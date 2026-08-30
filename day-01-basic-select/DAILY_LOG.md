@@ -33,8 +33,18 @@ A running record of user queries, questions asked to the instructor, errors enco
 
 ---
 
+## ❓ Question 4: "I tried selecting the DISTRICT column but it says it's wrong... I was getting confused that NAME is the name of a person"
+- **Context**: Problem 06 (*Japanese Cities' Names*). Selected `DISTRICT` instead of `NAME`.
+- **Instructor Resolution & Core Learning**:
+  - **Table Grain & Entity Semantics**: In Data Analysis, you must always identify what **one row represents** (the *grain* of the table).
+  - In a `CITY` table, each row is a city. Therefore, the `NAME` column represents the *City's name*, not a person. `DISTRICT` represents the region / prefecture.
+  - **Action**: Corrected projection to `SELECT NAME FROM CITY WHERE COUNTRYCODE = 'JPN';`.
+
+---
+
 ## 🛠️ Errors & Blockers Tracked Today
 | # | Issue / Blocker | Root Cause | Fix Applied |
 |---|---|---|---|
 | 1 | Grader failure on DB2 | Dialect whitespace / formatting mismatch | Switched HackerRank dropdown to MySQL |
 | 2 | Theoretical gap on execution order | Assuming SQL runs top-to-bottom | Documented 8-stage logical execution lifecycle in `THEORY.md` |
+| 3 | Schema misinterpretation (`DISTRICT` vs `NAME`) | Assumed `NAME` referred to a person rather than the city entity | Checked entity grain of table (`CITY` row = city) and selected `NAME` |

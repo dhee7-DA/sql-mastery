@@ -24,9 +24,9 @@ WHERE COUNTRYCODE = 'USA' AND POPULATION > 100000;
 -- -----------------------------------------------------------------------------
 
 -- Write your query below:
-
-
-
+SELECT NAME
+FROM CITY
+WHERE COUNTRYCODE = 'USA' AND POPULATION > 120000;
 -- -----------------------------------------------------------------------------
 -- Problem 03: Select All
 -- Table: CITY
@@ -46,9 +46,9 @@ WHERE COUNTRYCODE = 'USA' AND POPULATION > 100000;
 -- -----------------------------------------------------------------------------
 
 -- Write your query below:
-
-
-
+SELECT *
+FROM CITY
+WHERE ID = 1661;
 -- -----------------------------------------------------------------------------
 -- Problem 05: Japanese Cities' Attributes
 -- Table: CITY
@@ -58,9 +58,9 @@ WHERE COUNTRYCODE = 'USA' AND POPULATION > 100000;
 -- -----------------------------------------------------------------------------
 
 -- Write your query below:
-
-
-
+SELECT *
+FROM CITY
+WHERE COUNTRYCODE = 'JPN';
 -- -----------------------------------------------------------------------------
 -- Problem 06: Japanese Cities' Names
 -- Table: CITY
@@ -70,9 +70,9 @@ WHERE COUNTRYCODE = 'USA' AND POPULATION > 100000;
 -- -----------------------------------------------------------------------------
 
 -- Write your query below:
-
-
-
+SELECT NAME
+FROM CITY
+WHERE COUNTRYCODE = 'JPN';
 -- -----------------------------------------------------------------------------
 -- Problem 07: Weather Observation Station 1
 -- Table: STATION

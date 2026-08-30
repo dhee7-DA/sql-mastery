@@ -16,7 +16,7 @@ Welcome to the **14-Day SQL Intensive**. This repository is an institutional-gra
 
 | Day | Module Directory | Key Concepts | Status |
 |---|---|---|---|
-| **Day 01** | [day-01-basic-select](./day-01-basic-select) | `SELECT`, `FROM`, `WHERE`, `AND`/`OR`, `DISTINCT`, Modulo | 🟡 In Progress (1/8) |
+| **Day 01** | [day-01-basic-select](./day-01-basic-select) | `SELECT`, `FROM`, `WHERE`, `AND`/`OR`, `DISTINCT`, Modulo | 🟡 In Progress (5/8 - 63%) |
 | **Day 02** | `day-02-ordering-wildcards` | `ORDER BY`, `LIMIT` / `TOP`, `LIKE`, `NOT LIKE`, Wildcards | ⚪ Pending |
 | **Day 03** | `day-03-string-functions` | `LENGTH`, `SUBSTR`, `LEFT`/`RIGHT`, Regex basics | ⚪ Pending |
 | **Day 04** | `day-04-aggregations` | `COUNT`, `SUM`, `AVG`, `MIN`, `MAX`, `ROUND`, `TRUNCATE` | ⚪ Pending |
