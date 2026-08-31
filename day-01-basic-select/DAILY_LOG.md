@@ -42,9 +42,19 @@ A running record of user queries, questions asked to the instructor, errors enco
 
 ---
 
+## ❓ Question 5: "So we use MOD with WHERE clause and after it. Tell me more about MOD and interview cases."
+- **Context**: Solved Problem 08 (*Weather Observation Station 3*). Wanted deep architectural understanding of `MOD` and company interview applications.
+- **Instructor Resolution & Additions**:
+  - Replaced raw LaTeX math formulas with clean Unicode division boxes and tables.
+  - Documented the 4 primary business use cases: Even/Odd parity, Systematic Data Sampling (every 10th row), A/B Test Cohort Splitting (3-way splits), and Time duration conversion.
+  - Created a dedicated [`INTERVIEW_QUESTIONS.md`](./INTERVIEW_QUESTIONS.md) containing actual interview scenarios from Amazon, Meta, Uber, and Netflix.
+
+---
+
 ## 🛠️ Errors & Blockers Tracked Today
 | # | Issue / Blocker | Root Cause | Fix Applied |
 |---|---|---|---|
 | 1 | Grader failure on DB2 | Dialect whitespace / formatting mismatch | Switched HackerRank dropdown to MySQL |
 | 2 | Theoretical gap on execution order | Assuming SQL runs top-to-bottom | Documented 8-stage logical execution lifecycle in `THEORY.md` |
 | 3 | Schema misinterpretation (`DISTRICT` vs `NAME`) | Assumed `NAME` referred to a person rather than the city entity | Checked entity grain of table (`CITY` row = city) and selected `NAME` |
+| 4 | Raw LaTeX unrendered math | Markdown viewers lacking mathjax parsing | Standardized all equations to clean Unicode ASCII visuals |

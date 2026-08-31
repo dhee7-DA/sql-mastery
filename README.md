@@ -16,8 +16,8 @@ Welcome to the **14-Day SQL Intensive**. This repository is an institutional-gra
 
 | Day | Module Directory | Key Concepts | Status |
 |---|---|---|---|
-| **Day 01** | [day-01-basic-select](./day-01-basic-select) | `SELECT`, `FROM`, `WHERE`, `AND`/`OR`, `DISTINCT`, Modulo | 🟡 In Progress (5/8 - 63%) |
-| **Day 02** | `day-02-ordering-wildcards` | `ORDER BY`, `LIMIT` / `TOP`, `LIKE`, `NOT LIKE`, Wildcards | ⚪ Pending |
+| **Day 01** | [day-01-basic-select](./day-01-basic-select) | `SELECT`, `FROM`, `WHERE`, `AND`/`OR`, `DISTINCT`, Modulo | ✅ Completed (8/8) |
+| **Day 02** | `day-02-ordering-wildcards` | `ORDER BY`, `LIMIT` / `TOP`, `LIKE`, `NOT LIKE`, Wildcards | 🟡 Next Up |
 | **Day 03** | `day-03-string-functions` | `LENGTH`, `SUBSTR`, `LEFT`/`RIGHT`, Regex basics | ⚪ Pending |
 | **Day 04** | `day-04-aggregations` | `COUNT`, `SUM`, `AVG`, `MIN`, `MAX`, `ROUND`, `TRUNCATE` | ⚪ Pending |
 | **Day 05** | `day-05-group-by-having` | `GROUP BY`, `HAVING` vs `WHERE`, Multi-column grouping | ⚪ Pending |
@@ -47,6 +47,7 @@ sql-mastery/
 │   ├── README.md                 # Day 01 overview, schemas, problem links
 │   ├── THEORY.md                 # Deep theory, Mermaid execution flowcharts, mental models
 │   ├── SOLUTIONS_BREAKDOWN.md    # Problem analysis, logic explanation, solutions & interview tips
+│   ├── INTERVIEW_QUESTIONS.md    # Real screening problems from Amazon, Meta, Uber, Netflix
 │   ├── queries.sql               # Clean, executable SQL solutions
 │   ├── DAILY_LOG.md              # Daily Q&A, blockers resolved, dialect comparisons
 │   └── ASSESSMENT.md             # Instructor scorecard, strengths, and areas to improve
@@ -55,11 +56,12 @@ sql-mastery/
 
 ---
 
-## 🔄 Daily 5-File Protocol
+## 🔄 Daily 6-File Protocol
 
-For every single day of this intensive, 5 standardized files are maintained:
+For every single day of this intensive, 6 standardized files are maintained:
 1. **`THEORY.md`**: Visual diagrams, execution lifecycle, syntax rules, and mental models.
 2. **`SOLUTIONS_BREAKDOWN.md`**: For each problem: *What are they testing?* + *Clean SQL* + *Detailed breakdown* + *Interview tips*.
-3. **`queries.sql`**: The clean executable query bank.
-4. **`DAILY_LOG.md`**: Real-time Q&A log, blockers debugged, and engine differences.
-5. **`ASSESSMENT.md`**: Objective scorecards assessing mastery and highlighting gaps.
+3. **`INTERVIEW_QUESTIONS.md`**: Real technical interview scenarios from top tech companies testing that day's concepts.
+4. **`queries.sql`**: The clean executable query bank.
+5. **`DAILY_LOG.md`**: Real-time Q&A log, blockers debugged, and engine differences.
+6. **`ASSESSMENT.md`**: Objective scorecards assessing mastery and highlighting gaps.

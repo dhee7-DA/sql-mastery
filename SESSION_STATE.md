@@ -6,13 +6,13 @@
 
 ## 📌 Current Snapshot
 
-- **Current Sprint**: Day 01 of 14
-- **Active Module**: `day-01-basic-select` (Basic SELECT, Row Filtering, DISTINCT, Modulo)
+- **Current Sprint**: **Day 01 Complete! 🏆**
+- **Active Module**: `day-01-basic-select` (All 8 Reps Completed & Documented)
 - **Current Dialect**: **MySQL 8.0+**
-- **Last Completed Task**: Solved Problem 06 on HackerRank (*Japanese Cities' Names*)
-- **Next Immediate Action**: Solve Problem 07 (*Weather Observation Station 1*)
-- **Total Problems Completed Today**: 5 / 8 (63% Progress!)
-- **Last Updated**: 2026-08-31 01:47 IST
+- **Last Completed Task**: Solved Problem 08 (*Weather Observation Station 3*) & Created `INTERVIEW_QUESTIONS.md`
+- **Next Immediate Action**: Advance to **Day 02**: `day-02-ordering-wildcards` (`ORDER BY`, `LIMIT`/`TOP`, `LIKE`, `NOT LIKE`, Wildcards)
+- **Total Problems Completed in Day 01**: **8 / 8 (100% Milestone Achieved!)**
+- **Last Updated**: 2026-08-31 12:26 IST
 
 ---
 
@@ -20,9 +20,9 @@
 
 | Day | Module Directory | Focus | Problems | Status |
 |---|---|---|---|---|
-| **01** | [`day-01-basic-select`](./day-01-basic-select) | `SELECT`, `FROM`, `WHERE`, `AND`/`OR`, `DISTINCT`, Modulo | 5/8 | 🟡 Active (63%) |
-| **02** | `day-02-ordering-wildcards` | `ORDER BY`, `LIMIT`/`TOP`, `LIKE`, `NOT LIKE`, Wildcards | 0/8 | ⚪ Pending |
-| **03** | `day-03-string-functions` | `LENGTH`, `SUBSTR`, `LEFT`/`RIGHT`, Regex intro | 0/8 | ⚪ Pending |
+| **01** | [`day-01-basic-select`](./day-01-basic-select) | `SELECT`, `FROM`, `WHERE`, `AND`/`OR`, `DISTINCT`, Modulo | 8/8 | ✅ Completed (100%) |
+| **02** | `day-02-ordering-wildcards` | `ORDER BY`, `LIMIT`/`TOP`, `LIKE`, `NOT LIKE`, Wildcards | 0/8 | 🟡 Next Up |
+| **03** | `day-03-string-functions` | `LENGTH`, `SUBSTR`, `LEFT`/`RIGHT`, Regex basics | 0/8 | ⚪ Pending |
 | **04** | `day-04-aggregations` | `COUNT`, `SUM`, `AVG`, `MIN`, `MAX`, `ROUND` | 0/8 | ⚪ Pending |
 | **05** | `day-05-group-by-having` | `GROUP BY`, `HAVING` vs `WHERE`, Multi-column aggregations | 0/8 | ⚪ Pending |
 | **06** | `day-06-conditional-logic` | `CASE WHEN`, Conditional aggregations, pivots | 0/8 | ⚪ Pending |
@@ -48,11 +48,16 @@
 - **22:45 IST**: Student solved and submitted **Problem 01** (*Revising the Select Query I*).
 - **22:55 IST**: First Git commit and push executed to GitHub.
 
-### 2. 2026-08-31 (Day 01 Sprint Continued - Late Night)
+### 2. 2026-08-31 (Day 01 Sprint Continued)
 - **00:48 IST**: Resumed session. Briefed Problem 02 (column projection vs full row scan).
 - **00:54 IST**: Student solved and submitted **Problem 02** (*Revising the Select Query II*) with 100% test pass.
 - **00:55 IST**: Saved solution in `queries.sql`, updated session ledger, and updated instructor assessment.
 - **01:36 IST**: Student solved and submitted **Problem 04** (*Select By ID*) with 100% test pass. Score: 30/80.
 - **01:39 IST**: Student solved and submitted **Problem 05** (*Japanese Cities' Attributes*) with 100% test pass. Score: 40/80.
 - **01:46 IST**: Student identified and resolved entity grain misconception (`DISTRICT` vs `NAME` in `CITY` table).
-- **01:47 IST**: Student solved and submitted **Problem 06** (*Japanese Cities' Names*) with 100% test pass. Score: 50/80 (63% to 1st star badge).
+- **01:47 IST**: Student solved and submitted **Problem 06** (*Japanese Cities' Names*) with 100% test pass. Score: 50/80.
+- **12:05 IST**: Morning session kickoff. Student solved and submitted **Problem 07** (*Weather Observation Station 1*) with 100% test pass (+15.00 pts). Total Score: 65/80.
+- **12:20 IST**: Replaced raw LaTeX math formatting across theory and briefings with clean Unicode ASCII tables.
+- **12:25 IST**: Student solved and submitted **Problem 08** (*Weather Observation Station 3*) with 100% test pass (+10.00 pts). Total Score: 75/80 (94%).
+- **12:26 IST**: Authored institutional-grade `INTERVIEW_QUESTIONS.md` featuring real screening cases from Amazon, Meta, Uber, and Netflix.
+- **12:26 IST**: Sealed Day 01 with 100% completion scorecard!

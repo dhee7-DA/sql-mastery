@@ -35,8 +35,8 @@ WHERE COUNTRYCODE = 'USA' AND POPULATION > 120000;
 -- -----------------------------------------------------------------------------
 
 -- Write your query below:
-
-
+SELECT *
+FROM CITY;
 
 -- -----------------------------------------------------------------------------
 -- Problem 04: Select By ID
@@ -81,9 +81,8 @@ WHERE COUNTRYCODE = 'JPN';
 -- -----------------------------------------------------------------------------
 
 -- Write your query below:
-
-
-
+SELECT CITY, STATE
+FROM STATION;
 -- -----------------------------------------------------------------------------
 -- Problem 08: Weather Observation Station 3
 -- Table: STATION
@@ -93,5 +92,6 @@ WHERE COUNTRYCODE = 'JPN';
 -- -----------------------------------------------------------------------------
 
 -- Write your query below:
-
-
+SELECT DISTINCT CITY
+FROM STATION
+WHERE MOD(ID, 2) = 0;

@@ -19,7 +19,7 @@ Table: CITY
 +----+---------------+-------------+-------------+------------+
 ```
 
-SQL operates using **Set Theory**. When you run a query, you are transforming a large set of rows into a targeted subset through filtering and projection.
+SQL operates using **Set Theory**. When you write a query, you are transforming a large set of rows into a targeted subset through filtering and projection.
 
 ---
 
@@ -48,93 +48,139 @@ flowchart TD
 ### Why this matters:
 1. Because **`FROM`** runs first, the database confirms the table exists.
 2. Because **`WHERE`** runs second, it evaluates rows **before** columns are picked.
-3. Because **`SELECT`** runs fifth, any column alias defined in `SELECT` (e.g. `SELECT population AS pop`) **cannot** be used inside `WHERE` (e.g. `WHERE pop > 100` ❌ causes an error!).
+3. Because **`SELECT`** runs fifth, any column alias defined in `SELECT` (e.g. `SELECT population AS pop`) **cannot** be used inside `WHERE` (e.g. `WHERE pop > 100` is invalid).
 
 ---
 
-## 🔍 3. Core Clauses Breakdown
+## 🔍 3. Deep-Dive: The `WHERE` Clause & Modulo Arithmetic (`MOD`)
 
-### A. The `FROM` Clause
-Specifies the target table to read data from.
-```sql
-FROM CITY;
+### What is `MOD` (Modulo)?
+Modulo calculates the **remainder** left over after integer division:
+
+```text
+       3  <-- Quotient (How many whole times it fits)
+     ____
+  4 ) 14  <-- Dividend (The number you start with)
+     -12  <-- (4 × 3)
+     ____
+       2  <-- REMAINDER  ===>  MOD(14, 4) = 2
 ```
 
-### B. The `WHERE` Clause (Row Filter)
-Evaluates a boolean condition for every row. If the condition evaluates to `TRUE`, the row is retained. If `FALSE` or `NULL`, the row is discarded.
-
-#### Comparison Operators:
-| Operator | Meaning | Example |
-|---|---|---|
-| `=` | Equal to | `COUNTRYCODE = 'USA'` |
-| `<>` or `!=` | Not equal to | `COUNTRYCODE <> 'USA'` |
-| `>` | Greater than | `POPULATION > 100000` |
-| `<` | Less than | `POPULATION < 50000` |
-| `>=` | Greater than or equal to | `POPULATION >= 100000` |
-| `<=` | Less than or equal to | `POPULATION <= 100000` |
-
-#### Boolean Logic Operators:
-- **`AND`**: Both conditions must be `TRUE`.
-  ```sql
-  WHERE COUNTRYCODE = 'USA' AND POPULATION > 100000
-  ```
-- **`OR`**: At least one condition must be `TRUE`.
-  ```sql
-  WHERE COUNTRYCODE = 'USA' OR COUNTRYCODE = 'JPN'
-  ```
-- **`NOT`**: Inverts the condition.
-  ```sql
-  WHERE NOT (COUNTRYCODE = 'USA')
-  ```
+### Modulo Lookup Reference Table:
+| Expression | Calculation | Result | Meaning / Category |
+|---|---|---|---|
+| `MOD(10, 2)` | 10 = (5 × 2) + 0 | **0** | Even number (Divisible by 2) |
+| `MOD(11, 2)` | 11 = (5 × 2) + 1 | **1** | Odd number |
+| `MOD(10, 3)` | 10 = (3 × 3) + 1 | **1** | 1 left over after division by 3 |
+| `MOD(12, 3)` | 12 = (4 × 3) + 0 | **0** | Perfect multiple of 3 |
+| `MOD(100, 10)`| 100 = (10 × 10) + 0 | **0** | Perfect multiple of 10 |
+| `MOD(7, 10)` | 7 = (0 × 10) + 7 | **7** | When N < M, remainder is N |
 
 ---
 
-### C. The `SELECT` Clause (Column Projection)
-Specifies which attributes to output.
-- `SELECT *`: Returns every column defined in the table.
-- `SELECT NAME, POPULATION`: Returns only the specified columns in that exact order.
+### Real-World Use Cases for `MOD` in SQL:
 
----
-
-### D. The `DISTINCT` Keyword (Set Deduplication)
-When querying categorical data (e.g., city names, country codes), multiple rows may contain identical values. `DISTINCT` eliminates duplicate rows.
-
+#### 1. Even / Odd Parity Filtering
 ```sql
-SELECT DISTINCT CITY
-FROM STATION;
+-- Even IDs
+SELECT * FROM orders WHERE MOD(order_id, 2) = 0;
+
+-- Odd IDs
+SELECT * FROM orders WHERE MOD(order_id, 2) = 1;
 ```
 
-> **Important**: `SELECT DISTINCT CITY, STATE` checks for uniqueness of the **combination** of `(CITY, STATE)`.
+#### 2. Systematic Data Sampling (e.g., Extract Every 10th Record)
+In big data environments (billions of rows), you often want a quick representative sample without scanning everything:
+```sql
+SELECT * 
+FROM clickstream_events
+WHERE MOD(event_id, 10) = 0; -- Yields an exact 10% systematic sample
+```
+
+#### 3. A/B Testing & Multi-Cohort Bucketing
+Split active users into 3 distinct test variants based on their numerical ID:
+```sql
+SELECT 
+    user_id,
+    email,
+    CASE 
+        WHEN MOD(user_id, 3) = 0 THEN 'Variant A (Control)'
+        WHEN MOD(user_id, 3) = 1 THEN 'Variant B (New Checkout)'
+        WHEN MOD(user_id, 3) = 2 THEN 'Variant C (One-Click Buy)'
+    END AS experiment_cohort
+FROM users;
+```
+
+#### 4. Time and Duration Breakdown
+Convert total call seconds (e.g., 145 seconds) into minutes and remaining seconds:
+```sql
+SELECT 
+    call_id,
+    FLOOR(duration_seconds / 60) AS call_minutes,
+    MOD(duration_seconds, 60)    AS remaining_seconds
+FROM support_calls;
+```
 
 ---
 
-### E. Modulo Arithmetic (`MOD()` vs `%`)
-Modulo finds the remainder of integer division:
-- Even numbers divided by 2 have a remainder of `0`.
-- Odd numbers divided by 2 have a remainder of `1`.
+## 💎 4. Deep-Dive: Set Deduplication with `DISTINCT`
 
-| Dialect | Even Condition | Odd Condition |
-|---|---|---|
-| **MySQL / Oracle** | `MOD(ID, 2) = 0` | `MOD(ID, 2) = 1` or `MOD(ID, 2) <> 0` |
-| **PostgreSQL / SQL Server** | `ID % 2 = 0` | `ID % 2 = 1` or `ID % 2 <> 0` |
+### 1. Why `DISTINCT` Exists
+Databases store relational entities where attributes repeat. If you select a column like `CITY` from `STATION`, the same city name may appear across multiple records with different IDs.
+
+```text
+Input Table: STATION
++----+------------+-------+
+| ID | CITY       | STATE |
++----+------------+-------+
+| 10 | Austin     | TX    |
+| 12 | Denver     | CO    |
+| 14 | Austin     | TX    | <-- Duplicate city
+| 16 | Seattle    | WA    |
++----+------------+-------+
+```
+
+```sql
+SELECT DISTINCT CITY FROM STATION;
+```
+
+**Result Set (Duplicates Removed):**
+```text
+Austin
+Denver
+Seattle
+```
+
+### 2. Crucial Rule: Multi-Column `DISTINCT`
+When multiple columns are specified, `DISTINCT` evaluates the **entire combination (tuple)** of all selected columns, NOT just the first column:
+
+```sql
+SELECT DISTINCT CITY, STATE FROM STATION;
+```
+- If you have `(Austin, TX)` and `(Austin, TX)`, only one is returned.
+- If you have `(Austin, TX)` and `(Austin, MN)`, **both** are returned because the `(CITY, STATE)` pair is unique!
+
+### 3. Syntax Rules:
+- `SELECT DISTINCT CITY, STATE` ✅
+- `SELECT CITY, DISTINCT STATE` ❌ *(Syntax error: DISTINCT must follow SELECT immediately)*
 
 ---
 
-## ⚠️ 4. Top 5 Traps & Common Errors
+## ⚠️ 5. Top 5 Traps & Common Gotchas
 
 1. **Quotation Rules**:
-   - String literals: Always single quotes (`'USA'`, `'New York'`).
+   - String literals: Always single quotes (`'USA'`, `'JPN'`).
    - Numbers: Never use quotes (`100000`, `1661`).
    - Identifiers (column/table names): No quotes needed.
 2. **Trailing Commas**:
-   - `SELECT ID, NAME, FROM CITY;` ❌ (*Syntax error before `FROM`*)
+   - `SELECT ID, NAME, FROM CITY;` ❌ (*Syntax error*)
    - `SELECT ID, NAME FROM CITY;` ✅
-3. **Missing `AND` in range filtering**:
-   - `WHERE 50000 < POPULATION < 100000` ❌ (*Invalid SQL*)
-   - `WHERE POPULATION > 50000 AND POPULATION < 100000` ✅
-4. **`DISTINCT` Placement**:
-   - `SELECT CITY, DISTINCT STATE` ❌ (*`DISTINCT` must appear immediately after `SELECT`*)
-   - `SELECT DISTINCT CITY, STATE` ✅
+3. **Table Grain & Entity Semantics**:
+   - Always verify what 1 row represents. In `CITY`, each row is a city, so `NAME` is the city name (not a customer or person).
+4. **Modulo Dialect Differences**:
+   - MySQL/Postgres/Snowflake: Supports both `MOD(id, 2) = 0` and `id % 2 = 0`.
+   - Oracle: Only supports `MOD(id, 2) = 0`.
+   - MS SQL Server: Only supports `id % 2 = 0`.
 5. **Null Values**:
-   - `WHERE column = NULL` ❌ (*Will always evaluate to UNKNOWN / False*)
+   - `WHERE column = NULL` ❌ *(Always evaluates to UNKNOWN)*
    - `WHERE column IS NULL` ✅
