@@ -6,36 +6,59 @@ Welcome to the **14-Day SQL Intensive**. This repository is an institutional-gra
 
 ## 🎯 The Philosophy: Problem-First Deliberate Practice
 - **Zero Tutorial Hell**: Concepts are learned in tight theory bursts and immediately reinforced with active problem-solving reps.
-- **Mental Model First**: Understanding query execution order and set-based thinking over syntax memorization.
-- **Strict Rep Logging**: Every single query is written by hand, tested on live datasets (HackerRank, LeetCode, StrataScratch), and reviewed for correctness and performance.
-- **Continuous Documentation**: Every day contains rich theory with diagrams, problem deconstructions, interview strategies, Q&A logs, and instructor progress assessments.
+- **HackerRank Mapped Progression**: Aligned 1-to-1 with HackerRank Subdomains (Basic Select, Advanced Select, Aggregation, Basic Join, Advanced Join) and progressive difficulty levels (Easy ➡️ Medium ➡️ Hard).
+- **Strict Rep Logging**: Every query is written by hand, tested on live datasets, and reviewed for correctness and performance.
+- **Continuous Documentation**: Every day contains rich visual theory, problem deconstructions, real company interview case studies, Q&A logs, and instructor progress assessments.
 
 ---
 
-## 🗺️ 14-Day Syllabus & Progress Tracker
+## 🗺️ 14-Day Syllabus & Progress Tracker (HackerRank Subdomain Roadmap)
 
-| Day | Module Directory | Key Concepts | Status |
-|---|---|---|---|
-| **Day 01** | [day-01-basic-select](./day-01-basic-select) | `SELECT`, `FROM`, `WHERE`, `AND`/`OR`, `DISTINCT`, Modulo | ✅ Completed (8/8) |
-| **Day 02** | `day-02-ordering-wildcards` | `ORDER BY`, `LIMIT` / `TOP`, `LIKE`, `NOT LIKE`, Wildcards | 🟡 Next Up |
-| **Day 03** | `day-03-string-functions` | `LENGTH`, `SUBSTR`, `LEFT`/`RIGHT`, Regex basics | ⚪ Pending |
-| **Day 04** | `day-04-aggregations` | `COUNT`, `SUM`, `AVG`, `MIN`, `MAX`, `ROUND`, `TRUNCATE` | ⚪ Pending |
-| **Day 05** | `day-05-group-by-having` | `GROUP BY`, `HAVING` vs `WHERE`, Multi-column grouping | ⚪ Pending |
-| **Day 06** | `day-06-conditional-logic` | `CASE WHEN ... THEN ... ELSE ... END`, Pivot queries | ⚪ Pending |
-| **Day 07** | `day-07-joins-basics` | `INNER JOIN`, `LEFT JOIN`, `RIGHT JOIN`, Join condition logic | ⚪ Pending |
-| **Day 08** | `day-08-advanced-joins` | `FULL OUTER JOIN`, `CROSS JOIN`, Multi-table joins, self-joins | ⚪ Pending |
-| **Day 09** | `day-09-subqueries-ctes` | Scalar subqueries, correlated subqueries, `WITH` CTEs | ⚪ Pending |
-| **Day 10** | `day-10-window-ranking` | `ROW_NUMBER()`, `RANK()`, `DENSE_RANK()`, `NTILE()` | ⚪ Pending |
-| **Day 11** | `day-11-window-aggregates` | `LAG()`, `LEAD()`, `SUM() OVER(PARTITION BY ... ORDER BY ...)` | ⚪ Pending |
-| **Day 12** | `day-12-set-ops-dates` | `UNION` / `UNION ALL`, `INTERSECT`, `DATEDIFF`, `DATE_ADD` | ⚪ Pending |
-| **Day 13** | `day-13-business-scenarios` | Churn analysis, retention cohorts, revenue rollups | ⚪ Pending |
-| **Day 14** | `day-14-capstone-project` | Comprehensive end-to-end analytics case study | ⚪ Pending |
+### 🟢 Phase 1: Basic Select Track (Fundamentals, Patterns & Ordering)
+| Day | Module Directory | HackerRank Subdomain & Focus | Difficulty | Status |
+|---|---|---|---|---|
+| **Day 01** | [`day-01-basic-select`](./day-01-basic-select) | `SELECT`, `FROM`, `WHERE`, `AND`/`OR`, `DISTINCT`, `MOD()` | Easy | ✅ Completed (8/8) |
+| **Day 02** | [`day-02-pattern-matching-vowels`](./day-02-ordering-wildcards) | Station 4 (`COUNT - DISTINCT`), Station 6–12 (Vowel Regex/LIKE) | Easy | 🟡 In Progress (1/8) |
+| **Day 03** | `day-03-sorting-ordering` | `ORDER BY`, `LIMIT`, `LENGTH()`, Station 5, Employee & Student Sorts | Easy | ⚪ Pending |
+
+---
+
+### 🟡 Phase 2: Advanced Select & Conditional Logic
+| Day | Module Directory | HackerRank Subdomain & Focus | Difficulty | Status |
+|---|---|---|---|---|
+| **Day 04** | `day-04-advanced-select-case` | `CASE WHEN`, Type of Triangle, The PADS, Occupations Pivot | Easy / Medium | ⚪ Pending |
+| **Day 05** | `day-05-advanced-select-hierarchies`| Binary Tree Nodes, New Companies, Table Relationships | Medium | ⚪ Pending |
+
+---
+
+### 🟠 Phase 3: Aggregations & Analytical Mathematics
+| Day | Module Directory | HackerRank Subdomain & Focus | Difficulty | Status |
+|---|---|---|---|---|
+| **Day 06** | `day-06-basic-aggregations` | `COUNT`, `SUM`, `AVG`, `ROUND`, Top Earners, Density Diff | Easy | ⚪ Pending |
+| **Day 07** | `day-07-station-math-aggregates` | Station 2, 13–20 (Manhattan & Euclidean Distances, Median) | Easy / Medium | ⚪ Pending |
+
+---
+
+### 🔴 Phase 4: Relational Joins Track
+| Day | Module Directory | HackerRank Subdomain & Focus | Difficulty | Status |
+|---|---|---|---|---|
+| **Day 08** | `day-08-basic-joins` | `INNER JOIN`, `LEFT JOIN`, Asian Pop, African Cities, Continents | Easy | ⚪ Pending |
+| **Day 09** | `day-09-intermediate-joins` | The Report, Top Competitors, Ollivander's Inventory | Medium | ⚪ Pending |
+| **Day 10** | `day-10-advanced-joins-scoring` | Contest Leaderboard, Placements, Symmetric Pairs | Medium / Hard | ⚪ Pending |
+
+---
+
+### 🟣 Phase 5: Advanced Analytical SQL & Portfolio Case Study
+| Day | Module Directory | Focus & Enterprise Skills | Difficulty | Status |
+|---|---|---|---|---|
+| **Day 11** | `day-11-window-ranking` | `ROW_NUMBER()`, `RANK()`, `DENSE_RANK()`, `NTILE()` | Advanced | ⚪ Pending |
+| **Day 12** | `day-12-window-aggregates` | `LAG()`, `LEAD()`, Running Totals, Moving Averages | Advanced | ⚪ Pending |
+| **Day 13** | `day-13-business-analytics` | Churn Analysis, Retention Cohorts, MoM Growth Queries | Advanced | ⚪ Pending |
+| **Day 14** | `day-14-capstone-project` | Comprehensive End-to-End Analytics Case Study & Presentation | Capstone | ⚪ Pending |
 
 ---
 
 ## 📁 Repository Architecture
-
-This repo is structured so that you can open it in **any IDE** (VS Code, Cursor, Antigravity) or share it with any mentor/AI assistant and instantly resume with full context:
 
 ```text
 sql-mastery/
@@ -43,22 +66,14 @@ sql-mastery/
 ├── PATTERNS.md                   # Reusable SQL patterns, mental models & gotchas
 ├── SESSION_STATE.md              # Real-time state ledger (last task, next step, history)
 │
-├── day-01-basic-select/
-│   ├── README.md                 # Day 01 overview, schemas, problem links
-│   ├── THEORY.md                 # Deep theory, Mermaid execution flowcharts, mental models
-│   ├── SOLUTIONS_BREAKDOWN.md    # Problem analysis, logic explanation, solutions & interview tips
-│   ├── INTERVIEW_QUESTIONS.md    # Real screening problems from Amazon, Meta, Uber, Netflix
-│   ├── queries.sql               # Clean, executable SQL solutions
-│   ├── DAILY_LOG.md              # Daily Q&A, blockers resolved, dialect comparisons
-│   └── ASSESSMENT.md             # Instructor scorecard, strengths, and areas to improve
+├── day-01-basic-select/          # [COMPLETED] Basic SELECT, WHERE, DISTINCT, MOD
+├── day-02-ordering-wildcards/    # [ACTIVE] Station 4 + Vowel Pattern Matching (Station 6-12)
 └── ...
 ```
 
 ---
 
 ## 🔄 Daily 6-File Protocol
-
-For every single day of this intensive, 6 standardized files are maintained:
 1. **`THEORY.md`**: Visual diagrams, execution lifecycle, syntax rules, and mental models.
 2. **`SOLUTIONS_BREAKDOWN.md`**: For each problem: *What are they testing?* + *Clean SQL* + *Detailed breakdown* + *Interview tips*.
 3. **`INTERVIEW_QUESTIONS.md`**: Real technical interview scenarios from top tech companies testing that day's concepts.

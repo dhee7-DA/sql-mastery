@@ -6,13 +6,14 @@
 
 ## 📌 Current Snapshot
 
-- **Current Sprint**: **Day 01 Complete! 🏆**
-- **Active Module**: `day-01-basic-select` (All 8 Reps Completed & Documented)
+- **Current Sprint**: **Day 02 of 14**
+- **Active Module**: `day-02-ordering-wildcards` (Station 4 + Vowel Pattern Matching Series 6–12)
 - **Current Dialect**: **MySQL 8.0+**
-- **Last Completed Task**: Solved Problem 08 (*Weather Observation Station 3*) & Created `INTERVIEW_QUESTIONS.md`
-- **Next Immediate Action**: Advance to **Day 02**: `day-02-ordering-wildcards` (`ORDER BY`, `LIMIT`/`TOP`, `LIKE`, `NOT LIKE`, Wildcards)
-- **Total Problems Completed in Day 01**: **8 / 8 (100% Milestone Achieved!)**
-- **Last Updated**: 2026-08-31 12:26 IST
+- **Major Milestone Achieved**: 🌟 **1st Star HackerRank SQL Badge Unlocked!** (85/175 pts towards 2nd Star)
+- **Last Completed Task**: Solved Day 02 Problem 01 (*Weather Observation Station 4*)
+- **Next Immediate Action**: Solve Problem 02 (*Weather Observation Station 6*) — Starts with vowels
+- **Total Problems Completed in Day 02**: 1 / 8
+- **Last Updated**: 2026-08-31 23:26 IST
 
 ---
 
@@ -21,43 +22,32 @@
 | Day | Module Directory | Focus | Problems | Status |
 |---|---|---|---|---|
 | **01** | [`day-01-basic-select`](./day-01-basic-select) | `SELECT`, `FROM`, `WHERE`, `AND`/`OR`, `DISTINCT`, Modulo | 8/8 | ✅ Completed (100%) |
-| **02** | `day-02-ordering-wildcards` | `ORDER BY`, `LIMIT`/`TOP`, `LIKE`, `NOT LIKE`, Wildcards | 0/8 | 🟡 Next Up |
-| **03** | `day-03-string-functions` | `LENGTH`, `SUBSTR`, `LEFT`/`RIGHT`, Regex basics | 0/8 | ⚪ Pending |
-| **04** | `day-04-aggregations` | `COUNT`, `SUM`, `AVG`, `MIN`, `MAX`, `ROUND` | 0/8 | ⚪ Pending |
-| **05** | `day-05-group-by-having` | `GROUP BY`, `HAVING` vs `WHERE`, Multi-column aggregations | 0/8 | ⚪ Pending |
-| **06** | `day-06-conditional-logic` | `CASE WHEN`, Conditional aggregations, pivots | 0/8 | ⚪ Pending |
-| **07** | `day-07-joins-basics` | `INNER JOIN`, `LEFT JOIN`, `RIGHT JOIN`, Join predicates | 0/8 | ⚪ Pending |
-| **08** | `day-08-advanced-joins` | `FULL OUTER JOIN`, `CROSS JOIN`, Self-joins, multi-table | 0/8 | ⚪ Pending |
-| **09** | `day-09-subqueries-ctes` | Scalar subqueries, correlated subqueries, `WITH` CTEs | 0/8 | ⚪ Pending |
-| **10** | `day-10-window-ranking` | `ROW_NUMBER()`, `RANK()`, `DENSE_RANK()`, `NTILE()` | 0/8 | ⚪ Pending |
-| **11** | `day-11-window-aggregates` | `LAG()`, `LEAD()`, `SUM() OVER(PARTITION BY ...)` | 0/8 | ⚪ Pending |
-| **12** | `day-12-set-ops-dates` | `UNION`, `UNION ALL`, `INTERSECT`, Date arithmetic | 0/8 | ⚪ Pending |
-| **13** | `day-13-business-scenarios` | Churn analysis, retention cohorts, revenue rollups | 0/6 | ⚪ Pending |
-| **14** | `day-14-capstone-project` | Comprehensive end-to-end analytics case study | 0/1 | ⚪ Pending |
+| **02** | [`day-02-ordering-wildcards`](./day-02-ordering-wildcards) | Station 4 (`COUNT - DISTINCT`), Station 6–12 (Vowel Regex) | 1/8 | 🟡 Active (In Progress) |
+| **03** | `day-03-sorting-ordering` | `ORDER BY`, `LIMIT`, `LENGTH()`, Station 5, Employees, Students | 0/8 | ⚪ Pending |
+| **04** | `day-04-advanced-select-case` | `CASE WHEN`, Type of Triangle, The PADS, Occupations Pivot | 0/5 | ⚪ Pending |
+| **05** | `day-05-advanced-select-hierarchies`| Binary Tree Nodes, New Companies | 0/5 | ⚪ Pending |
+| **06** | `day-06-basic-aggregations` | `COUNT`, `SUM`, `AVG`, `ROUND`, Top Earners, Density Diff | 0/8 | ⚪ Pending |
+| **07** | `day-07-station-math-aggregates` | Station 2, 13–20 (Manhattan & Euclidean Distances, Medians) | 0/9 | ⚪ Pending |
+| **08** | `day-08-basic-joins` | `INNER JOIN`, `LEFT JOIN`, Asian Pop, African Cities, Continents | 0/8 | ⚪ Pending |
+| **09** | `day-09-intermediate-joins` | The Report, Top Competitors, Ollivander's Inventory | 0/8 | ⚪ Pending |
+| **10** | `day-10-advanced-joins-scoring` | Contest Leaderboard, Placements, Symmetric Pairs | 0/5 | ⚪ Pending |
+| **11** | `day-11-window-ranking` | `ROW_NUMBER()`, `RANK()`, `DENSE_RANK()`, `NTILE()` | 0/8 | ⚪ Pending |
+| **12** | `day-12-window-aggregates` | `LAG()`, `LEAD()`, Running Totals, Moving Averages | 0/8 | ⚪ Pending |
+| **13** | `day-13-business-analytics` | Churn Analysis, Retention Cohorts, MoM Growth Queries | 0/6 | ⚪ Pending |
+| **14** | `day-14-capstone-project` | Comprehensive End-to-End Analytics Case Study & Presentation | 0/1 | ⚪ Pending |
 
 ---
 
 ## 📜 Chronological Session Activity Log
 
-### 1. 2026-08-30 (Day 01 Kickoff - Evening)
-- **22:16 IST**: Initialized repository scaffolding (`README.md`, `PATTERNS.md`, `SESSION_STATE.md`).
-- **22:20 IST**: Created Day 01 5-file architecture (`THEORY.md`, `SOLUTIONS_BREAKDOWN.md`, `queries.sql`, `DAILY_LOG.md`, `ASSESSMENT.md`).
-- **22:30 IST**: Delivered foundational concept briefing on `SELECT`, `WHERE`, `AND`, strings vs numbers, and execution order.
-- **22:37 IST**: Debugged and resolved DB2 vs MySQL platform differences on HackerRank.
-- **22:42 IST**: Clarified MySQL vs PostgreSQL portability (ANSI SQL 95% standard).
-- **22:45 IST**: Student solved and submitted **Problem 01** (*Revising the Select Query I*).
-- **22:55 IST**: First Git commit and push executed to GitHub.
+### 1. 2026-08-30 to 2026-08-31 (Day 01 - 100% Conquered)
+- Full 8 Basic Select challenges solved and documented across 6 standardized files.
+- Real-world company interview scenarios created for Amazon, Meta, Uber, and Netflix.
+- All code pushed and verified on GitHub profile.
 
-### 2. 2026-08-31 (Day 01 Sprint Continued)
-- **00:48 IST**: Resumed session. Briefed Problem 02 (column projection vs full row scan).
-- **00:54 IST**: Student solved and submitted **Problem 02** (*Revising the Select Query II*) with 100% test pass.
-- **00:55 IST**: Saved solution in `queries.sql`, updated session ledger, and updated instructor assessment.
-- **01:36 IST**: Student solved and submitted **Problem 04** (*Select By ID*) with 100% test pass. Score: 30/80.
-- **01:39 IST**: Student solved and submitted **Problem 05** (*Japanese Cities' Attributes*) with 100% test pass. Score: 40/80.
-- **01:46 IST**: Student identified and resolved entity grain misconception (`DISTRICT` vs `NAME` in `CITY` table).
-- **01:47 IST**: Student solved and submitted **Problem 06** (*Japanese Cities' Names*) with 100% test pass. Score: 50/80.
-- **12:05 IST**: Morning session kickoff. Student solved and submitted **Problem 07** (*Weather Observation Station 1*) with 100% test pass (+15.00 pts). Total Score: 65/80.
-- **12:20 IST**: Replaced raw LaTeX math formatting across theory and briefings with clean Unicode ASCII tables.
-- **12:25 IST**: Student solved and submitted **Problem 08** (*Weather Observation Station 3*) with 100% test pass (+10.00 pts). Total Score: 75/80 (94%).
-- **12:26 IST**: Authored institutional-grade `INTERVIEW_QUESTIONS.md` featuring real screening cases from Amazon, Meta, Uber, and Netflix.
-- **12:26 IST**: Sealed Day 01 with 100% completion scorecard!
+### 2. 2026-08-31 (Day 02 Sprint - Night Session)
+- **19:45 IST**: Scaffolded complete Day 02 suite.
+- **20:57 IST**: Restructured 14-day syllabus in `README.md` to map 1-to-1 with HackerRank's 58 problem subdomains and difficulty paths.
+- **23:20 IST**: Taught 4-Step Analytical Problem Deconstruction Framework for translating English questions to mathematical SQL.
+- **23:26 IST**: Student solved **Weather Observation Station 4** on first attempt (+10.00 pts).
+- **23:26 IST**: 🌟 **1st Star HackerRank SQL Badge Unlocked!** Total Score: 85/175 pts.
