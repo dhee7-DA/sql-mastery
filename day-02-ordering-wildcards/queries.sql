@@ -14,6 +14,26 @@
 -- Write your query below:
 SELECT COUNT(CITY) - COUNT(DISTINCT CITY)
 FROM STATION;
+
+-- -----------------------------------------------------------------------------
+-- Problem 01.5: Weather Observation Station 5
+-- Table: STATION
+-- Query the two cities in STATION with the shortest and longest CITY names, as
+-- well as their respective lengths. In case of ties, sort alphabetically.
+-- Link: https://www.hackerrank.com/challenges/weather-observation-station-5/problem
+-- -----------------------------------------------------------------------------
+
+-- Write your query below:
+SELECT CITY, LENGTH(CITY)
+FROM STATION
+ORDER BY LENGTH(CITY) ASC, CITY ASC
+LIMIT 1;
+
+SELECT CITY, LENGTH(CITY)
+FROM STATION
+ORDER BY LENGTH(CITY) DESC, CITY ASC
+LIMIT 1;
+
 -- -----------------------------------------------------------------------------
 -- Problem 02: Weather Observation Station 6
 -- Table: STATION
@@ -23,9 +43,9 @@ FROM STATION;
 -- -----------------------------------------------------------------------------
 
 -- Write your query below:
-
-
-
+SELECT DISTINCT CITY
+FROM STATION
+WHERE CITY REGEXP '^[aeiou]';
 -- -----------------------------------------------------------------------------
 -- Problem 03: Weather Observation Station 7
 -- Table: STATION
@@ -35,9 +55,9 @@ FROM STATION;
 -- -----------------------------------------------------------------------------
 
 -- Write your query below:
-
-
-
+SELECT DISTINCT CITY
+FROM STATION
+WHERE CITY REGEXP '[aeiou]$';
 -- -----------------------------------------------------------------------------
 -- Problem 04: Weather Observation Station 8
 -- Table: STATION

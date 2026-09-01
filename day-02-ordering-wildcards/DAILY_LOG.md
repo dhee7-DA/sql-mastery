@@ -43,8 +43,19 @@ A running record of user queries, questions asked to the instructor, errors enco
 
 ---
 
+## ❓ Question 4: "Why do we need two queries for two cities, and why write `, CITY ASC` after the comma?"
+- **Context**: Problem 01.5 (*Weather Observation Station 5*).
+- **Instructor Resolution & Core Insights**:
+  1. **Single Sort Limitation**: An `ORDER BY` clause can only sort in one direction (`ASC` OR `DESC`) per query. Thus, extracting the shortest and longest requires two distinct sorting passes.
+  2. **The Secondary Tie-Breaker**: When multiple cities share the same character count (e.g. `Amo`, `Lee`, `Roy` all have length 3), SQL requires `, CITY ASC` to break the tie alphabetically.
+  3. **Index Card Analogy**: Visualized sorting 500 physical cards by length, checking alphabetical order on ties, and picking the #1 card.
+  4. Query solved successfully (+30.00 pts, Total Score: 115/175 pts).
+
+---
+
 ## 🛠️ Errors & Blockers Tracked Today
 | # | Issue / Blocker | Root Cause | Fix Applied |
 |---|---|---|---|
 | 1 | Clause sequence confusion | Unclear on order of `SELECT`, `FROM`, `ORDER BY`, `LIMIT` | Taught Universal SQL Blueprint ("So Few Whales Order Lunch") |
 | 2 | Tie-breaker misconception | Assumed primary sort column could break its own ties | Demonstrated multi-column sorting (`ORDER BY LENGTH() ASC, CITY ASC`) |
+| 3 | Dual query confusion | Expecting one query to sort in opposite directions | Explained single sort limitation and wrote dual sequential queries |

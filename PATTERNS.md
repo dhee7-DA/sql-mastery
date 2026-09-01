@@ -64,10 +64,15 @@ Use this master reference table to translate **any English business prompt or in
 | *"Text starts with 'A'"* | `WHERE col LIKE 'A%'` or `WHERE col REGEXP '^A'` | `WHERE city LIKE 'A%'` |
 | *"Text ends with 'a'"* | `WHERE col LIKE '%a'` or `WHERE col REGEXP 'a$'` | `WHERE city LIKE '%a'` |
 | *"Text contains 'tech' anywhere"* | `WHERE col LIKE '%tech%'` | `WHERE email LIKE '%@gmail.com'` |
+| *"2nd character is 'a'"* | `WHERE col LIKE '_a%'` | `WHERE city LIKE '_a%'` |
+| *"Text is exactly 3 characters long"* | `WHERE col LIKE '___'` | `WHERE code LIKE '___'` |
 | *"Text starts with a vowel (A, E, I, O, U)"* | `WHERE col REGEXP '^[aeiou]'` | `WHERE city REGEXP '^[aeiou]'` |
 | *"Text does NOT start with a vowel"* | `WHERE col NOT REGEXP '^[aeiou]'` | `WHERE city NOT REGEXP '^[aeiou]'` |
 | *"Text ends with a vowel"* | `WHERE col REGEXP '[aeiou]$'` | `WHERE city REGEXP '[aeiou]$'` |
-| *"Text starts AND ends with vowels"* | `WHERE col REGEXP '^[aeiou]' AND col REGEXP '[aeiou]$'` | `WHERE city REGEXP '^[aeiou]' AND ...` |
+| *"Text does NOT end with a vowel"* | `WHERE col NOT REGEXP '[aeiou]$'` | `WHERE city NOT REGEXP '[aeiou]$'` |
+| *"Text starts AND ends with vowels"* | `WHERE col REGEXP '^[aeiou]' AND col REGEXP '[aeiou]$'` | `WHERE city REGEXP '^[aeiou].*[aeiou]$'` |
+| *"Either does NOT start OR does NOT end with vowel"* | `WHERE col NOT REGEXP '^[aeiou]' OR col NOT REGEXP '[aeiou]$'` | Station 11 Pattern |
+| *"Neither starts NOR ends with vowel"* | `WHERE col NOT REGEXP '^[aeiou]' AND col NOT REGEXP '[aeiou]$'` | Station 12 Pattern |
 | *"Even numbers / Even IDs"* | `WHERE MOD(col, 2) = 0` (or `WHERE col % 2 = 0`) | `WHERE MOD(id, 2) = 0` |
 | *"Odd numbers / Odd IDs"* | `WHERE MOD(col, 2) = 1` (or `WHERE MOD(col, 2) <> 0`) | `WHERE MOD(id, 2) = 1` |
 | *"Every 10th record / 10% sampling"* | `WHERE MOD(col, 10) = 0` | `WHERE MOD(order_id, 10) = 0` |
@@ -78,16 +83,7 @@ Use this master reference table to translate **any English business prompt or in
 
 ---
 
-### 🅳 The `GROUP BY` & `HAVING` Clauses (Day 5 Preview: Summaries & Aggregations)
-
-| When the English Prompt says... | What you write in SQL | Concrete Example |
-|---|---|---|
-| *"For each department / Per customer / By category"* | `GROUP BY column_name` | `GROUP BY department_id` |
-| *"Filter groups after aggregation / Having more than 5"* | `HAVING COUNT(*) > 5` | `HAVING AVG(salary) > 50000` |
-
----
-
-### 🅴 The `ORDER BY` Clause (How to sort / arrange rows)
+### 🅳 The `ORDER BY` Clause (How to sort / arrange rows)
 
 | When the English Prompt says... | What you write in SQL | Concrete Example |
 |---|---|---|
@@ -99,7 +95,7 @@ Use this master reference table to translate **any English business prompt or in
 
 ---
 
-### 🅵 The `LIMIT` Clause (How many rows to return?)
+### 🅴 The `LIMIT` Clause (How many rows to return?)
 
 | When the English Prompt says... | What you write in SQL | Concrete Example |
 |---|---|---|
@@ -110,7 +106,22 @@ Use this master reference table to translate **any English business prompt or in
 
 ---
 
-## 🏛️ 2. The Universal SQL Sentence Blueprint
+## 🎯 2. The Wildcard & Regex Quick-Reference Cheatsheet
+
+### A. SQL Standard `LIKE` Wildcards
+- **`%`**: Any number of characters (0, 1, or many). E.g. `'A%'` (starts with A), `'%A'` (ends with A), `'%A%'` (contains A).
+- **`_`**: Exactly ONE character. E.g. `'_A%'` (2nd letter is A), `'___'` (exactly 3 letters).
+
+### B. Regular Expression (`REGEXP`) Anchors & Sets
+- **`^`**: Start anchor. E.g. `'^A'` (starts with A).
+- **`$`**: End anchor. E.g. `'A$'` (ends with A).
+- **`[...]`**: Any single character inside. E.g. `'[aeiou]'` (any vowel).
+- **`[^...]`**: Any single character NOT inside. E.g. `'[^aeiou]'` (any non-vowel).
+- **`.*`**: Any sequence of characters. E.g. `'^[aeiou].*[aeiou]$'` (starts AND ends with vowels).
+
+---
+
+## 🏛️ 3. The Universal SQL Sentence Blueprint
 
 SQL query clauses must **always follow this strict, unchangeable order**:
 
@@ -129,15 +140,15 @@ SQL query clauses must **always follow this strict, unchangeable order**:
 
 ---
 
-## ⚙️ 3. The Logical Execution Order (How the Engine Thinks)
+## ⚙️ 4. The Logical Execution Order (How the Database Engine Thinks)
 
 ```text
-1. FROM & JOINs       --> Locate and load tables
-2. WHERE              --> Filter raw rows
-3. GROUP BY           --> Bucket into groups
-4. HAVING             --> Filter groups
-5. SELECT             --> Choose / calculate output columns
-6. DISTINCT           --> Remove duplicate rows
+1. FROM & JOINs       --> Locate and load raw tables into memory
+2. WHERE              --> Filter individual rows before grouping
+3. GROUP BY           --> Bucket rows into summary groups
+4. HAVING             --> Filter groups based on aggregated totals
+5. SELECT             --> Choose / calculate output expressions
+6. DISTINCT           --> Remove duplicate rows from result set
 7. ORDER BY           --> Sort the surviving rows
-8. LIMIT / OFFSET     --> Cut the result set to Top N
+8. LIMIT / OFFSET     --> Restrict the number of output rows
 ```
