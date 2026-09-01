@@ -28,10 +28,23 @@ A running record of user queries, questions asked to the instructor, errors enco
     4. `Relationship`: Translate "the difference between" to math subtraction `COUNT(CITY) - COUNT(DISTINCT CITY)`.
   - Student simplified into core essence: *"Find difference between total city and unique city"*.
   - Query executed and passed on first attempt!
+  - 🌟 **1st Star HackerRank SQL Badge Unlocked!**
+
+---
+
+## ❓ Question 3: "Tell me what words should I look for in the problem so I know what to write in my query, and which keyword comes first vs later?"
+- **Context**: Weather Observation Station 5. Feeling overwhelmed about clause order and translating English prompts to SQL syntax.
+- **Instructor Resolution & Additions**:
+  1. **Universal SQL Sentence Blueprint**: Fixed rigid order:
+     - `SELECT` ➡️ `FROM` ➡️ `WHERE` ➡️ `ORDER BY` ➡️ `LIMIT`
+     - Memory Hook: *"So Few Whales Order Lunch"*
+  2. **English-to-SQL Decoder Table**: Built comprehensive keyword translation dictionary mapping words like "Print / Fetch / Exclude duplicates / Largest / Alphabetical / If tied" directly to SQL syntax.
+  3. Logged permanently into [`PATTERNS.md`](../PATTERNS.md) and [`THEORY.md`](./THEORY.md).
 
 ---
 
 ## 🛠️ Errors & Blockers Tracked Today
 | # | Issue / Blocker | Root Cause | Fix Applied |
 |---|---|---|---|
-| 1 | Problem deconstruction hesitation | Translating English business questions into SQL mathematical logic | Applied 4-Step Analytical Framework |
+| 1 | Clause sequence confusion | Unclear on order of `SELECT`, `FROM`, `ORDER BY`, `LIMIT` | Taught Universal SQL Blueprint ("So Few Whales Order Lunch") |
+| 2 | Tie-breaker misconception | Assumed primary sort column could break its own ties | Demonstrated multi-column sorting (`ORDER BY LENGTH() ASC, CITY ASC`) |
