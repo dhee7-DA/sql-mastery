@@ -12,6 +12,17 @@ Welcome to the **14-Day SQL Intensive**. This repository is an institutional-gra
 
 ---
 
+## 🎮 Interactive SQL Query Visualizer Web App
+
+An in-browser interactive execution studio located in [`visualizer/`](./visualizer):
+- 🎬 **Step-by-Step Engine Stepper**: Watch queries physically execute across `FROM` ➡️ `WHERE` ➡️ `SELECT & CASE` ➡️ `DISTINCT` ➡️ `ORDER BY` ➡️ `LIMIT`.
+- 🌳 **Dynamic CASE WHEN & Logic Decision Trees**: Live branching flowcharts for conditional classifications.
+- 📊 **Real-Time Distribution Charts & Diff Grids**: Visual categorical frequencies and side-by-side table diffs.
+- 🚀 **Zero Dependencies**: Pure HTML5, Vanilla CSS Glassmorphism, and Vanilla JavaScript. Double-click [`visualizer/index.html`](./visualizer/index.html) to open in any browser!
+
+---
+
+
 ## 🗺️ 14-Day Syllabus & Progress Tracker (HackerRank Subdomain Roadmap)
 
 ### 🟢 Phase 1: Basic Select Track (Fundamentals, Patterns & Ordering)

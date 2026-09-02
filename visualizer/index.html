@@ -1,0 +1,278 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>SQL Mindmap & Query Execution Visualizer</title>
+  <meta name="description" content="Interactive, real-time SQL query execution visualizer and engine lifecycle mindmap for data and finance analysts.">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Fira+Code:wght@400;500;600;700&family=Plus+Jakarta+Sans:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="style.css">
+</head>
+<body>
+  <div class="app-container">
+    <!-- Top Navigation Header -->
+    <header class="app-header">
+      <div class="brand-group">
+        <div class="brand-logo">
+          <svg width="28" height="28" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round">
+            <ellipse cx="12" cy="5" rx="9" ry="3"></ellipse>
+            <path d="M21 12c0 1.66-4 3-9 3s-9-1.34-9-3"></path>
+            <path d="M3 5v14c0 1.66 4 3 9 3s9-1.34 9-3V5"></path>
+          </svg>
+        </div>
+        <div>
+          <div class="brand-title">SQL Mindmap &amp; Execution Visualizer</div>
+          <div class="brand-subtitle">Step-by-Step Engine Lifecycle &bull; Phase 1 &amp; Phase 2 Interactive Studio</div>
+        </div>
+      </div>
+
+      <div class="header-actions">
+        <!-- Preset Queries Dropdown -->
+        <div class="preset-selector-wrapper">
+          <label for="presetSelect" class="preset-label">Preset Scenarios:</label>
+          <select id="presetSelect" class="preset-dropdown">
+            <option value="custom">-- Choose a Scenario or Type Query --</option>
+            <option value="preset_case_triangle" selected>🔺 CASE WHEN: Type of Triangle</option>
+            <option value="preset_case_credit">💳 CASE WHEN: Credit Risk Tiering</option>
+            <option value="preset_station5_tiebreak">🏙️ Station 5: LENGTH() with Tie-Breaker</option>
+            <option value="preset_students_right">🎓 Higher Than 75: RIGHT(Name, 3) Sort</option>
+            <option value="preset_employees_salaries">💼 Employee Salaries: AND / OR Filtering</option>
+            <option value="preset_regex_vowels">⚡ Station 8: Starts &amp; Ends with Vowels</option>
+            <option value="preset_distinct_cities">🌍 DISTINCT: Unique Geo Markets</option>
+          </select>
+        </div>
+
+        <button id="btnRunQuery" class="btn btn-primary">
+          <svg width="16" height="16" viewBox="0 0 24 24" fill="currentColor">
+            <polygon points="5 3 19 12 5 21 5 3"></polygon>
+          </svg>
+          Visualize Query
+        </button>
+      </div>
+    </header>
+
+    <!-- Main Workspace Layout (Sidebar + Center Stage) -->
+    <main class="workspace-layout">
+      <!-- Left Sidebar: Schema Explorer & Query Editor -->
+      <aside class="left-sidebar">
+        <!-- Schema Inspector Panel -->
+        <section class="panel schema-panel">
+          <div class="panel-header">
+            <div class="panel-title">
+              <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                <path d="M4 6h16M4 12h16M4 18h16"></path>
+              </svg>
+              In-Memory Schema Explorer
+            </div>
+            <span class="badge badge-accent" id="activeTableBadge">TRIANGLES (Active)</span>
+          </div>
+
+          <div class="schema-tree" id="schemaTree">
+            <!-- Populated dynamically via JS -->
+          </div>
+        </section>
+
+        <!-- Query Code Editor Panel -->
+        <section class="panel editor-panel">
+          <div class="panel-header">
+            <div class="panel-title">
+              <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                <polyline points="16 18 22 12 16 6"></polyline>
+                <polyline points="8 6 2 12 8 18"></polyline>
+              </svg>
+              SQL Query Studio
+            </div>
+            <div class="editor-tools">
+              <button id="btnFormatSQL" class="btn-tool" title="Format SQL">Format</button>
+              <button id="btnClearSQL" class="btn-tool" title="Clear Editor">Clear</button>
+            </div>
+          </div>
+
+          <div class="code-editor-container">
+            <textarea id="sqlInput" class="sql-textarea" spellcheck="false" placeholder="Write your SELECT query here..."></textarea>
+          </div>
+
+          <div class="editor-footer">
+            <span class="engine-tag">Engine: MySQL 8.0+ In-Memory AST Simulator</span>
+            <span class="shortcut-tip">Press <strong>Ctrl + Enter</strong> to Run</span>
+          </div>
+        </section>
+      </aside>
+
+      <!-- Center & Right: Execution Timeline & Dynamic Visualization Stage -->
+      <section class="main-stage">
+        <!-- Engine Lifecycle Stepper Timeline Bar -->
+        <div class="timeline-card">
+          <div class="timeline-header">
+            <div class="timeline-title-group">
+              <span class="timeline-badge">EXECUTION TIMELINE</span>
+              <span class="timeline-sub" id="timelineStepDesc">Step 0 of 6: Ready to start</span>
+            </div>
+
+            <!-- Playback Controls -->
+            <div class="playback-controls">
+              <button id="btnPrevStep" class="ctrl-btn" title="Previous Step (Shift + Left)" disabled>
+                <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                  <polygon points="19 20 9 12 19 4 19 20"></polygon>
+                  <line x1="5" y1="19" x2="5" y2="5"></line>
+                </svg>
+              </button>
+              <button id="btnPlayPause" class="ctrl-btn ctrl-btn-primary" title="Play / Pause Auto-Stepper">
+                <svg width="16" height="16" viewBox="0 0 24 24" fill="currentColor" id="playIcon">
+                  <polygon points="5 3 19 12 5 21 5 3"></polygon>
+                </svg>
+                <span id="playBtnText">Auto Play</span>
+              </button>
+              <button id="btnNextStep" class="ctrl-btn" title="Next Step (Shift + Right)">
+                <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                  <polygon points="5 4 15 12 5 20 5 4"></polygon>
+                  <line x1="19" y1="5" x2="19" y2="19"></line>
+                </svg>
+              </button>
+              <button id="btnResetStep" class="ctrl-btn" title="Reset Timeline">
+                <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                  <polyline points="1 4 1 10 7 10"></polyline>
+                  <path d="M3.51 15a9 9 0 1 0 2.13-9.36L1 10"></path>
+                </svg>
+              </button>
+            </div>
+          </div>
+
+          <!-- The Physical Engine Track -->
+          <div class="timeline-track" id="timelineTrack">
+            <div class="track-step" data-phase="from">
+              <div class="step-circle">1</div>
+              <div class="step-label">FROM &amp; LOAD</div>
+              <div class="step-bar"></div>
+            </div>
+            <div class="track-step" data-phase="where">
+              <div class="step-circle">2</div>
+              <div class="step-label">WHERE FILTER</div>
+              <div class="step-bar"></div>
+            </div>
+            <div class="track-step" data-phase="select">
+              <div class="step-circle">3</div>
+              <div class="step-label">SELECT &amp; CASE</div>
+              <div class="step-bar"></div>
+            </div>
+            <div class="track-step" data-phase="distinct">
+              <div class="step-circle">4</div>
+              <div class="step-label">DISTINCT</div>
+              <div class="step-bar"></div>
+            </div>
+            <div class="track-step" data-phase="order">
+              <div class="step-circle">5</div>
+              <div class="step-label">ORDER BY</div>
+              <div class="step-bar"></div>
+            </div>
+            <div class="track-step" data-phase="limit">
+              <div class="step-circle">6</div>
+              <div class="step-label">LIMIT / SLICE</div>
+            </div>
+          </div>
+
+          <!-- Dynamic Explanation Callout -->
+          <div class="phase-callout" id="phaseCallout">
+            <div class="callout-icon" id="calloutIcon">💡</div>
+            <div class="callout-content">
+              <strong id="calloutTitle">Engine Overview:</strong>
+              <span id="calloutText">Click "Visualize Query" or press Play to watch how the database engine executes each clause in order.</span>
+            </div>
+          </div>
+        </div>
+
+        <!-- Multi-View Visualization Tabs Card -->
+        <div class="stage-view-card">
+          <!-- View Navigation Tabs -->
+          <div class="stage-tabs-bar">
+            <div class="stage-tabs">
+              <button class="stage-tab active" data-tab="tabStepper">
+                <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                  <rect x="3" y="3" width="18" height="18" rx="2"></rect>
+                  <path d="M3 9h18M9 21V9"></path>
+                </svg>
+                Active Step Data Grid
+              </button>
+              <button class="stage-tab" data-tab="tabDecisionTree" id="tabDecisionTreeBtn">
+                <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                  <circle cx="12" cy="5" r="3"></circle>
+                  <circle cx="6" cy="19" r="3"></circle>
+                  <circle cx="18" cy="19" r="3"></circle>
+                  <path d="M12 8v4M6 16v-2a2 2 0 0 1 2-2h8a2 2 0 0 1 2 2v2"></path>
+                </svg>
+                Logic &amp; CASE WHEN Tree
+              </button>
+              <button class="stage-tab" data-tab="tabChart">
+                <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                  <line x1="18" y1="20" x2="18" y2="10"></line>
+                  <line x1="12" y1="20" x2="12" y2="4"></line>
+                  <line x1="6" y1="20" x2="6" y2="14"></line>
+                </svg>
+                Distribution &amp; Metrics
+              </button>
+              <button class="stage-tab" data-tab="tabDiff">
+                <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                  <path d="M16 3h5v5M4 20L21 3M21 16v5h-5M15 15l6 6M4 4l5 5"></path>
+                </svg>
+                Before / After Data Diff
+              </button>
+            </div>
+
+            <div class="tab-metrics-badge" id="rowCounterBadge">
+              15 Rows in Pipeline
+            </div>
+          </div>
+
+          <!-- View Panels -->
+          <!-- Tab 1: Stepper Grid -->
+          <div class="tab-panel active" id="tabStepper">
+            <div class="table-container" id="stepperTableContainer">
+              <!-- Rendered via JS -->
+            </div>
+          </div>
+
+          <!-- Tab 2: Decision Tree Visualizer -->
+          <div class="tab-panel" id="tabDecisionTree">
+            <div class="decision-tree-container" id="decisionTreeContainer">
+              <!-- Rendered dynamically for CASE WHEN / Boolean expressions -->
+            </div>
+          </div>
+
+          <!-- Tab 3: Distribution Chart -->
+          <div class="tab-panel" id="tabChart">
+            <div class="chart-container" id="chartContainer">
+              <!-- Dynamic SVG Bar/Category Chart -->
+            </div>
+          </div>
+
+          <!-- Tab 4: Before / After Diff Grid -->
+          <div class="tab-panel" id="tabDiff">
+            <div class="diff-container" id="diffContainer">
+              <!-- Side-by-Side Original vs Final -->
+            </div>
+          </div>
+        </div>
+      </section>
+    </main>
+
+    <!-- Bottom Status Bar -->
+    <footer class="app-footer">
+      <div class="footer-left">
+        <span class="status-indicator online"></span>
+        <span>MySQL 8.0+ Parser Ready</span>
+        <span class="separator">&bull;</span>
+        <span id="activeQueryStats">Query parsed successfully: 0 syntax warnings</span>
+      </div>
+      <div class="footer-right">
+        <span>Part of <strong>14-Day SQL Mastery</strong> Portfolio</span>
+        <span class="separator">&bull;</span>
+        <a href="../FOUNDATIONS_MASTER_COMPENDIUM.md" class="footer-link">📖 View Master Compendium</a>
+      </div>
+    </footer>
+  </div>
+
+  <script src="app.js"></script>
+</body>
+</html>
