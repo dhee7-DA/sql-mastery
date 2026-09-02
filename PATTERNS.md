@@ -119,7 +119,16 @@ Use this master reference table to translate **any English business prompt or in
 - **`[^...]`**: Any single character NOT inside. E.g. `'[^aeiou]'` (any non-vowel).
 - **`.*`**: Any sequence of characters. E.g. `'^[aeiou].*[aeiou]$'` (starts AND ends with vowels).
 
+### C. String Slicing & Text Extraction Toolkit
+- **`LEFT(str, N)`**: Grabs the first $N$ characters from the start (left). E.g. `LEFT('Kristeen', 4)` ➡️ `'Kris'`.
+- **`RIGHT(str, N)`**: Grabs the last $N$ characters from the end (right). E.g. `RIGHT('Kristeen', 3)` ➡️ `'een'`.
+- **`SUBSTRING(str, start, len)`** (or `SUBSTR`): Extracts characters from any position (1-indexed). E.g. `SUBSTRING('DataAnalyst', 5, 7)` ➡️ `'Analyst'`.
+- **`LENGTH(str)`**: Returns the character count. E.g. `LENGTH('SQL')` ➡️ `3`.
+- **`CONCAT(a, b, ...)`**: Glues multiple strings together. E.g. `CONCAT('First', ' ', 'Last')` ➡️ `'First Last'`.
+- **`UPPER(str)` / `LOWER(str)`**: Converts casing. E.g. `UPPER('sql')` ➡️ `'SQL'`.
+
 ---
+
 
 ## 🏛️ 3. The Universal SQL Sentence Blueprint
 

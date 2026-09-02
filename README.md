@@ -19,7 +19,7 @@ Welcome to the **14-Day SQL Intensive**. This repository is an institutional-gra
 |---|---|---|---|---|
 | **Day 01** | [`day-01-basic-select`](./day-01-basic-select) | `SELECT`, `FROM`, `WHERE`, `AND`/`OR`, `DISTINCT`, `MOD()` | Easy | ✅ Completed (8/8) |
 | **Day 02** | [`day-02-pattern-matching-vowels`](./day-02-ordering-wildcards) | Station 4 (`COUNT - DISTINCT`), Station 5 (`LENGTH`), Station 6–12 (Regex) | Easy | ✅ Completed (8/8) |
-| **Day 03** | `day-03-sorting-ordering` | `ORDER BY`, `LIMIT`, `LENGTH()`, Station 5, Employee & Student Sorts | Easy | ⚪ Pending |
+| **Day 03** | [`day-03-sorting-ordering`](./day-03-sorting-ordering) | `ORDER BY`, `LIMIT`, `RIGHT(Name, 3)`, Employees, Students | Easy | ✅ Completed (3/3) |
 
 ---
 
