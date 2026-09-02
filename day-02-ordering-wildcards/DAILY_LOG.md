@@ -53,9 +53,26 @@ A running record of user queries, questions asked to the instructor, errors enco
 
 ---
 
+## ❓ Question 5: "What's the error in Station 8?" (`AND REGEXP '[aeiou]$'`)
+- **Context**: Weather Observation Station 8 syntax error.
+- **Root Cause**: Left out column name `CITY` after `AND`.
+- **Instructor Resolution**:
+  - In SQL, every side of a boolean operator (`AND` / `OR`) must be a standalone expression. You must repeat the column name: `CITY REGEXP '...' AND CITY REGEXP '...'`.
+  - Fix applied, problem passed with +15.00 pts!
+
+---
+
+## 💡 Student Self-Debugging Milestone: Station 11 & 12 Boolean Logic
+- **Student Reflection**: *"Earlier I used AND I got an error, but then I realized here it will be OR .. hehehe .. After weather station 5, I'm able to solve the next problems with a little ease."*
+- **Significance**: Demonstrates mastery of Boolean algebra and rapid independent debugging without needing instructor hints.
+
+---
+
 ## 🛠️ Errors & Blockers Tracked Today
 | # | Issue / Blocker | Root Cause | Fix Applied |
 |---|---|---|---|
 | 1 | Clause sequence confusion | Unclear on order of `SELECT`, `FROM`, `ORDER BY`, `LIMIT` | Taught Universal SQL Blueprint ("So Few Whales Order Lunch") |
 | 2 | Tie-breaker misconception | Assumed primary sort column could break its own ties | Demonstrated multi-column sorting (`ORDER BY LENGTH() ASC, CITY ASC`) |
 | 3 | Dual query confusion | Expecting one query to sort in opposite directions | Explained single sort limitation and wrote dual sequential queries |
+| 4 | Dollar sign placement in regex | Placed `$` inside brackets `[aeiou$]` | Corrected anchor positioning outside brackets `[aeiou]$` |
+| 5 | Missing column in `AND` clause | Wrote `AND REGEXP ...` without column | Added explicit column reference `AND CITY REGEXP ...` |

@@ -67,9 +67,10 @@ WHERE CITY REGEXP '[aeiou]$';
 -- -----------------------------------------------------------------------------
 
 -- Write your query below:
-
-
-
+SELECT DISTINCT CITY
+FROM STATION
+WHERE CITY REGEXP '^[aeiou]'
+  AND CITY REGEXP '[aeiou]$';
 -- -----------------------------------------------------------------------------
 -- Problem 05: Weather Observation Station 9
 -- Table: STATION
@@ -79,9 +80,9 @@ WHERE CITY REGEXP '[aeiou]$';
 -- -----------------------------------------------------------------------------
 
 -- Write your query below:
-
-
-
+SELECT DISTINCT CITY
+FROM STATION
+WHERE CITY NOT REGEXP '^[aeiou]';
 -- -----------------------------------------------------------------------------
 -- Problem 06: Weather Observation Station 10
 -- Table: STATION
@@ -91,9 +92,9 @@ WHERE CITY REGEXP '[aeiou]$';
 -- -----------------------------------------------------------------------------
 
 -- Write your query below:
-
-
-
+SELECT DISTINCT CITY
+FROM STATION
+WHERE CITY NOT REGEXP '[aeiou]$';
 -- -----------------------------------------------------------------------------
 -- Problem 07: Weather Observation Station 11
 -- Table: STATION
@@ -103,9 +104,10 @@ WHERE CITY REGEXP '[aeiou]$';
 -- -----------------------------------------------------------------------------
 
 -- Write your query below:
-
-
-
+SELECT DISTINCT CITY
+FROM STATION
+WHERE CITY NOT REGEXP '^[aeiou]'
+   OR CITY NOT REGEXP '[aeiou]$';
 -- -----------------------------------------------------------------------------
 -- Problem 08: Weather Observation Station 12
 -- Table: STATION
@@ -115,5 +117,7 @@ WHERE CITY REGEXP '[aeiou]$';
 -- -----------------------------------------------------------------------------
 
 -- Write your query below:
-
-
+SELECT DISTINCT CITY
+FROM STATION
+WHERE CITY NOT REGEXP '^[aeiou]'
+  AND CITY NOT REGEXP '[aeiou]$';
