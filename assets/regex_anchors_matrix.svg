@@ -1,0 +1,95 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1000 450" width="100%" height="100%">
+  <defs>
+    <linearGradient id="reg-bg" x1="0%" y1="0%" x2="100%" y2="100%">
+      <stop offset="0%" stop-color="#0f172a" />
+      <stop offset="100%" stop-color="#1e293b" />
+    </linearGradient>
+    <linearGradient id="caret-grad" x1="0%" y1="0%" x2="100%" y2="0%">
+      <stop offset="0%" stop-color="#ec4899" />
+      <stop offset="100%" stop-color="#db2777" />
+    </linearGradient>
+    <linearGradient id="dollar-grad" x1="0%" y1="0%" x2="100%" y2="0%">
+      <stop offset="0%" stop-color="#06b6d4" />
+      <stop offset="100%" stop-color="#0284c7" />
+    </linearGradient>
+    <linearGradient id="bracket-grad" x1="0%" y1="0%" x2="100%" y2="0%">
+      <stop offset="0%" stop-color="#10b981" />
+      <stop offset="100%" stop-color="#059669" />
+    </linearGradient>
+  </defs>
+
+  <rect width="1000" height="450" rx="16" fill="url(#reg-bg)" stroke="#334155" stroke-width="2" />
+
+  <!-- Header -->
+  <text x="500" y="42" font-family="-apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif" font-size="22" font-weight="800" fill="#f8fafc" text-anchor="middle">
+    ⚡ MYSQL REGULAR EXPRESSIONS (REGEXP) ANCHOR MATRIX
+  </text>
+  <text x="500" y="68" font-family="sans-serif" font-size="13" fill="#94a3b8" text-anchor="middle">
+    The 4 fundamental building blocks for high-performance pattern matching and text filtering
+  </text>
+
+  <!-- 3 Pillar Visuals -->
+  <!-- Pillar 1: Starts With (^) -->
+  <g transform="translate(60, 100)">
+    <rect width="270" height="235" rx="12" fill="#1e293b" stroke="#ec4899" stroke-width="1.5" />
+    <rect width="270" height="36" rx="12" fill="url(#caret-grad)" />
+    <text x="135" y="24" font-family="sans-serif" font-size="15" font-weight="bold" fill="#ffffff" text-anchor="middle">^ (START ANCHOR)</text>
+    
+    <rect x="20" y="55" width="230" height="35" rx="6" fill="#0f172a" />
+    <text x="135" y="78" font-family="monospace" font-size="14" font-weight="bold" fill="#f472b6" text-anchor="middle">REGEXP '^[aeiou]'</text>
+    
+    <text x="20" y="115" font-family="sans-serif" font-size="12" font-weight="bold" fill="#f8fafc">Meaning:</text>
+    <text x="20" y="135" font-family="sans-serif" font-size="12" fill="#cbd5e1">Must start with any vowel letter</text>
+    <text x="20" y="150" font-family="sans-serif" font-size="12" fill="#cbd5e1">at the absolute beginning.</text>
+    
+    <text x="20" y="180" font-family="sans-serif" font-size="12" font-weight="bold" fill="#10b981">✅ Matches: </text>
+    <text x="95" y="180" font-family="sans-serif" font-size="12" fill="#94a3b8">Austin, Orlando, Erie</text>
+    <text x="20" y="205" font-family="sans-serif" font-size="12" font-weight="bold" fill="#ef4444">❌ Rejects: </text>
+    <text x="95" y="205" font-family="sans-serif" font-size="12" fill="#94a3b8">Dallas, Boston, Chicago</text>
+  </g>
+
+  <!-- Pillar 2: Ends With ($) -->
+  <g transform="translate(365, 100)">
+    <rect width="270" height="235" rx="12" fill="#1e293b" stroke="#06b6d4" stroke-width="1.5" />
+    <rect width="270" height="36" rx="12" fill="url(#dollar-grad)" />
+    <text x="135" y="24" font-family="sans-serif" font-size="15" font-weight="bold" fill="#ffffff" text-anchor="middle">$ (END ANCHOR)</text>
+    
+    <rect x="20" y="55" width="230" height="35" rx="6" fill="#0f172a" />
+    <text x="135" y="78" font-family="monospace" font-size="14" font-weight="bold" fill="#38bdf8" text-anchor="middle">REGEXP '[aeiou]$'</text>
+    
+    <text x="20" y="115" font-family="sans-serif" font-size="12" font-weight="bold" fill="#f8fafc">Meaning:</text>
+    <text x="20" y="135" font-family="sans-serif" font-size="12" fill="#cbd5e1">Must end with any vowel letter</text>
+    <text x="20" y="150" font-family="sans-serif" font-size="12" fill="#cbd5e1">at the absolute final character.</text>
+    
+    <text x="20" y="180" font-family="sans-serif" font-size="12" font-weight="bold" fill="#10b981">✅ Matches: </text>
+    <text x="95" y="180" font-family="sans-serif" font-size="12" fill="#94a3b8">Atlanta, Chicago, Miami</text>
+    <text x="20" y="205" font-family="sans-serif" font-size="12" font-weight="bold" fill="#ef4444">❌ Rejects: </text>
+    <text x="95" y="205" font-family="sans-serif" font-size="12" fill="#94a3b8">Austin, Dallas, New York</text>
+  </g>
+
+  <!-- Pillar 3: Character Class [...] -->
+  <g transform="translate(670, 100)">
+    <rect width="270" height="235" rx="12" fill="#1e293b" stroke="#10b981" stroke-width="1.5" />
+    <rect width="270" height="36" rx="12" fill="url(#bracket-grad)" />
+    <text x="135" y="24" font-family="sans-serif" font-size="15" font-weight="bold" fill="#ffffff" text-anchor="middle">[...] (CHARACTER BASKET)</text>
+    
+    <rect x="20" y="55" width="230" height="35" rx="6" fill="#0f172a" />
+    <text x="135" y="78" font-family="monospace" font-size="14" font-weight="bold" fill="#34d399" text-anchor="middle">[0-9] or [^aeiou]</text>
+    
+    <text x="20" y="115" font-family="sans-serif" font-size="12" font-weight="bold" fill="#f8fafc">Meaning:</text>
+    <text x="20" y="135" font-family="sans-serif" font-size="12" fill="#cbd5e1">Matches ANY SINGLE character</text>
+    <text x="20" y="150" font-family="sans-serif" font-size="12" fill="#cbd5e1">enclosed inside the bracket class.</text>
+    
+    <text x="20" y="180" font-family="sans-serif" font-size="12" font-weight="bold" fill="#10b981">💡 [0-9]: </text>
+    <text x="80" y="180" font-family="sans-serif" font-size="12" fill="#94a3b8">Matches any digit</text>
+    <text x="20" y="205" font-family="sans-serif" font-size="12" font-weight="bold" fill="#38bdf8">💡 [^abc]: </text>
+    <text x="90" y="205" font-family="sans-serif" font-size="12" fill="#94a3b8">Negation (NOT a, b, or c)</text>
+  </g>
+
+  <!-- Bottom Tip -->
+  <rect x="60" y="360" width="880" height="55" rx="10" fill="#0f172a" stroke="#475569" stroke-width="1.5" />
+  <text x="80" y="393" font-family="sans-serif" font-size="13" font-weight="bold" fill="#fbbf24">🎯 ANCHOR POSITIONING RULE:</text>
+  <text x="310" y="393" font-family="sans-serif" font-size="13" fill="#cbd5e1">
+    Place anchors <tspan fill="#f472b6" font-weight="bold">OUTSIDE</tspan> the brackets: <tspan fill="#34d399" font-weight="bold">'^[aeiou]'</tspan> and <tspan fill="#38bdf8" font-weight="bold">'[aeiou]$'</tspan>! If inside <tspan fill="#ef4444">'[aeiou$]'</tspan>, it searches for literal '$'.
+  </text>
+</svg>

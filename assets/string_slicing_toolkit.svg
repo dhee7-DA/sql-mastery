@@ -1,0 +1,124 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1000 450" width="100%" height="100%">
+  <defs>
+    <linearGradient id="slice-bg" x1="0%" y1="0%" x2="100%" y2="100%">
+      <stop offset="0%" stop-color="#0f172a" />
+      <stop offset="100%" stop-color="#1e293b" />
+    </linearGradient>
+    <linearGradient id="left-pill" x1="0%" y1="0%" x2="100%" y2="0%">
+      <stop offset="0%" stop-color="#3b82f6" />
+      <stop offset="100%" stop-color="#1d4ed8" />
+    </linearGradient>
+    <linearGradient id="substr-pill" x1="0%" y1="0%" x2="100%" y2="0%">
+      <stop offset="0%" stop-color="#10b981" />
+      <stop offset="100%" stop-color="#047857" />
+    </linearGradient>
+    <linearGradient id="right-pill" x1="0%" y1="0%" x2="100%" y2="0%">
+      <stop offset="0%" stop-color="#f59e0b" />
+      <stop offset="100%" stop-color="#b45309" />
+    </linearGradient>
+  </defs>
+
+  <!-- Background -->
+  <rect width="1000" height="450" rx="16" fill="url(#slice-bg)" stroke="#334155" stroke-width="2" />
+
+  <!-- Header -->
+  <text x="500" y="42" font-family="-apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif" font-size="22" font-weight="800" fill="#f8fafc" text-anchor="middle">
+    ✂️ THE SQL STRING SLICING &amp; INDEXING TOOLKIT
+  </text>
+  <text x="500" y="68" font-family="sans-serif" font-size="13" fill="#94a3b8" text-anchor="middle">
+    Visualizing 1-Based Indexing across LEFT(), SUBSTRING(), and RIGHT() on the string 'K R I S T E E N'
+  </text>
+
+  <!-- Character Boxes (String: KRISTEEN, Length: 8) -->
+  <!-- Box 1: K (Index 1) -->
+  <g transform="translate(140, 110)">
+    <rect x="0" y="0" width="80" height="70" rx="8" fill="#1e293b" stroke="#475569" stroke-width="2" />
+    <text x="40" y="42" font-family="monospace" font-size="28" font-weight="bold" fill="#f8fafc" text-anchor="middle">K</text>
+    <text x="40" y="62" font-family="sans-serif" font-size="11" fill="#64748b" text-anchor="middle">Index 1</text>
+  </g>
+  <!-- Box 2: R (Index 2) -->
+  <g transform="translate(230, 110)">
+    <rect x="0" y="0" width="80" height="70" rx="8" fill="#1e293b" stroke="#475569" stroke-width="2" />
+    <text x="40" y="42" font-family="monospace" font-size="28" font-weight="bold" fill="#f8fafc" text-anchor="middle">R</text>
+    <text x="40" y="62" font-family="sans-serif" font-size="11" fill="#64748b" text-anchor="middle">Index 2</text>
+  </g>
+  <!-- Box 3: I (Index 3) -->
+  <g transform="translate(320, 110)">
+    <rect x="0" y="0" width="80" height="70" rx="8" fill="#1e293b" stroke="#475569" stroke-width="2" />
+    <text x="40" y="42" font-family="monospace" font-size="28" font-weight="bold" fill="#f8fafc" text-anchor="middle">I</text>
+    <text x="40" y="62" font-family="sans-serif" font-size="11" fill="#64748b" text-anchor="middle">Index 3</text>
+  </g>
+  <!-- Box 4: S (Index 4) -->
+  <g transform="translate(410, 110)">
+    <rect x="0" y="0" width="80" height="70" rx="8" fill="#1e293b" stroke="#475569" stroke-width="2" />
+    <text x="40" y="42" font-family="monospace" font-size="28" font-weight="bold" fill="#f8fafc" text-anchor="middle">S</text>
+    <text x="40" y="62" font-family="sans-serif" font-size="11" fill="#64748b" text-anchor="middle">Index 4</text>
+  </g>
+  <!-- Box 5: T (Index 5) -->
+  <g transform="translate(500, 110)">
+    <rect x="0" y="0" width="80" height="70" rx="8" fill="#1e293b" stroke="#475569" stroke-width="2" />
+    <text x="40" y="42" font-family="monospace" font-size="28" font-weight="bold" fill="#f8fafc" text-anchor="middle">T</text>
+    <text x="40" y="62" font-family="sans-serif" font-size="11" fill="#64748b" text-anchor="middle">Index 5</text>
+  </g>
+  <!-- Box 6: E (Index 6) -->
+  <g transform="translate(590, 110)">
+    <rect x="0" y="0" width="80" height="70" rx="8" fill="#1e293b" stroke="#475569" stroke-width="2" />
+    <text x="40" y="42" font-family="monospace" font-size="28" font-weight="bold" fill="#f8fafc" text-anchor="middle">E</text>
+    <text x="40" y="62" font-family="sans-serif" font-size="11" fill="#64748b" text-anchor="middle">Index 6</text>
+  </g>
+  <!-- Box 7: E (Index 7) -->
+  <g transform="translate(680, 110)">
+    <rect x="0" y="0" width="80" height="70" rx="8" fill="#1e293b" stroke="#475569" stroke-width="2" />
+    <text x="40" y="42" font-family="monospace" font-size="28" font-weight="bold" fill="#f8fafc" text-anchor="middle">E</text>
+    <text x="40" y="62" font-family="sans-serif" font-size="11" fill="#64748b" text-anchor="middle">Index 7</text>
+  </g>
+  <!-- Box 8: N (Index 8) -->
+  <g transform="translate(770, 110)">
+    <rect x="0" y="0" width="80" height="70" rx="8" fill="#1e293b" stroke="#475569" stroke-width="2" />
+    <text x="40" y="42" font-family="monospace" font-size="28" font-weight="bold" fill="#f8fafc" text-anchor="middle">N</text>
+    <text x="40" y="62" font-family="sans-serif" font-size="11" fill="#64748b" text-anchor="middle">Index 8</text>
+  </g>
+
+  <!-- Total Length Indicator -->
+  <path d="M 140 195 L 850 195" stroke="#94a3b8" stroke-width="1.5" stroke-dasharray="4,4" />
+  <text x="495" y="215" font-family="monospace" font-size="13" font-weight="bold" fill="#38bdf8" text-anchor="middle">
+    LENGTH('Kristeen') = 8 characters
+  </text>
+
+  <!-- Section 1: LEFT('Kristeen', 4) -->
+  <g transform="translate(60, 240)">
+    <rect width="270" height="100" rx="10" fill="#1e293b" stroke="#3b82f6" stroke-width="1.5" />
+    <rect width="270" height="26" rx="10" fill="url(#left-pill)" />
+    <text x="135" y="18" font-family="sans-serif" font-size="12" font-weight="bold" fill="#ffffff" text-anchor="middle">1. LEFT(name, 4)</text>
+    <text x="15" y="50" font-family="monospace" font-size="13" font-weight="bold" fill="#60a5fa">Output: 'Kris'</text>
+    <text x="15" y="72" font-family="sans-serif" font-size="11" fill="#94a3b8">Grabs 4 characters starting</text>
+    <text x="15" y="88" font-family="sans-serif" font-size="11" fill="#94a3b8">from the LEFT boundary (start).</text>
+  </g>
+
+  <!-- Section 2: SUBSTRING('Kristeen', 5, 4) -->
+  <g transform="translate(365, 240)">
+    <rect width="270" height="100" rx="10" fill="#1e293b" stroke="#10b981" stroke-width="1.5" />
+    <rect width="270" height="26" rx="10" fill="url(#substr-pill)" />
+    <text x="135" y="18" font-family="sans-serif" font-size="12" font-weight="bold" fill="#ffffff" text-anchor="middle">2. SUBSTRING(name, 5, 4)</text>
+    <text x="15" y="50" font-family="monospace" font-size="13" font-weight="bold" fill="#34d399">Output: 'teen'</text>
+    <text x="15" y="72" font-family="sans-serif" font-size="11" fill="#94a3b8">Starts at Index 5 ('T') and</text>
+    <text x="15" y="88" font-family="sans-serif" font-size="11" fill="#94a3b8">extracts 4 characters forward.</text>
+  </g>
+
+  <!-- Section 3: RIGHT('Kristeen', 3) -->
+  <g transform="translate(670, 240)">
+    <rect width="270" height="100" rx="10" fill="#1e293b" stroke="#f59e0b" stroke-width="1.5" />
+    <rect width="270" height="26" rx="10" fill="url(#right-pill)" />
+    <text x="135" y="18" font-family="sans-serif" font-size="12" font-weight="bold" fill="#ffffff" text-anchor="middle">3. RIGHT(name, 3)</text>
+    <text x="15" y="50" font-family="monospace" font-size="13" font-weight="bold" fill="#fbbf24">Output: 'een'</text>
+    <text x="15" y="72" font-family="sans-serif" font-size="11" fill="#94a3b8">Grabs 3 characters backward</text>
+    <text x="15" y="88" font-family="sans-serif" font-size="11" fill="#94a3b8">from the RIGHT boundary (end).</text>
+  </g>
+
+  <!-- Bottom Tip -->
+  <rect x="60" y="365" width="880" height="55" rx="10" fill="#0f172a" stroke="#475569" stroke-width="1.5" />
+  <text x="80" y="398" font-family="sans-serif" font-size="13" font-weight="bold" fill="#f43f5e">⚠️ THE 1-BASED INDEXING TRAP:</text>
+  <text x="310" y="398" font-family="sans-serif" font-size="13" fill="#cbd5e1">
+    Unlike Python/Java (0-indexed), SQL strings start at <tspan fill="#38bdf8" font-weight="bold">Index 1</tspan>! Position 0 does not exist in standard SQL.
+  </text>
+</svg>

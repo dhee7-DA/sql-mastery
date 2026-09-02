@@ -1,0 +1,81 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1000 450" width="100%" height="100%">
+  <defs>
+    <linearGradient id="sort-bg" x1="0%" y1="0%" x2="100%" y2="100%">
+      <stop offset="0%" stop-color="#0f172a" />
+      <stop offset="100%" stop-color="#1e293b" />
+    </linearGradient>
+    <linearGradient id="card-grad" x1="0%" y1="0%" x2="100%" y2="100%">
+      <stop offset="0%" stop-color="#334155" />
+      <stop offset="100%" stop-color="#1e293b" />
+    </linearGradient>
+  </defs>
+
+  <rect width="1000" height="450" rx="16" fill="url(#sort-bg)" stroke="#334155" stroke-width="2" />
+
+  <!-- Header -->
+  <text x="500" y="42" font-family="-apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif" font-size="22" font-weight="800" fill="#f8fafc" text-anchor="middle">
+    🤝 MULTI-COLUMN SORTING &amp; TIE-BREAKER ENGINE
+  </text>
+  <text x="500" y="68" font-family="sans-serif" font-size="13" fill="#94a3b8" text-anchor="middle">
+    How SQL resolves equal values in the primary sort using a secondary tie-breaker column
+  </text>
+
+  <!-- Query Box -->
+  <rect x="180" y="90" width="640" height="38" rx="8" fill="#0f172a" stroke="#6366f1" stroke-width="1.5" />
+  <text x="500" y="114" font-family="monospace" font-size="13" font-weight="bold" fill="#a5b4fc" text-anchor="middle">
+    ORDER BY LENGTH(city) ASC, city ASC;
+  </text>
+
+  <!-- Step 1: Primary Sort Box -->
+  <g transform="translate(60, 150)">
+    <rect width="410" height="190" rx="12" fill="url(#card-grad)" stroke="#3b82f6" stroke-width="1.5" />
+    <text x="205" y="28" font-family="sans-serif" font-size="14" font-weight="bold" fill="#60a5fa" text-anchor="middle">RULE 1: PRIMARY SORT (LENGTH ASC)</text>
+    
+    <!-- Rows -->
+    <rect x="20" y="45" width="370" height="32" rx="6" fill="#1e293b" />
+    <text x="40" y="66" font-family="sans-serif" font-size="13" fill="#f8fafc">Roy</text>
+    <text x="330" y="66" font-family="monospace" font-size="13" font-weight="bold" fill="#fbbf24">Length: 3</text>
+    
+    <rect x="20" y="85" width="370" height="32" rx="6" fill="#1e293b" stroke="#f59e0b" stroke-width="1" />
+    <text x="40" y="106" font-family="sans-serif" font-size="13" fill="#f8fafc">Amo</text>
+    <text x="330" y="106" font-family="monospace" font-size="13" font-weight="bold" fill="#fbbf24">Length: 3</text>
+    
+    <rect x="20" y="125" width="370" height="32" rx="6" fill="#1e293b" />
+    <text x="40" y="146" font-family="sans-serif" font-size="13" fill="#f8fafc">Lee</text>
+    <text x="330" y="146" font-family="monospace" font-size="13" font-weight="bold" fill="#fbbf24">Length: 3</text>
+
+    <text x="205" y="178" font-family="sans-serif" font-size="11" font-weight="bold" fill="#f87171" text-anchor="middle">⚠️ 3-WAY TIE DETECTED (3 = 3 = 3)!</text>
+  </g>
+
+  <!-- Arrow between -->
+  <path d="M 480 245 L 520 245" stroke="#6366f1" stroke-width="3" stroke-dasharray="4,4" />
+  <polygon points="520,245 510,239 510,251" fill="#6366f1" />
+
+  <!-- Step 2: Tie Breaker Box -->
+  <g transform="translate(530, 150)">
+    <rect width="410" height="190" rx="12" fill="url(#card-grad)" stroke="#10b981" stroke-width="1.5" />
+    <text x="205" y="28" font-family="sans-serif" font-size="14" font-weight="bold" fill="#34d399" text-anchor="middle">RULE 2: TIE-BREAKER (CITY ASC)</text>
+    
+    <!-- Rows Sorted Alphabetically -->
+    <rect x="20" y="45" width="370" height="32" rx="6" fill="#064e3b" stroke="#10b981" stroke-width="1.5" />
+    <text x="40" y="66" font-family="sans-serif" font-size="13" font-weight="bold" fill="#a7f3d0">1. Amo</text>
+    <text x="310" y="66" font-family="sans-serif" font-size="11" fill="#6ee7b7">Starts with 'A' (Winner!)</text>
+    
+    <rect x="20" y="85" width="370" height="32" rx="6" fill="#1e293b" />
+    <text x="40" y="106" font-family="sans-serif" font-size="13" fill="#cbd5e1">2. Lee</text>
+    <text x="310" y="106" font-family="sans-serif" font-size="11" fill="#94a3b8">Starts with 'L'</text>
+    
+    <rect x="20" y="125" width="370" height="32" rx="6" fill="#1e293b" />
+    <text x="40" y="146" font-family="sans-serif" font-size="13" fill="#cbd5e1">3. Roy</text>
+    <text x="310" y="146" font-family="sans-serif" font-size="11" fill="#94a3b8">Starts with 'R'</text>
+
+    <text x="205" y="178" font-family="sans-serif" font-size="11" font-weight="bold" fill="#34d399" text-anchor="middle">✅ DETERMINISTIC ORDER ACHIEVED</text>
+  </g>
+
+  <!-- Bottom Tip -->
+  <rect x="60" y="360" width="880" height="55" rx="10" fill="#0f172a" stroke="#475569" stroke-width="1.5" />
+  <text x="80" y="393" font-family="sans-serif" font-size="13" font-weight="bold" fill="#38bdf8">💡 PRODUCTION RULE:</text>
+  <text x="240" y="393" font-family="sans-serif" font-size="13" fill="#cbd5e1">
+    Without a secondary tie-breaker column, SQL query order is <tspan fill="#f43f5e" font-weight="bold">non-deterministic</tspan> (can return random results across runs)!
+  </text>
+</svg>

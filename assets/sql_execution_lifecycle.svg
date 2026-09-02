@@ -1,0 +1,128 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1000 480" width="100%" height="100%">
+  <defs>
+    <linearGradient id="bg-grad" x1="0%" y1="0%" x2="100%" y2="100%">
+      <stop offset="0%" stop-color="#0f172a" />
+      <stop offset="100%" stop-color="#1e293b" />
+    </linearGradient>
+    <linearGradient id="from-grad" x1="0%" y1="0%" x2="100%" y2="0%">
+      <stop offset="0%" stop-color="#6366f1" />
+      <stop offset="100%" stop-color="#8b5cf6" />
+    </linearGradient>
+    <linearGradient id="where-grad" x1="0%" y1="0%" x2="100%" y2="0%">
+      <stop offset="0%" stop-color="#ec4899" />
+      <stop offset="100%" stop-color="#f43f5e" />
+    </linearGradient>
+    <linearGradient id="group-grad" x1="0%" y1="0%" x2="100%" y2="0%">
+      <stop offset="0%" stop-color="#f59e0b" />
+      <stop offset="100%" stop-color="#d97706" />
+    </linearGradient>
+    <linearGradient id="select-grad" x1="0%" y1="0%" x2="100%" y2="0%">
+      <stop offset="0%" stop-color="#10b981" />
+      <stop offset="100%" stop-color="#059669" />
+    </linearGradient>
+    <linearGradient id="order-grad" x1="0%" y1="0%" x2="100%" y2="0%">
+      <stop offset="0%" stop-color="#06b6d4" />
+      <stop offset="100%" stop-color="#0284c7" />
+    </linearGradient>
+    <linearGradient id="limit-grad" x1="0%" y1="0%" x2="100%" y2="0%">
+      <stop offset="0%" stop-color="#8b5cf6" />
+      <stop offset="100%" stop-color="#a855f7" />
+    </linearGradient>
+    <filter id="glow" x="-20%" y="-20%" width="140%" height="140%">
+      <feDropShadow dx="0" dy="8" stdDeviation="6" flood-color="#000000" flood-opacity="0.5" />
+    </filter>
+  </defs>
+
+  <!-- Background Canvas -->
+  <rect width="1000" height="480" rx="16" fill="url(#bg-grad)" stroke="#334155" stroke-width="2" />
+
+  <!-- Title Header -->
+  <text x="500" y="45" font-family="-apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif" font-size="22" font-weight="800" fill="#f8fafc" text-anchor="middle" letter-spacing="1">
+    ⚙️ SQL LOGICAL EXECUTION LIFECYCLE (THE ENGINE MINDMAP)
+  </text>
+  <text x="500" y="70" font-family="-apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif" font-size="13" fill="#94a3b8" text-anchor="middle">
+    SQL is written in one order, but processed by the database engine in a strictly optimized physical sequence
+  </text>
+
+  <!-- Flow Steps Grid -->
+  <!-- Step 1: FROM -->
+  <g filter="url(#glow)" transform="translate(60, 100)">
+    <rect width="260" height="95" rx="12" fill="#1e293b" stroke="#6366f1" stroke-width="2" />
+    <rect x="0" y="0" width="260" height="28" rx="12" fill="url(#from-grad)" />
+    <text x="130" y="19" font-family="sans-serif" font-size="13" font-weight="bold" fill="#ffffff" text-anchor="middle">STEP 1: FROM &amp; JOINs</text>
+    <text x="13" y="52" font-family="sans-serif" font-size="12" font-weight="600" fill="#f1f5f9">Locates &amp; loads raw tables</text>
+    <text x="13" y="72" font-family="sans-serif" font-size="11" fill="#94a3b8">Identifies data sources in memory</text>
+  </g>
+
+  <!-- Connector 1 -> 2 -->
+  <path d="M 320 148 L 370 148" stroke="#6366f1" stroke-width="3" stroke-dasharray="6,4" fill="none" marker-end="url(#arrow)" />
+  <polygon points="370,148 360,142 360,154" fill="#6366f1" />
+
+  <!-- Step 2: WHERE -->
+  <g filter="url(#glow)" transform="translate(370, 100)">
+    <rect width="260" height="95" rx="12" fill="#1e293b" stroke="#ec4899" stroke-width="2" />
+    <rect x="0" y="0" width="260" height="28" rx="12" fill="url(#where-grad)" />
+    <text x="130" y="19" font-family="sans-serif" font-size="13" font-weight="bold" fill="#ffffff" text-anchor="middle">STEP 2: WHERE</text>
+    <text x="13" y="52" font-family="sans-serif" font-size="12" font-weight="600" fill="#f1f5f9">Row-level filtering</text>
+    <text x="13" y="72" font-family="sans-serif" font-size="11" fill="#94a3b8">Discards non-matching raw rows</text>
+  </g>
+
+  <!-- Connector 2 -> 3 -->
+  <path d="M 630 148 L 680 148" stroke="#ec4899" stroke-width="3" stroke-dasharray="6,4" fill="none" />
+  <polygon points="680,148 670,142 670,154" fill="#ec4899" />
+
+  <!-- Step 3: GROUP BY & HAVING -->
+  <g filter="url(#glow)" transform="translate(680, 100)">
+    <rect width="260" height="95" rx="12" fill="#1e293b" stroke="#f59e0b" stroke-width="2" />
+    <rect x="0" y="0" width="260" height="28" rx="12" fill="url(#group-grad)" />
+    <text x="130" y="19" font-family="sans-serif" font-size="13" font-weight="bold" fill="#ffffff" text-anchor="middle">STEP 3: GROUP BY &amp; HAVING</text>
+    <text x="13" y="52" font-family="sans-serif" font-size="12" font-weight="600" fill="#f1f5f9">Aggregation &amp; group filters</text>
+    <text x="13" y="72" font-family="sans-serif" font-size="11" fill="#94a3b8">Buckets rows &amp; applies HAVING</text>
+  </g>
+
+  <!-- Big U-Turn Connector (Row 1 -> Row 2) -->
+  <path d="M 810 195 L 810 240 L 810 240 L 810 260" stroke="#f59e0b" stroke-width="3" stroke-dasharray="6,4" fill="none" />
+  <polygon points="810,260 804,250 816,250" fill="#f59e0b" />
+
+  <!-- Step 4: SELECT & DISTINCT -->
+  <g filter="url(#glow)" transform="translate(680, 260)">
+    <rect width="260" height="95" rx="12" fill="#1e293b" stroke="#10b981" stroke-width="2" />
+    <rect x="0" y="0" width="260" height="28" rx="12" fill="url(#select-grad)" />
+    <text x="130" y="19" font-family="sans-serif" font-size="13" font-weight="bold" fill="#ffffff" text-anchor="middle">STEP 4: SELECT &amp; DISTINCT</text>
+    <text x="13" y="52" font-family="sans-serif" font-size="12" font-weight="600" fill="#f1f5f9">Calculates output expressions</text>
+    <text x="13" y="72" font-family="sans-serif" font-size="11" fill="#94a3b8">Aliases assigned &amp; duplicates removed</text>
+  </g>
+
+  <!-- Connector 4 -> 5 (Going Left) -->
+  <path d="M 680 308 L 630 308" stroke="#10b981" stroke-width="3" stroke-dasharray="6,4" fill="none" />
+  <polygon points="630,308 640,302 640,314" fill="#10b981" />
+
+  <!-- Step 5: ORDER BY -->
+  <g filter="url(#glow)" transform="translate(370, 260)">
+    <rect width="260" height="95" rx="12" fill="#1e293b" stroke="#06b6d4" stroke-width="2" />
+    <rect x="0" y="0" width="260" height="28" rx="12" fill="url(#order-grad)" />
+    <text x="130" y="19" font-family="sans-serif" font-size="13" font-weight="bold" fill="#ffffff" text-anchor="middle">STEP 5: ORDER BY</text>
+    <text x="13" y="52" font-family="sans-serif" font-size="12" font-weight="600" fill="#f1f5f9">Sorts the surviving rows</text>
+    <text x="13" y="72" font-family="sans-serif" font-size="11" fill="#94a3b8">Applies primary sort &amp; tie-breakers</text>
+  </g>
+
+  <!-- Connector 5 -> 6 (Going Left) -->
+  <path d="M 370 308 L 320 308" stroke="#06b6d4" stroke-width="3" stroke-dasharray="6,4" fill="none" />
+  <polygon points="320,308 330,302 330,314" fill="#06b6d4" />
+
+  <!-- Step 6: LIMIT & OFFSET -->
+  <g filter="url(#glow)" transform="translate(60, 260)">
+    <rect width="260" height="95" rx="12" fill="#1e293b" stroke="#8b5cf6" stroke-width="2" />
+    <rect x="0" y="0" width="260" height="28" rx="12" fill="url(#limit-grad)" />
+    <text x="130" y="19" font-family="sans-serif" font-size="13" font-weight="bold" fill="#ffffff" text-anchor="middle">STEP 6: LIMIT &amp; OFFSET</text>
+    <text x="13" y="52" font-family="sans-serif" font-size="12" font-weight="600" fill="#f1f5f9">Output row restriction</text>
+    <text x="13" y="72" font-family="sans-serif" font-size="11" fill="#94a3b8">Slices final Top-N rows for display</text>
+  </g>
+
+  <!-- Bottom Pro-Tip Bar -->
+  <rect x="60" y="395" width="880" height="55" rx="10" fill="#0f172a" stroke="#475569" stroke-width="1.5" />
+  <text x="80" y="428" font-family="sans-serif" font-size="13" font-weight="bold" fill="#38bdf8">💡 KEY INSIGHT FOR ANALYSTS:</text>
+  <text x="310" y="428" font-family="sans-serif" font-size="13" fill="#cbd5e1">
+    Because <tspan fill="#ec4899" font-weight="bold">WHERE (Step 2)</tspan> runs BEFORE <tspan fill="#10b981" font-weight="bold">SELECT (Step 4)</tspan>, you CANNOT use column aliases in your WHERE clause!
+  </text>
+</svg>

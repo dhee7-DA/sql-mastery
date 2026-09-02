@@ -1,6 +1,6 @@
 # 🏛️ Phase 1 Foundations Master Compendium & Problem Bank
 
-> **Purpose**: The definitive, single-source reference manual and graded problem bank for all Phase 1 Foundations SQL keywords and concepts. Contains full theoretical breakdowns, a unified corporate schema, and comprehensive Easy, Medium, and Hard practice problems with line-by-line solution explanations.
+> **Executive Reference**: The definitive, single-source reference manual and graded problem bank for all **Phase 1 Foundations SQL keywords and concepts**. Designed for Data Analysts, Financial Analysts, and Analytics Engineers.
 
 ---
 
@@ -70,6 +70,8 @@ All practice problems in this compendium operate on this unified, production-gra
 
 ## 🏛️ 2. The Universal SQL Sentence Blueprint & Execution Lifecycle
 
+![SQL Logical Execution Lifecycle](./assets/sql_execution_lifecycle.svg)
+
 Whenever you write a query, SQL clauses **must be written in this exact strict order**:
 
 ```text
@@ -84,6 +86,7 @@ Written Order:                                Logical Execution Order (Engine Li
                                               8. LIMIT         (Slice the final Top-N rows)
 ```
 
+> [!IMPORTANT]
 > **Universal Memory Hook**: **"So Few Whales Gather Heavenly Ocean Lunches"**  
 > (**S**ELECT ➡️ **F**ROM ➡️ **W**HERE ➡️ **G**ROUP BY ➡️ **H**AVING ➡️ **O**RDER BY ➡️ **L**IMIT)
 
@@ -93,48 +96,45 @@ Written Order:                                Logical Execution Order (Engine Li
 
 ---
 
-### MODULE 01: `SELECT` (Projection, Aliasing, Math & Expressions)
+### 🔷 MODULE 01: `SELECT` (Projection, Aliasing, Math & Expressions)
 
 #### 🧠 Theory & Concepts:
 - `SELECT` determines **which columns and calculated expressions appear in the final output**.
 - `SELECT *` performs a full-width row scan (retrieves all columns).
-- Column Aliasing (`AS alias_name`): Renames output columns for readability and reporting.
-- Scalar Math inside `SELECT`: You can perform arithmetic directly on columns: `+`, `-`, `*`, `/`.
+- Column Aliasing (`AS alias_name`): Renames output columns for clean reporting.
+- Scalar Math inside `SELECT`: Perform arithmetic directly on numerical columns: `+`, `-`, `*`, `/`.
 
-```text
-Syntax:
-SELECT column1, column2, (salary * 0.10) AS bonus_estimate
-FROM Employees;
-```
+> [!NOTE]
+> Aliases assigned in `SELECT` **cannot be used in the `WHERE` clause** because `WHERE` executes *before* `SELECT`!
 
 ---
 
 #### 🎯 Graded Practice Problems:
 
 ##### 🟢 Easy Problem 1.1: Full Employee Directory
-- **Problem**: Retrieve all columns and records for every employee in the company.
+- **Business Question**: Retrieve all columns and records for every employee in the company.
 - **SQL Query**:
   ```sql
   SELECT *
   FROM Employees;
   ```
-- **Explanation**: `*` instructs the database engine to project every attribute defined in the `Employees` table without filtering.
+- **Execution Breakdown**: `*` instructs the database engine to project every attribute defined in the `Employees` table without filtering.
 
 ---
 
 ##### 🟢 Easy Problem 1.2: Customer Contact Projection
-- **Problem**: Display only the first name, last name, and email address of all customers.
+- **Business Question**: Display only the first name, last name, and email address of all customers.
 - **SQL Query**:
   ```sql
   SELECT first_name, last_name, email
   FROM Customers;
   ```
-- **Explanation**: Explicitly projects only the 3 targeted fields, reducing memory and network bandwidth.
+- **Execution Breakdown**: Explicitly projects only the 3 targeted fields, optimizing network bandwidth and memory.
 
 ---
 
 ##### 🟡 Medium Problem 1.3: Projected Annual Compensation with Bonus
-- **Problem**: Display employee first names, current salary, and a new column named `projected_salary` that reflects a 15% salary increase.
+- **Business Question**: Display employee first names, current salary, and a new column named `projected_salary` reflecting a 15% salary increase.
 - **SQL Query**:
   ```sql
   SELECT first_name,
@@ -142,12 +142,12 @@ FROM Employees;
          salary * 1.15 AS projected_salary
   FROM Employees;
   ```
-- **Explanation**: Performs scalar multiplication `salary * 1.15` per row and assigns the clean business label `projected_salary` using `AS`.
+- **Execution Breakdown**: Performs scalar multiplication `salary * 1.15` per row and assigns the clean business label `projected_salary` using `AS`.
 
 ---
 
 ##### 🔴 Hard Problem 1.4: Monthly Inventory Value per Stock Unit
-- **Problem**: Write a query for the finance team displaying `product_name`, current `stock_quantity`, unit `price`, total inventory holding value (`price * stock_quantity`) labeled as `total_inventory_value`, and the estimated weekly carrying cost (defined as 2% of total inventory holding value divided by 52) labeled as `weekly_carrying_cost`.
+- **Business Question**: Write a query for the finance team displaying `product_name`, current `stock_quantity`, unit `price`, total inventory holding value (`price * stock_quantity`) labeled as `total_inventory_value`, and the estimated weekly carrying cost (defined as 2% of total inventory holding value divided by 52) labeled as `weekly_carrying_cost`.
 - **SQL Query**:
   ```sql
   SELECT product_name,
@@ -157,81 +157,87 @@ FROM Employees;
          ((price * stock_quantity * 0.02) / 52) AS weekly_carrying_cost
   FROM Products;
   ```
-- **Explanation**: Computes compound multi-step financial arithmetic directly inside the `SELECT` clause with clean aliases.
+- **Execution Breakdown**: Computes compound multi-step financial arithmetic directly inside the `SELECT` clause with clean aliases.
 
 ---
 
-### MODULE 02: `DISTINCT` (Deduplication & Cardinality)
+### 🔷 MODULE 02: `DISTINCT` (Deduplication & Cardinality)
 
 #### 🧠 Theory & Concepts:
 - `DISTINCT` eliminates **duplicate tuples** from the final result set.
-- `SELECT DISTINCT column`: Returns only unique values in that column.
+- `SELECT DISTINCT column`: Returns unique values in that column.
 - `SELECT DISTINCT col1, col2`: Evaluates uniqueness across the **combination of both columns** together.
 - `COUNT(DISTINCT column)`: Returns the integer count of unique, non-null values.
+
+> [!TIP]
+> `DISTINCT` runs after `SELECT` during Step 6 of query execution.
 
 ---
 
 #### 🎯 Graded Practice Problems:
 
 ##### 🟢 Easy Problem 2.1: Unique Customer Countries
-- **Problem**: List all unique countries where the company has registered customers.
+- **Business Question**: List all unique countries where the company has registered customers.
 - **SQL Query**:
   ```sql
   SELECT DISTINCT country
   FROM Customers;
   ```
-- **Explanation**: Discards repeated country entries so each country appears exactly once.
+- **Execution Breakdown**: Discards repeated country entries so each country appears exactly once.
 
 ---
 
-##### 🟡 Medium Problem 2.2: Active Department Locations
-- **Problem**: Query all unique combinations of `city` and `state` from the `Customers` table to identify unique geographical markets.
+##### 🟡 Medium Problem 2.2: Active Geographic Market Pairs
+- **Business Question**: Query all unique combinations of `city` and `state` from the `Customers` table to identify unique geographical markets.
 - **SQL Query**:
   ```sql
   SELECT DISTINCT city, state
   FROM Customers;
   ```
-- **Explanation**: Evaluates the pair `(city, state)` together. If two customers live in `Austin, TX`, it outputs `Austin, TX` only once.
+- **Execution Breakdown**: Evaluates the pair `(city, state)` together. If two customers live in `Austin, TX`, it outputs `Austin, TX` only once.
 
 ---
 
 ##### 🔴 Hard Problem 2.3: Redundant Customer City Cardinality Metric
-- **Problem**: Write a query that computes the exact number of duplicate city entries in the `Customers` table (i.e. the difference between total city records and unique city names).
+- **Business Question**: Compute the exact count of duplicate city records in the `Customers` table (difference between total city entries and unique city names).
 - **SQL Query**:
   ```sql
   SELECT COUNT(city) - COUNT(DISTINCT city) AS duplicate_city_count
   FROM Customers;
   ```
-- **Explanation**: `COUNT(city)` calculates total rows with non-null city values; `COUNT(DISTINCT city)` counts unique values. Subtracting the two gives the exact count of duplicate entries.
+- **Execution Breakdown**: `COUNT(city)` calculates total rows with non-null city values; `COUNT(DISTINCT city)` counts unique values. Subtracting the two gives the exact count of duplicate entries.
 
 ---
 
-### MODULE 03: `WHERE` Predicates & Comparison Operators
+### 🔷 MODULE 03: `WHERE` Predicates & Comparison Operators
 
 #### 🧠 Theory & Concepts:
 - `WHERE` filters rows **before** any aggregation or sorting occurs.
-- Numeric comparisons: `>`, `<`, `>=`, `<=`, `=`, `<>` (or `!=`).
-- Text comparisons: Case-insensitive by default in MySQL, strings **must be enclosed in single quotes** (`'USA'`).
-- Numeric values **must NOT be enclosed in quotes or include currency symbols** (`WHERE salary > 50000`, NOT `'$50,000'`).
+- Comparison operators: `>`, `<`, `>=`, `<=`, `=`, `<>` (or `!=`).
+- Text literals: Strings **must be enclosed in single quotes** (`'USA'`).
+- Numeric literals: Numbers **must NOT be enclosed in quotes or include currency symbols** (`WHERE salary > 50000`, NOT `'$50,000'`).
+
+> [!CAUTION]
+> Putting currency symbols like `$2000` in SQL causes syntax errors (`ERROR 1064`). Always use pure numbers like `2000`!
 
 ---
 
 #### 🎯 Graded Practice Problems:
 
 ##### 🟢 Easy Problem 3.1: Prime Credit Customer Filtering
-- **Problem**: Retrieve all customer details for customers with a credit score of at least 750.
+- **Business Question**: Retrieve all customer details for customers with a credit score of at least 750.
 - **SQL Query**:
   ```sql
   SELECT *
   FROM Customers
   WHERE credit_score >= 750;
   ```
-- **Explanation**: Filters for rows where the numeric value in `credit_score` is greater than or equal to 750.
+- **Execution Breakdown**: Filters for rows where the numeric value in `credit_score` is greater than or equal to 750.
 
 ---
 
 ##### 🟡 Medium Problem 3.2: High-Value Successful Transaction Auditing
-- **Problem**: Find all transaction IDs and amounts where the transaction amount exceeds $1,000.00 and the status is `'COMPLETED'`.
+- **Business Question**: Find all transaction IDs and amounts where the transaction amount exceeds $1,000.00 and the status is `'COMPLETED'`.
 - **SQL Query**:
   ```sql
   SELECT txn_id, amount
@@ -239,12 +245,12 @@ FROM Employees;
   WHERE amount > 1000.00
     AND status = 'COMPLETED';
   ```
-- **Explanation**: Both conditions must evaluate to TRUE for a row to survive the filter.
+- **Execution Breakdown**: Both conditions must evaluate to TRUE for a row to survive the filter.
 
 ---
 
 ##### 🔴 Hard Problem 3.3: Recent Non-Executive High-Earner Filter
-- **Problem**: Query the employee ID, full name (combined as `employee_name`), department, and salary of all employees earning over $90,000 who report to a manager (manager_id is not null) and have less than 24 months of tenure.
+- **Business Question**: Query the employee ID, full name (combined as `employee_name`), department, and salary of all employees earning over $90,000 who report to a manager (manager_id is not null) and have less than 24 months of tenure.
 - **SQL Query**:
   ```sql
   SELECT emp_id,
@@ -256,38 +262,38 @@ FROM Employees;
     AND manager_id IS NOT NULL
     AND months_tenure < 24;
   ```
-- **Explanation**: Combines string concatenation `CONCAT()`, null checks `IS NOT NULL`, and strict numeric bounds simultaneously.
+- **Execution Breakdown**: Combines string concatenation `CONCAT()`, null checks `IS NOT NULL`, and strict numeric bounds simultaneously.
 
 ---
 
-### MODULE 04: Boolean Operators (`AND`, `OR`, `NOT`) & Operator Precedence
+### 🔷 MODULE 04: Boolean Operators (`AND`, `OR`, `NOT`) & Precedence
+
+![Boolean Logic Venn Diagram](./assets/boolean_logic_venn.svg)
 
 #### 🧠 Theory & Concepts:
 - **`AND`**: Returns TRUE only if **all** connected conditions are TRUE.
 - **`OR`**: Returns TRUE if **at least one** condition is TRUE.
 - **`NOT`**: Inverts the truth value of a condition.
-- **Operator Precedence Rule**: In SQL, **`AND` has higher precedence than `OR`**!
-  - `A OR B AND C` is evaluated as `A OR (B AND C)`.
-  - **Always use parentheses `()` to explicitly declare evaluation order** when mixing `AND` and `OR`!
+- **Operator Precedence**: In SQL, **`AND` has higher priority than `OR`** (`A OR B AND C` is evaluated as `A OR (B AND C)`). Always use parentheses `()`!
 
 ---
 
 #### 🎯 Graded Practice Problems:
 
 ##### 🟢 Easy Problem 4.1: West Coast Customer Filter
-- **Problem**: Query first names and emails of customers residing in either California (`'CA'`) or Washington (`'WA'`).
+- **Business Question**: Query first names and emails of customers residing in either California (`'CA'`) or Washington (`'WA'`).
 - **SQL Query**:
   ```sql
   SELECT first_name, email
   FROM Customers
   WHERE state = 'CA' OR state = 'WA';
   ```
-- **Explanation**: Evaluates to TRUE if the customer resides in either state.
+- **Execution Breakdown**: Evaluates to TRUE if the customer resides in either state.
 
 ---
 
 ##### 🟡 Medium Problem 4.2: High-Risk Transaction Detection
-- **Problem**: Retrieve all transactions that are either `'FAILED'` or `'DISPUTED'` where the transaction amount is strictly greater than $500.00.
+- **Business Question**: Retrieve all transactions that are either `'FAILED'` or `'DISPUTED'` where the transaction amount is strictly greater than $500.00.
 - **SQL Query**:
   ```sql
   SELECT txn_id, amount, status
@@ -295,12 +301,12 @@ FROM Employees;
   WHERE (status = 'FAILED' OR status = 'DISPUTED')
     AND amount > 500.00;
   ```
-- **Explanation**: The parentheses `()` force SQL to evaluate the status condition first, ensuring only high-value failed/disputed records are returned.
+- **Execution Breakdown**: The parentheses `()` force SQL to evaluate the status condition first, ensuring only high-value failed/disputed records are returned.
 
 ---
 
 ##### 🔴 Hard Problem 4.3: Targeted Executive Risk Audit
-- **Problem**: Find all employees who work in `'Finance'` or `'Analytics'` with a salary exceeding $85,000, OR any employee in any department whose tenure is under 6 months with a salary over $100,000.
+- **Business Question**: Find all employees who work in `'Finance'` or `'Analytics'` with a salary exceeding $85,000, OR any employee in any department whose tenure is under 6 months with a salary over $100,000.
 - **SQL Query**:
   ```sql
   SELECT emp_id, first_name, department, salary, months_tenure
@@ -308,48 +314,50 @@ FROM Employees;
   WHERE (department IN ('Finance', 'Analytics') AND salary > 85000)
      OR (months_tenure < 6 AND salary > 100000);
   ```
-- **Explanation**: Uses grouped parentheses to construct two distinct business criteria connected by a top-level `OR`.
+- **Execution Breakdown**: Uses grouped parentheses to construct two distinct business criteria connected by a top-level `OR`.
 
 ---
 
-### MODULE 05: Range & Set Operators (`BETWEEN`, `IN`, `NOT IN`)
+### 🔷 MODULE 05: Range & Set Operators (`BETWEEN`, `IN`, `NOT IN`)
 
 #### 🧠 Theory & Concepts:
-- **`BETWEEN low AND high`**: Inclusive range check (`column >= low AND column <= high`).
+- **`BETWEEN low AND high`**: Inclusive range check (`col >= low AND col <= high`).
 - **`IN (val1, val2, ...)`**: Shorthand for multiple `OR` equality comparisons.
 - **`NOT IN (val1, val2, ...)`**: Excludes all records matching any item in the list.
-  - ⚠️ **NULL Trap**: If the `NOT IN` list contains a `NULL`, the entire expression evaluates to UNKNOWN and returns 0 rows!
+
+> [!WARNING]
+> If a `NOT IN (...)` list contains a `NULL`, the entire condition evaluates to `UNKNOWN` and returns 0 rows!
 
 ---
 
 #### 🎯 Graded Practice Problems:
 
 ##### 🟢 Easy Problem 5.1: Mid-Tier Credit Customers
-- **Problem**: Retrieve customers with credit scores between 650 and 720 (inclusive).
+- **Business Question**: Retrieve customers with credit scores between 650 and 720 (inclusive).
 - **SQL Query**:
   ```sql
   SELECT customer_id, first_name, credit_score
   FROM Customers
   WHERE credit_score BETWEEN 650 AND 720;
   ```
-- **Explanation**: `BETWEEN` includes boundary numbers 650 and 720.
+- **Execution Breakdown**: `BETWEEN` includes boundary numbers 650 and 720.
 
 ---
 
 ##### 🟡 Medium Problem 5.2: North American Customer Filter
-- **Problem**: Query all customers located in the United States, Canada, or Mexico using a set operator.
+- **Business Question**: Query all customers located in the United States, Canada, or Mexico using a set operator.
 - **SQL Query**:
   ```sql
   SELECT customer_id, first_name, country
   FROM Customers
   WHERE country IN ('USA', 'CAN', 'MEX');
   ```
-- **Explanation**: Replaces three chained `OR country = ...` statements with a concise, index-friendly set comparison.
+- **Execution Breakdown**: Replaces three chained `OR country = ...` statements with a concise, index-friendly set comparison.
 
 ---
 
 ##### 🔴 Hard Problem 5.3: Non-Standard Transaction Flagging
-- **Problem**: Find all completed transactions that did NOT occur at `'Amazon Prime'`, `'Apple Store'`, or `'Uber'`, with amounts between $100.00 and $2,500.00.
+- **Business Question**: Find all completed transactions that did NOT occur at `'Amazon Prime'`, `'Apple Store'`, or `'Uber'`, with amounts between $100.00 and $2,500.00.
 - **SQL Query**:
   ```sql
   SELECT txn_id, merchant_name, amount
@@ -358,36 +366,36 @@ FROM Employees;
     AND merchant_name NOT IN ('Amazon Prime', 'Apple Store', 'Uber')
     AND amount BETWEEN 100.00 AND 2500.00;
   ```
-- **Explanation**: Combines equality status filtering, negated set containment `NOT IN`, and inclusive numerical bounds `BETWEEN`.
+- **Execution Breakdown**: Combines equality status filtering, negated set containment `NOT IN`, and inclusive numerical bounds `BETWEEN`.
 
 ---
 
-### MODULE 06: Modulo Arithmetic (`MOD()` / `%`)
+### 🔷 MODULE 06: Modulo Arithmetic (`MOD()` / `%`)
 
 #### 🧠 Theory & Concepts:
-- `MOD(n, d)` (or `n % d`) returns the **remainder** when $n$ is divided by $d$.
-- **Even ID check**: `MOD(id, 2) = 0`
-- **Odd ID check**: `MOD(id, 2) = 1` (or `MOD(id, 2) <> 0`)
-- **Systematic Sampling**: `MOD(id, 10) = 0` grabs an exact 10% systematic sample of rows for testing or QA.
+- `MOD(n, d)` returns the **remainder** when $n$ is divided by $d$.
+- **Even parity**: `MOD(id, 2) = 0`
+- **Odd parity**: `MOD(id, 2) = 1`
+- **Systematic Sampling**: `MOD(id, 10) = 0` produces an exact 10% sample slice.
 
 ---
 
 #### 🎯 Graded Practice Problems:
 
 ##### 🟢 Easy Problem 6.1: Even-Numbered Employee IDs
-- **Problem**: Query the names of all employees with even employee IDs.
+- **Business Question**: Query the names of all employees with even employee IDs.
 - **SQL Query**:
   ```sql
   SELECT emp_id, first_name
   FROM Employees
   WHERE MOD(emp_id, 2) = 0;
   ```
-- **Explanation**: Checks if the remainder of `emp_id / 2` is 0.
+- **Execution Breakdown**: Checks if the remainder of `emp_id / 2` is 0.
 
 ---
 
 ##### 🟡 Medium Problem 6.2: A/B Testing Customer Split
-- **Problem**: Select all customers assigned to A/B Test Variant Group B (defined as customers with odd customer IDs) who have a credit score greater than 700.
+- **Business Question**: Select all customers assigned to A/B Test Variant Group B (odd customer IDs) who have a credit score greater than 700.
 - **SQL Query**:
   ```sql
   SELECT customer_id, first_name, credit_score
@@ -395,12 +403,12 @@ FROM Employees;
   WHERE MOD(customer_id, 2) = 1
     AND credit_score > 700;
   ```
-- **Explanation**: Partitions customer IDs into odd parity cohorts while applying a secondary quality filter.
+- **Execution Breakdown**: Partitions customer IDs into odd parity cohorts while applying a secondary quality filter.
 
 ---
 
 ##### 🔴 Hard Problem 6.3: Systematic 5% Quality Control Audit
-- **Problem**: The compliance team needs to audit every 20th completed transaction (systematic 5% sample) where the amount is strictly greater than $50.00.
+- **Business Question**: The compliance team needs to audit every 20th completed transaction (systematic 5% sample) where the amount is strictly greater than $50.00.
 - **SQL Query**:
   ```sql
   SELECT txn_id, customer_id, amount, status
@@ -409,51 +417,46 @@ FROM Employees;
     AND amount > 50.00
     AND MOD(txn_id, 20) = 0;
   ```
-- **Explanation**: `MOD(txn_id, 20) = 0` deterministically filters for IDs ending in `00, 20, 40, 60...`, producing a mathematically uniform 5% audit slice.
+- **Execution Breakdown**: `MOD(txn_id, 20) = 0` deterministically filters for IDs ending in `00, 20, 40, 60...`, producing a mathematically uniform 5% audit slice.
 
 ---
 
-### MODULE 07: Standard SQL Wildcards (`LIKE` & `NOT LIKE`)
+### 🔷 MODULE 07: Standard SQL Wildcards (`LIKE` & `NOT LIKE`)
 
 #### 🧠 Theory & Concepts:
-- **`%`**: Matches zero, one, or multiple characters of any length.
-  - `'A%'` ➡️ Starts with 'A'.
-  - `'%a'` ➡️ Ends with 'a'.
-  - `'%tech%'` ➡️ Contains 'tech' anywhere.
-- **`_` (Underscore)**: Matches **exactly one single character**.
-  - `'_a%'` ➡️ Second character must be 'a'.
-  - `'___'` ➡️ Total string length must be exactly 3 characters.
+- **`%`**: Matches zero, one, or multiple characters of any length (`'A%'`, `'%a'`, `'%tech%'`).
+- **`_` (Underscore)**: Matches **exactly one single character** (`'_a%'`, `'___'`).
 
 ---
 
 #### 🎯 Graded Practice Problems:
 
 ##### 🟢 Easy Problem 7.1: Gmail User Query
-- **Problem**: Find all customers whose email address ends with `@gmail.com`.
+- **Business Question**: Find all customers whose email address ends with `@gmail.com`.
 - **SQL Query**:
   ```sql
   SELECT customer_id, first_name, email
   FROM Customers
   WHERE email LIKE '%@gmail.com';
   ```
-- **Explanation**: `%` matches any username characters preceding the literal `@gmail.com` suffix.
+- **Execution Breakdown**: `%` matches any username characters preceding the literal `@gmail.com` suffix.
 
 ---
 
 ##### 🟡 Medium Problem 7.2: Standard Product SKU Pattern Match
-- **Problem**: Find all products whose `product_code` begins with `'EL-'` and ends with `'-US'`.
+- **Business Question**: Find all products whose `product_code` begins with `'EL-'` and ends with `'-US'`.
 - **SQL Query**:
   ```sql
   SELECT product_id, product_name, product_code
   FROM Products
   WHERE product_code LIKE 'EL-%-US';
   ```
-- **Explanation**: Enforces exact prefix `'EL-'`, exact suffix `'-US'`, and permits any batch numbers in the middle `%`.
+- **Execution Breakdown**: Enforces exact prefix `'EL-'`, exact suffix `'-US'`, and permits any batch numbers in the middle `%`.
 
 ---
 
-##### 🔴 Hard Problem 7.3: Strict Corporate Security Username Audit
-- **Problem**: Query all employees whose first name has `'a'` as the second letter, whose last name does NOT end with `'son'`, and whose salary exceeds $60,000.
+##### 🔴 Hard Problem 7.3: Strict Security Username Audit
+- **Business Question**: Query all employees whose first name has `'a'` as the second letter, whose last name does NOT end with `'son'`, and whose salary exceeds $60,000.
 - **SQL Query**:
   ```sql
   SELECT emp_id, first_name, last_name, salary
@@ -462,38 +465,42 @@ FROM Employees;
     AND last_name NOT LIKE '%son'
     AND salary > 60000;
   ```
-- **Explanation**: Uses `_a%` for fixed second-character positioning, `NOT LIKE '%son'` for suffix exclusion, and numeric thresholding.
+- **Execution Breakdown**: Uses `_a%` for fixed second-character positioning, `NOT LIKE '%son'` for suffix exclusion, and numeric thresholding.
 
 ---
 
-### MODULE 08: Regular Expressions (`REGEXP` / `RLIKE`)
+### 🔷 MODULE 08: Regular Expressions (`REGEXP` / `RLIKE`)
+
+![Regex Anchors Matrix](./assets/regex_anchors_matrix.svg)
 
 #### 🧠 Theory & Concepts:
 - **`^`**: Start anchor (`'^A'` = starts with A).
 - **`$`**: End anchor (`'a$'` = ends with a).
 - **`[...]`**: Character set (`'[aeiou]'` = matches any single vowel).
-- **`[^...]`**: Negated set (`'[^aeiou]'` = matches any consonant / non-vowel).
+- **`[^...]`**: Negated set (`'[^aeiou]'` = matches any consonant).
 - **`NOT REGEXP`**: Inverts the match.
-- **`.*`**: Matches any sequence of characters in regex.
+
+> [!IMPORTANT]
+> Always place anchors **outside the brackets**: `'^[aeiou]'` (starts with vowel) and `'[aeiou]$'` (ends with vowel).
 
 ---
 
 #### 🎯 Graded Practice Problems:
 
 ##### 🟢 Easy Problem 8.1: Cities Starting with Vowels (Station 6 Pattern)
-- **Problem**: Query unique city names from the `Customers` table that start with a vowel (`a, e, i, o, u`).
+- **Business Question**: Query unique city names from `Customers` starting with a vowel (`a, e, i, o, u`).
 - **SQL Query**:
   ```sql
   SELECT DISTINCT city
   FROM Customers
   WHERE city REGEXP '^[aeiou]';
   ```
-- **Explanation**: `^` anchors the search at the start; `[aeiou]` matches any vowel character.
+- **Execution Breakdown**: `^` anchors the search at the start; `[aeiou]` matches any vowel character.
 
 ---
 
 ##### 🟡 Medium Problem 8.2: Cities Starting AND Ending with Vowels (Station 8 Pattern)
-- **Problem**: Query unique city names that begin with a vowel AND end with a vowel.
+- **Business Question**: Query unique city names that begin with a vowel AND end with a vowel.
 - **SQL Query**:
   ```sql
   SELECT DISTINCT city
@@ -501,12 +508,12 @@ FROM Employees;
   WHERE city REGEXP '^[aeiou]'
     AND city REGEXP '[aeiou]$';
   ```
-- **Explanation**: Combines the start anchor `^[aeiou]` and end anchor `[aeiou]$` across two complete boolean predicates.
+- **Execution Breakdown**: Combines the start anchor `^[aeiou]` and end anchor `[aeiou]$` across two complete boolean predicates.
 
 ---
 
 ##### 🔴 Hard Problem 8.3: Neither Starting NOR Ending with Vowels (Station 12 Pattern)
-- **Problem**: Query unique customer city names that do NOT start with a vowel AND do NOT end with a vowel.
+- **Business Question**: Query unique customer city names that do NOT start with a vowel AND do NOT end with a vowel.
 - **SQL Query**:
   ```sql
   SELECT DISTINCT city
@@ -514,48 +521,53 @@ FROM Employees;
   WHERE city NOT REGEXP '^[aeiou]'
     AND city NOT REGEXP '[aeiou]$';
   ```
-- **Explanation**: Applies De Morgan's boolean negation rule to filter out all cities with vowel boundaries on either end.
+- **Execution Breakdown**: Applies De Morgan's boolean negation rule to filter out all cities with vowel boundaries on either end.
 
 ---
 
-### MODULE 09: String Slicing & Metrics (`LENGTH`, `LEFT`, `RIGHT`, `SUBSTRING`)
+### 🔷 MODULE 09: String Slicing & Metrics (`LENGTH`, `LEFT`, `RIGHT`, `SUBSTRING`)
+
+![String Slicing Toolkit](./assets/string_slicing_toolkit.svg)
 
 #### 🧠 Theory & Concepts:
-- **`LENGTH(str)`**: Returns character count (`LENGTH('Austin')` ➡️ 6).
+- **`LENGTH(str)`**: Returns character count.
 - **`LEFT(str, N)`**: Extracts first $N$ characters from start.
 - **`RIGHT(str, N)`**: Extracts last $N$ characters from end.
 - **`SUBSTRING(str, start, len)`**: Extracts `len` characters starting at 1-based index `start`.
+
+> [!WARNING]
+> SQL uses **1-based indexing**! Position 1 is the first letter, not 0.
 
 ---
 
 #### 🎯 Graded Practice Problems:
 
 ##### 🟢 Easy Problem 9.1: Masked Credit Card Suffix Projection
-- **Problem**: Display customer first names and only the last 4 characters of their email domain extension.
+- **Business Question**: Display customer first names and only the last 4 characters of their email domain extension.
 - **SQL Query**:
   ```sql
   SELECT first_name,
          RIGHT(email, 4) AS email_extension
   FROM Customers;
   ```
-- **Explanation**: Extracts the final 4 characters (e.g. `'.com'`, `'.org'`).
+- **Execution Breakdown**: Extracts the final 4 characters (e.g. `'.com'`, `'.org'`).
 
 ---
 
 ##### 🟡 Medium Problem 9.2: Product Category Prefix Extraction
-- **Problem**: Extract the 2-letter department code (the first 2 characters) from `product_code` and display it alongside `product_name`.
+- **Business Question**: Extract the 2-letter department code (first 2 characters) from `product_code` and display alongside `product_name`.
 - **SQL Query**:
   ```sql
   SELECT product_name,
          LEFT(product_code, 2) AS category_prefix
   FROM Products;
   ```
-- **Explanation**: Uses `LEFT(str, 2)` to extract leading categorical codes.
+- **Execution Breakdown**: Uses `LEFT(str, 2)` to extract leading categorical codes.
 
 ---
 
 ##### 🔴 Hard Problem 9.3: Suffix Sorting with ID Tie-Breakers (Higher Than 75 Marks Pattern)
-- **Problem**: Query the names of all employees earning over $75,000, ordered alphabetically by the **last three characters** of their first name, with secondary tie-breaking by ascending `emp_id`.
+- **Business Question**: Query the names of all employees earning over $75,000, ordered alphabetically by the **last three characters** of their first name, with secondary tie-breaking by ascending `emp_id`.
 - **SQL Query**:
   ```sql
   SELECT first_name
@@ -563,25 +575,27 @@ FROM Employees;
   WHERE salary > 75000
   ORDER BY RIGHT(first_name, 3) ASC, emp_id ASC;
   ```
-- **Explanation**: Computes `RIGHT(first_name, 3)` dynamically in `ORDER BY` and breaks ties using the primary key `emp_id`.
+- **Execution Breakdown**: Computes `RIGHT(first_name, 3)` dynamically in `ORDER BY` and breaks ties using the primary key `emp_id`.
 
 ---
 
-### MODULE 10: Sorting, Tie-Breaking & Output Slicing (`ORDER BY` & `LIMIT`)
+### 🔷 MODULE 10: Sorting, Tie-Breaking & Output Slicing (`ORDER BY` & `LIMIT`)
+
+![Sorting Tiebreaker Engine](./assets/sorting_tiebreaker_engine.svg)
 
 #### 🧠 Theory & Concepts:
-- **`ORDER BY col ASC`**: Ascending order (Default: A-Z, smallest numbers first, oldest dates first).
-- **`ORDER BY col DESC`**: Descending order (Z-A, highest numbers first, newest dates first).
+- **`ORDER BY col ASC`**: Ascending order (Default: A-Z, smallest numbers first).
+- **`ORDER BY col DESC`**: Descending order (Z-A, highest numbers first).
 - **Multi-Column Sorting**: `ORDER BY col1 DESC, col2 ASC` (breaks ties in col1 using col2).
-- **`LIMIT N`**: Restricts the returned row count to the top $N$ rows.
-- **`LIMIT N OFFSET M`**: Skips $M$ rows and returns the next $N$ rows (Pagination).
+- **`LIMIT N`**: Restricts the returned row count to top $N$ rows.
+- **`LIMIT N OFFSET M`**: Skips $M$ rows and returns next $N$ rows (Pagination).
 
 ---
 
 #### 🎯 Graded Practice Problems:
 
 ##### 🟢 Easy Problem 10.1: Top 5 Highest-Paid Employees
-- **Problem**: Find the top 5 highest-earning employees in the company.
+- **Business Question**: Find the top 5 highest-earning employees in the company.
 - **SQL Query**:
   ```sql
   SELECT first_name, last_name, salary
@@ -589,12 +603,12 @@ FROM Employees;
   ORDER BY salary DESC
   LIMIT 5;
   ```
-- **Explanation**: Sorts salaries descending and truncates output to the first 5 records.
+- **Execution Breakdown**: Sorts salaries descending and truncates output to first 5 records.
 
 ---
 
 ##### 🟡 Medium Problem 10.2: Shortest & Longest City Names with Tie-Breakers (Station 5 Pattern)
-- **Problem**: Write two queries to find the single shortest and single longest customer city name along with their character lengths. In case of ties, choose the alphabetically first city.
+- **Business Question**: Write two queries to find the single shortest and single longest customer city name along with their character lengths. In case of ties, choose the alphabetically first city.
 - **SQL Query**:
   ```sql
   -- Query 1: Shortest City
@@ -609,12 +623,12 @@ FROM Employees;
   ORDER BY LENGTH(city) DESC, city ASC
   LIMIT 1;
   ```
-- **Explanation**: Evaluates character lengths via `LENGTH(city)`, sorts ascending/descending, enforces alphabetical tie-breaking via `, city ASC`, and slices top row with `LIMIT 1`.
+- **Execution Breakdown**: Evaluates character lengths via `LENGTH(city)`, sorts ascending/descending, enforces alphabetical tie-breaking via `, city ASC`, and slices top row with `LIMIT 1`.
 
 ---
 
 ##### 🔴 Hard Problem 10.3: Second-Highest Transaction Value (Pagination Pattern)
-- **Problem**: Find the single 2nd largest completed transaction amount without using subqueries or window functions.
+- **Business Question**: Find the single 2nd largest completed transaction amount without using subqueries or window functions.
 - **SQL Query**:
   ```sql
   SELECT txn_id, customer_id, amount
@@ -623,13 +637,11 @@ FROM Employees;
   ORDER BY amount DESC
   LIMIT 1 OFFSET 1;
   ```
-- **Explanation**: Sorts all completed transactions from highest to lowest, skips the #1 largest row (`OFFSET 1`), and takes the next single row (`LIMIT 1`).
+- **Execution Breakdown**: Sorts all completed transactions from highest to lowest, skips the #1 largest row (`OFFSET 1`), and takes the next single row (`LIMIT 1`).
 
 ---
 
 ## 🏁 4. Phase 1 Foundations Summary Checklist
-
-Use this checklist to confirm complete mastery of Phase 1 before moving to Phase 2:
 
 - [x] **Universal Blueprint**: Can structure queries in the rigid clause order (`SELECT ➡️ FROM ➡️ WHERE ➡️ ORDER BY ➡️ LIMIT`).
 - [x] **Deduplication**: Understand difference between `COUNT(col)` and `COUNT(DISTINCT col)`.
