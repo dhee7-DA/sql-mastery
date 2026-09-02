@@ -21,7 +21,10 @@ Welcome to the **14-Day SQL Intensive**. This repository is an institutional-gra
 | **Day 02** | [`day-02-pattern-matching-vowels`](./day-02-ordering-wildcards) | Station 4 (`COUNT - DISTINCT`), Station 5 (`LENGTH`), Station 6–12 (Regex) | Easy | ✅ Completed (8/8) |
 | **Day 03** | [`day-03-sorting-ordering`](./day-03-sorting-ordering) | `ORDER BY`, `LIMIT`, `RIGHT(Name, 3)`, Employees, Students | Easy | ✅ Completed (3/3) |
 
+> 📖 **Phase 1 Master Reference**: Full theoretical notes and graded Easy/Medium/Hard problem bank available in [`FOUNDATIONS_MASTER_COMPENDIUM.md`](./FOUNDATIONS_MASTER_COMPENDIUM.md).
+
 ---
+
 
 ### 🟡 Phase 2: Advanced Select & Conditional Logic
 | Day | Module Directory | HackerRank Subdomain & Focus | Difficulty | Status |
