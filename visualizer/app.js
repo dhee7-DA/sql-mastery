@@ -2613,12 +2613,25 @@ function renderQuestStepperTrack() {
   const track = document.getElementById('questStepperTrack');
   const progressText = document.getElementById('questProgressText');
   const progressBarFill = document.getElementById('questProgressBarFill');
+  const levelSelect = document.getElementById('questDirectLevelSelect');
 
   if (!track || !window.QUESTS_DATA) return;
 
   const total = window.QUESTS_DATA.length;
   if (progressText) progressText.textContent = `Level ${currentQuestIndex + 1} of ${total}`;
   if (progressBarFill) progressBarFill.style.width = `${((currentQuestIndex + 1) / total) * 100}%`;
+
+  if (levelSelect && levelSelect.options.length === 0) {
+    levelSelect.innerHTML = window.QUESTS_DATA.map((q, idx) => 
+      `<option value="${idx}">Lvl ${idx + 1 < 10 ? '0' + (idx + 1) : idx + 1}: ${q.title.split(':')[1] || q.title}</option>`
+    ).join('');
+    levelSelect.addEventListener('change', (e) => {
+      setQuestIndex(parseInt(e.target.value, 10));
+    });
+  }
+  if (levelSelect) {
+    levelSelect.value = currentQuestIndex;
+  }
 
   let html = '';
   window.QUESTS_DATA.forEach((q, idx) => {
@@ -2632,6 +2645,13 @@ function renderQuestStepperTrack() {
     `;
   });
   track.innerHTML = html;
+
+  setTimeout(() => {
+    const activePill = track.querySelector('.quest-step-pill.active');
+    if (activePill) {
+      activePill.scrollIntoView({ behavior: 'smooth', block: 'nearest', inline: 'center' });
+    }
+  }, 50);
 }
 
 function setQuestIndex(idx) {

@@ -531,10 +531,13 @@
           <h2 class="view-title">🎮 SQL Quests: Learn by Doing (Duolingo Style)</h2>
           <p class="view-subtitle">Interactive micro-games, live threshold sliders, tap-to-assemble word banks, and bug-fixing puzzles. Zero typing required!</p>
         </div>
-        <div class="quest-progress-badge">
-          <span id="questProgressText" style="font-family: var(--font-mono); font-size: 11px; color: #9ec5ad; font-weight: 600;">Quest 1 of 4</span>
-          <div class="quest-progress-bar-wrap">
-            <div class="quest-progress-bar-fill" id="questProgressBarFill" style="width: 25%;"></div>
+        <div class="quest-progress-badge" style="display: flex; align-items: center; gap: 12px;">
+          <select id="questDirectLevelSelect" class="clean-select" style="background: #09090b; border: 1px solid var(--border-default); color: #fff; font-family: var(--font-mono); font-size: 11px; padding: 4px 8px; border-radius: var(--radius-sm); max-width: 220px;"></select>
+          <div>
+            <span id="questProgressText" style="font-family: var(--font-mono); font-size: 11px; color: #9ec5ad; font-weight: 600;">Level 1 of 20</span>
+            <div class="quest-progress-bar-wrap">
+              <div class="quest-progress-bar-fill" id="questProgressBarFill" style="width: 5%;"></div>
+            </div>
           </div>
         </div>
       </div>
