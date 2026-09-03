@@ -1408,14 +1408,59 @@ function switchToStudioWithQuery(query, table) {
   parseAndBuildPipeline(query);
 }
 
-function renderKeywordExplainer() {
+let activeExplainerKeyword = 'from';
+
+function renderKeywordExplainer(targetId = null) {
+  if (targetId) {
+    activeExplainerKeyword = targetId;
+  }
+
+  const filterContainer = document.getElementById('keywordPillFilter');
   const container = document.getElementById('keywordCardsGrid');
   if (!container || !window.FOUNDATIONS_DATA) return;
 
-  const keywords = window.FOUNDATIONS_DATA.keywords || [];
+  const allKeywords = window.FOUNDATIONS_DATA.keywords || [];
+
+  // 1. Render Keyword Filter Pills
+  if (filterContainer) {
+    let pillsHtml = '';
+    allKeywords.forEach(kw => {
+      const isActive = kw.id === activeExplainerKeyword;
+      pillsHtml += `
+        <button class="kw-filter-pill ${isActive ? 'active' : ''}" data-kwid="${kw.id}">
+          <span class="clause-pill ${kw.badgeClass}" style="margin: 0; padding: 1px 4px;">${kw.name}</span>
+          <span>${kw.name}</span>
+        </button>
+      `;
+    });
+    const isAllActive = activeExplainerKeyword === 'all';
+    pillsHtml += `
+      <button class="kw-filter-pill ${isAllActive ? 'active' : ''}" data-kwid="all">
+        <span>View All Keywords</span>
+      </button>
+    `;
+    filterContainer.innerHTML = pillsHtml;
+
+    // Bind pill clicks
+    filterContainer.querySelectorAll('.kw-filter-pill').forEach(pill => {
+      pill.addEventListener('click', () => {
+        renderKeywordExplainer(pill.dataset.kwid);
+      });
+    });
+  }
+
+  // 2. Filter displayed keywords
+  const displayKeywords = activeExplainerKeyword === 'all'
+    ? allKeywords
+    : allKeywords.filter(k => k.id === activeExplainerKeyword);
+
   let html = '';
 
-  keywords.forEach(kw => {
+  displayKeywords.forEach(kw => {
+    const currentIndex = allKeywords.findIndex(k => k.id === kw.id);
+    const prevKeyword = currentIndex > 0 ? allKeywords[currentIndex - 1] : null;
+    const nextKeyword = currentIndex < allKeywords.length - 1 ? allKeywords[currentIndex + 1] : null;
+
     html += `
       <div class="keyword-card" id="kw_${kw.id}">
         <div class="keyword-card-top">
@@ -1424,7 +1469,7 @@ function renderKeywordExplainer() {
             <span class="keyword-name-title">${kw.name}</span>
             <span style="font-size: 11px; color: var(--text-muted);">&bull; ${kw.category}</span>
           </div>
-          <span class="exec-badge">Physical Step: ${kw.executionOrder}</span>
+          <span class="exec-badge">Physical Execution: ${kw.executionOrder}</span>
         </div>
 
         <p class="keyword-desc">${kw.concept}</p>
@@ -1450,6 +1495,23 @@ function renderKeywordExplainer() {
         <div class="svg-diagram-wrapper">
           ${kw.svgDiagram}
         </div>
+
+        ${activeExplainerKeyword !== 'all' ? `
+          <div class="card-action-footer">
+            <div class="stepper-nav-group">
+              <button class="card-nav-btn" ${!prevKeyword ? 'disabled' : ''} onclick="renderKeywordExplainer('${prevKeyword ? prevKeyword.id : ''}')">
+                &larr; Previous (${prevKeyword ? prevKeyword.name : 'Start'})
+              </button>
+              <button class="card-nav-btn" ${!nextKeyword ? 'disabled' : ''} onclick="renderKeywordExplainer('${nextKeyword ? nextKeyword.id : ''}')">
+                Next (${nextKeyword ? nextKeyword.name : 'End'}) &rarr;
+              </button>
+            </div>
+            <button class="btn-solve-in-studio" onclick="switchToMcqsWithKeyword('${kw.name}')">
+              <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M9 11l3 3L22 4"></path><path d="M21 12v7a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h11"></path></svg>
+              Practice ${kw.name} MCQs
+            </button>
+          </div>
+        ` : ''}
       </div>
     `;
   });
@@ -1457,29 +1519,73 @@ function renderKeywordExplainer() {
   container.innerHTML = html;
 }
 
+function switchToMcqsWithKeyword(keywordName) {
+  // 1. Switch active nav tab
+  document.querySelectorAll('.nav-tab').forEach(t => t.classList.remove('active'));
+  document.querySelectorAll('.view-panel').forEach(p => p.classList.remove('active'));
+
+  const mcqTab = document.querySelector('.nav-tab[data-view="viewMcqs"]');
+  const mcqView = document.getElementById('viewMcqs');
+  if (mcqTab) mcqTab.classList.add('active');
+  if (mcqView) mcqView.classList.add('active');
+
+  renderMcqs(keywordName);
+}
+
 let QuizState = {
   score: 0,
   answered: 0,
   total: 0
 };
+let activeMcqFilter = 'all';
 
-function renderMcqs() {
+function renderMcqs(filterKeyword = 'all') {
+  activeMcqFilter = filterKeyword;
+  const filterContainer = document.getElementById('mcqPillFilter');
   const container = document.getElementById('mcqCardsList');
   if (!container || !window.FOUNDATIONS_DATA) return;
 
-  const mcqs = window.FOUNDATIONS_DATA.mcqs || [];
-  QuizState.total = mcqs.length;
+  const allMcqs = window.FOUNDATIONS_DATA.mcqs || [];
+
+  // 1. Render Filter Pills
+  if (filterContainer) {
+    const uniqueKeywords = ['all', ...new Set(allMcqs.map(m => m.keyword))];
+    let pillsHtml = '';
+    uniqueKeywords.forEach(k => {
+      const isActive = k.toLowerCase() === activeMcqFilter.toLowerCase();
+      const label = k === 'all' ? `All Questions (${allMcqs.length})` : k;
+      pillsHtml += `
+        <button class="kw-filter-pill ${isActive ? 'active' : ''}" data-filter="${k}">
+          <span>${label}</span>
+        </button>
+      `;
+    });
+    filterContainer.innerHTML = pillsHtml;
+
+    filterContainer.querySelectorAll('.kw-filter-pill').forEach(btn => {
+      btn.addEventListener('click', () => {
+        renderMcqs(btn.dataset.filter);
+      });
+    });
+  }
+
+  // 2. Filter Questions
+  const filteredMcqs = activeMcqFilter === 'all'
+    ? allMcqs
+    : allMcqs.filter(m => m.keyword.toLowerCase().includes(activeMcqFilter.toLowerCase()) || activeMcqFilter.toLowerCase().includes(m.keyword.toLowerCase()));
+
+  QuizState.total = allMcqs.length;
   document.getElementById('quizTotalCount').textContent = QuizState.total;
   document.getElementById('quizScoreCount').textContent = QuizState.score;
 
   let html = '';
 
-  mcqs.forEach((mcq, idx) => {
+  filteredMcqs.forEach((mcq, idx) => {
     html += `
       <div class="mcq-card" id="card_${mcq.id}">
         <div class="mcq-meta-row">
           <span class="mcq-keyword-tag">${mcq.keyword}</span>
-          <span style="font-size: 11px; font-family: var(--font-mono); color: var(--text-muted);">Question ${idx + 1} of ${mcqs.length}</span>
+          <span style="font-size: 11px; font-family: var(--font-mono); color: var(--text-muted);">Question ${idx + 1} of ${filteredMcqs.length}</span>
         </div>
         <p class="mcq-question-text">${mcq.question}</p>
         <div class="mcq-options-grid" id="options_${mcq.id}">
