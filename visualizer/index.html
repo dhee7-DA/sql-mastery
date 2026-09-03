@@ -86,7 +86,7 @@
             <!-- 1. FROM Block -->
             <div class="builder-section">
               <div class="builder-section-title">
-                <span class="clause-pill">FROM</span> Source Table
+                <span class="clause-pill pill-from">FROM</span> Source Table
               </div>
               <select id="builderTableSelect" class="builder-select full-width">
                 <option value="TRIANGLES">TRIANGLES (A, B, C)</option>
@@ -99,32 +99,50 @@
             <!-- 2. SELECT Block -->
             <div class="builder-section">
               <div class="builder-section-title">
-                <span class="clause-pill">SELECT</span> Columns &amp; Expressions
-                <label class="distinct-toggle">
-                  <input type="checkbox" id="builderDistinctCheck">
-                  <span>DISTINCT</span>
-                </label>
+                <span class="clause-pill pill-select">SELECT</span> Columns &amp; Functions
+                <div class="select-quick-actions">
+                  <button id="btnSelectAllCols" class="micro-text-btn">All</button>
+                  <button id="btnClearAllCols" class="micro-text-btn">Clear</button>
+                  <label class="distinct-toggle">
+                    <input type="checkbox" id="builderDistinctCheck">
+                    <span>DISTINCT</span>
+                  </label>
+                </div>
               </div>
               <div class="column-chips" id="builderColumnChips">
                 <!-- Dynamically populated column checkboxes -->
               </div>
-              <div class="expression-block" id="builderExpressionBlock">
+
+              <!-- Function / Expression Options -->
+              <div class="expression-group">
                 <label class="expr-toggle">
                   <input type="checkbox" id="builderCaseWhenCheck" checked>
                   <span id="builderCaseWhenLabel">+ Add CASE WHEN Classification</span>
                 </label>
+                <div class="transform-pill-row" id="builderTransformRow">
+                  <span class="sub-label">String / Math:</span>
+                  <button class="transform-chip" data-fn="none" id="btnFnNone">Standard</button>
+                  <button class="transform-chip" data-fn="length" id="btnFnLength">LENGTH()</button>
+                  <button class="transform-chip" data-fn="right3" id="btnFnRight">RIGHT(str, 3)</button>
+                </div>
               </div>
             </div>
 
             <!-- 3. WHERE Block -->
             <div class="builder-section">
               <div class="builder-section-title">
-                <span class="clause-pill">WHERE</span> Filter Conditions
+                <span class="clause-pill pill-where">WHERE</span> Filter Conditions
                 <div class="logic-toggle-group">
                   <button class="logic-btn active" id="builderLogicAnd" data-logic="AND">AND</button>
                   <button class="logic-btn" id="builderLogicOr" data-logic="OR">OR</button>
                 </div>
               </div>
+
+              <!-- Quick Filter Templates -->
+              <div class="quick-filter-templates" id="quickFilterTemplates">
+                <!-- Populated per table -->
+              </div>
+
               <div class="filter-rows" id="builderFilterList">
                 <!-- Dynamically populated filter condition rows -->
               </div>
@@ -137,7 +155,7 @@
             <!-- 4. ORDER BY Block -->
             <div class="builder-section">
               <div class="builder-section-title">
-                <span class="clause-pill">ORDER BY</span> Sorting &amp; Tie-Breakers
+                <span class="clause-pill pill-order">ORDER BY</span> Sorting &amp; Tie-Breakers
               </div>
               <div class="order-controls">
                 <div class="order-row">
@@ -158,7 +176,7 @@
             <!-- 5. LIMIT Block -->
             <div class="builder-section">
               <div class="builder-section-title">
-                <span class="clause-pill">LIMIT</span> Row Slicing
+                <span class="clause-pill pill-limit">LIMIT</span> Row Slicing
               </div>
               <div class="limit-controls">
                 <button class="limit-pill active" data-limit="All">All</button>
@@ -166,6 +184,18 @@
                 <button class="limit-pill" data-limit="10">Top 10</button>
                 <input type="number" id="builderLimitInput" class="limit-input" placeholder="Custom" min="1" max="100">
               </div>
+            </div>
+
+            <!-- Live Query Preview & Copy Card -->
+            <div class="builder-preview-card">
+              <div class="preview-header">
+                <span class="preview-title">Live SQL Generation</span>
+                <button id="btnCopyGeneratedSQL" class="copy-sql-btn" title="Copy SQL to Clipboard">
+                  <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="9" y="9" width="13" height="13" rx="2" ry="2"></rect><path d="M5 15H4a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h9a2 2 0 0 1 2 2v1"></path></svg>
+                  <span id="copyBtnLabel">Copy</span>
+                </button>
+              </div>
+              <pre class="live-sql-code" id="liveSqlPreview">SELECT * FROM TRIANGLES;</pre>
             </div>
           </div>
 

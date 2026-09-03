@@ -754,6 +754,7 @@ const BuilderState = {
   columns: new Set(['A', 'B', 'C']),
   isDistinct: false,
   hasCaseWhen: true,
+  fn: 'none',
   logic: 'AND',
   filters: [],
   orderCol1: '',
@@ -761,6 +762,24 @@ const BuilderState = {
   orderCol2: '',
   orderDir2: 'ASC',
   limit: 'All'
+};
+
+const TABLE_FILTER_TEMPLATES = {
+  TRIANGLES: [
+    { label: 'Valid Only', col: 'A', op: '>', val: '0', extra: 'A + B > C' },
+    { label: 'Equilateral Match', col: 'A', op: '=', val: '20' }
+  ],
+  Employees: [
+    { label: 'High Earners (> $80k)', col: 'salary', op: '>', val: '80000' },
+    { label: 'Recent (< 12m)', col: 'months_tenure', op: '<', val: '12' }
+  ],
+  Customers: [
+    { label: 'Prime Credit (>= 750)', col: 'credit_score', op: '>=', val: '750' },
+    { label: 'USA Accounts', col: 'country', op: '=', val: 'USA' }
+  ],
+  STUDENTS: [
+    { label: 'Honor Roll (> 75)', col: 'Marks', op: '>', val: '75' }
+  ]
 };
 
 function initVisualBuilder() {
@@ -777,6 +796,55 @@ function initVisualBuilder() {
     syncBuilderFromTable(newTbl);
     generateSqlFromBuilder();
   });
+
+  // Select All / Clear All Columns
+  const btnSelectAll = document.getElementById('btnSelectAllCols');
+  const btnClearAll = document.getElementById('btnClearAllCols');
+  if (btnSelectAll && btnClearAll) {
+    btnSelectAll.addEventListener('click', () => {
+      const allCols = Object.keys(DATABASE[BuilderState.table][0] || {});
+      BuilderState.columns = new Set(allCols);
+      document.querySelectorAll('.col-chip').forEach(c => c.classList.add('active'));
+      generateSqlFromBuilder();
+    });
+
+    btnClearAll.addEventListener('click', () => {
+      const allCols = Object.keys(DATABASE[BuilderState.table][0] || {});
+      const firstCol = allCols[0] || 'A';
+      BuilderState.columns = new Set([firstCol]);
+      document.querySelectorAll('.col-chip').forEach(c => {
+        if (c.dataset.col === firstCol) c.classList.add('active');
+        else c.classList.remove('active');
+      });
+      generateSqlFromBuilder();
+    });
+  }
+
+  // Transform Function Chips (None, LENGTH, RIGHT 3)
+  const fnChips = document.querySelectorAll('.transform-chip');
+  fnChips.forEach(chip => {
+    chip.addEventListener('click', () => {
+      fnChips.forEach(c => c.classList.remove('active'));
+      chip.classList.add('active');
+      BuilderState.fn = chip.dataset.fn;
+      generateSqlFromBuilder();
+    });
+  });
+
+  // Copy Generated SQL
+  const btnCopy = document.getElementById('btnCopyGeneratedSQL');
+  const copyLabel = document.getElementById('copyBtnLabel');
+  if (btnCopy) {
+    btnCopy.addEventListener('click', () => {
+      const query = document.getElementById('sqlInput').value;
+      navigator.clipboard.writeText(query).then(() => {
+        if (copyLabel) copyLabel.textContent = 'Copied!';
+        setTimeout(() => {
+          if (copyLabel) copyLabel.textContent = 'Copy';
+        }, 1500);
+      });
+    });
+  }
 
   // Distinct toggle
   const distinctCheck = document.getElementById('builderDistinctCheck');
@@ -943,7 +1011,23 @@ function syncBuilderFromTable(tableName) {
     });
   }
 
-  // 2. Update CASE WHEN label
+  // 2. Render Quick Filter Templates
+  const templateContainer = document.getElementById('quickFilterTemplates');
+  if (templateContainer) {
+    templateContainer.innerHTML = '';
+    const templates = TABLE_FILTER_TEMPLATES[tableName] || [];
+    templates.forEach(t => {
+      const tChip = document.createElement('button');
+      tChip.className = 'template-chip';
+      tChip.textContent = t.label;
+      tChip.addEventListener('click', () => {
+        addFilterRow(t.col, t.op, t.val);
+      });
+      templateContainer.appendChild(tChip);
+    });
+  }
+
+  // 3. Update CASE WHEN label
   const caseLabel = document.getElementById('builderCaseWhenLabel');
   const caseCheck = document.getElementById('builderCaseWhenCheck');
   if (caseLabel && caseCheck) {
@@ -966,7 +1050,7 @@ function syncBuilderFromTable(tableName) {
     }
   }
 
-  // 3. Update Order Dropdowns
+  // 4. Update Order Dropdowns
   const orderCol1 = document.getElementById('builderOrderCol1');
   const orderCol2 = document.getElementById('builderOrderCol2');
   if (orderCol1 && orderCol2) {
@@ -978,7 +1062,7 @@ function syncBuilderFromTable(tableName) {
     BuilderState.orderCol2 = '';
   }
 
-  // 4. Reset Filter Rows to match new columns
+  // 5. Reset Filter Rows to match new columns
   const filterList = document.getElementById('builderFilterList');
   if (filterList) {
     filterList.innerHTML = '';
@@ -986,34 +1070,36 @@ function syncBuilderFromTable(tableName) {
   }
 }
 
-function addFilterRow() {
+function addFilterRow(initCol = null, initOp = '=', initVal = '') {
   const filterList = document.getElementById('builderFilterList');
   if (!filterList) return;
 
   const cols = Object.keys(DATABASE[BuilderState.table][0] || {});
-  const filterId = 'filter_' + Date.now();
+  const filterId = 'filter_' + Date.now() + Math.random().toString(36).substr(2, 4);
 
   const row = document.createElement('div');
   row.className = 'filter-row';
   row.id = filterId;
 
-  let colOptions = cols.map(c => `<option value="${c}">${c}</option>`).join('');
+  const defaultCol = initCol || cols[0];
+
+  let colOptions = cols.map(c => `<option value="${c}" ${c === defaultCol ? 'selected' : ''}>${c}</option>`).join('');
 
   row.innerHTML = `
     <select class="builder-select filter-col flex-1">
       ${colOptions}
     </select>
     <select class="builder-select filter-op" style="width: 72px;">
-      <option value=">">&gt;</option>
-      <option value="<">&lt;</option>
-      <option value="=">=</option>
-      <option value="!=">!=</option>
-      <option value=">=">&gt;=</option>
-      <option value="<=">&lt;=</option>
-      <option value="LIKE">LIKE</option>
-      <option value="REGEXP">REGEXP</option>
+      <option value=">" ${initOp === '>' ? 'selected' : ''}>&gt;</option>
+      <option value="<" ${initOp === '<' ? 'selected' : ''}>&lt;</option>
+      <option value="=" ${initOp === '=' ? 'selected' : ''}>=</option>
+      <option value="!=" ${initOp === '!=' ? 'selected' : ''}>!=</option>
+      <option value=">=" ${initOp === '>=' ? 'selected' : ''}>&gt;=</option>
+      <option value="<=" ${initOp === '<=' ? 'selected' : ''}>&lt;=</option>
+      <option value="LIKE" ${initOp === 'LIKE' ? 'selected' : ''}>LIKE</option>
+      <option value="REGEXP" ${initOp === 'REGEXP' ? 'selected' : ''}>REGEXP</option>
     </select>
-    <input type="text" class="filter-input" placeholder="Value...">
+    <input type="text" class="filter-input" placeholder="Value..." value="${initVal}">
     <button class="remove-filter-btn" title="Remove filter">
       <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><line x1="18" y1="6" x2="6" y2="18"></line><line x1="6" y1="6" x2="18" y2="18"></line></svg>
     </button>
@@ -1041,6 +1127,9 @@ function addFilterRow() {
 
   filterList.appendChild(row);
   syncFiltersFromDOM();
+  if (initVal !== '') {
+    generateSqlFromBuilder();
+  }
 }
 
 function syncFiltersFromDOM() {
@@ -1068,7 +1157,17 @@ function generateSqlFromBuilder() {
   }
 
   const colsArray = Array.from(BuilderState.columns);
-  query += colsArray.join(', ');
+  const formattedCols = colsArray.map(col => {
+    if (BuilderState.fn === 'length' && (col === 'first_name' || col === 'city' || col === 'Name')) {
+      return `LENGTH(${col}) AS len_${col}`;
+    }
+    if (BuilderState.fn === 'right3' && (col === 'first_name' || col === 'city' || col === 'Name')) {
+      return `RIGHT(${col}, 3) AS suffix_${col}`;
+    }
+    return col;
+  });
+
+  query += formattedCols.join(', ');
 
   // Append CASE WHEN if enabled
   if (BuilderState.hasCaseWhen) {
@@ -1086,7 +1185,6 @@ function generateSqlFromBuilder() {
   // WHERE Filters
   if (BuilderState.filters.length > 0) {
     const filterClauses = BuilderState.filters.map(f => {
-      // Check if value is numeric or text
       const isNum = !isNaN(f.val);
       const formattedVal = isNum ? f.val : `'${f.val}'`;
       return `${f.col} ${f.op} ${formattedVal}`;
@@ -1113,11 +1211,17 @@ function generateSqlFromBuilder() {
     query += ';';
   }
 
-  // Update raw textarea and run execution engine
+  // Update raw textarea and live preview pre box
   const sqlInput = document.getElementById('sqlInput');
   if (sqlInput) {
     sqlInput.value = query;
   }
+
+  const livePreview = document.getElementById('liveSqlPreview');
+  if (livePreview) {
+    livePreview.textContent = query;
+  }
+
   parseAndBuildPipeline(query);
 }
 
