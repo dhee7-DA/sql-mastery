@@ -1388,7 +1388,87 @@ function initDeconstructorSystem() {
     renderDeconstructedProblem(activeDeconstructorId);
   });
 
+  // Wire Custom Modal
+  const openModalBtn = document.getElementById('btnOpenCustomModal');
+  const modal = document.getElementById('customProblemModal');
+  const closeModalBtn = document.getElementById('btnCloseCustomModal');
+  const runCustomBtn = document.getElementById('btnRunCustomDeconstruct');
+
+  if (openModalBtn && modal) {
+    openModalBtn.addEventListener('click', () => {
+      modal.style.display = 'flex';
+    });
+  }
+  if (closeModalBtn && modal) {
+    closeModalBtn.addEventListener('click', () => {
+      modal.style.display = 'none';
+    });
+  }
+  if (runCustomBtn && modal) {
+    runCustomBtn.addEventListener('click', handleCustomProblemDeconstruct);
+  }
+
   renderDeconstructedProblem(activeDeconstructorId);
+}
+
+function handleCustomProblemDeconstruct() {
+  const title = document.getElementById('customProbTitle')?.value.trim() || 'Custom Interview Challenge';
+  const prompt = document.getElementById('customProbPrompt')?.value.trim() || 'Analyze relational data constraints and produce target outputs.';
+  const schemaStr = document.getElementById('customProbSchema')?.value.trim() || 'CustomTable(id INT, name VARCHAR, value INT)';
+  const modal = document.getElementById('customProblemModal');
+
+  const hasJoin = /join/i.test(prompt);
+  const hasGroup = /group by|average|count|sum/i.test(prompt);
+  const hasCase = /case|when|if/i.test(prompt);
+  const hasNull = /null/i.test(prompt);
+
+  const detectedTags = ['CUSTOM', hasJoin ? 'JOIN' : 'FILTER', hasGroup ? 'AGGREGATION' : 'SELECTION'];
+  if (hasCase) detectedTags.push('CASE WHEN');
+
+  const customId = 'custom_' + Date.now();
+  const newProblem = {
+    id: customId,
+    title: title,
+    difficulty: 'Medium',
+    points: 25,
+    tags: detectedTags,
+    schema: { table: schemaStr.split('(')[0].replace(/table:?/i, '').trim() || 'CustomTable' },
+    rawPrompt: prompt,
+    plainEnglishGoal: `Filter and project attributes from ${schemaStr} satisfying the specified criteria with deterministic output order.`,
+    mentalModel: `Scan candidate records sequentially, test relational validity gates, and project scalar outputs.`,
+    edgeCases: [
+      { trap: 'Unmatched Records / NULL Semantics', detail: hasNull ? 'Prompt mentions NULL: inner joins will drop missing records. A LEFT JOIN or COALESCE is required.' : 'Verify boundary inequalities (< vs <=) to prevent silent edge data loss.' },
+      { trap: 'Tie-Breaker Inconsistency', detail: 'Ensure deterministic secondary sorting is applied to satisfy automated test suites.' }
+    ],
+    corporateContext: {
+      industry: 'Enterprise Data Platform & Analytics',
+      role: 'Analytics Engineer / Product Data Analyst',
+      realWorldProblem: 'Reconciling operational data across staging and production warehouse tables.',
+      kpiImpact: 'Ensures 100% data fidelity on financial governance and executive dashboards.'
+    },
+    executionBlueprint: [
+      { step: '1. FROM', action: `Allocate table space for ${schemaStr.split('(')[0] || 'CustomTable'}` },
+      { step: '2. WHERE', action: 'Apply initial row-level qualification predicates' },
+      { step: '3. SELECT', action: 'Project attributes with proper type casting and formatting' }
+    ],
+    solutionSQL: `SELECT *\nFROM ${schemaStr.split('(')[0].replace(/table:?/i, '').trim() || 'CustomTable'}\nWHERE id IS NOT NULL;`
+  };
+
+  window.DECONSTRUCTOR_PRESETS.unshift(newProblem);
+  activeDeconstructorId = customId;
+
+  const select = document.getElementById('deconstructorPresetSelect');
+  if (select) {
+    let opts = '';
+    window.DECONSTRUCTOR_PRESETS.forEach(p => {
+      opts += `<option value="${p.id}">${p.title} (${p.difficulty})</option>`;
+    });
+    select.innerHTML = opts;
+    select.value = customId;
+  }
+
+  renderDeconstructedProblem(customId);
+  if (modal) modal.style.display = 'none';
 }
 
 function renderDeconstructedProblem(problemId = 'triangle') {
@@ -1489,22 +1569,79 @@ function renderDeconstructedProblem(problemId = 'triangle') {
 }
 
 // =============================================================================
-// GUIDED LEARNING LAB CONTROLLER (STEP-BY-STEP, SINGLE EMPLOYEES SCHEMA)
+// GUIDED LEARNING LAB CONTROLLER (MULTI-TRACK & INTERACTIVE SANDBOX)
 // =============================================================================
 
+let currentTrack = 'track01'; // 'track01' | 'track02' | 'trackOperators'
 let currentGuidedStep = 1;
+let activeWhereFilter = 0;
+let activeOrderSort = 0;
+let activeLimitCount = 3;
+
+// WHERE sandbox options
+const whereSandboxPresets = [
+  { label: "salary >= 74k AND Eng (3 Pass)", sql: "SELECT * FROM Employees WHERE salary >= 74000 AND department = 'Engineering';", filter: r => r.salary >= 74000 && r.department === 'Engineering', dropReason: r => r.department !== 'Engineering' ? `dept='${r.department}' (wanted Eng)` : `salary=$${r.salary.toLocaleString()} (< $74k)` },
+  { label: "department = 'Sales' (2 Pass)", sql: "SELECT * FROM Employees WHERE department = 'Sales';", filter: r => r.department === 'Sales', dropReason: r => `dept='${r.department}' (not Sales)` },
+  { label: "salary < 70k (3 Pass)", sql: "SELECT * FROM Employees WHERE salary < 70000;", filter: r => r.salary < 70000, dropReason: r => `salary=$${r.salary.toLocaleString()} (>= $70k)` },
+  { label: "hire_year >= 2022 (2 Pass)", sql: "SELECT * FROM Employees WHERE hire_year >= 2022;", filter: r => r.hire_year >= 2022, dropReason: r => `hired in ${r.hire_year} (< 2022)` },
+  { label: "All Employees (8 Pass)", sql: "SELECT * FROM Employees WHERE 1 = 1;", filter: () => true, dropReason: () => "" }
+];
+
+// ORDER BY sandbox options
+const orderSandboxPresets = [
+  { label: "salary DESC, name ASC (Tie-breaker)", sql: "SELECT * FROM Employees ORDER BY salary DESC, name ASC;", sortFn: (a, b) => b.salary !== a.salary ? b.salary - a.salary : a.name.localeCompare(b.name) },
+  { label: "hire_year ASC (Seniority first)", sql: "SELECT * FROM Employees ORDER BY hire_year ASC, name ASC;", sortFn: (a, b) => a.hire_year !== b.hire_year ? a.hire_year - b.hire_year : a.name.localeCompare(b.name) },
+  { label: "department ASC, salary DESC", sql: "SELECT * FROM Employees ORDER BY department ASC, salary DESC;", sortFn: (a, b) => a.department !== b.department ? a.department.localeCompare(b.department) : b.salary - a.salary }
+];
+
+// LIMIT sandbox options
+const limitSandboxPresets = [1, 3, 5];
 
 function initGuidedLab() {
-  renderGuidedStepperBar();
-  renderGuidedStep(1);
+  const btnTrack01 = document.getElementById('btnTrack01');
+  const btnTrack02 = document.getElementById('btnTrack02');
+  const btnTrackOperators = document.getElementById('btnTrackOperators');
+
+  if (btnTrack01) btnTrack01.addEventListener('click', () => switchTrack('track01'));
+  if (btnTrack02) btnTrack02.addEventListener('click', () => switchTrack('track02'));
+  if (btnTrackOperators) btnTrackOperators.addEventListener('click', () => switchTrack('trackOperators'));
+
+  switchTrack('track01');
+}
+
+function switchTrack(trackId) {
+  currentTrack = trackId;
+  currentGuidedStep = 1;
+
+  document.querySelectorAll('.track-btn').forEach(b => b.classList.remove('active'));
+  const activeBtn = document.getElementById(trackId === 'track01' ? 'btnTrack01' : (trackId === 'track02' ? 'btnTrack02' : 'btnTrackOperators'));
+  if (activeBtn) activeBtn.classList.add('active');
+
+  const badge = document.getElementById('trackActiveSchemaBadge');
+  if (badge) {
+    if (trackId === 'track01') badge.textContent = 'Schema: Employees (8 rows)';
+    else if (trackId === 'track02') badge.textContent = 'Schema: TRIANGLES (8 rows)';
+    else badge.textContent = 'Operators: LIKE, IN, BETWEEN, NULL';
+  }
+
+  const stepperBar = document.getElementById('guidedStepperBar');
+  if (trackId === 'trackOperators') {
+    if (stepperBar) stepperBar.style.display = 'none';
+    renderOperatorsSandbox();
+  } else {
+    if (stepperBar) stepperBar.style.display = 'flex';
+    renderGuidedStepperBar();
+    renderGuidedStep(1);
+  }
 }
 
 function renderGuidedStepperBar() {
   const bar = document.getElementById('guidedStepperBar');
-  if (!bar || !window.GUIDED_STEPS) return;
+  const activeSteps = currentTrack === 'track01' ? window.GUIDED_STEPS : window.CASEWHEN_STEPS;
+  if (!bar || !activeSteps) return;
 
   let html = '';
-  window.GUIDED_STEPS.forEach(s => {
+  activeSteps.forEach(s => {
     const isActive = s.stepIndex === currentGuidedStep;
     const isCompleted = s.stepIndex < currentGuidedStep;
     html += `
@@ -1517,15 +1654,95 @@ function renderGuidedStepperBar() {
   bar.innerHTML = html;
 }
 
+function setSandboxWhereFilter(index) {
+  activeWhereFilter = index;
+  renderGuidedStep(2);
+}
+
+function setSandboxOrderSort(index) {
+  activeOrderSort = index;
+  renderGuidedStep(5);
+}
+
+function setSandboxLimitCount(count) {
+  activeLimitCount = count;
+  renderGuidedStep(6);
+}
+
 function renderGuidedStep(stepNum) {
   currentGuidedStep = stepNum;
   renderGuidedStepperBar();
 
   const container = document.getElementById('guidedStepCard');
-  if (!container || !window.GUIDED_STEPS) return;
+  const activeSteps = currentTrack === 'track01' ? window.GUIDED_STEPS : window.CASEWHEN_STEPS;
+  const activeSchema = currentTrack === 'track01' ? window.GUIDED_SCHEMA : window.CASEWHEN_SCHEMA;
+  if (!container || !activeSteps) return;
 
-  const step = window.GUIDED_STEPS.find(s => s.stepIndex === stepNum) || window.GUIDED_STEPS[0];
-  const transformedRows = step.transform(JSON.parse(JSON.stringify(window.GUIDED_SCHEMA.rows)));
+  const step = activeSteps.find(s => s.stepIndex === stepNum) || activeSteps[0];
+  let transformedRows = [];
+  let currentSqlCode = step.sqlCode;
+  let sandboxChipsHtml = '';
+
+  // Apply Live Interactive Sandbox in Track 01
+  if (currentTrack === 'track01' && stepNum === 2) {
+    const preset = whereSandboxPresets[activeWhereFilter];
+    currentSqlCode = preset.sql;
+    transformedRows = activeSchema.rows.map(r => {
+      const passes = preset.filter(r);
+      return {
+        ...r,
+        _passed: passes,
+        _status: passes ? 'passed' : 'rejected',
+        _label: passes ? 'KEPT BUFFER' : preset.dropReason(r)
+      };
+    });
+
+    sandboxChipsHtml = `
+      <div class="sandbox-chips-row">
+        <span class="sandbox-chips-label">⚡ Live Filter Sandbox:</span>
+        ${whereSandboxPresets.map((p, idx) => `
+          <button class="sandbox-chip ${activeWhereFilter === idx ? 'active' : ''}" onclick="setSandboxWhereFilter(${idx})">${p.label}</button>
+        `).join('')}
+      </div>
+    `;
+  } else if (currentTrack === 'track01' && stepNum === 5) {
+    const preset = orderSandboxPresets[activeOrderSort];
+    currentSqlCode = preset.sql;
+    const sorted = [...activeSchema.rows].sort(preset.sortFn);
+    transformedRows = sorted.map((r, idx) => ({
+      ...r,
+      _status: idx === 0 ? 'passed' : 'loaded',
+      _label: `RANK #${idx + 1}`
+    }));
+
+    sandboxChipsHtml = `
+      <div class="sandbox-chips-row">
+        <span class="sandbox-chips-label">⚡ Live Sort Sandbox:</span>
+        ${orderSandboxPresets.map((p, idx) => `
+          <button class="sandbox-chip ${activeOrderSort === idx ? 'active' : ''}" onclick="setSandboxOrderSort(${idx})">${p.label}</button>
+        `).join('')}
+      </div>
+    `;
+  } else if (currentTrack === 'track01' && stepNum === 6) {
+    currentSqlCode = `SELECT id, name, department, salary\nFROM Employees\nORDER BY salary DESC, name ASC\nLIMIT ${activeLimitCount};`;
+    const sorted = [...activeSchema.rows].sort((a, b) => b.salary !== a.salary ? b.salary - a.salary : a.name.localeCompare(b.name)).slice(0, 5);
+    transformedRows = sorted.map((r, idx) => ({
+      ...r,
+      _status: idx < activeLimitCount ? 'passed' : 'rejected',
+      _label: idx < activeLimitCount ? `SURVIVED (TOP ${activeLimitCount})` : `TRUNCATED (ROW #${idx + 1})`
+    }));
+
+    sandboxChipsHtml = `
+      <div class="sandbox-chips-row">
+        <span class="sandbox-chips-label">⚡ Live Row Clipper:</span>
+        ${limitSandboxPresets.map(cnt => `
+          <button class="sandbox-chip ${activeLimitCount === cnt ? 'active' : ''}" onclick="setSandboxLimitCount(${cnt})">LIMIT ${cnt}</button>
+        `).join('')}
+      </div>
+    `;
+  } else {
+    transformedRows = step.transform(JSON.parse(JSON.stringify(activeSchema.rows)));
+  }
 
   const sampleRow = transformedRows[0] || {};
   const displayCols = Object.keys(sampleRow).filter(k => !k.startsWith('_'));
@@ -1536,7 +1753,7 @@ function renderGuidedStep(stepNum) {
         <thead>
           <tr>
             ${displayCols.map(c => `<th>${c}</th>`).join('')}
-            <th style="width: 160px;">ENGINE STATUS</th>
+            <th style="width: 170px;">ENGINE STATUS</th>
           </tr>
         </thead>
         <tbody>
@@ -1548,35 +1765,38 @@ function renderGuidedStep(stepNum) {
     const trClass = isRejected ? 'row-rejected-dim' : (isPassed ? 'row-passed-highlight' : '');
 
     let badgeClass = 'tag-badge';
-    if (isPassed) badgeClass += ' tag-pass';
-    if (isRejected) badgeClass += ' tag-fail';
+    if (isPassed) badgeClass = 'badge-active-pass';
+    if (isRejected) badgeClass = 'badge-active-drop';
 
-    tableHtml += `<tr class="${trClass}">`;
-    displayCols.forEach(c => {
-      let val = row[c];
-      if (typeof val === 'number' && c === 'salary') val = `$${val.toLocaleString()}`;
-      if (typeof val === 'number' && c === 'annual_bonus') val = `$${val.toLocaleString()}`;
-      tableHtml += `<td>${val !== undefined ? val : ''}</td>`;
-    });
-
-    const statusLabel = row._label || (isPassed ? 'PASS' : (isRejected ? 'DROP' : 'IN MEMORY'));
-    const reasonText = row._reason ? `<div style="font-size: 10px; color: var(--text-muted); margin-top: 2px;">${row._reason}</div>` : '';
-
-    tableHtml += `<td><span class="${badgeClass}">${statusLabel}</span>${reasonText}</td></tr>`;
+    tableHtml += `
+      <tr class="${trClass}">
+        ${displayCols.map(c => `<td>${row[c] !== undefined ? row[c] : 'NULL'}</td>`).join('')}
+        <td>
+          <span class="guided-row-badge ${badgeClass}">${row._label || (isPassed ? 'SURVIVED' : 'ACTIVE')}</span>
+        </td>
+      </tr>
+    `;
   });
 
-  tableHtml += `</tbody></table></div>`;
+  tableHtml += `
+        </tbody>
+      </table>
+    </div>
+  `;
 
+  const totalSteps = activeSteps.length;
   const prevStep = stepNum > 1 ? stepNum - 1 : null;
-  const nextStep = stepNum < window.GUIDED_STEPS.length ? stepNum + 1 : null;
+  const nextStep = stepNum < totalSteps ? stepNum + 1 : null;
 
   container.innerHTML = `
-    <div class="guided-step-header">
-      <div class="guided-title-group">
+    <div class="guided-header-block">
+      <div class="guided-title-row">
         <span class="clause-pill ${step.pillClass}">${step.keyword}</span>
         <h2 class="guided-step-title">${step.title}</h2>
       </div>
-      <span class="status-pill" style="font-size: 11px;">Single Schema: Employees (8 rows)</span>
+      <div class="guided-gotcha-box">
+        <strong>CRITICAL GOTCHA:</strong> ${step.gotcha}
+      </div>
     </div>
 
     <div class="guided-concept-block">
@@ -1593,33 +1813,236 @@ function renderGuidedStep(stepNum) {
 
     <div class="guided-code-box">
       <span style="color: var(--text-muted); font-size: 10.5px; display: block; margin-bottom: 4px;">EXECUTED SQL:</span>
-      <code>${step.sqlCode}</code>
+      <code>${currentSqlCode}</code>
     </div>
 
     <div class="guided-interactive-section">
       <span class="guided-action-prompt">${step.actionPrompt}</span>
+      ${sandboxChipsHtml}
       ${tableHtml}
     </div>
 
     <div class="guided-footer-nav">
       <button class="card-nav-btn" ${!prevStep ? 'disabled' : ''} onclick="renderGuidedStep(${prevStep})">
-        &larr; Previous (${prevStep ? window.GUIDED_STEPS[prevStep - 1].keyword : 'Start'})
+        &larr; Previous (${prevStep ? activeSteps[prevStep - 1].keyword : 'Start'})
       </button>
 
       <div style="display: flex; gap: 8px; align-items: center;">
         <button class="card-nav-btn" onclick="switchToExplainerWithKeyword('${step.id}')">
           <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="10"></circle><line x1="12" y1="16" x2="12" y2="12"></line><line x1="12" y1="8" x2="12.01" y2="8"></line></svg>
-          ${step.keyword} Study Notes
+          Study Notes
         </button>
         <button class="btn-solve-in-studio" onclick="switchToMcqsWithKeyword('${step.keyword}')">
           <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M9 11l3 3L22 4"></path><path d="M21 12v7a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h11"></path></svg>
-          Practice ${step.keyword} MCQs
+          Practice MCQs
         </button>
       </div>
 
       <button class="card-nav-btn" style="background: var(--text-primary); color: #09090b; font-weight: 600;" onclick="${nextStep ? `renderGuidedStep(${nextStep})` : `switchToMcqsWithKeyword('ALL')`}">
-        ${nextStep ? `Next: Step 0${nextStep} (${window.GUIDED_STEPS[nextStep - 1].keyword}) &rarr;` : `Complete Lab &rarr;`}
+        ${nextStep ? `Next: Step 0${nextStep} (${activeSteps[nextStep - 1].keyword}) &rarr;` : `Complete Lab &rarr;`}
       </button>
+    </div>
+  `;
+}
+
+// =============================================================================
+// OPERATORS & 3-VALUED LOGIC SANDBOX RENDERER
+// =============================================================================
+
+let activeLikeIndex = 0;
+let activeInIndex = 0;
+let activeBetweenIndex = 0;
+
+function setOperatorLike(idx) {
+  activeLikeIndex = idx;
+  renderOperatorsSandbox();
+}
+
+function setOperatorIn(idx) {
+  activeInIndex = idx;
+  renderOperatorsSandbox();
+}
+
+function setOperatorBetween(idx) {
+  activeBetweenIndex = idx;
+  renderOperatorsSandbox();
+}
+
+function renderOperatorsSandbox() {
+  const container = document.getElementById('guidedStepCard');
+  if (!container || !window.OPERATORS_DATA || !window.GUIDED_SCHEMA) return;
+
+  const data = window.OPERATORS_DATA;
+  const rows = window.GUIDED_SCHEMA.rows;
+
+  const currentLike = data.likePresets[activeLikeIndex];
+  const currentIn = data.inPresets[activeInIndex];
+  const currentBetween = data.betweenPresets[activeBetweenIndex];
+
+  container.innerHTML = `
+    <div class="guided-header-block">
+      <div class="guided-title-row">
+        <span class="clause-pill pill-where">OPERATORS</span>
+        <h2 class="guided-step-title">⚡ Interactive Operators &amp; 3-Valued Logic Sandbox</h2>
+      </div>
+      <div class="guided-gotcha-box">
+        <strong>THE 3-VALUED LOGIC TRAP:</strong> In SQL, a comparison involving NULL evaluates to UNKNOWN, which WHERE treats as FALSE. Therefore, <code>salary = NULL</code> returns 0 rows! You must always write <code>salary IS NULL</code>.
+      </div>
+    </div>
+
+    <!-- Section 1: LIKE & Wildcards -->
+    <div class="deconstruct-section section-goal" style="margin-bottom: 16px;">
+      <div class="section-header-title" style="color: #9ec5ad;">
+        <span>1. Pattern Matching with LIKE ('%' vs '_')</span>
+      </div>
+      <p style="font-size: 12px; color: var(--text-secondary); margin: 0 0 8px 0;">
+        <code>%</code> matches 0 or more characters; <code>_</code> matches exactly one single character.
+      </p>
+      <div class="sandbox-chips-row">
+        <span class="sandbox-chips-label">Pattern:</span>
+        ${data.likePresets.map((lp, idx) => `
+          <button class="sandbox-chip ${activeLikeIndex === idx ? 'active' : ''}" onclick="setOperatorLike(${idx})">${lp.label}</button>
+        `).join('')}
+      </div>
+      <div class="guided-code-box" style="margin-bottom: 8px;">
+        <code>SELECT name, department FROM Employees WHERE ${currentLike.pattern};</code>
+      </div>
+      <div style="font-size: 11px; color: #a1a1aa; margin-bottom: 8px;">&bull; Note: ${currentLike.note}</div>
+      <div class="guided-table-wrap">
+        <table>
+          <thead>
+            <tr><th>name</th><th>department</th><th>LIKE MATCH</th></tr>
+          </thead>
+          <tbody>
+            ${rows.map(r => {
+              const matched = currentLike.filter(r);
+              return `
+                <tr class="${matched ? 'row-passed-highlight' : 'row-rejected-dim'}">
+                  <td><strong>${r.name}</strong></td>
+                  <td>${r.department}</td>
+                  <td><span class="guided-row-badge ${matched ? 'badge-active-pass' : 'badge-active-drop'}">${matched ? 'MATCHES PATTERN' : 'NO MATCH'}</span></td>
+                </tr>
+              `;
+            }).join('')}
+          </tbody>
+        </table>
+      </div>
+    </div>
+
+    <!-- Section 2: IN vs NOT IN -->
+    <div class="deconstruct-section section-corporate" style="margin-bottom: 16px;">
+      <div class="section-header-title" style="color: #a4b7cf;">
+        <span>2. Set Membership with IN &amp; NOT IN</span>
+      </div>
+      <div class="sandbox-chips-row">
+        <span class="sandbox-chips-label">Set Filter:</span>
+        ${data.inPresets.map((ip, idx) => `
+          <button class="sandbox-chip ${activeInIndex === idx ? 'active' : ''}" onclick="setOperatorIn(${idx})">${ip.label}</button>
+        `).join('')}
+      </div>
+      <div class="guided-code-box" style="margin-bottom: 8px;">
+        <code>SELECT name, department, salary FROM Employees WHERE ${currentIn.pattern};</code>
+      </div>
+      <div style="font-size: 11px; color: #a1a1aa; margin-bottom: 8px;">&bull; Note: ${currentIn.note}</div>
+      <div class="guided-table-wrap">
+        <table>
+          <thead>
+            <tr><th>name</th><th>department</th><th>salary</th><th>IN STATUS</th></tr>
+          </thead>
+          <tbody>
+            ${rows.map(r => {
+              const matched = currentIn.filter(r);
+              return `
+                <tr class="${matched ? 'row-passed-highlight' : 'row-rejected-dim'}">
+                  <td>${r.name}</td>
+                  <td><strong>${r.department}</strong></td>
+                  <td>$${r.salary.toLocaleString()}</td>
+                  <td><span class="guided-row-badge ${matched ? 'badge-active-pass' : 'badge-active-drop'}">${matched ? 'INCLUDED IN SET' : 'EXCLUDED'}</span></td>
+                </tr>
+              `;
+            }).join('')}
+          </tbody>
+        </table>
+      </div>
+    </div>
+
+    <!-- Section 3: BETWEEN (Inclusive Boundaries) -->
+    <div class="deconstruct-section section-blueprint" style="margin-bottom: 16px;">
+      <div class="section-header-title" style="color: #dfcaa9;">
+        <span>3. Inclusive Range Matching with BETWEEN ... AND ...</span>
+      </div>
+      <div class="sandbox-chips-row">
+        <span class="sandbox-chips-label">Range:</span>
+        ${data.betweenPresets.map((bp, idx) => `
+          <button class="sandbox-chip ${activeBetweenIndex === idx ? 'active' : ''}" onclick="setOperatorBetween(${idx})">${bp.label}</button>
+        `).join('')}
+      </div>
+      <div class="guided-code-box" style="margin-bottom: 8px;">
+        <code>SELECT name, department, salary FROM Employees WHERE ${currentBetween.pattern};</code>
+      </div>
+      <div style="font-size: 11px; color: #a1a1aa; margin-bottom: 8px;">&bull; Note: ${currentBetween.note}</div>
+      <div class="guided-table-wrap">
+        <table>
+          <thead>
+            <tr><th>name</th><th>salary</th><th>BETWEEN RANGE STATUS</th></tr>
+          </thead>
+          <tbody>
+            ${rows.map(r => {
+              const matched = currentBetween.filter(r);
+              return `
+                <tr class="${matched ? 'row-passed-highlight' : 'row-rejected-dim'}">
+                  <td>${r.name}</td>
+                  <td><strong>$${r.salary.toLocaleString()}</strong></td>
+                  <td><span class="guided-row-badge ${matched ? 'badge-active-pass' : 'badge-active-drop'}">${matched ? 'INSIDE RANGE' : 'OUTSIDE RANGE'}</span></td>
+                </tr>
+              `;
+            }).join('')}
+          </tbody>
+        </table>
+      </div>
+    </div>
+
+    <!-- Section 4: 3-Valued Logic Truth Table -->
+    <div class="deconstruct-section section-traps">
+      <div class="section-header-title" style="color: #d69d8f;">
+        <span>4. The 3-Valued Boolean Logic Matrix (TRUE, FALSE, UNKNOWN)</span>
+      </div>
+      <p style="font-size: 12px; color: var(--text-secondary); line-height: 1.6; margin: 0 0 10px 0;">
+        Unlike standard programming languages with 2-valued boolean logic (true/false), SQL uses <strong>3-Valued Logic</strong> due to NULL. Any direct equality test against NULL evaluates to UNKNOWN!
+      </p>
+      <div class="guided-table-wrap">
+        <table>
+          <thead>
+            <tr><th>EXPRESSION</th><th>RESULT</th><th>WHERE BEHAVIOR</th><th>WHY?</th></tr>
+          </thead>
+          <tbody>
+            <tr class="row-rejected-dim">
+              <td><code>salary = NULL</code></td>
+              <td><span class="guided-row-badge badge-active-drop">UNKNOWN</span></td>
+              <td>ROW REJECTED</td>
+              <td>Unknown cannot equal unknown; evaluation yields UNKNOWN (treated as FALSE).</td>
+            </tr>
+            <tr class="row-rejected-dim">
+              <td><code>salary != NULL</code></td>
+              <td><span class="guided-row-badge badge-active-drop">UNKNOWN</span></td>
+              <td>ROW REJECTED</td>
+              <td>Negating UNKNOWN is still UNKNOWN; row is rejected!</td>
+            </tr>
+            <tr class="row-passed-highlight">
+              <td><code>salary IS NULL</code></td>
+              <td><span class="guided-row-badge badge-active-pass">TRUE / FALSE</span></td>
+              <td>CORRECT FILTER</td>
+              <td>Unary operator that inspects the memory null-mask directly.</td>
+            </tr>
+            <tr class="row-passed-highlight">
+              <td><code>salary IS NOT NULL</code></td>
+              <td><span class="guided-row-badge badge-active-pass">TRUE / FALSE</span></td>
+              <td>CORRECT FILTER</td>
+              <td>Ensures column has an actual valid value.</td>
+            </tr>
+          </tbody>
+        </table>
+      </div>
     </div>
   `;
 }

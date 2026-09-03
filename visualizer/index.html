@@ -93,6 +93,22 @@
     <!-- VIEW 1: Guided Learning Lab (Default, Calm, Step-by-Step) -->
     <div class="view-panel active" id="viewGuidedLab">
       <div class="guided-lab-container">
+        <!-- Track Switcher Header -->
+        <div class="track-switcher-bar">
+          <div class="track-pill-group">
+            <button class="track-btn active" id="btnTrack01">
+              <span>Track 01: Foundations (FROM &rarr; LIMIT)</span>
+            </button>
+            <button class="track-btn" id="btnTrack02">
+              <span>Track 02: CASE WHEN &amp; Decision Trees</span>
+            </button>
+            <button class="track-btn" id="btnTrackOperators">
+              <span>⚡ Operators &amp; NULL Sandbox</span>
+            </button>
+          </div>
+          <span class="status-pill" id="trackActiveSchemaBadge">Schema: Employees (8 rows)</span>
+        </div>
+
         <!-- Step Navigation Stepper Bar -->
         <div class="guided-stepper-bar" id="guidedStepperBar">
           <!-- Dynamically populated step buttons: 01 FROM, 02 WHERE, etc. -->
@@ -478,6 +494,38 @@
     </div>
   </div>
 
+  <!-- Custom Problem Analyzer Modal -->
+  <div class="custom-modal-overlay" id="customProblemModal" style="display: none;">
+    <div class="custom-modal-box">
+      <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 8px;">
+        <h3 class="custom-modal-title">&plus; Deconstruct Any SQL Problem &amp; Data</h3>
+        <button id="btnCloseCustomModal" class="card-nav-btn" style="padding: 3px 8px; font-size: 14px;">&times;</button>
+      </div>
+      <p style="font-size: 11.5px; color: var(--text-muted); margin: 0 0 12px 0;">
+        Paste any challenge from HackerRank, LeetCode, or an interview. The engine will instantly deconstruct its goal, detect silent edge-case traps, map its corporate application, and provide an executable simulation blueprint.
+      </p>
+      <div style="display: flex; flex-direction: column; gap: 10px;">
+        <div>
+          <label style="font-size: 10px; font-family: var(--font-mono); color: var(--text-secondary); display: block; margin-bottom: 4px;">PROBLEM TITLE</label>
+          <input type="text" id="customProbTitle" class="custom-modal-input" placeholder="e.g. LeetCode 175: Combine Two Tables" style="width: 100%; box-sizing: border-box; background: #09090b; border: 1px solid var(--border-default); border-radius: var(--radius-sm); color: #fff; font-family: var(--font-mono); font-size: 12px; padding: 7px 10px;">
+        </div>
+        <div>
+          <label style="font-size: 10px; font-family: var(--font-mono); color: var(--text-secondary); display: block; margin-bottom: 4px;">RAW PROBLEM PROMPT / QUESTION DESCRIPTION</label>
+          <textarea id="customProbPrompt" class="custom-modal-textarea" style="width: 100%; box-sizing: border-box; height: 80px; background: #09090b; border: 1px solid var(--border-default); border-radius: var(--radius-sm); color: #fff; font-family: var(--font-sans); font-size: 11.5px; line-height: 1.5; padding: 8px 10px;" placeholder="Write an SQL query to report the first name, last name, city, and state of each person in the Person table. If the address of a personId is not present, report null instead..."></textarea>
+        </div>
+        <div>
+          <label style="font-size: 10px; font-family: var(--font-mono); color: var(--text-secondary); display: block; margin-bottom: 4px;">SAMPLE SCHEMA OR RELEVANT COLUMNS (Optional)</label>
+          <input type="text" id="customProbSchema" class="custom-modal-input" placeholder="e.g. Person(personId, lastName, firstName) | Address(addressId, personId, city, state)" style="width: 100%; box-sizing: border-box; background: #09090b; border: 1px solid var(--border-default); border-radius: var(--radius-sm); color: #fff; font-family: var(--font-mono); font-size: 12px; padding: 7px 10px;">
+        </div>
+        <div style="display: flex; justify-content: flex-end; gap: 8px; margin-top: 4px;">
+          <button id="btnRunCustomDeconstruct" class="btn-solve-in-studio" style="padding: 7px 16px; font-weight: 600;">
+            Deconstruct &amp; Analyze Problem &rarr;
+          </button>
+        </div>
+      </div>
+    </div>
+  </div>
+
   <!-- Clean Footer -->
   <footer class="app-footer">
     <div class="footer-status">
@@ -491,6 +539,8 @@
 </div>
 
 <script src="guided_lab_data.js"></script>
+<script src="casewhen_lab_data.js"></script>
+<script src="operators_sandbox.js"></script>
 <script src="deconstructor_data.js"></script>
 <script src="foundations_curriculum.js"></script>
 <script src="app.js"></script>
