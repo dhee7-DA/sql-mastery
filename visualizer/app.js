@@ -740,14 +740,394 @@ function switchTable(tbl) {
   updateActiveTableBadge(tbl);
   document.getElementById('sqlInput').value = `SELECT *\nFROM ${tbl}\nLIMIT 10;`;
   parseAndBuildPipeline(document.getElementById('sqlInput').value);
+  if (typeof syncBuilderFromTable === 'function') {
+    syncBuilderFromTable(tbl);
+  }
 }
 
 // =============================================================================
-// 8. EVENT BINDINGS
+// 8. VISUAL QUERY BUILDER CONTROLLER
+// =============================================================================
+
+const BuilderState = {
+  table: 'TRIANGLES',
+  columns: new Set(['A', 'B', 'C']),
+  isDistinct: false,
+  hasCaseWhen: true,
+  logic: 'AND',
+  filters: [],
+  orderCol1: '',
+  orderDir1: 'ASC',
+  orderCol2: '',
+  orderDir2: 'ASC',
+  limit: 'All'
+};
+
+function initVisualBuilder() {
+  const tableSelect = document.getElementById('builderTableSelect');
+  if (!tableSelect) return;
+
+  tableSelect.value = BuilderState.table;
+  syncBuilderFromTable(BuilderState.table);
+
+  // Table selection change
+  tableSelect.addEventListener('change', (e) => {
+    const newTbl = e.target.value;
+    BuilderState.table = newTbl;
+    syncBuilderFromTable(newTbl);
+    generateSqlFromBuilder();
+  });
+
+  // Distinct toggle
+  const distinctCheck = document.getElementById('builderDistinctCheck');
+  if (distinctCheck) {
+    distinctCheck.addEventListener('change', (e) => {
+      BuilderState.isDistinct = e.target.checked;
+      generateSqlFromBuilder();
+    });
+  }
+
+  // CASE WHEN toggle
+  const caseCheck = document.getElementById('builderCaseWhenCheck');
+  if (caseCheck) {
+    caseCheck.addEventListener('change', (e) => {
+      BuilderState.hasCaseWhen = e.target.checked;
+      generateSqlFromBuilder();
+    });
+  }
+
+  // Logic Toggle (AND / OR)
+  const logicAnd = document.getElementById('builderLogicAnd');
+  const logicOr = document.getElementById('builderLogicOr');
+  if (logicAnd && logicOr) {
+    logicAnd.addEventListener('click', () => {
+      logicAnd.classList.add('active');
+      logicOr.classList.remove('active');
+      BuilderState.logic = 'AND';
+      generateSqlFromBuilder();
+    });
+    logicOr.addEventListener('click', () => {
+      logicOr.classList.add('active');
+      logicAnd.classList.remove('active');
+      BuilderState.logic = 'OR';
+      generateSqlFromBuilder();
+    });
+  }
+
+  // Add Filter Row Button
+  const btnAddFilter = document.getElementById('btnAddFilterRow');
+  if (btnAddFilter) {
+    btnAddFilter.addEventListener('click', () => {
+      addFilterRow();
+    });
+  }
+
+  // Order Direction Buttons
+  const dirBtn1 = document.getElementById('builderOrderDir1');
+  if (dirBtn1) {
+    dirBtn1.addEventListener('click', () => {
+      BuilderState.orderDir1 = BuilderState.orderDir1 === 'ASC' ? 'DESC' : 'ASC';
+      dirBtn1.textContent = BuilderState.orderDir1;
+      dirBtn1.dataset.dir = BuilderState.orderDir1;
+      generateSqlFromBuilder();
+    });
+  }
+
+  const dirBtn2 = document.getElementById('builderOrderDir2');
+  if (dirBtn2) {
+    dirBtn2.addEventListener('click', () => {
+      BuilderState.orderDir2 = BuilderState.orderDir2 === 'ASC' ? 'DESC' : 'ASC';
+      dirBtn2.textContent = BuilderState.orderDir2;
+      dirBtn2.dataset.dir = BuilderState.orderDir2;
+      generateSqlFromBuilder();
+    });
+  }
+
+  // Order Column Selects
+  const orderCol1 = document.getElementById('builderOrderCol1');
+  if (orderCol1) {
+    orderCol1.addEventListener('change', (e) => {
+      BuilderState.orderCol1 = e.target.value;
+      generateSqlFromBuilder();
+    });
+  }
+
+  const orderCol2 = document.getElementById('builderOrderCol2');
+  if (orderCol2) {
+    orderCol2.addEventListener('change', (e) => {
+      BuilderState.orderCol2 = e.target.value;
+      generateSqlFromBuilder();
+    });
+  }
+
+  // Limit Pills
+  document.querySelectorAll('.limit-pill').forEach(pill => {
+    pill.addEventListener('click', () => {
+      document.querySelectorAll('.limit-pill').forEach(p => p.classList.remove('active'));
+      pill.classList.add('active');
+      BuilderState.limit = pill.dataset.limit;
+      document.getElementById('builderLimitInput').value = '';
+      generateSqlFromBuilder();
+    });
+  });
+
+  const limitInput = document.getElementById('builderLimitInput');
+  if (limitInput) {
+    limitInput.addEventListener('input', (e) => {
+      const val = e.target.value.trim();
+      if (val && !isNaN(val)) {
+        document.querySelectorAll('.limit-pill').forEach(p => p.classList.remove('active'));
+        BuilderState.limit = parseInt(val, 10);
+      } else {
+        BuilderState.limit = 'All';
+      }
+      generateSqlFromBuilder();
+    });
+  }
+
+  // Mode Switcher (Visual Builder vs Raw SQL)
+  const btnModeBuilder = document.getElementById('btnModeBuilder');
+  const btnModeRaw = document.getElementById('btnModeRaw');
+  const visualContainer = document.getElementById('visualBuilderContainer');
+  const rawContainer = document.getElementById('rawSqlContainer');
+  const rawActions = document.getElementById('rawEditorActions');
+
+  if (btnModeBuilder && btnModeRaw) {
+    btnModeBuilder.addEventListener('click', () => {
+      btnModeBuilder.classList.add('active');
+      btnModeRaw.classList.remove('active');
+      visualContainer.style.display = 'flex';
+      rawContainer.style.display = 'none';
+      if (rawActions) rawActions.style.display = 'none';
+    });
+
+    btnModeRaw.addEventListener('click', () => {
+      btnModeRaw.classList.add('active');
+      btnModeBuilder.classList.remove('active');
+      visualContainer.style.display = 'none';
+      rawContainer.style.display = 'block';
+      if (rawActions) rawActions.style.display = 'flex';
+    });
+  }
+}
+
+function syncBuilderFromTable(tableName) {
+  const sample = DATABASE[tableName] ? DATABASE[tableName][0] : {};
+  const cols = Object.keys(sample);
+
+  BuilderState.table = tableName;
+  BuilderState.columns = new Set(cols);
+
+  // 1. Render Column Chips
+  const chipsContainer = document.getElementById('builderColumnChips');
+  if (chipsContainer) {
+    chipsContainer.innerHTML = '';
+    cols.forEach(col => {
+      const chip = document.createElement('div');
+      chip.className = 'col-chip active';
+      chip.textContent = col;
+      chip.dataset.col = col;
+      chip.addEventListener('click', () => {
+        if (BuilderState.columns.has(col)) {
+          if (BuilderState.columns.size > 1) {
+            BuilderState.columns.delete(col);
+            chip.classList.remove('active');
+          }
+        } else {
+          BuilderState.columns.add(col);
+          chip.classList.add('active');
+        }
+        generateSqlFromBuilder();
+      });
+      chipsContainer.appendChild(chip);
+    });
+  }
+
+  // 2. Update CASE WHEN label
+  const caseLabel = document.getElementById('builderCaseWhenLabel');
+  const caseCheck = document.getElementById('builderCaseWhenCheck');
+  if (caseLabel && caseCheck) {
+    if (tableName === 'TRIANGLES') {
+      caseLabel.textContent = '+ Add CASE WHEN: Triangle Classification';
+      caseCheck.checked = true;
+      BuilderState.hasCaseWhen = true;
+    } else if (tableName === 'Customers') {
+      caseLabel.textContent = '+ Add CASE WHEN: Credit Risk Tiering';
+      caseCheck.checked = false;
+      BuilderState.hasCaseWhen = false;
+    } else if (tableName === 'Employees') {
+      caseLabel.textContent = '+ Add CASE WHEN: Salary Compensation Tier';
+      caseCheck.checked = false;
+      BuilderState.hasCaseWhen = false;
+    } else {
+      caseLabel.textContent = '+ Add CASE WHEN Classification';
+      caseCheck.checked = false;
+      BuilderState.hasCaseWhen = false;
+    }
+  }
+
+  // 3. Update Order Dropdowns
+  const orderCol1 = document.getElementById('builderOrderCol1');
+  const orderCol2 = document.getElementById('builderOrderCol2');
+  if (orderCol1 && orderCol2) {
+    let opts = '<option value="">-- No Sort --</option>';
+    cols.forEach(c => { opts += `<option value="${c}">${c}</option>`; });
+    orderCol1.innerHTML = opts;
+    orderCol2.innerHTML = '<option value="">-- Secondary Tie-Breaker --</option>' + cols.map(c => `<option value="${c}">${c}</option>`).join('');
+    BuilderState.orderCol1 = '';
+    BuilderState.orderCol2 = '';
+  }
+
+  // 4. Reset Filter Rows to match new columns
+  const filterList = document.getElementById('builderFilterList');
+  if (filterList) {
+    filterList.innerHTML = '';
+    BuilderState.filters = [];
+  }
+}
+
+function addFilterRow() {
+  const filterList = document.getElementById('builderFilterList');
+  if (!filterList) return;
+
+  const cols = Object.keys(DATABASE[BuilderState.table][0] || {});
+  const filterId = 'filter_' + Date.now();
+
+  const row = document.createElement('div');
+  row.className = 'filter-row';
+  row.id = filterId;
+
+  let colOptions = cols.map(c => `<option value="${c}">${c}</option>`).join('');
+
+  row.innerHTML = `
+    <select class="builder-select filter-col flex-1">
+      ${colOptions}
+    </select>
+    <select class="builder-select filter-op" style="width: 72px;">
+      <option value=">">&gt;</option>
+      <option value="<">&lt;</option>
+      <option value="=">=</option>
+      <option value="!=">!=</option>
+      <option value=">=">&gt;=</option>
+      <option value="<=">&lt;=</option>
+      <option value="LIKE">LIKE</option>
+      <option value="REGEXP">REGEXP</option>
+    </select>
+    <input type="text" class="filter-input" placeholder="Value...">
+    <button class="remove-filter-btn" title="Remove filter">
+      <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><line x1="18" y1="6" x2="6" y2="18"></line><line x1="6" y1="6" x2="18" y2="18"></line></svg>
+    </button>
+  `;
+
+  // Bind change events
+  const colSel = row.querySelector('.filter-col');
+  const opSel = row.querySelector('.filter-op');
+  const valInp = row.querySelector('.filter-input');
+  const removeBtn = row.querySelector('.remove-filter-btn');
+
+  const updateFilters = () => {
+    syncFiltersFromDOM();
+    generateSqlFromBuilder();
+  };
+
+  colSel.addEventListener('change', updateFilters);
+  opSel.addEventListener('change', updateFilters);
+  valInp.addEventListener('input', updateFilters);
+
+  removeBtn.addEventListener('click', () => {
+    row.remove();
+    updateFilters();
+  });
+
+  filterList.appendChild(row);
+  syncFiltersFromDOM();
+}
+
+function syncFiltersFromDOM() {
+  const filterList = document.getElementById('builderFilterList');
+  if (!filterList) return;
+
+  const rows = filterList.querySelectorAll('.filter-row');
+  BuilderState.filters = [];
+
+  rows.forEach(r => {
+    const col = r.querySelector('.filter-col').value;
+    const op = r.querySelector('.filter-op').value;
+    const val = r.querySelector('.filter-input').value.trim();
+    if (val !== '') {
+      BuilderState.filters.push({ col, op, val });
+    }
+  });
+}
+
+function generateSqlFromBuilder() {
+  let query = 'SELECT ';
+
+  if (BuilderState.isDistinct) {
+    query += 'DISTINCT ';
+  }
+
+  const colsArray = Array.from(BuilderState.columns);
+  query += colsArray.join(', ');
+
+  // Append CASE WHEN if enabled
+  if (BuilderState.hasCaseWhen) {
+    if (BuilderState.table === 'TRIANGLES') {
+      query += `,\n       CASE\n           WHEN A + B <= C OR A + C <= B OR B + C <= A THEN 'Not A Triangle'\n           WHEN A = B AND B = C THEN 'Equilateral'\n           WHEN A = B OR B = C OR A = C THEN 'Isosceles'\n           ELSE 'Scalene'\n       END AS triangle_type`;
+    } else if (BuilderState.table === 'Customers') {
+      query += `,\n       CASE\n           WHEN credit_score >= 750 THEN 'Prime'\n           WHEN credit_score >= 670 THEN 'Near Prime'\n           ELSE 'Subprime'\n       END AS risk_tier`;
+    } else if (BuilderState.table === 'Employees') {
+      query += `,\n       CASE\n           WHEN salary >= 100000 THEN 'Executive'\n           WHEN salary >= 75000 THEN 'Senior'\n           ELSE 'Associate'\n       END AS salary_tier`;
+    }
+  }
+
+  query += `\nFROM ${BuilderState.table}`;
+
+  // WHERE Filters
+  if (BuilderState.filters.length > 0) {
+    const filterClauses = BuilderState.filters.map(f => {
+      // Check if value is numeric or text
+      const isNum = !isNaN(f.val);
+      const formattedVal = isNum ? f.val : `'${f.val}'`;
+      return `${f.col} ${f.op} ${formattedVal}`;
+    });
+    query += `\nWHERE ${filterClauses.join(` ${BuilderState.logic} `)}`;
+  }
+
+  // ORDER BY
+  const orderParts = [];
+  if (BuilderState.orderCol1) {
+    orderParts.push(`${BuilderState.orderCol1} ${BuilderState.orderDir1}`);
+  }
+  if (BuilderState.orderCol2) {
+    orderParts.push(`${BuilderState.orderCol2} ${BuilderState.orderDir2}`);
+  }
+  if (orderParts.length > 0) {
+    query += `\nORDER BY ${orderParts.join(', ')}`;
+  }
+
+  // LIMIT
+  if (BuilderState.limit !== 'All') {
+    query += `\nLIMIT ${BuilderState.limit};`;
+  } else {
+    query += ';';
+  }
+
+  // Update raw textarea and run execution engine
+  const sqlInput = document.getElementById('sqlInput');
+  if (sqlInput) {
+    sqlInput.value = query;
+  }
+  parseAndBuildPipeline(query);
+}
+
+// =============================================================================
+// 9. EVENT BINDINGS & INITIALIZATION
 // =============================================================================
 
 document.addEventListener('DOMContentLoaded', () => {
   renderSchemaExplorer();
+  initVisualBuilder();
 
   const sqlInput = document.getElementById('sqlInput');
   sqlInput.value = PRESETS.preset_case_triangle;

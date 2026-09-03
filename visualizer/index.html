@@ -68,16 +68,109 @@
           </div>
         </div>
 
-        <!-- Query Editor Section -->
+        <!-- Query Studio Section (Visual Builder & Raw SQL) -->
         <div class="card editor-card">
           <div class="card-header">
-            <span class="section-title">SQL Statement</span>
-            <div class="editor-actions">
+            <div class="studio-mode-toggle">
+              <button id="btnModeBuilder" class="mode-toggle-btn active">Visual Builder</button>
+              <button id="btnModeRaw" class="mode-toggle-btn">Raw SQL</button>
+            </div>
+            <div class="editor-actions" id="rawEditorActions" style="display: none;">
               <button id="btnFormatSQL" class="text-action-btn">Format</button>
               <button id="btnClearSQL" class="text-action-btn">Clear</button>
             </div>
           </div>
-          <div class="editor-body">
+
+          <!-- Mode 1: Point-and-Click Visual Builder -->
+          <div class="builder-body" id="visualBuilderContainer">
+            <!-- 1. FROM Block -->
+            <div class="builder-section">
+              <div class="builder-section-title">
+                <span class="clause-pill">FROM</span> Source Table
+              </div>
+              <select id="builderTableSelect" class="builder-select full-width">
+                <option value="TRIANGLES">TRIANGLES (A, B, C)</option>
+                <option value="Employees">Employees (emp_id, salary, ...)</option>
+                <option value="Customers">Customers (customer_id, city, ...)</option>
+                <option value="STUDENTS">STUDENTS (ID, Name, Marks)</option>
+              </select>
+            </div>
+
+            <!-- 2. SELECT Block -->
+            <div class="builder-section">
+              <div class="builder-section-title">
+                <span class="clause-pill">SELECT</span> Columns &amp; Expressions
+                <label class="distinct-toggle">
+                  <input type="checkbox" id="builderDistinctCheck">
+                  <span>DISTINCT</span>
+                </label>
+              </div>
+              <div class="column-chips" id="builderColumnChips">
+                <!-- Dynamically populated column checkboxes -->
+              </div>
+              <div class="expression-block" id="builderExpressionBlock">
+                <label class="expr-toggle">
+                  <input type="checkbox" id="builderCaseWhenCheck" checked>
+                  <span id="builderCaseWhenLabel">+ Add CASE WHEN Classification</span>
+                </label>
+              </div>
+            </div>
+
+            <!-- 3. WHERE Block -->
+            <div class="builder-section">
+              <div class="builder-section-title">
+                <span class="clause-pill">WHERE</span> Filter Conditions
+                <div class="logic-toggle-group">
+                  <button class="logic-btn active" id="builderLogicAnd" data-logic="AND">AND</button>
+                  <button class="logic-btn" id="builderLogicOr" data-logic="OR">OR</button>
+                </div>
+              </div>
+              <div class="filter-rows" id="builderFilterList">
+                <!-- Dynamically populated filter condition rows -->
+              </div>
+              <button id="btnAddFilterRow" class="builder-btn-outline">
+                <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><line x1="12" y1="5" x2="12" y2="19"></line><line x1="5" y1="12" x2="19" y2="12"></line></svg>
+                Add Filter
+              </button>
+            </div>
+
+            <!-- 4. ORDER BY Block -->
+            <div class="builder-section">
+              <div class="builder-section-title">
+                <span class="clause-pill">ORDER BY</span> Sorting &amp; Tie-Breakers
+              </div>
+              <div class="order-controls">
+                <div class="order-row">
+                  <select id="builderOrderCol1" class="builder-select flex-1">
+                    <option value="">-- No Sort --</option>
+                  </select>
+                  <button id="builderOrderDir1" class="dir-toggle-btn" data-dir="ASC">ASC</button>
+                </div>
+                <div class="order-row">
+                  <select id="builderOrderCol2" class="builder-select flex-1">
+                    <option value="">-- Secondary Tie-Breaker --</option>
+                  </select>
+                  <button id="builderOrderDir2" class="dir-toggle-btn" data-dir="ASC">ASC</button>
+                </div>
+              </div>
+            </div>
+
+            <!-- 5. LIMIT Block -->
+            <div class="builder-section">
+              <div class="builder-section-title">
+                <span class="clause-pill">LIMIT</span> Row Slicing
+              </div>
+              <div class="limit-controls">
+                <button class="limit-pill active" data-limit="All">All</button>
+                <button class="limit-pill" data-limit="5">Top 5</button>
+                <button class="limit-pill" data-limit="10">Top 10</button>
+                <input type="number" id="builderLimitInput" class="limit-input" placeholder="Custom" min="1" max="100">
+              </div>
+            </div>
+          </div>
+
+          <!-- Mode 2: Raw SQL Textarea (Hidden by default) -->
+          <div class="editor-body" id="rawSqlContainer" style="display: none;">
             <textarea id="sqlInput" class="code-editor" spellcheck="false" placeholder="Write query..."></textarea>
           </div>
           <div class="editor-statusbar">
