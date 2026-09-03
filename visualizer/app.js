@@ -2690,7 +2690,8 @@ function renderFillBlankQuest(container, quest) {
   const filledCount = Object.keys(userSlotSelections).length;
 
   let codeHtml = '';
-  quest.template.forEach(item => {
+  const tmpl = quest.template || quest.codeTemplate || [];
+  tmpl.forEach(item => {
     if (item.isBlank) {
       const currentVal = userSlotSelections[item.slotId];
       let stateClass = '';
