@@ -415,5 +415,97 @@ window.QUESTS_DATA = [
       slot2: { correct: 'HAVING', options: ['HAVING', 'WHERE', 'AND', 'FILTER'] }
     },
     explanation: "WHERE filters raw individual records BEFORE grouping. HAVING filters summary buckets AFTER aggregation has computed."
+  },
+
+  // ---------------------------------------------------------------------------
+  // LEVEL 17: INNER JOIN (The Key Intersection)
+  // ---------------------------------------------------------------------------
+  {
+    id: 17,
+    title: 'Level 17: INNER JOIN Relational Bridge',
+    subtitle: 'Bridge Employees to Departments using the primary and foreign key match.',
+    type: 'fill_blank',
+    category: 'Pillar 3: Relational JOINs',
+    codeTemplate: [
+      { text: 'SELECT e.name, d.dept_name\nFROM Employees AS e\n', isBlank: false },
+      { text: '', isBlank: true, slotId: 'slot1', placeholder: '[ ___ ]' },
+      { text: ' Departments AS d\n  ', isBlank: false },
+      { text: '', isBlank: true, slotId: 'slot2', placeholder: '[ ___ ]' },
+      { text: ' e.dept_id = d.dept_id;', isBlank: false }
+    ],
+    slots: {
+      slot1: { correct: 'INNER JOIN', options: ['INNER JOIN', 'LEFT JOIN', 'CROSS JOIN', 'UNION'] },
+      slot2: { correct: 'ON', options: ['ON', 'WHERE', 'USING', 'WITH'] }
+    },
+    explanation: "INNER JOIN connects records that satisfy the ON predicate on both sides, excluding unassigned rows."
+  },
+
+  // ---------------------------------------------------------------------------
+  // LEVEL 18: The Anti-Join (Isolating Orphaned Records)
+  // ---------------------------------------------------------------------------
+  {
+    id: 18,
+    title: 'Level 18: The Anti-Join (Orphan Hunter)',
+    subtitle: 'Find all employees who have NOT been assigned to any department.',
+    type: 'fill_blank',
+    category: 'Pillar 3: Relational JOINs',
+    codeTemplate: [
+      { text: 'SELECT e.emp_id, e.name\nFROM Employees AS e\n', isBlank: false },
+      { text: '', isBlank: true, slotId: 'slot1', placeholder: '[ ___ ]' },
+      { text: ' Departments AS d\n  ON e.dept_id = d.dept_id\nWHERE d.dept_id ', isBlank: false },
+      { text: '', isBlank: true, slotId: 'slot2', placeholder: '[ ___ ]' },
+      { text: ';', isBlank: false }
+    ],
+    slots: {
+      slot1: { correct: 'LEFT JOIN', options: ['LEFT JOIN', 'INNER JOIN', 'RIGHT JOIN', 'CROSS JOIN'] },
+      slot2: { correct: 'IS NULL', options: ['IS NULL', '= NULL', 'IS NOT NULL', '!= 0'] }
+    },
+    explanation: "An Anti-Join combines LEFT JOIN with WHERE right_table.id IS NULL to isolate orphaned records with zero matches."
+  },
+
+  // ---------------------------------------------------------------------------
+  // LEVEL 19: The Self-Join (Manager Hierarchy Tree)
+  // ---------------------------------------------------------------------------
+  {
+    id: 19,
+    title: 'Level 19: The Self-Join (Org Chart Tree)',
+    subtitle: 'Join Employees table to itself to match each worker with their direct manager.',
+    type: 'fill_blank',
+    category: 'Pillar 3: Relational JOINs',
+    codeTemplate: [
+      { text: 'SELECT emp.name AS employee,\n       mgr.name AS manager\nFROM Employees AS emp\nLEFT JOIN ', isBlank: false },
+      { text: '', isBlank: true, slotId: 'slot1', placeholder: '[ ___ ]' },
+      { text: ' AS mgr\n  ON emp.', isBlank: false },
+      { text: '', isBlank: true, slotId: 'slot2', placeholder: '[ ___ ]' },
+      { text: ' = mgr.emp_id;', isBlank: false }
+    ],
+    slots: {
+      slot1: { correct: 'Employees', options: ['Employees', 'Managers', 'Staff', 'OrgChart'] },
+      slot2: { correct: 'manager_id', options: ['manager_id', 'emp_id', 'dept_id', 'role_id'] }
+    },
+    explanation: "A Self-Join pairs a table with itself using distinct aliases (emp vs mgr) to resolve hierarchical relationships."
+  },
+
+  // ---------------------------------------------------------------------------
+  // LEVEL 20: The ON vs WHERE Outer Join Filter Trap
+  // ---------------------------------------------------------------------------
+  {
+    id: 20,
+    title: 'Level 20: The Outer Join Filter Trap (ON vs WHERE)',
+    subtitle: 'Filter department location during join without dropping unassigned employees!',
+    type: 'fill_blank',
+    category: 'Pillar 3: Relational JOINs',
+    codeTemplate: [
+      { text: 'SELECT e.name, d.location\nFROM Employees AS e\nLEFT JOIN Departments AS d\n  ', isBlank: false },
+      { text: '', isBlank: true, slotId: 'slot1', placeholder: '[ ___ ]' },
+      { text: ' e.dept_id = d.dept_id\n  ', isBlank: false },
+      { text: '', isBlank: true, slotId: 'slot2', placeholder: '[ ___ ]' },
+      { text: " d.location = 'San Francisco';", isBlank: false }
+    ],
+    slots: {
+      slot1: { correct: 'ON', options: ['ON', 'WHERE', 'HAVING', 'USING'] },
+      slot2: { correct: 'AND', options: ['AND', 'WHERE', 'OR', 'THEN'] }
+    },
+    explanation: "Filtering right-table attributes in the ON clause preserves all left-table rows with NULLs. Putting it in WHERE silently turns the query into an INNER JOIN!"
   }
 ];
