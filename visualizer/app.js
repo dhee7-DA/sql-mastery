@@ -1345,6 +1345,7 @@ function initCurriculumSystem() {
 
       // Lazy render on view switch
       if (targetId === 'viewGuidedLab') renderGuidedStep(currentGuidedStep);
+      if (targetId === 'viewQuests') renderActiveQuest(currentQuestIndex);
       if (targetId === 'viewDeconstructor') renderDeconstructedProblem(activeDeconstructorId);
       if (targetId === 'viewExplainer') renderKeywordExplainer();
       if (targetId === 'viewMcqs') renderMcqs();
@@ -1353,8 +1354,9 @@ function initCurriculumSystem() {
     });
   });
 
-  // Initialize the Guided Lab default view & Problem Deconstructor
+  // Initialize the Guided Lab default view, Quests & Problem Deconstructor
   initGuidedLab();
+  initQuestsSystem();
   initDeconstructorSystem();
 
   // Difficulty filter pills in Problem Bank
@@ -2435,4 +2437,358 @@ function renderProblemBank(filter = 'all') {
       switchToStudioWithQuery(q, tbl);
     });
   });
+}
+
+// =============================================================================
+// DUOLINGO-STYLE INTERACTIVE QUESTS CONTROLLER
+// =============================================================================
+
+let currentQuestIndex = 0;
+let questSliderValue = 80000;
+let userWordBankTray = [];
+let bugIsFixed = false;
+
+function initQuestsSystem() {
+  renderQuestStepperTrack();
+  renderActiveQuest(0);
+}
+
+function renderQuestStepperTrack() {
+  const track = document.getElementById('questStepperTrack');
+  const progressText = document.getElementById('questProgressText');
+  const progressBarFill = document.getElementById('questProgressBarFill');
+
+  if (!track || !window.QUESTS_DATA) return;
+
+  const total = window.QUESTS_DATA.length;
+  if (progressText) progressText.textContent = `Quest ${currentQuestIndex + 1} of ${total}`;
+  if (progressBarFill) progressBarFill.style.width = `${((currentQuestIndex + 1) / total) * 100}%`;
+
+  let html = '';
+  window.QUESTS_DATA.forEach((q, idx) => {
+    const isActive = idx === currentQuestIndex;
+    const isDone = idx < currentQuestIndex;
+    html += `
+      <button class="quest-step-pill ${isActive ? 'active' : ''} ${isDone ? 'completed' : ''}" onclick="setQuestIndex(${idx})">
+        <span>${isDone ? '&check;' : idx + 1}</span>
+        <span>${q.title.split(':')[0]}</span>
+      </button>
+    `;
+  });
+  track.innerHTML = html;
+}
+
+function setQuestIndex(idx) {
+  currentQuestIndex = idx;
+  userWordBankTray = [];
+  bugIsFixed = false;
+  renderQuestStepperTrack();
+  renderActiveQuest(idx);
+}
+
+function renderActiveQuest(idx) {
+  const container = document.getElementById('questActiveCard');
+  if (!container || !window.QUESTS_DATA) return;
+
+  const quest = window.QUESTS_DATA[idx] || window.QUESTS_DATA[0];
+
+  if (quest.type === 'slider') {
+    renderSliderQuest(container, quest);
+  } else if (quest.type === 'wordbank') {
+    renderWordBankQuest(container, quest);
+  } else if (quest.type === 'spot_bug') {
+    renderSpotBugQuest(container, quest);
+  } else if (quest.type === 'boss') {
+    renderBossQuest(container, quest);
+  }
+}
+
+// --- QUEST 1: Live Threshold Slider Scaffolder ---
+function renderSliderQuest(container, quest) {
+  const rows = window.GUIDED_SCHEMA.rows;
+  const highCount = rows.filter(r => r.salary >= questSliderValue).length;
+  const lowCount = rows.length - highCount;
+
+  container.innerHTML = `
+    <div class="quest-card-header">
+      <div>
+        <h3 class="quest-card-title">${quest.title}</h3>
+        <p class="quest-card-subtitle">${quest.subtitle}</p>
+      </div>
+      <span class="status-pill" style="font-size: 11px;">Scaffolding Level: Warm-up</span>
+    </div>
+
+    <!-- Live Interactive Slider Control -->
+    <div class="quest-slider-wrap">
+      <span style="font-size: 11px; font-family: var(--font-mono); color: var(--text-secondary);">THRESHOLD:</span>
+      <input type="range" class="quest-slider" id="questSalarySlider" min="${quest.minSalary}" max="${quest.maxSalary}" step="${quest.step}" value="${questSliderValue}">
+      <span class="quest-slider-val" id="questSliderDisplay">$${questSliderValue.toLocaleString()}</span>
+    </div>
+
+    <!-- Live Generated SQL Expression -->
+    <div class="guided-code-box">
+      <span style="color: var(--text-muted); font-size: 10px; display: block; margin-bottom: 4px;">LIVE ANSI SQL TEMPLATE (REACTIVE):</span>
+      <code id="questGeneratedSql">SELECT name, department, salary,\n       CASE\n         WHEN salary >= ${questSliderValue} THEN 'Senior'\n         ELSE 'Standard'\n       END AS salary_tier\nFROM Employees;</code>
+    </div>
+
+    <div style="font-size: 11.5px; color: var(--text-muted); display: flex; justify-content: space-between; align-items: center;">
+      <span>💡 ${quest.hint}</span>
+      <span style="font-weight: 600; color: #9ec5ad;">Current Result: ${highCount} Senior / ${lowCount} Standard</span>
+    </div>
+
+    <!-- Reactive Table Below -->
+    <div class="guided-table-wrap">
+      <table>
+        <thead>
+          <tr><th>name</th><th>department</th><th>salary</th><th>COMPUTED salary_tier</th></tr>
+        </thead>
+        <tbody id="questSliderTableBody">
+          ${rows.map(r => {
+            const isHigh = r.salary >= questSliderValue;
+            return `
+              <tr class="${isHigh ? 'row-passed-highlight' : 'row-rejected-dim'}">
+                <td>${r.name}</td>
+                <td>${r.department}</td>
+                <td>$${r.salary.toLocaleString()}</td>
+                <td>
+                  <span class="guided-row-badge ${isHigh ? 'badge-active-pass' : 'badge-active-drop'}">
+                    ${isHigh ? 'SENIOR' : 'STANDARD'}
+                  </span>
+                </td>
+              </tr>
+            `;
+          }).join('')}
+        </tbody>
+      </table>
+    </div>
+
+    <div style="display: flex; justify-content: flex-end; margin-top: 10px;">
+      <button class="card-nav-btn" style="background: var(--text-primary); color: #09090b; font-weight: 600;" onclick="setQuestIndex(1)">
+        Next: Quest 02 (Word Bank Assembly) &rarr;
+      </button>
+    </div>
+  `;
+
+  // Wire slider
+  const slider = document.getElementById('questSalarySlider');
+  if (slider) {
+    slider.addEventListener('input', (e) => {
+      questSliderValue = parseInt(e.target.value, 10);
+      document.getElementById('questSliderDisplay').textContent = `$${questSliderValue.toLocaleString()}`;
+      document.getElementById('questGeneratedSql').textContent = `SELECT name, department, salary,\n       CASE\n         WHEN salary >= ${questSliderValue} THEN 'Senior'\n         ELSE 'Standard'\n       END AS salary_tier\nFROM Employees;`;
+
+      const tbody = document.getElementById('questSliderTableBody');
+      if (tbody) {
+        tbody.innerHTML = rows.map(r => {
+          const isHigh = r.salary >= questSliderValue;
+          return `
+            <tr class="${isHigh ? 'row-passed-highlight' : 'row-rejected-dim'}">
+              <td>${r.name}</td>
+              <td>${r.department}</td>
+              <td>$${r.salary.toLocaleString()}</td>
+              <td>
+                <span class="guided-row-badge ${isHigh ? 'badge-active-pass' : 'badge-active-drop'}">
+                  ${isHigh ? 'SENIOR' : 'STANDARD'}
+                </span>
+              </td>
+            </tr>
+          `;
+        }).join('');
+      }
+    });
+  }
+}
+
+// --- QUEST 2: Tap-to-Assemble Word Bank ---
+function renderWordBankQuest(container, quest) {
+  const allTokens = [
+    'CASE',
+    'WHEN',
+    "department = 'Engineering'",
+    'THEN',
+    "'Tech'",
+    'ELSE',
+    "'Operations'",
+    'END',
+    'IF',
+    'WHERE'
+  ];
+
+  const isComplete = userWordBankTray.join(' ') === quest.correctTokens.join(' ');
+
+  container.innerHTML = `
+    <div class="quest-card-header">
+      <div>
+        <h3 class="quest-card-title">${quest.title}</h3>
+        <p class="quest-card-subtitle">${quest.subtitle}</p>
+      </div>
+      <span class="status-pill" style="font-size: 11px;">Duolingo Sentence Builder</span>
+    </div>
+
+    <!-- Objective Prompt -->
+    <div style="background: #111114; border: 1px solid var(--border-default); border-radius: var(--radius-sm); padding: 12px 16px;">
+      <span style="font-size: 10px; font-family: var(--font-mono); color: var(--text-muted); display: block; margin-bottom: 2px;">GOAL:</span>
+      <span style="font-size: 13px; font-weight: 600; color: var(--text-primary);">${quest.targetSentence}</span>
+    </div>
+
+    <!-- Assembly Tray (Where chosen tokens sit) -->
+    <div>
+      <span style="font-size: 10px; font-family: var(--font-mono); color: var(--text-muted); display: block; margin-bottom: 6px;">YOUR ASSEMBLY TRAY (Tap tokens in order, tap again to remove):</span>
+      <div class="wordbank-tray ${isComplete ? 'tray-success' : ''}" id="questWordTray">
+        ${userWordBankTray.length === 0 ? '<span style="color: #52525b; font-size: 12px; font-style: italic;">Tap words from below to construct the expression...</span>' : ''}
+        ${userWordBankTray.map((tok, idx) => `
+          <button class="wordbank-token in-tray" onclick="removeTokenFromTray(${idx})">${tok}</button>
+        `).join('')}
+      </div>
+    </div>
+
+    <!-- Celebration Banner if completed -->
+    ${isComplete ? `
+      <div style="background: rgba(158, 197, 173, 0.1); border: 1px solid #9ec5ad; border-radius: var(--radius-sm); padding: 10px 16px; display: flex; align-items: center; gap: 8px;">
+        <span style="color: #9ec5ad; font-size: 16px;">&check;</span>
+        <span style="font-size: 12.5px; font-weight: 600; color: #9ec5ad;">Awesome! Valid CASE WHEN structure assembled perfectly!</span>
+      </div>
+    ` : ''}
+
+    <!-- Available Word Bank Pool -->
+    <div>
+      <span style="font-size: 10px; font-family: var(--font-mono); color: var(--text-muted); display: block; margin-bottom: 6px;">WORD BANK:</span>
+      <div class="wordbank-pool">
+        ${allTokens.map((tok, idx) => {
+          const usedCountInTray = userWordBankTray.filter(t => t === tok).length;
+          const totalInAvailable = allTokens.filter(t => t === tok).length;
+          const isUsed = usedCountInTray >= totalInAvailable;
+          return `
+            <button class="wordbank-token ${isUsed ? 'used' : ''}" ${isUsed ? 'disabled' : ''} onclick="addTokenToTray('${tok.replace(/'/g, "\\'")}')">${tok}</button>
+          `;
+        }).join('')}
+      </div>
+    </div>
+
+    <div style="display: flex; justify-content: space-between; align-items: center; margin-top: 10px;">
+      <button class="card-nav-btn" onclick="userWordBankTray = []; renderActiveQuest(1);">&orarr; Clear Tray</button>
+      <button class="card-nav-btn" ${!isComplete ? 'disabled' : ''} style="background: ${isComplete ? '#9ec5ad' : '#27272a'}; color: #09090b; font-weight: 600;" onclick="setQuestIndex(2)">
+        Next: Quest 03 (Spot the Bug) &rarr;
+      </button>
+    </div>
+  `;
+}
+
+function addTokenToTray(token) {
+  userWordBankTray.push(token);
+  renderActiveQuest(1);
+}
+
+function removeTokenFromTray(idx) {
+  userWordBankTray.splice(idx, 1);
+  renderActiveQuest(1);
+}
+
+// --- QUEST 3: Spot the Bug & Fix the Waterfall ---
+function renderSpotBugQuest(container, quest) {
+  container.innerHTML = `
+    <div class="quest-card-header">
+      <div>
+        <h3 class="quest-card-title">${quest.title}</h3>
+        <p class="quest-card-subtitle">${quest.subtitle}</p>
+      </div>
+      <span class="status-pill" style="font-size: 11px;">Logic Debugger</span>
+    </div>
+
+    <!-- Candidate Row Showcase -->
+    <div style="background: #111114; border: 1px solid var(--border-default); border-radius: var(--radius-sm); padding: 12px 16px; display: flex; justify-content: space-between; align-items: center;">
+      <div>
+        <span style="font-size: 10px; font-family: var(--font-mono); color: var(--text-muted);">TEST INPUT ROW:</span>
+        <div style="font-size: 14px; font-weight: 700; font-family: var(--font-mono); color: #d69d8f;">A = 20, B = 20, C = 40</div>
+      </div>
+      <div style="text-align: right;">
+        <span style="font-size: 10px; font-family: var(--font-mono); color: var(--text-muted);">MATHEMATICAL TRUTH:</span>
+        <div style="font-size: 12px; font-weight: 600; color: #dfcaa9;">20 + 20 &le; 40 &rarr; NOT A TRIANGLE!</div>
+      </div>
+    </div>
+
+    <!-- Bug vs Fix Showcase -->
+    <div class="bug-card-box">
+      <!-- Buggy State -->
+      <div class="waterfall-step-card" style="border-color: ${bugIsFixed ? '#27272a' : '#c98877'}; opacity: ${bugIsFixed ? '0.4' : '1'};">
+        <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 8px;">
+          <span style="font-size: 11px; font-weight: 700; color: #c98877;">&cross; BUGGY WATERFALL ORDER</span>
+          <span class="guided-row-badge badge-active-drop">FAILS TESTS</span>
+        </div>
+        <div class="guided-code-box" style="margin-bottom: 8px;">
+          <code>${quest.buggyQuery}</code>
+        </div>
+        <p style="font-size: 11px; color: #d69d8f; line-height: 1.5; margin: 0;">
+          ${quest.bugExplanation}
+        </p>
+      </div>
+
+      <!-- Fixed State -->
+      <div class="waterfall-step-card" style="border-color: ${bugIsFixed ? '#9ec5ad' : '#27272a'}; opacity: ${bugIsFixed ? '1' : '0.4'};">
+        <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 8px;">
+          <span style="font-size: 11px; font-weight: 700; color: #9ec5ad;">&check; CORRECT WATERFALL ORDER</span>
+          <span class="guided-row-badge ${bugIsFixed ? 'badge-active-pass' : ''}">PASSES TESTS</span>
+        </div>
+        <div class="guided-code-box" style="margin-bottom: 8px;">
+          <code>${quest.fixedQuery}</code>
+        </div>
+        <p style="font-size: 11px; color: #9ec5ad; line-height: 1.5; margin: 0;">
+          ${quest.fixedExplanation}
+        </p>
+      </div>
+    </div>
+
+    <!-- Action Button -->
+    <div style="display: flex; justify-content: space-between; align-items: center; margin-top: 10px;">
+      <button class="btn-solve-in-studio" onclick="bugIsFixed = !bugIsFixed; renderActiveQuest(2);">
+        <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="1 4 1 10 7 10"></polyline><polyline points="23 20 23 14 17 14"></polyline><path d="M20.49 9A9 9 0 0 0 5.64 5.64L1 10m22 4l-4.64 4.36A9 9 0 0 1 3.51 15"></path></svg>
+        ${bugIsFixed ? 'Revert to Buggy Order' : '🔄 Swap Branches into Correct Order'}
+      </button>
+
+      <button class="card-nav-btn" ${!bugIsFixed ? 'disabled' : ''} style="background: ${bugIsFixed ? '#9ec5ad' : '#27272a'}; color: #09090b; font-weight: 600;" onclick="setQuestIndex(3)">
+        Next: Boss Level 04 (HackerRank) &rarr;
+      </button>
+    </div>
+  `;
+}
+
+// --- QUEST 4: The HackerRank Boss Challenge ---
+function renderBossQuest(container, quest) {
+  container.innerHTML = `
+    <div class="quest-card-header">
+      <div>
+        <h3 class="quest-card-title">${quest.title}</h3>
+        <p class="quest-card-subtitle">${quest.subtitle}</p>
+      </div>
+      <span class="points-pill" style="font-size: 12px;">+${quest.points}.00 Pts</span>
+    </div>
+
+    <div style="background: rgba(158, 197, 173, 0.08); border: 1px solid #9ec5ad; border-radius: var(--radius-sm); padding: 14px 18px;">
+      <h4 style="margin: 0 0 6px 0; color: #9ec5ad; font-size: 14px;">🎉 Congratulations! You have conquered all prerequisite quests!</h4>
+      <p style="margin: 0; font-size: 12px; line-height: 1.6; color: var(--text-secondary);">
+        You now completely understand:
+        <br>&bull; Why <code>CASE</code> produces a computed scalar value.
+        <br>&bull; The exact syntax sequence: <code>CASE WHEN ... THEN ... ELSE ... END</code>.
+        <br>&bull; Why the triangle inequality test <code>A + B &le; C</code> must come FIRST in the waterfall.
+      </p>
+    </div>
+
+    <div>
+      <span style="font-size: 10.5px; font-family: var(--font-mono); color: var(--text-muted); display: block; margin-bottom: 4px;">YOUR VERIFIED HACKERRANK SOLUTION:</span>
+      <div class="guided-code-box" style="margin-bottom: 12px;">
+        <code>${quest.solutionCode}</code>
+      </div>
+    </div>
+
+    <div style="display: flex; justify-content: space-between; align-items: center; margin-top: 10px;">
+      <button class="card-nav-btn" onclick="switchToStudioWithQuery(\`${quest.solutionCode.replace(/`/g, '\\`')}\`, 'TRIANGLES')">
+        <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polygon points="5 3 19 12 5 21 5 3"></polygon></svg>
+        Simulate in Studio
+      </button>
+
+      <a href="${quest.hackerRankUrl}" target="_blank" class="btn-solve-in-studio" style="text-decoration: none; padding: 9px 20px; font-size: 13px; font-weight: 700; background: #9ec5ad; color: #09090b;">
+        🚀 Solve on HackerRank (+20 Pts) &rarr;
+      </a>
+    </div>
+  `;
 }

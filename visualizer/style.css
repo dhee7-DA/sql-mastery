@@ -2491,4 +2491,230 @@ body {
   .cases-grid {
     grid-template-columns: 1fr;
   }
+  .bug-card-box {
+    grid-template-columns: 1fr;
+  }
+}
+
+/* =============================================================================
+   DUOLINGO-STYLE INTERACTIVE QUESTS STYLES
+   ============================================================================= */
+
+.quests-container {
+  padding: 24px 32px;
+  max-width: 1040px;
+  margin: 0 auto;
+  display: flex;
+  flex-direction: column;
+  gap: 16px;
+}
+
+.quests-header {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding-bottom: 14px;
+  border-bottom: 1px solid var(--border-default);
+}
+
+.quest-progress-badge {
+  display: flex;
+  flex-direction: column;
+  align-items: flex-end;
+  gap: 6px;
+}
+
+.quest-progress-bar-wrap {
+  width: 150px;
+  height: 6px;
+  background: #18181c;
+  border-radius: 3px;
+  overflow: hidden;
+  border: 1px solid var(--border-default);
+}
+
+.quest-progress-bar-fill {
+  height: 100%;
+  background: linear-gradient(90deg, #9ec5ad, #dfcaa9);
+  transition: width 0.3s cubic-bezier(0.16, 1, 0.3, 1);
+}
+
+.quest-stepper-track {
+  display: flex;
+  gap: 8px;
+  margin-bottom: 8px;
+}
+
+.quest-step-pill {
+  flex: 1;
+  background: #121216;
+  border: 1px solid var(--border-default);
+  border-radius: var(--radius-sm);
+  color: var(--text-secondary);
+  font-family: var(--font-sans);
+  font-size: 11px;
+  font-weight: 500;
+  padding: 8px 12px;
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 6px;
+  transition: all var(--duration-fast);
+}
+
+.quest-step-pill:hover {
+  background: #1a1a20;
+  color: var(--text-primary);
+}
+
+.quest-step-pill.active {
+  background: rgba(158, 197, 173, 0.12);
+  border-color: #9ec5ad;
+  color: #9ec5ad;
+  font-weight: 600;
+}
+
+.quest-step-pill.completed {
+  border-color: #3f3f46;
+  color: #a1a1aa;
+}
+
+.quest-card {
+  background: var(--bg-card);
+  border: 1px solid var(--border-default);
+  border-radius: var(--radius-md);
+  padding: 22px 24px;
+  display: flex;
+  flex-direction: column;
+  gap: 16px;
+}
+
+.quest-card-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: flex-start;
+}
+
+.quest-card-title {
+  font-size: 16px;
+  font-weight: 600;
+  color: var(--text-primary);
+  margin: 0 0 4px 0;
+}
+
+.quest-card-subtitle {
+  font-size: 12px;
+  color: var(--text-secondary);
+  margin: 0;
+  line-height: 1.5;
+}
+
+/* Word Bank Tray & Tokens */
+.wordbank-tray {
+  min-height: 52px;
+  background: #09090b;
+  border: 2px dashed #27272a;
+  border-radius: var(--radius-sm);
+  padding: 10px 14px;
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: 8px;
+  transition: all 0.2s;
+}
+
+.wordbank-tray.tray-success {
+  border-color: #9ec5ad;
+  background: rgba(158, 197, 173, 0.05);
+}
+
+.wordbank-tray.tray-error {
+  border-color: #d69d8f;
+  background: rgba(214, 157, 143, 0.05);
+}
+
+.wordbank-pool {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 8px;
+  padding: 12px 14px;
+  background: #111114;
+  border: 1px solid var(--border-default);
+  border-radius: var(--radius-sm);
+}
+
+.wordbank-token {
+  background: #18181c;
+  border: 1px solid var(--border-default);
+  border-radius: 6px;
+  color: #dfcaa9;
+  font-family: var(--font-mono);
+  font-size: 12px;
+  font-weight: 500;
+  padding: 6px 12px;
+  cursor: pointer;
+  user-select: none;
+  transition: all 0.15s ease;
+  box-shadow: 0 2px 4px rgba(0,0,0,0.4);
+}
+
+.wordbank-token:hover {
+  background: #24242c;
+  color: #fff;
+  border-color: #52525b;
+  transform: translateY(-1px);
+}
+
+.wordbank-token.in-tray {
+  background: rgba(223, 202, 169, 0.15);
+  border-color: #dfcaa9;
+  color: #dfcaa9;
+}
+
+.wordbank-token.used {
+  opacity: 0.25;
+  cursor: not-allowed;
+  transform: none;
+}
+
+/* Quest Slider */
+.quest-slider-wrap {
+  display: flex;
+  align-items: center;
+  gap: 16px;
+  background: #09090b;
+  border: 1px solid var(--border-default);
+  border-radius: var(--radius-sm);
+  padding: 12px 18px;
+}
+
+.quest-slider {
+  flex: 1;
+  height: 6px;
+  accent-color: #9ec5ad;
+  cursor: pointer;
+}
+
+.quest-slider-val {
+  font-family: var(--font-mono);
+  font-size: 14px;
+  font-weight: 700;
+  color: #9ec5ad;
+  min-width: 90px;
+  text-align: right;
+}
+
+/* Bug Swap Card */
+.bug-card-box {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 16px;
+}
+
+.waterfall-step-card {
+  padding: 12px 16px;
+  border-radius: var(--radius-sm);
+  background: #09090b;
+  border: 1px solid var(--border-default);
 }
