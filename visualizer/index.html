@@ -60,6 +60,10 @@
           <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polygon points="5 3 19 12 5 21 5 3"></polygon></svg>
           Guided Learning Lab (Step-by-Step)
         </button>
+        <button class="nav-tab" data-view="viewDeconstructor">
+          <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="11" cy="11" r="8"></circle><line x1="21" y1="21" x2="16.65" y2="16.65"></line></svg>
+          Problem Deconstructor &amp; Business Context
+        </button>
         <button class="nav-tab" data-view="viewMcqs">
           <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M9 11l3 3L22 4"></path><path d="M21 12v7a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h11"></path></svg>
           Interactive MCQs
@@ -70,7 +74,7 @@
         </button>
         <button class="nav-tab" data-view="viewStudio">
           <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="16 18 22 12 16 6"></polyline><polyline points="8 6 2 12 8 18"></polyline></svg>
-          Advanced Query Studio
+          Advanced Studio
         </button>
       </div>
       <div class="nav-meta">
@@ -89,6 +93,31 @@
         <!-- Single Focused Step Content -->
         <div class="guided-step-card" id="guidedStepCard">
           <!-- Dynamically populated for current step -->
+        </div>
+      </div>
+    </div>
+
+    <!-- VIEW 2: Problem Deconstructor & Business Context -->
+    <div class="view-panel" id="viewDeconstructor">
+      <div class="deconstructor-container">
+        <div class="deconstructor-header">
+          <div>
+            <h2 class="view-title">SQL Problem Deconstructor &amp; Business Context Engine</h2>
+            <p class="view-subtitle">Deconstruct HackerRank &amp; LeetCode problems into plain goals, hidden trap edge cases, and real-world corporate applications.</p>
+          </div>
+          <div class="deconstructor-controls">
+            <select id="deconstructorPresetSelect" class="clean-select" style="min-width: 250px;">
+              <!-- Populated dynamically from window.DECONSTRUCTOR_PRESETS -->
+            </select>
+            <button class="card-nav-btn" id="btnOpenCustomModal" style="background: var(--bg-card); color: var(--text-primary);">
+              &plus; Paste Custom Problem
+            </button>
+          </div>
+        </div>
+
+        <!-- Dynamic Deconstruction Body -->
+        <div class="deconstructor-body" id="deconstructorBody">
+          <!-- Dynamically rendered -->
         </div>
       </div>
     </div>
@@ -454,6 +483,7 @@
 </div>
 
 <script src="guided_lab_data.js"></script>
+<script src="deconstructor_data.js"></script>
 <script src="foundations_curriculum.js"></script>
 <script src="app.js"></script>
 </body>

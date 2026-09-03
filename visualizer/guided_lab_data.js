@@ -40,36 +40,87 @@ window.GUIDED_STEPS = [
     actionPrompt: 'Below is the full Employees dataset loaded from disk into engine working memory (8 records):',
     transform: (rows) => rows.map(r => ({ ...r, _status: 'loaded', _label: 'IN MEMORY' })),
     svg: `
-      <svg viewBox="0 0 700 130" width="100%" height="130" xmlns="http://www.w3.org/2000/svg">
-        <rect width="700" height="130" fill="#0b0b0e" rx="6" stroke="#232328"/>
-        <!-- Disk storage -->
-        <g transform="translate(40, 30)">
-          <rect width="130" height="70" rx="4" fill="#141418" stroke="#33333b"/>
-          <text x="65" y="32" fill="#a4b7cf" font-family="monospace" font-size="11" font-weight="700" text-anchor="middle">PHYSICAL DISK</text>
-          <text x="65" y="50" fill="#71717a" font-family="monospace" font-size="9" text-anchor="middle">Employees.ibd</text>
-          <text x="65" y="62" fill="#52525b" font-family="monospace" font-size="8" text-anchor="middle">Stored on NVMe / SSD</text>
+      <svg viewBox="0 0 780 180" width="100%" height="180" xmlns="http://www.w3.org/2000/svg">
+        <defs>
+          <marker id="arrow-from" viewBox="0 0 10 10" refX="6" refY="5" markerWidth="6" markerHeight="6" orient="auto-start-reverse">
+            <path d="M 0 1 L 10 5 L 0 9 z" fill="#8da2be"/>
+          </marker>
+        </defs>
+        <rect width="780" height="180" fill="#0b0b0e" rx="6" stroke="#232328"/>
+
+        <!-- Left: Physical Disk Sector -->
+        <g transform="translate(30, 20)">
+          <rect width="180" height="140" rx="5" fill="#121216" stroke="#2f333d"/>
+          <rect width="180" height="26" rx="5" fill="#181a20"/>
+          <text x="90" y="17" fill="#a4b7cf" font-family="monospace" font-size="10" font-weight="700" text-anchor="middle">PHYSICAL NVMe DISK</text>
+          
+          <!-- Disk file sectors -->
+          <g transform="translate(15, 36)">
+            <rect width="150" height="20" rx="3" fill="#1c1e26" stroke="#282b36"/>
+            <text x="8" y="14" fill="#71717a" font-family="monospace" font-size="8.5">Page 0x01: Schema ibd</text>
+            <rect y="26" width="150" height="20" rx="3" fill="#1c1e26" stroke="#282b36"/>
+            <text x="8" y="40" fill="#71717a" font-family="monospace" font-size="8.5">Page 0x02: Rows 101-104</text>
+            <rect y="52" width="150" height="20" rx="3" fill="#1c1e26" stroke="#282b36"/>
+            <text x="8" y="66" fill="#71717a" font-family="monospace" font-size="8.5">Page 0x03: Rows 105-108</text>
+            <rect y="78" width="150" height="18" rx="3" fill="#181a22"/>
+            <text x="75" y="90" fill="#52525b" font-family="monospace" font-size="8" text-anchor="middle">&bull;&bull;&bull; Binary B-Tree &bull;&bull;&bull;</text>
+          </g>
         </g>
 
-        <!-- Data flow arrow -->
-        <path d="M 180 65 L 260 65" stroke="#8da2be" stroke-width="2" stroke-dasharray="4,4"/>
-        <text x="220" y="55" fill="#8da2be" font-family="monospace" font-size="9" text-anchor="middle">I/O READ</text>
-
-        <!-- Engine Memory Buffer -->
-        <g transform="translate(270, 20)">
-          <rect width="210" height="90" rx="4" fill="rgba(141, 162, 190, 0.12)" stroke="#8da2be"/>
-          <text x="105" y="30" fill="#8da2be" font-family="monospace" font-size="12" font-weight="700" text-anchor="middle">FROM Employees</text>
-          <text x="105" y="50" fill="#d1d5db" font-family="monospace" font-size="10" text-anchor="middle">Working Set Allocated in RAM</text>
-          <text x="105" y="68" fill="#9ec5ad" font-family="monospace" font-size="9" text-anchor="middle">&check; 8 rows &times; 5 columns loaded</text>
+        <!-- Connecting I/O Stream Arrows -->
+        <g>
+          <path d="M 220 70 C 270 70, 280 80, 320 80" fill="none" stroke="#8da2be" stroke-width="2" stroke-dasharray="5,4" marker-end="url(#arrow-from)"/>
+          <path d="M 220 95 C 270 95, 280 95, 320 95" fill="none" stroke="#8da2be" stroke-width="2" stroke-dasharray="5,4" marker-end="url(#arrow-from)"/>
+          <path d="M 220 120 C 270 120, 280 110, 320 110" fill="none" stroke="#8da2be" stroke-width="2" stroke-dasharray="5,4" marker-end="url(#arrow-from)"/>
+          <rect x="235" y="45" width="80" height="18" rx="3" fill="#16181f" stroke="#2c303c"/>
+          <text x="275" y="57" fill="#8da2be" font-family="monospace" font-size="8" font-weight="700" text-anchor="middle">DMA I/O READ</text>
         </g>
 
-        <!-- Pipeline to next -->
-        <path d="M 490 65 L 560 65" stroke="#8da2be" stroke-width="2"/>
-        <text x="525" y="55" fill="#71717a" font-family="monospace" font-size="9" text-anchor="middle">PASS</text>
+        <!-- Right: Structured Working Memory Schema Table -->
+        <g transform="translate(330, 20)">
+          <rect width="420" height="140" rx="5" fill="#111115" stroke="#8da2be" stroke-width="1.5"/>
+          <rect width="420" height="26" rx="5" fill="rgba(141, 162, 190, 0.15)"/>
+          <text x="15" y="17" fill="#8da2be" font-family="monospace" font-size="10" font-weight="700">IN-MEMORY WORKING TABLE: Employees</text>
+          <text x="405" y="17" fill="#9ec5ad" font-family="monospace" font-size="9" text-anchor="end">Buffer: 8 rows &times; 5 cols</text>
 
-        <g transform="translate(570, 35)">
-          <rect width="90" height="60" rx="4" fill="#141418" stroke="#33333b"/>
-          <text x="45" y="32" fill="#71717a" font-family="monospace" font-size="10" font-weight="600" text-anchor="middle">TO WHERE</text>
-          <text x="45" y="48" fill="#52525b" font-family="monospace" font-size="8" text-anchor="middle">Filter Gate</text>
+          <!-- Table Header -->
+          <g transform="translate(10, 34)">
+            <rect width="400" height="18" fill="#181a20" stroke="#252730"/>
+            <text x="25" y="12" fill="#a4b7cf" font-family="monospace" font-size="8" font-weight="700">emp_id</text>
+            <text x="95" y="12" fill="#a4b7cf" font-family="monospace" font-size="8" font-weight="700">name</text>
+            <text x="200" y="12" fill="#a4b7cf" font-family="monospace" font-size="8" font-weight="700">department</text>
+            <text x="290" y="12" fill="#a4b7cf" font-family="monospace" font-size="8" font-weight="700">salary</text>
+            <text x="360" y="12" fill="#a4b7cf" font-family="monospace" font-size="8" font-weight="700">year</text>
+          </g>
+
+          <!-- Sample Table Rows Loaded -->
+          <g transform="translate(10, 56)">
+            <rect width="400" height="15" fill="#131418"/>
+            <text x="25" y="11" fill="#71717a" font-family="monospace" font-size="8">101</text>
+            <text x="95" y="11" fill="#d1d5db" font-family="monospace" font-size="8">Alice Smith</text>
+            <text x="200" y="11" fill="#dfcaa9" font-family="monospace" font-size="8">Engineering</text>
+            <text x="290" y="11" fill="#9ec5ad" font-family="monospace" font-size="8">$95,000</text>
+            <text x="360" y="11" fill="#71717a" font-family="monospace" font-size="8">2021</text>
+          </g>
+          <g transform="translate(10, 73)">
+            <rect width="400" height="15" fill="#101013"/>
+            <text x="25" y="11" fill="#71717a" font-family="monospace" font-size="8">102</text>
+            <text x="95" y="11" fill="#d1d5db" font-family="monospace" font-size="8">Bob Jones</text>
+            <text x="200" y="11" fill="#dfcaa9" font-family="monospace" font-size="8">Marketing</text>
+            <text x="290" y="11" fill="#9ec5ad" font-family="monospace" font-size="8">$62,000</text>
+            <text x="360" y="11" fill="#71717a" font-family="monospace" font-size="8">2023</text>
+          </g>
+          <g transform="translate(10, 90)">
+            <rect width="400" height="15" fill="#131418"/>
+            <text x="25" y="11" fill="#71717a" font-family="monospace" font-size="8">103</text>
+            <text x="95" y="11" fill="#d1d5db" font-family="monospace" font-size="8">Charlie Brown</text>
+            <text x="200" y="11" fill="#dfcaa9" font-family="monospace" font-size="8">Engineering</text>
+            <text x="290" y="11" fill="#9ec5ad" font-family="monospace" font-size="8">$82,000</text>
+            <text x="360" y="11" fill="#71717a" font-family="monospace" font-size="8">2020</text>
+          </g>
+          <g transform="translate(10, 107)">
+            <text x="200" y="10" fill="#52525b" font-family="monospace" font-size="8" text-anchor="middle">&plus; 5 more rows loaded into RAM buffer &bull;&bull;&bull;</text>
+          </g>
         </g>
       </svg>
     `
@@ -111,41 +162,136 @@ window.GUIDED_STEPS = [
       };
     }),
     svg: `
-      <svg viewBox="0 0 700 130" width="100%" height="130" xmlns="http://www.w3.org/2000/svg">
-        <rect width="700" height="130" fill="#0b0b0e" rx="6" stroke="#232328"/>
-        <!-- 8 incoming rows -->
-        <g transform="translate(30, 30)">
-          <rect width="110" height="70" rx="4" fill="#141418" stroke="#33333b"/>
-          <text x="55" y="32" fill="#d1d5db" font-family="monospace" font-size="11" font-weight="700" text-anchor="middle">8 ROWS</text>
-          <text x="55" y="48" fill="#71717a" font-family="monospace" font-size="9" text-anchor="middle">From FROM clause</text>
-          <text x="55" y="62" fill="#52525b" font-family="monospace" font-size="8" text-anchor="middle">All employees</text>
+      <svg viewBox="0 0 780 200" width="100%" height="200" xmlns="http://www.w3.org/2000/svg">
+        <defs>
+          <marker id="arrow-pass" viewBox="0 0 10 10" refX="6" refY="5" markerWidth="6" markerHeight="6" orient="auto-start-reverse">
+            <path d="M 0 1 L 10 5 L 0 9 z" fill="#9ec5ad"/>
+          </marker>
+          <marker id="arrow-drop" viewBox="0 0 10 10" refX="6" refY="5" markerWidth="6" markerHeight="6" orient="auto-start-reverse">
+            <path d="M 0 1 L 10 5 L 0 9 z" fill="#c98877"/>
+          </marker>
+        </defs>
+        <rect width="780" height="200" fill="#0b0b0e" rx="6" stroke="#232328"/>
+
+        <!-- Left: Input Table (8 rows) -->
+        <g transform="translate(20, 15)">
+          <rect width="250" height="170" rx="4" fill="#121216" stroke="#33333b"/>
+          <rect width="250" height="22" rx="4" fill="#181a20"/>
+          <text x="10" y="15" fill="#a4b7cf" font-family="monospace" font-size="9" font-weight="700">INPUT: Employees (8 rows)</text>
+
+          <!-- Header -->
+          <g transform="translate(8, 28)">
+            <text x="5" y="10" fill="#71717a" font-family="monospace" font-size="7.5" font-weight="700">ID</text>
+            <text x="35" y="10" fill="#71717a" font-family="monospace" font-size="7.5" font-weight="700">NAME</text>
+            <text x="110" y="10" fill="#71717a" font-family="monospace" font-size="7.5" font-weight="700">DEPT</text>
+            <text x="180" y="10" fill="#71717a" font-family="monospace" font-size="7.5" font-weight="700">SALARY</text>
+          </g>
+
+          <!-- Rows with row anchors -->
+          <!-- Row 1: Alice (Pass) -->
+          <g transform="translate(8, 43)">
+            <rect width="234" height="13" fill="rgba(139, 179, 156, 0.12)" stroke="rgba(139, 179, 156, 0.3)"/>
+            <text x="5" y="10" fill="#9ec5ad" font-family="monospace" font-size="7.5">101</text>
+            <text x="35" y="10" fill="#d1d5db" font-family="monospace" font-size="7.5">Alice Smith</text>
+            <text x="110" y="10" fill="#dfcaa9" font-family="monospace" font-size="7.5">Engineering</text>
+            <text x="180" y="10" fill="#9ec5ad" font-family="monospace" font-size="7.5">$95k</text>
+          </g>
+          <!-- Row 2: Bob (Drop) -->
+          <g transform="translate(8, 58)">
+            <rect width="234" height="13" fill="#131418"/>
+            <text x="5" y="10" fill="#52525b" font-family="monospace" font-size="7.5">102</text>
+            <text x="35" y="10" fill="#71717a" font-family="monospace" font-size="7.5">Bob Jones</text>
+            <text x="110" y="10" fill="#71717a" font-family="monospace" font-size="7.5">Marketing</text>
+            <text x="180" y="10" fill="#71717a" font-family="monospace" font-size="7.5">$62k</text>
+          </g>
+          <!-- Row 3: Charlie (Pass) -->
+          <g transform="translate(8, 73)">
+            <rect width="234" height="13" fill="rgba(139, 179, 156, 0.12)" stroke="rgba(139, 179, 156, 0.3)"/>
+            <text x="5" y="10" fill="#9ec5ad" font-family="monospace" font-size="7.5">103</text>
+            <text x="35" y="10" fill="#d1d5db" font-family="monospace" font-size="7.5">Charlie Brown</text>
+            <text x="110" y="10" fill="#dfcaa9" font-family="monospace" font-size="7.5">Engineering</text>
+            <text x="180" y="10" fill="#9ec5ad" font-family="monospace" font-size="7.5">$82k</text>
+          </g>
+          <!-- Row 4: Diana (Drop) -->
+          <g transform="translate(8, 88)">
+            <rect width="234" height="13" fill="#131418"/>
+            <text x="5" y="10" fill="#52525b" font-family="monospace" font-size="7.5">104</text>
+            <text x="35" y="10" fill="#71717a" font-family="monospace" font-size="7.5">Diana Prince</text>
+            <text x="110" y="10" fill="#71717a" font-family="monospace" font-size="7.5">Sales</text>
+            <text x="180" y="10" fill="#71717a" font-family="monospace" font-size="7.5">$74k</text>
+          </g>
+          <!-- Row 5: Evan (Pass) -->
+          <g transform="translate(8, 103)">
+            <rect width="234" height="13" fill="rgba(139, 179, 156, 0.12)" stroke="rgba(139, 179, 156, 0.3)"/>
+            <text x="5" y="10" fill="#9ec5ad" font-family="monospace" font-size="7.5">105</text>
+            <text x="35" y="10" fill="#d1d5db" font-family="monospace" font-size="7.5">Evan Wright</text>
+            <text x="110" y="10" fill="#dfcaa9" font-family="monospace" font-size="7.5">Engineering</text>
+            <text x="180" y="10" fill="#9ec5ad" font-family="monospace" font-size="7.5">$95k</text>
+          </g>
+          <!-- Rows 6,7,8 (Drop) -->
+          <g transform="translate(8, 118)">
+            <text x="117" y="10" fill="#52525b" font-family="monospace" font-size="7.5" text-anchor="middle">&bull;&bull;&bull; 106 Fiona, 107 George, 108 Hannah &bull;&bull;&bull;</text>
+          </g>
         </g>
 
-        <path d="M 150 65 L 220 65" stroke="#c98877" stroke-width="2"/>
-
-        <!-- WHERE Predicate Gate -->
-        <g transform="translate(230, 20)">
-          <rect width="240" height="90" rx="4" fill="rgba(201, 136, 119, 0.12)" stroke="#c98877"/>
-          <text x="120" y="30" fill="#d69d8f" font-family="monospace" font-size="12" font-weight="700" text-anchor="middle">WHERE Predicate Evaluator</text>
-          <text x="120" y="48" fill="#dfcaa9" font-family="monospace" font-size="9.5" text-anchor="middle">salary &ge; 74k AND dept = 'Engineering'</text>
-          <text x="120" y="66" fill="#9ec5ad" font-family="monospace" font-size="9" text-anchor="middle">&bull; TRUE &rarr; Keep (Alice, Charlie, Evan)</text>
-          <text x="120" y="80" fill="#c98877" font-family="monospace" font-size="9" text-anchor="middle">&bull; FALSE / NULL &rarr; Drop (5 records)</text>
+        <!-- Center: Predicate Filter Gate -->
+        <g transform="translate(290, 45)">
+          <rect width="180" height="105" rx="5" fill="rgba(201, 136, 119, 0.1)" stroke="#d69d8f" stroke-width="1.5"/>
+          <text x="90" y="22" fill="#d69d8f" font-family="monospace" font-size="10" font-weight="700" text-anchor="middle">PREDICATE GATE</text>
+          <text x="90" y="42" fill="#dfcaa9" font-family="monospace" font-size="8.5" text-anchor="middle">dept == 'Engineering'</text>
+          <text x="90" y="58" fill="#dfcaa9" font-family="monospace" font-size="8.5" text-anchor="middle">&amp;&amp; salary &ge; $74,000</text>
+          
+          <line x1="20" y1="72" x2="160" y2="72" stroke="#33333b"/>
+          <text x="90" y="88" fill="#9ec5ad" font-family="monospace" font-size="8" text-anchor="middle">&check; 3 TRUE  |  &cross; 5 FALSE</text>
         </g>
 
-        <!-- Passing rows -->
-        <path d="M 480 50 L 560 50" stroke="#9ec5ad" stroke-width="2"/>
-        <text x="520" y="42" fill="#9ec5ad" font-family="monospace" font-size="8.5" text-anchor="middle">3 KEPT</text>
-        <g transform="translate(570, 25)">
-          <rect width="100" height="40" rx="4" fill="rgba(139, 179, 156, 0.12)" stroke="#9ec5ad"/>
-          <text x="50" y="24" fill="#9ec5ad" font-family="monospace" font-size="10" font-weight="700" text-anchor="middle">3 PASSED</text>
+        <!-- Dynamic Flow Arrows -->
+        <!-- Pass Arrows (Green) to Right Output Table -->
+        <path d="M 270 65 Q 280 65 290 70" fill="none" stroke="#9ec5ad" stroke-width="2"/>
+        <path d="M 470 75 C 490 75, 495 55, 510 55" fill="none" stroke="#9ec5ad" stroke-width="2" marker-end="url(#arrow-pass)"/>
+        <path d="M 470 85 C 490 85, 495 72, 510 72" fill="none" stroke="#9ec5ad" stroke-width="2" marker-end="url(#arrow-pass)"/>
+        <path d="M 470 95 C 490 95, 495 90, 510 90" fill="none" stroke="#9ec5ad" stroke-width="2" marker-end="url(#arrow-pass)"/>
+
+        <!-- Drop Arrows (Curved Terracotta) to Bottom Discard Box -->
+        <path d="M 470 125 C 490 125, 490 155, 510 155" fill="none" stroke="#c98877" stroke-width="1.5" stroke-dasharray="4,4" marker-end="url(#arrow-drop)"/>
+
+        <!-- Right Top: Filtered Output Table (3 rows) -->
+        <g transform="translate(520, 20)">
+          <rect width="240" height="95" rx="4" fill="#121216" stroke="#9ec5ad" stroke-width="1.5"/>
+          <rect width="240" height="20" rx="4" fill="rgba(139, 179, 156, 0.15)"/>
+          <text x="10" y="14" fill="#9ec5ad" font-family="monospace" font-size="8.5" font-weight="700">KEPT BUFFER (3 Passed)</text>
+
+          <g transform="translate(6, 26)">
+            <!-- Row 1: Alice -->
+            <g transform="translate(0, 5)">
+              <text x="5" y="10" fill="#9ec5ad" font-family="monospace" font-size="7.5">101</text>
+              <text x="35" y="10" fill="#d1d5db" font-family="monospace" font-size="7.5">Alice Smith</text>
+              <text x="110" y="10" fill="#dfcaa9" font-family="monospace" font-size="7.5">Eng</text>
+              <text x="160" y="10" fill="#9ec5ad" font-family="monospace" font-size="7.5">$95,000</text>
+            </g>
+            <!-- Row 2: Charlie -->
+            <g transform="translate(0, 22)">
+              <text x="5" y="10" fill="#9ec5ad" font-family="monospace" font-size="7.5">103</text>
+              <text x="35" y="10" fill="#d1d5db" font-family="monospace" font-size="7.5">Charlie Brown</text>
+              <text x="110" y="10" fill="#dfcaa9" font-family="monospace" font-size="7.5">Eng</text>
+              <text x="160" y="10" fill="#9ec5ad" font-family="monospace" font-size="7.5">$82,000</text>
+            </g>
+            <!-- Row 3: Evan -->
+            <g transform="translate(0, 39)">
+              <text x="5" y="10" fill="#9ec5ad" font-family="monospace" font-size="7.5">105</text>
+              <text x="35" y="10" fill="#d1d5db" font-family="monospace" font-size="7.5">Evan Wright</text>
+              <text x="110" y="10" fill="#dfcaa9" font-family="monospace" font-size="7.5">Eng</text>
+              <text x="160" y="10" fill="#9ec5ad" font-family="monospace" font-size="7.5">$95,000</text>
+            </g>
+          </g>
         </g>
 
-        <!-- Dropped rows -->
-        <path d="M 480 85 L 560 85" stroke="#c98877" stroke-width="2" stroke-dasharray="3,3"/>
-        <text x="520" y="98" fill="#c98877" font-family="monospace" font-size="8.5" text-anchor="middle">5 DROPPED</text>
-        <g transform="translate(570, 75)">
-          <rect width="100" height="35" rx="4" fill="#141418" stroke="#33333b"/>
-          <text x="50" y="22" fill="#71717a" font-family="monospace" font-size="9" text-anchor="middle">5 Discarded</text>
+        <!-- Right Bottom: Discarded Records Box -->
+        <g transform="translate(520, 130)">
+          <rect width="240" height="50" rx="4" fill="#121216" stroke="#33333b" stroke-dasharray="3,3"/>
+          <text x="10" y="17" fill="#71717a" font-family="monospace" font-size="8" font-weight="700">&cross; DISCARDED BUFFER (5 Rows Dropped)</text>
+          <text x="10" y="32" fill="#52525b" font-family="monospace" font-size="7.5">Bob (Mktg), Diana (Sales), Fiona (Sales), George (Mktg), Hannah (Fin)</text>
+          <text x="10" y="44" fill="#c98877" font-family="monospace" font-size="7.5">Reason: Predicate evaluated to FALSE &rarr; Dropped from memory</text>
         </g>
       </svg>
     `
@@ -180,38 +326,105 @@ window.GUIDED_STEPS = [
         _label: 'PROJECTED'
       })),
     svg: `
-      <svg viewBox="0 0 700 130" width="100%" height="130" xmlns="http://www.w3.org/2000/svg">
-        <rect width="700" height="130" fill="#0b0b0e" rx="6" stroke="#232328"/>
-        <!-- All columns -->
-        <g transform="translate(30, 25)">
-          <rect width="130" height="80" rx="4" fill="#141418" stroke="#33333b"/>
-          <text x="65" y="24" fill="#a1a1aa" font-family="monospace" font-size="10" font-weight="700" text-anchor="middle">5 Full Columns</text>
-          <text x="65" y="42" fill="#52525b" font-family="monospace" font-size="8.5" text-anchor="middle">emp_id (dropped)</text>
-          <text x="65" y="56" fill="#9ec5ad" font-family="monospace" font-size="8.5" font-weight="600" text-anchor="middle">name (kept)</text>
-          <text x="65" y="70" fill="#9ec5ad" font-family="monospace" font-size="8.5" font-weight="600" text-anchor="middle">salary (kept)</text>
-          <text x="65" y="84" fill="#52525b" font-family="monospace" font-size="8.5" text-anchor="middle">dept, hire_year (dropped)</text>
+      <svg viewBox="0 0 780 190" width="100%" height="190" xmlns="http://www.w3.org/2000/svg">
+        <defs>
+          <marker id="arrow-proj" viewBox="0 0 10 10" refX="6" refY="5" markerWidth="6" markerHeight="6" orient="auto-start-reverse">
+            <path d="M 0 1 L 10 5 L 0 9 z" fill="#9ec5ad"/>
+          </marker>
+          <marker id="arrow-math" viewBox="0 0 10 10" refX="6" refY="5" markerWidth="6" markerHeight="6" orient="auto-start-reverse">
+            <path d="M 0 1 L 10 5 L 0 9 z" fill="#dfcaa9"/>
+          </marker>
+        </defs>
+        <rect width="780" height="190" fill="#0b0b0e" rx="6" stroke="#232328"/>
+
+        <!-- Left: Full 5-Column Table -->
+        <g transform="translate(20, 20)">
+          <rect width="280" height="150" rx="4" fill="#121216" stroke="#33333b"/>
+          <rect width="280" height="22" rx="4" fill="#181a20"/>
+          <text x="10" y="15" fill="#a4b7cf" font-family="monospace" font-size="9" font-weight="700">INPUT: 5 Columns in Working Buffer</text>
+
+          <!-- Column Blocks -->
+          <g transform="translate(10, 30)">
+            <!-- emp_id (dropped) -->
+            <rect x="0" y="0" width="45" height="100" rx="3" fill="#14151a" stroke="#23242c" stroke-dasharray="2,2"/>
+            <text x="22" y="16" fill="#52525b" font-family="monospace" font-size="7.5" text-anchor="middle">emp_id</text>
+            <text x="22" y="60" fill="#3f3f46" font-family="monospace" font-size="7" text-anchor="middle">Dropped</text>
+
+            <!-- name (KEPT) -->
+            <rect x="52" y="0" width="65" height="100" rx="3" fill="rgba(139, 179, 156, 0.1)" stroke="#9ec5ad"/>
+            <text x="84" y="16" fill="#9ec5ad" font-family="monospace" font-size="8" font-weight="700" text-anchor="middle">name</text>
+            <text x="84" y="40" fill="#d1d5db" font-family="monospace" font-size="7" text-anchor="middle">Alice</text>
+            <text x="84" y="60" fill="#d1d5db" font-family="monospace" font-size="7" text-anchor="middle">Charlie</text>
+            <text x="84" y="80" fill="#d1d5db" font-family="monospace" font-size="7" text-anchor="middle">Evan</text>
+
+            <!-- dept (dropped) -->
+            <rect x="124" y="0" width="45" height="100" rx="3" fill="#14151a" stroke="#23242c" stroke-dasharray="2,2"/>
+            <text x="146" y="16" fill="#52525b" font-family="monospace" font-size="7.5" text-anchor="middle">dept</text>
+            <text x="146" y="60" fill="#3f3f46" font-family="monospace" font-size="7" text-anchor="middle">Dropped</text>
+
+            <!-- salary (KEPT + COMPUTED) -->
+            <rect x="176" y="0" width="55" height="100" rx="3" fill="rgba(139, 179, 156, 0.1)" stroke="#9ec5ad"/>
+            <text x="203" y="16" fill="#9ec5ad" font-family="monospace" font-size="8" font-weight="700" text-anchor="middle">salary</text>
+            <text x="203" y="40" fill="#d1d5db" font-family="monospace" font-size="7" text-anchor="middle">$95k</text>
+            <text x="203" y="60" fill="#d1d5db" font-family="monospace" font-size="7" text-anchor="middle">$82k</text>
+            <text x="203" y="80" fill="#d1d5db" font-family="monospace" font-size="7" text-anchor="middle">$95k</text>
+
+            <!-- year (dropped) -->
+            <rect x="238" y="0" width="35" height="100" rx="3" fill="#14151a" stroke="#23242c" stroke-dasharray="2,2"/>
+            <text x="255" y="16" fill="#52525b" font-family="monospace" font-size="7.5" text-anchor="middle">year</text>
+            <text x="255" y="60" fill="#3f3f46" font-family="monospace" font-size="7" text-anchor="middle">Drop</text>
+          </g>
         </g>
 
-        <path d="M 170 65 L 230 65" stroke="#9ec5ad" stroke-width="2"/>
+        <!-- Center: Projection & Expression Engine -->
+        <g transform="translate(325, 45)">
+          <!-- Name Direct Flow -->
+          <path d="M -15 25 L 50 25" fill="none" stroke="#9ec5ad" stroke-width="2" marker-end="url(#arrow-proj)"/>
+          
+          <!-- Salary Direct Flow -->
+          <path d="M -15 65 L 50 65" fill="none" stroke="#9ec5ad" stroke-width="2" marker-end="url(#arrow-proj)"/>
 
-        <!-- SELECT Engine -->
-        <g transform="translate(240, 20)">
-          <rect width="230" height="90" rx="4" fill="rgba(139, 179, 156, 0.12)" stroke="#9ec5ad"/>
-          <text x="115" y="30" fill="#9ec5ad" font-family="monospace" font-size="12" font-weight="700" text-anchor="middle">SELECT Projection</text>
-          <text x="115" y="48" fill="#d1d5db" font-family="monospace" font-size="10" text-anchor="middle">Extracts: name, salary</text>
-          <text x="115" y="66" fill="#dfcaa9" font-family="monospace" font-size="9.5" text-anchor="middle">Computes: salary * 0.10</text>
-          <text x="115" y="82" fill="#dfcaa9" font-family="monospace" font-size="9.5" text-anchor="middle">Assigns: AS annual_bonus</text>
+          <!-- Salary Computed Math Block -->
+          <g transform="translate(60, 45)">
+            <rect width="110" height="50" rx="4" fill="rgba(209, 184, 150, 0.12)" stroke="#dfcaa9" stroke-width="1.5"/>
+            <text x="55" y="18" fill="#dfcaa9" font-family="monospace" font-size="8.5" font-weight="700" text-anchor="middle">EXPRESSION</text>
+            <text x="55" y="32" fill="#d1d5db" font-family="monospace" font-size="8" text-anchor="middle">salary &times; 0.10</text>
+            <text x="55" y="44" fill="#dfcaa9" font-family="monospace" font-size="7.5" text-anchor="middle">AS annual_bonus</text>
+          </g>
+          <path d="M 170 70 L 210 70" fill="none" stroke="#dfcaa9" stroke-width="2" marker-end="url(#arrow-math)"/>
         </g>
 
-        <path d="M 480 65 L 550 65" stroke="#9ec5ad" stroke-width="2"/>
+        <!-- Right: Final Projected Table Shape -->
+        <g transform="translate(550, 20)">
+          <rect width="210" height="150" rx="4" fill="#121216" stroke="#9ec5ad" stroke-width="1.5"/>
+          <rect width="210" height="22" rx="4" fill="rgba(139, 179, 156, 0.15)"/>
+          <text x="10" y="15" fill="#9ec5ad" font-family="monospace" font-size="9" font-weight="700">PROJECTED SHAPE (3 Cols)</text>
 
-        <!-- Projected Shape -->
-        <g transform="translate(560, 25)">
-          <rect width="110" height="80" rx="4" fill="#141418" stroke="#9ec5ad"/>
-          <text x="55" y="26" fill="#9ec5ad" font-family="monospace" font-size="10" font-weight="700" text-anchor="middle">Final Shape</text>
-          <text x="55" y="44" fill="#d1d5db" font-family="monospace" font-size="9" text-anchor="middle">name</text>
-          <text x="55" y="58" fill="#d1d5db" font-family="monospace" font-size="9" text-anchor="middle">salary</text>
-          <text x="55" y="74" fill="#dfcaa9" font-family="monospace" font-size="9" font-weight="600" text-anchor="middle">annual_bonus</text>
+          <!-- Table Header -->
+          <g transform="translate(10, 32)">
+            <text x="10" y="10" fill="#9ec5ad" font-family="monospace" font-size="8" font-weight="700">name</text>
+            <text x="80" y="10" fill="#9ec5ad" font-family="monospace" font-size="8" font-weight="700">salary</text>
+            <text x="140" y="10" fill="#dfcaa9" font-family="monospace" font-size="8" font-weight="700">bonus</text>
+          </g>
+
+          <g transform="translate(10, 50)">
+            <rect width="190" height="22" rx="2" fill="#16181f"/>
+            <text x="10" y="15" fill="#d1d5db" font-family="monospace" font-size="8">Alice Smith</text>
+            <text x="80" y="15" fill="#d1d5db" font-family="monospace" font-size="8">$95,000</text>
+            <text x="140" y="15" fill="#dfcaa9" font-family="monospace" font-size="8" font-weight="700">$9,500</text>
+          </g>
+          <g transform="translate(10, 78)">
+            <rect width="190" height="22" rx="2" fill="#16181f"/>
+            <text x="10" y="15" fill="#d1d5db" font-family="monospace" font-size="8">Charlie Brown</text>
+            <text x="80" y="15" fill="#d1d5db" font-family="monospace" font-size="8">$82,000</text>
+            <text x="140" y="15" fill="#dfcaa9" font-family="monospace" font-size="8" font-weight="700">$8,200</text>
+          </g>
+          <g transform="translate(10, 106)">
+            <rect width="190" height="22" rx="2" fill="#16181f"/>
+            <text x="10" y="15" fill="#d1d5db" font-family="monospace" font-size="8">Evan Wright</text>
+            <text x="80" y="15" fill="#d1d5db" font-family="monospace" font-size="8">$95,000</text>
+            <text x="140" y="15" fill="#dfcaa9" font-family="monospace" font-size="8" font-weight="700">$9,500</text>
+          </g>
         </g>
       </svg>
     `
@@ -248,39 +461,77 @@ window.GUIDED_STEPS = [
       return uniqueDepts;
     },
     svg: `
-      <svg viewBox="0 0 700 130" width="100%" height="130" xmlns="http://www.w3.org/2000/svg">
-        <rect width="700" height="130" fill="#0b0b0e" rx="6" stroke="#232328"/>
-        <!-- 8 Dept rows with duplicates -->
-        <g transform="translate(30, 20)">
-          <rect width="140" height="90" rx="4" fill="#141418" stroke="#33333b"/>
-          <text x="70" y="22" fill="#a1a1aa" font-family="monospace" font-size="9.5" text-anchor="middle">8 Projected Rows:</text>
-          <text x="70" y="38" fill="#71717a" font-family="monospace" font-size="8.5" text-anchor="middle">Engineering (1)</text>
-          <text x="70" y="50" fill="#71717a" font-family="monospace" font-size="8.5" text-anchor="middle">Engineering (2) [dup]</text>
-          <text x="70" y="62" fill="#71717a" font-family="monospace" font-size="8.5" text-anchor="middle">Engineering (3) [dup]</text>
-          <text x="70" y="74" fill="#71717a" font-family="monospace" font-size="8.5" text-anchor="middle">Marketing, Sales...</text>
+      <svg viewBox="0 0 780 190" width="100%" height="190" xmlns="http://www.w3.org/2000/svg">
+        <defs>
+          <marker id="arrow-dist" viewBox="0 0 10 10" refX="6" refY="5" markerWidth="6" markerHeight="6" orient="auto-start-reverse">
+            <path d="M 0 1 L 10 5 L 0 9 z" fill="#9ec5ad"/>
+          </marker>
+        </defs>
+        <rect width="780" height="190" fill="#0b0b0e" rx="6" stroke="#232328"/>
+
+        <!-- Left: 8 Raw Rows with Duplicate Departments -->
+        <g transform="translate(20, 15)">
+          <rect width="240" height="160" rx="4" fill="#121216" stroke="#33333b"/>
+          <rect width="240" height="20" rx="4" fill="#181a20"/>
+          <text x="10" y="14" fill="#a4b7cf" font-family="monospace" font-size="8.5" font-weight="700">INPUT: 8 Department Rows</text>
+
+          <g transform="translate(10, 26)">
+            <!-- Row 1, 3, 5: Engineering (Blue tint) -->
+            <text x="10" y="12" fill="#dfcaa9" font-family="monospace" font-size="8">1. Engineering (Alice)</text>
+            <text x="10" y="27" fill="#71717a" font-family="monospace" font-size="8">2. Marketing (Bob)</text>
+            <text x="10" y="42" fill="#dfcaa9" font-family="monospace" font-size="8">3. Engineering (Charlie)</text>
+            <text x="10" y="57" fill="#a4b7cf" font-family="monospace" font-size="8">4. Sales (Diana)</text>
+            <text x="10" y="72" fill="#dfcaa9" font-family="monospace" font-size="8">5. Engineering (Evan)</text>
+            <text x="10" y="87" fill="#a4b7cf" font-family="monospace" font-size="8">6. Sales (Fiona)</text>
+            <text x="10" y="102" fill="#71717a" font-family="monospace" font-size="8">7. Marketing (George)</text>
+            <text x="10" y="117" fill="#beafcc" font-family="monospace" font-size="8">8. Finance (Hannah)</text>
+          </g>
         </g>
 
-        <path d="M 180 65 L 250 65" stroke="#9ec5ad" stroke-width="2"/>
+        <!-- Center: Converging Arrows Matrix -->
+        <g transform="translate(265, 25)">
+          <!-- 3 Engineering rows converging to 1 -->
+          <path d="M 0 15 C 60 15, 90 35, 140 35" fill="none" stroke="#dfcaa9" stroke-width="1.8"/>
+          <path d="M 0 45 C 60 45, 90 35, 140 35" fill="none" stroke="#dfcaa9" stroke-width="1.8"/>
+          <path d="M 0 75 C 60 75, 90 35, 140 35" fill="none" stroke="#dfcaa9" stroke-width="1.8" marker-end="url(#arrow-dist)"/>
+          <text x="65" y="48" fill="#dfcaa9" font-family="monospace" font-size="7" font-weight="700">3 &rarr; 1 Eng</text>
 
-        <!-- DISTINCT Hash table -->
-        <g transform="translate(260, 20)">
-          <rect width="210" height="90" rx="4" fill="rgba(139, 179, 156, 0.12)" stroke="#9ec5ad"/>
-          <text x="105" y="30" fill="#9ec5ad" font-family="monospace" font-size="12" font-weight="700" text-anchor="middle">DISTINCT Hash Map</text>
-          <text x="105" y="50" fill="#d1d5db" font-family="monospace" font-size="9.5" text-anchor="middle">Checks tuple uniqueness</text>
-          <text x="105" y="66" fill="#71717a" font-family="monospace" font-size="9" text-anchor="middle">Discards matching duplicates</text>
-          <text x="105" y="80" fill="#9ec5ad" font-family="monospace" font-size="9" text-anchor="middle">8 rows &rarr; 4 unique departments</text>
+          <!-- 2 Marketing rows converging to 1 -->
+          <path d="M 0 30 C 60 30, 90 68, 140 68" fill="none" stroke="#71717a" stroke-width="1.8"/>
+          <path d="M 0 105 C 60 105, 90 68, 140 68" fill="none" stroke="#71717a" stroke-width="1.8" marker-end="url(#arrow-dist)"/>
+          <text x="65" y="80" fill="#71717a" font-family="monospace" font-size="7" font-weight="700">2 &rarr; 1 Mktg</text>
+
+          <!-- 2 Sales rows converging to 1 -->
+          <path d="M 0 60 C 60 60, 90 102, 140 102" fill="none" stroke="#a4b7cf" stroke-width="1.8"/>
+          <path d="M 0 90 C 60 90, 90 102, 140 102" fill="none" stroke="#a4b7cf" stroke-width="1.8" marker-end="url(#arrow-dist)"/>
+
+          <!-- 1 Finance straight -->
+          <path d="M 0 120 L 140 135" fill="none" stroke="#beafcc" stroke-width="1.8" marker-end="url(#arrow-dist)"/>
         </g>
 
-        <path d="M 480 65 L 550 65" stroke="#9ec5ad" stroke-width="2"/>
+        <!-- Right: Deduplicated Unique Rows -->
+        <g transform="translate(460, 25)">
+          <rect width="280" height="145" rx="4" fill="#121216" stroke="#9ec5ad" stroke-width="1.5"/>
+          <rect width="280" height="22" rx="4" fill="rgba(139, 179, 156, 0.15)"/>
+          <text x="10" y="15" fill="#9ec5ad" font-family="monospace" font-size="9" font-weight="700">OUTPUT: SELECT DISTINCT department</text>
 
-        <!-- 4 Unique outputs -->
-        <g transform="translate(560, 20)">
-          <rect width="110" height="90" rx="4" fill="#141418" stroke="#9ec5ad"/>
-          <text x="55" y="24" fill="#9ec5ad" font-family="monospace" font-size="10" font-weight="700" text-anchor="middle">4 Unique Rows</text>
-          <text x="55" y="42" fill="#dfcaa9" font-family="monospace" font-size="8.5" text-anchor="middle">Engineering</text>
-          <text x="55" y="56" fill="#dfcaa9" font-family="monospace" font-size="8.5" text-anchor="middle">Marketing</text>
-          <text x="55" y="70" fill="#dfcaa9" font-family="monospace" font-size="8.5" text-anchor="middle">Sales</text>
-          <text x="55" y="84" fill="#dfcaa9" font-family="monospace" font-size="8.5" text-anchor="middle">Finance</text>
+          <g transform="translate(15, 36)">
+            <rect y="0" width="250" height="22" rx="3" fill="#16181f" stroke="rgba(209, 184, 150, 0.4)"/>
+            <text x="12" y="15" fill="#dfcaa9" font-family="monospace" font-size="8.5" font-weight="700">Engineering</text>
+            <text x="240" y="15" fill="#71717a" font-family="monospace" font-size="7.5" text-anchor="end">Collapsed from 3 rows</text>
+
+            <rect y="26" width="250" height="22" rx="3" fill="#16181f" stroke="rgba(113, 113, 122, 0.4)"/>
+            <text x="12" y="41" fill="#d1d5db" font-family="monospace" font-size="8.5" font-weight="700">Marketing</text>
+            <text x="240" y="41" fill="#71717a" font-family="monospace" font-size="7.5" text-anchor="end">Collapsed from 2 rows</text>
+
+            <rect y="52" width="250" height="22" rx="3" fill="#16181f" stroke="rgba(164, 183, 207, 0.4)"/>
+            <text x="12" y="67" fill="#a4b7cf" font-family="monospace" font-size="8.5" font-weight="700">Sales</text>
+            <text x="240" y="67" fill="#71717a" font-family="monospace" font-size="7.5" text-anchor="end">Collapsed from 2 rows</text>
+
+            <rect y="78" width="250" height="22" rx="3" fill="#16181f" stroke="rgba(190, 175, 204, 0.4)"/>
+            <text x="12" y="93" fill="#beafcc" font-family="monospace" font-size="8.5" font-weight="700">Finance</text>
+            <text x="240" y="93" fill="#71717a" font-family="monospace" font-size="7.5" text-anchor="end">Single row</text>
+          </g>
         </g>
       </svg>
     `
@@ -321,40 +572,81 @@ window.GUIDED_STEPS = [
       }));
     },
     svg: `
-      <svg viewBox="0 0 700 130" width="100%" height="130" xmlns="http://www.w3.org/2000/svg">
-        <rect width="700" height="130" fill="#0b0b0e" rx="6" stroke="#232328"/>
-        <!-- Unsorted input -->
-        <g transform="translate(30, 25)">
-          <rect width="130" height="80" rx="4" fill="#141418" stroke="#33333b"/>
-          <text x="65" y="24" fill="#a1a1aa" font-family="monospace" font-size="9.5" text-anchor="middle">Unsorted Rows:</text>
-          <text x="65" y="42" fill="#71717a" font-family="monospace" font-size="8.5" text-anchor="middle">Alice ($95k)</text>
-          <text x="65" y="56" fill="#71717a" font-family="monospace" font-size="8.5" text-anchor="middle">Charlie ($82k)</text>
-          <text x="65" y="70" fill="#71717a" font-family="monospace" font-size="8.5" text-anchor="middle">Evan ($95k)</text>
-          <text x="65" y="84" fill="#71717a" font-family="monospace" font-size="8.5" text-anchor="middle">Hannah ($89k)...</text>
+      <svg viewBox="0 0 780 195" width="100%" height="195" xmlns="http://www.w3.org/2000/svg">
+        <defs>
+          <marker id="arrow-sort" viewBox="0 0 10 10" refX="6" refY="5" markerWidth="6" markerHeight="6" orient="auto-start-reverse">
+            <path d="M 0 1 L 10 5 L 0 9 z" fill="#dfcaa9"/>
+          </marker>
+        </defs>
+        <rect width="780" height="195" fill="#0b0b0e" rx="6" stroke="#232328"/>
+
+        <!-- Left: Unsorted 5 Qualifying Rows -->
+        <g transform="translate(20, 20)">
+          <rect width="240" height="155" rx="4" fill="#121216" stroke="#33333b"/>
+          <rect width="240" height="22" rx="4" fill="#181a20"/>
+          <text x="10" y="15" fill="#a4b7cf" font-family="monospace" font-size="8.5" font-weight="700">INPUT: Unsorted (Arbitrary Order)</text>
+
+          <g transform="translate(10, 32)">
+            <!-- Alice -->
+            <text x="5" y="15" fill="#d1d5db" font-family="monospace" font-size="8">Alice Smith &mdash; $95,000</text>
+            <!-- Charlie -->
+            <text x="5" y="38" fill="#d1d5db" font-family="monospace" font-size="8">Charlie Brown &mdash; $82,000</text>
+            <!-- Diana -->
+            <text x="5" y="61" fill="#d1d5db" font-family="monospace" font-size="8">Diana Prince &mdash; $74,000</text>
+            <!-- Evan -->
+            <text x="5" y="84" fill="#d1d5db" font-family="monospace" font-size="8">Evan Wright &mdash; $95,000</text>
+            <!-- Hannah -->
+            <text x="5" y="107" fill="#d1d5db" font-family="monospace" font-size="8">Hannah Abbott &mdash; $89,000</text>
+          </g>
         </g>
 
-        <path d="M 170 65 L 230 65" stroke="#dfcaa9" stroke-width="2"/>
+        <!-- Center: Cross-Over Sorting Flow Arrows -->
+        <g transform="translate(265, 30)">
+          <!-- Alice to Rank 1 -->
+          <path d="M 0 18 L 190 18" fill="none" stroke="#9ec5ad" stroke-width="2" marker-end="url(#arrow-sort)"/>
+          
+          <!-- Charlie to Rank 4 -->
+          <path d="M 0 41 C 80 41, 110 87, 190 87" fill="none" stroke="#dfcaa9" stroke-width="1.8" marker-end="url(#arrow-sort)"/>
 
-        <!-- QuickSort Engine with tie-breaker -->
-        <g transform="translate(240, 20)">
-          <rect width="230" height="90" rx="4" fill="rgba(209, 184, 150, 0.12)" stroke="#dfcaa9"/>
-          <text x="115" y="28" fill="#dfcaa9" font-family="monospace" font-size="12" font-weight="700" text-anchor="middle">ORDER BY Sorter Engine</text>
-          <text x="115" y="46" fill="#d1d5db" font-family="monospace" font-size="9.5" text-anchor="middle">Primary: salary DESC</text>
-          <text x="115" y="62" fill="#a4b7cf" font-family="monospace" font-size="9" text-anchor="middle">Tie Detected: Alice ($95k) == Evan ($95k)</text>
-          <text x="115" y="78" fill="#9ec5ad" font-family="monospace" font-size="9" text-anchor="middle">Tie-Breaker: name ASC &rarr; Alice &lt; Evan</text>
+          <!-- Diana to Rank 5 -->
+          <path d="M 0 64 C 80 64, 110 110, 190 110" fill="none" stroke="#dfcaa9" stroke-width="1.8" marker-end="url(#arrow-sort)"/>
+
+          <!-- Evan to Rank 2 (Tie Breaker!) -->
+          <path d="M 0 87 C 80 87, 110 41, 190 41" fill="none" stroke="#9ec5ad" stroke-width="2" marker-end="url(#arrow-sort)"/>
+
+          <!-- Hannah to Rank 3 -->
+          <path d="M 0 110 C 80 110, 110 64, 190 64" fill="none" stroke="#dfcaa9" stroke-width="1.8" marker-end="url(#arrow-sort)"/>
+
+          <!-- Tie-Breaker Callout Box -->
+          <g transform="translate(45, 118)">
+            <rect width="130" height="28" rx="3" fill="#1a1813" stroke="#dfcaa9"/>
+            <text x="65" y="12" fill="#dfcaa9" font-family="monospace" font-size="7.5" font-weight="700" text-anchor="middle">TIE DETECTED ($95k)</text>
+            <text x="65" y="22" fill="#9ec5ad" font-family="monospace" font-size="7" text-anchor="middle">name ASC: Alice &lt; Evan</text>
+          </g>
         </g>
 
-        <path d="M 480 65 L 550 65" stroke="#dfcaa9" stroke-width="2"/>
+        <!-- Right: Reordered Sorted Rows -->
+        <g transform="translate(500, 20)">
+          <rect width="260" height="155" rx="4" fill="#121216" stroke="#dfcaa9" stroke-width="1.5"/>
+          <rect width="260" height="22" rx="4" fill="rgba(209, 184, 150, 0.15)"/>
+          <text x="10" y="15" fill="#dfcaa9" font-family="monospace" font-size="8.5" font-weight="700">OUTPUT: ORDER BY salary DESC, name ASC</text>
 
-        <!-- Sorted Order -->
-        <g transform="translate(560, 20)">
-          <rect width="110" height="90" rx="4" fill="#141418" stroke="#dfcaa9"/>
-          <text x="55" y="22" fill="#dfcaa9" font-family="monospace" font-size="9.5" font-weight="700" text-anchor="middle">Guaranteed Order</text>
-          <text x="55" y="38" fill="#9ec5ad" font-family="monospace" font-size="8" text-anchor="middle">1. Alice ($95k)</text>
-          <text x="55" y="50" fill="#9ec5ad" font-family="monospace" font-size="8" text-anchor="middle">2. Evan ($95k)</text>
-          <text x="55" y="62" fill="#d1d5db" font-family="monospace" font-size="8" text-anchor="middle">3. Hannah ($89k)</text>
-          <text x="55" y="74" fill="#d1d5db" font-family="monospace" font-size="8" text-anchor="middle">4. Charlie ($82k)</text>
-          <text x="55" y="86" fill="#d1d5db" font-family="monospace" font-size="8" text-anchor="middle">5. Diana ($74k)</text>
+          <g transform="translate(10, 32)">
+            <rect y="0" width="240" height="20" rx="3" fill="#181a20" stroke="#9ec5ad"/>
+            <text x="8" y="14" fill="#9ec5ad" font-family="monospace" font-size="8" font-weight="700">#1 Alice Smith &mdash; $95,000</text>
+
+            <rect y="23" width="240" height="20" rx="3" fill="#181a20" stroke="#9ec5ad"/>
+            <text x="8" y="37" fill="#9ec5ad" font-family="monospace" font-size="8" font-weight="700">#2 Evan Wright &mdash; $95,000</text>
+
+            <rect y="46" width="240" height="20" rx="3" fill="#14151a"/>
+            <text x="8" y="60" fill="#d1d5db" font-family="monospace" font-size="8">#3 Hannah Abbott &mdash; $89,000</text>
+
+            <rect y="69" width="240" height="20" rx="3" fill="#14151a"/>
+            <text x="8" y="83" fill="#d1d5db" font-family="monospace" font-size="8">#4 Charlie Brown &mdash; $82,000</text>
+
+            <rect y="92" width="240" height="20" rx="3" fill="#14151a"/>
+            <text x="8" y="106" fill="#d1d5db" font-family="monospace" font-size="8">#5 Diana Prince &mdash; $74,000</text>
+          </g>
         </g>
       </svg>
     `
@@ -395,38 +687,81 @@ window.GUIDED_STEPS = [
       }));
     },
     svg: `
-      <svg viewBox="0 0 700 130" width="100%" height="130" xmlns="http://www.w3.org/2000/svg">
-        <rect width="700" height="130" fill="#0b0b0e" rx="6" stroke="#232328"/>
-        <!-- 5 sorted candidate rows -->
-        <g transform="translate(30, 20)">
-          <rect width="130" height="90" rx="4" fill="#141418" stroke="#33333b"/>
-          <text x="65" y="20" fill="#a1a1aa" font-family="monospace" font-size="9.5" text-anchor="middle">5 Sorted Candidates</text>
-          <text x="65" y="36" fill="#beafcc" font-family="monospace" font-size="8.5" text-anchor="middle">1. Alice ($95k)</text>
-          <text x="65" y="50" fill="#beafcc" font-family="monospace" font-size="8.5" text-anchor="middle">2. Evan ($95k)</text>
-          <text x="65" y="64" fill="#beafcc" font-family="monospace" font-size="8.5" text-anchor="middle">3. Hannah ($89k)</text>
-          <text x="65" y="78" fill="#52525b" font-family="monospace" font-size="8" text-anchor="middle">-- Cut Line --</text>
-          <text x="65" y="90" fill="#52525b" font-family="monospace" font-size="8" text-anchor="middle">4. Charlie, 5. Diana</text>
+      <svg viewBox="0 0 780 190" width="100%" height="190" xmlns="http://www.w3.org/2000/svg">
+        <defs>
+          <marker id="arrow-lim" viewBox="0 0 10 10" refX="6" refY="5" markerWidth="6" markerHeight="6" orient="auto-start-reverse">
+            <path d="M 0 1 L 10 5 L 0 9 z" fill="#beafcc"/>
+          </marker>
+        </defs>
+        <rect width="780" height="190" fill="#0b0b0e" rx="6" stroke="#232328"/>
+
+        <!-- Left: 5 Sorted Rows -->
+        <g transform="translate(20, 15)">
+          <rect width="250" height="160" rx="4" fill="#121216" stroke="#33333b"/>
+          <rect width="250" height="20" rx="4" fill="#181a20"/>
+          <text x="10" y="14" fill="#a4b7cf" font-family="monospace" font-size="8.5" font-weight="700">INPUT: 5 Sorted Candidate Rows</text>
+
+          <g transform="translate(10, 26)">
+            <!-- Top 3 -->
+            <rect y="5" width="230" height="20" rx="3" fill="#191720" stroke="#beafcc"/>
+            <text x="8" y="19" fill="#beafcc" font-family="monospace" font-size="8">1. Alice Smith ($95k)</text>
+
+            <rect y="29" width="230" height="20" rx="3" fill="#191720" stroke="#beafcc"/>
+            <text x="8" y="43" fill="#beafcc" font-family="monospace" font-size="8">2. Evan Wright ($95k)</text>
+
+            <rect y="53" width="230" height="20" rx="3" fill="#191720" stroke="#beafcc"/>
+            <text x="8" y="67" fill="#beafcc" font-family="monospace" font-size="8">3. Hannah Abbott ($89k)</text>
+
+            <!-- Truncation Divider -->
+            <line x1="0" y1="80" x2="230" y2="80" stroke="#c98877" stroke-width="2" stroke-dasharray="4,3"/>
+            <text x="115" y="93" fill="#c98877" font-family="monospace" font-size="7.5" font-weight="700" text-anchor="middle">&mdash;&mdash; LIMIT 3 CUT-OFF &mdash;&mdash;</text>
+
+            <!-- Below cutoff -->
+            <rect y="98" width="230" height="16" rx="3" fill="#141418"/>
+            <text x="8" y="110" fill="#52525b" font-family="monospace" font-size="7.5">4. Charlie Brown ($82k) [CLIPPED]</text>
+
+            <rect y="117" width="230" height="16" rx="3" fill="#141418"/>
+            <text x="8" y="129" fill="#52525b" font-family="monospace" font-size="7.5">5. Diana Prince ($74k) [CLIPPED]</text>
+          </g>
         </g>
 
-        <path d="M 170 65 L 240 65" stroke="#beafcc" stroke-width="2"/>
+        <!-- Center: LIMIT Barrier and Flow Arrows -->
+        <g transform="translate(285, 20)">
+          <!-- Top 3 Arrows Flowing Through -->
+          <path d="M 0 35 L 180 35" fill="none" stroke="#beafcc" stroke-width="2" marker-end="url(#arrow-lim)"/>
+          <path d="M 0 59 L 180 59" fill="none" stroke="#beafcc" stroke-width="2" marker-end="url(#arrow-lim)"/>
+          <path d="M 0 83 L 180 83" fill="none" stroke="#beafcc" stroke-width="2" marker-end="url(#arrow-lim)"/>
 
-        <!-- LIMIT Truncator -->
-        <g transform="translate(250, 25)">
-          <rect width="200" height="80" rx="4" fill="rgba(171, 155, 184, 0.12)" stroke="#beafcc"/>
-          <text x="100" y="32" fill="#beafcc" font-family="monospace" font-size="13" font-weight="700" text-anchor="middle">LIMIT 3</text>
-          <text x="100" y="50" fill="#d1d5db" font-family="monospace" font-size="10" text-anchor="middle">Clips result buffer at row 3</text>
-          <text x="100" y="66" fill="#71717a" font-family="monospace" font-size="9" text-anchor="middle">Rows 4 &amp; 5 discarded</text>
+          <!-- Blocked Truncation Symbol -->
+          <g transform="translate(45, 115)">
+            <rect width="100" height="28" rx="3" fill="#1c1618" stroke="#c98877"/>
+            <text x="50" y="12" fill="#c98877" font-family="monospace" font-size="7.5" font-weight="700" text-anchor="middle">BUFFER CLIPPED</text>
+            <text x="50" y="22" fill="#71717a" font-family="monospace" font-size="7" text-anchor="middle">Rows 4 &amp; 5 Discarded</text>
+          </g>
         </g>
 
-        <path d="M 460 65 L 530 65" stroke="#beafcc" stroke-width="2"/>
+        <!-- Right: Final Result Delivered -->
+        <g transform="translate(510, 15)">
+          <rect width="250" height="160" rx="4" fill="#121216" stroke="#beafcc" stroke-width="1.5"/>
+          <rect width="250" height="20" rx="4" fill="rgba(190, 175, 204, 0.15)"/>
+          <text x="10" y="14" fill="#beafcc" font-family="monospace" font-size="8.5" font-weight="700">OUTPUT: Final Result Packet (3 Rows)</text>
 
-        <!-- Final Client Result -->
-        <g transform="translate(540, 20)">
-          <rect width="130" height="90" rx="4" fill="rgba(171, 155, 184, 0.15)" stroke="#beafcc"/>
-          <text x="65" y="24" fill="#beafcc" font-family="monospace" font-size="10" font-weight="700" text-anchor="middle">Delivered Output</text>
-          <text x="65" y="44" fill="#dfcaa9" font-family="monospace" font-size="8.5" font-weight="600" text-anchor="middle">1. Alice Smith ($95k)</text>
-          <text x="65" y="60" fill="#dfcaa9" font-family="monospace" font-size="8.5" font-weight="600" text-anchor="middle">2. Evan Wright ($95k)</text>
-          <text x="65" y="76" fill="#dfcaa9" font-family="monospace" font-size="8.5" font-weight="600" text-anchor="middle">3. Hannah Abbott ($89k)</text>
+          <g transform="translate(10, 32)">
+            <rect y="0" width="230" height="32" rx="3" fill="#17151e" stroke="rgba(190, 175, 204, 0.3)"/>
+            <text x="10" y="15" fill="#dfcaa9" font-family="monospace" font-size="8.5" font-weight="700">#1 Alice Smith</text>
+            <text x="10" y="27" fill="#71717a" font-family="monospace" font-size="7.5">Engineering &bull; $95,000</text>
+            <text x="215" y="20" fill="#9ec5ad" font-family="monospace" font-size="8" text-anchor="end">&check; Transmitted</text>
+
+            <rect y="38" width="230" height="32" rx="3" fill="#17151e" stroke="rgba(190, 175, 204, 0.3)"/>
+            <text x="10" y="53" fill="#dfcaa9" font-family="monospace" font-size="8.5" font-weight="700">#2 Evan Wright</text>
+            <text x="10" y="65" fill="#71717a" font-family="monospace" font-size="7.5">Engineering &bull; $95,000</text>
+            <text x="215" y="58" fill="#9ec5ad" font-family="monospace" font-size="8" text-anchor="end">&check; Transmitted</text>
+
+            <rect y="76" width="230" height="32" rx="3" fill="#17151e" stroke="rgba(190, 175, 204, 0.3)"/>
+            <text x="10" y="91" fill="#dfcaa9" font-family="monospace" font-size="8.5" font-weight="700">#3 Hannah Abbott</text>
+            <text x="10" y="103" fill="#71717a" font-family="monospace" font-size="7.5">Finance &bull; $89,000</text>
+            <text x="215" y="96" fill="#9ec5ad" font-family="monospace" font-size="8" text-anchor="end">&check; Transmitted</text>
+          </g>
         </g>
       </svg>
     `

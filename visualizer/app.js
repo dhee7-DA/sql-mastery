@@ -1345,6 +1345,7 @@ function initCurriculumSystem() {
 
       // Lazy render on view switch
       if (targetId === 'viewGuidedLab') renderGuidedStep(currentGuidedStep);
+      if (targetId === 'viewDeconstructor') renderDeconstructedProblem(activeDeconstructorId);
       if (targetId === 'viewExplainer') renderKeywordExplainer();
       if (targetId === 'viewMcqs') renderMcqs();
       if (targetId === 'viewCases') renderCaseStudies();
@@ -1352,8 +1353,9 @@ function initCurriculumSystem() {
     });
   });
 
-  // Initialize the Guided Lab default view
+  // Initialize the Guided Lab default view & Problem Deconstructor
   initGuidedLab();
+  initDeconstructorSystem();
 
   // Difficulty filter pills in Problem Bank
   document.querySelectorAll('.diff-filter-btn').forEach(btn => {
@@ -1363,6 +1365,127 @@ function initCurriculumSystem() {
       renderProblemBank(btn.dataset.diff);
     });
   });
+}
+
+// =============================================================================
+// PROBLEM DECONSTRUCTOR & BUSINESS CONTEXT CONTROLLER
+// =============================================================================
+
+let activeDeconstructorId = 'triangle';
+
+function initDeconstructorSystem() {
+  const select = document.getElementById('deconstructorPresetSelect');
+  if (!select || !window.DECONSTRUCTOR_PRESETS) return;
+
+  let opts = '';
+  window.DECONSTRUCTOR_PRESETS.forEach(p => {
+    opts += `<option value="${p.id}">${p.title} (${p.difficulty})</option>`;
+  });
+  select.innerHTML = opts;
+
+  select.addEventListener('change', (e) => {
+    activeDeconstructorId = e.target.value;
+    renderDeconstructedProblem(activeDeconstructorId);
+  });
+
+  renderDeconstructedProblem(activeDeconstructorId);
+}
+
+function renderDeconstructedProblem(problemId = 'triangle') {
+  activeDeconstructorId = problemId;
+  const container = document.getElementById('deconstructorBody');
+  if (!container || !window.DECONSTRUCTOR_PRESETS) return;
+
+  const problem = window.DECONSTRUCTOR_PRESETS.find(p => p.id === problemId) || window.DECONSTRUCTOR_PRESETS[0];
+
+  container.innerHTML = `
+    <div class="deconstruct-card">
+      <div class="deconstruct-meta-header">
+        <div class="deconstruct-title-row">
+          <h3 class="deconstruct-main-title">${problem.title}</h3>
+          <span class="badge-diff diff-easy">${problem.difficulty}</span>
+          <span class="points-pill">+${problem.points} Pts</span>
+        </div>
+        <div style="display: flex; gap: 6px;">
+          ${problem.tags.map(t => `<span class="deconstruct-tag-pill">${t}</span>`).join('')}
+          <span class="status-pill" style="font-size: 10.5px;">Schema: ${problem.schema.table}</span>
+        </div>
+      </div>
+
+      <!-- Raw Problem Prompt -->
+      <div style="background: #09090b; border: 1px solid var(--border-default); border-radius: var(--radius-sm); padding: 12px 16px;">
+        <span style="font-size: 10px; font-family: var(--font-mono); color: var(--text-muted); display: block; margin-bottom: 4px;">OFFICIAL PROBLEM PROMPT:</span>
+        <p style="font-size: 12px; line-height: 1.55; color: var(--text-secondary); margin: 0; white-space: pre-line;">${problem.rawPrompt}</p>
+      </div>
+
+      <!-- Part 1: De-jargonized Goal & Mental Model -->
+      <div class="deconstruct-section section-goal">
+        <div class="section-header-title" style="color: #9ec5ad;">
+          <span>🎯 Part 1: De-Jargonized Goal &amp; Mental Model</span>
+        </div>
+        <p style="font-size: 12.5px; line-height: 1.6; color: var(--text-primary); margin: 0;">
+          <strong>Target Output:</strong> ${problem.plainEnglishGoal}
+        </p>
+        <p style="font-size: 12px; line-height: 1.6; color: #a1a1aa; margin: 0;">
+          <strong>Intuitive Mental Model:</strong> ${problem.mentalModel}
+        </p>
+      </div>
+
+      <!-- Part 2: Critical Edge Cases & Hidden Traps -->
+      <div class="deconstruct-section section-traps">
+        <div class="section-header-title" style="color: #d69d8f;">
+          <span>⚠️ Part 2: Critical Edge Cases &amp; Hidden Traps (Why Test Cases Fail)</span>
+        </div>
+        <div>
+          ${problem.edgeCases.map(ec => `
+            <div class="trap-item">
+              <div class="trap-title">&cross; Trap: ${ec.trap}</div>
+              <p class="trap-detail">${ec.detail}</p>
+            </div>
+          `).join('')}
+        </div>
+      </div>
+
+      <!-- Part 3: Real-World Corporate & Industry Application -->
+      <div class="deconstruct-section section-corporate">
+        <div class="section-header-title" style="color: #a4b7cf;">
+          <span>🏢 Part 3: Real-World Corporate &amp; Industry Application (Why Companies Care)</span>
+        </div>
+        <div class="corp-badge-row">
+          <span class="corp-badge">Industry: ${problem.corporateContext.industry}</span>
+          <span class="corp-badge">Role: ${problem.corporateContext.role}</span>
+        </div>
+        <p class="corp-desc-text">${problem.corporateContext.realWorldProblem}</p>
+        <div class="kpi-impact-box">
+          <strong>Business KPI Impact:</strong> ${problem.corporateContext.kpiImpact}
+        </div>
+      </div>
+
+      <!-- Part 4: Physical Engine Execution Blueprint & Query -->
+      <div class="deconstruct-section section-blueprint">
+        <div class="section-header-title" style="color: #dfcaa9;">
+          <span>📐 Part 4: Physical Execution Blueprint &amp; Query</span>
+        </div>
+        <div style="margin-bottom: 10px;">
+          ${problem.executionBlueprint.map(bp => `
+            <div class="blueprint-step-row">
+              <span class="blueprint-step-tag">${bp.step}</span>
+              <span class="blueprint-step-action">${bp.action}</span>
+            </div>
+          `).join('')}
+        </div>
+        <div class="guided-code-box" style="margin-bottom: 12px;">
+          <code>${problem.solutionSQL}</code>
+        </div>
+        <div style="display: flex; justify-content: flex-end;">
+          <button class="btn-solve-in-studio" onclick="switchToStudioWithQuery(\`${problem.solutionSQL.replace(/`/g, '\\`')}\`, '${problem.schema.table}')">
+            <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polygon points="5 3 19 12 5 21 5 3"></polygon></svg>
+            Simulate in Studio / Visualizer
+          </button>
+        </div>
+      </div>
+    </div>
+  `;
 }
 
 // =============================================================================
