@@ -2446,6 +2446,9 @@ function renderProblemBank(filter = 'all') {
 let currentQuestIndex = 0;
 let questSliderValue = 80000;
 let userWordBankTray = [];
+let userSlotSelections = {};
+let fillBlankChecked = false;
+let fillBlankPassed = false;
 let bugIsFixed = false;
 
 function initQuestsSystem() {
@@ -2461,7 +2464,7 @@ function renderQuestStepperTrack() {
   if (!track || !window.QUESTS_DATA) return;
 
   const total = window.QUESTS_DATA.length;
-  if (progressText) progressText.textContent = `Quest ${currentQuestIndex + 1} of ${total}`;
+  if (progressText) progressText.textContent = `Level ${currentQuestIndex + 1} of ${total}`;
   if (progressBarFill) progressBarFill.style.width = `${((currentQuestIndex + 1) / total) * 100}%`;
 
   let html = '';
@@ -2469,7 +2472,7 @@ function renderQuestStepperTrack() {
     const isActive = idx === currentQuestIndex;
     const isDone = idx < currentQuestIndex;
     html += `
-      <button class="quest-step-pill ${isActive ? 'active' : ''} ${isDone ? 'completed' : ''}" onclick="setQuestIndex(${idx})">
+      <button class="quest-step-pill ${isActive ? 'active' : ''} ${isDone ? 'completed' : ''}" style="min-width: 80px;" onclick="setQuestIndex(${idx})">
         <span>${isDone ? '&check;' : idx + 1}</span>
         <span>${q.title.split(':')[0]}</span>
       </button>
@@ -2481,6 +2484,9 @@ function renderQuestStepperTrack() {
 function setQuestIndex(idx) {
   currentQuestIndex = idx;
   userWordBankTray = [];
+  userSlotSelections = {};
+  fillBlankChecked = false;
+  fillBlankPassed = false;
   bugIsFixed = false;
   renderQuestStepperTrack();
   renderActiveQuest(idx);
@@ -2492,7 +2498,9 @@ function renderActiveQuest(idx) {
 
   const quest = window.QUESTS_DATA[idx] || window.QUESTS_DATA[0];
 
-  if (quest.type === 'slider') {
+  if (quest.type === 'fill_blank') {
+    renderFillBlankQuest(container, quest);
+  } else if (quest.type === 'slider') {
     renderSliderQuest(container, quest);
   } else if (quest.type === 'wordbank') {
     renderWordBankQuest(container, quest);
@@ -2501,6 +2509,130 @@ function renderActiveQuest(idx) {
   } else if (quest.type === 'boss') {
     renderBossQuest(container, quest);
   }
+}
+
+// --- FILL IN THE BLANK QUEST RENDERER ---
+function renderFillBlankQuest(container, quest) {
+  const totalSlots = Object.keys(quest.slots).length;
+  const filledCount = Object.keys(userSlotSelections).length;
+
+  let codeHtml = '';
+  quest.template.forEach(item => {
+    if (item.isBlank) {
+      const currentVal = userSlotSelections[item.slotId];
+      let stateClass = '';
+      if (currentVal) stateClass = 'filled';
+      if (fillBlankChecked) {
+        stateClass = (currentVal === quest.slots[item.slotId].correct) ? 'correct' : 'incorrect';
+      }
+      codeHtml += `<span class="blank-slot ${stateClass}">${currentVal || item.placeholder}</span>`;
+    } else {
+      codeHtml += item.text;
+    }
+  });
+
+  let choicesHtml = '';
+  Object.keys(quest.slots).forEach((slotKey, idx) => {
+    const slotInfo = quest.slots[slotKey];
+    choicesHtml += `
+      <div class="slot-choice-row">
+        <span class="choice-label">BLANK #${idx + 1}:</span>
+        ${slotInfo.options.map(opt => `
+          <button class="choice-pill ${userSlotSelections[slotKey] === opt ? 'selected' : ''}" onclick="selectSlotChoice('${slotKey}', '${opt}')">${opt}</button>
+        `).join('')}
+      </div>
+    `;
+  });
+
+  const allSlotsFilled = filledCount === totalSlots;
+
+  container.innerHTML = `
+    <div class="quest-card-header">
+      <div>
+        <h3 class="quest-card-title">${quest.title}</h3>
+        <p class="quest-card-subtitle">${quest.subtitle}</p>
+      </div>
+      <span class="status-pill" style="font-size: 11px;">Category: ${quest.category}</span>
+    </div>
+
+    <!-- Task Goal -->
+    <div style="background: #111114; border: 1px solid var(--border-default); border-radius: var(--radius-sm); padding: 12px 16px;">
+      <span style="font-size: 10px; font-family: var(--font-mono); color: var(--text-muted); display: block; margin-bottom: 2px;">TASK INSTRUCTION:</span>
+      <span style="font-size: 13px; font-weight: 600; color: var(--text-primary);">${quest.task}</span>
+    </div>
+
+    <!-- Interactive Code Template with Glowing Blanks -->
+    <div>
+      <span style="font-size: 10px; font-family: var(--font-mono); color: var(--text-muted); display: block; margin-bottom: 6px;">FILL IN THE BLANK(S):</span>
+      <div class="fill-blank-code-container"><code>${codeHtml}</code></div>
+    </div>
+
+    <!-- Choice Bank -->
+    <div>
+      <span style="font-size: 10px; font-family: var(--font-mono); color: var(--text-muted); display: block; margin-bottom: 6px;">SELECT YOUR OPTIONS:</span>
+      <div class="slot-choice-bank">
+        ${choicesHtml}
+      </div>
+    </div>
+
+    <!-- Result Feedback Banner -->
+    ${fillBlankChecked ? (fillBlankPassed ? `
+      <div style="background: rgba(158, 197, 173, 0.1); border: 1px solid #9ec5ad; border-radius: var(--radius-sm); padding: 12px 16px; display: flex; align-items: center; gap: 10px;">
+        <span style="color: #9ec5ad; font-size: 18px;">&check;</span>
+        <div>
+          <div style="font-size: 13px; font-weight: 700; color: #9ec5ad; margin-bottom: 2px;">🎉 Brilliant! Correct Answer!</div>
+          <div style="font-size: 11.5px; color: var(--text-secondary);">${quest.explanation}</div>
+        </div>
+      </div>
+    ` : `
+      <div style="background: rgba(214, 157, 143, 0.1); border: 1px solid #d69d8f; border-radius: var(--radius-sm); padding: 12px 16px; display: flex; align-items: center; gap: 10px;">
+        <span style="color: #d69d8f; font-size: 18px;">&cross;</span>
+        <div>
+          <div style="font-size: 13px; font-weight: 700; color: #d69d8f; margin-bottom: 2px;">Not quite right yet!</div>
+          <div style="font-size: 11.5px; color: var(--text-secondary);">Check the highlighted red blanks and try choosing a different keyword.</div>
+        </div>
+      </div>
+    `) : ''}
+
+    <!-- Action Bar -->
+    <div style="display: flex; justify-content: space-between; align-items: center; margin-top: 10px;">
+      <button class="card-nav-btn" onclick="userSlotSelections = {}; fillBlankChecked = false; renderActiveQuest(${currentQuestIndex});">&orarr; Reset Blanks</button>
+      
+      <div style="display: flex; gap: 10px;">
+        <button class="btn-solve-in-studio" ${!allSlotsFilled ? 'disabled' : ''} style="padding: 7px 18px; font-weight: 600;" onclick="checkFillBlankAnswer()">
+          Check Answer &check;
+        </button>
+
+        ${fillBlankPassed ? `
+          <button class="card-nav-btn" style="background: #9ec5ad; color: #09090b; font-weight: 700;" onclick="setQuestIndex(${currentQuestIndex + 1})">
+            Next Level (${currentQuestIndex + 2 < 10 ? '0' + (currentQuestIndex + 2) : currentQuestIndex + 2}) &rarr;
+          </button>
+        ` : ''}
+      </div>
+    </div>
+  `;
+}
+
+function selectSlotChoice(slotId, value) {
+  userSlotSelections[slotId] = value;
+  fillBlankChecked = false;
+  renderActiveQuest(currentQuestIndex);
+}
+
+function checkFillBlankAnswer() {
+  const quest = window.QUESTS_DATA[currentQuestIndex];
+  if (!quest || quest.type !== 'fill_blank') return;
+
+  let allCorrect = true;
+  Object.keys(quest.slots).forEach(slotKey => {
+    if (userSlotSelections[slotKey] !== quest.slots[slotKey].correct) {
+      allCorrect = false;
+    }
+  });
+
+  fillBlankChecked = true;
+  fillBlankPassed = allCorrect;
+  renderActiveQuest(currentQuestIndex);
 }
 
 // --- QUEST 1: Live Threshold Slider Scaffolder ---

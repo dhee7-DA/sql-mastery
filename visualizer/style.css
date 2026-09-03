@@ -2718,3 +2718,110 @@ body {
   background: #09090b;
   border: 1px solid var(--border-default);
 }
+
+/* Fill in the Blank Styling */
+.fill-blank-code-container {
+  background: #09090b;
+  border: 1px solid var(--border-default);
+  border-radius: var(--radius-sm);
+  padding: 18px 22px;
+  font-family: var(--font-mono);
+  font-size: 13.5px;
+  line-height: 2.2;
+  color: #e4e4e7;
+  white-space: pre-wrap;
+}
+
+.blank-slot {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  min-width: 85px;
+  height: 28px;
+  padding: 0 10px;
+  margin: 0 4px;
+  background: #141418;
+  border: 1.5px dashed #dfcaa9;
+  border-radius: 4px;
+  color: #dfcaa9;
+  font-weight: 700;
+  cursor: pointer;
+  vertical-align: middle;
+  transition: all 0.15s ease;
+}
+
+.blank-slot:hover {
+  background: rgba(223, 202, 169, 0.1);
+  border-color: #f0debf;
+}
+
+.blank-slot.filled {
+  border-style: solid;
+  border-color: #dfcaa9;
+  background: rgba(223, 202, 169, 0.15);
+  color: #fff;
+}
+
+.blank-slot.correct {
+  border-style: solid;
+  border-color: #9ec5ad;
+  background: rgba(158, 197, 173, 0.15);
+  color: #9ec5ad;
+}
+
+.blank-slot.incorrect {
+  border-style: solid;
+  border-color: #d69d8f;
+  background: rgba(214, 157, 143, 0.15);
+  color: #d69d8f;
+}
+
+.slot-choice-bank {
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+  background: #111114;
+  border: 1px solid var(--border-default);
+  border-radius: var(--radius-sm);
+  padding: 14px 18px;
+}
+
+.slot-choice-row {
+  display: flex;
+  align-items: center;
+  flex-wrap: wrap;
+  gap: 8px;
+}
+
+.choice-label {
+  font-size: 11px;
+  font-family: var(--font-mono);
+  color: var(--text-muted);
+  min-width: 80px;
+}
+
+.choice-pill {
+  background: #18181c;
+  border: 1px solid var(--border-default);
+  border-radius: 6px;
+  color: var(--text-secondary);
+  font-family: var(--font-mono);
+  font-size: 12px;
+  font-weight: 600;
+  padding: 5px 12px;
+  cursor: pointer;
+  transition: all 0.15s ease;
+}
+
+.choice-pill:hover {
+  background: #24242c;
+  color: #fff;
+  border-color: #52525b;
+  transform: translateY(-1px);
+}
+
+.choice-pill.selected {
+  background: rgba(223, 202, 169, 0.2);
+  border-color: #dfcaa9;
+  color: #dfcaa9;
+}
