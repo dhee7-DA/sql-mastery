@@ -1606,16 +1606,34 @@ function renderGuidedStep(stepNum) {
         &larr; Previous (${prevStep ? window.GUIDED_STEPS[prevStep - 1].keyword : 'Start'})
       </button>
 
-      <button class="btn-solve-in-studio" onclick="switchToMcqsWithKeyword('${step.keyword}')">
-        <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M9 11l3 3L22 4"></path><path d="M21 12v7a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h11"></path></svg>
-        Practice ${step.keyword} MCQs
-      </button>
+      <div style="display: flex; gap: 8px; align-items: center;">
+        <button class="card-nav-btn" onclick="switchToExplainerWithKeyword('${step.id}')">
+          <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="10"></circle><line x1="12" y1="16" x2="12" y2="12"></line><line x1="12" y1="8" x2="12.01" y2="8"></line></svg>
+          ${step.keyword} Study Notes
+        </button>
+        <button class="btn-solve-in-studio" onclick="switchToMcqsWithKeyword('${step.keyword}')">
+          <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M9 11l3 3L22 4"></path><path d="M21 12v7a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h11"></path></svg>
+          Practice ${step.keyword} MCQs
+        </button>
+      </div>
 
       <button class="card-nav-btn" style="background: var(--text-primary); color: #09090b; font-weight: 600;" onclick="${nextStep ? `renderGuidedStep(${nextStep})` : `switchToMcqsWithKeyword('ALL')`}">
         ${nextStep ? `Next: Step 0${nextStep} (${window.GUIDED_STEPS[nextStep - 1].keyword}) &rarr;` : `Complete Lab &rarr;`}
       </button>
     </div>
   `;
+}
+
+function switchToExplainerWithKeyword(keywordId) {
+  document.querySelectorAll('.nav-tab').forEach(t => t.classList.remove('active'));
+  document.querySelectorAll('.view-panel').forEach(p => p.classList.remove('active'));
+
+  const tab = document.querySelector('.nav-tab[data-view="viewExplainer"]');
+  const view = document.getElementById('viewExplainer');
+  if (tab) tab.classList.add('active');
+  if (view) view.classList.add('active');
+
+  renderKeywordExplainer(keywordId.toLowerCase());
 }
 
 function switchToStudioWithQuery(query, table) {
