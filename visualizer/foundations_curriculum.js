@@ -1,0 +1,522 @@
+// =============================================================================
+// FOUNDATIONS CURRICULUM DATA: KEYWORDS, MCQS, CASE STUDIES & PROBLEMS
+// =============================================================================
+
+window.FOUNDATIONS_DATA = {
+  // ---------------------------------------------------------------------------
+  // 1. KEYWORD ENCYCLOPEDIA & VISUAL EXPLAINERS
+  // ---------------------------------------------------------------------------
+  keywords: [
+    {
+      id: 'from',
+      name: 'FROM',
+      category: 'Source Binding',
+      badgeClass: 'pill-from',
+      executionOrder: '01 (Physical First)',
+      summary: 'Specifies the source table or relation. Allocates the initial dataset in engine memory.',
+      concept: 'The SQL query engine ALWAYS executes FROM before anything else. It binds the table from disk into a working memory buffer. Without FROM, the query engine does not know what columns or rows exist.',
+      syntax: 'FROM table_name [AS alias]',
+      rules: [
+        'Executes as Step 01 in the physical query pipeline.',
+        'Creates the virtual working table that subsequent clauses (WHERE, GROUP BY, SELECT) operate on.',
+        'Table aliases defined here are accessible everywhere else in the query.'
+      ],
+      gotcha: 'You cannot use column aliases created in SELECT inside the FROM clause because SELECT has not executed yet.',
+      svgDiagram: `
+        <svg viewBox="0 0 600 120" width="100%" height="120" xmlns="http://www.w3.org/2000/svg">
+          <rect width="600" height="120" fill="#0c0c0f" rx="6" stroke="#232328"/>
+          <rect x="30" y="35" width="110" height="50" rx="4" fill="#141418" stroke="#33333b"/>
+          <text x="85" y="58" fill="#a4b7cf" font-family="monospace" font-size="11" font-weight="700" text-anchor="middle">PHYSICAL DISK</text>
+          <text x="85" y="74" fill="#71717a" font-family="monospace" font-size="9" text-anchor="middle">Storage Engine</text>
+
+          <path d="M 145 60 L 210 60" stroke="#8da2be" stroke-width="2" stroke-dasharray="4,4"/>
+
+          <rect x="215" y="30" width="160" height="60" rx="4" fill="rgba(141, 162, 190, 0.12)" stroke="#8da2be"/>
+          <text x="295" y="54" fill="#8da2be" font-family="monospace" font-size="12" font-weight="700" text-anchor="middle">FROM [Table]</text>
+          <text x="295" y="72" fill="#d1d5db" font-family="monospace" font-size="10" text-anchor="middle">Working Set Allocated</text>
+
+          <path d="M 380 60 L 445 60" stroke="#8da2be" stroke-width="2"/>
+
+          <rect x="450" y="35" width="120" height="50" rx="4" fill="#141418" stroke="#33333b"/>
+          <text x="510" y="58" fill="#71717a" font-family="monospace" font-size="11" font-weight="700" text-anchor="middle">TO WHERE / ON</text>
+          <text x="510" y="74" fill="#52525b" font-family="monospace" font-size="9" text-anchor="middle">Next Evaluation</text>
+        </svg>
+      `
+    },
+    {
+      id: 'where',
+      name: 'WHERE',
+      category: 'Row Filtering',
+      badgeClass: 'pill-where',
+      executionOrder: '02 (Pre-Aggregation Filter)',
+      summary: 'Filters individual rows based on boolean predicates (TRUE / FALSE / UNKNOWN).',
+      concept: 'WHERE inspects each row in the working table one-by-one. If the predicate evaluates to TRUE, the row is kept. If it evaluates to FALSE or NULL (UNKNOWN), the row is immediately discarded. This happens BEFORE projection (SELECT) or grouping.',
+      syntax: 'WHERE condition_1 [AND | OR] condition_2',
+      rules: [
+        'Executes as Step 02, immediately after FROM.',
+        'Operates on raw table rows before SELECT column aliases exist.',
+        'Cannot contain aggregate functions like COUNT() or SUM() (use HAVING for aggregate filters).',
+        'Three-valued logic: TRUE, FALSE, and UNKNOWN (NULL). Only TRUE passes!'
+      ],
+      gotcha: 'Writing "WHERE salary_alias > 5000" throws an Unknown Column error because SELECT has not run yet!',
+      svgDiagram: `
+        <svg viewBox="0 0 600 120" width="100%" height="120" xmlns="http://www.w3.org/2000/svg">
+          <rect width="600" height="120" fill="#0c0c0f" rx="6" stroke="#232328"/>
+          <rect x="30" y="35" width="100" height="50" rx="4" fill="#141418" stroke="#33333b"/>
+          <text x="80" y="58" fill="#d1d5db" font-family="monospace" font-size="11" font-weight="700" text-anchor="middle">ALL ROWS</text>
+          <text x="80" y="74" fill="#71717a" font-family="monospace" font-size="9" text-anchor="middle">From FROM (100%)</text>
+
+          <path d="M 135 60 L 205 60" stroke="#c98877" stroke-width="2"/>
+
+          <rect x="210" y="25" width="180" height="70" rx="4" fill="rgba(201, 136, 119, 0.12)" stroke="#c98877"/>
+          <text x="300" y="48" fill="#d69d8f" font-family="monospace" font-size="12" font-weight="700" text-anchor="middle">WHERE Predicate</text>
+          <text x="300" y="66" fill="#9ec5ad" font-family="monospace" font-size="10" text-anchor="middle">&bull; TRUE &rarr; Keep Row</text>
+          <text x="300" y="82" fill="#c98877" font-family="monospace" font-size="10" text-anchor="middle">&bull; FALSE / NULL &rarr; Drop</text>
+
+          <path d="M 395 60 L 465 60" stroke="#c98877" stroke-width="2"/>
+          <rect x="470" y="35" width="100" height="50" rx="4" fill="#141418" stroke="#33333b"/>
+          <text x="520" y="58" fill="#9ec5ad" font-family="monospace" font-size="11" font-weight="700" text-anchor="middle">PASSED ROWS</text>
+          <text x="520" y="74" fill="#71717a" font-family="monospace" font-size="9" text-anchor="middle">Filtered Sub-set</text>
+        </svg>
+      `
+    },
+    {
+      id: 'select',
+      name: 'SELECT',
+      category: 'Column Projection',
+      badgeClass: 'pill-select',
+      executionOrder: '03 (Post-Filter Projection)',
+      summary: 'Specifies which columns and computed expressions appear in the final output.',
+      concept: 'SELECT determines the horizontal shape of the result table. It does not select rows—it projects columns! In SELECT, you can calculate mathematical expressions, format strings with functions like LENGTH() or RIGHT(), and introduce column aliases.',
+      syntax: 'SELECT column1, column2, expression AS alias_name',
+      rules: [
+        'Executes AFTER FROM and WHERE, but BEFORE DISTINCT, ORDER BY, and LIMIT.',
+        'This is where column aliases (AS alias) are born and named in query memory.',
+        'Selecting specific columns (SELECT name, salary) is far more efficient than SELECT * in production databases.'
+      ],
+      gotcha: 'SELECT does NOT filter rows; row filtering belongs entirely to WHERE.',
+      svgDiagram: `
+        <svg viewBox="0 0 600 120" width="100%" height="120" xmlns="http://www.w3.org/2000/svg">
+          <rect width="600" height="120" fill="#0c0c0f" rx="6" stroke="#232328"/>
+          <rect x="30" y="35" width="120" height="50" rx="4" fill="#141418" stroke="#33333b"/>
+          <text x="90" y="56" fill="#a1a1aa" font-family="monospace" font-size="10" text-anchor="middle">Raw Table Columns</text>
+          <text x="90" y="72" fill="#71717a" font-family="monospace" font-size="9" text-anchor="middle">[ID, Name, Salary, Dept, ...]</text>
+
+          <path d="M 155 60 L 215 60" stroke="#9ec5ad" stroke-width="2"/>
+
+          <rect x="220" y="25" width="170" height="70" rx="4" fill="rgba(139, 179, 156, 0.12)" stroke="#9ec5ad"/>
+          <text x="305" y="48" fill="#9ec5ad" font-family="monospace" font-size="12" font-weight="700" text-anchor="middle">SELECT Projection</text>
+          <text x="305" y="66" fill="#d1d5db" font-family="monospace" font-size="10" text-anchor="middle">Extracts exact columns</text>
+          <text x="305" y="82" fill="#dfcaa9" font-family="monospace" font-size="9" text-anchor="middle">Computes AS Aliases</text>
+
+          <path d="M 395 60 L 455 60" stroke="#9ec5ad" stroke-width="2"/>
+
+          <rect x="460" y="35" width="115" height="50" rx="4" fill="#141418" stroke="#33333b"/>
+          <text x="517" y="58" fill="#9ec5ad" font-family="monospace" font-size="11" font-weight="700" text-anchor="middle">FINAL SHAPE</text>
+          <text x="517" y="74" fill="#71717a" font-family="monospace" font-size="9" text-anchor="middle">Only desired fields</text>
+        </svg>
+      `
+    },
+    {
+      id: 'distinct',
+      name: 'DISTINCT',
+      category: 'Deduplication',
+      badgeClass: 'pill-select',
+      executionOrder: '04 (Post-Projection Deduplication)',
+      summary: 'Removes duplicate rows from the projected result set across ALL selected columns.',
+      concept: 'DISTINCT evaluates the COMBINATION of all columns listed in the SELECT clause. It hashes or sorts the projected rows and discards any row that is completely identical to another across every single projected column.',
+      syntax: 'SELECT DISTINCT column1, column2 FROM table',
+      rules: [
+        'Applies to the entire projected row, not just a single column.',
+        'Requires an internal sort or hash table in memory, which has a performance cost on large tables.',
+        'NULL values are treated as identical duplicates: multiple NULLs are collapsed into one single NULL.'
+      ],
+      gotcha: 'SELECT DISTINCT city, id does NOT produce unique cities if id is a unique primary key! Every row will remain unique.',
+      svgDiagram: `
+        <svg viewBox="0 0 600 120" width="100%" height="120" xmlns="http://www.w3.org/2000/svg">
+          <rect width="600" height="120" fill="#0c0c0f" rx="6" stroke="#232328"/>
+          <g transform="translate(40, 25)">
+            <rect width="110" height="20" rx="3" fill="#18181b" stroke="#33333b"/>
+            <text x="55" y="14" fill="#a1a1aa" font-family="monospace" font-size="9" text-anchor="middle">'New York'</text>
+            <rect y="24" width="110" height="20" rx="3" fill="#18181b" stroke="#33333b"/>
+            <text x="55" y="38" fill="#a1a1aa" font-family="monospace" font-size="9" text-anchor="middle">'New York' (dup)</text>
+            <rect y="48" width="110" height="20" rx="3" fill="#18181b" stroke="#33333b"/>
+            <text x="55" y="62" fill="#a1a1aa" font-family="monospace" font-size="9" text-anchor="middle">'Austin'</text>
+          </g>
+
+          <path d="M 170 60 L 230 60" stroke="#9ec5ad" stroke-width="2"/>
+
+          <rect x="235" y="25" width="150" height="70" rx="4" fill="rgba(139, 179, 156, 0.12)" stroke="#9ec5ad"/>
+          <text x="310" y="50" fill="#9ec5ad" font-family="monospace" font-size="12" font-weight="700" text-anchor="middle">DISTINCT Hash</text>
+          <text x="310" y="70" fill="#71717a" font-family="monospace" font-size="10" text-anchor="middle">Collapses full matches</text>
+
+          <path d="M 390 60 L 450 60" stroke="#9ec5ad" stroke-width="2"/>
+
+          <g transform="translate(460, 35)">
+            <rect width="100" height="22" rx="3" fill="#18181b" stroke="#33333b"/>
+            <text x="50" y="15" fill="#9ec5ad" font-family="monospace" font-size="10" font-weight="600" text-anchor="middle">'New York'</text>
+            <rect y="28" width="100" height="22" rx="3" fill="#18181b" stroke="#33333b"/>
+            <text x="50" y="43" fill="#9ec5ad" font-family="monospace" font-size="10" font-weight="600" text-anchor="middle">'Austin'</text>
+          </g>
+        </svg>
+      `
+    },
+    {
+      id: 'order_by',
+      name: 'ORDER BY',
+      category: 'Sorting & Sequencing',
+      badgeClass: 'pill-order',
+      executionOrder: '05 (Post-Projection Sorting)',
+      summary: 'Sorts the resulting rows ascending (ASC) or descending (DESC), with optional multi-column tie-breakers.',
+      concept: 'Without ORDER BY, relational database tables have NO guaranteed ordering! The engine returns rows in arbitrary physical order. ORDER BY executes after SELECT, which is why column aliases created in SELECT are 100% legal to reference here.',
+      syntax: 'ORDER BY column1 [ASC|DESC], column2 [ASC|DESC]',
+      rules: [
+        'Default direction is ASC (Ascending, lowest to highest or A to Z).',
+        'Can sort by multiple columns: primary column first, secondary tie-breaker if primary values are identical.',
+        'Can reference SELECT column aliases (e.g. ORDER BY salary_usd DESC).',
+        'Can sort by expressions or positions (e.g. ORDER BY 2 DESC).'
+      ],
+      gotcha: 'Sorting strings is alphabetical (lexicographical): "100" comes before "20"!',
+      svgDiagram: `
+        <svg viewBox="0 0 600 120" width="100%" height="120" xmlns="http://www.w3.org/2000/svg">
+          <rect width="600" height="120" fill="#0c0c0f" rx="6" stroke="#232328"/>
+          <g transform="translate(35, 30)">
+            <rect width="100" height="18" rx="2" fill="#18181b" stroke="#33333b"/>
+            <text x="50" y="13" fill="#a1a1aa" font-family="monospace" font-size="9" text-anchor="middle">Eve (Marks: 65)</text>
+            <rect y="22" width="100" height="18" rx="2" fill="#18181b" stroke="#33333b"/>
+            <text x="50" y="35" fill="#a1a1aa" font-family="monospace" font-size="9" text-anchor="middle">Bob (Marks: 95)</text>
+            <rect y="44" width="100" height="18" rx="2" fill="#18181b" stroke="#33333b"/>
+            <text x="50" y="57" fill="#a1a1aa" font-family="monospace" font-size="9" text-anchor="middle">Alice (Marks: 80)</text>
+          </g>
+
+          <path d="M 150 60 L 210 60" stroke="#dfcaa9" stroke-width="2"/>
+
+          <rect x="215" y="25" width="170" height="70" rx="4" fill="rgba(209, 184, 150, 0.12)" stroke="#dfcaa9"/>
+          <text x="300" y="48" fill="#dfcaa9" font-family="monospace" font-size="12" font-weight="700" text-anchor="middle">ORDER BY Marks DESC</text>
+          <text x="300" y="68" fill="#a1a1aa" font-family="monospace" font-size="10" text-anchor="middle">Engine Sort Run (QSort)</text>
+
+          <path d="M 390 60 L 450 60" stroke="#dfcaa9" stroke-width="2"/>
+
+          <g transform="translate(455, 30)">
+            <rect width="110" height="18" rx="2" fill="#18181b" stroke="#33333b"/>
+            <text x="55" y="13" fill="#dfcaa9" font-family="monospace" font-size="9" font-weight="600" text-anchor="middle">Bob (Marks: 95)</text>
+            <rect y="22" width="110" height="18" rx="2" fill="#18181b" stroke="#33333b"/>
+            <text x="55" y="35" fill="#dfcaa9" font-family="monospace" font-size="9" font-weight="600" text-anchor="middle">Alice (Marks: 80)</text>
+            <rect y="44" width="110" height="18" rx="2" fill="#18181b" stroke="#33333b"/>
+            <text x="55" y="57" fill="#dfcaa9" font-family="monospace" font-size="9" font-weight="600" text-anchor="middle">Eve (Marks: 65)</text>
+          </g>
+        </svg>
+      `
+    },
+    {
+      id: 'limit',
+      name: 'LIMIT / TOP',
+      category: 'Result Slicing',
+      badgeClass: 'pill-limit',
+      executionOrder: '06 (Final Truncation)',
+      summary: 'Restricts the maximum number of rows returned to the client application.',
+      concept: 'LIMIT is the very final operational step in a SQL query. Once all rows are found, filtered, projected, deduplicated, and sorted, LIMIT simply clips the output at row N. In SQL Server it is written as TOP N in the SELECT clause, but executes identically.',
+      syntax: 'LIMIT count [OFFSET skip_count]',
+      rules: [
+        'Executes as Step 06—the very last step before data transmission.',
+        'Always combine LIMIT with ORDER BY for deterministic results (e.g. "top 3 salaries"). Without ORDER BY, which 3 rows return is unpredictable!',
+        'Optional OFFSET allows pagination (e.g. LIMIT 10 OFFSET 20 grabs page 3).'
+      ],
+      gotcha: 'Using LIMIT without ORDER BY means your result set is non-deterministic (can change between query runs).',
+      svgDiagram: `
+        <svg viewBox="0 0 600 120" width="100%" height="120" xmlns="http://www.w3.org/2000/svg">
+          <rect width="600" height="120" fill="#0c0c0f" rx="6" stroke="#232328"/>
+          <g transform="translate(40, 20)">
+            <rect width="130" height="16" rx="2" fill="#18181b" stroke="#33333b"/>
+            <text x="65" y="12" fill="#beafcc" font-family="monospace" font-size="9" text-anchor="middle">Row 1: $120,000</text>
+            <rect y="20" width="130" height="16" rx="2" fill="#18181b" stroke="#33333b"/>
+            <text x="65" y="32" fill="#beafcc" font-family="monospace" font-size="9" text-anchor="middle">Row 2: $95,000</text>
+            <rect y="40" width="130" height="16" rx="2" fill="#18181b" stroke="#33333b"/>
+            <text x="65" y="52" fill="#71717a" font-family="monospace" font-size="9" text-anchor="middle">Row 3: $80,000 (cut)</text>
+            <rect y="60" width="130" height="16" rx="2" fill="#18181b" stroke="#33333b"/>
+            <text x="65" y="72" fill="#71717a" font-family="monospace" font-size="9" text-anchor="middle">Row 4: $65,000 (cut)</text>
+          </g>
+
+          <path d="M 190 60 L 260 60" stroke="#beafcc" stroke-width="2"/>
+
+          <rect x="265" y="30" width="140" height="60" rx="4" fill="rgba(171, 155, 184, 0.12)" stroke="#beafcc"/>
+          <text x="335" y="54" fill="#beafcc" font-family="monospace" font-size="12" font-weight="700" text-anchor="middle">LIMIT 2</text>
+          <text x="335" y="72" fill="#71717a" font-family="monospace" font-size="10" text-anchor="middle">Truncates at row 2</text>
+
+          <path d="M 410 60 L 475 60" stroke="#beafcc" stroke-width="2"/>
+
+          <g transform="translate(480, 35)">
+            <rect width="90" height="22" rx="2" fill="rgba(171, 155, 184, 0.2)" stroke="#beafcc"/>
+            <text x="45" y="15" fill="#beafcc" font-family="monospace" font-size="10" font-weight="700" text-anchor="middle">Row 1: $120k</text>
+            <rect y="26" width="90" height="22" rx="2" fill="rgba(171, 155, 184, 0.2)" stroke="#beafcc"/>
+            <text x="45" y="41" fill="#beafcc" font-family="monospace" font-size="10" font-weight="700" text-anchor="middle">Row 2: $95k</text>
+          </g>
+        </svg>
+      `
+    },
+    {
+      id: 'as',
+      name: 'AS (Aliases)',
+      category: 'Identifier Renaming',
+      badgeClass: 'pill-order',
+      executionOrder: '03 (Column) / 01 (Table)',
+      summary: 'Assigns temporary, human-friendly names to columns or tables during query execution.',
+      concept: 'Aliases make queries readable and provide labels for calculated expressions. However, the timing of alias creation determines where they can be used: Table aliases are born in FROM (Step 01), while Column aliases are born in SELECT (Step 03).',
+      syntax: 'SELECT col AS new_name FROM table AS t',
+      rules: [
+        'The AS keyword is optional in SQL, but writing it explicitly is recommended for clarity.',
+        'Column aliases can be referenced in ORDER BY, GROUP BY, and HAVING (in MySQL).',
+        'Column aliases CANNOT be referenced in WHERE because WHERE executes before SELECT!'
+      ],
+      gotcha: 'Wrapping aliases with double quotes ("Total Cost") allows spaces, but requires matching case in some SQL dialects.',
+      svgDiagram: `
+        <svg viewBox="0 0 600 120" width="100%" height="120" xmlns="http://www.w3.org/2000/svg">
+          <rect width="600" height="120" fill="#0c0c0f" rx="6" stroke="#232328"/>
+          <rect x="35" y="35" width="170" height="50" rx="4" fill="#141418" stroke="#33333b"/>
+          <text x="120" y="58" fill="#d1d5db" font-family="monospace" font-size="11" font-weight="700" text-anchor="middle">salary * 1.15</text>
+          <text x="120" y="74" fill="#71717a" font-family="monospace" font-size="9" text-anchor="middle">Raw math expression</text>
+
+          <path d="M 215 60 L 275 60" stroke="#dfcaa9" stroke-width="2"/>
+
+          <rect x="280" y="30" width="140" height="60" rx="4" fill="rgba(209, 184, 150, 0.12)" stroke="#dfcaa9"/>
+          <text x="350" y="54" fill="#dfcaa9" font-family="monospace" font-size="12" font-weight="700" text-anchor="middle">AS projected_pay</text>
+          <text x="350" y="72" fill="#71717a" font-family="monospace" font-size="10" text-anchor="middle">Semantic Renaming</text>
+
+          <path d="M 425 60 L 485 60" stroke="#dfcaa9" stroke-width="2"/>
+
+          <rect x="490" y="35" width="80" height="50" rx="4" fill="#141418" stroke="#33333b"/>
+          <text x="530" y="58" fill="#dfcaa9" font-family="monospace" font-size="10" font-weight="700" text-anchor="middle">OUTPUT</text>
+          <text x="530" y="74" fill="#71717a" font-family="monospace" font-size="8" text-anchor="middle">projected_pay</text>
+        </svg>
+      `
+    }
+  ],
+
+  // ---------------------------------------------------------------------------
+  // 2. INTERACTIVE MCQS (FOR EVERY KEYWORD)
+  // ---------------------------------------------------------------------------
+  mcqs: [
+    {
+      id: 'mcq_from_1',
+      keyword: 'FROM',
+      question: 'Which clause does the database engine physically execute FIRST when parsing a SELECT query?',
+      options: [
+        'SELECT',
+        'FROM',
+        'WHERE',
+        'ORDER BY'
+      ],
+      correctIndex: 1,
+      explanation: 'FROM executes as Step 01. The engine must first bind the table into memory to establish column definitions and row records before it can evaluate conditions or project fields.'
+    },
+    {
+      id: 'mcq_where_1',
+      keyword: 'WHERE',
+      question: 'Why does the query "SELECT salary * 12 AS annual_pay FROM Employees WHERE annual_pay > 50000;" fail in standard SQL?',
+      options: [
+        'annual_pay is a reserved keyword in SQL',
+        'WHERE executes before SELECT, so annual_pay does not exist yet when WHERE is evaluated',
+        'Multiplication cannot be performed inside SELECT',
+        'WHERE requires parentheses around all alias names'
+      ],
+      correctIndex: 1,
+      explanation: 'Physical execution order is FROM (1) ➡️ WHERE (2) ➡️ SELECT (3). Because WHERE executes before SELECT, the column alias "annual_pay" has not been defined in engine memory when WHERE inspects rows.'
+    },
+    {
+      id: 'mcq_where_2',
+      keyword: 'WHERE',
+      question: 'In SQL 3-valued logic, what happens when a WHERE condition evaluates to UNKNOWN (NULL)?',
+      options: [
+        'The row is returned because NULL represents potential data',
+        'The query aborts with an unhandled exception',
+        'The row is rejected and excluded from the result set',
+        'The engine converts UNKNOWN to TRUE by default'
+      ],
+      correctIndex: 2,
+      explanation: 'Only rows where the WHERE predicate evaluates to strictly TRUE are passed forward. Both FALSE and UNKNOWN (NULL) fail the filter and are excluded.'
+    },
+    {
+      id: 'mcq_select_1',
+      keyword: 'SELECT',
+      question: 'What is the primary architectural purpose of the SELECT clause in relational algebra?',
+      options: [
+        'Row restriction and filtration',
+        'Column projection and computed expression generation',
+        'Disk storage allocation',
+        'Network packet transmission'
+      ],
+      correctIndex: 1,
+      explanation: 'SELECT performs "projection" (choosing horizontal fields/expressions), while WHERE performs "selection" or "restriction" (filtering vertical rows).'
+    },
+    {
+      id: 'mcq_distinct_1',
+      keyword: 'DISTINCT',
+      question: 'Given a table with columns (id INT PRIMARY KEY, department VARCHAR), what does "SELECT DISTINCT department, id FROM Employees" return?',
+      options: [
+        'Only unique department names, dropping id',
+        'Every single row in the table, because id is unique per row',
+        'An error because DISTINCT cannot be used with multiple columns',
+        'The first row for each department'
+      ],
+      correctIndex: 1,
+      explanation: 'DISTINCT evaluates the COMBINATION of all projected columns. Since id is a unique primary key for every row, every tuple (department, id) is unique, so no rows will be removed!'
+    },
+    {
+      id: 'mcq_order_1',
+      keyword: 'ORDER BY',
+      question: 'Why is it legal to use a column alias defined in SELECT inside the ORDER BY clause?',
+      options: [
+        'Because ORDER BY executes after SELECT in the physical lifecycle',
+        'Because ORDER BY executes before FROM',
+        'Because SQL compilers rewrite all ORDER BY clauses to use column index numbers',
+        'It is actually illegal in all SQL dialects'
+      ],
+      correctIndex: 0,
+      explanation: 'ORDER BY runs at Step 05, well after SELECT (Step 03) has executed and created column aliases in working memory.'
+    },
+    {
+      id: 'mcq_order_2',
+      keyword: 'ORDER BY',
+      question: 'In the clause "ORDER BY Marks DESC, Name ASC", what happens when two students have the exact same Marks (e.g. 80)?',
+      options: [
+        'Both rows are removed as duplicates',
+        'The tie is broken by sorting their Names alphabetically in ascending order',
+        'The engine throws an Ambiguous Ordering error',
+        'The student with the higher ID is chosen'
+      ],
+      correctIndex: 1,
+      explanation: 'Multi-column ORDER BY uses subsequent columns as secondary tie-breakers. When primary values match, Name ASC determines the relative position.'
+    },
+    {
+      id: 'mcq_limit_1',
+      keyword: 'LIMIT',
+      question: 'Why is using LIMIT without an ORDER BY clause considered an anti-pattern in data engineering?',
+      options: [
+        'The query will execute 10x slower',
+        'The query output is non-deterministic (engine can return different rows each time)',
+        'LIMIT cannot syntactically function without ORDER BY',
+        'Database indexes are automatically disabled'
+      ],
+      correctIndex: 1,
+      explanation: 'Without ORDER BY, relational tables have no innate order. The storage engine can return any arbitrary slice of rows based on disk fragmentation or buffer pool state.'
+    },
+    {
+      id: 'mcq_alias_1',
+      keyword: 'AS (Aliases)',
+      question: 'Which of the following identifier names requires double quotes (or backticks) in SQL?',
+      options: [
+        'monthly_salary',
+        'total_revenue',
+        'Monthly Compensation',
+        'department_id'
+      ],
+      correctIndex: 2,
+      explanation: 'Any alias containing spaces, special characters, or reserved keywords must be escaped using double quotes ("Monthly Compensation") or MySQL backticks (`Monthly Compensation`).'
+    }
+  ],
+
+  // ---------------------------------------------------------------------------
+  // 3. REAL-WORLD CASE STUDIES
+  // ---------------------------------------------------------------------------
+  caseStudies: [
+    {
+      id: 'case_fintech_onboarding',
+      title: 'Fintech Credit Underwriting: Prime Customer Acquisition',
+      industry: 'Fintech / Banking',
+      difficulty: 'Medium',
+      scenario: 'You are the Lead Data Analyst at a digital lending startup. The credit risk team needs an audited extract of all active US accounts with high creditworthiness (credit_score >= 700) to receive an invitation to an exclusive zero-fee card tier. You must ensure no duplicates exist and present the top 5 candidates with the longest tenure first.',
+      schemaSnippet: 'Customers (customer_id, full_name, credit_score, country, tenure_months)',
+      businessObjective: 'Extract unique US customers with credit_score >= 700, projecting their monthly limit (credit_score * 15), sorted by tenure descending, limited to 5 records.',
+      targetQuery: `SELECT DISTINCT full_name, credit_score, (credit_score * 15) AS monthly_credit_limit, tenure_months\nFROM Customers\nWHERE country = 'USA' AND credit_score >= 700\nORDER BY tenure_months DESC\nLIMIT 5;`,
+      table: 'Customers'
+    },
+    {
+      id: 'case_ecommerce_top_earners',
+      title: 'Global Tech Corp: Executive Compensation Audit',
+      industry: 'Human Resources & Corporate Governance',
+      difficulty: 'Easy',
+      scenario: 'The board of directors is conducting an executive compensation review. They require a listing of the highest-paid employees in Engineering and Sales earning over $80,000. In case of salary ties, candidates should be ordered alphabetically by their last name.',
+      schemaSnippet: 'Employees (emp_id, first_name, last_name, department, salary, months_tenure)',
+      businessObjective: 'Select first_name, last_name, department, and salary for staff earning > 80,000 in Engineering or Sales, ordered by salary DESC with last_name ASC as tie-breaker.',
+      targetQuery: `SELECT first_name, last_name, department, salary\nFROM Employees\nWHERE salary > 80000 AND (department = 'Engineering' OR department = 'Sales')\nORDER BY salary DESC, last_name ASC\nLIMIT 10;`,
+      table: 'Employees'
+    },
+    {
+      id: 'case_geometry_triangle_qc',
+      title: 'Autonomous Robotics: Sensor Distance Triangle Verification',
+      industry: 'Hardware & Robotics',
+      difficulty: 'Hard',
+      scenario: 'An autonomous warehouse drone uses 3 ultrasound distance sensors (A, B, C) to map triangular boundary walls. If any measurement violates the Triangle Inequality Theorem, the polygon is invalid and flagged for sensor re-calibration.',
+      schemaSnippet: 'TRIANGLES (A, B, C)',
+      businessObjective: 'Evaluate sides A, B, C and classify them as Equilateral, Isosceles, Scalene, or Not A Triangle using strict short-circuit logic.',
+      targetQuery: `SELECT A, B, C,\n       CASE\n           WHEN A + B <= C OR A + C <= B OR B + C <= A THEN 'Not A Triangle'\n           WHEN A = B AND B = C THEN 'Equilateral'\n           WHEN A = B OR B = C OR A = C THEN 'Isosceles'\n           ELSE 'Scalene'\n       END AS triangle_type\nFROM TRIANGLES;`,
+      table: 'TRIANGLES'
+    }
+  ],
+
+  // ---------------------------------------------------------------------------
+  // 4. GRADED PRACTICE PROBLEM BANK (EASY / MEDIUM / HARD)
+  // ---------------------------------------------------------------------------
+  problems: [
+    {
+      id: 'prob_foundations_01',
+      title: 'Filter High Earners in Tech',
+      difficulty: 'Easy',
+      points: 15,
+      category: 'WHERE & SELECT',
+      table: 'Employees',
+      prompt: 'Write a query to select the first_name, last_name, and salary of all employees in the "Engineering" department whose salary is strictly greater than 85,000. Order by salary descending.',
+      starterSQL: 'SELECT first_name, last_name, salary\nFROM Employees\nWHERE department = \'Engineering\' AND salary > 85000\nORDER BY salary DESC;',
+      solutionSQL: 'SELECT first_name, last_name, salary\nFROM Employees\nWHERE department = \'Engineering\' AND salary > 85000\nORDER BY salary DESC;',
+      expectedCount: 2
+    },
+    {
+      id: 'prob_foundations_02',
+      title: 'Deduplicated Customer Cities',
+      difficulty: 'Easy',
+      points: 15,
+      category: 'DISTINCT & ORDER BY',
+      table: 'Customers',
+      prompt: 'Query a list of unique city names from the Customers table for accounts in the "USA". Sort the cities alphabetically in ascending order.',
+      starterSQL: 'SELECT DISTINCT city\nFROM Customers\nWHERE country = \'USA\'\nORDER BY city ASC;',
+      solutionSQL: 'SELECT DISTINCT city\nFROM Customers\nWHERE country = \'USA\'\nORDER BY city ASC;',
+      expectedCount: 3
+    },
+    {
+      id: 'prob_foundations_03',
+      title: 'Top 3 High Honors Students',
+      difficulty: 'Medium',
+      points: 25,
+      category: 'ORDER BY & LIMIT',
+      table: 'STUDENTS',
+      prompt: 'Find the top 3 students who scored more than 75 Marks. Order the result primarily by Marks descending, and break any score ties by Name ascending.',
+      starterSQL: 'SELECT ID, Name, Marks\nFROM STUDENTS\nWHERE Marks > 75\nORDER BY Marks DESC, Name ASC\nLIMIT 3;',
+      solutionSQL: 'SELECT ID, Name, Marks\nFROM STUDENTS\nWHERE Marks > 75\nORDER BY Marks DESC, Name ASC\nLIMIT 3;',
+      expectedCount: 3
+    },
+    {
+      id: 'prob_foundations_04',
+      title: 'Suffix Sorting on Student Names',
+      difficulty: 'Medium',
+      points: 25,
+      category: 'Functions & Tie-Breakers',
+      table: 'STUDENTS',
+      prompt: 'Query the Name of any student in STUDENTS who scored higher than 75 Marks. Order your output by the LAST THREE CHARACTERS of each name. If two names end in the same 3 characters, sort them by ascending ID.',
+      starterSQL: 'SELECT Name\nFROM STUDENTS\nWHERE Marks > 75\nORDER BY RIGHT(Name, 3) ASC, ID ASC;',
+      solutionSQL: 'SELECT Name\nFROM STUDENTS\nWHERE Marks > 75\nORDER BY RIGHT(Name, 3) ASC, ID ASC;',
+      expectedCount: 4
+    },
+    {
+      id: 'prob_foundations_05',
+      title: 'Triangle Geometry Classification',
+      difficulty: 'Hard',
+      points: 35,
+      category: 'CASE WHEN & Inequality',
+      table: 'TRIANGLES',
+      prompt: 'Write a query identifying the type of each record in the TRIANGLES table using its three side lengths A, B, and C. Correctly handle degenerate non-triangles first, then Equilateral, Isosceles, and Scalene.',
+      starterSQL: 'SELECT \n    CASE\n        WHEN A + B <= C OR A + C <= B OR B + C <= A THEN \'Not A Triangle\'\n        WHEN A = B AND B = C THEN \'Equilateral\'\n        WHEN A = B OR B = C OR A = C THEN \'Isosceles\'\n        ELSE \'Scalene\'\n    END AS triangle_type\nFROM TRIANGLES;',
+      solutionSQL: 'SELECT \n    CASE\n        WHEN A + B <= C OR A + C <= B OR B + C <= A THEN \'Not A Triangle\'\n        WHEN A = B AND B = C THEN \'Equilateral\'\n        WHEN A = B OR B = C OR A = C THEN \'Isosceles\'\n        ELSE \'Scalene\'\n    END AS triangle_type\nFROM TRIANGLES;',
+      expectedCount: 15
+    }
+  ]
+};

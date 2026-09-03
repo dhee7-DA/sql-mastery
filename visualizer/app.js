@@ -1320,4 +1320,315 @@ document.addEventListener('DOMContentLoaded', () => {
       parseAndBuildPipeline(sqlInput.value);
     }
   });
+
+  // Initialize Learning Platform Curriculum Views
+  initCurriculumSystem();
 });
+
+// =============================================================================
+// 10. CURRICULUM MODULE & VIEW ROUTING CONTROLLER
+// =============================================================================
+
+function initCurriculumSystem() {
+  // Top Navigation Tabs Click
+  document.querySelectorAll('.nav-tab').forEach(tab => {
+    tab.addEventListener('click', () => {
+      document.querySelectorAll('.nav-tab').forEach(t => t.classList.remove('active'));
+      document.querySelectorAll('.view-panel').forEach(p => p.classList.remove('active'));
+
+      tab.classList.add('active');
+      const targetId = tab.dataset.view;
+      const targetView = document.getElementById(targetId);
+      if (targetView) {
+        targetView.classList.add('active');
+      }
+
+      // Lazy render on view switch
+      if (targetId === 'viewExplainer') renderKeywordExplainer();
+      if (targetId === 'viewMcqs') renderMcqs();
+      if (targetId === 'viewCases') renderCaseStudies();
+      if (targetId === 'viewProblems') renderProblemBank();
+    });
+  });
+
+  // Difficulty filter pills in Problem Bank
+  document.querySelectorAll('.diff-filter-btn').forEach(btn => {
+    btn.addEventListener('click', () => {
+      document.querySelectorAll('.diff-filter-btn').forEach(b => b.classList.remove('active'));
+      btn.classList.add('active');
+      renderProblemBank(btn.dataset.diff);
+    });
+  });
+}
+
+function switchToStudioWithQuery(query, table) {
+  // 1. Switch to Studio view
+  document.querySelectorAll('.nav-tab').forEach(t => t.classList.remove('active'));
+  document.querySelectorAll('.view-panel').forEach(p => p.classList.remove('active'));
+
+  const studioTab = document.querySelector('.nav-tab[data-view="viewStudio"]');
+  const studioView = document.getElementById('viewStudio');
+  if (studioTab) studioTab.classList.add('active');
+  if (studioView) studioView.classList.add('active');
+
+  // 2. Switch active table
+  if (table && DATABASE[table]) {
+    EngineState.activeTable = table;
+    updateActiveTableBadge(table);
+    const tblSel = document.getElementById('builderTableSelect');
+    if (tblSel) tblSel.value = table;
+    syncBuilderFromTable(table);
+  }
+
+  // 3. Inject SQL and Parse
+  const sqlInput = document.getElementById('sqlInput');
+  if (sqlInput) {
+    sqlInput.value = query;
+  }
+  const livePreview = document.getElementById('liveSqlPreview');
+  if (livePreview) {
+    livePreview.textContent = query;
+  }
+
+  // Switch to Raw mode to display the loaded solution
+  const btnModeRaw = document.getElementById('btnModeRaw');
+  const btnModeBuilder = document.getElementById('btnModeBuilder');
+  const visualContainer = document.getElementById('visualBuilderContainer');
+  const rawContainer = document.getElementById('rawSqlContainer');
+  const rawActions = document.getElementById('rawEditorActions');
+
+  if (btnModeRaw && btnModeBuilder && visualContainer && rawContainer) {
+    btnModeRaw.classList.add('active');
+    btnModeBuilder.classList.remove('active');
+    visualContainer.style.display = 'none';
+    rawContainer.style.display = 'block';
+    if (rawActions) rawActions.style.display = 'flex';
+  }
+
+  parseAndBuildPipeline(query);
+}
+
+function renderKeywordExplainer() {
+  const container = document.getElementById('keywordCardsGrid');
+  if (!container || !window.FOUNDATIONS_DATA) return;
+
+  const keywords = window.FOUNDATIONS_DATA.keywords || [];
+  let html = '';
+
+  keywords.forEach(kw => {
+    html += `
+      <div class="keyword-card" id="kw_${kw.id}">
+        <div class="keyword-card-top">
+          <div class="keyword-identity">
+            <span class="clause-pill ${kw.badgeClass}">${kw.name}</span>
+            <span class="keyword-name-title">${kw.name}</span>
+            <span style="font-size: 11px; color: var(--text-muted);">&bull; ${kw.category}</span>
+          </div>
+          <span class="exec-badge">Physical Step: ${kw.executionOrder}</span>
+        </div>
+
+        <p class="keyword-desc">${kw.concept}</p>
+
+        <div class="keyword-syntax-box">
+          <span style="color: var(--text-muted); font-size: 10px; display: block; margin-bottom: 2px;">CANONICAL SYNTAX:</span>
+          <code>${kw.syntax}</code>
+        </div>
+
+        <div>
+          <span style="font-size: 11px; font-weight: 600; text-transform: uppercase; color: var(--text-secondary); display: block; margin-bottom: 6px;">
+            Execution Principles &amp; Architecture:
+          </span>
+          <ul class="keyword-rules-list">
+            ${kw.rules.map(r => `<li>${r}</li>`).join('')}
+          </ul>
+        </div>
+
+        <div class="keyword-gotcha-box">
+          <strong>CRITICAL GOTCHA:</strong> ${kw.gotcha}
+        </div>
+
+        <div class="svg-diagram-wrapper">
+          ${kw.svgDiagram}
+        </div>
+      </div>
+    `;
+  });
+
+  container.innerHTML = html;
+}
+
+let QuizState = {
+  score: 0,
+  answered: 0,
+  total: 0
+};
+
+function renderMcqs() {
+  const container = document.getElementById('mcqCardsList');
+  if (!container || !window.FOUNDATIONS_DATA) return;
+
+  const mcqs = window.FOUNDATIONS_DATA.mcqs || [];
+  QuizState.total = mcqs.length;
+  document.getElementById('quizTotalCount').textContent = QuizState.total;
+  document.getElementById('quizScoreCount').textContent = QuizState.score;
+
+  let html = '';
+
+  mcqs.forEach((mcq, idx) => {
+    html += `
+      <div class="mcq-card" id="card_${mcq.id}">
+        <div class="mcq-meta-row">
+          <span class="mcq-keyword-tag">${mcq.keyword}</span>
+          <span style="font-size: 11px; font-family: var(--font-mono); color: var(--text-muted);">Question ${idx + 1} of ${mcqs.length}</span>
+        </div>
+        <p class="mcq-question-text">${mcq.question}</p>
+        <div class="mcq-options-grid" id="options_${mcq.id}">
+          ${mcq.options.map((opt, optIdx) => `
+            <button class="mcq-option-btn" data-qid="${mcq.id}" data-optidx="${optIdx}">
+              <strong>${String.fromCharCode(65 + optIdx)}.</strong> ${opt}
+            </button>
+          `).join('')}
+        </div>
+        <div class="mcq-explanation-card" id="exp_${mcq.id}">
+          <div style="font-weight: 600; margin-bottom: 4px;" id="verdict_${mcq.id}"></div>
+          <div>${mcq.explanation}</div>
+        </div>
+      </div>
+    `;
+  });
+
+  container.innerHTML = html;
+
+  // Bind option clicks
+  container.querySelectorAll('.mcq-option-btn').forEach(btn => {
+    btn.addEventListener('click', (e) => {
+      const qid = btn.dataset.qid;
+      const optIdx = parseInt(btn.dataset.optidx, 10);
+      handleMcqAnswer(qid, optIdx);
+    });
+  });
+}
+
+function handleMcqAnswer(qid, selectedIdx) {
+  const mcqs = window.FOUNDATIONS_DATA.mcqs;
+  const mcq = mcqs.find(m => m.id === qid);
+  if (!mcq) return;
+
+  const card = document.getElementById(`card_${qid}`);
+  const optionBtns = card.querySelectorAll('.mcq-option-btn');
+  const expCard = document.getElementById(`exp_${qid}`);
+  const verdict = document.getElementById(`verdict_${qid}`);
+
+  // Disable all options in this card
+  optionBtns.forEach(b => b.disabled = true);
+
+  const isCorrect = (selectedIdx === mcq.correctIndex);
+  if (isCorrect) {
+    QuizState.score++;
+    document.getElementById('quizScoreCount').textContent = QuizState.score;
+    optionBtns[selectedIdx].classList.add('opt-correct');
+    verdict.innerHTML = `<span style="color: #9ec5ad;">&check; Correct Execution Reasoning</span>`;
+  } else {
+    optionBtns[selectedIdx].classList.add('opt-wrong');
+    optionBtns[mcq.correctIndex].classList.add('opt-correct');
+    verdict.innerHTML = `<span style="color: #c98877;">&cross; Incorrect</span> &mdash; Correct answer is <strong>Option ${String.fromCharCode(65 + mcq.correctIndex)}</strong>`;
+  }
+
+  QuizState.answered++;
+  expCard.classList.add('show');
+}
+
+function renderCaseStudies() {
+  const container = document.getElementById('caseStudiesGrid');
+  if (!container || !window.FOUNDATIONS_DATA) return;
+
+  const cases = window.FOUNDATIONS_DATA.caseStudies || [];
+  let html = '';
+
+  cases.forEach(cs => {
+    html += `
+      <div class="case-card">
+        <div class="case-card-header">
+          <div>
+            <h3 class="case-title">${cs.title}</h3>
+            <span class="case-industry">${cs.industry}</span>
+          </div>
+          <span class="badge-diff ${cs.difficulty === 'Easy' ? 'diff-easy' : (cs.difficulty === 'Medium' ? 'diff-medium' : 'diff-hard')}">${cs.difficulty}</span>
+        </div>
+
+        <p class="case-scenario-text">${cs.scenario}</p>
+
+        <div style="font-family: var(--font-mono); font-size: 10.5px; color: var(--text-muted);">
+          Schema: <code>${cs.schemaSnippet}</code>
+        </div>
+
+        <div class="case-objective-box">
+          <strong>Objective:</strong> ${cs.businessObjective}
+        </div>
+
+        <div class="case-card-actions">
+          <button class="btn-solve-in-studio" data-table="${cs.table}" data-query="${encodeURIComponent(cs.targetQuery)}">
+            <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polygon points="5 3 19 12 5 21 5 3"></polygon></svg>
+            Solve in Query Studio
+          </button>
+        </div>
+      </div>
+    `;
+  });
+
+  container.innerHTML = html;
+
+  container.querySelectorAll('.btn-solve-in-studio').forEach(btn => {
+    btn.addEventListener('click', () => {
+      const q = decodeURIComponent(btn.dataset.query);
+      const tbl = btn.dataset.table;
+      switchToStudioWithQuery(q, tbl);
+    });
+  });
+}
+
+function renderProblemBank(filter = 'all') {
+  const container = document.getElementById('problemsListGrid');
+  if (!container || !window.FOUNDATIONS_DATA) return;
+
+  let problems = window.FOUNDATIONS_DATA.problems || [];
+  if (filter !== 'all') {
+    problems = problems.filter(p => p.difficulty.toLowerCase() === filter.toLowerCase());
+  }
+
+  let html = '';
+
+  problems.forEach((prob, idx) => {
+    const diffClass = prob.difficulty === 'Easy' ? 'diff-easy' : (prob.difficulty === 'Medium' ? 'diff-medium' : 'diff-hard');
+
+    html += `
+      <div class="problem-card">
+        <div class="problem-main-info">
+          <div class="problem-title-row">
+            <span class="badge-diff ${diffClass}">${prob.difficulty}</span>
+            <span class="problem-card-title">${prob.title}</span>
+            <span class="points-pill">+${prob.points} pts</span>
+            <span style="font-size: 11px; font-family: var(--font-mono); color: var(--text-muted);">&bull; Table: ${prob.table}</span>
+          </div>
+          <p class="problem-prompt-text">${prob.prompt}</p>
+        </div>
+        <div class="problem-action-col">
+          <button class="btn-solve-in-studio" data-table="${prob.table}" data-query="${encodeURIComponent(prob.solutionSQL)}">
+            <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="16 18 22 12 16 6"></polyline><polyline points="8 6 2 12 8 18"></polyline></svg>
+            Load in Studio
+          </button>
+        </div>
+      </div>
+    `;
+  });
+
+  container.innerHTML = html;
+
+  container.querySelectorAll('.btn-solve-in-studio').forEach(btn => {
+    btn.addEventListener('click', () => {
+      const q = decodeURIComponent(btn.dataset.query);
+      const tbl = btn.dataset.table;
+      switchToStudioWithQuery(q, tbl);
+    });
+  });
+}

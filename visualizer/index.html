@@ -53,10 +53,40 @@
       </div>
     </header>
 
-    <!-- Main Workspace Grid -->
-    <main class="workspace-grid">
-      <!-- Left Column: Schema & Code Editor -->
-      <aside class="sidebar-col">
+    <!-- Top Navigation Bar for Learning Platform -->
+    <nav class="app-nav-bar">
+      <div class="nav-tabs-list">
+        <button class="nav-tab active" data-view="viewStudio">
+          <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="16 18 22 12 16 6"></polyline><polyline points="8 6 2 12 8 18"></polyline></svg>
+          Query Studio &amp; Engine
+        </button>
+        <button class="nav-tab" data-view="viewExplainer">
+          <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="10"></circle><line x1="12" y1="16" x2="12" y2="12"></line><line x1="12" y1="8" x2="12.01" y2="8"></line></svg>
+          Keyword Explainer &amp; SVGs
+        </button>
+        <button class="nav-tab" data-view="viewMcqs">
+          <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M9 11l3 3L22 4"></path><path d="M21 12v7a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h11"></path></svg>
+          Interactive MCQs
+        </button>
+        <button class="nav-tab" data-view="viewCases">
+          <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="2" y="7" width="20" height="14" rx="2" ry="2"></rect><path d="M16 21V5a2 2 0 0 0-2-2h-4a2 2 0 0 0-2 2v16"></path></svg>
+          Case Studies
+        </button>
+        <button class="nav-tab" data-view="viewProblems">
+          <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polygon points="12 2 15.09 8.26 22 9.27 17 14.14 18.18 21.02 12 17.77 5.82 21.02 7 14.14 2 9.27 8.91 8.26 12 2"></polygon></svg>
+          Problem Bank
+        </button>
+      </div>
+      <div class="nav-meta">
+        <span class="module-indicator">Track: <strong>SQL Foundations</strong></span>
+      </div>
+    </nav>
+
+    <!-- VIEW 1: Query Studio (Default) -->
+    <div class="view-panel active" id="viewStudio">
+      <main class="workspace-grid">
+        <!-- Left Column: Schema & Code Editor -->
+        <aside class="sidebar-col">
         <!-- Schema Tree Section -->
         <div class="card schema-card">
           <div class="card-header">
@@ -321,19 +351,93 @@
         </div>
       </section>
     </main>
+  </div><!-- End of viewStudio -->
 
-    <!-- Clean Footer -->
-    <footer class="app-footer">
-      <div class="footer-status">
-        <span class="status-dot"></span>
-        <span id="activeQueryStats">Engine ready. Valid AST.</span>
+  <!-- VIEW 2: Keyword Explainer & SVGs -->
+  <div class="view-panel" id="viewExplainer">
+    <div class="curriculum-container">
+      <div class="curriculum-header">
+        <div>
+          <h2 class="view-title">SQL Keyword Physical Execution Explainer</h2>
+          <p class="view-subtitle">Master how the relational storage engine processes each clause in memory with vector execution maps.</p>
+        </div>
+        <div class="keyword-pill-filter" id="keywordPillFilter">
+          <!-- Dynamically populated keyword filter pills -->
+        </div>
       </div>
-      <div class="footer-links">
-        <a href="../FOUNDATIONS_MASTER_COMPENDIUM.md">Foundations Compendium</a>
+      <div class="keyword-cards-grid" id="keywordCardsGrid">
+        <!-- Dynamically rendered from FOUNDATIONS_DATA.keywords -->
       </div>
-    </footer>
+    </div>
   </div>
 
-  <script src="app.js"></script>
+  <!-- VIEW 3: Interactive MCQs & Knowledge Check -->
+  <div class="view-panel" id="viewMcqs">
+    <div class="curriculum-container">
+      <div class="curriculum-header">
+        <div>
+          <h2 class="view-title">Keyword Knowledge Checks &amp; MCQs</h2>
+          <p class="view-subtitle">Interactive technical checks on physical execution sequence, NULL semantics, and interview gotchas.</p>
+        </div>
+        <div class="quiz-score-badge">
+          Score: <span id="quizScoreCount">0</span> / <span id="quizTotalCount">0</span>
+        </div>
+      </div>
+      <div class="mcq-cards-list" id="mcqCardsList">
+        <!-- Dynamically rendered from FOUNDATIONS_DATA.mcqs -->
+      </div>
+    </div>
+  </div>
+
+  <!-- VIEW 4: Real-World Case Studies -->
+  <div class="view-panel" id="viewCases">
+    <div class="curriculum-container">
+      <div class="curriculum-header">
+        <div>
+          <h2 class="view-title">Corporate SQL Case Studies</h2>
+          <p class="view-subtitle">Realistic scenario-driven analytics across Fintech, HR Governance, and Robotics hardware.</p>
+        </div>
+      </div>
+      <div class="cases-grid" id="caseStudiesGrid">
+        <!-- Dynamically rendered from FOUNDATIONS_DATA.caseStudies -->
+      </div>
+    </div>
+  </div>
+
+  <!-- VIEW 5: Graded Problem Bank -->
+  <div class="view-panel" id="viewProblems">
+    <div class="curriculum-container">
+      <div class="curriculum-header">
+        <div>
+          <h2 class="view-title">Interactive Problem Bank</h2>
+          <p class="view-subtitle">Graded SQL challenges (Easy / Medium / Hard) with 1-click loading into the Query Studio engine.</p>
+        </div>
+        <div class="difficulty-filter-group">
+          <button class="diff-filter-btn active" data-diff="all">All Levels</button>
+          <button class="diff-filter-btn" data-diff="Easy">Easy</button>
+          <button class="diff-filter-btn" data-diff="Medium">Medium</button>
+          <button class="diff-filter-btn" data-diff="Hard">Hard</button>
+        </div>
+      </div>
+      <div class="problems-list" id="problemsListGrid">
+        <!-- Dynamically rendered from FOUNDATIONS_DATA.problems -->
+      </div>
+    </div>
+  </div>
+
+  <!-- Clean Footer -->
+  <footer class="app-footer">
+    <div class="footer-status">
+      <span class="status-dot"></span>
+      <span id="activeQueryStats">Engine ready. Valid AST.</span>
+    </div>
+    <div class="footer-links">
+      <a href="../FOUNDATIONS_MASTER_COMPENDIUM.md">Foundations Compendium</a>
+    </div>
+  </footer>
+</div>
+
+<script src="foundations_curriculum.js"></script>
+<script src="app.js"></script>
 </body>
 </html>
