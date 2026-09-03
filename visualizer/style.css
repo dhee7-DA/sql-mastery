@@ -2825,3 +2825,31 @@ body {
   border-color: #dfcaa9;
   color: #dfcaa9;
 }
+
+.diff-filter-btn,
+.case-filter-btn {
+  background: #18181c;
+  border: 1px solid var(--border-default);
+  border-radius: 6px;
+  color: var(--text-secondary);
+  font-family: var(--font-mono);
+  font-size: 11px;
+  font-weight: 600;
+  padding: 5px 12px;
+  cursor: pointer;
+  transition: all 0.15s ease;
+}
+
+.diff-filter-btn:hover,
+.case-filter-btn:hover {
+  background: #24242c;
+  color: #fff;
+  border-color: #52525b;
+}
+
+.diff-filter-btn.active,
+.case-filter-btn.active {
+  background: rgba(158, 197, 173, 0.15);
+  border-color: #9ec5ad;
+  color: #9ec5ad;
+}

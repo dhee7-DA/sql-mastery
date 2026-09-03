@@ -69,6 +69,82 @@ const DATABASE = {
     { ID: 10, Name: 'Amina', Marks: 89 },
     { ID: 11, Name: 'Priya', Marks: 91 },
     { ID: 12, Name: 'Devi', Marks: 78 }
+  ],
+
+  Transactions: [
+    { tx_id: 'TX-901', merchant_category: 'Crypto Exchange', amount_usd: 6200.00, is_foreign_card: true, risk_score: 94 },
+    { tx_id: 'TX-902', merchant_category: 'Electronics Retail', amount_usd: 1450.00, is_foreign_card: false, risk_score: 78 },
+    { tx_id: 'TX-903', merchant_category: 'Grocery Supermarket', amount_usd: 85.50, is_foreign_card: false, risk_score: 12 },
+    { tx_id: 'TX-904', merchant_category: 'Luxury Jewelry', amount_usd: 8900.00, is_foreign_card: true, risk_score: 91 },
+    { tx_id: 'TX-905', merchant_category: 'SaaS Cloud Hosting', amount_usd: 420.00, is_foreign_card: true, risk_score: 65 },
+    { tx_id: 'TX-906', merchant_category: 'Airline Tickets', amount_usd: 2100.00, is_foreign_card: false, risk_score: 82 }
+  ],
+
+  SubscriptionAccounts: [
+    { account_id: 1, company_name: 'Stripe Inc', plan_tier: 'Enterprise', licensed_seats: 250, active_seats: 235, days_since_last_login: 1 },
+    { account_id: 2, company_name: 'Acme Hardware', plan_tier: 'Enterprise', licensed_seats: 100, active_seats: 18, days_since_last_login: 38 },
+    { account_id: 3, company_name: 'Nexus Robotics', plan_tier: 'Growth', licensed_seats: 50, active_seats: 21, days_since_last_login: 16 },
+    { account_id: 4, company_name: 'FinEdge Global', plan_tier: 'Growth', licensed_seats: 40, active_seats: 38, days_since_last_login: 2 },
+    { account_id: 5, company_name: 'CloudVector Labs', plan_tier: 'Enterprise', licensed_seats: 500, active_seats: 95, days_since_last_login: 42 }
+  ],
+
+  Orders: [
+    { order_id: 5001, order_total: 189.50, is_prime_member: true, destination_zip: '94105', order_status: 'PENDING_FULFILLMENT' },
+    { order_id: 5002, order_total: 42.00, is_prime_member: false, destination_zip: '10001', order_status: 'PENDING_FULFILLMENT' },
+    { order_id: 5003, order_total: 245.00, is_prime_member: false, destination_zip: '78701', order_status: 'PENDING_FULFILLMENT' },
+    { order_id: 5004, order_total: 89.00, is_prime_member: true, destination_zip: '98101', order_status: 'SHIPPED' },
+    { order_id: 5005, order_total: 310.00, is_prime_member: true, destination_zip: '60601', order_status: 'PENDING_FULFILLMENT' }
+  ],
+
+  PatientIntake: [
+    { intake_id: 701, patient_name: 'Marcus Vance', pulse_bpm: 138, o2_saturation: 84, is_unresponsive: false },
+    { intake_id: 702, patient_name: 'Elena Rostova', pulse_bpm: 82, o2_saturation: 98, is_unresponsive: false },
+    { intake_id: 703, patient_name: 'Arthur Pendelton', pulse_bpm: 112, o2_saturation: 91, is_unresponsive: false },
+    { intake_id: 704, patient_name: 'Chloe Zhao', pulse_bpm: 76, o2_saturation: 81, is_unresponsive: true },
+    { intake_id: 705, patient_name: 'Darius Miller', pulse_bpm: 104, o2_saturation: 95, is_unresponsive: false }
+  ],
+
+  DroneFleet: [
+    { drone_id: 'DRN-X01', battery_pct: 18, payload_kg: 3.2, mission_distance_km: 7.4, motor_health_score: 92 },
+    { drone_id: 'DRN-X02', battery_pct: 88, payload_kg: 2.1, mission_distance_km: 3.8, motor_health_score: 96 },
+    { drone_id: 'DRN-X03', battery_pct: 64, payload_kg: 4.8, mission_distance_km: 2.5, motor_health_score: 94 },
+    { drone_id: 'DRN-X04', battery_pct: 35, payload_kg: 1.5, mission_distance_km: 8.2, motor_health_score: 72 },
+    { drone_id: 'DRN-X05', battery_pct: 92, payload_kg: 3.9, mission_distance_km: 4.1, motor_health_score: 99 }
+  ],
+
+  ShipmentTracking: [
+    { tracking_id: 'SHP-8801', carrier_name: 'FedEx Air', sla_minutes: 240, actual_delivery_minutes: 385, freight_cost: 145.00 },
+    { tracking_id: 'SHP-8802', carrier_name: 'UPS Ground', sla_minutes: 180, actual_delivery_minutes: 172, freight_cost: 65.00 },
+    { tracking_id: 'SHP-8803', carrier_name: 'DHL Express', sla_minutes: 300, actual_delivery_minutes: 345, freight_cost: 210.00 },
+    { tracking_id: 'SHP-8804', carrier_name: 'OnTrac Regional', sla_minutes: 120, actual_delivery_minutes: 310, freight_cost: 55.00 }
+  ],
+
+  MediaCatalog: [
+    { title: 'The Quantum Heist', mpaa_rating: 'PG-13', genre: 'Sci-Fi Action', content_warning_tags: 'Violence' },
+    { title: 'Cyber Syndicate', mpaa_rating: 'R', genre: 'Crime Thriller', content_warning_tags: 'Violence, Language' },
+    { title: 'Panda Adventures', mpaa_rating: 'G', genre: 'Family Animation', content_warning_tags: 'None' },
+    { title: 'Dark Colony 2099', mpaa_rating: 'TV-MA', genre: 'Dystopian Horror', content_warning_tags: 'Gore, Language' }
+  ],
+
+  AuthAuditLog: [
+    { source_ip: '198.51.100.42', failed_attempts: 28, country_code: 'RU', is_vpn: false },
+    { source_ip: '10.0.12.84', failed_attempts: 14, country_code: 'US', is_vpn: true },
+    { source_ip: '203.0.113.19', failed_attempts: 8, country_code: 'CN', is_vpn: false },
+    { source_ip: '192.0.2.105', failed_attempts: 34, country_code: 'BR', is_vpn: false }
+  ],
+
+  ExecutiveReview: [
+    { executive_id: 1, executive_name: 'Alexandra Vance', department: 'Product', okr_completion_pct: 118.5, tenure_years: 4 },
+    { executive_id: 2, executive_name: 'Julian Sterling', department: 'Engineering', okr_completion_pct: 104.2, tenure_years: 3 },
+    { executive_id: 3, executive_name: 'Beatrice Chen', department: 'Finance', okr_completion_pct: 91.0, tenure_years: 2 },
+    { executive_id: 4, executive_name: 'Devon Hughes', department: 'Sales', okr_completion_pct: 78.4, tenure_years: 1 }
+  ],
+
+  DepositLedger: [
+    { deposit_id: 'DEP-101', account_id: 'ACC-8821', amount_usd: 9850.00, deposit_channel: 'CASH_TELLER', customer_occupation: 'Consultant' },
+    { deposit_id: 'DEP-102', account_id: 'ACC-4412', amount_usd: 12500.00, deposit_channel: 'CASH_TELLER', customer_occupation: 'Retail Owner' },
+    { deposit_id: 'DEP-103', account_id: 'ACC-9903', amount_usd: 350.00, deposit_channel: 'ATM', customer_occupation: 'Software Engineer' },
+    { deposit_id: 'DEP-104', account_id: 'ACC-7714', amount_usd: 9200.00, deposit_channel: 'CASH_TELLER', customer_occupation: 'Real Estate' }
   ]
 };
 
@@ -1367,6 +1443,15 @@ function initCurriculumSystem() {
       renderProblemBank(btn.dataset.diff);
     });
   });
+
+  // Industry filter pills in Case Studies
+  document.querySelectorAll('.case-filter-btn').forEach(btn => {
+    btn.addEventListener('click', () => {
+      document.querySelectorAll('.case-filter-btn').forEach(b => b.classList.remove('active'));
+      btn.classList.add('active');
+      renderCaseStudies(btn.dataset.industry);
+    });
+  });
 }
 
 // =============================================================================
@@ -2344,11 +2429,18 @@ function handleMcqAnswer(qid, selectedIdx) {
   expCard.classList.add('show');
 }
 
-function renderCaseStudies() {
+let currentCaseIndustryFilter = 'all';
+
+function renderCaseStudies(industryFilter = currentCaseIndustryFilter) {
+  currentCaseIndustryFilter = industryFilter;
   const container = document.getElementById('caseStudiesGrid');
   if (!container || !window.FOUNDATIONS_DATA) return;
 
-  const cases = window.FOUNDATIONS_DATA.caseStudies || [];
+  let cases = window.FOUNDATIONS_DATA.caseStudies || [];
+  if (industryFilter !== 'all') {
+    cases = cases.filter(cs => cs.industry.toLowerCase().includes(industryFilter.toLowerCase()));
+  }
+
   let html = '';
 
   cases.forEach(cs => {
@@ -2364,7 +2456,7 @@ function renderCaseStudies() {
 
         <p class="case-scenario-text">${cs.scenario}</p>
 
-        <div style="font-family: var(--font-mono); font-size: 10.5px; color: var(--text-muted);">
+        <div style="font-family: var(--font-mono); font-size: 10.5px; color: var(--text-muted); margin-bottom: 6px;">
           Schema: <code>${cs.schemaSnippet}</code>
         </div>
 

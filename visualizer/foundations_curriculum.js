@@ -420,30 +420,151 @@ window.FOUNDATIONS_DATA = {
   // ---------------------------------------------------------------------------
   caseStudies: [
     {
-      id: 'case_fintech_onboarding',
-      title: 'Fintech Credit Underwriting: Prime Customer Acquisition',
-      industry: 'Fintech / Banking',
+      id: 'case_01_stripe_fraud',
+      title: 'Stripe Transaction Fraud Velocity Tripwire',
+      industry: 'Fintech',
       difficulty: 'Medium',
-      scenario: 'You are the Lead Data Analyst at a digital lending startup. The credit risk team needs an audited extract of all active US accounts with high creditworthiness (credit_score >= 700) to receive an invitation to an exclusive zero-fee card tier. You must ensure no duplicates exist and present the top 5 candidates with the longest tenure first.',
+      scenario: 'When credit card transactions pass through the Stripe ingestion pipeline, automated risk models flag potential chargeback fraud in sub-100ms windows. Transactions originating from foreign cards or exceeding specific risk scores must be classified into actionable operational tiers.',
+      schemaSnippet: 'Transactions (tx_id, merchant_category, amount_usd, is_foreign_card, risk_score)',
+      businessObjective: 'Categorize transactions into CRITICAL_RISK, SUSPICIOUS, or STANDARD_REVIEW based on monetary amount, foreign origin, and risk score.',
+      targetQuery: `SELECT tx_id, merchant_category, amount_usd, risk_score,\n       CASE\n           WHEN risk_score >= 90 OR (amount_usd >= 5000 AND is_foreign_card = TRUE) THEN 'CRITICAL_RISK'\n           WHEN risk_score >= 75 OR amount_usd >= 1000 THEN 'SUSPICIOUS'\n           ELSE 'STANDARD_REVIEW'\n       END AS fraud_decision\nFROM Transactions\nWHERE is_foreign_card = TRUE OR risk_score >= 75\nORDER BY amount_usd DESC, risk_score DESC\nLIMIT 50;`,
+      table: 'Transactions'
+    },
+    {
+      id: 'case_02_prime_underwriting',
+      title: 'Fintech Credit Underwriting: Prime Customer Acquisition',
+      industry: 'Fintech',
+      difficulty: 'Easy',
+      scenario: 'A digital lending neobank is launching an invitation-only premium credit card. Guidelines require identifying verified US accounts with a FICO score of 720+ who have maintained an active account for at least 12 months. Each applicant must be assigned a monthly limit ($15 per score point).',
       schemaSnippet: 'Customers (customer_id, full_name, credit_score, country, tenure_months)',
-      businessObjective: 'Extract unique US customers with credit_score >= 700, projecting their monthly limit (credit_score * 15), sorted by tenure descending, limited to 5 records.',
-      targetQuery: `SELECT DISTINCT full_name, credit_score, (credit_score * 15) AS monthly_credit_limit, tenure_months\nFROM Customers\nWHERE country = 'USA' AND credit_score >= 700\nORDER BY tenure_months DESC\nLIMIT 5;`,
+      businessObjective: 'Extract unique US customers with credit_score >= 720, calculating initial limit, sorted by tenure descending, limited to 10 records.',
+      targetQuery: `SELECT DISTINCT full_name, credit_score, (credit_score * 15) AS monthly_credit_limit, tenure_months\nFROM Customers\nWHERE country = 'USA' AND credit_score >= 720 AND tenure_months >= 12\nORDER BY tenure_months DESC, credit_score DESC\nLIMIT 10;`,
       table: 'Customers'
     },
     {
-      id: 'case_ecommerce_top_earners',
-      title: 'Global Tech Corp: Executive Compensation Audit',
-      industry: 'Human Resources & Corporate Governance',
-      difficulty: 'Easy',
-      scenario: 'The board of directors is conducting an executive compensation review. They require a listing of the highest-paid employees in Engineering and Sales earning over $80,000. In case of salary ties, candidates should be ordered alphabetically by their last name.',
-      schemaSnippet: 'Employees (emp_id, first_name, last_name, department, salary, months_tenure)',
-      businessObjective: 'Select first_name, last_name, department, and salary for staff earning > 80,000 in Engineering or Sales, ordered by salary DESC with last_name ASC as tie-breaker.',
-      targetQuery: `SELECT first_name, last_name, department, salary\nFROM Employees\nWHERE salary > 80000 AND (department = 'Engineering' OR department = 'Sales')\nORDER BY salary DESC, last_name ASC\nLIMIT 10;`,
-      table: 'Employees'
+      id: 'case_03_saas_churn',
+      title: 'B2B Account Churn Risk & Contraction Classifier',
+      industry: 'SaaS',
+      difficulty: 'Medium',
+      scenario: 'Customer Success leadership monitors subscription health ahead of annual enterprise renewals. Accounts with zero logins in the past 30 days or seat utilization under 40% are at imminent risk of contraction or cancellation.',
+      schemaSnippet: 'SubscriptionAccounts (account_id, company_name, plan_tier, licensed_seats, active_seats, days_since_last_login)',
+      businessObjective: 'Calculate seat utilization percentage and categorize accounts into IMMINENT_CHURN, NEEDS_OUTREACH, or HEALTHY.',
+      targetQuery: `SELECT company_name, plan_tier, licensed_seats, active_seats,\n       ROUND((active_seats * 100.0 / licensed_seats), 1) AS seat_utilization_pct,\n       CASE\n           WHEN days_since_last_login > 30 OR (active_seats * 1.0 / licensed_seats) < 0.25 THEN 'IMMINENT_CHURN'\n           WHEN days_since_last_login > 14 OR (active_seats * 1.0 / licensed_seats) < 0.50 THEN 'NEEDS_OUTREACH'\n           ELSE 'HEALTHY'\n       END AS account_health_status\nFROM SubscriptionAccounts\nWHERE plan_tier IN ('Enterprise', 'Growth')\nORDER BY seat_utilization_pct ASC, days_since_last_login DESC;`,
+      table: 'SubscriptionAccounts'
     },
     {
-      id: 'case_geometry_triangle_qc',
-      title: 'Autonomous Robotics: Sensor Distance Triangle Verification',
+      id: 'case_04_freemium_gate',
+      title: 'Freemium Cloud Compute Gatekeeper & Upgrade Tiers',
+      industry: 'SaaS',
+      difficulty: 'Easy',
+      scenario: 'A serverless database provider offers free-tier compute. When users exceed monthly execution limits, automated rate-limiting flags them for enterprise sales outreach or throttles their concurrency.',
+      schemaSnippet: 'DeveloperTenants (tenant_id, org_name, monthly_vcpuhours, storage_gb, is_billing_verified)',
+      businessObjective: 'Flag all unverified free tenants that exceed 100 vCPU-hours or 50GB storage, categorizing them into sales lead priorities.',
+      targetQuery: `SELECT org_name, monthly_vcpuhours, storage_gb,\n       CASE\n           WHEN monthly_vcpuhours >= 250 OR storage_gb >= 100 THEN 'HOT_SALES_LEAD'\n           WHEN monthly_vcpuhours >= 100 OR storage_gb >= 50 THEN 'WARM_UPGRADE_CANDIDATE'\n           ELSE 'STANDARD_FREE'\n       END AS sales_motion_tier\nFROM DeveloperTenants\nWHERE is_billing_verified = FALSE AND (monthly_vcpuhours >= 100 OR storage_gb >= 50)\nORDER BY monthly_vcpuhours DESC;`,
+      table: 'DeveloperTenants'
+    },
+    {
+      id: 'case_05_vip_loyalty',
+      title: 'VIP Customer Tiering & Loyalty Multipliers',
+      industry: 'E-Commerce',
+      difficulty: 'Medium',
+      scenario: 'An omni-channel luxury retailer calculates customer loyalty tiers annually based on trailing 12-month net spend. Platinum and Gold members receive accelerated reward multipliers (3x and 2x points).',
+      schemaSnippet: 'LoyaltyMembers (member_id, full_name, annual_spend, return_rate_pct, preferred_category)',
+      businessObjective: 'Assign loyalty tiers and reward multipliers to members who maintain return rates below 20%.',
+      targetQuery: `SELECT full_name, annual_spend, return_rate_pct,\n       CASE\n           WHEN annual_spend >= 10000 THEN 'PLATINUM (3x Points)'\n           WHEN annual_spend >= 5000 THEN 'GOLD (2x Points)'\n           WHEN annual_spend >= 1500 THEN 'SILVER (1.5x Points)'\n           ELSE 'BRONZE (1x Points)'\n       END AS loyalty_tier\nFROM LoyaltyMembers\nWHERE return_rate_pct < 20.0\nORDER BY annual_spend DESC\nLIMIT 25;`,
+      table: 'LoyaltyMembers'
+    },
+    {
+      id: 'case_06_express_routing',
+      title: 'Express vs Standard Fulfillment SLA Routing',
+      industry: 'E-Commerce',
+      difficulty: 'Easy',
+      scenario: 'An automated distribution hub batches pending orders into delivery lanes. Orders marked Prime or orders over $150 qualify for next-day air dispatch, while remaining packages route via standard ground carrier.',
+      schemaSnippet: 'Orders (order_id, order_total, is_prime_member, destination_zip, order_status)',
+      businessObjective: 'Route pending packages to AIR_DISPATCH or GROUND_CARRIER based on Prime status and total cart value.',
+      targetQuery: `SELECT order_id, order_total, is_prime_member, destination_zip,\n       CASE\n           WHEN is_prime_member = TRUE OR order_total >= 150.00 THEN 'AIR_DISPATCH_NEXT_DAY'\n           ELSE 'GROUND_CARRIER_STANDARD'\n       END AS fulfillment_routing\nFROM Orders\nWHERE order_status = 'PENDING_FULFILLMENT'\nORDER BY order_total DESC;`,
+      table: 'Orders'
+    },
+    {
+      id: 'case_07_er_triage',
+      title: 'Emergency Room Triage Acuity Matrix (ESI Tiers)',
+      industry: 'Healthcare',
+      difficulty: 'Hard',
+      scenario: 'Hospital emergency departments use the Emergency Severity Index (ESI 1 through 5) to categorize patient acuity upon check-in. Patients with oxygen saturation < 85% or pulse > 130 bpm must immediately bypass the waiting room.',
+      schemaSnippet: 'PatientIntake (intake_id, patient_name, pulse_bpm, o2_saturation, is_unresponsive)',
+      businessObjective: 'Assign ESI triage priority levels using strict medical safety waterfall ordering.',
+      targetQuery: `SELECT patient_name, pulse_bpm, o2_saturation,\n       CASE\n           WHEN is_unresponsive = TRUE OR o2_saturation < 85 THEN 'ESI-1: RESUSCITATION (IMMEDIATE)'\n           WHEN o2_saturation < 92 OR pulse_bpm > 130 OR pulse_bpm < 45 THEN 'ESI-2: EMERGENT (10 MIN MAX)'\n           WHEN pulse_bpm BETWEEN 100 AND 130 THEN 'ESI-3: URGENT'\n           ELSE 'ESI-4: NON-URGENT'\n       END AS triage_level\nFROM PatientIntake\nORDER BY o2_saturation ASC, pulse_bpm DESC;`,
+      table: 'PatientIntake'
+    },
+    {
+      id: 'case_08_pediatric_dosage',
+      title: 'Pediatric Dosage Safety Boundary Validator',
+      industry: 'Healthcare',
+      difficulty: 'Easy',
+      scenario: 'Automated medication dispensing cabinets verify that prescribed liquid amoxicillin doses fall strictly within safe pediatric weight-adjusted milligram boundaries (40mg/kg/day to 90mg/kg/day).',
+      schemaSnippet: 'Prescriptions (rx_id, patient_weight_kg, prescribed_mg_day, drug_name)',
+      businessObjective: 'Verify pediatric antibiotic dosages and flag safe vs out-of-boundary prescriptions.',
+      targetQuery: `SELECT rx_id, drug_name, patient_weight_kg, prescribed_mg_day,\n       CASE\n           WHEN prescribed_mg_day BETWEEN (patient_weight_kg * 40) AND (patient_weight_kg * 90) THEN 'DOSAGE_SAFE'\n           WHEN prescribed_mg_day > (patient_weight_kg * 90) THEN 'OVERDOSE_WARNING'\n           ELSE 'UNDERDOSE_INEFFECTIVE'\n       END AS clinical_safety_status\nFROM Prescriptions\nWHERE drug_name = 'Amoxicillin';`,
+      table: 'Prescriptions'
+    },
+    {
+      id: 'case_09_drone_battery',
+      title: 'Autonomous Delivery Drone Battery & Cargo Gate',
+      industry: 'Logistics',
+      difficulty: 'Medium',
+      scenario: 'Fleet dispatch software monitors delivery drones before releasing them from launch pads. A drone cannot take off if its payload exceeds 4.5kg, or if its battery percentage is below 40% for missions exceeding 5km.',
+      schemaSnippet: 'DroneFleet (drone_id, battery_pct, payload_kg, mission_distance_km, motor_health_score)',
+      businessObjective: 'Determine flight clearance status for scheduled missions based on battery and cargo boundaries.',
+      targetQuery: `SELECT drone_id, battery_pct, payload_kg, mission_distance_km,\n       CASE\n           WHEN payload_kg > 4.5 OR motor_health_score < 80 THEN 'GROUNDED_MAINTENANCE'\n           WHEN mission_distance_km > 5.0 AND battery_pct < 40 THEN 'GROUNDED_LOW_BATTERY'\n           WHEN mission_distance_km <= 5.0 AND battery_pct < 25 THEN 'GROUNDED_LOW_BATTERY'\n           ELSE 'CLEARED_FOR_TAKEOFF'\n       END AS flight_clearance\nFROM DroneFleet\nORDER BY flight_clearance ASC, battery_pct ASC;`,
+      table: 'DroneFleet'
+    },
+    {
+      id: 'case_10_late_delivery',
+      title: 'Carrier Late Delivery Penalty Escalation',
+      industry: 'Logistics',
+      difficulty: 'Medium',
+      scenario: 'Freight contracts stipulate financial liquidated damages when logistics carriers deliver shipments past agreed delivery SLA windows. Penalties escalate in tiers based on delay minutes.',
+      schemaSnippet: 'ShipmentTracking (tracking_id, carrier_name, sla_minutes, actual_delivery_minutes, freight_cost)',
+      businessObjective: 'Calculate delay minutes and assign contract penalty percentage tiers.',
+      targetQuery: `SELECT tracking_id, carrier_name,\n       (actual_delivery_minutes - sla_minutes) AS delay_minutes,\n       CASE\n           WHEN actual_delivery_minutes <= sla_minutes THEN 'ON_TIME (0% Penalty)'\n           WHEN (actual_delivery_minutes - sla_minutes) <= 60 THEN 'MINOR_DELAY (5% Penalty)'\n           WHEN (actual_delivery_minutes - sla_minutes) <= 180 THEN 'MODERATE_DELAY (15% Penalty)'\n           ELSE 'SEVERE_BREACH (30% Penalty)'\n       END AS penalty_assessment\nFROM ShipmentTracking\nWHERE actual_delivery_minutes > sla_minutes\nORDER BY delay_minutes DESC;`,
+      table: 'ShipmentTracking'
+    },
+    {
+      id: 'case_11_streaming_agegate',
+      title: 'Content Age-Gate & Parental Advisory Routing',
+      industry: 'Media',
+      difficulty: 'Easy',
+      scenario: 'A streaming entertainment service serves titles across multiple user profiles. In child profiles (under 13), titles rated R, TV-MA, or NC-17 must be blocked, while PG-13 content requires parental passcodes.',
+      schemaSnippet: 'MediaCatalog (title, mpaa_rating, genre, content_warning_tags)',
+      businessObjective: 'Categorize catalog titles for child profile accessibility using set membership (IN).',
+      targetQuery: `SELECT title, genre, mpaa_rating,\n       CASE\n           WHEN mpaa_rating IN ('R', 'TV-MA', 'NC-17') THEN 'RESTRICTED_LOCKED'\n           WHEN mpaa_rating = 'PG-13' THEN 'PARENTAL_PIN_REQUIRED'\n           ELSE 'OPEN_ACCESS'\n       END AS child_profile_permission\nFROM MediaCatalog\nORDER BY title ASC;`,
+      table: 'MediaCatalog'
+    },
+    {
+      id: 'case_12_bruteforce_ip',
+      title: 'Brute-Force IP Lockout & Anomaly Detection',
+      industry: 'Cybersecurity',
+      difficulty: 'Hard',
+      scenario: 'An authentication gateway analyzes failed login attempts. An IP subnet recording 10+ failed attempts within a monitoring window is flagged for automatic firewall blacklisting unless it originates from a whitelisted VPN block (10.0.%.%).',
+      schemaSnippet: 'AuthAuditLog (source_ip, failed_attempts, country_code, is_vpn)',
+      businessObjective: 'Identify and classify suspicious authentication IPs for automated firewall response using LIKE wildcards.',
+      targetQuery: `SELECT source_ip, failed_attempts, country_code,\n       CASE\n           WHEN source_ip LIKE '10.0.%' THEN 'INTERNAL_VPN_ALERT'\n           WHEN failed_attempts >= 25 THEN 'AUTOMATIC_PERMANENT_BAN'\n           WHEN failed_attempts >= 10 THEN 'TEMPORARY_RATE_LIMIT_60M'\n           ELSE 'MONITOR'\n       END AS firewall_action\nFROM AuthAuditLog\nWHERE failed_attempts >= 5\nORDER BY failed_attempts DESC;`,
+      table: 'AuthAuditLog'
+    },
+    {
+      id: 'case_13_exec_bonus',
+      title: 'Executive Equity Vesting & Bonus Brackets',
+      industry: 'Human Resources',
+      difficulty: 'Medium',
+      scenario: 'Year-end corporate compensation committees evaluate executive performance based on individual OKR completion rates to assign multiplier brackets for staff with tenure >= 2 years.',
+      schemaSnippet: 'ExecutiveReview (executive_id, executive_name, department, okr_completion_pct, tenure_years)',
+      businessObjective: 'Calculate equity acceleration tiers for executives with tenure >= 2 years.',
+      targetQuery: `SELECT executive_name, department, okr_completion_pct, tenure_years,\n       CASE\n           WHEN okr_completion_pct >= 115.0 THEN 'SUPERIOR (150% Bonus + 1.25x Vesting)'\n           WHEN okr_completion_pct >= 100.0 THEN 'TARGET (100% Bonus + 1.0x Vesting)'\n           WHEN okr_completion_pct >= 85.0 THEN 'THRESHOLD (75% Bonus + Standard Vesting)'\n           ELSE 'BELOW_EXPECTATION (0% Bonus)'\n       END AS bonus_vesting_bracket\nFROM ExecutiveReview\nWHERE tenure_years >= 2\nORDER BY okr_completion_pct DESC;`,
+      table: 'ExecutiveReview'
+    },
+    {
+      id: 'case_14_robotics_triangle',
+      title: 'Sensor Distance Triangle Geometry Verification',
       industry: 'Hardware & Robotics',
       difficulty: 'Hard',
       scenario: 'An autonomous warehouse drone uses 3 ultrasound distance sensors (A, B, C) to map triangular boundary walls. If any measurement violates the Triangle Inequality Theorem, the polygon is invalid and flagged for sensor re-calibration.',
@@ -451,6 +572,17 @@ window.FOUNDATIONS_DATA = {
       businessObjective: 'Evaluate sides A, B, C and classify them as Equilateral, Isosceles, Scalene, or Not A Triangle using strict short-circuit logic.',
       targetQuery: `SELECT A, B, C,\n       CASE\n           WHEN A + B <= C OR A + C <= B OR B + C <= A THEN 'Not A Triangle'\n           WHEN A = B AND B = C THEN 'Equilateral'\n           WHEN A = B OR B = C OR A = C THEN 'Isosceles'\n           ELSE 'Scalene'\n       END AS triangle_type\nFROM TRIANGLES;`,
       table: 'TRIANGLES'
+    },
+    {
+      id: 'case_15_aml_structuring',
+      title: 'Anti-Money Laundering (AML) Structuring Tripwire',
+      industry: 'Fintech',
+      difficulty: 'Hard',
+      scenario: 'Federal regulations require Currency Transaction Reports (CTRs) for cash deposits exceeding $10,000. Criminal actors attempt structuring (smurfing)—intentionally making cash deposits between $8,500 and $9,999 to evade reporting thresholds.',
+      schemaSnippet: 'DepositLedger (deposit_id, account_id, amount_usd, deposit_channel, customer_occupation)',
+      businessObjective: 'Flag suspicious cash deposits sitting immediately under the federal $10,000 CTR reporting threshold.',
+      targetQuery: `SELECT deposit_id, account_id, amount_usd, deposit_channel,\n       CASE\n           WHEN amount_usd BETWEEN 8500.00 AND 9999.99 THEN 'SUSPICIOUS_STRUCTURING_FLAG'\n           WHEN amount_usd >= 10000.00 THEN 'MANDATORY_CTR_FILING'\n           ELSE 'STANDARD_ACTIVITY'\n       END AS aml_compliance_tier\nFROM DepositLedger\nWHERE deposit_channel = 'CASH_TELLER' AND amount_usd >= 8500.00\nORDER BY amount_usd DESC;`,
+      table: 'DepositLedger'
     }
   ],
 
