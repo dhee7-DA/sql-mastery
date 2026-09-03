@@ -465,22 +465,33 @@
   <!-- VIEW 4: Real-World Case Studies -->
   <div class="view-panel" id="viewCases">
     <div class="curriculum-container">
-      <div class="curriculum-header">
-        <div>
-          <h2 class="view-title">Corporate SQL Case Studies</h2>
-          <p class="view-subtitle">15 production scenario-driven analytics across Fintech, SaaS, E-Commerce, Healthcare, and Logistics.</p>
+      <div class="curriculum-header" style="flex-direction: column; align-items: stretch; gap: 14px;">
+        <div style="display: flex; justify-content: space-between; align-items: flex-end; flex-wrap: wrap; gap: 10px;">
+          <div>
+            <h2 class="view-title">The 100 Corporate Case Study Master Vault</h2>
+            <p class="view-subtitle">100 real-world corporate analytics scenarios across 10 global industries.</p>
+          </div>
+          <div style="display: flex; align-items: center; gap: 10px;">
+            <input type="text" id="caseSearchInput" placeholder="🔍 Search 100 case studies by keyword, schema, or title..." style="width: 280px; background: #09090b; border: 1px solid var(--border-default); border-radius: var(--radius-sm); color: #fff; font-family: var(--font-mono); font-size: 11.5px; padding: 6px 12px;">
+            <span id="caseCountBadge" class="status-pill" style="font-size: 11px;">100 Cases</span>
+          </div>
         </div>
-        <div class="difficulty-filter-group" id="caseIndustryFilters">
-          <button class="case-filter-btn active" data-industry="all">All (15)</button>
-          <button class="case-filter-btn" data-industry="Fintech">Fintech</button>
-          <button class="case-filter-btn" data-industry="SaaS">SaaS</button>
-          <button class="case-filter-btn" data-industry="E-Commerce">E-Commerce</button>
-          <button class="case-filter-btn" data-industry="Healthcare">Healthcare</button>
-          <button class="case-filter-btn" data-industry="Logistics">Logistics</button>
+        <div class="difficulty-filter-group" id="caseIndustryFilters" style="flex-wrap: wrap; gap: 6px;">
+          <button class="case-filter-btn active" data-industry="all">All (100)</button>
+          <button class="case-filter-btn" data-industry="Fintech">Fintech (10)</button>
+          <button class="case-filter-btn" data-industry="SaaS">SaaS (10)</button>
+          <button class="case-filter-btn" data-industry="Retail">Retail (10)</button>
+          <button class="case-filter-btn" data-industry="Healthcare">Healthcare (10)</button>
+          <button class="case-filter-btn" data-industry="Logistics">Logistics (10)</button>
+          <button class="case-filter-btn" data-industry="Media">Media (10)</button>
+          <button class="case-filter-btn" data-industry="Security">Security (10)</button>
+          <button class="case-filter-btn" data-industry="Hardware">Hardware (10)</button>
+          <button class="case-filter-btn" data-industry="HR">HR (10)</button>
+          <button class="case-filter-btn" data-industry="Platforms">Platforms (10)</button>
         </div>
       </div>
       <div class="cases-grid" id="caseStudiesGrid">
-        <!-- Dynamically rendered from FOUNDATIONS_DATA.caseStudies -->
+        <!-- Dynamically rendered from ALL_100_CASE_STUDIES -->
       </div>
     </div>
   </div>
@@ -583,6 +594,7 @@
 <script src="operators_sandbox.js"></script>
 <script src="quests_engine.js"></script>
 <script src="deconstructor_data.js"></script>
+<script src="case_studies_100.js"></script>
 <script src="foundations_curriculum.js"></script>
 <script src="app.js"></script>
 </body>

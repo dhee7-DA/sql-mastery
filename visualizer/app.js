@@ -1452,6 +1452,15 @@ function initCurriculumSystem() {
       renderCaseStudies(btn.dataset.industry);
     });
   });
+
+  // Search input for 100 Case Studies
+  const caseSearchInput = document.getElementById('caseSearchInput');
+  if (caseSearchInput) {
+    caseSearchInput.addEventListener('input', (e) => {
+      currentCaseSearchQuery = e.target.value.trim();
+      renderCaseStudies(currentCaseIndustryFilter);
+    });
+  }
 }
 
 // =============================================================================
@@ -2430,15 +2439,44 @@ function handleMcqAnswer(qid, selectedIdx) {
 }
 
 let currentCaseIndustryFilter = 'all';
+let currentCaseSearchQuery = '';
 
 function renderCaseStudies(industryFilter = currentCaseIndustryFilter) {
   currentCaseIndustryFilter = industryFilter;
   const container = document.getElementById('caseStudiesGrid');
-  if (!container || !window.FOUNDATIONS_DATA) return;
+  const countBadge = document.getElementById('caseCountBadge');
+  if (!container) return;
 
-  let cases = window.FOUNDATIONS_DATA.caseStudies || [];
+  let allCases = window.ALL_100_CASE_STUDIES || (window.FOUNDATIONS_DATA ? window.FOUNDATIONS_DATA.caseStudies : []) || [];
+  let cases = allCases;
+
   if (industryFilter !== 'all') {
-    cases = cases.filter(cs => cs.industry.toLowerCase().includes(industryFilter.toLowerCase()));
+    cases = cases.filter(cs => cs.industry.toLowerCase() === industryFilter.toLowerCase() || cs.industry.toLowerCase().includes(industryFilter.toLowerCase()));
+  }
+
+  if (currentCaseSearchQuery) {
+    const q = currentCaseSearchQuery.toLowerCase();
+    cases = cases.filter(cs => 
+      cs.title.toLowerCase().includes(q) ||
+      cs.scenario.toLowerCase().includes(q) ||
+      cs.businessObjective.toLowerCase().includes(q) ||
+      cs.schemaSnippet.toLowerCase().includes(q) ||
+      cs.targetQuery.toLowerCase().includes(q)
+    );
+  }
+
+  if (countBadge) {
+    countBadge.textContent = `${cases.length} of ${allCases.length} Cases`;
+  }
+
+  if (cases.length === 0) {
+    container.innerHTML = `
+      <div style="grid-column: 1 / -1; padding: 40px; text-align: center; color: var(--text-muted);">
+        <p style="font-size: 14px; margin-bottom: 8px;">No case studies match "${currentCaseSearchQuery}".</p>
+        <button class="card-nav-btn" onclick="document.getElementById('caseSearchInput').value = ''; currentCaseSearchQuery = ''; renderCaseStudies('all');">Clear Filter</button>
+      </div>
+    `;
+    return;
   }
 
   let html = '';
@@ -2448,8 +2486,11 @@ function renderCaseStudies(industryFilter = currentCaseIndustryFilter) {
       <div class="case-card">
         <div class="case-card-header">
           <div>
+            <div style="display: flex; align-items: center; gap: 6px; margin-bottom: 3px;">
+              <span class="status-pill" style="font-size: 10px; padding: 1px 6px;">#${cs.id < 10 ? '00' + cs.id : (cs.id < 100 ? '0' + cs.id : cs.id)}</span>
+              <span class="case-industry">${cs.industry}</span>
+            </div>
             <h3 class="case-title">${cs.title}</h3>
-            <span class="case-industry">${cs.industry}</span>
           </div>
           <span class="badge-diff ${cs.difficulty === 'Easy' ? 'diff-easy' : (cs.difficulty === 'Medium' ? 'diff-medium' : 'diff-hard')}">${cs.difficulty}</span>
         </div>
