@@ -320,5 +320,100 @@ window.QUESTS_DATA = [
     fixedQuery: `SELECT CASE\n         WHEN A + B <= C THEN 'Not A Triangle'  -- &check; Correct: Checked first!\n         WHEN A = B THEN 'Isosceles'\n         ELSE 'Scalene'\n       END AS shape\nFROM TRIANGLES;`,
     bugExplanation: 'Because SQL evaluates CASE from top to bottom and short-circuits at the first TRUE condition, row (20, 20, 40) saw "20 = 20" (TRUE) and exited as Isosceles! But 20 + 20 = 40, which violates the triangle inequality theorem (sum of two sides must be strictly greater than the third). It is not a triangle at all!',
     fixedExplanation: 'Perfect! By moving "WHEN A + B <= C" to the top of the waterfall, the invalid shape is caught and rejected immediately before the equality test can ever fire.'
+  },
+
+  // ---------------------------------------------------------------------------
+  // LEVEL 13: The Big 5 Aggregate Functions
+  // ---------------------------------------------------------------------------
+  {
+    id: 13,
+    title: 'Level 13: The Big 5 Aggregations',
+    subtitle: 'Compute the total headcount, sum of payroll, and average salary across all records.',
+    type: 'fill_blank',
+    category: 'Pillar 2: Aggregations',
+    codeTemplate: [
+      { text: 'SELECT ', isBlank: false },
+      { text: '', isBlank: true, slotId: 'slot1', placeholder: '[ ___ ]' },
+      { text: '(*) AS total_staff,\n       ', isBlank: false },
+      { text: '', isBlank: true, slotId: 'slot2', placeholder: '[ ___ ]' },
+      { text: '(salary) AS total_payroll,\n       ', isBlank: false },
+      { text: '', isBlank: true, slotId: 'slot3', placeholder: '[ ___ ]' },
+      { text: '(salary) AS avg_salary\nFROM Employees;', isBlank: false }
+    ],
+    slots: {
+      slot1: { correct: 'COUNT', options: ['COUNT', 'TOTAL', 'NUM', 'ROWS'] },
+      slot2: { correct: 'SUM', options: ['SUM', 'ADD', 'PLUS', 'ACCUM'] },
+      slot3: { correct: 'AVG', options: ['AVG', 'MEAN', 'AVERAGE', 'MEDIAN'] }
+    },
+    explanation: "COUNT(*) counts rows, SUM(salary) computes arithmetic total, and AVG(salary) calculates mean value across non-NULL records."
+  },
+
+  // ---------------------------------------------------------------------------
+  // LEVEL 14: The NULL Trap: COUNT(*) vs COUNT(column)
+  // ---------------------------------------------------------------------------
+  {
+    id: 14,
+    title: 'Level 14: The NULL Trap (COUNT vs COUNT DISTINCT)',
+    subtitle: 'Count unique department names while skipping duplicates.',
+    type: 'fill_blank',
+    category: 'Pillar 2: Aggregations',
+    codeTemplate: [
+      { text: 'SELECT COUNT(', isBlank: false },
+      { text: '', isBlank: true, slotId: 'slot1', placeholder: '[ ___ ]' },
+      { text: ' department) AS distinct_dept_count,\n       COUNT(', isBlank: false },
+      { text: '', isBlank: true, slotId: 'slot2', placeholder: '[ ___ ]' },
+      { text: ') AS all_rows\nFROM Employees;', isBlank: false }
+    ],
+    slots: {
+      slot1: { correct: 'DISTINCT', options: ['DISTINCT', 'UNIQUE', 'DIFFERENT', 'SET'] },
+      slot2: { correct: '*', options: ['*', 'ALL', '1', 'ROWS'] }
+    },
+    explanation: "COUNT(DISTINCT column) deduplicates values before counting, while COUNT(*) counts every single row in the table including NULLs."
+  },
+
+  // ---------------------------------------------------------------------------
+  // LEVEL 15: The GROUP BY Bucket Sorter
+  // ---------------------------------------------------------------------------
+  {
+    id: 15,
+    title: 'Level 15: The GROUP BY Bucket Sorter',
+    subtitle: 'Partition rows into department buckets and calculate average salary per team.',
+    type: 'fill_blank',
+    category: 'Pillar 2: Aggregations',
+    codeTemplate: [
+      { text: 'SELECT department, AVG(salary) AS avg_pay\nFROM Employees\n', isBlank: false },
+      { text: '', isBlank: true, slotId: 'slot1', placeholder: '[ ___ ]' },
+      { text: ' ', isBlank: false },
+      { text: '', isBlank: true, slotId: 'slot2', placeholder: '[ ___ ]' },
+      { text: ' department;', isBlank: false }
+    ],
+    slots: {
+      slot1: { correct: 'GROUP', options: ['GROUP', 'PARTITION', 'ORDER', 'CLUSTER'] },
+      slot2: { correct: 'BY', options: ['BY', 'ON', 'OVER', 'WITH'] }
+    },
+    explanation: "GROUP BY partitions data into independent summary buckets, allowing aggregate functions to compute separately within each department."
+  },
+
+  // ---------------------------------------------------------------------------
+  // LEVEL 16: The WHERE vs HAVING Gateway
+  // ---------------------------------------------------------------------------
+  {
+    id: 16,
+    title: 'Level 16: The WHERE vs HAVING Gateway',
+    subtitle: 'Filter individual salaries first with WHERE, then filter departmental aggregates with HAVING.',
+    type: 'fill_blank',
+    category: 'Pillar 2: Aggregations',
+    codeTemplate: [
+      { text: 'SELECT department, COUNT(*) AS team_size\nFROM Employees\n', isBlank: false },
+      { text: '', isBlank: true, slotId: 'slot1', placeholder: '[ ___ ]' },
+      { text: ' salary >= 60000\nGROUP BY department\n', isBlank: false },
+      { text: '', isBlank: true, slotId: 'slot2', placeholder: '[ ___ ]' },
+      { text: ' COUNT(*) >= 2;', isBlank: false }
+    ],
+    slots: {
+      slot1: { correct: 'WHERE', options: ['WHERE', 'HAVING', 'FILTER', 'WHEN'] },
+      slot2: { correct: 'HAVING', options: ['HAVING', 'WHERE', 'AND', 'FILTER'] }
+    },
+    explanation: "WHERE filters raw individual records BEFORE grouping. HAVING filters summary buckets AFTER aggregation has computed."
   }
 ];

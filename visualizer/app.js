@@ -1696,10 +1696,12 @@ const limitSandboxPresets = [1, 3, 5];
 function initGuidedLab() {
   const btnTrack01 = document.getElementById('btnTrack01');
   const btnTrack02 = document.getElementById('btnTrack02');
+  const btnTrackAggregations = document.getElementById('btnTrackAggregations');
   const btnTrackOperators = document.getElementById('btnTrackOperators');
 
   if (btnTrack01) btnTrack01.addEventListener('click', () => switchTrack('track01'));
   if (btnTrack02) btnTrack02.addEventListener('click', () => switchTrack('track02'));
+  if (btnTrackAggregations) btnTrackAggregations.addEventListener('click', () => switchTrack('trackAggregations'));
   if (btnTrackOperators) btnTrackOperators.addEventListener('click', () => switchTrack('trackOperators'));
 
   switchTrack('track01');
@@ -1710,13 +1712,18 @@ function switchTrack(trackId) {
   currentGuidedStep = 1;
 
   document.querySelectorAll('.track-btn').forEach(b => b.classList.remove('active'));
-  const activeBtn = document.getElementById(trackId === 'track01' ? 'btnTrack01' : (trackId === 'track02' ? 'btnTrack02' : 'btnTrackOperators'));
+  const activeBtn = document.getElementById(
+    trackId === 'track01' ? 'btnTrack01' : 
+    (trackId === 'track02' ? 'btnTrack02' : 
+    (trackId === 'trackAggregations' ? 'btnTrackAggregations' : 'btnTrackOperators'))
+  );
   if (activeBtn) activeBtn.classList.add('active');
 
   const badge = document.getElementById('trackActiveSchemaBadge');
   if (badge) {
     if (trackId === 'track01') badge.textContent = 'Schema: Employees (8 rows)';
     else if (trackId === 'track02') badge.textContent = 'Schema: TRIANGLES (8 rows)';
+    else if (trackId === 'trackAggregations') badge.textContent = 'Schema: Employees (9 rows, NULL bonuses)';
     else badge.textContent = 'Operators: LIKE, IN, BETWEEN, NULL';
   }
 
@@ -1733,7 +1740,9 @@ function switchTrack(trackId) {
 
 function renderGuidedStepperBar() {
   const bar = document.getElementById('guidedStepperBar');
-  const activeSteps = currentTrack === 'track01' ? window.GUIDED_STEPS : window.CASEWHEN_STEPS;
+  const activeSteps = currentTrack === 'track01' ? window.GUIDED_STEPS : 
+    (currentTrack === 'track02' ? window.CASEWHEN_STEPS : 
+    (currentTrack === 'trackAggregations' ? window.AGGREGATIONS_STEPS : []));
   if (!bar || !activeSteps) return;
 
   let html = '';
@@ -1770,8 +1779,12 @@ function renderGuidedStep(stepNum) {
   renderGuidedStepperBar();
 
   const container = document.getElementById('guidedStepCard');
-  const activeSteps = currentTrack === 'track01' ? window.GUIDED_STEPS : window.CASEWHEN_STEPS;
-  const activeSchema = currentTrack === 'track01' ? window.GUIDED_SCHEMA : window.CASEWHEN_SCHEMA;
+  const activeSteps = currentTrack === 'track01' ? window.GUIDED_STEPS : 
+    (currentTrack === 'track02' ? window.CASEWHEN_STEPS : 
+    (currentTrack === 'trackAggregations' ? window.AGGREGATIONS_STEPS : []));
+  const activeSchema = currentTrack === 'track01' ? window.GUIDED_SCHEMA : 
+    (currentTrack === 'track02' ? window.CASEWHEN_SCHEMA : 
+    (currentTrack === 'trackAggregations' ? window.AGGREGATIONS_SCHEMA : null));
   if (!container || !activeSteps) return;
 
   const step = activeSteps.find(s => s.stepIndex === stepNum) || activeSteps[0];
