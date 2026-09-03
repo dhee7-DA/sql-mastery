@@ -1344,12 +1344,16 @@ function initCurriculumSystem() {
       }
 
       // Lazy render on view switch
+      if (targetId === 'viewGuidedLab') renderGuidedStep(currentGuidedStep);
       if (targetId === 'viewExplainer') renderKeywordExplainer();
       if (targetId === 'viewMcqs') renderMcqs();
       if (targetId === 'viewCases') renderCaseStudies();
       if (targetId === 'viewProblems') renderProblemBank();
     });
   });
+
+  // Initialize the Guided Lab default view
+  initGuidedLab();
 
   // Difficulty filter pills in Problem Bank
   document.querySelectorAll('.diff-filter-btn').forEach(btn => {
@@ -1359,6 +1363,136 @@ function initCurriculumSystem() {
       renderProblemBank(btn.dataset.diff);
     });
   });
+}
+
+// =============================================================================
+// GUIDED LEARNING LAB CONTROLLER (STEP-BY-STEP, SINGLE EMPLOYEES SCHEMA)
+// =============================================================================
+
+let currentGuidedStep = 1;
+
+function initGuidedLab() {
+  renderGuidedStepperBar();
+  renderGuidedStep(1);
+}
+
+function renderGuidedStepperBar() {
+  const bar = document.getElementById('guidedStepperBar');
+  if (!bar || !window.GUIDED_STEPS) return;
+
+  let html = '';
+  window.GUIDED_STEPS.forEach(s => {
+    const isActive = s.stepIndex === currentGuidedStep;
+    const isCompleted = s.stepIndex < currentGuidedStep;
+    html += `
+      <button class="guided-step-btn ${isActive ? 'active' : ''} ${isCompleted ? 'completed' : ''}" onclick="renderGuidedStep(${s.stepIndex})">
+        <span class="clause-pill ${s.pillClass}" style="margin: 0; padding: 1px 5px;">${s.keyword}</span>
+        <span>${s.stepIndex < 10 ? '0' + s.stepIndex : s.stepIndex} ${s.keyword}</span>
+      </button>
+    `;
+  });
+  bar.innerHTML = html;
+}
+
+function renderGuidedStep(stepNum) {
+  currentGuidedStep = stepNum;
+  renderGuidedStepperBar();
+
+  const container = document.getElementById('guidedStepCard');
+  if (!container || !window.GUIDED_STEPS) return;
+
+  const step = window.GUIDED_STEPS.find(s => s.stepIndex === stepNum) || window.GUIDED_STEPS[0];
+  const transformedRows = step.transform(JSON.parse(JSON.stringify(window.GUIDED_SCHEMA.rows)));
+
+  const sampleRow = transformedRows[0] || {};
+  const displayCols = Object.keys(sampleRow).filter(k => !k.startsWith('_'));
+
+  let tableHtml = `
+    <div class="guided-table-wrap">
+      <table>
+        <thead>
+          <tr>
+            ${displayCols.map(c => `<th>${c}</th>`).join('')}
+            <th style="width: 160px;">ENGINE STATUS</th>
+          </tr>
+        </thead>
+        <tbody>
+  `;
+
+  transformedRows.forEach(row => {
+    const isRejected = (row._status === 'rejected' || row._passed === false);
+    const isPassed = (row._status === 'passed' || row._passed === true);
+    const trClass = isRejected ? 'row-rejected-dim' : (isPassed ? 'row-passed-highlight' : '');
+
+    let badgeClass = 'tag-badge';
+    if (isPassed) badgeClass += ' tag-pass';
+    if (isRejected) badgeClass += ' tag-fail';
+
+    tableHtml += `<tr class="${trClass}">`;
+    displayCols.forEach(c => {
+      let val = row[c];
+      if (typeof val === 'number' && c === 'salary') val = `$${val.toLocaleString()}`;
+      if (typeof val === 'number' && c === 'annual_bonus') val = `$${val.toLocaleString()}`;
+      tableHtml += `<td>${val !== undefined ? val : ''}</td>`;
+    });
+
+    const statusLabel = row._label || (isPassed ? 'PASS' : (isRejected ? 'DROP' : 'IN MEMORY'));
+    const reasonText = row._reason ? `<div style="font-size: 10px; color: var(--text-muted); margin-top: 2px;">${row._reason}</div>` : '';
+
+    tableHtml += `<td><span class="${badgeClass}">${statusLabel}</span>${reasonText}</td></tr>`;
+  });
+
+  tableHtml += `</tbody></table></div>`;
+
+  const prevStep = stepNum > 1 ? stepNum - 1 : null;
+  const nextStep = stepNum < window.GUIDED_STEPS.length ? stepNum + 1 : null;
+
+  container.innerHTML = `
+    <div class="guided-step-header">
+      <div class="guided-title-group">
+        <span class="clause-pill ${step.pillClass}">${step.keyword}</span>
+        <h2 class="guided-step-title">${step.title}</h2>
+      </div>
+      <span class="status-pill" style="font-size: 11px;">Single Schema: Employees (8 rows)</span>
+    </div>
+
+    <div class="guided-concept-block">
+      <h3 class="guided-concept-heading">${step.conceptHeading}</h3>
+      <p class="guided-concept-text">${step.conceptText}</p>
+      <ul class="guided-points-list">
+        ${step.explanationPoints.map(p => `<li>${p}</li>`).join('')}
+      </ul>
+    </div>
+
+    <div class="guided-svg-container">
+      ${step.svg}
+    </div>
+
+    <div class="guided-code-box">
+      <span style="color: var(--text-muted); font-size: 10.5px; display: block; margin-bottom: 4px;">EXECUTED SQL:</span>
+      <code>${step.sqlCode}</code>
+    </div>
+
+    <div class="guided-interactive-section">
+      <span class="guided-action-prompt">${step.actionPrompt}</span>
+      ${tableHtml}
+    </div>
+
+    <div class="guided-footer-nav">
+      <button class="card-nav-btn" ${!prevStep ? 'disabled' : ''} onclick="renderGuidedStep(${prevStep})">
+        &larr; Previous (${prevStep ? window.GUIDED_STEPS[prevStep - 1].keyword : 'Start'})
+      </button>
+
+      <button class="btn-solve-in-studio" onclick="switchToMcqsWithKeyword('${step.keyword}')">
+        <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M9 11l3 3L22 4"></path><path d="M21 12v7a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h11"></path></svg>
+        Practice ${step.keyword} MCQs
+      </button>
+
+      <button class="card-nav-btn" style="background: var(--text-primary); color: #09090b; font-weight: 600;" onclick="${nextStep ? `renderGuidedStep(${nextStep})` : `switchToMcqsWithKeyword('ALL')`}">
+        ${nextStep ? `Next: Step 0${nextStep} (${window.GUIDED_STEPS[nextStep - 1].keyword}) &rarr;` : `Complete Lab &rarr;`}
+      </button>
+    </div>
+  `;
 }
 
 function switchToStudioWithQuery(query, table) {
