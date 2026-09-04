@@ -3472,3 +3472,299 @@ body {
   border: 1px solid #d69d8f;
   color: #d69d8f;
 }
+
+/* =============================================================================
+   CURRICULUM MASTERY PROGRESS TRACKER
+   ============================================================================= */
+.study-progress-card {
+  background: #111116;
+  border: 1px solid #23232c;
+  border-radius: var(--radius-sm);
+  padding: 10px 12px;
+  margin-bottom: 12px;
+}
+
+.study-progress-header {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  margin-bottom: 6px;
+}
+
+.study-progress-title {
+  font-family: var(--font-mono);
+  font-size: 10px;
+  font-weight: 700;
+  text-transform: uppercase;
+  letter-spacing: 0.05em;
+  color: #a4b7cf;
+}
+
+.study-progress-pct {
+  font-family: var(--font-mono);
+  font-size: 10.5px;
+  font-weight: 700;
+  color: #9ec5ad;
+}
+
+.study-progress-bar-track {
+  width: 100%;
+  height: 5px;
+  background: #1c1c24;
+  border-radius: 3px;
+  overflow: hidden;
+}
+
+.study-progress-bar-fill {
+  height: 100%;
+  background: linear-gradient(90deg, #9ec5ad, #8da2be);
+  border-radius: 3px;
+  transition: width 0.35s ease;
+}
+
+.study-topic-btn .mastery-badge {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  width: 15px;
+  height: 15px;
+  border-radius: 50%;
+  font-size: 9.5px;
+  font-weight: 700;
+}
+
+.study-topic-btn .mastery-badge.done {
+  background: rgba(158, 197, 173, 0.2);
+  color: #9ec5ad;
+  border: 1px solid #9ec5ad;
+}
+
+.study-topic-btn .mastery-badge.pending {
+  background: rgba(113, 113, 122, 0.15);
+  color: #71717a;
+  border: 1px solid #3f3f46;
+}
+
+/* =============================================================================
+   INLINE "FIX-IT" SANDBOX IN STUDY HUB
+   ============================================================================= */
+.study-sandbox-card {
+  margin: 24px 0;
+  background: #0e0e13;
+  border: 1px solid #282834;
+  border-radius: var(--radius-md);
+  padding: 18px 20px;
+  box-shadow: 0 4px 20px rgba(0, 0, 0, 0.35);
+}
+
+.study-sandbox-header {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  flex-wrap: wrap;
+  gap: 10px;
+  margin-bottom: 10px;
+}
+
+.study-sandbox-title-row {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+}
+
+.study-sandbox-title {
+  font-size: 13.5px;
+  font-weight: 700;
+  color: #f4f4f5;
+}
+
+.study-sandbox-tools {
+  display: flex;
+  align-items: center;
+  gap: 6px;
+}
+
+.study-sandbox-btn-sm {
+  background: #181820;
+  border: 1px solid var(--border-default);
+  color: var(--text-secondary);
+  font-family: var(--font-mono);
+  font-size: 10.5px;
+  padding: 3px 8px;
+  border-radius: 3px;
+  cursor: pointer;
+  transition: var(--transition-fast);
+}
+
+.study-sandbox-btn-sm:hover {
+  background: #272733;
+  color: #fff;
+  border-color: #52525b;
+}
+
+.study-sandbox-instruction {
+  font-size: 12px;
+  line-height: 1.55;
+  color: var(--text-secondary);
+  margin-bottom: 10px;
+}
+
+.study-sandbox-hint-box {
+  display: none;
+  background: rgba(223, 202, 169, 0.06);
+  border-left: 3px solid #dfcaa9;
+  border-radius: 0 var(--radius-sm) var(--radius-sm) 0;
+  padding: 8px 12px;
+  font-size: 11.5px;
+  color: #dfcaa9;
+  line-height: 1.5;
+  margin-bottom: 12px;
+}
+
+.study-sandbox-hint-box.show {
+  display: block;
+}
+
+.study-sandbox-editor-wrapper {
+  margin-bottom: 12px;
+}
+
+.study-sandbox-textarea {
+  width: 100%;
+  min-height: 105px;
+  background: #07070a;
+  border: 1px solid #23232c;
+  border-radius: var(--radius-sm);
+  color: #f4f4f5;
+  font-family: var(--font-mono);
+  font-size: 12px;
+  line-height: 1.55;
+  padding: 12px 14px;
+  box-sizing: border-box;
+  resize: vertical;
+  transition: border-color 0.15s ease;
+}
+
+.study-sandbox-textarea:focus {
+  outline: none;
+  border-color: #8da2be;
+}
+
+.study-sandbox-actions {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  flex-wrap: wrap;
+  gap: 10px;
+  margin-bottom: 12px;
+}
+
+.btn-run-fix {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  background: #18221c;
+  border: 1px solid #9ec5ad;
+  color: #9ec5ad;
+  font-family: var(--font-mono);
+  font-size: 11.5px;
+  font-weight: 700;
+  padding: 6px 14px;
+  border-radius: var(--radius-sm);
+  cursor: pointer;
+  transition: all 0.15s ease;
+}
+
+.btn-run-fix:hover {
+  background: #24352b;
+  box-shadow: 0 0 10px rgba(158, 197, 173, 0.3);
+  transform: translateY(-1px);
+}
+
+.study-sandbox-console {
+  display: none;
+  margin-top: 10px;
+}
+
+.study-sandbox-console.show {
+  display: block;
+}
+
+.study-console-banner {
+  padding: 10px 12px;
+  border-radius: var(--radius-sm);
+  font-size: 12px;
+  line-height: 1.5;
+  margin-bottom: 10px;
+}
+
+.study-console-banner.success {
+  background: rgba(158, 197, 173, 0.15);
+  border: 1px solid #9ec5ad;
+  color: #9ec5ad;
+}
+
+.study-console-banner.error {
+  background: rgba(214, 157, 143, 0.15);
+  border: 1px solid #d69d8f;
+  color: #d69d8f;
+}
+
+.study-sandbox-table-preview {
+  max-height: 200px;
+  overflow: auto;
+  border: 1px solid var(--border-muted);
+  border-radius: var(--radius-sm);
+  background: #08080a;
+}
+
+.study-sandbox-table-preview table {
+  width: 100%;
+  border-collapse: collapse;
+  font-family: var(--font-mono);
+  font-size: 11px;
+}
+
+.study-sandbox-table-preview th {
+  background: #13131a;
+  color: #a4b7cf;
+  padding: 6px 10px;
+  text-align: left;
+  border-bottom: 1px solid #23232c;
+  position: sticky;
+  top: 0;
+}
+
+.study-sandbox-table-preview td {
+  padding: 5px 10px;
+  border-bottom: 1px solid #16161c;
+  color: var(--text-secondary);
+}
+
+.btn-toggle-mastery {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  background: transparent;
+  border: 1px solid var(--border-default);
+  color: var(--text-muted);
+  font-family: var(--font-mono);
+  font-size: 11px;
+  padding: 6px 12px;
+  border-radius: var(--radius-sm);
+  cursor: pointer;
+  transition: var(--transition-fast);
+}
+
+.btn-toggle-mastery:hover {
+  background: #1c1c24;
+  color: #fff;
+  border-color: #52525b;
+}
+
+.btn-toggle-mastery.mastered {
+  border-color: #9ec5ad;
+  color: #9ec5ad;
+  background: rgba(158, 197, 173, 0.1);
+}
+

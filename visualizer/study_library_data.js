@@ -119,13 +119,21 @@ FROM Employees
 WHERE salary * 1.2 > 100000;`,
       goodExplanation: "Re-evaluates the arithmetic expression during row filtration. Enables B-Tree index range scans or subquery pre-computation."
     },
+    sandbox: {
+      table: 'Employees',
+      title: 'Fix Lexical Alias Violation in WHERE',
+      instruction: 'The query below fails during Step 02 because `projected_comp` is not allocated until Step 05 (SELECT). Rewrite the WHERE clause using the mathematical expression `salary * 1.2 > 120000` to find qualifying high-earners.',
+      initialSql: 'SELECT emp_id, first_name, salary * 1.2 AS projected_comp\nFROM Employees\nWHERE projected_comp > 120000;',
+      solutionSql: 'SELECT emp_id, first_name, salary * 1.2 AS projected_comp\nFROM Employees\nWHERE salary * 1.2 > 120000;',
+      hint: 'Column aliases defined in SELECT do not exist yet when WHERE runs. Replace `projected_comp` with the underlying arithmetic `salary * 1.2 > 120000`.'
+    },
     quiz: {
       question: "Which clause is the very FIRST to physically execute when a relational engine processes a query?",
       options: [
         "A) SELECT (Allocates projection buffers)",
         "B) FROM (Binds virtual working tables & joins)",
-        "C) WHERE (Filters incoming disk pages)",
-        "D) ORDER BY (Allocates temporary sort files)"
+        "C) WHERE (Evaluates row-by-row boolean filters)",
+        "D) ORDER BY (Allocates temporary sort buffers)"
       ],
       correctIndex: 1,
       explanation: "Step 01 is always FROM (and any JOIN operations). The engine cannot filter rows (WHERE), partition buckets (GROUP BY), or project columns (SELECT) until the target tables are bound into memory."
@@ -199,6 +207,14 @@ FROM Employees
 WHERE manager_id IS NULL;
 -- Returns top executives with no superior`,
       goodExplanation: "IS NULL and IS NOT NULL are special unary operators designed specifically to inspect memory existence without invoking 3-valued value equality."
+    },
+    sandbox: {
+      table: 'Employees',
+      title: 'Defeat the = NULL Unknown Trap',
+      instruction: 'The query below yields 0 rows because `salary = NULL` evaluates to UNKNOWN for all records. Fix the query to retrieve all non-null engineering staff earning at least $100,000.',
+      initialSql: 'SELECT emp_id, first_name, department, salary\nFROM Employees\nWHERE salary = NULL;',
+      solutionSql: 'SELECT emp_id, first_name, department, salary\nFROM Employees\nWHERE department = \'Engineering\' AND salary >= 100000;',
+      hint: 'Never use `= NULL`. Use explicit conditions such as `department = \'Engineering\' AND salary >= 100000` or `salary IS NOT NULL`.'
     },
     quiz: {
       question: "What is the exact evaluation of the boolean expression: (NULL = NULL) OR (5 = 5)?",
@@ -308,6 +324,14 @@ CASE
 END`,
       goodExplanation: "Always test the disqualifying condition or most restrictive domain constraint first before evaluating nested subtypes."
     },
+    sandbox: {
+      table: 'TRIANGLES',
+      title: 'Short-Circuit the Triangle Trap',
+      instruction: 'The waterfall evaluation of CASE exits at the first matching branch. In the initial query, invalid triangles like (20, 20, 40) falsely match Isosceles. Reorder the branches so the geometric inequality check is at the top!',
+      initialSql: 'SELECT A, B, C,\n       CASE\n           WHEN A = B AND B = C THEN \'Equilateral\'\n           WHEN A = B OR B = C OR A = C THEN \'Isosceles\'\n           WHEN A + B <= C OR A + C <= B OR B + C <= A THEN \'Not A Triangle\'\n           ELSE \'Scalene\'\n       END AS triangle_type\nFROM TRIANGLES;',
+      solutionSql: 'SELECT A, B, C,\n       CASE\n           WHEN A + B <= C OR A + C <= B OR B + C <= A THEN \'Not A Triangle\'\n           WHEN A = B AND B = C THEN \'Equilateral\'\n           WHEN A = B OR B = C OR A = C THEN \'Isosceles\'\n           ELSE \'Scalene\'\n       END AS triangle_type\nFROM TRIANGLES;',
+      hint: 'Move the line `WHEN A + B <= C OR A + C <= B OR B + C <= A THEN \'Not A Triangle\'` directly above the Equilateral check.'
+    },
     quiz: {
       question: "What will CASE WHEN salary > 80000 THEN 'Senior' WHEN salary > 50000 THEN 'Mid' ELSE 'Junior' END return for an employee with salary = NULL?",
       options: [
@@ -403,6 +427,14 @@ FROM Employees
 GROUP BY department;
 -- Solution 2: Window function if row details are needed`,
       goodExplanation: "Strictly guarantees that every projected column is either 1:1 with the grouping grain or reduced to a deterministic scalar summary."
+    },
+    sandbox: {
+      table: 'Employees',
+      title: 'Eliminate ONLY_FULL_GROUP_BY Violation',
+      instruction: 'The query violates the SQL standard by projecting non-aggregated column `first_name`. Remove `first_name`, include `COUNT(*) AS team_size`, and filter with `HAVING COUNT(*) >= 2`.',
+      initialSql: 'SELECT department, first_name, AVG(salary) AS avg_salary\nFROM Employees\nGROUP BY department;',
+      solutionSql: 'SELECT department, COUNT(*) AS team_size, AVG(salary) AS avg_salary\nFROM Employees\nGROUP BY department\nHAVING COUNT(*) >= 2;',
+      hint: 'Every column in SELECT must be in GROUP BY or wrapped in an aggregate function. Remove `first_name` and add `COUNT(*) AS team_size` with `HAVING COUNT(*) >= 2`.'
     },
     quiz: {
       question: "A table has 4 rows with bonus values: [1000, 2000, NULL, 3000]. What does AVG(bonus) return?",
@@ -510,6 +542,14 @@ LEFT JOIN Departments d
 -- Employees without NY departments still output with NULLs!`,
       goodExplanation: "Conditions placed in the ON clause govern whether a match is formed, but do NOT prevent the left row from appearing in the output stream."
     },
+    sandbox: {
+      table: 'Employees',
+      title: 'Stop Outer Join Collapsing in WHERE',
+      instruction: 'The WHERE filter `d.location = \'San Francisco\'` drops unassigned employees with NULL locations, secretly converting the LEFT JOIN into an INNER JOIN. Relocate the location filter into the ON clause!',
+      initialSql: 'SELECT e.emp_id, e.name, d.dept_name, d.location\nFROM Employees e\nLEFT JOIN Departments d\n  ON e.dept_id = d.dept_id\nWHERE d.location = \'San Francisco\';',
+      solutionSql: 'SELECT e.emp_id, e.name, d.dept_name, d.location\nFROM Employees e\nLEFT JOIN Departments d\n  ON e.dept_id = d.dept_id\n  AND d.location = \'San Francisco\';',
+      hint: 'To preserve all rows from the Left table, filter conditions on the Right table must reside in the ON clause, not WHERE.'
+    },
     quiz: {
       question: "To find 'Customers who have NEVER placed an order' with optimal performance and index usage, which pattern is recommended?",
       options: [
@@ -592,6 +632,14 @@ WHERE NOT EXISTS (
 );
 -- Or: WHERE customer_id NOT IN (SELECT ref_id FROM Referrals WHERE ref_id IS NOT NULL)`,
       goodExplanation: "NOT EXISTS operates strictly on boolean cardinality (does at least 1 matching row exist?), completely immune to NULL evaluation traps."
+    },
+    sandbox: {
+      table: 'Employees',
+      title: 'Bypass the Fatal NOT IN (NULL) Black Hole',
+      instruction: 'The query returns 0 rows because `NOT IN (62000, 74000, NULL)` unrolls into an UNKNOWN boolean expression. Fix the query by removing the NULL from the set.',
+      initialSql: 'SELECT emp_id, first_name, salary\nFROM Employees\nWHERE salary NOT IN (62000, 74000, NULL);',
+      solutionSql: 'SELECT emp_id, first_name, salary\nFROM Employees\nWHERE salary NOT IN (62000, 74000);',
+      hint: 'A NULL inside a NOT IN list silently kills the entire result set. Remove NULL to restore valid filtering.'
     },
     quiz: {
       question: "Given a column with value NULL, what does the expression: COALESCE(NULL, NULL, 'Production', 'Fallback') return?",
@@ -687,6 +735,14 @@ ORDER BY created_at DESC, id ASC
 LIMIT 20 OFFSET 20;
 -- Primary key 'id' guarantees a unique, reproducible sequence`,
       goodExplanation: "Appending a guaranteed unique column (like the Primary Key) ensures strict total order across engine restarts and pagination requests."
+    },
+    sandbox: {
+      table: 'Employees',
+      title: 'Enforce Deterministic Pagination Order',
+      instruction: 'Sorting solely by non-unique `department` causes row hopping and duplicated records across paginated slices. Add `emp_id ASC` as a unique primary-key tie-breaker.',
+      initialSql: 'SELECT emp_id, first_name, department, salary\nFROM Employees\nORDER BY department ASC\nLIMIT 5;',
+      solutionSql: 'SELECT emp_id, first_name, department, salary\nFROM Employees\nORDER BY department ASC, emp_id ASC\nLIMIT 5;',
+      hint: 'Append `, emp_id ASC` directly after `department ASC` in the ORDER BY clause.'
     },
     quiz: {
       question: "Why is HAVING preferred over WHERE when filtering based on the result of an aggregation function like SUM(amount) > 10000?",

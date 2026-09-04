@@ -2425,6 +2425,311 @@ function escapeHtmlStudy(str) {
   return str.replace(/&/g, '&amp;').replace(/</g, '&lt;').replace(/>/g, '&gt;');
 }
 
+// ---------------------------------------------------------------------------
+// CURRICULUM PROGRESS & MASTERY PERSISTENCE
+// ---------------------------------------------------------------------------
+
+function getCompletedStudySections() {
+  try {
+    const saved = localStorage.getItem('sql_mastery_study_completed');
+    if (saved) return new Set(JSON.parse(saved));
+  } catch (e) {}
+  return new Set();
+}
+
+function saveCompletedStudySections(completedSet) {
+  try {
+    localStorage.setItem('sql_mastery_study_completed', JSON.stringify([...completedSet]));
+  } catch (e) {}
+}
+
+function markStudySectionCompleted(sectionId, silent = false) {
+  const completed = getCompletedStudySections();
+  if (!completed.has(sectionId)) {
+    completed.add(sectionId);
+    saveCompletedStudySections(completed);
+    if (!silent && window.soundFX) {
+      window.soundFX.playSuccess();
+      window.soundFX.playChordChime();
+      if (typeof window.soundFX.addXP === 'function') {
+        window.soundFX.addXP(15, 'Chapter Mastered!');
+      }
+    }
+    updateStudyMasteryUI();
+    updateTopicButtonsMastery();
+
+    const toggleBtn = document.getElementById('btnMasteryToggle_' + sectionId);
+    if (toggleBtn) {
+      toggleBtn.className = 'btn-toggle-mastery mastered';
+      toggleBtn.innerHTML = `<svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><polyline points="20 6 9 17 4 12"></polyline></svg> Chapter Mastered`;
+    }
+  }
+}
+
+function toggleStudySectionCompletion(sectionId) {
+  const completed = getCompletedStudySections();
+  if (completed.has(sectionId)) {
+    completed.delete(sectionId);
+    if (window.soundFX) window.soundFX.playPop();
+  } else {
+    completed.add(sectionId);
+    if (window.soundFX) {
+      window.soundFX.playSuccess();
+      window.soundFX.playChordChime();
+      if (typeof window.soundFX.addXP === 'function') {
+        window.soundFX.addXP(15, 'Chapter Mastered!');
+      }
+    }
+  }
+  saveCompletedStudySections(completed);
+  updateStudyMasteryUI();
+  updateTopicButtonsMastery();
+
+  const toggleBtn = document.getElementById('btnMasteryToggle_' + sectionId);
+  if (toggleBtn) {
+    const isDone = completed.has(sectionId);
+    toggleBtn.className = `btn-toggle-mastery ${isDone ? 'mastered' : ''}`;
+    toggleBtn.innerHTML = isDone
+      ? `<svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><polyline points="20 6 9 17 4 12"></polyline></svg> Chapter Mastered`
+      : `<svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="10"></circle></svg> Mark as Mastered (+15 XP)`;
+  }
+}
+
+function updateStudyMasteryUI() {
+  const completed = getCompletedStudySections();
+  const total = (window.STUDY_LIBRARY || []).length || 7;
+  const countEl = document.getElementById('studyMasteryCount');
+  const barEl = document.getElementById('studyMasteryBar');
+  if (countEl) countEl.textContent = `${completed.size} / ${total} Mastered`;
+  if (barEl) barEl.style.width = `${Math.round((completed.size / total) * 100)}%`;
+}
+
+function updateTopicButtonsMastery() {
+  const completed = getCompletedStudySections();
+  document.querySelectorAll('.study-topic-btn').forEach(btn => {
+    const secId = btn.getAttribute('data-secid');
+    const badge = btn.querySelector('.mastery-badge');
+    if (secId && badge) {
+      if (completed.has(secId)) {
+        badge.className = 'mastery-badge done';
+        badge.textContent = '✓';
+      } else {
+        badge.className = 'mastery-badge pending';
+        badge.textContent = '○';
+      }
+    }
+  });
+}
+
+// ---------------------------------------------------------------------------
+// INLINE FIX-IT SANDBOX ENGINE
+// ---------------------------------------------------------------------------
+
+function resetStudySandbox(sectionId) {
+  const library = window.STUDY_LIBRARY;
+  if (!library) return;
+  const item = library.find(i => i.id === sectionId);
+  if (!item || !item.sandbox) return;
+
+  const textarea = document.getElementById('studySandboxTextarea_' + sectionId);
+  if (textarea) textarea.value = item.sandbox.initialSql;
+
+  const consoleEl = document.getElementById('studySandboxConsole_' + sectionId);
+  if (consoleEl) consoleEl.classList.remove('show');
+
+  if (window.soundFX) window.soundFX.playPop();
+}
+
+function loadStudySandboxSolution(sectionId) {
+  const library = window.STUDY_LIBRARY;
+  if (!library) return;
+  const item = library.find(i => i.id === sectionId);
+  if (!item || !item.sandbox) return;
+
+  const textarea = document.getElementById('studySandboxTextarea_' + sectionId);
+  if (textarea) textarea.value = item.sandbox.solutionSql;
+
+  if (window.soundFX) window.soundFX.playPop();
+}
+
+function toggleStudySandboxHint(sectionId) {
+  const hintEl = document.getElementById('studySandboxHint_' + sectionId);
+  if (!hintEl) return;
+  hintEl.classList.toggle('show');
+  if (window.soundFX) window.soundFX.playPop();
+}
+
+function runStudySandboxFix(sectionId) {
+  const library = window.STUDY_LIBRARY;
+  if (!library) return;
+  const item = library.find(i => i.id === sectionId);
+  if (!item || !item.sandbox) return;
+
+  const textarea = document.getElementById('studySandboxTextarea_' + sectionId);
+  const consoleEl = document.getElementById('studySandboxConsole_' + sectionId);
+  const bannerEl = document.getElementById('studyConsoleBanner_' + sectionId);
+  const tablePreviewEl = document.getElementById('studySandboxTablePreview_' + sectionId);
+  if (!textarea || !consoleEl || !bannerEl) return;
+
+  const sql = textarea.value.trim();
+  const clean = sql.replace(/\s+/g, ' ');
+
+  let isSuccess = false;
+  let errorMsg = '';
+  let previewRows = [];
+  let previewCols = [];
+
+  if (sectionId === 'sec_execution_order') {
+    if (/WHERE[\s\S]*projected_comp/i.test(sql)) {
+      errorMsg = "Relational Pipeline Crash: 'projected_comp' is an alias evaluated in Step 05 (SELECT) and cannot be referenced in Step 02 (WHERE). Replace it with 'salary * 1.2 > 120000' or 'salary > 100000'.";
+    } else if (/WHERE[\s\S]*salary/i.test(sql)) {
+      isSuccess = true;
+      const emps = DATABASE.Employees || [];
+      previewCols = ['emp_id', 'first_name', 'salary', 'projected_comp'];
+      previewRows = emps.filter(e => e.salary * 1.2 > 120000).map(e => ({
+        emp_id: e.emp_id,
+        first_name: e.first_name,
+        salary: `$${e.salary.toLocaleString()}`,
+        projected_comp: `$${Math.round(e.salary * 1.2).toLocaleString()}`
+      }));
+    } else {
+      errorMsg = "Filter Missing: Please supply a valid WHERE condition that filters on salary without referencing the SELECT alias.";
+    }
+  } else if (sectionId === 'sec_foundations') {
+    if (/=\s*NULL/i.test(sql)) {
+      errorMsg = "3-Valued Logic Bug: '= NULL' yields UNKNOWN for every tuple in the relation. The query dropped all records! Use explicit conditions like department = 'Engineering' AND salary >= 100000 or IS NOT NULL.";
+    } else if (/(?:IS\s+NOT\s+NULL|department\s*=\s*'Engineering'|salary\s*>=?\s*100000)/i.test(clean)) {
+      isSuccess = true;
+      const emps = DATABASE.Employees || [];
+      previewCols = ['emp_id', 'first_name', 'department', 'salary'];
+      previewRows = emps.filter(e => e.department === 'Engineering' && e.salary >= 100000).map(e => ({
+        emp_id: e.emp_id,
+        first_name: e.first_name,
+        department: e.department,
+        salary: `$${e.salary.toLocaleString()}`
+      }));
+    } else {
+      errorMsg = "Ensure you filter for valid non-null records with department = 'Engineering' AND salary >= 100000.";
+    }
+  } else if (sectionId === 'sec_casewhen') {
+    if (/WHEN\s+A\s*=\s*B[\s\S]+WHEN\s+A\s*\+\s*B\s*<=\s*C/i.test(sql)) {
+      errorMsg = "Short-Circuit Waterfall Bug: The Equilateral/Isosceles checks executed first, falsely classifying invalid triangle (20, 20, 40) as Isosceles! Move the 'Not A Triangle' test to the top.";
+    } else if (/WHEN\s+A\s*\+\s*B\s*<=\s*C[\s\S]+WHEN\s+A\s*=\s*B/i.test(sql)) {
+      isSuccess = true;
+      previewCols = ['A', 'B', 'C', 'triangle_type'];
+      const tris = DATABASE.TRIANGLES || [];
+      previewRows = tris.slice(0, 6).map(t => {
+        let type = 'Scalene';
+        if (t.A + t.B <= t.C || t.A + t.C <= t.B || t.B + t.C <= t.A) type = 'Not A Triangle';
+        else if (t.A === t.B && t.B === t.C) type = 'Equilateral';
+        else if (t.A === t.B || t.B === t.C || t.A === t.C) type = 'Isosceles';
+        return { A: t.A, B: t.B, C: t.C, triangle_type: type };
+      });
+    } else {
+      errorMsg = "Please verify the triangle inequality 'A + B <= C OR A + C <= B OR B + C <= A' is the first branch in the CASE statement.";
+    }
+  } else if (sectionId === 'sec_aggregations') {
+    if (/SELECT[\s\S]+first_name[\s\S]+GROUP\s+BY/i.test(sql)) {
+      errorMsg = "ONLY_FULL_GROUP_BY Violation: Column 'first_name' is not in the GROUP BY clause and has no aggregate function! Remove 'first_name' and aggregate with COUNT(*) and AVG(salary).";
+    } else if (/GROUP\s+BY\s+department/i.test(sql) && !/first_name/i.test(sql)) {
+      isSuccess = true;
+      previewCols = ['department', 'team_size', 'avg_salary'];
+      previewRows = [
+        { department: 'Engineering', team_size: 3, avg_salary: '$133,333' },
+        { department: 'Analytics', team_size: 4, avg_salary: '$98,250' },
+        { department: 'Finance', team_size: 3, avg_salary: '$97,000' }
+      ];
+    } else {
+      errorMsg = "Please group by department and compute aggregate summaries like COUNT(*) AS team_size and AVG(salary).";
+    }
+  } else if (sectionId === 'sec_joins') {
+    if (/WHERE[\s\S]+(?:location|city|dept_name)/i.test(sql)) {
+      errorMsg = "Outer Join Filter Trap: Putting 'd.location = ...' in WHERE discards all outer rows where d.location is NULL! Move AND d.location = 'San Francisco' into the ON clause.";
+    } else if (/ON[\s\S]+(?:location|city|dept_name)/i.test(sql)) {
+      isSuccess = true;
+      previewCols = ['emp_id', 'first_name', 'dept_name', 'location'];
+      previewRows = [
+        { emp_id: 101, first_name: 'Ashley', dept_name: 'NULL', location: 'NULL' },
+        { emp_id: 102, first_name: 'David', dept_name: 'Engineering', location: 'San Francisco' },
+        { emp_id: 103, first_name: 'Julia', dept_name: 'NULL', location: 'NULL' },
+        { emp_id: 105, first_name: 'Samantha', dept_name: 'Engineering', location: 'San Francisco' },
+        { emp_id: 111, first_name: 'Lisa', dept_name: 'Engineering', location: 'San Francisco' }
+      ];
+    } else {
+      errorMsg = "Ensure your right-table condition (e.g. d.location = 'San Francisco') is placed inside the ON clause of the LEFT JOIN.";
+    }
+  } else if (sectionId === 'sec_operators') {
+    if (/NOT\s+IN[\s\S]+NULL/i.test(sql)) {
+      errorMsg = "Fatal NOT IN (NULL) Trap: The query returns 0 rows because evaluating NOT IN with NULL produces UNKNOWN for every record! Remove NULL from the NOT IN list.";
+    } else if (/NOT\s+IN/i.test(sql) && !/NULL/i.test(sql)) {
+      isSuccess = true;
+      const emps = DATABASE.Employees || [];
+      previewCols = ['emp_id', 'first_name', 'salary'];
+      previewRows = emps.filter(e => e.salary !== 62000 && e.salary !== 74000).slice(0, 5).map(e => ({
+        emp_id: e.emp_id,
+        first_name: e.first_name,
+        salary: `$${e.salary.toLocaleString()}`
+      }));
+    } else {
+      errorMsg = "Remove NULL from the NOT IN list so the condition evaluates to a valid boolean.";
+    }
+  } else if (sectionId === 'sec_interview_traps') {
+    if (/ORDER\s+BY\s+department\s*(?:ASC)?\s*LIMIT/i.test(clean) && !/emp_id/i.test(sql)) {
+      errorMsg = "Unstable Pagination Warning: 'department' contains multiple duplicate rows. Rows will shift between pages unpredictably! Append ', emp_id ASC' as a deterministic tie-breaker.";
+    } else if (/ORDER\s+BY[\s\S]+emp_id/i.test(sql)) {
+      isSuccess = true;
+      const emps = [...(DATABASE.Employees || [])];
+      emps.sort((a, b) => a.department.localeCompare(b.department) || a.emp_id - b.emp_id);
+      previewCols = ['emp_id', 'first_name', 'department', 'salary'];
+      previewRows = emps.slice(0, 5).map(e => ({
+        emp_id: e.emp_id,
+        first_name: e.first_name,
+        department: e.department,
+        salary: `$${e.salary.toLocaleString()}`
+      }));
+    } else {
+      errorMsg = "Please include both department ASC and emp_id ASC in the ORDER BY clause.";
+    }
+  }
+
+  consoleEl.classList.add('show');
+
+  if (isSuccess) {
+    if (window.soundFX) {
+      window.soundFX.playSuccess();
+      window.soundFX.playChordChime();
+    }
+    bannerEl.className = 'study-console-banner success';
+    bannerEl.innerHTML = `<strong>✓ Fix Verified!</strong> Query passed physical engine inspection. Outputting ${previewRows.length} tuples.`;
+    markStudySectionCompleted(sectionId);
+
+    if (tablePreviewEl && previewRows.length > 0) {
+      let tHtml = `
+        <table>
+          <thead>
+            <tr>${previewCols.map(c => `<th>${c}</th>`).join('')}</tr>
+          </thead>
+          <tbody>
+            ${previewRows.map(r => `
+              <tr>${previewCols.map(c => `<td>${r[c] !== undefined ? r[c] : ''}</td>`).join('')}</tr>
+            `).join('')}
+          </tbody>
+        </table>
+      `;
+      tablePreviewEl.innerHTML = tHtml;
+    }
+  } else {
+    if (window.soundFX) window.soundFX.playError();
+    bannerEl.className = 'study-console-banner error';
+    bannerEl.innerHTML = `<strong>&cross; Architectural Pitfall:</strong> ${errorMsg}`;
+    if (tablePreviewEl) tablePreviewEl.innerHTML = '';
+  }
+}
+
+// ---------------------------------------------------------------------------
+// CONCEPT CHECKPOINT QUIZ HANDLER
+// ---------------------------------------------------------------------------
+
 const answeredStudyQuizzes = new Set();
 
 function handleStudyQuizAnswer(sectionId, selectedIdx) {
@@ -2462,6 +2767,7 @@ function handleStudyQuizAnswer(sectionId, selectedIdx) {
     }
     feedback.className = 'study-quiz-feedback show success';
     feedback.innerHTML = `<strong>&check; Spot On!</strong> ${item.quiz.explanation}`;
+    markStudySectionCompleted(sectionId);
   } else {
     if (window.soundFX) {
       window.soundFX.playError();
@@ -2471,6 +2777,10 @@ function handleStudyQuizAnswer(sectionId, selectedIdx) {
   }
 }
 
+// ---------------------------------------------------------------------------
+// STUDY LIBRARY MAIN RENDERER
+// ---------------------------------------------------------------------------
+
 function renderStudyLibrary(targetId = null) {
   if (targetId) activeStudySectionId = targetId;
 
@@ -2479,6 +2789,10 @@ function renderStudyLibrary(targetId = null) {
   if (!navContainer || !mainReader || !window.STUDY_LIBRARY) return;
 
   const library = window.STUDY_LIBRARY;
+  const completedSections = getCompletedStudySections();
+
+  // Update Mastery Tracker Gauge
+  updateStudyMasteryUI();
 
   // Filter sections if searching
   const matchingSections = studySearchFilter
@@ -2490,17 +2804,20 @@ function renderStudyLibrary(targetId = null) {
       )
     : library;
 
-  // Render Sidebar Topic Buttons
+  // Render Sidebar Topic Buttons with Mastery Badges
   let navHtml = '';
   library.forEach(item => {
     const isSelected = item.id === activeStudySectionId;
     const isMatch = matchingSections.some(m => m.id === item.id);
     const opacityStyle = studySearchFilter && !isMatch ? 'opacity: 0.35;' : '';
+    const isDone = completedSections.has(item.id);
+
     navHtml += `
-      <button class="study-topic-btn ${isSelected ? 'active' : ''}" style="${opacityStyle}" onclick="selectStudySection('${item.id}')">
+      <button class="study-topic-btn ${isSelected ? 'active' : ''}" style="${opacityStyle}" data-secid="${item.id}" onclick="selectStudySection('${item.id}')">
         <span style="display: flex; align-items: center; gap: 8px;">
+          <span class="mastery-badge ${isDone ? 'done' : 'pending'}">${isDone ? '✓' : '○'}</span>
           <span>${item.icon}</span>
-          <span style="white-space: nowrap; overflow: hidden; text-overflow: ellipsis; max-width: 175px;">${item.title.split('.')[1] || item.title}</span>
+          <span style="white-space: nowrap; overflow: hidden; text-overflow: ellipsis; max-width: 160px;">${item.title.split('.')[1] || item.title}</span>
         </span>
         <span class="status-pill" style="font-size: 9px; padding: 1px 5px;">${item.readTime}</span>
       </button>
@@ -2568,6 +2885,50 @@ function renderStudyLibrary(targetId = null) {
     `;
   }
 
+  let sandboxHtml = '';
+  if (activeItem.sandbox) {
+    const sb = activeItem.sandbox;
+    sandboxHtml = `
+      <div class="study-sandbox-card">
+        <div class="study-sandbox-header">
+          <div class="study-sandbox-title-row">
+            <span class="clause-pill pill-where" style="font-size: 10px;">Interactive Fix-It Sandbox</span>
+            <span class="study-sandbox-title">${sb.title}</span>
+            <span class="status-pill" style="font-size: 9.5px; padding: 1px 6px;">Table: ${sb.table}</span>
+          </div>
+          <div class="study-sandbox-tools">
+            <button class="study-sandbox-btn-sm" onclick="resetStudySandbox('${activeItem.id}')">Reset</button>
+            <button class="study-sandbox-btn-sm" onclick="toggleStudySandboxHint('${activeItem.id}')">💡 Hint</button>
+            <button class="study-sandbox-btn-sm" onclick="loadStudySandboxSolution('${activeItem.id}')">Solution</button>
+          </div>
+        </div>
+
+        <p class="study-sandbox-instruction">${sb.instruction}</p>
+
+        <div class="study-sandbox-hint-box" id="studySandboxHint_${activeItem.id}">
+          <strong>💡 Architectural Hint:</strong> ${sb.hint}
+        </div>
+
+        <div class="study-sandbox-editor-wrapper">
+          <textarea class="study-sandbox-textarea" id="studySandboxTextarea_${activeItem.id}" spellcheck="false">${sb.initialSql}</textarea>
+        </div>
+
+        <div class="study-sandbox-actions">
+          <button class="btn-run-fix" onclick="runStudySandboxFix('${activeItem.id}')">
+            <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><polygon points="5 3 19 12 5 21 5 3"></polygon></svg>
+            Run &amp; Test Fix
+          </button>
+          <span style="font-family: var(--font-mono); font-size: 10.5px; color: var(--text-muted);">Shortcut: <kbd style="background: #1a1a22; padding: 2px 5px; border-radius: 3px; border: 1px solid #333;">Ctrl + Enter</kbd></span>
+        </div>
+
+        <div class="study-sandbox-console" id="studySandboxConsole_${activeItem.id}">
+          <div class="study-console-banner" id="studyConsoleBanner_${activeItem.id}"></div>
+          <div class="study-sandbox-table-preview" id="studySandboxTablePreview_${activeItem.id}"></div>
+        </div>
+      </div>
+    `;
+  }
+
   let quizHtml = '';
   if (activeItem.quiz) {
     const q = activeItem.quiz;
@@ -2602,6 +2963,8 @@ function renderStudyLibrary(targetId = null) {
     `;
   }
 
+  const isCurrentDone = completedSections.has(activeItem.id);
+
   mainReader.innerHTML = `
     <div class="study-header-banner">
       <div class="study-meta-row">
@@ -2615,19 +2978,27 @@ function renderStudyLibrary(targetId = null) {
     ${svgHtml}
     ${sectionsHtml}
     ${diffHtml}
+    ${sandboxHtml}
     ${quizHtml}
     ${gotchasHtml}
 
     <div class="study-actions-footer">
-      <div style="display: flex; gap: 8px;">
+      <div style="display: flex; gap: 8px; align-items: center; flex-wrap: wrap;">
+        <button class="btn-toggle-mastery ${isCurrentDone ? 'mastered' : ''}" id="btnMasteryToggle_${activeItem.id}" onclick="toggleStudySectionCompletion('${activeItem.id}')">
+          ${isCurrentDone 
+            ? `<svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><polyline points="20 6 9 17 4 12"></polyline></svg> Chapter Mastered` 
+            : `<svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="10"></circle></svg> Mark as Mastered (+15 XP)`
+          }
+        </button>
+
         ${activeItem.quickActions.labTrack ? `
           <button class="card-nav-btn" onclick="switchTrack('${activeItem.quickActions.labTrack}'); switchNavTab('viewGuidedLab');">
-            🧪 Launch Guided Lab (${activeItem.quickActions.labTrack}) &rarr;
+            🧪 Guided Lab &rarr;
           </button>
         ` : ''}
         ${activeItem.quickActions.questId !== undefined ? `
           <button class="card-nav-btn" onclick="setQuestIndex(${activeItem.quickActions.questId}); switchNavTab('viewQuests');">
-            🎮 Practice Quest Level &rarr;
+            🎮 Quest Level &rarr;
           </button>
         ` : ''}
       </div>
@@ -2638,6 +3009,17 @@ function renderStudyLibrary(targetId = null) {
       </button>
     </div>
   `;
+
+  // Attach Ctrl+Enter in sandbox textarea
+  const sandboxTextarea = document.getElementById('studySandboxTextarea_' + activeItem.id);
+  if (sandboxTextarea) {
+    sandboxTextarea.addEventListener('keydown', (e) => {
+      if ((e.ctrlKey || e.metaKey) && e.key === 'Enter') {
+        e.preventDefault();
+        runStudySandboxFix(activeItem.id);
+      }
+    });
+  }
 }
 
 function selectStudySection(sectionId) {
