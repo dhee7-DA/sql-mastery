@@ -2828,7 +2828,8 @@ body {
 
 .diff-filter-btn,
 .case-filter-btn,
-.case-pillar-btn {
+.case-pillar-btn,
+.case-section-btn {
   background: #18181c;
   border: 1px solid var(--border-default);
   border-radius: 6px;
@@ -2843,7 +2844,8 @@ body {
 
 .diff-filter-btn:hover,
 .case-filter-btn:hover,
-.case-pillar-btn:hover {
+.case-pillar-btn:hover,
+.case-section-btn:hover {
   background: #24242c;
   color: #fff;
   border-color: #52525b;
@@ -2856,11 +2858,142 @@ body {
   color: #9ec5ad;
 }
 
-.case-pillar-btn.active {
+.case-pillar-btn.active,
+.case-section-btn.active {
   background: rgba(164, 183, 207, 0.2);
   border-color: #a4b7cf;
   color: #a4b7cf;
 }
+
+/* Slot-Picker / Missing Keyword Challenge Styling */
+.case-code-preview {
+  background: #09090b;
+  border: 1px solid #27272a;
+  border-radius: 6px;
+  padding: 12px 14px;
+  margin: 8px 0;
+  font-family: var(--font-mono);
+  font-size: 12px;
+  line-height: 1.6;
+  color: #f4f4f5;
+  white-space: pre-wrap;
+  word-break: break-word;
+}
+
+.case-challenge-box {
+  background: #0d0d12;
+  border: 1px solid rgba(164, 183, 207, 0.25);
+  border-radius: 8px;
+  padding: 14px;
+  margin: 10px 0;
+  box-shadow: 0 4px 20px rgba(0, 0, 0, 0.35);
+}
+
+.challenge-query-rendered {
+  font-family: var(--font-mono);
+  font-size: 12.5px;
+  line-height: 2.2;
+  color: #e4e4e7;
+  white-space: pre-wrap;
+}
+
+.slot-select {
+  appearance: none;
+  background: #18181f;
+  border: 1.5px solid #dfcaa9;
+  border-radius: 4px;
+  color: #dfcaa9;
+  font-family: var(--font-mono);
+  font-size: 11.5px;
+  font-weight: 700;
+  padding: 3px 8px;
+  cursor: pointer;
+  outline: none;
+  transition: all 0.15s ease;
+  vertical-align: middle;
+  margin: 0 3px;
+}
+
+.slot-select:focus {
+  border-color: #fcd34d;
+  box-shadow: 0 0 8px rgba(252, 211, 77, 0.35);
+}
+
+.slot-select.slot-correct {
+  border-color: #4ade80 !important;
+  color: #4ade80 !important;
+  background: rgba(74, 222, 128, 0.1) !important;
+}
+
+.slot-select.slot-incorrect {
+  border-color: #f87171 !important;
+  color: #f87171 !important;
+  background: rgba(248, 113, 113, 0.1) !important;
+}
+
+.btn-check-slots {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  background: linear-gradient(135deg, #1e3a5f, #1e293b);
+  border: 1px solid #3b82f6;
+  color: #93c5fd;
+  font-family: var(--font-sans);
+  font-size: 11px;
+  font-weight: 600;
+  padding: 6px 14px;
+  border-radius: var(--radius-sm);
+  cursor: pointer;
+  transition: all 0.15s ease;
+}
+
+.btn-check-slots:hover {
+  background: #2563eb;
+  color: #fff;
+  border-color: #60a5fa;
+  box-shadow: 0 2px 10px rgba(37, 99, 235, 0.3);
+}
+
+.btn-toggle-challenge {
+  background: rgba(223, 202, 169, 0.1);
+  border: 1px solid #dfcaa9;
+  color: #dfcaa9;
+  font-family: var(--font-sans);
+  font-size: 11px;
+  font-weight: 600;
+  padding: 6px 12px;
+  border-radius: var(--radius-sm);
+  cursor: pointer;
+  transition: all 0.15s ease;
+}
+
+.btn-toggle-challenge:hover {
+  background: #dfcaa9;
+  color: #121216;
+}
+
+.challenge-feedback-box {
+  margin-top: 10px;
+  padding: 10px 14px;
+  border-radius: 6px;
+  font-size: 11.5px;
+  line-height: 1.55;
+  font-family: var(--font-sans);
+  animation: fadeIn 0.2s ease-in-out;
+}
+
+.challenge-feedback-box.correct {
+  background: rgba(34, 197, 94, 0.1);
+  border: 1px solid rgba(74, 222, 128, 0.35);
+  color: #86efac;
+}
+
+.challenge-feedback-box.incorrect {
+  background: rgba(239, 68, 68, 0.1);
+  border: 1px solid rgba(248, 113, 113, 0.35);
+  color: #fca5a5;
+}
+
 
 /* =============================================================================
    SOUND FX & GAMIFICATION BADGES

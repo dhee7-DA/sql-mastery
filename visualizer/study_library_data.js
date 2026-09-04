@@ -5,6 +5,66 @@
 
 window.STUDY_LIBRARY = [
   // ---------------------------------------------------------------------------
+  // SECTION 00: Database Theory, Architecture & Technical Interview Prep
+  // ---------------------------------------------------------------------------
+  {
+    id: 'sec_theory_architecture',
+    pillarId: 'pillar0',
+    icon: '🏛️',
+    title: '00. Database Theory & Technical Interview Prep',
+    badge: 'Interview Foundations',
+    badgeClass: 'pill-from',
+    readTime: '8 min read',
+    summary: 'RDBMS vs NoSQL, OLTP vs OLAP columnar storage, ACID transaction isolation levels, and B-Tree indexing mechanics.',
+    sections: [
+      {
+        heading: '1. RDBMS vs. NoSQL Architectural Trade-offs',
+        content: `In financial technology and mission-critical enterprise systems, choosing your storage architecture dictates reliability:
+- **RDBMS (PostgreSQL, MySQL)**: Relational tables adhering to strict 3rd Normal Form (3NF). Guarantees complete consistency across foreign key constraints. Essential for banking ledgers, payments, and trade reconciliations.
+- **NoSQL (MongoDB, Redis, Cassandra)**: Document and key-value stores. Trade ACID transactions for horizontal scaling and arbitrary schema elasticity. Best for user session caching, raw clickstream telemetry, and unstructured profiles.`
+      },
+      {
+        heading: '2. OLTP vs. OLAP: Row-Oriented vs. Columnar Storage',
+        content: `Understanding how disk pages physically organize data separates senior data engineers from beginners:
+- **OLTP (Online Transaction Processing - Postgres/Aurora)**: Stores complete rows contiguously on disk pages. Fast sub-5ms single-row reads and writes. Bottlenecks when scanning millions of rows to calculate aggregates.
+- **OLAP (Online Analytical Processing - Snowflake, BigQuery, ClickHouse)**: Stores each column separately across contiguous micro-partitions. A query calculating \`SUM(amount_usd)\` reads **only** that column off NVMe storage, skipping all other columns. This provides 20x to 50x query speedups and 10x compression ratios.`
+      },
+      {
+        heading: '3. ACID Guarantees & Transaction Isolation Levels',
+        content: `The 4 foundational guarantees protecting concurrent database operations:
+- **Atomicity**: All-or-nothing execution.
+- **Consistency**: All schema and constraint rules must hold true after commit.
+- **Isolation**: Concurrent transactions cannot observe corrupt partial states.
+- **Durability**: Committed data is written to non-volatile WAL logs.
+
+**The 4 Isolation Levels:**
+1. *Read Uncommitted*: Allows **Dirty Reads** (reading uncommitted data).
+2. *Read Committed*: Default in PostgreSQL. Eliminates dirty reads; allows non-repeatable reads.
+3. *Repeatable Read*: Default in MySQL InnoDB. Rows read once retain identical values throughout the transaction.
+4. *Serializable*: Highest safety. Emulates serial execution, eliminating phantom rows at the cost of lock contention.`
+      },
+      {
+        heading: '4. B-Tree Indexing & Buffer Pool Mechanics',
+        content: `How database engines locate 1 row out of 100,000,000 in ~3 I/O hops:
+- **B-Tree Anatomy**: Root -> Internal Branches -> Leaf Nodes. \`O(log N)\` search complexity.
+- **Clustered Index**: Defines the actual physical order of table rows on disk pages (almost always the Primary Key).
+- **Secondary Index**: Separate search tree pointing back to the clustered row ID.
+- **Index Seek vs. Full Table Scan**: An *Index Seek* traverses directly to the target leaf page; a *Full Table Scan (FTS)* sequentially reads every disk page in the table.
+- **The Buffer Pool**: Memory cache in RAM. An index seek hitting the buffer pool executes in microseconds without physical disk reads.`
+      }
+    ],
+    interviewGotchas: [
+      {
+        title: "The Function Wrap Index Trap",
+        trap: "Adding WHERE UPPER(email) = 'USER@DOMAIN.COM' forces a Full Table Scan because the index was created on raw 'email', not 'UPPER(email)'. Fix: Use Functional Indexes or normalize inputs before writing."
+      },
+      {
+        title: "SELECT * Columnar Cost Multiplier",
+        trap: "Running SELECT * in Snowflake or BigQuery forces the engine to decompress and read every column from disk, multiplying cloud compute costs by 20x to 50x."
+      }
+    ]
+  },
+  // ---------------------------------------------------------------------------
   // SECTION 01: Physical Query Execution Order
   // ---------------------------------------------------------------------------
   {

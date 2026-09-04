@@ -498,40 +498,47 @@
       <div class="curriculum-header" style="flex-direction: column; align-items: stretch; gap: 14px;">
         <div style="display: flex; justify-content: space-between; align-items: flex-end; flex-wrap: wrap; gap: 10px;">
           <div>
-            <h2 class="view-title">The 300 Corporate Case Study Master Vault</h2>
-            <p class="view-subtitle">300 production analytics scenarios across 10 global industries &amp; 3 core pillars.</p>
+            <h2 class="view-title">The 500 Corporate Case Study Master Vault</h2>
+            <p class="view-subtitle">500 production analytics scenarios across 10 global industries &amp; 5 beginner SQL sections with interactive slot challenges.</p>
           </div>
-          <div style="display: flex; align-items: center; gap: 10px;">
-            <input type="text" id="caseSearchInput" placeholder="🔍 Search 300 cases by keyword, schema, query..." style="width: 300px; background: #09090b; border: 1px solid var(--border-default); border-radius: var(--radius-sm); color: #fff; font-family: var(--font-mono); font-size: 11.5px; padding: 6px 12px;">
-            <span id="caseCountBadge" class="status-pill" style="font-size: 11px;">300 Cases</span>
+          <div style="display: flex; align-items: center; gap: 8px; flex-wrap: wrap;">
+            <div class="mode-toggle-group" style="display: flex; gap: 4px; background: #09090b; padding: 3px; border-radius: var(--radius-sm); border: 1px solid var(--border-default);">
+              <button id="btnCaseStudyMode" class="card-nav-btn active" style="font-size: 11px; padding: 4px 10px;">👁️ Study Mode</button>
+              <button id="btnCaseChallengeMode" class="card-nav-btn" style="font-size: 11px; padding: 4px 10px;">🧩 Slot Challenge Mode</button>
+            </div>
+            <input type="text" id="caseSearchInput" placeholder="🔍 Search 500 cases by keyword, schema, query..." style="width: 260px; background: #09090b; border: 1px solid var(--border-default); border-radius: var(--radius-sm); color: #fff; font-family: var(--font-mono); font-size: 11.5px; padding: 6px 12px;">
+            <span id="caseCountBadge" class="status-pill" style="font-size: 11px;">500 Cases</span>
+            <span id="caseSolvedBadge" class="status-pill" style="font-size: 11px; background: rgba(34, 197, 94, 0.15); color: #4ade80; border: 1px solid rgba(74, 222, 128, 0.3);">⚡ <span id="casesSolvedCount">0</span>/500 Solved</span>
           </div>
         </div>
 
-        <!-- Pillar Switcher Bar -->
-        <div class="case-pillar-group" id="casePillarFilters" style="display: flex; gap: 8px; flex-wrap: wrap;">
-          <button class="case-pillar-btn active" data-pillar="all">All Pillars (300)</button>
-          <button class="case-pillar-btn" data-pillar="Pillar 1: Foundations">Pillar 1: Foundations (100)</button>
-          <button class="case-pillar-btn" data-pillar="Pillar 2: Aggregations">Pillar 2: Aggregations (100)</button>
-          <button class="case-pillar-btn" data-pillar="Pillar 3: Relational JOINs">Pillar 3: Relational JOINs (100)</button>
+        <!-- 5 Core Sections Switcher Bar -->
+        <div class="case-section-group" id="caseSectionFilters" style="display: flex; gap: 8px; flex-wrap: wrap;">
+          <button class="case-section-btn active" data-section="all">All Sections (500)</button>
+          <button class="case-section-btn" data-section="Section 1: Database Theory &amp; Architecture">Sec 1: Theory &amp; Interview Prep (100)</button>
+          <button class="case-section-btn" data-section="Section 2: Physical Query Execution Order &amp; Projections">Sec 2: Execution &amp; Projections (100)</button>
+          <button class="case-section-btn" data-section="Section 3: Filtering, Predicates &amp; Three-Valued Logic">Sec 3: Filtering &amp; 3VL (100)</button>
+          <button class="case-section-btn" data-section="Section 4: String Slicing, Text Manipulation &amp; Pattern Matching">Sec 4: String Manipulation (100)</button>
+          <button class="case-section-btn" data-section="Section 5: Sorting, Determinism &amp; Slicing">Sec 5: Sorting &amp; Slicing (100)</button>
         </div>
 
-        <!-- Industry Filter Pills -->
+        <!-- Industry Filter Pills (10 Industries, 50 cases each) -->
         <div class="difficulty-filter-group" id="caseIndustryFilters" style="flex-wrap: wrap; gap: 6px;">
-          <button class="case-filter-btn active" data-industry="all">All Industries (300)</button>
-          <button class="case-filter-btn" data-industry="Fintech">Fintech (30)</button>
-          <button class="case-filter-btn" data-industry="SaaS">SaaS (30)</button>
-          <button class="case-filter-btn" data-industry="Retail">Retail (30)</button>
-          <button class="case-filter-btn" data-industry="Healthcare">Healthcare (30)</button>
-          <button class="case-filter-btn" data-industry="Logistics">Logistics (30)</button>
-          <button class="case-filter-btn" data-industry="Media">Media (30)</button>
-          <button class="case-filter-btn" data-industry="Security">Security (30)</button>
-          <button class="case-filter-btn" data-industry="Hardware">Hardware (30)</button>
-          <button class="case-filter-btn" data-industry="HR">HR (30)</button>
-          <button class="case-filter-btn" data-industry="Platforms">Platforms (30)</button>
+          <button class="case-filter-btn active" data-industry="all">All Industries (500)</button>
+          <button class="case-filter-btn" data-industry="Fintech">Fintech (50)</button>
+          <button class="case-filter-btn" data-industry="SaaS">SaaS (50)</button>
+          <button class="case-filter-btn" data-industry="Retail">Retail (50)</button>
+          <button class="case-filter-btn" data-industry="Healthcare">Healthcare (50)</button>
+          <button class="case-filter-btn" data-industry="Logistics">Logistics (50)</button>
+          <button class="case-filter-btn" data-industry="Media">Media (50)</button>
+          <button class="case-filter-btn" data-industry="Security">Security (50)</button>
+          <button class="case-filter-btn" data-industry="Hardware">Hardware (50)</button>
+          <button class="case-filter-btn" data-industry="HR">HR (50)</button>
+          <button class="case-filter-btn" data-industry="Platforms">Platforms (50)</button>
         </div>
       </div>
       <div class="cases-grid" id="caseStudiesGrid">
-        <!-- Dynamically rendered from ALL_300_CASE_STUDIES -->
+        <!-- Dynamically rendered from ALL_500_CASE_STUDIES -->
       </div>
     </div>
   </div>
@@ -639,7 +646,9 @@
 <script src="operators_sandbox.js"></script>
 <script src="quests_engine.js"></script>
 <script src="deconstructor_data.js"></script>
-<script src="case_studies_300.js"></script>
+<script src="theory_interview_prep.js"></script>
+<script src="case_studies_500.js"></script>
+<script src="case_study_blanks.js"></script>
 <script src="foundations_curriculum.js"></script>
 <script src="audio_fx.js"></script>
 <script src="study_library_data.js"></script>

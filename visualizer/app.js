@@ -1458,32 +1458,52 @@ function initCurriculumSystem() {
     });
   });
 
-  // Pillar filter pills in 300 Case Studies
-  document.querySelectorAll('.case-pillar-btn').forEach(btn => {
+  // Section filter pills in 500 Case Studies
+  document.querySelectorAll('.case-section-btn').forEach(btn => {
     btn.addEventListener('click', () => {
-      document.querySelectorAll('.case-pillar-btn').forEach(b => b.classList.remove('active'));
+      document.querySelectorAll('.case-section-btn').forEach(b => b.classList.remove('active'));
       btn.classList.add('active');
       if (window.soundFX) window.soundFX.playPop();
-      renderCaseStudies(currentCaseIndustryFilter, btn.dataset.pillar);
+      renderCaseStudies(currentCaseIndustryFilter, btn.dataset.section);
     });
   });
 
-  // Industry filter pills in 300 Case Studies
+  // Industry filter pills in 500 Case Studies
   document.querySelectorAll('.case-filter-btn').forEach(btn => {
     btn.addEventListener('click', () => {
       document.querySelectorAll('.case-filter-btn').forEach(b => b.classList.remove('active'));
       btn.classList.add('active');
       if (window.soundFX) window.soundFX.playPop();
-      renderCaseStudies(btn.dataset.industry, currentCasePillarFilter);
+      renderCaseStudies(btn.dataset.industry, currentCaseSectionFilter);
     });
   });
 
-  // Search input for 300 Case Studies
+  // Mode Switcher: Study Mode vs Challenge Mode
+  const btnStudyMode = document.getElementById('btnCaseStudyMode');
+  const btnChallengeMode = document.getElementById('btnCaseChallengeMode');
+  if (btnStudyMode && btnChallengeMode) {
+    btnStudyMode.addEventListener('click', () => {
+      btnStudyMode.classList.add('active');
+      btnChallengeMode.classList.remove('active');
+      currentCaseMode = 'study';
+      if (window.soundFX) window.soundFX.playPop();
+      renderCaseStudies();
+    });
+    btnChallengeMode.addEventListener('click', () => {
+      btnChallengeMode.classList.add('active');
+      btnStudyMode.classList.remove('active');
+      currentCaseMode = 'challenge';
+      if (window.soundFX) window.soundFX.playPop();
+      renderCaseStudies();
+    });
+  }
+
+  // Search input for 500 Case Studies
   const caseSearchInput = document.getElementById('caseSearchInput');
   if (caseSearchInput) {
     caseSearchInput.addEventListener('input', (e) => {
       currentCaseSearchQuery = e.target.value.trim();
-      renderCaseStudies(currentCaseIndustryFilter, currentCasePillarFilter);
+      renderCaseStudies(currentCaseIndustryFilter, currentCaseSectionFilter);
     });
   }
 }
@@ -3185,22 +3205,34 @@ function handleMcqAnswer(qid, selectedIdx) {
   expCard.classList.add('show');
 }
 
-let currentCasePillarFilter = 'all';
+function escapeHtml(str) {
+  if (!str) return '';
+  return String(str)
+    .replace(/&/g, '&amp;')
+    .replace(/</g, '&lt;')
+    .replace(/>/g, '&gt;')
+    .replace(/"/g, '&quot;')
+    .replace(/'/g, '&#039;');
+}
+
+let currentCaseSectionFilter = 'all';
 let currentCaseIndustryFilter = 'all';
 let currentCaseSearchQuery = '';
+let currentCaseMode = 'study'; // 'study' or 'challenge'
 
-function renderCaseStudies(industryFilter = currentCaseIndustryFilter, pillarFilter = currentCasePillarFilter) {
+function renderCaseStudies(industryFilter = currentCaseIndustryFilter, sectionFilter = currentCaseSectionFilter) {
   currentCaseIndustryFilter = industryFilter;
-  currentCasePillarFilter = pillarFilter;
+  currentCaseSectionFilter = sectionFilter;
   const container = document.getElementById('caseStudiesGrid');
   const countBadge = document.getElementById('caseCountBadge');
+  const solvedCountSpan = document.getElementById('casesSolvedCount');
   if (!container) return;
 
-  let allCases = window.ALL_300_CASE_STUDIES || window.ALL_100_CASE_STUDIES || (window.FOUNDATIONS_DATA ? window.FOUNDATIONS_DATA.caseStudies : []) || [];
+  let allCases = window.ALL_500_CASE_STUDIES || window.ALL_300_CASE_STUDIES || [];
   let cases = allCases;
 
-  if (currentCasePillarFilter !== 'all') {
-    cases = cases.filter(cs => cs.pillar && (cs.pillar.toLowerCase() === currentCasePillarFilter.toLowerCase() || cs.pillar.toLowerCase().includes(currentCasePillarFilter.toLowerCase())));
+  if (currentCaseSectionFilter !== 'all') {
+    cases = cases.filter(cs => cs.section && (cs.section.toLowerCase() === currentCaseSectionFilter.toLowerCase() || cs.section.toLowerCase().includes(currentCaseSectionFilter.toLowerCase())));
   }
 
   if (currentCaseIndustryFilter !== 'all') {
@@ -3221,6 +3253,9 @@ function renderCaseStudies(industryFilter = currentCaseIndustryFilter, pillarFil
   if (countBadge) {
     countBadge.textContent = `${cases.length} of ${allCases.length} Cases`;
   }
+  if (solvedCountSpan && window.CASE_BLANKS_ENGINE) {
+    solvedCountSpan.textContent = window.CASE_BLANKS_ENGINE.getSolvedCount();
+  }
 
   if (cases.length === 0) {
     container.innerHTML = `
@@ -3235,14 +3270,52 @@ function renderCaseStudies(industryFilter = currentCaseIndustryFilter, pillarFil
   let html = '';
 
   cases.forEach(cs => {
+    const isSolved = window.CASE_BLANKS_ENGINE && window.CASE_BLANKS_ENGINE.isSolved(cs.id);
+    const challenge = window.CASE_BLANKS_ENGINE ? window.CASE_BLANKS_ENGINE.createChallenge(cs) : null;
+
+    let queryBlockHtml = '';
+    if (currentCaseMode === 'study' || !challenge) {
+      // Study View
+      queryBlockHtml = `
+        <div class="case-code-preview">
+          <code>${escapeHtml(cs.targetQuery)}</code>
+        </div>
+      `;
+    } else {
+      // Interactive Slot Challenge View
+      let renderedMasked = escapeHtml(challenge.maskedQuery);
+      for (const [slotId, slotInfo] of Object.entries(challenge.slots)) {
+        let optionsHtml = `<option value="">[ Select Clause ]</option>`;
+        slotInfo.options.forEach(opt => {
+          optionsHtml += `<option value="${escapeHtml(opt)}">${escapeHtml(opt)}</option>`;
+        });
+        const selectHtml = `<select class="slot-select" data-case-id="${cs.id}" data-slot-id="${slotId}">${optionsHtml}</select>`;
+        renderedMasked = renderedMasked.replace(`[[${slotId}]]`, selectHtml);
+      }
+
+      queryBlockHtml = `
+        <div class="case-challenge-box">
+          <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 8px;">
+            <span style="font-size: 10px; font-family: var(--font-mono); color: #dfcaa9; font-weight: 700; text-transform: uppercase;">🧩 Missing Keyword Challenge</span>
+            ${isSolved ? '<span class="status-pill" style="font-size: 9.5px; color: #4ade80; border-color: rgba(74,222,128,0.3);">✓ Solved (+15 XP)</span>' : '<span style="font-size: 10px; color: var(--text-muted);">Fill in all missing slots</span>'}
+          </div>
+          <div class="challenge-query-rendered">
+            ${renderedMasked}
+          </div>
+          <div class="challenge-feedback-box" id="feedback_${cs.id}" style="display: none;"></div>
+        </div>
+      `;
+    }
+
     html += `
-      <div class="case-card">
+      <div class="case-card ${isSolved ? 'case-solved' : ''}" id="case_card_${cs.id}">
         <div class="case-card-header">
           <div>
             <div style="display: flex; align-items: center; gap: 6px; margin-bottom: 4px; flex-wrap: wrap;">
               <span class="status-pill" style="font-size: 10px; padding: 1px 6px;">#${cs.id < 10 ? '00' + cs.id : (cs.id < 100 ? '0' + cs.id : cs.id)}</span>
-              <span class="clause-pill pill-group" style="font-size: 9.5px; padding: 1px 6px;">${cs.pillar || 'Pillar 1'}</span>
+              <span class="clause-pill pill-group" style="font-size: 9.5px; padding: 1px 6px;">${cs.section || cs.pillar || 'Section 1'}</span>
               <span class="case-industry">${cs.industry}</span>
+              ${isSolved ? '<span style="font-size: 11px;" title="Solved!">🏆</span>' : ''}
             </div>
             <h3 class="case-title">${cs.title}</h3>
           </div>
@@ -3259,7 +3332,15 @@ function renderCaseStudies(industryFilter = currentCaseIndustryFilter, pillarFil
           <strong>Objective:</strong> ${cs.businessObjective}
         </div>
 
-        <div class="case-card-actions">
+        ${queryBlockHtml}
+
+        <div class="case-card-actions" style="display: flex; gap: 8px; justify-content: flex-end; align-items: center; margin-top: 6px;">
+          ${currentCaseMode === 'challenge' && challenge ? `
+            <button class="btn-check-slots" data-case-id="${cs.id}">
+              <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="20 6 9 17 4 12"></polyline></svg>
+              Verify Solution
+            </button>
+          ` : ''}
           <button class="btn-solve-in-studio" data-table="${cs.table}" data-query="${encodeURIComponent(cs.targetQuery)}">
             <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polygon points="5 3 19 12 5 21 5 3"></polygon></svg>
             Solve in Query Studio
@@ -3271,11 +3352,59 @@ function renderCaseStudies(industryFilter = currentCaseIndustryFilter, pillarFil
 
   container.innerHTML = html;
 
+  // Event Listeners for Solve in Studio
   container.querySelectorAll('.btn-solve-in-studio').forEach(btn => {
     btn.addEventListener('click', () => {
       const q = decodeURIComponent(btn.dataset.query);
       const tbl = btn.dataset.table;
       switchToStudioWithQuery(q, tbl);
+    });
+  });
+
+  // Event Listeners for Check Solution
+  container.querySelectorAll('.btn-check-slots').forEach(btn => {
+    btn.addEventListener('click', () => {
+      const caseId = parseInt(btn.dataset.caseId, 10);
+      const cs = (window.ALL_500_CASE_STUDIES || window.ALL_300_CASE_STUDIES || []).find(c => c.id === caseId);
+      if (!cs || !window.CASE_BLANKS_ENGINE) return;
+
+      const card = document.getElementById(`case_card_${caseId}`);
+      if (!card) return;
+
+      const userAnswers = {};
+      card.querySelectorAll('.slot-select').forEach(sel => {
+        userAnswers[sel.dataset.slotId] = sel.value;
+      });
+
+      const verification = window.CASE_BLANKS_ENGINE.verifyChallenge(cs, userAnswers);
+      const feedbackDiv = document.getElementById(`feedback_${caseId}`);
+
+      // Highlight slot borders
+      for (const [slotId, res] of Object.entries(verification.results || {})) {
+        const sel = card.querySelector(`.slot-select[data-slot-id="${slotId}"]`);
+        if (sel) {
+          if (res.isCorrect) {
+            sel.classList.add('slot-correct');
+            sel.classList.remove('slot-incorrect');
+          } else {
+            sel.classList.add('slot-incorrect');
+            sel.classList.remove('slot-correct');
+          }
+        }
+      }
+
+      if (feedbackDiv) {
+        feedbackDiv.style.display = 'block';
+        feedbackDiv.className = `challenge-feedback-box ${verification.isCorrect ? 'correct' : 'incorrect'}`;
+        feedbackDiv.innerHTML = verification.explanation;
+      }
+
+      if (verification.isCorrect) {
+        card.classList.add('case-solved');
+        if (solvedCountSpan) {
+          solvedCountSpan.textContent = window.CASE_BLANKS_ENGINE.getSolvedCount();
+        }
+      }
     });
   });
 }
