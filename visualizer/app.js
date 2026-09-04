@@ -1407,8 +1407,21 @@ document.addEventListener('DOMContentLoaded', () => {
 
 function initCurriculumSystem() {
   // Top Navigation Tabs Click
+  // Sound FX and Gamification setup
+  const btnSoundToggle = document.getElementById('btnSoundToggle');
+  if (btnSoundToggle && window.soundFX) {
+    window.soundFX.updateSoundButtonUI();
+    window.soundFX.updateXPBadgeUI();
+    const streakEl = document.getElementById('streakDaysCount');
+    if (streakEl) streakEl.textContent = window.soundFX.streak;
+    btnSoundToggle.addEventListener('click', () => {
+      window.soundFX.toggleSound();
+    });
+  }
+
   document.querySelectorAll('.nav-tab').forEach(tab => {
     tab.addEventListener('click', () => {
+      if (window.soundFX) window.soundFX.playWhoosh();
       document.querySelectorAll('.nav-tab').forEach(t => t.classList.remove('active'));
       document.querySelectorAll('.view-panel').forEach(p => p.classList.remove('active'));
 
@@ -1779,6 +1792,134 @@ function setSandboxLimitCount(count) {
   renderGuidedStep(6);
 }
 
+let activeVennFilter = 'all';
+
+function setVennFilter(filterKey) {
+  if (window.soundFX) window.soundFX.playPop();
+  activeVennFilter = filterKey;
+  renderGuidedStep(currentGuidedStep);
+}
+
+function renderRelationalDualTableLinker() {
+  const tableA = window.JOINS_SCHEMA.tableA;
+  const tableB = window.JOINS_SCHEMA.tableB;
+  return `
+    <div class="relational-linker-wrap">
+      <div class="relational-linker-header">
+        <span class="relational-linker-title">Interactive Relational Key Linker</span>
+        <span class="relational-linker-hint">Hover any employee or department to trace live foreign key matches</span>
+      </div>
+      <div class="relational-dual-grid">
+        <div class="relational-table-box">
+          <div class="relational-table-title">
+            <span>TABLE A: Employees (Left)</span>
+            <span style="font-size: 9.5px; opacity: 0.7;">FK: dept_id</span>
+          </div>
+          ${tableA.rows.map(r => `
+            <div class="relational-row" data-side="left" data-empid="${r.emp_id}" data-deptid="${r.dept_id !== null ? r.dept_id : 'null'}">
+              <span><strong>#${r.emp_id}</strong> ${r.name}</span>
+              <span class="relational-key-badge ${r.dept_id === null ? 'key-null' : ''}">
+                ${r.dept_id !== null ? `dept_id: ${r.dept_id}` : 'NULL (Orphan)'}
+              </span>
+            </div>
+          `).join('')}
+        </div>
+        <div class="relational-table-box">
+          <div class="relational-table-title">
+            <span>TABLE B: Departments (Right)</span>
+            <span style="font-size: 9.5px; opacity: 0.7;">PK: dept_id</span>
+          </div>
+          ${tableB.rows.map(d => `
+            <div class="relational-row" data-side="right" data-deptid="${d.dept_id}">
+              <span><strong>#${d.dept_id}</strong> ${d.dept_name}</span>
+              <span class="relational-key-badge">${d.location}</span>
+            </div>
+          `).join('')}
+        </div>
+      </div>
+      <div id="relationalHoverFeedback" style="margin-top: 10px; font-family: var(--font-mono); font-size: 11px; color: var(--text-muted); text-align: center; min-height: 18px;">
+        Hover a record to simulate pointer lookup in memory...
+      </div>
+    </div>
+  `;
+}
+
+function bindRelationalLinkerEvents() {
+  const rows = document.querySelectorAll('.relational-row');
+  const feedback = document.getElementById('relationalHoverFeedback');
+  const resultRows = document.querySelectorAll('.guided-table-wrap tbody tr');
+
+  rows.forEach(row => {
+    row.addEventListener('mouseenter', () => {
+      const side = row.dataset.side;
+      const deptId = row.dataset.deptid;
+      const empId = row.dataset.empid;
+
+      rows.forEach(r => r.classList.remove('active-match', 'active-orphan'));
+      if (resultRows) resultRows.forEach(tr => tr.style.opacity = '0.35');
+
+      if (deptId === 'null') {
+        row.classList.add('active-orphan');
+        if (window.soundFX) window.soundFX.playError();
+        if (feedback) {
+          feedback.innerHTML = `<span style="color: #d69d8f;">&cross; Orphan Employee (#${empId}) has dept_id = NULL. No department matches. Dropped in INNER JOIN, preserved with NULLs in LEFT JOIN.</span>`;
+        }
+        if (resultRows) {
+          resultRows.forEach(tr => {
+            if (tr.textContent.includes('Evan Vance')) {
+              tr.style.opacity = '1';
+              tr.style.backgroundColor = 'rgba(214, 157, 143, 0.2)';
+            }
+          });
+        }
+        return;
+      }
+
+      // Highlight matching records across both tables
+      let matchedCount = 0;
+      rows.forEach(r => {
+        if (r.dataset.deptid === deptId) {
+          r.classList.add('active-match');
+          matchedCount++;
+        }
+      });
+
+      if (window.soundFX) window.soundFX.playConnect();
+
+      // Highlight matching result rows
+      if (resultRows) {
+        resultRows.forEach(tr => {
+          if (tr.textContent.includes(`dept ${deptId}`) || tr.textContent.includes(`dept_id: ${deptId}`) || tr.textContent.includes(`Engineering`) && deptId === '10' || tr.textContent.includes(`Marketing`) && deptId === '20' || tr.textContent.includes(`Sales`) && deptId === '30' || tr.textContent.includes(`Research`) && deptId === '40') {
+            tr.style.opacity = '1';
+            tr.style.backgroundColor = 'rgba(158, 197, 173, 0.2)';
+          }
+        });
+      }
+
+      if (feedback) {
+        if (side === 'left') {
+          feedback.innerHTML = `<span style="color: #9ec5ad;">&check; Relational Match: Employee joins with Department #${deptId} (Key match found).</span>`;
+        } else {
+          feedback.innerHTML = `<span style="color: #a4b7cf;">&check; Relational Match: Department #${deptId} connects to ${matchedCount - 1} employee(s).</span>`;
+        }
+      }
+    });
+
+    row.addEventListener('mouseleave', () => {
+      rows.forEach(r => r.classList.remove('active-match', 'active-orphan'));
+      if (resultRows) {
+        resultRows.forEach(tr => {
+          tr.style.opacity = '1';
+          tr.style.backgroundColor = '';
+        });
+      }
+      if (feedback) {
+        feedback.innerHTML = 'Hover a record to simulate pointer lookup in memory...';
+      }
+    });
+  });
+}
+
 function renderGuidedStep(stepNum) {
   currentGuidedStep = stepNum;
   renderGuidedStepperBar();
@@ -1860,6 +2001,28 @@ function renderGuidedStep(stepNum) {
     transformedRows = step.transform(JSON.parse(JSON.stringify(activeSchema.rows)));
   }
 
+  // Filter transformed rows for Track 04 JOINs if Venn filter is active
+  let vennFilterBarHtml = '';
+  if (currentTrack === 'trackJoins') {
+    if (activeVennFilter === 'intersection') {
+      transformedRows = transformedRows.filter(r => r._status === 'passed');
+    } else if (activeVennFilter === 'left') {
+      transformedRows = transformedRows.filter(r => r.name === 'Evan Vance' || (r._label && (r._label.includes('LEFT') || r._label.includes('Evan'))));
+    } else if (activeVennFilter === 'right') {
+      transformedRows = transformedRows.filter(r => r.dept_name === 'Research' || (r._label && (r._label.includes('RIGHT') || r._label.includes('Research') || r._label.includes('0 employees'))));
+    }
+
+    vennFilterBarHtml = `
+      <div class="venn-filter-bar">
+        <span style="font-family: var(--font-mono); font-size: 10.5px; color: #a4b7cf; font-weight: 700;">Venn Filter:</span>
+        <button class="venn-filter-pill ${activeVennFilter === 'all' ? 'active' : ''}" onclick="setVennFilter('all')">Show All Rows</button>
+        <button class="venn-filter-pill ${activeVennFilter === 'intersection' ? 'active' : ''}" onclick="setVennFilter('intersection')">&cap; Intersection Matches</button>
+        <button class="venn-filter-pill ${activeVennFilter === 'left' ? 'active' : ''}" onclick="setVennFilter('left')">&bull; Left Only (Evan Vance)</button>
+        <button class="venn-filter-pill ${activeVennFilter === 'right' ? 'active' : ''}" onclick="setVennFilter('right')">&bull; Right Only (Research Dept)</button>
+      </div>
+    `;
+  }
+
   const sampleRow = transformedRows[0] || {};
   const displayCols = Object.keys(sampleRow).filter(k => !k.startsWith('_'));
 
@@ -1935,6 +2098,8 @@ function renderGuidedStep(stepNum) {
     <div class="guided-interactive-section">
       <span class="guided-action-prompt">${step.actionPrompt}</span>
       ${sandboxChipsHtml}
+      ${currentTrack === 'trackJoins' ? renderRelationalDualTableLinker() : ''}
+      ${vennFilterBarHtml}
       ${tableHtml}
     </div>
 
@@ -1959,6 +2124,10 @@ function renderGuidedStep(stepNum) {
       </button>
     </div>
   `;
+
+  if (currentTrack === 'trackJoins') {
+    bindRelationalLinkerEvents();
+  }
 }
 
 // =============================================================================
@@ -2788,6 +2957,7 @@ function renderFillBlankQuest(container, quest) {
 }
 
 function selectSlotChoice(slotId, value) {
+  if (window.soundFX) window.soundFX.playPop();
   userSlotSelections[slotId] = value;
   fillBlankChecked = false;
   renderActiveQuest(currentQuestIndex);
@@ -2806,6 +2976,16 @@ function checkFillBlankAnswer() {
 
   fillBlankChecked = true;
   fillBlankPassed = allCorrect;
+
+  if (allCorrect) {
+    if (window.soundFX) {
+      window.soundFX.playSuccess();
+      window.soundFX.addXP(20, `${quest.title.split(':')[0]} Solved!`);
+    }
+  } else {
+    if (window.soundFX) window.soundFX.playError();
+  }
+
   renderActiveQuest(currentQuestIndex);
 }
 

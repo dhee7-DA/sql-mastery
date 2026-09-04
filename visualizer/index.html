@@ -43,7 +43,17 @@
         </div>
       </div>
 
-      <div class="header-right">
+      <div class="header-right" style="display: flex; align-items: center; gap: 10px;">
+        <span class="xp-streak-pill" id="userStreakCounter" title="Daily SQL Mastery Streak">
+          🔥 <span id="streakDaysCount">1</span>d Streak
+        </span>
+        <span class="xp-streak-pill" id="userXpCounter" title="Total SQL Mastery Points">
+          ⚡ 60 <span style="font-size: 10px; color: var(--text-muted);">XP</span>
+        </span>
+        <button id="btnSoundToggle" class="btn-sound-toggle" title="Toggle Sound FX">
+          <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polygon points="11 5 6 9 2 9 2 15 6 15 11 19 11 5"></polygon><path d="M19.07 4.93a10 10 0 0 1 0 14.14M15.54 8.46a5 5 0 0 1 0 7.07"></path></svg>
+          Sound ON
+        </button>
         <button id="btnRunQuery" class="action-btn action-btn-primary">
           <svg width="14" height="14" viewBox="0 0 24 24" fill="currentColor">
             <polygon points="5 3 19 12 5 21 5 3"></polygon>
@@ -607,6 +617,7 @@
 <script src="deconstructor_data.js"></script>
 <script src="case_studies_100.js"></script>
 <script src="foundations_curriculum.js"></script>
+<script src="audio_fx.js"></script>
 <script src="app.js"></script>
 </body>
 </html>

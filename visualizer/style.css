@@ -2853,3 +2853,232 @@ body {
   border-color: #9ec5ad;
   color: #9ec5ad;
 }
+
+/* =============================================================================
+   SOUND FX & GAMIFICATION BADGES
+   ============================================================================= */
+.btn-sound-toggle {
+  display: inline-flex;
+  align-items: center;
+  gap: 5px;
+  background: #18181c;
+  border: 1px solid var(--border-default);
+  border-radius: var(--radius-sm);
+  color: #9ec5ad;
+  font-family: var(--font-mono);
+  font-size: 11px;
+  font-weight: 600;
+  padding: 4px 10px;
+  cursor: pointer;
+  transition: all 0.15s ease;
+}
+
+.btn-sound-toggle:hover {
+  background: #23232a;
+  border-color: #9ec5ad;
+}
+
+.btn-sound-toggle.muted {
+  color: var(--text-muted);
+  border-color: var(--border-muted);
+}
+
+.xp-streak-pill {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  background: #121216;
+  border: 1px solid var(--border-default);
+  border-radius: var(--radius-sm);
+  padding: 4px 10px;
+  font-family: var(--font-mono);
+  font-size: 11px;
+  font-weight: 600;
+  color: #f4f4f5;
+}
+
+.xp-floating-particle {
+  position: fixed;
+  bottom: 30px;
+  right: 30px;
+  background: linear-gradient(135deg, #18221c, #0e1612);
+  border: 1px solid #9ec5ad;
+  border-radius: 8px;
+  padding: 10px 16px;
+  color: #9ec5ad;
+  font-family: var(--font-mono);
+  font-size: 13px;
+  font-weight: 700;
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  box-shadow: 0 8px 24px rgba(0, 0, 0, 0.5), 0 0 15px rgba(158, 197, 173, 0.25);
+  animation: floatUp 0.35s cubic-bezier(0.16, 1, 0.3, 1) forwards;
+  z-index: 99999;
+}
+
+.xp-floating-particle.fade-out {
+  opacity: 0;
+  transform: translateY(-20px);
+  transition: all 0.4s ease;
+}
+
+@keyframes floatUp {
+  0% {
+    opacity: 0;
+    transform: translateY(20px) scale(0.9);
+  }
+  100% {
+    opacity: 1;
+    transform: translateY(0) scale(1);
+  }
+}
+
+/* =============================================================================
+   INTERACTIVE DUAL-TABLE RELATIONAL LINKER (TRACK 04)
+   ============================================================================= */
+.relational-linker-wrap {
+  margin: 14px 0 18px 0;
+  padding: 14px;
+  background: #0d0d11;
+  border: 1px solid var(--border-default);
+  border-radius: var(--radius-md);
+}
+
+.relational-linker-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 10px;
+}
+
+.relational-linker-title {
+  font-family: var(--font-mono);
+  font-size: 11px;
+  color: #a4b7cf;
+  font-weight: 700;
+  text-transform: uppercase;
+  letter-spacing: 0.5px;
+}
+
+.relational-linker-hint {
+  font-size: 11px;
+  color: var(--text-muted);
+}
+
+.relational-dual-grid {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 16px;
+}
+
+.relational-table-box {
+  background: #121216;
+  border: 1px solid var(--border-muted);
+  border-radius: var(--radius-sm);
+  overflow: hidden;
+}
+
+.relational-table-title {
+  background: #18181e;
+  padding: 6px 10px;
+  font-family: var(--font-mono);
+  font-size: 10.5px;
+  font-weight: 700;
+  color: #dfcaa9;
+  border-bottom: 1px solid var(--border-muted);
+  display: flex;
+  justify-content: space-between;
+}
+
+.relational-row {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 6px 10px;
+  border-bottom: 1px solid #1c1c22;
+  font-family: var(--font-mono);
+  font-size: 11px;
+  cursor: pointer;
+  transition: all 0.15s ease;
+}
+
+.relational-row:last-child {
+  border-bottom: none;
+}
+
+.relational-row:hover,
+.relational-row.active-match {
+  background: rgba(158, 197, 173, 0.15);
+  color: #fff;
+  border-left: 3px solid #9ec5ad;
+  padding-left: 7px;
+}
+
+.relational-row.active-orphan {
+  background: rgba(214, 157, 143, 0.15);
+  color: #d69d8f;
+  border-left: 3px solid #d69d8f;
+  padding-left: 7px;
+}
+
+.relational-key-badge {
+  background: #1f232b;
+  color: #a4b7cf;
+  padding: 2px 6px;
+  border-radius: 3px;
+  font-size: 10px;
+  border: 1px solid rgba(164, 183, 207, 0.2);
+}
+
+.relational-key-badge.key-null {
+  background: rgba(214, 157, 143, 0.15);
+  color: #d69d8f;
+  border-color: rgba(214, 157, 143, 0.3);
+}
+
+/* Interactive SVG Venn Zones */
+.venn-interactive-zone {
+  cursor: pointer;
+  transition: all 0.2s ease;
+}
+
+.venn-interactive-zone:hover {
+  opacity: 0.9;
+  filter: drop-shadow(0 0 8px rgba(158, 197, 173, 0.4));
+}
+
+.venn-interactive-zone.active-zone {
+  filter: drop-shadow(0 0 12px rgba(158, 197, 173, 0.7));
+  stroke-width: 2.5 !important;
+}
+
+.venn-filter-bar {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  margin: 8px 0;
+  padding: 6px 10px;
+  background: #141419;
+  border-radius: var(--radius-sm);
+  border: 1px solid var(--border-muted);
+}
+
+.venn-filter-pill {
+  background: #1c1c24;
+  border: 1px solid var(--border-default);
+  color: var(--text-secondary);
+  font-family: var(--font-mono);
+  font-size: 10.5px;
+  padding: 3px 8px;
+  border-radius: 4px;
+  cursor: pointer;
+  transition: all 0.15s ease;
+}
+
+.venn-filter-pill:hover,
+.venn-filter-pill.active {
+  background: rgba(158, 197, 173, 0.2);
+  border-color: #9ec5ad;
+  color: #9ec5ad;
+}
