@@ -75,8 +75,8 @@
           🎮 Interactive Quests (Duolingo Mode)
         </button>
         <button class="nav-tab" data-view="viewExplainer">
-          <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="10"></circle><line x1="12" y1="16" x2="12" y2="12"></line><line x1="12" y1="8" x2="12.01" y2="8"></line></svg>
-          Keyword Study Notes &amp; SVGs
+          <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M4 19.5A2.5 2.5 0 0 1 6.5 17H20"></path><path d="M6.5 2H20v20H6.5A2.5 2.5 0 0 1 4 19.5v-15A2.5 2.5 0 0 1 6.5 2z"></path></svg>
+          📚 Study Material &amp; Docs
         </button>
         <button class="nav-tab" data-view="viewDeconstructor">
           <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="11" cy="11" r="8"></circle><line x1="21" y1="21" x2="16.65" y2="16.65"></line></svg>
@@ -437,21 +437,24 @@
     </main>
   </div><!-- End of viewStudio -->
 
-  <!-- VIEW 2: Keyword Explainer & SVGs -->
+  <!-- VIEW 2: Study Material & Docs Hub -->
   <div class="view-panel" id="viewExplainer">
-    <div class="curriculum-container">
-      <div class="curriculum-header">
-        <div>
-          <h2 class="view-title">SQL Keyword Physical Execution Explainer</h2>
-          <p class="view-subtitle">Master how the relational storage engine processes each clause in memory with vector execution maps.</p>
+    <div class="study-portal-wrapper">
+      <!-- Left Sidebar: Search & Topic Navigator -->
+      <aside class="study-sidebar">
+        <div class="study-search-box">
+          <input type="text" id="studySearchInput" class="clean-search-input" placeholder="🔍 Search topics, syntax, gotchas..." />
         </div>
-        <div class="keyword-pill-filter" id="keywordPillFilter">
-          <!-- Dynamically populated keyword filter pills -->
-        </div>
-      </div>
-      <div class="keyword-cards-grid" id="keywordCardsGrid">
-        <!-- Dynamically rendered from FOUNDATIONS_DATA.keywords -->
-      </div>
+        <div class="study-nav-section-title">CURRICULUM PILLARS &amp; TOPICS</div>
+        <nav class="study-topics-nav" id="studyTopicsNav">
+          <!-- Dynamically populated from window.STUDY_LIBRARY -->
+        </nav>
+      </aside>
+
+      <!-- Right Main Reader: Structured Study Material -->
+      <main class="study-main-reader" id="studyMainReader">
+        <!-- Dynamically rendered active study section -->
+      </main>
     </div>
   </div>
 
@@ -618,6 +621,7 @@
 <script src="case_studies_100.js"></script>
 <script src="foundations_curriculum.js"></script>
 <script src="audio_fx.js"></script>
+<script src="study_library_data.js"></script>
 <script src="app.js"></script>
 </body>
 </html>

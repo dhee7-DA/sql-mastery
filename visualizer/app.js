@@ -1436,17 +1436,18 @@ function initCurriculumSystem() {
       if (targetId === 'viewGuidedLab') renderGuidedStep(currentGuidedStep);
       if (targetId === 'viewQuests') renderActiveQuest(currentQuestIndex);
       if (targetId === 'viewDeconstructor') renderDeconstructedProblem(activeDeconstructorId);
-      if (targetId === 'viewExplainer') renderKeywordExplainer();
+      if (targetId === 'viewExplainer') renderStudyLibrary();
       if (targetId === 'viewMcqs') renderMcqs();
       if (targetId === 'viewCases') renderCaseStudies();
       if (targetId === 'viewProblems') renderProblemBank();
     });
   });
 
-  // Initialize the Guided Lab default view, Quests & Problem Deconstructor
+  // Initialize the Guided Lab default view, Quests, Problem Deconstructor & Study Library
   initGuidedLab();
   initQuestsSystem();
   initDeconstructorSystem();
+  initStudyLibrary();
 
   // Difficulty filter pills in Problem Bank
   document.querySelectorAll('.diff-filter-btn').forEach(btn => {
@@ -2391,115 +2392,173 @@ function switchToStudioWithQuery(query, table) {
   parseAndBuildPipeline(query);
 }
 
-let activeExplainerKeyword = 'from';
+// =============================================================================
+// STUDY LIBRARY & DOCUMENTATION CONTROLLER
+// =============================================================================
 
-function renderKeywordExplainer(targetId = null) {
-  if (targetId) {
-    activeExplainerKeyword = targetId;
-  }
+let activeStudySectionId = 'sec_execution_order';
+let studySearchFilter = '';
 
-  const filterContainer = document.getElementById('keywordPillFilter');
-  const container = document.getElementById('keywordCardsGrid');
-  if (!container || !window.FOUNDATIONS_DATA) return;
-
-  const allKeywords = window.FOUNDATIONS_DATA.keywords || [];
-
-  // 1. Render Keyword Filter Pills
-  if (filterContainer) {
-    let pillsHtml = '';
-    allKeywords.forEach(kw => {
-      const isActive = kw.id === activeExplainerKeyword;
-      pillsHtml += `
-        <button class="kw-filter-pill ${isActive ? 'active' : ''}" data-kwid="${kw.id}">
-          <span class="clause-pill ${kw.badgeClass}" style="margin: 0; padding: 1px 4px;">${kw.name}</span>
-          <span>${kw.name}</span>
-        </button>
-      `;
+function initStudyLibrary() {
+  const searchInput = document.getElementById('studySearchInput');
+  if (searchInput) {
+    searchInput.addEventListener('input', (e) => {
+      studySearchFilter = e.target.value.toLowerCase().trim();
+      renderStudyLibrary(activeStudySectionId);
     });
-    const isAllActive = activeExplainerKeyword === 'all';
-    pillsHtml += `
-      <button class="kw-filter-pill ${isAllActive ? 'active' : ''}" data-kwid="all">
-        <span>View All Keywords</span>
+  }
+}
+
+function renderStudyLibrary(targetId = null) {
+  if (targetId) activeStudySectionId = targetId;
+
+  const navContainer = document.getElementById('studyTopicsNav');
+  const mainReader = document.getElementById('studyMainReader');
+  if (!navContainer || !mainReader || !window.STUDY_LIBRARY) return;
+
+  const library = window.STUDY_LIBRARY;
+
+  // Filter sections if searching
+  const matchingSections = studySearchFilter
+    ? library.filter(item => 
+        item.title.toLowerCase().includes(studySearchFilter) ||
+        item.summary.toLowerCase().includes(studySearchFilter) ||
+        item.sections.some(s => s.heading.toLowerCase().includes(studySearchFilter) || s.content.toLowerCase().includes(studySearchFilter)) ||
+        (item.gotchas && item.gotchas.some(g => g.toLowerCase().includes(studySearchFilter)))
+      )
+    : library;
+
+  // Render Sidebar Topic Buttons
+  let navHtml = '';
+  library.forEach(item => {
+    const isSelected = item.id === activeStudySectionId;
+    const isMatch = matchingSections.some(m => m.id === item.id);
+    const opacityStyle = studySearchFilter && !isMatch ? 'opacity: 0.35;' : '';
+    navHtml += `
+      <button class="study-topic-btn ${isSelected ? 'active' : ''}" style="${opacityStyle}" onclick="selectStudySection('${item.id}')">
+        <span style="display: flex; align-items: center; gap: 8px;">
+          <span>${item.icon}</span>
+          <span style="white-space: nowrap; overflow: hidden; text-overflow: ellipsis; max-width: 175px;">${item.title.split('.')[1] || item.title}</span>
+        </span>
+        <span class="status-pill" style="font-size: 9px; padding: 1px 5px;">${item.readTime}</span>
       </button>
     `;
-    filterContainer.innerHTML = pillsHtml;
+  });
+  navContainer.innerHTML = navHtml;
 
-    // Bind pill clicks
-    filterContainer.querySelectorAll('.kw-filter-pill').forEach(pill => {
-      pill.addEventListener('click', () => {
-        renderKeywordExplainer(pill.dataset.kwid);
-      });
-    });
-  }
+  // Find active section to display
+  const activeItem = library.find(i => i.id === activeStudySectionId) || library[0];
+  if (!activeItem) return;
 
-  // 2. Filter displayed keywords
-  const displayKeywords = activeExplainerKeyword === 'all'
-    ? allKeywords
-    : allKeywords.filter(k => k.id === activeExplainerKeyword);
+  let sectionsHtml = '';
+  activeItem.sections.forEach(sec => {
+    let formattedContent = sec.content
+      .replace(/```sql([\s\S]*?)```/g, '<div class="study-code-snippet">$1</div>')
+      .replace(/`([^`]+)`/g, '<code>$1</code>')
+      .replace(/\*\*([^*]+)\*\*/g, '<strong>$1</strong>')
+      .replace(/\n\n/g, '</p><p>')
+      .replace(/\n- /g, '<br>&bull; ');
 
-  let html = '';
-
-  displayKeywords.forEach(kw => {
-    const currentIndex = allKeywords.findIndex(k => k.id === kw.id);
-    const prevKeyword = currentIndex > 0 ? allKeywords[currentIndex - 1] : null;
-    const nextKeyword = currentIndex < allKeywords.length - 1 ? allKeywords[currentIndex + 1] : null;
-
-    html += `
-      <div class="keyword-card" id="kw_${kw.id}">
-        <div class="keyword-card-top">
-          <div class="keyword-identity">
-            <span class="clause-pill ${kw.badgeClass}">${kw.name}</span>
-            <span class="keyword-name-title">${kw.name}</span>
-            <span style="font-size: 11px; color: var(--text-muted);">&bull; ${kw.category}</span>
-          </div>
-          <span class="exec-badge">Physical Execution: ${kw.executionOrder}</span>
+    sectionsHtml += `
+      <div class="study-section-block">
+        <h3 class="study-section-heading">${sec.heading}</h3>
+        <div class="study-section-content">
+          <p>${formattedContent}</p>
         </div>
-
-        <p class="keyword-desc">${kw.concept}</p>
-
-        <div class="keyword-syntax-box">
-          <span style="color: var(--text-muted); font-size: 10px; display: block; margin-bottom: 2px;">CANONICAL SYNTAX:</span>
-          <code>${kw.syntax}</code>
-        </div>
-
-        <div>
-          <span style="font-size: 11px; font-weight: 600; text-transform: uppercase; color: var(--text-secondary); display: block; margin-bottom: 6px;">
-            Execution Principles &amp; Architecture:
-          </span>
-          <ul class="keyword-rules-list">
-            ${kw.rules.map(r => `<li>${r}</li>`).join('')}
-          </ul>
-        </div>
-
-        <div class="keyword-gotcha-box">
-          <strong>CRITICAL GOTCHA:</strong> ${kw.gotcha}
-        </div>
-
-        <div class="svg-diagram-wrapper">
-          ${kw.svgDiagram}
-        </div>
-
-        ${activeExplainerKeyword !== 'all' ? `
-          <div class="card-action-footer">
-            <div class="stepper-nav-group">
-              <button class="card-nav-btn" ${!prevKeyword ? 'disabled' : ''} onclick="renderKeywordExplainer('${prevKeyword ? prevKeyword.id : ''}')">
-                &larr; Previous (${prevKeyword ? prevKeyword.name : 'Start'})
-              </button>
-              <button class="card-nav-btn" ${!nextKeyword ? 'disabled' : ''} onclick="renderKeywordExplainer('${nextKeyword ? nextKeyword.id : ''}')">
-                Next (${nextKeyword ? nextKeyword.name : 'End'}) &rarr;
-              </button>
-            </div>
-            <button class="btn-solve-in-studio" onclick="switchToMcqsWithKeyword('${kw.name}')">
-              <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M9 11l3 3L22 4"></path><path d="M21 12v7a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h11"></path></svg>
-              Practice ${kw.name} MCQs
-            </button>
-          </div>
-        ` : ''}
       </div>
     `;
   });
 
-  container.innerHTML = html;
+  let svgHtml = activeItem.svgDiagram ? `
+    <div style="margin: 16px 0; background: #07070a; border: 1px solid var(--border-muted); border-radius: var(--radius-sm); padding: 10px; overflow-x: auto;">
+      ${activeItem.svgDiagram}
+    </div>
+  ` : '';
+
+  let gotchasHtml = '';
+  if (activeItem.gotchas && activeItem.gotchas.length > 0) {
+    gotchasHtml = `
+      <div class="study-gotchas-box">
+        <div class="study-gotchas-title">⚡ CRITICAL PRODUCTION GOTCHAS &amp; INTERVIEW PITFALLS</div>
+        <ul class="study-gotchas-list">
+          ${activeItem.gotchas.map(g => `<li>${g}</li>`).join('')}
+        </ul>
+      </div>
+    `;
+  }
+
+  mainReader.innerHTML = `
+    <div class="study-header-banner">
+      <div class="study-meta-row">
+        <span class="clause-pill ${activeItem.badgeClass}">${activeItem.badge}</span>
+        <span class="status-pill">${activeItem.readTime}</span>
+      </div>
+      <h1 class="study-title">${activeItem.title}</h1>
+      <p class="study-summary-text">${activeItem.summary}</p>
+    </div>
+
+    ${svgHtml}
+    ${sectionsHtml}
+    ${gotchasHtml}
+
+    <div class="study-actions-footer">
+      <div style="display: flex; gap: 8px;">
+        ${activeItem.quickActions.labTrack ? `
+          <button class="card-nav-btn" onclick="switchTrack('${activeItem.quickActions.labTrack}'); switchNavTab('viewGuidedLab');">
+            🧪 Launch Guided Lab (${activeItem.quickActions.labTrack}) &rarr;
+          </button>
+        ` : ''}
+        ${activeItem.quickActions.questId !== undefined ? `
+          <button class="card-nav-btn" onclick="setQuestIndex(${activeItem.quickActions.questId}); switchNavTab('viewQuests');">
+            🎮 Practice Quest Level &rarr;
+          </button>
+        ` : ''}
+      </div>
+
+      <button class="btn-solve-in-studio" onclick="switchToStudioWithQuery(\`${activeItem.quickActions.presetQuery.replace(/`/g, '\\`')}\`, 'Employees')">
+        <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polygon points="5 3 19 12 5 21 5 3"></polygon></svg>
+        Simulate in Studio
+      </button>
+    </div>
+  `;
+}
+
+function selectStudySection(sectionId) {
+  if (window.soundFX) window.soundFX.playPop();
+  activeStudySectionId = sectionId;
+  renderStudyLibrary(sectionId);
+}
+
+function switchNavTab(targetViewId) {
+  if (window.soundFX) window.soundFX.playWhoosh();
+  document.querySelectorAll('.nav-tab').forEach(t => t.classList.remove('active'));
+  document.querySelectorAll('.view-panel').forEach(p => p.classList.remove('active'));
+
+  const tab = document.querySelector(`.nav-tab[data-view="${targetViewId}"]`);
+  const view = document.getElementById(targetViewId);
+  if (tab) tab.classList.add('active');
+  if (view) view.classList.add('active');
+}
+
+function switchToExplainerWithKeyword(keywordId) {
+  switchNavTab('viewExplainer');
+
+  const map = {
+    'from': 'sec_execution_order',
+    'where': 'sec_foundations',
+    'casewhen': 'sec_casewhen',
+    'aggregations': 'sec_aggregations',
+    'join_inner': 'sec_joins',
+    'join_left': 'sec_joins',
+    'join_right': 'sec_joins',
+    'join_full': 'sec_joins',
+    'join_anti': 'sec_joins',
+    'join_cross': 'sec_joins',
+    'operators': 'sec_operators'
+  };
+
+  const targetSec = map[keywordId.toLowerCase()] || 'sec_execution_order';
+  renderStudyLibrary(targetSec);
 }
 
 function switchToMcqsWithKeyword(keywordName) {

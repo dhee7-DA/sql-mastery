@@ -3082,3 +3082,218 @@ body {
   border-color: #9ec5ad;
   color: #9ec5ad;
 }
+
+/* =============================================================================
+   STUDY LIBRARY & DOCUMENTATION PORTAL
+   ============================================================================= */
+.study-portal-wrapper {
+  display: flex;
+  gap: 20px;
+  padding: 16px 20px;
+  max-width: 1500px;
+  margin: 0 auto;
+  height: calc(100vh - 108px);
+  box-sizing: border-box;
+}
+
+.study-sidebar {
+  width: 320px;
+  flex-shrink: 0;
+  background: #0e0e12;
+  border: 1px solid var(--border-default);
+  border-radius: var(--radius-md);
+  padding: 14px;
+  display: flex;
+  flex-direction: column;
+  overflow-y: auto;
+}
+
+.study-search-box {
+  margin-bottom: 12px;
+}
+
+.clean-search-input {
+  width: 100%;
+  background: #141418;
+  border: 1px solid var(--border-muted);
+  border-radius: var(--radius-sm);
+  padding: 8px 12px;
+  font-family: var(--font-sans);
+  font-size: 12px;
+  color: var(--text-primary);
+  outline: none;
+  transition: all 0.15s ease;
+  box-sizing: border-box;
+}
+
+.clean-search-input:focus {
+  border-color: #9ec5ad;
+  box-shadow: 0 0 0 1px rgba(158, 197, 173, 0.2);
+}
+
+.study-nav-section-title {
+  font-family: var(--font-mono);
+  font-size: 10px;
+  font-weight: 700;
+  color: var(--text-muted);
+  letter-spacing: 0.6px;
+  text-transform: uppercase;
+  margin: 6px 0 8px 4px;
+}
+
+.study-topics-nav {
+  display: flex;
+  flex-direction: column;
+  gap: 6px;
+}
+
+.study-topic-btn {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  width: 100%;
+  padding: 9px 12px;
+  background: #131317;
+  border: 1px solid #202026;
+  border-radius: var(--radius-sm);
+  color: var(--text-secondary);
+  font-family: var(--font-sans);
+  font-size: 12px;
+  font-weight: 500;
+  text-align: left;
+  cursor: pointer;
+  transition: all 0.15s ease;
+}
+
+.study-topic-btn:hover {
+  background: #1b1b22;
+  border-color: #383842;
+  color: #fff;
+  transform: translateX(2px);
+}
+
+.study-topic-btn.active {
+  background: rgba(158, 197, 173, 0.12);
+  border-color: #9ec5ad;
+  color: #9ec5ad;
+  font-weight: 600;
+}
+
+.study-main-reader {
+  flex: 1;
+  background: #0e0e12;
+  border: 1px solid var(--border-default);
+  border-radius: var(--radius-md);
+  padding: 24px 32px;
+  overflow-y: auto;
+  box-sizing: border-box;
+}
+
+.study-header-banner {
+  border-bottom: 1px solid var(--border-default);
+  padding-bottom: 16px;
+  margin-bottom: 20px;
+}
+
+.study-meta-row {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  margin-bottom: 6px;
+}
+
+.study-title {
+  font-size: 22px;
+  font-weight: 700;
+  color: #fff;
+  letter-spacing: -0.3px;
+  margin-bottom: 6px;
+}
+
+.study-summary-text {
+  font-size: 13.5px;
+  line-height: 1.6;
+  color: var(--text-secondary);
+}
+
+.study-section-block {
+  margin-bottom: 26px;
+}
+
+.study-section-heading {
+  font-size: 16px;
+  font-weight: 700;
+  color: #f4f4f5;
+  margin-bottom: 10px;
+  display: flex;
+  align-items: center;
+  gap: 8px;
+}
+
+.study-section-content {
+  font-size: 13px;
+  line-height: 1.65;
+  color: #d1d5db;
+}
+
+.study-section-content p {
+  margin-bottom: 12px;
+}
+
+.study-section-content ul {
+  padding-left: 20px;
+  margin-bottom: 14px;
+}
+
+.study-section-content li {
+  margin-bottom: 6px;
+}
+
+.study-code-snippet {
+  background: #070709;
+  border: 1px solid var(--border-default);
+  border-radius: var(--radius-sm);
+  padding: 12px 16px;
+  font-family: var(--font-mono);
+  font-size: 12px;
+  line-height: 1.5;
+  color: #dfcaa9;
+  margin: 12px 0 16px 0;
+  overflow-x: auto;
+  white-space: pre;
+}
+
+.study-gotchas-box {
+  background: rgba(214, 157, 143, 0.08);
+  border: 1px solid rgba(214, 157, 143, 0.3);
+  border-radius: var(--radius-sm);
+  padding: 14px 18px;
+  margin: 20px 0;
+}
+
+.study-gotchas-title {
+  font-family: var(--font-mono);
+  font-size: 11px;
+  font-weight: 700;
+  color: #d69d8f;
+  text-transform: uppercase;
+  letter-spacing: 0.5px;
+  margin-bottom: 8px;
+}
+
+.study-gotchas-list {
+  padding-left: 18px;
+  margin: 0;
+  color: #e5e7eb;
+  font-size: 12.5px;
+  line-height: 1.6;
+}
+
+.study-actions-footer {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  border-top: 1px solid var(--border-default);
+  padding-top: 16px;
+  margin-top: 24px;
+}
