@@ -57,7 +57,7 @@ However, the relational storage engine executes this in **Physical Execution Ord
             <text x="35" y="20" fill="#9ec5ad" font-family="monospace" font-size="10" font-weight="700" text-anchor="middle">01. FROM</text>
             <text x="35" y="34" fill="#71717a" font-family="monospace" font-size="8" text-anchor="middle">Allocate Set</text>
           </g>
-          <path d="M 72 22 L 88 22" stroke="#52525b" stroke-width="2" marker-end="url(#arrow)"/>
+          <path d="M 72 22 L 88 22" stroke="#52525b" stroke-width="2"/>
           
           <g transform="translate(90, 0)">
             <rect width="70" height="45" rx="4" fill="#181820" stroke="#d69d8f"/>
@@ -103,6 +103,33 @@ However, the relational storage engine executes this in **Physical Execution Ord
         <text x="380" y="105" fill="#71717a" font-family="monospace" font-size="9.5" text-anchor="middle">Data flows left-to-right through internal engine stages</text>
       </svg>
     `,
+    diff: {
+      badTitle: "❌ ANTI-PATTERN: Filtering on SELECT alias in WHERE",
+      badSql: `-- Fails: "Unknown column 'projected_comp' in 'where clause'"
+SELECT employee_id,
+       salary * 1.2 AS projected_comp
+FROM Employees
+WHERE projected_comp > 100000;`,
+      badExplanation: "Step 02 (WHERE) executes BEFORE Step 05 (SELECT). When the engine filters rows, the alias 'projected_comp' has not yet been bound into working memory.",
+      goodTitle: "✅ PRODUCTION STANDARD: Filter raw mathematical expression",
+      goodSql: `-- Correct: Re-evaluates expression or wraps in CTE
+SELECT employee_id,
+       salary * 1.2 AS projected_comp
+FROM Employees
+WHERE salary * 1.2 > 100000;`,
+      goodExplanation: "Re-evaluates the arithmetic expression during row filtration. Enables B-Tree index range scans or subquery pre-computation."
+    },
+    quiz: {
+      question: "Which clause is the very FIRST to physically execute when a relational engine processes a query?",
+      options: [
+        "A) SELECT (Allocates projection buffers)",
+        "B) FROM (Binds virtual working tables & joins)",
+        "C) WHERE (Filters incoming disk pages)",
+        "D) ORDER BY (Allocates temporary sort files)"
+      ],
+      correctIndex: 1,
+      explanation: "Step 01 is always FROM (and any JOIN operations). The engine cannot filter rows (WHERE), partition buckets (GROUP BY), or project columns (SELECT) until the target tables are bound into memory."
+    },
     gotchas: [
       'SELECT is NOT Step 01! It executes after filtering and grouping.',
       'Column aliases created in SELECT cannot be filtered in WHERE.',
@@ -157,6 +184,33 @@ ORDER BY salary DESC, name ASC;
 3. In MySQL, \`NULL\` values sort FIRST in \`ASC\` order and LAST in \`DESC\` order.`
       }
     ],
+    diff: {
+      badTitle: "❌ ANTI-PATTERN: Dangerous equality check with NULL",
+      badSql: `-- Checking missing records with = NULL
+SELECT name, department
+FROM Employees
+WHERE manager_id = NULL;
+-- Returns 0 rows! NULL = NULL yields UNKNOWN.`,
+      badExplanation: "In 3-valued boolean logic, NULL represents unknown state. Comparing anything with = NULL yields UNKNOWN, which evaluates to false in WHERE.",
+      goodTitle: "✅ PRODUCTION STANDARD: Explicit Nullability IS NULL",
+      goodSql: `-- Correctly matches unassigned top leadership
+SELECT name, department
+FROM Employees
+WHERE manager_id IS NULL;
+-- Returns top executives with no superior`,
+      goodExplanation: "IS NULL and IS NOT NULL are special unary operators designed specifically to inspect memory existence without invoking 3-valued value equality."
+    },
+    quiz: {
+      question: "What is the exact evaluation of the boolean expression: (NULL = NULL) OR (5 = 5)?",
+      options: [
+        "A) UNKNOWN",
+        "B) FALSE",
+        "C) TRUE",
+        "D) NULL Pointer Exception"
+      ],
+      correctIndex: 2,
+      explanation: "In 3-valued logic: NULL = NULL evaluates to UNKNOWN. However, 5 = 5 evaluates to TRUE. In short-circuiting disjunction: UNKNOWN OR TRUE evaluates strictly to TRUE!"
+    },
     gotchas: [
       'NULL = NULL yields UNKNOWN, never TRUE. Always use IS NULL.',
       'NOT IN with any NULL value in the list always returns 0 rows! (The Fatal NOT IN trap).',
@@ -234,6 +288,37 @@ GROUP BY department;
 \`\`\``
       }
     ],
+    diff: {
+      badTitle: "❌ ANTI-PATTERN: Equilateral check before Triangle Inequality",
+      badSql: `-- Broken HackerRank logic:
+CASE
+  WHEN A = B AND B = C THEN 'Equilateral'
+  WHEN A = B OR B = C THEN 'Isosceles'
+  WHEN A + B <= C THEN 'Not A Triangle' -- NEVER REACHED for (20,20,40)!
+  ELSE 'Scalene'
+END`,
+      badExplanation: "CASE is a waterfall that exits at the FIRST true branch. Sides (20, 20, 40) match A = B first, falsely classifying an impossible straight line as an Isosceles triangle!",
+      goodTitle: "✅ PRODUCTION STANDARD: Validate geometric boundary first",
+      goodSql: `-- Bulletproof geometry validation:
+CASE
+  WHEN A + B <= C OR A + C <= B OR B + C <= A THEN 'Not A Triangle'
+  WHEN A = B AND B = C THEN 'Equilateral'
+  WHEN A = B OR B = C OR A = C THEN 'Isosceles'
+  ELSE 'Scalene'
+END`,
+      goodExplanation: "Always test the disqualifying condition or most restrictive domain constraint first before evaluating nested subtypes."
+    },
+    quiz: {
+      question: "What will CASE WHEN salary > 80000 THEN 'Senior' WHEN salary > 50000 THEN 'Mid' ELSE 'Junior' END return for an employee with salary = NULL?",
+      options: [
+        "A) 'Senior'",
+        "B) 'Mid'",
+        "C) 'Junior'",
+        "D) NULL"
+      ],
+      correctIndex: 2,
+      explanation: "Both NULL > 80000 and NULL > 50000 evaluate to UNKNOWN (failing the WHEN branches). Execution falls through to the explicit ELSE branch, returning 'Junior'."
+    },
     gotchas: [
       'All THEN and ELSE expressions must evaluate to compatible data types.',
       'Omitting ELSE defaults silently to NULL. Always supply an explicit ELSE in production.',
@@ -302,6 +387,34 @@ HAVING COUNT(*) >= 2;        -- Gate 2: Keep only departments with at least 2 qu
 \`\`\``
       }
     ],
+    diff: {
+      badTitle: "❌ ANTI-PATTERN: Selecting non-aggregated column in GROUP BY",
+      badSql: `-- Illegal under SQL-92 / ONLY_FULL_GROUP_BY:
+SELECT department, name, MAX(salary)
+FROM Employees
+GROUP BY department;
+-- Fails: "name is not in GROUP BY clause and contains nonaggregated column"`,
+      badExplanation: "A department has 50 different employee names. Without an aggregate function or grouping key, the engine has no deterministic way to pick which name to pair with the single maximum salary.",
+      goodTitle: "✅ PRODUCTION STANDARD: Enclose or partition explicitly",
+      goodSql: `-- Solution 1: Aggregate or omit
+SELECT department, MAX(salary) AS top_salary,
+       COUNT(*) AS total_staff
+FROM Employees
+GROUP BY department;
+-- Solution 2: Window function if row details are needed`,
+      goodExplanation: "Strictly guarantees that every projected column is either 1:1 with the grouping grain or reduced to a deterministic scalar summary."
+    },
+    quiz: {
+      question: "A table has 4 rows with bonus values: [1000, 2000, NULL, 3000]. What does AVG(bonus) return?",
+      options: [
+        "A) 1500 (6000 / 4)",
+        "B) 2000 (6000 / 3)",
+        "C) NULL",
+        "D) 0"
+      ],
+      correctIndex: 1,
+      explanation: "The SQL standard dictates that AVG(column) ignores NULLs completely. It calculates SUM(bonus) / COUNT(bonus) = 6000 / 3 = 2000, NOT dividing by the total physical rows (4)!"
+    },
     gotchas: [
       'AVG() ignores NULLs! If 1 employee earns 100k and 1 earns NULL, AVG is 100k, not 50k!',
       'Never put aggregate functions in WHERE. Use HAVING.',
@@ -377,6 +490,37 @@ LEFT JOIN Employees AS mgr
 Because top executives (like the CEO) have \`manager_id = NULL\`, a \`LEFT JOIN\` ensures they are not omitted from the organizational chart!`
       }
     ],
+    diff: {
+      badTitle: "❌ ANTI-PATTERN: Outer table filter in WHERE (Converts to INNER)",
+      badSql: `-- Silent Bug: Intended to get ALL employees with dept info if in NY:
+SELECT e.name, d.dept_name, d.city
+FROM Employees e
+LEFT JOIN Departments d
+  ON e.dept_id = d.dept_id
+WHERE d.city = 'New York';
+-- Unassigned employees have d.city = NULL. NULL = 'New York' fails WHERE!`,
+      badExplanation: "WHERE runs AFTER the LEFT JOIN has completed. Rows where the right table had no match have d.city = NULL. The predicate d.city = 'New York' discards all NULLs, silently turning the LEFT JOIN into an INNER JOIN!",
+      goodTitle: "✅ PRODUCTION STANDARD: Filter outer table in ON clause",
+      goodSql: `-- Correct: Preserves ALL employees regardless of match:
+SELECT e.name, d.dept_name, d.city
+FROM Employees e
+LEFT JOIN Departments d
+  ON e.dept_id = d.dept_id
+  AND d.city = 'New York';
+-- Employees without NY departments still output with NULLs!`,
+      goodExplanation: "Conditions placed in the ON clause govern whether a match is formed, but do NOT prevent the left row from appearing in the output stream."
+    },
+    quiz: {
+      question: "To find 'Customers who have NEVER placed an order' with optimal performance and index usage, which pattern is recommended?",
+      options: [
+        "A) WHERE customer_id NOT IN (SELECT customer_id FROM Orders)",
+        "B) LEFT JOIN Orders o ON c.id = o.customer_id WHERE o.customer_id IS NULL",
+        "C) CROSS JOIN Orders o WHERE c.id != o.customer_id",
+        "D) RIGHT JOIN Customers c ON c.id = Orders.id"
+      ],
+      correctIndex: 1,
+      explanation: "The ANTI-JOIN pattern (LEFT JOIN + WHERE right.key IS NULL) is deterministic, avoids the lethal NOT IN NULL black hole bug, and enables hash-anti-join engine optimizations."
+    },
     gotchas: [
       'ON filters rows BEFORE join completion. WHERE filters rows AFTER join completion.',
       'CROSS JOIN without a condition on two 100,000-row tables generates 10,000,000,000 rows (OOM crash).',
@@ -431,6 +575,35 @@ FROM Employees;
 \`\`\``
       }
     ],
+    diff: {
+      badTitle: "❌ ANTI-PATTERN: The Fatal NOT IN with NULL Subquery",
+      badSql: `-- Subquery returns (10, 20, NULL):
+SELECT * FROM Customers
+WHERE customer_id NOT IN (
+    SELECT referrer_id FROM Referrals
+);
+-- Returns 0 rows every time!`,
+      badExplanation: "NOT IN (10, 20, NULL) unrolls to: id != 10 AND id != 20 AND id != NULL. Since id != NULL is UNKNOWN, the entire conjunction resolves to UNKNOWN and zero rows pass.",
+      goodTitle: "✅ PRODUCTION STANDARD: NOT EXISTS or IS NOT NULL guard",
+      goodSql: `SELECT * FROM Customers c
+WHERE NOT EXISTS (
+    SELECT 1 FROM Referrals r
+    WHERE r.referrer_id = c.customer_id
+);
+-- Or: WHERE customer_id NOT IN (SELECT ref_id FROM Referrals WHERE ref_id IS NOT NULL)`,
+      goodExplanation: "NOT EXISTS operates strictly on boolean cardinality (does at least 1 matching row exist?), completely immune to NULL evaluation traps."
+    },
+    quiz: {
+      question: "Given a column with value NULL, what does the expression: COALESCE(NULL, NULL, 'Production', 'Fallback') return?",
+      options: [
+        "A) NULL",
+        "B) 'Fallback'",
+        "C) 'Production'",
+        "D) Error: Multiple NULL arguments"
+      ],
+      correctIndex: 2,
+      explanation: "COALESCE scans arguments from left to right and immediately returns the very first non-NULL argument encountered. Here, 'Production' is the first non-NULL value."
+    },
     gotchas: [
       'BETWEEN is INCLUSIVE of both endpoints (BETWEEN 50000 AND 80000 includes both 50k and 80k).',
       'Never perform arithmetic on NULL: salary + NULL always yields NULL! Wrap in COALESCE.',
@@ -497,6 +670,35 @@ FROM Employees;
         content: `\`LEFT JOIN ... WHERE right.id IS NULL\` is significantly faster and safer than \`NOT IN (SELECT id ...)\` because it handles NULLs cleanly and leverages index lookups.`
       }
     ],
+    diff: {
+      badTitle: "❌ ANTI-PATTERN: Naive pagination with LIMIT/OFFSET without unique sort",
+      badSql: `-- Page 2 of transactions:
+SELECT id, user_id, amount, created_at
+FROM Transactions
+ORDER BY created_at DESC
+LIMIT 20 OFFSET 20;
+-- If multiple rows share created_at, rows shift randomly between pages!`,
+      badExplanation: "In modern multi-threaded storage engines, sorting on non-unique columns produces non-deterministic order. Rows can appear on both Page 1 and Page 2, or be skipped entirely!",
+      goodTitle: "✅ PRODUCTION STANDARD: Deterministic Unique Tie-Breaker",
+      goodSql: `-- Guaranteed deterministic pagination:
+SELECT id, user_id, amount, created_at
+FROM Transactions
+ORDER BY created_at DESC, id ASC
+LIMIT 20 OFFSET 20;
+-- Primary key 'id' guarantees a unique, reproducible sequence`,
+      goodExplanation: "Appending a guaranteed unique column (like the Primary Key) ensures strict total order across engine restarts and pagination requests."
+    },
+    quiz: {
+      question: "Why is HAVING preferred over WHERE when filtering based on the result of an aggregation function like SUM(amount) > 10000?",
+      options: [
+        "A) HAVING is faster because it uses B-Tree indexes",
+        "B) WHERE executes before grouping occurs, so aggregate totals do not exist yet",
+        "C) WHERE only works on string columns, not numbers",
+        "D) HAVING can only be used on primary key columns"
+      ],
+      correctIndex: 1,
+      explanation: "In physical execution order: WHERE is Step 02 (filtering individual raw rows). GROUP BY is Step 03 (creating buckets). HAVING is Step 04 (filtering the aggregated buckets). Therefore, aggregate totals do not exist when WHERE runs."
+    },
     gotchas: [
       'Master these 10 concepts and you will pass 95% of database interview screenings.',
       'Always test edge cases: NULL values, empty tables, and duplicate foreign keys.'

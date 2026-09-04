@@ -1458,21 +1458,32 @@ function initCurriculumSystem() {
     });
   });
 
-  // Industry filter pills in Case Studies
+  // Pillar filter pills in 300 Case Studies
+  document.querySelectorAll('.case-pillar-btn').forEach(btn => {
+    btn.addEventListener('click', () => {
+      document.querySelectorAll('.case-pillar-btn').forEach(b => b.classList.remove('active'));
+      btn.classList.add('active');
+      if (window.soundFX) window.soundFX.playPop();
+      renderCaseStudies(currentCaseIndustryFilter, btn.dataset.pillar);
+    });
+  });
+
+  // Industry filter pills in 300 Case Studies
   document.querySelectorAll('.case-filter-btn').forEach(btn => {
     btn.addEventListener('click', () => {
       document.querySelectorAll('.case-filter-btn').forEach(b => b.classList.remove('active'));
       btn.classList.add('active');
-      renderCaseStudies(btn.dataset.industry);
+      if (window.soundFX) window.soundFX.playPop();
+      renderCaseStudies(btn.dataset.industry, currentCasePillarFilter);
     });
   });
 
-  // Search input for 100 Case Studies
+  // Search input for 300 Case Studies
   const caseSearchInput = document.getElementById('caseSearchInput');
   if (caseSearchInput) {
     caseSearchInput.addEventListener('input', (e) => {
       currentCaseSearchQuery = e.target.value.trim();
-      renderCaseStudies(currentCaseIndustryFilter);
+      renderCaseStudies(currentCaseIndustryFilter, currentCasePillarFilter);
     });
   }
 }
@@ -2409,6 +2420,57 @@ function initStudyLibrary() {
   }
 }
 
+function escapeHtmlStudy(str) {
+  if (!str) return '';
+  return str.replace(/&/g, '&amp;').replace(/</g, '&lt;').replace(/>/g, '&gt;');
+}
+
+const answeredStudyQuizzes = new Set();
+
+function handleStudyQuizAnswer(sectionId, selectedIdx) {
+  const library = window.STUDY_LIBRARY;
+  if (!library) return;
+  const item = library.find(i => i.id === sectionId);
+  if (!item || !item.quiz) return;
+
+  const quizCard = document.getElementById(`studyQuiz_${sectionId}`);
+  const feedback = document.getElementById(`studyQuizFeedback_${sectionId}`);
+  if (!quizCard || !feedback) return;
+
+  const buttons = quizCard.querySelectorAll('.study-quiz-option-btn');
+  const isCorrect = selectedIdx === item.quiz.correctIndex;
+
+  buttons.forEach((btn, idx) => {
+    btn.disabled = true;
+    if (idx === item.quiz.correctIndex) {
+      btn.classList.add('opt-correct');
+    } else if (idx === selectedIdx && !isCorrect) {
+      btn.classList.add('opt-wrong');
+    }
+  });
+
+  if (isCorrect) {
+    if (window.soundFX) {
+      window.soundFX.playSuccess();
+      window.soundFX.playChordChime();
+    }
+    if (!answeredStudyQuizzes.has(sectionId)) {
+      answeredStudyQuizzes.add(sectionId);
+      if (window.soundFX && typeof window.soundFX.addXP === 'function') {
+        window.soundFX.addXP(10, 'Concept Mastery Checkpoint!');
+      }
+    }
+    feedback.className = 'study-quiz-feedback show success';
+    feedback.innerHTML = `<strong>&check; Spot On!</strong> ${item.quiz.explanation}`;
+  } else {
+    if (window.soundFX) {
+      window.soundFX.playError();
+    }
+    feedback.className = 'study-quiz-feedback show fail';
+    feedback.innerHTML = `<strong>&cross; Review Concept:</strong> ${item.quiz.explanation}`;
+  }
+}
+
 function renderStudyLibrary(targetId = null) {
   if (targetId) activeStudySectionId = targetId;
 
@@ -2475,6 +2537,59 @@ function renderStudyLibrary(targetId = null) {
     </div>
   ` : '';
 
+  let diffHtml = '';
+  if (activeItem.diff) {
+    diffHtml = `
+      <div style="margin: 22px 0 10px 0; font-family: var(--font-mono); font-size: 11px; font-weight: 700; color: #a4b7cf; text-transform: uppercase; letter-spacing: 0.05em; display: flex; align-items: center; gap: 8px;">
+        <span>Visual Architecture Diff</span>
+        <span style="color: var(--text-muted);">&bull;</span>
+        <span style="color: #d69d8f;">Anti-Pattern</span>
+        <span style="color: var(--text-muted);">vs</span>
+        <span style="color: #9ec5ad;">Production Idiom</span>
+      </div>
+      <div class="sql-diff-grid">
+        <div class="sql-diff-box diff-bad">
+          <div class="sql-diff-header">
+            <span>${activeItem.diff.badTitle}</span>
+            <span style="font-size: 9px; opacity: 0.8; font-family: var(--font-sans);">DISCARD</span>
+          </div>
+          <div class="sql-diff-code">${escapeHtmlStudy(activeItem.diff.badSql)}</div>
+          <div class="sql-diff-explanation">${activeItem.diff.badExplanation}</div>
+        </div>
+        <div class="sql-diff-box diff-good">
+          <div class="sql-diff-header">
+            <span>${activeItem.diff.goodTitle}</span>
+            <span style="font-size: 9px; opacity: 0.8; font-family: var(--font-sans);">RECOMMENDED</span>
+          </div>
+          <div class="sql-diff-code">${escapeHtmlStudy(activeItem.diff.goodSql)}</div>
+          <div class="sql-diff-explanation">${activeItem.diff.goodExplanation}</div>
+        </div>
+      </div>
+    `;
+  }
+
+  let quizHtml = '';
+  if (activeItem.quiz) {
+    const q = activeItem.quiz;
+    quizHtml = `
+      <div class="study-quiz-card" id="studyQuiz_${activeItem.id}">
+        <div class="study-quiz-badge-row">
+          <span class="clause-pill pill-where" style="font-size: 10px;">Concept Mastery Checkpoint</span>
+          <span style="font-family: var(--font-mono); font-size: 11px; color: #9ec5ad; font-weight: 600;">+10 XP Reward</span>
+        </div>
+        <div class="study-quiz-title">${q.question}</div>
+        <div class="study-quiz-options-grid">
+          ${q.options.map((opt, idx) => `
+            <button class="study-quiz-option-btn" onclick="handleStudyQuizAnswer('${activeItem.id}', ${idx})">
+              ${opt}
+            </button>
+          `).join('')}
+        </div>
+        <div class="study-quiz-feedback" id="studyQuizFeedback_${activeItem.id}"></div>
+      </div>
+    `;
+  }
+
   let gotchasHtml = '';
   if (activeItem.gotchas && activeItem.gotchas.length > 0) {
     gotchasHtml = `
@@ -2499,6 +2614,8 @@ function renderStudyLibrary(targetId = null) {
 
     ${svgHtml}
     ${sectionsHtml}
+    ${diffHtml}
+    ${quizHtml}
     ${gotchasHtml}
 
     <div class="study-actions-footer">
@@ -2686,20 +2803,26 @@ function handleMcqAnswer(qid, selectedIdx) {
   expCard.classList.add('show');
 }
 
+let currentCasePillarFilter = 'all';
 let currentCaseIndustryFilter = 'all';
 let currentCaseSearchQuery = '';
 
-function renderCaseStudies(industryFilter = currentCaseIndustryFilter) {
+function renderCaseStudies(industryFilter = currentCaseIndustryFilter, pillarFilter = currentCasePillarFilter) {
   currentCaseIndustryFilter = industryFilter;
+  currentCasePillarFilter = pillarFilter;
   const container = document.getElementById('caseStudiesGrid');
   const countBadge = document.getElementById('caseCountBadge');
   if (!container) return;
 
-  let allCases = window.ALL_100_CASE_STUDIES || (window.FOUNDATIONS_DATA ? window.FOUNDATIONS_DATA.caseStudies : []) || [];
+  let allCases = window.ALL_300_CASE_STUDIES || window.ALL_100_CASE_STUDIES || (window.FOUNDATIONS_DATA ? window.FOUNDATIONS_DATA.caseStudies : []) || [];
   let cases = allCases;
 
-  if (industryFilter !== 'all') {
-    cases = cases.filter(cs => cs.industry.toLowerCase() === industryFilter.toLowerCase() || cs.industry.toLowerCase().includes(industryFilter.toLowerCase()));
+  if (currentCasePillarFilter !== 'all') {
+    cases = cases.filter(cs => cs.pillar && (cs.pillar.toLowerCase() === currentCasePillarFilter.toLowerCase() || cs.pillar.toLowerCase().includes(currentCasePillarFilter.toLowerCase())));
+  }
+
+  if (currentCaseIndustryFilter !== 'all') {
+    cases = cases.filter(cs => cs.industry && (cs.industry.toLowerCase() === currentCaseIndustryFilter.toLowerCase() || cs.industry.toLowerCase().includes(currentCaseIndustryFilter.toLowerCase())));
   }
 
   if (currentCaseSearchQuery) {
@@ -2707,9 +2830,9 @@ function renderCaseStudies(industryFilter = currentCaseIndustryFilter) {
     cases = cases.filter(cs => 
       cs.title.toLowerCase().includes(q) ||
       cs.scenario.toLowerCase().includes(q) ||
-      cs.businessObjective.toLowerCase().includes(q) ||
-      cs.schemaSnippet.toLowerCase().includes(q) ||
-      cs.targetQuery.toLowerCase().includes(q)
+      (cs.businessObjective && cs.businessObjective.toLowerCase().includes(q)) ||
+      (cs.schemaSnippet && cs.schemaSnippet.toLowerCase().includes(q)) ||
+      (cs.targetQuery && cs.targetQuery.toLowerCase().includes(q))
     );
   }
 
@@ -2721,7 +2844,7 @@ function renderCaseStudies(industryFilter = currentCaseIndustryFilter) {
     container.innerHTML = `
       <div style="grid-column: 1 / -1; padding: 40px; text-align: center; color: var(--text-muted);">
         <p style="font-size: 14px; margin-bottom: 8px;">No case studies match "${currentCaseSearchQuery}".</p>
-        <button class="card-nav-btn" onclick="document.getElementById('caseSearchInput').value = ''; currentCaseSearchQuery = ''; renderCaseStudies('all');">Clear Filter</button>
+        <button class="card-nav-btn" onclick="document.getElementById('caseSearchInput').value = ''; currentCaseSearchQuery = ''; renderCaseStudies('all', 'all');">Clear Filter</button>
       </div>
     `;
     return;
@@ -2734,8 +2857,9 @@ function renderCaseStudies(industryFilter = currentCaseIndustryFilter) {
       <div class="case-card">
         <div class="case-card-header">
           <div>
-            <div style="display: flex; align-items: center; gap: 6px; margin-bottom: 3px;">
+            <div style="display: flex; align-items: center; gap: 6px; margin-bottom: 4px; flex-wrap: wrap;">
               <span class="status-pill" style="font-size: 10px; padding: 1px 6px;">#${cs.id < 10 ? '00' + cs.id : (cs.id < 100 ? '0' + cs.id : cs.id)}</span>
+              <span class="clause-pill pill-group" style="font-size: 9.5px; padding: 1px 6px;">${cs.pillar || 'Pillar 1'}</span>
               <span class="case-industry">${cs.industry}</span>
             </div>
             <h3 class="case-title">${cs.title}</h3>

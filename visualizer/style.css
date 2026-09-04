@@ -2827,7 +2827,8 @@ body {
 }
 
 .diff-filter-btn,
-.case-filter-btn {
+.case-filter-btn,
+.case-pillar-btn {
   background: #18181c;
   border: 1px solid var(--border-default);
   border-radius: 6px;
@@ -2841,7 +2842,8 @@ body {
 }
 
 .diff-filter-btn:hover,
-.case-filter-btn:hover {
+.case-filter-btn:hover,
+.case-pillar-btn:hover {
   background: #24242c;
   color: #fff;
   border-color: #52525b;
@@ -2852,6 +2854,12 @@ body {
   background: rgba(158, 197, 173, 0.15);
   border-color: #9ec5ad;
   color: #9ec5ad;
+}
+
+.case-pillar-btn.active {
+  background: rgba(164, 183, 207, 0.2);
+  border-color: #a4b7cf;
+  color: #a4b7cf;
 }
 
 /* =============================================================================
@@ -3296,4 +3304,171 @@ body {
   border-top: 1px solid var(--border-default);
   padding-top: 16px;
   margin-top: 24px;
+}
+
+/* =============================================================================
+   SIDE-BY-SIDE SQL VISUAL DIFFS (ANTI-PATTERN VS IDIOMATIC)
+   ============================================================================= */
+.sql-diff-grid {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 16px;
+  margin: 18px 0;
+}
+
+.sql-diff-box {
+  background: #09090c;
+  border-radius: var(--radius-sm);
+  overflow: hidden;
+  display: flex;
+  flex-direction: column;
+}
+
+.sql-diff-box.diff-bad {
+  border: 1px solid rgba(214, 157, 143, 0.4);
+}
+
+.sql-diff-box.diff-good {
+  border: 1px solid rgba(158, 197, 173, 0.4);
+}
+
+.sql-diff-header {
+  padding: 8px 12px;
+  font-family: var(--font-mono);
+  font-size: 11px;
+  font-weight: 700;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+}
+
+.diff-bad .sql-diff-header {
+  background: rgba(214, 157, 143, 0.15);
+  color: #d69d8f;
+  border-bottom: 1px solid rgba(214, 157, 143, 0.25);
+}
+
+.diff-good .sql-diff-header {
+  background: rgba(158, 197, 173, 0.15);
+  color: #9ec5ad;
+  border-bottom: 1px solid rgba(158, 197, 173, 0.25);
+}
+
+.sql-diff-code {
+  padding: 12px 14px;
+  font-family: var(--font-mono);
+  font-size: 11.5px;
+  line-height: 1.55;
+  color: #f4f4f5;
+  white-space: pre;
+  overflow-x: auto;
+  flex: 1;
+}
+
+.sql-diff-explanation {
+  padding: 8px 12px;
+  font-size: 11.5px;
+  line-height: 1.5;
+  background: #111115;
+  border-top: 1px solid #1a1a20;
+}
+
+.diff-bad .sql-diff-explanation {
+  color: #d69d8f;
+}
+
+.diff-good .sql-diff-explanation {
+  color: #9ec5ad;
+}
+
+/* =============================================================================
+   INLINE INTERACTIVE STUDY QUIZ CHECKPOINTS
+   ============================================================================= */
+.study-quiz-card {
+  margin: 24px 0;
+  background: #111116;
+  border: 1px solid #2a2a34;
+  border-radius: var(--radius-md);
+  padding: 18px 22px;
+  box-shadow: 0 4px 16px rgba(0, 0, 0, 0.3);
+}
+
+.study-quiz-badge-row {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  margin-bottom: 10px;
+}
+
+.study-quiz-title {
+  font-size: 14px;
+  font-weight: 700;
+  color: #f4f4f5;
+  margin-bottom: 12px;
+  line-height: 1.5;
+}
+
+.study-quiz-options-grid {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 10px;
+  margin-bottom: 12px;
+}
+
+.study-quiz-option-btn {
+  background: #181820;
+  border: 1px solid var(--border-default);
+  border-radius: var(--radius-sm);
+  padding: 10px 14px;
+  color: var(--text-secondary);
+  font-family: var(--font-mono);
+  font-size: 12px;
+  font-weight: 500;
+  text-align: left;
+  cursor: pointer;
+  transition: all 0.15s ease;
+}
+
+.study-quiz-option-btn:hover {
+  background: #23232c;
+  color: #fff;
+  border-color: #52525b;
+}
+
+.study-quiz-option-btn.opt-correct {
+  background: rgba(158, 197, 173, 0.2) !important;
+  border-color: #9ec5ad !important;
+  color: #9ec5ad !important;
+  font-weight: 700;
+}
+
+.study-quiz-option-btn.opt-wrong {
+  background: rgba(214, 157, 143, 0.2) !important;
+  border-color: #d69d8f !important;
+  color: #d69d8f !important;
+}
+
+.study-quiz-feedback {
+  display: none;
+  padding: 10px 14px;
+  border-radius: var(--radius-sm);
+  font-size: 12px;
+  line-height: 1.5;
+  margin-top: 10px;
+}
+
+.study-quiz-feedback.show {
+  display: block;
+}
+
+.study-quiz-feedback.success {
+  background: rgba(158, 197, 173, 0.12);
+  border: 1px solid #9ec5ad;
+  color: #9ec5ad;
+}
+
+.study-quiz-feedback.fail {
+  background: rgba(214, 157, 143, 0.12);
+  border: 1px solid #d69d8f;
+  color: #d69d8f;
 }
