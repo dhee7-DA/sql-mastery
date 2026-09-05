@@ -1302,10 +1302,36 @@ function generateSqlFromBuilder() {
 }
 
 // =============================================================================
-// 9. EVENT BINDINGS & INITIALIZATION
-// =============================================================================
+// Immediate theme application to prevent FOUC
+(function applyEarlyTheme() {
+  try {
+    const savedTheme = localStorage.getItem('sql_visualizer_theme') || 'zinc-pitch';
+    document.documentElement.setAttribute('data-theme', savedTheme);
+  } catch (e) {}
+})();
+
+function initThemeController() {
+  const themeSelect = document.getElementById('themeSelect');
+  let savedTheme = 'zinc-pitch';
+  try {
+    savedTheme = localStorage.getItem('sql_visualizer_theme') || 'zinc-pitch';
+  } catch (e) {}
+
+  document.documentElement.setAttribute('data-theme', savedTheme);
+  if (themeSelect) {
+    themeSelect.value = savedTheme;
+    themeSelect.addEventListener('change', (e) => {
+      const newTheme = e.target.value;
+      document.documentElement.setAttribute('data-theme', newTheme);
+      try {
+        localStorage.setItem('sql_visualizer_theme', newTheme);
+      } catch (err) {}
+    });
+  }
+}
 
 function initVisualizerApp() {
+  initThemeController();
   renderSchemaExplorer();
   initVisualBuilder();
 
