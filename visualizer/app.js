@@ -1305,61 +1305,85 @@ function generateSqlFromBuilder() {
 // 9. EVENT BINDINGS & INITIALIZATION
 // =============================================================================
 
-document.addEventListener('DOMContentLoaded', () => {
+function initVisualizerApp() {
   renderSchemaExplorer();
   initVisualBuilder();
 
   const sqlInput = document.getElementById('sqlInput');
-  sqlInput.value = PRESETS.preset_case_triangle;
-  parseAndBuildPipeline(sqlInput.value);
-
-  document.getElementById('btnRunQuery').addEventListener('click', () => {
+  if (sqlInput) {
+    sqlInput.value = PRESETS.preset_case_triangle;
     parseAndBuildPipeline(sqlInput.value);
-  });
+  }
 
-  document.getElementById('presetSelect').addEventListener('change', (e) => {
-    const val = e.target.value;
-    if (PRESETS[val]) {
-      sqlInput.value = PRESETS[val];
-      parseAndBuildPipeline(sqlInput.value);
-    }
-  });
+  const btnRun = document.getElementById('btnRunQuery');
+  if (btnRun) {
+    btnRun.addEventListener('click', () => {
+      if (sqlInput) parseAndBuildPipeline(sqlInput.value);
+    });
+  }
 
-  document.getElementById('btnPrevStep').addEventListener('click', () => {
-    if (EngineState.currentStepIndex > 0) renderStep(EngineState.currentStepIndex - 1);
-  });
+  const presetSel = document.getElementById('presetSelect');
+  if (presetSel) {
+    presetSel.addEventListener('change', (e) => {
+      const val = e.target.value;
+      if (PRESETS[val] && sqlInput) {
+        sqlInput.value = PRESETS[val];
+        parseAndBuildPipeline(sqlInput.value);
+      }
+    });
+  }
 
-  document.getElementById('btnNextStep').addEventListener('click', () => {
-    if (EngineState.currentStepIndex < EngineState.steps.length - 1) renderStep(EngineState.currentStepIndex + 1);
-  });
+  const btnPrev = document.getElementById('btnPrevStep');
+  if (btnPrev) {
+    btnPrev.addEventListener('click', () => {
+      if (EngineState.currentStepIndex > 0) renderStep(EngineState.currentStepIndex - 1);
+    });
+  }
 
-  document.getElementById('btnResetStep').addEventListener('click', () => {
-    renderStep(0);
-  });
+  const btnNext = document.getElementById('btnNextStep');
+  if (btnNext) {
+    btnNext.addEventListener('click', () => {
+      if (EngineState.currentStepIndex < EngineState.steps.length - 1) renderStep(EngineState.currentStepIndex + 1);
+    });
+  }
 
-  document.getElementById('btnPlayPause').addEventListener('click', () => {
-    if (EngineState.isPlaying) {
-      clearInterval(EngineState.playTimer);
-      EngineState.isPlaying = false;
-      document.getElementById('playBtnText').textContent = 'Play';
-      document.getElementById('playIcon').innerHTML = '<polygon points="5 3 19 12 5 21 5 3"></polygon>';
-    } else {
-      EngineState.isPlaying = true;
-      document.getElementById('playBtnText').textContent = 'Pause';
-      document.getElementById('playIcon').innerHTML = '<rect x="6" y="4" width="4" height="16"></rect><rect x="14" y="4" width="4" height="16"></rect>';
+  const btnReset = document.getElementById('btnResetStep');
+  if (btnReset) {
+    btnReset.addEventListener('click', () => {
+      renderStep(0);
+    });
+  }
 
-      EngineState.playTimer = setInterval(() => {
-        if (EngineState.currentStepIndex < EngineState.steps.length - 1) {
-          renderStep(EngineState.currentStepIndex + 1);
-        } else {
-          clearInterval(EngineState.playTimer);
-          EngineState.isPlaying = false;
-          document.getElementById('playBtnText').textContent = 'Play';
-          document.getElementById('playIcon').innerHTML = '<polygon points="5 3 19 12 5 21 5 3"></polygon>';
-        }
-      }, 1600);
-    }
-  });
+  const btnPlay = document.getElementById('btnPlayPause');
+  if (btnPlay) {
+    btnPlay.addEventListener('click', () => {
+      if (EngineState.isPlaying) {
+        clearInterval(EngineState.playTimer);
+        EngineState.isPlaying = false;
+        const txt = document.getElementById('playBtnText');
+        const ico = document.getElementById('playIcon');
+        if (txt) txt.textContent = 'Play';
+        if (ico) ico.innerHTML = '<polygon points="5 3 19 12 5 21 5 3"></polygon>';
+      } else {
+        EngineState.isPlaying = true;
+        const txt = document.getElementById('playBtnText');
+        const ico = document.getElementById('playIcon');
+        if (txt) txt.textContent = 'Pause';
+        if (ico) ico.innerHTML = '<rect x="6" y="4" width="4" height="16"></rect><rect x="14" y="4" width="4" height="16"></rect>';
+
+        EngineState.playTimer = setInterval(() => {
+          if (EngineState.currentStepIndex < EngineState.steps.length - 1) {
+            renderStep(EngineState.currentStepIndex + 1);
+          } else {
+            clearInterval(EngineState.playTimer);
+            EngineState.isPlaying = false;
+            if (txt) txt.textContent = 'Play';
+            if (ico) ico.innerHTML = '<polygon points="5 3 19 12 5 21 5 3"></polygon>';
+          }
+        }, 1600);
+      }
+    });
+  }
 
   document.querySelectorAll('.track-node').forEach((el) => {
     el.addEventListener('click', () => {
@@ -1379,31 +1403,64 @@ document.addEventListener('DOMContentLoaded', () => {
     });
   });
 
-  document.getElementById('btnClearSQL').addEventListener('click', () => {
-    sqlInput.value = '';
-    sqlInput.focus();
-  });
+  const btnClear = document.getElementById('btnClearSQL');
+  if (btnClear && sqlInput) {
+    btnClear.addEventListener('click', () => {
+      sqlInput.value = '';
+      sqlInput.focus();
+    });
+  }
 
-  document.getElementById('btnFormatSQL').addEventListener('click', () => {
-    let sql = sqlInput.value.replace(/\s+/g, ' ');
-    sql = sql.replace(/\b(SELECT|FROM|WHERE|GROUP BY|HAVING|ORDER BY|LIMIT|CASE|WHEN|THEN|ELSE|END)\b/gi, match => `\n${match.toUpperCase()}`);
-    sqlInput.value = sql.trim();
-  });
+  const btnFormat = document.getElementById('btnFormatSQL');
+  if (btnFormat && sqlInput) {
+    btnFormat.addEventListener('click', () => {
+      let sql = sqlInput.value.replace(/\s+/g, ' ');
+      sql = sql.replace(/\b(SELECT|FROM|WHERE|GROUP BY|HAVING|ORDER BY|LIMIT|CASE|WHEN|THEN|ELSE|END)\b/gi, match => `\n${match.toUpperCase()}`);
+      sqlInput.value = sql.trim();
+    });
+  }
 
   window.addEventListener('keydown', (e) => {
     if (e.ctrlKey && e.key === 'Enter') {
       e.preventDefault();
-      parseAndBuildPipeline(sqlInput.value);
+      if (sqlInput) parseAndBuildPipeline(sqlInput.value);
     }
   });
 
   // Initialize Learning Platform Curriculum Views
   initCurriculumSystem();
-});
+}
+
 
 // =============================================================================
 // 10. CURRICULUM MODULE & VIEW ROUTING CONTROLLER
 // =============================================================================
+
+function switchMainView(targetId) {
+  if (window.soundFX) window.soundFX.playWhoosh();
+  document.querySelectorAll('.nav-tab').forEach(t => t.classList.remove('active'));
+  document.querySelectorAll('.view-panel').forEach(p => p.classList.remove('active'));
+
+  const tab = document.querySelector(`.nav-tab[data-view="${targetId}"]`);
+  if (tab) tab.classList.add('active');
+
+  const targetView = document.getElementById(targetId);
+  if (targetView) {
+    targetView.classList.add('active');
+  }
+
+  // Lazy render on view switch
+  if (targetId === 'viewGuidedLab') renderGuidedStep(currentGuidedStep);
+  if (targetId === 'viewQuests') renderActiveQuest(currentQuestIndex);
+  if (targetId === 'viewDeconstructor') renderDeconstructedProblem(activeDeconstructorId);
+  if (targetId === 'viewExplainer') renderStudyLibrary();
+  if (targetId === 'viewMcqs') renderMcqs();
+  if (targetId === 'viewCases') renderCaseStudies();
+  if (targetId === 'viewEnterpriseERD') initEnterpriseERD();
+  if (targetId === 'viewProblems') renderProblemBank();
+}
+
+window.switchMainView = switchMainView;
 
 function initCurriculumSystem() {
   // Top Navigation Tabs Click
@@ -1421,26 +1478,8 @@ function initCurriculumSystem() {
 
   document.querySelectorAll('.nav-tab').forEach(tab => {
     tab.addEventListener('click', () => {
-      if (window.soundFX) window.soundFX.playWhoosh();
-      document.querySelectorAll('.nav-tab').forEach(t => t.classList.remove('active'));
-      document.querySelectorAll('.view-panel').forEach(p => p.classList.remove('active'));
-
-      tab.classList.add('active');
       const targetId = tab.dataset.view;
-      const targetView = document.getElementById(targetId);
-      if (targetView) {
-        targetView.classList.add('active');
-      }
-
-      // Lazy render on view switch
-      if (targetId === 'viewGuidedLab') renderGuidedStep(currentGuidedStep);
-      if (targetId === 'viewQuests') renderActiveQuest(currentQuestIndex);
-      if (targetId === 'viewDeconstructor') renderDeconstructedProblem(activeDeconstructorId);
-      if (targetId === 'viewExplainer') renderStudyLibrary();
-      if (targetId === 'viewMcqs') renderMcqs();
-      if (targetId === 'viewCases') renderCaseStudies();
-      if (targetId === 'viewEnterpriseERD') initEnterpriseERD();
-      if (targetId === 'viewProblems') renderProblemBank();
+      if (targetId) switchMainView(targetId);
     });
   });
 
@@ -3839,101 +3878,113 @@ function openCaseDossier(caseId) {
   `;
 
   // Section 5: In-Dossier Live Data Simulator (5-Row Scan)
-  const sim = window.CASE_SIMULATOR_ENGINE.runSimulation(cs);
-  const colNames = Object.keys(sim.rawRows[0] || {});
+  let simulatorHtml = '';
+  if (window.CASE_SIMULATOR_ENGINE) {
+    try {
+      const sim = window.CASE_SIMULATOR_ENGINE.runSimulation(cs);
+      const colNames = Object.keys(sim.rawRows[0] || {});
 
-  let rawRowsHtml = '';
-  sim.evalResults.forEach((res, rIdx) => {
-    const rowClass = res.passed ? 'sim-row-match' : 'sim-row-dropped';
-    const tagHtml = res.passed 
-      ? `<span class="sim-tag-match">&check; MATCH</span>` 
-      : `<span class="sim-tag-dropped">&cross; DROPPED</span><span class="sim-reason-tag">${escapeHtml(res.reason)}</span>`;
-    
-    let cellsHtml = `<td>${rIdx + 1}</td><td>${tagHtml}</td>`;
-    colNames.forEach(col => {
-      const val = res.row[col];
-      cellsHtml += `<td>${val !== undefined && val !== null ? escapeHtml(val) : '<em>NULL</em>'}</td>`;
-    });
+      let rawRowsHtml = '';
+      sim.evalResults.forEach((res, rIdx) => {
+        const rowClass = res.passed ? 'sim-row-match' : 'sim-row-dropped';
+        const tagHtml = res.passed 
+          ? `<span class="sim-tag-match">&check; MATCH</span>` 
+          : `<span class="sim-tag-dropped">&cross; DROPPED</span><span class="sim-reason-tag">${escapeHtml(res.reason)}</span>`;
+        
+        let cellsHtml = `<td>${rIdx + 1}</td><td>${tagHtml}</td>`;
+        colNames.forEach(col => {
+          const val = res.row[col];
+          cellsHtml += `<td>${val !== undefined && val !== null ? escapeHtml(val) : '<em>NULL</em>'}</td>`;
+        });
 
-    rawRowsHtml += `<tr class="${rowClass}">${cellsHtml}</tr>`;
-  });
-
-  let outputRowsHtml = '';
-  if (sim.outputRows.length === 0) {
-    outputRowsHtml = `<tr><td colspan="${colNames.length + 1}" style="text-align: center; color: var(--text-muted); padding: 12px;">0 rows survived predicate filter.</td></tr>`;
-  } else {
-    sim.outputRows.forEach((row, oIdx) => {
-      let cellsHtml = `<td>${oIdx + 1}</td>`;
-      colNames.forEach(col => {
-        const val = row[col];
-        cellsHtml += `<td>${val !== undefined && val !== null ? escapeHtml(val) : '<em>NULL</em>'}</td>`;
+        rawRowsHtml += `<tr class="${rowClass}">${cellsHtml}</tr>`;
       });
-      outputRowsHtml += `<tr class="sim-row-match">${cellsHtml}</tr>`;
-    });
+
+      let outputRowsHtml = '';
+      if (sim.outputRows.length === 0) {
+        outputRowsHtml = `<tr><td colspan="${colNames.length + 1}" style="text-align: center; color: var(--text-muted); padding: 12px;">0 rows survived predicate filter.</td></tr>`;
+      } else {
+        sim.outputRows.forEach((row, oIdx) => {
+          let cellsHtml = `<td>${oIdx + 1}</td>`;
+          colNames.forEach(col => {
+            const val = row[col];
+            cellsHtml += `<td>${val !== undefined && val !== null ? escapeHtml(val) : '<em>NULL</em>'}</td>`;
+          });
+          outputRowsHtml += `<tr class="sim-row-match">${cellsHtml}</tr>`;
+        });
+      }
+
+      simulatorHtml = `
+        <div class="live-sim-drawer" id="dossierSimDrawer" style="margin-top: 0;">
+          <div class="sim-header-bar">
+            <div class="sim-title">
+              <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="22 12 18 12 15 21 9 3 6 12 2 12"></polyline></svg>
+              ⚡ Real-Time In-Memory Relational Simulator (5 Disk Rows Tested)
+            </div>
+            <div class="sim-metrics">
+              <span class="sim-metric-pill">Read: <strong>${sim.stats.diskRowsScanned} rows</strong></span>
+              <span class="sim-metric-pill">Passed: <strong>${sim.stats.outputRowsCount} rows</strong></span>
+              <span class="sim-metric-pill">Latency: <strong>${sim.stats.executionTimeMs}ms</strong></span>
+            </div>
+          </div>
+
+          <div class="sim-stage-box">
+            <div class="sim-stage-title">
+              <span>STAGE 1: Row Predicate Filter Verification</span>
+            </div>
+            <div class="sim-table-wrap">
+              <table class="sim-table">
+                <thead>
+                  <tr>
+                    <th>#</th>
+                    <th>Filter Evaluation</th>
+                    ${colNames.map(c => `<th>${escapeHtml(c)}</th>`).join('')}
+                  </tr>
+                </thead>
+                <tbody>
+                  ${rawRowsHtml}
+                </tbody>
+              </table>
+            </div>
+          </div>
+
+          <div class="sim-stage-box" style="margin-bottom: 0;">
+            <div class="sim-stage-title">
+              <span>STAGE 2: Final Projected Output Stream</span>
+            </div>
+            <div class="sim-table-wrap">
+              <table class="sim-table">
+                <thead>
+                  <tr>
+                    <th>#</th>
+                    ${colNames.map(c => `<th>${escapeHtml(c)}</th>`).join('')}
+                  </tr>
+                </thead>
+                <tbody>
+                  ${outputRowsHtml}
+                </tbody>
+              </table>
+            </div>
+          </div>
+        </div>
+      `;
+    } catch(err) {
+      console.warn('Simulation skipped in dossier:', err);
+    }
   }
 
-  const simulatorHtml = `
-    <div class="live-sim-drawer" id="dossierSimDrawer" style="margin-top: 0;">
-      <div class="sim-header-bar">
-        <div class="sim-title">
-          <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="22 12 18 12 15 21 9 3 6 12 2 12"></polyline></svg>
-          ⚡ Real-Time In-Memory Relational Simulator (5 Disk Rows Tested)
-        </div>
-        <div class="sim-metrics">
-          <span class="sim-metric-pill">Read: <strong>${sim.stats.diskRowsScanned} rows</strong></span>
-          <span class="sim-metric-pill">Passed: <strong>${sim.stats.outputRowsCount} rows</strong></span>
-          <span class="sim-metric-pill">Latency: <strong>${sim.stats.executionTimeMs}ms</strong></span>
-        </div>
-      </div>
-
-      <div class="sim-stage-box">
-        <div class="sim-stage-title">
-          <span>STAGE 1: Row Predicate Filter Verification</span>
-        </div>
-        <div class="sim-table-wrap">
-          <table class="sim-table">
-            <thead>
-              <tr>
-                <th>#</th>
-                <th>Filter Evaluation</th>
-                ${colNames.map(c => `<th>${escapeHtml(c)}</th>`).join('')}
-              </tr>
-            </thead>
-            <tbody>
-              ${rawRowsHtml}
-            </tbody>
-          </table>
-        </div>
-      </div>
-
-      <div class="sim-stage-box" style="margin-bottom: 0;">
-        <div class="sim-stage-title">
-          <span>STAGE 2: Final Projected Output Stream</span>
-        </div>
-        <div class="sim-table-wrap">
-          <table class="sim-table">
-            <thead>
-              <tr>
-                <th>#</th>
-                ${colNames.map(c => `<th>${escapeHtml(c)}</th>`).join('')}
-              </tr>
-            </thead>
-            <tbody>
-              ${outputRowsHtml}
-            </tbody>
-          </table>
-        </div>
-      </div>
-    </div>
-  `;
-
   body.innerHTML = incidentHtml + beginnerCheatSheetHtml + schemaHtml + breakdownHtml + pitfallsHtml + simulatorHtml;
+  modal.style.display = 'flex';
 }
+
+window.openCaseDossier = openCaseDossier;
 
 function closeCaseDossier() {
   const modal = document.getElementById('caseStudyDetailModal');
   if (modal) modal.style.display = 'none';
 }
+
+window.closeCaseDossier = closeCaseDossier;
 
 function navigateDossierPrev() {
   const allCases = window.ALL_500_CASE_STUDIES || window.ALL_300_CASE_STUDIES || [];
@@ -4807,4 +4858,13 @@ function renderBossQuest(container, quest) {
       </a>
     </div>
   `;
+}
+
+// =============================================================================
+// BOOTSTRAP APPLICATION INITIALIZATION
+// =============================================================================
+if (document.readyState === 'loading') {
+  document.addEventListener('DOMContentLoaded', initVisualizerApp);
+} else {
+  initVisualizerApp();
 }
