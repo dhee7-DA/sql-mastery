@@ -1439,6 +1439,7 @@ function initCurriculumSystem() {
       if (targetId === 'viewExplainer') renderStudyLibrary();
       if (targetId === 'viewMcqs') renderMcqs();
       if (targetId === 'viewCases') renderCaseStudies();
+      if (targetId === 'viewEnterpriseERD') initEnterpriseERD();
       if (targetId === 'viewProblems') renderProblemBank();
     });
   });
@@ -1504,6 +1505,19 @@ function initCurriculumSystem() {
     caseSearchInput.addEventListener('input', (e) => {
       currentCaseSearchQuery = e.target.value.trim();
       renderCaseStudies(currentCaseIndustryFilter, currentCaseSectionFilter);
+    });
+  }
+
+  // Enterprise ERD Explorer Company Switcher
+  const erdCompanySelector = document.getElementById('erdCompanySelector');
+  if (erdCompanySelector) {
+    erdCompanySelector.querySelectorAll('button').forEach(btn => {
+      btn.addEventListener('click', () => {
+        erdCompanySelector.querySelectorAll('button').forEach(b => b.classList.remove('active'));
+        btn.classList.add('active');
+        if (window.soundFX) window.soundFX.playPop();
+        initEnterpriseERD(btn.dataset.company);
+      });
     });
   }
 }
@@ -3334,23 +3348,139 @@ function renderCaseStudies(industryFilter = currentCaseIndustryFilter, sectionFi
 
         ${queryBlockHtml}
 
-        <div class="case-card-actions" style="display: flex; gap: 8px; justify-content: flex-end; align-items: center; margin-top: 6px;">
-          ${currentCaseMode === 'challenge' && challenge ? `
-            <button class="btn-check-slots" data-case-id="${cs.id}">
-              <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="20 6 9 17 4 12"></polyline></svg>
-              Verify Solution
-            </button>
-          ` : ''}
-          <button class="btn-solve-in-studio" data-table="${cs.table}" data-query="${encodeURIComponent(cs.targetQuery)}">
-            <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polygon points="5 3 19 12 5 21 5 3"></polygon></svg>
-            Solve in Query Studio
+        <div class="case-card-actions" style="display: flex; gap: 8px; justify-content: space-between; align-items: center; margin-top: 8px; flex-wrap: wrap;">
+          <button class="btn-toggle-sim" data-case-id="${cs.id}">
+            <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="3" y="3" width="18" height="18" rx="2" ry="2"></rect><line x1="3" y1="9" x2="21" y2="9"></line><line x1="9" y1="21" x2="9" y2="9"></line></svg>
+            Live Data Simulator (5 Rows)
           </button>
+          <div style="display: flex; gap: 8px; align-items: center;">
+            ${currentCaseMode === 'challenge' && challenge ? `
+              <button class="btn-check-slots" data-case-id="${cs.id}">
+                <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="20 6 9 17 4 12"></polyline></svg>
+                Verify Solution
+              </button>
+            ` : ''}
+            <button class="btn-solve-in-studio" data-table="${cs.table}" data-query="${encodeURIComponent(cs.targetQuery)}">
+              <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polygon points="5 3 19 12 5 21 5 3"></polygon></svg>
+              Solve in Studio
+            </button>
+          </div>
         </div>
+
+        <!-- In-Card Live Data Simulator Collapsible Drawer -->
+        <div class="live-sim-drawer" id="sim_drawer_${cs.id}" style="display: none;"></div>
       </div>
     `;
   });
 
   container.innerHTML = html;
+
+  // Event Listeners for Live Data Simulator Drawer Toggle
+  container.querySelectorAll('.btn-toggle-sim').forEach(btn => {
+    btn.addEventListener('click', () => {
+      const caseId = parseInt(btn.dataset.caseId, 10);
+      const cs = (window.ALL_500_CASE_STUDIES || window.ALL_300_CASE_STUDIES || []).find(c => c.id === caseId);
+      const drawer = document.getElementById(`sim_drawer_${caseId}`);
+      if (!drawer || !cs || !window.CASE_SIMULATOR_ENGINE) return;
+
+      if (drawer.style.display === 'block') {
+        drawer.style.display = 'none';
+        btn.classList.remove('active');
+      } else {
+        if (window.soundFX) window.soundFX.playPop();
+        drawer.style.display = 'block';
+        btn.classList.add('active');
+
+        // Run Zero-Latency Simulation
+        const sim = window.CASE_SIMULATOR_ENGINE.runSimulation(cs);
+        const colNames = Object.keys(sim.rawRows[0] || {});
+
+        let rawRowsHtml = '';
+        sim.evalResults.forEach((res, rIdx) => {
+          const rowClass = res.passed ? 'sim-row-match' : 'sim-row-dropped';
+          const tagHtml = res.passed 
+            ? `<span class="sim-tag-match">&check; MATCH</span>` 
+            : `<span class="sim-tag-dropped">&cross; DROPPED</span><span class="sim-reason-tag">${escapeHtml(res.reason)}</span>`;
+          
+          let cellsHtml = `<td>${rIdx + 1}</td><td>${tagHtml}</td>`;
+          colNames.forEach(col => {
+            const val = res.row[col];
+            cellsHtml += `<td>${val !== undefined && val !== null ? escapeHtml(val) : '<em>NULL</em>'}</td>`;
+          });
+
+          rawRowsHtml += `<tr class="${rowClass}">${cellsHtml}</tr>`;
+        });
+
+        // Stage 2: Projected Output Rows
+        let outputRowsHtml = '';
+        if (sim.outputRows.length === 0) {
+          outputRowsHtml = `<tr><td colspan="${colNames.length + 1}" style="text-align: center; color: var(--text-muted); padding: 12px;">0 rows survived predicate filter.</td></tr>`;
+        } else {
+          sim.outputRows.forEach((row, oIdx) => {
+            let cellsHtml = `<td>${oIdx + 1}</td>`;
+            colNames.forEach(col => {
+              const val = row[col];
+              cellsHtml += `<td>${val !== undefined && val !== null ? escapeHtml(val) : '<em>NULL</em>'}</td>`;
+            });
+            outputRowsHtml += `<tr class="sim-row-match">${cellsHtml}</tr>`;
+          });
+        }
+
+        drawer.innerHTML = `
+          <div class="sim-header-bar">
+            <div class="sim-title">
+              <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="22 12 18 12 15 21 9 3 6 12 2 12"></polyline></svg>
+              Live Relational Data Simulator (5-Row Disk Buffer)
+            </div>
+            <div class="sim-metrics">
+              <span class="sim-metric-pill">Read: <strong>${sim.stats.diskRowsScanned} rows</strong></span>
+              <span class="sim-metric-pill">Passed: <strong>${sim.stats.outputRowsCount} rows</strong></span>
+              <span class="sim-metric-pill">Latency: <strong>${sim.stats.executionTimeMs}ms</strong></span>
+            </div>
+          </div>
+
+          <div class="sim-stage-box">
+            <div class="sim-stage-title">
+              <span>📥 STAGE 1: Scanning Raw Disk Rows (Filter Predicate Evaluation)</span>
+            </div>
+            <div class="sim-table-wrap">
+              <table class="sim-table">
+                <thead>
+                  <tr>
+                    <th>#</th>
+                    <th>Filter Evaluation</th>
+                    ${colNames.map(c => `<th>${escapeHtml(c)}</th>`).join('')}
+                  </tr>
+                </thead>
+                <tbody>
+                  ${rawRowsHtml}
+                </tbody>
+              </table>
+            </div>
+          </div>
+
+          <div class="sim-stage-box" style="margin-bottom: 0;">
+            <div class="sim-stage-title">
+              <span>📤 STAGE 2: Projected &amp; Ordered Output Stream (Client Result)</span>
+            </div>
+            <div class="sim-table-wrap">
+              <table class="sim-table">
+                <thead>
+                  <tr>
+                    <th>#</th>
+                    ${colNames.map(c => `<th>${escapeHtml(c)}</th>`).join('')}
+                  </tr>
+                </thead>
+                <tbody>
+                  ${outputRowsHtml}
+                </tbody>
+              </table>
+            </div>
+          </div>
+        `;
+      }
+    });
+  });
 
   // Event Listeners for Solve in Studio
   container.querySelectorAll('.btn-solve-in-studio').forEach(btn => {
@@ -3407,6 +3537,289 @@ function renderCaseStudies(industryFilter = currentCaseIndustryFilter, sectionFi
       }
     });
   });
+}
+
+// =============================================================================
+// ENTERPRISE PRODUCTION ERD EXPLORER CONTROLLER
+// =============================================================================
+
+let currentErdCompany = 'stripe';
+let currentErdSelectedTable = 'CUSTOMERS';
+
+function initEnterpriseERD(companyKey = currentErdCompany) {
+  currentErdCompany = companyKey;
+  const companyData = (window.ENTERPRISE_ERD_DATA && window.ENTERPRISE_ERD_DATA[companyKey]) 
+    ? window.ENTERPRISE_ERD_DATA[companyKey] 
+    : (window.ENTERPRISE_ERD_DATA ? window.ENTERPRISE_ERD_DATA.stripe : null);
+  
+  if (!companyData) return;
+
+  // Verify selected table belongs to this company
+  if (!companyData.tables.some(t => t.name === currentErdSelectedTable)) {
+    currentErdSelectedTable = companyData.tables[0].name;
+  }
+
+  const visualBoard = document.getElementById('erdVisualBoard');
+  const inspector = document.getElementById('erdTableInspector');
+  if (!visualBoard || !inspector) return;
+
+  // 1. Architecture Topology Header & Banner
+  const bannerHtml = `
+    <div class="erd-company-banner" style="grid-column: 1 / -1;">
+      <div class="erd-company-info">
+        <div class="erd-company-icon">${companyData.icon || '🏢'}</div>
+        <div>
+          <h3 class="erd-company-title">
+            ${companyData.companyName} Architecture Schema
+            <span class="erd-company-domain">${companyData.domain}</span>
+          </h3>
+          <p class="erd-company-desc">${companyData.description}</p>
+        </div>
+      </div>
+      <div style="display: flex; gap: 8px; align-items: center;">
+        <span class="status-pill" style="font-size: 11px; color: #9ec5ad; border-color: rgba(158,197,173,0.3);">
+          ⚡ 5 Interconnected Production Tables
+        </span>
+      </div>
+    </div>
+
+    <!-- ERD Legend Bar -->
+    <div class="erd-legend-bar" style="grid-column: 1 / -1;">
+      <span style="color: var(--text-primary); font-weight: 700; margin-right: 6px;">DIAGRAM LEGEND:</span>
+      <div class="erd-legend-item">
+        <span class="erd-pk-badge">PK</span>
+        <span>Primary Key (Unique Clustered Index)</span>
+      </div>
+      <div class="erd-legend-item">
+        <span class="erd-fk-badge">FK</span>
+        <span>Foreign Key (Relational Constraint)</span>
+      </div>
+      <div class="erd-legend-item">
+        <span class="erd-cardinality-badge">1 : N</span>
+        <span>One-to-Many Relationship (Crow's Foot)</span>
+      </div>
+      <div class="erd-legend-item">
+        <span class="erd-cardinality-badge">1 : 1</span>
+        <span>One-to-One Identity Mapping</span>
+      </div>
+    </div>
+  `;
+
+  // 2. Render 5 Entity Cards
+  let entityCardsHtml = '';
+  companyData.tables.forEach(tbl => {
+    const isSelected = tbl.name === currentErdSelectedTable;
+    let colsHtml = '';
+
+    tbl.columns.forEach(col => {
+      let badgeHtml = '<span style="color: var(--text-muted); font-size: 10px;">&bull;</span>';
+      if (col.isPk) badgeHtml = '<span class="erd-pk-badge">PK</span>';
+      else if (col.isFk) badgeHtml = '<span class="erd-fk-badge">FK</span>';
+
+      colsHtml += `
+        <div class="erd-col-row" title="${escapeHtml(col.desc || '')}">
+          <div class="erd-col-left">
+            ${badgeHtml}
+            <span class="erd-col-name">${escapeHtml(col.name)}</span>
+          </div>
+          <span class="erd-col-type">${escapeHtml(col.type)}</span>
+        </div>
+      `;
+    });
+
+    entityCardsHtml += `
+      <div class="erd-entity-card ${isSelected ? 'selected' : ''}" data-table="${tbl.name}">
+        <div class="erd-entity-header">
+          <div>
+            <div class="erd-table-name">${escapeHtml(tbl.name)}</div>
+            <div class="erd-table-caption">${escapeHtml(tbl.caption)}</div>
+          </div>
+          <span class="erd-rows-badge">${tbl.sampleRows ? tbl.sampleRows.length : 0} rows</span>
+        </div>
+        <div class="erd-entity-body">
+          <p style="font-size: 11px; color: var(--text-muted); margin: 0 0 6px 0; line-height: 1.4;">${escapeHtml(tbl.description)}</p>
+          ${colsHtml}
+        </div>
+        <div class="erd-card-footer">
+          <span style="font-size: 10px; color: ${isSelected ? '#dfcaa9' : 'var(--text-muted)'}; font-family: var(--font-mono);">
+            ${isSelected ? '● Active Inspector' : 'Click to inspect'}
+          </span>
+          <button class="card-nav-btn" style="padding: 2px 8px; font-size: 10.5px;">Inspect &rarr;</button>
+        </div>
+      </div>
+    `;
+  });
+
+  // 3. Render Relational Connectors & Cardinality Pipeline
+  let relsHtml = '';
+  if (companyData.relationships && companyData.relationships.length > 0) {
+    let relRowsHtml = '';
+    companyData.relationships.forEach(rel => {
+      relRowsHtml += `
+        <div class="erd-rel-row">
+          <div class="erd-rel-table-pill">${rel.fromTable}.${rel.fromCol}</div>
+          <div class="erd-rel-arrow-connector">
+            <span>&boxh;&boxh;&boxh;</span>
+            <span class="erd-cardinality-badge">${rel.type}</span>
+            <span>&boxh;&boxh;&boxh;&blacktriangleright;</span>
+          </div>
+          <div class="erd-rel-table-pill">${rel.toTable}.${rel.toCol}</div>
+          <div class="erd-rel-label-text">
+            <strong>Rule:</strong> ${escapeHtml(rel.label)}
+          </div>
+        </div>
+      `;
+    });
+
+    relsHtml = `
+      <div class="erd-relationships-diagram" style="grid-column: 1 / -1;">
+        <div class="erd-diagram-title">
+          <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="18" cy="5" r="3"></circle><circle cx="6" cy="12" r="3"></circle><circle cx="18" cy="19" r="3"></circle><line x1="8.59" y1="13.51" x2="15.42" y2="17.49"></line><line x1="15.41" y1="6.51" x2="8.59" y2="10.49"></line></svg>
+          Foreign Key Relational Connectors &amp; Crow's Foot Cardinality
+        </div>
+        <div class="erd-rel-pipeline">
+          ${relRowsHtml}
+        </div>
+      </div>
+    `;
+  }
+
+  visualBoard.innerHTML = bannerHtml + entityCardsHtml + relsHtml;
+
+  // Add click listeners to entity cards
+  visualBoard.querySelectorAll('.erd-entity-card').forEach(card => {
+    card.addEventListener('click', () => {
+      const tblName = card.dataset.table;
+      currentErdSelectedTable = tblName;
+      if (window.soundFX) window.soundFX.playPop();
+      initEnterpriseERD(currentErdCompany);
+    });
+  });
+
+  // 4. Render Deep Table Inspector
+  renderErdInspector(companyData, currentErdSelectedTable);
+}
+
+function renderErdInspector(companyData, tableName) {
+  const inspector = document.getElementById('erdTableInspector');
+  if (!inspector || !companyData) return;
+
+  const tableObj = companyData.tables.find(t => t.name === tableName) || companyData.tables[0];
+  if (!tableObj) return;
+
+  // Register in DATABASE so Query Studio can run it instantly!
+  if (!DATABASE[tableObj.name] && tableObj.sampleRows) {
+    DATABASE[tableObj.name] = JSON.parse(JSON.stringify(tableObj.sampleRows));
+  }
+
+  // Schema definition rows
+  let schemaRowsHtml = '';
+  tableObj.columns.forEach(col => {
+    let keyBadge = '<span style="color: var(--text-muted); font-size: 10px;">Attribute</span>';
+    if (col.isPk) keyBadge = '<span class="erd-pk-badge">PRIMARY KEY</span>';
+    else if (col.isFk) keyBadge = `<span class="erd-fk-badge">FOREIGN KEY</span> <span style="font-size: 10px; color: #7dd3fc; margin-left: 4px;">↳ ${escapeHtml(col.references || '')}</span>`;
+
+    schemaRowsHtml += `
+      <tr>
+        <td style="font-weight: 700; color: #fff;">${escapeHtml(col.name)}</td>
+        <td style="color: #dfcaa9;">${escapeHtml(col.type)}</td>
+        <td>${keyBadge}</td>
+        <td style="color: var(--text-secondary); font-size: 11px;">${escapeHtml(col.desc || '')}</td>
+      </tr>
+    `;
+  });
+
+  // Sample data records
+  const sampleRows = tableObj.sampleRows || [];
+  const colKeys = tableObj.columns.map(c => c.name);
+
+  let sampleHeaderHtml = colKeys.map(k => `<th>${escapeHtml(k)}</th>`).join('');
+  let sampleBodyHtml = '';
+
+  if (sampleRows.length === 0) {
+    sampleBodyHtml = `<tr><td colspan="${colKeys.length}" style="text-align: center; color: var(--text-muted); padding: 16px;">No sample records available.</td></tr>`;
+  } else {
+    sampleRows.forEach(row => {
+      let cells = colKeys.map(k => {
+        const val = row[k];
+        return `<td>${val !== undefined && val !== null ? escapeHtml(val) : '<em>NULL</em>'}</td>`;
+      }).join('');
+      sampleBodyHtml += `<tr>${cells}</tr>`;
+    });
+  }
+
+  inspector.innerHTML = `
+    <div class="erd-inspector-header">
+      <div>
+        <div style="display: flex; align-items: center; gap: 8px; margin-bottom: 4px;">
+          <span class="clause-pill pill-from" style="font-size: 10px;">Table Deep Inspector</span>
+          <h3 class="erd-inspector-title">TABLE: ${escapeHtml(tableObj.name)}</h3>
+          <span class="status-pill" style="font-size: 10px;">${escapeHtml(tableObj.caption)}</span>
+        </div>
+        <p style="font-size: 12px; color: var(--text-secondary); margin: 0;">${escapeHtml(tableObj.description)}</p>
+      </div>
+      <div>
+        <button class="btn-solve-in-studio" id="btnQueryThisTable">
+          <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polygon points="5 3 19 12 5 21 5 3"></polygon></svg>
+          Query This Table in Studio
+        </button>
+      </div>
+    </div>
+
+    <!-- Schema Definitions -->
+    <div style="margin-bottom: 20px;">
+      <h4 style="font-size: 12px; font-family: var(--font-mono); color: #dfcaa9; text-transform: uppercase; margin: 0 0 8px 0;">
+        Column Definitions &amp; Relational Constraints
+      </h4>
+      <div class="erd-inspector-table-wrap">
+        <table class="erd-data-table">
+          <thead>
+            <tr>
+              <th>Column Name</th>
+              <th>Data Type</th>
+              <th>Key Constraint</th>
+              <th>Production Usage</th>
+            </tr>
+          </thead>
+          <tbody>
+            ${schemaRowsHtml}
+          </tbody>
+        </table>
+      </div>
+    </div>
+
+    <!-- Live Relational Data Preview -->
+    <div>
+      <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 8px;">
+        <h4 style="font-size: 12px; font-family: var(--font-mono); color: #dfcaa9; text-transform: uppercase; margin: 0;">
+          Live Relational Data Preview (${sampleRows.length} Sample Rows)
+        </h4>
+        <span style="font-size: 10px; font-family: var(--font-mono); color: var(--text-muted);">
+          Indexed in-memory relational buffer
+        </span>
+      </div>
+      <div class="erd-inspector-table-wrap">
+        <table class="erd-data-table">
+          <thead>
+            <tr>
+              ${sampleHeaderHtml}
+            </tr>
+          </thead>
+          <tbody>
+            ${sampleBodyHtml}
+          </tbody>
+        </table>
+      </div>
+    </div>
+  `;
+
+  const btnQuery = document.getElementById('btnQueryThisTable');
+  if (btnQuery) {
+    btnQuery.addEventListener('click', () => {
+      const defaultQuery = `SELECT *\nFROM ${tableObj.name}\nLIMIT 10;`;
+      switchToStudioWithQuery(defaultQuery, tableObj.name);
+    });
+  }
 }
 
 function renderProblemBank(filter = 'all') {
