@@ -6,15 +6,19 @@
 
 ## 📌 Current Snapshot
 
-- **Current Sprint**: **Phase 1 Completed ➡️ Transitioning to Phase 2 (Day 04)**
-- **Active Module**: `day-04-advanced-select-case`
-- **Current Dialect**: **MySQL 8.0+**
-- **Major Milestone Achieved**: 🏆 **PHASE 1: BASIC SELECT TRACK 100% CONQUERED (20 / 20 PROBLEMS SOLVED)!**
-- **HackerRank Total Points**: **235 / 300 points** (Only 65 pts away from **3rd Star Badge** 🌟🌟🌟)
-- **Last Completed Task**: Solved Problem 03 (*Employee Salaries*) autonomously with compound filter & sorting (+10.00 pts)
-- **Next Immediate Action**: Scaffold and start Day 04 (*Advanced Select & CASE WHEN*, *Type of Triangle*, *The PADS*)
-- **Total Problems Completed in Intensive**: 20 / 58 Problems (34.5% of entire HackerRank catalog)
-- **Last Updated**: 2026-09-02 13:05 IST
+- **Current Sprint**: **Phase 1, 2, and Day 05 Completed ➡️ Ready for Day 06**
+- **Active Module**: `day-05-basic-aggregations` (Completed) ➡️ Next: `day-06-station-math-aggregates`
+- **Current Dialect**: **MySQL 8.0+ / ANSI SQL**
+- **Major Milestone Achieved**: 🏆 **BASIC AGGREGATIONS & 600 CASE STUDIES + 500 MCQs MASTER VAULT DEPLOYED!**
+- **Visualizer Super-Upgrades**:
+  - **600 Enterprise Case Studies Vault** (Cases 501–600 for Aggregations & GROUP BY across 10 industries).
+  - **500 Master MCQ Technical Vault** (50 deep questions for each of the 10 core SQL keywords).
+  - **26 Interactive Quests** (6 new Aggregation levels added, Levels 21–26).
+  - **8 Curated Themes**: Added `🌸 Sakura Mochi` and `🍵 Matcha Latte`.
+  - **Permanent Aggregations Hub**: 1-click header navigation jump to Cases, Docs, Lab Track, and Studio.
+- **Next Immediate Action**: Advance to Day 06 (*Station Math, Coordinate Distances & Calculating Medians*)
+- **Total Problems Completed in Intensive**: 31 / 58 Problems
+- **Last Updated**: 2026-09-06 03:46 IST
 
 ---
 
@@ -25,10 +29,10 @@
 | **01** | [`day-01-basic-select`](./day-01-basic-select) | `SELECT`, `FROM`, `WHERE`, `AND`/`OR`, `DISTINCT`, Modulo | 8/8 | ✅ Completed (100%) |
 | **02** | [`day-02-ordering-wildcards`](./day-02-ordering-wildcards) | Station 4 (`COUNT - DISTINCT`), Station 5 (`LENGTH`), Station 6–12 (Regex) | 8/8 | ✅ Completed (100%) |
 | **03** | [`day-03-sorting-ordering`](./day-03-sorting-ordering) | `ORDER BY`, `LIMIT`, `RIGHT(Name, 3)`, Employees, Students | 3/3 | ✅ Completed (100%) |
-| **04** | `day-04-advanced-select-case` | `CASE WHEN`, Type of Triangle, The PADS, Occupations Pivot | 0/5 | 🟡 Next Up |
-| **05** | `day-05-advanced-select-hierarchies`| Binary Tree Nodes, New Companies | 0/5 | ⚪ Pending |
-| **06** | `day-06-basic-aggregations` | `COUNT`, `SUM`, `AVG`, `ROUND`, Top Earners, Density Diff | 0/8 | ⚪ Pending |
-| **07** | `day-07-station-math-aggregates` | Station 2, 13–20 (Manhattan & Euclidean Distances, Medians) | 0/9 | ⚪ Pending |
+| **04** | [`day-04-advanced-select-case`](./day-04-advanced-select-case) | `CASE WHEN`, Type of Triangle, Multi-branching logic | 1/1 | ✅ Completed (100%) |
+| **05** | [`day-05-basic-aggregations`](./day-05-basic-aggregations) | `COUNT`, `SUM`, `AVG`, `ROUND`, Top Earners, Density Diff | 10/10 | ✅ Completed (100%) |
+| **06** | `day-06-station-math-aggregates` | Station 2, 13–20 (Manhattan & Euclidean Distances, Medians) | 0/8 | 🟡 Next Up |
+| **07** | `day-07-station-math-aggregates` | Station 2, 13–20 (Manhattan & Euclidean Distances, Medians) | 0/8 | ⚪ Pending |
 | **08** | `day-08-basic-joins` | `INNER JOIN`, `LEFT JOIN`, Asian Pop, African Cities, Continents | 0/8 | ⚪ Pending |
 | **09** | `day-09-intermediate-joins` | The Report, Top Competitors, Ollivander's Inventory | 0/8 | ⚪ Pending |
 | **10** | `day-10-advanced-joins-scoring` | Contest Leaderboard, Placements, Symmetric Pairs | 0/5 | ⚪ Pending |
