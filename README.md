@@ -40,15 +40,15 @@ An in-browser interactive execution studio located in [`visualizer/`](./visualiz
 ### 🟡 Phase 2: Advanced Select & Conditional Logic
 | Day | Module Directory | HackerRank Subdomain & Focus | Difficulty | Status |
 |---|---|---|---|---|
-| **Day 04** | `day-04-advanced-select-case` | `CASE WHEN`, Type of Triangle, The PADS, Occupations Pivot | Easy / Medium | ⚪ Pending |
-| **Day 05** | `day-05-advanced-select-hierarchies`| Binary Tree Nodes, New Companies, Table Relationships | Medium | ⚪ Pending |
+| **Day 04** | [`day-04-advanced-select-case`](./day-04-advanced-select-case) | `CASE WHEN`, Type of Triangle, Multi-branching logic | Easy / Medium | ✅ Completed (1/1) |
 
 ---
 
 ### 🟠 Phase 3: Aggregations & Analytical Mathematics
 | Day | Module Directory | HackerRank Subdomain & Focus | Difficulty | Status |
 |---|---|---|---|---|
-| **Day 06** | `day-06-basic-aggregations` | `COUNT`, `SUM`, `AVG`, `ROUND`, Top Earners, Density Diff | Easy | ⚪ Pending |
+| **Day 05** | [`day-05-basic-aggregations`](./day-05-basic-aggregations) | `COUNT`, `SUM`, `AVG`, `FLOOR`, `CEIL`, Top Earners, Density Diff | Easy | ✅ Completed (10/10) |
+| **Day 06** | `day-06-station-math-aggregates` | Station 2, 13–20 (Manhattan & Euclidean Distances, Median) | Easy / Medium | ⚪ Pending |
 | **Day 07** | `day-07-station-math-aggregates` | Station 2, 13–20 (Manhattan & Euclidean Distances, Median) | Easy / Medium | ⚪ Pending |
 
 ---
