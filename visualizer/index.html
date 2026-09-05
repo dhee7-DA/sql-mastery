@@ -509,6 +509,7 @@
             <div class="mode-toggle-group" style="display: flex; gap: 4px; background: #09090b; padding: 3px; border-radius: var(--radius-sm); border: 1px solid var(--border-default);">
               <button id="btnCaseStudyMode" class="card-nav-btn active" style="font-size: 11px; padding: 4px 10px;">👁️ Study Mode</button>
               <button id="btnCaseChallengeMode" class="card-nav-btn" style="font-size: 11px; padding: 4px 10px;">🧩 Slot Challenge Mode</button>
+              <button id="btnToggleEli5Mode" class="btn-eli5-toggle" style="font-size: 11px; padding: 4px 10px;" title="Switch between ELI5 Everyday English and Technical Specs">👶 ELI5 Beginner Mode</button>
             </div>
             <!-- Difficulty Sort Selector -->
             <select id="caseSortSelect" class="clean-select" style="background: #09090b; border: 1px solid var(--border-default); color: #dfcaa9; font-family: var(--font-mono); font-size: 11px; padding: 5px 8px; border-radius: var(--radius-sm); cursor: pointer;">
@@ -722,6 +723,20 @@
     </div>
   </div>
 
+  <!-- Full-Screen Interactive Domain ERD Diagram Modal -->
+  <div class="domain-erd-modal-overlay" id="domainErdModal" style="display: none;">
+    <div class="domain-erd-modal-container" id="domainErdContent">
+      <!-- Dynamically rendered by DOMAIN_ERD_ENGINE -->
+    </div>
+  </div>
+
+  <!-- Interactive Click-to-Learn Glossary Flashcard Modal -->
+  <div class="glossary-modal-overlay" id="glossaryModal" style="display: none;">
+    <div class="glossary-modal-container" id="glossaryContent">
+      <!-- Dynamically rendered by CASE_DOSSIER_ENGINE.openGlossaryFlashcard -->
+    </div>
+  </div>
+
   <!-- Clean Footer -->
   <footer class="app-footer">
     <div class="footer-status">
@@ -744,12 +759,13 @@
 <script src="theory_interview_prep.js"></script>
 <script src="case_studies_500.js"></script>
 <script src="case_study_blanks.js"></script>
-<script src="case_dossier_engine.js"></script>
+<script src="domain_erd_engine.js?v=2"></script>
+<script src="case_dossier_engine.js?v=2"></script>
 <script src="enterprise_erd_data.js"></script>
 <script src="case_simulator_engine.js"></script>
 <script src="foundations_curriculum.js"></script>
 <script src="audio_fx.js"></script>
 <script src="study_library_data.js"></script>
-<script src="app.js"></script>
+<script src="app.js?v=2"></script>
 </body>
 </html>

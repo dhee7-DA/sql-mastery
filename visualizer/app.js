@@ -1502,6 +1502,8 @@ function initCurriculumSystem() {
   // Mode Switcher: Study Mode vs Challenge Mode
   const btnStudyMode = document.getElementById('btnCaseStudyMode');
   const btnChallengeMode = document.getElementById('btnCaseChallengeMode');
+  const btnToggleEli5 = document.getElementById('btnToggleEli5Mode');
+
   if (btnStudyMode && btnChallengeMode) {
     btnStudyMode.addEventListener('click', () => {
       btnStudyMode.classList.add('active');
@@ -1515,6 +1517,23 @@ function initCurriculumSystem() {
       btnStudyMode.classList.remove('active');
       currentCaseMode = 'challenge';
       if (window.soundFX) window.soundFX.playPop();
+      renderCaseStudies();
+    });
+  }
+
+  // ELI5 Mode Switcher (Everyday English vs Technical Specs)
+  window.isEli5ModeActive = false;
+  if (btnToggleEli5) {
+    btnToggleEli5.addEventListener('click', () => {
+      window.isEli5ModeActive = !window.isEli5ModeActive;
+      if (window.soundFX) window.soundFX.playPop();
+      if (window.isEli5ModeActive) {
+        btnToggleEli5.classList.add('active');
+        btnToggleEli5.innerHTML = '👶 ELI5 Active (Everyday English)';
+      } else {
+        btnToggleEli5.classList.remove('active');
+        btnToggleEli5.innerHTML = '👶 ELI5 Beginner Mode';
+      }
       renderCaseStudies();
     });
   }
@@ -3453,14 +3472,22 @@ function renderCaseStudies(
           <span class="clause-pill pill-group" style="font-size: 9px; padding: 1px 6px;">${cs.section ? cs.section.split(':')[0] : 'Section'}</span>
         </div>
 
-        <p class="case-scenario-text">${cs.scenario}</p>
+        ${window.isEli5ModeActive && window.CASE_DOSSIER_ENGINE ? `
+          <div class="eli5-story-box">
+            ${window.CASE_DOSSIER_ENGINE.getEli5Story(cs)}
+          </div>
+        ` : `
+          <p class="case-scenario-text">${cs.scenario}</p>
+        `}
 
-        <div style="font-family: var(--font-mono); font-size: 10.5px; color: var(--text-muted); margin-bottom: 6px;">
-          Schema: <code>${cs.schemaSnippet}</code>
-        </div>
+        ${window.DOMAIN_ERD_ENGINE ? window.DOMAIN_ERD_ENGINE.renderMiniERD(cs) : `
+          <div style="font-family: var(--font-mono); font-size: 10.5px; color: var(--text-muted); margin-bottom: 6px;">
+            Schema: <code>${cs.schemaSnippet}</code>
+          </div>
+        `}
 
         <div class="case-objective-box">
-          <strong>Objective:</strong> ${cs.businessObjective}
+          <strong>Objective [Goal]:</strong> ${cs.businessObjective}
         </div>
 
         ${queryBlockHtml}
@@ -3494,6 +3521,18 @@ function renderCaseStudies(
   });
 
   container.innerHTML = html;
+
+  // Event Listeners for Open Domain ERD Diagram
+  container.querySelectorAll('.btn-open-domain-erd').forEach(btn => {
+    btn.addEventListener('click', (e) => {
+      e.stopPropagation();
+      const dom = btn.dataset.domain;
+      const tbl = btn.dataset.table;
+      if (window.DOMAIN_ERD_ENGINE) {
+        window.DOMAIN_ERD_ENGINE.openDomainERD(dom, tbl);
+      }
+    });
+  });
 
   // Event Listeners for Open Deep Dossier
   container.querySelectorAll('.btn-open-dossier').forEach(btn => {
@@ -3696,14 +3735,16 @@ function openCaseDossier(caseId) {
   if (badgeInd) badgeInd.textContent = cs.industry;
   if (badgeSec) badgeSec.textContent = cs.section ? cs.section.split(':')[0] : 'Section';
 
-  // Section 1: Executive Incident Brief
+  // Section 1: Executive Incident Brief & Everyday Analogy
   const incidentHtml = `
     <div class="dossier-incident-card">
       <div class="dossier-section-title" style="color: #818cf8;">
-        <span>🚨 REAL-WORLD SCENARIO &amp; BUSINESS OBJECTIVE</span>
+        <span>🚨 REAL-WORLD BUSINESS SCENARIO &amp; EVERYDAY ANALOGY</span>
       </div>
       <h2 style="font-size: 18px; color: #fff; margin: 0 0 8px 0;">${escapeHtml(cs.title)}</h2>
-      <p class="dossier-story-text">${dossier.incidentStory}</p>
+      <div class="eli5-story-box" style="margin-bottom: 12px;">
+        ${dossier.eli5Story}
+      </div>
       <div class="dossier-objective-callout">
         <strong>Business Goal [What you need to solve]:</strong> ${escapeHtml(cs.businessObjective)}
       </div>
@@ -3728,35 +3769,38 @@ function openCaseDossier(caseId) {
     </div>
   `;
 
-  // Section 2: Schema & Storage Architecture (with bracketed meanings)
+  // Section 2: Visual ERD & Storage Performance
   const schemaHtml = `
     <div class="dossier-schema-card">
       <div class="dossier-section-title" style="color: #2dd4bf;">
-        <span>🏗️ TABLE STRUCTURE &amp; STORAGE PERFORMANCE</span>
+        <span>🏗️ TABLE STRUCTURE &amp; DOMAIN ERD</span>
       </div>
-      <div class="dossier-schema-code">Table: ${escapeHtml(cs.table)} | Columns: ${escapeHtml(cs.schemaSnippet)}</div>
-      <p style="font-size: 12px; color: var(--text-secondary); margin: 0; line-height: 1.6;">
+      
+      ${window.DOMAIN_ERD_ENGINE ? window.DOMAIN_ERD_ENGINE.renderMiniERD(cs) : `
+        <div class="dossier-schema-code">Table: ${escapeHtml(cs.table)} | Columns: ${escapeHtml(cs.schemaSnippet)}</div>
+      `}
+
+      <p style="font-size: 12px; color: var(--text-secondary); margin: 8px 0 0 0; line-height: 1.6;">
         <strong>How the database works under the hood:</strong> Tables store rows on hard disk pages [blocks of computer storage]. 
         Adding a <strong>B-Tree Index</strong> [like an alphabetical index at the back of a textbook] allows the database to locate rows in <span style="color: #2dd4bf; font-weight: 700;">O(log N) [under 1 millisecond]</span> instead of doing a <strong>Full Table Scan</strong> [slowly reading every single row on disk one by one].
       </p>
     </div>
   `;
 
-  // Section 3: Line-by-Line SQL Deconstruction with Interactive Highlighting
+  // Section 3: Line-by-Line SQL Deconstruction with Full-Spectrum Interactive Highlighting
   let breakdownRowsHtml = '';
-  dossier.queryBreakdown.forEach(item => {
+  dossier.queryBreakdown.forEach((item, idx) => {
     breakdownRowsHtml += `
       <div class="breakdown-row">
         <div class="breakdown-code-line">
-          <span class="breakdown-tag" style="background: ${item.tagColor}22; color: ${item.tagColor}; border: 1px solid ${item.tagColor}66;">
-            ${item.type}
+          <span class="breakdown-tag" style="background: rgba(56, 189, 248, 0.15); color: #38bdf8; border: 1px solid rgba(56, 189, 248, 0.3);">
+            Step ${idx + 1}: ${item.clauseType}
           </span>
-          <span class="breakdown-sql-text">${item.highlightedLine}</span>
+          <span class="breakdown-sql-text"><code>${item.highlightedLine}</code></span>
         </div>
-        <div class="breakdown-tag-meaning" style="color: ${item.tagColor};">
+        <div class="breakdown-tag-meaning" style="color: #67e8f9;">
           📌 ${escapeHtml(item.plainMeaning)}
         </div>
-        <div class="breakdown-explanation">${item.explanation}</div>
       </div>
     `;
   });
@@ -3776,9 +3820,9 @@ function openCaseDossier(caseId) {
   let pitfallsListHtml = '';
   dossier.pitfalls.forEach(p => {
     pitfallsListHtml += `
-      <div class="pitfall-item">
-        <div class="pitfall-title" style="color: ${p.color};">${p.title}</div>
-        <div class="pitfall-rule">${p.rule}</div>
+      <div class="pitfall-item" style="margin-bottom: 10px; background: rgba(251, 146, 60, 0.06); border-left: 3px solid #fb923c; padding: 10px 14px; border-radius: 0 4px 4px 0;">
+        <div class="pitfall-title" style="color: #fb923c; font-weight: 700; font-size: 12.5px; margin-bottom: 4px;">${p.title}</div>
+        <div class="pitfall-rule" style="color: var(--text-secondary); font-size: 12px; line-height: 1.5;">${p.explanation}</div>
       </div>
     `;
   });
