@@ -171,6 +171,111 @@
   --status-fail: #fb4934;
 }
 
+/* 5. Paper White (Linear / Vercel Editorial Light) */
+[data-theme="paper-white"] {
+  --bg-canvas: #f8fafc;
+  --bg-surface: #ffffff;
+  --bg-surface-elevated: #f1f5f9;
+  --bg-card: #ffffff;
+  --bg-card-subtle: #f8fafc;
+  --bg-hover: #f1f5f9;
+  --bg-active: #e2e8f0;
+
+  --border-subtle: rgba(0, 0, 0, 0.05);
+  --border-default: #e2e8f0;
+  --border-muted: #f1f5f9;
+  --border-hover: #cbd5e1;
+  --border-focus: #64748b;
+
+  --text-primary: #0f172a;
+  --text-secondary: #475569;
+  --text-muted: #64748b;
+
+  --status-success: #16a34a;
+  --status-info: #0284c7;
+  --status-warning: #d97706;
+  --status-fail: #e11d48;
+
+  --shadow-specular: inset 0 1px 0 0 rgba(255, 255, 255, 0.8);
+  --shadow-specular-bright: inset 0 1px 0 0 #ffffff;
+  --shadow-card: 0 1px 3px 0 rgba(0, 0, 0, 0.06), 0 1px 2px -1px rgba(0, 0, 0, 0.04);
+  --shadow-card-hover: 0 10px 25px -5px rgba(0, 0, 0, 0.08), 0 8px 10px -6px rgba(0, 0, 0, 0.04);
+}
+
+/* 6. Warm Cream (Bear Notes / Solarized Warm Paper) */
+[data-theme="warm-cream"] {
+  --bg-canvas: #fbf8f2;
+  --bg-surface: #ffffff;
+  --bg-surface-elevated: #f5f0e6;
+  --bg-card: #ffffff;
+  --bg-card-subtle: #f7f3ec;
+  --bg-hover: #ede6d8;
+  --bg-active: #e2d9c7;
+
+  --border-subtle: rgba(41, 37, 36, 0.06);
+  --border-default: #e4dcd0;
+  --border-muted: #ede7dc;
+  --border-hover: #d0c5b5;
+  --border-focus: #b45309;
+
+  --text-primary: #292524;
+  --text-secondary: #57534e;
+  --text-muted: #78716c;
+
+  --status-success: #15803d;
+  --status-info: #0369a1;
+  --status-warning: #b45309;
+  --status-fail: #be123c;
+
+  --shadow-specular: inset 0 1px 0 0 rgba(255, 255, 255, 0.9);
+  --shadow-specular-bright: inset 0 1px 0 0 #ffffff;
+  --shadow-card: 0 1px 3px 0 rgba(41, 37, 36, 0.06), 0 1px 2px -1px rgba(41, 37, 36, 0.04);
+  --shadow-card-hover: 0 10px 25px -5px rgba(41, 37, 36, 0.08), 0 8px 10px -6px rgba(41, 37, 36, 0.04);
+}
+
+/* Light Theme Component Adaptations */
+[data-theme="paper-white"] .action-btn-primary,
+[data-theme="warm-cream"] .action-btn-primary {
+  background: #0f172a;
+  color: #ffffff;
+  border-color: #0f172a;
+}
+[data-theme="paper-white"] .action-btn-primary:hover,
+[data-theme="warm-cream"] .action-btn-primary:hover {
+  background: #1e293b;
+  color: #ffffff;
+}
+
+[data-theme="paper-white"] .nav-tab.active,
+[data-theme="warm-cream"] .nav-tab.active {
+  background: #ffffff;
+  color: var(--text-primary);
+  border-color: var(--border-default);
+  box-shadow: 0 1px 3px rgba(0, 0, 0, 0.08);
+}
+
+[data-theme="paper-white"] .case-dossier-container,
+[data-theme="warm-cream"] .case-dossier-container {
+  background: #ffffff;
+  border-color: var(--border-default);
+  box-shadow: 0 24px 60px rgba(0, 0, 0, 0.15);
+}
+
+[data-theme="paper-white"] .case-code-preview,
+[data-theme="warm-cream"] .case-code-preview,
+[data-theme="paper-white"] .dossier-query-box,
+[data-theme="warm-cream"] .dossier-query-box {
+  background: #0f172a;
+  border-color: #1e293b;
+}
+
+[data-theme="paper-white"] .case-dossier-header,
+[data-theme="warm-cream"] .case-dossier-header,
+[data-theme="paper-white"] .case-dossier-footer,
+[data-theme="warm-cream"] .case-dossier-footer {
+  background: var(--bg-card-subtle);
+}
+
 /* Theme Switcher Header Component */
 .theme-select-wrapper {
   display: flex;
