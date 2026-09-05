@@ -3407,9 +3407,10 @@ function renderCaseStudies(
 
     let queryBlockHtml = '';
     if (currentCaseMode === 'study' || !challenge) {
+      const highlighted = window.CASE_DOSSIER_ENGINE ? window.CASE_DOSSIER_ENGINE.highlightSQL(cs.targetQuery) : escapeHtml(cs.targetQuery);
       queryBlockHtml = `
         <div class="case-code-preview">
-          <code>${escapeHtml(cs.targetQuery)}</code>
+          <code>${highlighted}</code>
         </div>
       `;
     } else {
@@ -3699,31 +3700,49 @@ function openCaseDossier(caseId) {
   const incidentHtml = `
     <div class="dossier-incident-card">
       <div class="dossier-section-title" style="color: #818cf8;">
-        <span>🚨 EXECUTIVE INCIDENT BRIEF &amp; PRODUCTION CONTEXT</span>
+        <span>🚨 REAL-WORLD SCENARIO &amp; BUSINESS OBJECTIVE</span>
       </div>
       <h2 style="font-size: 18px; color: #fff; margin: 0 0 8px 0;">${escapeHtml(cs.title)}</h2>
       <p class="dossier-story-text">${dossier.incidentStory}</p>
       <div class="dossier-objective-callout">
-        <strong>Business Objective &amp; SLA Target:</strong> ${escapeHtml(cs.businessObjective)}
+        <strong>Business Goal [What you need to solve]:</strong> ${escapeHtml(cs.businessObjective)}
       </div>
     </div>
   `;
 
-  // Section 2: Schema & Storage Architecture
+  // Beginner Translation Cheat-Sheet Box
+  const beginnerCheatSheetHtml = `
+    <div class="dossier-beginner-guide">
+      <div style="display: flex; align-items: center; gap: 8px; font-weight: 700; color: #38bdf8; font-size: 11.5px; margin-bottom: 8px; font-family: var(--font-mono);">
+        <span>🐣 BEGINNER CHEAT-SHEET [WHAT EACH SQL KEYWORD MEANS]</span>
+      </div>
+      <div class="dossier-beginner-guide-grid">
+        <div><span style="color: #38bdf8; font-weight: 800;">SELECT</span> = "Show these columns"</div>
+        <div><span style="color: #c084fc; font-weight: 800;">FROM</span> = "Look in this table"</div>
+        <div><span style="color: #34d399; font-weight: 800;">WHERE</span> = "Filter rule [must be true]"</div>
+        <div><span style="color: #10b981; font-weight: 800;">AND</span> = "Both conditions must be true"</div>
+        <div><span style="color: #fb923c; font-weight: 800;">OR</span> = "Either condition can be true"</div>
+        <div><span style="color: #fbbf24; font-weight: 800;">ORDER BY</span> = "Sort rows (ASC / DESC)"</div>
+        <div><span style="color: #f472b6; font-weight: 800;">LIMIT</span> = "Stop after N rows"</div>
+      </div>
+    </div>
+  `;
+
+  // Section 2: Schema & Storage Architecture (with bracketed meanings)
   const schemaHtml = `
     <div class="dossier-schema-card">
       <div class="dossier-section-title" style="color: #2dd4bf;">
-        <span>🏗️ RELATIONAL ENTITY SCHEMA &amp; INDEXING RECOMMENDATION</span>
+        <span>🏗️ TABLE STRUCTURE &amp; STORAGE PERFORMANCE</span>
       </div>
-      <div class="dossier-schema-code">Table: ${escapeHtml(cs.table)} | DDL: ${escapeHtml(cs.schemaSnippet)}</div>
-      <p style="font-size: 12px; color: var(--text-secondary); margin: 0; line-height: 1.5;">
-        <strong>Storage Engine Note:</strong> Ensure composite B-Tree indexes exist covering the columns filtered in the <code>WHERE</code> clause. 
-        For table <code>${escapeHtml(cs.table)}</code>, queries filtering on exact match predicates achieve <span style="color: #2dd4bf;">O(log N) lookup time</span> instead of full page scans.
+      <div class="dossier-schema-code">Table: ${escapeHtml(cs.table)} | Columns: ${escapeHtml(cs.schemaSnippet)}</div>
+      <p style="font-size: 12px; color: var(--text-secondary); margin: 0; line-height: 1.6;">
+        <strong>How the database works under the hood:</strong> Tables store rows on hard disk pages [blocks of computer storage]. 
+        Adding a <strong>B-Tree Index</strong> [like an alphabetical index at the back of a textbook] allows the database to locate rows in <span style="color: #2dd4bf; font-weight: 700;">O(log N) [under 1 millisecond]</span> instead of doing a <strong>Full Table Scan</strong> [slowly reading every single row on disk one by one].
       </p>
     </div>
   `;
 
-  // Section 3: Line-by-Line SQL Deconstruction
+  // Section 3: Line-by-Line SQL Deconstruction with Interactive Highlighting
   let breakdownRowsHtml = '';
   dossier.queryBreakdown.forEach(item => {
     breakdownRowsHtml += `
@@ -3732,7 +3751,10 @@ function openCaseDossier(caseId) {
           <span class="breakdown-tag" style="background: ${item.tagColor}22; color: ${item.tagColor}; border: 1px solid ${item.tagColor}66;">
             ${item.type}
           </span>
-          <span class="breakdown-sql-text">${escapeHtml(item.line)}</span>
+          <span class="breakdown-sql-text">${item.highlightedLine}</span>
+        </div>
+        <div class="breakdown-tag-meaning" style="color: ${item.tagColor};">
+          📌 ${escapeHtml(item.plainMeaning)}
         </div>
         <div class="breakdown-explanation">${item.explanation}</div>
       </div>
@@ -3742,7 +3764,7 @@ function openCaseDossier(caseId) {
   const breakdownHtml = `
     <div class="dossier-breakdown-card">
       <div class="dossier-section-title" style="color: #dfcaa9;">
-        <span>🔍 LINE-BY-LINE SQL DECONSTRUCTION &amp; EXECUTION LOGIC</span>
+        <span>🔍 LINE-BY-LINE SQL EXPLANATION [HOVER OVER KEYWORDS]</span>
       </div>
       <div>
         ${breakdownRowsHtml}
@@ -3750,7 +3772,7 @@ function openCaseDossier(caseId) {
     </div>
   `;
 
-  // Section 4: Interview Pitfalls & Mnemonic Hazard Box
+  // Section 4: Interview Pitfalls & Mnemonic Hazard Box (with bracketed titles)
   let pitfallsListHtml = '';
   dossier.pitfalls.forEach(p => {
     pitfallsListHtml += `
@@ -3764,7 +3786,7 @@ function openCaseDossier(caseId) {
   const pitfallsHtml = `
     <div class="dossier-pitfalls-card">
       <div class="dossier-section-title" style="color: #fb923c;">
-        <span>⚠️ PRODUCTION TRAPS &amp; FAANG INTERVIEW GOTCHAS</span>
+        <span>⚠️ PRODUCTION TRAPS &amp; INTERVIEW GOTCHAS [EXPLAINED SIMPLY]</span>
       </div>
       <div>
         ${pitfallsListHtml}
@@ -3861,8 +3883,7 @@ function openCaseDossier(caseId) {
     </div>
   `;
 
-  body.innerHTML = incidentHtml + schemaHtml + breakdownHtml + pitfallsHtml + simulatorHtml;
-  modal.style.display = 'flex';
+  body.innerHTML = incidentHtml + beginnerCheatSheetHtml + schemaHtml + breakdownHtml + pitfallsHtml + simulatorHtml;
 }
 
 function closeCaseDossier() {
