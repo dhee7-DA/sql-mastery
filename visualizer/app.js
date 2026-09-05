@@ -3362,14 +3362,15 @@ let QuizState = {
   total: 0
 };
 let activeMcqFilter = 'all';
+let currentMcqDisplayLimit = 25;
 
-function renderMcqs(filterKeyword = 'all') {
+function renderMcqs(filterKeyword = 'all', resetLimit = true) {
+  if (resetLimit) currentMcqDisplayLimit = 25;
   activeMcqFilter = filterKeyword;
   const filterContainer = document.getElementById('mcqPillFilter');
   const container = document.getElementById('mcqCardsList');
-  if (!container || !window.FOUNDATIONS_DATA) return;
-
-  const allMcqs = window.FOUNDATIONS_DATA.mcqs || [];
+  const allMcqs = window.MCQS_VAULT_500 || (window.FOUNDATIONS_DATA ? window.FOUNDATIONS_DATA.mcqs : []);
+  if (!container || !allMcqs.length) return;
 
   // 1. Render Filter Pills
   if (filterContainer) {
@@ -3377,7 +3378,8 @@ function renderMcqs(filterKeyword = 'all') {
     let pillsHtml = '';
     uniqueKeywords.forEach(k => {
       const isActive = k.toLowerCase() === activeMcqFilter.toLowerCase();
-      const label = k === 'all' ? `All Questions (${allMcqs.length})` : k;
+      const count = k === 'all' ? allMcqs.length : allMcqs.filter(m => m.keyword === k).length;
+      const label = k === 'all' ? `All Questions (${count})` : `${k} (${count})`;
       pillsHtml += `
         <button class="kw-filter-pill ${isActive ? 'active' : ''}" data-filter="${k}">
           <span>${label}</span>
@@ -3388,7 +3390,8 @@ function renderMcqs(filterKeyword = 'all') {
 
     filterContainer.querySelectorAll('.kw-filter-pill').forEach(btn => {
       btn.addEventListener('click', () => {
-        renderMcqs(btn.dataset.filter);
+        if (window.soundFX) window.soundFX.playPop();
+        renderMcqs(btn.dataset.filter, true);
       });
     });
   }
@@ -3403,13 +3406,15 @@ function renderMcqs(filterKeyword = 'all') {
   document.getElementById('quizScoreCount').textContent = QuizState.score;
 
   let html = '';
+  const visibleMcqs = filteredMcqs.slice(0, currentMcqDisplayLimit);
 
-  filteredMcqs.forEach((mcq, idx) => {
+  visibleMcqs.forEach((mcq, idx) => {
     html += `
       <div class="mcq-card" id="card_${mcq.id}">
         <div class="mcq-meta-row">
           <span class="mcq-keyword-tag">${mcq.keyword}</span>
-          <span style="font-size: 11px; font-family: var(--font-mono); color: var(--text-muted);">Question ${idx + 1} of ${filteredMcqs.length}</span>
+          ${mcq.tag ? `<span class="mcq-cute-badge">${mcq.tag}</span>` : ''}
+          <span style="font-size: 11px; font-family: var(--font-mono); color: var(--text-muted); margin-left: auto;">Question ${idx + 1} of ${filteredMcqs.length}</span>
         </div>
         <p class="mcq-question-text">${mcq.question}</p>
         <div class="mcq-options-grid" id="options_${mcq.id}">
@@ -3427,11 +3432,30 @@ function renderMcqs(filterKeyword = 'all') {
     `;
   });
 
+  if (filteredMcqs.length > currentMcqDisplayLimit) {
+    html += `
+      <div style="text-align: center; margin: 20px 0;">
+        <button id="btnLoadMoreMcqs" class="mcq-load-more-btn">
+          <span>🍡 Load Next 25 Questions (${visibleMcqs.length} of ${filteredMcqs.length} loaded)</span>
+        </button>
+      </div>
+    `;
+  }
+
   container.innerHTML = html;
+
+  const btnMore = document.getElementById('btnLoadMoreMcqs');
+  if (btnMore) {
+    btnMore.addEventListener('click', () => {
+      currentMcqDisplayLimit += 25;
+      if (window.soundFX) window.soundFX.playPop();
+      renderMcqs(activeMcqFilter, false);
+    });
+  }
 
   // Bind option clicks
   container.querySelectorAll('.mcq-option-btn').forEach(btn => {
-    btn.addEventListener('click', (e) => {
+    btn.addEventListener('click', () => {
       const qid = btn.dataset.qid;
       const optIdx = parseInt(btn.dataset.optidx, 10);
       handleMcqAnswer(qid, optIdx);
@@ -3440,7 +3464,7 @@ function renderMcqs(filterKeyword = 'all') {
 }
 
 function handleMcqAnswer(qid, selectedIdx) {
-  const mcqs = window.FOUNDATIONS_DATA.mcqs;
+  const mcqs = window.MCQS_VAULT_500 || (window.FOUNDATIONS_DATA ? window.FOUNDATIONS_DATA.mcqs : []);
   const mcq = mcqs.find(m => m.id === qid);
   if (!mcq) return;
 
@@ -3455,13 +3479,15 @@ function handleMcqAnswer(qid, selectedIdx) {
   const isCorrect = (selectedIdx === mcq.correctIndex);
   if (isCorrect) {
     QuizState.score++;
+    if (window.soundFX) window.soundFX.playSuccess();
     document.getElementById('quizScoreCount').textContent = QuizState.score;
     optionBtns[selectedIdx].classList.add('opt-correct');
-    verdict.innerHTML = `<span style="color: #9ec5ad;">&check; Correct Execution Reasoning</span>`;
+    verdict.innerHTML = `<span style="color: #4ade80; font-weight: 700;">&check; Correct Reasoning! 🌸</span>`;
   } else {
+    if (window.soundFX) window.soundFX.playError();
     optionBtns[selectedIdx].classList.add('opt-wrong');
     optionBtns[mcq.correctIndex].classList.add('opt-correct');
-    verdict.innerHTML = `<span style="color: #c98877;">&cross; Incorrect</span> &mdash; Correct answer is <strong>Option ${String.fromCharCode(65 + mcq.correctIndex)}</strong>`;
+    verdict.innerHTML = `<span style="color: #fb7185; font-weight: 700;">&cross; Not quite!</span> &mdash; Correct answer is <strong>Option ${String.fromCharCode(65 + mcq.correctIndex)}</strong>`;
   }
 
   QuizState.answered++;

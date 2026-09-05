@@ -233,6 +233,58 @@
   --shadow-card-hover: 0 10px 25px -5px rgba(41, 37, 36, 0.08), 0 8px 10px -6px rgba(41, 37, 36, 0.04);
 }
 
+/* 7. Sakura Mochi (Delightful, Soft Rose & Lilac Tactile Theme) */
+[data-theme="sakura-mochi"] {
+  --bg-canvas: #151118;
+  --bg-surface: #1d1822;
+  --bg-surface-elevated: #26202d;
+  --bg-card: #201a26;
+  --bg-card-subtle: #292131;
+  --bg-hover: #33293e;
+  --bg-active: #40334e;
+
+  --border-subtle: rgba(244, 114, 182, 0.12);
+  --border-default: #392b45;
+  --border-muted: #2c2136;
+  --border-hover: #59426c;
+  --border-focus: #f472b6;
+
+  --text-primary: #fdf2f8;
+  --text-secondary: #f472b6;
+  --text-muted: #a797b3;
+
+  --status-success: #4ade80;
+  --status-info: #38bdf8;
+  --status-warning: #fbbf24;
+  --status-fail: #fb7185;
+}
+
+/* 8. Matcha Latte (Gentle Earthy Green, Calm & Organic) */
+[data-theme="matcha-latte"] {
+  --bg-canvas: #0f1511;
+  --bg-surface: #151e18;
+  --bg-surface-elevated: #1c2820;
+  --bg-card: #18231c;
+  --bg-card-subtle: #202d24;
+  --bg-hover: #293a2e;
+  --bg-active: #344a3b;
+
+  --border-subtle: rgba(134, 239, 172, 0.12);
+  --border-default: #2a3d30;
+  --border-muted: #202e24;
+  --border-hover: #405c48;
+  --border-focus: #86efac;
+
+  --text-primary: #f0fdf4;
+  --text-secondary: #86efac;
+  --text-muted: #85a28e;
+
+  --status-success: #22c55e;
+  --status-info: #38bdf8;
+  --status-warning: #facc15;
+  --status-fail: #f87171;
+}
+
 /* Light Theme Component Adaptations */
 [data-theme="paper-white"] .action-btn-primary,
 [data-theme="warm-cream"] .action-btn-primary {
@@ -2139,8 +2191,13 @@ body {
   border-radius: var(--radius-sm);
   text-align: left;
   cursor: pointer;
-  transition: var(--transition-fast);
+  transition: all 0.15s cubic-bezier(0.16, 1, 0.3, 1);
   line-height: 1.4;
+  position: relative;
+}
+
+.mcq-option-btn:active:not(:disabled) {
+  transform: scale(0.985);
 }
 
 .mcq-option-btn:hover:not(:disabled) {
@@ -2150,16 +2207,56 @@ body {
 }
 
 .mcq-option-btn.opt-correct {
-  background: rgba(139, 179, 156, 0.14) !important;
+  background: rgba(139, 179, 156, 0.18) !important;
   border-color: #10b981 !important;
   color: #10b981 !important;
   font-weight: 600;
+  box-shadow: 0 0 10px rgba(16, 185, 129, 0.2);
 }
 
 .mcq-option-btn.opt-wrong {
-  background: rgba(201, 136, 119, 0.14) !important;
-  border-color: #c98877 !important;
-  color: #f472b6 !important;
+  background: rgba(201, 136, 119, 0.18) !important;
+  border-color: #f43f5e !important;
+  color: #fb7185 !important;
+}
+
+.mcq-cute-badge {
+  font-family: var(--font-sans);
+  font-size: 10px;
+  font-weight: 600;
+  padding: 2px 8px;
+  border-radius: 9999px;
+  background: rgba(244, 114, 182, 0.12);
+  color: #f472b6;
+  border: 1px solid rgba(244, 114, 182, 0.3);
+  display: inline-flex;
+  align-items: center;
+  gap: 4px;
+}
+
+.mcq-load-more-btn {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: 8px;
+  margin: 16px auto;
+  padding: 11px 26px;
+  font-family: var(--font-sans);
+  font-size: 12.5px;
+  font-weight: 600;
+  border-radius: 8px;
+  background: var(--bg-surface-elevated);
+  border: 1px solid var(--border-default);
+  color: var(--text-primary);
+  cursor: pointer;
+  transition: all 0.15s ease;
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.2);
+}
+
+.mcq-load-more-btn:hover {
+  background: var(--bg-hover);
+  border-color: var(--border-focus);
+  transform: translateY(-1px);
 }
 
 .mcq-explanation-card {

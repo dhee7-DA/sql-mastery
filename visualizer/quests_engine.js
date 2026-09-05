@@ -507,5 +507,136 @@ window.QUESTS_DATA = [
       slot2: { correct: 'AND', options: ['AND', 'WHERE', 'OR', 'THEN'] }
     },
     explanation: "Filtering right-table attributes in the ON clause preserves all left-table rows with NULLs. Putting it in WHERE silently turns the query into an INNER JOIN!"
+  },
+
+  // ---------------------------------------------------------------------------
+  // LEVEL 21: The Statistical Spread (MAX & MIN Range)
+  // ---------------------------------------------------------------------------
+  {
+    id: 21,
+    title: 'Level 21: The Statistical Spread (MAX - MIN Range)',
+    subtitle: 'Calculate the salary compensation spread between the top earner and entry level.',
+    type: 'fill_blank',
+    category: 'Pillar 2: Aggregations',
+    codeTemplate: [
+      { text: 'SELECT department,\n       ', isBlank: false },
+      { text: '', isBlank: true, slotId: 'slot1', placeholder: '[ ___ ]' },
+      { text: '(salary) - ', isBlank: false },
+      { text: '', isBlank: true, slotId: 'slot2', placeholder: '[ ___ ]' },
+      { text: '(salary) AS salary_spread\nFROM Employees\nGROUP BY department;', isBlank: false }
+    ],
+    slots: {
+      slot1: { correct: 'MAX', options: ['MAX', 'PEAK', 'HIGH', 'TOP'] },
+      slot2: { correct: 'MIN', options: ['MIN', 'BASE', 'LOW', 'BOTTOM'] }
+    },
+    explanation: "Subtracting MIN(salary) from MAX(salary) directly computes the statistical range of compensation within each department."
+  },
+
+  // ---------------------------------------------------------------------------
+  // LEVEL 22: The NULL Trap: COUNT(*) vs COUNT(column)
+  // ---------------------------------------------------------------------------
+  {
+    id: 22,
+    title: 'Level 22: The NULL Trap (COUNT(*) vs COUNT(col))',
+    subtitle: 'Verify that COUNT(bonus) skips unassigned bonuses while COUNT(*) tallies all staff.',
+    type: 'fill_blank',
+    category: 'Pillar 2: Aggregations',
+    codeTemplate: [
+      { text: 'SELECT department,\n       COUNT(', isBlank: false },
+      { text: '', isBlank: true, slotId: 'slot1', placeholder: '[ ___ ]' },
+      { text: ') AS total_staff,\n       COUNT(', isBlank: false },
+      { text: '', isBlank: true, slotId: 'slot2', placeholder: '[ ___ ]' },
+      { text: ') AS bonus_recipients\nFROM Employees\nGROUP BY department;', isBlank: false }
+    ],
+    slots: {
+      slot1: { correct: '*', options: ['*', 'ALL', '1', 'name'] },
+      slot2: { correct: 'bonus', options: ['bonus', '*', '1', 'salary'] }
+    },
+    explanation: "COUNT(*) counts every physical row in the partition, while COUNT(bonus) strictly tallies employees who have a non-NULL bonus value."
+  },
+
+  // ---------------------------------------------------------------------------
+  // LEVEL 23: Multi-Dimensional GROUP BY (Dept & Location)
+  // ---------------------------------------------------------------------------
+  {
+    id: 23,
+    title: 'Level 23: Multi-Dimensional GROUP BY',
+    subtitle: 'Group headcount across both department and office location simultaneously.',
+    type: 'fill_blank',
+    category: 'Pillar 2: Aggregations',
+    codeTemplate: [
+      { text: 'SELECT department, office_location,\n       COUNT(*) AS office_headcount,\n       ROUND(AVG(salary), 2) AS avg_location_pay\nFROM Employees\n', isBlank: false },
+      { text: '', isBlank: true, slotId: 'slot1', placeholder: '[ ___ ]' },
+      { text: ' ', isBlank: false },
+      { text: '', isBlank: true, slotId: 'slot2', placeholder: '[ ___ ]' },
+      { text: ' department, office_location\nORDER BY office_headcount DESC;', isBlank: false }
+    ],
+    slots: {
+      slot1: { correct: 'GROUP', options: ['GROUP', 'PARTITION', 'ORDER', 'CLUSTER'] },
+      slot2: { correct: 'BY', options: ['BY', 'ON', 'OVER', 'WITH'] }
+    },
+    explanation: "Grouping by multiple columns partitions data into composite buckets, calculating metrics for every unique combination of (department, office_location)."
+  },
+
+  // ---------------------------------------------------------------------------
+  // LEVEL 24: Spot the Bug (The ONLY_FULL_GROUP_BY Trap)
+  // ---------------------------------------------------------------------------
+  {
+    id: 24,
+    title: 'Level 24: Spot the Bug (ONLY_FULL_GROUP_BY)',
+    subtitle: 'Fix the non-aggregated column in the projection list that causes database syntax failure!',
+    type: 'spot_bug',
+    category: 'Interview Puzzles',
+    testRow: { department: 'Engineering', name: 'Alice', salary: 95000 },
+    buggyQuery: `SELECT department, name, AVG(salary) AS avg_sal\nFROM Employees\nGROUP BY department;`,
+    fixedQuery: `SELECT department, AVG(salary) AS avg_sal\nFROM Employees\nGROUP BY department;`,
+    bugExplanation: 'Column "name" is neither wrapped in an aggregate function nor included in the GROUP BY clause. In standard SQL (ONLY_FULL_GROUP_BY), this causes an error because multiple names exist per department and the engine cannot guess which one to return.',
+    fixedExplanation: 'Excellent! By removing the unaggregated "name" column from the projection, the query cleanly returns one summary row per department.'
+  },
+
+  // ---------------------------------------------------------------------------
+  // LEVEL 25: Conditional Aggregation (Pivoting with CASE)
+  // ---------------------------------------------------------------------------
+  {
+    id: 25,
+    title: 'Level 25: Conditional Aggregation (Pivoting with CASE)',
+    subtitle: 'Count high-earning seniors earning >= $90,000 using conditional SUM.',
+    type: 'fill_blank',
+    category: 'Pillar 2: Aggregations',
+    codeTemplate: [
+      { text: 'SELECT department,\n       ', isBlank: false },
+      { text: '', isBlank: true, slotId: 'slot1', placeholder: '[ ___ ]' },
+      { text: '(CASE WHEN salary >= 90000 THEN ', isBlank: false },
+      { text: '', isBlank: true, slotId: 'slot2', placeholder: '[ ___ ]' },
+      { text: ' ELSE 0 END) AS high_earners_count\nFROM Employees\nGROUP BY department;', isBlank: false }
+    ],
+    slots: {
+      slot1: { correct: 'SUM', options: ['SUM', 'COUNT', 'AVG', 'TOTAL'] },
+      slot2: { correct: '1', options: ['1', 'salary', 'TRUE', '100'] }
+    },
+    explanation: "Summing 1 when the condition matches and 0 otherwise is the universal SQL pattern for conditional frequency counting."
+  },
+
+  // ---------------------------------------------------------------------------
+  // LEVEL 26: Compound HAVING Gatekeeper
+  // ---------------------------------------------------------------------------
+  {
+    id: 26,
+    title: 'Level 26: Compound HAVING Gatekeeper',
+    subtitle: 'Filter for departments that have both at least 2 staff AND an average salary above $75,000.',
+    type: 'fill_blank',
+    category: 'Pillar 2: Aggregations',
+    codeTemplate: [
+      { text: 'SELECT department, COUNT(*) AS headcount, AVG(salary) AS avg_pay\nFROM Employees\nGROUP BY department\n', isBlank: false },
+      { text: '', isBlank: true, slotId: 'slot1', placeholder: '[ ___ ]' },
+      { text: ' COUNT(*) >= 2\n  ', isBlank: false },
+      { text: '', isBlank: true, slotId: 'slot2', placeholder: '[ ___ ]' },
+      { text: ' AVG(salary) > 75000;', isBlank: false }
+    ],
+    slots: {
+      slot1: { correct: 'HAVING', options: ['HAVING', 'WHERE', 'WHEN', 'FILTER'] },
+      slot2: { correct: 'AND', options: ['AND', 'OR', 'THEN', 'WITH'] }
+    },
+    explanation: "HAVING supports boolean operators (AND, OR) to filter aggregated groups across multiple statistical thresholds simultaneously."
   }
 ];

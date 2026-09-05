@@ -8,7 +8,7 @@
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
   <link href="https://fonts.googleapis.com/css2?family=Geist+Mono:wght@400;500;600&family=Geist:wght@300;400;500;600;700&display=swap" rel="stylesheet">
-  <link rel="stylesheet" href="style.css?v=7">
+  <link rel="stylesheet" href="style.css?v=9">
 </head>
 <body>
   <div class="app-layout">
@@ -64,6 +64,8 @@
             <option value="warm-obsidian">🪵 Warm Obsidian</option>
             <option value="paper-white">☀️ Paper White</option>
             <option value="warm-cream">☕ Warm Cream</option>
+            <option value="sakura-mochi">🌸 Sakura Mochi</option>
+            <option value="matcha-latte">🍵 Matcha Latte</option>
           </select>
         </div>
         <button id="btnRunQuery" class="action-btn action-btn-primary">
@@ -526,8 +528,8 @@
     <div class="curriculum-container">
       <div class="curriculum-header">
         <div>
-          <h2 class="view-title">Keyword Knowledge Checks &amp; MCQs</h2>
-          <p class="view-subtitle">Interactive technical checks on physical execution sequence, NULL semantics, and interview gotchas.</p>
+          <h2 class="view-title">The 500 Master MCQ Technical Vault</h2>
+          <p class="view-subtitle">500 deep technical checks across 10 core SQL keywords on physical execution sequence, NULL semantics, and senior interview gotchas.</p>
         </div>
         <div class="quiz-header-right">
           <div class="quiz-score-badge">
@@ -674,7 +676,7 @@
         <div class="quest-progress-badge" style="display: flex; align-items: center; gap: 12px;">
           <select id="questDirectLevelSelect" class="clean-select" style="background: #09090b; border: 1px solid var(--border-default); color: #fff; font-family: var(--font-mono); font-size: 11px; padding: 4px 8px; border-radius: var(--radius-sm); max-width: 220px;"></select>
           <div>
-            <span id="questProgressText" style="font-family: var(--font-mono); font-size: 11px; color: #9ec5ad; font-weight: 600;">Level 1 of 20</span>
+            <span id="questProgressText" style="font-family: var(--font-mono); font-size: 11px; color: #9ec5ad; font-weight: 600;">Level 1 of 26</span>
             <div class="quest-progress-bar-wrap">
               <div class="quest-progress-bar-fill" id="questProgressBarFill" style="width: 5%;"></div>
             </div>
@@ -813,8 +815,9 @@
 <script src="enterprise_erd_data.js"></script>
 <script src="case_simulator_engine.js"></script>
 <script src="foundations_curriculum.js"></script>
+<script src="mcqs_vault_500.js"></script>
 <script src="audio_fx.js"></script>
 <script src="study_library_data.js"></script>
-<script src="app.js?v=7"></script>
+<script src="app.js?v=8"></script>
 </body>
 </html>
