@@ -109,89 +109,121 @@ window.CASE_DOSSIER_ENGINE = (() => {
     }
   };
 
-  // FULL-SPECTRUM SQL TOKENIZER & HIGHLIGHTER (ZERO PLAIN WHITE TEXT)
+  // FULL-SPECTRUM SQL TOKENIZER & HIGHLIGHTER (ZERO PLAIN WHITE TEXT, ZERO CORRUPTION)
   function highlightSQL(sql) {
     if (!sql) return '';
 
-    // Step 1: Extract string literals and replace with unique placeholders
-    const strings = [];
-    let text = sql.replace(/'([^'\\]*(\\.[^'\\]*)*)'/g, (match) => {
-      strings.push(match);
-      return `___SQL_STR_${strings.length - 1}___`;
-    });
+    const KEYWORD_COLORS = {
+      'SELECT': { color: '#38bdf8', meaning: 'SELECT [Choose Columns]' },
+      'FROM': { color: '#c084fc', meaning: 'FROM [Table Source]' },
+      'WHERE': { color: '#34d399', meaning: 'WHERE [Row Filter]' },
+      'JOIN': { color: '#f472b6', meaning: 'JOIN [Combine Tables]' },
+      'INNER JOIN': { color: '#f472b6', meaning: 'INNER JOIN [Matching Rows Only]' },
+      'LEFT JOIN': { color: '#f472b6', meaning: 'LEFT JOIN [Keep All Left Rows]' },
+      'RIGHT JOIN': { color: '#f472b6', meaning: 'RIGHT JOIN [Keep All Right Rows]' },
+      'FULL JOIN': { color: '#f472b6', meaning: 'FULL JOIN [Keep All Rows from Both]' },
+      'CROSS JOIN': { color: '#f472b6', meaning: 'CROSS JOIN [Cartesian Product]' },
+      'ON': { color: '#c084fc', meaning: 'ON [Join Condition]' },
+      'AND': { color: '#a78bfa', meaning: 'AND [Both Must Be True]' },
+      'OR': { color: '#f59e0b', meaning: 'OR [Either Can Be True]' },
+      'NOT': { color: '#f87171', meaning: 'NOT [Invert Condition]' },
+      'IN': { color: '#a78bfa', meaning: 'IN [Value in Set List]' },
+      'LIKE': { color: '#fb7185', meaning: 'LIKE [Pattern Match]' },
+      'BETWEEN': { color: '#a78bfa', meaning: 'BETWEEN [Range Check: Low AND High]' },
+      'IS': { color: '#a78bfa', meaning: 'IS [Null State Check]' },
+      'NULL': { color: '#f87171', meaning: 'NULL [Missing / Unknown Value]' },
+      'ORDER BY': { color: '#fbbf24', meaning: 'ORDER BY [Sort Sequence]' },
+      'ORDER': { color: '#fbbf24', meaning: 'ORDER [Sort Sequence]' },
+      'BY': { color: '#fbbf24', meaning: 'BY [Sort Specifier]' },
+      'GROUP BY': { color: '#fbbf24', meaning: 'GROUP BY [Aggregate Buckets]' },
+      'GROUP': { color: '#fbbf24', meaning: 'GROUP [Bucket Key]' },
+      'HAVING': { color: '#f59e0b', meaning: 'HAVING [Group Aggregation Filter]' },
+      'LIMIT': { color: '#38bdf8', meaning: 'LIMIT [Slice First N Rows]' },
+      'OFFSET': { color: '#38bdf8', meaning: 'OFFSET [Skip First N Rows]' },
+      'CASE': { color: '#fbbf24', meaning: 'CASE [Conditional Expression]' },
+      'WHEN': { color: '#38bdf8', meaning: 'WHEN [Condition Branch]' },
+      'THEN': { color: '#34d399', meaning: 'THEN [Result if True]' },
+      'ELSE': { color: '#f87171', meaning: 'ELSE [Fallback Value]' },
+      'END': { color: '#fbbf24', meaning: 'END [Close CASE Expression]' },
+      'AS': { color: '#38bdf8', meaning: 'AS [Rename Output Column]' },
+      'DISTINCT': { color: '#38bdf8', meaning: 'DISTINCT [Deduplicate Identical Rows]' },
+      'ASC': { color: '#a3e635', meaning: 'ASC [Ascending: Small to Large / A-Z]' },
+      'DESC': { color: '#fb7185', meaning: 'DESC [Descending: Large to Small / Z-A]' },
+      'COUNT': { color: '#38bdf8', meaning: 'COUNT [Count Number of Rows]' },
+      'SUM': { color: '#38bdf8', meaning: 'SUM [Add Column Numbers]' },
+      'AVG': { color: '#38bdf8', meaning: 'AVG [Average Mean Value]' },
+      'MIN': { color: '#38bdf8', meaning: 'MIN [Smallest Value]' },
+      'MAX': { color: '#38bdf8', meaning: 'MAX [Largest Value]' },
+      'LENGTH': { color: '#38bdf8', meaning: 'LENGTH [Count Characters]' },
+      'RIGHT': { color: '#38bdf8', meaning: 'RIGHT [Extract Suffix Characters]' },
+      'LEFT': { color: '#38bdf8', meaning: 'LEFT [Extract Prefix Characters]' },
+      'SUBSTRING': { color: '#38bdf8', meaning: 'SUBSTRING [Extract Substring Slice]' },
+      'CONCAT': { color: '#38bdf8', meaning: 'CONCAT [Combine Text Strings]' },
+      'REGEXP': { color: '#fb7185', meaning: 'REGEXP [Regular Expression]' },
+      'OVER': { color: '#c084fc', meaning: 'OVER [Window Function Boundary]' },
+      'PARTITION': { color: '#c084fc', meaning: 'PARTITION BY [Window Buckets]' },
+      'ROW_NUMBER': { color: '#38bdf8', meaning: 'ROW_NUMBER [Unique 1..N Row Rank]' },
+      'DENSE_RANK': { color: '#38bdf8', meaning: 'DENSE_RANK [Rank Without Gaps]' },
+      'RANK': { color: '#38bdf8', meaning: 'RANK [Rank with Tied Gaps]' },
+      'TRUE': { color: '#10b981', meaning: 'Boolean TRUE (1)' },
+      'FALSE': { color: '#ef4444', meaning: 'Boolean FALSE (0)' }
+    };
 
-    // Step 2: Escape HTML special characters
-    text = text
-      .replace(/&/g, '&amp;')
-      .replace(/</g, '&lt;')
-      .replace(/>/g, '&gt;');
+    function esc(s) {
+      return s.replace(/&/g, '&amp;').replace(/</g, '&lt;').replace(/>/g, '&gt;').replace(/"/g, '&quot;');
+    }
 
-    // Step 3: Highlight Booleans (Ruby Red for FALSE, Emerald Green for TRUE)
-    text = text.replace(/\bFALSE\b/gi, '<span class="sql-token-bool" style="color: #ef4444; font-weight: 700;" title="Boolean: 0 / False">FALSE</span>');
-    text = text.replace(/\bTRUE\b/gi, '<span class="sql-token-bool" style="color: #10b981; font-weight: 700;" title="Boolean: 1 / True">TRUE</span>');
+    const tokenRegex = /('(?:[^'\\]|\\.)*')|(\b(?:ORDER\s+BY|GROUP\s+BY|IS\s+NOT\s+NULL|IS\s+NULL)\b)|([a-zA-Z_][a-zA-Z0-9_]*)|(\d+(?:\.\d+)?)|(>=|<=|!=|<>|=|>|<|\+|-|\*|\/)|([,;()])/gi;
 
-    // Step 4: Highlight Multi-Word Keywords
-    text = text.replace(/\bIS\s+NOT\s+NULL\b/gi, '<span class="sql-token-kw" style="color: #818cf8; font-weight: 800; cursor: help; text-decoration: underline dotted;" title="IS NOT NULL: Value must exist">IS NOT NULL</span>');
-    text = text.replace(/\bIS\s+NULL\b/gi, '<span class="sql-token-kw" style="color: #f87171; font-weight: 800; cursor: help; text-decoration: underline dotted;" title="IS NULL: Value is missing/unknown">IS NULL</span>');
-    text = text.replace(/\bORDER\s+BY\b/gi, '<span class="sql-token-kw" style="color: #fbbf24; font-weight: 800; cursor: help; text-decoration: underline dotted;" title="ORDER BY [Sort rows in sequence]">ORDER BY</span>');
+    let lastIndex = 0;
+    let result = '';
+    let match;
+    let lastKeyword = '';
 
-    // Step 5: Highlight Table Names (words immediately after FROM or JOIN)
-    text = text.replace(/\b(FROM|JOIN)\s+([a-zA-Z0-9_]+)\b/gi, (match, kw, tbl) => {
-      const kwUpper = kw.toUpperCase();
-      const kwColor = SQL_KEYWORDS[kwUpper] ? SQL_KEYWORDS[kwUpper].color : '#c084fc';
-      return `<span class="sql-token-kw" style="color: ${kwColor}; font-weight: 800;" title="${escapeHtml(SQL_KEYWORDS[kwUpper]?.meaning || 'Table Source')}">${kwUpper}</span> <span class="sql-token-table" style="color: #f472b6; font-weight: 700; text-shadow: 0 0 8px rgba(244,114,182,0.25);" title="Table Name [The file on disk storing records]">🏷️ ${tbl}</span>`;
-    });
-
-    // Step 6: Highlight Column Aliases (words immediately after AS)
-    text = text.replace(/\bAS\s+([a-zA-Z0-9_]+)\b/gi, (match, alias) => {
-      return `<span class="sql-token-kw" style="color: #38bdf8; font-weight: 800;" title="AS [Rename Output Column]">AS</span> <span class="sql-token-alias" style="color: #2dd4bf; font-weight: 700; text-decoration: underline wavy #2dd4bf;" title="Column Alias [Renamed output field]">✨ ${alias}</span>`;
-    });
-
-    // Step 7: Highlight all other Keywords
-    Object.keys(SQL_KEYWORDS).forEach(kw => {
-      if (kw === 'ORDER BY' || kw === 'ORDER' || kw === 'BY' || kw === 'FROM' || kw === 'JOIN' || kw === 'AS') return;
-      const regex = new RegExp(`\\b(${kw})\\b`, 'gi');
-      const info = SQL_KEYWORDS[kw];
-      text = text.replace(regex, match => {
-        return `<span class="sql-token-kw" style="color: ${info.color}; font-weight: 800; cursor: help; text-decoration: underline dotted;" title="${escapeHtml(info.meaning)}">${match.toUpperCase()}</span>`;
-      });
-    });
-
-    // Handle remaining ORDER or BY
-    text = text.replace(/\b(ORDER)\b/gi, `<span class="sql-token-kw" style="color: #fbbf24; font-weight: 800;">ORDER</span>`);
-    text = text.replace(/\b(BY)\b/gi, `<span class="sql-token-kw" style="color: #fbbf24; font-weight: 800;">BY</span>`);
-
-    // Step 8: Highlight Numbers (Lime Green)
-    text = text.replace(/\b(\d+(\.\d+)?)\b/g, match => {
-      return `<span class="sql-token-num" style="color: #a3e635; font-weight: 700;" title="Numeric Value">${match}</span>`;
-    });
-
-    // Step 9: Highlight Operators (Coral Red)
-    text = text.replace(/(&gt;=|&lt;=|!=|&lt;&gt;|=|&gt;|&lt;|\+|-|\*|\/)/g, match => {
-      return `<span class="sql-token-op" style="color: #fb7185; font-weight: 700;" title="Operator [Comparison or Math]">${match}</span>`;
-    });
-
-    // Step 10: Highlight all remaining unstyled identifier words as Column Names (Soft Ice Mint/Cyan)
-    // To do this cleanly, parse text outside of HTML tags and placeholders
-    text = text.replace(/(<[^>]+>|___SQL_STR_\d+___)|(\b[a-zA-Z_][a-zA-Z0-9_]*\b)/g, (match, tagOrPlaceholder, identifier) => {
-      if (tagOrPlaceholder) return tagOrPlaceholder;
-      if (identifier) {
-        return `<span class="sql-token-col" style="color: #7dd3fc; font-weight: 600;" title="Column [Field in table]">${identifier}</span>`;
+    while ((match = tokenRegex.exec(sql)) !== null) {
+      if (match.index > lastIndex) {
+        result += esc(sql.slice(lastIndex, match.index));
       }
-      return match;
-    });
+      lastIndex = tokenRegex.lastIndex;
 
-    // Step 11: Highlight Punctuation (commas, semicolons, parentheses) in Steel Gray
-    text = text.replace(/([,;()])/g, '<span class="sql-token-punct" style="color: #94a3b8; font-weight: 600;">$1</span>');
+      const [raw, strVal, multiKwVal, wordVal, numVal, opVal, punctVal] = match;
 
-    // Step 12: Restore Strings with warm butterscotch gold color
-    strings.forEach((str, idx) => {
-      const escapedStr = escapeHtml(str);
-      const replacement = `<span class="sql-token-str" style="color: #fde68a; font-weight: 600;" title="Text String Literal">${escapedStr}</span>`;
-      text = text.replace(`___SQL_STR_${idx}___`, replacement);
-    });
+      if (strVal !== undefined) {
+        result += `<span class="sql-token-str" style="color: #fde68a; font-weight: 600;" title="Text String Literal">${esc(strVal)}</span>`;
+      } else if (multiKwVal !== undefined) {
+        const kwNorm = multiKwVal.replace(/\s+/g, ' ').toUpperCase();
+        const kwInfo = KEYWORD_COLORS[kwNorm] || { color: '#fbbf24', meaning: kwNorm };
+        result += `<span class="sql-token-kw" style="color: ${kwInfo.color}; font-weight: 800; cursor: help; text-decoration: underline dotted;" title="${esc(kwInfo.meaning)}">${esc(multiKwVal.toUpperCase())}</span>`;
+        lastKeyword = kwNorm;
+      } else if (wordVal !== undefined) {
+        const wUpper = wordVal.toUpperCase();
+        if (KEYWORD_COLORS[wUpper]) {
+          const kwInfo = KEYWORD_COLORS[wUpper];
+          result += `<span class="sql-token-kw" style="color: ${kwInfo.color}; font-weight: 800; cursor: help; text-decoration: underline dotted;" title="${esc(kwInfo.meaning)}">${wUpper}</span>`;
+          lastKeyword = wUpper;
+        } else if (lastKeyword === 'FROM' || lastKeyword === 'JOIN') {
+          result += `<span class="sql-token-table" style="color: #f472b6; font-weight: 700; text-shadow: 0 0 8px rgba(244,114,182,0.25);" title="Table Name [File on disk storing records]">🏷️ ${esc(wordVal)}</span>`;
+          lastKeyword = '';
+        } else if (lastKeyword === 'AS') {
+          result += `<span class="sql-token-alias" style="color: #2dd4bf; font-weight: 700; text-decoration: underline wavy #2dd4bf;" title="Column Alias [Renamed field]">✨ ${esc(wordVal)}</span>`;
+          lastKeyword = '';
+        } else {
+          result += `<span class="sql-token-col" style="color: #67e8f9; font-weight: 600;" title="Column [Field in table]">${esc(wordVal)}</span>`;
+        }
+      } else if (numVal !== undefined) {
+        result += `<span class="sql-token-num" style="color: #a3e635; font-weight: 700;" title="Numeric Value">${esc(numVal)}</span>`;
+      } else if (opVal !== undefined) {
+        result += `<span class="sql-token-op" style="color: #fb7185; font-weight: 700;" title="Operator [Comparison or Math]">${esc(opVal)}</span>`;
+      } else if (punctVal !== undefined) {
+        result += `<span class="sql-token-punct" style="color: #94a3b8; font-weight: 600;">${esc(punctVal)}</span>`;
+      }
+    }
 
-    return text;
+    if (lastIndex < sql.length) {
+      result += esc(sql.slice(lastIndex));
+    }
+
+    return result;
   }
 
   // ELI5 Story Metaphors for every case study

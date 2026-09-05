@@ -1436,6 +1436,15 @@ function initVisualizerApp() {
 // 10. CURRICULUM MODULE & VIEW ROUTING CONTROLLER
 // =============================================================================
 
+let currentCaseSectionFilter = 'all';
+let currentCaseIndustryFilter = 'all';
+let currentCaseDiffFilter = 'all';
+let currentCaseSortOrder = 'diff_asc';
+let currentCaseSearchQuery = '';
+let currentCaseMode = 'study'; // 'study' or 'challenge'
+let activeDossierCaseId = 1;
+let currentCaseDisplayLimit = 30;
+
 function switchMainView(targetId) {
   if (window.soundFX) window.soundFX.playWhoosh();
   document.querySelectorAll('.nav-tab').forEach(t => t.classList.remove('active'));
@@ -1504,6 +1513,7 @@ function initCurriculumSystem() {
       document.querySelectorAll('.case-section-btn').forEach(b => b.classList.remove('active'));
       btn.classList.add('active');
       if (window.soundFX) window.soundFX.playPop();
+      currentCaseDisplayLimit = 30;
       renderCaseStudies(currentCaseIndustryFilter, btn.dataset.section, currentCaseDiffFilter, currentCaseSortOrder);
     });
   });
@@ -1514,6 +1524,7 @@ function initCurriculumSystem() {
       document.querySelectorAll('.case-diff-filter-btn').forEach(b => b.classList.remove('active'));
       btn.classList.add('active');
       if (window.soundFX) window.soundFX.playPop();
+      currentCaseDisplayLimit = 30;
       renderCaseStudies(currentCaseIndustryFilter, currentCaseSectionFilter, btn.dataset.diff, currentCaseSortOrder);
     });
   });
@@ -1524,6 +1535,7 @@ function initCurriculumSystem() {
     caseSortSelect.addEventListener('change', (e) => {
       currentCaseSortOrder = e.target.value;
       if (window.soundFX) window.soundFX.playPop();
+      currentCaseDisplayLimit = 30;
       renderCaseStudies(currentCaseIndustryFilter, currentCaseSectionFilter, currentCaseDiffFilter, currentCaseSortOrder);
     });
   }
@@ -1534,6 +1546,7 @@ function initCurriculumSystem() {
       document.querySelectorAll('.case-filter-btn').forEach(b => b.classList.remove('active'));
       btn.classList.add('active');
       if (window.soundFX) window.soundFX.playPop();
+      currentCaseDisplayLimit = 30;
       renderCaseStudies(btn.dataset.industry, currentCaseSectionFilter, currentCaseDiffFilter, currentCaseSortOrder);
     });
   });
@@ -3357,14 +3370,6 @@ function escapeHtml(str) {
     .replace(/'/g, '&#039;');
 }
 
-let currentCaseSectionFilter = 'all';
-let currentCaseIndustryFilter = 'all';
-let currentCaseDiffFilter = 'all';
-let currentCaseSortOrder = 'diff_asc';
-let currentCaseSearchQuery = '';
-let currentCaseMode = 'study'; // 'study' or 'challenge'
-let activeDossierCaseId = 1;
-
 function renderCaseStudies(
   industryFilter = currentCaseIndustryFilter,
   sectionFilter = currentCaseSectionFilter,
@@ -3455,8 +3460,10 @@ function renderCaseStudies(
   }
 
   let html = '';
+  const totalMatching = cases.length;
+  const visibleCases = cases.slice(0, currentCaseDisplayLimit);
 
-  cases.forEach(cs => {
+  visibleCases.forEach(cs => {
     const isSolved = window.CASE_BLANKS_ENGINE && window.CASE_BLANKS_ENGINE.isSolved(cs.id);
     const challenge = window.CASE_BLANKS_ENGINE ? window.CASE_BLANKS_ENGINE.createChallenge(cs) : null;
 
@@ -3559,7 +3566,35 @@ function renderCaseStudies(
     `;
   });
 
+  if (totalMatching > currentCaseDisplayLimit) {
+    html += `
+      <div style="grid-column: 1 / -1; display: flex; justify-content: center; gap: 12px; padding: 24px 10px; align-items: center; flex-wrap: wrap;">
+        <button class="btn-solve-in-studio" id="btnLoadMoreCases" style="padding: 10px 24px; font-size: 13px; font-weight: 700;">
+          ⬇️ Load Next 30 Cases (${Math.min(currentCaseDisplayLimit, totalMatching)} of ${totalMatching} Shown)
+        </button>
+        <button class="card-nav-btn" id="btnLoadAllCases" style="padding: 10px 18px; font-size: 12px;">
+          ⚡ Load All ${totalMatching} Cases
+        </button>
+      </div>
+    `;
+  }
+
   container.innerHTML = html;
+
+  const btnMore = container.querySelector('#btnLoadMoreCases');
+  if (btnMore) {
+    btnMore.addEventListener('click', () => {
+      currentCaseDisplayLimit += 30;
+      renderCaseStudies();
+    });
+  }
+  const btnAll = container.querySelector('#btnLoadAllCases');
+  if (btnAll) {
+    btnAll.addEventListener('click', () => {
+      currentCaseDisplayLimit = totalMatching;
+      renderCaseStudies();
+    });
+  }
 
   // Event Listeners for Open Domain ERD Diagram
   container.querySelectorAll('.btn-open-domain-erd').forEach(btn => {
