@@ -1529,6 +1529,22 @@ function initCurriculumSystem() {
     });
   });
 
+  // Quick Jump Aggregations Hub Menu
+  const qjBtn = document.getElementById('quickJumpAggregationsBtn');
+  const qjMenu = document.getElementById('quickJumpAggregationsMenu');
+  if (qjBtn && qjMenu) {
+    qjBtn.addEventListener('click', (e) => {
+      e.stopPropagation();
+      qjMenu.classList.toggle('open');
+      if (window.soundFX) window.soundFX.playPop();
+    });
+    document.addEventListener('click', (e) => {
+      if (!qjMenu.contains(e.target) && e.target !== qjBtn) {
+        qjMenu.classList.remove('open');
+      }
+    });
+  }
+
   // Initialize the Guided Lab default view, Quests, Problem Deconstructor & Study Library
   initGuidedLab();
   initQuestsSystem();
@@ -3177,7 +3193,24 @@ function renderStudyLibrary(targetId = null) {
 
   const isCurrentDone = completedSections.has(activeItem.id);
 
+  const quickPillsHtml = `
+    <div class="study-quick-nav-bar">
+      <span class="study-quick-label">⚡ TOPIC JUMP:</span>
+      <div class="study-quick-pills">
+        ${library.map(sec => {
+          const isActive = sec.id === activeItem.id;
+          const isAgg = sec.id === 'sec_aggregations';
+          const shortName = sec.title.replace(/^\\d+\\.\\s*/, '').split('(')[0].trim();
+          return `<button class="study-quick-pill ${isActive ? 'active' : ''} ${isAgg ? 'pill-aggregations-highlight' : ''}" onclick="selectStudySection('${sec.id}')">
+            ${isAgg ? '🔥 ' : ''}${sec.icon} ${shortName}
+          </button>`;
+        }).join('')}
+      </div>
+    </div>
+  `;
+
   mainReader.innerHTML = `
+    ${quickPillsHtml}
     <div class="study-header-banner">
       <div class="study-meta-row">
         <span class="clause-pill ${activeItem.badgeClass}">${activeItem.badge}</span>
@@ -3239,6 +3272,44 @@ function selectStudySection(sectionId) {
   activeStudySectionId = sectionId;
   renderStudyLibrary(sectionId);
 }
+
+window.jumpToAggregationsSection = function(destination) {
+  const menu = document.getElementById('quickJumpAggregationsMenu');
+  if (menu) menu.classList.remove('open');
+  if (window.soundFX) window.soundFX.playPop();
+
+  if (destination === 'cases') {
+    switchMainView('viewCases');
+    const sec6Btn = document.querySelector('.case-section-btn[data-section*="Section 6"]');
+    if (sec6Btn) {
+      document.querySelectorAll('.case-section-btn').forEach(b => b.classList.remove('active'));
+      sec6Btn.classList.add('active');
+    }
+    currentCaseDisplayLimit = 30;
+    renderCaseStudies(currentCaseIndustryFilter, 'Section 6: Aggregations, Statistical Metrics & GROUP BY', currentCaseDiffFilter, currentCaseSortOrder);
+    const panel = document.getElementById('viewCases');
+    if (panel) panel.scrollTop = 0;
+  } else if (destination === 'docs') {
+    switchMainView('viewExplainer');
+    selectStudySection('sec_aggregations');
+    const panel = document.getElementById('viewExplainer');
+    if (panel) panel.scrollTop = 0;
+  } else if (destination === 'lab') {
+    switchMainView('viewGuidedLab');
+    switchTrack('trackAggregations');
+    const panel = document.getElementById('viewGuidedLab');
+    if (panel) panel.scrollTop = 0;
+  } else if (destination === 'studio') {
+    switchMainView('viewStudio');
+    const presetSelect = document.getElementById('presetSelect');
+    if (presetSelect) {
+      presetSelect.value = 'preset_dept_payroll';
+      presetSelect.dispatchEvent(new Event('change'));
+    }
+    const panel = document.getElementById('viewStudio');
+    if (panel) panel.scrollTop = 0;
+  }
+};
 
 function switchNavTab(targetViewId) {
   if (window.soundFX) window.soundFX.playWhoosh();
@@ -3423,7 +3494,7 @@ function renderCaseStudies(
   const solvedCountSpan = document.getElementById('casesSolvedCount');
   if (!container) return;
 
-  let allCases = window.ALL_500_CASE_STUDIES || window.ALL_300_CASE_STUDIES || [];
+  let allCases = window.ALL_600_CASE_STUDIES || window.ALL_500_CASE_STUDIES || window.ALL_300_CASE_STUDIES || [];
   let cases = allCases.slice();
 
   // 1. Filter by Section

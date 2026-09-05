@@ -84,27 +84,27 @@
         </button>
         <button class="nav-tab" data-view="viewQuests" onclick="switchMainView('viewQuests')">
           <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polygon points="13 2 3 14 12 14 11 22 21 10 12 10 13 2"></polygon></svg>
-          🎮 Interactive Quests (Duolingo Mode)
+          Quests
         </button>
         <button class="nav-tab" data-view="viewExplainer" onclick="switchMainView('viewExplainer')">
           <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M4 19.5A2.5 2.5 0 0 1 6.5 17H20"></path><path d="M6.5 2H20v20H6.5A2.5 2.5 0 0 1 4 19.5v-15A2.5 2.5 0 0 1 6.5 2z"></path></svg>
-          📚 Study Material &amp; Docs
+          Study Docs
         </button>
         <button class="nav-tab" data-view="viewDeconstructor" onclick="switchMainView('viewDeconstructor')">
           <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="11" cy="11" r="8"></circle><line x1="21" y1="21" x2="16.65" y2="16.65"></line></svg>
-          Problem Deconstructor
+          Deconstructor
         </button>
         <button class="nav-tab" data-view="viewMcqs" onclick="switchMainView('viewMcqs')">
           <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M9 11l3 3L22 4"></path><path d="M21 12v7a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h11"></path></svg>
-          Interactive MCQs
+          MCQs
         </button>
         <button class="nav-tab" data-view="viewCases" onclick="switchMainView('viewCases')">
           <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="2" y="7" width="20" height="14" rx="2" ry="2"></rect><path d="M16 21V5a2 2 0 0 0-2-2h-4a2 2 0 0 0-2 2v16"></path></svg>
-          Case Studies (500)
+          Case Studies (600)
         </button>
         <button class="nav-tab" data-view="viewEnterpriseERD" onclick="switchMainView('viewEnterpriseERD')">
           <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="3" y="3" width="7" height="7"></rect><rect x="14" y="3" width="7" height="7"></rect><rect x="14" y="14" width="7" height="7"></rect><rect x="3" y="14" width="7" height="7"></rect><line x1="10" y1="6.5" x2="14" y2="6.5"></line><line x1="6.5" y1="10" x2="6.5" y2="14"></line></svg>
-          🏛️ Enterprise ERD Explorer
+          ERD Map
         </button>
         <button class="nav-tab" data-view="viewProblems" onclick="switchMainView('viewProblems')">
           <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polygon points="12 2 15.09 8.26 22 9.27 17 14.14 18.18 21.02 12 17.77 5.82 21.02 7 14.14 2 9.27 8.91 8.26 12 2"></polygon></svg>
@@ -116,6 +116,42 @@
         </button>
       </div>
       <div class="nav-meta">
+        <div class="quick-jump-dropdown-wrap">
+          <button id="quickJumpAggregationsBtn" class="quick-jump-aggregations-btn" title="Quick Jump to Aggregations Hub">
+            <span class="fire-icon">🔥</span> Aggregations Hub <svg width="10" height="10" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><polyline points="6 9 12 15 18 9"></polyline></svg>
+          </button>
+          <div class="quick-jump-menu" id="quickJumpAggregationsMenu">
+            <div class="quick-jump-header">🔥 AGGREGATIONS &amp; GROUP BY HUB</div>
+            <button class="quick-jump-item" onclick="jumpToAggregationsSection('cases')">
+              <span class="qj-icon">📊</span>
+              <div class="qj-content">
+                <span class="qj-title">100 Aggregation Case Studies</span>
+                <span class="qj-desc">Section 6 corporate scenarios (Cases 501–600)</span>
+              </div>
+            </button>
+            <button class="quick-jump-item" onclick="jumpToAggregationsSection('docs')">
+              <span class="qj-icon">📚</span>
+              <div class="qj-content">
+                <span class="qj-title">Aggregations Study Docs &amp; Gotchas</span>
+                <span class="qj-desc">Section 04 theory, AST diffs &amp; sandbox</span>
+              </div>
+            </button>
+            <button class="quick-jump-item" onclick="jumpToAggregationsSection('lab')">
+              <span class="qj-icon">🧪</span>
+              <div class="qj-content">
+                <span class="qj-title">Interactive Aggregations Track</span>
+                <span class="qj-desc">Physical GROUP BY execution step-by-step</span>
+              </div>
+            </button>
+            <button class="quick-jump-item" onclick="jumpToAggregationsSection('studio')">
+              <span class="qj-icon">💻</span>
+              <div class="qj-content">
+                <span class="qj-title">Studio Preset: Dept Payroll</span>
+                <span class="qj-desc">Run GROUP BY &amp; HAVING in live engine</span>
+              </div>
+            </button>
+          </div>
+        </div>
         <span class="module-indicator">Schema: <strong>Employees (8 rows)</strong></span>
       </div>
     </nav>
@@ -514,8 +550,8 @@
       <div class="curriculum-header" style="flex-direction: column; align-items: stretch; gap: 14px;">
         <div style="display: flex; justify-content: space-between; align-items: flex-end; flex-wrap: wrap; gap: 10px;">
           <div>
-            <h2 class="view-title">The 500 Corporate Case Study Master Vault</h2>
-            <p class="view-subtitle">500 production analytics scenarios across 10 global industries &amp; 5 beginner SQL sections with interactive slot challenges.</p>
+            <h2 class="view-title">The 600 Corporate Case Study Master Vault</h2>
+            <p class="view-subtitle">600 production analytics scenarios across 10 global industries &amp; 6 SQL sections with interactive slot challenges.</p>
           </div>
           <div style="display: flex; align-items: center; gap: 8px; flex-wrap: wrap;">
             <div class="mode-toggle-group" style="display: flex; gap: 4px; background: #09090b; padding: 3px; border-radius: var(--radius-sm); border: 1px solid var(--border-default);">
@@ -527,41 +563,42 @@
             <select id="caseSortSelect" class="clean-select" style="background: #09090b; border: 1px solid var(--border-default); color: #dfcaa9; font-family: var(--font-mono); font-size: 11px; padding: 5px 8px; border-radius: var(--radius-sm); cursor: pointer;">
               <option value="diff_asc">Sort: Easy &rarr; Medium &rarr; Hard (Curriculum Order)</option>
               <option value="diff_desc">Sort: Hard &rarr; Medium &rarr; Easy (Challenge Order)</option>
-              <option value="id_asc">Sort: Case ID #001 &rarr; #500 (Chronological)</option>
+              <option value="id_asc">Sort: Case ID #001 &rarr; #600 (Chronological)</option>
             </select>
-            <input type="text" id="caseSearchInput" placeholder="🔍 Search 500 cases by keyword, schema, query..." style="width: 240px; background: #09090b; border: 1px solid var(--border-default); border-radius: var(--radius-sm); color: #fff; font-family: var(--font-mono); font-size: 11.5px; padding: 6px 12px;">
-            <span id="caseCountBadge" class="status-pill" style="font-size: 11px;">500 Cases</span>
-            <span id="caseSolvedBadge" class="status-pill" style="font-size: 11px; background: rgba(34, 197, 94, 0.15); color: #4ade80; border: 1px solid rgba(74, 222, 128, 0.3);">⚡ <span id="casesSolvedCount">0</span>/500 Solved</span>
+            <input type="text" id="caseSearchInput" placeholder="🔍 Search 600 cases by keyword, schema, query..." style="width: 240px; background: #09090b; border: 1px solid var(--border-default); border-radius: var(--radius-sm); color: #fff; font-family: var(--font-mono); font-size: 11.5px; padding: 6px 12px;">
+            <span id="caseCountBadge" class="status-pill" style="font-size: 11px;">600 Cases</span>
+            <span id="caseSolvedBadge" class="status-pill" style="font-size: 11px; background: rgba(34, 197, 94, 0.15); color: #4ade80; border: 1px solid rgba(74, 222, 128, 0.3);">⚡ <span id="casesSolvedCount">0</span>/600 Solved</span>
           </div>
         </div>
 
         <!-- Difficulty Filter Pills (Color Theory Mnemonic Bar) -->
         <div class="difficulty-mnemonic-bar" id="caseDifficultyFilters" style="display: flex; gap: 8px; align-items: center; flex-wrap: wrap;">
           <span style="font-size: 10.5px; font-family: var(--font-mono); color: var(--text-muted); font-weight: 600; text-transform: uppercase;">Difficulty Tier:</span>
-          <button class="case-diff-filter-btn active" data-diff="all" style="border-color: #52525b;">All Difficulties (500)</button>
-          <button class="case-diff-filter-btn diff-pill-easy" data-diff="Easy">🟢 Easy &bull; Foundations (180)</button>
-          <button class="case-diff-filter-btn diff-pill-medium" data-diff="Medium">🟡 Medium &bull; Production Standard (220)</button>
-          <button class="case-diff-filter-btn diff-pill-hard" data-diff="Hard">🔴 Hard &bull; Senior Edge Cases (100)</button>
+          <button class="case-diff-filter-btn active" data-diff="all" style="border-color: #52525b;">All Difficulties (600)</button>
+          <button class="case-diff-filter-btn diff-pill-easy" data-diff="Easy">🟢 Easy &bull; Foundations (233)</button>
+          <button class="case-diff-filter-btn diff-pill-medium" data-diff="Medium">🟡 Medium &bull; Production Standard (233)</button>
+          <button class="case-diff-filter-btn diff-pill-hard" data-diff="Hard">🔴 Hard &bull; Senior Edge Cases (134)</button>
         </div>
 
-        <!-- 5 Core Sections Switcher Bar -->
+        <!-- 6 Core Sections Switcher Bar -->
         <div class="case-section-group" id="caseSectionFilters" style="display: flex; gap: 8px; flex-wrap: wrap;">
-          <button class="case-section-btn active" data-section="all">All Sections (500)</button>
+          <button class="case-section-btn active" data-section="all">All Sections (600)</button>
           <button class="case-section-btn" data-section="Section 1: Database Theory &amp; Architecture">Sec 1: Theory &amp; Interview Prep (100)</button>
           <button class="case-section-btn" data-section="Section 2: Physical Query Execution Order &amp; Projections">Sec 2: Execution &amp; Projections (100)</button>
           <button class="case-section-btn" data-section="Section 3: Filtering, Predicates &amp; Three-Valued Logic">Sec 3: Filtering &amp; 3VL (100)</button>
           <button class="case-section-btn" data-section="Section 4: String Slicing, Text Manipulation &amp; Pattern Matching">Sec 4: String Manipulation (100)</button>
           <button class="case-section-btn" data-section="Section 5: Sorting, Determinism &amp; Slicing">Sec 5: Sorting &amp; Slicing (100)</button>
+          <button class="case-section-btn section-btn-aggregations" data-section="Section 6: Aggregations, Statistical Metrics &amp; GROUP BY">🔥 Sec 6: Aggregations &amp; GROUP BY (100)</button>
         </div>
 
-        <!-- Industry Filter Pills (10 Industries, 50 cases each) -->
+        <!-- Industry Filter Pills (10 Industries) -->
         <div class="difficulty-filter-group" id="caseIndustryFilters" style="flex-wrap: wrap; gap: 6px;">
-          <button class="case-filter-btn active" data-industry="all">All Industries (500)</button>
-          <button class="case-filter-btn" data-industry="Fintech">Fintech (50)</button>
+          <button class="case-filter-btn active" data-industry="all">All Industries (600)</button>
+          <button class="case-filter-btn" data-industry="Fintech">Fintech (60)</button>
           <button class="case-filter-btn" data-industry="SaaS">SaaS (50)</button>
           <button class="case-filter-btn" data-industry="Retail">Retail (50)</button>
-          <button class="case-filter-btn" data-industry="Healthcare">Healthcare (50)</button>
-          <button class="case-filter-btn" data-industry="Logistics">Logistics (50)</button>
+          <button class="case-filter-btn" data-industry="Healthcare">Healthcare (60)</button>
+          <button class="case-filter-btn" data-industry="Logistics">Logistics (60)</button>
           <button class="case-filter-btn" data-industry="Media">Media (50)</button>
           <button class="case-filter-btn" data-industry="Security">Security (50)</button>
           <button class="case-filter-btn" data-industry="Hardware">Hardware (50)</button>
@@ -778,6 +815,6 @@
 <script src="foundations_curriculum.js"></script>
 <script src="audio_fx.js"></script>
 <script src="study_library_data.js"></script>
-<script src="app.js?v=6"></script>
+<script src="app.js?v=7"></script>
 </body>
 </html>
