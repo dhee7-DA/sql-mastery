@@ -1465,9 +1465,29 @@ function initCurriculumSystem() {
       document.querySelectorAll('.case-section-btn').forEach(b => b.classList.remove('active'));
       btn.classList.add('active');
       if (window.soundFX) window.soundFX.playPop();
-      renderCaseStudies(currentCaseIndustryFilter, btn.dataset.section);
+      renderCaseStudies(currentCaseIndustryFilter, btn.dataset.section, currentCaseDiffFilter, currentCaseSortOrder);
     });
   });
+
+  // Difficulty Filter Pills in 500 Case Studies (Color Theory)
+  document.querySelectorAll('.case-diff-filter-btn').forEach(btn => {
+    btn.addEventListener('click', () => {
+      document.querySelectorAll('.case-diff-filter-btn').forEach(b => b.classList.remove('active'));
+      btn.classList.add('active');
+      if (window.soundFX) window.soundFX.playPop();
+      renderCaseStudies(currentCaseIndustryFilter, currentCaseSectionFilter, btn.dataset.diff, currentCaseSortOrder);
+    });
+  });
+
+  // Sort Order Selector in 500 Case Studies
+  const caseSortSelect = document.getElementById('caseSortSelect');
+  if (caseSortSelect) {
+    caseSortSelect.addEventListener('change', (e) => {
+      currentCaseSortOrder = e.target.value;
+      if (window.soundFX) window.soundFX.playPop();
+      renderCaseStudies(currentCaseIndustryFilter, currentCaseSectionFilter, currentCaseDiffFilter, currentCaseSortOrder);
+    });
+  }
 
   // Industry filter pills in 500 Case Studies
   document.querySelectorAll('.case-filter-btn').forEach(btn => {
@@ -1475,7 +1495,7 @@ function initCurriculumSystem() {
       document.querySelectorAll('.case-filter-btn').forEach(b => b.classList.remove('active'));
       btn.classList.add('active');
       if (window.soundFX) window.soundFX.playPop();
-      renderCaseStudies(btn.dataset.industry, currentCaseSectionFilter);
+      renderCaseStudies(btn.dataset.industry, currentCaseSectionFilter, currentCaseDiffFilter, currentCaseSortOrder);
     });
   });
 
@@ -1504,9 +1524,59 @@ function initCurriculumSystem() {
   if (caseSearchInput) {
     caseSearchInput.addEventListener('input', (e) => {
       currentCaseSearchQuery = e.target.value.trim();
-      renderCaseStudies(currentCaseIndustryFilter, currentCaseSectionFilter);
+      renderCaseStudies(currentCaseIndustryFilter, currentCaseSectionFilter, currentCaseDiffFilter, currentCaseSortOrder);
     });
   }
+
+  // Case Study Dossier Modal Controls
+  const modal = document.getElementById('caseStudyDetailModal');
+  const btnCloseDossier = document.getElementById('btnCloseDossierModal');
+  const btnDossierPrev = document.getElementById('btnDossierPrev');
+  const btnDossierNext = document.getElementById('btnDossierNext');
+  const btnDossierToggleSim = document.getElementById('btnDossierToggleSim');
+  const btnDossierSolveStudio = document.getElementById('btnDossierSolveStudio');
+
+  if (btnCloseDossier) {
+    btnCloseDossier.addEventListener('click', closeCaseDossier);
+  }
+  if (modal) {
+    modal.addEventListener('click', (e) => {
+      if (e.target === modal) closeCaseDossier();
+    });
+  }
+  if (btnDossierPrev) {
+    btnDossierPrev.addEventListener('click', navigateDossierPrev);
+  }
+  if (btnDossierNext) {
+    btnDossierNext.addEventListener('click', navigateDossierNext);
+  }
+  if (btnDossierToggleSim) {
+    btnDossierToggleSim.addEventListener('click', toggleDossierSimulator);
+  }
+  if (btnDossierSolveStudio) {
+    btnDossierSolveStudio.addEventListener('click', () => {
+      const allCases = window.ALL_500_CASE_STUDIES || window.ALL_300_CASE_STUDIES || [];
+      const cs = allCases.find(c => c.id === activeDossierCaseId);
+      if (cs) {
+        closeCaseDossier();
+        switchToStudioWithQuery(cs.targetQuery, cs.table);
+      }
+    });
+  }
+
+  // Keyboard navigation for dossier modal
+  window.addEventListener('keydown', (e) => {
+    const modalEl = document.getElementById('caseStudyDetailModal');
+    if (modalEl && modalEl.style.display === 'flex') {
+      if (e.key === 'Escape') {
+        closeCaseDossier();
+      } else if (e.key === 'ArrowLeft') {
+        navigateDossierPrev();
+      } else if (e.key === 'ArrowRight') {
+        navigateDossierNext();
+      }
+    }
+  });
 
   // Enterprise ERD Explorer Company Switcher
   const erdCompanySelector = document.getElementById('erdCompanySelector');
@@ -3231,28 +3301,53 @@ function escapeHtml(str) {
 
 let currentCaseSectionFilter = 'all';
 let currentCaseIndustryFilter = 'all';
+let currentCaseDiffFilter = 'all';
+let currentCaseSortOrder = 'diff_asc';
 let currentCaseSearchQuery = '';
 let currentCaseMode = 'study'; // 'study' or 'challenge'
+let activeDossierCaseId = 1;
 
-function renderCaseStudies(industryFilter = currentCaseIndustryFilter, sectionFilter = currentCaseSectionFilter) {
+function renderCaseStudies(
+  industryFilter = currentCaseIndustryFilter,
+  sectionFilter = currentCaseSectionFilter,
+  diffFilter = currentCaseDiffFilter,
+  sortOrder = currentCaseSortOrder
+) {
   currentCaseIndustryFilter = industryFilter;
   currentCaseSectionFilter = sectionFilter;
+  currentCaseDiffFilter = diffFilter;
+  currentCaseSortOrder = sortOrder;
+
   const container = document.getElementById('caseStudiesGrid');
   const countBadge = document.getElementById('caseCountBadge');
   const solvedCountSpan = document.getElementById('casesSolvedCount');
   if (!container) return;
 
   let allCases = window.ALL_500_CASE_STUDIES || window.ALL_300_CASE_STUDIES || [];
-  let cases = allCases;
+  let cases = allCases.slice();
 
+  // 1. Filter by Section
   if (currentCaseSectionFilter !== 'all') {
-    cases = cases.filter(cs => cs.section && (cs.section.toLowerCase() === currentCaseSectionFilter.toLowerCase() || cs.section.toLowerCase().includes(currentCaseSectionFilter.toLowerCase())));
+    cases = cases.filter(cs => cs.section && (
+      cs.section.toLowerCase() === currentCaseSectionFilter.toLowerCase() || 
+      cs.section.toLowerCase().includes(currentCaseSectionFilter.toLowerCase())
+    ));
   }
 
+  // 2. Filter by Industry
   if (currentCaseIndustryFilter !== 'all') {
-    cases = cases.filter(cs => cs.industry && (cs.industry.toLowerCase() === currentCaseIndustryFilter.toLowerCase() || cs.industry.toLowerCase().includes(currentCaseIndustryFilter.toLowerCase())));
+    cases = cases.filter(cs => cs.industry && (
+      cs.industry.toLowerCase() === currentCaseIndustryFilter.toLowerCase() || 
+      cs.industry.toLowerCase().includes(currentCaseIndustryFilter.toLowerCase())
+    ));
   }
 
+  // 3. Filter by Difficulty
+  if (currentCaseDiffFilter !== 'all') {
+    cases = cases.filter(cs => cs.difficulty && cs.difficulty.toLowerCase() === currentCaseDiffFilter.toLowerCase());
+  }
+
+  // 4. Search Filter
   if (currentCaseSearchQuery) {
     const q = currentCaseSearchQuery.toLowerCase();
     cases = cases.filter(cs => 
@@ -3262,6 +3357,26 @@ function renderCaseStudies(industryFilter = currentCaseIndustryFilter, sectionFi
       (cs.schemaSnippet && cs.schemaSnippet.toLowerCase().includes(q)) ||
       (cs.targetQuery && cs.targetQuery.toLowerCase().includes(q))
     );
+  }
+
+  // 5. Sort Cases (Progressive Difficulty Order)
+  const diffRank = { 'Easy': 1, 'Medium': 2, 'Hard': 3 };
+  if (currentCaseSortOrder === 'diff_asc') {
+    cases.sort((a, b) => {
+      const rA = diffRank[a.difficulty] || 2;
+      const rB = diffRank[b.difficulty] || 2;
+      if (rA !== rB) return rA - rB;
+      return a.id - b.id;
+    });
+  } else if (currentCaseSortOrder === 'diff_desc') {
+    cases.sort((a, b) => {
+      const rA = diffRank[a.difficulty] || 2;
+      const rB = diffRank[b.difficulty] || 2;
+      if (rA !== rB) return rB - rA;
+      return a.id - b.id;
+    });
+  } else if (currentCaseSortOrder === 'id_asc') {
+    cases.sort((a, b) => a.id - b.id);
   }
 
   if (countBadge) {
@@ -3274,8 +3389,8 @@ function renderCaseStudies(industryFilter = currentCaseIndustryFilter, sectionFi
   if (cases.length === 0) {
     container.innerHTML = `
       <div style="grid-column: 1 / -1; padding: 40px; text-align: center; color: var(--text-muted);">
-        <p style="font-size: 14px; margin-bottom: 8px;">No case studies match "${currentCaseSearchQuery}".</p>
-        <button class="card-nav-btn" onclick="document.getElementById('caseSearchInput').value = ''; currentCaseSearchQuery = ''; renderCaseStudies('all', 'all');">Clear Filter</button>
+        <p style="font-size: 14px; margin-bottom: 8px;">No case studies match current filters.</p>
+        <button class="card-nav-btn" onclick="currentCaseSearchQuery = ''; currentCaseDiffFilter = 'all'; currentCaseIndustryFilter = 'all'; currentCaseSectionFilter = 'all'; renderCaseStudies();">Reset All Filters</button>
       </div>
     `;
     return;
@@ -3287,16 +3402,17 @@ function renderCaseStudies(industryFilter = currentCaseIndustryFilter, sectionFi
     const isSolved = window.CASE_BLANKS_ENGINE && window.CASE_BLANKS_ENGINE.isSolved(cs.id);
     const challenge = window.CASE_BLANKS_ENGINE ? window.CASE_BLANKS_ENGINE.createChallenge(cs) : null;
 
+    const diffClass = cs.difficulty === 'Easy' ? 'diff-pill-easy' : (cs.difficulty === 'Medium' ? 'diff-pill-medium' : 'diff-pill-hard');
+    const diffEmoji = cs.difficulty === 'Easy' ? '🟢' : (cs.difficulty === 'Medium' ? '🟡' : '🔴');
+
     let queryBlockHtml = '';
     if (currentCaseMode === 'study' || !challenge) {
-      // Study View
       queryBlockHtml = `
         <div class="case-code-preview">
           <code>${escapeHtml(cs.targetQuery)}</code>
         </div>
       `;
     } else {
-      // Interactive Slot Challenge View
       let renderedMasked = escapeHtml(challenge.maskedQuery);
       for (const [slotId, slotInfo] of Object.entries(challenge.slots)) {
         let optionsHtml = `<option value="">[ Select Clause ]</option>`;
@@ -3327,13 +3443,13 @@ function renderCaseStudies(industryFilter = currentCaseIndustryFilter, sectionFi
           <div>
             <div style="display: flex; align-items: center; gap: 6px; margin-bottom: 4px; flex-wrap: wrap;">
               <span class="status-pill" style="font-size: 10px; padding: 1px 6px;">#${cs.id < 10 ? '00' + cs.id : (cs.id < 100 ? '0' + cs.id : cs.id)}</span>
-              <span class="clause-pill pill-group" style="font-size: 9.5px; padding: 1px 6px;">${cs.section || cs.pillar || 'Section 1'}</span>
+              <span class="case-diff-filter-btn ${diffClass} active" style="font-size: 9.5px; padding: 1px 7px;">${diffEmoji} ${cs.difficulty}</span>
               <span class="case-industry">${cs.industry}</span>
               ${isSolved ? '<span style="font-size: 11px;" title="Solved!">🏆</span>' : ''}
             </div>
-            <h3 class="case-title">${cs.title}</h3>
+            <h3 class="case-title" style="cursor: pointer;" onclick="openCaseDossier(${cs.id})" title="Click to open full case study dossier">${cs.title}</h3>
           </div>
-          <span class="badge-diff ${cs.difficulty === 'Easy' ? 'diff-easy' : (cs.difficulty === 'Medium' ? 'diff-medium' : 'diff-hard')}">${cs.difficulty}</span>
+          <span class="clause-pill pill-group" style="font-size: 9px; padding: 1px 6px;">${cs.section ? cs.section.split(':')[0] : 'Section'}</span>
         </div>
 
         <p class="case-scenario-text">${cs.scenario}</p>
@@ -3349,20 +3465,23 @@ function renderCaseStudies(industryFilter = currentCaseIndustryFilter, sectionFi
         ${queryBlockHtml}
 
         <div class="case-card-actions" style="display: flex; gap: 8px; justify-content: space-between; align-items: center; margin-top: 8px; flex-wrap: wrap;">
+          <button class="btn-open-dossier" data-case-id="${cs.id}">
+            📖 Deep Dossier
+          </button>
           <button class="btn-toggle-sim" data-case-id="${cs.id}">
             <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="3" y="3" width="18" height="18" rx="2" ry="2"></rect><line x1="3" y1="9" x2="21" y2="9"></line><line x1="9" y1="21" x2="9" y2="9"></line></svg>
-            Live Data Simulator (5 Rows)
+            Live Simulator (5 Rows)
           </button>
           <div style="display: flex; gap: 8px; align-items: center;">
             ${currentCaseMode === 'challenge' && challenge ? `
               <button class="btn-check-slots" data-case-id="${cs.id}">
                 <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="20 6 9 17 4 12"></polyline></svg>
-                Verify Solution
+                Verify
               </button>
             ` : ''}
             <button class="btn-solve-in-studio" data-table="${cs.table}" data-query="${encodeURIComponent(cs.targetQuery)}">
               <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polygon points="5 3 19 12 5 21 5 3"></polygon></svg>
-              Solve in Studio
+              Studio
             </button>
           </div>
         </div>
@@ -3374,6 +3493,14 @@ function renderCaseStudies(industryFilter = currentCaseIndustryFilter, sectionFi
   });
 
   container.innerHTML = html;
+
+  // Event Listeners for Open Deep Dossier
+  container.querySelectorAll('.btn-open-dossier').forEach(btn => {
+    btn.addEventListener('click', () => {
+      const cid = parseInt(btn.dataset.caseId, 10);
+      openCaseDossier(cid);
+    });
+  });
 
   // Event Listeners for Live Data Simulator Drawer Toggle
   container.querySelectorAll('.btn-toggle-sim').forEach(btn => {
@@ -3509,7 +3636,6 @@ function renderCaseStudies(industryFilter = currentCaseIndustryFilter, sectionFi
       const verification = window.CASE_BLANKS_ENGINE.verifyChallenge(cs, userAnswers);
       const feedbackDiv = document.getElementById(`feedback_${caseId}`);
 
-      // Highlight slot borders
       for (const [slotId, res] of Object.entries(verification.results || {})) {
         const sel = card.querySelector(`.slot-select[data-slot-id="${slotId}"]`);
         if (sel) {
@@ -3537,6 +3663,238 @@ function renderCaseStudies(industryFilter = currentCaseIndustryFilter, sectionFi
       }
     });
   });
+}
+
+function openCaseDossier(caseId) {
+  const allCases = window.ALL_500_CASE_STUDIES || window.ALL_300_CASE_STUDIES || [];
+  const cs = allCases.find(c => c.id === caseId);
+  if (!cs || !window.CASE_DOSSIER_ENGINE) return;
+
+  activeDossierCaseId = caseId;
+  const dossier = window.CASE_DOSSIER_ENGINE.getDossier(cs);
+
+  const modal = document.getElementById('caseStudyDetailModal');
+  const body = document.getElementById('caseDossierBody');
+  const badgeId = document.getElementById('dossierCaseIdBadge');
+  const badgeDiff = document.getElementById('dossierDifficultyBadge');
+  const badgeInd = document.getElementById('dossierIndustryBadge');
+  const badgeSec = document.getElementById('dossierSectionBadge');
+
+  if (!modal || !body) return;
+
+  if (window.soundFX) window.soundFX.playPop();
+
+  // Badges
+  if (badgeId) badgeId.textContent = `#${cs.id < 10 ? '00' + cs.id : (cs.id < 100 ? '0' + cs.id : cs.id)}`;
+  if (badgeDiff) {
+    badgeDiff.innerHTML = dossier.diffMeta.label;
+    badgeDiff.style.borderColor = dossier.diffMeta.border;
+    badgeDiff.style.color = dossier.diffMeta.badge;
+    badgeDiff.style.background = dossier.diffMeta.bg;
+  }
+  if (badgeInd) badgeInd.textContent = cs.industry;
+  if (badgeSec) badgeSec.textContent = cs.section ? cs.section.split(':')[0] : 'Section';
+
+  // Section 1: Executive Incident Brief
+  const incidentHtml = `
+    <div class="dossier-incident-card">
+      <div class="dossier-section-title" style="color: #818cf8;">
+        <span>🚨 EXECUTIVE INCIDENT BRIEF &amp; PRODUCTION CONTEXT</span>
+      </div>
+      <h2 style="font-size: 18px; color: #fff; margin: 0 0 8px 0;">${escapeHtml(cs.title)}</h2>
+      <p class="dossier-story-text">${dossier.incidentStory}</p>
+      <div class="dossier-objective-callout">
+        <strong>Business Objective &amp; SLA Target:</strong> ${escapeHtml(cs.businessObjective)}
+      </div>
+    </div>
+  `;
+
+  // Section 2: Schema & Storage Architecture
+  const schemaHtml = `
+    <div class="dossier-schema-card">
+      <div class="dossier-section-title" style="color: #2dd4bf;">
+        <span>🏗️ RELATIONAL ENTITY SCHEMA &amp; INDEXING RECOMMENDATION</span>
+      </div>
+      <div class="dossier-schema-code">Table: ${escapeHtml(cs.table)} | DDL: ${escapeHtml(cs.schemaSnippet)}</div>
+      <p style="font-size: 12px; color: var(--text-secondary); margin: 0; line-height: 1.5;">
+        <strong>Storage Engine Note:</strong> Ensure composite B-Tree indexes exist covering the columns filtered in the <code>WHERE</code> clause. 
+        For table <code>${escapeHtml(cs.table)}</code>, queries filtering on exact match predicates achieve <span style="color: #2dd4bf;">O(log N) lookup time</span> instead of full page scans.
+      </p>
+    </div>
+  `;
+
+  // Section 3: Line-by-Line SQL Deconstruction
+  let breakdownRowsHtml = '';
+  dossier.queryBreakdown.forEach(item => {
+    breakdownRowsHtml += `
+      <div class="breakdown-row">
+        <div class="breakdown-code-line">
+          <span class="breakdown-tag" style="background: ${item.tagColor}22; color: ${item.tagColor}; border: 1px solid ${item.tagColor}66;">
+            ${item.type}
+          </span>
+          <span class="breakdown-sql-text">${escapeHtml(item.line)}</span>
+        </div>
+        <div class="breakdown-explanation">${item.explanation}</div>
+      </div>
+    `;
+  });
+
+  const breakdownHtml = `
+    <div class="dossier-breakdown-card">
+      <div class="dossier-section-title" style="color: #dfcaa9;">
+        <span>🔍 LINE-BY-LINE SQL DECONSTRUCTION &amp; EXECUTION LOGIC</span>
+      </div>
+      <div>
+        ${breakdownRowsHtml}
+      </div>
+    </div>
+  `;
+
+  // Section 4: Interview Pitfalls & Mnemonic Hazard Box
+  let pitfallsListHtml = '';
+  dossier.pitfalls.forEach(p => {
+    pitfallsListHtml += `
+      <div class="pitfall-item">
+        <div class="pitfall-title" style="color: ${p.color};">${p.title}</div>
+        <div class="pitfall-rule">${p.rule}</div>
+      </div>
+    `;
+  });
+
+  const pitfallsHtml = `
+    <div class="dossier-pitfalls-card">
+      <div class="dossier-section-title" style="color: #fb923c;">
+        <span>⚠️ PRODUCTION TRAPS &amp; FAANG INTERVIEW GOTCHAS</span>
+      </div>
+      <div>
+        ${pitfallsListHtml}
+      </div>
+    </div>
+  `;
+
+  // Section 5: In-Dossier Live Data Simulator (5-Row Scan)
+  const sim = window.CASE_SIMULATOR_ENGINE.runSimulation(cs);
+  const colNames = Object.keys(sim.rawRows[0] || {});
+
+  let rawRowsHtml = '';
+  sim.evalResults.forEach((res, rIdx) => {
+    const rowClass = res.passed ? 'sim-row-match' : 'sim-row-dropped';
+    const tagHtml = res.passed 
+      ? `<span class="sim-tag-match">&check; MATCH</span>` 
+      : `<span class="sim-tag-dropped">&cross; DROPPED</span><span class="sim-reason-tag">${escapeHtml(res.reason)}</span>`;
+    
+    let cellsHtml = `<td>${rIdx + 1}</td><td>${tagHtml}</td>`;
+    colNames.forEach(col => {
+      const val = res.row[col];
+      cellsHtml += `<td>${val !== undefined && val !== null ? escapeHtml(val) : '<em>NULL</em>'}</td>`;
+    });
+
+    rawRowsHtml += `<tr class="${rowClass}">${cellsHtml}</tr>`;
+  });
+
+  let outputRowsHtml = '';
+  if (sim.outputRows.length === 0) {
+    outputRowsHtml = `<tr><td colspan="${colNames.length + 1}" style="text-align: center; color: var(--text-muted); padding: 12px;">0 rows survived predicate filter.</td></tr>`;
+  } else {
+    sim.outputRows.forEach((row, oIdx) => {
+      let cellsHtml = `<td>${oIdx + 1}</td>`;
+      colNames.forEach(col => {
+        const val = row[col];
+        cellsHtml += `<td>${val !== undefined && val !== null ? escapeHtml(val) : '<em>NULL</em>'}</td>`;
+      });
+      outputRowsHtml += `<tr class="sim-row-match">${cellsHtml}</tr>`;
+    });
+  }
+
+  const simulatorHtml = `
+    <div class="live-sim-drawer" id="dossierSimDrawer" style="margin-top: 0;">
+      <div class="sim-header-bar">
+        <div class="sim-title">
+          <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="22 12 18 12 15 21 9 3 6 12 2 12"></polyline></svg>
+          ⚡ Real-Time In-Memory Relational Simulator (5 Disk Rows Tested)
+        </div>
+        <div class="sim-metrics">
+          <span class="sim-metric-pill">Read: <strong>${sim.stats.diskRowsScanned} rows</strong></span>
+          <span class="sim-metric-pill">Passed: <strong>${sim.stats.outputRowsCount} rows</strong></span>
+          <span class="sim-metric-pill">Latency: <strong>${sim.stats.executionTimeMs}ms</strong></span>
+        </div>
+      </div>
+
+      <div class="sim-stage-box">
+        <div class="sim-stage-title">
+          <span>STAGE 1: Row Predicate Filter Verification</span>
+        </div>
+        <div class="sim-table-wrap">
+          <table class="sim-table">
+            <thead>
+              <tr>
+                <th>#</th>
+                <th>Filter Evaluation</th>
+                ${colNames.map(c => `<th>${escapeHtml(c)}</th>`).join('')}
+              </tr>
+            </thead>
+            <tbody>
+              ${rawRowsHtml}
+            </tbody>
+          </table>
+        </div>
+      </div>
+
+      <div class="sim-stage-box" style="margin-bottom: 0;">
+        <div class="sim-stage-title">
+          <span>STAGE 2: Final Projected Output Stream</span>
+        </div>
+        <div class="sim-table-wrap">
+          <table class="sim-table">
+            <thead>
+              <tr>
+                <th>#</th>
+                ${colNames.map(c => `<th>${escapeHtml(c)}</th>`).join('')}
+              </tr>
+            </thead>
+            <tbody>
+              ${outputRowsHtml}
+            </tbody>
+          </table>
+        </div>
+      </div>
+    </div>
+  `;
+
+  body.innerHTML = incidentHtml + schemaHtml + breakdownHtml + pitfallsHtml + simulatorHtml;
+  modal.style.display = 'flex';
+}
+
+function closeCaseDossier() {
+  const modal = document.getElementById('caseStudyDetailModal');
+  if (modal) modal.style.display = 'none';
+}
+
+function navigateDossierPrev() {
+  const allCases = window.ALL_500_CASE_STUDIES || window.ALL_300_CASE_STUDIES || [];
+  const currentIdx = allCases.findIndex(c => c.id === activeDossierCaseId);
+  if (currentIdx > 0) {
+    openCaseDossier(allCases[currentIdx - 1].id);
+  } else {
+    openCaseDossier(allCases[allCases.length - 1].id);
+  }
+}
+
+function navigateDossierNext() {
+  const allCases = window.ALL_500_CASE_STUDIES || window.ALL_300_CASE_STUDIES || [];
+  const currentIdx = allCases.findIndex(c => c.id === activeDossierCaseId);
+  if (currentIdx < allCases.length - 1) {
+    openCaseDossier(allCases[currentIdx + 1].id);
+  } else {
+    openCaseDossier(allCases[0].id);
+  }
+}
+
+function toggleDossierSimulator() {
+  const drawer = document.getElementById('dossierSimDrawer');
+  if (drawer) {
+    drawer.style.display = (drawer.style.display === 'none') ? 'block' : 'none';
+  }
 }
 
 // =============================================================================
