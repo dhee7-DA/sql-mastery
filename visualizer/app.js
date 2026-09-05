@@ -193,7 +193,18 @@ WHERE city REGEXP '^[aeiou]' AND city REGEXP '[aeiou]$';`,
 
   preset_distinct_cities: `SELECT DISTINCT city, state
 FROM Customers
-ORDER BY state ASC, city ASC;`
+ORDER BY state ASC, city ASC;`,
+
+  preset_top_earners: `SELECT (months_tenure * salary) AS total_earnings, COUNT(*) AS employee_count
+FROM Employees
+GROUP BY total_earnings
+ORDER BY total_earnings DESC
+LIMIT 1;`,
+
+  preset_dept_payroll: `SELECT department, COUNT(*) AS staff_count, SUM(salary) AS total_payroll, AVG(salary) AS avg_salary
+FROM Employees
+GROUP BY department
+ORDER BY total_payroll DESC;`
 };
 
 // =============================================================================
