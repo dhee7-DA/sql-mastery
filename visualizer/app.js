@@ -3539,10 +3539,10 @@ function renderCaseStudies(
         ${queryBlockHtml}
 
         <div class="case-card-actions" style="display: flex; gap: 8px; justify-content: space-between; align-items: center; margin-top: 8px; flex-wrap: wrap;">
-          <button class="btn-open-dossier" data-case-id="${cs.id}">
+          <button class="btn-open-dossier" data-case-id="${cs.id}" onclick="openCaseDossier(${cs.id})">
             📖 Deep Dossier
           </button>
-          <button class="btn-toggle-sim" data-case-id="${cs.id}">
+          <button class="btn-toggle-sim" data-case-id="${cs.id}" onclick="toggleCaseSim(${cs.id})">
             <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="3" y="3" width="18" height="18" rx="2" ry="2"></rect><line x1="3" y1="9" x2="21" y2="9"></line><line x1="9" y1="21" x2="9" y2="9"></line></svg>
             Live Simulator (5 Rows)
           </button>
@@ -3553,7 +3553,7 @@ function renderCaseStudies(
                 Verify
               </button>
             ` : ''}
-            <button class="btn-solve-in-studio" data-table="${cs.table}" data-query="${encodeURIComponent(cs.targetQuery)}">
+            <button class="btn-solve-in-studio" data-table="${cs.table}" data-query="${encodeURIComponent(cs.targetQuery)}" onclick="switchToStudioWithQuery(decodeURIComponent('${encodeURIComponent(cs.targetQuery)}'), '${cs.table}')">
               <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polygon points="5 3 19 12 5 21 5 3"></polygon></svg>
               Studio
             </button>
@@ -3778,6 +3778,110 @@ function renderCaseStudies(
     });
   });
 }
+
+function toggleCaseSim(caseId) {
+  const cs = (window.ALL_500_CASE_STUDIES || window.ALL_300_CASE_STUDIES || []).find(c => c.id === caseId);
+  const drawer = document.getElementById(`sim_drawer_${caseId}`);
+  const btn = document.querySelector(`.btn-toggle-sim[data-case-id="${caseId}"]`);
+  if (!drawer || !cs || !window.CASE_SIMULATOR_ENGINE) return;
+
+  if (drawer.style.display === 'block') {
+    drawer.style.display = 'none';
+    if (btn) btn.classList.remove('active');
+  } else {
+    if (window.soundFX) window.soundFX.playPop();
+    drawer.style.display = 'block';
+    if (btn) btn.classList.add('active');
+
+    // Run Zero-Latency Simulation
+    const sim = window.CASE_SIMULATOR_ENGINE.runSimulation(cs);
+    const colNames = Object.keys(sim.rawRows[0] || {});
+
+    let rawRowsHtml = '';
+    sim.evalResults.forEach((res, rIdx) => {
+      const rowClass = res.passed ? 'sim-row-match' : 'sim-row-dropped';
+      const tagHtml = res.passed 
+        ? `<span class="sim-tag-match">&check; MATCH</span>` 
+        : `<span class="sim-tag-dropped">&cross; DROPPED</span><span class="sim-reason-tag">${escapeHtml(res.reason)}</span>`;
+      
+      let cellsHtml = `<td>${rIdx + 1}</td><td>${tagHtml}</td>`;
+      colNames.forEach(col => {
+        const val = res.row[col];
+        cellsHtml += `<td>${val !== undefined && val !== null ? escapeHtml(val) : '<em>NULL</em>'}</td>`;
+      });
+
+      rawRowsHtml += `<tr class="${rowClass}">${cellsHtml}</tr>`;
+    });
+
+    let outputRowsHtml = '';
+    if (sim.outputRows.length === 0) {
+      outputRowsHtml = `<tr><td colspan="${colNames.length + 1}" style="text-align: center; color: var(--text-muted); padding: 12px;">0 rows survived predicate filter.</td></tr>`;
+    } else {
+      sim.outputRows.forEach((row, oIdx) => {
+        let cellsHtml = `<td>${oIdx + 1}</td>`;
+        colNames.forEach(col => {
+          const val = row[col];
+          cellsHtml += `<td>${val !== undefined && val !== null ? escapeHtml(val) : '<em>NULL</em>'}</td>`;
+        });
+        outputRowsHtml += `<tr>${cellsHtml}</tr>`;
+      });
+    }
+
+    drawer.innerHTML = `
+      <div class="sim-header-bar">
+        <div class="sim-title">
+          <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="22 12 18 12 15 21 9 3 6 12 2 12"></polyline></svg>
+          Real-Time Zero-Latency In-Memory Simulator (5 Disk Rows Tested)
+        </div>
+        <div class="sim-metrics">
+          <span class="sim-metric-pill">Scanned: <strong>${sim.stats.diskRowsScanned} rows</strong></span>
+          <span class="sim-metric-pill">Passed: <strong>${sim.stats.outputRowsCount} rows</strong></span>
+          <span class="sim-metric-pill">Latency: <strong>${sim.stats.executionTimeMs}ms</strong></span>
+        </div>
+      </div>
+
+      <div class="sim-stage-box">
+        <div class="sim-stage-title">
+          <span>STAGE 1: Row Predicate Filter Verification</span>
+        </div>
+        <div class="sim-table-wrap">
+          <table class="sim-table">
+            <thead>
+              <tr>
+                <th>#</th>
+                <th>Filter Evaluation</th>
+                ${colNames.map(c => `<th>${escapeHtml(c)}</th>`).join('')}
+              </tr>
+            </thead>
+            <tbody>
+              ${rawRowsHtml}
+            </tbody>
+          </table>
+        </div>
+      </div>
+
+      <div class="sim-stage-box" style="margin-bottom: 0;">
+        <div class="sim-stage-title">
+          <span>STAGE 2: Final Projected Output Stream</span>
+        </div>
+        <div class="sim-table-wrap">
+          <table class="sim-table">
+            <thead>
+              <tr>
+                <th>#</th>
+                ${colNames.map(c => `<th>${escapeHtml(c)}</th>`).join('')}
+              </tr>
+            </thead>
+            <tbody>
+              ${outputRowsHtml}
+            </tbody>
+          </table>
+        </div>
+      </div>
+    `;
+  }
+}
+window.toggleCaseSim = toggleCaseSim;
 
 function openCaseDossier(caseId) {
   const allCases = window.ALL_500_CASE_STUDIES || window.ALL_300_CASE_STUDIES || [];
@@ -4009,6 +4113,7 @@ function openCaseDossier(caseId) {
   }
 
   body.innerHTML = incidentHtml + beginnerCheatSheetHtml + schemaHtml + breakdownHtml + pitfallsHtml + simulatorHtml;
+  modal.classList.add('active');
   modal.style.display = 'flex';
 }
 
@@ -4016,7 +4121,10 @@ window.openCaseDossier = openCaseDossier;
 
 function closeCaseDossier() {
   const modal = document.getElementById('caseStudyDetailModal');
-  if (modal) modal.style.display = 'none';
+  if (modal) {
+    modal.classList.remove('active');
+    modal.style.display = 'none';
+  }
 }
 
 window.closeCaseDossier = closeCaseDossier;

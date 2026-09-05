@@ -599,7 +599,7 @@ window.DOMAIN_ERD_ENGINE = (() => {
             <span class="case-erd-table-name">${parsed.tableName}</span>
             <span class="case-erd-domain-badge">${cs.industry} Schema</span>
           </div>
-          <button class="btn-open-domain-erd" data-domain="${escapeHtml(cs.industry)}" data-table="${escapeHtml(parsed.tableName)}" title="Open interactive visual ERD diagram with relationship arrows">
+          <button class="btn-open-domain-erd" onclick="window.DOMAIN_ERD_ENGINE.openDomainERD('${escapeHtml(cs.industry)}', '${escapeHtml(parsed.tableName)}'); event.stopPropagation();" data-domain="${escapeHtml(cs.industry)}" data-table="${escapeHtml(parsed.tableName)}" title="Open interactive visual ERD diagram with relationship arrows">
             📐 View Domain ERD Diagram
           </button>
         </div>
@@ -726,12 +726,16 @@ window.DOMAIN_ERD_ENGINE = (() => {
       </div>
     `;
 
+    modal.classList.add('active');
     modal.style.display = 'flex';
   }
 
   function closeDomainERD() {
     const modal = document.getElementById('domainErdModal');
-    if (modal) modal.style.display = 'none';
+    if (modal) {
+      modal.classList.remove('active');
+      modal.style.display = 'none';
+    }
   }
 
   function escapeHtml(str) {

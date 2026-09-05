@@ -4528,10 +4528,14 @@ body {
   background: rgba(0, 0, 0, 0.85);
   backdrop-filter: blur(8px);
   z-index: 9999;
-  display: flex;
+  display: none;
   align-items: center;
   justify-content: center;
   padding: 24px;
+}
+
+.case-dossier-overlay.active {
+  display: flex !important;
 }
 
 .case-dossier-container {
@@ -5129,10 +5133,14 @@ body {
   background: rgba(0, 0, 0, 0.85);
   backdrop-filter: blur(8px);
   z-index: 10000;
-  display: flex;
+  display: none;
   align-items: center;
   justify-content: center;
   padding: 24px;
+}
+
+.domain-erd-modal-overlay.active {
+  display: flex !important;
 }
 
 .domain-erd-modal-container {
