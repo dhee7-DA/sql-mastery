@@ -221,23 +221,215 @@ const EngineState = {
 };
 
 // =============================================================================
+// 3.5 DYNAMIC TABLE INJECTION & SYNTHESIS ENGINE (STUDIO RELATIONAL EXECUTOR)
+// Dynamically creates, populates, and registers tables for any Case Study or custom query
+// =============================================================================
+
+const DYNAMIC_TABLE_REGISTRY = new Set();
+
+function ensureDynamicTableInDatabase(tableName, caseStudy = null, sqlContext = '') {
+  if (!tableName) return 'Employees';
+  const cleanName = tableName.trim();
+
+  // If already in DATABASE and not a dynamic table, return existing key
+  const existingKey = Object.keys(DATABASE).find(k => k.toLowerCase() === cleanName.toLowerCase());
+  if (existingKey && !DYNAMIC_TABLE_REGISTRY.has(existingKey)) {
+    return existingKey;
+  }
+
+  // 1. Locate case study or schema definition
+  const allCases = window.ALL_600_CASE_STUDIES || window.ALL_500_CASE_STUDIES || [];
+  let cs = caseStudy;
+  if (!cs) {
+    cs = allCases.find(c => c.table && c.table.toLowerCase() === cleanName.toLowerCase());
+  }
+  if (!cs && sqlContext) {
+    cs = allCases.find(c => c.targetQuery && c.targetQuery.toLowerCase().includes(`from ${cleanName.toLowerCase()}`));
+  }
+
+  // Check DOMAIN_ERD_ENGINE for matching table schema
+  let domainTableObj = null;
+  if (window.DOMAIN_ERD_ENGINE && window.DOMAIN_ERD_ENGINE.DOMAIN_SCHEMAS) {
+    for (const dom of Object.values(window.DOMAIN_ERD_ENGINE.DOMAIN_SCHEMAS)) {
+      const match = (dom.tables || []).find(t => t.name.toLowerCase() === cleanName.toLowerCase());
+      if (match) {
+        domainTableObj = match;
+        break;
+      }
+    }
+  }
+
+  // 2. Determine Columns & Types
+  let cols = [];
+  if (domainTableObj && domainTableObj.columns && domainTableObj.columns.length > 0) {
+    cols = domainTableObj.columns.map(c => ({ name: c.name, type: c.type || 'VARCHAR(64)', isPk: c.isPk, isFk: c.isFk }));
+  } else if (cs && cs.schemaSnippet && window.DOMAIN_ERD_ENGINE) {
+    const parsed = window.DOMAIN_ERD_ENGINE.parseSchemaSnippet(cs.schemaSnippet);
+    if (parsed && parsed.columns && parsed.columns.length > 0) {
+      cols = parsed.columns;
+    }
+  }
+
+  // Fallback: extract column names from SQL query (SELECT / WHERE)
+  if (cols.length === 0 && sqlContext) {
+    const selectColsMatch = sqlContext.match(/SELECT\s+([\s\S]+?)\s+FROM/i);
+    if (selectColsMatch) {
+      const raw = selectColsMatch[1].replace(/DISTINCT/i, '').split(/,(?![^(]*\))/);
+      raw.forEach(colExpr => {
+        const clean = colExpr.trim().split(/\s+AS\s+/i)[0].trim().replace(/[()]/g, '');
+        const colName = clean.split(/\s+/).pop();
+        if (colName && colName !== '*' && !cols.some(c => c.name.toLowerCase() === colName.toLowerCase())) {
+          cols.push({ name: colName, type: 'VARCHAR(64)' });
+        }
+      });
+    }
+    const whereColsMatch = sqlContext.match(/WHERE\s+([\s\S]+?)(?:ORDER|GROUP|LIMIT|;|$)/i);
+    if (whereColsMatch) {
+      const tokens = whereColsMatch[1].match(/[a-zA-Z_][a-zA-Z0-9_]*/g) || [];
+      const keywords = new Set(['WHERE', 'AND', 'OR', 'NOT', 'IN', 'IS', 'NULL', 'TRUE', 'FALSE', 'LIKE', 'BETWEEN']);
+      tokens.forEach(tok => {
+        if (!keywords.has(tok.toUpperCase()) && !cols.some(c => c.name.toLowerCase() === tok.toLowerCase())) {
+          cols.push({ name: tok, type: 'VARCHAR(64)' });
+        }
+      });
+    }
+  }
+
+  // Fallback defaults if still empty
+  if (cols.length === 0) {
+    cols = [
+      { name: 'id', type: 'INT', isPk: true },
+      { name: 'name', type: 'VARCHAR(64)' },
+      { name: 'status', type: 'VARCHAR(20)' },
+      { name: 'amount', type: 'DECIMAL(10,2)' },
+      { name: 'is_active', type: 'BOOLEAN' }
+    ];
+  }
+
+  // 3. Extract target filter values so at least 2 rows match whatever WHERE condition is in sqlContext
+  const targetFilterValues = {};
+  if (sqlContext) {
+    const eqMatches = sqlContext.matchAll(/([a-zA-Z_][a-zA-Z0-9_]*)\s*=\s*(?:'([^']*)'|(\d+(?:\.\d+)?)|(TRUE|FALSE))/gi);
+    for (const m of eqMatches) {
+      const col = m[1];
+      const strVal = m[2];
+      const numVal = m[3];
+      const boolVal = m[4];
+      if (strVal !== undefined) targetFilterValues[col.toLowerCase()] = strVal;
+      else if (numVal !== undefined) targetFilterValues[col.toLowerCase()] = parseFloat(numVal);
+      else if (boolVal !== undefined) targetFilterValues[col.toLowerCase()] = boolVal.toUpperCase() === 'TRUE';
+    }
+  }
+
+  // 4. Synthesize 5 Domain-Accurate Rows
+  const generatedRows = [];
+  const rowCount = 5;
+  for (let i = 0; i < rowCount; i++) {
+    const row = {};
+    cols.forEach(c => {
+      const colName = c.name;
+      const lowerName = colName.toLowerCase();
+      const colType = (c.type || '').toUpperCase();
+
+      // First 2 rows intentionally match target equality filters
+      const shouldMatchTarget = (i < 2);
+      if (shouldMatchTarget && targetFilterValues[lowerName] !== undefined) {
+        row[colName] = targetFilterValues[lowerName];
+        return;
+      }
+
+      // Generate realistic values based on column name semantics
+      if (lowerName.includes('id')) {
+        if (colType.includes('INT') || (!colType.includes('VARCHAR') && !lowerName.includes('uuid') && !lowerName.includes('code') && !lowerName.includes('card') && !lowerName.includes('token'))) {
+          row[colName] = 1001 + i;
+        } else {
+          row[colName] = `${lowerName.replace('_id', '')}_${7710 + i}`;
+        }
+      } else if (lowerName.includes('frozen') || lowerName.includes('delivered') || lowerName.includes('active') || lowerName.includes('is_') || lowerName.includes('has_') || colType.includes('BOOL')) {
+        row[colName] = (i % 2 === 0);
+      } else if (lowerName.includes('limit') || lowerName.includes('budget') || lowerName.includes('cap')) {
+        row[colName] = (i + 1) * 2500;
+      } else if (lowerName.includes('yield') || lowerName.includes('pct') || lowerName.includes('rate') || lowerName.includes('percent')) {
+        row[colName] = Number((0.025 * (i + 1)).toFixed(4));
+      } else if (lowerName.includes('share') || lowerName.includes('shares') || lowerName.includes('qty') || lowerName.includes('count') || lowerName.includes('attempts')) {
+        row[colName] = (i + 1) * 15;
+      } else if (lowerName.includes('amount') || lowerName.includes('balance') || lowerName.includes('price') || lowerName.includes('mrr') || lowerName.includes('salary') || lowerName.includes('usd') || colType.includes('DECIMAL')) {
+        row[colName] = Number(((i + 1) * 1250.50).toFixed(2));
+      } else if (lowerName.includes('status') || lowerName.includes('tier') || lowerName.includes('state')) {
+        const statuses = ['ACTIVE', 'PENDING', 'SUCCEEDED', 'COMPLETED', 'QUEUED'];
+        row[colName] = statuses[i % statuses.length];
+      } else if (lowerName.includes('type') || lowerName.includes('event')) {
+        const types = ['PAYMENT_ATTEMPT', 'AUTH_HOLD', 'REFUND_SETTLED', 'WEBHOOK_DISPATCH', 'BALANCE_INQUIRY'];
+        row[colName] = types[i % types.length];
+      } else if (lowerName.includes('date') || lowerName.includes('at') || lowerName.includes('time') || colType.includes('DATE') || colType.includes('TIME')) {
+        row[colName] = `2026-03-0${i + 1} 12:00:00`;
+      } else if (lowerName.includes('ticker') || lowerName.includes('symbol')) {
+        const tickers = ['AAPL', 'NVDA', 'MSFT', 'AMZN', 'GOOGL'];
+        row[colName] = tickers[i % tickers.length];
+      } else if (lowerName.includes('name') || lowerName.includes('user') || lowerName.includes('customer')) {
+        const names = ['Alpha Corp', 'Beta Pay', 'Gamma Cloud', 'Delta Retail', 'Epsilon Health'];
+        row[colName] = names[i % names.length];
+      } else if (lowerName.includes('json') || lowerName.includes('payload')) {
+        row[colName] = `{"event":"evt_${i + 1}","retries":${i}}`;
+      } else {
+        row[colName] = `sample_${lowerName}_${i + 1}`;
+      }
+    });
+    generatedRows.push(row);
+  }
+
+  // 5. Register in DATABASE and track as dynamic
+  DATABASE[cleanName] = generatedRows;
+  DYNAMIC_TABLE_REGISTRY.add(cleanName);
+
+  // 6. Update UI builderTableSelect dropdown
+  const tblSel = document.getElementById('builderTableSelect');
+  if (tblSel) {
+    let opt = Array.from(tblSel.options).find(o => o.value.toLowerCase() === cleanName.toLowerCase());
+    if (!opt) {
+      opt = document.createElement('option');
+      opt.value = cleanName;
+      opt.textContent = `⚡ ${cleanName} (${cs ? cs.industry : 'Case Study Table'} - ${generatedRows.length} rows)`;
+      tblSel.appendChild(opt);
+    }
+    tblSel.value = cleanName;
+  }
+
+  // 7. Update Schema explorer
+  renderSchemaExplorer();
+
+  return cleanName;
+}
+
+function resetStudioToDefaultTable() {
+  switchTable('Employees');
+  const banner = document.getElementById('dynamicTableBanner');
+  if (banner) banner.style.display = 'none';
+}
+
+// =============================================================================
 // 4. PARSER & PIPELINE BUILDER
 // =============================================================================
 
 function parseAndBuildPipeline(sql) {
   const cleanSQL = sql.trim();
 
-  // Detect FROM table
+  // Detect FROM table with Dynamic Injection
   let tableName = 'TRIANGLES';
   const fromMatch = cleanSQL.match(/FROM\s+([A-Za-z0-9_]+)/i);
   if (fromMatch) {
-    const found = Object.keys(DATABASE).find(k => k.toLowerCase() === fromMatch[1].toLowerCase());
-    if (found) tableName = found;
+    const requested = fromMatch[1];
+    const found = Object.keys(DATABASE).find(k => k.toLowerCase() === requested.toLowerCase());
+    if (found) {
+      tableName = found;
+    } else {
+      tableName = ensureDynamicTableInDatabase(requested, null, cleanSQL) || requested;
+    }
   }
   EngineState.activeTable = tableName;
   updateActiveTableBadge(tableName);
 
-  const rawRows = JSON.parse(JSON.stringify(DATABASE[tableName]));
+  const rawRows = JSON.parse(JSON.stringify(DATABASE[tableName] || []));
   const steps = [];
 
   // 1. FROM
@@ -406,37 +598,131 @@ function parseAndBuildPipeline(sql) {
 
 function evaluateWherePredicate(row, whereClause, tableName) {
   try {
-    if (/salary\s*>\s*(\d+)/i.test(whereClause) && /months(?:_tenure)?\s*<\s*(\d+)/i.test(whereClause)) {
-      const salMin = parseInt(whereClause.match(/salary\s*>\s*(\d+)/i)[1], 10);
-      const tenureMax = parseInt(whereClause.match(/months(?:_tenure)?\s*<\s*(\d+)/i)[1], 10);
-      const salPass = row.salary > salMin;
-      const tenurePass = row.months_tenure < tenureMax;
-      const passed = salPass && tenurePass;
+    const cleanClause = (whereClause || '').trim();
+    if (!cleanClause) return { passed: true, reason: 'No filter' };
+
+    // 1. Check for compound AND conditions
+    if (/\s+AND\s+/i.test(cleanClause)) {
+      const parts = cleanClause.split(/\s+AND\s+/i);
+      const subResults = parts.map(p => evaluateWherePredicate(row, p, tableName));
+      const allPassed = subResults.every(r => r.passed);
       return {
-        passed,
-        reason: `salary ${row.salary} > ${salMin} [${salPass ? '✓' : '✗'}] AND tenure ${row.months_tenure} < ${tenureMax} [${tenurePass ? '✓' : '✗'}]`
+        passed: allPassed,
+        reason: subResults.map(r => r.reason).join(' AND ')
       };
     }
 
-    if (/Marks\s*>\s*(\d+)/i.test(whereClause)) {
-      const minMarks = parseInt(whereClause.match(/Marks\s*>\s*(\d+)/i)[1], 10);
-      const passed = row.Marks > minMarks;
+    // 2. Check for compound OR conditions
+    if (/\s+OR\s+/i.test(cleanClause)) {
+      const parts = cleanClause.split(/\s+OR\s+/i);
+      const subResults = parts.map(p => evaluateWherePredicate(row, p, tableName));
+      const anyPassed = subResults.some(r => r.passed);
       return {
-        passed,
-        reason: `Marks ${row.Marks} > ${minMarks} (${passed ? 'Pass' : 'Fail'})`
+        passed: anyPassed,
+        reason: subResults.map(r => r.reason).join(' OR ')
       };
     }
 
-    if (/country\s*=\s*'([^']+)'/i.test(whereClause)) {
-      const targetCountry = whereClause.match(/country\s*=\s*'([^']+)'/i)[1];
-      const passed = row.country === targetCountry;
+    // 3. IS NULL / IS NOT NULL
+    const nullMatch = cleanClause.match(/([a-zA-Z0-9_]+)\s+IS\s+(NOT\s+)?NULL/i);
+    if (nullMatch) {
+      const col = nullMatch[1];
+      const isNot = Boolean(nullMatch[2]);
+      const val = row[col];
+      const isNull = val === null || val === undefined;
+      const passed = isNot ? !isNull : isNull;
       return {
         passed,
-        reason: `country '${row.country}' = '${targetCountry}'`
+        reason: `${col} is ${isNull ? 'NULL' : 'NOT NULL'} [${passed ? '✓' : '✗'}]`
       };
     }
 
-    if (/REGEXP/i.test(whereClause)) {
+    // 4. String Equality: col = 'value' or col != 'value'
+    const strEqMatch = cleanClause.match(/([a-zA-Z0-9_]+)\s*(=|!=|<>)\s*'([^']*)'/i);
+    if (strEqMatch) {
+      const col = strEqMatch[1];
+      const op = strEqMatch[2];
+      const targetStr = strEqMatch[3];
+      const rowVal = String(row[col] !== undefined ? row[col] : '');
+      const isEqual = rowVal.toLowerCase() === targetStr.toLowerCase();
+      const passed = (op === '=') ? isEqual : !isEqual;
+      return {
+        passed,
+        reason: `${col} ('${rowVal}') ${op} '${targetStr}' [${passed ? '✓' : '✗'}]`
+      };
+    }
+
+    // 5. Boolean Equality: col = TRUE / col = FALSE
+    const boolMatch = cleanClause.match(/([a-zA-Z0-9_]+)\s*(=|!=|<>)\s*(TRUE|FALSE)/i);
+    if (boolMatch) {
+      const col = boolMatch[1];
+      const op = boolMatch[2];
+      const targetBool = boolMatch[3].toUpperCase() === 'TRUE';
+      const rowVal = Boolean(row[col]);
+      const isEqual = (rowVal === targetBool);
+      const passed = (op === '=') ? isEqual : !isEqual;
+      return {
+        passed,
+        reason: `${col} (${rowVal}) ${op} ${targetBool ? 'TRUE' : 'FALSE'} [${passed ? '✓' : '✗'}]`
+      };
+    }
+
+    // 6. Numeric Comparison: col (> | < | >= | <= | = | !=) number
+    const numCompMatch = cleanClause.match(/([a-zA-Z0-9_]+)\s*(>=|<=|>|<|=|!=|<>)\s*(\d+(?:\.\d+)?)/i);
+    if (numCompMatch) {
+      const col = numCompMatch[1];
+      const op = numCompMatch[2];
+      const targetNum = parseFloat(numCompMatch[3]);
+      const rowVal = parseFloat(row[col]);
+      if (!isNaN(rowVal)) {
+        let passed = false;
+        if (op === '>') passed = rowVal > targetNum;
+        else if (op === '<') passed = rowVal < targetNum;
+        else if (op === '>=') passed = rowVal >= targetNum;
+        else if (op === '<=') passed = rowVal <= targetNum;
+        else if (op === '=') passed = rowVal === targetNum;
+        else if (op === '!=' || op === '<>') passed = rowVal !== targetNum;
+        return {
+          passed,
+          reason: `${col} (${rowVal}) ${op} ${targetNum} [${passed ? '✓' : '✗'}]`
+        };
+      }
+    }
+
+    // 7. LIKE Pattern Matching
+    const likeMatch = cleanClause.match(/([a-zA-Z0-9_]+)\s+(NOT\s+)?LIKE\s*'([^']*)'/i);
+    if (likeMatch) {
+      const col = likeMatch[1];
+      const isNot = Boolean(likeMatch[2]);
+      const pattern = likeMatch[3];
+      const regexStr = '^' + pattern.replace(/%/g, '.*').replace(/_/g, '.') + '$';
+      const re = new RegExp(regexStr, 'i');
+      const val = String(row[col] || '');
+      const matches = re.test(val);
+      const passed = isNot ? !matches : matches;
+      return {
+        passed,
+        reason: `${col} ('${val}') ${isNot ? 'NOT LIKE' : 'LIKE'} '${pattern}' [${passed ? '✓' : '✗'}]`
+      };
+    }
+
+    // 8. IN List
+    const inMatch = cleanClause.match(/([a-zA-Z0-9_]+)\s+(NOT\s+)?IN\s*\(([^)]+)\)/i);
+    if (inMatch) {
+      const col = inMatch[1];
+      const isNot = Boolean(inMatch[2]);
+      const items = inMatch[3].split(',').map(s => s.trim().replace(/^'|'$/g, '').toLowerCase());
+      const val = String(row[col] || '').toLowerCase();
+      const inList = items.includes(val);
+      const passed = isNot ? !inList : inList;
+      return {
+        passed,
+        reason: `${col} ('${row[col]}') ${isNot ? 'NOT IN' : 'IN'} (${inMatch[3].trim()}) [${passed ? '✓' : '✗'}]`
+      };
+    }
+
+    // 9. REGEXP Pattern
+    if (/REGEXP/i.test(cleanClause) && row.city) {
       const startsVowel = /^[aeiou]/i.test(row.city);
       const endsVowel = /[aeiou]$/i.test(row.city);
       const passed = startsVowel && endsVowel;
@@ -455,15 +741,19 @@ function evaluateWherePredicate(row, whereClause, tableName) {
 function evaluateSelectRow(row, selectClause, tableName) {
   const result = {};
 
+  if (!selectClause || selectClause.trim() === '*') {
+    return { ...row };
+  }
+
+  // 1. Special Case When handling for Triangles & Credit Score
   if (/CASE[\s\S]+?END/i.test(selectClause)) {
-    if (tableName === 'TRIANGLES') {
+    if (tableName === 'TRIANGLES' && row.A !== undefined) {
       result.A = row.A;
       result.B = row.B;
       result.C = row.C;
 
       const A = row.A, B = row.B, C = row.C;
       let triangleType = 'Scalene';
-
       if (A + B <= C || A + C <= B || B + C <= A) {
         triangleType = 'Not A Triangle';
       } else if (A === B && B === C) {
@@ -492,30 +782,69 @@ function evaluateSelectRow(row, selectClause, tableName) {
     }
   }
 
-  if (/RIGHT\s*\(\s*Name\s*,\s*3\s*\)/i.test(selectClause)) {
-    result.Name = row.Name;
-    if (row.Marks !== undefined) result.Marks = row.Marks;
-    result.suffix_3 = row.Name.slice(-3);
-    return result;
-  }
+  // 2. Parse comma-separated projections
+  const colExpressions = selectClause.split(/,(?![^(]*\))/);
+  colExpressions.forEach(expr => {
+    const raw = expr.trim();
+    if (!raw) return;
 
-  if (/LENGTH\s*\(\s*city\s*\)/i.test(selectClause)) {
-    result.city = row.city;
-    result.city_length = row.city.length;
-    return result;
-  }
+    // Check for alias: `expression AS alias_name`
+    const asMatch = raw.match(/^([\s\S]+?)\s+AS\s+([a-zA-Z0-9_]+)$/i);
+    let expression = raw;
+    let aliasName = raw;
+    if (asMatch) {
+      expression = asMatch[1].trim();
+      aliasName = asMatch[2].trim();
+    }
 
-  if (selectClause !== '*') {
-    const rawCols = selectClause.split(',').map(c => c.trim().split(/\s+AS\s+/i)[0].trim());
-    rawCols.forEach(col => {
-      if (row[col] !== undefined) {
-        result[col] = row[col];
-      }
-    });
-    if (Object.keys(result).length > 0) return result;
-  }
+    // Direct column match
+    if (row[aliasName] !== undefined) {
+      result[aliasName] = row[aliasName];
+      return;
+    }
+    if (row[expression] !== undefined) {
+      result[aliasName] = row[expression];
+      return;
+    }
 
-  return { ...row };
+    // RIGHT(col, N)
+    const rightMatch = expression.match(/RIGHT\s*\(\s*([a-zA-Z0-9_]+)\s*,\s*(\d+)\s*\)/i);
+    if (rightMatch && row[rightMatch[1]] !== undefined) {
+      result[aliasName] = String(row[rightMatch[1]]).slice(-parseInt(rightMatch[2], 10));
+      return;
+    }
+
+    // LEFT(col, N)
+    const leftMatch = expression.match(/LEFT\s*\(\s*([a-zA-Z0-9_]+)\s*,\s*(\d+)\s*\)/i);
+    if (leftMatch && row[leftMatch[1]] !== undefined) {
+      result[aliasName] = String(row[leftMatch[1]]).slice(0, parseInt(leftMatch[2], 10));
+      return;
+    }
+
+    // LENGTH(col)
+    const lenMatch = expression.match(/LENGTH\s*\(\s*([a-zA-Z0-9_]+)\s*\)/i);
+    if (lenMatch && row[lenMatch[1]] !== undefined) {
+      result[aliasName] = String(row[lenMatch[1]]).length;
+      return;
+    }
+
+    // Multiplication: (col * number)
+    const multMatch = expression.match(/\(?\s*([a-zA-Z0-9_]+)\s*\*\s*(\d+(?:\.\d+)?)\s*\)?/);
+    if (multMatch && row[multMatch[1]] !== undefined) {
+      result[aliasName] = Number((parseFloat(row[multMatch[1]]) * parseFloat(multMatch[2])).toFixed(4));
+      return;
+    }
+
+    // Case-insensitive key match fallback
+    const matchKey = Object.keys(row).find(k => k.toLowerCase() === expression.toLowerCase());
+    if (matchKey) {
+      result[aliasName] = row[matchKey];
+    } else {
+      result[aliasName] = row[aliasName] !== undefined ? row[aliasName] : '-';
+    }
+  });
+
+  return Object.keys(result).length > 0 ? result : { ...row };
 }
 
 function sortRows(rows, orderClause) {
@@ -818,7 +1147,30 @@ function renderSchemaExplorer() {
 }
 
 function updateActiveTableBadge(tbl) {
-  document.getElementById('activeTableBadge').textContent = tbl;
+  const badge = document.getElementById('activeTableBadge');
+  if (badge) {
+    const isDynamic = DYNAMIC_TABLE_REGISTRY.has(tbl);
+    badge.innerHTML = isDynamic ? `⚡ ${tbl}` : tbl;
+    badge.title = isDynamic ? `Dynamic Case Study Table (${DATABASE[tbl]?.length || 0} rows)` : `Standard Database Table`;
+  }
+  
+  // Show / hide the dynamic table banner in Studio
+  const banner = document.getElementById('dynamicTableBanner');
+  if (banner) {
+    if (DYNAMIC_TABLE_REGISTRY.has(tbl)) {
+      banner.style.display = 'flex';
+      banner.innerHTML = `
+        <div class="dynamic-banner-content">
+          <span class="dynamic-banner-icon">⚡</span>
+          <span>Dynamic Case Table Active: <strong>${tbl}</strong> (${DATABASE[tbl]?.length || 0} Synthetic Disk Records Generated)</span>
+        </div>
+        <button class="btn-reset-db" onclick="resetStudioToDefaultTable()">↺ Reset to Employees (Standard DB)</button>
+      `;
+    } else {
+      banner.style.display = 'none';
+    }
+  }
+
   renderSchemaExplorer();
 }
 
@@ -2603,13 +2955,24 @@ function switchToStudioWithQuery(query, table) {
   if (studioTab) studioTab.classList.add('active');
   if (studioView) studioView.classList.add('active');
 
-  // 2. Switch active table
-  if (table && DATABASE[table]) {
-    EngineState.activeTable = table;
-    updateActiveTableBadge(table);
+  // 2. Ensure table is present in database (dynamically synthesize if from case study)
+  let activeTbl = table;
+  if (activeTbl) {
+    activeTbl = ensureDynamicTableInDatabase(activeTbl, null, query);
+  }
+  if (!activeTbl && query) {
+    const fromMatch = query.match(/FROM\s+([A-Za-z0-9_]+)/i);
+    if (fromMatch) {
+      activeTbl = ensureDynamicTableInDatabase(fromMatch[1], null, query);
+    }
+  }
+
+  if (activeTbl && DATABASE[activeTbl]) {
+    EngineState.activeTable = activeTbl;
+    updateActiveTableBadge(activeTbl);
     const tblSel = document.getElementById('builderTableSelect');
-    if (tblSel) tblSel.value = table;
-    syncBuilderFromTable(table);
+    if (tblSel) tblSel.value = activeTbl;
+    syncBuilderFromTable(activeTbl);
   }
 
   // 3. Inject SQL and Parse
