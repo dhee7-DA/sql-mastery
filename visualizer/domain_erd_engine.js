@@ -599,8 +599,8 @@ window.DOMAIN_ERD_ENGINE = (() => {
             <span class="case-erd-table-name">${parsed.tableName}</span>
             <span class="case-erd-domain-badge">${cs.industry} Schema</span>
           </div>
-          <button class="btn-open-domain-erd" onclick="window.DOMAIN_ERD_ENGINE.openDomainERD('${escapeHtml(cs.industry)}', '${escapeHtml(parsed.tableName)}'); event.stopPropagation();" data-domain="${escapeHtml(cs.industry)}" data-table="${escapeHtml(parsed.tableName)}" title="Open interactive visual ERD diagram with relationship arrows">
-            📐 View Domain ERD Diagram
+          <button class="btn-open-domain-erd" onclick="window.DOMAIN_ERD_ENGINE.focusTableInTopERD('${escapeHtml(cs.industry)}', '${escapeHtml(parsed.tableName)}'); event.stopPropagation();" data-domain="${escapeHtml(cs.industry)}" data-table="${escapeHtml(parsed.tableName)}" title="View and highlight ${escapeHtml(parsed.tableName)} in the top Domain ERD Map">
+            📐 View in Top ERD &uarr;
           </button>
         </div>
 
@@ -738,6 +738,169 @@ window.DOMAIN_ERD_ENGINE = (() => {
     }
   }
 
+  // Persistent Top-of-Page Domain ERD Showcase Engine
+  let currentShowcaseDomain = 'Fintech';
+  let isShowcaseCollapsed = false;
+
+  function renderTopShowcase(domainName = currentShowcaseDomain, highlightTable = null) {
+    if (domainName && DOMAIN_SCHEMAS[domainName]) {
+      currentShowcaseDomain = domainName;
+    }
+    const container = document.getElementById('caseStudiesDomainErdShowcase');
+    if (!container) return;
+
+    const domain = DOMAIN_SCHEMAS[currentShowcaseDomain] || DOMAIN_SCHEMAS['Fintech'];
+
+    // 1. Relationships Ribbon
+    let relChipsHtml = '';
+    domain.relationships.forEach((rel) => {
+      relChipsHtml += `
+        <div class="erd-showcase-rel-chip" title="${escapeHtml(rel.label)}">
+          <strong>${escapeHtml(rel.from)}</strong>
+          <span class="erd-showcase-rel-arrow">&rarr;</span>
+          <strong>${escapeHtml(rel.to)}</strong>
+          <span class="erd-showcase-rel-label">${escapeHtml(rel.label.split('[')[0].trim())}</span>
+        </div>
+      `;
+    });
+
+    // 2. Tables Grid
+    let tablesHtml = '';
+    domain.tables.forEach(tbl => {
+      const isSelected = highlightTable && tbl.name.toLowerCase() === highlightTable.toLowerCase();
+      const cardClass = isSelected ? 'erd-top-table-card erd-highlight-pulse' : 'erd-top-table-card';
+
+      let colsHtml = '';
+      tbl.columns.forEach(col => {
+        const pkFkBadge = col.isPk 
+          ? `<span class="erd-key-badge" title="Primary Key">🔑 PK</span>` 
+          : (col.isFk ? `<span class="erd-fk-badge" title="Foreign Key: ${col.ref}">🔗 FK</span>` : '');
+
+        colsHtml += `
+          <div class="erd-top-col-row ${col.isPk ? 'erd-col-pk' : ''}">
+            <div class="erd-top-col-left">
+              ${pkFkBadge}
+              <span class="erd-top-col-name">${escapeHtml(col.name)}</span>
+            </div>
+            <div class="erd-top-col-right">
+              <span class="erd-top-col-type">${escapeHtml(col.type)}</span>
+              <span class="erd-top-col-meaning" title="${escapeHtml(col.desc)}">${escapeHtml(col.desc)}</span>
+            </div>
+          </div>
+        `;
+      });
+
+      tablesHtml += `
+        <div class="${cardClass}" id="erd_top_table_${escapeHtml(tbl.name)}">
+          <div class="erd-top-table-header">
+            <div class="erd-top-table-name">
+              <span>${tbl.icon || '📋'}</span>
+              <span>${escapeHtml(tbl.name)}</span>
+            </div>
+            <span class="erd-top-table-caption">${escapeHtml(tbl.caption)}</span>
+          </div>
+          <div class="erd-top-table-desc">${escapeHtml(tbl.desc)}</div>
+          <div class="erd-top-table-body">
+            ${colsHtml}
+          </div>
+        </div>
+      `;
+    });
+
+    container.innerHTML = `
+      <div class="erd-showcase-header">
+        <div class="erd-showcase-title-row">
+          <span class="erd-showcase-icon">${domain.icon}</span>
+          <div>
+            <div class="erd-showcase-heading">
+              <span>${escapeHtml(domain.domain)} Domain Architecture &amp; Live ERD Schema</span>
+              <span class="status-pill" style="font-size: 10.5px; padding: 1px 7px;">
+                ${domain.tables.length} Tables &bull; ${domain.relationships.length} Cardinality Rules
+              </span>
+            </div>
+            <div class="erd-showcase-desc">${escapeHtml(domain.overview)}</div>
+          </div>
+        </div>
+        <div class="erd-showcase-actions">
+          <button class="card-nav-btn" onclick="window.DOMAIN_ERD_ENGINE.toggleShowcaseCollapse()">
+            ${isShowcaseCollapsed ? '▼ Expand Schema ERD' : '▲ Collapse Schema ERD'}
+          </button>
+          <button class="card-nav-btn" onclick="window.DOMAIN_ERD_ENGINE.openDomainERD('${escapeHtml(domain.domain)}')">
+            ⛶ Fullscreen Zoom
+          </button>
+        </div>
+      </div>
+
+      <!-- 10 Domain Tabs Switcher Strip -->
+      <div class="erd-showcase-domain-tabs">
+        <span style="font-size: 10.5px; font-family: var(--font-mono); color: var(--text-muted); font-weight: 600; text-transform: uppercase; margin-right: 4px;">Industry Domains:</span>
+        ${Object.keys(DOMAIN_SCHEMAS).map(domKey => {
+          const isActive = domKey.toLowerCase() === currentShowcaseDomain.toLowerCase();
+          return `
+            <button class="erd-domain-tab-btn ${isActive ? 'active' : ''}" onclick="window.DOMAIN_ERD_ENGINE.switchShowcaseDomain('${domKey}')">
+              ${DOMAIN_SCHEMAS[domKey].icon} ${domKey}
+            </button>
+          `;
+        }).join('')}
+      </div>
+
+      <!-- Collapsible ERD Content (Visible by Default) -->
+      <div class="erd-showcase-content ${isShowcaseCollapsed ? 'collapsed' : ''}" id="erdShowcaseContent">
+        <!-- Relationship Cardinality Ribbon -->
+        <div class="erd-showcase-rel-strip">
+          ${relChipsHtml}
+        </div>
+
+        <!-- Multi-Table Entity Cards Grid -->
+        <div class="erd-showcase-tables-grid">
+          ${tablesHtml}
+        </div>
+      </div>
+    `;
+  }
+
+  function switchShowcaseDomain(domainKey) {
+    currentShowcaseDomain = domainKey;
+    renderTopShowcase(domainKey);
+    // Sync with the case studies industry filter buttons below
+    const industryBtn = document.querySelector(`.case-filter-btn[data-industry="${domainKey}"]`);
+    if (industryBtn) {
+      document.querySelectorAll('.case-filter-btn').forEach(b => b.classList.remove('active'));
+      industryBtn.classList.add('active');
+    }
+    if (window.renderCaseStudies) {
+      window.renderCaseStudies(domainKey);
+    }
+  }
+
+  function toggleShowcaseCollapse() {
+    isShowcaseCollapsed = !isShowcaseCollapsed;
+    renderTopShowcase(currentShowcaseDomain);
+  }
+
+  function focusTableInTopERD(domainName, tableName) {
+    if (isShowcaseCollapsed) {
+      isShowcaseCollapsed = false;
+    }
+    renderTopShowcase(domainName, tableName);
+
+    // Smooth scroll to the top ERD showcase
+    const showcaseEl = document.getElementById('caseStudiesDomainErdShowcase');
+    if (showcaseEl) {
+      showcaseEl.scrollIntoView({ behavior: 'smooth', block: 'start' });
+    }
+
+    // Pulse highlight the requested table
+    setTimeout(() => {
+      const targetTable = document.getElementById(`erd_top_table_${tableName}`);
+      if (targetTable) {
+        targetTable.classList.remove('erd-highlight-pulse');
+        void targetTable.offsetWidth; // force DOM reflow
+        targetTable.classList.add('erd-highlight-pulse');
+      }
+    }, 180);
+  }
+
   function escapeHtml(str) {
     if (!str) return '';
     return String(str)
@@ -753,7 +916,11 @@ window.DOMAIN_ERD_ENGINE = (() => {
     parseSchemaSnippet,
     renderMiniERD,
     openDomainERD,
-    closeDomainERD
+    closeDomainERD,
+    renderTopShowcase,
+    switchShowcaseDomain,
+    toggleShowcaseCollapse,
+    focusTableInTopERD
   };
 
 })();

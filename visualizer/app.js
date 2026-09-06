@@ -1600,6 +1600,9 @@ function initCurriculumSystem() {
       btn.classList.add('active');
       if (window.soundFX) window.soundFX.playPop();
       currentCaseDisplayLimit = 30;
+      if (btn.dataset.industry !== 'all' && window.DOMAIN_ERD_ENGINE) {
+        window.DOMAIN_ERD_ENGINE.renderTopShowcase(btn.dataset.industry);
+      }
       renderCaseStudies(btn.dataset.industry, currentCaseSectionFilter, currentCaseDiffFilter, currentCaseSortOrder);
     });
   });
@@ -3520,6 +3523,12 @@ function renderCaseStudies(
   const solvedCountSpan = document.getElementById('casesSolvedCount');
   if (!container) return;
 
+  // Mount or synchronize the persistent Top Domain ERD Showcase
+  if (window.DOMAIN_ERD_ENGINE && document.getElementById('caseStudiesDomainErdShowcase')) {
+    const targetDomain = (currentCaseIndustryFilter === 'all' || !currentCaseIndustryFilter) ? 'Fintech' : currentCaseIndustryFilter;
+    window.DOMAIN_ERD_ENGINE.renderTopShowcase(targetDomain);
+  }
+
   let allCases = window.ALL_600_CASE_STUDIES || window.ALL_500_CASE_STUDIES || window.ALL_300_CASE_STUDIES || [];
   let cases = allCases.slice();
 
@@ -3730,14 +3739,14 @@ function renderCaseStudies(
     });
   }
 
-  // Event Listeners for Open Domain ERD Diagram
+  // Event Listeners for Focus in Top Domain ERD Showcase
   container.querySelectorAll('.btn-open-domain-erd').forEach(btn => {
     btn.addEventListener('click', (e) => {
       e.stopPropagation();
       const dom = btn.dataset.domain;
       const tbl = btn.dataset.table;
       if (window.DOMAIN_ERD_ENGINE) {
-        window.DOMAIN_ERD_ENGINE.openDomainERD(dom, tbl);
+        window.DOMAIN_ERD_ENGINE.focusTableInTopERD(dom, tbl);
       }
     });
   });

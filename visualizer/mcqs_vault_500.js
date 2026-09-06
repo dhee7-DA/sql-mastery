@@ -11,9 +11,9 @@ window.MCQS_VAULT_500 = [
     "question": "[COUNT #1] What is the key functional difference between COUNT(*) and COUNT(column_name) when the specified column contains NULLs?",
     "options": [
       "COUNT(*) counts every physical row; COUNT(column_name) excludes rows where column_name IS NULL",
-      "COUNT(*) only counts primary keys; COUNT(column_name) counts all non-primary keys",
       "COUNT(column_name) converts NULLs into 0 before calculating the total headcount",
-      "There is no functional difference; both return the exact same row count"
+      "There is no functional difference; both return the exact same row count",
+      "COUNT(*) only counts primary keys; COUNT(column_name) counts all non-primary keys"
     ],
     "correctIndex": 0,
     "explanation": "In ANSI SQL, COUNT(*) counts the cardinality of the input row set regardless of column contents, while COUNT(column_name) strictly tallies rows where the specified column evaluates to a non-NULL value."
@@ -24,12 +24,12 @@ window.MCQS_VAULT_500 = [
     "tag": "⚡ Gotcha Trap",
     "question": "[COUNT #2] When running \"SELECT COUNT(*) FROM EmptyTable;\" where the table contains exactly zero rows, what is the output?",
     "options": [
-      "NULL",
       "0",
+      "An error: EmptyTableNotFoundException",
       "An empty result set with 0 rows",
-      "An error: EmptyTableNotFoundException"
+      "NULL"
     ],
-    "correctIndex": 1,
+    "correctIndex": 0,
     "explanation": "COUNT(*) on an empty table returns a single row with the scalar value 0. Unlike SUM() or AVG() which return NULL on empty sets, COUNT always returns an integer >= 0."
   },
   {
@@ -38,12 +38,12 @@ window.MCQS_VAULT_500 = [
     "tag": "🐱 Brain Bender",
     "question": "[COUNT #3] In terms of optimizer performance in modern RDBMS (PostgreSQL, MySQL InnoDB), why is COUNT(*) preferred over COUNT(1)?",
     "options": [
-      "COUNT(1) forces the engine to materialize a literal 1 for every row before summing",
+      "Modern optimizers treat COUNT(*) and COUNT(1) identically, but COUNT(*) is the idiomatic standard",
       "COUNT(*) is standard ANSI SQL and engines optimize it directly to scan the narrowest index",
       "COUNT(1) consumes twice the memory buffer allocation of COUNT(*)",
-      "Modern optimizers treat COUNT(*) and COUNT(1) identically, but COUNT(*) is the idiomatic standard"
+      "COUNT(1) forces the engine to materialize a literal 1 for every row before summing"
     ],
-    "correctIndex": 3,
+    "correctIndex": 0,
     "explanation": "Modern query planners parse COUNT(1) and COUNT(*) to the exact same physical execution plan (scanning the leanest available secondary index). COUNT(*) is the universal standard."
   },
   {
@@ -52,12 +52,12 @@ window.MCQS_VAULT_500 = [
     "tag": "🎯 Core Concept",
     "question": "[COUNT #4] Given a table with 5 rows containing values [10, 20, 20, NULL, NULL], what does \"SELECT COUNT(DISTINCT val) FROM t;\" return?",
     "options": [
-      "2",
       "3",
       "4",
+      "2",
       "5"
     ],
-    "correctIndex": 0,
+    "correctIndex": 2,
     "explanation": "COUNT(DISTINCT val) filters out NULLs first, then deduplicates the remaining non-NULL values [10, 20, 20] into unique elements [10, 20], yielding a count of 2."
   },
   {
@@ -66,12 +66,12 @@ window.MCQS_VAULT_500 = [
     "tag": "🏆 Senior Staff",
     "question": "[COUNT #5] Why can COUNT(DISTINCT col) become a major performance bottleneck on billion-row tables?",
     "options": [
-      "It forces the storage engine to convert data types to strings",
       "It requires maintaining an in-memory hash set or performing an expensive disk sort to eliminate duplicates",
-      "It locks the entire table preventing concurrent writes",
-      "It disables parallel query workers across all CPU cores"
+      "It forces the storage engine to convert data types to strings",
+      "It disables parallel query workers across all CPU cores",
+      "It locks the entire table preventing concurrent writes"
     ],
-    "correctIndex": 1,
+    "correctIndex": 0,
     "explanation": "Unlike simple streaming COUNT(*), COUNT(DISTINCT) must track every distinct key in a hash table or sort buffer, leading to high memory pressure and potential spills to temp disk."
   },
   {
@@ -80,12 +80,12 @@ window.MCQS_VAULT_500 = [
     "tag": "🍡 Quick Snack",
     "question": "[COUNT #6] What is the key functional difference between COUNT(*) and COUNT(column_name) when the specified column contains NULLs? (Scenario Variant 2)",
     "options": [
+      "There is no functional difference; both return the exact same row count",
       "COUNT(*) counts every physical row; COUNT(column_name) excludes rows where column_name IS NULL",
-      "COUNT(*) only counts primary keys; COUNT(column_name) counts all non-primary keys",
       "COUNT(column_name) converts NULLs into 0 before calculating the total headcount",
-      "There is no functional difference; both return the exact same row count"
+      "COUNT(*) only counts primary keys; COUNT(column_name) counts all non-primary keys"
     ],
-    "correctIndex": 0,
+    "correctIndex": 1,
     "explanation": "In ANSI SQL, COUNT(*) counts the cardinality of the input row set regardless of column contents, while COUNT(column_name) strictly tallies rows where the specified column evaluates to a non-NULL value."
   },
   {
@@ -95,11 +95,11 @@ window.MCQS_VAULT_500 = [
     "question": "[COUNT #7] When running \"SELECT COUNT(*) FROM EmptyTable;\" where the table contains exactly zero rows, what is the output? (Scenario Variant 2)",
     "options": [
       "NULL",
-      "0",
       "An empty result set with 0 rows",
-      "An error: EmptyTableNotFoundException"
+      "An error: EmptyTableNotFoundException",
+      "0"
     ],
-    "correctIndex": 1,
+    "correctIndex": 3,
     "explanation": "COUNT(*) on an empty table returns a single row with the scalar value 0. Unlike SUM() or AVG() which return NULL on empty sets, COUNT always returns an integer >= 0."
   },
   {
@@ -108,12 +108,12 @@ window.MCQS_VAULT_500 = [
     "tag": "🐱 Brain Bender",
     "question": "[COUNT #8] In terms of optimizer performance in modern RDBMS (PostgreSQL, MySQL InnoDB), why is COUNT(*) preferred over COUNT(1)? (Scenario Variant 2)",
     "options": [
-      "COUNT(1) forces the engine to materialize a literal 1 for every row before summing",
       "COUNT(*) is standard ANSI SQL and engines optimize it directly to scan the narrowest index",
+      "Modern optimizers treat COUNT(*) and COUNT(1) identically, but COUNT(*) is the idiomatic standard",
       "COUNT(1) consumes twice the memory buffer allocation of COUNT(*)",
-      "Modern optimizers treat COUNT(*) and COUNT(1) identically, but COUNT(*) is the idiomatic standard"
+      "COUNT(1) forces the engine to materialize a literal 1 for every row before summing"
     ],
-    "correctIndex": 3,
+    "correctIndex": 1,
     "explanation": "Modern query planners parse COUNT(1) and COUNT(*) to the exact same physical execution plan (scanning the leanest available secondary index). COUNT(*) is the universal standard."
   },
   {
@@ -122,12 +122,12 @@ window.MCQS_VAULT_500 = [
     "tag": "🎯 Core Concept",
     "question": "[COUNT #9] Given a table with 5 rows containing values [10, 20, 20, NULL, NULL], what does \"SELECT COUNT(DISTINCT val) FROM t;\" return? (Scenario Variant 2)",
     "options": [
-      "2",
+      "5",
       "3",
       "4",
-      "5"
+      "2"
     ],
-    "correctIndex": 0,
+    "correctIndex": 3,
     "explanation": "COUNT(DISTINCT val) filters out NULLs first, then deduplicates the remaining non-NULL values [10, 20, 20] into unique elements [10, 20], yielding a count of 2."
   },
   {
@@ -136,10 +136,10 @@ window.MCQS_VAULT_500 = [
     "tag": "🏆 Senior Staff",
     "question": "[COUNT #10] Why can COUNT(DISTINCT col) become a major performance bottleneck on billion-row tables? (Scenario Variant 2)",
     "options": [
-      "It forces the storage engine to convert data types to strings",
-      "It requires maintaining an in-memory hash set or performing an expensive disk sort to eliminate duplicates",
       "It locks the entire table preventing concurrent writes",
-      "It disables parallel query workers across all CPU cores"
+      "It requires maintaining an in-memory hash set or performing an expensive disk sort to eliminate duplicates",
+      "It disables parallel query workers across all CPU cores",
+      "It forces the storage engine to convert data types to strings"
     ],
     "correctIndex": 1,
     "explanation": "Unlike simple streaming COUNT(*), COUNT(DISTINCT) must track every distinct key in a hash table or sort buffer, leading to high memory pressure and potential spills to temp disk."
@@ -150,12 +150,12 @@ window.MCQS_VAULT_500 = [
     "tag": "🍡 Quick Snack",
     "question": "[COUNT #11] What is the key functional difference between COUNT(*) and COUNT(column_name) when the specified column contains NULLs? (Scenario Variant 3)",
     "options": [
+      "There is no functional difference; both return the exact same row count",
       "COUNT(*) counts every physical row; COUNT(column_name) excludes rows where column_name IS NULL",
-      "COUNT(*) only counts primary keys; COUNT(column_name) counts all non-primary keys",
       "COUNT(column_name) converts NULLs into 0 before calculating the total headcount",
-      "There is no functional difference; both return the exact same row count"
+      "COUNT(*) only counts primary keys; COUNT(column_name) counts all non-primary keys"
     ],
-    "correctIndex": 0,
+    "correctIndex": 1,
     "explanation": "In ANSI SQL, COUNT(*) counts the cardinality of the input row set regardless of column contents, while COUNT(column_name) strictly tallies rows where the specified column evaluates to a non-NULL value."
   },
   {
@@ -164,12 +164,12 @@ window.MCQS_VAULT_500 = [
     "tag": "⚡ Gotcha Trap",
     "question": "[COUNT #12] When running \"SELECT COUNT(*) FROM EmptyTable;\" where the table contains exactly zero rows, what is the output? (Scenario Variant 3)",
     "options": [
-      "NULL",
       "0",
       "An empty result set with 0 rows",
-      "An error: EmptyTableNotFoundException"
+      "An error: EmptyTableNotFoundException",
+      "NULL"
     ],
-    "correctIndex": 1,
+    "correctIndex": 0,
     "explanation": "COUNT(*) on an empty table returns a single row with the scalar value 0. Unlike SUM() or AVG() which return NULL on empty sets, COUNT always returns an integer >= 0."
   },
   {
@@ -178,12 +178,12 @@ window.MCQS_VAULT_500 = [
     "tag": "🐱 Brain Bender",
     "question": "[COUNT #13] In terms of optimizer performance in modern RDBMS (PostgreSQL, MySQL InnoDB), why is COUNT(*) preferred over COUNT(1)? (Scenario Variant 3)",
     "options": [
-      "COUNT(1) forces the engine to materialize a literal 1 for every row before summing",
-      "COUNT(*) is standard ANSI SQL and engines optimize it directly to scan the narrowest index",
       "COUNT(1) consumes twice the memory buffer allocation of COUNT(*)",
-      "Modern optimizers treat COUNT(*) and COUNT(1) identically, but COUNT(*) is the idiomatic standard"
+      "COUNT(1) forces the engine to materialize a literal 1 for every row before summing",
+      "Modern optimizers treat COUNT(*) and COUNT(1) identically, but COUNT(*) is the idiomatic standard",
+      "COUNT(*) is standard ANSI SQL and engines optimize it directly to scan the narrowest index"
     ],
-    "correctIndex": 3,
+    "correctIndex": 2,
     "explanation": "Modern query planners parse COUNT(1) and COUNT(*) to the exact same physical execution plan (scanning the leanest available secondary index). COUNT(*) is the universal standard."
   },
   {
@@ -192,12 +192,12 @@ window.MCQS_VAULT_500 = [
     "tag": "🎯 Core Concept",
     "question": "[COUNT #14] Given a table with 5 rows containing values [10, 20, 20, NULL, NULL], what does \"SELECT COUNT(DISTINCT val) FROM t;\" return? (Scenario Variant 3)",
     "options": [
-      "2",
       "3",
-      "4",
-      "5"
+      "2",
+      "5",
+      "4"
     ],
-    "correctIndex": 0,
+    "correctIndex": 1,
     "explanation": "COUNT(DISTINCT val) filters out NULLs first, then deduplicates the remaining non-NULL values [10, 20, 20] into unique elements [10, 20], yielding a count of 2."
   },
   {
@@ -207,11 +207,11 @@ window.MCQS_VAULT_500 = [
     "question": "[COUNT #15] Why can COUNT(DISTINCT col) become a major performance bottleneck on billion-row tables? (Scenario Variant 3)",
     "options": [
       "It forces the storage engine to convert data types to strings",
-      "It requires maintaining an in-memory hash set or performing an expensive disk sort to eliminate duplicates",
       "It locks the entire table preventing concurrent writes",
-      "It disables parallel query workers across all CPU cores"
+      "It disables parallel query workers across all CPU cores",
+      "It requires maintaining an in-memory hash set or performing an expensive disk sort to eliminate duplicates"
     ],
-    "correctIndex": 1,
+    "correctIndex": 3,
     "explanation": "Unlike simple streaming COUNT(*), COUNT(DISTINCT) must track every distinct key in a hash table or sort buffer, leading to high memory pressure and potential spills to temp disk."
   },
   {
@@ -220,12 +220,12 @@ window.MCQS_VAULT_500 = [
     "tag": "🍡 Quick Snack",
     "question": "[COUNT #16] What is the key functional difference between COUNT(*) and COUNT(column_name) when the specified column contains NULLs? (Scenario Variant 4)",
     "options": [
-      "COUNT(*) counts every physical row; COUNT(column_name) excludes rows where column_name IS NULL",
-      "COUNT(*) only counts primary keys; COUNT(column_name) counts all non-primary keys",
       "COUNT(column_name) converts NULLs into 0 before calculating the total headcount",
+      "COUNT(*) only counts primary keys; COUNT(column_name) counts all non-primary keys",
+      "COUNT(*) counts every physical row; COUNT(column_name) excludes rows where column_name IS NULL",
       "There is no functional difference; both return the exact same row count"
     ],
-    "correctIndex": 0,
+    "correctIndex": 2,
     "explanation": "In ANSI SQL, COUNT(*) counts the cardinality of the input row set regardless of column contents, while COUNT(column_name) strictly tallies rows where the specified column evaluates to a non-NULL value."
   },
   {
@@ -234,12 +234,12 @@ window.MCQS_VAULT_500 = [
     "tag": "⚡ Gotcha Trap",
     "question": "[COUNT #17] When running \"SELECT COUNT(*) FROM EmptyTable;\" where the table contains exactly zero rows, what is the output? (Scenario Variant 4)",
     "options": [
-      "NULL",
       "0",
       "An empty result set with 0 rows",
-      "An error: EmptyTableNotFoundException"
+      "An error: EmptyTableNotFoundException",
+      "NULL"
     ],
-    "correctIndex": 1,
+    "correctIndex": 0,
     "explanation": "COUNT(*) on an empty table returns a single row with the scalar value 0. Unlike SUM() or AVG() which return NULL on empty sets, COUNT always returns an integer >= 0."
   },
   {
@@ -262,12 +262,12 @@ window.MCQS_VAULT_500 = [
     "tag": "🎯 Core Concept",
     "question": "[COUNT #19] Given a table with 5 rows containing values [10, 20, 20, NULL, NULL], what does \"SELECT COUNT(DISTINCT val) FROM t;\" return? (Scenario Variant 4)",
     "options": [
-      "2",
-      "3",
+      "5",
       "4",
-      "5"
+      "3",
+      "2"
     ],
-    "correctIndex": 0,
+    "correctIndex": 3,
     "explanation": "COUNT(DISTINCT val) filters out NULLs first, then deduplicates the remaining non-NULL values [10, 20, 20] into unique elements [10, 20], yielding a count of 2."
   },
   {
@@ -276,10 +276,10 @@ window.MCQS_VAULT_500 = [
     "tag": "🏆 Senior Staff",
     "question": "[COUNT #20] Why can COUNT(DISTINCT col) become a major performance bottleneck on billion-row tables? (Scenario Variant 4)",
     "options": [
-      "It forces the storage engine to convert data types to strings",
+      "It disables parallel query workers across all CPU cores",
       "It requires maintaining an in-memory hash set or performing an expensive disk sort to eliminate duplicates",
       "It locks the entire table preventing concurrent writes",
-      "It disables parallel query workers across all CPU cores"
+      "It forces the storage engine to convert data types to strings"
     ],
     "correctIndex": 1,
     "explanation": "Unlike simple streaming COUNT(*), COUNT(DISTINCT) must track every distinct key in a hash table or sort buffer, leading to high memory pressure and potential spills to temp disk."
@@ -305,11 +305,11 @@ window.MCQS_VAULT_500 = [
     "question": "[COUNT #22] When running \"SELECT COUNT(*) FROM EmptyTable;\" where the table contains exactly zero rows, what is the output? (Scenario Variant 5)",
     "options": [
       "NULL",
-      "0",
+      "An error: EmptyTableNotFoundException",
       "An empty result set with 0 rows",
-      "An error: EmptyTableNotFoundException"
+      "0"
     ],
-    "correctIndex": 1,
+    "correctIndex": 3,
     "explanation": "COUNT(*) on an empty table returns a single row with the scalar value 0. Unlike SUM() or AVG() which return NULL on empty sets, COUNT always returns an integer >= 0."
   },
   {
@@ -318,12 +318,12 @@ window.MCQS_VAULT_500 = [
     "tag": "🐱 Brain Bender",
     "question": "[COUNT #23] In terms of optimizer performance in modern RDBMS (PostgreSQL, MySQL InnoDB), why is COUNT(*) preferred over COUNT(1)? (Scenario Variant 5)",
     "options": [
-      "COUNT(1) forces the engine to materialize a literal 1 for every row before summing",
-      "COUNT(*) is standard ANSI SQL and engines optimize it directly to scan the narrowest index",
       "COUNT(1) consumes twice the memory buffer allocation of COUNT(*)",
-      "Modern optimizers treat COUNT(*) and COUNT(1) identically, but COUNT(*) is the idiomatic standard"
+      "COUNT(*) is standard ANSI SQL and engines optimize it directly to scan the narrowest index",
+      "Modern optimizers treat COUNT(*) and COUNT(1) identically, but COUNT(*) is the idiomatic standard",
+      "COUNT(1) forces the engine to materialize a literal 1 for every row before summing"
     ],
-    "correctIndex": 3,
+    "correctIndex": 2,
     "explanation": "Modern query planners parse COUNT(1) and COUNT(*) to the exact same physical execution plan (scanning the leanest available secondary index). COUNT(*) is the universal standard."
   },
   {
@@ -332,12 +332,12 @@ window.MCQS_VAULT_500 = [
     "tag": "🎯 Core Concept",
     "question": "[COUNT #24] Given a table with 5 rows containing values [10, 20, 20, NULL, NULL], what does \"SELECT COUNT(DISTINCT val) FROM t;\" return? (Scenario Variant 5)",
     "options": [
-      "2",
+      "5",
       "3",
       "4",
-      "5"
+      "2"
     ],
-    "correctIndex": 0,
+    "correctIndex": 3,
     "explanation": "COUNT(DISTINCT val) filters out NULLs first, then deduplicates the remaining non-NULL values [10, 20, 20] into unique elements [10, 20], yielding a count of 2."
   },
   {
@@ -346,10 +346,10 @@ window.MCQS_VAULT_500 = [
     "tag": "🏆 Senior Staff",
     "question": "[COUNT #25] Why can COUNT(DISTINCT col) become a major performance bottleneck on billion-row tables? (Scenario Variant 5)",
     "options": [
-      "It forces the storage engine to convert data types to strings",
+      "It disables parallel query workers across all CPU cores",
       "It requires maintaining an in-memory hash set or performing an expensive disk sort to eliminate duplicates",
       "It locks the entire table preventing concurrent writes",
-      "It disables parallel query workers across all CPU cores"
+      "It forces the storage engine to convert data types to strings"
     ],
     "correctIndex": 1,
     "explanation": "Unlike simple streaming COUNT(*), COUNT(DISTINCT) must track every distinct key in a hash table or sort buffer, leading to high memory pressure and potential spills to temp disk."
@@ -360,12 +360,12 @@ window.MCQS_VAULT_500 = [
     "tag": "🍡 Quick Snack",
     "question": "[COUNT #26] What is the key functional difference between COUNT(*) and COUNT(column_name) when the specified column contains NULLs? (Scenario Variant 6)",
     "options": [
-      "COUNT(*) counts every physical row; COUNT(column_name) excludes rows where column_name IS NULL",
-      "COUNT(*) only counts primary keys; COUNT(column_name) counts all non-primary keys",
       "COUNT(column_name) converts NULLs into 0 before calculating the total headcount",
-      "There is no functional difference; both return the exact same row count"
+      "There is no functional difference; both return the exact same row count",
+      "COUNT(*) only counts primary keys; COUNT(column_name) counts all non-primary keys",
+      "COUNT(*) counts every physical row; COUNT(column_name) excludes rows where column_name IS NULL"
     ],
-    "correctIndex": 0,
+    "correctIndex": 3,
     "explanation": "In ANSI SQL, COUNT(*) counts the cardinality of the input row set regardless of column contents, while COUNT(column_name) strictly tallies rows where the specified column evaluates to a non-NULL value."
   },
   {
@@ -374,12 +374,12 @@ window.MCQS_VAULT_500 = [
     "tag": "⚡ Gotcha Trap",
     "question": "[COUNT #27] When running \"SELECT COUNT(*) FROM EmptyTable;\" where the table contains exactly zero rows, what is the output? (Scenario Variant 6)",
     "options": [
-      "NULL",
-      "0",
       "An empty result set with 0 rows",
-      "An error: EmptyTableNotFoundException"
+      "An error: EmptyTableNotFoundException",
+      "NULL",
+      "0"
     ],
-    "correctIndex": 1,
+    "correctIndex": 3,
     "explanation": "COUNT(*) on an empty table returns a single row with the scalar value 0. Unlike SUM() or AVG() which return NULL on empty sets, COUNT always returns an integer >= 0."
   },
   {
@@ -388,12 +388,12 @@ window.MCQS_VAULT_500 = [
     "tag": "🐱 Brain Bender",
     "question": "[COUNT #28] In terms of optimizer performance in modern RDBMS (PostgreSQL, MySQL InnoDB), why is COUNT(*) preferred over COUNT(1)? (Scenario Variant 6)",
     "options": [
-      "COUNT(1) forces the engine to materialize a literal 1 for every row before summing",
-      "COUNT(*) is standard ANSI SQL and engines optimize it directly to scan the narrowest index",
+      "Modern optimizers treat COUNT(*) and COUNT(1) identically, but COUNT(*) is the idiomatic standard",
       "COUNT(1) consumes twice the memory buffer allocation of COUNT(*)",
-      "Modern optimizers treat COUNT(*) and COUNT(1) identically, but COUNT(*) is the idiomatic standard"
+      "COUNT(1) forces the engine to materialize a literal 1 for every row before summing",
+      "COUNT(*) is standard ANSI SQL and engines optimize it directly to scan the narrowest index"
     ],
-    "correctIndex": 3,
+    "correctIndex": 0,
     "explanation": "Modern query planners parse COUNT(1) and COUNT(*) to the exact same physical execution plan (scanning the leanest available secondary index). COUNT(*) is the universal standard."
   },
   {
@@ -402,12 +402,12 @@ window.MCQS_VAULT_500 = [
     "tag": "🎯 Core Concept",
     "question": "[COUNT #29] Given a table with 5 rows containing values [10, 20, 20, NULL, NULL], what does \"SELECT COUNT(DISTINCT val) FROM t;\" return? (Scenario Variant 6)",
     "options": [
-      "2",
-      "3",
+      "5",
       "4",
-      "5"
+      "3",
+      "2"
     ],
-    "correctIndex": 0,
+    "correctIndex": 3,
     "explanation": "COUNT(DISTINCT val) filters out NULLs first, then deduplicates the remaining non-NULL values [10, 20, 20] into unique elements [10, 20], yielding a count of 2."
   },
   {
@@ -444,10 +444,10 @@ window.MCQS_VAULT_500 = [
     "tag": "⚡ Gotcha Trap",
     "question": "[COUNT #32] When running \"SELECT COUNT(*) FROM EmptyTable;\" where the table contains exactly zero rows, what is the output? (Scenario Variant 7)",
     "options": [
-      "NULL",
-      "0",
       "An empty result set with 0 rows",
-      "An error: EmptyTableNotFoundException"
+      "0",
+      "An error: EmptyTableNotFoundException",
+      "NULL"
     ],
     "correctIndex": 1,
     "explanation": "COUNT(*) on an empty table returns a single row with the scalar value 0. Unlike SUM() or AVG() which return NULL on empty sets, COUNT always returns an integer >= 0."
@@ -458,12 +458,12 @@ window.MCQS_VAULT_500 = [
     "tag": "🐱 Brain Bender",
     "question": "[COUNT #33] In terms of optimizer performance in modern RDBMS (PostgreSQL, MySQL InnoDB), why is COUNT(*) preferred over COUNT(1)? (Scenario Variant 7)",
     "options": [
-      "COUNT(1) forces the engine to materialize a literal 1 for every row before summing",
+      "Modern optimizers treat COUNT(*) and COUNT(1) identically, but COUNT(*) is the idiomatic standard",
       "COUNT(*) is standard ANSI SQL and engines optimize it directly to scan the narrowest index",
-      "COUNT(1) consumes twice the memory buffer allocation of COUNT(*)",
-      "Modern optimizers treat COUNT(*) and COUNT(1) identically, but COUNT(*) is the idiomatic standard"
+      "COUNT(1) forces the engine to materialize a literal 1 for every row before summing",
+      "COUNT(1) consumes twice the memory buffer allocation of COUNT(*)"
     ],
-    "correctIndex": 3,
+    "correctIndex": 0,
     "explanation": "Modern query planners parse COUNT(1) and COUNT(*) to the exact same physical execution plan (scanning the leanest available secondary index). COUNT(*) is the universal standard."
   },
   {
@@ -472,12 +472,12 @@ window.MCQS_VAULT_500 = [
     "tag": "🎯 Core Concept",
     "question": "[COUNT #34] Given a table with 5 rows containing values [10, 20, 20, NULL, NULL], what does \"SELECT COUNT(DISTINCT val) FROM t;\" return? (Scenario Variant 7)",
     "options": [
+      "5",
       "2",
-      "3",
       "4",
-      "5"
+      "3"
     ],
-    "correctIndex": 0,
+    "correctIndex": 1,
     "explanation": "COUNT(DISTINCT val) filters out NULLs first, then deduplicates the remaining non-NULL values [10, 20, 20] into unique elements [10, 20], yielding a count of 2."
   },
   {
@@ -486,12 +486,12 @@ window.MCQS_VAULT_500 = [
     "tag": "🏆 Senior Staff",
     "question": "[COUNT #35] Why can COUNT(DISTINCT col) become a major performance bottleneck on billion-row tables? (Scenario Variant 7)",
     "options": [
-      "It forces the storage engine to convert data types to strings",
-      "It requires maintaining an in-memory hash set or performing an expensive disk sort to eliminate duplicates",
       "It locks the entire table preventing concurrent writes",
-      "It disables parallel query workers across all CPU cores"
+      "It forces the storage engine to convert data types to strings",
+      "It disables parallel query workers across all CPU cores",
+      "It requires maintaining an in-memory hash set or performing an expensive disk sort to eliminate duplicates"
     ],
-    "correctIndex": 1,
+    "correctIndex": 3,
     "explanation": "Unlike simple streaming COUNT(*), COUNT(DISTINCT) must track every distinct key in a hash table or sort buffer, leading to high memory pressure and potential spills to temp disk."
   },
   {
@@ -500,12 +500,12 @@ window.MCQS_VAULT_500 = [
     "tag": "🍡 Quick Snack",
     "question": "[COUNT #36] What is the key functional difference between COUNT(*) and COUNT(column_name) when the specified column contains NULLs? (Scenario Variant 8)",
     "options": [
-      "COUNT(*) counts every physical row; COUNT(column_name) excludes rows where column_name IS NULL",
-      "COUNT(*) only counts primary keys; COUNT(column_name) counts all non-primary keys",
       "COUNT(column_name) converts NULLs into 0 before calculating the total headcount",
-      "There is no functional difference; both return the exact same row count"
+      "COUNT(*) counts every physical row; COUNT(column_name) excludes rows where column_name IS NULL",
+      "There is no functional difference; both return the exact same row count",
+      "COUNT(*) only counts primary keys; COUNT(column_name) counts all non-primary keys"
     ],
-    "correctIndex": 0,
+    "correctIndex": 1,
     "explanation": "In ANSI SQL, COUNT(*) counts the cardinality of the input row set regardless of column contents, while COUNT(column_name) strictly tallies rows where the specified column evaluates to a non-NULL value."
   },
   {
@@ -515,11 +515,11 @@ window.MCQS_VAULT_500 = [
     "question": "[COUNT #37] When running \"SELECT COUNT(*) FROM EmptyTable;\" where the table contains exactly zero rows, what is the output? (Scenario Variant 8)",
     "options": [
       "NULL",
-      "0",
       "An empty result set with 0 rows",
-      "An error: EmptyTableNotFoundException"
+      "An error: EmptyTableNotFoundException",
+      "0"
     ],
-    "correctIndex": 1,
+    "correctIndex": 3,
     "explanation": "COUNT(*) on an empty table returns a single row with the scalar value 0. Unlike SUM() or AVG() which return NULL on empty sets, COUNT always returns an integer >= 0."
   },
   {
@@ -529,8 +529,8 @@ window.MCQS_VAULT_500 = [
     "question": "[COUNT #38] In terms of optimizer performance in modern RDBMS (PostgreSQL, MySQL InnoDB), why is COUNT(*) preferred over COUNT(1)? (Scenario Variant 8)",
     "options": [
       "COUNT(1) forces the engine to materialize a literal 1 for every row before summing",
-      "COUNT(*) is standard ANSI SQL and engines optimize it directly to scan the narrowest index",
       "COUNT(1) consumes twice the memory buffer allocation of COUNT(*)",
+      "COUNT(*) is standard ANSI SQL and engines optimize it directly to scan the narrowest index",
       "Modern optimizers treat COUNT(*) and COUNT(1) identically, but COUNT(*) is the idiomatic standard"
     ],
     "correctIndex": 3,
@@ -542,12 +542,12 @@ window.MCQS_VAULT_500 = [
     "tag": "🎯 Core Concept",
     "question": "[COUNT #39] Given a table with 5 rows containing values [10, 20, 20, NULL, NULL], what does \"SELECT COUNT(DISTINCT val) FROM t;\" return? (Scenario Variant 8)",
     "options": [
-      "2",
-      "3",
       "4",
-      "5"
+      "3",
+      "5",
+      "2"
     ],
-    "correctIndex": 0,
+    "correctIndex": 3,
     "explanation": "COUNT(DISTINCT val) filters out NULLs first, then deduplicates the remaining non-NULL values [10, 20, 20] into unique elements [10, 20], yielding a count of 2."
   },
   {
@@ -570,12 +570,12 @@ window.MCQS_VAULT_500 = [
     "tag": "🍡 Quick Snack",
     "question": "[COUNT #41] What is the key functional difference between COUNT(*) and COUNT(column_name) when the specified column contains NULLs? (Scenario Variant 9)",
     "options": [
-      "COUNT(*) counts every physical row; COUNT(column_name) excludes rows where column_name IS NULL",
-      "COUNT(*) only counts primary keys; COUNT(column_name) counts all non-primary keys",
       "COUNT(column_name) converts NULLs into 0 before calculating the total headcount",
+      "COUNT(*) only counts primary keys; COUNT(column_name) counts all non-primary keys",
+      "COUNT(*) counts every physical row; COUNT(column_name) excludes rows where column_name IS NULL",
       "There is no functional difference; both return the exact same row count"
     ],
-    "correctIndex": 0,
+    "correctIndex": 2,
     "explanation": "In ANSI SQL, COUNT(*) counts the cardinality of the input row set regardless of column contents, while COUNT(column_name) strictly tallies rows where the specified column evaluates to a non-NULL value."
   },
   {
@@ -584,10 +584,10 @@ window.MCQS_VAULT_500 = [
     "tag": "⚡ Gotcha Trap",
     "question": "[COUNT #42] When running \"SELECT COUNT(*) FROM EmptyTable;\" where the table contains exactly zero rows, what is the output? (Scenario Variant 9)",
     "options": [
-      "NULL",
+      "An error: EmptyTableNotFoundException",
       "0",
-      "An empty result set with 0 rows",
-      "An error: EmptyTableNotFoundException"
+      "NULL",
+      "An empty result set with 0 rows"
     ],
     "correctIndex": 1,
     "explanation": "COUNT(*) on an empty table returns a single row with the scalar value 0. Unlike SUM() or AVG() which return NULL on empty sets, COUNT always returns an integer >= 0."
@@ -598,12 +598,12 @@ window.MCQS_VAULT_500 = [
     "tag": "🐱 Brain Bender",
     "question": "[COUNT #43] In terms of optimizer performance in modern RDBMS (PostgreSQL, MySQL InnoDB), why is COUNT(*) preferred over COUNT(1)? (Scenario Variant 9)",
     "options": [
+      "Modern optimizers treat COUNT(*) and COUNT(1) identically, but COUNT(*) is the idiomatic standard",
       "COUNT(1) forces the engine to materialize a literal 1 for every row before summing",
       "COUNT(*) is standard ANSI SQL and engines optimize it directly to scan the narrowest index",
-      "COUNT(1) consumes twice the memory buffer allocation of COUNT(*)",
-      "Modern optimizers treat COUNT(*) and COUNT(1) identically, but COUNT(*) is the idiomatic standard"
+      "COUNT(1) consumes twice the memory buffer allocation of COUNT(*)"
     ],
-    "correctIndex": 3,
+    "correctIndex": 0,
     "explanation": "Modern query planners parse COUNT(1) and COUNT(*) to the exact same physical execution plan (scanning the leanest available secondary index). COUNT(*) is the universal standard."
   },
   {
@@ -612,12 +612,12 @@ window.MCQS_VAULT_500 = [
     "tag": "🎯 Core Concept",
     "question": "[COUNT #44] Given a table with 5 rows containing values [10, 20, 20, NULL, NULL], what does \"SELECT COUNT(DISTINCT val) FROM t;\" return? (Scenario Variant 9)",
     "options": [
-      "2",
       "3",
+      "2",
       "4",
       "5"
     ],
-    "correctIndex": 0,
+    "correctIndex": 1,
     "explanation": "COUNT(DISTINCT val) filters out NULLs first, then deduplicates the remaining non-NULL values [10, 20, 20] into unique elements [10, 20], yielding a count of 2."
   },
   {
@@ -626,12 +626,12 @@ window.MCQS_VAULT_500 = [
     "tag": "🏆 Senior Staff",
     "question": "[COUNT #45] Why can COUNT(DISTINCT col) become a major performance bottleneck on billion-row tables? (Scenario Variant 9)",
     "options": [
-      "It forces the storage engine to convert data types to strings",
       "It requires maintaining an in-memory hash set or performing an expensive disk sort to eliminate duplicates",
-      "It locks the entire table preventing concurrent writes",
-      "It disables parallel query workers across all CPU cores"
+      "It forces the storage engine to convert data types to strings",
+      "It disables parallel query workers across all CPU cores",
+      "It locks the entire table preventing concurrent writes"
     ],
-    "correctIndex": 1,
+    "correctIndex": 0,
     "explanation": "Unlike simple streaming COUNT(*), COUNT(DISTINCT) must track every distinct key in a hash table or sort buffer, leading to high memory pressure and potential spills to temp disk."
   },
   {
@@ -640,12 +640,12 @@ window.MCQS_VAULT_500 = [
     "tag": "🍡 Quick Snack",
     "question": "[COUNT #46] What is the key functional difference between COUNT(*) and COUNT(column_name) when the specified column contains NULLs? (Scenario Variant 10)",
     "options": [
-      "COUNT(*) counts every physical row; COUNT(column_name) excludes rows where column_name IS NULL",
-      "COUNT(*) only counts primary keys; COUNT(column_name) counts all non-primary keys",
       "COUNT(column_name) converts NULLs into 0 before calculating the total headcount",
+      "COUNT(*) only counts primary keys; COUNT(column_name) counts all non-primary keys",
+      "COUNT(*) counts every physical row; COUNT(column_name) excludes rows where column_name IS NULL",
       "There is no functional difference; both return the exact same row count"
     ],
-    "correctIndex": 0,
+    "correctIndex": 2,
     "explanation": "In ANSI SQL, COUNT(*) counts the cardinality of the input row set regardless of column contents, while COUNT(column_name) strictly tallies rows where the specified column evaluates to a non-NULL value."
   },
   {
@@ -654,12 +654,12 @@ window.MCQS_VAULT_500 = [
     "tag": "⚡ Gotcha Trap",
     "question": "[COUNT #47] When running \"SELECT COUNT(*) FROM EmptyTable;\" where the table contains exactly zero rows, what is the output? (Scenario Variant 10)",
     "options": [
+      "An empty result set with 0 rows",
       "NULL",
       "0",
-      "An empty result set with 0 rows",
       "An error: EmptyTableNotFoundException"
     ],
-    "correctIndex": 1,
+    "correctIndex": 2,
     "explanation": "COUNT(*) on an empty table returns a single row with the scalar value 0. Unlike SUM() or AVG() which return NULL on empty sets, COUNT always returns an integer >= 0."
   },
   {
@@ -669,11 +669,11 @@ window.MCQS_VAULT_500 = [
     "question": "[COUNT #48] In terms of optimizer performance in modern RDBMS (PostgreSQL, MySQL InnoDB), why is COUNT(*) preferred over COUNT(1)? (Scenario Variant 10)",
     "options": [
       "COUNT(1) forces the engine to materialize a literal 1 for every row before summing",
-      "COUNT(*) is standard ANSI SQL and engines optimize it directly to scan the narrowest index",
+      "Modern optimizers treat COUNT(*) and COUNT(1) identically, but COUNT(*) is the idiomatic standard",
       "COUNT(1) consumes twice the memory buffer allocation of COUNT(*)",
-      "Modern optimizers treat COUNT(*) and COUNT(1) identically, but COUNT(*) is the idiomatic standard"
+      "COUNT(*) is standard ANSI SQL and engines optimize it directly to scan the narrowest index"
     ],
-    "correctIndex": 3,
+    "correctIndex": 1,
     "explanation": "Modern query planners parse COUNT(1) and COUNT(*) to the exact same physical execution plan (scanning the leanest available secondary index). COUNT(*) is the universal standard."
   },
   {
@@ -682,12 +682,12 @@ window.MCQS_VAULT_500 = [
     "tag": "🎯 Core Concept",
     "question": "[COUNT #49] Given a table with 5 rows containing values [10, 20, 20, NULL, NULL], what does \"SELECT COUNT(DISTINCT val) FROM t;\" return? (Scenario Variant 10)",
     "options": [
-      "2",
-      "3",
       "4",
-      "5"
+      "5",
+      "2",
+      "3"
     ],
-    "correctIndex": 0,
+    "correctIndex": 2,
     "explanation": "COUNT(DISTINCT val) filters out NULLs first, then deduplicates the remaining non-NULL values [10, 20, 20] into unique elements [10, 20], yielding a count of 2."
   },
   {
@@ -697,11 +697,11 @@ window.MCQS_VAULT_500 = [
     "question": "[COUNT #50] Why can COUNT(DISTINCT col) become a major performance bottleneck on billion-row tables? (Scenario Variant 10)",
     "options": [
       "It forces the storage engine to convert data types to strings",
-      "It requires maintaining an in-memory hash set or performing an expensive disk sort to eliminate duplicates",
       "It locks the entire table preventing concurrent writes",
+      "It requires maintaining an in-memory hash set or performing an expensive disk sort to eliminate duplicates",
       "It disables parallel query workers across all CPU cores"
     ],
-    "correctIndex": 1,
+    "correctIndex": 2,
     "explanation": "Unlike simple streaming COUNT(*), COUNT(DISTINCT) must track every distinct key in a hash table or sort buffer, leading to high memory pressure and potential spills to temp disk."
   },
   {
@@ -711,11 +711,11 @@ window.MCQS_VAULT_500 = [
     "question": "[SUM #1] What is the result of \"SELECT SUM(bonus) FROM Employees;\" if every single employee row has a NULL bonus?",
     "options": [
       "0",
+      "NaN",
       "NULL",
-      "Throws a NullPointerException",
-      "NaN"
+      "Throws a NullPointerException"
     ],
-    "correctIndex": 1,
+    "correctIndex": 2,
     "explanation": "By ANSI SQL specification, if an aggregate column contains only NULLs (or if the input row set is empty), SUM() returns NULL, NOT 0. Use COALESCE(SUM(bonus), 0) to guarantee a 0."
   },
   {
@@ -725,11 +725,11 @@ window.MCQS_VAULT_500 = [
     "question": "[SUM #2] How does SUM() behave when calculating values containing mixed positive numbers and NULLs, e.g., [100, 200, NULL, 50]?",
     "options": [
       "It returns NULL because NULL + integer evaluates to NULL",
-      "It returns 350 because aggregate functions silently ignore NULL values during accumulation",
+      "It defaults NULL to 1 and returns 351",
       "It throws an Arithmetic Warning error",
-      "It defaults NULL to 1 and returns 351"
+      "It returns 350 because aggregate functions silently ignore NULL values during accumulation"
     ],
-    "correctIndex": 1,
+    "correctIndex": 3,
     "explanation": "Unlike scalar arithmetic (where 100 + NULL = NULL), SQL aggregate functions like SUM() completely eliminate NULL values before accumulating the sum."
   },
   {
@@ -738,12 +738,12 @@ window.MCQS_VAULT_500 = [
     "tag": "🐱 Brain Bender",
     "question": "[SUM #3] How can you use SUM() with CASE WHEN to count specific categories without using multiple queries?",
     "options": [
-      "SELECT SUM(CASE WHEN status = \"active\" THEN 1 ELSE 0 END) FROM Users;",
-      "SELECT SUM(status == \"active\") FROM Users;",
       "SELECT SUM(status) WHERE status = \"active\" FROM Users;",
-      "SELECT SUM() GROUP BY status = \"active\" FROM Users;"
+      "SELECT SUM() GROUP BY status = \"active\" FROM Users;",
+      "SELECT SUM(status == \"active\") FROM Users;",
+      "SELECT SUM(CASE WHEN status = \"active\" THEN 1 ELSE 0 END) FROM Users;"
     ],
-    "correctIndex": 0,
+    "correctIndex": 3,
     "explanation": "Summing a conditional CASE expression (returning 1 for matches and 0 for non-matches) is the classic SQL pattern for multi-column pivot counting."
   },
   {
@@ -753,11 +753,11 @@ window.MCQS_VAULT_500 = [
     "question": "[SUM #4] What happens if the result of SUM(int_column) exceeds the maximum capacity of a 32-bit signed integer (2,147,483,647)?",
     "options": [
       "The query wraps around into negative numbers silently in standard engines",
-      "PostgreSQL and SQL Server throw an integer overflow error; MySQL may promote to BIGINT or DECIMAL depending on sql_mode",
       "The engine automatically deletes the largest rows",
+      "PostgreSQL and SQL Server throw an integer overflow error; MySQL may promote to BIGINT or DECIMAL depending on sql_mode",
       "The query returns NULL"
     ],
-    "correctIndex": 1,
+    "correctIndex": 2,
     "explanation": "Integer overflow in SUM() must be prevented by casting the column: SUM(CAST(int_col AS BIGINT)) or SUM(int_col::numeric)."
   },
   {
@@ -766,12 +766,12 @@ window.MCQS_VAULT_500 = [
     "tag": "🏆 Senior Staff",
     "question": "[SUM #5] What does the query \"SELECT SUM(DISTINCT score) FROM Games;\" calculate?",
     "options": [
-      "The sum of all game scores excluding duplicate score values",
+      "The sum of the highest and lowest score only",
       "The sum of scores partitioned by unique game IDs",
-      "An invalid syntax error; DISTINCT cannot be used with SUM()",
-      "The sum of the highest and lowest score only"
+      "The sum of all game scores excluding duplicate score values",
+      "An invalid syntax error; DISTINCT cannot be used with SUM()"
     ],
-    "correctIndex": 0,
+    "correctIndex": 2,
     "explanation": "SUM(DISTINCT score) removes identical score values prior to summing (e.g. scores [10, 10, 20] become 10 + 20 = 30)."
   },
   {
@@ -780,12 +780,12 @@ window.MCQS_VAULT_500 = [
     "tag": "🍡 Quick Snack",
     "question": "[SUM #6] What is the result of \"SELECT SUM(bonus) FROM Employees;\" if every single employee row has a NULL bonus? (Scenario Variant 2)",
     "options": [
-      "0",
-      "NULL",
+      "NaN",
       "Throws a NullPointerException",
-      "NaN"
+      "0",
+      "NULL"
     ],
-    "correctIndex": 1,
+    "correctIndex": 3,
     "explanation": "By ANSI SQL specification, if an aggregate column contains only NULLs (or if the input row set is empty), SUM() returns NULL, NOT 0. Use COALESCE(SUM(bonus), 0) to guarantee a 0."
   },
   {
@@ -794,12 +794,12 @@ window.MCQS_VAULT_500 = [
     "tag": "⚡ Gotcha Trap",
     "question": "[SUM #7] How does SUM() behave when calculating values containing mixed positive numbers and NULLs, e.g., [100, 200, NULL, 50]? (Scenario Variant 2)",
     "options": [
-      "It returns NULL because NULL + integer evaluates to NULL",
       "It returns 350 because aggregate functions silently ignore NULL values during accumulation",
       "It throws an Arithmetic Warning error",
+      "It returns NULL because NULL + integer evaluates to NULL",
       "It defaults NULL to 1 and returns 351"
     ],
-    "correctIndex": 1,
+    "correctIndex": 0,
     "explanation": "Unlike scalar arithmetic (where 100 + NULL = NULL), SQL aggregate functions like SUM() completely eliminate NULL values before accumulating the sum."
   },
   {
@@ -809,9 +809,9 @@ window.MCQS_VAULT_500 = [
     "question": "[SUM #8] How can you use SUM() with CASE WHEN to count specific categories without using multiple queries? (Scenario Variant 2)",
     "options": [
       "SELECT SUM(CASE WHEN status = \"active\" THEN 1 ELSE 0 END) FROM Users;",
-      "SELECT SUM(status == \"active\") FROM Users;",
+      "SELECT SUM() GROUP BY status = \"active\" FROM Users;",
       "SELECT SUM(status) WHERE status = \"active\" FROM Users;",
-      "SELECT SUM() GROUP BY status = \"active\" FROM Users;"
+      "SELECT SUM(status == \"active\") FROM Users;"
     ],
     "correctIndex": 0,
     "explanation": "Summing a conditional CASE expression (returning 1 for matches and 0 for non-matches) is the classic SQL pattern for multi-column pivot counting."
@@ -824,8 +824,8 @@ window.MCQS_VAULT_500 = [
     "options": [
       "The query wraps around into negative numbers silently in standard engines",
       "PostgreSQL and SQL Server throw an integer overflow error; MySQL may promote to BIGINT or DECIMAL depending on sql_mode",
-      "The engine automatically deletes the largest rows",
-      "The query returns NULL"
+      "The query returns NULL",
+      "The engine automatically deletes the largest rows"
     ],
     "correctIndex": 1,
     "explanation": "Integer overflow in SUM() must be prevented by casting the column: SUM(CAST(int_col AS BIGINT)) or SUM(int_col::numeric)."
@@ -851,11 +851,11 @@ window.MCQS_VAULT_500 = [
     "question": "[SUM #11] What is the result of \"SELECT SUM(bonus) FROM Employees;\" if every single employee row has a NULL bonus? (Scenario Variant 3)",
     "options": [
       "0",
-      "NULL",
       "Throws a NullPointerException",
+      "NULL",
       "NaN"
     ],
-    "correctIndex": 1,
+    "correctIndex": 2,
     "explanation": "By ANSI SQL specification, if an aggregate column contains only NULLs (or if the input row set is empty), SUM() returns NULL, NOT 0. Use COALESCE(SUM(bonus), 0) to guarantee a 0."
   },
   {
@@ -865,11 +865,11 @@ window.MCQS_VAULT_500 = [
     "question": "[SUM #12] How does SUM() behave when calculating values containing mixed positive numbers and NULLs, e.g., [100, 200, NULL, 50]? (Scenario Variant 3)",
     "options": [
       "It returns NULL because NULL + integer evaluates to NULL",
-      "It returns 350 because aggregate functions silently ignore NULL values during accumulation",
       "It throws an Arithmetic Warning error",
-      "It defaults NULL to 1 and returns 351"
+      "It defaults NULL to 1 and returns 351",
+      "It returns 350 because aggregate functions silently ignore NULL values during accumulation"
     ],
-    "correctIndex": 1,
+    "correctIndex": 3,
     "explanation": "Unlike scalar arithmetic (where 100 + NULL = NULL), SQL aggregate functions like SUM() completely eliminate NULL values before accumulating the sum."
   },
   {
@@ -878,12 +878,12 @@ window.MCQS_VAULT_500 = [
     "tag": "🐱 Brain Bender",
     "question": "[SUM #13] How can you use SUM() with CASE WHEN to count specific categories without using multiple queries? (Scenario Variant 3)",
     "options": [
-      "SELECT SUM(CASE WHEN status = \"active\" THEN 1 ELSE 0 END) FROM Users;",
-      "SELECT SUM(status == \"active\") FROM Users;",
       "SELECT SUM(status) WHERE status = \"active\" FROM Users;",
-      "SELECT SUM() GROUP BY status = \"active\" FROM Users;"
+      "SELECT SUM() GROUP BY status = \"active\" FROM Users;",
+      "SELECT SUM(status == \"active\") FROM Users;",
+      "SELECT SUM(CASE WHEN status = \"active\" THEN 1 ELSE 0 END) FROM Users;"
     ],
-    "correctIndex": 0,
+    "correctIndex": 3,
     "explanation": "Summing a conditional CASE expression (returning 1 for matches and 0 for non-matches) is the classic SQL pattern for multi-column pivot counting."
   },
   {
@@ -892,10 +892,10 @@ window.MCQS_VAULT_500 = [
     "tag": "🎯 Core Concept",
     "question": "[SUM #14] What happens if the result of SUM(int_column) exceeds the maximum capacity of a 32-bit signed integer (2,147,483,647)? (Scenario Variant 3)",
     "options": [
-      "The query wraps around into negative numbers silently in standard engines",
+      "The query returns NULL",
       "PostgreSQL and SQL Server throw an integer overflow error; MySQL may promote to BIGINT or DECIMAL depending on sql_mode",
-      "The engine automatically deletes the largest rows",
-      "The query returns NULL"
+      "The query wraps around into negative numbers silently in standard engines",
+      "The engine automatically deletes the largest rows"
     ],
     "correctIndex": 1,
     "explanation": "Integer overflow in SUM() must be prevented by casting the column: SUM(CAST(int_col AS BIGINT)) or SUM(int_col::numeric)."
@@ -907,9 +907,9 @@ window.MCQS_VAULT_500 = [
     "question": "[SUM #15] What does the query \"SELECT SUM(DISTINCT score) FROM Games;\" calculate? (Scenario Variant 3)",
     "options": [
       "The sum of all game scores excluding duplicate score values",
+      "The sum of the highest and lowest score only",
       "The sum of scores partitioned by unique game IDs",
-      "An invalid syntax error; DISTINCT cannot be used with SUM()",
-      "The sum of the highest and lowest score only"
+      "An invalid syntax error; DISTINCT cannot be used with SUM()"
     ],
     "correctIndex": 0,
     "explanation": "SUM(DISTINCT score) removes identical score values prior to summing (e.g. scores [10, 10, 20] become 10 + 20 = 30)."
@@ -934,9 +934,9 @@ window.MCQS_VAULT_500 = [
     "tag": "⚡ Gotcha Trap",
     "question": "[SUM #17] How does SUM() behave when calculating values containing mixed positive numbers and NULLs, e.g., [100, 200, NULL, 50]? (Scenario Variant 4)",
     "options": [
-      "It returns NULL because NULL + integer evaluates to NULL",
-      "It returns 350 because aggregate functions silently ignore NULL values during accumulation",
       "It throws an Arithmetic Warning error",
+      "It returns 350 because aggregate functions silently ignore NULL values during accumulation",
+      "It returns NULL because NULL + integer evaluates to NULL",
       "It defaults NULL to 1 and returns 351"
     ],
     "correctIndex": 1,
@@ -948,12 +948,12 @@ window.MCQS_VAULT_500 = [
     "tag": "🐱 Brain Bender",
     "question": "[SUM #18] How can you use SUM() with CASE WHEN to count specific categories without using multiple queries? (Scenario Variant 4)",
     "options": [
+      "SELECT SUM() GROUP BY status = \"active\" FROM Users;",
       "SELECT SUM(CASE WHEN status = \"active\" THEN 1 ELSE 0 END) FROM Users;",
       "SELECT SUM(status == \"active\") FROM Users;",
-      "SELECT SUM(status) WHERE status = \"active\" FROM Users;",
-      "SELECT SUM() GROUP BY status = \"active\" FROM Users;"
+      "SELECT SUM(status) WHERE status = \"active\" FROM Users;"
     ],
-    "correctIndex": 0,
+    "correctIndex": 1,
     "explanation": "Summing a conditional CASE expression (returning 1 for matches and 0 for non-matches) is the classic SQL pattern for multi-column pivot counting."
   },
   {
@@ -962,12 +962,12 @@ window.MCQS_VAULT_500 = [
     "tag": "🎯 Core Concept",
     "question": "[SUM #19] What happens if the result of SUM(int_column) exceeds the maximum capacity of a 32-bit signed integer (2,147,483,647)? (Scenario Variant 4)",
     "options": [
-      "The query wraps around into negative numbers silently in standard engines",
-      "PostgreSQL and SQL Server throw an integer overflow error; MySQL may promote to BIGINT or DECIMAL depending on sql_mode",
+      "The query returns NULL",
       "The engine automatically deletes the largest rows",
-      "The query returns NULL"
+      "PostgreSQL and SQL Server throw an integer overflow error; MySQL may promote to BIGINT or DECIMAL depending on sql_mode",
+      "The query wraps around into negative numbers silently in standard engines"
     ],
-    "correctIndex": 1,
+    "correctIndex": 2,
     "explanation": "Integer overflow in SUM() must be prevented by casting the column: SUM(CAST(int_col AS BIGINT)) or SUM(int_col::numeric)."
   },
   {
@@ -990,12 +990,12 @@ window.MCQS_VAULT_500 = [
     "tag": "🍡 Quick Snack",
     "question": "[SUM #21] What is the result of \"SELECT SUM(bonus) FROM Employees;\" if every single employee row has a NULL bonus? (Scenario Variant 5)",
     "options": [
+      "Throws a NullPointerException",
       "0",
       "NULL",
-      "Throws a NullPointerException",
       "NaN"
     ],
-    "correctIndex": 1,
+    "correctIndex": 2,
     "explanation": "By ANSI SQL specification, if an aggregate column contains only NULLs (or if the input row set is empty), SUM() returns NULL, NOT 0. Use COALESCE(SUM(bonus), 0) to guarantee a 0."
   },
   {
@@ -1004,12 +1004,12 @@ window.MCQS_VAULT_500 = [
     "tag": "⚡ Gotcha Trap",
     "question": "[SUM #22] How does SUM() behave when calculating values containing mixed positive numbers and NULLs, e.g., [100, 200, NULL, 50]? (Scenario Variant 5)",
     "options": [
-      "It returns NULL because NULL + integer evaluates to NULL",
       "It returns 350 because aggregate functions silently ignore NULL values during accumulation",
+      "It returns NULL because NULL + integer evaluates to NULL",
       "It throws an Arithmetic Warning error",
       "It defaults NULL to 1 and returns 351"
     ],
-    "correctIndex": 1,
+    "correctIndex": 0,
     "explanation": "Unlike scalar arithmetic (where 100 + NULL = NULL), SQL aggregate functions like SUM() completely eliminate NULL values before accumulating the sum."
   },
   {
@@ -1019,8 +1019,8 @@ window.MCQS_VAULT_500 = [
     "question": "[SUM #23] How can you use SUM() with CASE WHEN to count specific categories without using multiple queries? (Scenario Variant 5)",
     "options": [
       "SELECT SUM(CASE WHEN status = \"active\" THEN 1 ELSE 0 END) FROM Users;",
-      "SELECT SUM(status == \"active\") FROM Users;",
       "SELECT SUM(status) WHERE status = \"active\" FROM Users;",
+      "SELECT SUM(status == \"active\") FROM Users;",
       "SELECT SUM() GROUP BY status = \"active\" FROM Users;"
     ],
     "correctIndex": 0,
@@ -1032,12 +1032,12 @@ window.MCQS_VAULT_500 = [
     "tag": "🎯 Core Concept",
     "question": "[SUM #24] What happens if the result of SUM(int_column) exceeds the maximum capacity of a 32-bit signed integer (2,147,483,647)? (Scenario Variant 5)",
     "options": [
+      "The query returns NULL",
       "The query wraps around into negative numbers silently in standard engines",
       "PostgreSQL and SQL Server throw an integer overflow error; MySQL may promote to BIGINT or DECIMAL depending on sql_mode",
-      "The engine automatically deletes the largest rows",
-      "The query returns NULL"
+      "The engine automatically deletes the largest rows"
     ],
-    "correctIndex": 1,
+    "correctIndex": 2,
     "explanation": "Integer overflow in SUM() must be prevented by casting the column: SUM(CAST(int_col AS BIGINT)) or SUM(int_col::numeric)."
   },
   {
@@ -1048,8 +1048,8 @@ window.MCQS_VAULT_500 = [
     "options": [
       "The sum of all game scores excluding duplicate score values",
       "The sum of scores partitioned by unique game IDs",
-      "An invalid syntax error; DISTINCT cannot be used with SUM()",
-      "The sum of the highest and lowest score only"
+      "The sum of the highest and lowest score only",
+      "An invalid syntax error; DISTINCT cannot be used with SUM()"
     ],
     "correctIndex": 0,
     "explanation": "SUM(DISTINCT score) removes identical score values prior to summing (e.g. scores [10, 10, 20] become 10 + 20 = 30)."
@@ -1060,12 +1060,12 @@ window.MCQS_VAULT_500 = [
     "tag": "🍡 Quick Snack",
     "question": "[SUM #26] What is the result of \"SELECT SUM(bonus) FROM Employees;\" if every single employee row has a NULL bonus? (Scenario Variant 6)",
     "options": [
+      "Throws a NullPointerException",
       "0",
       "NULL",
-      "Throws a NullPointerException",
       "NaN"
     ],
-    "correctIndex": 1,
+    "correctIndex": 2,
     "explanation": "By ANSI SQL specification, if an aggregate column contains only NULLs (or if the input row set is empty), SUM() returns NULL, NOT 0. Use COALESCE(SUM(bonus), 0) to guarantee a 0."
   },
   {
@@ -1074,12 +1074,12 @@ window.MCQS_VAULT_500 = [
     "tag": "⚡ Gotcha Trap",
     "question": "[SUM #27] How does SUM() behave when calculating values containing mixed positive numbers and NULLs, e.g., [100, 200, NULL, 50]? (Scenario Variant 6)",
     "options": [
+      "It defaults NULL to 1 and returns 351",
       "It returns NULL because NULL + integer evaluates to NULL",
-      "It returns 350 because aggregate functions silently ignore NULL values during accumulation",
       "It throws an Arithmetic Warning error",
-      "It defaults NULL to 1 and returns 351"
+      "It returns 350 because aggregate functions silently ignore NULL values during accumulation"
     ],
-    "correctIndex": 1,
+    "correctIndex": 3,
     "explanation": "Unlike scalar arithmetic (where 100 + NULL = NULL), SQL aggregate functions like SUM() completely eliminate NULL values before accumulating the sum."
   },
   {
@@ -1088,12 +1088,12 @@ window.MCQS_VAULT_500 = [
     "tag": "🐱 Brain Bender",
     "question": "[SUM #28] How can you use SUM() with CASE WHEN to count specific categories without using multiple queries? (Scenario Variant 6)",
     "options": [
-      "SELECT SUM(CASE WHEN status = \"active\" THEN 1 ELSE 0 END) FROM Users;",
       "SELECT SUM(status == \"active\") FROM Users;",
       "SELECT SUM(status) WHERE status = \"active\" FROM Users;",
+      "SELECT SUM(CASE WHEN status = \"active\" THEN 1 ELSE 0 END) FROM Users;",
       "SELECT SUM() GROUP BY status = \"active\" FROM Users;"
     ],
-    "correctIndex": 0,
+    "correctIndex": 2,
     "explanation": "Summing a conditional CASE expression (returning 1 for matches and 0 for non-matches) is the classic SQL pattern for multi-column pivot counting."
   },
   {
@@ -1103,11 +1103,11 @@ window.MCQS_VAULT_500 = [
     "question": "[SUM #29] What happens if the result of SUM(int_column) exceeds the maximum capacity of a 32-bit signed integer (2,147,483,647)? (Scenario Variant 6)",
     "options": [
       "The query wraps around into negative numbers silently in standard engines",
+      "The query returns NULL",
       "PostgreSQL and SQL Server throw an integer overflow error; MySQL may promote to BIGINT or DECIMAL depending on sql_mode",
-      "The engine automatically deletes the largest rows",
-      "The query returns NULL"
+      "The engine automatically deletes the largest rows"
     ],
-    "correctIndex": 1,
+    "correctIndex": 2,
     "explanation": "Integer overflow in SUM() must be prevented by casting the column: SUM(CAST(int_col AS BIGINT)) or SUM(int_col::numeric)."
   },
   {
@@ -1116,12 +1116,12 @@ window.MCQS_VAULT_500 = [
     "tag": "🏆 Senior Staff",
     "question": "[SUM #30] What does the query \"SELECT SUM(DISTINCT score) FROM Games;\" calculate? (Scenario Variant 6)",
     "options": [
+      "The sum of the highest and lowest score only",
       "The sum of all game scores excluding duplicate score values",
       "The sum of scores partitioned by unique game IDs",
-      "An invalid syntax error; DISTINCT cannot be used with SUM()",
-      "The sum of the highest and lowest score only"
+      "An invalid syntax error; DISTINCT cannot be used with SUM()"
     ],
-    "correctIndex": 0,
+    "correctIndex": 1,
     "explanation": "SUM(DISTINCT score) removes identical score values prior to summing (e.g. scores [10, 10, 20] become 10 + 20 = 30)."
   },
   {
@@ -1130,12 +1130,12 @@ window.MCQS_VAULT_500 = [
     "tag": "🍡 Quick Snack",
     "question": "[SUM #31] What is the result of \"SELECT SUM(bonus) FROM Employees;\" if every single employee row has a NULL bonus? (Scenario Variant 7)",
     "options": [
-      "0",
       "NULL",
+      "0",
       "Throws a NullPointerException",
       "NaN"
     ],
-    "correctIndex": 1,
+    "correctIndex": 0,
     "explanation": "By ANSI SQL specification, if an aggregate column contains only NULLs (or if the input row set is empty), SUM() returns NULL, NOT 0. Use COALESCE(SUM(bonus), 0) to guarantee a 0."
   },
   {
@@ -1144,12 +1144,12 @@ window.MCQS_VAULT_500 = [
     "tag": "⚡ Gotcha Trap",
     "question": "[SUM #32] How does SUM() behave when calculating values containing mixed positive numbers and NULLs, e.g., [100, 200, NULL, 50]? (Scenario Variant 7)",
     "options": [
-      "It returns NULL because NULL + integer evaluates to NULL",
       "It returns 350 because aggregate functions silently ignore NULL values during accumulation",
-      "It throws an Arithmetic Warning error",
-      "It defaults NULL to 1 and returns 351"
+      "It returns NULL because NULL + integer evaluates to NULL",
+      "It defaults NULL to 1 and returns 351",
+      "It throws an Arithmetic Warning error"
     ],
-    "correctIndex": 1,
+    "correctIndex": 0,
     "explanation": "Unlike scalar arithmetic (where 100 + NULL = NULL), SQL aggregate functions like SUM() completely eliminate NULL values before accumulating the sum."
   },
   {
@@ -1158,12 +1158,12 @@ window.MCQS_VAULT_500 = [
     "tag": "🐱 Brain Bender",
     "question": "[SUM #33] How can you use SUM() with CASE WHEN to count specific categories without using multiple queries? (Scenario Variant 7)",
     "options": [
-      "SELECT SUM(CASE WHEN status = \"active\" THEN 1 ELSE 0 END) FROM Users;",
       "SELECT SUM(status == \"active\") FROM Users;",
-      "SELECT SUM(status) WHERE status = \"active\" FROM Users;",
-      "SELECT SUM() GROUP BY status = \"active\" FROM Users;"
+      "SELECT SUM(CASE WHEN status = \"active\" THEN 1 ELSE 0 END) FROM Users;",
+      "SELECT SUM() GROUP BY status = \"active\" FROM Users;",
+      "SELECT SUM(status) WHERE status = \"active\" FROM Users;"
     ],
-    "correctIndex": 0,
+    "correctIndex": 1,
     "explanation": "Summing a conditional CASE expression (returning 1 for matches and 0 for non-matches) is the classic SQL pattern for multi-column pivot counting."
   },
   {
@@ -1173,11 +1173,11 @@ window.MCQS_VAULT_500 = [
     "question": "[SUM #34] What happens if the result of SUM(int_column) exceeds the maximum capacity of a 32-bit signed integer (2,147,483,647)? (Scenario Variant 7)",
     "options": [
       "The query wraps around into negative numbers silently in standard engines",
-      "PostgreSQL and SQL Server throw an integer overflow error; MySQL may promote to BIGINT or DECIMAL depending on sql_mode",
       "The engine automatically deletes the largest rows",
+      "PostgreSQL and SQL Server throw an integer overflow error; MySQL may promote to BIGINT or DECIMAL depending on sql_mode",
       "The query returns NULL"
     ],
-    "correctIndex": 1,
+    "correctIndex": 2,
     "explanation": "Integer overflow in SUM() must be prevented by casting the column: SUM(CAST(int_col AS BIGINT)) or SUM(int_col::numeric)."
   },
   {
@@ -1187,9 +1187,9 @@ window.MCQS_VAULT_500 = [
     "question": "[SUM #35] What does the query \"SELECT SUM(DISTINCT score) FROM Games;\" calculate? (Scenario Variant 7)",
     "options": [
       "The sum of all game scores excluding duplicate score values",
-      "The sum of scores partitioned by unique game IDs",
       "An invalid syntax error; DISTINCT cannot be used with SUM()",
-      "The sum of the highest and lowest score only"
+      "The sum of the highest and lowest score only",
+      "The sum of scores partitioned by unique game IDs"
     ],
     "correctIndex": 0,
     "explanation": "SUM(DISTINCT score) removes identical score values prior to summing (e.g. scores [10, 10, 20] become 10 + 20 = 30)."
@@ -1200,12 +1200,12 @@ window.MCQS_VAULT_500 = [
     "tag": "🍡 Quick Snack",
     "question": "[SUM #36] What is the result of \"SELECT SUM(bonus) FROM Employees;\" if every single employee row has a NULL bonus? (Scenario Variant 8)",
     "options": [
-      "0",
       "NULL",
       "Throws a NullPointerException",
-      "NaN"
+      "NaN",
+      "0"
     ],
-    "correctIndex": 1,
+    "correctIndex": 0,
     "explanation": "By ANSI SQL specification, if an aggregate column contains only NULLs (or if the input row set is empty), SUM() returns NULL, NOT 0. Use COALESCE(SUM(bonus), 0) to guarantee a 0."
   },
   {
@@ -1214,10 +1214,10 @@ window.MCQS_VAULT_500 = [
     "tag": "⚡ Gotcha Trap",
     "question": "[SUM #37] How does SUM() behave when calculating values containing mixed positive numbers and NULLs, e.g., [100, 200, NULL, 50]? (Scenario Variant 8)",
     "options": [
-      "It returns NULL because NULL + integer evaluates to NULL",
+      "It defaults NULL to 1 and returns 351",
       "It returns 350 because aggregate functions silently ignore NULL values during accumulation",
-      "It throws an Arithmetic Warning error",
-      "It defaults NULL to 1 and returns 351"
+      "It returns NULL because NULL + integer evaluates to NULL",
+      "It throws an Arithmetic Warning error"
     ],
     "correctIndex": 1,
     "explanation": "Unlike scalar arithmetic (where 100 + NULL = NULL), SQL aggregate functions like SUM() completely eliminate NULL values before accumulating the sum."
@@ -1228,12 +1228,12 @@ window.MCQS_VAULT_500 = [
     "tag": "🐱 Brain Bender",
     "question": "[SUM #38] How can you use SUM() with CASE WHEN to count specific categories without using multiple queries? (Scenario Variant 8)",
     "options": [
-      "SELECT SUM(CASE WHEN status = \"active\" THEN 1 ELSE 0 END) FROM Users;",
       "SELECT SUM(status == \"active\") FROM Users;",
-      "SELECT SUM(status) WHERE status = \"active\" FROM Users;",
-      "SELECT SUM() GROUP BY status = \"active\" FROM Users;"
+      "SELECT SUM() GROUP BY status = \"active\" FROM Users;",
+      "SELECT SUM(CASE WHEN status = \"active\" THEN 1 ELSE 0 END) FROM Users;",
+      "SELECT SUM(status) WHERE status = \"active\" FROM Users;"
     ],
-    "correctIndex": 0,
+    "correctIndex": 2,
     "explanation": "Summing a conditional CASE expression (returning 1 for matches and 0 for non-matches) is the classic SQL pattern for multi-column pivot counting."
   },
   {
@@ -1242,12 +1242,12 @@ window.MCQS_VAULT_500 = [
     "tag": "🎯 Core Concept",
     "question": "[SUM #39] What happens if the result of SUM(int_column) exceeds the maximum capacity of a 32-bit signed integer (2,147,483,647)? (Scenario Variant 8)",
     "options": [
-      "The query wraps around into negative numbers silently in standard engines",
       "PostgreSQL and SQL Server throw an integer overflow error; MySQL may promote to BIGINT or DECIMAL depending on sql_mode",
-      "The engine automatically deletes the largest rows",
-      "The query returns NULL"
+      "The query returns NULL",
+      "The query wraps around into negative numbers silently in standard engines",
+      "The engine automatically deletes the largest rows"
     ],
-    "correctIndex": 1,
+    "correctIndex": 0,
     "explanation": "Integer overflow in SUM() must be prevented by casting the column: SUM(CAST(int_col AS BIGINT)) or SUM(int_col::numeric)."
   },
   {
@@ -1256,12 +1256,12 @@ window.MCQS_VAULT_500 = [
     "tag": "🏆 Senior Staff",
     "question": "[SUM #40] What does the query \"SELECT SUM(DISTINCT score) FROM Games;\" calculate? (Scenario Variant 8)",
     "options": [
-      "The sum of all game scores excluding duplicate score values",
-      "The sum of scores partitioned by unique game IDs",
+      "The sum of the highest and lowest score only",
       "An invalid syntax error; DISTINCT cannot be used with SUM()",
-      "The sum of the highest and lowest score only"
+      "The sum of scores partitioned by unique game IDs",
+      "The sum of all game scores excluding duplicate score values"
     ],
-    "correctIndex": 0,
+    "correctIndex": 3,
     "explanation": "SUM(DISTINCT score) removes identical score values prior to summing (e.g. scores [10, 10, 20] become 10 + 20 = 30)."
   },
   {
@@ -1270,12 +1270,12 @@ window.MCQS_VAULT_500 = [
     "tag": "🍡 Quick Snack",
     "question": "[SUM #41] What is the result of \"SELECT SUM(bonus) FROM Employees;\" if every single employee row has a NULL bonus? (Scenario Variant 9)",
     "options": [
-      "0",
       "NULL",
+      "0",
       "Throws a NullPointerException",
       "NaN"
     ],
-    "correctIndex": 1,
+    "correctIndex": 0,
     "explanation": "By ANSI SQL specification, if an aggregate column contains only NULLs (or if the input row set is empty), SUM() returns NULL, NOT 0. Use COALESCE(SUM(bonus), 0) to guarantee a 0."
   },
   {
@@ -1284,12 +1284,12 @@ window.MCQS_VAULT_500 = [
     "tag": "⚡ Gotcha Trap",
     "question": "[SUM #42] How does SUM() behave when calculating values containing mixed positive numbers and NULLs, e.g., [100, 200, NULL, 50]? (Scenario Variant 9)",
     "options": [
-      "It returns NULL because NULL + integer evaluates to NULL",
-      "It returns 350 because aggregate functions silently ignore NULL values during accumulation",
+      "It defaults NULL to 1 and returns 351",
       "It throws an Arithmetic Warning error",
-      "It defaults NULL to 1 and returns 351"
+      "It returns 350 because aggregate functions silently ignore NULL values during accumulation",
+      "It returns NULL because NULL + integer evaluates to NULL"
     ],
-    "correctIndex": 1,
+    "correctIndex": 2,
     "explanation": "Unlike scalar arithmetic (where 100 + NULL = NULL), SQL aggregate functions like SUM() completely eliminate NULL values before accumulating the sum."
   },
   {
@@ -1298,12 +1298,12 @@ window.MCQS_VAULT_500 = [
     "tag": "🐱 Brain Bender",
     "question": "[SUM #43] How can you use SUM() with CASE WHEN to count specific categories without using multiple queries? (Scenario Variant 9)",
     "options": [
-      "SELECT SUM(CASE WHEN status = \"active\" THEN 1 ELSE 0 END) FROM Users;",
-      "SELECT SUM(status == \"active\") FROM Users;",
       "SELECT SUM(status) WHERE status = \"active\" FROM Users;",
-      "SELECT SUM() GROUP BY status = \"active\" FROM Users;"
+      "SELECT SUM() GROUP BY status = \"active\" FROM Users;",
+      "SELECT SUM(CASE WHEN status = \"active\" THEN 1 ELSE 0 END) FROM Users;",
+      "SELECT SUM(status == \"active\") FROM Users;"
     ],
-    "correctIndex": 0,
+    "correctIndex": 2,
     "explanation": "Summing a conditional CASE expression (returning 1 for matches and 0 for non-matches) is the classic SQL pattern for multi-column pivot counting."
   },
   {
@@ -1312,12 +1312,12 @@ window.MCQS_VAULT_500 = [
     "tag": "🎯 Core Concept",
     "question": "[SUM #44] What happens if the result of SUM(int_column) exceeds the maximum capacity of a 32-bit signed integer (2,147,483,647)? (Scenario Variant 9)",
     "options": [
+      "The query returns NULL",
       "The query wraps around into negative numbers silently in standard engines",
-      "PostgreSQL and SQL Server throw an integer overflow error; MySQL may promote to BIGINT or DECIMAL depending on sql_mode",
       "The engine automatically deletes the largest rows",
-      "The query returns NULL"
+      "PostgreSQL and SQL Server throw an integer overflow error; MySQL may promote to BIGINT or DECIMAL depending on sql_mode"
     ],
-    "correctIndex": 1,
+    "correctIndex": 3,
     "explanation": "Integer overflow in SUM() must be prevented by casting the column: SUM(CAST(int_col AS BIGINT)) or SUM(int_col::numeric)."
   },
   {
@@ -1326,12 +1326,12 @@ window.MCQS_VAULT_500 = [
     "tag": "🏆 Senior Staff",
     "question": "[SUM #45] What does the query \"SELECT SUM(DISTINCT score) FROM Games;\" calculate? (Scenario Variant 9)",
     "options": [
+      "An invalid syntax error; DISTINCT cannot be used with SUM()",
       "The sum of all game scores excluding duplicate score values",
       "The sum of scores partitioned by unique game IDs",
-      "An invalid syntax error; DISTINCT cannot be used with SUM()",
       "The sum of the highest and lowest score only"
     ],
-    "correctIndex": 0,
+    "correctIndex": 1,
     "explanation": "SUM(DISTINCT score) removes identical score values prior to summing (e.g. scores [10, 10, 20] become 10 + 20 = 30)."
   },
   {
@@ -1341,11 +1341,11 @@ window.MCQS_VAULT_500 = [
     "question": "[SUM #46] What is the result of \"SELECT SUM(bonus) FROM Employees;\" if every single employee row has a NULL bonus? (Scenario Variant 10)",
     "options": [
       "0",
+      "NaN",
       "NULL",
-      "Throws a NullPointerException",
-      "NaN"
+      "Throws a NullPointerException"
     ],
-    "correctIndex": 1,
+    "correctIndex": 2,
     "explanation": "By ANSI SQL specification, if an aggregate column contains only NULLs (or if the input row set is empty), SUM() returns NULL, NOT 0. Use COALESCE(SUM(bonus), 0) to guarantee a 0."
   },
   {
@@ -1354,12 +1354,12 @@ window.MCQS_VAULT_500 = [
     "tag": "⚡ Gotcha Trap",
     "question": "[SUM #47] How does SUM() behave when calculating values containing mixed positive numbers and NULLs, e.g., [100, 200, NULL, 50]? (Scenario Variant 10)",
     "options": [
-      "It returns NULL because NULL + integer evaluates to NULL",
-      "It returns 350 because aggregate functions silently ignore NULL values during accumulation",
+      "It defaults NULL to 1 and returns 351",
       "It throws an Arithmetic Warning error",
-      "It defaults NULL to 1 and returns 351"
+      "It returns NULL because NULL + integer evaluates to NULL",
+      "It returns 350 because aggregate functions silently ignore NULL values during accumulation"
     ],
-    "correctIndex": 1,
+    "correctIndex": 3,
     "explanation": "Unlike scalar arithmetic (where 100 + NULL = NULL), SQL aggregate functions like SUM() completely eliminate NULL values before accumulating the sum."
   },
   {
@@ -1368,12 +1368,12 @@ window.MCQS_VAULT_500 = [
     "tag": "🐱 Brain Bender",
     "question": "[SUM #48] How can you use SUM() with CASE WHEN to count specific categories without using multiple queries? (Scenario Variant 10)",
     "options": [
-      "SELECT SUM(CASE WHEN status = \"active\" THEN 1 ELSE 0 END) FROM Users;",
-      "SELECT SUM(status == \"active\") FROM Users;",
       "SELECT SUM(status) WHERE status = \"active\" FROM Users;",
-      "SELECT SUM() GROUP BY status = \"active\" FROM Users;"
+      "SELECT SUM(status == \"active\") FROM Users;",
+      "SELECT SUM() GROUP BY status = \"active\" FROM Users;",
+      "SELECT SUM(CASE WHEN status = \"active\" THEN 1 ELSE 0 END) FROM Users;"
     ],
-    "correctIndex": 0,
+    "correctIndex": 3,
     "explanation": "Summing a conditional CASE expression (returning 1 for matches and 0 for non-matches) is the classic SQL pattern for multi-column pivot counting."
   },
   {
@@ -1382,12 +1382,12 @@ window.MCQS_VAULT_500 = [
     "tag": "🎯 Core Concept",
     "question": "[SUM #49] What happens if the result of SUM(int_column) exceeds the maximum capacity of a 32-bit signed integer (2,147,483,647)? (Scenario Variant 10)",
     "options": [
-      "The query wraps around into negative numbers silently in standard engines",
       "PostgreSQL and SQL Server throw an integer overflow error; MySQL may promote to BIGINT or DECIMAL depending on sql_mode",
-      "The engine automatically deletes the largest rows",
-      "The query returns NULL"
+      "The query wraps around into negative numbers silently in standard engines",
+      "The query returns NULL",
+      "The engine automatically deletes the largest rows"
     ],
-    "correctIndex": 1,
+    "correctIndex": 0,
     "explanation": "Integer overflow in SUM() must be prevented by casting the column: SUM(CAST(int_col AS BIGINT)) or SUM(int_col::numeric)."
   },
   {
@@ -1396,12 +1396,12 @@ window.MCQS_VAULT_500 = [
     "tag": "🏆 Senior Staff",
     "question": "[SUM #50] What does the query \"SELECT SUM(DISTINCT score) FROM Games;\" calculate? (Scenario Variant 10)",
     "options": [
-      "The sum of all game scores excluding duplicate score values",
       "The sum of scores partitioned by unique game IDs",
       "An invalid syntax error; DISTINCT cannot be used with SUM()",
-      "The sum of the highest and lowest score only"
+      "The sum of the highest and lowest score only",
+      "The sum of all game scores excluding duplicate score values"
     ],
-    "correctIndex": 0,
+    "correctIndex": 3,
     "explanation": "SUM(DISTINCT score) removes identical score values prior to summing (e.g. scores [10, 10, 20] become 10 + 20 = 30)."
   },
   {
@@ -1410,12 +1410,12 @@ window.MCQS_VAULT_500 = [
     "tag": "🍡 Quick Snack",
     "question": "[AVG #1] Given scores [10, 20, NULL, NULL], what does \"SELECT AVG(score) FROM Tests;\" return?",
     "options": [
-      "7.5 (30 / 4)",
-      "15.0 (30 / 2)",
       "NULL",
-      "0"
+      "7.5 (30 / 4)",
+      "0",
+      "15.0 (30 / 2)"
     ],
-    "correctIndex": 1,
+    "correctIndex": 3,
     "explanation": "AVG() computes SUM(score) / COUNT(score). Because COUNT(score) only counts non-NULL rows (2 rows), the denominator is 2, producing 30 / 2 = 15.0."
   },
   {
@@ -1425,11 +1425,11 @@ window.MCQS_VAULT_500 = [
     "question": "[AVG #2] In Microsoft SQL Server, what is the output of \"SELECT AVG(rating) FROM Movies;\" if rating is an INT column with values [4, 5]?",
     "options": [
       "4.5",
-      "4",
+      "4.0",
       "5",
-      "4.0"
+      "4"
     ],
-    "correctIndex": 1,
+    "correctIndex": 3,
     "explanation": "In SQL Server, AVG() on integer columns performs integer division and truncates the decimal part, returning 4 instead of 4.5! You must cast: AVG(CAST(rating AS FLOAT))."
   },
   {
@@ -1438,12 +1438,12 @@ window.MCQS_VAULT_500 = [
     "tag": "🐱 Brain Bender",
     "question": "[AVG #3] If you want NULL values in column 'score' to count as 0 when calculating the company-wide average, which expression is correct?",
     "options": [
+      "AVG(score NULL AS 0)",
       "AVG(COALESCE(score, 0))",
       "COALESCE(AVG(score), 0)",
-      "AVG(score) + 0",
-      "AVG(score NULL AS 0)"
+      "AVG(score) + 0"
     ],
-    "correctIndex": 0,
+    "correctIndex": 1,
     "explanation": "AVG(COALESCE(score, 0)) converts NULLs into 0 before the aggregation occurs, ensuring the full row count is included in the denominator."
   },
   {
@@ -1452,12 +1452,12 @@ window.MCQS_VAULT_500 = [
     "tag": "🎯 Core Concept",
     "question": "[AVG #4] What is the statistical effect of using AVG(DISTINCT salary) compared to standard AVG(salary)?",
     "options": [
-      "It eliminates salary tiers with multiple workers, heavily biasing the mean toward rare outlier salaries",
       "It calculates the median salary instead of the mean",
-      "It runs 10x faster because the dataset is smaller",
-      "It returns the exact same result as AVG(salary)"
+      "It eliminates salary tiers with multiple workers, heavily biasing the mean toward rare outlier salaries",
+      "It returns the exact same result as AVG(salary)",
+      "It runs 10x faster because the dataset is smaller"
     ],
-    "correctIndex": 0,
+    "correctIndex": 1,
     "explanation": "Deduplicating values prior to averaging destroys the true weighting of the population, giving a salary shared by 500 entry-level employees the exact same weight as a single CEO salary."
   },
   {
@@ -1466,12 +1466,12 @@ window.MCQS_VAULT_500 = [
     "tag": "🏆 Senior Staff",
     "question": "[AVG #5] When does AVG() return NULL?",
     "options": [
+      "Only when an arithmetic division by zero occurs",
       "When the table has no rows, or when every single row in the column evaluates to NULL",
       "When any single row in the table contains a NULL value",
-      "When the average equals zero",
-      "Only when an arithmetic division by zero occurs"
+      "When the average equals zero"
     ],
-    "correctIndex": 0,
+    "correctIndex": 1,
     "explanation": "AVG() returns NULL when there are zero qualifying non-NULL values to average (either an empty table or an all-NULL column)."
   },
   {
@@ -1480,12 +1480,12 @@ window.MCQS_VAULT_500 = [
     "tag": "🍡 Quick Snack",
     "question": "[AVG #6] Given scores [10, 20, NULL, NULL], what does \"SELECT AVG(score) FROM Tests;\" return? (Scenario Variant 2)",
     "options": [
-      "7.5 (30 / 4)",
       "15.0 (30 / 2)",
       "NULL",
-      "0"
+      "0",
+      "7.5 (30 / 4)"
     ],
-    "correctIndex": 1,
+    "correctIndex": 0,
     "explanation": "AVG() computes SUM(score) / COUNT(score). Because COUNT(score) only counts non-NULL rows (2 rows), the denominator is 2, producing 30 / 2 = 15.0."
   },
   {
@@ -1509,9 +1509,9 @@ window.MCQS_VAULT_500 = [
     "question": "[AVG #8] If you want NULL values in column 'score' to count as 0 when calculating the company-wide average, which expression is correct? (Scenario Variant 2)",
     "options": [
       "AVG(COALESCE(score, 0))",
-      "COALESCE(AVG(score), 0)",
+      "AVG(score NULL AS 0)",
       "AVG(score) + 0",
-      "AVG(score NULL AS 0)"
+      "COALESCE(AVG(score), 0)"
     ],
     "correctIndex": 0,
     "explanation": "AVG(COALESCE(score, 0)) converts NULLs into 0 before the aggregation occurs, ensuring the full row count is included in the denominator."
@@ -1523,9 +1523,9 @@ window.MCQS_VAULT_500 = [
     "question": "[AVG #9] What is the statistical effect of using AVG(DISTINCT salary) compared to standard AVG(salary)? (Scenario Variant 2)",
     "options": [
       "It eliminates salary tiers with multiple workers, heavily biasing the mean toward rare outlier salaries",
+      "It returns the exact same result as AVG(salary)",
       "It calculates the median salary instead of the mean",
-      "It runs 10x faster because the dataset is smaller",
-      "It returns the exact same result as AVG(salary)"
+      "It runs 10x faster because the dataset is smaller"
     ],
     "correctIndex": 0,
     "explanation": "Deduplicating values prior to averaging destroys the true weighting of the population, giving a salary shared by 500 entry-level employees the exact same weight as a single CEO salary."
@@ -1550,12 +1550,12 @@ window.MCQS_VAULT_500 = [
     "tag": "🍡 Quick Snack",
     "question": "[AVG #11] Given scores [10, 20, NULL, NULL], what does \"SELECT AVG(score) FROM Tests;\" return? (Scenario Variant 3)",
     "options": [
+      "0",
       "7.5 (30 / 4)",
       "15.0 (30 / 2)",
-      "NULL",
-      "0"
+      "NULL"
     ],
-    "correctIndex": 1,
+    "correctIndex": 2,
     "explanation": "AVG() computes SUM(score) / COUNT(score). Because COUNT(score) only counts non-NULL rows (2 rows), the denominator is 2, producing 30 / 2 = 15.0."
   },
   {
@@ -1564,12 +1564,12 @@ window.MCQS_VAULT_500 = [
     "tag": "⚡ Gotcha Trap",
     "question": "[AVG #12] In Microsoft SQL Server, what is the output of \"SELECT AVG(rating) FROM Movies;\" if rating is an INT column with values [4, 5]? (Scenario Variant 3)",
     "options": [
-      "4.5",
       "4",
-      "5",
-      "4.0"
+      "4.5",
+      "4.0",
+      "5"
     ],
-    "correctIndex": 1,
+    "correctIndex": 0,
     "explanation": "In SQL Server, AVG() on integer columns performs integer division and truncates the decimal part, returning 4 instead of 4.5! You must cast: AVG(CAST(rating AS FLOAT))."
   },
   {
@@ -1579,9 +1579,9 @@ window.MCQS_VAULT_500 = [
     "question": "[AVG #13] If you want NULL values in column 'score' to count as 0 when calculating the company-wide average, which expression is correct? (Scenario Variant 3)",
     "options": [
       "AVG(COALESCE(score, 0))",
-      "COALESCE(AVG(score), 0)",
+      "AVG(score NULL AS 0)",
       "AVG(score) + 0",
-      "AVG(score NULL AS 0)"
+      "COALESCE(AVG(score), 0)"
     ],
     "correctIndex": 0,
     "explanation": "AVG(COALESCE(score, 0)) converts NULLs into 0 before the aggregation occurs, ensuring the full row count is included in the denominator."
@@ -1606,12 +1606,12 @@ window.MCQS_VAULT_500 = [
     "tag": "🏆 Senior Staff",
     "question": "[AVG #15] When does AVG() return NULL? (Scenario Variant 3)",
     "options": [
+      "Only when an arithmetic division by zero occurs",
       "When the table has no rows, or when every single row in the column evaluates to NULL",
-      "When any single row in the table contains a NULL value",
       "When the average equals zero",
-      "Only when an arithmetic division by zero occurs"
+      "When any single row in the table contains a NULL value"
     ],
-    "correctIndex": 0,
+    "correctIndex": 1,
     "explanation": "AVG() returns NULL when there are zero qualifying non-NULL values to average (either an empty table or an all-NULL column)."
   },
   {
@@ -1620,12 +1620,12 @@ window.MCQS_VAULT_500 = [
     "tag": "🍡 Quick Snack",
     "question": "[AVG #16] Given scores [10, 20, NULL, NULL], what does \"SELECT AVG(score) FROM Tests;\" return? (Scenario Variant 4)",
     "options": [
-      "7.5 (30 / 4)",
       "15.0 (30 / 2)",
       "NULL",
+      "7.5 (30 / 4)",
       "0"
     ],
-    "correctIndex": 1,
+    "correctIndex": 0,
     "explanation": "AVG() computes SUM(score) / COUNT(score). Because COUNT(score) only counts non-NULL rows (2 rows), the denominator is 2, producing 30 / 2 = 15.0."
   },
   {
@@ -1649,9 +1649,9 @@ window.MCQS_VAULT_500 = [
     "question": "[AVG #18] If you want NULL values in column 'score' to count as 0 when calculating the company-wide average, which expression is correct? (Scenario Variant 4)",
     "options": [
       "AVG(COALESCE(score, 0))",
+      "AVG(score NULL AS 0)",
       "COALESCE(AVG(score), 0)",
-      "AVG(score) + 0",
-      "AVG(score NULL AS 0)"
+      "AVG(score) + 0"
     ],
     "correctIndex": 0,
     "explanation": "AVG(COALESCE(score, 0)) converts NULLs into 0 before the aggregation occurs, ensuring the full row count is included in the denominator."
@@ -1662,12 +1662,12 @@ window.MCQS_VAULT_500 = [
     "tag": "🎯 Core Concept",
     "question": "[AVG #19] What is the statistical effect of using AVG(DISTINCT salary) compared to standard AVG(salary)? (Scenario Variant 4)",
     "options": [
-      "It eliminates salary tiers with multiple workers, heavily biasing the mean toward rare outlier salaries",
       "It calculates the median salary instead of the mean",
+      "It eliminates salary tiers with multiple workers, heavily biasing the mean toward rare outlier salaries",
       "It runs 10x faster because the dataset is smaller",
       "It returns the exact same result as AVG(salary)"
     ],
-    "correctIndex": 0,
+    "correctIndex": 1,
     "explanation": "Deduplicating values prior to averaging destroys the true weighting of the population, giving a salary shared by 500 entry-level employees the exact same weight as a single CEO salary."
   },
   {
@@ -1678,8 +1678,8 @@ window.MCQS_VAULT_500 = [
     "options": [
       "When the table has no rows, or when every single row in the column evaluates to NULL",
       "When any single row in the table contains a NULL value",
-      "When the average equals zero",
-      "Only when an arithmetic division by zero occurs"
+      "Only when an arithmetic division by zero occurs",
+      "When the average equals zero"
     ],
     "correctIndex": 0,
     "explanation": "AVG() returns NULL when there are zero qualifying non-NULL values to average (either an empty table or an all-NULL column)."
@@ -1690,12 +1690,12 @@ window.MCQS_VAULT_500 = [
     "tag": "🍡 Quick Snack",
     "question": "[AVG #21] Given scores [10, 20, NULL, NULL], what does \"SELECT AVG(score) FROM Tests;\" return? (Scenario Variant 5)",
     "options": [
-      "7.5 (30 / 4)",
       "15.0 (30 / 2)",
-      "NULL",
-      "0"
+      "0",
+      "7.5 (30 / 4)",
+      "NULL"
     ],
-    "correctIndex": 1,
+    "correctIndex": 0,
     "explanation": "AVG() computes SUM(score) / COUNT(score). Because COUNT(score) only counts non-NULL rows (2 rows), the denominator is 2, producing 30 / 2 = 15.0."
   },
   {
@@ -1704,12 +1704,12 @@ window.MCQS_VAULT_500 = [
     "tag": "⚡ Gotcha Trap",
     "question": "[AVG #22] In Microsoft SQL Server, what is the output of \"SELECT AVG(rating) FROM Movies;\" if rating is an INT column with values [4, 5]? (Scenario Variant 5)",
     "options": [
+      "5",
       "4.5",
       "4",
-      "5",
       "4.0"
     ],
-    "correctIndex": 1,
+    "correctIndex": 2,
     "explanation": "In SQL Server, AVG() on integer columns performs integer division and truncates the decimal part, returning 4 instead of 4.5! You must cast: AVG(CAST(rating AS FLOAT))."
   },
   {
@@ -1719,9 +1719,9 @@ window.MCQS_VAULT_500 = [
     "question": "[AVG #23] If you want NULL values in column 'score' to count as 0 when calculating the company-wide average, which expression is correct? (Scenario Variant 5)",
     "options": [
       "AVG(COALESCE(score, 0))",
-      "COALESCE(AVG(score), 0)",
+      "AVG(score NULL AS 0)",
       "AVG(score) + 0",
-      "AVG(score NULL AS 0)"
+      "COALESCE(AVG(score), 0)"
     ],
     "correctIndex": 0,
     "explanation": "AVG(COALESCE(score, 0)) converts NULLs into 0 before the aggregation occurs, ensuring the full row count is included in the denominator."
@@ -1732,12 +1732,12 @@ window.MCQS_VAULT_500 = [
     "tag": "🎯 Core Concept",
     "question": "[AVG #24] What is the statistical effect of using AVG(DISTINCT salary) compared to standard AVG(salary)? (Scenario Variant 5)",
     "options": [
-      "It eliminates salary tiers with multiple workers, heavily biasing the mean toward rare outlier salaries",
+      "It returns the exact same result as AVG(salary)",
       "It calculates the median salary instead of the mean",
       "It runs 10x faster because the dataset is smaller",
-      "It returns the exact same result as AVG(salary)"
+      "It eliminates salary tiers with multiple workers, heavily biasing the mean toward rare outlier salaries"
     ],
-    "correctIndex": 0,
+    "correctIndex": 3,
     "explanation": "Deduplicating values prior to averaging destroys the true weighting of the population, giving a salary shared by 500 entry-level employees the exact same weight as a single CEO salary."
   },
   {
@@ -1746,12 +1746,12 @@ window.MCQS_VAULT_500 = [
     "tag": "🏆 Senior Staff",
     "question": "[AVG #25] When does AVG() return NULL? (Scenario Variant 5)",
     "options": [
-      "When the table has no rows, or when every single row in the column evaluates to NULL",
       "When any single row in the table contains a NULL value",
       "When the average equals zero",
+      "When the table has no rows, or when every single row in the column evaluates to NULL",
       "Only when an arithmetic division by zero occurs"
     ],
-    "correctIndex": 0,
+    "correctIndex": 2,
     "explanation": "AVG() returns NULL when there are zero qualifying non-NULL values to average (either an empty table or an all-NULL column)."
   },
   {
@@ -1760,12 +1760,12 @@ window.MCQS_VAULT_500 = [
     "tag": "🍡 Quick Snack",
     "question": "[AVG #26] Given scores [10, 20, NULL, NULL], what does \"SELECT AVG(score) FROM Tests;\" return? (Scenario Variant 6)",
     "options": [
-      "7.5 (30 / 4)",
-      "15.0 (30 / 2)",
+      "0",
       "NULL",
-      "0"
+      "7.5 (30 / 4)",
+      "15.0 (30 / 2)"
     ],
-    "correctIndex": 1,
+    "correctIndex": 3,
     "explanation": "AVG() computes SUM(score) / COUNT(score). Because COUNT(score) only counts non-NULL rows (2 rows), the denominator is 2, producing 30 / 2 = 15.0."
   },
   {
@@ -1774,10 +1774,10 @@ window.MCQS_VAULT_500 = [
     "tag": "⚡ Gotcha Trap",
     "question": "[AVG #27] In Microsoft SQL Server, what is the output of \"SELECT AVG(rating) FROM Movies;\" if rating is an INT column with values [4, 5]? (Scenario Variant 6)",
     "options": [
-      "4.5",
-      "4",
       "5",
-      "4.0"
+      "4",
+      "4.0",
+      "4.5"
     ],
     "correctIndex": 1,
     "explanation": "In SQL Server, AVG() on integer columns performs integer division and truncates the decimal part, returning 4 instead of 4.5! You must cast: AVG(CAST(rating AS FLOAT))."
@@ -1788,12 +1788,12 @@ window.MCQS_VAULT_500 = [
     "tag": "🐱 Brain Bender",
     "question": "[AVG #28] If you want NULL values in column 'score' to count as 0 when calculating the company-wide average, which expression is correct? (Scenario Variant 6)",
     "options": [
-      "AVG(COALESCE(score, 0))",
+      "AVG(score NULL AS 0)",
       "COALESCE(AVG(score), 0)",
       "AVG(score) + 0",
-      "AVG(score NULL AS 0)"
+      "AVG(COALESCE(score, 0))"
     ],
-    "correctIndex": 0,
+    "correctIndex": 3,
     "explanation": "AVG(COALESCE(score, 0)) converts NULLs into 0 before the aggregation occurs, ensuring the full row count is included in the denominator."
   },
   {
@@ -1802,12 +1802,12 @@ window.MCQS_VAULT_500 = [
     "tag": "🎯 Core Concept",
     "question": "[AVG #29] What is the statistical effect of using AVG(DISTINCT salary) compared to standard AVG(salary)? (Scenario Variant 6)",
     "options": [
+      "It returns the exact same result as AVG(salary)",
       "It eliminates salary tiers with multiple workers, heavily biasing the mean toward rare outlier salaries",
-      "It calculates the median salary instead of the mean",
       "It runs 10x faster because the dataset is smaller",
-      "It returns the exact same result as AVG(salary)"
+      "It calculates the median salary instead of the mean"
     ],
-    "correctIndex": 0,
+    "correctIndex": 1,
     "explanation": "Deduplicating values prior to averaging destroys the true weighting of the population, giving a salary shared by 500 entry-level employees the exact same weight as a single CEO salary."
   },
   {
@@ -1816,12 +1816,12 @@ window.MCQS_VAULT_500 = [
     "tag": "🏆 Senior Staff",
     "question": "[AVG #30] When does AVG() return NULL? (Scenario Variant 6)",
     "options": [
-      "When the table has no rows, or when every single row in the column evaluates to NULL",
       "When any single row in the table contains a NULL value",
       "When the average equals zero",
+      "When the table has no rows, or when every single row in the column evaluates to NULL",
       "Only when an arithmetic division by zero occurs"
     ],
-    "correctIndex": 0,
+    "correctIndex": 2,
     "explanation": "AVG() returns NULL when there are zero qualifying non-NULL values to average (either an empty table or an all-NULL column)."
   },
   {
@@ -1830,9 +1830,9 @@ window.MCQS_VAULT_500 = [
     "tag": "🍡 Quick Snack",
     "question": "[AVG #31] Given scores [10, 20, NULL, NULL], what does \"SELECT AVG(score) FROM Tests;\" return? (Scenario Variant 7)",
     "options": [
-      "7.5 (30 / 4)",
-      "15.0 (30 / 2)",
       "NULL",
+      "15.0 (30 / 2)",
+      "7.5 (30 / 4)",
       "0"
     ],
     "correctIndex": 1,
@@ -1845,11 +1845,11 @@ window.MCQS_VAULT_500 = [
     "question": "[AVG #32] In Microsoft SQL Server, what is the output of \"SELECT AVG(rating) FROM Movies;\" if rating is an INT column with values [4, 5]? (Scenario Variant 7)",
     "options": [
       "4.5",
+      "4.0",
       "4",
-      "5",
-      "4.0"
+      "5"
     ],
-    "correctIndex": 1,
+    "correctIndex": 2,
     "explanation": "In SQL Server, AVG() on integer columns performs integer division and truncates the decimal part, returning 4 instead of 4.5! You must cast: AVG(CAST(rating AS FLOAT))."
   },
   {
@@ -1858,12 +1858,12 @@ window.MCQS_VAULT_500 = [
     "tag": "🐱 Brain Bender",
     "question": "[AVG #33] If you want NULL values in column 'score' to count as 0 when calculating the company-wide average, which expression is correct? (Scenario Variant 7)",
     "options": [
-      "AVG(COALESCE(score, 0))",
-      "COALESCE(AVG(score), 0)",
       "AVG(score) + 0",
-      "AVG(score NULL AS 0)"
+      "AVG(COALESCE(score, 0))",
+      "AVG(score NULL AS 0)",
+      "COALESCE(AVG(score), 0)"
     ],
-    "correctIndex": 0,
+    "correctIndex": 1,
     "explanation": "AVG(COALESCE(score, 0)) converts NULLs into 0 before the aggregation occurs, ensuring the full row count is included in the denominator."
   },
   {
@@ -1872,12 +1872,12 @@ window.MCQS_VAULT_500 = [
     "tag": "🎯 Core Concept",
     "question": "[AVG #34] What is the statistical effect of using AVG(DISTINCT salary) compared to standard AVG(salary)? (Scenario Variant 7)",
     "options": [
-      "It eliminates salary tiers with multiple workers, heavily biasing the mean toward rare outlier salaries",
+      "It returns the exact same result as AVG(salary)",
       "It calculates the median salary instead of the mean",
       "It runs 10x faster because the dataset is smaller",
-      "It returns the exact same result as AVG(salary)"
+      "It eliminates salary tiers with multiple workers, heavily biasing the mean toward rare outlier salaries"
     ],
-    "correctIndex": 0,
+    "correctIndex": 3,
     "explanation": "Deduplicating values prior to averaging destroys the true weighting of the population, giving a salary shared by 500 entry-level employees the exact same weight as a single CEO salary."
   },
   {
@@ -1886,12 +1886,12 @@ window.MCQS_VAULT_500 = [
     "tag": "🏆 Senior Staff",
     "question": "[AVG #35] When does AVG() return NULL? (Scenario Variant 7)",
     "options": [
-      "When the table has no rows, or when every single row in the column evaluates to NULL",
       "When any single row in the table contains a NULL value",
+      "When the table has no rows, or when every single row in the column evaluates to NULL",
       "When the average equals zero",
       "Only when an arithmetic division by zero occurs"
     ],
-    "correctIndex": 0,
+    "correctIndex": 1,
     "explanation": "AVG() returns NULL when there are zero qualifying non-NULL values to average (either an empty table or an all-NULL column)."
   },
   {
@@ -1900,10 +1900,10 @@ window.MCQS_VAULT_500 = [
     "tag": "🍡 Quick Snack",
     "question": "[AVG #36] Given scores [10, 20, NULL, NULL], what does \"SELECT AVG(score) FROM Tests;\" return? (Scenario Variant 8)",
     "options": [
-      "7.5 (30 / 4)",
-      "15.0 (30 / 2)",
       "NULL",
-      "0"
+      "15.0 (30 / 2)",
+      "0",
+      "7.5 (30 / 4)"
     ],
     "correctIndex": 1,
     "explanation": "AVG() computes SUM(score) / COUNT(score). Because COUNT(score) only counts non-NULL rows (2 rows), the denominator is 2, producing 30 / 2 = 15.0."
@@ -1914,12 +1914,12 @@ window.MCQS_VAULT_500 = [
     "tag": "⚡ Gotcha Trap",
     "question": "[AVG #37] In Microsoft SQL Server, what is the output of \"SELECT AVG(rating) FROM Movies;\" if rating is an INT column with values [4, 5]? (Scenario Variant 8)",
     "options": [
-      "4.5",
       "4",
       "5",
-      "4.0"
+      "4.0",
+      "4.5"
     ],
-    "correctIndex": 1,
+    "correctIndex": 0,
     "explanation": "In SQL Server, AVG() on integer columns performs integer division and truncates the decimal part, returning 4 instead of 4.5! You must cast: AVG(CAST(rating AS FLOAT))."
   },
   {
@@ -1928,12 +1928,12 @@ window.MCQS_VAULT_500 = [
     "tag": "🐱 Brain Bender",
     "question": "[AVG #38] If you want NULL values in column 'score' to count as 0 when calculating the company-wide average, which expression is correct? (Scenario Variant 8)",
     "options": [
-      "AVG(COALESCE(score, 0))",
-      "COALESCE(AVG(score), 0)",
       "AVG(score) + 0",
-      "AVG(score NULL AS 0)"
+      "COALESCE(AVG(score), 0)",
+      "AVG(score NULL AS 0)",
+      "AVG(COALESCE(score, 0))"
     ],
-    "correctIndex": 0,
+    "correctIndex": 3,
     "explanation": "AVG(COALESCE(score, 0)) converts NULLs into 0 before the aggregation occurs, ensuring the full row count is included in the denominator."
   },
   {
@@ -1942,12 +1942,12 @@ window.MCQS_VAULT_500 = [
     "tag": "🎯 Core Concept",
     "question": "[AVG #39] What is the statistical effect of using AVG(DISTINCT salary) compared to standard AVG(salary)? (Scenario Variant 8)",
     "options": [
-      "It eliminates salary tiers with multiple workers, heavily biasing the mean toward rare outlier salaries",
-      "It calculates the median salary instead of the mean",
       "It runs 10x faster because the dataset is smaller",
-      "It returns the exact same result as AVG(salary)"
+      "It returns the exact same result as AVG(salary)",
+      "It eliminates salary tiers with multiple workers, heavily biasing the mean toward rare outlier salaries",
+      "It calculates the median salary instead of the mean"
     ],
-    "correctIndex": 0,
+    "correctIndex": 2,
     "explanation": "Deduplicating values prior to averaging destroys the true weighting of the population, giving a salary shared by 500 entry-level employees the exact same weight as a single CEO salary."
   },
   {
@@ -1956,12 +1956,12 @@ window.MCQS_VAULT_500 = [
     "tag": "🏆 Senior Staff",
     "question": "[AVG #40] When does AVG() return NULL? (Scenario Variant 8)",
     "options": [
-      "When the table has no rows, or when every single row in the column evaluates to NULL",
       "When any single row in the table contains a NULL value",
-      "When the average equals zero",
-      "Only when an arithmetic division by zero occurs"
+      "When the table has no rows, or when every single row in the column evaluates to NULL",
+      "Only when an arithmetic division by zero occurs",
+      "When the average equals zero"
     ],
-    "correctIndex": 0,
+    "correctIndex": 1,
     "explanation": "AVG() returns NULL when there are zero qualifying non-NULL values to average (either an empty table or an all-NULL column)."
   },
   {
@@ -1970,9 +1970,9 @@ window.MCQS_VAULT_500 = [
     "tag": "🍡 Quick Snack",
     "question": "[AVG #41] Given scores [10, 20, NULL, NULL], what does \"SELECT AVG(score) FROM Tests;\" return? (Scenario Variant 9)",
     "options": [
-      "7.5 (30 / 4)",
-      "15.0 (30 / 2)",
       "NULL",
+      "15.0 (30 / 2)",
+      "7.5 (30 / 4)",
       "0"
     ],
     "correctIndex": 1,
@@ -1985,11 +1985,11 @@ window.MCQS_VAULT_500 = [
     "question": "[AVG #42] In Microsoft SQL Server, what is the output of \"SELECT AVG(rating) FROM Movies;\" if rating is an INT column with values [4, 5]? (Scenario Variant 9)",
     "options": [
       "4.5",
+      "4.0",
       "4",
-      "5",
-      "4.0"
+      "5"
     ],
-    "correctIndex": 1,
+    "correctIndex": 2,
     "explanation": "In SQL Server, AVG() on integer columns performs integer division and truncates the decimal part, returning 4 instead of 4.5! You must cast: AVG(CAST(rating AS FLOAT))."
   },
   {
@@ -1999,9 +1999,9 @@ window.MCQS_VAULT_500 = [
     "question": "[AVG #43] If you want NULL values in column 'score' to count as 0 when calculating the company-wide average, which expression is correct? (Scenario Variant 9)",
     "options": [
       "AVG(COALESCE(score, 0))",
+      "AVG(score NULL AS 0)",
       "COALESCE(AVG(score), 0)",
-      "AVG(score) + 0",
-      "AVG(score NULL AS 0)"
+      "AVG(score) + 0"
     ],
     "correctIndex": 0,
     "explanation": "AVG(COALESCE(score, 0)) converts NULLs into 0 before the aggregation occurs, ensuring the full row count is included in the denominator."
@@ -2013,9 +2013,9 @@ window.MCQS_VAULT_500 = [
     "question": "[AVG #44] What is the statistical effect of using AVG(DISTINCT salary) compared to standard AVG(salary)? (Scenario Variant 9)",
     "options": [
       "It eliminates salary tiers with multiple workers, heavily biasing the mean toward rare outlier salaries",
-      "It calculates the median salary instead of the mean",
       "It runs 10x faster because the dataset is smaller",
-      "It returns the exact same result as AVG(salary)"
+      "It returns the exact same result as AVG(salary)",
+      "It calculates the median salary instead of the mean"
     ],
     "correctIndex": 0,
     "explanation": "Deduplicating values prior to averaging destroys the true weighting of the population, giving a salary shared by 500 entry-level employees the exact same weight as a single CEO salary."
@@ -2026,12 +2026,12 @@ window.MCQS_VAULT_500 = [
     "tag": "🏆 Senior Staff",
     "question": "[AVG #45] When does AVG() return NULL? (Scenario Variant 9)",
     "options": [
-      "When the table has no rows, or when every single row in the column evaluates to NULL",
-      "When any single row in the table contains a NULL value",
       "When the average equals zero",
-      "Only when an arithmetic division by zero occurs"
+      "Only when an arithmetic division by zero occurs",
+      "When the table has no rows, or when every single row in the column evaluates to NULL",
+      "When any single row in the table contains a NULL value"
     ],
-    "correctIndex": 0,
+    "correctIndex": 2,
     "explanation": "AVG() returns NULL when there are zero qualifying non-NULL values to average (either an empty table or an all-NULL column)."
   },
   {
@@ -2040,10 +2040,10 @@ window.MCQS_VAULT_500 = [
     "tag": "🍡 Quick Snack",
     "question": "[AVG #46] Given scores [10, 20, NULL, NULL], what does \"SELECT AVG(score) FROM Tests;\" return? (Scenario Variant 10)",
     "options": [
-      "7.5 (30 / 4)",
-      "15.0 (30 / 2)",
       "NULL",
-      "0"
+      "15.0 (30 / 2)",
+      "0",
+      "7.5 (30 / 4)"
     ],
     "correctIndex": 1,
     "explanation": "AVG() computes SUM(score) / COUNT(score). Because COUNT(score) only counts non-NULL rows (2 rows), the denominator is 2, producing 30 / 2 = 15.0."
@@ -2054,12 +2054,12 @@ window.MCQS_VAULT_500 = [
     "tag": "⚡ Gotcha Trap",
     "question": "[AVG #47] In Microsoft SQL Server, what is the output of \"SELECT AVG(rating) FROM Movies;\" if rating is an INT column with values [4, 5]? (Scenario Variant 10)",
     "options": [
+      "4.0",
       "4.5",
       "4",
-      "5",
-      "4.0"
+      "5"
     ],
-    "correctIndex": 1,
+    "correctIndex": 2,
     "explanation": "In SQL Server, AVG() on integer columns performs integer division and truncates the decimal part, returning 4 instead of 4.5! You must cast: AVG(CAST(rating AS FLOAT))."
   },
   {
@@ -2068,12 +2068,12 @@ window.MCQS_VAULT_500 = [
     "tag": "🐱 Brain Bender",
     "question": "[AVG #48] If you want NULL values in column 'score' to count as 0 when calculating the company-wide average, which expression is correct? (Scenario Variant 10)",
     "options": [
+      "AVG(score) + 0",
       "AVG(COALESCE(score, 0))",
       "COALESCE(AVG(score), 0)",
-      "AVG(score) + 0",
       "AVG(score NULL AS 0)"
     ],
-    "correctIndex": 0,
+    "correctIndex": 1,
     "explanation": "AVG(COALESCE(score, 0)) converts NULLs into 0 before the aggregation occurs, ensuring the full row count is included in the denominator."
   },
   {
@@ -2083,9 +2083,9 @@ window.MCQS_VAULT_500 = [
     "question": "[AVG #49] What is the statistical effect of using AVG(DISTINCT salary) compared to standard AVG(salary)? (Scenario Variant 10)",
     "options": [
       "It eliminates salary tiers with multiple workers, heavily biasing the mean toward rare outlier salaries",
+      "It returns the exact same result as AVG(salary)",
       "It calculates the median salary instead of the mean",
-      "It runs 10x faster because the dataset is smaller",
-      "It returns the exact same result as AVG(salary)"
+      "It runs 10x faster because the dataset is smaller"
     ],
     "correctIndex": 0,
     "explanation": "Deduplicating values prior to averaging destroys the true weighting of the population, giving a salary shared by 500 entry-level employees the exact same weight as a single CEO salary."
@@ -2096,12 +2096,12 @@ window.MCQS_VAULT_500 = [
     "tag": "🏆 Senior Staff",
     "question": "[AVG #50] When does AVG() return NULL? (Scenario Variant 10)",
     "options": [
-      "When the table has no rows, or when every single row in the column evaluates to NULL",
-      "When any single row in the table contains a NULL value",
       "When the average equals zero",
-      "Only when an arithmetic division by zero occurs"
+      "Only when an arithmetic division by zero occurs",
+      "When any single row in the table contains a NULL value",
+      "When the table has no rows, or when every single row in the column evaluates to NULL"
     ],
-    "correctIndex": 0,
+    "correctIndex": 3,
     "explanation": "AVG() returns NULL when there are zero qualifying non-NULL values to average (either an empty table or an all-NULL column)."
   },
   {
@@ -2110,12 +2110,12 @@ window.MCQS_VAULT_500 = [
     "tag": "🍡 Quick Snack",
     "question": "[MIN & MAX #1] What does MIN(username) return when executed on a VARCHAR column containing ['Alice', 'bob', 'Charlie'] in a case-sensitive collation?",
     "options": [
-      "Alice",
-      "bob",
       "Charlie",
-      "NULL"
+      "bob",
+      "NULL",
+      "Alice"
     ],
-    "correctIndex": 0,
+    "correctIndex": 3,
     "explanation": "In ASCII/binary case-sensitive collation, uppercase letters (A-Z: ASCII 65-90) sort before lowercase letters (a-z: ASCII 97-122), making \"Alice\" strictly less than \"bob\"."
   },
   {
@@ -2124,10 +2124,10 @@ window.MCQS_VAULT_500 = [
     "tag": "⚡ Gotcha Trap",
     "question": "[MIN & MAX #2] How do MIN() and MAX() handle NULL values in a column?",
     "options": [
-      "They return NULL if any value in the column is NULL",
+      "MAX() treats NULL as the absolute highest possible value",
       "They completely ignore NULL values and evaluate only non-NULL entries",
       "MIN() treats NULL as the absolute lowest possible value",
-      "MAX() treats NULL as the absolute highest possible value"
+      "They return NULL if any value in the column is NULL"
     ],
     "correctIndex": 1,
     "explanation": "All ANSI aggregate functions (with the sole exception of COUNT(*)) ignore NULL values entirely during computation."
@@ -2139,9 +2139,9 @@ window.MCQS_VAULT_500 = [
     "question": "[MIN & MAX #3] How can an index optimize a query like \"SELECT MIN(created_at), MAX(created_at) FROM Orders;\"?",
     "options": [
       "The query engine can read the first and last keys in the B-tree index in O(log N) time without scanning any table rows",
-      "The engine converts the B-tree into a hash table in RAM",
+      "The engine must perform a full parallel table scan regardless",
       "Indexes cannot assist MIN() or MAX() queries",
-      "The engine must perform a full parallel table scan regardless"
+      "The engine converts the B-tree into a hash table in RAM"
     ],
     "correctIndex": 0,
     "explanation": "Because B-tree indexes are stored in sorted order, finding MIN() and MAX() requires only two instantaneous index lookups: the leftmost leaf node and the rightmost leaf node."
@@ -2152,12 +2152,12 @@ window.MCQS_VAULT_500 = [
     "tag": "🎯 Core Concept",
     "question": "[MIN & MAX #4] Given dates ['2026-01-01', '2025-12-31', '2026-09-05'], what does MAX(event_date) return?",
     "options": [
-      "2026-09-05",
-      "2025-12-31",
       "2026-01-01",
-      "NULL"
+      "2025-12-31",
+      "NULL",
+      "2026-09-05"
     ],
-    "correctIndex": 0,
+    "correctIndex": 3,
     "explanation": "MAX() on temporal data types (DATE, TIMESTAMP) returns the most recent (latest chronologically) date."
   },
   {
@@ -2166,12 +2166,12 @@ window.MCQS_VAULT_500 = [
     "tag": "🏆 Senior Staff",
     "question": "[MIN & MAX #5] What is the result of \"SELECT MAX(salary) - MIN(salary) AS salary_spread FROM Employees;\"?",
     "options": [
-      "The arithmetic difference between the highest and lowest non-NULL salary",
+      "0 if any employee has a NULL salary",
       "An error: aggregate functions cannot be subtracted in SELECT",
       "The average salary deviation across all rows",
-      "0 if any employee has a NULL salary"
+      "The arithmetic difference between the highest and lowest non-NULL salary"
     ],
-    "correctIndex": 0,
+    "correctIndex": 3,
     "explanation": "Scalar operations (such as subtraction) can freely operate on the scalar results produced by aggregate functions in the SELECT projection."
   },
   {
@@ -2180,12 +2180,12 @@ window.MCQS_VAULT_500 = [
     "tag": "🍡 Quick Snack",
     "question": "[MIN & MAX #6] What does MIN(username) return when executed on a VARCHAR column containing ['Alice', 'bob', 'Charlie'] in a case-sensitive collation? (Scenario Variant 2)",
     "options": [
+      "Charlie",
       "Alice",
       "bob",
-      "Charlie",
       "NULL"
     ],
-    "correctIndex": 0,
+    "correctIndex": 1,
     "explanation": "In ASCII/binary case-sensitive collation, uppercase letters (A-Z: ASCII 65-90) sort before lowercase letters (a-z: ASCII 97-122), making \"Alice\" strictly less than \"bob\"."
   },
   {
@@ -2194,12 +2194,12 @@ window.MCQS_VAULT_500 = [
     "tag": "⚡ Gotcha Trap",
     "question": "[MIN & MAX #7] How do MIN() and MAX() handle NULL values in a column? (Scenario Variant 2)",
     "options": [
-      "They return NULL if any value in the column is NULL",
-      "They completely ignore NULL values and evaluate only non-NULL entries",
       "MIN() treats NULL as the absolute lowest possible value",
-      "MAX() treats NULL as the absolute highest possible value"
+      "MAX() treats NULL as the absolute highest possible value",
+      "They completely ignore NULL values and evaluate only non-NULL entries",
+      "They return NULL if any value in the column is NULL"
     ],
-    "correctIndex": 1,
+    "correctIndex": 2,
     "explanation": "All ANSI aggregate functions (with the sole exception of COUNT(*)) ignore NULL values entirely during computation."
   },
   {
@@ -2208,12 +2208,12 @@ window.MCQS_VAULT_500 = [
     "tag": "🐱 Brain Bender",
     "question": "[MIN & MAX #8] How can an index optimize a query like \"SELECT MIN(created_at), MAX(created_at) FROM Orders;\"? (Scenario Variant 2)",
     "options": [
+      "The engine must perform a full parallel table scan regardless",
       "The query engine can read the first and last keys in the B-tree index in O(log N) time without scanning any table rows",
       "The engine converts the B-tree into a hash table in RAM",
-      "Indexes cannot assist MIN() or MAX() queries",
-      "The engine must perform a full parallel table scan regardless"
+      "Indexes cannot assist MIN() or MAX() queries"
     ],
-    "correctIndex": 0,
+    "correctIndex": 1,
     "explanation": "Because B-tree indexes are stored in sorted order, finding MIN() and MAX() requires only two instantaneous index lookups: the leftmost leaf node and the rightmost leaf node."
   },
   {
@@ -2222,12 +2222,12 @@ window.MCQS_VAULT_500 = [
     "tag": "🎯 Core Concept",
     "question": "[MIN & MAX #9] Given dates ['2026-01-01', '2025-12-31', '2026-09-05'], what does MAX(event_date) return? (Scenario Variant 2)",
     "options": [
-      "2026-09-05",
       "2025-12-31",
-      "2026-01-01",
-      "NULL"
+      "NULL",
+      "2026-09-05",
+      "2026-01-01"
     ],
-    "correctIndex": 0,
+    "correctIndex": 2,
     "explanation": "MAX() on temporal data types (DATE, TIMESTAMP) returns the most recent (latest chronologically) date."
   },
   {
@@ -2236,12 +2236,12 @@ window.MCQS_VAULT_500 = [
     "tag": "🏆 Senior Staff",
     "question": "[MIN & MAX #10] What is the result of \"SELECT MAX(salary) - MIN(salary) AS salary_spread FROM Employees;\"? (Scenario Variant 2)",
     "options": [
-      "The arithmetic difference between the highest and lowest non-NULL salary",
-      "An error: aggregate functions cannot be subtracted in SELECT",
       "The average salary deviation across all rows",
-      "0 if any employee has a NULL salary"
+      "An error: aggregate functions cannot be subtracted in SELECT",
+      "0 if any employee has a NULL salary",
+      "The arithmetic difference between the highest and lowest non-NULL salary"
     ],
-    "correctIndex": 0,
+    "correctIndex": 3,
     "explanation": "Scalar operations (such as subtraction) can freely operate on the scalar results produced by aggregate functions in the SELECT projection."
   },
   {
@@ -2250,12 +2250,12 @@ window.MCQS_VAULT_500 = [
     "tag": "🍡 Quick Snack",
     "question": "[MIN & MAX #11] What does MIN(username) return when executed on a VARCHAR column containing ['Alice', 'bob', 'Charlie'] in a case-sensitive collation? (Scenario Variant 3)",
     "options": [
-      "Alice",
-      "bob",
+      "NULL",
       "Charlie",
-      "NULL"
+      "bob",
+      "Alice"
     ],
-    "correctIndex": 0,
+    "correctIndex": 3,
     "explanation": "In ASCII/binary case-sensitive collation, uppercase letters (A-Z: ASCII 65-90) sort before lowercase letters (a-z: ASCII 97-122), making \"Alice\" strictly less than \"bob\"."
   },
   {
@@ -2264,12 +2264,12 @@ window.MCQS_VAULT_500 = [
     "tag": "⚡ Gotcha Trap",
     "question": "[MIN & MAX #12] How do MIN() and MAX() handle NULL values in a column? (Scenario Variant 3)",
     "options": [
-      "They return NULL if any value in the column is NULL",
       "They completely ignore NULL values and evaluate only non-NULL entries",
-      "MIN() treats NULL as the absolute lowest possible value",
-      "MAX() treats NULL as the absolute highest possible value"
+      "MAX() treats NULL as the absolute highest possible value",
+      "They return NULL if any value in the column is NULL",
+      "MIN() treats NULL as the absolute lowest possible value"
     ],
-    "correctIndex": 1,
+    "correctIndex": 0,
     "explanation": "All ANSI aggregate functions (with the sole exception of COUNT(*)) ignore NULL values entirely during computation."
   },
   {
@@ -2278,12 +2278,12 @@ window.MCQS_VAULT_500 = [
     "tag": "🐱 Brain Bender",
     "question": "[MIN & MAX #13] How can an index optimize a query like \"SELECT MIN(created_at), MAX(created_at) FROM Orders;\"? (Scenario Variant 3)",
     "options": [
-      "The query engine can read the first and last keys in the B-tree index in O(log N) time without scanning any table rows",
       "The engine converts the B-tree into a hash table in RAM",
       "Indexes cannot assist MIN() or MAX() queries",
-      "The engine must perform a full parallel table scan regardless"
+      "The engine must perform a full parallel table scan regardless",
+      "The query engine can read the first and last keys in the B-tree index in O(log N) time without scanning any table rows"
     ],
-    "correctIndex": 0,
+    "correctIndex": 3,
     "explanation": "Because B-tree indexes are stored in sorted order, finding MIN() and MAX() requires only two instantaneous index lookups: the leftmost leaf node and the rightmost leaf node."
   },
   {
@@ -2292,12 +2292,12 @@ window.MCQS_VAULT_500 = [
     "tag": "🎯 Core Concept",
     "question": "[MIN & MAX #14] Given dates ['2026-01-01', '2025-12-31', '2026-09-05'], what does MAX(event_date) return? (Scenario Variant 3)",
     "options": [
-      "2026-09-05",
-      "2025-12-31",
+      "NULL",
       "2026-01-01",
-      "NULL"
+      "2026-09-05",
+      "2025-12-31"
     ],
-    "correctIndex": 0,
+    "correctIndex": 2,
     "explanation": "MAX() on temporal data types (DATE, TIMESTAMP) returns the most recent (latest chronologically) date."
   },
   {
@@ -2306,12 +2306,12 @@ window.MCQS_VAULT_500 = [
     "tag": "🏆 Senior Staff",
     "question": "[MIN & MAX #15] What is the result of \"SELECT MAX(salary) - MIN(salary) AS salary_spread FROM Employees;\"? (Scenario Variant 3)",
     "options": [
-      "The arithmetic difference between the highest and lowest non-NULL salary",
+      "0 if any employee has a NULL salary",
       "An error: aggregate functions cannot be subtracted in SELECT",
       "The average salary deviation across all rows",
-      "0 if any employee has a NULL salary"
+      "The arithmetic difference between the highest and lowest non-NULL salary"
     ],
-    "correctIndex": 0,
+    "correctIndex": 3,
     "explanation": "Scalar operations (such as subtraction) can freely operate on the scalar results produced by aggregate functions in the SELECT projection."
   },
   {
@@ -2321,9 +2321,9 @@ window.MCQS_VAULT_500 = [
     "question": "[MIN & MAX #16] What does MIN(username) return when executed on a VARCHAR column containing ['Alice', 'bob', 'Charlie'] in a case-sensitive collation? (Scenario Variant 4)",
     "options": [
       "Alice",
-      "bob",
       "Charlie",
-      "NULL"
+      "NULL",
+      "bob"
     ],
     "correctIndex": 0,
     "explanation": "In ASCII/binary case-sensitive collation, uppercase letters (A-Z: ASCII 65-90) sort before lowercase letters (a-z: ASCII 97-122), making \"Alice\" strictly less than \"bob\"."
@@ -2334,10 +2334,10 @@ window.MCQS_VAULT_500 = [
     "tag": "⚡ Gotcha Trap",
     "question": "[MIN & MAX #17] How do MIN() and MAX() handle NULL values in a column? (Scenario Variant 4)",
     "options": [
-      "They return NULL if any value in the column is NULL",
+      "MAX() treats NULL as the absolute highest possible value",
       "They completely ignore NULL values and evaluate only non-NULL entries",
       "MIN() treats NULL as the absolute lowest possible value",
-      "MAX() treats NULL as the absolute highest possible value"
+      "They return NULL if any value in the column is NULL"
     ],
     "correctIndex": 1,
     "explanation": "All ANSI aggregate functions (with the sole exception of COUNT(*)) ignore NULL values entirely during computation."
@@ -2348,12 +2348,12 @@ window.MCQS_VAULT_500 = [
     "tag": "🐱 Brain Bender",
     "question": "[MIN & MAX #18] How can an index optimize a query like \"SELECT MIN(created_at), MAX(created_at) FROM Orders;\"? (Scenario Variant 4)",
     "options": [
-      "The query engine can read the first and last keys in the B-tree index in O(log N) time without scanning any table rows",
       "The engine converts the B-tree into a hash table in RAM",
       "Indexes cannot assist MIN() or MAX() queries",
-      "The engine must perform a full parallel table scan regardless"
+      "The engine must perform a full parallel table scan regardless",
+      "The query engine can read the first and last keys in the B-tree index in O(log N) time without scanning any table rows"
     ],
-    "correctIndex": 0,
+    "correctIndex": 3,
     "explanation": "Because B-tree indexes are stored in sorted order, finding MIN() and MAX() requires only two instantaneous index lookups: the leftmost leaf node and the rightmost leaf node."
   },
   {
@@ -2362,12 +2362,12 @@ window.MCQS_VAULT_500 = [
     "tag": "🎯 Core Concept",
     "question": "[MIN & MAX #19] Given dates ['2026-01-01', '2025-12-31', '2026-09-05'], what does MAX(event_date) return? (Scenario Variant 4)",
     "options": [
-      "2026-09-05",
       "2025-12-31",
+      "NULL",
       "2026-01-01",
-      "NULL"
+      "2026-09-05"
     ],
-    "correctIndex": 0,
+    "correctIndex": 3,
     "explanation": "MAX() on temporal data types (DATE, TIMESTAMP) returns the most recent (latest chronologically) date."
   },
   {
@@ -2376,12 +2376,12 @@ window.MCQS_VAULT_500 = [
     "tag": "🏆 Senior Staff",
     "question": "[MIN & MAX #20] What is the result of \"SELECT MAX(salary) - MIN(salary) AS salary_spread FROM Employees;\"? (Scenario Variant 4)",
     "options": [
-      "The arithmetic difference between the highest and lowest non-NULL salary",
+      "0 if any employee has a NULL salary",
       "An error: aggregate functions cannot be subtracted in SELECT",
-      "The average salary deviation across all rows",
-      "0 if any employee has a NULL salary"
+      "The arithmetic difference between the highest and lowest non-NULL salary",
+      "The average salary deviation across all rows"
     ],
-    "correctIndex": 0,
+    "correctIndex": 2,
     "explanation": "Scalar operations (such as subtraction) can freely operate on the scalar results produced by aggregate functions in the SELECT projection."
   },
   {
@@ -2390,12 +2390,12 @@ window.MCQS_VAULT_500 = [
     "tag": "🍡 Quick Snack",
     "question": "[MIN & MAX #21] What does MIN(username) return when executed on a VARCHAR column containing ['Alice', 'bob', 'Charlie'] in a case-sensitive collation? (Scenario Variant 5)",
     "options": [
-      "Alice",
-      "bob",
       "Charlie",
-      "NULL"
+      "NULL",
+      "Alice",
+      "bob"
     ],
-    "correctIndex": 0,
+    "correctIndex": 2,
     "explanation": "In ASCII/binary case-sensitive collation, uppercase letters (A-Z: ASCII 65-90) sort before lowercase letters (a-z: ASCII 97-122), making \"Alice\" strictly less than \"bob\"."
   },
   {
@@ -2404,10 +2404,10 @@ window.MCQS_VAULT_500 = [
     "tag": "⚡ Gotcha Trap",
     "question": "[MIN & MAX #22] How do MIN() and MAX() handle NULL values in a column? (Scenario Variant 5)",
     "options": [
-      "They return NULL if any value in the column is NULL",
+      "MAX() treats NULL as the absolute highest possible value",
       "They completely ignore NULL values and evaluate only non-NULL entries",
       "MIN() treats NULL as the absolute lowest possible value",
-      "MAX() treats NULL as the absolute highest possible value"
+      "They return NULL if any value in the column is NULL"
     ],
     "correctIndex": 1,
     "explanation": "All ANSI aggregate functions (with the sole exception of COUNT(*)) ignore NULL values entirely during computation."
@@ -2418,12 +2418,12 @@ window.MCQS_VAULT_500 = [
     "tag": "🐱 Brain Bender",
     "question": "[MIN & MAX #23] How can an index optimize a query like \"SELECT MIN(created_at), MAX(created_at) FROM Orders;\"? (Scenario Variant 5)",
     "options": [
-      "The query engine can read the first and last keys in the B-tree index in O(log N) time without scanning any table rows",
+      "The engine must perform a full parallel table scan regardless",
       "The engine converts the B-tree into a hash table in RAM",
       "Indexes cannot assist MIN() or MAX() queries",
-      "The engine must perform a full parallel table scan regardless"
+      "The query engine can read the first and last keys in the B-tree index in O(log N) time without scanning any table rows"
     ],
-    "correctIndex": 0,
+    "correctIndex": 3,
     "explanation": "Because B-tree indexes are stored in sorted order, finding MIN() and MAX() requires only two instantaneous index lookups: the leftmost leaf node and the rightmost leaf node."
   },
   {
@@ -2432,12 +2432,12 @@ window.MCQS_VAULT_500 = [
     "tag": "🎯 Core Concept",
     "question": "[MIN & MAX #24] Given dates ['2026-01-01', '2025-12-31', '2026-09-05'], what does MAX(event_date) return? (Scenario Variant 5)",
     "options": [
-      "2026-09-05",
       "2025-12-31",
+      "2026-09-05",
       "2026-01-01",
       "NULL"
     ],
-    "correctIndex": 0,
+    "correctIndex": 1,
     "explanation": "MAX() on temporal data types (DATE, TIMESTAMP) returns the most recent (latest chronologically) date."
   },
   {
@@ -2460,12 +2460,12 @@ window.MCQS_VAULT_500 = [
     "tag": "🍡 Quick Snack",
     "question": "[MIN & MAX #26] What does MIN(username) return when executed on a VARCHAR column containing ['Alice', 'bob', 'Charlie'] in a case-sensitive collation? (Scenario Variant 6)",
     "options": [
-      "Alice",
       "bob",
+      "Alice",
       "Charlie",
       "NULL"
     ],
-    "correctIndex": 0,
+    "correctIndex": 1,
     "explanation": "In ASCII/binary case-sensitive collation, uppercase letters (A-Z: ASCII 65-90) sort before lowercase letters (a-z: ASCII 97-122), making \"Alice\" strictly less than \"bob\"."
   },
   {
@@ -2474,12 +2474,12 @@ window.MCQS_VAULT_500 = [
     "tag": "⚡ Gotcha Trap",
     "question": "[MIN & MAX #27] How do MIN() and MAX() handle NULL values in a column? (Scenario Variant 6)",
     "options": [
-      "They return NULL if any value in the column is NULL",
       "They completely ignore NULL values and evaluate only non-NULL entries",
-      "MIN() treats NULL as the absolute lowest possible value",
-      "MAX() treats NULL as the absolute highest possible value"
+      "MAX() treats NULL as the absolute highest possible value",
+      "They return NULL if any value in the column is NULL",
+      "MIN() treats NULL as the absolute lowest possible value"
     ],
-    "correctIndex": 1,
+    "correctIndex": 0,
     "explanation": "All ANSI aggregate functions (with the sole exception of COUNT(*)) ignore NULL values entirely during computation."
   },
   {
@@ -2489,9 +2489,9 @@ window.MCQS_VAULT_500 = [
     "question": "[MIN & MAX #28] How can an index optimize a query like \"SELECT MIN(created_at), MAX(created_at) FROM Orders;\"? (Scenario Variant 6)",
     "options": [
       "The query engine can read the first and last keys in the B-tree index in O(log N) time without scanning any table rows",
-      "The engine converts the B-tree into a hash table in RAM",
       "Indexes cannot assist MIN() or MAX() queries",
-      "The engine must perform a full parallel table scan regardless"
+      "The engine must perform a full parallel table scan regardless",
+      "The engine converts the B-tree into a hash table in RAM"
     ],
     "correctIndex": 0,
     "explanation": "Because B-tree indexes are stored in sorted order, finding MIN() and MAX() requires only two instantaneous index lookups: the leftmost leaf node and the rightmost leaf node."
@@ -2502,12 +2502,12 @@ window.MCQS_VAULT_500 = [
     "tag": "🎯 Core Concept",
     "question": "[MIN & MAX #29] Given dates ['2026-01-01', '2025-12-31', '2026-09-05'], what does MAX(event_date) return? (Scenario Variant 6)",
     "options": [
+      "NULL",
       "2026-09-05",
-      "2025-12-31",
       "2026-01-01",
-      "NULL"
+      "2025-12-31"
     ],
-    "correctIndex": 0,
+    "correctIndex": 1,
     "explanation": "MAX() on temporal data types (DATE, TIMESTAMP) returns the most recent (latest chronologically) date."
   },
   {
@@ -2517,8 +2517,8 @@ window.MCQS_VAULT_500 = [
     "question": "[MIN & MAX #30] What is the result of \"SELECT MAX(salary) - MIN(salary) AS salary_spread FROM Employees;\"? (Scenario Variant 6)",
     "options": [
       "The arithmetic difference between the highest and lowest non-NULL salary",
-      "An error: aggregate functions cannot be subtracted in SELECT",
       "The average salary deviation across all rows",
+      "An error: aggregate functions cannot be subtracted in SELECT",
       "0 if any employee has a NULL salary"
     ],
     "correctIndex": 0,
@@ -2532,8 +2532,8 @@ window.MCQS_VAULT_500 = [
     "options": [
       "Alice",
       "bob",
-      "Charlie",
-      "NULL"
+      "NULL",
+      "Charlie"
     ],
     "correctIndex": 0,
     "explanation": "In ASCII/binary case-sensitive collation, uppercase letters (A-Z: ASCII 65-90) sort before lowercase letters (a-z: ASCII 97-122), making \"Alice\" strictly less than \"bob\"."
@@ -2544,10 +2544,10 @@ window.MCQS_VAULT_500 = [
     "tag": "⚡ Gotcha Trap",
     "question": "[MIN & MAX #32] How do MIN() and MAX() handle NULL values in a column? (Scenario Variant 7)",
     "options": [
-      "They return NULL if any value in the column is NULL",
-      "They completely ignore NULL values and evaluate only non-NULL entries",
       "MIN() treats NULL as the absolute lowest possible value",
-      "MAX() treats NULL as the absolute highest possible value"
+      "They completely ignore NULL values and evaluate only non-NULL entries",
+      "MAX() treats NULL as the absolute highest possible value",
+      "They return NULL if any value in the column is NULL"
     ],
     "correctIndex": 1,
     "explanation": "All ANSI aggregate functions (with the sole exception of COUNT(*)) ignore NULL values entirely during computation."
@@ -2559,8 +2559,8 @@ window.MCQS_VAULT_500 = [
     "question": "[MIN & MAX #33] How can an index optimize a query like \"SELECT MIN(created_at), MAX(created_at) FROM Orders;\"? (Scenario Variant 7)",
     "options": [
       "The query engine can read the first and last keys in the B-tree index in O(log N) time without scanning any table rows",
-      "The engine converts the B-tree into a hash table in RAM",
       "Indexes cannot assist MIN() or MAX() queries",
+      "The engine converts the B-tree into a hash table in RAM",
       "The engine must perform a full parallel table scan regardless"
     ],
     "correctIndex": 0,
@@ -2586,12 +2586,12 @@ window.MCQS_VAULT_500 = [
     "tag": "🏆 Senior Staff",
     "question": "[MIN & MAX #35] What is the result of \"SELECT MAX(salary) - MIN(salary) AS salary_spread FROM Employees;\"? (Scenario Variant 7)",
     "options": [
-      "The arithmetic difference between the highest and lowest non-NULL salary",
-      "An error: aggregate functions cannot be subtracted in SELECT",
       "The average salary deviation across all rows",
-      "0 if any employee has a NULL salary"
+      "0 if any employee has a NULL salary",
+      "An error: aggregate functions cannot be subtracted in SELECT",
+      "The arithmetic difference between the highest and lowest non-NULL salary"
     ],
-    "correctIndex": 0,
+    "correctIndex": 3,
     "explanation": "Scalar operations (such as subtraction) can freely operate on the scalar results produced by aggregate functions in the SELECT projection."
   },
   {
@@ -2600,12 +2600,12 @@ window.MCQS_VAULT_500 = [
     "tag": "🍡 Quick Snack",
     "question": "[MIN & MAX #36] What does MIN(username) return when executed on a VARCHAR column containing ['Alice', 'bob', 'Charlie'] in a case-sensitive collation? (Scenario Variant 8)",
     "options": [
-      "Alice",
+      "NULL",
       "bob",
-      "Charlie",
-      "NULL"
+      "Alice",
+      "Charlie"
     ],
-    "correctIndex": 0,
+    "correctIndex": 2,
     "explanation": "In ASCII/binary case-sensitive collation, uppercase letters (A-Z: ASCII 65-90) sort before lowercase letters (a-z: ASCII 97-122), making \"Alice\" strictly less than \"bob\"."
   },
   {
@@ -2614,12 +2614,12 @@ window.MCQS_VAULT_500 = [
     "tag": "⚡ Gotcha Trap",
     "question": "[MIN & MAX #37] How do MIN() and MAX() handle NULL values in a column? (Scenario Variant 8)",
     "options": [
-      "They return NULL if any value in the column is NULL",
       "They completely ignore NULL values and evaluate only non-NULL entries",
+      "MAX() treats NULL as the absolute highest possible value",
       "MIN() treats NULL as the absolute lowest possible value",
-      "MAX() treats NULL as the absolute highest possible value"
+      "They return NULL if any value in the column is NULL"
     ],
-    "correctIndex": 1,
+    "correctIndex": 0,
     "explanation": "All ANSI aggregate functions (with the sole exception of COUNT(*)) ignore NULL values entirely during computation."
   },
   {
@@ -2628,12 +2628,12 @@ window.MCQS_VAULT_500 = [
     "tag": "🐱 Brain Bender",
     "question": "[MIN & MAX #38] How can an index optimize a query like \"SELECT MIN(created_at), MAX(created_at) FROM Orders;\"? (Scenario Variant 8)",
     "options": [
-      "The query engine can read the first and last keys in the B-tree index in O(log N) time without scanning any table rows",
-      "The engine converts the B-tree into a hash table in RAM",
       "Indexes cannot assist MIN() or MAX() queries",
-      "The engine must perform a full parallel table scan regardless"
+      "The engine must perform a full parallel table scan regardless",
+      "The engine converts the B-tree into a hash table in RAM",
+      "The query engine can read the first and last keys in the B-tree index in O(log N) time without scanning any table rows"
     ],
-    "correctIndex": 0,
+    "correctIndex": 3,
     "explanation": "Because B-tree indexes are stored in sorted order, finding MIN() and MAX() requires only two instantaneous index lookups: the leftmost leaf node and the rightmost leaf node."
   },
   {
@@ -2643,9 +2643,9 @@ window.MCQS_VAULT_500 = [
     "question": "[MIN & MAX #39] Given dates ['2026-01-01', '2025-12-31', '2026-09-05'], what does MAX(event_date) return? (Scenario Variant 8)",
     "options": [
       "2026-09-05",
+      "NULL",
       "2025-12-31",
-      "2026-01-01",
-      "NULL"
+      "2026-01-01"
     ],
     "correctIndex": 0,
     "explanation": "MAX() on temporal data types (DATE, TIMESTAMP) returns the most recent (latest chronologically) date."
@@ -2656,12 +2656,12 @@ window.MCQS_VAULT_500 = [
     "tag": "🏆 Senior Staff",
     "question": "[MIN & MAX #40] What is the result of \"SELECT MAX(salary) - MIN(salary) AS salary_spread FROM Employees;\"? (Scenario Variant 8)",
     "options": [
-      "The arithmetic difference between the highest and lowest non-NULL salary",
-      "An error: aggregate functions cannot be subtracted in SELECT",
       "The average salary deviation across all rows",
+      "An error: aggregate functions cannot be subtracted in SELECT",
+      "The arithmetic difference between the highest and lowest non-NULL salary",
       "0 if any employee has a NULL salary"
     ],
-    "correctIndex": 0,
+    "correctIndex": 2,
     "explanation": "Scalar operations (such as subtraction) can freely operate on the scalar results produced by aggregate functions in the SELECT projection."
   },
   {
@@ -2670,12 +2670,12 @@ window.MCQS_VAULT_500 = [
     "tag": "🍡 Quick Snack",
     "question": "[MIN & MAX #41] What does MIN(username) return when executed on a VARCHAR column containing ['Alice', 'bob', 'Charlie'] in a case-sensitive collation? (Scenario Variant 9)",
     "options": [
-      "Alice",
       "bob",
       "Charlie",
-      "NULL"
+      "NULL",
+      "Alice"
     ],
-    "correctIndex": 0,
+    "correctIndex": 3,
     "explanation": "In ASCII/binary case-sensitive collation, uppercase letters (A-Z: ASCII 65-90) sort before lowercase letters (a-z: ASCII 97-122), making \"Alice\" strictly less than \"bob\"."
   },
   {
@@ -2684,10 +2684,10 @@ window.MCQS_VAULT_500 = [
     "tag": "⚡ Gotcha Trap",
     "question": "[MIN & MAX #42] How do MIN() and MAX() handle NULL values in a column? (Scenario Variant 9)",
     "options": [
-      "They return NULL if any value in the column is NULL",
+      "MAX() treats NULL as the absolute highest possible value",
       "They completely ignore NULL values and evaluate only non-NULL entries",
       "MIN() treats NULL as the absolute lowest possible value",
-      "MAX() treats NULL as the absolute highest possible value"
+      "They return NULL if any value in the column is NULL"
     ],
     "correctIndex": 1,
     "explanation": "All ANSI aggregate functions (with the sole exception of COUNT(*)) ignore NULL values entirely during computation."
@@ -2698,12 +2698,12 @@ window.MCQS_VAULT_500 = [
     "tag": "🐱 Brain Bender",
     "question": "[MIN & MAX #43] How can an index optimize a query like \"SELECT MIN(created_at), MAX(created_at) FROM Orders;\"? (Scenario Variant 9)",
     "options": [
-      "The query engine can read the first and last keys in the B-tree index in O(log N) time without scanning any table rows",
       "The engine converts the B-tree into a hash table in RAM",
       "Indexes cannot assist MIN() or MAX() queries",
+      "The query engine can read the first and last keys in the B-tree index in O(log N) time without scanning any table rows",
       "The engine must perform a full parallel table scan regardless"
     ],
-    "correctIndex": 0,
+    "correctIndex": 2,
     "explanation": "Because B-tree indexes are stored in sorted order, finding MIN() and MAX() requires only two instantaneous index lookups: the leftmost leaf node and the rightmost leaf node."
   },
   {
@@ -2712,12 +2712,12 @@ window.MCQS_VAULT_500 = [
     "tag": "🎯 Core Concept",
     "question": "[MIN & MAX #44] Given dates ['2026-01-01', '2025-12-31', '2026-09-05'], what does MAX(event_date) return? (Scenario Variant 9)",
     "options": [
+      "2026-01-01",
       "2026-09-05",
       "2025-12-31",
-      "2026-01-01",
       "NULL"
     ],
-    "correctIndex": 0,
+    "correctIndex": 1,
     "explanation": "MAX() on temporal data types (DATE, TIMESTAMP) returns the most recent (latest chronologically) date."
   },
   {
@@ -2726,12 +2726,12 @@ window.MCQS_VAULT_500 = [
     "tag": "🏆 Senior Staff",
     "question": "[MIN & MAX #45] What is the result of \"SELECT MAX(salary) - MIN(salary) AS salary_spread FROM Employees;\"? (Scenario Variant 9)",
     "options": [
-      "The arithmetic difference between the highest and lowest non-NULL salary",
       "An error: aggregate functions cannot be subtracted in SELECT",
-      "The average salary deviation across all rows",
-      "0 if any employee has a NULL salary"
+      "0 if any employee has a NULL salary",
+      "The arithmetic difference between the highest and lowest non-NULL salary",
+      "The average salary deviation across all rows"
     ],
-    "correctIndex": 0,
+    "correctIndex": 2,
     "explanation": "Scalar operations (such as subtraction) can freely operate on the scalar results produced by aggregate functions in the SELECT projection."
   },
   {
@@ -2754,10 +2754,10 @@ window.MCQS_VAULT_500 = [
     "tag": "⚡ Gotcha Trap",
     "question": "[MIN & MAX #47] How do MIN() and MAX() handle NULL values in a column? (Scenario Variant 10)",
     "options": [
-      "They return NULL if any value in the column is NULL",
-      "They completely ignore NULL values and evaluate only non-NULL entries",
       "MIN() treats NULL as the absolute lowest possible value",
-      "MAX() treats NULL as the absolute highest possible value"
+      "They completely ignore NULL values and evaluate only non-NULL entries",
+      "MAX() treats NULL as the absolute highest possible value",
+      "They return NULL if any value in the column is NULL"
     ],
     "correctIndex": 1,
     "explanation": "All ANSI aggregate functions (with the sole exception of COUNT(*)) ignore NULL values entirely during computation."
@@ -2768,12 +2768,12 @@ window.MCQS_VAULT_500 = [
     "tag": "🐱 Brain Bender",
     "question": "[MIN & MAX #48] How can an index optimize a query like \"SELECT MIN(created_at), MAX(created_at) FROM Orders;\"? (Scenario Variant 10)",
     "options": [
-      "The query engine can read the first and last keys in the B-tree index in O(log N) time without scanning any table rows",
       "The engine converts the B-tree into a hash table in RAM",
-      "Indexes cannot assist MIN() or MAX() queries",
-      "The engine must perform a full parallel table scan regardless"
+      "The engine must perform a full parallel table scan regardless",
+      "The query engine can read the first and last keys in the B-tree index in O(log N) time without scanning any table rows",
+      "Indexes cannot assist MIN() or MAX() queries"
     ],
-    "correctIndex": 0,
+    "correctIndex": 2,
     "explanation": "Because B-tree indexes are stored in sorted order, finding MIN() and MAX() requires only two instantaneous index lookups: the leftmost leaf node and the rightmost leaf node."
   },
   {
@@ -2782,12 +2782,12 @@ window.MCQS_VAULT_500 = [
     "tag": "🎯 Core Concept",
     "question": "[MIN & MAX #49] Given dates ['2026-01-01', '2025-12-31', '2026-09-05'], what does MAX(event_date) return? (Scenario Variant 10)",
     "options": [
-      "2026-09-05",
-      "2025-12-31",
+      "NULL",
       "2026-01-01",
-      "NULL"
+      "2026-09-05",
+      "2025-12-31"
     ],
-    "correctIndex": 0,
+    "correctIndex": 2,
     "explanation": "MAX() on temporal data types (DATE, TIMESTAMP) returns the most recent (latest chronologically) date."
   },
   {
@@ -2796,12 +2796,12 @@ window.MCQS_VAULT_500 = [
     "tag": "🏆 Senior Staff",
     "question": "[MIN & MAX #50] What is the result of \"SELECT MAX(salary) - MIN(salary) AS salary_spread FROM Employees;\"? (Scenario Variant 10)",
     "options": [
-      "The arithmetic difference between the highest and lowest non-NULL salary",
-      "An error: aggregate functions cannot be subtracted in SELECT",
+      "0 if any employee has a NULL salary",
       "The average salary deviation across all rows",
-      "0 if any employee has a NULL salary"
+      "The arithmetic difference between the highest and lowest non-NULL salary",
+      "An error: aggregate functions cannot be subtracted in SELECT"
     ],
-    "correctIndex": 0,
+    "correctIndex": 2,
     "explanation": "Scalar operations (such as subtraction) can freely operate on the scalar results produced by aggregate functions in the SELECT projection."
   },
   {
@@ -2810,12 +2810,12 @@ window.MCQS_VAULT_500 = [
     "tag": "🍡 Quick Snack",
     "question": "[GROUP BY #1] Why does the query \"SELECT department, name, AVG(salary) FROM Employees GROUP BY department;\" fail in standard SQL (ONLY_FULL_GROUP_BY)?",
     "options": [
+      "GROUP BY must always be followed by HAVING",
       "AVG() cannot be combined with text columns",
       "\"name\" is not in the GROUP BY clause and is not wrapped in an aggregate function, creating an ambiguous 1-to-many projection",
-      "GROUP BY must always be followed by HAVING",
       "department names must be sorted using ORDER BY first"
     ],
-    "correctIndex": 1,
+    "correctIndex": 2,
     "explanation": "Under ANSI SQL and MySQL ONLY_FULL_GROUP_BY, every column in the SELECT list that is not aggregated MUST appear in the GROUP BY clause to prevent non-deterministic values."
   },
   {
@@ -2824,12 +2824,12 @@ window.MCQS_VAULT_500 = [
     "tag": "⚡ Gotcha Trap",
     "question": "[GROUP BY #2] How does GROUP BY handle rows where the grouping column value is NULL?",
     "options": [
-      "All NULL rows are discarded from the query result",
-      "Every NULL row forms its own unique, separate group bucket",
       "All NULL rows are grouped together into a single collective group bucket",
-      "An AmbiguousKeyException error is thrown"
+      "Every NULL row forms its own unique, separate group bucket",
+      "An AmbiguousKeyException error is thrown",
+      "All NULL rows are discarded from the query result"
     ],
-    "correctIndex": 2,
+    "correctIndex": 0,
     "explanation": "In SQL grouping, NULL values are considered equal to each other for the purpose of grouping, aggregating all rows with NULL in that column into one single bucket."
   },
   {
@@ -2838,12 +2838,12 @@ window.MCQS_VAULT_500 = [
     "tag": "🐱 Brain Bender",
     "question": "[GROUP BY #3] What does positional grouping syntax like \"GROUP BY 1, 2\" mean in engines that support it?",
     "options": [
+      "Group only the first 2 rows of the table",
       "Group by the first and second physical columns stored on disk in the table schema",
       "Group by the 1st and 2nd expressions listed in the SELECT clause",
-      "Group only the first 2 rows of the table",
       "Group by primary key 1 and foreign key 2"
     ],
-    "correctIndex": 1,
+    "correctIndex": 2,
     "explanation": "GROUP BY 1, 2 references columns by their ordinal 1-based index in the SELECT projection list. While convenient, it is considered fragile in production code if columns are reordered."
   },
   {
@@ -2852,12 +2852,12 @@ window.MCQS_VAULT_500 = [
     "tag": "🎯 Core Concept",
     "question": "[GROUP BY #4] In the query \"SELECT department, role, COUNT(*) FROM Staff GROUP BY department, role;\", how are groups created?",
     "options": [
-      "Unique combinations of (department, role) tuples each form a distinct summary bucket",
-      "Rows are grouped by department, then role is discarded",
       "The query performs two separate queries and concatenates them",
-      "Only rows where department equals role are grouped"
+      "Only rows where department equals role are grouped",
+      "Rows are grouped by department, then role is discarded",
+      "Unique combinations of (department, role) tuples each form a distinct summary bucket"
     ],
-    "correctIndex": 0,
+    "correctIndex": 3,
     "explanation": "Multi-column GROUP BY partitions rows by composite tuples. An aggregate is calculated for every distinct pairing of (department, role)."
   },
   {
@@ -2866,12 +2866,12 @@ window.MCQS_VAULT_500 = [
     "tag": "🏆 Senior Staff",
     "question": "[GROUP BY #5] Can you group by a calculated expression such as \"GROUP BY YEAR(hire_date)\" in ANSI SQL?",
     "options": [
+      "Only if the expression is aliased in the WHERE clause",
       "Yes, grouping by scalar deterministic expressions on columns is fully valid",
       "No, GROUP BY can only reference physical column names directly",
-      "Only if hire_date is indexed as a primary key",
-      "Only if the expression is aliased in the WHERE clause"
+      "Only if hire_date is indexed as a primary key"
     ],
-    "correctIndex": 0,
+    "correctIndex": 1,
     "explanation": "Expressions like YEAR(hire_date) or CASE WHEN statements are legal in GROUP BY clauses across modern SQL engines."
   },
   {
@@ -2882,8 +2882,8 @@ window.MCQS_VAULT_500 = [
     "options": [
       "AVG() cannot be combined with text columns",
       "\"name\" is not in the GROUP BY clause and is not wrapped in an aggregate function, creating an ambiguous 1-to-many projection",
-      "GROUP BY must always be followed by HAVING",
-      "department names must be sorted using ORDER BY first"
+      "department names must be sorted using ORDER BY first",
+      "GROUP BY must always be followed by HAVING"
     ],
     "correctIndex": 1,
     "explanation": "Under ANSI SQL and MySQL ONLY_FULL_GROUP_BY, every column in the SELECT list that is not aggregated MUST appear in the GROUP BY clause to prevent non-deterministic values."
@@ -2895,11 +2895,11 @@ window.MCQS_VAULT_500 = [
     "question": "[GROUP BY #7] How does GROUP BY handle rows where the grouping column value is NULL? (Scenario Variant 2)",
     "options": [
       "All NULL rows are discarded from the query result",
-      "Every NULL row forms its own unique, separate group bucket",
       "All NULL rows are grouped together into a single collective group bucket",
+      "Every NULL row forms its own unique, separate group bucket",
       "An AmbiguousKeyException error is thrown"
     ],
-    "correctIndex": 2,
+    "correctIndex": 1,
     "explanation": "In SQL grouping, NULL values are considered equal to each other for the purpose of grouping, aggregating all rows with NULL in that column into one single bucket."
   },
   {
@@ -2909,11 +2909,11 @@ window.MCQS_VAULT_500 = [
     "question": "[GROUP BY #8] What does positional grouping syntax like \"GROUP BY 1, 2\" mean in engines that support it? (Scenario Variant 2)",
     "options": [
       "Group by the first and second physical columns stored on disk in the table schema",
+      "Group by primary key 1 and foreign key 2",
       "Group by the 1st and 2nd expressions listed in the SELECT clause",
-      "Group only the first 2 rows of the table",
-      "Group by primary key 1 and foreign key 2"
+      "Group only the first 2 rows of the table"
     ],
-    "correctIndex": 1,
+    "correctIndex": 2,
     "explanation": "GROUP BY 1, 2 references columns by their ordinal 1-based index in the SELECT projection list. While convenient, it is considered fragile in production code if columns are reordered."
   },
   {
@@ -2922,12 +2922,12 @@ window.MCQS_VAULT_500 = [
     "tag": "🎯 Core Concept",
     "question": "[GROUP BY #9] In the query \"SELECT department, role, COUNT(*) FROM Staff GROUP BY department, role;\", how are groups created? (Scenario Variant 2)",
     "options": [
-      "Unique combinations of (department, role) tuples each form a distinct summary bucket",
       "Rows are grouped by department, then role is discarded",
+      "Only rows where department equals role are grouped",
       "The query performs two separate queries and concatenates them",
-      "Only rows where department equals role are grouped"
+      "Unique combinations of (department, role) tuples each form a distinct summary bucket"
     ],
-    "correctIndex": 0,
+    "correctIndex": 3,
     "explanation": "Multi-column GROUP BY partitions rows by composite tuples. An aggregate is calculated for every distinct pairing of (department, role)."
   },
   {
@@ -2936,12 +2936,12 @@ window.MCQS_VAULT_500 = [
     "tag": "🏆 Senior Staff",
     "question": "[GROUP BY #10] Can you group by a calculated expression such as \"GROUP BY YEAR(hire_date)\" in ANSI SQL? (Scenario Variant 2)",
     "options": [
+      "Only if the expression is aliased in the WHERE clause",
       "Yes, grouping by scalar deterministic expressions on columns is fully valid",
-      "No, GROUP BY can only reference physical column names directly",
       "Only if hire_date is indexed as a primary key",
-      "Only if the expression is aliased in the WHERE clause"
+      "No, GROUP BY can only reference physical column names directly"
     ],
-    "correctIndex": 0,
+    "correctIndex": 1,
     "explanation": "Expressions like YEAR(hire_date) or CASE WHEN statements are legal in GROUP BY clauses across modern SQL engines."
   },
   {
@@ -2950,12 +2950,12 @@ window.MCQS_VAULT_500 = [
     "tag": "🍡 Quick Snack",
     "question": "[GROUP BY #11] Why does the query \"SELECT department, name, AVG(salary) FROM Employees GROUP BY department;\" fail in standard SQL (ONLY_FULL_GROUP_BY)? (Scenario Variant 3)",
     "options": [
-      "AVG() cannot be combined with text columns",
       "\"name\" is not in the GROUP BY clause and is not wrapped in an aggregate function, creating an ambiguous 1-to-many projection",
+      "AVG() cannot be combined with text columns",
       "GROUP BY must always be followed by HAVING",
       "department names must be sorted using ORDER BY first"
     ],
-    "correctIndex": 1,
+    "correctIndex": 0,
     "explanation": "Under ANSI SQL and MySQL ONLY_FULL_GROUP_BY, every column in the SELECT list that is not aggregated MUST appear in the GROUP BY clause to prevent non-deterministic values."
   },
   {
@@ -2964,12 +2964,12 @@ window.MCQS_VAULT_500 = [
     "tag": "⚡ Gotcha Trap",
     "question": "[GROUP BY #12] How does GROUP BY handle rows where the grouping column value is NULL? (Scenario Variant 3)",
     "options": [
-      "All NULL rows are discarded from the query result",
-      "Every NULL row forms its own unique, separate group bucket",
+      "An AmbiguousKeyException error is thrown",
       "All NULL rows are grouped together into a single collective group bucket",
-      "An AmbiguousKeyException error is thrown"
+      "All NULL rows are discarded from the query result",
+      "Every NULL row forms its own unique, separate group bucket"
     ],
-    "correctIndex": 2,
+    "correctIndex": 1,
     "explanation": "In SQL grouping, NULL values are considered equal to each other for the purpose of grouping, aggregating all rows with NULL in that column into one single bucket."
   },
   {
@@ -2978,10 +2978,10 @@ window.MCQS_VAULT_500 = [
     "tag": "🐱 Brain Bender",
     "question": "[GROUP BY #13] What does positional grouping syntax like \"GROUP BY 1, 2\" mean in engines that support it? (Scenario Variant 3)",
     "options": [
-      "Group by the first and second physical columns stored on disk in the table schema",
+      "Group by primary key 1 and foreign key 2",
       "Group by the 1st and 2nd expressions listed in the SELECT clause",
-      "Group only the first 2 rows of the table",
-      "Group by primary key 1 and foreign key 2"
+      "Group by the first and second physical columns stored on disk in the table schema",
+      "Group only the first 2 rows of the table"
     ],
     "correctIndex": 1,
     "explanation": "GROUP BY 1, 2 references columns by their ordinal 1-based index in the SELECT projection list. While convenient, it is considered fragile in production code if columns are reordered."
@@ -3007,9 +3007,9 @@ window.MCQS_VAULT_500 = [
     "question": "[GROUP BY #15] Can you group by a calculated expression such as \"GROUP BY YEAR(hire_date)\" in ANSI SQL? (Scenario Variant 3)",
     "options": [
       "Yes, grouping by scalar deterministic expressions on columns is fully valid",
-      "No, GROUP BY can only reference physical column names directly",
       "Only if hire_date is indexed as a primary key",
-      "Only if the expression is aliased in the WHERE clause"
+      "Only if the expression is aliased in the WHERE clause",
+      "No, GROUP BY can only reference physical column names directly"
     ],
     "correctIndex": 0,
     "explanation": "Expressions like YEAR(hire_date) or CASE WHEN statements are legal in GROUP BY clauses across modern SQL engines."
@@ -3021,11 +3021,11 @@ window.MCQS_VAULT_500 = [
     "question": "[GROUP BY #16] Why does the query \"SELECT department, name, AVG(salary) FROM Employees GROUP BY department;\" fail in standard SQL (ONLY_FULL_GROUP_BY)? (Scenario Variant 4)",
     "options": [
       "AVG() cannot be combined with text columns",
-      "\"name\" is not in the GROUP BY clause and is not wrapped in an aggregate function, creating an ambiguous 1-to-many projection",
+      "department names must be sorted using ORDER BY first",
       "GROUP BY must always be followed by HAVING",
-      "department names must be sorted using ORDER BY first"
+      "\"name\" is not in the GROUP BY clause and is not wrapped in an aggregate function, creating an ambiguous 1-to-many projection"
     ],
-    "correctIndex": 1,
+    "correctIndex": 3,
     "explanation": "Under ANSI SQL and MySQL ONLY_FULL_GROUP_BY, every column in the SELECT list that is not aggregated MUST appear in the GROUP BY clause to prevent non-deterministic values."
   },
   {
@@ -3034,12 +3034,12 @@ window.MCQS_VAULT_500 = [
     "tag": "⚡ Gotcha Trap",
     "question": "[GROUP BY #17] How does GROUP BY handle rows where the grouping column value is NULL? (Scenario Variant 4)",
     "options": [
-      "All NULL rows are discarded from the query result",
-      "Every NULL row forms its own unique, separate group bucket",
       "All NULL rows are grouped together into a single collective group bucket",
-      "An AmbiguousKeyException error is thrown"
+      "An AmbiguousKeyException error is thrown",
+      "All NULL rows are discarded from the query result",
+      "Every NULL row forms its own unique, separate group bucket"
     ],
-    "correctIndex": 2,
+    "correctIndex": 0,
     "explanation": "In SQL grouping, NULL values are considered equal to each other for the purpose of grouping, aggregating all rows with NULL in that column into one single bucket."
   },
   {
@@ -3049,11 +3049,11 @@ window.MCQS_VAULT_500 = [
     "question": "[GROUP BY #18] What does positional grouping syntax like \"GROUP BY 1, 2\" mean in engines that support it? (Scenario Variant 4)",
     "options": [
       "Group by the first and second physical columns stored on disk in the table schema",
-      "Group by the 1st and 2nd expressions listed in the SELECT clause",
       "Group only the first 2 rows of the table",
+      "Group by the 1st and 2nd expressions listed in the SELECT clause",
       "Group by primary key 1 and foreign key 2"
     ],
-    "correctIndex": 1,
+    "correctIndex": 2,
     "explanation": "GROUP BY 1, 2 references columns by their ordinal 1-based index in the SELECT projection list. While convenient, it is considered fragile in production code if columns are reordered."
   },
   {
@@ -3062,12 +3062,12 @@ window.MCQS_VAULT_500 = [
     "tag": "🎯 Core Concept",
     "question": "[GROUP BY #19] In the query \"SELECT department, role, COUNT(*) FROM Staff GROUP BY department, role;\", how are groups created? (Scenario Variant 4)",
     "options": [
-      "Unique combinations of (department, role) tuples each form a distinct summary bucket",
       "Rows are grouped by department, then role is discarded",
+      "Only rows where department equals role are grouped",
       "The query performs two separate queries and concatenates them",
-      "Only rows where department equals role are grouped"
+      "Unique combinations of (department, role) tuples each form a distinct summary bucket"
     ],
-    "correctIndex": 0,
+    "correctIndex": 3,
     "explanation": "Multi-column GROUP BY partitions rows by composite tuples. An aggregate is calculated for every distinct pairing of (department, role)."
   },
   {
@@ -3076,12 +3076,12 @@ window.MCQS_VAULT_500 = [
     "tag": "🏆 Senior Staff",
     "question": "[GROUP BY #20] Can you group by a calculated expression such as \"GROUP BY YEAR(hire_date)\" in ANSI SQL? (Scenario Variant 4)",
     "options": [
-      "Yes, grouping by scalar deterministic expressions on columns is fully valid",
       "No, GROUP BY can only reference physical column names directly",
       "Only if hire_date is indexed as a primary key",
-      "Only if the expression is aliased in the WHERE clause"
+      "Only if the expression is aliased in the WHERE clause",
+      "Yes, grouping by scalar deterministic expressions on columns is fully valid"
     ],
-    "correctIndex": 0,
+    "correctIndex": 3,
     "explanation": "Expressions like YEAR(hire_date) or CASE WHEN statements are legal in GROUP BY clauses across modern SQL engines."
   },
   {
@@ -3090,12 +3090,12 @@ window.MCQS_VAULT_500 = [
     "tag": "🍡 Quick Snack",
     "question": "[GROUP BY #21] Why does the query \"SELECT department, name, AVG(salary) FROM Employees GROUP BY department;\" fail in standard SQL (ONLY_FULL_GROUP_BY)? (Scenario Variant 5)",
     "options": [
+      "department names must be sorted using ORDER BY first",
       "AVG() cannot be combined with text columns",
-      "\"name\" is not in the GROUP BY clause and is not wrapped in an aggregate function, creating an ambiguous 1-to-many projection",
       "GROUP BY must always be followed by HAVING",
-      "department names must be sorted using ORDER BY first"
+      "\"name\" is not in the GROUP BY clause and is not wrapped in an aggregate function, creating an ambiguous 1-to-many projection"
     ],
-    "correctIndex": 1,
+    "correctIndex": 3,
     "explanation": "Under ANSI SQL and MySQL ONLY_FULL_GROUP_BY, every column in the SELECT list that is not aggregated MUST appear in the GROUP BY clause to prevent non-deterministic values."
   },
   {
@@ -3105,11 +3105,11 @@ window.MCQS_VAULT_500 = [
     "question": "[GROUP BY #22] How does GROUP BY handle rows where the grouping column value is NULL? (Scenario Variant 5)",
     "options": [
       "All NULL rows are discarded from the query result",
-      "Every NULL row forms its own unique, separate group bucket",
       "All NULL rows are grouped together into a single collective group bucket",
-      "An AmbiguousKeyException error is thrown"
+      "An AmbiguousKeyException error is thrown",
+      "Every NULL row forms its own unique, separate group bucket"
     ],
-    "correctIndex": 2,
+    "correctIndex": 1,
     "explanation": "In SQL grouping, NULL values are considered equal to each other for the purpose of grouping, aggregating all rows with NULL in that column into one single bucket."
   },
   {
@@ -3118,12 +3118,12 @@ window.MCQS_VAULT_500 = [
     "tag": "🐱 Brain Bender",
     "question": "[GROUP BY #23] What does positional grouping syntax like \"GROUP BY 1, 2\" mean in engines that support it? (Scenario Variant 5)",
     "options": [
+      "Group only the first 2 rows of the table",
       "Group by the first and second physical columns stored on disk in the table schema",
       "Group by the 1st and 2nd expressions listed in the SELECT clause",
-      "Group only the first 2 rows of the table",
       "Group by primary key 1 and foreign key 2"
     ],
-    "correctIndex": 1,
+    "correctIndex": 2,
     "explanation": "GROUP BY 1, 2 references columns by their ordinal 1-based index in the SELECT projection list. While convenient, it is considered fragile in production code if columns are reordered."
   },
   {
@@ -3132,12 +3132,12 @@ window.MCQS_VAULT_500 = [
     "tag": "🎯 Core Concept",
     "question": "[GROUP BY #24] In the query \"SELECT department, role, COUNT(*) FROM Staff GROUP BY department, role;\", how are groups created? (Scenario Variant 5)",
     "options": [
-      "Unique combinations of (department, role) tuples each form a distinct summary bucket",
-      "Rows are grouped by department, then role is discarded",
       "The query performs two separate queries and concatenates them",
-      "Only rows where department equals role are grouped"
+      "Only rows where department equals role are grouped",
+      "Rows are grouped by department, then role is discarded",
+      "Unique combinations of (department, role) tuples each form a distinct summary bucket"
     ],
-    "correctIndex": 0,
+    "correctIndex": 3,
     "explanation": "Multi-column GROUP BY partitions rows by composite tuples. An aggregate is calculated for every distinct pairing of (department, role)."
   },
   {
@@ -3146,12 +3146,12 @@ window.MCQS_VAULT_500 = [
     "tag": "🏆 Senior Staff",
     "question": "[GROUP BY #25] Can you group by a calculated expression such as \"GROUP BY YEAR(hire_date)\" in ANSI SQL? (Scenario Variant 5)",
     "options": [
+      "Only if the expression is aliased in the WHERE clause",
       "Yes, grouping by scalar deterministic expressions on columns is fully valid",
       "No, GROUP BY can only reference physical column names directly",
-      "Only if hire_date is indexed as a primary key",
-      "Only if the expression is aliased in the WHERE clause"
+      "Only if hire_date is indexed as a primary key"
     ],
-    "correctIndex": 0,
+    "correctIndex": 1,
     "explanation": "Expressions like YEAR(hire_date) or CASE WHEN statements are legal in GROUP BY clauses across modern SQL engines."
   },
   {
@@ -3160,12 +3160,12 @@ window.MCQS_VAULT_500 = [
     "tag": "🍡 Quick Snack",
     "question": "[GROUP BY #26] Why does the query \"SELECT department, name, AVG(salary) FROM Employees GROUP BY department;\" fail in standard SQL (ONLY_FULL_GROUP_BY)? (Scenario Variant 6)",
     "options": [
-      "AVG() cannot be combined with text columns",
       "\"name\" is not in the GROUP BY clause and is not wrapped in an aggregate function, creating an ambiguous 1-to-many projection",
       "GROUP BY must always be followed by HAVING",
-      "department names must be sorted using ORDER BY first"
+      "department names must be sorted using ORDER BY first",
+      "AVG() cannot be combined with text columns"
     ],
-    "correctIndex": 1,
+    "correctIndex": 0,
     "explanation": "Under ANSI SQL and MySQL ONLY_FULL_GROUP_BY, every column in the SELECT list that is not aggregated MUST appear in the GROUP BY clause to prevent non-deterministic values."
   },
   {
@@ -3175,11 +3175,11 @@ window.MCQS_VAULT_500 = [
     "question": "[GROUP BY #27] How does GROUP BY handle rows where the grouping column value is NULL? (Scenario Variant 6)",
     "options": [
       "All NULL rows are discarded from the query result",
-      "Every NULL row forms its own unique, separate group bucket",
       "All NULL rows are grouped together into a single collective group bucket",
-      "An AmbiguousKeyException error is thrown"
+      "An AmbiguousKeyException error is thrown",
+      "Every NULL row forms its own unique, separate group bucket"
     ],
-    "correctIndex": 2,
+    "correctIndex": 1,
     "explanation": "In SQL grouping, NULL values are considered equal to each other for the purpose of grouping, aggregating all rows with NULL in that column into one single bucket."
   },
   {
@@ -3188,12 +3188,12 @@ window.MCQS_VAULT_500 = [
     "tag": "🐱 Brain Bender",
     "question": "[GROUP BY #28] What does positional grouping syntax like \"GROUP BY 1, 2\" mean in engines that support it? (Scenario Variant 6)",
     "options": [
-      "Group by the first and second physical columns stored on disk in the table schema",
       "Group by the 1st and 2nd expressions listed in the SELECT clause",
       "Group only the first 2 rows of the table",
-      "Group by primary key 1 and foreign key 2"
+      "Group by primary key 1 and foreign key 2",
+      "Group by the first and second physical columns stored on disk in the table schema"
     ],
-    "correctIndex": 1,
+    "correctIndex": 0,
     "explanation": "GROUP BY 1, 2 references columns by their ordinal 1-based index in the SELECT projection list. While convenient, it is considered fragile in production code if columns are reordered."
   },
   {
@@ -3202,12 +3202,12 @@ window.MCQS_VAULT_500 = [
     "tag": "🎯 Core Concept",
     "question": "[GROUP BY #29] In the query \"SELECT department, role, COUNT(*) FROM Staff GROUP BY department, role;\", how are groups created? (Scenario Variant 6)",
     "options": [
-      "Unique combinations of (department, role) tuples each form a distinct summary bucket",
-      "Rows are grouped by department, then role is discarded",
       "The query performs two separate queries and concatenates them",
-      "Only rows where department equals role are grouped"
+      "Rows are grouped by department, then role is discarded",
+      "Only rows where department equals role are grouped",
+      "Unique combinations of (department, role) tuples each form a distinct summary bucket"
     ],
-    "correctIndex": 0,
+    "correctIndex": 3,
     "explanation": "Multi-column GROUP BY partitions rows by composite tuples. An aggregate is calculated for every distinct pairing of (department, role)."
   },
   {
@@ -3216,12 +3216,12 @@ window.MCQS_VAULT_500 = [
     "tag": "🏆 Senior Staff",
     "question": "[GROUP BY #30] Can you group by a calculated expression such as \"GROUP BY YEAR(hire_date)\" in ANSI SQL? (Scenario Variant 6)",
     "options": [
+      "Only if hire_date is indexed as a primary key",
       "Yes, grouping by scalar deterministic expressions on columns is fully valid",
       "No, GROUP BY can only reference physical column names directly",
-      "Only if hire_date is indexed as a primary key",
       "Only if the expression is aliased in the WHERE clause"
     ],
-    "correctIndex": 0,
+    "correctIndex": 1,
     "explanation": "Expressions like YEAR(hire_date) or CASE WHEN statements are legal in GROUP BY clauses across modern SQL engines."
   },
   {
@@ -3230,12 +3230,12 @@ window.MCQS_VAULT_500 = [
     "tag": "🍡 Quick Snack",
     "question": "[GROUP BY #31] Why does the query \"SELECT department, name, AVG(salary) FROM Employees GROUP BY department;\" fail in standard SQL (ONLY_FULL_GROUP_BY)? (Scenario Variant 7)",
     "options": [
+      "GROUP BY must always be followed by HAVING",
       "AVG() cannot be combined with text columns",
       "\"name\" is not in the GROUP BY clause and is not wrapped in an aggregate function, creating an ambiguous 1-to-many projection",
-      "GROUP BY must always be followed by HAVING",
       "department names must be sorted using ORDER BY first"
     ],
-    "correctIndex": 1,
+    "correctIndex": 2,
     "explanation": "Under ANSI SQL and MySQL ONLY_FULL_GROUP_BY, every column in the SELECT list that is not aggregated MUST appear in the GROUP BY clause to prevent non-deterministic values."
   },
   {
@@ -3244,12 +3244,12 @@ window.MCQS_VAULT_500 = [
     "tag": "⚡ Gotcha Trap",
     "question": "[GROUP BY #32] How does GROUP BY handle rows where the grouping column value is NULL? (Scenario Variant 7)",
     "options": [
+      "All NULL rows are grouped together into a single collective group bucket",
       "All NULL rows are discarded from the query result",
       "Every NULL row forms its own unique, separate group bucket",
-      "All NULL rows are grouped together into a single collective group bucket",
       "An AmbiguousKeyException error is thrown"
     ],
-    "correctIndex": 2,
+    "correctIndex": 0,
     "explanation": "In SQL grouping, NULL values are considered equal to each other for the purpose of grouping, aggregating all rows with NULL in that column into one single bucket."
   },
   {
@@ -3258,12 +3258,12 @@ window.MCQS_VAULT_500 = [
     "tag": "🐱 Brain Bender",
     "question": "[GROUP BY #33] What does positional grouping syntax like \"GROUP BY 1, 2\" mean in engines that support it? (Scenario Variant 7)",
     "options": [
-      "Group by the first and second physical columns stored on disk in the table schema",
       "Group by the 1st and 2nd expressions listed in the SELECT clause",
-      "Group only the first 2 rows of the table",
-      "Group by primary key 1 and foreign key 2"
+      "Group by primary key 1 and foreign key 2",
+      "Group by the first and second physical columns stored on disk in the table schema",
+      "Group only the first 2 rows of the table"
     ],
-    "correctIndex": 1,
+    "correctIndex": 0,
     "explanation": "GROUP BY 1, 2 references columns by their ordinal 1-based index in the SELECT projection list. While convenient, it is considered fragile in production code if columns are reordered."
   },
   {
@@ -3272,12 +3272,12 @@ window.MCQS_VAULT_500 = [
     "tag": "🎯 Core Concept",
     "question": "[GROUP BY #34] In the query \"SELECT department, role, COUNT(*) FROM Staff GROUP BY department, role;\", how are groups created? (Scenario Variant 7)",
     "options": [
-      "Unique combinations of (department, role) tuples each form a distinct summary bucket",
-      "Rows are grouped by department, then role is discarded",
       "The query performs two separate queries and concatenates them",
-      "Only rows where department equals role are grouped"
+      "Unique combinations of (department, role) tuples each form a distinct summary bucket",
+      "Only rows where department equals role are grouped",
+      "Rows are grouped by department, then role is discarded"
     ],
-    "correctIndex": 0,
+    "correctIndex": 1,
     "explanation": "Multi-column GROUP BY partitions rows by composite tuples. An aggregate is calculated for every distinct pairing of (department, role)."
   },
   {
@@ -3300,10 +3300,10 @@ window.MCQS_VAULT_500 = [
     "tag": "🍡 Quick Snack",
     "question": "[GROUP BY #36] Why does the query \"SELECT department, name, AVG(salary) FROM Employees GROUP BY department;\" fail in standard SQL (ONLY_FULL_GROUP_BY)? (Scenario Variant 8)",
     "options": [
-      "AVG() cannot be combined with text columns",
-      "\"name\" is not in the GROUP BY clause and is not wrapped in an aggregate function, creating an ambiguous 1-to-many projection",
       "GROUP BY must always be followed by HAVING",
-      "department names must be sorted using ORDER BY first"
+      "\"name\" is not in the GROUP BY clause and is not wrapped in an aggregate function, creating an ambiguous 1-to-many projection",
+      "department names must be sorted using ORDER BY first",
+      "AVG() cannot be combined with text columns"
     ],
     "correctIndex": 1,
     "explanation": "Under ANSI SQL and MySQL ONLY_FULL_GROUP_BY, every column in the SELECT list that is not aggregated MUST appear in the GROUP BY clause to prevent non-deterministic values."
@@ -3314,12 +3314,12 @@ window.MCQS_VAULT_500 = [
     "tag": "⚡ Gotcha Trap",
     "question": "[GROUP BY #37] How does GROUP BY handle rows where the grouping column value is NULL? (Scenario Variant 8)",
     "options": [
-      "All NULL rows are discarded from the query result",
-      "Every NULL row forms its own unique, separate group bucket",
       "All NULL rows are grouped together into a single collective group bucket",
-      "An AmbiguousKeyException error is thrown"
+      "An AmbiguousKeyException error is thrown",
+      "Every NULL row forms its own unique, separate group bucket",
+      "All NULL rows are discarded from the query result"
     ],
-    "correctIndex": 2,
+    "correctIndex": 0,
     "explanation": "In SQL grouping, NULL values are considered equal to each other for the purpose of grouping, aggregating all rows with NULL in that column into one single bucket."
   },
   {
@@ -3329,11 +3329,11 @@ window.MCQS_VAULT_500 = [
     "question": "[GROUP BY #38] What does positional grouping syntax like \"GROUP BY 1, 2\" mean in engines that support it? (Scenario Variant 8)",
     "options": [
       "Group by the first and second physical columns stored on disk in the table schema",
-      "Group by the 1st and 2nd expressions listed in the SELECT clause",
       "Group only the first 2 rows of the table",
+      "Group by the 1st and 2nd expressions listed in the SELECT clause",
       "Group by primary key 1 and foreign key 2"
     ],
-    "correctIndex": 1,
+    "correctIndex": 2,
     "explanation": "GROUP BY 1, 2 references columns by their ordinal 1-based index in the SELECT projection list. While convenient, it is considered fragile in production code if columns are reordered."
   },
   {
@@ -3342,12 +3342,12 @@ window.MCQS_VAULT_500 = [
     "tag": "🎯 Core Concept",
     "question": "[GROUP BY #39] In the query \"SELECT department, role, COUNT(*) FROM Staff GROUP BY department, role;\", how are groups created? (Scenario Variant 8)",
     "options": [
-      "Unique combinations of (department, role) tuples each form a distinct summary bucket",
-      "Rows are grouped by department, then role is discarded",
+      "Only rows where department equals role are grouped",
       "The query performs two separate queries and concatenates them",
-      "Only rows where department equals role are grouped"
+      "Unique combinations of (department, role) tuples each form a distinct summary bucket",
+      "Rows are grouped by department, then role is discarded"
     ],
-    "correctIndex": 0,
+    "correctIndex": 2,
     "explanation": "Multi-column GROUP BY partitions rows by composite tuples. An aggregate is calculated for every distinct pairing of (department, role)."
   },
   {
@@ -3356,12 +3356,12 @@ window.MCQS_VAULT_500 = [
     "tag": "🏆 Senior Staff",
     "question": "[GROUP BY #40] Can you group by a calculated expression such as \"GROUP BY YEAR(hire_date)\" in ANSI SQL? (Scenario Variant 8)",
     "options": [
-      "Yes, grouping by scalar deterministic expressions on columns is fully valid",
       "No, GROUP BY can only reference physical column names directly",
+      "Yes, grouping by scalar deterministic expressions on columns is fully valid",
       "Only if hire_date is indexed as a primary key",
       "Only if the expression is aliased in the WHERE clause"
     ],
-    "correctIndex": 0,
+    "correctIndex": 1,
     "explanation": "Expressions like YEAR(hire_date) or CASE WHEN statements are legal in GROUP BY clauses across modern SQL engines."
   },
   {
@@ -3370,12 +3370,12 @@ window.MCQS_VAULT_500 = [
     "tag": "🍡 Quick Snack",
     "question": "[GROUP BY #41] Why does the query \"SELECT department, name, AVG(salary) FROM Employees GROUP BY department;\" fail in standard SQL (ONLY_FULL_GROUP_BY)? (Scenario Variant 9)",
     "options": [
-      "AVG() cannot be combined with text columns",
-      "\"name\" is not in the GROUP BY clause and is not wrapped in an aggregate function, creating an ambiguous 1-to-many projection",
+      "department names must be sorted using ORDER BY first",
       "GROUP BY must always be followed by HAVING",
-      "department names must be sorted using ORDER BY first"
+      "AVG() cannot be combined with text columns",
+      "\"name\" is not in the GROUP BY clause and is not wrapped in an aggregate function, creating an ambiguous 1-to-many projection"
     ],
-    "correctIndex": 1,
+    "correctIndex": 3,
     "explanation": "Under ANSI SQL and MySQL ONLY_FULL_GROUP_BY, every column in the SELECT list that is not aggregated MUST appear in the GROUP BY clause to prevent non-deterministic values."
   },
   {
@@ -3384,12 +3384,12 @@ window.MCQS_VAULT_500 = [
     "tag": "⚡ Gotcha Trap",
     "question": "[GROUP BY #42] How does GROUP BY handle rows where the grouping column value is NULL? (Scenario Variant 9)",
     "options": [
-      "All NULL rows are discarded from the query result",
       "Every NULL row forms its own unique, separate group bucket",
       "All NULL rows are grouped together into a single collective group bucket",
-      "An AmbiguousKeyException error is thrown"
+      "An AmbiguousKeyException error is thrown",
+      "All NULL rows are discarded from the query result"
     ],
-    "correctIndex": 2,
+    "correctIndex": 1,
     "explanation": "In SQL grouping, NULL values are considered equal to each other for the purpose of grouping, aggregating all rows with NULL in that column into one single bucket."
   },
   {
@@ -3398,12 +3398,12 @@ window.MCQS_VAULT_500 = [
     "tag": "🐱 Brain Bender",
     "question": "[GROUP BY #43] What does positional grouping syntax like \"GROUP BY 1, 2\" mean in engines that support it? (Scenario Variant 9)",
     "options": [
-      "Group by the first and second physical columns stored on disk in the table schema",
       "Group by the 1st and 2nd expressions listed in the SELECT clause",
-      "Group only the first 2 rows of the table",
-      "Group by primary key 1 and foreign key 2"
+      "Group by primary key 1 and foreign key 2",
+      "Group by the first and second physical columns stored on disk in the table schema",
+      "Group only the first 2 rows of the table"
     ],
-    "correctIndex": 1,
+    "correctIndex": 0,
     "explanation": "GROUP BY 1, 2 references columns by their ordinal 1-based index in the SELECT projection list. While convenient, it is considered fragile in production code if columns are reordered."
   },
   {
@@ -3412,12 +3412,12 @@ window.MCQS_VAULT_500 = [
     "tag": "🎯 Core Concept",
     "question": "[GROUP BY #44] In the query \"SELECT department, role, COUNT(*) FROM Staff GROUP BY department, role;\", how are groups created? (Scenario Variant 9)",
     "options": [
-      "Unique combinations of (department, role) tuples each form a distinct summary bucket",
-      "Rows are grouped by department, then role is discarded",
+      "Only rows where department equals role are grouped",
       "The query performs two separate queries and concatenates them",
-      "Only rows where department equals role are grouped"
+      "Rows are grouped by department, then role is discarded",
+      "Unique combinations of (department, role) tuples each form a distinct summary bucket"
     ],
-    "correctIndex": 0,
+    "correctIndex": 3,
     "explanation": "Multi-column GROUP BY partitions rows by composite tuples. An aggregate is calculated for every distinct pairing of (department, role)."
   },
   {
@@ -3426,12 +3426,12 @@ window.MCQS_VAULT_500 = [
     "tag": "🏆 Senior Staff",
     "question": "[GROUP BY #45] Can you group by a calculated expression such as \"GROUP BY YEAR(hire_date)\" in ANSI SQL? (Scenario Variant 9)",
     "options": [
-      "Yes, grouping by scalar deterministic expressions on columns is fully valid",
+      "Only if the expression is aliased in the WHERE clause",
       "No, GROUP BY can only reference physical column names directly",
-      "Only if hire_date is indexed as a primary key",
-      "Only if the expression is aliased in the WHERE clause"
+      "Yes, grouping by scalar deterministic expressions on columns is fully valid",
+      "Only if hire_date is indexed as a primary key"
     ],
-    "correctIndex": 0,
+    "correctIndex": 2,
     "explanation": "Expressions like YEAR(hire_date) or CASE WHEN statements are legal in GROUP BY clauses across modern SQL engines."
   },
   {
@@ -3440,9 +3440,9 @@ window.MCQS_VAULT_500 = [
     "tag": "🍡 Quick Snack",
     "question": "[GROUP BY #46] Why does the query \"SELECT department, name, AVG(salary) FROM Employees GROUP BY department;\" fail in standard SQL (ONLY_FULL_GROUP_BY)? (Scenario Variant 10)",
     "options": [
-      "AVG() cannot be combined with text columns",
-      "\"name\" is not in the GROUP BY clause and is not wrapped in an aggregate function, creating an ambiguous 1-to-many projection",
       "GROUP BY must always be followed by HAVING",
+      "\"name\" is not in the GROUP BY clause and is not wrapped in an aggregate function, creating an ambiguous 1-to-many projection",
+      "AVG() cannot be combined with text columns",
       "department names must be sorted using ORDER BY first"
     ],
     "correctIndex": 1,
@@ -3454,12 +3454,12 @@ window.MCQS_VAULT_500 = [
     "tag": "⚡ Gotcha Trap",
     "question": "[GROUP BY #47] How does GROUP BY handle rows where the grouping column value is NULL? (Scenario Variant 10)",
     "options": [
-      "All NULL rows are discarded from the query result",
-      "Every NULL row forms its own unique, separate group bucket",
+      "An AmbiguousKeyException error is thrown",
       "All NULL rows are grouped together into a single collective group bucket",
-      "An AmbiguousKeyException error is thrown"
+      "All NULL rows are discarded from the query result",
+      "Every NULL row forms its own unique, separate group bucket"
     ],
-    "correctIndex": 2,
+    "correctIndex": 1,
     "explanation": "In SQL grouping, NULL values are considered equal to each other for the purpose of grouping, aggregating all rows with NULL in that column into one single bucket."
   },
   {
@@ -3468,12 +3468,12 @@ window.MCQS_VAULT_500 = [
     "tag": "🐱 Brain Bender",
     "question": "[GROUP BY #48] What does positional grouping syntax like \"GROUP BY 1, 2\" mean in engines that support it? (Scenario Variant 10)",
     "options": [
-      "Group by the first and second physical columns stored on disk in the table schema",
       "Group by the 1st and 2nd expressions listed in the SELECT clause",
       "Group only the first 2 rows of the table",
+      "Group by the first and second physical columns stored on disk in the table schema",
       "Group by primary key 1 and foreign key 2"
     ],
-    "correctIndex": 1,
+    "correctIndex": 0,
     "explanation": "GROUP BY 1, 2 references columns by their ordinal 1-based index in the SELECT projection list. While convenient, it is considered fragile in production code if columns are reordered."
   },
   {
@@ -3482,12 +3482,12 @@ window.MCQS_VAULT_500 = [
     "tag": "🎯 Core Concept",
     "question": "[GROUP BY #49] In the query \"SELECT department, role, COUNT(*) FROM Staff GROUP BY department, role;\", how are groups created? (Scenario Variant 10)",
     "options": [
-      "Unique combinations of (department, role) tuples each form a distinct summary bucket",
+      "Only rows where department equals role are grouped",
       "Rows are grouped by department, then role is discarded",
-      "The query performs two separate queries and concatenates them",
-      "Only rows where department equals role are grouped"
+      "Unique combinations of (department, role) tuples each form a distinct summary bucket",
+      "The query performs two separate queries and concatenates them"
     ],
-    "correctIndex": 0,
+    "correctIndex": 2,
     "explanation": "Multi-column GROUP BY partitions rows by composite tuples. An aggregate is calculated for every distinct pairing of (department, role)."
   },
   {
@@ -3496,12 +3496,12 @@ window.MCQS_VAULT_500 = [
     "tag": "🏆 Senior Staff",
     "question": "[GROUP BY #50] Can you group by a calculated expression such as \"GROUP BY YEAR(hire_date)\" in ANSI SQL? (Scenario Variant 10)",
     "options": [
-      "Yes, grouping by scalar deterministic expressions on columns is fully valid",
       "No, GROUP BY can only reference physical column names directly",
       "Only if hire_date is indexed as a primary key",
-      "Only if the expression is aliased in the WHERE clause"
+      "Only if the expression is aliased in the WHERE clause",
+      "Yes, grouping by scalar deterministic expressions on columns is fully valid"
     ],
-    "correctIndex": 0,
+    "correctIndex": 3,
     "explanation": "Expressions like YEAR(hire_date) or CASE WHEN statements are legal in GROUP BY clauses across modern SQL engines."
   },
   {
@@ -3510,12 +3510,12 @@ window.MCQS_VAULT_500 = [
     "tag": "🍡 Quick Snack",
     "question": "[HAVING #1] What is the fundamental architectural difference between the WHERE clause and the HAVING clause?",
     "options": [
+      "HAVING executes before FROM, while WHERE executes after SELECT",
       "WHERE filters individual rows before grouping; HAVING filters aggregated group buckets after grouping",
       "WHERE only works with numbers; HAVING only works with strings",
-      "HAVING executes before FROM, while WHERE executes after SELECT",
       "There is no difference; they are aliases for each other"
     ],
-    "correctIndex": 0,
+    "correctIndex": 1,
     "explanation": "In the physical query pipeline, WHERE executes at Step 02 on raw table rows. HAVING executes at Step 04 after GROUP BY has aggregated rows into summary buckets."
   },
   {
@@ -3525,9 +3525,9 @@ window.MCQS_VAULT_500 = [
     "question": "[HAVING #2] Why does \"SELECT department, COUNT(*) FROM Employees WHERE COUNT(*) > 5 GROUP BY department;\" fail?",
     "options": [
       "Aggregate functions cannot be evaluated in the WHERE clause because groups have not been formed yet",
+      "department must be wrapped in a MAX() function",
       "COUNT(*) cannot be compared using the greater-than (>) operator",
-      "Employees table requires a subquery to count rows",
-      "department must be wrapped in a MAX() function"
+      "Employees table requires a subquery to count rows"
     ],
     "correctIndex": 0,
     "explanation": "The WHERE clause operates on individual rows as they are read from disk. At that point, aggregation has not occurred, so aggregate functions like COUNT(*) are illegal in WHERE."
@@ -3539,9 +3539,9 @@ window.MCQS_VAULT_500 = [
     "question": "[HAVING #3] Can a query contain a HAVING clause without a GROUP BY clause?",
     "options": [
       "Yes, the entire table is treated as a single implicit group, and HAVING filters the whole-table aggregate",
+      "Yes, but it automatically behaves identically to a WHERE clause",
       "No, SQL syntax requires GROUP BY immediately preceding HAVING",
-      "Only in MySQL, but it causes a syntax crash in PostgreSQL and Oracle",
-      "Yes, but it automatically behaves identically to a WHERE clause"
+      "Only in MySQL, but it causes a syntax crash in PostgreSQL and Oracle"
     ],
     "correctIndex": 0,
     "explanation": "A HAVING clause without GROUP BY treats the entire dataset as one single group. If the condition (e.g. HAVING COUNT(*) > 100) fails, the query returns 0 rows."
@@ -3552,12 +3552,12 @@ window.MCQS_VAULT_500 = [
     "tag": "🎯 Core Concept",
     "question": "[HAVING #4] Is it valid standard SQL for a HAVING clause to reference an aggregate function that does NOT appear in the SELECT list?",
     "options": [
-      "Yes, e.g., \"SELECT department FROM Employees GROUP BY department HAVING AVG(salary) > 80000;\" is fully valid",
       "No, any column or function tested in HAVING must be projected in SELECT",
+      "Yes, e.g., \"SELECT department FROM Employees GROUP BY department HAVING AVG(salary) > 80000;\" is fully valid",
       "Only if the aggregate function is aliased using AS in SELECT",
       "Only in SQLite"
     ],
-    "correctIndex": 0,
+    "correctIndex": 1,
     "explanation": "An aggregate in HAVING does not need to be projected in SELECT. The query engine calculates the aggregate in the group buffer to filter buckets without returning the metric to the user."
   },
   {
@@ -3566,12 +3566,12 @@ window.MCQS_VAULT_500 = [
     "tag": "🏆 Senior Staff",
     "question": "[HAVING #5] Which clause executes immediately before HAVING in the physical SQL pipeline?",
     "options": [
-      "GROUP BY",
       "WHERE",
+      "GROUP BY",
       "SELECT",
       "ORDER BY"
     ],
-    "correctIndex": 0,
+    "correctIndex": 1,
     "explanation": "The execution order is FROM ➡️ WHERE ➡️ GROUP BY ➡️ HAVING ➡️ SELECT ➡️ DISTINCT ➡️ ORDER BY ➡️ LIMIT."
   },
   {
@@ -3580,12 +3580,12 @@ window.MCQS_VAULT_500 = [
     "tag": "🍡 Quick Snack",
     "question": "[HAVING #6] What is the fundamental architectural difference between the WHERE clause and the HAVING clause? (Scenario Variant 2)",
     "options": [
-      "WHERE filters individual rows before grouping; HAVING filters aggregated group buckets after grouping",
       "WHERE only works with numbers; HAVING only works with strings",
       "HAVING executes before FROM, while WHERE executes after SELECT",
+      "WHERE filters individual rows before grouping; HAVING filters aggregated group buckets after grouping",
       "There is no difference; they are aliases for each other"
     ],
-    "correctIndex": 0,
+    "correctIndex": 2,
     "explanation": "In the physical query pipeline, WHERE executes at Step 02 on raw table rows. HAVING executes at Step 04 after GROUP BY has aggregated rows into summary buckets."
   },
   {
@@ -3594,12 +3594,12 @@ window.MCQS_VAULT_500 = [
     "tag": "⚡ Gotcha Trap",
     "question": "[HAVING #7] Why does \"SELECT department, COUNT(*) FROM Employees WHERE COUNT(*) > 5 GROUP BY department;\" fail? (Scenario Variant 2)",
     "options": [
-      "Aggregate functions cannot be evaluated in the WHERE clause because groups have not been formed yet",
-      "COUNT(*) cannot be compared using the greater-than (>) operator",
+      "department must be wrapped in a MAX() function",
       "Employees table requires a subquery to count rows",
-      "department must be wrapped in a MAX() function"
+      "Aggregate functions cannot be evaluated in the WHERE clause because groups have not been formed yet",
+      "COUNT(*) cannot be compared using the greater-than (>) operator"
     ],
-    "correctIndex": 0,
+    "correctIndex": 2,
     "explanation": "The WHERE clause operates on individual rows as they are read from disk. At that point, aggregation has not occurred, so aggregate functions like COUNT(*) are illegal in WHERE."
   },
   {
@@ -3608,12 +3608,12 @@ window.MCQS_VAULT_500 = [
     "tag": "🐱 Brain Bender",
     "question": "[HAVING #8] Can a query contain a HAVING clause without a GROUP BY clause? (Scenario Variant 2)",
     "options": [
+      "Only in MySQL, but it causes a syntax crash in PostgreSQL and Oracle",
       "Yes, the entire table is treated as a single implicit group, and HAVING filters the whole-table aggregate",
       "No, SQL syntax requires GROUP BY immediately preceding HAVING",
-      "Only in MySQL, but it causes a syntax crash in PostgreSQL and Oracle",
       "Yes, but it automatically behaves identically to a WHERE clause"
     ],
-    "correctIndex": 0,
+    "correctIndex": 1,
     "explanation": "A HAVING clause without GROUP BY treats the entire dataset as one single group. If the condition (e.g. HAVING COUNT(*) > 100) fails, the query returns 0 rows."
   },
   {
@@ -3622,12 +3622,12 @@ window.MCQS_VAULT_500 = [
     "tag": "🎯 Core Concept",
     "question": "[HAVING #9] Is it valid standard SQL for a HAVING clause to reference an aggregate function that does NOT appear in the SELECT list? (Scenario Variant 2)",
     "options": [
+      "Only in SQLite",
       "Yes, e.g., \"SELECT department FROM Employees GROUP BY department HAVING AVG(salary) > 80000;\" is fully valid",
       "No, any column or function tested in HAVING must be projected in SELECT",
-      "Only if the aggregate function is aliased using AS in SELECT",
-      "Only in SQLite"
+      "Only if the aggregate function is aliased using AS in SELECT"
     ],
-    "correctIndex": 0,
+    "correctIndex": 1,
     "explanation": "An aggregate in HAVING does not need to be projected in SELECT. The query engine calculates the aggregate in the group buffer to filter buckets without returning the metric to the user."
   },
   {
@@ -3636,12 +3636,12 @@ window.MCQS_VAULT_500 = [
     "tag": "🏆 Senior Staff",
     "question": "[HAVING #10] Which clause executes immediately before HAVING in the physical SQL pipeline? (Scenario Variant 2)",
     "options": [
-      "GROUP BY",
+      "ORDER BY",
       "WHERE",
       "SELECT",
-      "ORDER BY"
+      "GROUP BY"
     ],
-    "correctIndex": 0,
+    "correctIndex": 3,
     "explanation": "The execution order is FROM ➡️ WHERE ➡️ GROUP BY ➡️ HAVING ➡️ SELECT ➡️ DISTINCT ➡️ ORDER BY ➡️ LIMIT."
   },
   {
@@ -3652,8 +3652,8 @@ window.MCQS_VAULT_500 = [
     "options": [
       "WHERE filters individual rows before grouping; HAVING filters aggregated group buckets after grouping",
       "WHERE only works with numbers; HAVING only works with strings",
-      "HAVING executes before FROM, while WHERE executes after SELECT",
-      "There is no difference; they are aliases for each other"
+      "There is no difference; they are aliases for each other",
+      "HAVING executes before FROM, while WHERE executes after SELECT"
     ],
     "correctIndex": 0,
     "explanation": "In the physical query pipeline, WHERE executes at Step 02 on raw table rows. HAVING executes at Step 04 after GROUP BY has aggregated rows into summary buckets."
@@ -3664,12 +3664,12 @@ window.MCQS_VAULT_500 = [
     "tag": "⚡ Gotcha Trap",
     "question": "[HAVING #12] Why does \"SELECT department, COUNT(*) FROM Employees WHERE COUNT(*) > 5 GROUP BY department;\" fail? (Scenario Variant 3)",
     "options": [
-      "Aggregate functions cannot be evaluated in the WHERE clause because groups have not been formed yet",
       "COUNT(*) cannot be compared using the greater-than (>) operator",
       "Employees table requires a subquery to count rows",
+      "Aggregate functions cannot be evaluated in the WHERE clause because groups have not been formed yet",
       "department must be wrapped in a MAX() function"
     ],
-    "correctIndex": 0,
+    "correctIndex": 2,
     "explanation": "The WHERE clause operates on individual rows as they are read from disk. At that point, aggregation has not occurred, so aggregate functions like COUNT(*) are illegal in WHERE."
   },
   {
@@ -3678,12 +3678,12 @@ window.MCQS_VAULT_500 = [
     "tag": "🐱 Brain Bender",
     "question": "[HAVING #13] Can a query contain a HAVING clause without a GROUP BY clause? (Scenario Variant 3)",
     "options": [
-      "Yes, the entire table is treated as a single implicit group, and HAVING filters the whole-table aggregate",
-      "No, SQL syntax requires GROUP BY immediately preceding HAVING",
       "Only in MySQL, but it causes a syntax crash in PostgreSQL and Oracle",
-      "Yes, but it automatically behaves identically to a WHERE clause"
+      "No, SQL syntax requires GROUP BY immediately preceding HAVING",
+      "Yes, but it automatically behaves identically to a WHERE clause",
+      "Yes, the entire table is treated as a single implicit group, and HAVING filters the whole-table aggregate"
     ],
-    "correctIndex": 0,
+    "correctIndex": 3,
     "explanation": "A HAVING clause without GROUP BY treats the entire dataset as one single group. If the condition (e.g. HAVING COUNT(*) > 100) fails, the query returns 0 rows."
   },
   {
@@ -3692,12 +3692,12 @@ window.MCQS_VAULT_500 = [
     "tag": "🎯 Core Concept",
     "question": "[HAVING #14] Is it valid standard SQL for a HAVING clause to reference an aggregate function that does NOT appear in the SELECT list? (Scenario Variant 3)",
     "options": [
-      "Yes, e.g., \"SELECT department FROM Employees GROUP BY department HAVING AVG(salary) > 80000;\" is fully valid",
-      "No, any column or function tested in HAVING must be projected in SELECT",
       "Only if the aggregate function is aliased using AS in SELECT",
-      "Only in SQLite"
+      "Yes, e.g., \"SELECT department FROM Employees GROUP BY department HAVING AVG(salary) > 80000;\" is fully valid",
+      "Only in SQLite",
+      "No, any column or function tested in HAVING must be projected in SELECT"
     ],
-    "correctIndex": 0,
+    "correctIndex": 1,
     "explanation": "An aggregate in HAVING does not need to be projected in SELECT. The query engine calculates the aggregate in the group buffer to filter buckets without returning the metric to the user."
   },
   {
@@ -3706,12 +3706,12 @@ window.MCQS_VAULT_500 = [
     "tag": "🏆 Senior Staff",
     "question": "[HAVING #15] Which clause executes immediately before HAVING in the physical SQL pipeline? (Scenario Variant 3)",
     "options": [
-      "GROUP BY",
-      "WHERE",
       "SELECT",
-      "ORDER BY"
+      "ORDER BY",
+      "GROUP BY",
+      "WHERE"
     ],
-    "correctIndex": 0,
+    "correctIndex": 2,
     "explanation": "The execution order is FROM ➡️ WHERE ➡️ GROUP BY ➡️ HAVING ➡️ SELECT ➡️ DISTINCT ➡️ ORDER BY ➡️ LIMIT."
   },
   {
@@ -3720,12 +3720,12 @@ window.MCQS_VAULT_500 = [
     "tag": "🍡 Quick Snack",
     "question": "[HAVING #16] What is the fundamental architectural difference between the WHERE clause and the HAVING clause? (Scenario Variant 4)",
     "options": [
-      "WHERE filters individual rows before grouping; HAVING filters aggregated group buckets after grouping",
-      "WHERE only works with numbers; HAVING only works with strings",
+      "There is no difference; they are aliases for each other",
       "HAVING executes before FROM, while WHERE executes after SELECT",
-      "There is no difference; they are aliases for each other"
+      "WHERE filters individual rows before grouping; HAVING filters aggregated group buckets after grouping",
+      "WHERE only works with numbers; HAVING only works with strings"
     ],
-    "correctIndex": 0,
+    "correctIndex": 2,
     "explanation": "In the physical query pipeline, WHERE executes at Step 02 on raw table rows. HAVING executes at Step 04 after GROUP BY has aggregated rows into summary buckets."
   },
   {
@@ -3734,12 +3734,12 @@ window.MCQS_VAULT_500 = [
     "tag": "⚡ Gotcha Trap",
     "question": "[HAVING #17] Why does \"SELECT department, COUNT(*) FROM Employees WHERE COUNT(*) > 5 GROUP BY department;\" fail? (Scenario Variant 4)",
     "options": [
-      "Aggregate functions cannot be evaluated in the WHERE clause because groups have not been formed yet",
       "COUNT(*) cannot be compared using the greater-than (>) operator",
-      "Employees table requires a subquery to count rows",
-      "department must be wrapped in a MAX() function"
+      "department must be wrapped in a MAX() function",
+      "Aggregate functions cannot be evaluated in the WHERE clause because groups have not been formed yet",
+      "Employees table requires a subquery to count rows"
     ],
-    "correctIndex": 0,
+    "correctIndex": 2,
     "explanation": "The WHERE clause operates on individual rows as they are read from disk. At that point, aggregation has not occurred, so aggregate functions like COUNT(*) are illegal in WHERE."
   },
   {
@@ -3748,12 +3748,12 @@ window.MCQS_VAULT_500 = [
     "tag": "🐱 Brain Bender",
     "question": "[HAVING #18] Can a query contain a HAVING clause without a GROUP BY clause? (Scenario Variant 4)",
     "options": [
-      "Yes, the entire table is treated as a single implicit group, and HAVING filters the whole-table aggregate",
-      "No, SQL syntax requires GROUP BY immediately preceding HAVING",
       "Only in MySQL, but it causes a syntax crash in PostgreSQL and Oracle",
-      "Yes, but it automatically behaves identically to a WHERE clause"
+      "Yes, but it automatically behaves identically to a WHERE clause",
+      "Yes, the entire table is treated as a single implicit group, and HAVING filters the whole-table aggregate",
+      "No, SQL syntax requires GROUP BY immediately preceding HAVING"
     ],
-    "correctIndex": 0,
+    "correctIndex": 2,
     "explanation": "A HAVING clause without GROUP BY treats the entire dataset as one single group. If the condition (e.g. HAVING COUNT(*) > 100) fails, the query returns 0 rows."
   },
   {
@@ -3764,8 +3764,8 @@ window.MCQS_VAULT_500 = [
     "options": [
       "Yes, e.g., \"SELECT department FROM Employees GROUP BY department HAVING AVG(salary) > 80000;\" is fully valid",
       "No, any column or function tested in HAVING must be projected in SELECT",
-      "Only if the aggregate function is aliased using AS in SELECT",
-      "Only in SQLite"
+      "Only in SQLite",
+      "Only if the aggregate function is aliased using AS in SELECT"
     ],
     "correctIndex": 0,
     "explanation": "An aggregate in HAVING does not need to be projected in SELECT. The query engine calculates the aggregate in the group buffer to filter buckets without returning the metric to the user."
@@ -3776,12 +3776,12 @@ window.MCQS_VAULT_500 = [
     "tag": "🏆 Senior Staff",
     "question": "[HAVING #20] Which clause executes immediately before HAVING in the physical SQL pipeline? (Scenario Variant 4)",
     "options": [
+      "ORDER BY",
       "GROUP BY",
-      "WHERE",
       "SELECT",
-      "ORDER BY"
+      "WHERE"
     ],
-    "correctIndex": 0,
+    "correctIndex": 1,
     "explanation": "The execution order is FROM ➡️ WHERE ➡️ GROUP BY ➡️ HAVING ➡️ SELECT ➡️ DISTINCT ➡️ ORDER BY ➡️ LIMIT."
   },
   {
@@ -3790,12 +3790,12 @@ window.MCQS_VAULT_500 = [
     "tag": "🍡 Quick Snack",
     "question": "[HAVING #21] What is the fundamental architectural difference between the WHERE clause and the HAVING clause? (Scenario Variant 5)",
     "options": [
-      "WHERE filters individual rows before grouping; HAVING filters aggregated group buckets after grouping",
       "WHERE only works with numbers; HAVING only works with strings",
+      "There is no difference; they are aliases for each other",
       "HAVING executes before FROM, while WHERE executes after SELECT",
-      "There is no difference; they are aliases for each other"
+      "WHERE filters individual rows before grouping; HAVING filters aggregated group buckets after grouping"
     ],
-    "correctIndex": 0,
+    "correctIndex": 3,
     "explanation": "In the physical query pipeline, WHERE executes at Step 02 on raw table rows. HAVING executes at Step 04 after GROUP BY has aggregated rows into summary buckets."
   },
   {
@@ -3804,12 +3804,12 @@ window.MCQS_VAULT_500 = [
     "tag": "⚡ Gotcha Trap",
     "question": "[HAVING #22] Why does \"SELECT department, COUNT(*) FROM Employees WHERE COUNT(*) > 5 GROUP BY department;\" fail? (Scenario Variant 5)",
     "options": [
-      "Aggregate functions cannot be evaluated in the WHERE clause because groups have not been formed yet",
-      "COUNT(*) cannot be compared using the greater-than (>) operator",
       "Employees table requires a subquery to count rows",
-      "department must be wrapped in a MAX() function"
+      "COUNT(*) cannot be compared using the greater-than (>) operator",
+      "department must be wrapped in a MAX() function",
+      "Aggregate functions cannot be evaluated in the WHERE clause because groups have not been formed yet"
     ],
-    "correctIndex": 0,
+    "correctIndex": 3,
     "explanation": "The WHERE clause operates on individual rows as they are read from disk. At that point, aggregation has not occurred, so aggregate functions like COUNT(*) are illegal in WHERE."
   },
   {
@@ -3818,12 +3818,12 @@ window.MCQS_VAULT_500 = [
     "tag": "🐱 Brain Bender",
     "question": "[HAVING #23] Can a query contain a HAVING clause without a GROUP BY clause? (Scenario Variant 5)",
     "options": [
+      "Yes, but it automatically behaves identically to a WHERE clause",
       "Yes, the entire table is treated as a single implicit group, and HAVING filters the whole-table aggregate",
-      "No, SQL syntax requires GROUP BY immediately preceding HAVING",
       "Only in MySQL, but it causes a syntax crash in PostgreSQL and Oracle",
-      "Yes, but it automatically behaves identically to a WHERE clause"
+      "No, SQL syntax requires GROUP BY immediately preceding HAVING"
     ],
-    "correctIndex": 0,
+    "correctIndex": 1,
     "explanation": "A HAVING clause without GROUP BY treats the entire dataset as one single group. If the condition (e.g. HAVING COUNT(*) > 100) fails, the query returns 0 rows."
   },
   {
@@ -3832,12 +3832,12 @@ window.MCQS_VAULT_500 = [
     "tag": "🎯 Core Concept",
     "question": "[HAVING #24] Is it valid standard SQL for a HAVING clause to reference an aggregate function that does NOT appear in the SELECT list? (Scenario Variant 5)",
     "options": [
-      "Yes, e.g., \"SELECT department FROM Employees GROUP BY department HAVING AVG(salary) > 80000;\" is fully valid",
       "No, any column or function tested in HAVING must be projected in SELECT",
       "Only if the aggregate function is aliased using AS in SELECT",
+      "Yes, e.g., \"SELECT department FROM Employees GROUP BY department HAVING AVG(salary) > 80000;\" is fully valid",
       "Only in SQLite"
     ],
-    "correctIndex": 0,
+    "correctIndex": 2,
     "explanation": "An aggregate in HAVING does not need to be projected in SELECT. The query engine calculates the aggregate in the group buffer to filter buckets without returning the metric to the user."
   },
   {
@@ -3846,12 +3846,12 @@ window.MCQS_VAULT_500 = [
     "tag": "🏆 Senior Staff",
     "question": "[HAVING #25] Which clause executes immediately before HAVING in the physical SQL pipeline? (Scenario Variant 5)",
     "options": [
-      "GROUP BY",
-      "WHERE",
+      "ORDER BY",
       "SELECT",
-      "ORDER BY"
+      "GROUP BY",
+      "WHERE"
     ],
-    "correctIndex": 0,
+    "correctIndex": 2,
     "explanation": "The execution order is FROM ➡️ WHERE ➡️ GROUP BY ➡️ HAVING ➡️ SELECT ➡️ DISTINCT ➡️ ORDER BY ➡️ LIMIT."
   },
   {
@@ -3860,12 +3860,12 @@ window.MCQS_VAULT_500 = [
     "tag": "🍡 Quick Snack",
     "question": "[HAVING #26] What is the fundamental architectural difference between the WHERE clause and the HAVING clause? (Scenario Variant 6)",
     "options": [
-      "WHERE filters individual rows before grouping; HAVING filters aggregated group buckets after grouping",
-      "WHERE only works with numbers; HAVING only works with strings",
+      "There is no difference; they are aliases for each other",
       "HAVING executes before FROM, while WHERE executes after SELECT",
-      "There is no difference; they are aliases for each other"
+      "WHERE filters individual rows before grouping; HAVING filters aggregated group buckets after grouping",
+      "WHERE only works with numbers; HAVING only works with strings"
     ],
-    "correctIndex": 0,
+    "correctIndex": 2,
     "explanation": "In the physical query pipeline, WHERE executes at Step 02 on raw table rows. HAVING executes at Step 04 after GROUP BY has aggregated rows into summary buckets."
   },
   {
@@ -3875,9 +3875,9 @@ window.MCQS_VAULT_500 = [
     "question": "[HAVING #27] Why does \"SELECT department, COUNT(*) FROM Employees WHERE COUNT(*) > 5 GROUP BY department;\" fail? (Scenario Variant 6)",
     "options": [
       "Aggregate functions cannot be evaluated in the WHERE clause because groups have not been formed yet",
+      "department must be wrapped in a MAX() function",
       "COUNT(*) cannot be compared using the greater-than (>) operator",
-      "Employees table requires a subquery to count rows",
-      "department must be wrapped in a MAX() function"
+      "Employees table requires a subquery to count rows"
     ],
     "correctIndex": 0,
     "explanation": "The WHERE clause operates on individual rows as they are read from disk. At that point, aggregation has not occurred, so aggregate functions like COUNT(*) are illegal in WHERE."
@@ -3902,12 +3902,12 @@ window.MCQS_VAULT_500 = [
     "tag": "🎯 Core Concept",
     "question": "[HAVING #29] Is it valid standard SQL for a HAVING clause to reference an aggregate function that does NOT appear in the SELECT list? (Scenario Variant 6)",
     "options": [
-      "Yes, e.g., \"SELECT department FROM Employees GROUP BY department HAVING AVG(salary) > 80000;\" is fully valid",
+      "Only in SQLite",
       "No, any column or function tested in HAVING must be projected in SELECT",
-      "Only if the aggregate function is aliased using AS in SELECT",
-      "Only in SQLite"
+      "Yes, e.g., \"SELECT department FROM Employees GROUP BY department HAVING AVG(salary) > 80000;\" is fully valid",
+      "Only if the aggregate function is aliased using AS in SELECT"
     ],
-    "correctIndex": 0,
+    "correctIndex": 2,
     "explanation": "An aggregate in HAVING does not need to be projected in SELECT. The query engine calculates the aggregate in the group buffer to filter buckets without returning the metric to the user."
   },
   {
@@ -3916,12 +3916,12 @@ window.MCQS_VAULT_500 = [
     "tag": "🏆 Senior Staff",
     "question": "[HAVING #30] Which clause executes immediately before HAVING in the physical SQL pipeline? (Scenario Variant 6)",
     "options": [
+      "ORDER BY",
       "GROUP BY",
       "WHERE",
-      "SELECT",
-      "ORDER BY"
+      "SELECT"
     ],
-    "correctIndex": 0,
+    "correctIndex": 1,
     "explanation": "The execution order is FROM ➡️ WHERE ➡️ GROUP BY ➡️ HAVING ➡️ SELECT ➡️ DISTINCT ➡️ ORDER BY ➡️ LIMIT."
   },
   {
@@ -3930,12 +3930,12 @@ window.MCQS_VAULT_500 = [
     "tag": "🍡 Quick Snack",
     "question": "[HAVING #31] What is the fundamental architectural difference between the WHERE clause and the HAVING clause? (Scenario Variant 7)",
     "options": [
+      "There is no difference; they are aliases for each other",
       "WHERE filters individual rows before grouping; HAVING filters aggregated group buckets after grouping",
-      "WHERE only works with numbers; HAVING only works with strings",
       "HAVING executes before FROM, while WHERE executes after SELECT",
-      "There is no difference; they are aliases for each other"
+      "WHERE only works with numbers; HAVING only works with strings"
     ],
-    "correctIndex": 0,
+    "correctIndex": 1,
     "explanation": "In the physical query pipeline, WHERE executes at Step 02 on raw table rows. HAVING executes at Step 04 after GROUP BY has aggregated rows into summary buckets."
   },
   {
@@ -3944,12 +3944,12 @@ window.MCQS_VAULT_500 = [
     "tag": "⚡ Gotcha Trap",
     "question": "[HAVING #32] Why does \"SELECT department, COUNT(*) FROM Employees WHERE COUNT(*) > 5 GROUP BY department;\" fail? (Scenario Variant 7)",
     "options": [
-      "Aggregate functions cannot be evaluated in the WHERE clause because groups have not been formed yet",
+      "department must be wrapped in a MAX() function",
       "COUNT(*) cannot be compared using the greater-than (>) operator",
       "Employees table requires a subquery to count rows",
-      "department must be wrapped in a MAX() function"
+      "Aggregate functions cannot be evaluated in the WHERE clause because groups have not been formed yet"
     ],
-    "correctIndex": 0,
+    "correctIndex": 3,
     "explanation": "The WHERE clause operates on individual rows as they are read from disk. At that point, aggregation has not occurred, so aggregate functions like COUNT(*) are illegal in WHERE."
   },
   {
@@ -3958,12 +3958,12 @@ window.MCQS_VAULT_500 = [
     "tag": "🐱 Brain Bender",
     "question": "[HAVING #33] Can a query contain a HAVING clause without a GROUP BY clause? (Scenario Variant 7)",
     "options": [
-      "Yes, the entire table is treated as a single implicit group, and HAVING filters the whole-table aggregate",
       "No, SQL syntax requires GROUP BY immediately preceding HAVING",
-      "Only in MySQL, but it causes a syntax crash in PostgreSQL and Oracle",
-      "Yes, but it automatically behaves identically to a WHERE clause"
+      "Yes, the entire table is treated as a single implicit group, and HAVING filters the whole-table aggregate",
+      "Yes, but it automatically behaves identically to a WHERE clause",
+      "Only in MySQL, but it causes a syntax crash in PostgreSQL and Oracle"
     ],
-    "correctIndex": 0,
+    "correctIndex": 1,
     "explanation": "A HAVING clause without GROUP BY treats the entire dataset as one single group. If the condition (e.g. HAVING COUNT(*) > 100) fails, the query returns 0 rows."
   },
   {
@@ -3973,9 +3973,9 @@ window.MCQS_VAULT_500 = [
     "question": "[HAVING #34] Is it valid standard SQL for a HAVING clause to reference an aggregate function that does NOT appear in the SELECT list? (Scenario Variant 7)",
     "options": [
       "Yes, e.g., \"SELECT department FROM Employees GROUP BY department HAVING AVG(salary) > 80000;\" is fully valid",
+      "Only in SQLite",
       "No, any column or function tested in HAVING must be projected in SELECT",
-      "Only if the aggregate function is aliased using AS in SELECT",
-      "Only in SQLite"
+      "Only if the aggregate function is aliased using AS in SELECT"
     ],
     "correctIndex": 0,
     "explanation": "An aggregate in HAVING does not need to be projected in SELECT. The query engine calculates the aggregate in the group buffer to filter buckets without returning the metric to the user."
@@ -3986,12 +3986,12 @@ window.MCQS_VAULT_500 = [
     "tag": "🏆 Senior Staff",
     "question": "[HAVING #35] Which clause executes immediately before HAVING in the physical SQL pipeline? (Scenario Variant 7)",
     "options": [
-      "GROUP BY",
       "WHERE",
+      "GROUP BY",
       "SELECT",
       "ORDER BY"
     ],
-    "correctIndex": 0,
+    "correctIndex": 1,
     "explanation": "The execution order is FROM ➡️ WHERE ➡️ GROUP BY ➡️ HAVING ➡️ SELECT ➡️ DISTINCT ➡️ ORDER BY ➡️ LIMIT."
   },
   {
@@ -4000,12 +4000,12 @@ window.MCQS_VAULT_500 = [
     "tag": "🍡 Quick Snack",
     "question": "[HAVING #36] What is the fundamental architectural difference between the WHERE clause and the HAVING clause? (Scenario Variant 8)",
     "options": [
-      "WHERE filters individual rows before grouping; HAVING filters aggregated group buckets after grouping",
+      "There is no difference; they are aliases for each other",
       "WHERE only works with numbers; HAVING only works with strings",
-      "HAVING executes before FROM, while WHERE executes after SELECT",
-      "There is no difference; they are aliases for each other"
+      "WHERE filters individual rows before grouping; HAVING filters aggregated group buckets after grouping",
+      "HAVING executes before FROM, while WHERE executes after SELECT"
     ],
-    "correctIndex": 0,
+    "correctIndex": 2,
     "explanation": "In the physical query pipeline, WHERE executes at Step 02 on raw table rows. HAVING executes at Step 04 after GROUP BY has aggregated rows into summary buckets."
   },
   {
@@ -4014,12 +4014,12 @@ window.MCQS_VAULT_500 = [
     "tag": "⚡ Gotcha Trap",
     "question": "[HAVING #37] Why does \"SELECT department, COUNT(*) FROM Employees WHERE COUNT(*) > 5 GROUP BY department;\" fail? (Scenario Variant 8)",
     "options": [
-      "Aggregate functions cannot be evaluated in the WHERE clause because groups have not been formed yet",
+      "department must be wrapped in a MAX() function",
       "COUNT(*) cannot be compared using the greater-than (>) operator",
-      "Employees table requires a subquery to count rows",
-      "department must be wrapped in a MAX() function"
+      "Aggregate functions cannot be evaluated in the WHERE clause because groups have not been formed yet",
+      "Employees table requires a subquery to count rows"
     ],
-    "correctIndex": 0,
+    "correctIndex": 2,
     "explanation": "The WHERE clause operates on individual rows as they are read from disk. At that point, aggregation has not occurred, so aggregate functions like COUNT(*) are illegal in WHERE."
   },
   {
@@ -4028,12 +4028,12 @@ window.MCQS_VAULT_500 = [
     "tag": "🐱 Brain Bender",
     "question": "[HAVING #38] Can a query contain a HAVING clause without a GROUP BY clause? (Scenario Variant 8)",
     "options": [
+      "Yes, but it automatically behaves identically to a WHERE clause",
       "Yes, the entire table is treated as a single implicit group, and HAVING filters the whole-table aggregate",
       "No, SQL syntax requires GROUP BY immediately preceding HAVING",
-      "Only in MySQL, but it causes a syntax crash in PostgreSQL and Oracle",
-      "Yes, but it automatically behaves identically to a WHERE clause"
+      "Only in MySQL, but it causes a syntax crash in PostgreSQL and Oracle"
     ],
-    "correctIndex": 0,
+    "correctIndex": 1,
     "explanation": "A HAVING clause without GROUP BY treats the entire dataset as one single group. If the condition (e.g. HAVING COUNT(*) > 100) fails, the query returns 0 rows."
   },
   {
@@ -4042,12 +4042,12 @@ window.MCQS_VAULT_500 = [
     "tag": "🎯 Core Concept",
     "question": "[HAVING #39] Is it valid standard SQL for a HAVING clause to reference an aggregate function that does NOT appear in the SELECT list? (Scenario Variant 8)",
     "options": [
-      "Yes, e.g., \"SELECT department FROM Employees GROUP BY department HAVING AVG(salary) > 80000;\" is fully valid",
       "No, any column or function tested in HAVING must be projected in SELECT",
-      "Only if the aggregate function is aliased using AS in SELECT",
-      "Only in SQLite"
+      "Only in SQLite",
+      "Yes, e.g., \"SELECT department FROM Employees GROUP BY department HAVING AVG(salary) > 80000;\" is fully valid",
+      "Only if the aggregate function is aliased using AS in SELECT"
     ],
-    "correctIndex": 0,
+    "correctIndex": 2,
     "explanation": "An aggregate in HAVING does not need to be projected in SELECT. The query engine calculates the aggregate in the group buffer to filter buckets without returning the metric to the user."
   },
   {
@@ -4056,12 +4056,12 @@ window.MCQS_VAULT_500 = [
     "tag": "🏆 Senior Staff",
     "question": "[HAVING #40] Which clause executes immediately before HAVING in the physical SQL pipeline? (Scenario Variant 8)",
     "options": [
+      "SELECT",
       "GROUP BY",
       "WHERE",
-      "SELECT",
       "ORDER BY"
     ],
-    "correctIndex": 0,
+    "correctIndex": 1,
     "explanation": "The execution order is FROM ➡️ WHERE ➡️ GROUP BY ➡️ HAVING ➡️ SELECT ➡️ DISTINCT ➡️ ORDER BY ➡️ LIMIT."
   },
   {
@@ -4070,12 +4070,12 @@ window.MCQS_VAULT_500 = [
     "tag": "🍡 Quick Snack",
     "question": "[HAVING #41] What is the fundamental architectural difference between the WHERE clause and the HAVING clause? (Scenario Variant 9)",
     "options": [
-      "WHERE filters individual rows before grouping; HAVING filters aggregated group buckets after grouping",
       "WHERE only works with numbers; HAVING only works with strings",
       "HAVING executes before FROM, while WHERE executes after SELECT",
-      "There is no difference; they are aliases for each other"
+      "There is no difference; they are aliases for each other",
+      "WHERE filters individual rows before grouping; HAVING filters aggregated group buckets after grouping"
     ],
-    "correctIndex": 0,
+    "correctIndex": 3,
     "explanation": "In the physical query pipeline, WHERE executes at Step 02 on raw table rows. HAVING executes at Step 04 after GROUP BY has aggregated rows into summary buckets."
   },
   {
@@ -4085,9 +4085,9 @@ window.MCQS_VAULT_500 = [
     "question": "[HAVING #42] Why does \"SELECT department, COUNT(*) FROM Employees WHERE COUNT(*) > 5 GROUP BY department;\" fail? (Scenario Variant 9)",
     "options": [
       "Aggregate functions cannot be evaluated in the WHERE clause because groups have not been formed yet",
-      "COUNT(*) cannot be compared using the greater-than (>) operator",
+      "department must be wrapped in a MAX() function",
       "Employees table requires a subquery to count rows",
-      "department must be wrapped in a MAX() function"
+      "COUNT(*) cannot be compared using the greater-than (>) operator"
     ],
     "correctIndex": 0,
     "explanation": "The WHERE clause operates on individual rows as they are read from disk. At that point, aggregation has not occurred, so aggregate functions like COUNT(*) are illegal in WHERE."
@@ -4098,12 +4098,12 @@ window.MCQS_VAULT_500 = [
     "tag": "🐱 Brain Bender",
     "question": "[HAVING #43] Can a query contain a HAVING clause without a GROUP BY clause? (Scenario Variant 9)",
     "options": [
-      "Yes, the entire table is treated as a single implicit group, and HAVING filters the whole-table aggregate",
       "No, SQL syntax requires GROUP BY immediately preceding HAVING",
+      "Yes, but it automatically behaves identically to a WHERE clause",
       "Only in MySQL, but it causes a syntax crash in PostgreSQL and Oracle",
-      "Yes, but it automatically behaves identically to a WHERE clause"
+      "Yes, the entire table is treated as a single implicit group, and HAVING filters the whole-table aggregate"
     ],
-    "correctIndex": 0,
+    "correctIndex": 3,
     "explanation": "A HAVING clause without GROUP BY treats the entire dataset as one single group. If the condition (e.g. HAVING COUNT(*) > 100) fails, the query returns 0 rows."
   },
   {
@@ -4112,12 +4112,12 @@ window.MCQS_VAULT_500 = [
     "tag": "🎯 Core Concept",
     "question": "[HAVING #44] Is it valid standard SQL for a HAVING clause to reference an aggregate function that does NOT appear in the SELECT list? (Scenario Variant 9)",
     "options": [
-      "Yes, e.g., \"SELECT department FROM Employees GROUP BY department HAVING AVG(salary) > 80000;\" is fully valid",
+      "Only in SQLite",
       "No, any column or function tested in HAVING must be projected in SELECT",
-      "Only if the aggregate function is aliased using AS in SELECT",
-      "Only in SQLite"
+      "Yes, e.g., \"SELECT department FROM Employees GROUP BY department HAVING AVG(salary) > 80000;\" is fully valid",
+      "Only if the aggregate function is aliased using AS in SELECT"
     ],
-    "correctIndex": 0,
+    "correctIndex": 2,
     "explanation": "An aggregate in HAVING does not need to be projected in SELECT. The query engine calculates the aggregate in the group buffer to filter buckets without returning the metric to the user."
   },
   {
@@ -4128,8 +4128,8 @@ window.MCQS_VAULT_500 = [
     "options": [
       "GROUP BY",
       "WHERE",
-      "SELECT",
-      "ORDER BY"
+      "ORDER BY",
+      "SELECT"
     ],
     "correctIndex": 0,
     "explanation": "The execution order is FROM ➡️ WHERE ➡️ GROUP BY ➡️ HAVING ➡️ SELECT ➡️ DISTINCT ➡️ ORDER BY ➡️ LIMIT."
@@ -4140,12 +4140,12 @@ window.MCQS_VAULT_500 = [
     "tag": "🍡 Quick Snack",
     "question": "[HAVING #46] What is the fundamental architectural difference between the WHERE clause and the HAVING clause? (Scenario Variant 10)",
     "options": [
-      "WHERE filters individual rows before grouping; HAVING filters aggregated group buckets after grouping",
-      "WHERE only works with numbers; HAVING only works with strings",
       "HAVING executes before FROM, while WHERE executes after SELECT",
-      "There is no difference; they are aliases for each other"
+      "There is no difference; they are aliases for each other",
+      "WHERE filters individual rows before grouping; HAVING filters aggregated group buckets after grouping",
+      "WHERE only works with numbers; HAVING only works with strings"
     ],
-    "correctIndex": 0,
+    "correctIndex": 2,
     "explanation": "In the physical query pipeline, WHERE executes at Step 02 on raw table rows. HAVING executes at Step 04 after GROUP BY has aggregated rows into summary buckets."
   },
   {
@@ -4154,12 +4154,12 @@ window.MCQS_VAULT_500 = [
     "tag": "⚡ Gotcha Trap",
     "question": "[HAVING #47] Why does \"SELECT department, COUNT(*) FROM Employees WHERE COUNT(*) > 5 GROUP BY department;\" fail? (Scenario Variant 10)",
     "options": [
-      "Aggregate functions cannot be evaluated in the WHERE clause because groups have not been formed yet",
       "COUNT(*) cannot be compared using the greater-than (>) operator",
       "Employees table requires a subquery to count rows",
+      "Aggregate functions cannot be evaluated in the WHERE clause because groups have not been formed yet",
       "department must be wrapped in a MAX() function"
     ],
-    "correctIndex": 0,
+    "correctIndex": 2,
     "explanation": "The WHERE clause operates on individual rows as they are read from disk. At that point, aggregation has not occurred, so aggregate functions like COUNT(*) are illegal in WHERE."
   },
   {
@@ -4170,8 +4170,8 @@ window.MCQS_VAULT_500 = [
     "options": [
       "Yes, the entire table is treated as a single implicit group, and HAVING filters the whole-table aggregate",
       "No, SQL syntax requires GROUP BY immediately preceding HAVING",
-      "Only in MySQL, but it causes a syntax crash in PostgreSQL and Oracle",
-      "Yes, but it automatically behaves identically to a WHERE clause"
+      "Yes, but it automatically behaves identically to a WHERE clause",
+      "Only in MySQL, but it causes a syntax crash in PostgreSQL and Oracle"
     ],
     "correctIndex": 0,
     "explanation": "A HAVING clause without GROUP BY treats the entire dataset as one single group. If the condition (e.g. HAVING COUNT(*) > 100) fails, the query returns 0 rows."
@@ -4182,12 +4182,12 @@ window.MCQS_VAULT_500 = [
     "tag": "🎯 Core Concept",
     "question": "[HAVING #49] Is it valid standard SQL for a HAVING clause to reference an aggregate function that does NOT appear in the SELECT list? (Scenario Variant 10)",
     "options": [
+      "Only in SQLite",
       "Yes, e.g., \"SELECT department FROM Employees GROUP BY department HAVING AVG(salary) > 80000;\" is fully valid",
-      "No, any column or function tested in HAVING must be projected in SELECT",
       "Only if the aggregate function is aliased using AS in SELECT",
-      "Only in SQLite"
+      "No, any column or function tested in HAVING must be projected in SELECT"
     ],
-    "correctIndex": 0,
+    "correctIndex": 1,
     "explanation": "An aggregate in HAVING does not need to be projected in SELECT. The query engine calculates the aggregate in the group buffer to filter buckets without returning the metric to the user."
   },
   {
@@ -4196,12 +4196,12 @@ window.MCQS_VAULT_500 = [
     "tag": "🏆 Senior Staff",
     "question": "[HAVING #50] Which clause executes immediately before HAVING in the physical SQL pipeline? (Scenario Variant 10)",
     "options": [
-      "GROUP BY",
-      "WHERE",
       "SELECT",
-      "ORDER BY"
+      "ORDER BY",
+      "GROUP BY",
+      "WHERE"
     ],
-    "correctIndex": 0,
+    "correctIndex": 2,
     "explanation": "The execution order is FROM ➡️ WHERE ➡️ GROUP BY ➡️ HAVING ➡️ SELECT ➡️ DISTINCT ➡️ ORDER BY ➡️ LIMIT."
   },
   {
@@ -4210,12 +4210,12 @@ window.MCQS_VAULT_500 = [
     "tag": "🍡 Quick Snack",
     "question": "[WHERE #1] In SQL Three-Valued Logic (3VL), what is the evaluation result of \"WHERE salary = NULL\"?",
     "options": [
-      "UNKNOWN (evaluates to non-TRUE, so the row is rejected)",
       "TRUE if the salary is indeed NULL",
+      "Syntax Error: NULL cannot be compared with =",
       "FALSE",
-      "Syntax Error: NULL cannot be compared with ="
+      "UNKNOWN (evaluates to non-TRUE, so the row is rejected)"
     ],
-    "correctIndex": 0,
+    "correctIndex": 3,
     "explanation": "In SQL, comparing any value to NULL using = produces UNKNOWN. In a WHERE clause, only rows evaluating strictly to TRUE pass. To check for nulls, use IS NULL."
   },
   {
@@ -4225,8 +4225,8 @@ window.MCQS_VAULT_500 = [
     "question": "[WHERE #2] Why does the predicate \"WHERE department_id NOT IN (1, 2, NULL)\" evaluate unexpectedly?",
     "options": [
       "If the list contains NULL, NOT IN returns UNKNOWN for all non-matching rows, resulting in ZERO rows returned",
-      "It automatically treats NULL as 0",
       "It throws an InvalidSetComparison exception",
+      "It automatically treats NULL as 0",
       "It returns all rows where department_id is 1 or 2"
     ],
     "correctIndex": 0,
@@ -4238,12 +4238,12 @@ window.MCQS_VAULT_500 = [
     "tag": "🐱 Brain Bender",
     "question": "[WHERE #3] What does it mean for a WHERE clause predicate to be \"SARGable\" (Search Argument Able)?",
     "options": [
+      "The predicate has no WHERE keyword",
       "The condition is structured so the query optimizer can utilize a B-tree index seek rather than a full table scan",
-      "The condition is written in uppercase syntax",
       "The query uses asynchronous parallel threads",
-      "The predicate has no WHERE keyword"
+      "The condition is written in uppercase syntax"
     ],
-    "correctIndex": 0,
+    "correctIndex": 1,
     "explanation": "A SARGable predicate allows index seeks. For example, \"WHERE created_at >= '2026-01-01'\" is SARGable, whereas \"WHERE YEAR(created_at) = 2026\" wraps the column in a function and disables index seeks."
   },
   {
@@ -4253,9 +4253,9 @@ window.MCQS_VAULT_500 = [
     "question": "[WHERE #4] What happens when you use column aliases defined in SELECT inside the WHERE clause?",
     "options": [
       "The database engine throws an \"Unknown Column\" error because WHERE executes before SELECT",
-      "The query runs 2x faster",
       "The engine automatically aliases all table columns",
-      "It is standard ANSI SQL and works in all engines"
+      "It is standard ANSI SQL and works in all engines",
+      "The query runs 2x faster"
     ],
     "correctIndex": 0,
     "explanation": "WHERE executes as Step 02, while SELECT executes as Step 03/05. The column alias does not exist yet when WHERE is evaluated."
@@ -4266,12 +4266,12 @@ window.MCQS_VAULT_500 = [
     "tag": "🏆 Senior Staff",
     "question": "[WHERE #5] In the condition \"WHERE status = 'active' OR role = 'admin' AND salary > 50000\", which operator has higher precedence?",
     "options": [
-      "AND has higher precedence than OR and is evaluated first",
       "OR has higher precedence than AND",
       "Operators are strictly evaluated left-to-right regardless of type",
+      "AND has higher precedence than OR and is evaluated first",
       "AND and OR have equal precedence"
     ],
-    "correctIndex": 0,
+    "correctIndex": 2,
     "explanation": "AND has higher logical precedence than OR. The predicate is evaluated as: status = 'active' OR (role = 'admin' AND salary > 50000). Always use parentheses to ensure clarity."
   },
   {
@@ -4280,12 +4280,12 @@ window.MCQS_VAULT_500 = [
     "tag": "🍡 Quick Snack",
     "question": "[WHERE #6] In SQL Three-Valued Logic (3VL), what is the evaluation result of \"WHERE salary = NULL\"? (Scenario Variant 2)",
     "options": [
-      "UNKNOWN (evaluates to non-TRUE, so the row is rejected)",
+      "Syntax Error: NULL cannot be compared with =",
       "TRUE if the salary is indeed NULL",
-      "FALSE",
-      "Syntax Error: NULL cannot be compared with ="
+      "UNKNOWN (evaluates to non-TRUE, so the row is rejected)",
+      "FALSE"
     ],
-    "correctIndex": 0,
+    "correctIndex": 2,
     "explanation": "In SQL, comparing any value to NULL using = produces UNKNOWN. In a WHERE clause, only rows evaluating strictly to TRUE pass. To check for nulls, use IS NULL."
   },
   {
@@ -4295,9 +4295,9 @@ window.MCQS_VAULT_500 = [
     "question": "[WHERE #7] Why does the predicate \"WHERE department_id NOT IN (1, 2, NULL)\" evaluate unexpectedly? (Scenario Variant 2)",
     "options": [
       "If the list contains NULL, NOT IN returns UNKNOWN for all non-matching rows, resulting in ZERO rows returned",
-      "It automatically treats NULL as 0",
       "It throws an InvalidSetComparison exception",
-      "It returns all rows where department_id is 1 or 2"
+      "It returns all rows where department_id is 1 or 2",
+      "It automatically treats NULL as 0"
     ],
     "correctIndex": 0,
     "explanation": "NOT IN (1, 2, NULL) expands to (id != 1 AND id != 2 AND id != NULL). Because id != NULL is always UNKNOWN, the whole AND chain evaluates to UNKNOWN or FALSE, returning zero rows!"
@@ -4308,12 +4308,12 @@ window.MCQS_VAULT_500 = [
     "tag": "🐱 Brain Bender",
     "question": "[WHERE #8] What does it mean for a WHERE clause predicate to be \"SARGable\" (Search Argument Able)? (Scenario Variant 2)",
     "options": [
+      "The predicate has no WHERE keyword",
       "The condition is structured so the query optimizer can utilize a B-tree index seek rather than a full table scan",
-      "The condition is written in uppercase syntax",
       "The query uses asynchronous parallel threads",
-      "The predicate has no WHERE keyword"
+      "The condition is written in uppercase syntax"
     ],
-    "correctIndex": 0,
+    "correctIndex": 1,
     "explanation": "A SARGable predicate allows index seeks. For example, \"WHERE created_at >= '2026-01-01'\" is SARGable, whereas \"WHERE YEAR(created_at) = 2026\" wraps the column in a function and disables index seeks."
   },
   {
@@ -4322,12 +4322,12 @@ window.MCQS_VAULT_500 = [
     "tag": "🎯 Core Concept",
     "question": "[WHERE #9] What happens when you use column aliases defined in SELECT inside the WHERE clause? (Scenario Variant 2)",
     "options": [
-      "The database engine throws an \"Unknown Column\" error because WHERE executes before SELECT",
-      "The query runs 2x faster",
       "The engine automatically aliases all table columns",
-      "It is standard ANSI SQL and works in all engines"
+      "It is standard ANSI SQL and works in all engines",
+      "The database engine throws an \"Unknown Column\" error because WHERE executes before SELECT",
+      "The query runs 2x faster"
     ],
-    "correctIndex": 0,
+    "correctIndex": 2,
     "explanation": "WHERE executes as Step 02, while SELECT executes as Step 03/05. The column alias does not exist yet when WHERE is evaluated."
   },
   {
@@ -4336,12 +4336,12 @@ window.MCQS_VAULT_500 = [
     "tag": "🏆 Senior Staff",
     "question": "[WHERE #10] In the condition \"WHERE status = 'active' OR role = 'admin' AND salary > 50000\", which operator has higher precedence? (Scenario Variant 2)",
     "options": [
-      "AND has higher precedence than OR and is evaluated first",
       "OR has higher precedence than AND",
       "Operators are strictly evaluated left-to-right regardless of type",
+      "AND has higher precedence than OR and is evaluated first",
       "AND and OR have equal precedence"
     ],
-    "correctIndex": 0,
+    "correctIndex": 2,
     "explanation": "AND has higher logical precedence than OR. The predicate is evaluated as: status = 'active' OR (role = 'admin' AND salary > 50000). Always use parentheses to ensure clarity."
   },
   {
@@ -4352,8 +4352,8 @@ window.MCQS_VAULT_500 = [
     "options": [
       "UNKNOWN (evaluates to non-TRUE, so the row is rejected)",
       "TRUE if the salary is indeed NULL",
-      "FALSE",
-      "Syntax Error: NULL cannot be compared with ="
+      "Syntax Error: NULL cannot be compared with =",
+      "FALSE"
     ],
     "correctIndex": 0,
     "explanation": "In SQL, comparing any value to NULL using = produces UNKNOWN. In a WHERE clause, only rows evaluating strictly to TRUE pass. To check for nulls, use IS NULL."
@@ -4364,12 +4364,12 @@ window.MCQS_VAULT_500 = [
     "tag": "⚡ Gotcha Trap",
     "question": "[WHERE #12] Why does the predicate \"WHERE department_id NOT IN (1, 2, NULL)\" evaluate unexpectedly? (Scenario Variant 3)",
     "options": [
-      "If the list contains NULL, NOT IN returns UNKNOWN for all non-matching rows, resulting in ZERO rows returned",
       "It automatically treats NULL as 0",
+      "If the list contains NULL, NOT IN returns UNKNOWN for all non-matching rows, resulting in ZERO rows returned",
       "It throws an InvalidSetComparison exception",
       "It returns all rows where department_id is 1 or 2"
     ],
-    "correctIndex": 0,
+    "correctIndex": 1,
     "explanation": "NOT IN (1, 2, NULL) expands to (id != 1 AND id != 2 AND id != NULL). Because id != NULL is always UNKNOWN, the whole AND chain evaluates to UNKNOWN or FALSE, returning zero rows!"
   },
   {
@@ -4379,9 +4379,9 @@ window.MCQS_VAULT_500 = [
     "question": "[WHERE #13] What does it mean for a WHERE clause predicate to be \"SARGable\" (Search Argument Able)? (Scenario Variant 3)",
     "options": [
       "The condition is structured so the query optimizer can utilize a B-tree index seek rather than a full table scan",
-      "The condition is written in uppercase syntax",
       "The query uses asynchronous parallel threads",
-      "The predicate has no WHERE keyword"
+      "The predicate has no WHERE keyword",
+      "The condition is written in uppercase syntax"
     ],
     "correctIndex": 0,
     "explanation": "A SARGable predicate allows index seeks. For example, \"WHERE created_at >= '2026-01-01'\" is SARGable, whereas \"WHERE YEAR(created_at) = 2026\" wraps the column in a function and disables index seeks."
@@ -4392,12 +4392,12 @@ window.MCQS_VAULT_500 = [
     "tag": "🎯 Core Concept",
     "question": "[WHERE #14] What happens when you use column aliases defined in SELECT inside the WHERE clause? (Scenario Variant 3)",
     "options": [
-      "The database engine throws an \"Unknown Column\" error because WHERE executes before SELECT",
-      "The query runs 2x faster",
       "The engine automatically aliases all table columns",
-      "It is standard ANSI SQL and works in all engines"
+      "It is standard ANSI SQL and works in all engines",
+      "The database engine throws an \"Unknown Column\" error because WHERE executes before SELECT",
+      "The query runs 2x faster"
     ],
-    "correctIndex": 0,
+    "correctIndex": 2,
     "explanation": "WHERE executes as Step 02, while SELECT executes as Step 03/05. The column alias does not exist yet when WHERE is evaluated."
   },
   {
@@ -4406,12 +4406,12 @@ window.MCQS_VAULT_500 = [
     "tag": "🏆 Senior Staff",
     "question": "[WHERE #15] In the condition \"WHERE status = 'active' OR role = 'admin' AND salary > 50000\", which operator has higher precedence? (Scenario Variant 3)",
     "options": [
-      "AND has higher precedence than OR and is evaluated first",
-      "OR has higher precedence than AND",
       "Operators are strictly evaluated left-to-right regardless of type",
-      "AND and OR have equal precedence"
+      "OR has higher precedence than AND",
+      "AND and OR have equal precedence",
+      "AND has higher precedence than OR and is evaluated first"
     ],
-    "correctIndex": 0,
+    "correctIndex": 3,
     "explanation": "AND has higher logical precedence than OR. The predicate is evaluated as: status = 'active' OR (role = 'admin' AND salary > 50000). Always use parentheses to ensure clarity."
   },
   {
@@ -4420,12 +4420,12 @@ window.MCQS_VAULT_500 = [
     "tag": "🍡 Quick Snack",
     "question": "[WHERE #16] In SQL Three-Valued Logic (3VL), what is the evaluation result of \"WHERE salary = NULL\"? (Scenario Variant 4)",
     "options": [
+      "Syntax Error: NULL cannot be compared with =",
       "UNKNOWN (evaluates to non-TRUE, so the row is rejected)",
-      "TRUE if the salary is indeed NULL",
       "FALSE",
-      "Syntax Error: NULL cannot be compared with ="
+      "TRUE if the salary is indeed NULL"
     ],
-    "correctIndex": 0,
+    "correctIndex": 1,
     "explanation": "In SQL, comparing any value to NULL using = produces UNKNOWN. In a WHERE clause, only rows evaluating strictly to TRUE pass. To check for nulls, use IS NULL."
   },
   {
@@ -4450,8 +4450,8 @@ window.MCQS_VAULT_500 = [
     "options": [
       "The condition is structured so the query optimizer can utilize a B-tree index seek rather than a full table scan",
       "The condition is written in uppercase syntax",
-      "The query uses asynchronous parallel threads",
-      "The predicate has no WHERE keyword"
+      "The predicate has no WHERE keyword",
+      "The query uses asynchronous parallel threads"
     ],
     "correctIndex": 0,
     "explanation": "A SARGable predicate allows index seeks. For example, \"WHERE created_at >= '2026-01-01'\" is SARGable, whereas \"WHERE YEAR(created_at) = 2026\" wraps the column in a function and disables index seeks."
@@ -4462,12 +4462,12 @@ window.MCQS_VAULT_500 = [
     "tag": "🎯 Core Concept",
     "question": "[WHERE #19] What happens when you use column aliases defined in SELECT inside the WHERE clause? (Scenario Variant 4)",
     "options": [
-      "The database engine throws an \"Unknown Column\" error because WHERE executes before SELECT",
       "The query runs 2x faster",
-      "The engine automatically aliases all table columns",
-      "It is standard ANSI SQL and works in all engines"
+      "It is standard ANSI SQL and works in all engines",
+      "The database engine throws an \"Unknown Column\" error because WHERE executes before SELECT",
+      "The engine automatically aliases all table columns"
     ],
-    "correctIndex": 0,
+    "correctIndex": 2,
     "explanation": "WHERE executes as Step 02, while SELECT executes as Step 03/05. The column alias does not exist yet when WHERE is evaluated."
   },
   {
@@ -4478,8 +4478,8 @@ window.MCQS_VAULT_500 = [
     "options": [
       "AND has higher precedence than OR and is evaluated first",
       "OR has higher precedence than AND",
-      "Operators are strictly evaluated left-to-right regardless of type",
-      "AND and OR have equal precedence"
+      "AND and OR have equal precedence",
+      "Operators are strictly evaluated left-to-right regardless of type"
     ],
     "correctIndex": 0,
     "explanation": "AND has higher logical precedence than OR. The predicate is evaluated as: status = 'active' OR (role = 'admin' AND salary > 50000). Always use parentheses to ensure clarity."
@@ -4492,8 +4492,8 @@ window.MCQS_VAULT_500 = [
     "options": [
       "UNKNOWN (evaluates to non-TRUE, so the row is rejected)",
       "TRUE if the salary is indeed NULL",
-      "FALSE",
-      "Syntax Error: NULL cannot be compared with ="
+      "Syntax Error: NULL cannot be compared with =",
+      "FALSE"
     ],
     "correctIndex": 0,
     "explanation": "In SQL, comparing any value to NULL using = produces UNKNOWN. In a WHERE clause, only rows evaluating strictly to TRUE pass. To check for nulls, use IS NULL."
@@ -4504,12 +4504,12 @@ window.MCQS_VAULT_500 = [
     "tag": "⚡ Gotcha Trap",
     "question": "[WHERE #22] Why does the predicate \"WHERE department_id NOT IN (1, 2, NULL)\" evaluate unexpectedly? (Scenario Variant 5)",
     "options": [
-      "If the list contains NULL, NOT IN returns UNKNOWN for all non-matching rows, resulting in ZERO rows returned",
-      "It automatically treats NULL as 0",
+      "It returns all rows where department_id is 1 or 2",
       "It throws an InvalidSetComparison exception",
-      "It returns all rows where department_id is 1 or 2"
+      "It automatically treats NULL as 0",
+      "If the list contains NULL, NOT IN returns UNKNOWN for all non-matching rows, resulting in ZERO rows returned"
     ],
-    "correctIndex": 0,
+    "correctIndex": 3,
     "explanation": "NOT IN (1, 2, NULL) expands to (id != 1 AND id != 2 AND id != NULL). Because id != NULL is always UNKNOWN, the whole AND chain evaluates to UNKNOWN or FALSE, returning zero rows!"
   },
   {
@@ -4518,12 +4518,12 @@ window.MCQS_VAULT_500 = [
     "tag": "🐱 Brain Bender",
     "question": "[WHERE #23] What does it mean for a WHERE clause predicate to be \"SARGable\" (Search Argument Able)? (Scenario Variant 5)",
     "options": [
-      "The condition is structured so the query optimizer can utilize a B-tree index seek rather than a full table scan",
+      "The predicate has no WHERE keyword",
       "The condition is written in uppercase syntax",
       "The query uses asynchronous parallel threads",
-      "The predicate has no WHERE keyword"
+      "The condition is structured so the query optimizer can utilize a B-tree index seek rather than a full table scan"
     ],
-    "correctIndex": 0,
+    "correctIndex": 3,
     "explanation": "A SARGable predicate allows index seeks. For example, \"WHERE created_at >= '2026-01-01'\" is SARGable, whereas \"WHERE YEAR(created_at) = 2026\" wraps the column in a function and disables index seeks."
   },
   {
@@ -4533,9 +4533,9 @@ window.MCQS_VAULT_500 = [
     "question": "[WHERE #24] What happens when you use column aliases defined in SELECT inside the WHERE clause? (Scenario Variant 5)",
     "options": [
       "The database engine throws an \"Unknown Column\" error because WHERE executes before SELECT",
-      "The query runs 2x faster",
+      "It is standard ANSI SQL and works in all engines",
       "The engine automatically aliases all table columns",
-      "It is standard ANSI SQL and works in all engines"
+      "The query runs 2x faster"
     ],
     "correctIndex": 0,
     "explanation": "WHERE executes as Step 02, while SELECT executes as Step 03/05. The column alias does not exist yet when WHERE is evaluated."
@@ -4546,12 +4546,12 @@ window.MCQS_VAULT_500 = [
     "tag": "🏆 Senior Staff",
     "question": "[WHERE #25] In the condition \"WHERE status = 'active' OR role = 'admin' AND salary > 50000\", which operator has higher precedence? (Scenario Variant 5)",
     "options": [
+      "Operators are strictly evaluated left-to-right regardless of type",
       "AND has higher precedence than OR and is evaluated first",
       "OR has higher precedence than AND",
-      "Operators are strictly evaluated left-to-right regardless of type",
       "AND and OR have equal precedence"
     ],
-    "correctIndex": 0,
+    "correctIndex": 1,
     "explanation": "AND has higher logical precedence than OR. The predicate is evaluated as: status = 'active' OR (role = 'admin' AND salary > 50000). Always use parentheses to ensure clarity."
   },
   {
@@ -4560,12 +4560,12 @@ window.MCQS_VAULT_500 = [
     "tag": "🍡 Quick Snack",
     "question": "[WHERE #26] In SQL Three-Valued Logic (3VL), what is the evaluation result of \"WHERE salary = NULL\"? (Scenario Variant 6)",
     "options": [
-      "UNKNOWN (evaluates to non-TRUE, so the row is rejected)",
       "TRUE if the salary is indeed NULL",
-      "FALSE",
-      "Syntax Error: NULL cannot be compared with ="
+      "UNKNOWN (evaluates to non-TRUE, so the row is rejected)",
+      "Syntax Error: NULL cannot be compared with =",
+      "FALSE"
     ],
-    "correctIndex": 0,
+    "correctIndex": 1,
     "explanation": "In SQL, comparing any value to NULL using = produces UNKNOWN. In a WHERE clause, only rows evaluating strictly to TRUE pass. To check for nulls, use IS NULL."
   },
   {
@@ -4574,12 +4574,12 @@ window.MCQS_VAULT_500 = [
     "tag": "⚡ Gotcha Trap",
     "question": "[WHERE #27] Why does the predicate \"WHERE department_id NOT IN (1, 2, NULL)\" evaluate unexpectedly? (Scenario Variant 6)",
     "options": [
-      "If the list contains NULL, NOT IN returns UNKNOWN for all non-matching rows, resulting in ZERO rows returned",
-      "It automatically treats NULL as 0",
+      "It returns all rows where department_id is 1 or 2",
       "It throws an InvalidSetComparison exception",
-      "It returns all rows where department_id is 1 or 2"
+      "If the list contains NULL, NOT IN returns UNKNOWN for all non-matching rows, resulting in ZERO rows returned",
+      "It automatically treats NULL as 0"
     ],
-    "correctIndex": 0,
+    "correctIndex": 2,
     "explanation": "NOT IN (1, 2, NULL) expands to (id != 1 AND id != 2 AND id != NULL). Because id != NULL is always UNKNOWN, the whole AND chain evaluates to UNKNOWN or FALSE, returning zero rows!"
   },
   {
@@ -4588,12 +4588,12 @@ window.MCQS_VAULT_500 = [
     "tag": "🐱 Brain Bender",
     "question": "[WHERE #28] What does it mean for a WHERE clause predicate to be \"SARGable\" (Search Argument Able)? (Scenario Variant 6)",
     "options": [
-      "The condition is structured so the query optimizer can utilize a B-tree index seek rather than a full table scan",
       "The condition is written in uppercase syntax",
-      "The query uses asynchronous parallel threads",
-      "The predicate has no WHERE keyword"
+      "The predicate has no WHERE keyword",
+      "The condition is structured so the query optimizer can utilize a B-tree index seek rather than a full table scan",
+      "The query uses asynchronous parallel threads"
     ],
-    "correctIndex": 0,
+    "correctIndex": 2,
     "explanation": "A SARGable predicate allows index seeks. For example, \"WHERE created_at >= '2026-01-01'\" is SARGable, whereas \"WHERE YEAR(created_at) = 2026\" wraps the column in a function and disables index seeks."
   },
   {
@@ -4602,12 +4602,12 @@ window.MCQS_VAULT_500 = [
     "tag": "🎯 Core Concept",
     "question": "[WHERE #29] What happens when you use column aliases defined in SELECT inside the WHERE clause? (Scenario Variant 6)",
     "options": [
+      "It is standard ANSI SQL and works in all engines",
       "The database engine throws an \"Unknown Column\" error because WHERE executes before SELECT",
       "The query runs 2x faster",
-      "The engine automatically aliases all table columns",
-      "It is standard ANSI SQL and works in all engines"
+      "The engine automatically aliases all table columns"
     ],
-    "correctIndex": 0,
+    "correctIndex": 1,
     "explanation": "WHERE executes as Step 02, while SELECT executes as Step 03/05. The column alias does not exist yet when WHERE is evaluated."
   },
   {
@@ -4616,12 +4616,12 @@ window.MCQS_VAULT_500 = [
     "tag": "🏆 Senior Staff",
     "question": "[WHERE #30] In the condition \"WHERE status = 'active' OR role = 'admin' AND salary > 50000\", which operator has higher precedence? (Scenario Variant 6)",
     "options": [
-      "AND has higher precedence than OR and is evaluated first",
-      "OR has higher precedence than AND",
       "Operators are strictly evaluated left-to-right regardless of type",
-      "AND and OR have equal precedence"
+      "AND and OR have equal precedence",
+      "OR has higher precedence than AND",
+      "AND has higher precedence than OR and is evaluated first"
     ],
-    "correctIndex": 0,
+    "correctIndex": 3,
     "explanation": "AND has higher logical precedence than OR. The predicate is evaluated as: status = 'active' OR (role = 'admin' AND salary > 50000). Always use parentheses to ensure clarity."
   },
   {
@@ -4631,9 +4631,9 @@ window.MCQS_VAULT_500 = [
     "question": "[WHERE #31] In SQL Three-Valued Logic (3VL), what is the evaluation result of \"WHERE salary = NULL\"? (Scenario Variant 7)",
     "options": [
       "UNKNOWN (evaluates to non-TRUE, so the row is rejected)",
-      "TRUE if the salary is indeed NULL",
+      "Syntax Error: NULL cannot be compared with =",
       "FALSE",
-      "Syntax Error: NULL cannot be compared with ="
+      "TRUE if the salary is indeed NULL"
     ],
     "correctIndex": 0,
     "explanation": "In SQL, comparing any value to NULL using = produces UNKNOWN. In a WHERE clause, only rows evaluating strictly to TRUE pass. To check for nulls, use IS NULL."
@@ -4644,12 +4644,12 @@ window.MCQS_VAULT_500 = [
     "tag": "⚡ Gotcha Trap",
     "question": "[WHERE #32] Why does the predicate \"WHERE department_id NOT IN (1, 2, NULL)\" evaluate unexpectedly? (Scenario Variant 7)",
     "options": [
-      "If the list contains NULL, NOT IN returns UNKNOWN for all non-matching rows, resulting in ZERO rows returned",
+      "It returns all rows where department_id is 1 or 2",
       "It automatically treats NULL as 0",
-      "It throws an InvalidSetComparison exception",
-      "It returns all rows where department_id is 1 or 2"
+      "If the list contains NULL, NOT IN returns UNKNOWN for all non-matching rows, resulting in ZERO rows returned",
+      "It throws an InvalidSetComparison exception"
     ],
-    "correctIndex": 0,
+    "correctIndex": 2,
     "explanation": "NOT IN (1, 2, NULL) expands to (id != 1 AND id != 2 AND id != NULL). Because id != NULL is always UNKNOWN, the whole AND chain evaluates to UNKNOWN or FALSE, returning zero rows!"
   },
   {
@@ -4658,12 +4658,12 @@ window.MCQS_VAULT_500 = [
     "tag": "🐱 Brain Bender",
     "question": "[WHERE #33] What does it mean for a WHERE clause predicate to be \"SARGable\" (Search Argument Able)? (Scenario Variant 7)",
     "options": [
-      "The condition is structured so the query optimizer can utilize a B-tree index seek rather than a full table scan",
-      "The condition is written in uppercase syntax",
+      "The predicate has no WHERE keyword",
       "The query uses asynchronous parallel threads",
-      "The predicate has no WHERE keyword"
+      "The condition is written in uppercase syntax",
+      "The condition is structured so the query optimizer can utilize a B-tree index seek rather than a full table scan"
     ],
-    "correctIndex": 0,
+    "correctIndex": 3,
     "explanation": "A SARGable predicate allows index seeks. For example, \"WHERE created_at >= '2026-01-01'\" is SARGable, whereas \"WHERE YEAR(created_at) = 2026\" wraps the column in a function and disables index seeks."
   },
   {
@@ -4672,12 +4672,12 @@ window.MCQS_VAULT_500 = [
     "tag": "🎯 Core Concept",
     "question": "[WHERE #34] What happens when you use column aliases defined in SELECT inside the WHERE clause? (Scenario Variant 7)",
     "options": [
-      "The database engine throws an \"Unknown Column\" error because WHERE executes before SELECT",
-      "The query runs 2x faster",
+      "It is standard ANSI SQL and works in all engines",
       "The engine automatically aliases all table columns",
-      "It is standard ANSI SQL and works in all engines"
+      "The database engine throws an \"Unknown Column\" error because WHERE executes before SELECT",
+      "The query runs 2x faster"
     ],
-    "correctIndex": 0,
+    "correctIndex": 2,
     "explanation": "WHERE executes as Step 02, while SELECT executes as Step 03/05. The column alias does not exist yet when WHERE is evaluated."
   },
   {
@@ -4686,12 +4686,12 @@ window.MCQS_VAULT_500 = [
     "tag": "🏆 Senior Staff",
     "question": "[WHERE #35] In the condition \"WHERE status = 'active' OR role = 'admin' AND salary > 50000\", which operator has higher precedence? (Scenario Variant 7)",
     "options": [
-      "AND has higher precedence than OR and is evaluated first",
       "OR has higher precedence than AND",
-      "Operators are strictly evaluated left-to-right regardless of type",
-      "AND and OR have equal precedence"
+      "AND has higher precedence than OR and is evaluated first",
+      "AND and OR have equal precedence",
+      "Operators are strictly evaluated left-to-right regardless of type"
     ],
-    "correctIndex": 0,
+    "correctIndex": 1,
     "explanation": "AND has higher logical precedence than OR. The predicate is evaluated as: status = 'active' OR (role = 'admin' AND salary > 50000). Always use parentheses to ensure clarity."
   },
   {
@@ -4700,12 +4700,12 @@ window.MCQS_VAULT_500 = [
     "tag": "🍡 Quick Snack",
     "question": "[WHERE #36] In SQL Three-Valued Logic (3VL), what is the evaluation result of \"WHERE salary = NULL\"? (Scenario Variant 8)",
     "options": [
-      "UNKNOWN (evaluates to non-TRUE, so the row is rejected)",
-      "TRUE if the salary is indeed NULL",
       "FALSE",
-      "Syntax Error: NULL cannot be compared with ="
+      "TRUE if the salary is indeed NULL",
+      "Syntax Error: NULL cannot be compared with =",
+      "UNKNOWN (evaluates to non-TRUE, so the row is rejected)"
     ],
-    "correctIndex": 0,
+    "correctIndex": 3,
     "explanation": "In SQL, comparing any value to NULL using = produces UNKNOWN. In a WHERE clause, only rows evaluating strictly to TRUE pass. To check for nulls, use IS NULL."
   },
   {
@@ -4714,12 +4714,12 @@ window.MCQS_VAULT_500 = [
     "tag": "⚡ Gotcha Trap",
     "question": "[WHERE #37] Why does the predicate \"WHERE department_id NOT IN (1, 2, NULL)\" evaluate unexpectedly? (Scenario Variant 8)",
     "options": [
+      "It throws an InvalidSetComparison exception",
       "If the list contains NULL, NOT IN returns UNKNOWN for all non-matching rows, resulting in ZERO rows returned",
       "It automatically treats NULL as 0",
-      "It throws an InvalidSetComparison exception",
       "It returns all rows where department_id is 1 or 2"
     ],
-    "correctIndex": 0,
+    "correctIndex": 1,
     "explanation": "NOT IN (1, 2, NULL) expands to (id != 1 AND id != 2 AND id != NULL). Because id != NULL is always UNKNOWN, the whole AND chain evaluates to UNKNOWN or FALSE, returning zero rows!"
   },
   {
@@ -4728,12 +4728,12 @@ window.MCQS_VAULT_500 = [
     "tag": "🐱 Brain Bender",
     "question": "[WHERE #38] What does it mean for a WHERE clause predicate to be \"SARGable\" (Search Argument Able)? (Scenario Variant 8)",
     "options": [
-      "The condition is structured so the query optimizer can utilize a B-tree index seek rather than a full table scan",
-      "The condition is written in uppercase syntax",
+      "The predicate has no WHERE keyword",
       "The query uses asynchronous parallel threads",
-      "The predicate has no WHERE keyword"
+      "The condition is structured so the query optimizer can utilize a B-tree index seek rather than a full table scan",
+      "The condition is written in uppercase syntax"
     ],
-    "correctIndex": 0,
+    "correctIndex": 2,
     "explanation": "A SARGable predicate allows index seeks. For example, \"WHERE created_at >= '2026-01-01'\" is SARGable, whereas \"WHERE YEAR(created_at) = 2026\" wraps the column in a function and disables index seeks."
   },
   {
@@ -4742,12 +4742,12 @@ window.MCQS_VAULT_500 = [
     "tag": "🎯 Core Concept",
     "question": "[WHERE #39] What happens when you use column aliases defined in SELECT inside the WHERE clause? (Scenario Variant 8)",
     "options": [
-      "The database engine throws an \"Unknown Column\" error because WHERE executes before SELECT",
-      "The query runs 2x faster",
       "The engine automatically aliases all table columns",
-      "It is standard ANSI SQL and works in all engines"
+      "It is standard ANSI SQL and works in all engines",
+      "The database engine throws an \"Unknown Column\" error because WHERE executes before SELECT",
+      "The query runs 2x faster"
     ],
-    "correctIndex": 0,
+    "correctIndex": 2,
     "explanation": "WHERE executes as Step 02, while SELECT executes as Step 03/05. The column alias does not exist yet when WHERE is evaluated."
   },
   {
@@ -4756,12 +4756,12 @@ window.MCQS_VAULT_500 = [
     "tag": "🏆 Senior Staff",
     "question": "[WHERE #40] In the condition \"WHERE status = 'active' OR role = 'admin' AND salary > 50000\", which operator has higher precedence? (Scenario Variant 8)",
     "options": [
-      "AND has higher precedence than OR and is evaluated first",
-      "OR has higher precedence than AND",
+      "AND and OR have equal precedence",
       "Operators are strictly evaluated left-to-right regardless of type",
-      "AND and OR have equal precedence"
+      "OR has higher precedence than AND",
+      "AND has higher precedence than OR and is evaluated first"
     ],
-    "correctIndex": 0,
+    "correctIndex": 3,
     "explanation": "AND has higher logical precedence than OR. The predicate is evaluated as: status = 'active' OR (role = 'admin' AND salary > 50000). Always use parentheses to ensure clarity."
   },
   {
@@ -4770,12 +4770,12 @@ window.MCQS_VAULT_500 = [
     "tag": "🍡 Quick Snack",
     "question": "[WHERE #41] In SQL Three-Valued Logic (3VL), what is the evaluation result of \"WHERE salary = NULL\"? (Scenario Variant 9)",
     "options": [
-      "UNKNOWN (evaluates to non-TRUE, so the row is rejected)",
       "TRUE if the salary is indeed NULL",
+      "UNKNOWN (evaluates to non-TRUE, so the row is rejected)",
       "FALSE",
       "Syntax Error: NULL cannot be compared with ="
     ],
-    "correctIndex": 0,
+    "correctIndex": 1,
     "explanation": "In SQL, comparing any value to NULL using = produces UNKNOWN. In a WHERE clause, only rows evaluating strictly to TRUE pass. To check for nulls, use IS NULL."
   },
   {
@@ -4784,12 +4784,12 @@ window.MCQS_VAULT_500 = [
     "tag": "⚡ Gotcha Trap",
     "question": "[WHERE #42] Why does the predicate \"WHERE department_id NOT IN (1, 2, NULL)\" evaluate unexpectedly? (Scenario Variant 9)",
     "options": [
-      "If the list contains NULL, NOT IN returns UNKNOWN for all non-matching rows, resulting in ZERO rows returned",
       "It automatically treats NULL as 0",
+      "It returns all rows where department_id is 1 or 2",
       "It throws an InvalidSetComparison exception",
-      "It returns all rows where department_id is 1 or 2"
+      "If the list contains NULL, NOT IN returns UNKNOWN for all non-matching rows, resulting in ZERO rows returned"
     ],
-    "correctIndex": 0,
+    "correctIndex": 3,
     "explanation": "NOT IN (1, 2, NULL) expands to (id != 1 AND id != 2 AND id != NULL). Because id != NULL is always UNKNOWN, the whole AND chain evaluates to UNKNOWN or FALSE, returning zero rows!"
   },
   {
@@ -4798,12 +4798,12 @@ window.MCQS_VAULT_500 = [
     "tag": "🐱 Brain Bender",
     "question": "[WHERE #43] What does it mean for a WHERE clause predicate to be \"SARGable\" (Search Argument Able)? (Scenario Variant 9)",
     "options": [
-      "The condition is structured so the query optimizer can utilize a B-tree index seek rather than a full table scan",
+      "The predicate has no WHERE keyword",
       "The condition is written in uppercase syntax",
       "The query uses asynchronous parallel threads",
-      "The predicate has no WHERE keyword"
+      "The condition is structured so the query optimizer can utilize a B-tree index seek rather than a full table scan"
     ],
-    "correctIndex": 0,
+    "correctIndex": 3,
     "explanation": "A SARGable predicate allows index seeks. For example, \"WHERE created_at >= '2026-01-01'\" is SARGable, whereas \"WHERE YEAR(created_at) = 2026\" wraps the column in a function and disables index seeks."
   },
   {
@@ -4812,12 +4812,12 @@ window.MCQS_VAULT_500 = [
     "tag": "🎯 Core Concept",
     "question": "[WHERE #44] What happens when you use column aliases defined in SELECT inside the WHERE clause? (Scenario Variant 9)",
     "options": [
-      "The database engine throws an \"Unknown Column\" error because WHERE executes before SELECT",
-      "The query runs 2x faster",
+      "It is standard ANSI SQL and works in all engines",
       "The engine automatically aliases all table columns",
-      "It is standard ANSI SQL and works in all engines"
+      "The query runs 2x faster",
+      "The database engine throws an \"Unknown Column\" error because WHERE executes before SELECT"
     ],
-    "correctIndex": 0,
+    "correctIndex": 3,
     "explanation": "WHERE executes as Step 02, while SELECT executes as Step 03/05. The column alias does not exist yet when WHERE is evaluated."
   },
   {
@@ -4826,12 +4826,12 @@ window.MCQS_VAULT_500 = [
     "tag": "🏆 Senior Staff",
     "question": "[WHERE #45] In the condition \"WHERE status = 'active' OR role = 'admin' AND salary > 50000\", which operator has higher precedence? (Scenario Variant 9)",
     "options": [
+      "AND and OR have equal precedence",
       "AND has higher precedence than OR and is evaluated first",
       "OR has higher precedence than AND",
-      "Operators are strictly evaluated left-to-right regardless of type",
-      "AND and OR have equal precedence"
+      "Operators are strictly evaluated left-to-right regardless of type"
     ],
-    "correctIndex": 0,
+    "correctIndex": 1,
     "explanation": "AND has higher logical precedence than OR. The predicate is evaluated as: status = 'active' OR (role = 'admin' AND salary > 50000). Always use parentheses to ensure clarity."
   },
   {
@@ -4840,12 +4840,12 @@ window.MCQS_VAULT_500 = [
     "tag": "🍡 Quick Snack",
     "question": "[WHERE #46] In SQL Three-Valued Logic (3VL), what is the evaluation result of \"WHERE salary = NULL\"? (Scenario Variant 10)",
     "options": [
-      "UNKNOWN (evaluates to non-TRUE, so the row is rejected)",
       "TRUE if the salary is indeed NULL",
-      "FALSE",
-      "Syntax Error: NULL cannot be compared with ="
+      "Syntax Error: NULL cannot be compared with =",
+      "UNKNOWN (evaluates to non-TRUE, so the row is rejected)",
+      "FALSE"
     ],
-    "correctIndex": 0,
+    "correctIndex": 2,
     "explanation": "In SQL, comparing any value to NULL using = produces UNKNOWN. In a WHERE clause, only rows evaluating strictly to TRUE pass. To check for nulls, use IS NULL."
   },
   {
@@ -4854,12 +4854,12 @@ window.MCQS_VAULT_500 = [
     "tag": "⚡ Gotcha Trap",
     "question": "[WHERE #47] Why does the predicate \"WHERE department_id NOT IN (1, 2, NULL)\" evaluate unexpectedly? (Scenario Variant 10)",
     "options": [
-      "If the list contains NULL, NOT IN returns UNKNOWN for all non-matching rows, resulting in ZERO rows returned",
       "It automatically treats NULL as 0",
       "It throws an InvalidSetComparison exception",
+      "If the list contains NULL, NOT IN returns UNKNOWN for all non-matching rows, resulting in ZERO rows returned",
       "It returns all rows where department_id is 1 or 2"
     ],
-    "correctIndex": 0,
+    "correctIndex": 2,
     "explanation": "NOT IN (1, 2, NULL) expands to (id != 1 AND id != 2 AND id != NULL). Because id != NULL is always UNKNOWN, the whole AND chain evaluates to UNKNOWN or FALSE, returning zero rows!"
   },
   {
@@ -4868,12 +4868,12 @@ window.MCQS_VAULT_500 = [
     "tag": "🐱 Brain Bender",
     "question": "[WHERE #48] What does it mean for a WHERE clause predicate to be \"SARGable\" (Search Argument Able)? (Scenario Variant 10)",
     "options": [
-      "The condition is structured so the query optimizer can utilize a B-tree index seek rather than a full table scan",
-      "The condition is written in uppercase syntax",
+      "The predicate has no WHERE keyword",
       "The query uses asynchronous parallel threads",
-      "The predicate has no WHERE keyword"
+      "The condition is structured so the query optimizer can utilize a B-tree index seek rather than a full table scan",
+      "The condition is written in uppercase syntax"
     ],
-    "correctIndex": 0,
+    "correctIndex": 2,
     "explanation": "A SARGable predicate allows index seeks. For example, \"WHERE created_at >= '2026-01-01'\" is SARGable, whereas \"WHERE YEAR(created_at) = 2026\" wraps the column in a function and disables index seeks."
   },
   {
@@ -4882,12 +4882,12 @@ window.MCQS_VAULT_500 = [
     "tag": "🎯 Core Concept",
     "question": "[WHERE #49] What happens when you use column aliases defined in SELECT inside the WHERE clause? (Scenario Variant 10)",
     "options": [
-      "The database engine throws an \"Unknown Column\" error because WHERE executes before SELECT",
       "The query runs 2x faster",
+      "The database engine throws an \"Unknown Column\" error because WHERE executes before SELECT",
       "The engine automatically aliases all table columns",
       "It is standard ANSI SQL and works in all engines"
     ],
-    "correctIndex": 0,
+    "correctIndex": 1,
     "explanation": "WHERE executes as Step 02, while SELECT executes as Step 03/05. The column alias does not exist yet when WHERE is evaluated."
   },
   {
@@ -4896,12 +4896,12 @@ window.MCQS_VAULT_500 = [
     "tag": "🏆 Senior Staff",
     "question": "[WHERE #50] In the condition \"WHERE status = 'active' OR role = 'admin' AND salary > 50000\", which operator has higher precedence? (Scenario Variant 10)",
     "options": [
-      "AND has higher precedence than OR and is evaluated first",
-      "OR has higher precedence than AND",
       "Operators are strictly evaluated left-to-right regardless of type",
-      "AND and OR have equal precedence"
+      "AND and OR have equal precedence",
+      "OR has higher precedence than AND",
+      "AND has higher precedence than OR and is evaluated first"
     ],
-    "correctIndex": 0,
+    "correctIndex": 3,
     "explanation": "AND has higher logical precedence than OR. The predicate is evaluated as: status = 'active' OR (role = 'admin' AND salary > 50000). Always use parentheses to ensure clarity."
   },
   {
@@ -4911,9 +4911,9 @@ window.MCQS_VAULT_500 = [
     "question": "[SELECT #1] What is the relational algebra operation performed by the SELECT clause when picking specific columns?",
     "options": [
       "Projection (choosing which vertical attributes appear in the output relation)",
-      "Selection (filtering rows)",
       "Cartesian Product (joining relations)",
-      "Union (combining sets)"
+      "Union (combining sets)",
+      "Selection (filtering rows)"
     ],
     "correctIndex": 0,
     "explanation": "In relational algebra, SELECT performs Projection (represented by the Greek letter π), while the WHERE clause performs Selection (represented by σ)."
@@ -4924,12 +4924,12 @@ window.MCQS_VAULT_500 = [
     "tag": "⚡ Gotcha Trap",
     "question": "[SELECT #2] Why is \"SELECT *\" considered a dangerous anti-pattern in high-throughput production backends?",
     "options": [
-      "It breaks covering indexes, increases network I/O payload, and breaks downstream applications if columns are added/removed",
-      "It causes database disk corruption",
       "SQL compilers cannot compile SELECT *",
-      "It automatically locks the entire database cluster"
+      "It breaks covering indexes, increases network I/O payload, and breaks downstream applications if columns are added/removed",
+      "It automatically locks the entire database cluster",
+      "It causes database disk corruption"
     ],
-    "correctIndex": 0,
+    "correctIndex": 1,
     "explanation": "SELECT * fetches unneeded large columns (e.g. TEXT, BLOB), defeats index-only scans, inflates memory serialization overhead, and introduces brittle coupling."
   },
   {
@@ -4938,12 +4938,12 @@ window.MCQS_VAULT_500 = [
     "tag": "🐱 Brain Bender",
     "question": "[SELECT #3] What is the scope and lifecycle of a column alias created with \"SELECT col AS my_alias\"?",
     "options": [
-      "It is available in ORDER BY, GROUP BY (in some engines), and downstream outer queries, but NOT in WHERE or FROM",
-      "It is globally persisted as a new database view",
       "It is only available inside stored procedures",
+      "It is globally persisted as a new database view",
+      "It is available in ORDER BY, GROUP BY (in some engines), and downstream outer queries, but NOT in WHERE or FROM",
       "It is available everywhere including FROM and WHERE"
     ],
-    "correctIndex": 0,
+    "correctIndex": 2,
     "explanation": "Column aliases are born in SELECT. They are accessible in clauses that execute AFTER SELECT (ORDER BY), but not in clauses that execute BEFORE SELECT (FROM, WHERE)."
   },
   {
@@ -4952,12 +4952,12 @@ window.MCQS_VAULT_500 = [
     "tag": "🎯 Core Concept",
     "question": "[SELECT #4] Can a SELECT clause contain a scalar subquery that computes a value per row?",
     "options": [
-      "Yes, scalar subqueries returning a single value per row can be projected directly in SELECT",
-      "No, subqueries are strictly restricted to the FROM clause",
       "Only if the subquery returns at least 10 rows",
-      "Only in NoSQL databases"
+      "No, subqueries are strictly restricted to the FROM clause",
+      "Only in NoSQL databases",
+      "Yes, scalar subqueries returning a single value per row can be projected directly in SELECT"
     ],
-    "correctIndex": 0,
+    "correctIndex": 3,
     "explanation": "Correlated scalar subqueries in SELECT are valid, though they must return at most 1 row and 1 column, and can incur O(N) performance overhead."
   },
   {
@@ -4967,9 +4967,9 @@ window.MCQS_VAULT_500 = [
     "question": "[SELECT #5] What does \"SELECT 1;\" return in relational database engines?",
     "options": [
       "A single-row, single-column result table containing the integer value 1",
-      "A syntax error because no FROM clause was specified",
+      "NULL",
       "The first row of the primary database table",
-      "NULL"
+      "A syntax error because no FROM clause was specified"
     ],
     "correctIndex": 0,
     "explanation": "Standard SQL engines (PostgreSQL, MySQL, SQLite) permit SELECT without a FROM clause to evaluate scalar expressions and test server connectivity."
@@ -4980,12 +4980,12 @@ window.MCQS_VAULT_500 = [
     "tag": "🍡 Quick Snack",
     "question": "[SELECT #6] What is the relational algebra operation performed by the SELECT clause when picking specific columns? (Scenario Variant 2)",
     "options": [
-      "Projection (choosing which vertical attributes appear in the output relation)",
-      "Selection (filtering rows)",
+      "Union (combining sets)",
       "Cartesian Product (joining relations)",
-      "Union (combining sets)"
+      "Selection (filtering rows)",
+      "Projection (choosing which vertical attributes appear in the output relation)"
     ],
-    "correctIndex": 0,
+    "correctIndex": 3,
     "explanation": "In relational algebra, SELECT performs Projection (represented by the Greek letter π), while the WHERE clause performs Selection (represented by σ)."
   },
   {
@@ -4994,12 +4994,12 @@ window.MCQS_VAULT_500 = [
     "tag": "⚡ Gotcha Trap",
     "question": "[SELECT #7] Why is \"SELECT *\" considered a dangerous anti-pattern in high-throughput production backends? (Scenario Variant 2)",
     "options": [
-      "It breaks covering indexes, increases network I/O payload, and breaks downstream applications if columns are added/removed",
-      "It causes database disk corruption",
       "SQL compilers cannot compile SELECT *",
-      "It automatically locks the entire database cluster"
+      "It automatically locks the entire database cluster",
+      "It breaks covering indexes, increases network I/O payload, and breaks downstream applications if columns are added/removed",
+      "It causes database disk corruption"
     ],
-    "correctIndex": 0,
+    "correctIndex": 2,
     "explanation": "SELECT * fetches unneeded large columns (e.g. TEXT, BLOB), defeats index-only scans, inflates memory serialization overhead, and introduces brittle coupling."
   },
   {
@@ -5009,9 +5009,9 @@ window.MCQS_VAULT_500 = [
     "question": "[SELECT #8] What is the scope and lifecycle of a column alias created with \"SELECT col AS my_alias\"? (Scenario Variant 2)",
     "options": [
       "It is available in ORDER BY, GROUP BY (in some engines), and downstream outer queries, but NOT in WHERE or FROM",
-      "It is globally persisted as a new database view",
+      "It is available everywhere including FROM and WHERE",
       "It is only available inside stored procedures",
-      "It is available everywhere including FROM and WHERE"
+      "It is globally persisted as a new database view"
     ],
     "correctIndex": 0,
     "explanation": "Column aliases are born in SELECT. They are accessible in clauses that execute AFTER SELECT (ORDER BY), but not in clauses that execute BEFORE SELECT (FROM, WHERE)."
@@ -5022,12 +5022,12 @@ window.MCQS_VAULT_500 = [
     "tag": "🎯 Core Concept",
     "question": "[SELECT #9] Can a SELECT clause contain a scalar subquery that computes a value per row? (Scenario Variant 2)",
     "options": [
-      "Yes, scalar subqueries returning a single value per row can be projected directly in SELECT",
-      "No, subqueries are strictly restricted to the FROM clause",
+      "Only in NoSQL databases",
       "Only if the subquery returns at least 10 rows",
-      "Only in NoSQL databases"
+      "Yes, scalar subqueries returning a single value per row can be projected directly in SELECT",
+      "No, subqueries are strictly restricted to the FROM clause"
     ],
-    "correctIndex": 0,
+    "correctIndex": 2,
     "explanation": "Correlated scalar subqueries in SELECT are valid, though they must return at most 1 row and 1 column, and can incur O(N) performance overhead."
   },
   {
@@ -5036,12 +5036,12 @@ window.MCQS_VAULT_500 = [
     "tag": "🏆 Senior Staff",
     "question": "[SELECT #10] What does \"SELECT 1;\" return in relational database engines? (Scenario Variant 2)",
     "options": [
-      "A single-row, single-column result table containing the integer value 1",
-      "A syntax error because no FROM clause was specified",
+      "NULL",
       "The first row of the primary database table",
-      "NULL"
+      "A syntax error because no FROM clause was specified",
+      "A single-row, single-column result table containing the integer value 1"
     ],
-    "correctIndex": 0,
+    "correctIndex": 3,
     "explanation": "Standard SQL engines (PostgreSQL, MySQL, SQLite) permit SELECT without a FROM clause to evaluate scalar expressions and test server connectivity."
   },
   {
@@ -5050,12 +5050,12 @@ window.MCQS_VAULT_500 = [
     "tag": "🍡 Quick Snack",
     "question": "[SELECT #11] What is the relational algebra operation performed by the SELECT clause when picking specific columns? (Scenario Variant 3)",
     "options": [
-      "Projection (choosing which vertical attributes appear in the output relation)",
-      "Selection (filtering rows)",
       "Cartesian Product (joining relations)",
-      "Union (combining sets)"
+      "Union (combining sets)",
+      "Projection (choosing which vertical attributes appear in the output relation)",
+      "Selection (filtering rows)"
     ],
-    "correctIndex": 0,
+    "correctIndex": 2,
     "explanation": "In relational algebra, SELECT performs Projection (represented by the Greek letter π), while the WHERE clause performs Selection (represented by σ)."
   },
   {
@@ -5064,12 +5064,12 @@ window.MCQS_VAULT_500 = [
     "tag": "⚡ Gotcha Trap",
     "question": "[SELECT #12] Why is \"SELECT *\" considered a dangerous anti-pattern in high-throughput production backends? (Scenario Variant 3)",
     "options": [
-      "It breaks covering indexes, increases network I/O payload, and breaks downstream applications if columns are added/removed",
+      "It automatically locks the entire database cluster",
       "It causes database disk corruption",
-      "SQL compilers cannot compile SELECT *",
-      "It automatically locks the entire database cluster"
+      "It breaks covering indexes, increases network I/O payload, and breaks downstream applications if columns are added/removed",
+      "SQL compilers cannot compile SELECT *"
     ],
-    "correctIndex": 0,
+    "correctIndex": 2,
     "explanation": "SELECT * fetches unneeded large columns (e.g. TEXT, BLOB), defeats index-only scans, inflates memory serialization overhead, and introduces brittle coupling."
   },
   {
@@ -5078,12 +5078,12 @@ window.MCQS_VAULT_500 = [
     "tag": "🐱 Brain Bender",
     "question": "[SELECT #13] What is the scope and lifecycle of a column alias created with \"SELECT col AS my_alias\"? (Scenario Variant 3)",
     "options": [
+      "It is only available inside stored procedures",
       "It is available in ORDER BY, GROUP BY (in some engines), and downstream outer queries, but NOT in WHERE or FROM",
       "It is globally persisted as a new database view",
-      "It is only available inside stored procedures",
       "It is available everywhere including FROM and WHERE"
     ],
-    "correctIndex": 0,
+    "correctIndex": 1,
     "explanation": "Column aliases are born in SELECT. They are accessible in clauses that execute AFTER SELECT (ORDER BY), but not in clauses that execute BEFORE SELECT (FROM, WHERE)."
   },
   {
@@ -5093,9 +5093,9 @@ window.MCQS_VAULT_500 = [
     "question": "[SELECT #14] Can a SELECT clause contain a scalar subquery that computes a value per row? (Scenario Variant 3)",
     "options": [
       "Yes, scalar subqueries returning a single value per row can be projected directly in SELECT",
+      "Only in NoSQL databases",
       "No, subqueries are strictly restricted to the FROM clause",
-      "Only if the subquery returns at least 10 rows",
-      "Only in NoSQL databases"
+      "Only if the subquery returns at least 10 rows"
     ],
     "correctIndex": 0,
     "explanation": "Correlated scalar subqueries in SELECT are valid, though they must return at most 1 row and 1 column, and can incur O(N) performance overhead."
@@ -5106,12 +5106,12 @@ window.MCQS_VAULT_500 = [
     "tag": "🏆 Senior Staff",
     "question": "[SELECT #15] What does \"SELECT 1;\" return in relational database engines? (Scenario Variant 3)",
     "options": [
+      "NULL",
       "A single-row, single-column result table containing the integer value 1",
       "A syntax error because no FROM clause was specified",
-      "The first row of the primary database table",
-      "NULL"
+      "The first row of the primary database table"
     ],
-    "correctIndex": 0,
+    "correctIndex": 1,
     "explanation": "Standard SQL engines (PostgreSQL, MySQL, SQLite) permit SELECT without a FROM clause to evaluate scalar expressions and test server connectivity."
   },
   {
@@ -5120,12 +5120,12 @@ window.MCQS_VAULT_500 = [
     "tag": "🍡 Quick Snack",
     "question": "[SELECT #16] What is the relational algebra operation performed by the SELECT clause when picking specific columns? (Scenario Variant 4)",
     "options": [
-      "Projection (choosing which vertical attributes appear in the output relation)",
-      "Selection (filtering rows)",
+      "Union (combining sets)",
       "Cartesian Product (joining relations)",
-      "Union (combining sets)"
+      "Projection (choosing which vertical attributes appear in the output relation)",
+      "Selection (filtering rows)"
     ],
-    "correctIndex": 0,
+    "correctIndex": 2,
     "explanation": "In relational algebra, SELECT performs Projection (represented by the Greek letter π), while the WHERE clause performs Selection (represented by σ)."
   },
   {
@@ -5134,12 +5134,12 @@ window.MCQS_VAULT_500 = [
     "tag": "⚡ Gotcha Trap",
     "question": "[SELECT #17] Why is \"SELECT *\" considered a dangerous anti-pattern in high-throughput production backends? (Scenario Variant 4)",
     "options": [
-      "It breaks covering indexes, increases network I/O payload, and breaks downstream applications if columns are added/removed",
       "It causes database disk corruption",
-      "SQL compilers cannot compile SELECT *",
-      "It automatically locks the entire database cluster"
+      "It breaks covering indexes, increases network I/O payload, and breaks downstream applications if columns are added/removed",
+      "It automatically locks the entire database cluster",
+      "SQL compilers cannot compile SELECT *"
     ],
-    "correctIndex": 0,
+    "correctIndex": 1,
     "explanation": "SELECT * fetches unneeded large columns (e.g. TEXT, BLOB), defeats index-only scans, inflates memory serialization overhead, and introduces brittle coupling."
   },
   {
@@ -5148,12 +5148,12 @@ window.MCQS_VAULT_500 = [
     "tag": "🐱 Brain Bender",
     "question": "[SELECT #18] What is the scope and lifecycle of a column alias created with \"SELECT col AS my_alias\"? (Scenario Variant 4)",
     "options": [
-      "It is available in ORDER BY, GROUP BY (in some engines), and downstream outer queries, but NOT in WHERE or FROM",
       "It is globally persisted as a new database view",
+      "It is available in ORDER BY, GROUP BY (in some engines), and downstream outer queries, but NOT in WHERE or FROM",
       "It is only available inside stored procedures",
       "It is available everywhere including FROM and WHERE"
     ],
-    "correctIndex": 0,
+    "correctIndex": 1,
     "explanation": "Column aliases are born in SELECT. They are accessible in clauses that execute AFTER SELECT (ORDER BY), but not in clauses that execute BEFORE SELECT (FROM, WHERE)."
   },
   {
@@ -5162,12 +5162,12 @@ window.MCQS_VAULT_500 = [
     "tag": "🎯 Core Concept",
     "question": "[SELECT #19] Can a SELECT clause contain a scalar subquery that computes a value per row? (Scenario Variant 4)",
     "options": [
-      "Yes, scalar subqueries returning a single value per row can be projected directly in SELECT",
-      "No, subqueries are strictly restricted to the FROM clause",
       "Only if the subquery returns at least 10 rows",
-      "Only in NoSQL databases"
+      "Only in NoSQL databases",
+      "Yes, scalar subqueries returning a single value per row can be projected directly in SELECT",
+      "No, subqueries are strictly restricted to the FROM clause"
     ],
-    "correctIndex": 0,
+    "correctIndex": 2,
     "explanation": "Correlated scalar subqueries in SELECT are valid, though they must return at most 1 row and 1 column, and can incur O(N) performance overhead."
   },
   {
@@ -5176,12 +5176,12 @@ window.MCQS_VAULT_500 = [
     "tag": "🏆 Senior Staff",
     "question": "[SELECT #20] What does \"SELECT 1;\" return in relational database engines? (Scenario Variant 4)",
     "options": [
-      "A single-row, single-column result table containing the integer value 1",
+      "NULL",
       "A syntax error because no FROM clause was specified",
-      "The first row of the primary database table",
-      "NULL"
+      "A single-row, single-column result table containing the integer value 1",
+      "The first row of the primary database table"
     ],
-    "correctIndex": 0,
+    "correctIndex": 2,
     "explanation": "Standard SQL engines (PostgreSQL, MySQL, SQLite) permit SELECT without a FROM clause to evaluate scalar expressions and test server connectivity."
   },
   {
@@ -5190,12 +5190,12 @@ window.MCQS_VAULT_500 = [
     "tag": "🍡 Quick Snack",
     "question": "[SELECT #21] What is the relational algebra operation performed by the SELECT clause when picking specific columns? (Scenario Variant 5)",
     "options": [
+      "Union (combining sets)",
       "Projection (choosing which vertical attributes appear in the output relation)",
       "Selection (filtering rows)",
-      "Cartesian Product (joining relations)",
-      "Union (combining sets)"
+      "Cartesian Product (joining relations)"
     ],
-    "correctIndex": 0,
+    "correctIndex": 1,
     "explanation": "In relational algebra, SELECT performs Projection (represented by the Greek letter π), while the WHERE clause performs Selection (represented by σ)."
   },
   {
@@ -5205,8 +5205,8 @@ window.MCQS_VAULT_500 = [
     "question": "[SELECT #22] Why is \"SELECT *\" considered a dangerous anti-pattern in high-throughput production backends? (Scenario Variant 5)",
     "options": [
       "It breaks covering indexes, increases network I/O payload, and breaks downstream applications if columns are added/removed",
-      "It causes database disk corruption",
       "SQL compilers cannot compile SELECT *",
+      "It causes database disk corruption",
       "It automatically locks the entire database cluster"
     ],
     "correctIndex": 0,
@@ -5218,12 +5218,12 @@ window.MCQS_VAULT_500 = [
     "tag": "🐱 Brain Bender",
     "question": "[SELECT #23] What is the scope and lifecycle of a column alias created with \"SELECT col AS my_alias\"? (Scenario Variant 5)",
     "options": [
-      "It is available in ORDER BY, GROUP BY (in some engines), and downstream outer queries, but NOT in WHERE or FROM",
+      "It is available everywhere including FROM and WHERE",
       "It is globally persisted as a new database view",
-      "It is only available inside stored procedures",
-      "It is available everywhere including FROM and WHERE"
+      "It is available in ORDER BY, GROUP BY (in some engines), and downstream outer queries, but NOT in WHERE or FROM",
+      "It is only available inside stored procedures"
     ],
-    "correctIndex": 0,
+    "correctIndex": 2,
     "explanation": "Column aliases are born in SELECT. They are accessible in clauses that execute AFTER SELECT (ORDER BY), but not in clauses that execute BEFORE SELECT (FROM, WHERE)."
   },
   {
@@ -5232,12 +5232,12 @@ window.MCQS_VAULT_500 = [
     "tag": "🎯 Core Concept",
     "question": "[SELECT #24] Can a SELECT clause contain a scalar subquery that computes a value per row? (Scenario Variant 5)",
     "options": [
-      "Yes, scalar subqueries returning a single value per row can be projected directly in SELECT",
+      "Only in NoSQL databases",
       "No, subqueries are strictly restricted to the FROM clause",
       "Only if the subquery returns at least 10 rows",
-      "Only in NoSQL databases"
+      "Yes, scalar subqueries returning a single value per row can be projected directly in SELECT"
     ],
-    "correctIndex": 0,
+    "correctIndex": 3,
     "explanation": "Correlated scalar subqueries in SELECT are valid, though they must return at most 1 row and 1 column, and can incur O(N) performance overhead."
   },
   {
@@ -5246,12 +5246,12 @@ window.MCQS_VAULT_500 = [
     "tag": "🏆 Senior Staff",
     "question": "[SELECT #25] What does \"SELECT 1;\" return in relational database engines? (Scenario Variant 5)",
     "options": [
-      "A single-row, single-column result table containing the integer value 1",
+      "NULL",
       "A syntax error because no FROM clause was specified",
       "The first row of the primary database table",
-      "NULL"
+      "A single-row, single-column result table containing the integer value 1"
     ],
-    "correctIndex": 0,
+    "correctIndex": 3,
     "explanation": "Standard SQL engines (PostgreSQL, MySQL, SQLite) permit SELECT without a FROM clause to evaluate scalar expressions and test server connectivity."
   },
   {
@@ -5260,12 +5260,12 @@ window.MCQS_VAULT_500 = [
     "tag": "🍡 Quick Snack",
     "question": "[SELECT #26] What is the relational algebra operation performed by the SELECT clause when picking specific columns? (Scenario Variant 6)",
     "options": [
-      "Projection (choosing which vertical attributes appear in the output relation)",
-      "Selection (filtering rows)",
       "Cartesian Product (joining relations)",
-      "Union (combining sets)"
+      "Union (combining sets)",
+      "Selection (filtering rows)",
+      "Projection (choosing which vertical attributes appear in the output relation)"
     ],
-    "correctIndex": 0,
+    "correctIndex": 3,
     "explanation": "In relational algebra, SELECT performs Projection (represented by the Greek letter π), while the WHERE clause performs Selection (represented by σ)."
   },
   {
@@ -5274,12 +5274,12 @@ window.MCQS_VAULT_500 = [
     "tag": "⚡ Gotcha Trap",
     "question": "[SELECT #27] Why is \"SELECT *\" considered a dangerous anti-pattern in high-throughput production backends? (Scenario Variant 6)",
     "options": [
-      "It breaks covering indexes, increases network I/O payload, and breaks downstream applications if columns are added/removed",
-      "It causes database disk corruption",
+      "It automatically locks the entire database cluster",
       "SQL compilers cannot compile SELECT *",
-      "It automatically locks the entire database cluster"
+      "It causes database disk corruption",
+      "It breaks covering indexes, increases network I/O payload, and breaks downstream applications if columns are added/removed"
     ],
-    "correctIndex": 0,
+    "correctIndex": 3,
     "explanation": "SELECT * fetches unneeded large columns (e.g. TEXT, BLOB), defeats index-only scans, inflates memory serialization overhead, and introduces brittle coupling."
   },
   {
@@ -5288,12 +5288,12 @@ window.MCQS_VAULT_500 = [
     "tag": "🐱 Brain Bender",
     "question": "[SELECT #28] What is the scope and lifecycle of a column alias created with \"SELECT col AS my_alias\"? (Scenario Variant 6)",
     "options": [
+      "It is available everywhere including FROM and WHERE",
       "It is available in ORDER BY, GROUP BY (in some engines), and downstream outer queries, but NOT in WHERE or FROM",
       "It is globally persisted as a new database view",
-      "It is only available inside stored procedures",
-      "It is available everywhere including FROM and WHERE"
+      "It is only available inside stored procedures"
     ],
-    "correctIndex": 0,
+    "correctIndex": 1,
     "explanation": "Column aliases are born in SELECT. They are accessible in clauses that execute AFTER SELECT (ORDER BY), but not in clauses that execute BEFORE SELECT (FROM, WHERE)."
   },
   {
@@ -5303,9 +5303,9 @@ window.MCQS_VAULT_500 = [
     "question": "[SELECT #29] Can a SELECT clause contain a scalar subquery that computes a value per row? (Scenario Variant 6)",
     "options": [
       "Yes, scalar subqueries returning a single value per row can be projected directly in SELECT",
-      "No, subqueries are strictly restricted to the FROM clause",
+      "Only in NoSQL databases",
       "Only if the subquery returns at least 10 rows",
-      "Only in NoSQL databases"
+      "No, subqueries are strictly restricted to the FROM clause"
     ],
     "correctIndex": 0,
     "explanation": "Correlated scalar subqueries in SELECT are valid, though they must return at most 1 row and 1 column, and can incur O(N) performance overhead."
@@ -5316,12 +5316,12 @@ window.MCQS_VAULT_500 = [
     "tag": "🏆 Senior Staff",
     "question": "[SELECT #30] What does \"SELECT 1;\" return in relational database engines? (Scenario Variant 6)",
     "options": [
-      "A single-row, single-column result table containing the integer value 1",
-      "A syntax error because no FROM clause was specified",
+      "NULL",
       "The first row of the primary database table",
-      "NULL"
+      "A single-row, single-column result table containing the integer value 1",
+      "A syntax error because no FROM clause was specified"
     ],
-    "correctIndex": 0,
+    "correctIndex": 2,
     "explanation": "Standard SQL engines (PostgreSQL, MySQL, SQLite) permit SELECT without a FROM clause to evaluate scalar expressions and test server connectivity."
   },
   {
@@ -5331,9 +5331,9 @@ window.MCQS_VAULT_500 = [
     "question": "[SELECT #31] What is the relational algebra operation performed by the SELECT clause when picking specific columns? (Scenario Variant 7)",
     "options": [
       "Projection (choosing which vertical attributes appear in the output relation)",
-      "Selection (filtering rows)",
       "Cartesian Product (joining relations)",
-      "Union (combining sets)"
+      "Union (combining sets)",
+      "Selection (filtering rows)"
     ],
     "correctIndex": 0,
     "explanation": "In relational algebra, SELECT performs Projection (represented by the Greek letter π), while the WHERE clause performs Selection (represented by σ)."
@@ -5344,12 +5344,12 @@ window.MCQS_VAULT_500 = [
     "tag": "⚡ Gotcha Trap",
     "question": "[SELECT #32] Why is \"SELECT *\" considered a dangerous anti-pattern in high-throughput production backends? (Scenario Variant 7)",
     "options": [
-      "It breaks covering indexes, increases network I/O payload, and breaks downstream applications if columns are added/removed",
-      "It causes database disk corruption",
+      "It automatically locks the entire database cluster",
       "SQL compilers cannot compile SELECT *",
-      "It automatically locks the entire database cluster"
+      "It causes database disk corruption",
+      "It breaks covering indexes, increases network I/O payload, and breaks downstream applications if columns are added/removed"
     ],
-    "correctIndex": 0,
+    "correctIndex": 3,
     "explanation": "SELECT * fetches unneeded large columns (e.g. TEXT, BLOB), defeats index-only scans, inflates memory serialization overhead, and introduces brittle coupling."
   },
   {
@@ -5359,9 +5359,9 @@ window.MCQS_VAULT_500 = [
     "question": "[SELECT #33] What is the scope and lifecycle of a column alias created with \"SELECT col AS my_alias\"? (Scenario Variant 7)",
     "options": [
       "It is available in ORDER BY, GROUP BY (in some engines), and downstream outer queries, but NOT in WHERE or FROM",
-      "It is globally persisted as a new database view",
       "It is only available inside stored procedures",
-      "It is available everywhere including FROM and WHERE"
+      "It is available everywhere including FROM and WHERE",
+      "It is globally persisted as a new database view"
     ],
     "correctIndex": 0,
     "explanation": "Column aliases are born in SELECT. They are accessible in clauses that execute AFTER SELECT (ORDER BY), but not in clauses that execute BEFORE SELECT (FROM, WHERE)."
@@ -5372,12 +5372,12 @@ window.MCQS_VAULT_500 = [
     "tag": "🎯 Core Concept",
     "question": "[SELECT #34] Can a SELECT clause contain a scalar subquery that computes a value per row? (Scenario Variant 7)",
     "options": [
-      "Yes, scalar subqueries returning a single value per row can be projected directly in SELECT",
-      "No, subqueries are strictly restricted to the FROM clause",
+      "Only in NoSQL databases",
       "Only if the subquery returns at least 10 rows",
-      "Only in NoSQL databases"
+      "No, subqueries are strictly restricted to the FROM clause",
+      "Yes, scalar subqueries returning a single value per row can be projected directly in SELECT"
     ],
-    "correctIndex": 0,
+    "correctIndex": 3,
     "explanation": "Correlated scalar subqueries in SELECT are valid, though they must return at most 1 row and 1 column, and can incur O(N) performance overhead."
   },
   {
@@ -5388,8 +5388,8 @@ window.MCQS_VAULT_500 = [
     "options": [
       "A single-row, single-column result table containing the integer value 1",
       "A syntax error because no FROM clause was specified",
-      "The first row of the primary database table",
-      "NULL"
+      "NULL",
+      "The first row of the primary database table"
     ],
     "correctIndex": 0,
     "explanation": "Standard SQL engines (PostgreSQL, MySQL, SQLite) permit SELECT without a FROM clause to evaluate scalar expressions and test server connectivity."
@@ -5400,12 +5400,12 @@ window.MCQS_VAULT_500 = [
     "tag": "🍡 Quick Snack",
     "question": "[SELECT #36] What is the relational algebra operation performed by the SELECT clause when picking specific columns? (Scenario Variant 8)",
     "options": [
-      "Projection (choosing which vertical attributes appear in the output relation)",
-      "Selection (filtering rows)",
+      "Union (combining sets)",
       "Cartesian Product (joining relations)",
-      "Union (combining sets)"
+      "Projection (choosing which vertical attributes appear in the output relation)",
+      "Selection (filtering rows)"
     ],
-    "correctIndex": 0,
+    "correctIndex": 2,
     "explanation": "In relational algebra, SELECT performs Projection (represented by the Greek letter π), while the WHERE clause performs Selection (represented by σ)."
   },
   {
@@ -5414,12 +5414,12 @@ window.MCQS_VAULT_500 = [
     "tag": "⚡ Gotcha Trap",
     "question": "[SELECT #37] Why is \"SELECT *\" considered a dangerous anti-pattern in high-throughput production backends? (Scenario Variant 8)",
     "options": [
-      "It breaks covering indexes, increases network I/O payload, and breaks downstream applications if columns are added/removed",
-      "It causes database disk corruption",
+      "It automatically locks the entire database cluster",
       "SQL compilers cannot compile SELECT *",
-      "It automatically locks the entire database cluster"
+      "It causes database disk corruption",
+      "It breaks covering indexes, increases network I/O payload, and breaks downstream applications if columns are added/removed"
     ],
-    "correctIndex": 0,
+    "correctIndex": 3,
     "explanation": "SELECT * fetches unneeded large columns (e.g. TEXT, BLOB), defeats index-only scans, inflates memory serialization overhead, and introduces brittle coupling."
   },
   {
@@ -5429,9 +5429,9 @@ window.MCQS_VAULT_500 = [
     "question": "[SELECT #38] What is the scope and lifecycle of a column alias created with \"SELECT col AS my_alias\"? (Scenario Variant 8)",
     "options": [
       "It is available in ORDER BY, GROUP BY (in some engines), and downstream outer queries, but NOT in WHERE or FROM",
+      "It is available everywhere including FROM and WHERE",
       "It is globally persisted as a new database view",
-      "It is only available inside stored procedures",
-      "It is available everywhere including FROM and WHERE"
+      "It is only available inside stored procedures"
     ],
     "correctIndex": 0,
     "explanation": "Column aliases are born in SELECT. They are accessible in clauses that execute AFTER SELECT (ORDER BY), but not in clauses that execute BEFORE SELECT (FROM, WHERE)."
@@ -5443,9 +5443,9 @@ window.MCQS_VAULT_500 = [
     "question": "[SELECT #39] Can a SELECT clause contain a scalar subquery that computes a value per row? (Scenario Variant 8)",
     "options": [
       "Yes, scalar subqueries returning a single value per row can be projected directly in SELECT",
-      "No, subqueries are strictly restricted to the FROM clause",
+      "Only in NoSQL databases",
       "Only if the subquery returns at least 10 rows",
-      "Only in NoSQL databases"
+      "No, subqueries are strictly restricted to the FROM clause"
     ],
     "correctIndex": 0,
     "explanation": "Correlated scalar subqueries in SELECT are valid, though they must return at most 1 row and 1 column, and can incur O(N) performance overhead."
@@ -5456,12 +5456,12 @@ window.MCQS_VAULT_500 = [
     "tag": "🏆 Senior Staff",
     "question": "[SELECT #40] What does \"SELECT 1;\" return in relational database engines? (Scenario Variant 8)",
     "options": [
-      "A single-row, single-column result table containing the integer value 1",
-      "A syntax error because no FROM clause was specified",
       "The first row of the primary database table",
-      "NULL"
+      "A single-row, single-column result table containing the integer value 1",
+      "NULL",
+      "A syntax error because no FROM clause was specified"
     ],
-    "correctIndex": 0,
+    "correctIndex": 1,
     "explanation": "Standard SQL engines (PostgreSQL, MySQL, SQLite) permit SELECT without a FROM clause to evaluate scalar expressions and test server connectivity."
   },
   {
@@ -5470,12 +5470,12 @@ window.MCQS_VAULT_500 = [
     "tag": "🍡 Quick Snack",
     "question": "[SELECT #41] What is the relational algebra operation performed by the SELECT clause when picking specific columns? (Scenario Variant 9)",
     "options": [
-      "Projection (choosing which vertical attributes appear in the output relation)",
       "Selection (filtering rows)",
       "Cartesian Product (joining relations)",
-      "Union (combining sets)"
+      "Union (combining sets)",
+      "Projection (choosing which vertical attributes appear in the output relation)"
     ],
-    "correctIndex": 0,
+    "correctIndex": 3,
     "explanation": "In relational algebra, SELECT performs Projection (represented by the Greek letter π), while the WHERE clause performs Selection (represented by σ)."
   },
   {
@@ -5484,12 +5484,12 @@ window.MCQS_VAULT_500 = [
     "tag": "⚡ Gotcha Trap",
     "question": "[SELECT #42] Why is \"SELECT *\" considered a dangerous anti-pattern in high-throughput production backends? (Scenario Variant 9)",
     "options": [
-      "It breaks covering indexes, increases network I/O payload, and breaks downstream applications if columns are added/removed",
-      "It causes database disk corruption",
       "SQL compilers cannot compile SELECT *",
+      "It causes database disk corruption",
+      "It breaks covering indexes, increases network I/O payload, and breaks downstream applications if columns are added/removed",
       "It automatically locks the entire database cluster"
     ],
-    "correctIndex": 0,
+    "correctIndex": 2,
     "explanation": "SELECT * fetches unneeded large columns (e.g. TEXT, BLOB), defeats index-only scans, inflates memory serialization overhead, and introduces brittle coupling."
   },
   {
@@ -5498,12 +5498,12 @@ window.MCQS_VAULT_500 = [
     "tag": "🐱 Brain Bender",
     "question": "[SELECT #43] What is the scope and lifecycle of a column alias created with \"SELECT col AS my_alias\"? (Scenario Variant 9)",
     "options": [
-      "It is available in ORDER BY, GROUP BY (in some engines), and downstream outer queries, but NOT in WHERE or FROM",
+      "It is available everywhere including FROM and WHERE",
       "It is globally persisted as a new database view",
-      "It is only available inside stored procedures",
-      "It is available everywhere including FROM and WHERE"
+      "It is available in ORDER BY, GROUP BY (in some engines), and downstream outer queries, but NOT in WHERE or FROM",
+      "It is only available inside stored procedures"
     ],
-    "correctIndex": 0,
+    "correctIndex": 2,
     "explanation": "Column aliases are born in SELECT. They are accessible in clauses that execute AFTER SELECT (ORDER BY), but not in clauses that execute BEFORE SELECT (FROM, WHERE)."
   },
   {
@@ -5512,12 +5512,12 @@ window.MCQS_VAULT_500 = [
     "tag": "🎯 Core Concept",
     "question": "[SELECT #44] Can a SELECT clause contain a scalar subquery that computes a value per row? (Scenario Variant 9)",
     "options": [
-      "Yes, scalar subqueries returning a single value per row can be projected directly in SELECT",
-      "No, subqueries are strictly restricted to the FROM clause",
       "Only if the subquery returns at least 10 rows",
-      "Only in NoSQL databases"
+      "No, subqueries are strictly restricted to the FROM clause",
+      "Only in NoSQL databases",
+      "Yes, scalar subqueries returning a single value per row can be projected directly in SELECT"
     ],
-    "correctIndex": 0,
+    "correctIndex": 3,
     "explanation": "Correlated scalar subqueries in SELECT are valid, though they must return at most 1 row and 1 column, and can incur O(N) performance overhead."
   },
   {
@@ -5526,12 +5526,12 @@ window.MCQS_VAULT_500 = [
     "tag": "🏆 Senior Staff",
     "question": "[SELECT #45] What does \"SELECT 1;\" return in relational database engines? (Scenario Variant 9)",
     "options": [
-      "A single-row, single-column result table containing the integer value 1",
       "A syntax error because no FROM clause was specified",
-      "The first row of the primary database table",
-      "NULL"
+      "NULL",
+      "A single-row, single-column result table containing the integer value 1",
+      "The first row of the primary database table"
     ],
-    "correctIndex": 0,
+    "correctIndex": 2,
     "explanation": "Standard SQL engines (PostgreSQL, MySQL, SQLite) permit SELECT without a FROM clause to evaluate scalar expressions and test server connectivity."
   },
   {
@@ -5540,12 +5540,12 @@ window.MCQS_VAULT_500 = [
     "tag": "🍡 Quick Snack",
     "question": "[SELECT #46] What is the relational algebra operation performed by the SELECT clause when picking specific columns? (Scenario Variant 10)",
     "options": [
-      "Projection (choosing which vertical attributes appear in the output relation)",
-      "Selection (filtering rows)",
+      "Union (combining sets)",
       "Cartesian Product (joining relations)",
-      "Union (combining sets)"
+      "Projection (choosing which vertical attributes appear in the output relation)",
+      "Selection (filtering rows)"
     ],
-    "correctIndex": 0,
+    "correctIndex": 2,
     "explanation": "In relational algebra, SELECT performs Projection (represented by the Greek letter π), while the WHERE clause performs Selection (represented by σ)."
   },
   {
@@ -5554,12 +5554,12 @@ window.MCQS_VAULT_500 = [
     "tag": "⚡ Gotcha Trap",
     "question": "[SELECT #47] Why is \"SELECT *\" considered a dangerous anti-pattern in high-throughput production backends? (Scenario Variant 10)",
     "options": [
-      "It breaks covering indexes, increases network I/O payload, and breaks downstream applications if columns are added/removed",
-      "It causes database disk corruption",
+      "It automatically locks the entire database cluster",
       "SQL compilers cannot compile SELECT *",
-      "It automatically locks the entire database cluster"
+      "It causes database disk corruption",
+      "It breaks covering indexes, increases network I/O payload, and breaks downstream applications if columns are added/removed"
     ],
-    "correctIndex": 0,
+    "correctIndex": 3,
     "explanation": "SELECT * fetches unneeded large columns (e.g. TEXT, BLOB), defeats index-only scans, inflates memory serialization overhead, and introduces brittle coupling."
   },
   {
@@ -5568,12 +5568,12 @@ window.MCQS_VAULT_500 = [
     "tag": "🐱 Brain Bender",
     "question": "[SELECT #48] What is the scope and lifecycle of a column alias created with \"SELECT col AS my_alias\"? (Scenario Variant 10)",
     "options": [
-      "It is available in ORDER BY, GROUP BY (in some engines), and downstream outer queries, but NOT in WHERE or FROM",
       "It is globally persisted as a new database view",
-      "It is only available inside stored procedures",
-      "It is available everywhere including FROM and WHERE"
+      "It is available everywhere including FROM and WHERE",
+      "It is available in ORDER BY, GROUP BY (in some engines), and downstream outer queries, but NOT in WHERE or FROM",
+      "It is only available inside stored procedures"
     ],
-    "correctIndex": 0,
+    "correctIndex": 2,
     "explanation": "Column aliases are born in SELECT. They are accessible in clauses that execute AFTER SELECT (ORDER BY), but not in clauses that execute BEFORE SELECT (FROM, WHERE)."
   },
   {
@@ -5583,9 +5583,9 @@ window.MCQS_VAULT_500 = [
     "question": "[SELECT #49] Can a SELECT clause contain a scalar subquery that computes a value per row? (Scenario Variant 10)",
     "options": [
       "Yes, scalar subqueries returning a single value per row can be projected directly in SELECT",
-      "No, subqueries are strictly restricted to the FROM clause",
+      "Only in NoSQL databases",
       "Only if the subquery returns at least 10 rows",
-      "Only in NoSQL databases"
+      "No, subqueries are strictly restricted to the FROM clause"
     ],
     "correctIndex": 0,
     "explanation": "Correlated scalar subqueries in SELECT are valid, though they must return at most 1 row and 1 column, and can incur O(N) performance overhead."
@@ -5596,12 +5596,12 @@ window.MCQS_VAULT_500 = [
     "tag": "🏆 Senior Staff",
     "question": "[SELECT #50] What does \"SELECT 1;\" return in relational database engines? (Scenario Variant 10)",
     "options": [
-      "A single-row, single-column result table containing the integer value 1",
-      "A syntax error because no FROM clause was specified",
       "The first row of the primary database table",
-      "NULL"
+      "NULL",
+      "A single-row, single-column result table containing the integer value 1",
+      "A syntax error because no FROM clause was specified"
     ],
-    "correctIndex": 0,
+    "correctIndex": 2,
     "explanation": "Standard SQL engines (PostgreSQL, MySQL, SQLite) permit SELECT without a FROM clause to evaluate scalar expressions and test server connectivity."
   },
   {
@@ -5610,12 +5610,12 @@ window.MCQS_VAULT_500 = [
     "tag": "🍡 Quick Snack",
     "question": "[FROM #1] Why does the FROM clause execute as Step 01 in the physical query lifecycle?",
     "options": [
-      "The query engine must first bind table storage and memory buffers to establish available columns and data types",
-      "Because the word FROM comes first alphabetically among keywords",
       "To verify user write permissions on disk",
-      "To format JSON network packets"
+      "To format JSON network packets",
+      "The query engine must first bind table storage and memory buffers to establish available columns and data types",
+      "Because the word FROM comes first alphabetically among keywords"
     ],
-    "correctIndex": 0,
+    "correctIndex": 2,
     "explanation": "Before a query engine can filter (WHERE), calculate (SELECT), or sort (ORDER BY), it must identify the physical relations on disk and load their column schemas."
   },
   {
@@ -5624,12 +5624,12 @@ window.MCQS_VAULT_500 = [
     "tag": "⚡ Gotcha Trap",
     "question": "[FROM #2] What is a \"derived table\" in the context of the FROM clause?",
     "options": [
-      "A subquery placed inside the FROM clause that produces a temporary virtual relation with a required alias",
       "A table created with the CREATE TABLE command",
-      "A physical disk backup partition",
-      "A materialized view refreshed hourly"
+      "A materialized view refreshed hourly",
+      "A subquery placed inside the FROM clause that produces a temporary virtual relation with a required alias",
+      "A physical disk backup partition"
     ],
-    "correctIndex": 0,
+    "correctIndex": 2,
     "explanation": "A derived table (or inline view) is a subquery in the FROM clause, e.g., \"FROM (SELECT id FROM Users) AS u\". Most engines strictly require an alias."
   },
   {
@@ -5639,9 +5639,9 @@ window.MCQS_VAULT_500 = [
     "question": "[FROM #3] When aliasing a table in FROM (\"FROM Employees AS e\"), can you still refer to columns using the original table name \"Employees.salary\"?",
     "options": [
       "In standard SQL, once an alias is defined, the original table name is hidden and referencing it causes an error",
-      "Yes, both table name and alias remain simultaneously accessible everywhere",
+      "Only if the alias is in lowercase",
       "Only in the WHERE clause",
-      "Only if the alias is in lowercase"
+      "Yes, both table name and alias remain simultaneously accessible everywhere"
     ],
     "correctIndex": 0,
     "explanation": "In ANSI SQL, defining a table correlation name (alias) hides the underlying base table name within the scope of that query block."
@@ -5652,12 +5652,12 @@ window.MCQS_VAULT_500 = [
     "tag": "🎯 Core Concept",
     "question": "[FROM #4] What is the physical result of listing two tables in FROM separated by a comma without a WHERE clause (\"FROM TableA, TableB\")?",
     "options": [
-      "A Cartesian Product (CROSS JOIN) pairing every row of TableA with every row of TableB (RowsA * RowsB)",
       "An INNER JOIN on matching primary keys",
-      "A UNION of both tables",
-      "A syntax error"
+      "A Cartesian Product (CROSS JOIN) pairing every row of TableA with every row of TableB (RowsA * RowsB)",
+      "A syntax error",
+      "A UNION of both tables"
     ],
-    "correctIndex": 0,
+    "correctIndex": 1,
     "explanation": "Comma-separated tables in FROM evaluate to a Cartesian product. If TableA has 1,000 rows and TableB has 1,000 rows, the intermediate set is 1,000,000 rows."
   },
   {
@@ -5666,12 +5666,12 @@ window.MCQS_VAULT_500 = [
     "tag": "🏆 Senior Staff",
     "question": "[FROM #5] In Oracle SQL, what is the purpose of the built-in single-row table named \"DUAL\"?",
     "options": [
-      "It provides a dummy table source for FROM when evaluating pure expressions like \"SELECT SYSDATE FROM DUAL;\"",
-      "It duplicates all write transactions to a secondary replica",
+      "It is a temporary cache table that deletes itself upon disconnect",
       "It stores dual-key cryptographic certificates",
-      "It is a temporary cache table that deletes itself upon disconnect"
+      "It duplicates all write transactions to a secondary replica",
+      "It provides a dummy table source for FROM when evaluating pure expressions like \"SELECT SYSDATE FROM DUAL;\""
     ],
-    "correctIndex": 0,
+    "correctIndex": 3,
     "explanation": "In Oracle SQL, every SELECT query historically required a FROM clause. The DUAL table contains exactly 1 row and 1 column (DUMMY) for evaluating scalar expressions."
   },
   {
@@ -5680,12 +5680,12 @@ window.MCQS_VAULT_500 = [
     "tag": "🍡 Quick Snack",
     "question": "[FROM #6] Why does the FROM clause execute as Step 01 in the physical query lifecycle? (Scenario Variant 2)",
     "options": [
+      "To format JSON network packets",
       "The query engine must first bind table storage and memory buffers to establish available columns and data types",
       "Because the word FROM comes first alphabetically among keywords",
-      "To verify user write permissions on disk",
-      "To format JSON network packets"
+      "To verify user write permissions on disk"
     ],
-    "correctIndex": 0,
+    "correctIndex": 1,
     "explanation": "Before a query engine can filter (WHERE), calculate (SELECT), or sort (ORDER BY), it must identify the physical relations on disk and load their column schemas."
   },
   {
@@ -5694,12 +5694,12 @@ window.MCQS_VAULT_500 = [
     "tag": "⚡ Gotcha Trap",
     "question": "[FROM #7] What is a \"derived table\" in the context of the FROM clause? (Scenario Variant 2)",
     "options": [
-      "A subquery placed inside the FROM clause that produces a temporary virtual relation with a required alias",
+      "A materialized view refreshed hourly",
       "A table created with the CREATE TABLE command",
       "A physical disk backup partition",
-      "A materialized view refreshed hourly"
+      "A subquery placed inside the FROM clause that produces a temporary virtual relation with a required alias"
     ],
-    "correctIndex": 0,
+    "correctIndex": 3,
     "explanation": "A derived table (or inline view) is a subquery in the FROM clause, e.g., \"FROM (SELECT id FROM Users) AS u\". Most engines strictly require an alias."
   },
   {
@@ -5708,12 +5708,12 @@ window.MCQS_VAULT_500 = [
     "tag": "🐱 Brain Bender",
     "question": "[FROM #8] When aliasing a table in FROM (\"FROM Employees AS e\"), can you still refer to columns using the original table name \"Employees.salary\"? (Scenario Variant 2)",
     "options": [
-      "In standard SQL, once an alias is defined, the original table name is hidden and referencing it causes an error",
-      "Yes, both table name and alias remain simultaneously accessible everywhere",
       "Only in the WHERE clause",
-      "Only if the alias is in lowercase"
+      "Only if the alias is in lowercase",
+      "In standard SQL, once an alias is defined, the original table name is hidden and referencing it causes an error",
+      "Yes, both table name and alias remain simultaneously accessible everywhere"
     ],
-    "correctIndex": 0,
+    "correctIndex": 2,
     "explanation": "In ANSI SQL, defining a table correlation name (alias) hides the underlying base table name within the scope of that query block."
   },
   {
@@ -5722,12 +5722,12 @@ window.MCQS_VAULT_500 = [
     "tag": "🎯 Core Concept",
     "question": "[FROM #9] What is the physical result of listing two tables in FROM separated by a comma without a WHERE clause (\"FROM TableA, TableB\")? (Scenario Variant 2)",
     "options": [
-      "A Cartesian Product (CROSS JOIN) pairing every row of TableA with every row of TableB (RowsA * RowsB)",
-      "An INNER JOIN on matching primary keys",
       "A UNION of both tables",
-      "A syntax error"
+      "A syntax error",
+      "An INNER JOIN on matching primary keys",
+      "A Cartesian Product (CROSS JOIN) pairing every row of TableA with every row of TableB (RowsA * RowsB)"
     ],
-    "correctIndex": 0,
+    "correctIndex": 3,
     "explanation": "Comma-separated tables in FROM evaluate to a Cartesian product. If TableA has 1,000 rows and TableB has 1,000 rows, the intermediate set is 1,000,000 rows."
   },
   {
@@ -5736,12 +5736,12 @@ window.MCQS_VAULT_500 = [
     "tag": "🏆 Senior Staff",
     "question": "[FROM #10] In Oracle SQL, what is the purpose of the built-in single-row table named \"DUAL\"? (Scenario Variant 2)",
     "options": [
-      "It provides a dummy table source for FROM when evaluating pure expressions like \"SELECT SYSDATE FROM DUAL;\"",
       "It duplicates all write transactions to a secondary replica",
-      "It stores dual-key cryptographic certificates",
-      "It is a temporary cache table that deletes itself upon disconnect"
+      "It is a temporary cache table that deletes itself upon disconnect",
+      "It provides a dummy table source for FROM when evaluating pure expressions like \"SELECT SYSDATE FROM DUAL;\"",
+      "It stores dual-key cryptographic certificates"
     ],
-    "correctIndex": 0,
+    "correctIndex": 2,
     "explanation": "In Oracle SQL, every SELECT query historically required a FROM clause. The DUAL table contains exactly 1 row and 1 column (DUMMY) for evaluating scalar expressions."
   },
   {
@@ -5751,9 +5751,9 @@ window.MCQS_VAULT_500 = [
     "question": "[FROM #11] Why does the FROM clause execute as Step 01 in the physical query lifecycle? (Scenario Variant 3)",
     "options": [
       "The query engine must first bind table storage and memory buffers to establish available columns and data types",
-      "Because the word FROM comes first alphabetically among keywords",
       "To verify user write permissions on disk",
-      "To format JSON network packets"
+      "To format JSON network packets",
+      "Because the word FROM comes first alphabetically among keywords"
     ],
     "correctIndex": 0,
     "explanation": "Before a query engine can filter (WHERE), calculate (SELECT), or sort (ORDER BY), it must identify the physical relations on disk and load their column schemas."
@@ -5764,12 +5764,12 @@ window.MCQS_VAULT_500 = [
     "tag": "⚡ Gotcha Trap",
     "question": "[FROM #12] What is a \"derived table\" in the context of the FROM clause? (Scenario Variant 3)",
     "options": [
-      "A subquery placed inside the FROM clause that produces a temporary virtual relation with a required alias",
-      "A table created with the CREATE TABLE command",
       "A physical disk backup partition",
-      "A materialized view refreshed hourly"
+      "A subquery placed inside the FROM clause that produces a temporary virtual relation with a required alias",
+      "A materialized view refreshed hourly",
+      "A table created with the CREATE TABLE command"
     ],
-    "correctIndex": 0,
+    "correctIndex": 1,
     "explanation": "A derived table (or inline view) is a subquery in the FROM clause, e.g., \"FROM (SELECT id FROM Users) AS u\". Most engines strictly require an alias."
   },
   {
@@ -5778,12 +5778,12 @@ window.MCQS_VAULT_500 = [
     "tag": "🐱 Brain Bender",
     "question": "[FROM #13] When aliasing a table in FROM (\"FROM Employees AS e\"), can you still refer to columns using the original table name \"Employees.salary\"? (Scenario Variant 3)",
     "options": [
-      "In standard SQL, once an alias is defined, the original table name is hidden and referencing it causes an error",
-      "Yes, both table name and alias remain simultaneously accessible everywhere",
       "Only in the WHERE clause",
-      "Only if the alias is in lowercase"
+      "Only if the alias is in lowercase",
+      "Yes, both table name and alias remain simultaneously accessible everywhere",
+      "In standard SQL, once an alias is defined, the original table name is hidden and referencing it causes an error"
     ],
-    "correctIndex": 0,
+    "correctIndex": 3,
     "explanation": "In ANSI SQL, defining a table correlation name (alias) hides the underlying base table name within the scope of that query block."
   },
   {
@@ -5792,12 +5792,12 @@ window.MCQS_VAULT_500 = [
     "tag": "🎯 Core Concept",
     "question": "[FROM #14] What is the physical result of listing two tables in FROM separated by a comma without a WHERE clause (\"FROM TableA, TableB\")? (Scenario Variant 3)",
     "options": [
-      "A Cartesian Product (CROSS JOIN) pairing every row of TableA with every row of TableB (RowsA * RowsB)",
+      "A syntax error",
       "An INNER JOIN on matching primary keys",
       "A UNION of both tables",
-      "A syntax error"
+      "A Cartesian Product (CROSS JOIN) pairing every row of TableA with every row of TableB (RowsA * RowsB)"
     ],
-    "correctIndex": 0,
+    "correctIndex": 3,
     "explanation": "Comma-separated tables in FROM evaluate to a Cartesian product. If TableA has 1,000 rows and TableB has 1,000 rows, the intermediate set is 1,000,000 rows."
   },
   {
@@ -5807,8 +5807,8 @@ window.MCQS_VAULT_500 = [
     "question": "[FROM #15] In Oracle SQL, what is the purpose of the built-in single-row table named \"DUAL\"? (Scenario Variant 3)",
     "options": [
       "It provides a dummy table source for FROM when evaluating pure expressions like \"SELECT SYSDATE FROM DUAL;\"",
-      "It duplicates all write transactions to a secondary replica",
       "It stores dual-key cryptographic certificates",
+      "It duplicates all write transactions to a secondary replica",
       "It is a temporary cache table that deletes itself upon disconnect"
     ],
     "correctIndex": 0,
@@ -5820,12 +5820,12 @@ window.MCQS_VAULT_500 = [
     "tag": "🍡 Quick Snack",
     "question": "[FROM #16] Why does the FROM clause execute as Step 01 in the physical query lifecycle? (Scenario Variant 4)",
     "options": [
-      "The query engine must first bind table storage and memory buffers to establish available columns and data types",
-      "Because the word FROM comes first alphabetically among keywords",
       "To verify user write permissions on disk",
+      "Because the word FROM comes first alphabetically among keywords",
+      "The query engine must first bind table storage and memory buffers to establish available columns and data types",
       "To format JSON network packets"
     ],
-    "correctIndex": 0,
+    "correctIndex": 2,
     "explanation": "Before a query engine can filter (WHERE), calculate (SELECT), or sort (ORDER BY), it must identify the physical relations on disk and load their column schemas."
   },
   {
@@ -5834,12 +5834,12 @@ window.MCQS_VAULT_500 = [
     "tag": "⚡ Gotcha Trap",
     "question": "[FROM #17] What is a \"derived table\" in the context of the FROM clause? (Scenario Variant 4)",
     "options": [
-      "A subquery placed inside the FROM clause that produces a temporary virtual relation with a required alias",
       "A table created with the CREATE TABLE command",
-      "A physical disk backup partition",
-      "A materialized view refreshed hourly"
+      "A subquery placed inside the FROM clause that produces a temporary virtual relation with a required alias",
+      "A materialized view refreshed hourly",
+      "A physical disk backup partition"
     ],
-    "correctIndex": 0,
+    "correctIndex": 1,
     "explanation": "A derived table (or inline view) is a subquery in the FROM clause, e.g., \"FROM (SELECT id FROM Users) AS u\". Most engines strictly require an alias."
   },
   {
@@ -5850,8 +5850,8 @@ window.MCQS_VAULT_500 = [
     "options": [
       "In standard SQL, once an alias is defined, the original table name is hidden and referencing it causes an error",
       "Yes, both table name and alias remain simultaneously accessible everywhere",
-      "Only in the WHERE clause",
-      "Only if the alias is in lowercase"
+      "Only if the alias is in lowercase",
+      "Only in the WHERE clause"
     ],
     "correctIndex": 0,
     "explanation": "In ANSI SQL, defining a table correlation name (alias) hides the underlying base table name within the scope of that query block."
@@ -5862,12 +5862,12 @@ window.MCQS_VAULT_500 = [
     "tag": "🎯 Core Concept",
     "question": "[FROM #19] What is the physical result of listing two tables in FROM separated by a comma without a WHERE clause (\"FROM TableA, TableB\")? (Scenario Variant 4)",
     "options": [
-      "A Cartesian Product (CROSS JOIN) pairing every row of TableA with every row of TableB (RowsA * RowsB)",
       "An INNER JOIN on matching primary keys",
       "A UNION of both tables",
-      "A syntax error"
+      "A syntax error",
+      "A Cartesian Product (CROSS JOIN) pairing every row of TableA with every row of TableB (RowsA * RowsB)"
     ],
-    "correctIndex": 0,
+    "correctIndex": 3,
     "explanation": "Comma-separated tables in FROM evaluate to a Cartesian product. If TableA has 1,000 rows and TableB has 1,000 rows, the intermediate set is 1,000,000 rows."
   },
   {
@@ -5876,12 +5876,12 @@ window.MCQS_VAULT_500 = [
     "tag": "🏆 Senior Staff",
     "question": "[FROM #20] In Oracle SQL, what is the purpose of the built-in single-row table named \"DUAL\"? (Scenario Variant 4)",
     "options": [
-      "It provides a dummy table source for FROM when evaluating pure expressions like \"SELECT SYSDATE FROM DUAL;\"",
-      "It duplicates all write transactions to a secondary replica",
       "It stores dual-key cryptographic certificates",
-      "It is a temporary cache table that deletes itself upon disconnect"
+      "It is a temporary cache table that deletes itself upon disconnect",
+      "It provides a dummy table source for FROM when evaluating pure expressions like \"SELECT SYSDATE FROM DUAL;\"",
+      "It duplicates all write transactions to a secondary replica"
     ],
-    "correctIndex": 0,
+    "correctIndex": 2,
     "explanation": "In Oracle SQL, every SELECT query historically required a FROM clause. The DUAL table contains exactly 1 row and 1 column (DUMMY) for evaluating scalar expressions."
   },
   {
@@ -5891,9 +5891,9 @@ window.MCQS_VAULT_500 = [
     "question": "[FROM #21] Why does the FROM clause execute as Step 01 in the physical query lifecycle? (Scenario Variant 5)",
     "options": [
       "The query engine must first bind table storage and memory buffers to establish available columns and data types",
-      "Because the word FROM comes first alphabetically among keywords",
       "To verify user write permissions on disk",
-      "To format JSON network packets"
+      "To format JSON network packets",
+      "Because the word FROM comes first alphabetically among keywords"
     ],
     "correctIndex": 0,
     "explanation": "Before a query engine can filter (WHERE), calculate (SELECT), or sort (ORDER BY), it must identify the physical relations on disk and load their column schemas."
@@ -5905,9 +5905,9 @@ window.MCQS_VAULT_500 = [
     "question": "[FROM #22] What is a \"derived table\" in the context of the FROM clause? (Scenario Variant 5)",
     "options": [
       "A subquery placed inside the FROM clause that produces a temporary virtual relation with a required alias",
+      "A materialized view refreshed hourly",
       "A table created with the CREATE TABLE command",
-      "A physical disk backup partition",
-      "A materialized view refreshed hourly"
+      "A physical disk backup partition"
     ],
     "correctIndex": 0,
     "explanation": "A derived table (or inline view) is a subquery in the FROM clause, e.g., \"FROM (SELECT id FROM Users) AS u\". Most engines strictly require an alias."
@@ -5918,12 +5918,12 @@ window.MCQS_VAULT_500 = [
     "tag": "🐱 Brain Bender",
     "question": "[FROM #23] When aliasing a table in FROM (\"FROM Employees AS e\"), can you still refer to columns using the original table name \"Employees.salary\"? (Scenario Variant 5)",
     "options": [
-      "In standard SQL, once an alias is defined, the original table name is hidden and referencing it causes an error",
       "Yes, both table name and alias remain simultaneously accessible everywhere",
+      "Only if the alias is in lowercase",
       "Only in the WHERE clause",
-      "Only if the alias is in lowercase"
+      "In standard SQL, once an alias is defined, the original table name is hidden and referencing it causes an error"
     ],
-    "correctIndex": 0,
+    "correctIndex": 3,
     "explanation": "In ANSI SQL, defining a table correlation name (alias) hides the underlying base table name within the scope of that query block."
   },
   {
@@ -5946,12 +5946,12 @@ window.MCQS_VAULT_500 = [
     "tag": "🏆 Senior Staff",
     "question": "[FROM #25] In Oracle SQL, what is the purpose of the built-in single-row table named \"DUAL\"? (Scenario Variant 5)",
     "options": [
-      "It provides a dummy table source for FROM when evaluating pure expressions like \"SELECT SYSDATE FROM DUAL;\"",
-      "It duplicates all write transactions to a secondary replica",
+      "It is a temporary cache table that deletes itself upon disconnect",
       "It stores dual-key cryptographic certificates",
-      "It is a temporary cache table that deletes itself upon disconnect"
+      "It duplicates all write transactions to a secondary replica",
+      "It provides a dummy table source for FROM when evaluating pure expressions like \"SELECT SYSDATE FROM DUAL;\""
     ],
-    "correctIndex": 0,
+    "correctIndex": 3,
     "explanation": "In Oracle SQL, every SELECT query historically required a FROM clause. The DUAL table contains exactly 1 row and 1 column (DUMMY) for evaluating scalar expressions."
   },
   {
@@ -5960,12 +5960,12 @@ window.MCQS_VAULT_500 = [
     "tag": "🍡 Quick Snack",
     "question": "[FROM #26] Why does the FROM clause execute as Step 01 in the physical query lifecycle? (Scenario Variant 6)",
     "options": [
+      "To format JSON network packets",
       "The query engine must first bind table storage and memory buffers to establish available columns and data types",
-      "Because the word FROM comes first alphabetically among keywords",
       "To verify user write permissions on disk",
-      "To format JSON network packets"
+      "Because the word FROM comes first alphabetically among keywords"
     ],
-    "correctIndex": 0,
+    "correctIndex": 1,
     "explanation": "Before a query engine can filter (WHERE), calculate (SELECT), or sort (ORDER BY), it must identify the physical relations on disk and load their column schemas."
   },
   {
@@ -5974,12 +5974,12 @@ window.MCQS_VAULT_500 = [
     "tag": "⚡ Gotcha Trap",
     "question": "[FROM #27] What is a \"derived table\" in the context of the FROM clause? (Scenario Variant 6)",
     "options": [
+      "A materialized view refreshed hourly",
       "A subquery placed inside the FROM clause that produces a temporary virtual relation with a required alias",
-      "A table created with the CREATE TABLE command",
       "A physical disk backup partition",
-      "A materialized view refreshed hourly"
+      "A table created with the CREATE TABLE command"
     ],
-    "correctIndex": 0,
+    "correctIndex": 1,
     "explanation": "A derived table (or inline view) is a subquery in the FROM clause, e.g., \"FROM (SELECT id FROM Users) AS u\". Most engines strictly require an alias."
   },
   {
@@ -5989,9 +5989,9 @@ window.MCQS_VAULT_500 = [
     "question": "[FROM #28] When aliasing a table in FROM (\"FROM Employees AS e\"), can you still refer to columns using the original table name \"Employees.salary\"? (Scenario Variant 6)",
     "options": [
       "In standard SQL, once an alias is defined, the original table name is hidden and referencing it causes an error",
-      "Yes, both table name and alias remain simultaneously accessible everywhere",
       "Only in the WHERE clause",
-      "Only if the alias is in lowercase"
+      "Only if the alias is in lowercase",
+      "Yes, both table name and alias remain simultaneously accessible everywhere"
     ],
     "correctIndex": 0,
     "explanation": "In ANSI SQL, defining a table correlation name (alias) hides the underlying base table name within the scope of that query block."
@@ -6002,12 +6002,12 @@ window.MCQS_VAULT_500 = [
     "tag": "🎯 Core Concept",
     "question": "[FROM #29] What is the physical result of listing two tables in FROM separated by a comma without a WHERE clause (\"FROM TableA, TableB\")? (Scenario Variant 6)",
     "options": [
-      "A Cartesian Product (CROSS JOIN) pairing every row of TableA with every row of TableB (RowsA * RowsB)",
       "An INNER JOIN on matching primary keys",
-      "A UNION of both tables",
-      "A syntax error"
+      "A syntax error",
+      "A Cartesian Product (CROSS JOIN) pairing every row of TableA with every row of TableB (RowsA * RowsB)",
+      "A UNION of both tables"
     ],
-    "correctIndex": 0,
+    "correctIndex": 2,
     "explanation": "Comma-separated tables in FROM evaluate to a Cartesian product. If TableA has 1,000 rows and TableB has 1,000 rows, the intermediate set is 1,000,000 rows."
   },
   {
@@ -6016,12 +6016,12 @@ window.MCQS_VAULT_500 = [
     "tag": "🏆 Senior Staff",
     "question": "[FROM #30] In Oracle SQL, what is the purpose of the built-in single-row table named \"DUAL\"? (Scenario Variant 6)",
     "options": [
-      "It provides a dummy table source for FROM when evaluating pure expressions like \"SELECT SYSDATE FROM DUAL;\"",
-      "It duplicates all write transactions to a secondary replica",
       "It stores dual-key cryptographic certificates",
-      "It is a temporary cache table that deletes itself upon disconnect"
+      "It provides a dummy table source for FROM when evaluating pure expressions like \"SELECT SYSDATE FROM DUAL;\"",
+      "It is a temporary cache table that deletes itself upon disconnect",
+      "It duplicates all write transactions to a secondary replica"
     ],
-    "correctIndex": 0,
+    "correctIndex": 1,
     "explanation": "In Oracle SQL, every SELECT query historically required a FROM clause. The DUAL table contains exactly 1 row and 1 column (DUMMY) for evaluating scalar expressions."
   },
   {
@@ -6030,12 +6030,12 @@ window.MCQS_VAULT_500 = [
     "tag": "🍡 Quick Snack",
     "question": "[FROM #31] Why does the FROM clause execute as Step 01 in the physical query lifecycle? (Scenario Variant 7)",
     "options": [
-      "The query engine must first bind table storage and memory buffers to establish available columns and data types",
       "Because the word FROM comes first alphabetically among keywords",
+      "To format JSON network packets",
       "To verify user write permissions on disk",
-      "To format JSON network packets"
+      "The query engine must first bind table storage and memory buffers to establish available columns and data types"
     ],
-    "correctIndex": 0,
+    "correctIndex": 3,
     "explanation": "Before a query engine can filter (WHERE), calculate (SELECT), or sort (ORDER BY), it must identify the physical relations on disk and load their column schemas."
   },
   {
@@ -6044,12 +6044,12 @@ window.MCQS_VAULT_500 = [
     "tag": "⚡ Gotcha Trap",
     "question": "[FROM #32] What is a \"derived table\" in the context of the FROM clause? (Scenario Variant 7)",
     "options": [
-      "A subquery placed inside the FROM clause that produces a temporary virtual relation with a required alias",
-      "A table created with the CREATE TABLE command",
       "A physical disk backup partition",
-      "A materialized view refreshed hourly"
+      "A table created with the CREATE TABLE command",
+      "A materialized view refreshed hourly",
+      "A subquery placed inside the FROM clause that produces a temporary virtual relation with a required alias"
     ],
-    "correctIndex": 0,
+    "correctIndex": 3,
     "explanation": "A derived table (or inline view) is a subquery in the FROM clause, e.g., \"FROM (SELECT id FROM Users) AS u\". Most engines strictly require an alias."
   },
   {
@@ -6059,8 +6059,8 @@ window.MCQS_VAULT_500 = [
     "question": "[FROM #33] When aliasing a table in FROM (\"FROM Employees AS e\"), can you still refer to columns using the original table name \"Employees.salary\"? (Scenario Variant 7)",
     "options": [
       "In standard SQL, once an alias is defined, the original table name is hidden and referencing it causes an error",
-      "Yes, both table name and alias remain simultaneously accessible everywhere",
       "Only in the WHERE clause",
+      "Yes, both table name and alias remain simultaneously accessible everywhere",
       "Only if the alias is in lowercase"
     ],
     "correctIndex": 0,
@@ -6072,12 +6072,12 @@ window.MCQS_VAULT_500 = [
     "tag": "🎯 Core Concept",
     "question": "[FROM #34] What is the physical result of listing two tables in FROM separated by a comma without a WHERE clause (\"FROM TableA, TableB\")? (Scenario Variant 7)",
     "options": [
-      "A Cartesian Product (CROSS JOIN) pairing every row of TableA with every row of TableB (RowsA * RowsB)",
+      "A syntax error",
       "An INNER JOIN on matching primary keys",
-      "A UNION of both tables",
-      "A syntax error"
+      "A Cartesian Product (CROSS JOIN) pairing every row of TableA with every row of TableB (RowsA * RowsB)",
+      "A UNION of both tables"
     ],
-    "correctIndex": 0,
+    "correctIndex": 2,
     "explanation": "Comma-separated tables in FROM evaluate to a Cartesian product. If TableA has 1,000 rows and TableB has 1,000 rows, the intermediate set is 1,000,000 rows."
   },
   {
@@ -6086,12 +6086,12 @@ window.MCQS_VAULT_500 = [
     "tag": "🏆 Senior Staff",
     "question": "[FROM #35] In Oracle SQL, what is the purpose of the built-in single-row table named \"DUAL\"? (Scenario Variant 7)",
     "options": [
-      "It provides a dummy table source for FROM when evaluating pure expressions like \"SELECT SYSDATE FROM DUAL;\"",
-      "It duplicates all write transactions to a secondary replica",
       "It stores dual-key cryptographic certificates",
-      "It is a temporary cache table that deletes itself upon disconnect"
+      "It duplicates all write transactions to a secondary replica",
+      "It is a temporary cache table that deletes itself upon disconnect",
+      "It provides a dummy table source for FROM when evaluating pure expressions like \"SELECT SYSDATE FROM DUAL;\""
     ],
-    "correctIndex": 0,
+    "correctIndex": 3,
     "explanation": "In Oracle SQL, every SELECT query historically required a FROM clause. The DUAL table contains exactly 1 row and 1 column (DUMMY) for evaluating scalar expressions."
   },
   {
@@ -6100,12 +6100,12 @@ window.MCQS_VAULT_500 = [
     "tag": "🍡 Quick Snack",
     "question": "[FROM #36] Why does the FROM clause execute as Step 01 in the physical query lifecycle? (Scenario Variant 8)",
     "options": [
-      "The query engine must first bind table storage and memory buffers to establish available columns and data types",
       "Because the word FROM comes first alphabetically among keywords",
-      "To verify user write permissions on disk",
-      "To format JSON network packets"
+      "The query engine must first bind table storage and memory buffers to establish available columns and data types",
+      "To format JSON network packets",
+      "To verify user write permissions on disk"
     ],
-    "correctIndex": 0,
+    "correctIndex": 1,
     "explanation": "Before a query engine can filter (WHERE), calculate (SELECT), or sort (ORDER BY), it must identify the physical relations on disk and load their column schemas."
   },
   {
@@ -6114,12 +6114,12 @@ window.MCQS_VAULT_500 = [
     "tag": "⚡ Gotcha Trap",
     "question": "[FROM #37] What is a \"derived table\" in the context of the FROM clause? (Scenario Variant 8)",
     "options": [
-      "A subquery placed inside the FROM clause that produces a temporary virtual relation with a required alias",
+      "A materialized view refreshed hourly",
       "A table created with the CREATE TABLE command",
-      "A physical disk backup partition",
-      "A materialized view refreshed hourly"
+      "A subquery placed inside the FROM clause that produces a temporary virtual relation with a required alias",
+      "A physical disk backup partition"
     ],
-    "correctIndex": 0,
+    "correctIndex": 2,
     "explanation": "A derived table (or inline view) is a subquery in the FROM clause, e.g., \"FROM (SELECT id FROM Users) AS u\". Most engines strictly require an alias."
   },
   {
@@ -6128,12 +6128,12 @@ window.MCQS_VAULT_500 = [
     "tag": "🐱 Brain Bender",
     "question": "[FROM #38] When aliasing a table in FROM (\"FROM Employees AS e\"), can you still refer to columns using the original table name \"Employees.salary\"? (Scenario Variant 8)",
     "options": [
-      "In standard SQL, once an alias is defined, the original table name is hidden and referencing it causes an error",
-      "Yes, both table name and alias remain simultaneously accessible everywhere",
       "Only in the WHERE clause",
+      "Yes, both table name and alias remain simultaneously accessible everywhere",
+      "In standard SQL, once an alias is defined, the original table name is hidden and referencing it causes an error",
       "Only if the alias is in lowercase"
     ],
-    "correctIndex": 0,
+    "correctIndex": 2,
     "explanation": "In ANSI SQL, defining a table correlation name (alias) hides the underlying base table name within the scope of that query block."
   },
   {
@@ -6142,12 +6142,12 @@ window.MCQS_VAULT_500 = [
     "tag": "🎯 Core Concept",
     "question": "[FROM #39] What is the physical result of listing two tables in FROM separated by a comma without a WHERE clause (\"FROM TableA, TableB\")? (Scenario Variant 8)",
     "options": [
-      "A Cartesian Product (CROSS JOIN) pairing every row of TableA with every row of TableB (RowsA * RowsB)",
       "An INNER JOIN on matching primary keys",
-      "A UNION of both tables",
-      "A syntax error"
+      "A Cartesian Product (CROSS JOIN) pairing every row of TableA with every row of TableB (RowsA * RowsB)",
+      "A syntax error",
+      "A UNION of both tables"
     ],
-    "correctIndex": 0,
+    "correctIndex": 1,
     "explanation": "Comma-separated tables in FROM evaluate to a Cartesian product. If TableA has 1,000 rows and TableB has 1,000 rows, the intermediate set is 1,000,000 rows."
   },
   {
@@ -6156,12 +6156,12 @@ window.MCQS_VAULT_500 = [
     "tag": "🏆 Senior Staff",
     "question": "[FROM #40] In Oracle SQL, what is the purpose of the built-in single-row table named \"DUAL\"? (Scenario Variant 8)",
     "options": [
-      "It provides a dummy table source for FROM when evaluating pure expressions like \"SELECT SYSDATE FROM DUAL;\"",
-      "It duplicates all write transactions to a secondary replica",
       "It stores dual-key cryptographic certificates",
+      "It duplicates all write transactions to a secondary replica",
+      "It provides a dummy table source for FROM when evaluating pure expressions like \"SELECT SYSDATE FROM DUAL;\"",
       "It is a temporary cache table that deletes itself upon disconnect"
     ],
-    "correctIndex": 0,
+    "correctIndex": 2,
     "explanation": "In Oracle SQL, every SELECT query historically required a FROM clause. The DUAL table contains exactly 1 row and 1 column (DUMMY) for evaluating scalar expressions."
   },
   {
@@ -6184,12 +6184,12 @@ window.MCQS_VAULT_500 = [
     "tag": "⚡ Gotcha Trap",
     "question": "[FROM #42] What is a \"derived table\" in the context of the FROM clause? (Scenario Variant 9)",
     "options": [
-      "A subquery placed inside the FROM clause that produces a temporary virtual relation with a required alias",
-      "A table created with the CREATE TABLE command",
       "A physical disk backup partition",
-      "A materialized view refreshed hourly"
+      "A table created with the CREATE TABLE command",
+      "A materialized view refreshed hourly",
+      "A subquery placed inside the FROM clause that produces a temporary virtual relation with a required alias"
     ],
-    "correctIndex": 0,
+    "correctIndex": 3,
     "explanation": "A derived table (or inline view) is a subquery in the FROM clause, e.g., \"FROM (SELECT id FROM Users) AS u\". Most engines strictly require an alias."
   },
   {
@@ -6198,12 +6198,12 @@ window.MCQS_VAULT_500 = [
     "tag": "🐱 Brain Bender",
     "question": "[FROM #43] When aliasing a table in FROM (\"FROM Employees AS e\"), can you still refer to columns using the original table name \"Employees.salary\"? (Scenario Variant 9)",
     "options": [
-      "In standard SQL, once an alias is defined, the original table name is hidden and referencing it causes an error",
       "Yes, both table name and alias remain simultaneously accessible everywhere",
+      "In standard SQL, once an alias is defined, the original table name is hidden and referencing it causes an error",
       "Only in the WHERE clause",
       "Only if the alias is in lowercase"
     ],
-    "correctIndex": 0,
+    "correctIndex": 1,
     "explanation": "In ANSI SQL, defining a table correlation name (alias) hides the underlying base table name within the scope of that query block."
   },
   {
@@ -6212,12 +6212,12 @@ window.MCQS_VAULT_500 = [
     "tag": "🎯 Core Concept",
     "question": "[FROM #44] What is the physical result of listing two tables in FROM separated by a comma without a WHERE clause (\"FROM TableA, TableB\")? (Scenario Variant 9)",
     "options": [
-      "A Cartesian Product (CROSS JOIN) pairing every row of TableA with every row of TableB (RowsA * RowsB)",
       "An INNER JOIN on matching primary keys",
       "A UNION of both tables",
-      "A syntax error"
+      "A syntax error",
+      "A Cartesian Product (CROSS JOIN) pairing every row of TableA with every row of TableB (RowsA * RowsB)"
     ],
-    "correctIndex": 0,
+    "correctIndex": 3,
     "explanation": "Comma-separated tables in FROM evaluate to a Cartesian product. If TableA has 1,000 rows and TableB has 1,000 rows, the intermediate set is 1,000,000 rows."
   },
   {
@@ -6226,12 +6226,12 @@ window.MCQS_VAULT_500 = [
     "tag": "🏆 Senior Staff",
     "question": "[FROM #45] In Oracle SQL, what is the purpose of the built-in single-row table named \"DUAL\"? (Scenario Variant 9)",
     "options": [
-      "It provides a dummy table source for FROM when evaluating pure expressions like \"SELECT SYSDATE FROM DUAL;\"",
-      "It duplicates all write transactions to a secondary replica",
       "It stores dual-key cryptographic certificates",
-      "It is a temporary cache table that deletes itself upon disconnect"
+      "It provides a dummy table source for FROM when evaluating pure expressions like \"SELECT SYSDATE FROM DUAL;\"",
+      "It is a temporary cache table that deletes itself upon disconnect",
+      "It duplicates all write transactions to a secondary replica"
     ],
-    "correctIndex": 0,
+    "correctIndex": 1,
     "explanation": "In Oracle SQL, every SELECT query historically required a FROM clause. The DUAL table contains exactly 1 row and 1 column (DUMMY) for evaluating scalar expressions."
   },
   {
@@ -6240,12 +6240,12 @@ window.MCQS_VAULT_500 = [
     "tag": "🍡 Quick Snack",
     "question": "[FROM #46] Why does the FROM clause execute as Step 01 in the physical query lifecycle? (Scenario Variant 10)",
     "options": [
-      "The query engine must first bind table storage and memory buffers to establish available columns and data types",
       "Because the word FROM comes first alphabetically among keywords",
-      "To verify user write permissions on disk",
-      "To format JSON network packets"
+      "To format JSON network packets",
+      "The query engine must first bind table storage and memory buffers to establish available columns and data types",
+      "To verify user write permissions on disk"
     ],
-    "correctIndex": 0,
+    "correctIndex": 2,
     "explanation": "Before a query engine can filter (WHERE), calculate (SELECT), or sort (ORDER BY), it must identify the physical relations on disk and load their column schemas."
   },
   {
@@ -6255,9 +6255,9 @@ window.MCQS_VAULT_500 = [
     "question": "[FROM #47] What is a \"derived table\" in the context of the FROM clause? (Scenario Variant 10)",
     "options": [
       "A subquery placed inside the FROM clause that produces a temporary virtual relation with a required alias",
-      "A table created with the CREATE TABLE command",
+      "A materialized view refreshed hourly",
       "A physical disk backup partition",
-      "A materialized view refreshed hourly"
+      "A table created with the CREATE TABLE command"
     ],
     "correctIndex": 0,
     "explanation": "A derived table (or inline view) is a subquery in the FROM clause, e.g., \"FROM (SELECT id FROM Users) AS u\". Most engines strictly require an alias."
@@ -6268,12 +6268,12 @@ window.MCQS_VAULT_500 = [
     "tag": "🐱 Brain Bender",
     "question": "[FROM #48] When aliasing a table in FROM (\"FROM Employees AS e\"), can you still refer to columns using the original table name \"Employees.salary\"? (Scenario Variant 10)",
     "options": [
-      "In standard SQL, once an alias is defined, the original table name is hidden and referencing it causes an error",
-      "Yes, both table name and alias remain simultaneously accessible everywhere",
       "Only in the WHERE clause",
+      "Yes, both table name and alias remain simultaneously accessible everywhere",
+      "In standard SQL, once an alias is defined, the original table name is hidden and referencing it causes an error",
       "Only if the alias is in lowercase"
     ],
-    "correctIndex": 0,
+    "correctIndex": 2,
     "explanation": "In ANSI SQL, defining a table correlation name (alias) hides the underlying base table name within the scope of that query block."
   },
   {
@@ -6282,12 +6282,12 @@ window.MCQS_VAULT_500 = [
     "tag": "🎯 Core Concept",
     "question": "[FROM #49] What is the physical result of listing two tables in FROM separated by a comma without a WHERE clause (\"FROM TableA, TableB\")? (Scenario Variant 10)",
     "options": [
-      "A Cartesian Product (CROSS JOIN) pairing every row of TableA with every row of TableB (RowsA * RowsB)",
       "An INNER JOIN on matching primary keys",
-      "A UNION of both tables",
-      "A syntax error"
+      "A Cartesian Product (CROSS JOIN) pairing every row of TableA with every row of TableB (RowsA * RowsB)",
+      "A syntax error",
+      "A UNION of both tables"
     ],
-    "correctIndex": 0,
+    "correctIndex": 1,
     "explanation": "Comma-separated tables in FROM evaluate to a Cartesian product. If TableA has 1,000 rows and TableB has 1,000 rows, the intermediate set is 1,000,000 rows."
   },
   {
@@ -6296,12 +6296,12 @@ window.MCQS_VAULT_500 = [
     "tag": "🏆 Senior Staff",
     "question": "[FROM #50] In Oracle SQL, what is the purpose of the built-in single-row table named \"DUAL\"? (Scenario Variant 10)",
     "options": [
-      "It provides a dummy table source for FROM when evaluating pure expressions like \"SELECT SYSDATE FROM DUAL;\"",
-      "It duplicates all write transactions to a secondary replica",
+      "It is a temporary cache table that deletes itself upon disconnect",
       "It stores dual-key cryptographic certificates",
-      "It is a temporary cache table that deletes itself upon disconnect"
+      "It provides a dummy table source for FROM when evaluating pure expressions like \"SELECT SYSDATE FROM DUAL;\"",
+      "It duplicates all write transactions to a secondary replica"
     ],
-    "correctIndex": 0,
+    "correctIndex": 2,
     "explanation": "In Oracle SQL, every SELECT query historically required a FROM clause. The DUAL table contains exactly 1 row and 1 column (DUMMY) for evaluating scalar expressions."
   },
   {
@@ -6310,12 +6310,12 @@ window.MCQS_VAULT_500 = [
     "tag": "🍡 Quick Snack",
     "question": "[ORDER BY & LIMIT #1] Why is the ORDER BY clause executed AFTER the SELECT clause in the physical lifecycle?",
     "options": [
+      "Because SELECT filters rows first",
       "Because the engine sorts the final projected result rows and can sort by column aliases defined in SELECT",
       "Because sorting on disk must precede reading rows",
-      "Because SELECT filters rows first",
       "It actually executes before WHERE"
     ],
-    "correctIndex": 0,
+    "correctIndex": 1,
     "explanation": "ORDER BY runs at Step 05/06 after projection, allowing it to reference aliases and computed expressions established during SELECT."
   },
   {
@@ -6325,9 +6325,9 @@ window.MCQS_VAULT_500 = [
     "question": "[ORDER BY & LIMIT #2] What does \"LIMIT 5 OFFSET 20\" do in MySQL and PostgreSQL?",
     "options": [
       "Skips the first 20 rows of the ordered result set and returns the next 5 rows (rows 21-25)",
+      "Returns rows where id is between 5 and 20",
       "Returns 20 rows starting from row 5",
-      "Limits the query to 5 columns and 20 rows",
-      "Returns rows where id is between 5 and 20"
+      "Limits the query to 5 columns and 20 rows"
     ],
     "correctIndex": 0,
     "explanation": "OFFSET skips the specified count of preceding rows, and LIMIT constrains the batch size of the returned window."
@@ -6338,12 +6338,12 @@ window.MCQS_VAULT_500 = [
     "tag": "🐱 Brain Bender",
     "question": "[ORDER BY & LIMIT #3] Why does deep offset pagination like \"LIMIT 10 OFFSET 1000000\" perform poorly on large tables?",
     "options": [
-      "The database engine must still read, sort, and traverse 1,000,010 physical rows before discarding the first 1,000,000",
-      "OFFSET locks the entire database buffer pool",
       "LIMIT only supports offsets up to 10,000",
-      "The network protocol cannot transmit large offsets"
+      "OFFSET locks the entire database buffer pool",
+      "The network protocol cannot transmit large offsets",
+      "The database engine must still read, sort, and traverse 1,000,010 physical rows before discarding the first 1,000,000"
     ],
-    "correctIndex": 0,
+    "correctIndex": 3,
     "explanation": "Offset pagination requires the engine to generate and scan all N + M rows and discard N of them. Keyset (cursor-based) pagination using \"WHERE id > last_seen_id\" is far more performant."
   },
   {
@@ -6354,8 +6354,8 @@ window.MCQS_VAULT_500 = [
     "options": [
       "In PostgreSQL/Oracle, NULLS FIRST is default for ASC (or controlled via NULLS FIRST/LAST); in MySQL/SQL Server, NULLs sort first as lowest",
       "NULLs are always removed from the result set during ORDER BY",
-      "NULLs are always placed in the exact center of the result",
-      "An error is thrown if NULLs are sorted"
+      "An error is thrown if NULLs are sorted",
+      "NULLs are always placed in the exact center of the result"
     ],
     "correctIndex": 0,
     "explanation": "Different engines have differing defaults: MySQL and SQL Server treat NULL as lower than any value. PostgreSQL and Oracle support explicit \"NULLS FIRST / NULLS LAST\" syntax."
@@ -6380,12 +6380,12 @@ window.MCQS_VAULT_500 = [
     "tag": "🍡 Quick Snack",
     "question": "[ORDER BY & LIMIT #6] Why is the ORDER BY clause executed AFTER the SELECT clause in the physical lifecycle? (Scenario Variant 2)",
     "options": [
-      "Because the engine sorts the final projected result rows and can sort by column aliases defined in SELECT",
-      "Because sorting on disk must precede reading rows",
       "Because SELECT filters rows first",
+      "Because sorting on disk must precede reading rows",
+      "Because the engine sorts the final projected result rows and can sort by column aliases defined in SELECT",
       "It actually executes before WHERE"
     ],
-    "correctIndex": 0,
+    "correctIndex": 2,
     "explanation": "ORDER BY runs at Step 05/06 after projection, allowing it to reference aliases and computed expressions established during SELECT."
   },
   {
@@ -6408,12 +6408,12 @@ window.MCQS_VAULT_500 = [
     "tag": "🐱 Brain Bender",
     "question": "[ORDER BY & LIMIT #8] Why does deep offset pagination like \"LIMIT 10 OFFSET 1000000\" perform poorly on large tables? (Scenario Variant 2)",
     "options": [
+      "The network protocol cannot transmit large offsets",
       "The database engine must still read, sort, and traverse 1,000,010 physical rows before discarding the first 1,000,000",
-      "OFFSET locks the entire database buffer pool",
       "LIMIT only supports offsets up to 10,000",
-      "The network protocol cannot transmit large offsets"
+      "OFFSET locks the entire database buffer pool"
     ],
-    "correctIndex": 0,
+    "correctIndex": 1,
     "explanation": "Offset pagination requires the engine to generate and scan all N + M rows and discard N of them. Keyset (cursor-based) pagination using \"WHERE id > last_seen_id\" is far more performant."
   },
   {
@@ -6422,12 +6422,12 @@ window.MCQS_VAULT_500 = [
     "tag": "🎯 Core Concept",
     "question": "[ORDER BY & LIMIT #9] In standard SQL, where do NULL values appear when sorting with \"ORDER BY score ASC\"? (Scenario Variant 2)",
     "options": [
-      "In PostgreSQL/Oracle, NULLS FIRST is default for ASC (or controlled via NULLS FIRST/LAST); in MySQL/SQL Server, NULLs sort first as lowest",
       "NULLs are always removed from the result set during ORDER BY",
       "NULLs are always placed in the exact center of the result",
+      "In PostgreSQL/Oracle, NULLS FIRST is default for ASC (or controlled via NULLS FIRST/LAST); in MySQL/SQL Server, NULLs sort first as lowest",
       "An error is thrown if NULLs are sorted"
     ],
-    "correctIndex": 0,
+    "correctIndex": 2,
     "explanation": "Different engines have differing defaults: MySQL and SQL Server treat NULL as lower than any value. PostgreSQL and Oracle support explicit \"NULLS FIRST / NULLS LAST\" syntax."
   },
   {
@@ -6436,12 +6436,12 @@ window.MCQS_VAULT_500 = [
     "tag": "🏆 Senior Staff",
     "question": "[ORDER BY & LIMIT #10] What is a \"deterministic sort\" and why is it essential when using LIMIT? (Scenario Variant 2)",
     "options": [
-      "A sort where a unique tie-breaker column (such as primary key id) guarantees the exact same row ordering on repeated executions",
-      "A sort that finishes in under 1 millisecond",
       "A sort performed entirely in CPU registers",
-      "A sort using only numeric columns"
+      "A sort that finishes in under 1 millisecond",
+      "A sort using only numeric columns",
+      "A sort where a unique tie-breaker column (such as primary key id) guarantees the exact same row ordering on repeated executions"
     ],
-    "correctIndex": 0,
+    "correctIndex": 3,
     "explanation": "If sorted by a non-unique column (e.g. ORDER BY salary DESC LIMIT 3) without a secondary unique tie-breaker (id ASC), rows with duplicate salaries can swap places unpredictably between queries."
   },
   {
@@ -6450,12 +6450,12 @@ window.MCQS_VAULT_500 = [
     "tag": "🍡 Quick Snack",
     "question": "[ORDER BY & LIMIT #11] Why is the ORDER BY clause executed AFTER the SELECT clause in the physical lifecycle? (Scenario Variant 3)",
     "options": [
-      "Because the engine sorts the final projected result rows and can sort by column aliases defined in SELECT",
-      "Because sorting on disk must precede reading rows",
+      "It actually executes before WHERE",
       "Because SELECT filters rows first",
-      "It actually executes before WHERE"
+      "Because sorting on disk must precede reading rows",
+      "Because the engine sorts the final projected result rows and can sort by column aliases defined in SELECT"
     ],
-    "correctIndex": 0,
+    "correctIndex": 3,
     "explanation": "ORDER BY runs at Step 05/06 after projection, allowing it to reference aliases and computed expressions established during SELECT."
   },
   {
@@ -6464,12 +6464,12 @@ window.MCQS_VAULT_500 = [
     "tag": "⚡ Gotcha Trap",
     "question": "[ORDER BY & LIMIT #12] What does \"LIMIT 5 OFFSET 20\" do in MySQL and PostgreSQL? (Scenario Variant 3)",
     "options": [
-      "Skips the first 20 rows of the ordered result set and returns the next 5 rows (rows 21-25)",
       "Returns 20 rows starting from row 5",
-      "Limits the query to 5 columns and 20 rows",
-      "Returns rows where id is between 5 and 20"
+      "Returns rows where id is between 5 and 20",
+      "Skips the first 20 rows of the ordered result set and returns the next 5 rows (rows 21-25)",
+      "Limits the query to 5 columns and 20 rows"
     ],
-    "correctIndex": 0,
+    "correctIndex": 2,
     "explanation": "OFFSET skips the specified count of preceding rows, and LIMIT constrains the batch size of the returned window."
   },
   {
@@ -6478,12 +6478,12 @@ window.MCQS_VAULT_500 = [
     "tag": "🐱 Brain Bender",
     "question": "[ORDER BY & LIMIT #13] Why does deep offset pagination like \"LIMIT 10 OFFSET 1000000\" perform poorly on large tables? (Scenario Variant 3)",
     "options": [
-      "The database engine must still read, sort, and traverse 1,000,010 physical rows before discarding the first 1,000,000",
       "OFFSET locks the entire database buffer pool",
       "LIMIT only supports offsets up to 10,000",
+      "The database engine must still read, sort, and traverse 1,000,010 physical rows before discarding the first 1,000,000",
       "The network protocol cannot transmit large offsets"
     ],
-    "correctIndex": 0,
+    "correctIndex": 2,
     "explanation": "Offset pagination requires the engine to generate and scan all N + M rows and discard N of them. Keyset (cursor-based) pagination using \"WHERE id > last_seen_id\" is far more performant."
   },
   {
@@ -6492,12 +6492,12 @@ window.MCQS_VAULT_500 = [
     "tag": "🎯 Core Concept",
     "question": "[ORDER BY & LIMIT #14] In standard SQL, where do NULL values appear when sorting with \"ORDER BY score ASC\"? (Scenario Variant 3)",
     "options": [
-      "In PostgreSQL/Oracle, NULLS FIRST is default for ASC (or controlled via NULLS FIRST/LAST); in MySQL/SQL Server, NULLs sort first as lowest",
-      "NULLs are always removed from the result set during ORDER BY",
       "NULLs are always placed in the exact center of the result",
+      "NULLs are always removed from the result set during ORDER BY",
+      "In PostgreSQL/Oracle, NULLS FIRST is default for ASC (or controlled via NULLS FIRST/LAST); in MySQL/SQL Server, NULLs sort first as lowest",
       "An error is thrown if NULLs are sorted"
     ],
-    "correctIndex": 0,
+    "correctIndex": 2,
     "explanation": "Different engines have differing defaults: MySQL and SQL Server treat NULL as lower than any value. PostgreSQL and Oracle support explicit \"NULLS FIRST / NULLS LAST\" syntax."
   },
   {
@@ -6506,12 +6506,12 @@ window.MCQS_VAULT_500 = [
     "tag": "🏆 Senior Staff",
     "question": "[ORDER BY & LIMIT #15] What is a \"deterministic sort\" and why is it essential when using LIMIT? (Scenario Variant 3)",
     "options": [
-      "A sort where a unique tie-breaker column (such as primary key id) guarantees the exact same row ordering on repeated executions",
       "A sort that finishes in under 1 millisecond",
+      "A sort where a unique tie-breaker column (such as primary key id) guarantees the exact same row ordering on repeated executions",
       "A sort performed entirely in CPU registers",
       "A sort using only numeric columns"
     ],
-    "correctIndex": 0,
+    "correctIndex": 1,
     "explanation": "If sorted by a non-unique column (e.g. ORDER BY salary DESC LIMIT 3) without a secondary unique tie-breaker (id ASC), rows with duplicate salaries can swap places unpredictably between queries."
   },
   {
@@ -6520,12 +6520,12 @@ window.MCQS_VAULT_500 = [
     "tag": "🍡 Quick Snack",
     "question": "[ORDER BY & LIMIT #16] Why is the ORDER BY clause executed AFTER the SELECT clause in the physical lifecycle? (Scenario Variant 4)",
     "options": [
-      "Because the engine sorts the final projected result rows and can sort by column aliases defined in SELECT",
       "Because sorting on disk must precede reading rows",
+      "Because the engine sorts the final projected result rows and can sort by column aliases defined in SELECT",
       "Because SELECT filters rows first",
       "It actually executes before WHERE"
     ],
-    "correctIndex": 0,
+    "correctIndex": 1,
     "explanation": "ORDER BY runs at Step 05/06 after projection, allowing it to reference aliases and computed expressions established during SELECT."
   },
   {
@@ -6534,12 +6534,12 @@ window.MCQS_VAULT_500 = [
     "tag": "⚡ Gotcha Trap",
     "question": "[ORDER BY & LIMIT #17] What does \"LIMIT 5 OFFSET 20\" do in MySQL and PostgreSQL? (Scenario Variant 4)",
     "options": [
-      "Skips the first 20 rows of the ordered result set and returns the next 5 rows (rows 21-25)",
       "Returns 20 rows starting from row 5",
       "Limits the query to 5 columns and 20 rows",
+      "Skips the first 20 rows of the ordered result set and returns the next 5 rows (rows 21-25)",
       "Returns rows where id is between 5 and 20"
     ],
-    "correctIndex": 0,
+    "correctIndex": 2,
     "explanation": "OFFSET skips the specified count of preceding rows, and LIMIT constrains the batch size of the returned window."
   },
   {
@@ -6548,12 +6548,12 @@ window.MCQS_VAULT_500 = [
     "tag": "🐱 Brain Bender",
     "question": "[ORDER BY & LIMIT #18] Why does deep offset pagination like \"LIMIT 10 OFFSET 1000000\" perform poorly on large tables? (Scenario Variant 4)",
     "options": [
-      "The database engine must still read, sort, and traverse 1,000,010 physical rows before discarding the first 1,000,000",
+      "The network protocol cannot transmit large offsets",
       "OFFSET locks the entire database buffer pool",
       "LIMIT only supports offsets up to 10,000",
-      "The network protocol cannot transmit large offsets"
+      "The database engine must still read, sort, and traverse 1,000,010 physical rows before discarding the first 1,000,000"
     ],
-    "correctIndex": 0,
+    "correctIndex": 3,
     "explanation": "Offset pagination requires the engine to generate and scan all N + M rows and discard N of them. Keyset (cursor-based) pagination using \"WHERE id > last_seen_id\" is far more performant."
   },
   {
@@ -6562,12 +6562,12 @@ window.MCQS_VAULT_500 = [
     "tag": "🎯 Core Concept",
     "question": "[ORDER BY & LIMIT #19] In standard SQL, where do NULL values appear when sorting with \"ORDER BY score ASC\"? (Scenario Variant 4)",
     "options": [
-      "In PostgreSQL/Oracle, NULLS FIRST is default for ASC (or controlled via NULLS FIRST/LAST); in MySQL/SQL Server, NULLs sort first as lowest",
-      "NULLs are always removed from the result set during ORDER BY",
       "NULLs are always placed in the exact center of the result",
-      "An error is thrown if NULLs are sorted"
+      "NULLs are always removed from the result set during ORDER BY",
+      "An error is thrown if NULLs are sorted",
+      "In PostgreSQL/Oracle, NULLS FIRST is default for ASC (or controlled via NULLS FIRST/LAST); in MySQL/SQL Server, NULLs sort first as lowest"
     ],
-    "correctIndex": 0,
+    "correctIndex": 3,
     "explanation": "Different engines have differing defaults: MySQL and SQL Server treat NULL as lower than any value. PostgreSQL and Oracle support explicit \"NULLS FIRST / NULLS LAST\" syntax."
   },
   {
@@ -6576,12 +6576,12 @@ window.MCQS_VAULT_500 = [
     "tag": "🏆 Senior Staff",
     "question": "[ORDER BY & LIMIT #20] What is a \"deterministic sort\" and why is it essential when using LIMIT? (Scenario Variant 4)",
     "options": [
-      "A sort where a unique tie-breaker column (such as primary key id) guarantees the exact same row ordering on repeated executions",
-      "A sort that finishes in under 1 millisecond",
       "A sort performed entirely in CPU registers",
-      "A sort using only numeric columns"
+      "A sort that finishes in under 1 millisecond",
+      "A sort using only numeric columns",
+      "A sort where a unique tie-breaker column (such as primary key id) guarantees the exact same row ordering on repeated executions"
     ],
-    "correctIndex": 0,
+    "correctIndex": 3,
     "explanation": "If sorted by a non-unique column (e.g. ORDER BY salary DESC LIMIT 3) without a secondary unique tie-breaker (id ASC), rows with duplicate salaries can swap places unpredictably between queries."
   },
   {
@@ -6590,12 +6590,12 @@ window.MCQS_VAULT_500 = [
     "tag": "🍡 Quick Snack",
     "question": "[ORDER BY & LIMIT #21] Why is the ORDER BY clause executed AFTER the SELECT clause in the physical lifecycle? (Scenario Variant 5)",
     "options": [
-      "Because the engine sorts the final projected result rows and can sort by column aliases defined in SELECT",
       "Because sorting on disk must precede reading rows",
-      "Because SELECT filters rows first",
-      "It actually executes before WHERE"
+      "It actually executes before WHERE",
+      "Because the engine sorts the final projected result rows and can sort by column aliases defined in SELECT",
+      "Because SELECT filters rows first"
     ],
-    "correctIndex": 0,
+    "correctIndex": 2,
     "explanation": "ORDER BY runs at Step 05/06 after projection, allowing it to reference aliases and computed expressions established during SELECT."
   },
   {
@@ -6604,12 +6604,12 @@ window.MCQS_VAULT_500 = [
     "tag": "⚡ Gotcha Trap",
     "question": "[ORDER BY & LIMIT #22] What does \"LIMIT 5 OFFSET 20\" do in MySQL and PostgreSQL? (Scenario Variant 5)",
     "options": [
+      "Returns rows where id is between 5 and 20",
       "Skips the first 20 rows of the ordered result set and returns the next 5 rows (rows 21-25)",
       "Returns 20 rows starting from row 5",
-      "Limits the query to 5 columns and 20 rows",
-      "Returns rows where id is between 5 and 20"
+      "Limits the query to 5 columns and 20 rows"
     ],
-    "correctIndex": 0,
+    "correctIndex": 1,
     "explanation": "OFFSET skips the specified count of preceding rows, and LIMIT constrains the batch size of the returned window."
   },
   {
@@ -6620,8 +6620,8 @@ window.MCQS_VAULT_500 = [
     "options": [
       "The database engine must still read, sort, and traverse 1,000,010 physical rows before discarding the first 1,000,000",
       "OFFSET locks the entire database buffer pool",
-      "LIMIT only supports offsets up to 10,000",
-      "The network protocol cannot transmit large offsets"
+      "The network protocol cannot transmit large offsets",
+      "LIMIT only supports offsets up to 10,000"
     ],
     "correctIndex": 0,
     "explanation": "Offset pagination requires the engine to generate and scan all N + M rows and discard N of them. Keyset (cursor-based) pagination using \"WHERE id > last_seen_id\" is far more performant."
@@ -6633,9 +6633,9 @@ window.MCQS_VAULT_500 = [
     "question": "[ORDER BY & LIMIT #24] In standard SQL, where do NULL values appear when sorting with \"ORDER BY score ASC\"? (Scenario Variant 5)",
     "options": [
       "In PostgreSQL/Oracle, NULLS FIRST is default for ASC (or controlled via NULLS FIRST/LAST); in MySQL/SQL Server, NULLs sort first as lowest",
-      "NULLs are always removed from the result set during ORDER BY",
+      "An error is thrown if NULLs are sorted",
       "NULLs are always placed in the exact center of the result",
-      "An error is thrown if NULLs are sorted"
+      "NULLs are always removed from the result set during ORDER BY"
     ],
     "correctIndex": 0,
     "explanation": "Different engines have differing defaults: MySQL and SQL Server treat NULL as lower than any value. PostgreSQL and Oracle support explicit \"NULLS FIRST / NULLS LAST\" syntax."
@@ -6647,9 +6647,9 @@ window.MCQS_VAULT_500 = [
     "question": "[ORDER BY & LIMIT #25] What is a \"deterministic sort\" and why is it essential when using LIMIT? (Scenario Variant 5)",
     "options": [
       "A sort where a unique tie-breaker column (such as primary key id) guarantees the exact same row ordering on repeated executions",
-      "A sort that finishes in under 1 millisecond",
+      "A sort using only numeric columns",
       "A sort performed entirely in CPU registers",
-      "A sort using only numeric columns"
+      "A sort that finishes in under 1 millisecond"
     ],
     "correctIndex": 0,
     "explanation": "If sorted by a non-unique column (e.g. ORDER BY salary DESC LIMIT 3) without a secondary unique tie-breaker (id ASC), rows with duplicate salaries can swap places unpredictably between queries."
@@ -6660,12 +6660,12 @@ window.MCQS_VAULT_500 = [
     "tag": "🍡 Quick Snack",
     "question": "[ORDER BY & LIMIT #26] Why is the ORDER BY clause executed AFTER the SELECT clause in the physical lifecycle? (Scenario Variant 6)",
     "options": [
-      "Because the engine sorts the final projected result rows and can sort by column aliases defined in SELECT",
-      "Because sorting on disk must precede reading rows",
       "Because SELECT filters rows first",
-      "It actually executes before WHERE"
+      "Because sorting on disk must precede reading rows",
+      "It actually executes before WHERE",
+      "Because the engine sorts the final projected result rows and can sort by column aliases defined in SELECT"
     ],
-    "correctIndex": 0,
+    "correctIndex": 3,
     "explanation": "ORDER BY runs at Step 05/06 after projection, allowing it to reference aliases and computed expressions established during SELECT."
   },
   {
@@ -6674,12 +6674,12 @@ window.MCQS_VAULT_500 = [
     "tag": "⚡ Gotcha Trap",
     "question": "[ORDER BY & LIMIT #27] What does \"LIMIT 5 OFFSET 20\" do in MySQL and PostgreSQL? (Scenario Variant 6)",
     "options": [
+      "Returns rows where id is between 5 and 20",
       "Skips the first 20 rows of the ordered result set and returns the next 5 rows (rows 21-25)",
-      "Returns 20 rows starting from row 5",
       "Limits the query to 5 columns and 20 rows",
-      "Returns rows where id is between 5 and 20"
+      "Returns 20 rows starting from row 5"
     ],
-    "correctIndex": 0,
+    "correctIndex": 1,
     "explanation": "OFFSET skips the specified count of preceding rows, and LIMIT constrains the batch size of the returned window."
   },
   {
@@ -6688,12 +6688,12 @@ window.MCQS_VAULT_500 = [
     "tag": "🐱 Brain Bender",
     "question": "[ORDER BY & LIMIT #28] Why does deep offset pagination like \"LIMIT 10 OFFSET 1000000\" perform poorly on large tables? (Scenario Variant 6)",
     "options": [
-      "The database engine must still read, sort, and traverse 1,000,010 physical rows before discarding the first 1,000,000",
       "OFFSET locks the entire database buffer pool",
-      "LIMIT only supports offsets up to 10,000",
-      "The network protocol cannot transmit large offsets"
+      "The network protocol cannot transmit large offsets",
+      "The database engine must still read, sort, and traverse 1,000,010 physical rows before discarding the first 1,000,000",
+      "LIMIT only supports offsets up to 10,000"
     ],
-    "correctIndex": 0,
+    "correctIndex": 2,
     "explanation": "Offset pagination requires the engine to generate and scan all N + M rows and discard N of them. Keyset (cursor-based) pagination using \"WHERE id > last_seen_id\" is far more performant."
   },
   {
@@ -6702,12 +6702,12 @@ window.MCQS_VAULT_500 = [
     "tag": "🎯 Core Concept",
     "question": "[ORDER BY & LIMIT #29] In standard SQL, where do NULL values appear when sorting with \"ORDER BY score ASC\"? (Scenario Variant 6)",
     "options": [
+      "An error is thrown if NULLs are sorted",
       "In PostgreSQL/Oracle, NULLS FIRST is default for ASC (or controlled via NULLS FIRST/LAST); in MySQL/SQL Server, NULLs sort first as lowest",
-      "NULLs are always removed from the result set during ORDER BY",
       "NULLs are always placed in the exact center of the result",
-      "An error is thrown if NULLs are sorted"
+      "NULLs are always removed from the result set during ORDER BY"
     ],
-    "correctIndex": 0,
+    "correctIndex": 1,
     "explanation": "Different engines have differing defaults: MySQL and SQL Server treat NULL as lower than any value. PostgreSQL and Oracle support explicit \"NULLS FIRST / NULLS LAST\" syntax."
   },
   {
@@ -6716,12 +6716,12 @@ window.MCQS_VAULT_500 = [
     "tag": "🏆 Senior Staff",
     "question": "[ORDER BY & LIMIT #30] What is a \"deterministic sort\" and why is it essential when using LIMIT? (Scenario Variant 6)",
     "options": [
+      "A sort using only numeric columns",
       "A sort where a unique tie-breaker column (such as primary key id) guarantees the exact same row ordering on repeated executions",
-      "A sort that finishes in under 1 millisecond",
       "A sort performed entirely in CPU registers",
-      "A sort using only numeric columns"
+      "A sort that finishes in under 1 millisecond"
     ],
-    "correctIndex": 0,
+    "correctIndex": 1,
     "explanation": "If sorted by a non-unique column (e.g. ORDER BY salary DESC LIMIT 3) without a secondary unique tie-breaker (id ASC), rows with duplicate salaries can swap places unpredictably between queries."
   },
   {
@@ -6730,12 +6730,12 @@ window.MCQS_VAULT_500 = [
     "tag": "🍡 Quick Snack",
     "question": "[ORDER BY & LIMIT #31] Why is the ORDER BY clause executed AFTER the SELECT clause in the physical lifecycle? (Scenario Variant 7)",
     "options": [
+      "It actually executes before WHERE",
       "Because the engine sorts the final projected result rows and can sort by column aliases defined in SELECT",
       "Because sorting on disk must precede reading rows",
-      "Because SELECT filters rows first",
-      "It actually executes before WHERE"
+      "Because SELECT filters rows first"
     ],
-    "correctIndex": 0,
+    "correctIndex": 1,
     "explanation": "ORDER BY runs at Step 05/06 after projection, allowing it to reference aliases and computed expressions established during SELECT."
   },
   {
@@ -6744,12 +6744,12 @@ window.MCQS_VAULT_500 = [
     "tag": "⚡ Gotcha Trap",
     "question": "[ORDER BY & LIMIT #32] What does \"LIMIT 5 OFFSET 20\" do in MySQL and PostgreSQL? (Scenario Variant 7)",
     "options": [
+      "Returns rows where id is between 5 and 20",
       "Skips the first 20 rows of the ordered result set and returns the next 5 rows (rows 21-25)",
-      "Returns 20 rows starting from row 5",
       "Limits the query to 5 columns and 20 rows",
-      "Returns rows where id is between 5 and 20"
+      "Returns 20 rows starting from row 5"
     ],
-    "correctIndex": 0,
+    "correctIndex": 1,
     "explanation": "OFFSET skips the specified count of preceding rows, and LIMIT constrains the batch size of the returned window."
   },
   {
@@ -6758,12 +6758,12 @@ window.MCQS_VAULT_500 = [
     "tag": "🐱 Brain Bender",
     "question": "[ORDER BY & LIMIT #33] Why does deep offset pagination like \"LIMIT 10 OFFSET 1000000\" perform poorly on large tables? (Scenario Variant 7)",
     "options": [
-      "The database engine must still read, sort, and traverse 1,000,010 physical rows before discarding the first 1,000,000",
+      "The network protocol cannot transmit large offsets",
       "OFFSET locks the entire database buffer pool",
       "LIMIT only supports offsets up to 10,000",
-      "The network protocol cannot transmit large offsets"
+      "The database engine must still read, sort, and traverse 1,000,010 physical rows before discarding the first 1,000,000"
     ],
-    "correctIndex": 0,
+    "correctIndex": 3,
     "explanation": "Offset pagination requires the engine to generate and scan all N + M rows and discard N of them. Keyset (cursor-based) pagination using \"WHERE id > last_seen_id\" is far more performant."
   },
   {
@@ -6772,12 +6772,12 @@ window.MCQS_VAULT_500 = [
     "tag": "🎯 Core Concept",
     "question": "[ORDER BY & LIMIT #34] In standard SQL, where do NULL values appear when sorting with \"ORDER BY score ASC\"? (Scenario Variant 7)",
     "options": [
-      "In PostgreSQL/Oracle, NULLS FIRST is default for ASC (or controlled via NULLS FIRST/LAST); in MySQL/SQL Server, NULLs sort first as lowest",
-      "NULLs are always removed from the result set during ORDER BY",
       "NULLs are always placed in the exact center of the result",
-      "An error is thrown if NULLs are sorted"
+      "In PostgreSQL/Oracle, NULLS FIRST is default for ASC (or controlled via NULLS FIRST/LAST); in MySQL/SQL Server, NULLs sort first as lowest",
+      "An error is thrown if NULLs are sorted",
+      "NULLs are always removed from the result set during ORDER BY"
     ],
-    "correctIndex": 0,
+    "correctIndex": 1,
     "explanation": "Different engines have differing defaults: MySQL and SQL Server treat NULL as lower than any value. PostgreSQL and Oracle support explicit \"NULLS FIRST / NULLS LAST\" syntax."
   },
   {
@@ -6787,9 +6787,9 @@ window.MCQS_VAULT_500 = [
     "question": "[ORDER BY & LIMIT #35] What is a \"deterministic sort\" and why is it essential when using LIMIT? (Scenario Variant 7)",
     "options": [
       "A sort where a unique tie-breaker column (such as primary key id) guarantees the exact same row ordering on repeated executions",
-      "A sort that finishes in under 1 millisecond",
+      "A sort using only numeric columns",
       "A sort performed entirely in CPU registers",
-      "A sort using only numeric columns"
+      "A sort that finishes in under 1 millisecond"
     ],
     "correctIndex": 0,
     "explanation": "If sorted by a non-unique column (e.g. ORDER BY salary DESC LIMIT 3) without a secondary unique tie-breaker (id ASC), rows with duplicate salaries can swap places unpredictably between queries."
@@ -6800,12 +6800,12 @@ window.MCQS_VAULT_500 = [
     "tag": "🍡 Quick Snack",
     "question": "[ORDER BY & LIMIT #36] Why is the ORDER BY clause executed AFTER the SELECT clause in the physical lifecycle? (Scenario Variant 8)",
     "options": [
-      "Because the engine sorts the final projected result rows and can sort by column aliases defined in SELECT",
       "Because sorting on disk must precede reading rows",
       "Because SELECT filters rows first",
-      "It actually executes before WHERE"
+      "It actually executes before WHERE",
+      "Because the engine sorts the final projected result rows and can sort by column aliases defined in SELECT"
     ],
-    "correctIndex": 0,
+    "correctIndex": 3,
     "explanation": "ORDER BY runs at Step 05/06 after projection, allowing it to reference aliases and computed expressions established during SELECT."
   },
   {
@@ -6814,12 +6814,12 @@ window.MCQS_VAULT_500 = [
     "tag": "⚡ Gotcha Trap",
     "question": "[ORDER BY & LIMIT #37] What does \"LIMIT 5 OFFSET 20\" do in MySQL and PostgreSQL? (Scenario Variant 8)",
     "options": [
+      "Returns rows where id is between 5 and 20",
       "Skips the first 20 rows of the ordered result set and returns the next 5 rows (rows 21-25)",
-      "Returns 20 rows starting from row 5",
       "Limits the query to 5 columns and 20 rows",
-      "Returns rows where id is between 5 and 20"
+      "Returns 20 rows starting from row 5"
     ],
-    "correctIndex": 0,
+    "correctIndex": 1,
     "explanation": "OFFSET skips the specified count of preceding rows, and LIMIT constrains the batch size of the returned window."
   },
   {
@@ -6829,9 +6829,9 @@ window.MCQS_VAULT_500 = [
     "question": "[ORDER BY & LIMIT #38] Why does deep offset pagination like \"LIMIT 10 OFFSET 1000000\" perform poorly on large tables? (Scenario Variant 8)",
     "options": [
       "The database engine must still read, sort, and traverse 1,000,010 physical rows before discarding the first 1,000,000",
-      "OFFSET locks the entire database buffer pool",
+      "The network protocol cannot transmit large offsets",
       "LIMIT only supports offsets up to 10,000",
-      "The network protocol cannot transmit large offsets"
+      "OFFSET locks the entire database buffer pool"
     ],
     "correctIndex": 0,
     "explanation": "Offset pagination requires the engine to generate and scan all N + M rows and discard N of them. Keyset (cursor-based) pagination using \"WHERE id > last_seen_id\" is far more performant."
@@ -6842,12 +6842,12 @@ window.MCQS_VAULT_500 = [
     "tag": "🎯 Core Concept",
     "question": "[ORDER BY & LIMIT #39] In standard SQL, where do NULL values appear when sorting with \"ORDER BY score ASC\"? (Scenario Variant 8)",
     "options": [
-      "In PostgreSQL/Oracle, NULLS FIRST is default for ASC (or controlled via NULLS FIRST/LAST); in MySQL/SQL Server, NULLs sort first as lowest",
-      "NULLs are always removed from the result set during ORDER BY",
+      "An error is thrown if NULLs are sorted",
       "NULLs are always placed in the exact center of the result",
-      "An error is thrown if NULLs are sorted"
+      "In PostgreSQL/Oracle, NULLS FIRST is default for ASC (or controlled via NULLS FIRST/LAST); in MySQL/SQL Server, NULLs sort first as lowest",
+      "NULLs are always removed from the result set during ORDER BY"
     ],
-    "correctIndex": 0,
+    "correctIndex": 2,
     "explanation": "Different engines have differing defaults: MySQL and SQL Server treat NULL as lower than any value. PostgreSQL and Oracle support explicit \"NULLS FIRST / NULLS LAST\" syntax."
   },
   {
@@ -6856,12 +6856,12 @@ window.MCQS_VAULT_500 = [
     "tag": "🏆 Senior Staff",
     "question": "[ORDER BY & LIMIT #40] What is a \"deterministic sort\" and why is it essential when using LIMIT? (Scenario Variant 8)",
     "options": [
+      "A sort using only numeric columns",
       "A sort where a unique tie-breaker column (such as primary key id) guarantees the exact same row ordering on repeated executions",
-      "A sort that finishes in under 1 millisecond",
       "A sort performed entirely in CPU registers",
-      "A sort using only numeric columns"
+      "A sort that finishes in under 1 millisecond"
     ],
-    "correctIndex": 0,
+    "correctIndex": 1,
     "explanation": "If sorted by a non-unique column (e.g. ORDER BY salary DESC LIMIT 3) without a secondary unique tie-breaker (id ASC), rows with duplicate salaries can swap places unpredictably between queries."
   },
   {
@@ -6871,8 +6871,8 @@ window.MCQS_VAULT_500 = [
     "question": "[ORDER BY & LIMIT #41] Why is the ORDER BY clause executed AFTER the SELECT clause in the physical lifecycle? (Scenario Variant 9)",
     "options": [
       "Because the engine sorts the final projected result rows and can sort by column aliases defined in SELECT",
-      "Because sorting on disk must precede reading rows",
       "Because SELECT filters rows first",
+      "Because sorting on disk must precede reading rows",
       "It actually executes before WHERE"
     ],
     "correctIndex": 0,
@@ -6884,12 +6884,12 @@ window.MCQS_VAULT_500 = [
     "tag": "⚡ Gotcha Trap",
     "question": "[ORDER BY & LIMIT #42] What does \"LIMIT 5 OFFSET 20\" do in MySQL and PostgreSQL? (Scenario Variant 9)",
     "options": [
-      "Skips the first 20 rows of the ordered result set and returns the next 5 rows (rows 21-25)",
       "Returns 20 rows starting from row 5",
       "Limits the query to 5 columns and 20 rows",
-      "Returns rows where id is between 5 and 20"
+      "Returns rows where id is between 5 and 20",
+      "Skips the first 20 rows of the ordered result set and returns the next 5 rows (rows 21-25)"
     ],
-    "correctIndex": 0,
+    "correctIndex": 3,
     "explanation": "OFFSET skips the specified count of preceding rows, and LIMIT constrains the batch size of the returned window."
   },
   {
@@ -6898,12 +6898,12 @@ window.MCQS_VAULT_500 = [
     "tag": "🐱 Brain Bender",
     "question": "[ORDER BY & LIMIT #43] Why does deep offset pagination like \"LIMIT 10 OFFSET 1000000\" perform poorly on large tables? (Scenario Variant 9)",
     "options": [
-      "The database engine must still read, sort, and traverse 1,000,010 physical rows before discarding the first 1,000,000",
       "OFFSET locks the entire database buffer pool",
+      "The database engine must still read, sort, and traverse 1,000,010 physical rows before discarding the first 1,000,000",
       "LIMIT only supports offsets up to 10,000",
       "The network protocol cannot transmit large offsets"
     ],
-    "correctIndex": 0,
+    "correctIndex": 1,
     "explanation": "Offset pagination requires the engine to generate and scan all N + M rows and discard N of them. Keyset (cursor-based) pagination using \"WHERE id > last_seen_id\" is far more performant."
   },
   {
@@ -6912,12 +6912,12 @@ window.MCQS_VAULT_500 = [
     "tag": "🎯 Core Concept",
     "question": "[ORDER BY & LIMIT #44] In standard SQL, where do NULL values appear when sorting with \"ORDER BY score ASC\"? (Scenario Variant 9)",
     "options": [
+      "An error is thrown if NULLs are sorted",
       "In PostgreSQL/Oracle, NULLS FIRST is default for ASC (or controlled via NULLS FIRST/LAST); in MySQL/SQL Server, NULLs sort first as lowest",
-      "NULLs are always removed from the result set during ORDER BY",
       "NULLs are always placed in the exact center of the result",
-      "An error is thrown if NULLs are sorted"
+      "NULLs are always removed from the result set during ORDER BY"
     ],
-    "correctIndex": 0,
+    "correctIndex": 1,
     "explanation": "Different engines have differing defaults: MySQL and SQL Server treat NULL as lower than any value. PostgreSQL and Oracle support explicit \"NULLS FIRST / NULLS LAST\" syntax."
   },
   {
@@ -6926,12 +6926,12 @@ window.MCQS_VAULT_500 = [
     "tag": "🏆 Senior Staff",
     "question": "[ORDER BY & LIMIT #45] What is a \"deterministic sort\" and why is it essential when using LIMIT? (Scenario Variant 9)",
     "options": [
-      "A sort where a unique tie-breaker column (such as primary key id) guarantees the exact same row ordering on repeated executions",
       "A sort that finishes in under 1 millisecond",
+      "A sort where a unique tie-breaker column (such as primary key id) guarantees the exact same row ordering on repeated executions",
       "A sort performed entirely in CPU registers",
       "A sort using only numeric columns"
     ],
-    "correctIndex": 0,
+    "correctIndex": 1,
     "explanation": "If sorted by a non-unique column (e.g. ORDER BY salary DESC LIMIT 3) without a secondary unique tie-breaker (id ASC), rows with duplicate salaries can swap places unpredictably between queries."
   },
   {
@@ -6942,8 +6942,8 @@ window.MCQS_VAULT_500 = [
     "options": [
       "Because the engine sorts the final projected result rows and can sort by column aliases defined in SELECT",
       "Because sorting on disk must precede reading rows",
-      "Because SELECT filters rows first",
-      "It actually executes before WHERE"
+      "It actually executes before WHERE",
+      "Because SELECT filters rows first"
     ],
     "correctIndex": 0,
     "explanation": "ORDER BY runs at Step 05/06 after projection, allowing it to reference aliases and computed expressions established during SELECT."
@@ -6954,12 +6954,12 @@ window.MCQS_VAULT_500 = [
     "tag": "⚡ Gotcha Trap",
     "question": "[ORDER BY & LIMIT #47] What does \"LIMIT 5 OFFSET 20\" do in MySQL and PostgreSQL? (Scenario Variant 10)",
     "options": [
-      "Skips the first 20 rows of the ordered result set and returns the next 5 rows (rows 21-25)",
-      "Returns 20 rows starting from row 5",
       "Limits the query to 5 columns and 20 rows",
-      "Returns rows where id is between 5 and 20"
+      "Returns rows where id is between 5 and 20",
+      "Skips the first 20 rows of the ordered result set and returns the next 5 rows (rows 21-25)",
+      "Returns 20 rows starting from row 5"
     ],
-    "correctIndex": 0,
+    "correctIndex": 2,
     "explanation": "OFFSET skips the specified count of preceding rows, and LIMIT constrains the batch size of the returned window."
   },
   {
@@ -6968,12 +6968,12 @@ window.MCQS_VAULT_500 = [
     "tag": "🐱 Brain Bender",
     "question": "[ORDER BY & LIMIT #48] Why does deep offset pagination like \"LIMIT 10 OFFSET 1000000\" perform poorly on large tables? (Scenario Variant 10)",
     "options": [
-      "The database engine must still read, sort, and traverse 1,000,010 physical rows before discarding the first 1,000,000",
-      "OFFSET locks the entire database buffer pool",
       "LIMIT only supports offsets up to 10,000",
+      "OFFSET locks the entire database buffer pool",
+      "The database engine must still read, sort, and traverse 1,000,010 physical rows before discarding the first 1,000,000",
       "The network protocol cannot transmit large offsets"
     ],
-    "correctIndex": 0,
+    "correctIndex": 2,
     "explanation": "Offset pagination requires the engine to generate and scan all N + M rows and discard N of them. Keyset (cursor-based) pagination using \"WHERE id > last_seen_id\" is far more performant."
   },
   {
@@ -6982,12 +6982,12 @@ window.MCQS_VAULT_500 = [
     "tag": "🎯 Core Concept",
     "question": "[ORDER BY & LIMIT #49] In standard SQL, where do NULL values appear when sorting with \"ORDER BY score ASC\"? (Scenario Variant 10)",
     "options": [
-      "In PostgreSQL/Oracle, NULLS FIRST is default for ASC (or controlled via NULLS FIRST/LAST); in MySQL/SQL Server, NULLs sort first as lowest",
       "NULLs are always removed from the result set during ORDER BY",
       "NULLs are always placed in the exact center of the result",
-      "An error is thrown if NULLs are sorted"
+      "An error is thrown if NULLs are sorted",
+      "In PostgreSQL/Oracle, NULLS FIRST is default for ASC (or controlled via NULLS FIRST/LAST); in MySQL/SQL Server, NULLs sort first as lowest"
     ],
-    "correctIndex": 0,
+    "correctIndex": 3,
     "explanation": "Different engines have differing defaults: MySQL and SQL Server treat NULL as lower than any value. PostgreSQL and Oracle support explicit \"NULLS FIRST / NULLS LAST\" syntax."
   },
   {
