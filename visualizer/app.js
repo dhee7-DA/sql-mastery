@@ -1551,6 +1551,12 @@ function initCurriculumSystem() {
   initDeconstructorSystem();
   initStudyLibrary();
 
+  // Initialize Case Studies and Persistent Top Domain ERD Showcase on startup
+  if (window.DOMAIN_ERD_ENGINE) {
+    window.DOMAIN_ERD_ENGINE.renderTopShowcase('Fintech');
+  }
+  renderCaseStudies();
+
   // Difficulty filter pills in Problem Bank
   document.querySelectorAll('.diff-filter-btn').forEach(btn => {
     btn.addEventListener('click', () => {

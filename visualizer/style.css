@@ -5926,78 +5926,80 @@ body {
 }
 
 /* =============================================================================
-   VISUAL MINI-ERD CARD COMPONENT (ON CASE STUDY CARDS)
+   TABLE REFERENCE PILL (ON CASE STUDY CARDS)
    ============================================================================= */
 .case-erd-preview {
-  background: #0a0b12;
-  border: 1px solid #1e2030;
-  border-radius: var(--radius-sm);
-  padding: 10px 12px;
-  margin: 8px 0;
-  display: flex;
-  flex-direction: column;
-  gap: 8px;
-  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.2);
+  display: none !important;
 }
 
-.case-erd-header {
-  display: flex;
-  align-items: center;
-  justify-content: space-between;
-  gap: 8px;
-  flex-wrap: wrap;
-  padding-bottom: 6px;
-  border-bottom: 1px solid rgba(255, 255, 255, 0.06);
-}
-
-.case-erd-title-wrap {
-  display: flex;
-  align-items: center;
-  gap: 6px;
-}
-
-.case-erd-icon {
-  font-size: 13px;
-}
-
-.case-erd-table-name {
-  font-family: var(--font-mono);
-  font-size: 11.5px;
-  font-weight: 700;
-  color: #f472b6;
-  letter-spacing: 0.3px;
-}
-
-.case-erd-domain-badge {
-  font-family: var(--font-mono);
-  font-size: 9.5px;
-  color: #8da2be;
-  background: rgba(141, 162, 190, 0.1);
-  padding: 1px 6px;
-  border-radius: 3px;
-  border: 1px solid rgba(141, 162, 190, 0.2);
-}
-
-.btn-open-domain-erd {
-  background: rgba(56, 189, 248, 0.1);
-  border: 1px solid rgba(56, 189, 248, 0.3);
-  color: #38bdf8;
-  font-family: var(--font-mono);
-  font-size: 9.5px;
-  font-weight: 600;
-  padding: 3px 8px;
-  border-radius: var(--radius-sm);
-  cursor: pointer;
+.case-table-meta-pill {
   display: inline-flex;
   align-items: center;
-  gap: 4px;
-  transition: all 0.15s ease;
+  gap: 6px;
+  background: var(--bg-surface-elevated);
+  border: 1px solid var(--border-default);
+  border-radius: var(--radius-sm);
+  padding: 4px 10px;
+  margin: 6px 0 8px 0;
+  font-size: 11px;
+  font-family: var(--font-mono);
+  color: var(--text-secondary);
+  box-shadow: 0 1px 3px rgba(0, 0, 0, 0.04);
+  width: fit-content;
+  max-width: 100%;
 }
 
-.btn-open-domain-erd:hover {
-  background: rgba(56, 189, 248, 0.22);
-  border-color: #38bdf8;
-  color: #fff;
+.case-table-pill-icon {
+  font-size: 13px;
+  line-height: 1;
+}
+
+.case-table-pill-label {
+  color: var(--text-muted);
+  font-size: 10px;
+  text-transform: uppercase;
+  font-weight: 600;
+  letter-spacing: 0.4px;
+}
+
+.case-table-pill-name {
+  color: var(--text-primary);
+  font-weight: 700;
+  background: transparent;
+  padding: 0;
+  border: none;
+  font-size: 11.5px;
+}
+
+.case-table-pill-domain {
+  color: var(--text-muted);
+  font-size: 10px;
+  background: var(--bg-card);
+  border: 1px solid var(--border-subtle);
+  border-radius: 3px;
+  padding: 1px 5px;
+}
+
+.btn-goto-top-erd {
+  background: transparent;
+  border: 1px solid var(--border-default);
+  color: var(--accent-primary, #6366f1);
+  border-radius: 3px;
+  padding: 1px 7px;
+  font-size: 9.5px;
+  cursor: pointer;
+  font-family: var(--font-mono);
+  font-weight: 600;
+  transition: all 0.15s ease;
+  margin-left: 4px;
+  display: inline-flex;
+  align-items: center;
+  gap: 3px;
+}
+
+.btn-goto-top-erd:hover {
+  background: var(--accent-subtle, rgba(99, 102, 241, 0.1));
+  border-color: var(--accent-primary, #6366f1);
   transform: translateY(-1px);
 }
 

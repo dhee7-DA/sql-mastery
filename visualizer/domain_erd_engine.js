@@ -564,49 +564,21 @@ window.DOMAIN_ERD_ENGINE = (() => {
     return { tableName, columns: cols };
   }
 
-  // Generate visual mini-ERD entity card HTML for a case study card
+  // Generate compact, theme-aware table reference pill for a case study card (no bulky black boxes)
   function renderMiniERD(cs) {
     const parsed = parseSchemaSnippet(cs.schemaSnippet);
     const domainData = DOMAIN_SCHEMAS[cs.industry] || DOMAIN_SCHEMAS['Fintech'];
-    const domainIcon = domainData.icon || '📊';
-
-    let colsHtml = '';
-    parsed.columns.forEach(col => {
-      const pkClass = col.isPk ? 'erd-col-pk' : '';
-      const keyBadge = col.isPk 
-        ? `<span class="erd-key-badge" title="Primary Key [Unique identifier for this row]"><span class="erd-key-icon">🔑</span> PK</span>` 
-        : (col.isFk ? `<span class="erd-fk-badge" title="Foreign Key [Points to another table]"><span class="erd-fk-icon">🔗</span> FK</span>` : '');
-
-      colsHtml += `
-        <div class="erd-col-pill ${pkClass}" title="${col.name}: ${col.meaning}">
-          <div class="erd-col-left">
-            ${keyBadge}
-            <span class="erd-col-name">${col.name}</span>
-          </div>
-          <div class="erd-col-right">
-            <span class="erd-col-type">${col.type}</span>
-            <span class="erd-col-meaning-tag">${col.meaning}</span>
-          </div>
-        </div>
-      `;
-    });
+    const domainIcon = domainData.icon || '🏛️';
 
     return `
-      <div class="case-erd-preview">
-        <div class="case-erd-header">
-          <div class="case-erd-title-wrap">
-            <span class="case-erd-icon">${domainIcon}</span>
-            <span class="case-erd-table-name">${parsed.tableName}</span>
-            <span class="case-erd-domain-badge">${cs.industry} Schema</span>
-          </div>
-          <button class="btn-open-domain-erd" onclick="window.DOMAIN_ERD_ENGINE.focusTableInTopERD('${escapeHtml(cs.industry)}', '${escapeHtml(parsed.tableName)}'); event.stopPropagation();" data-domain="${escapeHtml(cs.industry)}" data-table="${escapeHtml(parsed.tableName)}" title="View and highlight ${escapeHtml(parsed.tableName)} in the top Domain ERD Map">
-            📐 View in Top ERD &uarr;
-          </button>
-        </div>
-
-        <div class="case-erd-columns-list">
-          ${colsHtml}
-        </div>
+      <div class="case-table-meta-pill" title="Target Table in ${escapeHtml(cs.industry)} Domain Architecture">
+        <span class="case-table-pill-icon">${domainIcon}</span>
+        <span class="case-table-pill-label">Table:</span>
+        <code class="case-table-pill-name">${escapeHtml(parsed.tableName)}</code>
+        <span class="case-table-pill-domain">${escapeHtml(cs.industry)}</span>
+        <button type="button" class="btn-goto-top-erd" onclick="window.DOMAIN_ERD_ENGINE.focusTableInTopERD('${escapeHtml(cs.industry)}', '${escapeHtml(parsed.tableName)}'); event.stopPropagation();" title="Highlight ${escapeHtml(parsed.tableName)} in Top ERD Diagram">
+          &uarr; Top ERD
+        </button>
       </div>
     `;
   }
