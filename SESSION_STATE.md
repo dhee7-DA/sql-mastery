@@ -60,3 +60,9 @@
 - **2026-09-02 13:02 IST**: Student solved **Employee Names** (+10.00 pts). Total Score: 225 / 300 pts.
 - **2026-09-02 13:05 IST**: Student wrote query autonomously and self-debugged currency symbol for **Employee Salaries** (+10.00 pts). Total Score: **235 / 300 pts**.
 - **2026-09-02 13:05 IST**: 🏆 **PHASE 1 (BASIC SELECT) 100% CONQUERED (20 / 20 PROBLEMS)!**
+
+### 4. 2026-09-06 (Studio Dynamic Injection & Visualizer Polish)
+- **500 Master MCQs Options Jumbled**: Shuffled answer positions across options A, B, C, D to achieve 25% equal distribution.
+- **Persistent Domain ERD Showcase**: Mounted live multi-domain ERD at the top of Case Studies across 10 industries; replaced in-card black boxes with sleek single-line table pills.
+- **Studio Dynamic Table Injection Engine**: Query Studio now dynamically synthesizes and registers disk tables for ANY of the 600 case studies or custom queries, complete with WHERE evaluation and column projections.
+
