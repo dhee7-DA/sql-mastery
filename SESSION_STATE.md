@@ -6,19 +6,19 @@
 
 ## 📌 Current Snapshot
 
-- **Current Sprint**: **Phase 1, 2, and Day 05 Completed ➡️ Ready for Day 06**
-- **Active Module**: `day-05-basic-aggregations` (Completed) ➡️ Next: `day-06-station-math-aggregates`
+- **Current Sprint**: **Phase 1, 2, Day 05 & Day 06 Completed ➡️ Ready for Day 08 (Relational Joins)**
+- **Active Module**: `day-06-station-math-aggregates` (Completed) ➡️ Next: `day-08-basic-joins`
 - **Current Dialect**: **MySQL 8.0+ / ANSI SQL**
-- **Major Milestone Achieved**: 🏆 **BASIC AGGREGATIONS & 600 CASE STUDIES + 500 MCQs MASTER VAULT DEPLOYED!**
+- **Major Milestone Achieved**: 🏆 **HACKERRANK AGGREGATION TRACK 100% CONQUERED (Station 2, 13–20 + Top Earners + Medians)!**
 - **Visualizer Super-Upgrades**:
+  - **Query Studio Dynamic Table Injection**: Synthesizes and executes 600 case studies or custom queries on the fly.
   - **600 Enterprise Case Studies Vault** (Cases 501–600 for Aggregations & GROUP BY across 10 industries).
-  - **500 Master MCQ Technical Vault** (50 deep questions for each of the 10 core SQL keywords).
-  - **26 Interactive Quests** (6 new Aggregation levels added, Levels 21–26).
-  - **8 Curated Themes**: Added `🌸 Sakura Mochi` and `🍵 Matcha Latte`.
-  - **Permanent Aggregations Hub**: 1-click header navigation jump to Cases, Docs, Lab Track, and Studio.
-- **Next Immediate Action**: Advance to Day 06 (*Station Math, Coordinate Distances & Calculating Medians*)
-- **Total Problems Completed in Intensive**: 31 / 58 Problems
-- **Last Updated**: 2026-09-06 03:46 IST
+  - **500 Master MCQ Technical Vault** (50 deep questions for each of the 10 core SQL keywords, balanced ~25% each A/B/C/D).
+  - **26 Interactive Quests** (6 Aggregation levels added, Levels 21–26).
+  - **Top Multi-Domain ERD Map**: Mounted across 10 global corporate domains.
+- **Next Immediate Action**: Advance to Day 08 (*Relational Joins: INNER JOIN, LEFT JOIN, ON vs WHERE*)
+- **Total Problems Completed in Intensive**: 40 / 58 Problems
+- **Last Updated**: 2026-09-07 11:55 IST
 
 ---
 
@@ -31,9 +31,8 @@
 | **03** | [`day-03-sorting-ordering`](./day-03-sorting-ordering) | `ORDER BY`, `LIMIT`, `RIGHT(Name, 3)`, Employees, Students | 3/3 | ✅ Completed (100%) |
 | **04** | [`day-04-advanced-select-case`](./day-04-advanced-select-case) | `CASE WHEN`, Type of Triangle, Multi-branching logic | 1/1 | ✅ Completed (100%) |
 | **05** | [`day-05-basic-aggregations`](./day-05-basic-aggregations) | `COUNT`, `SUM`, `AVG`, `ROUND`, Top Earners, Density Diff | 10/10 | ✅ Completed (100%) |
-| **06** | `day-06-station-math-aggregates` | Station 2, 13–20 (Manhattan & Euclidean Distances, Medians) | 0/8 | 🟡 Next Up |
-| **07** | `day-07-station-math-aggregates` | Station 2, 13–20 (Manhattan & Euclidean Distances, Medians) | 0/8 | ⚪ Pending |
-| **08** | `day-08-basic-joins` | `INNER JOIN`, `LEFT JOIN`, Asian Pop, African Cities, Continents | 0/8 | ⚪ Pending |
+| **06** | [`day-06-station-math-aggregates`](./day-06-station-math-aggregates) | Station 2, 13–20 (Manhattan & Euclidean Distances, Medians) | 9/9 | ✅ Completed (100%) |
+| **08** | `day-08-basic-joins` | `INNER JOIN`, `LEFT JOIN`, Asian Pop, African Cities, Continents | 0/8 | 🟡 Next Up |
 | **09** | `day-09-intermediate-joins` | The Report, Top Competitors, Ollivander's Inventory | 0/8 | ⚪ Pending |
 | **10** | `day-10-advanced-joins-scoring` | Contest Leaderboard, Placements, Symmetric Pairs | 0/5 | ⚪ Pending |
 | **11** | `day-11-window-ranking` | `ROW_NUMBER()`, `RANK()`, `DENSE_RANK()`, `NTILE()` | 0/8 | ⚪ Pending |
