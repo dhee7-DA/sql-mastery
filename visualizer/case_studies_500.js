@@ -3,6 +3,10 @@
 // 7 Sections x Up to 100 Cases Each across 10 Global Industries
 // =============================================================================
 
+if (typeof window === 'undefined') {
+  global.window = global;
+}
+
 window.ALL_500_CASE_STUDIES = [
   {
     "id": 1,

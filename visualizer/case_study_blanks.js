@@ -1,15 +1,22 @@
 // =============================================================================
-// INTERACTIVE CASE STUDY "SLOT-PICKER / MISSING KEYWORD" ENGINE
-// Masks key SQL keywords into interactive blanks with interview trap distractors
+// INTERACTIVE CASE STUDY "JUMBLED TOKEN PUZZLE & BLANKS" ENGINE v2
+// High-yield active retrieval: Masks key clauses, builds randomized token banks
+// with realistic interview trap distractors, and supports click/drag-and-drop.
 // =============================================================================
 
+if (typeof window === 'undefined') {
+  global.window = global;
+}
+
 window.CASE_BLANKS_ENGINE = (() => {
-  // Common interview distractors dictionary for core SQL keywords
+  // Comprehensive interview distractors dictionary for core & advanced SQL keywords
   const DISTRACTORS = {
     'WHERE': ['WHERE', 'HAVING', 'FILTER', 'WHEN'],
+    'HAVING': ['HAVING', 'WHERE', 'FILTER', 'QUALIFY'],
+    'GROUP BY': ['GROUP BY', 'ORDER BY', 'PARTITION BY', 'CLUSTER BY'],
+    'ORDER BY': ['ORDER BY', 'SORT BY', 'GROUP BY', 'RANK BY'],
     'IS NULL': ['IS NULL', '= NULL', '== NULL', 'IS EMPTY'],
     'IS NOT NULL': ['IS NOT NULL', '!= NULL', '<> NULL', 'NOT NULL'],
-    'ORDER BY': ['ORDER BY', 'SORT BY', 'GROUP BY', 'RANK BY'],
     'DESC': ['DESC', 'ASC', 'DOWN', 'REVERSE'],
     'ASC': ['ASC', 'DESC', 'UP', 'FORWARD'],
     'LIMIT': ['LIMIT', 'TOP', 'FETCH', 'TAKE'],
@@ -23,7 +30,16 @@ window.CASE_BLANKS_ENGINE = (() => {
     'NOT IN': ['NOT IN', 'EXCLUDE', 'WITHOUT', 'NOT LIKE'],
     'AND': ['AND', 'OR', 'THEN', 'WITH'],
     'OR': ['OR', 'AND', 'EITHER', 'ELSE'],
-    'ROUND': ['ROUND', 'TRUNC', 'APPROX', 'CEIL'],
+    'ROUND': ['ROUND', 'TRUNCATE', 'APPROX', 'FLOOR'],
+    'TRUNCATE': ['TRUNCATE', 'ROUND', 'CHOP', 'FLOOR'],
+    'ABS': ['ABS', 'MAGNITUDE', 'NEG', 'VAL'],
+    'SQRT': ['SQRT', 'ROOT', 'POW', 'SQR'],
+    'POW': ['POW', 'EXP', 'POWER', 'SQRT'],
+    'FLOOR': ['FLOOR', 'CEIL', 'ROUND', 'TRUNCATE'],
+    'CEIL': ['CEIL', 'FLOOR', 'ROUND', 'HIGH'],
+    'OVER': ['OVER', 'PARTITION', 'WINDOW', 'FRAME'],
+    'ROW_NUMBER': ['ROW_NUMBER', 'RANK', 'DENSE_RANK', 'INDEX'],
+    'WITH': ['WITH', 'CTE', 'TEMP', 'DEFINE'],
     'LENGTH': ['LENGTH', 'LEN', 'SIZE', 'COUNT'],
     'RIGHT': ['RIGHT', 'LEFT', 'TAIL', 'SUFFIX'],
     'LEFT': ['LEFT', 'RIGHT', 'HEAD', 'PREFIX'],
@@ -31,14 +47,39 @@ window.CASE_BLANKS_ENGINE = (() => {
     'SELECT': ['SELECT', 'EXTRACT', 'GET', 'PROHIBIT'],
     'FROM': ['FROM', 'INTO', 'SOURCE', 'TABLE'],
     'AS': ['AS', 'NAME', 'ALIAS', 'LABEL'],
-    'NOT': ['NOT', 'NEVER', 'EXCLUDE', 'DROP']
+    'NOT': ['NOT', 'NEVER', 'EXCLUDE', 'DROP'],
+    'COUNT': ['COUNT', 'SUM', 'TOTAL', 'NUM'],
+    'SUM': ['SUM', 'COUNT', 'TOTAL', 'ADD'],
+    'AVG': ['AVG', 'MEAN', 'MEDIAN', 'SUM'],
+    'MIN': ['MIN', 'LOWEST', 'LEAST', 'FLOOR'],
+    'MAX': ['MAX', 'HIGHEST', 'GREATEST', 'CEIL'],
+    'JOIN': ['JOIN', 'MERGE', 'CONNECT', 'COMBINE'],
+    'INNER JOIN': ['INNER JOIN', 'LEFT JOIN', 'FULL JOIN', 'CROSS JOIN'],
+    'LEFT JOIN': ['LEFT JOIN', 'INNER JOIN', 'RIGHT JOIN', 'OUTER JOIN'],
+    'ON': ['ON', 'WHERE', 'USING', 'MATCHING']
   };
 
   // Keywords ranked by educational / interview trap value
   const KEYWORD_PRIORITY = [
+    'ROW_NUMBER',
+    'TRUNCATE',
+    'ROUND',
+    'SQRT',
+    'POW',
+    'ABS',
+    'FLOOR',
+    'CEIL',
+    'OVER',
+    'WITH',
+    'INNER JOIN',
+    'LEFT JOIN',
+    'JOIN',
+    'ON',
     'IS NOT NULL',
     'IS NULL',
     'COALESCE',
+    'HAVING',
+    'GROUP BY',
     'BETWEEN',
     'NOT IN',
     'IN',
@@ -51,7 +92,6 @@ window.CASE_BLANKS_ENGINE = (() => {
     'LIMIT',
     'OFFSET',
     'DISTINCT',
-    'ROUND',
     'LENGTH',
     'RIGHT',
     'LEFT',
@@ -72,10 +112,10 @@ window.CASE_BLANKS_ENGINE = (() => {
   }
 
   // Solved state storage in localStorage
-  const STORAGE_KEY = 'sql_mastery_solved_case_challenges_v1';
+  const STORAGE_KEY = 'sql_mastery_solved_case_challenges_v2';
   function getSolvedSet() {
     try {
-      const raw = localStorage.getItem(STORAGE_KEY);
+      const raw = localStorage.getItem(STORAGE_KEY) || localStorage.getItem('sql_mastery_solved_case_challenges_v1');
       return raw ? new Set(JSON.parse(raw)) : new Set();
     } catch (e) {
       return new Set();
@@ -90,6 +130,27 @@ window.CASE_BLANKS_ENGINE = (() => {
     } catch (e) {}
   }
 
+  // Active in-memory state tracking placed tokens per case
+  // Shape: { [caseId]: { slots: { slot_1: 'WHERE' }, usedTokens: ['tok_1'] } }
+  const CASE_ACTIVE_STATE = {};
+
+  function getCaseState(caseId) {
+    if (!CASE_ACTIVE_STATE[caseId]) {
+      CASE_ACTIVE_STATE[caseId] = {
+        slots: {},
+        usedTokens: new Set()
+      };
+    }
+    return CASE_ACTIVE_STATE[caseId];
+  }
+
+  function clearCaseState(caseId) {
+    CASE_ACTIVE_STATE[caseId] = {
+      slots: {},
+      usedTokens: new Set()
+    };
+  }
+
   // Generate Challenge for any Case Study
   function createChallenge(caseStudy) {
     if (!caseStudy || !caseStudy.targetQuery) return null;
@@ -99,11 +160,9 @@ window.CASE_BLANKS_ENGINE = (() => {
 
     // Search for keywords in priority order
     for (const kw of KEYWORD_PRIORITY) {
-      // Regex boundary match
       const regex = new RegExp(`\\b${kw.replace(' ', '\\s+')}\\b`, 'gi');
       let match;
       while ((match = regex.exec(query)) !== null) {
-        // Prevent overlapping spans
         const start = match.index;
         const end = start + match[0].length;
         const hasOverlap = detected.some(d => (start >= d.start && start < d.end) || (end > d.start && end <= d.end));
@@ -118,13 +177,12 @@ window.CASE_BLANKS_ENGINE = (() => {
       }
     }
 
-    // Sort by start index
+    // Sort by start index in the query
     detected.sort((a, b) => a.start - b.start);
 
     // Pick 2 to 3 slots to mask
     let selected = detected;
     if (detected.length > 3) {
-      // Pick 2 or 3 distinct high-priority keywords
       const uniqueKeywords = [];
       const filtered = [];
       for (const item of detected) {
@@ -135,17 +193,16 @@ window.CASE_BLANKS_ENGINE = (() => {
       }
       selected = filtered.length >= 2 ? filtered : detected.slice(0, 3);
     } else if (detected.length === 0) {
-      // Fallback: search for SELECT / FROM
       return null;
     }
 
-    // Re-sort chosen slots by appearance
     selected.sort((a, b) => a.start - b.start);
 
-    // Build masked query string & slots map
+    // Build masked query string, slots map, and collect correct keywords
     let maskedQuery = '';
     let lastIdx = 0;
     const slots = {};
+    const correctKeywords = [];
 
     selected.forEach((item, slotIdx) => {
       const slotId = `slot_${slotIdx + 1}`;
@@ -154,23 +211,47 @@ window.CASE_BLANKS_ENGINE = (() => {
       lastIdx = item.end;
 
       const correctVal = item.keyword.toUpperCase();
-      const optionsPool = DISTRACTORS[correctVal] || [correctVal, 'INVALID_1', 'INVALID_2', 'INVALID_3'];
-      
+      correctKeywords.push(correctVal);
+
       slots[slotId] = {
         slotId: slotId,
         correct: correctVal,
-        options: shuffle(optionsPool),
-        placeholder: `[ ___ ]`
+        originalText: item.originalText
       };
     });
 
     maskedQuery += query.slice(lastIdx);
+
+    // Build jumbled token bank (Correct tokens + 2 to 3 smart distractors)
+    const tokenSet = new Set(correctKeywords);
+    const distractorCandidates = [];
+
+    correctKeywords.forEach(kw => {
+      const options = DISTRACTORS[kw] || [];
+      options.forEach(opt => {
+        if (!tokenSet.has(opt) && !distractorCandidates.includes(opt)) {
+          distractorCandidates.push(opt);
+        }
+      });
+    });
+
+    // Add up to 3 distractors
+    const shuffledDistractors = shuffle(distractorCandidates).slice(0, Math.min(3, Math.max(2, 5 - correctKeywords.length)));
+    shuffledDistractors.forEach(d => tokenSet.add(d));
+
+    // Convert to jumbled token objects
+    const jumbledList = shuffle([...tokenSet]);
+    const tokenBank = jumbledList.map((text, idx) => ({
+      id: `tok_${caseStudy.id}_${idx}`,
+      text: text
+    }));
 
     return {
       caseId: caseStudy.id,
       title: caseStudy.title,
       maskedQuery: maskedQuery,
       slots: slots,
+      tokenBank: tokenBank,
       isSolved: getSolvedSet().has(caseStudy.id)
     };
   }
@@ -198,17 +279,15 @@ window.CASE_BLANKS_ENGINE = (() => {
 
     if (allCorrect) {
       markSolved(caseStudy.id);
-      // Trigger sound & XP if audio engine available
-      if (window.AUDIO_FX && typeof window.AUDIO_FX.playSuccess === 'function') {
-        window.AUDIO_FX.playSuccess();
+      if (window.soundFX && typeof window.soundFX.playSuccess === 'function') {
+        window.soundFX.playSuccess();
       }
-      // Add XP
       if (typeof window.awardExperiencePoints === 'function') {
         window.awardExperiencePoints(15, `Solved Case Challenge #${caseStudy.id}`);
       }
     } else {
-      if (window.AUDIO_FX && typeof window.AUDIO_FX.playError === 'function') {
-        window.AUDIO_FX.playError();
+      if (window.soundFX && typeof window.soundFX.playError === 'function') {
+        window.soundFX.playError();
       }
     }
 
@@ -222,23 +301,30 @@ window.CASE_BLANKS_ENGINE = (() => {
   // Generate Executive Post-Mortem Explanation
   function generatePostMortem(caseStudy, results, allCorrect) {
     if (allCorrect) {
-      return `<strong>🎯 Flawless Query Execution!</strong><br>All SQL clauses and keywords are logically and physically valid for <em>${caseStudy.title}</em>. The database engine executes the predicates in proper sequence without throwing column alias errors or null-evaluation traps.`;
+      return `<strong>🎯 Flawless Query Execution!</strong><br>All SQL clauses and keywords are logically and physically valid for <em>${caseStudy.title}</em>. The database engine executes the predicates in proper sequence without throwing syntax errors or trap violations.`;
     }
 
     let mistakes = [];
     for (const [slotId, res] of Object.entries(results)) {
       if (!res.isCorrect) {
-        mistakes.push(`For slot <strong>${slotId.toUpperCase()}</strong>: You chose <code>${res.chosen || 'EMPTY'}</code>, but the query requires <code>${res.correct}</code>.`);
+        mistakes.push(`For slot <strong>${slotId.toUpperCase()}</strong>: You placed <code>${res.chosen || 'EMPTY'}</code>, but this position requires <code>${res.correct}</code>.`);
       }
     }
 
-    return `<strong>⚠️ Trap Triggered:</strong><br>${mistakes.join('<br>')}<br><br><em>Remember:</em> In SQL, clause evaluation order and Three-Valued Logic strictly dictate keyword placement.`;
+    return `<strong>⚠️ Trap Triggered:</strong><br>${mistakes.join('<br>')}<br><br><em>Remember:</em> In SQL, clause evaluation order strictly dictates keyword placement.`;
   }
 
   return {
     createChallenge,
     verifyChallenge,
+    getCaseState,
+    clearCaseState,
     getSolvedCount: () => getSolvedSet().size,
-    isSolved: (id) => getSolvedSet().has(id)
+    isSolved: (id) => getSolvedSet().has(id),
+    markSolved
   };
 })();
+
+if (typeof module !== 'undefined' && module.exports) {
+  module.exports = { CASE_BLANKS_ENGINE: window.CASE_BLANKS_ENGINE };
+}
