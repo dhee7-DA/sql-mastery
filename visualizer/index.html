@@ -80,11 +80,11 @@
     <!-- Top Navigation Bar for Learning Platform -->
     <nav class="app-nav-bar">
       <div class="nav-tabs-list">
-        <button class="nav-tab active" data-view="viewPathways" onclick="switchMainView('viewPathways')">
+        <button class="nav-tab" data-view="viewPathways" onclick="switchMainView('viewPathways')">
           <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="10"></circle><polygon points="12 8 8 12 12 16 12 8"></polygon></svg>
           Topic Pathways
         </button>
-        <button class="nav-tab" data-view="viewGuidedLab" onclick="switchMainView('viewGuidedLab')">
+        <button class="nav-tab active" data-view="viewGuidedLab" onclick="switchMainView('viewGuidedLab')">
           <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polygon points="5 3 19 12 5 21 5 3"></polygon></svg>
           Guided Lab
         </button>
@@ -102,7 +102,7 @@
         </button>
         <button class="nav-tab" data-view="viewMcqs" onclick="switchMainView('viewMcqs')">
           <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M9 11l3 3L22 4"></path><path d="M21 12v7a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h11"></path></svg>
-          MCQs
+          MCQs (1,200)
         </button>
         <button class="nav-tab" data-view="viewCases" onclick="switchMainView('viewCases')">
           <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="2" y="7" width="20" height="14" rx="2" ry="2"></rect><path d="M16 21V5a2 2 0 0 0-2-2h-4a2 2 0 0 0-2 2v16"></path></svg>
@@ -163,7 +163,7 @@
     </nav>
 
     <!-- VIEW 0: Topic Pathways & 4-Stage Modular Progression Hub -->
-    <div class="view-panel active" id="viewPathways">
+    <div class="view-panel" id="viewPathways">
       <div class="pathways-container">
         <!-- Pathways Header & Module Selector -->
         <div class="pathways-header">
@@ -253,7 +253,7 @@
     </div>
 
     <!-- VIEW 1: Guided Learning Lab (Calm, Step-by-Step) -->
-    <div class="view-panel" id="viewGuidedLab">
+    <div class="view-panel active" id="viewGuidedLab">
       <div class="guided-lab-container">
         <!-- Track Switcher Header -->
         <div class="track-switcher-bar">
@@ -625,8 +625,8 @@
     <div class="curriculum-container">
       <div class="curriculum-header">
         <div>
-          <h2 class="view-title">The 600 Master MCQ Technical Vault</h2>
-          <p class="view-subtitle">600 deep technical checks across 12 core SQL domains on physical execution sequence, NULL semantics, spatial coordinates, medians, and relational joins.</p>
+          <h2 class="view-title">The 1,200 Master MCQ Technical Vault</h2>
+          <p class="view-subtitle">100 deep technical checks per keyword across all 12 core SQL domains on physical execution sequence, NULL semantics, spatial coordinates, medians, and relational joins.</p>
         </div>
         <div class="quiz-header-right">
           <div class="quiz-score-badge">

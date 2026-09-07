@@ -3841,10 +3841,11 @@ function renderMcqs(filterKeyword = 'all', resetLimit = true) {
 
 function handleMcqAnswer(qid, selectedIdx) {
   const mcqs = window.MCQS_VAULT_500 || (window.FOUNDATIONS_DATA ? window.FOUNDATIONS_DATA.mcqs : []);
-  const mcq = mcqs.find(m => m.id === qid);
+  const mcq = mcqs.find(m => String(m.id) === String(qid));
   if (!mcq) return;
 
   const card = document.getElementById(`card_${qid}`);
+  if (!card) return;
   const optionBtns = card.querySelectorAll('.mcq-option-btn');
   const expCard = document.getElementById(`exp_${qid}`);
   const verdict = document.getElementById(`verdict_${qid}`);
@@ -3852,7 +3853,11 @@ function handleMcqAnswer(qid, selectedIdx) {
   // Disable all options in this card
   optionBtns.forEach(b => b.disabled = true);
 
-  const isCorrect = (selectedIdx === mcq.correctIndex);
+  const correctIdx = (typeof mcq.correctIndex === 'number')
+    ? mcq.correctIndex
+    : (mcq.correctOption ? (mcq.correctOption.charCodeAt(0) - 65) : 0);
+
+  const isCorrect = (selectedIdx === correctIdx);
   if (isCorrect) {
     QuizState.score++;
     if (window.soundFX) window.soundFX.playSuccess();
@@ -3862,12 +3867,12 @@ function handleMcqAnswer(qid, selectedIdx) {
   } else {
     if (window.soundFX) window.soundFX.playError();
     optionBtns[selectedIdx].classList.add('opt-wrong');
-    optionBtns[mcq.correctIndex].classList.add('opt-correct');
-    verdict.innerHTML = `<span style="color: #fb7185; font-weight: 700;">&cross; Not quite!</span> &mdash; Correct answer is <strong>Option ${String.fromCharCode(65 + mcq.correctIndex)}</strong>`;
+    if (optionBtns[correctIdx]) optionBtns[correctIdx].classList.add('opt-correct');
+    verdict.innerHTML = `<span style="color: #fb7185; font-weight: 700;">&cross; Not quite!</span> &mdash; Correct answer is <strong>Option ${String.fromCharCode(65 + correctIdx)}</strong>`;
   }
 
   QuizState.answered++;
-  expCard.classList.add('show');
+  if (expCard) expCard.classList.add('show');
 }
 
 function escapeHtml(str) {
@@ -5799,12 +5804,12 @@ const TOPIC_PATHWAY_MODULES = [
     icon: "🔗",
     tagline: "INNER, LEFT, RIGHT, FULL OUTER, CROSS, SELF, NON-EQUI & Physical Plans",
     caseSection: "Section 8: Relational Joins & Financial Data Modeling",
-    mcqKeyword: "JOINS",
+    mcqKeywords: ["JOINS"],
     studySectionId: "sec_joins",
     labTrackId: "track04",
     trapsModuleId: "mod_joins",
     caseCount: 390,
-    mcqCount: 50,
+    mcqCount: 100,
     trapsCount: 4,
     tipsCount: 2,
     interviewCount: 2
@@ -5816,12 +5821,12 @@ const TOPIC_PATHWAY_MODULES = [
     icon: "🏛️",
     tagline: "FROM -> WHERE -> GROUP BY -> HAVING -> SELECT -> ORDER BY -> LIMIT",
     caseSection: "Section 2: Physical Query Execution Order & Projections",
-    mcqKeyword: "SELECT",
+    mcqKeywords: ["SELECT", "FROM"],
     studySectionId: "sec_execution_order",
     labTrackId: "track01",
     trapsModuleId: "mod_foundations",
     caseCount: 100,
-    mcqCount: 50,
+    mcqCount: 200,
     trapsCount: 4,
     tipsCount: 2,
     interviewCount: 2
@@ -5833,12 +5838,12 @@ const TOPIC_PATHWAY_MODULES = [
     icon: "⚖️",
     tagline: "Simple vs Searched CASE, Short-circuiting, Pivot Reporting & NULLs",
     caseSection: "Section 3: Filtering, Predicates & Three-Valued Logic",
-    mcqKeyword: "WHERE",
+    mcqKeywords: ["WHERE", "ORDER BY & LIMIT"],
     studySectionId: "sec_casewhen",
     labTrackId: "track02",
     trapsModuleId: "mod_casewhen",
     caseCount: 100,
-    mcqCount: 50,
+    mcqCount: 200,
     trapsCount: 3,
     tipsCount: 2,
     interviewCount: 1
@@ -5850,12 +5855,12 @@ const TOPIC_PATHWAY_MODULES = [
     icon: "📊",
     tagline: "COUNT, SUM, AVG, MIN, MAX, GROUP BY buckets, HAVING filters & Variance",
     caseSection: "Section 6: Aggregations, Statistical Metrics & GROUP BY",
-    mcqKeyword: "GROUP BY",
+    mcqKeywords: ["COUNT", "SUM", "AVG", "MIN & MAX", "GROUP BY", "HAVING"],
     studySectionId: "sec_aggregations",
     labTrackId: "track03",
     trapsModuleId: "mod_aggregations",
     caseCount: 100,
-    mcqCount: 50,
+    mcqCount: 600,
     trapsCount: 3,
     tipsCount: 1,
     interviewCount: 1
@@ -5867,12 +5872,12 @@ const TOPIC_PATHWAY_MODULES = [
     icon: "🧩",
     tagline: "Scalar, Correlated, EXISTS vs IN, CTE Pipelines & Recursion",
     caseSection: "Section 5: Sorting, Determinism & Slicing",
-    mcqKeyword: "FROM",
+    mcqKeywords: ["FROM", "SELECT"],
     studySectionId: "sec_foundations",
     labTrackId: "track01",
     trapsModuleId: "mod_ctes",
     caseCount: 100,
-    mcqCount: 50,
+    mcqCount: 200,
     trapsCount: 2,
     tipsCount: 1,
     interviewCount: 1
@@ -5884,12 +5889,12 @@ const TOPIC_PATHWAY_MODULES = [
     icon: "🪟",
     tagline: "ROW_NUMBER, RANK, DENSE_RANK, LEAD/LAG, Running Totals & Framing",
     caseSection: "Section 7: Spatial Coordinates, Math Functions & Medians",
-    mcqKeyword: "ORDER BY & LIMIT",
+    mcqKeywords: ["ORDER BY & LIMIT", "MATH & MEDIANS"],
     studySectionId: "sec_operators",
     labTrackId: "track01",
     trapsModuleId: "mod_window",
     caseCount: 50,
-    mcqCount: 50,
+    mcqCount: 200,
     trapsCount: 2,
     tipsCount: 1,
     interviewCount: 1
@@ -5901,12 +5906,12 @@ const TOPIC_PATHWAY_MODULES = [
     icon: "🏛️",
     tagline: "ACID, B-Tree Indexes, OLTP vs OLAP, Buffer Pools & Normalization",
     caseSection: "Section 1: Database Theory & Architecture",
-    mcqKeyword: "COUNT",
+    mcqKeywords: ["COUNT", "SELECT", "FROM"],
     studySectionId: "sec_theory_architecture",
     labTrackId: "track01",
     trapsModuleId: "mod_architecture",
     caseCount: 100,
-    mcqCount: 50,
+    mcqCount: 300,
     trapsCount: 2,
     tipsCount: 1,
     interviewCount: 1
@@ -6252,10 +6257,11 @@ function renderPathwayMcqs() {
   if (!container || !window.MCQS_VAULT_500) return;
 
   const currentMod = TOPIC_PATHWAY_MODULES.find(m => m.id === currentPathwayModuleId) || TOPIC_PATHWAY_MODULES[0];
-  const allTopicMcqs = window.MCQS_VAULT_500.filter(m => m.keyword === currentMod.mcqKeyword);
+  const targetKeywords = currentMod.mcqKeywords || (currentMod.mcqKeyword ? [currentMod.mcqKeyword] : ['SELECT']);
+  const allTopicMcqs = window.MCQS_VAULT_500.filter(m => targetKeywords.includes(m.keyword));
 
   if (allTopicMcqs.length === 0) {
-    container.innerHTML = `<div class="card"><p>No MCQs mapped for keyword: ${currentMod.mcqKeyword}</p></div>`;
+    container.innerHTML = `<div class="card"><p>No MCQs mapped for this module.</p></div>`;
     return;
   }
 
@@ -6306,11 +6312,13 @@ function renderPathwayMcqs() {
     <div class="card" style="max-width: 900px; margin: 0 auto; border-left: 4px solid #6366f1;">
       <div class="card-header" style="display: flex; align-items: center; justify-content: space-between; flex-wrap: wrap; gap: 8px;">
         <div style="display: flex; align-items: center; gap: 8px;">
-          <span class="clause-pill pill-where" style="font-size: 10px;">${q.tag || 'Topic Question'}</span>
+          <span class="clause-pill pill-where" style="font-size: 10px;">${q.keyword}</span>
           <span class="status-pill" style="font-family: var(--font-mono); font-size: 11px;">Question ${currentPathwayMcqIndex + 1} of ${allTopicMcqs.length}</span>
         </div>
         <div style="display: flex; align-items: center; gap: 10px;">
-          <span style="font-family: var(--font-mono); font-size: 11px; color: #9ec5ad; font-weight: 600;">+10 XP Reward</span>
+          <button class="card-nav-btn" onclick="switchMainView('viewMcqs'); if(window.renderMcqs) window.renderMcqs('${q.keyword}');" style="font-size: 11px; padding: 3px 10px;">
+            🔍 Open All 100 in Vault &rarr;
+          </button>
           <select class="clean-select" style="font-size: 11px; padding: 3px 8px;" onchange="jumpToPathwayMcq(this.value)">
             ${allTopicMcqs.map((_, i) => `<option value="${i}" ${i === currentPathwayMcqIndex ? 'selected' : ''}>Q${i + 1}</option>`).join('')}
           </select>

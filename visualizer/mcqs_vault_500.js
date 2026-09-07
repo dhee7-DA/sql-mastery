@@ -1,6 +1,7 @@
 // =============================================================================
-// THE 600 MASTER MCQ VAULT: INSTITUTIONAL-GRADE TECHNICAL QUESTIONS
-// Foundational SQL, Aggregations, Math & Relational Joins for Analysts
+// THE 1,200 MASTER MCQ TECHNICAL VAULT: INSTITUTIONAL-GRADE QUESTIONS
+// 100 Deep Technical Questions Per Keyword across 12 Core SQL Domains
+// Physical Execution, NULL Semantics, Aggregations, Spatial Math & Relational Joins
 // =============================================================================
 
 window.MCQS_VAULT_500 = [
@@ -705,6 +706,706 @@ window.MCQS_VAULT_500 = [
     "explanation": "Unlike simple streaming COUNT(*), COUNT(DISTINCT) must track every distinct key in a hash table or sort buffer, leading to high memory pressure and potential spills to temp disk."
   },
   {
+    "id": "mcq_count_51",
+    "keyword": "COUNT",
+    "tag": "🎯 Core Concept",
+    "question": "[COUNT #51 &bull; Fintech & Ledger Systems] What is the result of SELECT COUNT(DISTINCT col1, col2) in MySQL 8.0 when a row contains a NULL in col1 but a valid value in col2? (Application Scenario 1)",
+    "options": [
+      "The row is included because col2 is not NULL",
+      "An error 1064 is thrown because multi-column COUNT DISTINCT is unsupported",
+      "The NULL is coerced to an empty string",
+      "The row is excluded from the distinct count because ANSI SQL requires all tuple elements to be non-NULL"
+    ],
+    "correctIndex": 3,
+    "explanation": "In MySQL, COUNT(DISTINCT expr1, expr2, ...) returns the number of unique non-NULL combinations. If ANY column in the tuple is NULL, the entire tuple is ignored. [Context: Fintech & Ledger Systems]"
+  },
+  {
+    "id": "mcq_count_52",
+    "keyword": "COUNT",
+    "tag": "🏛️ Corporate Edge",
+    "question": "[COUNT #52 &bull; SaaS Subscription Billing] In high-throughput event logging, why might an architect replace SELECT COUNT(*) with an approximate row count from information_schema.tables? (Application Scenario 1)",
+    "options": [
+      "information_schema tables provide microsecond transactional ACID precision",
+      "Exact COUNT(*) on InnoDB without an index scan requires an MVCC row traversal which can lock or slow down on 100M+ row tables",
+      "COUNT(*) is deprecated in SQL:2023 standard",
+      "InnoDB automatically converts information_schema queries into parallel GPU shaders"
+    ],
+    "correctIndex": 1,
+    "explanation": "For massive InnoDB tables, transactional MVCC guarantees require inspecting row visibility unless a secondary index can be scanned. For dashboards, table_rows from information_schema provides instantaneous O(1) approximation. [Context: SaaS Subscription Billing]"
+  },
+  {
+    "id": "mcq_count_53",
+    "keyword": "COUNT",
+    "tag": "💡 Lead Architect",
+    "question": "[COUNT #53 &bull; Global Supply Chain & Logistics] Which query correctly counts the number of active users per day while outputting 0 (rather than omitting the day) for days with zero user activity? (Application Scenario 1)",
+    "options": [
+      "SELECT d.day, COUNT(*) FROM calendar_days d INNER JOIN user_activity u ON d.day = u.activity_date GROUP BY d.day",
+      "SELECT d.day, SUM(u.id) FROM calendar_days d RIGHT JOIN user_activity u ON d.day = u.activity_date GROUP BY d.day",
+      "SELECT d.day, COUNT(d.day) FROM user_activity u LEFT JOIN calendar_days d ON d.day = u.activity_date GROUP BY d.day",
+      "SELECT d.day, COUNT(u.id) FROM calendar_days d LEFT JOIN user_activity u ON d.day = u.activity_date GROUP BY d.day"
+    ],
+    "correctIndex": 3,
+    "explanation": "A LEFT JOIN from a master calendar_days table combined with COUNT(u.id) properly preserves days with no records, and because u.id is NULL for unmatched days, COUNT(u.id) returns 0. [Context: Global Supply Chain & Logistics]"
+  },
+  {
+    "id": "mcq_count_54",
+    "keyword": "COUNT",
+    "tag": "⚡ Gotcha Trap",
+    "question": "[COUNT #54 &bull; Healthcare Patient Records] When running SELECT COUNT(1) FROM (SELECT 1 UNION SELECT 1) AS t, what value is returned? (Application Scenario 1)",
+    "options": [
+      "2",
+      "1",
+      "NULL",
+      "Syntax error"
+    ],
+    "correctIndex": 1,
+    "explanation": "UNION without ALL deduplicates rows. (SELECT 1 UNION SELECT 1) results in exactly 1 row, so COUNT(1) yields 1. [Context: Healthcare Patient Records]"
+  },
+  {
+    "id": "mcq_count_55",
+    "keyword": "COUNT",
+    "tag": "🎯 Core Concept",
+    "question": "[COUNT #55 &bull; E-Commerce Checkout Funnels] What does SELECT COUNT(NULLIF(status, 'inactive')) FROM subscriptions; achieve? (Application Scenario 1)",
+    "options": [
+      "Counts only subscriptions where status is 'inactive'",
+      "Throws a runtime error because NULLIF cannot accept column identifiers",
+      "Converts the entire count to NULL if any record is inactive",
+      "Counts all subscriptions, converting 'inactive' to NULL and thus excluding 'inactive' records from the count"
+    ],
+    "correctIndex": 3,
+    "explanation": "NULLIF(status, 'inactive') returns NULL whenever status is 'inactive'. Since COUNT(expr) ignores NULLs, this concisely counts only subscriptions that are NOT inactive. [Context: E-Commerce Checkout Funnels]"
+  },
+  {
+    "id": "mcq_count_56",
+    "keyword": "COUNT",
+    "tag": "🏛️ Corporate Edge",
+    "question": "[COUNT #56 &bull; Telecom Billing & Data Streams] What is the result of SELECT COUNT(DISTINCT col1, col2) in MySQL 8.0 when a row contains a NULL in col1 but a valid value in col2? (Application Scenario 2)",
+    "options": [
+      "The row is included because col2 is not NULL",
+      "The row is excluded from the distinct count because ANSI SQL requires all tuple elements to be non-NULL",
+      "An error 1064 is thrown because multi-column COUNT DISTINCT is unsupported",
+      "The NULL is coerced to an empty string"
+    ],
+    "correctIndex": 1,
+    "explanation": "In MySQL, COUNT(DISTINCT expr1, expr2, ...) returns the number of unique non-NULL combinations. If ANY column in the tuple is NULL, the entire tuple is ignored. [Context: Telecom Billing & Data Streams]"
+  },
+  {
+    "id": "mcq_count_57",
+    "keyword": "COUNT",
+    "tag": "💡 Lead Architect",
+    "question": "[COUNT #57 &bull; AdTech Real-Time Bidding] In high-throughput event logging, why might an architect replace SELECT COUNT(*) with an approximate row count from information_schema.tables? (Application Scenario 2)",
+    "options": [
+      "information_schema tables provide microsecond transactional ACID precision",
+      "COUNT(*) is deprecated in SQL:2023 standard",
+      "InnoDB automatically converts information_schema queries into parallel GPU shaders",
+      "Exact COUNT(*) on InnoDB without an index scan requires an MVCC row traversal which can lock or slow down on 100M+ row tables"
+    ],
+    "correctIndex": 3,
+    "explanation": "For massive InnoDB tables, transactional MVCC guarantees require inspecting row visibility unless a secondary index can be scanned. For dashboards, table_rows from information_schema provides instantaneous O(1) approximation. [Context: AdTech Real-Time Bidding]"
+  },
+  {
+    "id": "mcq_count_58",
+    "keyword": "COUNT",
+    "tag": "⚡ Gotcha Trap",
+    "question": "[COUNT #58 &bull; Cybersecurity Audit Logs] Which query correctly counts the number of active users per day while outputting 0 (rather than omitting the day) for days with zero user activity? (Application Scenario 2)",
+    "options": [
+      "SELECT d.day, COUNT(*) FROM calendar_days d INNER JOIN user_activity u ON d.day = u.activity_date GROUP BY d.day",
+      "SELECT d.day, COUNT(u.id) FROM calendar_days d LEFT JOIN user_activity u ON d.day = u.activity_date GROUP BY d.day",
+      "SELECT d.day, SUM(u.id) FROM calendar_days d RIGHT JOIN user_activity u ON d.day = u.activity_date GROUP BY d.day",
+      "SELECT d.day, COUNT(d.day) FROM user_activity u LEFT JOIN calendar_days d ON d.day = u.activity_date GROUP BY d.day"
+    ],
+    "correctIndex": 1,
+    "explanation": "A LEFT JOIN from a master calendar_days table combined with COUNT(u.id) properly preserves days with no records, and because u.id is NULL for unmatched days, COUNT(u.id) returns 0. [Context: Cybersecurity Audit Logs]"
+  },
+  {
+    "id": "mcq_count_59",
+    "keyword": "COUNT",
+    "tag": "🎯 Core Concept",
+    "question": "[COUNT #59 &bull; Fintech & Ledger Systems] When running SELECT COUNT(1) FROM (SELECT 1 UNION SELECT 1) AS t, what value is returned? (Application Scenario 2)",
+    "options": [
+      "2",
+      "NULL",
+      "Syntax error",
+      "1"
+    ],
+    "correctIndex": 3,
+    "explanation": "UNION without ALL deduplicates rows. (SELECT 1 UNION SELECT 1) results in exactly 1 row, so COUNT(1) yields 1. [Context: Fintech & Ledger Systems]"
+  },
+  {
+    "id": "mcq_count_60",
+    "keyword": "COUNT",
+    "tag": "🏛️ Corporate Edge",
+    "question": "[COUNT #60 &bull; SaaS Subscription Billing] What does SELECT COUNT(NULLIF(status, 'inactive')) FROM subscriptions; achieve? (Application Scenario 2)",
+    "options": [
+      "Counts only subscriptions where status is 'inactive'",
+      "Counts all subscriptions, converting 'inactive' to NULL and thus excluding 'inactive' records from the count",
+      "Throws a runtime error because NULLIF cannot accept column identifiers",
+      "Converts the entire count to NULL if any record is inactive"
+    ],
+    "correctIndex": 1,
+    "explanation": "NULLIF(status, 'inactive') returns NULL whenever status is 'inactive'. Since COUNT(expr) ignores NULLs, this concisely counts only subscriptions that are NOT inactive. [Context: SaaS Subscription Billing]"
+  },
+  {
+    "id": "mcq_count_61",
+    "keyword": "COUNT",
+    "tag": "💡 Lead Architect",
+    "question": "[COUNT #61 &bull; Global Supply Chain & Logistics] What is the result of SELECT COUNT(DISTINCT col1, col2) in MySQL 8.0 when a row contains a NULL in col1 but a valid value in col2? (Application Scenario 3)",
+    "options": [
+      "The row is included because col2 is not NULL",
+      "An error 1064 is thrown because multi-column COUNT DISTINCT is unsupported",
+      "The NULL is coerced to an empty string",
+      "The row is excluded from the distinct count because ANSI SQL requires all tuple elements to be non-NULL"
+    ],
+    "correctIndex": 3,
+    "explanation": "In MySQL, COUNT(DISTINCT expr1, expr2, ...) returns the number of unique non-NULL combinations. If ANY column in the tuple is NULL, the entire tuple is ignored. [Context: Global Supply Chain & Logistics]"
+  },
+  {
+    "id": "mcq_count_62",
+    "keyword": "COUNT",
+    "tag": "⚡ Gotcha Trap",
+    "question": "[COUNT #62 &bull; Healthcare Patient Records] In high-throughput event logging, why might an architect replace SELECT COUNT(*) with an approximate row count from information_schema.tables? (Application Scenario 3)",
+    "options": [
+      "information_schema tables provide microsecond transactional ACID precision",
+      "Exact COUNT(*) on InnoDB without an index scan requires an MVCC row traversal which can lock or slow down on 100M+ row tables",
+      "COUNT(*) is deprecated in SQL:2023 standard",
+      "InnoDB automatically converts information_schema queries into parallel GPU shaders"
+    ],
+    "correctIndex": 1,
+    "explanation": "For massive InnoDB tables, transactional MVCC guarantees require inspecting row visibility unless a secondary index can be scanned. For dashboards, table_rows from information_schema provides instantaneous O(1) approximation. [Context: Healthcare Patient Records]"
+  },
+  {
+    "id": "mcq_count_63",
+    "keyword": "COUNT",
+    "tag": "🎯 Core Concept",
+    "question": "[COUNT #63 &bull; E-Commerce Checkout Funnels] Which query correctly counts the number of active users per day while outputting 0 (rather than omitting the day) for days with zero user activity? (Application Scenario 3)",
+    "options": [
+      "SELECT d.day, COUNT(*) FROM calendar_days d INNER JOIN user_activity u ON d.day = u.activity_date GROUP BY d.day",
+      "SELECT d.day, SUM(u.id) FROM calendar_days d RIGHT JOIN user_activity u ON d.day = u.activity_date GROUP BY d.day",
+      "SELECT d.day, COUNT(d.day) FROM user_activity u LEFT JOIN calendar_days d ON d.day = u.activity_date GROUP BY d.day",
+      "SELECT d.day, COUNT(u.id) FROM calendar_days d LEFT JOIN user_activity u ON d.day = u.activity_date GROUP BY d.day"
+    ],
+    "correctIndex": 3,
+    "explanation": "A LEFT JOIN from a master calendar_days table combined with COUNT(u.id) properly preserves days with no records, and because u.id is NULL for unmatched days, COUNT(u.id) returns 0. [Context: E-Commerce Checkout Funnels]"
+  },
+  {
+    "id": "mcq_count_64",
+    "keyword": "COUNT",
+    "tag": "🏛️ Corporate Edge",
+    "question": "[COUNT #64 &bull; Telecom Billing & Data Streams] When running SELECT COUNT(1) FROM (SELECT 1 UNION SELECT 1) AS t, what value is returned? (Application Scenario 3)",
+    "options": [
+      "2",
+      "1",
+      "NULL",
+      "Syntax error"
+    ],
+    "correctIndex": 1,
+    "explanation": "UNION without ALL deduplicates rows. (SELECT 1 UNION SELECT 1) results in exactly 1 row, so COUNT(1) yields 1. [Context: Telecom Billing & Data Streams]"
+  },
+  {
+    "id": "mcq_count_65",
+    "keyword": "COUNT",
+    "tag": "💡 Lead Architect",
+    "question": "[COUNT #65 &bull; AdTech Real-Time Bidding] What does SELECT COUNT(NULLIF(status, 'inactive')) FROM subscriptions; achieve? (Application Scenario 3)",
+    "options": [
+      "Counts only subscriptions where status is 'inactive'",
+      "Throws a runtime error because NULLIF cannot accept column identifiers",
+      "Converts the entire count to NULL if any record is inactive",
+      "Counts all subscriptions, converting 'inactive' to NULL and thus excluding 'inactive' records from the count"
+    ],
+    "correctIndex": 3,
+    "explanation": "NULLIF(status, 'inactive') returns NULL whenever status is 'inactive'. Since COUNT(expr) ignores NULLs, this concisely counts only subscriptions that are NOT inactive. [Context: AdTech Real-Time Bidding]"
+  },
+  {
+    "id": "mcq_count_66",
+    "keyword": "COUNT",
+    "tag": "⚡ Gotcha Trap",
+    "question": "[COUNT #66 &bull; Cybersecurity Audit Logs] What is the result of SELECT COUNT(DISTINCT col1, col2) in MySQL 8.0 when a row contains a NULL in col1 but a valid value in col2? (Application Scenario 4)",
+    "options": [
+      "The row is included because col2 is not NULL",
+      "The row is excluded from the distinct count because ANSI SQL requires all tuple elements to be non-NULL",
+      "An error 1064 is thrown because multi-column COUNT DISTINCT is unsupported",
+      "The NULL is coerced to an empty string"
+    ],
+    "correctIndex": 1,
+    "explanation": "In MySQL, COUNT(DISTINCT expr1, expr2, ...) returns the number of unique non-NULL combinations. If ANY column in the tuple is NULL, the entire tuple is ignored. [Context: Cybersecurity Audit Logs]"
+  },
+  {
+    "id": "mcq_count_67",
+    "keyword": "COUNT",
+    "tag": "🎯 Core Concept",
+    "question": "[COUNT #67 &bull; Fintech & Ledger Systems] In high-throughput event logging, why might an architect replace SELECT COUNT(*) with an approximate row count from information_schema.tables? (Application Scenario 4)",
+    "options": [
+      "information_schema tables provide microsecond transactional ACID precision",
+      "COUNT(*) is deprecated in SQL:2023 standard",
+      "InnoDB automatically converts information_schema queries into parallel GPU shaders",
+      "Exact COUNT(*) on InnoDB without an index scan requires an MVCC row traversal which can lock or slow down on 100M+ row tables"
+    ],
+    "correctIndex": 3,
+    "explanation": "For massive InnoDB tables, transactional MVCC guarantees require inspecting row visibility unless a secondary index can be scanned. For dashboards, table_rows from information_schema provides instantaneous O(1) approximation. [Context: Fintech & Ledger Systems]"
+  },
+  {
+    "id": "mcq_count_68",
+    "keyword": "COUNT",
+    "tag": "🏛️ Corporate Edge",
+    "question": "[COUNT #68 &bull; SaaS Subscription Billing] Which query correctly counts the number of active users per day while outputting 0 (rather than omitting the day) for days with zero user activity? (Application Scenario 4)",
+    "options": [
+      "SELECT d.day, COUNT(*) FROM calendar_days d INNER JOIN user_activity u ON d.day = u.activity_date GROUP BY d.day",
+      "SELECT d.day, COUNT(u.id) FROM calendar_days d LEFT JOIN user_activity u ON d.day = u.activity_date GROUP BY d.day",
+      "SELECT d.day, SUM(u.id) FROM calendar_days d RIGHT JOIN user_activity u ON d.day = u.activity_date GROUP BY d.day",
+      "SELECT d.day, COUNT(d.day) FROM user_activity u LEFT JOIN calendar_days d ON d.day = u.activity_date GROUP BY d.day"
+    ],
+    "correctIndex": 1,
+    "explanation": "A LEFT JOIN from a master calendar_days table combined with COUNT(u.id) properly preserves days with no records, and because u.id is NULL for unmatched days, COUNT(u.id) returns 0. [Context: SaaS Subscription Billing]"
+  },
+  {
+    "id": "mcq_count_69",
+    "keyword": "COUNT",
+    "tag": "💡 Lead Architect",
+    "question": "[COUNT #69 &bull; Global Supply Chain & Logistics] When running SELECT COUNT(1) FROM (SELECT 1 UNION SELECT 1) AS t, what value is returned? (Application Scenario 4)",
+    "options": [
+      "2",
+      "NULL",
+      "Syntax error",
+      "1"
+    ],
+    "correctIndex": 3,
+    "explanation": "UNION without ALL deduplicates rows. (SELECT 1 UNION SELECT 1) results in exactly 1 row, so COUNT(1) yields 1. [Context: Global Supply Chain & Logistics]"
+  },
+  {
+    "id": "mcq_count_70",
+    "keyword": "COUNT",
+    "tag": "⚡ Gotcha Trap",
+    "question": "[COUNT #70 &bull; Healthcare Patient Records] What does SELECT COUNT(NULLIF(status, 'inactive')) FROM subscriptions; achieve? (Application Scenario 4)",
+    "options": [
+      "Counts only subscriptions where status is 'inactive'",
+      "Counts all subscriptions, converting 'inactive' to NULL and thus excluding 'inactive' records from the count",
+      "Throws a runtime error because NULLIF cannot accept column identifiers",
+      "Converts the entire count to NULL if any record is inactive"
+    ],
+    "correctIndex": 1,
+    "explanation": "NULLIF(status, 'inactive') returns NULL whenever status is 'inactive'. Since COUNT(expr) ignores NULLs, this concisely counts only subscriptions that are NOT inactive. [Context: Healthcare Patient Records]"
+  },
+  {
+    "id": "mcq_count_71",
+    "keyword": "COUNT",
+    "tag": "🎯 Core Concept",
+    "question": "[COUNT #71 &bull; E-Commerce Checkout Funnels] What is the result of SELECT COUNT(DISTINCT col1, col2) in MySQL 8.0 when a row contains a NULL in col1 but a valid value in col2? (Application Scenario 5)",
+    "options": [
+      "The row is included because col2 is not NULL",
+      "An error 1064 is thrown because multi-column COUNT DISTINCT is unsupported",
+      "The NULL is coerced to an empty string",
+      "The row is excluded from the distinct count because ANSI SQL requires all tuple elements to be non-NULL"
+    ],
+    "correctIndex": 3,
+    "explanation": "In MySQL, COUNT(DISTINCT expr1, expr2, ...) returns the number of unique non-NULL combinations. If ANY column in the tuple is NULL, the entire tuple is ignored. [Context: E-Commerce Checkout Funnels]"
+  },
+  {
+    "id": "mcq_count_72",
+    "keyword": "COUNT",
+    "tag": "🏛️ Corporate Edge",
+    "question": "[COUNT #72 &bull; Telecom Billing & Data Streams] In high-throughput event logging, why might an architect replace SELECT COUNT(*) with an approximate row count from information_schema.tables? (Application Scenario 5)",
+    "options": [
+      "information_schema tables provide microsecond transactional ACID precision",
+      "Exact COUNT(*) on InnoDB without an index scan requires an MVCC row traversal which can lock or slow down on 100M+ row tables",
+      "COUNT(*) is deprecated in SQL:2023 standard",
+      "InnoDB automatically converts information_schema queries into parallel GPU shaders"
+    ],
+    "correctIndex": 1,
+    "explanation": "For massive InnoDB tables, transactional MVCC guarantees require inspecting row visibility unless a secondary index can be scanned. For dashboards, table_rows from information_schema provides instantaneous O(1) approximation. [Context: Telecom Billing & Data Streams]"
+  },
+  {
+    "id": "mcq_count_73",
+    "keyword": "COUNT",
+    "tag": "💡 Lead Architect",
+    "question": "[COUNT #73 &bull; AdTech Real-Time Bidding] Which query correctly counts the number of active users per day while outputting 0 (rather than omitting the day) for days with zero user activity? (Application Scenario 5)",
+    "options": [
+      "SELECT d.day, COUNT(*) FROM calendar_days d INNER JOIN user_activity u ON d.day = u.activity_date GROUP BY d.day",
+      "SELECT d.day, SUM(u.id) FROM calendar_days d RIGHT JOIN user_activity u ON d.day = u.activity_date GROUP BY d.day",
+      "SELECT d.day, COUNT(d.day) FROM user_activity u LEFT JOIN calendar_days d ON d.day = u.activity_date GROUP BY d.day",
+      "SELECT d.day, COUNT(u.id) FROM calendar_days d LEFT JOIN user_activity u ON d.day = u.activity_date GROUP BY d.day"
+    ],
+    "correctIndex": 3,
+    "explanation": "A LEFT JOIN from a master calendar_days table combined with COUNT(u.id) properly preserves days with no records, and because u.id is NULL for unmatched days, COUNT(u.id) returns 0. [Context: AdTech Real-Time Bidding]"
+  },
+  {
+    "id": "mcq_count_74",
+    "keyword": "COUNT",
+    "tag": "⚡ Gotcha Trap",
+    "question": "[COUNT #74 &bull; Cybersecurity Audit Logs] When running SELECT COUNT(1) FROM (SELECT 1 UNION SELECT 1) AS t, what value is returned? (Application Scenario 5)",
+    "options": [
+      "2",
+      "1",
+      "NULL",
+      "Syntax error"
+    ],
+    "correctIndex": 1,
+    "explanation": "UNION without ALL deduplicates rows. (SELECT 1 UNION SELECT 1) results in exactly 1 row, so COUNT(1) yields 1. [Context: Cybersecurity Audit Logs]"
+  },
+  {
+    "id": "mcq_count_75",
+    "keyword": "COUNT",
+    "tag": "🎯 Core Concept",
+    "question": "[COUNT #75 &bull; Fintech & Ledger Systems] What does SELECT COUNT(NULLIF(status, 'inactive')) FROM subscriptions; achieve? (Application Scenario 5)",
+    "options": [
+      "Counts only subscriptions where status is 'inactive'",
+      "Throws a runtime error because NULLIF cannot accept column identifiers",
+      "Converts the entire count to NULL if any record is inactive",
+      "Counts all subscriptions, converting 'inactive' to NULL and thus excluding 'inactive' records from the count"
+    ],
+    "correctIndex": 3,
+    "explanation": "NULLIF(status, 'inactive') returns NULL whenever status is 'inactive'. Since COUNT(expr) ignores NULLs, this concisely counts only subscriptions that are NOT inactive. [Context: Fintech & Ledger Systems]"
+  },
+  {
+    "id": "mcq_count_76",
+    "keyword": "COUNT",
+    "tag": "🏛️ Corporate Edge",
+    "question": "[COUNT #76 &bull; SaaS Subscription Billing] What is the result of SELECT COUNT(DISTINCT col1, col2) in MySQL 8.0 when a row contains a NULL in col1 but a valid value in col2? (Application Scenario 6)",
+    "options": [
+      "The row is included because col2 is not NULL",
+      "The row is excluded from the distinct count because ANSI SQL requires all tuple elements to be non-NULL",
+      "An error 1064 is thrown because multi-column COUNT DISTINCT is unsupported",
+      "The NULL is coerced to an empty string"
+    ],
+    "correctIndex": 1,
+    "explanation": "In MySQL, COUNT(DISTINCT expr1, expr2, ...) returns the number of unique non-NULL combinations. If ANY column in the tuple is NULL, the entire tuple is ignored. [Context: SaaS Subscription Billing]"
+  },
+  {
+    "id": "mcq_count_77",
+    "keyword": "COUNT",
+    "tag": "💡 Lead Architect",
+    "question": "[COUNT #77 &bull; Global Supply Chain & Logistics] In high-throughput event logging, why might an architect replace SELECT COUNT(*) with an approximate row count from information_schema.tables? (Application Scenario 6)",
+    "options": [
+      "information_schema tables provide microsecond transactional ACID precision",
+      "COUNT(*) is deprecated in SQL:2023 standard",
+      "InnoDB automatically converts information_schema queries into parallel GPU shaders",
+      "Exact COUNT(*) on InnoDB without an index scan requires an MVCC row traversal which can lock or slow down on 100M+ row tables"
+    ],
+    "correctIndex": 3,
+    "explanation": "For massive InnoDB tables, transactional MVCC guarantees require inspecting row visibility unless a secondary index can be scanned. For dashboards, table_rows from information_schema provides instantaneous O(1) approximation. [Context: Global Supply Chain & Logistics]"
+  },
+  {
+    "id": "mcq_count_78",
+    "keyword": "COUNT",
+    "tag": "⚡ Gotcha Trap",
+    "question": "[COUNT #78 &bull; Healthcare Patient Records] Which query correctly counts the number of active users per day while outputting 0 (rather than omitting the day) for days with zero user activity? (Application Scenario 6)",
+    "options": [
+      "SELECT d.day, COUNT(*) FROM calendar_days d INNER JOIN user_activity u ON d.day = u.activity_date GROUP BY d.day",
+      "SELECT d.day, COUNT(u.id) FROM calendar_days d LEFT JOIN user_activity u ON d.day = u.activity_date GROUP BY d.day",
+      "SELECT d.day, SUM(u.id) FROM calendar_days d RIGHT JOIN user_activity u ON d.day = u.activity_date GROUP BY d.day",
+      "SELECT d.day, COUNT(d.day) FROM user_activity u LEFT JOIN calendar_days d ON d.day = u.activity_date GROUP BY d.day"
+    ],
+    "correctIndex": 1,
+    "explanation": "A LEFT JOIN from a master calendar_days table combined with COUNT(u.id) properly preserves days with no records, and because u.id is NULL for unmatched days, COUNT(u.id) returns 0. [Context: Healthcare Patient Records]"
+  },
+  {
+    "id": "mcq_count_79",
+    "keyword": "COUNT",
+    "tag": "🎯 Core Concept",
+    "question": "[COUNT #79 &bull; E-Commerce Checkout Funnels] When running SELECT COUNT(1) FROM (SELECT 1 UNION SELECT 1) AS t, what value is returned? (Application Scenario 6)",
+    "options": [
+      "2",
+      "NULL",
+      "Syntax error",
+      "1"
+    ],
+    "correctIndex": 3,
+    "explanation": "UNION without ALL deduplicates rows. (SELECT 1 UNION SELECT 1) results in exactly 1 row, so COUNT(1) yields 1. [Context: E-Commerce Checkout Funnels]"
+  },
+  {
+    "id": "mcq_count_80",
+    "keyword": "COUNT",
+    "tag": "🏛️ Corporate Edge",
+    "question": "[COUNT #80 &bull; Telecom Billing & Data Streams] What does SELECT COUNT(NULLIF(status, 'inactive')) FROM subscriptions; achieve? (Application Scenario 6)",
+    "options": [
+      "Counts only subscriptions where status is 'inactive'",
+      "Counts all subscriptions, converting 'inactive' to NULL and thus excluding 'inactive' records from the count",
+      "Throws a runtime error because NULLIF cannot accept column identifiers",
+      "Converts the entire count to NULL if any record is inactive"
+    ],
+    "correctIndex": 1,
+    "explanation": "NULLIF(status, 'inactive') returns NULL whenever status is 'inactive'. Since COUNT(expr) ignores NULLs, this concisely counts only subscriptions that are NOT inactive. [Context: Telecom Billing & Data Streams]"
+  },
+  {
+    "id": "mcq_count_81",
+    "keyword": "COUNT",
+    "tag": "💡 Lead Architect",
+    "question": "[COUNT #81 &bull; AdTech Real-Time Bidding] What is the result of SELECT COUNT(DISTINCT col1, col2) in MySQL 8.0 when a row contains a NULL in col1 but a valid value in col2? (Application Scenario 7)",
+    "options": [
+      "The row is included because col2 is not NULL",
+      "An error 1064 is thrown because multi-column COUNT DISTINCT is unsupported",
+      "The NULL is coerced to an empty string",
+      "The row is excluded from the distinct count because ANSI SQL requires all tuple elements to be non-NULL"
+    ],
+    "correctIndex": 3,
+    "explanation": "In MySQL, COUNT(DISTINCT expr1, expr2, ...) returns the number of unique non-NULL combinations. If ANY column in the tuple is NULL, the entire tuple is ignored. [Context: AdTech Real-Time Bidding]"
+  },
+  {
+    "id": "mcq_count_82",
+    "keyword": "COUNT",
+    "tag": "⚡ Gotcha Trap",
+    "question": "[COUNT #82 &bull; Cybersecurity Audit Logs] In high-throughput event logging, why might an architect replace SELECT COUNT(*) with an approximate row count from information_schema.tables? (Application Scenario 7)",
+    "options": [
+      "information_schema tables provide microsecond transactional ACID precision",
+      "Exact COUNT(*) on InnoDB without an index scan requires an MVCC row traversal which can lock or slow down on 100M+ row tables",
+      "COUNT(*) is deprecated in SQL:2023 standard",
+      "InnoDB automatically converts information_schema queries into parallel GPU shaders"
+    ],
+    "correctIndex": 1,
+    "explanation": "For massive InnoDB tables, transactional MVCC guarantees require inspecting row visibility unless a secondary index can be scanned. For dashboards, table_rows from information_schema provides instantaneous O(1) approximation. [Context: Cybersecurity Audit Logs]"
+  },
+  {
+    "id": "mcq_count_83",
+    "keyword": "COUNT",
+    "tag": "🎯 Core Concept",
+    "question": "[COUNT #83 &bull; Fintech & Ledger Systems] Which query correctly counts the number of active users per day while outputting 0 (rather than omitting the day) for days with zero user activity? (Application Scenario 7)",
+    "options": [
+      "SELECT d.day, COUNT(*) FROM calendar_days d INNER JOIN user_activity u ON d.day = u.activity_date GROUP BY d.day",
+      "SELECT d.day, SUM(u.id) FROM calendar_days d RIGHT JOIN user_activity u ON d.day = u.activity_date GROUP BY d.day",
+      "SELECT d.day, COUNT(d.day) FROM user_activity u LEFT JOIN calendar_days d ON d.day = u.activity_date GROUP BY d.day",
+      "SELECT d.day, COUNT(u.id) FROM calendar_days d LEFT JOIN user_activity u ON d.day = u.activity_date GROUP BY d.day"
+    ],
+    "correctIndex": 3,
+    "explanation": "A LEFT JOIN from a master calendar_days table combined with COUNT(u.id) properly preserves days with no records, and because u.id is NULL for unmatched days, COUNT(u.id) returns 0. [Context: Fintech & Ledger Systems]"
+  },
+  {
+    "id": "mcq_count_84",
+    "keyword": "COUNT",
+    "tag": "🏛️ Corporate Edge",
+    "question": "[COUNT #84 &bull; SaaS Subscription Billing] When running SELECT COUNT(1) FROM (SELECT 1 UNION SELECT 1) AS t, what value is returned? (Application Scenario 7)",
+    "options": [
+      "2",
+      "1",
+      "NULL",
+      "Syntax error"
+    ],
+    "correctIndex": 1,
+    "explanation": "UNION without ALL deduplicates rows. (SELECT 1 UNION SELECT 1) results in exactly 1 row, so COUNT(1) yields 1. [Context: SaaS Subscription Billing]"
+  },
+  {
+    "id": "mcq_count_85",
+    "keyword": "COUNT",
+    "tag": "💡 Lead Architect",
+    "question": "[COUNT #85 &bull; Global Supply Chain & Logistics] What does SELECT COUNT(NULLIF(status, 'inactive')) FROM subscriptions; achieve? (Application Scenario 7)",
+    "options": [
+      "Counts only subscriptions where status is 'inactive'",
+      "Throws a runtime error because NULLIF cannot accept column identifiers",
+      "Converts the entire count to NULL if any record is inactive",
+      "Counts all subscriptions, converting 'inactive' to NULL and thus excluding 'inactive' records from the count"
+    ],
+    "correctIndex": 3,
+    "explanation": "NULLIF(status, 'inactive') returns NULL whenever status is 'inactive'. Since COUNT(expr) ignores NULLs, this concisely counts only subscriptions that are NOT inactive. [Context: Global Supply Chain & Logistics]"
+  },
+  {
+    "id": "mcq_count_86",
+    "keyword": "COUNT",
+    "tag": "⚡ Gotcha Trap",
+    "question": "[COUNT #86 &bull; Healthcare Patient Records] What is the result of SELECT COUNT(DISTINCT col1, col2) in MySQL 8.0 when a row contains a NULL in col1 but a valid value in col2? (Application Scenario 8)",
+    "options": [
+      "The row is included because col2 is not NULL",
+      "The row is excluded from the distinct count because ANSI SQL requires all tuple elements to be non-NULL",
+      "An error 1064 is thrown because multi-column COUNT DISTINCT is unsupported",
+      "The NULL is coerced to an empty string"
+    ],
+    "correctIndex": 1,
+    "explanation": "In MySQL, COUNT(DISTINCT expr1, expr2, ...) returns the number of unique non-NULL combinations. If ANY column in the tuple is NULL, the entire tuple is ignored. [Context: Healthcare Patient Records]"
+  },
+  {
+    "id": "mcq_count_87",
+    "keyword": "COUNT",
+    "tag": "🎯 Core Concept",
+    "question": "[COUNT #87 &bull; E-Commerce Checkout Funnels] In high-throughput event logging, why might an architect replace SELECT COUNT(*) with an approximate row count from information_schema.tables? (Application Scenario 8)",
+    "options": [
+      "information_schema tables provide microsecond transactional ACID precision",
+      "COUNT(*) is deprecated in SQL:2023 standard",
+      "InnoDB automatically converts information_schema queries into parallel GPU shaders",
+      "Exact COUNT(*) on InnoDB without an index scan requires an MVCC row traversal which can lock or slow down on 100M+ row tables"
+    ],
+    "correctIndex": 3,
+    "explanation": "For massive InnoDB tables, transactional MVCC guarantees require inspecting row visibility unless a secondary index can be scanned. For dashboards, table_rows from information_schema provides instantaneous O(1) approximation. [Context: E-Commerce Checkout Funnels]"
+  },
+  {
+    "id": "mcq_count_88",
+    "keyword": "COUNT",
+    "tag": "🏛️ Corporate Edge",
+    "question": "[COUNT #88 &bull; Telecom Billing & Data Streams] Which query correctly counts the number of active users per day while outputting 0 (rather than omitting the day) for days with zero user activity? (Application Scenario 8)",
+    "options": [
+      "SELECT d.day, COUNT(*) FROM calendar_days d INNER JOIN user_activity u ON d.day = u.activity_date GROUP BY d.day",
+      "SELECT d.day, COUNT(u.id) FROM calendar_days d LEFT JOIN user_activity u ON d.day = u.activity_date GROUP BY d.day",
+      "SELECT d.day, SUM(u.id) FROM calendar_days d RIGHT JOIN user_activity u ON d.day = u.activity_date GROUP BY d.day",
+      "SELECT d.day, COUNT(d.day) FROM user_activity u LEFT JOIN calendar_days d ON d.day = u.activity_date GROUP BY d.day"
+    ],
+    "correctIndex": 1,
+    "explanation": "A LEFT JOIN from a master calendar_days table combined with COUNT(u.id) properly preserves days with no records, and because u.id is NULL for unmatched days, COUNT(u.id) returns 0. [Context: Telecom Billing & Data Streams]"
+  },
+  {
+    "id": "mcq_count_89",
+    "keyword": "COUNT",
+    "tag": "💡 Lead Architect",
+    "question": "[COUNT #89 &bull; AdTech Real-Time Bidding] When running SELECT COUNT(1) FROM (SELECT 1 UNION SELECT 1) AS t, what value is returned? (Application Scenario 8)",
+    "options": [
+      "2",
+      "NULL",
+      "Syntax error",
+      "1"
+    ],
+    "correctIndex": 3,
+    "explanation": "UNION without ALL deduplicates rows. (SELECT 1 UNION SELECT 1) results in exactly 1 row, so COUNT(1) yields 1. [Context: AdTech Real-Time Bidding]"
+  },
+  {
+    "id": "mcq_count_90",
+    "keyword": "COUNT",
+    "tag": "⚡ Gotcha Trap",
+    "question": "[COUNT #90 &bull; Cybersecurity Audit Logs] What does SELECT COUNT(NULLIF(status, 'inactive')) FROM subscriptions; achieve? (Application Scenario 8)",
+    "options": [
+      "Counts only subscriptions where status is 'inactive'",
+      "Counts all subscriptions, converting 'inactive' to NULL and thus excluding 'inactive' records from the count",
+      "Throws a runtime error because NULLIF cannot accept column identifiers",
+      "Converts the entire count to NULL if any record is inactive"
+    ],
+    "correctIndex": 1,
+    "explanation": "NULLIF(status, 'inactive') returns NULL whenever status is 'inactive'. Since COUNT(expr) ignores NULLs, this concisely counts only subscriptions that are NOT inactive. [Context: Cybersecurity Audit Logs]"
+  },
+  {
+    "id": "mcq_count_91",
+    "keyword": "COUNT",
+    "tag": "🎯 Core Concept",
+    "question": "[COUNT #91 &bull; Fintech & Ledger Systems] What is the result of SELECT COUNT(DISTINCT col1, col2) in MySQL 8.0 when a row contains a NULL in col1 but a valid value in col2? (Application Scenario 9)",
+    "options": [
+      "The row is included because col2 is not NULL",
+      "An error 1064 is thrown because multi-column COUNT DISTINCT is unsupported",
+      "The NULL is coerced to an empty string",
+      "The row is excluded from the distinct count because ANSI SQL requires all tuple elements to be non-NULL"
+    ],
+    "correctIndex": 3,
+    "explanation": "In MySQL, COUNT(DISTINCT expr1, expr2, ...) returns the number of unique non-NULL combinations. If ANY column in the tuple is NULL, the entire tuple is ignored. [Context: Fintech & Ledger Systems]"
+  },
+  {
+    "id": "mcq_count_92",
+    "keyword": "COUNT",
+    "tag": "🏛️ Corporate Edge",
+    "question": "[COUNT #92 &bull; SaaS Subscription Billing] In high-throughput event logging, why might an architect replace SELECT COUNT(*) with an approximate row count from information_schema.tables? (Application Scenario 9)",
+    "options": [
+      "information_schema tables provide microsecond transactional ACID precision",
+      "Exact COUNT(*) on InnoDB without an index scan requires an MVCC row traversal which can lock or slow down on 100M+ row tables",
+      "COUNT(*) is deprecated in SQL:2023 standard",
+      "InnoDB automatically converts information_schema queries into parallel GPU shaders"
+    ],
+    "correctIndex": 1,
+    "explanation": "For massive InnoDB tables, transactional MVCC guarantees require inspecting row visibility unless a secondary index can be scanned. For dashboards, table_rows from information_schema provides instantaneous O(1) approximation. [Context: SaaS Subscription Billing]"
+  },
+  {
+    "id": "mcq_count_93",
+    "keyword": "COUNT",
+    "tag": "💡 Lead Architect",
+    "question": "[COUNT #93 &bull; Global Supply Chain & Logistics] Which query correctly counts the number of active users per day while outputting 0 (rather than omitting the day) for days with zero user activity? (Application Scenario 9)",
+    "options": [
+      "SELECT d.day, COUNT(*) FROM calendar_days d INNER JOIN user_activity u ON d.day = u.activity_date GROUP BY d.day",
+      "SELECT d.day, SUM(u.id) FROM calendar_days d RIGHT JOIN user_activity u ON d.day = u.activity_date GROUP BY d.day",
+      "SELECT d.day, COUNT(d.day) FROM user_activity u LEFT JOIN calendar_days d ON d.day = u.activity_date GROUP BY d.day",
+      "SELECT d.day, COUNT(u.id) FROM calendar_days d LEFT JOIN user_activity u ON d.day = u.activity_date GROUP BY d.day"
+    ],
+    "correctIndex": 3,
+    "explanation": "A LEFT JOIN from a master calendar_days table combined with COUNT(u.id) properly preserves days with no records, and because u.id is NULL for unmatched days, COUNT(u.id) returns 0. [Context: Global Supply Chain & Logistics]"
+  },
+  {
+    "id": "mcq_count_94",
+    "keyword": "COUNT",
+    "tag": "⚡ Gotcha Trap",
+    "question": "[COUNT #94 &bull; Healthcare Patient Records] When running SELECT COUNT(1) FROM (SELECT 1 UNION SELECT 1) AS t, what value is returned? (Application Scenario 9)",
+    "options": [
+      "2",
+      "1",
+      "NULL",
+      "Syntax error"
+    ],
+    "correctIndex": 1,
+    "explanation": "UNION without ALL deduplicates rows. (SELECT 1 UNION SELECT 1) results in exactly 1 row, so COUNT(1) yields 1. [Context: Healthcare Patient Records]"
+  },
+  {
+    "id": "mcq_count_95",
+    "keyword": "COUNT",
+    "tag": "🎯 Core Concept",
+    "question": "[COUNT #95 &bull; E-Commerce Checkout Funnels] What does SELECT COUNT(NULLIF(status, 'inactive')) FROM subscriptions; achieve? (Application Scenario 9)",
+    "options": [
+      "Counts only subscriptions where status is 'inactive'",
+      "Throws a runtime error because NULLIF cannot accept column identifiers",
+      "Converts the entire count to NULL if any record is inactive",
+      "Counts all subscriptions, converting 'inactive' to NULL and thus excluding 'inactive' records from the count"
+    ],
+    "correctIndex": 3,
+    "explanation": "NULLIF(status, 'inactive') returns NULL whenever status is 'inactive'. Since COUNT(expr) ignores NULLs, this concisely counts only subscriptions that are NOT inactive. [Context: E-Commerce Checkout Funnels]"
+  },
+  {
+    "id": "mcq_count_96",
+    "keyword": "COUNT",
+    "tag": "🏛️ Corporate Edge",
+    "question": "[COUNT #96 &bull; Telecom Billing & Data Streams] What is the result of SELECT COUNT(DISTINCT col1, col2) in MySQL 8.0 when a row contains a NULL in col1 but a valid value in col2? (Application Scenario 10)",
+    "options": [
+      "The row is included because col2 is not NULL",
+      "The row is excluded from the distinct count because ANSI SQL requires all tuple elements to be non-NULL",
+      "An error 1064 is thrown because multi-column COUNT DISTINCT is unsupported",
+      "The NULL is coerced to an empty string"
+    ],
+    "correctIndex": 1,
+    "explanation": "In MySQL, COUNT(DISTINCT expr1, expr2, ...) returns the number of unique non-NULL combinations. If ANY column in the tuple is NULL, the entire tuple is ignored. [Context: Telecom Billing & Data Streams]"
+  },
+  {
+    "id": "mcq_count_97",
+    "keyword": "COUNT",
+    "tag": "💡 Lead Architect",
+    "question": "[COUNT #97 &bull; AdTech Real-Time Bidding] In high-throughput event logging, why might an architect replace SELECT COUNT(*) with an approximate row count from information_schema.tables? (Application Scenario 10)",
+    "options": [
+      "information_schema tables provide microsecond transactional ACID precision",
+      "COUNT(*) is deprecated in SQL:2023 standard",
+      "InnoDB automatically converts information_schema queries into parallel GPU shaders",
+      "Exact COUNT(*) on InnoDB without an index scan requires an MVCC row traversal which can lock or slow down on 100M+ row tables"
+    ],
+    "correctIndex": 3,
+    "explanation": "For massive InnoDB tables, transactional MVCC guarantees require inspecting row visibility unless a secondary index can be scanned. For dashboards, table_rows from information_schema provides instantaneous O(1) approximation. [Context: AdTech Real-Time Bidding]"
+  },
+  {
+    "id": "mcq_count_98",
+    "keyword": "COUNT",
+    "tag": "⚡ Gotcha Trap",
+    "question": "[COUNT #98 &bull; Cybersecurity Audit Logs] Which query correctly counts the number of active users per day while outputting 0 (rather than omitting the day) for days with zero user activity? (Application Scenario 10)",
+    "options": [
+      "SELECT d.day, COUNT(*) FROM calendar_days d INNER JOIN user_activity u ON d.day = u.activity_date GROUP BY d.day",
+      "SELECT d.day, COUNT(u.id) FROM calendar_days d LEFT JOIN user_activity u ON d.day = u.activity_date GROUP BY d.day",
+      "SELECT d.day, SUM(u.id) FROM calendar_days d RIGHT JOIN user_activity u ON d.day = u.activity_date GROUP BY d.day",
+      "SELECT d.day, COUNT(d.day) FROM user_activity u LEFT JOIN calendar_days d ON d.day = u.activity_date GROUP BY d.day"
+    ],
+    "correctIndex": 1,
+    "explanation": "A LEFT JOIN from a master calendar_days table combined with COUNT(u.id) properly preserves days with no records, and because u.id is NULL for unmatched days, COUNT(u.id) returns 0. [Context: Cybersecurity Audit Logs]"
+  },
+  {
+    "id": "mcq_count_99",
+    "keyword": "COUNT",
+    "tag": "🎯 Core Concept",
+    "question": "[COUNT #99 &bull; Fintech & Ledger Systems] When running SELECT COUNT(1) FROM (SELECT 1 UNION SELECT 1) AS t, what value is returned? (Application Scenario 10)",
+    "options": [
+      "2",
+      "NULL",
+      "Syntax error",
+      "1"
+    ],
+    "correctIndex": 3,
+    "explanation": "UNION without ALL deduplicates rows. (SELECT 1 UNION SELECT 1) results in exactly 1 row, so COUNT(1) yields 1. [Context: Fintech & Ledger Systems]"
+  },
+  {
+    "id": "mcq_count_100",
+    "keyword": "COUNT",
+    "tag": "🏛️ Corporate Edge",
+    "question": "[COUNT #100 &bull; SaaS Subscription Billing] What does SELECT COUNT(NULLIF(status, 'inactive')) FROM subscriptions; achieve? (Application Scenario 10)",
+    "options": [
+      "Counts only subscriptions where status is 'inactive'",
+      "Counts all subscriptions, converting 'inactive' to NULL and thus excluding 'inactive' records from the count",
+      "Throws a runtime error because NULLIF cannot accept column identifiers",
+      "Converts the entire count to NULL if any record is inactive"
+    ],
+    "correctIndex": 1,
+    "explanation": "NULLIF(status, 'inactive') returns NULL whenever status is 'inactive'. Since COUNT(expr) ignores NULLs, this concisely counts only subscriptions that are NOT inactive. [Context: SaaS Subscription Billing]"
+  },
+  {
     "id": "mcq_sum_1",
     "keyword": "SUM",
     "tag": "🍡 Quick Snack",
@@ -1403,6 +2104,706 @@ window.MCQS_VAULT_500 = [
     ],
     "correctIndex": 3,
     "explanation": "SUM(DISTINCT score) removes identical score values prior to summing (e.g. scores [10, 10, 20] become 10 + 20 = 30)."
+  },
+  {
+    "id": "mcq_sum_51",
+    "keyword": "SUM",
+    "tag": "🎯 Core Concept",
+    "question": "[SUM #51 &bull; Fintech & Ledger Systems] If a query runs SELECT SUM(amount) FROM transactions WHERE status = 'failed' and no rows match the predicate, what does the engine return? (Application Scenario 1)",
+    "options": [
+      "0.00",
+      "NaN",
+      "An empty result set with 0 rows",
+      "NULL"
+    ],
+    "correctIndex": 3,
+    "explanation": "Per the ANSI SQL specification, aggregate functions like SUM, AVG, MIN, and MAX return NULL when evaluated over an empty set (unless wrapped in COALESCE or IFNULL). Only COUNT returns 0. [Context: Fintech & Ledger Systems]"
+  },
+  {
+    "id": "mcq_sum_52",
+    "keyword": "SUM",
+    "tag": "🏛️ Corporate Edge",
+    "question": "[SUM #52 &bull; SaaS Subscription Billing] What is the recommended production pattern to prevent NULL return values when aggregating revenue on potentially empty date ranges? (Application Scenario 1)",
+    "options": [
+      "SUM(COALESCE(amount, 0))",
+      "COALESCE(SUM(amount), 0)",
+      "SUM(amount) + 0",
+      "NVL2(amount, SUM(amount), 0)"
+    ],
+    "correctIndex": 1,
+    "explanation": "COALESCE(SUM(amount), 0) is optimal because wrapping the aggregate itself handles both empty input rowsets (which yield a single NULL) and columns with NULL values in a single evaluation. [Context: SaaS Subscription Billing]"
+  },
+  {
+    "id": "mcq_sum_53",
+    "keyword": "SUM",
+    "tag": "💡 Lead Architect",
+    "question": "[SUM #53 &bull; Global Supply Chain & Logistics] In high-precision financial accounting, why should monetary sums use DECIMAL/NUMERIC rather than FLOAT or DOUBLE? (Application Scenario 1)",
+    "options": [
+      "DECIMAL automatically computes currency exchange rates",
+      "FLOAT requires twice as many CPU cycles per addition",
+      "DECIMAL values cannot be grouped by",
+      "FLOAT/DOUBLE use IEEE 754 binary floating-point representation which causes silent binary rounding errors (e.g. 0.1 + 0.2 != 0.3)"
+    ],
+    "correctIndex": 3,
+    "explanation": "IEEE 754 floating point arithmetic introduces binary precision drift, rendering balance sheets inaccurate. DECIMAL provides exact base-10 fractional representation. [Context: Global Supply Chain & Logistics]"
+  },
+  {
+    "id": "mcq_sum_54",
+    "keyword": "SUM",
+    "tag": "⚡ Gotcha Trap",
+    "question": "[SUM #54 &bull; Healthcare Patient Records] What is the output of SELECT SUM(CASE WHEN score >= 50 THEN 1 ELSE 0 END) FROM exam_results? (Application Scenario 1)",
+    "options": [
+      "The total sum of scores of students who passed",
+      "The count of students whose score is greater than or equal to 50",
+      "The percentage of students who passed",
+      "A boolean TRUE or FALSE"
+    ],
+    "correctIndex": 1,
+    "explanation": "This is the classic conditional aggregation pattern (SUM-CASE). Summing 1 for every student with score >= 50 and 0 otherwise tallies the number of passing students. [Context: Healthcare Patient Records]"
+  },
+  {
+    "id": "mcq_sum_55",
+    "keyword": "SUM",
+    "tag": "🎯 Core Concept",
+    "question": "[SUM #55 &bull; E-Commerce Checkout Funnels] If table Accounts has two rows: Balance = 100 and Balance = -100, what is the result of SELECT SUM(Balance) FROM Accounts? (Application Scenario 1)",
+    "options": [
+      "NULL",
+      "200",
+      "Error: Negative balances disallowed",
+      "0"
+    ],
+    "correctIndex": 3,
+    "explanation": "100 + (-100) = 0. The aggregate SUM handles signed numbers correctly. [Context: E-Commerce Checkout Funnels]"
+  },
+  {
+    "id": "mcq_sum_56",
+    "keyword": "SUM",
+    "tag": "🏛️ Corporate Edge",
+    "question": "[SUM #56 &bull; Telecom Billing & Data Streams] If a query runs SELECT SUM(amount) FROM transactions WHERE status = 'failed' and no rows match the predicate, what does the engine return? (Application Scenario 2)",
+    "options": [
+      "0.00",
+      "NULL",
+      "NaN",
+      "An empty result set with 0 rows"
+    ],
+    "correctIndex": 1,
+    "explanation": "Per the ANSI SQL specification, aggregate functions like SUM, AVG, MIN, and MAX return NULL when evaluated over an empty set (unless wrapped in COALESCE or IFNULL). Only COUNT returns 0. [Context: Telecom Billing & Data Streams]"
+  },
+  {
+    "id": "mcq_sum_57",
+    "keyword": "SUM",
+    "tag": "💡 Lead Architect",
+    "question": "[SUM #57 &bull; AdTech Real-Time Bidding] What is the recommended production pattern to prevent NULL return values when aggregating revenue on potentially empty date ranges? (Application Scenario 2)",
+    "options": [
+      "SUM(COALESCE(amount, 0))",
+      "SUM(amount) + 0",
+      "NVL2(amount, SUM(amount), 0)",
+      "COALESCE(SUM(amount), 0)"
+    ],
+    "correctIndex": 3,
+    "explanation": "COALESCE(SUM(amount), 0) is optimal because wrapping the aggregate itself handles both empty input rowsets (which yield a single NULL) and columns with NULL values in a single evaluation. [Context: AdTech Real-Time Bidding]"
+  },
+  {
+    "id": "mcq_sum_58",
+    "keyword": "SUM",
+    "tag": "⚡ Gotcha Trap",
+    "question": "[SUM #58 &bull; Cybersecurity Audit Logs] In high-precision financial accounting, why should monetary sums use DECIMAL/NUMERIC rather than FLOAT or DOUBLE? (Application Scenario 2)",
+    "options": [
+      "DECIMAL automatically computes currency exchange rates",
+      "FLOAT/DOUBLE use IEEE 754 binary floating-point representation which causes silent binary rounding errors (e.g. 0.1 + 0.2 != 0.3)",
+      "FLOAT requires twice as many CPU cycles per addition",
+      "DECIMAL values cannot be grouped by"
+    ],
+    "correctIndex": 1,
+    "explanation": "IEEE 754 floating point arithmetic introduces binary precision drift, rendering balance sheets inaccurate. DECIMAL provides exact base-10 fractional representation. [Context: Cybersecurity Audit Logs]"
+  },
+  {
+    "id": "mcq_sum_59",
+    "keyword": "SUM",
+    "tag": "🎯 Core Concept",
+    "question": "[SUM #59 &bull; Fintech & Ledger Systems] What is the output of SELECT SUM(CASE WHEN score >= 50 THEN 1 ELSE 0 END) FROM exam_results? (Application Scenario 2)",
+    "options": [
+      "The total sum of scores of students who passed",
+      "The percentage of students who passed",
+      "A boolean TRUE or FALSE",
+      "The count of students whose score is greater than or equal to 50"
+    ],
+    "correctIndex": 3,
+    "explanation": "This is the classic conditional aggregation pattern (SUM-CASE). Summing 1 for every student with score >= 50 and 0 otherwise tallies the number of passing students. [Context: Fintech & Ledger Systems]"
+  },
+  {
+    "id": "mcq_sum_60",
+    "keyword": "SUM",
+    "tag": "🏛️ Corporate Edge",
+    "question": "[SUM #60 &bull; SaaS Subscription Billing] If table Accounts has two rows: Balance = 100 and Balance = -100, what is the result of SELECT SUM(Balance) FROM Accounts? (Application Scenario 2)",
+    "options": [
+      "NULL",
+      "0",
+      "200",
+      "Error: Negative balances disallowed"
+    ],
+    "correctIndex": 1,
+    "explanation": "100 + (-100) = 0. The aggregate SUM handles signed numbers correctly. [Context: SaaS Subscription Billing]"
+  },
+  {
+    "id": "mcq_sum_61",
+    "keyword": "SUM",
+    "tag": "💡 Lead Architect",
+    "question": "[SUM #61 &bull; Global Supply Chain & Logistics] If a query runs SELECT SUM(amount) FROM transactions WHERE status = 'failed' and no rows match the predicate, what does the engine return? (Application Scenario 3)",
+    "options": [
+      "0.00",
+      "NaN",
+      "An empty result set with 0 rows",
+      "NULL"
+    ],
+    "correctIndex": 3,
+    "explanation": "Per the ANSI SQL specification, aggregate functions like SUM, AVG, MIN, and MAX return NULL when evaluated over an empty set (unless wrapped in COALESCE or IFNULL). Only COUNT returns 0. [Context: Global Supply Chain & Logistics]"
+  },
+  {
+    "id": "mcq_sum_62",
+    "keyword": "SUM",
+    "tag": "⚡ Gotcha Trap",
+    "question": "[SUM #62 &bull; Healthcare Patient Records] What is the recommended production pattern to prevent NULL return values when aggregating revenue on potentially empty date ranges? (Application Scenario 3)",
+    "options": [
+      "SUM(COALESCE(amount, 0))",
+      "COALESCE(SUM(amount), 0)",
+      "SUM(amount) + 0",
+      "NVL2(amount, SUM(amount), 0)"
+    ],
+    "correctIndex": 1,
+    "explanation": "COALESCE(SUM(amount), 0) is optimal because wrapping the aggregate itself handles both empty input rowsets (which yield a single NULL) and columns with NULL values in a single evaluation. [Context: Healthcare Patient Records]"
+  },
+  {
+    "id": "mcq_sum_63",
+    "keyword": "SUM",
+    "tag": "🎯 Core Concept",
+    "question": "[SUM #63 &bull; E-Commerce Checkout Funnels] In high-precision financial accounting, why should monetary sums use DECIMAL/NUMERIC rather than FLOAT or DOUBLE? (Application Scenario 3)",
+    "options": [
+      "DECIMAL automatically computes currency exchange rates",
+      "FLOAT requires twice as many CPU cycles per addition",
+      "DECIMAL values cannot be grouped by",
+      "FLOAT/DOUBLE use IEEE 754 binary floating-point representation which causes silent binary rounding errors (e.g. 0.1 + 0.2 != 0.3)"
+    ],
+    "correctIndex": 3,
+    "explanation": "IEEE 754 floating point arithmetic introduces binary precision drift, rendering balance sheets inaccurate. DECIMAL provides exact base-10 fractional representation. [Context: E-Commerce Checkout Funnels]"
+  },
+  {
+    "id": "mcq_sum_64",
+    "keyword": "SUM",
+    "tag": "🏛️ Corporate Edge",
+    "question": "[SUM #64 &bull; Telecom Billing & Data Streams] What is the output of SELECT SUM(CASE WHEN score >= 50 THEN 1 ELSE 0 END) FROM exam_results? (Application Scenario 3)",
+    "options": [
+      "The total sum of scores of students who passed",
+      "The count of students whose score is greater than or equal to 50",
+      "The percentage of students who passed",
+      "A boolean TRUE or FALSE"
+    ],
+    "correctIndex": 1,
+    "explanation": "This is the classic conditional aggregation pattern (SUM-CASE). Summing 1 for every student with score >= 50 and 0 otherwise tallies the number of passing students. [Context: Telecom Billing & Data Streams]"
+  },
+  {
+    "id": "mcq_sum_65",
+    "keyword": "SUM",
+    "tag": "💡 Lead Architect",
+    "question": "[SUM #65 &bull; AdTech Real-Time Bidding] If table Accounts has two rows: Balance = 100 and Balance = -100, what is the result of SELECT SUM(Balance) FROM Accounts? (Application Scenario 3)",
+    "options": [
+      "NULL",
+      "200",
+      "Error: Negative balances disallowed",
+      "0"
+    ],
+    "correctIndex": 3,
+    "explanation": "100 + (-100) = 0. The aggregate SUM handles signed numbers correctly. [Context: AdTech Real-Time Bidding]"
+  },
+  {
+    "id": "mcq_sum_66",
+    "keyword": "SUM",
+    "tag": "⚡ Gotcha Trap",
+    "question": "[SUM #66 &bull; Cybersecurity Audit Logs] If a query runs SELECT SUM(amount) FROM transactions WHERE status = 'failed' and no rows match the predicate, what does the engine return? (Application Scenario 4)",
+    "options": [
+      "0.00",
+      "NULL",
+      "NaN",
+      "An empty result set with 0 rows"
+    ],
+    "correctIndex": 1,
+    "explanation": "Per the ANSI SQL specification, aggregate functions like SUM, AVG, MIN, and MAX return NULL when evaluated over an empty set (unless wrapped in COALESCE or IFNULL). Only COUNT returns 0. [Context: Cybersecurity Audit Logs]"
+  },
+  {
+    "id": "mcq_sum_67",
+    "keyword": "SUM",
+    "tag": "🎯 Core Concept",
+    "question": "[SUM #67 &bull; Fintech & Ledger Systems] What is the recommended production pattern to prevent NULL return values when aggregating revenue on potentially empty date ranges? (Application Scenario 4)",
+    "options": [
+      "SUM(COALESCE(amount, 0))",
+      "SUM(amount) + 0",
+      "NVL2(amount, SUM(amount), 0)",
+      "COALESCE(SUM(amount), 0)"
+    ],
+    "correctIndex": 3,
+    "explanation": "COALESCE(SUM(amount), 0) is optimal because wrapping the aggregate itself handles both empty input rowsets (which yield a single NULL) and columns with NULL values in a single evaluation. [Context: Fintech & Ledger Systems]"
+  },
+  {
+    "id": "mcq_sum_68",
+    "keyword": "SUM",
+    "tag": "🏛️ Corporate Edge",
+    "question": "[SUM #68 &bull; SaaS Subscription Billing] In high-precision financial accounting, why should monetary sums use DECIMAL/NUMERIC rather than FLOAT or DOUBLE? (Application Scenario 4)",
+    "options": [
+      "DECIMAL automatically computes currency exchange rates",
+      "FLOAT/DOUBLE use IEEE 754 binary floating-point representation which causes silent binary rounding errors (e.g. 0.1 + 0.2 != 0.3)",
+      "FLOAT requires twice as many CPU cycles per addition",
+      "DECIMAL values cannot be grouped by"
+    ],
+    "correctIndex": 1,
+    "explanation": "IEEE 754 floating point arithmetic introduces binary precision drift, rendering balance sheets inaccurate. DECIMAL provides exact base-10 fractional representation. [Context: SaaS Subscription Billing]"
+  },
+  {
+    "id": "mcq_sum_69",
+    "keyword": "SUM",
+    "tag": "💡 Lead Architect",
+    "question": "[SUM #69 &bull; Global Supply Chain & Logistics] What is the output of SELECT SUM(CASE WHEN score >= 50 THEN 1 ELSE 0 END) FROM exam_results? (Application Scenario 4)",
+    "options": [
+      "The total sum of scores of students who passed",
+      "The percentage of students who passed",
+      "A boolean TRUE or FALSE",
+      "The count of students whose score is greater than or equal to 50"
+    ],
+    "correctIndex": 3,
+    "explanation": "This is the classic conditional aggregation pattern (SUM-CASE). Summing 1 for every student with score >= 50 and 0 otherwise tallies the number of passing students. [Context: Global Supply Chain & Logistics]"
+  },
+  {
+    "id": "mcq_sum_70",
+    "keyword": "SUM",
+    "tag": "⚡ Gotcha Trap",
+    "question": "[SUM #70 &bull; Healthcare Patient Records] If table Accounts has two rows: Balance = 100 and Balance = -100, what is the result of SELECT SUM(Balance) FROM Accounts? (Application Scenario 4)",
+    "options": [
+      "NULL",
+      "0",
+      "200",
+      "Error: Negative balances disallowed"
+    ],
+    "correctIndex": 1,
+    "explanation": "100 + (-100) = 0. The aggregate SUM handles signed numbers correctly. [Context: Healthcare Patient Records]"
+  },
+  {
+    "id": "mcq_sum_71",
+    "keyword": "SUM",
+    "tag": "🎯 Core Concept",
+    "question": "[SUM #71 &bull; E-Commerce Checkout Funnels] If a query runs SELECT SUM(amount) FROM transactions WHERE status = 'failed' and no rows match the predicate, what does the engine return? (Application Scenario 5)",
+    "options": [
+      "0.00",
+      "NaN",
+      "An empty result set with 0 rows",
+      "NULL"
+    ],
+    "correctIndex": 3,
+    "explanation": "Per the ANSI SQL specification, aggregate functions like SUM, AVG, MIN, and MAX return NULL when evaluated over an empty set (unless wrapped in COALESCE or IFNULL). Only COUNT returns 0. [Context: E-Commerce Checkout Funnels]"
+  },
+  {
+    "id": "mcq_sum_72",
+    "keyword": "SUM",
+    "tag": "🏛️ Corporate Edge",
+    "question": "[SUM #72 &bull; Telecom Billing & Data Streams] What is the recommended production pattern to prevent NULL return values when aggregating revenue on potentially empty date ranges? (Application Scenario 5)",
+    "options": [
+      "SUM(COALESCE(amount, 0))",
+      "COALESCE(SUM(amount), 0)",
+      "SUM(amount) + 0",
+      "NVL2(amount, SUM(amount), 0)"
+    ],
+    "correctIndex": 1,
+    "explanation": "COALESCE(SUM(amount), 0) is optimal because wrapping the aggregate itself handles both empty input rowsets (which yield a single NULL) and columns with NULL values in a single evaluation. [Context: Telecom Billing & Data Streams]"
+  },
+  {
+    "id": "mcq_sum_73",
+    "keyword": "SUM",
+    "tag": "💡 Lead Architect",
+    "question": "[SUM #73 &bull; AdTech Real-Time Bidding] In high-precision financial accounting, why should monetary sums use DECIMAL/NUMERIC rather than FLOAT or DOUBLE? (Application Scenario 5)",
+    "options": [
+      "DECIMAL automatically computes currency exchange rates",
+      "FLOAT requires twice as many CPU cycles per addition",
+      "DECIMAL values cannot be grouped by",
+      "FLOAT/DOUBLE use IEEE 754 binary floating-point representation which causes silent binary rounding errors (e.g. 0.1 + 0.2 != 0.3)"
+    ],
+    "correctIndex": 3,
+    "explanation": "IEEE 754 floating point arithmetic introduces binary precision drift, rendering balance sheets inaccurate. DECIMAL provides exact base-10 fractional representation. [Context: AdTech Real-Time Bidding]"
+  },
+  {
+    "id": "mcq_sum_74",
+    "keyword": "SUM",
+    "tag": "⚡ Gotcha Trap",
+    "question": "[SUM #74 &bull; Cybersecurity Audit Logs] What is the output of SELECT SUM(CASE WHEN score >= 50 THEN 1 ELSE 0 END) FROM exam_results? (Application Scenario 5)",
+    "options": [
+      "The total sum of scores of students who passed",
+      "The count of students whose score is greater than or equal to 50",
+      "The percentage of students who passed",
+      "A boolean TRUE or FALSE"
+    ],
+    "correctIndex": 1,
+    "explanation": "This is the classic conditional aggregation pattern (SUM-CASE). Summing 1 for every student with score >= 50 and 0 otherwise tallies the number of passing students. [Context: Cybersecurity Audit Logs]"
+  },
+  {
+    "id": "mcq_sum_75",
+    "keyword": "SUM",
+    "tag": "🎯 Core Concept",
+    "question": "[SUM #75 &bull; Fintech & Ledger Systems] If table Accounts has two rows: Balance = 100 and Balance = -100, what is the result of SELECT SUM(Balance) FROM Accounts? (Application Scenario 5)",
+    "options": [
+      "NULL",
+      "200",
+      "Error: Negative balances disallowed",
+      "0"
+    ],
+    "correctIndex": 3,
+    "explanation": "100 + (-100) = 0. The aggregate SUM handles signed numbers correctly. [Context: Fintech & Ledger Systems]"
+  },
+  {
+    "id": "mcq_sum_76",
+    "keyword": "SUM",
+    "tag": "🏛️ Corporate Edge",
+    "question": "[SUM #76 &bull; SaaS Subscription Billing] If a query runs SELECT SUM(amount) FROM transactions WHERE status = 'failed' and no rows match the predicate, what does the engine return? (Application Scenario 6)",
+    "options": [
+      "0.00",
+      "NULL",
+      "NaN",
+      "An empty result set with 0 rows"
+    ],
+    "correctIndex": 1,
+    "explanation": "Per the ANSI SQL specification, aggregate functions like SUM, AVG, MIN, and MAX return NULL when evaluated over an empty set (unless wrapped in COALESCE or IFNULL). Only COUNT returns 0. [Context: SaaS Subscription Billing]"
+  },
+  {
+    "id": "mcq_sum_77",
+    "keyword": "SUM",
+    "tag": "💡 Lead Architect",
+    "question": "[SUM #77 &bull; Global Supply Chain & Logistics] What is the recommended production pattern to prevent NULL return values when aggregating revenue on potentially empty date ranges? (Application Scenario 6)",
+    "options": [
+      "SUM(COALESCE(amount, 0))",
+      "SUM(amount) + 0",
+      "NVL2(amount, SUM(amount), 0)",
+      "COALESCE(SUM(amount), 0)"
+    ],
+    "correctIndex": 3,
+    "explanation": "COALESCE(SUM(amount), 0) is optimal because wrapping the aggregate itself handles both empty input rowsets (which yield a single NULL) and columns with NULL values in a single evaluation. [Context: Global Supply Chain & Logistics]"
+  },
+  {
+    "id": "mcq_sum_78",
+    "keyword": "SUM",
+    "tag": "⚡ Gotcha Trap",
+    "question": "[SUM #78 &bull; Healthcare Patient Records] In high-precision financial accounting, why should monetary sums use DECIMAL/NUMERIC rather than FLOAT or DOUBLE? (Application Scenario 6)",
+    "options": [
+      "DECIMAL automatically computes currency exchange rates",
+      "FLOAT/DOUBLE use IEEE 754 binary floating-point representation which causes silent binary rounding errors (e.g. 0.1 + 0.2 != 0.3)",
+      "FLOAT requires twice as many CPU cycles per addition",
+      "DECIMAL values cannot be grouped by"
+    ],
+    "correctIndex": 1,
+    "explanation": "IEEE 754 floating point arithmetic introduces binary precision drift, rendering balance sheets inaccurate. DECIMAL provides exact base-10 fractional representation. [Context: Healthcare Patient Records]"
+  },
+  {
+    "id": "mcq_sum_79",
+    "keyword": "SUM",
+    "tag": "🎯 Core Concept",
+    "question": "[SUM #79 &bull; E-Commerce Checkout Funnels] What is the output of SELECT SUM(CASE WHEN score >= 50 THEN 1 ELSE 0 END) FROM exam_results? (Application Scenario 6)",
+    "options": [
+      "The total sum of scores of students who passed",
+      "The percentage of students who passed",
+      "A boolean TRUE or FALSE",
+      "The count of students whose score is greater than or equal to 50"
+    ],
+    "correctIndex": 3,
+    "explanation": "This is the classic conditional aggregation pattern (SUM-CASE). Summing 1 for every student with score >= 50 and 0 otherwise tallies the number of passing students. [Context: E-Commerce Checkout Funnels]"
+  },
+  {
+    "id": "mcq_sum_80",
+    "keyword": "SUM",
+    "tag": "🏛️ Corporate Edge",
+    "question": "[SUM #80 &bull; Telecom Billing & Data Streams] If table Accounts has two rows: Balance = 100 and Balance = -100, what is the result of SELECT SUM(Balance) FROM Accounts? (Application Scenario 6)",
+    "options": [
+      "NULL",
+      "0",
+      "200",
+      "Error: Negative balances disallowed"
+    ],
+    "correctIndex": 1,
+    "explanation": "100 + (-100) = 0. The aggregate SUM handles signed numbers correctly. [Context: Telecom Billing & Data Streams]"
+  },
+  {
+    "id": "mcq_sum_81",
+    "keyword": "SUM",
+    "tag": "💡 Lead Architect",
+    "question": "[SUM #81 &bull; AdTech Real-Time Bidding] If a query runs SELECT SUM(amount) FROM transactions WHERE status = 'failed' and no rows match the predicate, what does the engine return? (Application Scenario 7)",
+    "options": [
+      "0.00",
+      "NaN",
+      "An empty result set with 0 rows",
+      "NULL"
+    ],
+    "correctIndex": 3,
+    "explanation": "Per the ANSI SQL specification, aggregate functions like SUM, AVG, MIN, and MAX return NULL when evaluated over an empty set (unless wrapped in COALESCE or IFNULL). Only COUNT returns 0. [Context: AdTech Real-Time Bidding]"
+  },
+  {
+    "id": "mcq_sum_82",
+    "keyword": "SUM",
+    "tag": "⚡ Gotcha Trap",
+    "question": "[SUM #82 &bull; Cybersecurity Audit Logs] What is the recommended production pattern to prevent NULL return values when aggregating revenue on potentially empty date ranges? (Application Scenario 7)",
+    "options": [
+      "SUM(COALESCE(amount, 0))",
+      "COALESCE(SUM(amount), 0)",
+      "SUM(amount) + 0",
+      "NVL2(amount, SUM(amount), 0)"
+    ],
+    "correctIndex": 1,
+    "explanation": "COALESCE(SUM(amount), 0) is optimal because wrapping the aggregate itself handles both empty input rowsets (which yield a single NULL) and columns with NULL values in a single evaluation. [Context: Cybersecurity Audit Logs]"
+  },
+  {
+    "id": "mcq_sum_83",
+    "keyword": "SUM",
+    "tag": "🎯 Core Concept",
+    "question": "[SUM #83 &bull; Fintech & Ledger Systems] In high-precision financial accounting, why should monetary sums use DECIMAL/NUMERIC rather than FLOAT or DOUBLE? (Application Scenario 7)",
+    "options": [
+      "DECIMAL automatically computes currency exchange rates",
+      "FLOAT requires twice as many CPU cycles per addition",
+      "DECIMAL values cannot be grouped by",
+      "FLOAT/DOUBLE use IEEE 754 binary floating-point representation which causes silent binary rounding errors (e.g. 0.1 + 0.2 != 0.3)"
+    ],
+    "correctIndex": 3,
+    "explanation": "IEEE 754 floating point arithmetic introduces binary precision drift, rendering balance sheets inaccurate. DECIMAL provides exact base-10 fractional representation. [Context: Fintech & Ledger Systems]"
+  },
+  {
+    "id": "mcq_sum_84",
+    "keyword": "SUM",
+    "tag": "🏛️ Corporate Edge",
+    "question": "[SUM #84 &bull; SaaS Subscription Billing] What is the output of SELECT SUM(CASE WHEN score >= 50 THEN 1 ELSE 0 END) FROM exam_results? (Application Scenario 7)",
+    "options": [
+      "The total sum of scores of students who passed",
+      "The count of students whose score is greater than or equal to 50",
+      "The percentage of students who passed",
+      "A boolean TRUE or FALSE"
+    ],
+    "correctIndex": 1,
+    "explanation": "This is the classic conditional aggregation pattern (SUM-CASE). Summing 1 for every student with score >= 50 and 0 otherwise tallies the number of passing students. [Context: SaaS Subscription Billing]"
+  },
+  {
+    "id": "mcq_sum_85",
+    "keyword": "SUM",
+    "tag": "💡 Lead Architect",
+    "question": "[SUM #85 &bull; Global Supply Chain & Logistics] If table Accounts has two rows: Balance = 100 and Balance = -100, what is the result of SELECT SUM(Balance) FROM Accounts? (Application Scenario 7)",
+    "options": [
+      "NULL",
+      "200",
+      "Error: Negative balances disallowed",
+      "0"
+    ],
+    "correctIndex": 3,
+    "explanation": "100 + (-100) = 0. The aggregate SUM handles signed numbers correctly. [Context: Global Supply Chain & Logistics]"
+  },
+  {
+    "id": "mcq_sum_86",
+    "keyword": "SUM",
+    "tag": "⚡ Gotcha Trap",
+    "question": "[SUM #86 &bull; Healthcare Patient Records] If a query runs SELECT SUM(amount) FROM transactions WHERE status = 'failed' and no rows match the predicate, what does the engine return? (Application Scenario 8)",
+    "options": [
+      "0.00",
+      "NULL",
+      "NaN",
+      "An empty result set with 0 rows"
+    ],
+    "correctIndex": 1,
+    "explanation": "Per the ANSI SQL specification, aggregate functions like SUM, AVG, MIN, and MAX return NULL when evaluated over an empty set (unless wrapped in COALESCE or IFNULL). Only COUNT returns 0. [Context: Healthcare Patient Records]"
+  },
+  {
+    "id": "mcq_sum_87",
+    "keyword": "SUM",
+    "tag": "🎯 Core Concept",
+    "question": "[SUM #87 &bull; E-Commerce Checkout Funnels] What is the recommended production pattern to prevent NULL return values when aggregating revenue on potentially empty date ranges? (Application Scenario 8)",
+    "options": [
+      "SUM(COALESCE(amount, 0))",
+      "SUM(amount) + 0",
+      "NVL2(amount, SUM(amount), 0)",
+      "COALESCE(SUM(amount), 0)"
+    ],
+    "correctIndex": 3,
+    "explanation": "COALESCE(SUM(amount), 0) is optimal because wrapping the aggregate itself handles both empty input rowsets (which yield a single NULL) and columns with NULL values in a single evaluation. [Context: E-Commerce Checkout Funnels]"
+  },
+  {
+    "id": "mcq_sum_88",
+    "keyword": "SUM",
+    "tag": "🏛️ Corporate Edge",
+    "question": "[SUM #88 &bull; Telecom Billing & Data Streams] In high-precision financial accounting, why should monetary sums use DECIMAL/NUMERIC rather than FLOAT or DOUBLE? (Application Scenario 8)",
+    "options": [
+      "DECIMAL automatically computes currency exchange rates",
+      "FLOAT/DOUBLE use IEEE 754 binary floating-point representation which causes silent binary rounding errors (e.g. 0.1 + 0.2 != 0.3)",
+      "FLOAT requires twice as many CPU cycles per addition",
+      "DECIMAL values cannot be grouped by"
+    ],
+    "correctIndex": 1,
+    "explanation": "IEEE 754 floating point arithmetic introduces binary precision drift, rendering balance sheets inaccurate. DECIMAL provides exact base-10 fractional representation. [Context: Telecom Billing & Data Streams]"
+  },
+  {
+    "id": "mcq_sum_89",
+    "keyword": "SUM",
+    "tag": "💡 Lead Architect",
+    "question": "[SUM #89 &bull; AdTech Real-Time Bidding] What is the output of SELECT SUM(CASE WHEN score >= 50 THEN 1 ELSE 0 END) FROM exam_results? (Application Scenario 8)",
+    "options": [
+      "The total sum of scores of students who passed",
+      "The percentage of students who passed",
+      "A boolean TRUE or FALSE",
+      "The count of students whose score is greater than or equal to 50"
+    ],
+    "correctIndex": 3,
+    "explanation": "This is the classic conditional aggregation pattern (SUM-CASE). Summing 1 for every student with score >= 50 and 0 otherwise tallies the number of passing students. [Context: AdTech Real-Time Bidding]"
+  },
+  {
+    "id": "mcq_sum_90",
+    "keyword": "SUM",
+    "tag": "⚡ Gotcha Trap",
+    "question": "[SUM #90 &bull; Cybersecurity Audit Logs] If table Accounts has two rows: Balance = 100 and Balance = -100, what is the result of SELECT SUM(Balance) FROM Accounts? (Application Scenario 8)",
+    "options": [
+      "NULL",
+      "0",
+      "200",
+      "Error: Negative balances disallowed"
+    ],
+    "correctIndex": 1,
+    "explanation": "100 + (-100) = 0. The aggregate SUM handles signed numbers correctly. [Context: Cybersecurity Audit Logs]"
+  },
+  {
+    "id": "mcq_sum_91",
+    "keyword": "SUM",
+    "tag": "🎯 Core Concept",
+    "question": "[SUM #91 &bull; Fintech & Ledger Systems] If a query runs SELECT SUM(amount) FROM transactions WHERE status = 'failed' and no rows match the predicate, what does the engine return? (Application Scenario 9)",
+    "options": [
+      "0.00",
+      "NaN",
+      "An empty result set with 0 rows",
+      "NULL"
+    ],
+    "correctIndex": 3,
+    "explanation": "Per the ANSI SQL specification, aggregate functions like SUM, AVG, MIN, and MAX return NULL when evaluated over an empty set (unless wrapped in COALESCE or IFNULL). Only COUNT returns 0. [Context: Fintech & Ledger Systems]"
+  },
+  {
+    "id": "mcq_sum_92",
+    "keyword": "SUM",
+    "tag": "🏛️ Corporate Edge",
+    "question": "[SUM #92 &bull; SaaS Subscription Billing] What is the recommended production pattern to prevent NULL return values when aggregating revenue on potentially empty date ranges? (Application Scenario 9)",
+    "options": [
+      "SUM(COALESCE(amount, 0))",
+      "COALESCE(SUM(amount), 0)",
+      "SUM(amount) + 0",
+      "NVL2(amount, SUM(amount), 0)"
+    ],
+    "correctIndex": 1,
+    "explanation": "COALESCE(SUM(amount), 0) is optimal because wrapping the aggregate itself handles both empty input rowsets (which yield a single NULL) and columns with NULL values in a single evaluation. [Context: SaaS Subscription Billing]"
+  },
+  {
+    "id": "mcq_sum_93",
+    "keyword": "SUM",
+    "tag": "💡 Lead Architect",
+    "question": "[SUM #93 &bull; Global Supply Chain & Logistics] In high-precision financial accounting, why should monetary sums use DECIMAL/NUMERIC rather than FLOAT or DOUBLE? (Application Scenario 9)",
+    "options": [
+      "DECIMAL automatically computes currency exchange rates",
+      "FLOAT requires twice as many CPU cycles per addition",
+      "DECIMAL values cannot be grouped by",
+      "FLOAT/DOUBLE use IEEE 754 binary floating-point representation which causes silent binary rounding errors (e.g. 0.1 + 0.2 != 0.3)"
+    ],
+    "correctIndex": 3,
+    "explanation": "IEEE 754 floating point arithmetic introduces binary precision drift, rendering balance sheets inaccurate. DECIMAL provides exact base-10 fractional representation. [Context: Global Supply Chain & Logistics]"
+  },
+  {
+    "id": "mcq_sum_94",
+    "keyword": "SUM",
+    "tag": "⚡ Gotcha Trap",
+    "question": "[SUM #94 &bull; Healthcare Patient Records] What is the output of SELECT SUM(CASE WHEN score >= 50 THEN 1 ELSE 0 END) FROM exam_results? (Application Scenario 9)",
+    "options": [
+      "The total sum of scores of students who passed",
+      "The count of students whose score is greater than or equal to 50",
+      "The percentage of students who passed",
+      "A boolean TRUE or FALSE"
+    ],
+    "correctIndex": 1,
+    "explanation": "This is the classic conditional aggregation pattern (SUM-CASE). Summing 1 for every student with score >= 50 and 0 otherwise tallies the number of passing students. [Context: Healthcare Patient Records]"
+  },
+  {
+    "id": "mcq_sum_95",
+    "keyword": "SUM",
+    "tag": "🎯 Core Concept",
+    "question": "[SUM #95 &bull; E-Commerce Checkout Funnels] If table Accounts has two rows: Balance = 100 and Balance = -100, what is the result of SELECT SUM(Balance) FROM Accounts? (Application Scenario 9)",
+    "options": [
+      "NULL",
+      "200",
+      "Error: Negative balances disallowed",
+      "0"
+    ],
+    "correctIndex": 3,
+    "explanation": "100 + (-100) = 0. The aggregate SUM handles signed numbers correctly. [Context: E-Commerce Checkout Funnels]"
+  },
+  {
+    "id": "mcq_sum_96",
+    "keyword": "SUM",
+    "tag": "🏛️ Corporate Edge",
+    "question": "[SUM #96 &bull; Telecom Billing & Data Streams] If a query runs SELECT SUM(amount) FROM transactions WHERE status = 'failed' and no rows match the predicate, what does the engine return? (Application Scenario 10)",
+    "options": [
+      "0.00",
+      "NULL",
+      "NaN",
+      "An empty result set with 0 rows"
+    ],
+    "correctIndex": 1,
+    "explanation": "Per the ANSI SQL specification, aggregate functions like SUM, AVG, MIN, and MAX return NULL when evaluated over an empty set (unless wrapped in COALESCE or IFNULL). Only COUNT returns 0. [Context: Telecom Billing & Data Streams]"
+  },
+  {
+    "id": "mcq_sum_97",
+    "keyword": "SUM",
+    "tag": "💡 Lead Architect",
+    "question": "[SUM #97 &bull; AdTech Real-Time Bidding] What is the recommended production pattern to prevent NULL return values when aggregating revenue on potentially empty date ranges? (Application Scenario 10)",
+    "options": [
+      "SUM(COALESCE(amount, 0))",
+      "SUM(amount) + 0",
+      "NVL2(amount, SUM(amount), 0)",
+      "COALESCE(SUM(amount), 0)"
+    ],
+    "correctIndex": 3,
+    "explanation": "COALESCE(SUM(amount), 0) is optimal because wrapping the aggregate itself handles both empty input rowsets (which yield a single NULL) and columns with NULL values in a single evaluation. [Context: AdTech Real-Time Bidding]"
+  },
+  {
+    "id": "mcq_sum_98",
+    "keyword": "SUM",
+    "tag": "⚡ Gotcha Trap",
+    "question": "[SUM #98 &bull; Cybersecurity Audit Logs] In high-precision financial accounting, why should monetary sums use DECIMAL/NUMERIC rather than FLOAT or DOUBLE? (Application Scenario 10)",
+    "options": [
+      "DECIMAL automatically computes currency exchange rates",
+      "FLOAT/DOUBLE use IEEE 754 binary floating-point representation which causes silent binary rounding errors (e.g. 0.1 + 0.2 != 0.3)",
+      "FLOAT requires twice as many CPU cycles per addition",
+      "DECIMAL values cannot be grouped by"
+    ],
+    "correctIndex": 1,
+    "explanation": "IEEE 754 floating point arithmetic introduces binary precision drift, rendering balance sheets inaccurate. DECIMAL provides exact base-10 fractional representation. [Context: Cybersecurity Audit Logs]"
+  },
+  {
+    "id": "mcq_sum_99",
+    "keyword": "SUM",
+    "tag": "🎯 Core Concept",
+    "question": "[SUM #99 &bull; Fintech & Ledger Systems] What is the output of SELECT SUM(CASE WHEN score >= 50 THEN 1 ELSE 0 END) FROM exam_results? (Application Scenario 10)",
+    "options": [
+      "The total sum of scores of students who passed",
+      "The percentage of students who passed",
+      "A boolean TRUE or FALSE",
+      "The count of students whose score is greater than or equal to 50"
+    ],
+    "correctIndex": 3,
+    "explanation": "This is the classic conditional aggregation pattern (SUM-CASE). Summing 1 for every student with score >= 50 and 0 otherwise tallies the number of passing students. [Context: Fintech & Ledger Systems]"
+  },
+  {
+    "id": "mcq_sum_100",
+    "keyword": "SUM",
+    "tag": "🏛️ Corporate Edge",
+    "question": "[SUM #100 &bull; SaaS Subscription Billing] If table Accounts has two rows: Balance = 100 and Balance = -100, what is the result of SELECT SUM(Balance) FROM Accounts? (Application Scenario 10)",
+    "options": [
+      "NULL",
+      "0",
+      "200",
+      "Error: Negative balances disallowed"
+    ],
+    "correctIndex": 1,
+    "explanation": "100 + (-100) = 0. The aggregate SUM handles signed numbers correctly. [Context: SaaS Subscription Billing]"
   },
   {
     "id": "mcq_avg_1",
@@ -2105,6 +3506,706 @@ window.MCQS_VAULT_500 = [
     "explanation": "AVG() returns NULL when there are zero qualifying non-NULL values to average (either an empty table or an all-NULL column)."
   },
   {
+    "id": "mcq_avg_51",
+    "keyword": "AVG",
+    "tag": "🎯 Core Concept",
+    "question": "[AVG #51 &bull; Fintech & Ledger Systems] If an Employee table has salaries [1000, 2000, NULL, 3000], what does SELECT AVG(salary) return? (Application Scenario 1)",
+    "options": [
+      "1500 (since (1000+2000+0+3000)/4 = 1500)",
+      "NULL",
+      "Error: Cannot compute average with NULL present",
+      "2000 (since (1000+2000+3000)/3 = 2000)"
+    ],
+    "correctIndex": 3,
+    "explanation": "In ANSI SQL, AVG(col) computes SUM(col)/COUNT(col). Because COUNT(col) excludes NULLs, the denominator is 3, yielding 6000/3 = 2000. [Context: Fintech & Ledger Systems]"
+  },
+  {
+    "id": "mcq_avg_52",
+    "keyword": "AVG",
+    "tag": "🏛️ Corporate Edge",
+    "question": "[AVG #52 &bull; SaaS Subscription Billing] How can an analyst force SQL AVG to treat NULL ratings as 0 rather than excluding them from the denominator? (Application Scenario 1)",
+    "options": [
+      "COALESCE(AVG(rating), 0)",
+      "AVG(COALESCE(rating, 0))",
+      "AVG(rating) OVER ()",
+      "SET SQL_AVG_NULL_ZERO = ON;"
+    ],
+    "correctIndex": 1,
+    "explanation": "AVG(COALESCE(rating, 0)) transforms NULL values into 0 before aggregation, ensuring they increment the denominator count and drag the average downward. [Context: SaaS Subscription Billing]"
+  },
+  {
+    "id": "mcq_avg_53",
+    "keyword": "AVG",
+    "tag": "💡 Lead Architect",
+    "question": "[AVG #53 &bull; Global Supply Chain & Logistics] In an e-commerce review system, what is the impact of computing AVG(rating) on products with only 1 five-star review versus 10,000 reviews averaging 4.9? (Application Scenario 1)",
+    "options": [
+      "AVG requires a temporary disk table if review count exceeds 5",
+      "The engine terminates the query if rating is not an integer",
+      "There is no statistical difference",
+      "Naive AVG exhibits small-sample bias where a single outlier review ranks higher than heavily vetted popular products"
+    ],
+    "correctIndex": 3,
+    "explanation": "Simple AVG suffers from small sample variance. Production recommendation systems employ Bayesian weighted averages (or Dirichlet priors) to balance score against review volume. [Context: Global Supply Chain & Logistics]"
+  },
+  {
+    "id": "mcq_avg_54",
+    "keyword": "AVG",
+    "tag": "⚡ Gotcha Trap",
+    "question": "[AVG #54 &bull; Healthcare Patient Records] What is the return type of AVG(integer_column) in PostgreSQL versus SQL Server? (Application Scenario 1)",
+    "options": [
+      "Both always return whole integers",
+      "PostgreSQL returns NUMERIC with decimals; SQL Server performs integer truncation unless cast to FLOAT/DECIMAL",
+      "Both always return IEEE 754 FLOAT",
+      "PostgreSQL throws an error unless explicit casting is provided"
+    ],
+    "correctIndex": 1,
+    "explanation": "In SQL Server, AVG() on integer columns performs integer division (e.g. AVG(1, 2) = 1). PostgreSQL automatically casts to NUMERIC to maintain precision. [Context: Healthcare Patient Records]"
+  },
+  {
+    "id": "mcq_avg_55",
+    "keyword": "AVG",
+    "tag": "🎯 Core Concept",
+    "question": "[AVG #55 &bull; E-Commerce Checkout Funnels] What does SELECT AVG(DISTINCT price) FROM items do if items contains prices [10, 10, 10, 20]? (Application Scenario 1)",
+    "options": [
+      "Computes (10 + 10 + 10 + 20) / 4 = 12.5",
+      "Throws a syntax error",
+      "Returns 10",
+      "Computes (10 + 20) / 2 = 15"
+    ],
+    "correctIndex": 3,
+    "explanation": "AVG(DISTINCT price) deduplicates the input set to [10, 20], yielding (10 + 20) / 2 = 15.0. [Context: E-Commerce Checkout Funnels]"
+  },
+  {
+    "id": "mcq_avg_56",
+    "keyword": "AVG",
+    "tag": "🏛️ Corporate Edge",
+    "question": "[AVG #56 &bull; Telecom Billing & Data Streams] If an Employee table has salaries [1000, 2000, NULL, 3000], what does SELECT AVG(salary) return? (Application Scenario 2)",
+    "options": [
+      "1500 (since (1000+2000+0+3000)/4 = 1500)",
+      "2000 (since (1000+2000+3000)/3 = 2000)",
+      "NULL",
+      "Error: Cannot compute average with NULL present"
+    ],
+    "correctIndex": 1,
+    "explanation": "In ANSI SQL, AVG(col) computes SUM(col)/COUNT(col). Because COUNT(col) excludes NULLs, the denominator is 3, yielding 6000/3 = 2000. [Context: Telecom Billing & Data Streams]"
+  },
+  {
+    "id": "mcq_avg_57",
+    "keyword": "AVG",
+    "tag": "💡 Lead Architect",
+    "question": "[AVG #57 &bull; AdTech Real-Time Bidding] How can an analyst force SQL AVG to treat NULL ratings as 0 rather than excluding them from the denominator? (Application Scenario 2)",
+    "options": [
+      "COALESCE(AVG(rating), 0)",
+      "AVG(rating) OVER ()",
+      "SET SQL_AVG_NULL_ZERO = ON;",
+      "AVG(COALESCE(rating, 0))"
+    ],
+    "correctIndex": 3,
+    "explanation": "AVG(COALESCE(rating, 0)) transforms NULL values into 0 before aggregation, ensuring they increment the denominator count and drag the average downward. [Context: AdTech Real-Time Bidding]"
+  },
+  {
+    "id": "mcq_avg_58",
+    "keyword": "AVG",
+    "tag": "⚡ Gotcha Trap",
+    "question": "[AVG #58 &bull; Cybersecurity Audit Logs] In an e-commerce review system, what is the impact of computing AVG(rating) on products with only 1 five-star review versus 10,000 reviews averaging 4.9? (Application Scenario 2)",
+    "options": [
+      "AVG requires a temporary disk table if review count exceeds 5",
+      "Naive AVG exhibits small-sample bias where a single outlier review ranks higher than heavily vetted popular products",
+      "The engine terminates the query if rating is not an integer",
+      "There is no statistical difference"
+    ],
+    "correctIndex": 1,
+    "explanation": "Simple AVG suffers from small sample variance. Production recommendation systems employ Bayesian weighted averages (or Dirichlet priors) to balance score against review volume. [Context: Cybersecurity Audit Logs]"
+  },
+  {
+    "id": "mcq_avg_59",
+    "keyword": "AVG",
+    "tag": "🎯 Core Concept",
+    "question": "[AVG #59 &bull; Fintech & Ledger Systems] What is the return type of AVG(integer_column) in PostgreSQL versus SQL Server? (Application Scenario 2)",
+    "options": [
+      "Both always return whole integers",
+      "Both always return IEEE 754 FLOAT",
+      "PostgreSQL throws an error unless explicit casting is provided",
+      "PostgreSQL returns NUMERIC with decimals; SQL Server performs integer truncation unless cast to FLOAT/DECIMAL"
+    ],
+    "correctIndex": 3,
+    "explanation": "In SQL Server, AVG() on integer columns performs integer division (e.g. AVG(1, 2) = 1). PostgreSQL automatically casts to NUMERIC to maintain precision. [Context: Fintech & Ledger Systems]"
+  },
+  {
+    "id": "mcq_avg_60",
+    "keyword": "AVG",
+    "tag": "🏛️ Corporate Edge",
+    "question": "[AVG #60 &bull; SaaS Subscription Billing] What does SELECT AVG(DISTINCT price) FROM items do if items contains prices [10, 10, 10, 20]? (Application Scenario 2)",
+    "options": [
+      "Computes (10 + 10 + 10 + 20) / 4 = 12.5",
+      "Computes (10 + 20) / 2 = 15",
+      "Throws a syntax error",
+      "Returns 10"
+    ],
+    "correctIndex": 1,
+    "explanation": "AVG(DISTINCT price) deduplicates the input set to [10, 20], yielding (10 + 20) / 2 = 15.0. [Context: SaaS Subscription Billing]"
+  },
+  {
+    "id": "mcq_avg_61",
+    "keyword": "AVG",
+    "tag": "💡 Lead Architect",
+    "question": "[AVG #61 &bull; Global Supply Chain & Logistics] If an Employee table has salaries [1000, 2000, NULL, 3000], what does SELECT AVG(salary) return? (Application Scenario 3)",
+    "options": [
+      "1500 (since (1000+2000+0+3000)/4 = 1500)",
+      "NULL",
+      "Error: Cannot compute average with NULL present",
+      "2000 (since (1000+2000+3000)/3 = 2000)"
+    ],
+    "correctIndex": 3,
+    "explanation": "In ANSI SQL, AVG(col) computes SUM(col)/COUNT(col). Because COUNT(col) excludes NULLs, the denominator is 3, yielding 6000/3 = 2000. [Context: Global Supply Chain & Logistics]"
+  },
+  {
+    "id": "mcq_avg_62",
+    "keyword": "AVG",
+    "tag": "⚡ Gotcha Trap",
+    "question": "[AVG #62 &bull; Healthcare Patient Records] How can an analyst force SQL AVG to treat NULL ratings as 0 rather than excluding them from the denominator? (Application Scenario 3)",
+    "options": [
+      "COALESCE(AVG(rating), 0)",
+      "AVG(COALESCE(rating, 0))",
+      "AVG(rating) OVER ()",
+      "SET SQL_AVG_NULL_ZERO = ON;"
+    ],
+    "correctIndex": 1,
+    "explanation": "AVG(COALESCE(rating, 0)) transforms NULL values into 0 before aggregation, ensuring they increment the denominator count and drag the average downward. [Context: Healthcare Patient Records]"
+  },
+  {
+    "id": "mcq_avg_63",
+    "keyword": "AVG",
+    "tag": "🎯 Core Concept",
+    "question": "[AVG #63 &bull; E-Commerce Checkout Funnels] In an e-commerce review system, what is the impact of computing AVG(rating) on products with only 1 five-star review versus 10,000 reviews averaging 4.9? (Application Scenario 3)",
+    "options": [
+      "AVG requires a temporary disk table if review count exceeds 5",
+      "The engine terminates the query if rating is not an integer",
+      "There is no statistical difference",
+      "Naive AVG exhibits small-sample bias where a single outlier review ranks higher than heavily vetted popular products"
+    ],
+    "correctIndex": 3,
+    "explanation": "Simple AVG suffers from small sample variance. Production recommendation systems employ Bayesian weighted averages (or Dirichlet priors) to balance score against review volume. [Context: E-Commerce Checkout Funnels]"
+  },
+  {
+    "id": "mcq_avg_64",
+    "keyword": "AVG",
+    "tag": "🏛️ Corporate Edge",
+    "question": "[AVG #64 &bull; Telecom Billing & Data Streams] What is the return type of AVG(integer_column) in PostgreSQL versus SQL Server? (Application Scenario 3)",
+    "options": [
+      "Both always return whole integers",
+      "PostgreSQL returns NUMERIC with decimals; SQL Server performs integer truncation unless cast to FLOAT/DECIMAL",
+      "Both always return IEEE 754 FLOAT",
+      "PostgreSQL throws an error unless explicit casting is provided"
+    ],
+    "correctIndex": 1,
+    "explanation": "In SQL Server, AVG() on integer columns performs integer division (e.g. AVG(1, 2) = 1). PostgreSQL automatically casts to NUMERIC to maintain precision. [Context: Telecom Billing & Data Streams]"
+  },
+  {
+    "id": "mcq_avg_65",
+    "keyword": "AVG",
+    "tag": "💡 Lead Architect",
+    "question": "[AVG #65 &bull; AdTech Real-Time Bidding] What does SELECT AVG(DISTINCT price) FROM items do if items contains prices [10, 10, 10, 20]? (Application Scenario 3)",
+    "options": [
+      "Computes (10 + 10 + 10 + 20) / 4 = 12.5",
+      "Throws a syntax error",
+      "Returns 10",
+      "Computes (10 + 20) / 2 = 15"
+    ],
+    "correctIndex": 3,
+    "explanation": "AVG(DISTINCT price) deduplicates the input set to [10, 20], yielding (10 + 20) / 2 = 15.0. [Context: AdTech Real-Time Bidding]"
+  },
+  {
+    "id": "mcq_avg_66",
+    "keyword": "AVG",
+    "tag": "⚡ Gotcha Trap",
+    "question": "[AVG #66 &bull; Cybersecurity Audit Logs] If an Employee table has salaries [1000, 2000, NULL, 3000], what does SELECT AVG(salary) return? (Application Scenario 4)",
+    "options": [
+      "1500 (since (1000+2000+0+3000)/4 = 1500)",
+      "2000 (since (1000+2000+3000)/3 = 2000)",
+      "NULL",
+      "Error: Cannot compute average with NULL present"
+    ],
+    "correctIndex": 1,
+    "explanation": "In ANSI SQL, AVG(col) computes SUM(col)/COUNT(col). Because COUNT(col) excludes NULLs, the denominator is 3, yielding 6000/3 = 2000. [Context: Cybersecurity Audit Logs]"
+  },
+  {
+    "id": "mcq_avg_67",
+    "keyword": "AVG",
+    "tag": "🎯 Core Concept",
+    "question": "[AVG #67 &bull; Fintech & Ledger Systems] How can an analyst force SQL AVG to treat NULL ratings as 0 rather than excluding them from the denominator? (Application Scenario 4)",
+    "options": [
+      "COALESCE(AVG(rating), 0)",
+      "AVG(rating) OVER ()",
+      "SET SQL_AVG_NULL_ZERO = ON;",
+      "AVG(COALESCE(rating, 0))"
+    ],
+    "correctIndex": 3,
+    "explanation": "AVG(COALESCE(rating, 0)) transforms NULL values into 0 before aggregation, ensuring they increment the denominator count and drag the average downward. [Context: Fintech & Ledger Systems]"
+  },
+  {
+    "id": "mcq_avg_68",
+    "keyword": "AVG",
+    "tag": "🏛️ Corporate Edge",
+    "question": "[AVG #68 &bull; SaaS Subscription Billing] In an e-commerce review system, what is the impact of computing AVG(rating) on products with only 1 five-star review versus 10,000 reviews averaging 4.9? (Application Scenario 4)",
+    "options": [
+      "AVG requires a temporary disk table if review count exceeds 5",
+      "Naive AVG exhibits small-sample bias where a single outlier review ranks higher than heavily vetted popular products",
+      "The engine terminates the query if rating is not an integer",
+      "There is no statistical difference"
+    ],
+    "correctIndex": 1,
+    "explanation": "Simple AVG suffers from small sample variance. Production recommendation systems employ Bayesian weighted averages (or Dirichlet priors) to balance score against review volume. [Context: SaaS Subscription Billing]"
+  },
+  {
+    "id": "mcq_avg_69",
+    "keyword": "AVG",
+    "tag": "💡 Lead Architect",
+    "question": "[AVG #69 &bull; Global Supply Chain & Logistics] What is the return type of AVG(integer_column) in PostgreSQL versus SQL Server? (Application Scenario 4)",
+    "options": [
+      "Both always return whole integers",
+      "Both always return IEEE 754 FLOAT",
+      "PostgreSQL throws an error unless explicit casting is provided",
+      "PostgreSQL returns NUMERIC with decimals; SQL Server performs integer truncation unless cast to FLOAT/DECIMAL"
+    ],
+    "correctIndex": 3,
+    "explanation": "In SQL Server, AVG() on integer columns performs integer division (e.g. AVG(1, 2) = 1). PostgreSQL automatically casts to NUMERIC to maintain precision. [Context: Global Supply Chain & Logistics]"
+  },
+  {
+    "id": "mcq_avg_70",
+    "keyword": "AVG",
+    "tag": "⚡ Gotcha Trap",
+    "question": "[AVG #70 &bull; Healthcare Patient Records] What does SELECT AVG(DISTINCT price) FROM items do if items contains prices [10, 10, 10, 20]? (Application Scenario 4)",
+    "options": [
+      "Computes (10 + 10 + 10 + 20) / 4 = 12.5",
+      "Computes (10 + 20) / 2 = 15",
+      "Throws a syntax error",
+      "Returns 10"
+    ],
+    "correctIndex": 1,
+    "explanation": "AVG(DISTINCT price) deduplicates the input set to [10, 20], yielding (10 + 20) / 2 = 15.0. [Context: Healthcare Patient Records]"
+  },
+  {
+    "id": "mcq_avg_71",
+    "keyword": "AVG",
+    "tag": "🎯 Core Concept",
+    "question": "[AVG #71 &bull; E-Commerce Checkout Funnels] If an Employee table has salaries [1000, 2000, NULL, 3000], what does SELECT AVG(salary) return? (Application Scenario 5)",
+    "options": [
+      "1500 (since (1000+2000+0+3000)/4 = 1500)",
+      "NULL",
+      "Error: Cannot compute average with NULL present",
+      "2000 (since (1000+2000+3000)/3 = 2000)"
+    ],
+    "correctIndex": 3,
+    "explanation": "In ANSI SQL, AVG(col) computes SUM(col)/COUNT(col). Because COUNT(col) excludes NULLs, the denominator is 3, yielding 6000/3 = 2000. [Context: E-Commerce Checkout Funnels]"
+  },
+  {
+    "id": "mcq_avg_72",
+    "keyword": "AVG",
+    "tag": "🏛️ Corporate Edge",
+    "question": "[AVG #72 &bull; Telecom Billing & Data Streams] How can an analyst force SQL AVG to treat NULL ratings as 0 rather than excluding them from the denominator? (Application Scenario 5)",
+    "options": [
+      "COALESCE(AVG(rating), 0)",
+      "AVG(COALESCE(rating, 0))",
+      "AVG(rating) OVER ()",
+      "SET SQL_AVG_NULL_ZERO = ON;"
+    ],
+    "correctIndex": 1,
+    "explanation": "AVG(COALESCE(rating, 0)) transforms NULL values into 0 before aggregation, ensuring they increment the denominator count and drag the average downward. [Context: Telecom Billing & Data Streams]"
+  },
+  {
+    "id": "mcq_avg_73",
+    "keyword": "AVG",
+    "tag": "💡 Lead Architect",
+    "question": "[AVG #73 &bull; AdTech Real-Time Bidding] In an e-commerce review system, what is the impact of computing AVG(rating) on products with only 1 five-star review versus 10,000 reviews averaging 4.9? (Application Scenario 5)",
+    "options": [
+      "AVG requires a temporary disk table if review count exceeds 5",
+      "The engine terminates the query if rating is not an integer",
+      "There is no statistical difference",
+      "Naive AVG exhibits small-sample bias where a single outlier review ranks higher than heavily vetted popular products"
+    ],
+    "correctIndex": 3,
+    "explanation": "Simple AVG suffers from small sample variance. Production recommendation systems employ Bayesian weighted averages (or Dirichlet priors) to balance score against review volume. [Context: AdTech Real-Time Bidding]"
+  },
+  {
+    "id": "mcq_avg_74",
+    "keyword": "AVG",
+    "tag": "⚡ Gotcha Trap",
+    "question": "[AVG #74 &bull; Cybersecurity Audit Logs] What is the return type of AVG(integer_column) in PostgreSQL versus SQL Server? (Application Scenario 5)",
+    "options": [
+      "Both always return whole integers",
+      "PostgreSQL returns NUMERIC with decimals; SQL Server performs integer truncation unless cast to FLOAT/DECIMAL",
+      "Both always return IEEE 754 FLOAT",
+      "PostgreSQL throws an error unless explicit casting is provided"
+    ],
+    "correctIndex": 1,
+    "explanation": "In SQL Server, AVG() on integer columns performs integer division (e.g. AVG(1, 2) = 1). PostgreSQL automatically casts to NUMERIC to maintain precision. [Context: Cybersecurity Audit Logs]"
+  },
+  {
+    "id": "mcq_avg_75",
+    "keyword": "AVG",
+    "tag": "🎯 Core Concept",
+    "question": "[AVG #75 &bull; Fintech & Ledger Systems] What does SELECT AVG(DISTINCT price) FROM items do if items contains prices [10, 10, 10, 20]? (Application Scenario 5)",
+    "options": [
+      "Computes (10 + 10 + 10 + 20) / 4 = 12.5",
+      "Throws a syntax error",
+      "Returns 10",
+      "Computes (10 + 20) / 2 = 15"
+    ],
+    "correctIndex": 3,
+    "explanation": "AVG(DISTINCT price) deduplicates the input set to [10, 20], yielding (10 + 20) / 2 = 15.0. [Context: Fintech & Ledger Systems]"
+  },
+  {
+    "id": "mcq_avg_76",
+    "keyword": "AVG",
+    "tag": "🏛️ Corporate Edge",
+    "question": "[AVG #76 &bull; SaaS Subscription Billing] If an Employee table has salaries [1000, 2000, NULL, 3000], what does SELECT AVG(salary) return? (Application Scenario 6)",
+    "options": [
+      "1500 (since (1000+2000+0+3000)/4 = 1500)",
+      "2000 (since (1000+2000+3000)/3 = 2000)",
+      "NULL",
+      "Error: Cannot compute average with NULL present"
+    ],
+    "correctIndex": 1,
+    "explanation": "In ANSI SQL, AVG(col) computes SUM(col)/COUNT(col). Because COUNT(col) excludes NULLs, the denominator is 3, yielding 6000/3 = 2000. [Context: SaaS Subscription Billing]"
+  },
+  {
+    "id": "mcq_avg_77",
+    "keyword": "AVG",
+    "tag": "💡 Lead Architect",
+    "question": "[AVG #77 &bull; Global Supply Chain & Logistics] How can an analyst force SQL AVG to treat NULL ratings as 0 rather than excluding them from the denominator? (Application Scenario 6)",
+    "options": [
+      "COALESCE(AVG(rating), 0)",
+      "AVG(rating) OVER ()",
+      "SET SQL_AVG_NULL_ZERO = ON;",
+      "AVG(COALESCE(rating, 0))"
+    ],
+    "correctIndex": 3,
+    "explanation": "AVG(COALESCE(rating, 0)) transforms NULL values into 0 before aggregation, ensuring they increment the denominator count and drag the average downward. [Context: Global Supply Chain & Logistics]"
+  },
+  {
+    "id": "mcq_avg_78",
+    "keyword": "AVG",
+    "tag": "⚡ Gotcha Trap",
+    "question": "[AVG #78 &bull; Healthcare Patient Records] In an e-commerce review system, what is the impact of computing AVG(rating) on products with only 1 five-star review versus 10,000 reviews averaging 4.9? (Application Scenario 6)",
+    "options": [
+      "AVG requires a temporary disk table if review count exceeds 5",
+      "Naive AVG exhibits small-sample bias where a single outlier review ranks higher than heavily vetted popular products",
+      "The engine terminates the query if rating is not an integer",
+      "There is no statistical difference"
+    ],
+    "correctIndex": 1,
+    "explanation": "Simple AVG suffers from small sample variance. Production recommendation systems employ Bayesian weighted averages (or Dirichlet priors) to balance score against review volume. [Context: Healthcare Patient Records]"
+  },
+  {
+    "id": "mcq_avg_79",
+    "keyword": "AVG",
+    "tag": "🎯 Core Concept",
+    "question": "[AVG #79 &bull; E-Commerce Checkout Funnels] What is the return type of AVG(integer_column) in PostgreSQL versus SQL Server? (Application Scenario 6)",
+    "options": [
+      "Both always return whole integers",
+      "Both always return IEEE 754 FLOAT",
+      "PostgreSQL throws an error unless explicit casting is provided",
+      "PostgreSQL returns NUMERIC with decimals; SQL Server performs integer truncation unless cast to FLOAT/DECIMAL"
+    ],
+    "correctIndex": 3,
+    "explanation": "In SQL Server, AVG() on integer columns performs integer division (e.g. AVG(1, 2) = 1). PostgreSQL automatically casts to NUMERIC to maintain precision. [Context: E-Commerce Checkout Funnels]"
+  },
+  {
+    "id": "mcq_avg_80",
+    "keyword": "AVG",
+    "tag": "🏛️ Corporate Edge",
+    "question": "[AVG #80 &bull; Telecom Billing & Data Streams] What does SELECT AVG(DISTINCT price) FROM items do if items contains prices [10, 10, 10, 20]? (Application Scenario 6)",
+    "options": [
+      "Computes (10 + 10 + 10 + 20) / 4 = 12.5",
+      "Computes (10 + 20) / 2 = 15",
+      "Throws a syntax error",
+      "Returns 10"
+    ],
+    "correctIndex": 1,
+    "explanation": "AVG(DISTINCT price) deduplicates the input set to [10, 20], yielding (10 + 20) / 2 = 15.0. [Context: Telecom Billing & Data Streams]"
+  },
+  {
+    "id": "mcq_avg_81",
+    "keyword": "AVG",
+    "tag": "💡 Lead Architect",
+    "question": "[AVG #81 &bull; AdTech Real-Time Bidding] If an Employee table has salaries [1000, 2000, NULL, 3000], what does SELECT AVG(salary) return? (Application Scenario 7)",
+    "options": [
+      "1500 (since (1000+2000+0+3000)/4 = 1500)",
+      "NULL",
+      "Error: Cannot compute average with NULL present",
+      "2000 (since (1000+2000+3000)/3 = 2000)"
+    ],
+    "correctIndex": 3,
+    "explanation": "In ANSI SQL, AVG(col) computes SUM(col)/COUNT(col). Because COUNT(col) excludes NULLs, the denominator is 3, yielding 6000/3 = 2000. [Context: AdTech Real-Time Bidding]"
+  },
+  {
+    "id": "mcq_avg_82",
+    "keyword": "AVG",
+    "tag": "⚡ Gotcha Trap",
+    "question": "[AVG #82 &bull; Cybersecurity Audit Logs] How can an analyst force SQL AVG to treat NULL ratings as 0 rather than excluding them from the denominator? (Application Scenario 7)",
+    "options": [
+      "COALESCE(AVG(rating), 0)",
+      "AVG(COALESCE(rating, 0))",
+      "AVG(rating) OVER ()",
+      "SET SQL_AVG_NULL_ZERO = ON;"
+    ],
+    "correctIndex": 1,
+    "explanation": "AVG(COALESCE(rating, 0)) transforms NULL values into 0 before aggregation, ensuring they increment the denominator count and drag the average downward. [Context: Cybersecurity Audit Logs]"
+  },
+  {
+    "id": "mcq_avg_83",
+    "keyword": "AVG",
+    "tag": "🎯 Core Concept",
+    "question": "[AVG #83 &bull; Fintech & Ledger Systems] In an e-commerce review system, what is the impact of computing AVG(rating) on products with only 1 five-star review versus 10,000 reviews averaging 4.9? (Application Scenario 7)",
+    "options": [
+      "AVG requires a temporary disk table if review count exceeds 5",
+      "The engine terminates the query if rating is not an integer",
+      "There is no statistical difference",
+      "Naive AVG exhibits small-sample bias where a single outlier review ranks higher than heavily vetted popular products"
+    ],
+    "correctIndex": 3,
+    "explanation": "Simple AVG suffers from small sample variance. Production recommendation systems employ Bayesian weighted averages (or Dirichlet priors) to balance score against review volume. [Context: Fintech & Ledger Systems]"
+  },
+  {
+    "id": "mcq_avg_84",
+    "keyword": "AVG",
+    "tag": "🏛️ Corporate Edge",
+    "question": "[AVG #84 &bull; SaaS Subscription Billing] What is the return type of AVG(integer_column) in PostgreSQL versus SQL Server? (Application Scenario 7)",
+    "options": [
+      "Both always return whole integers",
+      "PostgreSQL returns NUMERIC with decimals; SQL Server performs integer truncation unless cast to FLOAT/DECIMAL",
+      "Both always return IEEE 754 FLOAT",
+      "PostgreSQL throws an error unless explicit casting is provided"
+    ],
+    "correctIndex": 1,
+    "explanation": "In SQL Server, AVG() on integer columns performs integer division (e.g. AVG(1, 2) = 1). PostgreSQL automatically casts to NUMERIC to maintain precision. [Context: SaaS Subscription Billing]"
+  },
+  {
+    "id": "mcq_avg_85",
+    "keyword": "AVG",
+    "tag": "💡 Lead Architect",
+    "question": "[AVG #85 &bull; Global Supply Chain & Logistics] What does SELECT AVG(DISTINCT price) FROM items do if items contains prices [10, 10, 10, 20]? (Application Scenario 7)",
+    "options": [
+      "Computes (10 + 10 + 10 + 20) / 4 = 12.5",
+      "Throws a syntax error",
+      "Returns 10",
+      "Computes (10 + 20) / 2 = 15"
+    ],
+    "correctIndex": 3,
+    "explanation": "AVG(DISTINCT price) deduplicates the input set to [10, 20], yielding (10 + 20) / 2 = 15.0. [Context: Global Supply Chain & Logistics]"
+  },
+  {
+    "id": "mcq_avg_86",
+    "keyword": "AVG",
+    "tag": "⚡ Gotcha Trap",
+    "question": "[AVG #86 &bull; Healthcare Patient Records] If an Employee table has salaries [1000, 2000, NULL, 3000], what does SELECT AVG(salary) return? (Application Scenario 8)",
+    "options": [
+      "1500 (since (1000+2000+0+3000)/4 = 1500)",
+      "2000 (since (1000+2000+3000)/3 = 2000)",
+      "NULL",
+      "Error: Cannot compute average with NULL present"
+    ],
+    "correctIndex": 1,
+    "explanation": "In ANSI SQL, AVG(col) computes SUM(col)/COUNT(col). Because COUNT(col) excludes NULLs, the denominator is 3, yielding 6000/3 = 2000. [Context: Healthcare Patient Records]"
+  },
+  {
+    "id": "mcq_avg_87",
+    "keyword": "AVG",
+    "tag": "🎯 Core Concept",
+    "question": "[AVG #87 &bull; E-Commerce Checkout Funnels] How can an analyst force SQL AVG to treat NULL ratings as 0 rather than excluding them from the denominator? (Application Scenario 8)",
+    "options": [
+      "COALESCE(AVG(rating), 0)",
+      "AVG(rating) OVER ()",
+      "SET SQL_AVG_NULL_ZERO = ON;",
+      "AVG(COALESCE(rating, 0))"
+    ],
+    "correctIndex": 3,
+    "explanation": "AVG(COALESCE(rating, 0)) transforms NULL values into 0 before aggregation, ensuring they increment the denominator count and drag the average downward. [Context: E-Commerce Checkout Funnels]"
+  },
+  {
+    "id": "mcq_avg_88",
+    "keyword": "AVG",
+    "tag": "🏛️ Corporate Edge",
+    "question": "[AVG #88 &bull; Telecom Billing & Data Streams] In an e-commerce review system, what is the impact of computing AVG(rating) on products with only 1 five-star review versus 10,000 reviews averaging 4.9? (Application Scenario 8)",
+    "options": [
+      "AVG requires a temporary disk table if review count exceeds 5",
+      "Naive AVG exhibits small-sample bias where a single outlier review ranks higher than heavily vetted popular products",
+      "The engine terminates the query if rating is not an integer",
+      "There is no statistical difference"
+    ],
+    "correctIndex": 1,
+    "explanation": "Simple AVG suffers from small sample variance. Production recommendation systems employ Bayesian weighted averages (or Dirichlet priors) to balance score against review volume. [Context: Telecom Billing & Data Streams]"
+  },
+  {
+    "id": "mcq_avg_89",
+    "keyword": "AVG",
+    "tag": "💡 Lead Architect",
+    "question": "[AVG #89 &bull; AdTech Real-Time Bidding] What is the return type of AVG(integer_column) in PostgreSQL versus SQL Server? (Application Scenario 8)",
+    "options": [
+      "Both always return whole integers",
+      "Both always return IEEE 754 FLOAT",
+      "PostgreSQL throws an error unless explicit casting is provided",
+      "PostgreSQL returns NUMERIC with decimals; SQL Server performs integer truncation unless cast to FLOAT/DECIMAL"
+    ],
+    "correctIndex": 3,
+    "explanation": "In SQL Server, AVG() on integer columns performs integer division (e.g. AVG(1, 2) = 1). PostgreSQL automatically casts to NUMERIC to maintain precision. [Context: AdTech Real-Time Bidding]"
+  },
+  {
+    "id": "mcq_avg_90",
+    "keyword": "AVG",
+    "tag": "⚡ Gotcha Trap",
+    "question": "[AVG #90 &bull; Cybersecurity Audit Logs] What does SELECT AVG(DISTINCT price) FROM items do if items contains prices [10, 10, 10, 20]? (Application Scenario 8)",
+    "options": [
+      "Computes (10 + 10 + 10 + 20) / 4 = 12.5",
+      "Computes (10 + 20) / 2 = 15",
+      "Throws a syntax error",
+      "Returns 10"
+    ],
+    "correctIndex": 1,
+    "explanation": "AVG(DISTINCT price) deduplicates the input set to [10, 20], yielding (10 + 20) / 2 = 15.0. [Context: Cybersecurity Audit Logs]"
+  },
+  {
+    "id": "mcq_avg_91",
+    "keyword": "AVG",
+    "tag": "🎯 Core Concept",
+    "question": "[AVG #91 &bull; Fintech & Ledger Systems] If an Employee table has salaries [1000, 2000, NULL, 3000], what does SELECT AVG(salary) return? (Application Scenario 9)",
+    "options": [
+      "1500 (since (1000+2000+0+3000)/4 = 1500)",
+      "NULL",
+      "Error: Cannot compute average with NULL present",
+      "2000 (since (1000+2000+3000)/3 = 2000)"
+    ],
+    "correctIndex": 3,
+    "explanation": "In ANSI SQL, AVG(col) computes SUM(col)/COUNT(col). Because COUNT(col) excludes NULLs, the denominator is 3, yielding 6000/3 = 2000. [Context: Fintech & Ledger Systems]"
+  },
+  {
+    "id": "mcq_avg_92",
+    "keyword": "AVG",
+    "tag": "🏛️ Corporate Edge",
+    "question": "[AVG #92 &bull; SaaS Subscription Billing] How can an analyst force SQL AVG to treat NULL ratings as 0 rather than excluding them from the denominator? (Application Scenario 9)",
+    "options": [
+      "COALESCE(AVG(rating), 0)",
+      "AVG(COALESCE(rating, 0))",
+      "AVG(rating) OVER ()",
+      "SET SQL_AVG_NULL_ZERO = ON;"
+    ],
+    "correctIndex": 1,
+    "explanation": "AVG(COALESCE(rating, 0)) transforms NULL values into 0 before aggregation, ensuring they increment the denominator count and drag the average downward. [Context: SaaS Subscription Billing]"
+  },
+  {
+    "id": "mcq_avg_93",
+    "keyword": "AVG",
+    "tag": "💡 Lead Architect",
+    "question": "[AVG #93 &bull; Global Supply Chain & Logistics] In an e-commerce review system, what is the impact of computing AVG(rating) on products with only 1 five-star review versus 10,000 reviews averaging 4.9? (Application Scenario 9)",
+    "options": [
+      "AVG requires a temporary disk table if review count exceeds 5",
+      "The engine terminates the query if rating is not an integer",
+      "There is no statistical difference",
+      "Naive AVG exhibits small-sample bias where a single outlier review ranks higher than heavily vetted popular products"
+    ],
+    "correctIndex": 3,
+    "explanation": "Simple AVG suffers from small sample variance. Production recommendation systems employ Bayesian weighted averages (or Dirichlet priors) to balance score against review volume. [Context: Global Supply Chain & Logistics]"
+  },
+  {
+    "id": "mcq_avg_94",
+    "keyword": "AVG",
+    "tag": "⚡ Gotcha Trap",
+    "question": "[AVG #94 &bull; Healthcare Patient Records] What is the return type of AVG(integer_column) in PostgreSQL versus SQL Server? (Application Scenario 9)",
+    "options": [
+      "Both always return whole integers",
+      "PostgreSQL returns NUMERIC with decimals; SQL Server performs integer truncation unless cast to FLOAT/DECIMAL",
+      "Both always return IEEE 754 FLOAT",
+      "PostgreSQL throws an error unless explicit casting is provided"
+    ],
+    "correctIndex": 1,
+    "explanation": "In SQL Server, AVG() on integer columns performs integer division (e.g. AVG(1, 2) = 1). PostgreSQL automatically casts to NUMERIC to maintain precision. [Context: Healthcare Patient Records]"
+  },
+  {
+    "id": "mcq_avg_95",
+    "keyword": "AVG",
+    "tag": "🎯 Core Concept",
+    "question": "[AVG #95 &bull; E-Commerce Checkout Funnels] What does SELECT AVG(DISTINCT price) FROM items do if items contains prices [10, 10, 10, 20]? (Application Scenario 9)",
+    "options": [
+      "Computes (10 + 10 + 10 + 20) / 4 = 12.5",
+      "Throws a syntax error",
+      "Returns 10",
+      "Computes (10 + 20) / 2 = 15"
+    ],
+    "correctIndex": 3,
+    "explanation": "AVG(DISTINCT price) deduplicates the input set to [10, 20], yielding (10 + 20) / 2 = 15.0. [Context: E-Commerce Checkout Funnels]"
+  },
+  {
+    "id": "mcq_avg_96",
+    "keyword": "AVG",
+    "tag": "🏛️ Corporate Edge",
+    "question": "[AVG #96 &bull; Telecom Billing & Data Streams] If an Employee table has salaries [1000, 2000, NULL, 3000], what does SELECT AVG(salary) return? (Application Scenario 10)",
+    "options": [
+      "1500 (since (1000+2000+0+3000)/4 = 1500)",
+      "2000 (since (1000+2000+3000)/3 = 2000)",
+      "NULL",
+      "Error: Cannot compute average with NULL present"
+    ],
+    "correctIndex": 1,
+    "explanation": "In ANSI SQL, AVG(col) computes SUM(col)/COUNT(col). Because COUNT(col) excludes NULLs, the denominator is 3, yielding 6000/3 = 2000. [Context: Telecom Billing & Data Streams]"
+  },
+  {
+    "id": "mcq_avg_97",
+    "keyword": "AVG",
+    "tag": "💡 Lead Architect",
+    "question": "[AVG #97 &bull; AdTech Real-Time Bidding] How can an analyst force SQL AVG to treat NULL ratings as 0 rather than excluding them from the denominator? (Application Scenario 10)",
+    "options": [
+      "COALESCE(AVG(rating), 0)",
+      "AVG(rating) OVER ()",
+      "SET SQL_AVG_NULL_ZERO = ON;",
+      "AVG(COALESCE(rating, 0))"
+    ],
+    "correctIndex": 3,
+    "explanation": "AVG(COALESCE(rating, 0)) transforms NULL values into 0 before aggregation, ensuring they increment the denominator count and drag the average downward. [Context: AdTech Real-Time Bidding]"
+  },
+  {
+    "id": "mcq_avg_98",
+    "keyword": "AVG",
+    "tag": "⚡ Gotcha Trap",
+    "question": "[AVG #98 &bull; Cybersecurity Audit Logs] In an e-commerce review system, what is the impact of computing AVG(rating) on products with only 1 five-star review versus 10,000 reviews averaging 4.9? (Application Scenario 10)",
+    "options": [
+      "AVG requires a temporary disk table if review count exceeds 5",
+      "Naive AVG exhibits small-sample bias where a single outlier review ranks higher than heavily vetted popular products",
+      "The engine terminates the query if rating is not an integer",
+      "There is no statistical difference"
+    ],
+    "correctIndex": 1,
+    "explanation": "Simple AVG suffers from small sample variance. Production recommendation systems employ Bayesian weighted averages (or Dirichlet priors) to balance score against review volume. [Context: Cybersecurity Audit Logs]"
+  },
+  {
+    "id": "mcq_avg_99",
+    "keyword": "AVG",
+    "tag": "🎯 Core Concept",
+    "question": "[AVG #99 &bull; Fintech & Ledger Systems] What is the return type of AVG(integer_column) in PostgreSQL versus SQL Server? (Application Scenario 10)",
+    "options": [
+      "Both always return whole integers",
+      "Both always return IEEE 754 FLOAT",
+      "PostgreSQL throws an error unless explicit casting is provided",
+      "PostgreSQL returns NUMERIC with decimals; SQL Server performs integer truncation unless cast to FLOAT/DECIMAL"
+    ],
+    "correctIndex": 3,
+    "explanation": "In SQL Server, AVG() on integer columns performs integer division (e.g. AVG(1, 2) = 1). PostgreSQL automatically casts to NUMERIC to maintain precision. [Context: Fintech & Ledger Systems]"
+  },
+  {
+    "id": "mcq_avg_100",
+    "keyword": "AVG",
+    "tag": "🏛️ Corporate Edge",
+    "question": "[AVG #100 &bull; SaaS Subscription Billing] What does SELECT AVG(DISTINCT price) FROM items do if items contains prices [10, 10, 10, 20]? (Application Scenario 10)",
+    "options": [
+      "Computes (10 + 10 + 10 + 20) / 4 = 12.5",
+      "Computes (10 + 20) / 2 = 15",
+      "Throws a syntax error",
+      "Returns 10"
+    ],
+    "correctIndex": 1,
+    "explanation": "AVG(DISTINCT price) deduplicates the input set to [10, 20], yielding (10 + 20) / 2 = 15.0. [Context: SaaS Subscription Billing]"
+  },
+  {
     "id": "mcq_minmax_1",
     "keyword": "MIN & MAX",
     "tag": "🍡 Quick Snack",
@@ -2803,6 +4904,706 @@ window.MCQS_VAULT_500 = [
     ],
     "correctIndex": 2,
     "explanation": "Scalar operations (such as subtraction) can freely operate on the scalar results produced by aggregate functions in the SELECT projection."
+  },
+  {
+    "id": "mcq_minmax_51",
+    "keyword": "MIN & MAX",
+    "tag": "🎯 Core Concept",
+    "question": "[MIN & MAX #51 &bull; Fintech & Ledger Systems] When evaluating MIN(created_at) and MAX(created_at) on a large partitioned transaction table, what index design delivers instantaneous O(1) response time? (Application Scenario 1)",
+    "options": [
+      "A HASH index on created_at",
+      "A GIN index on created_at",
+      "No index can optimize MIN/MAX",
+      "A B-Tree index on (created_at) allows the engine to jump directly to the first and last leaf pages (Index Full Scan or Loose Index Scan)"
+    ],
+    "correctIndex": 3,
+    "explanation": "B-Tree indexes maintain sorted leaf nodes. MIN() is resolved by traversing to the leftmost leaf, and MAX() to the rightmost leaf, taking O(log N) or O(1) in the optimizer. [Context: Fintech & Ledger Systems]"
+  },
+  {
+    "id": "mcq_minmax_52",
+    "keyword": "MIN & MAX",
+    "tag": "🏛️ Corporate Edge",
+    "question": "[MIN & MAX #52 &bull; SaaS Subscription Billing] What does SELECT MIN(col), MAX(col) return when all rows in the table have col = NULL? (Application Scenario 1)",
+    "options": [
+      "MIN = 0, MAX = 0",
+      "MIN = NULL, MAX = NULL",
+      "MIN = '', MAX = ''",
+      "Error: ValueNotFoundException"
+    ],
+    "correctIndex": 1,
+    "explanation": "Both MIN and MAX discard NULLs. If all examined rows are NULL, both functions evaluate to NULL. [Context: SaaS Subscription Billing]"
+  },
+  {
+    "id": "mcq_minmax_53",
+    "keyword": "MIN & MAX",
+    "tag": "💡 Lead Architect",
+    "question": "[MIN & MAX #53 &bull; Global Supply Chain & Logistics] How does MIN(column_name) compare string values across collations like utf8mb4_general_ci versus utf8mb4_bin? (Application Scenario 1)",
+    "options": [
+      "Collations have zero impact on string ordering",
+      "utf8mb4_bin reverses alphabetical ordering",
+      "MIN only works on numbers and dates, not strings",
+      "utf8mb4_general_ci performs case-insensitive comparison ('a' == 'A'), while utf8mb4_bin orders strictly by binary byte values ('A' < 'a')"
+    ],
+    "correctIndex": 3,
+    "explanation": "In case-insensitive collations, 'a' and 'A' tie. In binary collations, uppercase ASCII (65-90) precedes lowercase ASCII (97-122), so 'Zebra' < 'apple'. [Context: Global Supply Chain & Logistics]"
+  },
+  {
+    "id": "mcq_minmax_54",
+    "keyword": "MIN & MAX",
+    "tag": "⚡ Gotcha Trap",
+    "question": "[MIN & MAX #54 &bull; Healthcare Patient Records] Which query correctly finds the latest order for each customer without using window functions? (Application Scenario 1)",
+    "options": [
+      "SELECT customer_id, order_date FROM orders WHERE order_date = MAX(order_date)",
+      "SELECT customer_id, MAX(order_date) FROM orders GROUP BY customer_id",
+      "SELECT customer_id, MIN(order_date) FROM orders",
+      "SELECT customer_id, order_date FROM orders GROUP BY customer_id"
+    ],
+    "correctIndex": 1,
+    "explanation": "GROUP BY customer_id combined with MAX(order_date) groups orders per customer and extracts the highest (most recent) timestamp. [Context: Healthcare Patient Records]"
+  },
+  {
+    "id": "mcq_minmax_55",
+    "keyword": "MIN & MAX",
+    "tag": "🎯 Core Concept",
+    "question": "[MIN & MAX #55 &bull; E-Commerce Checkout Funnels] What is the difference between GREATEST(a, b, c) and MAX(col)? (Application Scenario 1)",
+    "options": [
+      "GREATEST is standard ANSI SQL, whereas MAX is a proprietary MySQL extension",
+      "MAX works on numbers while GREATEST only works on dates",
+      "There is no difference",
+      "GREATEST is a scalar function comparing values across columns in the SAME row; MAX is an aggregate comparing values across MULTIPLE rows"
+    ],
+    "correctIndex": 3,
+    "explanation": "GREATEST() takes multiple arguments and evaluates horizontally across a single tuple. MAX() is a vertical aggregate function that consumes a single column across multiple rows. [Context: E-Commerce Checkout Funnels]"
+  },
+  {
+    "id": "mcq_minmax_56",
+    "keyword": "MIN & MAX",
+    "tag": "🏛️ Corporate Edge",
+    "question": "[MIN & MAX #56 &bull; Telecom Billing & Data Streams] When evaluating MIN(created_at) and MAX(created_at) on a large partitioned transaction table, what index design delivers instantaneous O(1) response time? (Application Scenario 2)",
+    "options": [
+      "A HASH index on created_at",
+      "A B-Tree index on (created_at) allows the engine to jump directly to the first and last leaf pages (Index Full Scan or Loose Index Scan)",
+      "A GIN index on created_at",
+      "No index can optimize MIN/MAX"
+    ],
+    "correctIndex": 1,
+    "explanation": "B-Tree indexes maintain sorted leaf nodes. MIN() is resolved by traversing to the leftmost leaf, and MAX() to the rightmost leaf, taking O(log N) or O(1) in the optimizer. [Context: Telecom Billing & Data Streams]"
+  },
+  {
+    "id": "mcq_minmax_57",
+    "keyword": "MIN & MAX",
+    "tag": "💡 Lead Architect",
+    "question": "[MIN & MAX #57 &bull; AdTech Real-Time Bidding] What does SELECT MIN(col), MAX(col) return when all rows in the table have col = NULL? (Application Scenario 2)",
+    "options": [
+      "MIN = 0, MAX = 0",
+      "MIN = '', MAX = ''",
+      "Error: ValueNotFoundException",
+      "MIN = NULL, MAX = NULL"
+    ],
+    "correctIndex": 3,
+    "explanation": "Both MIN and MAX discard NULLs. If all examined rows are NULL, both functions evaluate to NULL. [Context: AdTech Real-Time Bidding]"
+  },
+  {
+    "id": "mcq_minmax_58",
+    "keyword": "MIN & MAX",
+    "tag": "⚡ Gotcha Trap",
+    "question": "[MIN & MAX #58 &bull; Cybersecurity Audit Logs] How does MIN(column_name) compare string values across collations like utf8mb4_general_ci versus utf8mb4_bin? (Application Scenario 2)",
+    "options": [
+      "Collations have zero impact on string ordering",
+      "utf8mb4_general_ci performs case-insensitive comparison ('a' == 'A'), while utf8mb4_bin orders strictly by binary byte values ('A' < 'a')",
+      "utf8mb4_bin reverses alphabetical ordering",
+      "MIN only works on numbers and dates, not strings"
+    ],
+    "correctIndex": 1,
+    "explanation": "In case-insensitive collations, 'a' and 'A' tie. In binary collations, uppercase ASCII (65-90) precedes lowercase ASCII (97-122), so 'Zebra' < 'apple'. [Context: Cybersecurity Audit Logs]"
+  },
+  {
+    "id": "mcq_minmax_59",
+    "keyword": "MIN & MAX",
+    "tag": "🎯 Core Concept",
+    "question": "[MIN & MAX #59 &bull; Fintech & Ledger Systems] Which query correctly finds the latest order for each customer without using window functions? (Application Scenario 2)",
+    "options": [
+      "SELECT customer_id, order_date FROM orders WHERE order_date = MAX(order_date)",
+      "SELECT customer_id, MIN(order_date) FROM orders",
+      "SELECT customer_id, order_date FROM orders GROUP BY customer_id",
+      "SELECT customer_id, MAX(order_date) FROM orders GROUP BY customer_id"
+    ],
+    "correctIndex": 3,
+    "explanation": "GROUP BY customer_id combined with MAX(order_date) groups orders per customer and extracts the highest (most recent) timestamp. [Context: Fintech & Ledger Systems]"
+  },
+  {
+    "id": "mcq_minmax_60",
+    "keyword": "MIN & MAX",
+    "tag": "🏛️ Corporate Edge",
+    "question": "[MIN & MAX #60 &bull; SaaS Subscription Billing] What is the difference between GREATEST(a, b, c) and MAX(col)? (Application Scenario 2)",
+    "options": [
+      "GREATEST is standard ANSI SQL, whereas MAX is a proprietary MySQL extension",
+      "GREATEST is a scalar function comparing values across columns in the SAME row; MAX is an aggregate comparing values across MULTIPLE rows",
+      "MAX works on numbers while GREATEST only works on dates",
+      "There is no difference"
+    ],
+    "correctIndex": 1,
+    "explanation": "GREATEST() takes multiple arguments and evaluates horizontally across a single tuple. MAX() is a vertical aggregate function that consumes a single column across multiple rows. [Context: SaaS Subscription Billing]"
+  },
+  {
+    "id": "mcq_minmax_61",
+    "keyword": "MIN & MAX",
+    "tag": "💡 Lead Architect",
+    "question": "[MIN & MAX #61 &bull; Global Supply Chain & Logistics] When evaluating MIN(created_at) and MAX(created_at) on a large partitioned transaction table, what index design delivers instantaneous O(1) response time? (Application Scenario 3)",
+    "options": [
+      "A HASH index on created_at",
+      "A GIN index on created_at",
+      "No index can optimize MIN/MAX",
+      "A B-Tree index on (created_at) allows the engine to jump directly to the first and last leaf pages (Index Full Scan or Loose Index Scan)"
+    ],
+    "correctIndex": 3,
+    "explanation": "B-Tree indexes maintain sorted leaf nodes. MIN() is resolved by traversing to the leftmost leaf, and MAX() to the rightmost leaf, taking O(log N) or O(1) in the optimizer. [Context: Global Supply Chain & Logistics]"
+  },
+  {
+    "id": "mcq_minmax_62",
+    "keyword": "MIN & MAX",
+    "tag": "⚡ Gotcha Trap",
+    "question": "[MIN & MAX #62 &bull; Healthcare Patient Records] What does SELECT MIN(col), MAX(col) return when all rows in the table have col = NULL? (Application Scenario 3)",
+    "options": [
+      "MIN = 0, MAX = 0",
+      "MIN = NULL, MAX = NULL",
+      "MIN = '', MAX = ''",
+      "Error: ValueNotFoundException"
+    ],
+    "correctIndex": 1,
+    "explanation": "Both MIN and MAX discard NULLs. If all examined rows are NULL, both functions evaluate to NULL. [Context: Healthcare Patient Records]"
+  },
+  {
+    "id": "mcq_minmax_63",
+    "keyword": "MIN & MAX",
+    "tag": "🎯 Core Concept",
+    "question": "[MIN & MAX #63 &bull; E-Commerce Checkout Funnels] How does MIN(column_name) compare string values across collations like utf8mb4_general_ci versus utf8mb4_bin? (Application Scenario 3)",
+    "options": [
+      "Collations have zero impact on string ordering",
+      "utf8mb4_bin reverses alphabetical ordering",
+      "MIN only works on numbers and dates, not strings",
+      "utf8mb4_general_ci performs case-insensitive comparison ('a' == 'A'), while utf8mb4_bin orders strictly by binary byte values ('A' < 'a')"
+    ],
+    "correctIndex": 3,
+    "explanation": "In case-insensitive collations, 'a' and 'A' tie. In binary collations, uppercase ASCII (65-90) precedes lowercase ASCII (97-122), so 'Zebra' < 'apple'. [Context: E-Commerce Checkout Funnels]"
+  },
+  {
+    "id": "mcq_minmax_64",
+    "keyword": "MIN & MAX",
+    "tag": "🏛️ Corporate Edge",
+    "question": "[MIN & MAX #64 &bull; Telecom Billing & Data Streams] Which query correctly finds the latest order for each customer without using window functions? (Application Scenario 3)",
+    "options": [
+      "SELECT customer_id, order_date FROM orders WHERE order_date = MAX(order_date)",
+      "SELECT customer_id, MAX(order_date) FROM orders GROUP BY customer_id",
+      "SELECT customer_id, MIN(order_date) FROM orders",
+      "SELECT customer_id, order_date FROM orders GROUP BY customer_id"
+    ],
+    "correctIndex": 1,
+    "explanation": "GROUP BY customer_id combined with MAX(order_date) groups orders per customer and extracts the highest (most recent) timestamp. [Context: Telecom Billing & Data Streams]"
+  },
+  {
+    "id": "mcq_minmax_65",
+    "keyword": "MIN & MAX",
+    "tag": "💡 Lead Architect",
+    "question": "[MIN & MAX #65 &bull; AdTech Real-Time Bidding] What is the difference between GREATEST(a, b, c) and MAX(col)? (Application Scenario 3)",
+    "options": [
+      "GREATEST is standard ANSI SQL, whereas MAX is a proprietary MySQL extension",
+      "MAX works on numbers while GREATEST only works on dates",
+      "There is no difference",
+      "GREATEST is a scalar function comparing values across columns in the SAME row; MAX is an aggregate comparing values across MULTIPLE rows"
+    ],
+    "correctIndex": 3,
+    "explanation": "GREATEST() takes multiple arguments and evaluates horizontally across a single tuple. MAX() is a vertical aggregate function that consumes a single column across multiple rows. [Context: AdTech Real-Time Bidding]"
+  },
+  {
+    "id": "mcq_minmax_66",
+    "keyword": "MIN & MAX",
+    "tag": "⚡ Gotcha Trap",
+    "question": "[MIN & MAX #66 &bull; Cybersecurity Audit Logs] When evaluating MIN(created_at) and MAX(created_at) on a large partitioned transaction table, what index design delivers instantaneous O(1) response time? (Application Scenario 4)",
+    "options": [
+      "A HASH index on created_at",
+      "A B-Tree index on (created_at) allows the engine to jump directly to the first and last leaf pages (Index Full Scan or Loose Index Scan)",
+      "A GIN index on created_at",
+      "No index can optimize MIN/MAX"
+    ],
+    "correctIndex": 1,
+    "explanation": "B-Tree indexes maintain sorted leaf nodes. MIN() is resolved by traversing to the leftmost leaf, and MAX() to the rightmost leaf, taking O(log N) or O(1) in the optimizer. [Context: Cybersecurity Audit Logs]"
+  },
+  {
+    "id": "mcq_minmax_67",
+    "keyword": "MIN & MAX",
+    "tag": "🎯 Core Concept",
+    "question": "[MIN & MAX #67 &bull; Fintech & Ledger Systems] What does SELECT MIN(col), MAX(col) return when all rows in the table have col = NULL? (Application Scenario 4)",
+    "options": [
+      "MIN = 0, MAX = 0",
+      "MIN = '', MAX = ''",
+      "Error: ValueNotFoundException",
+      "MIN = NULL, MAX = NULL"
+    ],
+    "correctIndex": 3,
+    "explanation": "Both MIN and MAX discard NULLs. If all examined rows are NULL, both functions evaluate to NULL. [Context: Fintech & Ledger Systems]"
+  },
+  {
+    "id": "mcq_minmax_68",
+    "keyword": "MIN & MAX",
+    "tag": "🏛️ Corporate Edge",
+    "question": "[MIN & MAX #68 &bull; SaaS Subscription Billing] How does MIN(column_name) compare string values across collations like utf8mb4_general_ci versus utf8mb4_bin? (Application Scenario 4)",
+    "options": [
+      "Collations have zero impact on string ordering",
+      "utf8mb4_general_ci performs case-insensitive comparison ('a' == 'A'), while utf8mb4_bin orders strictly by binary byte values ('A' < 'a')",
+      "utf8mb4_bin reverses alphabetical ordering",
+      "MIN only works on numbers and dates, not strings"
+    ],
+    "correctIndex": 1,
+    "explanation": "In case-insensitive collations, 'a' and 'A' tie. In binary collations, uppercase ASCII (65-90) precedes lowercase ASCII (97-122), so 'Zebra' < 'apple'. [Context: SaaS Subscription Billing]"
+  },
+  {
+    "id": "mcq_minmax_69",
+    "keyword": "MIN & MAX",
+    "tag": "💡 Lead Architect",
+    "question": "[MIN & MAX #69 &bull; Global Supply Chain & Logistics] Which query correctly finds the latest order for each customer without using window functions? (Application Scenario 4)",
+    "options": [
+      "SELECT customer_id, order_date FROM orders WHERE order_date = MAX(order_date)",
+      "SELECT customer_id, MIN(order_date) FROM orders",
+      "SELECT customer_id, order_date FROM orders GROUP BY customer_id",
+      "SELECT customer_id, MAX(order_date) FROM orders GROUP BY customer_id"
+    ],
+    "correctIndex": 3,
+    "explanation": "GROUP BY customer_id combined with MAX(order_date) groups orders per customer and extracts the highest (most recent) timestamp. [Context: Global Supply Chain & Logistics]"
+  },
+  {
+    "id": "mcq_minmax_70",
+    "keyword": "MIN & MAX",
+    "tag": "⚡ Gotcha Trap",
+    "question": "[MIN & MAX #70 &bull; Healthcare Patient Records] What is the difference between GREATEST(a, b, c) and MAX(col)? (Application Scenario 4)",
+    "options": [
+      "GREATEST is standard ANSI SQL, whereas MAX is a proprietary MySQL extension",
+      "GREATEST is a scalar function comparing values across columns in the SAME row; MAX is an aggregate comparing values across MULTIPLE rows",
+      "MAX works on numbers while GREATEST only works on dates",
+      "There is no difference"
+    ],
+    "correctIndex": 1,
+    "explanation": "GREATEST() takes multiple arguments and evaluates horizontally across a single tuple. MAX() is a vertical aggregate function that consumes a single column across multiple rows. [Context: Healthcare Patient Records]"
+  },
+  {
+    "id": "mcq_minmax_71",
+    "keyword": "MIN & MAX",
+    "tag": "🎯 Core Concept",
+    "question": "[MIN & MAX #71 &bull; E-Commerce Checkout Funnels] When evaluating MIN(created_at) and MAX(created_at) on a large partitioned transaction table, what index design delivers instantaneous O(1) response time? (Application Scenario 5)",
+    "options": [
+      "A HASH index on created_at",
+      "A GIN index on created_at",
+      "No index can optimize MIN/MAX",
+      "A B-Tree index on (created_at) allows the engine to jump directly to the first and last leaf pages (Index Full Scan or Loose Index Scan)"
+    ],
+    "correctIndex": 3,
+    "explanation": "B-Tree indexes maintain sorted leaf nodes. MIN() is resolved by traversing to the leftmost leaf, and MAX() to the rightmost leaf, taking O(log N) or O(1) in the optimizer. [Context: E-Commerce Checkout Funnels]"
+  },
+  {
+    "id": "mcq_minmax_72",
+    "keyword": "MIN & MAX",
+    "tag": "🏛️ Corporate Edge",
+    "question": "[MIN & MAX #72 &bull; Telecom Billing & Data Streams] What does SELECT MIN(col), MAX(col) return when all rows in the table have col = NULL? (Application Scenario 5)",
+    "options": [
+      "MIN = 0, MAX = 0",
+      "MIN = NULL, MAX = NULL",
+      "MIN = '', MAX = ''",
+      "Error: ValueNotFoundException"
+    ],
+    "correctIndex": 1,
+    "explanation": "Both MIN and MAX discard NULLs. If all examined rows are NULL, both functions evaluate to NULL. [Context: Telecom Billing & Data Streams]"
+  },
+  {
+    "id": "mcq_minmax_73",
+    "keyword": "MIN & MAX",
+    "tag": "💡 Lead Architect",
+    "question": "[MIN & MAX #73 &bull; AdTech Real-Time Bidding] How does MIN(column_name) compare string values across collations like utf8mb4_general_ci versus utf8mb4_bin? (Application Scenario 5)",
+    "options": [
+      "Collations have zero impact on string ordering",
+      "utf8mb4_bin reverses alphabetical ordering",
+      "MIN only works on numbers and dates, not strings",
+      "utf8mb4_general_ci performs case-insensitive comparison ('a' == 'A'), while utf8mb4_bin orders strictly by binary byte values ('A' < 'a')"
+    ],
+    "correctIndex": 3,
+    "explanation": "In case-insensitive collations, 'a' and 'A' tie. In binary collations, uppercase ASCII (65-90) precedes lowercase ASCII (97-122), so 'Zebra' < 'apple'. [Context: AdTech Real-Time Bidding]"
+  },
+  {
+    "id": "mcq_minmax_74",
+    "keyword": "MIN & MAX",
+    "tag": "⚡ Gotcha Trap",
+    "question": "[MIN & MAX #74 &bull; Cybersecurity Audit Logs] Which query correctly finds the latest order for each customer without using window functions? (Application Scenario 5)",
+    "options": [
+      "SELECT customer_id, order_date FROM orders WHERE order_date = MAX(order_date)",
+      "SELECT customer_id, MAX(order_date) FROM orders GROUP BY customer_id",
+      "SELECT customer_id, MIN(order_date) FROM orders",
+      "SELECT customer_id, order_date FROM orders GROUP BY customer_id"
+    ],
+    "correctIndex": 1,
+    "explanation": "GROUP BY customer_id combined with MAX(order_date) groups orders per customer and extracts the highest (most recent) timestamp. [Context: Cybersecurity Audit Logs]"
+  },
+  {
+    "id": "mcq_minmax_75",
+    "keyword": "MIN & MAX",
+    "tag": "🎯 Core Concept",
+    "question": "[MIN & MAX #75 &bull; Fintech & Ledger Systems] What is the difference between GREATEST(a, b, c) and MAX(col)? (Application Scenario 5)",
+    "options": [
+      "GREATEST is standard ANSI SQL, whereas MAX is a proprietary MySQL extension",
+      "MAX works on numbers while GREATEST only works on dates",
+      "There is no difference",
+      "GREATEST is a scalar function comparing values across columns in the SAME row; MAX is an aggregate comparing values across MULTIPLE rows"
+    ],
+    "correctIndex": 3,
+    "explanation": "GREATEST() takes multiple arguments and evaluates horizontally across a single tuple. MAX() is a vertical aggregate function that consumes a single column across multiple rows. [Context: Fintech & Ledger Systems]"
+  },
+  {
+    "id": "mcq_minmax_76",
+    "keyword": "MIN & MAX",
+    "tag": "🏛️ Corporate Edge",
+    "question": "[MIN & MAX #76 &bull; SaaS Subscription Billing] When evaluating MIN(created_at) and MAX(created_at) on a large partitioned transaction table, what index design delivers instantaneous O(1) response time? (Application Scenario 6)",
+    "options": [
+      "A HASH index on created_at",
+      "A B-Tree index on (created_at) allows the engine to jump directly to the first and last leaf pages (Index Full Scan or Loose Index Scan)",
+      "A GIN index on created_at",
+      "No index can optimize MIN/MAX"
+    ],
+    "correctIndex": 1,
+    "explanation": "B-Tree indexes maintain sorted leaf nodes. MIN() is resolved by traversing to the leftmost leaf, and MAX() to the rightmost leaf, taking O(log N) or O(1) in the optimizer. [Context: SaaS Subscription Billing]"
+  },
+  {
+    "id": "mcq_minmax_77",
+    "keyword": "MIN & MAX",
+    "tag": "💡 Lead Architect",
+    "question": "[MIN & MAX #77 &bull; Global Supply Chain & Logistics] What does SELECT MIN(col), MAX(col) return when all rows in the table have col = NULL? (Application Scenario 6)",
+    "options": [
+      "MIN = 0, MAX = 0",
+      "MIN = '', MAX = ''",
+      "Error: ValueNotFoundException",
+      "MIN = NULL, MAX = NULL"
+    ],
+    "correctIndex": 3,
+    "explanation": "Both MIN and MAX discard NULLs. If all examined rows are NULL, both functions evaluate to NULL. [Context: Global Supply Chain & Logistics]"
+  },
+  {
+    "id": "mcq_minmax_78",
+    "keyword": "MIN & MAX",
+    "tag": "⚡ Gotcha Trap",
+    "question": "[MIN & MAX #78 &bull; Healthcare Patient Records] How does MIN(column_name) compare string values across collations like utf8mb4_general_ci versus utf8mb4_bin? (Application Scenario 6)",
+    "options": [
+      "Collations have zero impact on string ordering",
+      "utf8mb4_general_ci performs case-insensitive comparison ('a' == 'A'), while utf8mb4_bin orders strictly by binary byte values ('A' < 'a')",
+      "utf8mb4_bin reverses alphabetical ordering",
+      "MIN only works on numbers and dates, not strings"
+    ],
+    "correctIndex": 1,
+    "explanation": "In case-insensitive collations, 'a' and 'A' tie. In binary collations, uppercase ASCII (65-90) precedes lowercase ASCII (97-122), so 'Zebra' < 'apple'. [Context: Healthcare Patient Records]"
+  },
+  {
+    "id": "mcq_minmax_79",
+    "keyword": "MIN & MAX",
+    "tag": "🎯 Core Concept",
+    "question": "[MIN & MAX #79 &bull; E-Commerce Checkout Funnels] Which query correctly finds the latest order for each customer without using window functions? (Application Scenario 6)",
+    "options": [
+      "SELECT customer_id, order_date FROM orders WHERE order_date = MAX(order_date)",
+      "SELECT customer_id, MIN(order_date) FROM orders",
+      "SELECT customer_id, order_date FROM orders GROUP BY customer_id",
+      "SELECT customer_id, MAX(order_date) FROM orders GROUP BY customer_id"
+    ],
+    "correctIndex": 3,
+    "explanation": "GROUP BY customer_id combined with MAX(order_date) groups orders per customer and extracts the highest (most recent) timestamp. [Context: E-Commerce Checkout Funnels]"
+  },
+  {
+    "id": "mcq_minmax_80",
+    "keyword": "MIN & MAX",
+    "tag": "🏛️ Corporate Edge",
+    "question": "[MIN & MAX #80 &bull; Telecom Billing & Data Streams] What is the difference between GREATEST(a, b, c) and MAX(col)? (Application Scenario 6)",
+    "options": [
+      "GREATEST is standard ANSI SQL, whereas MAX is a proprietary MySQL extension",
+      "GREATEST is a scalar function comparing values across columns in the SAME row; MAX is an aggregate comparing values across MULTIPLE rows",
+      "MAX works on numbers while GREATEST only works on dates",
+      "There is no difference"
+    ],
+    "correctIndex": 1,
+    "explanation": "GREATEST() takes multiple arguments and evaluates horizontally across a single tuple. MAX() is a vertical aggregate function that consumes a single column across multiple rows. [Context: Telecom Billing & Data Streams]"
+  },
+  {
+    "id": "mcq_minmax_81",
+    "keyword": "MIN & MAX",
+    "tag": "💡 Lead Architect",
+    "question": "[MIN & MAX #81 &bull; AdTech Real-Time Bidding] When evaluating MIN(created_at) and MAX(created_at) on a large partitioned transaction table, what index design delivers instantaneous O(1) response time? (Application Scenario 7)",
+    "options": [
+      "A HASH index on created_at",
+      "A GIN index on created_at",
+      "No index can optimize MIN/MAX",
+      "A B-Tree index on (created_at) allows the engine to jump directly to the first and last leaf pages (Index Full Scan or Loose Index Scan)"
+    ],
+    "correctIndex": 3,
+    "explanation": "B-Tree indexes maintain sorted leaf nodes. MIN() is resolved by traversing to the leftmost leaf, and MAX() to the rightmost leaf, taking O(log N) or O(1) in the optimizer. [Context: AdTech Real-Time Bidding]"
+  },
+  {
+    "id": "mcq_minmax_82",
+    "keyword": "MIN & MAX",
+    "tag": "⚡ Gotcha Trap",
+    "question": "[MIN & MAX #82 &bull; Cybersecurity Audit Logs] What does SELECT MIN(col), MAX(col) return when all rows in the table have col = NULL? (Application Scenario 7)",
+    "options": [
+      "MIN = 0, MAX = 0",
+      "MIN = NULL, MAX = NULL",
+      "MIN = '', MAX = ''",
+      "Error: ValueNotFoundException"
+    ],
+    "correctIndex": 1,
+    "explanation": "Both MIN and MAX discard NULLs. If all examined rows are NULL, both functions evaluate to NULL. [Context: Cybersecurity Audit Logs]"
+  },
+  {
+    "id": "mcq_minmax_83",
+    "keyword": "MIN & MAX",
+    "tag": "🎯 Core Concept",
+    "question": "[MIN & MAX #83 &bull; Fintech & Ledger Systems] How does MIN(column_name) compare string values across collations like utf8mb4_general_ci versus utf8mb4_bin? (Application Scenario 7)",
+    "options": [
+      "Collations have zero impact on string ordering",
+      "utf8mb4_bin reverses alphabetical ordering",
+      "MIN only works on numbers and dates, not strings",
+      "utf8mb4_general_ci performs case-insensitive comparison ('a' == 'A'), while utf8mb4_bin orders strictly by binary byte values ('A' < 'a')"
+    ],
+    "correctIndex": 3,
+    "explanation": "In case-insensitive collations, 'a' and 'A' tie. In binary collations, uppercase ASCII (65-90) precedes lowercase ASCII (97-122), so 'Zebra' < 'apple'. [Context: Fintech & Ledger Systems]"
+  },
+  {
+    "id": "mcq_minmax_84",
+    "keyword": "MIN & MAX",
+    "tag": "🏛️ Corporate Edge",
+    "question": "[MIN & MAX #84 &bull; SaaS Subscription Billing] Which query correctly finds the latest order for each customer without using window functions? (Application Scenario 7)",
+    "options": [
+      "SELECT customer_id, order_date FROM orders WHERE order_date = MAX(order_date)",
+      "SELECT customer_id, MAX(order_date) FROM orders GROUP BY customer_id",
+      "SELECT customer_id, MIN(order_date) FROM orders",
+      "SELECT customer_id, order_date FROM orders GROUP BY customer_id"
+    ],
+    "correctIndex": 1,
+    "explanation": "GROUP BY customer_id combined with MAX(order_date) groups orders per customer and extracts the highest (most recent) timestamp. [Context: SaaS Subscription Billing]"
+  },
+  {
+    "id": "mcq_minmax_85",
+    "keyword": "MIN & MAX",
+    "tag": "💡 Lead Architect",
+    "question": "[MIN & MAX #85 &bull; Global Supply Chain & Logistics] What is the difference between GREATEST(a, b, c) and MAX(col)? (Application Scenario 7)",
+    "options": [
+      "GREATEST is standard ANSI SQL, whereas MAX is a proprietary MySQL extension",
+      "MAX works on numbers while GREATEST only works on dates",
+      "There is no difference",
+      "GREATEST is a scalar function comparing values across columns in the SAME row; MAX is an aggregate comparing values across MULTIPLE rows"
+    ],
+    "correctIndex": 3,
+    "explanation": "GREATEST() takes multiple arguments and evaluates horizontally across a single tuple. MAX() is a vertical aggregate function that consumes a single column across multiple rows. [Context: Global Supply Chain & Logistics]"
+  },
+  {
+    "id": "mcq_minmax_86",
+    "keyword": "MIN & MAX",
+    "tag": "⚡ Gotcha Trap",
+    "question": "[MIN & MAX #86 &bull; Healthcare Patient Records] When evaluating MIN(created_at) and MAX(created_at) on a large partitioned transaction table, what index design delivers instantaneous O(1) response time? (Application Scenario 8)",
+    "options": [
+      "A HASH index on created_at",
+      "A B-Tree index on (created_at) allows the engine to jump directly to the first and last leaf pages (Index Full Scan or Loose Index Scan)",
+      "A GIN index on created_at",
+      "No index can optimize MIN/MAX"
+    ],
+    "correctIndex": 1,
+    "explanation": "B-Tree indexes maintain sorted leaf nodes. MIN() is resolved by traversing to the leftmost leaf, and MAX() to the rightmost leaf, taking O(log N) or O(1) in the optimizer. [Context: Healthcare Patient Records]"
+  },
+  {
+    "id": "mcq_minmax_87",
+    "keyword": "MIN & MAX",
+    "tag": "🎯 Core Concept",
+    "question": "[MIN & MAX #87 &bull; E-Commerce Checkout Funnels] What does SELECT MIN(col), MAX(col) return when all rows in the table have col = NULL? (Application Scenario 8)",
+    "options": [
+      "MIN = 0, MAX = 0",
+      "MIN = '', MAX = ''",
+      "Error: ValueNotFoundException",
+      "MIN = NULL, MAX = NULL"
+    ],
+    "correctIndex": 3,
+    "explanation": "Both MIN and MAX discard NULLs. If all examined rows are NULL, both functions evaluate to NULL. [Context: E-Commerce Checkout Funnels]"
+  },
+  {
+    "id": "mcq_minmax_88",
+    "keyword": "MIN & MAX",
+    "tag": "🏛️ Corporate Edge",
+    "question": "[MIN & MAX #88 &bull; Telecom Billing & Data Streams] How does MIN(column_name) compare string values across collations like utf8mb4_general_ci versus utf8mb4_bin? (Application Scenario 8)",
+    "options": [
+      "Collations have zero impact on string ordering",
+      "utf8mb4_general_ci performs case-insensitive comparison ('a' == 'A'), while utf8mb4_bin orders strictly by binary byte values ('A' < 'a')",
+      "utf8mb4_bin reverses alphabetical ordering",
+      "MIN only works on numbers and dates, not strings"
+    ],
+    "correctIndex": 1,
+    "explanation": "In case-insensitive collations, 'a' and 'A' tie. In binary collations, uppercase ASCII (65-90) precedes lowercase ASCII (97-122), so 'Zebra' < 'apple'. [Context: Telecom Billing & Data Streams]"
+  },
+  {
+    "id": "mcq_minmax_89",
+    "keyword": "MIN & MAX",
+    "tag": "💡 Lead Architect",
+    "question": "[MIN & MAX #89 &bull; AdTech Real-Time Bidding] Which query correctly finds the latest order for each customer without using window functions? (Application Scenario 8)",
+    "options": [
+      "SELECT customer_id, order_date FROM orders WHERE order_date = MAX(order_date)",
+      "SELECT customer_id, MIN(order_date) FROM orders",
+      "SELECT customer_id, order_date FROM orders GROUP BY customer_id",
+      "SELECT customer_id, MAX(order_date) FROM orders GROUP BY customer_id"
+    ],
+    "correctIndex": 3,
+    "explanation": "GROUP BY customer_id combined with MAX(order_date) groups orders per customer and extracts the highest (most recent) timestamp. [Context: AdTech Real-Time Bidding]"
+  },
+  {
+    "id": "mcq_minmax_90",
+    "keyword": "MIN & MAX",
+    "tag": "⚡ Gotcha Trap",
+    "question": "[MIN & MAX #90 &bull; Cybersecurity Audit Logs] What is the difference between GREATEST(a, b, c) and MAX(col)? (Application Scenario 8)",
+    "options": [
+      "GREATEST is standard ANSI SQL, whereas MAX is a proprietary MySQL extension",
+      "GREATEST is a scalar function comparing values across columns in the SAME row; MAX is an aggregate comparing values across MULTIPLE rows",
+      "MAX works on numbers while GREATEST only works on dates",
+      "There is no difference"
+    ],
+    "correctIndex": 1,
+    "explanation": "GREATEST() takes multiple arguments and evaluates horizontally across a single tuple. MAX() is a vertical aggregate function that consumes a single column across multiple rows. [Context: Cybersecurity Audit Logs]"
+  },
+  {
+    "id": "mcq_minmax_91",
+    "keyword": "MIN & MAX",
+    "tag": "🎯 Core Concept",
+    "question": "[MIN & MAX #91 &bull; Fintech & Ledger Systems] When evaluating MIN(created_at) and MAX(created_at) on a large partitioned transaction table, what index design delivers instantaneous O(1) response time? (Application Scenario 9)",
+    "options": [
+      "A HASH index on created_at",
+      "A GIN index on created_at",
+      "No index can optimize MIN/MAX",
+      "A B-Tree index on (created_at) allows the engine to jump directly to the first and last leaf pages (Index Full Scan or Loose Index Scan)"
+    ],
+    "correctIndex": 3,
+    "explanation": "B-Tree indexes maintain sorted leaf nodes. MIN() is resolved by traversing to the leftmost leaf, and MAX() to the rightmost leaf, taking O(log N) or O(1) in the optimizer. [Context: Fintech & Ledger Systems]"
+  },
+  {
+    "id": "mcq_minmax_92",
+    "keyword": "MIN & MAX",
+    "tag": "🏛️ Corporate Edge",
+    "question": "[MIN & MAX #92 &bull; SaaS Subscription Billing] What does SELECT MIN(col), MAX(col) return when all rows in the table have col = NULL? (Application Scenario 9)",
+    "options": [
+      "MIN = 0, MAX = 0",
+      "MIN = NULL, MAX = NULL",
+      "MIN = '', MAX = ''",
+      "Error: ValueNotFoundException"
+    ],
+    "correctIndex": 1,
+    "explanation": "Both MIN and MAX discard NULLs. If all examined rows are NULL, both functions evaluate to NULL. [Context: SaaS Subscription Billing]"
+  },
+  {
+    "id": "mcq_minmax_93",
+    "keyword": "MIN & MAX",
+    "tag": "💡 Lead Architect",
+    "question": "[MIN & MAX #93 &bull; Global Supply Chain & Logistics] How does MIN(column_name) compare string values across collations like utf8mb4_general_ci versus utf8mb4_bin? (Application Scenario 9)",
+    "options": [
+      "Collations have zero impact on string ordering",
+      "utf8mb4_bin reverses alphabetical ordering",
+      "MIN only works on numbers and dates, not strings",
+      "utf8mb4_general_ci performs case-insensitive comparison ('a' == 'A'), while utf8mb4_bin orders strictly by binary byte values ('A' < 'a')"
+    ],
+    "correctIndex": 3,
+    "explanation": "In case-insensitive collations, 'a' and 'A' tie. In binary collations, uppercase ASCII (65-90) precedes lowercase ASCII (97-122), so 'Zebra' < 'apple'. [Context: Global Supply Chain & Logistics]"
+  },
+  {
+    "id": "mcq_minmax_94",
+    "keyword": "MIN & MAX",
+    "tag": "⚡ Gotcha Trap",
+    "question": "[MIN & MAX #94 &bull; Healthcare Patient Records] Which query correctly finds the latest order for each customer without using window functions? (Application Scenario 9)",
+    "options": [
+      "SELECT customer_id, order_date FROM orders WHERE order_date = MAX(order_date)",
+      "SELECT customer_id, MAX(order_date) FROM orders GROUP BY customer_id",
+      "SELECT customer_id, MIN(order_date) FROM orders",
+      "SELECT customer_id, order_date FROM orders GROUP BY customer_id"
+    ],
+    "correctIndex": 1,
+    "explanation": "GROUP BY customer_id combined with MAX(order_date) groups orders per customer and extracts the highest (most recent) timestamp. [Context: Healthcare Patient Records]"
+  },
+  {
+    "id": "mcq_minmax_95",
+    "keyword": "MIN & MAX",
+    "tag": "🎯 Core Concept",
+    "question": "[MIN & MAX #95 &bull; E-Commerce Checkout Funnels] What is the difference between GREATEST(a, b, c) and MAX(col)? (Application Scenario 9)",
+    "options": [
+      "GREATEST is standard ANSI SQL, whereas MAX is a proprietary MySQL extension",
+      "MAX works on numbers while GREATEST only works on dates",
+      "There is no difference",
+      "GREATEST is a scalar function comparing values across columns in the SAME row; MAX is an aggregate comparing values across MULTIPLE rows"
+    ],
+    "correctIndex": 3,
+    "explanation": "GREATEST() takes multiple arguments and evaluates horizontally across a single tuple. MAX() is a vertical aggregate function that consumes a single column across multiple rows. [Context: E-Commerce Checkout Funnels]"
+  },
+  {
+    "id": "mcq_minmax_96",
+    "keyword": "MIN & MAX",
+    "tag": "🏛️ Corporate Edge",
+    "question": "[MIN & MAX #96 &bull; Telecom Billing & Data Streams] When evaluating MIN(created_at) and MAX(created_at) on a large partitioned transaction table, what index design delivers instantaneous O(1) response time? (Application Scenario 10)",
+    "options": [
+      "A HASH index on created_at",
+      "A B-Tree index on (created_at) allows the engine to jump directly to the first and last leaf pages (Index Full Scan or Loose Index Scan)",
+      "A GIN index on created_at",
+      "No index can optimize MIN/MAX"
+    ],
+    "correctIndex": 1,
+    "explanation": "B-Tree indexes maintain sorted leaf nodes. MIN() is resolved by traversing to the leftmost leaf, and MAX() to the rightmost leaf, taking O(log N) or O(1) in the optimizer. [Context: Telecom Billing & Data Streams]"
+  },
+  {
+    "id": "mcq_minmax_97",
+    "keyword": "MIN & MAX",
+    "tag": "💡 Lead Architect",
+    "question": "[MIN & MAX #97 &bull; AdTech Real-Time Bidding] What does SELECT MIN(col), MAX(col) return when all rows in the table have col = NULL? (Application Scenario 10)",
+    "options": [
+      "MIN = 0, MAX = 0",
+      "MIN = '', MAX = ''",
+      "Error: ValueNotFoundException",
+      "MIN = NULL, MAX = NULL"
+    ],
+    "correctIndex": 3,
+    "explanation": "Both MIN and MAX discard NULLs. If all examined rows are NULL, both functions evaluate to NULL. [Context: AdTech Real-Time Bidding]"
+  },
+  {
+    "id": "mcq_minmax_98",
+    "keyword": "MIN & MAX",
+    "tag": "⚡ Gotcha Trap",
+    "question": "[MIN & MAX #98 &bull; Cybersecurity Audit Logs] How does MIN(column_name) compare string values across collations like utf8mb4_general_ci versus utf8mb4_bin? (Application Scenario 10)",
+    "options": [
+      "Collations have zero impact on string ordering",
+      "utf8mb4_general_ci performs case-insensitive comparison ('a' == 'A'), while utf8mb4_bin orders strictly by binary byte values ('A' < 'a')",
+      "utf8mb4_bin reverses alphabetical ordering",
+      "MIN only works on numbers and dates, not strings"
+    ],
+    "correctIndex": 1,
+    "explanation": "In case-insensitive collations, 'a' and 'A' tie. In binary collations, uppercase ASCII (65-90) precedes lowercase ASCII (97-122), so 'Zebra' < 'apple'. [Context: Cybersecurity Audit Logs]"
+  },
+  {
+    "id": "mcq_minmax_99",
+    "keyword": "MIN & MAX",
+    "tag": "🎯 Core Concept",
+    "question": "[MIN & MAX #99 &bull; Fintech & Ledger Systems] Which query correctly finds the latest order for each customer without using window functions? (Application Scenario 10)",
+    "options": [
+      "SELECT customer_id, order_date FROM orders WHERE order_date = MAX(order_date)",
+      "SELECT customer_id, MIN(order_date) FROM orders",
+      "SELECT customer_id, order_date FROM orders GROUP BY customer_id",
+      "SELECT customer_id, MAX(order_date) FROM orders GROUP BY customer_id"
+    ],
+    "correctIndex": 3,
+    "explanation": "GROUP BY customer_id combined with MAX(order_date) groups orders per customer and extracts the highest (most recent) timestamp. [Context: Fintech & Ledger Systems]"
+  },
+  {
+    "id": "mcq_minmax_100",
+    "keyword": "MIN & MAX",
+    "tag": "🏛️ Corporate Edge",
+    "question": "[MIN & MAX #100 &bull; SaaS Subscription Billing] What is the difference between GREATEST(a, b, c) and MAX(col)? (Application Scenario 10)",
+    "options": [
+      "GREATEST is standard ANSI SQL, whereas MAX is a proprietary MySQL extension",
+      "GREATEST is a scalar function comparing values across columns in the SAME row; MAX is an aggregate comparing values across MULTIPLE rows",
+      "MAX works on numbers while GREATEST only works on dates",
+      "There is no difference"
+    ],
+    "correctIndex": 1,
+    "explanation": "GREATEST() takes multiple arguments and evaluates horizontally across a single tuple. MAX() is a vertical aggregate function that consumes a single column across multiple rows. [Context: SaaS Subscription Billing]"
   },
   {
     "id": "mcq_groupby_1",
@@ -3505,6 +6306,706 @@ window.MCQS_VAULT_500 = [
     "explanation": "Expressions like YEAR(hire_date) or CASE WHEN statements are legal in GROUP BY clauses across modern SQL engines."
   },
   {
+    "id": "mcq_groupby_51",
+    "keyword": "GROUP BY",
+    "tag": "🎯 Core Concept",
+    "question": "[GROUP BY #51 &bull; Fintech & Ledger Systems] In MySQL with ONLY_FULL_GROUP_BY enabled, why does 'SELECT dept_id, name, SUM(salary) FROM emp GROUP BY dept_id;' throw an error? (Application Scenario 1)",
+    "options": [
+      "MySQL does not support SUM() inside a GROUP BY query",
+      "dept_id must be a string rather than an integer",
+      "The query must include an ORDER BY clause",
+      "'name' is non-aggregated and not functionally dependent on dept_id, creating ambiguity about which employee's name to return"
+    ],
+    "correctIndex": 3,
+    "explanation": "ONLY_FULL_GROUP_BY complies with ANSI SQL: every non-aggregated column in the SELECT list must appear in the GROUP BY clause, or be functionally dependent on the primary key in GROUP BY. [Context: Fintech & Ledger Systems]"
+  },
+  {
+    "id": "mcq_groupby_52",
+    "keyword": "GROUP BY",
+    "tag": "🏛️ Corporate Edge",
+    "question": "[GROUP BY #52 &bull; SaaS Subscription Billing] How does the physical SQL engine process GROUP BY during query execution? (Application Scenario 1)",
+    "options": [
+      "It executes a nested loop SELECT query for every distinct value in the database",
+      "It hash-partitions or sorts rows by the grouping keys, accumulating running aggregate states in an in-memory hash table or sort buffer",
+      "It evaluates GROUP BY after LIMIT",
+      "It converts the table into a CSV file before grouping"
+    ],
+    "correctIndex": 1,
+    "explanation": "Engines utilize Hash Aggregation (building an in-memory hash map of groups) or Stream Aggregation (scanning pre-sorted data) to compute aggregates in O(N) time. [Context: SaaS Subscription Billing]"
+  },
+  {
+    "id": "mcq_groupby_53",
+    "keyword": "GROUP BY",
+    "tag": "💡 Lead Architect",
+    "question": "[GROUP BY #53 &bull; Global Supply Chain & Logistics] What is the effect of GROUP BY ROLLUP(year, quarter, month)? (Application Scenario 1)",
+    "options": [
+      "Randomly sorts the groupings",
+      "Limits the output to 3 rows",
+      "Removes all NULL values from the dataset",
+      "Generates hierarchical subtotals: by (year, quarter, month), by (year, quarter), by (year), and a grand total ()"
+    ],
+    "correctIndex": 3,
+    "explanation": "ROLLUP creates progressive hierarchical subtotals from right to left, finishing with a grand total row where grouped columns are NULL. [Context: Global Supply Chain & Logistics]"
+  },
+  {
+    "id": "mcq_groupby_54",
+    "keyword": "GROUP BY",
+    "tag": "⚡ Gotcha Trap",
+    "question": "[GROUP BY #54 &bull; Healthcare Patient Records] When grouping by an expression like 'GROUP BY DATE(created_at)', why might an index on created_at fail to be used for index grouping? (Application Scenario 1)",
+    "options": [
+      "DATE() converts the column into a temporary BLOB",
+      "Wrapping a column in a function prevents index range scans unless an expression index / functional index is defined",
+      "MySQL forbids functions in GROUP BY",
+      "Dates cannot be indexed in relational databases"
+    ],
+    "correctIndex": 1,
+    "explanation": "Applying functions to indexed columns obscures the sorted index order. To utilize an index, either use a generated column with a secondary index or range filter on timestamps. [Context: Healthcare Patient Records]"
+  },
+  {
+    "id": "mcq_groupby_55",
+    "keyword": "GROUP BY",
+    "tag": "🎯 Core Concept",
+    "question": "[GROUP BY #55 &bull; E-Commerce Checkout Funnels] How are NULL values treated when present in the column specified in a GROUP BY clause? (Application Scenario 1)",
+    "options": [
+      "Every NULL forms its own distinct independent group",
+      "NULLs are automatically dropped before grouping",
+      "The engine throws a NullPointerException",
+      "All NULLs are gathered together into a single collective group"
+    ],
+    "correctIndex": 3,
+    "explanation": "Under ANSI SQL rules, all NULL values in a GROUP BY column are treated as mutually equal for grouping purposes and merged into a single bucket. [Context: E-Commerce Checkout Funnels]"
+  },
+  {
+    "id": "mcq_groupby_56",
+    "keyword": "GROUP BY",
+    "tag": "🏛️ Corporate Edge",
+    "question": "[GROUP BY #56 &bull; Telecom Billing & Data Streams] In MySQL with ONLY_FULL_GROUP_BY enabled, why does 'SELECT dept_id, name, SUM(salary) FROM emp GROUP BY dept_id;' throw an error? (Application Scenario 2)",
+    "options": [
+      "MySQL does not support SUM() inside a GROUP BY query",
+      "'name' is non-aggregated and not functionally dependent on dept_id, creating ambiguity about which employee's name to return",
+      "dept_id must be a string rather than an integer",
+      "The query must include an ORDER BY clause"
+    ],
+    "correctIndex": 1,
+    "explanation": "ONLY_FULL_GROUP_BY complies with ANSI SQL: every non-aggregated column in the SELECT list must appear in the GROUP BY clause, or be functionally dependent on the primary key in GROUP BY. [Context: Telecom Billing & Data Streams]"
+  },
+  {
+    "id": "mcq_groupby_57",
+    "keyword": "GROUP BY",
+    "tag": "💡 Lead Architect",
+    "question": "[GROUP BY #57 &bull; AdTech Real-Time Bidding] How does the physical SQL engine process GROUP BY during query execution? (Application Scenario 2)",
+    "options": [
+      "It executes a nested loop SELECT query for every distinct value in the database",
+      "It evaluates GROUP BY after LIMIT",
+      "It converts the table into a CSV file before grouping",
+      "It hash-partitions or sorts rows by the grouping keys, accumulating running aggregate states in an in-memory hash table or sort buffer"
+    ],
+    "correctIndex": 3,
+    "explanation": "Engines utilize Hash Aggregation (building an in-memory hash map of groups) or Stream Aggregation (scanning pre-sorted data) to compute aggregates in O(N) time. [Context: AdTech Real-Time Bidding]"
+  },
+  {
+    "id": "mcq_groupby_58",
+    "keyword": "GROUP BY",
+    "tag": "⚡ Gotcha Trap",
+    "question": "[GROUP BY #58 &bull; Cybersecurity Audit Logs] What is the effect of GROUP BY ROLLUP(year, quarter, month)? (Application Scenario 2)",
+    "options": [
+      "Randomly sorts the groupings",
+      "Generates hierarchical subtotals: by (year, quarter, month), by (year, quarter), by (year), and a grand total ()",
+      "Limits the output to 3 rows",
+      "Removes all NULL values from the dataset"
+    ],
+    "correctIndex": 1,
+    "explanation": "ROLLUP creates progressive hierarchical subtotals from right to left, finishing with a grand total row where grouped columns are NULL. [Context: Cybersecurity Audit Logs]"
+  },
+  {
+    "id": "mcq_groupby_59",
+    "keyword": "GROUP BY",
+    "tag": "🎯 Core Concept",
+    "question": "[GROUP BY #59 &bull; Fintech & Ledger Systems] When grouping by an expression like 'GROUP BY DATE(created_at)', why might an index on created_at fail to be used for index grouping? (Application Scenario 2)",
+    "options": [
+      "DATE() converts the column into a temporary BLOB",
+      "MySQL forbids functions in GROUP BY",
+      "Dates cannot be indexed in relational databases",
+      "Wrapping a column in a function prevents index range scans unless an expression index / functional index is defined"
+    ],
+    "correctIndex": 3,
+    "explanation": "Applying functions to indexed columns obscures the sorted index order. To utilize an index, either use a generated column with a secondary index or range filter on timestamps. [Context: Fintech & Ledger Systems]"
+  },
+  {
+    "id": "mcq_groupby_60",
+    "keyword": "GROUP BY",
+    "tag": "🏛️ Corporate Edge",
+    "question": "[GROUP BY #60 &bull; SaaS Subscription Billing] How are NULL values treated when present in the column specified in a GROUP BY clause? (Application Scenario 2)",
+    "options": [
+      "Every NULL forms its own distinct independent group",
+      "All NULLs are gathered together into a single collective group",
+      "NULLs are automatically dropped before grouping",
+      "The engine throws a NullPointerException"
+    ],
+    "correctIndex": 1,
+    "explanation": "Under ANSI SQL rules, all NULL values in a GROUP BY column are treated as mutually equal for grouping purposes and merged into a single bucket. [Context: SaaS Subscription Billing]"
+  },
+  {
+    "id": "mcq_groupby_61",
+    "keyword": "GROUP BY",
+    "tag": "💡 Lead Architect",
+    "question": "[GROUP BY #61 &bull; Global Supply Chain & Logistics] In MySQL with ONLY_FULL_GROUP_BY enabled, why does 'SELECT dept_id, name, SUM(salary) FROM emp GROUP BY dept_id;' throw an error? (Application Scenario 3)",
+    "options": [
+      "MySQL does not support SUM() inside a GROUP BY query",
+      "dept_id must be a string rather than an integer",
+      "The query must include an ORDER BY clause",
+      "'name' is non-aggregated and not functionally dependent on dept_id, creating ambiguity about which employee's name to return"
+    ],
+    "correctIndex": 3,
+    "explanation": "ONLY_FULL_GROUP_BY complies with ANSI SQL: every non-aggregated column in the SELECT list must appear in the GROUP BY clause, or be functionally dependent on the primary key in GROUP BY. [Context: Global Supply Chain & Logistics]"
+  },
+  {
+    "id": "mcq_groupby_62",
+    "keyword": "GROUP BY",
+    "tag": "⚡ Gotcha Trap",
+    "question": "[GROUP BY #62 &bull; Healthcare Patient Records] How does the physical SQL engine process GROUP BY during query execution? (Application Scenario 3)",
+    "options": [
+      "It executes a nested loop SELECT query for every distinct value in the database",
+      "It hash-partitions or sorts rows by the grouping keys, accumulating running aggregate states in an in-memory hash table or sort buffer",
+      "It evaluates GROUP BY after LIMIT",
+      "It converts the table into a CSV file before grouping"
+    ],
+    "correctIndex": 1,
+    "explanation": "Engines utilize Hash Aggregation (building an in-memory hash map of groups) or Stream Aggregation (scanning pre-sorted data) to compute aggregates in O(N) time. [Context: Healthcare Patient Records]"
+  },
+  {
+    "id": "mcq_groupby_63",
+    "keyword": "GROUP BY",
+    "tag": "🎯 Core Concept",
+    "question": "[GROUP BY #63 &bull; E-Commerce Checkout Funnels] What is the effect of GROUP BY ROLLUP(year, quarter, month)? (Application Scenario 3)",
+    "options": [
+      "Randomly sorts the groupings",
+      "Limits the output to 3 rows",
+      "Removes all NULL values from the dataset",
+      "Generates hierarchical subtotals: by (year, quarter, month), by (year, quarter), by (year), and a grand total ()"
+    ],
+    "correctIndex": 3,
+    "explanation": "ROLLUP creates progressive hierarchical subtotals from right to left, finishing with a grand total row where grouped columns are NULL. [Context: E-Commerce Checkout Funnels]"
+  },
+  {
+    "id": "mcq_groupby_64",
+    "keyword": "GROUP BY",
+    "tag": "🏛️ Corporate Edge",
+    "question": "[GROUP BY #64 &bull; Telecom Billing & Data Streams] When grouping by an expression like 'GROUP BY DATE(created_at)', why might an index on created_at fail to be used for index grouping? (Application Scenario 3)",
+    "options": [
+      "DATE() converts the column into a temporary BLOB",
+      "Wrapping a column in a function prevents index range scans unless an expression index / functional index is defined",
+      "MySQL forbids functions in GROUP BY",
+      "Dates cannot be indexed in relational databases"
+    ],
+    "correctIndex": 1,
+    "explanation": "Applying functions to indexed columns obscures the sorted index order. To utilize an index, either use a generated column with a secondary index or range filter on timestamps. [Context: Telecom Billing & Data Streams]"
+  },
+  {
+    "id": "mcq_groupby_65",
+    "keyword": "GROUP BY",
+    "tag": "💡 Lead Architect",
+    "question": "[GROUP BY #65 &bull; AdTech Real-Time Bidding] How are NULL values treated when present in the column specified in a GROUP BY clause? (Application Scenario 3)",
+    "options": [
+      "Every NULL forms its own distinct independent group",
+      "NULLs are automatically dropped before grouping",
+      "The engine throws a NullPointerException",
+      "All NULLs are gathered together into a single collective group"
+    ],
+    "correctIndex": 3,
+    "explanation": "Under ANSI SQL rules, all NULL values in a GROUP BY column are treated as mutually equal for grouping purposes and merged into a single bucket. [Context: AdTech Real-Time Bidding]"
+  },
+  {
+    "id": "mcq_groupby_66",
+    "keyword": "GROUP BY",
+    "tag": "⚡ Gotcha Trap",
+    "question": "[GROUP BY #66 &bull; Cybersecurity Audit Logs] In MySQL with ONLY_FULL_GROUP_BY enabled, why does 'SELECT dept_id, name, SUM(salary) FROM emp GROUP BY dept_id;' throw an error? (Application Scenario 4)",
+    "options": [
+      "MySQL does not support SUM() inside a GROUP BY query",
+      "'name' is non-aggregated and not functionally dependent on dept_id, creating ambiguity about which employee's name to return",
+      "dept_id must be a string rather than an integer",
+      "The query must include an ORDER BY clause"
+    ],
+    "correctIndex": 1,
+    "explanation": "ONLY_FULL_GROUP_BY complies with ANSI SQL: every non-aggregated column in the SELECT list must appear in the GROUP BY clause, or be functionally dependent on the primary key in GROUP BY. [Context: Cybersecurity Audit Logs]"
+  },
+  {
+    "id": "mcq_groupby_67",
+    "keyword": "GROUP BY",
+    "tag": "🎯 Core Concept",
+    "question": "[GROUP BY #67 &bull; Fintech & Ledger Systems] How does the physical SQL engine process GROUP BY during query execution? (Application Scenario 4)",
+    "options": [
+      "It executes a nested loop SELECT query for every distinct value in the database",
+      "It evaluates GROUP BY after LIMIT",
+      "It converts the table into a CSV file before grouping",
+      "It hash-partitions or sorts rows by the grouping keys, accumulating running aggregate states in an in-memory hash table or sort buffer"
+    ],
+    "correctIndex": 3,
+    "explanation": "Engines utilize Hash Aggregation (building an in-memory hash map of groups) or Stream Aggregation (scanning pre-sorted data) to compute aggregates in O(N) time. [Context: Fintech & Ledger Systems]"
+  },
+  {
+    "id": "mcq_groupby_68",
+    "keyword": "GROUP BY",
+    "tag": "🏛️ Corporate Edge",
+    "question": "[GROUP BY #68 &bull; SaaS Subscription Billing] What is the effect of GROUP BY ROLLUP(year, quarter, month)? (Application Scenario 4)",
+    "options": [
+      "Randomly sorts the groupings",
+      "Generates hierarchical subtotals: by (year, quarter, month), by (year, quarter), by (year), and a grand total ()",
+      "Limits the output to 3 rows",
+      "Removes all NULL values from the dataset"
+    ],
+    "correctIndex": 1,
+    "explanation": "ROLLUP creates progressive hierarchical subtotals from right to left, finishing with a grand total row where grouped columns are NULL. [Context: SaaS Subscription Billing]"
+  },
+  {
+    "id": "mcq_groupby_69",
+    "keyword": "GROUP BY",
+    "tag": "💡 Lead Architect",
+    "question": "[GROUP BY #69 &bull; Global Supply Chain & Logistics] When grouping by an expression like 'GROUP BY DATE(created_at)', why might an index on created_at fail to be used for index grouping? (Application Scenario 4)",
+    "options": [
+      "DATE() converts the column into a temporary BLOB",
+      "MySQL forbids functions in GROUP BY",
+      "Dates cannot be indexed in relational databases",
+      "Wrapping a column in a function prevents index range scans unless an expression index / functional index is defined"
+    ],
+    "correctIndex": 3,
+    "explanation": "Applying functions to indexed columns obscures the sorted index order. To utilize an index, either use a generated column with a secondary index or range filter on timestamps. [Context: Global Supply Chain & Logistics]"
+  },
+  {
+    "id": "mcq_groupby_70",
+    "keyword": "GROUP BY",
+    "tag": "⚡ Gotcha Trap",
+    "question": "[GROUP BY #70 &bull; Healthcare Patient Records] How are NULL values treated when present in the column specified in a GROUP BY clause? (Application Scenario 4)",
+    "options": [
+      "Every NULL forms its own distinct independent group",
+      "All NULLs are gathered together into a single collective group",
+      "NULLs are automatically dropped before grouping",
+      "The engine throws a NullPointerException"
+    ],
+    "correctIndex": 1,
+    "explanation": "Under ANSI SQL rules, all NULL values in a GROUP BY column are treated as mutually equal for grouping purposes and merged into a single bucket. [Context: Healthcare Patient Records]"
+  },
+  {
+    "id": "mcq_groupby_71",
+    "keyword": "GROUP BY",
+    "tag": "🎯 Core Concept",
+    "question": "[GROUP BY #71 &bull; E-Commerce Checkout Funnels] In MySQL with ONLY_FULL_GROUP_BY enabled, why does 'SELECT dept_id, name, SUM(salary) FROM emp GROUP BY dept_id;' throw an error? (Application Scenario 5)",
+    "options": [
+      "MySQL does not support SUM() inside a GROUP BY query",
+      "dept_id must be a string rather than an integer",
+      "The query must include an ORDER BY clause",
+      "'name' is non-aggregated and not functionally dependent on dept_id, creating ambiguity about which employee's name to return"
+    ],
+    "correctIndex": 3,
+    "explanation": "ONLY_FULL_GROUP_BY complies with ANSI SQL: every non-aggregated column in the SELECT list must appear in the GROUP BY clause, or be functionally dependent on the primary key in GROUP BY. [Context: E-Commerce Checkout Funnels]"
+  },
+  {
+    "id": "mcq_groupby_72",
+    "keyword": "GROUP BY",
+    "tag": "🏛️ Corporate Edge",
+    "question": "[GROUP BY #72 &bull; Telecom Billing & Data Streams] How does the physical SQL engine process GROUP BY during query execution? (Application Scenario 5)",
+    "options": [
+      "It executes a nested loop SELECT query for every distinct value in the database",
+      "It hash-partitions or sorts rows by the grouping keys, accumulating running aggregate states in an in-memory hash table or sort buffer",
+      "It evaluates GROUP BY after LIMIT",
+      "It converts the table into a CSV file before grouping"
+    ],
+    "correctIndex": 1,
+    "explanation": "Engines utilize Hash Aggregation (building an in-memory hash map of groups) or Stream Aggregation (scanning pre-sorted data) to compute aggregates in O(N) time. [Context: Telecom Billing & Data Streams]"
+  },
+  {
+    "id": "mcq_groupby_73",
+    "keyword": "GROUP BY",
+    "tag": "💡 Lead Architect",
+    "question": "[GROUP BY #73 &bull; AdTech Real-Time Bidding] What is the effect of GROUP BY ROLLUP(year, quarter, month)? (Application Scenario 5)",
+    "options": [
+      "Randomly sorts the groupings",
+      "Limits the output to 3 rows",
+      "Removes all NULL values from the dataset",
+      "Generates hierarchical subtotals: by (year, quarter, month), by (year, quarter), by (year), and a grand total ()"
+    ],
+    "correctIndex": 3,
+    "explanation": "ROLLUP creates progressive hierarchical subtotals from right to left, finishing with a grand total row where grouped columns are NULL. [Context: AdTech Real-Time Bidding]"
+  },
+  {
+    "id": "mcq_groupby_74",
+    "keyword": "GROUP BY",
+    "tag": "⚡ Gotcha Trap",
+    "question": "[GROUP BY #74 &bull; Cybersecurity Audit Logs] When grouping by an expression like 'GROUP BY DATE(created_at)', why might an index on created_at fail to be used for index grouping? (Application Scenario 5)",
+    "options": [
+      "DATE() converts the column into a temporary BLOB",
+      "Wrapping a column in a function prevents index range scans unless an expression index / functional index is defined",
+      "MySQL forbids functions in GROUP BY",
+      "Dates cannot be indexed in relational databases"
+    ],
+    "correctIndex": 1,
+    "explanation": "Applying functions to indexed columns obscures the sorted index order. To utilize an index, either use a generated column with a secondary index or range filter on timestamps. [Context: Cybersecurity Audit Logs]"
+  },
+  {
+    "id": "mcq_groupby_75",
+    "keyword": "GROUP BY",
+    "tag": "🎯 Core Concept",
+    "question": "[GROUP BY #75 &bull; Fintech & Ledger Systems] How are NULL values treated when present in the column specified in a GROUP BY clause? (Application Scenario 5)",
+    "options": [
+      "Every NULL forms its own distinct independent group",
+      "NULLs are automatically dropped before grouping",
+      "The engine throws a NullPointerException",
+      "All NULLs are gathered together into a single collective group"
+    ],
+    "correctIndex": 3,
+    "explanation": "Under ANSI SQL rules, all NULL values in a GROUP BY column are treated as mutually equal for grouping purposes and merged into a single bucket. [Context: Fintech & Ledger Systems]"
+  },
+  {
+    "id": "mcq_groupby_76",
+    "keyword": "GROUP BY",
+    "tag": "🏛️ Corporate Edge",
+    "question": "[GROUP BY #76 &bull; SaaS Subscription Billing] In MySQL with ONLY_FULL_GROUP_BY enabled, why does 'SELECT dept_id, name, SUM(salary) FROM emp GROUP BY dept_id;' throw an error? (Application Scenario 6)",
+    "options": [
+      "MySQL does not support SUM() inside a GROUP BY query",
+      "'name' is non-aggregated and not functionally dependent on dept_id, creating ambiguity about which employee's name to return",
+      "dept_id must be a string rather than an integer",
+      "The query must include an ORDER BY clause"
+    ],
+    "correctIndex": 1,
+    "explanation": "ONLY_FULL_GROUP_BY complies with ANSI SQL: every non-aggregated column in the SELECT list must appear in the GROUP BY clause, or be functionally dependent on the primary key in GROUP BY. [Context: SaaS Subscription Billing]"
+  },
+  {
+    "id": "mcq_groupby_77",
+    "keyword": "GROUP BY",
+    "tag": "💡 Lead Architect",
+    "question": "[GROUP BY #77 &bull; Global Supply Chain & Logistics] How does the physical SQL engine process GROUP BY during query execution? (Application Scenario 6)",
+    "options": [
+      "It executes a nested loop SELECT query for every distinct value in the database",
+      "It evaluates GROUP BY after LIMIT",
+      "It converts the table into a CSV file before grouping",
+      "It hash-partitions or sorts rows by the grouping keys, accumulating running aggregate states in an in-memory hash table or sort buffer"
+    ],
+    "correctIndex": 3,
+    "explanation": "Engines utilize Hash Aggregation (building an in-memory hash map of groups) or Stream Aggregation (scanning pre-sorted data) to compute aggregates in O(N) time. [Context: Global Supply Chain & Logistics]"
+  },
+  {
+    "id": "mcq_groupby_78",
+    "keyword": "GROUP BY",
+    "tag": "⚡ Gotcha Trap",
+    "question": "[GROUP BY #78 &bull; Healthcare Patient Records] What is the effect of GROUP BY ROLLUP(year, quarter, month)? (Application Scenario 6)",
+    "options": [
+      "Randomly sorts the groupings",
+      "Generates hierarchical subtotals: by (year, quarter, month), by (year, quarter), by (year), and a grand total ()",
+      "Limits the output to 3 rows",
+      "Removes all NULL values from the dataset"
+    ],
+    "correctIndex": 1,
+    "explanation": "ROLLUP creates progressive hierarchical subtotals from right to left, finishing with a grand total row where grouped columns are NULL. [Context: Healthcare Patient Records]"
+  },
+  {
+    "id": "mcq_groupby_79",
+    "keyword": "GROUP BY",
+    "tag": "🎯 Core Concept",
+    "question": "[GROUP BY #79 &bull; E-Commerce Checkout Funnels] When grouping by an expression like 'GROUP BY DATE(created_at)', why might an index on created_at fail to be used for index grouping? (Application Scenario 6)",
+    "options": [
+      "DATE() converts the column into a temporary BLOB",
+      "MySQL forbids functions in GROUP BY",
+      "Dates cannot be indexed in relational databases",
+      "Wrapping a column in a function prevents index range scans unless an expression index / functional index is defined"
+    ],
+    "correctIndex": 3,
+    "explanation": "Applying functions to indexed columns obscures the sorted index order. To utilize an index, either use a generated column with a secondary index or range filter on timestamps. [Context: E-Commerce Checkout Funnels]"
+  },
+  {
+    "id": "mcq_groupby_80",
+    "keyword": "GROUP BY",
+    "tag": "🏛️ Corporate Edge",
+    "question": "[GROUP BY #80 &bull; Telecom Billing & Data Streams] How are NULL values treated when present in the column specified in a GROUP BY clause? (Application Scenario 6)",
+    "options": [
+      "Every NULL forms its own distinct independent group",
+      "All NULLs are gathered together into a single collective group",
+      "NULLs are automatically dropped before grouping",
+      "The engine throws a NullPointerException"
+    ],
+    "correctIndex": 1,
+    "explanation": "Under ANSI SQL rules, all NULL values in a GROUP BY column are treated as mutually equal for grouping purposes and merged into a single bucket. [Context: Telecom Billing & Data Streams]"
+  },
+  {
+    "id": "mcq_groupby_81",
+    "keyword": "GROUP BY",
+    "tag": "💡 Lead Architect",
+    "question": "[GROUP BY #81 &bull; AdTech Real-Time Bidding] In MySQL with ONLY_FULL_GROUP_BY enabled, why does 'SELECT dept_id, name, SUM(salary) FROM emp GROUP BY dept_id;' throw an error? (Application Scenario 7)",
+    "options": [
+      "MySQL does not support SUM() inside a GROUP BY query",
+      "dept_id must be a string rather than an integer",
+      "The query must include an ORDER BY clause",
+      "'name' is non-aggregated and not functionally dependent on dept_id, creating ambiguity about which employee's name to return"
+    ],
+    "correctIndex": 3,
+    "explanation": "ONLY_FULL_GROUP_BY complies with ANSI SQL: every non-aggregated column in the SELECT list must appear in the GROUP BY clause, or be functionally dependent on the primary key in GROUP BY. [Context: AdTech Real-Time Bidding]"
+  },
+  {
+    "id": "mcq_groupby_82",
+    "keyword": "GROUP BY",
+    "tag": "⚡ Gotcha Trap",
+    "question": "[GROUP BY #82 &bull; Cybersecurity Audit Logs] How does the physical SQL engine process GROUP BY during query execution? (Application Scenario 7)",
+    "options": [
+      "It executes a nested loop SELECT query for every distinct value in the database",
+      "It hash-partitions or sorts rows by the grouping keys, accumulating running aggregate states in an in-memory hash table or sort buffer",
+      "It evaluates GROUP BY after LIMIT",
+      "It converts the table into a CSV file before grouping"
+    ],
+    "correctIndex": 1,
+    "explanation": "Engines utilize Hash Aggregation (building an in-memory hash map of groups) or Stream Aggregation (scanning pre-sorted data) to compute aggregates in O(N) time. [Context: Cybersecurity Audit Logs]"
+  },
+  {
+    "id": "mcq_groupby_83",
+    "keyword": "GROUP BY",
+    "tag": "🎯 Core Concept",
+    "question": "[GROUP BY #83 &bull; Fintech & Ledger Systems] What is the effect of GROUP BY ROLLUP(year, quarter, month)? (Application Scenario 7)",
+    "options": [
+      "Randomly sorts the groupings",
+      "Limits the output to 3 rows",
+      "Removes all NULL values from the dataset",
+      "Generates hierarchical subtotals: by (year, quarter, month), by (year, quarter), by (year), and a grand total ()"
+    ],
+    "correctIndex": 3,
+    "explanation": "ROLLUP creates progressive hierarchical subtotals from right to left, finishing with a grand total row where grouped columns are NULL. [Context: Fintech & Ledger Systems]"
+  },
+  {
+    "id": "mcq_groupby_84",
+    "keyword": "GROUP BY",
+    "tag": "🏛️ Corporate Edge",
+    "question": "[GROUP BY #84 &bull; SaaS Subscription Billing] When grouping by an expression like 'GROUP BY DATE(created_at)', why might an index on created_at fail to be used for index grouping? (Application Scenario 7)",
+    "options": [
+      "DATE() converts the column into a temporary BLOB",
+      "Wrapping a column in a function prevents index range scans unless an expression index / functional index is defined",
+      "MySQL forbids functions in GROUP BY",
+      "Dates cannot be indexed in relational databases"
+    ],
+    "correctIndex": 1,
+    "explanation": "Applying functions to indexed columns obscures the sorted index order. To utilize an index, either use a generated column with a secondary index or range filter on timestamps. [Context: SaaS Subscription Billing]"
+  },
+  {
+    "id": "mcq_groupby_85",
+    "keyword": "GROUP BY",
+    "tag": "💡 Lead Architect",
+    "question": "[GROUP BY #85 &bull; Global Supply Chain & Logistics] How are NULL values treated when present in the column specified in a GROUP BY clause? (Application Scenario 7)",
+    "options": [
+      "Every NULL forms its own distinct independent group",
+      "NULLs are automatically dropped before grouping",
+      "The engine throws a NullPointerException",
+      "All NULLs are gathered together into a single collective group"
+    ],
+    "correctIndex": 3,
+    "explanation": "Under ANSI SQL rules, all NULL values in a GROUP BY column are treated as mutually equal for grouping purposes and merged into a single bucket. [Context: Global Supply Chain & Logistics]"
+  },
+  {
+    "id": "mcq_groupby_86",
+    "keyword": "GROUP BY",
+    "tag": "⚡ Gotcha Trap",
+    "question": "[GROUP BY #86 &bull; Healthcare Patient Records] In MySQL with ONLY_FULL_GROUP_BY enabled, why does 'SELECT dept_id, name, SUM(salary) FROM emp GROUP BY dept_id;' throw an error? (Application Scenario 8)",
+    "options": [
+      "MySQL does not support SUM() inside a GROUP BY query",
+      "'name' is non-aggregated and not functionally dependent on dept_id, creating ambiguity about which employee's name to return",
+      "dept_id must be a string rather than an integer",
+      "The query must include an ORDER BY clause"
+    ],
+    "correctIndex": 1,
+    "explanation": "ONLY_FULL_GROUP_BY complies with ANSI SQL: every non-aggregated column in the SELECT list must appear in the GROUP BY clause, or be functionally dependent on the primary key in GROUP BY. [Context: Healthcare Patient Records]"
+  },
+  {
+    "id": "mcq_groupby_87",
+    "keyword": "GROUP BY",
+    "tag": "🎯 Core Concept",
+    "question": "[GROUP BY #87 &bull; E-Commerce Checkout Funnels] How does the physical SQL engine process GROUP BY during query execution? (Application Scenario 8)",
+    "options": [
+      "It executes a nested loop SELECT query for every distinct value in the database",
+      "It evaluates GROUP BY after LIMIT",
+      "It converts the table into a CSV file before grouping",
+      "It hash-partitions or sorts rows by the grouping keys, accumulating running aggregate states in an in-memory hash table or sort buffer"
+    ],
+    "correctIndex": 3,
+    "explanation": "Engines utilize Hash Aggregation (building an in-memory hash map of groups) or Stream Aggregation (scanning pre-sorted data) to compute aggregates in O(N) time. [Context: E-Commerce Checkout Funnels]"
+  },
+  {
+    "id": "mcq_groupby_88",
+    "keyword": "GROUP BY",
+    "tag": "🏛️ Corporate Edge",
+    "question": "[GROUP BY #88 &bull; Telecom Billing & Data Streams] What is the effect of GROUP BY ROLLUP(year, quarter, month)? (Application Scenario 8)",
+    "options": [
+      "Randomly sorts the groupings",
+      "Generates hierarchical subtotals: by (year, quarter, month), by (year, quarter), by (year), and a grand total ()",
+      "Limits the output to 3 rows",
+      "Removes all NULL values from the dataset"
+    ],
+    "correctIndex": 1,
+    "explanation": "ROLLUP creates progressive hierarchical subtotals from right to left, finishing with a grand total row where grouped columns are NULL. [Context: Telecom Billing & Data Streams]"
+  },
+  {
+    "id": "mcq_groupby_89",
+    "keyword": "GROUP BY",
+    "tag": "💡 Lead Architect",
+    "question": "[GROUP BY #89 &bull; AdTech Real-Time Bidding] When grouping by an expression like 'GROUP BY DATE(created_at)', why might an index on created_at fail to be used for index grouping? (Application Scenario 8)",
+    "options": [
+      "DATE() converts the column into a temporary BLOB",
+      "MySQL forbids functions in GROUP BY",
+      "Dates cannot be indexed in relational databases",
+      "Wrapping a column in a function prevents index range scans unless an expression index / functional index is defined"
+    ],
+    "correctIndex": 3,
+    "explanation": "Applying functions to indexed columns obscures the sorted index order. To utilize an index, either use a generated column with a secondary index or range filter on timestamps. [Context: AdTech Real-Time Bidding]"
+  },
+  {
+    "id": "mcq_groupby_90",
+    "keyword": "GROUP BY",
+    "tag": "⚡ Gotcha Trap",
+    "question": "[GROUP BY #90 &bull; Cybersecurity Audit Logs] How are NULL values treated when present in the column specified in a GROUP BY clause? (Application Scenario 8)",
+    "options": [
+      "Every NULL forms its own distinct independent group",
+      "All NULLs are gathered together into a single collective group",
+      "NULLs are automatically dropped before grouping",
+      "The engine throws a NullPointerException"
+    ],
+    "correctIndex": 1,
+    "explanation": "Under ANSI SQL rules, all NULL values in a GROUP BY column are treated as mutually equal for grouping purposes and merged into a single bucket. [Context: Cybersecurity Audit Logs]"
+  },
+  {
+    "id": "mcq_groupby_91",
+    "keyword": "GROUP BY",
+    "tag": "🎯 Core Concept",
+    "question": "[GROUP BY #91 &bull; Fintech & Ledger Systems] In MySQL with ONLY_FULL_GROUP_BY enabled, why does 'SELECT dept_id, name, SUM(salary) FROM emp GROUP BY dept_id;' throw an error? (Application Scenario 9)",
+    "options": [
+      "MySQL does not support SUM() inside a GROUP BY query",
+      "dept_id must be a string rather than an integer",
+      "The query must include an ORDER BY clause",
+      "'name' is non-aggregated and not functionally dependent on dept_id, creating ambiguity about which employee's name to return"
+    ],
+    "correctIndex": 3,
+    "explanation": "ONLY_FULL_GROUP_BY complies with ANSI SQL: every non-aggregated column in the SELECT list must appear in the GROUP BY clause, or be functionally dependent on the primary key in GROUP BY. [Context: Fintech & Ledger Systems]"
+  },
+  {
+    "id": "mcq_groupby_92",
+    "keyword": "GROUP BY",
+    "tag": "🏛️ Corporate Edge",
+    "question": "[GROUP BY #92 &bull; SaaS Subscription Billing] How does the physical SQL engine process GROUP BY during query execution? (Application Scenario 9)",
+    "options": [
+      "It executes a nested loop SELECT query for every distinct value in the database",
+      "It hash-partitions or sorts rows by the grouping keys, accumulating running aggregate states in an in-memory hash table or sort buffer",
+      "It evaluates GROUP BY after LIMIT",
+      "It converts the table into a CSV file before grouping"
+    ],
+    "correctIndex": 1,
+    "explanation": "Engines utilize Hash Aggregation (building an in-memory hash map of groups) or Stream Aggregation (scanning pre-sorted data) to compute aggregates in O(N) time. [Context: SaaS Subscription Billing]"
+  },
+  {
+    "id": "mcq_groupby_93",
+    "keyword": "GROUP BY",
+    "tag": "💡 Lead Architect",
+    "question": "[GROUP BY #93 &bull; Global Supply Chain & Logistics] What is the effect of GROUP BY ROLLUP(year, quarter, month)? (Application Scenario 9)",
+    "options": [
+      "Randomly sorts the groupings",
+      "Limits the output to 3 rows",
+      "Removes all NULL values from the dataset",
+      "Generates hierarchical subtotals: by (year, quarter, month), by (year, quarter), by (year), and a grand total ()"
+    ],
+    "correctIndex": 3,
+    "explanation": "ROLLUP creates progressive hierarchical subtotals from right to left, finishing with a grand total row where grouped columns are NULL. [Context: Global Supply Chain & Logistics]"
+  },
+  {
+    "id": "mcq_groupby_94",
+    "keyword": "GROUP BY",
+    "tag": "⚡ Gotcha Trap",
+    "question": "[GROUP BY #94 &bull; Healthcare Patient Records] When grouping by an expression like 'GROUP BY DATE(created_at)', why might an index on created_at fail to be used for index grouping? (Application Scenario 9)",
+    "options": [
+      "DATE() converts the column into a temporary BLOB",
+      "Wrapping a column in a function prevents index range scans unless an expression index / functional index is defined",
+      "MySQL forbids functions in GROUP BY",
+      "Dates cannot be indexed in relational databases"
+    ],
+    "correctIndex": 1,
+    "explanation": "Applying functions to indexed columns obscures the sorted index order. To utilize an index, either use a generated column with a secondary index or range filter on timestamps. [Context: Healthcare Patient Records]"
+  },
+  {
+    "id": "mcq_groupby_95",
+    "keyword": "GROUP BY",
+    "tag": "🎯 Core Concept",
+    "question": "[GROUP BY #95 &bull; E-Commerce Checkout Funnels] How are NULL values treated when present in the column specified in a GROUP BY clause? (Application Scenario 9)",
+    "options": [
+      "Every NULL forms its own distinct independent group",
+      "NULLs are automatically dropped before grouping",
+      "The engine throws a NullPointerException",
+      "All NULLs are gathered together into a single collective group"
+    ],
+    "correctIndex": 3,
+    "explanation": "Under ANSI SQL rules, all NULL values in a GROUP BY column are treated as mutually equal for grouping purposes and merged into a single bucket. [Context: E-Commerce Checkout Funnels]"
+  },
+  {
+    "id": "mcq_groupby_96",
+    "keyword": "GROUP BY",
+    "tag": "🏛️ Corporate Edge",
+    "question": "[GROUP BY #96 &bull; Telecom Billing & Data Streams] In MySQL with ONLY_FULL_GROUP_BY enabled, why does 'SELECT dept_id, name, SUM(salary) FROM emp GROUP BY dept_id;' throw an error? (Application Scenario 10)",
+    "options": [
+      "MySQL does not support SUM() inside a GROUP BY query",
+      "'name' is non-aggregated and not functionally dependent on dept_id, creating ambiguity about which employee's name to return",
+      "dept_id must be a string rather than an integer",
+      "The query must include an ORDER BY clause"
+    ],
+    "correctIndex": 1,
+    "explanation": "ONLY_FULL_GROUP_BY complies with ANSI SQL: every non-aggregated column in the SELECT list must appear in the GROUP BY clause, or be functionally dependent on the primary key in GROUP BY. [Context: Telecom Billing & Data Streams]"
+  },
+  {
+    "id": "mcq_groupby_97",
+    "keyword": "GROUP BY",
+    "tag": "💡 Lead Architect",
+    "question": "[GROUP BY #97 &bull; AdTech Real-Time Bidding] How does the physical SQL engine process GROUP BY during query execution? (Application Scenario 10)",
+    "options": [
+      "It executes a nested loop SELECT query for every distinct value in the database",
+      "It evaluates GROUP BY after LIMIT",
+      "It converts the table into a CSV file before grouping",
+      "It hash-partitions or sorts rows by the grouping keys, accumulating running aggregate states in an in-memory hash table or sort buffer"
+    ],
+    "correctIndex": 3,
+    "explanation": "Engines utilize Hash Aggregation (building an in-memory hash map of groups) or Stream Aggregation (scanning pre-sorted data) to compute aggregates in O(N) time. [Context: AdTech Real-Time Bidding]"
+  },
+  {
+    "id": "mcq_groupby_98",
+    "keyword": "GROUP BY",
+    "tag": "⚡ Gotcha Trap",
+    "question": "[GROUP BY #98 &bull; Cybersecurity Audit Logs] What is the effect of GROUP BY ROLLUP(year, quarter, month)? (Application Scenario 10)",
+    "options": [
+      "Randomly sorts the groupings",
+      "Generates hierarchical subtotals: by (year, quarter, month), by (year, quarter), by (year), and a grand total ()",
+      "Limits the output to 3 rows",
+      "Removes all NULL values from the dataset"
+    ],
+    "correctIndex": 1,
+    "explanation": "ROLLUP creates progressive hierarchical subtotals from right to left, finishing with a grand total row where grouped columns are NULL. [Context: Cybersecurity Audit Logs]"
+  },
+  {
+    "id": "mcq_groupby_99",
+    "keyword": "GROUP BY",
+    "tag": "🎯 Core Concept",
+    "question": "[GROUP BY #99 &bull; Fintech & Ledger Systems] When grouping by an expression like 'GROUP BY DATE(created_at)', why might an index on created_at fail to be used for index grouping? (Application Scenario 10)",
+    "options": [
+      "DATE() converts the column into a temporary BLOB",
+      "MySQL forbids functions in GROUP BY",
+      "Dates cannot be indexed in relational databases",
+      "Wrapping a column in a function prevents index range scans unless an expression index / functional index is defined"
+    ],
+    "correctIndex": 3,
+    "explanation": "Applying functions to indexed columns obscures the sorted index order. To utilize an index, either use a generated column with a secondary index or range filter on timestamps. [Context: Fintech & Ledger Systems]"
+  },
+  {
+    "id": "mcq_groupby_100",
+    "keyword": "GROUP BY",
+    "tag": "🏛️ Corporate Edge",
+    "question": "[GROUP BY #100 &bull; SaaS Subscription Billing] How are NULL values treated when present in the column specified in a GROUP BY clause? (Application Scenario 10)",
+    "options": [
+      "Every NULL forms its own distinct independent group",
+      "All NULLs are gathered together into a single collective group",
+      "NULLs are automatically dropped before grouping",
+      "The engine throws a NullPointerException"
+    ],
+    "correctIndex": 1,
+    "explanation": "Under ANSI SQL rules, all NULL values in a GROUP BY column are treated as mutually equal for grouping purposes and merged into a single bucket. [Context: SaaS Subscription Billing]"
+  },
+  {
     "id": "mcq_having_1",
     "keyword": "HAVING",
     "tag": "🍡 Quick Snack",
@@ -4203,6 +7704,706 @@ window.MCQS_VAULT_500 = [
     ],
     "correctIndex": 2,
     "explanation": "The execution order is FROM ➡️ WHERE ➡️ GROUP BY ➡️ HAVING ➡️ SELECT ➡️ DISTINCT ➡️ ORDER BY ➡️ LIMIT."
+  },
+  {
+    "id": "mcq_having_51",
+    "keyword": "HAVING",
+    "tag": "🎯 Core Concept",
+    "question": "[HAVING #51 &bull; Fintech & Ledger Systems] What is the fundamental architectural difference between WHERE and HAVING in SQL physical execution? (Application Scenario 1)",
+    "options": [
+      "WHERE can only evaluate numbers; HAVING can only evaluate strings",
+      "HAVING is executed before FROM",
+      "WHERE requires an index while HAVING cannot use indexes",
+      "WHERE filters raw individual rows BEFORE aggregation; HAVING filters collapsed groups AFTER aggregation has computed"
+    ],
+    "correctIndex": 3,
+    "explanation": "In the relational physical pipeline: FROM -> WHERE -> GROUP BY -> HAVING. WHERE prunes rows before the grouping phase, reducing aggregate memory consumption. HAVING filters the post-aggregation groups. [Context: Fintech & Ledger Systems]"
+  },
+  {
+    "id": "mcq_having_52",
+    "keyword": "HAVING",
+    "tag": "🏛️ Corporate Edge",
+    "question": "[HAVING #52 &bull; SaaS Subscription Billing] Can a query use a HAVING clause without a GROUP BY clause? (Application Scenario 1)",
+    "options": [
+      "No, HAVING is strictly illegal without GROUP BY",
+      "Yes, in which case the entire result set is treated as a single aggregate group",
+      "Yes, but only in SQLite and Oracle",
+      "No, the engine will fail during parsing"
+    ],
+    "correctIndex": 1,
+    "explanation": "In ANSI SQL, HAVING without GROUP BY treats the entire table as one grand group (e.g. 'SELECT 1 HAVING COUNT(*) > 0'). [Context: SaaS Subscription Billing]"
+  },
+  {
+    "id": "mcq_having_53",
+    "keyword": "HAVING",
+    "tag": "💡 Lead Architect",
+    "question": "[HAVING #53 &bull; Global Supply Chain & Logistics] Why is 'SELECT dept, COUNT(*) FROM emp WHERE COUNT(*) > 5 GROUP BY dept;' invalid SQL? (Application Scenario 1)",
+    "options": [
+      "dept must be renamed before filtering",
+      "COUNT(*) cannot be greater than 5 in MySQL",
+      "The query must use SUM instead of COUNT",
+      "Aggregate functions like COUNT(*) cannot appear in a WHERE clause because aggregates have not yet been computed when WHERE executes"
+    ],
+    "correctIndex": 3,
+    "explanation": "WHERE filters rows before aggregation occurs. To filter on aggregate conditions, the condition must be placed in the HAVING clause. [Context: Global Supply Chain & Logistics]"
+  },
+  {
+    "id": "mcq_having_54",
+    "keyword": "HAVING",
+    "tag": "⚡ Gotcha Trap",
+    "question": "[HAVING #54 &bull; Healthcare Patient Records] Which query executes faster and uses less temporary memory when filtering departments with total payroll > $1M in location 'NYC'? (Application Scenario 1)",
+    "options": [
+      "Filter both 'location = NYC' and 'SUM(salary) > 1M' in HAVING",
+      "Filter 'location = NYC' in WHERE, and 'SUM(salary) > 1M' in HAVING",
+      "Both execute with identical query plans and memory usage",
+      "Filter both in a subquery with no HAVING"
+    ],
+    "correctIndex": 1,
+    "explanation": "Pushing scalar predicates into WHERE eliminates non-NYC employees BEFORE hashing/grouping, drastically reducing the volume of data aggregated in memory. [Context: Healthcare Patient Records]"
+  },
+  {
+    "id": "mcq_having_55",
+    "keyword": "HAVING",
+    "tag": "🎯 Core Concept",
+    "question": "[HAVING #55 &bull; E-Commerce Checkout Funnels] What is the output of 'SELECT category, AVG(price) FROM products GROUP BY category HAVING MIN(stock) > 0;'? (Application Scenario 1)",
+    "options": [
+      "Only products whose price is greater than 0",
+      "An error because MIN(stock) is not in the SELECT list",
+      "Categories where total stock equals 0",
+      "Categories where every single product has stock > 0, showing the category name and its average price"
+    ],
+    "correctIndex": 3,
+    "explanation": "A HAVING clause can reference aggregate expressions (like MIN(stock)) even if that aggregate is not explicitly projected in the SELECT list. [Context: E-Commerce Checkout Funnels]"
+  },
+  {
+    "id": "mcq_having_56",
+    "keyword": "HAVING",
+    "tag": "🏛️ Corporate Edge",
+    "question": "[HAVING #56 &bull; Telecom Billing & Data Streams] What is the fundamental architectural difference between WHERE and HAVING in SQL physical execution? (Application Scenario 2)",
+    "options": [
+      "WHERE can only evaluate numbers; HAVING can only evaluate strings",
+      "WHERE filters raw individual rows BEFORE aggregation; HAVING filters collapsed groups AFTER aggregation has computed",
+      "HAVING is executed before FROM",
+      "WHERE requires an index while HAVING cannot use indexes"
+    ],
+    "correctIndex": 1,
+    "explanation": "In the relational physical pipeline: FROM -> WHERE -> GROUP BY -> HAVING. WHERE prunes rows before the grouping phase, reducing aggregate memory consumption. HAVING filters the post-aggregation groups. [Context: Telecom Billing & Data Streams]"
+  },
+  {
+    "id": "mcq_having_57",
+    "keyword": "HAVING",
+    "tag": "💡 Lead Architect",
+    "question": "[HAVING #57 &bull; AdTech Real-Time Bidding] Can a query use a HAVING clause without a GROUP BY clause? (Application Scenario 2)",
+    "options": [
+      "No, HAVING is strictly illegal without GROUP BY",
+      "Yes, but only in SQLite and Oracle",
+      "No, the engine will fail during parsing",
+      "Yes, in which case the entire result set is treated as a single aggregate group"
+    ],
+    "correctIndex": 3,
+    "explanation": "In ANSI SQL, HAVING without GROUP BY treats the entire table as one grand group (e.g. 'SELECT 1 HAVING COUNT(*) > 0'). [Context: AdTech Real-Time Bidding]"
+  },
+  {
+    "id": "mcq_having_58",
+    "keyword": "HAVING",
+    "tag": "⚡ Gotcha Trap",
+    "question": "[HAVING #58 &bull; Cybersecurity Audit Logs] Why is 'SELECT dept, COUNT(*) FROM emp WHERE COUNT(*) > 5 GROUP BY dept;' invalid SQL? (Application Scenario 2)",
+    "options": [
+      "dept must be renamed before filtering",
+      "Aggregate functions like COUNT(*) cannot appear in a WHERE clause because aggregates have not yet been computed when WHERE executes",
+      "COUNT(*) cannot be greater than 5 in MySQL",
+      "The query must use SUM instead of COUNT"
+    ],
+    "correctIndex": 1,
+    "explanation": "WHERE filters rows before aggregation occurs. To filter on aggregate conditions, the condition must be placed in the HAVING clause. [Context: Cybersecurity Audit Logs]"
+  },
+  {
+    "id": "mcq_having_59",
+    "keyword": "HAVING",
+    "tag": "🎯 Core Concept",
+    "question": "[HAVING #59 &bull; Fintech & Ledger Systems] Which query executes faster and uses less temporary memory when filtering departments with total payroll > $1M in location 'NYC'? (Application Scenario 2)",
+    "options": [
+      "Filter both 'location = NYC' and 'SUM(salary) > 1M' in HAVING",
+      "Both execute with identical query plans and memory usage",
+      "Filter both in a subquery with no HAVING",
+      "Filter 'location = NYC' in WHERE, and 'SUM(salary) > 1M' in HAVING"
+    ],
+    "correctIndex": 3,
+    "explanation": "Pushing scalar predicates into WHERE eliminates non-NYC employees BEFORE hashing/grouping, drastically reducing the volume of data aggregated in memory. [Context: Fintech & Ledger Systems]"
+  },
+  {
+    "id": "mcq_having_60",
+    "keyword": "HAVING",
+    "tag": "🏛️ Corporate Edge",
+    "question": "[HAVING #60 &bull; SaaS Subscription Billing] What is the output of 'SELECT category, AVG(price) FROM products GROUP BY category HAVING MIN(stock) > 0;'? (Application Scenario 2)",
+    "options": [
+      "Only products whose price is greater than 0",
+      "Categories where every single product has stock > 0, showing the category name and its average price",
+      "An error because MIN(stock) is not in the SELECT list",
+      "Categories where total stock equals 0"
+    ],
+    "correctIndex": 1,
+    "explanation": "A HAVING clause can reference aggregate expressions (like MIN(stock)) even if that aggregate is not explicitly projected in the SELECT list. [Context: SaaS Subscription Billing]"
+  },
+  {
+    "id": "mcq_having_61",
+    "keyword": "HAVING",
+    "tag": "💡 Lead Architect",
+    "question": "[HAVING #61 &bull; Global Supply Chain & Logistics] What is the fundamental architectural difference between WHERE and HAVING in SQL physical execution? (Application Scenario 3)",
+    "options": [
+      "WHERE can only evaluate numbers; HAVING can only evaluate strings",
+      "HAVING is executed before FROM",
+      "WHERE requires an index while HAVING cannot use indexes",
+      "WHERE filters raw individual rows BEFORE aggregation; HAVING filters collapsed groups AFTER aggregation has computed"
+    ],
+    "correctIndex": 3,
+    "explanation": "In the relational physical pipeline: FROM -> WHERE -> GROUP BY -> HAVING. WHERE prunes rows before the grouping phase, reducing aggregate memory consumption. HAVING filters the post-aggregation groups. [Context: Global Supply Chain & Logistics]"
+  },
+  {
+    "id": "mcq_having_62",
+    "keyword": "HAVING",
+    "tag": "⚡ Gotcha Trap",
+    "question": "[HAVING #62 &bull; Healthcare Patient Records] Can a query use a HAVING clause without a GROUP BY clause? (Application Scenario 3)",
+    "options": [
+      "No, HAVING is strictly illegal without GROUP BY",
+      "Yes, in which case the entire result set is treated as a single aggregate group",
+      "Yes, but only in SQLite and Oracle",
+      "No, the engine will fail during parsing"
+    ],
+    "correctIndex": 1,
+    "explanation": "In ANSI SQL, HAVING without GROUP BY treats the entire table as one grand group (e.g. 'SELECT 1 HAVING COUNT(*) > 0'). [Context: Healthcare Patient Records]"
+  },
+  {
+    "id": "mcq_having_63",
+    "keyword": "HAVING",
+    "tag": "🎯 Core Concept",
+    "question": "[HAVING #63 &bull; E-Commerce Checkout Funnels] Why is 'SELECT dept, COUNT(*) FROM emp WHERE COUNT(*) > 5 GROUP BY dept;' invalid SQL? (Application Scenario 3)",
+    "options": [
+      "dept must be renamed before filtering",
+      "COUNT(*) cannot be greater than 5 in MySQL",
+      "The query must use SUM instead of COUNT",
+      "Aggregate functions like COUNT(*) cannot appear in a WHERE clause because aggregates have not yet been computed when WHERE executes"
+    ],
+    "correctIndex": 3,
+    "explanation": "WHERE filters rows before aggregation occurs. To filter on aggregate conditions, the condition must be placed in the HAVING clause. [Context: E-Commerce Checkout Funnels]"
+  },
+  {
+    "id": "mcq_having_64",
+    "keyword": "HAVING",
+    "tag": "🏛️ Corporate Edge",
+    "question": "[HAVING #64 &bull; Telecom Billing & Data Streams] Which query executes faster and uses less temporary memory when filtering departments with total payroll > $1M in location 'NYC'? (Application Scenario 3)",
+    "options": [
+      "Filter both 'location = NYC' and 'SUM(salary) > 1M' in HAVING",
+      "Filter 'location = NYC' in WHERE, and 'SUM(salary) > 1M' in HAVING",
+      "Both execute with identical query plans and memory usage",
+      "Filter both in a subquery with no HAVING"
+    ],
+    "correctIndex": 1,
+    "explanation": "Pushing scalar predicates into WHERE eliminates non-NYC employees BEFORE hashing/grouping, drastically reducing the volume of data aggregated in memory. [Context: Telecom Billing & Data Streams]"
+  },
+  {
+    "id": "mcq_having_65",
+    "keyword": "HAVING",
+    "tag": "💡 Lead Architect",
+    "question": "[HAVING #65 &bull; AdTech Real-Time Bidding] What is the output of 'SELECT category, AVG(price) FROM products GROUP BY category HAVING MIN(stock) > 0;'? (Application Scenario 3)",
+    "options": [
+      "Only products whose price is greater than 0",
+      "An error because MIN(stock) is not in the SELECT list",
+      "Categories where total stock equals 0",
+      "Categories where every single product has stock > 0, showing the category name and its average price"
+    ],
+    "correctIndex": 3,
+    "explanation": "A HAVING clause can reference aggregate expressions (like MIN(stock)) even if that aggregate is not explicitly projected in the SELECT list. [Context: AdTech Real-Time Bidding]"
+  },
+  {
+    "id": "mcq_having_66",
+    "keyword": "HAVING",
+    "tag": "⚡ Gotcha Trap",
+    "question": "[HAVING #66 &bull; Cybersecurity Audit Logs] What is the fundamental architectural difference between WHERE and HAVING in SQL physical execution? (Application Scenario 4)",
+    "options": [
+      "WHERE can only evaluate numbers; HAVING can only evaluate strings",
+      "WHERE filters raw individual rows BEFORE aggregation; HAVING filters collapsed groups AFTER aggregation has computed",
+      "HAVING is executed before FROM",
+      "WHERE requires an index while HAVING cannot use indexes"
+    ],
+    "correctIndex": 1,
+    "explanation": "In the relational physical pipeline: FROM -> WHERE -> GROUP BY -> HAVING. WHERE prunes rows before the grouping phase, reducing aggregate memory consumption. HAVING filters the post-aggregation groups. [Context: Cybersecurity Audit Logs]"
+  },
+  {
+    "id": "mcq_having_67",
+    "keyword": "HAVING",
+    "tag": "🎯 Core Concept",
+    "question": "[HAVING #67 &bull; Fintech & Ledger Systems] Can a query use a HAVING clause without a GROUP BY clause? (Application Scenario 4)",
+    "options": [
+      "No, HAVING is strictly illegal without GROUP BY",
+      "Yes, but only in SQLite and Oracle",
+      "No, the engine will fail during parsing",
+      "Yes, in which case the entire result set is treated as a single aggregate group"
+    ],
+    "correctIndex": 3,
+    "explanation": "In ANSI SQL, HAVING without GROUP BY treats the entire table as one grand group (e.g. 'SELECT 1 HAVING COUNT(*) > 0'). [Context: Fintech & Ledger Systems]"
+  },
+  {
+    "id": "mcq_having_68",
+    "keyword": "HAVING",
+    "tag": "🏛️ Corporate Edge",
+    "question": "[HAVING #68 &bull; SaaS Subscription Billing] Why is 'SELECT dept, COUNT(*) FROM emp WHERE COUNT(*) > 5 GROUP BY dept;' invalid SQL? (Application Scenario 4)",
+    "options": [
+      "dept must be renamed before filtering",
+      "Aggregate functions like COUNT(*) cannot appear in a WHERE clause because aggregates have not yet been computed when WHERE executes",
+      "COUNT(*) cannot be greater than 5 in MySQL",
+      "The query must use SUM instead of COUNT"
+    ],
+    "correctIndex": 1,
+    "explanation": "WHERE filters rows before aggregation occurs. To filter on aggregate conditions, the condition must be placed in the HAVING clause. [Context: SaaS Subscription Billing]"
+  },
+  {
+    "id": "mcq_having_69",
+    "keyword": "HAVING",
+    "tag": "💡 Lead Architect",
+    "question": "[HAVING #69 &bull; Global Supply Chain & Logistics] Which query executes faster and uses less temporary memory when filtering departments with total payroll > $1M in location 'NYC'? (Application Scenario 4)",
+    "options": [
+      "Filter both 'location = NYC' and 'SUM(salary) > 1M' in HAVING",
+      "Both execute with identical query plans and memory usage",
+      "Filter both in a subquery with no HAVING",
+      "Filter 'location = NYC' in WHERE, and 'SUM(salary) > 1M' in HAVING"
+    ],
+    "correctIndex": 3,
+    "explanation": "Pushing scalar predicates into WHERE eliminates non-NYC employees BEFORE hashing/grouping, drastically reducing the volume of data aggregated in memory. [Context: Global Supply Chain & Logistics]"
+  },
+  {
+    "id": "mcq_having_70",
+    "keyword": "HAVING",
+    "tag": "⚡ Gotcha Trap",
+    "question": "[HAVING #70 &bull; Healthcare Patient Records] What is the output of 'SELECT category, AVG(price) FROM products GROUP BY category HAVING MIN(stock) > 0;'? (Application Scenario 4)",
+    "options": [
+      "Only products whose price is greater than 0",
+      "Categories where every single product has stock > 0, showing the category name and its average price",
+      "An error because MIN(stock) is not in the SELECT list",
+      "Categories where total stock equals 0"
+    ],
+    "correctIndex": 1,
+    "explanation": "A HAVING clause can reference aggregate expressions (like MIN(stock)) even if that aggregate is not explicitly projected in the SELECT list. [Context: Healthcare Patient Records]"
+  },
+  {
+    "id": "mcq_having_71",
+    "keyword": "HAVING",
+    "tag": "🎯 Core Concept",
+    "question": "[HAVING #71 &bull; E-Commerce Checkout Funnels] What is the fundamental architectural difference between WHERE and HAVING in SQL physical execution? (Application Scenario 5)",
+    "options": [
+      "WHERE can only evaluate numbers; HAVING can only evaluate strings",
+      "HAVING is executed before FROM",
+      "WHERE requires an index while HAVING cannot use indexes",
+      "WHERE filters raw individual rows BEFORE aggregation; HAVING filters collapsed groups AFTER aggregation has computed"
+    ],
+    "correctIndex": 3,
+    "explanation": "In the relational physical pipeline: FROM -> WHERE -> GROUP BY -> HAVING. WHERE prunes rows before the grouping phase, reducing aggregate memory consumption. HAVING filters the post-aggregation groups. [Context: E-Commerce Checkout Funnels]"
+  },
+  {
+    "id": "mcq_having_72",
+    "keyword": "HAVING",
+    "tag": "🏛️ Corporate Edge",
+    "question": "[HAVING #72 &bull; Telecom Billing & Data Streams] Can a query use a HAVING clause without a GROUP BY clause? (Application Scenario 5)",
+    "options": [
+      "No, HAVING is strictly illegal without GROUP BY",
+      "Yes, in which case the entire result set is treated as a single aggregate group",
+      "Yes, but only in SQLite and Oracle",
+      "No, the engine will fail during parsing"
+    ],
+    "correctIndex": 1,
+    "explanation": "In ANSI SQL, HAVING without GROUP BY treats the entire table as one grand group (e.g. 'SELECT 1 HAVING COUNT(*) > 0'). [Context: Telecom Billing & Data Streams]"
+  },
+  {
+    "id": "mcq_having_73",
+    "keyword": "HAVING",
+    "tag": "💡 Lead Architect",
+    "question": "[HAVING #73 &bull; AdTech Real-Time Bidding] Why is 'SELECT dept, COUNT(*) FROM emp WHERE COUNT(*) > 5 GROUP BY dept;' invalid SQL? (Application Scenario 5)",
+    "options": [
+      "dept must be renamed before filtering",
+      "COUNT(*) cannot be greater than 5 in MySQL",
+      "The query must use SUM instead of COUNT",
+      "Aggregate functions like COUNT(*) cannot appear in a WHERE clause because aggregates have not yet been computed when WHERE executes"
+    ],
+    "correctIndex": 3,
+    "explanation": "WHERE filters rows before aggregation occurs. To filter on aggregate conditions, the condition must be placed in the HAVING clause. [Context: AdTech Real-Time Bidding]"
+  },
+  {
+    "id": "mcq_having_74",
+    "keyword": "HAVING",
+    "tag": "⚡ Gotcha Trap",
+    "question": "[HAVING #74 &bull; Cybersecurity Audit Logs] Which query executes faster and uses less temporary memory when filtering departments with total payroll > $1M in location 'NYC'? (Application Scenario 5)",
+    "options": [
+      "Filter both 'location = NYC' and 'SUM(salary) > 1M' in HAVING",
+      "Filter 'location = NYC' in WHERE, and 'SUM(salary) > 1M' in HAVING",
+      "Both execute with identical query plans and memory usage",
+      "Filter both in a subquery with no HAVING"
+    ],
+    "correctIndex": 1,
+    "explanation": "Pushing scalar predicates into WHERE eliminates non-NYC employees BEFORE hashing/grouping, drastically reducing the volume of data aggregated in memory. [Context: Cybersecurity Audit Logs]"
+  },
+  {
+    "id": "mcq_having_75",
+    "keyword": "HAVING",
+    "tag": "🎯 Core Concept",
+    "question": "[HAVING #75 &bull; Fintech & Ledger Systems] What is the output of 'SELECT category, AVG(price) FROM products GROUP BY category HAVING MIN(stock) > 0;'? (Application Scenario 5)",
+    "options": [
+      "Only products whose price is greater than 0",
+      "An error because MIN(stock) is not in the SELECT list",
+      "Categories where total stock equals 0",
+      "Categories where every single product has stock > 0, showing the category name and its average price"
+    ],
+    "correctIndex": 3,
+    "explanation": "A HAVING clause can reference aggregate expressions (like MIN(stock)) even if that aggregate is not explicitly projected in the SELECT list. [Context: Fintech & Ledger Systems]"
+  },
+  {
+    "id": "mcq_having_76",
+    "keyword": "HAVING",
+    "tag": "🏛️ Corporate Edge",
+    "question": "[HAVING #76 &bull; SaaS Subscription Billing] What is the fundamental architectural difference between WHERE and HAVING in SQL physical execution? (Application Scenario 6)",
+    "options": [
+      "WHERE can only evaluate numbers; HAVING can only evaluate strings",
+      "WHERE filters raw individual rows BEFORE aggregation; HAVING filters collapsed groups AFTER aggregation has computed",
+      "HAVING is executed before FROM",
+      "WHERE requires an index while HAVING cannot use indexes"
+    ],
+    "correctIndex": 1,
+    "explanation": "In the relational physical pipeline: FROM -> WHERE -> GROUP BY -> HAVING. WHERE prunes rows before the grouping phase, reducing aggregate memory consumption. HAVING filters the post-aggregation groups. [Context: SaaS Subscription Billing]"
+  },
+  {
+    "id": "mcq_having_77",
+    "keyword": "HAVING",
+    "tag": "💡 Lead Architect",
+    "question": "[HAVING #77 &bull; Global Supply Chain & Logistics] Can a query use a HAVING clause without a GROUP BY clause? (Application Scenario 6)",
+    "options": [
+      "No, HAVING is strictly illegal without GROUP BY",
+      "Yes, but only in SQLite and Oracle",
+      "No, the engine will fail during parsing",
+      "Yes, in which case the entire result set is treated as a single aggregate group"
+    ],
+    "correctIndex": 3,
+    "explanation": "In ANSI SQL, HAVING without GROUP BY treats the entire table as one grand group (e.g. 'SELECT 1 HAVING COUNT(*) > 0'). [Context: Global Supply Chain & Logistics]"
+  },
+  {
+    "id": "mcq_having_78",
+    "keyword": "HAVING",
+    "tag": "⚡ Gotcha Trap",
+    "question": "[HAVING #78 &bull; Healthcare Patient Records] Why is 'SELECT dept, COUNT(*) FROM emp WHERE COUNT(*) > 5 GROUP BY dept;' invalid SQL? (Application Scenario 6)",
+    "options": [
+      "dept must be renamed before filtering",
+      "Aggregate functions like COUNT(*) cannot appear in a WHERE clause because aggregates have not yet been computed when WHERE executes",
+      "COUNT(*) cannot be greater than 5 in MySQL",
+      "The query must use SUM instead of COUNT"
+    ],
+    "correctIndex": 1,
+    "explanation": "WHERE filters rows before aggregation occurs. To filter on aggregate conditions, the condition must be placed in the HAVING clause. [Context: Healthcare Patient Records]"
+  },
+  {
+    "id": "mcq_having_79",
+    "keyword": "HAVING",
+    "tag": "🎯 Core Concept",
+    "question": "[HAVING #79 &bull; E-Commerce Checkout Funnels] Which query executes faster and uses less temporary memory when filtering departments with total payroll > $1M in location 'NYC'? (Application Scenario 6)",
+    "options": [
+      "Filter both 'location = NYC' and 'SUM(salary) > 1M' in HAVING",
+      "Both execute with identical query plans and memory usage",
+      "Filter both in a subquery with no HAVING",
+      "Filter 'location = NYC' in WHERE, and 'SUM(salary) > 1M' in HAVING"
+    ],
+    "correctIndex": 3,
+    "explanation": "Pushing scalar predicates into WHERE eliminates non-NYC employees BEFORE hashing/grouping, drastically reducing the volume of data aggregated in memory. [Context: E-Commerce Checkout Funnels]"
+  },
+  {
+    "id": "mcq_having_80",
+    "keyword": "HAVING",
+    "tag": "🏛️ Corporate Edge",
+    "question": "[HAVING #80 &bull; Telecom Billing & Data Streams] What is the output of 'SELECT category, AVG(price) FROM products GROUP BY category HAVING MIN(stock) > 0;'? (Application Scenario 6)",
+    "options": [
+      "Only products whose price is greater than 0",
+      "Categories where every single product has stock > 0, showing the category name and its average price",
+      "An error because MIN(stock) is not in the SELECT list",
+      "Categories where total stock equals 0"
+    ],
+    "correctIndex": 1,
+    "explanation": "A HAVING clause can reference aggregate expressions (like MIN(stock)) even if that aggregate is not explicitly projected in the SELECT list. [Context: Telecom Billing & Data Streams]"
+  },
+  {
+    "id": "mcq_having_81",
+    "keyword": "HAVING",
+    "tag": "💡 Lead Architect",
+    "question": "[HAVING #81 &bull; AdTech Real-Time Bidding] What is the fundamental architectural difference between WHERE and HAVING in SQL physical execution? (Application Scenario 7)",
+    "options": [
+      "WHERE can only evaluate numbers; HAVING can only evaluate strings",
+      "HAVING is executed before FROM",
+      "WHERE requires an index while HAVING cannot use indexes",
+      "WHERE filters raw individual rows BEFORE aggregation; HAVING filters collapsed groups AFTER aggregation has computed"
+    ],
+    "correctIndex": 3,
+    "explanation": "In the relational physical pipeline: FROM -> WHERE -> GROUP BY -> HAVING. WHERE prunes rows before the grouping phase, reducing aggregate memory consumption. HAVING filters the post-aggregation groups. [Context: AdTech Real-Time Bidding]"
+  },
+  {
+    "id": "mcq_having_82",
+    "keyword": "HAVING",
+    "tag": "⚡ Gotcha Trap",
+    "question": "[HAVING #82 &bull; Cybersecurity Audit Logs] Can a query use a HAVING clause without a GROUP BY clause? (Application Scenario 7)",
+    "options": [
+      "No, HAVING is strictly illegal without GROUP BY",
+      "Yes, in which case the entire result set is treated as a single aggregate group",
+      "Yes, but only in SQLite and Oracle",
+      "No, the engine will fail during parsing"
+    ],
+    "correctIndex": 1,
+    "explanation": "In ANSI SQL, HAVING without GROUP BY treats the entire table as one grand group (e.g. 'SELECT 1 HAVING COUNT(*) > 0'). [Context: Cybersecurity Audit Logs]"
+  },
+  {
+    "id": "mcq_having_83",
+    "keyword": "HAVING",
+    "tag": "🎯 Core Concept",
+    "question": "[HAVING #83 &bull; Fintech & Ledger Systems] Why is 'SELECT dept, COUNT(*) FROM emp WHERE COUNT(*) > 5 GROUP BY dept;' invalid SQL? (Application Scenario 7)",
+    "options": [
+      "dept must be renamed before filtering",
+      "COUNT(*) cannot be greater than 5 in MySQL",
+      "The query must use SUM instead of COUNT",
+      "Aggregate functions like COUNT(*) cannot appear in a WHERE clause because aggregates have not yet been computed when WHERE executes"
+    ],
+    "correctIndex": 3,
+    "explanation": "WHERE filters rows before aggregation occurs. To filter on aggregate conditions, the condition must be placed in the HAVING clause. [Context: Fintech & Ledger Systems]"
+  },
+  {
+    "id": "mcq_having_84",
+    "keyword": "HAVING",
+    "tag": "🏛️ Corporate Edge",
+    "question": "[HAVING #84 &bull; SaaS Subscription Billing] Which query executes faster and uses less temporary memory when filtering departments with total payroll > $1M in location 'NYC'? (Application Scenario 7)",
+    "options": [
+      "Filter both 'location = NYC' and 'SUM(salary) > 1M' in HAVING",
+      "Filter 'location = NYC' in WHERE, and 'SUM(salary) > 1M' in HAVING",
+      "Both execute with identical query plans and memory usage",
+      "Filter both in a subquery with no HAVING"
+    ],
+    "correctIndex": 1,
+    "explanation": "Pushing scalar predicates into WHERE eliminates non-NYC employees BEFORE hashing/grouping, drastically reducing the volume of data aggregated in memory. [Context: SaaS Subscription Billing]"
+  },
+  {
+    "id": "mcq_having_85",
+    "keyword": "HAVING",
+    "tag": "💡 Lead Architect",
+    "question": "[HAVING #85 &bull; Global Supply Chain & Logistics] What is the output of 'SELECT category, AVG(price) FROM products GROUP BY category HAVING MIN(stock) > 0;'? (Application Scenario 7)",
+    "options": [
+      "Only products whose price is greater than 0",
+      "An error because MIN(stock) is not in the SELECT list",
+      "Categories where total stock equals 0",
+      "Categories where every single product has stock > 0, showing the category name and its average price"
+    ],
+    "correctIndex": 3,
+    "explanation": "A HAVING clause can reference aggregate expressions (like MIN(stock)) even if that aggregate is not explicitly projected in the SELECT list. [Context: Global Supply Chain & Logistics]"
+  },
+  {
+    "id": "mcq_having_86",
+    "keyword": "HAVING",
+    "tag": "⚡ Gotcha Trap",
+    "question": "[HAVING #86 &bull; Healthcare Patient Records] What is the fundamental architectural difference between WHERE and HAVING in SQL physical execution? (Application Scenario 8)",
+    "options": [
+      "WHERE can only evaluate numbers; HAVING can only evaluate strings",
+      "WHERE filters raw individual rows BEFORE aggregation; HAVING filters collapsed groups AFTER aggregation has computed",
+      "HAVING is executed before FROM",
+      "WHERE requires an index while HAVING cannot use indexes"
+    ],
+    "correctIndex": 1,
+    "explanation": "In the relational physical pipeline: FROM -> WHERE -> GROUP BY -> HAVING. WHERE prunes rows before the grouping phase, reducing aggregate memory consumption. HAVING filters the post-aggregation groups. [Context: Healthcare Patient Records]"
+  },
+  {
+    "id": "mcq_having_87",
+    "keyword": "HAVING",
+    "tag": "🎯 Core Concept",
+    "question": "[HAVING #87 &bull; E-Commerce Checkout Funnels] Can a query use a HAVING clause without a GROUP BY clause? (Application Scenario 8)",
+    "options": [
+      "No, HAVING is strictly illegal without GROUP BY",
+      "Yes, but only in SQLite and Oracle",
+      "No, the engine will fail during parsing",
+      "Yes, in which case the entire result set is treated as a single aggregate group"
+    ],
+    "correctIndex": 3,
+    "explanation": "In ANSI SQL, HAVING without GROUP BY treats the entire table as one grand group (e.g. 'SELECT 1 HAVING COUNT(*) > 0'). [Context: E-Commerce Checkout Funnels]"
+  },
+  {
+    "id": "mcq_having_88",
+    "keyword": "HAVING",
+    "tag": "🏛️ Corporate Edge",
+    "question": "[HAVING #88 &bull; Telecom Billing & Data Streams] Why is 'SELECT dept, COUNT(*) FROM emp WHERE COUNT(*) > 5 GROUP BY dept;' invalid SQL? (Application Scenario 8)",
+    "options": [
+      "dept must be renamed before filtering",
+      "Aggregate functions like COUNT(*) cannot appear in a WHERE clause because aggregates have not yet been computed when WHERE executes",
+      "COUNT(*) cannot be greater than 5 in MySQL",
+      "The query must use SUM instead of COUNT"
+    ],
+    "correctIndex": 1,
+    "explanation": "WHERE filters rows before aggregation occurs. To filter on aggregate conditions, the condition must be placed in the HAVING clause. [Context: Telecom Billing & Data Streams]"
+  },
+  {
+    "id": "mcq_having_89",
+    "keyword": "HAVING",
+    "tag": "💡 Lead Architect",
+    "question": "[HAVING #89 &bull; AdTech Real-Time Bidding] Which query executes faster and uses less temporary memory when filtering departments with total payroll > $1M in location 'NYC'? (Application Scenario 8)",
+    "options": [
+      "Filter both 'location = NYC' and 'SUM(salary) > 1M' in HAVING",
+      "Both execute with identical query plans and memory usage",
+      "Filter both in a subquery with no HAVING",
+      "Filter 'location = NYC' in WHERE, and 'SUM(salary) > 1M' in HAVING"
+    ],
+    "correctIndex": 3,
+    "explanation": "Pushing scalar predicates into WHERE eliminates non-NYC employees BEFORE hashing/grouping, drastically reducing the volume of data aggregated in memory. [Context: AdTech Real-Time Bidding]"
+  },
+  {
+    "id": "mcq_having_90",
+    "keyword": "HAVING",
+    "tag": "⚡ Gotcha Trap",
+    "question": "[HAVING #90 &bull; Cybersecurity Audit Logs] What is the output of 'SELECT category, AVG(price) FROM products GROUP BY category HAVING MIN(stock) > 0;'? (Application Scenario 8)",
+    "options": [
+      "Only products whose price is greater than 0",
+      "Categories where every single product has stock > 0, showing the category name and its average price",
+      "An error because MIN(stock) is not in the SELECT list",
+      "Categories where total stock equals 0"
+    ],
+    "correctIndex": 1,
+    "explanation": "A HAVING clause can reference aggregate expressions (like MIN(stock)) even if that aggregate is not explicitly projected in the SELECT list. [Context: Cybersecurity Audit Logs]"
+  },
+  {
+    "id": "mcq_having_91",
+    "keyword": "HAVING",
+    "tag": "🎯 Core Concept",
+    "question": "[HAVING #91 &bull; Fintech & Ledger Systems] What is the fundamental architectural difference between WHERE and HAVING in SQL physical execution? (Application Scenario 9)",
+    "options": [
+      "WHERE can only evaluate numbers; HAVING can only evaluate strings",
+      "HAVING is executed before FROM",
+      "WHERE requires an index while HAVING cannot use indexes",
+      "WHERE filters raw individual rows BEFORE aggregation; HAVING filters collapsed groups AFTER aggregation has computed"
+    ],
+    "correctIndex": 3,
+    "explanation": "In the relational physical pipeline: FROM -> WHERE -> GROUP BY -> HAVING. WHERE prunes rows before the grouping phase, reducing aggregate memory consumption. HAVING filters the post-aggregation groups. [Context: Fintech & Ledger Systems]"
+  },
+  {
+    "id": "mcq_having_92",
+    "keyword": "HAVING",
+    "tag": "🏛️ Corporate Edge",
+    "question": "[HAVING #92 &bull; SaaS Subscription Billing] Can a query use a HAVING clause without a GROUP BY clause? (Application Scenario 9)",
+    "options": [
+      "No, HAVING is strictly illegal without GROUP BY",
+      "Yes, in which case the entire result set is treated as a single aggregate group",
+      "Yes, but only in SQLite and Oracle",
+      "No, the engine will fail during parsing"
+    ],
+    "correctIndex": 1,
+    "explanation": "In ANSI SQL, HAVING without GROUP BY treats the entire table as one grand group (e.g. 'SELECT 1 HAVING COUNT(*) > 0'). [Context: SaaS Subscription Billing]"
+  },
+  {
+    "id": "mcq_having_93",
+    "keyword": "HAVING",
+    "tag": "💡 Lead Architect",
+    "question": "[HAVING #93 &bull; Global Supply Chain & Logistics] Why is 'SELECT dept, COUNT(*) FROM emp WHERE COUNT(*) > 5 GROUP BY dept;' invalid SQL? (Application Scenario 9)",
+    "options": [
+      "dept must be renamed before filtering",
+      "COUNT(*) cannot be greater than 5 in MySQL",
+      "The query must use SUM instead of COUNT",
+      "Aggregate functions like COUNT(*) cannot appear in a WHERE clause because aggregates have not yet been computed when WHERE executes"
+    ],
+    "correctIndex": 3,
+    "explanation": "WHERE filters rows before aggregation occurs. To filter on aggregate conditions, the condition must be placed in the HAVING clause. [Context: Global Supply Chain & Logistics]"
+  },
+  {
+    "id": "mcq_having_94",
+    "keyword": "HAVING",
+    "tag": "⚡ Gotcha Trap",
+    "question": "[HAVING #94 &bull; Healthcare Patient Records] Which query executes faster and uses less temporary memory when filtering departments with total payroll > $1M in location 'NYC'? (Application Scenario 9)",
+    "options": [
+      "Filter both 'location = NYC' and 'SUM(salary) > 1M' in HAVING",
+      "Filter 'location = NYC' in WHERE, and 'SUM(salary) > 1M' in HAVING",
+      "Both execute with identical query plans and memory usage",
+      "Filter both in a subquery with no HAVING"
+    ],
+    "correctIndex": 1,
+    "explanation": "Pushing scalar predicates into WHERE eliminates non-NYC employees BEFORE hashing/grouping, drastically reducing the volume of data aggregated in memory. [Context: Healthcare Patient Records]"
+  },
+  {
+    "id": "mcq_having_95",
+    "keyword": "HAVING",
+    "tag": "🎯 Core Concept",
+    "question": "[HAVING #95 &bull; E-Commerce Checkout Funnels] What is the output of 'SELECT category, AVG(price) FROM products GROUP BY category HAVING MIN(stock) > 0;'? (Application Scenario 9)",
+    "options": [
+      "Only products whose price is greater than 0",
+      "An error because MIN(stock) is not in the SELECT list",
+      "Categories where total stock equals 0",
+      "Categories where every single product has stock > 0, showing the category name and its average price"
+    ],
+    "correctIndex": 3,
+    "explanation": "A HAVING clause can reference aggregate expressions (like MIN(stock)) even if that aggregate is not explicitly projected in the SELECT list. [Context: E-Commerce Checkout Funnels]"
+  },
+  {
+    "id": "mcq_having_96",
+    "keyword": "HAVING",
+    "tag": "🏛️ Corporate Edge",
+    "question": "[HAVING #96 &bull; Telecom Billing & Data Streams] What is the fundamental architectural difference between WHERE and HAVING in SQL physical execution? (Application Scenario 10)",
+    "options": [
+      "WHERE can only evaluate numbers; HAVING can only evaluate strings",
+      "WHERE filters raw individual rows BEFORE aggregation; HAVING filters collapsed groups AFTER aggregation has computed",
+      "HAVING is executed before FROM",
+      "WHERE requires an index while HAVING cannot use indexes"
+    ],
+    "correctIndex": 1,
+    "explanation": "In the relational physical pipeline: FROM -> WHERE -> GROUP BY -> HAVING. WHERE prunes rows before the grouping phase, reducing aggregate memory consumption. HAVING filters the post-aggregation groups. [Context: Telecom Billing & Data Streams]"
+  },
+  {
+    "id": "mcq_having_97",
+    "keyword": "HAVING",
+    "tag": "💡 Lead Architect",
+    "question": "[HAVING #97 &bull; AdTech Real-Time Bidding] Can a query use a HAVING clause without a GROUP BY clause? (Application Scenario 10)",
+    "options": [
+      "No, HAVING is strictly illegal without GROUP BY",
+      "Yes, but only in SQLite and Oracle",
+      "No, the engine will fail during parsing",
+      "Yes, in which case the entire result set is treated as a single aggregate group"
+    ],
+    "correctIndex": 3,
+    "explanation": "In ANSI SQL, HAVING without GROUP BY treats the entire table as one grand group (e.g. 'SELECT 1 HAVING COUNT(*) > 0'). [Context: AdTech Real-Time Bidding]"
+  },
+  {
+    "id": "mcq_having_98",
+    "keyword": "HAVING",
+    "tag": "⚡ Gotcha Trap",
+    "question": "[HAVING #98 &bull; Cybersecurity Audit Logs] Why is 'SELECT dept, COUNT(*) FROM emp WHERE COUNT(*) > 5 GROUP BY dept;' invalid SQL? (Application Scenario 10)",
+    "options": [
+      "dept must be renamed before filtering",
+      "Aggregate functions like COUNT(*) cannot appear in a WHERE clause because aggregates have not yet been computed when WHERE executes",
+      "COUNT(*) cannot be greater than 5 in MySQL",
+      "The query must use SUM instead of COUNT"
+    ],
+    "correctIndex": 1,
+    "explanation": "WHERE filters rows before aggregation occurs. To filter on aggregate conditions, the condition must be placed in the HAVING clause. [Context: Cybersecurity Audit Logs]"
+  },
+  {
+    "id": "mcq_having_99",
+    "keyword": "HAVING",
+    "tag": "🎯 Core Concept",
+    "question": "[HAVING #99 &bull; Fintech & Ledger Systems] Which query executes faster and uses less temporary memory when filtering departments with total payroll > $1M in location 'NYC'? (Application Scenario 10)",
+    "options": [
+      "Filter both 'location = NYC' and 'SUM(salary) > 1M' in HAVING",
+      "Both execute with identical query plans and memory usage",
+      "Filter both in a subquery with no HAVING",
+      "Filter 'location = NYC' in WHERE, and 'SUM(salary) > 1M' in HAVING"
+    ],
+    "correctIndex": 3,
+    "explanation": "Pushing scalar predicates into WHERE eliminates non-NYC employees BEFORE hashing/grouping, drastically reducing the volume of data aggregated in memory. [Context: Fintech & Ledger Systems]"
+  },
+  {
+    "id": "mcq_having_100",
+    "keyword": "HAVING",
+    "tag": "🏛️ Corporate Edge",
+    "question": "[HAVING #100 &bull; SaaS Subscription Billing] What is the output of 'SELECT category, AVG(price) FROM products GROUP BY category HAVING MIN(stock) > 0;'? (Application Scenario 10)",
+    "options": [
+      "Only products whose price is greater than 0",
+      "Categories where every single product has stock > 0, showing the category name and its average price",
+      "An error because MIN(stock) is not in the SELECT list",
+      "Categories where total stock equals 0"
+    ],
+    "correctIndex": 1,
+    "explanation": "A HAVING clause can reference aggregate expressions (like MIN(stock)) even if that aggregate is not explicitly projected in the SELECT list. [Context: SaaS Subscription Billing]"
   },
   {
     "id": "mcq_where_1",
@@ -4905,6 +9106,706 @@ window.MCQS_VAULT_500 = [
     "explanation": "AND has higher logical precedence than OR. The predicate is evaluated as: status = 'active' OR (role = 'admin' AND salary > 50000). Always use parentheses to ensure clarity."
   },
   {
+    "id": "mcq_where_51",
+    "keyword": "WHERE",
+    "tag": "🎯 Core Concept",
+    "question": "[WHERE #51 &bull; Fintech & Ledger Systems] In Three-Valued Logic (3VL), what is the evaluation of 'WHERE salary = NULL' versus 'WHERE salary IS NULL'? (Application Scenario 1)",
+    "options": [
+      "Both evaluate to TRUE for missing values",
+      "'salary = NULL' is a syntax error",
+      "Both are identical in ANSI SQL",
+      "'salary = NULL' evaluates to UNKNOWN (which WHERE treats as FALSE), while 'salary IS NULL' correctly evaluates to TRUE for missing values"
+    ],
+    "correctIndex": 3,
+    "explanation": "NULL represents an unknown state, so comparing with = yields UNKNOWN. The WHERE clause only admits rows evaluating to TRUE. The unary predicate IS NULL must be used. [Context: Fintech & Ledger Systems]"
+  },
+  {
+    "id": "mcq_where_52",
+    "keyword": "WHERE",
+    "tag": "🏛️ Corporate Edge",
+    "question": "[WHERE #52 &bull; SaaS Subscription Billing] Why does the condition 'WHERE status NOT IN ('active', 'pending', NULL)' return ZERO rows, even if rows with status = 'archived' exist? (Application Scenario 1)",
+    "options": [
+      "NOT IN cannot accept more than two arguments",
+      "NOT IN expands to (status != 'active' AND status != 'pending' AND status != NULL). Since != NULL is UNKNOWN, the entire conjunction evaluates to UNKNOWN or FALSE",
+      "'archived' is a reserved word in MySQL",
+      "InnoDB automatically indexes NOT IN as empty"
+    ],
+    "correctIndex": 1,
+    "explanation": "The presence of NULL inside a NOT IN list is the most notorious SQL trap. Because x != NULL is UNKNOWN, ANDing with UNKNOWN makes the entire expression evaluate to UNKNOWN, returning 0 rows. [Context: SaaS Subscription Billing]"
+  },
+  {
+    "id": "mcq_where_53",
+    "keyword": "WHERE",
+    "tag": "💡 Lead Architect",
+    "question": "[WHERE #53 &bull; Global Supply Chain & Logistics] What is a 'sargable' predicate in SQL query optimization? (Application Scenario 1)",
+    "options": [
+      "A predicate that only works on SQLite databases",
+      "A predicate containing multiple OR clauses",
+      "A predicate that sorts output in descending order",
+      "A predicate formulated so the engine can utilize index seek operations (e.g. 'WHERE created_at >= '2026-01-01'') rather than full scans"
+    ],
+    "correctIndex": 3,
+    "explanation": "SARGable stands for Search Argument Able. Writing 'YEAR(date) = 2026' is non-sargable (forces full table scan), whereas 'date >= '2026-01-01' AND date < '2027-01-01'' is sargable. [Context: Global Supply Chain & Logistics]"
+  },
+  {
+    "id": "mcq_where_54",
+    "keyword": "WHERE",
+    "tag": "⚡ Gotcha Trap",
+    "question": "[WHERE #54 &bull; Healthcare Patient Records] In 'WHERE a = 1 OR b = 2', why might the query optimizer struggle to use single-column B-Tree indexes on both a and b? (Application Scenario 1)",
+    "options": [
+      "OR conditions automatically invalidate all primary keys",
+      "OR requires checking both branches; unless the engine supports Index Merge Union, it must perform a full table scan",
+      "B-Trees cannot store integers",
+      "MySQL does not support OR predicates"
+    ],
+    "correctIndex": 1,
+    "explanation": "Single-column B-Trees cannot satisfy an OR condition in a single index lookup. The engine must either perform an Index Merge (scanning both indexes and merging row IDs) or fall back to a full table scan. [Context: Healthcare Patient Records]"
+  },
+  {
+    "id": "mcq_where_55",
+    "keyword": "WHERE",
+    "tag": "🎯 Core Concept",
+    "question": "[WHERE #55 &bull; E-Commerce Checkout Funnels] What does 'WHERE 1 = 1' signify in production ORM and dynamic query builders? (Application Scenario 1)",
+    "options": [
+      "A security bypass exploit",
+      "A directive to disable table caching",
+      "A command that doubles query execution priority",
+      "A neutral true anchor allowing developers to programmatically append 'AND condition' without checking if it is the first predicate"
+    ],
+    "correctIndex": 3,
+    "explanation": "In dynamic SQL generation, 'WHERE 1=1' serves as a syntactic base so subsequent conditions can always start with 'AND ...' safely. [Context: E-Commerce Checkout Funnels]"
+  },
+  {
+    "id": "mcq_where_56",
+    "keyword": "WHERE",
+    "tag": "🏛️ Corporate Edge",
+    "question": "[WHERE #56 &bull; Telecom Billing & Data Streams] In Three-Valued Logic (3VL), what is the evaluation of 'WHERE salary = NULL' versus 'WHERE salary IS NULL'? (Application Scenario 2)",
+    "options": [
+      "Both evaluate to TRUE for missing values",
+      "'salary = NULL' evaluates to UNKNOWN (which WHERE treats as FALSE), while 'salary IS NULL' correctly evaluates to TRUE for missing values",
+      "'salary = NULL' is a syntax error",
+      "Both are identical in ANSI SQL"
+    ],
+    "correctIndex": 1,
+    "explanation": "NULL represents an unknown state, so comparing with = yields UNKNOWN. The WHERE clause only admits rows evaluating to TRUE. The unary predicate IS NULL must be used. [Context: Telecom Billing & Data Streams]"
+  },
+  {
+    "id": "mcq_where_57",
+    "keyword": "WHERE",
+    "tag": "💡 Lead Architect",
+    "question": "[WHERE #57 &bull; AdTech Real-Time Bidding] Why does the condition 'WHERE status NOT IN ('active', 'pending', NULL)' return ZERO rows, even if rows with status = 'archived' exist? (Application Scenario 2)",
+    "options": [
+      "NOT IN cannot accept more than two arguments",
+      "'archived' is a reserved word in MySQL",
+      "InnoDB automatically indexes NOT IN as empty",
+      "NOT IN expands to (status != 'active' AND status != 'pending' AND status != NULL). Since != NULL is UNKNOWN, the entire conjunction evaluates to UNKNOWN or FALSE"
+    ],
+    "correctIndex": 3,
+    "explanation": "The presence of NULL inside a NOT IN list is the most notorious SQL trap. Because x != NULL is UNKNOWN, ANDing with UNKNOWN makes the entire expression evaluate to UNKNOWN, returning 0 rows. [Context: AdTech Real-Time Bidding]"
+  },
+  {
+    "id": "mcq_where_58",
+    "keyword": "WHERE",
+    "tag": "⚡ Gotcha Trap",
+    "question": "[WHERE #58 &bull; Cybersecurity Audit Logs] What is a 'sargable' predicate in SQL query optimization? (Application Scenario 2)",
+    "options": [
+      "A predicate that only works on SQLite databases",
+      "A predicate formulated so the engine can utilize index seek operations (e.g. 'WHERE created_at >= '2026-01-01'') rather than full scans",
+      "A predicate containing multiple OR clauses",
+      "A predicate that sorts output in descending order"
+    ],
+    "correctIndex": 1,
+    "explanation": "SARGable stands for Search Argument Able. Writing 'YEAR(date) = 2026' is non-sargable (forces full table scan), whereas 'date >= '2026-01-01' AND date < '2027-01-01'' is sargable. [Context: Cybersecurity Audit Logs]"
+  },
+  {
+    "id": "mcq_where_59",
+    "keyword": "WHERE",
+    "tag": "🎯 Core Concept",
+    "question": "[WHERE #59 &bull; Fintech & Ledger Systems] In 'WHERE a = 1 OR b = 2', why might the query optimizer struggle to use single-column B-Tree indexes on both a and b? (Application Scenario 2)",
+    "options": [
+      "OR conditions automatically invalidate all primary keys",
+      "B-Trees cannot store integers",
+      "MySQL does not support OR predicates",
+      "OR requires checking both branches; unless the engine supports Index Merge Union, it must perform a full table scan"
+    ],
+    "correctIndex": 3,
+    "explanation": "Single-column B-Trees cannot satisfy an OR condition in a single index lookup. The engine must either perform an Index Merge (scanning both indexes and merging row IDs) or fall back to a full table scan. [Context: Fintech & Ledger Systems]"
+  },
+  {
+    "id": "mcq_where_60",
+    "keyword": "WHERE",
+    "tag": "🏛️ Corporate Edge",
+    "question": "[WHERE #60 &bull; SaaS Subscription Billing] What does 'WHERE 1 = 1' signify in production ORM and dynamic query builders? (Application Scenario 2)",
+    "options": [
+      "A security bypass exploit",
+      "A neutral true anchor allowing developers to programmatically append 'AND condition' without checking if it is the first predicate",
+      "A directive to disable table caching",
+      "A command that doubles query execution priority"
+    ],
+    "correctIndex": 1,
+    "explanation": "In dynamic SQL generation, 'WHERE 1=1' serves as a syntactic base so subsequent conditions can always start with 'AND ...' safely. [Context: SaaS Subscription Billing]"
+  },
+  {
+    "id": "mcq_where_61",
+    "keyword": "WHERE",
+    "tag": "💡 Lead Architect",
+    "question": "[WHERE #61 &bull; Global Supply Chain & Logistics] In Three-Valued Logic (3VL), what is the evaluation of 'WHERE salary = NULL' versus 'WHERE salary IS NULL'? (Application Scenario 3)",
+    "options": [
+      "Both evaluate to TRUE for missing values",
+      "'salary = NULL' is a syntax error",
+      "Both are identical in ANSI SQL",
+      "'salary = NULL' evaluates to UNKNOWN (which WHERE treats as FALSE), while 'salary IS NULL' correctly evaluates to TRUE for missing values"
+    ],
+    "correctIndex": 3,
+    "explanation": "NULL represents an unknown state, so comparing with = yields UNKNOWN. The WHERE clause only admits rows evaluating to TRUE. The unary predicate IS NULL must be used. [Context: Global Supply Chain & Logistics]"
+  },
+  {
+    "id": "mcq_where_62",
+    "keyword": "WHERE",
+    "tag": "⚡ Gotcha Trap",
+    "question": "[WHERE #62 &bull; Healthcare Patient Records] Why does the condition 'WHERE status NOT IN ('active', 'pending', NULL)' return ZERO rows, even if rows with status = 'archived' exist? (Application Scenario 3)",
+    "options": [
+      "NOT IN cannot accept more than two arguments",
+      "NOT IN expands to (status != 'active' AND status != 'pending' AND status != NULL). Since != NULL is UNKNOWN, the entire conjunction evaluates to UNKNOWN or FALSE",
+      "'archived' is a reserved word in MySQL",
+      "InnoDB automatically indexes NOT IN as empty"
+    ],
+    "correctIndex": 1,
+    "explanation": "The presence of NULL inside a NOT IN list is the most notorious SQL trap. Because x != NULL is UNKNOWN, ANDing with UNKNOWN makes the entire expression evaluate to UNKNOWN, returning 0 rows. [Context: Healthcare Patient Records]"
+  },
+  {
+    "id": "mcq_where_63",
+    "keyword": "WHERE",
+    "tag": "🎯 Core Concept",
+    "question": "[WHERE #63 &bull; E-Commerce Checkout Funnels] What is a 'sargable' predicate in SQL query optimization? (Application Scenario 3)",
+    "options": [
+      "A predicate that only works on SQLite databases",
+      "A predicate containing multiple OR clauses",
+      "A predicate that sorts output in descending order",
+      "A predicate formulated so the engine can utilize index seek operations (e.g. 'WHERE created_at >= '2026-01-01'') rather than full scans"
+    ],
+    "correctIndex": 3,
+    "explanation": "SARGable stands for Search Argument Able. Writing 'YEAR(date) = 2026' is non-sargable (forces full table scan), whereas 'date >= '2026-01-01' AND date < '2027-01-01'' is sargable. [Context: E-Commerce Checkout Funnels]"
+  },
+  {
+    "id": "mcq_where_64",
+    "keyword": "WHERE",
+    "tag": "🏛️ Corporate Edge",
+    "question": "[WHERE #64 &bull; Telecom Billing & Data Streams] In 'WHERE a = 1 OR b = 2', why might the query optimizer struggle to use single-column B-Tree indexes on both a and b? (Application Scenario 3)",
+    "options": [
+      "OR conditions automatically invalidate all primary keys",
+      "OR requires checking both branches; unless the engine supports Index Merge Union, it must perform a full table scan",
+      "B-Trees cannot store integers",
+      "MySQL does not support OR predicates"
+    ],
+    "correctIndex": 1,
+    "explanation": "Single-column B-Trees cannot satisfy an OR condition in a single index lookup. The engine must either perform an Index Merge (scanning both indexes and merging row IDs) or fall back to a full table scan. [Context: Telecom Billing & Data Streams]"
+  },
+  {
+    "id": "mcq_where_65",
+    "keyword": "WHERE",
+    "tag": "💡 Lead Architect",
+    "question": "[WHERE #65 &bull; AdTech Real-Time Bidding] What does 'WHERE 1 = 1' signify in production ORM and dynamic query builders? (Application Scenario 3)",
+    "options": [
+      "A security bypass exploit",
+      "A directive to disable table caching",
+      "A command that doubles query execution priority",
+      "A neutral true anchor allowing developers to programmatically append 'AND condition' without checking if it is the first predicate"
+    ],
+    "correctIndex": 3,
+    "explanation": "In dynamic SQL generation, 'WHERE 1=1' serves as a syntactic base so subsequent conditions can always start with 'AND ...' safely. [Context: AdTech Real-Time Bidding]"
+  },
+  {
+    "id": "mcq_where_66",
+    "keyword": "WHERE",
+    "tag": "⚡ Gotcha Trap",
+    "question": "[WHERE #66 &bull; Cybersecurity Audit Logs] In Three-Valued Logic (3VL), what is the evaluation of 'WHERE salary = NULL' versus 'WHERE salary IS NULL'? (Application Scenario 4)",
+    "options": [
+      "Both evaluate to TRUE for missing values",
+      "'salary = NULL' evaluates to UNKNOWN (which WHERE treats as FALSE), while 'salary IS NULL' correctly evaluates to TRUE for missing values",
+      "'salary = NULL' is a syntax error",
+      "Both are identical in ANSI SQL"
+    ],
+    "correctIndex": 1,
+    "explanation": "NULL represents an unknown state, so comparing with = yields UNKNOWN. The WHERE clause only admits rows evaluating to TRUE. The unary predicate IS NULL must be used. [Context: Cybersecurity Audit Logs]"
+  },
+  {
+    "id": "mcq_where_67",
+    "keyword": "WHERE",
+    "tag": "🎯 Core Concept",
+    "question": "[WHERE #67 &bull; Fintech & Ledger Systems] Why does the condition 'WHERE status NOT IN ('active', 'pending', NULL)' return ZERO rows, even if rows with status = 'archived' exist? (Application Scenario 4)",
+    "options": [
+      "NOT IN cannot accept more than two arguments",
+      "'archived' is a reserved word in MySQL",
+      "InnoDB automatically indexes NOT IN as empty",
+      "NOT IN expands to (status != 'active' AND status != 'pending' AND status != NULL). Since != NULL is UNKNOWN, the entire conjunction evaluates to UNKNOWN or FALSE"
+    ],
+    "correctIndex": 3,
+    "explanation": "The presence of NULL inside a NOT IN list is the most notorious SQL trap. Because x != NULL is UNKNOWN, ANDing with UNKNOWN makes the entire expression evaluate to UNKNOWN, returning 0 rows. [Context: Fintech & Ledger Systems]"
+  },
+  {
+    "id": "mcq_where_68",
+    "keyword": "WHERE",
+    "tag": "🏛️ Corporate Edge",
+    "question": "[WHERE #68 &bull; SaaS Subscription Billing] What is a 'sargable' predicate in SQL query optimization? (Application Scenario 4)",
+    "options": [
+      "A predicate that only works on SQLite databases",
+      "A predicate formulated so the engine can utilize index seek operations (e.g. 'WHERE created_at >= '2026-01-01'') rather than full scans",
+      "A predicate containing multiple OR clauses",
+      "A predicate that sorts output in descending order"
+    ],
+    "correctIndex": 1,
+    "explanation": "SARGable stands for Search Argument Able. Writing 'YEAR(date) = 2026' is non-sargable (forces full table scan), whereas 'date >= '2026-01-01' AND date < '2027-01-01'' is sargable. [Context: SaaS Subscription Billing]"
+  },
+  {
+    "id": "mcq_where_69",
+    "keyword": "WHERE",
+    "tag": "💡 Lead Architect",
+    "question": "[WHERE #69 &bull; Global Supply Chain & Logistics] In 'WHERE a = 1 OR b = 2', why might the query optimizer struggle to use single-column B-Tree indexes on both a and b? (Application Scenario 4)",
+    "options": [
+      "OR conditions automatically invalidate all primary keys",
+      "B-Trees cannot store integers",
+      "MySQL does not support OR predicates",
+      "OR requires checking both branches; unless the engine supports Index Merge Union, it must perform a full table scan"
+    ],
+    "correctIndex": 3,
+    "explanation": "Single-column B-Trees cannot satisfy an OR condition in a single index lookup. The engine must either perform an Index Merge (scanning both indexes and merging row IDs) or fall back to a full table scan. [Context: Global Supply Chain & Logistics]"
+  },
+  {
+    "id": "mcq_where_70",
+    "keyword": "WHERE",
+    "tag": "⚡ Gotcha Trap",
+    "question": "[WHERE #70 &bull; Healthcare Patient Records] What does 'WHERE 1 = 1' signify in production ORM and dynamic query builders? (Application Scenario 4)",
+    "options": [
+      "A security bypass exploit",
+      "A neutral true anchor allowing developers to programmatically append 'AND condition' without checking if it is the first predicate",
+      "A directive to disable table caching",
+      "A command that doubles query execution priority"
+    ],
+    "correctIndex": 1,
+    "explanation": "In dynamic SQL generation, 'WHERE 1=1' serves as a syntactic base so subsequent conditions can always start with 'AND ...' safely. [Context: Healthcare Patient Records]"
+  },
+  {
+    "id": "mcq_where_71",
+    "keyword": "WHERE",
+    "tag": "🎯 Core Concept",
+    "question": "[WHERE #71 &bull; E-Commerce Checkout Funnels] In Three-Valued Logic (3VL), what is the evaluation of 'WHERE salary = NULL' versus 'WHERE salary IS NULL'? (Application Scenario 5)",
+    "options": [
+      "Both evaluate to TRUE for missing values",
+      "'salary = NULL' is a syntax error",
+      "Both are identical in ANSI SQL",
+      "'salary = NULL' evaluates to UNKNOWN (which WHERE treats as FALSE), while 'salary IS NULL' correctly evaluates to TRUE for missing values"
+    ],
+    "correctIndex": 3,
+    "explanation": "NULL represents an unknown state, so comparing with = yields UNKNOWN. The WHERE clause only admits rows evaluating to TRUE. The unary predicate IS NULL must be used. [Context: E-Commerce Checkout Funnels]"
+  },
+  {
+    "id": "mcq_where_72",
+    "keyword": "WHERE",
+    "tag": "🏛️ Corporate Edge",
+    "question": "[WHERE #72 &bull; Telecom Billing & Data Streams] Why does the condition 'WHERE status NOT IN ('active', 'pending', NULL)' return ZERO rows, even if rows with status = 'archived' exist? (Application Scenario 5)",
+    "options": [
+      "NOT IN cannot accept more than two arguments",
+      "NOT IN expands to (status != 'active' AND status != 'pending' AND status != NULL). Since != NULL is UNKNOWN, the entire conjunction evaluates to UNKNOWN or FALSE",
+      "'archived' is a reserved word in MySQL",
+      "InnoDB automatically indexes NOT IN as empty"
+    ],
+    "correctIndex": 1,
+    "explanation": "The presence of NULL inside a NOT IN list is the most notorious SQL trap. Because x != NULL is UNKNOWN, ANDing with UNKNOWN makes the entire expression evaluate to UNKNOWN, returning 0 rows. [Context: Telecom Billing & Data Streams]"
+  },
+  {
+    "id": "mcq_where_73",
+    "keyword": "WHERE",
+    "tag": "💡 Lead Architect",
+    "question": "[WHERE #73 &bull; AdTech Real-Time Bidding] What is a 'sargable' predicate in SQL query optimization? (Application Scenario 5)",
+    "options": [
+      "A predicate that only works on SQLite databases",
+      "A predicate containing multiple OR clauses",
+      "A predicate that sorts output in descending order",
+      "A predicate formulated so the engine can utilize index seek operations (e.g. 'WHERE created_at >= '2026-01-01'') rather than full scans"
+    ],
+    "correctIndex": 3,
+    "explanation": "SARGable stands for Search Argument Able. Writing 'YEAR(date) = 2026' is non-sargable (forces full table scan), whereas 'date >= '2026-01-01' AND date < '2027-01-01'' is sargable. [Context: AdTech Real-Time Bidding]"
+  },
+  {
+    "id": "mcq_where_74",
+    "keyword": "WHERE",
+    "tag": "⚡ Gotcha Trap",
+    "question": "[WHERE #74 &bull; Cybersecurity Audit Logs] In 'WHERE a = 1 OR b = 2', why might the query optimizer struggle to use single-column B-Tree indexes on both a and b? (Application Scenario 5)",
+    "options": [
+      "OR conditions automatically invalidate all primary keys",
+      "OR requires checking both branches; unless the engine supports Index Merge Union, it must perform a full table scan",
+      "B-Trees cannot store integers",
+      "MySQL does not support OR predicates"
+    ],
+    "correctIndex": 1,
+    "explanation": "Single-column B-Trees cannot satisfy an OR condition in a single index lookup. The engine must either perform an Index Merge (scanning both indexes and merging row IDs) or fall back to a full table scan. [Context: Cybersecurity Audit Logs]"
+  },
+  {
+    "id": "mcq_where_75",
+    "keyword": "WHERE",
+    "tag": "🎯 Core Concept",
+    "question": "[WHERE #75 &bull; Fintech & Ledger Systems] What does 'WHERE 1 = 1' signify in production ORM and dynamic query builders? (Application Scenario 5)",
+    "options": [
+      "A security bypass exploit",
+      "A directive to disable table caching",
+      "A command that doubles query execution priority",
+      "A neutral true anchor allowing developers to programmatically append 'AND condition' without checking if it is the first predicate"
+    ],
+    "correctIndex": 3,
+    "explanation": "In dynamic SQL generation, 'WHERE 1=1' serves as a syntactic base so subsequent conditions can always start with 'AND ...' safely. [Context: Fintech & Ledger Systems]"
+  },
+  {
+    "id": "mcq_where_76",
+    "keyword": "WHERE",
+    "tag": "🏛️ Corporate Edge",
+    "question": "[WHERE #76 &bull; SaaS Subscription Billing] In Three-Valued Logic (3VL), what is the evaluation of 'WHERE salary = NULL' versus 'WHERE salary IS NULL'? (Application Scenario 6)",
+    "options": [
+      "Both evaluate to TRUE for missing values",
+      "'salary = NULL' evaluates to UNKNOWN (which WHERE treats as FALSE), while 'salary IS NULL' correctly evaluates to TRUE for missing values",
+      "'salary = NULL' is a syntax error",
+      "Both are identical in ANSI SQL"
+    ],
+    "correctIndex": 1,
+    "explanation": "NULL represents an unknown state, so comparing with = yields UNKNOWN. The WHERE clause only admits rows evaluating to TRUE. The unary predicate IS NULL must be used. [Context: SaaS Subscription Billing]"
+  },
+  {
+    "id": "mcq_where_77",
+    "keyword": "WHERE",
+    "tag": "💡 Lead Architect",
+    "question": "[WHERE #77 &bull; Global Supply Chain & Logistics] Why does the condition 'WHERE status NOT IN ('active', 'pending', NULL)' return ZERO rows, even if rows with status = 'archived' exist? (Application Scenario 6)",
+    "options": [
+      "NOT IN cannot accept more than two arguments",
+      "'archived' is a reserved word in MySQL",
+      "InnoDB automatically indexes NOT IN as empty",
+      "NOT IN expands to (status != 'active' AND status != 'pending' AND status != NULL). Since != NULL is UNKNOWN, the entire conjunction evaluates to UNKNOWN or FALSE"
+    ],
+    "correctIndex": 3,
+    "explanation": "The presence of NULL inside a NOT IN list is the most notorious SQL trap. Because x != NULL is UNKNOWN, ANDing with UNKNOWN makes the entire expression evaluate to UNKNOWN, returning 0 rows. [Context: Global Supply Chain & Logistics]"
+  },
+  {
+    "id": "mcq_where_78",
+    "keyword": "WHERE",
+    "tag": "⚡ Gotcha Trap",
+    "question": "[WHERE #78 &bull; Healthcare Patient Records] What is a 'sargable' predicate in SQL query optimization? (Application Scenario 6)",
+    "options": [
+      "A predicate that only works on SQLite databases",
+      "A predicate formulated so the engine can utilize index seek operations (e.g. 'WHERE created_at >= '2026-01-01'') rather than full scans",
+      "A predicate containing multiple OR clauses",
+      "A predicate that sorts output in descending order"
+    ],
+    "correctIndex": 1,
+    "explanation": "SARGable stands for Search Argument Able. Writing 'YEAR(date) = 2026' is non-sargable (forces full table scan), whereas 'date >= '2026-01-01' AND date < '2027-01-01'' is sargable. [Context: Healthcare Patient Records]"
+  },
+  {
+    "id": "mcq_where_79",
+    "keyword": "WHERE",
+    "tag": "🎯 Core Concept",
+    "question": "[WHERE #79 &bull; E-Commerce Checkout Funnels] In 'WHERE a = 1 OR b = 2', why might the query optimizer struggle to use single-column B-Tree indexes on both a and b? (Application Scenario 6)",
+    "options": [
+      "OR conditions automatically invalidate all primary keys",
+      "B-Trees cannot store integers",
+      "MySQL does not support OR predicates",
+      "OR requires checking both branches; unless the engine supports Index Merge Union, it must perform a full table scan"
+    ],
+    "correctIndex": 3,
+    "explanation": "Single-column B-Trees cannot satisfy an OR condition in a single index lookup. The engine must either perform an Index Merge (scanning both indexes and merging row IDs) or fall back to a full table scan. [Context: E-Commerce Checkout Funnels]"
+  },
+  {
+    "id": "mcq_where_80",
+    "keyword": "WHERE",
+    "tag": "🏛️ Corporate Edge",
+    "question": "[WHERE #80 &bull; Telecom Billing & Data Streams] What does 'WHERE 1 = 1' signify in production ORM and dynamic query builders? (Application Scenario 6)",
+    "options": [
+      "A security bypass exploit",
+      "A neutral true anchor allowing developers to programmatically append 'AND condition' without checking if it is the first predicate",
+      "A directive to disable table caching",
+      "A command that doubles query execution priority"
+    ],
+    "correctIndex": 1,
+    "explanation": "In dynamic SQL generation, 'WHERE 1=1' serves as a syntactic base so subsequent conditions can always start with 'AND ...' safely. [Context: Telecom Billing & Data Streams]"
+  },
+  {
+    "id": "mcq_where_81",
+    "keyword": "WHERE",
+    "tag": "💡 Lead Architect",
+    "question": "[WHERE #81 &bull; AdTech Real-Time Bidding] In Three-Valued Logic (3VL), what is the evaluation of 'WHERE salary = NULL' versus 'WHERE salary IS NULL'? (Application Scenario 7)",
+    "options": [
+      "Both evaluate to TRUE for missing values",
+      "'salary = NULL' is a syntax error",
+      "Both are identical in ANSI SQL",
+      "'salary = NULL' evaluates to UNKNOWN (which WHERE treats as FALSE), while 'salary IS NULL' correctly evaluates to TRUE for missing values"
+    ],
+    "correctIndex": 3,
+    "explanation": "NULL represents an unknown state, so comparing with = yields UNKNOWN. The WHERE clause only admits rows evaluating to TRUE. The unary predicate IS NULL must be used. [Context: AdTech Real-Time Bidding]"
+  },
+  {
+    "id": "mcq_where_82",
+    "keyword": "WHERE",
+    "tag": "⚡ Gotcha Trap",
+    "question": "[WHERE #82 &bull; Cybersecurity Audit Logs] Why does the condition 'WHERE status NOT IN ('active', 'pending', NULL)' return ZERO rows, even if rows with status = 'archived' exist? (Application Scenario 7)",
+    "options": [
+      "NOT IN cannot accept more than two arguments",
+      "NOT IN expands to (status != 'active' AND status != 'pending' AND status != NULL). Since != NULL is UNKNOWN, the entire conjunction evaluates to UNKNOWN or FALSE",
+      "'archived' is a reserved word in MySQL",
+      "InnoDB automatically indexes NOT IN as empty"
+    ],
+    "correctIndex": 1,
+    "explanation": "The presence of NULL inside a NOT IN list is the most notorious SQL trap. Because x != NULL is UNKNOWN, ANDing with UNKNOWN makes the entire expression evaluate to UNKNOWN, returning 0 rows. [Context: Cybersecurity Audit Logs]"
+  },
+  {
+    "id": "mcq_where_83",
+    "keyword": "WHERE",
+    "tag": "🎯 Core Concept",
+    "question": "[WHERE #83 &bull; Fintech & Ledger Systems] What is a 'sargable' predicate in SQL query optimization? (Application Scenario 7)",
+    "options": [
+      "A predicate that only works on SQLite databases",
+      "A predicate containing multiple OR clauses",
+      "A predicate that sorts output in descending order",
+      "A predicate formulated so the engine can utilize index seek operations (e.g. 'WHERE created_at >= '2026-01-01'') rather than full scans"
+    ],
+    "correctIndex": 3,
+    "explanation": "SARGable stands for Search Argument Able. Writing 'YEAR(date) = 2026' is non-sargable (forces full table scan), whereas 'date >= '2026-01-01' AND date < '2027-01-01'' is sargable. [Context: Fintech & Ledger Systems]"
+  },
+  {
+    "id": "mcq_where_84",
+    "keyword": "WHERE",
+    "tag": "🏛️ Corporate Edge",
+    "question": "[WHERE #84 &bull; SaaS Subscription Billing] In 'WHERE a = 1 OR b = 2', why might the query optimizer struggle to use single-column B-Tree indexes on both a and b? (Application Scenario 7)",
+    "options": [
+      "OR conditions automatically invalidate all primary keys",
+      "OR requires checking both branches; unless the engine supports Index Merge Union, it must perform a full table scan",
+      "B-Trees cannot store integers",
+      "MySQL does not support OR predicates"
+    ],
+    "correctIndex": 1,
+    "explanation": "Single-column B-Trees cannot satisfy an OR condition in a single index lookup. The engine must either perform an Index Merge (scanning both indexes and merging row IDs) or fall back to a full table scan. [Context: SaaS Subscription Billing]"
+  },
+  {
+    "id": "mcq_where_85",
+    "keyword": "WHERE",
+    "tag": "💡 Lead Architect",
+    "question": "[WHERE #85 &bull; Global Supply Chain & Logistics] What does 'WHERE 1 = 1' signify in production ORM and dynamic query builders? (Application Scenario 7)",
+    "options": [
+      "A security bypass exploit",
+      "A directive to disable table caching",
+      "A command that doubles query execution priority",
+      "A neutral true anchor allowing developers to programmatically append 'AND condition' without checking if it is the first predicate"
+    ],
+    "correctIndex": 3,
+    "explanation": "In dynamic SQL generation, 'WHERE 1=1' serves as a syntactic base so subsequent conditions can always start with 'AND ...' safely. [Context: Global Supply Chain & Logistics]"
+  },
+  {
+    "id": "mcq_where_86",
+    "keyword": "WHERE",
+    "tag": "⚡ Gotcha Trap",
+    "question": "[WHERE #86 &bull; Healthcare Patient Records] In Three-Valued Logic (3VL), what is the evaluation of 'WHERE salary = NULL' versus 'WHERE salary IS NULL'? (Application Scenario 8)",
+    "options": [
+      "Both evaluate to TRUE for missing values",
+      "'salary = NULL' evaluates to UNKNOWN (which WHERE treats as FALSE), while 'salary IS NULL' correctly evaluates to TRUE for missing values",
+      "'salary = NULL' is a syntax error",
+      "Both are identical in ANSI SQL"
+    ],
+    "correctIndex": 1,
+    "explanation": "NULL represents an unknown state, so comparing with = yields UNKNOWN. The WHERE clause only admits rows evaluating to TRUE. The unary predicate IS NULL must be used. [Context: Healthcare Patient Records]"
+  },
+  {
+    "id": "mcq_where_87",
+    "keyword": "WHERE",
+    "tag": "🎯 Core Concept",
+    "question": "[WHERE #87 &bull; E-Commerce Checkout Funnels] Why does the condition 'WHERE status NOT IN ('active', 'pending', NULL)' return ZERO rows, even if rows with status = 'archived' exist? (Application Scenario 8)",
+    "options": [
+      "NOT IN cannot accept more than two arguments",
+      "'archived' is a reserved word in MySQL",
+      "InnoDB automatically indexes NOT IN as empty",
+      "NOT IN expands to (status != 'active' AND status != 'pending' AND status != NULL). Since != NULL is UNKNOWN, the entire conjunction evaluates to UNKNOWN or FALSE"
+    ],
+    "correctIndex": 3,
+    "explanation": "The presence of NULL inside a NOT IN list is the most notorious SQL trap. Because x != NULL is UNKNOWN, ANDing with UNKNOWN makes the entire expression evaluate to UNKNOWN, returning 0 rows. [Context: E-Commerce Checkout Funnels]"
+  },
+  {
+    "id": "mcq_where_88",
+    "keyword": "WHERE",
+    "tag": "🏛️ Corporate Edge",
+    "question": "[WHERE #88 &bull; Telecom Billing & Data Streams] What is a 'sargable' predicate in SQL query optimization? (Application Scenario 8)",
+    "options": [
+      "A predicate that only works on SQLite databases",
+      "A predicate formulated so the engine can utilize index seek operations (e.g. 'WHERE created_at >= '2026-01-01'') rather than full scans",
+      "A predicate containing multiple OR clauses",
+      "A predicate that sorts output in descending order"
+    ],
+    "correctIndex": 1,
+    "explanation": "SARGable stands for Search Argument Able. Writing 'YEAR(date) = 2026' is non-sargable (forces full table scan), whereas 'date >= '2026-01-01' AND date < '2027-01-01'' is sargable. [Context: Telecom Billing & Data Streams]"
+  },
+  {
+    "id": "mcq_where_89",
+    "keyword": "WHERE",
+    "tag": "💡 Lead Architect",
+    "question": "[WHERE #89 &bull; AdTech Real-Time Bidding] In 'WHERE a = 1 OR b = 2', why might the query optimizer struggle to use single-column B-Tree indexes on both a and b? (Application Scenario 8)",
+    "options": [
+      "OR conditions automatically invalidate all primary keys",
+      "B-Trees cannot store integers",
+      "MySQL does not support OR predicates",
+      "OR requires checking both branches; unless the engine supports Index Merge Union, it must perform a full table scan"
+    ],
+    "correctIndex": 3,
+    "explanation": "Single-column B-Trees cannot satisfy an OR condition in a single index lookup. The engine must either perform an Index Merge (scanning both indexes and merging row IDs) or fall back to a full table scan. [Context: AdTech Real-Time Bidding]"
+  },
+  {
+    "id": "mcq_where_90",
+    "keyword": "WHERE",
+    "tag": "⚡ Gotcha Trap",
+    "question": "[WHERE #90 &bull; Cybersecurity Audit Logs] What does 'WHERE 1 = 1' signify in production ORM and dynamic query builders? (Application Scenario 8)",
+    "options": [
+      "A security bypass exploit",
+      "A neutral true anchor allowing developers to programmatically append 'AND condition' without checking if it is the first predicate",
+      "A directive to disable table caching",
+      "A command that doubles query execution priority"
+    ],
+    "correctIndex": 1,
+    "explanation": "In dynamic SQL generation, 'WHERE 1=1' serves as a syntactic base so subsequent conditions can always start with 'AND ...' safely. [Context: Cybersecurity Audit Logs]"
+  },
+  {
+    "id": "mcq_where_91",
+    "keyword": "WHERE",
+    "tag": "🎯 Core Concept",
+    "question": "[WHERE #91 &bull; Fintech & Ledger Systems] In Three-Valued Logic (3VL), what is the evaluation of 'WHERE salary = NULL' versus 'WHERE salary IS NULL'? (Application Scenario 9)",
+    "options": [
+      "Both evaluate to TRUE for missing values",
+      "'salary = NULL' is a syntax error",
+      "Both are identical in ANSI SQL",
+      "'salary = NULL' evaluates to UNKNOWN (which WHERE treats as FALSE), while 'salary IS NULL' correctly evaluates to TRUE for missing values"
+    ],
+    "correctIndex": 3,
+    "explanation": "NULL represents an unknown state, so comparing with = yields UNKNOWN. The WHERE clause only admits rows evaluating to TRUE. The unary predicate IS NULL must be used. [Context: Fintech & Ledger Systems]"
+  },
+  {
+    "id": "mcq_where_92",
+    "keyword": "WHERE",
+    "tag": "🏛️ Corporate Edge",
+    "question": "[WHERE #92 &bull; SaaS Subscription Billing] Why does the condition 'WHERE status NOT IN ('active', 'pending', NULL)' return ZERO rows, even if rows with status = 'archived' exist? (Application Scenario 9)",
+    "options": [
+      "NOT IN cannot accept more than two arguments",
+      "NOT IN expands to (status != 'active' AND status != 'pending' AND status != NULL). Since != NULL is UNKNOWN, the entire conjunction evaluates to UNKNOWN or FALSE",
+      "'archived' is a reserved word in MySQL",
+      "InnoDB automatically indexes NOT IN as empty"
+    ],
+    "correctIndex": 1,
+    "explanation": "The presence of NULL inside a NOT IN list is the most notorious SQL trap. Because x != NULL is UNKNOWN, ANDing with UNKNOWN makes the entire expression evaluate to UNKNOWN, returning 0 rows. [Context: SaaS Subscription Billing]"
+  },
+  {
+    "id": "mcq_where_93",
+    "keyword": "WHERE",
+    "tag": "💡 Lead Architect",
+    "question": "[WHERE #93 &bull; Global Supply Chain & Logistics] What is a 'sargable' predicate in SQL query optimization? (Application Scenario 9)",
+    "options": [
+      "A predicate that only works on SQLite databases",
+      "A predicate containing multiple OR clauses",
+      "A predicate that sorts output in descending order",
+      "A predicate formulated so the engine can utilize index seek operations (e.g. 'WHERE created_at >= '2026-01-01'') rather than full scans"
+    ],
+    "correctIndex": 3,
+    "explanation": "SARGable stands for Search Argument Able. Writing 'YEAR(date) = 2026' is non-sargable (forces full table scan), whereas 'date >= '2026-01-01' AND date < '2027-01-01'' is sargable. [Context: Global Supply Chain & Logistics]"
+  },
+  {
+    "id": "mcq_where_94",
+    "keyword": "WHERE",
+    "tag": "⚡ Gotcha Trap",
+    "question": "[WHERE #94 &bull; Healthcare Patient Records] In 'WHERE a = 1 OR b = 2', why might the query optimizer struggle to use single-column B-Tree indexes on both a and b? (Application Scenario 9)",
+    "options": [
+      "OR conditions automatically invalidate all primary keys",
+      "OR requires checking both branches; unless the engine supports Index Merge Union, it must perform a full table scan",
+      "B-Trees cannot store integers",
+      "MySQL does not support OR predicates"
+    ],
+    "correctIndex": 1,
+    "explanation": "Single-column B-Trees cannot satisfy an OR condition in a single index lookup. The engine must either perform an Index Merge (scanning both indexes and merging row IDs) or fall back to a full table scan. [Context: Healthcare Patient Records]"
+  },
+  {
+    "id": "mcq_where_95",
+    "keyword": "WHERE",
+    "tag": "🎯 Core Concept",
+    "question": "[WHERE #95 &bull; E-Commerce Checkout Funnels] What does 'WHERE 1 = 1' signify in production ORM and dynamic query builders? (Application Scenario 9)",
+    "options": [
+      "A security bypass exploit",
+      "A directive to disable table caching",
+      "A command that doubles query execution priority",
+      "A neutral true anchor allowing developers to programmatically append 'AND condition' without checking if it is the first predicate"
+    ],
+    "correctIndex": 3,
+    "explanation": "In dynamic SQL generation, 'WHERE 1=1' serves as a syntactic base so subsequent conditions can always start with 'AND ...' safely. [Context: E-Commerce Checkout Funnels]"
+  },
+  {
+    "id": "mcq_where_96",
+    "keyword": "WHERE",
+    "tag": "🏛️ Corporate Edge",
+    "question": "[WHERE #96 &bull; Telecom Billing & Data Streams] In Three-Valued Logic (3VL), what is the evaluation of 'WHERE salary = NULL' versus 'WHERE salary IS NULL'? (Application Scenario 10)",
+    "options": [
+      "Both evaluate to TRUE for missing values",
+      "'salary = NULL' evaluates to UNKNOWN (which WHERE treats as FALSE), while 'salary IS NULL' correctly evaluates to TRUE for missing values",
+      "'salary = NULL' is a syntax error",
+      "Both are identical in ANSI SQL"
+    ],
+    "correctIndex": 1,
+    "explanation": "NULL represents an unknown state, so comparing with = yields UNKNOWN. The WHERE clause only admits rows evaluating to TRUE. The unary predicate IS NULL must be used. [Context: Telecom Billing & Data Streams]"
+  },
+  {
+    "id": "mcq_where_97",
+    "keyword": "WHERE",
+    "tag": "💡 Lead Architect",
+    "question": "[WHERE #97 &bull; AdTech Real-Time Bidding] Why does the condition 'WHERE status NOT IN ('active', 'pending', NULL)' return ZERO rows, even if rows with status = 'archived' exist? (Application Scenario 10)",
+    "options": [
+      "NOT IN cannot accept more than two arguments",
+      "'archived' is a reserved word in MySQL",
+      "InnoDB automatically indexes NOT IN as empty",
+      "NOT IN expands to (status != 'active' AND status != 'pending' AND status != NULL). Since != NULL is UNKNOWN, the entire conjunction evaluates to UNKNOWN or FALSE"
+    ],
+    "correctIndex": 3,
+    "explanation": "The presence of NULL inside a NOT IN list is the most notorious SQL trap. Because x != NULL is UNKNOWN, ANDing with UNKNOWN makes the entire expression evaluate to UNKNOWN, returning 0 rows. [Context: AdTech Real-Time Bidding]"
+  },
+  {
+    "id": "mcq_where_98",
+    "keyword": "WHERE",
+    "tag": "⚡ Gotcha Trap",
+    "question": "[WHERE #98 &bull; Cybersecurity Audit Logs] What is a 'sargable' predicate in SQL query optimization? (Application Scenario 10)",
+    "options": [
+      "A predicate that only works on SQLite databases",
+      "A predicate formulated so the engine can utilize index seek operations (e.g. 'WHERE created_at >= '2026-01-01'') rather than full scans",
+      "A predicate containing multiple OR clauses",
+      "A predicate that sorts output in descending order"
+    ],
+    "correctIndex": 1,
+    "explanation": "SARGable stands for Search Argument Able. Writing 'YEAR(date) = 2026' is non-sargable (forces full table scan), whereas 'date >= '2026-01-01' AND date < '2027-01-01'' is sargable. [Context: Cybersecurity Audit Logs]"
+  },
+  {
+    "id": "mcq_where_99",
+    "keyword": "WHERE",
+    "tag": "🎯 Core Concept",
+    "question": "[WHERE #99 &bull; Fintech & Ledger Systems] In 'WHERE a = 1 OR b = 2', why might the query optimizer struggle to use single-column B-Tree indexes on both a and b? (Application Scenario 10)",
+    "options": [
+      "OR conditions automatically invalidate all primary keys",
+      "B-Trees cannot store integers",
+      "MySQL does not support OR predicates",
+      "OR requires checking both branches; unless the engine supports Index Merge Union, it must perform a full table scan"
+    ],
+    "correctIndex": 3,
+    "explanation": "Single-column B-Trees cannot satisfy an OR condition in a single index lookup. The engine must either perform an Index Merge (scanning both indexes and merging row IDs) or fall back to a full table scan. [Context: Fintech & Ledger Systems]"
+  },
+  {
+    "id": "mcq_where_100",
+    "keyword": "WHERE",
+    "tag": "🏛️ Corporate Edge",
+    "question": "[WHERE #100 &bull; SaaS Subscription Billing] What does 'WHERE 1 = 1' signify in production ORM and dynamic query builders? (Application Scenario 10)",
+    "options": [
+      "A security bypass exploit",
+      "A neutral true anchor allowing developers to programmatically append 'AND condition' without checking if it is the first predicate",
+      "A directive to disable table caching",
+      "A command that doubles query execution priority"
+    ],
+    "correctIndex": 1,
+    "explanation": "In dynamic SQL generation, 'WHERE 1=1' serves as a syntactic base so subsequent conditions can always start with 'AND ...' safely. [Context: SaaS Subscription Billing]"
+  },
+  {
     "id": "mcq_select_1",
     "keyword": "SELECT",
     "tag": "🍡 Quick Snack",
@@ -5603,6 +10504,706 @@ window.MCQS_VAULT_500 = [
     ],
     "correctIndex": 2,
     "explanation": "Standard SQL engines (PostgreSQL, MySQL, SQLite) permit SELECT without a FROM clause to evaluate scalar expressions and test server connectivity."
+  },
+  {
+    "id": "mcq_select_51",
+    "keyword": "SELECT",
+    "tag": "🎯 Core Concept",
+    "question": "[SELECT #51 &bull; Fintech & Ledger Systems] Why is 'SELECT *' universally considered an anti-pattern in high-concurrency production microservices? (Application Scenario 1)",
+    "options": [
+      "It throws a syntax warning in MySQL 8.0",
+      "It forces the query to run in single-threaded mode",
+      "It locks the entire database table against writes",
+      "It breaks covering indexes, increases network/IO payload, causes schema-drift crashes, and prevents compiler optimization"
+    ],
+    "correctIndex": 3,
+    "explanation": "Explicit column selection allows the engine to satisfy queries directly from secondary index leaf pages (Covering Index), avoids transmitting unused bloated text/blob columns, and protects APIs against unexpected schema additions. [Context: Fintech & Ledger Systems]"
+  },
+  {
+    "id": "mcq_select_52",
+    "keyword": "SELECT",
+    "tag": "🏛️ Corporate Edge",
+    "question": "[SELECT #52 &bull; SaaS Subscription Billing] In SQL execution order, when are column aliases defined in the SELECT list resolved? (Application Scenario 1)",
+    "options": [
+      "At the very beginning during FROM parsing",
+      "During the SELECT projection phase, which occurs AFTER WHERE, GROUP BY, and HAVING, meaning aliases cannot be referenced in WHERE",
+      "Before the WHERE clause is evaluated",
+      "Only when the client receives the network packet"
+    ],
+    "correctIndex": 1,
+    "explanation": "Execution order is FROM -> WHERE -> GROUP BY -> HAVING -> SELECT -> ORDER BY -> LIMIT. Because SELECT runs after WHERE and HAVING, aliases created in SELECT do not exist yet when WHERE executes. [Context: SaaS Subscription Billing]"
+  },
+  {
+    "id": "mcq_select_53",
+    "keyword": "SELECT",
+    "tag": "💡 Lead Architect",
+    "question": "[SELECT #53 &bull; Global Supply Chain & Logistics] What is the difference between 'SELECT DISTINCT col1, col2' and 'SELECT col1, DISTINCT col2'? (Application Scenario 1)",
+    "options": [
+      "'SELECT col1, DISTINCT col2' only deduplicates col2 while leaving col1 untouched",
+      "Both execute identically",
+      "DISTINCT only works when followed by parentheses",
+      "'SELECT col1, DISTINCT col2' is a syntax error because DISTINCT is a query-level modifier applying to the entire tuple"
+    ],
+    "correctIndex": 3,
+    "explanation": "DISTINCT is not a function; it is a query-level modifier that applies to all projected columns combined. 'SELECT col1, DISTINCT col2' is invalid ANSI SQL. [Context: Global Supply Chain & Logistics]"
+  },
+  {
+    "id": "mcq_select_54",
+    "keyword": "SELECT",
+    "tag": "⚡ Gotcha Trap",
+    "question": "[SELECT #54 &bull; Healthcare Patient Records] What does 'SELECT CASE WHEN x > 0 THEN 'pos' ELSE 'neg' END AS flag' return if x is NULL? (Application Scenario 1)",
+    "options": [
+      "NULL",
+      "'neg' because NULL > 0 evaluates to UNKNOWN, falling through to the ELSE branch",
+      "'pos'",
+      "Error: NullPointerException in CASE statement"
+    ],
+    "correctIndex": 1,
+    "explanation": "In CASE expressions, WHEN condition executes only on TRUE. Since NULL > 0 is UNKNOWN, it skips the THEN branch and drops into the ELSE branch. [Context: Healthcare Patient Records]"
+  },
+  {
+    "id": "mcq_select_55",
+    "keyword": "SELECT",
+    "tag": "🎯 Core Concept",
+    "question": "[SELECT #55 &bull; E-Commerce Checkout Funnels] What does 'SELECT 1 AS num UNION ALL SELECT 1 AS num' produce? (Application Scenario 1)",
+    "options": [
+      "One row containing 1",
+      "An error due to duplicate column names",
+      "A single row with value 2",
+      "Two rows, each containing 1"
+    ],
+    "correctIndex": 3,
+    "explanation": "UNION ALL preserves all rows without running an expensive deduplication sort or hash pass. Thus two rows with 1 are returned. [Context: E-Commerce Checkout Funnels]"
+  },
+  {
+    "id": "mcq_select_56",
+    "keyword": "SELECT",
+    "tag": "🏛️ Corporate Edge",
+    "question": "[SELECT #56 &bull; Telecom Billing & Data Streams] Why is 'SELECT *' universally considered an anti-pattern in high-concurrency production microservices? (Application Scenario 2)",
+    "options": [
+      "It throws a syntax warning in MySQL 8.0",
+      "It breaks covering indexes, increases network/IO payload, causes schema-drift crashes, and prevents compiler optimization",
+      "It forces the query to run in single-threaded mode",
+      "It locks the entire database table against writes"
+    ],
+    "correctIndex": 1,
+    "explanation": "Explicit column selection allows the engine to satisfy queries directly from secondary index leaf pages (Covering Index), avoids transmitting unused bloated text/blob columns, and protects APIs against unexpected schema additions. [Context: Telecom Billing & Data Streams]"
+  },
+  {
+    "id": "mcq_select_57",
+    "keyword": "SELECT",
+    "tag": "💡 Lead Architect",
+    "question": "[SELECT #57 &bull; AdTech Real-Time Bidding] In SQL execution order, when are column aliases defined in the SELECT list resolved? (Application Scenario 2)",
+    "options": [
+      "At the very beginning during FROM parsing",
+      "Before the WHERE clause is evaluated",
+      "Only when the client receives the network packet",
+      "During the SELECT projection phase, which occurs AFTER WHERE, GROUP BY, and HAVING, meaning aliases cannot be referenced in WHERE"
+    ],
+    "correctIndex": 3,
+    "explanation": "Execution order is FROM -> WHERE -> GROUP BY -> HAVING -> SELECT -> ORDER BY -> LIMIT. Because SELECT runs after WHERE and HAVING, aliases created in SELECT do not exist yet when WHERE executes. [Context: AdTech Real-Time Bidding]"
+  },
+  {
+    "id": "mcq_select_58",
+    "keyword": "SELECT",
+    "tag": "⚡ Gotcha Trap",
+    "question": "[SELECT #58 &bull; Cybersecurity Audit Logs] What is the difference between 'SELECT DISTINCT col1, col2' and 'SELECT col1, DISTINCT col2'? (Application Scenario 2)",
+    "options": [
+      "'SELECT col1, DISTINCT col2' only deduplicates col2 while leaving col1 untouched",
+      "'SELECT col1, DISTINCT col2' is a syntax error because DISTINCT is a query-level modifier applying to the entire tuple",
+      "Both execute identically",
+      "DISTINCT only works when followed by parentheses"
+    ],
+    "correctIndex": 1,
+    "explanation": "DISTINCT is not a function; it is a query-level modifier that applies to all projected columns combined. 'SELECT col1, DISTINCT col2' is invalid ANSI SQL. [Context: Cybersecurity Audit Logs]"
+  },
+  {
+    "id": "mcq_select_59",
+    "keyword": "SELECT",
+    "tag": "🎯 Core Concept",
+    "question": "[SELECT #59 &bull; Fintech & Ledger Systems] What does 'SELECT CASE WHEN x > 0 THEN 'pos' ELSE 'neg' END AS flag' return if x is NULL? (Application Scenario 2)",
+    "options": [
+      "NULL",
+      "'pos'",
+      "Error: NullPointerException in CASE statement",
+      "'neg' because NULL > 0 evaluates to UNKNOWN, falling through to the ELSE branch"
+    ],
+    "correctIndex": 3,
+    "explanation": "In CASE expressions, WHEN condition executes only on TRUE. Since NULL > 0 is UNKNOWN, it skips the THEN branch and drops into the ELSE branch. [Context: Fintech & Ledger Systems]"
+  },
+  {
+    "id": "mcq_select_60",
+    "keyword": "SELECT",
+    "tag": "🏛️ Corporate Edge",
+    "question": "[SELECT #60 &bull; SaaS Subscription Billing] What does 'SELECT 1 AS num UNION ALL SELECT 1 AS num' produce? (Application Scenario 2)",
+    "options": [
+      "One row containing 1",
+      "Two rows, each containing 1",
+      "An error due to duplicate column names",
+      "A single row with value 2"
+    ],
+    "correctIndex": 1,
+    "explanation": "UNION ALL preserves all rows without running an expensive deduplication sort or hash pass. Thus two rows with 1 are returned. [Context: SaaS Subscription Billing]"
+  },
+  {
+    "id": "mcq_select_61",
+    "keyword": "SELECT",
+    "tag": "💡 Lead Architect",
+    "question": "[SELECT #61 &bull; Global Supply Chain & Logistics] Why is 'SELECT *' universally considered an anti-pattern in high-concurrency production microservices? (Application Scenario 3)",
+    "options": [
+      "It throws a syntax warning in MySQL 8.0",
+      "It forces the query to run in single-threaded mode",
+      "It locks the entire database table against writes",
+      "It breaks covering indexes, increases network/IO payload, causes schema-drift crashes, and prevents compiler optimization"
+    ],
+    "correctIndex": 3,
+    "explanation": "Explicit column selection allows the engine to satisfy queries directly from secondary index leaf pages (Covering Index), avoids transmitting unused bloated text/blob columns, and protects APIs against unexpected schema additions. [Context: Global Supply Chain & Logistics]"
+  },
+  {
+    "id": "mcq_select_62",
+    "keyword": "SELECT",
+    "tag": "⚡ Gotcha Trap",
+    "question": "[SELECT #62 &bull; Healthcare Patient Records] In SQL execution order, when are column aliases defined in the SELECT list resolved? (Application Scenario 3)",
+    "options": [
+      "At the very beginning during FROM parsing",
+      "During the SELECT projection phase, which occurs AFTER WHERE, GROUP BY, and HAVING, meaning aliases cannot be referenced in WHERE",
+      "Before the WHERE clause is evaluated",
+      "Only when the client receives the network packet"
+    ],
+    "correctIndex": 1,
+    "explanation": "Execution order is FROM -> WHERE -> GROUP BY -> HAVING -> SELECT -> ORDER BY -> LIMIT. Because SELECT runs after WHERE and HAVING, aliases created in SELECT do not exist yet when WHERE executes. [Context: Healthcare Patient Records]"
+  },
+  {
+    "id": "mcq_select_63",
+    "keyword": "SELECT",
+    "tag": "🎯 Core Concept",
+    "question": "[SELECT #63 &bull; E-Commerce Checkout Funnels] What is the difference between 'SELECT DISTINCT col1, col2' and 'SELECT col1, DISTINCT col2'? (Application Scenario 3)",
+    "options": [
+      "'SELECT col1, DISTINCT col2' only deduplicates col2 while leaving col1 untouched",
+      "Both execute identically",
+      "DISTINCT only works when followed by parentheses",
+      "'SELECT col1, DISTINCT col2' is a syntax error because DISTINCT is a query-level modifier applying to the entire tuple"
+    ],
+    "correctIndex": 3,
+    "explanation": "DISTINCT is not a function; it is a query-level modifier that applies to all projected columns combined. 'SELECT col1, DISTINCT col2' is invalid ANSI SQL. [Context: E-Commerce Checkout Funnels]"
+  },
+  {
+    "id": "mcq_select_64",
+    "keyword": "SELECT",
+    "tag": "🏛️ Corporate Edge",
+    "question": "[SELECT #64 &bull; Telecom Billing & Data Streams] What does 'SELECT CASE WHEN x > 0 THEN 'pos' ELSE 'neg' END AS flag' return if x is NULL? (Application Scenario 3)",
+    "options": [
+      "NULL",
+      "'neg' because NULL > 0 evaluates to UNKNOWN, falling through to the ELSE branch",
+      "'pos'",
+      "Error: NullPointerException in CASE statement"
+    ],
+    "correctIndex": 1,
+    "explanation": "In CASE expressions, WHEN condition executes only on TRUE. Since NULL > 0 is UNKNOWN, it skips the THEN branch and drops into the ELSE branch. [Context: Telecom Billing & Data Streams]"
+  },
+  {
+    "id": "mcq_select_65",
+    "keyword": "SELECT",
+    "tag": "💡 Lead Architect",
+    "question": "[SELECT #65 &bull; AdTech Real-Time Bidding] What does 'SELECT 1 AS num UNION ALL SELECT 1 AS num' produce? (Application Scenario 3)",
+    "options": [
+      "One row containing 1",
+      "An error due to duplicate column names",
+      "A single row with value 2",
+      "Two rows, each containing 1"
+    ],
+    "correctIndex": 3,
+    "explanation": "UNION ALL preserves all rows without running an expensive deduplication sort or hash pass. Thus two rows with 1 are returned. [Context: AdTech Real-Time Bidding]"
+  },
+  {
+    "id": "mcq_select_66",
+    "keyword": "SELECT",
+    "tag": "⚡ Gotcha Trap",
+    "question": "[SELECT #66 &bull; Cybersecurity Audit Logs] Why is 'SELECT *' universally considered an anti-pattern in high-concurrency production microservices? (Application Scenario 4)",
+    "options": [
+      "It throws a syntax warning in MySQL 8.0",
+      "It breaks covering indexes, increases network/IO payload, causes schema-drift crashes, and prevents compiler optimization",
+      "It forces the query to run in single-threaded mode",
+      "It locks the entire database table against writes"
+    ],
+    "correctIndex": 1,
+    "explanation": "Explicit column selection allows the engine to satisfy queries directly from secondary index leaf pages (Covering Index), avoids transmitting unused bloated text/blob columns, and protects APIs against unexpected schema additions. [Context: Cybersecurity Audit Logs]"
+  },
+  {
+    "id": "mcq_select_67",
+    "keyword": "SELECT",
+    "tag": "🎯 Core Concept",
+    "question": "[SELECT #67 &bull; Fintech & Ledger Systems] In SQL execution order, when are column aliases defined in the SELECT list resolved? (Application Scenario 4)",
+    "options": [
+      "At the very beginning during FROM parsing",
+      "Before the WHERE clause is evaluated",
+      "Only when the client receives the network packet",
+      "During the SELECT projection phase, which occurs AFTER WHERE, GROUP BY, and HAVING, meaning aliases cannot be referenced in WHERE"
+    ],
+    "correctIndex": 3,
+    "explanation": "Execution order is FROM -> WHERE -> GROUP BY -> HAVING -> SELECT -> ORDER BY -> LIMIT. Because SELECT runs after WHERE and HAVING, aliases created in SELECT do not exist yet when WHERE executes. [Context: Fintech & Ledger Systems]"
+  },
+  {
+    "id": "mcq_select_68",
+    "keyword": "SELECT",
+    "tag": "🏛️ Corporate Edge",
+    "question": "[SELECT #68 &bull; SaaS Subscription Billing] What is the difference between 'SELECT DISTINCT col1, col2' and 'SELECT col1, DISTINCT col2'? (Application Scenario 4)",
+    "options": [
+      "'SELECT col1, DISTINCT col2' only deduplicates col2 while leaving col1 untouched",
+      "'SELECT col1, DISTINCT col2' is a syntax error because DISTINCT is a query-level modifier applying to the entire tuple",
+      "Both execute identically",
+      "DISTINCT only works when followed by parentheses"
+    ],
+    "correctIndex": 1,
+    "explanation": "DISTINCT is not a function; it is a query-level modifier that applies to all projected columns combined. 'SELECT col1, DISTINCT col2' is invalid ANSI SQL. [Context: SaaS Subscription Billing]"
+  },
+  {
+    "id": "mcq_select_69",
+    "keyword": "SELECT",
+    "tag": "💡 Lead Architect",
+    "question": "[SELECT #69 &bull; Global Supply Chain & Logistics] What does 'SELECT CASE WHEN x > 0 THEN 'pos' ELSE 'neg' END AS flag' return if x is NULL? (Application Scenario 4)",
+    "options": [
+      "NULL",
+      "'pos'",
+      "Error: NullPointerException in CASE statement",
+      "'neg' because NULL > 0 evaluates to UNKNOWN, falling through to the ELSE branch"
+    ],
+    "correctIndex": 3,
+    "explanation": "In CASE expressions, WHEN condition executes only on TRUE. Since NULL > 0 is UNKNOWN, it skips the THEN branch and drops into the ELSE branch. [Context: Global Supply Chain & Logistics]"
+  },
+  {
+    "id": "mcq_select_70",
+    "keyword": "SELECT",
+    "tag": "⚡ Gotcha Trap",
+    "question": "[SELECT #70 &bull; Healthcare Patient Records] What does 'SELECT 1 AS num UNION ALL SELECT 1 AS num' produce? (Application Scenario 4)",
+    "options": [
+      "One row containing 1",
+      "Two rows, each containing 1",
+      "An error due to duplicate column names",
+      "A single row with value 2"
+    ],
+    "correctIndex": 1,
+    "explanation": "UNION ALL preserves all rows without running an expensive deduplication sort or hash pass. Thus two rows with 1 are returned. [Context: Healthcare Patient Records]"
+  },
+  {
+    "id": "mcq_select_71",
+    "keyword": "SELECT",
+    "tag": "🎯 Core Concept",
+    "question": "[SELECT #71 &bull; E-Commerce Checkout Funnels] Why is 'SELECT *' universally considered an anti-pattern in high-concurrency production microservices? (Application Scenario 5)",
+    "options": [
+      "It throws a syntax warning in MySQL 8.0",
+      "It forces the query to run in single-threaded mode",
+      "It locks the entire database table against writes",
+      "It breaks covering indexes, increases network/IO payload, causes schema-drift crashes, and prevents compiler optimization"
+    ],
+    "correctIndex": 3,
+    "explanation": "Explicit column selection allows the engine to satisfy queries directly from secondary index leaf pages (Covering Index), avoids transmitting unused bloated text/blob columns, and protects APIs against unexpected schema additions. [Context: E-Commerce Checkout Funnels]"
+  },
+  {
+    "id": "mcq_select_72",
+    "keyword": "SELECT",
+    "tag": "🏛️ Corporate Edge",
+    "question": "[SELECT #72 &bull; Telecom Billing & Data Streams] In SQL execution order, when are column aliases defined in the SELECT list resolved? (Application Scenario 5)",
+    "options": [
+      "At the very beginning during FROM parsing",
+      "During the SELECT projection phase, which occurs AFTER WHERE, GROUP BY, and HAVING, meaning aliases cannot be referenced in WHERE",
+      "Before the WHERE clause is evaluated",
+      "Only when the client receives the network packet"
+    ],
+    "correctIndex": 1,
+    "explanation": "Execution order is FROM -> WHERE -> GROUP BY -> HAVING -> SELECT -> ORDER BY -> LIMIT. Because SELECT runs after WHERE and HAVING, aliases created in SELECT do not exist yet when WHERE executes. [Context: Telecom Billing & Data Streams]"
+  },
+  {
+    "id": "mcq_select_73",
+    "keyword": "SELECT",
+    "tag": "💡 Lead Architect",
+    "question": "[SELECT #73 &bull; AdTech Real-Time Bidding] What is the difference between 'SELECT DISTINCT col1, col2' and 'SELECT col1, DISTINCT col2'? (Application Scenario 5)",
+    "options": [
+      "'SELECT col1, DISTINCT col2' only deduplicates col2 while leaving col1 untouched",
+      "Both execute identically",
+      "DISTINCT only works when followed by parentheses",
+      "'SELECT col1, DISTINCT col2' is a syntax error because DISTINCT is a query-level modifier applying to the entire tuple"
+    ],
+    "correctIndex": 3,
+    "explanation": "DISTINCT is not a function; it is a query-level modifier that applies to all projected columns combined. 'SELECT col1, DISTINCT col2' is invalid ANSI SQL. [Context: AdTech Real-Time Bidding]"
+  },
+  {
+    "id": "mcq_select_74",
+    "keyword": "SELECT",
+    "tag": "⚡ Gotcha Trap",
+    "question": "[SELECT #74 &bull; Cybersecurity Audit Logs] What does 'SELECT CASE WHEN x > 0 THEN 'pos' ELSE 'neg' END AS flag' return if x is NULL? (Application Scenario 5)",
+    "options": [
+      "NULL",
+      "'neg' because NULL > 0 evaluates to UNKNOWN, falling through to the ELSE branch",
+      "'pos'",
+      "Error: NullPointerException in CASE statement"
+    ],
+    "correctIndex": 1,
+    "explanation": "In CASE expressions, WHEN condition executes only on TRUE. Since NULL > 0 is UNKNOWN, it skips the THEN branch and drops into the ELSE branch. [Context: Cybersecurity Audit Logs]"
+  },
+  {
+    "id": "mcq_select_75",
+    "keyword": "SELECT",
+    "tag": "🎯 Core Concept",
+    "question": "[SELECT #75 &bull; Fintech & Ledger Systems] What does 'SELECT 1 AS num UNION ALL SELECT 1 AS num' produce? (Application Scenario 5)",
+    "options": [
+      "One row containing 1",
+      "An error due to duplicate column names",
+      "A single row with value 2",
+      "Two rows, each containing 1"
+    ],
+    "correctIndex": 3,
+    "explanation": "UNION ALL preserves all rows without running an expensive deduplication sort or hash pass. Thus two rows with 1 are returned. [Context: Fintech & Ledger Systems]"
+  },
+  {
+    "id": "mcq_select_76",
+    "keyword": "SELECT",
+    "tag": "🏛️ Corporate Edge",
+    "question": "[SELECT #76 &bull; SaaS Subscription Billing] Why is 'SELECT *' universally considered an anti-pattern in high-concurrency production microservices? (Application Scenario 6)",
+    "options": [
+      "It throws a syntax warning in MySQL 8.0",
+      "It breaks covering indexes, increases network/IO payload, causes schema-drift crashes, and prevents compiler optimization",
+      "It forces the query to run in single-threaded mode",
+      "It locks the entire database table against writes"
+    ],
+    "correctIndex": 1,
+    "explanation": "Explicit column selection allows the engine to satisfy queries directly from secondary index leaf pages (Covering Index), avoids transmitting unused bloated text/blob columns, and protects APIs against unexpected schema additions. [Context: SaaS Subscription Billing]"
+  },
+  {
+    "id": "mcq_select_77",
+    "keyword": "SELECT",
+    "tag": "💡 Lead Architect",
+    "question": "[SELECT #77 &bull; Global Supply Chain & Logistics] In SQL execution order, when are column aliases defined in the SELECT list resolved? (Application Scenario 6)",
+    "options": [
+      "At the very beginning during FROM parsing",
+      "Before the WHERE clause is evaluated",
+      "Only when the client receives the network packet",
+      "During the SELECT projection phase, which occurs AFTER WHERE, GROUP BY, and HAVING, meaning aliases cannot be referenced in WHERE"
+    ],
+    "correctIndex": 3,
+    "explanation": "Execution order is FROM -> WHERE -> GROUP BY -> HAVING -> SELECT -> ORDER BY -> LIMIT. Because SELECT runs after WHERE and HAVING, aliases created in SELECT do not exist yet when WHERE executes. [Context: Global Supply Chain & Logistics]"
+  },
+  {
+    "id": "mcq_select_78",
+    "keyword": "SELECT",
+    "tag": "⚡ Gotcha Trap",
+    "question": "[SELECT #78 &bull; Healthcare Patient Records] What is the difference between 'SELECT DISTINCT col1, col2' and 'SELECT col1, DISTINCT col2'? (Application Scenario 6)",
+    "options": [
+      "'SELECT col1, DISTINCT col2' only deduplicates col2 while leaving col1 untouched",
+      "'SELECT col1, DISTINCT col2' is a syntax error because DISTINCT is a query-level modifier applying to the entire tuple",
+      "Both execute identically",
+      "DISTINCT only works when followed by parentheses"
+    ],
+    "correctIndex": 1,
+    "explanation": "DISTINCT is not a function; it is a query-level modifier that applies to all projected columns combined. 'SELECT col1, DISTINCT col2' is invalid ANSI SQL. [Context: Healthcare Patient Records]"
+  },
+  {
+    "id": "mcq_select_79",
+    "keyword": "SELECT",
+    "tag": "🎯 Core Concept",
+    "question": "[SELECT #79 &bull; E-Commerce Checkout Funnels] What does 'SELECT CASE WHEN x > 0 THEN 'pos' ELSE 'neg' END AS flag' return if x is NULL? (Application Scenario 6)",
+    "options": [
+      "NULL",
+      "'pos'",
+      "Error: NullPointerException in CASE statement",
+      "'neg' because NULL > 0 evaluates to UNKNOWN, falling through to the ELSE branch"
+    ],
+    "correctIndex": 3,
+    "explanation": "In CASE expressions, WHEN condition executes only on TRUE. Since NULL > 0 is UNKNOWN, it skips the THEN branch and drops into the ELSE branch. [Context: E-Commerce Checkout Funnels]"
+  },
+  {
+    "id": "mcq_select_80",
+    "keyword": "SELECT",
+    "tag": "🏛️ Corporate Edge",
+    "question": "[SELECT #80 &bull; Telecom Billing & Data Streams] What does 'SELECT 1 AS num UNION ALL SELECT 1 AS num' produce? (Application Scenario 6)",
+    "options": [
+      "One row containing 1",
+      "Two rows, each containing 1",
+      "An error due to duplicate column names",
+      "A single row with value 2"
+    ],
+    "correctIndex": 1,
+    "explanation": "UNION ALL preserves all rows without running an expensive deduplication sort or hash pass. Thus two rows with 1 are returned. [Context: Telecom Billing & Data Streams]"
+  },
+  {
+    "id": "mcq_select_81",
+    "keyword": "SELECT",
+    "tag": "💡 Lead Architect",
+    "question": "[SELECT #81 &bull; AdTech Real-Time Bidding] Why is 'SELECT *' universally considered an anti-pattern in high-concurrency production microservices? (Application Scenario 7)",
+    "options": [
+      "It throws a syntax warning in MySQL 8.0",
+      "It forces the query to run in single-threaded mode",
+      "It locks the entire database table against writes",
+      "It breaks covering indexes, increases network/IO payload, causes schema-drift crashes, and prevents compiler optimization"
+    ],
+    "correctIndex": 3,
+    "explanation": "Explicit column selection allows the engine to satisfy queries directly from secondary index leaf pages (Covering Index), avoids transmitting unused bloated text/blob columns, and protects APIs against unexpected schema additions. [Context: AdTech Real-Time Bidding]"
+  },
+  {
+    "id": "mcq_select_82",
+    "keyword": "SELECT",
+    "tag": "⚡ Gotcha Trap",
+    "question": "[SELECT #82 &bull; Cybersecurity Audit Logs] In SQL execution order, when are column aliases defined in the SELECT list resolved? (Application Scenario 7)",
+    "options": [
+      "At the very beginning during FROM parsing",
+      "During the SELECT projection phase, which occurs AFTER WHERE, GROUP BY, and HAVING, meaning aliases cannot be referenced in WHERE",
+      "Before the WHERE clause is evaluated",
+      "Only when the client receives the network packet"
+    ],
+    "correctIndex": 1,
+    "explanation": "Execution order is FROM -> WHERE -> GROUP BY -> HAVING -> SELECT -> ORDER BY -> LIMIT. Because SELECT runs after WHERE and HAVING, aliases created in SELECT do not exist yet when WHERE executes. [Context: Cybersecurity Audit Logs]"
+  },
+  {
+    "id": "mcq_select_83",
+    "keyword": "SELECT",
+    "tag": "🎯 Core Concept",
+    "question": "[SELECT #83 &bull; Fintech & Ledger Systems] What is the difference between 'SELECT DISTINCT col1, col2' and 'SELECT col1, DISTINCT col2'? (Application Scenario 7)",
+    "options": [
+      "'SELECT col1, DISTINCT col2' only deduplicates col2 while leaving col1 untouched",
+      "Both execute identically",
+      "DISTINCT only works when followed by parentheses",
+      "'SELECT col1, DISTINCT col2' is a syntax error because DISTINCT is a query-level modifier applying to the entire tuple"
+    ],
+    "correctIndex": 3,
+    "explanation": "DISTINCT is not a function; it is a query-level modifier that applies to all projected columns combined. 'SELECT col1, DISTINCT col2' is invalid ANSI SQL. [Context: Fintech & Ledger Systems]"
+  },
+  {
+    "id": "mcq_select_84",
+    "keyword": "SELECT",
+    "tag": "🏛️ Corporate Edge",
+    "question": "[SELECT #84 &bull; SaaS Subscription Billing] What does 'SELECT CASE WHEN x > 0 THEN 'pos' ELSE 'neg' END AS flag' return if x is NULL? (Application Scenario 7)",
+    "options": [
+      "NULL",
+      "'neg' because NULL > 0 evaluates to UNKNOWN, falling through to the ELSE branch",
+      "'pos'",
+      "Error: NullPointerException in CASE statement"
+    ],
+    "correctIndex": 1,
+    "explanation": "In CASE expressions, WHEN condition executes only on TRUE. Since NULL > 0 is UNKNOWN, it skips the THEN branch and drops into the ELSE branch. [Context: SaaS Subscription Billing]"
+  },
+  {
+    "id": "mcq_select_85",
+    "keyword": "SELECT",
+    "tag": "💡 Lead Architect",
+    "question": "[SELECT #85 &bull; Global Supply Chain & Logistics] What does 'SELECT 1 AS num UNION ALL SELECT 1 AS num' produce? (Application Scenario 7)",
+    "options": [
+      "One row containing 1",
+      "An error due to duplicate column names",
+      "A single row with value 2",
+      "Two rows, each containing 1"
+    ],
+    "correctIndex": 3,
+    "explanation": "UNION ALL preserves all rows without running an expensive deduplication sort or hash pass. Thus two rows with 1 are returned. [Context: Global Supply Chain & Logistics]"
+  },
+  {
+    "id": "mcq_select_86",
+    "keyword": "SELECT",
+    "tag": "⚡ Gotcha Trap",
+    "question": "[SELECT #86 &bull; Healthcare Patient Records] Why is 'SELECT *' universally considered an anti-pattern in high-concurrency production microservices? (Application Scenario 8)",
+    "options": [
+      "It throws a syntax warning in MySQL 8.0",
+      "It breaks covering indexes, increases network/IO payload, causes schema-drift crashes, and prevents compiler optimization",
+      "It forces the query to run in single-threaded mode",
+      "It locks the entire database table against writes"
+    ],
+    "correctIndex": 1,
+    "explanation": "Explicit column selection allows the engine to satisfy queries directly from secondary index leaf pages (Covering Index), avoids transmitting unused bloated text/blob columns, and protects APIs against unexpected schema additions. [Context: Healthcare Patient Records]"
+  },
+  {
+    "id": "mcq_select_87",
+    "keyword": "SELECT",
+    "tag": "🎯 Core Concept",
+    "question": "[SELECT #87 &bull; E-Commerce Checkout Funnels] In SQL execution order, when are column aliases defined in the SELECT list resolved? (Application Scenario 8)",
+    "options": [
+      "At the very beginning during FROM parsing",
+      "Before the WHERE clause is evaluated",
+      "Only when the client receives the network packet",
+      "During the SELECT projection phase, which occurs AFTER WHERE, GROUP BY, and HAVING, meaning aliases cannot be referenced in WHERE"
+    ],
+    "correctIndex": 3,
+    "explanation": "Execution order is FROM -> WHERE -> GROUP BY -> HAVING -> SELECT -> ORDER BY -> LIMIT. Because SELECT runs after WHERE and HAVING, aliases created in SELECT do not exist yet when WHERE executes. [Context: E-Commerce Checkout Funnels]"
+  },
+  {
+    "id": "mcq_select_88",
+    "keyword": "SELECT",
+    "tag": "🏛️ Corporate Edge",
+    "question": "[SELECT #88 &bull; Telecom Billing & Data Streams] What is the difference between 'SELECT DISTINCT col1, col2' and 'SELECT col1, DISTINCT col2'? (Application Scenario 8)",
+    "options": [
+      "'SELECT col1, DISTINCT col2' only deduplicates col2 while leaving col1 untouched",
+      "'SELECT col1, DISTINCT col2' is a syntax error because DISTINCT is a query-level modifier applying to the entire tuple",
+      "Both execute identically",
+      "DISTINCT only works when followed by parentheses"
+    ],
+    "correctIndex": 1,
+    "explanation": "DISTINCT is not a function; it is a query-level modifier that applies to all projected columns combined. 'SELECT col1, DISTINCT col2' is invalid ANSI SQL. [Context: Telecom Billing & Data Streams]"
+  },
+  {
+    "id": "mcq_select_89",
+    "keyword": "SELECT",
+    "tag": "💡 Lead Architect",
+    "question": "[SELECT #89 &bull; AdTech Real-Time Bidding] What does 'SELECT CASE WHEN x > 0 THEN 'pos' ELSE 'neg' END AS flag' return if x is NULL? (Application Scenario 8)",
+    "options": [
+      "NULL",
+      "'pos'",
+      "Error: NullPointerException in CASE statement",
+      "'neg' because NULL > 0 evaluates to UNKNOWN, falling through to the ELSE branch"
+    ],
+    "correctIndex": 3,
+    "explanation": "In CASE expressions, WHEN condition executes only on TRUE. Since NULL > 0 is UNKNOWN, it skips the THEN branch and drops into the ELSE branch. [Context: AdTech Real-Time Bidding]"
+  },
+  {
+    "id": "mcq_select_90",
+    "keyword": "SELECT",
+    "tag": "⚡ Gotcha Trap",
+    "question": "[SELECT #90 &bull; Cybersecurity Audit Logs] What does 'SELECT 1 AS num UNION ALL SELECT 1 AS num' produce? (Application Scenario 8)",
+    "options": [
+      "One row containing 1",
+      "Two rows, each containing 1",
+      "An error due to duplicate column names",
+      "A single row with value 2"
+    ],
+    "correctIndex": 1,
+    "explanation": "UNION ALL preserves all rows without running an expensive deduplication sort or hash pass. Thus two rows with 1 are returned. [Context: Cybersecurity Audit Logs]"
+  },
+  {
+    "id": "mcq_select_91",
+    "keyword": "SELECT",
+    "tag": "🎯 Core Concept",
+    "question": "[SELECT #91 &bull; Fintech & Ledger Systems] Why is 'SELECT *' universally considered an anti-pattern in high-concurrency production microservices? (Application Scenario 9)",
+    "options": [
+      "It throws a syntax warning in MySQL 8.0",
+      "It forces the query to run in single-threaded mode",
+      "It locks the entire database table against writes",
+      "It breaks covering indexes, increases network/IO payload, causes schema-drift crashes, and prevents compiler optimization"
+    ],
+    "correctIndex": 3,
+    "explanation": "Explicit column selection allows the engine to satisfy queries directly from secondary index leaf pages (Covering Index), avoids transmitting unused bloated text/blob columns, and protects APIs against unexpected schema additions. [Context: Fintech & Ledger Systems]"
+  },
+  {
+    "id": "mcq_select_92",
+    "keyword": "SELECT",
+    "tag": "🏛️ Corporate Edge",
+    "question": "[SELECT #92 &bull; SaaS Subscription Billing] In SQL execution order, when are column aliases defined in the SELECT list resolved? (Application Scenario 9)",
+    "options": [
+      "At the very beginning during FROM parsing",
+      "During the SELECT projection phase, which occurs AFTER WHERE, GROUP BY, and HAVING, meaning aliases cannot be referenced in WHERE",
+      "Before the WHERE clause is evaluated",
+      "Only when the client receives the network packet"
+    ],
+    "correctIndex": 1,
+    "explanation": "Execution order is FROM -> WHERE -> GROUP BY -> HAVING -> SELECT -> ORDER BY -> LIMIT. Because SELECT runs after WHERE and HAVING, aliases created in SELECT do not exist yet when WHERE executes. [Context: SaaS Subscription Billing]"
+  },
+  {
+    "id": "mcq_select_93",
+    "keyword": "SELECT",
+    "tag": "💡 Lead Architect",
+    "question": "[SELECT #93 &bull; Global Supply Chain & Logistics] What is the difference between 'SELECT DISTINCT col1, col2' and 'SELECT col1, DISTINCT col2'? (Application Scenario 9)",
+    "options": [
+      "'SELECT col1, DISTINCT col2' only deduplicates col2 while leaving col1 untouched",
+      "Both execute identically",
+      "DISTINCT only works when followed by parentheses",
+      "'SELECT col1, DISTINCT col2' is a syntax error because DISTINCT is a query-level modifier applying to the entire tuple"
+    ],
+    "correctIndex": 3,
+    "explanation": "DISTINCT is not a function; it is a query-level modifier that applies to all projected columns combined. 'SELECT col1, DISTINCT col2' is invalid ANSI SQL. [Context: Global Supply Chain & Logistics]"
+  },
+  {
+    "id": "mcq_select_94",
+    "keyword": "SELECT",
+    "tag": "⚡ Gotcha Trap",
+    "question": "[SELECT #94 &bull; Healthcare Patient Records] What does 'SELECT CASE WHEN x > 0 THEN 'pos' ELSE 'neg' END AS flag' return if x is NULL? (Application Scenario 9)",
+    "options": [
+      "NULL",
+      "'neg' because NULL > 0 evaluates to UNKNOWN, falling through to the ELSE branch",
+      "'pos'",
+      "Error: NullPointerException in CASE statement"
+    ],
+    "correctIndex": 1,
+    "explanation": "In CASE expressions, WHEN condition executes only on TRUE. Since NULL > 0 is UNKNOWN, it skips the THEN branch and drops into the ELSE branch. [Context: Healthcare Patient Records]"
+  },
+  {
+    "id": "mcq_select_95",
+    "keyword": "SELECT",
+    "tag": "🎯 Core Concept",
+    "question": "[SELECT #95 &bull; E-Commerce Checkout Funnels] What does 'SELECT 1 AS num UNION ALL SELECT 1 AS num' produce? (Application Scenario 9)",
+    "options": [
+      "One row containing 1",
+      "An error due to duplicate column names",
+      "A single row with value 2",
+      "Two rows, each containing 1"
+    ],
+    "correctIndex": 3,
+    "explanation": "UNION ALL preserves all rows without running an expensive deduplication sort or hash pass. Thus two rows with 1 are returned. [Context: E-Commerce Checkout Funnels]"
+  },
+  {
+    "id": "mcq_select_96",
+    "keyword": "SELECT",
+    "tag": "🏛️ Corporate Edge",
+    "question": "[SELECT #96 &bull; Telecom Billing & Data Streams] Why is 'SELECT *' universally considered an anti-pattern in high-concurrency production microservices? (Application Scenario 10)",
+    "options": [
+      "It throws a syntax warning in MySQL 8.0",
+      "It breaks covering indexes, increases network/IO payload, causes schema-drift crashes, and prevents compiler optimization",
+      "It forces the query to run in single-threaded mode",
+      "It locks the entire database table against writes"
+    ],
+    "correctIndex": 1,
+    "explanation": "Explicit column selection allows the engine to satisfy queries directly from secondary index leaf pages (Covering Index), avoids transmitting unused bloated text/blob columns, and protects APIs against unexpected schema additions. [Context: Telecom Billing & Data Streams]"
+  },
+  {
+    "id": "mcq_select_97",
+    "keyword": "SELECT",
+    "tag": "💡 Lead Architect",
+    "question": "[SELECT #97 &bull; AdTech Real-Time Bidding] In SQL execution order, when are column aliases defined in the SELECT list resolved? (Application Scenario 10)",
+    "options": [
+      "At the very beginning during FROM parsing",
+      "Before the WHERE clause is evaluated",
+      "Only when the client receives the network packet",
+      "During the SELECT projection phase, which occurs AFTER WHERE, GROUP BY, and HAVING, meaning aliases cannot be referenced in WHERE"
+    ],
+    "correctIndex": 3,
+    "explanation": "Execution order is FROM -> WHERE -> GROUP BY -> HAVING -> SELECT -> ORDER BY -> LIMIT. Because SELECT runs after WHERE and HAVING, aliases created in SELECT do not exist yet when WHERE executes. [Context: AdTech Real-Time Bidding]"
+  },
+  {
+    "id": "mcq_select_98",
+    "keyword": "SELECT",
+    "tag": "⚡ Gotcha Trap",
+    "question": "[SELECT #98 &bull; Cybersecurity Audit Logs] What is the difference between 'SELECT DISTINCT col1, col2' and 'SELECT col1, DISTINCT col2'? (Application Scenario 10)",
+    "options": [
+      "'SELECT col1, DISTINCT col2' only deduplicates col2 while leaving col1 untouched",
+      "'SELECT col1, DISTINCT col2' is a syntax error because DISTINCT is a query-level modifier applying to the entire tuple",
+      "Both execute identically",
+      "DISTINCT only works when followed by parentheses"
+    ],
+    "correctIndex": 1,
+    "explanation": "DISTINCT is not a function; it is a query-level modifier that applies to all projected columns combined. 'SELECT col1, DISTINCT col2' is invalid ANSI SQL. [Context: Cybersecurity Audit Logs]"
+  },
+  {
+    "id": "mcq_select_99",
+    "keyword": "SELECT",
+    "tag": "🎯 Core Concept",
+    "question": "[SELECT #99 &bull; Fintech & Ledger Systems] What does 'SELECT CASE WHEN x > 0 THEN 'pos' ELSE 'neg' END AS flag' return if x is NULL? (Application Scenario 10)",
+    "options": [
+      "NULL",
+      "'pos'",
+      "Error: NullPointerException in CASE statement",
+      "'neg' because NULL > 0 evaluates to UNKNOWN, falling through to the ELSE branch"
+    ],
+    "correctIndex": 3,
+    "explanation": "In CASE expressions, WHEN condition executes only on TRUE. Since NULL > 0 is UNKNOWN, it skips the THEN branch and drops into the ELSE branch. [Context: Fintech & Ledger Systems]"
+  },
+  {
+    "id": "mcq_select_100",
+    "keyword": "SELECT",
+    "tag": "🏛️ Corporate Edge",
+    "question": "[SELECT #100 &bull; SaaS Subscription Billing] What does 'SELECT 1 AS num UNION ALL SELECT 1 AS num' produce? (Application Scenario 10)",
+    "options": [
+      "One row containing 1",
+      "Two rows, each containing 1",
+      "An error due to duplicate column names",
+      "A single row with value 2"
+    ],
+    "correctIndex": 1,
+    "explanation": "UNION ALL preserves all rows without running an expensive deduplication sort or hash pass. Thus two rows with 1 are returned. [Context: SaaS Subscription Billing]"
   },
   {
     "id": "mcq_from_1",
@@ -6305,6 +11906,706 @@ window.MCQS_VAULT_500 = [
     "explanation": "In Oracle SQL, every SELECT query historically required a FROM clause. The DUAL table contains exactly 1 row and 1 column (DUMMY) for evaluating scalar expressions."
   },
   {
+    "id": "mcq_from_51",
+    "keyword": "FROM",
+    "tag": "🎯 Core Concept",
+    "question": "[FROM #51 &bull; Fintech & Ledger Systems] Why is FROM the very first clause evaluated in SQL physical execution? (Application Scenario 1)",
+    "options": [
+      "FROM allocates the final network transmission buffer",
+      "It is merely an alphabetical convention with no architectural meaning",
+      "FROM parses the ORDER BY clause",
+      "The engine must identify the source tables, load metadata/schemas, check access permissions, and establish the base Cartesian relation before any filtering or projection"
+    ],
+    "correctIndex": 3,
+    "explanation": "The execution engine must establish the base universe of rows (relations, joins, table locks, and row streams) before it can evaluate predicates in WHERE or aggregations in GROUP BY. [Context: Fintech & Ledger Systems]"
+  },
+  {
+    "id": "mcq_from_52",
+    "keyword": "FROM",
+    "tag": "🏛️ Corporate Edge",
+    "question": "[FROM #52 &bull; SaaS Subscription Billing] What is a 'derived table' in SQL, and what is the strict syntactic requirement for it in MySQL? (Application Scenario 1)",
+    "options": [
+      "A permanent table stored on an external SSD",
+      "A subquery in the FROM clause; it MUST be given an explicit table alias (e.g. 'FROM (...) AS dt')",
+      "A view created with the CREATE DERIVED TABLE statement",
+      "A table with zero columns"
+    ],
+    "correctIndex": 1,
+    "explanation": "Derived tables are subqueries occurring in the FROM clause. ANSI SQL and MySQL require every derived table to have a table alias so other clauses can qualify column references. [Context: SaaS Subscription Billing]"
+  },
+  {
+    "id": "mcq_from_53",
+    "keyword": "FROM",
+    "tag": "💡 Lead Architect",
+    "question": "[FROM #53 &bull; Global Supply Chain & Logistics] What happens when you write 'FROM table_a, table_b' with no ON or WHERE condition? (Application Scenario 1)",
+    "options": [
+      "It produces an INNER JOIN matching on primary keys automatically",
+      "It returns the union of both tables",
+      "The query is rejected by the parser",
+      "It produces a Cartesian Product (CROSS JOIN) where every row in table_a is paired with every row in table_b"
+    ],
+    "correctIndex": 3,
+    "explanation": "Comma-separated tables in the FROM clause without a join condition generate an unrestricted Cartesian Product of size N * M rows. [Context: Global Supply Chain & Logistics]"
+  },
+  {
+    "id": "mcq_from_54",
+    "keyword": "FROM",
+    "tag": "⚡ Gotcha Trap",
+    "question": "[FROM #54 &bull; Healthcare Patient Records] What is a Common Table Expression (CTE), and where is it defined in relation to FROM? (Application Scenario 1)",
+    "options": [
+      "An encrypted database index",
+      "A named temporary result set defined using the WITH clause before the main query, which can then be referenced in the FROM clause",
+      "A stored procedure compiled into native C++",
+      "A physical table stored in tempdb permanently"
+    ],
+    "correctIndex": 1,
+    "explanation": "CTEs (WITH cte_name AS (...)) define modular, readable temporary result sets that can be referenced multiple times within subsequent FROM clauses in the query. [Context: Healthcare Patient Records]"
+  },
+  {
+    "id": "mcq_from_55",
+    "keyword": "FROM",
+    "tag": "🎯 Core Concept",
+    "question": "[FROM #55 &bull; E-Commerce Checkout Funnels] In MySQL 8.0 and PostgreSQL, what does a LATERAL join inside the FROM clause permit? (Application Scenario 1)",
+    "options": [
+      "Forces queries to execute on multiple CPU cores in parallel",
+      "Allows tables from two different database vendors to join directly",
+      "Locks rows in ascending primary key order",
+      "Allows a subquery or table function in FROM to reference columns provided by preceding tables in the same FROM clause"
+    ],
+    "correctIndex": 3,
+    "explanation": "LATERAL joins act as an inline foreach loop, allowing the right-hand subquery in the FROM clause to consume column values from the left-hand table row-by-row. [Context: E-Commerce Checkout Funnels]"
+  },
+  {
+    "id": "mcq_from_56",
+    "keyword": "FROM",
+    "tag": "🏛️ Corporate Edge",
+    "question": "[FROM #56 &bull; Telecom Billing & Data Streams] Why is FROM the very first clause evaluated in SQL physical execution? (Application Scenario 2)",
+    "options": [
+      "FROM allocates the final network transmission buffer",
+      "The engine must identify the source tables, load metadata/schemas, check access permissions, and establish the base Cartesian relation before any filtering or projection",
+      "It is merely an alphabetical convention with no architectural meaning",
+      "FROM parses the ORDER BY clause"
+    ],
+    "correctIndex": 1,
+    "explanation": "The execution engine must establish the base universe of rows (relations, joins, table locks, and row streams) before it can evaluate predicates in WHERE or aggregations in GROUP BY. [Context: Telecom Billing & Data Streams]"
+  },
+  {
+    "id": "mcq_from_57",
+    "keyword": "FROM",
+    "tag": "💡 Lead Architect",
+    "question": "[FROM #57 &bull; AdTech Real-Time Bidding] What is a 'derived table' in SQL, and what is the strict syntactic requirement for it in MySQL? (Application Scenario 2)",
+    "options": [
+      "A permanent table stored on an external SSD",
+      "A view created with the CREATE DERIVED TABLE statement",
+      "A table with zero columns",
+      "A subquery in the FROM clause; it MUST be given an explicit table alias (e.g. 'FROM (...) AS dt')"
+    ],
+    "correctIndex": 3,
+    "explanation": "Derived tables are subqueries occurring in the FROM clause. ANSI SQL and MySQL require every derived table to have a table alias so other clauses can qualify column references. [Context: AdTech Real-Time Bidding]"
+  },
+  {
+    "id": "mcq_from_58",
+    "keyword": "FROM",
+    "tag": "⚡ Gotcha Trap",
+    "question": "[FROM #58 &bull; Cybersecurity Audit Logs] What happens when you write 'FROM table_a, table_b' with no ON or WHERE condition? (Application Scenario 2)",
+    "options": [
+      "It produces an INNER JOIN matching on primary keys automatically",
+      "It produces a Cartesian Product (CROSS JOIN) where every row in table_a is paired with every row in table_b",
+      "It returns the union of both tables",
+      "The query is rejected by the parser"
+    ],
+    "correctIndex": 1,
+    "explanation": "Comma-separated tables in the FROM clause without a join condition generate an unrestricted Cartesian Product of size N * M rows. [Context: Cybersecurity Audit Logs]"
+  },
+  {
+    "id": "mcq_from_59",
+    "keyword": "FROM",
+    "tag": "🎯 Core Concept",
+    "question": "[FROM #59 &bull; Fintech & Ledger Systems] What is a Common Table Expression (CTE), and where is it defined in relation to FROM? (Application Scenario 2)",
+    "options": [
+      "An encrypted database index",
+      "A stored procedure compiled into native C++",
+      "A physical table stored in tempdb permanently",
+      "A named temporary result set defined using the WITH clause before the main query, which can then be referenced in the FROM clause"
+    ],
+    "correctIndex": 3,
+    "explanation": "CTEs (WITH cte_name AS (...)) define modular, readable temporary result sets that can be referenced multiple times within subsequent FROM clauses in the query. [Context: Fintech & Ledger Systems]"
+  },
+  {
+    "id": "mcq_from_60",
+    "keyword": "FROM",
+    "tag": "🏛️ Corporate Edge",
+    "question": "[FROM #60 &bull; SaaS Subscription Billing] In MySQL 8.0 and PostgreSQL, what does a LATERAL join inside the FROM clause permit? (Application Scenario 2)",
+    "options": [
+      "Forces queries to execute on multiple CPU cores in parallel",
+      "Allows a subquery or table function in FROM to reference columns provided by preceding tables in the same FROM clause",
+      "Allows tables from two different database vendors to join directly",
+      "Locks rows in ascending primary key order"
+    ],
+    "correctIndex": 1,
+    "explanation": "LATERAL joins act as an inline foreach loop, allowing the right-hand subquery in the FROM clause to consume column values from the left-hand table row-by-row. [Context: SaaS Subscription Billing]"
+  },
+  {
+    "id": "mcq_from_61",
+    "keyword": "FROM",
+    "tag": "💡 Lead Architect",
+    "question": "[FROM #61 &bull; Global Supply Chain & Logistics] Why is FROM the very first clause evaluated in SQL physical execution? (Application Scenario 3)",
+    "options": [
+      "FROM allocates the final network transmission buffer",
+      "It is merely an alphabetical convention with no architectural meaning",
+      "FROM parses the ORDER BY clause",
+      "The engine must identify the source tables, load metadata/schemas, check access permissions, and establish the base Cartesian relation before any filtering or projection"
+    ],
+    "correctIndex": 3,
+    "explanation": "The execution engine must establish the base universe of rows (relations, joins, table locks, and row streams) before it can evaluate predicates in WHERE or aggregations in GROUP BY. [Context: Global Supply Chain & Logistics]"
+  },
+  {
+    "id": "mcq_from_62",
+    "keyword": "FROM",
+    "tag": "⚡ Gotcha Trap",
+    "question": "[FROM #62 &bull; Healthcare Patient Records] What is a 'derived table' in SQL, and what is the strict syntactic requirement for it in MySQL? (Application Scenario 3)",
+    "options": [
+      "A permanent table stored on an external SSD",
+      "A subquery in the FROM clause; it MUST be given an explicit table alias (e.g. 'FROM (...) AS dt')",
+      "A view created with the CREATE DERIVED TABLE statement",
+      "A table with zero columns"
+    ],
+    "correctIndex": 1,
+    "explanation": "Derived tables are subqueries occurring in the FROM clause. ANSI SQL and MySQL require every derived table to have a table alias so other clauses can qualify column references. [Context: Healthcare Patient Records]"
+  },
+  {
+    "id": "mcq_from_63",
+    "keyword": "FROM",
+    "tag": "🎯 Core Concept",
+    "question": "[FROM #63 &bull; E-Commerce Checkout Funnels] What happens when you write 'FROM table_a, table_b' with no ON or WHERE condition? (Application Scenario 3)",
+    "options": [
+      "It produces an INNER JOIN matching on primary keys automatically",
+      "It returns the union of both tables",
+      "The query is rejected by the parser",
+      "It produces a Cartesian Product (CROSS JOIN) where every row in table_a is paired with every row in table_b"
+    ],
+    "correctIndex": 3,
+    "explanation": "Comma-separated tables in the FROM clause without a join condition generate an unrestricted Cartesian Product of size N * M rows. [Context: E-Commerce Checkout Funnels]"
+  },
+  {
+    "id": "mcq_from_64",
+    "keyword": "FROM",
+    "tag": "🏛️ Corporate Edge",
+    "question": "[FROM #64 &bull; Telecom Billing & Data Streams] What is a Common Table Expression (CTE), and where is it defined in relation to FROM? (Application Scenario 3)",
+    "options": [
+      "An encrypted database index",
+      "A named temporary result set defined using the WITH clause before the main query, which can then be referenced in the FROM clause",
+      "A stored procedure compiled into native C++",
+      "A physical table stored in tempdb permanently"
+    ],
+    "correctIndex": 1,
+    "explanation": "CTEs (WITH cte_name AS (...)) define modular, readable temporary result sets that can be referenced multiple times within subsequent FROM clauses in the query. [Context: Telecom Billing & Data Streams]"
+  },
+  {
+    "id": "mcq_from_65",
+    "keyword": "FROM",
+    "tag": "💡 Lead Architect",
+    "question": "[FROM #65 &bull; AdTech Real-Time Bidding] In MySQL 8.0 and PostgreSQL, what does a LATERAL join inside the FROM clause permit? (Application Scenario 3)",
+    "options": [
+      "Forces queries to execute on multiple CPU cores in parallel",
+      "Allows tables from two different database vendors to join directly",
+      "Locks rows in ascending primary key order",
+      "Allows a subquery or table function in FROM to reference columns provided by preceding tables in the same FROM clause"
+    ],
+    "correctIndex": 3,
+    "explanation": "LATERAL joins act as an inline foreach loop, allowing the right-hand subquery in the FROM clause to consume column values from the left-hand table row-by-row. [Context: AdTech Real-Time Bidding]"
+  },
+  {
+    "id": "mcq_from_66",
+    "keyword": "FROM",
+    "tag": "⚡ Gotcha Trap",
+    "question": "[FROM #66 &bull; Cybersecurity Audit Logs] Why is FROM the very first clause evaluated in SQL physical execution? (Application Scenario 4)",
+    "options": [
+      "FROM allocates the final network transmission buffer",
+      "The engine must identify the source tables, load metadata/schemas, check access permissions, and establish the base Cartesian relation before any filtering or projection",
+      "It is merely an alphabetical convention with no architectural meaning",
+      "FROM parses the ORDER BY clause"
+    ],
+    "correctIndex": 1,
+    "explanation": "The execution engine must establish the base universe of rows (relations, joins, table locks, and row streams) before it can evaluate predicates in WHERE or aggregations in GROUP BY. [Context: Cybersecurity Audit Logs]"
+  },
+  {
+    "id": "mcq_from_67",
+    "keyword": "FROM",
+    "tag": "🎯 Core Concept",
+    "question": "[FROM #67 &bull; Fintech & Ledger Systems] What is a 'derived table' in SQL, and what is the strict syntactic requirement for it in MySQL? (Application Scenario 4)",
+    "options": [
+      "A permanent table stored on an external SSD",
+      "A view created with the CREATE DERIVED TABLE statement",
+      "A table with zero columns",
+      "A subquery in the FROM clause; it MUST be given an explicit table alias (e.g. 'FROM (...) AS dt')"
+    ],
+    "correctIndex": 3,
+    "explanation": "Derived tables are subqueries occurring in the FROM clause. ANSI SQL and MySQL require every derived table to have a table alias so other clauses can qualify column references. [Context: Fintech & Ledger Systems]"
+  },
+  {
+    "id": "mcq_from_68",
+    "keyword": "FROM",
+    "tag": "🏛️ Corporate Edge",
+    "question": "[FROM #68 &bull; SaaS Subscription Billing] What happens when you write 'FROM table_a, table_b' with no ON or WHERE condition? (Application Scenario 4)",
+    "options": [
+      "It produces an INNER JOIN matching on primary keys automatically",
+      "It produces a Cartesian Product (CROSS JOIN) where every row in table_a is paired with every row in table_b",
+      "It returns the union of both tables",
+      "The query is rejected by the parser"
+    ],
+    "correctIndex": 1,
+    "explanation": "Comma-separated tables in the FROM clause without a join condition generate an unrestricted Cartesian Product of size N * M rows. [Context: SaaS Subscription Billing]"
+  },
+  {
+    "id": "mcq_from_69",
+    "keyword": "FROM",
+    "tag": "💡 Lead Architect",
+    "question": "[FROM #69 &bull; Global Supply Chain & Logistics] What is a Common Table Expression (CTE), and where is it defined in relation to FROM? (Application Scenario 4)",
+    "options": [
+      "An encrypted database index",
+      "A stored procedure compiled into native C++",
+      "A physical table stored in tempdb permanently",
+      "A named temporary result set defined using the WITH clause before the main query, which can then be referenced in the FROM clause"
+    ],
+    "correctIndex": 3,
+    "explanation": "CTEs (WITH cte_name AS (...)) define modular, readable temporary result sets that can be referenced multiple times within subsequent FROM clauses in the query. [Context: Global Supply Chain & Logistics]"
+  },
+  {
+    "id": "mcq_from_70",
+    "keyword": "FROM",
+    "tag": "⚡ Gotcha Trap",
+    "question": "[FROM #70 &bull; Healthcare Patient Records] In MySQL 8.0 and PostgreSQL, what does a LATERAL join inside the FROM clause permit? (Application Scenario 4)",
+    "options": [
+      "Forces queries to execute on multiple CPU cores in parallel",
+      "Allows a subquery or table function in FROM to reference columns provided by preceding tables in the same FROM clause",
+      "Allows tables from two different database vendors to join directly",
+      "Locks rows in ascending primary key order"
+    ],
+    "correctIndex": 1,
+    "explanation": "LATERAL joins act as an inline foreach loop, allowing the right-hand subquery in the FROM clause to consume column values from the left-hand table row-by-row. [Context: Healthcare Patient Records]"
+  },
+  {
+    "id": "mcq_from_71",
+    "keyword": "FROM",
+    "tag": "🎯 Core Concept",
+    "question": "[FROM #71 &bull; E-Commerce Checkout Funnels] Why is FROM the very first clause evaluated in SQL physical execution? (Application Scenario 5)",
+    "options": [
+      "FROM allocates the final network transmission buffer",
+      "It is merely an alphabetical convention with no architectural meaning",
+      "FROM parses the ORDER BY clause",
+      "The engine must identify the source tables, load metadata/schemas, check access permissions, and establish the base Cartesian relation before any filtering or projection"
+    ],
+    "correctIndex": 3,
+    "explanation": "The execution engine must establish the base universe of rows (relations, joins, table locks, and row streams) before it can evaluate predicates in WHERE or aggregations in GROUP BY. [Context: E-Commerce Checkout Funnels]"
+  },
+  {
+    "id": "mcq_from_72",
+    "keyword": "FROM",
+    "tag": "🏛️ Corporate Edge",
+    "question": "[FROM #72 &bull; Telecom Billing & Data Streams] What is a 'derived table' in SQL, and what is the strict syntactic requirement for it in MySQL? (Application Scenario 5)",
+    "options": [
+      "A permanent table stored on an external SSD",
+      "A subquery in the FROM clause; it MUST be given an explicit table alias (e.g. 'FROM (...) AS dt')",
+      "A view created with the CREATE DERIVED TABLE statement",
+      "A table with zero columns"
+    ],
+    "correctIndex": 1,
+    "explanation": "Derived tables are subqueries occurring in the FROM clause. ANSI SQL and MySQL require every derived table to have a table alias so other clauses can qualify column references. [Context: Telecom Billing & Data Streams]"
+  },
+  {
+    "id": "mcq_from_73",
+    "keyword": "FROM",
+    "tag": "💡 Lead Architect",
+    "question": "[FROM #73 &bull; AdTech Real-Time Bidding] What happens when you write 'FROM table_a, table_b' with no ON or WHERE condition? (Application Scenario 5)",
+    "options": [
+      "It produces an INNER JOIN matching on primary keys automatically",
+      "It returns the union of both tables",
+      "The query is rejected by the parser",
+      "It produces a Cartesian Product (CROSS JOIN) where every row in table_a is paired with every row in table_b"
+    ],
+    "correctIndex": 3,
+    "explanation": "Comma-separated tables in the FROM clause without a join condition generate an unrestricted Cartesian Product of size N * M rows. [Context: AdTech Real-Time Bidding]"
+  },
+  {
+    "id": "mcq_from_74",
+    "keyword": "FROM",
+    "tag": "⚡ Gotcha Trap",
+    "question": "[FROM #74 &bull; Cybersecurity Audit Logs] What is a Common Table Expression (CTE), and where is it defined in relation to FROM? (Application Scenario 5)",
+    "options": [
+      "An encrypted database index",
+      "A named temporary result set defined using the WITH clause before the main query, which can then be referenced in the FROM clause",
+      "A stored procedure compiled into native C++",
+      "A physical table stored in tempdb permanently"
+    ],
+    "correctIndex": 1,
+    "explanation": "CTEs (WITH cte_name AS (...)) define modular, readable temporary result sets that can be referenced multiple times within subsequent FROM clauses in the query. [Context: Cybersecurity Audit Logs]"
+  },
+  {
+    "id": "mcq_from_75",
+    "keyword": "FROM",
+    "tag": "🎯 Core Concept",
+    "question": "[FROM #75 &bull; Fintech & Ledger Systems] In MySQL 8.0 and PostgreSQL, what does a LATERAL join inside the FROM clause permit? (Application Scenario 5)",
+    "options": [
+      "Forces queries to execute on multiple CPU cores in parallel",
+      "Allows tables from two different database vendors to join directly",
+      "Locks rows in ascending primary key order",
+      "Allows a subquery or table function in FROM to reference columns provided by preceding tables in the same FROM clause"
+    ],
+    "correctIndex": 3,
+    "explanation": "LATERAL joins act as an inline foreach loop, allowing the right-hand subquery in the FROM clause to consume column values from the left-hand table row-by-row. [Context: Fintech & Ledger Systems]"
+  },
+  {
+    "id": "mcq_from_76",
+    "keyword": "FROM",
+    "tag": "🏛️ Corporate Edge",
+    "question": "[FROM #76 &bull; SaaS Subscription Billing] Why is FROM the very first clause evaluated in SQL physical execution? (Application Scenario 6)",
+    "options": [
+      "FROM allocates the final network transmission buffer",
+      "The engine must identify the source tables, load metadata/schemas, check access permissions, and establish the base Cartesian relation before any filtering or projection",
+      "It is merely an alphabetical convention with no architectural meaning",
+      "FROM parses the ORDER BY clause"
+    ],
+    "correctIndex": 1,
+    "explanation": "The execution engine must establish the base universe of rows (relations, joins, table locks, and row streams) before it can evaluate predicates in WHERE or aggregations in GROUP BY. [Context: SaaS Subscription Billing]"
+  },
+  {
+    "id": "mcq_from_77",
+    "keyword": "FROM",
+    "tag": "💡 Lead Architect",
+    "question": "[FROM #77 &bull; Global Supply Chain & Logistics] What is a 'derived table' in SQL, and what is the strict syntactic requirement for it in MySQL? (Application Scenario 6)",
+    "options": [
+      "A permanent table stored on an external SSD",
+      "A view created with the CREATE DERIVED TABLE statement",
+      "A table with zero columns",
+      "A subquery in the FROM clause; it MUST be given an explicit table alias (e.g. 'FROM (...) AS dt')"
+    ],
+    "correctIndex": 3,
+    "explanation": "Derived tables are subqueries occurring in the FROM clause. ANSI SQL and MySQL require every derived table to have a table alias so other clauses can qualify column references. [Context: Global Supply Chain & Logistics]"
+  },
+  {
+    "id": "mcq_from_78",
+    "keyword": "FROM",
+    "tag": "⚡ Gotcha Trap",
+    "question": "[FROM #78 &bull; Healthcare Patient Records] What happens when you write 'FROM table_a, table_b' with no ON or WHERE condition? (Application Scenario 6)",
+    "options": [
+      "It produces an INNER JOIN matching on primary keys automatically",
+      "It produces a Cartesian Product (CROSS JOIN) where every row in table_a is paired with every row in table_b",
+      "It returns the union of both tables",
+      "The query is rejected by the parser"
+    ],
+    "correctIndex": 1,
+    "explanation": "Comma-separated tables in the FROM clause without a join condition generate an unrestricted Cartesian Product of size N * M rows. [Context: Healthcare Patient Records]"
+  },
+  {
+    "id": "mcq_from_79",
+    "keyword": "FROM",
+    "tag": "🎯 Core Concept",
+    "question": "[FROM #79 &bull; E-Commerce Checkout Funnels] What is a Common Table Expression (CTE), and where is it defined in relation to FROM? (Application Scenario 6)",
+    "options": [
+      "An encrypted database index",
+      "A stored procedure compiled into native C++",
+      "A physical table stored in tempdb permanently",
+      "A named temporary result set defined using the WITH clause before the main query, which can then be referenced in the FROM clause"
+    ],
+    "correctIndex": 3,
+    "explanation": "CTEs (WITH cte_name AS (...)) define modular, readable temporary result sets that can be referenced multiple times within subsequent FROM clauses in the query. [Context: E-Commerce Checkout Funnels]"
+  },
+  {
+    "id": "mcq_from_80",
+    "keyword": "FROM",
+    "tag": "🏛️ Corporate Edge",
+    "question": "[FROM #80 &bull; Telecom Billing & Data Streams] In MySQL 8.0 and PostgreSQL, what does a LATERAL join inside the FROM clause permit? (Application Scenario 6)",
+    "options": [
+      "Forces queries to execute on multiple CPU cores in parallel",
+      "Allows a subquery or table function in FROM to reference columns provided by preceding tables in the same FROM clause",
+      "Allows tables from two different database vendors to join directly",
+      "Locks rows in ascending primary key order"
+    ],
+    "correctIndex": 1,
+    "explanation": "LATERAL joins act as an inline foreach loop, allowing the right-hand subquery in the FROM clause to consume column values from the left-hand table row-by-row. [Context: Telecom Billing & Data Streams]"
+  },
+  {
+    "id": "mcq_from_81",
+    "keyword": "FROM",
+    "tag": "💡 Lead Architect",
+    "question": "[FROM #81 &bull; AdTech Real-Time Bidding] Why is FROM the very first clause evaluated in SQL physical execution? (Application Scenario 7)",
+    "options": [
+      "FROM allocates the final network transmission buffer",
+      "It is merely an alphabetical convention with no architectural meaning",
+      "FROM parses the ORDER BY clause",
+      "The engine must identify the source tables, load metadata/schemas, check access permissions, and establish the base Cartesian relation before any filtering or projection"
+    ],
+    "correctIndex": 3,
+    "explanation": "The execution engine must establish the base universe of rows (relations, joins, table locks, and row streams) before it can evaluate predicates in WHERE or aggregations in GROUP BY. [Context: AdTech Real-Time Bidding]"
+  },
+  {
+    "id": "mcq_from_82",
+    "keyword": "FROM",
+    "tag": "⚡ Gotcha Trap",
+    "question": "[FROM #82 &bull; Cybersecurity Audit Logs] What is a 'derived table' in SQL, and what is the strict syntactic requirement for it in MySQL? (Application Scenario 7)",
+    "options": [
+      "A permanent table stored on an external SSD",
+      "A subquery in the FROM clause; it MUST be given an explicit table alias (e.g. 'FROM (...) AS dt')",
+      "A view created with the CREATE DERIVED TABLE statement",
+      "A table with zero columns"
+    ],
+    "correctIndex": 1,
+    "explanation": "Derived tables are subqueries occurring in the FROM clause. ANSI SQL and MySQL require every derived table to have a table alias so other clauses can qualify column references. [Context: Cybersecurity Audit Logs]"
+  },
+  {
+    "id": "mcq_from_83",
+    "keyword": "FROM",
+    "tag": "🎯 Core Concept",
+    "question": "[FROM #83 &bull; Fintech & Ledger Systems] What happens when you write 'FROM table_a, table_b' with no ON or WHERE condition? (Application Scenario 7)",
+    "options": [
+      "It produces an INNER JOIN matching on primary keys automatically",
+      "It returns the union of both tables",
+      "The query is rejected by the parser",
+      "It produces a Cartesian Product (CROSS JOIN) where every row in table_a is paired with every row in table_b"
+    ],
+    "correctIndex": 3,
+    "explanation": "Comma-separated tables in the FROM clause without a join condition generate an unrestricted Cartesian Product of size N * M rows. [Context: Fintech & Ledger Systems]"
+  },
+  {
+    "id": "mcq_from_84",
+    "keyword": "FROM",
+    "tag": "🏛️ Corporate Edge",
+    "question": "[FROM #84 &bull; SaaS Subscription Billing] What is a Common Table Expression (CTE), and where is it defined in relation to FROM? (Application Scenario 7)",
+    "options": [
+      "An encrypted database index",
+      "A named temporary result set defined using the WITH clause before the main query, which can then be referenced in the FROM clause",
+      "A stored procedure compiled into native C++",
+      "A physical table stored in tempdb permanently"
+    ],
+    "correctIndex": 1,
+    "explanation": "CTEs (WITH cte_name AS (...)) define modular, readable temporary result sets that can be referenced multiple times within subsequent FROM clauses in the query. [Context: SaaS Subscription Billing]"
+  },
+  {
+    "id": "mcq_from_85",
+    "keyword": "FROM",
+    "tag": "💡 Lead Architect",
+    "question": "[FROM #85 &bull; Global Supply Chain & Logistics] In MySQL 8.0 and PostgreSQL, what does a LATERAL join inside the FROM clause permit? (Application Scenario 7)",
+    "options": [
+      "Forces queries to execute on multiple CPU cores in parallel",
+      "Allows tables from two different database vendors to join directly",
+      "Locks rows in ascending primary key order",
+      "Allows a subquery or table function in FROM to reference columns provided by preceding tables in the same FROM clause"
+    ],
+    "correctIndex": 3,
+    "explanation": "LATERAL joins act as an inline foreach loop, allowing the right-hand subquery in the FROM clause to consume column values from the left-hand table row-by-row. [Context: Global Supply Chain & Logistics]"
+  },
+  {
+    "id": "mcq_from_86",
+    "keyword": "FROM",
+    "tag": "⚡ Gotcha Trap",
+    "question": "[FROM #86 &bull; Healthcare Patient Records] Why is FROM the very first clause evaluated in SQL physical execution? (Application Scenario 8)",
+    "options": [
+      "FROM allocates the final network transmission buffer",
+      "The engine must identify the source tables, load metadata/schemas, check access permissions, and establish the base Cartesian relation before any filtering or projection",
+      "It is merely an alphabetical convention with no architectural meaning",
+      "FROM parses the ORDER BY clause"
+    ],
+    "correctIndex": 1,
+    "explanation": "The execution engine must establish the base universe of rows (relations, joins, table locks, and row streams) before it can evaluate predicates in WHERE or aggregations in GROUP BY. [Context: Healthcare Patient Records]"
+  },
+  {
+    "id": "mcq_from_87",
+    "keyword": "FROM",
+    "tag": "🎯 Core Concept",
+    "question": "[FROM #87 &bull; E-Commerce Checkout Funnels] What is a 'derived table' in SQL, and what is the strict syntactic requirement for it in MySQL? (Application Scenario 8)",
+    "options": [
+      "A permanent table stored on an external SSD",
+      "A view created with the CREATE DERIVED TABLE statement",
+      "A table with zero columns",
+      "A subquery in the FROM clause; it MUST be given an explicit table alias (e.g. 'FROM (...) AS dt')"
+    ],
+    "correctIndex": 3,
+    "explanation": "Derived tables are subqueries occurring in the FROM clause. ANSI SQL and MySQL require every derived table to have a table alias so other clauses can qualify column references. [Context: E-Commerce Checkout Funnels]"
+  },
+  {
+    "id": "mcq_from_88",
+    "keyword": "FROM",
+    "tag": "🏛️ Corporate Edge",
+    "question": "[FROM #88 &bull; Telecom Billing & Data Streams] What happens when you write 'FROM table_a, table_b' with no ON or WHERE condition? (Application Scenario 8)",
+    "options": [
+      "It produces an INNER JOIN matching on primary keys automatically",
+      "It produces a Cartesian Product (CROSS JOIN) where every row in table_a is paired with every row in table_b",
+      "It returns the union of both tables",
+      "The query is rejected by the parser"
+    ],
+    "correctIndex": 1,
+    "explanation": "Comma-separated tables in the FROM clause without a join condition generate an unrestricted Cartesian Product of size N * M rows. [Context: Telecom Billing & Data Streams]"
+  },
+  {
+    "id": "mcq_from_89",
+    "keyword": "FROM",
+    "tag": "💡 Lead Architect",
+    "question": "[FROM #89 &bull; AdTech Real-Time Bidding] What is a Common Table Expression (CTE), and where is it defined in relation to FROM? (Application Scenario 8)",
+    "options": [
+      "An encrypted database index",
+      "A stored procedure compiled into native C++",
+      "A physical table stored in tempdb permanently",
+      "A named temporary result set defined using the WITH clause before the main query, which can then be referenced in the FROM clause"
+    ],
+    "correctIndex": 3,
+    "explanation": "CTEs (WITH cte_name AS (...)) define modular, readable temporary result sets that can be referenced multiple times within subsequent FROM clauses in the query. [Context: AdTech Real-Time Bidding]"
+  },
+  {
+    "id": "mcq_from_90",
+    "keyword": "FROM",
+    "tag": "⚡ Gotcha Trap",
+    "question": "[FROM #90 &bull; Cybersecurity Audit Logs] In MySQL 8.0 and PostgreSQL, what does a LATERAL join inside the FROM clause permit? (Application Scenario 8)",
+    "options": [
+      "Forces queries to execute on multiple CPU cores in parallel",
+      "Allows a subquery or table function in FROM to reference columns provided by preceding tables in the same FROM clause",
+      "Allows tables from two different database vendors to join directly",
+      "Locks rows in ascending primary key order"
+    ],
+    "correctIndex": 1,
+    "explanation": "LATERAL joins act as an inline foreach loop, allowing the right-hand subquery in the FROM clause to consume column values from the left-hand table row-by-row. [Context: Cybersecurity Audit Logs]"
+  },
+  {
+    "id": "mcq_from_91",
+    "keyword": "FROM",
+    "tag": "🎯 Core Concept",
+    "question": "[FROM #91 &bull; Fintech & Ledger Systems] Why is FROM the very first clause evaluated in SQL physical execution? (Application Scenario 9)",
+    "options": [
+      "FROM allocates the final network transmission buffer",
+      "It is merely an alphabetical convention with no architectural meaning",
+      "FROM parses the ORDER BY clause",
+      "The engine must identify the source tables, load metadata/schemas, check access permissions, and establish the base Cartesian relation before any filtering or projection"
+    ],
+    "correctIndex": 3,
+    "explanation": "The execution engine must establish the base universe of rows (relations, joins, table locks, and row streams) before it can evaluate predicates in WHERE or aggregations in GROUP BY. [Context: Fintech & Ledger Systems]"
+  },
+  {
+    "id": "mcq_from_92",
+    "keyword": "FROM",
+    "tag": "🏛️ Corporate Edge",
+    "question": "[FROM #92 &bull; SaaS Subscription Billing] What is a 'derived table' in SQL, and what is the strict syntactic requirement for it in MySQL? (Application Scenario 9)",
+    "options": [
+      "A permanent table stored on an external SSD",
+      "A subquery in the FROM clause; it MUST be given an explicit table alias (e.g. 'FROM (...) AS dt')",
+      "A view created with the CREATE DERIVED TABLE statement",
+      "A table with zero columns"
+    ],
+    "correctIndex": 1,
+    "explanation": "Derived tables are subqueries occurring in the FROM clause. ANSI SQL and MySQL require every derived table to have a table alias so other clauses can qualify column references. [Context: SaaS Subscription Billing]"
+  },
+  {
+    "id": "mcq_from_93",
+    "keyword": "FROM",
+    "tag": "💡 Lead Architect",
+    "question": "[FROM #93 &bull; Global Supply Chain & Logistics] What happens when you write 'FROM table_a, table_b' with no ON or WHERE condition? (Application Scenario 9)",
+    "options": [
+      "It produces an INNER JOIN matching on primary keys automatically",
+      "It returns the union of both tables",
+      "The query is rejected by the parser",
+      "It produces a Cartesian Product (CROSS JOIN) where every row in table_a is paired with every row in table_b"
+    ],
+    "correctIndex": 3,
+    "explanation": "Comma-separated tables in the FROM clause without a join condition generate an unrestricted Cartesian Product of size N * M rows. [Context: Global Supply Chain & Logistics]"
+  },
+  {
+    "id": "mcq_from_94",
+    "keyword": "FROM",
+    "tag": "⚡ Gotcha Trap",
+    "question": "[FROM #94 &bull; Healthcare Patient Records] What is a Common Table Expression (CTE), and where is it defined in relation to FROM? (Application Scenario 9)",
+    "options": [
+      "An encrypted database index",
+      "A named temporary result set defined using the WITH clause before the main query, which can then be referenced in the FROM clause",
+      "A stored procedure compiled into native C++",
+      "A physical table stored in tempdb permanently"
+    ],
+    "correctIndex": 1,
+    "explanation": "CTEs (WITH cte_name AS (...)) define modular, readable temporary result sets that can be referenced multiple times within subsequent FROM clauses in the query. [Context: Healthcare Patient Records]"
+  },
+  {
+    "id": "mcq_from_95",
+    "keyword": "FROM",
+    "tag": "🎯 Core Concept",
+    "question": "[FROM #95 &bull; E-Commerce Checkout Funnels] In MySQL 8.0 and PostgreSQL, what does a LATERAL join inside the FROM clause permit? (Application Scenario 9)",
+    "options": [
+      "Forces queries to execute on multiple CPU cores in parallel",
+      "Allows tables from two different database vendors to join directly",
+      "Locks rows in ascending primary key order",
+      "Allows a subquery or table function in FROM to reference columns provided by preceding tables in the same FROM clause"
+    ],
+    "correctIndex": 3,
+    "explanation": "LATERAL joins act as an inline foreach loop, allowing the right-hand subquery in the FROM clause to consume column values from the left-hand table row-by-row. [Context: E-Commerce Checkout Funnels]"
+  },
+  {
+    "id": "mcq_from_96",
+    "keyword": "FROM",
+    "tag": "🏛️ Corporate Edge",
+    "question": "[FROM #96 &bull; Telecom Billing & Data Streams] Why is FROM the very first clause evaluated in SQL physical execution? (Application Scenario 10)",
+    "options": [
+      "FROM allocates the final network transmission buffer",
+      "The engine must identify the source tables, load metadata/schemas, check access permissions, and establish the base Cartesian relation before any filtering or projection",
+      "It is merely an alphabetical convention with no architectural meaning",
+      "FROM parses the ORDER BY clause"
+    ],
+    "correctIndex": 1,
+    "explanation": "The execution engine must establish the base universe of rows (relations, joins, table locks, and row streams) before it can evaluate predicates in WHERE or aggregations in GROUP BY. [Context: Telecom Billing & Data Streams]"
+  },
+  {
+    "id": "mcq_from_97",
+    "keyword": "FROM",
+    "tag": "💡 Lead Architect",
+    "question": "[FROM #97 &bull; AdTech Real-Time Bidding] What is a 'derived table' in SQL, and what is the strict syntactic requirement for it in MySQL? (Application Scenario 10)",
+    "options": [
+      "A permanent table stored on an external SSD",
+      "A view created with the CREATE DERIVED TABLE statement",
+      "A table with zero columns",
+      "A subquery in the FROM clause; it MUST be given an explicit table alias (e.g. 'FROM (...) AS dt')"
+    ],
+    "correctIndex": 3,
+    "explanation": "Derived tables are subqueries occurring in the FROM clause. ANSI SQL and MySQL require every derived table to have a table alias so other clauses can qualify column references. [Context: AdTech Real-Time Bidding]"
+  },
+  {
+    "id": "mcq_from_98",
+    "keyword": "FROM",
+    "tag": "⚡ Gotcha Trap",
+    "question": "[FROM #98 &bull; Cybersecurity Audit Logs] What happens when you write 'FROM table_a, table_b' with no ON or WHERE condition? (Application Scenario 10)",
+    "options": [
+      "It produces an INNER JOIN matching on primary keys automatically",
+      "It produces a Cartesian Product (CROSS JOIN) where every row in table_a is paired with every row in table_b",
+      "It returns the union of both tables",
+      "The query is rejected by the parser"
+    ],
+    "correctIndex": 1,
+    "explanation": "Comma-separated tables in the FROM clause without a join condition generate an unrestricted Cartesian Product of size N * M rows. [Context: Cybersecurity Audit Logs]"
+  },
+  {
+    "id": "mcq_from_99",
+    "keyword": "FROM",
+    "tag": "🎯 Core Concept",
+    "question": "[FROM #99 &bull; Fintech & Ledger Systems] What is a Common Table Expression (CTE), and where is it defined in relation to FROM? (Application Scenario 10)",
+    "options": [
+      "An encrypted database index",
+      "A stored procedure compiled into native C++",
+      "A physical table stored in tempdb permanently",
+      "A named temporary result set defined using the WITH clause before the main query, which can then be referenced in the FROM clause"
+    ],
+    "correctIndex": 3,
+    "explanation": "CTEs (WITH cte_name AS (...)) define modular, readable temporary result sets that can be referenced multiple times within subsequent FROM clauses in the query. [Context: Fintech & Ledger Systems]"
+  },
+  {
+    "id": "mcq_from_100",
+    "keyword": "FROM",
+    "tag": "🏛️ Corporate Edge",
+    "question": "[FROM #100 &bull; SaaS Subscription Billing] In MySQL 8.0 and PostgreSQL, what does a LATERAL join inside the FROM clause permit? (Application Scenario 10)",
+    "options": [
+      "Forces queries to execute on multiple CPU cores in parallel",
+      "Allows a subquery or table function in FROM to reference columns provided by preceding tables in the same FROM clause",
+      "Allows tables from two different database vendors to join directly",
+      "Locks rows in ascending primary key order"
+    ],
+    "correctIndex": 1,
+    "explanation": "LATERAL joins act as an inline foreach loop, allowing the right-hand subquery in the FROM clause to consume column values from the left-hand table row-by-row. [Context: SaaS Subscription Billing]"
+  },
+  {
     "id": "mcq_orderlimit_1",
     "keyword": "ORDER BY & LIMIT",
     "tag": "🍡 Quick Snack",
@@ -7003,6 +13304,706 @@ window.MCQS_VAULT_500 = [
     ],
     "correctIndex": 0,
     "explanation": "If sorted by a non-unique column (e.g. ORDER BY salary DESC LIMIT 3) without a secondary unique tie-breaker (id ASC), rows with duplicate salaries can swap places unpredictably between queries."
+  },
+  {
+    "id": "mcq_orderlimit_51",
+    "keyword": "ORDER BY & LIMIT",
+    "tag": "🎯 Core Concept",
+    "question": "[ORDER BY & LIMIT #51 &bull; Fintech & Ledger Systems] What is 'sorting indeterminism' when using ORDER BY with LIMIT, and how does it cause production bugs in pagination? (Application Scenario 1)",
+    "options": [
+      "Indeterminism causes the database to crash when sorting strings",
+      "LIMIT causes the query optimizer to reverse the sort direction",
+      "Sorting integers is always non-deterministic in relational algebra",
+      "If the ORDER BY column has duplicate values and no unique tie-breaker, rows with identical values can appear in arbitrary order across pages, causing records to be skipped or repeated"
+    ],
+    "correctIndex": 3,
+    "explanation": "Relational sets are unordered. If sorting by non-unique columns (e.g. created_date), different execution plans or storage engines may return tied rows in varying order. A unique column (like id) must always be appended as a tie-breaker. [Context: Fintech & Ledger Systems]"
+  },
+  {
+    "id": "mcq_orderlimit_52",
+    "keyword": "ORDER BY & LIMIT",
+    "tag": "🏛️ Corporate Edge",
+    "question": "[ORDER BY & LIMIT #52 &bull; SaaS Subscription Billing] Why is offset pagination ('LIMIT 20 OFFSET 1000000') notoriously slow on large tables? (Application Scenario 1)",
+    "options": [
+      "OFFSET is executed in the client's browser rather than the database",
+      "The engine must still read and discard the first 1,000,000 rows from the index/table before transmitting the desired 20 rows",
+      "B-Tree indexes cannot count past 65,535",
+      "MySQL disables caching whenever OFFSET is used"
+    ],
+    "correctIndex": 1,
+    "explanation": "OFFSET N requires scanning and discarding N rows. For deep pagination, Keyset Pagination (Cursor pagination, e.g. 'WHERE id > last_seen_id ORDER BY id LIMIT 20') delivers O(1) performance. [Context: SaaS Subscription Billing]"
+  },
+  {
+    "id": "mcq_orderlimit_53",
+    "keyword": "ORDER BY & LIMIT",
+    "tag": "💡 Lead Architect",
+    "question": "[ORDER BY & LIMIT #53 &bull; Global Supply Chain & Logistics] Where do NULL values appear by default in ORDER BY in MySQL versus PostgreSQL? (Application Scenario 1)",
+    "options": [
+      "Both always sort NULLs in the exact middle of the result set",
+      "PostgreSQL throws an error if NULLs are sorted",
+      "Both treat NULL as the integer zero",
+      "In MySQL, NULLs sort FIRST in ASC and LAST in DESC; in PostgreSQL, NULLs sort LAST in ASC and FIRST in DESC (unless NULLS FIRST/LAST is specified)"
+    ],
+    "correctIndex": 3,
+    "explanation": "MySQL treats NULL as the lowest possible value (appearing first in ASC). PostgreSQL treats NULL as the highest possible value (appearing last in ASC). ANSI SQL provides NULLS FIRST / NULLS LAST to make behavior explicit. [Context: Global Supply Chain & Logistics]"
+  },
+  {
+    "id": "mcq_orderlimit_54",
+    "keyword": "ORDER BY & LIMIT",
+    "tag": "⚡ Gotcha Trap",
+    "question": "[ORDER BY & LIMIT #54 &bull; Healthcare Patient Records] What is an 'Index Sort' (avoiding filesort) in MySQL EXPLAIN output? (Application Scenario 1)",
+    "options": [
+      "A sorting pass that sorts index files on disk",
+      "The query satisfies the ORDER BY directly from the ordered leaf nodes of a B-Tree index, without having to load rows into memory and run a sorting algorithm",
+      "A sort executed inside the CPU cache registers only",
+      "A sort that only works on PRIMARY KEY columns"
+    ],
+    "correctIndex": 1,
+    "explanation": "When the ORDER BY matches the leading columns of an index (and WHERE predicates are compatible), the engine retrieves rows already in sorted order, completely bypassing the expensive filesort pass. [Context: Healthcare Patient Records]"
+  },
+  {
+    "id": "mcq_orderlimit_55",
+    "keyword": "ORDER BY & LIMIT",
+    "tag": "🎯 Core Concept",
+    "question": "[ORDER BY & LIMIT #55 &bull; E-Commerce Checkout Funnels] What does 'ORDER BY 1 DESC, 2 ASC' mean in ANSI SQL? (Application Scenario 1)",
+    "options": [
+      "Sort by the numbers 1 and 2 literally",
+      "Syntax error: Ordinal column positioning is forbidden",
+      "Sort the primary key descending",
+      "Sort by the 1st column in the SELECT list descending, and break ties using the 2nd column ascending"
+    ],
+    "correctIndex": 3,
+    "explanation": "Positional references in ORDER BY refer to the 1-based index of columns in the SELECT clause. While standard, referencing explicit column names is preferred in production code. [Context: E-Commerce Checkout Funnels]"
+  },
+  {
+    "id": "mcq_orderlimit_56",
+    "keyword": "ORDER BY & LIMIT",
+    "tag": "🏛️ Corporate Edge",
+    "question": "[ORDER BY & LIMIT #56 &bull; Telecom Billing & Data Streams] What is 'sorting indeterminism' when using ORDER BY with LIMIT, and how does it cause production bugs in pagination? (Application Scenario 2)",
+    "options": [
+      "Indeterminism causes the database to crash when sorting strings",
+      "If the ORDER BY column has duplicate values and no unique tie-breaker, rows with identical values can appear in arbitrary order across pages, causing records to be skipped or repeated",
+      "LIMIT causes the query optimizer to reverse the sort direction",
+      "Sorting integers is always non-deterministic in relational algebra"
+    ],
+    "correctIndex": 1,
+    "explanation": "Relational sets are unordered. If sorting by non-unique columns (e.g. created_date), different execution plans or storage engines may return tied rows in varying order. A unique column (like id) must always be appended as a tie-breaker. [Context: Telecom Billing & Data Streams]"
+  },
+  {
+    "id": "mcq_orderlimit_57",
+    "keyword": "ORDER BY & LIMIT",
+    "tag": "💡 Lead Architect",
+    "question": "[ORDER BY & LIMIT #57 &bull; AdTech Real-Time Bidding] Why is offset pagination ('LIMIT 20 OFFSET 1000000') notoriously slow on large tables? (Application Scenario 2)",
+    "options": [
+      "OFFSET is executed in the client's browser rather than the database",
+      "B-Tree indexes cannot count past 65,535",
+      "MySQL disables caching whenever OFFSET is used",
+      "The engine must still read and discard the first 1,000,000 rows from the index/table before transmitting the desired 20 rows"
+    ],
+    "correctIndex": 3,
+    "explanation": "OFFSET N requires scanning and discarding N rows. For deep pagination, Keyset Pagination (Cursor pagination, e.g. 'WHERE id > last_seen_id ORDER BY id LIMIT 20') delivers O(1) performance. [Context: AdTech Real-Time Bidding]"
+  },
+  {
+    "id": "mcq_orderlimit_58",
+    "keyword": "ORDER BY & LIMIT",
+    "tag": "⚡ Gotcha Trap",
+    "question": "[ORDER BY & LIMIT #58 &bull; Cybersecurity Audit Logs] Where do NULL values appear by default in ORDER BY in MySQL versus PostgreSQL? (Application Scenario 2)",
+    "options": [
+      "Both always sort NULLs in the exact middle of the result set",
+      "In MySQL, NULLs sort FIRST in ASC and LAST in DESC; in PostgreSQL, NULLs sort LAST in ASC and FIRST in DESC (unless NULLS FIRST/LAST is specified)",
+      "PostgreSQL throws an error if NULLs are sorted",
+      "Both treat NULL as the integer zero"
+    ],
+    "correctIndex": 1,
+    "explanation": "MySQL treats NULL as the lowest possible value (appearing first in ASC). PostgreSQL treats NULL as the highest possible value (appearing last in ASC). ANSI SQL provides NULLS FIRST / NULLS LAST to make behavior explicit. [Context: Cybersecurity Audit Logs]"
+  },
+  {
+    "id": "mcq_orderlimit_59",
+    "keyword": "ORDER BY & LIMIT",
+    "tag": "🎯 Core Concept",
+    "question": "[ORDER BY & LIMIT #59 &bull; Fintech & Ledger Systems] What is an 'Index Sort' (avoiding filesort) in MySQL EXPLAIN output? (Application Scenario 2)",
+    "options": [
+      "A sorting pass that sorts index files on disk",
+      "A sort executed inside the CPU cache registers only",
+      "A sort that only works on PRIMARY KEY columns",
+      "The query satisfies the ORDER BY directly from the ordered leaf nodes of a B-Tree index, without having to load rows into memory and run a sorting algorithm"
+    ],
+    "correctIndex": 3,
+    "explanation": "When the ORDER BY matches the leading columns of an index (and WHERE predicates are compatible), the engine retrieves rows already in sorted order, completely bypassing the expensive filesort pass. [Context: Fintech & Ledger Systems]"
+  },
+  {
+    "id": "mcq_orderlimit_60",
+    "keyword": "ORDER BY & LIMIT",
+    "tag": "🏛️ Corporate Edge",
+    "question": "[ORDER BY & LIMIT #60 &bull; SaaS Subscription Billing] What does 'ORDER BY 1 DESC, 2 ASC' mean in ANSI SQL? (Application Scenario 2)",
+    "options": [
+      "Sort by the numbers 1 and 2 literally",
+      "Sort by the 1st column in the SELECT list descending, and break ties using the 2nd column ascending",
+      "Syntax error: Ordinal column positioning is forbidden",
+      "Sort the primary key descending"
+    ],
+    "correctIndex": 1,
+    "explanation": "Positional references in ORDER BY refer to the 1-based index of columns in the SELECT clause. While standard, referencing explicit column names is preferred in production code. [Context: SaaS Subscription Billing]"
+  },
+  {
+    "id": "mcq_orderlimit_61",
+    "keyword": "ORDER BY & LIMIT",
+    "tag": "💡 Lead Architect",
+    "question": "[ORDER BY & LIMIT #61 &bull; Global Supply Chain & Logistics] What is 'sorting indeterminism' when using ORDER BY with LIMIT, and how does it cause production bugs in pagination? (Application Scenario 3)",
+    "options": [
+      "Indeterminism causes the database to crash when sorting strings",
+      "LIMIT causes the query optimizer to reverse the sort direction",
+      "Sorting integers is always non-deterministic in relational algebra",
+      "If the ORDER BY column has duplicate values and no unique tie-breaker, rows with identical values can appear in arbitrary order across pages, causing records to be skipped or repeated"
+    ],
+    "correctIndex": 3,
+    "explanation": "Relational sets are unordered. If sorting by non-unique columns (e.g. created_date), different execution plans or storage engines may return tied rows in varying order. A unique column (like id) must always be appended as a tie-breaker. [Context: Global Supply Chain & Logistics]"
+  },
+  {
+    "id": "mcq_orderlimit_62",
+    "keyword": "ORDER BY & LIMIT",
+    "tag": "⚡ Gotcha Trap",
+    "question": "[ORDER BY & LIMIT #62 &bull; Healthcare Patient Records] Why is offset pagination ('LIMIT 20 OFFSET 1000000') notoriously slow on large tables? (Application Scenario 3)",
+    "options": [
+      "OFFSET is executed in the client's browser rather than the database",
+      "The engine must still read and discard the first 1,000,000 rows from the index/table before transmitting the desired 20 rows",
+      "B-Tree indexes cannot count past 65,535",
+      "MySQL disables caching whenever OFFSET is used"
+    ],
+    "correctIndex": 1,
+    "explanation": "OFFSET N requires scanning and discarding N rows. For deep pagination, Keyset Pagination (Cursor pagination, e.g. 'WHERE id > last_seen_id ORDER BY id LIMIT 20') delivers O(1) performance. [Context: Healthcare Patient Records]"
+  },
+  {
+    "id": "mcq_orderlimit_63",
+    "keyword": "ORDER BY & LIMIT",
+    "tag": "🎯 Core Concept",
+    "question": "[ORDER BY & LIMIT #63 &bull; E-Commerce Checkout Funnels] Where do NULL values appear by default in ORDER BY in MySQL versus PostgreSQL? (Application Scenario 3)",
+    "options": [
+      "Both always sort NULLs in the exact middle of the result set",
+      "PostgreSQL throws an error if NULLs are sorted",
+      "Both treat NULL as the integer zero",
+      "In MySQL, NULLs sort FIRST in ASC and LAST in DESC; in PostgreSQL, NULLs sort LAST in ASC and FIRST in DESC (unless NULLS FIRST/LAST is specified)"
+    ],
+    "correctIndex": 3,
+    "explanation": "MySQL treats NULL as the lowest possible value (appearing first in ASC). PostgreSQL treats NULL as the highest possible value (appearing last in ASC). ANSI SQL provides NULLS FIRST / NULLS LAST to make behavior explicit. [Context: E-Commerce Checkout Funnels]"
+  },
+  {
+    "id": "mcq_orderlimit_64",
+    "keyword": "ORDER BY & LIMIT",
+    "tag": "🏛️ Corporate Edge",
+    "question": "[ORDER BY & LIMIT #64 &bull; Telecom Billing & Data Streams] What is an 'Index Sort' (avoiding filesort) in MySQL EXPLAIN output? (Application Scenario 3)",
+    "options": [
+      "A sorting pass that sorts index files on disk",
+      "The query satisfies the ORDER BY directly from the ordered leaf nodes of a B-Tree index, without having to load rows into memory and run a sorting algorithm",
+      "A sort executed inside the CPU cache registers only",
+      "A sort that only works on PRIMARY KEY columns"
+    ],
+    "correctIndex": 1,
+    "explanation": "When the ORDER BY matches the leading columns of an index (and WHERE predicates are compatible), the engine retrieves rows already in sorted order, completely bypassing the expensive filesort pass. [Context: Telecom Billing & Data Streams]"
+  },
+  {
+    "id": "mcq_orderlimit_65",
+    "keyword": "ORDER BY & LIMIT",
+    "tag": "💡 Lead Architect",
+    "question": "[ORDER BY & LIMIT #65 &bull; AdTech Real-Time Bidding] What does 'ORDER BY 1 DESC, 2 ASC' mean in ANSI SQL? (Application Scenario 3)",
+    "options": [
+      "Sort by the numbers 1 and 2 literally",
+      "Syntax error: Ordinal column positioning is forbidden",
+      "Sort the primary key descending",
+      "Sort by the 1st column in the SELECT list descending, and break ties using the 2nd column ascending"
+    ],
+    "correctIndex": 3,
+    "explanation": "Positional references in ORDER BY refer to the 1-based index of columns in the SELECT clause. While standard, referencing explicit column names is preferred in production code. [Context: AdTech Real-Time Bidding]"
+  },
+  {
+    "id": "mcq_orderlimit_66",
+    "keyword": "ORDER BY & LIMIT",
+    "tag": "⚡ Gotcha Trap",
+    "question": "[ORDER BY & LIMIT #66 &bull; Cybersecurity Audit Logs] What is 'sorting indeterminism' when using ORDER BY with LIMIT, and how does it cause production bugs in pagination? (Application Scenario 4)",
+    "options": [
+      "Indeterminism causes the database to crash when sorting strings",
+      "If the ORDER BY column has duplicate values and no unique tie-breaker, rows with identical values can appear in arbitrary order across pages, causing records to be skipped or repeated",
+      "LIMIT causes the query optimizer to reverse the sort direction",
+      "Sorting integers is always non-deterministic in relational algebra"
+    ],
+    "correctIndex": 1,
+    "explanation": "Relational sets are unordered. If sorting by non-unique columns (e.g. created_date), different execution plans or storage engines may return tied rows in varying order. A unique column (like id) must always be appended as a tie-breaker. [Context: Cybersecurity Audit Logs]"
+  },
+  {
+    "id": "mcq_orderlimit_67",
+    "keyword": "ORDER BY & LIMIT",
+    "tag": "🎯 Core Concept",
+    "question": "[ORDER BY & LIMIT #67 &bull; Fintech & Ledger Systems] Why is offset pagination ('LIMIT 20 OFFSET 1000000') notoriously slow on large tables? (Application Scenario 4)",
+    "options": [
+      "OFFSET is executed in the client's browser rather than the database",
+      "B-Tree indexes cannot count past 65,535",
+      "MySQL disables caching whenever OFFSET is used",
+      "The engine must still read and discard the first 1,000,000 rows from the index/table before transmitting the desired 20 rows"
+    ],
+    "correctIndex": 3,
+    "explanation": "OFFSET N requires scanning and discarding N rows. For deep pagination, Keyset Pagination (Cursor pagination, e.g. 'WHERE id > last_seen_id ORDER BY id LIMIT 20') delivers O(1) performance. [Context: Fintech & Ledger Systems]"
+  },
+  {
+    "id": "mcq_orderlimit_68",
+    "keyword": "ORDER BY & LIMIT",
+    "tag": "🏛️ Corporate Edge",
+    "question": "[ORDER BY & LIMIT #68 &bull; SaaS Subscription Billing] Where do NULL values appear by default in ORDER BY in MySQL versus PostgreSQL? (Application Scenario 4)",
+    "options": [
+      "Both always sort NULLs in the exact middle of the result set",
+      "In MySQL, NULLs sort FIRST in ASC and LAST in DESC; in PostgreSQL, NULLs sort LAST in ASC and FIRST in DESC (unless NULLS FIRST/LAST is specified)",
+      "PostgreSQL throws an error if NULLs are sorted",
+      "Both treat NULL as the integer zero"
+    ],
+    "correctIndex": 1,
+    "explanation": "MySQL treats NULL as the lowest possible value (appearing first in ASC). PostgreSQL treats NULL as the highest possible value (appearing last in ASC). ANSI SQL provides NULLS FIRST / NULLS LAST to make behavior explicit. [Context: SaaS Subscription Billing]"
+  },
+  {
+    "id": "mcq_orderlimit_69",
+    "keyword": "ORDER BY & LIMIT",
+    "tag": "💡 Lead Architect",
+    "question": "[ORDER BY & LIMIT #69 &bull; Global Supply Chain & Logistics] What is an 'Index Sort' (avoiding filesort) in MySQL EXPLAIN output? (Application Scenario 4)",
+    "options": [
+      "A sorting pass that sorts index files on disk",
+      "A sort executed inside the CPU cache registers only",
+      "A sort that only works on PRIMARY KEY columns",
+      "The query satisfies the ORDER BY directly from the ordered leaf nodes of a B-Tree index, without having to load rows into memory and run a sorting algorithm"
+    ],
+    "correctIndex": 3,
+    "explanation": "When the ORDER BY matches the leading columns of an index (and WHERE predicates are compatible), the engine retrieves rows already in sorted order, completely bypassing the expensive filesort pass. [Context: Global Supply Chain & Logistics]"
+  },
+  {
+    "id": "mcq_orderlimit_70",
+    "keyword": "ORDER BY & LIMIT",
+    "tag": "⚡ Gotcha Trap",
+    "question": "[ORDER BY & LIMIT #70 &bull; Healthcare Patient Records] What does 'ORDER BY 1 DESC, 2 ASC' mean in ANSI SQL? (Application Scenario 4)",
+    "options": [
+      "Sort by the numbers 1 and 2 literally",
+      "Sort by the 1st column in the SELECT list descending, and break ties using the 2nd column ascending",
+      "Syntax error: Ordinal column positioning is forbidden",
+      "Sort the primary key descending"
+    ],
+    "correctIndex": 1,
+    "explanation": "Positional references in ORDER BY refer to the 1-based index of columns in the SELECT clause. While standard, referencing explicit column names is preferred in production code. [Context: Healthcare Patient Records]"
+  },
+  {
+    "id": "mcq_orderlimit_71",
+    "keyword": "ORDER BY & LIMIT",
+    "tag": "🎯 Core Concept",
+    "question": "[ORDER BY & LIMIT #71 &bull; E-Commerce Checkout Funnels] What is 'sorting indeterminism' when using ORDER BY with LIMIT, and how does it cause production bugs in pagination? (Application Scenario 5)",
+    "options": [
+      "Indeterminism causes the database to crash when sorting strings",
+      "LIMIT causes the query optimizer to reverse the sort direction",
+      "Sorting integers is always non-deterministic in relational algebra",
+      "If the ORDER BY column has duplicate values and no unique tie-breaker, rows with identical values can appear in arbitrary order across pages, causing records to be skipped or repeated"
+    ],
+    "correctIndex": 3,
+    "explanation": "Relational sets are unordered. If sorting by non-unique columns (e.g. created_date), different execution plans or storage engines may return tied rows in varying order. A unique column (like id) must always be appended as a tie-breaker. [Context: E-Commerce Checkout Funnels]"
+  },
+  {
+    "id": "mcq_orderlimit_72",
+    "keyword": "ORDER BY & LIMIT",
+    "tag": "🏛️ Corporate Edge",
+    "question": "[ORDER BY & LIMIT #72 &bull; Telecom Billing & Data Streams] Why is offset pagination ('LIMIT 20 OFFSET 1000000') notoriously slow on large tables? (Application Scenario 5)",
+    "options": [
+      "OFFSET is executed in the client's browser rather than the database",
+      "The engine must still read and discard the first 1,000,000 rows from the index/table before transmitting the desired 20 rows",
+      "B-Tree indexes cannot count past 65,535",
+      "MySQL disables caching whenever OFFSET is used"
+    ],
+    "correctIndex": 1,
+    "explanation": "OFFSET N requires scanning and discarding N rows. For deep pagination, Keyset Pagination (Cursor pagination, e.g. 'WHERE id > last_seen_id ORDER BY id LIMIT 20') delivers O(1) performance. [Context: Telecom Billing & Data Streams]"
+  },
+  {
+    "id": "mcq_orderlimit_73",
+    "keyword": "ORDER BY & LIMIT",
+    "tag": "💡 Lead Architect",
+    "question": "[ORDER BY & LIMIT #73 &bull; AdTech Real-Time Bidding] Where do NULL values appear by default in ORDER BY in MySQL versus PostgreSQL? (Application Scenario 5)",
+    "options": [
+      "Both always sort NULLs in the exact middle of the result set",
+      "PostgreSQL throws an error if NULLs are sorted",
+      "Both treat NULL as the integer zero",
+      "In MySQL, NULLs sort FIRST in ASC and LAST in DESC; in PostgreSQL, NULLs sort LAST in ASC and FIRST in DESC (unless NULLS FIRST/LAST is specified)"
+    ],
+    "correctIndex": 3,
+    "explanation": "MySQL treats NULL as the lowest possible value (appearing first in ASC). PostgreSQL treats NULL as the highest possible value (appearing last in ASC). ANSI SQL provides NULLS FIRST / NULLS LAST to make behavior explicit. [Context: AdTech Real-Time Bidding]"
+  },
+  {
+    "id": "mcq_orderlimit_74",
+    "keyword": "ORDER BY & LIMIT",
+    "tag": "⚡ Gotcha Trap",
+    "question": "[ORDER BY & LIMIT #74 &bull; Cybersecurity Audit Logs] What is an 'Index Sort' (avoiding filesort) in MySQL EXPLAIN output? (Application Scenario 5)",
+    "options": [
+      "A sorting pass that sorts index files on disk",
+      "The query satisfies the ORDER BY directly from the ordered leaf nodes of a B-Tree index, without having to load rows into memory and run a sorting algorithm",
+      "A sort executed inside the CPU cache registers only",
+      "A sort that only works on PRIMARY KEY columns"
+    ],
+    "correctIndex": 1,
+    "explanation": "When the ORDER BY matches the leading columns of an index (and WHERE predicates are compatible), the engine retrieves rows already in sorted order, completely bypassing the expensive filesort pass. [Context: Cybersecurity Audit Logs]"
+  },
+  {
+    "id": "mcq_orderlimit_75",
+    "keyword": "ORDER BY & LIMIT",
+    "tag": "🎯 Core Concept",
+    "question": "[ORDER BY & LIMIT #75 &bull; Fintech & Ledger Systems] What does 'ORDER BY 1 DESC, 2 ASC' mean in ANSI SQL? (Application Scenario 5)",
+    "options": [
+      "Sort by the numbers 1 and 2 literally",
+      "Syntax error: Ordinal column positioning is forbidden",
+      "Sort the primary key descending",
+      "Sort by the 1st column in the SELECT list descending, and break ties using the 2nd column ascending"
+    ],
+    "correctIndex": 3,
+    "explanation": "Positional references in ORDER BY refer to the 1-based index of columns in the SELECT clause. While standard, referencing explicit column names is preferred in production code. [Context: Fintech & Ledger Systems]"
+  },
+  {
+    "id": "mcq_orderlimit_76",
+    "keyword": "ORDER BY & LIMIT",
+    "tag": "🏛️ Corporate Edge",
+    "question": "[ORDER BY & LIMIT #76 &bull; SaaS Subscription Billing] What is 'sorting indeterminism' when using ORDER BY with LIMIT, and how does it cause production bugs in pagination? (Application Scenario 6)",
+    "options": [
+      "Indeterminism causes the database to crash when sorting strings",
+      "If the ORDER BY column has duplicate values and no unique tie-breaker, rows with identical values can appear in arbitrary order across pages, causing records to be skipped or repeated",
+      "LIMIT causes the query optimizer to reverse the sort direction",
+      "Sorting integers is always non-deterministic in relational algebra"
+    ],
+    "correctIndex": 1,
+    "explanation": "Relational sets are unordered. If sorting by non-unique columns (e.g. created_date), different execution plans or storage engines may return tied rows in varying order. A unique column (like id) must always be appended as a tie-breaker. [Context: SaaS Subscription Billing]"
+  },
+  {
+    "id": "mcq_orderlimit_77",
+    "keyword": "ORDER BY & LIMIT",
+    "tag": "💡 Lead Architect",
+    "question": "[ORDER BY & LIMIT #77 &bull; Global Supply Chain & Logistics] Why is offset pagination ('LIMIT 20 OFFSET 1000000') notoriously slow on large tables? (Application Scenario 6)",
+    "options": [
+      "OFFSET is executed in the client's browser rather than the database",
+      "B-Tree indexes cannot count past 65,535",
+      "MySQL disables caching whenever OFFSET is used",
+      "The engine must still read and discard the first 1,000,000 rows from the index/table before transmitting the desired 20 rows"
+    ],
+    "correctIndex": 3,
+    "explanation": "OFFSET N requires scanning and discarding N rows. For deep pagination, Keyset Pagination (Cursor pagination, e.g. 'WHERE id > last_seen_id ORDER BY id LIMIT 20') delivers O(1) performance. [Context: Global Supply Chain & Logistics]"
+  },
+  {
+    "id": "mcq_orderlimit_78",
+    "keyword": "ORDER BY & LIMIT",
+    "tag": "⚡ Gotcha Trap",
+    "question": "[ORDER BY & LIMIT #78 &bull; Healthcare Patient Records] Where do NULL values appear by default in ORDER BY in MySQL versus PostgreSQL? (Application Scenario 6)",
+    "options": [
+      "Both always sort NULLs in the exact middle of the result set",
+      "In MySQL, NULLs sort FIRST in ASC and LAST in DESC; in PostgreSQL, NULLs sort LAST in ASC and FIRST in DESC (unless NULLS FIRST/LAST is specified)",
+      "PostgreSQL throws an error if NULLs are sorted",
+      "Both treat NULL as the integer zero"
+    ],
+    "correctIndex": 1,
+    "explanation": "MySQL treats NULL as the lowest possible value (appearing first in ASC). PostgreSQL treats NULL as the highest possible value (appearing last in ASC). ANSI SQL provides NULLS FIRST / NULLS LAST to make behavior explicit. [Context: Healthcare Patient Records]"
+  },
+  {
+    "id": "mcq_orderlimit_79",
+    "keyword": "ORDER BY & LIMIT",
+    "tag": "🎯 Core Concept",
+    "question": "[ORDER BY & LIMIT #79 &bull; E-Commerce Checkout Funnels] What is an 'Index Sort' (avoiding filesort) in MySQL EXPLAIN output? (Application Scenario 6)",
+    "options": [
+      "A sorting pass that sorts index files on disk",
+      "A sort executed inside the CPU cache registers only",
+      "A sort that only works on PRIMARY KEY columns",
+      "The query satisfies the ORDER BY directly from the ordered leaf nodes of a B-Tree index, without having to load rows into memory and run a sorting algorithm"
+    ],
+    "correctIndex": 3,
+    "explanation": "When the ORDER BY matches the leading columns of an index (and WHERE predicates are compatible), the engine retrieves rows already in sorted order, completely bypassing the expensive filesort pass. [Context: E-Commerce Checkout Funnels]"
+  },
+  {
+    "id": "mcq_orderlimit_80",
+    "keyword": "ORDER BY & LIMIT",
+    "tag": "🏛️ Corporate Edge",
+    "question": "[ORDER BY & LIMIT #80 &bull; Telecom Billing & Data Streams] What does 'ORDER BY 1 DESC, 2 ASC' mean in ANSI SQL? (Application Scenario 6)",
+    "options": [
+      "Sort by the numbers 1 and 2 literally",
+      "Sort by the 1st column in the SELECT list descending, and break ties using the 2nd column ascending",
+      "Syntax error: Ordinal column positioning is forbidden",
+      "Sort the primary key descending"
+    ],
+    "correctIndex": 1,
+    "explanation": "Positional references in ORDER BY refer to the 1-based index of columns in the SELECT clause. While standard, referencing explicit column names is preferred in production code. [Context: Telecom Billing & Data Streams]"
+  },
+  {
+    "id": "mcq_orderlimit_81",
+    "keyword": "ORDER BY & LIMIT",
+    "tag": "💡 Lead Architect",
+    "question": "[ORDER BY & LIMIT #81 &bull; AdTech Real-Time Bidding] What is 'sorting indeterminism' when using ORDER BY with LIMIT, and how does it cause production bugs in pagination? (Application Scenario 7)",
+    "options": [
+      "Indeterminism causes the database to crash when sorting strings",
+      "LIMIT causes the query optimizer to reverse the sort direction",
+      "Sorting integers is always non-deterministic in relational algebra",
+      "If the ORDER BY column has duplicate values and no unique tie-breaker, rows with identical values can appear in arbitrary order across pages, causing records to be skipped or repeated"
+    ],
+    "correctIndex": 3,
+    "explanation": "Relational sets are unordered. If sorting by non-unique columns (e.g. created_date), different execution plans or storage engines may return tied rows in varying order. A unique column (like id) must always be appended as a tie-breaker. [Context: AdTech Real-Time Bidding]"
+  },
+  {
+    "id": "mcq_orderlimit_82",
+    "keyword": "ORDER BY & LIMIT",
+    "tag": "⚡ Gotcha Trap",
+    "question": "[ORDER BY & LIMIT #82 &bull; Cybersecurity Audit Logs] Why is offset pagination ('LIMIT 20 OFFSET 1000000') notoriously slow on large tables? (Application Scenario 7)",
+    "options": [
+      "OFFSET is executed in the client's browser rather than the database",
+      "The engine must still read and discard the first 1,000,000 rows from the index/table before transmitting the desired 20 rows",
+      "B-Tree indexes cannot count past 65,535",
+      "MySQL disables caching whenever OFFSET is used"
+    ],
+    "correctIndex": 1,
+    "explanation": "OFFSET N requires scanning and discarding N rows. For deep pagination, Keyset Pagination (Cursor pagination, e.g. 'WHERE id > last_seen_id ORDER BY id LIMIT 20') delivers O(1) performance. [Context: Cybersecurity Audit Logs]"
+  },
+  {
+    "id": "mcq_orderlimit_83",
+    "keyword": "ORDER BY & LIMIT",
+    "tag": "🎯 Core Concept",
+    "question": "[ORDER BY & LIMIT #83 &bull; Fintech & Ledger Systems] Where do NULL values appear by default in ORDER BY in MySQL versus PostgreSQL? (Application Scenario 7)",
+    "options": [
+      "Both always sort NULLs in the exact middle of the result set",
+      "PostgreSQL throws an error if NULLs are sorted",
+      "Both treat NULL as the integer zero",
+      "In MySQL, NULLs sort FIRST in ASC and LAST in DESC; in PostgreSQL, NULLs sort LAST in ASC and FIRST in DESC (unless NULLS FIRST/LAST is specified)"
+    ],
+    "correctIndex": 3,
+    "explanation": "MySQL treats NULL as the lowest possible value (appearing first in ASC). PostgreSQL treats NULL as the highest possible value (appearing last in ASC). ANSI SQL provides NULLS FIRST / NULLS LAST to make behavior explicit. [Context: Fintech & Ledger Systems]"
+  },
+  {
+    "id": "mcq_orderlimit_84",
+    "keyword": "ORDER BY & LIMIT",
+    "tag": "🏛️ Corporate Edge",
+    "question": "[ORDER BY & LIMIT #84 &bull; SaaS Subscription Billing] What is an 'Index Sort' (avoiding filesort) in MySQL EXPLAIN output? (Application Scenario 7)",
+    "options": [
+      "A sorting pass that sorts index files on disk",
+      "The query satisfies the ORDER BY directly from the ordered leaf nodes of a B-Tree index, without having to load rows into memory and run a sorting algorithm",
+      "A sort executed inside the CPU cache registers only",
+      "A sort that only works on PRIMARY KEY columns"
+    ],
+    "correctIndex": 1,
+    "explanation": "When the ORDER BY matches the leading columns of an index (and WHERE predicates are compatible), the engine retrieves rows already in sorted order, completely bypassing the expensive filesort pass. [Context: SaaS Subscription Billing]"
+  },
+  {
+    "id": "mcq_orderlimit_85",
+    "keyword": "ORDER BY & LIMIT",
+    "tag": "💡 Lead Architect",
+    "question": "[ORDER BY & LIMIT #85 &bull; Global Supply Chain & Logistics] What does 'ORDER BY 1 DESC, 2 ASC' mean in ANSI SQL? (Application Scenario 7)",
+    "options": [
+      "Sort by the numbers 1 and 2 literally",
+      "Syntax error: Ordinal column positioning is forbidden",
+      "Sort the primary key descending",
+      "Sort by the 1st column in the SELECT list descending, and break ties using the 2nd column ascending"
+    ],
+    "correctIndex": 3,
+    "explanation": "Positional references in ORDER BY refer to the 1-based index of columns in the SELECT clause. While standard, referencing explicit column names is preferred in production code. [Context: Global Supply Chain & Logistics]"
+  },
+  {
+    "id": "mcq_orderlimit_86",
+    "keyword": "ORDER BY & LIMIT",
+    "tag": "⚡ Gotcha Trap",
+    "question": "[ORDER BY & LIMIT #86 &bull; Healthcare Patient Records] What is 'sorting indeterminism' when using ORDER BY with LIMIT, and how does it cause production bugs in pagination? (Application Scenario 8)",
+    "options": [
+      "Indeterminism causes the database to crash when sorting strings",
+      "If the ORDER BY column has duplicate values and no unique tie-breaker, rows with identical values can appear in arbitrary order across pages, causing records to be skipped or repeated",
+      "LIMIT causes the query optimizer to reverse the sort direction",
+      "Sorting integers is always non-deterministic in relational algebra"
+    ],
+    "correctIndex": 1,
+    "explanation": "Relational sets are unordered. If sorting by non-unique columns (e.g. created_date), different execution plans or storage engines may return tied rows in varying order. A unique column (like id) must always be appended as a tie-breaker. [Context: Healthcare Patient Records]"
+  },
+  {
+    "id": "mcq_orderlimit_87",
+    "keyword": "ORDER BY & LIMIT",
+    "tag": "🎯 Core Concept",
+    "question": "[ORDER BY & LIMIT #87 &bull; E-Commerce Checkout Funnels] Why is offset pagination ('LIMIT 20 OFFSET 1000000') notoriously slow on large tables? (Application Scenario 8)",
+    "options": [
+      "OFFSET is executed in the client's browser rather than the database",
+      "B-Tree indexes cannot count past 65,535",
+      "MySQL disables caching whenever OFFSET is used",
+      "The engine must still read and discard the first 1,000,000 rows from the index/table before transmitting the desired 20 rows"
+    ],
+    "correctIndex": 3,
+    "explanation": "OFFSET N requires scanning and discarding N rows. For deep pagination, Keyset Pagination (Cursor pagination, e.g. 'WHERE id > last_seen_id ORDER BY id LIMIT 20') delivers O(1) performance. [Context: E-Commerce Checkout Funnels]"
+  },
+  {
+    "id": "mcq_orderlimit_88",
+    "keyword": "ORDER BY & LIMIT",
+    "tag": "🏛️ Corporate Edge",
+    "question": "[ORDER BY & LIMIT #88 &bull; Telecom Billing & Data Streams] Where do NULL values appear by default in ORDER BY in MySQL versus PostgreSQL? (Application Scenario 8)",
+    "options": [
+      "Both always sort NULLs in the exact middle of the result set",
+      "In MySQL, NULLs sort FIRST in ASC and LAST in DESC; in PostgreSQL, NULLs sort LAST in ASC and FIRST in DESC (unless NULLS FIRST/LAST is specified)",
+      "PostgreSQL throws an error if NULLs are sorted",
+      "Both treat NULL as the integer zero"
+    ],
+    "correctIndex": 1,
+    "explanation": "MySQL treats NULL as the lowest possible value (appearing first in ASC). PostgreSQL treats NULL as the highest possible value (appearing last in ASC). ANSI SQL provides NULLS FIRST / NULLS LAST to make behavior explicit. [Context: Telecom Billing & Data Streams]"
+  },
+  {
+    "id": "mcq_orderlimit_89",
+    "keyword": "ORDER BY & LIMIT",
+    "tag": "💡 Lead Architect",
+    "question": "[ORDER BY & LIMIT #89 &bull; AdTech Real-Time Bidding] What is an 'Index Sort' (avoiding filesort) in MySQL EXPLAIN output? (Application Scenario 8)",
+    "options": [
+      "A sorting pass that sorts index files on disk",
+      "A sort executed inside the CPU cache registers only",
+      "A sort that only works on PRIMARY KEY columns",
+      "The query satisfies the ORDER BY directly from the ordered leaf nodes of a B-Tree index, without having to load rows into memory and run a sorting algorithm"
+    ],
+    "correctIndex": 3,
+    "explanation": "When the ORDER BY matches the leading columns of an index (and WHERE predicates are compatible), the engine retrieves rows already in sorted order, completely bypassing the expensive filesort pass. [Context: AdTech Real-Time Bidding]"
+  },
+  {
+    "id": "mcq_orderlimit_90",
+    "keyword": "ORDER BY & LIMIT",
+    "tag": "⚡ Gotcha Trap",
+    "question": "[ORDER BY & LIMIT #90 &bull; Cybersecurity Audit Logs] What does 'ORDER BY 1 DESC, 2 ASC' mean in ANSI SQL? (Application Scenario 8)",
+    "options": [
+      "Sort by the numbers 1 and 2 literally",
+      "Sort by the 1st column in the SELECT list descending, and break ties using the 2nd column ascending",
+      "Syntax error: Ordinal column positioning is forbidden",
+      "Sort the primary key descending"
+    ],
+    "correctIndex": 1,
+    "explanation": "Positional references in ORDER BY refer to the 1-based index of columns in the SELECT clause. While standard, referencing explicit column names is preferred in production code. [Context: Cybersecurity Audit Logs]"
+  },
+  {
+    "id": "mcq_orderlimit_91",
+    "keyword": "ORDER BY & LIMIT",
+    "tag": "🎯 Core Concept",
+    "question": "[ORDER BY & LIMIT #91 &bull; Fintech & Ledger Systems] What is 'sorting indeterminism' when using ORDER BY with LIMIT, and how does it cause production bugs in pagination? (Application Scenario 9)",
+    "options": [
+      "Indeterminism causes the database to crash when sorting strings",
+      "LIMIT causes the query optimizer to reverse the sort direction",
+      "Sorting integers is always non-deterministic in relational algebra",
+      "If the ORDER BY column has duplicate values and no unique tie-breaker, rows with identical values can appear in arbitrary order across pages, causing records to be skipped or repeated"
+    ],
+    "correctIndex": 3,
+    "explanation": "Relational sets are unordered. If sorting by non-unique columns (e.g. created_date), different execution plans or storage engines may return tied rows in varying order. A unique column (like id) must always be appended as a tie-breaker. [Context: Fintech & Ledger Systems]"
+  },
+  {
+    "id": "mcq_orderlimit_92",
+    "keyword": "ORDER BY & LIMIT",
+    "tag": "🏛️ Corporate Edge",
+    "question": "[ORDER BY & LIMIT #92 &bull; SaaS Subscription Billing] Why is offset pagination ('LIMIT 20 OFFSET 1000000') notoriously slow on large tables? (Application Scenario 9)",
+    "options": [
+      "OFFSET is executed in the client's browser rather than the database",
+      "The engine must still read and discard the first 1,000,000 rows from the index/table before transmitting the desired 20 rows",
+      "B-Tree indexes cannot count past 65,535",
+      "MySQL disables caching whenever OFFSET is used"
+    ],
+    "correctIndex": 1,
+    "explanation": "OFFSET N requires scanning and discarding N rows. For deep pagination, Keyset Pagination (Cursor pagination, e.g. 'WHERE id > last_seen_id ORDER BY id LIMIT 20') delivers O(1) performance. [Context: SaaS Subscription Billing]"
+  },
+  {
+    "id": "mcq_orderlimit_93",
+    "keyword": "ORDER BY & LIMIT",
+    "tag": "💡 Lead Architect",
+    "question": "[ORDER BY & LIMIT #93 &bull; Global Supply Chain & Logistics] Where do NULL values appear by default in ORDER BY in MySQL versus PostgreSQL? (Application Scenario 9)",
+    "options": [
+      "Both always sort NULLs in the exact middle of the result set",
+      "PostgreSQL throws an error if NULLs are sorted",
+      "Both treat NULL as the integer zero",
+      "In MySQL, NULLs sort FIRST in ASC and LAST in DESC; in PostgreSQL, NULLs sort LAST in ASC and FIRST in DESC (unless NULLS FIRST/LAST is specified)"
+    ],
+    "correctIndex": 3,
+    "explanation": "MySQL treats NULL as the lowest possible value (appearing first in ASC). PostgreSQL treats NULL as the highest possible value (appearing last in ASC). ANSI SQL provides NULLS FIRST / NULLS LAST to make behavior explicit. [Context: Global Supply Chain & Logistics]"
+  },
+  {
+    "id": "mcq_orderlimit_94",
+    "keyword": "ORDER BY & LIMIT",
+    "tag": "⚡ Gotcha Trap",
+    "question": "[ORDER BY & LIMIT #94 &bull; Healthcare Patient Records] What is an 'Index Sort' (avoiding filesort) in MySQL EXPLAIN output? (Application Scenario 9)",
+    "options": [
+      "A sorting pass that sorts index files on disk",
+      "The query satisfies the ORDER BY directly from the ordered leaf nodes of a B-Tree index, without having to load rows into memory and run a sorting algorithm",
+      "A sort executed inside the CPU cache registers only",
+      "A sort that only works on PRIMARY KEY columns"
+    ],
+    "correctIndex": 1,
+    "explanation": "When the ORDER BY matches the leading columns of an index (and WHERE predicates are compatible), the engine retrieves rows already in sorted order, completely bypassing the expensive filesort pass. [Context: Healthcare Patient Records]"
+  },
+  {
+    "id": "mcq_orderlimit_95",
+    "keyword": "ORDER BY & LIMIT",
+    "tag": "🎯 Core Concept",
+    "question": "[ORDER BY & LIMIT #95 &bull; E-Commerce Checkout Funnels] What does 'ORDER BY 1 DESC, 2 ASC' mean in ANSI SQL? (Application Scenario 9)",
+    "options": [
+      "Sort by the numbers 1 and 2 literally",
+      "Syntax error: Ordinal column positioning is forbidden",
+      "Sort the primary key descending",
+      "Sort by the 1st column in the SELECT list descending, and break ties using the 2nd column ascending"
+    ],
+    "correctIndex": 3,
+    "explanation": "Positional references in ORDER BY refer to the 1-based index of columns in the SELECT clause. While standard, referencing explicit column names is preferred in production code. [Context: E-Commerce Checkout Funnels]"
+  },
+  {
+    "id": "mcq_orderlimit_96",
+    "keyword": "ORDER BY & LIMIT",
+    "tag": "🏛️ Corporate Edge",
+    "question": "[ORDER BY & LIMIT #96 &bull; Telecom Billing & Data Streams] What is 'sorting indeterminism' when using ORDER BY with LIMIT, and how does it cause production bugs in pagination? (Application Scenario 10)",
+    "options": [
+      "Indeterminism causes the database to crash when sorting strings",
+      "If the ORDER BY column has duplicate values and no unique tie-breaker, rows with identical values can appear in arbitrary order across pages, causing records to be skipped or repeated",
+      "LIMIT causes the query optimizer to reverse the sort direction",
+      "Sorting integers is always non-deterministic in relational algebra"
+    ],
+    "correctIndex": 1,
+    "explanation": "Relational sets are unordered. If sorting by non-unique columns (e.g. created_date), different execution plans or storage engines may return tied rows in varying order. A unique column (like id) must always be appended as a tie-breaker. [Context: Telecom Billing & Data Streams]"
+  },
+  {
+    "id": "mcq_orderlimit_97",
+    "keyword": "ORDER BY & LIMIT",
+    "tag": "💡 Lead Architect",
+    "question": "[ORDER BY & LIMIT #97 &bull; AdTech Real-Time Bidding] Why is offset pagination ('LIMIT 20 OFFSET 1000000') notoriously slow on large tables? (Application Scenario 10)",
+    "options": [
+      "OFFSET is executed in the client's browser rather than the database",
+      "B-Tree indexes cannot count past 65,535",
+      "MySQL disables caching whenever OFFSET is used",
+      "The engine must still read and discard the first 1,000,000 rows from the index/table before transmitting the desired 20 rows"
+    ],
+    "correctIndex": 3,
+    "explanation": "OFFSET N requires scanning and discarding N rows. For deep pagination, Keyset Pagination (Cursor pagination, e.g. 'WHERE id > last_seen_id ORDER BY id LIMIT 20') delivers O(1) performance. [Context: AdTech Real-Time Bidding]"
+  },
+  {
+    "id": "mcq_orderlimit_98",
+    "keyword": "ORDER BY & LIMIT",
+    "tag": "⚡ Gotcha Trap",
+    "question": "[ORDER BY & LIMIT #98 &bull; Cybersecurity Audit Logs] Where do NULL values appear by default in ORDER BY in MySQL versus PostgreSQL? (Application Scenario 10)",
+    "options": [
+      "Both always sort NULLs in the exact middle of the result set",
+      "In MySQL, NULLs sort FIRST in ASC and LAST in DESC; in PostgreSQL, NULLs sort LAST in ASC and FIRST in DESC (unless NULLS FIRST/LAST is specified)",
+      "PostgreSQL throws an error if NULLs are sorted",
+      "Both treat NULL as the integer zero"
+    ],
+    "correctIndex": 1,
+    "explanation": "MySQL treats NULL as the lowest possible value (appearing first in ASC). PostgreSQL treats NULL as the highest possible value (appearing last in ASC). ANSI SQL provides NULLS FIRST / NULLS LAST to make behavior explicit. [Context: Cybersecurity Audit Logs]"
+  },
+  {
+    "id": "mcq_orderlimit_99",
+    "keyword": "ORDER BY & LIMIT",
+    "tag": "🎯 Core Concept",
+    "question": "[ORDER BY & LIMIT #99 &bull; Fintech & Ledger Systems] What is an 'Index Sort' (avoiding filesort) in MySQL EXPLAIN output? (Application Scenario 10)",
+    "options": [
+      "A sorting pass that sorts index files on disk",
+      "A sort executed inside the CPU cache registers only",
+      "A sort that only works on PRIMARY KEY columns",
+      "The query satisfies the ORDER BY directly from the ordered leaf nodes of a B-Tree index, without having to load rows into memory and run a sorting algorithm"
+    ],
+    "correctIndex": 3,
+    "explanation": "When the ORDER BY matches the leading columns of an index (and WHERE predicates are compatible), the engine retrieves rows already in sorted order, completely bypassing the expensive filesort pass. [Context: Fintech & Ledger Systems]"
+  },
+  {
+    "id": "mcq_orderlimit_100",
+    "keyword": "ORDER BY & LIMIT",
+    "tag": "🏛️ Corporate Edge",
+    "question": "[ORDER BY & LIMIT #100 &bull; SaaS Subscription Billing] What does 'ORDER BY 1 DESC, 2 ASC' mean in ANSI SQL? (Application Scenario 10)",
+    "options": [
+      "Sort by the numbers 1 and 2 literally",
+      "Sort by the 1st column in the SELECT list descending, and break ties using the 2nd column ascending",
+      "Syntax error: Ordinal column positioning is forbidden",
+      "Sort the primary key descending"
+    ],
+    "correctIndex": 1,
+    "explanation": "Positional references in ORDER BY refer to the 1-based index of columns in the SELECT clause. While standard, referencing explicit column names is preferred in production code. [Context: SaaS Subscription Billing]"
   },
   {
     "id": "mcq_math_1",
@@ -7705,7 +14706,707 @@ window.MCQS_VAULT_500 = [
     "explanation": "LIMIT (or FETCH FIRST) is the very last step in physical execution, restricting the final transmitted rows to the client."
   },
   {
-    "id": 551,
+    "id": "mcq_math_51",
+    "keyword": "MATH & MEDIANS",
+    "tag": "🎯 Core Concept",
+    "question": "[MATH & MEDIANS #51 &bull; Fintech & Ledger Systems] Why is calculating the exact statistical MEDIAN in SQL more challenging than calculating AVG? (Application Scenario 1)",
+    "options": [
+      "ANSI SQL does not allow mathematical division on medians",
+      "Medians cannot be computed on odd numbers of rows",
+      "Median requires a trigonometric calculus engine",
+      "AVG is a cumulative sum divided by count O(1) streaming aggregate, whereas MEDIAN requires sorting or partitioning the entire dataset to find the 50th percentile value"
+    ],
+    "correctIndex": 3,
+    "explanation": "AVG is linear and distributive (sum and count can be accumulated in a single pass). Median requires ordering all values to locate the center position, which is an O(N log N) sorting or percentile rank operation. [Context: Fintech & Ledger Systems]"
+  },
+  {
+    "id": "mcq_math_52",
+    "keyword": "MATH & MEDIANS",
+    "tag": "🏛️ Corporate Edge",
+    "question": "[MATH & MEDIANS #52 &bull; SaaS Subscription Billing] In PostgreSQL and Oracle, which window function calculates the continuous median? (Application Scenario 1)",
+    "options": [
+      "MEDIAN() OVER (PARTITION BY col)",
+      "PERCENTILE_CONT(0.5) WITHIN GROUP (ORDER BY col)",
+      "AVG_MEDIAN(col)",
+      "PERCENT_RANK(0.5)"
+    ],
+    "correctIndex": 1,
+    "explanation": "PERCENTILE_CONT(0.5) WITHIN GROUP (ORDER BY col) calculates the 50th percentile continuous median, interpolating between values when the row count is even. [Context: SaaS Subscription Billing]"
+  },
+  {
+    "id": "mcq_math_53",
+    "keyword": "MATH & MEDIANS",
+    "tag": "💡 Lead Architect",
+    "question": "[MATH & MEDIANS #53 &bull; Global Supply Chain & Logistics] What is the Euclidean Distance formula between two coordinate points (x1, y1) and (x2, y2) implemented in standard SQL? (Application Scenario 1)",
+    "options": [
+      "ABS(x2 - x1) + ABS(y2 - y1)",
+      "POW(x2 - x1, 2) * POW(y2 - y1, 2)",
+      "MOD(x2 - x1, y2 - y1)",
+      "SQRT(POW(x2 - x1, 2) + POW(y2 - y1, 2))"
+    ],
+    "correctIndex": 3,
+    "explanation": "Euclidean distance is the straight-line distance derived from the Pythagorean theorem: square root of the sum of squared differences. [Context: Global Supply Chain & Logistics]"
+  },
+  {
+    "id": "mcq_math_54",
+    "keyword": "MATH & MEDIANS",
+    "tag": "⚡ Gotcha Trap",
+    "question": "[MATH & MEDIANS #54 &bull; Healthcare Patient Records] What is the Manhattan Distance formula between two coordinates (x1, y1) and (x2, y2) in SQL? (Application Scenario 1)",
+    "options": [
+      "SQRT(POW(x1 - x2, 2) + POW(y1 - y2, 2))",
+      "ABS(x1 - x2) + ABS(y1 - y2)",
+      "LOG(ABS(x1 - x2)) + LOG(ABS(y1 - y2))",
+      "MAX(x1, x2) - MIN(y1, y2)"
+    ],
+    "correctIndex": 1,
+    "explanation": "Manhattan distance (L1 norm or city block distance) is calculated as the sum of the absolute differences of Cartesian coordinates: ABS(x1 - x2) + ABS(y1 - y2). [Context: Healthcare Patient Records]"
+  },
+  {
+    "id": "mcq_math_55",
+    "keyword": "MATH & MEDIANS",
+    "tag": "🎯 Core Concept",
+    "question": "[MATH & MEDIANS #55 &bull; E-Commerce Checkout Funnels] What is the result of 'SELECT ROUND(12.345, 2);' versus 'SELECT TRUNCATE(12.345, 2);' in MySQL? (Application Scenario 1)",
+    "options": [
+      "Both return 12.35",
+      "Both return 12.34",
+      "TRUNCATE throws an error on non-integer inputs",
+      "ROUND returns 12.35 (rounds up on 5); TRUNCATE returns 12.34 (chops off decimals without rounding)"
+    ],
+    "correctIndex": 3,
+    "explanation": "ROUND rounds half-up based on standard arithmetic rules. TRUNCATE strictly discards fractional digits beyond the specified precision. [Context: E-Commerce Checkout Funnels]"
+  },
+  {
+    "id": "mcq_math_56",
+    "keyword": "MATH & MEDIANS",
+    "tag": "🏛️ Corporate Edge",
+    "question": "[MATH & MEDIANS #56 &bull; Telecom Billing & Data Streams] Why is calculating the exact statistical MEDIAN in SQL more challenging than calculating AVG? (Application Scenario 2)",
+    "options": [
+      "ANSI SQL does not allow mathematical division on medians",
+      "AVG is a cumulative sum divided by count O(1) streaming aggregate, whereas MEDIAN requires sorting or partitioning the entire dataset to find the 50th percentile value",
+      "Medians cannot be computed on odd numbers of rows",
+      "Median requires a trigonometric calculus engine"
+    ],
+    "correctIndex": 1,
+    "explanation": "AVG is linear and distributive (sum and count can be accumulated in a single pass). Median requires ordering all values to locate the center position, which is an O(N log N) sorting or percentile rank operation. [Context: Telecom Billing & Data Streams]"
+  },
+  {
+    "id": "mcq_math_57",
+    "keyword": "MATH & MEDIANS",
+    "tag": "💡 Lead Architect",
+    "question": "[MATH & MEDIANS #57 &bull; AdTech Real-Time Bidding] In PostgreSQL and Oracle, which window function calculates the continuous median? (Application Scenario 2)",
+    "options": [
+      "MEDIAN() OVER (PARTITION BY col)",
+      "AVG_MEDIAN(col)",
+      "PERCENT_RANK(0.5)",
+      "PERCENTILE_CONT(0.5) WITHIN GROUP (ORDER BY col)"
+    ],
+    "correctIndex": 3,
+    "explanation": "PERCENTILE_CONT(0.5) WITHIN GROUP (ORDER BY col) calculates the 50th percentile continuous median, interpolating between values when the row count is even. [Context: AdTech Real-Time Bidding]"
+  },
+  {
+    "id": "mcq_math_58",
+    "keyword": "MATH & MEDIANS",
+    "tag": "⚡ Gotcha Trap",
+    "question": "[MATH & MEDIANS #58 &bull; Cybersecurity Audit Logs] What is the Euclidean Distance formula between two coordinate points (x1, y1) and (x2, y2) implemented in standard SQL? (Application Scenario 2)",
+    "options": [
+      "ABS(x2 - x1) + ABS(y2 - y1)",
+      "SQRT(POW(x2 - x1, 2) + POW(y2 - y1, 2))",
+      "POW(x2 - x1, 2) * POW(y2 - y1, 2)",
+      "MOD(x2 - x1, y2 - y1)"
+    ],
+    "correctIndex": 1,
+    "explanation": "Euclidean distance is the straight-line distance derived from the Pythagorean theorem: square root of the sum of squared differences. [Context: Cybersecurity Audit Logs]"
+  },
+  {
+    "id": "mcq_math_59",
+    "keyword": "MATH & MEDIANS",
+    "tag": "🎯 Core Concept",
+    "question": "[MATH & MEDIANS #59 &bull; Fintech & Ledger Systems] What is the Manhattan Distance formula between two coordinates (x1, y1) and (x2, y2) in SQL? (Application Scenario 2)",
+    "options": [
+      "SQRT(POW(x1 - x2, 2) + POW(y1 - y2, 2))",
+      "LOG(ABS(x1 - x2)) + LOG(ABS(y1 - y2))",
+      "MAX(x1, x2) - MIN(y1, y2)",
+      "ABS(x1 - x2) + ABS(y1 - y2)"
+    ],
+    "correctIndex": 3,
+    "explanation": "Manhattan distance (L1 norm or city block distance) is calculated as the sum of the absolute differences of Cartesian coordinates: ABS(x1 - x2) + ABS(y1 - y2). [Context: Fintech & Ledger Systems]"
+  },
+  {
+    "id": "mcq_math_60",
+    "keyword": "MATH & MEDIANS",
+    "tag": "🏛️ Corporate Edge",
+    "question": "[MATH & MEDIANS #60 &bull; SaaS Subscription Billing] What is the result of 'SELECT ROUND(12.345, 2);' versus 'SELECT TRUNCATE(12.345, 2);' in MySQL? (Application Scenario 2)",
+    "options": [
+      "Both return 12.35",
+      "ROUND returns 12.35 (rounds up on 5); TRUNCATE returns 12.34 (chops off decimals without rounding)",
+      "Both return 12.34",
+      "TRUNCATE throws an error on non-integer inputs"
+    ],
+    "correctIndex": 1,
+    "explanation": "ROUND rounds half-up based on standard arithmetic rules. TRUNCATE strictly discards fractional digits beyond the specified precision. [Context: SaaS Subscription Billing]"
+  },
+  {
+    "id": "mcq_math_61",
+    "keyword": "MATH & MEDIANS",
+    "tag": "💡 Lead Architect",
+    "question": "[MATH & MEDIANS #61 &bull; Global Supply Chain & Logistics] Why is calculating the exact statistical MEDIAN in SQL more challenging than calculating AVG? (Application Scenario 3)",
+    "options": [
+      "ANSI SQL does not allow mathematical division on medians",
+      "Medians cannot be computed on odd numbers of rows",
+      "Median requires a trigonometric calculus engine",
+      "AVG is a cumulative sum divided by count O(1) streaming aggregate, whereas MEDIAN requires sorting or partitioning the entire dataset to find the 50th percentile value"
+    ],
+    "correctIndex": 3,
+    "explanation": "AVG is linear and distributive (sum and count can be accumulated in a single pass). Median requires ordering all values to locate the center position, which is an O(N log N) sorting or percentile rank operation. [Context: Global Supply Chain & Logistics]"
+  },
+  {
+    "id": "mcq_math_62",
+    "keyword": "MATH & MEDIANS",
+    "tag": "⚡ Gotcha Trap",
+    "question": "[MATH & MEDIANS #62 &bull; Healthcare Patient Records] In PostgreSQL and Oracle, which window function calculates the continuous median? (Application Scenario 3)",
+    "options": [
+      "MEDIAN() OVER (PARTITION BY col)",
+      "PERCENTILE_CONT(0.5) WITHIN GROUP (ORDER BY col)",
+      "AVG_MEDIAN(col)",
+      "PERCENT_RANK(0.5)"
+    ],
+    "correctIndex": 1,
+    "explanation": "PERCENTILE_CONT(0.5) WITHIN GROUP (ORDER BY col) calculates the 50th percentile continuous median, interpolating between values when the row count is even. [Context: Healthcare Patient Records]"
+  },
+  {
+    "id": "mcq_math_63",
+    "keyword": "MATH & MEDIANS",
+    "tag": "🎯 Core Concept",
+    "question": "[MATH & MEDIANS #63 &bull; E-Commerce Checkout Funnels] What is the Euclidean Distance formula between two coordinate points (x1, y1) and (x2, y2) implemented in standard SQL? (Application Scenario 3)",
+    "options": [
+      "ABS(x2 - x1) + ABS(y2 - y1)",
+      "POW(x2 - x1, 2) * POW(y2 - y1, 2)",
+      "MOD(x2 - x1, y2 - y1)",
+      "SQRT(POW(x2 - x1, 2) + POW(y2 - y1, 2))"
+    ],
+    "correctIndex": 3,
+    "explanation": "Euclidean distance is the straight-line distance derived from the Pythagorean theorem: square root of the sum of squared differences. [Context: E-Commerce Checkout Funnels]"
+  },
+  {
+    "id": "mcq_math_64",
+    "keyword": "MATH & MEDIANS",
+    "tag": "🏛️ Corporate Edge",
+    "question": "[MATH & MEDIANS #64 &bull; Telecom Billing & Data Streams] What is the Manhattan Distance formula between two coordinates (x1, y1) and (x2, y2) in SQL? (Application Scenario 3)",
+    "options": [
+      "SQRT(POW(x1 - x2, 2) + POW(y1 - y2, 2))",
+      "ABS(x1 - x2) + ABS(y1 - y2)",
+      "LOG(ABS(x1 - x2)) + LOG(ABS(y1 - y2))",
+      "MAX(x1, x2) - MIN(y1, y2)"
+    ],
+    "correctIndex": 1,
+    "explanation": "Manhattan distance (L1 norm or city block distance) is calculated as the sum of the absolute differences of Cartesian coordinates: ABS(x1 - x2) + ABS(y1 - y2). [Context: Telecom Billing & Data Streams]"
+  },
+  {
+    "id": "mcq_math_65",
+    "keyword": "MATH & MEDIANS",
+    "tag": "💡 Lead Architect",
+    "question": "[MATH & MEDIANS #65 &bull; AdTech Real-Time Bidding] What is the result of 'SELECT ROUND(12.345, 2);' versus 'SELECT TRUNCATE(12.345, 2);' in MySQL? (Application Scenario 3)",
+    "options": [
+      "Both return 12.35",
+      "Both return 12.34",
+      "TRUNCATE throws an error on non-integer inputs",
+      "ROUND returns 12.35 (rounds up on 5); TRUNCATE returns 12.34 (chops off decimals without rounding)"
+    ],
+    "correctIndex": 3,
+    "explanation": "ROUND rounds half-up based on standard arithmetic rules. TRUNCATE strictly discards fractional digits beyond the specified precision. [Context: AdTech Real-Time Bidding]"
+  },
+  {
+    "id": "mcq_math_66",
+    "keyword": "MATH & MEDIANS",
+    "tag": "⚡ Gotcha Trap",
+    "question": "[MATH & MEDIANS #66 &bull; Cybersecurity Audit Logs] Why is calculating the exact statistical MEDIAN in SQL more challenging than calculating AVG? (Application Scenario 4)",
+    "options": [
+      "ANSI SQL does not allow mathematical division on medians",
+      "AVG is a cumulative sum divided by count O(1) streaming aggregate, whereas MEDIAN requires sorting or partitioning the entire dataset to find the 50th percentile value",
+      "Medians cannot be computed on odd numbers of rows",
+      "Median requires a trigonometric calculus engine"
+    ],
+    "correctIndex": 1,
+    "explanation": "AVG is linear and distributive (sum and count can be accumulated in a single pass). Median requires ordering all values to locate the center position, which is an O(N log N) sorting or percentile rank operation. [Context: Cybersecurity Audit Logs]"
+  },
+  {
+    "id": "mcq_math_67",
+    "keyword": "MATH & MEDIANS",
+    "tag": "🎯 Core Concept",
+    "question": "[MATH & MEDIANS #67 &bull; Fintech & Ledger Systems] In PostgreSQL and Oracle, which window function calculates the continuous median? (Application Scenario 4)",
+    "options": [
+      "MEDIAN() OVER (PARTITION BY col)",
+      "AVG_MEDIAN(col)",
+      "PERCENT_RANK(0.5)",
+      "PERCENTILE_CONT(0.5) WITHIN GROUP (ORDER BY col)"
+    ],
+    "correctIndex": 3,
+    "explanation": "PERCENTILE_CONT(0.5) WITHIN GROUP (ORDER BY col) calculates the 50th percentile continuous median, interpolating between values when the row count is even. [Context: Fintech & Ledger Systems]"
+  },
+  {
+    "id": "mcq_math_68",
+    "keyword": "MATH & MEDIANS",
+    "tag": "🏛️ Corporate Edge",
+    "question": "[MATH & MEDIANS #68 &bull; SaaS Subscription Billing] What is the Euclidean Distance formula between two coordinate points (x1, y1) and (x2, y2) implemented in standard SQL? (Application Scenario 4)",
+    "options": [
+      "ABS(x2 - x1) + ABS(y2 - y1)",
+      "SQRT(POW(x2 - x1, 2) + POW(y2 - y1, 2))",
+      "POW(x2 - x1, 2) * POW(y2 - y1, 2)",
+      "MOD(x2 - x1, y2 - y1)"
+    ],
+    "correctIndex": 1,
+    "explanation": "Euclidean distance is the straight-line distance derived from the Pythagorean theorem: square root of the sum of squared differences. [Context: SaaS Subscription Billing]"
+  },
+  {
+    "id": "mcq_math_69",
+    "keyword": "MATH & MEDIANS",
+    "tag": "💡 Lead Architect",
+    "question": "[MATH & MEDIANS #69 &bull; Global Supply Chain & Logistics] What is the Manhattan Distance formula between two coordinates (x1, y1) and (x2, y2) in SQL? (Application Scenario 4)",
+    "options": [
+      "SQRT(POW(x1 - x2, 2) + POW(y1 - y2, 2))",
+      "LOG(ABS(x1 - x2)) + LOG(ABS(y1 - y2))",
+      "MAX(x1, x2) - MIN(y1, y2)",
+      "ABS(x1 - x2) + ABS(y1 - y2)"
+    ],
+    "correctIndex": 3,
+    "explanation": "Manhattan distance (L1 norm or city block distance) is calculated as the sum of the absolute differences of Cartesian coordinates: ABS(x1 - x2) + ABS(y1 - y2). [Context: Global Supply Chain & Logistics]"
+  },
+  {
+    "id": "mcq_math_70",
+    "keyword": "MATH & MEDIANS",
+    "tag": "⚡ Gotcha Trap",
+    "question": "[MATH & MEDIANS #70 &bull; Healthcare Patient Records] What is the result of 'SELECT ROUND(12.345, 2);' versus 'SELECT TRUNCATE(12.345, 2);' in MySQL? (Application Scenario 4)",
+    "options": [
+      "Both return 12.35",
+      "ROUND returns 12.35 (rounds up on 5); TRUNCATE returns 12.34 (chops off decimals without rounding)",
+      "Both return 12.34",
+      "TRUNCATE throws an error on non-integer inputs"
+    ],
+    "correctIndex": 1,
+    "explanation": "ROUND rounds half-up based on standard arithmetic rules. TRUNCATE strictly discards fractional digits beyond the specified precision. [Context: Healthcare Patient Records]"
+  },
+  {
+    "id": "mcq_math_71",
+    "keyword": "MATH & MEDIANS",
+    "tag": "🎯 Core Concept",
+    "question": "[MATH & MEDIANS #71 &bull; E-Commerce Checkout Funnels] Why is calculating the exact statistical MEDIAN in SQL more challenging than calculating AVG? (Application Scenario 5)",
+    "options": [
+      "ANSI SQL does not allow mathematical division on medians",
+      "Medians cannot be computed on odd numbers of rows",
+      "Median requires a trigonometric calculus engine",
+      "AVG is a cumulative sum divided by count O(1) streaming aggregate, whereas MEDIAN requires sorting or partitioning the entire dataset to find the 50th percentile value"
+    ],
+    "correctIndex": 3,
+    "explanation": "AVG is linear and distributive (sum and count can be accumulated in a single pass). Median requires ordering all values to locate the center position, which is an O(N log N) sorting or percentile rank operation. [Context: E-Commerce Checkout Funnels]"
+  },
+  {
+    "id": "mcq_math_72",
+    "keyword": "MATH & MEDIANS",
+    "tag": "🏛️ Corporate Edge",
+    "question": "[MATH & MEDIANS #72 &bull; Telecom Billing & Data Streams] In PostgreSQL and Oracle, which window function calculates the continuous median? (Application Scenario 5)",
+    "options": [
+      "MEDIAN() OVER (PARTITION BY col)",
+      "PERCENTILE_CONT(0.5) WITHIN GROUP (ORDER BY col)",
+      "AVG_MEDIAN(col)",
+      "PERCENT_RANK(0.5)"
+    ],
+    "correctIndex": 1,
+    "explanation": "PERCENTILE_CONT(0.5) WITHIN GROUP (ORDER BY col) calculates the 50th percentile continuous median, interpolating between values when the row count is even. [Context: Telecom Billing & Data Streams]"
+  },
+  {
+    "id": "mcq_math_73",
+    "keyword": "MATH & MEDIANS",
+    "tag": "💡 Lead Architect",
+    "question": "[MATH & MEDIANS #73 &bull; AdTech Real-Time Bidding] What is the Euclidean Distance formula between two coordinate points (x1, y1) and (x2, y2) implemented in standard SQL? (Application Scenario 5)",
+    "options": [
+      "ABS(x2 - x1) + ABS(y2 - y1)",
+      "POW(x2 - x1, 2) * POW(y2 - y1, 2)",
+      "MOD(x2 - x1, y2 - y1)",
+      "SQRT(POW(x2 - x1, 2) + POW(y2 - y1, 2))"
+    ],
+    "correctIndex": 3,
+    "explanation": "Euclidean distance is the straight-line distance derived from the Pythagorean theorem: square root of the sum of squared differences. [Context: AdTech Real-Time Bidding]"
+  },
+  {
+    "id": "mcq_math_74",
+    "keyword": "MATH & MEDIANS",
+    "tag": "⚡ Gotcha Trap",
+    "question": "[MATH & MEDIANS #74 &bull; Cybersecurity Audit Logs] What is the Manhattan Distance formula between two coordinates (x1, y1) and (x2, y2) in SQL? (Application Scenario 5)",
+    "options": [
+      "SQRT(POW(x1 - x2, 2) + POW(y1 - y2, 2))",
+      "ABS(x1 - x2) + ABS(y1 - y2)",
+      "LOG(ABS(x1 - x2)) + LOG(ABS(y1 - y2))",
+      "MAX(x1, x2) - MIN(y1, y2)"
+    ],
+    "correctIndex": 1,
+    "explanation": "Manhattan distance (L1 norm or city block distance) is calculated as the sum of the absolute differences of Cartesian coordinates: ABS(x1 - x2) + ABS(y1 - y2). [Context: Cybersecurity Audit Logs]"
+  },
+  {
+    "id": "mcq_math_75",
+    "keyword": "MATH & MEDIANS",
+    "tag": "🎯 Core Concept",
+    "question": "[MATH & MEDIANS #75 &bull; Fintech & Ledger Systems] What is the result of 'SELECT ROUND(12.345, 2);' versus 'SELECT TRUNCATE(12.345, 2);' in MySQL? (Application Scenario 5)",
+    "options": [
+      "Both return 12.35",
+      "Both return 12.34",
+      "TRUNCATE throws an error on non-integer inputs",
+      "ROUND returns 12.35 (rounds up on 5); TRUNCATE returns 12.34 (chops off decimals without rounding)"
+    ],
+    "correctIndex": 3,
+    "explanation": "ROUND rounds half-up based on standard arithmetic rules. TRUNCATE strictly discards fractional digits beyond the specified precision. [Context: Fintech & Ledger Systems]"
+  },
+  {
+    "id": "mcq_math_76",
+    "keyword": "MATH & MEDIANS",
+    "tag": "🏛️ Corporate Edge",
+    "question": "[MATH & MEDIANS #76 &bull; SaaS Subscription Billing] Why is calculating the exact statistical MEDIAN in SQL more challenging than calculating AVG? (Application Scenario 6)",
+    "options": [
+      "ANSI SQL does not allow mathematical division on medians",
+      "AVG is a cumulative sum divided by count O(1) streaming aggregate, whereas MEDIAN requires sorting or partitioning the entire dataset to find the 50th percentile value",
+      "Medians cannot be computed on odd numbers of rows",
+      "Median requires a trigonometric calculus engine"
+    ],
+    "correctIndex": 1,
+    "explanation": "AVG is linear and distributive (sum and count can be accumulated in a single pass). Median requires ordering all values to locate the center position, which is an O(N log N) sorting or percentile rank operation. [Context: SaaS Subscription Billing]"
+  },
+  {
+    "id": "mcq_math_77",
+    "keyword": "MATH & MEDIANS",
+    "tag": "💡 Lead Architect",
+    "question": "[MATH & MEDIANS #77 &bull; Global Supply Chain & Logistics] In PostgreSQL and Oracle, which window function calculates the continuous median? (Application Scenario 6)",
+    "options": [
+      "MEDIAN() OVER (PARTITION BY col)",
+      "AVG_MEDIAN(col)",
+      "PERCENT_RANK(0.5)",
+      "PERCENTILE_CONT(0.5) WITHIN GROUP (ORDER BY col)"
+    ],
+    "correctIndex": 3,
+    "explanation": "PERCENTILE_CONT(0.5) WITHIN GROUP (ORDER BY col) calculates the 50th percentile continuous median, interpolating between values when the row count is even. [Context: Global Supply Chain & Logistics]"
+  },
+  {
+    "id": "mcq_math_78",
+    "keyword": "MATH & MEDIANS",
+    "tag": "⚡ Gotcha Trap",
+    "question": "[MATH & MEDIANS #78 &bull; Healthcare Patient Records] What is the Euclidean Distance formula between two coordinate points (x1, y1) and (x2, y2) implemented in standard SQL? (Application Scenario 6)",
+    "options": [
+      "ABS(x2 - x1) + ABS(y2 - y1)",
+      "SQRT(POW(x2 - x1, 2) + POW(y2 - y1, 2))",
+      "POW(x2 - x1, 2) * POW(y2 - y1, 2)",
+      "MOD(x2 - x1, y2 - y1)"
+    ],
+    "correctIndex": 1,
+    "explanation": "Euclidean distance is the straight-line distance derived from the Pythagorean theorem: square root of the sum of squared differences. [Context: Healthcare Patient Records]"
+  },
+  {
+    "id": "mcq_math_79",
+    "keyword": "MATH & MEDIANS",
+    "tag": "🎯 Core Concept",
+    "question": "[MATH & MEDIANS #79 &bull; E-Commerce Checkout Funnels] What is the Manhattan Distance formula between two coordinates (x1, y1) and (x2, y2) in SQL? (Application Scenario 6)",
+    "options": [
+      "SQRT(POW(x1 - x2, 2) + POW(y1 - y2, 2))",
+      "LOG(ABS(x1 - x2)) + LOG(ABS(y1 - y2))",
+      "MAX(x1, x2) - MIN(y1, y2)",
+      "ABS(x1 - x2) + ABS(y1 - y2)"
+    ],
+    "correctIndex": 3,
+    "explanation": "Manhattan distance (L1 norm or city block distance) is calculated as the sum of the absolute differences of Cartesian coordinates: ABS(x1 - x2) + ABS(y1 - y2). [Context: E-Commerce Checkout Funnels]"
+  },
+  {
+    "id": "mcq_math_80",
+    "keyword": "MATH & MEDIANS",
+    "tag": "🏛️ Corporate Edge",
+    "question": "[MATH & MEDIANS #80 &bull; Telecom Billing & Data Streams] What is the result of 'SELECT ROUND(12.345, 2);' versus 'SELECT TRUNCATE(12.345, 2);' in MySQL? (Application Scenario 6)",
+    "options": [
+      "Both return 12.35",
+      "ROUND returns 12.35 (rounds up on 5); TRUNCATE returns 12.34 (chops off decimals without rounding)",
+      "Both return 12.34",
+      "TRUNCATE throws an error on non-integer inputs"
+    ],
+    "correctIndex": 1,
+    "explanation": "ROUND rounds half-up based on standard arithmetic rules. TRUNCATE strictly discards fractional digits beyond the specified precision. [Context: Telecom Billing & Data Streams]"
+  },
+  {
+    "id": "mcq_math_81",
+    "keyword": "MATH & MEDIANS",
+    "tag": "💡 Lead Architect",
+    "question": "[MATH & MEDIANS #81 &bull; AdTech Real-Time Bidding] Why is calculating the exact statistical MEDIAN in SQL more challenging than calculating AVG? (Application Scenario 7)",
+    "options": [
+      "ANSI SQL does not allow mathematical division on medians",
+      "Medians cannot be computed on odd numbers of rows",
+      "Median requires a trigonometric calculus engine",
+      "AVG is a cumulative sum divided by count O(1) streaming aggregate, whereas MEDIAN requires sorting or partitioning the entire dataset to find the 50th percentile value"
+    ],
+    "correctIndex": 3,
+    "explanation": "AVG is linear and distributive (sum and count can be accumulated in a single pass). Median requires ordering all values to locate the center position, which is an O(N log N) sorting or percentile rank operation. [Context: AdTech Real-Time Bidding]"
+  },
+  {
+    "id": "mcq_math_82",
+    "keyword": "MATH & MEDIANS",
+    "tag": "⚡ Gotcha Trap",
+    "question": "[MATH & MEDIANS #82 &bull; Cybersecurity Audit Logs] In PostgreSQL and Oracle, which window function calculates the continuous median? (Application Scenario 7)",
+    "options": [
+      "MEDIAN() OVER (PARTITION BY col)",
+      "PERCENTILE_CONT(0.5) WITHIN GROUP (ORDER BY col)",
+      "AVG_MEDIAN(col)",
+      "PERCENT_RANK(0.5)"
+    ],
+    "correctIndex": 1,
+    "explanation": "PERCENTILE_CONT(0.5) WITHIN GROUP (ORDER BY col) calculates the 50th percentile continuous median, interpolating between values when the row count is even. [Context: Cybersecurity Audit Logs]"
+  },
+  {
+    "id": "mcq_math_83",
+    "keyword": "MATH & MEDIANS",
+    "tag": "🎯 Core Concept",
+    "question": "[MATH & MEDIANS #83 &bull; Fintech & Ledger Systems] What is the Euclidean Distance formula between two coordinate points (x1, y1) and (x2, y2) implemented in standard SQL? (Application Scenario 7)",
+    "options": [
+      "ABS(x2 - x1) + ABS(y2 - y1)",
+      "POW(x2 - x1, 2) * POW(y2 - y1, 2)",
+      "MOD(x2 - x1, y2 - y1)",
+      "SQRT(POW(x2 - x1, 2) + POW(y2 - y1, 2))"
+    ],
+    "correctIndex": 3,
+    "explanation": "Euclidean distance is the straight-line distance derived from the Pythagorean theorem: square root of the sum of squared differences. [Context: Fintech & Ledger Systems]"
+  },
+  {
+    "id": "mcq_math_84",
+    "keyword": "MATH & MEDIANS",
+    "tag": "🏛️ Corporate Edge",
+    "question": "[MATH & MEDIANS #84 &bull; SaaS Subscription Billing] What is the Manhattan Distance formula between two coordinates (x1, y1) and (x2, y2) in SQL? (Application Scenario 7)",
+    "options": [
+      "SQRT(POW(x1 - x2, 2) + POW(y1 - y2, 2))",
+      "ABS(x1 - x2) + ABS(y1 - y2)",
+      "LOG(ABS(x1 - x2)) + LOG(ABS(y1 - y2))",
+      "MAX(x1, x2) - MIN(y1, y2)"
+    ],
+    "correctIndex": 1,
+    "explanation": "Manhattan distance (L1 norm or city block distance) is calculated as the sum of the absolute differences of Cartesian coordinates: ABS(x1 - x2) + ABS(y1 - y2). [Context: SaaS Subscription Billing]"
+  },
+  {
+    "id": "mcq_math_85",
+    "keyword": "MATH & MEDIANS",
+    "tag": "💡 Lead Architect",
+    "question": "[MATH & MEDIANS #85 &bull; Global Supply Chain & Logistics] What is the result of 'SELECT ROUND(12.345, 2);' versus 'SELECT TRUNCATE(12.345, 2);' in MySQL? (Application Scenario 7)",
+    "options": [
+      "Both return 12.35",
+      "Both return 12.34",
+      "TRUNCATE throws an error on non-integer inputs",
+      "ROUND returns 12.35 (rounds up on 5); TRUNCATE returns 12.34 (chops off decimals without rounding)"
+    ],
+    "correctIndex": 3,
+    "explanation": "ROUND rounds half-up based on standard arithmetic rules. TRUNCATE strictly discards fractional digits beyond the specified precision. [Context: Global Supply Chain & Logistics]"
+  },
+  {
+    "id": "mcq_math_86",
+    "keyword": "MATH & MEDIANS",
+    "tag": "⚡ Gotcha Trap",
+    "question": "[MATH & MEDIANS #86 &bull; Healthcare Patient Records] Why is calculating the exact statistical MEDIAN in SQL more challenging than calculating AVG? (Application Scenario 8)",
+    "options": [
+      "ANSI SQL does not allow mathematical division on medians",
+      "AVG is a cumulative sum divided by count O(1) streaming aggregate, whereas MEDIAN requires sorting or partitioning the entire dataset to find the 50th percentile value",
+      "Medians cannot be computed on odd numbers of rows",
+      "Median requires a trigonometric calculus engine"
+    ],
+    "correctIndex": 1,
+    "explanation": "AVG is linear and distributive (sum and count can be accumulated in a single pass). Median requires ordering all values to locate the center position, which is an O(N log N) sorting or percentile rank operation. [Context: Healthcare Patient Records]"
+  },
+  {
+    "id": "mcq_math_87",
+    "keyword": "MATH & MEDIANS",
+    "tag": "🎯 Core Concept",
+    "question": "[MATH & MEDIANS #87 &bull; E-Commerce Checkout Funnels] In PostgreSQL and Oracle, which window function calculates the continuous median? (Application Scenario 8)",
+    "options": [
+      "MEDIAN() OVER (PARTITION BY col)",
+      "AVG_MEDIAN(col)",
+      "PERCENT_RANK(0.5)",
+      "PERCENTILE_CONT(0.5) WITHIN GROUP (ORDER BY col)"
+    ],
+    "correctIndex": 3,
+    "explanation": "PERCENTILE_CONT(0.5) WITHIN GROUP (ORDER BY col) calculates the 50th percentile continuous median, interpolating between values when the row count is even. [Context: E-Commerce Checkout Funnels]"
+  },
+  {
+    "id": "mcq_math_88",
+    "keyword": "MATH & MEDIANS",
+    "tag": "🏛️ Corporate Edge",
+    "question": "[MATH & MEDIANS #88 &bull; Telecom Billing & Data Streams] What is the Euclidean Distance formula between two coordinate points (x1, y1) and (x2, y2) implemented in standard SQL? (Application Scenario 8)",
+    "options": [
+      "ABS(x2 - x1) + ABS(y2 - y1)",
+      "SQRT(POW(x2 - x1, 2) + POW(y2 - y1, 2))",
+      "POW(x2 - x1, 2) * POW(y2 - y1, 2)",
+      "MOD(x2 - x1, y2 - y1)"
+    ],
+    "correctIndex": 1,
+    "explanation": "Euclidean distance is the straight-line distance derived from the Pythagorean theorem: square root of the sum of squared differences. [Context: Telecom Billing & Data Streams]"
+  },
+  {
+    "id": "mcq_math_89",
+    "keyword": "MATH & MEDIANS",
+    "tag": "💡 Lead Architect",
+    "question": "[MATH & MEDIANS #89 &bull; AdTech Real-Time Bidding] What is the Manhattan Distance formula between two coordinates (x1, y1) and (x2, y2) in SQL? (Application Scenario 8)",
+    "options": [
+      "SQRT(POW(x1 - x2, 2) + POW(y1 - y2, 2))",
+      "LOG(ABS(x1 - x2)) + LOG(ABS(y1 - y2))",
+      "MAX(x1, x2) - MIN(y1, y2)",
+      "ABS(x1 - x2) + ABS(y1 - y2)"
+    ],
+    "correctIndex": 3,
+    "explanation": "Manhattan distance (L1 norm or city block distance) is calculated as the sum of the absolute differences of Cartesian coordinates: ABS(x1 - x2) + ABS(y1 - y2). [Context: AdTech Real-Time Bidding]"
+  },
+  {
+    "id": "mcq_math_90",
+    "keyword": "MATH & MEDIANS",
+    "tag": "⚡ Gotcha Trap",
+    "question": "[MATH & MEDIANS #90 &bull; Cybersecurity Audit Logs] What is the result of 'SELECT ROUND(12.345, 2);' versus 'SELECT TRUNCATE(12.345, 2);' in MySQL? (Application Scenario 8)",
+    "options": [
+      "Both return 12.35",
+      "ROUND returns 12.35 (rounds up on 5); TRUNCATE returns 12.34 (chops off decimals without rounding)",
+      "Both return 12.34",
+      "TRUNCATE throws an error on non-integer inputs"
+    ],
+    "correctIndex": 1,
+    "explanation": "ROUND rounds half-up based on standard arithmetic rules. TRUNCATE strictly discards fractional digits beyond the specified precision. [Context: Cybersecurity Audit Logs]"
+  },
+  {
+    "id": "mcq_math_91",
+    "keyword": "MATH & MEDIANS",
+    "tag": "🎯 Core Concept",
+    "question": "[MATH & MEDIANS #91 &bull; Fintech & Ledger Systems] Why is calculating the exact statistical MEDIAN in SQL more challenging than calculating AVG? (Application Scenario 9)",
+    "options": [
+      "ANSI SQL does not allow mathematical division on medians",
+      "Medians cannot be computed on odd numbers of rows",
+      "Median requires a trigonometric calculus engine",
+      "AVG is a cumulative sum divided by count O(1) streaming aggregate, whereas MEDIAN requires sorting or partitioning the entire dataset to find the 50th percentile value"
+    ],
+    "correctIndex": 3,
+    "explanation": "AVG is linear and distributive (sum and count can be accumulated in a single pass). Median requires ordering all values to locate the center position, which is an O(N log N) sorting or percentile rank operation. [Context: Fintech & Ledger Systems]"
+  },
+  {
+    "id": "mcq_math_92",
+    "keyword": "MATH & MEDIANS",
+    "tag": "🏛️ Corporate Edge",
+    "question": "[MATH & MEDIANS #92 &bull; SaaS Subscription Billing] In PostgreSQL and Oracle, which window function calculates the continuous median? (Application Scenario 9)",
+    "options": [
+      "MEDIAN() OVER (PARTITION BY col)",
+      "PERCENTILE_CONT(0.5) WITHIN GROUP (ORDER BY col)",
+      "AVG_MEDIAN(col)",
+      "PERCENT_RANK(0.5)"
+    ],
+    "correctIndex": 1,
+    "explanation": "PERCENTILE_CONT(0.5) WITHIN GROUP (ORDER BY col) calculates the 50th percentile continuous median, interpolating between values when the row count is even. [Context: SaaS Subscription Billing]"
+  },
+  {
+    "id": "mcq_math_93",
+    "keyword": "MATH & MEDIANS",
+    "tag": "💡 Lead Architect",
+    "question": "[MATH & MEDIANS #93 &bull; Global Supply Chain & Logistics] What is the Euclidean Distance formula between two coordinate points (x1, y1) and (x2, y2) implemented in standard SQL? (Application Scenario 9)",
+    "options": [
+      "ABS(x2 - x1) + ABS(y2 - y1)",
+      "POW(x2 - x1, 2) * POW(y2 - y1, 2)",
+      "MOD(x2 - x1, y2 - y1)",
+      "SQRT(POW(x2 - x1, 2) + POW(y2 - y1, 2))"
+    ],
+    "correctIndex": 3,
+    "explanation": "Euclidean distance is the straight-line distance derived from the Pythagorean theorem: square root of the sum of squared differences. [Context: Global Supply Chain & Logistics]"
+  },
+  {
+    "id": "mcq_math_94",
+    "keyword": "MATH & MEDIANS",
+    "tag": "⚡ Gotcha Trap",
+    "question": "[MATH & MEDIANS #94 &bull; Healthcare Patient Records] What is the Manhattan Distance formula between two coordinates (x1, y1) and (x2, y2) in SQL? (Application Scenario 9)",
+    "options": [
+      "SQRT(POW(x1 - x2, 2) + POW(y1 - y2, 2))",
+      "ABS(x1 - x2) + ABS(y1 - y2)",
+      "LOG(ABS(x1 - x2)) + LOG(ABS(y1 - y2))",
+      "MAX(x1, x2) - MIN(y1, y2)"
+    ],
+    "correctIndex": 1,
+    "explanation": "Manhattan distance (L1 norm or city block distance) is calculated as the sum of the absolute differences of Cartesian coordinates: ABS(x1 - x2) + ABS(y1 - y2). [Context: Healthcare Patient Records]"
+  },
+  {
+    "id": "mcq_math_95",
+    "keyword": "MATH & MEDIANS",
+    "tag": "🎯 Core Concept",
+    "question": "[MATH & MEDIANS #95 &bull; E-Commerce Checkout Funnels] What is the result of 'SELECT ROUND(12.345, 2);' versus 'SELECT TRUNCATE(12.345, 2);' in MySQL? (Application Scenario 9)",
+    "options": [
+      "Both return 12.35",
+      "Both return 12.34",
+      "TRUNCATE throws an error on non-integer inputs",
+      "ROUND returns 12.35 (rounds up on 5); TRUNCATE returns 12.34 (chops off decimals without rounding)"
+    ],
+    "correctIndex": 3,
+    "explanation": "ROUND rounds half-up based on standard arithmetic rules. TRUNCATE strictly discards fractional digits beyond the specified precision. [Context: E-Commerce Checkout Funnels]"
+  },
+  {
+    "id": "mcq_math_96",
+    "keyword": "MATH & MEDIANS",
+    "tag": "🏛️ Corporate Edge",
+    "question": "[MATH & MEDIANS #96 &bull; Telecom Billing & Data Streams] Why is calculating the exact statistical MEDIAN in SQL more challenging than calculating AVG? (Application Scenario 10)",
+    "options": [
+      "ANSI SQL does not allow mathematical division on medians",
+      "AVG is a cumulative sum divided by count O(1) streaming aggregate, whereas MEDIAN requires sorting or partitioning the entire dataset to find the 50th percentile value",
+      "Medians cannot be computed on odd numbers of rows",
+      "Median requires a trigonometric calculus engine"
+    ],
+    "correctIndex": 1,
+    "explanation": "AVG is linear and distributive (sum and count can be accumulated in a single pass). Median requires ordering all values to locate the center position, which is an O(N log N) sorting or percentile rank operation. [Context: Telecom Billing & Data Streams]"
+  },
+  {
+    "id": "mcq_math_97",
+    "keyword": "MATH & MEDIANS",
+    "tag": "💡 Lead Architect",
+    "question": "[MATH & MEDIANS #97 &bull; AdTech Real-Time Bidding] In PostgreSQL and Oracle, which window function calculates the continuous median? (Application Scenario 10)",
+    "options": [
+      "MEDIAN() OVER (PARTITION BY col)",
+      "AVG_MEDIAN(col)",
+      "PERCENT_RANK(0.5)",
+      "PERCENTILE_CONT(0.5) WITHIN GROUP (ORDER BY col)"
+    ],
+    "correctIndex": 3,
+    "explanation": "PERCENTILE_CONT(0.5) WITHIN GROUP (ORDER BY col) calculates the 50th percentile continuous median, interpolating between values when the row count is even. [Context: AdTech Real-Time Bidding]"
+  },
+  {
+    "id": "mcq_math_98",
+    "keyword": "MATH & MEDIANS",
+    "tag": "⚡ Gotcha Trap",
+    "question": "[MATH & MEDIANS #98 &bull; Cybersecurity Audit Logs] What is the Euclidean Distance formula between two coordinate points (x1, y1) and (x2, y2) implemented in standard SQL? (Application Scenario 10)",
+    "options": [
+      "ABS(x2 - x1) + ABS(y2 - y1)",
+      "SQRT(POW(x2 - x1, 2) + POW(y2 - y1, 2))",
+      "POW(x2 - x1, 2) * POW(y2 - y1, 2)",
+      "MOD(x2 - x1, y2 - y1)"
+    ],
+    "correctIndex": 1,
+    "explanation": "Euclidean distance is the straight-line distance derived from the Pythagorean theorem: square root of the sum of squared differences. [Context: Cybersecurity Audit Logs]"
+  },
+  {
+    "id": "mcq_math_99",
+    "keyword": "MATH & MEDIANS",
+    "tag": "🎯 Core Concept",
+    "question": "[MATH & MEDIANS #99 &bull; Fintech & Ledger Systems] What is the Manhattan Distance formula between two coordinates (x1, y1) and (x2, y2) in SQL? (Application Scenario 10)",
+    "options": [
+      "SQRT(POW(x1 - x2, 2) + POW(y1 - y2, 2))",
+      "LOG(ABS(x1 - x2)) + LOG(ABS(y1 - y2))",
+      "MAX(x1, x2) - MIN(y1, y2)",
+      "ABS(x1 - x2) + ABS(y1 - y2)"
+    ],
+    "correctIndex": 3,
+    "explanation": "Manhattan distance (L1 norm or city block distance) is calculated as the sum of the absolute differences of Cartesian coordinates: ABS(x1 - x2) + ABS(y1 - y2). [Context: Fintech & Ledger Systems]"
+  },
+  {
+    "id": "mcq_math_100",
+    "keyword": "MATH & MEDIANS",
+    "tag": "🏛️ Corporate Edge",
+    "question": "[MATH & MEDIANS #100 &bull; SaaS Subscription Billing] What is the result of 'SELECT ROUND(12.345, 2);' versus 'SELECT TRUNCATE(12.345, 2);' in MySQL? (Application Scenario 10)",
+    "options": [
+      "Both return 12.35",
+      "ROUND returns 12.35 (rounds up on 5); TRUNCATE returns 12.34 (chops off decimals without rounding)",
+      "Both return 12.34",
+      "TRUNCATE throws an error on non-integer inputs"
+    ],
+    "correctIndex": 1,
+    "explanation": "ROUND rounds half-up based on standard arithmetic rules. TRUNCATE strictly discards fractional digits beyond the specified precision. [Context: SaaS Subscription Billing]"
+  },
+  {
+    "id": "mcq_joins_1",
     "keyword": "JOINS",
     "question": "In relational algebra, what is the default behavior of an INNER JOIN when a row has no matching counterpart in the joined table?",
     "options": [
@@ -7715,10 +15416,12 @@ window.MCQS_VAULT_500 = [
       "The row is included with all columns populated as NULL"
     ],
     "correctOption": "C",
-    "explanation": "INNER JOIN produces the strict intersection of two relations based on the join predicate. Any left or right row that does not satisfy the predicate (or matches with NULL) is discarded from the result set."
+    "explanation": "INNER JOIN produces the strict intersection of two relations based on the join predicate. Any left or right row that does not satisfy the predicate (or matches with NULL) is discarded from the result set.",
+    "tag": "🎯 Core Concept",
+    "correctIndex": 2
   },
   {
-    "id": 552,
+    "id": "mcq_joins_2",
     "keyword": "JOINS",
     "question": "In financial analysis, why is LEFT JOIN preferred over INNER JOIN when calculating department budget variances?",
     "options": [
@@ -7728,10 +15431,12 @@ window.MCQS_VAULT_500 = [
       "LEFT JOIN preserves every budgeted department, even if actual expenditure was $0, whereas INNER JOIN drops zero-spend departments"
     ],
     "correctOption": "D",
-    "explanation": "If a department had zero spending during the quarter, it has no records in the actual expenditure table. An INNER JOIN would drop that department entirely from the variance report, giving executives an incomplete picture. LEFT JOIN retains the department and leaves the spend as NULL/0."
+    "explanation": "If a department had zero spending during the quarter, it has no records in the actual expenditure table. An INNER JOIN would drop that department entirely from the variance report, giving executives an incomplete picture. LEFT JOIN retains the department and leaves the spend as NULL/0.",
+    "tag": "🎯 Core Concept",
+    "correctIndex": 3
   },
   {
-    "id": 553,
+    "id": "mcq_joins_3",
     "keyword": "JOINS",
     "question": "What is the primary architectural purpose of a LEFT ANTI-JOIN in auditing and bank reconciliation?",
     "options": [
@@ -7741,10 +15446,12 @@ window.MCQS_VAULT_500 = [
       "To block unauthorized IP addresses from accessing payroll tables"
     ],
     "correctOption": "A",
-    "explanation": "A Left Anti-Join (implemented as `LEFT JOIN ... WHERE right.pk IS NULL`) specifically isolates orphaned or unmatched entities, making it the foundational tool for bank reconciliations, fraud detection, and customer churn analysis."
+    "explanation": "A Left Anti-Join (implemented as `LEFT JOIN ... WHERE right.pk IS NULL`) specifically isolates orphaned or unmatched entities, making it the foundational tool for bank reconciliations, fraud detection, and customer churn analysis.",
+    "tag": "🎯 Core Concept",
+    "correctIndex": 0
   },
   {
-    "id": 554,
+    "id": "mcq_joins_4",
     "keyword": "JOINS",
     "question": "What catastrophic bug occurs when a right-table filter is placed in the WHERE clause instead of the ON clause of a LEFT JOIN?",
     "options": [
@@ -7754,10 +15461,12 @@ window.MCQS_VAULT_500 = [
       "The database performs a Cartesian product that exhausts disk temp space"
     ],
     "correctOption": "C",
-    "explanation": "The ON clause qualifies rows during the join phase. The WHERE clause executes after the join. Any unmatched left rows padded with NULL will evaluate to UNKNOWN against right-table WHERE filters (e.g. NULL = 'PAID'), causing the engine to discard them and turning the query into an accidental INNER JOIN."
+    "explanation": "The ON clause qualifies rows during the join phase. The WHERE clause executes after the join. Any unmatched left rows padded with NULL will evaluate to UNKNOWN against right-table WHERE filters (e.g. NULL = 'PAID'), causing the engine to discard them and turning the query into an accidental INNER JOIN.",
+    "tag": "🎯 Core Concept",
+    "correctIndex": 2
   },
   {
-    "id": 555,
+    "id": "mcq_joins_5",
     "keyword": "JOINS",
     "question": "When performing a multi-currency conversion in financial reporting, why is a composite join required?",
     "options": [
@@ -7767,10 +15476,12 @@ window.MCQS_VAULT_500 = [
       "Because ANSI SQL forbids single-column foreign key joins on monetary values"
     ],
     "correctOption": "A",
-    "explanation": "Matching only on currency_code would join every transaction against all historical exchange rates for that currency (a Cartesian explosion). The join predicate must specify `ON t.currency = fx.currency AND t.date = fx.rate_date`."
+    "explanation": "Matching only on currency_code would join every transaction against all historical exchange rates for that currency (a Cartesian explosion). The join predicate must specify `ON t.currency = fx.currency AND t.date = fx.rate_date`.",
+    "tag": "🎯 Core Concept",
+    "correctIndex": 0
   },
   {
-    "id": 556,
+    "id": "mcq_joins_6",
     "keyword": "JOINS",
     "question": "What is a NON-EQUI JOIN, and where is it predominantly used in financial modeling?",
     "options": [
@@ -7780,10 +15491,12 @@ window.MCQS_VAULT_500 = [
       "A join that uses inequality operators (<, >, BETWEEN) rather than equals (=), used for tax brackets and tiered commission hurdles"
     ],
     "correctOption": "D",
-    "explanation": "Non-equi joins match continuous values against ranges (e.g. `ON employee.sales BETWEEN tiers.min_sales AND tiers.max_sales`), eliminating the need for hardcoded, brittle CASE WHEN statements."
+    "explanation": "Non-equi joins match continuous values against ranges (e.g. `ON employee.sales BETWEEN tiers.min_sales AND tiers.max_sales`), eliminating the need for hardcoded, brittle CASE WHEN statements.",
+    "tag": "🎯 Core Concept",
+    "correctIndex": 3
   },
   {
-    "id": 557,
+    "id": "mcq_joins_7",
     "keyword": "JOINS",
     "question": "In MySQL, what is the correct syntax to emulate a FULL OUTER JOIN between Table A and Table B?",
     "options": [
@@ -7793,10 +15506,12 @@ window.MCQS_VAULT_500 = [
       "SELECT ... FROM A MERGE JOIN B ON A.id = B.id"
     ],
     "correctOption": "C",
-    "explanation": "MySQL 8.0 does not support native `FULL OUTER JOIN` syntax. Analysts simulate it by unioning a `LEFT JOIN` and a `RIGHT JOIN`, where `UNION` automatically deduplicates the overlapping inner match set."
+    "explanation": "MySQL 8.0 does not support native `FULL OUTER JOIN` syntax. Analysts simulate it by unioning a `LEFT JOIN` and a `RIGHT JOIN`, where `UNION` automatically deduplicates the overlapping inner match set.",
+    "tag": "🎯 Core Concept",
+    "correctIndex": 2
   },
   {
-    "id": 558,
+    "id": "mcq_joins_8",
     "keyword": "JOINS",
     "question": "Why should COALESCE() almost always be paired with right-table numeric aggregates in a LEFT JOIN?",
     "options": [
@@ -7806,10 +15521,12 @@ window.MCQS_VAULT_500 = [
       "Because COALESCE converts integers into high-precision DECIMAL types automatically"
     ],
     "correctOption": "B",
-    "explanation": "Under Three-Valued Logic, any arithmetic operation involving NULL yields NULL (e.g. $1,000 - NULL = NULL). Using `COALESCE(SUM(payments), 0)` guarantees a clean numeric 0 for customers with zero payments."
+    "explanation": "Under Three-Valued Logic, any arithmetic operation involving NULL yields NULL (e.g. $1,000 - NULL = NULL). Using `COALESCE(SUM(payments), 0)` guarantees a clean numeric 0 for customers with zero payments.",
+    "tag": "🎯 Core Concept",
+    "correctIndex": 1
   },
   {
-    "id": 559,
+    "id": "mcq_joins_9",
     "keyword": "JOINS",
     "question": "What is a Cartesian Product, and which join produces it?",
     "options": [
@@ -7819,10 +15536,12 @@ window.MCQS_VAULT_500 = [
       "A join between tables that have identical primary keys"
     ],
     "correctOption": "A",
-    "explanation": "A CROSS JOIN produces M * N rows. If Table A has 10,000 rows and Table B has 10,000 rows, a Cartesian join creates 100,000,000 rows, often causing server memory exhaustion."
+    "explanation": "A CROSS JOIN produces M * N rows. If Table A has 10,000 rows and Table B has 10,000 rows, a Cartesian join creates 100,000,000 rows, often causing server memory exhaustion.",
+    "tag": "🎯 Core Concept",
+    "correctIndex": 0
   },
   {
-    "id": 560,
+    "id": "mcq_joins_10",
     "keyword": "JOINS",
     "question": "What causes a 'Cardinality Explosion' when joining a customer table to both an orders table and a support tickets table?",
     "options": [
@@ -7832,10 +15551,12 @@ window.MCQS_VAULT_500 = [
       "Independent one-to-many relationships cross-multiply, duplicating rows and falsely inflating aggregate sums"
     ],
     "correctOption": "D",
-    "explanation": "If a customer has 5 orders and 4 tickets, joining all three tables produces 1 * 5 * 4 = 20 rows. Summing order_amount across those 20 rows calculates 4x the actual spend. Analysts prevent this by pre-aggregating each child table in a CTE before joining."
+    "explanation": "If a customer has 5 orders and 4 tickets, joining all three tables produces 1 * 5 * 4 = 20 rows. Summing order_amount across those 20 rows calculates 4x the actual spend. Analysts prevent this by pre-aggregating each child table in a CTE before joining.",
+    "tag": "🎯 Core Concept",
+    "correctIndex": 3
   },
   {
-    "id": 561,
+    "id": "mcq_joins_11",
     "keyword": "JOINS",
     "question": "What is a SELF JOIN, and what is its most common operational use in corporate finance?",
     "options": [
@@ -7845,10 +15566,12 @@ window.MCQS_VAULT_500 = [
       "A join that checks whether a table contains duplicate primary keys"
     ],
     "correctOption": "A",
-    "explanation": "A table can be joined to another instance of itself (e.g. `FROM financial_quarters q1 JOIN financial_quarters q2 ON q1.company = q2.company AND q2.quarter = q1.quarter + 1`) to compare QoQ figures side-by-side on the same row."
+    "explanation": "A table can be joined to another instance of itself (e.g. `FROM financial_quarters q1 JOIN financial_quarters q2 ON q1.company = q2.company AND q2.quarter = q1.quarter + 1`) to compare QoQ figures side-by-side on the same row.",
+    "tag": "🎯 Core Concept",
+    "correctIndex": 0
   },
   {
-    "id": 562,
+    "id": "mcq_joins_12",
     "keyword": "JOINS",
     "question": "When joining two tables on a nullable column, what is the outcome of matching a NULL with another NULL?",
     "options": [
@@ -7858,10 +15581,12 @@ window.MCQS_VAULT_500 = [
       "The query engine throws error 1048: Column cannot be null"
     ],
     "correctOption": "B",
-    "explanation": "In SQL Three-Valued Logic, NULL represents missing information. Since one unknown cannot be asserted equal to another unknown, `NULL = NULL` yields UNKNOWN, so the join predicate fails."
+    "explanation": "In SQL Three-Valued Logic, NULL represents missing information. Since one unknown cannot be asserted equal to another unknown, `NULL = NULL` yields UNKNOWN, so the join predicate fails.",
+    "tag": "🎯 Core Concept",
+    "correctIndex": 1
   },
   {
-    "id": 563,
+    "id": "mcq_joins_13",
     "keyword": "JOINS",
     "question": "In MySQL, what operator can be used in an ON clause to allow NULL values to match each other as equal?",
     "options": [
@@ -7871,10 +15596,12 @@ window.MCQS_VAULT_500 = [
       "=== (Strict identity operator)"
     ],
     "correctOption": "C",
-    "explanation": "MySQL provides the spaceship operator `<=>` (`NULL-safe equal`). `1 <=> 1` is 1 (TRUE), `1 <=> NULL` is 0 (FALSE), and `NULL <=> NULL` is 1 (TRUE)."
+    "explanation": "MySQL provides the spaceship operator `<=>` (`NULL-safe equal`). `1 <=> 1` is 1 (TRUE), `1 <=> NULL` is 0 (FALSE), and `NULL <=> NULL` is 1 (TRUE).",
+    "tag": "🎯 Core Concept",
+    "correctIndex": 2
   },
   {
-    "id": 564,
+    "id": "mcq_joins_14",
     "keyword": "JOINS",
     "question": "Between NOT IN and NOT EXISTS, why is NOT EXISTS universally preferred for Anti-Joins?",
     "options": [
@@ -7884,10 +15611,12 @@ window.MCQS_VAULT_500 = [
       "NOT IN returns 0 rows for the entire query if the subquery contains even a single NULL value"
     ],
     "correctOption": "D",
-    "explanation": "If a subquery returns values including a NULL (e.g. `1, 2, NULL`), evaluating `id NOT IN (...)` becomes `id <> 1 AND id <> 2 AND id <> NULL`. Since `id <> NULL` is UNKNOWN, the entire conjunction is never TRUE, returning an empty result set."
+    "explanation": "If a subquery returns values including a NULL (e.g. `1, 2, NULL`), evaluating `id NOT IN (...)` becomes `id <> 1 AND id <> 2 AND id <> NULL`. Since `id <> NULL` is UNKNOWN, the entire conjunction is never TRUE, returning an empty result set.",
+    "tag": "🎯 Core Concept",
+    "correctIndex": 3
   },
   {
-    "id": 565,
+    "id": "mcq_joins_15",
     "keyword": "JOINS",
     "question": "What does the SQL optimizer do during an Index Nested Loop Join?",
     "options": [
@@ -7897,10 +15626,12 @@ window.MCQS_VAULT_500 = [
       "It converts the join into a multi-threaded parallel subquery"
     ],
     "correctOption": "A",
-    "explanation": "An Index Nested Loop Join leverages an index on the join column of the inner table, providing O(M * log N) complexity, which is exceptionally fast for indexed OLTP lookups."
+    "explanation": "An Index Nested Loop Join leverages an index on the join column of the inner table, providing O(M * log N) complexity, which is exceptionally fast for indexed OLTP lookups.",
+    "tag": "🎯 Core Concept",
+    "correctIndex": 0
   },
   {
-    "id": 566,
+    "id": "mcq_joins_16",
     "keyword": "JOINS",
     "question": "What join algorithm was introduced in MySQL 8.0.18 to replace Block Nested Loop for joining unindexed tables?",
     "options": [
@@ -7910,10 +15641,12 @@ window.MCQS_VAULT_500 = [
       "Bit-Vector Parallel Join"
     ],
     "correctOption": "C",
-    "explanation": "MySQL 8.0.18 introduced Hash Joins. The engine builds an in-memory hash table on the smaller relation and probes it with rows from the larger relation, drastically accelerating queries that lack secondary indexes."
+    "explanation": "MySQL 8.0.18 introduced Hash Joins. The engine builds an in-memory hash table on the smaller relation and probes it with rows from the larger relation, drastically accelerating queries that lack secondary indexes.",
+    "tag": "🎯 Core Concept",
+    "correctIndex": 2
   },
   {
-    "id": 567,
+    "id": "mcq_joins_17",
     "keyword": "JOINS",
     "question": "In an Accounts Receivable aging query, what is the role of DATEDIFF(CURRENT_DATE, due_date)?",
     "options": [
@@ -7923,10 +15656,12 @@ window.MCQS_VAULT_500 = [
       "To calculate the compound interest penalty rate for delinquent invoices"
     ],
     "correctOption": "A",
-    "explanation": "DATEDIFF returns the integer difference in days between two dates. Analysts wrap this inside a CASE WHEN expression to construct AR aging buckets for cash flow risk modeling."
+    "explanation": "DATEDIFF returns the integer difference in days between two dates. Analysts wrap this inside a CASE WHEN expression to construct AR aging buckets for cash flow risk modeling.",
+    "tag": "🎯 Core Concept",
+    "correctIndex": 0
   },
   {
-    "id": 568,
+    "id": "mcq_joins_18",
     "keyword": "JOINS",
     "question": "What is the result of joining an unaggregated Transactions table to an unaggregated Refunds table on customer_id?",
     "options": [
@@ -7936,10 +15671,12 @@ window.MCQS_VAULT_500 = [
       "Severe row multiplication if customers have multiple transactions and multiple refunds"
     ],
     "correctOption": "D",
-    "explanation": "Joining two one-to-many child tables without grouping first causes an M * N cross-product for that customer, corrupting transaction and refund sum totals."
+    "explanation": "Joining two one-to-many child tables without grouping first causes an M * N cross-product for that customer, corrupting transaction and refund sum totals.",
+    "tag": "🎯 Core Concept",
+    "correctIndex": 3
   },
   {
-    "id": 569,
+    "id": "mcq_joins_19",
     "keyword": "JOINS",
     "question": "What is the function of the USING clause in SQL joins (e.g. JOIN Orders USING (customer_id))?",
     "options": [
@@ -7949,10 +15686,12 @@ window.MCQS_VAULT_500 = [
       "Converts outer joins into inner joins dynamically"
     ],
     "correctOption": "C",
-    "explanation": "`USING (col)` is syntactic sugar for `ON table1.col = table2.col`. It also coalesces the duplicate column in `SELECT *` output so the column only appears once."
+    "explanation": "`USING (col)` is syntactic sugar for `ON table1.col = table2.col`. It also coalesces the duplicate column in `SELECT *` output so the column only appears once.",
+    "tag": "🎯 Core Concept",
+    "correctIndex": 2
   },
   {
-    "id": 570,
+    "id": "mcq_joins_20",
     "keyword": "JOINS",
     "question": "In corporate financial reporting, what is a 'Date Spine' and which join is used to construct it?",
     "options": [
@@ -7962,10 +15701,12 @@ window.MCQS_VAULT_500 = [
       "A stored procedure that calculates compound daily interest amortization"
     ],
     "correctOption": "B",
-    "explanation": "If a company had zero sales on Tuesday, a standard query omits Tuesday entirely. A Date Spine (all calendar dates) joined via `LEFT JOIN transactions ON spine.date = t.date` ensures every day appears on the executive dashboard with $0."
+    "explanation": "If a company had zero sales on Tuesday, a standard query omits Tuesday entirely. A Date Spine (all calendar dates) joined via `LEFT JOIN transactions ON spine.date = t.date` ensures every day appears on the executive dashboard with $0.",
+    "tag": "🎯 Core Concept",
+    "correctIndex": 1
   },
   {
-    "id": 571,
+    "id": "mcq_joins_21",
     "keyword": "JOINS",
     "question": "When joining a parent table with 1,000 rows to a child table with 5,000 rows on a primary-foreign key relationship, what is the MAXIMUM possible row count of an INNER JOIN?",
     "options": [
@@ -7975,10 +15716,12 @@ window.MCQS_VAULT_500 = [
       "1,000 rows"
     ],
     "correctOption": "A",
-    "explanation": "In a strict 1-to-many relationship where foreign keys reference unique primary keys, every child row matches at most one parent row. Thus the output cannot exceed the child table's row count (5,000)."
+    "explanation": "In a strict 1-to-many relationship where foreign keys reference unique primary keys, every child row matches at most one parent row. Thus the output cannot exceed the child table's row count (5,000).",
+    "tag": "🎯 Core Concept",
+    "correctIndex": 0
   },
   {
-    "id": 572,
+    "id": "mcq_joins_22",
     "keyword": "JOINS",
     "question": "In a financial audit comparing General Ledger (A) to Sub-Ledger (B), what does a query with WHERE A.id IS NULL indicate after a RIGHT JOIN?",
     "options": [
@@ -7988,10 +15731,12 @@ window.MCQS_VAULT_500 = [
       "Sub-ledger entries that have no corresponding record in the General Ledger (unposted transactions)"
     ],
     "correctOption": "D",
-    "explanation": "In `A RIGHT JOIN B`, `A.id IS NULL` isolates records present in B but completely absent from A, highlighting unposted sub-ledger transactions."
+    "explanation": "In `A RIGHT JOIN B`, `A.id IS NULL` isolates records present in B but completely absent from A, highlighting unposted sub-ledger transactions.",
+    "tag": "🎯 Core Concept",
+    "correctIndex": 3
   },
   {
-    "id": 573,
+    "id": "mcq_joins_23",
     "keyword": "JOINS",
     "question": "Why do enterprise SQL style guides strongly advise against using NATURAL JOIN in production pipelines?",
     "options": [
@@ -8001,10 +15746,12 @@ window.MCQS_VAULT_500 = [
       "NATURAL JOIN does not support foreign key indexing"
     ],
     "correctOption": "A",
-    "explanation": "If an engineer adds a column like `created_at` or `status` to both tables, a NATURAL JOIN will silently add that column to the join predicate, breaking production reports and returning zero rows without throwing an error."
+    "explanation": "If an engineer adds a column like `created_at` or `status` to both tables, a NATURAL JOIN will silently add that column to the join predicate, breaking production reports and returning zero rows without throwing an error.",
+    "tag": "🎯 Core Concept",
+    "correctIndex": 0
   },
   {
-    "id": 574,
+    "id": "mcq_joins_24",
     "keyword": "JOINS",
     "question": "How does a SEMI-JOIN differ from a standard INNER JOIN in query execution?",
     "options": [
@@ -8014,10 +15761,12 @@ window.MCQS_VAULT_500 = [
       "A SEMI-JOIN can only be executed on integer primary keys"
     ],
     "correctOption": "B",
-    "explanation": "Semi-joins (often written as `WHERE EXISTS (...)`) test presence without joining columns. Even if the secondary table has 10 matching rows, the primary row is emitted exactly once, preventing row duplication."
+    "explanation": "Semi-joins (often written as `WHERE EXISTS (...)`) test presence without joining columns. Even if the secondary table has 10 matching rows, the primary row is emitted exactly once, preventing row duplication.",
+    "tag": "🎯 Core Concept",
+    "correctIndex": 1
   },
   {
-    "id": 575,
+    "id": "mcq_joins_25",
     "keyword": "JOINS",
     "question": "What is an Equi-Join in SQL?",
     "options": [
@@ -8027,10 +15776,12 @@ window.MCQS_VAULT_500 = [
       "A join where both tables contain an equal number of rows"
     ],
     "correctOption": "C",
-    "explanation": "Equi-joins use the equality comparison operator `=` in the ON clause (e.g. `ON a.id = b.id`), representing over 95% of operational database joins."
+    "explanation": "Equi-joins use the equality comparison operator `=` in the ON clause (e.g. `ON a.id = b.id`), representing over 95% of operational database joins.",
+    "tag": "🎯 Core Concept",
+    "correctIndex": 2
   },
   {
-    "id": 576,
+    "id": "mcq_joins_26",
     "keyword": "JOINS",
     "question": "What will be the result of a query containing: `FROM Customers c LEFT JOIN Orders o ON c.id = o.customer_id WHERE c.country = 'USA'`?",
     "options": [
@@ -8040,10 +15791,12 @@ window.MCQS_VAULT_500 = [
       "All US customers will be returned, along with any orders they placed (unmatched US customers will have NULL orders)"
     ],
     "correctOption": "D",
-    "explanation": "Filtering the LEFT table in the WHERE clause is completely valid. It filters the left set down to US customers first, and then preserves all of those US customers regardless of whether they have orders."
+    "explanation": "Filtering the LEFT table in the WHERE clause is completely valid. It filters the left set down to US customers first, and then preserves all of those US customers regardless of whether they have orders.",
+    "tag": "🎯 Core Concept",
+    "correctIndex": 3
   },
   {
-    "id": 577,
+    "id": "mcq_joins_27",
     "keyword": "JOINS",
     "question": "In an ERP system, how can a financial analyst identify Purchase Orders that were billed but NEVER physically received at the warehouse?",
     "options": [
@@ -8053,10 +15806,12 @@ window.MCQS_VAULT_500 = [
       "Invoices FULL OUTER JOIN WarehouseReceipts ON inv.status = 'BILLED'"
     ],
     "correctOption": "A",
-    "explanation": "A Left Anti-Join between Invoices and Receipts where the receipt key IS NULL extracts all invoices that lack proof of physical warehouse delivery."
+    "explanation": "A Left Anti-Join between Invoices and Receipts where the receipt key IS NULL extracts all invoices that lack proof of physical warehouse delivery.",
+    "tag": "🎯 Core Concept",
+    "correctIndex": 0
   },
   {
-    "id": 578,
+    "id": "mcq_joins_28",
     "keyword": "JOINS",
     "question": "What is the expected behavior of `LEFT JOIN Payments p ON inv.id = p.inv_id AND p.payment_date >= '2026-01-01'` vs putting the date in WHERE?",
     "options": [
@@ -8066,10 +15821,12 @@ window.MCQS_VAULT_500 = [
       "The ON clause query terminates with a date format mismatch error"
     ],
     "correctOption": "C",
-    "explanation": "In an outer join, right-table qualifications in the ON clause govern whether secondary columns attach, not whether primary rows survive."
+    "explanation": "In an outer join, right-table qualifications in the ON clause govern whether secondary columns attach, not whether primary rows survive.",
+    "tag": "🎯 Core Concept",
+    "correctIndex": 2
   },
   {
-    "id": 579,
+    "id": "mcq_joins_29",
     "keyword": "JOINS",
     "question": "When joining employee records to cost centers, what happens if an employee has a NULL cost_center_id under an INNER JOIN?",
     "options": [
@@ -8079,10 +15836,12 @@ window.MCQS_VAULT_500 = [
       "The employee is assigned to the first cost center in the table"
     ],
     "correctOption": "A",
-    "explanation": "Because NULL cannot equal any value in the cost center master table, the join condition fails, excluding the employee."
+    "explanation": "Because NULL cannot equal any value in the cost center master table, the join condition fails, excluding the employee.",
+    "tag": "🎯 Core Concept",
+    "correctIndex": 0
   },
   {
-    "id": 580,
+    "id": "mcq_joins_30",
     "keyword": "JOINS",
     "question": "In Financial Statement consolidation, why is table aliasing (e.g. `GeneralLedger gl`) considered mandatory best practice?",
     "options": [
@@ -8092,10 +15851,12 @@ window.MCQS_VAULT_500 = [
       "It eliminates column ambiguity errors and makes complex multi-table joins human-readable and maintainable"
     ],
     "correctOption": "D",
-    "explanation": "Multiple tables frequently share identical column names like `id`, `name`, `amount`, and `created_at`. Explicit aliases prevent ambiguous column errors."
+    "explanation": "Multiple tables frequently share identical column names like `id`, `name`, `amount`, and `created_at`. Explicit aliases prevent ambiguous column errors.",
+    "tag": "🎯 Core Concept",
+    "correctIndex": 3
   },
   {
-    "id": 581,
+    "id": "mcq_joins_31",
     "keyword": "JOINS",
     "question": "In multi-table corporate financial reporting (Join Rule #31), why must analysts verify relationship cardinality (1:1, 1:N, M:N) before joining?",
     "options": [
@@ -8105,10 +15866,12 @@ window.MCQS_VAULT_500 = [
       "Because database backup systems reject queries that mix 1:N and M:N relationships"
     ],
     "correctOption": "C",
-    "explanation": "Understanding whether a join is 1:1, 1:N, or M:N tells the analyst whether aggregation sums will remain accurate or require pre-aggregation in a subquery."
+    "explanation": "Understanding whether a join is 1:1, 1:N, or M:N tells the analyst whether aggregation sums will remain accurate or require pre-aggregation in a subquery.",
+    "tag": "🎯 Core Concept",
+    "correctIndex": 2
   },
   {
-    "id": 582,
+    "id": "mcq_joins_32",
     "keyword": "JOINS",
     "question": "In multi-table corporate financial reporting (Join Rule #32), why must analysts verify relationship cardinality (1:1, 1:N, M:N) before joining?",
     "options": [
@@ -8118,10 +15881,12 @@ window.MCQS_VAULT_500 = [
       "Because foreign keys cannot be validated unless cardinality is declared in the SELECT clause"
     ],
     "correctOption": "B",
-    "explanation": "Understanding whether a join is 1:1, 1:N, or M:N tells the analyst whether aggregation sums will remain accurate or require pre-aggregation in a subquery."
+    "explanation": "Understanding whether a join is 1:1, 1:N, or M:N tells the analyst whether aggregation sums will remain accurate or require pre-aggregation in a subquery.",
+    "tag": "🎯 Core Concept",
+    "correctIndex": 1
   },
   {
-    "id": 583,
+    "id": "mcq_joins_33",
     "keyword": "JOINS",
     "question": "In multi-table corporate financial reporting (Join Rule #33), why must analysts verify relationship cardinality (1:1, 1:N, M:N) before joining?",
     "options": [
@@ -8131,10 +15896,12 @@ window.MCQS_VAULT_500 = [
       "Because SQL engines only permit joins between tables with identical row counts"
     ],
     "correctOption": "A",
-    "explanation": "Understanding whether a join is 1:1, 1:N, or M:N tells the analyst whether aggregation sums will remain accurate or require pre-aggregation in a subquery."
+    "explanation": "Understanding whether a join is 1:1, 1:N, or M:N tells the analyst whether aggregation sums will remain accurate or require pre-aggregation in a subquery.",
+    "tag": "🎯 Core Concept",
+    "correctIndex": 0
   },
   {
-    "id": 584,
+    "id": "mcq_joins_34",
     "keyword": "JOINS",
     "question": "In multi-table corporate financial reporting (Join Rule #34), why must analysts verify relationship cardinality (1:1, 1:N, M:N) before joining?",
     "options": [
@@ -8144,10 +15911,12 @@ window.MCQS_VAULT_500 = [
       "To anticipate and prevent unintended row multiplication and duplicate financial aggregation totals"
     ],
     "correctOption": "D",
-    "explanation": "Understanding whether a join is 1:1, 1:N, or M:N tells the analyst whether aggregation sums will remain accurate or require pre-aggregation in a subquery."
+    "explanation": "Understanding whether a join is 1:1, 1:N, or M:N tells the analyst whether aggregation sums will remain accurate or require pre-aggregation in a subquery.",
+    "tag": "🎯 Core Concept",
+    "correctIndex": 3
   },
   {
-    "id": 585,
+    "id": "mcq_joins_35",
     "keyword": "JOINS",
     "question": "In multi-table corporate financial reporting (Join Rule #35), why must analysts verify relationship cardinality (1:1, 1:N, M:N) before joining?",
     "options": [
@@ -8157,10 +15926,12 @@ window.MCQS_VAULT_500 = [
       "Because database backup systems reject queries that mix 1:N and M:N relationships"
     ],
     "correctOption": "A",
-    "explanation": "Understanding whether a join is 1:1, 1:N, or M:N tells the analyst whether aggregation sums will remain accurate or require pre-aggregation in a subquery."
+    "explanation": "Understanding whether a join is 1:1, 1:N, or M:N tells the analyst whether aggregation sums will remain accurate or require pre-aggregation in a subquery.",
+    "tag": "🎯 Core Concept",
+    "correctIndex": 0
   },
   {
-    "id": 586,
+    "id": "mcq_joins_36",
     "keyword": "JOINS",
     "question": "In multi-table corporate financial reporting (Join Rule #36), why must analysts verify relationship cardinality (1:1, 1:N, M:N) before joining?",
     "options": [
@@ -8170,10 +15941,12 @@ window.MCQS_VAULT_500 = [
       "Because foreign keys cannot be validated unless cardinality is declared in the SELECT clause"
     ],
     "correctOption": "B",
-    "explanation": "Understanding whether a join is 1:1, 1:N, or M:N tells the analyst whether aggregation sums will remain accurate or require pre-aggregation in a subquery."
+    "explanation": "Understanding whether a join is 1:1, 1:N, or M:N tells the analyst whether aggregation sums will remain accurate or require pre-aggregation in a subquery.",
+    "tag": "🎯 Core Concept",
+    "correctIndex": 1
   },
   {
-    "id": 587,
+    "id": "mcq_joins_37",
     "keyword": "JOINS",
     "question": "In multi-table corporate financial reporting (Join Rule #37), why must analysts verify relationship cardinality (1:1, 1:N, M:N) before joining?",
     "options": [
@@ -8183,10 +15956,12 @@ window.MCQS_VAULT_500 = [
       "Because SQL engines only permit joins between tables with identical row counts"
     ],
     "correctOption": "C",
-    "explanation": "Understanding whether a join is 1:1, 1:N, or M:N tells the analyst whether aggregation sums will remain accurate or require pre-aggregation in a subquery."
+    "explanation": "Understanding whether a join is 1:1, 1:N, or M:N tells the analyst whether aggregation sums will remain accurate or require pre-aggregation in a subquery.",
+    "tag": "🎯 Core Concept",
+    "correctIndex": 2
   },
   {
-    "id": 588,
+    "id": "mcq_joins_38",
     "keyword": "JOINS",
     "question": "In multi-table corporate financial reporting (Join Rule #38), why must analysts verify relationship cardinality (1:1, 1:N, M:N) before joining?",
     "options": [
@@ -8196,10 +15971,12 @@ window.MCQS_VAULT_500 = [
       "To anticipate and prevent unintended row multiplication and duplicate financial aggregation totals"
     ],
     "correctOption": "D",
-    "explanation": "Understanding whether a join is 1:1, 1:N, or M:N tells the analyst whether aggregation sums will remain accurate or require pre-aggregation in a subquery."
+    "explanation": "Understanding whether a join is 1:1, 1:N, or M:N tells the analyst whether aggregation sums will remain accurate or require pre-aggregation in a subquery.",
+    "tag": "🎯 Core Concept",
+    "correctIndex": 3
   },
   {
-    "id": 589,
+    "id": "mcq_joins_39",
     "keyword": "JOINS",
     "question": "In multi-table corporate financial reporting (Join Rule #39), why must analysts verify relationship cardinality (1:1, 1:N, M:N) before joining?",
     "options": [
@@ -8209,10 +15986,12 @@ window.MCQS_VAULT_500 = [
       "Because database backup systems reject queries that mix 1:N and M:N relationships"
     ],
     "correctOption": "A",
-    "explanation": "Understanding whether a join is 1:1, 1:N, or M:N tells the analyst whether aggregation sums will remain accurate or require pre-aggregation in a subquery."
+    "explanation": "Understanding whether a join is 1:1, 1:N, or M:N tells the analyst whether aggregation sums will remain accurate or require pre-aggregation in a subquery.",
+    "tag": "🎯 Core Concept",
+    "correctIndex": 0
   },
   {
-    "id": 590,
+    "id": "mcq_joins_40",
     "keyword": "JOINS",
     "question": "In multi-table corporate financial reporting (Join Rule #40), why must analysts verify relationship cardinality (1:1, 1:N, M:N) before joining?",
     "options": [
@@ -8222,10 +16001,12 @@ window.MCQS_VAULT_500 = [
       "Because foreign keys cannot be validated unless cardinality is declared in the SELECT clause"
     ],
     "correctOption": "C",
-    "explanation": "Understanding whether a join is 1:1, 1:N, or M:N tells the analyst whether aggregation sums will remain accurate or require pre-aggregation in a subquery."
+    "explanation": "Understanding whether a join is 1:1, 1:N, or M:N tells the analyst whether aggregation sums will remain accurate or require pre-aggregation in a subquery.",
+    "tag": "🎯 Core Concept",
+    "correctIndex": 2
   },
   {
-    "id": 591,
+    "id": "mcq_joins_41",
     "keyword": "JOINS",
     "question": "In multi-table corporate financial reporting (Join Rule #41), why must analysts verify relationship cardinality (1:1, 1:N, M:N) before joining?",
     "options": [
@@ -8235,10 +16016,12 @@ window.MCQS_VAULT_500 = [
       "Because SQL engines only permit joins between tables with identical row counts"
     ],
     "correctOption": "A",
-    "explanation": "Understanding whether a join is 1:1, 1:N, or M:N tells the analyst whether aggregation sums will remain accurate or require pre-aggregation in a subquery."
+    "explanation": "Understanding whether a join is 1:1, 1:N, or M:N tells the analyst whether aggregation sums will remain accurate or require pre-aggregation in a subquery.",
+    "tag": "🎯 Core Concept",
+    "correctIndex": 0
   },
   {
-    "id": 592,
+    "id": "mcq_joins_42",
     "keyword": "JOINS",
     "question": "In multi-table corporate financial reporting (Join Rule #42), why must analysts verify relationship cardinality (1:1, 1:N, M:N) before joining?",
     "options": [
@@ -8248,10 +16031,12 @@ window.MCQS_VAULT_500 = [
       "To anticipate and prevent unintended row multiplication and duplicate financial aggregation totals"
     ],
     "correctOption": "D",
-    "explanation": "Understanding whether a join is 1:1, 1:N, or M:N tells the analyst whether aggregation sums will remain accurate or require pre-aggregation in a subquery."
+    "explanation": "Understanding whether a join is 1:1, 1:N, or M:N tells the analyst whether aggregation sums will remain accurate or require pre-aggregation in a subquery.",
+    "tag": "🎯 Core Concept",
+    "correctIndex": 3
   },
   {
-    "id": 593,
+    "id": "mcq_joins_43",
     "keyword": "JOINS",
     "question": "In multi-table corporate financial reporting (Join Rule #43), why must analysts verify relationship cardinality (1:1, 1:N, M:N) before joining?",
     "options": [
@@ -8261,10 +16046,12 @@ window.MCQS_VAULT_500 = [
       "Because database backup systems reject queries that mix 1:N and M:N relationships"
     ],
     "correctOption": "C",
-    "explanation": "Understanding whether a join is 1:1, 1:N, or M:N tells the analyst whether aggregation sums will remain accurate or require pre-aggregation in a subquery."
+    "explanation": "Understanding whether a join is 1:1, 1:N, or M:N tells the analyst whether aggregation sums will remain accurate or require pre-aggregation in a subquery.",
+    "tag": "🎯 Core Concept",
+    "correctIndex": 2
   },
   {
-    "id": 594,
+    "id": "mcq_joins_44",
     "keyword": "JOINS",
     "question": "In multi-table corporate financial reporting (Join Rule #44), why must analysts verify relationship cardinality (1:1, 1:N, M:N) before joining?",
     "options": [
@@ -8274,10 +16061,12 @@ window.MCQS_VAULT_500 = [
       "Because foreign keys cannot be validated unless cardinality is declared in the SELECT clause"
     ],
     "correctOption": "B",
-    "explanation": "Understanding whether a join is 1:1, 1:N, or M:N tells the analyst whether aggregation sums will remain accurate or require pre-aggregation in a subquery."
+    "explanation": "Understanding whether a join is 1:1, 1:N, or M:N tells the analyst whether aggregation sums will remain accurate or require pre-aggregation in a subquery.",
+    "tag": "🎯 Core Concept",
+    "correctIndex": 1
   },
   {
-    "id": 595,
+    "id": "mcq_joins_45",
     "keyword": "JOINS",
     "question": "In multi-table corporate financial reporting (Join Rule #45), why must analysts verify relationship cardinality (1:1, 1:N, M:N) before joining?",
     "options": [
@@ -8287,10 +16076,12 @@ window.MCQS_VAULT_500 = [
       "Because SQL engines only permit joins between tables with identical row counts"
     ],
     "correctOption": "A",
-    "explanation": "Understanding whether a join is 1:1, 1:N, or M:N tells the analyst whether aggregation sums will remain accurate or require pre-aggregation in a subquery."
+    "explanation": "Understanding whether a join is 1:1, 1:N, or M:N tells the analyst whether aggregation sums will remain accurate or require pre-aggregation in a subquery.",
+    "tag": "🎯 Core Concept",
+    "correctIndex": 0
   },
   {
-    "id": 596,
+    "id": "mcq_joins_46",
     "keyword": "JOINS",
     "question": "In multi-table corporate financial reporting (Join Rule #46), why must analysts verify relationship cardinality (1:1, 1:N, M:N) before joining?",
     "options": [
@@ -8300,10 +16091,12 @@ window.MCQS_VAULT_500 = [
       "To anticipate and prevent unintended row multiplication and duplicate financial aggregation totals"
     ],
     "correctOption": "D",
-    "explanation": "Understanding whether a join is 1:1, 1:N, or M:N tells the analyst whether aggregation sums will remain accurate or require pre-aggregation in a subquery."
+    "explanation": "Understanding whether a join is 1:1, 1:N, or M:N tells the analyst whether aggregation sums will remain accurate or require pre-aggregation in a subquery.",
+    "tag": "🎯 Core Concept",
+    "correctIndex": 3
   },
   {
-    "id": 597,
+    "id": "mcq_joins_47",
     "keyword": "JOINS",
     "question": "In multi-table corporate financial reporting (Join Rule #47), why must analysts verify relationship cardinality (1:1, 1:N, M:N) before joining?",
     "options": [
@@ -8313,10 +16106,12 @@ window.MCQS_VAULT_500 = [
       "Because database backup systems reject queries that mix 1:N and M:N relationships"
     ],
     "correctOption": "A",
-    "explanation": "Understanding whether a join is 1:1, 1:N, or M:N tells the analyst whether aggregation sums will remain accurate or require pre-aggregation in a subquery."
+    "explanation": "Understanding whether a join is 1:1, 1:N, or M:N tells the analyst whether aggregation sums will remain accurate or require pre-aggregation in a subquery.",
+    "tag": "🎯 Core Concept",
+    "correctIndex": 0
   },
   {
-    "id": 598,
+    "id": "mcq_joins_48",
     "keyword": "JOINS",
     "question": "In multi-table corporate financial reporting (Join Rule #48), why must analysts verify relationship cardinality (1:1, 1:N, M:N) before joining?",
     "options": [
@@ -8326,10 +16121,12 @@ window.MCQS_VAULT_500 = [
       "Because foreign keys cannot be validated unless cardinality is declared in the SELECT clause"
     ],
     "correctOption": "B",
-    "explanation": "Understanding whether a join is 1:1, 1:N, or M:N tells the analyst whether aggregation sums will remain accurate or require pre-aggregation in a subquery."
+    "explanation": "Understanding whether a join is 1:1, 1:N, or M:N tells the analyst whether aggregation sums will remain accurate or require pre-aggregation in a subquery.",
+    "tag": "🎯 Core Concept",
+    "correctIndex": 1
   },
   {
-    "id": 599,
+    "id": "mcq_joins_49",
     "keyword": "JOINS",
     "question": "In multi-table corporate financial reporting (Join Rule #49), why must analysts verify relationship cardinality (1:1, 1:N, M:N) before joining?",
     "options": [
@@ -8339,10 +16136,12 @@ window.MCQS_VAULT_500 = [
       "Because SQL engines only permit joins between tables with identical row counts"
     ],
     "correctOption": "C",
-    "explanation": "Understanding whether a join is 1:1, 1:N, or M:N tells the analyst whether aggregation sums will remain accurate or require pre-aggregation in a subquery."
+    "explanation": "Understanding whether a join is 1:1, 1:N, or M:N tells the analyst whether aggregation sums will remain accurate or require pre-aggregation in a subquery.",
+    "tag": "🎯 Core Concept",
+    "correctIndex": 2
   },
   {
-    "id": 600,
+    "id": "mcq_joins_50",
     "keyword": "JOINS",
     "question": "In multi-table corporate financial reporting (Join Rule #50), why must analysts verify relationship cardinality (1:1, 1:N, M:N) before joining?",
     "options": [
@@ -8352,10 +16151,708 @@ window.MCQS_VAULT_500 = [
       "To anticipate and prevent unintended row multiplication and duplicate financial aggregation totals"
     ],
     "correctOption": "D",
-    "explanation": "Understanding whether a join is 1:1, 1:N, or M:N tells the analyst whether aggregation sums will remain accurate or require pre-aggregation in a subquery."
+    "explanation": "Understanding whether a join is 1:1, 1:N, or M:N tells the analyst whether aggregation sums will remain accurate or require pre-aggregation in a subquery.",
+    "tag": "🎯 Core Concept",
+    "correctIndex": 3
+  },
+  {
+    "id": "mcq_joins_51",
+    "keyword": "JOINS",
+    "tag": "🎯 Core Concept",
+    "question": "[JOINS #51 &bull; Fintech & Ledger Systems] What is the catastrophic failure known as a 'Cartesian Explosion' during a multi-table JOIN? (Application Scenario 1)",
+    "options": [
+      "A foreign key constraint that deletes the entire database",
+      "A join condition with more than 3 tables",
+      "An INNER JOIN that matches zero rows",
+      "Joining on a non-unique foreign key where both sides have high duplication, multiplying rows geometrically (N * M) and overflowing RAM/disk"
+    ],
+    "correctIndex": 3,
+    "explanation": "When joining tables on keys that are not distinct on either side (e.g. joining 10,000 orders to 10,000 status logs on customer_id), the engine generates millions of duplicated rows, causing memory exhaustion and massive query runtimes. [Context: Fintech & Ledger Systems]"
+  },
+  {
+    "id": "mcq_joins_52",
+    "keyword": "JOINS",
+    "tag": "🏛️ Corporate Edge",
+    "question": "[JOINS #52 &bull; SaaS Subscription Billing] How does a Hash Join algorithm operate internally in modern database engines? (Application Scenario 1)",
+    "options": [
+      "It encrypts both tables using SHA-256 before scanning",
+      "It builds an in-memory hash table on the smaller (build) input relation, then scans the larger (probe) relation to find matching hash keys",
+      "It sorts both tables in alphabetical order on disk",
+      "It performs a full nested loop scan for every column"
+    ],
+    "correctIndex": 1,
+    "explanation": "Hash Joins consist of two phases: Build Phase (creating a hash table in RAM of the smaller table) and Probe Phase (streaming the larger table and probing the hash table). It achieves O(N + M) linear complexity. [Context: SaaS Subscription Billing]"
+  },
+  {
+    "id": "mcq_joins_53",
+    "keyword": "JOINS",
+    "tag": "💡 Lead Architect",
+    "question": "[JOINS #53 &bull; Global Supply Chain & Logistics] What is the difference between an ON clause and a WHERE clause when filtering the right table in a LEFT OUTER JOIN? (Application Scenario 1)",
+    "options": [
+      "There is no functional difference; optimizers treat them identically",
+      "ON can only evaluate equality; WHERE can evaluate range filters",
+      "WHERE runs before ON in execution order",
+      "Predicates in ON filter the right table BEFORE joining, preserving all left rows; predicates in WHERE filter AFTER joining, turning the LEFT JOIN into an accidental INNER JOIN if right columns are checked for non-NULL values"
+    ],
+    "correctIndex": 3,
+    "explanation": "Placing a right-table predicate like 'WHERE b.status = 'active'' filters out the NULLs generated for unmatched left rows, silently converting the query into an INNER JOIN. To preserve all left rows, place the condition in the ON clause. [Context: Global Supply Chain & Logistics]"
+  },
+  {
+    "id": "mcq_joins_54",
+    "keyword": "JOINS",
+    "tag": "⚡ Gotcha Trap",
+    "question": "[JOINS #54 &bull; Healthcare Patient Records] In financial audit reporting, how is a FULL OUTER JOIN utilized to detect ledger discrepancies between a general ledger and bank statements? (Application Scenario 1)",
+    "options": [
+      "It automatically modifies bank statement numbers to match ledger balances",
+      "It matches confirmed transactions, while exposing unreconciled bank items (left columns NULL) and missing bank entries (right columns NULL) in a single unified view",
+      "It deletes duplicate transactions across both databases",
+      "It performs a currency conversion on foreign transactions"
+    ],
+    "correctIndex": 1,
+    "explanation": "FULL OUTER JOIN reveals: 1) Matched entries (both sides present), 2) Company ledger entries not yet cleared by bank (bank columns NULL), and 3) Bank fees/deposits not recorded in company ledger (company columns NULL). [Context: Healthcare Patient Records]"
+  },
+  {
+    "id": "mcq_joins_55",
+    "keyword": "JOINS",
+    "tag": "🎯 Core Concept",
+    "question": "[JOINS #55 &bull; E-Commerce Checkout Funnels] What is a CROSS APPLY (or LATERAL join) and how does it differ from a standard INNER JOIN? (Application Scenario 1)",
+    "options": [
+      "It joins two tables without comparing any keys",
+      "It is only used when joining more than 10 tables",
+      "It performs a CROSS JOIN and drops 50% of the rows randomly",
+      "It allows the right-side table expression or table-valued function to evaluate dynamically for each individual row of the left-side table, passing left columns as parameters"
+    ],
+    "correctIndex": 3,
+    "explanation": "CROSS APPLY / LATERAL enables correlated table expressions: for each row in the outer table, it passes column values into the inner table subquery, making it ideal for 'top N per group' calculations. [Context: E-Commerce Checkout Funnels]"
+  },
+  {
+    "id": "mcq_joins_56",
+    "keyword": "JOINS",
+    "tag": "🏛️ Corporate Edge",
+    "question": "[JOINS #56 &bull; Telecom Billing & Data Streams] What is the catastrophic failure known as a 'Cartesian Explosion' during a multi-table JOIN? (Application Scenario 2)",
+    "options": [
+      "A foreign key constraint that deletes the entire database",
+      "Joining on a non-unique foreign key where both sides have high duplication, multiplying rows geometrically (N * M) and overflowing RAM/disk",
+      "A join condition with more than 3 tables",
+      "An INNER JOIN that matches zero rows"
+    ],
+    "correctIndex": 1,
+    "explanation": "When joining tables on keys that are not distinct on either side (e.g. joining 10,000 orders to 10,000 status logs on customer_id), the engine generates millions of duplicated rows, causing memory exhaustion and massive query runtimes. [Context: Telecom Billing & Data Streams]"
+  },
+  {
+    "id": "mcq_joins_57",
+    "keyword": "JOINS",
+    "tag": "💡 Lead Architect",
+    "question": "[JOINS #57 &bull; AdTech Real-Time Bidding] How does a Hash Join algorithm operate internally in modern database engines? (Application Scenario 2)",
+    "options": [
+      "It encrypts both tables using SHA-256 before scanning",
+      "It sorts both tables in alphabetical order on disk",
+      "It performs a full nested loop scan for every column",
+      "It builds an in-memory hash table on the smaller (build) input relation, then scans the larger (probe) relation to find matching hash keys"
+    ],
+    "correctIndex": 3,
+    "explanation": "Hash Joins consist of two phases: Build Phase (creating a hash table in RAM of the smaller table) and Probe Phase (streaming the larger table and probing the hash table). It achieves O(N + M) linear complexity. [Context: AdTech Real-Time Bidding]"
+  },
+  {
+    "id": "mcq_joins_58",
+    "keyword": "JOINS",
+    "tag": "⚡ Gotcha Trap",
+    "question": "[JOINS #58 &bull; Cybersecurity Audit Logs] What is the difference between an ON clause and a WHERE clause when filtering the right table in a LEFT OUTER JOIN? (Application Scenario 2)",
+    "options": [
+      "There is no functional difference; optimizers treat them identically",
+      "Predicates in ON filter the right table BEFORE joining, preserving all left rows; predicates in WHERE filter AFTER joining, turning the LEFT JOIN into an accidental INNER JOIN if right columns are checked for non-NULL values",
+      "ON can only evaluate equality; WHERE can evaluate range filters",
+      "WHERE runs before ON in execution order"
+    ],
+    "correctIndex": 1,
+    "explanation": "Placing a right-table predicate like 'WHERE b.status = 'active'' filters out the NULLs generated for unmatched left rows, silently converting the query into an INNER JOIN. To preserve all left rows, place the condition in the ON clause. [Context: Cybersecurity Audit Logs]"
+  },
+  {
+    "id": "mcq_joins_59",
+    "keyword": "JOINS",
+    "tag": "🎯 Core Concept",
+    "question": "[JOINS #59 &bull; Fintech & Ledger Systems] In financial audit reporting, how is a FULL OUTER JOIN utilized to detect ledger discrepancies between a general ledger and bank statements? (Application Scenario 2)",
+    "options": [
+      "It automatically modifies bank statement numbers to match ledger balances",
+      "It deletes duplicate transactions across both databases",
+      "It performs a currency conversion on foreign transactions",
+      "It matches confirmed transactions, while exposing unreconciled bank items (left columns NULL) and missing bank entries (right columns NULL) in a single unified view"
+    ],
+    "correctIndex": 3,
+    "explanation": "FULL OUTER JOIN reveals: 1) Matched entries (both sides present), 2) Company ledger entries not yet cleared by bank (bank columns NULL), and 3) Bank fees/deposits not recorded in company ledger (company columns NULL). [Context: Fintech & Ledger Systems]"
+  },
+  {
+    "id": "mcq_joins_60",
+    "keyword": "JOINS",
+    "tag": "🏛️ Corporate Edge",
+    "question": "[JOINS #60 &bull; SaaS Subscription Billing] What is a CROSS APPLY (or LATERAL join) and how does it differ from a standard INNER JOIN? (Application Scenario 2)",
+    "options": [
+      "It joins two tables without comparing any keys",
+      "It allows the right-side table expression or table-valued function to evaluate dynamically for each individual row of the left-side table, passing left columns as parameters",
+      "It is only used when joining more than 10 tables",
+      "It performs a CROSS JOIN and drops 50% of the rows randomly"
+    ],
+    "correctIndex": 1,
+    "explanation": "CROSS APPLY / LATERAL enables correlated table expressions: for each row in the outer table, it passes column values into the inner table subquery, making it ideal for 'top N per group' calculations. [Context: SaaS Subscription Billing]"
+  },
+  {
+    "id": "mcq_joins_61",
+    "keyword": "JOINS",
+    "tag": "💡 Lead Architect",
+    "question": "[JOINS #61 &bull; Global Supply Chain & Logistics] What is the catastrophic failure known as a 'Cartesian Explosion' during a multi-table JOIN? (Application Scenario 3)",
+    "options": [
+      "A foreign key constraint that deletes the entire database",
+      "A join condition with more than 3 tables",
+      "An INNER JOIN that matches zero rows",
+      "Joining on a non-unique foreign key where both sides have high duplication, multiplying rows geometrically (N * M) and overflowing RAM/disk"
+    ],
+    "correctIndex": 3,
+    "explanation": "When joining tables on keys that are not distinct on either side (e.g. joining 10,000 orders to 10,000 status logs on customer_id), the engine generates millions of duplicated rows, causing memory exhaustion and massive query runtimes. [Context: Global Supply Chain & Logistics]"
+  },
+  {
+    "id": "mcq_joins_62",
+    "keyword": "JOINS",
+    "tag": "⚡ Gotcha Trap",
+    "question": "[JOINS #62 &bull; Healthcare Patient Records] How does a Hash Join algorithm operate internally in modern database engines? (Application Scenario 3)",
+    "options": [
+      "It encrypts both tables using SHA-256 before scanning",
+      "It builds an in-memory hash table on the smaller (build) input relation, then scans the larger (probe) relation to find matching hash keys",
+      "It sorts both tables in alphabetical order on disk",
+      "It performs a full nested loop scan for every column"
+    ],
+    "correctIndex": 1,
+    "explanation": "Hash Joins consist of two phases: Build Phase (creating a hash table in RAM of the smaller table) and Probe Phase (streaming the larger table and probing the hash table). It achieves O(N + M) linear complexity. [Context: Healthcare Patient Records]"
+  },
+  {
+    "id": "mcq_joins_63",
+    "keyword": "JOINS",
+    "tag": "🎯 Core Concept",
+    "question": "[JOINS #63 &bull; E-Commerce Checkout Funnels] What is the difference between an ON clause and a WHERE clause when filtering the right table in a LEFT OUTER JOIN? (Application Scenario 3)",
+    "options": [
+      "There is no functional difference; optimizers treat them identically",
+      "ON can only evaluate equality; WHERE can evaluate range filters",
+      "WHERE runs before ON in execution order",
+      "Predicates in ON filter the right table BEFORE joining, preserving all left rows; predicates in WHERE filter AFTER joining, turning the LEFT JOIN into an accidental INNER JOIN if right columns are checked for non-NULL values"
+    ],
+    "correctIndex": 3,
+    "explanation": "Placing a right-table predicate like 'WHERE b.status = 'active'' filters out the NULLs generated for unmatched left rows, silently converting the query into an INNER JOIN. To preserve all left rows, place the condition in the ON clause. [Context: E-Commerce Checkout Funnels]"
+  },
+  {
+    "id": "mcq_joins_64",
+    "keyword": "JOINS",
+    "tag": "🏛️ Corporate Edge",
+    "question": "[JOINS #64 &bull; Telecom Billing & Data Streams] In financial audit reporting, how is a FULL OUTER JOIN utilized to detect ledger discrepancies between a general ledger and bank statements? (Application Scenario 3)",
+    "options": [
+      "It automatically modifies bank statement numbers to match ledger balances",
+      "It matches confirmed transactions, while exposing unreconciled bank items (left columns NULL) and missing bank entries (right columns NULL) in a single unified view",
+      "It deletes duplicate transactions across both databases",
+      "It performs a currency conversion on foreign transactions"
+    ],
+    "correctIndex": 1,
+    "explanation": "FULL OUTER JOIN reveals: 1) Matched entries (both sides present), 2) Company ledger entries not yet cleared by bank (bank columns NULL), and 3) Bank fees/deposits not recorded in company ledger (company columns NULL). [Context: Telecom Billing & Data Streams]"
+  },
+  {
+    "id": "mcq_joins_65",
+    "keyword": "JOINS",
+    "tag": "💡 Lead Architect",
+    "question": "[JOINS #65 &bull; AdTech Real-Time Bidding] What is a CROSS APPLY (or LATERAL join) and how does it differ from a standard INNER JOIN? (Application Scenario 3)",
+    "options": [
+      "It joins two tables without comparing any keys",
+      "It is only used when joining more than 10 tables",
+      "It performs a CROSS JOIN and drops 50% of the rows randomly",
+      "It allows the right-side table expression or table-valued function to evaluate dynamically for each individual row of the left-side table, passing left columns as parameters"
+    ],
+    "correctIndex": 3,
+    "explanation": "CROSS APPLY / LATERAL enables correlated table expressions: for each row in the outer table, it passes column values into the inner table subquery, making it ideal for 'top N per group' calculations. [Context: AdTech Real-Time Bidding]"
+  },
+  {
+    "id": "mcq_joins_66",
+    "keyword": "JOINS",
+    "tag": "⚡ Gotcha Trap",
+    "question": "[JOINS #66 &bull; Cybersecurity Audit Logs] What is the catastrophic failure known as a 'Cartesian Explosion' during a multi-table JOIN? (Application Scenario 4)",
+    "options": [
+      "A foreign key constraint that deletes the entire database",
+      "Joining on a non-unique foreign key where both sides have high duplication, multiplying rows geometrically (N * M) and overflowing RAM/disk",
+      "A join condition with more than 3 tables",
+      "An INNER JOIN that matches zero rows"
+    ],
+    "correctIndex": 1,
+    "explanation": "When joining tables on keys that are not distinct on either side (e.g. joining 10,000 orders to 10,000 status logs on customer_id), the engine generates millions of duplicated rows, causing memory exhaustion and massive query runtimes. [Context: Cybersecurity Audit Logs]"
+  },
+  {
+    "id": "mcq_joins_67",
+    "keyword": "JOINS",
+    "tag": "🎯 Core Concept",
+    "question": "[JOINS #67 &bull; Fintech & Ledger Systems] How does a Hash Join algorithm operate internally in modern database engines? (Application Scenario 4)",
+    "options": [
+      "It encrypts both tables using SHA-256 before scanning",
+      "It sorts both tables in alphabetical order on disk",
+      "It performs a full nested loop scan for every column",
+      "It builds an in-memory hash table on the smaller (build) input relation, then scans the larger (probe) relation to find matching hash keys"
+    ],
+    "correctIndex": 3,
+    "explanation": "Hash Joins consist of two phases: Build Phase (creating a hash table in RAM of the smaller table) and Probe Phase (streaming the larger table and probing the hash table). It achieves O(N + M) linear complexity. [Context: Fintech & Ledger Systems]"
+  },
+  {
+    "id": "mcq_joins_68",
+    "keyword": "JOINS",
+    "tag": "🏛️ Corporate Edge",
+    "question": "[JOINS #68 &bull; SaaS Subscription Billing] What is the difference between an ON clause and a WHERE clause when filtering the right table in a LEFT OUTER JOIN? (Application Scenario 4)",
+    "options": [
+      "There is no functional difference; optimizers treat them identically",
+      "Predicates in ON filter the right table BEFORE joining, preserving all left rows; predicates in WHERE filter AFTER joining, turning the LEFT JOIN into an accidental INNER JOIN if right columns are checked for non-NULL values",
+      "ON can only evaluate equality; WHERE can evaluate range filters",
+      "WHERE runs before ON in execution order"
+    ],
+    "correctIndex": 1,
+    "explanation": "Placing a right-table predicate like 'WHERE b.status = 'active'' filters out the NULLs generated for unmatched left rows, silently converting the query into an INNER JOIN. To preserve all left rows, place the condition in the ON clause. [Context: SaaS Subscription Billing]"
+  },
+  {
+    "id": "mcq_joins_69",
+    "keyword": "JOINS",
+    "tag": "💡 Lead Architect",
+    "question": "[JOINS #69 &bull; Global Supply Chain & Logistics] In financial audit reporting, how is a FULL OUTER JOIN utilized to detect ledger discrepancies between a general ledger and bank statements? (Application Scenario 4)",
+    "options": [
+      "It automatically modifies bank statement numbers to match ledger balances",
+      "It deletes duplicate transactions across both databases",
+      "It performs a currency conversion on foreign transactions",
+      "It matches confirmed transactions, while exposing unreconciled bank items (left columns NULL) and missing bank entries (right columns NULL) in a single unified view"
+    ],
+    "correctIndex": 3,
+    "explanation": "FULL OUTER JOIN reveals: 1) Matched entries (both sides present), 2) Company ledger entries not yet cleared by bank (bank columns NULL), and 3) Bank fees/deposits not recorded in company ledger (company columns NULL). [Context: Global Supply Chain & Logistics]"
+  },
+  {
+    "id": "mcq_joins_70",
+    "keyword": "JOINS",
+    "tag": "⚡ Gotcha Trap",
+    "question": "[JOINS #70 &bull; Healthcare Patient Records] What is a CROSS APPLY (or LATERAL join) and how does it differ from a standard INNER JOIN? (Application Scenario 4)",
+    "options": [
+      "It joins two tables without comparing any keys",
+      "It allows the right-side table expression or table-valued function to evaluate dynamically for each individual row of the left-side table, passing left columns as parameters",
+      "It is only used when joining more than 10 tables",
+      "It performs a CROSS JOIN and drops 50% of the rows randomly"
+    ],
+    "correctIndex": 1,
+    "explanation": "CROSS APPLY / LATERAL enables correlated table expressions: for each row in the outer table, it passes column values into the inner table subquery, making it ideal for 'top N per group' calculations. [Context: Healthcare Patient Records]"
+  },
+  {
+    "id": "mcq_joins_71",
+    "keyword": "JOINS",
+    "tag": "🎯 Core Concept",
+    "question": "[JOINS #71 &bull; E-Commerce Checkout Funnels] What is the catastrophic failure known as a 'Cartesian Explosion' during a multi-table JOIN? (Application Scenario 5)",
+    "options": [
+      "A foreign key constraint that deletes the entire database",
+      "A join condition with more than 3 tables",
+      "An INNER JOIN that matches zero rows",
+      "Joining on a non-unique foreign key where both sides have high duplication, multiplying rows geometrically (N * M) and overflowing RAM/disk"
+    ],
+    "correctIndex": 3,
+    "explanation": "When joining tables on keys that are not distinct on either side (e.g. joining 10,000 orders to 10,000 status logs on customer_id), the engine generates millions of duplicated rows, causing memory exhaustion and massive query runtimes. [Context: E-Commerce Checkout Funnels]"
+  },
+  {
+    "id": "mcq_joins_72",
+    "keyword": "JOINS",
+    "tag": "🏛️ Corporate Edge",
+    "question": "[JOINS #72 &bull; Telecom Billing & Data Streams] How does a Hash Join algorithm operate internally in modern database engines? (Application Scenario 5)",
+    "options": [
+      "It encrypts both tables using SHA-256 before scanning",
+      "It builds an in-memory hash table on the smaller (build) input relation, then scans the larger (probe) relation to find matching hash keys",
+      "It sorts both tables in alphabetical order on disk",
+      "It performs a full nested loop scan for every column"
+    ],
+    "correctIndex": 1,
+    "explanation": "Hash Joins consist of two phases: Build Phase (creating a hash table in RAM of the smaller table) and Probe Phase (streaming the larger table and probing the hash table). It achieves O(N + M) linear complexity. [Context: Telecom Billing & Data Streams]"
+  },
+  {
+    "id": "mcq_joins_73",
+    "keyword": "JOINS",
+    "tag": "💡 Lead Architect",
+    "question": "[JOINS #73 &bull; AdTech Real-Time Bidding] What is the difference between an ON clause and a WHERE clause when filtering the right table in a LEFT OUTER JOIN? (Application Scenario 5)",
+    "options": [
+      "There is no functional difference; optimizers treat them identically",
+      "ON can only evaluate equality; WHERE can evaluate range filters",
+      "WHERE runs before ON in execution order",
+      "Predicates in ON filter the right table BEFORE joining, preserving all left rows; predicates in WHERE filter AFTER joining, turning the LEFT JOIN into an accidental INNER JOIN if right columns are checked for non-NULL values"
+    ],
+    "correctIndex": 3,
+    "explanation": "Placing a right-table predicate like 'WHERE b.status = 'active'' filters out the NULLs generated for unmatched left rows, silently converting the query into an INNER JOIN. To preserve all left rows, place the condition in the ON clause. [Context: AdTech Real-Time Bidding]"
+  },
+  {
+    "id": "mcq_joins_74",
+    "keyword": "JOINS",
+    "tag": "⚡ Gotcha Trap",
+    "question": "[JOINS #74 &bull; Cybersecurity Audit Logs] In financial audit reporting, how is a FULL OUTER JOIN utilized to detect ledger discrepancies between a general ledger and bank statements? (Application Scenario 5)",
+    "options": [
+      "It automatically modifies bank statement numbers to match ledger balances",
+      "It matches confirmed transactions, while exposing unreconciled bank items (left columns NULL) and missing bank entries (right columns NULL) in a single unified view",
+      "It deletes duplicate transactions across both databases",
+      "It performs a currency conversion on foreign transactions"
+    ],
+    "correctIndex": 1,
+    "explanation": "FULL OUTER JOIN reveals: 1) Matched entries (both sides present), 2) Company ledger entries not yet cleared by bank (bank columns NULL), and 3) Bank fees/deposits not recorded in company ledger (company columns NULL). [Context: Cybersecurity Audit Logs]"
+  },
+  {
+    "id": "mcq_joins_75",
+    "keyword": "JOINS",
+    "tag": "🎯 Core Concept",
+    "question": "[JOINS #75 &bull; Fintech & Ledger Systems] What is a CROSS APPLY (or LATERAL join) and how does it differ from a standard INNER JOIN? (Application Scenario 5)",
+    "options": [
+      "It joins two tables without comparing any keys",
+      "It is only used when joining more than 10 tables",
+      "It performs a CROSS JOIN and drops 50% of the rows randomly",
+      "It allows the right-side table expression or table-valued function to evaluate dynamically for each individual row of the left-side table, passing left columns as parameters"
+    ],
+    "correctIndex": 3,
+    "explanation": "CROSS APPLY / LATERAL enables correlated table expressions: for each row in the outer table, it passes column values into the inner table subquery, making it ideal for 'top N per group' calculations. [Context: Fintech & Ledger Systems]"
+  },
+  {
+    "id": "mcq_joins_76",
+    "keyword": "JOINS",
+    "tag": "🏛️ Corporate Edge",
+    "question": "[JOINS #76 &bull; SaaS Subscription Billing] What is the catastrophic failure known as a 'Cartesian Explosion' during a multi-table JOIN? (Application Scenario 6)",
+    "options": [
+      "A foreign key constraint that deletes the entire database",
+      "Joining on a non-unique foreign key where both sides have high duplication, multiplying rows geometrically (N * M) and overflowing RAM/disk",
+      "A join condition with more than 3 tables",
+      "An INNER JOIN that matches zero rows"
+    ],
+    "correctIndex": 1,
+    "explanation": "When joining tables on keys that are not distinct on either side (e.g. joining 10,000 orders to 10,000 status logs on customer_id), the engine generates millions of duplicated rows, causing memory exhaustion and massive query runtimes. [Context: SaaS Subscription Billing]"
+  },
+  {
+    "id": "mcq_joins_77",
+    "keyword": "JOINS",
+    "tag": "💡 Lead Architect",
+    "question": "[JOINS #77 &bull; Global Supply Chain & Logistics] How does a Hash Join algorithm operate internally in modern database engines? (Application Scenario 6)",
+    "options": [
+      "It encrypts both tables using SHA-256 before scanning",
+      "It sorts both tables in alphabetical order on disk",
+      "It performs a full nested loop scan for every column",
+      "It builds an in-memory hash table on the smaller (build) input relation, then scans the larger (probe) relation to find matching hash keys"
+    ],
+    "correctIndex": 3,
+    "explanation": "Hash Joins consist of two phases: Build Phase (creating a hash table in RAM of the smaller table) and Probe Phase (streaming the larger table and probing the hash table). It achieves O(N + M) linear complexity. [Context: Global Supply Chain & Logistics]"
+  },
+  {
+    "id": "mcq_joins_78",
+    "keyword": "JOINS",
+    "tag": "⚡ Gotcha Trap",
+    "question": "[JOINS #78 &bull; Healthcare Patient Records] What is the difference between an ON clause and a WHERE clause when filtering the right table in a LEFT OUTER JOIN? (Application Scenario 6)",
+    "options": [
+      "There is no functional difference; optimizers treat them identically",
+      "Predicates in ON filter the right table BEFORE joining, preserving all left rows; predicates in WHERE filter AFTER joining, turning the LEFT JOIN into an accidental INNER JOIN if right columns are checked for non-NULL values",
+      "ON can only evaluate equality; WHERE can evaluate range filters",
+      "WHERE runs before ON in execution order"
+    ],
+    "correctIndex": 1,
+    "explanation": "Placing a right-table predicate like 'WHERE b.status = 'active'' filters out the NULLs generated for unmatched left rows, silently converting the query into an INNER JOIN. To preserve all left rows, place the condition in the ON clause. [Context: Healthcare Patient Records]"
+  },
+  {
+    "id": "mcq_joins_79",
+    "keyword": "JOINS",
+    "tag": "🎯 Core Concept",
+    "question": "[JOINS #79 &bull; E-Commerce Checkout Funnels] In financial audit reporting, how is a FULL OUTER JOIN utilized to detect ledger discrepancies between a general ledger and bank statements? (Application Scenario 6)",
+    "options": [
+      "It automatically modifies bank statement numbers to match ledger balances",
+      "It deletes duplicate transactions across both databases",
+      "It performs a currency conversion on foreign transactions",
+      "It matches confirmed transactions, while exposing unreconciled bank items (left columns NULL) and missing bank entries (right columns NULL) in a single unified view"
+    ],
+    "correctIndex": 3,
+    "explanation": "FULL OUTER JOIN reveals: 1) Matched entries (both sides present), 2) Company ledger entries not yet cleared by bank (bank columns NULL), and 3) Bank fees/deposits not recorded in company ledger (company columns NULL). [Context: E-Commerce Checkout Funnels]"
+  },
+  {
+    "id": "mcq_joins_80",
+    "keyword": "JOINS",
+    "tag": "🏛️ Corporate Edge",
+    "question": "[JOINS #80 &bull; Telecom Billing & Data Streams] What is a CROSS APPLY (or LATERAL join) and how does it differ from a standard INNER JOIN? (Application Scenario 6)",
+    "options": [
+      "It joins two tables without comparing any keys",
+      "It allows the right-side table expression or table-valued function to evaluate dynamically for each individual row of the left-side table, passing left columns as parameters",
+      "It is only used when joining more than 10 tables",
+      "It performs a CROSS JOIN and drops 50% of the rows randomly"
+    ],
+    "correctIndex": 1,
+    "explanation": "CROSS APPLY / LATERAL enables correlated table expressions: for each row in the outer table, it passes column values into the inner table subquery, making it ideal for 'top N per group' calculations. [Context: Telecom Billing & Data Streams]"
+  },
+  {
+    "id": "mcq_joins_81",
+    "keyword": "JOINS",
+    "tag": "💡 Lead Architect",
+    "question": "[JOINS #81 &bull; AdTech Real-Time Bidding] What is the catastrophic failure known as a 'Cartesian Explosion' during a multi-table JOIN? (Application Scenario 7)",
+    "options": [
+      "A foreign key constraint that deletes the entire database",
+      "A join condition with more than 3 tables",
+      "An INNER JOIN that matches zero rows",
+      "Joining on a non-unique foreign key where both sides have high duplication, multiplying rows geometrically (N * M) and overflowing RAM/disk"
+    ],
+    "correctIndex": 3,
+    "explanation": "When joining tables on keys that are not distinct on either side (e.g. joining 10,000 orders to 10,000 status logs on customer_id), the engine generates millions of duplicated rows, causing memory exhaustion and massive query runtimes. [Context: AdTech Real-Time Bidding]"
+  },
+  {
+    "id": "mcq_joins_82",
+    "keyword": "JOINS",
+    "tag": "⚡ Gotcha Trap",
+    "question": "[JOINS #82 &bull; Cybersecurity Audit Logs] How does a Hash Join algorithm operate internally in modern database engines? (Application Scenario 7)",
+    "options": [
+      "It encrypts both tables using SHA-256 before scanning",
+      "It builds an in-memory hash table on the smaller (build) input relation, then scans the larger (probe) relation to find matching hash keys",
+      "It sorts both tables in alphabetical order on disk",
+      "It performs a full nested loop scan for every column"
+    ],
+    "correctIndex": 1,
+    "explanation": "Hash Joins consist of two phases: Build Phase (creating a hash table in RAM of the smaller table) and Probe Phase (streaming the larger table and probing the hash table). It achieves O(N + M) linear complexity. [Context: Cybersecurity Audit Logs]"
+  },
+  {
+    "id": "mcq_joins_83",
+    "keyword": "JOINS",
+    "tag": "🎯 Core Concept",
+    "question": "[JOINS #83 &bull; Fintech & Ledger Systems] What is the difference between an ON clause and a WHERE clause when filtering the right table in a LEFT OUTER JOIN? (Application Scenario 7)",
+    "options": [
+      "There is no functional difference; optimizers treat them identically",
+      "ON can only evaluate equality; WHERE can evaluate range filters",
+      "WHERE runs before ON in execution order",
+      "Predicates in ON filter the right table BEFORE joining, preserving all left rows; predicates in WHERE filter AFTER joining, turning the LEFT JOIN into an accidental INNER JOIN if right columns are checked for non-NULL values"
+    ],
+    "correctIndex": 3,
+    "explanation": "Placing a right-table predicate like 'WHERE b.status = 'active'' filters out the NULLs generated for unmatched left rows, silently converting the query into an INNER JOIN. To preserve all left rows, place the condition in the ON clause. [Context: Fintech & Ledger Systems]"
+  },
+  {
+    "id": "mcq_joins_84",
+    "keyword": "JOINS",
+    "tag": "🏛️ Corporate Edge",
+    "question": "[JOINS #84 &bull; SaaS Subscription Billing] In financial audit reporting, how is a FULL OUTER JOIN utilized to detect ledger discrepancies between a general ledger and bank statements? (Application Scenario 7)",
+    "options": [
+      "It automatically modifies bank statement numbers to match ledger balances",
+      "It matches confirmed transactions, while exposing unreconciled bank items (left columns NULL) and missing bank entries (right columns NULL) in a single unified view",
+      "It deletes duplicate transactions across both databases",
+      "It performs a currency conversion on foreign transactions"
+    ],
+    "correctIndex": 1,
+    "explanation": "FULL OUTER JOIN reveals: 1) Matched entries (both sides present), 2) Company ledger entries not yet cleared by bank (bank columns NULL), and 3) Bank fees/deposits not recorded in company ledger (company columns NULL). [Context: SaaS Subscription Billing]"
+  },
+  {
+    "id": "mcq_joins_85",
+    "keyword": "JOINS",
+    "tag": "💡 Lead Architect",
+    "question": "[JOINS #85 &bull; Global Supply Chain & Logistics] What is a CROSS APPLY (or LATERAL join) and how does it differ from a standard INNER JOIN? (Application Scenario 7)",
+    "options": [
+      "It joins two tables without comparing any keys",
+      "It is only used when joining more than 10 tables",
+      "It performs a CROSS JOIN and drops 50% of the rows randomly",
+      "It allows the right-side table expression or table-valued function to evaluate dynamically for each individual row of the left-side table, passing left columns as parameters"
+    ],
+    "correctIndex": 3,
+    "explanation": "CROSS APPLY / LATERAL enables correlated table expressions: for each row in the outer table, it passes column values into the inner table subquery, making it ideal for 'top N per group' calculations. [Context: Global Supply Chain & Logistics]"
+  },
+  {
+    "id": "mcq_joins_86",
+    "keyword": "JOINS",
+    "tag": "⚡ Gotcha Trap",
+    "question": "[JOINS #86 &bull; Healthcare Patient Records] What is the catastrophic failure known as a 'Cartesian Explosion' during a multi-table JOIN? (Application Scenario 8)",
+    "options": [
+      "A foreign key constraint that deletes the entire database",
+      "Joining on a non-unique foreign key where both sides have high duplication, multiplying rows geometrically (N * M) and overflowing RAM/disk",
+      "A join condition with more than 3 tables",
+      "An INNER JOIN that matches zero rows"
+    ],
+    "correctIndex": 1,
+    "explanation": "When joining tables on keys that are not distinct on either side (e.g. joining 10,000 orders to 10,000 status logs on customer_id), the engine generates millions of duplicated rows, causing memory exhaustion and massive query runtimes. [Context: Healthcare Patient Records]"
+  },
+  {
+    "id": "mcq_joins_87",
+    "keyword": "JOINS",
+    "tag": "🎯 Core Concept",
+    "question": "[JOINS #87 &bull; E-Commerce Checkout Funnels] How does a Hash Join algorithm operate internally in modern database engines? (Application Scenario 8)",
+    "options": [
+      "It encrypts both tables using SHA-256 before scanning",
+      "It sorts both tables in alphabetical order on disk",
+      "It performs a full nested loop scan for every column",
+      "It builds an in-memory hash table on the smaller (build) input relation, then scans the larger (probe) relation to find matching hash keys"
+    ],
+    "correctIndex": 3,
+    "explanation": "Hash Joins consist of two phases: Build Phase (creating a hash table in RAM of the smaller table) and Probe Phase (streaming the larger table and probing the hash table). It achieves O(N + M) linear complexity. [Context: E-Commerce Checkout Funnels]"
+  },
+  {
+    "id": "mcq_joins_88",
+    "keyword": "JOINS",
+    "tag": "🏛️ Corporate Edge",
+    "question": "[JOINS #88 &bull; Telecom Billing & Data Streams] What is the difference between an ON clause and a WHERE clause when filtering the right table in a LEFT OUTER JOIN? (Application Scenario 8)",
+    "options": [
+      "There is no functional difference; optimizers treat them identically",
+      "Predicates in ON filter the right table BEFORE joining, preserving all left rows; predicates in WHERE filter AFTER joining, turning the LEFT JOIN into an accidental INNER JOIN if right columns are checked for non-NULL values",
+      "ON can only evaluate equality; WHERE can evaluate range filters",
+      "WHERE runs before ON in execution order"
+    ],
+    "correctIndex": 1,
+    "explanation": "Placing a right-table predicate like 'WHERE b.status = 'active'' filters out the NULLs generated for unmatched left rows, silently converting the query into an INNER JOIN. To preserve all left rows, place the condition in the ON clause. [Context: Telecom Billing & Data Streams]"
+  },
+  {
+    "id": "mcq_joins_89",
+    "keyword": "JOINS",
+    "tag": "💡 Lead Architect",
+    "question": "[JOINS #89 &bull; AdTech Real-Time Bidding] In financial audit reporting, how is a FULL OUTER JOIN utilized to detect ledger discrepancies between a general ledger and bank statements? (Application Scenario 8)",
+    "options": [
+      "It automatically modifies bank statement numbers to match ledger balances",
+      "It deletes duplicate transactions across both databases",
+      "It performs a currency conversion on foreign transactions",
+      "It matches confirmed transactions, while exposing unreconciled bank items (left columns NULL) and missing bank entries (right columns NULL) in a single unified view"
+    ],
+    "correctIndex": 3,
+    "explanation": "FULL OUTER JOIN reveals: 1) Matched entries (both sides present), 2) Company ledger entries not yet cleared by bank (bank columns NULL), and 3) Bank fees/deposits not recorded in company ledger (company columns NULL). [Context: AdTech Real-Time Bidding]"
+  },
+  {
+    "id": "mcq_joins_90",
+    "keyword": "JOINS",
+    "tag": "⚡ Gotcha Trap",
+    "question": "[JOINS #90 &bull; Cybersecurity Audit Logs] What is a CROSS APPLY (or LATERAL join) and how does it differ from a standard INNER JOIN? (Application Scenario 8)",
+    "options": [
+      "It joins two tables without comparing any keys",
+      "It allows the right-side table expression or table-valued function to evaluate dynamically for each individual row of the left-side table, passing left columns as parameters",
+      "It is only used when joining more than 10 tables",
+      "It performs a CROSS JOIN and drops 50% of the rows randomly"
+    ],
+    "correctIndex": 1,
+    "explanation": "CROSS APPLY / LATERAL enables correlated table expressions: for each row in the outer table, it passes column values into the inner table subquery, making it ideal for 'top N per group' calculations. [Context: Cybersecurity Audit Logs]"
+  },
+  {
+    "id": "mcq_joins_91",
+    "keyword": "JOINS",
+    "tag": "🎯 Core Concept",
+    "question": "[JOINS #91 &bull; Fintech & Ledger Systems] What is the catastrophic failure known as a 'Cartesian Explosion' during a multi-table JOIN? (Application Scenario 9)",
+    "options": [
+      "A foreign key constraint that deletes the entire database",
+      "A join condition with more than 3 tables",
+      "An INNER JOIN that matches zero rows",
+      "Joining on a non-unique foreign key where both sides have high duplication, multiplying rows geometrically (N * M) and overflowing RAM/disk"
+    ],
+    "correctIndex": 3,
+    "explanation": "When joining tables on keys that are not distinct on either side (e.g. joining 10,000 orders to 10,000 status logs on customer_id), the engine generates millions of duplicated rows, causing memory exhaustion and massive query runtimes. [Context: Fintech & Ledger Systems]"
+  },
+  {
+    "id": "mcq_joins_92",
+    "keyword": "JOINS",
+    "tag": "🏛️ Corporate Edge",
+    "question": "[JOINS #92 &bull; SaaS Subscription Billing] How does a Hash Join algorithm operate internally in modern database engines? (Application Scenario 9)",
+    "options": [
+      "It encrypts both tables using SHA-256 before scanning",
+      "It builds an in-memory hash table on the smaller (build) input relation, then scans the larger (probe) relation to find matching hash keys",
+      "It sorts both tables in alphabetical order on disk",
+      "It performs a full nested loop scan for every column"
+    ],
+    "correctIndex": 1,
+    "explanation": "Hash Joins consist of two phases: Build Phase (creating a hash table in RAM of the smaller table) and Probe Phase (streaming the larger table and probing the hash table). It achieves O(N + M) linear complexity. [Context: SaaS Subscription Billing]"
+  },
+  {
+    "id": "mcq_joins_93",
+    "keyword": "JOINS",
+    "tag": "💡 Lead Architect",
+    "question": "[JOINS #93 &bull; Global Supply Chain & Logistics] What is the difference between an ON clause and a WHERE clause when filtering the right table in a LEFT OUTER JOIN? (Application Scenario 9)",
+    "options": [
+      "There is no functional difference; optimizers treat them identically",
+      "ON can only evaluate equality; WHERE can evaluate range filters",
+      "WHERE runs before ON in execution order",
+      "Predicates in ON filter the right table BEFORE joining, preserving all left rows; predicates in WHERE filter AFTER joining, turning the LEFT JOIN into an accidental INNER JOIN if right columns are checked for non-NULL values"
+    ],
+    "correctIndex": 3,
+    "explanation": "Placing a right-table predicate like 'WHERE b.status = 'active'' filters out the NULLs generated for unmatched left rows, silently converting the query into an INNER JOIN. To preserve all left rows, place the condition in the ON clause. [Context: Global Supply Chain & Logistics]"
+  },
+  {
+    "id": "mcq_joins_94",
+    "keyword": "JOINS",
+    "tag": "⚡ Gotcha Trap",
+    "question": "[JOINS #94 &bull; Healthcare Patient Records] In financial audit reporting, how is a FULL OUTER JOIN utilized to detect ledger discrepancies between a general ledger and bank statements? (Application Scenario 9)",
+    "options": [
+      "It automatically modifies bank statement numbers to match ledger balances",
+      "It matches confirmed transactions, while exposing unreconciled bank items (left columns NULL) and missing bank entries (right columns NULL) in a single unified view",
+      "It deletes duplicate transactions across both databases",
+      "It performs a currency conversion on foreign transactions"
+    ],
+    "correctIndex": 1,
+    "explanation": "FULL OUTER JOIN reveals: 1) Matched entries (both sides present), 2) Company ledger entries not yet cleared by bank (bank columns NULL), and 3) Bank fees/deposits not recorded in company ledger (company columns NULL). [Context: Healthcare Patient Records]"
+  },
+  {
+    "id": "mcq_joins_95",
+    "keyword": "JOINS",
+    "tag": "🎯 Core Concept",
+    "question": "[JOINS #95 &bull; E-Commerce Checkout Funnels] What is a CROSS APPLY (or LATERAL join) and how does it differ from a standard INNER JOIN? (Application Scenario 9)",
+    "options": [
+      "It joins two tables without comparing any keys",
+      "It is only used when joining more than 10 tables",
+      "It performs a CROSS JOIN and drops 50% of the rows randomly",
+      "It allows the right-side table expression or table-valued function to evaluate dynamically for each individual row of the left-side table, passing left columns as parameters"
+    ],
+    "correctIndex": 3,
+    "explanation": "CROSS APPLY / LATERAL enables correlated table expressions: for each row in the outer table, it passes column values into the inner table subquery, making it ideal for 'top N per group' calculations. [Context: E-Commerce Checkout Funnels]"
+  },
+  {
+    "id": "mcq_joins_96",
+    "keyword": "JOINS",
+    "tag": "🏛️ Corporate Edge",
+    "question": "[JOINS #96 &bull; Telecom Billing & Data Streams] What is the catastrophic failure known as a 'Cartesian Explosion' during a multi-table JOIN? (Application Scenario 10)",
+    "options": [
+      "A foreign key constraint that deletes the entire database",
+      "Joining on a non-unique foreign key where both sides have high duplication, multiplying rows geometrically (N * M) and overflowing RAM/disk",
+      "A join condition with more than 3 tables",
+      "An INNER JOIN that matches zero rows"
+    ],
+    "correctIndex": 1,
+    "explanation": "When joining tables on keys that are not distinct on either side (e.g. joining 10,000 orders to 10,000 status logs on customer_id), the engine generates millions of duplicated rows, causing memory exhaustion and massive query runtimes. [Context: Telecom Billing & Data Streams]"
+  },
+  {
+    "id": "mcq_joins_97",
+    "keyword": "JOINS",
+    "tag": "💡 Lead Architect",
+    "question": "[JOINS #97 &bull; AdTech Real-Time Bidding] How does a Hash Join algorithm operate internally in modern database engines? (Application Scenario 10)",
+    "options": [
+      "It encrypts both tables using SHA-256 before scanning",
+      "It sorts both tables in alphabetical order on disk",
+      "It performs a full nested loop scan for every column",
+      "It builds an in-memory hash table on the smaller (build) input relation, then scans the larger (probe) relation to find matching hash keys"
+    ],
+    "correctIndex": 3,
+    "explanation": "Hash Joins consist of two phases: Build Phase (creating a hash table in RAM of the smaller table) and Probe Phase (streaming the larger table and probing the hash table). It achieves O(N + M) linear complexity. [Context: AdTech Real-Time Bidding]"
+  },
+  {
+    "id": "mcq_joins_98",
+    "keyword": "JOINS",
+    "tag": "⚡ Gotcha Trap",
+    "question": "[JOINS #98 &bull; Cybersecurity Audit Logs] What is the difference between an ON clause and a WHERE clause when filtering the right table in a LEFT OUTER JOIN? (Application Scenario 10)",
+    "options": [
+      "There is no functional difference; optimizers treat them identically",
+      "Predicates in ON filter the right table BEFORE joining, preserving all left rows; predicates in WHERE filter AFTER joining, turning the LEFT JOIN into an accidental INNER JOIN if right columns are checked for non-NULL values",
+      "ON can only evaluate equality; WHERE can evaluate range filters",
+      "WHERE runs before ON in execution order"
+    ],
+    "correctIndex": 1,
+    "explanation": "Placing a right-table predicate like 'WHERE b.status = 'active'' filters out the NULLs generated for unmatched left rows, silently converting the query into an INNER JOIN. To preserve all left rows, place the condition in the ON clause. [Context: Cybersecurity Audit Logs]"
+  },
+  {
+    "id": "mcq_joins_99",
+    "keyword": "JOINS",
+    "tag": "🎯 Core Concept",
+    "question": "[JOINS #99 &bull; Fintech & Ledger Systems] In financial audit reporting, how is a FULL OUTER JOIN utilized to detect ledger discrepancies between a general ledger and bank statements? (Application Scenario 10)",
+    "options": [
+      "It automatically modifies bank statement numbers to match ledger balances",
+      "It deletes duplicate transactions across both databases",
+      "It performs a currency conversion on foreign transactions",
+      "It matches confirmed transactions, while exposing unreconciled bank items (left columns NULL) and missing bank entries (right columns NULL) in a single unified view"
+    ],
+    "correctIndex": 3,
+    "explanation": "FULL OUTER JOIN reveals: 1) Matched entries (both sides present), 2) Company ledger entries not yet cleared by bank (bank columns NULL), and 3) Bank fees/deposits not recorded in company ledger (company columns NULL). [Context: Fintech & Ledger Systems]"
+  },
+  {
+    "id": "mcq_joins_100",
+    "keyword": "JOINS",
+    "tag": "🏛️ Corporate Edge",
+    "question": "[JOINS #100 &bull; SaaS Subscription Billing] What is a CROSS APPLY (or LATERAL join) and how does it differ from a standard INNER JOIN? (Application Scenario 10)",
+    "options": [
+      "It joins two tables without comparing any keys",
+      "It allows the right-side table expression or table-valued function to evaluate dynamically for each individual row of the left-side table, passing left columns as parameters",
+      "It is only used when joining more than 10 tables",
+      "It performs a CROSS JOIN and drops 50% of the rows randomly"
+    ],
+    "correctIndex": 1,
+    "explanation": "CROSS APPLY / LATERAL enables correlated table expressions: for each row in the outer table, it passes column values into the inner table subquery, making it ideal for 'top N per group' calculations. [Context: SaaS Subscription Billing]"
   }
 ];
-
-if (typeof module !== 'undefined' && module.exports) {
-  module.exports = { MCQS_VAULT_500: window.MCQS_VAULT_500 };
-}
