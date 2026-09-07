@@ -56,6 +56,8 @@ window.CASE_BLANKS_ENGINE = (() => {
     'JOIN': ['JOIN', 'MERGE', 'CONNECT', 'COMBINE'],
     'INNER JOIN': ['INNER JOIN', 'LEFT JOIN', 'FULL JOIN', 'CROSS JOIN'],
     'LEFT JOIN': ['LEFT JOIN', 'INNER JOIN', 'RIGHT JOIN', 'OUTER JOIN'],
+    'RIGHT JOIN': ['RIGHT JOIN', 'LEFT JOIN', 'INNER JOIN', 'CROSS JOIN'],
+    'CROSS JOIN': ['CROSS JOIN', 'INNER JOIN', 'FULL JOIN', 'LEFT JOIN'],
     'ON': ['ON', 'WHERE', 'USING', 'MATCHING']
   };
 
@@ -73,6 +75,8 @@ window.CASE_BLANKS_ENGINE = (() => {
     'WITH',
     'INNER JOIN',
     'LEFT JOIN',
+    'RIGHT JOIN',
+    'CROSS JOIN',
     'JOIN',
     'ON',
     'IS NOT NULL',

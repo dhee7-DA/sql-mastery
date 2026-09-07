@@ -638,5 +638,97 @@ window.QUESTS_DATA = [
       slot2: { correct: 'AND', options: ['AND', 'OR', 'THEN', 'WITH'] }
     },
     explanation: "HAVING supports boolean operators (AND, OR) to filter aggregated groups across multiple statistical thresholds simultaneously."
+  },
+
+  // ---------------------------------------------------------------------------
+  // LEVEL 27: INNER JOIN & Foreign Key Intersection
+  // ---------------------------------------------------------------------------
+  {
+    id: 27,
+    title: 'Level 27: INNER JOIN & Foreign Key Intersection',
+    subtitle: 'Match corporate clients with their paid invoice transactions using primary and foreign keys.',
+    type: 'fill_blank',
+    category: 'Pillar 3: Relational Joins',
+    codeTemplate: [
+      { text: 'SELECT c.client_name, i.invoice_amount\nFROM Clients c\n', isBlank: false },
+      { text: '', isBlank: true, slotId: 'slot1', placeholder: '[ ___ ]' },
+      { text: ' Invoices i\n  ', isBlank: false },
+      { text: '', isBlank: true, slotId: 'slot2', placeholder: '[ ___ ]' },
+      { text: ' c.client_id = i.client_id;', isBlank: false }
+    ],
+    slots: {
+      slot1: { correct: 'INNER JOIN', options: ['INNER JOIN', 'LEFT JOIN', 'CROSS JOIN', 'MERGE'] },
+      slot2: { correct: 'ON', options: ['ON', 'WHERE', 'USING', 'MATCHING'] }
+    },
+    explanation: "INNER JOIN produces the exact intersection of two tables based on the ON qualification predicate, dropping unmatched entities."
+  },
+
+  // ---------------------------------------------------------------------------
+  // LEVEL 28: LEFT JOIN & Budget Completeness
+  // ---------------------------------------------------------------------------
+  {
+    id: 28,
+    title: 'Level 28: LEFT JOIN & Budget Completeness',
+    subtitle: 'Preserve all planned department budgets, defaulting zero-spend departments cleanly to 0.',
+    type: 'fill_blank',
+    category: 'Pillar 3: Relational Joins',
+    codeTemplate: [
+      { text: 'SELECT d.dept_name, d.budget_usd,\n       ', isBlank: false },
+      { text: '', isBlank: true, slotId: 'slot1', placeholder: '[ ___ ]' },
+      { text: '(SUM(e.actual_spend), 0.00) AS total_spent\nFROM Departments d\n', isBlank: false },
+      { text: '', isBlank: true, slotId: 'slot2', placeholder: '[ ___ ]' },
+      { text: ' Expenditures e\n  ON d.dept_id = e.dept_id\nGROUP BY d.dept_id, d.dept_name, d.budget_usd;', isBlank: false }
+    ],
+    slots: {
+      slot1: { correct: 'COALESCE', options: ['COALESCE', 'IFNULL', 'NULLIF', 'ROUND'] },
+      slot2: { correct: 'LEFT JOIN', options: ['LEFT JOIN', 'INNER JOIN', 'RIGHT JOIN', 'NATURAL JOIN'] }
+    },
+    explanation: "LEFT JOIN preserves every primary department even if actual expenditure was $0. COALESCE replaces NULL spend with 0.00."
+  },
+
+  // ---------------------------------------------------------------------------
+  // LEVEL 29: LEFT ANTI-JOIN (Bank Reconciliation)
+  // ---------------------------------------------------------------------------
+  {
+    id: 29,
+    title: 'Level 29: LEFT ANTI-JOIN (Bank Reconciliation)',
+    subtitle: 'Identify general ledger disbursements that have never cleared the bank account statement.',
+    type: 'fill_blank',
+    category: 'Pillar 3: Relational Joins',
+    codeTemplate: [
+      { text: 'SELECT gl.check_id, gl.vendor_name, gl.amount\nFROM GeneralLedger gl\nLEFT JOIN BankStatements bk\n  ON gl.check_id = bk.check_num\n', isBlank: false },
+      { text: '', isBlank: true, slotId: 'slot1', placeholder: '[ ___ ]' },
+      { text: ' bk.check_num ', isBlank: false },
+      { text: '', isBlank: true, slotId: 'slot2', placeholder: '[ ___ ]' },
+      { text: ';', isBlank: false }
+    ],
+    slots: {
+      slot1: { correct: 'WHERE', options: ['WHERE', 'HAVING', 'ON', 'WHEN'] },
+      slot2: { correct: 'IS NULL', options: ['IS NULL', '= NULL', '== NULL', 'EMPTY'] }
+    },
+    explanation: "A Left Anti-Join (LEFT JOIN ... WHERE right.pk IS NULL) isolates unmatched records, forming the backbone of bank reconciliations."
+  },
+
+  // ---------------------------------------------------------------------------
+  // LEVEL 30: NON-EQUI JOIN (Sales Commission Tiers)
+  // ---------------------------------------------------------------------------
+  {
+    id: 30,
+    title: 'Level 30: NON-EQUI JOIN (Sales Commission Tiers)',
+    subtitle: 'Match sales rep quarterly revenue against a tiered incentive bonus rate matrix.',
+    type: 'fill_blank',
+    category: 'Pillar 3: Relational Joins',
+    codeTemplate: [
+      { text: 'SELECT r.rep_name, r.quarterly_sales, t.rate_pct\nFROM SalesReps r\nINNER JOIN CommissionTiers t\n  ON r.quarterly_sales ', isBlank: false },
+      { text: '', isBlank: true, slotId: 'slot1', placeholder: '[ ___ ]' },
+      { text: ' t.min_sales ', isBlank: false },
+      { text: '', isBlank: true, slotId: 'slot2', placeholder: '[ ___ ]' },
+      { text: ' t.max_sales;', isBlank: false }
+    ],
+    slots: {
+      slot1: { correct: 'BETWEEN', options: ['BETWEEN', 'IN', 'WITHIN', 'RANGE'] },
+      slot2: { correct: 'AND', options: ['AND', 'OR', 'THEN', 'TO'] }
+    },
+    explanation: "Non-equi joins with BETWEEN match continuous numbers against hurdle brackets without hardcoding repetitive CASE WHEN statements."
   }
 ];

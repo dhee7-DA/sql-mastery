@@ -360,5 +360,107 @@ window.JOINS_STEPS = [
         </g>
       </svg>
     `
+  },
+
+  // ---------------------------------------------------------------------------
+  // STEP 07: SELF JOIN — Hierarchies & Period Comparisons
+  // ---------------------------------------------------------------------------
+  {
+    stepIndex: 7,
+    id: 'join_self',
+    keyword: 'SELF JOIN',
+    title: 'Step 07: SELF JOIN (Hierarchies & Period Comparisons)',
+    pillClass: 'pill-group',
+    conceptHeading: 'Joining a table to itself using dual aliasing (e AS emp, m AS mgr)',
+    conceptText: 'A SELF JOIN is a regular join where Table A and Table B are the exact same table on disk. You MUST provide distinct table aliases (e.g., e AS emp, m AS mgr) so SQL knows which side of the relationship you are addressing. In financial modeling, SELF JOINs are ubiquitous for: (1) Organizational reporting hierarchies (who reports to whom), and (2) Period-over-Period comparisons (matching Q2 to Q1 or 2026 to 2025 without window functions).',
+    sqlCode: `SELECT e.emp_id, e.name AS analyst_name,\n       COALESCE(m.name, 'Board of Directors') AS direct_manager\nFROM Employees AS e\nLEFT JOIN Employees AS m\n  ON e.dept_id = m.emp_id;`,
+    explanationPoints: [
+      'FROM Employees AS e treats the table as the employee roster.',
+      'LEFT JOIN Employees AS m treats the same table as the manager lookup.',
+      'ON e.dept_id = m.emp_id defines the recursive parent-child link.',
+      'LEFT JOIN ensures the CEO (manager_id IS NULL) is preserved at the top of the tree.',
+      'Output: Full organizational chain of command without duplicate table storage.'
+    ],
+    gotcha: 'Always use LEFT JOIN for managerial hierarchies! An INNER JOIN will silently drop the CEO or Managing Partner because their manager_id is NULL!',
+    actionPrompt: 'Recursive organizational hierarchy resolved through dual aliasing of the same table:',
+    transform: () => [
+      { emp_id: 1, analyst_name: 'Alice Chen', direct_manager: 'Bob Smith (VP)', hierarchy_level: 'L3 Analyst', _status: 'passed', _label: 'RECURSIVE MATCH' },
+      { emp_id: 2, analyst_name: 'Bob Smith', direct_manager: 'Charlie Kim (Dir)', hierarchy_level: 'L2 VP', _status: 'passed', _label: 'RECURSIVE MATCH' },
+      { emp_id: 3, analyst_name: 'Charlie Kim', direct_manager: 'Diana Ross (CEO)', hierarchy_level: 'L1 Director', _status: 'passed', _label: 'RECURSIVE MATCH' },
+      { emp_id: 4, analyst_name: 'Diana Ross', direct_manager: 'Board of Directors', hierarchy_level: 'Top Executive', _status: 'passed', _label: 'ROOT NODE (NULL MGR)' },
+      { emp_id: 5, analyst_name: 'Evan Vance', direct_manager: 'Unassigned', hierarchy_level: 'Contractor', _status: 'loaded', _label: 'PRESERVED' }
+    ],
+    svg: `
+      <svg viewBox="0 0 780 150" width="100%" height="150" xmlns="http://www.w3.org/2000/svg">
+        <rect width="780" height="150" fill="#0b0b0e" rx="6" stroke="#232328"/>
+        <!-- Self Join Recursive Loop -->
+        <g transform="translate(60, 25)">
+          <rect width="200" height="95" rx="5" fill="#121216" stroke="#4ade80" stroke-width="1.5"/>
+          <text x="100" y="24" fill="#4ade80" font-family="monospace" font-size="11" font-weight="700" text-anchor="middle">EMPLOYEES (ALIAS e)</text>
+          <text x="15" y="52" fill="#d1d5db" font-family="monospace" font-size="9">emp_id: 1, 2, 3, 4</text>
+          <text x="15" y="72" fill="#a4b7cf" font-family="monospace" font-size="9">FK: manager_id</text>
+        </g>
+        <!-- Curved Arrow connecting back -->
+        <path d="M 260 55 C 360 10, 420 10, 520 55" stroke="#4ade80" stroke-width="2" fill="none" stroke-dasharray="4,4"/>
+        <polygon points="520,55 510,48 512,58" fill="#4ade80"/>
+        <g transform="translate(520, 25)">
+          <rect width="200" height="95" rx="5" fill="#121216" stroke="#38bdf8" stroke-width="1.5"/>
+          <text x="100" y="24" fill="#38bdf8" font-family="monospace" font-size="11" font-weight="700" text-anchor="middle">EMPLOYEES (ALIAS m)</text>
+          <text x="15" y="52" fill="#d1d5db" font-family="monospace" font-size="9">emp_id: Primary Key</text>
+          <text x="15" y="72" fill="#a4b7cf" font-family="monospace" font-size="9">name: Manager Name</text>
+        </g>
+      </svg>
+    `
+  },
+
+  // ---------------------------------------------------------------------------
+  // STEP 08: NON-EQUI JOIN — Commission Tiers & Tax Brackets
+  // ---------------------------------------------------------------------------
+  {
+    stepIndex: 8,
+    id: 'join_nonequi',
+    keyword: 'NON-EQUI JOIN',
+    title: 'Step 08: NON-EQUI JOIN (Commission Tiers & Range Brackets)',
+    pillClass: 'pill-having',
+    conceptHeading: 'Joining across continuous ranges using BETWEEN, >=, <= instead of =',
+    conceptText: 'A NON-EQUI JOIN connects tables using conditional inequalities rather than equality. Instead of matching exact foreign keys, you test if a continuous financial metric (sales volume, margin %, trade size) falls within a configured tier: ON metric BETWEEN min_val AND max_val. This is the bedrock of corporate commission engines, revenue tiers, and graduated tax calculations.',
+    sqlCode: `SELECT r.rep_name, r.quarterly_sales,\n       t.tier_name, t.payout_pct,\n       ROUND(r.quarterly_sales * (t.payout_pct / 100.0), 2) AS commission_usd\nFROM SalesPerformance AS r\nINNER JOIN CommissionTiers AS t\n  ON r.quarterly_sales BETWEEN t.min_sales AND t.max_sales;`,
+    explanationPoints: [
+      'ON r.quarterly_sales BETWEEN t.min_sales AND t.max_sales tests range containment.',
+      'No common ID exists between the activity log and tier lookup table.',
+      'Each sales figure links to exactly one commission schedule.',
+      'Allows Finance & Sales Ops to adjust payout scales without altering transactional SQL.'
+    ],
+    gotcha: 'Beware of overlapping bracket boundaries! If Tier 1 is 0 to 50k and Tier 2 is 50k to 100k, an employee at exactly 50,000 matches BOTH tiers and doubles their row count! Ensure boundaries are strictly exclusive (e.g. 0 to 49999.99).',
+    actionPrompt: 'Continuous performance figures dynamically mapped to tiered compensation brackets:',
+    transform: () => [
+      { rep_name: 'Jordan Vance', quarterly_sales: '$125,000', tier: 'Gold Tier (12.5%)', commission_usd: '$15,625', _status: 'passed', _label: 'TIER MATCH' },
+      { rep_name: 'Elena Rostova', quarterly_sales: '$45,000', tier: 'Silver Tier (5.0%)', commission_usd: '$2,250', _status: 'passed', _label: 'TIER MATCH' },
+      { rep_name: 'Marcus Aurelius', quarterly_sales: '$210,000', tier: 'Platinum Tier (18.0%)', commission_usd: '$37,800', _status: 'passed', _label: 'TIER MATCH' },
+      { rep_name: 'Chloe Bennett', quarterly_sales: '$82,000', tier: 'Bronze Tier (8.0%)', commission_usd: '$6,560', _status: 'passed', _label: 'TIER MATCH' },
+      { rep_name: 'David Kim', quarterly_sales: '$15,000', tier: 'Base Tier (2.0%)', commission_usd: '$300', _status: 'passed', _label: 'TIER MATCH' }
+    ],
+    svg: `
+      <svg viewBox="0 0 780 150" width="100%" height="150" xmlns="http://www.w3.org/2000/svg">
+        <rect width="780" height="150" fill="#0b0b0e" rx="6" stroke="#232328"/>
+        <!-- Continuous Range Bracket Visualization -->
+        <g transform="translate(40, 30)">
+          <!-- Tier 1 -->
+          <rect x="0" y="20" width="160" height="50" fill="rgba(148, 163, 184, 0.15)" stroke="#94a3b8" rx="3"/>
+          <text x="80" y="45" fill="#94a3b8" font-family="monospace" font-size="10" font-weight="700" text-anchor="middle">$0 - $50k (5%)</text>
+          <!-- Tier 2 -->
+          <rect x="170" y="20" width="160" height="50" fill="rgba(251, 146, 60, 0.15)" stroke="#fb923c" rx="3"/>
+          <text x="250" y="45" fill="#fb923c" font-family="monospace" font-size="10" font-weight="700" text-anchor="middle">$50k - $100k (8%)</text>
+          <!-- Tier 3 -->
+          <rect x="340" y="20" width="160" height="50" fill="rgba(250, 204, 21, 0.15)" stroke="#facc15" rx="3"/>
+          <text x="420" y="45" fill="#facc15" font-family="monospace" font-size="10" font-weight="700" text-anchor="middle">$100k - $150k (12.5%)</text>
+          <!-- Tier 4 -->
+          <rect x="510" y="20" width="180" height="50" fill="rgba(168, 85, 247, 0.15)" stroke="#a855f7" rx="3"/>
+          <text x="600" y="45" fill="#a855f7" font-family="monospace" font-size="10" font-weight="700" text-anchor="middle">$150k+ (Platinum 18%)</text>
+        </g>
+        <text x="390" y="125" fill="#dfcaa9" font-family="monospace" font-size="10.5" font-weight="600" text-anchor="middle">Range Condition: ON r.quarterly_sales BETWEEN t.min_sales AND t.max_sales</text>
+      </svg>
+    `
   }
 ];
+

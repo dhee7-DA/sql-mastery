@@ -1848,6 +1848,7 @@ function switchMainView(targetId) {
   }
 
   // Lazy render on view switch
+  if (targetId === 'viewPathways') renderTopicPathways();
   if (targetId === 'viewGuidedLab') renderGuidedStep(currentGuidedStep);
   if (targetId === 'viewQuests') renderActiveQuest(currentQuestIndex);
   if (targetId === 'viewDeconstructor') renderDeconstructedProblem(activeDeconstructorId);
@@ -1897,7 +1898,10 @@ function initCurriculumSystem() {
     });
   }
 
-  // Initialize the Guided Lab default view, Quests, Problem Deconstructor & Study Library
+  // Initialize Topic Pathways Default Modular Hub
+  renderTopicPathways();
+
+  // Initialize the Guided Lab, Quests, Problem Deconstructor & Study Library
   initGuidedLab();
   initQuestsSystem();
   initDeconstructorSystem();
@@ -3898,7 +3902,7 @@ function renderCaseStudies(
     window.DOMAIN_ERD_ENGINE.renderTopShowcase(targetDomain);
   }
 
-  let allCases = window.ALL_600_CASE_STUDIES || window.ALL_500_CASE_STUDIES || window.ALL_300_CASE_STUDIES || [];
+  let allCases = window.ALL_1040_CASE_STUDIES || window.ALL_700_CASE_STUDIES || window.ALL_600_CASE_STUDIES || window.ALL_500_CASE_STUDIES || window.ALL_300_CASE_STUDIES || [];
   let cases = allCases.slice();
 
   // 1. Filter by Section
@@ -4033,7 +4037,7 @@ function renderCaseStudies(
               <span class="terminal-dot dot-green"></span>
             </div>
             <span class="terminal-title">Interactive Canvas • Fill the Missing Clauses</span>
-            ${isSolved ? '<span class="status-pill" style="font-size: 9.5px; color: #4ade80; border-color: rgba(74,222,128,0.3);">✓ Solved (+15 XP)</span>' : '<span style="font-size: 10px; color: #a1a1aa;">Click/Drag chips into slots</span>'}
+            ${isSolved ? '<span class="status-pill terminal-solved-pill">✓ Solved (+15 XP)</span>' : '<span class="terminal-hint-pill">Click or drag chips into slots</span>'}
           </div>
           <div class="case-terminal-code" id="canvas_code_${cs.id}">
             ${renderedMasked}
@@ -4044,7 +4048,7 @@ function renderCaseStudies(
         <div class="token-bank-dock" id="dock_${cs.id}">
           <div class="token-bank-header">
             <span>🏷️ <strong>Jumbled Keyword Bank:</strong> Click or drag into blanks</span>
-            <button class="micro-text-btn" style="font-size: 10px; color: #a1a1aa;" onclick="handleResetCase(${cs.id})">↺ Reset Slots</button>
+            <button class="token-bank-reset-btn" onclick="handleResetCase(${cs.id})">↺ Reset Slots</button>
           </div>
           <div class="token-chips-grid" id="chips_grid_${cs.id}">
             ${challenge.tokenBank.map(tok => {
@@ -4072,9 +4076,9 @@ function renderCaseStudies(
         <div class="case-solution-shield" id="solution_${cs.id}" style="display: none;">
           <div class="solution-shield-header">
             <span>💡 Official Syntax-Highlighted Solution:</span>
-            <button class="btn-case-action" style="padding: 2px 8px; font-size: 10px;" onclick="toggleCaseSolution(${cs.id})">Hide Solution</button>
+            <button class="btn-case-action" style="padding: 3px 10px; font-size: 10px;" onclick="toggleCaseSolution(${cs.id})">Hide Solution</button>
           </div>
-          <div class="case-terminal-code" style="padding: 10px 12px; background: #000; border-radius: 8px;">
+          <div class="case-terminal-code" style="padding: 12px 14px; background: #0b0f17; border-radius: 8px;">
             <code>${highlightedSolution}</code>
           </div>
         </div>
@@ -4085,15 +4089,15 @@ function renderCaseStudies(
       <div class="case-card ${isSolved ? 'case-solved' : ''}" id="case_card_${cs.id}">
         <div class="case-card-header">
           <div>
-            <div style="display: flex; align-items: center; gap: 6px; margin-bottom: 4px; flex-wrap: wrap;">
-              <span class="status-pill" style="font-size: 10px; padding: 1px 6px;">#${cs.id < 10 ? '00' + cs.id : (cs.id < 100 ? '0' + cs.id : cs.id)}</span>
-              <span class="case-diff-filter-btn ${diffClass} active" style="font-size: 9.5px; padding: 1px 7px;">${diffEmoji} ${cs.difficulty}</span>
+            <div style="display: flex; align-items: center; gap: 6px; margin-bottom: 6px; flex-wrap: wrap;">
+              <span class="status-pill case-id-pill">#${cs.id < 10 ? '00' + cs.id : (cs.id < 100 ? '0' + cs.id : cs.id)}</span>
+              <span class="case-diff-filter-btn ${diffClass} active">${diffEmoji} ${cs.difficulty}</span>
               <span class="case-industry-pill">${cs.industry}</span>
               ${isSolved ? '<span style="font-size: 11px;" title="Solved!">🏆</span>' : ''}
             </div>
-            <h3 class="case-title" style="cursor: pointer;" onclick="openCaseDossier(${cs.id})" title="Click to open full case study dossier">${cs.title}</h3>
+            <h3 class="case-title" onclick="openCaseDossier(${cs.id})" title="Click to open full case study dossier">${cs.title}</h3>
           </div>
-          <span class="clause-pill pill-group" style="font-size: 9px; padding: 1px 6px;">${cs.section ? cs.section.split(':')[0] : 'Section'}</span>
+          <span class="case-section-pill">${cs.section ? cs.section.split(':')[0] : 'Section'}</span>
         </div>
 
         ${window.isEli5ModeActive && window.CASE_DOSSIER_ENGINE ? `
@@ -4104,13 +4108,14 @@ function renderCaseStudies(
           <p class="case-scenario-text">${cs.scenario}</p>
         `}
 
-        <!-- Modern Sleek Meta Strip (No heavy ugly boxes) -->
+        <!-- Modern Sleek Meta Strip -->
         <div class="case-objective-strip">
           <span class="case-objective-icon">🎯</span>
-          <div style="flex: 1;">
-            <strong style="color: #38bdf8;">Objective:</strong> ${cs.businessObjective}
-            <div style="margin-top: 4px; font-size: 11px; font-family: var(--font-mono); color: #a1a1aa;">
-              🗄️ <strong>Table:</strong> <code style="color: #e4e4e7; background: rgba(255,255,255,0.06); padding: 1px 6px; border-radius: 4px;">${cs.table}</code> &bull; Schema: <code>${cs.schemaSnippet}</code>
+          <div class="case-objective-content">
+            <div class="case-objective-body"><strong class="case-objective-label">Objective:</strong> ${cs.businessObjective}</div>
+            <div class="case-meta-substrip">
+              <span class="case-meta-table">🗄️ <strong>Table:</strong> <code class="case-code-pill">${cs.table}</code></span>
+              <span class="case-meta-schema">&bull; Schema: <code class="case-schema-snippet">${cs.schemaSnippet}</code></span>
             </div>
           </div>
         </div>
@@ -4118,10 +4123,10 @@ function renderCaseStudies(
         ${queryBlockHtml}
 
         <div class="case-actions-bar">
-          <div style="display: flex; gap: 6px; align-items: center; flex-wrap: wrap;">
+          <div class="case-actions-group">
             ${currentCaseMode === 'challenge' && challenge ? `
               <button class="btn-case-action btn-verify-puzzle" onclick="handleVerifyCase(${cs.id})">
-                <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="20 6 9 17 4 12"></polyline></svg>
+                <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><polyline points="20 6 9 17 4 12"></polyline></svg>
                 Verify
               </button>
               <button class="btn-case-action btn-reveal-shield" onclick="toggleCaseSolution(${cs.id})">
@@ -4129,14 +4134,14 @@ function renderCaseStudies(
               </button>
             ` : ''}
           </div>
-          <div style="display: flex; gap: 6px; align-items: center; flex-wrap: wrap;">
-            <button class="btn-case-action" onclick="openCaseDossier(${cs.id})" title="View Executive Dossier">
+          <div class="case-actions-group">
+            <button class="btn-case-action btn-case-dossier" onclick="openCaseDossier(${cs.id})" title="View Executive Dossier">
               📖 Dossier
             </button>
-            <button class="btn-case-action" onclick="toggleCaseSim(${cs.id})" title="Simulate 5-Row Table">
+            <button class="btn-case-action btn-case-sim" onclick="toggleCaseSim(${cs.id})" title="Simulate 5-Row Table">
               📊 Simulator
             </button>
-            <button class="btn-case-action" style="color: #38bdf8; border-color: rgba(56, 189, 248, 0.4);" onclick="switchToStudioWithQuery(decodeURIComponent('${encodeURIComponent(cs.targetQuery)}'), '${cs.table}')" title="Test in Studio">
+            <button class="btn-case-action btn-case-studio" onclick="switchToStudioWithQuery(decodeURIComponent('${encodeURIComponent(cs.targetQuery)}'), '${cs.table}')" title="Test in Studio">
               ⚡ Studio
             </button>
           </div>
@@ -4317,7 +4322,7 @@ function renderCaseStudies(
   // Global Token Puzzle Event Handlers
   window.handleTokenClick = function(caseId, tokenId, tokenText) {
     if (!window.CASE_BLANKS_ENGINE) return;
-    const allCases = window.ALL_650_CASE_STUDIES || window.ALL_600_CASE_STUDIES || window.ALL_500_CASE_STUDIES || [];
+    const allCases = window.ALL_1040_CASE_STUDIES || window.ALL_700_CASE_STUDIES || window.ALL_650_CASE_STUDIES || window.ALL_600_CASE_STUDIES || window.ALL_500_CASE_STUDIES || [];
     const cs = allCases.find(c => c.id === caseId);
     if (!cs) return;
 
@@ -4372,7 +4377,7 @@ function renderCaseStudies(
     delete state.slots[slotId];
     if (window.soundFX) window.soundFX.playClick();
 
-    const allCases = window.ALL_650_CASE_STUDIES || window.ALL_600_CASE_STUDIES || window.ALL_500_CASE_STUDIES || [];
+    const allCases = window.ALL_1040_CASE_STUDIES || window.ALL_700_CASE_STUDIES || window.ALL_650_CASE_STUDIES || window.ALL_600_CASE_STUDIES || window.ALL_500_CASE_STUDIES || [];
     const cs = allCases.find(c => c.id === caseId);
     if (cs) {
       const challenge = window.CASE_BLANKS_ENGINE.createChallenge(cs);
@@ -4449,7 +4454,7 @@ function renderCaseStudies(
         chipEl.setAttribute('draggable', 'false');
       }
 
-      const allCases = window.ALL_650_CASE_STUDIES || window.ALL_600_CASE_STUDIES || window.ALL_500_CASE_STUDIES || [];
+      const allCases = window.ALL_1040_CASE_STUDIES || window.ALL_700_CASE_STUDIES || window.ALL_650_CASE_STUDIES || window.ALL_600_CASE_STUDIES || window.ALL_500_CASE_STUDIES || [];
       const cs = allCases.find(c => c.id === caseId);
       if (cs) {
         const challenge = window.CASE_BLANKS_ENGINE.createChallenge(cs);
@@ -4469,7 +4474,7 @@ function renderCaseStudies(
     window.CASE_BLANKS_ENGINE.clearCaseState(caseId);
     if (window.soundFX) window.soundFX.playClick();
 
-    const allCases = window.ALL_650_CASE_STUDIES || window.ALL_600_CASE_STUDIES || window.ALL_500_CASE_STUDIES || [];
+    const allCases = window.ALL_1040_CASE_STUDIES || window.ALL_700_CASE_STUDIES || window.ALL_650_CASE_STUDIES || window.ALL_600_CASE_STUDIES || window.ALL_500_CASE_STUDIES || [];
     const cs = allCases.find(c => c.id === caseId);
     if (!cs) return;
 
@@ -4506,7 +4511,7 @@ function renderCaseStudies(
 
   window.handleVerifyCase = function(caseId) {
     if (!window.CASE_BLANKS_ENGINE) return;
-    const allCases = window.ALL_650_CASE_STUDIES || window.ALL_600_CASE_STUDIES || window.ALL_500_CASE_STUDIES || [];
+    const allCases = window.ALL_1040_CASE_STUDIES || window.ALL_700_CASE_STUDIES || window.ALL_650_CASE_STUDIES || window.ALL_600_CASE_STUDIES || window.ALL_500_CASE_STUDIES || [];
     const cs = allCases.find(c => c.id === caseId);
     if (!cs) return;
 
@@ -5781,6 +5786,842 @@ function renderBossQuest(container, quest) {
     </div>
   `;
 }
+
+// =============================================================================
+// TOPIC PATHWAYS & 4-STAGE MODULAR LEARNING PIPELINE ENGINE
+// =============================================================================
+
+const TOPIC_PATHWAY_MODULES = [
+  {
+    id: "mod_joins",
+    num: "04",
+    title: "Relational Multi-Table Joins (FA / DA / BA)",
+    icon: "🔗",
+    tagline: "INNER, LEFT, RIGHT, FULL OUTER, CROSS, SELF, NON-EQUI & Physical Plans",
+    caseSection: "Section 8: Relational Joins & Financial Data Modeling",
+    mcqKeyword: "JOINS",
+    studySectionId: "sec_joins",
+    labTrackId: "track04",
+    trapsModuleId: "mod_joins",
+    caseCount: 390,
+    mcqCount: 50,
+    trapsCount: 4,
+    tipsCount: 2,
+    interviewCount: 2
+  },
+  {
+    id: "mod_foundations",
+    num: "01",
+    title: "SQL Foundations & Execution Pipeline",
+    icon: "🏛️",
+    tagline: "FROM -> WHERE -> GROUP BY -> HAVING -> SELECT -> ORDER BY -> LIMIT",
+    caseSection: "Section 2: Physical Query Execution Order & Projections",
+    mcqKeyword: "SELECT",
+    studySectionId: "sec_execution_order",
+    labTrackId: "track01",
+    trapsModuleId: "mod_foundations",
+    caseCount: 100,
+    mcqCount: 50,
+    trapsCount: 4,
+    tipsCount: 2,
+    interviewCount: 2
+  },
+  {
+    id: "mod_casewhen",
+    num: "02",
+    title: "Conditional Logic & CASE WHEN Decision Trees",
+    icon: "⚖️",
+    tagline: "Simple vs Searched CASE, Short-circuiting, Pivot Reporting & NULLs",
+    caseSection: "Section 3: Filtering, Predicates & Three-Valued Logic",
+    mcqKeyword: "WHERE",
+    studySectionId: "sec_casewhen",
+    labTrackId: "track02",
+    trapsModuleId: "mod_casewhen",
+    caseCount: 100,
+    mcqCount: 50,
+    trapsCount: 3,
+    tipsCount: 2,
+    interviewCount: 1
+  },
+  {
+    id: "mod_aggregations",
+    num: "03",
+    title: "Basic & Statistical Aggregations (GROUP BY)",
+    icon: "📊",
+    tagline: "COUNT, SUM, AVG, MIN, MAX, GROUP BY buckets, HAVING filters & Variance",
+    caseSection: "Section 6: Aggregations, Statistical Metrics & GROUP BY",
+    mcqKeyword: "GROUP BY",
+    studySectionId: "sec_aggregations",
+    labTrackId: "track03",
+    trapsModuleId: "mod_aggregations",
+    caseCount: 100,
+    mcqCount: 50,
+    trapsCount: 3,
+    tipsCount: 1,
+    interviewCount: 1
+  },
+  {
+    id: "mod_ctes",
+    num: "05",
+    title: "Subqueries & CTEs (Common Table Expressions)",
+    icon: "🧩",
+    tagline: "Scalar, Correlated, EXISTS vs IN, CTE Pipelines & Recursion",
+    caseSection: "Section 5: Sorting, Determinism & Slicing",
+    mcqKeyword: "FROM",
+    studySectionId: "sec_foundations",
+    labTrackId: "track01",
+    trapsModuleId: "mod_ctes",
+    caseCount: 100,
+    mcqCount: 50,
+    trapsCount: 2,
+    tipsCount: 1,
+    interviewCount: 1
+  },
+  {
+    id: "mod_window",
+    num: "06",
+    title: "Window Functions & Analytical Partitioning",
+    icon: "🪟",
+    tagline: "ROW_NUMBER, RANK, DENSE_RANK, LEAD/LAG, Running Totals & Framing",
+    caseSection: "Section 7: Spatial Coordinates, Math Functions & Medians",
+    mcqKeyword: "ORDER BY & LIMIT",
+    studySectionId: "sec_operators",
+    labTrackId: "track01",
+    trapsModuleId: "mod_window",
+    caseCount: 50,
+    mcqCount: 50,
+    trapsCount: 2,
+    tipsCount: 1,
+    interviewCount: 1
+  },
+  {
+    id: "mod_architecture",
+    num: "07",
+    title: "Database Architecture & Tech Interview Compendium",
+    icon: "🏛️",
+    tagline: "ACID, B-Tree Indexes, OLTP vs OLAP, Buffer Pools & Normalization",
+    caseSection: "Section 1: Database Theory & Architecture",
+    mcqKeyword: "COUNT",
+    studySectionId: "sec_theory_architecture",
+    labTrackId: "track01",
+    trapsModuleId: "mod_architecture",
+    caseCount: 100,
+    mcqCount: 50,
+    trapsCount: 2,
+    tipsCount: 1,
+    interviewCount: 1
+  }
+];
+
+let currentPathwayModuleId = 'mod_joins';
+let currentPathwayStage = 1;
+let pathwayCaseViewMode = 'compact';
+let pathwayCaseDiffFilter = 'all';
+let currentPathwayMcqIndex = 0;
+let pathwayMcqAnsweredState = {};
+
+function renderTopicPathways() {
+  const navContainer = document.getElementById('pathwayModulesNav');
+  if (!navContainer) return;
+
+  // 1. Render Module Selection Cards
+  let navHtml = '';
+  TOPIC_PATHWAY_MODULES.forEach(mod => {
+    const isActive = mod.id === currentPathwayModuleId;
+    navHtml += `
+      <button class="pathway-mod-card ${isActive ? 'active' : ''}" onclick="selectPathwayModule('${mod.id}')">
+        <div class="pathway-mod-top">
+          <span class="pathway-mod-icon">${mod.icon}</span>
+          <span class="pathway-mod-badge">MOD ${mod.num}</span>
+        </div>
+        <div class="pathway-mod-title">${mod.title}</div>
+        <div class="pathway-mod-meta">
+          <span>💼 ${mod.caseCount} Cases</span>
+          <span>&bull;</span>
+          <span>🧠 ${mod.mcqCount} Qs</span>
+        </div>
+      </button>
+    `;
+  });
+  navContainer.innerHTML = navHtml;
+
+  // 2. Synchronize Stepper UI
+  document.querySelectorAll('.pathway-stage-btn').forEach(btn => {
+    const s = parseInt(btn.dataset.stage, 10);
+    if (s === currentPathwayStage) {
+      btn.classList.add('active');
+    } else {
+      btn.classList.remove('active');
+    }
+  });
+
+  // 3. Show Active Stage Panel
+  for (let i = 1; i <= 4; i++) {
+    const panel = document.getElementById(`pathwayStagePanel_${i}`);
+    if (panel) {
+      panel.classList.toggle('active', i === currentPathwayStage);
+    }
+  }
+
+  // 4. Render Active Stage Content
+  if (currentPathwayStage === 1) renderPathwayMasterclass();
+  if (currentPathwayStage === 2) renderPathwayTrapsAndSecrets();
+  if (currentPathwayStage === 3) renderPathwayMcqs();
+  if (currentPathwayStage === 4) renderPathwayCaseStudies();
+}
+
+function selectPathwayModule(moduleId) {
+  currentPathwayModuleId = moduleId;
+  currentPathwayMcqIndex = 0;
+  if (window.soundFX) window.soundFX.playPop();
+  renderTopicPathways();
+}
+
+function selectPathwayStage(stageNum) {
+  currentPathwayStage = stageNum;
+  if (window.soundFX) window.soundFX.playPop();
+  renderTopicPathways();
+}
+
+// -----------------------------------------------------------------------------
+// STAGE 1: 📖 VISUAL MASTERCLASS
+// -----------------------------------------------------------------------------
+function renderPathwayMasterclass() {
+  const container = document.getElementById('pathwayMasterclassContent');
+  if (!container) return;
+
+  const currentMod = TOPIC_PATHWAY_MODULES.find(m => m.id === currentPathwayModuleId) || TOPIC_PATHWAY_MODULES[0];
+
+  // If Joins module, embed the visual interactive join linker & lab
+  if (currentMod.id === 'mod_joins') {
+    container.innerHTML = `
+      <div class="card" style="margin-bottom: 20px; border-left: 4px solid #6366f1;">
+        <div class="card-header" style="display: flex; align-items: center; justify-content: space-between;">
+          <div style="display: flex; align-items: center; gap: 10px;">
+            <span class="clause-pill pill-from" style="font-size: 11px;">Stage 1: Visual Masterclass</span>
+            <h2 style="font-size: 17px; color: #fff; margin: 0;">Relational Multi-Table Joins &amp; Execution Plans</h2>
+          </div>
+          <button class="action-btn action-btn-primary" onclick="selectPathwayStage(2)" style="padding: 6px 14px; font-size: 12px;">
+            Go to Stage 2: Traps &amp; Secrets &rarr;
+          </button>
+        </div>
+        <p style="font-size: 13px; color: var(--text-secondary); line-height: 1.5; margin: 8px 0 16px 0;">
+          Master all 8 ANSI SQL relational joins through physical execution diagrams, dual-table relationship linkers, and real corporate financial schemas.
+        </p>
+
+        <!-- Quick Jump to Interactive Relational Joins Track in Guided Lab -->
+        <div style="background: #09090e; border: 1px solid var(--border-default); border-radius: var(--radius-md); padding: 18px; display: flex; flex-direction: column; gap: 14px;">
+          <div style="display: flex; align-items: center; justify-content: space-between; flex-wrap: wrap; gap: 10px;">
+            <div>
+              <span style="font-size: 10px; font-family: var(--font-mono); color: #818cf8; text-transform: uppercase;">INTERACTIVE JOIN VISUALIZER &amp; LINKER</span>
+              <h3 style="font-size: 15px; color: #fff; margin: 3px 0 0 0;">Dual-Table Relational Linker &amp; Execution Step Simulator</h3>
+            </div>
+            <button class="action-btn action-btn-primary" onclick="switchNavTab('viewGuidedLab'); if (window.switchGuidedTrack) window.switchGuidedTrack('track04');" style="font-size: 12px;">
+              🚀 Open Full 8-Step Interactive Lab
+            </button>
+          </div>
+
+          <div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(280px, 1fr)); gap: 12px;">
+            <div style="background: var(--bg-card); border: 1px solid var(--border-muted); border-radius: var(--radius-sm); padding: 12px;">
+              <strong style="color: #60a5fa; display: block; margin-bottom: 4px;">1. INNER JOIN (Strict Intersection)</strong>
+              <span style="font-size: 11.5px; color: var(--text-secondary); line-height: 1.4;">Only rows with valid matching foreign keys on both sides are retained. Used for order reconciliation and completed transaction ledgers.</span>
+            </div>
+            <div style="background: var(--bg-card); border: 1px solid var(--border-muted); border-radius: var(--radius-sm); padding: 12px;">
+              <strong style="color: #34d399; display: block; margin-bottom: 4px;">2. LEFT OUTER JOIN (Preserve Left Base)</strong>
+              <span style="font-size: 11.5px; color: var(--text-secondary); line-height: 1.4;">Preserves 100% of rows from the left table; populates NULL for non-matching right columns. Essential for customer cohort retention analysis.</span>
+            </div>
+            <div style="background: var(--bg-card); border: 1px solid var(--border-muted); border-radius: var(--radius-sm); padding: 12px;">
+              <strong style="color: #f43f5e; display: block; margin-bottom: 4px;">3. LEFT ANTI-JOIN (Missing Records)</strong>
+              <span style="font-size: 11.5px; color: var(--text-secondary); line-height: 1.4;"><code>WHERE right.id IS NULL</code> filters out all matched tuples. The fastest corporate technique for identifying churned users, dormant cards, and orphan invoices.</span>
+            </div>
+            <div style="background: var(--bg-card); border: 1px solid var(--border-muted); border-radius: var(--radius-sm); padding: 12px;">
+              <strong style="color: #c084fc; display: block; margin-bottom: 4px;">4. FULL OUTER JOIN (Complete Union)</strong>
+              <span style="font-size: 11.5px; color: var(--text-secondary); line-height: 1.4;">Retains all records from both tables, filling NULL wherever pairs do not align. Primary engine behind bank GL account reconciliations.</span>
+            </div>
+          </div>
+        </div>
+      </div>
+    `;
+    return;
+  }
+
+  // Otherwise, pull textbook study material from STUDY_LIBRARY
+  const studyItem = window.STUDY_LIBRARY ? window.STUDY_LIBRARY.find(s => s.id === currentMod.studySectionId) : null;
+  if (!studyItem) {
+    container.innerHTML = `<div class="card"><p>Masterclass content loading for ${currentMod.title}...</p></div>`;
+    return;
+  }
+
+  let sectionsHtml = '';
+  studyItem.sections.forEach(sec => {
+    let formattedContent = sec.content
+      .replace(/```sql([\s\S]*?)```/g, '<div class="study-code-snippet">$1</div>')
+      .replace(/`([^`]+)`/g, '<code>$1</code>')
+      .replace(/\*\*([^*]+)\*\*/g, '<strong>$1</strong>')
+      .replace(/\n\n/g, '</p><p>')
+      .replace(/\n- /g, '<br>&bull; ');
+
+    sectionsHtml += `
+      <div class="study-section-block" style="margin-bottom: 18px;">
+        <h3 class="study-section-heading" style="font-size: 15px; color: var(--text-primary); margin-bottom: 8px;">${sec.heading}</h3>
+        <div class="study-section-content" style="font-size: 12.5px; color: var(--text-secondary); line-height: 1.55;">
+          <p>${formattedContent}</p>
+        </div>
+      </div>
+    `;
+  });
+
+  let svgHtml = studyItem.svgDiagram ? `
+    <div style="margin: 16px 0; background: #07070a; border: 1px solid var(--border-muted); border-radius: var(--radius-sm); padding: 12px; overflow-x: auto;">
+      ${studyItem.svgDiagram}
+    </div>
+  ` : '';
+
+  container.innerHTML = `
+    <div class="card" style="border-left: 4px solid #6366f1; margin-bottom: 20px;">
+      <div class="card-header" style="display: flex; align-items: center; justify-content: space-between; flex-wrap: wrap; gap: 10px;">
+        <div>
+          <span class="clause-pill ${studyItem.badgeClass || 'pill-from'}" style="font-size: 10px;">Stage 1: Visual Masterclass</span>
+          <h2 style="font-size: 18px; color: #fff; margin: 4px 0 0 0;">${studyItem.title}</h2>
+        </div>
+        <button class="action-btn action-btn-primary" onclick="selectPathwayStage(2)" style="padding: 6px 14px; font-size: 12px;">
+          Proceed to Stage 2: Traps &amp; Secrets &rarr;
+        </button>
+      </div>
+      <p style="font-size: 13px; color: var(--text-secondary); line-height: 1.5; margin: 8px 0 16px 0;">${studyItem.summary}</p>
+      ${svgHtml}
+      ${sectionsHtml}
+    </div>
+  `;
+}
+
+// -----------------------------------------------------------------------------
+// STAGE 2: ⚠️ TRAPS, GOTCHAS & INTERVIEW SECRETS
+// -----------------------------------------------------------------------------
+function renderPathwayTrapsAndSecrets() {
+  const container = document.getElementById('pathwayTrapsContent');
+  if (!container || !window.TRAPS_INTERVIEW_SECRETS) return;
+
+  const currentMod = TOPIC_PATHWAY_MODULES.find(m => m.id === currentPathwayModuleId) || TOPIC_PATHWAY_MODULES[0];
+  const trapsData = window.TRAPS_INTERVIEW_SECRETS.modules.find(m => m.moduleId === currentMod.trapsModuleId);
+
+  if (!trapsData) {
+    container.innerHTML = `<div class="card"><p>Traps &amp; Interview secrets for this module will be compiled shortly.</p></div>`;
+    return;
+  }
+
+  // 1. Traps Deck
+  let trapsHtml = '';
+  trapsData.traps.forEach(trap => {
+    const badgeClass = trap.severity === 'FATAL' ? 'trap-badge-fatal' : 'trap-badge-critical';
+    trapsHtml += `
+      <div class="trap-card">
+        <div class="trap-card-header">
+          <div class="trap-card-title">${trap.title}</div>
+          <span class="${badgeClass}">${trap.severity}</span>
+        </div>
+
+        <div class="trap-diff-grid">
+          <div class="trap-code-box bad">
+            <span class="trap-box-label">❌ Buggy Anti-Pattern</span>
+            <code>${escapeHtml(trap.badSql)}</code>
+          </div>
+          <div class="trap-code-box good">
+            <span class="trap-box-label">✅ Production Fix</span>
+            <code>${escapeHtml(trap.goodSql)}</code>
+          </div>
+        </div>
+
+        <div class="trap-explanation-box">
+          <strong>⚙️ Why It Breaks:</strong> ${trap.whyItBreaks}
+        </div>
+
+        <div class="trap-impact-callout">
+          <strong>🚨 Corporate Impact:</strong> ${trap.corporateImpact}
+        </div>
+      </div>
+    `;
+  });
+
+  // 2. Tips & Tricks Deck
+  let tipsHtml = '';
+  trapsData.tipsAndTricks.forEach(tip => {
+    tipsHtml += `
+      <div class="tip-card">
+        <div class="tip-card-header">
+          <div class="tip-card-title">${tip.title}</div>
+          <span class="tip-concept-pill">${tip.concept}</span>
+        </div>
+        <div class="tip-code-block">
+          <code>${escapeHtml(tip.codeSnippet)}</code>
+        </div>
+        <div style="font-size: 12px; color: var(--text-secondary); line-height: 1.45;">
+          ${tip.explanation}
+        </div>
+        <div class="tip-analyst-value">
+          <strong>💡 Analyst Value:</strong> ${tip.analystValue}
+        </div>
+      </div>
+    `;
+  });
+
+  // 3. Spoken-Word Interview Questions
+  let interviewHtml = '';
+  trapsData.interviewQuestions.forEach(item => {
+    interviewHtml += `
+      <div class="interview-flashcard">
+        <div class="interview-card-meta">
+          <span class="interview-diff-pill">${item.difficulty}</span>
+          <span class="clause-pill pill-where" style="font-size: 10px;">${item.testedConcept}</span>
+        </div>
+        <div class="interview-question-text">
+          "${item.question}"
+        </div>
+        <div class="interview-intent-box">
+          <strong>🎯 What the Interviewer is REALLY Testing:</strong><br>${item.interviewerIntent}
+        </div>
+        <div class="interview-spoken-answer-box">
+          <span class="interview-spoken-label">🎙️ Exact Spoken-Word Model Answer:</span>
+          <div class="interview-spoken-text">"${item.spokenAnswer}"</div>
+        </div>
+        ${item.sqlSnippet ? `
+          <div class="tip-code-block" style="margin-top: 4px;">
+            <code>${escapeHtml(item.sqlSnippet)}</code>
+          </div>
+        ` : ''}
+      </div>
+    `;
+  });
+
+  container.innerHTML = `
+    <div class="traps-deck-container">
+      <!-- Section A: Lethal Traps -->
+      <div class="traps-section-block">
+        <div class="traps-section-banner">
+          <h3 class="traps-section-heading">
+            <span>🛑 Deadly Production Traps &amp; Silent Corruption Bugs</span>
+          </h3>
+          <span class="status-pill" style="color: #f43f5e; border-color: rgba(244, 63, 94, 0.3);">${trapsData.traps.length} Lethal Pitfalls</span>
+        </div>
+        <div class="traps-grid">
+          ${trapsHtml}
+        </div>
+      </div>
+
+      <!-- Section B: Senior Analyst Tips & Tricks -->
+      <div class="traps-section-block">
+        <div class="traps-section-banner">
+          <h3 class="traps-section-heading">
+            <span>💡 Senior Analyst Tips &amp; SQL Intricacies</span>
+          </h3>
+          <span class="status-pill" style="color: #10b981; border-color: rgba(16, 185, 129, 0.3);">${trapsData.tipsAndTricks.length} Tactical Tricks</span>
+        </div>
+        <div class="traps-grid">
+          ${tipsHtml}
+        </div>
+      </div>
+
+      <!-- Section C: Corporate Technical Interview Flashcards -->
+      <div class="traps-section-block">
+        <div class="traps-section-banner">
+          <h3 class="traps-section-heading">
+            <span>🎙️ Spoken-Word Corporate Technical Interview Questions</span>
+          </h3>
+          <span class="status-pill" style="color: #8b5cf6; border-color: rgba(139, 92, 246, 0.3);">${trapsData.interviewQuestions.length} Model Answers</span>
+        </div>
+        <div class="traps-grid">
+          ${interviewHtml}
+        </div>
+      </div>
+
+      <!-- Footer CTA to proceed to MCQs -->
+      <div style="display: flex; justify-content: flex-end; padding-top: 10px;">
+        <button class="action-btn action-btn-primary" onclick="selectPathwayStage(3)" style="padding: 10px 20px; font-size: 13px;">
+          Mastered Traps! Test Knowledge in Stage 3: MCQs &rarr;
+        </button>
+      </div>
+    </div>
+  `;
+}
+
+// -----------------------------------------------------------------------------
+// STAGE 3: 🧠 TOPIC MCQS
+// -----------------------------------------------------------------------------
+function renderPathwayMcqs() {
+  const container = document.getElementById('pathwayMcqsContent');
+  if (!container || !window.MCQS_VAULT_500) return;
+
+  const currentMod = TOPIC_PATHWAY_MODULES.find(m => m.id === currentPathwayModuleId) || TOPIC_PATHWAY_MODULES[0];
+  const allTopicMcqs = window.MCQS_VAULT_500.filter(m => m.keyword === currentMod.mcqKeyword);
+
+  if (allTopicMcqs.length === 0) {
+    container.innerHTML = `<div class="card"><p>No MCQs mapped for keyword: ${currentMod.mcqKeyword}</p></div>`;
+    return;
+  }
+
+  if (currentPathwayMcqIndex >= allTopicMcqs.length) {
+    currentPathwayMcqIndex = 0;
+  }
+
+  const q = allTopicMcqs[currentPathwayMcqIndex];
+  const ansState = pathwayMcqAnsweredState[q.id];
+
+  let optionsHtml = '';
+  q.options.forEach((opt, idx) => {
+    let btnStyle = '';
+    let disabledAttr = '';
+    let marker = '';
+
+    if (ansState) {
+      disabledAttr = 'disabled';
+      if (idx === q.correctIndex) {
+        btnStyle = 'background: rgba(16, 185, 129, 0.2); border-color: #10b981; color: #86efac; font-weight: 700;';
+        marker = '✓ ';
+      } else if (idx === ansState.selectedIndex && !ansState.isCorrect) {
+        btnStyle = 'background: rgba(244, 63, 94, 0.2); border-color: #f43f5e; color: #fca5a5;';
+        marker = '✗ ';
+      } else {
+        btnStyle = 'opacity: 0.45;';
+      }
+    }
+
+    optionsHtml += `
+      <button class="study-quiz-option-btn" style="${btnStyle}" ${disabledAttr} onclick="handlePathwayMcqAnswer('${q.id}', ${idx})">
+        <span>${marker}${String.fromCharCode(65 + idx)})</span> ${escapeHtml(opt)}
+      </button>
+    `;
+  });
+
+  let explanationHtml = '';
+  if (ansState) {
+    explanationHtml = `
+      <div style="margin-top: 14px; background: var(--bg-card); border-left: 3px solid ${ansState.isCorrect ? '#10b981' : '#f43f5e'}; padding: 12px 14px; border-radius: var(--radius-sm); font-size: 12px; color: var(--text-secondary); line-height: 1.5;">
+        <strong style="color: ${ansState.isCorrect ? '#86efac' : '#fca5a5'};">${ansState.isCorrect ? '🎉 Correct Answer!' : '⚠️ Incorrect.'}</strong><br>
+        ${q.explanation}
+      </div>
+    `;
+  }
+
+  container.innerHTML = `
+    <div class="card" style="max-width: 900px; margin: 0 auto; border-left: 4px solid #6366f1;">
+      <div class="card-header" style="display: flex; align-items: center; justify-content: space-between; flex-wrap: wrap; gap: 8px;">
+        <div style="display: flex; align-items: center; gap: 8px;">
+          <span class="clause-pill pill-where" style="font-size: 10px;">${q.tag || 'Topic Question'}</span>
+          <span class="status-pill" style="font-family: var(--font-mono); font-size: 11px;">Question ${currentPathwayMcqIndex + 1} of ${allTopicMcqs.length}</span>
+        </div>
+        <div style="display: flex; align-items: center; gap: 10px;">
+          <span style="font-family: var(--font-mono); font-size: 11px; color: #9ec5ad; font-weight: 600;">+10 XP Reward</span>
+          <select class="clean-select" style="font-size: 11px; padding: 3px 8px;" onchange="jumpToPathwayMcq(this.value)">
+            ${allTopicMcqs.map((_, i) => `<option value="${i}" ${i === currentPathwayMcqIndex ? 'selected' : ''}>Q${i + 1}</option>`).join('')}
+          </select>
+        </div>
+      </div>
+
+      <div style="font-size: 15px; font-weight: 600; color: #fff; margin: 12px 0 16px 0; line-height: 1.45;">
+        ${escapeHtml(q.question)}
+      </div>
+
+      <div class="study-quiz-options-grid" style="display: flex; flex-direction: column; gap: 8px;">
+        ${optionsHtml}
+      </div>
+
+      ${explanationHtml}
+
+      <div style="display: flex; justify-content: space-between; align-items: center; margin-top: 20px; padding-top: 14px; border-top: 1px solid var(--border-default);">
+        <button class="card-nav-btn" onclick="prevPathwayMcq()" ${currentPathwayMcqIndex === 0 ? 'disabled style="opacity:0.4;"' : ''}>
+          &larr; Previous Question
+        </button>
+
+        <div style="display: flex; gap: 10px;">
+          <button class="action-btn action-btn-primary" onclick="nextPathwayMcq()" style="padding: 7px 16px; font-size: 12px;">
+            Next Question &rarr;
+          </button>
+          <button class="action-btn" onclick="selectPathwayStage(4)" style="background: var(--bg-surface); border: 1px solid var(--border-default); color: var(--text-secondary); font-size: 12px; padding: 7px 14px;">
+            Go to Stage 4: Cases ➔
+          </button>
+        </div>
+      </div>
+    </div>
+  `;
+}
+
+function handlePathwayMcqAnswer(qId, selectedIdx) {
+  const currentMod = TOPIC_PATHWAY_MODULES.find(m => m.id === currentPathwayModuleId);
+  const q = window.MCQS_VAULT_500.find(m => m.id === qId);
+  if (!q) return;
+
+  const isCorrect = selectedIdx === q.correctIndex;
+  pathwayMcqAnsweredState[qId] = { selectedIndex: selectedIdx, isCorrect };
+
+  if (window.soundFX) {
+    if (isCorrect) {
+      window.soundFX.playCorrect();
+      window.soundFX.addXP(10);
+    } else {
+      window.soundFX.playWrong();
+    }
+  }
+
+  renderPathwayMcqs();
+}
+
+function nextPathwayMcq() {
+  const currentMod = TOPIC_PATHWAY_MODULES.find(m => m.id === currentPathwayModuleId);
+  const allTopicMcqs = window.MCQS_VAULT_500.filter(m => m.keyword === currentMod.mcqKeyword);
+  if (currentPathwayMcqIndex < allTopicMcqs.length - 1) {
+    currentPathwayMcqIndex++;
+    if (window.soundFX) window.soundFX.playPop();
+    renderPathwayMcqs();
+  }
+}
+
+function prevPathwayMcq() {
+  if (currentPathwayMcqIndex > 0) {
+    currentPathwayMcqIndex--;
+    if (window.soundFX) window.soundFX.playPop();
+    renderPathwayMcqs();
+  }
+}
+
+function jumpToPathwayMcq(idx) {
+  currentPathwayMcqIndex = parseInt(idx, 10);
+  if (window.soundFX) window.soundFX.playPop();
+  renderPathwayMcqs();
+}
+
+// -----------------------------------------------------------------------------
+// STAGE 4: 🛠️ CORPORATE CASE STUDIES (HIGH-DENSITY COMPACT TABLE & CARDS)
+// -----------------------------------------------------------------------------
+function renderPathwayCaseStudies() {
+  const container = document.getElementById('pathwayCasesContent');
+  if (!container || !window.ALL_1040_CASE_STUDIES) return;
+
+  const currentMod = TOPIC_PATHWAY_MODULES.find(m => m.id === currentPathwayModuleId) || TOPIC_PATHWAY_MODULES[0];
+  let allSectionCases = window.ALL_1040_CASE_STUDIES.filter(cs => cs.section && cs.section.includes(currentMod.caseSection));
+
+  // If filter is active
+  let displayCases = allSectionCases;
+  if (pathwayCaseDiffFilter !== 'all') {
+    displayCases = allSectionCases.filter(cs => cs.difficulty && cs.difficulty.toLowerCase() === pathwayCaseDiffFilter.toLowerCase());
+  }
+
+  // Count by difficulty
+  const countEasy = allSectionCases.filter(cs => cs.difficulty === 'Easy').length;
+  const countMed = allSectionCases.filter(cs => cs.difficulty === 'Medium').length;
+  const countHard = allSectionCases.filter(cs => cs.difficulty === 'Hard').length;
+
+  let bodyHtml = '';
+
+  if (pathwayCaseViewMode === 'compact') {
+    // High-Density Compact Table View
+    let rowsHtml = '';
+    displayCases.forEach(cs => {
+      let diffClass = cs.difficulty === 'Easy' ? 'compact-diff-easy' : (cs.difficulty === 'Medium' ? 'compact-diff-medium' : 'compact-diff-hard');
+      rowsHtml += `
+        <tr class="compact-case-row" onclick="openCaseDrawer(${cs.id})" style="cursor: pointer;">
+          <td class="compact-case-id">#${cs.id < 10 ? '00' + cs.id : (cs.id < 100 ? '0' + cs.id : cs.id)}</td>
+          <td>
+            <div class="compact-case-title">
+              <span>${escapeHtml(cs.title)}</span>
+            </div>
+            <div style="font-size: 11px; color: var(--text-muted); white-space: nowrap; overflow: hidden; text-overflow: ellipsis; max-width: 450px;">
+              ${escapeHtml(cs.scenario)}
+            </div>
+          </td>
+          <td><span class="case-industry-pill" style="font-size: 10px;">${cs.industry}</span></td>
+          <td><span class="${diffClass}">${cs.difficulty}</span></td>
+          <td><code class="case-code-pill" style="font-size: 10.5px;">${cs.table}</code></td>
+          <td style="text-align: right;">
+            <button class="compact-btn-solve" onclick="event.stopPropagation(); openCaseDrawer(${cs.id})">
+              Solve &rarr;
+            </button>
+          </td>
+        </tr>
+      `;
+    });
+
+    bodyHtml = `
+      <div class="compact-table-wrap">
+        <table class="compact-case-table">
+          <thead>
+            <tr>
+              <th style="width: 70px;">ID</th>
+              <th>Scenario Title &amp; Business Context</th>
+              <th style="width: 120px;">Industry</th>
+              <th style="width: 90px;">Difficulty</th>
+              <th style="width: 140px;">Table</th>
+              <th style="width: 90px; text-align: right;">Action</th>
+            </tr>
+          </thead>
+          <tbody>
+            ${rowsHtml}
+          </tbody>
+        </table>
+      </div>
+    `;
+  } else {
+    // Full Card View
+    bodyHtml = `
+      <div style="margin-top: 10px;">
+        <button class="action-btn" onclick="switchNavTab('viewCases');" style="background: var(--bg-card); border: 1px solid var(--border-default); color: var(--text-primary); margin-bottom: 12px; font-size: 12px; padding: 6px 14px;">
+          Open in Full Master Case Grid &rarr;
+        </button>
+      </div>
+    `;
+  }
+
+  container.innerHTML = `
+    <div>
+      <div class="pathway-cases-toolbar">
+        <div style="display: flex; align-items: center; gap: 12px; flex-wrap: wrap;">
+          <span style="font-size: 13px; font-weight: 700; color: #fff;">
+            ${currentMod.title}: <strong>${allSectionCases.length} Cases</strong>
+          </span>
+          <div class="case-diff-pills-row" style="display: flex; gap: 6px;">
+            <button class="case-diff-filter-btn ${pathwayCaseDiffFilter === 'all' ? 'active' : ''}" onclick="filterPathwayCasesByDiff('all')">
+              All (${allSectionCases.length})
+            </button>
+            <button class="case-diff-filter-btn case-diff-easy ${pathwayCaseDiffFilter === 'Easy' ? 'active' : ''}" onclick="filterPathwayCasesByDiff('Easy')">
+              🟢 Easy (${countEasy})
+            </button>
+            <button class="case-diff-filter-btn case-diff-medium ${pathwayCaseDiffFilter === 'Medium' ? 'active' : ''}" onclick="filterPathwayCasesByDiff('Medium')">
+              🟡 Medium (${countMed})
+            </button>
+            <button class="case-diff-filter-btn case-diff-hard ${pathwayCaseDiffFilter === 'Hard' ? 'active' : ''}" onclick="filterPathwayCasesByDiff('Hard')">
+              🔴 Hard (${countHard})
+            </button>
+          </div>
+        </div>
+
+        <div class="pathway-view-toggle-wrap">
+          <button class="pathway-view-toggle-btn ${pathwayCaseViewMode === 'compact' ? 'active' : ''}" onclick="togglePathwayCaseView('compact')">
+            <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><line x1="8" y1="6" x2="21" y2="6"></line><line x1="8" y1="12" x2="21" y2="12"></line><line x1="8" y1="18" x2="21" y2="18"></line><line x1="3" y1="6" x2="3.01" y2="6"></line><line x1="3" y1="12" x2="3.01" y2="12"></line><line x1="3" y1="18" x2="3.01" y2="18"></line></svg>
+            Compact List
+          </button>
+          <button class="pathway-view-toggle-btn ${pathwayCaseViewMode === 'cards' ? 'active' : ''}" onclick="togglePathwayCaseView('cards')">
+            <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="3" y="3" width="7" height="7"></rect><rect x="14" y="3" width="7" height="7"></rect><rect x="14" y="14" width="7" height="7"></rect><rect x="3" y="14" width="7" height="7"></rect></svg>
+            Card Grid
+          </button>
+        </div>
+      </div>
+
+      ${bodyHtml}
+    </div>
+  `;
+}
+
+function filterPathwayCasesByDiff(diff) {
+  pathwayCaseDiffFilter = diff;
+  if (window.soundFX) window.soundFX.playPop();
+  renderPathwayCaseStudies();
+}
+
+function togglePathwayCaseView(mode) {
+  pathwayCaseViewMode = mode;
+  if (window.soundFX) window.soundFX.playPop();
+  renderPathwayCaseStudies();
+}
+
+// -----------------------------------------------------------------------------
+// SLIDE-OUT CASE DOSSIER DRAWER
+// -----------------------------------------------------------------------------
+function openCaseDrawer(caseId) {
+  const allCases = window.ALL_1040_CASE_STUDIES || [];
+  const cs = allCases.find(c => c.id === caseId);
+  if (!cs) return;
+
+  const backdrop = document.getElementById('caseDrawerBackdrop');
+  const badgeId = document.getElementById('drawerCaseIdBadge');
+  const titleEl = document.getElementById('drawerCaseTitle');
+  const body = document.getElementById('caseDrawerBody');
+
+  if (!backdrop || !body) return;
+
+  if (window.soundFX) window.soundFX.playPop();
+
+  if (badgeId) badgeId.textContent = `#${cs.id < 10 ? '00' + cs.id : (cs.id < 100 ? '0' + cs.id : cs.id)}`;
+  if (titleEl) titleEl.textContent = cs.title;
+
+  const challenge = window.CASE_BLANKS_REGISTRY ? window.CASE_BLANKS_REGISTRY[cs.id] : null;
+
+  body.innerHTML = `
+    <!-- Top Metadata -->
+    <div style="display: flex; align-items: center; justify-content: space-between; flex-wrap: wrap; gap: 8px;">
+      <div style="display: flex; align-items: center; gap: 8px;">
+        <span class="case-diff-filter-btn case-diff-${cs.difficulty.toLowerCase()} active">${cs.difficulty}</span>
+        <span class="case-industry-pill">${cs.industry}</span>
+        <span class="case-section-pill">${cs.section ? cs.section.split(':')[0] : 'Section'}</span>
+      </div>
+      <button class="action-btn" onclick="openCaseDossier(${cs.id})" style="font-size: 11px; padding: 4px 10px; background: var(--bg-card); border: 1px solid var(--border-default); color: #818cf8;">
+        📖 Open Full Dossier &rarr;
+      </button>
+    </div>
+
+    <!-- Scenario Brief -->
+    <div style="background: var(--bg-card); border: 1px solid var(--border-muted); border-radius: var(--radius-md); padding: 14px 16px;">
+      <div style="font-size: 10.5px; font-family: var(--font-mono); color: #818cf8; text-transform: uppercase; margin-bottom: 4px;">BUSINESS CONTEXT</div>
+      <p style="font-size: 13px; color: var(--text-primary); line-height: 1.5; margin: 0 0 10px 0;">${escapeHtml(cs.scenario)}</p>
+      <div style="font-size: 12px; color: #a5b4fc; background: rgba(99, 102, 241, 0.08); padding: 8px 12px; border-radius: var(--radius-xs); border-left: 3px solid #6366f1;">
+        <strong>🎯 Objective:</strong> ${escapeHtml(cs.businessObjective)}
+      </div>
+    </div>
+
+    <!-- Schema Snippet -->
+    <div style="background: #08080c; border: 1px solid var(--border-muted); border-radius: var(--radius-sm); padding: 10px 14px; font-family: var(--font-mono); font-size: 11px; color: #94a3b8;">
+      🗄️ <strong>Table:</strong> <code style="color: #60a5fa;">${cs.table}</code> &bull; Schema: <code>${cs.schemaSnippet}</code>
+    </div>
+
+    <!-- Interactive Blank or Target Query -->
+    <div style="background: #09090f; border: 1px solid var(--border-default); border-radius: var(--radius-md); padding: 14px;">
+      <div style="display: flex; align-items: center; justify-content: space-between; margin-bottom: 8px;">
+        <span style="font-size: 10.5px; font-family: var(--font-mono); color: var(--text-muted); text-transform: uppercase;">QUERY IMPLEMENTATION</span>
+        <button class="study-sandbox-btn-sm" onclick="toggleCaseSolution(${cs.id})">👁️ Reveal Answer</button>
+      </div>
+
+      <div class="guided-code-box" id="drawer_query_${cs.id}" style="margin: 0;">
+        <code>${escapeHtml(cs.targetQuery)}</code>
+      </div>
+    </div>
+
+    <!-- Simulator & Studio Buttons -->
+    <div style="display: flex; gap: 10px; align-items: center;">
+      <button class="action-btn action-btn-primary" onclick="toggleCaseSim(${cs.id})" style="font-size: 12px; padding: 7px 14px;">
+        📊 Run In-Card Simulator
+      </button>
+      <button class="action-btn" onclick="switchToStudioWithQuery(decodeURIComponent('${encodeURIComponent(cs.targetQuery)}'), '${cs.table}')" style="background: var(--bg-card); border: 1px solid var(--border-default); color: var(--text-primary); font-size: 12px; padding: 7px 14px;">
+        ⚡ Test in Query Studio
+      </button>
+    </div>
+
+    <div class="live-sim-drawer" id="sim_drawer_${cs.id}" style="display: none; margin-top: 10px;"></div>
+  `;
+
+  backdrop.classList.add('open');
+}
+
+function closeCaseDrawer(e) {
+  if (e && e.target && e.target.closest('.case-drawer-panel') && !e.target.classList.contains('btn-drawer-close')) {
+    return;
+  }
+  const backdrop = document.getElementById('caseDrawerBackdrop');
+  if (backdrop) backdrop.classList.remove('open');
+}
+
+window.renderTopicPathways = renderTopicPathways;
+window.selectPathwayModule = selectPathwayModule;
+window.selectPathwayStage = selectPathwayStage;
+window.renderPathwayMasterclass = renderPathwayMasterclass;
+window.renderPathwayTrapsAndSecrets = renderPathwayTrapsAndSecrets;
+window.renderPathwayMcqs = renderPathwayMcqs;
+window.handlePathwayMcqAnswer = handlePathwayMcqAnswer;
+window.nextPathwayMcq = nextPathwayMcq;
+window.prevPathwayMcq = prevPathwayMcq;
+window.jumpToPathwayMcq = jumpToPathwayMcq;
+window.renderPathwayCaseStudies = renderPathwayCaseStudies;
+window.filterPathwayCasesByDiff = filterPathwayCasesByDiff;
+window.togglePathwayCaseView = togglePathwayCaseView;
+window.openCaseDrawer = openCaseDrawer;
+window.closeCaseDrawer = closeCaseDrawer;
 
 // =============================================================================
 // BOOTSTRAP APPLICATION INITIALIZATION

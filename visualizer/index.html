@@ -8,7 +8,7 @@
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
   <link href="https://fonts.googleapis.com/css2?family=Geist+Mono:wght@400;500;600&family=Geist:wght@300;400;500;600;700&display=swap" rel="stylesheet">
-  <link rel="stylesheet" href="style.css?v=53">
+  <link rel="stylesheet" href="style.css?v=56">
 </head>
 <body>
   <div class="app-layout">
@@ -80,7 +80,11 @@
     <!-- Top Navigation Bar for Learning Platform -->
     <nav class="app-nav-bar">
       <div class="nav-tabs-list">
-        <button class="nav-tab active" data-view="viewGuidedLab" onclick="switchMainView('viewGuidedLab')">
+        <button class="nav-tab active" data-view="viewPathways" onclick="switchMainView('viewPathways')">
+          <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="10"></circle><polygon points="12 8 8 12 12 16 12 8"></polygon></svg>
+          Topic Pathways
+        </button>
+        <button class="nav-tab" data-view="viewGuidedLab" onclick="switchMainView('viewGuidedLab')">
           <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polygon points="5 3 19 12 5 21 5 3"></polygon></svg>
           Guided Lab
         </button>
@@ -102,7 +106,7 @@
         </button>
         <button class="nav-tab" data-view="viewCases" onclick="switchMainView('viewCases')">
           <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="2" y="7" width="20" height="14" rx="2" ry="2"></rect><path d="M16 21V5a2 2 0 0 0-2-2h-4a2 2 0 0 0-2 2v16"></path></svg>
-          Case Studies (650)
+          Case Studies (1,040)
         </button>
         <button class="nav-tab" data-view="viewEnterpriseERD" onclick="switchMainView('viewEnterpriseERD')">
           <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="3" y="3" width="7" height="7"></rect><rect x="14" y="3" width="7" height="7"></rect><rect x="14" y="14" width="7" height="7"></rect><rect x="3" y="14" width="7" height="7"></rect><line x1="10" y1="6.5" x2="14" y2="6.5"></line><line x1="6.5" y1="10" x2="6.5" y2="14"></line></svg>
@@ -158,8 +162,98 @@
       </div>
     </nav>
 
-    <!-- VIEW 1: Guided Learning Lab (Default, Calm, Step-by-Step) -->
-    <div class="view-panel active" id="viewGuidedLab">
+    <!-- VIEW 0: Topic Pathways & 4-Stage Modular Progression Hub -->
+    <div class="view-panel active" id="viewPathways">
+      <div class="pathways-container">
+        <!-- Pathways Header & Module Selector -->
+        <div class="pathways-header">
+          <div class="pathways-title-row">
+            <div>
+              <h1 class="pathways-title">
+                <span>🎯 Topic-Based Curriculum &amp; Mastery Pathways</span>
+                <span class="status-pill" style="font-size: 11px; background: rgba(99, 102, 241, 0.15); color: #a5b4fc; border: 1px solid rgba(99, 102, 241, 0.3);">4-Stage Progression</span>
+              </h1>
+              <p class="pathways-subtitle">Master SQL systematically: 1. Visual Masterclass &rarr; 2. Traps &amp; Interview Secrets &rarr; 3. Topic MCQs &rarr; 4. Corporate Case Studies</p>
+            </div>
+            <div class="pathways-progress-summary">
+              <span>Vault: <strong>1,040 Cases</strong></span>
+              <span style="color: var(--border-default);">&bull;</span>
+              <span><strong>600 MCQs</strong></span>
+              <span style="color: var(--border-default);">&bull;</span>
+              <span><strong>30 Traps &amp; Tips</strong></span>
+            </div>
+          </div>
+
+          <!-- Module Selector Grid -->
+          <div class="pathway-modules-nav" id="pathwayModulesNav">
+            <!-- Dynamically populated via app.js -->
+          </div>
+        </div>
+
+        <!-- 4-Stage Pathway Stepper -->
+        <div class="pathway-stepper-wrap" id="pathwayStepperWrap">
+          <button class="pathway-stage-btn active" id="btnPathwayStage_1" data-stage="1" onclick="selectPathwayStage(1)">
+            <span class="stage-num-pill">1</span>
+            <div class="stage-text-block">
+              <span class="stage-title">📖 Stage 1: Visual Masterclass</span>
+              <span class="stage-desc">High-Res SVGs, AST &amp; Theory</span>
+            </div>
+          </button>
+          <button class="pathway-stage-btn" id="btnPathwayStage_2" data-stage="2" onclick="selectPathwayStage(2)">
+            <span class="stage-num-pill">2</span>
+            <div class="stage-text-block">
+              <span class="stage-title">⚠️ Stage 2: Traps &amp; Secrets</span>
+              <span class="stage-desc">Deadly Gotchas &amp; Spoken Answers</span>
+            </div>
+          </button>
+          <button class="pathway-stage-btn" id="btnPathwayStage_3" data-stage="3" onclick="selectPathwayStage(3)">
+            <span class="stage-num-pill">3</span>
+            <div class="stage-text-block">
+              <span class="stage-title">🧠 Stage 3: Topic MCQs</span>
+              <span class="stage-desc">Instant Check &amp; XP Rewards</span>
+            </div>
+          </button>
+          <button class="pathway-stage-btn" id="btnPathwayStage_4" data-stage="4" onclick="selectPathwayStage(4)">
+            <span class="stage-num-pill">4</span>
+            <div class="stage-text-block">
+              <span class="stage-title">🛠️ Stage 4: Corporate Cases</span>
+              <span class="stage-desc">Easy / Med / Hard Token Blanks</span>
+            </div>
+          </button>
+        </div>
+
+        <!-- Stage 1 Content: Visual Masterclass -->
+        <div class="pathway-stage-panel active" id="pathwayStagePanel_1">
+          <div id="pathwayMasterclassContent">
+            <!-- Dynamic lesson content with SVGs -->
+          </div>
+        </div>
+
+        <!-- Stage 2 Content: Traps & Interview Secrets Deck -->
+        <div class="pathway-stage-panel" id="pathwayStagePanel_2">
+          <div id="pathwayTrapsContent">
+            <!-- Dynamic Traps, Tips & Interview Flashcards -->
+          </div>
+        </div>
+
+        <!-- Stage 3 Content: Topic MCQs -->
+        <div class="pathway-stage-panel" id="pathwayStagePanel_3">
+          <div id="pathwayMcqsContent">
+            <!-- Filtered Topic MCQs -->
+          </div>
+        </div>
+
+        <!-- Stage 4 Content: Corporate Case Studies -->
+        <div class="pathway-stage-panel" id="pathwayStagePanel_4">
+          <div id="pathwayCasesContent">
+            <!-- Compact Table + Full Cards View -->
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- VIEW 1: Guided Learning Lab (Calm, Step-by-Step) -->
+    <div class="view-panel" id="viewGuidedLab">
       <div class="guided-lab-container">
         <!-- Track Switcher Header -->
         <div class="track-switcher-bar">
@@ -531,8 +625,8 @@
     <div class="curriculum-container">
       <div class="curriculum-header">
         <div>
-          <h2 class="view-title">The 550 Master MCQ Technical Vault</h2>
-          <p class="view-subtitle">550 deep technical checks across 11 core SQL domains on physical execution sequence, NULL semantics, spatial coordinates, and calculating medians.</p>
+          <h2 class="view-title">The 600 Master MCQ Technical Vault</h2>
+          <p class="view-subtitle">600 deep technical checks across 12 core SQL domains on physical execution sequence, NULL semantics, spatial coordinates, medians, and relational joins.</p>
         </div>
         <div class="quiz-header-right">
           <div class="quiz-score-badge">
@@ -556,8 +650,8 @@
         <!-- Deck 1: Title, Modes, Sort, Search & Solved Tally -->
         <div class="toolbar-deck-top">
           <div>
-            <h2 class="view-title">The 650 Corporate Case Study Master Vault</h2>
-            <p class="view-subtitle">650 production analytics scenarios across 10 global industries &amp; 7 SQL sections with interactive slot challenges.</p>
+            <h2 class="view-title">The 1,040 Corporate Case Study Master Vault</h2>
+            <p class="view-subtitle">1,040 production analytics scenarios across 10 global industries &amp; 8 SQL sections with interactive slot challenges.</p>
           </div>
           <div class="toolbar-deck-controls">
             <div class="mode-toggle-group">
@@ -569,19 +663,19 @@
             <select id="caseSortSelect" class="case-sort-select">
               <option value="diff_asc">Sort: Easy &rarr; Medium &rarr; Hard (Curriculum Order)</option>
               <option value="diff_desc">Sort: Hard &rarr; Medium &rarr; Easy (Challenge Order)</option>
-              <option value="id_asc">Sort: Case ID #001 &rarr; #650 (Chronological)</option>
+              <option value="id_asc">Sort: Case ID #001 &rarr; #1040 (Chronological)</option>
             </select>
-            <input type="text" id="caseSearchInput" class="case-search-input" placeholder="🔍 Search 650 cases by keyword, schema, query...">
-            <span id="caseCountBadge" class="status-pill">650 Cases</span>
-            <span id="caseSolvedBadge" class="status-pill" style="background: rgba(34, 197, 94, 0.15); color: #4ade80; border: 1px solid rgba(74, 222, 128, 0.3);">⚡ <span id="casesSolvedCount">0</span>/650 Solved</span>
+            <input type="text" id="caseSearchInput" class="case-search-input" placeholder="🔍 Search 1,040 cases by keyword, schema, query...">
+            <span id="caseCountBadge" class="status-pill">1,040 Cases</span>
+            <span id="caseSolvedBadge" class="status-pill" style="background: rgba(34, 197, 94, 0.15); color: #4ade80; border: 1px solid rgba(74, 222, 128, 0.3);">⚡ <span id="casesSolvedCount">0</span>/1040 Solved</span>
           </div>
         </div>
 
         <!-- Deck 2: Section Switcher & Filter Strips -->
         <div class="toolbar-deck-bottom">
-          <!-- 7 Core Sections Switcher Bar -->
+          <!-- 8 Core Sections Switcher Bar -->
           <div class="case-section-group" id="caseSectionFilters" style="display: flex; gap: 8px; flex-wrap: wrap;">
-            <button class="case-section-btn active" data-section="all">All Sections (650)</button>
+            <button class="case-section-btn active" data-section="all">All Sections (1040)</button>
             <button class="case-section-btn" data-section="Section 1: Database Theory &amp; Architecture">Sec 1: Theory &amp; Interview Prep (100)</button>
             <button class="case-section-btn" data-section="Section 2: Physical Query Execution Order &amp; Projections">Sec 2: Execution &amp; Projections (100)</button>
             <button class="case-section-btn" data-section="Section 3: Filtering, Predicates &amp; Three-Valued Logic">Sec 3: Filtering &amp; 3VL (100)</button>
@@ -589,21 +683,22 @@
             <button class="case-section-btn" data-section="Section 5: Sorting, Determinism &amp; Slicing">Sec 5: Sorting &amp; Slicing (100)</button>
             <button class="case-section-btn section-btn-aggregations" data-section="Section 6: Aggregations, Statistical Metrics &amp; GROUP BY">🔥 Sec 6: Aggregations &amp; GROUP BY (100)</button>
             <button class="case-section-btn section-btn-math" data-section="Section 7: Spatial Coordinates, Math Functions &amp; Medians" style="border-color: rgba(56, 189, 248, 0.4); color: #38bdf8;">📍 Sec 7: Spatial Math &amp; Medians (50)</button>
+            <button class="case-section-btn section-btn-joins" data-section="Section 8: Relational Joins &amp; Financial Data Modeling" style="border-color: rgba(74, 222, 128, 0.4); color: #4ade80;">🔗 Sec 8: Relational Joins (FA/DA/BA) (390)</button>
           </div>
 
           <!-- Difficulty & Industry Strips -->
           <div style="display: flex; flex-direction: column; gap: 8px;">
             <div class="filter-strip-row" id="caseDifficultyFilters">
               <span class="filter-strip-label">Difficulty:</span>
-              <button class="case-diff-filter-btn active" data-diff="all">All Difficulties (600)</button>
-              <button class="case-diff-filter-btn diff-pill-easy" data-diff="Easy">🟢 Easy &bull; Foundations (233)</button>
-              <button class="case-diff-filter-btn diff-pill-medium" data-diff="Medium">🟡 Medium &bull; Production Standard (233)</button>
-              <button class="case-diff-filter-btn diff-pill-hard" data-diff="Hard">🔴 Hard &bull; Senior Edge Cases (134)</button>
+              <button class="case-diff-filter-btn active" data-diff="all">All Difficulties (1040)</button>
+              <button class="case-diff-filter-btn diff-pill-easy" data-diff="Easy">🟢 Easy &bull; Foundations (380)</button>
+              <button class="case-diff-filter-btn diff-pill-medium" data-diff="Medium">🟡 Medium &bull; Production Standard (380)</button>
+              <button class="case-diff-filter-btn diff-pill-hard" data-diff="Hard">🔴 Hard &bull; Senior Edge Cases (280)</button>
             </div>
 
             <div class="filter-strip-row" id="caseIndustryFilters">
               <span class="filter-strip-label">Industry:</span>
-              <button class="case-filter-btn active" data-industry="all">All (600)</button>
+              <button class="case-filter-btn active" data-industry="all">All (1040)</button>
               <button class="case-filter-btn" data-industry="Fintech">Fintech (60)</button>
               <button class="case-filter-btn" data-industry="SaaS">SaaS (50)</button>
               <button class="case-filter-btn" data-industry="Retail">Retail (50)</button>
@@ -801,6 +896,22 @@
     </div>
   </div>
 
+  <!-- Slide-out Case Dossier Drawer (High-Density Practice Mode) -->
+  <div class="case-drawer-backdrop" id="caseDrawerBackdrop" onclick="closeCaseDrawer(event)">
+    <div class="case-drawer-panel" onclick="event.stopPropagation()">
+      <div class="case-drawer-header">
+        <div style="display: flex; align-items: center; gap: 10px;">
+          <span class="clause-pill pill-from" id="drawerCaseIdBadge">CASE #001</span>
+          <span style="font-size: 14px; font-weight: 700; color: #fff;" id="drawerCaseTitle">Case Scenario</span>
+        </div>
+        <button class="btn-drawer-close" onclick="closeCaseDrawer()" title="Close Drawer">&times;</button>
+      </div>
+      <div class="case-drawer-body" id="caseDrawerBody">
+        <!-- Dynamically rendered case practice card -->
+      </div>
+    </div>
+  </div>
+
   <!-- Clean Footer -->
   <footer class="app-footer">
     <div class="footer-status">
@@ -821,16 +932,17 @@
 <script src="quests_engine.js"></script>
 <script src="deconstructor_data.js"></script>
 <script src="theory_interview_prep.js"></script>
-<script src="case_studies_500.js?v=53"></script>
-<script src="case_study_blanks.js?v=53"></script>
-<script src="domain_erd_engine.js?v=53"></script>
-<script src="case_dossier_engine.js?v=53"></script>
+<script src="case_studies_500.js?v=57"></script>
+<script src="case_study_blanks.js?v=57"></script>
+<script src="domain_erd_engine.js?v=57"></script>
+<script src="case_dossier_engine.js?v=57"></script>
 <script src="enterprise_erd_data.js"></script>
-<script src="case_simulator_engine.js"></script>
+<script src="case_simulator_engine.js?v=57"></script>
 <script src="foundations_curriculum.js"></script>
-<script src="mcqs_vault_500.js?v=53"></script>
+<script src="mcqs_vault_500.js?v=57"></script>
+<script src="traps_interview_secrets.js?v=57"></script>
 <script src="audio_fx.js"></script>
 <script src="study_library_data.js"></script>
-<script src="app.js?v=53"></script>
+<script src="app.js?v=57"></script>
 </body>
 </html>

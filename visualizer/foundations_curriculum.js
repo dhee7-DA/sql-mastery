@@ -289,6 +289,49 @@ window.FOUNDATIONS_DATA = {
           <text x="530" y="74" fill="#71717a" font-family="monospace" font-size="8" text-anchor="middle">projected_pay</text>
         </svg>
       `
+    },
+    {
+      id: 'join',
+      name: 'JOIN (INNER / LEFT / FULL / ANTI)',
+      category: 'Relational Combination',
+      badgeClass: 'pill-join',
+      executionOrder: '01b (Executes with FROM)',
+      summary: 'Combines rows from two or more tables based on a related common key (Foreign Key <-> Primary Key).',
+      concept: 'JOIN executes as part of the FROM clause. It builds a virtual composite working table by checking the ON predicate. An INNER JOIN keeps only matching pairs. A LEFT JOIN preserves all rows from the driving left table, padding missing right-table columns with NULL. An Anti-Join filters on WHERE right.key IS NULL to find disconnected orphan records.',
+      syntax: 'FROM TableA [INNER | LEFT | RIGHT | FULL] JOIN TableB ON TableA.key = TableB.key',
+      rules: [
+        'Executes inside Step 01 (FROM) before WHERE or GROUP BY ever run.',
+        'ON condition governs matching; WHERE condition filters after join completion.',
+        'NULL never equals NULL (NULL = NULL evaluates to UNKNOWN, not TRUE).',
+        'Filtering right-table columns in WHERE silently converts a LEFT JOIN into an INNER JOIN!'
+      ],
+      gotcha: 'Putting a right-table filter in the WHERE clause (e.g., WHERE right.city = \'NY\') drops all rows where right.city is NULL, secretly destroying your LEFT JOIN! Always place right-table filter predicates in the ON clause.',
+      svgDiagram: `
+        <svg viewBox="0 0 600 120" width="100%" height="120" xmlns="http://www.w3.org/2000/svg">
+          <rect width="600" height="120" fill="#0c0c0f" rx="6" stroke="#232328"/>
+          <g transform="translate(30, 25)">
+            <rect width="140" height="70" rx="4" fill="#141418" stroke="#4ade80" stroke-width="1.5"/>
+            <text x="70" y="32" fill="#4ade80" font-family="monospace" font-size="11" font-weight="700" text-anchor="middle">TABLE A (LEFT)</text>
+            <text x="70" y="52" fill="#d1d5db" font-family="monospace" font-size="9" text-anchor="middle">FK: dept_id</text>
+          </g>
+          <g transform="translate(200, 45)">
+            <path d="M 0 15 L 70 15" stroke="#dfcaa9" stroke-width="2" stroke-dasharray="3,3"/>
+            <rect x="15" y="-5" width="40" height="30" rx="3" fill="rgba(209, 184, 150, 0.2)" stroke="#dfcaa9"/>
+            <text x="35" y="15" fill="#dfcaa9" font-family="monospace" font-size="10" font-weight="700" text-anchor="middle">ON =</text>
+          </g>
+          <g transform="translate(300, 25)">
+            <rect width="140" height="70" rx="4" fill="#141418" stroke="#38bdf8" stroke-width="1.5"/>
+            <text x="70" y="32" fill="#38bdf8" font-family="monospace" font-size="11" font-weight="700" text-anchor="middle">TABLE B (RIGHT)</text>
+            <text x="70" y="52" fill="#d1d5db" font-family="monospace" font-size="9" text-anchor="middle">PK: dept_id</text>
+          </g>
+          <path d="M 445 60 L 485 60" stroke="#9ec5ad" stroke-width="2"/>
+          <g transform="translate(490, 35)">
+            <rect width="80" height="50" rx="4" fill="rgba(158, 197, 173, 0.15)" stroke="#9ec5ad"/>
+            <text x="40" y="26" fill="#9ec5ad" font-family="monospace" font-size="10" font-weight="700" text-anchor="middle">JOINED</text>
+            <text x="40" y="40" fill="#d1d5db" font-family="monospace" font-size="8" text-anchor="middle">Virtual Buffer</text>
+          </g>
+        </svg>
+      `
     }
   ],
 

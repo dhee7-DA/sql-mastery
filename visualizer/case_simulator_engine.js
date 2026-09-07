@@ -1,16 +1,85 @@
 // =============================================================================
 // IN-CARD LIVE DATA SIMULATOR ENGINE (Zero-Latency Browser Relational Executor)
-// Synthesizes 5 sample disk rows, evaluates WHERE predicates row-by-row with
-// visual match/dropped callouts, and computes projected output results.
+// Synthesizes 5 domain-accurate sample rows, evaluates WHERE predicates & JOINS
+// row-by-row with visual match/dropped callouts, and computes projected output results.
 // =============================================================================
 
-window.CASE_SIMULATOR_ENGINE = (() => {
+const CASE_SIMULATOR_ENGINE = (() => {
   // Generate 5 domain-accurate rows for any case study
   function generateSampleRows(caseStudy) {
     if (!caseStudy) return [];
 
     const title = (caseStudy.title || '').toLowerCase();
     const industry = (caseStudy.industry || 'Fintech').toLowerCase();
+    const section = (caseStudy.section || '').toLowerCase();
+    const query = (caseStudy.targetQuery || '').toUpperCase();
+
+    // 0. SECTION 8: RELATIONAL JOINS & FINANCIAL DATA MODELING (FA / DA / BA FOCUS)
+    if (section.includes('joins') || (caseStudy.id >= 651 && caseStudy.id <= 1040) || query.includes(' JOIN ')) {
+      // Bank Reconciliation / Anti-Join
+      if (title.includes('bank') || title.includes('reconciliation') || title.includes('disbursement') || query.includes('IS NULL')) {
+        return [
+          { check_id: 1001, vendor_name: "AWS Infrastructure", gl_amount_usd: 14500.00, bank_cleared_check: 1001, cleared_amount_usd: 14500.00, rec_status: "RECONCILED" },
+          { check_id: 1002, vendor_name: "Stripe Processing", gl_amount_usd: 3200.00, bank_cleared_check: 1002, cleared_amount_usd: 3200.00, rec_status: "RECONCILED" },
+          { check_id: 1003, vendor_name: "Deloitte & Touche", gl_amount_usd: 75000.00, bank_cleared_check: null, cleared_amount_usd: null, rec_status: "OUTSTANDING_CHECK" },
+          { check_id: 1004, vendor_name: "Google Workspace", gl_amount_usd: 1850.00, bank_cleared_check: 1004, cleared_amount_usd: 1850.00, rec_status: "RECONCILED" },
+          { check_id: 1005, vendor_name: "Cisco Networking", gl_amount_usd: 28400.00, bank_cleared_check: null, cleared_amount_usd: null, rec_status: "OUTSTANDING_CHECK" }
+        ];
+      }
+
+      // Budget vs Actual Spend Variance (Left Join Zero-Preservation)
+      if (title.includes('budget') || title.includes('variance') || title.includes('actual') || title.includes('spend')) {
+        return [
+          { dept_name: "Core Engineering", budget_allocated_usd: 500000.00, actual_spend_usd: 480000.00, variance_usd: -20000.00, audit_tag: "UNDER_BUDGET" },
+          { dept_name: "Performance Marketing", budget_allocated_usd: 250000.00, actual_spend_usd: 310000.00, variance_usd: +60000.00, audit_tag: "OVER_BUDGET" },
+          { dept_name: "Direct Sales & Field", budget_allocated_usd: 400000.00, actual_spend_usd: 395000.00, variance_usd: -5000.00, audit_tag: "ON_BUDGET" },
+          { dept_name: "Executive & Legal", budget_allocated_usd: 150000.00, actual_spend_usd: 142000.00, variance_usd: -8000.00, audit_tag: "UNDER_BUDGET" },
+          { dept_name: "Emerging R&D Labs", budget_allocated_usd: 300000.00, actual_spend_usd: null, variance_usd: -300000.00, audit_tag: "ZERO_SPEND_LINE" }
+        ];
+      }
+
+      // FX Conversion / Daily Spot Rates (Multi-Currency Composite Join)
+      if (title.includes('fx') || title.includes('currency') || title.includes('rate') || title.includes('multicurrency')) {
+        return [
+          { tx_id: "FX-901", orig_currency: "EUR", orig_amount: 10000.00, fx_rate_to_usd: 1.0850, converted_usd: 10850.00, rate_date: "2026-03-01" },
+          { tx_id: "FX-902", orig_currency: "GBP", orig_amount: 5000.00, fx_rate_to_usd: 1.2920, converted_usd: 6460.00, rate_date: "2026-03-01" },
+          { tx_id: "FX-903", orig_currency: "JPY", orig_amount: 1500000.00, fx_rate_to_usd: 0.0067, converted_usd: 10050.00, rate_date: "2026-03-01" },
+          { tx_id: "FX-904", orig_currency: "CAD", orig_amount: 8000.00, fx_rate_to_usd: 0.7350, converted_usd: 5880.00, rate_date: "2026-03-01" },
+          { tx_id: "FX-905", orig_currency: "CHF", orig_amount: 12000.00, fx_rate_to_usd: 1.1200, converted_usd: 13440.00, rate_date: "2026-03-01" }
+        ];
+      }
+
+      // Tiered Commission / Non-Equi Range Join (BETWEEN min AND max)
+      if (title.includes('commission') || title.includes('tier') || title.includes('bracket') || query.includes('BETWEEN')) {
+        return [
+          { rep_id: "REP_01", rep_name: "Jordan Vance", quarterly_sales_usd: 125000.00, commission_tier: "Tier 3 (Gold)", commission_pct: 12.5, payout_usd: 15625.00 },
+          { rep_id: "REP_02", rep_name: "Elena Rostova", quarterly_sales_usd: 45000.00, commission_tier: "Tier 1 (Silver)", commission_pct: 5.0, payout_usd: 2250.00 },
+          { rep_id: "REP_03", rep_name: "Marcus Aurelius", quarterly_sales_usd: 210000.00, commission_tier: "Tier 4 (Platinum)", commission_pct: 18.0, payout_usd: 37800.00 },
+          { rep_id: "REP_04", rep_name: "Chloe Bennett", quarterly_sales_usd: 82000.00, commission_tier: "Tier 2 (Bronze)", commission_pct: 8.0, payout_usd: 6560.00 },
+          { rep_id: "REP_05", rep_name: "David Kim", quarterly_sales_usd: 15000.00, commission_tier: "Tier 0 (Base)", commission_pct: 2.0, payout_usd: 300.00 }
+        ];
+      }
+
+      // Organizational Hierarchy / Managerial Rollup (Self Join)
+      if (title.includes('hierarchy') || title.includes('manager') || title.includes('rollup') || title.includes('self')) {
+        return [
+          { emp_id: 101, emp_name: "Sarah Connors", title: "VP Finance", manager_id: 999, manager_name: "Alex Stone (CEO)", level_depth: 2 },
+          { emp_id: 102, emp_name: "David Zhang", title: "Sr. FP&A Analyst", manager_id: 101, manager_name: "Sarah Connors (VP)", level_depth: 3 },
+          { emp_id: 103, emp_name: "Maria Santos", title: "Staff Accountant", manager_id: 101, manager_name: "Sarah Connors (VP)", level_depth: 3 },
+          { emp_id: 104, emp_name: "Alex Stone", title: "Chief Executive Officer", manager_id: null, manager_name: "NULL (Board of Directors)", level_depth: 1 },
+          { emp_id: 105, emp_name: "Kevin Lin", title: "Junior Analyst", manager_id: 102, manager_name: "David Zhang (Lead)", level_depth: 4 }
+        ];
+      }
+
+      // Default General Relational Join Sample Data
+      return [
+        { tx_id: "TX_101", customer_id: "CUS_401", customer_name: "Alpha Holdings", order_total_usd: 12500.00, dept_id: 10, region: "NA_EAST" },
+        { tx_id: "TX_102", customer_id: "CUS_402", customer_name: "Beta Global", order_total_usd: 850.00, dept_id: 20, region: "EMEA" },
+        { tx_id: "TX_103", customer_id: "CUS_403", customer_name: "Gamma Capital", order_total_usd: 45000.00, dept_id: 10, region: "NA_WEST" },
+        { tx_id: "TX_104", customer_id: "CUS_404", customer_name: "Delta Trust", order_total_usd: 320.00, dept_id: 30, region: "APAC" },
+        { tx_id: "TX_105", customer_id: "CUS_405", customer_name: "Epsilon Ventures", order_total_usd: 98000.00, dept_id: null, region: "UNASSIGNED" }
+      ];
+    }
 
     // 1. Stripe / Payment Charges Cases
     if (industry === 'fintech' || title.includes('stripe') || title.includes('transaction') || title.includes('charge')) {
@@ -70,42 +139,100 @@ window.CASE_SIMULATOR_ENGINE = (() => {
   function runSimulation(caseStudy) {
     const rawRows = generateSampleRows(caseStudy);
     const query = (caseStudy.targetQuery || '').toUpperCase();
+    const section = (caseStudy.section || '').toLowerCase();
+    const isJoinSection = section.includes('joins') || (caseStudy.id >= 651 && caseStudy.id <= 1040) || query.includes(' JOIN ');
 
     // Parse conditions
     const evalResults = rawRows.map((row, idx) => {
       let passed = true;
       let reason = "Satisfies all WHERE predicates";
 
-      // Status check
-      if (query.includes("STATUS = 'SUCCEEDED'") && row.status && row.status !== 'SUCCEEDED') {
-        passed = false;
-        reason = `Dropped: status is '${row.status}', not 'SUCCEEDED'`;
-      } else if (query.includes("STATUS = 'ACTIVE'") && row.status && row.status !== 'ACTIVE') {
-        passed = false;
-        reason = `Dropped: status is '${row.status}', not 'ACTIVE'`;
-      } else if (query.includes("IS_ACTIVE = TRUE") && row.is_active === false) {
-        passed = false;
-        reason = `Dropped: is_active is FALSE`;
-      } else if (query.includes("IS_FROZEN = FALSE") && row.is_frozen === true) {
-        passed = false;
-        reason = `Dropped: card is FROZEN`;
-      } else if (query.includes("SPO2_PCT < 90") && row.spo2_pct && row.spo2_pct >= 90) {
-        passed = false;
-        reason = `Dropped: spo2_pct (${row.spo2_pct}%) is not < 90%`;
-      } else if (query.includes("AMOUNT_USD >=") && row.amount_usd) {
-        const threshold = query.includes("10000") ? 10000 : (query.includes("5000") ? 5000 : 1000);
-        if (row.amount_usd < threshold) {
-          passed = false;
-          reason = `Dropped: amount_usd ($${row.amount_usd}) < threshold ($${threshold})`;
+      // 1. Relational Joins & Financial Analysis Conditions
+      if (isJoinSection) {
+        // Anti-Join Filter: WHERE right_table.key IS NULL
+        if (query.includes("IS NULL")) {
+          const hasNullKey = Object.values(row).some(v => v === null);
+          if (hasNullKey) {
+            passed = true;
+            reason = "Preserved by Anti-Join: Right key IS NULL (Unreconciled orphan item detected)";
+          } else {
+            passed = false;
+            reason = "Dropped by Anti-Join: Right table match found (Reconciled/cleared)";
+          }
         }
-      } else if (query.includes("PRIORITY_LEVEL = 1") && row.priority_level && row.priority_level !== 1) {
-        passed = false;
-        reason = `Dropped: priority_level is ${row.priority_level}, not 1`;
-      } else {
-        // Natural distribution (ensure at least 2 pass and at least 2 fail)
-        if (idx === 2 || idx === 3) {
+        // Inner Join Foreign Key Match
+        else if (query.includes("INNER JOIN")) {
+          const hasNullKey = Object.values(row).some(v => v === null);
+          if (hasNullKey) {
+            passed = false;
+            reason = "Dropped by INNER JOIN: No matching primary key in right table (Foreign key violation/NULL)";
+          } else {
+            passed = true;
+            reason = "Matched by INNER JOIN: Relational keys equal on both sides";
+          }
+        }
+        // Left Join Full Preservation
+        else if (query.includes("LEFT JOIN")) {
+          passed = true;
+          const hasNullRight = Object.values(row).some(v => v === null);
+          reason = hasNullRight 
+            ? "Preserved by LEFT JOIN: Right columns padded with NULL ($0 spend / unassigned preserved)"
+            : "Preserved by LEFT JOIN: Exact relational foreign key match found";
+        }
+        // Non-Equi Join (Range Tiers with BETWEEN)
+        else if (query.includes("BETWEEN")) {
+          passed = true;
+          reason = "Matched by Non-Equi JOIN: Metric sits precisely between tier min and max thresholds";
+        }
+        // Self Join (Hierarchy)
+        else if (query.includes("SELF") || query.includes("MANAGER")) {
+          if (row.manager_id === null) {
+            passed = query.includes("LEFT JOIN");
+            reason = passed ? "Top Executive: Root node in hierarchy preserved with NULL manager" : "Dropped: Has no manager";
+          } else {
+            passed = true;
+            reason = "Matched by Self JOIN: Employee joins recursively with manager record";
+          }
+        }
+        // General Join
+        else {
+          passed = true;
+          reason = "Joined successfully across relational keys";
+        }
+      }
+      // 2. Standard Single-Table WHERE Filters
+      else {
+        // Status check
+        if (query.includes("STATUS = 'SUCCEEDED'") && row.status && row.status !== 'SUCCEEDED') {
           passed = false;
-          reason = "Dropped: Does not meet compound filter criteria";
+          reason = `Dropped: status is '${row.status}', not 'SUCCEEDED'`;
+        } else if (query.includes("STATUS = 'ACTIVE'") && row.status && row.status !== 'ACTIVE') {
+          passed = false;
+          reason = `Dropped: status is '${row.status}', not 'ACTIVE'`;
+        } else if (query.includes("IS_ACTIVE = TRUE") && row.is_active === false) {
+          passed = false;
+          reason = `Dropped: is_active is FALSE`;
+        } else if (query.includes("IS_FROZEN = FALSE") && row.is_frozen === true) {
+          passed = false;
+          reason = `Dropped: card is FROZEN`;
+        } else if (query.includes("SPO2_PCT < 90") && row.spo2_pct && row.spo2_pct >= 90) {
+          passed = false;
+          reason = `Dropped: spo2_pct (${row.spo2_pct}%) is not < 90%`;
+        } else if (query.includes("AMOUNT_USD >=") && row.amount_usd) {
+          const threshold = query.includes("10000") ? 10000 : (query.includes("5000") ? 5000 : 1000);
+          if (row.amount_usd < threshold) {
+            passed = false;
+            reason = `Dropped: amount_usd ($${row.amount_usd}) < threshold ($${threshold})`;
+          }
+        } else if (query.includes("PRIORITY_LEVEL = 1") && row.priority_level && row.priority_level !== 1) {
+          passed = false;
+          reason = `Dropped: priority_level is ${row.priority_level}, not 1`;
+        } else {
+          // Natural distribution (ensure at least 2 pass and at least 2 fail)
+          if (idx === 2 || idx === 3) {
+            passed = false;
+            reason = "Dropped: Does not meet compound filter criteria";
+          }
         }
       }
 
@@ -123,8 +250,8 @@ window.CASE_SIMULATOR_ENGINE = (() => {
     // Sort simulation if ORDER BY is present
     if (query.includes("ORDER BY") && query.includes("DESC")) {
       passedRows.sort((a, b) => {
-        const valA = a.amount_usd || a.order_total_usd || a.monthly_mrr_usd || a.record_id || 0;
-        const valB = b.amount_usd || b.order_total_usd || b.monthly_mrr_usd || b.record_id || 0;
+        const valA = a.amount_usd || a.order_total_usd || a.monthly_mrr_usd || a.gl_amount_usd || a.record_id || 0;
+        const valB = b.amount_usd || b.order_total_usd || b.monthly_mrr_usd || b.gl_amount_usd || b.record_id || 0;
         return valB - valA;
       });
     }
@@ -146,7 +273,7 @@ window.CASE_SIMULATOR_ENGINE = (() => {
       stats: {
         diskRowsScanned: rawRows.length,
         outputRowsCount: finalOutput.length,
-        executionTimeMs: 0.35
+        executionTimeMs: 0.32
       }
     };
   }
@@ -156,3 +283,11 @@ window.CASE_SIMULATOR_ENGINE = (() => {
     runSimulation
   };
 })();
+
+if (typeof window !== 'undefined') {
+  window.CASE_SIMULATOR_ENGINE = CASE_SIMULATOR_ENGINE;
+}
+
+if (typeof module !== 'undefined' && module.exports) {
+  module.exports = CASE_SIMULATOR_ENGINE;
+}

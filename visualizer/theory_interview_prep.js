@@ -135,6 +135,32 @@ window.THEORY_INTERVIEW_PREP = {
         }
       ],
       interviewTrap: "Interview Question: 'Why does adding WHERE UPPER(email) = 'ALICE@CORP.COM' break an existing index on email?'\nAnswer: Wrapping an indexed column inside a scalar function forces the database engine to perform a Full Table Scan because the index holds raw 'email' values, not evaluated 'UPPER(email)' values. To fix this, use a Functional Index or normalize inputs before querying."
+    },
+    {
+      id: "mod_join_algorithms",
+      title: "6. Relational Join Physical Execution Algorithms",
+      icon: "⚙️",
+      summary: "How database optimizers physically execute joins: Nested Loop, In-Memory Hash Join, and Sort-Merge Join.",
+      concepts: [
+        {
+          heading: "Physical Join Algorithms",
+          bullets: [
+            "Nested Loop Join: The engine iterates through the outer driving table row-by-row and executes an index seek on the inner table for each row. Ideal for OLTP when the outer table is small (<1,000 rows) and the inner table has a B-Tree index on the foreign key.",
+            "Hash Join: The engine scans the smaller table, builds an in-memory Hash Table on the join key, and then streams the larger table probing the hash bucket in O(1) time per row (total O(M + N)). Default for large unindexed joins in modern analytical engines (Snowflake, BigQuery, MySQL 8.0+).",
+            "Sort-Merge Join: Both tables are sorted by the join key, and two pointers advance sequentially through the sorted streams in one linear pass. Highly efficient when data is already physically ordered by clustered indexes or for FULL OUTER JOINs."
+          ]
+        },
+        {
+          heading: "Memory Spills & Performance Gotchas",
+          bullets: [
+            "Hash Table Memory Spill: If the smaller table's hash table exceeds RAM buffer pool limits (e.g. work_mem in Postgres), it spills partitions to NVMe/disk, causing steep 10x-100x latency degradation.",
+            "Cartesian Explosion: Omitting an ON condition triggers a CROSS JOIN, forcing the optimizer into an N x M Nested Loop that exhausts CPU and disk space.",
+            "Anti-Join Optimization: Database engines rewrite 'LEFT JOIN ... WHERE right.key IS NULL' into an optimized physical Hash Anti-Join or Null-Aware Anti-Join that terminates immediately upon finding any match."
+          ]
+        }
+      ],
+      interviewTrap: "Interview Question: 'Why did my join query slow down 100x when joining two 10-million row tables in production?'\nAnswer: The query optimizer attempted an in-memory Hash Join, but the build-side table exceeded RAM allocation (work_mem/tempdb), causing a massive disk-spill bottleneck. To fix this, pre-aggregate or filter the dataset before joining, or ensure appropriate foreign key B-Tree indexes exist to allow index seeks."
     }
   ]
 };
+

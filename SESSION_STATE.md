@@ -6,19 +6,19 @@
 
 ## 📌 Current Snapshot
 
-- **Current Sprint**: **Phase 1, 2, Day 05 & Day 06 Completed ➡️ Ready for Day 08 (Relational Joins)**
-- **Active Module**: `day-06-station-math-aggregates` (Completed) ➡️ Next: `day-08-basic-joins`
+- **Current Sprint**: **Day 08 Completed (Basic Relational Joins) ➡️ Ready for Day 09 (Intermediate Joins)**
+- **Active Module**: `day-08-basic-joins` (Completed) ➡️ Next: `day-09-intermediate-joins`
 - **Current Dialect**: **MySQL 8.0+ / ANSI SQL**
-- **Major Milestone Achieved**: 🏆 **HACKERRANK AGGREGATION TRACK 100% CONQUERED (Station 2, 13–20 + Top Earners + Medians)!**
+- **Major Milestone Achieved**: 🏆 **HACKERRANK BASIC JOINS CONQUERED (Asian Pop, African Cities, Continent Averages + Anti-Joins)!**
 - **Visualizer Super-Upgrades**:
-  - **Query Studio Dynamic Table Injection**: Synthesizes and executes 600 case studies or custom queries on the fly.
-  - **600 Enterprise Case Studies Vault** (Cases 501–600 for Aggregations & GROUP BY across 10 industries).
-  - **500 Master MCQ Technical Vault** (50 deep questions for each of the 10 core SQL keywords, balanced ~25% each A/B/C/D).
-  - **26 Interactive Quests** (6 Aggregation levels added, Levels 21–26).
-  - **Top Multi-Domain ERD Map**: Mounted across 10 global corporate domains.
-- **Next Immediate Action**: Advance to Day 08 (*Relational Joins: INNER JOIN, LEFT JOIN, ON vs WHERE*)
-- **Total Problems Completed in Intensive**: 40 / 58 Problems
-- **Last Updated**: 2026-09-07 11:55 IST
+  - **The 1,040 Corporate Case Study Master Vault**: Scaled with Section 8 (*Relational Joins & Financial Data Modeling*) containing **390 compound practice cases** (130 Easy, 130 Medium, 130 Hard) spanning 10 corporate domains.
+  - **The 600 Master MCQ Technical Vault**: 600 deep technical checks across 12 core SQL foundations including relational joins.
+  - **30 Interactive Quests**: Levels 1–30 with audio FX, token puzzle mechanics, and instant evaluation.
+  - **Zero-Latency In-Card Simulator Engine**: Real-time browser-relational execution simulating multi-table foreign keys, anti-joins, zero-spend variance with COALESCE, and tiered commission lookups.
+  - **Track 04 in Guided Learning Lab**: 8 dedicated steps covering Inner, Left, Right, Full Outer, Anti, Cross, Self, and Non-Equi Joins.
+- **Next Immediate Action**: Practice Section 8 Joins in Visualizer or Advance to Day 09 (*Intermediate Joins: Non-Equi Joins, BETWEEN, Self Joins, Multi-Table Chains*)
+- **Total Problems Completed in Intensive**: 43 / 58 Problems
+- **Last Updated**: 2026-09-08 01:15 IST
 
 ---
 
@@ -32,8 +32,8 @@
 | **04** | [`day-04-advanced-select-case`](./day-04-advanced-select-case) | `CASE WHEN`, Type of Triangle, Multi-branching logic | 1/1 | ✅ Completed (100%) |
 | **05** | [`day-05-basic-aggregations`](./day-05-basic-aggregations) | `COUNT`, `SUM`, `AVG`, `ROUND`, Top Earners, Density Diff | 10/10 | ✅ Completed (100%) |
 | **06** | [`day-06-station-math-aggregates`](./day-06-station-math-aggregates) | Station 2, 13–20 (Manhattan & Euclidean Distances, Medians) | 9/9 | ✅ Completed (100%) |
-| **08** | `day-08-basic-joins` | `INNER JOIN`, `LEFT JOIN`, Asian Pop, African Cities, Continents | 0/8 | 🟡 Next Up |
-| **09** | `day-09-intermediate-joins` | The Report, Top Competitors, Ollivander's Inventory | 0/8 | ⚪ Pending |
+| **08** | [`day-08-basic-joins`](./day-08-basic-joins) | `INNER JOIN`, `LEFT JOIN`, Asian Pop, African Cities, Continents, Anti-Joins | 3/3 | ✅ Completed (100%) |
+| **09** | `day-09-intermediate-joins` | The Report, Top Competitors, Ollivander's Inventory, Non-Equi Joins | 0/8 | 🟡 Next Up |
 | **10** | `day-10-advanced-joins-scoring` | Contest Leaderboard, Placements, Symmetric Pairs | 0/5 | ⚪ Pending |
 | **11** | `day-11-window-ranking` | `ROW_NUMBER()`, `RANK()`, `DENSE_RANK()`, `NTILE()` | 0/8 | ⚪ Pending |
 | **12** | `day-12-window-aggregates` | `LAG()`, `LEAD()`, Running Totals, Moving Averages | 0/8 | ⚪ Pending |
