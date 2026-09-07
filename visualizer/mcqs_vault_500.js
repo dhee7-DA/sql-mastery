@@ -1,6 +1,6 @@
 // =============================================================================
-// THE 500 MASTER MCQ VAULT: INSTITUTIONAL-GRADE TECHNICAL QUESTIONS
-// 50 Questions per keyword across 10 foundational and aggregation keywords
+// THE 550 MASTER MCQ VAULT: INSTITUTIONAL-GRADE TECHNICAL QUESTIONS
+// Foundational SQL, Aggregations, Spatial Coordinates & Statistical Medians
 // =============================================================================
 
 window.MCQS_VAULT_500 = [
@@ -7003,6 +7003,706 @@ window.MCQS_VAULT_500 = [
     ],
     "correctIndex": 0,
     "explanation": "If sorted by a non-unique column (e.g. ORDER BY salary DESC LIMIT 3) without a secondary unique tie-breaker (id ASC), rows with duplicate salaries can swap places unpredictably between queries."
+  },
+  {
+    "id": "mcq_math_1",
+    "keyword": "MATH & MEDIANS",
+    "tag": "🍡 Quick Snack",
+    "question": "[MATH & MEDIANS #1] Why is there no universal MEDIAN() aggregate function in standard ANSI SQL or MySQL 8.0?",
+    "options": [
+      "Calculating exact median requires sorting the entire dataset, which does not fit cleanly into single-pass streaming aggregation (like SUM or COUNT)",
+      "The ANSI SQL standards committee deprecated MEDIAN() in 1999 due to floating point security bugs",
+      "MEDIAN can only be calculated on prime numbers, so databases reject it",
+      "SQL engines can only compute linear algebraic operations, not statistical percentiles"
+    ],
+    "correctIndex": 0,
+    "explanation": "Stream aggregates like SUM() and COUNT() maintain state in O(1) memory during a single scan. In contrast, finding the exact median requires global ordering or rank indexing (O(N log N) or two passes), so ANSI SQL left percentiles to window functions (PERCENTILE_CONT) or dialect-specific implementations."
+  },
+  {
+    "id": "mcq_math_2",
+    "keyword": "MATH & MEDIANS",
+    "tag": "⚡ Gotcha Trap",
+    "question": "[MATH & MEDIANS #2] What is the key functional difference between ROUND(123.456, 2) and TRUNCATE(123.456, 2) in MySQL?",
+    "options": [
+      "ROUND converts to floating point while TRUNCATE converts to an integer string",
+      "ROUND rounds up to 123.46 based on the next digit; TRUNCATE chops off trailing decimals to 123.45 without rounding",
+      "TRUNCATE deletes the table column while ROUND formats display only",
+      "There is no difference; both produce 123.46"
+    ],
+    "correctIndex": 1,
+    "explanation": "ROUND(n, d) performs mathematical half-up rounding on digit d+1. TRUNCATE(n, d) simply discards any decimal places beyond position d without altering earlier digits."
+  },
+  {
+    "id": "mcq_math_3",
+    "keyword": "MATH & MEDIANS",
+    "tag": "🐱 Brain Bender",
+    "question": "[MATH & MEDIANS #3] In MySQL, what is the return value of ROUND(2.5) vs ROUND(3.5)?",
+    "options": [
+      "2 and 4 (banker's rounding to nearest even number)",
+      "2 and 3 (floor rounding)",
+      "3 and 4 (MySQL performs round-half-up for exact numeric types, moving away from zero)",
+      "3 and 3 (nearest odd number)"
+    ],
+    "correctIndex": 2,
+    "explanation": "For exact-value numeric types (DECIMAL/INT), MySQL uses 'round half away from zero': 2.5 rounds to 3, and -2.5 rounds to -3. Note that Python 3 and IEEE-754 floating-point use banker's rounding (round to even)."
+  },
+  {
+    "id": "mcq_math_4",
+    "keyword": "MATH & MEDIANS",
+    "tag": "🎯 Core Concept",
+    "question": "[MATH & MEDIANS #4] In 2D grid coordinates (x1, y1) and (x2, y2), what is the Manhattan (Taxicab / L1 Norm) Distance formula in SQL?",
+    "options": [
+      "SQRT(POW(x1 - x2, 2) + POW(y1 - y2, 2))",
+      "(x1 - x2) * (y1 - y2)",
+      "POW(ABS(x1 - x2), 2) + POW(ABS(y1 - y2), 2)",
+      "ABS(x1 - x2) + ABS(y1 - y2)"
+    ],
+    "correctIndex": 3,
+    "explanation": "Manhattan Distance measures distance along orthogonal axes (city blocks). The formula is |x1 - x2| + |y1 - y2|, implemented in SQL as ABS(x1 - x2) + ABS(y1 - y2)."
+  },
+  {
+    "id": "mcq_math_5",
+    "keyword": "MATH & MEDIANS",
+    "tag": "🏆 Senior Staff",
+    "question": "[MATH & MEDIANS #5] When calculating Manhattan Distance between P1(MIN(LAT_N), MIN(LONG_W)) and P2(MAX(LAT_N), MAX(LONG_W)), why can ABS() be safely omitted?",
+    "options": [
+      "Because MAX is mathematically guaranteed to be greater than or equal to MIN, so (MAX - MIN) is always >= 0",
+      "Because SQL automatically inverts negative numbers in SELECT clauses",
+      "Because coordinates cannot be negative numbers in GPS systems",
+      "Because the query optimizer replaces MIN and MAX with absolute magnitudes"
+    ],
+    "correctIndex": 0,
+    "explanation": "Since by definition MAX(col) >= MIN(col) for any non-empty set, (MAX(col) - MIN(col)) is inherently non-negative. Thus |MAX - MIN| = MAX - MIN."
+  },
+  {
+    "id": "mcq_math_6",
+    "keyword": "MATH & MEDIANS",
+    "tag": "🍡 Quick Snack",
+    "question": "[MATH & MEDIANS #6] What is the Euclidean (L2 Norm / Straight-Line) Distance formula in MySQL between (x1, y1) and (x2, y2)?",
+    "options": [
+      "POW(SQRT(x1 - x2), 2) + POW(SQRT(y1 - y2), 2)",
+      "SQRT(POW(x1 - x2, 2) + POW(y1 - y2, 2))",
+      "ABS(x1 - x2) + ABS(y1 - y2)",
+      "SQRT(ABS(x1 - x2) + ABS(y1 - y2))"
+    ],
+    "correctIndex": 1,
+    "explanation": "Euclidean distance is the straight-line hypotenuse derived from the Pythagorean theorem: sqrt((Δx)² + (Δy)²). In MySQL, this is computed via SQRT(POW(x1 - x2, 2) + POW(y1 - y2, 2))."
+  },
+  {
+    "id": "mcq_math_7",
+    "keyword": "MATH & MEDIANS",
+    "tag": "⚡ Gotcha Trap",
+    "question": "[MATH & MEDIANS #7] To query Western Longitude (LONG_W) corresponding to the LARGEST Northern Latitude (LAT_N) under 137.2345, which query is most performant?",
+    "options": [
+      "SELECT LONG_W FROM STATION WHERE LAT_N = (SELECT MAX(LAT_N) FROM STATION WHERE LAT_N < 137.2345);",
+      "SELECT MAX(LONG_W) FROM STATION WHERE LAT_N < 137.2345;",
+      "SELECT LONG_W FROM STATION WHERE LAT_N < 137.2345 ORDER BY LAT_N DESC LIMIT 1;",
+      "SELECT LONG_W, MAX(LAT_N) FROM STATION GROUP BY LONG_W HAVING LAT_N < 137.2345;"
+    ],
+    "correctIndex": 2,
+    "explanation": "ORDER BY LAT_N DESC LIMIT 1 scans an index on LAT_N in reverse and halts after retrieving the first matching row (O(log N) with index or single top-1 heap pass). The subquery approach requires two passes over the table."
+  },
+  {
+    "id": "mcq_math_8",
+    "keyword": "MATH & MEDIANS",
+    "tag": "🐱 Brain Bender",
+    "question": "[MATH & MEDIANS #8] Why is 'SELECT LONG_W, MAX(LAT_N) FROM STATION WHERE LAT_N < 137.2345;' invalid in standard SQL?",
+    "options": [
+      "STATION cannot contain both numbers and strings",
+      "WHERE clauses cannot contain decimal values",
+      "MAX() cannot be called inside a SELECT statement that has two columns",
+      "LONG_W is not in a GROUP BY clause and is not an aggregated column, violating SQL-92 / ONLY_FULL_GROUP_BY"
+    ],
+    "correctIndex": 3,
+    "explanation": "Under ONLY_FULL_GROUP_BY, projecting an unaggregated column (LONG_W) alongside an aggregate (MAX(LAT_N)) without GROUP BY is rejected because the engine cannot know which row's LONG_W to return."
+  },
+  {
+    "id": "mcq_math_9",
+    "keyword": "MATH & MEDIANS",
+    "tag": "🎯 Core Concept",
+    "question": "[MATH & MEDIANS #9] In an odd-sized dataset of N = 499 rows sorted by value, which row number represents the exact median?",
+    "options": [
+      "Row 250 (calculated as (N + 1) / 2)",
+      "Row 249",
+      "Row 251",
+      "The average of Row 249 and Row 250"
+    ],
+    "correctIndex": 0,
+    "explanation": "For an odd number of elements N, the median is the single middle element at position (N + 1) / 2. For N = 499, (499 + 1) / 2 = 250."
+  },
+  {
+    "id": "mcq_math_10",
+    "keyword": "MATH & MEDIANS",
+    "tag": "🏆 Senior Staff",
+    "question": "[MATH & MEDIANS #10] In an even-sized dataset of N = 500 rows sorted by value, how is the median mathematically computed?",
+    "options": [
+      "Only row 250 is chosen by dropping the upper half",
+      "The arithmetic mean (average) of elements at positions N/2 (row 250) and (N/2) + 1 (row 251)",
+      "Only row 251 is chosen by ceiling",
+      "The sum of row 250 and row 251 without dividing by 2"
+    ],
+    "correctIndex": 1,
+    "explanation": "For an even count N, there is no single middle element. The median is defined as (Value[N/2] + Value[N/2 + 1]) / 2. For N = 500, that is (Row[250] + Row[251]) / 2."
+  },
+  {
+    "id": "mcq_math_11",
+    "keyword": "MATH & MEDIANS",
+    "tag": "🍡 Quick Snack",
+    "question": "[MATH & MEDIANS #11] Why does the condition 'row_num IN (FLOOR((total + 1) / 2.0), CEIL((total + 1) / 2.0))' work universally for both odd and even counts?",
+    "options": [
+      "Because FLOOR always converts floats to integers and CEIL deletes NULLs",
+      "Because IN requires exactly two arguments in MySQL",
+      "For odd N, FLOOR and CEIL evaluate to the same row (returning 1 row); for even N, they evaluate to N/2 and N/2 + 1 (returning the 2 middle rows)",
+      "Because SQL window functions cannot evaluate fractions"
+    ],
+    "correctIndex": 2,
+    "explanation": "If N=5 (odd), (5+1)/2 = 3.0: FLOOR(3.0)=3, CEIL(3.0)=3 -> IN (3, 3) picks row 3. If N=6 (even), (6+1)/2 = 3.5: FLOOR(3.5)=3, CEIL(3.5)=4 -> IN (3, 4) picks rows 3 and 4. Wrapping in AVG() returns the exact median in both cases!"
+  },
+  {
+    "id": "mcq_math_12",
+    "keyword": "MATH & MEDIANS",
+    "tag": "⚡ Gotcha Trap",
+    "question": "[MATH & MEDIANS #12] When using user variables in MySQL 5.7 to assign row numbers, why is '@r := -1' initialized to -1 instead of 0 for zero-indexed median targeting?",
+    "options": [
+      "MySQL user variables cannot store positive numbers",
+      "To prevent buffer overflow in MySQL memory tables",
+      "Because SQL arrays are 1-indexed so -1 offsets to 1",
+      "Because the first increment '@r := @r + 1' turns -1 into 0, ensuring row indexes start cleanly at 0"
+    ],
+    "correctIndex": 3,
+    "explanation": "Initializing @r := -1 means the first row evaluated gets @r := -1 + 1 = 0. This creates 0-based indexing [0, 1, ..., N-1], where the total count ends up stored in @r, simplifying zero-based median lookups."
+  },
+  {
+    "id": "mcq_math_13",
+    "keyword": "MATH & MEDIANS",
+    "tag": "🐱 Brain Bender",
+    "question": "[MATH & MEDIANS #13] What is the danger of relying on '@r := @r + 1' user variables inside SELECT statements in MySQL 8.0+?",
+    "options": [
+      "Evaluation order of user variables is explicitly undefined in MySQL 8.0 and deprecated, potentially causing non-deterministic results",
+      "User variables cause the database disk to be wiped",
+      "User variables lock all tables for write access indefinitely",
+      "User variables cannot be used in subqueries"
+    ],
+    "correctIndex": 0,
+    "explanation": "The MySQL manual explicitly warns that order of evaluation of expressions involving user variables is undefined and may change between releases. Window functions (ROW_NUMBER) should always be used in MySQL 8.0+."
+  },
+  {
+    "id": "mcq_math_14",
+    "keyword": "MATH & MEDIANS",
+    "tag": "🎯 Core Concept",
+    "question": "[MATH & MEDIANS #14] Which window function generates the exact fractional relative rank (from 0.0 to 1.0) of a row within a partition?",
+    "options": [
+      "DENSE_RANK()",
+      "PERCENT_RANK()",
+      "ROW_NUMBER()",
+      "NTILE(100)"
+    ],
+    "correctIndex": 1,
+    "explanation": "PERCENT_RANK() calculates (rank - 1) / (total_rows - 1), producing values between 0.0 and 1.0. The median can be located where PERCENT_RANK() is closest to 0.5."
+  },
+  {
+    "id": "mcq_math_15",
+    "keyword": "MATH & MEDIANS",
+    "tag": "🏆 Senior Staff",
+    "question": "[MATH & MEDIANS #15] What does the SQL mathematical function ABS(-42.75) return?",
+    "options": [
+      "-42.75",
+      "42",
+      "42.75",
+      "-42"
+    ],
+    "correctIndex": 2,
+    "explanation": "ABS(x) returns the absolute (positive) magnitude of x, stripping the negative sign."
+  },
+  {
+    "id": "mcq_math_16",
+    "keyword": "MATH & MEDIANS",
+    "tag": "🍡 Quick Snack",
+    "question": "[MATH & MEDIANS #16] In MySQL, what does POW(4, 0.5) evaluate to?",
+    "options": [
+      "16.0",
+      "2.5",
+      "8.0",
+      "2.0 (equivalent to SQRT(4))"
+    ],
+    "correctIndex": 3,
+    "explanation": "Raising a number to the power of 0.5 is mathematically identical to taking its square root: POW(x, 0.5) == SQRT(x)."
+  },
+  {
+    "id": "mcq_math_17",
+    "keyword": "MATH & MEDIANS",
+    "tag": "⚡ Gotcha Trap",
+    "question": "[MATH & MEDIANS #17] What is the result of 'SELECT SQRT(-16);' in MySQL?",
+    "options": [
+      "NULL (along with a domain error warning, since real square roots of negative numbers are undefined)",
+      "4",
+      "-4",
+      "4i"
+    ],
+    "correctIndex": 0,
+    "explanation": "In MySQL, SQRT(x) for x < 0 returns NULL and issues a 'numeric value out of range' warning because standard SQL math does not support imaginary/complex numbers."
+  },
+  {
+    "id": "mcq_math_18",
+    "keyword": "MATH & MEDIANS",
+    "tag": "🐱 Brain Bender",
+    "question": "[MATH & MEDIANS #18] What does 'SELECT FLOOR(7.89), CEIL(7.12);' return?",
+    "options": [
+      "8, 7",
+      "7, 8",
+      "7, 7",
+      "8, 8"
+    ],
+    "correctIndex": 1,
+    "explanation": "FLOOR(x) returns the largest integer <= x (7.89 -> 7). CEIL(x) or CEILING(x) returns the smallest integer >= x (7.12 -> 8)."
+  },
+  {
+    "id": "mcq_math_19",
+    "keyword": "MATH & MEDIANS",
+    "tag": "🎯 Core Concept",
+    "question": "[MATH & MEDIANS #19] What is the return value of FLOOR(-3.2) in SQL?",
+    "options": [
+      "-3",
+      "-3.0",
+      "-4",
+      "3"
+    ],
+    "correctIndex": 2,
+    "explanation": "FLOOR moves toward negative infinity. The largest integer less than or equal to -3.2 is -4 (since -4 < -3.2 < -3)."
+  },
+  {
+    "id": "mcq_math_20",
+    "keyword": "MATH & MEDIANS",
+    "tag": "🏆 Senior Staff",
+    "question": "[MATH & MEDIANS #20] When rounding currency values, why is 'DECIMAL(12, 2)' preferred over 'FLOAT' or 'DOUBLE'?",
+    "options": [
+      "DECIMAL consumes 0 bytes of disk storage",
+      "FLOAT cannot store numbers greater than 100",
+      "DOUBLE cannot be used in arithmetic operations like SUM",
+      "DECIMAL is an exact fixed-point representation; FLOAT and DOUBLE are approximate binary floating-point numbers subject to rounding errors"
+    ],
+    "correctIndex": 3,
+    "explanation": "FLOAT and DOUBLE use IEEE-754 binary floating-point, where numbers like 0.1 cannot be stored exactly, accumulating drift (e.g. 0.10000000000000000555). Financial ledgers require DECIMAL for exact decimal accuracy."
+  },
+  {
+    "id": "mcq_math_21",
+    "keyword": "MATH & MEDIANS",
+    "tag": "🍡 Quick Snack",
+    "question": "[MATH & MEDIANS #21] What does 'SELECT ROUND(12345.67, -2);' return in MySQL?",
+    "options": [
+      "12300 (rounding to the hundreds place)",
+      "12345.00",
+      "12345.67",
+      "NULL"
+    ],
+    "correctIndex": 0,
+    "explanation": "A negative precision in ROUND(x, -d) rounds to digits to the left of the decimal point: -1 rounds to tens, -2 rounds to hundreds (12345.67 -> 12300)."
+  },
+  {
+    "id": "mcq_math_22",
+    "keyword": "MATH & MEDIANS",
+    "tag": "⚡ Gotcha Trap",
+    "question": "[MATH & MEDIANS #22] How does 'MOD(17, 5)' behave in MySQL?",
+    "options": [
+      "Returns 3 (the quotient)",
+      "Returns 2 (the remainder after integer division 17 / 5)",
+      "Returns 3.4",
+      "Returns 0.4"
+    ],
+    "correctIndex": 1,
+    "explanation": "MOD(N, M) or N % M returns the remainder of N divided by M. 17 = (5 * 3) + 2, so the remainder is 2."
+  },
+  {
+    "id": "mcq_math_23",
+    "keyword": "MATH & MEDIANS",
+    "tag": "🐱 Brain Bender",
+    "question": "[MATH & MEDIANS #23] What does 'MOD(-17, 5)' return in MySQL vs PostgreSQL?",
+    "options": [
+      "In MySQL: 3 (always positive modulo)",
+      "In MySQL: NULL",
+      "In MySQL: -2; the result takes the sign of the numerator (dividend)",
+      "In MySQL: 2"
+    ],
+    "correctIndex": 2,
+    "explanation": "In MySQL and C/C++, MOD(N, M) uses truncated division: -17 = (5 * -3) + (-2). The remainder carries the sign of the first argument (-17)."
+  },
+  {
+    "id": "mcq_math_24",
+    "keyword": "MATH & MEDIANS",
+    "tag": "🎯 Core Concept",
+    "question": "[MATH & MEDIANS #24] When calculating Euclidean distance between two GPS points on Earth over long distances (>100 km), why is Euclidean distance inaccurate?",
+    "options": [
+      "GPS satellites do not use Cartesian coordinates",
+      "The Pythagorean theorem is mathematically disproven for distances greater than 50 miles",
+      "Latitude lines are diagonal rather than parallel",
+      "Earth is an oblate spheroid with spherical curvature; Euclidean distance assumes a flat 2D plane"
+    ],
+    "correctIndex": 3,
+    "explanation": "Euclidean distance assumes flat 2D Euclidean geometry. For planetary distances, the Haversine formula or Great-Circle Distance (accounting for spherical curvature) is required."
+  },
+  {
+    "id": "mcq_math_25",
+    "keyword": "MATH & MEDIANS",
+    "tag": "🏆 Senior Staff",
+    "question": "[MATH & MEDIANS #25] In MySQL 8.0, which built-in spatial function calculates true spherical distance between two geometry points on an ellipsoid?",
+    "options": [
+      "ST_Distance_Sphere(point1, point2)",
+      "GEODISTANCE(lat1, lon1, lat2, lon2)",
+      "SPHERE_METRIC(p1, p2)",
+      "CALC_HAVERSINE(p1, p2)"
+    ],
+    "correctIndex": 0,
+    "explanation": "MySQL provides spatial GIS functions including ST_Distance_Sphere(p1, p2) to compute the great-circle distance between two geometries on an earth sphere in meters."
+  },
+  {
+    "id": "mcq_math_26",
+    "keyword": "MATH & MEDIANS",
+    "tag": "🍡 Quick Snack",
+    "question": "[MATH & MEDIANS #26] Suppose an e-commerce platform has 10,000 orders where 9,990 orders are $20 and 10 orders are $1,000,000. Why is MEDIAN order value preferred over AVG?",
+    "options": [
+      "AVG() throws an overflow error on sets larger than 5,000 rows",
+      "The mean (AVG) is heavily skewed by extreme outliers ($1M whale orders), while the median accurately reflects typical customer spend ($20)",
+      "MEDIAN runs in O(1) time while AVG runs in O(N^2)",
+      "Financial auditors prohibit the use of AVG() under GAAP accounting"
+    ],
+    "correctIndex": 1,
+    "explanation": "Mean is sensitive to extreme outliers, skewing the reported average to ~$1,020. The median remains $20, reflecting true central tendency without outlier distortion."
+  },
+  {
+    "id": "mcq_math_27",
+    "keyword": "MATH & MEDIANS",
+    "tag": "⚡ Gotcha Trap",
+    "question": "[MATH & MEDIANS #27] In a table of 100,000 rows, how can you quickly approximate the median without sorting all 100,000 rows in modern data warehouses (BigQuery/Snowflake)?",
+    "options": [
+      "SELECT MEDIAN(column) WITH NO SORT;",
+      "SAMPLE 1 ROW FROM table;",
+      "APPROX_QUANTILES(column, 100)[OFFSET(50)] or APPROX_PERCENTILE(column, 0.5)",
+      "AVG(MIN(column) + MAX(column))"
+    ],
+    "correctIndex": 2,
+    "explanation": "Cloud analytical engines use streaming sketch algorithms (like T-Digest or HyperLogLog) via APPROX_QUANTILES or APPROX_PERCENTILE to compute percentiles within 1% error in O(N) single-pass without memory-intensive sorting."
+  },
+  {
+    "id": "mcq_math_28",
+    "keyword": "MATH & MEDIANS",
+    "tag": "🐱 Brain Bender",
+    "question": "[MATH & MEDIANS #28] In MySQL, what is the effect of 'SELECT SIGN(-150.5), SIGN(0), SIGN(42);'?",
+    "options": [
+      "'-', '0', '+'",
+      "-150, 0, 42",
+      "FALSE, NULL, TRUE",
+      "-1, 0, 1"
+    ],
+    "correctIndex": 3,
+    "explanation": "SIGN(x) returns -1 if x < 0, 0 if x = 0, and 1 if x > 0."
+  },
+  {
+    "id": "mcq_math_29",
+    "keyword": "MATH & MEDIANS",
+    "tag": "🎯 Core Concept",
+    "question": "[MATH & MEDIANS #29] Given coordinates X and Y, what does the expression 'SQRT(POW(X, 2) + POW(Y, 2))' represent geometrically?",
+    "options": [
+      "The distance from the origin (0, 0) to point (X, Y)",
+      "The perimeter of the bounding box",
+      "The slope of the line passing through (X, Y)",
+      "The area of the triangle formed by X and Y"
+    ],
+    "correctIndex": 0,
+    "explanation": "By the Pythagorean theorem, the distance from (0, 0) to (X, Y) is sqrt((X - 0)² + (Y - 0)²) = sqrt(X² + Y²)."
+  },
+  {
+    "id": "mcq_math_30",
+    "keyword": "MATH & MEDIANS",
+    "tag": "🏆 Senior Staff",
+    "question": "[MATH & MEDIANS #30] When finding the maximum value under a ceiling (e.g. LAT_N < 137.2345), what happens if NO rows satisfy the predicate?",
+    "options": [
+      "Returns 0",
+      "SELECT MAX(LAT_N) returns NULL",
+      "Throws an EmptyResultSetException error",
+      "Returns 137.2345"
+    ],
+    "correctIndex": 1,
+    "explanation": "Aggregate functions (except COUNT) return NULL when evaluated on an empty set or when all evaluated values are NULL."
+  },
+  {
+    "id": "mcq_math_31",
+    "keyword": "MATH & MEDIANS",
+    "tag": "🍡 Quick Snack",
+    "question": "[MATH & MEDIANS #31] What does 'SELECT ROUND(NULL, 4);' return in SQL?",
+    "options": [
+      "0.0000",
+      "0",
+      "NULL",
+      "An error: NullPointerException"
+    ],
+    "correctIndex": 2,
+    "explanation": "Standard scalar mathematical functions in SQL return NULL whenever any operand is NULL."
+  },
+  {
+    "id": "mcq_math_32",
+    "keyword": "MATH & MEDIANS",
+    "tag": "⚡ Gotcha Trap",
+    "question": "[MATH & MEDIANS #32] Why is 'WHERE LAT_N > 38.7880 AND LAT_N < 137.2345' NOT equivalent to 'WHERE LAT_N BETWEEN 38.7880 AND 137.2345'?",
+    "options": [
+      "BETWEEN only works on integers, not floating point numbers",
+      "BETWEEN evaluates in reverse descending order",
+      "There is no difference; they are strictly identical",
+      "BETWEEN is inclusive (>= and <=), whereas the first condition is strictly exclusive (> and <)"
+    ],
+    "correctIndex": 3,
+    "explanation": "In SQL, 'x BETWEEN a AND b' is syntactic sugar for 'x >= a AND x <= b'. If LAT_N equals exactly 38.7880, BETWEEN includes it, while '>' excludes it."
+  },
+  {
+    "id": "mcq_math_33",
+    "keyword": "MATH & MEDIANS",
+    "tag": "🐱 Brain Bender",
+    "question": "[MATH & MEDIANS #33] What is the time complexity of computing the exact median of N unsorted rows in a standard database engine?",
+    "options": [
+      "O(N log N) because all rows must be sorted by the target attribute",
+      "O(1)",
+      "O(N)",
+      "O(N^2)"
+    ],
+    "correctIndex": 0,
+    "explanation": "Exact median requires determining the middle rank, which requires sorting all N elements (O(N log N)) or using a Quickselect-like partitioning algorithm."
+  },
+  {
+    "id": "mcq_math_34",
+    "keyword": "MATH & MEDIANS",
+    "tag": "🎯 Core Concept",
+    "question": "[MATH & MEDIANS #34] If an index exists on LAT_N (B-Tree), what is the time complexity of 'SELECT LAT_N FROM STATION ORDER BY LAT_N LIMIT 1'?",
+    "options": [
+      "O(N log N)",
+      "O(1) or O(log N) to traverse to the leftmost leaf of the B-Tree index",
+      "O(N^2)",
+      "O(N)"
+    ],
+    "correctIndex": 1,
+    "explanation": "A B-Tree index keeps keys pre-sorted on disk. Finding the minimum is as simple as reading the very first entry on the leftmost leaf node."
+  },
+  {
+    "id": "mcq_math_35",
+    "keyword": "MATH & MEDIANS",
+    "tag": "🏆 Senior Staff",
+    "question": "[MATH & MEDIANS #35] In MySQL, what is the output of 'SELECT CEIL(-4.2);'?",
+    "options": [
+      "-5",
+      "-4.0",
+      "-4 (the smallest integer greater than or equal to -4.2)",
+      "4"
+    ],
+    "correctIndex": 2,
+    "explanation": "CEIL moves toward positive infinity on the number line. The smallest integer >= -4.2 is -4 (since -4 > -4.2)."
+  },
+  {
+    "id": "mcq_math_36",
+    "keyword": "MATH & MEDIANS",
+    "tag": "🍡 Quick Snack",
+    "question": "[MATH & MEDIANS #36] Which SQL operator calculates the remainder of division?",
+    "options": [
+      "REM",
+      "//",
+      "^",
+      "% or MOD()"
+    ],
+    "correctIndex": 3,
+    "explanation": "Both the modulo operator (%) and the MOD(a, b) function calculate the remainder of division in ANSI SQL and MySQL."
+  },
+  {
+    "id": "mcq_math_37",
+    "keyword": "MATH & MEDIANS",
+    "tag": "⚡ Gotcha Trap",
+    "question": "[MATH & MEDIANS #37] What is the value of 'SELECT POW(2, 3);' in MySQL?",
+    "options": [
+      "8",
+      "6",
+      "9",
+      "5"
+    ],
+    "correctIndex": 0,
+    "explanation": "POW(x, y) computes x raised to the power y: 2³ = 2 * 2 * 2 = 8."
+  },
+  {
+    "id": "mcq_math_38",
+    "keyword": "MATH & MEDIANS",
+    "tag": "🐱 Brain Bender",
+    "question": "[MATH & MEDIANS #38] What is the difference between NTILE(2) and computing the median directly?",
+    "options": [
+      "NTILE(2) only works on tables with exactly 2 rows",
+      "NTILE(2) buckets rows into two halves (bucket 1 and bucket 2) but does not return the singular midpoint scalar value",
+      "NTILE(2) calculates the mean of every pair of rows",
+      "NTILE(2) is deprecated in SQL:2003"
+    ],
+    "correctIndex": 1,
+    "explanation": "NTILE(k) assigns an integer bucket from 1 to k to every row. While NTILE(2) divides rows into two halves, extracting the exact single median value still requires additional filtering and averaging."
+  },
+  {
+    "id": "mcq_math_39",
+    "keyword": "MATH & MEDIANS",
+    "tag": "🎯 Core Concept",
+    "question": "[MATH & MEDIANS #39] What is the result of 'SELECT EXP(0);' in MySQL?",
+    "options": [
+      "0",
+      "2.71828",
+      "1 (any non-zero number raised to the power 0 is 1)",
+      "NULL"
+    ],
+    "correctIndex": 2,
+    "explanation": "EXP(x) calculates e^x (Euler's constant raised to power x). For x = 0, e^0 = 1."
+  },
+  {
+    "id": "mcq_math_40",
+    "keyword": "MATH & MEDIANS",
+    "tag": "🏆 Senior Staff",
+    "question": "[MATH & MEDIANS #40] What does 'SELECT LN(1);' return in MySQL?",
+    "options": [
+      "1",
+      "2.71828",
+      "NULL",
+      "0 (the natural logarithm of 1 is 0)"
+    ],
+    "correctIndex": 3,
+    "explanation": "The natural log of 1 is 0 because e^0 = 1. LN(x) computes log base e."
+  },
+  {
+    "id": "mcq_math_41",
+    "keyword": "MATH & MEDIANS",
+    "tag": "🍡 Quick Snack",
+    "question": "[MATH & MEDIANS #41] What is the return value of 'SELECT RADIANS(180);' in MySQL?",
+    "options": [
+      "3.141592653589793 (Pi radians)",
+      "180",
+      "1.0",
+      "360"
+    ],
+    "correctIndex": 0,
+    "explanation": "RADIANS(degrees) converts degrees to radians via (degrees * π / 180). 180 degrees equals π radians."
+  },
+  {
+    "id": "mcq_math_42",
+    "keyword": "MATH & MEDIANS",
+    "tag": "⚡ Gotcha Trap",
+    "question": "[MATH & MEDIANS #42] What is the return value of 'SELECT DEGREES(PI());' in MySQL?",
+    "options": [
+      "360",
+      "180",
+      "90",
+      "3.14159"
+    ],
+    "correctIndex": 1,
+    "explanation": "DEGREES(radians) converts radians back into degrees via (radians * 180 / π). PI() radians equals 180 degrees."
+  },
+  {
+    "id": "mcq_math_43",
+    "keyword": "MATH & MEDIANS",
+    "tag": "🐱 Brain Bender",
+    "question": "[MATH & MEDIANS #43] In high-frequency trading database systems, why is median latency (p50) tracked alongside 99th percentile latency (p99)?",
+    "options": [
+      "p50 and p99 always return the same number",
+      "p99 is only used for tax accounting",
+      "p50 tracks the typical trader experience, while p99 catches extreme tail latency spikes that breach Service Level Agreements (SLAs)",
+      "p50 measures throughput while p99 measures storage size"
+    ],
+    "correctIndex": 2,
+    "explanation": "Tail latency (p99/p99.9) captures worst-case outliers (garbage collection pauses, network jitter) that median (p50) completely hides."
+  },
+  {
+    "id": "mcq_math_44",
+    "keyword": "MATH & MEDIANS",
+    "tag": "🎯 Core Concept",
+    "question": "[MATH & MEDIANS #44] When calculating Taxicab distance across multiple delivery drivers to find the closest driver, what is the best query structure?",
+    "options": [
+      "SELECT MIN(driver_id) FROM Drivers GROUP BY status HAVING status = 'AVAILABLE';",
+      "SELECT driver_id FROM Drivers WHERE distance = (SELECT MIN(lat + lon) FROM Drivers);",
+      "SELECT driver_id, MAX(lat) - MIN(lat) FROM Drivers;",
+      "SELECT driver_id, ABS(lat - target_lat) + ABS(lon - target_lon) AS distance FROM Drivers WHERE status = 'AVAILABLE' ORDER BY distance ASC LIMIT 1;"
+    ],
+    "correctIndex": 3,
+    "explanation": "Computing the scalar distance expression for each candidate driver and sorting with 'ORDER BY distance ASC LIMIT 1' immediately yields the closest driver."
+  },
+  {
+    "id": "mcq_math_45",
+    "keyword": "MATH & MEDIANS",
+    "tag": "🏆 Senior Staff",
+    "question": "[MATH & MEDIANS #45] What is the result of 'SELECT ROUND(5.555, 2);' in MySQL?",
+    "options": [
+      "5.56",
+      "5.55",
+      "5.60",
+      "5.5"
+    ],
+    "correctIndex": 0,
+    "explanation": "The third decimal digit is 5, so half-up rounding increases the second digit from 5 to 6, returning 5.56."
+  },
+  {
+    "id": "mcq_math_46",
+    "keyword": "MATH & MEDIANS",
+    "tag": "🍡 Quick Snack",
+    "question": "[MATH & MEDIANS #46] What does 'SELECT TRUNCATE(5.559, 2);' return in MySQL?",
+    "options": [
+      "5.56",
+      "5.55",
+      "5.60",
+      "5.00"
+    ],
+    "correctIndex": 1,
+    "explanation": "TRUNCATE discards all digits after position 2 without rounding, returning 5.55."
+  },
+  {
+    "id": "mcq_math_47",
+    "keyword": "MATH & MEDIANS",
+    "tag": "⚡ Gotcha Trap",
+    "question": "[MATH & MEDIANS #47] In MySQL, can a window function like ROW_NUMBER() be used directly inside a WHERE clause without a subquery or CTE?",
+    "options": [
+      "Yes, as long as it has an OVER (ORDER BY) clause",
+      "Yes, if placed inside parenthesis",
+      "No, window functions are evaluated in the SELECT phase, which executes AFTER the WHERE clause; a CTE or derived table is required",
+      "Yes, in MySQL 8.0 but not in MySQL 5.7"
+    ],
+    "correctIndex": 2,
+    "explanation": "SQL execution order is FROM -> WHERE -> GROUP BY -> HAVING -> WINDOW/SELECT -> ORDER BY -> LIMIT. Because WHERE runs before window functions exist, filtering on ROW_NUMBER() requires wrapping it in a CTE or subquery."
+  },
+  {
+    "id": "mcq_math_48",
+    "keyword": "MATH & MEDIANS",
+    "tag": "🐱 Brain Bender",
+    "question": "[MATH & MEDIANS #48] What is the return value of 'SELECT ABS(10 - 25);'?",
+    "options": [
+      "-15",
+      "35",
+      "NULL",
+      "15"
+    ],
+    "correctIndex": 3,
+    "explanation": "10 - 25 = -15. The absolute value ABS(-15) is 15."
+  },
+  {
+    "id": "mcq_math_49",
+    "keyword": "MATH & MEDIANS",
+    "tag": "🎯 Core Concept",
+    "question": "[MATH & MEDIANS #49] What happens if you run 'SELECT POW(2, -1);' in MySQL?",
+    "options": [
+      "0.5 (since 2^(-1) = 1/2 = 0.5)",
+      "-2",
+      "-0.5",
+      "NULL"
+    ],
+    "correctIndex": 0,
+    "explanation": "A negative exponent represents the reciprocal: x^(-y) = 1 / (x^y). Thus 2^(-1) = 1/2 = 0.5."
+  },
+  {
+    "id": "mcq_math_50",
+    "keyword": "MATH & MEDIANS",
+    "tag": "🏆 Senior Staff",
+    "question": "[MATH & MEDIANS #50] Which SQL clause determines the final number of rows returned after all sorting and filtering is finished?",
+    "options": [
+      "WHERE",
+      "LIMIT (or FETCH FIRST n ROWS ONLY in ANSI SQL)",
+      "HAVING",
+      "GROUP BY"
+    ],
+    "correctIndex": 1,
+    "explanation": "LIMIT (or FETCH FIRST) is the very last step in physical execution, restricting the final transmitted rows to the client."
   }
 ];
 

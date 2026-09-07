@@ -102,7 +102,7 @@
         </button>
         <button class="nav-tab" data-view="viewCases" onclick="switchMainView('viewCases')">
           <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="2" y="7" width="20" height="14" rx="2" ry="2"></rect><path d="M16 21V5a2 2 0 0 0-2-2h-4a2 2 0 0 0-2 2v16"></path></svg>
-          Case Studies (600)
+          Case Studies (650)
         </button>
         <button class="nav-tab" data-view="viewEnterpriseERD" onclick="switchMainView('viewEnterpriseERD')">
           <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="3" y="3" width="7" height="7"></rect><rect x="14" y="3" width="7" height="7"></rect><rect x="14" y="14" width="7" height="7"></rect><rect x="3" y="14" width="7" height="7"></rect><line x1="10" y1="6.5" x2="14" y2="6.5"></line><line x1="6.5" y1="10" x2="6.5" y2="14"></line></svg>
@@ -531,8 +531,8 @@
     <div class="curriculum-container">
       <div class="curriculum-header">
         <div>
-          <h2 class="view-title">The 500 Master MCQ Technical Vault</h2>
-          <p class="view-subtitle">500 deep technical checks across 10 core SQL keywords on physical execution sequence, NULL semantics, and senior interview gotchas.</p>
+          <h2 class="view-title">The 550 Master MCQ Technical Vault</h2>
+          <p class="view-subtitle">550 deep technical checks across 11 core SQL domains on physical execution sequence, NULL semantics, spatial coordinates, and calculating medians.</p>
         </div>
         <div class="quiz-header-right">
           <div class="quiz-score-badge">
@@ -556,8 +556,8 @@
         <!-- Deck 1: Title, Modes, Sort, Search & Solved Tally -->
         <div class="toolbar-deck-top">
           <div>
-            <h2 class="view-title">The 600 Corporate Case Study Master Vault</h2>
-            <p class="view-subtitle">600 production analytics scenarios across 10 global industries &amp; 6 SQL sections with interactive slot challenges.</p>
+            <h2 class="view-title">The 650 Corporate Case Study Master Vault</h2>
+            <p class="view-subtitle">650 production analytics scenarios across 10 global industries &amp; 7 SQL sections with interactive slot challenges.</p>
           </div>
           <div class="toolbar-deck-controls">
             <div class="mode-toggle-group">
@@ -569,25 +569,26 @@
             <select id="caseSortSelect" class="case-sort-select">
               <option value="diff_asc">Sort: Easy &rarr; Medium &rarr; Hard (Curriculum Order)</option>
               <option value="diff_desc">Sort: Hard &rarr; Medium &rarr; Easy (Challenge Order)</option>
-              <option value="id_asc">Sort: Case ID #001 &rarr; #600 (Chronological)</option>
+              <option value="id_asc">Sort: Case ID #001 &rarr; #650 (Chronological)</option>
             </select>
-            <input type="text" id="caseSearchInput" class="case-search-input" placeholder="🔍 Search 600 cases by keyword, schema, query...">
-            <span id="caseCountBadge" class="status-pill">600 Cases</span>
-            <span id="caseSolvedBadge" class="status-pill" style="background: rgba(34, 197, 94, 0.15); color: #4ade80; border: 1px solid rgba(74, 222, 128, 0.3);">⚡ <span id="casesSolvedCount">0</span>/600 Solved</span>
+            <input type="text" id="caseSearchInput" class="case-search-input" placeholder="🔍 Search 650 cases by keyword, schema, query...">
+            <span id="caseCountBadge" class="status-pill">650 Cases</span>
+            <span id="caseSolvedBadge" class="status-pill" style="background: rgba(34, 197, 94, 0.15); color: #4ade80; border: 1px solid rgba(74, 222, 128, 0.3);">⚡ <span id="casesSolvedCount">0</span>/650 Solved</span>
           </div>
         </div>
 
         <!-- Deck 2: Section Switcher & Filter Strips -->
         <div class="toolbar-deck-bottom">
-          <!-- 6 Core Sections Switcher Bar -->
+          <!-- 7 Core Sections Switcher Bar -->
           <div class="case-section-group" id="caseSectionFilters" style="display: flex; gap: 8px; flex-wrap: wrap;">
-            <button class="case-section-btn active" data-section="all">All Sections (600)</button>
+            <button class="case-section-btn active" data-section="all">All Sections (650)</button>
             <button class="case-section-btn" data-section="Section 1: Database Theory &amp; Architecture">Sec 1: Theory &amp; Interview Prep (100)</button>
             <button class="case-section-btn" data-section="Section 2: Physical Query Execution Order &amp; Projections">Sec 2: Execution &amp; Projections (100)</button>
             <button class="case-section-btn" data-section="Section 3: Filtering, Predicates &amp; Three-Valued Logic">Sec 3: Filtering &amp; 3VL (100)</button>
             <button class="case-section-btn" data-section="Section 4: String Slicing, Text Manipulation &amp; Pattern Matching">Sec 4: String Manipulation (100)</button>
             <button class="case-section-btn" data-section="Section 5: Sorting, Determinism &amp; Slicing">Sec 5: Sorting &amp; Slicing (100)</button>
             <button class="case-section-btn section-btn-aggregations" data-section="Section 6: Aggregations, Statistical Metrics &amp; GROUP BY">🔥 Sec 6: Aggregations &amp; GROUP BY (100)</button>
+            <button class="case-section-btn section-btn-math" data-section="Section 7: Spatial Coordinates, Math Functions &amp; Medians" style="border-color: rgba(56, 189, 248, 0.4); color: #38bdf8;">📍 Sec 7: Spatial Math &amp; Medians (50)</button>
           </div>
 
           <!-- Difficulty & Industry Strips -->
@@ -820,16 +821,16 @@
 <script src="quests_engine.js"></script>
 <script src="deconstructor_data.js"></script>
 <script src="theory_interview_prep.js"></script>
-<script src="case_studies_500.js"></script>
+<script src="case_studies_500.js?v=52"></script>
 <script src="case_study_blanks.js"></script>
-<script src="domain_erd_engine.js?v=50"></script>
-<script src="case_dossier_engine.js?v=50"></script>
+<script src="domain_erd_engine.js?v=52"></script>
+<script src="case_dossier_engine.js?v=52"></script>
 <script src="enterprise_erd_data.js"></script>
 <script src="case_simulator_engine.js"></script>
 <script src="foundations_curriculum.js"></script>
-<script src="mcqs_vault_500.js?v=50"></script>
+<script src="mcqs_vault_500.js?v=52"></script>
 <script src="audio_fx.js"></script>
 <script src="study_library_data.js"></script>
-<script src="app.js?v=51"></script>
+<script src="app.js?v=52"></script>
 </body>
 </html>

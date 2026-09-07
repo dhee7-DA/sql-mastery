@@ -42,7 +42,17 @@ window.CASE_DOSSIER_ENGINE = (() => {
     'INNER': { color: '#c084fc', meaning: 'Inner Join [Keep only matching rows from both tables]' },
     'LEFT': { color: '#c084fc', meaning: 'Left Join [Keep all left rows even if right is missing]' },
     'RIGHT': { color: '#c084fc', meaning: 'Right Join [Keep all right rows even if left is missing]' },
-    'ON': { color: '#34d399', meaning: 'Join Condition [Which columns must match]' }
+    'ON': { color: '#34d399', meaning: 'Join Condition [Which columns must match]' },
+    'ROUND': { color: '#38bdf8', meaning: 'Rounding Function [Rounds number to specified decimal precision]' },
+    'TRUNCATE': { color: '#38bdf8', meaning: 'Truncate Function [Chops off decimal places without rounding]' },
+    'ABS': { color: '#38bdf8', meaning: 'Absolute Value [Strips negative sign: |-x| = x]' },
+    'SQRT': { color: '#38bdf8', meaning: 'Square Root [Calculates the square root: sqrt(x)]' },
+    'POW': { color: '#38bdf8', meaning: 'Power Function [Raises base to exponent: x^y]' },
+    'FLOOR': { color: '#38bdf8', meaning: 'Floor Function [Rounds down to nearest integer]' },
+    'CEIL': { color: '#38bdf8', meaning: 'Ceiling Function [Rounds up to nearest integer]' },
+    'OVER': { color: '#c084fc', meaning: 'Window Clause [Defines partition and ordering frame for window functions]' },
+    'ROW_NUMBER': { color: '#38bdf8', meaning: 'Window Ranking [Assigns unique sequential integer to each row]' },
+    'WITH': { color: '#c084fc', meaning: 'Common Table Expression (CTE) [Creates reusable temporary named result set]' }
   };
 
   // Interactive Glossary Dictionary for Click-to-Learn Flashcards
@@ -164,9 +174,16 @@ window.CASE_DOSSIER_ENGINE = (() => {
       'PARTITION': { color: '#c084fc', meaning: 'PARTITION BY [Window Buckets]' },
       'ROW_NUMBER': { color: '#38bdf8', meaning: 'ROW_NUMBER [Unique 1..N Row Rank]' },
       'DENSE_RANK': { color: '#38bdf8', meaning: 'DENSE_RANK [Rank Without Gaps]' },
-      'RANK': { color: '#38bdf8', meaning: 'RANK [Rank with Tied Gaps]' },
       'TRUE': { color: '#10b981', meaning: 'Boolean TRUE (1)' },
-      'FALSE': { color: '#ef4444', meaning: 'Boolean FALSE (0)' }
+      'FALSE': { color: '#ef4444', meaning: 'Boolean FALSE (0)' },
+      'ROUND': { color: '#38bdf8', meaning: 'ROUND [Round to Decimal Precision]' },
+      'TRUNCATE': { color: '#38bdf8', meaning: 'TRUNCATE [Chop Off Decimals Without Rounding]' },
+      'ABS': { color: '#38bdf8', meaning: 'ABS [Absolute Magnitude: |-x| = x]' },
+      'SQRT': { color: '#38bdf8', meaning: 'SQRT [Square Root: sqrt(x)]' },
+      'POW': { color: '#38bdf8', meaning: 'POW [Power: base ^ exp]' },
+      'FLOOR': { color: '#38bdf8', meaning: 'FLOOR [Round Down to Integer]' },
+      'CEIL': { color: '#38bdf8', meaning: 'CEIL [Round Up to Integer]' },
+      'WITH': { color: '#c084fc', meaning: 'WITH [Common Table Expression (CTE)]' }
     };
 
     function esc(s) {
