@@ -2220,10 +2220,18 @@ body {
 .view-panel.active {
   display: flex;
   flex-direction: column;
+  overflow-y: auto;
+  height: 100%;
 }
 
 #viewStudio.active {
   flex-direction: column;
+  overflow: hidden;
+}
+
+#viewPathways {
+  overflow-y: auto !important;
+  height: 100%;
 }
 
 /* Curriculum Views General Container */
