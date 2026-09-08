@@ -902,9 +902,13 @@
       <div class="case-drawer-header">
         <div style="display: flex; align-items: center; gap: 10px;">
           <span class="clause-pill pill-from" id="drawerCaseIdBadge">CASE #001</span>
-          <span style="font-size: 14px; font-weight: 700; color: #fff;" id="drawerCaseTitle">Case Scenario</span>
+          <span style="font-size: 14px; font-weight: 700; color: var(--text-primary);" id="drawerCaseTitle">Case Scenario</span>
         </div>
-        <button class="btn-drawer-close" onclick="closeCaseDrawer()" title="Close Drawer">&times;</button>
+        <div style="display: flex; align-items: center; gap: 8px;">
+          <button class="card-nav-btn" onclick="navigateDrawerCase(-1)" title="Previous Case Study" style="padding: 4px 10px; font-size: 11px;">&larr; Prev Case</button>
+          <button class="card-nav-btn" onclick="navigateDrawerCase(1)" title="Next Case Study" style="padding: 4px 10px; font-size: 11px;">Next Case &rarr;</button>
+          <button class="btn-drawer-close" onclick="closeCaseDrawer()" title="Close Drawer">&times;</button>
+        </div>
       </div>
       <div class="case-drawer-body" id="caseDrawerBody">
         <!-- Dynamically rendered case practice card -->

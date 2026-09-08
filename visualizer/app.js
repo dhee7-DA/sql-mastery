@@ -4673,7 +4673,7 @@ function toggleCaseSim(caseId) {
 window.toggleCaseSim = toggleCaseSim;
 
 function openCaseDossier(caseId) {
-  const allCases = window.ALL_500_CASE_STUDIES || window.ALL_300_CASE_STUDIES || [];
+  const allCases = window.ALL_1040_CASE_STUDIES || window.ALL_700_CASE_STUDIES || window.ALL_500_CASE_STUDIES || window.ALL_300_CASE_STUDIES || [];
   const cs = allCases.find(c => c.id === caseId);
   if (!cs || !window.CASE_DOSSIER_ENGINE) return;
 
@@ -4919,21 +4919,21 @@ function closeCaseDossier() {
 window.closeCaseDossier = closeCaseDossier;
 
 function navigateDossierPrev() {
-  const allCases = window.ALL_500_CASE_STUDIES || window.ALL_300_CASE_STUDIES || [];
+  const allCases = window.ALL_1040_CASE_STUDIES || window.ALL_700_CASE_STUDIES || window.ALL_500_CASE_STUDIES || window.ALL_300_CASE_STUDIES || [];
   const currentIdx = allCases.findIndex(c => c.id === activeDossierCaseId);
   if (currentIdx > 0) {
     openCaseDossier(allCases[currentIdx - 1].id);
-  } else {
+  } else if (allCases.length > 0) {
     openCaseDossier(allCases[allCases.length - 1].id);
   }
 }
 
 function navigateDossierNext() {
-  const allCases = window.ALL_500_CASE_STUDIES || window.ALL_300_CASE_STUDIES || [];
+  const allCases = window.ALL_1040_CASE_STUDIES || window.ALL_700_CASE_STUDIES || window.ALL_500_CASE_STUDIES || window.ALL_300_CASE_STUDIES || [];
   const currentIdx = allCases.findIndex(c => c.id === activeDossierCaseId);
-  if (currentIdx < allCases.length - 1) {
+  if (currentIdx >= 0 && currentIdx < allCases.length - 1) {
     openCaseDossier(allCases[currentIdx + 1].id);
-  } else {
+  } else if (allCases.length > 0) {
     openCaseDossier(allCases[0].id);
   }
 }
@@ -6269,13 +6269,17 @@ function renderPathwayTrapsAndSecrets() {
 // -----------------------------------------------------------------------------
 // STAGE 3: 🧠 TOPIC MCQS
 // -----------------------------------------------------------------------------
+function getPathwayTopicMcqs() {
+  const currentMod = TOPIC_PATHWAY_MODULES.find(m => m.id === currentPathwayModuleId) || TOPIC_PATHWAY_MODULES[0];
+  const targetKeywords = currentMod.mcqKeywords || (currentMod.mcqKeyword ? [currentMod.mcqKeyword] : ['SELECT']);
+  return (window.MCQS_VAULT_500 || []).filter(m => targetKeywords.includes(m.keyword));
+}
+
 function renderPathwayMcqs() {
   const container = document.getElementById('pathwayMcqsContent');
   if (!container || !window.MCQS_VAULT_500) return;
 
-  const currentMod = TOPIC_PATHWAY_MODULES.find(m => m.id === currentPathwayModuleId) || TOPIC_PATHWAY_MODULES[0];
-  const targetKeywords = currentMod.mcqKeywords || (currentMod.mcqKeyword ? [currentMod.mcqKeyword] : ['SELECT']);
-  const allTopicMcqs = window.MCQS_VAULT_500.filter(m => targetKeywords.includes(m.keyword));
+  const allTopicMcqs = getPathwayTopicMcqs();
 
   if (allTopicMcqs.length === 0) {
     container.innerHTML = `<div class="card"><p>No MCQs mapped for this module.</p></div>`;
@@ -6298,10 +6302,10 @@ function renderPathwayMcqs() {
     if (ansState) {
       disabledAttr = 'disabled';
       if (idx === q.correctIndex) {
-        btnStyle = 'background: rgba(16, 185, 129, 0.2); border-color: #10b981; color: #86efac; font-weight: 700;';
+        btnStyle = 'background: rgba(16, 185, 129, 0.2); border-color: #10b981; color: #10b981; font-weight: 700;';
         marker = '✓ ';
       } else if (idx === ansState.selectedIndex && !ansState.isCorrect) {
-        btnStyle = 'background: rgba(244, 63, 94, 0.2); border-color: #f43f5e; color: #fca5a5;';
+        btnStyle = 'background: rgba(244, 63, 94, 0.2); border-color: #f43f5e; color: #f43f5e;';
         marker = '✗ ';
       } else {
         btnStyle = 'opacity: 0.45;';
@@ -6318,9 +6322,9 @@ function renderPathwayMcqs() {
   let explanationHtml = '';
   if (ansState) {
     explanationHtml = `
-      <div style="margin-top: 14px; background: var(--bg-card); border-left: 3px solid ${ansState.isCorrect ? '#10b981' : '#f43f5e'}; padding: 12px 14px; border-radius: var(--radius-sm); font-size: 12px; color: var(--text-secondary); line-height: 1.5;">
-        <strong style="color: ${ansState.isCorrect ? '#86efac' : '#fca5a5'};">${ansState.isCorrect ? '🎉 Correct Answer!' : '⚠️ Incorrect.'}</strong><br>
-        ${q.explanation}
+      <div style="margin-top: 14px; background: var(--bg-card); border-left: 3px solid ${ansState.isCorrect ? '#10b981' : '#f43f5e'}; padding: 12px 14px; border-radius: var(--radius-sm); font-size: 12px; color: var(--text-primary); line-height: 1.5;">
+        <strong style="color: ${ansState.isCorrect ? '#10b981' : '#f43f5e'};">${ansState.isCorrect ? '🎉 Correct Answer!' : '⚠️ Incorrect.'}</strong><br>
+        <span style="color: var(--text-secondary);">${q.explanation}</span>
       </div>
     `;
   }
@@ -6342,8 +6346,8 @@ function renderPathwayMcqs() {
         </div>
       </div>
 
-      <div style="font-size: 15px; font-weight: 600; color: #fff; margin: 12px 0 16px 0; line-height: 1.45;">
-        ${escapeHtml(q.question)}
+      <div style="font-size: 15px; font-weight: 600; color: var(--text-primary); margin: 12px 0 16px 0; line-height: 1.45;">
+        ${q.question}
       </div>
 
       <div class="study-quiz-options-grid" style="display: flex; flex-direction: column; gap: 8px;">
@@ -6371,8 +6375,7 @@ function renderPathwayMcqs() {
 }
 
 function handlePathwayMcqAnswer(qId, selectedIdx) {
-  const currentMod = TOPIC_PATHWAY_MODULES.find(m => m.id === currentPathwayModuleId);
-  const q = window.MCQS_VAULT_500.find(m => m.id === qId);
+  const q = (window.MCQS_VAULT_500 || []).find(m => m.id === qId);
   if (!q) return;
 
   const isCorrect = selectedIdx === q.correctIndex;
@@ -6391,8 +6394,7 @@ function handlePathwayMcqAnswer(qId, selectedIdx) {
 }
 
 function nextPathwayMcq() {
-  const currentMod = TOPIC_PATHWAY_MODULES.find(m => m.id === currentPathwayModuleId);
-  const allTopicMcqs = window.MCQS_VAULT_500.filter(m => m.keyword === currentMod.mcqKeyword);
+  const allTopicMcqs = getPathwayTopicMcqs();
   if (currentPathwayMcqIndex < allTopicMcqs.length - 1) {
     currentPathwayMcqIndex++;
     if (window.soundFX) window.soundFX.playPop();
@@ -6548,12 +6550,33 @@ function togglePathwayCaseView(mode) {
 }
 
 // -----------------------------------------------------------------------------
-// SLIDE-OUT CASE DOSSIER DRAWER
+// SLIDE-OUT CASE DOSSIER DRAWER (INTERACTIVE TOKEN PUZZLE WITH JUMBLED WORDS)
 // -----------------------------------------------------------------------------
+let activeDrawerCaseId = 1;
+
+function navigateDrawerCase(step) {
+  const allCases = window.ALL_1040_CASE_STUDIES || [];
+  const currentMod = TOPIC_PATHWAY_MODULES.find(m => m.id === currentPathwayModuleId);
+  let scopeCases = allCases;
+  if (currentMod && currentMod.caseSection) {
+    const modCases = allCases.filter(cs => cs.section && cs.section.includes(currentMod.caseSection));
+    if (modCases.length > 0) scopeCases = modCases;
+  }
+  const currentIdx = scopeCases.findIndex(c => c.id === activeDrawerCaseId);
+  let nextIdx = currentIdx + step;
+  if (nextIdx < 0) nextIdx = scopeCases.length - 1;
+  if (nextIdx >= scopeCases.length) nextIdx = 0;
+  if (scopeCases[nextIdx]) {
+    openCaseDrawer(scopeCases[nextIdx].id);
+  }
+}
+
 function openCaseDrawer(caseId) {
   const allCases = window.ALL_1040_CASE_STUDIES || [];
   const cs = allCases.find(c => c.id === caseId);
   if (!cs) return;
+
+  activeDrawerCaseId = caseId;
 
   const backdrop = document.getElementById('caseDrawerBackdrop');
   const badgeId = document.getElementById('drawerCaseIdBadge');
@@ -6567,7 +6590,108 @@ function openCaseDrawer(caseId) {
   if (badgeId) badgeId.textContent = `#${cs.id < 10 ? '00' + cs.id : (cs.id < 100 ? '0' + cs.id : cs.id)}`;
   if (titleEl) titleEl.textContent = cs.title;
 
-  const challenge = window.CASE_BLANKS_REGISTRY ? window.CASE_BLANKS_REGISTRY[cs.id] : null;
+  const isSolved = window.CASE_BLANKS_ENGINE && window.CASE_BLANKS_ENGINE.isSolved(cs.id);
+  const challenge = window.CASE_BLANKS_ENGINE ? window.CASE_BLANKS_ENGINE.createChallenge(cs) : null;
+  const activeState = window.CASE_BLANKS_ENGINE ? window.CASE_BLANKS_ENGINE.getCaseState(cs.id) : { slots: {}, usedTokens: new Set() };
+  const highlightedSolution = window.CASE_DOSSIER_ENGINE ? window.CASE_DOSSIER_ENGINE.highlightSQL(cs.targetQuery) : escapeHtml(cs.targetQuery);
+
+  let queryBlockHtml = '';
+  if (!challenge) {
+    queryBlockHtml = `
+      <div class="case-terminal-box">
+        <div class="case-terminal-header">
+          <span class="terminal-title">MySQL 8.0 &bull; Reference Query</span>
+          <button class="study-sandbox-btn-sm" onclick="toggleCaseSolution(${cs.id})">👁️ Reveal Answer</button>
+        </div>
+        <div class="case-solution-shield" id="solution_${cs.id}" style="display: none; padding: 12px 14px; background: #0b0f17; border-radius: 8px;">
+          <code>${highlightedSolution}</code>
+        </div>
+      </div>
+    `;
+  } else {
+    // Challenge / Jumbled Token Bank Puzzle Mode
+    let renderedMasked = escapeHtml(challenge.maskedQuery);
+    for (const [slotId, slotInfo] of Object.entries(challenge.slots)) {
+      const placedVal = activeState.slots[slotId] || '';
+      const isFilled = Boolean(placedVal);
+      const slotSpan = `
+        <span class="query-slot-target ${isFilled ? 'filled' : ''}" 
+              id="target_${cs.id}_${slotId}"
+              data-case-id="${cs.id}" 
+              data-slot-id="${slotId}" 
+              onclick="handleSlotEject(${cs.id}, '${slotId}')"
+              ondragover="handleSlotDragOver(event)"
+              ondragleave="handleSlotDragLeave(event)"
+              ondrop="handleSlotDrop(event, ${cs.id}, '${slotId}')"
+              title="${isFilled ? 'Click to remove token' : 'Click a token below or drag here'}">
+          ${isFilled ? `${escapeHtml(placedVal)} <span class="slot-eject-icon">✕</span>` : `[ ${slotId.toUpperCase()} ]`}
+        </span>
+      `;
+      renderedMasked = renderedMasked.replace(`[[${slotId}]]`, slotSpan);
+    }
+
+    queryBlockHtml = `
+      <div class="case-terminal-box">
+        <div class="case-terminal-header">
+          <div class="terminal-dots">
+            <span class="terminal-dot dot-red"></span>
+            <span class="terminal-dot dot-yellow"></span>
+            <span class="terminal-dot dot-green"></span>
+          </div>
+          <span class="terminal-title">Interactive Canvas &bull; Fill the Missing Clauses</span>
+          <div style="display: flex; align-items: center; gap: 8px;">
+            ${isSolved ? '<span class="status-pill terminal-solved-pill">✓ Solved (+15 XP)</span>' : '<span class="terminal-hint-pill">Click or drag chips into slots</span>'}
+            <button class="study-sandbox-btn-sm" onclick="toggleCaseSolution(${cs.id})">👁️ Reveal Answer</button>
+          </div>
+        </div>
+        <div class="case-terminal-code" id="canvas_code_${cs.id}">
+          ${renderedMasked}
+        </div>
+      </div>
+
+      <!-- Jumbled Token Bank Dock -->
+      <div class="token-bank-dock" id="dock_${cs.id}">
+        <div class="token-bank-header">
+          <span>🏷️ <strong>Jumbled Keyword Bank:</strong> Click or drag into blanks</span>
+          <div style="display: flex; gap: 6px;">
+            <button class="token-bank-reset-btn" onclick="handleResetCase(${cs.id})">↺ Reset Slots</button>
+            <button class="action-btn action-btn-primary" style="padding: 3px 10px; font-size: 11px;" onclick="handleVerifyCase(${cs.id})">✓ Check Query</button>
+          </div>
+        </div>
+        <div class="token-chips-grid" id="chips_grid_${cs.id}">
+          ${challenge.tokenBank.map(tok => {
+            const isPlaced = activeState.usedTokens && activeState.usedTokens.has(tok.id);
+            return `
+              <button class="token-chip ${isPlaced ? 'placed' : ''}" 
+                      id="chip_${tok.id}"
+                      draggable="${!isPlaced}"
+                      data-case-id="${cs.id}"
+                      data-token-id="${tok.id}"
+                      data-token-text="${escapeHtml(tok.text)}"
+                      onclick="handleTokenClick(${cs.id}, '${tok.id}', '${escapeHtml(tok.text)}')"
+                      ondragstart="handleTokenDragStart(event, ${cs.id}, '${tok.id}', '${escapeHtml(tok.text)}')">
+                ${escapeHtml(tok.text)}
+              </button>
+            `;
+          }).join('')}
+        </div>
+      </div>
+
+      <!-- Real-time Verification Feedback -->
+      <div class="case-feedback-banner" id="feedback_${cs.id}" style="display: none;"></div>
+
+      <!-- Collapsible Official Solution Shield (Hidden until Reveal Answer is clicked) -->
+      <div class="case-solution-shield" id="solution_${cs.id}" style="display: none; margin-top: 10px;">
+        <div class="solution-shield-header" style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 6px;">
+          <span style="font-size: 11px; font-weight: 700; color: #10b981;">💡 Official Syntax-Highlighted Solution:</span>
+          <button class="btn-case-action" style="padding: 2px 8px; font-size: 10px;" onclick="toggleCaseSolution(${cs.id})">Hide Solution</button>
+        </div>
+        <div class="case-terminal-code" style="padding: 12px 14px; background: #0b0f17; border-radius: 8px;">
+          <code>${highlightedSolution}</code>
+        </div>
+      </div>
+    `;
+  }
 
   body.innerHTML = `
     <!-- Top Metadata -->
@@ -6592,24 +6716,15 @@ function openCaseDrawer(caseId) {
     </div>
 
     <!-- Schema Snippet -->
-    <div style="background: #08080c; border: 1px solid var(--border-muted); border-radius: var(--radius-sm); padding: 10px 14px; font-family: var(--font-mono); font-size: 11px; color: #94a3b8;">
+    <div style="background: var(--bg-card); border: 1px solid var(--border-muted); border-radius: var(--radius-sm); padding: 10px 14px; font-family: var(--font-mono); font-size: 11px; color: var(--text-secondary);">
       🗄️ <strong>Table:</strong> <code style="color: #60a5fa;">${cs.table}</code> &bull; Schema: <code>${cs.schemaSnippet}</code>
     </div>
 
     <!-- Interactive Blank or Target Query -->
-    <div style="background: #09090f; border: 1px solid var(--border-default); border-radius: var(--radius-md); padding: 14px;">
-      <div style="display: flex; align-items: center; justify-content: space-between; margin-bottom: 8px;">
-        <span style="font-size: 10.5px; font-family: var(--font-mono); color: var(--text-muted); text-transform: uppercase;">QUERY IMPLEMENTATION</span>
-        <button class="study-sandbox-btn-sm" onclick="toggleCaseSolution(${cs.id})">👁️ Reveal Answer</button>
-      </div>
-
-      <div class="guided-code-box" id="drawer_query_${cs.id}" style="margin: 0;">
-        <code>${escapeHtml(cs.targetQuery)}</code>
-      </div>
-    </div>
+    ${queryBlockHtml}
 
     <!-- Simulator & Studio Buttons -->
-    <div style="display: flex; gap: 10px; align-items: center;">
+    <div style="display: flex; gap: 10px; align-items: center; flex-wrap: wrap;">
       <button class="action-btn action-btn-primary" onclick="toggleCaseSim(${cs.id})" style="font-size: 12px; padding: 7px 14px;">
         📊 Run In-Card Simulator
       </button>
@@ -6619,6 +6734,16 @@ function openCaseDrawer(caseId) {
     </div>
 
     <div class="live-sim-drawer" id="sim_drawer_${cs.id}" style="display: none; margin-top: 10px;"></div>
+
+    <!-- Drawer Footer Navigation -->
+    <div style="display: flex; justify-content: space-between; align-items: center; margin-top: 14px; padding-top: 14px; border-top: 1px solid var(--border-default);">
+      <button class="card-nav-btn" onclick="navigateDrawerCase(-1)" style="padding: 7px 14px; font-size: 12px;">
+        &larr; Previous Case Study
+      </button>
+      <button class="action-btn action-btn-primary" onclick="navigateDrawerCase(1)" style="padding: 7px 16px; font-size: 12px;">
+        Next Case Study &rarr;
+      </button>
+    </div>
   `;
 
   backdrop.classList.add('open');
@@ -6647,6 +6772,7 @@ window.filterPathwayCasesByDiff = filterPathwayCasesByDiff;
 window.togglePathwayCaseView = togglePathwayCaseView;
 window.openCaseDrawer = openCaseDrawer;
 window.closeCaseDrawer = closeCaseDrawer;
+window.navigateDrawerCase = navigateDrawerCase;
 
 // =============================================================================
 // BOOTSTRAP APPLICATION INITIALIZATION
