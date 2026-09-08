@@ -4951,7 +4951,7 @@ window.MCQS_VAULT_500 = [
     "id": "mcq_minmax_54",
     "keyword": "MIN & MAX",
     "tag": "⚡ Gotcha Trap",
-    "question": "[MIN & MAX #54 &bull; Healthcare Patient Records] Which query correctly finds the latest order for each customer without using window functions? (Application Scenario 1)",
+    "question": "[MIN & MAX #54 &bull; Healthcare Patient Records] Which query correctly determines the latest order date for each customer? (Application Scenario 1)",
     "options": [
       "SELECT customer_id, order_date FROM orders WHERE order_date = MAX(order_date)",
       "SELECT customer_id, MAX(order_date) FROM orders GROUP BY customer_id",
@@ -5021,7 +5021,7 @@ window.MCQS_VAULT_500 = [
     "id": "mcq_minmax_59",
     "keyword": "MIN & MAX",
     "tag": "🎯 Core Concept",
-    "question": "[MIN & MAX #59 &bull; Fintech & Ledger Systems] Which query correctly finds the latest order for each customer without using window functions? (Application Scenario 2)",
+    "question": "[MIN & MAX #59 &bull; Fintech & Ledger Systems] Which query correctly determines the latest order date for each customer? (Application Scenario 2)",
     "options": [
       "SELECT customer_id, order_date FROM orders WHERE order_date = MAX(order_date)",
       "SELECT customer_id, MIN(order_date) FROM orders",
@@ -5091,7 +5091,7 @@ window.MCQS_VAULT_500 = [
     "id": "mcq_minmax_64",
     "keyword": "MIN & MAX",
     "tag": "🏛️ Corporate Edge",
-    "question": "[MIN & MAX #64 &bull; Telecom Billing & Data Streams] Which query correctly finds the latest order for each customer without using window functions? (Application Scenario 3)",
+    "question": "[MIN & MAX #64 &bull; Telecom Billing & Data Streams] Which query correctly determines the latest order date for each customer? (Application Scenario 3)",
     "options": [
       "SELECT customer_id, order_date FROM orders WHERE order_date = MAX(order_date)",
       "SELECT customer_id, MAX(order_date) FROM orders GROUP BY customer_id",
@@ -5161,7 +5161,7 @@ window.MCQS_VAULT_500 = [
     "id": "mcq_minmax_69",
     "keyword": "MIN & MAX",
     "tag": "💡 Lead Architect",
-    "question": "[MIN & MAX #69 &bull; Global Supply Chain & Logistics] Which query correctly finds the latest order for each customer without using window functions? (Application Scenario 4)",
+    "question": "[MIN & MAX #69 &bull; Global Supply Chain & Logistics] Which query correctly determines the latest order date for each customer? (Application Scenario 4)",
     "options": [
       "SELECT customer_id, order_date FROM orders WHERE order_date = MAX(order_date)",
       "SELECT customer_id, MIN(order_date) FROM orders",
@@ -5231,7 +5231,7 @@ window.MCQS_VAULT_500 = [
     "id": "mcq_minmax_74",
     "keyword": "MIN & MAX",
     "tag": "⚡ Gotcha Trap",
-    "question": "[MIN & MAX #74 &bull; Cybersecurity Audit Logs] Which query correctly finds the latest order for each customer without using window functions? (Application Scenario 5)",
+    "question": "[MIN & MAX #74 &bull; Cybersecurity Audit Logs] Which query correctly determines the latest order date for each customer? (Application Scenario 5)",
     "options": [
       "SELECT customer_id, order_date FROM orders WHERE order_date = MAX(order_date)",
       "SELECT customer_id, MAX(order_date) FROM orders GROUP BY customer_id",
@@ -5301,7 +5301,7 @@ window.MCQS_VAULT_500 = [
     "id": "mcq_minmax_79",
     "keyword": "MIN & MAX",
     "tag": "🎯 Core Concept",
-    "question": "[MIN & MAX #79 &bull; E-Commerce Checkout Funnels] Which query correctly finds the latest order for each customer without using window functions? (Application Scenario 6)",
+    "question": "[MIN & MAX #79 &bull; E-Commerce Checkout Funnels] Which query correctly determines the latest order date for each customer? (Application Scenario 6)",
     "options": [
       "SELECT customer_id, order_date FROM orders WHERE order_date = MAX(order_date)",
       "SELECT customer_id, MIN(order_date) FROM orders",
@@ -5371,7 +5371,7 @@ window.MCQS_VAULT_500 = [
     "id": "mcq_minmax_84",
     "keyword": "MIN & MAX",
     "tag": "🏛️ Corporate Edge",
-    "question": "[MIN & MAX #84 &bull; SaaS Subscription Billing] Which query correctly finds the latest order for each customer without using window functions? (Application Scenario 7)",
+    "question": "[MIN & MAX #84 &bull; SaaS Subscription Billing] Which query correctly determines the latest order date for each customer? (Application Scenario 7)",
     "options": [
       "SELECT customer_id, order_date FROM orders WHERE order_date = MAX(order_date)",
       "SELECT customer_id, MAX(order_date) FROM orders GROUP BY customer_id",
@@ -5441,7 +5441,7 @@ window.MCQS_VAULT_500 = [
     "id": "mcq_minmax_89",
     "keyword": "MIN & MAX",
     "tag": "💡 Lead Architect",
-    "question": "[MIN & MAX #89 &bull; AdTech Real-Time Bidding] Which query correctly finds the latest order for each customer without using window functions? (Application Scenario 8)",
+    "question": "[MIN & MAX #89 &bull; AdTech Real-Time Bidding] Which query correctly determines the latest order date for each customer? (Application Scenario 8)",
     "options": [
       "SELECT customer_id, order_date FROM orders WHERE order_date = MAX(order_date)",
       "SELECT customer_id, MIN(order_date) FROM orders",
@@ -5511,7 +5511,7 @@ window.MCQS_VAULT_500 = [
     "id": "mcq_minmax_94",
     "keyword": "MIN & MAX",
     "tag": "⚡ Gotcha Trap",
-    "question": "[MIN & MAX #94 &bull; Healthcare Patient Records] Which query correctly finds the latest order for each customer without using window functions? (Application Scenario 9)",
+    "question": "[MIN & MAX #94 &bull; Healthcare Patient Records] Which query correctly determines the latest order date for each customer? (Application Scenario 9)",
     "options": [
       "SELECT customer_id, order_date FROM orders WHERE order_date = MAX(order_date)",
       "SELECT customer_id, MAX(order_date) FROM orders GROUP BY customer_id",
@@ -5581,7 +5581,7 @@ window.MCQS_VAULT_500 = [
     "id": "mcq_minmax_99",
     "keyword": "MIN & MAX",
     "tag": "🎯 Core Concept",
-    "question": "[MIN & MAX #99 &bull; Fintech & Ledger Systems] Which query correctly finds the latest order for each customer without using window functions? (Application Scenario 10)",
+    "question": "[MIN & MAX #99 &bull; Fintech & Ledger Systems] Which query correctly determines the latest order date for each customer? (Application Scenario 10)",
     "options": [
       "SELECT customer_id, order_date FROM orders WHERE order_date = MAX(order_date)",
       "SELECT customer_id, MIN(order_date) FROM orders",
@@ -7028,7 +7028,7 @@ window.MCQS_VAULT_500 = [
       "Aggregate functions cannot be evaluated in the WHERE clause because groups have not been formed yet",
       "department must be wrapped in a MAX() function",
       "COUNT(*) cannot be compared using the greater-than (>) operator",
-      "Employees table requires a subquery to count rows"
+      "Employees table requires a secondary table join to count rows"
     ],
     "correctIndex": 0,
     "explanation": "The WHERE clause operates on individual rows as they are read from disk. At that point, aggregation has not occurred, so aggregate functions like COUNT(*) are illegal in WHERE."
@@ -7096,7 +7096,7 @@ window.MCQS_VAULT_500 = [
     "question": "[HAVING #7] Why does \"SELECT department, COUNT(*) FROM Employees WHERE COUNT(*) > 5 GROUP BY department;\" fail? (Scenario Variant 2)",
     "options": [
       "department must be wrapped in a MAX() function",
-      "Employees table requires a subquery to count rows",
+      "Employees table requires a secondary table join to count rows",
       "Aggregate functions cannot be evaluated in the WHERE clause because groups have not been formed yet",
       "COUNT(*) cannot be compared using the greater-than (>) operator"
     ],
@@ -7166,7 +7166,7 @@ window.MCQS_VAULT_500 = [
     "question": "[HAVING #12] Why does \"SELECT department, COUNT(*) FROM Employees WHERE COUNT(*) > 5 GROUP BY department;\" fail? (Scenario Variant 3)",
     "options": [
       "COUNT(*) cannot be compared using the greater-than (>) operator",
-      "Employees table requires a subquery to count rows",
+      "Employees table requires a secondary table join to count rows",
       "Aggregate functions cannot be evaluated in the WHERE clause because groups have not been formed yet",
       "department must be wrapped in a MAX() function"
     ],
@@ -7238,7 +7238,7 @@ window.MCQS_VAULT_500 = [
       "COUNT(*) cannot be compared using the greater-than (>) operator",
       "department must be wrapped in a MAX() function",
       "Aggregate functions cannot be evaluated in the WHERE clause because groups have not been formed yet",
-      "Employees table requires a subquery to count rows"
+      "Employees table requires a secondary table join to count rows"
     ],
     "correctIndex": 2,
     "explanation": "The WHERE clause operates on individual rows as they are read from disk. At that point, aggregation has not occurred, so aggregate functions like COUNT(*) are illegal in WHERE."
@@ -7305,7 +7305,7 @@ window.MCQS_VAULT_500 = [
     "tag": "⚡ Gotcha Trap",
     "question": "[HAVING #22] Why does \"SELECT department, COUNT(*) FROM Employees WHERE COUNT(*) > 5 GROUP BY department;\" fail? (Scenario Variant 5)",
     "options": [
-      "Employees table requires a subquery to count rows",
+      "Employees table requires a secondary table join to count rows",
       "COUNT(*) cannot be compared using the greater-than (>) operator",
       "department must be wrapped in a MAX() function",
       "Aggregate functions cannot be evaluated in the WHERE clause because groups have not been formed yet"
@@ -7378,7 +7378,7 @@ window.MCQS_VAULT_500 = [
       "Aggregate functions cannot be evaluated in the WHERE clause because groups have not been formed yet",
       "department must be wrapped in a MAX() function",
       "COUNT(*) cannot be compared using the greater-than (>) operator",
-      "Employees table requires a subquery to count rows"
+      "Employees table requires a secondary table join to count rows"
     ],
     "correctIndex": 0,
     "explanation": "The WHERE clause operates on individual rows as they are read from disk. At that point, aggregation has not occurred, so aggregate functions like COUNT(*) are illegal in WHERE."
@@ -7447,7 +7447,7 @@ window.MCQS_VAULT_500 = [
     "options": [
       "department must be wrapped in a MAX() function",
       "COUNT(*) cannot be compared using the greater-than (>) operator",
-      "Employees table requires a subquery to count rows",
+      "Employees table requires a secondary table join to count rows",
       "Aggregate functions cannot be evaluated in the WHERE clause because groups have not been formed yet"
     ],
     "correctIndex": 3,
@@ -7518,7 +7518,7 @@ window.MCQS_VAULT_500 = [
       "department must be wrapped in a MAX() function",
       "COUNT(*) cannot be compared using the greater-than (>) operator",
       "Aggregate functions cannot be evaluated in the WHERE clause because groups have not been formed yet",
-      "Employees table requires a subquery to count rows"
+      "Employees table requires a secondary table join to count rows"
     ],
     "correctIndex": 2,
     "explanation": "The WHERE clause operates on individual rows as they are read from disk. At that point, aggregation has not occurred, so aggregate functions like COUNT(*) are illegal in WHERE."
@@ -7587,7 +7587,7 @@ window.MCQS_VAULT_500 = [
     "options": [
       "Aggregate functions cannot be evaluated in the WHERE clause because groups have not been formed yet",
       "department must be wrapped in a MAX() function",
-      "Employees table requires a subquery to count rows",
+      "Employees table requires a secondary table join to count rows",
       "COUNT(*) cannot be compared using the greater-than (>) operator"
     ],
     "correctIndex": 0,
@@ -7656,7 +7656,7 @@ window.MCQS_VAULT_500 = [
     "question": "[HAVING #47] Why does \"SELECT department, COUNT(*) FROM Employees WHERE COUNT(*) > 5 GROUP BY department;\" fail? (Scenario Variant 10)",
     "options": [
       "COUNT(*) cannot be compared using the greater-than (>) operator",
-      "Employees table requires a subquery to count rows",
+      "Employees table requires a secondary table join to count rows",
       "Aggregate functions cannot be evaluated in the WHERE clause because groups have not been formed yet",
       "department must be wrapped in a MAX() function"
     ],
@@ -7756,7 +7756,7 @@ window.MCQS_VAULT_500 = [
       "Filter both 'location = NYC' and 'SUM(salary) > 1M' in HAVING",
       "Filter 'location = NYC' in WHERE, and 'SUM(salary) > 1M' in HAVING",
       "Both execute with identical query plans and memory usage",
-      "Filter both in a subquery with no HAVING"
+      "Filter both aggregate metrics and raw columns simultaneously inside WHERE"
     ],
     "correctIndex": 1,
     "explanation": "Pushing scalar predicates into WHERE eliminates non-NYC employees BEFORE hashing/grouping, drastically reducing the volume of data aggregated in memory. [Context: Healthcare Patient Records]"
@@ -7825,7 +7825,7 @@ window.MCQS_VAULT_500 = [
     "options": [
       "Filter both 'location = NYC' and 'SUM(salary) > 1M' in HAVING",
       "Both execute with identical query plans and memory usage",
-      "Filter both in a subquery with no HAVING",
+      "Filter both aggregate metrics and raw columns simultaneously inside WHERE",
       "Filter 'location = NYC' in WHERE, and 'SUM(salary) > 1M' in HAVING"
     ],
     "correctIndex": 3,
@@ -7896,7 +7896,7 @@ window.MCQS_VAULT_500 = [
       "Filter both 'location = NYC' and 'SUM(salary) > 1M' in HAVING",
       "Filter 'location = NYC' in WHERE, and 'SUM(salary) > 1M' in HAVING",
       "Both execute with identical query plans and memory usage",
-      "Filter both in a subquery with no HAVING"
+      "Filter both aggregate metrics and raw columns simultaneously inside WHERE"
     ],
     "correctIndex": 1,
     "explanation": "Pushing scalar predicates into WHERE eliminates non-NYC employees BEFORE hashing/grouping, drastically reducing the volume of data aggregated in memory. [Context: Telecom Billing & Data Streams]"
@@ -7965,7 +7965,7 @@ window.MCQS_VAULT_500 = [
     "options": [
       "Filter both 'location = NYC' and 'SUM(salary) > 1M' in HAVING",
       "Both execute with identical query plans and memory usage",
-      "Filter both in a subquery with no HAVING",
+      "Filter both aggregate metrics and raw columns simultaneously inside WHERE",
       "Filter 'location = NYC' in WHERE, and 'SUM(salary) > 1M' in HAVING"
     ],
     "correctIndex": 3,
@@ -8036,7 +8036,7 @@ window.MCQS_VAULT_500 = [
       "Filter both 'location = NYC' and 'SUM(salary) > 1M' in HAVING",
       "Filter 'location = NYC' in WHERE, and 'SUM(salary) > 1M' in HAVING",
       "Both execute with identical query plans and memory usage",
-      "Filter both in a subquery with no HAVING"
+      "Filter both aggregate metrics and raw columns simultaneously inside WHERE"
     ],
     "correctIndex": 1,
     "explanation": "Pushing scalar predicates into WHERE eliminates non-NYC employees BEFORE hashing/grouping, drastically reducing the volume of data aggregated in memory. [Context: Cybersecurity Audit Logs]"
@@ -8105,7 +8105,7 @@ window.MCQS_VAULT_500 = [
     "options": [
       "Filter both 'location = NYC' and 'SUM(salary) > 1M' in HAVING",
       "Both execute with identical query plans and memory usage",
-      "Filter both in a subquery with no HAVING",
+      "Filter both aggregate metrics and raw columns simultaneously inside WHERE",
       "Filter 'location = NYC' in WHERE, and 'SUM(salary) > 1M' in HAVING"
     ],
     "correctIndex": 3,
@@ -8176,7 +8176,7 @@ window.MCQS_VAULT_500 = [
       "Filter both 'location = NYC' and 'SUM(salary) > 1M' in HAVING",
       "Filter 'location = NYC' in WHERE, and 'SUM(salary) > 1M' in HAVING",
       "Both execute with identical query plans and memory usage",
-      "Filter both in a subquery with no HAVING"
+      "Filter both aggregate metrics and raw columns simultaneously inside WHERE"
     ],
     "correctIndex": 1,
     "explanation": "Pushing scalar predicates into WHERE eliminates non-NYC employees BEFORE hashing/grouping, drastically reducing the volume of data aggregated in memory. [Context: SaaS Subscription Billing]"
@@ -8245,7 +8245,7 @@ window.MCQS_VAULT_500 = [
     "options": [
       "Filter both 'location = NYC' and 'SUM(salary) > 1M' in HAVING",
       "Both execute with identical query plans and memory usage",
-      "Filter both in a subquery with no HAVING",
+      "Filter both aggregate metrics and raw columns simultaneously inside WHERE",
       "Filter 'location = NYC' in WHERE, and 'SUM(salary) > 1M' in HAVING"
     ],
     "correctIndex": 3,
@@ -8316,7 +8316,7 @@ window.MCQS_VAULT_500 = [
       "Filter both 'location = NYC' and 'SUM(salary) > 1M' in HAVING",
       "Filter 'location = NYC' in WHERE, and 'SUM(salary) > 1M' in HAVING",
       "Both execute with identical query plans and memory usage",
-      "Filter both in a subquery with no HAVING"
+      "Filter both aggregate metrics and raw columns simultaneously inside WHERE"
     ],
     "correctIndex": 1,
     "explanation": "Pushing scalar predicates into WHERE eliminates non-NYC employees BEFORE hashing/grouping, drastically reducing the volume of data aggregated in memory. [Context: Healthcare Patient Records]"
@@ -8385,7 +8385,7 @@ window.MCQS_VAULT_500 = [
     "options": [
       "Filter both 'location = NYC' and 'SUM(salary) > 1M' in HAVING",
       "Both execute with identical query plans and memory usage",
-      "Filter both in a subquery with no HAVING",
+      "Filter both aggregate metrics and raw columns simultaneously inside WHERE",
       "Filter 'location = NYC' in WHERE, and 'SUM(salary) > 1M' in HAVING"
     ],
     "correctIndex": 3,
@@ -9851,15 +9851,15 @@ window.MCQS_VAULT_500 = [
     "id": "mcq_select_4",
     "keyword": "SELECT",
     "tag": "🎯 Core Concept",
-    "question": "[SELECT #4] Can a SELECT clause contain a scalar subquery that computes a value per row?",
+    "question": "[SELECT #4] Can a SELECT clause contain arithmetic expressions and computed constants per row?",
     "options": [
-      "Only if the subquery returns at least 10 rows",
-      "No, subqueries are strictly restricted to the FROM clause",
+      "Only if the query contains a GROUP BY clause",
+      "No, SELECT can only project raw existing table columns",
       "Only in NoSQL databases",
-      "Yes, scalar subqueries returning a single value per row can be projected directly in SELECT"
+      "Yes, arithmetic expressions and computed literals can be projected directly in SELECT"
     ],
     "correctIndex": 3,
-    "explanation": "Correlated scalar subqueries in SELECT are valid, though they must return at most 1 row and 1 column, and can incur O(N) performance overhead."
+    "explanation": "SELECT expressions can compute arithmetic operations (e.g., price * 1.18) or project constants for every candidate row."
   },
   {
     "id": "mcq_select_5",
@@ -9921,15 +9921,15 @@ window.MCQS_VAULT_500 = [
     "id": "mcq_select_9",
     "keyword": "SELECT",
     "tag": "🎯 Core Concept",
-    "question": "[SELECT #9] Can a SELECT clause contain a scalar subquery that computes a value per row? (Scenario Variant 2)",
+    "question": "[SELECT #9] Can a SELECT clause contain arithmetic expressions and computed constants per row? (Scenario Variant 2)",
     "options": [
       "Only in NoSQL databases",
-      "Only if the subquery returns at least 10 rows",
-      "Yes, scalar subqueries returning a single value per row can be projected directly in SELECT",
-      "No, subqueries are strictly restricted to the FROM clause"
+      "Only if the query contains a GROUP BY clause",
+      "Yes, arithmetic expressions and computed literals can be projected directly in SELECT",
+      "No, SELECT can only project raw existing table columns"
     ],
     "correctIndex": 2,
-    "explanation": "Correlated scalar subqueries in SELECT are valid, though they must return at most 1 row and 1 column, and can incur O(N) performance overhead."
+    "explanation": "SELECT expressions can compute arithmetic operations (e.g., price * 1.18) or project constants for every candidate row."
   },
   {
     "id": "mcq_select_10",
@@ -9991,15 +9991,15 @@ window.MCQS_VAULT_500 = [
     "id": "mcq_select_14",
     "keyword": "SELECT",
     "tag": "🎯 Core Concept",
-    "question": "[SELECT #14] Can a SELECT clause contain a scalar subquery that computes a value per row? (Scenario Variant 3)",
+    "question": "[SELECT #14] Can a SELECT clause contain arithmetic expressions and computed constants per row? (Scenario Variant 3)",
     "options": [
-      "Yes, scalar subqueries returning a single value per row can be projected directly in SELECT",
+      "Yes, arithmetic expressions and computed literals can be projected directly in SELECT",
       "Only in NoSQL databases",
-      "No, subqueries are strictly restricted to the FROM clause",
-      "Only if the subquery returns at least 10 rows"
+      "No, SELECT can only project raw existing table columns",
+      "Only if the query contains a GROUP BY clause"
     ],
     "correctIndex": 0,
-    "explanation": "Correlated scalar subqueries in SELECT are valid, though they must return at most 1 row and 1 column, and can incur O(N) performance overhead."
+    "explanation": "SELECT expressions can compute arithmetic operations (e.g., price * 1.18) or project constants for every candidate row."
   },
   {
     "id": "mcq_select_15",
@@ -10061,15 +10061,15 @@ window.MCQS_VAULT_500 = [
     "id": "mcq_select_19",
     "keyword": "SELECT",
     "tag": "🎯 Core Concept",
-    "question": "[SELECT #19] Can a SELECT clause contain a scalar subquery that computes a value per row? (Scenario Variant 4)",
+    "question": "[SELECT #19] Can a SELECT clause contain arithmetic expressions and computed constants per row? (Scenario Variant 4)",
     "options": [
-      "Only if the subquery returns at least 10 rows",
+      "Only if the query contains a GROUP BY clause",
       "Only in NoSQL databases",
-      "Yes, scalar subqueries returning a single value per row can be projected directly in SELECT",
-      "No, subqueries are strictly restricted to the FROM clause"
+      "Yes, arithmetic expressions and computed literals can be projected directly in SELECT",
+      "No, SELECT can only project raw existing table columns"
     ],
     "correctIndex": 2,
-    "explanation": "Correlated scalar subqueries in SELECT are valid, though they must return at most 1 row and 1 column, and can incur O(N) performance overhead."
+    "explanation": "SELECT expressions can compute arithmetic operations (e.g., price * 1.18) or project constants for every candidate row."
   },
   {
     "id": "mcq_select_20",
@@ -10131,15 +10131,15 @@ window.MCQS_VAULT_500 = [
     "id": "mcq_select_24",
     "keyword": "SELECT",
     "tag": "🎯 Core Concept",
-    "question": "[SELECT #24] Can a SELECT clause contain a scalar subquery that computes a value per row? (Scenario Variant 5)",
+    "question": "[SELECT #24] Can a SELECT clause contain arithmetic expressions and computed constants per row? (Scenario Variant 5)",
     "options": [
       "Only in NoSQL databases",
-      "No, subqueries are strictly restricted to the FROM clause",
-      "Only if the subquery returns at least 10 rows",
-      "Yes, scalar subqueries returning a single value per row can be projected directly in SELECT"
+      "No, SELECT can only project raw existing table columns",
+      "Only if the query contains a GROUP BY clause",
+      "Yes, arithmetic expressions and computed literals can be projected directly in SELECT"
     ],
     "correctIndex": 3,
-    "explanation": "Correlated scalar subqueries in SELECT are valid, though they must return at most 1 row and 1 column, and can incur O(N) performance overhead."
+    "explanation": "SELECT expressions can compute arithmetic operations (e.g., price * 1.18) or project constants for every candidate row."
   },
   {
     "id": "mcq_select_25",
@@ -10201,15 +10201,15 @@ window.MCQS_VAULT_500 = [
     "id": "mcq_select_29",
     "keyword": "SELECT",
     "tag": "🎯 Core Concept",
-    "question": "[SELECT #29] Can a SELECT clause contain a scalar subquery that computes a value per row? (Scenario Variant 6)",
+    "question": "[SELECT #29] Can a SELECT clause contain arithmetic expressions and computed constants per row? (Scenario Variant 6)",
     "options": [
-      "Yes, scalar subqueries returning a single value per row can be projected directly in SELECT",
+      "Yes, arithmetic expressions and computed literals can be projected directly in SELECT",
       "Only in NoSQL databases",
-      "Only if the subquery returns at least 10 rows",
-      "No, subqueries are strictly restricted to the FROM clause"
+      "Only if the query contains a GROUP BY clause",
+      "No, SELECT can only project raw existing table columns"
     ],
     "correctIndex": 0,
-    "explanation": "Correlated scalar subqueries in SELECT are valid, though they must return at most 1 row and 1 column, and can incur O(N) performance overhead."
+    "explanation": "SELECT expressions can compute arithmetic operations (e.g., price * 1.18) or project constants for every candidate row."
   },
   {
     "id": "mcq_select_30",
@@ -10271,15 +10271,15 @@ window.MCQS_VAULT_500 = [
     "id": "mcq_select_34",
     "keyword": "SELECT",
     "tag": "🎯 Core Concept",
-    "question": "[SELECT #34] Can a SELECT clause contain a scalar subquery that computes a value per row? (Scenario Variant 7)",
+    "question": "[SELECT #34] Can a SELECT clause contain arithmetic expressions and computed constants per row? (Scenario Variant 7)",
     "options": [
       "Only in NoSQL databases",
-      "Only if the subquery returns at least 10 rows",
-      "No, subqueries are strictly restricted to the FROM clause",
-      "Yes, scalar subqueries returning a single value per row can be projected directly in SELECT"
+      "Only if the query contains a GROUP BY clause",
+      "No, SELECT can only project raw existing table columns",
+      "Yes, arithmetic expressions and computed literals can be projected directly in SELECT"
     ],
     "correctIndex": 3,
-    "explanation": "Correlated scalar subqueries in SELECT are valid, though they must return at most 1 row and 1 column, and can incur O(N) performance overhead."
+    "explanation": "SELECT expressions can compute arithmetic operations (e.g., price * 1.18) or project constants for every candidate row."
   },
   {
     "id": "mcq_select_35",
@@ -10341,15 +10341,15 @@ window.MCQS_VAULT_500 = [
     "id": "mcq_select_39",
     "keyword": "SELECT",
     "tag": "🎯 Core Concept",
-    "question": "[SELECT #39] Can a SELECT clause contain a scalar subquery that computes a value per row? (Scenario Variant 8)",
+    "question": "[SELECT #39] Can a SELECT clause contain arithmetic expressions and computed constants per row? (Scenario Variant 8)",
     "options": [
-      "Yes, scalar subqueries returning a single value per row can be projected directly in SELECT",
+      "Yes, arithmetic expressions and computed literals can be projected directly in SELECT",
       "Only in NoSQL databases",
-      "Only if the subquery returns at least 10 rows",
-      "No, subqueries are strictly restricted to the FROM clause"
+      "Only if the query contains a GROUP BY clause",
+      "No, SELECT can only project raw existing table columns"
     ],
     "correctIndex": 0,
-    "explanation": "Correlated scalar subqueries in SELECT are valid, though they must return at most 1 row and 1 column, and can incur O(N) performance overhead."
+    "explanation": "SELECT expressions can compute arithmetic operations (e.g., price * 1.18) or project constants for every candidate row."
   },
   {
     "id": "mcq_select_40",
@@ -10411,15 +10411,15 @@ window.MCQS_VAULT_500 = [
     "id": "mcq_select_44",
     "keyword": "SELECT",
     "tag": "🎯 Core Concept",
-    "question": "[SELECT #44] Can a SELECT clause contain a scalar subquery that computes a value per row? (Scenario Variant 9)",
+    "question": "[SELECT #44] Can a SELECT clause contain arithmetic expressions and computed constants per row? (Scenario Variant 9)",
     "options": [
-      "Only if the subquery returns at least 10 rows",
-      "No, subqueries are strictly restricted to the FROM clause",
+      "Only if the query contains a GROUP BY clause",
+      "No, SELECT can only project raw existing table columns",
       "Only in NoSQL databases",
-      "Yes, scalar subqueries returning a single value per row can be projected directly in SELECT"
+      "Yes, arithmetic expressions and computed literals can be projected directly in SELECT"
     ],
     "correctIndex": 3,
-    "explanation": "Correlated scalar subqueries in SELECT are valid, though they must return at most 1 row and 1 column, and can incur O(N) performance overhead."
+    "explanation": "SELECT expressions can compute arithmetic operations (e.g., price * 1.18) or project constants for every candidate row."
   },
   {
     "id": "mcq_select_45",
@@ -10481,15 +10481,15 @@ window.MCQS_VAULT_500 = [
     "id": "mcq_select_49",
     "keyword": "SELECT",
     "tag": "🎯 Core Concept",
-    "question": "[SELECT #49] Can a SELECT clause contain a scalar subquery that computes a value per row? (Scenario Variant 10)",
+    "question": "[SELECT #49] Can a SELECT clause contain arithmetic expressions and computed constants per row? (Scenario Variant 10)",
     "options": [
-      "Yes, scalar subqueries returning a single value per row can be projected directly in SELECT",
+      "Yes, arithmetic expressions and computed literals can be projected directly in SELECT",
       "Only in NoSQL databases",
-      "Only if the subquery returns at least 10 rows",
-      "No, subqueries are strictly restricted to the FROM clause"
+      "Only if the query contains a GROUP BY clause",
+      "No, SELECT can only project raw existing table columns"
     ],
     "correctIndex": 0,
-    "explanation": "Correlated scalar subqueries in SELECT are valid, though they must return at most 1 row and 1 column, and can incur O(N) performance overhead."
+    "explanation": "SELECT expressions can compute arithmetic operations (e.g., price * 1.18) or project constants for every candidate row."
   },
   {
     "id": "mcq_select_50",
@@ -11223,15 +11223,15 @@ window.MCQS_VAULT_500 = [
     "id": "mcq_from_2",
     "keyword": "FROM",
     "tag": "⚡ Gotcha Trap",
-    "question": "[FROM #2] What is a \"derived table\" in the context of the FROM clause?",
+    "question": "[FROM #2] What relational result does a FROM clause produce when two tables are listed separated by a comma without an ON condition (e.g., FROM A, B)?",
     "options": [
-      "A table created with the CREATE TABLE command",
-      "A materialized view refreshed hourly",
-      "A subquery placed inside the FROM clause that produces a temporary virtual relation with a required alias",
-      "A physical disk backup partition"
+      "An automatic INNER JOIN matching on shared primary key names",
+      "A UNION ALL concatenating both tables vertically",
+      "A Cartesian Product (CROSS JOIN) pairing every row of table A with every row of table B",
+      "A database compiler syntax error"
     ],
     "correctIndex": 2,
-    "explanation": "A derived table (or inline view) is a subquery in the FROM clause, e.g., \"FROM (SELECT id FROM Users) AS u\". Most engines strictly require an alias."
+    "explanation": "Listing tables separated by commas in the FROM clause without an explicit join predicate produces an unconstrained Cartesian product yielding count(A) * count(B) rows."
   },
   {
     "id": "mcq_from_3",
@@ -11293,15 +11293,15 @@ window.MCQS_VAULT_500 = [
     "id": "mcq_from_7",
     "keyword": "FROM",
     "tag": "⚡ Gotcha Trap",
-    "question": "[FROM #7] What is a \"derived table\" in the context of the FROM clause? (Scenario Variant 2)",
+    "question": "[FROM #7] What relational result does a FROM clause produce when two tables are listed separated by a comma without an ON condition (e.g., FROM A, B)?",
     "options": [
-      "A materialized view refreshed hourly",
-      "A table created with the CREATE TABLE command",
-      "A physical disk backup partition",
-      "A subquery placed inside the FROM clause that produces a temporary virtual relation with a required alias"
+      "An automatic INNER JOIN matching on shared primary key names",
+      "A UNION ALL concatenating both tables vertically",
+      "A Cartesian Product (CROSS JOIN) pairing every row of table A with every row of table B",
+      "A database compiler syntax error"
     ],
-    "correctIndex": 3,
-    "explanation": "A derived table (or inline view) is a subquery in the FROM clause, e.g., \"FROM (SELECT id FROM Users) AS u\". Most engines strictly require an alias."
+    "correctIndex": 2,
+    "explanation": "Listing tables separated by commas in the FROM clause without an explicit join predicate produces an unconstrained Cartesian product yielding count(A) * count(B) rows."
   },
   {
     "id": "mcq_from_8",
@@ -11363,15 +11363,15 @@ window.MCQS_VAULT_500 = [
     "id": "mcq_from_12",
     "keyword": "FROM",
     "tag": "⚡ Gotcha Trap",
-    "question": "[FROM #12] What is a \"derived table\" in the context of the FROM clause? (Scenario Variant 3)",
+    "question": "[FROM #12] What relational result does a FROM clause produce when two tables are listed separated by a comma without an ON condition (e.g., FROM A, B)?",
     "options": [
-      "A physical disk backup partition",
-      "A subquery placed inside the FROM clause that produces a temporary virtual relation with a required alias",
-      "A materialized view refreshed hourly",
-      "A table created with the CREATE TABLE command"
+      "An automatic INNER JOIN matching on shared primary key names",
+      "A UNION ALL concatenating both tables vertically",
+      "A Cartesian Product (CROSS JOIN) pairing every row of table A with every row of table B",
+      "A database compiler syntax error"
     ],
-    "correctIndex": 1,
-    "explanation": "A derived table (or inline view) is a subquery in the FROM clause, e.g., \"FROM (SELECT id FROM Users) AS u\". Most engines strictly require an alias."
+    "correctIndex": 2,
+    "explanation": "Listing tables separated by commas in the FROM clause without an explicit join predicate produces an unconstrained Cartesian product yielding count(A) * count(B) rows."
   },
   {
     "id": "mcq_from_13",
@@ -11433,15 +11433,15 @@ window.MCQS_VAULT_500 = [
     "id": "mcq_from_17",
     "keyword": "FROM",
     "tag": "⚡ Gotcha Trap",
-    "question": "[FROM #17] What is a \"derived table\" in the context of the FROM clause? (Scenario Variant 4)",
+    "question": "[FROM #17] What relational result does a FROM clause produce when two tables are listed separated by a comma without an ON condition (e.g., FROM A, B)?",
     "options": [
-      "A table created with the CREATE TABLE command",
-      "A subquery placed inside the FROM clause that produces a temporary virtual relation with a required alias",
-      "A materialized view refreshed hourly",
-      "A physical disk backup partition"
+      "An automatic INNER JOIN matching on shared primary key names",
+      "A UNION ALL concatenating both tables vertically",
+      "A Cartesian Product (CROSS JOIN) pairing every row of table A with every row of table B",
+      "A database compiler syntax error"
     ],
-    "correctIndex": 1,
-    "explanation": "A derived table (or inline view) is a subquery in the FROM clause, e.g., \"FROM (SELECT id FROM Users) AS u\". Most engines strictly require an alias."
+    "correctIndex": 2,
+    "explanation": "Listing tables separated by commas in the FROM clause without an explicit join predicate produces an unconstrained Cartesian product yielding count(A) * count(B) rows."
   },
   {
     "id": "mcq_from_18",
@@ -11503,15 +11503,15 @@ window.MCQS_VAULT_500 = [
     "id": "mcq_from_22",
     "keyword": "FROM",
     "tag": "⚡ Gotcha Trap",
-    "question": "[FROM #22] What is a \"derived table\" in the context of the FROM clause? (Scenario Variant 5)",
+    "question": "[FROM #22] What relational result does a FROM clause produce when two tables are listed separated by a comma without an ON condition (e.g., FROM A, B)?",
     "options": [
-      "A subquery placed inside the FROM clause that produces a temporary virtual relation with a required alias",
-      "A materialized view refreshed hourly",
-      "A table created with the CREATE TABLE command",
-      "A physical disk backup partition"
+      "An automatic INNER JOIN matching on shared primary key names",
+      "A UNION ALL concatenating both tables vertically",
+      "A Cartesian Product (CROSS JOIN) pairing every row of table A with every row of table B",
+      "A database compiler syntax error"
     ],
-    "correctIndex": 0,
-    "explanation": "A derived table (or inline view) is a subquery in the FROM clause, e.g., \"FROM (SELECT id FROM Users) AS u\". Most engines strictly require an alias."
+    "correctIndex": 2,
+    "explanation": "Listing tables separated by commas in the FROM clause without an explicit join predicate produces an unconstrained Cartesian product yielding count(A) * count(B) rows."
   },
   {
     "id": "mcq_from_23",
@@ -11573,15 +11573,15 @@ window.MCQS_VAULT_500 = [
     "id": "mcq_from_27",
     "keyword": "FROM",
     "tag": "⚡ Gotcha Trap",
-    "question": "[FROM #27] What is a \"derived table\" in the context of the FROM clause? (Scenario Variant 6)",
+    "question": "[FROM #27] What relational result does a FROM clause produce when two tables are listed separated by a comma without an ON condition (e.g., FROM A, B)?",
     "options": [
-      "A materialized view refreshed hourly",
-      "A subquery placed inside the FROM clause that produces a temporary virtual relation with a required alias",
-      "A physical disk backup partition",
-      "A table created with the CREATE TABLE command"
+      "An automatic INNER JOIN matching on shared primary key names",
+      "A UNION ALL concatenating both tables vertically",
+      "A Cartesian Product (CROSS JOIN) pairing every row of table A with every row of table B",
+      "A database compiler syntax error"
     ],
-    "correctIndex": 1,
-    "explanation": "A derived table (or inline view) is a subquery in the FROM clause, e.g., \"FROM (SELECT id FROM Users) AS u\". Most engines strictly require an alias."
+    "correctIndex": 2,
+    "explanation": "Listing tables separated by commas in the FROM clause without an explicit join predicate produces an unconstrained Cartesian product yielding count(A) * count(B) rows."
   },
   {
     "id": "mcq_from_28",
@@ -11643,15 +11643,15 @@ window.MCQS_VAULT_500 = [
     "id": "mcq_from_32",
     "keyword": "FROM",
     "tag": "⚡ Gotcha Trap",
-    "question": "[FROM #32] What is a \"derived table\" in the context of the FROM clause? (Scenario Variant 7)",
+    "question": "[FROM #32] What relational result does a FROM clause produce when two tables are listed separated by a comma without an ON condition (e.g., FROM A, B)?",
     "options": [
-      "A physical disk backup partition",
-      "A table created with the CREATE TABLE command",
-      "A materialized view refreshed hourly",
-      "A subquery placed inside the FROM clause that produces a temporary virtual relation with a required alias"
+      "An automatic INNER JOIN matching on shared primary key names",
+      "A UNION ALL concatenating both tables vertically",
+      "A Cartesian Product (CROSS JOIN) pairing every row of table A with every row of table B",
+      "A database compiler syntax error"
     ],
-    "correctIndex": 3,
-    "explanation": "A derived table (or inline view) is a subquery in the FROM clause, e.g., \"FROM (SELECT id FROM Users) AS u\". Most engines strictly require an alias."
+    "correctIndex": 2,
+    "explanation": "Listing tables separated by commas in the FROM clause without an explicit join predicate produces an unconstrained Cartesian product yielding count(A) * count(B) rows."
   },
   {
     "id": "mcq_from_33",
@@ -11713,15 +11713,15 @@ window.MCQS_VAULT_500 = [
     "id": "mcq_from_37",
     "keyword": "FROM",
     "tag": "⚡ Gotcha Trap",
-    "question": "[FROM #37] What is a \"derived table\" in the context of the FROM clause? (Scenario Variant 8)",
+    "question": "[FROM #37] What relational result does a FROM clause produce when two tables are listed separated by a comma without an ON condition (e.g., FROM A, B)?",
     "options": [
-      "A materialized view refreshed hourly",
-      "A table created with the CREATE TABLE command",
-      "A subquery placed inside the FROM clause that produces a temporary virtual relation with a required alias",
-      "A physical disk backup partition"
+      "An automatic INNER JOIN matching on shared primary key names",
+      "A UNION ALL concatenating both tables vertically",
+      "A Cartesian Product (CROSS JOIN) pairing every row of table A with every row of table B",
+      "A database compiler syntax error"
     ],
     "correctIndex": 2,
-    "explanation": "A derived table (or inline view) is a subquery in the FROM clause, e.g., \"FROM (SELECT id FROM Users) AS u\". Most engines strictly require an alias."
+    "explanation": "Listing tables separated by commas in the FROM clause without an explicit join predicate produces an unconstrained Cartesian product yielding count(A) * count(B) rows."
   },
   {
     "id": "mcq_from_38",
@@ -11783,15 +11783,15 @@ window.MCQS_VAULT_500 = [
     "id": "mcq_from_42",
     "keyword": "FROM",
     "tag": "⚡ Gotcha Trap",
-    "question": "[FROM #42] What is a \"derived table\" in the context of the FROM clause? (Scenario Variant 9)",
+    "question": "[FROM #42] What relational result does a FROM clause produce when two tables are listed separated by a comma without an ON condition (e.g., FROM A, B)?",
     "options": [
-      "A physical disk backup partition",
-      "A table created with the CREATE TABLE command",
-      "A materialized view refreshed hourly",
-      "A subquery placed inside the FROM clause that produces a temporary virtual relation with a required alias"
+      "An automatic INNER JOIN matching on shared primary key names",
+      "A UNION ALL concatenating both tables vertically",
+      "A Cartesian Product (CROSS JOIN) pairing every row of table A with every row of table B",
+      "A database compiler syntax error"
     ],
-    "correctIndex": 3,
-    "explanation": "A derived table (or inline view) is a subquery in the FROM clause, e.g., \"FROM (SELECT id FROM Users) AS u\". Most engines strictly require an alias."
+    "correctIndex": 2,
+    "explanation": "Listing tables separated by commas in the FROM clause without an explicit join predicate produces an unconstrained Cartesian product yielding count(A) * count(B) rows."
   },
   {
     "id": "mcq_from_43",
@@ -11853,15 +11853,15 @@ window.MCQS_VAULT_500 = [
     "id": "mcq_from_47",
     "keyword": "FROM",
     "tag": "⚡ Gotcha Trap",
-    "question": "[FROM #47] What is a \"derived table\" in the context of the FROM clause? (Scenario Variant 10)",
+    "question": "[FROM #47] What relational result does a FROM clause produce when two tables are listed separated by a comma without an ON condition (e.g., FROM A, B)?",
     "options": [
-      "A subquery placed inside the FROM clause that produces a temporary virtual relation with a required alias",
-      "A materialized view refreshed hourly",
-      "A physical disk backup partition",
-      "A table created with the CREATE TABLE command"
+      "An automatic INNER JOIN matching on shared primary key names",
+      "A UNION ALL concatenating both tables vertically",
+      "A Cartesian Product (CROSS JOIN) pairing every row of table A with every row of table B",
+      "A database compiler syntax error"
     ],
-    "correctIndex": 0,
-    "explanation": "A derived table (or inline view) is a subquery in the FROM clause, e.g., \"FROM (SELECT id FROM Users) AS u\". Most engines strictly require an alias."
+    "correctIndex": 2,
+    "explanation": "Listing tables separated by commas in the FROM clause without an explicit join predicate produces an unconstrained Cartesian product yielding count(A) * count(B) rows."
   },
   {
     "id": "mcq_from_48",
@@ -11931,7 +11931,7 @@ window.MCQS_VAULT_500 = [
       "A table with zero columns"
     ],
     "correctIndex": 1,
-    "explanation": "Derived tables are subqueries occurring in the FROM clause. ANSI SQL and MySQL require every derived table to have a table alias so other clauses can qualify column references. [Context: SaaS Subscription Billing]"
+    "explanation": "Table aliases in the FROM clause (e.g., FROM Employees e) allow qualifying column references cleanly and resolving naming ambiguities across tables. [Context: SaaS Subscription Billing]"
   },
   {
     "id": "mcq_from_53",
@@ -12001,7 +12001,7 @@ window.MCQS_VAULT_500 = [
       "A subquery in the FROM clause; it MUST be given an explicit table alias (e.g. 'FROM (...) AS dt')"
     ],
     "correctIndex": 3,
-    "explanation": "Derived tables are subqueries occurring in the FROM clause. ANSI SQL and MySQL require every derived table to have a table alias so other clauses can qualify column references. [Context: AdTech Real-Time Bidding]"
+    "explanation": "Table aliases in the FROM clause (e.g., FROM Employees e) allow qualifying column references cleanly and resolving naming ambiguities across tables. [Context: AdTech Real-Time Bidding]"
   },
   {
     "id": "mcq_from_58",
@@ -12071,7 +12071,7 @@ window.MCQS_VAULT_500 = [
       "A table with zero columns"
     ],
     "correctIndex": 1,
-    "explanation": "Derived tables are subqueries occurring in the FROM clause. ANSI SQL and MySQL require every derived table to have a table alias so other clauses can qualify column references. [Context: Healthcare Patient Records]"
+    "explanation": "Table aliases in the FROM clause (e.g., FROM Employees e) allow qualifying column references cleanly and resolving naming ambiguities across tables. [Context: Healthcare Patient Records]"
   },
   {
     "id": "mcq_from_63",
@@ -12141,7 +12141,7 @@ window.MCQS_VAULT_500 = [
       "A subquery in the FROM clause; it MUST be given an explicit table alias (e.g. 'FROM (...) AS dt')"
     ],
     "correctIndex": 3,
-    "explanation": "Derived tables are subqueries occurring in the FROM clause. ANSI SQL and MySQL require every derived table to have a table alias so other clauses can qualify column references. [Context: Fintech & Ledger Systems]"
+    "explanation": "Table aliases in the FROM clause (e.g., FROM Employees e) allow qualifying column references cleanly and resolving naming ambiguities across tables. [Context: Fintech & Ledger Systems]"
   },
   {
     "id": "mcq_from_68",
@@ -12211,7 +12211,7 @@ window.MCQS_VAULT_500 = [
       "A table with zero columns"
     ],
     "correctIndex": 1,
-    "explanation": "Derived tables are subqueries occurring in the FROM clause. ANSI SQL and MySQL require every derived table to have a table alias so other clauses can qualify column references. [Context: Telecom Billing & Data Streams]"
+    "explanation": "Table aliases in the FROM clause (e.g., FROM Employees e) allow qualifying column references cleanly and resolving naming ambiguities across tables. [Context: Telecom Billing & Data Streams]"
   },
   {
     "id": "mcq_from_73",
@@ -12281,7 +12281,7 @@ window.MCQS_VAULT_500 = [
       "A subquery in the FROM clause; it MUST be given an explicit table alias (e.g. 'FROM (...) AS dt')"
     ],
     "correctIndex": 3,
-    "explanation": "Derived tables are subqueries occurring in the FROM clause. ANSI SQL and MySQL require every derived table to have a table alias so other clauses can qualify column references. [Context: Global Supply Chain & Logistics]"
+    "explanation": "Table aliases in the FROM clause (e.g., FROM Employees e) allow qualifying column references cleanly and resolving naming ambiguities across tables. [Context: Global Supply Chain & Logistics]"
   },
   {
     "id": "mcq_from_78",
@@ -12351,7 +12351,7 @@ window.MCQS_VAULT_500 = [
       "A table with zero columns"
     ],
     "correctIndex": 1,
-    "explanation": "Derived tables are subqueries occurring in the FROM clause. ANSI SQL and MySQL require every derived table to have a table alias so other clauses can qualify column references. [Context: Cybersecurity Audit Logs]"
+    "explanation": "Table aliases in the FROM clause (e.g., FROM Employees e) allow qualifying column references cleanly and resolving naming ambiguities across tables. [Context: Cybersecurity Audit Logs]"
   },
   {
     "id": "mcq_from_83",
@@ -12421,7 +12421,7 @@ window.MCQS_VAULT_500 = [
       "A subquery in the FROM clause; it MUST be given an explicit table alias (e.g. 'FROM (...) AS dt')"
     ],
     "correctIndex": 3,
-    "explanation": "Derived tables are subqueries occurring in the FROM clause. ANSI SQL and MySQL require every derived table to have a table alias so other clauses can qualify column references. [Context: E-Commerce Checkout Funnels]"
+    "explanation": "Table aliases in the FROM clause (e.g., FROM Employees e) allow qualifying column references cleanly and resolving naming ambiguities across tables. [Context: E-Commerce Checkout Funnels]"
   },
   {
     "id": "mcq_from_88",
@@ -12491,7 +12491,7 @@ window.MCQS_VAULT_500 = [
       "A table with zero columns"
     ],
     "correctIndex": 1,
-    "explanation": "Derived tables are subqueries occurring in the FROM clause. ANSI SQL and MySQL require every derived table to have a table alias so other clauses can qualify column references. [Context: SaaS Subscription Billing]"
+    "explanation": "Table aliases in the FROM clause (e.g., FROM Employees e) allow qualifying column references cleanly and resolving naming ambiguities across tables. [Context: SaaS Subscription Billing]"
   },
   {
     "id": "mcq_from_93",
@@ -12561,7 +12561,7 @@ window.MCQS_VAULT_500 = [
       "A subquery in the FROM clause; it MUST be given an explicit table alias (e.g. 'FROM (...) AS dt')"
     ],
     "correctIndex": 3,
-    "explanation": "Derived tables are subqueries occurring in the FROM clause. ANSI SQL and MySQL require every derived table to have a table alias so other clauses can qualify column references. [Context: AdTech Real-Time Bidding]"
+    "explanation": "Table aliases in the FROM clause (e.g., FROM Employees e) allow qualifying column references cleanly and resolving naming ambiguities across tables. [Context: AdTech Real-Time Bidding]"
   },
   {
     "id": "mcq_from_98",
@@ -14182,7 +14182,7 @@ window.MCQS_VAULT_500 = [
       "Evaluation order of user variables is explicitly undefined in MySQL 8.0 and deprecated, potentially causing non-deterministic results",
       "User variables cause the database disk to be wiped",
       "User variables lock all tables for write access indefinitely",
-      "User variables cannot be used in subqueries"
+      "User variables cannot be declared with the @ symbol"
     ],
     "correctIndex": 0,
     "explanation": "The MySQL manual explicitly warns that order of evaluation of expressions involving user variables is undefined and may change between releases. Window functions (ROW_NUMBER) should always be used in MySQL 8.0+."
@@ -14191,15 +14191,15 @@ window.MCQS_VAULT_500 = [
     "id": "mcq_math_14",
     "keyword": "MATH & MEDIANS",
     "tag": "🎯 Core Concept",
-    "question": "[MATH & MEDIANS #14] Which window function generates the exact fractional relative rank (from 0.0 to 1.0) of a row within a partition?",
+    "question": "[MATH & MEDIANS #14] In SQL, what is the key difference between ROUND(X, D) and TRUNCATE(X, D) when processing decimal numbers?",
     "options": [
-      "DENSE_RANK()",
-      "PERCENT_RANK()",
-      "ROW_NUMBER()",
-      "NTILE(100)"
+      "ROUND always returns an integer, while TRUNCATE preserves decimals",
+      "TRUNCATE physically clips digits beyond position D without rounding, while ROUND rounds to the nearest value",
+      "TRUNCATE is only supported in SQLite, while ROUND is ANSI standard",
+      "There is no mathematical difference; they are exact synonyms"
     ],
     "correctIndex": 1,
-    "explanation": "PERCENT_RANK() calculates (rank - 1) / (total_rows - 1), producing values between 0.0 and 1.0. The median can be located where PERCENT_RANK() is closest to 0.5."
+    "explanation": "TRUNCATE(X, D) simply discards digits past D decimal places without rounding up or down (e.g., TRUNCATE(4.789, 2) = 4.78). ROUND(4.789, 2) rounds to the nearest value (4.79)."
   },
   {
     "id": "mcq_math_15",
@@ -14653,15 +14653,15 @@ window.MCQS_VAULT_500 = [
     "id": "mcq_math_47",
     "keyword": "MATH & MEDIANS",
     "tag": "⚡ Gotcha Trap",
-    "question": "[MATH & MEDIANS #47] In MySQL, can a window function like ROW_NUMBER() be used directly inside a WHERE clause without a subquery or CTE?",
+    "question": "[MATH & MEDIANS #47] How does the Manhattan Distance formula between coordinates (x1, y1) and (x2, y2) differ from Euclidean Distance in SQL?",
     "options": [
-      "Yes, as long as it has an OVER (ORDER BY) clause",
-      "Yes, if placed inside parenthesis",
-      "No, window functions are evaluated in the SELECT phase, which executes AFTER the WHERE clause; a CTE or derived table is required",
-      "Yes, in MySQL 8.0 but not in MySQL 5.7"
+      "Manhattan distance uses trigonometric functions like SIN and COS",
+      "Manhattan distance is calculated using logarithmic transformations",
+      "Manhattan distance sums absolute differences |x1 - x2| + |y1 - y2|, whereas Euclidean distance computes SQRT(POW(x1-x2, 2) + POW(y1-y2, 2))",
+      "Euclidean distance only works on spherical coordinate systems"
     ],
     "correctIndex": 2,
-    "explanation": "SQL execution order is FROM -> WHERE -> GROUP BY -> HAVING -> WINDOW/SELECT -> ORDER BY -> LIMIT. Because WHERE runs before window functions exist, filtering on ROW_NUMBER() requires wrapping it in a CTE or subquery."
+    "explanation": "Manhattan distance measures grid-based distance along right-angled axes: ABS(x1 - x2) + ABS(y1 - y2). Euclidean distance computes direct straight-line distance: SQRT(POW(x1 - x2, 2) + POW(y1 - y2, 2))."
   },
   {
     "id": "mcq_math_48",
@@ -14723,15 +14723,15 @@ window.MCQS_VAULT_500 = [
     "id": "mcq_math_52",
     "keyword": "MATH & MEDIANS",
     "tag": "🏛️ Corporate Edge",
-    "question": "[MATH & MEDIANS #52 &bull; SaaS Subscription Billing] In PostgreSQL and Oracle, which window function calculates the continuous median? (Application Scenario 1)",
+    "question": "[MATH & MEDIANS #52 &bull; SaaS Subscription Billing] In SQL geometry and coordinate analysis, which formula correctly computes the Manhattan Distance between points (a, b) and (c, d)?",
     "options": [
-      "MEDIAN() OVER (PARTITION BY col)",
-      "PERCENTILE_CONT(0.5) WITHIN GROUP (ORDER BY col)",
-      "AVG_MEDIAN(col)",
-      "PERCENT_RANK(0.5)"
+      "SQRT(POW(a - c, 2) + POW(b - d, 2))",
+      "ABS(a - c) + ABS(b - d)",
+      "POW(ABS(a - c), 2) + POW(ABS(b - d), 2)",
+      "ROUND(a - c, 2) * ROUND(b - d, 2)"
     ],
     "correctIndex": 1,
-    "explanation": "PERCENTILE_CONT(0.5) WITHIN GROUP (ORDER BY col) calculates the 50th percentile continuous median, interpolating between values when the row count is even. [Context: SaaS Subscription Billing]"
+    "explanation": "The Manhattan Distance (taxicab metric) between points (a, b) and (c, d) is the sum of horizontal and vertical absolute coordinate differences: ABS(a - c) + ABS(b - d). [Context: SaaS Subscription Billing]"
   },
   {
     "id": "mcq_math_53",
@@ -14793,15 +14793,15 @@ window.MCQS_VAULT_500 = [
     "id": "mcq_math_57",
     "keyword": "MATH & MEDIANS",
     "tag": "💡 Lead Architect",
-    "question": "[MATH & MEDIANS #57 &bull; AdTech Real-Time Bidding] In PostgreSQL and Oracle, which window function calculates the continuous median? (Application Scenario 2)",
+    "question": "[MATH & MEDIANS #57 &bull; AdTech Real-Time Bidding] In SQL geometry and coordinate analysis, which formula correctly computes the Manhattan Distance between points (a, b) and (c, d)?",
     "options": [
-      "MEDIAN() OVER (PARTITION BY col)",
-      "AVG_MEDIAN(col)",
-      "PERCENT_RANK(0.5)",
-      "PERCENTILE_CONT(0.5) WITHIN GROUP (ORDER BY col)"
+      "SQRT(POW(a - c, 2) + POW(b - d, 2))",
+      "ABS(a - c) + ABS(b - d)",
+      "POW(ABS(a - c), 2) + POW(ABS(b - d), 2)",
+      "ROUND(a - c, 2) * ROUND(b - d, 2)"
     ],
-    "correctIndex": 3,
-    "explanation": "PERCENTILE_CONT(0.5) WITHIN GROUP (ORDER BY col) calculates the 50th percentile continuous median, interpolating between values when the row count is even. [Context: AdTech Real-Time Bidding]"
+    "correctIndex": 1,
+    "explanation": "The Manhattan Distance (taxicab metric) between points (a, b) and (c, d) is the sum of horizontal and vertical absolute coordinate differences: ABS(a - c) + ABS(b - d). [Context: AdTech Real-Time Bidding]"
   },
   {
     "id": "mcq_math_58",
@@ -14863,15 +14863,15 @@ window.MCQS_VAULT_500 = [
     "id": "mcq_math_62",
     "keyword": "MATH & MEDIANS",
     "tag": "⚡ Gotcha Trap",
-    "question": "[MATH & MEDIANS #62 &bull; Healthcare Patient Records] In PostgreSQL and Oracle, which window function calculates the continuous median? (Application Scenario 3)",
+    "question": "[MATH & MEDIANS #62 &bull; Healthcare Patient Records] In SQL geometry and coordinate analysis, which formula correctly computes the Manhattan Distance between points (a, b) and (c, d)?",
     "options": [
-      "MEDIAN() OVER (PARTITION BY col)",
-      "PERCENTILE_CONT(0.5) WITHIN GROUP (ORDER BY col)",
-      "AVG_MEDIAN(col)",
-      "PERCENT_RANK(0.5)"
+      "SQRT(POW(a - c, 2) + POW(b - d, 2))",
+      "ABS(a - c) + ABS(b - d)",
+      "POW(ABS(a - c), 2) + POW(ABS(b - d), 2)",
+      "ROUND(a - c, 2) * ROUND(b - d, 2)"
     ],
     "correctIndex": 1,
-    "explanation": "PERCENTILE_CONT(0.5) WITHIN GROUP (ORDER BY col) calculates the 50th percentile continuous median, interpolating between values when the row count is even. [Context: Healthcare Patient Records]"
+    "explanation": "The Manhattan Distance (taxicab metric) between points (a, b) and (c, d) is the sum of horizontal and vertical absolute coordinate differences: ABS(a - c) + ABS(b - d). [Context: Healthcare Patient Records]"
   },
   {
     "id": "mcq_math_63",
@@ -14933,15 +14933,15 @@ window.MCQS_VAULT_500 = [
     "id": "mcq_math_67",
     "keyword": "MATH & MEDIANS",
     "tag": "🎯 Core Concept",
-    "question": "[MATH & MEDIANS #67 &bull; Fintech & Ledger Systems] In PostgreSQL and Oracle, which window function calculates the continuous median? (Application Scenario 4)",
+    "question": "[MATH & MEDIANS #67 &bull; Fintech & Ledger Systems] In SQL geometry and coordinate analysis, which formula correctly computes the Manhattan Distance between points (a, b) and (c, d)?",
     "options": [
-      "MEDIAN() OVER (PARTITION BY col)",
-      "AVG_MEDIAN(col)",
-      "PERCENT_RANK(0.5)",
-      "PERCENTILE_CONT(0.5) WITHIN GROUP (ORDER BY col)"
+      "SQRT(POW(a - c, 2) + POW(b - d, 2))",
+      "ABS(a - c) + ABS(b - d)",
+      "POW(ABS(a - c), 2) + POW(ABS(b - d), 2)",
+      "ROUND(a - c, 2) * ROUND(b - d, 2)"
     ],
-    "correctIndex": 3,
-    "explanation": "PERCENTILE_CONT(0.5) WITHIN GROUP (ORDER BY col) calculates the 50th percentile continuous median, interpolating between values when the row count is even. [Context: Fintech & Ledger Systems]"
+    "correctIndex": 1,
+    "explanation": "The Manhattan Distance (taxicab metric) between points (a, b) and (c, d) is the sum of horizontal and vertical absolute coordinate differences: ABS(a - c) + ABS(b - d). [Context: Fintech & Ledger Systems]"
   },
   {
     "id": "mcq_math_68",
@@ -15003,15 +15003,15 @@ window.MCQS_VAULT_500 = [
     "id": "mcq_math_72",
     "keyword": "MATH & MEDIANS",
     "tag": "🏛️ Corporate Edge",
-    "question": "[MATH & MEDIANS #72 &bull; Telecom Billing & Data Streams] In PostgreSQL and Oracle, which window function calculates the continuous median? (Application Scenario 5)",
+    "question": "[MATH & MEDIANS #72 &bull; Telecom Billing & Data Streams] In SQL geometry and coordinate analysis, which formula correctly computes the Manhattan Distance between points (a, b) and (c, d)?",
     "options": [
-      "MEDIAN() OVER (PARTITION BY col)",
-      "PERCENTILE_CONT(0.5) WITHIN GROUP (ORDER BY col)",
-      "AVG_MEDIAN(col)",
-      "PERCENT_RANK(0.5)"
+      "SQRT(POW(a - c, 2) + POW(b - d, 2))",
+      "ABS(a - c) + ABS(b - d)",
+      "POW(ABS(a - c), 2) + POW(ABS(b - d), 2)",
+      "ROUND(a - c, 2) * ROUND(b - d, 2)"
     ],
     "correctIndex": 1,
-    "explanation": "PERCENTILE_CONT(0.5) WITHIN GROUP (ORDER BY col) calculates the 50th percentile continuous median, interpolating between values when the row count is even. [Context: Telecom Billing & Data Streams]"
+    "explanation": "The Manhattan Distance (taxicab metric) between points (a, b) and (c, d) is the sum of horizontal and vertical absolute coordinate differences: ABS(a - c) + ABS(b - d). [Context: Telecom Billing & Data Streams]"
   },
   {
     "id": "mcq_math_73",
@@ -15073,15 +15073,15 @@ window.MCQS_VAULT_500 = [
     "id": "mcq_math_77",
     "keyword": "MATH & MEDIANS",
     "tag": "💡 Lead Architect",
-    "question": "[MATH & MEDIANS #77 &bull; Global Supply Chain & Logistics] In PostgreSQL and Oracle, which window function calculates the continuous median? (Application Scenario 6)",
+    "question": "[MATH & MEDIANS #77 &bull; Global Supply Chain & Logistics] In SQL geometry and coordinate analysis, which formula correctly computes the Manhattan Distance between points (a, b) and (c, d)?",
     "options": [
-      "MEDIAN() OVER (PARTITION BY col)",
-      "AVG_MEDIAN(col)",
-      "PERCENT_RANK(0.5)",
-      "PERCENTILE_CONT(0.5) WITHIN GROUP (ORDER BY col)"
+      "SQRT(POW(a - c, 2) + POW(b - d, 2))",
+      "ABS(a - c) + ABS(b - d)",
+      "POW(ABS(a - c), 2) + POW(ABS(b - d), 2)",
+      "ROUND(a - c, 2) * ROUND(b - d, 2)"
     ],
-    "correctIndex": 3,
-    "explanation": "PERCENTILE_CONT(0.5) WITHIN GROUP (ORDER BY col) calculates the 50th percentile continuous median, interpolating between values when the row count is even. [Context: Global Supply Chain & Logistics]"
+    "correctIndex": 1,
+    "explanation": "The Manhattan Distance (taxicab metric) between points (a, b) and (c, d) is the sum of horizontal and vertical absolute coordinate differences: ABS(a - c) + ABS(b - d). [Context: Global Supply Chain & Logistics]"
   },
   {
     "id": "mcq_math_78",
@@ -15143,15 +15143,15 @@ window.MCQS_VAULT_500 = [
     "id": "mcq_math_82",
     "keyword": "MATH & MEDIANS",
     "tag": "⚡ Gotcha Trap",
-    "question": "[MATH & MEDIANS #82 &bull; Cybersecurity Audit Logs] In PostgreSQL and Oracle, which window function calculates the continuous median? (Application Scenario 7)",
+    "question": "[MATH & MEDIANS #82 &bull; Cybersecurity Audit Logs] In SQL geometry and coordinate analysis, which formula correctly computes the Manhattan Distance between points (a, b) and (c, d)?",
     "options": [
-      "MEDIAN() OVER (PARTITION BY col)",
-      "PERCENTILE_CONT(0.5) WITHIN GROUP (ORDER BY col)",
-      "AVG_MEDIAN(col)",
-      "PERCENT_RANK(0.5)"
+      "SQRT(POW(a - c, 2) + POW(b - d, 2))",
+      "ABS(a - c) + ABS(b - d)",
+      "POW(ABS(a - c), 2) + POW(ABS(b - d), 2)",
+      "ROUND(a - c, 2) * ROUND(b - d, 2)"
     ],
     "correctIndex": 1,
-    "explanation": "PERCENTILE_CONT(0.5) WITHIN GROUP (ORDER BY col) calculates the 50th percentile continuous median, interpolating between values when the row count is even. [Context: Cybersecurity Audit Logs]"
+    "explanation": "The Manhattan Distance (taxicab metric) between points (a, b) and (c, d) is the sum of horizontal and vertical absolute coordinate differences: ABS(a - c) + ABS(b - d). [Context: Cybersecurity Audit Logs]"
   },
   {
     "id": "mcq_math_83",
@@ -15213,15 +15213,15 @@ window.MCQS_VAULT_500 = [
     "id": "mcq_math_87",
     "keyword": "MATH & MEDIANS",
     "tag": "🎯 Core Concept",
-    "question": "[MATH & MEDIANS #87 &bull; E-Commerce Checkout Funnels] In PostgreSQL and Oracle, which window function calculates the continuous median? (Application Scenario 8)",
+    "question": "[MATH & MEDIANS #87 &bull; E-Commerce Checkout Funnels] In SQL geometry and coordinate analysis, which formula correctly computes the Manhattan Distance between points (a, b) and (c, d)?",
     "options": [
-      "MEDIAN() OVER (PARTITION BY col)",
-      "AVG_MEDIAN(col)",
-      "PERCENT_RANK(0.5)",
-      "PERCENTILE_CONT(0.5) WITHIN GROUP (ORDER BY col)"
+      "SQRT(POW(a - c, 2) + POW(b - d, 2))",
+      "ABS(a - c) + ABS(b - d)",
+      "POW(ABS(a - c), 2) + POW(ABS(b - d), 2)",
+      "ROUND(a - c, 2) * ROUND(b - d, 2)"
     ],
-    "correctIndex": 3,
-    "explanation": "PERCENTILE_CONT(0.5) WITHIN GROUP (ORDER BY col) calculates the 50th percentile continuous median, interpolating between values when the row count is even. [Context: E-Commerce Checkout Funnels]"
+    "correctIndex": 1,
+    "explanation": "The Manhattan Distance (taxicab metric) between points (a, b) and (c, d) is the sum of horizontal and vertical absolute coordinate differences: ABS(a - c) + ABS(b - d). [Context: E-Commerce Checkout Funnels]"
   },
   {
     "id": "mcq_math_88",
@@ -15283,15 +15283,15 @@ window.MCQS_VAULT_500 = [
     "id": "mcq_math_92",
     "keyword": "MATH & MEDIANS",
     "tag": "🏛️ Corporate Edge",
-    "question": "[MATH & MEDIANS #92 &bull; SaaS Subscription Billing] In PostgreSQL and Oracle, which window function calculates the continuous median? (Application Scenario 9)",
+    "question": "[MATH & MEDIANS #92 &bull; SaaS Subscription Billing] In SQL geometry and coordinate analysis, which formula correctly computes the Manhattan Distance between points (a, b) and (c, d)?",
     "options": [
-      "MEDIAN() OVER (PARTITION BY col)",
-      "PERCENTILE_CONT(0.5) WITHIN GROUP (ORDER BY col)",
-      "AVG_MEDIAN(col)",
-      "PERCENT_RANK(0.5)"
+      "SQRT(POW(a - c, 2) + POW(b - d, 2))",
+      "ABS(a - c) + ABS(b - d)",
+      "POW(ABS(a - c), 2) + POW(ABS(b - d), 2)",
+      "ROUND(a - c, 2) * ROUND(b - d, 2)"
     ],
     "correctIndex": 1,
-    "explanation": "PERCENTILE_CONT(0.5) WITHIN GROUP (ORDER BY col) calculates the 50th percentile continuous median, interpolating between values when the row count is even. [Context: SaaS Subscription Billing]"
+    "explanation": "The Manhattan Distance (taxicab metric) between points (a, b) and (c, d) is the sum of horizontal and vertical absolute coordinate differences: ABS(a - c) + ABS(b - d). [Context: SaaS Subscription Billing]"
   },
   {
     "id": "mcq_math_93",
@@ -15353,15 +15353,15 @@ window.MCQS_VAULT_500 = [
     "id": "mcq_math_97",
     "keyword": "MATH & MEDIANS",
     "tag": "💡 Lead Architect",
-    "question": "[MATH & MEDIANS #97 &bull; AdTech Real-Time Bidding] In PostgreSQL and Oracle, which window function calculates the continuous median? (Application Scenario 10)",
+    "question": "[MATH & MEDIANS #97 &bull; AdTech Real-Time Bidding] In SQL geometry and coordinate analysis, which formula correctly computes the Manhattan Distance between points (a, b) and (c, d)?",
     "options": [
-      "MEDIAN() OVER (PARTITION BY col)",
-      "AVG_MEDIAN(col)",
-      "PERCENT_RANK(0.5)",
-      "PERCENTILE_CONT(0.5) WITHIN GROUP (ORDER BY col)"
+      "SQRT(POW(a - c, 2) + POW(b - d, 2))",
+      "ABS(a - c) + ABS(b - d)",
+      "POW(ABS(a - c), 2) + POW(ABS(b - d), 2)",
+      "ROUND(a - c, 2) * ROUND(b - d, 2)"
     ],
-    "correctIndex": 3,
-    "explanation": "PERCENTILE_CONT(0.5) WITHIN GROUP (ORDER BY col) calculates the 50th percentile continuous median, interpolating between values when the row count is even. [Context: AdTech Real-Time Bidding]"
+    "correctIndex": 1,
+    "explanation": "The Manhattan Distance (taxicab metric) between points (a, b) and (c, d) is the sum of horizontal and vertical absolute coordinate differences: ABS(a - c) + ABS(b - d). [Context: AdTech Real-Time Bidding]"
   },
   {
     "id": "mcq_math_98",
