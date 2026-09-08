@@ -5822,7 +5822,7 @@ const TOPIC_PATHWAY_MODULES = [
     tagline: "WHERE, LIKE, REGEXP, NOT, IN, NULL semantics & SARGable ranges",
     caseSection: "Section 3: Filtering, Predicates & Three-Valued Logic",
     mcqKeywords: ["WHERE"],
-    studySectionId: "sec_operators",
+    studySectionId: "sec_filtering",
     labTrackId: "track01",
     trapsModuleId: "mod_foundations",
     caseCount: 100,
@@ -5839,7 +5839,7 @@ const TOPIC_PATHWAY_MODULES = [
     tagline: "ORDER BY, LIMIT, OFFSET, LENGTH() expressions & tie-breakers",
     caseSection: "Section 5: Sorting, Determinism & Slicing",
     mcqKeywords: ["ORDER BY & LIMIT"],
-    studySectionId: "sec_foundations",
+    studySectionId: "sec_sorting",
     labTrackId: "track01",
     trapsModuleId: "mod_foundations",
     caseCount: 100,
@@ -5890,7 +5890,7 @@ const TOPIC_PATHWAY_MODULES = [
     tagline: "ROUND, TRUNCATE, ABS, SQRT, POW, Manhattan, Euclidean & Medians",
     caseSection: "Section 7: Spatial Coordinates, Math Functions & Medians",
     mcqKeywords: ["MATH & MEDIANS"],
-    studySectionId: "sec_operators",
+    studySectionId: "sec_math",
     labTrackId: "track01",
     trapsModuleId: "mod_aggregations",
     caseCount: 50,
@@ -6014,105 +6014,133 @@ function renderPathwayMasterclass() {
 
   const currentMod = TOPIC_PATHWAY_MODULES.find(m => m.id === currentPathwayModuleId) || TOPIC_PATHWAY_MODULES[0];
 
-  // If Joins module, embed the visual interactive join linker & lab
-  if (currentMod.id === 'mod_joins') {
+  // Pull textbook study material from STUDY_LIBRARY
+  const studyItem = window.STUDY_LIBRARY ? window.STUDY_LIBRARY.find(s => s.id === currentMod.studySectionId) : null;
+  if (!studyItem) {
     container.innerHTML = `
-      <div class="card" style="margin-bottom: 20px; border-left: 4px solid #6366f1;">
-        <div class="card-header" style="display: flex; align-items: center; justify-content: space-between;">
-          <div style="display: flex; align-items: center; gap: 10px;">
-            <span class="clause-pill pill-from" style="font-size: 11px;">Stage 1: Visual Masterclass</span>
-            <h2 style="font-size: 17px; color: #fff; margin: 0;">Relational Multi-Table Joins &amp; Execution Plans</h2>
-          </div>
-          <button class="action-btn action-btn-primary" onclick="selectPathwayStage(2)" style="padding: 6px 14px; font-size: 12px;">
-            Go to Stage 2: Traps &amp; Secrets &rarr;
-          </button>
-        </div>
-        <p style="font-size: 13px; color: var(--text-secondary); line-height: 1.5; margin: 8px 0 16px 0;">
-          Master all 8 ANSI SQL relational joins through physical execution diagrams, dual-table relationship linkers, and real corporate financial schemas.
-        </p>
-
-        <!-- Quick Jump to Interactive Relational Joins Track in Guided Lab -->
-        <div style="background: #09090e; border: 1px solid var(--border-default); border-radius: var(--radius-md); padding: 18px; display: flex; flex-direction: column; gap: 14px;">
-          <div style="display: flex; align-items: center; justify-content: space-between; flex-wrap: wrap; gap: 10px;">
-            <div>
-              <span style="font-size: 10px; font-family: var(--font-mono); color: #818cf8; text-transform: uppercase;">INTERACTIVE JOIN VISUALIZER &amp; LINKER</span>
-              <h3 style="font-size: 15px; color: #fff; margin: 3px 0 0 0;">Dual-Table Relational Linker &amp; Execution Step Simulator</h3>
-            </div>
-            <button class="action-btn action-btn-primary" onclick="switchNavTab('viewGuidedLab'); if (window.switchGuidedTrack) window.switchGuidedTrack('track04');" style="font-size: 12px;">
-              🚀 Open Full 8-Step Interactive Lab
-            </button>
-          </div>
-
-          <div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(280px, 1fr)); gap: 12px;">
-            <div style="background: var(--bg-card); border: 1px solid var(--border-muted); border-radius: var(--radius-sm); padding: 12px;">
-              <strong style="color: #60a5fa; display: block; margin-bottom: 4px;">1. INNER JOIN (Strict Intersection)</strong>
-              <span style="font-size: 11.5px; color: var(--text-secondary); line-height: 1.4;">Only rows with valid matching foreign keys on both sides are retained. Used for order reconciliation and completed transaction ledgers.</span>
-            </div>
-            <div style="background: var(--bg-card); border: 1px solid var(--border-muted); border-radius: var(--radius-sm); padding: 12px;">
-              <strong style="color: #34d399; display: block; margin-bottom: 4px;">2. LEFT OUTER JOIN (Preserve Left Base)</strong>
-              <span style="font-size: 11.5px; color: var(--text-secondary); line-height: 1.4;">Preserves 100% of rows from the left table; populates NULL for non-matching right columns. Essential for customer cohort retention analysis.</span>
-            </div>
-            <div style="background: var(--bg-card); border: 1px solid var(--border-muted); border-radius: var(--radius-sm); padding: 12px;">
-              <strong style="color: #f43f5e; display: block; margin-bottom: 4px;">3. LEFT ANTI-JOIN (Missing Records)</strong>
-              <span style="font-size: 11.5px; color: var(--text-secondary); line-height: 1.4;"><code>WHERE right.id IS NULL</code> filters out all matched tuples. The fastest corporate technique for identifying churned users, dormant cards, and orphan invoices.</span>
-            </div>
-            <div style="background: var(--bg-card); border: 1px solid var(--border-muted); border-radius: var(--radius-sm); padding: 12px;">
-              <strong style="color: #c084fc; display: block; margin-bottom: 4px;">4. FULL OUTER JOIN (Complete Union)</strong>
-              <span style="font-size: 11.5px; color: var(--text-secondary); line-height: 1.4;">Retains all records from both tables, filling NULL wherever pairs do not align. Primary engine behind bank GL account reconciliations.</span>
-            </div>
-          </div>
-        </div>
+      <div class="card" style="border: 3px solid #000; box-shadow: 5px 5px 0px #000; border-radius: 16px; padding: 24px; background: var(--bg-card);">
+        <p style="font-weight: 700; color: var(--text-secondary);">Masterclass content loading for ${currentMod.title}...</p>
       </div>
     `;
     return;
   }
 
-  // Otherwise, pull textbook study material from STUDY_LIBRARY
-  const studyItem = window.STUDY_LIBRARY ? window.STUDY_LIBRARY.find(s => s.id === currentMod.studySectionId) : null;
-  if (!studyItem) {
-    container.innerHTML = `<div class="card"><p>Masterclass content loading for ${currentMod.title}...</p></div>`;
-    return;
+  // If Joins module, embed an interactive lab launcher card banner
+  let joinsLabBanner = '';
+  if (currentMod.id === 'mod_joins') {
+    joinsLabBanner = `
+      <div style="background: #fdf4ff; border: 3px solid #000; box-shadow: 4px 4px 0px #000; border-radius: 14px; padding: 18px 20px; margin-bottom: 22px; display: flex; align-items: center; justify-content: space-between; flex-wrap: wrap; gap: 14px;">
+        <div style="max-width: 650px;">
+          <div style="display: flex; align-items: center; gap: 8px; margin-bottom: 6px;">
+            <span style="background: #c084fc; color: #000; font-size: 10.5px; font-weight: 900; padding: 3px 8px; border: 2px solid #000; border-radius: 6px; box-shadow: 2px 2px 0px #000; text-transform: uppercase;">HANDS-ON SIMULATION</span>
+            <span style="background: #fef08a; color: #000; font-size: 10.5px; font-weight: 900; padding: 3px 8px; border: 2px solid #000; border-radius: 6px; box-shadow: 2px 2px 0px #000;">8-STEP DUAL-TABLE LAB</span>
+          </div>
+          <h3 style="font-size: 16px; font-weight: 900; color: #000; margin: 0 0 4px 0;">Interactive Relational Joins Visualizer &amp; Linker</h3>
+          <p style="font-size: 12.5px; color: #374151; margin: 0; line-height: 1.45; font-weight: 600;">
+            Step through physical dual-table joins (INNER, LEFT, ANTI, FULL OUTER) row-by-row with live pointer evaluation and corporate schema projections.
+          </p>
+        </div>
+        <button class="action-btn action-btn-primary" onclick="switchNavTab('viewGuidedLab'); if (window.switchGuidedTrack) window.switchGuidedTrack('track04');" style="background: #a855f7; color: #ffffff; font-weight: 900; border: 2.5px solid #000; box-shadow: 3px 3px 0px #000; border-radius: 8px; padding: 9px 18px; font-size: 13px; cursor: pointer; text-decoration: none;">
+          🚀 Open Interactive Joins Lab &rarr;
+        </button>
+      </div>
+    `;
   }
 
   let sectionsHtml = '';
-  studyItem.sections.forEach(sec => {
-    let formattedContent = sec.content
-      .replace(/```sql([\s\S]*?)```/g, '<div class="study-code-snippet">$1</div>')
-      .replace(/`([^`]+)`/g, '<code>$1</code>')
-      .replace(/\*\*([^*]+)\*\*/g, '<strong>$1</strong>')
-      .replace(/\n\n/g, '</p><p>')
-      .replace(/\n- /g, '<br>&bull; ');
+  if (studyItem.sections && studyItem.sections.length > 0) {
+    studyItem.sections.forEach((sec, idx) => {
+      let formattedContent = sec.content
+        .replace(/```sql([\s\S]*?)```/g, '<div class="study-code-snippet" style="background: #080c14; color: #f8fafc; border: 2px solid #000; border-radius: 8px; padding: 12px 14px; margin: 12px 0; font-family: var(--font-mono); font-size: 12px; line-height: 1.5; overflow-x: auto; box-shadow: 2px 2px 0px #000;">$1</div>')
+        .replace(/`([^`]+)`/g, '<code style="background: #fef08a; color: #000000; padding: 2px 6px; border: 1.5px solid #000; border-radius: 4px; font-weight: 800; font-size: 0.9em; box-shadow: 1px 1px 0px #000;">$1</code>')
+        .replace(/\*\*([^*]+)\*\*/g, '<strong style="color: #ffffff; font-weight: 800;">$1</strong>')
+        .replace(/\n\n/g, '</p><p style="margin-top: 10px;">')
+        .replace(/\n- /g, '<br>&bull; ')
+        .replace(/\n\d+\. /g, (m) => `<br><strong>${m.trim()}</strong> `);
 
-    sectionsHtml += `
-      <div class="study-section-block" style="margin-bottom: 18px;">
-        <h3 class="study-section-heading" style="font-size: 15px; color: var(--text-primary); margin-bottom: 8px;">${sec.heading}</h3>
-        <div class="study-section-content" style="font-size: 12.5px; color: var(--text-secondary); line-height: 1.55;">
-          <p>${formattedContent}</p>
+      const sectionPills = ['#38bdf8', '#34d399', '#fbbf24', '#f472b6', '#a78bfa'];
+      const pillColor = sectionPills[idx % sectionPills.length];
+
+      sectionsHtml += `
+        <div class="study-section-block" style="margin-bottom: 18px; background: #121218; border: 2.5px solid #000; border-radius: 12px; padding: 18px 20px; box-shadow: 3px 3px 0px #000;">
+          <h3 class="study-section-heading" style="font-size: 15.5px; font-weight: 900; color: #ffffff; margin: 0 0 12px 0; display: flex; align-items: center; gap: 8px;">
+            <span style="background: ${pillColor}; color: #000; font-size: 11px; font-weight: 900; padding: 2px 8px; border: 2px solid #000; border-radius: 5px; box-shadow: 1.5px 1.5px 0px #000;">PART ${idx + 1}</span>
+            ${sec.heading}
+          </h3>
+          <div class="study-section-content" style="font-size: 13px; color: #d4d4d8; line-height: 1.65;">
+            <p style="margin: 0;">${formattedContent}</p>
+          </div>
+        </div>
+      `;
+    });
+  }
+
+  // Interview Gotchas / MCQ traps block
+  let gotchasHtml = '';
+  if (studyItem.interviewGotchas && studyItem.interviewGotchas.length > 0) {
+    let gotchaCards = studyItem.interviewGotchas.map(g => `
+      <div style="margin-top: 10px; padding: 12px 14px; background: #ffffff; border: 2.5px solid #000; border-radius: 9px; box-shadow: 3px 3px 0px #000;">
+        <div style="font-weight: 900; color: #b91c1c; font-size: 13px; margin-bottom: 4px; display: flex; align-items: center; gap: 6px;">
+          <span>⚠️</span> <span>${g.title}</span>
+        </div>
+        <div style="color: #1e293b; font-size: 12.5px; line-height: 1.5; font-weight: 600;">
+          ${g.trap}
         </div>
       </div>
+    `).join('');
+
+    gotchasHtml = `
+      <div style="margin-top: 22px; padding: 18px; background: #fff1f2; border: 3px solid #000; border-radius: 14px; box-shadow: 4px 4px 0px #000;">
+        <div style="display: flex; align-items: center; justify-content: space-between; flex-wrap: wrap; gap: 8px; margin-bottom: 6px;">
+          <div style="display: flex; align-items: center; gap: 8px;">
+            <span style="background: #f43f5e; color: #ffffff; font-size: 11px; font-weight: 900; padding: 3px 8px; border: 2px solid #000; border-radius: 6px; box-shadow: 2px 2px 0px #000; text-transform: uppercase;">
+              CRITICAL TRAPS VAULT
+            </span>
+            <strong style="color: #000000; font-size: 14.5px; font-weight: 900;">Directly Tested in MCQs &amp; Case Studies</strong>
+          </div>
+          <span style="font-size: 11px; font-family: var(--font-mono); color: #881337; font-weight: 800;">
+            ${studyItem.interviewGotchas.length} INTERVIEW GOTCHAS
+          </span>
+        </div>
+        <p style="font-size: 12.5px; color: #475569; margin: 0 0 10px 0; font-weight: 600;">
+          Master these exact high-stakes edge cases before starting the 1,200 Technical MCQs and 1,040 Real-World Case Studies.
+        </p>
+        ${gotchaCards}
+      </div>
     `;
-  });
+  }
 
   let svgHtml = studyItem.svgDiagram ? `
-    <div style="margin: 16px 0; background: #07070a; border: 1px solid var(--border-muted); border-radius: var(--radius-sm); padding: 12px; overflow-x: auto;">
+    <div style="margin: 20px 0; background: #000000; border: 3px solid #000000; border-radius: 14px; padding: 10px; overflow-x: auto; box-shadow: 4px 4px 0px #000000;">
       ${studyItem.svgDiagram}
     </div>
   ` : '';
 
   container.innerHTML = `
-    <div class="card" style="border: 2.5px solid #6366f1; border-radius: 16px; box-shadow: 4px 4px 0px rgba(99, 102, 241, 0.4); margin-bottom: 20px;">
-      <div class="card-header" style="display: flex; align-items: center; justify-content: space-between; flex-wrap: wrap; gap: 10px;">
+    <div class="card" style="border: 3px solid #000000 !important; border-radius: 18px !important; box-shadow: 5px 5px 0px #000000 !important; background: var(--bg-card); margin-bottom: 24px; padding: 24px;">
+      <div class="card-header" style="display: flex; align-items: center; justify-content: space-between; flex-wrap: wrap; gap: 12px; margin-bottom: 12px;">
         <div>
-          <span class="clause-pill ${studyItem.badgeClass || 'pill-from'}" style="font-size: 10px;">Stage 1: Visual Masterclass</span>
-          <h2 style="font-size: 18px; color: var(--text-primary); font-weight: 800; margin: 4px 0 0 0;">${studyItem.title}</h2>
+          <div style="display: flex; align-items: center; gap: 8px; margin-bottom: 6px;">
+            <span style="background: #fef08a; color: #000; font-size: 11px; font-weight: 900; padding: 3px 8px; border: 2px solid #000; border-radius: 6px; box-shadow: 2px 2px 0px #000; text-transform: uppercase;">
+              STAGE 1: VISUAL MASTERCLASS
+            </span>
+            <span style="background: #e0e7ff; color: #3730a3; font-size: 11px; font-weight: 800; padding: 3px 8px; border: 2px solid #000; border-radius: 6px; box-shadow: 2px 2px 0px #000;">
+              ${studyItem.readTime || '12 min read'}
+            </span>
+          </div>
+          <h2 style="font-size: 20px; color: #ffffff; font-weight: 900; margin: 0; letter-spacing: -0.3px;">${studyItem.title}</h2>
         </div>
-        <button class="action-btn action-btn-primary" onclick="selectPathwayStage(2)" style="padding: 6px 14px; font-size: 12px;">
-          Proceed to Stage 2: Traps &amp; Secrets &rarr;
+        <button class="action-btn action-btn-primary" onclick="selectPathwayStage(2)" style="background: #22c55e !important; color: #000000 !important; font-weight: 900; border: 2.5px solid #000 !important; box-shadow: 3px 3px 0px #000 !important; border-radius: 8px; padding: 8px 18px; font-size: 13px; cursor: pointer;">
+          Stage 2: Traps &amp; Secrets &rarr;
         </button>
       </div>
-      <p style="font-size: 13px; color: var(--text-secondary); line-height: 1.5; margin: 8px 0 16px 0;">${studyItem.summary}</p>
+      <p style="font-size: 13.5px; color: var(--text-secondary); line-height: 1.55; margin: 0 0 16px 0; font-weight: 500;">
+        ${studyItem.summary}
+      </p>
+      ${joinsLabBanner}
       ${svgHtml}
       ${sectionsHtml}
+      ${gotchasHtml}
     </div>
   `;
 }
