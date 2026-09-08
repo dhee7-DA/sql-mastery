@@ -133,6 +133,16 @@ class SoundFXEngine {
     } catch (e) {}
   }
 
+  // Correct answer alias
+  playCorrect() {
+    this.playSuccess();
+  }
+
+  // Wrong answer alias
+  playWrong() {
+    this.playError();
+  }
+
   // Victorious Duolingo-style fanfare on quest completion
   playSuccess() {
     if (!this.enabled) return;

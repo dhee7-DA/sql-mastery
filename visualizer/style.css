@@ -7557,32 +7557,31 @@ body {
 
 .pathway-mod-card {
   background: var(--bg-card);
-  border: 2px solid var(--border-default);
-  border-radius: 14px;
+  border: 2.5px solid #000000 !important;
+  border-radius: 16px !important;
   padding: 14px 16px;
   cursor: pointer;
-  transition: all 0.16s var(--ease-spring);
+  transition: all 0.15s var(--ease-spring);
   display: flex;
   flex-direction: column;
   gap: 8px;
   position: relative;
   overflow: hidden;
   text-align: left;
-  box-shadow: 3px 3px 0px rgba(0, 0, 0, 0.75);
+  box-shadow: 4px 4px 0px #000000 !important;
 }
 
 .pathway-mod-card:hover {
   background: var(--bg-hover);
-  border-color: var(--border-hover);
-  transform: translate(-2px, -2px);
-  box-shadow: 5px 5px 0px rgba(0, 0, 0, 0.75);
+  transform: translate(-3px, -3px) !important;
+  box-shadow: 6px 6px 0px #000000 !important;
 }
 
 .pathway-mod-card.active {
   background: var(--bg-surface-elevated);
-  border-color: #6366f1;
-  box-shadow: 5px 5px 0px #6366f1;
-  transform: translate(-2px, -2px);
+  border-color: #000000 !important;
+  box-shadow: 5px 5px 0px #ec4899, 5px 5px 0px 2.5px #000000 !important;
+  transform: translate(-2px, -2px) !important;
 }
 
 .pathway-mod-card.active::before {
@@ -7591,8 +7590,8 @@ body {
   top: 0;
   left: 0;
   right: 0;
-  height: 4px;
-  background: linear-gradient(90deg, #6366f1, #ec4899);
+  height: 5px;
+  background: linear-gradient(90deg, #ec4899, #f59e0b, #38bdf8);
 }
 
 .pathway-mod-top {
@@ -7606,35 +7605,36 @@ body {
   display: inline-flex;
   align-items: center;
   justify-content: center;
-  width: 32px;
-  height: 32px;
+  width: 34px;
+  height: 34px;
   background: var(--bg-surface);
-  border: 1.5px solid var(--border-default);
-  border-radius: 8px;
+  border: 2px solid #000000;
+  border-radius: 10px;
+  box-shadow: 2px 2px 0px #000000;
 }
 
 .pathway-mod-badge {
   font-size: 10px;
   font-family: var(--font-mono);
-  font-weight: 800;
-  padding: 2px 7px;
+  font-weight: 900;
+  padding: 3px 8px;
   border-radius: 6px;
-  background: #f59e0b;
-  color: #000;
-  border: 1.5px solid #000;
-  box-shadow: 1.5px 1.5px 0px #000;
+  background: #fbbf24;
+  color: #000000;
+  border: 2px solid #000000;
+  box-shadow: 2px 2px 0px #000000;
 }
 
 .pathway-mod-title {
-  font-size: 13px;
-  font-weight: 700;
+  font-size: 13.5px;
+  font-weight: 800;
   color: var(--text-primary);
   line-height: 1.35;
 }
 
 .pathway-mod-meta {
   font-size: 11px;
-  font-weight: 600;
+  font-weight: 700;
   color: var(--text-secondary);
   display: flex;
   align-items: center;
@@ -7644,67 +7644,73 @@ body {
 /* 4-Stage Pathway Stepper */
 .pathway-stepper-wrap {
   background: var(--bg-surface);
-  border: 2px solid var(--border-default);
-  border-radius: 14px;
+  border: 2.5px solid #000000;
+  border-radius: 16px;
   padding: 10px 14px;
   display: flex;
   align-items: center;
-  gap: 10px;
+  gap: 12px;
   overflow-x: auto;
-  box-shadow: 3px 3px 0px rgba(0, 0, 0, 0.75);
+  box-shadow: 4px 4px 0px #000000;
 }
 
 .pathway-stage-btn {
   flex: 1;
   min-width: 200px;
   background: var(--bg-card);
-  border: 2px solid var(--border-default);
-  border-radius: 10px;
+  border: 2px solid #000000;
+  border-radius: 12px;
   padding: 10px 14px;
   display: flex;
   align-items: center;
   gap: 10px;
   cursor: pointer;
-  transition: all 0.15s ease;
+  transition: all 0.15s var(--ease-spring);
   text-align: left;
-  box-shadow: 2px 2px 0px rgba(0, 0, 0, 0.6);
+  box-shadow: 3px 3px 0px #000000;
 }
 
 .pathway-stage-btn:hover {
-  background: var(--bg-hover);
-  border-color: var(--border-hover);
-  transform: translate(-1px, -1px);
-  box-shadow: 3px 3px 0px rgba(0, 0, 0, 0.6);
+  background: #fef08a !important;
+  color: #000000 !important;
+  transform: translate(-2px, -2px);
+  box-shadow: 5px 5px 0px #000000;
+}
+
+.pathway-stage-btn:hover .stage-title,
+.pathway-stage-btn:hover .stage-desc {
+  color: #000000 !important;
 }
 
 .pathway-stage-btn.active {
-  background: var(--bg-surface-elevated);
-  border-color: #6366f1;
-  box-shadow: 4px 4px 0px #6366f1;
+  background: #6366f1 !important;
+  border-color: #000000 !important;
+  box-shadow: 4px 4px 0px #000000 !important;
   transform: translate(-2px, -2px);
 }
 
 .stage-num-pill {
-  width: 26px;
-  height: 26px;
+  width: 28px;
+  height: 28px;
   border-radius: 50%;
   background: var(--bg-surface);
-  border: 2px solid var(--border-default);
+  border: 2px solid #000000;
   display: flex;
   align-items: center;
   justify-content: center;
   font-family: var(--font-mono);
   font-size: 11px;
-  font-weight: 800;
-  color: var(--text-primary);
+  font-weight: 900;
+  color: #000000;
   flex-shrink: 0;
+  box-shadow: 1.5px 1.5px 0px #000000;
 }
 
 .pathway-stage-btn.active .stage-num-pill {
-  background: #6366f1;
-  color: #ffffff;
-  border-color: #000;
-  box-shadow: 2px 2px 0px #000;
+  background: #fde047;
+  color: #000000;
+  border-color: #000000;
+  box-shadow: 2px 2px 0px #000000;
 }
 
 .stage-text-block {
@@ -7714,13 +7720,36 @@ body {
 
 .stage-title {
   font-size: 13px;
-  font-weight: 700;
+  font-weight: 800;
   color: var(--text-primary);
+}
+
+.pathway-stage-btn.active .stage-title {
+  color: #ffffff !important;
 }
 
 .stage-desc {
   font-size: 10.5px;
   color: var(--text-secondary);
+  font-weight: 600;
+}
+
+.pathway-stage-btn.active .stage-desc {
+  color: #c7d2fe !important;
+}
+
+@keyframes popBounce {
+  0% {
+    opacity: 0;
+    transform: scale(0.95) translateY(10px);
+  }
+  70% {
+    transform: scale(1.01) translateY(-2px);
+  }
+  100% {
+    opacity: 1;
+    transform: scale(1) translateY(0);
+  }
 }
 
 /* Stage Panels */
@@ -8313,41 +8342,352 @@ body {
   color: var(--text-primary);
 }
 
-/* Comic MCQ Option Buttons */
+/* ==========================================================================
+   POPPY NEO-BRUTALISM: HIGH CONTRAST, INK DROP-SHADOWS, VIBRANT STICKERS
+   ========================================================================== */
+
+/* Main MCQ Quiz Card */
+.pathway-mcq-main-card {
+  max-width: 920px;
+  margin: 0 auto;
+  background: var(--bg-card);
+  border: 3.5px solid #000000 !important;
+  border-radius: 20px !important;
+  box-shadow: 6px 6px 0px #6366f1, 6px 6px 0px 3.5px #000000 !important;
+  padding: 26px !important;
+  position: relative;
+}
+
+.neo-mcq-question-text {
+  font-size: 17px;
+  font-weight: 800;
+  color: var(--text-primary);
+  margin: 18px 0 20px 0;
+  line-height: 1.5;
+  letter-spacing: -0.01em;
+}
+
+/* Poppy Tag Badges */
+.neo-tag-badge {
+  font-family: var(--font-mono);
+  font-size: 11px;
+  font-weight: 900;
+  padding: 4px 10px;
+  border-radius: 8px;
+  border: 2px solid #000000;
+  box-shadow: 2px 2px 0px #000000;
+  text-transform: uppercase;
+  letter-spacing: 0.04em;
+  display: inline-flex;
+  align-items: center;
+}
+
+.neo-tag-badge.cyan {
+  background: #38bdf8;
+  color: #000000;
+}
+
+.neo-tag-badge.yellow {
+  background: #fbbf24;
+  color: #000000;
+}
+
+.neo-tag-badge.pink {
+  background: #f472b6;
+  color: #000000;
+}
+
+.neo-tag-badge.green {
+  background: #4ade80;
+  color: #000000;
+}
+
+/* Small Poppy Button */
+.neo-btn-sm {
+  font-family: var(--font-sans);
+  font-size: 11px;
+  font-weight: 800;
+  padding: 5px 12px;
+  border-radius: 8px;
+  border: 2px solid #000000;
+  box-shadow: 2.5px 2.5px 0px #000000;
+  cursor: pointer;
+  transition: all 0.12s var(--ease-spring);
+}
+
+.neo-btn-sm.pink {
+  background: #f472b6;
+  color: #000000;
+}
+
+.neo-btn-sm:hover {
+  transform: translate(-1.5px, -1.5px);
+  box-shadow: 4px 4px 0px #000000;
+}
+
+.neo-btn-sm:active {
+  transform: translate(1.5px, 1.5px);
+  box-shadow: 1px 1px 0px #000000;
+}
+
+/* Dropdown */
+.neo-select-dropdown {
+  background: var(--bg-surface);
+  color: var(--text-primary);
+  border: 2px solid #000000;
+  border-radius: 8px;
+  padding: 4px 8px;
+  font-family: var(--font-mono);
+  font-size: 11px;
+  font-weight: 800;
+  box-shadow: 2px 2px 0px #000000;
+  cursor: pointer;
+}
+
+/* Option Buttons */
 .study-quiz-option-btn {
   background: var(--bg-card);
-  border: 2px solid var(--border-default);
-  border-radius: 12px;
-  padding: 12px 16px;
-  color: var(--text-primary);
-  font-size: 13.5px;
-  font-weight: 600;
+  border: 2.5px solid #000000 !important;
+  border-radius: 14px !important;
+  padding: 14px 18px !important;
+  color: var(--text-primary) !important;
+  font-size: 14px !important;
+  font-weight: 700 !important;
   text-align: left;
   cursor: pointer;
-  box-shadow: 3px 3px 0px rgba(0, 0, 0, 0.65);
+  box-shadow: 3.5px 3.5px 0px #000000 !important;
   transition: all 0.12s var(--ease-spring);
   display: flex;
   align-items: center;
-  gap: 12px;
-  line-height: 1.45;
+  gap: 14px;
+  line-height: 1.5;
+  width: 100%;
 }
 
 .study-quiz-option-btn:hover:not(:disabled) {
-  background: var(--bg-hover);
-  border-color: #6366f1;
-  transform: translate(-2px, -2px);
-  box-shadow: 5px 5px 0px #6366f1;
+  background: #fef08a !important; /* Poppy yellow */
+  color: #000000 !important;
+  transform: translate(-2.5px, -2.5px) !important;
+  box-shadow: 6px 6px 0px #000000 !important;
 }
 
-.study-quiz-option-btn span {
+.study-quiz-option-btn:active:not(:disabled) {
+  transform: translate(2px, 2px) !important;
+  box-shadow: 1.5px 1.5px 0px #000000 !important;
+}
+
+.mcq-opt-letter {
   font-family: var(--font-mono);
-  font-weight: 800;
-  color: #6366f1;
-  background: rgba(99, 102, 241, 0.12);
-  padding: 2px 8px;
-  border-radius: 6px;
-  border: 1.5px solid rgba(99, 102, 241, 0.3);
+  font-weight: 900;
+  font-size: 12px;
+  color: #000000;
+  background: #38bdf8;
+  padding: 4px 10px;
+  border-radius: 8px;
+  border: 2px solid #000000;
+  box-shadow: 2px 2px 0px #000000;
   flex-shrink: 0;
+  transition: transform 0.1s ease;
+}
+
+.study-quiz-option-btn:hover:not(:disabled) .mcq-opt-letter {
+  background: #ec4899;
+  color: #ffffff;
+  transform: rotate(-3deg);
+}
+
+.mcq-opt-text {
+  flex: 1;
+}
+
+/* Status Pill inside button */
+.neo-opt-status-pill {
+  font-family: var(--font-mono);
+  font-size: 10.5px;
+  font-weight: 900;
+  padding: 3px 10px;
+  border-radius: 6px;
+  border: 1.5px solid #000000;
+  box-shadow: 1.5px 1.5px 0px #000000;
+  text-transform: uppercase;
+  margin-left: auto;
+  flex-shrink: 0;
+}
+
+.neo-opt-status-pill.correct {
+  background: #000000;
+  color: #4ade80;
+}
+
+.neo-opt-status-pill.wrong {
+  background: #000000;
+  color: #f43f5e;
+}
+
+/* Option states */
+.study-quiz-option-btn.neo-opt-correct {
+  background: #22c55e !important;
+  color: #000000 !important;
+  border: 3px solid #000000 !important;
+  box-shadow: 5px 5px 0px #000000 !important;
+  font-weight: 800 !important;
+  opacity: 1 !important;
+  cursor: default;
+}
+
+.study-quiz-option-btn.neo-opt-correct .mcq-opt-letter {
+  background: #000000 !important;
+  color: #22c55e !important;
+}
+
+.study-quiz-option-btn.neo-opt-wrong {
+  background: #f43f5e !important;
+  color: #ffffff !important;
+  border: 3px solid #000000 !important;
+  box-shadow: 5px 5px 0px #000000 !important;
+  font-weight: 800 !important;
+  opacity: 1 !important;
+  cursor: default;
+}
+
+.study-quiz-option-btn.neo-opt-wrong .mcq-opt-letter {
+  background: #000000 !important;
+  color: #f43f5e !important;
+}
+
+.study-quiz-option-btn.neo-opt-disabled {
+  opacity: 0.45 !important;
+  filter: grayscale(0.5);
+  cursor: not-allowed;
+}
+
+/* Poppy Neo-Brutalist Explanation Card */
+.neo-explanation-card {
+  margin-top: 22px;
+  border: 3px solid #000000;
+  border-radius: 16px;
+  padding: 18px 22px;
+  box-shadow: 6px 6px 0px #000000;
+  animation: popBounce 0.25s cubic-bezier(0.16, 1, 0.3, 1);
+}
+
+.neo-explanation-card.neo-exp-correct {
+  background: #dcfce7;
+  color: #052e16;
+}
+
+.neo-explanation-card.neo-exp-wrong {
+  background: #ffe4e6;
+  color: #4c0519;
+}
+
+.neo-exp-banner {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding-bottom: 10px;
+  border-bottom: 2.5px solid #000000;
+  margin-bottom: 12px;
+}
+
+.neo-exp-badge {
+  font-family: var(--font-mono);
+  font-size: 11.5px;
+  font-weight: 900;
+  padding: 4px 12px;
+  border-radius: 8px;
+  border: 2px solid #000000;
+  box-shadow: 2px 2px 0px #000000;
+  text-transform: uppercase;
+  letter-spacing: 0.04em;
+}
+
+.neo-exp-correct .neo-exp-badge {
+  background: #15803d;
+  color: #ffffff;
+}
+
+.neo-exp-wrong .neo-exp-badge {
+  background: #e11d48;
+  color: #ffffff;
+}
+
+.neo-exp-tag {
+  font-family: var(--font-mono);
+  font-size: 10px;
+  font-weight: 900;
+  background: #000000;
+  color: #fde047;
+  padding: 3px 8px;
+  border-radius: 6px;
+  text-transform: uppercase;
+}
+
+.neo-exp-body {
+  font-size: 14px;
+  font-weight: 700;
+  line-height: 1.6;
+  color: #0f172a;
+}
+
+/* Footer Navigation Buttons */
+.neo-mcq-footer-nav {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-top: 24px;
+  padding-top: 16px;
+  border-top: 2px solid #000000;
+  flex-wrap: wrap;
+  gap: 12px;
+}
+
+.neo-btn-primary {
+  background: #6366f1;
+  color: #ffffff;
+  border: 2.5px solid #000000;
+  border-radius: 10px;
+  padding: 9px 20px;
+  font-size: 13px;
+  font-weight: 900;
+  box-shadow: 3.5px 3.5px 0px #000000;
+  cursor: pointer;
+  transition: all 0.12s var(--ease-spring);
+}
+
+.neo-btn-primary:hover {
+  background: #4f46e5;
+  transform: translate(-2px, -2px);
+  box-shadow: 5.5px 5.5px 0px #000000;
+}
+
+.neo-btn-primary:active {
+  transform: translate(2px, 2px);
+  box-shadow: 1px 1px 0px #000000;
+}
+
+.neo-btn-nav {
+  background: var(--bg-surface);
+  color: var(--text-primary);
+  border: 2px solid #000000;
+  border-radius: 10px;
+  padding: 8px 16px;
+  font-size: 12.5px;
+  font-weight: 800;
+  box-shadow: 2.5px 2.5px 0px #000000;
+  cursor: pointer;
+  transition: all 0.12s var(--ease-spring);
+}
+
+.neo-btn-nav:hover:not(:disabled) {
+  background: var(--bg-hover);
+  transform: translate(-1.5px, -1.5px);
+  box-shadow: 4px 4px 0px #000000;
+}
+
+.neo-btn-nav:active:not(:disabled) {
+  transform: translate(1.5px, 1.5px);
+  box-shadow: 1px 1px 0px #000000;
 }
 
 

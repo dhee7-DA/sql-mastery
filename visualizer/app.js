@@ -6369,78 +6369,86 @@ function renderPathwayMcqs() {
 
   let optionsHtml = '';
   q.options.forEach((opt, idx) => {
-    let btnStyle = '';
+    let stateClass = '';
     let disabledAttr = '';
-    let marker = '';
+    let statusBadge = '';
 
     if (ansState) {
       disabledAttr = 'disabled';
       if (idx === q.correctIndex) {
-        btnStyle = 'background: rgba(16, 185, 129, 0.2); border-color: #10b981; color: #10b981; font-weight: 700;';
-        marker = '✓ ';
+        stateClass = 'neo-opt-correct';
+        statusBadge = `<span class="neo-opt-status-pill correct">✓ Correct Answer</span>`;
       } else if (idx === ansState.selectedIndex && !ansState.isCorrect) {
-        btnStyle = 'background: rgba(244, 63, 94, 0.2); border-color: #f43f5e; color: #f43f5e;';
-        marker = '✗ ';
+        stateClass = 'neo-opt-wrong';
+        statusBadge = `<span class="neo-opt-status-pill wrong">✗ Your Pick (Incorrect)</span>`;
       } else {
-        btnStyle = 'opacity: 0.45;';
+        stateClass = 'neo-opt-disabled';
       }
     }
 
     optionsHtml += `
-      <button class="study-quiz-option-btn" style="${btnStyle}" ${disabledAttr} onclick="handlePathwayMcqAnswer('${q.id}', ${idx})">
-        <span>${marker}${String.fromCharCode(65 + idx)})</span> ${escapeHtml(opt)}
+      <button class="study-quiz-option-btn ${stateClass}" ${disabledAttr} onclick="handlePathwayMcqAnswer('${q.id}', ${idx})">
+        <span class="mcq-opt-letter">${String.fromCharCode(65 + idx)}</span>
+        <span class="mcq-opt-text">${escapeHtml(opt)}</span>
+        ${statusBadge}
       </button>
     `;
   });
 
   let explanationHtml = '';
   if (ansState) {
+    const isWin = ansState.isCorrect;
     explanationHtml = `
-      <div style="margin-top: 14px; background: var(--bg-card); border-left: 3px solid ${ansState.isCorrect ? '#10b981' : '#f43f5e'}; padding: 12px 14px; border-radius: var(--radius-sm); font-size: 12px; color: var(--text-primary); line-height: 1.5;">
-        <strong style="color: ${ansState.isCorrect ? '#10b981' : '#f43f5e'};">${ansState.isCorrect ? '🎉 Correct Answer!' : '⚠️ Incorrect.'}</strong><br>
-        <span style="color: var(--text-secondary);">${q.explanation}</span>
+      <div class="neo-explanation-card ${isWin ? 'neo-exp-correct' : 'neo-exp-wrong'}">
+        <div class="neo-exp-banner">
+          <div class="neo-exp-badge">${isWin ? '🎉 EXCELLENT! CORRECT ANSWER' : '⚠️ BUSTED! DEEP BREAKDOWN'}</div>
+          <span class="neo-exp-tag">ANSI SQL PROTOCOL</span>
+        </div>
+        <div class="neo-exp-body">
+          ${escapeHtml(q.explanation)}
+        </div>
       </div>
     `;
   }
 
   container.innerHTML = `
-    <div class="card" style="max-width: 900px; margin: 0 auto; border: 2.5px solid #6366f1; border-radius: 16px; box-shadow: 4px 4px 0px rgba(99, 102, 241, 0.4); padding: 22px;">
-      <div class="card-header" style="display: flex; align-items: center; justify-content: space-between; flex-wrap: wrap; gap: 8px;">
+    <div class="card pathway-mcq-main-card">
+      <div class="card-header" style="display: flex; align-items: center; justify-content: space-between; flex-wrap: wrap; gap: 10px; margin-bottom: 12px;">
         <div style="display: flex; align-items: center; gap: 8px;">
-          <span class="clause-pill pill-where" style="font-size: 10px; font-weight: 800; border: 1.5px solid #000; box-shadow: 1.5px 1.5px 0px #000;">${q.keyword}</span>
-          <span class="status-pill" style="font-family: var(--font-mono); font-size: 11px; font-weight: 800;">Question ${currentPathwayMcqIndex + 1} of ${allTopicMcqs.length}</span>
+          <span class="neo-tag-badge cyan">${q.keyword}</span>
+          <span class="neo-tag-badge yellow">Question ${currentPathwayMcqIndex + 1} of ${allTopicMcqs.length}</span>
         </div>
         <div style="display: flex; align-items: center; gap: 10px;">
-          <button class="card-nav-btn" onclick="switchMainView('viewMcqs'); if(window.renderMcqs) window.renderMcqs('${q.keyword}');" style="font-size: 11px; padding: 4px 12px; font-weight: 700; border: 1.5px solid var(--border-default); box-shadow: 2px 2px 0px rgba(0,0,0,0.5);">
+          <button class="neo-btn-sm pink" onclick="switchMainView('viewMcqs'); if(window.renderMcqs) window.renderMcqs('${q.keyword}');">
             🔍 Open All 100 in Vault &rarr;
           </button>
-          <select class="clean-select" style="font-size: 11px; padding: 4px 8px; font-weight: 700;" onchange="jumpToPathwayMcq(this.value)">
+          <select class="neo-select-dropdown" onchange="jumpToPathwayMcq(this.value)">
             ${allTopicMcqs.map((_, i) => `<option value="${i}" ${i === currentPathwayMcqIndex ? 'selected' : ''}>Q${i + 1}</option>`).join('')}
           </select>
         </div>
       </div>
 
-      <div style="font-size: 16px; font-weight: 800; color: var(--text-primary); margin: 16px 0 18px 0; line-height: 1.45;">
+      <div class="neo-mcq-question-text">
         ${q.question}
       </div>
 
-      <div class="study-quiz-options-grid" style="display: flex; flex-direction: column; gap: 8px;">
+      <div class="study-quiz-options-grid" style="display: flex; flex-direction: column; gap: 12px;">
         ${optionsHtml}
       </div>
 
       ${explanationHtml}
 
-      <div style="display: flex; justify-content: space-between; align-items: center; margin-top: 20px; padding-top: 14px; border-top: 1px solid var(--border-default);">
-        <button class="card-nav-btn" onclick="prevPathwayMcq()" ${currentPathwayMcqIndex === 0 ? 'disabled style="opacity:0.4;"' : ''}>
+      <div class="neo-mcq-footer-nav">
+        <button class="neo-btn-nav" onclick="prevPathwayMcq()" ${currentPathwayMcqIndex === 0 ? 'disabled style="opacity:0.4; cursor:not-allowed;"' : ''}>
           &larr; Previous Question
         </button>
 
-        <div style="display: flex; gap: 10px;">
-          <button class="action-btn action-btn-primary" onclick="nextPathwayMcq()" style="padding: 7px 16px; font-size: 12px;">
+        <div style="display: flex; gap: 12px; align-items: center;">
+          <button class="neo-btn-primary" onclick="nextPathwayMcq()">
             Next Question &rarr;
           </button>
-          <button class="action-btn" onclick="selectPathwayStage(4)" style="background: var(--bg-surface); border: 1px solid var(--border-default); color: var(--text-secondary); font-size: 12px; padding: 7px 14px;">
-            Go to Stage 4: Cases ➔
+          <button class="neo-btn-nav" onclick="selectPathwayStage(4)">
+            Stage 4: Cases ➔
           </button>
         </div>
       </div>
@@ -6455,13 +6463,19 @@ function handlePathwayMcqAnswer(qId, selectedIdx) {
   const isCorrect = selectedIdx === q.correctIndex;
   pathwayMcqAnsweredState[qId] = { selectedIndex: selectedIdx, isCorrect };
 
-  if (window.soundFX) {
-    if (isCorrect) {
-      window.soundFX.playCorrect();
-      window.soundFX.addXP(10);
-    } else {
-      window.soundFX.playWrong();
+  try {
+    if (window.soundFX) {
+      if (isCorrect) {
+        if (typeof window.soundFX.playCorrect === 'function') window.soundFX.playCorrect();
+        else if (typeof window.soundFX.playSuccess === 'function') window.soundFX.playSuccess();
+        if (typeof window.soundFX.addXP === 'function') window.soundFX.addXP(10, 'MCQ Correct!');
+      } else {
+        if (typeof window.soundFX.playWrong === 'function') window.soundFX.playWrong();
+        else if (typeof window.soundFX.playError === 'function') window.soundFX.playError();
+      }
     }
+  } catch (err) {
+    console.warn('soundFX error caught:', err);
   }
 
   renderPathwayMcqs();
