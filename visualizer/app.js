@@ -6100,11 +6100,11 @@ function renderPathwayMasterclass() {
   ` : '';
 
   container.innerHTML = `
-    <div class="card" style="border-left: 4px solid #6366f1; margin-bottom: 20px;">
+    <div class="card" style="border: 2.5px solid #6366f1; border-radius: 16px; box-shadow: 4px 4px 0px rgba(99, 102, 241, 0.4); margin-bottom: 20px;">
       <div class="card-header" style="display: flex; align-items: center; justify-content: space-between; flex-wrap: wrap; gap: 10px;">
         <div>
           <span class="clause-pill ${studyItem.badgeClass || 'pill-from'}" style="font-size: 10px;">Stage 1: Visual Masterclass</span>
-          <h2 style="font-size: 18px; color: #fff; margin: 4px 0 0 0;">${studyItem.title}</h2>
+          <h2 style="font-size: 18px; color: var(--text-primary); font-weight: 800; margin: 4px 0 0 0;">${studyItem.title}</h2>
         </div>
         <button class="action-btn action-btn-primary" onclick="selectPathwayStage(2)" style="padding: 6px 14px; font-size: 12px;">
           Proceed to Stage 2: Traps &amp; Secrets &rarr;
@@ -6115,6 +6115,50 @@ function renderPathwayMasterclass() {
       ${sectionsHtml}
     </div>
   `;
+}
+
+// -----------------------------------------------------------------------------
+// HELPER: FORMAT & SYNTAX-HIGHLIGHT SQL QUERIES WITH MULTI-LINE INDENTATION
+// -----------------------------------------------------------------------------
+function formatAndHighlightSQL(sql, isBad) {
+  if (!sql) return '';
+  let formattedSql = sql.trim();
+  // If query is on one line but contains major SQL clauses, insert newlines before clauses for clean formatting
+  if (!formattedSql.includes('\n')) {
+    formattedSql = formattedSql.replace(/\s+(FROM|WHERE|INNER\s+JOIN|LEFT\s+JOIN|RIGHT\s+JOIN|FULL\s+JOIN|CROSS\s+JOIN|GROUP\s+BY|HAVING|ORDER\s+BY|LIMIT|OFFSET)\b/gi, '\n$1');
+  }
+  const lines = formattedSql.split('\n');
+  const processed = [];
+  for (let i = 0; i < lines.length; i++) {
+    const raw = lines[i];
+    const trimmed = raw.trim();
+    if (!trimmed) {
+      processed.push('');
+      continue;
+    }
+    if (trimmed.startsWith('--') || trimmed.startsWith('/*')) {
+      const commentColor = isBad ? '#fca5a5' : '#86efac';
+      processed.push(`<span class="sql-token-comment" style="color: ${commentColor}; font-style: italic; font-weight: 600;">${escapeHtml(raw)}</span>`);
+    } else {
+      const inlineCommentIdx = raw.indexOf('--');
+      if (inlineCommentIdx > 0) {
+        const codePart = raw.slice(0, inlineCommentIdx);
+        const commentPart = raw.slice(inlineCommentIdx);
+        const highlightedCode = (window.CASE_DOSSIER_ENGINE && window.CASE_DOSSIER_ENGINE.highlightSQL)
+          ? window.CASE_DOSSIER_ENGINE.highlightSQL(codePart)
+          : escapeHtml(codePart);
+        const commentColor = isBad ? '#fca5a5' : '#86efac';
+        processed.push(`${highlightedCode}<span class="sql-token-comment" style="color: ${commentColor}; font-style: italic; font-weight: 600;">${escapeHtml(commentPart)}</span>`);
+      } else {
+        if (window.CASE_DOSSIER_ENGINE && window.CASE_DOSSIER_ENGINE.highlightSQL) {
+          processed.push(window.CASE_DOSSIER_ENGINE.highlightSQL(raw));
+        } else {
+          processed.push(escapeHtml(raw));
+        }
+      }
+    }
+  }
+  return processed.join('\n');
 }
 
 // -----------------------------------------------------------------------------
@@ -6139,27 +6183,41 @@ function renderPathwayTrapsAndSecrets() {
     trapsHtml += `
       <div class="trap-card">
         <div class="trap-card-header">
-          <div class="trap-card-title">${trap.title}</div>
+          <div class="trap-card-title">${escapeHtml(trap.title)}</div>
           <span class="${badgeClass}">${trap.severity}</span>
         </div>
 
         <div class="trap-diff-grid">
           <div class="trap-code-box bad">
-            <span class="trap-box-label">❌ Buggy Anti-Pattern</span>
-            <code>${escapeHtml(trap.badSql)}</code>
+            <div class="trap-box-header">
+              <span>❌ Buggy Anti-Pattern</span>
+              <div class="trap-terminal-dots">
+                <span class="dot-r"></span>
+                <span class="dot-y"></span>
+                <span class="dot-g"></span>
+              </div>
+            </div>
+            <pre class="trap-code-content"><code>${formatAndHighlightSQL(trap.badSql, true)}</code></pre>
           </div>
           <div class="trap-code-box good">
-            <span class="trap-box-label">✅ Production Fix</span>
-            <code>${escapeHtml(trap.goodSql)}</code>
+            <div class="trap-box-header">
+              <span>✅ Production Fix</span>
+              <div class="trap-terminal-dots">
+                <span class="dot-r"></span>
+                <span class="dot-y"></span>
+                <span class="dot-g"></span>
+              </div>
+            </div>
+            <pre class="trap-code-content"><code>${formatAndHighlightSQL(trap.goodSql, false)}</code></pre>
           </div>
         </div>
 
         <div class="trap-explanation-box">
-          <strong>⚙️ Why It Breaks:</strong> ${trap.whyItBreaks}
+          <strong style="color: var(--text-primary);">⚙️ Why It Breaks:</strong> ${trap.whyItBreaks}
         </div>
 
         <div class="trap-impact-callout">
-          <strong>🚨 Corporate Impact:</strong> ${trap.corporateImpact}
+          <strong style="color: #f43f5e;">🚨 Corporate Impact:</strong> ${trap.corporateImpact}
         </div>
       </div>
     `;
@@ -6171,17 +6229,25 @@ function renderPathwayTrapsAndSecrets() {
     tipsHtml += `
       <div class="tip-card">
         <div class="tip-card-header">
-          <div class="tip-card-title">${tip.title}</div>
-          <span class="tip-concept-pill">${tip.concept}</span>
+          <div class="tip-card-title">${escapeHtml(tip.title)}</div>
+          <span class="tip-concept-pill">${escapeHtml(tip.concept)}</span>
         </div>
         <div class="tip-code-block">
-          <code>${escapeHtml(tip.codeSnippet)}</code>
+          <div class="trap-box-header" style="background: rgba(16, 185, 129, 0.15); color: #86efac; border-bottom: 1px solid rgba(16, 185, 129, 0.35);">
+            <span>⚡ Tactical Code &amp; Execution Blueprint</span>
+            <div class="trap-terminal-dots">
+              <span class="dot-r"></span>
+              <span class="dot-y"></span>
+              <span class="dot-g"></span>
+            </div>
+          </div>
+          <pre class="trap-code-content"><code>${formatAndHighlightSQL(tip.codeSnippet, false)}</code></pre>
         </div>
-        <div style="font-size: 12px; color: var(--text-secondary); line-height: 1.45;">
+        <div style="font-size: 12.5px; color: var(--text-secondary); line-height: 1.55;">
           ${tip.explanation}
         </div>
         <div class="tip-analyst-value">
-          <strong>💡 Analyst Value:</strong> ${tip.analystValue}
+          <strong style="color: #0284c7;">💡 Analyst Value:</strong> ${tip.analystValue}
         </div>
       </div>
     `;
@@ -6193,22 +6259,30 @@ function renderPathwayTrapsAndSecrets() {
     interviewHtml += `
       <div class="interview-flashcard">
         <div class="interview-card-meta">
-          <span class="interview-diff-pill">${item.difficulty}</span>
-          <span class="clause-pill pill-where" style="font-size: 10px;">${item.testedConcept}</span>
+          <span class="interview-diff-pill">${escapeHtml(item.difficulty)}</span>
+          <span class="clause-pill pill-where" style="font-size: 10px; font-weight: 800;">${escapeHtml(item.testedConcept)}</span>
         </div>
         <div class="interview-question-text">
-          "${item.question}"
+          "${escapeHtml(item.question)}"
         </div>
         <div class="interview-intent-box">
-          <strong>🎯 What the Interviewer is REALLY Testing:</strong><br>${item.interviewerIntent}
+          <strong style="color: #d97706;">🎯 What the Interviewer is REALLY Testing:</strong><br>${escapeHtml(item.interviewerIntent)}
         </div>
         <div class="interview-spoken-answer-box">
           <span class="interview-spoken-label">🎙️ Exact Spoken-Word Model Answer:</span>
-          <div class="interview-spoken-text">"${item.spokenAnswer}"</div>
+          <div class="interview-spoken-text">"${escapeHtml(item.spokenAnswer)}"</div>
         </div>
         ${item.sqlSnippet ? `
-          <div class="tip-code-block" style="margin-top: 4px;">
-            <code>${escapeHtml(item.sqlSnippet)}</code>
+          <div class="tip-code-block" style="margin-top: 6px; border-color: #8b5cf6; box-shadow: 3px 3px 0px rgba(139, 92, 246, 0.35);">
+            <div class="trap-box-header" style="background: rgba(139, 92, 246, 0.15); color: #c4b5fd; border-bottom: 1px solid rgba(139, 92, 246, 0.35);">
+              <span>💡 SQL Query Pattern</span>
+              <div class="trap-terminal-dots">
+                <span class="dot-r"></span>
+                <span class="dot-y"></span>
+                <span class="dot-g"></span>
+              </div>
+            </div>
+            <pre class="trap-code-content"><code>${formatAndHighlightSQL(item.sqlSnippet, false)}</code></pre>
           </div>
         ` : ''}
       </div>
@@ -6223,7 +6297,7 @@ function renderPathwayTrapsAndSecrets() {
           <h3 class="traps-section-heading">
             <span>🛑 Deadly Production Traps &amp; Silent Corruption Bugs</span>
           </h3>
-          <span class="status-pill" style="color: #f43f5e; border-color: rgba(244, 63, 94, 0.3);">${trapsData.traps.length} Lethal Pitfalls</span>
+          <span class="status-pill" style="color: #f43f5e; border-color: rgba(244, 63, 94, 0.3); font-weight: 800;">${trapsData.traps.length} Lethal Pitfalls</span>
         </div>
         <div class="traps-grid">
           ${trapsHtml}
@@ -6236,7 +6310,7 @@ function renderPathwayTrapsAndSecrets() {
           <h3 class="traps-section-heading">
             <span>💡 Senior Analyst Tips &amp; SQL Intricacies</span>
           </h3>
-          <span class="status-pill" style="color: #10b981; border-color: rgba(16, 185, 129, 0.3);">${trapsData.tipsAndTricks.length} Tactical Tricks</span>
+          <span class="status-pill" style="color: #10b981; border-color: rgba(16, 185, 129, 0.3); font-weight: 800;">${trapsData.tipsAndTricks.length} Tactical Tricks</span>
         </div>
         <div class="traps-grid">
           ${tipsHtml}
@@ -6249,7 +6323,7 @@ function renderPathwayTrapsAndSecrets() {
           <h3 class="traps-section-heading">
             <span>🎙️ Spoken-Word Corporate Technical Interview Questions</span>
           </h3>
-          <span class="status-pill" style="color: #8b5cf6; border-color: rgba(139, 92, 246, 0.3);">${trapsData.interviewQuestions.length} Model Answers</span>
+          <span class="status-pill" style="color: #8b5cf6; border-color: rgba(139, 92, 246, 0.3); font-weight: 800;">${trapsData.interviewQuestions.length} Model Answers</span>
         </div>
         <div class="traps-grid">
           ${interviewHtml}
@@ -6258,7 +6332,7 @@ function renderPathwayTrapsAndSecrets() {
 
       <!-- Footer CTA to proceed to MCQs -->
       <div style="display: flex; justify-content: flex-end; padding-top: 10px;">
-        <button class="action-btn action-btn-primary" onclick="selectPathwayStage(3)" style="padding: 10px 20px; font-size: 13px;">
+        <button class="action-btn action-btn-primary" onclick="selectPathwayStage(3)" style="padding: 10px 20px; font-size: 13px; font-weight: 800; border: 2px solid #000; box-shadow: 2px 2px 0px #000;">
           Mastered Traps! Test Knowledge in Stage 3: MCQs &rarr;
         </button>
       </div>
@@ -6330,23 +6404,23 @@ function renderPathwayMcqs() {
   }
 
   container.innerHTML = `
-    <div class="card" style="max-width: 900px; margin: 0 auto; border-left: 4px solid #6366f1;">
+    <div class="card" style="max-width: 900px; margin: 0 auto; border: 2.5px solid #6366f1; border-radius: 16px; box-shadow: 4px 4px 0px rgba(99, 102, 241, 0.4); padding: 22px;">
       <div class="card-header" style="display: flex; align-items: center; justify-content: space-between; flex-wrap: wrap; gap: 8px;">
         <div style="display: flex; align-items: center; gap: 8px;">
-          <span class="clause-pill pill-where" style="font-size: 10px;">${q.keyword}</span>
-          <span class="status-pill" style="font-family: var(--font-mono); font-size: 11px;">Question ${currentPathwayMcqIndex + 1} of ${allTopicMcqs.length}</span>
+          <span class="clause-pill pill-where" style="font-size: 10px; font-weight: 800; border: 1.5px solid #000; box-shadow: 1.5px 1.5px 0px #000;">${q.keyword}</span>
+          <span class="status-pill" style="font-family: var(--font-mono); font-size: 11px; font-weight: 800;">Question ${currentPathwayMcqIndex + 1} of ${allTopicMcqs.length}</span>
         </div>
         <div style="display: flex; align-items: center; gap: 10px;">
-          <button class="card-nav-btn" onclick="switchMainView('viewMcqs'); if(window.renderMcqs) window.renderMcqs('${q.keyword}');" style="font-size: 11px; padding: 3px 10px;">
+          <button class="card-nav-btn" onclick="switchMainView('viewMcqs'); if(window.renderMcqs) window.renderMcqs('${q.keyword}');" style="font-size: 11px; padding: 4px 12px; font-weight: 700; border: 1.5px solid var(--border-default); box-shadow: 2px 2px 0px rgba(0,0,0,0.5);">
             🔍 Open All 100 in Vault &rarr;
           </button>
-          <select class="clean-select" style="font-size: 11px; padding: 3px 8px;" onchange="jumpToPathwayMcq(this.value)">
+          <select class="clean-select" style="font-size: 11px; padding: 4px 8px; font-weight: 700;" onchange="jumpToPathwayMcq(this.value)">
             ${allTopicMcqs.map((_, i) => `<option value="${i}" ${i === currentPathwayMcqIndex ? 'selected' : ''}>Q${i + 1}</option>`).join('')}
           </select>
         </div>
       </div>
 
-      <div style="font-size: 15px; font-weight: 600; color: var(--text-primary); margin: 12px 0 16px 0; line-height: 1.45;">
+      <div style="font-size: 16px; font-weight: 800; color: var(--text-primary); margin: 16px 0 18px 0; line-height: 1.45;">
         ${q.question}
       </div>
 
