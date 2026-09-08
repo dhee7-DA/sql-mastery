@@ -5932,6 +5932,57 @@ const TOPIC_PATHWAY_MODULES = [
     trapsCount: 2,
     tipsCount: 1,
     interviewCount: 1
+  },
+  {
+    id: "mod_intermediate_joins",
+    num: "09",
+    title: "Intermediate Joins, Chains & Set Operations",
+    icon: "🔀",
+    tagline: "BETWEEN non-equi joins, 4-table chains, Self-Joins & UNION/EXCEPT",
+    caseSection: "Section 8: Relational Joins & Financial Data Modeling",
+    mcqKeywords: ["JOINS"],
+    studySectionId: "sec_intermediate_joins",
+    labTrackId: "track04",
+    trapsModuleId: "mod_joins",
+    caseCount: 390,
+    mcqCount: 100,
+    trapsCount: 2,
+    tipsCount: 1,
+    interviewCount: 1
+  },
+  {
+    id: "mod_subqueries",
+    num: "10",
+    title: "Subqueries, Derived Tables & Correlated Logic",
+    icon: "🎯",
+    tagline: "Scalar, Derived in FROM, Correlated loops, EXISTS vs IN & Semi-Joins",
+    caseSection: "Section 3: Filtering, Predicates & Three-Valued Logic",
+    mcqKeywords: ["WHERE", "SELECT"],
+    studySectionId: "sec_subqueries",
+    labTrackId: "track01",
+    trapsModuleId: "mod_foundations",
+    caseCount: 100,
+    mcqCount: 100,
+    trapsCount: 2,
+    tipsCount: 1,
+    interviewCount: 1
+  },
+  {
+    id: "mod_ctes",
+    num: "11",
+    title: "Common Table Expressions (CTEs) & Recursion",
+    icon: "🌲",
+    tagline: "WITH pipelines, Inlining vs Materialization, WITH RECURSIVE & Date Trees",
+    caseSection: "Section 2: Physical Query Execution Order & Projections",
+    mcqKeywords: ["SELECT", "FROM"],
+    studySectionId: "sec_ctes",
+    labTrackId: "track01",
+    trapsModuleId: "mod_foundations",
+    caseCount: 100,
+    mcqCount: 100,
+    trapsCount: 2,
+    tipsCount: 1,
+    interviewCount: 1
   }
 ];
 
