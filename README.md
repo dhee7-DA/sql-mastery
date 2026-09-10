@@ -12,16 +12,29 @@ Welcome to the **14-Day SQL Intensive**. This repository is an institutional-gra
 
 ---
 
-## 🎮 Interactive SQL Query Visualizer Web App
+## 🎮 Interactive SQL Query Visualizer & Masterclass Platform
 
-An in-browser interactive execution studio located in [`visualizer/`](./visualizer):
-- 🎬 **Step-by-Step Engine Stepper**: Watch queries physically execute across `FROM` ➡️ `WHERE` ➡️ `SELECT & CASE` ➡️ `DISTINCT` ➡️ `ORDER BY` ➡️ `LIMIT`.
-- 🌳 **Dynamic CASE WHEN & Logic Decision Trees**: Live branching flowcharts for conditional classifications.
-- 📊 **Real-Time Distribution Charts & Diff Grids**: Visual categorical frequencies and side-by-side table diffs.
-- 🚀 **Zero Dependencies**: Pure HTML5, Vanilla CSS Glassmorphism, and Vanilla JavaScript. Double-click [`visualizer/index.html`](./visualizer/index.html) to open in any browser!
+An institutional-grade, in-browser execution studio and visual masterclass located in [`visualizer/`](./visualizer):
+- 🎨 **Poppy Neo-Brutalist Design System**: High-contrast, tactile UI with raw 3px solid black outlines, offset ink drop shadows, and punchy sticker palettes (`#fef08a`, `#38bdf8`, `#f472b6`, `#22c55e`, `#fbbf24`, `#c084fc`).
+- 📖 **11 Visual Masterclass Modules**: Textbook-grade CS theory, engine storage physics, and custom Neo-Brutalist SVG Explainer Diagrams:
+  1. *Physical Execution Pipeline & Lexical Sequencing*
+  2. *Filtering, Predicates & Three-Valued Logic (3VL)*
+  3. *Sorting, Determinism & Keyset Pagination*
+  4. *Conditional Logic & CASE WHEN Decision Trees*
+  5. *Basic & Statistical Aggregations (GROUP BY)*
+  6. *Spatial Coordinates, Math Functions & Medians*
+  7. *Relational Multi-Table Joins & FK Linkers*
+  8. *Database Architecture & Physical 16KB Storage*
+  9. *Intermediate Joins, Non-Equi Conditions & Chains*
+  10. *Subqueries, Derived Tables & Correlated Logic*
+  11. *Common Table Expressions (CTEs) & Recursive Hierarchies*
+- 🧠 **1,200 Master Technical MCQs Vault**: 12 core SQL categories $\times$ 100 deep technical questions with instant answer validation, sound FX, and detailed rationales.
+- 💼 **1,040 Enterprise Case Studies Vault**: 8 corporate sections spanning 10 industry verticals (Fintech, Healthcare, SaaS, E-Commerce, Logistics, etc.), including 390 multi-table financial modeling cases.
+- 🔗 **8-Step Dual-Table Relational Joins Linker**: Interactive step-through simulator in Guided Lab (Track 04) covering Inner, Left, Right, Full Outer, Left Anti, Cross, Self, and Non-Equi joins.
+- 🎮 **30 Gamified Quests**: Live token puzzle solver with sound FX and real-time AST evaluation.
+- 🚀 **Zero Dependencies**: Pure HTML5, Vanilla CSS, and Vanilla JavaScript. Double-click [`visualizer/index.html`](./visualizer/index.html) or run a local server to launch!
 
 ---
-
 
 ## 🗺️ 14-Day Syllabus & Progress Tracker (HackerRank Subdomain Roadmap)
 
@@ -36,7 +49,6 @@ An in-browser interactive execution studio located in [`visualizer/`](./visualiz
 
 ---
 
-
 ### 🟡 Phase 2: Advanced Select & Conditional Logic
 | Day | Module Directory | HackerRank Subdomain & Focus | Difficulty | Status |
 |---|---|---|---|---|
@@ -48,17 +60,16 @@ An in-browser interactive execution studio located in [`visualizer/`](./visualiz
 | Day | Module Directory | HackerRank Subdomain & Focus | Difficulty | Status |
 |---|---|---|---|---|
 | **Day 05** | [`day-05-basic-aggregations`](./day-05-basic-aggregations) | `COUNT`, `SUM`, `AVG`, `FLOOR`, `CEIL`, Top Earners, Density Diff | Easy | ✅ Completed (10/10) |
-| **Day 06** | `day-06-station-math-aggregates` | Station 2, 13–20 (Manhattan & Euclidean Distances, Median) | Easy / Medium | ⚪ Pending |
-| **Day 07** | `day-07-station-math-aggregates` | Station 2, 13–20 (Manhattan & Euclidean Distances, Median) | Easy / Medium | ⚪ Pending |
+| **Day 06** | [`day-06-station-math-aggregates`](./day-06-station-math-aggregates) | Stations 2, 13–20 (Manhattan $L_1$ & Euclidean $L_2$ Distances, Medians) | Easy / Medium | ✅ Completed (9/9) |
 
 ---
 
 ### 🔴 Phase 4: Relational Joins Track
 | Day | Module Directory | HackerRank Subdomain & Focus | Difficulty | Status |
 |---|---|---|---|---|
-| **Day 08** | `day-08-basic-joins` | `INNER JOIN`, `LEFT JOIN`, Asian Pop, African Cities, Continents | Easy | ⚪ Pending |
-| **Day 09** | `day-09-intermediate-joins` | The Report, Top Competitors, Ollivander's Inventory | Medium | ⚪ Pending |
-| **Day 10** | `day-10-advanced-joins-scoring` | Contest Leaderboard, Placements, Symmetric Pairs | Medium / Hard | ⚪ Pending |
+| **Day 08** | [`day-08-basic-joins`](./day-08-basic-joins) | `INNER JOIN`, `LEFT JOIN`, Asian Pop, African Cities, Continents | Easy | ✅ Completed (3/3) |
+| **Day 09** | `day-09-intermediate-joins` | The Report, Top Competitors, Ollivander's Inventory, Non-Equi Joins | Medium | 🟡 Next Up |
+| **Day 10** | `day-10-advanced-joins-scoring` | Contest Leaderboard, Placements, Symmetric Pairs, Subqueries | Medium / Hard | ⚪ Pending |
 
 ---
 

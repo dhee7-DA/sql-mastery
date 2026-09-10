@@ -10,15 +10,15 @@
 - **Active Module**: `day-08-basic-joins` (Completed) ➡️ Next: `day-09-intermediate-joins`
 - **Current Dialect**: **MySQL 8.0+ / ANSI SQL**
 - **Major Milestone Achieved**: 🏆 **HACKERRANK BASIC JOINS CONQUERED (Asian Pop, African Cities, Continent Averages + Anti-Joins)!**
-- **Visualizer Super-Upgrades**:
-  - **The 1,040 Corporate Case Study Master Vault**: Scaled with Section 8 (*Relational Joins & Financial Data Modeling*) containing **390 compound practice cases** (130 Easy, 130 Medium, 130 Hard) spanning 10 corporate domains.
-  - **The 600 Master MCQ Technical Vault**: 600 deep technical checks across 12 core SQL foundations including relational joins.
+- **Visualizer & Masterclass Super-Upgrades**:
+  - **11 Visual Masterclass Modules with Poppy Neo-Brutalist SVGs**: Textbook CS theory, formulas, storage physics, and gotchas covering Modules 01 through 11 (including Subqueries, Correlated Logic, and Recursive CTEs).
+  - **The 1,200 Master MCQ Technical Vault**: 1,200 deep technical checks (100 per keyword across 12 core SQL categories) with instant feedback and randomized option distributions.
+  - **The 1,040 Corporate Case Study Master Vault**: Scaled across 8 sections spanning 10 corporate domains (including 390 Relational Joins cases).
   - **30 Interactive Quests**: Levels 1–30 with audio FX, token puzzle mechanics, and instant evaluation.
-  - **Zero-Latency In-Card Simulator Engine**: Real-time browser-relational execution simulating multi-table foreign keys, anti-joins, zero-spend variance with COALESCE, and tiered commission lookups.
   - **Track 04 in Guided Learning Lab**: 8 dedicated steps covering Inner, Left, Right, Full Outer, Anti, Cross, Self, and Non-Equi Joins.
-- **Next Immediate Action**: Practice Section 8 Joins in Visualizer or Advance to Day 09 (*Intermediate Joins: Non-Equi Joins, BETWEEN, Self Joins, Multi-Table Chains*)
-- **Total Problems Completed in Intensive**: 43 / 58 Problems
-- **Last Updated**: 2026-09-08 01:15 IST
+- **Next Immediate Action**: Advance to Day 09 (*Intermediate Joins: Non-Equi Joins, BETWEEN, Self Joins, Multi-Table Chains*)
+- **Total Problems Completed in Intensive**: 42 / 58 Problems
+- **Last Updated**: 2026-09-10 12:25 IST
 
 ---
 
