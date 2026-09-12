@@ -6,19 +6,19 @@
 
 ## 📌 Current Snapshot
 
-- **Current Sprint**: **Day 09 Completed (Intermediate Relational Joins) ➡️ Ready for Day 10 (Advanced Joins & Hierarchical Queries)**
-- **Active Module**: `day-09-intermediate-joins` (Completed) ➡️ Next: `day-10-advanced-joins-scoring`
+- **Current Sprint**: **Day 10 Completed (Advanced Relational Joins) ➡️ Ready for Day 11 (Window Functions & Ranking Engines)**
+- **Active Module**: `day-10-advanced-joins-scoring` (Completed) ➡️ Next: `day-11-window-ranking`
 - **Current Dialect**: **MySQL 8.0+ / ANSI SQL**
-- **Major Milestone Achieved**: 🏆 **HACKERRANK MEDIUM JOINS CONQUERED (The Report, Top Competitors, Ollivander's Inventory)!**
+- **Major Milestone Achieved**: 🏆 **ALL HACKERRANK BASIC & ADVANCED JOINS CONQUERED (Contest Leaderboard, Placements, Symmetric Pairs)!**
 - **Visualizer & Masterclass Super-Upgrades**:
   - **11 Visual Masterclass Modules with Poppy Neo-Brutalist SVGs**: Textbook CS theory, formulas, storage physics, and gotchas covering Modules 01 through 11 (including Subqueries, Correlated Logic, and Recursive CTEs).
   - **The 1,200 Master MCQ Technical Vault**: 1,200 deep technical checks (100 per keyword across 12 core SQL categories) with instant feedback and randomized option distributions.
   - **The 1,040 Corporate Case Study Master Vault**: Scaled across 8 sections spanning 10 corporate domains (including 390 Relational Joins cases).
   - **30 Interactive Quests**: Levels 1–30 with audio FX, token puzzle mechanics, and instant evaluation.
   - **Track 04 in Guided Learning Lab**: 8 dedicated steps covering Inner, Left, Right, Full Outer, Anti, Cross, Self, and Non-Equi Joins.
-- **Next Immediate Action**: Advance to Day 10 (*Advanced Joins & Hierarchical Queries: Contest Leaderboard, Placements, Symmetric Pairs*)
-- **Total Problems Completed in Intensive**: 45 / 58 Problems
-- **Last Updated**: 2026-09-13 00:46 IST
+- **Next Immediate Action**: Advance to Day 11 (*Window Functions: Ranking, Partitions, ROW_NUMBER, RANK, DENSE_RANK, NTILE*)
+- **Total Problems Completed in Intensive**: 48 / 58 Problems
+- **Last Updated**: 2026-09-13 00:53 IST
 
 ---
 
@@ -34,8 +34,8 @@
 | **06** | [`day-06-station-math-aggregates`](./day-06-station-math-aggregates) | Station 2, 13–20 (Manhattan & Euclidean Distances, Medians) | 9/9 | ✅ Completed (100%) |
 | **08** | [`day-08-basic-joins`](./day-08-basic-joins) | `INNER JOIN`, `LEFT JOIN`, Asian Pop, African Cities, Continents, Anti-Joins | 3/3 | ✅ Completed (100%) |
 | **09** | [`day-09-intermediate-joins`](./day-09-intermediate-joins) | The Report, Top Competitors, Ollivander's Inventory, Non-Equi Joins | 3/3 | ✅ Completed (100%) |
-| **10** | `day-10-advanced-joins-scoring` | Contest Leaderboard, Placements, Symmetric Pairs | 0/3 | 🟡 Next Up |
-| **11** | `day-11-window-ranking` | `ROW_NUMBER()`, `RANK()`, `DENSE_RANK()`, `NTILE()` | 0/8 | ⚪ Pending |
+| **10** | [`day-10-advanced-joins-scoring`](./day-10-advanced-joins-scoring) | Contest Leaderboard, Placements, Symmetric Pairs | 3/3 | ✅ Completed (100%) |
+| **11** | `day-11-window-ranking` | `ROW_NUMBER()`, `RANK()`, `DENSE_RANK()`, `NTILE()` | 0/8 | 🟡 Next Up |
 | **12** | `day-12-window-aggregates` | `LAG()`, `LEAD()`, Running Totals, Moving Averages | 0/8 | ⚪ Pending |
 | **13** | `day-13-business-analytics` | Churn Analysis, Retention Cohorts, MoM Growth Queries | 0/6 | ⚪ Pending |
 | **14** | `day-14-capstone-project` | Comprehensive End-to-End Analytics Case Study & Presentation | 0/1 | ⚪ Pending |
