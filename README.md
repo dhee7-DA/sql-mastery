@@ -76,8 +76,8 @@ An institutional-grade, in-browser execution studio and visual masterclass locat
 ### 🟣 Phase 5: Advanced Analytical SQL & Portfolio Case Study
 | Day | Module Directory | Focus & Enterprise Skills | Difficulty | Status |
 |---|---|---|---|---|
-| **Day 11** | `day-11-window-ranking` | `ROW_NUMBER()`, `RANK()`, `DENSE_RANK()`, `NTILE()` | Advanced | ⚪ Pending |
-| **Day 12** | `day-12-window-aggregates` | `LAG()`, `LEAD()`, Running Totals, Moving Averages | Advanced | ⚪ Pending |
+| **Day 11** | [`day-11-window-ranking`](./day-11-window-ranking) | `ROW_NUMBER()`, `RANK()`, `DENSE_RANK()`, `NTILE()` | Advanced | ✅ Completed (4/4) |
+| **Day 12** | `day-12-window-aggregates` | `LAG()`, `LEAD()`, Running Totals, Moving Averages | Advanced | 🟡 Next Up |
 | **Day 13** | `day-13-business-analytics` | Churn Analysis, Retention Cohorts, MoM Growth Queries | Advanced | ⚪ Pending |
 | **Day 14** | `day-14-capstone-project` | Comprehensive End-to-End Analytics Case Study & Presentation | Capstone | ⚪ Pending |
 
