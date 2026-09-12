@@ -83,7 +83,69 @@ Use this master reference table to translate **any English business prompt or in
 
 ---
 
-### 🅳 The `ORDER BY` Clause (How to sort / arrange rows)
+### 🅳 The `GROUP BY` & `HAVING` Clauses (Aggregations & Group Bucketing)
+
+| When the English Prompt says... | What you write in SQL | Concrete Example |
+|---|---|---|
+| *"For each / Per [Category] / Grouped by"* | `GROUP BY category_col` | `SELECT dept, COUNT(*) FROM Emp GROUP BY dept;` |
+| *"Multi-level breakdown / By Country and City"* | `GROUP BY col1, col2` | `SELECT country, city, SUM(sales) FROM Stores GROUP BY country, city;` |
+| *"Filter groups where total exceeds / Having count"* | `HAVING aggregate_func > value` | `GROUP BY customer_id HAVING COUNT(order_id) >= 5;` |
+| *"Filter groups where average revenue is above threshold"* | `HAVING AVG(amount) > 1000` | `GROUP BY category HAVING AVG(price) > 50;` |
+| *"Filter individual rows before grouping"* | `WHERE raw_col = 'val' GROUP BY group_col` | `WHERE status = 'PAID' GROUP BY client_id;` |
+
+---
+
+### 🅴 The Multi-Table `JOIN` Clauses (Relational Data Modeling)
+
+| When the English Prompt says... | What you write in SQL | Concrete Example |
+|---|---|---|
+| *"Match records across both tables / Only completed / Inner"* | `FROM A INNER JOIN B ON A.id = B.a_id` | `FROM Orders o JOIN Customers c ON o.cust_id = c.id;` |
+| *"Include ALL records from first table, even with zero matches"*| `FROM A LEFT JOIN B ON A.id = B.a_id` | `FROM Customers c LEFT JOIN Orders o ON c.id = o.cust_id;` |
+| *"Find missing / unbilled / dormant / churned records"* | `FROM A LEFT JOIN B ON A.id = B.a_id WHERE B.id IS NULL` | `FROM Users u LEFT JOIN Orders o ON u.id = o.user_id WHERE o.id IS NULL;` |
+| *"Full outer reconciliation / Compare GL against Bank"* | `FROM A FULL OUTER JOIN B ON A.key = B.key` | `FROM GeneralLedger g FULL JOIN BankStmt b ON g.tx_id = b.tx_id;` |
+| *"Match value within continuous range / Grades / Tax tiers"* | `FROM A JOIN B ON A.val BETWEEN B.min_val AND B.max_val` | `FROM Students s JOIN Grades g ON s.marks BETWEEN g.min_mark AND g.max_mark;` |
+| *"Every combination of A and B / Cartesian scenario matrix"* | `FROM Products CROSS JOIN Regions` | `FROM Products p CROSS JOIN Regions r;` |
+| *"Hierarchical employee to manager / Compare with self"* | `FROM Employees e LEFT JOIN Employees m ON e.mgr_id = m.emp_id` | `FROM Employees e JOIN Employees m ON e.manager_id = m.emp_id;` |
+| *"Symmetric pairs without duplicates (X, Y) matching (Y, X)"* | `FROM Pairs a JOIN Pairs b ON a.x = b.y AND a.y = b.x WHERE a.x <= a.y` | `FROM Functions a JOIN Functions b ON a.x = b.y AND a.y = b.x WHERE a.x < b.x;` |
+
+---
+
+### 🅵 The `SUBQUERY` Clauses (Nested & Correlated Logic)
+
+| When the English Prompt says... | What you write in SQL | Concrete Example |
+|---|---|---|
+| *"Compared to company average / Above the mean"* | `WHERE salary > (SELECT AVG(salary) FROM Emp)` | `WHERE salary > (SELECT AVG(salary) FROM Employees);` |
+| *"Subquery as a temporary inline table / Derived"* | `FROM (SELECT ...) AS derived_alias` | `FROM (SELECT dept, COUNT(*) AS cnt FROM Emp GROUP BY dept) AS dt;` |
+| *"Cheapest item per category / Peer-group benchmark"* | Correlated: `WHERE price = (SELECT MIN(p2.price) FROM Prod p2 WHERE p2.cat = p1.cat)` | `WHERE w1.coins = (SELECT MIN(coins) FROM Wands w2 WHERE w2.power = w1.power);` |
+| *"Check if matching record exists (Short-circuiting)"* | `WHERE EXISTS (SELECT 1 FROM Subtable WHERE ...)` | `WHERE EXISTS (SELECT 1 FROM Orders o WHERE o.cust_id = c.id);` |
+| *"Exclude records safely without NULL trap"* | `WHERE NOT EXISTS (SELECT 1 FROM Inactive i WHERE i.id = u.id)` | `WHERE NOT EXISTS (SELECT 1 FROM Banned b WHERE b.user_id = u.id);` |
+| *"Dynamic threshold equal to maximum group count"* | `HAVING COUNT(*) = (SELECT MAX(cnt) FROM (...) AS sub)` | HackerRank *Challenges* Pattern |
+
+---
+
+### 🅶 The `CTE` Clauses (`WITH` & `WITH RECURSIVE`)
+
+| When the English Prompt says... | What you write in SQL | Concrete Example |
+|---|---|---|
+| *"Modular step-by-step pipeline / Clean readability"* | `WITH cte_name AS (SELECT ...) SELECT * FROM cte_name;` | `WITH RegionalSales AS (SELECT region, SUM(amt) AS rev FROM Sales GROUP BY region) SELECT * FROM RegionalSales;` |
+| *"Multiple chained transformation stages"* | `WITH a AS (...), b AS (...) SELECT ...` | `WITH raw AS (...), summary AS (...) SELECT * FROM summary;` |
+| *"Generate calendar dates without gaps (0-revenue days)"* | `WITH RECURSIVE Cal AS (SELECT '2026-01-01' UNION ALL SELECT DATE_ADD(...)) ...` | Gapless Date Table Pattern |
+| *"Organizational chart / Manager tree down to leaf reports"*| `WITH RECURSIVE Org AS (Anchor CEO UNION ALL Recursive Reports) ...` | Employee-Manager Rollup Pattern |
+
+---
+
+### 🅷 The Set Operations (`UNION`, `UNION ALL`, `INTERSECT`, `EXCEPT`)
+
+| When the English Prompt says... | What you write in SQL | Concrete Example |
+|---|---|---|
+| *"Combine results vertically / Fast concatenate (No dedupe)"* | `SELECT ... UNION ALL SELECT ...` | `SELECT id FROM OnlineTx UNION ALL SELECT id FROM InStoreTx;` |
+| *"Combine results and remove duplicates"* | `SELECT ... UNION SELECT ...` | `SELECT customer_id FROM WebApp UNION SELECT customer_id FROM MobileApp;` |
+| *"Rows that exist in BOTH queries (Common items)"* | `SELECT ... INTERSECT SELECT ...` | `SELECT email FROM NewsletterList INTERSECT SELECT email FROM PayingCustomers;` |
+| *"Rows in query A but NOT in query B (Difference)"* | `SELECT ... EXCEPT SELECT ...` (or `MINUS`) | `SELECT product_id FROM AllCatalog EXCEPT SELECT product_id FROM SoldProducts;` |
+
+---
+
+### 🅸 The `ORDER BY` Clause (How to sort / arrange rows)
 
 | When the English Prompt says... | What you write in SQL | Concrete Example |
 |---|---|---|
@@ -95,7 +157,7 @@ Use this master reference table to translate **any English business prompt or in
 
 ---
 
-### 🅴 The `LIMIT` Clause (How many rows to return?)
+### 🅹 The `LIMIT` Clause (How many rows to return?)
 
 | When the English Prompt says... | What you write in SQL | Concrete Example |
 |---|---|---|
@@ -129,35 +191,71 @@ Use this master reference table to translate **any English business prompt or in
 
 ---
 
-
 ## 🏛️ 3. The Universal SQL Sentence Blueprint
 
 SQL query clauses must **always follow this strict, unchangeable order**:
 
 ```text
-1. SELECT   [What columns / calculations / aggregates to output?]
-2. FROM     [Which table holds the data?]
-3. WHERE    [Which raw rows to filter before aggregation?]       (Optional)
-4. GROUP BY [Which column(s) to bucket rows into?]              (Optional - Day 5)
-5. HAVING   [Which aggregated groups to filter?]                (Optional - Day 5)
-6. ORDER BY [How to sort the final surviving rows?]             (Optional)
-7. LIMIT    [How many rows to return on screen?]                (Optional)
+1. WITH     [Common Table Expressions - temporary modular views] (Optional)
+2. SELECT   [What columns / calculations / aggregates to output?]
+3. FROM     [Which table holds the data?]
+4. JOIN     [Which auxiliary tables to link via ON?]             (Optional)
+5. WHERE    [Which raw rows to filter before aggregation?]       (Optional)
+6. GROUP BY [Which column(s) to bucket rows into?]              (Optional)
+7. HAVING   [Which aggregated groups to filter?]                (Optional)
+8. ORDER BY [How to sort the final surviving rows?]             (Optional)
+9. LIMIT    [How many rows to return on screen?]                (Optional)
 ```
-
-> **Memory Hook**: **"So Few Whales Gather Heavenly Ocean Lunches"**  
-> (**S**ELECT ➡️ **F**ROM ➡️ **W**HERE ➡️ **G**ROUP BY ➡️ **H**AVING ➡️ **O**RDER BY ➡️ **L**IMIT)
 
 ---
 
 ## ⚙️ 4. The Logical Execution Order (How the Database Engine Thinks)
 
 ```text
-1. FROM & JOINs       --> Locate and load raw tables into memory
-2. WHERE              --> Filter individual rows before grouping
-3. GROUP BY           --> Bucket rows into summary groups
-4. HAVING             --> Filter groups based on aggregated totals
-5. SELECT             --> Choose / calculate output expressions
+1. FROM & JOINs       --> Locate, bind, and cross/filter raw tables into memory
+2. WHERE              --> Filter individual base rows before grouping
+3. GROUP BY           --> Bucket rows into summary hash buckets in RAM
+4. HAVING             --> Filter summary groups based on aggregate accumulators
+5. SELECT             --> Evaluate math expressions and assign column aliases
 6. DISTINCT           --> Remove duplicate rows from result set
-7. ORDER BY           --> Sort the surviving rows
-8. LIMIT / OFFSET     --> Restrict the number of output rows
+7. UNION / EXCEPT     --> Execute vertical set concatenation & deduplication
+8. ORDER BY           --> Sort surviving rows using priority queue or filesort
+9. LIMIT / OFFSET     --> Restrict row slice returned to client
 ```
+
+---
+
+## 🔗 5. The 8-Way Relational Join Decision Matrix
+
+```text
+┌────────────────────────┬───────────────────────────────────┬──────────────────────────────────────────┐
+│ Join Type              │ Set Theory Logic                  │ Enterprise Business Scenario             │
+├────────────────────────┼───────────────────────────────────┼──────────────────────────────────────────┤
+│ 1. INNER JOIN          │ A ∩ B (Strict Intersection)       │ Matched transactions, completed orders   │
+│ 2. LEFT OUTER JOIN     │ A (Preserve 100% Left Table)      │ Customer cohort retention baselines      │
+│ 3. RIGHT OUTER JOIN    │ B (Preserve 100% Right Table)     │ Dimension-first reporting                │
+│ 4. FULL OUTER JOIN     │ A ∪ B (Retain all rows from both) │ GL Account vs Bank Statement matching    │
+│ 5. LEFT ANTI-JOIN      │ A - B (Where B.key IS NULL)       │ Churned clients, unbilled orders, leaks  │
+│ 6. CROSS JOIN          │ A × B (Cartesian Product)         │ Scenario modeling (Products × Regions)   │
+│ 7. SELF JOIN           │ Table joined to itself            │ Manager-employee hierarchy, pairs        │
+│ 8. NON-EQUI JOIN       │ ON value BETWEEN min AND max      │ Grade bands, tax brackets, commission    │
+└────────────────────────┴───────────────────────────────────┴──────────────────────────────────────────┘
+```
+
+> **The Fan-Out Guard**: When joining a parent table (e.g. `Accounts`) to two child tables (e.g. `Trades` and `Transfers`), pre-aggregate the child tables in separate CTEs beforehand to guarantee strict 1-to-1 grain and avoid duplicating balance metrics.
+
+---
+
+## 🌲 6. Subqueries vs. Common Table Expressions (CTEs) Decision Matrix
+
+```text
+┌────────────────────────┬────────────────────────────────────────┬────────────────────────────────────────┐
+│ Pattern                │ When to Choose                         │ Why it Wins                            │
+├────────────────────────┼────────────────────────────────────────┼────────────────────────────────────────┤
+│ Inline Subquery (FROM) │ Small, single-use intermediate filter  │ Quick, localized, zero named overhead  │
+│ Correlated Subquery    │ Row-by-row peer-group lookup           │ Directly binds outer row parameters    │
+│ CTE (WITH clause)      │ 2+ transformation stages, reuse        │ Eliminates pyramid nesting, readable   │
+│ Recursive CTE          │ Graphs, Org Trees, Gapless Dates       │ Native iterative loop without cursors  │
+└────────────────────────┴────────────────────────────────────────┴────────────────────────────────────────┘
+```
+
