@@ -12,13 +12,13 @@
 - **Major Milestone Achieved**: 🏆 **ALL HACKERRANK BASIC & ADVANCED JOINS CONQUERED (Contest Leaderboard, Placements, Symmetric Pairs)!**
 - **Visualizer & Masterclass Super-Upgrades**:
   - **11 Visual Masterclass Modules with Poppy Neo-Brutalist SVGs**: Textbook CS theory, formulas, storage physics, and gotchas covering Modules 01 through 11 (including Subqueries, Correlated Logic, and Recursive CTEs).
-  - **The 1,200 Master MCQ Technical Vault**: 1,200 deep technical checks (100 per keyword across 12 core SQL categories) with instant feedback and randomized option distributions.
+  - **The 1,450 Master MCQ Technical Vault**: 1,450 deep technical checks across 21 distinct categories, including **350 Dedicated Join MCQs** (35 each across 10 join families: Inner, Left, Right, Full Outer, Cross, Anti, Semi, Self, Non-Equi, and Physical Algorithms) with balanced 25% option distribution.
   - **The 1,040 Corporate Case Study Master Vault**: Scaled across 8 sections spanning 10 corporate domains (including 390 Relational Joins cases).
   - **30 Interactive Quests**: Levels 1–30 with audio FX, token puzzle mechanics, and instant evaluation.
   - **Track 04 in Guided Learning Lab**: 8 dedicated steps covering Inner, Left, Right, Full Outer, Anti, Cross, Self, and Non-Equi Joins.
 - **Next Immediate Action**: Advance to Day 11 (*Window Functions: Ranking, Partitions, ROW_NUMBER, RANK, DENSE_RANK, NTILE*)
 - **Total Problems Completed in Intensive**: 48 / 58 Problems
-- **Last Updated**: 2026-09-13 00:53 IST
+- **Last Updated**: 2026-09-13 01:45 IST
 
 ---
 
