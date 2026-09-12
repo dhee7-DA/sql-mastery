@@ -1,0 +1,547 @@
+// =============================================================================
+// PART 4: LEFT ANTI-JOIN & NOT EXISTS (40 DISTINCT CASES: 13 Easy, 14 Medium, 13 Hard)
+// Detecting Missing Records, Churn, Orphans & Compliance Gaps Across 10 Industries
+// Pattern: TableA a LEFT JOIN TableB b ON a.key = b.key WHERE b.pk IS NULL
+// =============================================================================
+
+module.exports = [
+  // --- FINTECH ---
+  {
+    title: "Issued Corporate Dividend Checks With Zero Bank Clearance Receipts",
+    ind: "Fintech",
+    diff: "Easy",
+    table: "IssuedDividendChecks",
+    scenario: "Performing bank reconciliations by isolating dividend checks sent to shareholders that have not been cashed or presented at any clearing bank.",
+    businessObjective: "Perform a LEFT ANTI-JOIN between IssuedDividendChecks and ClearedBankRecords on check_number to isolate outstanding uncashed checks.",
+    schemaSnippet: "`IssuedDividendChecks (check_number VARCHAR(20) PRIMARY KEY, shareholder_id VARCHAR(32), dividend_amount DECIMAL(10,2), issue_date DATE)` & `ClearedBankRecords (check_number VARCHAR(20) PRIMARY KEY, cleared_date DATE)`",
+    targetQuery: `SELECT i.check_number, i.shareholder_id, i.dividend_amount, i.issue_date\nFROM IssuedDividendChecks i\nLEFT JOIN ClearedBankRecords c\n  ON i.check_number = c.check_number\nWHERE c.check_number IS NULL\nORDER BY i.issue_date ASC;`,
+    eli5Story: "Comparing the company checkbook against the bank statement. If a dividend check we mailed out has no matching row at the bank, list it as uncashed.",
+    commonMistakes: "Filtering on a nullable right-table column like c.cleared_date instead of the PRIMARY KEY in the WHERE clause.",
+    learningOutcomes: "Master the foundational Left Anti-Join pattern using primary key IS NULL predicates."
+  },
+  {
+    title: "Onboarded Retail Banking Customers Missing Initial Funding Deposit",
+    ind: "Fintech",
+    diff: "Medium",
+    table: "OnboardedCustomers",
+    scenario: "Detecting funnel abandonment by identifying KYC-verified customers who opened accounts over 14 days ago but never made an initial deposit.",
+    businessObjective: "Left anti-join OnboardedCustomers to DepositTransactions on customer_id to generate re-engagement outreach lists.",
+    schemaSnippet: "`OnboardedCustomers (customer_id VARCHAR(32) PRIMARY KEY, full_name VARCHAR(100), email VARCHAR(100), kyc_verified_at DATE)` & `DepositTransactions (deposit_id VARCHAR(32) PRIMARY KEY, customer_id VARCHAR(32), amount DECIMAL(10,2))`",
+    targetQuery: `SELECT c.customer_id, c.full_name, c.email, c.kyc_verified_at\nFROM OnboardedCustomers c\nLEFT JOIN DepositTransactions d\n  ON c.customer_id = d.customer_id\nWHERE d.customer_id IS NULL\n  AND c.kyc_verified_at <= CURRENT_DATE - INTERVAL 14 DAY\nORDER BY c.kyc_verified_at ASC;`,
+    eli5Story: "Finding people who signed up for our banking app and verified their passport two weeks ago, but never put any money into their account.",
+    commonMistakes: "Placing the 14-day filter in the ON clause instead of the WHERE clause, which affects the join match rather than the driving table.",
+    learningOutcomes: "Combine temporal aging criteria with anti-join churn detection."
+  },
+  {
+    title: "High-Value Wire Transfers Missing AML Compliance Sign-Off Attestations",
+    ind: "Fintech",
+    diff: "Hard",
+    table: "HighValueWires",
+    scenario: "Auditing compliance controls by detecting outbound wire transfers exceeding $50,000 that lack a logged anti-money laundering (AML) sign-off.",
+    businessObjective: "Left anti-join HighValueWires to AmlSignOffs on wire_id to immediately flag compliance violations before federal audits.",
+    schemaSnippet: "`HighValueWires (wire_id VARCHAR(32) PRIMARY KEY, sender_account VARCHAR(32), amount_usd DECIMAL(12,2), destination_country VARCHAR(2), wire_timestamp TIMESTAMP)` & `AmlSignOffs (wire_id VARCHAR(32) PRIMARY KEY, compliance_officer_id VARCHAR(32), sign_off_timestamp TIMESTAMP)`",
+    targetQuery: `SELECT w.wire_id, w.sender_account, w.amount_usd, w.destination_country, w.wire_timestamp\nFROM HighValueWires w\nLEFT JOIN AmlSignOffs a\n  ON w.wire_id = a.wire_id\nWHERE a.wire_id IS NULL\n  AND w.amount_usd >= 50000.00\nORDER BY w.amount_usd DESC;`,
+    eli5Story: "Finding huge $50k+ bank wires that were sent overseas without a human compliance officer reviewing and signing off on them first.",
+    commonMistakes: "Using NOT IN with a subquery that contains NULLs, which causes the entire query to return zero rows due to three-valued logic.",
+    learningOutcomes: "Safely isolate high-risk compliance gaps using NULL-safe anti-join mechanics."
+  },
+  {
+    title: "Registered Merchant POS Terminals Without Swipes for 90 Days",
+    ind: "Fintech",
+    diff: "Easy",
+    table: "MerchantTerminals",
+    scenario: "Identifying dormant point-of-sale card swiper hardware deployed at merchant retail stores that have recorded zero swipes in the last 90 days.",
+    businessObjective: "Left anti-join MerchantTerminals to RecentSwipes on terminal_id to schedule hardware retrieval and avoid terminal loss.",
+    schemaSnippet: "`MerchantTerminals (terminal_id VARCHAR(16) PRIMARY KEY, merchant_name VARCHAR(64), contact_phone VARCHAR(16))` & `RecentSwipes (terminal_id VARCHAR(16) PRIMARY KEY, last_swipe_date DATE)`",
+    targetQuery: `SELECT t.terminal_id, t.merchant_name, t.contact_phone\nFROM MerchantTerminals t\nLEFT JOIN RecentSwipes s\n  ON t.terminal_id = s.terminal_id\nWHERE s.terminal_id IS NULL\nORDER BY t.merchant_name ASC;`,
+    eli5Story: "Finding store credit card swipers that haven't processed a single payment in 3 months so we can call the store and ask for our reader back.",
+    commonMistakes: "Using an INNER JOIN which only returns the terminals that ARE currently swiping.",
+    learningOutcomes: "Identify dormant physical assets across merchant processing fleets."
+  },
+
+  // --- SAAS ---
+  {
+    title: "Enterprise Trial Workspaces That Never Provisioned API Credentials",
+    ind: "SaaS",
+    diff: "Easy",
+    table: "TrialWorkspaces",
+    scenario: "Assisting developer sales by identifying corporate trial accounts that signed up but never created an API key to begin integration testing.",
+    businessObjective: "Left anti-join TrialWorkspaces to ApiKeyVault on workspace_id to identify zero-integration trial accounts.",
+    schemaSnippet: "`TrialWorkspaces (workspace_id VARCHAR(32) PRIMARY KEY, company_name VARCHAR(100), trial_started_at DATE)` & `ApiKeyVault (key_id VARCHAR(32) PRIMARY KEY, workspace_id VARCHAR(32), key_prefix VARCHAR(10))`",
+    targetQuery: `SELECT w.workspace_id, w.company_name, w.trial_started_at\nFROM TrialWorkspaces w\nLEFT JOIN ApiKeyVault k\n  ON w.workspace_id = k.workspace_id\nWHERE k.workspace_id IS NULL\nORDER BY w.trial_started_at DESC;`,
+    eli5Story: "Finding companies that signed up for our developer tool trial but never clicked 'Create API Key' so sales can offer onboarding help.",
+    commonMistakes: "Filtering k.key_prefix IS NULL instead of the foreign key or primary key.",
+    learningOutcomes: "Identify developer onboarding drop-off points using anti-join queries."
+  },
+  {
+    title: "Active Paid SaaS Seats With Zero User Logins in the Past 60 Days",
+    ind: "SaaS",
+    diff: "Medium",
+    table: "PaidSeatLicenses",
+    scenario: "Assisting IT enterprise license optimization by finding paid employee software seats with zero recorded logins over the past two months.",
+    businessObjective: "Left anti-join PaidSeatLicenses to ActiveLogins on seat_id to recommend license reclamation and cost savings.",
+    schemaSnippet: "`PaidSeatLicenses (seat_id VARCHAR(32) PRIMARY KEY, employee_email VARCHAR(100), dept_name VARCHAR(64), cost_per_seat_usd DECIMAL(6,2))` & `ActiveLogins (seat_id VARCHAR(32) PRIMARY KEY, last_login_date DATE)`",
+    targetQuery: `SELECT s.seat_id, s.employee_email, s.dept_name, s.cost_per_seat_usd\nFROM PaidSeatLicenses s\nLEFT JOIN ActiveLogins a\n  ON s.seat_id = a.seat_id\nWHERE a.seat_id IS NULL\nORDER BY s.cost_per_seat_usd DESC;`,
+    eli5Story: "Finding company software licenses (like Zoom or Salesforce) that we are paying $100/month for even though the employee hasn't logged in for 60 days.",
+    commonMistakes: "Deleting the seat license directly without first generating an audit verification list.",
+    learningOutcomes: "Support corporate SaaS license reclamation workflows via anti-join queries."
+  },
+  {
+    title: "Resolved Customer Support Tickets Missing CSAT Survey Ratings",
+    ind: "SaaS",
+    diff: "Medium",
+    table: "ResolvedTickets",
+    scenario: "Auditing support quality by identifying customer tickets marked resolved over 72 hours ago where the customer never submitted a CSAT score.",
+    businessObjective: "Left anti-join ResolvedTickets to CsatResponses on ticket_id to calculate survey response coverage gaps.",
+    schemaSnippet: "`ResolvedTickets (ticket_id VARCHAR(32) PRIMARY KEY, agent_name VARCHAR(64), customer_email VARCHAR(100), resolved_at TIMESTAMP)` & `CsatResponses (survey_id VARCHAR(32) PRIMARY KEY, ticket_id VARCHAR(32), rating_score INT)`",
+    targetQuery: `SELECT r.ticket_id, r.agent_name, r.customer_email, r.resolved_at\nFROM ResolvedTickets r\nLEFT JOIN CsatResponses c\n  ON r.ticket_id = c.ticket_id\nWHERE c.ticket_id IS NULL\n  AND r.resolved_at <= NOW() - INTERVAL 72 HOUR\nORDER BY r.resolved_at DESC;`,
+    eli5Story: "Finding customer help tickets that were closed 3 days ago where the customer never filled out the 'How was our service?' 5-star survey.",
+    commonMistakes: "Treating unanswered surveys as 0-star reviews instead of recognizing them as unreturned survey gaps.",
+    learningOutcomes: "Measure customer feedback response rates using outer anti-joins."
+  },
+  {
+    title: "Production Cloud Database Snapshots Without Automated Backup Policies",
+    ind: "SaaS",
+    diff: "Hard",
+    table: "ProductionDatabases",
+    scenario: "Enforcing disaster recovery compliance by finding production PostgreSQL/MySQL instances lacking an attached automated snapshot policy.",
+    businessObjective: "Left anti-join ProductionDatabases to SnapshotPolicies on db_instance_id to flag unprotected production data stores.",
+    schemaSnippet: "`ProductionDatabases (db_instance_id VARCHAR(32) PRIMARY KEY, cluster_name VARCHAR(64), engine VARCHAR(16), tier VARCHAR(16))` & `SnapshotPolicies (policy_id VARCHAR(32) PRIMARY KEY, db_instance_id VARCHAR(32), retention_days INT)`",
+    targetQuery: `SELECT d.db_instance_id, d.cluster_name, d.engine\nFROM ProductionDatabases d\nLEFT JOIN SnapshotPolicies p\n  ON d.db_instance_id = p.db_instance_id\nWHERE p.db_instance_id IS NULL\n  AND d.tier = 'PRODUCTION'\nORDER BY d.cluster_name ASC;`,
+    eli5Story: "Finding main company databases that don't have automatic daily backups turned on, sounding the red alert before disaster strikes.",
+    commonMistakes: "Filtering tier = 'PRODUCTION' on the right table instead of the driving table, dropping all rows.",
+    learningOutcomes: "Enforce cloud infrastructure disaster recovery compliance using anti-join gap audits."
+  },
+
+  // --- RETAIL ---
+  {
+    title: "Abandoned Shopping Carts With Zero Completed Checkout Orders",
+    ind: "Retail",
+    diff: "Easy",
+    table: "OnlineCarts",
+    scenario: "Driving marketing retargeting by identifying shopping carts created with over $100 in items that never completed checkout within 24 hours.",
+    businessObjective: "Left anti-join OnlineCarts to CompletedOrders on cart_id to find abandoned shopping carts for automated email recovery.",
+    schemaSnippet: "`OnlineCarts (cart_id VARCHAR(32) PRIMARY KEY, customer_email VARCHAR(100), cart_value_usd DECIMAL(10,2), created_at TIMESTAMP)` & `CompletedOrders (order_id VARCHAR(32) PRIMARY KEY, cart_id VARCHAR(32), paid_at TIMESTAMP)`",
+    targetQuery: `SELECT c.cart_id, c.customer_email, c.cart_value_usd, c.created_at\nFROM OnlineCarts c\nLEFT JOIN CompletedOrders o\n  ON c.cart_id = o.cart_id\nWHERE o.cart_id IS NULL\n  AND c.cart_value_usd >= 100.00\n  AND c.created_at <= NOW() - INTERVAL 24 HOUR\nORDER BY c.cart_value_usd DESC;`,
+    eli5Story: "Finding shoppers who put $100+ worth of clothes in their online shopping cart yesterday but never clicked the 'Buy Now' button.",
+    commonMistakes: "Confusing cart abandonment with order cancellation; order cancellation has an order record with status = 'CANCELLED'.",
+    learningOutcomes: "Identify conversion funnel drop-offs using anti-join queries."
+  },
+  {
+    title: "High-Stock Warehouse Inventory SKUs With Zero Sales in 180 Days",
+    ind: "Retail",
+    diff: "Medium",
+    table: "WarehouseInventory",
+    scenario: "Identifying stagnant, dead-stock inventory taking up costly warehouse bin space by finding SKUs with zero customer sales in 6 months.",
+    businessObjective: "Left anti-join WarehouseInventory to RecentSales on sku to compile candidate inventory lists for clearance liquidation.",
+    schemaSnippet: "`WarehouseInventory (sku VARCHAR(32) PRIMARY KEY, product_title VARCHAR(100), units_in_stock INT, holding_cost_usd DECIMAL(8,2))` & `RecentSales (sku VARCHAR(32) PRIMARY KEY, units_sold INT)`",
+    targetQuery: `SELECT w.sku, w.product_title, w.units_in_stock, w.holding_cost_usd,\n       ROUND(w.units_in_stock * w.holding_cost_usd, 2) AS total_monthly_holding_cost\nFROM WarehouseInventory w\nLEFT JOIN RecentSales s\n  ON w.sku = s.sku\nWHERE s.sku IS NULL\n  AND w.units_in_stock >= 50\nORDER BY total_monthly_holding_cost DESC;`,
+    eli5Story: "Finding boxes of winter coats sitting in the warehouse that haven't had a single sale in 6 months so we can discount them and clear the shelves.",
+    commonMistakes: "Excluding units_in_stock filter, reporting out-of-stock items that have zero sales simply because inventory was zero.",
+    learningOutcomes: "Identify dead inventory stock and holding costs using anti-join audits."
+  },
+  {
+    title: "Registered Loyalty Members With Zero Points Accruals in 12 Months",
+    ind: "Retail",
+    diff: "Easy",
+    table: "LoyaltyAccounts",
+    scenario: "Auditing loyalty program attrition by finding registered rewards members who have not earned or burned a single reward point in a year.",
+    businessObjective: "Left anti-join LoyaltyAccounts to AnnualPointsLedger on member_id to identify churned rewards members.",
+    schemaSnippet: "`LoyaltyAccounts (member_id VARCHAR(32) PRIMARY KEY, full_name VARCHAR(100), tier VARCHAR(16), joined_date DATE)` & `AnnualPointsLedger (member_id VARCHAR(32) PRIMARY KEY, points_accrued INT)`",
+    targetQuery: `SELECT m.member_id, m.full_name, m.tier, m.joined_date\nFROM LoyaltyAccounts m\nLEFT JOIN AnnualPointsLedger p\n  ON m.member_id = p.member_id\nWHERE p.member_id IS NULL\nORDER BY m.joined_date ASC;`,
+    eli5Story: "Finding shoppers who signed up for our rewards card years ago but haven't swiped it once in the past 12 months.",
+    commonMistakes: "Using `WHERE p.points_accrued = 0` which requires a matching row, failing to capture members with zero rows.",
+    learningOutcomes: "Distinguish between zero-value rows and completely missing relational records."
+  },
+  {
+    title: "Approved Supplier Vendors Who Never Submitted a Goods Shipment",
+    ind: "Retail",
+    diff: "Hard",
+    table: "ApprovedVendors",
+    scenario: "Pruning supplier vendor directories by identifying approved wholesale vendors that have never delivered a commercial shipment.",
+    businessObjective: "Left anti-join ApprovedVendors to InboundShipments on vendor_id to remove inactive vendor records from procurement ERP systems.",
+    schemaSnippet: "`ApprovedVendors (vendor_id VARCHAR(32) PRIMARY KEY, vendor_name VARCHAR(100), approved_date DATE, procurement_category VARCHAR(32))` & `InboundShipments (shipment_id VARCHAR(32) PRIMARY KEY, vendor_id VARCHAR(32), delivery_date DATE)`",
+    targetQuery: `SELECT v.vendor_id, v.vendor_name, v.procurement_category, v.approved_date\nFROM ApprovedVendors v\nLEFT JOIN InboundShipments s\n  ON v.vendor_id = s.vendor_id\nWHERE s.vendor_id IS NULL\n  AND v.approved_date <= CURRENT_DATE - INTERVAL 1 YEAR\nORDER BY v.approved_date ASC;`,
+    eli5Story: "Cleaning up our factory vendor directory by removing suppliers that were approved over a year ago but never shipped us a single box of parts.",
+    commonMistakes: "Using an INNER JOIN which only returns active suppliers that DID deliver shipments.",
+    learningOutcomes: "Clean up enterprise master data records using anti-join dormancy criteria."
+  },
+
+  // --- HEALTHCARE ---
+  {
+    title: "High-Risk Diabetic Patients Missing Annual HbA1c Screenings",
+    ind: "Healthcare",
+    diff: "Medium",
+    table: "DiabeticRegistry",
+    scenario: "Closing clinical quality care gaps by identifying high-risk diabetic patients who have had zero HbA1c blood sugar tests in the past 12 months.",
+    businessObjective: "Left anti-join DiabeticRegistry to AnnualHba1cTests on patient_mrn to generate outreach call lists for clinic nurses.",
+    schemaSnippet: "`DiabeticRegistry (patient_mrn VARCHAR(16) PRIMARY KEY, patient_name VARCHAR(100), primary_clinic VARCHAR(32), risk_tier VARCHAR(16))` & `AnnualHba1cTests (test_id VARCHAR(32) PRIMARY KEY, patient_mrn VARCHAR(16), test_date DATE)`",
+    targetQuery: `SELECT d.patient_mrn, d.patient_name, d.primary_clinic, d.risk_tier\nFROM DiabeticRegistry d\nLEFT JOIN AnnualHba1cTests t\n  ON d.patient_mrn = t.patient_mrn\nWHERE t.patient_mrn IS NULL\n  AND d.risk_tier IN ('HIGH_RISK', 'CRITICAL')\nORDER BY d.primary_clinic ASC, d.patient_name ASC;`,
+    eli5Story: "Finding patients with serious diabetes who haven't had their annual blood sugar checkup so hospital nurses can phone them to schedule an appointment.",
+    commonMistakes: "Using `WHERE t.test_date IS NULL` which can be ambiguous if test_date allows NULLs; always check the primary key.",
+    learningOutcomes: "Identify preventative healthcare compliance gaps via clinical anti-joins."
+  },
+  {
+    title: "Post-Operative Surgical Discharges Missing 30-Day Follow-Up Clinic Visits",
+    ind: "Healthcare",
+    diff: "Hard",
+    table: "SurgicalDischarges",
+    scenario: "Reducing 30-day hospital readmissions by identifying patients discharged after major surgery who have not had a post-op clinic visit.",
+    businessObjective: "Left anti-join SurgicalDischarges to FollowUpVisits on surgery_id to flag patients missing required post-operative evaluations.",
+    schemaSnippet: "`SurgicalDischarges (surgery_id VARCHAR(32) PRIMARY KEY, patient_mrn VARCHAR(16), procedure_name VARCHAR(64), discharge_date DATE)` & `FollowUpVisits (visit_id VARCHAR(32) PRIMARY KEY, surgery_id VARCHAR(32), visit_date DATE)`",
+    targetQuery: `SELECT s.surgery_id, s.patient_mrn, s.procedure_name, s.discharge_date\nFROM SurgicalDischarges s\nLEFT JOIN FollowUpVisits f\n  ON s.surgery_id = f.surgery_id\nWHERE f.surgery_id IS NULL\n  AND s.discharge_date BETWEEN CURRENT_DATE - INTERVAL 30 DAY AND CURRENT_DATE - INTERVAL 14 DAY\nORDER BY s.discharge_date ASC;`,
+    eli5Story: "Checking which patients went home after major surgery 2 to 4 weeks ago but haven't come back in to let the surgeon check their stitches.",
+    commonMistakes: "Querying too early (day 1 post-op) before patients have had time to attend their scheduled follow-up.",
+    learningOutcomes: "Isolate surgical recovery compliance gaps within specific post-operative calendar windows."
+  },
+  {
+    title: "Licensed Attending Physicians Missing Annual DEA License Renewal Filings",
+    ind: "Healthcare",
+    diff: "Easy",
+    table: "AttendingDoctors",
+    scenario: "Maintaining hospital regulatory credentialing by finding doctors who write prescriptions but have zero DEA registration renewals on file.",
+    businessObjective: "Left anti-join AttendingDoctors to DeaRenewals on npi_number to suspend prescribing authority for uncredentialed practitioners.",
+    schemaSnippet: "`AttendingDoctors (npi_number VARCHAR(10) PRIMARY KEY, doctor_name VARCHAR(100), department VARCHAR(32))` & `DeaRenewals (npi_number VARCHAR(10) PRIMARY KEY, renewal_status VARCHAR(16), expiration_year INT)`",
+    targetQuery: `SELECT d.npi_number, d.doctor_name, d.department\nFROM AttendingDoctors d\nLEFT JOIN DeaRenewals r\n  ON d.npi_number = r.npi_number\nWHERE r.npi_number IS NULL\nORDER BY d.department ASC;`,
+    eli5Story: "Finding hospital doctors whose federal drug prescribing licenses have expired so we can pause their ability to write pain medicine prescriptions.",
+    commonMistakes: "Using an INNER JOIN which only shows doctors whose licenses ARE up to date.",
+    learningOutcomes: "Audit professional clinical medical credentialing via anti-join queries."
+  },
+  {
+    title: "Pediatric Patients Missing Scheduled CDC Immunization Milestones",
+    ind: "Healthcare",
+    diff: "Medium",
+    table: "PediatricPatients",
+    scenario: "Tracking early-childhood public health vaccination milestones by identifying toddlers age 24+ months missing MMR vaccine records.",
+    businessObjective: "Left anti-join PediatricPatients to MmrVaccineRecords on patient_id to generate vaccination reminder postcards for parents.",
+    schemaSnippet: "`PediatricPatients (patient_id VARCHAR(32) PRIMARY KEY, child_name VARCHAR(100), dob DATE, guardian_phone VARCHAR(16))` & `MmrVaccineRecords (vaccine_record_id VARCHAR(32) PRIMARY KEY, patient_id VARCHAR(32), dose_date DATE)`",
+    targetQuery: `SELECT p.patient_id, p.child_name, p.dob, p.guardian_phone\nFROM PediatricPatients p\nLEFT JOIN MmrVaccineRecords v\n  ON p.patient_id = v.patient_id\nWHERE v.patient_id IS NULL\n  AND p.dob <= CURRENT_DATE - INTERVAL 24 MONTH\nORDER BY p.dob ASC;`,
+    eli5Story: "Finding two-year-old toddlers who haven't had their measles/mumps vaccine shots yet so the clinic can remind their parents.",
+    commonMistakes: "Filtering out patients who received other vaccines (e.g. Polio) by joining a generic vaccine table without filtering specifically for MMR in the ON clause.",
+    learningOutcomes: "Identify specific missing clinical treatments using targeted outer anti-joins."
+  },
+
+  // --- LOGISTICS ---
+  {
+    title: "Staged Warehouse Pallets Missing Shipping Container Bay Assignments",
+    ind: "Logistics",
+    diff: "Easy",
+    table: "StagedPallets",
+    scenario: "Preventing stranded cargo at export shipping terminals by finding outbound pallets sitting on the staging floor without a container assignment.",
+    businessObjective: "Left anti-join StagedPallets to ContainerStowage on pallet_rfid to alert terminal yard marshals to unassigned cargo.",
+    schemaSnippet: "`StagedPallets (pallet_rfid VARCHAR(32) PRIMARY KEY, destination_port VARCHAR(5), weight_kg DECIMAL(8,2), staged_at TIMESTAMP)` & `ContainerStowage (pallet_rfid VARCHAR(32) PRIMARY KEY, container_id VARCHAR(32))`",
+    targetQuery: `SELECT p.pallet_rfid, p.destination_port, p.weight_kg, p.staged_at\nFROM StagedPallets p\nLEFT JOIN ContainerStowage c\n  ON p.pallet_rfid = c.pallet_rfid\nWHERE c.pallet_rfid IS NULL\nORDER BY p.staged_at ASC;`,
+    eli5Story: "Finding heavy shipping pallets sitting on the warehouse floor that nobody assigned to a sea container yet before the cargo ship departs.",
+    commonMistakes: "Assuming pallets without container assignments are error records rather than active staging tasks.",
+    learningOutcomes: "Isolate unassigned freight units in transport staging pipelines."
+  },
+  {
+    title: "Dispatched Cross-Country Freight Trucks Missing En-Route GPS Waypoints",
+    ind: "Logistics",
+    diff: "Medium",
+    table: "DispatchedTrucks",
+    scenario: "Detecting communications blackouts or truck theft by identifying dispatched long-haul semi-trucks that have sent zero GPS pings in 6 hours.",
+    businessObjective: "Left anti-join DispatchedTrucks to RecentGpsPings on truck_vin to alert 24/7 fleet safety dispatchers.",
+    schemaSnippet: "`DispatchedTrucks (truck_vin VARCHAR(17) PRIMARY KEY, driver_id VARCHAR(32), origin_hub VARCHAR(8), dest_hub VARCHAR(8))` & `RecentGpsPings (truck_vin VARCHAR(17) PRIMARY KEY, last_ping_time TIMESTAMP)`",
+    targetQuery: `SELECT t.truck_vin, t.driver_id, t.origin_hub, t.dest_hub\nFROM DispatchedTrucks t\nLEFT JOIN RecentGpsPings g\n  ON t.truck_vin = g.truck_vin\nWHERE g.truck_vin IS NULL\nORDER BY t.truck_vin ASC;`,
+    eli5Story: "Sounding the alarm if a semi-truck driving across the country stops sending GPS signals for over 6 hours.",
+    commonMistakes: "Querying parked trucks at depots; must ensure driving table strictly holds DISPATCHED en-route trucks.",
+    learningOutcomes: "Detect operational telemetry loss across active transport fleets."
+  },
+  {
+    title: "Import Customs Declarations Missing Required Country-of-Origin Certificates",
+    ind: "Logistics",
+    diff: "Hard",
+    table: "CustomsDeclarations",
+    scenario: "Preventing customs tariff border penalties by identifying international shipping declarations that lack a certified Certificate of Origin.",
+    businessObjective: "Left anti-join CustomsDeclarations to OriginCertificates on declaration_id to halt clearance before customs inspection audits.",
+    schemaSnippet: "`CustomsDeclarations (declaration_id VARCHAR(32) PRIMARY KEY, importer_ein VARCHAR(12), declared_value_usd DECIMAL(12,2), import_country VARCHAR(2))` & `OriginCertificates (cert_id VARCHAR(32) PRIMARY KEY, declaration_id VARCHAR(32), certifying_chamber VARCHAR(64))`",
+    targetQuery: `SELECT d.declaration_id, d.importer_ein, d.declared_value_usd, d.import_country\nFROM CustomsDeclarations d\nLEFT JOIN OriginCertificates c\n  ON d.declaration_id = c.declaration_id\nWHERE c.declaration_id IS NULL\nORDER BY d.declared_value_usd DESC;`,
+    eli5Story: "Stopping import shipping containers at the port if the paperwork doesn't have the official stamp proving where the goods were made.",
+    commonMistakes: "Using NOT EXISTS without correlating the declaration_id, causing complete syntax or logic failures.",
+    learningOutcomes: "Enforce international trade compliance documentation requirements via anti-joins."
+  },
+  {
+    title: "Fleet Delivery Vehicles With Zero Recorded Oil Change Services",
+    ind: "Logistics",
+    diff: "Easy",
+    table: "FleetVehicles",
+    scenario: "Preventing engine damage across parcel delivery vans by finding vehicles with over 15,000 miles that have zero recorded oil changes on file.",
+    businessObjective: "Left anti-join FleetVehicles to OilChangeHistory on vehicle_vin to schedule urgent garage maintenance.",
+    schemaSnippet: "`FleetVehicles (vehicle_vin VARCHAR(17) PRIMARY KEY, vehicle_model VARCHAR(32), odometer_miles INT)` & `OilChangeHistory (vehicle_vin VARCHAR(17) PRIMARY KEY, last_service_date DATE)`",
+    targetQuery: `SELECT v.vehicle_vin, v.vehicle_model, v.odometer_miles\nFROM FleetVehicles v\nLEFT JOIN OilChangeHistory o\n  ON v.vehicle_vin = o.vehicle_vin\nWHERE o.vehicle_vin IS NULL\n  AND v.odometer_miles >= 15000\nORDER BY v.odometer_miles DESC;`,
+    eli5Story: "Finding delivery vans that have driven 15,000 miles but have never had an oil change in their entire life.",
+    commonMistakes: "Omitting the odometer threshold, which would flag brand-new vehicles delivered from the factory with only 10 miles on them.",
+    learningOutcomes: "Identify unserviced motor fleet assets combining mileage thresholds with anti-joins."
+  },
+
+  // --- MEDIA ---
+  {
+    title: "Published Podcast Audio Episodes Missing Dynamic Ad Insertion Audio",
+    ind: "Media",
+    diff: "Easy",
+    table: "PodcastEpisodes",
+    scenario: "Maximizing podcast network ad monetization by identifying live published episodes that lack dynamically inserted commercial sponsor audio.",
+    businessObjective: "Left anti-join PodcastEpisodes to EpisodeAdStitchLogs on episode_id to alert audio ad-ops engineers to unmonetized episodes.",
+    schemaSnippet: "`PodcastEpisodes (episode_id VARCHAR(32) PRIMARY KEY, show_name VARCHAR(64), publish_date DATE, download_count INT)` & `EpisodeAdStitchLogs (episode_id VARCHAR(32) PRIMARY KEY, ad_campaign_id VARCHAR(32))`",
+    targetQuery: `SELECT e.episode_id, e.show_name, e.publish_date, e.download_count\nFROM PodcastEpisodes e\nLEFT JOIN EpisodeAdStitchLogs a\n  ON e.episode_id = a.episode_id\nWHERE a.episode_id IS NULL\n  AND e.download_count > 1000\nORDER BY e.download_count DESC;`,
+    eli5Story: "Finding popular podcast episodes that thousands of listeners downloaded today where our ad-insertion computer forgot to stitch in the sponsor commercials.",
+    commonMistakes: "Using an INNER JOIN which only shows the episodes that DID have commercials inserted.",
+    learningOutcomes: "Identify revenue leakage in digital media streaming using outer anti-joins."
+  },
+  {
+    title: "Licensed Streaming Movies With Zero User Streams Across Territory",
+    ind: "Media",
+    diff: "Medium",
+    table: "TerritoryLicenses",
+    scenario: "Evaluating digital film library ROI by finding films licensed for specific countries that have accumulated zero viewer plays since launch.",
+    businessObjective: "Left anti-join TerritoryLicenses to TerritoryStreams on license_id to terminate unprofitable regional licensing rights.",
+    schemaSnippet: "`TerritoryLicenses (license_id VARCHAR(32) PRIMARY KEY, film_title VARCHAR(100), territory_code VARCHAR(2), license_cost_usd DECIMAL(10,2))` & `TerritoryStreams (license_id VARCHAR(32) PRIMARY KEY, play_count INT)`",
+    targetQuery: `SELECT l.license_id, l.film_title, l.territory_code, l.license_cost_usd\nFROM TerritoryLicenses l\nLEFT JOIN TerritoryStreams s\n  ON l.license_id = s.license_id\nWHERE s.license_id IS NULL\nORDER BY l.license_cost_usd DESC;`,
+    eli5Story: "Finding movies we paid $50,000 to stream in France or Japan where not a single person ever pressed play.",
+    commonMistakes: "Joining on film_title alone when the same movie has different licensing contracts per international territory.",
+    learningOutcomes: "Audit regional intellectual property rights utilization using license-specific anti-joins."
+  },
+  {
+    title: "Print Newspaper Subscribers Who Never Activated Digital Web Access Pass",
+    ind: "Media",
+    diff: "Easy",
+    table: "PrintSubscribers",
+    scenario: "Assisting digital transition by identifying daily print newspaper home-delivery subscribers who have never activated their included web login.",
+    businessObjective: "Left anti-join PrintSubscribers to DigitalPaywallAccounts on subscriber_id to run email activation onboarding campaigns.",
+    schemaSnippet: "`PrintSubscribers (subscriber_id VARCHAR(32) PRIMARY KEY, customer_name VARCHAR(100), email VARCHAR(100), home_city VARCHAR(32))` & `DigitalPaywallAccounts (subscriber_id VARCHAR(32) PRIMARY KEY, username VARCHAR(32), activated_at TIMESTAMP)`",
+    targetQuery: `SELECT p.subscriber_id, p.customer_name, p.email, p.home_city\nFROM PrintSubscribers p\nLEFT JOIN DigitalPaywallAccounts d\n  ON p.subscriber_id = d.subscriber_id\nWHERE d.subscriber_id IS NULL\nORDER BY p.home_city ASC;`,
+    eli5Story: "Finding folks who pay for home newspaper delivery every morning but never set up their free password to read the news on their phone.",
+    commonMistakes: "Filtering d.activated_at IS NULL when d.subscriber_id IS NULL is the definitive test for zero existence.",
+    learningOutcomes: "Identify multi-channel customer digital onboarding opportunities via anti-joins."
+  },
+  {
+    title: "Video Content Creators With Over 100k Subs Missing Tax W-9 Forms",
+    ind: "Media",
+    diff: "Hard",
+    table: "VideoCreators",
+    scenario: "Enforcing IRS 1099 compliance by identifying monetized video influencers earning revenue who have failed to submit a tax W-9 form.",
+    businessObjective: "Left anti-join VideoCreators to W9Submissions on creator_id to freeze outbound advertising revenue payouts pending tax compliance.",
+    schemaSnippet: "`VideoCreators (creator_id VARCHAR(32) PRIMARY KEY, channel_name VARCHAR(64), subscriber_count INT, pending_payout_usd DECIMAL(10,2))` & `W9Submissions (creator_id VARCHAR(32) PRIMARY KEY, tin_ssn_verified BOOLEAN)`",
+    targetQuery: `SELECT c.creator_id, c.channel_name, c.subscriber_count, c.pending_payout_usd\nFROM VideoCreators c\nLEFT JOIN W9Submissions w\n  ON c.creator_id = w.creator_id\nWHERE w.creator_id IS NULL\n  AND c.pending_payout_usd >= 600.00\nORDER BY c.pending_payout_usd DESC;`,
+    eli5Story: "Finding YouTubers who made over $600 this year but haven't given us their tax paperwork, so we can pause their payment until they submit their tax ID.",
+    commonMistakes: "Filtering out creators with pending payouts below the $600 IRS reporting threshold on the right table.",
+    learningOutcomes: "Enforce statutory tax withholding controls on creator platform payouts."
+  },
+
+  // --- SECURITY ---
+  {
+    title: "Production Cloud EC2 Instances Missing Mandated CrowdStrike EDR Agent",
+    ind: "Security",
+    diff: "Medium",
+    table: "Ec2Instances",
+    scenario: "Enforcing zero-trust endpoint protection by identifying running AWS production virtual servers that lack a registered CrowdStrike EDR agent.",
+    businessObjective: "Left anti-join Ec2Instances to EdrRegisteredAgents on instance_id to automatically trigger security quarantine automation.",
+    schemaSnippet: "`Ec2Instances (instance_id VARCHAR(19) PRIMARY KEY, vpc_id VARCHAR(21), environment VARCHAR(16), launch_time TIMESTAMP)` & `EdrRegisteredAgents (instance_id VARCHAR(19) PRIMARY KEY, agent_version VARCHAR(16))`",
+    targetQuery: `SELECT e.instance_id, e.vpc_id, e.environment, e.launch_time\nFROM Ec2Instances e\nLEFT JOIN EdrRegisteredAgents a\n  ON e.instance_id = a.instance_id\nWHERE a.instance_id IS NULL\n  AND e.environment = 'PRODUCTION'\nORDER BY e.launch_time ASC;`,
+    eli5Story: "Finding cloud server computers that don't have our mandatory security anti-virus installed so we can quarantine them before hackers find them.",
+    commonMistakes: "Omitting e.environment = 'PRODUCTION', accidentally alerting security engineers to temporary test/dev machines.",
+    learningOutcomes: "Audit enterprise cloud server compliance using infrastructure anti-joins."
+  },
+  {
+    title: "Privileged IAM Admin Users Missing Hardware FIDO2 MFA Token Registrations",
+    ind: "Security",
+    diff: "Hard",
+    table: "IamAdminUsers",
+    scenario: "Enforcing NIST 800-63B cyber security standards by finding super-administrator accounts that have not registered a physical FIDO2 YubiKey.",
+    businessObjective: "Left anti-join IamAdminUsers to FidoHardwareTokens on user_arn to revoke administrative console access.",
+    schemaSnippet: "`IamAdminUsers (user_arn VARCHAR(128) PRIMARY KEY, email VARCHAR(100), admin_role VARCHAR(32))` & `FidoHardwareTokens (user_arn VARCHAR(128) PRIMARY KEY, token_serial VARCHAR(32))`",
+    targetQuery: `SELECT u.user_arn, u.email, u.admin_role\nFROM IamAdminUsers u\nLEFT JOIN FidoHardwareTokens f\n  ON u.user_arn = f.user_arn\nWHERE f.user_arn IS NULL\nORDER BY u.admin_role ASC;`,
+    eli5Story: "Finding administrators who can delete all company data who haven't plugged in their physical USB security key.",
+    commonMistakes: "Confusing SMS phone verification with hardware FIDO2 cryptographic tokens.",
+    learningOutcomes: "Enforce multi-factor authentication compliance using anti-join audits."
+  },
+  {
+    title: "Public-Facing Corporate Subdomains Missing Automated SSL/TLS Certificates",
+    ind: "Security",
+    diff: "Easy",
+    table: "PublicSubdomains",
+    scenario: "Preventing browser HTTPS security warnings by identifying external public web domains that lack an active SSL/TLS cryptographic certificate.",
+    businessObjective: "Left anti-join PublicSubdomains to SslCertificates on fqdn_domain to initiate automated Let's Encrypt certificate issuance.",
+    schemaSnippet: "`PublicSubdomains (fqdn_domain VARCHAR(128) PRIMARY KEY, ip_address VARCHAR(45), owner_service VARCHAR(32))` & `SslCertificates (fqdn_domain VARCHAR(128) PRIMARY KEY, issuer VARCHAR(64), expires_at DATE)`",
+    targetQuery: `SELECT s.fqdn_domain, s.ip_address, s.owner_service\nFROM PublicSubdomains s\nLEFT JOIN SslCertificates c\n  ON s.fqdn_domain = c.fqdn_domain\nWHERE c.fqdn_domain IS NULL\nORDER BY s.fqdn_domain ASC;`,
+    eli5Story: "Finding company websites that don't have the HTTPS padlock symbol so customers don't get scary 'This website is not secure' warnings.",
+    commonMistakes: "Using an INNER JOIN which only shows domains that ALREADY have valid certificates.",
+    learningOutcomes: "Identify unencrypted web assets using domain-level anti-joins."
+  },
+  {
+    title: "Corporate GitHub Repositories Missing Branch Protection Rules",
+    ind: "Security",
+    diff: "Medium",
+    table: "CorporateRepositories",
+    scenario: "Preventing accidental production outages by identifying engineering code repositories that lack mandatory main branch protection rules.",
+    businessObjective: "Left anti-join CorporateRepositories to BranchProtectionRules on repo_id to enforce code review requirements before deployment.",
+    schemaSnippet: "`CorporateRepositories (repo_id VARCHAR(32) PRIMARY KEY, repo_name VARCHAR(64), lead_team VARCHAR(32), is_archived BOOLEAN)` & `BranchProtectionRules (repo_id VARCHAR(32) PRIMARY KEY, branch_name VARCHAR(32), min_approvals INT)`",
+    targetQuery: `SELECT r.repo_id, r.repo_name, r.lead_team\nFROM CorporateRepositories r\nLEFT JOIN BranchProtectionRules b\n  ON r.repo_id = b.repo_id\n AND b.branch_name = 'main'\nWHERE b.repo_id IS NULL\n  AND r.is_archived = FALSE\nORDER BY r.repo_name ASC;`,
+    eli5Story: "Finding software coding repositories where anyone could push untested code directly to production without a teammate reviewing it first.",
+    commonMistakes: "Putting `b.branch_name = 'main'` in the WHERE clause, which turns the LEFT JOIN into an INNER JOIN and breaks the anti-join.",
+    learningOutcomes: "Enforce DevOps engineering branch governance policies using filtered anti-joins."
+  },
+
+  // --- HARDWARE ---
+  {
+    title: "Assembled Server Blades Missing Firmware Secure Boot Cryptographic Flashing",
+    ind: "Hardware",
+    diff: "Hard",
+    table: "AssembledBlades",
+    scenario: "Enforcing supply-chain cryptographic integrity by identifying newly manufactured datacenter server blades that missed UEFI secure boot flashing.",
+    businessObjective: "Left anti-join AssembledBlades to FirmwareFlashes on blade_serial to halt automated packaging conveyors.",
+    schemaSnippet: "`AssembledBlades (blade_serial VARCHAR(32) PRIMARY KEY, model_type VARCHAR(16), assembly_line VARCHAR(8), assembled_at TIMESTAMP)` & `FirmwareFlashes (blade_serial VARCHAR(32) PRIMARY KEY, flash_checksum VARCHAR(64))`",
+    targetQuery: `SELECT a.blade_serial, a.model_type, a.assembly_line, a.assembled_at\nFROM AssembledBlades a\nLEFT JOIN FirmwareFlashes f\n  ON a.blade_serial = f.blade_serial\nWHERE f.blade_serial IS NULL\nORDER BY a.assembled_at ASC;`,
+    eli5Story: "Catching computer server motherboards on the factory conveyor belt that forgot to get their secure operating system firmware burned into memory.",
+    commonMistakes: "Allowing unflashed server hardware to proceed to final packaging and shipping.",
+    learningOutcomes: "Implement factory assembly line quality gates using hardware serial anti-joins."
+  },
+  {
+    title: "Precision CNC Machined Castings Missing Coordinate Measuring Machine (CMM) Scans",
+    ind: "Hardware",
+    diff: "Medium",
+    table: "MachinedCastings",
+    scenario: "Verifying aerospace structural quality by identifying milled titanium airframe brackets that lack an automated 3D laser CMM dimensional scan.",
+    businessObjective: "Left anti-join MachinedCastings to CmmScans on casting_serial to hold parts before aerospace assembly.",
+    schemaSnippet: "`MachinedCastings (casting_serial VARCHAR(32) PRIMARY KEY, alloy_grade VARCHAR(16), mill_operator VARCHAR(32))` & `CmmScans (casting_serial VARCHAR(32) PRIMARY KEY, dimensional_pass BOOLEAN)`",
+    targetQuery: `SELECT m.casting_serial, m.alloy_grade, m.mill_operator\nFROM MachinedCastings m\nLEFT JOIN CmmScans c\n  ON m.casting_serial = c.casting_serial\nWHERE c.casting_serial IS NULL\nORDER BY m.casting_serial ASC;`,
+    eli5Story: "Finding metal airplane parts that were cut on the CNC machine but haven't been measured by the 3D laser robot to prove they are the exact right shape.",
+    commonMistakes: "Using an INNER JOIN which only reports the parts that WERE measured.",
+    learningOutcomes: "Ensure aerospace manufacturing inspection completeness via outer anti-joins."
+  },
+  {
+    title: "Packaged Electronics SKUs Missing Consumer Safety Regulatory Labels",
+    ind: "Hardware",
+    diff: "Easy",
+    table: "PackagedSkus",
+    scenario: "Preventing customs import seizures by identifying consumer electronics product packaging that lacks required FCC/CE regulatory certifications.",
+    businessObjective: "Left anti-join PackagedSkus to RegulatoryMarks on sku to prevent warehouse retail shipments.",
+    schemaSnippet: "`PackagedSkus (sku VARCHAR(32) PRIMARY KEY, product_title VARCHAR(100), target_market VARCHAR(8))` & `RegulatoryMarks (sku VARCHAR(32) PRIMARY KEY, fcc_id VARCHAR(32))`",
+    targetQuery: `SELECT p.sku, p.product_title, p.target_market\nFROM PackagedSkus p\nLEFT JOIN RegulatoryMarks r\n  ON p.sku = r.sku\nWHERE r.sku IS NULL\nORDER BY p.product_title ASC;`,
+    eli5Story: "Finding boxes of headphones and chargers that don't have the official FCC certification sticker printed on the back before shipping to Best Buy.",
+    commonMistakes: "Shipping consumer devices without verifying regulatory label existence.",
+    learningOutcomes: "Audit product packaging regulatory compliance via anti-join queries."
+  },
+  {
+    title: "Cleanroom Semiconductor Wafers Missing Optical Particle Defect Scans",
+    ind: "Hardware",
+    diff: "Medium",
+    table: "CleanroomWafers",
+    scenario: "Auditing silicon wafer fabrication lots to catch silicon wafers that skipped the KLA-Tencor laser particle defect inspection station.",
+    businessObjective: "Left anti-join CleanroomWafers to ParticleScans on wafer_id to route wafers back to metrology before chemical etching.",
+    schemaSnippet: "`CleanroomWafers (wafer_id VARCHAR(32) PRIMARY KEY, lot_id VARCHAR(32), layer_step VARCHAR(32))` & `ParticleScans (wafer_id VARCHAR(32) PRIMARY KEY, scan_timestamp TIMESTAMP)`",
+    targetQuery: `SELECT w.wafer_id, w.lot_id, w.layer_step\nFROM CleanroomWafers w\nLEFT JOIN ParticleScans p\n  ON w.wafer_id = p.wafer_id\nWHERE p.wafer_id IS NULL\nORDER BY w.lot_id ASC;`,
+    eli5Story: "Finding microchip silicon wafers that skipped the microscope dust-inspection station so we can inspect them before baking them in the oven.",
+    commonMistakes: "Joining on lot_id instead of wafer_id, which falsely marks a wafer as inspected if any other wafer in the same lot was scanned.",
+    learningOutcomes: "Audit unit-level manufacturing metrology using anti-joins."
+  },
+
+  // --- HR ---
+  {
+    title: "Newly Onboarded Remote Employees Missing Form W-4 Tax Withholding Elects",
+    ind: "HR",
+    diff: "Easy",
+    table: "NewHires",
+    scenario: "Ensuring payroll tax compliance by identifying newly onboarded employees who have not submitted their IRS Form W-4 tax withholding elections.",
+    businessObjective: "Left anti-join NewHires to FormW4Elections on employee_id to prompt employees before first payroll processing.",
+    schemaSnippet: "`NewHires (employee_id VARCHAR(32) PRIMARY KEY, full_name VARCHAR(100), hire_date DATE, work_state VARCHAR(2))` & `FormW4Elections (employee_id VARCHAR(32) PRIMARY KEY, filing_status VARCHAR(16))`",
+    targetQuery: `SELECT n.employee_id, n.full_name, n.work_state, n.hire_date\nFROM NewHires n\nLEFT JOIN FormW4Elections w\n  ON n.employee_id = w.employee_id\nWHERE w.employee_id IS NULL\nORDER BY n.hire_date ASC;`,
+    eli5Story: "Finding new employees who haven't filled out their federal tax forms yet so payroll knows how much tax money to withhold from their paycheck.",
+    commonMistakes: "Using an INNER JOIN which leaves out the exact new hires who need automated reminder emails.",
+    learningOutcomes: "Track onboarding documentation completion using anti-joins."
+  },
+  {
+    title: "Corporate Credit Card Holders Missing Monthly Expense Submissions",
+    ind: "HR",
+    diff: "Medium",
+    table: "CorporateCardHolders",
+    scenario: "Auditing corporate card policy compliance by finding employees with card transactions who have zero submitted monthly expense reports.",
+    businessObjective: "Left anti-join CorporateCardHolders to ExpenseReports on employee_id to freeze corporate card spending limits.",
+    schemaSnippet: "`CorporateCardHolders (employee_id VARCHAR(32) PRIMARY KEY, card_holder_name VARCHAR(100), monthly_spend_usd DECIMAL(10,2))` & `ExpenseReports (report_id VARCHAR(32) PRIMARY KEY, employee_id VARCHAR(32), submission_month VARCHAR(7))`",
+    targetQuery: `SELECT c.employee_id, c.card_holder_name, c.monthly_spend_usd\nFROM CorporateCardHolders c\nLEFT JOIN ExpenseReports e\n  ON c.employee_id = e.employee_id\n AND e.submission_month = '2026-08'\nWHERE e.employee_id IS NULL\n  AND c.monthly_spend_usd > 0.00\nORDER BY c.monthly_spend_usd DESC;`,
+    eli5Story: "Finding managers who swiped their company credit card last month but never uploaded their receipts for accounting approval.",
+    commonMistakes: "Putting the submission_month filter in the WHERE clause, which turns the LEFT JOIN into an INNER JOIN.",
+    learningOutcomes: "Enforce corporate credit card expense reporting deadlines using anti-joins."
+  },
+  {
+    title: "Terminated Corporate Contractors Retaining Active Active Directory SSO Access",
+    ind: "HR",
+    diff: "Hard",
+    table: "TerminatedContractors",
+    scenario: "Preventing unauthorized corporate access by identifying terminated contractors whose Active Directory SSO logins were not disabled.",
+    businessObjective: "Left anti-join TerminatedContractors to DisabledAccounts on contractor_guid to sound immediate insider-threat security alerts.",
+    schemaSnippet: "`TerminatedContractors (contractor_guid VARCHAR(36) PRIMARY KEY, full_name VARCHAR(100), termination_date DATE)` & `DisabledAccounts (contractor_guid VARCHAR(36) PRIMARY KEY, disabled_at TIMESTAMP)`",
+    targetQuery: `SELECT t.contractor_guid, t.full_name, t.termination_date\nFROM TerminatedContractors t\nLEFT JOIN DisabledAccounts d\n  ON t.contractor_guid = d.contractor_guid\nWHERE d.contractor_guid IS NULL\nORDER BY t.termination_date ASC;`,
+    eli5Story: "Finding freelance workers whose contracts ended weeks ago but IT forgot to turn off their password, leaving them able to log into company files.",
+    commonMistakes: "Failing to prioritize terminated accounts that still have active network credentials.",
+    learningOutcomes: "Detect offboarding insider-threat security vulnerabilities using anti-join gap audits."
+  },
+  {
+    title: "Full-Time Employees Missing Annual Cybersecurity Refresher Training",
+    ind: "HR",
+    diff: "Easy",
+    table: "FullTimeStaff",
+    scenario: "Maintaining SOC-2 security certification by identifying active full-time employees who have not completed the annual anti-phishing training course.",
+    businessObjective: "Left anti-join FullTimeStaff to SecurityTrainingCompletions on staff_id to send manager escalation notices.",
+    schemaSnippet: "`FullTimeStaff (staff_id VARCHAR(32) PRIMARY KEY, email VARCHAR(100), department VARCHAR(32))` & `SecurityTrainingCompletions (staff_id VARCHAR(32) PRIMARY KEY, completed_year INT)`",
+    targetQuery: `SELECT s.staff_id, s.email, s.department\nFROM FullTimeStaff s\nLEFT JOIN SecurityTrainingCompletions c\n  ON s.staff_id = c.staff_id\n AND c.completed_year = 2026\nWHERE c.staff_id IS NULL\nORDER BY s.department ASC;`,
+    eli5Story: "Finding coworkers who haven't finished their mandatory 20-minute anti-hacker video training module this year.",
+    commonMistakes: "Putting completed_year = 2026 in the WHERE clause, breaking the anti-join for employees with no training records.",
+    learningOutcomes: "Track mandatory enterprise compliance training completion via anti-joins."
+  },
+
+  // --- PLATFORMS ---
+  {
+    title: "Approved Gig Ride-Share Drivers Who Never Completed First Trip",
+    ind: "Platforms",
+    diff: "Easy",
+    table: "ApprovedDrivers",
+    scenario: "Optimizing driver recruitment campaigns by identifying approved ride-share drivers who have never completed their first passenger trip.",
+    businessObjective: "Left anti-join ApprovedDrivers to CompletedTrips on driver_id to trigger first-trip cash incentive bonus nudges.",
+    schemaSnippet: "`ApprovedDrivers (driver_id VARCHAR(32) PRIMARY KEY, driver_name VARCHAR(100), approved_date DATE, city VARCHAR(32))` & `CompletedTrips (trip_id VARCHAR(32) PRIMARY KEY, driver_id VARCHAR(32), fare_usd DECIMAL(8,2))`",
+    targetQuery: `SELECT d.driver_id, d.driver_name, d.city, d.approved_date\nFROM ApprovedDrivers d\nLEFT JOIN CompletedTrips t\n  ON d.driver_id = t.driver_id\nWHERE t.driver_id IS NULL\nORDER BY d.approved_date DESC;`,
+    eli5Story: "Finding newly approved Uber/Lyft drivers who got their background check approved but haven't turned on the app to pick up a passenger yet.",
+    commonMistakes: "Using an INNER JOIN which only shows active drivers who ARE driving.",
+    learningOutcomes: "Identify driver onboarding activation drop-offs using platform anti-joins."
+  },
+  {
+    title: "Registered Marketplace Merchants With Zero Active Product Listings",
+    ind: "Platforms",
+    diff: "Medium",
+    table: "RegisteredMerchants",
+    scenario: "Auditing seller storefronts by identifying registered e-commerce merchants whose storefronts contain zero active product listings.",
+    businessObjective: "Left anti-join RegisteredMerchants to ActiveListings on merchant_id to trigger automated storefront setup guides.",
+    schemaSnippet: "`RegisteredMerchants (merchant_id VARCHAR(32) PRIMARY KEY, store_name VARCHAR(64), registered_at DATE)` & `ActiveListings (listing_id VARCHAR(32) PRIMARY KEY, merchant_id VARCHAR(32), status VARCHAR(16))`",
+    targetQuery: `SELECT m.merchant_id, m.store_name, m.registered_at\nFROM RegisteredMerchants m\nLEFT JOIN ActiveListings l\n  ON m.merchant_id = l.merchant_id\nWHERE l.merchant_id IS NULL\nORDER BY m.registered_at ASC;`,
+    eli5Story: "Finding seller accounts that opened a digital storefront but haven't uploaded a single product photo or description to sell.",
+    commonMistakes: "Checking status = 'ACTIVE' in the WHERE clause, breaking the anti-join logic.",
+    learningOutcomes: "Identify empty merchant storefronts to optimize platform onboarding flows."
+  },
+  {
+    title: "Cloud Platform Developers Who Created Accounts Without Deploying a Container",
+    ind: "Platforms",
+    diff: "Hard",
+    table: "CloudDevelopers",
+    scenario: "Measuring developer time-to-value by identifying cloud platform developers who signed up over 7 days ago but never deployed a container.",
+    businessObjective: "Left anti-join CloudDevelopers to DeployedContainers on dev_id to evaluate developer friction and self-serve onboarding barriers.",
+    schemaSnippet: "`CloudDevelopers (dev_id VARCHAR(32) PRIMARY KEY, github_username VARCHAR(64), signup_date DATE)` & `DeployedContainers (container_id VARCHAR(32) PRIMARY KEY, dev_id VARCHAR(32), launched_at TIMESTAMP))`",
+    targetQuery: `SELECT d.dev_id, d.github_username, d.signup_date\nFROM CloudDevelopers d\nLEFT JOIN DeployedContainers c\n  ON d.dev_id = c.dev_id\nWHERE c.dev_id IS NULL\n  AND d.signup_date <= CURRENT_DATE - INTERVAL 7 DAY\nORDER BY d.signup_date DESC;`,
+    eli5Story: "Finding software developers who signed up for our cloud hosting platform a week ago but never launched their first web app.",
+    commonMistakes: "Filtering out newly signed-up users (< 7 days) on the right table instead of the driving developer table.",
+    learningOutcomes: "Measure developer activation metrics and product adoption funnels via anti-joins."
+  },
+  {
+    title: "Food Delivery Ghost Kitchens Registered Without Food Safety Permits",
+    ind: "Platforms",
+    diff: "Medium",
+    table: "GhostKitchens",
+    scenario: "Enforcing public health regulations across food delivery platforms by identifying commercial ghost kitchens operating without an uploaded health permit.",
+    businessObjective: "Left anti-join GhostKitchens to HealthPermits on kitchen_id to suspend delivery dispatch orders pending health inspection clearance.",
+    schemaSnippet: "`GhostKitchens (kitchen_id VARCHAR(32) PRIMARY KEY, kitchen_name VARCHAR(64), address VARCHAR(100), city VARCHAR(32))` & `HealthPermits (permit_id VARCHAR(32) PRIMARY KEY, kitchen_id VARCHAR(32), permit_number VARCHAR(32))`",
+    targetQuery: `SELECT k.kitchen_id, k.kitchen_name, k.address, k.city\nFROM GhostKitchens k\nLEFT JOIN HealthPermits p\n  ON k.kitchen_id = p.kitchen_id\nWHERE p.kitchen_id IS NULL\nORDER BY k.city ASC, k.kitchen_name ASC;`,
+    eli5Story: "Finding delivery-only restaurants on DoorDash/UberEats that haven't uploaded their official city health inspection certificate.",
+    commonMistakes: "Allowing restaurants to receive delivery orders while their health permit record is missing.",
+    learningOutcomes: "Enforce food safety regulatory compliance using platform merchant anti-joins."
+  }
+];

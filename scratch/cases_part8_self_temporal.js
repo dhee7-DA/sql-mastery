@@ -1,0 +1,547 @@
+// =============================================================================
+// PART 8: SELF-JOIN INTERVAL OVERLAPS & CONCURRENCY (40 DISTINCT CASES: 13 Easy, 14 Medium, 13 Hard)
+// Detecting Collisions, Double-Bookings & Concurrency Violations Across 10 Industries
+// Overlap Condition: (a.start_time < b.end_time AND b.start_time < a.end_time AND a.id < b.id)
+// =============================================================================
+
+module.exports = [
+  // --- FINTECH ---
+  {
+    title: "High-Frequency Trading Quote Revisions Within 500 Milliseconds",
+    ind: "Fintech",
+    diff: "Hard",
+    table: "QuoteRevisions",
+    scenario: "Detecting high-frequency algorithmic quote stuffing by finding rapid limit price revisions submitted on the same ticker within 500 milliseconds.",
+    businessObjective: "Self-join QuoteRevisions on ticker where a.quote_id < b.quote_id to detect ultra-fast quote updates.",
+    schemaSnippet: "`QuoteRevisions (quote_id BIGINT PRIMARY KEY, ticker VARCHAR(10), bid_price DECIMAL(10,4), submitted_at TIMESTAMP(3))`",
+    targetQuery: `SELECT a.ticker,\n       a.quote_id AS initial_quote_id,\n       b.quote_id AS rapid_revision_id,\n       a.bid_price AS initial_price,\n       b.bid_price AS revised_price,\n       TIMESTAMPDIFF(MICROSECOND, a.submitted_at, b.submitted_at) / 1000.0 AS latency_delta_ms\nFROM QuoteRevisions a\nINNER JOIN QuoteRevisions b\n  ON a.ticker = b.ticker\n AND a.quote_id < b.quote_id\nWHERE b.submitted_at >= a.submitted_at\n  AND b.submitted_at <= a.submitted_at + INTERVAL 500 MILLISECOND\nORDER BY latency_delta_ms ASC;`,
+    eli5Story: "Catching ultra-fast algorithmic trading computers that changed their stock bid price twice in less than half a second to manipulate the market.",
+    commonMistakes: "Using `a.quote_id <> b.quote_id` which reports every pair twice; using `<` guarantees clean directional reporting.",
+    learningOutcomes: "Detect sub-second temporal clustering and market manipulation using inequality self-joins."
+  },
+  {
+    title: "Simultaneous Credit Card Swipes in Different Cities (Impossible Travel Fraud)",
+    ind: "Fintech",
+    diff: "Hard",
+    table: "CardSwipesGeo",
+    scenario: "Detecting counterfeit cloned credit cards by finding card swipes on the same card in two different cities within 30 minutes of each other.",
+    businessObjective: "Self-join CardSwipesGeo on card_number where a.swipe_id < b.swipe_id to detect impossible travel velocity.",
+    schemaSnippet: "`CardSwipesGeo (swipe_id BIGINT PRIMARY KEY, card_number VARCHAR(16), city_name VARCHAR(64), swipe_time TIMESTAMP)`",
+    targetQuery: `SELECT a.card_number,\n       a.city_name AS first_city,\n       b.city_name AS second_city,\n       a.swipe_time AS first_swipe,\n       b.swipe_time AS second_swipe,\n       TIMESTAMPDIFF(MINUTE, a.swipe_time, b.swipe_time) AS minutes_between_swipes\nFROM CardSwipesGeo a\nINNER JOIN CardSwipesGeo b\n  ON a.card_number = b.card_number\n AND a.swipe_id < b.swipe_id\nWHERE a.city_name <> b.city_name\n  AND b.swipe_time >= a.swipe_time\n  AND b.swipe_time <= a.swipe_time + INTERVAL 30 MINUTE\nORDER BY minutes_between_swipes ASC;`,
+    eli5Story: "Spotting cloned credit card theft: a card was swiped at a coffee shop in New York, and 10 minutes later the same card was swiped in Los Angeles!",
+    commonMistakes: "Forgetting `a.city_name <> b.city_name`, which would falsely flag a shopper buying a coffee and a donut at two stores in the same city.",
+    learningOutcomes: "Implement velocity-based cybersecurity fraud detection using temporal self-joins."
+  },
+  {
+    title: "Margin Call Liquidation Grace Period Overlaps",
+    ind: "Fintech",
+    diff: "Medium",
+    table: "MarginCallNotices",
+    scenario: "Ensuring regulatory fairness by verifying that a trader was not served two overlapping margin call cure periods simultaneously.",
+    businessObjective: "Self-join MarginCallNotices on trader_id to find overlapping grace period windows.",
+    schemaSnippet: "`MarginCallNotices (notice_id VARCHAR(32) PRIMARY KEY, trader_id VARCHAR(32), grace_start TIMESTAMP, grace_end TIMESTAMP)`",
+    targetQuery: `SELECT a.trader_id,\n       a.notice_id AS first_notice,\n       b.notice_id AS overlapping_notice,\n       a.grace_start AS notice_a_start,\n       b.grace_start AS notice_b_start\nFROM MarginCallNotices a\nINNER JOIN MarginCallNotices b\n  ON a.trader_id = b.trader_id\n AND a.notice_id < b.notice_id\nWHERE a.grace_start < b.grace_end\n  AND b.grace_start < a.grace_end\nORDER BY a.trader_id ASC;`,
+    eli5Story: "Making sure a stock trader didn't receive two confusing, overlapping warnings to deposit money at the exact same time.",
+    commonMistakes: "Using `a.grace_start BETWEEN b.grace_start AND b.grace_end` which misses cases where window A completely envelops window B.",
+    learningOutcomes: "Apply the universal interval overlap condition `(start_a < end_b AND start_b < end_a)`."
+  },
+  {
+    title: "Simultaneous ATM Cash Withdrawals on the Same Account",
+    ind: "Fintech",
+    diff: "Easy",
+    table: "AtmWithdrawals",
+    scenario: "Detecting ATM jackpotting and card cloning by finding ATM cash withdrawals on the same debit card at different ATM terminals within 5 minutes.",
+    businessObjective: "Self-join AtmWithdrawals on card_id to detect rapid concurrent cash withdrawals.",
+    schemaSnippet: "`AtmWithdrawals (tx_id VARCHAR(32) PRIMARY KEY, card_id VARCHAR(32), atm_id VARCHAR(16), tx_time TIMESTAMP)`",
+    targetQuery: `SELECT a.card_id,\n       a.atm_id AS first_atm,\n       b.atm_id AS second_atm,\n       TIMESTAMPDIFF(SECOND, a.tx_time, b.tx_time) AS seconds_apart\nFROM AtmWithdrawals a\nINNER JOIN AtmWithdrawals b\n  ON a.card_id = b.card_id\n AND a.tx_id < b.tx_id\nWHERE a.atm_id <> b.atm_id\n  AND b.tx_time >= a.tx_time\n  AND b.tx_time <= a.tx_time + INTERVAL 5 MINUTE\nORDER BY seconds_apart ASC;`,
+    eli5Story: "Catching thieves withdrawing cash simultaneously from two different ATM machines using cloned copies of the same debit card.",
+    commonMistakes: "Failing to check `a.atm_id <> b.atm_id`, accidentally flagging a user who took out $100 and then took out another $100 at the same ATM.",
+    learningOutcomes: "Isolate concurrent hardware terminal fraud using self-joins."
+  },
+
+  // --- SAAS ---
+  {
+    title: "SaaS User Concurrent Session Clashes (Account Sharing Detection)",
+    ind: "SaaS",
+    diff: "Hard",
+    table: "ActiveUserSessions",
+    scenario: "Enforcing single-seat licensing terms by identifying user accounts with two overlapping active web sessions from distinct IP addresses.",
+    businessObjective: "Self-join ActiveUserSessions on user_id to detect overlapping active browser session intervals from different IP addresses.",
+    schemaSnippet: "`ActiveUserSessions (session_id VARCHAR(32) PRIMARY KEY, user_id VARCHAR(32), ip_address VARCHAR(45), login_time TIMESTAMP, logout_time TIMESTAMP)`",
+    targetQuery: `SELECT a.user_id,\n       a.session_id AS session_1,\n       b.session_id AS session_2,\n       a.ip_address AS ip_1,\n       b.ip_address AS ip_2,\n       GREATEST(a.login_time, b.login_time) AS overlap_start,\n       LEAST(a.logout_time, b.logout_time) AS overlap_end\nFROM ActiveUserSessions a\nINNER JOIN ActiveUserSessions b\n  ON a.user_id = b.user_id\n AND a.session_id < b.session_id\nWHERE a.ip_address <> b.ip_address\n  AND a.login_time < b.logout_time\n  AND b.login_time < a.logout_time\nORDER BY a.user_id ASC;`,
+    eli5Story: "Catching people sharing their Netflix or SaaS password with a friend: both people were logged in and streaming at the exact same time from two different houses.",
+    commonMistakes: "Not checking `a.ip_address <> b.ip_address`, which would flag a legitimate user who opened two browser tabs on the same laptop.",
+    learningOutcomes: "Calculate exact concurrent overlap windows using GREATEST(start_times) and LEAST(end_times)."
+  },
+  {
+    title: "Cloud Microservice Maintenance Window Collisions",
+    ind: "SaaS",
+    diff: "Medium",
+    table: "MaintenanceSchedules",
+    scenario: "Preventing total application downtime by verifying that dependent microservices are not scheduled for maintenance during overlapping time windows.",
+    businessObjective: "Self-join MaintenanceSchedules on cluster_id to find overlapping maintenance outages in the same cluster.",
+    schemaSnippet: "`MaintenanceSchedules (schedule_id VARCHAR(32) PRIMARY KEY, cluster_id VARCHAR(16), service_name VARCHAR(64), start_time TIMESTAMP, end_time TIMESTAMP)`",
+    targetQuery: `SELECT a.cluster_id,\n       a.service_name AS service_a,\n       b.service_name AS service_b,\n       a.start_time AS a_start,\n       b.start_time AS b_start\nFROM MaintenanceSchedules a\nINNER JOIN MaintenanceSchedules b\n  ON a.cluster_id = b.cluster_id\n AND a.schedule_id < b.schedule_id\nWHERE a.service_name <> b.service_name\n  AND a.start_time < b.end_time\n  AND b.start_time < a.end_time\nORDER BY a.cluster_id ASC;`,
+    eli5Story: "Making sure engineering teams don't take down both the login service AND the payment database for maintenance at the exact same hour.",
+    commonMistakes: "Omitting the service name inequality check when schedule IDs are distinct.",
+    learningOutcomes: "Prevent operational service outages by auditing maintenance window overlaps."
+  },
+  {
+    title: "Continuous Integration Test Pipeline Worker Slot Contention",
+    ind: "SaaS",
+    diff: "Easy",
+    table: "CiBuildRuns",
+    scenario: "Auditing CI/CD build runner concurrency by finding automated test jobs that executed simultaneously on the exact same dedicated build agent.",
+    businessObjective: "Self-join CiBuildRuns on runner_id to identify illegal concurrent job allocations that slow down unit test speeds.",
+    schemaSnippet: "`CiBuildRuns (build_id VARCHAR(32) PRIMARY KEY, runner_id VARCHAR(16), repo_name VARCHAR(64), start_time TIMESTAMP, finish_time TIMESTAMP)`",
+    targetQuery: `SELECT a.runner_id,\n       a.build_id AS build_1,\n       b.build_id AS build_2,\n       a.repo_name\nFROM CiBuildRuns a\nINNER JOIN CiBuildRuns b\n  ON a.runner_id = b.runner_id\n AND a.build_id < b.build_id\nWHERE a.start_time < b.finish_time\n  AND b.start_time < a.finish_time\nORDER BY a.runner_id ASC;`,
+    eli5Story: "Checking if two software test jobs were accidentally assigned to run on the exact same build computer at the same time, causing them to fight for memory.",
+    commonMistakes: "Using `a.build_id <> b.build_id` which doubles collision records.",
+    learningOutcomes: "Identify multi-tenant hardware concurrency bottlenecks using self-joins."
+  },
+  {
+    title: "Database Read-Replica Promotion Failover Overlaps",
+    ind: "SaaS",
+    diff: "Medium",
+    table: "FailoverEvents",
+    scenario: "Auditing database split-brain risks by detecting if two different read-replicas were triggered to promote to master within the same 60 seconds.",
+    businessObjective: "Self-join FailoverEvents on cluster_id to detect dangerous concurrent database master promotion attempts.",
+    schemaSnippet: "`FailoverEvents (event_id VARCHAR(32) PRIMARY KEY, cluster_id VARCHAR(32), promoted_node VARCHAR(32), triggered_at TIMESTAMP)`",
+    targetQuery: `SELECT a.cluster_id,\n       a.promoted_node AS node_1,\n       b.promoted_node AS node_2,\n       TIMESTAMPDIFF(SECOND, a.triggered_at, b.triggered_at) AS seconds_apart\nFROM FailoverEvents a\nINNER JOIN FailoverEvents b\n  ON a.cluster_id = b.cluster_id\n AND a.event_id < b.event_id\nWHERE b.triggered_at >= a.triggered_at\n  AND b.triggered_at <= a.triggered_at + INTERVAL 60 SECOND\nORDER BY seconds_apart ASC;`,
+    eli5Story: "Detecting 'split-brain' disaster: two different database servers both thought the master was dead and both tried to crown themselves the new master at once!",
+    commonMistakes: "Failing to check `a.promoted_node <> b.promoted_node`.",
+    learningOutcomes: "Detect distributed system consensus split-brain anomalies using temporal self-joins."
+  },
+
+  // --- RETAIL ---
+  {
+    title: "Warehouse Loading Dock Reservation Clashes (Double-Booked Bays)",
+    ind: "Retail",
+    diff: "Easy",
+    table: "DockBayReservations",
+    scenario: "Preventing physical truck traffic jams at warehouse distribution centers by detecting double-booked loading bay time slots.",
+    businessObjective: "Self-join DockBayReservations on bay_id to find overlapping truck loading reservation windows.",
+    schemaSnippet: "`DockBayReservations (res_id VARCHAR(32) PRIMARY KEY, bay_id VARCHAR(16), carrier_name VARCHAR(64), start_time TIMESTAMP, end_time TIMESTAMP)`",
+    targetQuery: `SELECT a.bay_id,\n       a.res_id AS reservation_1,\n       b.res_id AS reservation_2,\n       a.carrier_name AS carrier_1,\n       b.carrier_name AS carrier_2,\n       a.start_time AS start_1,\n       b.start_time AS start_2\nFROM DockBayReservations a\nINNER JOIN DockBayReservations b\n  ON a.bay_id = b.bay_id\n AND a.res_id < b.res_id\nWHERE a.start_time < b.end_time\n  AND b.start_time < a.end_time\nORDER BY a.bay_id ASC;`,
+    eli5Story: "Catching scheduling mistakes where two 18-wheeler semi-trucks were told to back into Loading Bay #4 at the exact same time.",
+    commonMistakes: "Using `<=` on start and end times when back-to-back reservations (one leaves at 2:00 PM, next arrives at 2:00 PM) are permitted.",
+    learningOutcomes: "Enforce physical logistics asset reservation integrity using strict `<` interval checks."
+  },
+  {
+    title: "Retail Cashier Register Shift Overlaps on the Same Cash Drawer",
+    ind: "Retail",
+    diff: "Medium",
+    table: "CashierShifts",
+    scenario: "Preventing cash drawer discrepancy confusion by verifying that two cashiers are never logged into the exact same physical cash drawer simultaneously.",
+    businessObjective: "Self-join CashierShifts on register_id to find overlapping cashier shift intervals.",
+    schemaSnippet: "`CashierShifts (shift_id VARCHAR(32) PRIMARY KEY, register_id VARCHAR(16), cashier_name VARCHAR(100), shift_start TIMESTAMP, shift_end TIMESTAMP)`",
+    targetQuery: `SELECT a.register_id,\n       a.cashier_name AS cashier_1,\n       b.cashier_name AS cashier_2,\n       a.shift_start, b.shift_start\nFROM CashierShifts a\nINNER JOIN CashierShifts b\n  ON a.register_id = b.register_id\n AND a.shift_id < b.shift_id\nWHERE a.shift_start < b.shift_end\n  AND b.shift_start < a.shift_end\nORDER BY a.register_id ASC;`,
+    eli5Story: "Making sure two cashiers aren't ringing up sales on the same cash drawer at the same time, so we know who is responsible if $50 goes missing.",
+    commonMistakes: "Using `a.cashier_name <> b.cashier_name` without `a.shift_id < b.shift_id`, causing duplicate pairing rows.",
+    learningOutcomes: "Maintain physical asset accountability by identifying overlapping worker shift intervals."
+  },
+  {
+    title: "Promotional Flash Sale Overlaps on the Same Product SKU",
+    ind: "Retail",
+    diff: "Hard",
+    table: "FlashSales",
+    scenario: "Preventing retailer margin erosion by identifying overlapping promotional discount periods on the same product that could trigger compound discounts.",
+    businessObjective: "Self-join FlashSales on sku to detect overlapping promotional marketing campaigns.",
+    schemaSnippet: "`FlashSales (promo_id VARCHAR(32) PRIMARY KEY, sku VARCHAR(32), discount_pct INT, valid_from DATE, valid_to DATE)`",
+    targetQuery: `SELECT a.sku,\n       a.promo_id AS promo_1, a.discount_pct AS discount_1,\n       b.promo_id AS promo_2, b.discount_pct AS discount_2,\n       a.valid_from AS promo_1_start,\n       b.valid_from AS promo_2_start\nFROM FlashSales a\nINNER JOIN FlashSales b\n  ON a.sku = b.sku\n AND a.promo_id < b.promo_id\nWHERE a.valid_from <= b.valid_to\n  AND b.valid_from <= a.valid_to\nORDER BY a.sku ASC;`,
+    eli5Story: "Catching marketing errors where a jacket has a '30% Off Winter Sale' and a '40% Off VIP Coupon' running on the exact same days.",
+    commonMistakes: "Not checking date boundary inclusivity (`<=` vs `<`) when promotional dates are inclusive calendar days.",
+    learningOutcomes: "Audit commercial promotional calendars using inclusive interval overlap self-joins."
+  },
+  {
+    title: "Retail Store Forklift Maintenance vs Operational Shift Overlaps",
+    ind: "Retail",
+    diff: "Easy",
+    table: "ForkliftReservations",
+    scenario: "Ensuring warehouse safety by detecting times when a forklift was scheduled for warehouse restocking while simultaneously scheduled for battery maintenance.",
+    businessObjective: "Self-join ForkliftReservations on forklift_id to detect conflicting task assignments.",
+    schemaSnippet: "`ForkliftReservations (task_id VARCHAR(32) PRIMARY KEY, forklift_id VARCHAR(16), task_type VARCHAR(20), start_time TIMESTAMP, end_time TIMESTAMP)`",
+    targetQuery: `SELECT a.forklift_id,\n       a.task_type AS task_1,\n       b.task_type AS task_2,\n       a.start_time AS start_1,\n       b.start_time AS start_2\nFROM ForkliftReservations a\nINNER JOIN ForkliftReservations b\n  ON a.forklift_id = b.forklift_id\n AND a.task_id < b.task_id\nWHERE a.start_time < b.end_time\n  AND b.start_time < a.end_time\nORDER BY a.forklift_id ASC;`,
+    eli5Story: "Making sure a warehouse worker isn't trying to drive a forklift to move pallets at the same time a mechanic is changing its battery.",
+    commonMistakes: "Allowing a task to overlap with itself by omitting the task ID inequality condition.",
+    learningOutcomes: "Detect conflicting equipment task allocations using interval self-joins."
+  },
+
+  // --- HEALTHCARE ---
+  {
+    title: "Hospital ER On-Call Physician Shift Double-Bookings",
+    ind: "Healthcare",
+    diff: "Medium",
+    table: "PhysicianShifts",
+    scenario: "Enforcing hospital patient safety rules by identifying emergency room doctors mistakenly scheduled for two overlapping shifts in different hospital buildings.",
+    businessObjective: "Self-join PhysicianShifts on doctor_id to detect overlapping on-call physician shifts.",
+    schemaSnippet: "`PhysicianShifts (shift_id VARCHAR(32) PRIMARY KEY, doctor_id VARCHAR(16), hospital_campus VARCHAR(32), shift_start TIMESTAMP, shift_end TIMESTAMP)`",
+    targetQuery: `SELECT a.doctor_id,\n       a.hospital_campus AS campus_1,\n       b.hospital_campus AS campus_2,\n       a.shift_start AS start_1,\n       b.shift_start AS start_2,\n       GREATEST(a.shift_start, b.shift_start) AS conflict_start,\n       LEAST(a.shift_end, b.shift_end) AS conflict_end\nFROM PhysicianShifts a\nINNER JOIN PhysicianShifts b\n  ON a.doctor_id = b.doctor_id\n AND a.shift_id < b.shift_id\nWHERE a.shift_start < b.shift_end\n  AND b.shift_start < a.shift_end\nORDER BY a.doctor_id ASC;`,
+    eli5Story: "Catching hospital scheduling mistakes where a trauma doctor was put on the calendar to work in the downtown ER and the suburban ER at the exact same time.",
+    commonMistakes: "Allowing a doctor's shift to conflict with itself by missing `a.shift_id < b.shift_id`.",
+    learningOutcomes: "Enforce medical practitioner scheduling integrity using interval overlap self-joins."
+  },
+  {
+    title: "Hospital Surgical Operating Room (OR) Schedule Double-Bookings",
+    ind: "Healthcare",
+    diff: "Hard",
+    table: "OperatingRoomBookings",
+    scenario: "Preventing surgical delays by detecting overlapping patient surgery bookings scheduled in the exact same surgical suite.",
+    businessObjective: "Self-join OperatingRoomBookings on room_number to detect overlapping surgical theater reservations.",
+    schemaSnippet: "`OperatingRoomBookings (booking_id VARCHAR(32) PRIMARY KEY, room_number VARCHAR(8), surgeon_name VARCHAR(100), start_time TIMESTAMP, end_time TIMESTAMP)`",
+    targetQuery: `SELECT a.room_number,\n       a.booking_id AS surgery_1, a.surgeon_name AS surgeon_1,\n       b.booking_id AS surgery_2, b.surgeon_name AS surgeon_2,\n       a.start_time AS start_1, b.start_time AS start_2\nFROM OperatingRoomBookings a\nINNER JOIN OperatingRoomBookings b\n  ON a.room_number = b.room_number\n AND a.booking_id < b.booking_id\nWHERE a.start_time < b.end_time\n  AND b.start_time < a.end_time\nORDER BY a.room_number ASC;`,
+    eli5Story: "Stopping a disaster before it happens: two different surgeons scheduled major surgeries in Operating Room #3 at 10:00 AM!",
+    commonMistakes: "Using `<=` when surgeries scheduled back-to-back (one finishes at 10:00, next starts at 10:00) don't conflict (assuming turnaround time is factored).",
+    learningOutcomes: "Audit critical healthcare facility room scheduling using interval self-joins."
+  },
+  {
+    title: "Hospital ICU Bed Concurrent Occupancy Conflicts",
+    ind: "Healthcare",
+    diff: "Easy",
+    table: "IcuBedStays",
+    scenario: "Detecting data entry errors in hospital electronic health record systems by finding overlapping patient admissions assigned to the exact same physical bed.",
+    businessObjective: "Self-join IcuBedStays on bed_id to find double-booked ICU beds.",
+    schemaSnippet: "`IcuBedStays (stay_id VARCHAR(32) PRIMARY KEY, bed_id VARCHAR(16), patient_mrn VARCHAR(16), admit_time TIMESTAMP, discharge_time TIMESTAMP)`",
+    targetQuery: `SELECT a.bed_id,\n       a.patient_mrn AS patient_1,\n       b.patient_mrn AS patient_2,\n       a.admit_time AS admit_1,\n       b.admit_time AS admit_2\nFROM IcuBedStays a\nINNER JOIN IcuBedStays b\n  ON a.bed_id = b.bed_id\n AND a.stay_id < b.stay_id\nWHERE a.admit_time < b.discharge_time\n  AND b.admit_time < a.discharge_time\nORDER BY a.bed_id ASC;`,
+    eli5Story: "Finding computer records that claim two different patients are lying in Bed 12 at the exact same moment.",
+    commonMistakes: "Omitting stay ID comparison, which produces thousands of duplicate pairing combinations.",
+    learningOutcomes: "Validate patient room allocation records using interval self-joins."
+  },
+  {
+    title: "Radiology MRI Scanner Scan Slot Collisions",
+    ind: "Healthcare",
+    diff: "Medium",
+    table: "MriScannerSlots",
+    scenario: "Maintaining hospital imaging clinic schedules by identifying overlapping patient MRI scanner time slots.",
+    businessObjective: "Self-join MriScannerSlots on scanner_id to detect double-booked patient scan appointments.",
+    schemaSnippet: "`MriScannerSlots (slot_id VARCHAR(32) PRIMARY KEY, scanner_id VARCHAR(8), patient_id VARCHAR(32), start_time TIMESTAMP, end_time TIMESTAMP)`",
+    targetQuery: `SELECT a.scanner_id,\n       a.patient_id AS patient_1,\n       b.patient_id AS patient_2,\n       a.start_time AS start_1,\n       b.start_time AS start_2\nFROM MriScannerSlots a\nINNER JOIN MriScannerSlots b\n  ON a.scanner_id = b.scanner_id\n AND a.slot_id < b.slot_id\nWHERE a.start_time < b.end_time\n  AND b.start_time < a.end_time\nORDER BY a.scanner_id ASC;`,
+    eli5Story: "Making sure two patients weren't booked to go into the big MRI magnet scanner tube at the exact same time.",
+    commonMistakes: "Using `a.slot_id <> b.slot_id` which doubles collision records.",
+    learningOutcomes: "Enforce diagnostic imaging equipment schedule integrity using self-joins."
+  },
+
+  // --- LOGISTICS ---
+  {
+    title: "Truck Driver Hours-of-Service (HOS) Overlapping Driving Shift Violations",
+    ind: "Logistics",
+    diff: "Hard",
+    table: "DriverDutyLogs",
+    scenario: "Detecting commercial driver safety fraud by finding overlapping active driving duty logs recorded by the same driver across two different trucking companies.",
+    businessObjective: "Self-join DriverDutyLogs on commercial_license_no to detect overlapping driving shift windows.",
+    schemaSnippet: "`DriverDutyLogs (log_id VARCHAR(32) PRIMARY KEY, license_no VARCHAR(20), carrier_dot VARCHAR(12), shift_start TIMESTAMP, shift_end TIMESTAMP)`",
+    targetQuery: `SELECT a.license_no,\n       a.carrier_dot AS carrier_1,\n       b.carrier_dot AS carrier_2,\n       a.shift_start AS start_1,\n       b.shift_start AS start_2,\n       GREATEST(a.shift_start, b.shift_start) AS overlap_commence,\n       LEAST(a.shift_end, b.shift_end) AS overlap_conclude\nFROM DriverDutyLogs a\nINNER JOIN DriverDutyLogs b\n  ON a.license_no = b.license_no\n AND a.log_id < b.log_id\nWHERE a.shift_start < b.shift_end\n  AND b.shift_start < a.shift_end\nORDER BY a.license_no ASC;`,
+    eli5Story: "Catching a truck driver who was logging driving hours for two different trucking companies on the exact same afternoon, violating federal rest break laws.",
+    commonMistakes: "Assuming drivers only work for one carrier; joining strictly on license_no exposes cross-carrier double-logging.",
+    learningOutcomes: "Detect regulatory hours-of-service compliance violations using interval self-joins."
+  },
+  {
+    title: "Airport Runway Takeoff and Landing Slot Conflicts",
+    ind: "Logistics",
+    diff: "Hard",
+    table: "RunwaySchedule",
+    scenario: "Verifying airport air traffic safety by detecting scheduled flight arrivals and departures sharing the same runway with less than 2 minutes of separation.",
+    businessObjective: "Self-join RunwaySchedule on runway_id to detect dangerous runway occupancy proximity windows.",
+    schemaSnippet: "`RunwaySchedule (flight_id VARCHAR(10) PRIMARY KEY, runway_id VARCHAR(8), scheduled_time TIMESTAMP)`",
+    targetQuery: `SELECT a.runway_id,\n       a.flight_id AS flight_1,\n       b.flight_id AS flight_2,\n       a.scheduled_time AS time_1,\n       b.scheduled_time AS time_2,\n       TIMESTAMPDIFF(SECOND, a.scheduled_time, b.scheduled_time) AS separation_seconds\nFROM RunwaySchedule a\nINNER JOIN RunwaySchedule b\n  ON a.runway_id = b.runway_id\n AND a.flight_id < b.flight_id\nWHERE b.scheduled_time >= a.scheduled_time\n  AND b.scheduled_time <= a.scheduled_time + INTERVAL 120 SECOND\nORDER BY separation_seconds ASC;`,
+    eli5Story: "Checking the airport runway schedule to ensure no two airplanes land on Runway 28L within two minutes of each other.",
+    commonMistakes: "Using `<>` without ordering, which reports the separation seconds as both positive and negative for each flight pair.",
+    learningOutcomes: "Enforce safety separation intervals across high-throughput transport infrastructure."
+  },
+  {
+    title: "Maritime Container Port Berth Mooring Schedule Overlaps",
+    ind: "Logistics",
+    diff: "Medium",
+    table: "BerthReservations",
+    scenario: "Preventing container ship docking delays by detecting overlapping mooring berth reservations at ocean marine terminals.",
+    businessObjective: "Self-join BerthReservations on berth_id to detect overlapping vessel mooring reservation intervals.",
+    schemaSnippet: "`BerthReservations (res_id VARCHAR(32) PRIMARY KEY, berth_id VARCHAR(8), vessel_name VARCHAR(100), eta TIMESTAMP, etd TIMESTAMP)`",
+    targetQuery: `SELECT a.berth_id,\n       a.vessel_name AS vessel_1,\n       b.vessel_name AS vessel_2,\n       a.eta AS eta_1, b.eta AS eta_2\nFROM BerthReservations a\nINNER JOIN BerthReservations b\n  ON a.berth_id = b.berth_id\n AND a.res_id < b.res_id\nWHERE a.eta < b.etd\n  AND b.eta < a.etd\nORDER BY a.berth_id ASC;`,
+    eli5Story: "Making sure two giant ocean container ships aren't scheduled to tie up at Dock Berth #3 at the exact same time.",
+    commonMistakes: "Using `a.eta <= b.etd` when a departing ship undocking at 10:00 allows the arriving ship to dock at 10:00.",
+    learningOutcomes: "Audit marine cargo terminal berth scheduling using interval self-joins."
+  },
+  {
+    title: "Delivery Van Route Shift Overlaps on the Same Fleet Vehicle",
+    ind: "Logistics",
+    diff: "Easy",
+    table: "VanDispatchSchedules",
+    scenario: "Preventing dispatch conflicts by verifying that two drivers are not scheduled to drive the exact same delivery van during overlapping shift hours.",
+    businessObjective: "Self-join VanDispatchSchedules on van_id to detect vehicle double-assignments.",
+    schemaSnippet: "`VanDispatchSchedules (schedule_id VARCHAR(32) PRIMARY KEY, van_id VARCHAR(16), driver_name VARCHAR(100), start_time TIMESTAMP, end_time TIMESTAMP)`",
+    targetQuery: `SELECT a.van_id,\n       a.driver_name AS driver_1,\n       b.driver_name AS driver_2,\n       a.start_time AS start_1,\n       b.start_time AS start_2\nFROM VanDispatchSchedules a\nINNER JOIN VanDispatchSchedules b\n  ON a.van_id = b.van_id\n AND a.schedule_id < b.schedule_id\nWHERE a.start_time < b.end_time\n  AND b.start_time < a.end_time\nORDER BY a.van_id ASC;`,
+    eli5Story: "Catching scheduling mistakes where Dave and Sarah were both told to take Delivery Van #8 out for deliveries at 1:00 PM.",
+    commonMistakes: "Allowing a schedule to match itself by omitting the schedule ID inequality condition.",
+    learningOutcomes: "Prevent physical transport fleet double-booking using interval self-joins."
+  },
+
+  // --- MEDIA ---
+  {
+    title: "Broadcast Television Ad Slot Double-Bookings (Overlapping Commercial Airings)",
+    ind: "Media",
+    diff: "Medium",
+    table: "BroadcastAdSpots",
+    scenario: "Preventing advertiser contract breach by detecting overlapping commercial advertisement bookings scheduled to air on the same channel at the same second.",
+    businessObjective: "Self-join BroadcastAdSpots on channel_id to detect overlapping commercial time slots.",
+    schemaSnippet: "`BroadcastAdSpots (spot_id VARCHAR(32) PRIMARY KEY, channel_id VARCHAR(16), sponsor_name VARCHAR(64), air_start TIMESTAMP, air_end TIMESTAMP)`",
+    targetQuery: `SELECT a.channel_id,\n       a.sponsor_name AS sponsor_1,\n       b.sponsor_name AS sponsor_2,\n       a.air_start, b.air_start\nFROM BroadcastAdSpots a\nINNER JOIN BroadcastAdSpots b\n  ON a.channel_id = b.channel_id\n AND a.spot_id < b.spot_id\nWHERE a.air_start < b.air_end\n  AND b.air_start < a.air_end\nORDER BY a.channel_id ASC;`,
+    eli5Story: "Making sure Coca-Cola and Pepsi commercials weren't accidentally scheduled to play at the exact same second on the same TV channel.",
+    commonMistakes: "Using `a.sponsor_name <> b.sponsor_name` without `a.spot_id < b.spot_id`, which allows the same sponsor with two overlapping spots to be missed.",
+    learningOutcomes: "Audit broadcast media commercial schedules using interval self-joins."
+  },
+  {
+    title: "Radio Sound Recording Studio Booth Double-Bookings",
+    ind: "Media",
+    diff: "Easy",
+    table: "StudioBookings",
+    scenario: "Managing sound recording studios by detecting overlapping session bookings scheduled in the same soundproof recording booth.",
+    businessObjective: "Self-join StudioBookings on booth_id to identify conflicting recording reservations.",
+    schemaSnippet: "`StudioBookings (booking_id VARCHAR(32) PRIMARY KEY, booth_id VARCHAR(8), artist_name VARCHAR(100), start_time TIMESTAMP, end_time TIMESTAMP)`",
+    targetQuery: `SELECT a.booth_id,\n       a.artist_name AS artist_1,\n       b.artist_name AS artist_2,\n       a.start_time AS start_1,\n       b.start_time AS start_2\nFROM StudioBookings a\nINNER JOIN StudioBookings b\n  ON a.booth_id = b.booth_id\n AND a.booking_id < b.booking_id\nWHERE a.start_time < b.end_time\n  AND b.start_time < a.end_time\nORDER BY a.booth_id ASC;`,
+    eli5Story: "Catching double-bookings at the music studio so two musicians don't show up with their guitars for Studio A at 2:00 PM.",
+    commonMistakes: "Using an INNER JOIN without comparing booking IDs, pairing every reservation with itself.",
+    learningOutcomes: "Maintain physical production studio schedule integrity using self-joins."
+  },
+  {
+    title: "Live Concert Venue Arena Double-Bookings",
+    ind: "Media",
+    diff: "Hard",
+    table: "ArenaConcerts",
+    scenario: "Preventing event cancellation penalties by identifying overlapping concert tour bookings scheduled at the same sports stadium arena.",
+    businessObjective: "Self-join ArenaConcerts on venue_id to detect overlapping arena event dates.",
+    schemaSnippet: "`ArenaConcerts (event_id VARCHAR(32) PRIMARY KEY, venue_id VARCHAR(16), tour_name VARCHAR(100), load_in_date DATE, load_out_date DATE)`",
+    targetQuery: `SELECT a.venue_id,\n       a.tour_name AS tour_1,\n       b.tour_name AS tour_2,\n       a.load_in_date AS tour_1_start,\n       b.load_in_date AS tour_2_start\nFROM ArenaConcerts a\nINNER JOIN ArenaConcerts b\n  ON a.venue_id = b.venue_id\n AND a.event_id < b.event_id\nWHERE a.load_in_date <= b.load_out_date\n  AND b.load_in_date <= a.load_out_date\nORDER BY a.venue_id ASC;`,
+    eli5Story: "Making sure a rock concert tour and a basketball game aren't booked to take over Madison Square Garden on the exact same weekend.",
+    commonMistakes: "Forgetting that load-in and load-out require full calendar days, requiring `<=` boundary comparisons.",
+    learningOutcomes: "Audit large entertainment venue scheduling using inclusive date interval self-joins."
+  },
+  {
+    title: "Video Streaming Content Exclusive Premiere Window Overlaps",
+    ind: "Media",
+    diff: "Medium",
+    table: "ExclusivePremieres",
+    scenario: "Enforcing film distribution contracts by verifying that two competing streaming platforms were not granted exclusive premiere windows for the same film simultaneously.",
+    businessObjective: "Self-join ExclusivePremieres on movie_id to detect conflicting exclusive licensing windows.",
+    schemaSnippet: "`ExclusivePremieres (license_id VARCHAR(32) PRIMARY KEY, movie_id VARCHAR(32), platform_name VARCHAR(64), window_start DATE, window_end DATE)`",
+    targetQuery: `SELECT a.movie_id,\n       a.platform_name AS platform_1,\n       b.platform_name AS platform_2,\n       a.window_start AS window_1_start,\n       b.window_start AS window_2_start\nFROM ExclusivePremieres a\nINNER JOIN ExclusivePremieres b\n  ON a.movie_id = b.movie_id\n AND a.license_id < b.license_id\nWHERE a.platform_name <> b.platform_name\n  AND a.window_start <= b.window_end\n  AND b.window_start <= a.window_end\nORDER BY a.movie_id ASC;`,
+    eli5Story: "Catching legal licensing mistakes where our studio promised both Netflix and Hulu exclusive rights to stream the same movie during the month of October.",
+    commonMistakes: "Omitting `a.platform_name <> b.platform_name`, which would flag consecutive extensions granted to the same platform.",
+    learningOutcomes: "Audit multi-platform digital media exclusivity windows using interval self-joins."
+  },
+
+  // --- SECURITY ---
+  {
+    title: "Security Badge Door Access Collisions (Card Sharing Badge-Passing Fraud)",
+    ind: "Security",
+    diff: "Hard",
+    table: "BadgeSwipesSecurity",
+    scenario: "Detecting employee security badge sharing or tailgating by finding badge swipes for the same employee badge at two different security turnstiles within 60 seconds.",
+    businessObjective: "Self-join BadgeSwipesSecurity on badge_id to detect simultaneous access door swipes.",
+    schemaSnippet: "`BadgeSwipesSecurity (swipe_id BIGINT PRIMARY KEY, badge_id VARCHAR(32), door_name VARCHAR(32), swipe_time TIMESTAMP)`",
+    targetQuery: `SELECT a.badge_id,\n       a.door_name AS door_1,\n       b.door_name AS door_2,\n       TIMESTAMPDIFF(SECOND, a.swipe_time, b.swipe_time) AS seconds_between_swipes\nFROM BadgeSwipesSecurity a\nINNER JOIN BadgeSwipesSecurity b\n  ON a.badge_id = b.badge_id\n AND a.swipe_id < b.swipe_id\nWHERE a.door_name <> b.door_name\n  AND b.swipe_time >= a.swipe_time\n  AND b.swipe_time <= a.swipe_time + INTERVAL 60 SECOND\nORDER BY seconds_between_swipes ASC;`,
+    eli5Story: "Catching badge sharing fraud: an employee swiped their keycard at Door A, and 15 seconds later the same card was swiped at Door B across the building!",
+    commonMistakes: "Forgetting `a.door_name <> b.door_name`, which would flag someone who had to swipe twice at the same turnstile because the gate jammed.",
+    learningOutcomes: "Detect physical security access anomalies using rapid-succession self-joins."
+  },
+  {
+    title: "Emergency Incident Lockdown Overlaps in Corporate Campus Buildings",
+    ind: "Security",
+    diff: "Easy",
+    table: "BuildingLockdowns",
+    scenario: "Verifying building security logs to detect overlapping automated lockdown alarm events triggered in the same building.",
+    businessObjective: "Self-join BuildingLockdowns on building_code to identify concurrent emergency alarm triggers.",
+    schemaSnippet: "`BuildingLockdowns (event_id VARCHAR(32) PRIMARY KEY, building_code VARCHAR(16), alarm_type VARCHAR(32), start_time TIMESTAMP, end_time TIMESTAMP)`",
+    targetQuery: `SELECT a.building_code,\n       a.alarm_type AS alarm_1,\n       b.alarm_type AS alarm_2,\n       a.start_time AS start_1,\n       b.start_time AS start_2\nFROM BuildingLockdowns a\nINNER JOIN BuildingLockdowns b\n  ON a.building_code = b.building_code\n AND a.event_id < b.event_id\nWHERE a.start_time < b.end_time\n  AND b.start_time < a.end_time\nORDER BY a.building_code ASC;`,
+    eli5Story: "Checking if a fire alarm and a security lockdown alarm were both triggered in Building C at the exact same time.",
+    commonMistakes: "Using `a.event_id <> b.event_id` which doubles collision records.",
+    learningOutcomes: "Identify concurrent security alarm activations using interval self-joins."
+  },
+  {
+    title: "Security Operations Center (SOC) Analyst Shift Handover Overlaps",
+    ind: "Security",
+    diff: "Medium",
+    table: "SocAnalystShifts",
+    scenario: "Ensuring continuous 24/7 cybersecurity coverage by verifying that outgoing and incoming SOC analysts have an overlapping shift handover window of at least 30 minutes.",
+    businessObjective: "Self-join SocAnalystShifts on shift_queue to verify required 30-minute handover overlaps between consecutive shifts.",
+    schemaSnippet: "`SocAnalystShifts (shift_id VARCHAR(32) PRIMARY KEY, shift_queue VARCHAR(32), analyst_name VARCHAR(100), shift_start TIMESTAMP, shift_end TIMESTAMP)`",
+    targetQuery: `SELECT a.shift_queue,\n       a.analyst_name AS outgoing_analyst,\n       b.analyst_name AS incoming_analyst,\n       TIMESTAMPDIFF(MINUTE, b.shift_start, a.shift_end) AS handover_overlap_minutes\nFROM SocAnalystShifts a\nINNER JOIN SocAnalystShifts b\n  ON a.shift_queue = b.shift_queue\n AND a.shift_id <> b.shift_id\nWHERE b.shift_start < a.shift_end\n  AND b.shift_start >= a.shift_start\n  AND TIMESTAMPDIFF(MINUTE, b.shift_start, a.shift_end) >= 30\nORDER BY a.shift_start ASC;`,
+    eli5Story: "Verifying that the night-shift cyber analyst and the morning-shift analyst spent at least 30 minutes sitting together going over open hacker alarms.",
+    commonMistakes: "Not checking `b.shift_start >= a.shift_start`, which inverts outgoing and incoming analysts.",
+    learningOutcomes: "Verify mandatory operational shift handover compliance using temporal self-joins."
+  },
+  {
+    title: "Automated Penetration Test Scanning Schedule Collisions",
+    ind: "Security",
+    diff: "Medium",
+    table: "PenTestSchedules",
+    scenario: "Preventing server network overload by verifying that two automated vulnerability port scanners are not targeting the same subnet simultaneously.",
+    businessObjective: "Self-join PenTestSchedules on target_subnet to detect overlapping penetration test scans.",
+    schemaSnippet: "`PenTestSchedules (scan_id VARCHAR(32) PRIMARY KEY, target_subnet VARCHAR(18), scanner_tool VARCHAR(32), start_time TIMESTAMP, end_time TIMESTAMP)`",
+    targetQuery: `SELECT a.target_subnet,\n       a.scanner_tool AS tool_1,\n       b.scanner_tool AS tool_2,\n       a.start_time AS start_1,\n       b.start_time AS start_2\nFROM PenTestSchedules a\nINNER JOIN PenTestSchedules b\n  ON a.target_subnet = b.target_subnet\n AND a.scan_id < b.scan_id\nWHERE a.start_time < b.end_time\n  AND b.start_time < a.end_time\nORDER BY a.target_subnet ASC;`,
+    eli5Story: "Making sure two different automated security testing programs don't hammer the exact same database network at the exact same second, crashing the servers.",
+    commonMistakes: "Omitting the subnet equality check, which would falsely flag scans running on completely separate networks.",
+    learningOutcomes: "Coordinate automated security vulnerability scans using interval self-joins."
+  },
+
+  // --- HARDWARE ---
+  {
+    title: "Semiconductor Cleanroom Tool Preventative Maintenance Overlaps",
+    ind: "Hardware",
+    diff: "Hard",
+    table: "CleanroomToolMaintenance",
+    scenario: "Preventing microchip fabrication line stoppages by verifying that two redundant photolithography stepper tools are not down for maintenance simultaneously.",
+    businessObjective: "Self-join CleanroomToolMaintenance on tool_family to detect overlapping maintenance outages across redundant cleanroom tools.",
+    schemaSnippet: "`CleanroomToolMaintenance (maint_id VARCHAR(32) PRIMARY KEY, tool_family VARCHAR(16), tool_id VARCHAR(16), start_time TIMESTAMP, end_time TIMESTAMP)`",
+    targetQuery: `SELECT a.tool_family,\n       a.tool_id AS tool_down_1,\n       b.tool_id AS tool_down_2,\n       GREATEST(a.start_time, b.start_time) AS line_stoppage_start,\n       LEAST(a.end_time, b.end_time) AS line_stoppage_end\nFROM CleanroomToolMaintenance a\nINNER JOIN CleanroomToolMaintenance b\n  ON a.tool_family = b.tool_family\n AND a.maint_id < b.maint_id\nWHERE a.tool_id <> b.tool_id\n  AND a.start_time < b.end_time\n  AND b.start_time < a.end_time\nORDER BY a.tool_family ASC;`,
+    eli5Story: "Catching scheduling blunders where both of our multi-million dollar microchip laser machines were turned off for oil changes at the same time, halting the factory.",
+    commonMistakes: "Missing `a.tool_id <> b.tool_id`, which would match multiple sequential maintenance tasks on the same tool.",
+    learningOutcomes: "Audit redundant manufacturing equipment maintenance schedules using interval self-joins."
+  },
+  {
+    title: "Circuit Board Pick-and-Place Machine Setup Overlaps",
+    ind: "Hardware",
+    diff: "Easy",
+    table: "SmtSetupWindows",
+    scenario: "Managing automated surface mount electronics lines by detecting overlapping setup windows scheduled on the same assembly machine.",
+    businessObjective: "Self-join SmtSetupWindows on line_id to detect conflicting machine setup bookings.",
+    schemaSnippet: "`SmtSetupWindows (setup_id VARCHAR(32) PRIMARY KEY, line_id VARCHAR(16), board_model VARCHAR(32), start_time TIMESTAMP, end_time TIMESTAMP)`",
+    targetQuery: `SELECT a.line_id,\n       a.board_model AS model_1,\n       b.board_model AS model_2,\n       a.start_time AS start_1,\n       b.start_time AS start_2\nFROM SmtSetupWindows a\nINNER JOIN SmtSetupWindows b\n  ON a.line_id = b.line_id\n AND a.setup_id < b.setup_id\nWHERE a.start_time < b.end_time\n  AND b.start_time < a.end_time\nORDER BY a.line_id ASC;`,
+    eli5Story: "Making sure technicians aren't trying to reconfigure Assembly Line 2 for iPhones at the exact same hour someone is reconfiguring it for iPads.",
+    commonMistakes: "Using `<>` without ordering, which doubles collision records.",
+    learningOutcomes: "Ensure electronic assembly line scheduling integrity via self-joins."
+  },
+  {
+    title: "Environmental Thermal Stress Chamber Test Overlaps",
+    ind: "Hardware",
+    diff: "Medium",
+    table: "ChamberTestReservations",
+    scenario: "Managing hardware reliability stress test ovens by detecting overlapping test bookings reserved in the same thermal stress chamber.",
+    businessObjective: "Self-join ChamberTestReservations on chamber_id to detect double-booked chamber testing slots.",
+    schemaSnippet: "`ChamberTestReservations (res_id VARCHAR(32) PRIMARY KEY, chamber_id VARCHAR(16), hardware_project VARCHAR(32), start_time TIMESTAMP, end_time TIMESTAMP)`",
+    targetQuery: `SELECT a.chamber_id,\n       a.hardware_project AS project_1,\n       b.hardware_project AS project_2,\n       a.start_time AS start_1,\n       b.start_time AS start_2\nFROM ChamberTestReservations a\nINNER JOIN ChamberTestReservations b\n  ON a.chamber_id = b.chamber_id\n AND a.res_id < b.res_id\nWHERE a.start_time < b.end_time\n  AND b.start_time < a.end_time\nORDER BY a.chamber_id ASC;`,
+    eli5Story: "Making sure the heat-testing oven in our test lab isn't booked for laptop battery stress testing and drone testing on the same afternoon.",
+    commonMistakes: "Allowing a reservation to match itself by omitting the reservation ID inequality condition.",
+    learningOutcomes: "Manage physical test equipment reservations using interval self-joins."
+  },
+  {
+    title: "Precision CNC Machine Calibration Downtime Overlaps",
+    ind: "Hardware",
+    diff: "Easy",
+    table: "CncCalibrationSlots",
+    scenario: "Coordinating laser calibration technicians by finding overlapping laser calibration bookings on the same 5-axis milling machine.",
+    businessObjective: "Self-join CncCalibrationSlots on machine_id to detect double-booked calibration appointments.",
+    schemaSnippet: "`CncCalibrationSlots (slot_id VARCHAR(32) PRIMARY KEY, machine_id VARCHAR(16), technician_name VARCHAR(64), start_time TIMESTAMP, end_time TIMESTAMP)`",
+    targetQuery: `SELECT a.machine_id,\n       a.technician_name AS tech_1,\n       b.technician_name AS tech_2,\n       a.start_time AS start_1,\n       b.start_time AS start_2\nFROM CncCalibrationSlots a\nINNER JOIN CncCalibrationSlots b\n  ON a.machine_id = b.machine_id\n AND a.slot_id < b.slot_id\nWHERE a.start_time < b.end_time\n  AND b.start_time < a.end_time\nORDER BY a.machine_id ASC;`,
+    eli5Story: "Preventing two external calibration contractors from showing up to align the same CNC machine at the exact same hour.",
+    commonMistakes: "Using `a.slot_id <> b.slot_id` which reports each pair twice.",
+    learningOutcomes: "Schedule factory maintenance technicians without conflicts using self-joins."
+  },
+
+  // --- HR ---
+  {
+    title: "Corporate Conference Room Double-Bookings (Room Reservation Conflicts)",
+    ind: "HR",
+    diff: "Easy",
+    table: "ConferenceRoomBookings",
+    scenario: "Preventing office meeting room clashes by detecting overlapping employee reservations booked in the same conference room.",
+    businessObjective: "Self-join ConferenceRoomBookings on room_id to detect overlapping meeting time slots.",
+    schemaSnippet: "`ConferenceRoomBookings (booking_id VARCHAR(32) PRIMARY KEY, room_id VARCHAR(16), meeting_organizer VARCHAR(100), start_time TIMESTAMP, end_time TIMESTAMP)`",
+    targetQuery: `SELECT a.room_id,\n       a.meeting_organizer AS organizer_1,\n       b.meeting_organizer AS organizer_2,\n       a.start_time AS start_1,\n       b.start_time AS start_2\nFROM ConferenceRoomBookings a\nINNER JOIN ConferenceRoomBookings b\n  ON a.room_id = b.room_id\n AND a.booking_id < b.booking_id\nWHERE a.start_time < b.end_time\n  AND b.start_time < a.end_time\nORDER BY a.room_id ASC;`,
+    eli5Story: "Finding meeting room calendar double-bookings where two managers booked the big Boardroom at 11:00 AM on Monday.",
+    commonMistakes: "Using `<=` on start and end times, which falsely flags consecutive meetings (e.g. 10:00-11:00 and 11:00-12:00) as conflicts.",
+    learningOutcomes: "Master physical meeting room reservation collision audits using strict interval comparisons."
+  },
+  {
+    title: "Simultaneous Paid Time Off (PTO) Absences Across Critical Team Roles",
+    ind: "HR",
+    diff: "Medium",
+    table: "TeamPtoRequests",
+    scenario: "Maintaining team operational coverage by detecting when two engineers on the same critical on-call rotation have approved PTO on overlapping dates.",
+    businessObjective: "Self-join TeamPtoRequests on team_id to detect concurrent vacation absences among teammates.",
+    schemaSnippet: "`TeamPtoRequests (request_id VARCHAR(32) PRIMARY KEY, team_id VARCHAR(16), employee_name VARCHAR(100), start_date DATE, end_date DATE)`",
+    targetQuery: `SELECT a.team_id,\n       a.employee_name AS employee_1,\n       b.employee_name AS employee_2,\n       a.start_date AS start_1,\n       b.start_date AS start_2\nFROM TeamPtoRequests a\nINNER JOIN TeamPtoRequests b\n  ON a.team_id = b.team_id\n AND a.request_id < b.request_id\nWHERE a.employee_name <> b.employee_name\n  AND a.start_date <= b.end_date\n  AND b.start_date <= a.end_date\nORDER BY a.team_id ASC;`,
+    eli5Story: "Making sure both of our company's on-call database engineers aren't on vacation in the Bahamas on the exact same weekend.",
+    commonMistakes: "Using `<` instead of `<=` on date intervals, which would miss single-day vacation overlaps.",
+    learningOutcomes: "Maintain minimum enterprise team staffing levels using date overlap self-joins."
+  },
+  {
+    title: "Employee Mandatory Compliance Training Session Conflicts",
+    ind: "HR",
+    diff: "Medium",
+    table: "TrainingEnrollments",
+    scenario: "Preventing employee training calendar conflicts by finding employees enrolled in two different live mandatory training webinars scheduled at the same hour.",
+    businessObjective: "Self-join TrainingEnrollments on employee_id to detect conflicting training course times.",
+    schemaSnippet: "`TrainingEnrollments (enrollment_id VARCHAR(32) PRIMARY KEY, employee_id VARCHAR(32), course_title VARCHAR(64), start_time TIMESTAMP, end_time TIMESTAMP)`",
+    targetQuery: `SELECT a.employee_id,\n       a.course_title AS course_1,\n       b.course_title AS course_2,\n       a.start_time AS start_1,\n       b.start_time AS start_2\nFROM TrainingEnrollments a\nINNER JOIN TrainingEnrollments b\n  ON a.employee_id = b.employee_id\n AND a.enrollment_id < b.enrollment_id\nWHERE a.start_time < b.end_time\n  AND b.start_time < a.end_time\nORDER BY a.employee_id ASC;`,
+    eli5Story: "Checking that an employee wasn't scheduled to attend Fire Safety Training and Cyber Security Training in different rooms at the exact same hour.",
+    commonMistakes: "Using `a.enrollment_id <> b.enrollment_id` which doubles collision records.",
+    learningOutcomes: "Ensure corporate training schedule feasibility using self-joins."
+  },
+  {
+    title: "Executive Boardroom Video Conference Suite Overlaps",
+    ind: "HR",
+    diff: "Hard",
+    table: "BoardroomReservations",
+    scenario: "Auditing C-suite executive boardroom utilization to identify overlapping telepresence reservations.",
+    businessObjective: "Self-join BoardroomReservations on suite_id to detect double-booked executive meeting suites.",
+    schemaSnippet: "`BoardroomReservations (res_id VARCHAR(32) PRIMARY KEY, suite_id VARCHAR(8), executive_name VARCHAR(64), start_time TIMESTAMP, end_time TIMESTAMP)`",
+    targetQuery: `SELECT a.suite_id,\n       a.executive_name AS exec_1,\n       b.executive_name AS exec_2,\n       a.start_time AS start_1,\n       b.start_time AS start_2\nFROM BoardroomReservations a\nINNER JOIN BoardroomReservations b\n  ON a.suite_id = b.suite_id\n AND a.res_id < b.res_id\nWHERE a.start_time < b.end_time\n  AND b.start_time < a.end_time\nORDER BY a.suite_id ASC;`,
+    eli5Story: "Making sure the CEO and the CFO didn't both book the main executive boardroom for conflicting investor video calls.",
+    commonMistakes: "Allowing a reservation to match itself by omitting the reservation ID inequality condition.",
+    learningOutcomes: "Audit executive facilities scheduling using interval self-joins."
+  },
+
+  // --- PLATFORMS ---
+  {
+    title: "Ride-Share Driver Multi-Apping (Overlapping Active Passenger Trips)",
+    ind: "Platforms",
+    diff: "Hard",
+    table: "DriverTripIntervals",
+    scenario: "Enforcing platform exclusivity and safety rules by detecting drivers who logged overlapping in-progress passenger trips on competing apps simultaneously.",
+    businessObjective: "Self-join DriverTripIntervals on driver_ssn to detect overlapping active passenger trip intervals.",
+    schemaSnippet: "`DriverTripIntervals (trip_id VARCHAR(32) PRIMARY KEY, driver_ssn VARCHAR(11), platform_name VARCHAR(16), pickup_time TIMESTAMP, dropoff_time TIMESTAMP)`",
+    targetQuery: `SELECT a.driver_ssn,\n       a.platform_name AS platform_1,\n       b.platform_name AS platform_2,\n       a.pickup_time AS pickup_1,\n       b.pickup_time AS pickup_2,\n       GREATEST(a.pickup_time, b.pickup_time) AS overlap_start,\n       LEAST(a.dropoff_time, b.dropoff_time) AS overlap_end\nFROM DriverTripIntervals a\nINNER JOIN DriverTripIntervals b\n  ON a.driver_ssn = b.driver_ssn\n AND a.trip_id < b.trip_id\nWHERE a.platform_name <> b.platform_name\n  AND a.pickup_time < b.dropoff_time\n  AND b.pickup_time < a.dropoff_time\nORDER BY a.driver_ssn ASC;`,
+    eli5Story: "Catching a driver who picked up an Uber passenger and a Lyft passenger at the same time in the same car without the riders knowing.",
+    commonMistakes: "Omitting `a.platform_name <> b.platform_name`, which would flag normal consecutive trips on the same platform.",
+    learningOutcomes: "Detect multi-platform service violations using cross-platform interval self-joins."
+  },
+  {
+    title: "Food Delivery Courier Double-Dipping Delivery Batch Overlaps",
+    ind: "Platforms",
+    diff: "Medium",
+    table: "CourierDeliveryIntervals",
+    scenario: "Maintaining food temperature quality by finding delivery couriers who accepted simultaneous order dispatches from distant restaurants.",
+    businessObjective: "Self-join CourierDeliveryIntervals on courier_id to detect overlapping delivery runs with conflicting pickup windows.",
+    schemaSnippet: "`CourierDeliveryIntervals (run_id VARCHAR(32) PRIMARY KEY, courier_id VARCHAR(32), restaurant_id VARCHAR(32), start_time TIMESTAMP, end_time TIMESTAMP)`",
+    targetQuery: `SELECT a.courier_id,\n       a.restaurant_id AS restaurant_1,\n       b.restaurant_id AS restaurant_2,\n       a.start_time AS start_1,\n       b.start_time AS start_2\nFROM CourierDeliveryIntervals a\nINNER JOIN CourierDeliveryIntervals b\n  ON a.courier_id = b.courier_id\n AND a.run_id < b.run_id\nWHERE a.restaurant_id <> b.restaurant_id\n  AND a.start_time < b.end_time\n  AND b.start_time < a.end_time\nORDER BY a.courier_id ASC;`,
+    eli5Story: "Catching delivery drivers who picked up food from two different restaurants miles apart, letting the first customer's food get cold.",
+    commonMistakes: "Failing to check `a.restaurant_id <> b.restaurant_id`.",
+    learningOutcomes: "Model delivery service quality metrics using interval self-joins."
+  },
+  {
+    title: "Electric Vehicle Charger Connector Stalls Double-Booking",
+    ind: "Platforms",
+    diff: "Easy",
+    table: "EvPlugSlots",
+    scenario: "Auditing smart charger booking systems by identifying overlapping charging reservation slots on the exact same DC fast-charging plug.",
+    businessObjective: "Self-join EvPlugSlots on plug_id to detect overlapping vehicle charging reservations.",
+    schemaSnippet: "`EvPlugSlots (slot_id VARCHAR(32) PRIMARY KEY, plug_id VARCHAR(16), vehicle_vin VARCHAR(17), start_time TIMESTAMP, end_time TIMESTAMP)`",
+    targetQuery: `SELECT a.plug_id,\n       a.vehicle_vin AS vehicle_1,\n       b.vehicle_vin AS vehicle_2,\n       a.start_time AS start_1,\n       b.start_time AS start_2\nFROM EvPlugSlots a\nINNER JOIN EvPlugSlots b\n  ON a.plug_id = b.plug_id\n AND a.slot_id < b.slot_id\nWHERE a.start_time < b.end_time\n  AND b.start_time < a.end_time\nORDER BY a.plug_id ASC;`,
+    eli5Story: "Making sure two drivers weren't promised the exact same charging plug at the highway rest stop at 3:00 PM.",
+    commonMistakes: "Using `a.slot_id <> b.slot_id` which doubles collision records.",
+    learningOutcomes: "Ensure electric vehicle charging reservation integrity using self-joins."
+  },
+  {
+    title: "Live Game Streaming Tournament Server Host Allocation Overlaps",
+    ind: "Platforms",
+    diff: "Medium",
+    table: "TournamentServerSlots",
+    scenario: "Preventing esports tournament match delays by detecting overlapping server reservations scheduled on the same competitive game server host.",
+    businessObjective: "Self-join TournamentServerSlots on server_id to detect conflicting esports tournament match allocations.",
+    schemaSnippet: "`TournamentServerSlots (match_id VARCHAR(32) PRIMARY KEY, server_id VARCHAR(16), team_a VARCHAR(32), team_b VARCHAR(32), start_time TIMESTAMP, end_time TIMESTAMP)`",
+    targetQuery: `SELECT a.server_id,\n       a.match_id AS match_1,\n       b.match_id AS match_2,\n       a.start_time AS start_1,\n       b.start_time AS start_2\nFROM TournamentServerSlots a\nINNER JOIN TournamentServerSlots b\n  ON a.server_id = b.server_id\n AND a.match_id < b.match_id\nWHERE a.start_time < b.end_time\n  AND b.start_time < a.end_time\nORDER BY a.server_id ASC;`,
+    eli5Story: "Making sure two competitive esports tournament matches weren't assigned to play on the same game server at the same time.",
+    commonMistakes: "Allowing a match to overlap with itself by omitting the match ID inequality condition.",
+    learningOutcomes: "Manage digital cloud gaming server allocations using interval self-joins."
+  }
+];

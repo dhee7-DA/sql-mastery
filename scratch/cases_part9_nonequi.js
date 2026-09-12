@@ -1,0 +1,547 @@
+// =============================================================================
+// PART 9: NON-EQUI JOIN (40 DISTINCT CASES: 13 Easy, 14 Medium, 13 Hard)
+// Range Matches, Tier Lookups, As-Of Rates & Sliding Scales Across 10 Industries
+// Patterns: ON a.val BETWEEN t.min AND t.max | ON a.date >= r.effective_date
+// =============================================================================
+
+module.exports = [
+  // --- FINTECH ---
+  {
+    title: "Credit Card Transaction to Daily As-Of FX Conversion Rates",
+    ind: "Fintech",
+    diff: "Hard",
+    table: "ForeignTransactions",
+    scenario: "Converting international euro transactions to USD using the daily historical foreign exchange spot rate in effect on the exact purchase date.",
+    businessObjective: "Join ForeignTransactions to DailyFxRates on currency and transaction_date to compute accurate historical USD conversions.",
+    schemaSnippet: "`ForeignTransactions (tx_id VARCHAR(32) PRIMARY KEY, orig_currency VARCHAR(3), orig_amount DECIMAL(10,2), tx_date DATE)` & `DailyFxRates (currency VARCHAR(3), rate_date DATE, rate_to_usd DECIMAL(8,4), PRIMARY KEY(currency, rate_date))`",
+    targetQuery: `SELECT t.tx_id, t.orig_currency, t.orig_amount, t.tx_date,\n       f.rate_to_usd AS spot_exchange_rate,\n       ROUND(t.orig_amount * f.rate_to_usd, 2) AS converted_amount_usd\nFROM ForeignTransactions t\nINNER JOIN DailyFxRates f\n  ON t.orig_currency = f.currency\n AND t.tx_date = f.rate_date\nORDER BY t.tx_date DESC, t.orig_amount DESC;`,
+    eli5Story: "Converting a 50 Euro dinner in Paris to US Dollars using the exact currency exchange rate from the day the meal was purchased.",
+    commonMistakes: "Using today's current exchange rate instead of joining against the historical rate on the transaction date.",
+    learningOutcomes: "Master multi-column temporal exchange rate matching across financial transaction feeds."
+  },
+  {
+    title: "Consumer Loan Credit Score to Interest Rate Spread Bracket",
+    ind: "Fintech",
+    diff: "Easy",
+    table: "LoanApplications",
+    scenario: "Automating loan underwriting by matching applicant FICO credit scores against risk-based interest rate tier lookup tables.",
+    businessObjective: "Join LoanApplications to InterestRateTiers on credit score range using BETWEEN to determine annual percentage rates (APR).",
+    schemaSnippet: "`LoanApplications (app_id VARCHAR(32) PRIMARY KEY, applicant_name VARCHAR(100), fico_score INT, loan_amount DECIMAL(10,2))` & `InterestRateTiers (tier_name VARCHAR(20) PRIMARY KEY, min_fico INT, max_fico INT, apr_percentage DECIMAL(5,2))`",
+    targetQuery: `SELECT a.app_id, a.applicant_name, a.fico_score,\n       t.tier_name, t.apr_percentage,\n       ROUND(a.loan_amount * (t.apr_percentage / 100.0), 2) AS estimated_year1_interest_usd\nFROM LoanApplications a\nINNER JOIN InterestRateTiers t\n  ON a.fico_score BETWEEN t.min_fico AND t.max_fico\nORDER BY a.fico_score DESC;`,
+    eli5Story: "Looking up an applicant's 740 credit score in the rate chart to give them the 5.5% interest rate, instead of writing dozens of messy IF/THEN statements.",
+    commonMistakes: "Overlapping credit score tiers (e.g. 700-750 and 750-800) which causes applicants with exactly 750 to match twice.",
+    learningOutcomes: "Eliminate hardcoded CASE statements by joining against dynamic tiered bracket lookup tables."
+  },
+  {
+    title: "High-Yield Savings Balance to Tiered APY Rate Schedule",
+    ind: "Fintech",
+    diff: "Medium",
+    table: "SavingsBalances",
+    scenario: "Calculating monthly interest payouts by matching savings account balances to tiered annual percentage yield (APY) brackets.",
+    businessObjective: "Join SavingsBalances to ApyBrackets using BETWEEN to look up tiered interest yield schedules.",
+    schemaSnippet: "`SavingsBalances (account_id VARCHAR(32) PRIMARY KEY, client_name VARCHAR(100), balance_usd DECIMAL(12,2))` & `ApyBrackets (bracket_code VARCHAR(16) PRIMARY KEY, min_bal DECIMAL(12,2), max_bal DECIMAL(12,2), apy_rate DECIMAL(5,3))`",
+    targetQuery: `SELECT s.account_id, s.client_name, s.balance_usd,\n       b.bracket_code, b.apy_rate,\n       ROUND(s.balance_usd * (b.apy_rate / 100.0 / 12.0), 2) AS monthly_interest_credit_usd\nFROM SavingsBalances s\nINNER JOIN ApyBrackets b\n  ON s.balance_usd BETWEEN b.min_bal AND b.max_bal\nORDER BY s.balance_usd DESC;`,
+    eli5Story: "Paying higher interest rates to bank customers with larger savings balances: balances over $100k get 4.5% APY, while smaller balances get 3.0%.",
+    commonMistakes: "Annual interest divided by 12 vs 365 daily compounding; must match business specification.",
+    learningOutcomes: "Apply tiered percentage calculations to banking balance brackets using non-equi joins."
+  },
+  {
+    title: "Stock Trade Volume to Brokerage Commission Discount Tiers",
+    ind: "Fintech",
+    diff: "Medium",
+    table: "TraderMonthlyVolume",
+    scenario: "Applying volume-based commission discounts by matching a trader's monthly share volume against sliding scale transaction fee schedules.",
+    businessObjective: "Join TraderMonthlyVolume to CommissionTiers using BETWEEN to determine per-share brokerage fees.",
+    schemaSnippet: "`TraderMonthlyVolume (trader_id VARCHAR(32) PRIMARY KEY, monthly_shares_traded INT)` & `CommissionTiers (tier_id VARCHAR(16) PRIMARY KEY, min_shares INT, max_shares INT, fee_per_share DECIMAL(6,4))`",
+    targetQuery: `SELECT v.trader_id, v.monthly_shares_traded,\n       t.tier_id, t.fee_per_share,\n       ROUND(v.monthly_shares_traded * t.fee_per_share, 2) AS total_commission_billed_usd\nFROM TraderMonthlyVolume v\nINNER JOIN CommissionTiers t\n  ON v.monthly_shares_traded BETWEEN t.min_shares AND t.max_shares\nORDER BY v.monthly_shares_traded DESC;`,
+    eli5Story: "Giving active stock traders a discount: if you trade over 100,000 shares this month, your fee drops from $0.005 per share to $0.002 per share.",
+    commonMistakes: "Forgetting to define max_shares for the top tier (using 999999999 or NULL-handling).",
+    learningOutcomes: "Implement sliding scale volume fee lookups via range-based non-equi joins."
+  },
+
+  // --- SAAS ---
+  {
+    title: "SaaS Enterprise Seat Licensing Volume Discount Schedule",
+    ind: "SaaS",
+    diff: "Easy",
+    table: "EnterpriseDeals",
+    scenario: "Calculating enterprise contract pricing by matching requested seat counts against volume tiered pricing schedules.",
+    businessObjective: "Join EnterpriseDeals to SeatPricingTiers using BETWEEN to determine per-seat monthly license fees.",
+    schemaSnippet: "`EnterpriseDeals (deal_id VARCHAR(32) PRIMARY KEY, customer_name VARCHAR(100), seat_count INT)` & `SeatPricingTiers (tier_name VARCHAR(20) PRIMARY KEY, min_seats INT, max_seats INT, price_per_seat_usd DECIMAL(6,2))`",
+    targetQuery: `SELECT d.deal_id, d.customer_name, d.seat_count,\n       t.tier_name, t.price_per_seat_usd,\n       ROUND(d.seat_count * t.price_per_seat_usd * 12.0, 2) AS annual_contract_value_usd\nFROM EnterpriseDeals d\nINNER JOIN SeatPricingTiers t\n  ON d.seat_count BETWEEN t.min_seats AND t.max_seats\nORDER BY d.seat_count DESC;`,
+    eli5Story: "Giving big companies a bulk discount on software: companies buying 500+ seats pay $15/seat instead of the regular $25/seat.",
+    commonMistakes: "Multiplying by 12 for annual contract value when price_per_seat_usd was already an annual price (verify time unit).",
+    learningOutcomes: "Calculate volume-discounted enterprise contract pricing using range joins."
+  },
+  {
+    title: "Customer Support Incident Severity Score to SLA Resolution Target Windows",
+    ind: "SaaS",
+    diff: "Medium",
+    table: "IncidentAlerts",
+    scenario: "Classifying customer support tickets into SLA response deadlines by matching numerical incident impact scores to SLA target brackets.",
+    businessObjective: "Join IncidentAlerts to SlaBrackets on impact_score using BETWEEN to look up contractual response time limits.",
+    schemaSnippet: "`IncidentAlerts (incident_id VARCHAR(32) PRIMARY KEY, impact_score INT, created_at TIMESTAMP)` & `SlaBrackets (sla_tier VARCHAR(16) PRIMARY KEY, min_score INT, max_score INT, target_resolution_hours INT)`",
+    targetQuery: `SELECT i.incident_id, i.impact_score,\n       s.sla_tier, s.target_resolution_hours,\n       DATE_ADD(i.created_at, INTERVAL s.target_resolution_hours HOUR) AS sla_deadline_timestamp\nFROM IncidentAlerts i\nINNER JOIN SlaBrackets s\n  ON i.impact_score BETWEEN s.min_score AND s.max_score\nORDER BY i.impact_score DESC;`,
+    eli5Story: "Matching an emergency score of 95 into the 'Critical Priority' bucket, which gives engineers a 2-hour deadline to fix the bug.",
+    commonMistakes: "Using `DATE_ADD` with incorrect interval units (e.g. DAY instead of HOUR).",
+    learningOutcomes: "Calculate contractual SLA deadlines by joining dynamic numerical scores against resolution windows."
+  },
+  {
+    title: "Cloud Infrastructure API Request Volumes to Throttling Burst Capacity Tiers",
+    ind: "SaaS",
+    diff: "Hard",
+    table: "TenantHourlyRequests",
+    scenario: "Applying rate-limiting burst limits by joining hourly tenant API request volumes to burst throttling policy brackets.",
+    businessObjective: "Join TenantHourlyRequests to BurstPolicies using BETWEEN to assign concurrency rate caps.",
+    schemaSnippet: "`TenantHourlyRequests (tenant_id VARCHAR(32), request_hour TIMESTAMP, total_requests INT, PRIMARY KEY(tenant_id, request_hour))` & `BurstPolicies (policy_name VARCHAR(20) PRIMARY KEY, min_req INT, max_req INT, max_concurrent_burst INT)`",
+    targetQuery: `SELECT r.tenant_id, r.request_hour, r.total_requests,\n       p.policy_name, p.max_concurrent_burst\nFROM TenantHourlyRequests r\nINNER JOIN BurstPolicies p\n  ON r.total_requests BETWEEN p.min_req AND p.max_req\nWHERE r.request_hour >= NOW() - INTERVAL 24 HOUR\nORDER BY r.total_requests DESC;`,
+    eli5Story: "Checking how many requests a customer sent in an hour to place them in the correct speed-limit bracket so they don't crash our servers.",
+    commonMistakes: "Gaps between policy brackets (e.g. 1-1000 and 1001-5000), leaving edge cases like 1000.5 unmatched if floats are involved.",
+    learningOutcomes: "Assign infrastructure throttling caps dynamically using range-based joins."
+  },
+  {
+    title: "Customer Net Promoter Score (NPS) to Customer Health Cohort Tiers",
+    ind: "SaaS",
+    diff: "Easy",
+    table: "CustomerNpsScores",
+    scenario: "Segmenting customer satisfaction survey responses into Promoter, Passive, and Detractor cohorts using official NPS score brackets.",
+    businessObjective: "Join CustomerNpsScores to NpsTiers on score using BETWEEN to categorize customer sentiments.",
+    schemaSnippet: "`CustomerNpsScores (customer_id VARCHAR(32) PRIMARY KEY, nps_rating INT)` & `NpsTiers (cohort_name VARCHAR(16) PRIMARY KEY, min_rating INT, max_rating INT)`",
+    targetQuery: `SELECT c.customer_id, c.nps_rating,\n       t.cohort_name\nFROM CustomerNpsScores c\nINNER JOIN NpsTiers t\n  ON c.nps_rating BETWEEN t.min_rating AND t.max_rating\nORDER BY c.nps_rating DESC;`,
+    eli5Story: "Sorting survey answers: scores 9-10 are 'Promoters', 7-8 are 'Passives', and 0-6 are 'Detractors'.",
+    commonMistakes: "Using hardcoded CASE statements instead of maintaining an adaptable metadata tier table.",
+    learningOutcomes: "Categorize customer survey cohorts using range lookup tables."
+  },
+
+  // --- RETAIL ---
+  {
+    title: "Order Cart Value to Tiered Free Shipping Thresholds",
+    ind: "Retail",
+    diff: "Easy",
+    table: "CartCheckoutTotals",
+    scenario: "Applying promotional shipping incentives by matching customer shopping cart totals to tiered shipping cost schedules.",
+    businessObjective: "Join CartCheckoutTotals to ShippingTiers using BETWEEN to assign shipping costs and free shipping waivers.",
+    schemaSnippet: "`CartCheckoutTotals (cart_id VARCHAR(32) PRIMARY KEY, cart_subtotal_usd DECIMAL(10,2))` & `ShippingTiers (tier_code VARCHAR(16) PRIMARY KEY, min_spend DECIMAL(10,2), max_spend DECIMAL(10,2), shipping_fee_usd DECIMAL(6,2))`",
+    targetQuery: `SELECT c.cart_id, c.cart_subtotal_usd,\n       s.tier_code, s.shipping_fee_usd,\n       (c.cart_subtotal_usd + s.shipping_fee_usd) AS final_order_total_usd\nFROM CartCheckoutTotals c\nINNER JOIN ShippingTiers s\n  ON c.cart_subtotal_usd BETWEEN s.min_spend AND s.max_spend\nORDER BY c.cart_subtotal_usd DESC;`,
+    eli5Story: "Orders under $50 pay $8 shipping; orders between $50 and $100 pay $4 shipping; orders over $100 get free shipping!",
+    commonMistakes: "Overlapping cart dollar amounts (e.g. min 50.00 and max 50.00) causing double row generation at the boundary.",
+    learningOutcomes: "Determine e-commerce checkout shipping rates using range joins."
+  },
+  {
+    title: "Customer Lifetime Value (LTV) to VIP Loyalty Reward Matrix",
+    ind: "Retail",
+    diff: "Medium",
+    table: "CustomerLtv",
+    scenario: "Assigning customer rewards club tier statuses (Bronze, Silver, Gold, Diamond) by matching lifetime cumulative spending to loyalty reward matrices.",
+    businessObjective: "Join CustomerLtv to LoyaltyRewardMatrix using BETWEEN to look up annual reward perks and discount percentages.",
+    schemaSnippet: "`CustomerLtv (customer_id VARCHAR(32) PRIMARY KEY, lifetime_spend_usd DECIMAL(12,2))` & `LoyaltyRewardMatrix (vip_tier VARCHAR(16) PRIMARY KEY, min_spend DECIMAL(12,2), max_spend DECIMAL(12,2), store_discount_pct DECIMAL(4,2))`",
+    targetQuery: `SELECT c.customer_id, c.lifetime_spend_usd,\n       m.vip_tier, m.store_discount_pct\nFROM CustomerLtv c\nINNER JOIN LoyaltyRewardMatrix m\n  ON c.lifetime_spend_usd BETWEEN m.min_spend AND m.max_spend\nORDER BY c.lifetime_spend_usd DESC;`,
+    eli5Story: "Rewarding loyal shoppers: anyone who has spent over $1,000 at our store gets bumped to Gold VIP status with a permanent 10% discount.",
+    commonMistakes: "Using LEFT JOIN without handling when a brand-new customer has $0 lifetime spend (must ensure a tier covers $0.00 to $99.99).",
+    learningOutcomes: "Assign customer loyalty VIP tiers dynamically using range non-equi joins."
+  },
+  {
+    title: "Warehouse Inventory Turnover Days to Obsolescence Risk Categories",
+    ind: "Retail",
+    diff: "Hard",
+    table: "InventoryTurnover",
+    scenario: "Categorizing inventory aging risk by matching days of supply on hand against inventory depreciation and obsolescence reserve brackets.",
+    businessObjective: "Join InventoryTurnover to ObsolescenceReserveBrackets using BETWEEN to compute balance sheet inventory write-downs.",
+    schemaSnippet: "`InventoryTurnover (sku VARCHAR(32) PRIMARY KEY, holding_inventory_usd DECIMAL(12,2), days_of_supply INT)` & `ObsolescenceReserveBrackets (risk_grade VARCHAR(8) PRIMARY KEY, min_days INT, max_days INT, reserve_write_down_pct DECIMAL(5,2))`",
+    targetQuery: `SELECT i.sku, i.holding_inventory_usd, i.days_of_supply,\n       r.risk_grade, r.reserve_write_down_pct,\n       ROUND(i.holding_inventory_usd * (r.reserve_write_down_pct / 100.0), 2) AS obsolescence_reserve_charge_usd\nFROM InventoryTurnover i\nINNER JOIN ObsolescenceReserveBrackets r\n  ON i.days_of_supply BETWEEN r.min_days AND r.max_days\nORDER BY obsolescence_reserve_charge_usd DESC;`,
+    eli5Story: "If we have enough winter coats in the warehouse to last 300 days, accounting requires us to mark down their value by 40% on our company balance sheet.",
+    commonMistakes: "Omitting the percentage division (`/ 100.0`), multiplying the inventory value by 40 instead of 0.40.",
+    learningOutcomes: "Calculate financial balance sheet reserve write-downs using inventory aging range joins."
+  },
+  {
+    title: "Store Square Footage to Retail Lease CAM Surcharge Tiers",
+    ind: "Retail",
+    diff: "Medium",
+    table: "RetailLeases",
+    scenario: "Computing common area maintenance (CAM) mall charges by matching retail store square footage against mall property fee schedules.",
+    businessObjective: "Join RetailLeases to CamFeeSchedules using BETWEEN to calculate monthly mall maintenance surcharges.",
+    schemaSnippet: "`RetailLeases (lease_id VARCHAR(32) PRIMARY KEY, tenant_store VARCHAR(64), square_feet INT)` & `CamFeeSchedules (fee_bracket VARCHAR(16) PRIMARY KEY, min_sqft INT, max_sqft INT, monthly_cam_usd DECIMAL(8,2))`",
+    targetQuery: `SELECT l.lease_id, l.tenant_store, l.square_feet,\n       s.fee_bracket, s.monthly_cam_usd\nFROM RetailLeases l\nINNER JOIN CamFeeSchedules s\n  ON l.square_feet BETWEEN s.min_sqft AND s.max_sqft\nORDER BY l.square_feet DESC;`,
+    eli5Story: "Calculating shopping mall cleaning and security fees: big department stores pay $5,000/month, while small kiosk shops pay $500/month.",
+    commonMistakes: "Creating integer boundary gaps (e.g. 1000-2000 and 2001-5000), leaving exactly 2000.5 unmatched.",
+    learningOutcomes: "Compute commercial real estate property charges using square-footage non-equi joins."
+  },
+
+  // --- HEALTHCARE ---
+  {
+    title: "Patient Body Mass Index (BMI) to Clinical Health Risk Categories",
+    ind: "Healthcare",
+    diff: "Easy",
+    table: "PatientVitalsBmi",
+    scenario: "Classifying patient health metrics by matching calculated Body Mass Index (BMI) values against CDC health weight classification categories.",
+    businessObjective: "Join PatientVitalsBmi to BmiClassificationBrackets using BETWEEN to categorize clinical weight tiers.",
+    schemaSnippet: "`PatientVitalsBmi (patient_id VARCHAR(32) PRIMARY KEY, bmi_value DECIMAL(4,1))` & `BmiClassificationBrackets (category_name VARCHAR(32) PRIMARY KEY, min_bmi DECIMAL(4,1), max_bmi DECIMAL(4,1))`",
+    targetQuery: `SELECT p.patient_id, p.bmi_value,\n       b.category_name\nFROM PatientVitalsBmi p\nINNER JOIN BmiClassificationBrackets b\n  ON p.bmi_value BETWEEN b.min_bmi AND b.max_bmi\nORDER BY p.bmi_value DESC;`,
+    eli5Story: "Matching a patient's BMI number into the official medical chart: Underweight, Normal, Overweight, or Obese.",
+    commonMistakes: "Using decimal boundary overlaps (e.g. 24.9 and 25.0), ensuring min_bmi and max_bmi provide continuous coverage.",
+    learningOutcomes: "Assign standardized medical classification categories using non-equi range joins."
+  },
+  {
+    title: "Emergency Department Triage Pain Scale to Analgesic Medication Protocols",
+    ind: "Healthcare",
+    diff: "Medium",
+    table: "TriageAssessments",
+    scenario: "Recommending emergency room analgesic pain treatment protocols by matching patient self-reported 1-to-10 pain scores to pharmaceutical dosage guidelines.",
+    businessObjective: "Join TriageAssessments to PainMedicationProtocols on pain_score using BETWEEN to suggest clinical pain medication options.",
+    schemaSnippet: "`TriageAssessments (triage_id VARCHAR(32) PRIMARY KEY, patient_mrn VARCHAR(16), pain_score INT)` & `PainMedicationProtocols (protocol_name VARCHAR(32) PRIMARY KEY, min_pain INT, max_pain INT, approved_drug_class VARCHAR(64))`",
+    targetQuery: `SELECT t.triage_id, t.patient_mrn, t.pain_score,\n       p.protocol_name, p.approved_drug_class\nFROM TriageAssessments t\nINNER JOIN PainMedicationProtocols p\n  ON t.pain_score BETWEEN p.min_pain AND p.max_pain\nORDER BY t.pain_score DESC;`,
+    eli5Story: "Matching a patient's pain level from 1 to 10 to the doctor's pain medicine guide (mild pain gets Tylenol; severe pain gets morphine).",
+    commonMistakes: "Handling pain_score = 0; must ensure a protocol exists for zero pain (no medication required).",
+    learningOutcomes: "Implement clinical decision support dosage protocols via range joins."
+  },
+  {
+    title: "Patient Age to Preventative Cancer Screening Recommendations",
+    ind: "Healthcare",
+    diff: "Hard",
+    table: "PatientDemographics",
+    scenario: "Generating automated healthcare screening reminders by matching patient age in years to US Preventive Services Task Force (USPSTF) screening guideline age brackets.",
+    businessObjective: "Join PatientDemographics to ScreeningGuidelines using non-equi age range comparisons to generate eligible screening lists.",
+    schemaSnippet: "`PatientDemographics (patient_id VARCHAR(32) PRIMARY KEY, full_name VARCHAR(100), gender VARCHAR(1), age_years INT)` & `ScreeningGuidelines (guideline_id VARCHAR(16) PRIMARY KEY, screening_test VARCHAR(64), target_gender VARCHAR(1), min_age INT, max_age INT)`",
+    targetQuery: `SELECT p.patient_id, p.full_name, p.age_years,\n       s.screening_test\nFROM PatientDemographics p\nINNER JOIN ScreeningGuidelines s\n  ON (s.target_gender = 'ALL' OR s.target_gender = p.gender)\n AND p.age_years BETWEEN s.min_age AND s.max_age\nORDER BY p.patient_id ASC, s.screening_test ASC;`,
+    eli5Story: "Checking a patient's age and gender to see which cancer screenings they are due for (e.g. mammograms for women 40-74, colonoscopies for adults 45-75).",
+    commonMistakes: "Neglecting the gender condition, recommending mammograms or prostate exams to the wrong demographic cohorts.",
+    learningOutcomes: "Combine multi-variable demographic matching with age-bracket non-equi joins."
+  },
+  {
+    title: "Clinical Trial Patient Blood Pressure to Hypertension Stage Tiers",
+    ind: "Healthcare",
+    diff: "Medium",
+    table: "BloodPressureReadings",
+    scenario: "Categorizing clinical trial cardiovascular health by matching systolic blood pressure readings to American Heart Association hypertension stage brackets.",
+    businessObjective: "Join BloodPressureReadings to HypertensionStages on systolic_mmhg using BETWEEN to assign cardiovascular risk stages.",
+    schemaSnippet: "`BloodPressureReadings (reading_id VARCHAR(32) PRIMARY KEY, patient_id VARCHAR(32), systolic_mmhg INT)` & `HypertensionStages (stage_name VARCHAR(32) PRIMARY KEY, min_systolic INT, max_systolic INT)`",
+    targetQuery: `SELECT r.reading_id, r.patient_id, r.systolic_mmhg,\n       s.stage_name\nFROM BloodPressureReadings r\nINNER JOIN HypertensionStages s\n  ON r.systolic_mmhg BETWEEN s.min_systolic AND s.max_systolic\nORDER BY r.systolic_mmhg DESC;`,
+    eli5Story: "Classifying blood pressure numbers: under 120 is Normal, 120-129 is Elevated, 130-139 is Stage 1 High Blood Pressure.",
+    commonMistakes: "Using `<` and `>` with gaps between numbers, failing to handle exact integer boundary values.",
+    learningOutcomes: "Categorize clinical diagnostic measurements using range non-equi joins."
+  },
+
+  // --- LOGISTICS ---
+  {
+    title: "Air Freight Cargo Weight to Dimensional Weight Tariff Surcharge Brackets",
+    ind: "Logistics",
+    diff: "Medium",
+    table: "AirCargoPallets",
+    scenario: "Calculating air freight charges by matching pallet dimensional weight (volumetric weight) against airline freight rate brackets.",
+    businessObjective: "Join AirCargoPallets to FreightTariffBrackets using BETWEEN to assign rate per kilogram.",
+    schemaSnippet: "`AirCargoPallets (pallet_id VARCHAR(32) PRIMARY KEY, chargeable_weight_kg DECIMAL(8,2))` & `FreightTariffBrackets (bracket_name VARCHAR(16) PRIMARY KEY, min_kg DECIMAL(8,2), max_kg DECIMAL(8,2), rate_per_kg_usd DECIMAL(6,2))`",
+    targetQuery: `SELECT p.pallet_id, p.chargeable_weight_kg,\n       t.bracket_name, t.rate_per_kg_usd,\n       ROUND(p.chargeable_weight_kg * t.rate_per_kg_usd, 2) AS total_freight_charge_usd\nFROM AirCargoPallets p\nINNER JOIN FreightTariffBrackets t\n  ON p.chargeable_weight_kg BETWEEN t.min_kg AND t.max_kg\nORDER BY total_freight_charge_usd DESC;`,
+    eli5Story: "Charging for heavy airplane cargo: a 500kg pallet gets a discounted rate of $3.50 per kilo, while a small 20kg box pays $8.00 per kilo.",
+    commonMistakes: "Using actual scale weight instead of chargeable dimensional weight, losing revenue on light but bulky cargo.",
+    learningOutcomes: "Calculate multi-tier freight charges using weight bracket non-equi joins."
+  },
+  {
+    title: "Trucking Haul Distance Miles to Driver Per-Mile Mileage Pay Brackets",
+    ind: "Logistics",
+    diff: "Easy",
+    table: "TruckingTrips",
+    scenario: "Computing long-haul truck driver pay by matching trip highway miles to per-mile graduated compensation brackets.",
+    businessObjective: "Join TruckingTrips to MileagePayTiers on route_miles using BETWEEN to determine driver per-mile pay rates.",
+    schemaSnippet: "`TruckingTrips (trip_id VARCHAR(32) PRIMARY KEY, driver_id VARCHAR(32), route_miles INT)` & `MileagePayTiers (tier_code VARCHAR(16) PRIMARY KEY, min_miles INT, max_miles INT, pay_per_mile_usd DECIMAL(5,2))`",
+    targetQuery: `SELECT t.trip_id, t.driver_id, t.route_miles,\n       m.tier_code, m.pay_per_mile_usd,\n       ROUND(t.route_miles * m.pay_per_mile_usd, 2) AS driver_trip_earnings_usd\nFROM TruckingTrips t\nINNER JOIN MileagePayTiers m\n  ON t.route_miles BETWEEN m.min_miles AND m.max_miles\nORDER BY driver_trip_earnings_usd DESC;`,
+    eli5Story: "Paying truck drivers based on trip length: short local trips under 100 miles pay $0.75/mile, while long coast-to-coast trips pay $0.55/mile.",
+    commonMistakes: "Assuming pay rate is flat across all distances instead of graduated by trip length.",
+    learningOutcomes: "Determine driver payroll compensation using graduated distance non-equi joins."
+  },
+  {
+    title: "Ocean Freight Container Dwell Days to Port Demurrage Storage Penalties",
+    ind: "Logistics",
+    diff: "Hard",
+    table: "TerminalContainers",
+    scenario: "Calculating demurrage storage penalties assessed against cargo importers for containers sitting on marine terminal docks past free time.",
+    businessObjective: "Join TerminalContainers to DemurrageFeeSchedules using BETWEEN on dwell_days to look up daily storage penalty rates.",
+    schemaSnippet: "`TerminalContainers (container_no VARCHAR(11) PRIMARY KEY, importer_name VARCHAR(100), days_on_dock INT)` & `DemurrageFeeSchedules (penalty_tier VARCHAR(16) PRIMARY KEY, min_days INT, max_days INT, daily_fee_usd DECIMAL(8,2))`",
+    targetQuery: `SELECT c.container_no, c.importer_name, c.days_on_dock,\n       d.penalty_tier, d.daily_fee_usd,\n       ROUND(c.days_on_dock * d.daily_fee_usd, 2) AS estimated_demurrage_penalty_usd\nFROM TerminalContainers c\nINNER JOIN DemurrageFeeSchedules d\n  ON c.days_on_dock BETWEEN d.min_days AND d.max_days\nWHERE c.days_on_dock > 5\nORDER BY estimated_demurrage_penalty_usd DESC;`,
+    eli5Story: "Charging late fees to companies that leave their shipping containers sitting at the seaport: Days 1-5 are free, Days 6-10 cost $150/day, Days 11+ cost $300/day.",
+    commonMistakes: "Applying the penalty to all days rather than days exceeding the free 5-day window.",
+    learningOutcomes: "Compute maritime port penalty surcharges using dwell time non-equi joins."
+  },
+  {
+    title: "Delivery Transit Delay Hours to Customer SLA Refund Credit Brackets",
+    ind: "Logistics",
+    diff: "Easy",
+    table: "DelayedParcels",
+    scenario: "Automating customer appeasement gift card credits by matching delivery package delay hours against customer service refund brackets.",
+    businessObjective: "Join DelayedParcels to SlaRefundBrackets on delay_hours using BETWEEN to assign credit amounts.",
+    schemaSnippet: "`DelayedParcels (tracking_no VARCHAR(32) PRIMARY KEY, delay_hours INT)` & `SlaRefundBrackets (bracket_id VARCHAR(16) PRIMARY KEY, min_delay_hours INT, max_delay_hours INT, refund_credit_usd DECIMAL(6,2))`",
+    targetQuery: `SELECT p.tracking_no, p.delay_hours,\n       b.bracket_id, b.refund_credit_usd\nFROM DelayedParcels p\nINNER JOIN SlaRefundBrackets b\n  ON p.delay_hours BETWEEN b.min_delay_hours AND b.max_delay_hours\nORDER BY p.delay_hours DESC;`,
+    eli5Story: "Giving customers money back when packages arrive late: 24 hours late gets a $5 coupon; 48 hours late gets a full $20 refund.",
+    commonMistakes: "Using `a.delay_hours = b.min_delay_hours` instead of BETWEEN range matching.",
+    learningOutcomes: "Automate customer credit compensation using delay interval non-equi joins."
+  },
+
+  // --- MEDIA ---
+  {
+    title: "Streaming Video View Count to Creator Monetization Tier Brackets",
+    ind: "Media",
+    diff: "Medium",
+    table: "CreatorVideoStats",
+    scenario: "Computing creator ad-revenue payouts by matching video view counts against sliding scale CPM monetization brackets.",
+    businessObjective: "Join CreatorVideoStats to MonetizationBrackets on total_views using BETWEEN to look up effective CPM rates.",
+    schemaSnippet: "`CreatorVideoStats (video_id VARCHAR(32) PRIMARY KEY, creator_id VARCHAR(32), total_views BIGINT)` & `MonetizationBrackets (tier_name VARCHAR(16) PRIMARY KEY, min_views BIGINT, max_views BIGINT, cpm_rate_usd DECIMAL(6,2))`",
+    targetQuery: `SELECT v.video_id, v.creator_id, v.total_views,\n       m.tier_name, m.cpm_rate_usd,\n       ROUND((v.total_views / 1000.0) * m.cpm_rate_usd, 2) AS estimated_payout_usd\nFROM CreatorVideoStats v\nINNER JOIN MonetizationBrackets m\n  ON v.total_views BETWEEN m.min_views AND m.max_views\nORDER BY estimated_payout_usd DESC;`,
+    eli5Story: "Paying video creators: videos with over 1 million views earn $8.00 per thousand views, while smaller videos earn $3.00 per thousand views.",
+    commonMistakes: "Forgetting to divide total views by 1000 before multiplying by CPM.",
+    learningOutcomes: "Calculate digital creator media earnings using view volume range joins."
+  },
+  {
+    title: "Video Game Player Level to Matchmaking Skill Rating (MMR) Brackets",
+    ind: "Media",
+    diff: "Easy",
+    table: "PlayerMmr",
+    scenario: "Grouping online multiplayer gamers into balanced competitive lobbies by matching numerical MMR points against league rank brackets.",
+    businessObjective: "Join PlayerMmr to RankBrackets on mmr_score using BETWEEN to assign competitive league ranks (Gold, Platinum, Diamond).",
+    schemaSnippet: "`PlayerMmr (player_id VARCHAR(32) PRIMARY KEY, mmr_score INT)` & `RankBrackets (rank_name VARCHAR(16) PRIMARY KEY, min_mmr INT, max_mmr INT)`",
+    targetQuery: `SELECT p.player_id, p.mmr_score,\n       r.rank_name\nFROM PlayerMmr p\nINNER JOIN RankBrackets r\n  ON p.mmr_score BETWEEN r.min_mmr AND r.max_mmr\nORDER BY p.mmr_score DESC;`,
+    eli5Story: "Matching competitive video game players into ranks: 1,500 MMR is Gold, 2,000 MMR is Platinum, 2,500 MMR is Diamond.",
+    commonMistakes: "Allowing overlapping MMR scores between ranks, causing players at the boundary to receive two ranks.",
+    learningOutcomes: "Assign competitive gaming tiers dynamically using non-equi range joins."
+  },
+  {
+    title: "Digital Audio Track Duration to Streaming Royalty Compensation Units",
+    ind: "Media",
+    diff: "Hard",
+    table: "AudioTrackMetadata",
+    scenario: "Applying digital streaming licensing royalty rules by matching audio track duration in seconds against payout credit multipliers.",
+    businessObjective: "Join AudioTrackMetadata to RoyaltyDurationTiers on track_seconds using BETWEEN to compute qualified royalty credits.",
+    schemaSnippet: "`AudioTrackMetadata (isrc_code VARCHAR(12) PRIMARY KEY, track_title VARCHAR(100), track_seconds INT)` & `RoyaltyDurationTiers (tier_code VARCHAR(16) PRIMARY KEY, min_sec INT, max_sec INT, royalty_credit_multiplier DECIMAL(4,2))`",
+    targetQuery: `SELECT a.isrc_code, a.track_title, a.track_seconds,\n       r.tier_code, r.royalty_credit_multiplier\nFROM AudioTrackMetadata a\nINNER JOIN RoyaltyDurationTiers r\n  ON a.track_seconds BETWEEN r.min_sec AND r.max_sec\nORDER BY a.track_seconds DESC;`,
+    eli5Story: "Making sure 10-second audio clips don't get the same music royalties as full 4-minute songs: songs must be at least 30 seconds long to earn royalties.",
+    commonMistakes: "Omitting track_seconds = 0 or very short sound effects (< 30 seconds).",
+    learningOutcomes: "Enforce streaming royalty duration qualification rules via non-equi joins."
+  },
+  {
+    title: "Podcast Sponsorship Listener Reach to Ad Read Pricing Brackets",
+    ind: "Media",
+    diff: "Medium",
+    table: "PodcastShows",
+    scenario: "Pricing 60-second host-read commercial spots by matching average episode listener downloads to sponsor pricing rate cards.",
+    businessObjective: "Join PodcastShows to SponsorRateCard on avg_downloads using BETWEEN to determine standard commercial spot rates.",
+    schemaSnippet: "`PodcastShows (show_id VARCHAR(32) PRIMARY KEY, show_title VARCHAR(100), avg_downloads INT)` & `SponsorRateCard (rate_tier VARCHAR(16) PRIMARY KEY, min_downloads INT, max_downloads INT, spot_rate_usd DECIMAL(8,2))`",
+    targetQuery: `SELECT p.show_id, p.show_title, p.avg_downloads,\n       s.rate_tier, s.spot_rate_usd\nFROM PodcastShows p\nINNER JOIN SponsorRateCard s\n  ON p.avg_downloads BETWEEN s.min_downloads AND s.max_downloads\nORDER BY s.spot_rate_usd DESC;`,
+    eli5Story: "Setting ad prices for podcasts: shows with 50,000 listeners charge $1,500 per sponsor shoutout; shows with 200,000 listeners charge $6,000.",
+    commonMistakes: "Using hardcoded IF statements that must be rewritten every time sales changes ad prices.",
+    learningOutcomes: "Implement adaptable commercial rate-card lookups using range joins."
+  },
+
+  // --- SECURITY ---
+  {
+    title: "Common Vulnerability Scoring System (CVSS) Score to Remediation SLAs",
+    ind: "Security",
+    diff: "Easy",
+    table: "VulnerabilityFindings",
+    scenario: "Enforcing SOC-2 cyber security patch deadlines by matching numerical CVSS vulnerability scores against mandatory remediation day windows.",
+    businessObjective: "Join VulnerabilityFindings to CvssSlaTiers on cvss_score using BETWEEN to calculate required patch deadline dates.",
+    schemaSnippet: "`VulnerabilityFindings (finding_id VARCHAR(32) PRIMARY KEY, cve_id VARCHAR(16), cvss_score DECIMAL(3,1), detected_date DATE)` & `CvssSlaTiers (severity_name VARCHAR(16) PRIMARY KEY, min_cvss DECIMAL(3,1), max_cvss DECIMAL(3,1), max_patch_days INT)`",
+    targetQuery: `SELECT f.finding_id, f.cve_id, f.cvss_score,\n       s.severity_name, s.max_patch_days,\n       DATE_ADD(f.detected_date, INTERVAL s.max_patch_days DAY) AS mandated_remediation_deadline\nFROM VulnerabilityFindings f\nINNER JOIN CvssSlaTiers s\n  ON f.cvss_score BETWEEN s.min_cvss AND s.max_cvss\nORDER BY f.cvss_score DESC;`,
+    eli5Story: "Enforcing security rules: Critical software bugs (score 9.0-10.0) must be patched within 48 hours; Medium bugs (4.0-6.9) can wait 30 days.",
+    commonMistakes: "Using integer comparisons for decimal CVSS scores (e.g. 8.9 falling into a gap between 8 and 9).",
+    learningOutcomes: "Calculate corporate cybersecurity remediation deadlines using decimal range joins."
+  },
+  {
+    title: "Employee Security Phishing Risk Score to Training Mandatory Tiers",
+    ind: "Security",
+    diff: "Medium",
+    table: "EmployeePhishRisk",
+    scenario: "Assigning automated security awareness training by matching employee phishing simulation failure scores to remedial course requirements.",
+    businessObjective: "Join EmployeePhishRisk to RemedialTrainingMatrix on risk_score using BETWEEN to assign required training modules.",
+    schemaSnippet: "`EmployeePhishRisk (employee_id VARCHAR(32) PRIMARY KEY, employee_name VARCHAR(100), risk_score INT)` & `RemedialTrainingMatrix (risk_tier VARCHAR(16) PRIMARY KEY, min_score INT, max_score INT, required_module VARCHAR(64))`",
+    targetQuery: `SELECT e.employee_id, e.employee_name, e.risk_score,\n       m.risk_tier, m.required_module\nFROM EmployeePhishRisk e\nINNER JOIN RemedialTrainingMatrix m\n  ON e.risk_score BETWEEN m.min_score AND m.max_score\nORDER BY e.risk_score DESC;`,
+    eli5Story: "Sending coworkers who clicked on fake test phishing links to mandatory 1-hour anti-scam video training classes.",
+    commonMistakes: "Using `a.risk_score = m.min_score` instead of range matching.",
+    learningOutcomes: "Automate corporate risk training assignments using score bracket joins."
+  },
+  {
+    title: "Network Port Number to Standard Firewall Risk Classification Tiers",
+    ind: "Security",
+    diff: "Hard",
+    table: "FirewallOpenPorts",
+    scenario: "Classifying perimeter network exposure risk by matching destination port numbers against IANA and internal risk port range catalogs.",
+    businessObjective: "Join FirewallOpenPorts to PortRiskCatalogs using BETWEEN to tag open ports with compliance risk levels.",
+    schemaSnippet: "`FirewallOpenPorts (rule_id VARCHAR(32) PRIMARY KEY, dest_port INT, ip_address VARCHAR(45))` & `PortRiskCatalogs (risk_level VARCHAR(16) PRIMARY KEY, min_port INT, max_port INT, requires_ciso_approval BOOLEAN)`",
+    targetQuery: `SELECT p.rule_id, p.dest_port, p.ip_address,\n       c.risk_level, c.requires_ciso_approval\nFROM FirewallOpenPorts p\nINNER JOIN PortRiskCatalogs c\n  ON p.dest_port BETWEEN c.min_port AND c.max_port\nWHERE c.requires_ciso_approval = TRUE\nORDER BY p.dest_port ASC;`,
+    eli5Story: "Flagging firewall rules that open high-risk port ranges so the Chief Information Security Officer can personally review them.",
+    commonMistakes: "Overlooking well-known ports (0-1023) vs registered dynamic ports (1024-49151) boundary classifications.",
+    learningOutcomes: "Categorize network infrastructure security risks using port range non-equi joins."
+  },
+  {
+    title: "Security Incident Response Duration to Cyber Insurance Payout Deductibles",
+    ind: "Security",
+    diff: "Medium",
+    table: "RansomwareIncidents",
+    scenario: "Computing cyber insurance policy deductible obligations by matching incident business interruption downtime hours to policy coverage tiers.",
+    businessObjective: "Join RansomwareIncidents to InsuranceDeductibleTiers on downtime_hours using BETWEEN to determine insurance coverage percentages.",
+    schemaSnippet: "`RansomwareIncidents (incident_id VARCHAR(32) PRIMARY KEY, downtime_hours INT, forensic_cost_usd DECIMAL(12,2))` & `InsuranceDeductibleTiers (tier_code VARCHAR(16) PRIMARY KEY, min_hours INT, max_hours INT, insurer_coverage_pct DECIMAL(5,2))`",
+    targetQuery: `SELECT r.incident_id, r.downtime_hours, r.forensic_cost_usd,\n       t.tier_code, t.insurer_coverage_pct,\n       ROUND(r.forensic_cost_usd * (t.insurer_coverage_pct / 100.0), 2) AS insurance_reimbursement_usd\nFROM RansomwareIncidents r\nINNER JOIN InsuranceDeductibleTiers t\n  ON r.downtime_hours BETWEEN t.min_hours AND t.max_hours\nORDER BY insurance_reimbursement_usd DESC;`,
+    eli5Story: "Calculating how much money our cyber insurance policy pays to cover computer repair costs after a ransomware attack based on how many days systems were down.",
+    commonMistakes: "Subtracting deductible without checking whether coverage percentage applies to gross or net expenses.",
+    learningOutcomes: "Calculate insurance claim reimbursements using downtime interval non-equi joins."
+  },
+
+  // --- HARDWARE ---
+  {
+    title: "Silicon Wafer Defect Density to Die Quality Grade Yield Bands",
+    ind: "Hardware",
+    diff: "Hard",
+    table: "WaferDefectDensity",
+    scenario: "Grading manufactured microchips into performance bins (Premium Server, Desktop, Budget Mobile) by matching laser defect density per cm² to binning grade tables.",
+    businessObjective: "Join WaferDefectDensity to QualityGradeBands on defect_density using BETWEEN to determine product binning destinations.",
+    schemaSnippet: "`WaferDefectDensity (wafer_serial VARCHAR(32) PRIMARY KEY, defects_per_sqcm DECIMAL(6,3))` & `QualityGradeBands (grade_label VARCHAR(16) PRIMARY KEY, min_defects DECIMAL(6,3), max_defects DECIMAL(6,3), target_market VARCHAR(32))`",
+    targetQuery: `SELECT w.wafer_serial, w.defects_per_sqcm,\n       g.grade_label, g.target_market\nFROM WaferDefectDensity w\nINNER JOIN QualityGradeBands g\n  ON w.defects_per_sqcm BETWEEN g.min_defects AND g.max_defects\nORDER BY w.defects_per_sqcm ASC;`,
+    eli5Story: "Microchip binning: chips with zero defects are sold as ultra-fast $1,000 server processors; chips with tiny defects have damaged cores disabled and are sold as $200 laptop chips.",
+    commonMistakes: "Using strict `<` and `>` with floating point defect densities, creating unmatched gap regions.",
+    learningOutcomes: "Execute semiconductor manufacturing product binning using precision non-equi joins."
+  },
+  {
+    title: "Electronic Component Operating Temperature to Thermal Derating Factors",
+    ind: "Hardware",
+    diff: "Medium",
+    table: "CircuitTelemetry",
+    scenario: "Calculating electrical power limits for aerospace electronics by matching operating temperature in Celsius to component thermal derating factors.",
+    businessObjective: "Join CircuitTelemetry to ThermalDeratingMatrix on operating_temp_c using BETWEEN to calculate derated allowable power wattage.",
+    schemaSnippet: "`CircuitTelemetry (component_id VARCHAR(32) PRIMARY KEY, operating_temp_c DECIMAL(5,1), max_rated_watts DECIMAL(6,2))` & `ThermalDeratingMatrix (temp_band VARCHAR(16) PRIMARY KEY, min_temp DECIMAL(5,1), max_temp DECIMAL(5,1), derating_multiplier DECIMAL(4,2))`",
+    targetQuery: `SELECT c.component_id, c.operating_temp_c, c.max_rated_watts,\n       m.temp_band, m.derating_multiplier,\n       ROUND(c.max_rated_watts * m.derating_multiplier, 2) AS safe_allowable_power_watts\nFROM CircuitTelemetry c\nINNER JOIN ThermalDeratingMatrix m\n  ON c.operating_temp_c BETWEEN m.min_temp AND m.max_temp\nORDER BY safe_allowable_power_watts ASC;`,
+    eli5Story: "When electronics get hot in space or inside an engine, you must lower the electricity flowing through them so they don't burn out.",
+    commonMistakes: "Applying derating multipliers greater than 1.0 (derating must reduce power capacity).",
+    learningOutcomes: "Calculate engineering thermal derating limits using operational temperature range joins."
+  },
+  {
+    title: "Printed Circuit Board Trace Width to Maximum Current Capacity (Amps)",
+    ind: "Hardware",
+    diff: "Easy",
+    table: "PcbTraces",
+    scenario: "Validating circuit board hardware safety standards by matching etched copper trace widths against IPC-2152 electrical current carrying capacity tables.",
+    businessObjective: "Join PcbTraces to IpcTraceCurrentCapacity using BETWEEN on trace_width_mils to look up maximum allowable amperes.",
+    schemaSnippet: "`PcbTraces (trace_net_name VARCHAR(32) PRIMARY KEY, trace_width_mils DECIMAL(6,2))` & `IpcTraceCurrentCapacity (capacity_band VARCHAR(16) PRIMARY KEY, min_width DECIMAL(6,2), max_width DECIMAL(6,2), max_current_amps DECIMAL(5,2))`",
+    targetQuery: `SELECT p.trace_net_name, p.trace_width_mils,\n       i.capacity_band, i.max_current_amps\nFROM PcbTraces p\nINNER JOIN IpcTraceCurrentCapacity i\n  ON p.trace_width_mils BETWEEN i.min_width AND i.max_width\nORDER BY p.trace_width_mils DESC;`,
+    eli5Story: "Making sure a copper wire printed on a motherboard is wide enough to carry 10 amps of power without melting like a fuse.",
+    commonMistakes: "Confusing mils (thousandths of an inch) with millimeters, causing scale mismatch errors.",
+    learningOutcomes: "Validate electrical hardware safety guidelines using dimensional range joins."
+  },
+  {
+    title: "Automated Pick-and-Place Machine Placement Speed to Quality Inspection Frequency",
+    ind: "Hardware",
+    diff: "Medium",
+    table: "SmtLineSpeeds",
+    scenario: "Assigning automated optical inspection (AOI) sampling rates by matching surface-mount electronics placement component speeds to inspection frequency brackets.",
+    businessObjective: "Join SmtLineSpeeds to InspectionSamplingPolicy on components_per_hour using BETWEEN to set mandatory QA inspection intervals.",
+    schemaSnippet: "`SmtLineSpeeds (line_id VARCHAR(16) PRIMARY KEY, components_per_hour INT)` & `InspectionSamplingPolicy (speed_bracket VARCHAR(16) PRIMARY KEY, min_cph INT, max_cph INT, inspection_interval_minutes INT)`",
+    targetQuery: `SELECT l.line_id, l.components_per_hour,\n       p.speed_bracket, p.inspection_interval_minutes\nFROM SmtLineSpeeds l\nINNER JOIN InspectionSamplingPolicy p\n  ON l.components_per_hour BETWEEN p.min_cph AND p.max_cph\nORDER BY l.components_per_hour DESC;`,
+    eli5Story: "The faster the robot places computer chips on circuit boards, the more often human inspectors have to check the boards for mistakes.",
+    commonMistakes: "Using `a.components_per_hour = p.min_cph` instead of BETWEEN range matching.",
+    learningOutcomes: "Determine factory inspection sampling frequencies using operational speed range joins."
+  },
+
+  // --- HR ---
+  {
+    title: "Employee Gross Annual Salary to Statutory Federal Income Tax Brackets",
+    ind: "HR",
+    diff: "Medium",
+    table: "EmployeeSalaries",
+    scenario: "Determining payroll marginal income tax withholding tiers by matching employee gross taxable earnings against IRS graduated tax brackets.",
+    businessObjective: "Join EmployeeSalaries to FederalTaxBrackets using BETWEEN on annual_salary_usd to assign marginal tax rates.",
+    schemaSnippet: "`EmployeeSalaries (employee_id VARCHAR(32) PRIMARY KEY, employee_name VARCHAR(100), annual_salary_usd DECIMAL(12,2))` & `FederalTaxBrackets (bracket_id VARCHAR(8) PRIMARY KEY, min_income DECIMAL(12,2), max_income DECIMAL(12,2), marginal_tax_pct DECIMAL(4,2))`",
+    targetQuery: `SELECT e.employee_id, e.employee_name, e.annual_salary_usd,\n       t.bracket_id, t.marginal_tax_pct,\n       ROUND(e.annual_salary_usd * (t.marginal_tax_pct / 100.0), 2) AS estimated_marginal_tax_usd\nFROM EmployeeSalaries e\nINNER JOIN FederalTaxBrackets t\n  ON e.annual_salary_usd BETWEEN t.min_income AND t.max_income\nORDER BY e.annual_salary_usd DESC;`,
+    eli5Story: "Looking up an employee's salary in the IRS tax table: someone making $85k lands in the 22% tax bracket; someone making $200k lands in the 32% bracket.",
+    commonMistakes: "Treating marginal tax as flat tax on the entire salary rather than graduated brackets in complete payroll engines.",
+    learningOutcomes: "Assign statutory tax withholding brackets using salary range non-equi joins."
+  },
+  {
+    title: "Employee Years of Tenured Service to Annual PTO Vacation Day Accruals",
+    ind: "HR",
+    diff: "Easy",
+    table: "EmployeeTenure",
+    scenario: "Computing employee annual vacation benefits by matching years of completed company service against the corporate PTO tenure reward policy schedule.",
+    businessObjective: "Join EmployeeTenure to PtoAccrualTiers on years_of_service using BETWEEN to look up annual granted vacation days.",
+    schemaSnippet: "`EmployeeTenure (employee_id VARCHAR(32) PRIMARY KEY, employee_name VARCHAR(100), years_of_service INT)` & `PtoAccrualTiers (tier_label VARCHAR(16) PRIMARY KEY, min_years INT, max_years INT, annual_pto_days INT)`",
+    targetQuery: `SELECT e.employee_id, e.employee_name, e.years_of_service,\n       p.tier_label, p.annual_pto_days\nFROM EmployeeTenure e\nINNER JOIN PtoAccrualTiers p\n  ON e.years_of_service BETWEEN p.min_years AND p.max_years\nORDER BY e.years_of_service DESC;`,
+    eli5Story: "Rewarding loyalty: new hires get 15 days off per year; 5-year veterans get 20 days off; 10-year veterans get 25 days off.",
+    commonMistakes: "Using `<>` without range comparisons.",
+    learningOutcomes: "Determine employee benefits dynamically using tenure range joins."
+  },
+  {
+    title: "Sales Representative Quarterly Revenue to Commission Accelerator Multipliers",
+    ind: "HR",
+    diff: "Hard",
+    table: "RepQuarterlySales",
+    scenario: "Computing sales incentive compensation accelerators by matching a sales rep's quarterly quota attainment percentage against commission bonus brackets.",
+    businessObjective: "Join RepQuarterlySales to AcceleratorTiers on quota_attainment_pct using BETWEEN to calculate accelerated commission payout bonuses.",
+    schemaSnippet: "`RepQuarterlySales (rep_id VARCHAR(32) PRIMARY KEY, rep_name VARCHAR(100), quota_attainment_pct DECIMAL(5,1), base_commission_usd DECIMAL(10,2))` & `AcceleratorTiers (tier_name VARCHAR(16) PRIMARY KEY, min_attainment DECIMAL(5,1), max_attainment DECIMAL(5,1), accelerator_multiplier DECIMAL(4,2))`",
+    targetQuery: `SELECT s.rep_id, s.rep_name, s.quota_attainment_pct,\n       a.tier_name, a.accelerator_multiplier,\n       ROUND(s.base_commission_usd * a.accelerator_multiplier, 2) AS accelerated_payout_usd\nFROM RepQuarterlySales s\nINNER JOIN AcceleratorTiers a\n  ON s.quota_attainment_pct BETWEEN a.min_attainment AND a.max_attainment\nORDER BY accelerated_payout_usd DESC;`,
+    eli5Story: "Sales accelerators: if a rep hits 150% of their sales goal, their commission rate triples from 1x to 3x on all extra deals!",
+    commonMistakes: "Applying accelerators before verifying base commission eligibility.",
+    learningOutcomes: "Calculate sales incentive compensation accelerators using range non-equi joins."
+  },
+  {
+    title: "Corporate Relocation Distance Miles to Moving Expense Stipend Brackets",
+    ind: "HR",
+    diff: "Easy",
+    table: "RelocationRequests",
+    scenario: "Calculating employee office relocation lump-sum allowances by matching moving distance in miles to corporate relocation stipend matrices.",
+    businessObjective: "Join RelocationRequests to RelocationStipends on distance_miles using BETWEEN to determine relocation cash bonuses.",
+    schemaSnippet: "`RelocationRequests (request_id VARCHAR(32) PRIMARY KEY, employee_name VARCHAR(100), distance_miles INT)` & `RelocationStipends (distance_bracket VARCHAR(16) PRIMARY KEY, min_miles INT, max_miles INT, stipend_amount_usd DECIMAL(8,2))`",
+    targetQuery: `SELECT r.request_id, r.employee_name, r.distance_miles,\n       s.distance_bracket, s.stipend_amount_usd\nFROM RelocationRequests r\nINNER JOIN RelocationStipends s\n  ON r.distance_miles BETWEEN s.min_miles AND s.max_miles\nORDER BY r.distance_miles DESC;`,
+    eli5Story: "Paying workers who move for a promotion: moving 100 miles gets a $3,000 moving check; moving 2,000 miles across the country gets $10,000.",
+    commonMistakes: "Using `r.distance_miles = s.min_miles` instead of BETWEEN range matching.",
+    learningOutcomes: "Assign employee relocation benefits dynamically using distance range joins."
+  },
+
+  // --- PLATFORMS ---
+  {
+    title: "Ride-Share Passenger Trip Distance to Dynamic Base Pricing Brackets",
+    ind: "Platforms",
+    diff: "Easy",
+    table: "PassengerTripRequests",
+    scenario: "Computing ride-share passenger upfront fares by matching estimated trip mileage against city-specific graduated mileage rate brackets.",
+    businessObjective: "Join PassengerTripRequests to MileageRateCards on trip_miles using BETWEEN to assign base fare rates.",
+    schemaSnippet: "`PassengerTripRequests (trip_id VARCHAR(32) PRIMARY KEY, trip_miles DECIMAL(6,2), pickup_city VARCHAR(32))` & `MileageRateCards (rate_bracket VARCHAR(16) PRIMARY KEY, min_miles DECIMAL(6,2), max_miles DECIMAL(6,2), base_fee_usd DECIMAL(6,2), per_mile_rate DECIMAL(6,2))`",
+    targetQuery: `SELECT t.trip_id, t.pickup_city, t.trip_miles,\n       r.rate_bracket, r.base_fee_usd, r.per_mile_rate,\n       ROUND(r.base_fee_usd + (t.trip_miles * r.per_mile_rate), 2) AS estimated_trip_fare_usd\nFROM PassengerTripRequests t\nINNER JOIN MileageRateCards r\n  ON t.trip_miles BETWEEN r.min_miles AND r.max_miles\nORDER BY estimated_trip_fare_usd DESC;`,
+    eli5Story: "Calculating passenger Uber fares: quick 2-mile rides pay a $5 base fare plus $2/mile; long 30-mile airport rides pay a $15 base fee plus $1.20/mile.",
+    commonMistakes: "Failing to account for fractional decimal mileage when defining bracket minimums and maximums.",
+    learningOutcomes: "Calculate transportation platform pricing schedules using non-equi joins."
+  },
+  {
+    title: "Food Delivery Cart Total to Small Order Delivery Surcharges",
+    ind: "Platforms",
+    diff: "Medium",
+    table: "FoodDeliveryCarts",
+    scenario: "Enforcing delivery platform unit economics by matching customer meal order subtotals against small-order delivery fee surcharge tables.",
+    businessObjective: "Join FoodDeliveryCarts to SmallOrderFeeSchedule using BETWEEN on subtotal_usd to add mandatory low-basket surcharges.",
+    schemaSnippet: "`FoodDeliveryCarts (cart_id VARCHAR(32) PRIMARY KEY, subtotal_usd DECIMAL(8,2))` & `SmallOrderFeeSchedule (fee_tier VARCHAR(16) PRIMARY KEY, min_subtotal DECIMAL(8,2), max_subtotal DECIMAL(8,2), small_order_fee_usd DECIMAL(6,2))`",
+    targetQuery: `SELECT c.cart_id, c.subtotal_usd,\n       f.fee_tier, f.small_order_fee_usd,\n       (c.subtotal_usd + f.small_order_fee_usd) AS cart_total_with_fee_usd\nFROM FoodDeliveryCarts c\nINNER JOIN SmallOrderFeeSchedule f\n  ON c.subtotal_usd BETWEEN f.min_subtotal AND f.max_subtotal\nORDER BY c.subtotal_usd ASC;`,
+    eli5Story: "If someone orders just one $3 cookie on DoorDash, charging them a $2.50 'small order fee' so delivery doesn't lose money.",
+    commonMistakes: "Applying the small order fee to carts over $15 (must ensure fee drops to $0.00 for normal orders).",
+    learningOutcomes: "Apply low-basket delivery surcharges using non-equi joins."
+  },
+  {
+    title: "Marketplace Merchant Monthly Gross Merchandise Value to Take-Rate Tiers",
+    ind: "Platforms",
+    diff: "Hard",
+    table: "MerchantMonthlyGmv",
+    scenario: "Incentivizing marketplace seller growth by matching monthly gross merchandise volume (GMV) against reduced platform commission take-rate tiers.",
+    businessObjective: "Join MerchantMonthlyGmv to TakeRateSchedule on monthly_gmv_usd using BETWEEN to determine commission rates.",
+    schemaSnippet: "`MerchantMonthlyGmv (merchant_id VARCHAR(32) PRIMARY KEY, store_name VARCHAR(64), monthly_gmv_usd DECIMAL(12,2))` & `TakeRateSchedule (tier_name VARCHAR(16) PRIMARY KEY, min_gmv DECIMAL(12,2), max_gmv DECIMAL(12,2), take_rate_pct DECIMAL(4,2))`",
+    targetQuery: `SELECT m.merchant_id, m.store_name, m.monthly_gmv_usd,\n       t.tier_name, t.take_rate_pct,\n       ROUND(m.monthly_gmv_usd * (t.take_rate_pct / 100.0), 2) AS platform_commission_fee_usd\nFROM MerchantMonthlyGmv m\nINNER JOIN TakeRateSchedule t\n  ON m.monthly_gmv_usd BETWEEN t.min_gmv AND t.max_gmv\nORDER BY m.monthly_gmv_usd DESC;`,
+    eli5Story: "Rewarding high-volume sellers: small sellers pay a 15% marketplace commission, but mega-stores selling over $1M/month only pay 8%.",
+    commonMistakes: "Using `<` and `>` without handling exact boundary thresholds.",
+    learningOutcomes: "Model marketplace take-rates and seller fee tiers using range non-equi joins."
+  },
+  {
+    title: "Electric Vehicle Charging Session Duration to Parking Idle Fee Brackets",
+    ind: "Platforms",
+    diff: "Medium",
+    table: "CompletedChargingSessions",
+    scenario: "Preventing EV charging stall hogging by matching post-charge idle parking minutes to progressive idle fee penalty brackets.",
+    businessObjective: "Join CompletedChargingSessions to IdleFeeSchedule on idle_minutes using BETWEEN to calculate penalty fees for cars left plugged in.",
+    schemaSnippet: "`CompletedChargingSessions (session_id VARCHAR(32) PRIMARY KEY, idle_minutes INT)` & `IdleFeeSchedule (fee_tier VARCHAR(16) PRIMARY KEY, min_idle_min INT, max_idle_min INT, fee_per_minute_usd DECIMAL(5,2))`",
+    targetQuery: `SELECT s.session_id, s.idle_minutes,\n       f.fee_tier, f.fee_per_minute_usd,\n       ROUND(s.idle_minutes * f.fee_per_minute_usd, 2) AS total_idle_penalty_fee_usd\nFROM CompletedChargingSessions s\nINNER JOIN IdleFeeSchedule f\n  ON s.idle_minutes BETWEEN f.min_idle_min AND f.max_idle_min\nWHERE s.idle_minutes > 5\nORDER BY total_idle_penalty_fee_usd DESC;`,
+    eli5Story: "Charging Tesla and EV drivers a $1/minute penalty fee if their car finished charging to 100% and they left it parked blocking the charger.",
+    commonMistakes: "Charging customers during the 5-minute initial grace period.",
+    learningOutcomes: "Enforce parking asset turnaround using graduated penalty fee non-equi joins."
+  }
+];

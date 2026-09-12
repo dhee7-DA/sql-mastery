@@ -1,0 +1,547 @@
+// =============================================================================
+// PART 3: LEFT JOIN WITH RIGHT-SIDE PRE-AGGREGATION (40 DISTINCT CASES: 13 Easy, 14 Medium, 13 Hard)
+// Guarding Against Cartesian Fan-Out & Inflated Financial Totals Across 10 Industries
+// Pattern: Parent Table LEFT JOIN (SELECT parent_id, SUM(...) ... GROUP BY parent_id)
+// =============================================================================
+
+module.exports = [
+  // --- FINTECH ---
+  {
+    title: "Commercial Invoices to Multi-Tranche Wire Disbursements (AR Balances)",
+    ind: "Fintech",
+    diff: "Medium",
+    table: "CommercialInvoices",
+    scenario: "Reconciling commercial corporate invoices against partial wire installments, pre-aggregating wires to calculate accurate outstanding balances.",
+    businessObjective: "Left join CommercialInvoices to a pre-aggregated subquery of WireDisbursements to compute remaining balance due without duplicating invoices.",
+    schemaSnippet: "`CommercialInvoices (invoice_id VARCHAR(32) PRIMARY KEY, client_name VARCHAR(100), invoice_total_usd DECIMAL(12,2), due_date DATE)` & `WireDisbursements (disbursement_id VARCHAR(32) PRIMARY KEY, invoice_id VARCHAR(32), wire_amount DECIMAL(12,2))`",
+    targetQuery: `SELECT inv.invoice_id, inv.client_name, inv.invoice_total_usd,\n       COALESCE(w.total_disbursed_usd, 0.00) AS total_disbursed_usd,\n       (inv.invoice_total_usd - COALESCE(w.total_disbursed_usd, 0.00)) AS outstanding_balance_usd\nFROM CommercialInvoices inv\nLEFT JOIN (\n  SELECT invoice_id, SUM(wire_amount) AS total_disbursed_usd\n  FROM WireDisbursements\n  GROUP BY invoice_id\n) w ON inv.invoice_id = w.invoice_id\nWHERE inv.invoice_total_usd - COALESCE(w.total_disbursed_usd, 0.00) > 0.00\nORDER BY outstanding_balance_usd DESC;`,
+    eli5Story: "If a client paid a $100k invoice with three separate wire payments, joining directly would triple the invoice row! Pre-summing the wires into one total first keeps one clean row per invoice.",
+    commonMistakes: "Joining raw WireDisbursements directly and then running SUM(inv.invoice_total_usd), which triples the company's recorded revenue.",
+    learningOutcomes: "Eliminate Cartesian fan-out and multi-payment duplication traps using pre-aggregated subqueries."
+  },
+  {
+    title: "Mortgage Loan Originations to Amortized Principal Repayments",
+    ind: "Fintech",
+    diff: "Hard",
+    table: "MortgageOriginations",
+    scenario: "Calculating current unpaid principal balance (UPB) across securitized residential mortgage loan pools.",
+    businessObjective: "Left join MortgageOriginations to pre-aggregated monthly payment ledger to compute remaining principal and loan payoff percentages.",
+    schemaSnippet: "`MortgageOriginations (loan_number VARCHAR(20) PRIMARY KEY, borrower_name VARCHAR(100), original_principal DECIMAL(12,2), origination_date DATE)` & `PrincipalRepayments (payment_id VARCHAR(32) PRIMARY KEY, loan_number VARCHAR(20), principal_paid DECIMAL(10,2))`",
+    targetQuery: `SELECT m.loan_number, m.borrower_name, m.original_principal,\n       COALESCE(p.lifetime_principal_paid, 0.00) AS total_principal_repaid,\n       (m.original_principal - COALESCE(p.lifetime_principal_paid, 0.00)) AS current_upb_usd,\n       ROUND((COALESCE(p.lifetime_principal_paid, 0.00) / m.original_principal) * 100.0, 1) AS principal_repaid_pct\nFROM MortgageOriginations m\nLEFT JOIN (\n  SELECT loan_number, SUM(principal_paid) AS lifetime_principal_paid\n  FROM PrincipalRepayments\n  GROUP BY loan_number\n) p ON m.loan_number = p.loan_number\nORDER BY current_upb_usd DESC;`,
+    eli5Story: "Subtracting all monthly mortgage payments made so far from the original home loan balance, without duplicating the loan for each of the 360 monthly payments.",
+    commonMistakes: "Joining 360 monthly payments raw without pre-aggregation, leading to memory-exhausting join fan-outs.",
+    learningOutcomes: "Calculate mortgage pool metrics and current balances using subquery joins."
+  },
+  {
+    title: "Corporate Treasury Bond Portfolios to Periodic Coupon Payments",
+    ind: "Fintech",
+    diff: "Medium",
+    table: "TreasuryBonds",
+    scenario: "Computing cumulative coupon interest income collected across fixed-income bond holdings without multiplying bond face values.",
+    businessObjective: "Left join TreasuryBonds to a pre-aggregated summary of CouponDisbursements to report total cash yields per bond issue.",
+    schemaSnippet: "`TreasuryBonds (cusip VARCHAR(9) PRIMARY KEY, issuer VARCHAR(64), face_value_usd DECIMAL(14,2), maturity_date DATE)` & `CouponDisbursements (coupon_id VARCHAR(32) PRIMARY KEY, cusip VARCHAR(9), amount_paid DECIMAL(10,2))`",
+    targetQuery: `SELECT b.cusip, b.issuer, b.face_value_usd,\n       COALESCE(c.total_coupons_collected, 0.00) AS total_coupons_collected,\n       ROUND((COALESCE(c.total_coupons_collected, 0.00) / b.face_value_usd) * 100.0, 2) AS cumulative_cash_yield_pct\nFROM TreasuryBonds b\nLEFT JOIN (\n  SELECT cusip, SUM(amount_paid) AS total_coupons_collected\n  FROM CouponDisbursements\n  GROUP BY cusip\n) c ON b.cusip = c.cusip\nORDER BY cumulative_cash_yield_pct DESC;`,
+    eli5Story: "Adding up all the semi-annual interest checks collected on a treasury bond to see our total return, keeping exactly one row per bond.",
+    commonMistakes: "Summing face_value_usd alongside raw coupon rows, which multiplies the bond's original value by the number of coupons received.",
+    learningOutcomes: "Prevent bond face value inflation in fixed-income portfolio analytics."
+  },
+  {
+    title: "Revolving Credit Facilities to Multi-Draw Borrowing Notes",
+    ind: "Fintech",
+    diff: "Easy",
+    table: "CreditFacilities",
+    scenario: "Tracking available borrowing headroom on corporate syndicated revolving credit lines.",
+    businessObjective: "Left join CreditFacilities to pre-aggregated drawdown totals to compute undrawn commitment fees and remaining borrowing capacity.",
+    schemaSnippet: "`CreditFacilities (facility_id VARCHAR(32) PRIMARY KEY, borrower_name VARCHAR(100), total_commitment_usd DECIMAL(14,2))` & `FacilityDrawdowns (draw_id VARCHAR(32) PRIMARY KEY, facility_id VARCHAR(32), draw_amount DECIMAL(12,2))`",
+    targetQuery: `SELECT f.facility_id, f.borrower_name, f.total_commitment_usd,\n       COALESCE(d.total_drawn_usd, 0.00) AS total_drawn_usd,\n       (f.total_commitment_usd - COALESCE(d.total_drawn_usd, 0.00)) AS undrawn_headroom_usd\nFROM CreditFacilities f\nLEFT JOIN (\n  SELECT facility_id, SUM(draw_amount) AS total_drawn_usd\n  FROM FacilityDrawdowns\n  GROUP BY facility_id\n) d ON f.facility_id = d.facility_id\nORDER BY undrawn_headroom_usd ASC;`,
+    eli5Story: "Checking how much credit limit a corporate client has left by subtracting all their past loan withdrawals from their maximum credit line.",
+    commonMistakes: "Running a raw join which duplicates the facility commitment row for every drawdown.",
+    learningOutcomes: "Calculate corporate borrowing capacity via pre-aggregated draw totals."
+  },
+
+  // --- SAAS ---
+  {
+    title: "Enterprise SaaS Contracts to Monthly Add-on Overage Billings",
+    ind: "SaaS",
+    diff: "Medium",
+    table: "SaasContracts",
+    scenario: "Computing net annual customer contract value by summing base contract price with pre-aggregated monthly add-on overages.",
+    businessObjective: "Left join SaasContracts to a pre-aggregated subquery of MonthlyAddOns to compute total billable customer lifetime revenue.",
+    schemaSnippet: "`SaasContracts (contract_id VARCHAR(32) PRIMARY KEY, customer_name VARCHAR(100), base_annual_fee_usd DECIMAL(12,2), start_date DATE)` & `MonthlyAddOns (addon_id VARCHAR(32) PRIMARY KEY, contract_id VARCHAR(32), overage_fee_usd DECIMAL(10,2))`",
+    targetQuery: `SELECT c.contract_id, c.customer_name, c.base_annual_fee_usd,\n       COALESCE(a.total_overages_usd, 0.00) AS total_overages_usd,\n       (c.base_annual_fee_usd + COALESCE(a.total_overages_usd, 0.00)) AS total_account_spend_usd\nFROM SaasContracts c\nLEFT JOIN (\n  SELECT contract_id, SUM(overage_fee_usd) AS total_overages_usd\n  FROM MonthlyAddOns\n  GROUP BY contract_id\n) a ON c.contract_id = a.contract_id\nORDER BY total_account_spend_usd DESC;`,
+    eli5Story: "Adding base annual software subscription cost plus all 12 monthly cloud overage fees together, keeping 1 row per customer.",
+    commonMistakes: "Joining raw monthly add-on rows and summing base_annual_fee_usd, multiplying the base fee by 12.",
+    learningOutcomes: "Combine fixed contract pricing with variable consumption fees via pre-aggregated subqueries."
+  },
+  {
+    title: "Priority Customer Accounts to Multi-Agent Support Escalations",
+    ind: "SaaS",
+    diff: "Easy",
+    table: "PriorityAccounts",
+    scenario: "Summarizing customer support burden across high-ARR SaaS tenants by counting tickets and escalations without duplicating tenant records.",
+    businessObjective: "Left join PriorityAccounts to a pre-aggregated ticket summary subquery to report ticket counts and urgent escalation totals.",
+    schemaSnippet: "`PriorityAccounts (account_id VARCHAR(32) PRIMARY KEY, company_name VARCHAR(100), arr_usd DECIMAL(10,2))` & `SupportTickets (ticket_id VARCHAR(32) PRIMARY KEY, account_id VARCHAR(32), is_escalated BOOLEAN)`",
+    targetQuery: `SELECT a.account_id, a.company_name, a.arr_usd,\n       COALESCE(t.ticket_count, 0) AS total_tickets,\n       COALESCE(t.escalated_count, 0) AS total_escalated_tickets\nFROM PriorityAccounts a\nLEFT JOIN (\n  SELECT account_id,\n         COUNT(ticket_id) AS ticket_count,\n         SUM(CASE WHEN is_escalated = TRUE THEN 1 ELSE 0 END) AS escalated_count\n  FROM SupportTickets\n  GROUP BY account_id\n) t ON a.account_id = t.account_id\nORDER BY total_escalated_tickets DESC;`,
+    eli5Story: "Counting how many total support tickets and emergency escalations each big company filed this month, keeping 1 clean row per account.",
+    commonMistakes: "Using a direct join and grouping by account, which works for simple counts but breaks as soon as other 1-to-many tables are added.",
+    learningOutcomes: "Structure multi-metric support ticket summaries using derived subqueries."
+  },
+  {
+    title: "Engineering Microservices to Distributed Tracing Latency Spikes",
+    ind: "SaaS",
+    diff: "Hard",
+    table: "Microservices",
+    scenario: "Correlating software microservices with downstream OpenTelemetry span traces to evaluate p99 latency without multiplying service records.",
+    businessObjective: "Left join Microservices to a pre-aggregated subquery of SpanTraces to calculate average duration and high-latency incident counts.",
+    schemaSnippet: "`Microservices (service_id VARCHAR(32) PRIMARY KEY, service_name VARCHAR(64), owner_team VARCHAR(32))` & `SpanTraces (trace_id VARCHAR(64) PRIMARY KEY, service_id VARCHAR(32), duration_ms INT)`",
+    targetQuery: `SELECT m.service_id, m.service_name, m.owner_team,\n       COALESCE(s.trace_count, 0) AS total_traces_recorded,\n       COALESCE(s.avg_duration_ms, 0) AS avg_latency_ms,\n       COALESCE(s.spikes_over_1000ms, 0) AS latency_spike_count\nFROM Microservices m\nLEFT JOIN (\n  SELECT service_id,\n         COUNT(trace_id) AS trace_count,\n         ROUND(AVG(duration_ms)) AS avg_duration_ms,\n         SUM(CASE WHEN duration_ms > 1000 THEN 1 ELSE 0 END) AS spikes_over_1000ms\n  FROM SpanTraces\n  GROUP BY service_id\n) s ON m.service_id = s.service_id\nORDER BY latency_spike_count DESC;`,
+    eli5Story: "Checking which microservice backend code is running slow, averaging millions of web requests down into one row per service.",
+    commonMistakes: "Joining millions of raw trace spans directly into the primary service table, crashing query memory.",
+    learningOutcomes: "Pre-aggregate high-throughput observability telemetry prior to joining against service metadata."
+  },
+  {
+    title: "Multi-Tenant Organizations to Departmental Storage Buckets",
+    ind: "SaaS",
+    diff: "Easy",
+    table: "SaaSOrganizations",
+    scenario: "Computing total cloud object storage consumption per enterprise organization across dozens of departmental S3 buckets.",
+    businessObjective: "Left join SaaSOrganizations to a pre-aggregated summary of StorageBuckets to compute total terabytes consumed.",
+    schemaSnippet: "`SaaSOrganizations (org_id VARCHAR(32) PRIMARY KEY, org_name VARCHAR(100), storage_limit_gb INT)` & `StorageBuckets (bucket_id VARCHAR(32) PRIMARY KEY, org_id VARCHAR(32), storage_used_gb INT)`",
+    targetQuery: `SELECT o.org_id, o.org_name, o.storage_limit_gb,\n       COALESCE(b.total_gb_used, 0) AS total_gb_used,\n       (o.storage_limit_gb - COALESCE(b.total_gb_used, 0)) AS remaining_quota_gb\nFROM SaaSOrganizations o\nLEFT JOIN (\n  SELECT org_id, SUM(storage_used_gb) AS total_gb_used\n  FROM StorageBuckets\n  GROUP BY org_id\n) b ON o.org_id = b.org_id\nORDER BY remaining_quota_gb ASC;`,
+    eli5Story: "Adding up all the cloud storage used by marketing, sales, and engineering folders for each client company, comparing it to their storage plan limit.",
+    commonMistakes: "Duplicating the org row for every single folder/bucket created by the customer.",
+    learningOutcomes: "Roll up sub-resource asset utilization to top-level organizational accounts."
+  },
+
+  // --- RETAIL ---
+  {
+    title: "Customer Purchase Orders to Multi-Warehouse Partial Split Shipments",
+    ind: "Retail",
+    diff: "Hard",
+    table: "CustomerOrders",
+    scenario: "Reconciling e-commerce customer orders against multiple warehouse partial split shipments to compute fulfillment completion percentages.",
+    businessObjective: "Left join CustomerOrders to a pre-aggregated subquery of Shipments to compare total ordered units vs total shipped units.",
+    schemaSnippet: "`CustomerOrders (order_id VARCHAR(32) PRIMARY KEY, customer_id VARCHAR(32), total_units_ordered INT, order_date DATE)` & `ShipmentPackages (package_id VARCHAR(32) PRIMARY KEY, order_id VARCHAR(32), units_shipped INT, carrier VARCHAR(16))`",
+    targetQuery: `SELECT o.order_id, o.customer_id, o.total_units_ordered,\n       COALESCE(s.units_fulfilled, 0) AS total_units_fulfilled,\n       (o.total_units_ordered - COALESCE(s.units_fulfilled, 0)) AS backordered_units,\n       CASE\n         WHEN COALESCE(s.units_fulfilled, 0) = 0 THEN 'UNFULFILLED'\n         WHEN COALESCE(s.units_fulfilled, 0) < o.total_units_ordered THEN 'PARTIALLY_SHIPPED'\n         ELSE 'FULLY_SHIPPED'\n       END AS fulfillment_status\nFROM CustomerOrders o\nLEFT JOIN (\n  SELECT order_id, SUM(units_shipped) AS units_fulfilled\n  FROM ShipmentPackages\n  GROUP BY order_id\n) s ON o.order_id = s.order_id\nORDER BY backordered_units DESC;`,
+    eli5Story: "When an online order of 5 items is shipped in 3 separate boxes from 3 different warehouses, pre-summing the boxes tells us exactly how many items are still missing.",
+    commonMistakes: "Directly joining shipments and summing total_units_ordered, which triples the customer's ordered items.",
+    learningOutcomes: "Audit multi-parcel split fulfillment pipelines using derived subquery joins."
+  },
+  {
+    title: "Promotional Discount Codes to Multi-Channel Cart Redemptions",
+    ind: "Retail",
+    diff: "Medium",
+    table: "DiscountCodes",
+    scenario: "Monitoring marketing discount code budgets by aggregating coupon redemptions without multiplying promotional campaign budgets.",
+    businessObjective: "Left join DiscountCodes to a pre-aggregated summary of CartRedemptions to compute total discounts granted and remaining budget cap.",
+    schemaSnippet: "`DiscountCodes (promo_code VARCHAR(20) PRIMARY KEY, campaign_name VARCHAR(64), max_budget_usd DECIMAL(10,2))` & `CartRedemptions (redemption_id VARCHAR(32) PRIMARY KEY, promo_code VARCHAR(20), discount_usd DECIMAL(8,2))`",
+    targetQuery: `SELECT d.promo_code, d.campaign_name, d.max_budget_usd,\n       COALESCE(r.total_redemptions, 0) AS times_used,\n       COALESCE(r.total_discount_given, 0.00) AS total_discount_granted_usd,\n       (d.max_budget_usd - COALESCE(r.total_discount_given, 0.00)) AS remaining_promo_budget_usd\nFROM DiscountCodes d\nLEFT JOIN (\n  SELECT promo_code,\n         COUNT(redemption_id) AS total_redemptions,\n         SUM(discount_usd) AS total_discount_given\n  FROM CartRedemptions\n  GROUP BY promo_code\n) r ON d.promo_code = r.promo_code\nORDER BY remaining_promo_budget_usd ASC;`,
+    eli5Story: "Tracking how much money was saved by shoppers using the code 'SUMMER20', making sure we turn off the coupon before we exceed our $50k marketing budget.",
+    commonMistakes: "Joining raw redemptions and aggregating without subqueries when joining to a third table (e.g. products).",
+    learningOutcomes: "Track promotional coupon burn rates using pre-aggregated redemption logs."
+  },
+  {
+    title: "Vendor Purchase Orders to Receiving Dock Inspection Lots",
+    ind: "Retail",
+    diff: "Easy",
+    table: "VendorPurchaseOrders",
+    scenario: "Tracking warehouse receiving progress across vendor purchase orders that arrive in multiple delivery truck shipments.",
+    businessObjective: "Left join VendorPurchaseOrders to pre-aggregated dock inspection receipts to calculate outstanding units awaiting delivery.",
+    schemaSnippet: "`VendorPurchaseOrders (po_id VARCHAR(32) PRIMARY KEY, vendor_name VARCHAR(64), total_ordered_units INT)` & `DockReceipts (receipt_id VARCHAR(32) PRIMARY KEY, po_id VARCHAR(32), received_units INT)`",
+    targetQuery: `SELECT po.po_id, po.vendor_name, po.total_ordered_units,\n       COALESCE(d.total_received_units, 0) AS units_received_to_date,\n       (po.total_ordered_units - COALESCE(d.total_received_units, 0)) AS remaining_units_due\nFROM VendorPurchaseOrders po\nLEFT JOIN (\n  SELECT po_id, SUM(received_units) AS total_received_units\n  FROM DockReceipts\n  GROUP BY po_id\n) d ON po.po_id = d.po_id\nORDER BY remaining_units_due DESC;`,
+    eli5Story: "Tracking how many boxes of shampoo have arrived on the dock across 4 delivery trucks, comparing it to our purchase order to see what's still missing.",
+    commonMistakes: "Using an INNER JOIN which omits newly created purchase orders that have not yet had their first truck arrive.",
+    learningOutcomes: "Track inbound supplier fulfillment pacing using pre-aggregated receipt logs."
+  },
+  {
+    title: "Store Gift Card Batches to POS Register Balance Drawdowns",
+    ind: "Retail",
+    diff: "Medium",
+    table: "GiftCards",
+    scenario: "Auditing outstanding store gift card financial liability by pre-aggregating cashier register balance drawdowns.",
+    businessObjective: "Left join GiftCards to pre-aggregated redemptions to compute unspent gift card breakage and current active liability balance.",
+    schemaSnippet: "`GiftCards (card_id VARCHAR(20) PRIMARY KEY, original_amount_usd DECIMAL(8,2), issue_date DATE)` & `CardRedemptions (redemption_id VARCHAR(32) PRIMARY KEY, card_id VARCHAR(20), spend_amount_usd DECIMAL(8,2))`",
+    targetQuery: `SELECT g.card_id, g.original_amount_usd,\n       COALESCE(r.total_spent_usd, 0.00) AS total_spent_to_date,\n       (g.original_amount_usd - COALESCE(r.total_spent_usd, 0.00)) AS remaining_card_balance_usd\nFROM GiftCards g\nLEFT JOIN (\n  SELECT card_id, SUM(spend_amount_usd) AS total_spent_usd\n  FROM CardRedemptions\n  GROUP BY card_id\n) r ON g.card_id = r.card_id\nWHERE g.original_amount_usd - COALESCE(r.total_spent_usd, 0.00) > 0.00\nORDER BY remaining_card_balance_usd DESC;`,
+    eli5Story: "Calculating how much unspent money is still sitting on store gift cards by subtracting all store purchases without duplicating the card row.",
+    commonMistakes: "Allowing negative balances due to missing COALESCE or improper subtraction order.",
+    learningOutcomes: "Compute unredeemed customer gift card balance sheet liabilities."
+  },
+
+  // --- HEALTHCARE ---
+  {
+    title: "Hospital Inpatient Stays to Multi-Specialist Clinical Consultations",
+    ind: "Healthcare",
+    diff: "Medium",
+    table: "InpatientStays",
+    scenario: "Computing total physician consultation fees per patient admission stay by pre-aggregating multi-specialist bedside consult bills.",
+    businessObjective: "Left join InpatientStays to a pre-aggregated subquery of SpecialistConsults to report total consultation billing per hospital stay.",
+    schemaSnippet: "`InpatientStays (stay_id VARCHAR(32) PRIMARY KEY, patient_id VARCHAR(32), room_charge_usd DECIMAL(10,2), admit_date DATE)` & `SpecialistConsults (consult_id VARCHAR(32) PRIMARY KEY, stay_id VARCHAR(32), consult_fee_usd DECIMAL(8,2))`",
+    targetQuery: `SELECT s.stay_id, s.patient_id, s.room_charge_usd,\n       COALESCE(c.total_consult_fees, 0.00) AS total_consult_fees_usd,\n       (s.room_charge_usd + COALESCE(c.total_consult_fees, 0.00)) AS total_hospital_bill_usd\nFROM InpatientStays s\nLEFT JOIN (\n  SELECT stay_id, SUM(consult_fee_usd) AS total_consult_fees\n  FROM SpecialistConsults\n  GROUP BY stay_id\n) c ON s.stay_id = c.stay_id\nORDER BY total_hospital_bill_usd DESC;`,
+    eli5Story: "Adding the hospital bed charges to all the doctor consult visits (cardiologist, neurologist, etc.), without duplicating the bed charge for every doctor who walked into the room.",
+    commonMistakes: "Summing room_charge_usd directly on a raw join, which multiplies room charges by the number of doctor visits.",
+    learningOutcomes: "Combine room charges with pre-aggregated specialist fee line items."
+  },
+  {
+    title: "Medical Malpractice Policies to Open Litigation Reserve Adjustments",
+    ind: "Healthcare",
+    diff: "Hard",
+    table: "MalpracticePolicies",
+    scenario: "Calculating total loss reserves on healthcare provider liability policies by pre-aggregating multi-year legal defense and indemnity reserve adjustments.",
+    businessObjective: "Left join MalpracticePolicies to a pre-aggregated subquery of ClaimReserves to report total outstanding financial loss exposure.",
+    schemaSnippet: "`MalpracticePolicies (policy_id VARCHAR(32) PRIMARY KEY, hospital_name VARCHAR(100), aggregate_coverage_limit_usd DECIMAL(14,2))` & `ClaimReserves (reserve_id VARCHAR(32) PRIMARY KEY, policy_id VARCHAR(32), reserve_amount_usd DECIMAL(12,2))`",
+    targetQuery: `SELECT p.policy_id, p.hospital_name, p.aggregate_coverage_limit_usd,\n       COALESCE(r.total_reserves_held, 0.00) AS total_litigation_reserves_usd,\n       (p.aggregate_coverage_limit_usd - COALESCE(r.total_reserves_held, 0.00)) AS remaining_policy_headroom_usd\nFROM MalpracticePolicies p\nLEFT JOIN (\n  SELECT policy_id, SUM(reserve_amount_usd) AS total_reserves_held\n  FROM ClaimReserves\n  GROUP BY policy_id\n) r ON p.policy_id = r.policy_id\nORDER BY total_litigation_reserves_usd DESC;`,
+    eli5Story: "Adding up all money set aside for pending doctor malpractice lawsuits to verify the hospital's insurance policy hasn't run out of money.",
+    commonMistakes: "Multiplying policy limits when a hospital has 10 active malpractice claims on a raw join.",
+    learningOutcomes: "Model insurance loss reserves and policy limit depletion via pre-aggregated subqueries."
+  },
+  {
+    title: "Pharmacy Bulk Drug Batches to Unit Dose Dispensations",
+    ind: "Healthcare",
+    diff: "Easy",
+    table: "BulkDrugBatches",
+    scenario: "Reconciling bulk liquid medication inventory against hundreds of individual patient syringe dispensations in hospital pharmacies.",
+    businessObjective: "Left join BulkDrugBatches to pre-aggregated dispensations to compute remaining batch volume and detect unaccounted medication loss.",
+    schemaSnippet: "`BulkDrugBatches (batch_lot VARCHAR(32) PRIMARY KEY, drug_name VARCHAR(64), total_volume_ml DECIMAL(8,2))` & `DoseDispensations (dose_id VARCHAR(32) PRIMARY KEY, batch_lot VARCHAR(32), volume_ml DECIMAL(6,2))`",
+    targetQuery: `SELECT b.batch_lot, b.drug_name, b.total_volume_ml,\n       COALESCE(d.total_dispensed_ml, 0.0) AS total_volume_dispensed_ml,\n       (b.total_volume_ml - COALESCE(d.total_dispensed_ml, 0.0)) AS remaining_volume_ml\nFROM BulkDrugBatches b\nLEFT JOIN (\n  SELECT batch_lot, SUM(volume_ml) AS total_dispensed_ml\n  FROM DoseDispensations\n  GROUP BY batch_lot\n) d ON b.batch_lot = d.batch_lot\nORDER BY remaining_volume_ml ASC;`,
+    eli5Story: "Tracking a 1,000ml bottle of liquid medicine to see how much is left after nurses pulled 50 small syringe doses from it.",
+    commonMistakes: "Using an INNER JOIN which omits full, unopened medicine bottles that have had zero doses dispensed.",
+    learningOutcomes: "Track bulk clinical inventory drawdown using pre-aggregated dispensation metrics."
+  },
+  {
+    title: "Emergency Department Visits to Diagnostic Radiology Image Series",
+    ind: "Healthcare",
+    diff: "Medium",
+    table: "EdVisits",
+    scenario: "Summarizing radiology diagnostic imaging workload per ER patient admission without multiplying admission stay records.",
+    businessObjective: "Left join EdVisits to pre-aggregated radiology scans to report scan counts and total radiation dosage millisieverts per patient stay.",
+    schemaSnippet: "`EdVisits (visit_id VARCHAR(32) PRIMARY KEY, patient_mrn VARCHAR(16), triage_acuity INT, admit_time TIMESTAMP)` & `RadiologyScans (scan_id VARCHAR(32) PRIMARY KEY, visit_id VARCHAR(32), radiation_msv DECIMAL(6,2))`",
+    targetQuery: `SELECT v.visit_id, v.patient_mrn, v.triage_acuity,\n       COALESCE(r.scan_count, 0) AS total_scans_performed,\n       COALESCE(r.total_radiation_msv, 0.0) AS total_cumulative_radiation_msv\nFROM EdVisits v\nLEFT JOIN (\n  SELECT visit_id,\n         COUNT(scan_id) AS scan_count,\n         SUM(radiation_msv) AS total_radiation_msv\n  FROM RadiologyScans\n  GROUP BY visit_id\n) r ON v.visit_id = r.visit_id\nORDER BY total_cumulative_radiation_msv DESC;`,
+    eli5Story: "Adding up all X-rays and CT scans a patient received in the emergency room to monitor their radiation exposure safely.",
+    commonMistakes: "Duplicating emergency visit timestamps when joining multiple X-ray scans.",
+    learningOutcomes: "Aggregate clinical radiology metrics per patient encounter using subquery joins."
+  },
+
+  // --- LOGISTICS ---
+  {
+    title: "Ocean Freight Bills of Lading to Intermodal Drayage Delivery Legs",
+    ind: "Logistics",
+    diff: "Hard",
+    table: "BillsOfLading",
+    scenario: "Reconciling master ocean container bills of lading against multiple land transport legs (port drayage, rail spur, final truck delivery).",
+    businessObjective: "Left join BillsOfLading to pre-aggregated transport legs to compute total freight transit cost per master ocean container.",
+    schemaSnippet: "`BillsOfLading (bol_number VARCHAR(32) PRIMARY KEY, ocean_carrier VARCHAR(64), ocean_freight_usd DECIMAL(10,2))` & `DrayageLegs (leg_id VARCHAR(32) PRIMARY KEY, bol_number VARCHAR(32), drayage_cost_usd DECIMAL(8,2))`",
+    targetQuery: `SELECT b.bol_number, b.ocean_carrier, b.ocean_freight_usd,\n       COALESCE(d.total_inland_drayage, 0.00) AS total_inland_drayage_usd,\n       (b.ocean_freight_usd + COALESCE(d.total_inland_drayage, 0.00)) AS total_landed_freight_cost_usd\nFROM BillsOfLading b\nLEFT JOIN (\n  SELECT bol_number, SUM(drayage_cost_usd) AS total_inland_drayage\n  FROM DrayageLegs\n  GROUP BY bol_number\n) d ON b.bol_number = d.bol_number\nORDER BY total_landed_freight_cost_usd DESC;`,
+    eli5Story: "Adding the ocean ship fee plus the 3 train and truck legs needed to get a container from Shanghai to Chicago, without multiplying the ocean fee by 3.",
+    commonMistakes: "Summing ocean_freight_usd on a raw join, inflating shipping cost by the number of inland truck legs.",
+    learningOutcomes: "Calculate multi-modal freight cost summaries using pre-aggregated inland transit legs."
+  },
+  {
+    title: "Supply Chain Purchase Orders to Packing Manifest Line Items",
+    ind: "Logistics",
+    diff: "Medium",
+    table: "SupplyOrders",
+    scenario: "Comparing purchase order line items against packed shipping manifests to verify cartons are completely packed before container sealing.",
+    businessObjective: "Left join SupplyOrders to a pre-aggregated subquery of PackingManifests to calculate packing completion ratios.",
+    schemaSnippet: "`SupplyOrders (po_code VARCHAR(32) PRIMARY KEY, total_weight_kg DECIMAL(10,2))` & `PackingManifests (manifest_id VARCHAR(32) PRIMARY KEY, po_code VARCHAR(32), packed_weight_kg DECIMAL(10,2))`",
+    targetQuery: `SELECT s.po_code, s.total_weight_kg,\n       COALESCE(p.packed_weight, 0.00) AS total_packed_weight_kg,\n       (s.total_weight_kg - COALESCE(p.packed_weight, 0.00)) AS remaining_unpacked_weight_kg\nFROM SupplyOrders s\nLEFT JOIN (\n  SELECT po_code, SUM(packed_weight_kg) AS packed_weight\n  FROM PackingManifests\n  GROUP BY po_code\n) p ON s.po_code = p.po_code\nORDER BY remaining_unpacked_weight_kg DESC;`,
+    eli5Story: "Checking how many kilograms of goods have been packed into shipping boxes so far, compared to what the client ordered.",
+    commonMistakes: "Omitting purchase orders with zero packed boxes by using an INNER JOIN.",
+    learningOutcomes: "Track cargo packing progress across logistics distribution hubs."
+  },
+  {
+    title: "Fleet Delivery Vans to Telematics GPS Speeding and Harsh Braking Events",
+    ind: "Logistics",
+    diff: "Easy",
+    table: "FleetVans",
+    scenario: "Evaluating delivery driver safety across urban delivery routes by aggregating harsh braking and speeding incidents per vehicle.",
+    businessObjective: "Left join FleetVans to pre-aggregated safety telemetry to rank vehicles by safety violation count without duplicating vehicle records.",
+    schemaSnippet: "`FleetVans (van_id VARCHAR(16) PRIMARY KEY, assigned_depot VARCHAR(32), route_miles INT)` & `TelematicsAlerts (alert_id BIGINT PRIMARY KEY, van_id VARCHAR(16), alert_type VARCHAR(24))`",
+    targetQuery: `SELECT v.van_id, v.assigned_depot, v.route_miles,\n       COALESCE(t.total_alerts, 0) AS total_safety_alerts,\n       COALESCE(t.speeding_count, 0) AS speeding_events,\n       COALESCE(t.harsh_braking_count, 0) AS harsh_braking_events\nFROM FleetVans v\nLEFT JOIN (\n  SELECT van_id,\n         COUNT(alert_id) AS total_alerts,\n         SUM(CASE WHEN alert_type = 'SPEEDING' THEN 1 ELSE 0 END) AS speeding_count,\n         SUM(CASE WHEN alert_type = 'HARSH_BRAKE' THEN 1 ELSE 0 END) AS harsh_braking_count\n  FROM TelematicsAlerts\n  GROUP BY van_id\n) t ON v.van_id = t.van_id\nORDER BY total_safety_alerts DESC;`,
+    eli5Story: "Counting how many times each delivery van sped or slammed on the brakes today, giving safe drivers a clean score of 0.",
+    commonMistakes: "Using a raw join that multiplies route_miles by the number of safety alerts when calculating depot fleet mileage.",
+    learningOutcomes: "Aggregate multi-category telemetry events using pre-aggregated subqueries."
+  },
+  {
+    title: "Warehouse Storage Aisles to Robotic Picking Cycle Counts",
+    ind: "Logistics",
+    diff: "Medium",
+    table: "WarehouseAisles",
+    scenario: "Measuring inventory picking activity per warehouse storage aisle by summing robotic vehicle visits without duplicating aisle metadata.",
+    businessObjective: "Left join WarehouseAisles to pre-aggregated robotic picking logs to report total units picked per storage zone.",
+    schemaSnippet: "`WarehouseAisles (aisle_id VARCHAR(16) PRIMARY KEY, zone_name VARCHAR(16), total_bin_slots INT)` & `RoboticPicks (pick_id VARCHAR(32) PRIMARY KEY, aisle_id VARCHAR(16), units_picked INT)`",
+    targetQuery: `SELECT a.aisle_id, a.zone_name, a.total_bin_slots,\n       COALESCE(p.total_picks_count, 0) AS total_picks_performed,\n       COALESCE(p.total_units_picked, 0) AS total_units_retrieved\nFROM WarehouseAisles a\nLEFT JOIN (\n  SELECT aisle_id,\n         COUNT(pick_id) AS total_picks_count,\n         SUM(units_picked) AS total_units_picked\n  FROM RoboticPicks\n  GROUP BY aisle_id\n) p ON a.aisle_id = p.aisle_id\nORDER BY total_units_retrieved DESC;`,
+    eli5Story: "Counting how many boxes warehouse robots picked out of Aisle 4 today, showing 0 for quiet aisles storing slow-moving items.",
+    commonMistakes: "Duplicating bin slot capacity when running multi-aisle warehouse reports.",
+    learningOutcomes: "Measure physical facility throughput using pre-aggregated picking logs."
+  },
+
+  // --- MEDIA ---
+  {
+    title: "Music Album Master Releases to Global Streaming Platform Splits",
+    ind: "Media",
+    diff: "Medium",
+    table: "AlbumMasters",
+    scenario: "Calculating total record label revenue across albums by pre-aggregating international streams across Spotify, Apple Music, and YouTube.",
+    businessObjective: "Left join AlbumMasters to pre-aggregated streaming logs to calculate total album stream count and label earnings.",
+    schemaSnippet: "`AlbumMasters (album_upc VARCHAR(14) PRIMARY KEY, artist_name VARCHAR(100), album_title VARCHAR(100), release_year INT)` & `PlatformStreams (log_id BIGINT PRIMARY KEY, album_upc VARCHAR(14), net_earnings_usd DECIMAL(10,2))`",
+    targetQuery: `SELECT a.album_upc, a.artist_name, a.album_title, a.release_year,\n       COALESCE(s.total_label_earnings_usd, 0.00) AS total_label_earnings_usd\nFROM AlbumMasters a\nLEFT JOIN (\n  SELECT album_upc, SUM(net_earnings_usd) AS total_label_earnings_usd\n  FROM PlatformStreams\n  GROUP BY album_upc\n) s ON a.album_upc = s.album_upc\nORDER BY total_label_earnings_usd DESC;`,
+    eli5Story: "Adding up money made by an album across Spotify, Apple Music, and YouTube into one total without duplicating the album row.",
+    commonMistakes: "Joining raw streams and attempting to group by album title, which breaks when different artists release albums with the same title.",
+    learningOutcomes: "Aggregate multi-platform streaming earnings using UPC album master keys."
+  },
+  {
+    title: "Film Production Budgets to Production Assistant Petty Cash Expenses",
+    ind: "Media",
+    diff: "Hard",
+    table: "FilmProjects",
+    scenario: "Reconciling Hollywood film production budgets against hundreds of small field petty cash receipts submitted by crew members.",
+    businessObjective: "Left join FilmProjects to a pre-aggregated summary of PettyCashReceipts to compute remaining cash contingency reserves.",
+    schemaSnippet: "`FilmProjects (project_id VARCHAR(32) PRIMARY KEY, film_title VARCHAR(100), allocated_petty_cash_usd DECIMAL(10,2))` & `PettyCashReceipts (receipt_id VARCHAR(32) PRIMARY KEY, project_id VARCHAR(32), amount_usd DECIMAL(8,2))`",
+    targetQuery: `SELECT f.project_id, f.film_title, f.allocated_petty_cash_usd,\n       COALESCE(p.total_spent_usd, 0.00) AS total_petty_cash_spent_usd,\n       (f.allocated_petty_cash_usd - COALESCE(p.total_spent_usd, 0.00)) AS remaining_cash_reserve_usd,\n       ROUND((COALESCE(p.total_spent_usd, 0.00) / f.allocated_petty_cash_usd) * 100.0, 1) AS budget_burned_pct\nFROM FilmProjects f\nLEFT JOIN (\n  SELECT project_id, SUM(amount_usd) AS total_spent_usd\n  FROM PettyCashReceipts\n  GROUP BY project_id\n) p ON f.project_id = p.project_id\nORDER BY budget_burned_pct DESC;`,
+    eli5Story: "Checking how much emergency cash a movie director spent on lunch and extra coffee for the camera crew, comparing it to their $50k emergency budget.",
+    commonMistakes: "Multiplying allocated_petty_cash_usd by 500 when joining 500 small paper receipts on a raw join.",
+    learningOutcomes: "Track corporate expense burn against budget caps using pre-aggregated subqueries."
+  },
+  {
+    title: "Digital Marketing Ad Campaigns to Attributed E-Commerce Conversions",
+    ind: "Media",
+    diff: "Medium",
+    table: "AdCampaigns",
+    scenario: "Computing return on ad spend (ROAS) across social media advertising campaigns by pre-aggregating customer shopping conversions.",
+    businessObjective: "Left join AdCampaigns to pre-aggregated conversions to compute ROAS ratios without multiplying campaign budgets.",
+    schemaSnippet: "`AdCampaigns (campaign_id VARCHAR(32) PRIMARY KEY, campaign_name VARCHAR(64), total_ad_spend_usd DECIMAL(10,2))` & `ConversionEvents (conversion_id VARCHAR(32) PRIMARY KEY, campaign_id VARCHAR(32), order_value_usd DECIMAL(10,2))`",
+    targetQuery: `SELECT c.campaign_id, c.campaign_name, c.total_ad_spend_usd,\n       COALESCE(v.total_revenue_usd, 0.00) AS total_attributed_revenue_usd,\n       ROUND(COALESCE(v.total_revenue_usd, 0.00) / NULLIF(c.total_ad_spend_usd, 0), 2) AS roas_ratio\nFROM AdCampaigns c\nLEFT JOIN (\n  SELECT campaign_id, SUM(order_value_usd) AS total_revenue_usd\n  FROM ConversionEvents\n  GROUP BY campaign_id\n) v ON c.campaign_id = v.campaign_id\nORDER BY roas_ratio DESC;`,
+    eli5Story: "Calculating Return On Ad Spend: if we spent $1,000 on Instagram ads and generated $4,000 in shoe sales, our ROAS score is 4.0.",
+    commonMistakes: "Joining raw conversion events and summing total_ad_spend_usd, multiplying the marketing budget by the number of sales.",
+    learningOutcomes: "Calculate marketing ROAS metrics cleanly by isolating multi-event conversion logs in derived tables."
+  },
+  {
+    title: "Video Game Titles to In-Game Microtransaction Virtual Coin Purchases",
+    ind: "Media",
+    diff: "Easy",
+    table: "GameTitles",
+    scenario: "Measuring digital revenue across mobile video game titles by pre-aggregating in-game gem and coin microtransactions.",
+    businessObjective: "Left join GameTitles to pre-aggregated microtransactions to report total revenue per gaming title.",
+    schemaSnippet: "`GameTitles (game_id VARCHAR(16) PRIMARY KEY, game_title VARCHAR(64), studio_division VARCHAR(32))` & `CoinPurchases (tx_id BIGINT PRIMARY KEY, game_id VARCHAR(16), usd_amount DECIMAL(6,2))`",
+    targetQuery: `SELECT g.game_id, g.game_title, g.studio_division,\n       COALESCE(p.total_transactions, 0) AS microtransaction_count,\n       COALESCE(p.total_in_game_revenue, 0.00) AS total_virtual_currency_usd\nFROM GameTitles g\nLEFT JOIN (\n  SELECT game_id,\n         COUNT(tx_id) AS total_transactions,\n         SUM(usd_amount) AS total_in_game_revenue\n  FROM CoinPurchases\n  GROUP BY game_id\n) p ON g.game_id = p.game_id\nORDER BY total_virtual_currency_usd DESC;`,
+    eli5Story: "Adding up all the $0.99 and $4.99 virtual diamond purchases players bought inside our mobile video games.",
+    commonMistakes: "Excluding newly released game titles that haven't sold any virtual coins yet.",
+    learningOutcomes: "Aggregate gaming digital currency transactions using pre-aggregated subqueries."
+  },
+
+  // --- SECURITY ---
+  {
+    title: "High-Risk Vulnerability CVEs to Distributed Host Patch Verification Probes",
+    ind: "Security",
+    diff: "Medium",
+    table: "HighRiskCves",
+    scenario: "Tracking enterprise patch remediation progress across critical security vulnerabilities by pre-aggregating host scan verification logs.",
+    businessObjective: "Left join HighRiskCves to pre-aggregated host patch logs to report remediation completion percentages per CVE.",
+    schemaSnippet: "`HighRiskCves (cve_id VARCHAR(16) PRIMARY KEY, description VARCHAR(128), cvss_score DECIMAL(3,1), total_affected_hosts INT)` & `PatchVerifications (verify_id BIGINT PRIMARY KEY, cve_id VARCHAR(16), is_patched BOOLEAN)`",
+    targetQuery: `SELECT c.cve_id, c.cvss_score, c.total_affected_hosts,\n       COALESCE(p.patched_host_count, 0) AS patched_hosts,\n       (c.total_affected_hosts - COALESCE(p.patched_host_count, 0)) AS vulnerable_hosts_remaining,\n       ROUND((COALESCE(p.patched_host_count, 0) * 100.0) / c.total_affected_hosts, 1) AS remediation_pct\nFROM HighRiskCves c\nLEFT JOIN (\n  SELECT cve_id, COUNT(verify_id) AS patched_host_count\n  FROM PatchVerifications\n  WHERE is_patched = TRUE\n  GROUP BY cve_id\n) p ON c.cve_id = p.cve_id\nORDER BY vulnerable_hosts_remaining DESC;`,
+    eli5Story: "Tracking how many company laptops have installed the urgent security update for a dangerous computer bug, counting down how many are left.",
+    commonMistakes: "Filtering is_patched = TRUE in the outer WHERE clause, which drops unpatched CVEs where patched_host_count is 0.",
+    learningOutcomes: "Calculate cybersecurity remediation percentages using filtered subquery joins."
+  },
+  {
+    title: "Security Incident Post-Mortems to Correlated SIEM Log Triggers",
+    ind: "Security",
+    diff: "Hard",
+    table: "IncidentPostMortems",
+    scenario: "Measuring cyber attack blast radius by pre-aggregating correlated SIEM security alerts associated with major security incident tickets.",
+    businessObjective: "Left join IncidentPostMortems to pre-aggregated SIEM alerts to report total log volume without multiplying incident metadata.",
+    schemaSnippet: "`IncidentPostMortems (incident_id VARCHAR(32) PRIMARY KEY, incident_title VARCHAR(100), lead_responder VARCHAR(64), incident_severity VARCHAR(8))` & `SiemAlerts (alert_id VARCHAR(64) PRIMARY KEY, incident_id VARCHAR(32), log_source VARCHAR(32))`",
+    targetQuery: `SELECT i.incident_id, i.incident_title, i.incident_severity,\n       COALESCE(a.alert_count, 0) AS total_correlated_alerts,\n       COALESCE(a.unique_log_sources, 0) AS affected_log_sources_count\nFROM IncidentPostMortems i\nLEFT JOIN (\n  SELECT incident_id,\n         COUNT(alert_id) AS alert_count,\n         COUNT(DISTINCT log_source) AS unique_log_sources\n  FROM SiemAlerts\n  GROUP BY incident_id\n) a ON i.incident_id = a.incident_id\nORDER BY total_correlated_alerts DESC;`,
+    eli5Story: "Counting how many firewall and server alarms went off during a major security breach, keeping one row per incident ticket.",
+    commonMistakes: "Joining raw alerts and running COUNT(i.incident_id), which misrepresents the number of post-mortem incident reports.",
+    learningOutcomes: "Isolate high-volume SIEM alert streams in derived tables for incident blast radius summaries."
+  },
+  {
+    title: "API Endpoint Gateways to Web Application Firewall (WAF) Block Triggers",
+    ind: "Security",
+    diff: "Easy",
+    table: "ApiEndpoints",
+    scenario: "Identifying targeted API endpoints by pre-aggregating daily WAF SQL injection and cross-site scripting (XSS) attack block triggers.",
+    businessObjective: "Left join ApiEndpoints to pre-aggregated WAF block counts to rank API routes by attack frequency.",
+    schemaSnippet: "`ApiEndpoints (endpoint_id VARCHAR(32) PRIMARY KEY, http_method VARCHAR(8), route_path VARCHAR(128))` & `WafBlocks (block_id BIGINT PRIMARY KEY, endpoint_id VARCHAR(32), attack_rule VARCHAR(32))`",
+    targetQuery: `SELECT e.endpoint_id, e.http_method, e.route_path,\n       COALESCE(w.total_attacks_blocked, 0) AS total_attacks_blocked\nFROM ApiEndpoints e\nLEFT JOIN (\n  SELECT endpoint_id, COUNT(block_id) AS total_attacks_blocked\n  FROM WafBlocks\n  GROUP BY endpoint_id\n) w ON e.endpoint_id = w.endpoint_id\nORDER BY total_attacks_blocked DESC;`,
+    eli5Story: "Counting how many hacker attacks our web firewall blocked on each API route (like /login or /checkout), showing 0 for quiet routes.",
+    commonMistakes: "Dropping newly deployed API routes that have not yet had any attacks blocked.",
+    learningOutcomes: "Summarize threat defense telemetry across API gateway infrastructure."
+  },
+  {
+    title: "Corporate Identity Accounts to Multi-Factor Authenticator Push Challenges",
+    ind: "Security",
+    diff: "Medium",
+    table: "IdentityAccounts",
+    scenario: "Detecting MFA fatigue attacks (push bombing) by pre-aggregating daily push authentication attempts per employee account.",
+    businessObjective: "Left join IdentityAccounts to pre-aggregated MFA push logs to flag accounts experiencing abnormal numbers of push denials.",
+    schemaSnippet: "`IdentityAccounts (user_id VARCHAR(32) PRIMARY KEY, email VARCHAR(100), job_title VARCHAR(64))` & `MfaPushes (push_id BIGINT PRIMARY KEY, user_id VARCHAR(32), push_result VARCHAR(16))`",
+    targetQuery: `SELECT u.user_id, u.email, u.job_title,\n       COALESCE(p.total_pushes, 0) AS total_mfa_prompts,\n       COALESCE(p.denied_count, 0) AS denied_push_count,\n       CASE\n         WHEN COALESCE(p.denied_count, 0) >= 5 THEN 'POTENTIAL_MFA_FATIGUE_ATTACK'\n         ELSE 'NORMAL'\n       END AS threat_status\nFROM IdentityAccounts u\nLEFT JOIN (\n  SELECT user_id,\n         COUNT(push_id) AS total_pushes,\n         SUM(CASE WHEN push_result = 'DENIED' THEN 1 ELSE 0 END) AS denied_count\n  FROM MfaPushes\n  GROUP BY user_id\n) p ON u.user_id = p.user_id\nORDER BY denied_push_count DESC;`,
+    eli5Story: "Looking for workers who had 5 or more fake phone login prompts denied in a row, which means a hacker is trying to annoy them into clicking Approve.",
+    commonMistakes: "Grouping by user email on a raw join when multiple MFA tables are joined, generating a combinatorial row explosion.",
+    learningOutcomes: "Detect cyber security authentication anomalies using pre-aggregated conditional counts."
+  },
+
+  // --- HARDWARE ---
+  {
+    title: "Fabrication Silicon Wafers to Die-Level Electronic Probe Yield Measurements",
+    ind: "Hardware",
+    diff: "Hard",
+    table: "SiliconWafers",
+    scenario: "Computing semiconductor wafer yield by pre-aggregating thousands of individual microchip electronic die probe test results per wafer.",
+    businessObjective: "Left join SiliconWafers to a pre-aggregated subquery of DieProbes to compute net working die count and wafer yield percentage.",
+    schemaSnippet: "`SiliconWafers (wafer_serial VARCHAR(32) PRIMARY KEY, fab_lot VARCHAR(32), total_dies_printed INT)` & `DieProbes (die_id BIGINT PRIMARY KEY, wafer_serial VARCHAR(32), is_pass BOOLEAN)`",
+    targetQuery: `SELECT w.wafer_serial, w.fab_lot, w.total_dies_printed,\n       COALESCE(d.passing_dies, 0) AS functional_chips_passed,\n       ROUND((COALESCE(d.passing_dies, 0) * 100.0) / w.total_dies_printed, 2) AS wafer_yield_pct\nFROM SiliconWafers w\nLEFT JOIN (\n  SELECT wafer_serial, COUNT(die_id) AS passing_dies\n  FROM DieProbes\n  WHERE is_pass = TRUE\n  GROUP BY wafer_serial\n) d ON w.wafer_serial = d.wafer_serial\nORDER BY wafer_yield_pct DESC;`,
+    eli5Story: "Counting how many good computer chips worked out of the 800 printed on each circular silicon pizza (wafer), keeping one row per wafer.",
+    commonMistakes: "Joining all 800 raw die test rows directly into manufacturing reports, causing massive query memory slowdowns.",
+    learningOutcomes: "Perform large-scale manufacturing yield calculations using pre-aggregated probe subqueries."
+  },
+  {
+    title: "Finished Laptop Assembly Lots to Drop-Test Accelerometer Shock Readings",
+    ind: "Hardware",
+    diff: "Medium",
+    table: "AssemblyLots",
+    scenario: "Auditing ruggedized laptop quality control by pre-aggregating shock impact G-force sensor readings across quality assurance drop tests.",
+    businessObjective: "Left join AssemblyLots to pre-aggregated drop test telemetry to report maximum G-force and shock failure counts per lot.",
+    schemaSnippet: "`AssemblyLots (lot_number VARCHAR(24) PRIMARY KEY, model_id VARCHAR(16), total_units_in_lot INT)` & `DropTestTelemetry (reading_id BIGINT PRIMARY KEY, lot_number VARCHAR(24), g_force DECIMAL(6,2), chassis_cracked BOOLEAN)`",
+    targetQuery: `SELECT l.lot_number, l.model_id, l.total_units_in_lot,\n       COALESCE(t.tests_run, 0) AS total_drops_tested,\n       COALESCE(t.max_g_force, 0.0) AS peak_g_force_recorded,\n       COALESCE(t.cracked_units, 0) AS chassis_crack_failures\nFROM AssemblyLots l\nLEFT JOIN (\n  SELECT lot_number,\n         COUNT(reading_id) AS tests_run,\n         MAX(g_force) AS max_g_force,\n         SUM(CASE WHEN chassis_cracked = TRUE THEN 1 ELSE 0 END) AS cracked_units\n  FROM DropTestTelemetry\n  GROUP BY lot_number\n) t ON l.lot_number = t.lot_number\nORDER BY chassis_crack_failures DESC;`,
+    eli5Story: "Checking how many laptops cracked when QA engineers dropped them onto concrete floors during durability testing.",
+    commonMistakes: "Duplicating assembly lot units when calculating total manufactured laptops across testing runs.",
+    learningOutcomes: "Summarize stress test telemetry metrics using derived pre-aggregation."
+  },
+  {
+    title: "High-Density Server Racks to Daily Kilowatt PDU Power Draw Fluctuations",
+    ind: "Hardware",
+    diff: "Easy",
+    table: "ServerRacks",
+    scenario: "Monitoring data center thermal and power density by pre-aggregating smart power distribution unit (PDU) kilowatt draws per server rack.",
+    businessObjective: "Left join ServerRacks to pre-aggregated power telemetry to report average and peak kilowatt power consumption.",
+    schemaSnippet: "`ServerRacks (rack_id VARCHAR(16) PRIMARY KEY, data_hall VARCHAR(16), max_kw_capacity DECIMAL(6,2))` & `PduPowerLogs (log_id BIGINT PRIMARY KEY, rack_id VARCHAR(16), kw_draw DECIMAL(6,2))`",
+    targetQuery: `SELECT r.rack_id, r.data_hall, r.max_kw_capacity,\n       COALESCE(p.avg_kw_draw, 0.00) AS avg_kw_consumed,\n       COALESCE(p.peak_kw_draw, 0.00) AS peak_kw_consumed,\n       (r.max_kw_capacity - COALESCE(p.peak_kw_draw, 0.00)) AS power_headroom_kw\nFROM ServerRacks r\nLEFT JOIN (\n  SELECT rack_id,\n         ROUND(AVG(kw_draw), 2) AS avg_kw_draw,\n         MAX(kw_draw) AS peak_kw_draw\n  FROM PduPowerLogs\n  GROUP BY rack_id\n) p ON r.rack_id = p.rack_id\nORDER BY power_headroom_kw ASC;`,
+    eli5Story: "Checking how much electricity server racks in our data center are pulling so we don't trip the circuit breakers.",
+    commonMistakes: "Running an INNER JOIN which ignores newly installed server racks that haven't turned on their power plugs yet.",
+    learningOutcomes: "Calculate data center energy consumption and safety margins via pre-aggregated power logs."
+  },
+  {
+    title: "Industrial Robotic Arms to Joint Motor Torque Vibration Sensor Logs",
+    ind: "Hardware",
+    diff: "Medium",
+    table: "RoboticArms",
+    scenario: "Predicting factory robot joint mechanical failure by pre-aggregating high-frequency vibration sensor logs per robotic arm.",
+    businessObjective: "Left join RoboticArms to pre-aggregated vibration logs to identify mechanical joints exceeding vibration warning limits.",
+    schemaSnippet: "`RoboticArms (robot_serial VARCHAR(32) PRIMARY KEY, cell_location VARCHAR(16), manufacturer VARCHAR(32))` & `JointVibrations (vibration_id BIGINT PRIMARY KEY, robot_serial VARCHAR(32), vibration_mm_s DECIMAL(6,2))`",
+    targetQuery: `SELECT a.robot_serial, a.cell_location, a.manufacturer,\n       COALESCE(v.vibration_alerts_count, 0) AS high_vibration_alert_count\nFROM RoboticArms a\nLEFT JOIN (\n  SELECT robot_serial, COUNT(vibration_id) AS vibration_alerts_count\n  FROM JointVibrations\n  WHERE vibration_mm_s > 4.50\n  GROUP BY robot_serial\n) v ON a.robot_serial = v.robot_serial\nORDER BY high_vibration_alert_count DESC;`,
+    eli5Story: "Listening to the mechanical vibrations in robotic arms to catch gears grinding before the robot breaks down on the assembly line.",
+    commonMistakes: "Filtering vibration_mm_s in the outer WHERE clause, which eliminates healthy robotic arms that had zero vibration alerts.",
+    learningOutcomes: "Perform predictive maintenance anomaly counts using pre-filtered subquery joins."
+  },
+
+  // --- HR ---
+  {
+    title: "Corporate Business Trips to Multi-Item Employee Travel Receipts",
+    ind: "HR",
+    diff: "Medium",
+    table: "BusinessTrips",
+    scenario: "Auditing employee corporate travel expenses by pre-aggregating hotel, flight, and meal receipts against approved trip budget caps.",
+    businessObjective: "Left join BusinessTrips to a pre-aggregated subquery of TravelReceipts to compute total actual spend and budget variances.",
+    schemaSnippet: "`BusinessTrips (trip_id VARCHAR(32) PRIMARY KEY, employee_name VARCHAR(100), approved_budget_usd DECIMAL(10,2), destination VARCHAR(32))` & `TravelReceipts (receipt_id VARCHAR(32) PRIMARY KEY, trip_id VARCHAR(32), expense_usd DECIMAL(8,2))`",
+    targetQuery: `SELECT t.trip_id, t.employee_name, t.approved_budget_usd,\n       COALESCE(r.total_actual_spend, 0.00) AS total_actual_expenses_usd,\n       (t.approved_budget_usd - COALESCE(r.total_actual_spend, 0.00)) AS remaining_budget_usd,\n       CASE\n         WHEN COALESCE(r.total_actual_spend, 0.00) > t.approved_budget_usd THEN 'BUDGET_OVERRUN'\n         ELSE 'WITHIN_BUDGET'\n       END AS compliance_flag\nFROM BusinessTrips t\nLEFT JOIN (\n  SELECT trip_id, SUM(expense_usd) AS total_actual_spend\n  FROM TravelReceipts\n  GROUP BY trip_id\n) r ON t.trip_id = r.trip_id\nORDER BY total_actual_expenses_usd DESC;`,
+    eli5Story: "Adding up hotel and plane tickets for an employee's business trip to Chicago, comparing it to their $2,500 travel budget.",
+    commonMistakes: "Duplicating approved_budget_usd across 15 receipt items on a raw join, inflating approved budgets fifteen-fold.",
+    learningOutcomes: "Reconcile corporate travel expense lines without multiplying parent budget allowances."
+  },
+  {
+    title: "Annual Department Headcount Budgets to Requisition Job Openings",
+    ind: "HR",
+    diff: "Easy",
+    table: "HeadcountBudgets",
+    scenario: "Tracking corporate talent acquisition pacing by pre-aggregating open job requisitions per department headcount budget.",
+    businessObjective: "Left join HeadcountBudgets to pre-aggregated job openings to calculate unfilled hiring slots per department.",
+    schemaSnippet: "`HeadcountBudgets (dept_id VARCHAR(16) PRIMARY KEY, dept_name VARCHAR(64), approved_new_hires INT)` & `JobRequisitions (req_id VARCHAR(32) PRIMARY KEY, dept_id VARCHAR(16), status VARCHAR(16))`",
+    targetQuery: `SELECT b.dept_id, b.dept_name, b.approved_new_hires,\n       COALESCE(j.active_openings, 0) AS current_job_postings,\n       (b.approved_new_hires - COALESCE(j.active_openings, 0)) AS unposted_hiring_slots\nFROM HeadcountBudgets b\nLEFT JOIN (\n  SELECT dept_id, COUNT(req_id) AS active_openings\n  FROM JobRequisitions\n  WHERE status = 'OPEN'\n  GROUP BY dept_id\n) j ON b.dept_id = j.dept_id\nORDER BY unposted_hiring_slots DESC;`,
+    eli5Story: "Checking how many approved new job openings each department has posted on LinkedIn vs how many hiring slots are still untouched.",
+    commonMistakes: "Using an INNER JOIN which omits departments that have not yet posted their first job opening.",
+    learningOutcomes: "Measure enterprise recruitment capacity using pre-aggregated requisition subqueries."
+  },
+  {
+    title: "Sales Incentive Compensation Plans to Monthly Milestone Commission Draws",
+    ind: "HR",
+    diff: "Hard",
+    table: "IncentivePlans",
+    scenario: "Computing sales commission liability by pre-aggregating monthly commission draw disbursements across sales executives.",
+    businessObjective: "Left join IncentivePlans to pre-aggregated commission draws to report total commission paid and remaining commission pool cap.",
+    schemaSnippet: "`IncentivePlans (rep_id VARCHAR(32) PRIMARY KEY, rep_name VARCHAR(100), annual_ote_commission_usd DECIMAL(10,2))` & `CommissionDraws (draw_id VARCHAR(32) PRIMARY KEY, rep_id VARCHAR(32), draw_usd DECIMAL(8,2))`",
+    targetQuery: `SELECT p.rep_id, p.rep_name, p.annual_ote_commission_usd,\n       COALESCE(c.total_commission_drawn, 0.00) AS total_commission_paid_usd,\n       (p.annual_ote_commission_usd - COALESCE(c.total_commission_drawn, 0.00)) AS remaining_commission_pool_usd\nFROM IncentivePlans p\nLEFT JOIN (\n  SELECT rep_id, SUM(draw_usd) AS total_commission_drawn\n  FROM CommissionDraws\n  GROUP BY rep_id\n) c ON p.rep_id = c.rep_id\nORDER BY total_commission_paid_usd DESC;`,
+    eli5Story: "Adding up all monthly commission checks paid to a top sales rep, comparing it to their annual compensation cap.",
+    commonMistakes: "Summing annual_ote_commission_usd across monthly payment rows on a raw join, creating false million-dollar liability figures.",
+    learningOutcomes: "Calculate compensation payouts cleanly by pre-aggregating variable milestone payments."
+  },
+  {
+    title: "Corporate Health Insurance Contracts to Covered Dependent Enrollment Claims",
+    ind: "HR",
+    diff: "Easy",
+    table: "InsurancePolicies",
+    scenario: "Tracking employee health benefit premium liabilities by pre-aggregating covered spouses and dependent children per employee policy.",
+    businessObjective: "Left join InsurancePolicies to pre-aggregated dependents to compute total monthly company premium contributions.",
+    schemaSnippet: "`InsurancePolicies (policy_id VARCHAR(32) PRIMARY KEY, employee_id VARCHAR(32), employee_monthly_premium DECIMAL(8,2))` & `CoveredDependents (dependent_id VARCHAR(32) PRIMARY KEY, policy_id VARCHAR(32), dependent_premium_usd DECIMAL(8,2))`",
+    targetQuery: `SELECT p.policy_id, p.employee_id, p.employee_monthly_premium,\n       COALESCE(d.total_dependent_premiums, 0.00) AS dependent_premiums_usd,\n       (p.employee_monthly_premium + COALESCE(d.total_dependent_premiums, 0.00)) AS total_monthly_health_cost_usd\nFROM InsurancePolicies p\nLEFT JOIN (\n  SELECT policy_id, SUM(dependent_premium_usd) AS total_dependent_premiums\n  FROM CoveredDependents\n  GROUP BY policy_id\n) d ON p.policy_id = d.policy_id\nORDER BY total_monthly_health_cost_usd DESC;`,
+    eli5Story: "Adding the employee's health insurance premium to the premiums for their spouse and kids into one single monthly total.",
+    commonMistakes: "Using a direct join that multiplies employee_monthly_premium by the number of covered children.",
+    learningOutcomes: "Combine employee base benefits with pre-aggregated dependent add-on costs."
+  },
+
+  // --- PLATFORMS ---
+  {
+    title: "Driver Delivery Shifts to Customer Tips and Distance Bonuses",
+    ind: "Platforms",
+    diff: "Medium",
+    table: "DriverShifts",
+    scenario: "Reconciling courier shift pay by pre-aggregating trip tips and delivery distance bonuses without multiplying hourly base shift wages.",
+    businessObjective: "Left join DriverShifts to a pre-aggregated subquery of ShiftDeliveries to calculate total gross earnings per delivery shift.",
+    schemaSnippet: "`DriverShifts (shift_id VARCHAR(32) PRIMARY KEY, driver_id VARCHAR(32), base_hourly_pay_usd DECIMAL(8,2))` & `ShiftDeliveries (delivery_id VARCHAR(32) PRIMARY KEY, shift_id VARCHAR(32), tip_usd DECIMAL(6,2), distance_bonus_usd DECIMAL(6,2))`",
+    targetQuery: `SELECT s.shift_id, s.driver_id, s.base_hourly_pay_usd,\n       COALESCE(d.total_tips, 0.00) AS total_tips_usd,\n       COALESCE(d.total_bonuses, 0.00) AS total_distance_bonuses_usd,\n       (s.base_hourly_pay_usd + COALESCE(d.total_tips, 0.00) + COALESCE(d.total_bonuses, 0.00)) AS total_shift_earnings_usd\nFROM DriverShifts s\nLEFT JOIN (\n  SELECT shift_id,\n         SUM(tip_usd) AS total_tips,\n         SUM(distance_bonus_usd) AS total_bonuses\n  FROM ShiftDeliveries\n  GROUP BY shift_id\n) d ON s.shift_id = d.shift_id\nORDER BY total_shift_earnings_usd DESC;`,
+    eli5Story: "Adding up tips and bonuses from 8 pizza deliveries during a driver's shift and adding it to their guaranteed hourly wage.",
+    commonMistakes: "Raw joining shift deliveries and summing base_hourly_pay_usd, multiplying their base hourly pay by 8.",
+    learningOutcomes: "Model gig economy shift compensation without duplicating hourly base pay guarantees."
+  },
+  {
+    title: "Marketplace Merchant Stores to Customer Product Review Ratings",
+    ind: "Platforms",
+    diff: "Easy",
+    table: "MerchantStores",
+    scenario: "Computing average merchant customer satisfaction ratings by pre-aggregating product customer reviews per storefront.",
+    businessObjective: "Left join MerchantStores to pre-aggregated reviews to report average star rating and review counts per merchant.",
+    schemaSnippet: "`MerchantStores (store_id VARCHAR(32) PRIMARY KEY, store_name VARCHAR(64), country VARCHAR(2))` & `ProductReviews (review_id BIGINT PRIMARY KEY, store_id VARCHAR(32), star_rating INT)`",
+    targetQuery: `SELECT m.store_id, m.store_name, m.country,\n       COALESCE(r.total_reviews, 0) AS total_reviews_received,\n       COALESCE(r.avg_rating, 0.0) AS avg_star_rating\nFROM MerchantStores m\nLEFT JOIN (\n  SELECT store_id,\n         COUNT(review_id) AS total_reviews,\n         ROUND(AVG(star_rating), 2) AS avg_rating\n  FROM ProductReviews\n  GROUP BY store_id\n) r ON m.store_id = r.store_id\nORDER BY avg_star_rating DESC;`,
+    eli5Story: "Averaging all 5-star and 1-star reviews for an Amazon third-party seller into one clean score without duplicating store records.",
+    commonMistakes: "Omitting new stores that have zero reviews by using an INNER JOIN.",
+    learningOutcomes: "Aggregate customer feedback ratings per storefront using derived subqueries."
+  },
+  {
+    title: "Streaming Video Channels to Fan Super-Chat Donation Transactions",
+    ind: "Platforms",
+    diff: "Medium",
+    table: "StreamingChannels",
+    scenario: "Auditing live broadcast creator earnings by pre-aggregating fan live-chat cash donations per live stream broadcast.",
+    businessObjective: "Left join StreamingChannels to pre-aggregated SuperChats to compute total donations and platform commission fee splits.",
+    schemaSnippet: "`StreamingChannels (channel_id VARCHAR(32) PRIMARY KEY, channel_name VARCHAR(64), partner_rev_share_pct DECIMAL(4,2))` & `SuperChats (chat_id BIGINT PRIMARY KEY, channel_id VARCHAR(32), donation_usd DECIMAL(8,2))`",
+    targetQuery: `SELECT c.channel_id, c.channel_name, c.partner_rev_share_pct,\n       COALESCE(s.gross_donations_usd, 0.00) AS total_donations_usd,\n       ROUND(COALESCE(s.gross_donations_usd, 0.00) * (c.partner_rev_share_pct / 100.0), 2) AS creator_net_payout_usd\nFROM StreamingChannels c\nLEFT JOIN (\n  SELECT channel_id, SUM(donation_usd) AS gross_donations_usd\n  FROM SuperChats\n  GROUP BY channel_id\n) s ON c.channel_id = s.channel_id\nORDER BY total_donations_usd DESC;`,
+    eli5Story: "Adding up all the $5 and $20 super-chat messages viewers sent during a gaming livestream, and calculating the creator's 70% share.",
+    commonMistakes: "Multiplying creator revenue share percentages when joining raw chat transaction feeds.",
+    learningOutcomes: "Calculate digital donation revenues using pre-aggregated live stream transaction logs."
+  },
+  {
+    title: "Electric Vehicle Charging Stations to Fast-Charging Power Draws",
+    ind: "Platforms",
+    diff: "Hard",
+    table: "ChargingStations",
+    scenario: "Computing total electrical utility bills across commercial highway EV fast-charging stations by pre-aggregating charging session kWh draws.",
+    businessObjective: "Left join ChargingStations to pre-aggregated power sessions to compute energy bills without duplicating station grid connection fees.",
+    schemaSnippet: "`ChargingStations (station_id VARCHAR(16) PRIMARY KEY, utility_provider VARCHAR(64), monthly_grid_fee_usd DECIMAL(8,2))` & `SessionDraws (session_id BIGINT PRIMARY KEY, station_id VARCHAR(16), kwh_consumed DECIMAL(8,2), kwh_rate_usd DECIMAL(6,3))`",
+    targetQuery: `SELECT s.station_id, s.utility_provider, s.monthly_grid_fee_usd,\n       COALESCE(e.total_energy_cost_usd, 0.00) AS total_variable_energy_cost_usd,\n       (s.monthly_grid_fee_usd + COALESCE(e.total_energy_cost_usd, 0.00)) AS total_station_utility_bill_usd\nFROM ChargingStations s\nLEFT JOIN (\n  SELECT station_id,\n         ROUND(SUM(kwh_consumed * kwh_rate_usd), 2) AS total_energy_cost_usd\n  FROM SessionDraws\n  GROUP BY station_id\n) e ON s.station_id = e.station_id\nORDER BY total_station_utility_bill_usd DESC;`,
+    eli5Story: "Adding the flat $500 monthly electric utility connection fee to the variable electricity used by all cars charged at that station this month.",
+    commonMistakes: "Summing monthly_grid_fee_usd across 2,000 charging sessions, turning a $500 fee into a $1,000,000 billing error.",
+    learningOutcomes: "Combine fixed utility fees with variable consumption metrics using pre-aggregated subqueries."
+  }
+];

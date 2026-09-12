@@ -1,0 +1,547 @@
+// =============================================================================
+// PART 7: SELF-JOIN HIERARCHIES & ADJACENCY LISTS (40 DISTINCT CASES: 13 Easy, 14 Medium, 13 Hard)
+// Parent-Child Traversal, Organizational Trees & Graph Lineage Across 10 Industries
+// Pattern: TableA child LEFT/INNER JOIN TableA parent ON child.parent_id = parent.id
+// =============================================================================
+
+module.exports = [
+  // --- FINTECH ---
+  {
+    title: "Corporate Subsidiary Bank Account Ownership Tree (Parent Holding Rollup)",
+    ind: "Fintech",
+    diff: "Easy",
+    table: "CorporateEntities",
+    scenario: "Traversing multinational holding company structures to report subsidiary operating companies alongside their legal parent entity.",
+    businessObjective: "Perform a self-join on CorporateEntities where child.parent_entity_id = parent.entity_id to display corporate hierarchy.",
+    schemaSnippet: "`CorporateEntities (entity_id VARCHAR(32) PRIMARY KEY, entity_name VARCHAR(100), jurisdiction VARCHAR(2), parent_entity_id VARCHAR(32))`",
+    targetQuery: `SELECT sub.entity_id AS subsidiary_id,\n       sub.entity_name AS subsidiary_name,\n       sub.jurisdiction AS subsidiary_country,\n       COALESCE(parent.entity_name, 'ULTIMATE_GLOBAL_PARENT') AS parent_holding_company\nFROM CorporateEntities sub\nLEFT JOIN CorporateEntities parent\n  ON sub.parent_entity_id = parent.entity_id\nORDER BY parent_holding_company ASC, sub.entity_name ASC;`,
+    eli5Story: "Looking at a big global bank or company: showing which parent holding company in Delaware or London owns each local subsidiary in Germany or Singapore.",
+    commonMistakes: "Using an INNER JOIN which drops the CEO holding company at the very top because its parent_entity_id is NULL.",
+    learningOutcomes: "Master self-joining on parent-child adjacency lists and handling root-node NULL preservation."
+  },
+  {
+    title: "Layered Financial Transfer Rings (Detecting Multi-Hop Money Laundering)",
+    ind: "Fintech",
+    diff: "Hard",
+    table: "FundTransfers",
+    scenario: "Detecting circular financial layering schemes where funds transferred from Account A to Account B are immediately routed to Account C within 60 minutes.",
+    businessObjective: "Self-join FundTransfers on leg1.destination_acct = leg2.origin_acct to detect rapid multi-hop layering transfers.",
+    schemaSnippet: "`FundTransfers (transfer_id VARCHAR(32) PRIMARY KEY, origin_acct VARCHAR(32), destination_acct VARCHAR(32), amount_usd DECIMAL(12,2), transfer_time TIMESTAMP)`",
+    targetQuery: `SELECT leg1.origin_acct AS initial_sender,\n       leg1.destination_acct AS intermediary_mule,\n       leg2.destination_acct AS final_recipient,\n       leg1.amount_usd AS sent_amount,\n       leg2.amount_usd AS forwarded_amount,\n       TIMESTAMPDIFF(MINUTE, leg1.transfer_time, leg2.transfer_time) AS transit_minutes\nFROM FundTransfers leg1\nINNER JOIN FundTransfers leg2\n  ON leg1.destination_acct = leg2.origin_acct\nWHERE leg2.transfer_time > leg1.transfer_time\n  AND leg2.transfer_time <= leg1.transfer_time + INTERVAL 60 MINUTE\n  AND ABS(leg1.amount_usd - leg2.amount_usd) <= 500.00\n  AND leg1.origin_acct <> leg2.destination_acct\nORDER BY transit_minutes ASC;`,
+    eli5Story: "Catching criminals who quickly wire stolen money into a middleman's bank account, who immediately forwards the money to an offshore account 10 minutes later.",
+    commonMistakes: "Forgetting `leg1.origin_acct <> leg2.destination_acct`, which would confuse simple refund reversals with circular forwarding rings.",
+    learningOutcomes: "Perform multi-hop graph path traversal using temporal self-joins on transfer logs."
+  },
+  {
+    title: "Customer Referral Trees (Attributing Multi-Tier Sign-Up Bonus Credits)",
+    ind: "Fintech",
+    diff: "Medium",
+    table: "RetailBankCustomers",
+    scenario: "Attributing secondary customer referral bonuses by linking new bank customers to their referring friend and their friend's original referrer.",
+    businessObjective: "Perform a 2-tier self-join on RetailBankCustomers to report 1st-degree and 2nd-degree referral attribution chains.",
+    schemaSnippet: "`RetailBankCustomers (customer_id VARCHAR(32) PRIMARY KEY, customer_name VARCHAR(100), referred_by_id VARCHAR(32))`",
+    targetQuery: `SELECT c.customer_id, c.customer_name AS new_customer,\n       r1.customer_name AS direct_referrer,\n       r2.customer_name AS secondary_grand_referrer\nFROM RetailBankCustomers c\nINNER JOIN RetailBankCustomers r1\n  ON c.referred_by_id = r1.customer_id\nLEFT JOIN RetailBankCustomers r2\n  ON r1.referred_by_id = r2.customer_id\nORDER BY r1.customer_name ASC, c.customer_name ASC;`,
+    eli5Story: "Alice invited Bob, and Bob invited Charlie. When Charlie opens an account, our self-join lets us pay a $50 bonus to Bob and a $10 thank-you bonus to Alice.",
+    commonMistakes: "Using INNER JOIN for both hops, which drops Charlie if Bob was never referred by anyone.",
+    learningOutcomes: "Navigate multi-level referral graph trees using chained self-joins."
+  },
+  {
+    title: "Credit Risk Counterparty Exposure Hierarchy (Parent Guarantor Rollup)",
+    ind: "Fintech",
+    diff: "Medium",
+    table: "CreditBorrowers",
+    scenario: "Aggregating commercial loan default exposure by rolling up subsidiary borrowing lines to the ultimate corporate parent guarantor.",
+    businessObjective: "Self-join CreditBorrowers to calculate total credit exposure grouped by parent corporate guarantor.",
+    schemaSnippet: "`CreditBorrowers (borrower_id VARCHAR(32) PRIMARY KEY, borrower_name VARCHAR(100), parent_guarantor_id VARCHAR(32), credit_exposure_usd DECIMAL(14,2))`",
+    targetQuery: `SELECT COALESCE(p.borrower_name, b.borrower_name) AS ultimate_parent_guarantor,\n       COUNT(b.borrower_id) AS total_subsidiary_borrowers,\n       SUM(b.credit_exposure_usd) AS aggregate_family_exposure_usd\nFROM CreditBorrowers b\nLEFT JOIN CreditBorrowers p\n  ON b.parent_guarantor_id = p.borrower_id\nGROUP BY COALESCE(p.borrower_name, b.borrower_name)\nHAVING SUM(b.credit_exposure_usd) >= 10000000.00\nORDER BY aggregate_family_exposure_usd DESC;`,
+    eli5Story: "Adding up all loans taken out by 10 different shell companies owned by the same airline to see the airline's true total $50M debt exposure.",
+    commonMistakes: "Grouping by p.borrower_name without COALESCE, turning independent parent companies with no guarantor into a giant NULL group.",
+    learningOutcomes: "Execute risk aggregation across corporate parent-subsidiary debt graphs."
+  },
+
+  // --- SAAS ---
+  {
+    title: "Multi-Tenant Workspace Organization Hierarchy (Enterprise Parent to Sub-Accounts)",
+    ind: "SaaS",
+    diff: "Easy",
+    table: "SaaSWorkspaces",
+    scenario: "Reporting enterprise multi-tenant account hierarchies by joining sub-workspaces to their parent corporate umbrella account.",
+    businessObjective: "Self-join SaaSWorkspaces to display sub-account names alongside parent enterprise contract names.",
+    schemaSnippet: "`SaaSWorkspaces (workspace_id VARCHAR(32) PRIMARY KEY, workspace_name VARCHAR(100), parent_workspace_id VARCHAR(32), seat_limit INT)`",
+    targetQuery: `SELECT sub.workspace_id, sub.workspace_name AS department_workspace,\n       sub.seat_limit,\n       COALESCE(parent.workspace_name, 'ROOT_ENTERPRISE_ORG') AS parent_umbrella_contract\nFROM SaaSWorkspaces sub\nLEFT JOIN SaaSWorkspaces parent\n  ON sub.parent_workspace_id = parent.workspace_id\nORDER BY parent_umbrella_contract ASC, department_workspace ASC;`,
+    eli5Story: "Showing all the departmental team workspaces (like 'Uber Marketing' and 'Uber Engineering') linked to the main company contract ('Uber Global').",
+    commonMistakes: "Omitting the root organization by using INNER JOIN instead of LEFT JOIN.",
+    learningOutcomes: "Structure enterprise multi-tenant account trees using parent-child self-joins."
+  },
+  {
+    title: "Feature Flag Dependency Hierarchy (Prerequisite Activation Chains)",
+    ind: "SaaS",
+    diff: "Medium",
+    table: "FeatureFlags",
+    scenario: "Validating software feature release flags by ensuring child feature toggles only activate if their parent prerequisite feature is enabled.",
+    businessObjective: "Self-join FeatureFlags on child.prerequisite_flag_id = parent.flag_id to detect invalid flag configurations.",
+    schemaSnippet: "`FeatureFlags (flag_id VARCHAR(32) PRIMARY KEY, flag_name VARCHAR(64), is_enabled BOOLEAN, prerequisite_flag_id VARCHAR(32))`",
+    targetQuery: `SELECT child.flag_name AS dependent_feature,\n       child.is_enabled AS child_status,\n       parent.flag_name AS required_parent_feature,\n       parent.is_enabled AS parent_status\nFROM FeatureFlags child\nINNER JOIN FeatureFlags parent\n  ON child.prerequisite_flag_id = parent.flag_id\nWHERE child.is_enabled = TRUE\n  AND parent.is_enabled = FALSE\nORDER BY child.flag_name ASC;`,
+    eli5Story: "Finding software settings that are turned ON even though the master setting they depend on is turned OFF (which causes bugs for users).",
+    commonMistakes: "Using a LEFT JOIN when the objective is specifically to audit features that have an existing parent prerequisite.",
+    learningOutcomes: "Enforce hierarchical configuration dependency constraints using self-joins."
+  },
+  {
+    title: "API Endpoint Routing Tree (Microservice Gateway URI Ingestion)",
+    ind: "SaaS",
+    diff: "Hard",
+    table: "ApiRoutes",
+    scenario: "Auditing API gateway routing rules by joining nested REST sub-resources to their base parent controllers to build complete URI paths.",
+    businessObjective: "Self-join ApiRoutes on child.parent_route_id = parent.route_id to concatenate full nested REST endpoint paths.",
+    schemaSnippet: "`ApiRoutes (route_id VARCHAR(32) PRIMARY KEY, path_segment VARCHAR(64), http_auth_required BOOLEAN, parent_route_id VARCHAR(32))`",
+    targetQuery: `SELECT child.route_id,\n       CONCAT('/', parent.path_segment, '/', child.path_segment) AS full_endpoint_uri,\n       child.http_auth_required\nFROM ApiRoutes child\nINNER JOIN ApiRoutes parent\n  ON child.parent_route_id = parent.route_id\nWHERE parent.parent_route_id IS NULL\nORDER BY full_endpoint_uri ASC;`,
+    eli5Story: "Stitching together the web address parts '/users' and '/profile' to build the full API path '/users/profile' from two separate database rows.",
+    commonMistakes: "Concatenating in the wrong order (child first, parent second), resulting in inverted URI routes like '/profile/users'.",
+    learningOutcomes: "Construct composite hierarchical strings using self-join concatenation."
+  },
+  {
+    title: "Customer Support Ticket Escalation Chain (Tier-1 to Engineering Handoff)",
+    ind: "SaaS",
+    diff: "Easy",
+    table: "SupportTicketsHierarchy",
+    scenario: "Tracking escalations where a tier-1 customer support ticket was closed and a new linked tier-3 engineering ticket was spawned.",
+    businessObjective: "Self-join SupportTicketsHierarchy on child.spawned_from_ticket_id = parent.ticket_id to measure resolution lag.",
+    schemaSnippet: "`SupportTicketsHierarchy (ticket_id VARCHAR(32) PRIMARY KEY, customer_email VARCHAR(100), tier_level INT, spawned_from_ticket_id VARCHAR(32))`",
+    targetQuery: `SELECT child.ticket_id AS engineering_ticket,\n       parent.ticket_id AS original_support_ticket,\n       child.customer_email\nFROM SupportTicketsHierarchy child\nINNER JOIN SupportTicketsHierarchy parent\n  ON child.spawned_from_ticket_id = parent.ticket_id\nWHERE child.tier_level = 3\n  AND parent.tier_level = 1\nORDER BY child.ticket_id ASC;`,
+    eli5Story: "Connecting an advanced engineering bug report to the original phone call ticket filed by the customer, keeping them linked together.",
+    commonMistakes: "Inverting child and parent join conditions, confusing the source ticket with the escalated ticket.",
+    learningOutcomes: "Track customer issue escalation lineages using self-referential keys."
+  },
+
+  // --- RETAIL ---
+  {
+    title: "Product Taxonomy Category Breadcrumbs (Department to Subcategory Rollup)",
+    ind: "Retail",
+    diff: "Easy",
+    table: "ProductCategories",
+    scenario: "Building e-commerce navigation menus by joining subcategories to their parent category to generate full breadcrumb paths.",
+    businessObjective: "Self-join ProductCategories on child.parent_category_id = parent.category_id to display subcategory breadcrumb paths.",
+    schemaSnippet: "`ProductCategories (category_id VARCHAR(16) PRIMARY KEY, category_name VARCHAR(64), parent_category_id VARCHAR(16))`",
+    targetQuery: `SELECT sub.category_id, sub.category_name AS subcategory,\n       COALESCE(parent.category_name, 'TOP_LEVEL_DEPARTMENT') AS parent_department,\n       CONCAT(COALESCE(parent.category_name, 'Root'), ' > ', sub.category_name) AS breadcrumb_path\nFROM ProductCategories sub\nLEFT JOIN ProductCategories parent\n  ON sub.parent_category_id = parent.category_id\nORDER BY parent_department ASC, subcategory ASC;`,
+    eli5Story: "Building the website menu bar: showing that 'Running Shoes' belongs under 'Sporting Goods' so online shoppers can find what they want.",
+    commonMistakes: "Using an INNER JOIN which drops top-level categories like 'Electronics' and 'Home Goods' because their parent is NULL.",
+    learningOutcomes: "Build dynamic e-commerce breadcrumb taxonomies using self-joins with string concatenation."
+  },
+  {
+    title: "Bill of Materials (BOM) Sub-Assembly Rollup (Electronics Component Tree)",
+    ind: "Retail",
+    diff: "Hard",
+    table: "BillOfMaterials",
+    scenario: "Computing total component manufacturing costs by joining finished retail products to their internal sub-assemblies and individual raw parts.",
+    businessObjective: "Self-join BillOfMaterials across a 2-tier assembly tree to calculate cumulative unit cost per finished retail product.",
+    schemaSnippet: "`BillOfMaterials (part_number VARCHAR(32) PRIMARY KEY, part_name VARCHAR(64), unit_cost_usd DECIMAL(8,2), parent_assembly_part_no VARCHAR(32))`",
+    targetQuery: `SELECT parent.part_number AS master_product_sku,\n       parent.part_name AS product_name,\n       COUNT(child.part_number) AS component_count,\n       ROUND(SUM(child.unit_cost_usd), 2) AS total_parts_cost_usd\nFROM BillOfMaterials parent\nINNER JOIN BillOfMaterials child\n  ON child.parent_assembly_part_no = parent.part_number\nWHERE parent.parent_assembly_part_no IS NULL\nGROUP BY parent.part_number, parent.part_name\nORDER BY total_parts_cost_usd DESC;`,
+    eli5Story: "Adding up the cost of the screen, the battery, the camera, and the aluminum case to find the exact cost to manufacture one smartphone.",
+    commonMistakes: "Including intermediate sub-assemblies in the outer query, double-counting parts that appear in sub-assemblies.",
+    learningOutcomes: "Aggregate component manufacturing costs across parent-child Bill of Materials trees."
+  },
+  {
+    title: "Retail Store Cluster Replenishment Hubs (Spoke-to-Hub Stock Transfers)",
+    ind: "Retail",
+    diff: "Medium",
+    table: "RetailStoreClusters",
+    scenario: "Managing retail store inventory transfers by linking smaller satellite stores to their regional flagship inventory replenishment hub.",
+    businessObjective: "Self-join RetailStoreClusters to list satellite stores alongside their designated regional replenishment store.",
+    schemaSnippet: "`RetailStoreClusters (store_id VARCHAR(16) PRIMARY KEY, store_name VARCHAR(64), hub_store_id VARCHAR(16), store_format VARCHAR(16))`",
+    targetQuery: `SELECT spoke.store_id AS spoke_store_id,\n       spoke.store_name AS spoke_store_name,\n       spoke.store_format,\n       hub.store_name AS regional_replenishment_hub\nFROM RetailStoreClusters spoke\nINNER JOIN RetailStoreClusters hub\n  ON spoke.hub_store_id = hub.store_id\nWHERE spoke.store_format = 'SATELLITE_EXPRESS'\nORDER BY hub.store_name ASC, spoke.store_name ASC;`,
+    eli5Story: "Connecting small downtown mall express stores with the giant flagship suburban store that sends them extra inventory trucks every morning.",
+    commonMistakes: "Using spoke.store_id = hub.hub_store_id, inverting the direction of inventory replenishment authority.",
+    learningOutcomes: "Model physical retail distribution clusters using self-join relationships."
+  },
+  {
+    title: "Customer Co-Purchase Item Affinity (Market Basket Association Self-Join)",
+    ind: "Retail",
+    diff: "Hard",
+    table: "CartItems",
+    scenario: "Computing product recommendation pairings by self-joining shopping cart items to find pairs of products frequently purchased together.",
+    businessObjective: "Self-join CartItems on cart_id where itemA.sku < itemB.sku to count co-purchase frequencies across shopping carts.",
+    schemaSnippet: "`CartItems (cart_id VARCHAR(32), sku VARCHAR(32), PRIMARY KEY(cart_id, sku))`",
+    targetQuery: `SELECT a.sku AS primary_sku,\n       b.sku AS co_purchased_sku,\n       COUNT(a.cart_id) AS co_purchase_frequency\nFROM CartItems a\nINNER JOIN CartItems b\n  ON a.cart_id = b.cart_id\n AND a.sku < b.sku\nGROUP BY a.sku, b.sku\nHAVING COUNT(a.cart_id) >= 25\nORDER BY co_purchase_frequency DESC;`,
+    eli5Story: "Finding out that customers who buy peanut butter almost always buy grape jelly in the same shopping basket ('Customers also bought...').",
+    commonMistakes: "Using `a.sku <> b.sku` instead of `a.sku < b.sku`, which pairs items both forward (A,B) and backward (B,A), doubling row counts.",
+    learningOutcomes: "Execute market basket association analysis using canonical inequality self-joins."
+  },
+
+  // --- HEALTHCARE ---
+  {
+    title: "Patient Clinical Referral Chains (Primary Care Doctor to Specialist)",
+    ind: "Healthcare",
+    diff: "Easy",
+    table: "DoctorProfiles",
+    scenario: "Auditing hospital referral networks by connecting referring primary care family physicians with treating specialist surgeons.",
+    businessObjective: "Self-join DoctorProfiles on referral logs to display primary doctor alongside receiving specialist.",
+    schemaSnippet: "`DoctorProfiles (doctor_id VARCHAR(16) PRIMARY KEY, doctor_name VARCHAR(100), specialty VARCHAR(32))` & `DoctorReferrals (referral_id VARCHAR(32) PRIMARY KEY, referring_doc_id VARCHAR(16), specialist_doc_id VARCHAR(16))`",
+    targetQuery: `SELECT ref.doctor_name AS referring_primary_care_doc,\n       spec.doctor_name AS receiving_specialist,\n       spec.specialty AS specialist_discipline\nFROM DoctorReferrals r\nINNER JOIN DoctorProfiles ref\n  ON r.referring_doc_id = ref.doctor_id\nINNER JOIN DoctorProfiles spec\n  ON r.specialist_doc_id = spec.doctor_id\nORDER BY ref.doctor_name ASC;`,
+    eli5Story: "Connecting the family clinic doctor who wrote the referral note with the specialized heart or brain surgeon who performed the operation.",
+    commonMistakes: "Aliasing both copies of DoctorProfiles with the same alias name (e.g. d), causing SQL syntax errors.",
+    learningOutcomes: "Join a single lookup table twice to project both sides of a directed operational relationship."
+  },
+  {
+    title: "Epidemiological Disease Transmission Contact Tracing (Patient Zero Trees)",
+    ind: "Healthcare",
+    diff: "Hard",
+    table: "InfectionCases",
+    scenario: "Tracing hospital viral outbreaks by joining infected patient cases to their suspected index patient exposure source.",
+    businessObjective: "Self-join InfectionCases on child.suspected_source_case_id = parent.case_id to track contagion generations in the ward.",
+    schemaSnippet: "`InfectionCases (case_id VARCHAR(32) PRIMARY KEY, patient_name VARCHAR(100), ward_room VARCHAR(16), confirmed_date DATE, suspected_source_case_id VARCHAR(32))`",
+    targetQuery: `SELECT source.patient_name AS index_patient_source,\n       source.ward_room AS source_room,\n       infected.patient_name AS infected_contact,\n       infected.ward_room AS contact_room,\n       DATEDIFF(infected.confirmed_date, source.confirmed_date) AS transmission_days\nFROM InfectionCases infected\nINNER JOIN InfectionCases source\n  ON infected.suspected_source_case_id = source.case_id\nWHERE DATEDIFF(infected.confirmed_date, source.confirmed_date) <= 14\nORDER BY source.patient_name ASC, transmission_days ASC;`,
+    eli5Story: "Tracking how a hospital flu virus spread from patient to patient across rooms to identify patient zero and stop the outbreak.",
+    commonMistakes: "Inverting source and infected aliases, confusing the transmitter with the recipient.",
+    learningOutcomes: "Perform contact tracing and transmission latency queries using self-joins."
+  },
+  {
+    title: "Hospital Clinical Departmental Sub-Specialties Hierarchy",
+    ind: "Healthcare",
+    diff: "Easy",
+    table: "MedicalDepartments",
+    scenario: "Organizing hospital medical divisions by joining sub-specialty clinics (e.g. Pediatric Oncology) to their parent department (e.g. Oncology).",
+    businessObjective: "Self-join MedicalDepartments on child.parent_dept_id = parent.dept_id to display clinical divisional structures.",
+    schemaSnippet: "`MedicalDepartments (dept_id VARCHAR(16) PRIMARY KEY, dept_name VARCHAR(64), parent_dept_id VARCHAR(16))`",
+    targetQuery: `SELECT sub.dept_id, sub.dept_name AS sub_specialty,\n       COALESCE(parent.dept_name, 'PRIMARY_EXECUTIVE_DIVISION') AS parent_division\nFROM MedicalDepartments sub\nLEFT JOIN MedicalDepartments parent\n  ON sub.parent_dept_id = parent.dept_id\nORDER BY parent_division ASC, sub_specialty ASC;`,
+    eli5Story: "Showing how 'Pediatric Cardiology' sits inside the larger 'Cardiology' division on the hospital's organizational chart.",
+    commonMistakes: "Using an INNER JOIN which omits top-level divisions like Surgery and Internal Medicine.",
+    learningOutcomes: "Structure clinical departmental organization trees using self-joins."
+  },
+  {
+    title: "Drug Formulation Precursor Ingredients (Active Pharmaceutical Ingredient Breakdown)",
+    ind: "Healthcare",
+    diff: "Medium",
+    table: "DrugFormulas",
+    scenario: "Auditing medication compound manufacturing by joining finished formulated drugs to their raw active pharmaceutical ingredient (API) chemical precursors.",
+    businessObjective: "Self-join DrugFormulas on child.parent_formula_id = parent.formula_id to verify chemical compound ingredient proportions.",
+    schemaSnippet: "`DrugFormulas (formula_id VARCHAR(32) PRIMARY KEY, compound_name VARCHAR(64), mg_per_dose DECIMAL(8,2), parent_formula_id VARCHAR(32))`",
+    targetQuery: `SELECT parent.compound_name AS finished_medication,\n       child.compound_name AS active_ingredient,\n       child.mg_per_dose\nFROM DrugFormulas child\nINNER JOIN DrugFormulas parent\n  ON child.parent_formula_id = parent.formula_id\nORDER BY parent.compound_name ASC, child.mg_per_dose DESC;`,
+    eli5Story: "Listing the raw chemical ingredients that are mixed together to make one pill of an antibiotic medicine.",
+    commonMistakes: "Selecting parent.mg_per_dose instead of child.mg_per_dose, showing total tablet weight instead of ingredient weight.",
+    learningOutcomes: "Deconstruct compound formulations using self-referential chemical trees."
+  },
+
+  // --- LOGISTICS ---
+  {
+    title: "Supply Chain Hub-and-Spoke Route Legs (Inbound Feeder to Master Hub)",
+    ind: "Logistics",
+    diff: "Easy",
+    table: "FreightNodes",
+    scenario: "Mapping airline and trucking hub-and-spoke networks by joining local spoke depots to their primary consolidation break-bulk hub.",
+    businessObjective: "Self-join FreightNodes on spoke.parent_hub_id = hub.node_id to report regional consolidation transit paths.",
+    schemaSnippet: "`FreightNodes (node_id VARCHAR(8) PRIMARY KEY, node_name VARCHAR(64), node_type VARCHAR(16), parent_hub_id VARCHAR(8))`",
+    targetQuery: `SELECT spoke.node_id AS spoke_code,\n       spoke.node_name AS spoke_terminal,\n       hub.node_name AS primary_consolidation_hub\nFROM FreightNodes spoke\nINNER JOIN FreightNodes hub\n  ON spoke.parent_hub_id = hub.node_id\nWHERE spoke.node_type = 'SPOKE_STATION'\nORDER BY hub.node_name ASC, spoke.node_name ASC;`,
+    eli5Story: "Connecting small regional airport freight depots to the giant FedEx or UPS sorting hub in Memphis or Louisville.",
+    commonMistakes: "Using spoke.parent_hub_id = hub.parent_hub_id, which matches sister spokes together instead of matching spoke to hub.",
+    learningOutcomes: "Model transport hub-and-spoke networks using self-joins."
+  },
+  {
+    title: "Multi-Leg Parcel Routing Handoffs (Scan-to-Scan Package Custody Tracking)",
+    ind: "Logistics",
+    diff: "Hard",
+    table: "TrackingScans",
+    scenario: "Detecting lost packages in transit by self-joining sequential parcel tracking scans to verify that departed packages arrived at the next hub.",
+    businessObjective: "Self-join TrackingScans on package tracking number to link consecutive departure and arrival scans.",
+    schemaSnippet: "`TrackingScans (scan_id BIGINT PRIMARY KEY, tracking_number VARCHAR(32), facility_code VARCHAR(8), event_type VARCHAR(16), scan_time TIMESTAMP)`",
+    targetQuery: `SELECT depart.tracking_number,\n       depart.facility_code AS origin_facility,\n       arrive.facility_code AS destination_facility,\n       depart.scan_time AS departure_time,\n       arrive.scan_time AS arrival_time,\n       TIMESTAMPDIFF(HOUR, depart.scan_time, arrive.scan_time) AS transit_hours\nFROM TrackingScans depart\nINNER JOIN TrackingScans arrive\n  ON depart.tracking_number = arrive.tracking_number\nWHERE depart.event_type = 'DEPARTED_FACILITY'\n  AND arrive.event_type = 'ARRIVED_FACILITY'\n  AND arrive.scan_time > depart.scan_time\n  AND TIMESTAMPDIFF(HOUR, depart.scan_time, arrive.scan_time) <= 48\nORDER BY depart.tracking_number ASC, departure_time ASC;`,
+    eli5Story: "Connecting the 'Departed Chicago' scan with the 'Arrived Detroit' scan to calculate how many hours the truck took to drive between sorting hubs.",
+    commonMistakes: "Not bounding the time difference, which accidentally matches a departure from Monday to an arrival 3 weeks later.",
+    learningOutcomes: "Reconstruct continuous freight custody chains using temporal event self-joins."
+  },
+  {
+    title: "Freight Shipping Pallet Parent-Child Consolidation (Carton to Master Pallet)",
+    ind: "Logistics",
+    diff: "Medium",
+    table: "ShippingUnits",
+    scenario: "Tracking containerized air cargo by joining individual customer parcels to their consolidated master gaylord pallet.",
+    businessObjective: "Self-join ShippingUnits on child.parent_unit_id = parent.unit_id to calculate consolidated weight per master pallet.",
+    schemaSnippet: "`ShippingUnits (unit_id VARCHAR(32) PRIMARY KEY, unit_type VARCHAR(16), weight_kg DECIMAL(8,2), parent_unit_id VARCHAR(32))`",
+    targetQuery: `SELECT parent.unit_id AS master_pallet_id,\n       COUNT(child.unit_id) AS total_cartons_consolidated,\n       SUM(child.weight_kg) AS total_carton_weight_kg,\n       parent.weight_kg AS empty_pallet_tare_weight_kg,\n       (SUM(child.weight_kg) + parent.weight_kg) AS gross_pallet_weight_kg\nFROM ShippingUnits parent\nINNER JOIN ShippingUnits child\n  ON child.parent_unit_id = parent.unit_id\nWHERE parent.unit_type = 'MASTER_PALLET'\nGROUP BY parent.unit_id, parent.weight_kg\nORDER BY gross_pallet_weight_kg DESC;`,
+    eli5Story: "Adding up the weight of 40 small Amazon boxes stacked onto one giant wooden pallet to calculate the total shipping weight for the cargo airplane.",
+    commonMistakes: "Forgetting to add the wooden pallet's own weight (tare weight) to the cargo contents weight.",
+    learningOutcomes: "Compute consolidated logistics weights across parent-child shipping packaging trees."
+  },
+  {
+    title: "Trucking Linehaul Relay Drivers (Tractor-Trailer Relay Handoffs)",
+    ind: "Logistics",
+    diff: "Medium",
+    table: "DriverRelayLegs",
+    scenario: "Auditing cross-country freight relay handoffs where Driver 1 hands off a loaded semi-trailer to Driver 2 at an interstate truck stop.",
+    businessObjective: "Self-join DriverRelayLegs on trailer_id to link sequential driving legs and verify seamless truck handoffs.",
+    schemaSnippet: "`DriverRelayLegs (leg_id VARCHAR(32) PRIMARY KEY, trailer_id VARCHAR(16), driver_id VARCHAR(32), handover_location VARCHAR(32), handover_time TIMESTAMP)`",
+    targetQuery: `SELECT leg1.trailer_id,\n       leg1.driver_id AS inbound_driver,\n       leg2.driver_id AS outbound_driver,\n       leg1.handover_location\nFROM DriverRelayLegs leg1\nINNER JOIN DriverRelayLegs leg2\n  ON leg1.trailer_id = leg2.trailer_id\n AND leg1.leg_id <> leg2.leg_id\nWHERE leg2.handover_time >= leg1.handover_time\n  AND leg2.handover_time <= leg1.handover_time + INTERVAL 4 HOUR\nORDER BY leg1.handover_time DESC;`,
+    eli5Story: "Connecting the truck driver who drove the trailer from Dallas to Memphis with the second driver who hopped in the cab to drive it from Memphis to Atlanta.",
+    commonMistakes: "Allowing leg1.leg_id = leg2.leg_id, which matches a driver's leg to itself.",
+    learningOutcomes: "Model relay logistics operations using bounded inequality self-joins."
+  },
+
+  // --- MEDIA ---
+  {
+    title: "Media Content Franchises and Spin-Off Lineage (Prequels and Sequels)",
+    ind: "Media",
+    diff: "Easy",
+    table: "EntertainmentCatalog",
+    scenario: "Organizing streaming video libraries by linking spin-off TV series and movie sequels to their original parent franchise title.",
+    businessObjective: "Self-join EntertainmentCatalog on child.parent_franchise_id = parent.title_id to display franchise lineage.",
+    schemaSnippet: "`EntertainmentCatalog (title_id VARCHAR(32) PRIMARY KEY, title_name VARCHAR(100), release_year INT, parent_franchise_id VARCHAR(32))`",
+    targetQuery: `SELECT child.title_name AS spin_off_or_sequel,\n       child.release_year,\n       COALESCE(parent.title_name, 'ORIGINAL_FLAGSHIP_IP') AS original_parent_franchise\nFROM EntertainmentCatalog child\nLEFT JOIN EntertainmentCatalog parent\n  ON child.parent_franchise_id = parent.title_id\nORDER BY original_parent_franchise ASC, child.release_year ASC;`,
+    eli5Story: "Showing that 'House of the Dragon' is a spin-off of 'Game of Thrones', or 'Better Call Saul' is a spin-off of 'Breaking Bad'.",
+    commonMistakes: "Using an INNER JOIN which drops the original blockbuster movie that started the whole franchise.",
+    learningOutcomes: "Model digital media franchise lineage using self-joins."
+  },
+  {
+    title: "Podcast Audio Feed Episode Syndication (Parent Show to Season Episodes)",
+    ind: "Media",
+    diff: "Medium",
+    table: "PodcastMediaFeed",
+    scenario: "Computing average episode download duration per podcast series by self-joining individual audio episodes to their master series feed header.",
+    businessObjective: "Self-join PodcastMediaFeed to calculate average episode downloads grouped by master show title.",
+    schemaSnippet: "`PodcastMediaFeed (feed_id VARCHAR(32) PRIMARY KEY, item_title VARCHAR(100), item_type VARCHAR(16), download_count INT, parent_show_id VARCHAR(32))`",
+    targetQuery: `SELECT parent.item_title AS podcast_show_name,\n       COUNT(child.feed_id) AS total_episodes_published,\n       ROUND(AVG(child.download_count), 0) AS avg_downloads_per_episode\nFROM PodcastMediaFeed parent\nINNER JOIN PodcastMediaFeed child\n  ON child.parent_show_id = parent.feed_id\nWHERE parent.item_type = 'SHOW_MASTER'\nGROUP BY parent.item_title\nORDER BY avg_downloads_per_episode DESC;`,
+    eli5Story: "Averaging the download listener numbers across all 50 episodes of a popular podcast show to measure the show's overall popularity.",
+    commonMistakes: "Grouping by parent.feed_id without filtering on item_type, which could allow child episodes to act as parents.",
+    learningOutcomes: "Aggregate episodic digital media metrics across show master hierarchies."
+  },
+  {
+    title: "Digital News Article Update Versions (Breaking News Editorial Revisions)",
+    ind: "Media",
+    diff: "Hard",
+    table: "ArticleRevisions",
+    scenario: "Tracking editorial corrections and breaking news updates by linking edited article versions to their original breaking news draft.",
+    businessObjective: "Self-join ArticleRevisions on current.replaces_revision_id = previous.revision_id to track word count deltas between article edits.",
+    schemaSnippet: "`ArticleRevisions (revision_id VARCHAR(32) PRIMARY KEY, article_headline VARCHAR(128), word_count INT, edited_at TIMESTAMP, replaces_revision_id VARCHAR(32))`",
+    targetQuery: `SELECT curr.article_headline AS current_headline,\n       prev.article_headline AS original_headline,\n       (curr.word_count - prev.word_count) AS word_count_delta,\n       TIMESTAMPDIFF(MINUTE, prev.edited_at, curr.edited_at) AS minutes_between_edits\nFROM ArticleRevisions curr\nINNER JOIN ArticleRevisions prev\n  ON curr.replaces_revision_id = prev.revision_id\nORDER BY minutes_between_edits ASC;`,
+    eli5Story: "Comparing a breaking news article published at 9:00 AM with the updated version published at 9:30 AM to see what new facts the reporter added.",
+    commonMistakes: "Subtracting word count in reverse order, producing negative deltas for articles that grew longer with updates.",
+    learningOutcomes: "Analyze revision history and editorial changes using version-linked self-joins."
+  },
+  {
+    title: "Online Discussion Forum Reply Trees (Parent Post to Comment Threads)",
+    ind: "Media",
+    diff: "Easy",
+    table: "ForumPosts",
+    scenario: "Organizing social media and forum discussions by joining reply comments directly to the original parent discussion thread post.",
+    businessObjective: "Self-join ForumPosts on reply.parent_post_id = thread.post_id to calculate comment reply activity per original thread.",
+    schemaSnippet: "`ForumPosts (post_id VARCHAR(32) PRIMARY KEY, author VARCHAR(64), post_body VARCHAR(255), parent_post_id VARCHAR(32))`",
+    targetQuery: `SELECT thread.post_id AS thread_id,\n       thread.author AS original_poster,\n       COUNT(reply.post_id) AS total_replies\nFROM ForumPosts thread\nINNER JOIN ForumPosts reply\n  ON reply.parent_post_id = thread.post_id\nWHERE thread.parent_post_id IS NULL\nGROUP BY thread.post_id, thread.author\nORDER BY total_replies DESC;`,
+    eli5Story: "Counting how many comments people left on a Reddit or Twitter discussion post, making sure replies link to the original poster's message.",
+    commonMistakes: "Omitting `WHERE thread.parent_post_id IS NULL`, which would allow nested replies to count as top-level discussion threads.",
+    learningOutcomes: "Structure online discussion forum threads and comment reply counts using self-joins."
+  },
+
+  // --- SECURITY ---
+  {
+    title: "Security Access Token Delegation Chains (OAuth Token Inheritance Trees)",
+    ind: "Security",
+    diff: "Medium",
+    table: "OAuthTokens",
+    scenario: "Auditing cloud service token privilege delegation by tracing derived child microservice tokens back to the original user session token.",
+    businessObjective: "Self-join OAuthTokens on child.parent_token_id = parent.token_id to detect unauthorized privilege escalation.",
+    schemaSnippet: "`OAuthTokens (token_id VARCHAR(64) PRIMARY KEY, client_app VARCHAR(64), scope VARCHAR(32), parent_token_id VARCHAR(64))`",
+    targetQuery: `SELECT child.token_id AS child_service_token,\n       child.client_app AS downstream_service,\n       child.scope AS child_scope,\n       parent.client_app AS upstream_authorizer,\n       parent.scope AS parent_scope\nFROM OAuthTokens child\nINNER JOIN OAuthTokens parent\n  ON child.parent_token_id = parent.token_id\nWHERE child.scope = 'ADMIN_WRITE'\n  AND parent.scope = 'READ_ONLY'\nORDER BY child.token_id ASC;`,
+    eli5Story: "Catching a computer program that was only given 'Read-Only' permission but somehow created a child token that gave itself full 'Admin-Write' power.",
+    commonMistakes: "Using a LEFT JOIN when the security query specifically targets derived child tokens with parents.",
+    learningOutcomes: "Audit authorization privilege escalation vulnerabilities across token delegation trees."
+  },
+  {
+    title: "Security Incident Response Parent-Child Alert Bundles (Root Cause Analysis)",
+    ind: "Security",
+    diff: "Easy",
+    table: "SecurityAlertsTree",
+    scenario: "Grouping thousands of noisy automated alerts into one master security incident ticket by linking subordinate alerts to the primary root alarm.",
+    businessObjective: "Self-join SecurityAlertsTree on child.root_incident_id = parent.alert_id to report grouped alerts per master security incident.",
+    schemaSnippet: "`SecurityAlertsTree (alert_id VARCHAR(32) PRIMARY KEY, alert_name VARCHAR(64), root_incident_id VARCHAR(32))`",
+    targetQuery: `SELECT parent.alert_id AS master_incident_id,\n       parent.alert_name AS primary_attack_signature,\n       COUNT(child.alert_id) AS subordinate_alerts_count\nFROM SecurityAlertsTree parent\nINNER JOIN SecurityAlertsTree child\n  ON child.root_incident_id = parent.alert_id\nWHERE parent.root_incident_id IS NULL\nGROUP BY parent.alert_id, parent.alert_name\nORDER BY subordinate_alerts_count DESC;`,
+    eli5Story: "Combining 200 noisy alarms that went off at once into 1 single master incident folder so cybersecurity analysts don't get overwhelmed.",
+    commonMistakes: "Forgetting `parent.root_incident_id IS NULL`, which would treat intermediate alerts as master incidents.",
+    learningOutcomes: "Group correlated security alerts into root-cause incident tickets using self-joins."
+  },
+  {
+    title: "Zero-Trust Device Certificate Re-Issuance Chains (Root CA to Intermediate to Leaf)",
+    ind: "Security",
+    diff: "Hard",
+    table: "PkiCertificates",
+    scenario: "Validating SSL/TLS certificate chains of trust by joining leaf device certificates to their signing intermediate authority certificate.",
+    businessObjective: "Self-join PkiCertificates on leaf.issuer_serial = issuer.cert_serial to verify cryptographic expiration boundaries.",
+    schemaSnippet: "`PkiCertificates (cert_serial VARCHAR(64) PRIMARY KEY, common_name VARCHAR(100), cert_type VARCHAR(16), expires_at DATE, issuer_serial VARCHAR(64))`",
+    targetQuery: `SELECT leaf.common_name AS device_hostname,\n       leaf.expires_at AS device_cert_expires,\n       issuer.common_name AS issuing_authority,\n       issuer.expires_at AS ca_cert_expires\nFROM PkiCertificates leaf\nINNER JOIN PkiCertificates issuer\n  ON leaf.issuer_serial = issuer.cert_serial\nWHERE leaf.cert_type = 'LEAF_DEVICE'\n  AND leaf.expires_at > issuer.expires_at\nORDER BY leaf.common_name ASC;`,
+    eli5Story: "Catching a computer security certificate that claims it is valid until 2028, even though the company certificate authority that signed it expires in 2027.",
+    commonMistakes: "Allowing a leaf certificate to outlive its signing authority, causing unexpected connection failures when the CA expires.",
+    learningOutcomes: "Validate PKI certificate hierarchy expiration dates using self-joins."
+  },
+  {
+    title: "Phishing Campaign Forwarding Trees (Employee-to-Employee Email Spreads)",
+    ind: "Security",
+    diff: "Medium",
+    table: "PhishingIncidentLogs",
+    scenario: "Tracing the internal spread of malicious phishing emails by joining employees who forwarded a phishing email to other coworkers.",
+    businessObjective: "Self-join PhishingIncidentLogs on victim.forwarded_from_user_id = source.user_id to map internal phishing diffusion paths.",
+    schemaSnippet: "`PhishingIncidentLogs (incident_id BIGINT PRIMARY KEY, user_id VARCHAR(32), user_email VARCHAR(100), forwarded_from_user_id VARCHAR(32))`",
+    targetQuery: `SELECT source.user_email AS original_compromised_forwarder,\n       COUNT(victim.incident_id) AS coworkers_infected\nFROM PhishingIncidentLogs source\nINNER JOIN PhishingIncidentLogs victim\n  ON victim.forwarded_from_user_id = source.user_id\nGROUP BY source.user_email\nORDER BY coworkers_infected DESC;`,
+    eli5Story: "Seeing which employee accidentally forwarded a dangerous scam email to 50 coworkers so IT security can send targeted training to their team.",
+    commonMistakes: "Confusing the sender and recipient in the join condition, attributing the infection in reverse.",
+    learningOutcomes: "Analyze internal cyber incident propagation graphs using self-joins."
+  },
+
+  // --- HARDWARE ---
+  {
+    title: "Computer Server Chassis Sub-Module Assembly Tree (Chassis to Daughter Cards)",
+    ind: "Hardware",
+    diff: "Easy",
+    table: "ServerAssemblyTree",
+    scenario: "Tracking physical computer hardware topology by linking expansion cards and power supplies to their hosting server chassis serial.",
+    businessObjective: "Self-join ServerAssemblyTree on child.parent_chassis_serial = parent.hardware_serial to report installed components per chassis.",
+    schemaSnippet: "`ServerAssemblyTree (hardware_serial VARCHAR(32) PRIMARY KEY, part_description VARCHAR(64), parent_chassis_serial VARCHAR(32))`",
+    targetQuery: `SELECT parent.hardware_serial AS chassis_serial,\n       child.hardware_serial AS installed_module_serial,\n       child.part_description AS module_type\nFROM ServerAssemblyTree parent\nINNER JOIN ServerAssemblyTree child\n  ON child.parent_chassis_serial = parent.hardware_serial\nORDER BY chassis_serial ASC, module_type ASC;`,
+    eli5Story: "Listing all the GPU graphics cards, network cards, and power supplies plugged into a big data center server computer.",
+    commonMistakes: "Using a LEFT JOIN on the child table when only modular assemblies with installed daughter cards are requested.",
+    learningOutcomes: "Model physical modular computer hardware assemblies using self-joins."
+  },
+  {
+    title: "Semiconductor Process Recipe Evolution (Revision History Lineage)",
+    ind: "Hardware",
+    diff: "Medium",
+    table: "ProcessRecipes",
+    scenario: "Tracking cleanroom chemical etching recipe parameter revisions by linking updated recipe revisions to their previous baseline recipe.",
+    businessObjective: "Self-join ProcessRecipes on curr.supersedes_recipe_id = prev.recipe_id to calculate chemical gas flow changes between revisions.",
+    schemaSnippet: "`ProcessRecipes (recipe_id VARCHAR(32) PRIMARY KEY, recipe_code VARCHAR(16), rf_power_watts INT, supersedes_recipe_id VARCHAR(32))`",
+    targetQuery: `SELECT curr.recipe_code AS current_recipe,\n       prev.recipe_code AS previous_baseline_recipe,\n       curr.rf_power_watts AS new_rf_power,\n       prev.rf_power_watts AS old_rf_power,\n       (curr.rf_power_watts - prev.rf_power_watts) AS power_delta_watts\nFROM ProcessRecipes curr\nINNER JOIN ProcessRecipes prev\n  ON curr.supersedes_recipe_id = prev.recipe_id\nORDER BY curr.recipe_code ASC;`,
+    eli5Story: "Comparing the laser power used in the new microchip manufacturing recipe with the old recipe to document chemical process changes.",
+    commonMistakes: "Inverting power delta calculations, showing power increases as decreases.",
+    learningOutcomes: "Track manufacturing process parameter changes across version lineages."
+  },
+  {
+    title: "Printed Circuit Board Multi-Layer Stackup Hierarchy (Core to Outer Copper Foil)",
+    ind: "Hardware",
+    diff: "Hard",
+    table: "PcbStackupLayers",
+    scenario: "Validating printed circuit board electrical impedance by joining inner dielectric core layers to their outer laminated copper signal traces.",
+    businessObjective: "Self-join PcbStackupLayers on child.bonded_to_layer_id = parent.layer_id to evaluate balanced copper weight distribution.",
+    schemaSnippet: "`PcbStackupLayers (layer_id VARCHAR(16) PRIMARY KEY, layer_name VARCHAR(32), copper_oz DECIMAL(4,2), bonded_to_layer_id VARCHAR(16))`",
+    targetQuery: `SELECT core.layer_name AS dielectric_core_layer,\n       signal.layer_name AS laminated_copper_layer,\n       signal.copper_oz AS copper_thickness_oz\nFROM PcbStackupLayers core\nINNER JOIN PcbStackupLayers signal\n  ON signal.bonded_to_layer_id = core.layer_id\nWHERE signal.copper_oz >= 1.00\nORDER BY core.layer_name ASC;`,
+    eli5Story: "Making sure the top and bottom copper layers of a circuit board are glued to the core center board with the right thickness of copper.",
+    commonMistakes: "Self-joining without filtering on specific layer bonding relationships, cross-joining all layers together.",
+    learningOutcomes: "Model physical composite layering structures using relational self-joins."
+  },
+  {
+    title: "Industrial Manufacturing Equipment Sub-Assembly Tree (Robotic Arm Joint Kinematics)",
+    ind: "Hardware",
+    diff: "Easy",
+    table: "EquipmentComponents",
+    scenario: "Mapping automated assembly machine sub-components by joining mechanical axis joints to their parent robotic arm drive unit.",
+    businessObjective: "Self-join EquipmentComponents on child.parent_assembly_id = parent.component_id to verify robot component configurations.",
+    schemaSnippet: "`EquipmentComponents (component_id VARCHAR(32) PRIMARY KEY, component_name VARCHAR(64), parent_assembly_id VARCHAR(32))`",
+    targetQuery: `SELECT parent.component_name AS primary_robot_drive,\n       child.component_name AS motorized_wrist_axis\nFROM EquipmentComponents parent\nINNER JOIN EquipmentComponents child\n  ON child.parent_assembly_id = parent.component_id\nORDER BY parent.component_name ASC;`,
+    eli5Story: "Showing which robotic fingers and wrist motors are attached to which robot arm on the factory floor.",
+    commonMistakes: "Inverting child and parent join conditions.",
+    learningOutcomes: "Structure multi-tier robotics hardware trees using self-joins."
+  },
+
+  // --- HR ---
+  {
+    title: "Employee to Direct Manager Organizational Roster (Standard Corporate Hierarchy)",
+    ind: "HR",
+    diff: "Easy",
+    table: "CorporateStaff",
+    scenario: "Generating an all-hands corporate reporting roster by joining every employee to their direct people manager, preserving the CEO.",
+    businessObjective: "Self-join CorporateStaff on e.manager_id = m.employee_id using LEFT JOIN to display employee and manager names.",
+    schemaSnippet: "`CorporateStaff (employee_id VARCHAR(32) PRIMARY KEY, full_name VARCHAR(100), job_title VARCHAR(64), manager_id VARCHAR(32))`",
+    targetQuery: `SELECT e.employee_id, e.full_name AS employee_name,\n       e.job_title AS employee_title,\n       COALESCE(m.full_name, 'BOARD_OF_DIRECTORS') AS manager_name,\n       COALESCE(m.job_title, 'GOVERNING_BOARD') AS manager_title\nFROM CorporateStaff e\nLEFT JOIN CorporateStaff m\n  ON e.manager_id = m.employee_id\nORDER BY e.full_name ASC;`,
+    eli5Story: "Making the official company phonebook: showing every employee's name side-by-side with who their direct boss is. For the CEO, list the Board of Directors.",
+    commonMistakes: "Using an INNER JOIN which makes the CEO disappear from the company roster because the CEO has no manager_id.",
+    learningOutcomes: "Master the standard corporate organizational hierarchy self-join pattern with root-node handling."
+  },
+  {
+    title: "Skip-Level Manager Hierarchy (Employee to Grandparent VP Skip-Level)",
+    ind: "HR",
+    diff: "Medium",
+    table: "OrgChart",
+    scenario: "Scheduling executive skip-level one-on-one meetings by connecting employees to their manager's manager (grandparent manager).",
+    businessObjective: "Perform a 2-tier self-join on OrgChart to identify each employee's skip-level manager for quarterly executive reviews.",
+    schemaSnippet: "`OrgChart (emp_id VARCHAR(32) PRIMARY KEY, emp_name VARCHAR(100), manager_id VARCHAR(32))`",
+    targetQuery: `SELECT e.emp_name AS employee,\n       m.emp_name AS direct_manager,\n       skip.emp_name AS skip_level_vp\nFROM OrgChart e\nINNER JOIN OrgChart m\n  ON e.manager_id = m.emp_id\nINNER JOIN OrgChart skip\n  ON m.manager_id = skip.emp_id\nORDER BY skip.emp_name ASC, e.emp_name ASC;`,
+    eli5Story: "Finding your boss's boss (like the Vice President of your department) so you can schedule a quarterly skip-level coffee chat.",
+    commonMistakes: "Using LEFT JOIN on the first hop but INNER JOIN on the second hop, which inadvertently filters out employees without skip-levels.",
+    learningOutcomes: "Chain multiple self-joins together to traverse multi-generation managerial hierarchies."
+  },
+  {
+    title: "Peer Coworkers Sharing the Same Direct Manager (Team Roster Generation)",
+    ind: "HR",
+    diff: "Medium",
+    table: "StaffDirectoryPeers",
+    scenario: "Finding peer colleagues on the same team by self-joining employees who share the exact same people manager.",
+    businessObjective: "Self-join StaffDirectoryPeers on a.manager_id = b.manager_id where a.emp_id < b.emp_id to list all peer pairings.",
+    schemaSnippet: "`StaffDirectoryPeers (emp_id VARCHAR(32) PRIMARY KEY, emp_name VARCHAR(100), manager_id VARCHAR(32))`",
+    targetQuery: `SELECT m.emp_name AS shared_manager,\n       a.emp_name AS team_member_1,\n       b.emp_name AS team_member_2\nFROM StaffDirectoryPeers a\nINNER JOIN StaffDirectoryPeers b\n  ON a.manager_id = b.manager_id\n AND a.emp_id < b.emp_id\nINNER JOIN StaffDirectoryPeers m\n  ON a.manager_id = m.emp_id\nORDER BY m.emp_name ASC, a.emp_name ASC;`,
+    eli5Story: "Listing coworkers who report to the same boss so we can pair them up for secret Santa or peer code reviews.",
+    commonMistakes: "Using `a.emp_id <> b.emp_id` which outputs both (Alice, Bob) and (Bob, Alice); `a.emp_id < b.emp_id` eliminates duplicate inverted pairs.",
+    learningOutcomes: "Generate unique peer combinations sharing a common parent key using inequality self-joins."
+  },
+  {
+    title: "Succession Planning Mentorship Trees (Senior Mentor to Protégé Pipeline)",
+    ind: "HR",
+    diff: "Hard",
+    table: "TalentPipeline",
+    scenario: "Auditing corporate leadership succession plans by linking designated executive successors to their assigned C-suite executive sponsors.",
+    businessObjective: "Self-join TalentPipeline on protégé.sponsor_emp_id = mentor.emp_id to evaluate leadership succession readiness.",
+    schemaSnippet: "`TalentPipeline (emp_id VARCHAR(32) PRIMARY KEY, emp_name VARCHAR(100), role_level VARCHAR(16), readiness_rating VARCHAR(16), sponsor_emp_id VARCHAR(32))`",
+    targetQuery: `SELECT mentor.emp_name AS executive_sponsor,\n       mentor.role_level AS executive_level,\n       protege.emp_name AS designated_successor,\n       protege.readiness_rating\nFROM TalentPipeline protege\nINNER JOIN TalentPipeline mentor\n  ON protege.sponsor_emp_id = mentor.emp_id\nWHERE protege.readiness_rating = 'READY_NOW'\nORDER BY mentor.emp_name ASC;`,
+    eli5Story: "Checking which senior directors are ready right now to step into the Chief Financial Officer or VP role if an executive retires.",
+    commonMistakes: "Confusing who is the mentor and who is the protégé in the join condition.",
+    learningOutcomes: "Model talent succession readiness using self-referential organizational structures."
+  },
+
+  // --- PLATFORMS ---
+  {
+    title: "Marketplace Product Category Taxonomy Tree (Parent Category to Subcategory)",
+    ind: "Platforms",
+    diff: "Easy",
+    table: "PlatformCategories",
+    scenario: "Structuring digital marketplace search filters by joining e-commerce subcategories to their top-level department headers.",
+    businessObjective: "Self-join PlatformCategories on sub.parent_cat_id = top.cat_id to construct navigation filter menus.",
+    schemaSnippet: "`PlatformCategories (cat_id VARCHAR(16) PRIMARY KEY, cat_name VARCHAR(64), parent_cat_id VARCHAR(16))`",
+    targetQuery: `SELECT sub.cat_id, sub.cat_name AS subcategory_name,\n       COALESCE(top.cat_name, 'ROOT_DIRECTORY') AS parent_category\nFROM PlatformCategories sub\nLEFT JOIN PlatformCategories top\n  ON sub.parent_cat_id = top.cat_id\nORDER BY parent_category ASC, subcategory_name ASC;`,
+    eli5Story: "Organizing an Amazon or eBay category tree: linking 'Laptops' to 'Computers', and 'Computers' to 'Electronics'.",
+    commonMistakes: "Using an INNER JOIN which drops the main root categories.",
+    learningOutcomes: "Structure multi-level online marketplace category filters using self-joins."
+  },
+  {
+    title: "Driver Referral Trees (Attributing Multi-Tier Onboarding Incentives)",
+    ind: "Platforms",
+    diff: "Medium",
+    table: "PlatformDriversRoster",
+    scenario: "Calculating multi-tier driver referral bonuses by joining newly approved ride-share drivers to their referring veteran driver.",
+    businessObjective: "Self-join PlatformDriversRoster on new_driver.referred_by_driver_id = veteran.driver_id to calculate driver referral bonuses.",
+    schemaSnippet: "`PlatformDriversRoster (driver_id VARCHAR(32) PRIMARY KEY, driver_name VARCHAR(100), city VARCHAR(32), referred_by_driver_id VARCHAR(32))`",
+    targetQuery: `SELECT veteran.driver_name AS referring_driver,\n       veteran.city,\n       COUNT(new_driver.driver_id) AS drivers_referred_count,\n       COUNT(new_driver.driver_id) * 250.00 AS total_referral_bonus_usd\nFROM PlatformDriversRoster new_driver\nINNER JOIN PlatformDriversRoster veteran\n  ON new_driver.referred_by_driver_id = veteran.driver_id\nGROUP BY veteran.driver_name, veteran.city\nHAVING COUNT(new_driver.driver_id) >= 3\nORDER BY total_referral_bonus_usd DESC;`,
+    eli5Story: "Paying a $250 reward to experienced Uber drivers who recruited 3 or more of their friends to become drivers on the platform.",
+    commonMistakes: "Grouping by new_driver instead of veteran driver, which groups by the wrong side of the relationship.",
+    learningOutcomes: "Aggregate platform referral incentives using self-joins and group filtering."
+  },
+  {
+    title: "Food Delivery Ghost Kitchen Multi-Brand Umbrella Registry",
+    ind: "Platforms",
+    diff: "Hard",
+    table: "KitchenBrands",
+    scenario: "Auditing commercial ghost kitchens operating multiple digital virtual brands from the exact same physical commissary facility.",
+    businessObjective: "Self-join KitchenBrands on child.master_commissary_id = master.brand_id to audit virtual storefront clusters.",
+    schemaSnippet: "`KitchenBrands (brand_id VARCHAR(32) PRIMARY KEY, brand_name VARCHAR(64), cuisine_type VARCHAR(32), master_commissary_id VARCHAR(32))`",
+    targetQuery: `SELECT master.brand_name AS primary_commissary_kitchen,\n       COUNT(virtual.brand_id) AS virtual_brands_hosted,\n       GROUP_CONCAT(virtual.brand_name ORDER BY virtual.brand_name SEPARATOR ', ') AS hosted_virtual_menus\nFROM KitchenBrands master\nINNER JOIN KitchenBrands virtual\n  ON virtual.master_commissary_id = master.brand_id\nWHERE master.master_commissary_id IS NULL\nGROUP BY master.brand_name\nHAVING COUNT(virtual.brand_id) >= 3\nORDER BY virtual_brands_hosted DESC;`,
+    eli5Story: "Finding single industrial warehouse kitchens that are running 5 different digital restaurant menus (burgers, pizza, wings, tacos) from the exact same stove.",
+    commonMistakes: "Missing the GROUP_CONCAT separator or omitting the master kitchen filter.",
+    learningOutcomes: "Aggregate child brand entities into a single reporting row using self-joins and string aggregation."
+  },
+  {
+    title: "Social Graph Mutual Connections (Shared Friend Discovery Engine)",
+    ind: "Platforms",
+    diff: "Hard",
+    table: "UserFollows",
+    scenario: "Powering friend recommendation engines ('People You May Know') by finding mutual connections shared between two platform users.",
+    businessObjective: "Self-join UserFollows on f1.following_id = f2.following_id to compute mutual follower counts between distinct users.",
+    schemaSnippet: "`UserFollows (follower_id VARCHAR(32), following_id VARCHAR(32), PRIMARY KEY(follower_id, following_id))`",
+    targetQuery: `SELECT f1.follower_id AS user_a,\n       f2.follower_id AS user_b,\n       COUNT(f1.following_id) AS mutual_connections_count\nFROM UserFollows f1\nINNER JOIN UserFollows f2\n  ON f1.following_id = f2.following_id\n AND f1.follower_id < f2.follower_id\nGROUP BY f1.follower_id, f2.follower_id\nHAVING COUNT(f1.following_id) >= 5\nORDER BY mutual_connections_count DESC;`,
+    eli5Story: "Finding two people on Instagram or LinkedIn who don't know each other yet, but follow 5 of the exact same people ('5 mutual friends').",
+    commonMistakes: "Using `f1.follower_id <> f2.follower_id` which evaluates every pair twice; using `<` enforces a single canonical pair order.",
+    learningOutcomes: "Implement social graph mutual connection recommendation algorithms using self-joins."
+  }
+];
