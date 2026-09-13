@@ -106,7 +106,7 @@
         </button>
         <button class="nav-tab" data-view="viewCases" onclick="switchMainView('viewCases')">
           <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="2" y="7" width="20" height="14" rx="2" ry="2"></rect><path d="M16 21V5a2 2 0 0 0-2-2h-4a2 2 0 0 0-2 2v16"></path></svg>
-          Case Studies (1,490)
+          Case Studies (1,790)
         </button>
         <button class="nav-tab" data-view="viewEnterpriseERD" onclick="switchMainView('viewEnterpriseERD')">
           <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="3" y="3" width="7" height="7"></rect><rect x="14" y="3" width="7" height="7"></rect><rect x="14" y="14" width="7" height="7"></rect><rect x="3" y="14" width="7" height="7"></rect><line x1="10" y1="6.5" x2="14" y2="6.5"></line><line x1="6.5" y1="10" x2="6.5" y2="14"></line></svg>
@@ -650,8 +650,8 @@
         <!-- Deck 1: Title, Modes, Sort, Search & Solved Tally -->
         <div class="toolbar-deck-top">
           <div>
-            <h2 class="view-title">The 1,040 Corporate Case Study Master Vault</h2>
-            <p class="view-subtitle">1,040 production analytics scenarios across 10 global industries &amp; 8 SQL sections with interactive slot challenges.</p>
+            <h2 class="view-title">The 1,790 Corporate &amp; Foundations Case Study Master Vault</h2>
+            <p class="view-subtitle">1,790 production analytics &amp; syntax foundation scenarios across 11 SQL sections with interactive slot challenges.</p>
           </div>
           <div class="toolbar-deck-controls">
             <div class="mode-toggle-group">
@@ -663,19 +663,20 @@
             <select id="caseSortSelect" class="case-sort-select">
               <option value="diff_asc">Sort: Easy &rarr; Medium &rarr; Hard (Curriculum Order)</option>
               <option value="diff_desc">Sort: Hard &rarr; Medium &rarr; Easy (Challenge Order)</option>
-              <option value="id_asc">Sort: Case ID #001 &rarr; #1490 (Chronological)</option>
+              <option value="id_asc">Sort: Case ID #001 &rarr; #1790 (Chronological)</option>
             </select>
-            <input type="text" id="caseSearchInput" class="case-search-input" placeholder="🔍 Search 1,490 cases by keyword, schema, query...">
-            <span id="caseCountBadge" class="status-pill">1,490 Cases</span>
-            <span id="caseSolvedBadge" class="status-pill" style="background: rgba(34, 197, 94, 0.15); color: #4ade80; border: 1px solid rgba(74, 222, 128, 0.3);">⚡ <span id="casesSolvedCount">0</span>/1490 Solved</span>
+            <input type="text" id="caseSearchInput" class="case-search-input" placeholder="🔍 Search 1,790 cases by keyword, schema, query...">
+            <span id="caseCountBadge" class="status-pill">1,790 Cases</span>
+            <span id="caseSolvedBadge" class="status-pill" style="background: rgba(34, 197, 94, 0.15); color: #4ade80; border: 1px solid rgba(74, 222, 128, 0.3);">⚡ <span id="casesSolvedCount">0</span>/1790 Solved</span>
           </div>
         </div>
 
         <!-- Deck 2: Section Switcher & Filter Strips -->
         <div class="toolbar-deck-bottom">
-          <!-- 10 Core Sections Switcher Bar -->
+          <!-- 11 Core Sections Switcher Bar -->
           <div class="case-section-group" id="caseSectionFilters" style="display: flex; gap: 8px; flex-wrap: wrap;">
-            <button class="case-section-btn active" data-section="all">All Sections (1490)</button>
+            <button class="case-section-btn active" data-section="all">All Sections (1790)</button>
+            <button class="case-section-btn section-btn-syntax" data-section="Section 0: Foundations &amp; Syntax Gym" style="border-color: #f59e0b; color: #fbbf24; font-weight: 700;">🏋️ Sec 0: Syntax Gym (300)</button>
             <button class="case-section-btn" data-section="Section 1: Database Theory &amp; Architecture">Sec 1: Theory &amp; Interview Prep (100)</button>
             <button class="case-section-btn" data-section="Section 2: Physical Query Execution Order &amp; Projections">Sec 2: Execution &amp; Projections (100)</button>
             <button class="case-section-btn" data-section="Section 3: Filtering, Predicates &amp; Three-Valued Logic">Sec 3: Filtering &amp; 3VL (100)</button>
@@ -692,15 +693,16 @@
           <div style="display: flex; flex-direction: column; gap: 8px;">
             <div class="filter-strip-row" id="caseDifficultyFilters">
               <span class="filter-strip-label">Difficulty:</span>
-              <button class="case-diff-filter-btn active" data-diff="all">All Difficulties (1490)</button>
-              <button class="case-diff-filter-btn diff-pill-easy" data-diff="Easy">🟢 Easy &bull; Foundations (530)</button>
+              <button class="case-diff-filter-btn active" data-diff="all">All Difficulties (1790)</button>
+              <button class="case-diff-filter-btn diff-pill-easy" data-diff="Easy">🟢 Easy &bull; Foundations (830)</button>
               <button class="case-diff-filter-btn diff-pill-medium" data-diff="Medium">🟡 Medium &bull; Production Standard (530)</button>
               <button class="case-diff-filter-btn diff-pill-hard" data-diff="Hard">🔴 Hard &bull; Senior Edge Cases (430)</button>
             </div>
 
             <div class="filter-strip-row" id="caseIndustryFilters">
               <span class="filter-strip-label">Industry:</span>
-              <button class="case-filter-btn active" data-industry="all">All (1490)</button>
+              <button class="case-filter-btn active" data-industry="all">All (1790)</button>
+              <button class="case-filter-btn" data-industry="Foundations" style="color: #fbbf24; border-color: rgba(245, 158, 11, 0.4); font-weight: 600;">🏋️ Foundations (300)</button>
               <button class="case-filter-btn" data-industry="Fintech">Fintech (135)</button>
               <button class="case-filter-btn" data-industry="SaaS">SaaS (120)</button>
               <button class="case-filter-btn" data-industry="Retail">Retail (120)</button>
@@ -938,7 +940,8 @@
 <script src="quests_engine.js"></script>
 <script src="deconstructor_data.js"></script>
 <script src="theory_interview_prep.js"></script>
-<script src="case_studies_500.js?v=57"></script>
+<script src="syntax_gym_data.js"></script>
+<script src="case_studies_500.js?v=58"></script>
 <script src="case_study_blanks.js?v=57"></script>
 <script src="domain_erd_engine.js?v=57"></script>
 <script src="case_dossier_engine.js?v=57"></script>

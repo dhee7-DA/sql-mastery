@@ -1,16 +1,6 @@
 // =============================================================================
-// COMPLETE ENTERPRISE CASE STUDIES REPOSITORY (1490 Exhaustive Industry Scenarios)
-// Strictly Contiguous IDs #1 through #1490 (100% Unique Titles)
-// Section 1: Database Theory & Architecture (IDs 1 to 100)
-// Section 2: Physical Query Execution Order & Projections (IDs 101 to 200)
-// Section 3: Filtering, Predicates & Three-Valued Logic (IDs 201 to 300)
-// Section 4: String Slicing, Text Manipulation & Pattern Matching (IDs 301 to 400)
-// Section 5: Sorting, Determinism & Slicing (IDs 401 to 500)
-// Section 6: Aggregations, Statistical Metrics & GROUP BY (IDs 501 to 600)
-// Section 7: Spatial Coordinates, Math Functions & Medians (IDs 601 to 650)
-// Section 8: Relational Joins & Financial Data Modeling (IDs 651 to 1040)
-// Section 9: Window Functions & Quantitative Financial Analytics (IDs 1041 to 1340)
-// Section 10: Advanced SQL Engine Mastery (Subqueries, CTEs, Recursion & Set Operations) (IDs 1341 to 1490)
+// CORPORATE CASE STUDIES MASTER VAULT (1,790 PRODUCTION & FOUNDATION SCENARIOS)
+// Sections 0-10: Complete Enterprise & Syntax Gym Relational Modeling
 // =============================================================================
 
 const ALL_500_CASE_STUDIES = [
@@ -18178,7 +18168,12 @@ const ALL_500_CASE_STUDIES = [
       "Allowing a scalar subquery in the SELECT list to return more than 1 row, triggering fatal runtime cardinality errors",
       "Using IN with a subquery containing NULLs when NOT IN was intended, falling into the 3VL empty-result trap"
     ],
-    "takeaway": "Scalar subqueries evaluate to a single atomic value and can be substituted anywhere a scalar constant is valid, provided cardinality is strictly guaranteed."
+    "takeaway": "Scalar subqueries evaluate to a single atomic value and can be substituted anywhere a scalar constant is valid, provided cardinality is strictly guaranteed.",
+    "industry": "Fintech",
+    "scenario": "The analytics engineering group in the Fintech vertical requires an automated analytical query to isolate records from ledger_txns where amount deviates significantly from global or columnar subquery baselines without joining physical tables unnecessarily.",
+    "businessObjective": "The analytics engineering group in the Fintech vertical requires an automated analytical query to isolate records from ledger_txns where amount deviates significantly from global or columnar subquery baselines without joining physical tables unnecessarily.",
+    "schemaSnippet": "| Column | Type | Description |\n|---|---|---|\n| id | INT | Primary Key |\n| amount | NUMERIC | Measured Metric |\n| category_id | INT | Dimensional Grouping |\n| recorded_at | TIMESTAMP | Event Timestamp |",
+    "learningOutcomes": "Scalar subqueries evaluate to a single atomic value and can be substituted anywhere a scalar constant is valid, provided cardinality is strictly guaranteed."
   },
   {
     "id": 1342,
@@ -18194,7 +18189,12 @@ const ALL_500_CASE_STUDIES = [
       "Allowing a scalar subquery in the SELECT list to return more than 1 row, triggering fatal runtime cardinality errors",
       "Using IN with a subquery containing NULLs when NOT IN was intended, falling into the 3VL empty-result trap"
     ],
-    "takeaway": "Scalar subqueries evaluate to a single atomic value and can be substituted anywhere a scalar constant is valid, provided cardinality is strictly guaranteed."
+    "takeaway": "Scalar subqueries evaluate to a single atomic value and can be substituted anywhere a scalar constant is valid, provided cardinality is strictly guaranteed.",
+    "industry": "SaaS",
+    "scenario": "The analytics engineering group in the SaaS vertical requires an automated analytical query to isolate records from tenant_subscriptions where seat_count deviates significantly from global or columnar subquery baselines without joining physical tables unnecessarily.",
+    "businessObjective": "The analytics engineering group in the SaaS vertical requires an automated analytical query to isolate records from tenant_subscriptions where seat_count deviates significantly from global or columnar subquery baselines without joining physical tables unnecessarily.",
+    "schemaSnippet": "| Column | Type | Description |\n|---|---|---|\n| id | INT | Primary Key |\n| seat_count | NUMERIC | Measured Metric |\n| category_id | INT | Dimensional Grouping |\n| recorded_at | TIMESTAMP | Event Timestamp |",
+    "learningOutcomes": "Scalar subqueries evaluate to a single atomic value and can be substituted anywhere a scalar constant is valid, provided cardinality is strictly guaranteed."
   },
   {
     "id": 1343,
@@ -18210,7 +18210,12 @@ const ALL_500_CASE_STUDIES = [
       "Allowing a scalar subquery in the SELECT list to return more than 1 row, triggering fatal runtime cardinality errors",
       "Using IN with a subquery containing NULLs when NOT IN was intended, falling into the 3VL empty-result trap"
     ],
-    "takeaway": "Scalar subqueries evaluate to a single atomic value and can be substituted anywhere a scalar constant is valid, provided cardinality is strictly guaranteed."
+    "takeaway": "Scalar subqueries evaluate to a single atomic value and can be substituted anywhere a scalar constant is valid, provided cardinality is strictly guaranteed.",
+    "industry": "Healthcare",
+    "scenario": "The analytics engineering group in the Healthcare vertical requires an automated analytical query to isolate records from inpatient_stays where stay_days deviates significantly from global or columnar subquery baselines without joining physical tables unnecessarily.",
+    "businessObjective": "The analytics engineering group in the Healthcare vertical requires an automated analytical query to isolate records from inpatient_stays where stay_days deviates significantly from global or columnar subquery baselines without joining physical tables unnecessarily.",
+    "schemaSnippet": "| Column | Type | Description |\n|---|---|---|\n| id | INT | Primary Key |\n| stay_days | NUMERIC | Measured Metric |\n| category_id | INT | Dimensional Grouping |\n| recorded_at | TIMESTAMP | Event Timestamp |",
+    "learningOutcomes": "Scalar subqueries evaluate to a single atomic value and can be substituted anywhere a scalar constant is valid, provided cardinality is strictly guaranteed."
   },
   {
     "id": 1344,
@@ -18226,7 +18231,12 @@ const ALL_500_CASE_STUDIES = [
       "Allowing a scalar subquery in the SELECT list to return more than 1 row, triggering fatal runtime cardinality errors",
       "Using IN with a subquery containing NULLs when NOT IN was intended, falling into the 3VL empty-result trap"
     ],
-    "takeaway": "Scalar subqueries evaluate to a single atomic value and can be substituted anywhere a scalar constant is valid, provided cardinality is strictly guaranteed."
+    "takeaway": "Scalar subqueries evaluate to a single atomic value and can be substituted anywhere a scalar constant is valid, provided cardinality is strictly guaranteed.",
+    "industry": "E-Commerce",
+    "scenario": "The analytics engineering group in the E-Commerce vertical requires an automated analytical query to isolate records from customer_orders where order_total deviates significantly from global or columnar subquery baselines without joining physical tables unnecessarily.",
+    "businessObjective": "The analytics engineering group in the E-Commerce vertical requires an automated analytical query to isolate records from customer_orders where order_total deviates significantly from global or columnar subquery baselines without joining physical tables unnecessarily.",
+    "schemaSnippet": "| Column | Type | Description |\n|---|---|---|\n| id | INT | Primary Key |\n| order_total | NUMERIC | Measured Metric |\n| category_id | INT | Dimensional Grouping |\n| recorded_at | TIMESTAMP | Event Timestamp |",
+    "learningOutcomes": "Scalar subqueries evaluate to a single atomic value and can be substituted anywhere a scalar constant is valid, provided cardinality is strictly guaranteed."
   },
   {
     "id": 1345,
@@ -18242,7 +18252,12 @@ const ALL_500_CASE_STUDIES = [
       "Allowing a scalar subquery in the SELECT list to return more than 1 row, triggering fatal runtime cardinality errors",
       "Using IN with a subquery containing NULLs when NOT IN was intended, falling into the 3VL empty-result trap"
     ],
-    "takeaway": "Scalar subqueries evaluate to a single atomic value and can be substituted anywhere a scalar constant is valid, provided cardinality is strictly guaranteed."
+    "takeaway": "Scalar subqueries evaluate to a single atomic value and can be substituted anywhere a scalar constant is valid, provided cardinality is strictly guaranteed.",
+    "industry": "Logistics",
+    "scenario": "The analytics engineering group in the Logistics vertical requires an automated analytical query to isolate records from cargo_manifests where payload_kg deviates significantly from global or columnar subquery baselines without joining physical tables unnecessarily.",
+    "businessObjective": "The analytics engineering group in the Logistics vertical requires an automated analytical query to isolate records from cargo_manifests where payload_kg deviates significantly from global or columnar subquery baselines without joining physical tables unnecessarily.",
+    "schemaSnippet": "| Column | Type | Description |\n|---|---|---|\n| id | INT | Primary Key |\n| payload_kg | NUMERIC | Measured Metric |\n| category_id | INT | Dimensional Grouping |\n| recorded_at | TIMESTAMP | Event Timestamp |",
+    "learningOutcomes": "Scalar subqueries evaluate to a single atomic value and can be substituted anywhere a scalar constant is valid, provided cardinality is strictly guaranteed."
   },
   {
     "id": 1346,
@@ -18258,7 +18273,12 @@ const ALL_500_CASE_STUDIES = [
       "Allowing a scalar subquery in the SELECT list to return more than 1 row, triggering fatal runtime cardinality errors",
       "Using IN with a subquery containing NULLs when NOT IN was intended, falling into the 3VL empty-result trap"
     ],
-    "takeaway": "Scalar subqueries evaluate to a single atomic value and can be substituted anywhere a scalar constant is valid, provided cardinality is strictly guaranteed."
+    "takeaway": "Scalar subqueries evaluate to a single atomic value and can be substituted anywhere a scalar constant is valid, provided cardinality is strictly guaranteed.",
+    "industry": "Gaming",
+    "scenario": "The analytics engineering group in the Gaming vertical requires an automated analytical query to isolate records from player_sessions where gold_earned deviates significantly from global or columnar subquery baselines without joining physical tables unnecessarily.",
+    "businessObjective": "The analytics engineering group in the Gaming vertical requires an automated analytical query to isolate records from player_sessions where gold_earned deviates significantly from global or columnar subquery baselines without joining physical tables unnecessarily.",
+    "schemaSnippet": "| Column | Type | Description |\n|---|---|---|\n| id | INT | Primary Key |\n| gold_earned | NUMERIC | Measured Metric |\n| category_id | INT | Dimensional Grouping |\n| recorded_at | TIMESTAMP | Event Timestamp |",
+    "learningOutcomes": "Scalar subqueries evaluate to a single atomic value and can be substituted anywhere a scalar constant is valid, provided cardinality is strictly guaranteed."
   },
   {
     "id": 1347,
@@ -18274,7 +18294,12 @@ const ALL_500_CASE_STUDIES = [
       "Allowing a scalar subquery in the SELECT list to return more than 1 row, triggering fatal runtime cardinality errors",
       "Using IN with a subquery containing NULLs when NOT IN was intended, falling into the 3VL empty-result trap"
     ],
-    "takeaway": "Scalar subqueries evaluate to a single atomic value and can be substituted anywhere a scalar constant is valid, provided cardinality is strictly guaranteed."
+    "takeaway": "Scalar subqueries evaluate to a single atomic value and can be substituted anywhere a scalar constant is valid, provided cardinality is strictly guaranteed.",
+    "industry": "AdTech",
+    "scenario": "The analytics engineering group in the AdTech vertical requires an automated analytical query to isolate records from campaign_performance where ctr_pct deviates significantly from global or columnar subquery baselines without joining physical tables unnecessarily.",
+    "businessObjective": "The analytics engineering group in the AdTech vertical requires an automated analytical query to isolate records from campaign_performance where ctr_pct deviates significantly from global or columnar subquery baselines without joining physical tables unnecessarily.",
+    "schemaSnippet": "| Column | Type | Description |\n|---|---|---|\n| id | INT | Primary Key |\n| ctr_pct | NUMERIC | Measured Metric |\n| category_id | INT | Dimensional Grouping |\n| recorded_at | TIMESTAMP | Event Timestamp |",
+    "learningOutcomes": "Scalar subqueries evaluate to a single atomic value and can be substituted anywhere a scalar constant is valid, provided cardinality is strictly guaranteed."
   },
   {
     "id": 1348,
@@ -18290,7 +18315,12 @@ const ALL_500_CASE_STUDIES = [
       "Allowing a scalar subquery in the SELECT list to return more than 1 row, triggering fatal runtime cardinality errors",
       "Using IN with a subquery containing NULLs when NOT IN was intended, falling into the 3VL empty-result trap"
     ],
-    "takeaway": "Scalar subqueries evaluate to a single atomic value and can be substituted anywhere a scalar constant is valid, provided cardinality is strictly guaranteed."
+    "takeaway": "Scalar subqueries evaluate to a single atomic value and can be substituted anywhere a scalar constant is valid, provided cardinality is strictly guaranteed.",
+    "industry": "EdTech",
+    "scenario": "The analytics engineering group in the EdTech vertical requires an automated analytical query to isolate records from course_submissions where exam_score deviates significantly from global or columnar subquery baselines without joining physical tables unnecessarily.",
+    "businessObjective": "The analytics engineering group in the EdTech vertical requires an automated analytical query to isolate records from course_submissions where exam_score deviates significantly from global or columnar subquery baselines without joining physical tables unnecessarily.",
+    "schemaSnippet": "| Column | Type | Description |\n|---|---|---|\n| id | INT | Primary Key |\n| exam_score | NUMERIC | Measured Metric |\n| category_id | INT | Dimensional Grouping |\n| recorded_at | TIMESTAMP | Event Timestamp |",
+    "learningOutcomes": "Scalar subqueries evaluate to a single atomic value and can be substituted anywhere a scalar constant is valid, provided cardinality is strictly guaranteed."
   },
   {
     "id": 1349,
@@ -18306,7 +18336,12 @@ const ALL_500_CASE_STUDIES = [
       "Allowing a scalar subquery in the SELECT list to return more than 1 row, triggering fatal runtime cardinality errors",
       "Using IN with a subquery containing NULLs when NOT IN was intended, falling into the 3VL empty-result trap"
     ],
-    "takeaway": "Scalar subqueries evaluate to a single atomic value and can be substituted anywhere a scalar constant is valid, provided cardinality is strictly guaranteed."
+    "takeaway": "Scalar subqueries evaluate to a single atomic value and can be substituted anywhere a scalar constant is valid, provided cardinality is strictly guaranteed.",
+    "industry": "Energy",
+    "scenario": "The analytics engineering group in the Energy vertical requires an automated analytical query to isolate records from substation_telemetry where megawatt_load deviates significantly from global or columnar subquery baselines without joining physical tables unnecessarily.",
+    "businessObjective": "The analytics engineering group in the Energy vertical requires an automated analytical query to isolate records from substation_telemetry where megawatt_load deviates significantly from global or columnar subquery baselines without joining physical tables unnecessarily.",
+    "schemaSnippet": "| Column | Type | Description |\n|---|---|---|\n| id | INT | Primary Key |\n| megawatt_load | NUMERIC | Measured Metric |\n| category_id | INT | Dimensional Grouping |\n| recorded_at | TIMESTAMP | Event Timestamp |",
+    "learningOutcomes": "Scalar subqueries evaluate to a single atomic value and can be substituted anywhere a scalar constant is valid, provided cardinality is strictly guaranteed."
   },
   {
     "id": 1350,
@@ -18322,7 +18357,12 @@ const ALL_500_CASE_STUDIES = [
       "Allowing a scalar subquery in the SELECT list to return more than 1 row, triggering fatal runtime cardinality errors",
       "Using IN with a subquery containing NULLs when NOT IN was intended, falling into the 3VL empty-result trap"
     ],
-    "takeaway": "Scalar subqueries evaluate to a single atomic value and can be substituted anywhere a scalar constant is valid, provided cardinality is strictly guaranteed."
+    "takeaway": "Scalar subqueries evaluate to a single atomic value and can be substituted anywhere a scalar constant is valid, provided cardinality is strictly guaranteed.",
+    "industry": "Media",
+    "scenario": "The analytics engineering group in the Media vertical requires an automated analytical query to isolate records from video_streams where minutes_watched deviates significantly from global or columnar subquery baselines without joining physical tables unnecessarily.",
+    "businessObjective": "The analytics engineering group in the Media vertical requires an automated analytical query to isolate records from video_streams where minutes_watched deviates significantly from global or columnar subquery baselines without joining physical tables unnecessarily.",
+    "schemaSnippet": "| Column | Type | Description |\n|---|---|---|\n| id | INT | Primary Key |\n| minutes_watched | NUMERIC | Measured Metric |\n| category_id | INT | Dimensional Grouping |\n| recorded_at | TIMESTAMP | Event Timestamp |",
+    "learningOutcomes": "Scalar subqueries evaluate to a single atomic value and can be substituted anywhere a scalar constant is valid, provided cardinality is strictly guaranteed."
   },
   {
     "id": 1351,
@@ -18338,7 +18378,12 @@ const ALL_500_CASE_STUDIES = [
       "Allowing a scalar subquery in the SELECT list to return more than 1 row, triggering fatal runtime cardinality errors",
       "Using IN with a subquery containing NULLs when NOT IN was intended, falling into the 3VL empty-result trap"
     ],
-    "takeaway": "Scalar subqueries evaluate to a single atomic value and can be substituted anywhere a scalar constant is valid, provided cardinality is strictly guaranteed."
+    "takeaway": "Scalar subqueries evaluate to a single atomic value and can be substituted anywhere a scalar constant is valid, provided cardinality is strictly guaranteed.",
+    "industry": "Fintech",
+    "scenario": "The analytics engineering group in the Fintech vertical requires an automated analytical query to isolate records from bank_reserves where liquidity_ratio deviates significantly from global or columnar subquery baselines without joining physical tables unnecessarily.",
+    "businessObjective": "The analytics engineering group in the Fintech vertical requires an automated analytical query to isolate records from bank_reserves where liquidity_ratio deviates significantly from global or columnar subquery baselines without joining physical tables unnecessarily.",
+    "schemaSnippet": "| Column | Type | Description |\n|---|---|---|\n| id | INT | Primary Key |\n| liquidity_ratio | NUMERIC | Measured Metric |\n| category_id | INT | Dimensional Grouping |\n| recorded_at | TIMESTAMP | Event Timestamp |",
+    "learningOutcomes": "Scalar subqueries evaluate to a single atomic value and can be substituted anywhere a scalar constant is valid, provided cardinality is strictly guaranteed."
   },
   {
     "id": 1352,
@@ -18354,7 +18399,12 @@ const ALL_500_CASE_STUDIES = [
       "Allowing a scalar subquery in the SELECT list to return more than 1 row, triggering fatal runtime cardinality errors",
       "Using IN with a subquery containing NULLs when NOT IN was intended, falling into the 3VL empty-result trap"
     ],
-    "takeaway": "Scalar subqueries evaluate to a single atomic value and can be substituted anywhere a scalar constant is valid, provided cardinality is strictly guaranteed."
+    "takeaway": "Scalar subqueries evaluate to a single atomic value and can be substituted anywhere a scalar constant is valid, provided cardinality is strictly guaranteed.",
+    "industry": "SaaS",
+    "scenario": "The analytics engineering group in the SaaS vertical requires an automated analytical query to isolate records from tenant_churn_events where mrr_loss deviates significantly from global or columnar subquery baselines without joining physical tables unnecessarily.",
+    "businessObjective": "The analytics engineering group in the SaaS vertical requires an automated analytical query to isolate records from tenant_churn_events where mrr_loss deviates significantly from global or columnar subquery baselines without joining physical tables unnecessarily.",
+    "schemaSnippet": "| Column | Type | Description |\n|---|---|---|\n| id | INT | Primary Key |\n| mrr_loss | NUMERIC | Measured Metric |\n| category_id | INT | Dimensional Grouping |\n| recorded_at | TIMESTAMP | Event Timestamp |",
+    "learningOutcomes": "Scalar subqueries evaluate to a single atomic value and can be substituted anywhere a scalar constant is valid, provided cardinality is strictly guaranteed."
   },
   {
     "id": 1353,
@@ -18370,7 +18420,12 @@ const ALL_500_CASE_STUDIES = [
       "Allowing a scalar subquery in the SELECT list to return more than 1 row, triggering fatal runtime cardinality errors",
       "Using IN with a subquery containing NULLs when NOT IN was intended, falling into the 3VL empty-result trap"
     ],
-    "takeaway": "Scalar subqueries evaluate to a single atomic value and can be substituted anywhere a scalar constant is valid, provided cardinality is strictly guaranteed."
+    "takeaway": "Scalar subqueries evaluate to a single atomic value and can be substituted anywhere a scalar constant is valid, provided cardinality is strictly guaranteed.",
+    "industry": "Healthcare",
+    "scenario": "The analytics engineering group in the Healthcare vertical requires an automated analytical query to isolate records from icu_admissions where sofa_score deviates significantly from global or columnar subquery baselines without joining physical tables unnecessarily.",
+    "businessObjective": "The analytics engineering group in the Healthcare vertical requires an automated analytical query to isolate records from icu_admissions where sofa_score deviates significantly from global or columnar subquery baselines without joining physical tables unnecessarily.",
+    "schemaSnippet": "| Column | Type | Description |\n|---|---|---|\n| id | INT | Primary Key |\n| sofa_score | NUMERIC | Measured Metric |\n| category_id | INT | Dimensional Grouping |\n| recorded_at | TIMESTAMP | Event Timestamp |",
+    "learningOutcomes": "Scalar subqueries evaluate to a single atomic value and can be substituted anywhere a scalar constant is valid, provided cardinality is strictly guaranteed."
   },
   {
     "id": 1354,
@@ -18386,7 +18441,12 @@ const ALL_500_CASE_STUDIES = [
       "Allowing a scalar subquery in the SELECT list to return more than 1 row, triggering fatal runtime cardinality errors",
       "Using IN with a subquery containing NULLs when NOT IN was intended, falling into the 3VL empty-result trap"
     ],
-    "takeaway": "Scalar subqueries evaluate to a single atomic value and can be substituted anywhere a scalar constant is valid, provided cardinality is strictly guaranteed."
+    "takeaway": "Scalar subqueries evaluate to a single atomic value and can be substituted anywhere a scalar constant is valid, provided cardinality is strictly guaranteed.",
+    "industry": "E-Commerce",
+    "scenario": "The analytics engineering group in the E-Commerce vertical requires an automated analytical query to isolate records from checkout_promotions where discount_amt deviates significantly from global or columnar subquery baselines without joining physical tables unnecessarily.",
+    "businessObjective": "The analytics engineering group in the E-Commerce vertical requires an automated analytical query to isolate records from checkout_promotions where discount_amt deviates significantly from global or columnar subquery baselines without joining physical tables unnecessarily.",
+    "schemaSnippet": "| Column | Type | Description |\n|---|---|---|\n| id | INT | Primary Key |\n| discount_amt | NUMERIC | Measured Metric |\n| category_id | INT | Dimensional Grouping |\n| recorded_at | TIMESTAMP | Event Timestamp |",
+    "learningOutcomes": "Scalar subqueries evaluate to a single atomic value and can be substituted anywhere a scalar constant is valid, provided cardinality is strictly guaranteed."
   },
   {
     "id": 1355,
@@ -18402,7 +18462,12 @@ const ALL_500_CASE_STUDIES = [
       "Allowing a scalar subquery in the SELECT list to return more than 1 row, triggering fatal runtime cardinality errors",
       "Using IN with a subquery containing NULLs when NOT IN was intended, falling into the 3VL empty-result trap"
     ],
-    "takeaway": "Scalar subqueries evaluate to a single atomic value and can be substituted anywhere a scalar constant is valid, provided cardinality is strictly guaranteed."
+    "takeaway": "Scalar subqueries evaluate to a single atomic value and can be substituted anywhere a scalar constant is valid, provided cardinality is strictly guaranteed.",
+    "industry": "Logistics",
+    "scenario": "The analytics engineering group in the Logistics vertical requires an automated analytical query to isolate records from container_yard_scans where dwell_hours deviates significantly from global or columnar subquery baselines without joining physical tables unnecessarily.",
+    "businessObjective": "The analytics engineering group in the Logistics vertical requires an automated analytical query to isolate records from container_yard_scans where dwell_hours deviates significantly from global or columnar subquery baselines without joining physical tables unnecessarily.",
+    "schemaSnippet": "| Column | Type | Description |\n|---|---|---|\n| id | INT | Primary Key |\n| dwell_hours | NUMERIC | Measured Metric |\n| category_id | INT | Dimensional Grouping |\n| recorded_at | TIMESTAMP | Event Timestamp |",
+    "learningOutcomes": "Scalar subqueries evaluate to a single atomic value and can be substituted anywhere a scalar constant is valid, provided cardinality is strictly guaranteed."
   },
   {
     "id": 1356,
@@ -18418,7 +18483,12 @@ const ALL_500_CASE_STUDIES = [
       "Forgetting to alias the outer and inner table differently, causing the inner query to compare against itself rather than binding to the outer row",
       "Running correlated subqueries on non-indexed foreign keys, causing O(N*M) quadratic nested loop full-table scan disasters"
     ],
-    "takeaway": "Correlated subqueries bind outer query row parameters into the inner scope, executing context-aware comparisons for each candidate row."
+    "takeaway": "Correlated subqueries bind outer query row parameters into the inner scope, executing context-aware comparisons for each candidate row.",
+    "industry": "Fintech",
+    "scenario": "In Fintech, identifying outliers requires localized context: comparing an observation against its specific entity's baseline rather than an irrelevant global average. We need a correlated subquery row-binding account_id.",
+    "businessObjective": "In Fintech, identifying outliers requires localized context: comparing an observation against its specific entity's baseline rather than an irrelevant global average. We need a correlated subquery row-binding account_id.",
+    "schemaSnippet": "| Column | Type | Description |\n|---|---|---|\n| id | INT | Primary Key |\n| account_id | INT | Entity Correlation Anchor |\n| amount | NUMERIC | Tracked Observation |\n| recorded_at | DATE | Observation Date |",
+    "learningOutcomes": "Correlated subqueries bind outer query row parameters into the inner scope, executing context-aware comparisons for each candidate row."
   },
   {
     "id": 1357,
@@ -18434,7 +18504,12 @@ const ALL_500_CASE_STUDIES = [
       "Forgetting to alias the outer and inner table differently, causing the inner query to compare against itself rather than binding to the outer row",
       "Running correlated subqueries on non-indexed foreign keys, causing O(N*M) quadratic nested loop full-table scan disasters"
     ],
-    "takeaway": "Correlated subqueries bind outer query row parameters into the inner scope, executing context-aware comparisons for each candidate row."
+    "takeaway": "Correlated subqueries bind outer query row parameters into the inner scope, executing context-aware comparisons for each candidate row.",
+    "industry": "SaaS",
+    "scenario": "In SaaS, identifying outliers requires localized context: comparing an observation against its specific entity's baseline rather than an irrelevant global average. We need a correlated subquery row-binding plan_id.",
+    "businessObjective": "In SaaS, identifying outliers requires localized context: comparing an observation against its specific entity's baseline rather than an irrelevant global average. We need a correlated subquery row-binding plan_id.",
+    "schemaSnippet": "| Column | Type | Description |\n|---|---|---|\n| id | INT | Primary Key |\n| plan_id | INT | Entity Correlation Anchor |\n| api_calls | NUMERIC | Tracked Observation |\n| recorded_at | DATE | Observation Date |",
+    "learningOutcomes": "Correlated subqueries bind outer query row parameters into the inner scope, executing context-aware comparisons for each candidate row."
   },
   {
     "id": 1358,
@@ -18450,7 +18525,12 @@ const ALL_500_CASE_STUDIES = [
       "Forgetting to alias the outer and inner table differently, causing the inner query to compare against itself rather than binding to the outer row",
       "Running correlated subqueries on non-indexed foreign keys, causing O(N*M) quadratic nested loop full-table scan disasters"
     ],
-    "takeaway": "Correlated subqueries bind outer query row parameters into the inner scope, executing context-aware comparisons for each candidate row."
+    "takeaway": "Correlated subqueries bind outer query row parameters into the inner scope, executing context-aware comparisons for each candidate row.",
+    "industry": "Healthcare",
+    "scenario": "In Healthcare, identifying outliers requires localized context: comparing an observation against its specific entity's baseline rather than an irrelevant global average. We need a correlated subquery row-binding age_group_id.",
+    "businessObjective": "In Healthcare, identifying outliers requires localized context: comparing an observation against its specific entity's baseline rather than an irrelevant global average. We need a correlated subquery row-binding age_group_id.",
+    "schemaSnippet": "| Column | Type | Description |\n|---|---|---|\n| id | INT | Primary Key |\n| age_group_id | INT | Entity Correlation Anchor |\n| biomarker_val | NUMERIC | Tracked Observation |\n| recorded_at | DATE | Observation Date |",
+    "learningOutcomes": "Correlated subqueries bind outer query row parameters into the inner scope, executing context-aware comparisons for each candidate row."
   },
   {
     "id": 1359,
@@ -18466,7 +18546,12 @@ const ALL_500_CASE_STUDIES = [
       "Forgetting to alias the outer and inner table differently, causing the inner query to compare against itself rather than binding to the outer row",
       "Running correlated subqueries on non-indexed foreign keys, causing O(N*M) quadratic nested loop full-table scan disasters"
     ],
-    "takeaway": "Correlated subqueries bind outer query row parameters into the inner scope, executing context-aware comparisons for each candidate row."
+    "takeaway": "Correlated subqueries bind outer query row parameters into the inner scope, executing context-aware comparisons for each candidate row.",
+    "industry": "E-Commerce",
+    "scenario": "In E-Commerce, identifying outliers requires localized context: comparing an observation against its specific entity's baseline rather than an irrelevant global average. We need a correlated subquery row-binding category_id.",
+    "businessObjective": "In E-Commerce, identifying outliers requires localized context: comparing an observation against its specific entity's baseline rather than an irrelevant global average. We need a correlated subquery row-binding category_id.",
+    "schemaSnippet": "| Column | Type | Description |\n|---|---|---|\n| id | INT | Primary Key |\n| category_id | INT | Entity Correlation Anchor |\n| unit_price | NUMERIC | Tracked Observation |\n| recorded_at | DATE | Observation Date |",
+    "learningOutcomes": "Correlated subqueries bind outer query row parameters into the inner scope, executing context-aware comparisons for each candidate row."
   },
   {
     "id": 1360,
@@ -18482,7 +18567,12 @@ const ALL_500_CASE_STUDIES = [
       "Forgetting to alias the outer and inner table differently, causing the inner query to compare against itself rather than binding to the outer row",
       "Running correlated subqueries on non-indexed foreign keys, causing O(N*M) quadratic nested loop full-table scan disasters"
     ],
-    "takeaway": "Correlated subqueries bind outer query row parameters into the inner scope, executing context-aware comparisons for each candidate row."
+    "takeaway": "Correlated subqueries bind outer query row parameters into the inner scope, executing context-aware comparisons for each candidate row.",
+    "industry": "Logistics",
+    "scenario": "In Logistics, identifying outliers requires localized context: comparing an observation against its specific entity's baseline rather than an irrelevant global average. We need a correlated subquery row-binding carrier_id.",
+    "businessObjective": "In Logistics, identifying outliers requires localized context: comparing an observation against its specific entity's baseline rather than an irrelevant global average. We need a correlated subquery row-binding carrier_id.",
+    "schemaSnippet": "| Column | Type | Description |\n|---|---|---|\n| id | INT | Primary Key |\n| carrier_id | INT | Entity Correlation Anchor |\n| delay_minutes | NUMERIC | Tracked Observation |\n| recorded_at | DATE | Observation Date |",
+    "learningOutcomes": "Correlated subqueries bind outer query row parameters into the inner scope, executing context-aware comparisons for each candidate row."
   },
   {
     "id": 1361,
@@ -18498,7 +18588,12 @@ const ALL_500_CASE_STUDIES = [
       "Forgetting to alias the outer and inner table differently, causing the inner query to compare against itself rather than binding to the outer row",
       "Running correlated subqueries on non-indexed foreign keys, causing O(N*M) quadratic nested loop full-table scan disasters"
     ],
-    "takeaway": "Correlated subqueries bind outer query row parameters into the inner scope, executing context-aware comparisons for each candidate row."
+    "takeaway": "Correlated subqueries bind outer query row parameters into the inner scope, executing context-aware comparisons for each candidate row.",
+    "industry": "Gaming",
+    "scenario": "In Gaming, identifying outliers requires localized context: comparing an observation against its specific entity's baseline rather than an irrelevant global average. We need a correlated subquery row-binding player_id.",
+    "businessObjective": "In Gaming, identifying outliers requires localized context: comparing an observation against its specific entity's baseline rather than an irrelevant global average. We need a correlated subquery row-binding player_id.",
+    "schemaSnippet": "| Column | Type | Description |\n|---|---|---|\n| id | INT | Primary Key |\n| player_id | INT | Entity Correlation Anchor |\n| score | NUMERIC | Tracked Observation |\n| recorded_at | DATE | Observation Date |",
+    "learningOutcomes": "Correlated subqueries bind outer query row parameters into the inner scope, executing context-aware comparisons for each candidate row."
   },
   {
     "id": 1362,
@@ -18514,7 +18609,12 @@ const ALL_500_CASE_STUDIES = [
       "Forgetting to alias the outer and inner table differently, causing the inner query to compare against itself rather than binding to the outer row",
       "Running correlated subqueries on non-indexed foreign keys, causing O(N*M) quadratic nested loop full-table scan disasters"
     ],
-    "takeaway": "Correlated subqueries bind outer query row parameters into the inner scope, executing context-aware comparisons for each candidate row."
+    "takeaway": "Correlated subqueries bind outer query row parameters into the inner scope, executing context-aware comparisons for each candidate row.",
+    "industry": "AdTech",
+    "scenario": "In AdTech, identifying outliers requires localized context: comparing an observation against its specific entity's baseline rather than an irrelevant global average. We need a correlated subquery row-binding advertiser_id.",
+    "businessObjective": "In AdTech, identifying outliers requires localized context: comparing an observation against its specific entity's baseline rather than an irrelevant global average. We need a correlated subquery row-binding advertiser_id.",
+    "schemaSnippet": "| Column | Type | Description |\n|---|---|---|\n| id | INT | Primary Key |\n| advertiser_id | INT | Entity Correlation Anchor |\n| bid_amount | NUMERIC | Tracked Observation |\n| recorded_at | DATE | Observation Date |",
+    "learningOutcomes": "Correlated subqueries bind outer query row parameters into the inner scope, executing context-aware comparisons for each candidate row."
   },
   {
     "id": 1363,
@@ -18530,7 +18630,12 @@ const ALL_500_CASE_STUDIES = [
       "Forgetting to alias the outer and inner table differently, causing the inner query to compare against itself rather than binding to the outer row",
       "Running correlated subqueries on non-indexed foreign keys, causing O(N*M) quadratic nested loop full-table scan disasters"
     ],
-    "takeaway": "Correlated subqueries bind outer query row parameters into the inner scope, executing context-aware comparisons for each candidate row."
+    "takeaway": "Correlated subqueries bind outer query row parameters into the inner scope, executing context-aware comparisons for each candidate row.",
+    "industry": "EdTech",
+    "scenario": "In EdTech, identifying outliers requires localized context: comparing an observation against its specific entity's baseline rather than an irrelevant global average. We need a correlated subquery row-binding dept_id.",
+    "businessObjective": "In EdTech, identifying outliers requires localized context: comparing an observation against its specific entity's baseline rather than an irrelevant global average. We need a correlated subquery row-binding dept_id.",
+    "schemaSnippet": "| Column | Type | Description |\n|---|---|---|\n| id | INT | Primary Key |\n| dept_id | INT | Entity Correlation Anchor |\n| grade | NUMERIC | Tracked Observation |\n| recorded_at | DATE | Observation Date |",
+    "learningOutcomes": "Correlated subqueries bind outer query row parameters into the inner scope, executing context-aware comparisons for each candidate row."
   },
   {
     "id": 1364,
@@ -18546,7 +18651,12 @@ const ALL_500_CASE_STUDIES = [
       "Forgetting to alias the outer and inner table differently, causing the inner query to compare against itself rather than binding to the outer row",
       "Running correlated subqueries on non-indexed foreign keys, causing O(N*M) quadratic nested loop full-table scan disasters"
     ],
-    "takeaway": "Correlated subqueries bind outer query row parameters into the inner scope, executing context-aware comparisons for each candidate row."
+    "takeaway": "Correlated subqueries bind outer query row parameters into the inner scope, executing context-aware comparisons for each candidate row.",
+    "industry": "Energy",
+    "scenario": "In Energy, identifying outliers requires localized context: comparing an observation against its specific entity's baseline rather than an irrelevant global average. We need a correlated subquery row-binding station_id.",
+    "businessObjective": "In Energy, identifying outliers requires localized context: comparing an observation against its specific entity's baseline rather than an irrelevant global average. We need a correlated subquery row-binding station_id.",
+    "schemaSnippet": "| Column | Type | Description |\n|---|---|---|\n| id | INT | Primary Key |\n| station_id | INT | Entity Correlation Anchor |\n| vibration_hz | NUMERIC | Tracked Observation |\n| recorded_at | DATE | Observation Date |",
+    "learningOutcomes": "Correlated subqueries bind outer query row parameters into the inner scope, executing context-aware comparisons for each candidate row."
   },
   {
     "id": 1365,
@@ -18562,7 +18672,12 @@ const ALL_500_CASE_STUDIES = [
       "Forgetting to alias the outer and inner table differently, causing the inner query to compare against itself rather than binding to the outer row",
       "Running correlated subqueries on non-indexed foreign keys, causing O(N*M) quadratic nested loop full-table scan disasters"
     ],
-    "takeaway": "Correlated subqueries bind outer query row parameters into the inner scope, executing context-aware comparisons for each candidate row."
+    "takeaway": "Correlated subqueries bind outer query row parameters into the inner scope, executing context-aware comparisons for each candidate row.",
+    "industry": "Media",
+    "scenario": "In Media, identifying outliers requires localized context: comparing an observation against its specific entity's baseline rather than an irrelevant global average. We need a correlated subquery row-binding author_id.",
+    "businessObjective": "In Media, identifying outliers requires localized context: comparing an observation against its specific entity's baseline rather than an irrelevant global average. We need a correlated subquery row-binding author_id.",
+    "schemaSnippet": "| Column | Type | Description |\n|---|---|---|\n| id | INT | Primary Key |\n| author_id | INT | Entity Correlation Anchor |\n| comment_count | NUMERIC | Tracked Observation |\n| recorded_at | DATE | Observation Date |",
+    "learningOutcomes": "Correlated subqueries bind outer query row parameters into the inner scope, executing context-aware comparisons for each candidate row."
   },
   {
     "id": 1366,
@@ -18578,7 +18693,12 @@ const ALL_500_CASE_STUDIES = [
       "Forgetting to alias the outer and inner table differently, causing the inner query to compare against itself rather than binding to the outer row",
       "Running correlated subqueries on non-indexed foreign keys, causing O(N*M) quadratic nested loop full-table scan disasters"
     ],
-    "takeaway": "Correlated subqueries bind outer query row parameters into the inner scope, executing context-aware comparisons for each candidate row."
+    "takeaway": "Correlated subqueries bind outer query row parameters into the inner scope, executing context-aware comparisons for each candidate row.",
+    "industry": "Fintech",
+    "scenario": "In Fintech, identifying outliers requires localized context: comparing an observation against its specific entity's baseline rather than an irrelevant global average. We need a correlated subquery row-binding portfolio_id.",
+    "businessObjective": "In Fintech, identifying outliers requires localized context: comparing an observation against its specific entity's baseline rather than an irrelevant global average. We need a correlated subquery row-binding portfolio_id.",
+    "schemaSnippet": "| Column | Type | Description |\n|---|---|---|\n| id | INT | Primary Key |\n| portfolio_id | INT | Entity Correlation Anchor |\n| var_exposure | NUMERIC | Tracked Observation |\n| recorded_at | DATE | Observation Date |",
+    "learningOutcomes": "Correlated subqueries bind outer query row parameters into the inner scope, executing context-aware comparisons for each candidate row."
   },
   {
     "id": 1367,
@@ -18594,7 +18714,12 @@ const ALL_500_CASE_STUDIES = [
       "Forgetting to alias the outer and inner table differently, causing the inner query to compare against itself rather than binding to the outer row",
       "Running correlated subqueries on non-indexed foreign keys, causing O(N*M) quadratic nested loop full-table scan disasters"
     ],
-    "takeaway": "Correlated subqueries bind outer query row parameters into the inner scope, executing context-aware comparisons for each candidate row."
+    "takeaway": "Correlated subqueries bind outer query row parameters into the inner scope, executing context-aware comparisons for each candidate row.",
+    "industry": "SaaS",
+    "scenario": "In SaaS, identifying outliers requires localized context: comparing an observation against its specific entity's baseline rather than an irrelevant global average. We need a correlated subquery row-binding org_id.",
+    "businessObjective": "In SaaS, identifying outliers requires localized context: comparing an observation against its specific entity's baseline rather than an irrelevant global average. We need a correlated subquery row-binding org_id.",
+    "schemaSnippet": "| Column | Type | Description |\n|---|---|---|\n| id | INT | Primary Key |\n| org_id | INT | Entity Correlation Anchor |\n| storage_gb | NUMERIC | Tracked Observation |\n| recorded_at | DATE | Observation Date |",
+    "learningOutcomes": "Correlated subqueries bind outer query row parameters into the inner scope, executing context-aware comparisons for each candidate row."
   },
   {
     "id": 1368,
@@ -18610,7 +18735,12 @@ const ALL_500_CASE_STUDIES = [
       "Forgetting to alias the outer and inner table differently, causing the inner query to compare against itself rather than binding to the outer row",
       "Running correlated subqueries on non-indexed foreign keys, causing O(N*M) quadratic nested loop full-table scan disasters"
     ],
-    "takeaway": "Correlated subqueries bind outer query row parameters into the inner scope, executing context-aware comparisons for each candidate row."
+    "takeaway": "Correlated subqueries bind outer query row parameters into the inner scope, executing context-aware comparisons for each candidate row.",
+    "industry": "Healthcare",
+    "scenario": "In Healthcare, identifying outliers requires localized context: comparing an observation against its specific entity's baseline rather than an irrelevant global average. We need a correlated subquery row-binding weight_class_id.",
+    "businessObjective": "In Healthcare, identifying outliers requires localized context: comparing an observation against its specific entity's baseline rather than an irrelevant global average. We need a correlated subquery row-binding weight_class_id.",
+    "schemaSnippet": "| Column | Type | Description |\n|---|---|---|\n| id | INT | Primary Key |\n| weight_class_id | INT | Entity Correlation Anchor |\n| dosage_mg | NUMERIC | Tracked Observation |\n| recorded_at | DATE | Observation Date |",
+    "learningOutcomes": "Correlated subqueries bind outer query row parameters into the inner scope, executing context-aware comparisons for each candidate row."
   },
   {
     "id": 1369,
@@ -18626,7 +18756,12 @@ const ALL_500_CASE_STUDIES = [
       "Forgetting to alias the outer and inner table differently, causing the inner query to compare against itself rather than binding to the outer row",
       "Running correlated subqueries on non-indexed foreign keys, causing O(N*M) quadratic nested loop full-table scan disasters"
     ],
-    "takeaway": "Correlated subqueries bind outer query row parameters into the inner scope, executing context-aware comparisons for each candidate row."
+    "takeaway": "Correlated subqueries bind outer query row parameters into the inner scope, executing context-aware comparisons for each candidate row.",
+    "industry": "E-Commerce",
+    "scenario": "In E-Commerce, identifying outliers requires localized context: comparing an observation against its specific entity's baseline rather than an irrelevant global average. We need a correlated subquery row-binding country_code.",
+    "businessObjective": "In E-Commerce, identifying outliers requires localized context: comparing an observation against its specific entity's baseline rather than an irrelevant global average. We need a correlated subquery row-binding country_code.",
+    "schemaSnippet": "| Column | Type | Description |\n|---|---|---|\n| id | INT | Primary Key |\n| country_code | INT | Entity Correlation Anchor |\n| cart_val | NUMERIC | Tracked Observation |\n| recorded_at | DATE | Observation Date |",
+    "learningOutcomes": "Correlated subqueries bind outer query row parameters into the inner scope, executing context-aware comparisons for each candidate row."
   },
   {
     "id": 1370,
@@ -18642,7 +18777,12 @@ const ALL_500_CASE_STUDIES = [
       "Forgetting to alias the outer and inner table differently, causing the inner query to compare against itself rather than binding to the outer row",
       "Running correlated subqueries on non-indexed foreign keys, causing O(N*M) quadratic nested loop full-table scan disasters"
     ],
-    "takeaway": "Correlated subqueries bind outer query row parameters into the inner scope, executing context-aware comparisons for each candidate row."
+    "takeaway": "Correlated subqueries bind outer query row parameters into the inner scope, executing context-aware comparisons for each candidate row.",
+    "industry": "Logistics",
+    "scenario": "In Logistics, identifying outliers requires localized context: comparing an observation against its specific entity's baseline rather than an irrelevant global average. We need a correlated subquery row-binding reefer_type_id.",
+    "businessObjective": "In Logistics, identifying outliers requires localized context: comparing an observation against its specific entity's baseline rather than an irrelevant global average. We need a correlated subquery row-binding reefer_type_id.",
+    "schemaSnippet": "| Column | Type | Description |\n|---|---|---|\n| id | INT | Primary Key |\n| reefer_type_id | INT | Entity Correlation Anchor |\n| temp_celsius | NUMERIC | Tracked Observation |\n| recorded_at | DATE | Observation Date |",
+    "learningOutcomes": "Correlated subqueries bind outer query row parameters into the inner scope, executing context-aware comparisons for each candidate row."
   },
   {
     "id": 1371,
@@ -18658,7 +18798,12 @@ const ALL_500_CASE_STUDIES = [
       "Using 'NOT IN (SELECT id FROM ...)' where the inner table contains a single NULL, causing the entire query to return zero rows due to 3-valued logic",
       "Using SELECT * instead of understanding that in EXISTS, the projected columns are ignored by the parser"
     ],
-    "takeaway": "EXISTS and NOT EXISTS evaluate boolean tuple presence, short-circuit immediately on the first match, and are 100% immune to 3VL NULL traps."
+    "takeaway": "EXISTS and NOT EXISTS evaluate boolean tuple presence, short-circuit immediately on the first match, and are 100% immune to 3VL NULL traps.",
+    "industry": "Fintech",
+    "scenario": "In Fintech, tracking negative space (events that DID NOT occur) is vital for churn, risk, and fraud detection. Using NOT IN causes catastrophic empty returns if nullable rows exist; we must implement production NOT EXISTS anti-semi joins.",
+    "businessObjective": "In Fintech, tracking negative space (events that DID NOT occur) is vital for churn, risk, and fraud detection. Using NOT IN causes catastrophic empty returns if nullable rows exist; we must implement production NOT EXISTS anti-semi joins.",
+    "schemaSnippet": "| Column | Type | Description |\n|---|---|---|\n| account_id | INT / VARCHAR | Primary Entity Reference |\n| status | VARCHAR | Lifecycle Status |\n| created_at | TIMESTAMP | Creation Timestamp |",
+    "learningOutcomes": "EXISTS and NOT EXISTS evaluate boolean tuple presence, short-circuit immediately on the first match, and are 100% immune to 3VL NULL traps."
   },
   {
     "id": 1372,
@@ -18674,7 +18819,12 @@ const ALL_500_CASE_STUDIES = [
       "Using 'NOT IN (SELECT id FROM ...)' where the inner table contains a single NULL, causing the entire query to return zero rows due to 3-valued logic",
       "Using SELECT * instead of understanding that in EXISTS, the projected columns are ignored by the parser"
     ],
-    "takeaway": "EXISTS and NOT EXISTS evaluate boolean tuple presence, short-circuit immediately on the first match, and are 100% immune to 3VL NULL traps."
+    "takeaway": "EXISTS and NOT EXISTS evaluate boolean tuple presence, short-circuit immediately on the first match, and are 100% immune to 3VL NULL traps.",
+    "industry": "SaaS",
+    "scenario": "In SaaS, tracking negative space (events that DID NOT occur) is vital for churn, risk, and fraud detection. Using NOT IN causes catastrophic empty returns if nullable rows exist; we must implement production NOT EXISTS anti-semi joins.",
+    "businessObjective": "In SaaS, tracking negative space (events that DID NOT occur) is vital for churn, risk, and fraud detection. Using NOT IN causes catastrophic empty returns if nullable rows exist; we must implement production NOT EXISTS anti-semi joins.",
+    "schemaSnippet": "| Column | Type | Description |\n|---|---|---|\n| tenant_id | INT / VARCHAR | Primary Entity Reference |\n| status | VARCHAR | Lifecycle Status |\n| created_at | TIMESTAMP | Creation Timestamp |",
+    "learningOutcomes": "EXISTS and NOT EXISTS evaluate boolean tuple presence, short-circuit immediately on the first match, and are 100% immune to 3VL NULL traps."
   },
   {
     "id": 1373,
@@ -18690,7 +18840,12 @@ const ALL_500_CASE_STUDIES = [
       "Using 'NOT IN (SELECT id FROM ...)' where the inner table contains a single NULL, causing the entire query to return zero rows due to 3-valued logic",
       "Using SELECT * instead of understanding that in EXISTS, the projected columns are ignored by the parser"
     ],
-    "takeaway": "EXISTS and NOT EXISTS evaluate boolean tuple presence, short-circuit immediately on the first match, and are 100% immune to 3VL NULL traps."
+    "takeaway": "EXISTS and NOT EXISTS evaluate boolean tuple presence, short-circuit immediately on the first match, and are 100% immune to 3VL NULL traps.",
+    "industry": "Healthcare",
+    "scenario": "In Healthcare, tracking negative space (events that DID NOT occur) is vital for churn, risk, and fraud detection. Using NOT IN causes catastrophic empty returns if nullable rows exist; we must implement production NOT EXISTS anti-semi joins.",
+    "businessObjective": "In Healthcare, tracking negative space (events that DID NOT occur) is vital for churn, risk, and fraud detection. Using NOT IN causes catastrophic empty returns if nullable rows exist; we must implement production NOT EXISTS anti-semi joins.",
+    "schemaSnippet": "| Column | Type | Description |\n|---|---|---|\n| patient_id | INT / VARCHAR | Primary Entity Reference |\n| status | VARCHAR | Lifecycle Status |\n| created_at | TIMESTAMP | Creation Timestamp |",
+    "learningOutcomes": "EXISTS and NOT EXISTS evaluate boolean tuple presence, short-circuit immediately on the first match, and are 100% immune to 3VL NULL traps."
   },
   {
     "id": 1374,
@@ -18706,7 +18861,12 @@ const ALL_500_CASE_STUDIES = [
       "Using 'NOT IN (SELECT id FROM ...)' where the inner table contains a single NULL, causing the entire query to return zero rows due to 3-valued logic",
       "Using SELECT * instead of understanding that in EXISTS, the projected columns are ignored by the parser"
     ],
-    "takeaway": "EXISTS and NOT EXISTS evaluate boolean tuple presence, short-circuit immediately on the first match, and are 100% immune to 3VL NULL traps."
+    "takeaway": "EXISTS and NOT EXISTS evaluate boolean tuple presence, short-circuit immediately on the first match, and are 100% immune to 3VL NULL traps.",
+    "industry": "E-Commerce",
+    "scenario": "In E-Commerce, tracking negative space (events that DID NOT occur) is vital for churn, risk, and fraud detection. Using NOT IN causes catastrophic empty returns if nullable rows exist; we must implement production NOT EXISTS anti-semi joins.",
+    "businessObjective": "In E-Commerce, tracking negative space (events that DID NOT occur) is vital for churn, risk, and fraud detection. Using NOT IN causes catastrophic empty returns if nullable rows exist; we must implement production NOT EXISTS anti-semi joins.",
+    "schemaSnippet": "| Column | Type | Description |\n|---|---|---|\n| user_id | INT / VARCHAR | Primary Entity Reference |\n| status | VARCHAR | Lifecycle Status |\n| created_at | TIMESTAMP | Creation Timestamp |",
+    "learningOutcomes": "EXISTS and NOT EXISTS evaluate boolean tuple presence, short-circuit immediately on the first match, and are 100% immune to 3VL NULL traps."
   },
   {
     "id": 1375,
@@ -18722,7 +18882,12 @@ const ALL_500_CASE_STUDIES = [
       "Using 'NOT IN (SELECT id FROM ...)' where the inner table contains a single NULL, causing the entire query to return zero rows due to 3-valued logic",
       "Using SELECT * instead of understanding that in EXISTS, the projected columns are ignored by the parser"
     ],
-    "takeaway": "EXISTS and NOT EXISTS evaluate boolean tuple presence, short-circuit immediately on the first match, and are 100% immune to 3VL NULL traps."
+    "takeaway": "EXISTS and NOT EXISTS evaluate boolean tuple presence, short-circuit immediately on the first match, and are 100% immune to 3VL NULL traps.",
+    "industry": "Logistics",
+    "scenario": "In Logistics, tracking negative space (events that DID NOT occur) is vital for churn, risk, and fraud detection. Using NOT IN causes catastrophic empty returns if nullable rows exist; we must implement production NOT EXISTS anti-semi joins.",
+    "businessObjective": "In Logistics, tracking negative space (events that DID NOT occur) is vital for churn, risk, and fraud detection. Using NOT IN causes catastrophic empty returns if nullable rows exist; we must implement production NOT EXISTS anti-semi joins.",
+    "schemaSnippet": "| Column | Type | Description |\n|---|---|---|\n| vehicle_id | INT / VARCHAR | Primary Entity Reference |\n| status | VARCHAR | Lifecycle Status |\n| created_at | TIMESTAMP | Creation Timestamp |",
+    "learningOutcomes": "EXISTS and NOT EXISTS evaluate boolean tuple presence, short-circuit immediately on the first match, and are 100% immune to 3VL NULL traps."
   },
   {
     "id": 1376,
@@ -18738,7 +18903,12 @@ const ALL_500_CASE_STUDIES = [
       "Using 'NOT IN (SELECT id FROM ...)' where the inner table contains a single NULL, causing the entire query to return zero rows due to 3-valued logic",
       "Using SELECT * instead of understanding that in EXISTS, the projected columns are ignored by the parser"
     ],
-    "takeaway": "EXISTS and NOT EXISTS evaluate boolean tuple presence, short-circuit immediately on the first match, and are 100% immune to 3VL NULL traps."
+    "takeaway": "EXISTS and NOT EXISTS evaluate boolean tuple presence, short-circuit immediately on the first match, and are 100% immune to 3VL NULL traps.",
+    "industry": "Gaming",
+    "scenario": "In Gaming, tracking negative space (events that DID NOT occur) is vital for churn, risk, and fraud detection. Using NOT IN causes catastrophic empty returns if nullable rows exist; we must implement production NOT EXISTS anti-semi joins.",
+    "businessObjective": "In Gaming, tracking negative space (events that DID NOT occur) is vital for churn, risk, and fraud detection. Using NOT IN causes catastrophic empty returns if nullable rows exist; we must implement production NOT EXISTS anti-semi joins.",
+    "schemaSnippet": "| Column | Type | Description |\n|---|---|---|\n| player_id | INT / VARCHAR | Primary Entity Reference |\n| status | VARCHAR | Lifecycle Status |\n| created_at | TIMESTAMP | Creation Timestamp |",
+    "learningOutcomes": "EXISTS and NOT EXISTS evaluate boolean tuple presence, short-circuit immediately on the first match, and are 100% immune to 3VL NULL traps."
   },
   {
     "id": 1377,
@@ -18754,7 +18924,12 @@ const ALL_500_CASE_STUDIES = [
       "Using 'NOT IN (SELECT id FROM ...)' where the inner table contains a single NULL, causing the entire query to return zero rows due to 3-valued logic",
       "Using SELECT * instead of understanding that in EXISTS, the projected columns are ignored by the parser"
     ],
-    "takeaway": "EXISTS and NOT EXISTS evaluate boolean tuple presence, short-circuit immediately on the first match, and are 100% immune to 3VL NULL traps."
+    "takeaway": "EXISTS and NOT EXISTS evaluate boolean tuple presence, short-circuit immediately on the first match, and are 100% immune to 3VL NULL traps.",
+    "industry": "AdTech",
+    "scenario": "In AdTech, tracking negative space (events that DID NOT occur) is vital for churn, risk, and fraud detection. Using NOT IN causes catastrophic empty returns if nullable rows exist; we must implement production NOT EXISTS anti-semi joins.",
+    "businessObjective": "In AdTech, tracking negative space (events that DID NOT occur) is vital for churn, risk, and fraud detection. Using NOT IN causes catastrophic empty returns if nullable rows exist; we must implement production NOT EXISTS anti-semi joins.",
+    "schemaSnippet": "| Column | Type | Description |\n|---|---|---|\n| impression_id | INT / VARCHAR | Primary Entity Reference |\n| status | VARCHAR | Lifecycle Status |\n| created_at | TIMESTAMP | Creation Timestamp |",
+    "learningOutcomes": "EXISTS and NOT EXISTS evaluate boolean tuple presence, short-circuit immediately on the first match, and are 100% immune to 3VL NULL traps."
   },
   {
     "id": 1378,
@@ -18770,7 +18945,12 @@ const ALL_500_CASE_STUDIES = [
       "Using 'NOT IN (SELECT id FROM ...)' where the inner table contains a single NULL, causing the entire query to return zero rows due to 3-valued logic",
       "Using SELECT * instead of understanding that in EXISTS, the projected columns are ignored by the parser"
     ],
-    "takeaway": "EXISTS and NOT EXISTS evaluate boolean tuple presence, short-circuit immediately on the first match, and are 100% immune to 3VL NULL traps."
+    "takeaway": "EXISTS and NOT EXISTS evaluate boolean tuple presence, short-circuit immediately on the first match, and are 100% immune to 3VL NULL traps.",
+    "industry": "EdTech",
+    "scenario": "In EdTech, tracking negative space (events that DID NOT occur) is vital for churn, risk, and fraud detection. Using NOT IN causes catastrophic empty returns if nullable rows exist; we must implement production NOT EXISTS anti-semi joins.",
+    "businessObjective": "In EdTech, tracking negative space (events that DID NOT occur) is vital for churn, risk, and fraud detection. Using NOT IN causes catastrophic empty returns if nullable rows exist; we must implement production NOT EXISTS anti-semi joins.",
+    "schemaSnippet": "| Column | Type | Description |\n|---|---|---|\n| student_id | INT / VARCHAR | Primary Entity Reference |\n| status | VARCHAR | Lifecycle Status |\n| created_at | TIMESTAMP | Creation Timestamp |",
+    "learningOutcomes": "EXISTS and NOT EXISTS evaluate boolean tuple presence, short-circuit immediately on the first match, and are 100% immune to 3VL NULL traps."
   },
   {
     "id": 1379,
@@ -18786,7 +18966,12 @@ const ALL_500_CASE_STUDIES = [
       "Using 'NOT IN (SELECT id FROM ...)' where the inner table contains a single NULL, causing the entire query to return zero rows due to 3-valued logic",
       "Using SELECT * instead of understanding that in EXISTS, the projected columns are ignored by the parser"
     ],
-    "takeaway": "EXISTS and NOT EXISTS evaluate boolean tuple presence, short-circuit immediately on the first match, and are 100% immune to 3VL NULL traps."
+    "takeaway": "EXISTS and NOT EXISTS evaluate boolean tuple presence, short-circuit immediately on the first match, and are 100% immune to 3VL NULL traps.",
+    "industry": "Energy",
+    "scenario": "In Energy, tracking negative space (events that DID NOT occur) is vital for churn, risk, and fraud detection. Using NOT IN causes catastrophic empty returns if nullable rows exist; we must implement production NOT EXISTS anti-semi joins.",
+    "businessObjective": "In Energy, tracking negative space (events that DID NOT occur) is vital for churn, risk, and fraud detection. Using NOT IN causes catastrophic empty returns if nullable rows exist; we must implement production NOT EXISTS anti-semi joins.",
+    "schemaSnippet": "| Column | Type | Description |\n|---|---|---|\n| meter_id | INT / VARCHAR | Primary Entity Reference |\n| status | VARCHAR | Lifecycle Status |\n| created_at | TIMESTAMP | Creation Timestamp |",
+    "learningOutcomes": "EXISTS and NOT EXISTS evaluate boolean tuple presence, short-circuit immediately on the first match, and are 100% immune to 3VL NULL traps."
   },
   {
     "id": 1380,
@@ -18802,7 +18987,12 @@ const ALL_500_CASE_STUDIES = [
       "Using 'NOT IN (SELECT id FROM ...)' where the inner table contains a single NULL, causing the entire query to return zero rows due to 3-valued logic",
       "Using SELECT * instead of understanding that in EXISTS, the projected columns are ignored by the parser"
     ],
-    "takeaway": "EXISTS and NOT EXISTS evaluate boolean tuple presence, short-circuit immediately on the first match, and are 100% immune to 3VL NULL traps."
+    "takeaway": "EXISTS and NOT EXISTS evaluate boolean tuple presence, short-circuit immediately on the first match, and are 100% immune to 3VL NULL traps.",
+    "industry": "Media",
+    "scenario": "In Media, tracking negative space (events that DID NOT occur) is vital for churn, risk, and fraud detection. Using NOT IN causes catastrophic empty returns if nullable rows exist; we must implement production NOT EXISTS anti-semi joins.",
+    "businessObjective": "In Media, tracking negative space (events that DID NOT occur) is vital for churn, risk, and fraud detection. Using NOT IN causes catastrophic empty returns if nullable rows exist; we must implement production NOT EXISTS anti-semi joins.",
+    "schemaSnippet": "| Column | Type | Description |\n|---|---|---|\n| subscriber_id | INT / VARCHAR | Primary Entity Reference |\n| status | VARCHAR | Lifecycle Status |\n| created_at | TIMESTAMP | Creation Timestamp |",
+    "learningOutcomes": "EXISTS and NOT EXISTS evaluate boolean tuple presence, short-circuit immediately on the first match, and are 100% immune to 3VL NULL traps."
   },
   {
     "id": 1381,
@@ -18818,7 +19008,12 @@ const ALL_500_CASE_STUDIES = [
       "Using 'NOT IN (SELECT id FROM ...)' where the inner table contains a single NULL, causing the entire query to return zero rows due to 3-valued logic",
       "Using SELECT * instead of understanding that in EXISTS, the projected columns are ignored by the parser"
     ],
-    "takeaway": "EXISTS and NOT EXISTS evaluate boolean tuple presence, short-circuit immediately on the first match, and are 100% immune to 3VL NULL traps."
+    "takeaway": "EXISTS and NOT EXISTS evaluate boolean tuple presence, short-circuit immediately on the first match, and are 100% immune to 3VL NULL traps.",
+    "industry": "Fintech",
+    "scenario": "In Fintech, tracking negative space (events that DID NOT occur) is vital for churn, risk, and fraud detection. Using NOT IN causes catastrophic empty returns if nullable rows exist; we must implement production NOT EXISTS anti-semi joins.",
+    "businessObjective": "In Fintech, tracking negative space (events that DID NOT occur) is vital for churn, risk, and fraud detection. Using NOT IN causes catastrophic empty returns if nullable rows exist; we must implement production NOT EXISTS anti-semi joins.",
+    "schemaSnippet": "| Column | Type | Description |\n|---|---|---|\n| settlement_ref | INT / VARCHAR | Primary Entity Reference |\n| status | VARCHAR | Lifecycle Status |\n| created_at | TIMESTAMP | Creation Timestamp |",
+    "learningOutcomes": "EXISTS and NOT EXISTS evaluate boolean tuple presence, short-circuit immediately on the first match, and are 100% immune to 3VL NULL traps."
   },
   {
     "id": 1382,
@@ -18834,7 +19029,12 @@ const ALL_500_CASE_STUDIES = [
       "Using 'NOT IN (SELECT id FROM ...)' where the inner table contains a single NULL, causing the entire query to return zero rows due to 3-valued logic",
       "Using SELECT * instead of understanding that in EXISTS, the projected columns are ignored by the parser"
     ],
-    "takeaway": "EXISTS and NOT EXISTS evaluate boolean tuple presence, short-circuit immediately on the first match, and are 100% immune to 3VL NULL traps."
+    "takeaway": "EXISTS and NOT EXISTS evaluate boolean tuple presence, short-circuit immediately on the first match, and are 100% immune to 3VL NULL traps.",
+    "industry": "SaaS",
+    "scenario": "In SaaS, tracking negative space (events that DID NOT occur) is vital for churn, risk, and fraud detection. Using NOT IN causes catastrophic empty returns if nullable rows exist; we must implement production NOT EXISTS anti-semi joins.",
+    "businessObjective": "In SaaS, tracking negative space (events that DID NOT occur) is vital for churn, risk, and fraud detection. Using NOT IN causes catastrophic empty returns if nullable rows exist; we must implement production NOT EXISTS anti-semi joins.",
+    "schemaSnippet": "| Column | Type | Description |\n|---|---|---|\n| workspace_id | INT / VARCHAR | Primary Entity Reference |\n| status | VARCHAR | Lifecycle Status |\n| created_at | TIMESTAMP | Creation Timestamp |",
+    "learningOutcomes": "EXISTS and NOT EXISTS evaluate boolean tuple presence, short-circuit immediately on the first match, and are 100% immune to 3VL NULL traps."
   },
   {
     "id": 1383,
@@ -18850,7 +19050,12 @@ const ALL_500_CASE_STUDIES = [
       "Using 'NOT IN (SELECT id FROM ...)' where the inner table contains a single NULL, causing the entire query to return zero rows due to 3-valued logic",
       "Using SELECT * instead of understanding that in EXISTS, the projected columns are ignored by the parser"
     ],
-    "takeaway": "EXISTS and NOT EXISTS evaluate boolean tuple presence, short-circuit immediately on the first match, and are 100% immune to 3VL NULL traps."
+    "takeaway": "EXISTS and NOT EXISTS evaluate boolean tuple presence, short-circuit immediately on the first match, and are 100% immune to 3VL NULL traps.",
+    "industry": "Healthcare",
+    "scenario": "In Healthcare, tracking negative space (events that DID NOT occur) is vital for churn, risk, and fraud detection. Using NOT IN causes catastrophic empty returns if nullable rows exist; we must implement production NOT EXISTS anti-semi joins.",
+    "businessObjective": "In Healthcare, tracking negative space (events that DID NOT occur) is vital for churn, risk, and fraud detection. Using NOT IN causes catastrophic empty returns if nullable rows exist; we must implement production NOT EXISTS anti-semi joins.",
+    "schemaSnippet": "| Column | Type | Description |\n|---|---|---|\n| encounter_id | INT / VARCHAR | Primary Entity Reference |\n| status | VARCHAR | Lifecycle Status |\n| created_at | TIMESTAMP | Creation Timestamp |",
+    "learningOutcomes": "EXISTS and NOT EXISTS evaluate boolean tuple presence, short-circuit immediately on the first match, and are 100% immune to 3VL NULL traps."
   },
   {
     "id": 1384,
@@ -18866,7 +19071,12 @@ const ALL_500_CASE_STUDIES = [
       "Using 'NOT IN (SELECT id FROM ...)' where the inner table contains a single NULL, causing the entire query to return zero rows due to 3-valued logic",
       "Using SELECT * instead of understanding that in EXISTS, the projected columns are ignored by the parser"
     ],
-    "takeaway": "EXISTS and NOT EXISTS evaluate boolean tuple presence, short-circuit immediately on the first match, and are 100% immune to 3VL NULL traps."
+    "takeaway": "EXISTS and NOT EXISTS evaluate boolean tuple presence, short-circuit immediately on the first match, and are 100% immune to 3VL NULL traps.",
+    "industry": "E-Commerce",
+    "scenario": "In E-Commerce, tracking negative space (events that DID NOT occur) is vital for churn, risk, and fraud detection. Using NOT IN causes catastrophic empty returns if nullable rows exist; we must implement production NOT EXISTS anti-semi joins.",
+    "businessObjective": "In E-Commerce, tracking negative space (events that DID NOT occur) is vital for churn, risk, and fraud detection. Using NOT IN causes catastrophic empty returns if nullable rows exist; we must implement production NOT EXISTS anti-semi joins.",
+    "schemaSnippet": "| Column | Type | Description |\n|---|---|---|\n| session_id | INT / VARCHAR | Primary Entity Reference |\n| status | VARCHAR | Lifecycle Status |\n| created_at | TIMESTAMP | Creation Timestamp |",
+    "learningOutcomes": "EXISTS and NOT EXISTS evaluate boolean tuple presence, short-circuit immediately on the first match, and are 100% immune to 3VL NULL traps."
   },
   {
     "id": 1385,
@@ -18882,7 +19092,12 @@ const ALL_500_CASE_STUDIES = [
       "Using 'NOT IN (SELECT id FROM ...)' where the inner table contains a single NULL, causing the entire query to return zero rows due to 3-valued logic",
       "Using SELECT * instead of understanding that in EXISTS, the projected columns are ignored by the parser"
     ],
-    "takeaway": "EXISTS and NOT EXISTS evaluate boolean tuple presence, short-circuit immediately on the first match, and are 100% immune to 3VL NULL traps."
+    "takeaway": "EXISTS and NOT EXISTS evaluate boolean tuple presence, short-circuit immediately on the first match, and are 100% immune to 3VL NULL traps.",
+    "industry": "Logistics",
+    "scenario": "In Logistics, tracking negative space (events that DID NOT occur) is vital for churn, risk, and fraud detection. Using NOT IN causes catastrophic empty returns if nullable rows exist; we must implement production NOT EXISTS anti-semi joins.",
+    "businessObjective": "In Logistics, tracking negative space (events that DID NOT occur) is vital for churn, risk, and fraud detection. Using NOT IN causes catastrophic empty returns if nullable rows exist; we must implement production NOT EXISTS anti-semi joins.",
+    "schemaSnippet": "| Column | Type | Description |\n|---|---|---|\n| manifest_id | INT / VARCHAR | Primary Entity Reference |\n| status | VARCHAR | Lifecycle Status |\n| created_at | TIMESTAMP | Creation Timestamp |",
+    "learningOutcomes": "EXISTS and NOT EXISTS evaluate boolean tuple presence, short-circuit immediately on the first match, and are 100% immune to 3VL NULL traps."
   },
   {
     "id": 1386,
@@ -18898,7 +19113,12 @@ const ALL_500_CASE_STUDIES = [
       "Using COUNT(*) instead of COUNT(DISTINCT) when ties exist, accidentally excluding tied 2nd place candidates",
       "Using <= N instead of < N in the comparison, returning N + 1 rows instead of N"
     ],
-    "takeaway": "The correlated count idiom defines rank as the cardinality of elements strictly superior to the candidate item in the same partition."
+    "takeaway": "The correlated count idiom defines rank as the cardinality of elements strictly superior to the candidate item in the same partition.",
+    "industry": "Fintech",
+    "scenario": "In technical interview and legacy database environments, retrieving the Top-N rows per category without window functions demonstrates foundational relational set calculus mastery.",
+    "businessObjective": "In technical interview and legacy database environments, retrieving the Top-N rows per category without window functions demonstrates foundational relational set calculus mastery.",
+    "schemaSnippet": "| Column | Type | Description |\n|---|---|---|\n| id | INT | Primary Key |\n| branch_id | INT | Partitioning Category |\n| wire_amount | NUMERIC | Ranking Metric |\n| recorded_at | DATE | Observation Date |",
+    "learningOutcomes": "The correlated count idiom defines rank as the cardinality of elements strictly superior to the candidate item in the same partition."
   },
   {
     "id": 1387,
@@ -18914,7 +19134,12 @@ const ALL_500_CASE_STUDIES = [
       "Using COUNT(*) instead of COUNT(DISTINCT) when ties exist, accidentally excluding tied 2nd place candidates",
       "Using <= N instead of < N in the comparison, returning N + 1 rows instead of N"
     ],
-    "takeaway": "The correlated count idiom defines rank as the cardinality of elements strictly superior to the candidate item in the same partition."
+    "takeaway": "The correlated count idiom defines rank as the cardinality of elements strictly superior to the candidate item in the same partition.",
+    "industry": "SaaS",
+    "scenario": "In technical interview and legacy database environments, retrieving the Top-N rows per category without window functions demonstrates foundational relational set calculus mastery.",
+    "businessObjective": "In technical interview and legacy database environments, retrieving the Top-N rows per category without window functions demonstrates foundational relational set calculus mastery.",
+    "schemaSnippet": "| Column | Type | Description |\n|---|---|---|\n| id | INT | Primary Key |\n| org_id | INT | Partitioning Category |\n| commit_count | NUMERIC | Ranking Metric |\n| recorded_at | DATE | Observation Date |",
+    "learningOutcomes": "The correlated count idiom defines rank as the cardinality of elements strictly superior to the candidate item in the same partition."
   },
   {
     "id": 1388,
@@ -18930,7 +19155,12 @@ const ALL_500_CASE_STUDIES = [
       "Using COUNT(*) instead of COUNT(DISTINCT) when ties exist, accidentally excluding tied 2nd place candidates",
       "Using <= N instead of < N in the comparison, returning N + 1 rows instead of N"
     ],
-    "takeaway": "The correlated count idiom defines rank as the cardinality of elements strictly superior to the candidate item in the same partition."
+    "takeaway": "The correlated count idiom defines rank as the cardinality of elements strictly superior to the candidate item in the same partition.",
+    "industry": "Healthcare",
+    "scenario": "In technical interview and legacy database environments, retrieving the Top-N rows per category without window functions demonstrates foundational relational set calculus mastery.",
+    "businessObjective": "In technical interview and legacy database environments, retrieving the Top-N rows per category without window functions demonstrates foundational relational set calculus mastery.",
+    "schemaSnippet": "| Column | Type | Description |\n|---|---|---|\n| id | INT | Primary Key |\n| ward_id | INT | Partitioning Category |\n| billing_cost | NUMERIC | Ranking Metric |\n| recorded_at | DATE | Observation Date |",
+    "learningOutcomes": "The correlated count idiom defines rank as the cardinality of elements strictly superior to the candidate item in the same partition."
   },
   {
     "id": 1389,
@@ -18946,7 +19176,12 @@ const ALL_500_CASE_STUDIES = [
       "Using COUNT(*) instead of COUNT(DISTINCT) when ties exist, accidentally excluding tied 2nd place candidates",
       "Using <= N instead of < N in the comparison, returning N + 1 rows instead of N"
     ],
-    "takeaway": "The correlated count idiom defines rank as the cardinality of elements strictly superior to the candidate item in the same partition."
+    "takeaway": "The correlated count idiom defines rank as the cardinality of elements strictly superior to the candidate item in the same partition.",
+    "industry": "E-Commerce",
+    "scenario": "In technical interview and legacy database environments, retrieving the Top-N rows per category without window functions demonstrates foundational relational set calculus mastery.",
+    "businessObjective": "In technical interview and legacy database environments, retrieving the Top-N rows per category without window functions demonstrates foundational relational set calculus mastery.",
+    "schemaSnippet": "| Column | Type | Description |\n|---|---|---|\n| id | INT | Primary Key |\n| category_id | INT | Partitioning Category |\n| sales_qty | NUMERIC | Ranking Metric |\n| recorded_at | DATE | Observation Date |",
+    "learningOutcomes": "The correlated count idiom defines rank as the cardinality of elements strictly superior to the candidate item in the same partition."
   },
   {
     "id": 1390,
@@ -18962,7 +19197,12 @@ const ALL_500_CASE_STUDIES = [
       "Using COUNT(*) instead of COUNT(DISTINCT) when ties exist, accidentally excluding tied 2nd place candidates",
       "Using <= N instead of < N in the comparison, returning N + 1 rows instead of N"
     ],
-    "takeaway": "The correlated count idiom defines rank as the cardinality of elements strictly superior to the candidate item in the same partition."
+    "takeaway": "The correlated count idiom defines rank as the cardinality of elements strictly superior to the candidate item in the same partition.",
+    "industry": "Logistics",
+    "scenario": "In technical interview and legacy database environments, retrieving the Top-N rows per category without window functions demonstrates foundational relational set calculus mastery.",
+    "businessObjective": "In technical interview and legacy database environments, retrieving the Top-N rows per category without window functions demonstrates foundational relational set calculus mastery.",
+    "schemaSnippet": "| Column | Type | Description |\n|---|---|---|\n| id | INT | Primary Key |\n| depot_id | INT | Partitioning Category |\n| distance_km | NUMERIC | Ranking Metric |\n| recorded_at | DATE | Observation Date |",
+    "learningOutcomes": "The correlated count idiom defines rank as the cardinality of elements strictly superior to the candidate item in the same partition."
   },
   {
     "id": 1391,
@@ -18978,7 +19218,12 @@ const ALL_500_CASE_STUDIES = [
       "Using COUNT(*) instead of COUNT(DISTINCT) when ties exist, accidentally excluding tied 2nd place candidates",
       "Using <= N instead of < N in the comparison, returning N + 1 rows instead of N"
     ],
-    "takeaway": "The correlated count idiom defines rank as the cardinality of elements strictly superior to the candidate item in the same partition."
+    "takeaway": "The correlated count idiom defines rank as the cardinality of elements strictly superior to the candidate item in the same partition.",
+    "industry": "Gaming",
+    "scenario": "In technical interview and legacy database environments, retrieving the Top-N rows per category without window functions demonstrates foundational relational set calculus mastery.",
+    "businessObjective": "In technical interview and legacy database environments, retrieving the Top-N rows per category without window functions demonstrates foundational relational set calculus mastery.",
+    "schemaSnippet": "| Column | Type | Description |\n|---|---|---|\n| id | INT | Primary Key |\n| server_id | INT | Partitioning Category |\n| mmr_rating | NUMERIC | Ranking Metric |\n| recorded_at | DATE | Observation Date |",
+    "learningOutcomes": "The correlated count idiom defines rank as the cardinality of elements strictly superior to the candidate item in the same partition."
   },
   {
     "id": 1392,
@@ -18994,7 +19239,12 @@ const ALL_500_CASE_STUDIES = [
       "Using COUNT(*) instead of COUNT(DISTINCT) when ties exist, accidentally excluding tied 2nd place candidates",
       "Using <= N instead of < N in the comparison, returning N + 1 rows instead of N"
     ],
-    "takeaway": "The correlated count idiom defines rank as the cardinality of elements strictly superior to the candidate item in the same partition."
+    "takeaway": "The correlated count idiom defines rank as the cardinality of elements strictly superior to the candidate item in the same partition.",
+    "industry": "AdTech",
+    "scenario": "In technical interview and legacy database environments, retrieving the Top-N rows per category without window functions demonstrates foundational relational set calculus mastery.",
+    "businessObjective": "In technical interview and legacy database environments, retrieving the Top-N rows per category without window functions demonstrates foundational relational set calculus mastery.",
+    "schemaSnippet": "| Column | Type | Description |\n|---|---|---|\n| id | INT | Primary Key |\n| publisher_id | INT | Partitioning Category |\n| ecpm | NUMERIC | Ranking Metric |\n| recorded_at | DATE | Observation Date |",
+    "learningOutcomes": "The correlated count idiom defines rank as the cardinality of elements strictly superior to the candidate item in the same partition."
   },
   {
     "id": 1393,
@@ -19010,7 +19260,12 @@ const ALL_500_CASE_STUDIES = [
       "Using COUNT(*) instead of COUNT(DISTINCT) when ties exist, accidentally excluding tied 2nd place candidates",
       "Using <= N instead of < N in the comparison, returning N + 1 rows instead of N"
     ],
-    "takeaway": "The correlated count idiom defines rank as the cardinality of elements strictly superior to the candidate item in the same partition."
+    "takeaway": "The correlated count idiom defines rank as the cardinality of elements strictly superior to the candidate item in the same partition.",
+    "industry": "EdTech",
+    "scenario": "In technical interview and legacy database environments, retrieving the Top-N rows per category without window functions demonstrates foundational relational set calculus mastery.",
+    "businessObjective": "In technical interview and legacy database environments, retrieving the Top-N rows per category without window functions demonstrates foundational relational set calculus mastery.",
+    "schemaSnippet": "| Column | Type | Description |\n|---|---|---|\n| id | INT | Primary Key |\n| dept_id | INT | Partitioning Category |\n| score | NUMERIC | Ranking Metric |\n| recorded_at | DATE | Observation Date |",
+    "learningOutcomes": "The correlated count idiom defines rank as the cardinality of elements strictly superior to the candidate item in the same partition."
   },
   {
     "id": 1394,
@@ -19026,7 +19281,12 @@ const ALL_500_CASE_STUDIES = [
       "Using COUNT(*) instead of COUNT(DISTINCT) when ties exist, accidentally excluding tied 2nd place candidates",
       "Using <= N instead of < N in the comparison, returning N + 1 rows instead of N"
     ],
-    "takeaway": "The correlated count idiom defines rank as the cardinality of elements strictly superior to the candidate item in the same partition."
+    "takeaway": "The correlated count idiom defines rank as the cardinality of elements strictly superior to the candidate item in the same partition.",
+    "industry": "Energy",
+    "scenario": "In technical interview and legacy database environments, retrieving the Top-N rows per category without window functions demonstrates foundational relational set calculus mastery.",
+    "businessObjective": "In technical interview and legacy database environments, retrieving the Top-N rows per category without window functions demonstrates foundational relational set calculus mastery.",
+    "schemaSnippet": "| Column | Type | Description |\n|---|---|---|\n| id | INT | Primary Key |\n| cluster_id | INT | Partitioning Category |\n| kwh_output | NUMERIC | Ranking Metric |\n| recorded_at | DATE | Observation Date |",
+    "learningOutcomes": "The correlated count idiom defines rank as the cardinality of elements strictly superior to the candidate item in the same partition."
   },
   {
     "id": 1395,
@@ -19042,7 +19302,12 @@ const ALL_500_CASE_STUDIES = [
       "Using COUNT(*) instead of COUNT(DISTINCT) when ties exist, accidentally excluding tied 2nd place candidates",
       "Using <= N instead of < N in the comparison, returning N + 1 rows instead of N"
     ],
-    "takeaway": "The correlated count idiom defines rank as the cardinality of elements strictly superior to the candidate item in the same partition."
+    "takeaway": "The correlated count idiom defines rank as the cardinality of elements strictly superior to the candidate item in the same partition.",
+    "industry": "Media",
+    "scenario": "In technical interview and legacy database environments, retrieving the Top-N rows per category without window functions demonstrates foundational relational set calculus mastery.",
+    "businessObjective": "In technical interview and legacy database environments, retrieving the Top-N rows per category without window functions demonstrates foundational relational set calculus mastery.",
+    "schemaSnippet": "| Column | Type | Description |\n|---|---|---|\n| id | INT | Primary Key |\n| genre_id | INT | Partitioning Category |\n| total_streams | NUMERIC | Ranking Metric |\n| recorded_at | DATE | Observation Date |",
+    "learningOutcomes": "The correlated count idiom defines rank as the cardinality of elements strictly superior to the candidate item in the same partition."
   },
   {
     "id": 1396,
@@ -19058,7 +19323,12 @@ const ALL_500_CASE_STUDIES = [
       "Using COUNT(*) instead of COUNT(DISTINCT) when ties exist, accidentally excluding tied 2nd place candidates",
       "Using <= N instead of < N in the comparison, returning N + 1 rows instead of N"
     ],
-    "takeaway": "The correlated count idiom defines rank as the cardinality of elements strictly superior to the candidate item in the same partition."
+    "takeaway": "The correlated count idiom defines rank as the cardinality of elements strictly superior to the candidate item in the same partition.",
+    "industry": "Fintech",
+    "scenario": "In technical interview and legacy database environments, retrieving the Top-N rows per category without window functions demonstrates foundational relational set calculus mastery.",
+    "businessObjective": "In technical interview and legacy database environments, retrieving the Top-N rows per category without window functions demonstrates foundational relational set calculus mastery.",
+    "schemaSnippet": "| Column | Type | Description |\n|---|---|---|\n| id | INT | Primary Key |\n| desk_id | INT | Partitioning Category |\n| bonus_usd | NUMERIC | Ranking Metric |\n| recorded_at | DATE | Observation Date |",
+    "learningOutcomes": "The correlated count idiom defines rank as the cardinality of elements strictly superior to the candidate item in the same partition."
   },
   {
     "id": 1397,
@@ -19074,7 +19344,12 @@ const ALL_500_CASE_STUDIES = [
       "Using COUNT(*) instead of COUNT(DISTINCT) when ties exist, accidentally excluding tied 2nd place candidates",
       "Using <= N instead of < N in the comparison, returning N + 1 rows instead of N"
     ],
-    "takeaway": "The correlated count idiom defines rank as the cardinality of elements strictly superior to the candidate item in the same partition."
+    "takeaway": "The correlated count idiom defines rank as the cardinality of elements strictly superior to the candidate item in the same partition.",
+    "industry": "SaaS",
+    "scenario": "In technical interview and legacy database environments, retrieving the Top-N rows per category without window functions demonstrates foundational relational set calculus mastery.",
+    "businessObjective": "In technical interview and legacy database environments, retrieving the Top-N rows per category without window functions demonstrates foundational relational set calculus mastery.",
+    "schemaSnippet": "| Column | Type | Description |\n|---|---|---|\n| id | INT | Primary Key |\n| region_code | INT | Partitioning Category |\n| storage_terabytes | NUMERIC | Ranking Metric |\n| recorded_at | DATE | Observation Date |",
+    "learningOutcomes": "The correlated count idiom defines rank as the cardinality of elements strictly superior to the candidate item in the same partition."
   },
   {
     "id": 1398,
@@ -19090,7 +19365,12 @@ const ALL_500_CASE_STUDIES = [
       "Using COUNT(*) instead of COUNT(DISTINCT) when ties exist, accidentally excluding tied 2nd place candidates",
       "Using <= N instead of < N in the comparison, returning N + 1 rows instead of N"
     ],
-    "takeaway": "The correlated count idiom defines rank as the cardinality of elements strictly superior to the candidate item in the same partition."
+    "takeaway": "The correlated count idiom defines rank as the cardinality of elements strictly superior to the candidate item in the same partition.",
+    "industry": "Healthcare",
+    "scenario": "In technical interview and legacy database environments, retrieving the Top-N rows per category without window functions demonstrates foundational relational set calculus mastery.",
+    "businessObjective": "In technical interview and legacy database environments, retrieving the Top-N rows per category without window functions demonstrates foundational relational set calculus mastery.",
+    "schemaSnippet": "| Column | Type | Description |\n|---|---|---|\n| id | INT | Primary Key |\n| specialty_id | INT | Partitioning Category |\n| daily_dosage | NUMERIC | Ranking Metric |\n| recorded_at | DATE | Observation Date |",
+    "learningOutcomes": "The correlated count idiom defines rank as the cardinality of elements strictly superior to the candidate item in the same partition."
   },
   {
     "id": 1399,
@@ -19106,7 +19386,12 @@ const ALL_500_CASE_STUDIES = [
       "Using COUNT(*) instead of COUNT(DISTINCT) when ties exist, accidentally excluding tied 2nd place candidates",
       "Using <= N instead of < N in the comparison, returning N + 1 rows instead of N"
     ],
-    "takeaway": "The correlated count idiom defines rank as the cardinality of elements strictly superior to the candidate item in the same partition."
+    "takeaway": "The correlated count idiom defines rank as the cardinality of elements strictly superior to the candidate item in the same partition.",
+    "industry": "E-Commerce",
+    "scenario": "In technical interview and legacy database environments, retrieving the Top-N rows per category without window functions demonstrates foundational relational set calculus mastery.",
+    "businessObjective": "In technical interview and legacy database environments, retrieving the Top-N rows per category without window functions demonstrates foundational relational set calculus mastery.",
+    "schemaSnippet": "| Column | Type | Description |\n|---|---|---|\n| id | INT | Primary Key |\n| channel_id | INT | Partitioning Category |\n| gross_margin | NUMERIC | Ranking Metric |\n| recorded_at | DATE | Observation Date |",
+    "learningOutcomes": "The correlated count idiom defines rank as the cardinality of elements strictly superior to the candidate item in the same partition."
   },
   {
     "id": 1400,
@@ -19122,7 +19407,12 @@ const ALL_500_CASE_STUDIES = [
       "Using COUNT(*) instead of COUNT(DISTINCT) when ties exist, accidentally excluding tied 2nd place candidates",
       "Using <= N instead of < N in the comparison, returning N + 1 rows instead of N"
     ],
-    "takeaway": "The correlated count idiom defines rank as the cardinality of elements strictly superior to the candidate item in the same partition."
+    "takeaway": "The correlated count idiom defines rank as the cardinality of elements strictly superior to the candidate item in the same partition.",
+    "industry": "Logistics",
+    "scenario": "In technical interview and legacy database environments, retrieving the Top-N rows per category without window functions demonstrates foundational relational set calculus mastery.",
+    "businessObjective": "In technical interview and legacy database environments, retrieving the Top-N rows per category without window functions demonstrates foundational relational set calculus mastery.",
+    "schemaSnippet": "| Column | Type | Description |\n|---|---|---|\n| id | INT | Primary Key |\n| vessel_id | INT | Partitioning Category |\n| gross_weight | NUMERIC | Ranking Metric |\n| recorded_at | DATE | Observation Date |",
+    "learningOutcomes": "The correlated count idiom defines rank as the cardinality of elements strictly superior to the candidate item in the same partition."
   },
   {
     "id": 1401,
@@ -19138,7 +19428,12 @@ const ALL_500_CASE_STUDIES = [
       "Using deeply nested derived table pyramids that read backwards, making debugging and maintenance impossible",
       "Assuming CTEs automatically create indexes on temporary columns, leading to unexpected slow joins on unindexed intermediate keys"
     ],
-    "takeaway": "Modular CTE pipelines structure complex multi-tier calculations into literate, sequential, testable data transformations."
+    "takeaway": "Modular CTE pipelines structure complex multi-tier calculations into literate, sequential, testable data transformations.",
+    "industry": "Fintech",
+    "scenario": "Complex analytical pipelines in Fintech require clean, self-documenting architectures where intermediate metrics (base filtering, aggregation, variance normalization) are isolated into readable, modular stages.",
+    "businessObjective": "Complex analytical pipelines in Fintech require clean, self-documenting architectures where intermediate metrics (base filtering, aggregation, variance normalization) are isolated into readable, modular stages.",
+    "schemaSnippet": "| Column | Type | Description |\n|---|---|---|\n| entity_id | INT | Entity Identifier |\n| fx_spread | NUMERIC | Calculated Metric |\n| reporting_date | DATE | Financial Snapshot Date |",
+    "learningOutcomes": "Modular CTE pipelines structure complex multi-tier calculations into literate, sequential, testable data transformations."
   },
   {
     "id": 1402,
@@ -19154,7 +19449,12 @@ const ALL_500_CASE_STUDIES = [
       "Using deeply nested derived table pyramids that read backwards, making debugging and maintenance impossible",
       "Assuming CTEs automatically create indexes on temporary columns, leading to unexpected slow joins on unindexed intermediate keys"
     ],
-    "takeaway": "Modular CTE pipelines structure complex multi-tier calculations into literate, sequential, testable data transformations."
+    "takeaway": "Modular CTE pipelines structure complex multi-tier calculations into literate, sequential, testable data transformations.",
+    "industry": "SaaS",
+    "scenario": "Complex analytical pipelines in SaaS require clean, self-documenting architectures where intermediate metrics (base filtering, aggregation, variance normalization) are isolated into readable, modular stages.",
+    "businessObjective": "Complex analytical pipelines in SaaS require clean, self-documenting architectures where intermediate metrics (base filtering, aggregation, variance normalization) are isolated into readable, modular stages.",
+    "schemaSnippet": "| Column | Type | Description |\n|---|---|---|\n| entity_id | INT | Entity Identifier |\n| activation_step | NUMERIC | Calculated Metric |\n| reporting_date | DATE | Financial Snapshot Date |",
+    "learningOutcomes": "Modular CTE pipelines structure complex multi-tier calculations into literate, sequential, testable data transformations."
   },
   {
     "id": 1403,
@@ -19170,7 +19470,12 @@ const ALL_500_CASE_STUDIES = [
       "Using deeply nested derived table pyramids that read backwards, making debugging and maintenance impossible",
       "Assuming CTEs automatically create indexes on temporary columns, leading to unexpected slow joins on unindexed intermediate keys"
     ],
-    "takeaway": "Modular CTE pipelines structure complex multi-tier calculations into literate, sequential, testable data transformations."
+    "takeaway": "Modular CTE pipelines structure complex multi-tier calculations into literate, sequential, testable data transformations.",
+    "industry": "Healthcare",
+    "scenario": "Complex analytical pipelines in Healthcare require clean, self-documenting architectures where intermediate metrics (base filtering, aggregation, variance normalization) are isolated into readable, modular stages.",
+    "businessObjective": "Complex analytical pipelines in Healthcare require clean, self-documenting architectures where intermediate metrics (base filtering, aggregation, variance normalization) are isolated into readable, modular stages.",
+    "schemaSnippet": "| Column | Type | Description |\n|---|---|---|\n| entity_id | INT | Entity Identifier |\n| readmit_rate | NUMERIC | Calculated Metric |\n| reporting_date | DATE | Financial Snapshot Date |",
+    "learningOutcomes": "Modular CTE pipelines structure complex multi-tier calculations into literate, sequential, testable data transformations."
   },
   {
     "id": 1404,
@@ -19186,7 +19491,12 @@ const ALL_500_CASE_STUDIES = [
       "Using deeply nested derived table pyramids that read backwards, making debugging and maintenance impossible",
       "Assuming CTEs automatically create indexes on temporary columns, leading to unexpected slow joins on unindexed intermediate keys"
     ],
-    "takeaway": "Modular CTE pipelines structure complex multi-tier calculations into literate, sequential, testable data transformations."
+    "takeaway": "Modular CTE pipelines structure complex multi-tier calculations into literate, sequential, testable data transformations.",
+    "industry": "E-Commerce",
+    "scenario": "Complex analytical pipelines in E-Commerce require clean, self-documenting architectures where intermediate metrics (base filtering, aggregation, variance normalization) are isolated into readable, modular stages.",
+    "businessObjective": "Complex analytical pipelines in E-Commerce require clean, self-documenting architectures where intermediate metrics (base filtering, aggregation, variance normalization) are isolated into readable, modular stages.",
+    "schemaSnippet": "| Column | Type | Description |\n|---|---|---|\n| entity_id | INT | Entity Identifier |\n| order_frequency | NUMERIC | Calculated Metric |\n| reporting_date | DATE | Financial Snapshot Date |",
+    "learningOutcomes": "Modular CTE pipelines structure complex multi-tier calculations into literate, sequential, testable data transformations."
   },
   {
     "id": 1405,
@@ -19202,7 +19512,12 @@ const ALL_500_CASE_STUDIES = [
       "Using deeply nested derived table pyramids that read backwards, making debugging and maintenance impossible",
       "Assuming CTEs automatically create indexes on temporary columns, leading to unexpected slow joins on unindexed intermediate keys"
     ],
-    "takeaway": "Modular CTE pipelines structure complex multi-tier calculations into literate, sequential, testable data transformations."
+    "takeaway": "Modular CTE pipelines structure complex multi-tier calculations into literate, sequential, testable data transformations.",
+    "industry": "Logistics",
+    "scenario": "Complex analytical pipelines in Logistics require clean, self-documenting architectures where intermediate metrics (base filtering, aggregation, variance normalization) are isolated into readable, modular stages.",
+    "businessObjective": "Complex analytical pipelines in Logistics require clean, self-documenting architectures where intermediate metrics (base filtering, aggregation, variance normalization) are isolated into readable, modular stages.",
+    "schemaSnippet": "| Column | Type | Description |\n|---|---|---|\n| entity_id | INT | Entity Identifier |\n| ontime_pct | NUMERIC | Calculated Metric |\n| reporting_date | DATE | Financial Snapshot Date |",
+    "learningOutcomes": "Modular CTE pipelines structure complex multi-tier calculations into literate, sequential, testable data transformations."
   },
   {
     "id": 1406,
@@ -19218,7 +19533,12 @@ const ALL_500_CASE_STUDIES = [
       "Using deeply nested derived table pyramids that read backwards, making debugging and maintenance impossible",
       "Assuming CTEs automatically create indexes on temporary columns, leading to unexpected slow joins on unindexed intermediate keys"
     ],
-    "takeaway": "Modular CTE pipelines structure complex multi-tier calculations into literate, sequential, testable data transformations."
+    "takeaway": "Modular CTE pipelines structure complex multi-tier calculations into literate, sequential, testable data transformations.",
+    "industry": "Gaming",
+    "scenario": "Complex analytical pipelines in Gaming require clean, self-documenting architectures where intermediate metrics (base filtering, aggregation, variance normalization) are isolated into readable, modular stages.",
+    "businessObjective": "Complex analytical pipelines in Gaming require clean, self-documenting architectures where intermediate metrics (base filtering, aggregation, variance normalization) are isolated into readable, modular stages.",
+    "schemaSnippet": "| Column | Type | Description |\n|---|---|---|\n| entity_id | INT | Entity Identifier |\n| xp_gained | NUMERIC | Calculated Metric |\n| reporting_date | DATE | Financial Snapshot Date |",
+    "learningOutcomes": "Modular CTE pipelines structure complex multi-tier calculations into literate, sequential, testable data transformations."
   },
   {
     "id": 1407,
@@ -19234,7 +19554,12 @@ const ALL_500_CASE_STUDIES = [
       "Using deeply nested derived table pyramids that read backwards, making debugging and maintenance impossible",
       "Assuming CTEs automatically create indexes on temporary columns, leading to unexpected slow joins on unindexed intermediate keys"
     ],
-    "takeaway": "Modular CTE pipelines structure complex multi-tier calculations into literate, sequential, testable data transformations."
+    "takeaway": "Modular CTE pipelines structure complex multi-tier calculations into literate, sequential, testable data transformations.",
+    "industry": "AdTech",
+    "scenario": "Complex analytical pipelines in AdTech require clean, self-documenting architectures where intermediate metrics (base filtering, aggregation, variance normalization) are isolated into readable, modular stages.",
+    "businessObjective": "Complex analytical pipelines in AdTech require clean, self-documenting architectures where intermediate metrics (base filtering, aggregation, variance normalization) are isolated into readable, modular stages.",
+    "schemaSnippet": "| Column | Type | Description |\n|---|---|---|\n| entity_id | INT | Entity Identifier |\n| ecpm_yield | NUMERIC | Calculated Metric |\n| reporting_date | DATE | Financial Snapshot Date |",
+    "learningOutcomes": "Modular CTE pipelines structure complex multi-tier calculations into literate, sequential, testable data transformations."
   },
   {
     "id": 1408,
@@ -19250,7 +19575,12 @@ const ALL_500_CASE_STUDIES = [
       "Using deeply nested derived table pyramids that read backwards, making debugging and maintenance impossible",
       "Assuming CTEs automatically create indexes on temporary columns, leading to unexpected slow joins on unindexed intermediate keys"
     ],
-    "takeaway": "Modular CTE pipelines structure complex multi-tier calculations into literate, sequential, testable data transformations."
+    "takeaway": "Modular CTE pipelines structure complex multi-tier calculations into literate, sequential, testable data transformations.",
+    "industry": "EdTech",
+    "scenario": "Complex analytical pipelines in EdTech require clean, self-documenting architectures where intermediate metrics (base filtering, aggregation, variance normalization) are isolated into readable, modular stages.",
+    "businessObjective": "Complex analytical pipelines in EdTech require clean, self-documenting architectures where intermediate metrics (base filtering, aggregation, variance normalization) are isolated into readable, modular stages.",
+    "schemaSnippet": "| Column | Type | Description |\n|---|---|---|\n| entity_id | INT | Entity Identifier |\n| completion_prob | NUMERIC | Calculated Metric |\n| reporting_date | DATE | Financial Snapshot Date |",
+    "learningOutcomes": "Modular CTE pipelines structure complex multi-tier calculations into literate, sequential, testable data transformations."
   },
   {
     "id": 1409,
@@ -19266,7 +19596,12 @@ const ALL_500_CASE_STUDIES = [
       "Using deeply nested derived table pyramids that read backwards, making debugging and maintenance impossible",
       "Assuming CTEs automatically create indexes on temporary columns, leading to unexpected slow joins on unindexed intermediate keys"
     ],
-    "takeaway": "Modular CTE pipelines structure complex multi-tier calculations into literate, sequential, testable data transformations."
+    "takeaway": "Modular CTE pipelines structure complex multi-tier calculations into literate, sequential, testable data transformations.",
+    "industry": "Energy",
+    "scenario": "Complex analytical pipelines in Energy require clean, self-documenting architectures where intermediate metrics (base filtering, aggregation, variance normalization) are isolated into readable, modular stages.",
+    "businessObjective": "Complex analytical pipelines in Energy require clean, self-documenting architectures where intermediate metrics (base filtering, aggregation, variance normalization) are isolated into readable, modular stages.",
+    "schemaSnippet": "| Column | Type | Description |\n|---|---|---|\n| entity_id | INT | Entity Identifier |\n| aerodynamic_eff | NUMERIC | Calculated Metric |\n| reporting_date | DATE | Financial Snapshot Date |",
+    "learningOutcomes": "Modular CTE pipelines structure complex multi-tier calculations into literate, sequential, testable data transformations."
   },
   {
     "id": 1410,
@@ -19282,7 +19617,12 @@ const ALL_500_CASE_STUDIES = [
       "Using deeply nested derived table pyramids that read backwards, making debugging and maintenance impossible",
       "Assuming CTEs automatically create indexes on temporary columns, leading to unexpected slow joins on unindexed intermediate keys"
     ],
-    "takeaway": "Modular CTE pipelines structure complex multi-tier calculations into literate, sequential, testable data transformations."
+    "takeaway": "Modular CTE pipelines structure complex multi-tier calculations into literate, sequential, testable data transformations.",
+    "industry": "Media",
+    "scenario": "Complex analytical pipelines in Media require clean, self-documenting architectures where intermediate metrics (base filtering, aggregation, variance normalization) are isolated into readable, modular stages.",
+    "businessObjective": "Complex analytical pipelines in Media require clean, self-documenting architectures where intermediate metrics (base filtering, aggregation, variance normalization) are isolated into readable, modular stages.",
+    "schemaSnippet": "| Column | Type | Description |\n|---|---|---|\n| entity_id | INT | Entity Identifier |\n| episodes_per_day | NUMERIC | Calculated Metric |\n| reporting_date | DATE | Financial Snapshot Date |",
+    "learningOutcomes": "Modular CTE pipelines structure complex multi-tier calculations into literate, sequential, testable data transformations."
   },
   {
     "id": 1411,
@@ -19298,7 +19638,12 @@ const ALL_500_CASE_STUDIES = [
       "Using deeply nested derived table pyramids that read backwards, making debugging and maintenance impossible",
       "Assuming CTEs automatically create indexes on temporary columns, leading to unexpected slow joins on unindexed intermediate keys"
     ],
-    "takeaway": "Modular CTE pipelines structure complex multi-tier calculations into literate, sequential, testable data transformations."
+    "takeaway": "Modular CTE pipelines structure complex multi-tier calculations into literate, sequential, testable data transformations.",
+    "industry": "Fintech",
+    "scenario": "Complex analytical pipelines in Fintech require clean, self-documenting architectures where intermediate metrics (base filtering, aggregation, variance normalization) are isolated into readable, modular stages.",
+    "businessObjective": "Complex analytical pipelines in Fintech require clean, self-documenting architectures where intermediate metrics (base filtering, aggregation, variance normalization) are isolated into readable, modular stages.",
+    "schemaSnippet": "| Column | Type | Description |\n|---|---|---|\n| entity_id | INT | Entity Identifier |\n| cet1_ratio | NUMERIC | Calculated Metric |\n| reporting_date | DATE | Financial Snapshot Date |",
+    "learningOutcomes": "Modular CTE pipelines structure complex multi-tier calculations into literate, sequential, testable data transformations."
   },
   {
     "id": 1412,
@@ -19314,7 +19659,12 @@ const ALL_500_CASE_STUDIES = [
       "Using deeply nested derived table pyramids that read backwards, making debugging and maintenance impossible",
       "Assuming CTEs automatically create indexes on temporary columns, leading to unexpected slow joins on unindexed intermediate keys"
     ],
-    "takeaway": "Modular CTE pipelines structure complex multi-tier calculations into literate, sequential, testable data transformations."
+    "takeaway": "Modular CTE pipelines structure complex multi-tier calculations into literate, sequential, testable data transformations.",
+    "industry": "SaaS",
+    "scenario": "Complex analytical pipelines in SaaS require clean, self-documenting architectures where intermediate metrics (base filtering, aggregation, variance normalization) are isolated into readable, modular stages.",
+    "businessObjective": "Complex analytical pipelines in SaaS require clean, self-documenting architectures where intermediate metrics (base filtering, aggregation, variance normalization) are isolated into readable, modular stages.",
+    "schemaSnippet": "| Column | Type | Description |\n|---|---|---|\n| entity_id | INT | Entity Identifier |\n| mrr_delta | NUMERIC | Calculated Metric |\n| reporting_date | DATE | Financial Snapshot Date |",
+    "learningOutcomes": "Modular CTE pipelines structure complex multi-tier calculations into literate, sequential, testable data transformations."
   },
   {
     "id": 1413,
@@ -19330,7 +19680,12 @@ const ALL_500_CASE_STUDIES = [
       "Using deeply nested derived table pyramids that read backwards, making debugging and maintenance impossible",
       "Assuming CTEs automatically create indexes on temporary columns, leading to unexpected slow joins on unindexed intermediate keys"
     ],
-    "takeaway": "Modular CTE pipelines structure complex multi-tier calculations into literate, sequential, testable data transformations."
+    "takeaway": "Modular CTE pipelines structure complex multi-tier calculations into literate, sequential, testable data transformations.",
+    "industry": "Healthcare",
+    "scenario": "Complex analytical pipelines in Healthcare require clean, self-documenting architectures where intermediate metrics (base filtering, aggregation, variance normalization) are isolated into readable, modular stages.",
+    "businessObjective": "Complex analytical pipelines in Healthcare require clean, self-documenting architectures where intermediate metrics (base filtering, aggregation, variance normalization) are isolated into readable, modular stages.",
+    "schemaSnippet": "| Column | Type | Description |\n|---|---|---|\n| entity_id | INT | Entity Identifier |\n| exposure_score | NUMERIC | Calculated Metric |\n| reporting_date | DATE | Financial Snapshot Date |",
+    "learningOutcomes": "Modular CTE pipelines structure complex multi-tier calculations into literate, sequential, testable data transformations."
   },
   {
     "id": 1414,
@@ -19346,7 +19701,12 @@ const ALL_500_CASE_STUDIES = [
       "Using deeply nested derived table pyramids that read backwards, making debugging and maintenance impossible",
       "Assuming CTEs automatically create indexes on temporary columns, leading to unexpected slow joins on unindexed intermediate keys"
     ],
-    "takeaway": "Modular CTE pipelines structure complex multi-tier calculations into literate, sequential, testable data transformations."
+    "takeaway": "Modular CTE pipelines structure complex multi-tier calculations into literate, sequential, testable data transformations.",
+    "industry": "E-Commerce",
+    "scenario": "Complex analytical pipelines in E-Commerce require clean, self-documenting architectures where intermediate metrics (base filtering, aggregation, variance normalization) are isolated into readable, modular stages.",
+    "businessObjective": "Complex analytical pipelines in E-Commerce require clean, self-documenting architectures where intermediate metrics (base filtering, aggregation, variance normalization) are isolated into readable, modular stages.",
+    "schemaSnippet": "| Column | Type | Description |\n|---|---|---|\n| entity_id | INT | Entity Identifier |\n| ltv_cac_ratio | NUMERIC | Calculated Metric |\n| reporting_date | DATE | Financial Snapshot Date |",
+    "learningOutcomes": "Modular CTE pipelines structure complex multi-tier calculations into literate, sequential, testable data transformations."
   },
   {
     "id": 1415,
@@ -19362,7 +19722,12 @@ const ALL_500_CASE_STUDIES = [
       "Using deeply nested derived table pyramids that read backwards, making debugging and maintenance impossible",
       "Assuming CTEs automatically create indexes on temporary columns, leading to unexpected slow joins on unindexed intermediate keys"
     ],
-    "takeaway": "Modular CTE pipelines structure complex multi-tier calculations into literate, sequential, testable data transformations."
+    "takeaway": "Modular CTE pipelines structure complex multi-tier calculations into literate, sequential, testable data transformations.",
+    "industry": "Logistics",
+    "scenario": "Complex analytical pipelines in Logistics require clean, self-documenting architectures where intermediate metrics (base filtering, aggregation, variance normalization) are isolated into readable, modular stages.",
+    "businessObjective": "Complex analytical pipelines in Logistics require clean, self-documenting architectures where intermediate metrics (base filtering, aggregation, variance normalization) are isolated into readable, modular stages.",
+    "schemaSnippet": "| Column | Type | Description |\n|---|---|---|\n| entity_id | INT | Entity Identifier |\n| demand_variance | NUMERIC | Calculated Metric |\n| reporting_date | DATE | Financial Snapshot Date |",
+    "learningOutcomes": "Modular CTE pipelines structure complex multi-tier calculations into literate, sequential, testable data transformations."
   },
   {
     "id": 1416,
@@ -19378,7 +19743,12 @@ const ALL_500_CASE_STUDIES = [
       "Failing to CAST the anchor string accumulator, causing deeper recursive string concatenations to fail with data-too-long errors",
       "Forgetting to check for circular data cycles, which can trap the database in an infinite loop"
     ],
-    "takeaway": "WITH RECURSIVE evaluates trees and hierarchies iteratively using an anchor base case and an inductive recursive join until the working queue is empty."
+    "takeaway": "WITH RECURSIVE evaluates trees and hierarchies iteratively using an anchor base case and an inductive recursive join until the working queue is empty.",
+    "industry": "Fintech",
+    "scenario": "In Fintech, organizations and entities are modeled hierarchically. To audit supervisory chains, delegation of authority, and depth levels, we need a recursive query walking from the root node to every leaf.",
+    "businessObjective": "In Fintech, organizations and entities are modeled hierarchically. To audit supervisory chains, delegation of authority, and depth levels, we need a recursive query walking from the root node to every leaf.",
+    "schemaSnippet": "| Column | Type | Description |\n|---|---|---|\n| banker_id | INT | Entity Primary Key |\n| full_name | VARCHAR(100) | Entity Name |\n| manager_id | INT | Self-Referencing Foreign Key |\n| title | VARCHAR(50) | Official Role/Title |",
+    "learningOutcomes": "WITH RECURSIVE evaluates trees and hierarchies iteratively using an anchor base case and an inductive recursive join until the working queue is empty."
   },
   {
     "id": 1417,
@@ -19394,7 +19764,12 @@ const ALL_500_CASE_STUDIES = [
       "Failing to CAST the anchor string accumulator, causing deeper recursive string concatenations to fail with data-too-long errors",
       "Forgetting to check for circular data cycles, which can trap the database in an infinite loop"
     ],
-    "takeaway": "WITH RECURSIVE evaluates trees and hierarchies iteratively using an anchor base case and an inductive recursive join until the working queue is empty."
+    "takeaway": "WITH RECURSIVE evaluates trees and hierarchies iteratively using an anchor base case and an inductive recursive join until the working queue is empty.",
+    "industry": "SaaS",
+    "scenario": "In SaaS, organizations and entities are modeled hierarchically. To audit supervisory chains, delegation of authority, and depth levels, we need a recursive query walking from the root node to every leaf.",
+    "businessObjective": "In SaaS, organizations and entities are modeled hierarchically. To audit supervisory chains, delegation of authority, and depth levels, we need a recursive query walking from the root node to every leaf.",
+    "schemaSnippet": "| Column | Type | Description |\n|---|---|---|\n| engineer_id | INT | Entity Primary Key |\n| full_name | VARCHAR(100) | Entity Name |\n| manager_id | INT | Self-Referencing Foreign Key |\n| title | VARCHAR(50) | Official Role/Title |",
+    "learningOutcomes": "WITH RECURSIVE evaluates trees and hierarchies iteratively using an anchor base case and an inductive recursive join until the working queue is empty."
   },
   {
     "id": 1418,
@@ -19410,7 +19785,12 @@ const ALL_500_CASE_STUDIES = [
       "Failing to CAST the anchor string accumulator, causing deeper recursive string concatenations to fail with data-too-long errors",
       "Forgetting to check for circular data cycles, which can trap the database in an infinite loop"
     ],
-    "takeaway": "WITH RECURSIVE evaluates trees and hierarchies iteratively using an anchor base case and an inductive recursive join until the working queue is empty."
+    "takeaway": "WITH RECURSIVE evaluates trees and hierarchies iteratively using an anchor base case and an inductive recursive join until the working queue is empty.",
+    "industry": "Healthcare",
+    "scenario": "In Healthcare, organizations and entities are modeled hierarchically. To audit supervisory chains, delegation of authority, and depth levels, we need a recursive query walking from the root node to every leaf.",
+    "businessObjective": "In Healthcare, organizations and entities are modeled hierarchically. To audit supervisory chains, delegation of authority, and depth levels, we need a recursive query walking from the root node to every leaf.",
+    "schemaSnippet": "| Column | Type | Description |\n|---|---|---|\n| staff_id | INT | Entity Primary Key |\n| full_name | VARCHAR(100) | Entity Name |\n| supervisor_id | INT | Self-Referencing Foreign Key |\n| title | VARCHAR(50) | Official Role/Title |",
+    "learningOutcomes": "WITH RECURSIVE evaluates trees and hierarchies iteratively using an anchor base case and an inductive recursive join until the working queue is empty."
   },
   {
     "id": 1419,
@@ -19426,7 +19806,12 @@ const ALL_500_CASE_STUDIES = [
       "Failing to CAST the anchor string accumulator, causing deeper recursive string concatenations to fail with data-too-long errors",
       "Forgetting to check for circular data cycles, which can trap the database in an infinite loop"
     ],
-    "takeaway": "WITH RECURSIVE evaluates trees and hierarchies iteratively using an anchor base case and an inductive recursive join until the working queue is empty."
+    "takeaway": "WITH RECURSIVE evaluates trees and hierarchies iteratively using an anchor base case and an inductive recursive join until the working queue is empty.",
+    "industry": "E-Commerce",
+    "scenario": "In E-Commerce, organizations and entities are modeled hierarchically. To audit supervisory chains, delegation of authority, and depth levels, we need a recursive query walking from the root node to every leaf.",
+    "businessObjective": "In E-Commerce, organizations and entities are modeled hierarchically. To audit supervisory chains, delegation of authority, and depth levels, we need a recursive query walking from the root node to every leaf.",
+    "schemaSnippet": "| Column | Type | Description |\n|---|---|---|\n| store_emp_id | INT | Entity Primary Key |\n| full_name | VARCHAR(100) | Entity Name |\n| regional_lead_id | INT | Self-Referencing Foreign Key |\n| title | VARCHAR(50) | Official Role/Title |",
+    "learningOutcomes": "WITH RECURSIVE evaluates trees and hierarchies iteratively using an anchor base case and an inductive recursive join until the working queue is empty."
   },
   {
     "id": 1420,
@@ -19442,7 +19827,12 @@ const ALL_500_CASE_STUDIES = [
       "Failing to CAST the anchor string accumulator, causing deeper recursive string concatenations to fail with data-too-long errors",
       "Forgetting to check for circular data cycles, which can trap the database in an infinite loop"
     ],
-    "takeaway": "WITH RECURSIVE evaluates trees and hierarchies iteratively using an anchor base case and an inductive recursive join until the working queue is empty."
+    "takeaway": "WITH RECURSIVE evaluates trees and hierarchies iteratively using an anchor base case and an inductive recursive join until the working queue is empty.",
+    "industry": "Logistics",
+    "scenario": "In Logistics, organizations and entities are modeled hierarchically. To audit supervisory chains, delegation of authority, and depth levels, we need a recursive query walking from the root node to every leaf.",
+    "businessObjective": "In Logistics, organizations and entities are modeled hierarchically. To audit supervisory chains, delegation of authority, and depth levels, we need a recursive query walking from the root node to every leaf.",
+    "schemaSnippet": "| Column | Type | Description |\n|---|---|---|\n| dispatcher_id | INT | Entity Primary Key |\n| full_name | VARCHAR(100) | Entity Name |\n| lead_dispatcher_id | INT | Self-Referencing Foreign Key |\n| title | VARCHAR(50) | Official Role/Title |",
+    "learningOutcomes": "WITH RECURSIVE evaluates trees and hierarchies iteratively using an anchor base case and an inductive recursive join until the working queue is empty."
   },
   {
     "id": 1421,
@@ -19458,7 +19848,12 @@ const ALL_500_CASE_STUDIES = [
       "Failing to CAST the anchor string accumulator, causing deeper recursive string concatenations to fail with data-too-long errors",
       "Forgetting to check for circular data cycles, which can trap the database in an infinite loop"
     ],
-    "takeaway": "WITH RECURSIVE evaluates trees and hierarchies iteratively using an anchor base case and an inductive recursive join until the working queue is empty."
+    "takeaway": "WITH RECURSIVE evaluates trees and hierarchies iteratively using an anchor base case and an inductive recursive join until the working queue is empty.",
+    "industry": "Gaming",
+    "scenario": "In Gaming, organizations and entities are modeled hierarchically. To audit supervisory chains, delegation of authority, and depth levels, we need a recursive query walking from the root node to every leaf.",
+    "businessObjective": "In Gaming, organizations and entities are modeled hierarchically. To audit supervisory chains, delegation of authority, and depth levels, we need a recursive query walking from the root node to every leaf.",
+    "schemaSnippet": "| Column | Type | Description |\n|---|---|---|\n| player_id | INT | Entity Primary Key |\n| full_name | VARCHAR(100) | Entity Name |\n| officer_id | INT | Self-Referencing Foreign Key |\n| title | VARCHAR(50) | Official Role/Title |",
+    "learningOutcomes": "WITH RECURSIVE evaluates trees and hierarchies iteratively using an anchor base case and an inductive recursive join until the working queue is empty."
   },
   {
     "id": 1422,
@@ -19474,7 +19869,12 @@ const ALL_500_CASE_STUDIES = [
       "Failing to CAST the anchor string accumulator, causing deeper recursive string concatenations to fail with data-too-long errors",
       "Forgetting to check for circular data cycles, which can trap the database in an infinite loop"
     ],
-    "takeaway": "WITH RECURSIVE evaluates trees and hierarchies iteratively using an anchor base case and an inductive recursive join until the working queue is empty."
+    "takeaway": "WITH RECURSIVE evaluates trees and hierarchies iteratively using an anchor base case and an inductive recursive join until the working queue is empty.",
+    "industry": "AdTech",
+    "scenario": "In AdTech, organizations and entities are modeled hierarchically. To audit supervisory chains, delegation of authority, and depth levels, we need a recursive query walking from the root node to every leaf.",
+    "businessObjective": "In AdTech, organizations and entities are modeled hierarchically. To audit supervisory chains, delegation of authority, and depth levels, we need a recursive query walking from the root node to every leaf.",
+    "schemaSnippet": "| Column | Type | Description |\n|---|---|---|\n| executive_id | INT | Entity Primary Key |\n| full_name | VARCHAR(100) | Entity Name |\n| director_id | INT | Self-Referencing Foreign Key |\n| title | VARCHAR(50) | Official Role/Title |",
+    "learningOutcomes": "WITH RECURSIVE evaluates trees and hierarchies iteratively using an anchor base case and an inductive recursive join until the working queue is empty."
   },
   {
     "id": 1423,
@@ -19490,7 +19890,12 @@ const ALL_500_CASE_STUDIES = [
       "Failing to CAST the anchor string accumulator, causing deeper recursive string concatenations to fail with data-too-long errors",
       "Forgetting to check for circular data cycles, which can trap the database in an infinite loop"
     ],
-    "takeaway": "WITH RECURSIVE evaluates trees and hierarchies iteratively using an anchor base case and an inductive recursive join until the working queue is empty."
+    "takeaway": "WITH RECURSIVE evaluates trees and hierarchies iteratively using an anchor base case and an inductive recursive join until the working queue is empty.",
+    "industry": "EdTech",
+    "scenario": "In EdTech, organizations and entities are modeled hierarchically. To audit supervisory chains, delegation of authority, and depth levels, we need a recursive query walking from the root node to every leaf.",
+    "businessObjective": "In EdTech, organizations and entities are modeled hierarchically. To audit supervisory chains, delegation of authority, and depth levels, we need a recursive query walking from the root node to every leaf.",
+    "schemaSnippet": "| Column | Type | Description |\n|---|---|---|\n| faculty_id | INT | Entity Primary Key |\n| full_name | VARCHAR(100) | Entity Name |\n| department_chair_id | INT | Self-Referencing Foreign Key |\n| title | VARCHAR(50) | Official Role/Title |",
+    "learningOutcomes": "WITH RECURSIVE evaluates trees and hierarchies iteratively using an anchor base case and an inductive recursive join until the working queue is empty."
   },
   {
     "id": 1424,
@@ -19506,7 +19911,12 @@ const ALL_500_CASE_STUDIES = [
       "Failing to CAST the anchor string accumulator, causing deeper recursive string concatenations to fail with data-too-long errors",
       "Forgetting to check for circular data cycles, which can trap the database in an infinite loop"
     ],
-    "takeaway": "WITH RECURSIVE evaluates trees and hierarchies iteratively using an anchor base case and an inductive recursive join until the working queue is empty."
+    "takeaway": "WITH RECURSIVE evaluates trees and hierarchies iteratively using an anchor base case and an inductive recursive join until the working queue is empty.",
+    "industry": "Energy",
+    "scenario": "In Energy, organizations and entities are modeled hierarchically. To audit supervisory chains, delegation of authority, and depth levels, we need a recursive query walking from the root node to every leaf.",
+    "businessObjective": "In Energy, organizations and entities are modeled hierarchically. To audit supervisory chains, delegation of authority, and depth levels, we need a recursive query walking from the root node to every leaf.",
+    "schemaSnippet": "| Column | Type | Description |\n|---|---|---|\n| technician_id | INT | Entity Primary Key |\n| full_name | VARCHAR(100) | Entity Name |\n| lead_engineer_id | INT | Self-Referencing Foreign Key |\n| title | VARCHAR(50) | Official Role/Title |",
+    "learningOutcomes": "WITH RECURSIVE evaluates trees and hierarchies iteratively using an anchor base case and an inductive recursive join until the working queue is empty."
   },
   {
     "id": 1425,
@@ -19522,7 +19932,12 @@ const ALL_500_CASE_STUDIES = [
       "Failing to CAST the anchor string accumulator, causing deeper recursive string concatenations to fail with data-too-long errors",
       "Forgetting to check for circular data cycles, which can trap the database in an infinite loop"
     ],
-    "takeaway": "WITH RECURSIVE evaluates trees and hierarchies iteratively using an anchor base case and an inductive recursive join until the working queue is empty."
+    "takeaway": "WITH RECURSIVE evaluates trees and hierarchies iteratively using an anchor base case and an inductive recursive join until the working queue is empty.",
+    "industry": "Media",
+    "scenario": "In Media, organizations and entities are modeled hierarchically. To audit supervisory chains, delegation of authority, and depth levels, we need a recursive query walking from the root node to every leaf.",
+    "businessObjective": "In Media, organizations and entities are modeled hierarchically. To audit supervisory chains, delegation of authority, and depth levels, we need a recursive query walking from the root node to every leaf.",
+    "schemaSnippet": "| Column | Type | Description |\n|---|---|---|\n| journalist_id | INT | Entity Primary Key |\n| full_name | VARCHAR(100) | Entity Name |\n| managing_editor_id | INT | Self-Referencing Foreign Key |\n| title | VARCHAR(50) | Official Role/Title |",
+    "learningOutcomes": "WITH RECURSIVE evaluates trees and hierarchies iteratively using an anchor base case and an inductive recursive join until the working queue is empty."
   },
   {
     "id": 1426,
@@ -19538,7 +19953,12 @@ const ALL_500_CASE_STUDIES = [
       "Failing to CAST the anchor string accumulator, causing deeper recursive string concatenations to fail with data-too-long errors",
       "Forgetting to check for circular data cycles, which can trap the database in an infinite loop"
     ],
-    "takeaway": "WITH RECURSIVE evaluates trees and hierarchies iteratively using an anchor base case and an inductive recursive join until the working queue is empty."
+    "takeaway": "WITH RECURSIVE evaluates trees and hierarchies iteratively using an anchor base case and an inductive recursive join until the working queue is empty.",
+    "industry": "Fintech",
+    "scenario": "In Fintech, organizations and entities are modeled hierarchically. To audit supervisory chains, delegation of authority, and depth levels, we need a recursive query walking from the root node to every leaf.",
+    "businessObjective": "In Fintech, organizations and entities are modeled hierarchically. To audit supervisory chains, delegation of authority, and depth levels, we need a recursive query walking from the root node to every leaf.",
+    "schemaSnippet": "| Column | Type | Description |\n|---|---|---|\n| entity_id | INT | Entity Primary Key |\n| full_name | VARCHAR(100) | Entity Name |\n| parent_entity_id | INT | Self-Referencing Foreign Key |\n| title | VARCHAR(50) | Official Role/Title |",
+    "learningOutcomes": "WITH RECURSIVE evaluates trees and hierarchies iteratively using an anchor base case and an inductive recursive join until the working queue is empty."
   },
   {
     "id": 1427,
@@ -19554,7 +19974,12 @@ const ALL_500_CASE_STUDIES = [
       "Failing to CAST the anchor string accumulator, causing deeper recursive string concatenations to fail with data-too-long errors",
       "Forgetting to check for circular data cycles, which can trap the database in an infinite loop"
     ],
-    "takeaway": "WITH RECURSIVE evaluates trees and hierarchies iteratively using an anchor base case and an inductive recursive join until the working queue is empty."
+    "takeaway": "WITH RECURSIVE evaluates trees and hierarchies iteratively using an anchor base case and an inductive recursive join until the working queue is empty.",
+    "industry": "SaaS",
+    "scenario": "In SaaS, organizations and entities are modeled hierarchically. To audit supervisory chains, delegation of authority, and depth levels, we need a recursive query walking from the root node to every leaf.",
+    "businessObjective": "In SaaS, organizations and entities are modeled hierarchically. To audit supervisory chains, delegation of authority, and depth levels, we need a recursive query walking from the root node to every leaf.",
+    "schemaSnippet": "| Column | Type | Description |\n|---|---|---|\n| role_id | INT | Entity Primary Key |\n| full_name | VARCHAR(100) | Entity Name |\n| parent_role_id | INT | Self-Referencing Foreign Key |\n| title | VARCHAR(50) | Official Role/Title |",
+    "learningOutcomes": "WITH RECURSIVE evaluates trees and hierarchies iteratively using an anchor base case and an inductive recursive join until the working queue is empty."
   },
   {
     "id": 1428,
@@ -19570,7 +19995,12 @@ const ALL_500_CASE_STUDIES = [
       "Failing to CAST the anchor string accumulator, causing deeper recursive string concatenations to fail with data-too-long errors",
       "Forgetting to check for circular data cycles, which can trap the database in an infinite loop"
     ],
-    "takeaway": "WITH RECURSIVE evaluates trees and hierarchies iteratively using an anchor base case and an inductive recursive join until the working queue is empty."
+    "takeaway": "WITH RECURSIVE evaluates trees and hierarchies iteratively using an anchor base case and an inductive recursive join until the working queue is empty.",
+    "industry": "Healthcare",
+    "scenario": "In Healthcare, organizations and entities are modeled hierarchically. To audit supervisory chains, delegation of authority, and depth levels, we need a recursive query walking from the root node to every leaf.",
+    "businessObjective": "In Healthcare, organizations and entities are modeled hierarchically. To audit supervisory chains, delegation of authority, and depth levels, we need a recursive query walking from the root node to every leaf.",
+    "schemaSnippet": "| Column | Type | Description |\n|---|---|---|\n| doctor_id | INT | Entity Primary Key |\n| full_name | VARCHAR(100) | Entity Name |\n| department_head_id | INT | Self-Referencing Foreign Key |\n| title | VARCHAR(50) | Official Role/Title |",
+    "learningOutcomes": "WITH RECURSIVE evaluates trees and hierarchies iteratively using an anchor base case and an inductive recursive join until the working queue is empty."
   },
   {
     "id": 1429,
@@ -19586,7 +20016,12 @@ const ALL_500_CASE_STUDIES = [
       "Failing to CAST the anchor string accumulator, causing deeper recursive string concatenations to fail with data-too-long errors",
       "Forgetting to check for circular data cycles, which can trap the database in an infinite loop"
     ],
-    "takeaway": "WITH RECURSIVE evaluates trees and hierarchies iteratively using an anchor base case and an inductive recursive join until the working queue is empty."
+    "takeaway": "WITH RECURSIVE evaluates trees and hierarchies iteratively using an anchor base case and an inductive recursive join until the working queue is empty.",
+    "industry": "E-Commerce",
+    "scenario": "In E-Commerce, organizations and entities are modeled hierarchically. To audit supervisory chains, delegation of authority, and depth levels, we need a recursive query walking from the root node to every leaf.",
+    "businessObjective": "In E-Commerce, organizations and entities are modeled hierarchically. To audit supervisory chains, delegation of authority, and depth levels, we need a recursive query walking from the root node to every leaf.",
+    "schemaSnippet": "| Column | Type | Description |\n|---|---|---|\n| affiliate_id | INT | Entity Primary Key |\n| full_name | VARCHAR(100) | Entity Name |\n| referrer_id | INT | Self-Referencing Foreign Key |\n| title | VARCHAR(50) | Official Role/Title |",
+    "learningOutcomes": "WITH RECURSIVE evaluates trees and hierarchies iteratively using an anchor base case and an inductive recursive join until the working queue is empty."
   },
   {
     "id": 1430,
@@ -19602,7 +20037,12 @@ const ALL_500_CASE_STUDIES = [
       "Failing to CAST the anchor string accumulator, causing deeper recursive string concatenations to fail with data-too-long errors",
       "Forgetting to check for circular data cycles, which can trap the database in an infinite loop"
     ],
-    "takeaway": "WITH RECURSIVE evaluates trees and hierarchies iteratively using an anchor base case and an inductive recursive join until the working queue is empty."
+    "takeaway": "WITH RECURSIVE evaluates trees and hierarchies iteratively using an anchor base case and an inductive recursive join until the working queue is empty.",
+    "industry": "Logistics",
+    "scenario": "In Logistics, organizations and entities are modeled hierarchically. To audit supervisory chains, delegation of authority, and depth levels, we need a recursive query walking from the root node to every leaf.",
+    "businessObjective": "In Logistics, organizations and entities are modeled hierarchically. To audit supervisory chains, delegation of authority, and depth levels, we need a recursive query walking from the root node to every leaf.",
+    "schemaSnippet": "| Column | Type | Description |\n|---|---|---|\n| agent_id | INT | Entity Primary Key |\n| full_name | VARCHAR(100) | Entity Name |\n| master_agent_id | INT | Self-Referencing Foreign Key |\n| title | VARCHAR(50) | Official Role/Title |",
+    "learningOutcomes": "WITH RECURSIVE evaluates trees and hierarchies iteratively using an anchor base case and an inductive recursive join until the working queue is empty."
   },
   {
     "id": 1431,
@@ -19618,7 +20058,12 @@ const ALL_500_CASE_STUDIES = [
       "Failing to filter out visited nodes in cyclic networks, leading to database abort errors from runaway recursion",
       "Multiplying quantities additively rather than multiplicatively in Bill of Materials explosions"
     ],
-    "takeaway": "Graph traversal in SQL requires maintaining a visited-node path guard to prevent cyclic loops while BFS-expanding edge connections."
+    "takeaway": "Graph traversal in SQL requires maintaining a visited-node path guard to prevent cyclic loops while BFS-expanding edge connections.",
+    "industry": "Fintech",
+    "scenario": "In Fintech, data forms network graphs rather than simple trees (cycles, multi-path connections, multiplicative weights). A recursive CTE is required to navigate graph edges while guarding against infinite cyclic loops.",
+    "businessObjective": "In Fintech, data forms network graphs rather than simple trees (cycles, multi-path connections, multiplicative weights). A recursive CTE is required to navigate graph edges while guarding against infinite cyclic loops.",
+    "schemaSnippet": "| Column | Type | Description |\n|---|---|---|\n| sender_bank_id | INT / VARCHAR | Edge Source Node |\n| receiver_bank_id | INT / VARCHAR | Edge Target Node |\n| weight | NUMERIC | Edge Metric / Cost |",
+    "learningOutcomes": "Graph traversal in SQL requires maintaining a visited-node path guard to prevent cyclic loops while BFS-expanding edge connections."
   },
   {
     "id": 1432,
@@ -19634,7 +20079,12 @@ const ALL_500_CASE_STUDIES = [
       "Failing to filter out visited nodes in cyclic networks, leading to database abort errors from runaway recursion",
       "Multiplying quantities additively rather than multiplicatively in Bill of Materials explosions"
     ],
-    "takeaway": "Graph traversal in SQL requires maintaining a visited-node path guard to prevent cyclic loops while BFS-expanding edge connections."
+    "takeaway": "Graph traversal in SQL requires maintaining a visited-node path guard to prevent cyclic loops while BFS-expanding edge connections.",
+    "industry": "SaaS",
+    "scenario": "In SaaS, data forms network graphs rather than simple trees (cycles, multi-path connections, multiplicative weights). A recursive CTE is required to navigate graph edges while guarding against infinite cyclic loops.",
+    "businessObjective": "In SaaS, data forms network graphs rather than simple trees (cycles, multi-path connections, multiplicative weights). A recursive CTE is required to navigate graph edges while guarding against infinite cyclic loops.",
+    "schemaSnippet": "| Column | Type | Description |\n|---|---|---|\n| calling_service_id | INT / VARCHAR | Edge Source Node |\n| target_service_id | INT / VARCHAR | Edge Target Node |\n| weight | NUMERIC | Edge Metric / Cost |",
+    "learningOutcomes": "Graph traversal in SQL requires maintaining a visited-node path guard to prevent cyclic loops while BFS-expanding edge connections."
   },
   {
     "id": 1433,
@@ -19650,7 +20100,12 @@ const ALL_500_CASE_STUDIES = [
       "Failing to filter out visited nodes in cyclic networks, leading to database abort errors from runaway recursion",
       "Multiplying quantities additively rather than multiplicatively in Bill of Materials explosions"
     ],
-    "takeaway": "Graph traversal in SQL requires maintaining a visited-node path guard to prevent cyclic loops while BFS-expanding edge connections."
+    "takeaway": "Graph traversal in SQL requires maintaining a visited-node path guard to prevent cyclic loops while BFS-expanding edge connections.",
+    "industry": "Healthcare",
+    "scenario": "In Healthcare, data forms network graphs rather than simple trees (cycles, multi-path connections, multiplicative weights). A recursive CTE is required to navigate graph edges while guarding against infinite cyclic loops.",
+    "businessObjective": "In Healthcare, data forms network graphs rather than simple trees (cycles, multi-path connections, multiplicative weights). A recursive CTE is required to navigate graph edges while guarding against infinite cyclic loops.",
+    "schemaSnippet": "| Column | Type | Description |\n|---|---|---|\n| source_patient_id | INT / VARCHAR | Edge Source Node |\n| exposed_patient_id | INT / VARCHAR | Edge Target Node |\n| weight | NUMERIC | Edge Metric / Cost |",
+    "learningOutcomes": "Graph traversal in SQL requires maintaining a visited-node path guard to prevent cyclic loops while BFS-expanding edge connections."
   },
   {
     "id": 1434,
@@ -19666,7 +20121,12 @@ const ALL_500_CASE_STUDIES = [
       "Failing to filter out visited nodes in cyclic networks, leading to database abort errors from runaway recursion",
       "Multiplying quantities additively rather than multiplicatively in Bill of Materials explosions"
     ],
-    "takeaway": "Graph traversal in SQL requires maintaining a visited-node path guard to prevent cyclic loops while BFS-expanding edge connections."
+    "takeaway": "Graph traversal in SQL requires maintaining a visited-node path guard to prevent cyclic loops while BFS-expanding edge connections.",
+    "industry": "E-Commerce",
+    "scenario": "In E-Commerce, data forms network graphs rather than simple trees (cycles, multi-path connections, multiplicative weights). A recursive CTE is required to navigate graph edges while guarding against infinite cyclic loops.",
+    "businessObjective": "In E-Commerce, data forms network graphs rather than simple trees (cycles, multi-path connections, multiplicative weights). A recursive CTE is required to navigate graph edges while guarding against infinite cyclic loops.",
+    "schemaSnippet": "| Column | Type | Description |\n|---|---|---|\n| assembly_sku | INT / VARCHAR | Edge Source Node |\n| component_sku | INT / VARCHAR | Edge Target Node |\n| weight | NUMERIC | Edge Metric / Cost |",
+    "learningOutcomes": "Graph traversal in SQL requires maintaining a visited-node path guard to prevent cyclic loops while BFS-expanding edge connections."
   },
   {
     "id": 1435,
@@ -19682,7 +20142,12 @@ const ALL_500_CASE_STUDIES = [
       "Failing to filter out visited nodes in cyclic networks, leading to database abort errors from runaway recursion",
       "Multiplying quantities additively rather than multiplicatively in Bill of Materials explosions"
     ],
-    "takeaway": "Graph traversal in SQL requires maintaining a visited-node path guard to prevent cyclic loops while BFS-expanding edge connections."
+    "takeaway": "Graph traversal in SQL requires maintaining a visited-node path guard to prevent cyclic loops while BFS-expanding edge connections.",
+    "industry": "Logistics",
+    "scenario": "In Logistics, data forms network graphs rather than simple trees (cycles, multi-path connections, multiplicative weights). A recursive CTE is required to navigate graph edges while guarding against infinite cyclic loops.",
+    "businessObjective": "In Logistics, data forms network graphs rather than simple trees (cycles, multi-path connections, multiplicative weights). A recursive CTE is required to navigate graph edges while guarding against infinite cyclic loops.",
+    "schemaSnippet": "| Column | Type | Description |\n|---|---|---|\n| origin_depot_id | INT / VARCHAR | Edge Source Node |\n| destination_depot_id | INT / VARCHAR | Edge Target Node |\n| weight | NUMERIC | Edge Metric / Cost |",
+    "learningOutcomes": "Graph traversal in SQL requires maintaining a visited-node path guard to prevent cyclic loops while BFS-expanding edge connections."
   },
   {
     "id": 1436,
@@ -19698,7 +20163,12 @@ const ALL_500_CASE_STUDIES = [
       "Failing to filter out visited nodes in cyclic networks, leading to database abort errors from runaway recursion",
       "Multiplying quantities additively rather than multiplicatively in Bill of Materials explosions"
     ],
-    "takeaway": "Graph traversal in SQL requires maintaining a visited-node path guard to prevent cyclic loops while BFS-expanding edge connections."
+    "takeaway": "Graph traversal in SQL requires maintaining a visited-node path guard to prevent cyclic loops while BFS-expanding edge connections.",
+    "industry": "Gaming",
+    "scenario": "In Gaming, data forms network graphs rather than simple trees (cycles, multi-path connections, multiplicative weights). A recursive CTE is required to navigate graph edges while guarding against infinite cyclic loops.",
+    "businessObjective": "In Gaming, data forms network graphs rather than simple trees (cycles, multi-path connections, multiplicative weights). A recursive CTE is required to navigate graph edges while guarding against infinite cyclic loops.",
+    "schemaSnippet": "| Column | Type | Description |\n|---|---|---|\n| item_id | INT / VARCHAR | Edge Source Node |\n| ingredient_id | INT / VARCHAR | Edge Target Node |\n| weight | NUMERIC | Edge Metric / Cost |",
+    "learningOutcomes": "Graph traversal in SQL requires maintaining a visited-node path guard to prevent cyclic loops while BFS-expanding edge connections."
   },
   {
     "id": 1437,
@@ -19714,7 +20184,12 @@ const ALL_500_CASE_STUDIES = [
       "Failing to filter out visited nodes in cyclic networks, leading to database abort errors from runaway recursion",
       "Multiplying quantities additively rather than multiplicatively in Bill of Materials explosions"
     ],
-    "takeaway": "Graph traversal in SQL requires maintaining a visited-node path guard to prevent cyclic loops while BFS-expanding edge connections."
+    "takeaway": "Graph traversal in SQL requires maintaining a visited-node path guard to prevent cyclic loops while BFS-expanding edge connections.",
+    "industry": "AdTech",
+    "scenario": "In AdTech, data forms network graphs rather than simple trees (cycles, multi-path connections, multiplicative weights). A recursive CTE is required to navigate graph edges while guarding against infinite cyclic loops.",
+    "businessObjective": "In AdTech, data forms network graphs rather than simple trees (cycles, multi-path connections, multiplicative weights). A recursive CTE is required to navigate graph edges while guarding against infinite cyclic loops.",
+    "schemaSnippet": "| Column | Type | Description |\n|---|---|---|\n| seller_domain | INT / VARCHAR | Edge Source Node |\n| buyer_domain | INT / VARCHAR | Edge Target Node |\n| weight | NUMERIC | Edge Metric / Cost |",
+    "learningOutcomes": "Graph traversal in SQL requires maintaining a visited-node path guard to prevent cyclic loops while BFS-expanding edge connections."
   },
   {
     "id": 1438,
@@ -19730,7 +20205,12 @@ const ALL_500_CASE_STUDIES = [
       "Failing to filter out visited nodes in cyclic networks, leading to database abort errors from runaway recursion",
       "Multiplying quantities additively rather than multiplicatively in Bill of Materials explosions"
     ],
-    "takeaway": "Graph traversal in SQL requires maintaining a visited-node path guard to prevent cyclic loops while BFS-expanding edge connections."
+    "takeaway": "Graph traversal in SQL requires maintaining a visited-node path guard to prevent cyclic loops while BFS-expanding edge connections.",
+    "industry": "EdTech",
+    "scenario": "In EdTech, data forms network graphs rather than simple trees (cycles, multi-path connections, multiplicative weights). A recursive CTE is required to navigate graph edges while guarding against infinite cyclic loops.",
+    "businessObjective": "In EdTech, data forms network graphs rather than simple trees (cycles, multi-path connections, multiplicative weights). A recursive CTE is required to navigate graph edges while guarding against infinite cyclic loops.",
+    "schemaSnippet": "| Column | Type | Description |\n|---|---|---|\n| course_id | INT / VARCHAR | Edge Source Node |\n| prereq_course_id | INT / VARCHAR | Edge Target Node |\n| weight | NUMERIC | Edge Metric / Cost |",
+    "learningOutcomes": "Graph traversal in SQL requires maintaining a visited-node path guard to prevent cyclic loops while BFS-expanding edge connections."
   },
   {
     "id": 1439,
@@ -19746,7 +20226,12 @@ const ALL_500_CASE_STUDIES = [
       "Failing to filter out visited nodes in cyclic networks, leading to database abort errors from runaway recursion",
       "Multiplying quantities additively rather than multiplicatively in Bill of Materials explosions"
     ],
-    "takeaway": "Graph traversal in SQL requires maintaining a visited-node path guard to prevent cyclic loops while BFS-expanding edge connections."
+    "takeaway": "Graph traversal in SQL requires maintaining a visited-node path guard to prevent cyclic loops while BFS-expanding edge connections.",
+    "industry": "Energy",
+    "scenario": "In Energy, data forms network graphs rather than simple trees (cycles, multi-path connections, multiplicative weights). A recursive CTE is required to navigate graph edges while guarding against infinite cyclic loops.",
+    "businessObjective": "In Energy, data forms network graphs rather than simple trees (cycles, multi-path connections, multiplicative weights). A recursive CTE is required to navigate graph edges while guarding against infinite cyclic loops.",
+    "schemaSnippet": "| Column | Type | Description |\n|---|---|---|\n| from_substation | INT / VARCHAR | Edge Source Node |\n| to_substation | INT / VARCHAR | Edge Target Node |\n| weight | NUMERIC | Edge Metric / Cost |",
+    "learningOutcomes": "Graph traversal in SQL requires maintaining a visited-node path guard to prevent cyclic loops while BFS-expanding edge connections."
   },
   {
     "id": 1440,
@@ -19762,7 +20247,12 @@ const ALL_500_CASE_STUDIES = [
       "Failing to filter out visited nodes in cyclic networks, leading to database abort errors from runaway recursion",
       "Multiplying quantities additively rather than multiplicatively in Bill of Materials explosions"
     ],
-    "takeaway": "Graph traversal in SQL requires maintaining a visited-node path guard to prevent cyclic loops while BFS-expanding edge connections."
+    "takeaway": "Graph traversal in SQL requires maintaining a visited-node path guard to prevent cyclic loops while BFS-expanding edge connections.",
+    "industry": "Media",
+    "scenario": "In Media, data forms network graphs rather than simple trees (cycles, multi-path connections, multiplicative weights). A recursive CTE is required to navigate graph edges while guarding against infinite cyclic loops.",
+    "businessObjective": "In Media, data forms network graphs rather than simple trees (cycles, multi-path connections, multiplicative weights). A recursive CTE is required to navigate graph edges while guarding against infinite cyclic loops.",
+    "schemaSnippet": "| Column | Type | Description |\n|---|---|---|\n| user_a | INT / VARCHAR | Edge Source Node |\n| user_b | INT / VARCHAR | Edge Target Node |\n| weight | NUMERIC | Edge Metric / Cost |",
+    "learningOutcomes": "Graph traversal in SQL requires maintaining a visited-node path guard to prevent cyclic loops while BFS-expanding edge connections."
   },
   {
     "id": 1441,
@@ -19778,7 +20268,12 @@ const ALL_500_CASE_STUDIES = [
       "Failing to filter out visited nodes in cyclic networks, leading to database abort errors from runaway recursion",
       "Multiplying quantities additively rather than multiplicatively in Bill of Materials explosions"
     ],
-    "takeaway": "Graph traversal in SQL requires maintaining a visited-node path guard to prevent cyclic loops while BFS-expanding edge connections."
+    "takeaway": "Graph traversal in SQL requires maintaining a visited-node path guard to prevent cyclic loops while BFS-expanding edge connections.",
+    "industry": "Fintech",
+    "scenario": "In Fintech, data forms network graphs rather than simple trees (cycles, multi-path connections, multiplicative weights). A recursive CTE is required to navigate graph edges while guarding against infinite cyclic loops.",
+    "businessObjective": "In Fintech, data forms network graphs rather than simple trees (cycles, multi-path connections, multiplicative weights). A recursive CTE is required to navigate graph edges while guarding against infinite cyclic loops.",
+    "schemaSnippet": "| Column | Type | Description |\n|---|---|---|\n| from_account | INT / VARCHAR | Edge Source Node |\n| to_account | INT / VARCHAR | Edge Target Node |\n| weight | NUMERIC | Edge Metric / Cost |",
+    "learningOutcomes": "Graph traversal in SQL requires maintaining a visited-node path guard to prevent cyclic loops while BFS-expanding edge connections."
   },
   {
     "id": 1442,
@@ -19794,7 +20289,12 @@ const ALL_500_CASE_STUDIES = [
       "Failing to filter out visited nodes in cyclic networks, leading to database abort errors from runaway recursion",
       "Multiplying quantities additively rather than multiplicatively in Bill of Materials explosions"
     ],
-    "takeaway": "Graph traversal in SQL requires maintaining a visited-node path guard to prevent cyclic loops while BFS-expanding edge connections."
+    "takeaway": "Graph traversal in SQL requires maintaining a visited-node path guard to prevent cyclic loops while BFS-expanding edge connections.",
+    "industry": "SaaS",
+    "scenario": "In SaaS, data forms network graphs rather than simple trees (cycles, multi-path connections, multiplicative weights). A recursive CTE is required to navigate graph edges while guarding against infinite cyclic loops.",
+    "businessObjective": "In SaaS, data forms network graphs rather than simple trees (cycles, multi-path connections, multiplicative weights). A recursive CTE is required to navigate graph edges while guarding against infinite cyclic loops.",
+    "schemaSnippet": "| Column | Type | Description |\n|---|---|---|\n| package_id | INT / VARCHAR | Edge Source Node |\n| depends_on_id | INT / VARCHAR | Edge Target Node |\n| weight | NUMERIC | Edge Metric / Cost |",
+    "learningOutcomes": "Graph traversal in SQL requires maintaining a visited-node path guard to prevent cyclic loops while BFS-expanding edge connections."
   },
   {
     "id": 1443,
@@ -19810,7 +20310,12 @@ const ALL_500_CASE_STUDIES = [
       "Failing to filter out visited nodes in cyclic networks, leading to database abort errors from runaway recursion",
       "Multiplying quantities additively rather than multiplicatively in Bill of Materials explosions"
     ],
-    "takeaway": "Graph traversal in SQL requires maintaining a visited-node path guard to prevent cyclic loops while BFS-expanding edge connections."
+    "takeaway": "Graph traversal in SQL requires maintaining a visited-node path guard to prevent cyclic loops while BFS-expanding edge connections.",
+    "industry": "Healthcare",
+    "scenario": "In Healthcare, data forms network graphs rather than simple trees (cycles, multi-path connections, multiplicative weights). A recursive CTE is required to navigate graph edges while guarding against infinite cyclic loops.",
+    "businessObjective": "In Healthcare, data forms network graphs rather than simple trees (cycles, multi-path connections, multiplicative weights). A recursive CTE is required to navigate graph edges while guarding against infinite cyclic loops.",
+    "schemaSnippet": "| Column | Type | Description |\n|---|---|---|\n| parent_subject_id | INT / VARCHAR | Edge Source Node |\n| child_subject_id | INT / VARCHAR | Edge Target Node |\n| weight | NUMERIC | Edge Metric / Cost |",
+    "learningOutcomes": "Graph traversal in SQL requires maintaining a visited-node path guard to prevent cyclic loops while BFS-expanding edge connections."
   },
   {
     "id": 1444,
@@ -19826,7 +20331,12 @@ const ALL_500_CASE_STUDIES = [
       "Failing to filter out visited nodes in cyclic networks, leading to database abort errors from runaway recursion",
       "Multiplying quantities additively rather than multiplicatively in Bill of Materials explosions"
     ],
-    "takeaway": "Graph traversal in SQL requires maintaining a visited-node path guard to prevent cyclic loops while BFS-expanding edge connections."
+    "takeaway": "Graph traversal in SQL requires maintaining a visited-node path guard to prevent cyclic loops while BFS-expanding edge connections.",
+    "industry": "E-Commerce",
+    "scenario": "In E-Commerce, data forms network graphs rather than simple trees (cycles, multi-path connections, multiplicative weights). A recursive CTE is required to navigate graph edges while guarding against infinite cyclic loops.",
+    "businessObjective": "In E-Commerce, data forms network graphs rather than simple trees (cycles, multi-path connections, multiplicative weights). A recursive CTE is required to navigate graph edges while guarding against infinite cyclic loops.",
+    "schemaSnippet": "| Column | Type | Description |\n|---|---|---|\n| parent_assembly | INT / VARCHAR | Edge Source Node |\n| child_part | INT / VARCHAR | Edge Target Node |\n| weight | NUMERIC | Edge Metric / Cost |",
+    "learningOutcomes": "Graph traversal in SQL requires maintaining a visited-node path guard to prevent cyclic loops while BFS-expanding edge connections."
   },
   {
     "id": 1445,
@@ -19842,7 +20352,12 @@ const ALL_500_CASE_STUDIES = [
       "Failing to filter out visited nodes in cyclic networks, leading to database abort errors from runaway recursion",
       "Multiplying quantities additively rather than multiplicatively in Bill of Materials explosions"
     ],
-    "takeaway": "Graph traversal in SQL requires maintaining a visited-node path guard to prevent cyclic loops while BFS-expanding edge connections."
+    "takeaway": "Graph traversal in SQL requires maintaining a visited-node path guard to prevent cyclic loops while BFS-expanding edge connections.",
+    "industry": "Logistics",
+    "scenario": "In Logistics, data forms network graphs rather than simple trees (cycles, multi-path connections, multiplicative weights). A recursive CTE is required to navigate graph edges while guarding against infinite cyclic loops.",
+    "businessObjective": "In Logistics, data forms network graphs rather than simple trees (cycles, multi-path connections, multiplicative weights). A recursive CTE is required to navigate graph edges while guarding against infinite cyclic loops.",
+    "schemaSnippet": "| Column | Type | Description |\n|---|---|---|\n| origin_airport | INT / VARCHAR | Edge Source Node |\n| dest_airport | INT / VARCHAR | Edge Target Node |\n| weight | NUMERIC | Edge Metric / Cost |",
+    "learningOutcomes": "Graph traversal in SQL requires maintaining a visited-node path guard to prevent cyclic loops while BFS-expanding edge connections."
   },
   {
     "id": 1446,
@@ -19858,7 +20373,12 @@ const ALL_500_CASE_STUDIES = [
       "Using UNION instead of UNION ALL on massive high-volume tables, triggering heavy sort-buffer disk spills",
       "Expecting column aliases in the second query to take effect, when ANSI SQL dictates aliases come strictly from Query 1"
     ],
-    "takeaway": "UNION ALL streams combined records with zero deduplication memory cost; UNION forces an expensive sort/hash to eliminate identical duplicate tuples."
+    "takeaway": "UNION ALL streams combined records with zero deduplication memory cost; UNION forces an expensive sort/hash to eliminate identical duplicate tuples.",
+    "industry": "Fintech",
+    "scenario": "In Fintech, disparate event streams from multiple production systems must be consolidated vertically into a unified table. Engineers must choose between streaming UNION ALL and memory-intensive deduplicating UNION.",
+    "businessObjective": "In Fintech, disparate event streams from multiple production systems must be consolidated vertically into a unified table. Engineers must choose between streaming UNION ALL and memory-intensive deduplicating UNION.",
+    "schemaSnippet": "| Column | Type | Description |\n|---|---|---|\n| record_id | INT | Transaction ID |\n| entity_id | INT | Associated Account / User |\n| amount | NUMERIC | Transaction Magnitude |\n| event_timestamp | TIMESTAMP | Event Timestamp |",
+    "learningOutcomes": "UNION ALL streams combined records with zero deduplication memory cost; UNION forces an expensive sort/hash to eliminate identical duplicate tuples."
   },
   {
     "id": 1447,
@@ -19874,7 +20394,12 @@ const ALL_500_CASE_STUDIES = [
       "Using UNION instead of UNION ALL on massive high-volume tables, triggering heavy sort-buffer disk spills",
       "Expecting column aliases in the second query to take effect, when ANSI SQL dictates aliases come strictly from Query 1"
     ],
-    "takeaway": "UNION ALL streams combined records with zero deduplication memory cost; UNION forces an expensive sort/hash to eliminate identical duplicate tuples."
+    "takeaway": "UNION ALL streams combined records with zero deduplication memory cost; UNION forces an expensive sort/hash to eliminate identical duplicate tuples.",
+    "industry": "SaaS",
+    "scenario": "In SaaS, disparate event streams from multiple production systems must be consolidated vertically into a unified table. Engineers must choose between streaming UNION ALL and memory-intensive deduplicating UNION.",
+    "businessObjective": "In SaaS, disparate event streams from multiple production systems must be consolidated vertically into a unified table. Engineers must choose between streaming UNION ALL and memory-intensive deduplicating UNION.",
+    "schemaSnippet": "| Column | Type | Description |\n|---|---|---|\n| record_id | INT | Transaction ID |\n| entity_id | INT | Associated Account / User |\n| amount | NUMERIC | Transaction Magnitude |\n| event_timestamp | TIMESTAMP | Event Timestamp |",
+    "learningOutcomes": "UNION ALL streams combined records with zero deduplication memory cost; UNION forces an expensive sort/hash to eliminate identical duplicate tuples."
   },
   {
     "id": 1448,
@@ -19890,7 +20415,12 @@ const ALL_500_CASE_STUDIES = [
       "Using UNION instead of UNION ALL on massive high-volume tables, triggering heavy sort-buffer disk spills",
       "Expecting column aliases in the second query to take effect, when ANSI SQL dictates aliases come strictly from Query 1"
     ],
-    "takeaway": "UNION ALL streams combined records with zero deduplication memory cost; UNION forces an expensive sort/hash to eliminate identical duplicate tuples."
+    "takeaway": "UNION ALL streams combined records with zero deduplication memory cost; UNION forces an expensive sort/hash to eliminate identical duplicate tuples.",
+    "industry": "Healthcare",
+    "scenario": "In Healthcare, disparate event streams from multiple production systems must be consolidated vertically into a unified table. Engineers must choose between streaming UNION ALL and memory-intensive deduplicating UNION.",
+    "businessObjective": "In Healthcare, disparate event streams from multiple production systems must be consolidated vertically into a unified table. Engineers must choose between streaming UNION ALL and memory-intensive deduplicating UNION.",
+    "schemaSnippet": "| Column | Type | Description |\n|---|---|---|\n| record_id | INT | Transaction ID |\n| entity_id | INT | Associated Account / User |\n| amount | NUMERIC | Transaction Magnitude |\n| event_timestamp | TIMESTAMP | Event Timestamp |",
+    "learningOutcomes": "UNION ALL streams combined records with zero deduplication memory cost; UNION forces an expensive sort/hash to eliminate identical duplicate tuples."
   },
   {
     "id": 1449,
@@ -19906,7 +20436,12 @@ const ALL_500_CASE_STUDIES = [
       "Using UNION instead of UNION ALL on massive high-volume tables, triggering heavy sort-buffer disk spills",
       "Expecting column aliases in the second query to take effect, when ANSI SQL dictates aliases come strictly from Query 1"
     ],
-    "takeaway": "UNION ALL streams combined records with zero deduplication memory cost; UNION forces an expensive sort/hash to eliminate identical duplicate tuples."
+    "takeaway": "UNION ALL streams combined records with zero deduplication memory cost; UNION forces an expensive sort/hash to eliminate identical duplicate tuples.",
+    "industry": "E-Commerce",
+    "scenario": "In E-Commerce, disparate event streams from multiple production systems must be consolidated vertically into a unified table. Engineers must choose between streaming UNION ALL and memory-intensive deduplicating UNION.",
+    "businessObjective": "In E-Commerce, disparate event streams from multiple production systems must be consolidated vertically into a unified table. Engineers must choose between streaming UNION ALL and memory-intensive deduplicating UNION.",
+    "schemaSnippet": "| Column | Type | Description |\n|---|---|---|\n| record_id | INT | Transaction ID |\n| entity_id | INT | Associated Account / User |\n| amount | NUMERIC | Transaction Magnitude |\n| event_timestamp | TIMESTAMP | Event Timestamp |",
+    "learningOutcomes": "UNION ALL streams combined records with zero deduplication memory cost; UNION forces an expensive sort/hash to eliminate identical duplicate tuples."
   },
   {
     "id": 1450,
@@ -19922,7 +20457,12 @@ const ALL_500_CASE_STUDIES = [
       "Using UNION instead of UNION ALL on massive high-volume tables, triggering heavy sort-buffer disk spills",
       "Expecting column aliases in the second query to take effect, when ANSI SQL dictates aliases come strictly from Query 1"
     ],
-    "takeaway": "UNION ALL streams combined records with zero deduplication memory cost; UNION forces an expensive sort/hash to eliminate identical duplicate tuples."
+    "takeaway": "UNION ALL streams combined records with zero deduplication memory cost; UNION forces an expensive sort/hash to eliminate identical duplicate tuples.",
+    "industry": "Logistics",
+    "scenario": "In Logistics, disparate event streams from multiple production systems must be consolidated vertically into a unified table. Engineers must choose between streaming UNION ALL and memory-intensive deduplicating UNION.",
+    "businessObjective": "In Logistics, disparate event streams from multiple production systems must be consolidated vertically into a unified table. Engineers must choose between streaming UNION ALL and memory-intensive deduplicating UNION.",
+    "schemaSnippet": "| Column | Type | Description |\n|---|---|---|\n| record_id | INT | Transaction ID |\n| entity_id | INT | Associated Account / User |\n| amount | NUMERIC | Transaction Magnitude |\n| event_timestamp | TIMESTAMP | Event Timestamp |",
+    "learningOutcomes": "UNION ALL streams combined records with zero deduplication memory cost; UNION forces an expensive sort/hash to eliminate identical duplicate tuples."
   },
   {
     "id": 1451,
@@ -19938,7 +20478,12 @@ const ALL_500_CASE_STUDIES = [
       "Using UNION instead of UNION ALL on massive high-volume tables, triggering heavy sort-buffer disk spills",
       "Expecting column aliases in the second query to take effect, when ANSI SQL dictates aliases come strictly from Query 1"
     ],
-    "takeaway": "UNION ALL streams combined records with zero deduplication memory cost; UNION forces an expensive sort/hash to eliminate identical duplicate tuples."
+    "takeaway": "UNION ALL streams combined records with zero deduplication memory cost; UNION forces an expensive sort/hash to eliminate identical duplicate tuples.",
+    "industry": "Gaming",
+    "scenario": "In Gaming, disparate event streams from multiple production systems must be consolidated vertically into a unified table. Engineers must choose between streaming UNION ALL and memory-intensive deduplicating UNION.",
+    "businessObjective": "In Gaming, disparate event streams from multiple production systems must be consolidated vertically into a unified table. Engineers must choose between streaming UNION ALL and memory-intensive deduplicating UNION.",
+    "schemaSnippet": "| Column | Type | Description |\n|---|---|---|\n| record_id | INT | Transaction ID |\n| entity_id | INT | Associated Account / User |\n| amount | NUMERIC | Transaction Magnitude |\n| event_timestamp | TIMESTAMP | Event Timestamp |",
+    "learningOutcomes": "UNION ALL streams combined records with zero deduplication memory cost; UNION forces an expensive sort/hash to eliminate identical duplicate tuples."
   },
   {
     "id": 1452,
@@ -19954,7 +20499,12 @@ const ALL_500_CASE_STUDIES = [
       "Using UNION instead of UNION ALL on massive high-volume tables, triggering heavy sort-buffer disk spills",
       "Expecting column aliases in the second query to take effect, when ANSI SQL dictates aliases come strictly from Query 1"
     ],
-    "takeaway": "UNION ALL streams combined records with zero deduplication memory cost; UNION forces an expensive sort/hash to eliminate identical duplicate tuples."
+    "takeaway": "UNION ALL streams combined records with zero deduplication memory cost; UNION forces an expensive sort/hash to eliminate identical duplicate tuples.",
+    "industry": "AdTech",
+    "scenario": "In AdTech, disparate event streams from multiple production systems must be consolidated vertically into a unified table. Engineers must choose between streaming UNION ALL and memory-intensive deduplicating UNION.",
+    "businessObjective": "In AdTech, disparate event streams from multiple production systems must be consolidated vertically into a unified table. Engineers must choose between streaming UNION ALL and memory-intensive deduplicating UNION.",
+    "schemaSnippet": "| Column | Type | Description |\n|---|---|---|\n| record_id | INT | Transaction ID |\n| entity_id | INT | Associated Account / User |\n| amount | NUMERIC | Transaction Magnitude |\n| event_timestamp | TIMESTAMP | Event Timestamp |",
+    "learningOutcomes": "UNION ALL streams combined records with zero deduplication memory cost; UNION forces an expensive sort/hash to eliminate identical duplicate tuples."
   },
   {
     "id": 1453,
@@ -19970,7 +20520,12 @@ const ALL_500_CASE_STUDIES = [
       "Using UNION instead of UNION ALL on massive high-volume tables, triggering heavy sort-buffer disk spills",
       "Expecting column aliases in the second query to take effect, when ANSI SQL dictates aliases come strictly from Query 1"
     ],
-    "takeaway": "UNION ALL streams combined records with zero deduplication memory cost; UNION forces an expensive sort/hash to eliminate identical duplicate tuples."
+    "takeaway": "UNION ALL streams combined records with zero deduplication memory cost; UNION forces an expensive sort/hash to eliminate identical duplicate tuples.",
+    "industry": "EdTech",
+    "scenario": "In EdTech, disparate event streams from multiple production systems must be consolidated vertically into a unified table. Engineers must choose between streaming UNION ALL and memory-intensive deduplicating UNION.",
+    "businessObjective": "In EdTech, disparate event streams from multiple production systems must be consolidated vertically into a unified table. Engineers must choose between streaming UNION ALL and memory-intensive deduplicating UNION.",
+    "schemaSnippet": "| Column | Type | Description |\n|---|---|---|\n| record_id | INT | Transaction ID |\n| entity_id | INT | Associated Account / User |\n| amount | NUMERIC | Transaction Magnitude |\n| event_timestamp | TIMESTAMP | Event Timestamp |",
+    "learningOutcomes": "UNION ALL streams combined records with zero deduplication memory cost; UNION forces an expensive sort/hash to eliminate identical duplicate tuples."
   },
   {
     "id": 1454,
@@ -19986,7 +20541,12 @@ const ALL_500_CASE_STUDIES = [
       "Using UNION instead of UNION ALL on massive high-volume tables, triggering heavy sort-buffer disk spills",
       "Expecting column aliases in the second query to take effect, when ANSI SQL dictates aliases come strictly from Query 1"
     ],
-    "takeaway": "UNION ALL streams combined records with zero deduplication memory cost; UNION forces an expensive sort/hash to eliminate identical duplicate tuples."
+    "takeaway": "UNION ALL streams combined records with zero deduplication memory cost; UNION forces an expensive sort/hash to eliminate identical duplicate tuples.",
+    "industry": "Energy",
+    "scenario": "In Energy, disparate event streams from multiple production systems must be consolidated vertically into a unified table. Engineers must choose between streaming UNION ALL and memory-intensive deduplicating UNION.",
+    "businessObjective": "In Energy, disparate event streams from multiple production systems must be consolidated vertically into a unified table. Engineers must choose between streaming UNION ALL and memory-intensive deduplicating UNION.",
+    "schemaSnippet": "| Column | Type | Description |\n|---|---|---|\n| record_id | INT | Transaction ID |\n| entity_id | INT | Associated Account / User |\n| amount | NUMERIC | Transaction Magnitude |\n| event_timestamp | TIMESTAMP | Event Timestamp |",
+    "learningOutcomes": "UNION ALL streams combined records with zero deduplication memory cost; UNION forces an expensive sort/hash to eliminate identical duplicate tuples."
   },
   {
     "id": 1455,
@@ -20002,7 +20562,12 @@ const ALL_500_CASE_STUDIES = [
       "Using UNION instead of UNION ALL on massive high-volume tables, triggering heavy sort-buffer disk spills",
       "Expecting column aliases in the second query to take effect, when ANSI SQL dictates aliases come strictly from Query 1"
     ],
-    "takeaway": "UNION ALL streams combined records with zero deduplication memory cost; UNION forces an expensive sort/hash to eliminate identical duplicate tuples."
+    "takeaway": "UNION ALL streams combined records with zero deduplication memory cost; UNION forces an expensive sort/hash to eliminate identical duplicate tuples.",
+    "industry": "Media",
+    "scenario": "In Media, disparate event streams from multiple production systems must be consolidated vertically into a unified table. Engineers must choose between streaming UNION ALL and memory-intensive deduplicating UNION.",
+    "businessObjective": "In Media, disparate event streams from multiple production systems must be consolidated vertically into a unified table. Engineers must choose between streaming UNION ALL and memory-intensive deduplicating UNION.",
+    "schemaSnippet": "| Column | Type | Description |\n|---|---|---|\n| record_id | INT | Transaction ID |\n| entity_id | INT | Associated Account / User |\n| amount | NUMERIC | Transaction Magnitude |\n| event_timestamp | TIMESTAMP | Event Timestamp |",
+    "learningOutcomes": "UNION ALL streams combined records with zero deduplication memory cost; UNION forces an expensive sort/hash to eliminate identical duplicate tuples."
   },
   {
     "id": 1456,
@@ -20018,7 +20583,12 @@ const ALL_500_CASE_STUDIES = [
       "Using UNION instead of UNION ALL on massive high-volume tables, triggering heavy sort-buffer disk spills",
       "Expecting column aliases in the second query to take effect, when ANSI SQL dictates aliases come strictly from Query 1"
     ],
-    "takeaway": "UNION ALL streams combined records with zero deduplication memory cost; UNION forces an expensive sort/hash to eliminate identical duplicate tuples."
+    "takeaway": "UNION ALL streams combined records with zero deduplication memory cost; UNION forces an expensive sort/hash to eliminate identical duplicate tuples.",
+    "industry": "Fintech",
+    "scenario": "In Fintech, disparate event streams from multiple production systems must be consolidated vertically into a unified table. Engineers must choose between streaming UNION ALL and memory-intensive deduplicating UNION.",
+    "businessObjective": "In Fintech, disparate event streams from multiple production systems must be consolidated vertically into a unified table. Engineers must choose between streaming UNION ALL and memory-intensive deduplicating UNION.",
+    "schemaSnippet": "| Column | Type | Description |\n|---|---|---|\n| record_id | INT | Transaction ID |\n| entity_id | INT | Associated Account / User |\n| amount | NUMERIC | Transaction Magnitude |\n| event_timestamp | TIMESTAMP | Event Timestamp |",
+    "learningOutcomes": "UNION ALL streams combined records with zero deduplication memory cost; UNION forces an expensive sort/hash to eliminate identical duplicate tuples."
   },
   {
     "id": 1457,
@@ -20034,7 +20604,12 @@ const ALL_500_CASE_STUDIES = [
       "Using UNION instead of UNION ALL on massive high-volume tables, triggering heavy sort-buffer disk spills",
       "Expecting column aliases in the second query to take effect, when ANSI SQL dictates aliases come strictly from Query 1"
     ],
-    "takeaway": "UNION ALL streams combined records with zero deduplication memory cost; UNION forces an expensive sort/hash to eliminate identical duplicate tuples."
+    "takeaway": "UNION ALL streams combined records with zero deduplication memory cost; UNION forces an expensive sort/hash to eliminate identical duplicate tuples.",
+    "industry": "SaaS",
+    "scenario": "In SaaS, disparate event streams from multiple production systems must be consolidated vertically into a unified table. Engineers must choose between streaming UNION ALL and memory-intensive deduplicating UNION.",
+    "businessObjective": "In SaaS, disparate event streams from multiple production systems must be consolidated vertically into a unified table. Engineers must choose between streaming UNION ALL and memory-intensive deduplicating UNION.",
+    "schemaSnippet": "| Column | Type | Description |\n|---|---|---|\n| record_id | INT | Transaction ID |\n| entity_id | INT | Associated Account / User |\n| amount | NUMERIC | Transaction Magnitude |\n| event_timestamp | TIMESTAMP | Event Timestamp |",
+    "learningOutcomes": "UNION ALL streams combined records with zero deduplication memory cost; UNION forces an expensive sort/hash to eliminate identical duplicate tuples."
   },
   {
     "id": 1458,
@@ -20050,7 +20625,12 @@ const ALL_500_CASE_STUDIES = [
       "Using UNION instead of UNION ALL on massive high-volume tables, triggering heavy sort-buffer disk spills",
       "Expecting column aliases in the second query to take effect, when ANSI SQL dictates aliases come strictly from Query 1"
     ],
-    "takeaway": "UNION ALL streams combined records with zero deduplication memory cost; UNION forces an expensive sort/hash to eliminate identical duplicate tuples."
+    "takeaway": "UNION ALL streams combined records with zero deduplication memory cost; UNION forces an expensive sort/hash to eliminate identical duplicate tuples.",
+    "industry": "Healthcare",
+    "scenario": "In Healthcare, disparate event streams from multiple production systems must be consolidated vertically into a unified table. Engineers must choose between streaming UNION ALL and memory-intensive deduplicating UNION.",
+    "businessObjective": "In Healthcare, disparate event streams from multiple production systems must be consolidated vertically into a unified table. Engineers must choose between streaming UNION ALL and memory-intensive deduplicating UNION.",
+    "schemaSnippet": "| Column | Type | Description |\n|---|---|---|\n| record_id | INT | Transaction ID |\n| entity_id | INT | Associated Account / User |\n| amount | NUMERIC | Transaction Magnitude |\n| event_timestamp | TIMESTAMP | Event Timestamp |",
+    "learningOutcomes": "UNION ALL streams combined records with zero deduplication memory cost; UNION forces an expensive sort/hash to eliminate identical duplicate tuples."
   },
   {
     "id": 1459,
@@ -20066,7 +20646,12 @@ const ALL_500_CASE_STUDIES = [
       "Using UNION instead of UNION ALL on massive high-volume tables, triggering heavy sort-buffer disk spills",
       "Expecting column aliases in the second query to take effect, when ANSI SQL dictates aliases come strictly from Query 1"
     ],
-    "takeaway": "UNION ALL streams combined records with zero deduplication memory cost; UNION forces an expensive sort/hash to eliminate identical duplicate tuples."
+    "takeaway": "UNION ALL streams combined records with zero deduplication memory cost; UNION forces an expensive sort/hash to eliminate identical duplicate tuples.",
+    "industry": "E-Commerce",
+    "scenario": "In E-Commerce, disparate event streams from multiple production systems must be consolidated vertically into a unified table. Engineers must choose between streaming UNION ALL and memory-intensive deduplicating UNION.",
+    "businessObjective": "In E-Commerce, disparate event streams from multiple production systems must be consolidated vertically into a unified table. Engineers must choose between streaming UNION ALL and memory-intensive deduplicating UNION.",
+    "schemaSnippet": "| Column | Type | Description |\n|---|---|---|\n| record_id | INT | Transaction ID |\n| entity_id | INT | Associated Account / User |\n| amount | NUMERIC | Transaction Magnitude |\n| event_timestamp | TIMESTAMP | Event Timestamp |",
+    "learningOutcomes": "UNION ALL streams combined records with zero deduplication memory cost; UNION forces an expensive sort/hash to eliminate identical duplicate tuples."
   },
   {
     "id": 1460,
@@ -20082,7 +20667,12 @@ const ALL_500_CASE_STUDIES = [
       "Using UNION instead of UNION ALL on massive high-volume tables, triggering heavy sort-buffer disk spills",
       "Expecting column aliases in the second query to take effect, when ANSI SQL dictates aliases come strictly from Query 1"
     ],
-    "takeaway": "UNION ALL streams combined records with zero deduplication memory cost; UNION forces an expensive sort/hash to eliminate identical duplicate tuples."
+    "takeaway": "UNION ALL streams combined records with zero deduplication memory cost; UNION forces an expensive sort/hash to eliminate identical duplicate tuples.",
+    "industry": "Logistics",
+    "scenario": "In Logistics, disparate event streams from multiple production systems must be consolidated vertically into a unified table. Engineers must choose between streaming UNION ALL and memory-intensive deduplicating UNION.",
+    "businessObjective": "In Logistics, disparate event streams from multiple production systems must be consolidated vertically into a unified table. Engineers must choose between streaming UNION ALL and memory-intensive deduplicating UNION.",
+    "schemaSnippet": "| Column | Type | Description |\n|---|---|---|\n| record_id | INT | Transaction ID |\n| entity_id | INT | Associated Account / User |\n| amount | NUMERIC | Transaction Magnitude |\n| event_timestamp | TIMESTAMP | Event Timestamp |",
+    "learningOutcomes": "UNION ALL streams combined records with zero deduplication memory cost; UNION forces an expensive sort/hash to eliminate identical duplicate tuples."
   },
   {
     "id": 1461,
@@ -20098,7 +20688,12 @@ const ALL_500_CASE_STUDIES = [
       "Using EXCEPT without understanding that it removes duplicates from the left query by default (EXCEPT DISTINCT)",
       "Assuming NULLs break EXCEPT, when in fact ANSI SQL set operations treat NULL as matching another NULL"
     ],
-    "takeaway": "INTERSECT isolates common distinct tuples between two relations; EXCEPT computes set subtraction, isolating records unique to the first query."
+    "takeaway": "INTERSECT isolates common distinct tuples between two relations; EXCEPT computes set subtraction, isolating records unique to the first query.",
+    "industry": "Fintech",
+    "scenario": "Auditing ledger fidelity, user overlap, and missing records in Fintech requires relational set algebra: finding common intersections (INTERSECT) or isolating unreconciled discrepancies (EXCEPT / MINUS).",
+    "businessObjective": "Auditing ledger fidelity, user overlap, and missing records in Fintech requires relational set algebra: finding common intersections (INTERSECT) or isolating unreconciled discrepancies (EXCEPT / MINUS).",
+    "schemaSnippet": "| Column | Type | Description |\n|---|---|---|\n| entity_id | INT / VARCHAR | Entity Primary Reference |\n| amount | NUMERIC | Transactional Metric |\n| event_date | DATE | Recording Date |",
+    "learningOutcomes": "INTERSECT isolates common distinct tuples between two relations; EXCEPT computes set subtraction, isolating records unique to the first query."
   },
   {
     "id": 1462,
@@ -20114,7 +20709,12 @@ const ALL_500_CASE_STUDIES = [
       "Using EXCEPT without understanding that it removes duplicates from the left query by default (EXCEPT DISTINCT)",
       "Assuming NULLs break EXCEPT, when in fact ANSI SQL set operations treat NULL as matching another NULL"
     ],
-    "takeaway": "INTERSECT isolates common distinct tuples between two relations; EXCEPT computes set subtraction, isolating records unique to the first query."
+    "takeaway": "INTERSECT isolates common distinct tuples between two relations; EXCEPT computes set subtraction, isolating records unique to the first query.",
+    "industry": "SaaS",
+    "scenario": "Auditing ledger fidelity, user overlap, and missing records in SaaS requires relational set algebra: finding common intersections (INTERSECT) or isolating unreconciled discrepancies (EXCEPT / MINUS).",
+    "businessObjective": "Auditing ledger fidelity, user overlap, and missing records in SaaS requires relational set algebra: finding common intersections (INTERSECT) or isolating unreconciled discrepancies (EXCEPT / MINUS).",
+    "schemaSnippet": "| Column | Type | Description |\n|---|---|---|\n| entity_id | INT / VARCHAR | Entity Primary Reference |\n| amount | NUMERIC | Transactional Metric |\n| event_date | DATE | Recording Date |",
+    "learningOutcomes": "INTERSECT isolates common distinct tuples between two relations; EXCEPT computes set subtraction, isolating records unique to the first query."
   },
   {
     "id": 1463,
@@ -20130,7 +20730,12 @@ const ALL_500_CASE_STUDIES = [
       "Using EXCEPT without understanding that it removes duplicates from the left query by default (EXCEPT DISTINCT)",
       "Assuming NULLs break EXCEPT, when in fact ANSI SQL set operations treat NULL as matching another NULL"
     ],
-    "takeaway": "INTERSECT isolates common distinct tuples between two relations; EXCEPT computes set subtraction, isolating records unique to the first query."
+    "takeaway": "INTERSECT isolates common distinct tuples between two relations; EXCEPT computes set subtraction, isolating records unique to the first query.",
+    "industry": "Healthcare",
+    "scenario": "Auditing ledger fidelity, user overlap, and missing records in Healthcare requires relational set algebra: finding common intersections (INTERSECT) or isolating unreconciled discrepancies (EXCEPT / MINUS).",
+    "businessObjective": "Auditing ledger fidelity, user overlap, and missing records in Healthcare requires relational set algebra: finding common intersections (INTERSECT) or isolating unreconciled discrepancies (EXCEPT / MINUS).",
+    "schemaSnippet": "| Column | Type | Description |\n|---|---|---|\n| entity_id | INT / VARCHAR | Entity Primary Reference |\n| amount | NUMERIC | Transactional Metric |\n| event_date | DATE | Recording Date |",
+    "learningOutcomes": "INTERSECT isolates common distinct tuples between two relations; EXCEPT computes set subtraction, isolating records unique to the first query."
   },
   {
     "id": 1464,
@@ -20146,7 +20751,12 @@ const ALL_500_CASE_STUDIES = [
       "Using EXCEPT without understanding that it removes duplicates from the left query by default (EXCEPT DISTINCT)",
       "Assuming NULLs break EXCEPT, when in fact ANSI SQL set operations treat NULL as matching another NULL"
     ],
-    "takeaway": "INTERSECT isolates common distinct tuples between two relations; EXCEPT computes set subtraction, isolating records unique to the first query."
+    "takeaway": "INTERSECT isolates common distinct tuples between two relations; EXCEPT computes set subtraction, isolating records unique to the first query.",
+    "industry": "E-Commerce",
+    "scenario": "Auditing ledger fidelity, user overlap, and missing records in E-Commerce requires relational set algebra: finding common intersections (INTERSECT) or isolating unreconciled discrepancies (EXCEPT / MINUS).",
+    "businessObjective": "Auditing ledger fidelity, user overlap, and missing records in E-Commerce requires relational set algebra: finding common intersections (INTERSECT) or isolating unreconciled discrepancies (EXCEPT / MINUS).",
+    "schemaSnippet": "| Column | Type | Description |\n|---|---|---|\n| entity_id | INT / VARCHAR | Entity Primary Reference |\n| amount | NUMERIC | Transactional Metric |\n| event_date | DATE | Recording Date |",
+    "learningOutcomes": "INTERSECT isolates common distinct tuples between two relations; EXCEPT computes set subtraction, isolating records unique to the first query."
   },
   {
     "id": 1465,
@@ -20162,7 +20772,12 @@ const ALL_500_CASE_STUDIES = [
       "Using EXCEPT without understanding that it removes duplicates from the left query by default (EXCEPT DISTINCT)",
       "Assuming NULLs break EXCEPT, when in fact ANSI SQL set operations treat NULL as matching another NULL"
     ],
-    "takeaway": "INTERSECT isolates common distinct tuples between two relations; EXCEPT computes set subtraction, isolating records unique to the first query."
+    "takeaway": "INTERSECT isolates common distinct tuples between two relations; EXCEPT computes set subtraction, isolating records unique to the first query.",
+    "industry": "Logistics",
+    "scenario": "Auditing ledger fidelity, user overlap, and missing records in Logistics requires relational set algebra: finding common intersections (INTERSECT) or isolating unreconciled discrepancies (EXCEPT / MINUS).",
+    "businessObjective": "Auditing ledger fidelity, user overlap, and missing records in Logistics requires relational set algebra: finding common intersections (INTERSECT) or isolating unreconciled discrepancies (EXCEPT / MINUS).",
+    "schemaSnippet": "| Column | Type | Description |\n|---|---|---|\n| entity_id | INT / VARCHAR | Entity Primary Reference |\n| amount | NUMERIC | Transactional Metric |\n| event_date | DATE | Recording Date |",
+    "learningOutcomes": "INTERSECT isolates common distinct tuples between two relations; EXCEPT computes set subtraction, isolating records unique to the first query."
   },
   {
     "id": 1466,
@@ -20178,7 +20793,12 @@ const ALL_500_CASE_STUDIES = [
       "Using EXCEPT without understanding that it removes duplicates from the left query by default (EXCEPT DISTINCT)",
       "Assuming NULLs break EXCEPT, when in fact ANSI SQL set operations treat NULL as matching another NULL"
     ],
-    "takeaway": "INTERSECT isolates common distinct tuples between two relations; EXCEPT computes set subtraction, isolating records unique to the first query."
+    "takeaway": "INTERSECT isolates common distinct tuples between two relations; EXCEPT computes set subtraction, isolating records unique to the first query.",
+    "industry": "Gaming",
+    "scenario": "Auditing ledger fidelity, user overlap, and missing records in Gaming requires relational set algebra: finding common intersections (INTERSECT) or isolating unreconciled discrepancies (EXCEPT / MINUS).",
+    "businessObjective": "Auditing ledger fidelity, user overlap, and missing records in Gaming requires relational set algebra: finding common intersections (INTERSECT) or isolating unreconciled discrepancies (EXCEPT / MINUS).",
+    "schemaSnippet": "| Column | Type | Description |\n|---|---|---|\n| entity_id | INT / VARCHAR | Entity Primary Reference |\n| amount | NUMERIC | Transactional Metric |\n| event_date | DATE | Recording Date |",
+    "learningOutcomes": "INTERSECT isolates common distinct tuples between two relations; EXCEPT computes set subtraction, isolating records unique to the first query."
   },
   {
     "id": 1467,
@@ -20194,7 +20814,12 @@ const ALL_500_CASE_STUDIES = [
       "Using EXCEPT without understanding that it removes duplicates from the left query by default (EXCEPT DISTINCT)",
       "Assuming NULLs break EXCEPT, when in fact ANSI SQL set operations treat NULL as matching another NULL"
     ],
-    "takeaway": "INTERSECT isolates common distinct tuples between two relations; EXCEPT computes set subtraction, isolating records unique to the first query."
+    "takeaway": "INTERSECT isolates common distinct tuples between two relations; EXCEPT computes set subtraction, isolating records unique to the first query.",
+    "industry": "AdTech",
+    "scenario": "Auditing ledger fidelity, user overlap, and missing records in AdTech requires relational set algebra: finding common intersections (INTERSECT) or isolating unreconciled discrepancies (EXCEPT / MINUS).",
+    "businessObjective": "Auditing ledger fidelity, user overlap, and missing records in AdTech requires relational set algebra: finding common intersections (INTERSECT) or isolating unreconciled discrepancies (EXCEPT / MINUS).",
+    "schemaSnippet": "| Column | Type | Description |\n|---|---|---|\n| entity_id | INT / VARCHAR | Entity Primary Reference |\n| amount | NUMERIC | Transactional Metric |\n| event_date | DATE | Recording Date |",
+    "learningOutcomes": "INTERSECT isolates common distinct tuples between two relations; EXCEPT computes set subtraction, isolating records unique to the first query."
   },
   {
     "id": 1468,
@@ -20210,7 +20835,12 @@ const ALL_500_CASE_STUDIES = [
       "Using EXCEPT without understanding that it removes duplicates from the left query by default (EXCEPT DISTINCT)",
       "Assuming NULLs break EXCEPT, when in fact ANSI SQL set operations treat NULL as matching another NULL"
     ],
-    "takeaway": "INTERSECT isolates common distinct tuples between two relations; EXCEPT computes set subtraction, isolating records unique to the first query."
+    "takeaway": "INTERSECT isolates common distinct tuples between two relations; EXCEPT computes set subtraction, isolating records unique to the first query.",
+    "industry": "EdTech",
+    "scenario": "Auditing ledger fidelity, user overlap, and missing records in EdTech requires relational set algebra: finding common intersections (INTERSECT) or isolating unreconciled discrepancies (EXCEPT / MINUS).",
+    "businessObjective": "Auditing ledger fidelity, user overlap, and missing records in EdTech requires relational set algebra: finding common intersections (INTERSECT) or isolating unreconciled discrepancies (EXCEPT / MINUS).",
+    "schemaSnippet": "| Column | Type | Description |\n|---|---|---|\n| entity_id | INT / VARCHAR | Entity Primary Reference |\n| amount | NUMERIC | Transactional Metric |\n| event_date | DATE | Recording Date |",
+    "learningOutcomes": "INTERSECT isolates common distinct tuples between two relations; EXCEPT computes set subtraction, isolating records unique to the first query."
   },
   {
     "id": 1469,
@@ -20226,7 +20856,12 @@ const ALL_500_CASE_STUDIES = [
       "Using EXCEPT without understanding that it removes duplicates from the left query by default (EXCEPT DISTINCT)",
       "Assuming NULLs break EXCEPT, when in fact ANSI SQL set operations treat NULL as matching another NULL"
     ],
-    "takeaway": "INTERSECT isolates common distinct tuples between two relations; EXCEPT computes set subtraction, isolating records unique to the first query."
+    "takeaway": "INTERSECT isolates common distinct tuples between two relations; EXCEPT computes set subtraction, isolating records unique to the first query.",
+    "industry": "Energy",
+    "scenario": "Auditing ledger fidelity, user overlap, and missing records in Energy requires relational set algebra: finding common intersections (INTERSECT) or isolating unreconciled discrepancies (EXCEPT / MINUS).",
+    "businessObjective": "Auditing ledger fidelity, user overlap, and missing records in Energy requires relational set algebra: finding common intersections (INTERSECT) or isolating unreconciled discrepancies (EXCEPT / MINUS).",
+    "schemaSnippet": "| Column | Type | Description |\n|---|---|---|\n| entity_id | INT / VARCHAR | Entity Primary Reference |\n| amount | NUMERIC | Transactional Metric |\n| event_date | DATE | Recording Date |",
+    "learningOutcomes": "INTERSECT isolates common distinct tuples between two relations; EXCEPT computes set subtraction, isolating records unique to the first query."
   },
   {
     "id": 1470,
@@ -20242,7 +20877,12 @@ const ALL_500_CASE_STUDIES = [
       "Using EXCEPT without understanding that it removes duplicates from the left query by default (EXCEPT DISTINCT)",
       "Assuming NULLs break EXCEPT, when in fact ANSI SQL set operations treat NULL as matching another NULL"
     ],
-    "takeaway": "INTERSECT isolates common distinct tuples between two relations; EXCEPT computes set subtraction, isolating records unique to the first query."
+    "takeaway": "INTERSECT isolates common distinct tuples between two relations; EXCEPT computes set subtraction, isolating records unique to the first query.",
+    "industry": "Media",
+    "scenario": "Auditing ledger fidelity, user overlap, and missing records in Media requires relational set algebra: finding common intersections (INTERSECT) or isolating unreconciled discrepancies (EXCEPT / MINUS).",
+    "businessObjective": "Auditing ledger fidelity, user overlap, and missing records in Media requires relational set algebra: finding common intersections (INTERSECT) or isolating unreconciled discrepancies (EXCEPT / MINUS).",
+    "schemaSnippet": "| Column | Type | Description |\n|---|---|---|\n| entity_id | INT / VARCHAR | Entity Primary Reference |\n| amount | NUMERIC | Transactional Metric |\n| event_date | DATE | Recording Date |",
+    "learningOutcomes": "INTERSECT isolates common distinct tuples between two relations; EXCEPT computes set subtraction, isolating records unique to the first query."
   },
   {
     "id": 1471,
@@ -20258,7 +20898,12 @@ const ALL_500_CASE_STUDIES = [
       "Using EXCEPT without understanding that it removes duplicates from the left query by default (EXCEPT DISTINCT)",
       "Assuming NULLs break EXCEPT, when in fact ANSI SQL set operations treat NULL as matching another NULL"
     ],
-    "takeaway": "INTERSECT isolates common distinct tuples between two relations; EXCEPT computes set subtraction, isolating records unique to the first query."
+    "takeaway": "INTERSECT isolates common distinct tuples between two relations; EXCEPT computes set subtraction, isolating records unique to the first query.",
+    "industry": "Fintech",
+    "scenario": "Auditing ledger fidelity, user overlap, and missing records in Fintech requires relational set algebra: finding common intersections (INTERSECT) or isolating unreconciled discrepancies (EXCEPT / MINUS).",
+    "businessObjective": "Auditing ledger fidelity, user overlap, and missing records in Fintech requires relational set algebra: finding common intersections (INTERSECT) or isolating unreconciled discrepancies (EXCEPT / MINUS).",
+    "schemaSnippet": "| Column | Type | Description |\n|---|---|---|\n| entity_id | INT / VARCHAR | Entity Primary Reference |\n| amount | NUMERIC | Transactional Metric |\n| event_date | DATE | Recording Date |",
+    "learningOutcomes": "INTERSECT isolates common distinct tuples between two relations; EXCEPT computes set subtraction, isolating records unique to the first query."
   },
   {
     "id": 1472,
@@ -20274,7 +20919,12 @@ const ALL_500_CASE_STUDIES = [
       "Using EXCEPT without understanding that it removes duplicates from the left query by default (EXCEPT DISTINCT)",
       "Assuming NULLs break EXCEPT, when in fact ANSI SQL set operations treat NULL as matching another NULL"
     ],
-    "takeaway": "INTERSECT isolates common distinct tuples between two relations; EXCEPT computes set subtraction, isolating records unique to the first query."
+    "takeaway": "INTERSECT isolates common distinct tuples between two relations; EXCEPT computes set subtraction, isolating records unique to the first query.",
+    "industry": "SaaS",
+    "scenario": "Auditing ledger fidelity, user overlap, and missing records in SaaS requires relational set algebra: finding common intersections (INTERSECT) or isolating unreconciled discrepancies (EXCEPT / MINUS).",
+    "businessObjective": "Auditing ledger fidelity, user overlap, and missing records in SaaS requires relational set algebra: finding common intersections (INTERSECT) or isolating unreconciled discrepancies (EXCEPT / MINUS).",
+    "schemaSnippet": "| Column | Type | Description |\n|---|---|---|\n| entity_id | INT / VARCHAR | Entity Primary Reference |\n| amount | NUMERIC | Transactional Metric |\n| event_date | DATE | Recording Date |",
+    "learningOutcomes": "INTERSECT isolates common distinct tuples between two relations; EXCEPT computes set subtraction, isolating records unique to the first query."
   },
   {
     "id": 1473,
@@ -20290,7 +20940,12 @@ const ALL_500_CASE_STUDIES = [
       "Using EXCEPT without understanding that it removes duplicates from the left query by default (EXCEPT DISTINCT)",
       "Assuming NULLs break EXCEPT, when in fact ANSI SQL set operations treat NULL as matching another NULL"
     ],
-    "takeaway": "INTERSECT isolates common distinct tuples between two relations; EXCEPT computes set subtraction, isolating records unique to the first query."
+    "takeaway": "INTERSECT isolates common distinct tuples between two relations; EXCEPT computes set subtraction, isolating records unique to the first query.",
+    "industry": "Healthcare",
+    "scenario": "Auditing ledger fidelity, user overlap, and missing records in Healthcare requires relational set algebra: finding common intersections (INTERSECT) or isolating unreconciled discrepancies (EXCEPT / MINUS).",
+    "businessObjective": "Auditing ledger fidelity, user overlap, and missing records in Healthcare requires relational set algebra: finding common intersections (INTERSECT) or isolating unreconciled discrepancies (EXCEPT / MINUS).",
+    "schemaSnippet": "| Column | Type | Description |\n|---|---|---|\n| entity_id | INT / VARCHAR | Entity Primary Reference |\n| amount | NUMERIC | Transactional Metric |\n| event_date | DATE | Recording Date |",
+    "learningOutcomes": "INTERSECT isolates common distinct tuples between two relations; EXCEPT computes set subtraction, isolating records unique to the first query."
   },
   {
     "id": 1474,
@@ -20306,7 +20961,12 @@ const ALL_500_CASE_STUDIES = [
       "Using EXCEPT without understanding that it removes duplicates from the left query by default (EXCEPT DISTINCT)",
       "Assuming NULLs break EXCEPT, when in fact ANSI SQL set operations treat NULL as matching another NULL"
     ],
-    "takeaway": "INTERSECT isolates common distinct tuples between two relations; EXCEPT computes set subtraction, isolating records unique to the first query."
+    "takeaway": "INTERSECT isolates common distinct tuples between two relations; EXCEPT computes set subtraction, isolating records unique to the first query.",
+    "industry": "E-Commerce",
+    "scenario": "Auditing ledger fidelity, user overlap, and missing records in E-Commerce requires relational set algebra: finding common intersections (INTERSECT) or isolating unreconciled discrepancies (EXCEPT / MINUS).",
+    "businessObjective": "Auditing ledger fidelity, user overlap, and missing records in E-Commerce requires relational set algebra: finding common intersections (INTERSECT) or isolating unreconciled discrepancies (EXCEPT / MINUS).",
+    "schemaSnippet": "| Column | Type | Description |\n|---|---|---|\n| entity_id | INT / VARCHAR | Entity Primary Reference |\n| amount | NUMERIC | Transactional Metric |\n| event_date | DATE | Recording Date |",
+    "learningOutcomes": "INTERSECT isolates common distinct tuples between two relations; EXCEPT computes set subtraction, isolating records unique to the first query."
   },
   {
     "id": 1475,
@@ -20322,7 +20982,12 @@ const ALL_500_CASE_STUDIES = [
       "Using EXCEPT without understanding that it removes duplicates from the left query by default (EXCEPT DISTINCT)",
       "Assuming NULLs break EXCEPT, when in fact ANSI SQL set operations treat NULL as matching another NULL"
     ],
-    "takeaway": "INTERSECT isolates common distinct tuples between two relations; EXCEPT computes set subtraction, isolating records unique to the first query."
+    "takeaway": "INTERSECT isolates common distinct tuples between two relations; EXCEPT computes set subtraction, isolating records unique to the first query.",
+    "industry": "Logistics",
+    "scenario": "Auditing ledger fidelity, user overlap, and missing records in Logistics requires relational set algebra: finding common intersections (INTERSECT) or isolating unreconciled discrepancies (EXCEPT / MINUS).",
+    "businessObjective": "Auditing ledger fidelity, user overlap, and missing records in Logistics requires relational set algebra: finding common intersections (INTERSECT) or isolating unreconciled discrepancies (EXCEPT / MINUS).",
+    "schemaSnippet": "| Column | Type | Description |\n|---|---|---|\n| entity_id | INT / VARCHAR | Entity Primary Reference |\n| amount | NUMERIC | Transactional Metric |\n| event_date | DATE | Recording Date |",
+    "learningOutcomes": "INTERSECT isolates common distinct tuples between two relations; EXCEPT computes set subtraction, isolating records unique to the first query."
   },
   {
     "id": 1476,
@@ -20338,7 +21003,12 @@ const ALL_500_CASE_STUDIES = [
       "Using naive COALESCE(col, 'Total') when legitimate NULL data exists in the base table, confusing genuine NULLs with subtotal rows",
       "Using CUBE with 6+ dimensions, causing an exponential 2^N explosion that exhausts server memory"
     ],
-    "takeaway": "ROLLUP and CUBE generate multi-tier subtotals and grand totals in a single table scan; GROUPING() is required to distinguish data NULLs from aggregate NULLs."
+    "takeaway": "ROLLUP and CUBE generate multi-tier subtotals and grand totals in a single table scan; GROUPING() is required to distinguish data NULLs from aggregate NULLs.",
+    "industry": "Fintech",
+    "scenario": "In Fintech executive reporting, business stakeholders need granular reports showing subtotals at each dimensional tier as well as an overall grand total, computed in a single table scan.",
+    "businessObjective": "In Fintech executive reporting, business stakeholders need granular reports showing subtotals at each dimensional tier as well as an overall grand total, computed in a single table scan.",
+    "schemaSnippet": "| Column | Type | Description |\n|---|---|---|\n| region | VARCHAR | Dimension 1 |\n| country | VARCHAR | Dimension 2 |\n| branch_name | VARCHAR | Dimension 3 |\n| total_val | NUMERIC | Financial Value Metric |",
+    "learningOutcomes": "ROLLUP and CUBE generate multi-tier subtotals and grand totals in a single table scan; GROUPING() is required to distinguish data NULLs from aggregate NULLs."
   },
   {
     "id": 1477,
@@ -20354,7 +21024,12 @@ const ALL_500_CASE_STUDIES = [
       "Using naive COALESCE(col, 'Total') when legitimate NULL data exists in the base table, confusing genuine NULLs with subtotal rows",
       "Using CUBE with 6+ dimensions, causing an exponential 2^N explosion that exhausts server memory"
     ],
-    "takeaway": "ROLLUP and CUBE generate multi-tier subtotals and grand totals in a single table scan; GROUPING() is required to distinguish data NULLs from aggregate NULLs."
+    "takeaway": "ROLLUP and CUBE generate multi-tier subtotals and grand totals in a single table scan; GROUPING() is required to distinguish data NULLs from aggregate NULLs.",
+    "industry": "SaaS",
+    "scenario": "In SaaS executive reporting, business stakeholders need granular reports showing subtotals at each dimensional tier as well as an overall grand total, computed in a single table scan.",
+    "businessObjective": "In SaaS executive reporting, business stakeholders need granular reports showing subtotals at each dimensional tier as well as an overall grand total, computed in a single table scan.",
+    "schemaSnippet": "| Column | Type | Description |\n|---|---|---|\n| cloud_provider | VARCHAR | Dimension 1 |\n| cloud_region | VARCHAR | Dimension 2 |\n| plan_tier | VARCHAR | Dimension 3 |\n| total_val | NUMERIC | Financial Value Metric |",
+    "learningOutcomes": "ROLLUP and CUBE generate multi-tier subtotals and grand totals in a single table scan; GROUPING() is required to distinguish data NULLs from aggregate NULLs."
   },
   {
     "id": 1478,
@@ -20370,7 +21045,12 @@ const ALL_500_CASE_STUDIES = [
       "Using naive COALESCE(col, 'Total') when legitimate NULL data exists in the base table, confusing genuine NULLs with subtotal rows",
       "Using CUBE with 6+ dimensions, causing an exponential 2^N explosion that exhausts server memory"
     ],
-    "takeaway": "ROLLUP and CUBE generate multi-tier subtotals and grand totals in a single table scan; GROUPING() is required to distinguish data NULLs from aggregate NULLs."
+    "takeaway": "ROLLUP and CUBE generate multi-tier subtotals and grand totals in a single table scan; GROUPING() is required to distinguish data NULLs from aggregate NULLs.",
+    "industry": "Healthcare",
+    "scenario": "In Healthcare executive reporting, business stakeholders need granular reports showing subtotals at each dimensional tier as well as an overall grand total, computed in a single table scan.",
+    "businessObjective": "In Healthcare executive reporting, business stakeholders need granular reports showing subtotals at each dimensional tier as well as an overall grand total, computed in a single table scan.",
+    "schemaSnippet": "| Column | Type | Description |\n|---|---|---|\n| hospital_division | VARCHAR | Dimension 1 |\n| department | VARCHAR | Dimension 2 |\n| clinic_name | VARCHAR | Dimension 3 |\n| total_val | NUMERIC | Financial Value Metric |",
+    "learningOutcomes": "ROLLUP and CUBE generate multi-tier subtotals and grand totals in a single table scan; GROUPING() is required to distinguish data NULLs from aggregate NULLs."
   },
   {
     "id": 1479,
@@ -20386,7 +21066,12 @@ const ALL_500_CASE_STUDIES = [
       "Using naive COALESCE(col, 'Total') when legitimate NULL data exists in the base table, confusing genuine NULLs with subtotal rows",
       "Using CUBE with 6+ dimensions, causing an exponential 2^N explosion that exhausts server memory"
     ],
-    "takeaway": "ROLLUP and CUBE generate multi-tier subtotals and grand totals in a single table scan; GROUPING() is required to distinguish data NULLs from aggregate NULLs."
+    "takeaway": "ROLLUP and CUBE generate multi-tier subtotals and grand totals in a single table scan; GROUPING() is required to distinguish data NULLs from aggregate NULLs.",
+    "industry": "E-Commerce",
+    "scenario": "In E-Commerce executive reporting, business stakeholders need granular reports showing subtotals at each dimensional tier as well as an overall grand total, computed in a single table scan.",
+    "businessObjective": "In E-Commerce executive reporting, business stakeholders need granular reports showing subtotals at each dimensional tier as well as an overall grand total, computed in a single table scan.",
+    "schemaSnippet": "| Column | Type | Description |\n|---|---|---|\n| territory | VARCHAR | Dimension 1 |\n| state | VARCHAR | Dimension 2 |\n| store_id | VARCHAR | Dimension 3 |\n| total_val | NUMERIC | Financial Value Metric |",
+    "learningOutcomes": "ROLLUP and CUBE generate multi-tier subtotals and grand totals in a single table scan; GROUPING() is required to distinguish data NULLs from aggregate NULLs."
   },
   {
     "id": 1480,
@@ -20402,7 +21087,12 @@ const ALL_500_CASE_STUDIES = [
       "Using naive COALESCE(col, 'Total') when legitimate NULL data exists in the base table, confusing genuine NULLs with subtotal rows",
       "Using CUBE with 6+ dimensions, causing an exponential 2^N explosion that exhausts server memory"
     ],
-    "takeaway": "ROLLUP and CUBE generate multi-tier subtotals and grand totals in a single table scan; GROUPING() is required to distinguish data NULLs from aggregate NULLs."
+    "takeaway": "ROLLUP and CUBE generate multi-tier subtotals and grand totals in a single table scan; GROUPING() is required to distinguish data NULLs from aggregate NULLs.",
+    "industry": "Logistics",
+    "scenario": "In Logistics executive reporting, business stakeholders need granular reports showing subtotals at each dimensional tier as well as an overall grand total, computed in a single table scan.",
+    "businessObjective": "In Logistics executive reporting, business stakeholders need granular reports showing subtotals at each dimensional tier as well as an overall grand total, computed in a single table scan.",
+    "schemaSnippet": "| Column | Type | Description |\n|---|---|---|\n| continent | VARCHAR | Dimension 1 |\n| country | VARCHAR | Dimension 2 |\n| terminal_code | VARCHAR | Dimension 3 |\n| total_val | NUMERIC | Financial Value Metric |",
+    "learningOutcomes": "ROLLUP and CUBE generate multi-tier subtotals and grand totals in a single table scan; GROUPING() is required to distinguish data NULLs from aggregate NULLs."
   },
   {
     "id": 1481,
@@ -20418,7 +21108,12 @@ const ALL_500_CASE_STUDIES = [
       "Using naive COALESCE(col, 'Total') when legitimate NULL data exists in the base table, confusing genuine NULLs with subtotal rows",
       "Using CUBE with 6+ dimensions, causing an exponential 2^N explosion that exhausts server memory"
     ],
-    "takeaway": "ROLLUP and CUBE generate multi-tier subtotals and grand totals in a single table scan; GROUPING() is required to distinguish data NULLs from aggregate NULLs."
+    "takeaway": "ROLLUP and CUBE generate multi-tier subtotals and grand totals in a single table scan; GROUPING() is required to distinguish data NULLs from aggregate NULLs.",
+    "industry": "Gaming",
+    "scenario": "In Gaming executive reporting, business stakeholders need granular reports showing subtotals at each dimensional tier as well as an overall grand total, computed in a single table scan.",
+    "businessObjective": "In Gaming executive reporting, business stakeholders need granular reports showing subtotals at each dimensional tier as well as an overall grand total, computed in a single table scan.",
+    "schemaSnippet": "| Column | Type | Description |\n|---|---|---|\n| platform | VARCHAR | Dimension 1 |\n| region | VARCHAR | Dimension 2 |\n| currency | VARCHAR | Dimension 3 |\n| total_val | NUMERIC | Financial Value Metric |",
+    "learningOutcomes": "ROLLUP and CUBE generate multi-tier subtotals and grand totals in a single table scan; GROUPING() is required to distinguish data NULLs from aggregate NULLs."
   },
   {
     "id": 1482,
@@ -20434,7 +21129,12 @@ const ALL_500_CASE_STUDIES = [
       "Using naive COALESCE(col, 'Total') when legitimate NULL data exists in the base table, confusing genuine NULLs with subtotal rows",
       "Using CUBE with 6+ dimensions, causing an exponential 2^N explosion that exhausts server memory"
     ],
-    "takeaway": "ROLLUP and CUBE generate multi-tier subtotals and grand totals in a single table scan; GROUPING() is required to distinguish data NULLs from aggregate NULLs."
+    "takeaway": "ROLLUP and CUBE generate multi-tier subtotals and grand totals in a single table scan; GROUPING() is required to distinguish data NULLs from aggregate NULLs.",
+    "industry": "AdTech",
+    "scenario": "In AdTech executive reporting, business stakeholders need granular reports showing subtotals at each dimensional tier as well as an overall grand total, computed in a single table scan.",
+    "businessObjective": "In AdTech executive reporting, business stakeholders need granular reports showing subtotals at each dimensional tier as well as an overall grand total, computed in a single table scan.",
+    "schemaSnippet": "| Column | Type | Description |\n|---|---|---|\n| device_type | VARCHAR | Dimension 1 |\n| ad_format | VARCHAR | Dimension 2 |\n| country_code | VARCHAR | Dimension 3 |\n| total_val | NUMERIC | Financial Value Metric |",
+    "learningOutcomes": "ROLLUP and CUBE generate multi-tier subtotals and grand totals in a single table scan; GROUPING() is required to distinguish data NULLs from aggregate NULLs."
   },
   {
     "id": 1483,
@@ -20450,7 +21150,12 @@ const ALL_500_CASE_STUDIES = [
       "Using naive COALESCE(col, 'Total') when legitimate NULL data exists in the base table, confusing genuine NULLs with subtotal rows",
       "Using CUBE with 6+ dimensions, causing an exponential 2^N explosion that exhausts server memory"
     ],
-    "takeaway": "ROLLUP and CUBE generate multi-tier subtotals and grand totals in a single table scan; GROUPING() is required to distinguish data NULLs from aggregate NULLs."
+    "takeaway": "ROLLUP and CUBE generate multi-tier subtotals and grand totals in a single table scan; GROUPING() is required to distinguish data NULLs from aggregate NULLs.",
+    "industry": "EdTech",
+    "scenario": "In EdTech executive reporting, business stakeholders need granular reports showing subtotals at each dimensional tier as well as an overall grand total, computed in a single table scan.",
+    "businessObjective": "In EdTech executive reporting, business stakeholders need granular reports showing subtotals at each dimensional tier as well as an overall grand total, computed in a single table scan.",
+    "schemaSnippet": "| Column | Type | Description |\n|---|---|---|\n| college | VARCHAR | Dimension 1 |\n| major | VARCHAR | Dimension 2 |\n| degree_type | VARCHAR | Dimension 3 |\n| total_val | NUMERIC | Financial Value Metric |",
+    "learningOutcomes": "ROLLUP and CUBE generate multi-tier subtotals and grand totals in a single table scan; GROUPING() is required to distinguish data NULLs from aggregate NULLs."
   },
   {
     "id": 1484,
@@ -20466,7 +21171,12 @@ const ALL_500_CASE_STUDIES = [
       "Using naive COALESCE(col, 'Total') when legitimate NULL data exists in the base table, confusing genuine NULLs with subtotal rows",
       "Using CUBE with 6+ dimensions, causing an exponential 2^N explosion that exhausts server memory"
     ],
-    "takeaway": "ROLLUP and CUBE generate multi-tier subtotals and grand totals in a single table scan; GROUPING() is required to distinguish data NULLs from aggregate NULLs."
+    "takeaway": "ROLLUP and CUBE generate multi-tier subtotals and grand totals in a single table scan; GROUPING() is required to distinguish data NULLs from aggregate NULLs.",
+    "industry": "Energy",
+    "scenario": "In Energy executive reporting, business stakeholders need granular reports showing subtotals at each dimensional tier as well as an overall grand total, computed in a single table scan.",
+    "businessObjective": "In Energy executive reporting, business stakeholders need granular reports showing subtotals at each dimensional tier as well as an overall grand total, computed in a single table scan.",
+    "schemaSnippet": "| Column | Type | Description |\n|---|---|---|\n| sector | VARCHAR | Dimension 1 |\n| fuel_type | VARCHAR | Dimension 2 |\n| station_name | VARCHAR | Dimension 3 |\n| total_val | NUMERIC | Financial Value Metric |",
+    "learningOutcomes": "ROLLUP and CUBE generate multi-tier subtotals and grand totals in a single table scan; GROUPING() is required to distinguish data NULLs from aggregate NULLs."
   },
   {
     "id": 1485,
@@ -20482,7 +21192,12 @@ const ALL_500_CASE_STUDIES = [
       "Using naive COALESCE(col, 'Total') when legitimate NULL data exists in the base table, confusing genuine NULLs with subtotal rows",
       "Using CUBE with 6+ dimensions, causing an exponential 2^N explosion that exhausts server memory"
     ],
-    "takeaway": "ROLLUP and CUBE generate multi-tier subtotals and grand totals in a single table scan; GROUPING() is required to distinguish data NULLs from aggregate NULLs."
+    "takeaway": "ROLLUP and CUBE generate multi-tier subtotals and grand totals in a single table scan; GROUPING() is required to distinguish data NULLs from aggregate NULLs.",
+    "industry": "Media",
+    "scenario": "In Media executive reporting, business stakeholders need granular reports showing subtotals at each dimensional tier as well as an overall grand total, computed in a single table scan.",
+    "businessObjective": "In Media executive reporting, business stakeholders need granular reports showing subtotals at each dimensional tier as well as an overall grand total, computed in a single table scan.",
+    "schemaSnippet": "| Column | Type | Description |\n|---|---|---|\n| device_cat | VARCHAR | Dimension 1 |\n| genre | VARCHAR | Dimension 2 |\n| tier | VARCHAR | Dimension 3 |\n| total_val | NUMERIC | Financial Value Metric |",
+    "learningOutcomes": "ROLLUP and CUBE generate multi-tier subtotals and grand totals in a single table scan; GROUPING() is required to distinguish data NULLs from aggregate NULLs."
   },
   {
     "id": 1486,
@@ -20498,7 +21213,12 @@ const ALL_500_CASE_STUDIES = [
       "Using naive COALESCE(col, 'Total') when legitimate NULL data exists in the base table, confusing genuine NULLs with subtotal rows",
       "Using CUBE with 6+ dimensions, causing an exponential 2^N explosion that exhausts server memory"
     ],
-    "takeaway": "ROLLUP and CUBE generate multi-tier subtotals and grand totals in a single table scan; GROUPING() is required to distinguish data NULLs from aggregate NULLs."
+    "takeaway": "ROLLUP and CUBE generate multi-tier subtotals and grand totals in a single table scan; GROUPING() is required to distinguish data NULLs from aggregate NULLs.",
+    "industry": "Fintech",
+    "scenario": "In Fintech executive reporting, business stakeholders need granular reports showing subtotals at each dimensional tier as well as an overall grand total, computed in a single table scan.",
+    "businessObjective": "In Fintech executive reporting, business stakeholders need granular reports showing subtotals at each dimensional tier as well as an overall grand total, computed in a single table scan.",
+    "schemaSnippet": "| Column | Type | Description |\n|---|---|---|\n| entity_grp | VARCHAR | Dimension 1 |\n| legal_entity | VARCHAR | Dimension 2 |\n| asset_class | VARCHAR | Dimension 3 |\n| total_val | NUMERIC | Financial Value Metric |",
+    "learningOutcomes": "ROLLUP and CUBE generate multi-tier subtotals and grand totals in a single table scan; GROUPING() is required to distinguish data NULLs from aggregate NULLs."
   },
   {
     "id": 1487,
@@ -20514,7 +21234,12 @@ const ALL_500_CASE_STUDIES = [
       "Using naive COALESCE(col, 'Total') when legitimate NULL data exists in the base table, confusing genuine NULLs with subtotal rows",
       "Using CUBE with 6+ dimensions, causing an exponential 2^N explosion that exhausts server memory"
     ],
-    "takeaway": "ROLLUP and CUBE generate multi-tier subtotals and grand totals in a single table scan; GROUPING() is required to distinguish data NULLs from aggregate NULLs."
+    "takeaway": "ROLLUP and CUBE generate multi-tier subtotals and grand totals in a single table scan; GROUPING() is required to distinguish data NULLs from aggregate NULLs.",
+    "industry": "SaaS",
+    "scenario": "In SaaS executive reporting, business stakeholders need granular reports showing subtotals at each dimensional tier as well as an overall grand total, computed in a single table scan.",
+    "businessObjective": "In SaaS executive reporting, business stakeholders need granular reports showing subtotals at each dimensional tier as well as an overall grand total, computed in a single table scan.",
+    "schemaSnippet": "| Column | Type | Description |\n|---|---|---|\n| market_segment | VARCHAR | Dimension 1 |\n| account_tier | VARCHAR | Dimension 2 |\n| geo_region | VARCHAR | Dimension 3 |\n| total_val | NUMERIC | Financial Value Metric |",
+    "learningOutcomes": "ROLLUP and CUBE generate multi-tier subtotals and grand totals in a single table scan; GROUPING() is required to distinguish data NULLs from aggregate NULLs."
   },
   {
     "id": 1488,
@@ -20530,7 +21255,12 @@ const ALL_500_CASE_STUDIES = [
       "Using naive COALESCE(col, 'Total') when legitimate NULL data exists in the base table, confusing genuine NULLs with subtotal rows",
       "Using CUBE with 6+ dimensions, causing an exponential 2^N explosion that exhausts server memory"
     ],
-    "takeaway": "ROLLUP and CUBE generate multi-tier subtotals and grand totals in a single table scan; GROUPING() is required to distinguish data NULLs from aggregate NULLs."
+    "takeaway": "ROLLUP and CUBE generate multi-tier subtotals and grand totals in a single table scan; GROUPING() is required to distinguish data NULLs from aggregate NULLs.",
+    "industry": "Healthcare",
+    "scenario": "In Healthcare executive reporting, business stakeholders need granular reports showing subtotals at each dimensional tier as well as an overall grand total, computed in a single table scan.",
+    "businessObjective": "In Healthcare executive reporting, business stakeholders need granular reports showing subtotals at each dimensional tier as well as an overall grand total, computed in a single table scan.",
+    "schemaSnippet": "| Column | Type | Description |\n|---|---|---|\n| age_bracket | VARCHAR | Dimension 1 |\n| comorbidity | VARCHAR | Dimension 2 |\n| insurance_type | VARCHAR | Dimension 3 |\n| total_val | NUMERIC | Financial Value Metric |",
+    "learningOutcomes": "ROLLUP and CUBE generate multi-tier subtotals and grand totals in a single table scan; GROUPING() is required to distinguish data NULLs from aggregate NULLs."
   },
   {
     "id": 1489,
@@ -20546,7 +21276,12 @@ const ALL_500_CASE_STUDIES = [
       "Using naive COALESCE(col, 'Total') when legitimate NULL data exists in the base table, confusing genuine NULLs with subtotal rows",
       "Using CUBE with 6+ dimensions, causing an exponential 2^N explosion that exhausts server memory"
     ],
-    "takeaway": "ROLLUP and CUBE generate multi-tier subtotals and grand totals in a single table scan; GROUPING() is required to distinguish data NULLs from aggregate NULLs."
+    "takeaway": "ROLLUP and CUBE generate multi-tier subtotals and grand totals in a single table scan; GROUPING() is required to distinguish data NULLs from aggregate NULLs.",
+    "industry": "E-Commerce",
+    "scenario": "In E-Commerce executive reporting, business stakeholders need granular reports showing subtotals at each dimensional tier as well as an overall grand total, computed in a single table scan.",
+    "businessObjective": "In E-Commerce executive reporting, business stakeholders need granular reports showing subtotals at each dimensional tier as well as an overall grand total, computed in a single table scan.",
+    "schemaSnippet": "| Column | Type | Description |\n|---|---|---|\n| merchandise_dept | VARCHAR | Dimension 1 |\n| sales_channel | VARCHAR | Dimension 2 |\n| fiscal_quarter | VARCHAR | Dimension 3 |\n| total_val | NUMERIC | Financial Value Metric |",
+    "learningOutcomes": "ROLLUP and CUBE generate multi-tier subtotals and grand totals in a single table scan; GROUPING() is required to distinguish data NULLs from aggregate NULLs."
   },
   {
     "id": 1490,
@@ -20562,40 +21297,17903 @@ const ALL_500_CASE_STUDIES = [
       "Using naive COALESCE(col, 'Total') when legitimate NULL data exists in the base table, confusing genuine NULLs with subtotal rows",
       "Using CUBE with 6+ dimensions, causing an exponential 2^N explosion that exhausts server memory"
     ],
-    "takeaway": "ROLLUP and CUBE generate multi-tier subtotals and grand totals in a single table scan; GROUPING() is required to distinguish data NULLs from aggregate NULLs."
+    "takeaway": "ROLLUP and CUBE generate multi-tier subtotals and grand totals in a single table scan; GROUPING() is required to distinguish data NULLs from aggregate NULLs.",
+    "industry": "Logistics",
+    "scenario": "In Logistics executive reporting, business stakeholders need granular reports showing subtotals at each dimensional tier as well as an overall grand total, computed in a single table scan.",
+    "businessObjective": "In Logistics executive reporting, business stakeholders need granular reports showing subtotals at each dimensional tier as well as an overall grand total, computed in a single table scan.",
+    "schemaSnippet": "| Column | Type | Description |\n|---|---|---|\n| shipping_lane | VARCHAR | Dimension 1 |\n| carrier_mode | VARCHAR | Dimension 2 |\n| customs_broker | VARCHAR | Dimension 3 |\n| total_val | NUMERIC | Financial Value Metric |",
+    "learningOutcomes": "ROLLUP and CUBE generate multi-tier subtotals and grand totals in a single table scan; GROUPING() is required to distinguish data NULLs from aggregate NULLs."
+  },
+  {
+    "id": 1491,
+    "drillNumber": 1,
+    "section": "Section 0: Foundations & Syntax Gym",
+    "title": "Retrieve the Entire Students Table",
+    "industry": "Foundations",
+    "difficulty": "Easy",
+    "scenario": "You are setting up the classroom roster. Retrieve all columns and all records for every enrolled student.",
+    "businessObjective": "Pull every column using the universal asterisk wildcard.",
+    "schemaSnippet": "Students(student_id INT, first_name VARCHAR, last_name VARCHAR, age INT, major VARCHAR, gpa DECIMAL, city VARCHAR, enrolled_year INT)",
+    "targetQuery": "SELECT *\nFROM Students;",
+    "syntaxBlueprint": "SELECT *\nFROM table_name;",
+    "syntaxRule": "The asterisk (*) represents all columns. Always follow SELECT * with FROM and your table name.",
+    "syntaxTrap": "Writing 'SELECT ALL FROM Students;' (ALL is an aggregate modifier, not a column wildcard).",
+    "eli5Story": "[SYNTAX BLUEPRINT]:\nSELECT *\nFROM table_name;\n\n[RULE]: The asterisk (*) represents all columns. Always follow SELECT * with FROM and your table name.\n\n[TRAP TO AVOID]: Writing 'SELECT ALL FROM Students;' (ALL is an aggregate modifier, not a column wildcard).",
+    "commonMistakes": "Putting a semicolon after SELECT or forgetting the FROM keyword.",
+    "learningOutcomes": "Mastered basic table scanning and wildcard projections.",
+    "challengeSlots": [
+      {
+        "type": "keyword",
+        "value": "SELECT"
+      },
+      {
+        "type": "column",
+        "value": "*"
+      },
+      {
+        "type": "keyword",
+        "value": "FROM"
+      },
+      {
+        "type": "table",
+        "value": "Students;"
+      }
+    ]
+  },
+  {
+    "id": 1492,
+    "drillNumber": 2,
+    "section": "Section 0: Foundations & Syntax Gym",
+    "title": "Inspect Available Library Books",
+    "industry": "Foundations",
+    "difficulty": "Easy",
+    "scenario": "The librarian wants to review the full catalog including inventory and pricing.",
+    "businessObjective": "Select every column from the Books catalog.",
+    "schemaSnippet": "Books(book_id INT, title VARCHAR, author VARCHAR, genre VARCHAR, price DECIMAL, stock_qty INT, published_year INT, is_hardcover BOOLEAN)",
+    "targetQuery": "SELECT *\nFROM Books;",
+    "syntaxBlueprint": "SELECT *\nFROM table_name;",
+    "syntaxRule": "A query must end with a semicolon in standard SQL clients.",
+    "syntaxTrap": "Typing the table name before SELECT.",
+    "eli5Story": "[SYNTAX BLUEPRINT]:\nSELECT *\nFROM table_name;\n\n[RULE]: A query must end with a semicolon in standard SQL clients.\n\n[TRAP TO AVOID]: Typing the table name before SELECT.",
+    "commonMistakes": "Omitting the semicolon at the end of the query.",
+    "learningOutcomes": "Mastered full catalog inspection.",
+    "challengeSlots": [
+      {
+        "type": "keyword",
+        "value": "SELECT"
+      },
+      {
+        "type": "column",
+        "value": "*"
+      },
+      {
+        "type": "keyword",
+        "value": "FROM"
+      },
+      {
+        "type": "table",
+        "value": "Books;"
+      }
+    ]
+  },
+  {
+    "id": 1493,
+    "drillNumber": 3,
+    "section": "Section 0: Foundations & Syntax Gym",
+    "title": "Display Student First Names Only",
+    "industry": "Foundations",
+    "difficulty": "Easy",
+    "scenario": "Generate an attendance roll call sheet displaying only the first name of each student.",
+    "businessObjective": "Extract a single specific column to minimize memory overhead.",
+    "schemaSnippet": "Students(student_id INT, first_name VARCHAR, last_name VARCHAR, age INT, major VARCHAR, gpa DECIMAL, city VARCHAR, enrolled_year INT)",
+    "targetQuery": "SELECT first_name\nFROM Students;",
+    "syntaxBlueprint": "SELECT column_name\nFROM table_name;",
+    "syntaxRule": "When selecting a single column, no commas are used anywhere in the query.",
+    "syntaxTrap": "Writing 'SELECT first_name, FROM Students;' (trailing comma before FROM).",
+    "eli5Story": "[SYNTAX BLUEPRINT]:\nSELECT column_name\nFROM table_name;\n\n[RULE]: When selecting a single column, no commas are used anywhere in the query.\n\n[TRAP TO AVOID]: Writing 'SELECT first_name, FROM Students;' (trailing comma before FROM).",
+    "commonMistakes": "Accidentally adding a comma after the single column name.",
+    "learningOutcomes": "Mastered single-column extraction without unnecessary commas.",
+    "challengeSlots": [
+      {
+        "type": "keyword",
+        "value": "SELECT"
+      },
+      {
+        "type": "column",
+        "value": "first_name"
+      },
+      {
+        "type": "keyword",
+        "value": "FROM"
+      },
+      {
+        "type": "table",
+        "value": "Students;"
+      }
+    ]
+  },
+  {
+    "id": 1494,
+    "drillNumber": 4,
+    "section": "Section 0: Foundations & Syntax Gym",
+    "title": "List All Book Titles",
+    "industry": "Foundations",
+    "difficulty": "Easy",
+    "scenario": "Print the spine labels for bookstore shelves showing only book titles.",
+    "businessObjective": "Select the title column from the Books table.",
+    "schemaSnippet": "Books(book_id INT, title VARCHAR, author VARCHAR, genre VARCHAR, price DECIMAL, stock_qty INT, published_year INT, is_hardcover BOOLEAN)",
+    "targetQuery": "SELECT title\nFROM Books;",
+    "syntaxBlueprint": "SELECT column_name\nFROM table_name;",
+    "syntaxRule": "Column names are case-insensitive in ANSI SQL, but snake_case is standard practice.",
+    "syntaxTrap": "Wrapping the column name in single quotes ('title' will output the literal word 'title' for every row!).",
+    "eli5Story": "[SYNTAX BLUEPRINT]:\nSELECT column_name\nFROM table_name;\n\n[RULE]: Column names are case-insensitive in ANSI SQL, but snake_case is standard practice.\n\n[TRAP TO AVOID]: Wrapping the column name in single quotes ('title' will output the literal word 'title' for every row!).",
+    "commonMistakes": "Putting single quotes around column identifiers.",
+    "learningOutcomes": "Understood the difference between column names and text literals.",
+    "challengeSlots": [
+      {
+        "type": "keyword",
+        "value": "SELECT"
+      },
+      {
+        "type": "column",
+        "value": "title"
+      },
+      {
+        "type": "keyword",
+        "value": "FROM"
+      },
+      {
+        "type": "table",
+        "value": "Books;"
+      }
+    ]
+  },
+  {
+    "id": 1495,
+    "drillNumber": 5,
+    "section": "Section 0: Foundations & Syntax Gym",
+    "title": "Extract Music Track Titles",
+    "industry": "Foundations",
+    "difficulty": "Easy",
+    "scenario": "A music streaming app needs to fetch just the track titles for an index screen.",
+    "businessObjective": "Select the track_title column from MusicTracks.",
+    "schemaSnippet": "MusicTracks(track_id INT, track_title VARCHAR, artist_name VARCHAR, genre VARCHAR, duration_seconds INT, play_count INT, release_year INT)",
+    "targetQuery": "SELECT track_title\nFROM MusicTracks;",
+    "syntaxBlueprint": "SELECT column_name\nFROM table_name;",
+    "syntaxRule": "Ensure exact column spelling matches the database schema definition.",
+    "syntaxTrap": "Misspelling 'track_title' as 'track_name' or 'song'.",
+    "eli5Story": "[SYNTAX BLUEPRINT]:\nSELECT column_name\nFROM table_name;\n\n[RULE]: Ensure exact column spelling matches the database schema definition.\n\n[TRAP TO AVOID]: Misspelling 'track_title' as 'track_name' or 'song'.",
+    "commonMistakes": "Guessing column names instead of referencing the schema.",
+    "learningOutcomes": "Learned schema column alignment.",
+    "challengeSlots": [
+      {
+        "type": "keyword",
+        "value": "SELECT"
+      },
+      {
+        "type": "column",
+        "value": "track_title"
+      },
+      {
+        "type": "keyword",
+        "value": "FROM"
+      },
+      {
+        "type": "table",
+        "value": "MusicTracks;"
+      }
+    ]
+  },
+  {
+    "id": 1496,
+    "drillNumber": 6,
+    "section": "Section 0: Foundations & Syntax Gym",
+    "title": "View All Grocery Inventory Items",
+    "industry": "Foundations",
+    "difficulty": "Easy",
+    "scenario": "The supermarket stock manager performs an initial scan of the entire product table.",
+    "businessObjective": "Retrieve all columns from GroceryItems.",
+    "schemaSnippet": "GroceryItems(item_id INT, item_name VARCHAR, category VARCHAR, unit_price DECIMAL, is_organic BOOLEAN, calories INT, stock_units INT)",
+    "targetQuery": "SELECT *\nFROM GroceryItems;",
+    "syntaxBlueprint": "SELECT *\nFROM table_name;",
+    "syntaxRule": "Asterisk selects columns in their physical storage order.",
+    "syntaxTrap": "Writing 'SELECT GroceryItems.*' when only one table is involved (redundant prefix).",
+    "eli5Story": "[SYNTAX BLUEPRINT]:\nSELECT *\nFROM table_name;\n\n[RULE]: Asterisk selects columns in their physical storage order.\n\n[TRAP TO AVOID]: Writing 'SELECT GroceryItems.*' when only one table is involved (redundant prefix).",
+    "commonMistakes": "Overcomplicating the query with table qualifiers when scanning a single table.",
+    "learningOutcomes": "Mastered full table scan syntax.",
+    "challengeSlots": [
+      {
+        "type": "keyword",
+        "value": "SELECT"
+      },
+      {
+        "type": "column",
+        "value": "*"
+      },
+      {
+        "type": "keyword",
+        "value": "FROM"
+      },
+      {
+        "type": "table",
+        "value": "GroceryItems;"
+      }
+    ]
+  },
+  {
+    "id": 1497,
+    "drillNumber": 7,
+    "section": "Section 0: Foundations & Syntax Gym",
+    "title": "Extract Employee Email Handles (Last Names)",
+    "industry": "Foundations",
+    "difficulty": "Easy",
+    "scenario": "The IT department needs all employee last names to verify domain directory entries.",
+    "businessObjective": "Select last_name from Employees.",
+    "schemaSnippet": "Employees(emp_id INT, first_name VARCHAR, last_name VARCHAR, department VARCHAR, salary DECIMAL, bonus DECIMAL, hire_date DATE)",
+    "targetQuery": "SELECT last_name\nFROM Employees;",
+    "syntaxBlueprint": "SELECT column_name\nFROM table_name;",
+    "syntaxRule": "Specifying only the needed column saves network bandwidth and buffer cache.",
+    "syntaxTrap": "Using 'SELECT last_name;' without a FROM clause.",
+    "eli5Story": "[SYNTAX BLUEPRINT]:\nSELECT column_name\nFROM table_name;\n\n[RULE]: Specifying only the needed column saves network bandwidth and buffer cache.\n\n[TRAP TO AVOID]: Using 'SELECT last_name;' without a FROM clause.",
+    "commonMistakes": "Forgetting the FROM clause.",
+    "learningOutcomes": "Reinforced mandatory FROM clause syntax.",
+    "challengeSlots": [
+      {
+        "type": "keyword",
+        "value": "SELECT"
+      },
+      {
+        "type": "column",
+        "value": "last_name"
+      },
+      {
+        "type": "keyword",
+        "value": "FROM"
+      },
+      {
+        "type": "table",
+        "value": "Employees;"
+      }
+    ]
+  },
+  {
+    "id": 1498,
+    "drillNumber": 8,
+    "section": "Section 0: Foundations & Syntax Gym",
+    "title": "List Registered Pet Names",
+    "industry": "Foundations",
+    "difficulty": "Easy",
+    "scenario": "The receptionist at the veterinary clinic needs a list of all patient pet names.",
+    "businessObjective": "Select pet_name from PetClinic.",
+    "schemaSnippet": "PetClinic(pet_id INT, pet_name VARCHAR, species VARCHAR, breed VARCHAR, age_years INT, weight_kg DECIMAL, is_vaccinated BOOLEAN, owner_city VARCHAR)",
+    "targetQuery": "SELECT pet_name\nFROM PetClinic;",
+    "syntaxBlueprint": "SELECT column_name\nFROM table_name;",
+    "syntaxRule": "Target table follows immediately after the FROM keyword.",
+    "syntaxTrap": "Writing 'FROM PetClinic SELECT pet_name' (lexical syntax requires SELECT first).",
+    "eli5Story": "[SYNTAX BLUEPRINT]:\nSELECT column_name\nFROM table_name;\n\n[RULE]: Target table follows immediately after the FROM keyword.\n\n[TRAP TO AVOID]: Writing 'FROM PetClinic SELECT pet_name' (lexical syntax requires SELECT first).",
+    "commonMistakes": "Inverting SELECT and FROM order.",
+    "learningOutcomes": "Solidified lexical statement ordering.",
+    "challengeSlots": [
+      {
+        "type": "keyword",
+        "value": "SELECT"
+      },
+      {
+        "type": "column",
+        "value": "pet_name"
+      },
+      {
+        "type": "keyword",
+        "value": "FROM"
+      },
+      {
+        "type": "table",
+        "value": "PetClinic;"
+      }
+    ]
+  },
+  {
+    "id": 1499,
+    "drillNumber": 9,
+    "section": "Section 0: Foundations & Syntax Gym",
+    "title": "Fetch Movie Titles for Marquee",
+    "industry": "Foundations",
+    "difficulty": "Easy",
+    "scenario": "The cinema manager updates the outdoor marquee sign with all film titles.",
+    "businessObjective": "Select movie_title from MovieReviews.",
+    "schemaSnippet": "MovieReviews(review_id INT, movie_title VARCHAR, director VARCHAR, genre VARCHAR, star_rating DECIMAL, release_year INT, review_length_words INT)",
+    "targetQuery": "SELECT movie_title\nFROM MovieReviews;",
+    "syntaxBlueprint": "SELECT column_name\nFROM table_name;",
+    "syntaxRule": "Keywords are traditionally uppercase and column names lowercase for readability.",
+    "syntaxTrap": "Writing 'SELECT movie title' without the underscore (space causes syntax parse failure).",
+    "eli5Story": "[SYNTAX BLUEPRINT]:\nSELECT column_name\nFROM table_name;\n\n[RULE]: Keywords are traditionally uppercase and column names lowercase for readability.\n\n[TRAP TO AVOID]: Writing 'SELECT movie title' without the underscore (space causes syntax parse failure).",
+    "commonMistakes": "Omitting the underscore in multi-word column names.",
+    "learningOutcomes": "Learned identifier formatting without spaces.",
+    "challengeSlots": [
+      {
+        "type": "keyword",
+        "value": "SELECT"
+      },
+      {
+        "type": "column",
+        "value": "movie_title"
+      },
+      {
+        "type": "keyword",
+        "value": "FROM"
+      },
+      {
+        "type": "table",
+        "value": "MovieReviews;"
+      }
+    ]
+  },
+  {
+    "id": 1500,
+    "drillNumber": 10,
+    "section": "Section 0: Foundations & Syntax Gym",
+    "title": "Check Flight Number Schedule",
+    "industry": "Foundations",
+    "difficulty": "Easy",
+    "scenario": "The departure board updates the list of all operating flight numbers.",
+    "businessObjective": "Select flight_id from FlightSchedule.",
+    "schemaSnippet": "FlightSchedule(flight_id VARCHAR, airline VARCHAR, origin_airport VARCHAR, dest_airport VARCHAR, departure_time VARCHAR, delay_minutes INT, ticket_price DECIMAL, is_international BOOLEAN)",
+    "targetQuery": "SELECT flight_id\nFROM FlightSchedule;",
+    "syntaxBlueprint": "SELECT column_name\nFROM table_name;",
+    "syntaxRule": "Identifiers can contain numbers and underscores but cannot start with a number.",
+    "syntaxTrap": "Writing 'SELECT flight-id' with a hyphen (hyphen means subtraction!).",
+    "eli5Story": "[SYNTAX BLUEPRINT]:\nSELECT column_name\nFROM table_name;\n\n[RULE]: Identifiers can contain numbers and underscores but cannot start with a number.\n\n[TRAP TO AVOID]: Writing 'SELECT flight-id' with a hyphen (hyphen means subtraction!).",
+    "commonMistakes": "Using a hyphen instead of an underscore.",
+    "learningOutcomes": "Understood SQL identifier syntax rules.",
+    "challengeSlots": [
+      {
+        "type": "keyword",
+        "value": "SELECT"
+      },
+      {
+        "type": "column",
+        "value": "flight_id"
+      },
+      {
+        "type": "keyword",
+        "value": "FROM"
+      },
+      {
+        "type": "table",
+        "value": "FlightSchedule;"
+      }
+    ]
+  },
+  {
+    "id": 1501,
+    "drillNumber": 11,
+    "section": "Section 0: Foundations & Syntax Gym",
+    "title": "Syntax #011: Select the first name, last name, and GPA for all students",
+    "industry": "Foundations",
+    "difficulty": "Easy",
+    "scenario": "Select the first name, last name, and GPA for all students.",
+    "businessObjective": "Select the first name, last name, and GPA for all students.",
+    "schemaSnippet": "Students schema",
+    "targetQuery": "SELECT undefined\nFROM Students;",
+    "syntaxBlueprint": "SELECT column_1, column_2\nFROM Students;",
+    "syntaxRule": "Keywords are SELECT, FROM, AS, DISTINCT. Keep commas between columns only.",
+    "syntaxTrap": "Do not add trailing commas before FROM or quote column identifiers.",
+    "eli5Story": "[SYNTAX BLUEPRINT]:\nSELECT column_1, column_2\nFROM Students;\n\n[RULE]: Keywords are SELECT, FROM, AS, DISTINCT. Keep commas between columns only.\n\n[TRAP TO AVOID]: Do not add trailing commas before FROM or quote column identifiers.",
+    "commonMistakes": "Punctuation errors, trailing commas, or quotes around column names.",
+    "learningOutcomes": "Mastered 1.2 Multi-Column & Commas on Students.",
+    "challengeSlots": [
+      {
+        "type": "keyword",
+        "value": "SELECT"
+      },
+      {
+        "type": "column",
+        "value": "undefined"
+      },
+      {
+        "type": "keyword",
+        "value": "FROM"
+      },
+      {
+        "type": "table",
+        "value": "Students;"
+      }
+    ]
+  },
+  {
+    "id": 1502,
+    "drillNumber": 12,
+    "section": "Section 0: Foundations & Syntax Gym",
+    "title": "Syntax #012: Display book title, author, and price for a book fair catalog",
+    "industry": "Foundations",
+    "difficulty": "Easy",
+    "scenario": "Display book title, author, and price for a book fair catalog.",
+    "businessObjective": "Display book title, author, and price for a book fair catalog.",
+    "schemaSnippet": "Books schema",
+    "targetQuery": "SELECT undefined\nFROM Books;",
+    "syntaxBlueprint": "SELECT column_1, column_2\nFROM Books;",
+    "syntaxRule": "Keywords are SELECT, FROM, AS, DISTINCT. Keep commas between columns only.",
+    "syntaxTrap": "Do not add trailing commas before FROM or quote column identifiers.",
+    "eli5Story": "[SYNTAX BLUEPRINT]:\nSELECT column_1, column_2\nFROM Books;\n\n[RULE]: Keywords are SELECT, FROM, AS, DISTINCT. Keep commas between columns only.\n\n[TRAP TO AVOID]: Do not add trailing commas before FROM or quote column identifiers.",
+    "commonMistakes": "Punctuation errors, trailing commas, or quotes around column names.",
+    "learningOutcomes": "Mastered 1.2 Multi-Column & Commas on Books.",
+    "challengeSlots": [
+      {
+        "type": "keyword",
+        "value": "SELECT"
+      },
+      {
+        "type": "column",
+        "value": "undefined"
+      },
+      {
+        "type": "keyword",
+        "value": "FROM"
+      },
+      {
+        "type": "table",
+        "value": "Books;"
+      }
+    ]
+  },
+  {
+    "id": 1503,
+    "drillNumber": 13,
+    "section": "Section 0: Foundations & Syntax Gym",
+    "title": "Syntax #013: Extract first name, department, and salary for the monthly compensation review",
+    "industry": "Foundations",
+    "difficulty": "Easy",
+    "scenario": "Extract first name, department, and salary for the monthly compensation review.",
+    "businessObjective": "Extract first name, department, and salary for the monthly compensation review.",
+    "schemaSnippet": "Employees schema",
+    "targetQuery": "SELECT undefined\nFROM Employees;",
+    "syntaxBlueprint": "SELECT column_1, column_2\nFROM Employees;",
+    "syntaxRule": "Keywords are SELECT, FROM, AS, DISTINCT. Keep commas between columns only.",
+    "syntaxTrap": "Do not add trailing commas before FROM or quote column identifiers.",
+    "eli5Story": "[SYNTAX BLUEPRINT]:\nSELECT column_1, column_2\nFROM Employees;\n\n[RULE]: Keywords are SELECT, FROM, AS, DISTINCT. Keep commas between columns only.\n\n[TRAP TO AVOID]: Do not add trailing commas before FROM or quote column identifiers.",
+    "commonMistakes": "Punctuation errors, trailing commas, or quotes around column names.",
+    "learningOutcomes": "Mastered 1.2 Multi-Column & Commas on Employees.",
+    "challengeSlots": [
+      {
+        "type": "keyword",
+        "value": "SELECT"
+      },
+      {
+        "type": "column",
+        "value": "undefined"
+      },
+      {
+        "type": "keyword",
+        "value": "FROM"
+      },
+      {
+        "type": "table",
+        "value": "Employees;"
+      }
+    ]
+  },
+  {
+    "id": 1504,
+    "drillNumber": 14,
+    "section": "Section 0: Foundations & Syntax Gym",
+    "title": "Syntax #014: List grocery item name, its category, and unit price for shelf price tags",
+    "industry": "Foundations",
+    "difficulty": "Easy",
+    "scenario": "List grocery item name, its category, and unit price for shelf price tags.",
+    "businessObjective": "List grocery item name, its category, and unit price for shelf price tags.",
+    "schemaSnippet": "GroceryItems schema",
+    "targetQuery": "SELECT undefined\nFROM GroceryItems;",
+    "syntaxBlueprint": "SELECT column_1, column_2\nFROM GroceryItems;",
+    "syntaxRule": "Keywords are SELECT, FROM, AS, DISTINCT. Keep commas between columns only.",
+    "syntaxTrap": "Do not add trailing commas before FROM or quote column identifiers.",
+    "eli5Story": "[SYNTAX BLUEPRINT]:\nSELECT column_1, column_2\nFROM GroceryItems;\n\n[RULE]: Keywords are SELECT, FROM, AS, DISTINCT. Keep commas between columns only.\n\n[TRAP TO AVOID]: Do not add trailing commas before FROM or quote column identifiers.",
+    "commonMistakes": "Punctuation errors, trailing commas, or quotes around column names.",
+    "learningOutcomes": "Mastered 1.2 Multi-Column & Commas on GroceryItems.",
+    "challengeSlots": [
+      {
+        "type": "keyword",
+        "value": "SELECT"
+      },
+      {
+        "type": "column",
+        "value": "undefined"
+      },
+      {
+        "type": "keyword",
+        "value": "FROM"
+      },
+      {
+        "type": "table",
+        "value": "GroceryItems;"
+      }
+    ]
+  },
+  {
+    "id": 1505,
+    "drillNumber": 15,
+    "section": "Section 0: Foundations & Syntax Gym",
+    "title": "Syntax #015: View customer name, purchased product, and ordered quantity on packing slips",
+    "industry": "Foundations",
+    "difficulty": "Easy",
+    "scenario": "View customer name, purchased product, and ordered quantity on packing slips.",
+    "businessObjective": "View customer name, purchased product, and ordered quantity on packing slips.",
+    "schemaSnippet": "Orders schema",
+    "targetQuery": "SELECT undefined\nFROM Orders;",
+    "syntaxBlueprint": "SELECT column_1, column_2\nFROM Orders;",
+    "syntaxRule": "Keywords are SELECT, FROM, AS, DISTINCT. Keep commas between columns only.",
+    "syntaxTrap": "Do not add trailing commas before FROM or quote column identifiers.",
+    "eli5Story": "[SYNTAX BLUEPRINT]:\nSELECT column_1, column_2\nFROM Orders;\n\n[RULE]: Keywords are SELECT, FROM, AS, DISTINCT. Keep commas between columns only.\n\n[TRAP TO AVOID]: Do not add trailing commas before FROM or quote column identifiers.",
+    "commonMistakes": "Punctuation errors, trailing commas, or quotes around column names.",
+    "learningOutcomes": "Mastered 1.2 Multi-Column & Commas on Orders.",
+    "challengeSlots": [
+      {
+        "type": "keyword",
+        "value": "SELECT"
+      },
+      {
+        "type": "column",
+        "value": "undefined"
+      },
+      {
+        "type": "keyword",
+        "value": "FROM"
+      },
+      {
+        "type": "table",
+        "value": "Orders;"
+      }
+    ]
+  },
+  {
+    "id": 1506,
+    "drillNumber": 16,
+    "section": "Section 0: Foundations & Syntax Gym",
+    "title": "Syntax #016: Show track title, artist name, and duration in seconds for the media player",
+    "industry": "Foundations",
+    "difficulty": "Easy",
+    "scenario": "Show track title, artist name, and duration in seconds for the media player.",
+    "businessObjective": "Show track title, artist name, and duration in seconds for the media player.",
+    "schemaSnippet": "MusicTracks schema",
+    "targetQuery": "SELECT undefined\nFROM MusicTracks;",
+    "syntaxBlueprint": "SELECT column_1, column_2\nFROM MusicTracks;",
+    "syntaxRule": "Keywords are SELECT, FROM, AS, DISTINCT. Keep commas between columns only.",
+    "syntaxTrap": "Do not add trailing commas before FROM or quote column identifiers.",
+    "eli5Story": "[SYNTAX BLUEPRINT]:\nSELECT column_1, column_2\nFROM MusicTracks;\n\n[RULE]: Keywords are SELECT, FROM, AS, DISTINCT. Keep commas between columns only.\n\n[TRAP TO AVOID]: Do not add trailing commas before FROM or quote column identifiers.",
+    "commonMistakes": "Punctuation errors, trailing commas, or quotes around column names.",
+    "learningOutcomes": "Mastered 1.2 Multi-Column & Commas on MusicTracks.",
+    "challengeSlots": [
+      {
+        "type": "keyword",
+        "value": "SELECT"
+      },
+      {
+        "type": "column",
+        "value": "undefined"
+      },
+      {
+        "type": "keyword",
+        "value": "FROM"
+      },
+      {
+        "type": "table",
+        "value": "MusicTracks;"
+      }
+    ]
+  },
+  {
+    "id": 1507,
+    "drillNumber": 17,
+    "section": "Section 0: Foundations & Syntax Gym",
+    "title": "Syntax #017: Fetch gym member name, plan type, and monthly fee for billing",
+    "industry": "Foundations",
+    "difficulty": "Easy",
+    "scenario": "Fetch gym member name, plan type, and monthly fee for billing.",
+    "businessObjective": "Fetch gym member name, plan type, and monthly fee for billing.",
+    "schemaSnippet": "GymMembers schema",
+    "targetQuery": "SELECT undefined\nFROM GymMembers;",
+    "syntaxBlueprint": "SELECT column_1, column_2\nFROM GymMembers;",
+    "syntaxRule": "Keywords are SELECT, FROM, AS, DISTINCT. Keep commas between columns only.",
+    "syntaxTrap": "Do not add trailing commas before FROM or quote column identifiers.",
+    "eli5Story": "[SYNTAX BLUEPRINT]:\nSELECT column_1, column_2\nFROM GymMembers;\n\n[RULE]: Keywords are SELECT, FROM, AS, DISTINCT. Keep commas between columns only.\n\n[TRAP TO AVOID]: Do not add trailing commas before FROM or quote column identifiers.",
+    "commonMistakes": "Punctuation errors, trailing commas, or quotes around column names.",
+    "learningOutcomes": "Mastered 1.2 Multi-Column & Commas on GymMembers.",
+    "challengeSlots": [
+      {
+        "type": "keyword",
+        "value": "SELECT"
+      },
+      {
+        "type": "column",
+        "value": "undefined"
+      },
+      {
+        "type": "keyword",
+        "value": "FROM"
+      },
+      {
+        "type": "table",
+        "value": "GymMembers;"
+      }
+    ]
+  },
+  {
+    "id": 1508,
+    "drillNumber": 18,
+    "section": "Section 0: Foundations & Syntax Gym",
+    "title": "Syntax #018: Output movie title, director, and star rating for a film review website",
+    "industry": "Foundations",
+    "difficulty": "Easy",
+    "scenario": "Output movie title, director, and star rating for a film review website.",
+    "businessObjective": "Output movie title, director, and star rating for a film review website.",
+    "schemaSnippet": "MovieReviews schema",
+    "targetQuery": "SELECT undefined\nFROM MovieReviews;",
+    "syntaxBlueprint": "SELECT column_1, column_2\nFROM MovieReviews;",
+    "syntaxRule": "Keywords are SELECT, FROM, AS, DISTINCT. Keep commas between columns only.",
+    "syntaxTrap": "Do not add trailing commas before FROM or quote column identifiers.",
+    "eli5Story": "[SYNTAX BLUEPRINT]:\nSELECT column_1, column_2\nFROM MovieReviews;\n\n[RULE]: Keywords are SELECT, FROM, AS, DISTINCT. Keep commas between columns only.\n\n[TRAP TO AVOID]: Do not add trailing commas before FROM or quote column identifiers.",
+    "commonMistakes": "Punctuation errors, trailing commas, or quotes around column names.",
+    "learningOutcomes": "Mastered 1.2 Multi-Column & Commas on MovieReviews.",
+    "challengeSlots": [
+      {
+        "type": "keyword",
+        "value": "SELECT"
+      },
+      {
+        "type": "column",
+        "value": "undefined"
+      },
+      {
+        "type": "keyword",
+        "value": "FROM"
+      },
+      {
+        "type": "table",
+        "value": "MovieReviews;"
+      }
+    ]
+  },
+  {
+    "id": 1509,
+    "drillNumber": 19,
+    "section": "Section 0: Foundations & Syntax Gym",
+    "title": "Syntax #019: Display flight ID, airline, origin airport, and destination airport for the flight gate monitor",
+    "industry": "Foundations",
+    "difficulty": "Easy",
+    "scenario": "Display flight ID, airline, origin airport, and destination airport for the flight gate monitor.",
+    "businessObjective": "Display flight ID, airline, origin airport, and destination airport for the flight gate monitor.",
+    "schemaSnippet": "FlightSchedule schema",
+    "targetQuery": "SELECT undefined\nFROM FlightSchedule;",
+    "syntaxBlueprint": "SELECT column_1, column_2\nFROM FlightSchedule;",
+    "syntaxRule": "Keywords are SELECT, FROM, AS, DISTINCT. Keep commas between columns only.",
+    "syntaxTrap": "Do not add trailing commas before FROM or quote column identifiers.",
+    "eli5Story": "[SYNTAX BLUEPRINT]:\nSELECT column_1, column_2\nFROM FlightSchedule;\n\n[RULE]: Keywords are SELECT, FROM, AS, DISTINCT. Keep commas between columns only.\n\n[TRAP TO AVOID]: Do not add trailing commas before FROM or quote column identifiers.",
+    "commonMistakes": "Punctuation errors, trailing commas, or quotes around column names.",
+    "learningOutcomes": "Mastered 1.2 Multi-Column & Commas on FlightSchedule.",
+    "challengeSlots": [
+      {
+        "type": "keyword",
+        "value": "SELECT"
+      },
+      {
+        "type": "column",
+        "value": "undefined"
+      },
+      {
+        "type": "keyword",
+        "value": "FROM"
+      },
+      {
+        "type": "table",
+        "value": "FlightSchedule;"
+      }
+    ]
+  },
+  {
+    "id": 1510,
+    "drillNumber": 20,
+    "section": "Section 0: Foundations & Syntax Gym",
+    "title": "Syntax #020: Retrieve pet name, species, age in years, and weight in kg for veterinary patient intake",
+    "industry": "Foundations",
+    "difficulty": "Easy",
+    "scenario": "Retrieve pet name, species, age in years, and weight in kg for veterinary patient intake.",
+    "businessObjective": "Retrieve pet name, species, age in years, and weight in kg for veterinary patient intake.",
+    "schemaSnippet": "PetClinic schema",
+    "targetQuery": "SELECT undefined\nFROM PetClinic;",
+    "syntaxBlueprint": "SELECT column_1, column_2\nFROM PetClinic;",
+    "syntaxRule": "Keywords are SELECT, FROM, AS, DISTINCT. Keep commas between columns only.",
+    "syntaxTrap": "Do not add trailing commas before FROM or quote column identifiers.",
+    "eli5Story": "[SYNTAX BLUEPRINT]:\nSELECT column_1, column_2\nFROM PetClinic;\n\n[RULE]: Keywords are SELECT, FROM, AS, DISTINCT. Keep commas between columns only.\n\n[TRAP TO AVOID]: Do not add trailing commas before FROM or quote column identifiers.",
+    "commonMistakes": "Punctuation errors, trailing commas, or quotes around column names.",
+    "learningOutcomes": "Mastered 1.2 Multi-Column & Commas on PetClinic.",
+    "challengeSlots": [
+      {
+        "type": "keyword",
+        "value": "SELECT"
+      },
+      {
+        "type": "column",
+        "value": "undefined"
+      },
+      {
+        "type": "keyword",
+        "value": "FROM"
+      },
+      {
+        "type": "table",
+        "value": "PetClinic;"
+      }
+    ]
+  },
+  {
+    "id": 1511,
+    "drillNumber": 21,
+    "section": "Section 0: Foundations & Syntax Gym",
+    "title": "Syntax #021: Rename full_name to student_name and gpa to academic_gpa",
+    "industry": "Foundations",
+    "difficulty": "Easy",
+    "scenario": "Rename full_name to student_name and gpa to academic_gpa.",
+    "businessObjective": "Rename full_name to student_name and gpa to academic_gpa.",
+    "schemaSnippet": "Students schema",
+    "targetQuery": "SELECT full_name AS student_name, gpa AS academic_gpa\nFROM Students;",
+    "syntaxBlueprint": "SELECT full_name AS student_name, gpa AS academic_gpa\nFROM Students;",
+    "syntaxRule": "Keywords are SELECT, FROM, AS, DISTINCT. Keep commas between columns only.",
+    "syntaxTrap": "Do not add trailing commas before FROM or quote column identifiers.",
+    "eli5Story": "[SYNTAX BLUEPRINT]:\nSELECT full_name AS student_name, gpa AS academic_gpa\nFROM Students;\n\n[RULE]: Keywords are SELECT, FROM, AS, DISTINCT. Keep commas between columns only.\n\n[TRAP TO AVOID]: Do not add trailing commas before FROM or quote column identifiers.",
+    "commonMistakes": "Punctuation errors, trailing commas, or quotes around column names.",
+    "learningOutcomes": "Mastered 1.3 Column Aliases (AS) on Students.",
+    "challengeSlots": [
+      {
+        "type": "keyword",
+        "value": "SELECT"
+      },
+      {
+        "type": "column",
+        "value": "full_name"
+      },
+      {
+        "type": "keyword",
+        "value": "AS"
+      },
+      {
+        "type": "column",
+        "value": "student_name,"
+      },
+      {
+        "type": "column",
+        "value": "gpa"
+      },
+      {
+        "type": "keyword",
+        "value": "AS"
+      },
+      {
+        "type": "column",
+        "value": "academic_gpa"
+      },
+      {
+        "type": "keyword",
+        "value": "FROM"
+      },
+      {
+        "type": "table",
+        "value": "Students;"
+      }
+    ]
+  },
+  {
+    "id": 1512,
+    "drillNumber": 22,
+    "section": "Section 0: Foundations & Syntax Gym",
+    "title": "Syntax #022: Rename title to book_title and price to retail_price_usd",
+    "industry": "Foundations",
+    "difficulty": "Easy",
+    "scenario": "Rename title to book_title and price to retail_price_usd.",
+    "businessObjective": "Rename title to book_title and price to retail_price_usd.",
+    "schemaSnippet": "Books schema",
+    "targetQuery": "SELECT title AS book_title, price AS retail_price_usd\nFROM Books;",
+    "syntaxBlueprint": "SELECT title AS book_title, price AS retail_price_usd\nFROM Books;",
+    "syntaxRule": "Keywords are SELECT, FROM, AS, DISTINCT. Keep commas between columns only.",
+    "syntaxTrap": "Do not add trailing commas before FROM or quote column identifiers.",
+    "eli5Story": "[SYNTAX BLUEPRINT]:\nSELECT title AS book_title, price AS retail_price_usd\nFROM Books;\n\n[RULE]: Keywords are SELECT, FROM, AS, DISTINCT. Keep commas between columns only.\n\n[TRAP TO AVOID]: Do not add trailing commas before FROM or quote column identifiers.",
+    "commonMistakes": "Punctuation errors, trailing commas, or quotes around column names.",
+    "learningOutcomes": "Mastered 1.3 Column Aliases (AS) on Books.",
+    "challengeSlots": [
+      {
+        "type": "keyword",
+        "value": "SELECT"
+      },
+      {
+        "type": "column",
+        "value": "title"
+      },
+      {
+        "type": "keyword",
+        "value": "AS"
+      },
+      {
+        "type": "column",
+        "value": "book_title,"
+      },
+      {
+        "type": "column",
+        "value": "price"
+      },
+      {
+        "type": "keyword",
+        "value": "AS"
+      },
+      {
+        "type": "column",
+        "value": "retail_price_usd"
+      },
+      {
+        "type": "keyword",
+        "value": "FROM"
+      },
+      {
+        "type": "table",
+        "value": "Books;"
+      }
+    ]
+  },
+  {
+    "id": 1513,
+    "drillNumber": 23,
+    "section": "Section 0: Foundations & Syntax Gym",
+    "title": "Syntax #023: Alias first_name as employee and salary as base_compensation",
+    "industry": "Foundations",
+    "difficulty": "Easy",
+    "scenario": "Alias first_name as employee and salary as base_compensation.",
+    "businessObjective": "Alias first_name as employee and salary as base_compensation.",
+    "schemaSnippet": "Employees schema",
+    "targetQuery": "SELECT first_name AS employee, salary AS base_compensation\nFROM Employees;",
+    "syntaxBlueprint": "SELECT first_name AS employee, salary AS base_compensation\nFROM Employees;",
+    "syntaxRule": "Keywords are SELECT, FROM, AS, DISTINCT. Keep commas between columns only.",
+    "syntaxTrap": "Do not add trailing commas before FROM or quote column identifiers.",
+    "eli5Story": "[SYNTAX BLUEPRINT]:\nSELECT first_name AS employee, salary AS base_compensation\nFROM Employees;\n\n[RULE]: Keywords are SELECT, FROM, AS, DISTINCT. Keep commas between columns only.\n\n[TRAP TO AVOID]: Do not add trailing commas before FROM or quote column identifiers.",
+    "commonMistakes": "Punctuation errors, trailing commas, or quotes around column names.",
+    "learningOutcomes": "Mastered 1.3 Column Aliases (AS) on Employees.",
+    "challengeSlots": [
+      {
+        "type": "keyword",
+        "value": "SELECT"
+      },
+      {
+        "type": "column",
+        "value": "first_name"
+      },
+      {
+        "type": "keyword",
+        "value": "AS"
+      },
+      {
+        "type": "column",
+        "value": "employee,"
+      },
+      {
+        "type": "column",
+        "value": "salary"
+      },
+      {
+        "type": "keyword",
+        "value": "AS"
+      },
+      {
+        "type": "column",
+        "value": "base_compensation"
+      },
+      {
+        "type": "keyword",
+        "value": "FROM"
+      },
+      {
+        "type": "table",
+        "value": "Employees;"
+      }
+    ]
+  },
+  {
+    "id": 1514,
+    "drillNumber": 24,
+    "section": "Section 0: Foundations & Syntax Gym",
+    "title": "Syntax #024: Alias item_name to product and unit_price to cost_per_unit",
+    "industry": "Foundations",
+    "difficulty": "Easy",
+    "scenario": "Alias item_name to product and unit_price to cost_per_unit.",
+    "businessObjective": "Alias item_name to product and unit_price to cost_per_unit.",
+    "schemaSnippet": "GroceryItems schema",
+    "targetQuery": "SELECT item_name AS product, unit_price AS cost_per_unit\nFROM GroceryItems;",
+    "syntaxBlueprint": "SELECT item_name AS product, unit_price AS cost_per_unit\nFROM GroceryItems;",
+    "syntaxRule": "Keywords are SELECT, FROM, AS, DISTINCT. Keep commas between columns only.",
+    "syntaxTrap": "Do not add trailing commas before FROM or quote column identifiers.",
+    "eli5Story": "[SYNTAX BLUEPRINT]:\nSELECT item_name AS product, unit_price AS cost_per_unit\nFROM GroceryItems;\n\n[RULE]: Keywords are SELECT, FROM, AS, DISTINCT. Keep commas between columns only.\n\n[TRAP TO AVOID]: Do not add trailing commas before FROM or quote column identifiers.",
+    "commonMistakes": "Punctuation errors, trailing commas, or quotes around column names.",
+    "learningOutcomes": "Mastered 1.3 Column Aliases (AS) on GroceryItems.",
+    "challengeSlots": [
+      {
+        "type": "keyword",
+        "value": "SELECT"
+      },
+      {
+        "type": "column",
+        "value": "item_name"
+      },
+      {
+        "type": "keyword",
+        "value": "AS"
+      },
+      {
+        "type": "column",
+        "value": "product,"
+      },
+      {
+        "type": "column",
+        "value": "unit_price"
+      },
+      {
+        "type": "keyword",
+        "value": "AS"
+      },
+      {
+        "type": "column",
+        "value": "cost_per_unit"
+      },
+      {
+        "type": "keyword",
+        "value": "FROM"
+      },
+      {
+        "type": "table",
+        "value": "GroceryItems;"
+      }
+    ]
+  },
+  {
+    "id": 1515,
+    "drillNumber": 25,
+    "section": "Section 0: Foundations & Syntax Gym",
+    "title": "Syntax #025: Rename customer_name to buyer and quantity to units_ordered",
+    "industry": "Foundations",
+    "difficulty": "Easy",
+    "scenario": "Rename customer_name to buyer and quantity to units_ordered.",
+    "businessObjective": "Rename customer_name to buyer and quantity to units_ordered.",
+    "schemaSnippet": "Orders schema",
+    "targetQuery": "SELECT customer_name AS buyer, quantity AS units_ordered\nFROM Orders;",
+    "syntaxBlueprint": "SELECT customer_name AS buyer, quantity AS units_ordered\nFROM Orders;",
+    "syntaxRule": "Keywords are SELECT, FROM, AS, DISTINCT. Keep commas between columns only.",
+    "syntaxTrap": "Do not add trailing commas before FROM or quote column identifiers.",
+    "eli5Story": "[SYNTAX BLUEPRINT]:\nSELECT customer_name AS buyer, quantity AS units_ordered\nFROM Orders;\n\n[RULE]: Keywords are SELECT, FROM, AS, DISTINCT. Keep commas between columns only.\n\n[TRAP TO AVOID]: Do not add trailing commas before FROM or quote column identifiers.",
+    "commonMistakes": "Punctuation errors, trailing commas, or quotes around column names.",
+    "learningOutcomes": "Mastered 1.3 Column Aliases (AS) on Orders.",
+    "challengeSlots": [
+      {
+        "type": "keyword",
+        "value": "SELECT"
+      },
+      {
+        "type": "column",
+        "value": "customer_name"
+      },
+      {
+        "type": "keyword",
+        "value": "AS"
+      },
+      {
+        "type": "column",
+        "value": "buyer,"
+      },
+      {
+        "type": "column",
+        "value": "quantity"
+      },
+      {
+        "type": "keyword",
+        "value": "AS"
+      },
+      {
+        "type": "column",
+        "value": "units_ordered"
+      },
+      {
+        "type": "keyword",
+        "value": "FROM"
+      },
+      {
+        "type": "table",
+        "value": "Orders;"
+      }
+    ]
+  },
+  {
+    "id": 1516,
+    "drillNumber": 26,
+    "section": "Section 0: Foundations & Syntax Gym",
+    "title": "Syntax #026: Alias track_title as song and artist_name as musician",
+    "industry": "Foundations",
+    "difficulty": "Easy",
+    "scenario": "Alias track_title as song and artist_name as musician.",
+    "businessObjective": "Alias track_title as song and artist_name as musician.",
+    "schemaSnippet": "MusicTracks schema",
+    "targetQuery": "SELECT track_title AS song, artist_name AS musician\nFROM MusicTracks;",
+    "syntaxBlueprint": "SELECT track_title AS song, artist_name AS musician\nFROM MusicTracks;",
+    "syntaxRule": "Keywords are SELECT, FROM, AS, DISTINCT. Keep commas between columns only.",
+    "syntaxTrap": "Do not add trailing commas before FROM or quote column identifiers.",
+    "eli5Story": "[SYNTAX BLUEPRINT]:\nSELECT track_title AS song, artist_name AS musician\nFROM MusicTracks;\n\n[RULE]: Keywords are SELECT, FROM, AS, DISTINCT. Keep commas between columns only.\n\n[TRAP TO AVOID]: Do not add trailing commas before FROM or quote column identifiers.",
+    "commonMistakes": "Punctuation errors, trailing commas, or quotes around column names.",
+    "learningOutcomes": "Mastered 1.3 Column Aliases (AS) on MusicTracks.",
+    "challengeSlots": [
+      {
+        "type": "keyword",
+        "value": "SELECT"
+      },
+      {
+        "type": "column",
+        "value": "track_title"
+      },
+      {
+        "type": "keyword",
+        "value": "AS"
+      },
+      {
+        "type": "column",
+        "value": "song,"
+      },
+      {
+        "type": "column",
+        "value": "artist_name"
+      },
+      {
+        "type": "keyword",
+        "value": "AS"
+      },
+      {
+        "type": "column",
+        "value": "musician"
+      },
+      {
+        "type": "keyword",
+        "value": "FROM"
+      },
+      {
+        "type": "table",
+        "value": "MusicTracks;"
+      }
+    ]
+  },
+  {
+    "id": 1517,
+    "drillNumber": 27,
+    "section": "Section 0: Foundations & Syntax Gym",
+    "title": "Syntax #027: Rename member_name to client and monthly_fee to rate",
+    "industry": "Foundations",
+    "difficulty": "Easy",
+    "scenario": "Rename member_name to client and monthly_fee to rate.",
+    "businessObjective": "Rename member_name to client and monthly_fee to rate.",
+    "schemaSnippet": "GymMembers schema",
+    "targetQuery": "SELECT member_name AS client, monthly_fee AS rate\nFROM GymMembers;",
+    "syntaxBlueprint": "SELECT member_name AS client, monthly_fee AS rate\nFROM GymMembers;",
+    "syntaxRule": "Keywords are SELECT, FROM, AS, DISTINCT. Keep commas between columns only.",
+    "syntaxTrap": "Do not add trailing commas before FROM or quote column identifiers.",
+    "eli5Story": "[SYNTAX BLUEPRINT]:\nSELECT member_name AS client, monthly_fee AS rate\nFROM GymMembers;\n\n[RULE]: Keywords are SELECT, FROM, AS, DISTINCT. Keep commas between columns only.\n\n[TRAP TO AVOID]: Do not add trailing commas before FROM or quote column identifiers.",
+    "commonMistakes": "Punctuation errors, trailing commas, or quotes around column names.",
+    "learningOutcomes": "Mastered 1.3 Column Aliases (AS) on GymMembers.",
+    "challengeSlots": [
+      {
+        "type": "keyword",
+        "value": "SELECT"
+      },
+      {
+        "type": "column",
+        "value": "member_name"
+      },
+      {
+        "type": "keyword",
+        "value": "AS"
+      },
+      {
+        "type": "column",
+        "value": "client,"
+      },
+      {
+        "type": "column",
+        "value": "monthly_fee"
+      },
+      {
+        "type": "keyword",
+        "value": "AS"
+      },
+      {
+        "type": "column",
+        "value": "rate"
+      },
+      {
+        "type": "keyword",
+        "value": "FROM"
+      },
+      {
+        "type": "table",
+        "value": "GymMembers;"
+      }
+    ]
+  },
+  {
+    "id": 1518,
+    "drillNumber": 28,
+    "section": "Section 0: Foundations & Syntax Gym",
+    "title": "Syntax #028: Alias movie_title to film and star_rating to score",
+    "industry": "Foundations",
+    "difficulty": "Easy",
+    "scenario": "Alias movie_title to film and star_rating to score.",
+    "businessObjective": "Alias movie_title to film and star_rating to score.",
+    "schemaSnippet": "MovieReviews schema",
+    "targetQuery": "SELECT movie_title AS film, star_rating AS score\nFROM MovieReviews;",
+    "syntaxBlueprint": "SELECT movie_title AS film, star_rating AS score\nFROM MovieReviews;",
+    "syntaxRule": "Keywords are SELECT, FROM, AS, DISTINCT. Keep commas between columns only.",
+    "syntaxTrap": "Do not add trailing commas before FROM or quote column identifiers.",
+    "eli5Story": "[SYNTAX BLUEPRINT]:\nSELECT movie_title AS film, star_rating AS score\nFROM MovieReviews;\n\n[RULE]: Keywords are SELECT, FROM, AS, DISTINCT. Keep commas between columns only.\n\n[TRAP TO AVOID]: Do not add trailing commas before FROM or quote column identifiers.",
+    "commonMistakes": "Punctuation errors, trailing commas, or quotes around column names.",
+    "learningOutcomes": "Mastered 1.3 Column Aliases (AS) on MovieReviews.",
+    "challengeSlots": [
+      {
+        "type": "keyword",
+        "value": "SELECT"
+      },
+      {
+        "type": "column",
+        "value": "movie_title"
+      },
+      {
+        "type": "keyword",
+        "value": "AS"
+      },
+      {
+        "type": "column",
+        "value": "film,"
+      },
+      {
+        "type": "column",
+        "value": "star_rating"
+      },
+      {
+        "type": "keyword",
+        "value": "AS"
+      },
+      {
+        "type": "column",
+        "value": "score"
+      },
+      {
+        "type": "keyword",
+        "value": "FROM"
+      },
+      {
+        "type": "table",
+        "value": "MovieReviews;"
+      }
+    ]
+  },
+  {
+    "id": 1519,
+    "drillNumber": 29,
+    "section": "Section 0: Foundations & Syntax Gym",
+    "title": "Syntax #029: Rename flight_id to flight_code and ticket_price to fare_usd",
+    "industry": "Foundations",
+    "difficulty": "Easy",
+    "scenario": "Rename flight_id to flight_code and ticket_price to fare_usd.",
+    "businessObjective": "Rename flight_id to flight_code and ticket_price to fare_usd.",
+    "schemaSnippet": "FlightSchedule schema",
+    "targetQuery": "SELECT flight_id AS flight_code, ticket_price AS fare_usd\nFROM FlightSchedule;",
+    "syntaxBlueprint": "SELECT flight_id AS flight_code, ticket_price AS fare_usd\nFROM FlightSchedule;",
+    "syntaxRule": "Keywords are SELECT, FROM, AS, DISTINCT. Keep commas between columns only.",
+    "syntaxTrap": "Do not add trailing commas before FROM or quote column identifiers.",
+    "eli5Story": "[SYNTAX BLUEPRINT]:\nSELECT flight_id AS flight_code, ticket_price AS fare_usd\nFROM FlightSchedule;\n\n[RULE]: Keywords are SELECT, FROM, AS, DISTINCT. Keep commas between columns only.\n\n[TRAP TO AVOID]: Do not add trailing commas before FROM or quote column identifiers.",
+    "commonMistakes": "Punctuation errors, trailing commas, or quotes around column names.",
+    "learningOutcomes": "Mastered 1.3 Column Aliases (AS) on FlightSchedule.",
+    "challengeSlots": [
+      {
+        "type": "keyword",
+        "value": "SELECT"
+      },
+      {
+        "type": "column",
+        "value": "flight_id"
+      },
+      {
+        "type": "keyword",
+        "value": "AS"
+      },
+      {
+        "type": "column",
+        "value": "flight_code,"
+      },
+      {
+        "type": "column",
+        "value": "ticket_price"
+      },
+      {
+        "type": "keyword",
+        "value": "AS"
+      },
+      {
+        "type": "column",
+        "value": "fare_usd"
+      },
+      {
+        "type": "keyword",
+        "value": "FROM"
+      },
+      {
+        "type": "table",
+        "value": "FlightSchedule;"
+      }
+    ]
+  },
+  {
+    "id": 1520,
+    "drillNumber": 30,
+    "section": "Section 0: Foundations & Syntax Gym",
+    "title": "Syntax #030: Alias pet_name to patient_name and age_years to patient_age",
+    "industry": "Foundations",
+    "difficulty": "Easy",
+    "scenario": "Alias pet_name to patient_name and age_years to patient_age.",
+    "businessObjective": "Alias pet_name to patient_name and age_years to patient_age.",
+    "schemaSnippet": "PetClinic schema",
+    "targetQuery": "SELECT pet_name AS patient_name, age_years AS patient_age\nFROM PetClinic;",
+    "syntaxBlueprint": "SELECT pet_name AS patient_name, age_years AS patient_age\nFROM PetClinic;",
+    "syntaxRule": "Keywords are SELECT, FROM, AS, DISTINCT. Keep commas between columns only.",
+    "syntaxTrap": "Do not add trailing commas before FROM or quote column identifiers.",
+    "eli5Story": "[SYNTAX BLUEPRINT]:\nSELECT pet_name AS patient_name, age_years AS patient_age\nFROM PetClinic;\n\n[RULE]: Keywords are SELECT, FROM, AS, DISTINCT. Keep commas between columns only.\n\n[TRAP TO AVOID]: Do not add trailing commas before FROM or quote column identifiers.",
+    "commonMistakes": "Punctuation errors, trailing commas, or quotes around column names.",
+    "learningOutcomes": "Mastered 1.3 Column Aliases (AS) on PetClinic.",
+    "challengeSlots": [
+      {
+        "type": "keyword",
+        "value": "SELECT"
+      },
+      {
+        "type": "column",
+        "value": "pet_name"
+      },
+      {
+        "type": "keyword",
+        "value": "AS"
+      },
+      {
+        "type": "column",
+        "value": "patient_name,"
+      },
+      {
+        "type": "column",
+        "value": "age_years"
+      },
+      {
+        "type": "keyword",
+        "value": "AS"
+      },
+      {
+        "type": "column",
+        "value": "patient_age"
+      },
+      {
+        "type": "keyword",
+        "value": "FROM"
+      },
+      {
+        "type": "table",
+        "value": "PetClinic;"
+      }
+    ]
+  },
+  {
+    "id": 1521,
+    "drillNumber": 31,
+    "section": "Section 0: Foundations & Syntax Gym",
+    "title": "Syntax #031: Select full_name alongside a static text label 'Active' as enrollment_status",
+    "industry": "Foundations",
+    "difficulty": "Easy",
+    "scenario": "Select full_name alongside a static text label 'Active' as enrollment_status.",
+    "businessObjective": "Select full_name alongside a static text label 'Active' as enrollment_status.",
+    "schemaSnippet": "Students schema",
+    "targetQuery": "SELECT full_name, 'Active' AS enrollment_status\nFROM Students;",
+    "syntaxBlueprint": "SELECT full_name, 'Active' AS enrollment_status\nFROM Students;",
+    "syntaxRule": "Keywords are SELECT, FROM, AS, DISTINCT. Keep commas between columns only.",
+    "syntaxTrap": "Do not add trailing commas before FROM or quote column identifiers.",
+    "eli5Story": "[SYNTAX BLUEPRINT]:\nSELECT full_name, 'Active' AS enrollment_status\nFROM Students;\n\n[RULE]: Keywords are SELECT, FROM, AS, DISTINCT. Keep commas between columns only.\n\n[TRAP TO AVOID]: Do not add trailing commas before FROM or quote column identifiers.",
+    "commonMistakes": "Punctuation errors, trailing commas, or quotes around column names.",
+    "learningOutcomes": "Mastered 1.4 Constant Literals on Students.",
+    "challengeSlots": [
+      {
+        "type": "keyword",
+        "value": "SELECT"
+      },
+      {
+        "type": "column",
+        "value": "full_name,"
+      },
+      {
+        "type": "column",
+        "value": "'Active'"
+      },
+      {
+        "type": "keyword",
+        "value": "AS"
+      },
+      {
+        "type": "column",
+        "value": "enrollment_status"
+      },
+      {
+        "type": "keyword",
+        "value": "FROM"
+      },
+      {
+        "type": "table",
+        "value": "Students;"
+      }
+    ]
+  },
+  {
+    "id": 1522,
+    "drillNumber": 32,
+    "section": "Section 0: Foundations & Syntax Gym",
+    "title": "Syntax #032: Select book title and a fixed location string 'Central Library' as branch_location",
+    "industry": "Foundations",
+    "difficulty": "Easy",
+    "scenario": "Select book title and a fixed location string 'Central Library' as branch_location.",
+    "businessObjective": "Select book title and a fixed location string 'Central Library' as branch_location.",
+    "schemaSnippet": "Books schema",
+    "targetQuery": "SELECT title, 'Central Library' AS branch_location\nFROM Books;",
+    "syntaxBlueprint": "SELECT title, 'Central Library' AS branch_location\nFROM Books;",
+    "syntaxRule": "Keywords are SELECT, FROM, AS, DISTINCT. Keep commas between columns only.",
+    "syntaxTrap": "Do not add trailing commas before FROM or quote column identifiers.",
+    "eli5Story": "[SYNTAX BLUEPRINT]:\nSELECT title, 'Central Library' AS branch_location\nFROM Books;\n\n[RULE]: Keywords are SELECT, FROM, AS, DISTINCT. Keep commas between columns only.\n\n[TRAP TO AVOID]: Do not add trailing commas before FROM or quote column identifiers.",
+    "commonMistakes": "Punctuation errors, trailing commas, or quotes around column names.",
+    "learningOutcomes": "Mastered 1.4 Constant Literals on Books.",
+    "challengeSlots": [
+      {
+        "type": "keyword",
+        "value": "SELECT"
+      },
+      {
+        "type": "column",
+        "value": "title,"
+      },
+      {
+        "type": "column",
+        "value": "'Central"
+      },
+      {
+        "type": "column",
+        "value": "Library'"
+      },
+      {
+        "type": "keyword",
+        "value": "AS"
+      },
+      {
+        "type": "column",
+        "value": "branch_location"
+      },
+      {
+        "type": "keyword",
+        "value": "FROM"
+      },
+      {
+        "type": "table",
+        "value": "Books;"
+      }
+    ]
+  },
+  {
+    "id": 1523,
+    "drillNumber": 33,
+    "section": "Section 0: Foundations & Syntax Gym",
+    "title": "Syntax #033: Select employee first_name alongside a fixed numerical year 2026 as review_year",
+    "industry": "Foundations",
+    "difficulty": "Easy",
+    "scenario": "Select employee first_name alongside a fixed numerical year 2026 as review_year.",
+    "businessObjective": "Select employee first_name alongside a fixed numerical year 2026 as review_year.",
+    "schemaSnippet": "Employees schema",
+    "targetQuery": "SELECT first_name, 2026 AS review_year\nFROM Employees;",
+    "syntaxBlueprint": "SELECT first_name, 2026 AS review_year\nFROM Employees;",
+    "syntaxRule": "Keywords are SELECT, FROM, AS, DISTINCT. Keep commas between columns only.",
+    "syntaxTrap": "Do not add trailing commas before FROM or quote column identifiers.",
+    "eli5Story": "[SYNTAX BLUEPRINT]:\nSELECT first_name, 2026 AS review_year\nFROM Employees;\n\n[RULE]: Keywords are SELECT, FROM, AS, DISTINCT. Keep commas between columns only.\n\n[TRAP TO AVOID]: Do not add trailing commas before FROM or quote column identifiers.",
+    "commonMistakes": "Punctuation errors, trailing commas, or quotes around column names.",
+    "learningOutcomes": "Mastered 1.4 Constant Literals on Employees.",
+    "challengeSlots": [
+      {
+        "type": "keyword",
+        "value": "SELECT"
+      },
+      {
+        "type": "column",
+        "value": "first_name,"
+      },
+      {
+        "type": "column",
+        "value": "2026"
+      },
+      {
+        "type": "keyword",
+        "value": "AS"
+      },
+      {
+        "type": "column",
+        "value": "review_year"
+      },
+      {
+        "type": "keyword",
+        "value": "FROM"
+      },
+      {
+        "type": "table",
+        "value": "Employees;"
+      }
+    ]
+  },
+  {
+    "id": 1524,
+    "drillNumber": 34,
+    "section": "Section 0: Foundations & Syntax Gym",
+    "title": "Syntax #034: Display item_name with a constant string 'In Stock' as availability",
+    "industry": "Foundations",
+    "difficulty": "Easy",
+    "scenario": "Display item_name with a constant string 'In Stock' as availability.",
+    "businessObjective": "Display item_name with a constant string 'In Stock' as availability.",
+    "schemaSnippet": "GroceryItems schema",
+    "targetQuery": "SELECT item_name, 'In Stock' AS availability\nFROM GroceryItems;",
+    "syntaxBlueprint": "SELECT item_name, 'In Stock' AS availability\nFROM GroceryItems;",
+    "syntaxRule": "Keywords are SELECT, FROM, AS, DISTINCT. Keep commas between columns only.",
+    "syntaxTrap": "Do not add trailing commas before FROM or quote column identifiers.",
+    "eli5Story": "[SYNTAX BLUEPRINT]:\nSELECT item_name, 'In Stock' AS availability\nFROM GroceryItems;\n\n[RULE]: Keywords are SELECT, FROM, AS, DISTINCT. Keep commas between columns only.\n\n[TRAP TO AVOID]: Do not add trailing commas before FROM or quote column identifiers.",
+    "commonMistakes": "Punctuation errors, trailing commas, or quotes around column names.",
+    "learningOutcomes": "Mastered 1.4 Constant Literals on GroceryItems.",
+    "challengeSlots": [
+      {
+        "type": "keyword",
+        "value": "SELECT"
+      },
+      {
+        "type": "column",
+        "value": "item_name,"
+      },
+      {
+        "type": "column",
+        "value": "'In"
+      },
+      {
+        "type": "column",
+        "value": "Stock'"
+      },
+      {
+        "type": "keyword",
+        "value": "AS"
+      },
+      {
+        "type": "column",
+        "value": "availability"
+      },
+      {
+        "type": "keyword",
+        "value": "FROM"
+      },
+      {
+        "type": "table",
+        "value": "GroceryItems;"
+      }
+    ]
+  },
+  {
+    "id": 1525,
+    "drillNumber": 35,
+    "section": "Section 0: Foundations & Syntax Gym",
+    "title": "Syntax #035: Select order_id with a boolean literal TRUE as is_verified",
+    "industry": "Foundations",
+    "difficulty": "Easy",
+    "scenario": "Select order_id with a boolean literal TRUE as is_verified.",
+    "businessObjective": "Select order_id with a boolean literal TRUE as is_verified.",
+    "schemaSnippet": "Orders schema",
+    "targetQuery": "SELECT order_id, TRUE AS is_verified\nFROM Orders;",
+    "syntaxBlueprint": "SELECT order_id, TRUE AS is_verified\nFROM Orders;",
+    "syntaxRule": "Keywords are SELECT, FROM, AS, DISTINCT. Keep commas between columns only.",
+    "syntaxTrap": "Do not add trailing commas before FROM or quote column identifiers.",
+    "eli5Story": "[SYNTAX BLUEPRINT]:\nSELECT order_id, TRUE AS is_verified\nFROM Orders;\n\n[RULE]: Keywords are SELECT, FROM, AS, DISTINCT. Keep commas between columns only.\n\n[TRAP TO AVOID]: Do not add trailing commas before FROM or quote column identifiers.",
+    "commonMistakes": "Punctuation errors, trailing commas, or quotes around column names.",
+    "learningOutcomes": "Mastered 1.4 Constant Literals on Orders.",
+    "challengeSlots": [
+      {
+        "type": "keyword",
+        "value": "SELECT"
+      },
+      {
+        "type": "column",
+        "value": "order_id,"
+      },
+      {
+        "type": "column",
+        "value": "TRUE"
+      },
+      {
+        "type": "keyword",
+        "value": "AS"
+      },
+      {
+        "type": "column",
+        "value": "is_verified"
+      },
+      {
+        "type": "keyword",
+        "value": "FROM"
+      },
+      {
+        "type": "table",
+        "value": "Orders;"
+      }
+    ]
+  },
+  {
+    "id": 1526,
+    "drillNumber": 36,
+    "section": "Section 0: Foundations & Syntax Gym",
+    "title": "Syntax #036: Select track_title with constant text 'HQ Audio' as format_type",
+    "industry": "Foundations",
+    "difficulty": "Easy",
+    "scenario": "Select track_title with constant text 'HQ Audio' as format_type.",
+    "businessObjective": "Select track_title with constant text 'HQ Audio' as format_type.",
+    "schemaSnippet": "MusicTracks schema",
+    "targetQuery": "SELECT track_title, 'HQ Audio' AS format_type\nFROM MusicTracks;",
+    "syntaxBlueprint": "SELECT track_title, 'HQ Audio' AS format_type\nFROM MusicTracks;",
+    "syntaxRule": "Keywords are SELECT, FROM, AS, DISTINCT. Keep commas between columns only.",
+    "syntaxTrap": "Do not add trailing commas before FROM or quote column identifiers.",
+    "eli5Story": "[SYNTAX BLUEPRINT]:\nSELECT track_title, 'HQ Audio' AS format_type\nFROM MusicTracks;\n\n[RULE]: Keywords are SELECT, FROM, AS, DISTINCT. Keep commas between columns only.\n\n[TRAP TO AVOID]: Do not add trailing commas before FROM or quote column identifiers.",
+    "commonMistakes": "Punctuation errors, trailing commas, or quotes around column names.",
+    "learningOutcomes": "Mastered 1.4 Constant Literals on MusicTracks.",
+    "challengeSlots": [
+      {
+        "type": "keyword",
+        "value": "SELECT"
+      },
+      {
+        "type": "column",
+        "value": "track_title,"
+      },
+      {
+        "type": "column",
+        "value": "'HQ"
+      },
+      {
+        "type": "column",
+        "value": "Audio'"
+      },
+      {
+        "type": "keyword",
+        "value": "AS"
+      },
+      {
+        "type": "column",
+        "value": "format_type"
+      },
+      {
+        "type": "keyword",
+        "value": "FROM"
+      },
+      {
+        "type": "table",
+        "value": "MusicTracks;"
+      }
+    ]
+  },
+  {
+    "id": 1527,
+    "drillNumber": 37,
+    "section": "Section 0: Foundations & Syntax Gym",
+    "title": "Syntax #037: Display member_name with a constant integer 30 as grace_period_days",
+    "industry": "Foundations",
+    "difficulty": "Easy",
+    "scenario": "Display member_name with a constant integer 30 as grace_period_days.",
+    "businessObjective": "Display member_name with a constant integer 30 as grace_period_days.",
+    "schemaSnippet": "GymMembers schema",
+    "targetQuery": "SELECT member_name, 30 AS grace_period_days\nFROM GymMembers;",
+    "syntaxBlueprint": "SELECT member_name, 30 AS grace_period_days\nFROM GymMembers;",
+    "syntaxRule": "Keywords are SELECT, FROM, AS, DISTINCT. Keep commas between columns only.",
+    "syntaxTrap": "Do not add trailing commas before FROM or quote column identifiers.",
+    "eli5Story": "[SYNTAX BLUEPRINT]:\nSELECT member_name, 30 AS grace_period_days\nFROM GymMembers;\n\n[RULE]: Keywords are SELECT, FROM, AS, DISTINCT. Keep commas between columns only.\n\n[TRAP TO AVOID]: Do not add trailing commas before FROM or quote column identifiers.",
+    "commonMistakes": "Punctuation errors, trailing commas, or quotes around column names.",
+    "learningOutcomes": "Mastered 1.4 Constant Literals on GymMembers.",
+    "challengeSlots": [
+      {
+        "type": "keyword",
+        "value": "SELECT"
+      },
+      {
+        "type": "column",
+        "value": "member_name,"
+      },
+      {
+        "type": "column",
+        "value": "30"
+      },
+      {
+        "type": "keyword",
+        "value": "AS"
+      },
+      {
+        "type": "column",
+        "value": "grace_period_days"
+      },
+      {
+        "type": "keyword",
+        "value": "FROM"
+      },
+      {
+        "type": "table",
+        "value": "GymMembers;"
+      }
+    ]
+  },
+  {
+    "id": 1528,
+    "drillNumber": 38,
+    "section": "Section 0: Foundations & Syntax Gym",
+    "title": "Syntax #038: Select movie_title with a decimal constant 5.0 as max_possible_rating",
+    "industry": "Foundations",
+    "difficulty": "Easy",
+    "scenario": "Select movie_title with a decimal constant 5.0 as max_possible_rating.",
+    "businessObjective": "Select movie_title with a decimal constant 5.0 as max_possible_rating.",
+    "schemaSnippet": "MovieReviews schema",
+    "targetQuery": "SELECT movie_title, 5.0 AS max_possible_rating\nFROM MovieReviews;",
+    "syntaxBlueprint": "SELECT movie_title, 5.0 AS max_possible_rating\nFROM MovieReviews;",
+    "syntaxRule": "Keywords are SELECT, FROM, AS, DISTINCT. Keep commas between columns only.",
+    "syntaxTrap": "Do not add trailing commas before FROM or quote column identifiers.",
+    "eli5Story": "[SYNTAX BLUEPRINT]:\nSELECT movie_title, 5.0 AS max_possible_rating\nFROM MovieReviews;\n\n[RULE]: Keywords are SELECT, FROM, AS, DISTINCT. Keep commas between columns only.\n\n[TRAP TO AVOID]: Do not add trailing commas before FROM or quote column identifiers.",
+    "commonMistakes": "Punctuation errors, trailing commas, or quotes around column names.",
+    "learningOutcomes": "Mastered 1.4 Constant Literals on MovieReviews.",
+    "challengeSlots": [
+      {
+        "type": "keyword",
+        "value": "SELECT"
+      },
+      {
+        "type": "column",
+        "value": "movie_title,"
+      },
+      {
+        "type": "column",
+        "value": "5.0"
+      },
+      {
+        "type": "keyword",
+        "value": "AS"
+      },
+      {
+        "type": "column",
+        "value": "max_possible_rating"
+      },
+      {
+        "type": "keyword",
+        "value": "FROM"
+      },
+      {
+        "type": "table",
+        "value": "MovieReviews;"
+      }
+    ]
+  },
+  {
+    "id": 1529,
+    "drillNumber": 39,
+    "section": "Section 0: Foundations & Syntax Gym",
+    "title": "Syntax #039: Select flight_id with a static string 'Terminal 2' as assigned_terminal",
+    "industry": "Foundations",
+    "difficulty": "Easy",
+    "scenario": "Select flight_id with a static string 'Terminal 2' as assigned_terminal.",
+    "businessObjective": "Select flight_id with a static string 'Terminal 2' as assigned_terminal.",
+    "schemaSnippet": "FlightSchedule schema",
+    "targetQuery": "SELECT flight_id, 'Terminal 2' AS assigned_terminal\nFROM FlightSchedule;",
+    "syntaxBlueprint": "SELECT flight_id, 'Terminal 2' AS assigned_terminal\nFROM FlightSchedule;",
+    "syntaxRule": "Keywords are SELECT, FROM, AS, DISTINCT. Keep commas between columns only.",
+    "syntaxTrap": "Do not add trailing commas before FROM or quote column identifiers.",
+    "eli5Story": "[SYNTAX BLUEPRINT]:\nSELECT flight_id, 'Terminal 2' AS assigned_terminal\nFROM FlightSchedule;\n\n[RULE]: Keywords are SELECT, FROM, AS, DISTINCT. Keep commas between columns only.\n\n[TRAP TO AVOID]: Do not add trailing commas before FROM or quote column identifiers.",
+    "commonMistakes": "Punctuation errors, trailing commas, or quotes around column names.",
+    "learningOutcomes": "Mastered 1.4 Constant Literals on FlightSchedule.",
+    "challengeSlots": [
+      {
+        "type": "keyword",
+        "value": "SELECT"
+      },
+      {
+        "type": "column",
+        "value": "flight_id,"
+      },
+      {
+        "type": "column",
+        "value": "'Terminal"
+      },
+      {
+        "type": "column",
+        "value": "2'"
+      },
+      {
+        "type": "keyword",
+        "value": "AS"
+      },
+      {
+        "type": "column",
+        "value": "assigned_terminal"
+      },
+      {
+        "type": "keyword",
+        "value": "FROM"
+      },
+      {
+        "type": "table",
+        "value": "FlightSchedule;"
+      }
+    ]
+  },
+  {
+    "id": 1530,
+    "drillNumber": 40,
+    "section": "Section 0: Foundations & Syntax Gym",
+    "title": "Syntax #040: Display pet_name with fixed text 'Downtown Vet' as clinic_name",
+    "industry": "Foundations",
+    "difficulty": "Easy",
+    "scenario": "Display pet_name with fixed text 'Downtown Vet' as clinic_name.",
+    "businessObjective": "Display pet_name with fixed text 'Downtown Vet' as clinic_name.",
+    "schemaSnippet": "PetClinic schema",
+    "targetQuery": "SELECT pet_name, 'Downtown Vet' AS clinic_name\nFROM PetClinic;",
+    "syntaxBlueprint": "SELECT pet_name, 'Downtown Vet' AS clinic_name\nFROM PetClinic;",
+    "syntaxRule": "Keywords are SELECT, FROM, AS, DISTINCT. Keep commas between columns only.",
+    "syntaxTrap": "Do not add trailing commas before FROM or quote column identifiers.",
+    "eli5Story": "[SYNTAX BLUEPRINT]:\nSELECT pet_name, 'Downtown Vet' AS clinic_name\nFROM PetClinic;\n\n[RULE]: Keywords are SELECT, FROM, AS, DISTINCT. Keep commas between columns only.\n\n[TRAP TO AVOID]: Do not add trailing commas before FROM or quote column identifiers.",
+    "commonMistakes": "Punctuation errors, trailing commas, or quotes around column names.",
+    "learningOutcomes": "Mastered 1.4 Constant Literals on PetClinic.",
+    "challengeSlots": [
+      {
+        "type": "keyword",
+        "value": "SELECT"
+      },
+      {
+        "type": "column",
+        "value": "pet_name,"
+      },
+      {
+        "type": "column",
+        "value": "'Downtown"
+      },
+      {
+        "type": "column",
+        "value": "Vet'"
+      },
+      {
+        "type": "keyword",
+        "value": "AS"
+      },
+      {
+        "type": "column",
+        "value": "clinic_name"
+      },
+      {
+        "type": "keyword",
+        "value": "FROM"
+      },
+      {
+        "type": "table",
+        "value": "PetClinic;"
+      }
+    ]
+  },
+  {
+    "id": 1531,
+    "drillNumber": 41,
+    "section": "Section 0: Foundations & Syntax Gym",
+    "title": "Syntax #041: Calculate the total inventory value by multiplying price by stock_qty",
+    "industry": "Foundations",
+    "difficulty": "Easy",
+    "scenario": "Calculate the total inventory value by multiplying price by stock_qty.",
+    "businessObjective": "Calculate the total inventory value by multiplying price by stock_qty.",
+    "schemaSnippet": "Books schema",
+    "targetQuery": "SELECT title, price, (price * stock_qty) AS total_inventory_value\nFROM Books;",
+    "syntaxBlueprint": "SELECT title, price, (price * stock_qty) AS total_inventory_value\nFROM Books;",
+    "syntaxRule": "Keywords are SELECT, FROM, AS, DISTINCT. Keep commas between columns only.",
+    "syntaxTrap": "Do not add trailing commas before FROM or quote column identifiers.",
+    "eli5Story": "[SYNTAX BLUEPRINT]:\nSELECT title, price, (price * stock_qty) AS total_inventory_value\nFROM Books;\n\n[RULE]: Keywords are SELECT, FROM, AS, DISTINCT. Keep commas between columns only.\n\n[TRAP TO AVOID]: Do not add trailing commas before FROM or quote column identifiers.",
+    "commonMistakes": "Punctuation errors, trailing commas, or quotes around column names.",
+    "learningOutcomes": "Mastered 1.5 Arithmetic Operators on Books.",
+    "challengeSlots": [
+      {
+        "type": "keyword",
+        "value": "SELECT"
+      },
+      {
+        "type": "column",
+        "value": "title,"
+      },
+      {
+        "type": "column",
+        "value": "price,"
+      },
+      {
+        "type": "column",
+        "value": "(price"
+      },
+      {
+        "type": "column",
+        "value": "*"
+      },
+      {
+        "type": "column",
+        "value": "stock_qty)"
+      },
+      {
+        "type": "keyword",
+        "value": "AS"
+      },
+      {
+        "type": "column",
+        "value": "total_inventory_value"
+      },
+      {
+        "type": "keyword",
+        "value": "FROM"
+      },
+      {
+        "type": "table",
+        "value": "Books;"
+      }
+    ]
+  },
+  {
+    "id": 1532,
+    "drillNumber": 42,
+    "section": "Section 0: Foundations & Syntax Gym",
+    "title": "Syntax #042: Compute order subtotal by multiplying unit_price by quantity",
+    "industry": "Foundations",
+    "difficulty": "Easy",
+    "scenario": "Compute order subtotal by multiplying unit_price by quantity.",
+    "businessObjective": "Compute order subtotal by multiplying unit_price by quantity.",
+    "schemaSnippet": "Orders schema",
+    "targetQuery": "SELECT order_id, (unit_price * quantity) AS subtotal\nFROM Orders;",
+    "syntaxBlueprint": "SELECT order_id, (unit_price * quantity) AS subtotal\nFROM Orders;",
+    "syntaxRule": "Keywords are SELECT, FROM, AS, DISTINCT. Keep commas between columns only.",
+    "syntaxTrap": "Do not add trailing commas before FROM or quote column identifiers.",
+    "eli5Story": "[SYNTAX BLUEPRINT]:\nSELECT order_id, (unit_price * quantity) AS subtotal\nFROM Orders;\n\n[RULE]: Keywords are SELECT, FROM, AS, DISTINCT. Keep commas between columns only.\n\n[TRAP TO AVOID]: Do not add trailing commas before FROM or quote column identifiers.",
+    "commonMistakes": "Punctuation errors, trailing commas, or quotes around column names.",
+    "learningOutcomes": "Mastered 1.5 Arithmetic Operators on Orders.",
+    "challengeSlots": [
+      {
+        "type": "keyword",
+        "value": "SELECT"
+      },
+      {
+        "type": "column",
+        "value": "order_id,"
+      },
+      {
+        "type": "column",
+        "value": "(unit_price"
+      },
+      {
+        "type": "column",
+        "value": "*"
+      },
+      {
+        "type": "column",
+        "value": "quantity)"
+      },
+      {
+        "type": "keyword",
+        "value": "AS"
+      },
+      {
+        "type": "column",
+        "value": "subtotal"
+      },
+      {
+        "type": "keyword",
+        "value": "FROM"
+      },
+      {
+        "type": "table",
+        "value": "Orders;"
+      }
+    ]
+  },
+  {
+    "id": 1533,
+    "drillNumber": 43,
+    "section": "Section 0: Foundations & Syntax Gym",
+    "title": "Syntax #043: Calculate a 10% raise amount and the resulting projected salary",
+    "industry": "Foundations",
+    "difficulty": "Easy",
+    "scenario": "Calculate a 10% raise amount and the resulting projected salary.",
+    "businessObjective": "Calculate a 10% raise amount and the resulting projected salary.",
+    "schemaSnippet": "Employees schema",
+    "targetQuery": "SELECT first_name, salary, (salary * 0.10) AS raise_amount, (salary * 1.10) AS projected_salary\nFROM Employees;",
+    "syntaxBlueprint": "SELECT first_name, salary, (salary * 0.10) AS raise_amount, (salary * 1.10) AS projected_salary\nFROM Employees;",
+    "syntaxRule": "Keywords are SELECT, FROM, AS, DISTINCT. Keep commas between columns only.",
+    "syntaxTrap": "Do not add trailing commas before FROM or quote column identifiers.",
+    "eli5Story": "[SYNTAX BLUEPRINT]:\nSELECT first_name, salary, (salary * 0.10) AS raise_amount, (salary * 1.10) AS projected_salary\nFROM Employees;\n\n[RULE]: Keywords are SELECT, FROM, AS, DISTINCT. Keep commas between columns only.\n\n[TRAP TO AVOID]: Do not add trailing commas before FROM or quote column identifiers.",
+    "commonMistakes": "Punctuation errors, trailing commas, or quotes around column names.",
+    "learningOutcomes": "Mastered 1.5 Arithmetic Operators on Employees.",
+    "challengeSlots": [
+      {
+        "type": "keyword",
+        "value": "SELECT"
+      },
+      {
+        "type": "column",
+        "value": "first_name,"
+      },
+      {
+        "type": "column",
+        "value": "salary,"
+      },
+      {
+        "type": "column",
+        "value": "(salary"
+      },
+      {
+        "type": "column",
+        "value": "*"
+      },
+      {
+        "type": "column",
+        "value": "0.10)"
+      },
+      {
+        "type": "keyword",
+        "value": "AS"
+      },
+      {
+        "type": "column",
+        "value": "raise_amount,"
+      },
+      {
+        "type": "column",
+        "value": "(salary"
+      },
+      {
+        "type": "column",
+        "value": "*"
+      },
+      {
+        "type": "column",
+        "value": "1.10)"
+      },
+      {
+        "type": "keyword",
+        "value": "AS"
+      },
+      {
+        "type": "column",
+        "value": "projected_salary"
+      },
+      {
+        "type": "keyword",
+        "value": "FROM"
+      },
+      {
+        "type": "table",
+        "value": "Employees;"
+      }
+    ]
+  },
+  {
+    "id": 1534,
+    "drillNumber": 44,
+    "section": "Section 0: Foundations & Syntax Gym",
+    "title": "Syntax #044: Convert a 4.0 GPA to an approximate 100-point scale by multiplying by 25.0",
+    "industry": "Foundations",
+    "difficulty": "Easy",
+    "scenario": "Convert a 4.0 GPA to an approximate 100-point scale by multiplying by 25.0.",
+    "businessObjective": "Convert a 4.0 GPA to an approximate 100-point scale by multiplying by 25.0.",
+    "schemaSnippet": "Students schema",
+    "targetQuery": "SELECT full_name, gpa, (gpa * 25.0) AS gpa_percentage\nFROM Students;",
+    "syntaxBlueprint": "SELECT full_name, gpa, (gpa * 25.0) AS gpa_percentage\nFROM Students;",
+    "syntaxRule": "Keywords are SELECT, FROM, AS, DISTINCT. Keep commas between columns only.",
+    "syntaxTrap": "Do not add trailing commas before FROM or quote column identifiers.",
+    "eli5Story": "[SYNTAX BLUEPRINT]:\nSELECT full_name, gpa, (gpa * 25.0) AS gpa_percentage\nFROM Students;\n\n[RULE]: Keywords are SELECT, FROM, AS, DISTINCT. Keep commas between columns only.\n\n[TRAP TO AVOID]: Do not add trailing commas before FROM or quote column identifiers.",
+    "commonMistakes": "Punctuation errors, trailing commas, or quotes around column names.",
+    "learningOutcomes": "Mastered 1.5 Arithmetic Operators on Students.",
+    "challengeSlots": [
+      {
+        "type": "keyword",
+        "value": "SELECT"
+      },
+      {
+        "type": "column",
+        "value": "full_name,"
+      },
+      {
+        "type": "column",
+        "value": "gpa,"
+      },
+      {
+        "type": "column",
+        "value": "(gpa"
+      },
+      {
+        "type": "column",
+        "value": "*"
+      },
+      {
+        "type": "column",
+        "value": "25.0)"
+      },
+      {
+        "type": "keyword",
+        "value": "AS"
+      },
+      {
+        "type": "column",
+        "value": "gpa_percentage"
+      },
+      {
+        "type": "keyword",
+        "value": "FROM"
+      },
+      {
+        "type": "table",
+        "value": "Students;"
+      }
+    ]
+  },
+  {
+    "id": 1535,
+    "drillNumber": 45,
+    "section": "Section 0: Foundations & Syntax Gym",
+    "title": "Syntax #045: Calculate the item price including an 8% sales tax (unit_price * 1.08)",
+    "industry": "Foundations",
+    "difficulty": "Easy",
+    "scenario": "Calculate the item price including an 8% sales tax (unit_price * 1.08).",
+    "businessObjective": "Calculate the item price including an 8% sales tax (unit_price * 1.08).",
+    "schemaSnippet": "GroceryItems schema",
+    "targetQuery": "SELECT item_name, unit_price, (unit_price * 1.08) AS price_with_tax\nFROM GroceryItems;",
+    "syntaxBlueprint": "SELECT item_name, unit_price, (unit_price * 1.08) AS price_with_tax\nFROM GroceryItems;",
+    "syntaxRule": "Keywords are SELECT, FROM, AS, DISTINCT. Keep commas between columns only.",
+    "syntaxTrap": "Do not add trailing commas before FROM or quote column identifiers.",
+    "eli5Story": "[SYNTAX BLUEPRINT]:\nSELECT item_name, unit_price, (unit_price * 1.08) AS price_with_tax\nFROM GroceryItems;\n\n[RULE]: Keywords are SELECT, FROM, AS, DISTINCT. Keep commas between columns only.\n\n[TRAP TO AVOID]: Do not add trailing commas before FROM or quote column identifiers.",
+    "commonMistakes": "Punctuation errors, trailing commas, or quotes around column names.",
+    "learningOutcomes": "Mastered 1.5 Arithmetic Operators on GroceryItems.",
+    "challengeSlots": [
+      {
+        "type": "keyword",
+        "value": "SELECT"
+      },
+      {
+        "type": "column",
+        "value": "item_name,"
+      },
+      {
+        "type": "column",
+        "value": "unit_price,"
+      },
+      {
+        "type": "column",
+        "value": "(unit_price"
+      },
+      {
+        "type": "column",
+        "value": "*"
+      },
+      {
+        "type": "column",
+        "value": "1.08)"
+      },
+      {
+        "type": "keyword",
+        "value": "AS"
+      },
+      {
+        "type": "column",
+        "value": "price_with_tax"
+      },
+      {
+        "type": "keyword",
+        "value": "FROM"
+      },
+      {
+        "type": "table",
+        "value": "GroceryItems;"
+      }
+    ]
+  },
+  {
+    "id": 1536,
+    "drillNumber": 46,
+    "section": "Section 0: Foundations & Syntax Gym",
+    "title": "Syntax #046: Convert duration in seconds into fractional minutes by dividing by 60.0",
+    "industry": "Foundations",
+    "difficulty": "Easy",
+    "scenario": "Convert duration in seconds into fractional minutes by dividing by 60.0.",
+    "businessObjective": "Convert duration in seconds into fractional minutes by dividing by 60.0.",
+    "schemaSnippet": "MusicTracks schema",
+    "targetQuery": "SELECT track_title, duration_seconds, (duration_seconds / 60.0) AS duration_minutes\nFROM MusicTracks;",
+    "syntaxBlueprint": "SELECT track_title, duration_seconds, (duration_seconds / 60.0) AS duration_minutes\nFROM MusicTracks;",
+    "syntaxRule": "Keywords are SELECT, FROM, AS, DISTINCT. Keep commas between columns only.",
+    "syntaxTrap": "Do not add trailing commas before FROM or quote column identifiers.",
+    "eli5Story": "[SYNTAX BLUEPRINT]:\nSELECT track_title, duration_seconds, (duration_seconds / 60.0) AS duration_minutes\nFROM MusicTracks;\n\n[RULE]: Keywords are SELECT, FROM, AS, DISTINCT. Keep commas between columns only.\n\n[TRAP TO AVOID]: Do not add trailing commas before FROM or quote column identifiers.",
+    "commonMistakes": "Punctuation errors, trailing commas, or quotes around column names.",
+    "learningOutcomes": "Mastered 1.5 Arithmetic Operators on MusicTracks.",
+    "challengeSlots": [
+      {
+        "type": "keyword",
+        "value": "SELECT"
+      },
+      {
+        "type": "column",
+        "value": "track_title,"
+      },
+      {
+        "type": "column",
+        "value": "duration_seconds,"
+      },
+      {
+        "type": "column",
+        "value": "(duration_seconds"
+      },
+      {
+        "type": "column",
+        "value": "/"
+      },
+      {
+        "type": "column",
+        "value": "60.0)"
+      },
+      {
+        "type": "keyword",
+        "value": "AS"
+      },
+      {
+        "type": "column",
+        "value": "duration_minutes"
+      },
+      {
+        "type": "keyword",
+        "value": "FROM"
+      },
+      {
+        "type": "table",
+        "value": "MusicTracks;"
+      }
+    ]
+  },
+  {
+    "id": 1537,
+    "drillNumber": 47,
+    "section": "Section 0: Foundations & Syntax Gym",
+    "title": "Syntax #047: Compute the total annual membership cost by multiplying monthly_fee by 12",
+    "industry": "Foundations",
+    "difficulty": "Easy",
+    "scenario": "Compute the total annual membership cost by multiplying monthly_fee by 12.",
+    "businessObjective": "Compute the total annual membership cost by multiplying monthly_fee by 12.",
+    "schemaSnippet": "GymMembers schema",
+    "targetQuery": "SELECT member_name, monthly_fee, (monthly_fee * 12) AS annual_cost\nFROM GymMembers;",
+    "syntaxBlueprint": "SELECT member_name, monthly_fee, (monthly_fee * 12) AS annual_cost\nFROM GymMembers;",
+    "syntaxRule": "Keywords are SELECT, FROM, AS, DISTINCT. Keep commas between columns only.",
+    "syntaxTrap": "Do not add trailing commas before FROM or quote column identifiers.",
+    "eli5Story": "[SYNTAX BLUEPRINT]:\nSELECT member_name, monthly_fee, (monthly_fee * 12) AS annual_cost\nFROM GymMembers;\n\n[RULE]: Keywords are SELECT, FROM, AS, DISTINCT. Keep commas between columns only.\n\n[TRAP TO AVOID]: Do not add trailing commas before FROM or quote column identifiers.",
+    "commonMistakes": "Punctuation errors, trailing commas, or quotes around column names.",
+    "learningOutcomes": "Mastered 1.5 Arithmetic Operators on GymMembers.",
+    "challengeSlots": [
+      {
+        "type": "keyword",
+        "value": "SELECT"
+      },
+      {
+        "type": "column",
+        "value": "member_name,"
+      },
+      {
+        "type": "column",
+        "value": "monthly_fee,"
+      },
+      {
+        "type": "column",
+        "value": "(monthly_fee"
+      },
+      {
+        "type": "column",
+        "value": "*"
+      },
+      {
+        "type": "column",
+        "value": "12)"
+      },
+      {
+        "type": "keyword",
+        "value": "AS"
+      },
+      {
+        "type": "column",
+        "value": "annual_cost"
+      },
+      {
+        "type": "keyword",
+        "value": "FROM"
+      },
+      {
+        "type": "table",
+        "value": "GymMembers;"
+      }
+    ]
+  },
+  {
+    "id": 1538,
+    "drillNumber": 48,
+    "section": "Section 0: Foundations & Syntax Gym",
+    "title": "Syntax #048: Add a $35 standard checked bag fee to ticket_price",
+    "industry": "Foundations",
+    "difficulty": "Easy",
+    "scenario": "Add a $35 standard checked bag fee to ticket_price.",
+    "businessObjective": "Add a $35 standard checked bag fee to ticket_price.",
+    "schemaSnippet": "FlightSchedule schema",
+    "targetQuery": "SELECT flight_id, ticket_price, (ticket_price + 35.00) AS price_with_baggage\nFROM FlightSchedule;",
+    "syntaxBlueprint": "SELECT flight_id, ticket_price, (ticket_price + 35.00) AS price_with_baggage\nFROM FlightSchedule;",
+    "syntaxRule": "Keywords are SELECT, FROM, AS, DISTINCT. Keep commas between columns only.",
+    "syntaxTrap": "Do not add trailing commas before FROM or quote column identifiers.",
+    "eli5Story": "[SYNTAX BLUEPRINT]:\nSELECT flight_id, ticket_price, (ticket_price + 35.00) AS price_with_baggage\nFROM FlightSchedule;\n\n[RULE]: Keywords are SELECT, FROM, AS, DISTINCT. Keep commas between columns only.\n\n[TRAP TO AVOID]: Do not add trailing commas before FROM or quote column identifiers.",
+    "commonMistakes": "Punctuation errors, trailing commas, or quotes around column names.",
+    "learningOutcomes": "Mastered 1.5 Arithmetic Operators on FlightSchedule.",
+    "challengeSlots": [
+      {
+        "type": "keyword",
+        "value": "SELECT"
+      },
+      {
+        "type": "column",
+        "value": "flight_id,"
+      },
+      {
+        "type": "column",
+        "value": "ticket_price,"
+      },
+      {
+        "type": "column",
+        "value": "(ticket_price"
+      },
+      {
+        "type": "column",
+        "value": "+"
+      },
+      {
+        "type": "column",
+        "value": "35.00)"
+      },
+      {
+        "type": "keyword",
+        "value": "AS"
+      },
+      {
+        "type": "column",
+        "value": "price_with_baggage"
+      },
+      {
+        "type": "keyword",
+        "value": "FROM"
+      },
+      {
+        "type": "table",
+        "value": "FlightSchedule;"
+      }
+    ]
+  },
+  {
+    "id": 1539,
+    "drillNumber": 49,
+    "section": "Section 0: Foundations & Syntax Gym",
+    "title": "Syntax #049: Convert pet weight from kilograms to pounds by multiplying by 2.20462",
+    "industry": "Foundations",
+    "difficulty": "Easy",
+    "scenario": "Convert pet weight from kilograms to pounds by multiplying by 2.20462.",
+    "businessObjective": "Convert pet weight from kilograms to pounds by multiplying by 2.20462.",
+    "schemaSnippet": "PetClinic schema",
+    "targetQuery": "SELECT pet_name, weight_kg, (weight_kg * 2.20462) AS weight_lbs\nFROM PetClinic;",
+    "syntaxBlueprint": "SELECT pet_name, weight_kg, (weight_kg * 2.20462) AS weight_lbs\nFROM PetClinic;",
+    "syntaxRule": "Keywords are SELECT, FROM, AS, DISTINCT. Keep commas between columns only.",
+    "syntaxTrap": "Do not add trailing commas before FROM or quote column identifiers.",
+    "eli5Story": "[SYNTAX BLUEPRINT]:\nSELECT pet_name, weight_kg, (weight_kg * 2.20462) AS weight_lbs\nFROM PetClinic;\n\n[RULE]: Keywords are SELECT, FROM, AS, DISTINCT. Keep commas between columns only.\n\n[TRAP TO AVOID]: Do not add trailing commas before FROM or quote column identifiers.",
+    "commonMistakes": "Punctuation errors, trailing commas, or quotes around column names.",
+    "learningOutcomes": "Mastered 1.5 Arithmetic Operators on PetClinic.",
+    "challengeSlots": [
+      {
+        "type": "keyword",
+        "value": "SELECT"
+      },
+      {
+        "type": "column",
+        "value": "pet_name,"
+      },
+      {
+        "type": "column",
+        "value": "weight_kg,"
+      },
+      {
+        "type": "column",
+        "value": "(weight_kg"
+      },
+      {
+        "type": "column",
+        "value": "*"
+      },
+      {
+        "type": "column",
+        "value": "2.20462)"
+      },
+      {
+        "type": "keyword",
+        "value": "AS"
+      },
+      {
+        "type": "column",
+        "value": "weight_lbs"
+      },
+      {
+        "type": "keyword",
+        "value": "FROM"
+      },
+      {
+        "type": "table",
+        "value": "PetClinic;"
+      }
+    ]
+  },
+  {
+    "id": 1540,
+    "drillNumber": 50,
+    "section": "Section 0: Foundations & Syntax Gym",
+    "title": "Syntax #050: Calculate the final discounted total: subtotal times (1 - discount_pct)",
+    "industry": "Foundations",
+    "difficulty": "Easy",
+    "scenario": "Calculate the final discounted total: subtotal times (1 - discount_pct).",
+    "businessObjective": "Calculate the final discounted total: subtotal times (1 - discount_pct).",
+    "schemaSnippet": "Orders schema",
+    "targetQuery": "SELECT order_id, unit_price, quantity, ((unit_price * quantity) * (1 - discount_pct)) AS final_charged_amount\nFROM Orders;",
+    "syntaxBlueprint": "SELECT order_id, unit_price, quantity, ((unit_price * quantity) * (1 - discount_pct)) AS final_charged_amount\nFROM Orders;",
+    "syntaxRule": "Keywords are SELECT, FROM, AS, DISTINCT. Keep commas between columns only.",
+    "syntaxTrap": "Do not add trailing commas before FROM or quote column identifiers.",
+    "eli5Story": "[SYNTAX BLUEPRINT]:\nSELECT order_id, unit_price, quantity, ((unit_price * quantity) * (1 - discount_pct)) AS final_charged_amount\nFROM Orders;\n\n[RULE]: Keywords are SELECT, FROM, AS, DISTINCT. Keep commas between columns only.\n\n[TRAP TO AVOID]: Do not add trailing commas before FROM or quote column identifiers.",
+    "commonMistakes": "Punctuation errors, trailing commas, or quotes around column names.",
+    "learningOutcomes": "Mastered 1.5 Arithmetic Operators on Orders.",
+    "challengeSlots": [
+      {
+        "type": "keyword",
+        "value": "SELECT"
+      },
+      {
+        "type": "column",
+        "value": "order_id,"
+      },
+      {
+        "type": "column",
+        "value": "unit_price,"
+      },
+      {
+        "type": "column",
+        "value": "quantity,"
+      },
+      {
+        "type": "column",
+        "value": "((unit_price"
+      },
+      {
+        "type": "column",
+        "value": "*"
+      },
+      {
+        "type": "column",
+        "value": "quantity)"
+      },
+      {
+        "type": "column",
+        "value": "*"
+      },
+      {
+        "type": "column",
+        "value": "(1"
+      },
+      {
+        "type": "column",
+        "value": "-"
+      },
+      {
+        "type": "column",
+        "value": "discount_pct))"
+      },
+      {
+        "type": "keyword",
+        "value": "AS"
+      },
+      {
+        "type": "column",
+        "value": "final_charged_amount"
+      },
+      {
+        "type": "keyword",
+        "value": "FROM"
+      },
+      {
+        "type": "table",
+        "value": "Orders;"
+      }
+    ]
+  },
+  {
+    "id": 1541,
+    "drillNumber": 51,
+    "section": "Section 0: Foundations & Syntax Gym",
+    "title": "Syntax #051: Round calculated price with 8.25% sales tax to 2 decimal places using ROUND()",
+    "industry": "Foundations",
+    "difficulty": "Easy",
+    "scenario": "Round calculated price with 8.25% sales tax to 2 decimal places using ROUND().",
+    "businessObjective": "Round calculated price with 8.25% sales tax to 2 decimal places using ROUND().",
+    "schemaSnippet": "GroceryItems schema",
+    "targetQuery": "SELECT item_name, ROUND(unit_price * 1.0825, 2) AS rounded_tax_price\nFROM GroceryItems;",
+    "syntaxBlueprint": "SELECT item_name, ROUND(unit_price * 1.0825, 2) AS rounded_tax_price\nFROM GroceryItems;",
+    "syntaxRule": "Keywords are SELECT, FROM, AS, DISTINCT. Keep commas between columns only.",
+    "syntaxTrap": "Do not add trailing commas before FROM or quote column identifiers.",
+    "eli5Story": "[SYNTAX BLUEPRINT]:\nSELECT item_name, ROUND(unit_price * 1.0825, 2) AS rounded_tax_price\nFROM GroceryItems;\n\n[RULE]: Keywords are SELECT, FROM, AS, DISTINCT. Keep commas between columns only.\n\n[TRAP TO AVOID]: Do not add trailing commas before FROM or quote column identifiers.",
+    "commonMistakes": "Punctuation errors, trailing commas, or quotes around column names.",
+    "learningOutcomes": "Mastered 1.6 Math & Rounding Functions on GroceryItems.",
+    "challengeSlots": [
+      {
+        "type": "keyword",
+        "value": "SELECT"
+      },
+      {
+        "type": "column",
+        "value": "item_name,"
+      },
+      {
+        "type": "column",
+        "value": "ROUND(unit_price"
+      },
+      {
+        "type": "column",
+        "value": "*"
+      },
+      {
+        "type": "column",
+        "value": "1.0825,"
+      },
+      {
+        "type": "column",
+        "value": "2)"
+      },
+      {
+        "type": "keyword",
+        "value": "AS"
+      },
+      {
+        "type": "column",
+        "value": "rounded_tax_price"
+      },
+      {
+        "type": "keyword",
+        "value": "FROM"
+      },
+      {
+        "type": "table",
+        "value": "GroceryItems;"
+      }
+    ]
+  },
+  {
+    "id": 1542,
+    "drillNumber": 52,
+    "section": "Section 0: Foundations & Syntax Gym",
+    "title": "Syntax #052: Round GPA to 1 decimal place using ROUND(gpa, 1)",
+    "industry": "Foundations",
+    "difficulty": "Easy",
+    "scenario": "Round GPA to 1 decimal place using ROUND(gpa, 1).",
+    "businessObjective": "Round GPA to 1 decimal place using ROUND(gpa, 1).",
+    "schemaSnippet": "Students schema",
+    "targetQuery": "SELECT full_name, ROUND(gpa, 1) AS rounded_gpa\nFROM Students;",
+    "syntaxBlueprint": "SELECT full_name, ROUND(gpa, 1) AS rounded_gpa\nFROM Students;",
+    "syntaxRule": "Keywords are SELECT, FROM, AS, DISTINCT. Keep commas between columns only.",
+    "syntaxTrap": "Do not add trailing commas before FROM or quote column identifiers.",
+    "eli5Story": "[SYNTAX BLUEPRINT]:\nSELECT full_name, ROUND(gpa, 1) AS rounded_gpa\nFROM Students;\n\n[RULE]: Keywords are SELECT, FROM, AS, DISTINCT. Keep commas between columns only.\n\n[TRAP TO AVOID]: Do not add trailing commas before FROM or quote column identifiers.",
+    "commonMistakes": "Punctuation errors, trailing commas, or quotes around column names.",
+    "learningOutcomes": "Mastered 1.6 Math & Rounding Functions on Students.",
+    "challengeSlots": [
+      {
+        "type": "keyword",
+        "value": "SELECT"
+      },
+      {
+        "type": "column",
+        "value": "full_name,"
+      },
+      {
+        "type": "column",
+        "value": "ROUND(gpa,"
+      },
+      {
+        "type": "column",
+        "value": "1)"
+      },
+      {
+        "type": "keyword",
+        "value": "AS"
+      },
+      {
+        "type": "column",
+        "value": "rounded_gpa"
+      },
+      {
+        "type": "keyword",
+        "value": "FROM"
+      },
+      {
+        "type": "table",
+        "value": "Students;"
+      }
+    ]
+  },
+  {
+    "id": 1543,
+    "drillNumber": 53,
+    "section": "Section 0: Foundations & Syntax Gym",
+    "title": "Syntax #053: Extract whole minutes of track duration using FLOOR(duration_seconds / 60)",
+    "industry": "Foundations",
+    "difficulty": "Easy",
+    "scenario": "Extract whole minutes of track duration using FLOOR(duration_seconds / 60).",
+    "businessObjective": "Extract whole minutes of track duration using FLOOR(duration_seconds / 60).",
+    "schemaSnippet": "MusicTracks schema",
+    "targetQuery": "SELECT track_title, FLOOR(duration_seconds / 60) AS whole_minutes\nFROM MusicTracks;",
+    "syntaxBlueprint": "SELECT track_title, FLOOR(duration_seconds / 60) AS whole_minutes\nFROM MusicTracks;",
+    "syntaxRule": "Keywords are SELECT, FROM, AS, DISTINCT. Keep commas between columns only.",
+    "syntaxTrap": "Do not add trailing commas before FROM or quote column identifiers.",
+    "eli5Story": "[SYNTAX BLUEPRINT]:\nSELECT track_title, FLOOR(duration_seconds / 60) AS whole_minutes\nFROM MusicTracks;\n\n[RULE]: Keywords are SELECT, FROM, AS, DISTINCT. Keep commas between columns only.\n\n[TRAP TO AVOID]: Do not add trailing commas before FROM or quote column identifiers.",
+    "commonMistakes": "Punctuation errors, trailing commas, or quotes around column names.",
+    "learningOutcomes": "Mastered 1.6 Math & Rounding Functions on MusicTracks.",
+    "challengeSlots": [
+      {
+        "type": "keyword",
+        "value": "SELECT"
+      },
+      {
+        "type": "column",
+        "value": "track_title,"
+      },
+      {
+        "type": "column",
+        "value": "FLOOR(duration_seconds"
+      },
+      {
+        "type": "column",
+        "value": "/"
+      },
+      {
+        "type": "column",
+        "value": "60)"
+      },
+      {
+        "type": "keyword",
+        "value": "AS"
+      },
+      {
+        "type": "column",
+        "value": "whole_minutes"
+      },
+      {
+        "type": "keyword",
+        "value": "FROM"
+      },
+      {
+        "type": "table",
+        "value": "MusicTracks;"
+      }
+    ]
+  },
+  {
+    "id": 1544,
+    "drillNumber": 54,
+    "section": "Section 0: Foundations & Syntax Gym",
+    "title": "Syntax #054: Round monthly fee up to the nearest whole integer using CEIL()",
+    "industry": "Foundations",
+    "difficulty": "Easy",
+    "scenario": "Round monthly fee up to the nearest whole integer using CEIL().",
+    "businessObjective": "Round monthly fee up to the nearest whole integer using CEIL().",
+    "schemaSnippet": "GymMembers schema",
+    "targetQuery": "SELECT member_name, CEIL(monthly_fee) AS rounded_up_fee\nFROM GymMembers;",
+    "syntaxBlueprint": "SELECT member_name, CEIL(monthly_fee) AS rounded_up_fee\nFROM GymMembers;",
+    "syntaxRule": "Keywords are SELECT, FROM, AS, DISTINCT. Keep commas between columns only.",
+    "syntaxTrap": "Do not add trailing commas before FROM or quote column identifiers.",
+    "eli5Story": "[SYNTAX BLUEPRINT]:\nSELECT member_name, CEIL(monthly_fee) AS rounded_up_fee\nFROM GymMembers;\n\n[RULE]: Keywords are SELECT, FROM, AS, DISTINCT. Keep commas between columns only.\n\n[TRAP TO AVOID]: Do not add trailing commas before FROM or quote column identifiers.",
+    "commonMistakes": "Punctuation errors, trailing commas, or quotes around column names.",
+    "learningOutcomes": "Mastered 1.6 Math & Rounding Functions on GymMembers.",
+    "challengeSlots": [
+      {
+        "type": "keyword",
+        "value": "SELECT"
+      },
+      {
+        "type": "column",
+        "value": "member_name,"
+      },
+      {
+        "type": "column",
+        "value": "CEIL(monthly_fee)"
+      },
+      {
+        "type": "keyword",
+        "value": "AS"
+      },
+      {
+        "type": "column",
+        "value": "rounded_up_fee"
+      },
+      {
+        "type": "keyword",
+        "value": "FROM"
+      },
+      {
+        "type": "table",
+        "value": "GymMembers;"
+      }
+    ]
+  },
+  {
+    "id": 1545,
+    "drillNumber": 55,
+    "section": "Section 0: Foundations & Syntax Gym",
+    "title": "Syntax #055: Calculate and round exact discount savings to 2 decimal places",
+    "industry": "Foundations",
+    "difficulty": "Easy",
+    "scenario": "Calculate and round exact discount savings to 2 decimal places.",
+    "businessObjective": "Calculate and round exact discount savings to 2 decimal places.",
+    "schemaSnippet": "Orders schema",
+    "targetQuery": "SELECT order_id, ROUND((unit_price * quantity) * discount_pct, 2) AS discount_savings\nFROM Orders;",
+    "syntaxBlueprint": "SELECT order_id, ROUND((unit_price * quantity) * discount_pct, 2) AS discount_savings\nFROM Orders;",
+    "syntaxRule": "Keywords are SELECT, FROM, AS, DISTINCT. Keep commas between columns only.",
+    "syntaxTrap": "Do not add trailing commas before FROM or quote column identifiers.",
+    "eli5Story": "[SYNTAX BLUEPRINT]:\nSELECT order_id, ROUND((unit_price * quantity) * discount_pct, 2) AS discount_savings\nFROM Orders;\n\n[RULE]: Keywords are SELECT, FROM, AS, DISTINCT. Keep commas between columns only.\n\n[TRAP TO AVOID]: Do not add trailing commas before FROM or quote column identifiers.",
+    "commonMistakes": "Punctuation errors, trailing commas, or quotes around column names.",
+    "learningOutcomes": "Mastered 1.6 Math & Rounding Functions on Orders.",
+    "challengeSlots": [
+      {
+        "type": "keyword",
+        "value": "SELECT"
+      },
+      {
+        "type": "column",
+        "value": "order_id,"
+      },
+      {
+        "type": "column",
+        "value": "ROUND((unit_price"
+      },
+      {
+        "type": "column",
+        "value": "*"
+      },
+      {
+        "type": "column",
+        "value": "quantity)"
+      },
+      {
+        "type": "column",
+        "value": "*"
+      },
+      {
+        "type": "column",
+        "value": "discount_pct,"
+      },
+      {
+        "type": "column",
+        "value": "2)"
+      },
+      {
+        "type": "keyword",
+        "value": "AS"
+      },
+      {
+        "type": "column",
+        "value": "discount_savings"
+      },
+      {
+        "type": "keyword",
+        "value": "FROM"
+      },
+      {
+        "type": "table",
+        "value": "Orders;"
+      }
+    ]
+  },
+  {
+    "id": 1546,
+    "drillNumber": 56,
+    "section": "Section 0: Foundations & Syntax Gym",
+    "title": "Syntax #056: Calculate and round base fare before 15% airport fees",
+    "industry": "Foundations",
+    "difficulty": "Easy",
+    "scenario": "Calculate and round base fare before 15% airport fees.",
+    "businessObjective": "Calculate and round base fare before 15% airport fees.",
+    "schemaSnippet": "FlightSchedule schema",
+    "targetQuery": "SELECT flight_id, ROUND(ticket_price / 1.15, 2) AS base_fare_before_tax\nFROM FlightSchedule;",
+    "syntaxBlueprint": "SELECT flight_id, ROUND(ticket_price / 1.15, 2) AS base_fare_before_tax\nFROM FlightSchedule;",
+    "syntaxRule": "Keywords are SELECT, FROM, AS, DISTINCT. Keep commas between columns only.",
+    "syntaxTrap": "Do not add trailing commas before FROM or quote column identifiers.",
+    "eli5Story": "[SYNTAX BLUEPRINT]:\nSELECT flight_id, ROUND(ticket_price / 1.15, 2) AS base_fare_before_tax\nFROM FlightSchedule;\n\n[RULE]: Keywords are SELECT, FROM, AS, DISTINCT. Keep commas between columns only.\n\n[TRAP TO AVOID]: Do not add trailing commas before FROM or quote column identifiers.",
+    "commonMistakes": "Punctuation errors, trailing commas, or quotes around column names.",
+    "learningOutcomes": "Mastered 1.6 Math & Rounding Functions on FlightSchedule.",
+    "challengeSlots": [
+      {
+        "type": "keyword",
+        "value": "SELECT"
+      },
+      {
+        "type": "column",
+        "value": "flight_id,"
+      },
+      {
+        "type": "column",
+        "value": "ROUND(ticket_price"
+      },
+      {
+        "type": "column",
+        "value": "/"
+      },
+      {
+        "type": "column",
+        "value": "1.15,"
+      },
+      {
+        "type": "column",
+        "value": "2)"
+      },
+      {
+        "type": "keyword",
+        "value": "AS"
+      },
+      {
+        "type": "column",
+        "value": "base_fare_before_tax"
+      },
+      {
+        "type": "keyword",
+        "value": "FROM"
+      },
+      {
+        "type": "table",
+        "value": "FlightSchedule;"
+      }
+    ]
+  },
+  {
+    "id": 1547,
+    "drillNumber": 57,
+    "section": "Section 0: Foundations & Syntax Gym",
+    "title": "Syntax #057: Convert weight to pounds and round to 1 decimal place",
+    "industry": "Foundations",
+    "difficulty": "Easy",
+    "scenario": "Convert weight to pounds and round to 1 decimal place.",
+    "businessObjective": "Convert weight to pounds and round to 1 decimal place.",
+    "schemaSnippet": "PetClinic schema",
+    "targetQuery": "SELECT pet_name, ROUND(weight_kg * 2.20462, 1) AS rounded_lbs\nFROM PetClinic;",
+    "syntaxBlueprint": "SELECT pet_name, ROUND(weight_kg * 2.20462, 1) AS rounded_lbs\nFROM PetClinic;",
+    "syntaxRule": "Keywords are SELECT, FROM, AS, DISTINCT. Keep commas between columns only.",
+    "syntaxTrap": "Do not add trailing commas before FROM or quote column identifiers.",
+    "eli5Story": "[SYNTAX BLUEPRINT]:\nSELECT pet_name, ROUND(weight_kg * 2.20462, 1) AS rounded_lbs\nFROM PetClinic;\n\n[RULE]: Keywords are SELECT, FROM, AS, DISTINCT. Keep commas between columns only.\n\n[TRAP TO AVOID]: Do not add trailing commas before FROM or quote column identifiers.",
+    "commonMistakes": "Punctuation errors, trailing commas, or quotes around column names.",
+    "learningOutcomes": "Mastered 1.6 Math & Rounding Functions on PetClinic.",
+    "challengeSlots": [
+      {
+        "type": "keyword",
+        "value": "SELECT"
+      },
+      {
+        "type": "column",
+        "value": "pet_name,"
+      },
+      {
+        "type": "column",
+        "value": "ROUND(weight_kg"
+      },
+      {
+        "type": "column",
+        "value": "*"
+      },
+      {
+        "type": "column",
+        "value": "2.20462,"
+      },
+      {
+        "type": "column",
+        "value": "1)"
+      },
+      {
+        "type": "keyword",
+        "value": "AS"
+      },
+      {
+        "type": "column",
+        "value": "rounded_lbs"
+      },
+      {
+        "type": "keyword",
+        "value": "FROM"
+      },
+      {
+        "type": "table",
+        "value": "PetClinic;"
+      }
+    ]
+  },
+  {
+    "id": 1548,
+    "drillNumber": 58,
+    "section": "Section 0: Foundations & Syntax Gym",
+    "title": "Syntax #058: Calculate the absolute deviation from target inventory level (10) using ABS()",
+    "industry": "Foundations",
+    "difficulty": "Easy",
+    "scenario": "Calculate the absolute deviation from target inventory level (10) using ABS().",
+    "businessObjective": "Calculate the absolute deviation from target inventory level (10) using ABS().",
+    "schemaSnippet": "Books schema",
+    "targetQuery": "SELECT title, ABS(stock_qty - 10) AS distance_from_target_stock\nFROM Books;",
+    "syntaxBlueprint": "SELECT title, ABS(stock_qty - 10) AS distance_from_target_stock\nFROM Books;",
+    "syntaxRule": "Keywords are SELECT, FROM, AS, DISTINCT. Keep commas between columns only.",
+    "syntaxTrap": "Do not add trailing commas before FROM or quote column identifiers.",
+    "eli5Story": "[SYNTAX BLUEPRINT]:\nSELECT title, ABS(stock_qty - 10) AS distance_from_target_stock\nFROM Books;\n\n[RULE]: Keywords are SELECT, FROM, AS, DISTINCT. Keep commas between columns only.\n\n[TRAP TO AVOID]: Do not add trailing commas before FROM or quote column identifiers.",
+    "commonMistakes": "Punctuation errors, trailing commas, or quotes around column names.",
+    "learningOutcomes": "Mastered 1.6 Math & Rounding Functions on Books.",
+    "challengeSlots": [
+      {
+        "type": "keyword",
+        "value": "SELECT"
+      },
+      {
+        "type": "column",
+        "value": "title,"
+      },
+      {
+        "type": "column",
+        "value": "ABS(stock_qty"
+      },
+      {
+        "type": "column",
+        "value": "-"
+      },
+      {
+        "type": "column",
+        "value": "10)"
+      },
+      {
+        "type": "keyword",
+        "value": "AS"
+      },
+      {
+        "type": "column",
+        "value": "distance_from_target_stock"
+      },
+      {
+        "type": "keyword",
+        "value": "FROM"
+      },
+      {
+        "type": "table",
+        "value": "Books;"
+      }
+    ]
+  },
+  {
+    "id": 1549,
+    "drillNumber": 59,
+    "section": "Section 0: Foundations & Syntax Gym",
+    "title": "Syntax #059: Calculate biweekly paycheck by dividing annual salary by 26 pay periods and rounding to 2 decimals",
+    "industry": "Foundations",
+    "difficulty": "Easy",
+    "scenario": "Calculate biweekly paycheck by dividing annual salary by 26 pay periods and rounding to 2 decimals.",
+    "businessObjective": "Calculate biweekly paycheck by dividing annual salary by 26 pay periods and rounding to 2 decimals.",
+    "schemaSnippet": "Employees schema",
+    "targetQuery": "SELECT first_name, ROUND(salary / 26.0, 2) AS biweekly_paycheck\nFROM Employees;",
+    "syntaxBlueprint": "SELECT first_name, ROUND(salary / 26.0, 2) AS biweekly_paycheck\nFROM Employees;",
+    "syntaxRule": "Keywords are SELECT, FROM, AS, DISTINCT. Keep commas between columns only.",
+    "syntaxTrap": "Do not add trailing commas before FROM or quote column identifiers.",
+    "eli5Story": "[SYNTAX BLUEPRINT]:\nSELECT first_name, ROUND(salary / 26.0, 2) AS biweekly_paycheck\nFROM Employees;\n\n[RULE]: Keywords are SELECT, FROM, AS, DISTINCT. Keep commas between columns only.\n\n[TRAP TO AVOID]: Do not add trailing commas before FROM or quote column identifiers.",
+    "commonMistakes": "Punctuation errors, trailing commas, or quotes around column names.",
+    "learningOutcomes": "Mastered 1.6 Math & Rounding Functions on Employees.",
+    "challengeSlots": [
+      {
+        "type": "keyword",
+        "value": "SELECT"
+      },
+      {
+        "type": "column",
+        "value": "first_name,"
+      },
+      {
+        "type": "column",
+        "value": "ROUND(salary"
+      },
+      {
+        "type": "column",
+        "value": "/"
+      },
+      {
+        "type": "column",
+        "value": "26.0,"
+      },
+      {
+        "type": "column",
+        "value": "2)"
+      },
+      {
+        "type": "keyword",
+        "value": "AS"
+      },
+      {
+        "type": "column",
+        "value": "biweekly_paycheck"
+      },
+      {
+        "type": "keyword",
+        "value": "FROM"
+      },
+      {
+        "type": "table",
+        "value": "Employees;"
+      }
+    ]
+  },
+  {
+    "id": 1550,
+    "drillNumber": 60,
+    "section": "Section 0: Foundations & Syntax Gym",
+    "title": "Syntax #060: Round star ratings to the nearest whole star using ROUND(star_rating, 0)",
+    "industry": "Foundations",
+    "difficulty": "Easy",
+    "scenario": "Round star ratings to the nearest whole star using ROUND(star_rating, 0).",
+    "businessObjective": "Round star ratings to the nearest whole star using ROUND(star_rating, 0).",
+    "schemaSnippet": "MovieReviews schema",
+    "targetQuery": "SELECT movie_title, ROUND(star_rating, 0) AS rounded_star_rating\nFROM MovieReviews;",
+    "syntaxBlueprint": "SELECT movie_title, ROUND(star_rating, 0) AS rounded_star_rating\nFROM MovieReviews;",
+    "syntaxRule": "Keywords are SELECT, FROM, AS, DISTINCT. Keep commas between columns only.",
+    "syntaxTrap": "Do not add trailing commas before FROM or quote column identifiers.",
+    "eli5Story": "[SYNTAX BLUEPRINT]:\nSELECT movie_title, ROUND(star_rating, 0) AS rounded_star_rating\nFROM MovieReviews;\n\n[RULE]: Keywords are SELECT, FROM, AS, DISTINCT. Keep commas between columns only.\n\n[TRAP TO AVOID]: Do not add trailing commas before FROM or quote column identifiers.",
+    "commonMistakes": "Punctuation errors, trailing commas, or quotes around column names.",
+    "learningOutcomes": "Mastered 1.6 Math & Rounding Functions on MovieReviews.",
+    "challengeSlots": [
+      {
+        "type": "keyword",
+        "value": "SELECT"
+      },
+      {
+        "type": "column",
+        "value": "movie_title,"
+      },
+      {
+        "type": "column",
+        "value": "ROUND(star_rating,"
+      },
+      {
+        "type": "column",
+        "value": "0)"
+      },
+      {
+        "type": "keyword",
+        "value": "AS"
+      },
+      {
+        "type": "column",
+        "value": "rounded_star_rating"
+      },
+      {
+        "type": "keyword",
+        "value": "FROM"
+      },
+      {
+        "type": "table",
+        "value": "MovieReviews;"
+      }
+    ]
+  },
+  {
+    "id": 1551,
+    "drillNumber": 61,
+    "section": "Section 0: Foundations & Syntax Gym",
+    "title": "Syntax #061: Glue first_name and last_name together with a space using CONCAT()",
+    "industry": "Foundations",
+    "difficulty": "Easy",
+    "scenario": "Glue first_name and last_name together with a space using CONCAT().",
+    "businessObjective": "Glue first_name and last_name together with a space using CONCAT().",
+    "schemaSnippet": "Students schema",
+    "targetQuery": "SELECT CONCAT(first_name, ' ', last_name) AS full_student_name\nFROM Students;",
+    "syntaxBlueprint": "SELECT CONCAT(first_name, ' ', last_name) AS full_student_name\nFROM Students;",
+    "syntaxRule": "Keywords are SELECT, FROM, AS, DISTINCT. Keep commas between columns only.",
+    "syntaxTrap": "Do not add trailing commas before FROM or quote column identifiers.",
+    "eli5Story": "[SYNTAX BLUEPRINT]:\nSELECT CONCAT(first_name, ' ', last_name) AS full_student_name\nFROM Students;\n\n[RULE]: Keywords are SELECT, FROM, AS, DISTINCT. Keep commas between columns only.\n\n[TRAP TO AVOID]: Do not add trailing commas before FROM or quote column identifiers.",
+    "commonMistakes": "Punctuation errors, trailing commas, or quotes around column names.",
+    "learningOutcomes": "Mastered 1.7 String Functions on Students.",
+    "challengeSlots": [
+      {
+        "type": "keyword",
+        "value": "SELECT"
+      },
+      {
+        "type": "column",
+        "value": "CONCAT(first_name,"
+      },
+      {
+        "type": "column",
+        "value": "'"
+      },
+      {
+        "type": "column",
+        "value": "',"
+      },
+      {
+        "type": "column",
+        "value": "last_name)"
+      },
+      {
+        "type": "keyword",
+        "value": "AS"
+      },
+      {
+        "type": "column",
+        "value": "full_student_name"
+      },
+      {
+        "type": "keyword",
+        "value": "FROM"
+      },
+      {
+        "type": "table",
+        "value": "Students;"
+      }
+    ]
+  },
+  {
+    "id": 1552,
+    "drillNumber": 62,
+    "section": "Section 0: Foundations & Syntax Gym",
+    "title": "Syntax #062: Transform title to uppercase and genre to lowercase",
+    "industry": "Foundations",
+    "difficulty": "Easy",
+    "scenario": "Transform title to uppercase and genre to lowercase.",
+    "businessObjective": "Transform title to uppercase and genre to lowercase.",
+    "schemaSnippet": "Books schema",
+    "targetQuery": "SELECT UPPER(title) AS uppercase_title, LOWER(genre) AS lowercase_genre\nFROM Books;",
+    "syntaxBlueprint": "SELECT UPPER(title) AS uppercase_title, LOWER(genre) AS lowercase_genre\nFROM Books;",
+    "syntaxRule": "Keywords are SELECT, FROM, AS, DISTINCT. Keep commas between columns only.",
+    "syntaxTrap": "Do not add trailing commas before FROM or quote column identifiers.",
+    "eli5Story": "[SYNTAX BLUEPRINT]:\nSELECT UPPER(title) AS uppercase_title, LOWER(genre) AS lowercase_genre\nFROM Books;\n\n[RULE]: Keywords are SELECT, FROM, AS, DISTINCT. Keep commas between columns only.\n\n[TRAP TO AVOID]: Do not add trailing commas before FROM or quote column identifiers.",
+    "commonMistakes": "Punctuation errors, trailing commas, or quotes around column names.",
+    "learningOutcomes": "Mastered 1.7 String Functions on Books.",
+    "challengeSlots": [
+      {
+        "type": "keyword",
+        "value": "SELECT"
+      },
+      {
+        "type": "column",
+        "value": "UPPER(title)"
+      },
+      {
+        "type": "keyword",
+        "value": "AS"
+      },
+      {
+        "type": "column",
+        "value": "uppercase_title,"
+      },
+      {
+        "type": "column",
+        "value": "LOWER(genre)"
+      },
+      {
+        "type": "keyword",
+        "value": "AS"
+      },
+      {
+        "type": "column",
+        "value": "lowercase_genre"
+      },
+      {
+        "type": "keyword",
+        "value": "FROM"
+      },
+      {
+        "type": "table",
+        "value": "Books;"
+      }
+    ]
+  },
+  {
+    "id": 1553,
+    "drillNumber": 63,
+    "section": "Section 0: Foundations & Syntax Gym",
+    "title": "Syntax #063: Format employee name as 'LastName, FirstName' using CONCAT()",
+    "industry": "Foundations",
+    "difficulty": "Easy",
+    "scenario": "Format employee name as 'LastName, FirstName' using CONCAT().",
+    "businessObjective": "Format employee name as 'LastName, FirstName' using CONCAT().",
+    "schemaSnippet": "Employees schema",
+    "targetQuery": "SELECT CONCAT(last_name, ', ', first_name) AS formal_directory_name\nFROM Employees;",
+    "syntaxBlueprint": "SELECT CONCAT(last_name, ', ', first_name) AS formal_directory_name\nFROM Employees;",
+    "syntaxRule": "Keywords are SELECT, FROM, AS, DISTINCT. Keep commas between columns only.",
+    "syntaxTrap": "Do not add trailing commas before FROM or quote column identifiers.",
+    "eli5Story": "[SYNTAX BLUEPRINT]:\nSELECT CONCAT(last_name, ', ', first_name) AS formal_directory_name\nFROM Employees;\n\n[RULE]: Keywords are SELECT, FROM, AS, DISTINCT. Keep commas between columns only.\n\n[TRAP TO AVOID]: Do not add trailing commas before FROM or quote column identifiers.",
+    "commonMistakes": "Punctuation errors, trailing commas, or quotes around column names.",
+    "learningOutcomes": "Mastered 1.7 String Functions on Employees.",
+    "challengeSlots": [
+      {
+        "type": "keyword",
+        "value": "SELECT"
+      },
+      {
+        "type": "column",
+        "value": "CONCAT(last_name,"
+      },
+      {
+        "type": "column",
+        "value": "',"
+      },
+      {
+        "type": "column",
+        "value": "',"
+      },
+      {
+        "type": "column",
+        "value": "first_name)"
+      },
+      {
+        "type": "keyword",
+        "value": "AS"
+      },
+      {
+        "type": "column",
+        "value": "formal_directory_name"
+      },
+      {
+        "type": "keyword",
+        "value": "FROM"
+      },
+      {
+        "type": "table",
+        "value": "Employees;"
+      }
+    ]
+  },
+  {
+    "id": 1554,
+    "drillNumber": 64,
+    "section": "Section 0: Foundations & Syntax Gym",
+    "title": "Syntax #064: Count the number of characters in track_title using LENGTH()",
+    "industry": "Foundations",
+    "difficulty": "Easy",
+    "scenario": "Count the number of characters in track_title using LENGTH().",
+    "businessObjective": "Count the number of characters in track_title using LENGTH().",
+    "schemaSnippet": "MusicTracks schema",
+    "targetQuery": "SELECT track_title, LENGTH(track_title) AS title_char_count\nFROM MusicTracks;",
+    "syntaxBlueprint": "SELECT track_title, LENGTH(track_title) AS title_char_count\nFROM MusicTracks;",
+    "syntaxRule": "Keywords are SELECT, FROM, AS, DISTINCT. Keep commas between columns only.",
+    "syntaxTrap": "Do not add trailing commas before FROM or quote column identifiers.",
+    "eli5Story": "[SYNTAX BLUEPRINT]:\nSELECT track_title, LENGTH(track_title) AS title_char_count\nFROM MusicTracks;\n\n[RULE]: Keywords are SELECT, FROM, AS, DISTINCT. Keep commas between columns only.\n\n[TRAP TO AVOID]: Do not add trailing commas before FROM or quote column identifiers.",
+    "commonMistakes": "Punctuation errors, trailing commas, or quotes around column names.",
+    "learningOutcomes": "Mastered 1.7 String Functions on MusicTracks.",
+    "challengeSlots": [
+      {
+        "type": "keyword",
+        "value": "SELECT"
+      },
+      {
+        "type": "column",
+        "value": "track_title,"
+      },
+      {
+        "type": "column",
+        "value": "LENGTH(track_title)"
+      },
+      {
+        "type": "keyword",
+        "value": "AS"
+      },
+      {
+        "type": "column",
+        "value": "title_char_count"
+      },
+      {
+        "type": "keyword",
+        "value": "FROM"
+      },
+      {
+        "type": "table",
+        "value": "MusicTracks;"
+      }
+    ]
+  },
+  {
+    "id": 1555,
+    "drillNumber": 65,
+    "section": "Section 0: Foundations & Syntax Gym",
+    "title": "Syntax #065: Convert item_name to all capital letters for shelf printing",
+    "industry": "Foundations",
+    "difficulty": "Easy",
+    "scenario": "Convert item_name to all capital letters for shelf printing.",
+    "businessObjective": "Convert item_name to all capital letters for shelf printing.",
+    "schemaSnippet": "GroceryItems schema",
+    "targetQuery": "SELECT UPPER(item_name) AS label_name\nFROM GroceryItems;",
+    "syntaxBlueprint": "SELECT UPPER(item_name) AS label_name\nFROM GroceryItems;",
+    "syntaxRule": "Keywords are SELECT, FROM, AS, DISTINCT. Keep commas between columns only.",
+    "syntaxTrap": "Do not add trailing commas before FROM or quote column identifiers.",
+    "eli5Story": "[SYNTAX BLUEPRINT]:\nSELECT UPPER(item_name) AS label_name\nFROM GroceryItems;\n\n[RULE]: Keywords are SELECT, FROM, AS, DISTINCT. Keep commas between columns only.\n\n[TRAP TO AVOID]: Do not add trailing commas before FROM or quote column identifiers.",
+    "commonMistakes": "Punctuation errors, trailing commas, or quotes around column names.",
+    "learningOutcomes": "Mastered 1.7 String Functions on GroceryItems.",
+    "challengeSlots": [
+      {
+        "type": "keyword",
+        "value": "SELECT"
+      },
+      {
+        "type": "column",
+        "value": "UPPER(item_name)"
+      },
+      {
+        "type": "keyword",
+        "value": "AS"
+      },
+      {
+        "type": "column",
+        "value": "label_name"
+      },
+      {
+        "type": "keyword",
+        "value": "FROM"
+      },
+      {
+        "type": "table",
+        "value": "GroceryItems;"
+      }
+    ]
+  },
+  {
+    "id": 1556,
+    "drillNumber": 66,
+    "section": "Section 0: Foundations & Syntax Gym",
+    "title": "Syntax #066: Combine origin and destination into a route string like 'ORD -> LAX'",
+    "industry": "Foundations",
+    "difficulty": "Easy",
+    "scenario": "Combine origin and destination into a route string like 'ORD -> LAX'.",
+    "businessObjective": "Combine origin and destination into a route string like 'ORD -> LAX'.",
+    "schemaSnippet": "FlightSchedule schema",
+    "targetQuery": "SELECT flight_id, CONCAT(origin_airport, ' -> ', dest_airport) AS route\nFROM FlightSchedule;",
+    "syntaxBlueprint": "SELECT flight_id, CONCAT(origin_airport, ' -> ', dest_airport) AS route\nFROM FlightSchedule;",
+    "syntaxRule": "Keywords are SELECT, FROM, AS, DISTINCT. Keep commas between columns only.",
+    "syntaxTrap": "Do not add trailing commas before FROM or quote column identifiers.",
+    "eli5Story": "[SYNTAX BLUEPRINT]:\nSELECT flight_id, CONCAT(origin_airport, ' -> ', dest_airport) AS route\nFROM FlightSchedule;\n\n[RULE]: Keywords are SELECT, FROM, AS, DISTINCT. Keep commas between columns only.\n\n[TRAP TO AVOID]: Do not add trailing commas before FROM or quote column identifiers.",
+    "commonMistakes": "Punctuation errors, trailing commas, or quotes around column names.",
+    "learningOutcomes": "Mastered 1.7 String Functions on FlightSchedule.",
+    "challengeSlots": [
+      {
+        "type": "keyword",
+        "value": "SELECT"
+      },
+      {
+        "type": "column",
+        "value": "flight_id,"
+      },
+      {
+        "type": "column",
+        "value": "CONCAT(origin_airport,"
+      },
+      {
+        "type": "column",
+        "value": "'"
+      },
+      {
+        "type": "column",
+        "value": "->"
+      },
+      {
+        "type": "column",
+        "value": "',"
+      },
+      {
+        "type": "column",
+        "value": "dest_airport)"
+      },
+      {
+        "type": "keyword",
+        "value": "AS"
+      },
+      {
+        "type": "column",
+        "value": "route"
+      },
+      {
+        "type": "keyword",
+        "value": "FROM"
+      },
+      {
+        "type": "table",
+        "value": "FlightSchedule;"
+      }
+    ]
+  },
+  {
+    "id": 1557,
+    "drillNumber": 67,
+    "section": "Section 0: Foundations & Syntax Gym",
+    "title": "Syntax #067: Extract the first 3 letters of species using LEFT(species, 3)",
+    "industry": "Foundations",
+    "difficulty": "Easy",
+    "scenario": "Extract the first 3 letters of species using LEFT(species, 3).",
+    "businessObjective": "Extract the first 3 letters of species using LEFT(species, 3).",
+    "schemaSnippet": "PetClinic schema",
+    "targetQuery": "SELECT pet_name, LEFT(species, 3) AS species_short_code\nFROM PetClinic;",
+    "syntaxBlueprint": "SELECT pet_name, LEFT(species, 3) AS species_short_code\nFROM PetClinic;",
+    "syntaxRule": "Keywords are SELECT, FROM, AS, DISTINCT. Keep commas between columns only.",
+    "syntaxTrap": "Do not add trailing commas before FROM or quote column identifiers.",
+    "eli5Story": "[SYNTAX BLUEPRINT]:\nSELECT pet_name, LEFT(species, 3) AS species_short_code\nFROM PetClinic;\n\n[RULE]: Keywords are SELECT, FROM, AS, DISTINCT. Keep commas between columns only.\n\n[TRAP TO AVOID]: Do not add trailing commas before FROM or quote column identifiers.",
+    "commonMistakes": "Punctuation errors, trailing commas, or quotes around column names.",
+    "learningOutcomes": "Mastered 1.7 String Functions on PetClinic.",
+    "challengeSlots": [
+      {
+        "type": "keyword",
+        "value": "SELECT"
+      },
+      {
+        "type": "column",
+        "value": "pet_name,"
+      },
+      {
+        "type": "column",
+        "value": "LEFT(species,"
+      },
+      {
+        "type": "column",
+        "value": "3)"
+      },
+      {
+        "type": "keyword",
+        "value": "AS"
+      },
+      {
+        "type": "column",
+        "value": "species_short_code"
+      },
+      {
+        "type": "keyword",
+        "value": "FROM"
+      },
+      {
+        "type": "table",
+        "value": "PetClinic;"
+      }
+    ]
+  },
+  {
+    "id": 1558,
+    "drillNumber": 68,
+    "section": "Section 0: Foundations & Syntax Gym",
+    "title": "Syntax #068: Extract the last 4 characters of movie_title using RIGHT()",
+    "industry": "Foundations",
+    "difficulty": "Easy",
+    "scenario": "Extract the last 4 characters of movie_title using RIGHT().",
+    "businessObjective": "Extract the last 4 characters of movie_title using RIGHT().",
+    "schemaSnippet": "MovieReviews schema",
+    "targetQuery": "SELECT movie_title, RIGHT(movie_title, 4) AS title_suffix\nFROM MovieReviews;",
+    "syntaxBlueprint": "SELECT movie_title, RIGHT(movie_title, 4) AS title_suffix\nFROM MovieReviews;",
+    "syntaxRule": "Keywords are SELECT, FROM, AS, DISTINCT. Keep commas between columns only.",
+    "syntaxTrap": "Do not add trailing commas before FROM or quote column identifiers.",
+    "eli5Story": "[SYNTAX BLUEPRINT]:\nSELECT movie_title, RIGHT(movie_title, 4) AS title_suffix\nFROM MovieReviews;\n\n[RULE]: Keywords are SELECT, FROM, AS, DISTINCT. Keep commas between columns only.\n\n[TRAP TO AVOID]: Do not add trailing commas before FROM or quote column identifiers.",
+    "commonMistakes": "Punctuation errors, trailing commas, or quotes around column names.",
+    "learningOutcomes": "Mastered 1.7 String Functions on MovieReviews.",
+    "challengeSlots": [
+      {
+        "type": "keyword",
+        "value": "SELECT"
+      },
+      {
+        "type": "column",
+        "value": "movie_title,"
+      },
+      {
+        "type": "column",
+        "value": "RIGHT(movie_title,"
+      },
+      {
+        "type": "column",
+        "value": "4)"
+      },
+      {
+        "type": "keyword",
+        "value": "AS"
+      },
+      {
+        "type": "column",
+        "value": "title_suffix"
+      },
+      {
+        "type": "keyword",
+        "value": "FROM"
+      },
+      {
+        "type": "table",
+        "value": "MovieReviews;"
+      }
+    ]
+  },
+  {
+    "id": 1559,
+    "drillNumber": 69,
+    "section": "Section 0: Foundations & Syntax Gym",
+    "title": "Syntax #069: Convert membership plan to uppercase for keycard printing",
+    "industry": "Foundations",
+    "difficulty": "Easy",
+    "scenario": "Convert membership plan to uppercase for keycard printing.",
+    "businessObjective": "Convert membership plan to uppercase for keycard printing.",
+    "schemaSnippet": "GymMembers schema",
+    "targetQuery": "SELECT UPPER(membership_plan) AS plan_badge\nFROM GymMembers;",
+    "syntaxBlueprint": "SELECT UPPER(membership_plan) AS plan_badge\nFROM GymMembers;",
+    "syntaxRule": "Keywords are SELECT, FROM, AS, DISTINCT. Keep commas between columns only.",
+    "syntaxTrap": "Do not add trailing commas before FROM or quote column identifiers.",
+    "eli5Story": "[SYNTAX BLUEPRINT]:\nSELECT UPPER(membership_plan) AS plan_badge\nFROM GymMembers;\n\n[RULE]: Keywords are SELECT, FROM, AS, DISTINCT. Keep commas between columns only.\n\n[TRAP TO AVOID]: Do not add trailing commas before FROM or quote column identifiers.",
+    "commonMistakes": "Punctuation errors, trailing commas, or quotes around column names.",
+    "learningOutcomes": "Mastered 1.7 String Functions on GymMembers.",
+    "challengeSlots": [
+      {
+        "type": "keyword",
+        "value": "SELECT"
+      },
+      {
+        "type": "column",
+        "value": "UPPER(membership_plan)"
+      },
+      {
+        "type": "keyword",
+        "value": "AS"
+      },
+      {
+        "type": "column",
+        "value": "plan_badge"
+      },
+      {
+        "type": "keyword",
+        "value": "FROM"
+      },
+      {
+        "type": "table",
+        "value": "GymMembers;"
+      }
+    ]
+  },
+  {
+    "id": 1560,
+    "drillNumber": 70,
+    "section": "Section 0: Foundations & Syntax Gym",
+    "title": "Syntax #070: Format an order label like 'Zoe Hart (Order #5001)' using CONCAT()",
+    "industry": "Foundations",
+    "difficulty": "Easy",
+    "scenario": "Format an order label like 'Zoe Hart (Order #5001)' using CONCAT().",
+    "businessObjective": "Format an order label like 'Zoe Hart (Order #5001)' using CONCAT().",
+    "schemaSnippet": "Orders schema",
+    "targetQuery": "SELECT CONCAT(customer_name, ' (Order #', order_id, ')') AS order_summary\nFROM Orders;",
+    "syntaxBlueprint": "SELECT CONCAT(customer_name, ' (Order #', order_id, ')') AS order_summary\nFROM Orders;",
+    "syntaxRule": "Keywords are SELECT, FROM, AS, DISTINCT. Keep commas between columns only.",
+    "syntaxTrap": "Do not add trailing commas before FROM or quote column identifiers.",
+    "eli5Story": "[SYNTAX BLUEPRINT]:\nSELECT CONCAT(customer_name, ' (Order #', order_id, ')') AS order_summary\nFROM Orders;\n\n[RULE]: Keywords are SELECT, FROM, AS, DISTINCT. Keep commas between columns only.\n\n[TRAP TO AVOID]: Do not add trailing commas before FROM or quote column identifiers.",
+    "commonMistakes": "Punctuation errors, trailing commas, or quotes around column names.",
+    "learningOutcomes": "Mastered 1.7 String Functions on Orders.",
+    "challengeSlots": [
+      {
+        "type": "keyword",
+        "value": "SELECT"
+      },
+      {
+        "type": "column",
+        "value": "CONCAT(customer_name,"
+      },
+      {
+        "type": "column",
+        "value": "'"
+      },
+      {
+        "type": "column",
+        "value": "(Order"
+      },
+      {
+        "type": "column",
+        "value": "#',"
+      },
+      {
+        "type": "column",
+        "value": "order_id,"
+      },
+      {
+        "type": "column",
+        "value": "')')"
+      },
+      {
+        "type": "keyword",
+        "value": "AS"
+      },
+      {
+        "type": "column",
+        "value": "order_summary"
+      },
+      {
+        "type": "keyword",
+        "value": "FROM"
+      },
+      {
+        "type": "table",
+        "value": "Orders;"
+      }
+    ]
+  },
+  {
+    "id": 1561,
+    "drillNumber": 71,
+    "section": "Section 0: Foundations & Syntax Gym",
+    "title": "Syntax #071: Extract the four-digit year from hire_date using YEAR()",
+    "industry": "Foundations",
+    "difficulty": "Easy",
+    "scenario": "Extract the four-digit year from hire_date using YEAR().",
+    "businessObjective": "Extract the four-digit year from hire_date using YEAR().",
+    "schemaSnippet": "Employees schema",
+    "targetQuery": "SELECT first_name, hire_date, YEAR(hire_date) AS hire_year\nFROM Employees;",
+    "syntaxBlueprint": "SELECT first_name, hire_date, YEAR(hire_date) AS hire_year\nFROM Employees;",
+    "syntaxRule": "Keywords are SELECT, FROM, AS, DISTINCT. Keep commas between columns only.",
+    "syntaxTrap": "Do not add trailing commas before FROM or quote column identifiers.",
+    "eli5Story": "[SYNTAX BLUEPRINT]:\nSELECT first_name, hire_date, YEAR(hire_date) AS hire_year\nFROM Employees;\n\n[RULE]: Keywords are SELECT, FROM, AS, DISTINCT. Keep commas between columns only.\n\n[TRAP TO AVOID]: Do not add trailing commas before FROM or quote column identifiers.",
+    "commonMistakes": "Punctuation errors, trailing commas, or quotes around column names.",
+    "learningOutcomes": "Mastered 1.8 Date Projections on Employees.",
+    "challengeSlots": [
+      {
+        "type": "keyword",
+        "value": "SELECT"
+      },
+      {
+        "type": "column",
+        "value": "first_name,"
+      },
+      {
+        "type": "column",
+        "value": "hire_date,"
+      },
+      {
+        "type": "column",
+        "value": "YEAR(hire_date)"
+      },
+      {
+        "type": "keyword",
+        "value": "AS"
+      },
+      {
+        "type": "column",
+        "value": "hire_year"
+      },
+      {
+        "type": "keyword",
+        "value": "FROM"
+      },
+      {
+        "type": "table",
+        "value": "Employees;"
+      }
+    ]
+  },
+  {
+    "id": 1562,
+    "drillNumber": 72,
+    "section": "Section 0: Foundations & Syntax Gym",
+    "title": "Syntax #072: Extract the numerical month from hire_date using MONTH()",
+    "industry": "Foundations",
+    "difficulty": "Easy",
+    "scenario": "Extract the numerical month from hire_date using MONTH().",
+    "businessObjective": "Extract the numerical month from hire_date using MONTH().",
+    "schemaSnippet": "Employees schema",
+    "targetQuery": "SELECT first_name, hire_date, MONTH(hire_date) AS hire_month\nFROM Employees;",
+    "syntaxBlueprint": "SELECT first_name, hire_date, MONTH(hire_date) AS hire_month\nFROM Employees;",
+    "syntaxRule": "Keywords are SELECT, FROM, AS, DISTINCT. Keep commas between columns only.",
+    "syntaxTrap": "Do not add trailing commas before FROM or quote column identifiers.",
+    "eli5Story": "[SYNTAX BLUEPRINT]:\nSELECT first_name, hire_date, MONTH(hire_date) AS hire_month\nFROM Employees;\n\n[RULE]: Keywords are SELECT, FROM, AS, DISTINCT. Keep commas between columns only.\n\n[TRAP TO AVOID]: Do not add trailing commas before FROM or quote column identifiers.",
+    "commonMistakes": "Punctuation errors, trailing commas, or quotes around column names.",
+    "learningOutcomes": "Mastered 1.8 Date Projections on Employees.",
+    "challengeSlots": [
+      {
+        "type": "keyword",
+        "value": "SELECT"
+      },
+      {
+        "type": "column",
+        "value": "first_name,"
+      },
+      {
+        "type": "column",
+        "value": "hire_date,"
+      },
+      {
+        "type": "column",
+        "value": "MONTH(hire_date)"
+      },
+      {
+        "type": "keyword",
+        "value": "AS"
+      },
+      {
+        "type": "column",
+        "value": "hire_month"
+      },
+      {
+        "type": "keyword",
+        "value": "FROM"
+      },
+      {
+        "type": "table",
+        "value": "Employees;"
+      }
+    ]
+  },
+  {
+    "id": 1563,
+    "drillNumber": 73,
+    "section": "Section 0: Foundations & Syntax Gym",
+    "title": "Syntax #073: Calculate how many years a student has been in school relative to 2026",
+    "industry": "Foundations",
+    "difficulty": "Easy",
+    "scenario": "Calculate how many years a student has been in school relative to 2026.",
+    "businessObjective": "Calculate how many years a student has been in school relative to 2026.",
+    "schemaSnippet": "Students schema",
+    "targetQuery": "SELECT full_name, enrolled_year, (2026 - enrolled_year) AS years_in_school\nFROM Students;",
+    "syntaxBlueprint": "SELECT full_name, enrolled_year, (2026 - enrolled_year) AS years_in_school\nFROM Students;",
+    "syntaxRule": "Keywords are SELECT, FROM, AS, DISTINCT. Keep commas between columns only.",
+    "syntaxTrap": "Do not add trailing commas before FROM or quote column identifiers.",
+    "eli5Story": "[SYNTAX BLUEPRINT]:\nSELECT full_name, enrolled_year, (2026 - enrolled_year) AS years_in_school\nFROM Students;\n\n[RULE]: Keywords are SELECT, FROM, AS, DISTINCT. Keep commas between columns only.\n\n[TRAP TO AVOID]: Do not add trailing commas before FROM or quote column identifiers.",
+    "commonMistakes": "Punctuation errors, trailing commas, or quotes around column names.",
+    "learningOutcomes": "Mastered 1.8 Date Projections on Students.",
+    "challengeSlots": [
+      {
+        "type": "keyword",
+        "value": "SELECT"
+      },
+      {
+        "type": "column",
+        "value": "full_name,"
+      },
+      {
+        "type": "column",
+        "value": "enrolled_year,"
+      },
+      {
+        "type": "column",
+        "value": "(2026"
+      },
+      {
+        "type": "column",
+        "value": "-"
+      },
+      {
+        "type": "column",
+        "value": "enrolled_year)"
+      },
+      {
+        "type": "keyword",
+        "value": "AS"
+      },
+      {
+        "type": "column",
+        "value": "years_in_school"
+      },
+      {
+        "type": "keyword",
+        "value": "FROM"
+      },
+      {
+        "type": "table",
+        "value": "Students;"
+      }
+    ]
+  },
+  {
+    "id": 1564,
+    "drillNumber": 74,
+    "section": "Section 0: Foundations & Syntax Gym",
+    "title": "Syntax #074: Extract the membership start year from join_date",
+    "industry": "Foundations",
+    "difficulty": "Easy",
+    "scenario": "Extract the membership start year from join_date.",
+    "businessObjective": "Extract the membership start year from join_date.",
+    "schemaSnippet": "GymMembers schema",
+    "targetQuery": "SELECT member_name, join_date, YEAR(join_date) AS joined_year\nFROM GymMembers;",
+    "syntaxBlueprint": "SELECT member_name, join_date, YEAR(join_date) AS joined_year\nFROM GymMembers;",
+    "syntaxRule": "Keywords are SELECT, FROM, AS, DISTINCT. Keep commas between columns only.",
+    "syntaxTrap": "Do not add trailing commas before FROM or quote column identifiers.",
+    "eli5Story": "[SYNTAX BLUEPRINT]:\nSELECT member_name, join_date, YEAR(join_date) AS joined_year\nFROM GymMembers;\n\n[RULE]: Keywords are SELECT, FROM, AS, DISTINCT. Keep commas between columns only.\n\n[TRAP TO AVOID]: Do not add trailing commas before FROM or quote column identifiers.",
+    "commonMistakes": "Punctuation errors, trailing commas, or quotes around column names.",
+    "learningOutcomes": "Mastered 1.8 Date Projections on GymMembers.",
+    "challengeSlots": [
+      {
+        "type": "keyword",
+        "value": "SELECT"
+      },
+      {
+        "type": "column",
+        "value": "member_name,"
+      },
+      {
+        "type": "column",
+        "value": "join_date,"
+      },
+      {
+        "type": "column",
+        "value": "YEAR(join_date)"
+      },
+      {
+        "type": "keyword",
+        "value": "AS"
+      },
+      {
+        "type": "column",
+        "value": "joined_year"
+      },
+      {
+        "type": "keyword",
+        "value": "FROM"
+      },
+      {
+        "type": "table",
+        "value": "GymMembers;"
+      }
+    ]
+  },
+  {
+    "id": 1565,
+    "drillNumber": 75,
+    "section": "Section 0: Foundations & Syntax Gym",
+    "title": "Syntax #075: Calculate the age of a book in years relative to 2026",
+    "industry": "Foundations",
+    "difficulty": "Easy",
+    "scenario": "Calculate the age of a book in years relative to 2026.",
+    "businessObjective": "Calculate the age of a book in years relative to 2026.",
+    "schemaSnippet": "Books schema",
+    "targetQuery": "SELECT title, published_year, (2026 - published_year) AS book_age_years\nFROM Books;",
+    "syntaxBlueprint": "SELECT title, published_year, (2026 - published_year) AS book_age_years\nFROM Books;",
+    "syntaxRule": "Keywords are SELECT, FROM, AS, DISTINCT. Keep commas between columns only.",
+    "syntaxTrap": "Do not add trailing commas before FROM or quote column identifiers.",
+    "eli5Story": "[SYNTAX BLUEPRINT]:\nSELECT title, published_year, (2026 - published_year) AS book_age_years\nFROM Books;\n\n[RULE]: Keywords are SELECT, FROM, AS, DISTINCT. Keep commas between columns only.\n\n[TRAP TO AVOID]: Do not add trailing commas before FROM or quote column identifiers.",
+    "commonMistakes": "Punctuation errors, trailing commas, or quotes around column names.",
+    "learningOutcomes": "Mastered 1.8 Date Projections on Books.",
+    "challengeSlots": [
+      {
+        "type": "keyword",
+        "value": "SELECT"
+      },
+      {
+        "type": "column",
+        "value": "title,"
+      },
+      {
+        "type": "column",
+        "value": "published_year,"
+      },
+      {
+        "type": "column",
+        "value": "(2026"
+      },
+      {
+        "type": "column",
+        "value": "-"
+      },
+      {
+        "type": "column",
+        "value": "published_year)"
+      },
+      {
+        "type": "keyword",
+        "value": "AS"
+      },
+      {
+        "type": "column",
+        "value": "book_age_years"
+      },
+      {
+        "type": "keyword",
+        "value": "FROM"
+      },
+      {
+        "type": "table",
+        "value": "Books;"
+      }
+    ]
+  },
+  {
+    "id": 1566,
+    "drillNumber": 76,
+    "section": "Section 0: Foundations & Syntax Gym",
+    "title": "Syntax #076: Compute how many years ago a movie was released",
+    "industry": "Foundations",
+    "difficulty": "Easy",
+    "scenario": "Compute how many years ago a movie was released.",
+    "businessObjective": "Compute how many years ago a movie was released.",
+    "schemaSnippet": "MovieReviews schema",
+    "targetQuery": "SELECT movie_title, release_year, (2026 - release_year) AS film_age\nFROM MovieReviews;",
+    "syntaxBlueprint": "SELECT movie_title, release_year, (2026 - release_year) AS film_age\nFROM MovieReviews;",
+    "syntaxRule": "Keywords are SELECT, FROM, AS, DISTINCT. Keep commas between columns only.",
+    "syntaxTrap": "Do not add trailing commas before FROM or quote column identifiers.",
+    "eli5Story": "[SYNTAX BLUEPRINT]:\nSELECT movie_title, release_year, (2026 - release_year) AS film_age\nFROM MovieReviews;\n\n[RULE]: Keywords are SELECT, FROM, AS, DISTINCT. Keep commas between columns only.\n\n[TRAP TO AVOID]: Do not add trailing commas before FROM or quote column identifiers.",
+    "commonMistakes": "Punctuation errors, trailing commas, or quotes around column names.",
+    "learningOutcomes": "Mastered 1.8 Date Projections on MovieReviews.",
+    "challengeSlots": [
+      {
+        "type": "keyword",
+        "value": "SELECT"
+      },
+      {
+        "type": "column",
+        "value": "movie_title,"
+      },
+      {
+        "type": "column",
+        "value": "release_year,"
+      },
+      {
+        "type": "column",
+        "value": "(2026"
+      },
+      {
+        "type": "column",
+        "value": "-"
+      },
+      {
+        "type": "column",
+        "value": "release_year)"
+      },
+      {
+        "type": "keyword",
+        "value": "AS"
+      },
+      {
+        "type": "column",
+        "value": "film_age"
+      },
+      {
+        "type": "keyword",
+        "value": "FROM"
+      },
+      {
+        "type": "table",
+        "value": "MovieReviews;"
+      }
+    ]
+  },
+  {
+    "id": 1567,
+    "drillNumber": 77,
+    "section": "Section 0: Foundations & Syntax Gym",
+    "title": "Syntax #077: Project the system's current calendar date using CURRENT_DATE",
+    "industry": "Foundations",
+    "difficulty": "Easy",
+    "scenario": "Project the system's current calendar date using CURRENT_DATE.",
+    "businessObjective": "Project the system's current calendar date using CURRENT_DATE.",
+    "schemaSnippet": "Employees schema",
+    "targetQuery": "SELECT first_name, CURRENT_DATE AS report_generated_on\nFROM Employees;",
+    "syntaxBlueprint": "SELECT first_name, CURRENT_DATE AS report_generated_on\nFROM Employees;",
+    "syntaxRule": "Keywords are SELECT, FROM, AS, DISTINCT. Keep commas between columns only.",
+    "syntaxTrap": "Do not add trailing commas before FROM or quote column identifiers.",
+    "eli5Story": "[SYNTAX BLUEPRINT]:\nSELECT first_name, CURRENT_DATE AS report_generated_on\nFROM Employees;\n\n[RULE]: Keywords are SELECT, FROM, AS, DISTINCT. Keep commas between columns only.\n\n[TRAP TO AVOID]: Do not add trailing commas before FROM or quote column identifiers.",
+    "commonMistakes": "Punctuation errors, trailing commas, or quotes around column names.",
+    "learningOutcomes": "Mastered 1.8 Date Projections on Employees.",
+    "challengeSlots": [
+      {
+        "type": "keyword",
+        "value": "SELECT"
+      },
+      {
+        "type": "column",
+        "value": "first_name,"
+      },
+      {
+        "type": "column",
+        "value": "CURRENT_DATE"
+      },
+      {
+        "type": "keyword",
+        "value": "AS"
+      },
+      {
+        "type": "column",
+        "value": "report_generated_on"
+      },
+      {
+        "type": "keyword",
+        "value": "FROM"
+      },
+      {
+        "type": "table",
+        "value": "Employees;"
+      }
+    ]
+  },
+  {
+    "id": 1568,
+    "drillNumber": 78,
+    "section": "Section 0: Foundations & Syntax Gym",
+    "title": "Syntax #078: Extract the membership anniversary month from join_date",
+    "industry": "Foundations",
+    "difficulty": "Easy",
+    "scenario": "Extract the membership anniversary month from join_date.",
+    "businessObjective": "Extract the membership anniversary month from join_date.",
+    "schemaSnippet": "GymMembers schema",
+    "targetQuery": "SELECT member_name, join_date, MONTH(join_date) AS anniversary_month\nFROM GymMembers;",
+    "syntaxBlueprint": "SELECT member_name, join_date, MONTH(join_date) AS anniversary_month\nFROM GymMembers;",
+    "syntaxRule": "Keywords are SELECT, FROM, AS, DISTINCT. Keep commas between columns only.",
+    "syntaxTrap": "Do not add trailing commas before FROM or quote column identifiers.",
+    "eli5Story": "[SYNTAX BLUEPRINT]:\nSELECT member_name, join_date, MONTH(join_date) AS anniversary_month\nFROM GymMembers;\n\n[RULE]: Keywords are SELECT, FROM, AS, DISTINCT. Keep commas between columns only.\n\n[TRAP TO AVOID]: Do not add trailing commas before FROM or quote column identifiers.",
+    "commonMistakes": "Punctuation errors, trailing commas, or quotes around column names.",
+    "learningOutcomes": "Mastered 1.8 Date Projections on GymMembers.",
+    "challengeSlots": [
+      {
+        "type": "keyword",
+        "value": "SELECT"
+      },
+      {
+        "type": "column",
+        "value": "member_name,"
+      },
+      {
+        "type": "column",
+        "value": "join_date,"
+      },
+      {
+        "type": "column",
+        "value": "MONTH(join_date)"
+      },
+      {
+        "type": "keyword",
+        "value": "AS"
+      },
+      {
+        "type": "column",
+        "value": "anniversary_month"
+      },
+      {
+        "type": "keyword",
+        "value": "FROM"
+      },
+      {
+        "type": "table",
+        "value": "GymMembers;"
+      }
+    ]
+  },
+  {
+    "id": 1569,
+    "drillNumber": 79,
+    "section": "Section 0: Foundations & Syntax Gym",
+    "title": "Syntax #079: Extract the specific day of the month (1-31) when the employee was hired",
+    "industry": "Foundations",
+    "difficulty": "Easy",
+    "scenario": "Extract the specific day of the month (1-31) when the employee was hired.",
+    "businessObjective": "Extract the specific day of the month (1-31) when the employee was hired.",
+    "schemaSnippet": "Employees schema",
+    "targetQuery": "SELECT first_name, hire_date, DAY(hire_date) AS hire_day_of_month\nFROM Employees;",
+    "syntaxBlueprint": "SELECT first_name, hire_date, DAY(hire_date) AS hire_day_of_month\nFROM Employees;",
+    "syntaxRule": "Keywords are SELECT, FROM, AS, DISTINCT. Keep commas between columns only.",
+    "syntaxTrap": "Do not add trailing commas before FROM or quote column identifiers.",
+    "eli5Story": "[SYNTAX BLUEPRINT]:\nSELECT first_name, hire_date, DAY(hire_date) AS hire_day_of_month\nFROM Employees;\n\n[RULE]: Keywords are SELECT, FROM, AS, DISTINCT. Keep commas between columns only.\n\n[TRAP TO AVOID]: Do not add trailing commas before FROM or quote column identifiers.",
+    "commonMistakes": "Punctuation errors, trailing commas, or quotes around column names.",
+    "learningOutcomes": "Mastered 1.8 Date Projections on Employees.",
+    "challengeSlots": [
+      {
+        "type": "keyword",
+        "value": "SELECT"
+      },
+      {
+        "type": "column",
+        "value": "first_name,"
+      },
+      {
+        "type": "column",
+        "value": "hire_date,"
+      },
+      {
+        "type": "column",
+        "value": "DAY(hire_date)"
+      },
+      {
+        "type": "keyword",
+        "value": "AS"
+      },
+      {
+        "type": "column",
+        "value": "hire_day_of_month"
+      },
+      {
+        "type": "keyword",
+        "value": "FROM"
+      },
+      {
+        "type": "table",
+        "value": "Employees;"
+      }
+    ]
+  },
+  {
+    "id": 1570,
+    "drillNumber": 80,
+    "section": "Section 0: Foundations & Syntax Gym",
+    "title": "Syntax #080: Project expected graduation year by adding 4 to enrolled_year",
+    "industry": "Foundations",
+    "difficulty": "Easy",
+    "scenario": "Project expected graduation year by adding 4 to enrolled_year.",
+    "businessObjective": "Project expected graduation year by adding 4 to enrolled_year.",
+    "schemaSnippet": "Students schema",
+    "targetQuery": "SELECT full_name, enrolled_year, CONCAT('Class of ', (enrolled_year + 4)) AS expected_graduation\nFROM Students;",
+    "syntaxBlueprint": "SELECT full_name, enrolled_year, CONCAT('Class of ', (enrolled_year + 4)) AS expected_graduation\nFROM Students;",
+    "syntaxRule": "Keywords are SELECT, FROM, AS, DISTINCT. Keep commas between columns only.",
+    "syntaxTrap": "Do not add trailing commas before FROM or quote column identifiers.",
+    "eli5Story": "[SYNTAX BLUEPRINT]:\nSELECT full_name, enrolled_year, CONCAT('Class of ', (enrolled_year + 4)) AS expected_graduation\nFROM Students;\n\n[RULE]: Keywords are SELECT, FROM, AS, DISTINCT. Keep commas between columns only.\n\n[TRAP TO AVOID]: Do not add trailing commas before FROM or quote column identifiers.",
+    "commonMistakes": "Punctuation errors, trailing commas, or quotes around column names.",
+    "learningOutcomes": "Mastered 1.8 Date Projections on Students.",
+    "challengeSlots": [
+      {
+        "type": "keyword",
+        "value": "SELECT"
+      },
+      {
+        "type": "column",
+        "value": "full_name,"
+      },
+      {
+        "type": "column",
+        "value": "enrolled_year,"
+      },
+      {
+        "type": "column",
+        "value": "CONCAT('Class"
+      },
+      {
+        "type": "column",
+        "value": "of"
+      },
+      {
+        "type": "column",
+        "value": "',"
+      },
+      {
+        "type": "column",
+        "value": "(enrolled_year"
+      },
+      {
+        "type": "column",
+        "value": "+"
+      },
+      {
+        "type": "column",
+        "value": "4))"
+      },
+      {
+        "type": "keyword",
+        "value": "AS"
+      },
+      {
+        "type": "column",
+        "value": "expected_graduation"
+      },
+      {
+        "type": "keyword",
+        "value": "FROM"
+      },
+      {
+        "type": "table",
+        "value": "Students;"
+      }
+    ]
+  },
+  {
+    "id": 1571,
+    "drillNumber": 81,
+    "section": "Section 0: Foundations & Syntax Gym",
+    "title": "Syntax #081: Find all unique home cities where enrolled students live without duplicates",
+    "industry": "Foundations",
+    "difficulty": "Easy",
+    "scenario": "Find all unique home cities where enrolled students live without duplicates.",
+    "businessObjective": "Find all unique home cities where enrolled students live without duplicates.",
+    "schemaSnippet": "Students schema",
+    "targetQuery": "SELECT DISTINCT city\nFROM Students;",
+    "syntaxBlueprint": "SELECT DISTINCT city\nFROM Students;",
+    "syntaxRule": "Keywords are SELECT, FROM, AS, DISTINCT. Keep commas between columns only.",
+    "syntaxTrap": "Do not add trailing commas before FROM or quote column identifiers.",
+    "eli5Story": "[SYNTAX BLUEPRINT]:\nSELECT DISTINCT city\nFROM Students;\n\n[RULE]: Keywords are SELECT, FROM, AS, DISTINCT. Keep commas between columns only.\n\n[TRAP TO AVOID]: Do not add trailing commas before FROM or quote column identifiers.",
+    "commonMistakes": "Punctuation errors, trailing commas, or quotes around column names.",
+    "learningOutcomes": "Mastered 1.9 DISTINCT Deduplication on Students.",
+    "challengeSlots": [
+      {
+        "type": "keyword",
+        "value": "SELECT"
+      },
+      {
+        "type": "keyword",
+        "value": "DISTINCT"
+      },
+      {
+        "type": "column",
+        "value": "city"
+      },
+      {
+        "type": "keyword",
+        "value": "FROM"
+      },
+      {
+        "type": "table",
+        "value": "Students;"
+      }
+    ]
+  },
+  {
+    "id": 1572,
+    "drillNumber": 82,
+    "section": "Section 0: Foundations & Syntax Gym",
+    "title": "Syntax #082: List all distinct literary genres available in the bookstore catalog",
+    "industry": "Foundations",
+    "difficulty": "Easy",
+    "scenario": "List all distinct literary genres available in the bookstore catalog.",
+    "businessObjective": "List all distinct literary genres available in the bookstore catalog.",
+    "schemaSnippet": "Books schema",
+    "targetQuery": "SELECT DISTINCT genre\nFROM Books;",
+    "syntaxBlueprint": "SELECT DISTINCT genre\nFROM Books;",
+    "syntaxRule": "Keywords are SELECT, FROM, AS, DISTINCT. Keep commas between columns only.",
+    "syntaxTrap": "Do not add trailing commas before FROM or quote column identifiers.",
+    "eli5Story": "[SYNTAX BLUEPRINT]:\nSELECT DISTINCT genre\nFROM Books;\n\n[RULE]: Keywords are SELECT, FROM, AS, DISTINCT. Keep commas between columns only.\n\n[TRAP TO AVOID]: Do not add trailing commas before FROM or quote column identifiers.",
+    "commonMistakes": "Punctuation errors, trailing commas, or quotes around column names.",
+    "learningOutcomes": "Mastered 1.9 DISTINCT Deduplication on Books.",
+    "challengeSlots": [
+      {
+        "type": "keyword",
+        "value": "SELECT"
+      },
+      {
+        "type": "keyword",
+        "value": "DISTINCT"
+      },
+      {
+        "type": "column",
+        "value": "genre"
+      },
+      {
+        "type": "keyword",
+        "value": "FROM"
+      },
+      {
+        "type": "table",
+        "value": "Books;"
+      }
+    ]
+  },
+  {
+    "id": 1573,
+    "drillNumber": 83,
+    "section": "Section 0: Foundations & Syntax Gym",
+    "title": "Syntax #083: Retrieve the list of distinct company departments without duplicate rows",
+    "industry": "Foundations",
+    "difficulty": "Easy",
+    "scenario": "Retrieve the list of distinct company departments without duplicate rows.",
+    "businessObjective": "Retrieve the list of distinct company departments without duplicate rows.",
+    "schemaSnippet": "Employees schema",
+    "targetQuery": "SELECT DISTINCT department\nFROM Employees;",
+    "syntaxBlueprint": "SELECT DISTINCT department\nFROM Employees;",
+    "syntaxRule": "Keywords are SELECT, FROM, AS, DISTINCT. Keep commas between columns only.",
+    "syntaxTrap": "Do not add trailing commas before FROM or quote column identifiers.",
+    "eli5Story": "[SYNTAX BLUEPRINT]:\nSELECT DISTINCT department\nFROM Employees;\n\n[RULE]: Keywords are SELECT, FROM, AS, DISTINCT. Keep commas between columns only.\n\n[TRAP TO AVOID]: Do not add trailing commas before FROM or quote column identifiers.",
+    "commonMistakes": "Punctuation errors, trailing commas, or quotes around column names.",
+    "learningOutcomes": "Mastered 1.9 DISTINCT Deduplication on Employees.",
+    "challengeSlots": [
+      {
+        "type": "keyword",
+        "value": "SELECT"
+      },
+      {
+        "type": "keyword",
+        "value": "DISTINCT"
+      },
+      {
+        "type": "column",
+        "value": "department"
+      },
+      {
+        "type": "keyword",
+        "value": "FROM"
+      },
+      {
+        "type": "table",
+        "value": "Employees;"
+      }
+    ]
+  },
+  {
+    "id": 1574,
+    "drillNumber": 84,
+    "section": "Section 0: Foundations & Syntax Gym",
+    "title": "Syntax #084: Display all unique grocery product categories",
+    "industry": "Foundations",
+    "difficulty": "Easy",
+    "scenario": "Display all unique grocery product categories.",
+    "businessObjective": "Display all unique grocery product categories.",
+    "schemaSnippet": "GroceryItems schema",
+    "targetQuery": "SELECT DISTINCT category\nFROM GroceryItems;",
+    "syntaxBlueprint": "SELECT DISTINCT category\nFROM GroceryItems;",
+    "syntaxRule": "Keywords are SELECT, FROM, AS, DISTINCT. Keep commas between columns only.",
+    "syntaxTrap": "Do not add trailing commas before FROM or quote column identifiers.",
+    "eli5Story": "[SYNTAX BLUEPRINT]:\nSELECT DISTINCT category\nFROM GroceryItems;\n\n[RULE]: Keywords are SELECT, FROM, AS, DISTINCT. Keep commas between columns only.\n\n[TRAP TO AVOID]: Do not add trailing commas before FROM or quote column identifiers.",
+    "commonMistakes": "Punctuation errors, trailing commas, or quotes around column names.",
+    "learningOutcomes": "Mastered 1.9 DISTINCT Deduplication on GroceryItems.",
+    "challengeSlots": [
+      {
+        "type": "keyword",
+        "value": "SELECT"
+      },
+      {
+        "type": "keyword",
+        "value": "DISTINCT"
+      },
+      {
+        "type": "column",
+        "value": "category"
+      },
+      {
+        "type": "keyword",
+        "value": "FROM"
+      },
+      {
+        "type": "table",
+        "value": "GroceryItems;"
+      }
+    ]
+  },
+  {
+    "id": 1575,
+    "drillNumber": 85,
+    "section": "Section 0: Foundations & Syntax Gym",
+    "title": "Syntax #085: List all unique musical genres featured in the streaming library",
+    "industry": "Foundations",
+    "difficulty": "Easy",
+    "scenario": "List all unique musical genres featured in the streaming library.",
+    "businessObjective": "List all unique musical genres featured in the streaming library.",
+    "schemaSnippet": "MusicTracks schema",
+    "targetQuery": "SELECT DISTINCT genre\nFROM MusicTracks;",
+    "syntaxBlueprint": "SELECT DISTINCT genre\nFROM MusicTracks;",
+    "syntaxRule": "Keywords are SELECT, FROM, AS, DISTINCT. Keep commas between columns only.",
+    "syntaxTrap": "Do not add trailing commas before FROM or quote column identifiers.",
+    "eli5Story": "[SYNTAX BLUEPRINT]:\nSELECT DISTINCT genre\nFROM MusicTracks;\n\n[RULE]: Keywords are SELECT, FROM, AS, DISTINCT. Keep commas between columns only.\n\n[TRAP TO AVOID]: Do not add trailing commas before FROM or quote column identifiers.",
+    "commonMistakes": "Punctuation errors, trailing commas, or quotes around column names.",
+    "learningOutcomes": "Mastered 1.9 DISTINCT Deduplication on MusicTracks.",
+    "challengeSlots": [
+      {
+        "type": "keyword",
+        "value": "SELECT"
+      },
+      {
+        "type": "keyword",
+        "value": "DISTINCT"
+      },
+      {
+        "type": "column",
+        "value": "genre"
+      },
+      {
+        "type": "keyword",
+        "value": "FROM"
+      },
+      {
+        "type": "table",
+        "value": "MusicTracks;"
+      }
+    ]
+  },
+  {
+    "id": 1576,
+    "drillNumber": 86,
+    "section": "Section 0: Foundations & Syntax Gym",
+    "title": "Syntax #086: Extract all distinct membership plan tiers",
+    "industry": "Foundations",
+    "difficulty": "Easy",
+    "scenario": "Extract all distinct membership plan tiers.",
+    "businessObjective": "Extract all distinct membership plan tiers.",
+    "schemaSnippet": "GymMembers schema",
+    "targetQuery": "SELECT DISTINCT membership_plan\nFROM GymMembers;",
+    "syntaxBlueprint": "SELECT DISTINCT membership_plan\nFROM GymMembers;",
+    "syntaxRule": "Keywords are SELECT, FROM, AS, DISTINCT. Keep commas between columns only.",
+    "syntaxTrap": "Do not add trailing commas before FROM or quote column identifiers.",
+    "eli5Story": "[SYNTAX BLUEPRINT]:\nSELECT DISTINCT membership_plan\nFROM GymMembers;\n\n[RULE]: Keywords are SELECT, FROM, AS, DISTINCT. Keep commas between columns only.\n\n[TRAP TO AVOID]: Do not add trailing commas before FROM or quote column identifiers.",
+    "commonMistakes": "Punctuation errors, trailing commas, or quotes around column names.",
+    "learningOutcomes": "Mastered 1.9 DISTINCT Deduplication on GymMembers.",
+    "challengeSlots": [
+      {
+        "type": "keyword",
+        "value": "SELECT"
+      },
+      {
+        "type": "keyword",
+        "value": "DISTINCT"
+      },
+      {
+        "type": "column",
+        "value": "membership_plan"
+      },
+      {
+        "type": "keyword",
+        "value": "FROM"
+      },
+      {
+        "type": "table",
+        "value": "GymMembers;"
+      }
+    ]
+  },
+  {
+    "id": 1577,
+    "drillNumber": 87,
+    "section": "Section 0: Foundations & Syntax Gym",
+    "title": "Syntax #087: Find all unique movie directors who have reviews recorded",
+    "industry": "Foundations",
+    "difficulty": "Easy",
+    "scenario": "Find all unique movie directors who have reviews recorded.",
+    "businessObjective": "Find all unique movie directors who have reviews recorded.",
+    "schemaSnippet": "MovieReviews schema",
+    "targetQuery": "SELECT DISTINCT director\nFROM MovieReviews;",
+    "syntaxBlueprint": "SELECT DISTINCT director\nFROM MovieReviews;",
+    "syntaxRule": "Keywords are SELECT, FROM, AS, DISTINCT. Keep commas between columns only.",
+    "syntaxTrap": "Do not add trailing commas before FROM or quote column identifiers.",
+    "eli5Story": "[SYNTAX BLUEPRINT]:\nSELECT DISTINCT director\nFROM MovieReviews;\n\n[RULE]: Keywords are SELECT, FROM, AS, DISTINCT. Keep commas between columns only.\n\n[TRAP TO AVOID]: Do not add trailing commas before FROM or quote column identifiers.",
+    "commonMistakes": "Punctuation errors, trailing commas, or quotes around column names.",
+    "learningOutcomes": "Mastered 1.9 DISTINCT Deduplication on MovieReviews.",
+    "challengeSlots": [
+      {
+        "type": "keyword",
+        "value": "SELECT"
+      },
+      {
+        "type": "keyword",
+        "value": "DISTINCT"
+      },
+      {
+        "type": "column",
+        "value": "director"
+      },
+      {
+        "type": "keyword",
+        "value": "FROM"
+      },
+      {
+        "type": "table",
+        "value": "MovieReviews;"
+      }
+    ]
+  },
+  {
+    "id": 1578,
+    "drillNumber": 88,
+    "section": "Section 0: Foundations & Syntax Gym",
+    "title": "Syntax #088: List all unique origin departure airports",
+    "industry": "Foundations",
+    "difficulty": "Easy",
+    "scenario": "List all unique origin departure airports.",
+    "businessObjective": "List all unique origin departure airports.",
+    "schemaSnippet": "FlightSchedule schema",
+    "targetQuery": "SELECT DISTINCT origin_airport\nFROM FlightSchedule;",
+    "syntaxBlueprint": "SELECT DISTINCT origin_airport\nFROM FlightSchedule;",
+    "syntaxRule": "Keywords are SELECT, FROM, AS, DISTINCT. Keep commas between columns only.",
+    "syntaxTrap": "Do not add trailing commas before FROM or quote column identifiers.",
+    "eli5Story": "[SYNTAX BLUEPRINT]:\nSELECT DISTINCT origin_airport\nFROM FlightSchedule;\n\n[RULE]: Keywords are SELECT, FROM, AS, DISTINCT. Keep commas between columns only.\n\n[TRAP TO AVOID]: Do not add trailing commas before FROM or quote column identifiers.",
+    "commonMistakes": "Punctuation errors, trailing commas, or quotes around column names.",
+    "learningOutcomes": "Mastered 1.9 DISTINCT Deduplication on FlightSchedule.",
+    "challengeSlots": [
+      {
+        "type": "keyword",
+        "value": "SELECT"
+      },
+      {
+        "type": "keyword",
+        "value": "DISTINCT"
+      },
+      {
+        "type": "column",
+        "value": "origin_airport"
+      },
+      {
+        "type": "keyword",
+        "value": "FROM"
+      },
+      {
+        "type": "table",
+        "value": "FlightSchedule;"
+      }
+    ]
+  },
+  {
+    "id": 1579,
+    "drillNumber": 89,
+    "section": "Section 0: Foundations & Syntax Gym",
+    "title": "Syntax #089: Find all distinct animal species treated at the clinic",
+    "industry": "Foundations",
+    "difficulty": "Easy",
+    "scenario": "Find all distinct animal species treated at the clinic.",
+    "businessObjective": "Find all distinct animal species treated at the clinic.",
+    "schemaSnippet": "PetClinic schema",
+    "targetQuery": "SELECT DISTINCT species\nFROM PetClinic;",
+    "syntaxBlueprint": "SELECT DISTINCT species\nFROM PetClinic;",
+    "syntaxRule": "Keywords are SELECT, FROM, AS, DISTINCT. Keep commas between columns only.",
+    "syntaxTrap": "Do not add trailing commas before FROM or quote column identifiers.",
+    "eli5Story": "[SYNTAX BLUEPRINT]:\nSELECT DISTINCT species\nFROM PetClinic;\n\n[RULE]: Keywords are SELECT, FROM, AS, DISTINCT. Keep commas between columns only.\n\n[TRAP TO AVOID]: Do not add trailing commas before FROM or quote column identifiers.",
+    "commonMistakes": "Punctuation errors, trailing commas, or quotes around column names.",
+    "learningOutcomes": "Mastered 1.9 DISTINCT Deduplication on PetClinic.",
+    "challengeSlots": [
+      {
+        "type": "keyword",
+        "value": "SELECT"
+      },
+      {
+        "type": "keyword",
+        "value": "DISTINCT"
+      },
+      {
+        "type": "column",
+        "value": "species"
+      },
+      {
+        "type": "keyword",
+        "value": "FROM"
+      },
+      {
+        "type": "table",
+        "value": "PetClinic;"
+      }
+    ]
+  },
+  {
+    "id": 1580,
+    "drillNumber": 90,
+    "section": "Section 0: Foundations & Syntax Gym",
+    "title": "Syntax #090: Find distinct combinations of customer name and shipping city (multi-column DISTINCT)",
+    "industry": "Foundations",
+    "difficulty": "Easy",
+    "scenario": "Find distinct combinations of customer name and shipping city (multi-column DISTINCT).",
+    "businessObjective": "Find distinct combinations of customer name and shipping city (multi-column DISTINCT).",
+    "schemaSnippet": "Orders schema",
+    "targetQuery": "SELECT DISTINCT customer_name, shipping_city\nFROM Orders;",
+    "syntaxBlueprint": "SELECT DISTINCT customer_name, shipping_city\nFROM Orders;",
+    "syntaxRule": "Keywords are SELECT, FROM, AS, DISTINCT. Keep commas between columns only.",
+    "syntaxTrap": "Do not add trailing commas before FROM or quote column identifiers.",
+    "eli5Story": "[SYNTAX BLUEPRINT]:\nSELECT DISTINCT customer_name, shipping_city\nFROM Orders;\n\n[RULE]: Keywords are SELECT, FROM, AS, DISTINCT. Keep commas between columns only.\n\n[TRAP TO AVOID]: Do not add trailing commas before FROM or quote column identifiers.",
+    "commonMistakes": "Punctuation errors, trailing commas, or quotes around column names.",
+    "learningOutcomes": "Mastered 1.9 DISTINCT Deduplication on Orders.",
+    "challengeSlots": [
+      {
+        "type": "keyword",
+        "value": "SELECT"
+      },
+      {
+        "type": "keyword",
+        "value": "DISTINCT"
+      },
+      {
+        "type": "column",
+        "value": "customer_name,"
+      },
+      {
+        "type": "column",
+        "value": "shipping_city"
+      },
+      {
+        "type": "keyword",
+        "value": "FROM"
+      },
+      {
+        "type": "table",
+        "value": "Orders;"
+      }
+    ]
+  },
+  {
+    "id": 1581,
+    "drillNumber": 91,
+    "section": "Section 0: Foundations & Syntax Gym",
+    "title": "Syntax #091: Fix the trailing comma bug: 'SELECT full_name, city, FROM Students;'",
+    "industry": "Foundations",
+    "difficulty": "Easy",
+    "scenario": "Fix the trailing comma bug: 'SELECT full_name, city, FROM Students;'",
+    "businessObjective": "Fix the trailing comma bug: 'SELECT full_name, city, FROM Students;'",
+    "schemaSnippet": "Students schema",
+    "targetQuery": "SELECT full_name, city\nFROM Students;",
+    "syntaxBlueprint": "SELECT column_1, column_2\nFROM Students;",
+    "syntaxRule": "Keywords are SELECT, FROM, AS, DISTINCT. Keep commas between columns only.",
+    "syntaxTrap": "Do not add trailing commas before FROM or quote column identifiers.",
+    "eli5Story": "[SYNTAX BLUEPRINT]:\nSELECT column_1, column_2\nFROM Students;\n\n[RULE]: Keywords are SELECT, FROM, AS, DISTINCT. Keep commas between columns only.\n\n[TRAP TO AVOID]: Do not add trailing commas before FROM or quote column identifiers.",
+    "commonMistakes": "Punctuation errors, trailing commas, or quotes around column names.",
+    "learningOutcomes": "Mastered 1.10 Bug Hunts & Edge Cases on Students.",
+    "challengeSlots": [
+      {
+        "type": "keyword",
+        "value": "SELECT"
+      },
+      {
+        "type": "column",
+        "value": "full_name,"
+      },
+      {
+        "type": "column",
+        "value": "city"
+      },
+      {
+        "type": "keyword",
+        "value": "FROM"
+      },
+      {
+        "type": "table",
+        "value": "Students;"
+      }
+    ]
+  },
+  {
+    "id": 1582,
+    "drillNumber": 92,
+    "section": "Section 0: Foundations & Syntax Gym",
+    "title": "Syntax #092: Fix the unquoted column alias containing spaces: 'SELECT title, price AS Retail Price FROM Books;'",
+    "industry": "Foundations",
+    "difficulty": "Easy",
+    "scenario": "Fix the unquoted column alias containing spaces: 'SELECT title, price AS Retail Price FROM Books;'",
+    "businessObjective": "Fix the unquoted column alias containing spaces: 'SELECT title, price AS Retail Price FROM Books;'",
+    "schemaSnippet": "Books schema",
+    "targetQuery": "SELECT title, price\nFROM Books;",
+    "syntaxBlueprint": "SELECT column_1, column_2\nFROM Books;",
+    "syntaxRule": "Keywords are SELECT, FROM, AS, DISTINCT. Keep commas between columns only.",
+    "syntaxTrap": "Do not add trailing commas before FROM or quote column identifiers.",
+    "eli5Story": "[SYNTAX BLUEPRINT]:\nSELECT column_1, column_2\nFROM Books;\n\n[RULE]: Keywords are SELECT, FROM, AS, DISTINCT. Keep commas between columns only.\n\n[TRAP TO AVOID]: Do not add trailing commas before FROM or quote column identifiers.",
+    "commonMistakes": "Punctuation errors, trailing commas, or quotes around column names.",
+    "learningOutcomes": "Mastered 1.10 Bug Hunts & Edge Cases on Books.",
+    "challengeSlots": [
+      {
+        "type": "keyword",
+        "value": "SELECT"
+      },
+      {
+        "type": "column",
+        "value": "title,"
+      },
+      {
+        "type": "column",
+        "value": "price"
+      },
+      {
+        "type": "keyword",
+        "value": "FROM"
+      },
+      {
+        "type": "table",
+        "value": "Books;"
+      }
+    ]
+  },
+  {
+    "id": 1583,
+    "drillNumber": 93,
+    "section": "Section 0: Foundations & Syntax Gym",
+    "title": "Syntax #093: Fix the misplaced DISTINCT keyword: 'SELECT first_name, DISTINCT department FROM Employees;'",
+    "industry": "Foundations",
+    "difficulty": "Easy",
+    "scenario": "Fix the misplaced DISTINCT keyword: 'SELECT first_name, DISTINCT department FROM Employees;'",
+    "businessObjective": "Fix the misplaced DISTINCT keyword: 'SELECT first_name, DISTINCT department FROM Employees;'",
+    "schemaSnippet": "Employees schema",
+    "targetQuery": "SELECT first_name, salary\nFROM Employees;",
+    "syntaxBlueprint": "SELECT column_1, column_2\nFROM Employees;",
+    "syntaxRule": "Keywords are SELECT, FROM, AS, DISTINCT. Keep commas between columns only.",
+    "syntaxTrap": "Do not add trailing commas before FROM or quote column identifiers.",
+    "eli5Story": "[SYNTAX BLUEPRINT]:\nSELECT column_1, column_2\nFROM Employees;\n\n[RULE]: Keywords are SELECT, FROM, AS, DISTINCT. Keep commas between columns only.\n\n[TRAP TO AVOID]: Do not add trailing commas before FROM or quote column identifiers.",
+    "commonMistakes": "Punctuation errors, trailing commas, or quotes around column names.",
+    "learningOutcomes": "Mastered 1.10 Bug Hunts & Edge Cases on Employees.",
+    "challengeSlots": [
+      {
+        "type": "keyword",
+        "value": "SELECT"
+      },
+      {
+        "type": "column",
+        "value": "first_name,"
+      },
+      {
+        "type": "column",
+        "value": "salary"
+      },
+      {
+        "type": "keyword",
+        "value": "FROM"
+      },
+      {
+        "type": "table",
+        "value": "Employees;"
+      }
+    ]
+  },
+  {
+    "id": 1584,
+    "drillNumber": 94,
+    "section": "Section 0: Foundations & Syntax Gym",
+    "title": "Syntax #094: Fix the single-quoted column name: \"SELECT 'item_name' FROM GroceryItems;\" (outputs literal string instead of column)",
+    "industry": "Foundations",
+    "difficulty": "Easy",
+    "scenario": "Fix the single-quoted column name: \"SELECT 'item_name' FROM GroceryItems;\" (outputs literal string instead of column).",
+    "businessObjective": "Fix the single-quoted column name: \"SELECT 'item_name' FROM GroceryItems;\" (outputs literal string instead of column).",
+    "schemaSnippet": "GroceryItems schema",
+    "targetQuery": "SELECT item_name, unit_price\nFROM GroceryItems;",
+    "syntaxBlueprint": "SELECT column_1, column_2\nFROM GroceryItems;",
+    "syntaxRule": "Keywords are SELECT, FROM, AS, DISTINCT. Keep commas between columns only.",
+    "syntaxTrap": "Do not add trailing commas before FROM or quote column identifiers.",
+    "eli5Story": "[SYNTAX BLUEPRINT]:\nSELECT column_1, column_2\nFROM GroceryItems;\n\n[RULE]: Keywords are SELECT, FROM, AS, DISTINCT. Keep commas between columns only.\n\n[TRAP TO AVOID]: Do not add trailing commas before FROM or quote column identifiers.",
+    "commonMistakes": "Punctuation errors, trailing commas, or quotes around column names.",
+    "learningOutcomes": "Mastered 1.10 Bug Hunts & Edge Cases on GroceryItems.",
+    "challengeSlots": [
+      {
+        "type": "keyword",
+        "value": "SELECT"
+      },
+      {
+        "type": "column",
+        "value": "item_name,"
+      },
+      {
+        "type": "column",
+        "value": "unit_price"
+      },
+      {
+        "type": "keyword",
+        "value": "FROM"
+      },
+      {
+        "type": "table",
+        "value": "GroceryItems;"
+      }
+    ]
+  },
+  {
+    "id": 1585,
+    "drillNumber": 95,
+    "section": "Section 0: Foundations & Syntax Gym",
+    "title": "Syntax #095: Fix missing comma between calculated expression and next column",
+    "industry": "Foundations",
+    "difficulty": "Easy",
+    "scenario": "Fix missing comma between calculated expression and next column.",
+    "businessObjective": "Fix missing comma between calculated expression and next column.",
+    "schemaSnippet": "Orders schema",
+    "targetQuery": "SELECT order_id, quantity * unit_price AS subtotal\nFROM Orders;",
+    "syntaxBlueprint": "SELECT column_1, column_2\nFROM Orders;",
+    "syntaxRule": "Keywords are SELECT, FROM, AS, DISTINCT. Keep commas between columns only.",
+    "syntaxTrap": "Do not add trailing commas before FROM or quote column identifiers.",
+    "eli5Story": "[SYNTAX BLUEPRINT]:\nSELECT column_1, column_2\nFROM Orders;\n\n[RULE]: Keywords are SELECT, FROM, AS, DISTINCT. Keep commas between columns only.\n\n[TRAP TO AVOID]: Do not add trailing commas before FROM or quote column identifiers.",
+    "commonMistakes": "Punctuation errors, trailing commas, or quotes around column names.",
+    "learningOutcomes": "Mastered 1.10 Bug Hunts & Edge Cases on Orders.",
+    "challengeSlots": [
+      {
+        "type": "keyword",
+        "value": "SELECT"
+      },
+      {
+        "type": "column",
+        "value": "order_id,"
+      },
+      {
+        "type": "column",
+        "value": "quantity"
+      },
+      {
+        "type": "column",
+        "value": "*"
+      },
+      {
+        "type": "column",
+        "value": "unit_price"
+      },
+      {
+        "type": "keyword",
+        "value": "AS"
+      },
+      {
+        "type": "column",
+        "value": "subtotal"
+      },
+      {
+        "type": "keyword",
+        "value": "FROM"
+      },
+      {
+        "type": "table",
+        "value": "Orders;"
+      }
+    ]
+  },
+  {
+    "id": 1586,
+    "drillNumber": 96,
+    "section": "Section 0: Foundations & Syntax Gym",
+    "title": "Syntax #096: Fix misspelled column identifier: 'SELECT song_title FROM MusicTracks;'",
+    "industry": "Foundations",
+    "difficulty": "Easy",
+    "scenario": "Fix misspelled column identifier: 'SELECT song_title FROM MusicTracks;'",
+    "businessObjective": "Fix misspelled column identifier: 'SELECT song_title FROM MusicTracks;'",
+    "schemaSnippet": "MusicTracks schema",
+    "targetQuery": "SELECT track_title, artist_name\nFROM MusicTracks;",
+    "syntaxBlueprint": "SELECT column_1, column_2\nFROM MusicTracks;",
+    "syntaxRule": "Keywords are SELECT, FROM, AS, DISTINCT. Keep commas between columns only.",
+    "syntaxTrap": "Do not add trailing commas before FROM or quote column identifiers.",
+    "eli5Story": "[SYNTAX BLUEPRINT]:\nSELECT column_1, column_2\nFROM MusicTracks;\n\n[RULE]: Keywords are SELECT, FROM, AS, DISTINCT. Keep commas between columns only.\n\n[TRAP TO AVOID]: Do not add trailing commas before FROM or quote column identifiers.",
+    "commonMistakes": "Punctuation errors, trailing commas, or quotes around column names.",
+    "learningOutcomes": "Mastered 1.10 Bug Hunts & Edge Cases on MusicTracks.",
+    "challengeSlots": [
+      {
+        "type": "keyword",
+        "value": "SELECT"
+      },
+      {
+        "type": "column",
+        "value": "track_title,"
+      },
+      {
+        "type": "column",
+        "value": "artist_name"
+      },
+      {
+        "type": "keyword",
+        "value": "FROM"
+      },
+      {
+        "type": "table",
+        "value": "MusicTracks;"
+      }
+    ]
+  },
+  {
+    "id": 1587,
+    "drillNumber": 97,
+    "section": "Section 0: Foundations & Syntax Gym",
+    "title": "Syntax #097: Fix table name typo: 'SELECT member_name FROM GymMember;' (singular vs plural)",
+    "industry": "Foundations",
+    "difficulty": "Easy",
+    "scenario": "Fix table name typo: 'SELECT member_name FROM GymMember;' (singular vs plural).",
+    "businessObjective": "Fix table name typo: 'SELECT member_name FROM GymMember;' (singular vs plural).",
+    "schemaSnippet": "GymMembers schema",
+    "targetQuery": "SELECT member_name, monthly_fee\nFROM GymMembers;",
+    "syntaxBlueprint": "SELECT column_1, column_2\nFROM GymMembers;",
+    "syntaxRule": "Keywords are SELECT, FROM, AS, DISTINCT. Keep commas between columns only.",
+    "syntaxTrap": "Do not add trailing commas before FROM or quote column identifiers.",
+    "eli5Story": "[SYNTAX BLUEPRINT]:\nSELECT column_1, column_2\nFROM GymMembers;\n\n[RULE]: Keywords are SELECT, FROM, AS, DISTINCT. Keep commas between columns only.\n\n[TRAP TO AVOID]: Do not add trailing commas before FROM or quote column identifiers.",
+    "commonMistakes": "Punctuation errors, trailing commas, or quotes around column names.",
+    "learningOutcomes": "Mastered 1.10 Bug Hunts & Edge Cases on GymMembers.",
+    "challengeSlots": [
+      {
+        "type": "keyword",
+        "value": "SELECT"
+      },
+      {
+        "type": "column",
+        "value": "member_name,"
+      },
+      {
+        "type": "column",
+        "value": "monthly_fee"
+      },
+      {
+        "type": "keyword",
+        "value": "FROM"
+      },
+      {
+        "type": "table",
+        "value": "GymMembers;"
+      }
+    ]
+  },
+  {
+    "id": 1588,
+    "drillNumber": 98,
+    "section": "Section 0: Foundations & Syntax Gym",
+    "title": "Syntax #098: Fix hyphen used in column alias: 'SELECT movie_title AS movie-name FROM MovieReviews;'",
+    "industry": "Foundations",
+    "difficulty": "Easy",
+    "scenario": "Fix hyphen used in column alias: 'SELECT movie_title AS movie-name FROM MovieReviews;'",
+    "businessObjective": "Fix hyphen used in column alias: 'SELECT movie_title AS movie-name FROM MovieReviews;'",
+    "schemaSnippet": "MovieReviews schema",
+    "targetQuery": "SELECT movie_title, star_rating\nFROM MovieReviews;",
+    "syntaxBlueprint": "SELECT column_1, column_2\nFROM MovieReviews;",
+    "syntaxRule": "Keywords are SELECT, FROM, AS, DISTINCT. Keep commas between columns only.",
+    "syntaxTrap": "Do not add trailing commas before FROM or quote column identifiers.",
+    "eli5Story": "[SYNTAX BLUEPRINT]:\nSELECT column_1, column_2\nFROM MovieReviews;\n\n[RULE]: Keywords are SELECT, FROM, AS, DISTINCT. Keep commas between columns only.\n\n[TRAP TO AVOID]: Do not add trailing commas before FROM or quote column identifiers.",
+    "commonMistakes": "Punctuation errors, trailing commas, or quotes around column names.",
+    "learningOutcomes": "Mastered 1.10 Bug Hunts & Edge Cases on MovieReviews.",
+    "challengeSlots": [
+      {
+        "type": "keyword",
+        "value": "SELECT"
+      },
+      {
+        "type": "column",
+        "value": "movie_title,"
+      },
+      {
+        "type": "column",
+        "value": "star_rating"
+      },
+      {
+        "type": "keyword",
+        "value": "FROM"
+      },
+      {
+        "type": "table",
+        "value": "MovieReviews;"
+      }
+    ]
+  },
+  {
+    "id": 1589,
+    "drillNumber": 99,
+    "section": "Section 0: Foundations & Syntax Gym",
+    "title": "Syntax #099: Fix missing FROM keyword: 'SELECT flight_id, origin_airport FlightSchedule;'",
+    "industry": "Foundations",
+    "difficulty": "Easy",
+    "scenario": "Fix missing FROM keyword: 'SELECT flight_id, origin_airport FlightSchedule;'",
+    "businessObjective": "Fix missing FROM keyword: 'SELECT flight_id, origin_airport FlightSchedule;'",
+    "schemaSnippet": "FlightSchedule schema",
+    "targetQuery": "SELECT flight_id, origin_airport, dest_airport\nFROM FlightSchedule;",
+    "syntaxBlueprint": "SELECT column_1, column_2\nFROM FlightSchedule;",
+    "syntaxRule": "Keywords are SELECT, FROM, AS, DISTINCT. Keep commas between columns only.",
+    "syntaxTrap": "Do not add trailing commas before FROM or quote column identifiers.",
+    "eli5Story": "[SYNTAX BLUEPRINT]:\nSELECT column_1, column_2\nFROM FlightSchedule;\n\n[RULE]: Keywords are SELECT, FROM, AS, DISTINCT. Keep commas between columns only.\n\n[TRAP TO AVOID]: Do not add trailing commas before FROM or quote column identifiers.",
+    "commonMistakes": "Punctuation errors, trailing commas, or quotes around column names.",
+    "learningOutcomes": "Mastered 1.10 Bug Hunts & Edge Cases on FlightSchedule.",
+    "challengeSlots": [
+      {
+        "type": "keyword",
+        "value": "SELECT"
+      },
+      {
+        "type": "column",
+        "value": "flight_id,"
+      },
+      {
+        "type": "column",
+        "value": "origin_airport,"
+      },
+      {
+        "type": "column",
+        "value": "dest_airport"
+      },
+      {
+        "type": "keyword",
+        "value": "FROM"
+      },
+      {
+        "type": "table",
+        "value": "FlightSchedule;"
+      }
+    ]
+  },
+  {
+    "id": 1590,
+    "drillNumber": 100,
+    "section": "Section 0: Foundations & Syntax Gym",
+    "title": "Syntax #100: Fix premature semicolon: 'SELECT pet_name; FROM PetClinic;'",
+    "industry": "Foundations",
+    "difficulty": "Easy",
+    "scenario": "Fix premature semicolon: 'SELECT pet_name; FROM PetClinic;'",
+    "businessObjective": "Fix premature semicolon: 'SELECT pet_name; FROM PetClinic;'",
+    "schemaSnippet": "PetClinic schema",
+    "targetQuery": "SELECT pet_name, age_years\nFROM PetClinic;",
+    "syntaxBlueprint": "SELECT column_1, column_2\nFROM PetClinic;",
+    "syntaxRule": "Keywords are SELECT, FROM, AS, DISTINCT. Keep commas between columns only.",
+    "syntaxTrap": "Do not add trailing commas before FROM or quote column identifiers.",
+    "eli5Story": "[SYNTAX BLUEPRINT]:\nSELECT column_1, column_2\nFROM PetClinic;\n\n[RULE]: Keywords are SELECT, FROM, AS, DISTINCT. Keep commas between columns only.\n\n[TRAP TO AVOID]: Do not add trailing commas before FROM or quote column identifiers.",
+    "commonMistakes": "Punctuation errors, trailing commas, or quotes around column names.",
+    "learningOutcomes": "Mastered 1.10 Bug Hunts & Edge Cases on PetClinic.",
+    "challengeSlots": [
+      {
+        "type": "keyword",
+        "value": "SELECT"
+      },
+      {
+        "type": "column",
+        "value": "pet_name,"
+      },
+      {
+        "type": "column",
+        "value": "age_years"
+      },
+      {
+        "type": "keyword",
+        "value": "FROM"
+      },
+      {
+        "type": "table",
+        "value": "PetClinic;"
+      }
+    ]
+  },
+  {
+    "id": 1591,
+    "drillNumber": 101,
+    "section": "Section 0: Foundations & Syntax Gym",
+    "title": "Syntax #101: Find all students who live in the city of Seattle",
+    "industry": "Foundations",
+    "difficulty": "Easy",
+    "scenario": "Find all students who live in the city of Seattle.",
+    "businessObjective": "Find all students who live in the city of Seattle.",
+    "schemaSnippet": "Students schema",
+    "targetQuery": "SELECT full_name, city\nFROM Students\nWHERE city = 'Seattle';",
+    "syntaxBlueprint": "SELECT full_name, city\nFROM Students\nWHERE city = 'Seattle';",
+    "syntaxRule": "Strings use single quotes, numbers do not. AND precedes OR unless parentheses are used. NULL requires IS NULL.",
+    "syntaxTrap": "Never write col = NULL or omit parentheses in mixed AND/OR statements.",
+    "eli5Story": "[SYNTAX BLUEPRINT]:\nSELECT full_name, city\nFROM Students\nWHERE city = 'Seattle';\n\n[RULE]: Strings use single quotes, numbers do not. AND precedes OR unless parentheses are used. NULL requires IS NULL.\n\n[TRAP TO AVOID]: Never write col = NULL or omit parentheses in mixed AND/OR statements.",
+    "commonMistakes": "Unquoted strings, missing parentheses around OR, or using = instead of LIKE.",
+    "learningOutcomes": "Mastered 2.1 Exact Equality & Inequality on Students.",
+    "challengeSlots": [
+      {
+        "type": "keyword",
+        "value": "SELECT"
+      },
+      {
+        "type": "column",
+        "value": "full_name,"
+      },
+      {
+        "type": "column",
+        "value": "city"
+      },
+      {
+        "type": "keyword",
+        "value": "FROM"
+      },
+      {
+        "type": "table",
+        "value": "Students"
+      },
+      {
+        "type": "keyword",
+        "value": "WHERE"
+      },
+      {
+        "type": "column",
+        "value": "city"
+      },
+      {
+        "type": "column",
+        "value": "="
+      },
+      {
+        "type": "column",
+        "value": "'Seattle';"
+      }
+    ]
+  },
+  {
+    "id": 1592,
+    "drillNumber": 102,
+    "section": "Section 0: Foundations & Syntax Gym",
+    "title": "Syntax #102: Select all books that belong to the 'Sci-Fi' genre",
+    "industry": "Foundations",
+    "difficulty": "Easy",
+    "scenario": "Select all books that belong to the 'Sci-Fi' genre.",
+    "businessObjective": "Select all books that belong to the 'Sci-Fi' genre.",
+    "schemaSnippet": "Books schema",
+    "targetQuery": "SELECT title, author, genre\nFROM Books\nWHERE genre = 'Sci-Fi';",
+    "syntaxBlueprint": "SELECT title, author, genre\nFROM Books\nWHERE genre = 'Sci-Fi';",
+    "syntaxRule": "Strings use single quotes, numbers do not. AND precedes OR unless parentheses are used. NULL requires IS NULL.",
+    "syntaxTrap": "Never write col = NULL or omit parentheses in mixed AND/OR statements.",
+    "eli5Story": "[SYNTAX BLUEPRINT]:\nSELECT title, author, genre\nFROM Books\nWHERE genre = 'Sci-Fi';\n\n[RULE]: Strings use single quotes, numbers do not. AND precedes OR unless parentheses are used. NULL requires IS NULL.\n\n[TRAP TO AVOID]: Never write col = NULL or omit parentheses in mixed AND/OR statements.",
+    "commonMistakes": "Unquoted strings, missing parentheses around OR, or using = instead of LIKE.",
+    "learningOutcomes": "Mastered 2.1 Exact Equality & Inequality on Books.",
+    "challengeSlots": [
+      {
+        "type": "keyword",
+        "value": "SELECT"
+      },
+      {
+        "type": "column",
+        "value": "title,"
+      },
+      {
+        "type": "column",
+        "value": "author,"
+      },
+      {
+        "type": "column",
+        "value": "genre"
+      },
+      {
+        "type": "keyword",
+        "value": "FROM"
+      },
+      {
+        "type": "table",
+        "value": "Books"
+      },
+      {
+        "type": "keyword",
+        "value": "WHERE"
+      },
+      {
+        "type": "column",
+        "value": "genre"
+      },
+      {
+        "type": "column",
+        "value": "="
+      },
+      {
+        "type": "column",
+        "value": "'Sci-Fi';"
+      }
+    ]
+  },
+  {
+    "id": 1593,
+    "drillNumber": 103,
+    "section": "Section 0: Foundations & Syntax Gym",
+    "title": "Syntax #103: Retrieve all employees in the Engineering department",
+    "industry": "Foundations",
+    "difficulty": "Easy",
+    "scenario": "Retrieve all employees in the Engineering department.",
+    "businessObjective": "Retrieve all employees in the Engineering department.",
+    "schemaSnippet": "Employees schema",
+    "targetQuery": "SELECT first_name, department, salary\nFROM Employees\nWHERE department = 'Engineering';",
+    "syntaxBlueprint": "SELECT first_name, department, salary\nFROM Employees\nWHERE department = 'Engineering';",
+    "syntaxRule": "Strings use single quotes, numbers do not. AND precedes OR unless parentheses are used. NULL requires IS NULL.",
+    "syntaxTrap": "Never write col = NULL or omit parentheses in mixed AND/OR statements.",
+    "eli5Story": "[SYNTAX BLUEPRINT]:\nSELECT first_name, department, salary\nFROM Employees\nWHERE department = 'Engineering';\n\n[RULE]: Strings use single quotes, numbers do not. AND precedes OR unless parentheses are used. NULL requires IS NULL.\n\n[TRAP TO AVOID]: Never write col = NULL or omit parentheses in mixed AND/OR statements.",
+    "commonMistakes": "Unquoted strings, missing parentheses around OR, or using = instead of LIKE.",
+    "learningOutcomes": "Mastered 2.1 Exact Equality & Inequality on Employees.",
+    "challengeSlots": [
+      {
+        "type": "keyword",
+        "value": "SELECT"
+      },
+      {
+        "type": "column",
+        "value": "first_name,"
+      },
+      {
+        "type": "column",
+        "value": "department,"
+      },
+      {
+        "type": "column",
+        "value": "salary"
+      },
+      {
+        "type": "keyword",
+        "value": "FROM"
+      },
+      {
+        "type": "table",
+        "value": "Employees"
+      },
+      {
+        "type": "keyword",
+        "value": "WHERE"
+      },
+      {
+        "type": "column",
+        "value": "department"
+      },
+      {
+        "type": "column",
+        "value": "="
+      },
+      {
+        "type": "column",
+        "value": "'Engineering';"
+      }
+    ]
+  },
+  {
+    "id": 1594,
+    "drillNumber": 104,
+    "section": "Section 0: Foundations & Syntax Gym",
+    "title": "Syntax #104: Find all grocery items where is_organic is TRUE",
+    "industry": "Foundations",
+    "difficulty": "Easy",
+    "scenario": "Find all grocery items where is_organic is TRUE.",
+    "businessObjective": "Find all grocery items where is_organic is TRUE.",
+    "schemaSnippet": "GroceryItems schema",
+    "targetQuery": "SELECT item_name, unit_price\nFROM GroceryItems\nWHERE is_organic = TRUE;",
+    "syntaxBlueprint": "SELECT item_name, unit_price\nFROM GroceryItems\nWHERE is_organic = TRUE;",
+    "syntaxRule": "Strings use single quotes, numbers do not. AND precedes OR unless parentheses are used. NULL requires IS NULL.",
+    "syntaxTrap": "Never write col = NULL or omit parentheses in mixed AND/OR statements.",
+    "eli5Story": "[SYNTAX BLUEPRINT]:\nSELECT item_name, unit_price\nFROM GroceryItems\nWHERE is_organic = TRUE;\n\n[RULE]: Strings use single quotes, numbers do not. AND precedes OR unless parentheses are used. NULL requires IS NULL.\n\n[TRAP TO AVOID]: Never write col = NULL or omit parentheses in mixed AND/OR statements.",
+    "commonMistakes": "Unquoted strings, missing parentheses around OR, or using = instead of LIKE.",
+    "learningOutcomes": "Mastered 2.1 Exact Equality & Inequality on GroceryItems.",
+    "challengeSlots": [
+      {
+        "type": "keyword",
+        "value": "SELECT"
+      },
+      {
+        "type": "column",
+        "value": "item_name,"
+      },
+      {
+        "type": "column",
+        "value": "unit_price"
+      },
+      {
+        "type": "keyword",
+        "value": "FROM"
+      },
+      {
+        "type": "table",
+        "value": "GroceryItems"
+      },
+      {
+        "type": "keyword",
+        "value": "WHERE"
+      },
+      {
+        "type": "column",
+        "value": "is_organic"
+      },
+      {
+        "type": "column",
+        "value": "="
+      },
+      {
+        "type": "column",
+        "value": "TRUE;"
+      }
+    ]
+  },
+  {
+    "id": 1595,
+    "drillNumber": 105,
+    "section": "Section 0: Foundations & Syntax Gym",
+    "title": "Syntax #105: Display all orders where order_status is 'Shipped'",
+    "industry": "Foundations",
+    "difficulty": "Easy",
+    "scenario": "Display all orders where order_status is 'Shipped'.",
+    "businessObjective": "Display all orders where order_status is 'Shipped'.",
+    "schemaSnippet": "Orders schema",
+    "targetQuery": "SELECT order_id, customer_name, order_status\nFROM Orders\nWHERE order_status = 'Shipped';",
+    "syntaxBlueprint": "SELECT order_id, customer_name, order_status\nFROM Orders\nWHERE order_status = 'Shipped';",
+    "syntaxRule": "Strings use single quotes, numbers do not. AND precedes OR unless parentheses are used. NULL requires IS NULL.",
+    "syntaxTrap": "Never write col = NULL or omit parentheses in mixed AND/OR statements.",
+    "eli5Story": "[SYNTAX BLUEPRINT]:\nSELECT order_id, customer_name, order_status\nFROM Orders\nWHERE order_status = 'Shipped';\n\n[RULE]: Strings use single quotes, numbers do not. AND precedes OR unless parentheses are used. NULL requires IS NULL.\n\n[TRAP TO AVOID]: Never write col = NULL or omit parentheses in mixed AND/OR statements.",
+    "commonMistakes": "Unquoted strings, missing parentheses around OR, or using = instead of LIKE.",
+    "learningOutcomes": "Mastered 2.1 Exact Equality & Inequality on Orders.",
+    "challengeSlots": [
+      {
+        "type": "keyword",
+        "value": "SELECT"
+      },
+      {
+        "type": "column",
+        "value": "order_id,"
+      },
+      {
+        "type": "column",
+        "value": "customer_name,"
+      },
+      {
+        "type": "column",
+        "value": "order_status"
+      },
+      {
+        "type": "keyword",
+        "value": "FROM"
+      },
+      {
+        "type": "table",
+        "value": "Orders"
+      },
+      {
+        "type": "keyword",
+        "value": "WHERE"
+      },
+      {
+        "type": "column",
+        "value": "order_status"
+      },
+      {
+        "type": "column",
+        "value": "="
+      },
+      {
+        "type": "column",
+        "value": "'Shipped';"
+      }
+    ]
+  },
+  {
+    "id": 1596,
+    "drillNumber": 106,
+    "section": "Section 0: Foundations & Syntax Gym",
+    "title": "Syntax #106: Find all tracks performed by the artist 'Luna Waves'",
+    "industry": "Foundations",
+    "difficulty": "Easy",
+    "scenario": "Find all tracks performed by the artist 'Luna Waves'.",
+    "businessObjective": "Find all tracks performed by the artist 'Luna Waves'.",
+    "schemaSnippet": "MusicTracks schema",
+    "targetQuery": "SELECT track_title, artist_name\nFROM MusicTracks\nWHERE artist_name = 'Luna Waves';",
+    "syntaxBlueprint": "SELECT track_title, artist_name\nFROM MusicTracks\nWHERE artist_name = 'Luna Waves';",
+    "syntaxRule": "Strings use single quotes, numbers do not. AND precedes OR unless parentheses are used. NULL requires IS NULL.",
+    "syntaxTrap": "Never write col = NULL or omit parentheses in mixed AND/OR statements.",
+    "eli5Story": "[SYNTAX BLUEPRINT]:\nSELECT track_title, artist_name\nFROM MusicTracks\nWHERE artist_name = 'Luna Waves';\n\n[RULE]: Strings use single quotes, numbers do not. AND precedes OR unless parentheses are used. NULL requires IS NULL.\n\n[TRAP TO AVOID]: Never write col = NULL or omit parentheses in mixed AND/OR statements.",
+    "commonMistakes": "Unquoted strings, missing parentheses around OR, or using = instead of LIKE.",
+    "learningOutcomes": "Mastered 2.1 Exact Equality & Inequality on MusicTracks.",
+    "challengeSlots": [
+      {
+        "type": "keyword",
+        "value": "SELECT"
+      },
+      {
+        "type": "column",
+        "value": "track_title,"
+      },
+      {
+        "type": "column",
+        "value": "artist_name"
+      },
+      {
+        "type": "keyword",
+        "value": "FROM"
+      },
+      {
+        "type": "table",
+        "value": "MusicTracks"
+      },
+      {
+        "type": "keyword",
+        "value": "WHERE"
+      },
+      {
+        "type": "column",
+        "value": "artist_name"
+      },
+      {
+        "type": "column",
+        "value": "="
+      },
+      {
+        "type": "column",
+        "value": "'Luna"
+      },
+      {
+        "type": "column",
+        "value": "Waves';"
+      }
+    ]
+  },
+  {
+    "id": 1597,
+    "drillNumber": 107,
+    "section": "Section 0: Foundations & Syntax Gym",
+    "title": "Syntax #107: List all members enrolled in the 'Gold' plan",
+    "industry": "Foundations",
+    "difficulty": "Easy",
+    "scenario": "List all members enrolled in the 'Gold' plan.",
+    "businessObjective": "List all members enrolled in the 'Gold' plan.",
+    "schemaSnippet": "GymMembers schema",
+    "targetQuery": "SELECT member_name, membership_plan\nFROM GymMembers\nWHERE membership_plan = 'Gold';",
+    "syntaxBlueprint": "SELECT member_name, membership_plan\nFROM GymMembers\nWHERE membership_plan = 'Gold';",
+    "syntaxRule": "Strings use single quotes, numbers do not. AND precedes OR unless parentheses are used. NULL requires IS NULL.",
+    "syntaxTrap": "Never write col = NULL or omit parentheses in mixed AND/OR statements.",
+    "eli5Story": "[SYNTAX BLUEPRINT]:\nSELECT member_name, membership_plan\nFROM GymMembers\nWHERE membership_plan = 'Gold';\n\n[RULE]: Strings use single quotes, numbers do not. AND precedes OR unless parentheses are used. NULL requires IS NULL.\n\n[TRAP TO AVOID]: Never write col = NULL or omit parentheses in mixed AND/OR statements.",
+    "commonMistakes": "Unquoted strings, missing parentheses around OR, or using = instead of LIKE.",
+    "learningOutcomes": "Mastered 2.1 Exact Equality & Inequality on GymMembers.",
+    "challengeSlots": [
+      {
+        "type": "keyword",
+        "value": "SELECT"
+      },
+      {
+        "type": "column",
+        "value": "member_name,"
+      },
+      {
+        "type": "column",
+        "value": "membership_plan"
+      },
+      {
+        "type": "keyword",
+        "value": "FROM"
+      },
+      {
+        "type": "table",
+        "value": "GymMembers"
+      },
+      {
+        "type": "keyword",
+        "value": "WHERE"
+      },
+      {
+        "type": "column",
+        "value": "membership_plan"
+      },
+      {
+        "type": "column",
+        "value": "="
+      },
+      {
+        "type": "column",
+        "value": "'Gold';"
+      }
+    ]
+  },
+  {
+    "id": 1598,
+    "drillNumber": 108,
+    "section": "Section 0: Foundations & Syntax Gym",
+    "title": "Syntax #108: Find all films directed by 'Christopher Nolan'",
+    "industry": "Foundations",
+    "difficulty": "Easy",
+    "scenario": "Find all films directed by 'Christopher Nolan'.",
+    "businessObjective": "Find all films directed by 'Christopher Nolan'.",
+    "schemaSnippet": "MovieReviews schema",
+    "targetQuery": "SELECT movie_title, director\nFROM MovieReviews\nWHERE director = 'Christopher Nolan';",
+    "syntaxBlueprint": "SELECT movie_title, director\nFROM MovieReviews\nWHERE director = 'Christopher Nolan';",
+    "syntaxRule": "Strings use single quotes, numbers do not. AND precedes OR unless parentheses are used. NULL requires IS NULL.",
+    "syntaxTrap": "Never write col = NULL or omit parentheses in mixed AND/OR statements.",
+    "eli5Story": "[SYNTAX BLUEPRINT]:\nSELECT movie_title, director\nFROM MovieReviews\nWHERE director = 'Christopher Nolan';\n\n[RULE]: Strings use single quotes, numbers do not. AND precedes OR unless parentheses are used. NULL requires IS NULL.\n\n[TRAP TO AVOID]: Never write col = NULL or omit parentheses in mixed AND/OR statements.",
+    "commonMistakes": "Unquoted strings, missing parentheses around OR, or using = instead of LIKE.",
+    "learningOutcomes": "Mastered 2.1 Exact Equality & Inequality on MovieReviews.",
+    "challengeSlots": [
+      {
+        "type": "keyword",
+        "value": "SELECT"
+      },
+      {
+        "type": "column",
+        "value": "movie_title,"
+      },
+      {
+        "type": "column",
+        "value": "director"
+      },
+      {
+        "type": "keyword",
+        "value": "FROM"
+      },
+      {
+        "type": "table",
+        "value": "MovieReviews"
+      },
+      {
+        "type": "keyword",
+        "value": "WHERE"
+      },
+      {
+        "type": "column",
+        "value": "director"
+      },
+      {
+        "type": "column",
+        "value": "="
+      },
+      {
+        "type": "column",
+        "value": "'Christopher"
+      },
+      {
+        "type": "column",
+        "value": "Nolan';"
+      }
+    ]
+  },
+  {
+    "id": 1599,
+    "drillNumber": 109,
+    "section": "Section 0: Foundations & Syntax Gym",
+    "title": "Syntax #109: Find all flights with destination airport equal to 'LAX'",
+    "industry": "Foundations",
+    "difficulty": "Easy",
+    "scenario": "Find all flights with destination airport equal to 'LAX'.",
+    "businessObjective": "Find all flights with destination airport equal to 'LAX'.",
+    "schemaSnippet": "FlightSchedule schema",
+    "targetQuery": "SELECT flight_id, dest_airport\nFROM FlightSchedule\nWHERE dest_airport = 'LAX';",
+    "syntaxBlueprint": "SELECT flight_id, dest_airport\nFROM FlightSchedule\nWHERE dest_airport = 'LAX';",
+    "syntaxRule": "Strings use single quotes, numbers do not. AND precedes OR unless parentheses are used. NULL requires IS NULL.",
+    "syntaxTrap": "Never write col = NULL or omit parentheses in mixed AND/OR statements.",
+    "eli5Story": "[SYNTAX BLUEPRINT]:\nSELECT flight_id, dest_airport\nFROM FlightSchedule\nWHERE dest_airport = 'LAX';\n\n[RULE]: Strings use single quotes, numbers do not. AND precedes OR unless parentheses are used. NULL requires IS NULL.\n\n[TRAP TO AVOID]: Never write col = NULL or omit parentheses in mixed AND/OR statements.",
+    "commonMistakes": "Unquoted strings, missing parentheses around OR, or using = instead of LIKE.",
+    "learningOutcomes": "Mastered 2.1 Exact Equality & Inequality on FlightSchedule.",
+    "challengeSlots": [
+      {
+        "type": "keyword",
+        "value": "SELECT"
+      },
+      {
+        "type": "column",
+        "value": "flight_id,"
+      },
+      {
+        "type": "column",
+        "value": "dest_airport"
+      },
+      {
+        "type": "keyword",
+        "value": "FROM"
+      },
+      {
+        "type": "table",
+        "value": "FlightSchedule"
+      },
+      {
+        "type": "keyword",
+        "value": "WHERE"
+      },
+      {
+        "type": "column",
+        "value": "dest_airport"
+      },
+      {
+        "type": "column",
+        "value": "="
+      },
+      {
+        "type": "column",
+        "value": "'LAX';"
+      }
+    ]
+  },
+  {
+    "id": 1600,
+    "drillNumber": 110,
+    "section": "Section 0: Foundations & Syntax Gym",
+    "title": "Syntax #110: Find all pets whose species is NOT 'Dog' using != operator",
+    "industry": "Foundations",
+    "difficulty": "Easy",
+    "scenario": "Find all pets whose species is NOT 'Dog' using != operator.",
+    "businessObjective": "Find all pets whose species is NOT 'Dog' using != operator.",
+    "schemaSnippet": "PetClinic schema",
+    "targetQuery": "SELECT pet_name, species\nFROM PetClinic\nWHERE species != 'Dog';",
+    "syntaxBlueprint": "SELECT pet_name, species\nFROM PetClinic\nWHERE species != 'Dog';",
+    "syntaxRule": "Strings use single quotes, numbers do not. AND precedes OR unless parentheses are used. NULL requires IS NULL.",
+    "syntaxTrap": "Never write col = NULL or omit parentheses in mixed AND/OR statements.",
+    "eli5Story": "[SYNTAX BLUEPRINT]:\nSELECT pet_name, species\nFROM PetClinic\nWHERE species != 'Dog';\n\n[RULE]: Strings use single quotes, numbers do not. AND precedes OR unless parentheses are used. NULL requires IS NULL.\n\n[TRAP TO AVOID]: Never write col = NULL or omit parentheses in mixed AND/OR statements.",
+    "commonMistakes": "Unquoted strings, missing parentheses around OR, or using = instead of LIKE.",
+    "learningOutcomes": "Mastered 2.1 Exact Equality & Inequality on PetClinic.",
+    "challengeSlots": [
+      {
+        "type": "keyword",
+        "value": "SELECT"
+      },
+      {
+        "type": "column",
+        "value": "pet_name,"
+      },
+      {
+        "type": "column",
+        "value": "species"
+      },
+      {
+        "type": "keyword",
+        "value": "FROM"
+      },
+      {
+        "type": "table",
+        "value": "PetClinic"
+      },
+      {
+        "type": "keyword",
+        "value": "WHERE"
+      },
+      {
+        "type": "column",
+        "value": "species"
+      },
+      {
+        "type": "column",
+        "value": "!="
+      },
+      {
+        "type": "column",
+        "value": "'Dog';"
+      }
+    ]
+  },
+  {
+    "id": 1601,
+    "drillNumber": 111,
+    "section": "Section 0: Foundations & Syntax Gym",
+    "title": "Syntax #111: Select students with a GPA greater than or equal to 3.50 (Honors list)",
+    "industry": "Foundations",
+    "difficulty": "Easy",
+    "scenario": "Select students with a GPA greater than or equal to 3.50 (Honors list).",
+    "businessObjective": "Select students with a GPA greater than or equal to 3.50 (Honors list).",
+    "schemaSnippet": "Students schema",
+    "targetQuery": "SELECT full_name, gpa\nFROM Students\nWHERE gpa >= 3.50;",
+    "syntaxBlueprint": "SELECT full_name, gpa\nFROM Students\nWHERE gpa >= 3.50;",
+    "syntaxRule": "Strings use single quotes, numbers do not. AND precedes OR unless parentheses are used. NULL requires IS NULL.",
+    "syntaxTrap": "Never write col = NULL or omit parentheses in mixed AND/OR statements.",
+    "eli5Story": "[SYNTAX BLUEPRINT]:\nSELECT full_name, gpa\nFROM Students\nWHERE gpa >= 3.50;\n\n[RULE]: Strings use single quotes, numbers do not. AND precedes OR unless parentheses are used. NULL requires IS NULL.\n\n[TRAP TO AVOID]: Never write col = NULL or omit parentheses in mixed AND/OR statements.",
+    "commonMistakes": "Unquoted strings, missing parentheses around OR, or using = instead of LIKE.",
+    "learningOutcomes": "Mastered 2.2 Numeric Comparisons on Students.",
+    "challengeSlots": [
+      {
+        "type": "keyword",
+        "value": "SELECT"
+      },
+      {
+        "type": "column",
+        "value": "full_name,"
+      },
+      {
+        "type": "column",
+        "value": "gpa"
+      },
+      {
+        "type": "keyword",
+        "value": "FROM"
+      },
+      {
+        "type": "table",
+        "value": "Students"
+      },
+      {
+        "type": "keyword",
+        "value": "WHERE"
+      },
+      {
+        "type": "column",
+        "value": "gpa"
+      },
+      {
+        "type": "column",
+        "value": ">="
+      },
+      {
+        "type": "column",
+        "value": "3.50;"
+      }
+    ]
+  },
+  {
+    "id": 1602,
+    "drillNumber": 112,
+    "section": "Section 0: Foundations & Syntax Gym",
+    "title": "Syntax #112: Find all budget books with a price strictly under $20.00",
+    "industry": "Foundations",
+    "difficulty": "Easy",
+    "scenario": "Find all budget books with a price strictly under $20.00.",
+    "businessObjective": "Find all budget books with a price strictly under $20.00.",
+    "schemaSnippet": "Books schema",
+    "targetQuery": "SELECT title, price\nFROM Books\nWHERE price < 20.00;",
+    "syntaxBlueprint": "SELECT title, price\nFROM Books\nWHERE price < 20.00;",
+    "syntaxRule": "Strings use single quotes, numbers do not. AND precedes OR unless parentheses are used. NULL requires IS NULL.",
+    "syntaxTrap": "Never write col = NULL or omit parentheses in mixed AND/OR statements.",
+    "eli5Story": "[SYNTAX BLUEPRINT]:\nSELECT title, price\nFROM Books\nWHERE price < 20.00;\n\n[RULE]: Strings use single quotes, numbers do not. AND precedes OR unless parentheses are used. NULL requires IS NULL.\n\n[TRAP TO AVOID]: Never write col = NULL or omit parentheses in mixed AND/OR statements.",
+    "commonMistakes": "Unquoted strings, missing parentheses around OR, or using = instead of LIKE.",
+    "learningOutcomes": "Mastered 2.2 Numeric Comparisons on Books.",
+    "challengeSlots": [
+      {
+        "type": "keyword",
+        "value": "SELECT"
+      },
+      {
+        "type": "column",
+        "value": "title,"
+      },
+      {
+        "type": "column",
+        "value": "price"
+      },
+      {
+        "type": "keyword",
+        "value": "FROM"
+      },
+      {
+        "type": "table",
+        "value": "Books"
+      },
+      {
+        "type": "keyword",
+        "value": "WHERE"
+      },
+      {
+        "type": "column",
+        "value": "price"
+      },
+      {
+        "type": "column",
+        "value": "<"
+      },
+      {
+        "type": "column",
+        "value": "20.00;"
+      }
+    ]
+  },
+  {
+    "id": 1603,
+    "drillNumber": 113,
+    "section": "Section 0: Foundations & Syntax Gym",
+    "title": "Syntax #113: Retrieve employees earning a salary greater than $80,000",
+    "industry": "Foundations",
+    "difficulty": "Easy",
+    "scenario": "Retrieve employees earning a salary greater than $80,000.",
+    "businessObjective": "Retrieve employees earning a salary greater than $80,000.",
+    "schemaSnippet": "Employees schema",
+    "targetQuery": "SELECT first_name, salary\nFROM Employees\nWHERE salary > 80000.00;",
+    "syntaxBlueprint": "SELECT first_name, salary\nFROM Employees\nWHERE salary > 80000.00;",
+    "syntaxRule": "Strings use single quotes, numbers do not. AND precedes OR unless parentheses are used. NULL requires IS NULL.",
+    "syntaxTrap": "Never write col = NULL or omit parentheses in mixed AND/OR statements.",
+    "eli5Story": "[SYNTAX BLUEPRINT]:\nSELECT first_name, salary\nFROM Employees\nWHERE salary > 80000.00;\n\n[RULE]: Strings use single quotes, numbers do not. AND precedes OR unless parentheses are used. NULL requires IS NULL.\n\n[TRAP TO AVOID]: Never write col = NULL or omit parentheses in mixed AND/OR statements.",
+    "commonMistakes": "Unquoted strings, missing parentheses around OR, or using = instead of LIKE.",
+    "learningOutcomes": "Mastered 2.2 Numeric Comparisons on Employees.",
+    "challengeSlots": [
+      {
+        "type": "keyword",
+        "value": "SELECT"
+      },
+      {
+        "type": "column",
+        "value": "first_name,"
+      },
+      {
+        "type": "column",
+        "value": "salary"
+      },
+      {
+        "type": "keyword",
+        "value": "FROM"
+      },
+      {
+        "type": "table",
+        "value": "Employees"
+      },
+      {
+        "type": "keyword",
+        "value": "WHERE"
+      },
+      {
+        "type": "column",
+        "value": "salary"
+      },
+      {
+        "type": "column",
+        "value": ">"
+      },
+      {
+        "type": "column",
+        "value": "80000.00;"
+      }
+    ]
+  },
+  {
+    "id": 1604,
+    "drillNumber": 114,
+    "section": "Section 0: Foundations & Syntax Gym",
+    "title": "Syntax #114: Find all low-calorie grocery items with 100 or fewer calories",
+    "industry": "Foundations",
+    "difficulty": "Easy",
+    "scenario": "Find all low-calorie grocery items with 100 or fewer calories.",
+    "businessObjective": "Find all low-calorie grocery items with 100 or fewer calories.",
+    "schemaSnippet": "GroceryItems schema",
+    "targetQuery": "SELECT item_name, calories\nFROM GroceryItems\nWHERE calories <= 100;",
+    "syntaxBlueprint": "SELECT item_name, calories\nFROM GroceryItems\nWHERE calories <= 100;",
+    "syntaxRule": "Strings use single quotes, numbers do not. AND precedes OR unless parentheses are used. NULL requires IS NULL.",
+    "syntaxTrap": "Never write col = NULL or omit parentheses in mixed AND/OR statements.",
+    "eli5Story": "[SYNTAX BLUEPRINT]:\nSELECT item_name, calories\nFROM GroceryItems\nWHERE calories <= 100;\n\n[RULE]: Strings use single quotes, numbers do not. AND precedes OR unless parentheses are used. NULL requires IS NULL.\n\n[TRAP TO AVOID]: Never write col = NULL or omit parentheses in mixed AND/OR statements.",
+    "commonMistakes": "Unquoted strings, missing parentheses around OR, or using = instead of LIKE.",
+    "learningOutcomes": "Mastered 2.2 Numeric Comparisons on GroceryItems.",
+    "challengeSlots": [
+      {
+        "type": "keyword",
+        "value": "SELECT"
+      },
+      {
+        "type": "column",
+        "value": "item_name,"
+      },
+      {
+        "type": "column",
+        "value": "calories"
+      },
+      {
+        "type": "keyword",
+        "value": "FROM"
+      },
+      {
+        "type": "table",
+        "value": "GroceryItems"
+      },
+      {
+        "type": "keyword",
+        "value": "WHERE"
+      },
+      {
+        "type": "column",
+        "value": "calories"
+      },
+      {
+        "type": "column",
+        "value": "<="
+      },
+      {
+        "type": "column",
+        "value": "100;"
+      }
+    ]
+  },
+  {
+    "id": 1605,
+    "drillNumber": 115,
+    "section": "Section 0: Foundations & Syntax Gym",
+    "title": "Syntax #115: Find bulk orders where quantity is 3 or more",
+    "industry": "Foundations",
+    "difficulty": "Easy",
+    "scenario": "Find bulk orders where quantity is 3 or more.",
+    "businessObjective": "Find bulk orders where quantity is 3 or more.",
+    "schemaSnippet": "Orders schema",
+    "targetQuery": "SELECT order_id, quantity\nFROM Orders\nWHERE quantity >= 3;",
+    "syntaxBlueprint": "SELECT order_id, quantity\nFROM Orders\nWHERE quantity >= 3;",
+    "syntaxRule": "Strings use single quotes, numbers do not. AND precedes OR unless parentheses are used. NULL requires IS NULL.",
+    "syntaxTrap": "Never write col = NULL or omit parentheses in mixed AND/OR statements.",
+    "eli5Story": "[SYNTAX BLUEPRINT]:\nSELECT order_id, quantity\nFROM Orders\nWHERE quantity >= 3;\n\n[RULE]: Strings use single quotes, numbers do not. AND precedes OR unless parentheses are used. NULL requires IS NULL.\n\n[TRAP TO AVOID]: Never write col = NULL or omit parentheses in mixed AND/OR statements.",
+    "commonMistakes": "Unquoted strings, missing parentheses around OR, or using = instead of LIKE.",
+    "learningOutcomes": "Mastered 2.2 Numeric Comparisons on Orders.",
+    "challengeSlots": [
+      {
+        "type": "keyword",
+        "value": "SELECT"
+      },
+      {
+        "type": "column",
+        "value": "order_id,"
+      },
+      {
+        "type": "column",
+        "value": "quantity"
+      },
+      {
+        "type": "keyword",
+        "value": "FROM"
+      },
+      {
+        "type": "table",
+        "value": "Orders"
+      },
+      {
+        "type": "keyword",
+        "value": "WHERE"
+      },
+      {
+        "type": "column",
+        "value": "quantity"
+      },
+      {
+        "type": "column",
+        "value": ">="
+      },
+      {
+        "type": "column",
+        "value": "3;"
+      }
+    ]
+  },
+  {
+    "id": 1606,
+    "drillNumber": 116,
+    "section": "Section 0: Foundations & Syntax Gym",
+    "title": "Syntax #116: Select viral tracks with over 100,000 plays",
+    "industry": "Foundations",
+    "difficulty": "Easy",
+    "scenario": "Select viral tracks with over 100,000 plays.",
+    "businessObjective": "Select viral tracks with over 100,000 plays.",
+    "schemaSnippet": "MusicTracks schema",
+    "targetQuery": "SELECT track_title, play_count\nFROM MusicTracks\nWHERE play_count > 100000;",
+    "syntaxBlueprint": "SELECT track_title, play_count\nFROM MusicTracks\nWHERE play_count > 100000;",
+    "syntaxRule": "Strings use single quotes, numbers do not. AND precedes OR unless parentheses are used. NULL requires IS NULL.",
+    "syntaxTrap": "Never write col = NULL or omit parentheses in mixed AND/OR statements.",
+    "eli5Story": "[SYNTAX BLUEPRINT]:\nSELECT track_title, play_count\nFROM MusicTracks\nWHERE play_count > 100000;\n\n[RULE]: Strings use single quotes, numbers do not. AND precedes OR unless parentheses are used. NULL requires IS NULL.\n\n[TRAP TO AVOID]: Never write col = NULL or omit parentheses in mixed AND/OR statements.",
+    "commonMistakes": "Unquoted strings, missing parentheses around OR, or using = instead of LIKE.",
+    "learningOutcomes": "Mastered 2.2 Numeric Comparisons on MusicTracks.",
+    "challengeSlots": [
+      {
+        "type": "keyword",
+        "value": "SELECT"
+      },
+      {
+        "type": "column",
+        "value": "track_title,"
+      },
+      {
+        "type": "column",
+        "value": "play_count"
+      },
+      {
+        "type": "keyword",
+        "value": "FROM"
+      },
+      {
+        "type": "table",
+        "value": "MusicTracks"
+      },
+      {
+        "type": "keyword",
+        "value": "WHERE"
+      },
+      {
+        "type": "column",
+        "value": "play_count"
+      },
+      {
+        "type": "column",
+        "value": ">"
+      },
+      {
+        "type": "column",
+        "value": "100000;"
+      }
+    ]
+  },
+  {
+    "id": 1607,
+    "drillNumber": 117,
+    "section": "Section 0: Foundations & Syntax Gym",
+    "title": "Syntax #117: Find active gym members who visited more than 10 times this month",
+    "industry": "Foundations",
+    "difficulty": "Easy",
+    "scenario": "Find active gym members who visited more than 10 times this month.",
+    "businessObjective": "Find active gym members who visited more than 10 times this month.",
+    "schemaSnippet": "GymMembers schema",
+    "targetQuery": "SELECT member_name, visits_this_month\nFROM GymMembers\nWHERE visits_this_month > 10;",
+    "syntaxBlueprint": "SELECT member_name, visits_this_month\nFROM GymMembers\nWHERE visits_this_month > 10;",
+    "syntaxRule": "Strings use single quotes, numbers do not. AND precedes OR unless parentheses are used. NULL requires IS NULL.",
+    "syntaxTrap": "Never write col = NULL or omit parentheses in mixed AND/OR statements.",
+    "eli5Story": "[SYNTAX BLUEPRINT]:\nSELECT member_name, visits_this_month\nFROM GymMembers\nWHERE visits_this_month > 10;\n\n[RULE]: Strings use single quotes, numbers do not. AND precedes OR unless parentheses are used. NULL requires IS NULL.\n\n[TRAP TO AVOID]: Never write col = NULL or omit parentheses in mixed AND/OR statements.",
+    "commonMistakes": "Unquoted strings, missing parentheses around OR, or using = instead of LIKE.",
+    "learningOutcomes": "Mastered 2.2 Numeric Comparisons on GymMembers.",
+    "challengeSlots": [
+      {
+        "type": "keyword",
+        "value": "SELECT"
+      },
+      {
+        "type": "column",
+        "value": "member_name,"
+      },
+      {
+        "type": "column",
+        "value": "visits_this_month"
+      },
+      {
+        "type": "keyword",
+        "value": "FROM"
+      },
+      {
+        "type": "table",
+        "value": "GymMembers"
+      },
+      {
+        "type": "keyword",
+        "value": "WHERE"
+      },
+      {
+        "type": "column",
+        "value": "visits_this_month"
+      },
+      {
+        "type": "column",
+        "value": ">"
+      },
+      {
+        "type": "column",
+        "value": "10;"
+      }
+    ]
+  },
+  {
+    "id": 1608,
+    "drillNumber": 118,
+    "section": "Section 0: Foundations & Syntax Gym",
+    "title": "Syntax #118: Select critically acclaimed movies with a star rating of 4.5 or higher",
+    "industry": "Foundations",
+    "difficulty": "Easy",
+    "scenario": "Select critically acclaimed movies with a star rating of 4.5 or higher.",
+    "businessObjective": "Select critically acclaimed movies with a star rating of 4.5 or higher.",
+    "schemaSnippet": "MovieReviews schema",
+    "targetQuery": "SELECT movie_title, star_rating\nFROM MovieReviews\nWHERE star_rating >= 4.5;",
+    "syntaxBlueprint": "SELECT movie_title, star_rating\nFROM MovieReviews\nWHERE star_rating >= 4.5;",
+    "syntaxRule": "Strings use single quotes, numbers do not. AND precedes OR unless parentheses are used. NULL requires IS NULL.",
+    "syntaxTrap": "Never write col = NULL or omit parentheses in mixed AND/OR statements.",
+    "eli5Story": "[SYNTAX BLUEPRINT]:\nSELECT movie_title, star_rating\nFROM MovieReviews\nWHERE star_rating >= 4.5;\n\n[RULE]: Strings use single quotes, numbers do not. AND precedes OR unless parentheses are used. NULL requires IS NULL.\n\n[TRAP TO AVOID]: Never write col = NULL or omit parentheses in mixed AND/OR statements.",
+    "commonMistakes": "Unquoted strings, missing parentheses around OR, or using = instead of LIKE.",
+    "learningOutcomes": "Mastered 2.2 Numeric Comparisons on MovieReviews.",
+    "challengeSlots": [
+      {
+        "type": "keyword",
+        "value": "SELECT"
+      },
+      {
+        "type": "column",
+        "value": "movie_title,"
+      },
+      {
+        "type": "column",
+        "value": "star_rating"
+      },
+      {
+        "type": "keyword",
+        "value": "FROM"
+      },
+      {
+        "type": "table",
+        "value": "MovieReviews"
+      },
+      {
+        "type": "keyword",
+        "value": "WHERE"
+      },
+      {
+        "type": "column",
+        "value": "star_rating"
+      },
+      {
+        "type": "column",
+        "value": ">="
+      },
+      {
+        "type": "column",
+        "value": "4.5;"
+      }
+    ]
+  },
+  {
+    "id": 1609,
+    "drillNumber": 119,
+    "section": "Section 0: Foundations & Syntax Gym",
+    "title": "Syntax #119: List all significantly delayed flights with more than 30 minutes of delay",
+    "industry": "Foundations",
+    "difficulty": "Easy",
+    "scenario": "List all significantly delayed flights with more than 30 minutes of delay.",
+    "businessObjective": "List all significantly delayed flights with more than 30 minutes of delay.",
+    "schemaSnippet": "FlightSchedule schema",
+    "targetQuery": "SELECT flight_id, delay_minutes\nFROM FlightSchedule\nWHERE delay_minutes > 30;",
+    "syntaxBlueprint": "SELECT flight_id, delay_minutes\nFROM FlightSchedule\nWHERE delay_minutes > 30;",
+    "syntaxRule": "Strings use single quotes, numbers do not. AND precedes OR unless parentheses are used. NULL requires IS NULL.",
+    "syntaxTrap": "Never write col = NULL or omit parentheses in mixed AND/OR statements.",
+    "eli5Story": "[SYNTAX BLUEPRINT]:\nSELECT flight_id, delay_minutes\nFROM FlightSchedule\nWHERE delay_minutes > 30;\n\n[RULE]: Strings use single quotes, numbers do not. AND precedes OR unless parentheses are used. NULL requires IS NULL.\n\n[TRAP TO AVOID]: Never write col = NULL or omit parentheses in mixed AND/OR statements.",
+    "commonMistakes": "Unquoted strings, missing parentheses around OR, or using = instead of LIKE.",
+    "learningOutcomes": "Mastered 2.2 Numeric Comparisons on FlightSchedule.",
+    "challengeSlots": [
+      {
+        "type": "keyword",
+        "value": "SELECT"
+      },
+      {
+        "type": "column",
+        "value": "flight_id,"
+      },
+      {
+        "type": "column",
+        "value": "delay_minutes"
+      },
+      {
+        "type": "keyword",
+        "value": "FROM"
+      },
+      {
+        "type": "table",
+        "value": "FlightSchedule"
+      },
+      {
+        "type": "keyword",
+        "value": "WHERE"
+      },
+      {
+        "type": "column",
+        "value": "delay_minutes"
+      },
+      {
+        "type": "column",
+        "value": ">"
+      },
+      {
+        "type": "column",
+        "value": "30;"
+      }
+    ]
+  },
+  {
+    "id": 1610,
+    "drillNumber": 120,
+    "section": "Section 0: Foundations & Syntax Gym",
+    "title": "Syntax #120: Find large animal patients weighing over 20 kilograms",
+    "industry": "Foundations",
+    "difficulty": "Easy",
+    "scenario": "Find large animal patients weighing over 20 kilograms.",
+    "businessObjective": "Find large animal patients weighing over 20 kilograms.",
+    "schemaSnippet": "PetClinic schema",
+    "targetQuery": "SELECT pet_name, weight_kg\nFROM PetClinic\nWHERE weight_kg > 20.0;",
+    "syntaxBlueprint": "SELECT pet_name, weight_kg\nFROM PetClinic\nWHERE weight_kg > 20.0;",
+    "syntaxRule": "Strings use single quotes, numbers do not. AND precedes OR unless parentheses are used. NULL requires IS NULL.",
+    "syntaxTrap": "Never write col = NULL or omit parentheses in mixed AND/OR statements.",
+    "eli5Story": "[SYNTAX BLUEPRINT]:\nSELECT pet_name, weight_kg\nFROM PetClinic\nWHERE weight_kg > 20.0;\n\n[RULE]: Strings use single quotes, numbers do not. AND precedes OR unless parentheses are used. NULL requires IS NULL.\n\n[TRAP TO AVOID]: Never write col = NULL or omit parentheses in mixed AND/OR statements.",
+    "commonMistakes": "Unquoted strings, missing parentheses around OR, or using = instead of LIKE.",
+    "learningOutcomes": "Mastered 2.2 Numeric Comparisons on PetClinic.",
+    "challengeSlots": [
+      {
+        "type": "keyword",
+        "value": "SELECT"
+      },
+      {
+        "type": "column",
+        "value": "pet_name,"
+      },
+      {
+        "type": "column",
+        "value": "weight_kg"
+      },
+      {
+        "type": "keyword",
+        "value": "FROM"
+      },
+      {
+        "type": "table",
+        "value": "PetClinic"
+      },
+      {
+        "type": "keyword",
+        "value": "WHERE"
+      },
+      {
+        "type": "column",
+        "value": "weight_kg"
+      },
+      {
+        "type": "column",
+        "value": ">"
+      },
+      {
+        "type": "column",
+        "value": "20.0;"
+      }
+    ]
+  },
+  {
+    "id": 1611,
+    "drillNumber": 121,
+    "section": "Section 0: Foundations & Syntax Gym",
+    "title": "Syntax #121: Select students whose age is between 18 and 22 inclusive",
+    "industry": "Foundations",
+    "difficulty": "Easy",
+    "scenario": "Select students whose age is between 18 and 22 inclusive.",
+    "businessObjective": "Select students whose age is between 18 and 22 inclusive.",
+    "schemaSnippet": "Students schema",
+    "targetQuery": "SELECT full_name, age\nFROM Students\nWHERE age BETWEEN 18 AND 22;",
+    "syntaxBlueprint": "SELECT full_name, age\nFROM Students\nWHERE age BETWEEN 18 AND 22;",
+    "syntaxRule": "Strings use single quotes, numbers do not. AND precedes OR unless parentheses are used. NULL requires IS NULL.",
+    "syntaxTrap": "Never write col = NULL or omit parentheses in mixed AND/OR statements.",
+    "eli5Story": "[SYNTAX BLUEPRINT]:\nSELECT full_name, age\nFROM Students\nWHERE age BETWEEN 18 AND 22;\n\n[RULE]: Strings use single quotes, numbers do not. AND precedes OR unless parentheses are used. NULL requires IS NULL.\n\n[TRAP TO AVOID]: Never write col = NULL or omit parentheses in mixed AND/OR statements.",
+    "commonMistakes": "Unquoted strings, missing parentheses around OR, or using = instead of LIKE.",
+    "learningOutcomes": "Mastered 2.3 Range Bounds (BETWEEN) on Students.",
+    "challengeSlots": [
+      {
+        "type": "keyword",
+        "value": "SELECT"
+      },
+      {
+        "type": "column",
+        "value": "full_name,"
+      },
+      {
+        "type": "column",
+        "value": "age"
+      },
+      {
+        "type": "keyword",
+        "value": "FROM"
+      },
+      {
+        "type": "table",
+        "value": "Students"
+      },
+      {
+        "type": "keyword",
+        "value": "WHERE"
+      },
+      {
+        "type": "column",
+        "value": "age"
+      },
+      {
+        "type": "keyword",
+        "value": "BETWEEN"
+      },
+      {
+        "type": "column",
+        "value": "18"
+      },
+      {
+        "type": "keyword",
+        "value": "AND"
+      },
+      {
+        "type": "column",
+        "value": "22;"
+      }
+    ]
+  },
+  {
+    "id": 1612,
+    "drillNumber": 122,
+    "section": "Section 0: Foundations & Syntax Gym",
+    "title": "Syntax #122: Find books with prices between $15.00 and $30.00 inclusive",
+    "industry": "Foundations",
+    "difficulty": "Easy",
+    "scenario": "Find books with prices between $15.00 and $30.00 inclusive.",
+    "businessObjective": "Find books with prices between $15.00 and $30.00 inclusive.",
+    "schemaSnippet": "Books schema",
+    "targetQuery": "SELECT title, price\nFROM Books\nWHERE price BETWEEN 15.00 AND 30.00;",
+    "syntaxBlueprint": "SELECT title, price\nFROM Books\nWHERE price BETWEEN 15.00 AND 30.00;",
+    "syntaxRule": "Strings use single quotes, numbers do not. AND precedes OR unless parentheses are used. NULL requires IS NULL.",
+    "syntaxTrap": "Never write col = NULL or omit parentheses in mixed AND/OR statements.",
+    "eli5Story": "[SYNTAX BLUEPRINT]:\nSELECT title, price\nFROM Books\nWHERE price BETWEEN 15.00 AND 30.00;\n\n[RULE]: Strings use single quotes, numbers do not. AND precedes OR unless parentheses are used. NULL requires IS NULL.\n\n[TRAP TO AVOID]: Never write col = NULL or omit parentheses in mixed AND/OR statements.",
+    "commonMistakes": "Unquoted strings, missing parentheses around OR, or using = instead of LIKE.",
+    "learningOutcomes": "Mastered 2.3 Range Bounds (BETWEEN) on Books.",
+    "challengeSlots": [
+      {
+        "type": "keyword",
+        "value": "SELECT"
+      },
+      {
+        "type": "column",
+        "value": "title,"
+      },
+      {
+        "type": "column",
+        "value": "price"
+      },
+      {
+        "type": "keyword",
+        "value": "FROM"
+      },
+      {
+        "type": "table",
+        "value": "Books"
+      },
+      {
+        "type": "keyword",
+        "value": "WHERE"
+      },
+      {
+        "type": "column",
+        "value": "price"
+      },
+      {
+        "type": "keyword",
+        "value": "BETWEEN"
+      },
+      {
+        "type": "column",
+        "value": "15.00"
+      },
+      {
+        "type": "keyword",
+        "value": "AND"
+      },
+      {
+        "type": "column",
+        "value": "30.00;"
+      }
+    ]
+  },
+  {
+    "id": 1613,
+    "drillNumber": 123,
+    "section": "Section 0: Foundations & Syntax Gym",
+    "title": "Syntax #123: Retrieve employees in the mid-career salary band between $60,000 and $90,000",
+    "industry": "Foundations",
+    "difficulty": "Easy",
+    "scenario": "Retrieve employees in the mid-career salary band between $60,000 and $90,000.",
+    "businessObjective": "Retrieve employees in the mid-career salary band between $60,000 and $90,000.",
+    "schemaSnippet": "Employees schema",
+    "targetQuery": "SELECT first_name, salary\nFROM Employees\nWHERE salary BETWEEN 60000.00 AND 90000.00;",
+    "syntaxBlueprint": "SELECT first_name, salary\nFROM Employees\nWHERE salary BETWEEN 60000.00 AND 90000.00;",
+    "syntaxRule": "Strings use single quotes, numbers do not. AND precedes OR unless parentheses are used. NULL requires IS NULL.",
+    "syntaxTrap": "Never write col = NULL or omit parentheses in mixed AND/OR statements.",
+    "eli5Story": "[SYNTAX BLUEPRINT]:\nSELECT first_name, salary\nFROM Employees\nWHERE salary BETWEEN 60000.00 AND 90000.00;\n\n[RULE]: Strings use single quotes, numbers do not. AND precedes OR unless parentheses are used. NULL requires IS NULL.\n\n[TRAP TO AVOID]: Never write col = NULL or omit parentheses in mixed AND/OR statements.",
+    "commonMistakes": "Unquoted strings, missing parentheses around OR, or using = instead of LIKE.",
+    "learningOutcomes": "Mastered 2.3 Range Bounds (BETWEEN) on Employees.",
+    "challengeSlots": [
+      {
+        "type": "keyword",
+        "value": "SELECT"
+      },
+      {
+        "type": "column",
+        "value": "first_name,"
+      },
+      {
+        "type": "column",
+        "value": "salary"
+      },
+      {
+        "type": "keyword",
+        "value": "FROM"
+      },
+      {
+        "type": "table",
+        "value": "Employees"
+      },
+      {
+        "type": "keyword",
+        "value": "WHERE"
+      },
+      {
+        "type": "column",
+        "value": "salary"
+      },
+      {
+        "type": "keyword",
+        "value": "BETWEEN"
+      },
+      {
+        "type": "column",
+        "value": "60000.00"
+      },
+      {
+        "type": "keyword",
+        "value": "AND"
+      },
+      {
+        "type": "column",
+        "value": "90000.00;"
+      }
+    ]
+  },
+  {
+    "id": 1614,
+    "drillNumber": 124,
+    "section": "Section 0: Foundations & Syntax Gym",
+    "title": "Syntax #124: Find grocery items priced between $2.00 and $5.00",
+    "industry": "Foundations",
+    "difficulty": "Easy",
+    "scenario": "Find grocery items priced between $2.00 and $5.00.",
+    "businessObjective": "Find grocery items priced between $2.00 and $5.00.",
+    "schemaSnippet": "GroceryItems schema",
+    "targetQuery": "SELECT item_name, unit_price\nFROM GroceryItems\nWHERE unit_price BETWEEN 2.00 AND 5.00;",
+    "syntaxBlueprint": "SELECT item_name, unit_price\nFROM GroceryItems\nWHERE unit_price BETWEEN 2.00 AND 5.00;",
+    "syntaxRule": "Strings use single quotes, numbers do not. AND precedes OR unless parentheses are used. NULL requires IS NULL.",
+    "syntaxTrap": "Never write col = NULL or omit parentheses in mixed AND/OR statements.",
+    "eli5Story": "[SYNTAX BLUEPRINT]:\nSELECT item_name, unit_price\nFROM GroceryItems\nWHERE unit_price BETWEEN 2.00 AND 5.00;\n\n[RULE]: Strings use single quotes, numbers do not. AND precedes OR unless parentheses are used. NULL requires IS NULL.\n\n[TRAP TO AVOID]: Never write col = NULL or omit parentheses in mixed AND/OR statements.",
+    "commonMistakes": "Unquoted strings, missing parentheses around OR, or using = instead of LIKE.",
+    "learningOutcomes": "Mastered 2.3 Range Bounds (BETWEEN) on GroceryItems.",
+    "challengeSlots": [
+      {
+        "type": "keyword",
+        "value": "SELECT"
+      },
+      {
+        "type": "column",
+        "value": "item_name,"
+      },
+      {
+        "type": "column",
+        "value": "unit_price"
+      },
+      {
+        "type": "keyword",
+        "value": "FROM"
+      },
+      {
+        "type": "table",
+        "value": "GroceryItems"
+      },
+      {
+        "type": "keyword",
+        "value": "WHERE"
+      },
+      {
+        "type": "column",
+        "value": "unit_price"
+      },
+      {
+        "type": "keyword",
+        "value": "BETWEEN"
+      },
+      {
+        "type": "column",
+        "value": "2.00"
+      },
+      {
+        "type": "keyword",
+        "value": "AND"
+      },
+      {
+        "type": "column",
+        "value": "5.00;"
+      }
+    ]
+  },
+  {
+    "id": 1615,
+    "drillNumber": 125,
+    "section": "Section 0: Foundations & Syntax Gym",
+    "title": "Syntax #125: Find orders where the unit price is between $25.00 and $100.00",
+    "industry": "Foundations",
+    "difficulty": "Easy",
+    "scenario": "Find orders where the unit price is between $25.00 and $100.00.",
+    "businessObjective": "Find orders where the unit price is between $25.00 and $100.00.",
+    "schemaSnippet": "Orders schema",
+    "targetQuery": "SELECT order_id, unit_price\nFROM Orders\nWHERE unit_price BETWEEN 25.00 AND 100.00;",
+    "syntaxBlueprint": "SELECT order_id, unit_price\nFROM Orders\nWHERE unit_price BETWEEN 25.00 AND 100.00;",
+    "syntaxRule": "Strings use single quotes, numbers do not. AND precedes OR unless parentheses are used. NULL requires IS NULL.",
+    "syntaxTrap": "Never write col = NULL or omit parentheses in mixed AND/OR statements.",
+    "eli5Story": "[SYNTAX BLUEPRINT]:\nSELECT order_id, unit_price\nFROM Orders\nWHERE unit_price BETWEEN 25.00 AND 100.00;\n\n[RULE]: Strings use single quotes, numbers do not. AND precedes OR unless parentheses are used. NULL requires IS NULL.\n\n[TRAP TO AVOID]: Never write col = NULL or omit parentheses in mixed AND/OR statements.",
+    "commonMistakes": "Unquoted strings, missing parentheses around OR, or using = instead of LIKE.",
+    "learningOutcomes": "Mastered 2.3 Range Bounds (BETWEEN) on Orders.",
+    "challengeSlots": [
+      {
+        "type": "keyword",
+        "value": "SELECT"
+      },
+      {
+        "type": "column",
+        "value": "order_id,"
+      },
+      {
+        "type": "column",
+        "value": "unit_price"
+      },
+      {
+        "type": "keyword",
+        "value": "FROM"
+      },
+      {
+        "type": "table",
+        "value": "Orders"
+      },
+      {
+        "type": "keyword",
+        "value": "WHERE"
+      },
+      {
+        "type": "column",
+        "value": "unit_price"
+      },
+      {
+        "type": "keyword",
+        "value": "BETWEEN"
+      },
+      {
+        "type": "column",
+        "value": "25.00"
+      },
+      {
+        "type": "keyword",
+        "value": "AND"
+      },
+      {
+        "type": "column",
+        "value": "100.00;"
+      }
+    ]
+  },
+  {
+    "id": 1616,
+    "drillNumber": 126,
+    "section": "Section 0: Foundations & Syntax Gym",
+    "title": "Syntax #126: Find tracks between 3 and 4 minutes long (180 to 240 seconds)",
+    "industry": "Foundations",
+    "difficulty": "Easy",
+    "scenario": "Find tracks between 3 and 4 minutes long (180 to 240 seconds).",
+    "businessObjective": "Find tracks between 3 and 4 minutes long (180 to 240 seconds).",
+    "schemaSnippet": "MusicTracks schema",
+    "targetQuery": "SELECT track_title, duration_seconds\nFROM MusicTracks\nWHERE duration_seconds BETWEEN 180 AND 240;",
+    "syntaxBlueprint": "SELECT track_title, duration_seconds\nFROM MusicTracks\nWHERE duration_seconds BETWEEN 180 AND 240;",
+    "syntaxRule": "Strings use single quotes, numbers do not. AND precedes OR unless parentheses are used. NULL requires IS NULL.",
+    "syntaxTrap": "Never write col = NULL or omit parentheses in mixed AND/OR statements.",
+    "eli5Story": "[SYNTAX BLUEPRINT]:\nSELECT track_title, duration_seconds\nFROM MusicTracks\nWHERE duration_seconds BETWEEN 180 AND 240;\n\n[RULE]: Strings use single quotes, numbers do not. AND precedes OR unless parentheses are used. NULL requires IS NULL.\n\n[TRAP TO AVOID]: Never write col = NULL or omit parentheses in mixed AND/OR statements.",
+    "commonMistakes": "Unquoted strings, missing parentheses around OR, or using = instead of LIKE.",
+    "learningOutcomes": "Mastered 2.3 Range Bounds (BETWEEN) on MusicTracks.",
+    "challengeSlots": [
+      {
+        "type": "keyword",
+        "value": "SELECT"
+      },
+      {
+        "type": "column",
+        "value": "track_title,"
+      },
+      {
+        "type": "column",
+        "value": "duration_seconds"
+      },
+      {
+        "type": "keyword",
+        "value": "FROM"
+      },
+      {
+        "type": "table",
+        "value": "MusicTracks"
+      },
+      {
+        "type": "keyword",
+        "value": "WHERE"
+      },
+      {
+        "type": "column",
+        "value": "duration_seconds"
+      },
+      {
+        "type": "keyword",
+        "value": "BETWEEN"
+      },
+      {
+        "type": "column",
+        "value": "180"
+      },
+      {
+        "type": "keyword",
+        "value": "AND"
+      },
+      {
+        "type": "column",
+        "value": "240;"
+      }
+    ]
+  },
+  {
+    "id": 1617,
+    "drillNumber": 127,
+    "section": "Section 0: Foundations & Syntax Gym",
+    "title": "Syntax #127: List gym members with monthly dues between $25.00 and $75.00",
+    "industry": "Foundations",
+    "difficulty": "Easy",
+    "scenario": "List gym members with monthly dues between $25.00 and $75.00.",
+    "businessObjective": "List gym members with monthly dues between $25.00 and $75.00.",
+    "schemaSnippet": "GymMembers schema",
+    "targetQuery": "SELECT member_name, monthly_fee\nFROM GymMembers\nWHERE monthly_fee BETWEEN 25.00 AND 75.00;",
+    "syntaxBlueprint": "SELECT member_name, monthly_fee\nFROM GymMembers\nWHERE monthly_fee BETWEEN 25.00 AND 75.00;",
+    "syntaxRule": "Strings use single quotes, numbers do not. AND precedes OR unless parentheses are used. NULL requires IS NULL.",
+    "syntaxTrap": "Never write col = NULL or omit parentheses in mixed AND/OR statements.",
+    "eli5Story": "[SYNTAX BLUEPRINT]:\nSELECT member_name, monthly_fee\nFROM GymMembers\nWHERE monthly_fee BETWEEN 25.00 AND 75.00;\n\n[RULE]: Strings use single quotes, numbers do not. AND precedes OR unless parentheses are used. NULL requires IS NULL.\n\n[TRAP TO AVOID]: Never write col = NULL or omit parentheses in mixed AND/OR statements.",
+    "commonMistakes": "Unquoted strings, missing parentheses around OR, or using = instead of LIKE.",
+    "learningOutcomes": "Mastered 2.3 Range Bounds (BETWEEN) on GymMembers.",
+    "challengeSlots": [
+      {
+        "type": "keyword",
+        "value": "SELECT"
+      },
+      {
+        "type": "column",
+        "value": "member_name,"
+      },
+      {
+        "type": "column",
+        "value": "monthly_fee"
+      },
+      {
+        "type": "keyword",
+        "value": "FROM"
+      },
+      {
+        "type": "table",
+        "value": "GymMembers"
+      },
+      {
+        "type": "keyword",
+        "value": "WHERE"
+      },
+      {
+        "type": "column",
+        "value": "monthly_fee"
+      },
+      {
+        "type": "keyword",
+        "value": "BETWEEN"
+      },
+      {
+        "type": "column",
+        "value": "25.00"
+      },
+      {
+        "type": "keyword",
+        "value": "AND"
+      },
+      {
+        "type": "column",
+        "value": "75.00;"
+      }
+    ]
+  },
+  {
+    "id": 1618,
+    "drillNumber": 128,
+    "section": "Section 0: Foundations & Syntax Gym",
+    "title": "Syntax #128: Find films released in the four-year span between 2020 and 2023 inclusive",
+    "industry": "Foundations",
+    "difficulty": "Easy",
+    "scenario": "Find films released in the four-year span between 2020 and 2023 inclusive.",
+    "businessObjective": "Find films released in the four-year span between 2020 and 2023 inclusive.",
+    "schemaSnippet": "MovieReviews schema",
+    "targetQuery": "SELECT movie_title, release_year\nFROM MovieReviews\nWHERE release_year BETWEEN 2020 AND 2023;",
+    "syntaxBlueprint": "SELECT movie_title, release_year\nFROM MovieReviews\nWHERE release_year BETWEEN 2020 AND 2023;",
+    "syntaxRule": "Strings use single quotes, numbers do not. AND precedes OR unless parentheses are used. NULL requires IS NULL.",
+    "syntaxTrap": "Never write col = NULL or omit parentheses in mixed AND/OR statements.",
+    "eli5Story": "[SYNTAX BLUEPRINT]:\nSELECT movie_title, release_year\nFROM MovieReviews\nWHERE release_year BETWEEN 2020 AND 2023;\n\n[RULE]: Strings use single quotes, numbers do not. AND precedes OR unless parentheses are used. NULL requires IS NULL.\n\n[TRAP TO AVOID]: Never write col = NULL or omit parentheses in mixed AND/OR statements.",
+    "commonMistakes": "Unquoted strings, missing parentheses around OR, or using = instead of LIKE.",
+    "learningOutcomes": "Mastered 2.3 Range Bounds (BETWEEN) on MovieReviews.",
+    "challengeSlots": [
+      {
+        "type": "keyword",
+        "value": "SELECT"
+      },
+      {
+        "type": "column",
+        "value": "movie_title,"
+      },
+      {
+        "type": "column",
+        "value": "release_year"
+      },
+      {
+        "type": "keyword",
+        "value": "FROM"
+      },
+      {
+        "type": "table",
+        "value": "MovieReviews"
+      },
+      {
+        "type": "keyword",
+        "value": "WHERE"
+      },
+      {
+        "type": "column",
+        "value": "release_year"
+      },
+      {
+        "type": "keyword",
+        "value": "BETWEEN"
+      },
+      {
+        "type": "column",
+        "value": "2020"
+      },
+      {
+        "type": "keyword",
+        "value": "AND"
+      },
+      {
+        "type": "column",
+        "value": "2023;"
+      }
+    ]
+  },
+  {
+    "id": 1619,
+    "drillNumber": 129,
+    "section": "Section 0: Foundations & Syntax Gym",
+    "title": "Syntax #129: Find flights with economy ticket prices between $200 and $400",
+    "industry": "Foundations",
+    "difficulty": "Easy",
+    "scenario": "Find flights with economy ticket prices between $200 and $400.",
+    "businessObjective": "Find flights with economy ticket prices between $200 and $400.",
+    "schemaSnippet": "FlightSchedule schema",
+    "targetQuery": "SELECT flight_id, ticket_price\nFROM FlightSchedule\nWHERE ticket_price BETWEEN 200.00 AND 400.00;",
+    "syntaxBlueprint": "SELECT flight_id, ticket_price\nFROM FlightSchedule\nWHERE ticket_price BETWEEN 200.00 AND 400.00;",
+    "syntaxRule": "Strings use single quotes, numbers do not. AND precedes OR unless parentheses are used. NULL requires IS NULL.",
+    "syntaxTrap": "Never write col = NULL or omit parentheses in mixed AND/OR statements.",
+    "eli5Story": "[SYNTAX BLUEPRINT]:\nSELECT flight_id, ticket_price\nFROM FlightSchedule\nWHERE ticket_price BETWEEN 200.00 AND 400.00;\n\n[RULE]: Strings use single quotes, numbers do not. AND precedes OR unless parentheses are used. NULL requires IS NULL.\n\n[TRAP TO AVOID]: Never write col = NULL or omit parentheses in mixed AND/OR statements.",
+    "commonMistakes": "Unquoted strings, missing parentheses around OR, or using = instead of LIKE.",
+    "learningOutcomes": "Mastered 2.3 Range Bounds (BETWEEN) on FlightSchedule.",
+    "challengeSlots": [
+      {
+        "type": "keyword",
+        "value": "SELECT"
+      },
+      {
+        "type": "column",
+        "value": "flight_id,"
+      },
+      {
+        "type": "column",
+        "value": "ticket_price"
+      },
+      {
+        "type": "keyword",
+        "value": "FROM"
+      },
+      {
+        "type": "table",
+        "value": "FlightSchedule"
+      },
+      {
+        "type": "keyword",
+        "value": "WHERE"
+      },
+      {
+        "type": "column",
+        "value": "ticket_price"
+      },
+      {
+        "type": "keyword",
+        "value": "BETWEEN"
+      },
+      {
+        "type": "column",
+        "value": "200.00"
+      },
+      {
+        "type": "keyword",
+        "value": "AND"
+      },
+      {
+        "type": "column",
+        "value": "400.00;"
+      }
+    ]
+  },
+  {
+    "id": 1620,
+    "drillNumber": 130,
+    "section": "Section 0: Foundations & Syntax Gym",
+    "title": "Syntax #130: Find very young or senior pets whose age is NOT between 3 and 8 years",
+    "industry": "Foundations",
+    "difficulty": "Easy",
+    "scenario": "Find very young or senior pets whose age is NOT between 3 and 8 years.",
+    "businessObjective": "Find very young or senior pets whose age is NOT between 3 and 8 years.",
+    "schemaSnippet": "PetClinic schema",
+    "targetQuery": "SELECT pet_name, age_years\nFROM PetClinic\nWHERE age_years NOT BETWEEN 3 AND 8;",
+    "syntaxBlueprint": "SELECT pet_name, age_years\nFROM PetClinic\nWHERE age_years NOT BETWEEN 3 AND 8;",
+    "syntaxRule": "Strings use single quotes, numbers do not. AND precedes OR unless parentheses are used. NULL requires IS NULL.",
+    "syntaxTrap": "Never write col = NULL or omit parentheses in mixed AND/OR statements.",
+    "eli5Story": "[SYNTAX BLUEPRINT]:\nSELECT pet_name, age_years\nFROM PetClinic\nWHERE age_years NOT BETWEEN 3 AND 8;\n\n[RULE]: Strings use single quotes, numbers do not. AND precedes OR unless parentheses are used. NULL requires IS NULL.\n\n[TRAP TO AVOID]: Never write col = NULL or omit parentheses in mixed AND/OR statements.",
+    "commonMistakes": "Unquoted strings, missing parentheses around OR, or using = instead of LIKE.",
+    "learningOutcomes": "Mastered 2.3 Range Bounds (BETWEEN) on PetClinic.",
+    "challengeSlots": [
+      {
+        "type": "keyword",
+        "value": "SELECT"
+      },
+      {
+        "type": "column",
+        "value": "pet_name,"
+      },
+      {
+        "type": "column",
+        "value": "age_years"
+      },
+      {
+        "type": "keyword",
+        "value": "FROM"
+      },
+      {
+        "type": "table",
+        "value": "PetClinic"
+      },
+      {
+        "type": "keyword",
+        "value": "WHERE"
+      },
+      {
+        "type": "column",
+        "value": "age_years"
+      },
+      {
+        "type": "keyword",
+        "value": "NOT"
+      },
+      {
+        "type": "keyword",
+        "value": "BETWEEN"
+      },
+      {
+        "type": "column",
+        "value": "3"
+      },
+      {
+        "type": "keyword",
+        "value": "AND"
+      },
+      {
+        "type": "column",
+        "value": "8;"
+      }
+    ]
+  },
+  {
+    "id": 1621,
+    "drillNumber": 131,
+    "section": "Section 0: Foundations & Syntax Gym",
+    "title": "Syntax #131: Select students who live in Seattle, Chicago, or Austin",
+    "industry": "Foundations",
+    "difficulty": "Easy",
+    "scenario": "Select students who live in Seattle, Chicago, or Austin.",
+    "businessObjective": "Select students who live in Seattle, Chicago, or Austin.",
+    "schemaSnippet": "Students schema",
+    "targetQuery": "SELECT full_name, city\nFROM Students\nWHERE city IN ('Seattle', 'Chicago', 'Austin');",
+    "syntaxBlueprint": "SELECT full_name, city\nFROM Students\nWHERE city IN ('Seattle', 'Chicago', 'Austin');",
+    "syntaxRule": "Strings use single quotes, numbers do not. AND precedes OR unless parentheses are used. NULL requires IS NULL.",
+    "syntaxTrap": "Never write col = NULL or omit parentheses in mixed AND/OR statements.",
+    "eli5Story": "[SYNTAX BLUEPRINT]:\nSELECT full_name, city\nFROM Students\nWHERE city IN ('Seattle', 'Chicago', 'Austin');\n\n[RULE]: Strings use single quotes, numbers do not. AND precedes OR unless parentheses are used. NULL requires IS NULL.\n\n[TRAP TO AVOID]: Never write col = NULL or omit parentheses in mixed AND/OR statements.",
+    "commonMistakes": "Unquoted strings, missing parentheses around OR, or using = instead of LIKE.",
+    "learningOutcomes": "Mastered 2.4 List Membership (IN & NOT IN) on Students.",
+    "challengeSlots": [
+      {
+        "type": "keyword",
+        "value": "SELECT"
+      },
+      {
+        "type": "column",
+        "value": "full_name,"
+      },
+      {
+        "type": "column",
+        "value": "city"
+      },
+      {
+        "type": "keyword",
+        "value": "FROM"
+      },
+      {
+        "type": "table",
+        "value": "Students"
+      },
+      {
+        "type": "keyword",
+        "value": "WHERE"
+      },
+      {
+        "type": "column",
+        "value": "city"
+      },
+      {
+        "type": "keyword",
+        "value": "IN"
+      },
+      {
+        "type": "column",
+        "value": "('Seattle',"
+      },
+      {
+        "type": "column",
+        "value": "'Chicago',"
+      },
+      {
+        "type": "column",
+        "value": "'Austin');"
+      }
+    ]
+  },
+  {
+    "id": 1622,
+    "drillNumber": 132,
+    "section": "Section 0: Foundations & Syntax Gym",
+    "title": "Syntax #132: Find books belonging to Mystery, Sci-Fi, or Thriller genres",
+    "industry": "Foundations",
+    "difficulty": "Easy",
+    "scenario": "Find books belonging to Mystery, Sci-Fi, or Thriller genres.",
+    "businessObjective": "Find books belonging to Mystery, Sci-Fi, or Thriller genres.",
+    "schemaSnippet": "Books schema",
+    "targetQuery": "SELECT title, genre\nFROM Books\nWHERE genre IN ('Mystery', 'Sci-Fi', 'Thriller');",
+    "syntaxBlueprint": "SELECT title, genre\nFROM Books\nWHERE genre IN ('Mystery', 'Sci-Fi', 'Thriller');",
+    "syntaxRule": "Strings use single quotes, numbers do not. AND precedes OR unless parentheses are used. NULL requires IS NULL.",
+    "syntaxTrap": "Never write col = NULL or omit parentheses in mixed AND/OR statements.",
+    "eli5Story": "[SYNTAX BLUEPRINT]:\nSELECT title, genre\nFROM Books\nWHERE genre IN ('Mystery', 'Sci-Fi', 'Thriller');\n\n[RULE]: Strings use single quotes, numbers do not. AND precedes OR unless parentheses are used. NULL requires IS NULL.\n\n[TRAP TO AVOID]: Never write col = NULL or omit parentheses in mixed AND/OR statements.",
+    "commonMistakes": "Unquoted strings, missing parentheses around OR, or using = instead of LIKE.",
+    "learningOutcomes": "Mastered 2.4 List Membership (IN & NOT IN) on Books.",
+    "challengeSlots": [
+      {
+        "type": "keyword",
+        "value": "SELECT"
+      },
+      {
+        "type": "column",
+        "value": "title,"
+      },
+      {
+        "type": "column",
+        "value": "genre"
+      },
+      {
+        "type": "keyword",
+        "value": "FROM"
+      },
+      {
+        "type": "table",
+        "value": "Books"
+      },
+      {
+        "type": "keyword",
+        "value": "WHERE"
+      },
+      {
+        "type": "column",
+        "value": "genre"
+      },
+      {
+        "type": "keyword",
+        "value": "IN"
+      },
+      {
+        "type": "column",
+        "value": "('Mystery',"
+      },
+      {
+        "type": "column",
+        "value": "'Sci-Fi',"
+      },
+      {
+        "type": "column",
+        "value": "'Thriller');"
+      }
+    ]
+  },
+  {
+    "id": 1623,
+    "drillNumber": 133,
+    "section": "Section 0: Foundations & Syntax Gym",
+    "title": "Syntax #133: Retrieve employees working in either Engineering or Design",
+    "industry": "Foundations",
+    "difficulty": "Easy",
+    "scenario": "Retrieve employees working in either Engineering or Design.",
+    "businessObjective": "Retrieve employees working in either Engineering or Design.",
+    "schemaSnippet": "Employees schema",
+    "targetQuery": "SELECT first_name, department\nFROM Employees\nWHERE department IN ('Engineering', 'Design');",
+    "syntaxBlueprint": "SELECT first_name, department\nFROM Employees\nWHERE department IN ('Engineering', 'Design');",
+    "syntaxRule": "Strings use single quotes, numbers do not. AND precedes OR unless parentheses are used. NULL requires IS NULL.",
+    "syntaxTrap": "Never write col = NULL or omit parentheses in mixed AND/OR statements.",
+    "eli5Story": "[SYNTAX BLUEPRINT]:\nSELECT first_name, department\nFROM Employees\nWHERE department IN ('Engineering', 'Design');\n\n[RULE]: Strings use single quotes, numbers do not. AND precedes OR unless parentheses are used. NULL requires IS NULL.\n\n[TRAP TO AVOID]: Never write col = NULL or omit parentheses in mixed AND/OR statements.",
+    "commonMistakes": "Unquoted strings, missing parentheses around OR, or using = instead of LIKE.",
+    "learningOutcomes": "Mastered 2.4 List Membership (IN & NOT IN) on Employees.",
+    "challengeSlots": [
+      {
+        "type": "keyword",
+        "value": "SELECT"
+      },
+      {
+        "type": "column",
+        "value": "first_name,"
+      },
+      {
+        "type": "column",
+        "value": "department"
+      },
+      {
+        "type": "keyword",
+        "value": "FROM"
+      },
+      {
+        "type": "table",
+        "value": "Employees"
+      },
+      {
+        "type": "keyword",
+        "value": "WHERE"
+      },
+      {
+        "type": "column",
+        "value": "department"
+      },
+      {
+        "type": "keyword",
+        "value": "IN"
+      },
+      {
+        "type": "column",
+        "value": "('Engineering',"
+      },
+      {
+        "type": "column",
+        "value": "'Design');"
+      }
+    ]
+  },
+  {
+    "id": 1624,
+    "drillNumber": 134,
+    "section": "Section 0: Foundations & Syntax Gym",
+    "title": "Syntax #134: List grocery items in either the Produce or Bakery category",
+    "industry": "Foundations",
+    "difficulty": "Easy",
+    "scenario": "List grocery items in either the Produce or Bakery category.",
+    "businessObjective": "List grocery items in either the Produce or Bakery category.",
+    "schemaSnippet": "GroceryItems schema",
+    "targetQuery": "SELECT item_name, category\nFROM GroceryItems\nWHERE category IN ('Produce', 'Bakery');",
+    "syntaxBlueprint": "SELECT item_name, category\nFROM GroceryItems\nWHERE category IN ('Produce', 'Bakery');",
+    "syntaxRule": "Strings use single quotes, numbers do not. AND precedes OR unless parentheses are used. NULL requires IS NULL.",
+    "syntaxTrap": "Never write col = NULL or omit parentheses in mixed AND/OR statements.",
+    "eli5Story": "[SYNTAX BLUEPRINT]:\nSELECT item_name, category\nFROM GroceryItems\nWHERE category IN ('Produce', 'Bakery');\n\n[RULE]: Strings use single quotes, numbers do not. AND precedes OR unless parentheses are used. NULL requires IS NULL.\n\n[TRAP TO AVOID]: Never write col = NULL or omit parentheses in mixed AND/OR statements.",
+    "commonMistakes": "Unquoted strings, missing parentheses around OR, or using = instead of LIKE.",
+    "learningOutcomes": "Mastered 2.4 List Membership (IN & NOT IN) on GroceryItems.",
+    "challengeSlots": [
+      {
+        "type": "keyword",
+        "value": "SELECT"
+      },
+      {
+        "type": "column",
+        "value": "item_name,"
+      },
+      {
+        "type": "column",
+        "value": "category"
+      },
+      {
+        "type": "keyword",
+        "value": "FROM"
+      },
+      {
+        "type": "table",
+        "value": "GroceryItems"
+      },
+      {
+        "type": "keyword",
+        "value": "WHERE"
+      },
+      {
+        "type": "column",
+        "value": "category"
+      },
+      {
+        "type": "keyword",
+        "value": "IN"
+      },
+      {
+        "type": "column",
+        "value": "('Produce',"
+      },
+      {
+        "type": "column",
+        "value": "'Bakery');"
+      }
+    ]
+  },
+  {
+    "id": 1625,
+    "drillNumber": 135,
+    "section": "Section 0: Foundations & Syntax Gym",
+    "title": "Syntax #135: Find all fulfilled orders with status Shipped or Delivered",
+    "industry": "Foundations",
+    "difficulty": "Easy",
+    "scenario": "Find all fulfilled orders with status Shipped or Delivered.",
+    "businessObjective": "Find all fulfilled orders with status Shipped or Delivered.",
+    "schemaSnippet": "Orders schema",
+    "targetQuery": "SELECT order_id, order_status\nFROM Orders\nWHERE order_status IN ('Shipped', 'Delivered');",
+    "syntaxBlueprint": "SELECT order_id, order_status\nFROM Orders\nWHERE order_status IN ('Shipped', 'Delivered');",
+    "syntaxRule": "Strings use single quotes, numbers do not. AND precedes OR unless parentheses are used. NULL requires IS NULL.",
+    "syntaxTrap": "Never write col = NULL or omit parentheses in mixed AND/OR statements.",
+    "eli5Story": "[SYNTAX BLUEPRINT]:\nSELECT order_id, order_status\nFROM Orders\nWHERE order_status IN ('Shipped', 'Delivered');\n\n[RULE]: Strings use single quotes, numbers do not. AND precedes OR unless parentheses are used. NULL requires IS NULL.\n\n[TRAP TO AVOID]: Never write col = NULL or omit parentheses in mixed AND/OR statements.",
+    "commonMistakes": "Unquoted strings, missing parentheses around OR, or using = instead of LIKE.",
+    "learningOutcomes": "Mastered 2.4 List Membership (IN & NOT IN) on Orders.",
+    "challengeSlots": [
+      {
+        "type": "keyword",
+        "value": "SELECT"
+      },
+      {
+        "type": "column",
+        "value": "order_id,"
+      },
+      {
+        "type": "column",
+        "value": "order_status"
+      },
+      {
+        "type": "keyword",
+        "value": "FROM"
+      },
+      {
+        "type": "table",
+        "value": "Orders"
+      },
+      {
+        "type": "keyword",
+        "value": "WHERE"
+      },
+      {
+        "type": "column",
+        "value": "order_status"
+      },
+      {
+        "type": "keyword",
+        "value": "IN"
+      },
+      {
+        "type": "column",
+        "value": "('Shipped',"
+      },
+      {
+        "type": "column",
+        "value": "'Delivered');"
+      }
+    ]
+  },
+  {
+    "id": 1626,
+    "drillNumber": 136,
+    "section": "Section 0: Foundations & Syntax Gym",
+    "title": "Syntax #136: Filter music tracks to only Rock or Synthwave",
+    "industry": "Foundations",
+    "difficulty": "Easy",
+    "scenario": "Filter music tracks to only Rock or Synthwave.",
+    "businessObjective": "Filter music tracks to only Rock or Synthwave.",
+    "schemaSnippet": "MusicTracks schema",
+    "targetQuery": "SELECT track_title, genre\nFROM MusicTracks\nWHERE genre IN ('Rock', 'Synthwave');",
+    "syntaxBlueprint": "SELECT track_title, genre\nFROM MusicTracks\nWHERE genre IN ('Rock', 'Synthwave');",
+    "syntaxRule": "Strings use single quotes, numbers do not. AND precedes OR unless parentheses are used. NULL requires IS NULL.",
+    "syntaxTrap": "Never write col = NULL or omit parentheses in mixed AND/OR statements.",
+    "eli5Story": "[SYNTAX BLUEPRINT]:\nSELECT track_title, genre\nFROM MusicTracks\nWHERE genre IN ('Rock', 'Synthwave');\n\n[RULE]: Strings use single quotes, numbers do not. AND precedes OR unless parentheses are used. NULL requires IS NULL.\n\n[TRAP TO AVOID]: Never write col = NULL or omit parentheses in mixed AND/OR statements.",
+    "commonMistakes": "Unquoted strings, missing parentheses around OR, or using = instead of LIKE.",
+    "learningOutcomes": "Mastered 2.4 List Membership (IN & NOT IN) on MusicTracks.",
+    "challengeSlots": [
+      {
+        "type": "keyword",
+        "value": "SELECT"
+      },
+      {
+        "type": "column",
+        "value": "track_title,"
+      },
+      {
+        "type": "column",
+        "value": "genre"
+      },
+      {
+        "type": "keyword",
+        "value": "FROM"
+      },
+      {
+        "type": "table",
+        "value": "MusicTracks"
+      },
+      {
+        "type": "keyword",
+        "value": "WHERE"
+      },
+      {
+        "type": "column",
+        "value": "genre"
+      },
+      {
+        "type": "keyword",
+        "value": "IN"
+      },
+      {
+        "type": "column",
+        "value": "('Rock',"
+      },
+      {
+        "type": "column",
+        "value": "'Synthwave');"
+      }
+    ]
+  },
+  {
+    "id": 1627,
+    "drillNumber": 137,
+    "section": "Section 0: Foundations & Syntax Gym",
+    "title": "Syntax #137: List premium members with either Gold or Platinum plans",
+    "industry": "Foundations",
+    "difficulty": "Easy",
+    "scenario": "List premium members with either Gold or Platinum plans.",
+    "businessObjective": "List premium members with either Gold or Platinum plans.",
+    "schemaSnippet": "GymMembers schema",
+    "targetQuery": "SELECT member_name, membership_plan\nFROM GymMembers\nWHERE membership_plan IN ('Gold', 'Platinum');",
+    "syntaxBlueprint": "SELECT member_name, membership_plan\nFROM GymMembers\nWHERE membership_plan IN ('Gold', 'Platinum');",
+    "syntaxRule": "Strings use single quotes, numbers do not. AND precedes OR unless parentheses are used. NULL requires IS NULL.",
+    "syntaxTrap": "Never write col = NULL or omit parentheses in mixed AND/OR statements.",
+    "eli5Story": "[SYNTAX BLUEPRINT]:\nSELECT member_name, membership_plan\nFROM GymMembers\nWHERE membership_plan IN ('Gold', 'Platinum');\n\n[RULE]: Strings use single quotes, numbers do not. AND precedes OR unless parentheses are used. NULL requires IS NULL.\n\n[TRAP TO AVOID]: Never write col = NULL or omit parentheses in mixed AND/OR statements.",
+    "commonMistakes": "Unquoted strings, missing parentheses around OR, or using = instead of LIKE.",
+    "learningOutcomes": "Mastered 2.4 List Membership (IN & NOT IN) on GymMembers.",
+    "challengeSlots": [
+      {
+        "type": "keyword",
+        "value": "SELECT"
+      },
+      {
+        "type": "column",
+        "value": "member_name,"
+      },
+      {
+        "type": "column",
+        "value": "membership_plan"
+      },
+      {
+        "type": "keyword",
+        "value": "FROM"
+      },
+      {
+        "type": "table",
+        "value": "GymMembers"
+      },
+      {
+        "type": "keyword",
+        "value": "WHERE"
+      },
+      {
+        "type": "column",
+        "value": "membership_plan"
+      },
+      {
+        "type": "keyword",
+        "value": "IN"
+      },
+      {
+        "type": "column",
+        "value": "('Gold',"
+      },
+      {
+        "type": "column",
+        "value": "'Platinum');"
+      }
+    ]
+  },
+  {
+    "id": 1628,
+    "drillNumber": 138,
+    "section": "Section 0: Foundations & Syntax Gym",
+    "title": "Syntax #138: Select movies whose genre is neither Horror nor Action",
+    "industry": "Foundations",
+    "difficulty": "Easy",
+    "scenario": "Select movies whose genre is neither Horror nor Action.",
+    "businessObjective": "Select movies whose genre is neither Horror nor Action.",
+    "schemaSnippet": "MovieReviews schema",
+    "targetQuery": "SELECT movie_title, genre\nFROM MovieReviews\nWHERE genre NOT IN ('Horror', 'Action');",
+    "syntaxBlueprint": "SELECT movie_title, genre\nFROM MovieReviews\nWHERE genre NOT IN ('Horror', 'Action');",
+    "syntaxRule": "Strings use single quotes, numbers do not. AND precedes OR unless parentheses are used. NULL requires IS NULL.",
+    "syntaxTrap": "Never write col = NULL or omit parentheses in mixed AND/OR statements.",
+    "eli5Story": "[SYNTAX BLUEPRINT]:\nSELECT movie_title, genre\nFROM MovieReviews\nWHERE genre NOT IN ('Horror', 'Action');\n\n[RULE]: Strings use single quotes, numbers do not. AND precedes OR unless parentheses are used. NULL requires IS NULL.\n\n[TRAP TO AVOID]: Never write col = NULL or omit parentheses in mixed AND/OR statements.",
+    "commonMistakes": "Unquoted strings, missing parentheses around OR, or using = instead of LIKE.",
+    "learningOutcomes": "Mastered 2.4 List Membership (IN & NOT IN) on MovieReviews.",
+    "challengeSlots": [
+      {
+        "type": "keyword",
+        "value": "SELECT"
+      },
+      {
+        "type": "column",
+        "value": "movie_title,"
+      },
+      {
+        "type": "column",
+        "value": "genre"
+      },
+      {
+        "type": "keyword",
+        "value": "FROM"
+      },
+      {
+        "type": "table",
+        "value": "MovieReviews"
+      },
+      {
+        "type": "keyword",
+        "value": "WHERE"
+      },
+      {
+        "type": "column",
+        "value": "genre"
+      },
+      {
+        "type": "keyword",
+        "value": "NOT"
+      },
+      {
+        "type": "keyword",
+        "value": "IN"
+      },
+      {
+        "type": "column",
+        "value": "('Horror',"
+      },
+      {
+        "type": "column",
+        "value": "'Action');"
+      }
+    ]
+  },
+  {
+    "id": 1629,
+    "drillNumber": 139,
+    "section": "Section 0: Foundations & Syntax Gym",
+    "title": "Syntax #139: Find flights departing from major hubs ORD, SFO, or JFK",
+    "industry": "Foundations",
+    "difficulty": "Easy",
+    "scenario": "Find flights departing from major hubs ORD, SFO, or JFK.",
+    "businessObjective": "Find flights departing from major hubs ORD, SFO, or JFK.",
+    "schemaSnippet": "FlightSchedule schema",
+    "targetQuery": "SELECT flight_id, origin_airport\nFROM FlightSchedule\nWHERE origin_airport IN ('ORD', 'SFO', 'JFK');",
+    "syntaxBlueprint": "SELECT flight_id, origin_airport\nFROM FlightSchedule\nWHERE origin_airport IN ('ORD', 'SFO', 'JFK');",
+    "syntaxRule": "Strings use single quotes, numbers do not. AND precedes OR unless parentheses are used. NULL requires IS NULL.",
+    "syntaxTrap": "Never write col = NULL or omit parentheses in mixed AND/OR statements.",
+    "eli5Story": "[SYNTAX BLUEPRINT]:\nSELECT flight_id, origin_airport\nFROM FlightSchedule\nWHERE origin_airport IN ('ORD', 'SFO', 'JFK');\n\n[RULE]: Strings use single quotes, numbers do not. AND precedes OR unless parentheses are used. NULL requires IS NULL.\n\n[TRAP TO AVOID]: Never write col = NULL or omit parentheses in mixed AND/OR statements.",
+    "commonMistakes": "Unquoted strings, missing parentheses around OR, or using = instead of LIKE.",
+    "learningOutcomes": "Mastered 2.4 List Membership (IN & NOT IN) on FlightSchedule.",
+    "challengeSlots": [
+      {
+        "type": "keyword",
+        "value": "SELECT"
+      },
+      {
+        "type": "column",
+        "value": "flight_id,"
+      },
+      {
+        "type": "column",
+        "value": "origin_airport"
+      },
+      {
+        "type": "keyword",
+        "value": "FROM"
+      },
+      {
+        "type": "table",
+        "value": "FlightSchedule"
+      },
+      {
+        "type": "keyword",
+        "value": "WHERE"
+      },
+      {
+        "type": "column",
+        "value": "origin_airport"
+      },
+      {
+        "type": "keyword",
+        "value": "IN"
+      },
+      {
+        "type": "column",
+        "value": "('ORD',"
+      },
+      {
+        "type": "column",
+        "value": "'SFO',"
+      },
+      {
+        "type": "column",
+        "value": "'JFK');"
+      }
+    ]
+  },
+  {
+    "id": 1630,
+    "drillNumber": 140,
+    "section": "Section 0: Foundations & Syntax Gym",
+    "title": "Syntax #140: Filter patient records to standard household pets: Dog or Cat",
+    "industry": "Foundations",
+    "difficulty": "Easy",
+    "scenario": "Filter patient records to standard household pets: Dog or Cat.",
+    "businessObjective": "Filter patient records to standard household pets: Dog or Cat.",
+    "schemaSnippet": "PetClinic schema",
+    "targetQuery": "SELECT pet_name, species\nFROM PetClinic\nWHERE species IN ('Dog', 'Cat');",
+    "syntaxBlueprint": "SELECT pet_name, species\nFROM PetClinic\nWHERE species IN ('Dog', 'Cat');",
+    "syntaxRule": "Strings use single quotes, numbers do not. AND precedes OR unless parentheses are used. NULL requires IS NULL.",
+    "syntaxTrap": "Never write col = NULL or omit parentheses in mixed AND/OR statements.",
+    "eli5Story": "[SYNTAX BLUEPRINT]:\nSELECT pet_name, species\nFROM PetClinic\nWHERE species IN ('Dog', 'Cat');\n\n[RULE]: Strings use single quotes, numbers do not. AND precedes OR unless parentheses are used. NULL requires IS NULL.\n\n[TRAP TO AVOID]: Never write col = NULL or omit parentheses in mixed AND/OR statements.",
+    "commonMistakes": "Unquoted strings, missing parentheses around OR, or using = instead of LIKE.",
+    "learningOutcomes": "Mastered 2.4 List Membership (IN & NOT IN) on PetClinic.",
+    "challengeSlots": [
+      {
+        "type": "keyword",
+        "value": "SELECT"
+      },
+      {
+        "type": "column",
+        "value": "pet_name,"
+      },
+      {
+        "type": "column",
+        "value": "species"
+      },
+      {
+        "type": "keyword",
+        "value": "FROM"
+      },
+      {
+        "type": "table",
+        "value": "PetClinic"
+      },
+      {
+        "type": "keyword",
+        "value": "WHERE"
+      },
+      {
+        "type": "column",
+        "value": "species"
+      },
+      {
+        "type": "keyword",
+        "value": "IN"
+      },
+      {
+        "type": "column",
+        "value": "('Dog',"
+      },
+      {
+        "type": "column",
+        "value": "'Cat');"
+      }
+    ]
+  },
+  {
+    "id": 1631,
+    "drillNumber": 141,
+    "section": "Section 0: Foundations & Syntax Gym",
+    "title": "Syntax #141: Find all students whose first name starts with the capital letter 'A'",
+    "industry": "Foundations",
+    "difficulty": "Easy",
+    "scenario": "Find all students whose first name starts with the capital letter 'A'.",
+    "businessObjective": "Find all students whose first name starts with the capital letter 'A'.",
+    "schemaSnippet": "Students schema",
+    "targetQuery": "SELECT full_name\nFROM Students\nWHERE full_name LIKE 'A%';",
+    "syntaxBlueprint": "SELECT full_name\nFROM Students\nWHERE full_name LIKE 'A%';",
+    "syntaxRule": "Strings use single quotes, numbers do not. AND precedes OR unless parentheses are used. NULL requires IS NULL.",
+    "syntaxTrap": "Never write col = NULL or omit parentheses in mixed AND/OR statements.",
+    "eli5Story": "[SYNTAX BLUEPRINT]:\nSELECT full_name\nFROM Students\nWHERE full_name LIKE 'A%';\n\n[RULE]: Strings use single quotes, numbers do not. AND precedes OR unless parentheses are used. NULL requires IS NULL.\n\n[TRAP TO AVOID]: Never write col = NULL or omit parentheses in mixed AND/OR statements.",
+    "commonMistakes": "Unquoted strings, missing parentheses around OR, or using = instead of LIKE.",
+    "learningOutcomes": "Mastered 2.5 Pattern Matching (LIKE) on Students.",
+    "challengeSlots": [
+      {
+        "type": "keyword",
+        "value": "SELECT"
+      },
+      {
+        "type": "column",
+        "value": "full_name"
+      },
+      {
+        "type": "keyword",
+        "value": "FROM"
+      },
+      {
+        "type": "table",
+        "value": "Students"
+      },
+      {
+        "type": "keyword",
+        "value": "WHERE"
+      },
+      {
+        "type": "column",
+        "value": "full_name"
+      },
+      {
+        "type": "keyword",
+        "value": "LIKE"
+      },
+      {
+        "type": "column",
+        "value": "'A%';"
+      }
+    ]
+  },
+  {
+    "id": 1632,
+    "drillNumber": 142,
+    "section": "Section 0: Foundations & Syntax Gym",
+    "title": "Syntax #142: Find all books written by an author with 'King' anywhere in their name",
+    "industry": "Foundations",
+    "difficulty": "Easy",
+    "scenario": "Find all books written by an author with 'King' anywhere in their name.",
+    "businessObjective": "Find all books written by an author with 'King' anywhere in their name.",
+    "schemaSnippet": "Books schema",
+    "targetQuery": "SELECT title, author\nFROM Books\nWHERE author LIKE '%King%';",
+    "syntaxBlueprint": "SELECT title, author\nFROM Books\nWHERE author LIKE '%King%';",
+    "syntaxRule": "Strings use single quotes, numbers do not. AND precedes OR unless parentheses are used. NULL requires IS NULL.",
+    "syntaxTrap": "Never write col = NULL or omit parentheses in mixed AND/OR statements.",
+    "eli5Story": "[SYNTAX BLUEPRINT]:\nSELECT title, author\nFROM Books\nWHERE author LIKE '%King%';\n\n[RULE]: Strings use single quotes, numbers do not. AND precedes OR unless parentheses are used. NULL requires IS NULL.\n\n[TRAP TO AVOID]: Never write col = NULL or omit parentheses in mixed AND/OR statements.",
+    "commonMistakes": "Unquoted strings, missing parentheses around OR, or using = instead of LIKE.",
+    "learningOutcomes": "Mastered 2.5 Pattern Matching (LIKE) on Books.",
+    "challengeSlots": [
+      {
+        "type": "keyword",
+        "value": "SELECT"
+      },
+      {
+        "type": "column",
+        "value": "title,"
+      },
+      {
+        "type": "column",
+        "value": "author"
+      },
+      {
+        "type": "keyword",
+        "value": "FROM"
+      },
+      {
+        "type": "table",
+        "value": "Books"
+      },
+      {
+        "type": "keyword",
+        "value": "WHERE"
+      },
+      {
+        "type": "column",
+        "value": "author"
+      },
+      {
+        "type": "keyword",
+        "value": "LIKE"
+      },
+      {
+        "type": "column",
+        "value": "'%King%';"
+      }
+    ]
+  },
+  {
+    "id": 1633,
+    "drillNumber": 143,
+    "section": "Section 0: Foundations & Syntax Gym",
+    "title": "Syntax #143: Select all employees whose family name ends with 'son' (e.g. Johnson, Wilson)",
+    "industry": "Foundations",
+    "difficulty": "Easy",
+    "scenario": "Select all employees whose family name ends with 'son' (e.g. Johnson, Wilson).",
+    "businessObjective": "Select all employees whose family name ends with 'son' (e.g. Johnson, Wilson).",
+    "schemaSnippet": "Employees schema",
+    "targetQuery": "SELECT first_name, last_name\nFROM Employees\nWHERE last_name LIKE '%son';",
+    "syntaxBlueprint": "SELECT first_name, last_name\nFROM Employees\nWHERE last_name LIKE '%son';",
+    "syntaxRule": "Strings use single quotes, numbers do not. AND precedes OR unless parentheses are used. NULL requires IS NULL.",
+    "syntaxTrap": "Never write col = NULL or omit parentheses in mixed AND/OR statements.",
+    "eli5Story": "[SYNTAX BLUEPRINT]:\nSELECT first_name, last_name\nFROM Employees\nWHERE last_name LIKE '%son';\n\n[RULE]: Strings use single quotes, numbers do not. AND precedes OR unless parentheses are used. NULL requires IS NULL.\n\n[TRAP TO AVOID]: Never write col = NULL or omit parentheses in mixed AND/OR statements.",
+    "commonMistakes": "Unquoted strings, missing parentheses around OR, or using = instead of LIKE.",
+    "learningOutcomes": "Mastered 2.5 Pattern Matching (LIKE) on Employees.",
+    "challengeSlots": [
+      {
+        "type": "keyword",
+        "value": "SELECT"
+      },
+      {
+        "type": "column",
+        "value": "first_name,"
+      },
+      {
+        "type": "column",
+        "value": "last_name"
+      },
+      {
+        "type": "keyword",
+        "value": "FROM"
+      },
+      {
+        "type": "table",
+        "value": "Employees"
+      },
+      {
+        "type": "keyword",
+        "value": "WHERE"
+      },
+      {
+        "type": "column",
+        "value": "last_name"
+      },
+      {
+        "type": "keyword",
+        "value": "LIKE"
+      },
+      {
+        "type": "column",
+        "value": "'%son';"
+      }
+    ]
+  },
+  {
+    "id": 1634,
+    "drillNumber": 144,
+    "section": "Section 0: Foundations & Syntax Gym",
+    "title": "Syntax #144: Find all grocery items with 'Organic' anywhere in the item name",
+    "industry": "Foundations",
+    "difficulty": "Easy",
+    "scenario": "Find all grocery items with 'Organic' anywhere in the item name.",
+    "businessObjective": "Find all grocery items with 'Organic' anywhere in the item name.",
+    "schemaSnippet": "GroceryItems schema",
+    "targetQuery": "SELECT item_name\nFROM GroceryItems\nWHERE item_name LIKE '%Organic%';",
+    "syntaxBlueprint": "SELECT item_name\nFROM GroceryItems\nWHERE item_name LIKE '%Organic%';",
+    "syntaxRule": "Strings use single quotes, numbers do not. AND precedes OR unless parentheses are used. NULL requires IS NULL.",
+    "syntaxTrap": "Never write col = NULL or omit parentheses in mixed AND/OR statements.",
+    "eli5Story": "[SYNTAX BLUEPRINT]:\nSELECT item_name\nFROM GroceryItems\nWHERE item_name LIKE '%Organic%';\n\n[RULE]: Strings use single quotes, numbers do not. AND precedes OR unless parentheses are used. NULL requires IS NULL.\n\n[TRAP TO AVOID]: Never write col = NULL or omit parentheses in mixed AND/OR statements.",
+    "commonMistakes": "Unquoted strings, missing parentheses around OR, or using = instead of LIKE.",
+    "learningOutcomes": "Mastered 2.5 Pattern Matching (LIKE) on GroceryItems.",
+    "challengeSlots": [
+      {
+        "type": "keyword",
+        "value": "SELECT"
+      },
+      {
+        "type": "column",
+        "value": "item_name"
+      },
+      {
+        "type": "keyword",
+        "value": "FROM"
+      },
+      {
+        "type": "table",
+        "value": "GroceryItems"
+      },
+      {
+        "type": "keyword",
+        "value": "WHERE"
+      },
+      {
+        "type": "column",
+        "value": "item_name"
+      },
+      {
+        "type": "keyword",
+        "value": "LIKE"
+      },
+      {
+        "type": "column",
+        "value": "'%Organic%';"
+      }
+    ]
+  },
+  {
+    "id": 1635,
+    "drillNumber": 145,
+    "section": "Section 0: Foundations & Syntax Gym",
+    "title": "Syntax #145: Find orders placed by customers whose name begins with 'Z'",
+    "industry": "Foundations",
+    "difficulty": "Easy",
+    "scenario": "Find orders placed by customers whose name begins with 'Z'.",
+    "businessObjective": "Find orders placed by customers whose name begins with 'Z'.",
+    "schemaSnippet": "Orders schema",
+    "targetQuery": "SELECT order_id, customer_name\nFROM Orders\nWHERE customer_name LIKE 'Z%';",
+    "syntaxBlueprint": "SELECT order_id, customer_name\nFROM Orders\nWHERE customer_name LIKE 'Z%';",
+    "syntaxRule": "Strings use single quotes, numbers do not. AND precedes OR unless parentheses are used. NULL requires IS NULL.",
+    "syntaxTrap": "Never write col = NULL or omit parentheses in mixed AND/OR statements.",
+    "eli5Story": "[SYNTAX BLUEPRINT]:\nSELECT order_id, customer_name\nFROM Orders\nWHERE customer_name LIKE 'Z%';\n\n[RULE]: Strings use single quotes, numbers do not. AND precedes OR unless parentheses are used. NULL requires IS NULL.\n\n[TRAP TO AVOID]: Never write col = NULL or omit parentheses in mixed AND/OR statements.",
+    "commonMistakes": "Unquoted strings, missing parentheses around OR, or using = instead of LIKE.",
+    "learningOutcomes": "Mastered 2.5 Pattern Matching (LIKE) on Orders.",
+    "challengeSlots": [
+      {
+        "type": "keyword",
+        "value": "SELECT"
+      },
+      {
+        "type": "column",
+        "value": "order_id,"
+      },
+      {
+        "type": "column",
+        "value": "customer_name"
+      },
+      {
+        "type": "keyword",
+        "value": "FROM"
+      },
+      {
+        "type": "table",
+        "value": "Orders"
+      },
+      {
+        "type": "keyword",
+        "value": "WHERE"
+      },
+      {
+        "type": "column",
+        "value": "customer_name"
+      },
+      {
+        "type": "keyword",
+        "value": "LIKE"
+      },
+      {
+        "type": "column",
+        "value": "'Z%';"
+      }
+    ]
+  },
+  {
+    "id": 1636,
+    "drillNumber": 146,
+    "section": "Section 0: Foundations & Syntax Gym",
+    "title": "Syntax #146: Find all tracks that have 'Rain' in the title",
+    "industry": "Foundations",
+    "difficulty": "Easy",
+    "scenario": "Find all tracks that have 'Rain' in the title.",
+    "businessObjective": "Find all tracks that have 'Rain' in the title.",
+    "schemaSnippet": "MusicTracks schema",
+    "targetQuery": "SELECT track_title\nFROM MusicTracks\nWHERE track_title LIKE '%Rain%';",
+    "syntaxBlueprint": "SELECT track_title\nFROM MusicTracks\nWHERE track_title LIKE '%Rain%';",
+    "syntaxRule": "Strings use single quotes, numbers do not. AND precedes OR unless parentheses are used. NULL requires IS NULL.",
+    "syntaxTrap": "Never write col = NULL or omit parentheses in mixed AND/OR statements.",
+    "eli5Story": "[SYNTAX BLUEPRINT]:\nSELECT track_title\nFROM MusicTracks\nWHERE track_title LIKE '%Rain%';\n\n[RULE]: Strings use single quotes, numbers do not. AND precedes OR unless parentheses are used. NULL requires IS NULL.\n\n[TRAP TO AVOID]: Never write col = NULL or omit parentheses in mixed AND/OR statements.",
+    "commonMistakes": "Unquoted strings, missing parentheses around OR, or using = instead of LIKE.",
+    "learningOutcomes": "Mastered 2.5 Pattern Matching (LIKE) on MusicTracks.",
+    "challengeSlots": [
+      {
+        "type": "keyword",
+        "value": "SELECT"
+      },
+      {
+        "type": "column",
+        "value": "track_title"
+      },
+      {
+        "type": "keyword",
+        "value": "FROM"
+      },
+      {
+        "type": "table",
+        "value": "MusicTracks"
+      },
+      {
+        "type": "keyword",
+        "value": "WHERE"
+      },
+      {
+        "type": "column",
+        "value": "track_title"
+      },
+      {
+        "type": "keyword",
+        "value": "LIKE"
+      },
+      {
+        "type": "column",
+        "value": "'%Rain%';"
+      }
+    ]
+  },
+  {
+    "id": 1637,
+    "drillNumber": 147,
+    "section": "Section 0: Foundations & Syntax Gym",
+    "title": "Syntax #147: Find members whose name has 'a' as the second character (e.g. Sam, Dan)",
+    "industry": "Foundations",
+    "difficulty": "Easy",
+    "scenario": "Find members whose name has 'a' as the second character (e.g. Sam, Dan).",
+    "businessObjective": "Find members whose name has 'a' as the second character (e.g. Sam, Dan).",
+    "schemaSnippet": "GymMembers schema",
+    "targetQuery": "SELECT member_name\nFROM GymMembers\nWHERE member_name LIKE '_a%';",
+    "syntaxBlueprint": "SELECT member_name\nFROM GymMembers\nWHERE member_name LIKE '_a%';",
+    "syntaxRule": "Strings use single quotes, numbers do not. AND precedes OR unless parentheses are used. NULL requires IS NULL.",
+    "syntaxTrap": "Never write col = NULL or omit parentheses in mixed AND/OR statements.",
+    "eli5Story": "[SYNTAX BLUEPRINT]:\nSELECT member_name\nFROM GymMembers\nWHERE member_name LIKE '_a%';\n\n[RULE]: Strings use single quotes, numbers do not. AND precedes OR unless parentheses are used. NULL requires IS NULL.\n\n[TRAP TO AVOID]: Never write col = NULL or omit parentheses in mixed AND/OR statements.",
+    "commonMistakes": "Unquoted strings, missing parentheses around OR, or using = instead of LIKE.",
+    "learningOutcomes": "Mastered 2.5 Pattern Matching (LIKE) on GymMembers.",
+    "challengeSlots": [
+      {
+        "type": "keyword",
+        "value": "SELECT"
+      },
+      {
+        "type": "column",
+        "value": "member_name"
+      },
+      {
+        "type": "keyword",
+        "value": "FROM"
+      },
+      {
+        "type": "table",
+        "value": "GymMembers"
+      },
+      {
+        "type": "keyword",
+        "value": "WHERE"
+      },
+      {
+        "type": "column",
+        "value": "member_name"
+      },
+      {
+        "type": "keyword",
+        "value": "LIKE"
+      },
+      {
+        "type": "column",
+        "value": "'_a%';"
+      }
+    ]
+  },
+  {
+    "id": 1638,
+    "drillNumber": 148,
+    "section": "Section 0: Foundations & Syntax Gym",
+    "title": "Syntax #148: Find movies that contain the word 'The ' in their title",
+    "industry": "Foundations",
+    "difficulty": "Easy",
+    "scenario": "Find movies that contain the word 'The ' in their title.",
+    "businessObjective": "Find movies that contain the word 'The ' in their title.",
+    "schemaSnippet": "MovieReviews schema",
+    "targetQuery": "SELECT movie_title\nFROM MovieReviews\nWHERE movie_title LIKE '%The %';",
+    "syntaxBlueprint": "SELECT movie_title\nFROM MovieReviews\nWHERE movie_title LIKE '%The %';",
+    "syntaxRule": "Strings use single quotes, numbers do not. AND precedes OR unless parentheses are used. NULL requires IS NULL.",
+    "syntaxTrap": "Never write col = NULL or omit parentheses in mixed AND/OR statements.",
+    "eli5Story": "[SYNTAX BLUEPRINT]:\nSELECT movie_title\nFROM MovieReviews\nWHERE movie_title LIKE '%The %';\n\n[RULE]: Strings use single quotes, numbers do not. AND precedes OR unless parentheses are used. NULL requires IS NULL.\n\n[TRAP TO AVOID]: Never write col = NULL or omit parentheses in mixed AND/OR statements.",
+    "commonMistakes": "Unquoted strings, missing parentheses around OR, or using = instead of LIKE.",
+    "learningOutcomes": "Mastered 2.5 Pattern Matching (LIKE) on MovieReviews.",
+    "challengeSlots": [
+      {
+        "type": "keyword",
+        "value": "SELECT"
+      },
+      {
+        "type": "column",
+        "value": "movie_title"
+      },
+      {
+        "type": "keyword",
+        "value": "FROM"
+      },
+      {
+        "type": "table",
+        "value": "MovieReviews"
+      },
+      {
+        "type": "keyword",
+        "value": "WHERE"
+      },
+      {
+        "type": "column",
+        "value": "movie_title"
+      },
+      {
+        "type": "keyword",
+        "value": "LIKE"
+      },
+      {
+        "type": "column",
+        "value": "'%The"
+      },
+      {
+        "type": "column",
+        "value": "%';"
+      }
+    ]
+  },
+  {
+    "id": 1639,
+    "drillNumber": 149,
+    "section": "Section 0: Foundations & Syntax Gym",
+    "title": "Syntax #149: Find all American Airlines flights starting with flight code 'AA-'",
+    "industry": "Foundations",
+    "difficulty": "Easy",
+    "scenario": "Find all American Airlines flights starting with flight code 'AA-'.",
+    "businessObjective": "Find all American Airlines flights starting with flight code 'AA-'.",
+    "schemaSnippet": "FlightSchedule schema",
+    "targetQuery": "SELECT flight_id\nFROM FlightSchedule\nWHERE flight_id LIKE 'AA-%';",
+    "syntaxBlueprint": "SELECT flight_id\nFROM FlightSchedule\nWHERE flight_id LIKE 'AA-%';",
+    "syntaxRule": "Strings use single quotes, numbers do not. AND precedes OR unless parentheses are used. NULL requires IS NULL.",
+    "syntaxTrap": "Never write col = NULL or omit parentheses in mixed AND/OR statements.",
+    "eli5Story": "[SYNTAX BLUEPRINT]:\nSELECT flight_id\nFROM FlightSchedule\nWHERE flight_id LIKE 'AA-%';\n\n[RULE]: Strings use single quotes, numbers do not. AND precedes OR unless parentheses are used. NULL requires IS NULL.\n\n[TRAP TO AVOID]: Never write col = NULL or omit parentheses in mixed AND/OR statements.",
+    "commonMistakes": "Unquoted strings, missing parentheses around OR, or using = instead of LIKE.",
+    "learningOutcomes": "Mastered 2.5 Pattern Matching (LIKE) on FlightSchedule.",
+    "challengeSlots": [
+      {
+        "type": "keyword",
+        "value": "SELECT"
+      },
+      {
+        "type": "column",
+        "value": "flight_id"
+      },
+      {
+        "type": "keyword",
+        "value": "FROM"
+      },
+      {
+        "type": "table",
+        "value": "FlightSchedule"
+      },
+      {
+        "type": "keyword",
+        "value": "WHERE"
+      },
+      {
+        "type": "column",
+        "value": "flight_id"
+      },
+      {
+        "type": "keyword",
+        "value": "LIKE"
+      },
+      {
+        "type": "column",
+        "value": "'AA-%';"
+      }
+    ]
+  },
+  {
+    "id": 1640,
+    "drillNumber": 150,
+    "section": "Section 0: Foundations & Syntax Gym",
+    "title": "Syntax #150: Find all dogs whose breed includes 'Retriever' (Golden, Labrador, etc.)",
+    "industry": "Foundations",
+    "difficulty": "Easy",
+    "scenario": "Find all dogs whose breed includes 'Retriever' (Golden, Labrador, etc.).",
+    "businessObjective": "Find all dogs whose breed includes 'Retriever' (Golden, Labrador, etc.).",
+    "schemaSnippet": "PetClinic schema",
+    "targetQuery": "SELECT pet_name, breed\nFROM PetClinic\nWHERE breed LIKE '%Retriever%';",
+    "syntaxBlueprint": "SELECT pet_name, breed\nFROM PetClinic\nWHERE breed LIKE '%Retriever%';",
+    "syntaxRule": "Strings use single quotes, numbers do not. AND precedes OR unless parentheses are used. NULL requires IS NULL.",
+    "syntaxTrap": "Never write col = NULL or omit parentheses in mixed AND/OR statements.",
+    "eli5Story": "[SYNTAX BLUEPRINT]:\nSELECT pet_name, breed\nFROM PetClinic\nWHERE breed LIKE '%Retriever%';\n\n[RULE]: Strings use single quotes, numbers do not. AND precedes OR unless parentheses are used. NULL requires IS NULL.\n\n[TRAP TO AVOID]: Never write col = NULL or omit parentheses in mixed AND/OR statements.",
+    "commonMistakes": "Unquoted strings, missing parentheses around OR, or using = instead of LIKE.",
+    "learningOutcomes": "Mastered 2.5 Pattern Matching (LIKE) on PetClinic.",
+    "challengeSlots": [
+      {
+        "type": "keyword",
+        "value": "SELECT"
+      },
+      {
+        "type": "column",
+        "value": "pet_name,"
+      },
+      {
+        "type": "column",
+        "value": "breed"
+      },
+      {
+        "type": "keyword",
+        "value": "FROM"
+      },
+      {
+        "type": "table",
+        "value": "PetClinic"
+      },
+      {
+        "type": "keyword",
+        "value": "WHERE"
+      },
+      {
+        "type": "column",
+        "value": "breed"
+      },
+      {
+        "type": "keyword",
+        "value": "LIKE"
+      },
+      {
+        "type": "column",
+        "value": "'%Retriever%';"
+      }
+    ]
+  },
+  {
+    "id": 1641,
+    "drillNumber": 151,
+    "section": "Section 0: Foundations & Syntax Gym",
+    "title": "Syntax #151: Find books whose title does NOT contain the word 'The'",
+    "industry": "Foundations",
+    "difficulty": "Easy",
+    "scenario": "Find books whose title does NOT contain the word 'The'.",
+    "businessObjective": "Find books whose title does NOT contain the word 'The'.",
+    "schemaSnippet": "Books schema",
+    "targetQuery": "SELECT title\nFROM Books\nWHERE title NOT LIKE '%The%';",
+    "syntaxBlueprint": "SELECT title\nFROM Books\nWHERE title NOT LIKE '%The%';",
+    "syntaxRule": "Strings use single quotes, numbers do not. AND precedes OR unless parentheses are used. NULL requires IS NULL.",
+    "syntaxTrap": "Never write col = NULL or omit parentheses in mixed AND/OR statements.",
+    "eli5Story": "[SYNTAX BLUEPRINT]:\nSELECT title\nFROM Books\nWHERE title NOT LIKE '%The%';\n\n[RULE]: Strings use single quotes, numbers do not. AND precedes OR unless parentheses are used. NULL requires IS NULL.\n\n[TRAP TO AVOID]: Never write col = NULL or omit parentheses in mixed AND/OR statements.",
+    "commonMistakes": "Unquoted strings, missing parentheses around OR, or using = instead of LIKE.",
+    "learningOutcomes": "Mastered 2.6 Inverse & Strict Wildcards on Books.",
+    "challengeSlots": [
+      {
+        "type": "keyword",
+        "value": "SELECT"
+      },
+      {
+        "type": "column",
+        "value": "title"
+      },
+      {
+        "type": "keyword",
+        "value": "FROM"
+      },
+      {
+        "type": "table",
+        "value": "Books"
+      },
+      {
+        "type": "keyword",
+        "value": "WHERE"
+      },
+      {
+        "type": "column",
+        "value": "title"
+      },
+      {
+        "type": "keyword",
+        "value": "NOT"
+      },
+      {
+        "type": "keyword",
+        "value": "LIKE"
+      },
+      {
+        "type": "column",
+        "value": "'%The%';"
+      }
+    ]
+  },
+  {
+    "id": 1642,
+    "drillNumber": 152,
+    "section": "Section 0: Foundations & Syntax Gym",
+    "title": "Syntax #152: Select students who live in cities that do NOT start with 'S'",
+    "industry": "Foundations",
+    "difficulty": "Easy",
+    "scenario": "Select students who live in cities that do NOT start with 'S'.",
+    "businessObjective": "Select students who live in cities that do NOT start with 'S'.",
+    "schemaSnippet": "Students schema",
+    "targetQuery": "SELECT full_name, city\nFROM Students\nWHERE city NOT LIKE 'S%';",
+    "syntaxBlueprint": "SELECT full_name, city\nFROM Students\nWHERE city NOT LIKE 'S%';",
+    "syntaxRule": "Strings use single quotes, numbers do not. AND precedes OR unless parentheses are used. NULL requires IS NULL.",
+    "syntaxTrap": "Never write col = NULL or omit parentheses in mixed AND/OR statements.",
+    "eli5Story": "[SYNTAX BLUEPRINT]:\nSELECT full_name, city\nFROM Students\nWHERE city NOT LIKE 'S%';\n\n[RULE]: Strings use single quotes, numbers do not. AND precedes OR unless parentheses are used. NULL requires IS NULL.\n\n[TRAP TO AVOID]: Never write col = NULL or omit parentheses in mixed AND/OR statements.",
+    "commonMistakes": "Unquoted strings, missing parentheses around OR, or using = instead of LIKE.",
+    "learningOutcomes": "Mastered 2.6 Inverse & Strict Wildcards on Students.",
+    "challengeSlots": [
+      {
+        "type": "keyword",
+        "value": "SELECT"
+      },
+      {
+        "type": "column",
+        "value": "full_name,"
+      },
+      {
+        "type": "column",
+        "value": "city"
+      },
+      {
+        "type": "keyword",
+        "value": "FROM"
+      },
+      {
+        "type": "table",
+        "value": "Students"
+      },
+      {
+        "type": "keyword",
+        "value": "WHERE"
+      },
+      {
+        "type": "column",
+        "value": "city"
+      },
+      {
+        "type": "keyword",
+        "value": "NOT"
+      },
+      {
+        "type": "keyword",
+        "value": "LIKE"
+      },
+      {
+        "type": "column",
+        "value": "'S%';"
+      }
+    ]
+  },
+  {
+    "id": 1643,
+    "drillNumber": 153,
+    "section": "Section 0: Foundations & Syntax Gym",
+    "title": "Syntax #153: Find employees whose department name does not end with 'ing'",
+    "industry": "Foundations",
+    "difficulty": "Easy",
+    "scenario": "Find employees whose department name does not end with 'ing'.",
+    "businessObjective": "Find employees whose department name does not end with 'ing'.",
+    "schemaSnippet": "Employees schema",
+    "targetQuery": "SELECT first_name, department\nFROM Employees\nWHERE department NOT LIKE '%ing';",
+    "syntaxBlueprint": "SELECT first_name, department\nFROM Employees\nWHERE department NOT LIKE '%ing';",
+    "syntaxRule": "Strings use single quotes, numbers do not. AND precedes OR unless parentheses are used. NULL requires IS NULL.",
+    "syntaxTrap": "Never write col = NULL or omit parentheses in mixed AND/OR statements.",
+    "eli5Story": "[SYNTAX BLUEPRINT]:\nSELECT first_name, department\nFROM Employees\nWHERE department NOT LIKE '%ing';\n\n[RULE]: Strings use single quotes, numbers do not. AND precedes OR unless parentheses are used. NULL requires IS NULL.\n\n[TRAP TO AVOID]: Never write col = NULL or omit parentheses in mixed AND/OR statements.",
+    "commonMistakes": "Unquoted strings, missing parentheses around OR, or using = instead of LIKE.",
+    "learningOutcomes": "Mastered 2.6 Inverse & Strict Wildcards on Employees.",
+    "challengeSlots": [
+      {
+        "type": "keyword",
+        "value": "SELECT"
+      },
+      {
+        "type": "column",
+        "value": "first_name,"
+      },
+      {
+        "type": "column",
+        "value": "department"
+      },
+      {
+        "type": "keyword",
+        "value": "FROM"
+      },
+      {
+        "type": "table",
+        "value": "Employees"
+      },
+      {
+        "type": "keyword",
+        "value": "WHERE"
+      },
+      {
+        "type": "column",
+        "value": "department"
+      },
+      {
+        "type": "keyword",
+        "value": "NOT"
+      },
+      {
+        "type": "keyword",
+        "value": "LIKE"
+      },
+      {
+        "type": "column",
+        "value": "'%ing';"
+      }
+    ]
+  },
+  {
+    "id": 1644,
+    "drillNumber": 154,
+    "section": "Section 0: Foundations & Syntax Gym",
+    "title": "Syntax #154: Find grocery items that do not contain the word 'Milk'",
+    "industry": "Foundations",
+    "difficulty": "Easy",
+    "scenario": "Find grocery items that do not contain the word 'Milk'.",
+    "businessObjective": "Find grocery items that do not contain the word 'Milk'.",
+    "schemaSnippet": "GroceryItems schema",
+    "targetQuery": "SELECT item_name\nFROM GroceryItems\nWHERE item_name NOT LIKE '%Milk%';",
+    "syntaxBlueprint": "SELECT item_name\nFROM GroceryItems\nWHERE item_name NOT LIKE '%Milk%';",
+    "syntaxRule": "Strings use single quotes, numbers do not. AND precedes OR unless parentheses are used. NULL requires IS NULL.",
+    "syntaxTrap": "Never write col = NULL or omit parentheses in mixed AND/OR statements.",
+    "eli5Story": "[SYNTAX BLUEPRINT]:\nSELECT item_name\nFROM GroceryItems\nWHERE item_name NOT LIKE '%Milk%';\n\n[RULE]: Strings use single quotes, numbers do not. AND precedes OR unless parentheses are used. NULL requires IS NULL.\n\n[TRAP TO AVOID]: Never write col = NULL or omit parentheses in mixed AND/OR statements.",
+    "commonMistakes": "Unquoted strings, missing parentheses around OR, or using = instead of LIKE.",
+    "learningOutcomes": "Mastered 2.6 Inverse & Strict Wildcards on GroceryItems.",
+    "challengeSlots": [
+      {
+        "type": "keyword",
+        "value": "SELECT"
+      },
+      {
+        "type": "column",
+        "value": "item_name"
+      },
+      {
+        "type": "keyword",
+        "value": "FROM"
+      },
+      {
+        "type": "table",
+        "value": "GroceryItems"
+      },
+      {
+        "type": "keyword",
+        "value": "WHERE"
+      },
+      {
+        "type": "column",
+        "value": "item_name"
+      },
+      {
+        "type": "keyword",
+        "value": "NOT"
+      },
+      {
+        "type": "keyword",
+        "value": "LIKE"
+      },
+      {
+        "type": "column",
+        "value": "'%Milk%';"
+      }
+    ]
+  },
+  {
+    "id": 1645,
+    "drillNumber": 155,
+    "section": "Section 0: Foundations & Syntax Gym",
+    "title": "Syntax #155: Find all active orders that are not cancelled",
+    "industry": "Foundations",
+    "difficulty": "Easy",
+    "scenario": "Find all active orders that are not cancelled.",
+    "businessObjective": "Find all active orders that are not cancelled.",
+    "schemaSnippet": "Orders schema",
+    "targetQuery": "SELECT order_id, order_status\nFROM Orders\nWHERE order_status NOT LIKE '%Cancel%';",
+    "syntaxBlueprint": "SELECT order_id, order_status\nFROM Orders\nWHERE order_status NOT LIKE '%Cancel%';",
+    "syntaxRule": "Strings use single quotes, numbers do not. AND precedes OR unless parentheses are used. NULL requires IS NULL.",
+    "syntaxTrap": "Never write col = NULL or omit parentheses in mixed AND/OR statements.",
+    "eli5Story": "[SYNTAX BLUEPRINT]:\nSELECT order_id, order_status\nFROM Orders\nWHERE order_status NOT LIKE '%Cancel%';\n\n[RULE]: Strings use single quotes, numbers do not. AND precedes OR unless parentheses are used. NULL requires IS NULL.\n\n[TRAP TO AVOID]: Never write col = NULL or omit parentheses in mixed AND/OR statements.",
+    "commonMistakes": "Unquoted strings, missing parentheses around OR, or using = instead of LIKE.",
+    "learningOutcomes": "Mastered 2.6 Inverse & Strict Wildcards on Orders.",
+    "challengeSlots": [
+      {
+        "type": "keyword",
+        "value": "SELECT"
+      },
+      {
+        "type": "column",
+        "value": "order_id,"
+      },
+      {
+        "type": "column",
+        "value": "order_status"
+      },
+      {
+        "type": "keyword",
+        "value": "FROM"
+      },
+      {
+        "type": "table",
+        "value": "Orders"
+      },
+      {
+        "type": "keyword",
+        "value": "WHERE"
+      },
+      {
+        "type": "column",
+        "value": "order_status"
+      },
+      {
+        "type": "keyword",
+        "value": "NOT"
+      },
+      {
+        "type": "keyword",
+        "value": "LIKE"
+      },
+      {
+        "type": "column",
+        "value": "'%Cancel%';"
+      }
+    ]
+  },
+  {
+    "id": 1646,
+    "drillNumber": 156,
+    "section": "Section 0: Foundations & Syntax Gym",
+    "title": "Syntax #156: Find music tracks that do not have 'Love' in the title",
+    "industry": "Foundations",
+    "difficulty": "Easy",
+    "scenario": "Find music tracks that do not have 'Love' in the title.",
+    "businessObjective": "Find music tracks that do not have 'Love' in the title.",
+    "schemaSnippet": "MusicTracks schema",
+    "targetQuery": "SELECT track_title\nFROM MusicTracks\nWHERE track_title NOT LIKE '%Love%';",
+    "syntaxBlueprint": "SELECT track_title\nFROM MusicTracks\nWHERE track_title NOT LIKE '%Love%';",
+    "syntaxRule": "Strings use single quotes, numbers do not. AND precedes OR unless parentheses are used. NULL requires IS NULL.",
+    "syntaxTrap": "Never write col = NULL or omit parentheses in mixed AND/OR statements.",
+    "eli5Story": "[SYNTAX BLUEPRINT]:\nSELECT track_title\nFROM MusicTracks\nWHERE track_title NOT LIKE '%Love%';\n\n[RULE]: Strings use single quotes, numbers do not. AND precedes OR unless parentheses are used. NULL requires IS NULL.\n\n[TRAP TO AVOID]: Never write col = NULL or omit parentheses in mixed AND/OR statements.",
+    "commonMistakes": "Unquoted strings, missing parentheses around OR, or using = instead of LIKE.",
+    "learningOutcomes": "Mastered 2.6 Inverse & Strict Wildcards on MusicTracks.",
+    "challengeSlots": [
+      {
+        "type": "keyword",
+        "value": "SELECT"
+      },
+      {
+        "type": "column",
+        "value": "track_title"
+      },
+      {
+        "type": "keyword",
+        "value": "FROM"
+      },
+      {
+        "type": "table",
+        "value": "MusicTracks"
+      },
+      {
+        "type": "keyword",
+        "value": "WHERE"
+      },
+      {
+        "type": "column",
+        "value": "track_title"
+      },
+      {
+        "type": "keyword",
+        "value": "NOT"
+      },
+      {
+        "type": "keyword",
+        "value": "LIKE"
+      },
+      {
+        "type": "column",
+        "value": "'%Love%';"
+      }
+    ]
+  },
+  {
+    "id": 1647,
+    "drillNumber": 157,
+    "section": "Section 0: Foundations & Syntax Gym",
+    "title": "Syntax #157: List gym members whose names do not start with the letter 'J'",
+    "industry": "Foundations",
+    "difficulty": "Easy",
+    "scenario": "List gym members whose names do not start with the letter 'J'.",
+    "businessObjective": "List gym members whose names do not start with the letter 'J'.",
+    "schemaSnippet": "GymMembers schema",
+    "targetQuery": "SELECT member_name\nFROM GymMembers\nWHERE member_name NOT LIKE 'J%';",
+    "syntaxBlueprint": "SELECT member_name\nFROM GymMembers\nWHERE member_name NOT LIKE 'J%';",
+    "syntaxRule": "Strings use single quotes, numbers do not. AND precedes OR unless parentheses are used. NULL requires IS NULL.",
+    "syntaxTrap": "Never write col = NULL or omit parentheses in mixed AND/OR statements.",
+    "eli5Story": "[SYNTAX BLUEPRINT]:\nSELECT member_name\nFROM GymMembers\nWHERE member_name NOT LIKE 'J%';\n\n[RULE]: Strings use single quotes, numbers do not. AND precedes OR unless parentheses are used. NULL requires IS NULL.\n\n[TRAP TO AVOID]: Never write col = NULL or omit parentheses in mixed AND/OR statements.",
+    "commonMistakes": "Unquoted strings, missing parentheses around OR, or using = instead of LIKE.",
+    "learningOutcomes": "Mastered 2.6 Inverse & Strict Wildcards on GymMembers.",
+    "challengeSlots": [
+      {
+        "type": "keyword",
+        "value": "SELECT"
+      },
+      {
+        "type": "column",
+        "value": "member_name"
+      },
+      {
+        "type": "keyword",
+        "value": "FROM"
+      },
+      {
+        "type": "table",
+        "value": "GymMembers"
+      },
+      {
+        "type": "keyword",
+        "value": "WHERE"
+      },
+      {
+        "type": "column",
+        "value": "member_name"
+      },
+      {
+        "type": "keyword",
+        "value": "NOT"
+      },
+      {
+        "type": "keyword",
+        "value": "LIKE"
+      },
+      {
+        "type": "column",
+        "value": "'J%';"
+      }
+    ]
+  },
+  {
+    "id": 1648,
+    "drillNumber": 158,
+    "section": "Section 0: Foundations & Syntax Gym",
+    "title": "Syntax #158: Find movies whose title consists of exactly 3 characters",
+    "industry": "Foundations",
+    "difficulty": "Easy",
+    "scenario": "Find movies whose title consists of exactly 3 characters.",
+    "businessObjective": "Find movies whose title consists of exactly 3 characters.",
+    "schemaSnippet": "MovieReviews schema",
+    "targetQuery": "SELECT movie_title\nFROM MovieReviews\nWHERE movie_title LIKE '___';",
+    "syntaxBlueprint": "SELECT movie_title\nFROM MovieReviews\nWHERE movie_title LIKE '___';",
+    "syntaxRule": "Strings use single quotes, numbers do not. AND precedes OR unless parentheses are used. NULL requires IS NULL.",
+    "syntaxTrap": "Never write col = NULL or omit parentheses in mixed AND/OR statements.",
+    "eli5Story": "[SYNTAX BLUEPRINT]:\nSELECT movie_title\nFROM MovieReviews\nWHERE movie_title LIKE '___';\n\n[RULE]: Strings use single quotes, numbers do not. AND precedes OR unless parentheses are used. NULL requires IS NULL.\n\n[TRAP TO AVOID]: Never write col = NULL or omit parentheses in mixed AND/OR statements.",
+    "commonMistakes": "Unquoted strings, missing parentheses around OR, or using = instead of LIKE.",
+    "learningOutcomes": "Mastered 2.6 Inverse & Strict Wildcards on MovieReviews.",
+    "challengeSlots": [
+      {
+        "type": "keyword",
+        "value": "SELECT"
+      },
+      {
+        "type": "column",
+        "value": "movie_title"
+      },
+      {
+        "type": "keyword",
+        "value": "FROM"
+      },
+      {
+        "type": "table",
+        "value": "MovieReviews"
+      },
+      {
+        "type": "keyword",
+        "value": "WHERE"
+      },
+      {
+        "type": "column",
+        "value": "movie_title"
+      },
+      {
+        "type": "keyword",
+        "value": "LIKE"
+      },
+      {
+        "type": "column",
+        "value": "'___';"
+      }
+    ]
+  },
+  {
+    "id": 1649,
+    "drillNumber": 159,
+    "section": "Section 0: Foundations & Syntax Gym",
+    "title": "Syntax #159: Find non-Delta flights that do not start with 'DL-'",
+    "industry": "Foundations",
+    "difficulty": "Easy",
+    "scenario": "Find non-Delta flights that do not start with 'DL-'.",
+    "businessObjective": "Find non-Delta flights that do not start with 'DL-'.",
+    "schemaSnippet": "FlightSchedule schema",
+    "targetQuery": "SELECT flight_id\nFROM FlightSchedule\nWHERE flight_id NOT LIKE 'DL-%';",
+    "syntaxBlueprint": "SELECT flight_id\nFROM FlightSchedule\nWHERE flight_id NOT LIKE 'DL-%';",
+    "syntaxRule": "Strings use single quotes, numbers do not. AND precedes OR unless parentheses are used. NULL requires IS NULL.",
+    "syntaxTrap": "Never write col = NULL or omit parentheses in mixed AND/OR statements.",
+    "eli5Story": "[SYNTAX BLUEPRINT]:\nSELECT flight_id\nFROM FlightSchedule\nWHERE flight_id NOT LIKE 'DL-%';\n\n[RULE]: Strings use single quotes, numbers do not. AND precedes OR unless parentheses are used. NULL requires IS NULL.\n\n[TRAP TO AVOID]: Never write col = NULL or omit parentheses in mixed AND/OR statements.",
+    "commonMistakes": "Unquoted strings, missing parentheses around OR, or using = instead of LIKE.",
+    "learningOutcomes": "Mastered 2.6 Inverse & Strict Wildcards on FlightSchedule.",
+    "challengeSlots": [
+      {
+        "type": "keyword",
+        "value": "SELECT"
+      },
+      {
+        "type": "column",
+        "value": "flight_id"
+      },
+      {
+        "type": "keyword",
+        "value": "FROM"
+      },
+      {
+        "type": "table",
+        "value": "FlightSchedule"
+      },
+      {
+        "type": "keyword",
+        "value": "WHERE"
+      },
+      {
+        "type": "column",
+        "value": "flight_id"
+      },
+      {
+        "type": "keyword",
+        "value": "NOT"
+      },
+      {
+        "type": "keyword",
+        "value": "LIKE"
+      },
+      {
+        "type": "column",
+        "value": "'DL-%';"
+      }
+    ]
+  },
+  {
+    "id": 1650,
+    "drillNumber": 160,
+    "section": "Section 0: Foundations & Syntax Gym",
+    "title": "Syntax #160: Find pets with names that are exactly 4 letters long (e.g. Milo, Luna)",
+    "industry": "Foundations",
+    "difficulty": "Easy",
+    "scenario": "Find pets with names that are exactly 4 letters long (e.g. Milo, Luna).",
+    "businessObjective": "Find pets with names that are exactly 4 letters long (e.g. Milo, Luna).",
+    "schemaSnippet": "PetClinic schema",
+    "targetQuery": "SELECT pet_name\nFROM PetClinic\nWHERE pet_name LIKE '____';",
+    "syntaxBlueprint": "SELECT pet_name\nFROM PetClinic\nWHERE pet_name LIKE '____';",
+    "syntaxRule": "Strings use single quotes, numbers do not. AND precedes OR unless parentheses are used. NULL requires IS NULL.",
+    "syntaxTrap": "Never write col = NULL or omit parentheses in mixed AND/OR statements.",
+    "eli5Story": "[SYNTAX BLUEPRINT]:\nSELECT pet_name\nFROM PetClinic\nWHERE pet_name LIKE '____';\n\n[RULE]: Strings use single quotes, numbers do not. AND precedes OR unless parentheses are used. NULL requires IS NULL.\n\n[TRAP TO AVOID]: Never write col = NULL or omit parentheses in mixed AND/OR statements.",
+    "commonMistakes": "Unquoted strings, missing parentheses around OR, or using = instead of LIKE.",
+    "learningOutcomes": "Mastered 2.6 Inverse & Strict Wildcards on PetClinic.",
+    "challengeSlots": [
+      {
+        "type": "keyword",
+        "value": "SELECT"
+      },
+      {
+        "type": "column",
+        "value": "pet_name"
+      },
+      {
+        "type": "keyword",
+        "value": "FROM"
+      },
+      {
+        "type": "table",
+        "value": "PetClinic"
+      },
+      {
+        "type": "keyword",
+        "value": "WHERE"
+      },
+      {
+        "type": "column",
+        "value": "pet_name"
+      },
+      {
+        "type": "keyword",
+        "value": "LIKE"
+      },
+      {
+        "type": "column",
+        "value": "'____';"
+      }
+    ]
+  },
+  {
+    "id": 1651,
+    "drillNumber": 161,
+    "section": "Section 0: Foundations & Syntax Gym",
+    "title": "Syntax #161: Find students who live in Seattle AND maintain a GPA higher than 3.50",
+    "industry": "Foundations",
+    "difficulty": "Easy",
+    "scenario": "Find students who live in Seattle AND maintain a GPA higher than 3.50.",
+    "businessObjective": "Find students who live in Seattle AND maintain a GPA higher than 3.50.",
+    "schemaSnippet": "Students schema",
+    "targetQuery": "SELECT full_name, city, gpa\nFROM Students\nWHERE city = 'Seattle' AND gpa > 3.50;",
+    "syntaxBlueprint": "SELECT full_name, city, gpa\nFROM Students\nWHERE city = 'Seattle' AND gpa > 3.50;",
+    "syntaxRule": "Strings use single quotes, numbers do not. AND precedes OR unless parentheses are used. NULL requires IS NULL.",
+    "syntaxTrap": "Never write col = NULL or omit parentheses in mixed AND/OR statements.",
+    "eli5Story": "[SYNTAX BLUEPRINT]:\nSELECT full_name, city, gpa\nFROM Students\nWHERE city = 'Seattle' AND gpa > 3.50;\n\n[RULE]: Strings use single quotes, numbers do not. AND precedes OR unless parentheses are used. NULL requires IS NULL.\n\n[TRAP TO AVOID]: Never write col = NULL or omit parentheses in mixed AND/OR statements.",
+    "commonMistakes": "Unquoted strings, missing parentheses around OR, or using = instead of LIKE.",
+    "learningOutcomes": "Mastered 2.7 Compound AND Logic on Students.",
+    "challengeSlots": [
+      {
+        "type": "keyword",
+        "value": "SELECT"
+      },
+      {
+        "type": "column",
+        "value": "full_name,"
+      },
+      {
+        "type": "column",
+        "value": "city,"
+      },
+      {
+        "type": "column",
+        "value": "gpa"
+      },
+      {
+        "type": "keyword",
+        "value": "FROM"
+      },
+      {
+        "type": "table",
+        "value": "Students"
+      },
+      {
+        "type": "keyword",
+        "value": "WHERE"
+      },
+      {
+        "type": "column",
+        "value": "city"
+      },
+      {
+        "type": "column",
+        "value": "="
+      },
+      {
+        "type": "column",
+        "value": "'Seattle'"
+      },
+      {
+        "type": "keyword",
+        "value": "AND"
+      },
+      {
+        "type": "column",
+        "value": "gpa"
+      },
+      {
+        "type": "column",
+        "value": ">"
+      },
+      {
+        "type": "column",
+        "value": "3.50;"
+      }
+    ]
+  },
+  {
+    "id": 1652,
+    "drillNumber": 162,
+    "section": "Section 0: Foundations & Syntax Gym",
+    "title": "Syntax #162: Find Sci-Fi books that are priced under $25.00",
+    "industry": "Foundations",
+    "difficulty": "Easy",
+    "scenario": "Find Sci-Fi books that are priced under $25.00.",
+    "businessObjective": "Find Sci-Fi books that are priced under $25.00.",
+    "schemaSnippet": "Books schema",
+    "targetQuery": "SELECT title, price, stock_qty\nFROM Books\nWHERE genre = 'Sci-Fi' AND price < 25.00;",
+    "syntaxBlueprint": "SELECT title, price, stock_qty\nFROM Books\nWHERE genre = 'Sci-Fi' AND price < 25.00;",
+    "syntaxRule": "Strings use single quotes, numbers do not. AND precedes OR unless parentheses are used. NULL requires IS NULL.",
+    "syntaxTrap": "Never write col = NULL or omit parentheses in mixed AND/OR statements.",
+    "eli5Story": "[SYNTAX BLUEPRINT]:\nSELECT title, price, stock_qty\nFROM Books\nWHERE genre = 'Sci-Fi' AND price < 25.00;\n\n[RULE]: Strings use single quotes, numbers do not. AND precedes OR unless parentheses are used. NULL requires IS NULL.\n\n[TRAP TO AVOID]: Never write col = NULL or omit parentheses in mixed AND/OR statements.",
+    "commonMistakes": "Unquoted strings, missing parentheses around OR, or using = instead of LIKE.",
+    "learningOutcomes": "Mastered 2.7 Compound AND Logic on Books.",
+    "challengeSlots": [
+      {
+        "type": "keyword",
+        "value": "SELECT"
+      },
+      {
+        "type": "column",
+        "value": "title,"
+      },
+      {
+        "type": "column",
+        "value": "price,"
+      },
+      {
+        "type": "column",
+        "value": "stock_qty"
+      },
+      {
+        "type": "keyword",
+        "value": "FROM"
+      },
+      {
+        "type": "table",
+        "value": "Books"
+      },
+      {
+        "type": "keyword",
+        "value": "WHERE"
+      },
+      {
+        "type": "column",
+        "value": "genre"
+      },
+      {
+        "type": "column",
+        "value": "="
+      },
+      {
+        "type": "column",
+        "value": "'Sci-Fi'"
+      },
+      {
+        "type": "keyword",
+        "value": "AND"
+      },
+      {
+        "type": "column",
+        "value": "price"
+      },
+      {
+        "type": "column",
+        "value": "<"
+      },
+      {
+        "type": "column",
+        "value": "25.00;"
+      }
+    ]
+  },
+  {
+    "id": 1653,
+    "drillNumber": 163,
+    "section": "Section 0: Foundations & Syntax Gym",
+    "title": "Syntax #163: Find Engineering employees earning $90,000 or more",
+    "industry": "Foundations",
+    "difficulty": "Easy",
+    "scenario": "Find Engineering employees earning $90,000 or more.",
+    "businessObjective": "Find Engineering employees earning $90,000 or more.",
+    "schemaSnippet": "Employees schema",
+    "targetQuery": "SELECT first_name, department, salary\nFROM Employees\nWHERE department = 'Engineering' AND salary >= 90000.00;",
+    "syntaxBlueprint": "SELECT first_name, department, salary\nFROM Employees\nWHERE department = 'Engineering' AND salary >= 90000.00;",
+    "syntaxRule": "Strings use single quotes, numbers do not. AND precedes OR unless parentheses are used. NULL requires IS NULL.",
+    "syntaxTrap": "Never write col = NULL or omit parentheses in mixed AND/OR statements.",
+    "eli5Story": "[SYNTAX BLUEPRINT]:\nSELECT first_name, department, salary\nFROM Employees\nWHERE department = 'Engineering' AND salary >= 90000.00;\n\n[RULE]: Strings use single quotes, numbers do not. AND precedes OR unless parentheses are used. NULL requires IS NULL.\n\n[TRAP TO AVOID]: Never write col = NULL or omit parentheses in mixed AND/OR statements.",
+    "commonMistakes": "Unquoted strings, missing parentheses around OR, or using = instead of LIKE.",
+    "learningOutcomes": "Mastered 2.7 Compound AND Logic on Employees.",
+    "challengeSlots": [
+      {
+        "type": "keyword",
+        "value": "SELECT"
+      },
+      {
+        "type": "column",
+        "value": "first_name,"
+      },
+      {
+        "type": "column",
+        "value": "department,"
+      },
+      {
+        "type": "column",
+        "value": "salary"
+      },
+      {
+        "type": "keyword",
+        "value": "FROM"
+      },
+      {
+        "type": "table",
+        "value": "Employees"
+      },
+      {
+        "type": "keyword",
+        "value": "WHERE"
+      },
+      {
+        "type": "column",
+        "value": "department"
+      },
+      {
+        "type": "column",
+        "value": "="
+      },
+      {
+        "type": "column",
+        "value": "'Engineering'"
+      },
+      {
+        "type": "keyword",
+        "value": "AND"
+      },
+      {
+        "type": "column",
+        "value": "salary"
+      },
+      {
+        "type": "column",
+        "value": ">="
+      },
+      {
+        "type": "column",
+        "value": "90000.00;"
+      }
+    ]
+  },
+  {
+    "id": 1654,
+    "drillNumber": 164,
+    "section": "Section 0: Foundations & Syntax Gym",
+    "title": "Syntax #164: Find organic grocery items that cost less than $4.00",
+    "industry": "Foundations",
+    "difficulty": "Easy",
+    "scenario": "Find organic grocery items that cost less than $4.00.",
+    "businessObjective": "Find organic grocery items that cost less than $4.00.",
+    "schemaSnippet": "GroceryItems schema",
+    "targetQuery": "SELECT item_name, unit_price, is_organic\nFROM GroceryItems\nWHERE is_organic = TRUE AND unit_price < 4.00;",
+    "syntaxBlueprint": "SELECT item_name, unit_price, is_organic\nFROM GroceryItems\nWHERE is_organic = TRUE AND unit_price < 4.00;",
+    "syntaxRule": "Strings use single quotes, numbers do not. AND precedes OR unless parentheses are used. NULL requires IS NULL.",
+    "syntaxTrap": "Never write col = NULL or omit parentheses in mixed AND/OR statements.",
+    "eli5Story": "[SYNTAX BLUEPRINT]:\nSELECT item_name, unit_price, is_organic\nFROM GroceryItems\nWHERE is_organic = TRUE AND unit_price < 4.00;\n\n[RULE]: Strings use single quotes, numbers do not. AND precedes OR unless parentheses are used. NULL requires IS NULL.\n\n[TRAP TO AVOID]: Never write col = NULL or omit parentheses in mixed AND/OR statements.",
+    "commonMistakes": "Unquoted strings, missing parentheses around OR, or using = instead of LIKE.",
+    "learningOutcomes": "Mastered 2.7 Compound AND Logic on GroceryItems.",
+    "challengeSlots": [
+      {
+        "type": "keyword",
+        "value": "SELECT"
+      },
+      {
+        "type": "column",
+        "value": "item_name,"
+      },
+      {
+        "type": "column",
+        "value": "unit_price,"
+      },
+      {
+        "type": "column",
+        "value": "is_organic"
+      },
+      {
+        "type": "keyword",
+        "value": "FROM"
+      },
+      {
+        "type": "table",
+        "value": "GroceryItems"
+      },
+      {
+        "type": "keyword",
+        "value": "WHERE"
+      },
+      {
+        "type": "column",
+        "value": "is_organic"
+      },
+      {
+        "type": "column",
+        "value": "="
+      },
+      {
+        "type": "column",
+        "value": "TRUE"
+      },
+      {
+        "type": "keyword",
+        "value": "AND"
+      },
+      {
+        "type": "column",
+        "value": "unit_price"
+      },
+      {
+        "type": "column",
+        "value": "<"
+      },
+      {
+        "type": "column",
+        "value": "4.00;"
+      }
+    ]
+  },
+  {
+    "id": 1655,
+    "drillNumber": 165,
+    "section": "Section 0: Foundations & Syntax Gym",
+    "title": "Syntax #165: Find orders with at least 2 items and a discount greater than 5%",
+    "industry": "Foundations",
+    "difficulty": "Easy",
+    "scenario": "Find orders with at least 2 items and a discount greater than 5%.",
+    "businessObjective": "Find orders with at least 2 items and a discount greater than 5%.",
+    "schemaSnippet": "Orders schema",
+    "targetQuery": "SELECT order_id, quantity, discount_pct\nFROM Orders\nWHERE quantity >= 2 AND discount_pct > 0.05;",
+    "syntaxBlueprint": "SELECT order_id, quantity, discount_pct\nFROM Orders\nWHERE quantity >= 2 AND discount_pct > 0.05;",
+    "syntaxRule": "Strings use single quotes, numbers do not. AND precedes OR unless parentheses are used. NULL requires IS NULL.",
+    "syntaxTrap": "Never write col = NULL or omit parentheses in mixed AND/OR statements.",
+    "eli5Story": "[SYNTAX BLUEPRINT]:\nSELECT order_id, quantity, discount_pct\nFROM Orders\nWHERE quantity >= 2 AND discount_pct > 0.05;\n\n[RULE]: Strings use single quotes, numbers do not. AND precedes OR unless parentheses are used. NULL requires IS NULL.\n\n[TRAP TO AVOID]: Never write col = NULL or omit parentheses in mixed AND/OR statements.",
+    "commonMistakes": "Unquoted strings, missing parentheses around OR, or using = instead of LIKE.",
+    "learningOutcomes": "Mastered 2.7 Compound AND Logic on Orders.",
+    "challengeSlots": [
+      {
+        "type": "keyword",
+        "value": "SELECT"
+      },
+      {
+        "type": "column",
+        "value": "order_id,"
+      },
+      {
+        "type": "column",
+        "value": "quantity,"
+      },
+      {
+        "type": "column",
+        "value": "discount_pct"
+      },
+      {
+        "type": "keyword",
+        "value": "FROM"
+      },
+      {
+        "type": "table",
+        "value": "Orders"
+      },
+      {
+        "type": "keyword",
+        "value": "WHERE"
+      },
+      {
+        "type": "column",
+        "value": "quantity"
+      },
+      {
+        "type": "column",
+        "value": ">="
+      },
+      {
+        "type": "column",
+        "value": "2"
+      },
+      {
+        "type": "keyword",
+        "value": "AND"
+      },
+      {
+        "type": "column",
+        "value": "discount_pct"
+      },
+      {
+        "type": "column",
+        "value": ">"
+      },
+      {
+        "type": "column",
+        "value": "0.05;"
+      }
+    ]
+  },
+  {
+    "id": 1656,
+    "drillNumber": 166,
+    "section": "Section 0: Foundations & Syntax Gym",
+    "title": "Syntax #166: Find Synthwave tracks released specifically in the year 2024",
+    "industry": "Foundations",
+    "difficulty": "Easy",
+    "scenario": "Find Synthwave tracks released specifically in the year 2024.",
+    "businessObjective": "Find Synthwave tracks released specifically in the year 2024.",
+    "schemaSnippet": "MusicTracks schema",
+    "targetQuery": "SELECT track_title, genre, release_year\nFROM MusicTracks\nWHERE genre = 'Synthwave' AND release_year = 2024;",
+    "syntaxBlueprint": "SELECT track_title, genre, release_year\nFROM MusicTracks\nWHERE genre = 'Synthwave' AND release_year = 2024;",
+    "syntaxRule": "Strings use single quotes, numbers do not. AND precedes OR unless parentheses are used. NULL requires IS NULL.",
+    "syntaxTrap": "Never write col = NULL or omit parentheses in mixed AND/OR statements.",
+    "eli5Story": "[SYNTAX BLUEPRINT]:\nSELECT track_title, genre, release_year\nFROM MusicTracks\nWHERE genre = 'Synthwave' AND release_year = 2024;\n\n[RULE]: Strings use single quotes, numbers do not. AND precedes OR unless parentheses are used. NULL requires IS NULL.\n\n[TRAP TO AVOID]: Never write col = NULL or omit parentheses in mixed AND/OR statements.",
+    "commonMistakes": "Unquoted strings, missing parentheses around OR, or using = instead of LIKE.",
+    "learningOutcomes": "Mastered 2.7 Compound AND Logic on MusicTracks.",
+    "challengeSlots": [
+      {
+        "type": "keyword",
+        "value": "SELECT"
+      },
+      {
+        "type": "column",
+        "value": "track_title,"
+      },
+      {
+        "type": "column",
+        "value": "genre,"
+      },
+      {
+        "type": "column",
+        "value": "release_year"
+      },
+      {
+        "type": "keyword",
+        "value": "FROM"
+      },
+      {
+        "type": "table",
+        "value": "MusicTracks"
+      },
+      {
+        "type": "keyword",
+        "value": "WHERE"
+      },
+      {
+        "type": "column",
+        "value": "genre"
+      },
+      {
+        "type": "column",
+        "value": "="
+      },
+      {
+        "type": "column",
+        "value": "'Synthwave'"
+      },
+      {
+        "type": "keyword",
+        "value": "AND"
+      },
+      {
+        "type": "column",
+        "value": "release_year"
+      },
+      {
+        "type": "column",
+        "value": "="
+      },
+      {
+        "type": "column",
+        "value": "2024;"
+      }
+    ]
+  },
+  {
+    "id": 1657,
+    "drillNumber": 167,
+    "section": "Section 0: Foundations & Syntax Gym",
+    "title": "Syntax #167: Find Gold members who have visited at least 15 times this month",
+    "industry": "Foundations",
+    "difficulty": "Easy",
+    "scenario": "Find Gold members who have visited at least 15 times this month.",
+    "businessObjective": "Find Gold members who have visited at least 15 times this month.",
+    "schemaSnippet": "GymMembers schema",
+    "targetQuery": "SELECT member_name, membership_plan, visits_this_month\nFROM GymMembers\nWHERE membership_plan = 'Gold' AND visits_this_month >= 15;",
+    "syntaxBlueprint": "SELECT member_name, membership_plan, visits_this_month\nFROM GymMembers\nWHERE membership_plan = 'Gold' AND visits_this_month >= 15;",
+    "syntaxRule": "Strings use single quotes, numbers do not. AND precedes OR unless parentheses are used. NULL requires IS NULL.",
+    "syntaxTrap": "Never write col = NULL or omit parentheses in mixed AND/OR statements.",
+    "eli5Story": "[SYNTAX BLUEPRINT]:\nSELECT member_name, membership_plan, visits_this_month\nFROM GymMembers\nWHERE membership_plan = 'Gold' AND visits_this_month >= 15;\n\n[RULE]: Strings use single quotes, numbers do not. AND precedes OR unless parentheses are used. NULL requires IS NULL.\n\n[TRAP TO AVOID]: Never write col = NULL or omit parentheses in mixed AND/OR statements.",
+    "commonMistakes": "Unquoted strings, missing parentheses around OR, or using = instead of LIKE.",
+    "learningOutcomes": "Mastered 2.7 Compound AND Logic on GymMembers.",
+    "challengeSlots": [
+      {
+        "type": "keyword",
+        "value": "SELECT"
+      },
+      {
+        "type": "column",
+        "value": "member_name,"
+      },
+      {
+        "type": "column",
+        "value": "membership_plan,"
+      },
+      {
+        "type": "column",
+        "value": "visits_this_month"
+      },
+      {
+        "type": "keyword",
+        "value": "FROM"
+      },
+      {
+        "type": "table",
+        "value": "GymMembers"
+      },
+      {
+        "type": "keyword",
+        "value": "WHERE"
+      },
+      {
+        "type": "column",
+        "value": "membership_plan"
+      },
+      {
+        "type": "column",
+        "value": "="
+      },
+      {
+        "type": "column",
+        "value": "'Gold'"
+      },
+      {
+        "type": "keyword",
+        "value": "AND"
+      },
+      {
+        "type": "column",
+        "value": "visits_this_month"
+      },
+      {
+        "type": "column",
+        "value": ">="
+      },
+      {
+        "type": "column",
+        "value": "15;"
+      }
+    ]
+  },
+  {
+    "id": 1658,
+    "drillNumber": 168,
+    "section": "Section 0: Foundations & Syntax Gym",
+    "title": "Syntax #168: Find top-tier Sci-Fi movies with a star rating of 4.5 or higher",
+    "industry": "Foundations",
+    "difficulty": "Easy",
+    "scenario": "Find top-tier Sci-Fi movies with a star rating of 4.5 or higher.",
+    "businessObjective": "Find top-tier Sci-Fi movies with a star rating of 4.5 or higher.",
+    "schemaSnippet": "MovieReviews schema",
+    "targetQuery": "SELECT movie_title, genre, star_rating\nFROM MovieReviews\nWHERE genre = 'Sci-Fi' AND star_rating >= 4.5;",
+    "syntaxBlueprint": "SELECT movie_title, genre, star_rating\nFROM MovieReviews\nWHERE genre = 'Sci-Fi' AND star_rating >= 4.5;",
+    "syntaxRule": "Strings use single quotes, numbers do not. AND precedes OR unless parentheses are used. NULL requires IS NULL.",
+    "syntaxTrap": "Never write col = NULL or omit parentheses in mixed AND/OR statements.",
+    "eli5Story": "[SYNTAX BLUEPRINT]:\nSELECT movie_title, genre, star_rating\nFROM MovieReviews\nWHERE genre = 'Sci-Fi' AND star_rating >= 4.5;\n\n[RULE]: Strings use single quotes, numbers do not. AND precedes OR unless parentheses are used. NULL requires IS NULL.\n\n[TRAP TO AVOID]: Never write col = NULL or omit parentheses in mixed AND/OR statements.",
+    "commonMistakes": "Unquoted strings, missing parentheses around OR, or using = instead of LIKE.",
+    "learningOutcomes": "Mastered 2.7 Compound AND Logic on MovieReviews.",
+    "challengeSlots": [
+      {
+        "type": "keyword",
+        "value": "SELECT"
+      },
+      {
+        "type": "column",
+        "value": "movie_title,"
+      },
+      {
+        "type": "column",
+        "value": "genre,"
+      },
+      {
+        "type": "column",
+        "value": "star_rating"
+      },
+      {
+        "type": "keyword",
+        "value": "FROM"
+      },
+      {
+        "type": "table",
+        "value": "MovieReviews"
+      },
+      {
+        "type": "keyword",
+        "value": "WHERE"
+      },
+      {
+        "type": "column",
+        "value": "genre"
+      },
+      {
+        "type": "column",
+        "value": "="
+      },
+      {
+        "type": "column",
+        "value": "'Sci-Fi'"
+      },
+      {
+        "type": "keyword",
+        "value": "AND"
+      },
+      {
+        "type": "column",
+        "value": "star_rating"
+      },
+      {
+        "type": "column",
+        "value": ">="
+      },
+      {
+        "type": "column",
+        "value": "4.5;"
+      }
+    ]
+  },
+  {
+    "id": 1659,
+    "drillNumber": 169,
+    "section": "Section 0: Foundations & Syntax Gym",
+    "title": "Syntax #169: Find on-time United Airlines flights with 0 minutes delay",
+    "industry": "Foundations",
+    "difficulty": "Easy",
+    "scenario": "Find on-time United Airlines flights with 0 minutes delay.",
+    "businessObjective": "Find on-time United Airlines flights with 0 minutes delay.",
+    "schemaSnippet": "FlightSchedule schema",
+    "targetQuery": "SELECT flight_id, airline, delay_minutes\nFROM FlightSchedule\nWHERE airline = 'United Airlines' AND delay_minutes = 0;",
+    "syntaxBlueprint": "SELECT flight_id, airline, delay_minutes\nFROM FlightSchedule\nWHERE airline = 'United Airlines' AND delay_minutes = 0;",
+    "syntaxRule": "Strings use single quotes, numbers do not. AND precedes OR unless parentheses are used. NULL requires IS NULL.",
+    "syntaxTrap": "Never write col = NULL or omit parentheses in mixed AND/OR statements.",
+    "eli5Story": "[SYNTAX BLUEPRINT]:\nSELECT flight_id, airline, delay_minutes\nFROM FlightSchedule\nWHERE airline = 'United Airlines' AND delay_minutes = 0;\n\n[RULE]: Strings use single quotes, numbers do not. AND precedes OR unless parentheses are used. NULL requires IS NULL.\n\n[TRAP TO AVOID]: Never write col = NULL or omit parentheses in mixed AND/OR statements.",
+    "commonMistakes": "Unquoted strings, missing parentheses around OR, or using = instead of LIKE.",
+    "learningOutcomes": "Mastered 2.7 Compound AND Logic on FlightSchedule.",
+    "challengeSlots": [
+      {
+        "type": "keyword",
+        "value": "SELECT"
+      },
+      {
+        "type": "column",
+        "value": "flight_id,"
+      },
+      {
+        "type": "column",
+        "value": "airline,"
+      },
+      {
+        "type": "column",
+        "value": "delay_minutes"
+      },
+      {
+        "type": "keyword",
+        "value": "FROM"
+      },
+      {
+        "type": "table",
+        "value": "FlightSchedule"
+      },
+      {
+        "type": "keyword",
+        "value": "WHERE"
+      },
+      {
+        "type": "column",
+        "value": "airline"
+      },
+      {
+        "type": "column",
+        "value": "="
+      },
+      {
+        "type": "column",
+        "value": "'United"
+      },
+      {
+        "type": "column",
+        "value": "Airlines'"
+      },
+      {
+        "type": "keyword",
+        "value": "AND"
+      },
+      {
+        "type": "column",
+        "value": "delay_minutes"
+      },
+      {
+        "type": "column",
+        "value": "="
+      },
+      {
+        "type": "column",
+        "value": "0;"
+      }
+    ]
+  },
+  {
+    "id": 1660,
+    "drillNumber": 170,
+    "section": "Section 0: Foundations & Syntax Gym",
+    "title": "Syntax #170: Find dogs that are confirmed vaccinated",
+    "industry": "Foundations",
+    "difficulty": "Easy",
+    "scenario": "Find dogs that are confirmed vaccinated.",
+    "businessObjective": "Find dogs that are confirmed vaccinated.",
+    "schemaSnippet": "PetClinic schema",
+    "targetQuery": "SELECT pet_name, species, is_vaccinated\nFROM PetClinic\nWHERE species = 'Dog' AND is_vaccinated = TRUE;",
+    "syntaxBlueprint": "SELECT pet_name, species, is_vaccinated\nFROM PetClinic\nWHERE species = 'Dog' AND is_vaccinated = TRUE;",
+    "syntaxRule": "Strings use single quotes, numbers do not. AND precedes OR unless parentheses are used. NULL requires IS NULL.",
+    "syntaxTrap": "Never write col = NULL or omit parentheses in mixed AND/OR statements.",
+    "eli5Story": "[SYNTAX BLUEPRINT]:\nSELECT pet_name, species, is_vaccinated\nFROM PetClinic\nWHERE species = 'Dog' AND is_vaccinated = TRUE;\n\n[RULE]: Strings use single quotes, numbers do not. AND precedes OR unless parentheses are used. NULL requires IS NULL.\n\n[TRAP TO AVOID]: Never write col = NULL or omit parentheses in mixed AND/OR statements.",
+    "commonMistakes": "Unquoted strings, missing parentheses around OR, or using = instead of LIKE.",
+    "learningOutcomes": "Mastered 2.7 Compound AND Logic on PetClinic.",
+    "challengeSlots": [
+      {
+        "type": "keyword",
+        "value": "SELECT"
+      },
+      {
+        "type": "column",
+        "value": "pet_name,"
+      },
+      {
+        "type": "column",
+        "value": "species,"
+      },
+      {
+        "type": "column",
+        "value": "is_vaccinated"
+      },
+      {
+        "type": "keyword",
+        "value": "FROM"
+      },
+      {
+        "type": "table",
+        "value": "PetClinic"
+      },
+      {
+        "type": "keyword",
+        "value": "WHERE"
+      },
+      {
+        "type": "column",
+        "value": "species"
+      },
+      {
+        "type": "column",
+        "value": "="
+      },
+      {
+        "type": "column",
+        "value": "'Dog'"
+      },
+      {
+        "type": "keyword",
+        "value": "AND"
+      },
+      {
+        "type": "column",
+        "value": "is_vaccinated"
+      },
+      {
+        "type": "column",
+        "value": "="
+      },
+      {
+        "type": "column",
+        "value": "TRUE;"
+      }
+    ]
+  },
+  {
+    "id": 1661,
+    "drillNumber": 171,
+    "section": "Section 0: Foundations & Syntax Gym",
+    "title": "Syntax #171: Find students who live in either Chicago OR Austin",
+    "industry": "Foundations",
+    "difficulty": "Easy",
+    "scenario": "Find students who live in either Chicago OR Austin.",
+    "businessObjective": "Find students who live in either Chicago OR Austin.",
+    "schemaSnippet": "Students schema",
+    "targetQuery": "SELECT full_name, city\nFROM Students\nWHERE city = 'Chicago' OR city = 'Austin';",
+    "syntaxBlueprint": "SELECT full_name, city\nFROM Students\nWHERE city = 'Chicago' OR city = 'Austin';",
+    "syntaxRule": "Strings use single quotes, numbers do not. AND precedes OR unless parentheses are used. NULL requires IS NULL.",
+    "syntaxTrap": "Never write col = NULL or omit parentheses in mixed AND/OR statements.",
+    "eli5Story": "[SYNTAX BLUEPRINT]:\nSELECT full_name, city\nFROM Students\nWHERE city = 'Chicago' OR city = 'Austin';\n\n[RULE]: Strings use single quotes, numbers do not. AND precedes OR unless parentheses are used. NULL requires IS NULL.\n\n[TRAP TO AVOID]: Never write col = NULL or omit parentheses in mixed AND/OR statements.",
+    "commonMistakes": "Unquoted strings, missing parentheses around OR, or using = instead of LIKE.",
+    "learningOutcomes": "Mastered 2.8 Compound OR & Precedence on Students.",
+    "challengeSlots": [
+      {
+        "type": "keyword",
+        "value": "SELECT"
+      },
+      {
+        "type": "column",
+        "value": "full_name,"
+      },
+      {
+        "type": "column",
+        "value": "city"
+      },
+      {
+        "type": "keyword",
+        "value": "FROM"
+      },
+      {
+        "type": "table",
+        "value": "Students"
+      },
+      {
+        "type": "keyword",
+        "value": "WHERE"
+      },
+      {
+        "type": "column",
+        "value": "city"
+      },
+      {
+        "type": "column",
+        "value": "="
+      },
+      {
+        "type": "column",
+        "value": "'Chicago'"
+      },
+      {
+        "type": "keyword",
+        "value": "OR"
+      },
+      {
+        "type": "column",
+        "value": "city"
+      },
+      {
+        "type": "column",
+        "value": "="
+      },
+      {
+        "type": "column",
+        "value": "'Austin';"
+      }
+    ]
+  },
+  {
+    "id": 1662,
+    "drillNumber": 172,
+    "section": "Section 0: Foundations & Syntax Gym",
+    "title": "Syntax #172: Find Sci-Fi OR Mystery books that are priced under $20 (parentheses mandatory!)",
+    "industry": "Foundations",
+    "difficulty": "Easy",
+    "scenario": "Find Sci-Fi OR Mystery books that are priced under $20 (parentheses mandatory!).",
+    "businessObjective": "Find Sci-Fi OR Mystery books that are priced under $20 (parentheses mandatory!).",
+    "schemaSnippet": "Books schema",
+    "targetQuery": "SELECT title, genre, price\nFROM Books\nWHERE (genre = 'Sci-Fi' OR genre = 'Mystery') AND price < 20.00;",
+    "syntaxBlueprint": "SELECT title, genre, price\nFROM Books\nWHERE (genre = 'Sci-Fi' OR genre = 'Mystery') AND price < 20.00;",
+    "syntaxRule": "Strings use single quotes, numbers do not. AND precedes OR unless parentheses are used. NULL requires IS NULL.",
+    "syntaxTrap": "Never write col = NULL or omit parentheses in mixed AND/OR statements.",
+    "eli5Story": "[SYNTAX BLUEPRINT]:\nSELECT title, genre, price\nFROM Books\nWHERE (genre = 'Sci-Fi' OR genre = 'Mystery') AND price < 20.00;\n\n[RULE]: Strings use single quotes, numbers do not. AND precedes OR unless parentheses are used. NULL requires IS NULL.\n\n[TRAP TO AVOID]: Never write col = NULL or omit parentheses in mixed AND/OR statements.",
+    "commonMistakes": "Unquoted strings, missing parentheses around OR, or using = instead of LIKE.",
+    "learningOutcomes": "Mastered 2.8 Compound OR & Precedence on Books.",
+    "challengeSlots": [
+      {
+        "type": "keyword",
+        "value": "SELECT"
+      },
+      {
+        "type": "column",
+        "value": "title,"
+      },
+      {
+        "type": "column",
+        "value": "genre,"
+      },
+      {
+        "type": "column",
+        "value": "price"
+      },
+      {
+        "type": "keyword",
+        "value": "FROM"
+      },
+      {
+        "type": "table",
+        "value": "Books"
+      },
+      {
+        "type": "keyword",
+        "value": "WHERE"
+      },
+      {
+        "type": "column",
+        "value": "(genre"
+      },
+      {
+        "type": "column",
+        "value": "="
+      },
+      {
+        "type": "column",
+        "value": "'Sci-Fi'"
+      },
+      {
+        "type": "keyword",
+        "value": "OR"
+      },
+      {
+        "type": "column",
+        "value": "genre"
+      },
+      {
+        "type": "column",
+        "value": "="
+      },
+      {
+        "type": "column",
+        "value": "'Mystery')"
+      },
+      {
+        "type": "keyword",
+        "value": "AND"
+      },
+      {
+        "type": "column",
+        "value": "price"
+      },
+      {
+        "type": "column",
+        "value": "<"
+      },
+      {
+        "type": "column",
+        "value": "20.00;"
+      }
+    ]
+  },
+  {
+    "id": 1663,
+    "drillNumber": 173,
+    "section": "Section 0: Foundations & Syntax Gym",
+    "title": "Syntax #173: Find Engineering OR Marketing employees who earn over $70,000",
+    "industry": "Foundations",
+    "difficulty": "Easy",
+    "scenario": "Find Engineering OR Marketing employees who earn over $70,000.",
+    "businessObjective": "Find Engineering OR Marketing employees who earn over $70,000.",
+    "schemaSnippet": "Employees schema",
+    "targetQuery": "SELECT first_name, department, salary\nFROM Employees\nWHERE (department = 'Engineering' OR department = 'Marketing') AND salary > 70000.00;",
+    "syntaxBlueprint": "SELECT first_name, department, salary\nFROM Employees\nWHERE (department = 'Engineering' OR department = 'Marketing') AND salary > 70000.00;",
+    "syntaxRule": "Strings use single quotes, numbers do not. AND precedes OR unless parentheses are used. NULL requires IS NULL.",
+    "syntaxTrap": "Never write col = NULL or omit parentheses in mixed AND/OR statements.",
+    "eli5Story": "[SYNTAX BLUEPRINT]:\nSELECT first_name, department, salary\nFROM Employees\nWHERE (department = 'Engineering' OR department = 'Marketing') AND salary > 70000.00;\n\n[RULE]: Strings use single quotes, numbers do not. AND precedes OR unless parentheses are used. NULL requires IS NULL.\n\n[TRAP TO AVOID]: Never write col = NULL or omit parentheses in mixed AND/OR statements.",
+    "commonMistakes": "Unquoted strings, missing parentheses around OR, or using = instead of LIKE.",
+    "learningOutcomes": "Mastered 2.8 Compound OR & Precedence on Employees.",
+    "challengeSlots": [
+      {
+        "type": "keyword",
+        "value": "SELECT"
+      },
+      {
+        "type": "column",
+        "value": "first_name,"
+      },
+      {
+        "type": "column",
+        "value": "department,"
+      },
+      {
+        "type": "column",
+        "value": "salary"
+      },
+      {
+        "type": "keyword",
+        "value": "FROM"
+      },
+      {
+        "type": "table",
+        "value": "Employees"
+      },
+      {
+        "type": "keyword",
+        "value": "WHERE"
+      },
+      {
+        "type": "column",
+        "value": "(department"
+      },
+      {
+        "type": "column",
+        "value": "="
+      },
+      {
+        "type": "column",
+        "value": "'Engineering'"
+      },
+      {
+        "type": "keyword",
+        "value": "OR"
+      },
+      {
+        "type": "column",
+        "value": "department"
+      },
+      {
+        "type": "column",
+        "value": "="
+      },
+      {
+        "type": "column",
+        "value": "'Marketing')"
+      },
+      {
+        "type": "keyword",
+        "value": "AND"
+      },
+      {
+        "type": "column",
+        "value": "salary"
+      },
+      {
+        "type": "column",
+        "value": ">"
+      },
+      {
+        "type": "column",
+        "value": "70000.00;"
+      }
+    ]
+  },
+  {
+    "id": 1664,
+    "drillNumber": 174,
+    "section": "Section 0: Foundations & Syntax Gym",
+    "title": "Syntax #174: Find Produce OR Bakery items that cost $5.00 or less",
+    "industry": "Foundations",
+    "difficulty": "Easy",
+    "scenario": "Find Produce OR Bakery items that cost $5.00 or less.",
+    "businessObjective": "Find Produce OR Bakery items that cost $5.00 or less.",
+    "schemaSnippet": "GroceryItems schema",
+    "targetQuery": "SELECT item_name, category, unit_price\nFROM GroceryItems\nWHERE (category = 'Produce' OR category = 'Bakery') AND unit_price <= 5.00;",
+    "syntaxBlueprint": "SELECT item_name, category, unit_price\nFROM GroceryItems\nWHERE (category = 'Produce' OR category = 'Bakery') AND unit_price <= 5.00;",
+    "syntaxRule": "Strings use single quotes, numbers do not. AND precedes OR unless parentheses are used. NULL requires IS NULL.",
+    "syntaxTrap": "Never write col = NULL or omit parentheses in mixed AND/OR statements.",
+    "eli5Story": "[SYNTAX BLUEPRINT]:\nSELECT item_name, category, unit_price\nFROM GroceryItems\nWHERE (category = 'Produce' OR category = 'Bakery') AND unit_price <= 5.00;\n\n[RULE]: Strings use single quotes, numbers do not. AND precedes OR unless parentheses are used. NULL requires IS NULL.\n\n[TRAP TO AVOID]: Never write col = NULL or omit parentheses in mixed AND/OR statements.",
+    "commonMistakes": "Unquoted strings, missing parentheses around OR, or using = instead of LIKE.",
+    "learningOutcomes": "Mastered 2.8 Compound OR & Precedence on GroceryItems.",
+    "challengeSlots": [
+      {
+        "type": "keyword",
+        "value": "SELECT"
+      },
+      {
+        "type": "column",
+        "value": "item_name,"
+      },
+      {
+        "type": "column",
+        "value": "category,"
+      },
+      {
+        "type": "column",
+        "value": "unit_price"
+      },
+      {
+        "type": "keyword",
+        "value": "FROM"
+      },
+      {
+        "type": "table",
+        "value": "GroceryItems"
+      },
+      {
+        "type": "keyword",
+        "value": "WHERE"
+      },
+      {
+        "type": "column",
+        "value": "(category"
+      },
+      {
+        "type": "column",
+        "value": "="
+      },
+      {
+        "type": "column",
+        "value": "'Produce'"
+      },
+      {
+        "type": "keyword",
+        "value": "OR"
+      },
+      {
+        "type": "column",
+        "value": "category"
+      },
+      {
+        "type": "column",
+        "value": "="
+      },
+      {
+        "type": "column",
+        "value": "'Bakery')"
+      },
+      {
+        "type": "keyword",
+        "value": "AND"
+      },
+      {
+        "type": "column",
+        "value": "unit_price"
+      },
+      {
+        "type": "column",
+        "value": "<="
+      },
+      {
+        "type": "column",
+        "value": "5.00;"
+      }
+    ]
+  },
+  {
+    "id": 1665,
+    "drillNumber": 175,
+    "section": "Section 0: Foundations & Syntax Gym",
+    "title": "Syntax #175: Find unfulfilled orders destined for Denver",
+    "industry": "Foundations",
+    "difficulty": "Easy",
+    "scenario": "Find unfulfilled orders destined for Denver.",
+    "businessObjective": "Find unfulfilled orders destined for Denver.",
+    "schemaSnippet": "Orders schema",
+    "targetQuery": "SELECT order_id, order_status, shipping_city\nFROM Orders\nWHERE (order_status = 'Processing' OR order_status = 'Pending') AND shipping_city = 'Denver';",
+    "syntaxBlueprint": "SELECT order_id, order_status, shipping_city\nFROM Orders\nWHERE (order_status = 'Processing' OR order_status = 'Pending') AND shipping_city = 'Denver';",
+    "syntaxRule": "Strings use single quotes, numbers do not. AND precedes OR unless parentheses are used. NULL requires IS NULL.",
+    "syntaxTrap": "Never write col = NULL or omit parentheses in mixed AND/OR statements.",
+    "eli5Story": "[SYNTAX BLUEPRINT]:\nSELECT order_id, order_status, shipping_city\nFROM Orders\nWHERE (order_status = 'Processing' OR order_status = 'Pending') AND shipping_city = 'Denver';\n\n[RULE]: Strings use single quotes, numbers do not. AND precedes OR unless parentheses are used. NULL requires IS NULL.\n\n[TRAP TO AVOID]: Never write col = NULL or omit parentheses in mixed AND/OR statements.",
+    "commonMistakes": "Unquoted strings, missing parentheses around OR, or using = instead of LIKE.",
+    "learningOutcomes": "Mastered 2.8 Compound OR & Precedence on Orders.",
+    "challengeSlots": [
+      {
+        "type": "keyword",
+        "value": "SELECT"
+      },
+      {
+        "type": "column",
+        "value": "order_id,"
+      },
+      {
+        "type": "column",
+        "value": "order_status,"
+      },
+      {
+        "type": "column",
+        "value": "shipping_city"
+      },
+      {
+        "type": "keyword",
+        "value": "FROM"
+      },
+      {
+        "type": "table",
+        "value": "Orders"
+      },
+      {
+        "type": "keyword",
+        "value": "WHERE"
+      },
+      {
+        "type": "column",
+        "value": "(order_status"
+      },
+      {
+        "type": "column",
+        "value": "="
+      },
+      {
+        "type": "column",
+        "value": "'Processing'"
+      },
+      {
+        "type": "keyword",
+        "value": "OR"
+      },
+      {
+        "type": "column",
+        "value": "order_status"
+      },
+      {
+        "type": "column",
+        "value": "="
+      },
+      {
+        "type": "column",
+        "value": "'Pending')"
+      },
+      {
+        "type": "keyword",
+        "value": "AND"
+      },
+      {
+        "type": "column",
+        "value": "shipping_city"
+      },
+      {
+        "type": "column",
+        "value": "="
+      },
+      {
+        "type": "column",
+        "value": "'Denver';"
+      }
+    ]
+  },
+  {
+    "id": 1666,
+    "drillNumber": 176,
+    "section": "Section 0: Foundations & Syntax Gym",
+    "title": "Syntax #176: Find Rock or Synthwave tracks with over 50,000 plays",
+    "industry": "Foundations",
+    "difficulty": "Easy",
+    "scenario": "Find Rock or Synthwave tracks with over 50,000 plays.",
+    "businessObjective": "Find Rock or Synthwave tracks with over 50,000 plays.",
+    "schemaSnippet": "MusicTracks schema",
+    "targetQuery": "SELECT track_title, genre, play_count\nFROM MusicTracks\nWHERE (genre = 'Rock' OR genre = 'Synthwave') AND play_count > 50000;",
+    "syntaxBlueprint": "SELECT track_title, genre, play_count\nFROM MusicTracks\nWHERE (genre = 'Rock' OR genre = 'Synthwave') AND play_count > 50000;",
+    "syntaxRule": "Strings use single quotes, numbers do not. AND precedes OR unless parentheses are used. NULL requires IS NULL.",
+    "syntaxTrap": "Never write col = NULL or omit parentheses in mixed AND/OR statements.",
+    "eli5Story": "[SYNTAX BLUEPRINT]:\nSELECT track_title, genre, play_count\nFROM MusicTracks\nWHERE (genre = 'Rock' OR genre = 'Synthwave') AND play_count > 50000;\n\n[RULE]: Strings use single quotes, numbers do not. AND precedes OR unless parentheses are used. NULL requires IS NULL.\n\n[TRAP TO AVOID]: Never write col = NULL or omit parentheses in mixed AND/OR statements.",
+    "commonMistakes": "Unquoted strings, missing parentheses around OR, or using = instead of LIKE.",
+    "learningOutcomes": "Mastered 2.8 Compound OR & Precedence on MusicTracks.",
+    "challengeSlots": [
+      {
+        "type": "keyword",
+        "value": "SELECT"
+      },
+      {
+        "type": "column",
+        "value": "track_title,"
+      },
+      {
+        "type": "column",
+        "value": "genre,"
+      },
+      {
+        "type": "column",
+        "value": "play_count"
+      },
+      {
+        "type": "keyword",
+        "value": "FROM"
+      },
+      {
+        "type": "table",
+        "value": "MusicTracks"
+      },
+      {
+        "type": "keyword",
+        "value": "WHERE"
+      },
+      {
+        "type": "column",
+        "value": "(genre"
+      },
+      {
+        "type": "column",
+        "value": "="
+      },
+      {
+        "type": "column",
+        "value": "'Rock'"
+      },
+      {
+        "type": "keyword",
+        "value": "OR"
+      },
+      {
+        "type": "column",
+        "value": "genre"
+      },
+      {
+        "type": "column",
+        "value": "="
+      },
+      {
+        "type": "column",
+        "value": "'Synthwave')"
+      },
+      {
+        "type": "keyword",
+        "value": "AND"
+      },
+      {
+        "type": "column",
+        "value": "play_count"
+      },
+      {
+        "type": "column",
+        "value": ">"
+      },
+      {
+        "type": "column",
+        "value": "50000;"
+      }
+    ]
+  },
+  {
+    "id": 1667,
+    "drillNumber": 177,
+    "section": "Section 0: Foundations & Syntax Gym",
+    "title": "Syntax #177: Find premium members (Gold or Platinum) who have a dedicated trainer",
+    "industry": "Foundations",
+    "difficulty": "Easy",
+    "scenario": "Find premium members (Gold or Platinum) who have a dedicated trainer.",
+    "businessObjective": "Find premium members (Gold or Platinum) who have a dedicated trainer.",
+    "schemaSnippet": "GymMembers schema",
+    "targetQuery": "SELECT member_name, membership_plan, has_trainer\nFROM GymMembers\nWHERE (membership_plan = 'Gold' OR membership_plan = 'Platinum') AND has_trainer = TRUE;",
+    "syntaxBlueprint": "SELECT member_name, membership_plan, has_trainer\nFROM GymMembers\nWHERE (membership_plan = 'Gold' OR membership_plan = 'Platinum') AND has_trainer = TRUE;",
+    "syntaxRule": "Strings use single quotes, numbers do not. AND precedes OR unless parentheses are used. NULL requires IS NULL.",
+    "syntaxTrap": "Never write col = NULL or omit parentheses in mixed AND/OR statements.",
+    "eli5Story": "[SYNTAX BLUEPRINT]:\nSELECT member_name, membership_plan, has_trainer\nFROM GymMembers\nWHERE (membership_plan = 'Gold' OR membership_plan = 'Platinum') AND has_trainer = TRUE;\n\n[RULE]: Strings use single quotes, numbers do not. AND precedes OR unless parentheses are used. NULL requires IS NULL.\n\n[TRAP TO AVOID]: Never write col = NULL or omit parentheses in mixed AND/OR statements.",
+    "commonMistakes": "Unquoted strings, missing parentheses around OR, or using = instead of LIKE.",
+    "learningOutcomes": "Mastered 2.8 Compound OR & Precedence on GymMembers.",
+    "challengeSlots": [
+      {
+        "type": "keyword",
+        "value": "SELECT"
+      },
+      {
+        "type": "column",
+        "value": "member_name,"
+      },
+      {
+        "type": "column",
+        "value": "membership_plan,"
+      },
+      {
+        "type": "column",
+        "value": "has_trainer"
+      },
+      {
+        "type": "keyword",
+        "value": "FROM"
+      },
+      {
+        "type": "table",
+        "value": "GymMembers"
+      },
+      {
+        "type": "keyword",
+        "value": "WHERE"
+      },
+      {
+        "type": "column",
+        "value": "(membership_plan"
+      },
+      {
+        "type": "column",
+        "value": "="
+      },
+      {
+        "type": "column",
+        "value": "'Gold'"
+      },
+      {
+        "type": "keyword",
+        "value": "OR"
+      },
+      {
+        "type": "column",
+        "value": "membership_plan"
+      },
+      {
+        "type": "column",
+        "value": "="
+      },
+      {
+        "type": "column",
+        "value": "'Platinum')"
+      },
+      {
+        "type": "keyword",
+        "value": "AND"
+      },
+      {
+        "type": "column",
+        "value": "has_trainer"
+      },
+      {
+        "type": "column",
+        "value": "="
+      },
+      {
+        "type": "column",
+        "value": "TRUE;"
+      }
+    ]
+  },
+  {
+    "id": 1668,
+    "drillNumber": 178,
+    "section": "Section 0: Foundations & Syntax Gym",
+    "title": "Syntax #178: Find top films by either Gerwig or Coppola with 4.0+ stars",
+    "industry": "Foundations",
+    "difficulty": "Easy",
+    "scenario": "Find top films by either Gerwig or Coppola with 4.0+ stars.",
+    "businessObjective": "Find top films by either Gerwig or Coppola with 4.0+ stars.",
+    "schemaSnippet": "MovieReviews schema",
+    "targetQuery": "SELECT movie_title, director, star_rating\nFROM MovieReviews\nWHERE (director = 'Greta Gerwig' OR director = 'Sofia Coppola') AND star_rating >= 4.0;",
+    "syntaxBlueprint": "SELECT movie_title, director, star_rating\nFROM MovieReviews\nWHERE (director = 'Greta Gerwig' OR director = 'Sofia Coppola') AND star_rating >= 4.0;",
+    "syntaxRule": "Strings use single quotes, numbers do not. AND precedes OR unless parentheses are used. NULL requires IS NULL.",
+    "syntaxTrap": "Never write col = NULL or omit parentheses in mixed AND/OR statements.",
+    "eli5Story": "[SYNTAX BLUEPRINT]:\nSELECT movie_title, director, star_rating\nFROM MovieReviews\nWHERE (director = 'Greta Gerwig' OR director = 'Sofia Coppola') AND star_rating >= 4.0;\n\n[RULE]: Strings use single quotes, numbers do not. AND precedes OR unless parentheses are used. NULL requires IS NULL.\n\n[TRAP TO AVOID]: Never write col = NULL or omit parentheses in mixed AND/OR statements.",
+    "commonMistakes": "Unquoted strings, missing parentheses around OR, or using = instead of LIKE.",
+    "learningOutcomes": "Mastered 2.8 Compound OR & Precedence on MovieReviews.",
+    "challengeSlots": [
+      {
+        "type": "keyword",
+        "value": "SELECT"
+      },
+      {
+        "type": "column",
+        "value": "movie_title,"
+      },
+      {
+        "type": "column",
+        "value": "director,"
+      },
+      {
+        "type": "column",
+        "value": "star_rating"
+      },
+      {
+        "type": "keyword",
+        "value": "FROM"
+      },
+      {
+        "type": "table",
+        "value": "MovieReviews"
+      },
+      {
+        "type": "keyword",
+        "value": "WHERE"
+      },
+      {
+        "type": "column",
+        "value": "(director"
+      },
+      {
+        "type": "column",
+        "value": "="
+      },
+      {
+        "type": "column",
+        "value": "'Greta"
+      },
+      {
+        "type": "column",
+        "value": "Gerwig'"
+      },
+      {
+        "type": "keyword",
+        "value": "OR"
+      },
+      {
+        "type": "column",
+        "value": "director"
+      },
+      {
+        "type": "column",
+        "value": "="
+      },
+      {
+        "type": "column",
+        "value": "'Sofia"
+      },
+      {
+        "type": "column",
+        "value": "Coppola')"
+      },
+      {
+        "type": "keyword",
+        "value": "AND"
+      },
+      {
+        "type": "column",
+        "value": "star_rating"
+      },
+      {
+        "type": "column",
+        "value": ">="
+      },
+      {
+        "type": "column",
+        "value": "4.0;"
+      }
+    ]
+  },
+  {
+    "id": 1669,
+    "drillNumber": 179,
+    "section": "Section 0: Foundations & Syntax Gym",
+    "title": "Syntax #179: Find Chicago flights (ORD or MDW) flying to Los Angeles (LAX)",
+    "industry": "Foundations",
+    "difficulty": "Easy",
+    "scenario": "Find Chicago flights (ORD or MDW) flying to Los Angeles (LAX).",
+    "businessObjective": "Find Chicago flights (ORD or MDW) flying to Los Angeles (LAX).",
+    "schemaSnippet": "FlightSchedule schema",
+    "targetQuery": "SELECT flight_id, origin_airport, dest_airport\nFROM FlightSchedule\nWHERE (origin_airport = 'ORD' OR origin_airport = 'MDW') AND dest_airport = 'LAX';",
+    "syntaxBlueprint": "SELECT flight_id, origin_airport, dest_airport\nFROM FlightSchedule\nWHERE (origin_airport = 'ORD' OR origin_airport = 'MDW') AND dest_airport = 'LAX';",
+    "syntaxRule": "Strings use single quotes, numbers do not. AND precedes OR unless parentheses are used. NULL requires IS NULL.",
+    "syntaxTrap": "Never write col = NULL or omit parentheses in mixed AND/OR statements.",
+    "eli5Story": "[SYNTAX BLUEPRINT]:\nSELECT flight_id, origin_airport, dest_airport\nFROM FlightSchedule\nWHERE (origin_airport = 'ORD' OR origin_airport = 'MDW') AND dest_airport = 'LAX';\n\n[RULE]: Strings use single quotes, numbers do not. AND precedes OR unless parentheses are used. NULL requires IS NULL.\n\n[TRAP TO AVOID]: Never write col = NULL or omit parentheses in mixed AND/OR statements.",
+    "commonMistakes": "Unquoted strings, missing parentheses around OR, or using = instead of LIKE.",
+    "learningOutcomes": "Mastered 2.8 Compound OR & Precedence on FlightSchedule.",
+    "challengeSlots": [
+      {
+        "type": "keyword",
+        "value": "SELECT"
+      },
+      {
+        "type": "column",
+        "value": "flight_id,"
+      },
+      {
+        "type": "column",
+        "value": "origin_airport,"
+      },
+      {
+        "type": "column",
+        "value": "dest_airport"
+      },
+      {
+        "type": "keyword",
+        "value": "FROM"
+      },
+      {
+        "type": "table",
+        "value": "FlightSchedule"
+      },
+      {
+        "type": "keyword",
+        "value": "WHERE"
+      },
+      {
+        "type": "column",
+        "value": "(origin_airport"
+      },
+      {
+        "type": "column",
+        "value": "="
+      },
+      {
+        "type": "column",
+        "value": "'ORD'"
+      },
+      {
+        "type": "keyword",
+        "value": "OR"
+      },
+      {
+        "type": "column",
+        "value": "origin_airport"
+      },
+      {
+        "type": "column",
+        "value": "="
+      },
+      {
+        "type": "column",
+        "value": "'MDW')"
+      },
+      {
+        "type": "keyword",
+        "value": "AND"
+      },
+      {
+        "type": "column",
+        "value": "dest_airport"
+      },
+      {
+        "type": "column",
+        "value": "="
+      },
+      {
+        "type": "column",
+        "value": "'LAX';"
+      }
+    ]
+  },
+  {
+    "id": 1670,
+    "drillNumber": 180,
+    "section": "Section 0: Foundations & Syntax Gym",
+    "title": "Syntax #180: Find young puppies or kittens under 2 years of age",
+    "industry": "Foundations",
+    "difficulty": "Easy",
+    "scenario": "Find young puppies or kittens under 2 years of age.",
+    "businessObjective": "Find young puppies or kittens under 2 years of age.",
+    "schemaSnippet": "PetClinic schema",
+    "targetQuery": "SELECT pet_name, species, age_years\nFROM PetClinic\nWHERE (species = 'Dog' OR species = 'Cat') AND age_years < 2;",
+    "syntaxBlueprint": "SELECT pet_name, species, age_years\nFROM PetClinic\nWHERE (species = 'Dog' OR species = 'Cat') AND age_years < 2;",
+    "syntaxRule": "Strings use single quotes, numbers do not. AND precedes OR unless parentheses are used. NULL requires IS NULL.",
+    "syntaxTrap": "Never write col = NULL or omit parentheses in mixed AND/OR statements.",
+    "eli5Story": "[SYNTAX BLUEPRINT]:\nSELECT pet_name, species, age_years\nFROM PetClinic\nWHERE (species = 'Dog' OR species = 'Cat') AND age_years < 2;\n\n[RULE]: Strings use single quotes, numbers do not. AND precedes OR unless parentheses are used. NULL requires IS NULL.\n\n[TRAP TO AVOID]: Never write col = NULL or omit parentheses in mixed AND/OR statements.",
+    "commonMistakes": "Unquoted strings, missing parentheses around OR, or using = instead of LIKE.",
+    "learningOutcomes": "Mastered 2.8 Compound OR & Precedence on PetClinic.",
+    "challengeSlots": [
+      {
+        "type": "keyword",
+        "value": "SELECT"
+      },
+      {
+        "type": "column",
+        "value": "pet_name,"
+      },
+      {
+        "type": "column",
+        "value": "species,"
+      },
+      {
+        "type": "column",
+        "value": "age_years"
+      },
+      {
+        "type": "keyword",
+        "value": "FROM"
+      },
+      {
+        "type": "table",
+        "value": "PetClinic"
+      },
+      {
+        "type": "keyword",
+        "value": "WHERE"
+      },
+      {
+        "type": "column",
+        "value": "(species"
+      },
+      {
+        "type": "column",
+        "value": "="
+      },
+      {
+        "type": "column",
+        "value": "'Dog'"
+      },
+      {
+        "type": "keyword",
+        "value": "OR"
+      },
+      {
+        "type": "column",
+        "value": "species"
+      },
+      {
+        "type": "column",
+        "value": "="
+      },
+      {
+        "type": "column",
+        "value": "'Cat')"
+      },
+      {
+        "type": "keyword",
+        "value": "AND"
+      },
+      {
+        "type": "column",
+        "value": "age_years"
+      },
+      {
+        "type": "column",
+        "value": "<"
+      },
+      {
+        "type": "column",
+        "value": "2;"
+      }
+    ]
+  },
+  {
+    "id": 1671,
+    "drillNumber": 181,
+    "section": "Section 0: Foundations & Syntax Gym",
+    "title": "Syntax #181: Find all employees who did not receive an annual bonus (bonus IS NULL)",
+    "industry": "Foundations",
+    "difficulty": "Easy",
+    "scenario": "Find all employees who did not receive an annual bonus (bonus IS NULL).",
+    "businessObjective": "Find all employees who did not receive an annual bonus (bonus IS NULL).",
+    "schemaSnippet": "Employees schema",
+    "targetQuery": "SELECT first_name, bonus\nFROM Employees\nWHERE bonus IS NULL;",
+    "syntaxBlueprint": "SELECT first_name, bonus\nFROM Employees\nWHERE bonus IS NULL;",
+    "syntaxRule": "Strings use single quotes, numbers do not. AND precedes OR unless parentheses are used. NULL requires IS NULL.",
+    "syntaxTrap": "Never write col = NULL or omit parentheses in mixed AND/OR statements.",
+    "eli5Story": "[SYNTAX BLUEPRINT]:\nSELECT first_name, bonus\nFROM Employees\nWHERE bonus IS NULL;\n\n[RULE]: Strings use single quotes, numbers do not. AND precedes OR unless parentheses are used. NULL requires IS NULL.\n\n[TRAP TO AVOID]: Never write col = NULL or omit parentheses in mixed AND/OR statements.",
+    "commonMistakes": "Unquoted strings, missing parentheses around OR, or using = instead of LIKE.",
+    "learningOutcomes": "Mastered 2.9 3VL & NULL Handling on Employees.",
+    "challengeSlots": [
+      {
+        "type": "keyword",
+        "value": "SELECT"
+      },
+      {
+        "type": "column",
+        "value": "first_name,"
+      },
+      {
+        "type": "column",
+        "value": "bonus"
+      },
+      {
+        "type": "keyword",
+        "value": "FROM"
+      },
+      {
+        "type": "table",
+        "value": "Employees"
+      },
+      {
+        "type": "keyword",
+        "value": "WHERE"
+      },
+      {
+        "type": "column",
+        "value": "bonus"
+      },
+      {
+        "type": "keyword",
+        "value": "IS"
+      },
+      {
+        "type": "column",
+        "value": "NULL;"
+      }
+    ]
+  },
+  {
+    "id": 1672,
+    "drillNumber": 182,
+    "section": "Section 0: Foundations & Syntax Gym",
+    "title": "Syntax #182: Find all employees who have a recorded bonus",
+    "industry": "Foundations",
+    "difficulty": "Easy",
+    "scenario": "Find all employees who have a recorded bonus.",
+    "businessObjective": "Find all employees who have a recorded bonus.",
+    "schemaSnippet": "Employees schema",
+    "targetQuery": "SELECT first_name, bonus\nFROM Employees\nWHERE bonus IS NOT NULL;",
+    "syntaxBlueprint": "SELECT first_name, bonus\nFROM Employees\nWHERE bonus IS NOT NULL;",
+    "syntaxRule": "Strings use single quotes, numbers do not. AND precedes OR unless parentheses are used. NULL requires IS NULL.",
+    "syntaxTrap": "Never write col = NULL or omit parentheses in mixed AND/OR statements.",
+    "eli5Story": "[SYNTAX BLUEPRINT]:\nSELECT first_name, bonus\nFROM Employees\nWHERE bonus IS NOT NULL;\n\n[RULE]: Strings use single quotes, numbers do not. AND precedes OR unless parentheses are used. NULL requires IS NULL.\n\n[TRAP TO AVOID]: Never write col = NULL or omit parentheses in mixed AND/OR statements.",
+    "commonMistakes": "Unquoted strings, missing parentheses around OR, or using = instead of LIKE.",
+    "learningOutcomes": "Mastered 2.9 3VL & NULL Handling on Employees.",
+    "challengeSlots": [
+      {
+        "type": "keyword",
+        "value": "SELECT"
+      },
+      {
+        "type": "column",
+        "value": "first_name,"
+      },
+      {
+        "type": "column",
+        "value": "bonus"
+      },
+      {
+        "type": "keyword",
+        "value": "FROM"
+      },
+      {
+        "type": "table",
+        "value": "Employees"
+      },
+      {
+        "type": "keyword",
+        "value": "WHERE"
+      },
+      {
+        "type": "column",
+        "value": "bonus"
+      },
+      {
+        "type": "keyword",
+        "value": "IS"
+      },
+      {
+        "type": "keyword",
+        "value": "NOT"
+      },
+      {
+        "type": "column",
+        "value": "NULL;"
+      }
+    ]
+  },
+  {
+    "id": 1673,
+    "drillNumber": 183,
+    "section": "Section 0: Foundations & Syntax Gym",
+    "title": "Syntax #183: Find in-stock books where inventory quantity is verified not null and positive",
+    "industry": "Foundations",
+    "difficulty": "Easy",
+    "scenario": "Find in-stock books where inventory quantity is verified not null and positive.",
+    "businessObjective": "Find in-stock books where inventory quantity is verified not null and positive.",
+    "schemaSnippet": "Books schema",
+    "targetQuery": "SELECT title, stock_qty\nFROM Books\nWHERE stock_qty IS NOT NULL AND stock_qty > 0;",
+    "syntaxBlueprint": "SELECT title, stock_qty\nFROM Books\nWHERE stock_qty IS NOT NULL AND stock_qty > 0;",
+    "syntaxRule": "Strings use single quotes, numbers do not. AND precedes OR unless parentheses are used. NULL requires IS NULL.",
+    "syntaxTrap": "Never write col = NULL or omit parentheses in mixed AND/OR statements.",
+    "eli5Story": "[SYNTAX BLUEPRINT]:\nSELECT title, stock_qty\nFROM Books\nWHERE stock_qty IS NOT NULL AND stock_qty > 0;\n\n[RULE]: Strings use single quotes, numbers do not. AND precedes OR unless parentheses are used. NULL requires IS NULL.\n\n[TRAP TO AVOID]: Never write col = NULL or omit parentheses in mixed AND/OR statements.",
+    "commonMistakes": "Unquoted strings, missing parentheses around OR, or using = instead of LIKE.",
+    "learningOutcomes": "Mastered 2.9 3VL & NULL Handling on Books.",
+    "challengeSlots": [
+      {
+        "type": "keyword",
+        "value": "SELECT"
+      },
+      {
+        "type": "column",
+        "value": "title,"
+      },
+      {
+        "type": "column",
+        "value": "stock_qty"
+      },
+      {
+        "type": "keyword",
+        "value": "FROM"
+      },
+      {
+        "type": "table",
+        "value": "Books"
+      },
+      {
+        "type": "keyword",
+        "value": "WHERE"
+      },
+      {
+        "type": "column",
+        "value": "stock_qty"
+      },
+      {
+        "type": "keyword",
+        "value": "IS"
+      },
+      {
+        "type": "keyword",
+        "value": "NOT"
+      },
+      {
+        "type": "keyword",
+        "value": "NULL"
+      },
+      {
+        "type": "keyword",
+        "value": "AND"
+      },
+      {
+        "type": "column",
+        "value": "stock_qty"
+      },
+      {
+        "type": "column",
+        "value": ">"
+      },
+      {
+        "type": "column",
+        "value": "0;"
+      }
+    ]
+  },
+  {
+    "id": 1674,
+    "drillNumber": 184,
+    "section": "Section 0: Foundations & Syntax Gym",
+    "title": "Syntax #184: Find students who have completed their coursework and have a recorded GPA",
+    "industry": "Foundations",
+    "difficulty": "Easy",
+    "scenario": "Find students who have completed their coursework and have a recorded GPA.",
+    "businessObjective": "Find students who have completed their coursework and have a recorded GPA.",
+    "schemaSnippet": "Students schema",
+    "targetQuery": "SELECT full_name, gpa\nFROM Students\nWHERE gpa IS NOT NULL;",
+    "syntaxBlueprint": "SELECT full_name, gpa\nFROM Students\nWHERE gpa IS NOT NULL;",
+    "syntaxRule": "Strings use single quotes, numbers do not. AND precedes OR unless parentheses are used. NULL requires IS NULL.",
+    "syntaxTrap": "Never write col = NULL or omit parentheses in mixed AND/OR statements.",
+    "eli5Story": "[SYNTAX BLUEPRINT]:\nSELECT full_name, gpa\nFROM Students\nWHERE gpa IS NOT NULL;\n\n[RULE]: Strings use single quotes, numbers do not. AND precedes OR unless parentheses are used. NULL requires IS NULL.\n\n[TRAP TO AVOID]: Never write col = NULL or omit parentheses in mixed AND/OR statements.",
+    "commonMistakes": "Unquoted strings, missing parentheses around OR, or using = instead of LIKE.",
+    "learningOutcomes": "Mastered 2.9 3VL & NULL Handling on Students.",
+    "challengeSlots": [
+      {
+        "type": "keyword",
+        "value": "SELECT"
+      },
+      {
+        "type": "column",
+        "value": "full_name,"
+      },
+      {
+        "type": "column",
+        "value": "gpa"
+      },
+      {
+        "type": "keyword",
+        "value": "FROM"
+      },
+      {
+        "type": "table",
+        "value": "Students"
+      },
+      {
+        "type": "keyword",
+        "value": "WHERE"
+      },
+      {
+        "type": "column",
+        "value": "gpa"
+      },
+      {
+        "type": "keyword",
+        "value": "IS"
+      },
+      {
+        "type": "keyword",
+        "value": "NOT"
+      },
+      {
+        "type": "column",
+        "value": "NULL;"
+      }
+    ]
+  },
+  {
+    "id": 1675,
+    "drillNumber": 185,
+    "section": "Section 0: Foundations & Syntax Gym",
+    "title": "Syntax #185: Find orders that received no discount",
+    "industry": "Foundations",
+    "difficulty": "Easy",
+    "scenario": "Find orders that received no discount.",
+    "businessObjective": "Find orders that received no discount.",
+    "schemaSnippet": "Orders schema",
+    "targetQuery": "SELECT order_id, discount_pct\nFROM Orders\nWHERE discount_pct IS NULL OR discount_pct = 0.00;",
+    "syntaxBlueprint": "SELECT order_id, discount_pct\nFROM Orders\nWHERE discount_pct IS NULL OR discount_pct = 0.00;",
+    "syntaxRule": "Strings use single quotes, numbers do not. AND precedes OR unless parentheses are used. NULL requires IS NULL.",
+    "syntaxTrap": "Never write col = NULL or omit parentheses in mixed AND/OR statements.",
+    "eli5Story": "[SYNTAX BLUEPRINT]:\nSELECT order_id, discount_pct\nFROM Orders\nWHERE discount_pct IS NULL OR discount_pct = 0.00;\n\n[RULE]: Strings use single quotes, numbers do not. AND precedes OR unless parentheses are used. NULL requires IS NULL.\n\n[TRAP TO AVOID]: Never write col = NULL or omit parentheses in mixed AND/OR statements.",
+    "commonMistakes": "Unquoted strings, missing parentheses around OR, or using = instead of LIKE.",
+    "learningOutcomes": "Mastered 2.9 3VL & NULL Handling on Orders.",
+    "challengeSlots": [
+      {
+        "type": "keyword",
+        "value": "SELECT"
+      },
+      {
+        "type": "column",
+        "value": "order_id,"
+      },
+      {
+        "type": "column",
+        "value": "discount_pct"
+      },
+      {
+        "type": "keyword",
+        "value": "FROM"
+      },
+      {
+        "type": "table",
+        "value": "Orders"
+      },
+      {
+        "type": "keyword",
+        "value": "WHERE"
+      },
+      {
+        "type": "column",
+        "value": "discount_pct"
+      },
+      {
+        "type": "keyword",
+        "value": "IS"
+      },
+      {
+        "type": "keyword",
+        "value": "NULL"
+      },
+      {
+        "type": "keyword",
+        "value": "OR"
+      },
+      {
+        "type": "column",
+        "value": "discount_pct"
+      },
+      {
+        "type": "column",
+        "value": "="
+      },
+      {
+        "type": "column",
+        "value": "0.00;"
+      }
+    ]
+  },
+  {
+    "id": 1676,
+    "drillNumber": 186,
+    "section": "Section 0: Foundations & Syntax Gym",
+    "title": "Syntax #186: Find pet records where the specific breed is documented",
+    "industry": "Foundations",
+    "difficulty": "Easy",
+    "scenario": "Find pet records where the specific breed is documented.",
+    "businessObjective": "Find pet records where the specific breed is documented.",
+    "schemaSnippet": "PetClinic schema",
+    "targetQuery": "SELECT pet_name, breed\nFROM PetClinic\nWHERE breed IS NOT NULL;",
+    "syntaxBlueprint": "SELECT pet_name, breed\nFROM PetClinic\nWHERE breed IS NOT NULL;",
+    "syntaxRule": "Strings use single quotes, numbers do not. AND precedes OR unless parentheses are used. NULL requires IS NULL.",
+    "syntaxTrap": "Never write col = NULL or omit parentheses in mixed AND/OR statements.",
+    "eli5Story": "[SYNTAX BLUEPRINT]:\nSELECT pet_name, breed\nFROM PetClinic\nWHERE breed IS NOT NULL;\n\n[RULE]: Strings use single quotes, numbers do not. AND precedes OR unless parentheses are used. NULL requires IS NULL.\n\n[TRAP TO AVOID]: Never write col = NULL or omit parentheses in mixed AND/OR statements.",
+    "commonMistakes": "Unquoted strings, missing parentheses around OR, or using = instead of LIKE.",
+    "learningOutcomes": "Mastered 2.9 3VL & NULL Handling on PetClinic.",
+    "challengeSlots": [
+      {
+        "type": "keyword",
+        "value": "SELECT"
+      },
+      {
+        "type": "column",
+        "value": "pet_name,"
+      },
+      {
+        "type": "column",
+        "value": "breed"
+      },
+      {
+        "type": "keyword",
+        "value": "FROM"
+      },
+      {
+        "type": "table",
+        "value": "PetClinic"
+      },
+      {
+        "type": "keyword",
+        "value": "WHERE"
+      },
+      {
+        "type": "column",
+        "value": "breed"
+      },
+      {
+        "type": "keyword",
+        "value": "IS"
+      },
+      {
+        "type": "keyword",
+        "value": "NOT"
+      },
+      {
+        "type": "column",
+        "value": "NULL;"
+      }
+    ]
+  },
+  {
+    "id": 1677,
+    "drillNumber": 187,
+    "section": "Section 0: Foundations & Syntax Gym",
+    "title": "Syntax #187: Find flights confirmed on-time",
+    "industry": "Foundations",
+    "difficulty": "Easy",
+    "scenario": "Find flights confirmed on-time.",
+    "businessObjective": "Find flights confirmed on-time.",
+    "schemaSnippet": "FlightSchedule schema",
+    "targetQuery": "SELECT flight_id, delay_minutes\nFROM FlightSchedule\nWHERE delay_minutes IS NOT NULL AND delay_minutes = 0;",
+    "syntaxBlueprint": "SELECT flight_id, delay_minutes\nFROM FlightSchedule\nWHERE delay_minutes IS NOT NULL AND delay_minutes = 0;",
+    "syntaxRule": "Strings use single quotes, numbers do not. AND precedes OR unless parentheses are used. NULL requires IS NULL.",
+    "syntaxTrap": "Never write col = NULL or omit parentheses in mixed AND/OR statements.",
+    "eli5Story": "[SYNTAX BLUEPRINT]:\nSELECT flight_id, delay_minutes\nFROM FlightSchedule\nWHERE delay_minutes IS NOT NULL AND delay_minutes = 0;\n\n[RULE]: Strings use single quotes, numbers do not. AND precedes OR unless parentheses are used. NULL requires IS NULL.\n\n[TRAP TO AVOID]: Never write col = NULL or omit parentheses in mixed AND/OR statements.",
+    "commonMistakes": "Unquoted strings, missing parentheses around OR, or using = instead of LIKE.",
+    "learningOutcomes": "Mastered 2.9 3VL & NULL Handling on FlightSchedule.",
+    "challengeSlots": [
+      {
+        "type": "keyword",
+        "value": "SELECT"
+      },
+      {
+        "type": "column",
+        "value": "flight_id,"
+      },
+      {
+        "type": "column",
+        "value": "delay_minutes"
+      },
+      {
+        "type": "keyword",
+        "value": "FROM"
+      },
+      {
+        "type": "table",
+        "value": "FlightSchedule"
+      },
+      {
+        "type": "keyword",
+        "value": "WHERE"
+      },
+      {
+        "type": "column",
+        "value": "delay_minutes"
+      },
+      {
+        "type": "keyword",
+        "value": "IS"
+      },
+      {
+        "type": "keyword",
+        "value": "NOT"
+      },
+      {
+        "type": "keyword",
+        "value": "NULL"
+      },
+      {
+        "type": "keyword",
+        "value": "AND"
+      },
+      {
+        "type": "column",
+        "value": "delay_minutes"
+      },
+      {
+        "type": "column",
+        "value": "="
+      },
+      {
+        "type": "column",
+        "value": "0;"
+      }
+    ]
+  },
+  {
+    "id": 1678,
+    "drillNumber": 188,
+    "section": "Section 0: Foundations & Syntax Gym",
+    "title": "Syntax #188: Find inactive members with zero visits logged",
+    "industry": "Foundations",
+    "difficulty": "Easy",
+    "scenario": "Find inactive members with zero visits logged.",
+    "businessObjective": "Find inactive members with zero visits logged.",
+    "schemaSnippet": "GymMembers schema",
+    "targetQuery": "SELECT member_name, visits_this_month\nFROM GymMembers\nWHERE visits_this_month IS NOT NULL AND visits_this_month = 0;",
+    "syntaxBlueprint": "SELECT member_name, visits_this_month\nFROM GymMembers\nWHERE visits_this_month IS NOT NULL AND visits_this_month = 0;",
+    "syntaxRule": "Strings use single quotes, numbers do not. AND precedes OR unless parentheses are used. NULL requires IS NULL.",
+    "syntaxTrap": "Never write col = NULL or omit parentheses in mixed AND/OR statements.",
+    "eli5Story": "[SYNTAX BLUEPRINT]:\nSELECT member_name, visits_this_month\nFROM GymMembers\nWHERE visits_this_month IS NOT NULL AND visits_this_month = 0;\n\n[RULE]: Strings use single quotes, numbers do not. AND precedes OR unless parentheses are used. NULL requires IS NULL.\n\n[TRAP TO AVOID]: Never write col = NULL or omit parentheses in mixed AND/OR statements.",
+    "commonMistakes": "Unquoted strings, missing parentheses around OR, or using = instead of LIKE.",
+    "learningOutcomes": "Mastered 2.9 3VL & NULL Handling on GymMembers.",
+    "challengeSlots": [
+      {
+        "type": "keyword",
+        "value": "SELECT"
+      },
+      {
+        "type": "column",
+        "value": "member_name,"
+      },
+      {
+        "type": "column",
+        "value": "visits_this_month"
+      },
+      {
+        "type": "keyword",
+        "value": "FROM"
+      },
+      {
+        "type": "table",
+        "value": "GymMembers"
+      },
+      {
+        "type": "keyword",
+        "value": "WHERE"
+      },
+      {
+        "type": "column",
+        "value": "visits_this_month"
+      },
+      {
+        "type": "keyword",
+        "value": "IS"
+      },
+      {
+        "type": "keyword",
+        "value": "NOT"
+      },
+      {
+        "type": "keyword",
+        "value": "NULL"
+      },
+      {
+        "type": "keyword",
+        "value": "AND"
+      },
+      {
+        "type": "column",
+        "value": "visits_this_month"
+      },
+      {
+        "type": "column",
+        "value": "="
+      },
+      {
+        "type": "column",
+        "value": "0;"
+      }
+    ]
+  },
+  {
+    "id": 1679,
+    "drillNumber": 189,
+    "section": "Section 0: Foundations & Syntax Gym",
+    "title": "Syntax #189: Verify items with valid non-null prices",
+    "industry": "Foundations",
+    "difficulty": "Easy",
+    "scenario": "Verify items with valid non-null prices.",
+    "businessObjective": "Verify items with valid non-null prices.",
+    "schemaSnippet": "GroceryItems schema",
+    "targetQuery": "SELECT item_name, unit_price\nFROM GroceryItems\nWHERE unit_price IS NOT NULL AND unit_price > 0.00;",
+    "syntaxBlueprint": "SELECT item_name, unit_price\nFROM GroceryItems\nWHERE unit_price IS NOT NULL AND unit_price > 0.00;",
+    "syntaxRule": "Strings use single quotes, numbers do not. AND precedes OR unless parentheses are used. NULL requires IS NULL.",
+    "syntaxTrap": "Never write col = NULL or omit parentheses in mixed AND/OR statements.",
+    "eli5Story": "[SYNTAX BLUEPRINT]:\nSELECT item_name, unit_price\nFROM GroceryItems\nWHERE unit_price IS NOT NULL AND unit_price > 0.00;\n\n[RULE]: Strings use single quotes, numbers do not. AND precedes OR unless parentheses are used. NULL requires IS NULL.\n\n[TRAP TO AVOID]: Never write col = NULL or omit parentheses in mixed AND/OR statements.",
+    "commonMistakes": "Unquoted strings, missing parentheses around OR, or using = instead of LIKE.",
+    "learningOutcomes": "Mastered 2.9 3VL & NULL Handling on GroceryItems.",
+    "challengeSlots": [
+      {
+        "type": "keyword",
+        "value": "SELECT"
+      },
+      {
+        "type": "column",
+        "value": "item_name,"
+      },
+      {
+        "type": "column",
+        "value": "unit_price"
+      },
+      {
+        "type": "keyword",
+        "value": "FROM"
+      },
+      {
+        "type": "table",
+        "value": "GroceryItems"
+      },
+      {
+        "type": "keyword",
+        "value": "WHERE"
+      },
+      {
+        "type": "column",
+        "value": "unit_price"
+      },
+      {
+        "type": "keyword",
+        "value": "IS"
+      },
+      {
+        "type": "keyword",
+        "value": "NOT"
+      },
+      {
+        "type": "keyword",
+        "value": "NULL"
+      },
+      {
+        "type": "keyword",
+        "value": "AND"
+      },
+      {
+        "type": "column",
+        "value": "unit_price"
+      },
+      {
+        "type": "column",
+        "value": ">"
+      },
+      {
+        "type": "column",
+        "value": "0.00;"
+      }
+    ]
+  },
+  {
+    "id": 1680,
+    "drillNumber": 190,
+    "section": "Section 0: Foundations & Syntax Gym",
+    "title": "Syntax #190: Select tracks with verified play metrics",
+    "industry": "Foundations",
+    "difficulty": "Easy",
+    "scenario": "Select tracks with verified play metrics.",
+    "businessObjective": "Select tracks with verified play metrics.",
+    "schemaSnippet": "MusicTracks schema",
+    "targetQuery": "SELECT track_title, play_count\nFROM MusicTracks\nWHERE play_count IS NOT NULL AND play_count >= 0;",
+    "syntaxBlueprint": "SELECT track_title, play_count\nFROM MusicTracks\nWHERE play_count IS NOT NULL AND play_count >= 0;",
+    "syntaxRule": "Strings use single quotes, numbers do not. AND precedes OR unless parentheses are used. NULL requires IS NULL.",
+    "syntaxTrap": "Never write col = NULL or omit parentheses in mixed AND/OR statements.",
+    "eli5Story": "[SYNTAX BLUEPRINT]:\nSELECT track_title, play_count\nFROM MusicTracks\nWHERE play_count IS NOT NULL AND play_count >= 0;\n\n[RULE]: Strings use single quotes, numbers do not. AND precedes OR unless parentheses are used. NULL requires IS NULL.\n\n[TRAP TO AVOID]: Never write col = NULL or omit parentheses in mixed AND/OR statements.",
+    "commonMistakes": "Unquoted strings, missing parentheses around OR, or using = instead of LIKE.",
+    "learningOutcomes": "Mastered 2.9 3VL & NULL Handling on MusicTracks.",
+    "challengeSlots": [
+      {
+        "type": "keyword",
+        "value": "SELECT"
+      },
+      {
+        "type": "column",
+        "value": "track_title,"
+      },
+      {
+        "type": "column",
+        "value": "play_count"
+      },
+      {
+        "type": "keyword",
+        "value": "FROM"
+      },
+      {
+        "type": "table",
+        "value": "MusicTracks"
+      },
+      {
+        "type": "keyword",
+        "value": "WHERE"
+      },
+      {
+        "type": "column",
+        "value": "play_count"
+      },
+      {
+        "type": "keyword",
+        "value": "IS"
+      },
+      {
+        "type": "keyword",
+        "value": "NOT"
+      },
+      {
+        "type": "keyword",
+        "value": "NULL"
+      },
+      {
+        "type": "keyword",
+        "value": "AND"
+      },
+      {
+        "type": "column",
+        "value": "play_count"
+      },
+      {
+        "type": "column",
+        "value": ">="
+      },
+      {
+        "type": "column",
+        "value": "0;"
+      }
+    ]
+  },
+  {
+    "id": 1681,
+    "drillNumber": 191,
+    "section": "Section 0: Foundations & Syntax Gym",
+    "title": "Syntax #191: Fix the illegal NULL comparison: 'WHERE bonus = NULL;' (evaluates to UNKNOWN and returns 0 rows)",
+    "industry": "Foundations",
+    "difficulty": "Easy",
+    "scenario": "Fix the illegal NULL comparison: 'WHERE bonus = NULL;' (evaluates to UNKNOWN and returns 0 rows).",
+    "businessObjective": "Fix the illegal NULL comparison: 'WHERE bonus = NULL;' (evaluates to UNKNOWN and returns 0 rows).",
+    "schemaSnippet": "Employees schema",
+    "targetQuery": "SELECT first_name, bonus\nFROM Employees\nWHERE bonus IS NULL;",
+    "syntaxBlueprint": "SELECT col_1, col_2\nFROM Employees\nWHERE condition;",
+    "syntaxRule": "Strings use single quotes, numbers do not. AND precedes OR unless parentheses are used. NULL requires IS NULL.",
+    "syntaxTrap": "Never write col = NULL or omit parentheses in mixed AND/OR statements.",
+    "eli5Story": "[SYNTAX BLUEPRINT]:\nSELECT col_1, col_2\nFROM Employees\nWHERE condition;\n\n[RULE]: Strings use single quotes, numbers do not. AND precedes OR unless parentheses are used. NULL requires IS NULL.\n\n[TRAP TO AVOID]: Never write col = NULL or omit parentheses in mixed AND/OR statements.",
+    "commonMistakes": "Unquoted strings, missing parentheses around OR, or using = instead of LIKE.",
+    "learningOutcomes": "Mastered 2.10 Multi-Condition Bug Hunts on Employees.",
+    "challengeSlots": [
+      {
+        "type": "keyword",
+        "value": "SELECT"
+      },
+      {
+        "type": "column",
+        "value": "first_name,"
+      },
+      {
+        "type": "column",
+        "value": "bonus"
+      },
+      {
+        "type": "keyword",
+        "value": "FROM"
+      },
+      {
+        "type": "table",
+        "value": "Employees"
+      },
+      {
+        "type": "keyword",
+        "value": "WHERE"
+      },
+      {
+        "type": "column",
+        "value": "bonus"
+      },
+      {
+        "type": "keyword",
+        "value": "IS"
+      },
+      {
+        "type": "column",
+        "value": "NULL;"
+      }
+    ]
+  },
+  {
+    "id": 1682,
+    "drillNumber": 192,
+    "section": "Section 0: Foundations & Syntax Gym",
+    "title": "Syntax #192: Fix operator precedence bug by adding parentheses around OR conditions",
+    "industry": "Foundations",
+    "difficulty": "Easy",
+    "scenario": "Fix operator precedence bug by adding parentheses around OR conditions.",
+    "businessObjective": "Fix operator precedence bug by adding parentheses around OR conditions.",
+    "schemaSnippet": "Students schema",
+    "targetQuery": "SELECT full_name, city, gpa\nFROM Students\nWHERE (city = 'Chicago' OR city = 'Seattle') AND gpa > 3.50;",
+    "syntaxBlueprint": "SELECT col_1, col_2\nFROM Students\nWHERE condition;",
+    "syntaxRule": "Strings use single quotes, numbers do not. AND precedes OR unless parentheses are used. NULL requires IS NULL.",
+    "syntaxTrap": "Never write col = NULL or omit parentheses in mixed AND/OR statements.",
+    "eli5Story": "[SYNTAX BLUEPRINT]:\nSELECT col_1, col_2\nFROM Students\nWHERE condition;\n\n[RULE]: Strings use single quotes, numbers do not. AND precedes OR unless parentheses are used. NULL requires IS NULL.\n\n[TRAP TO AVOID]: Never write col = NULL or omit parentheses in mixed AND/OR statements.",
+    "commonMistakes": "Unquoted strings, missing parentheses around OR, or using = instead of LIKE.",
+    "learningOutcomes": "Mastered 2.10 Multi-Condition Bug Hunts on Students.",
+    "challengeSlots": [
+      {
+        "type": "keyword",
+        "value": "SELECT"
+      },
+      {
+        "type": "column",
+        "value": "full_name,"
+      },
+      {
+        "type": "column",
+        "value": "city,"
+      },
+      {
+        "type": "column",
+        "value": "gpa"
+      },
+      {
+        "type": "keyword",
+        "value": "FROM"
+      },
+      {
+        "type": "table",
+        "value": "Students"
+      },
+      {
+        "type": "keyword",
+        "value": "WHERE"
+      },
+      {
+        "type": "column",
+        "value": "(city"
+      },
+      {
+        "type": "column",
+        "value": "="
+      },
+      {
+        "type": "column",
+        "value": "'Chicago'"
+      },
+      {
+        "type": "keyword",
+        "value": "OR"
+      },
+      {
+        "type": "column",
+        "value": "city"
+      },
+      {
+        "type": "column",
+        "value": "="
+      },
+      {
+        "type": "column",
+        "value": "'Seattle')"
+      },
+      {
+        "type": "keyword",
+        "value": "AND"
+      },
+      {
+        "type": "column",
+        "value": "gpa"
+      },
+      {
+        "type": "column",
+        "value": ">"
+      },
+      {
+        "type": "column",
+        "value": "3.50;"
+      }
+    ]
+  },
+  {
+    "id": 1683,
+    "drillNumber": 193,
+    "section": "Section 0: Foundations & Syntax Gym",
+    "title": "Syntax #193: Fix incorrect range syntax: 'WHERE price BETWEEN 10.00, 25.00;' (BETWEEN uses AND, not comma)",
+    "industry": "Foundations",
+    "difficulty": "Easy",
+    "scenario": "Fix incorrect range syntax: 'WHERE price BETWEEN 10.00, 25.00;' (BETWEEN uses AND, not comma).",
+    "businessObjective": "Fix incorrect range syntax: 'WHERE price BETWEEN 10.00, 25.00;' (BETWEEN uses AND, not comma).",
+    "schemaSnippet": "Books schema",
+    "targetQuery": "SELECT title, price\nFROM Books\nWHERE price BETWEEN 10.00 AND 25.00;",
+    "syntaxBlueprint": "SELECT col_1, col_2\nFROM Books\nWHERE condition;",
+    "syntaxRule": "Strings use single quotes, numbers do not. AND precedes OR unless parentheses are used. NULL requires IS NULL.",
+    "syntaxTrap": "Never write col = NULL or omit parentheses in mixed AND/OR statements.",
+    "eli5Story": "[SYNTAX BLUEPRINT]:\nSELECT col_1, col_2\nFROM Books\nWHERE condition;\n\n[RULE]: Strings use single quotes, numbers do not. AND precedes OR unless parentheses are used. NULL requires IS NULL.\n\n[TRAP TO AVOID]: Never write col = NULL or omit parentheses in mixed AND/OR statements.",
+    "commonMistakes": "Unquoted strings, missing parentheses around OR, or using = instead of LIKE.",
+    "learningOutcomes": "Mastered 2.10 Multi-Condition Bug Hunts on Books.",
+    "challengeSlots": [
+      {
+        "type": "keyword",
+        "value": "SELECT"
+      },
+      {
+        "type": "column",
+        "value": "title,"
+      },
+      {
+        "type": "column",
+        "value": "price"
+      },
+      {
+        "type": "keyword",
+        "value": "FROM"
+      },
+      {
+        "type": "table",
+        "value": "Books"
+      },
+      {
+        "type": "keyword",
+        "value": "WHERE"
+      },
+      {
+        "type": "column",
+        "value": "price"
+      },
+      {
+        "type": "keyword",
+        "value": "BETWEEN"
+      },
+      {
+        "type": "column",
+        "value": "10.00"
+      },
+      {
+        "type": "keyword",
+        "value": "AND"
+      },
+      {
+        "type": "column",
+        "value": "25.00;"
+      }
+    ]
+  },
+  {
+    "id": 1684,
+    "drillNumber": 194,
+    "section": "Section 0: Foundations & Syntax Gym",
+    "title": "Syntax #194: Fix syntax error: 'WHERE category IN Produce, Bakery;' (values in IN must be wrapped in parentheses)",
+    "industry": "Foundations",
+    "difficulty": "Easy",
+    "scenario": "Fix syntax error: 'WHERE category IN Produce, Bakery;' (values in IN must be wrapped in parentheses).",
+    "businessObjective": "Fix syntax error: 'WHERE category IN Produce, Bakery;' (values in IN must be wrapped in parentheses).",
+    "schemaSnippet": "GroceryItems schema",
+    "targetQuery": "SELECT item_name, category\nFROM GroceryItems\nWHERE category IN ('Produce', 'Bakery');",
+    "syntaxBlueprint": "SELECT col_1, col_2\nFROM GroceryItems\nWHERE condition;",
+    "syntaxRule": "Strings use single quotes, numbers do not. AND precedes OR unless parentheses are used. NULL requires IS NULL.",
+    "syntaxTrap": "Never write col = NULL or omit parentheses in mixed AND/OR statements.",
+    "eli5Story": "[SYNTAX BLUEPRINT]:\nSELECT col_1, col_2\nFROM GroceryItems\nWHERE condition;\n\n[RULE]: Strings use single quotes, numbers do not. AND precedes OR unless parentheses are used. NULL requires IS NULL.\n\n[TRAP TO AVOID]: Never write col = NULL or omit parentheses in mixed AND/OR statements.",
+    "commonMistakes": "Unquoted strings, missing parentheses around OR, or using = instead of LIKE.",
+    "learningOutcomes": "Mastered 2.10 Multi-Condition Bug Hunts on GroceryItems.",
+    "challengeSlots": [
+      {
+        "type": "keyword",
+        "value": "SELECT"
+      },
+      {
+        "type": "column",
+        "value": "item_name,"
+      },
+      {
+        "type": "column",
+        "value": "category"
+      },
+      {
+        "type": "keyword",
+        "value": "FROM"
+      },
+      {
+        "type": "table",
+        "value": "GroceryItems"
+      },
+      {
+        "type": "keyword",
+        "value": "WHERE"
+      },
+      {
+        "type": "column",
+        "value": "category"
+      },
+      {
+        "type": "keyword",
+        "value": "IN"
+      },
+      {
+        "type": "column",
+        "value": "('Produce',"
+      },
+      {
+        "type": "column",
+        "value": "'Bakery');"
+      }
+    ]
+  },
+  {
+    "id": 1685,
+    "drillNumber": 195,
+    "section": "Section 0: Foundations & Syntax Gym",
+    "title": "Syntax #195: Fix unquoted string identifier: \"WHERE shipping_city = Denver;\" (looks for column named Denver instead of text)",
+    "industry": "Foundations",
+    "difficulty": "Easy",
+    "scenario": "Fix unquoted string identifier: \"WHERE shipping_city = Denver;\" (looks for column named Denver instead of text).",
+    "businessObjective": "Fix unquoted string identifier: \"WHERE shipping_city = Denver;\" (looks for column named Denver instead of text).",
+    "schemaSnippet": "Orders schema",
+    "targetQuery": "SELECT order_id, shipping_city\nFROM Orders\nWHERE shipping_city = 'Denver';",
+    "syntaxBlueprint": "SELECT col_1, col_2\nFROM Orders\nWHERE condition;",
+    "syntaxRule": "Strings use single quotes, numbers do not. AND precedes OR unless parentheses are used. NULL requires IS NULL.",
+    "syntaxTrap": "Never write col = NULL or omit parentheses in mixed AND/OR statements.",
+    "eli5Story": "[SYNTAX BLUEPRINT]:\nSELECT col_1, col_2\nFROM Orders\nWHERE condition;\n\n[RULE]: Strings use single quotes, numbers do not. AND precedes OR unless parentheses are used. NULL requires IS NULL.\n\n[TRAP TO AVOID]: Never write col = NULL or omit parentheses in mixed AND/OR statements.",
+    "commonMistakes": "Unquoted strings, missing parentheses around OR, or using = instead of LIKE.",
+    "learningOutcomes": "Mastered 2.10 Multi-Condition Bug Hunts on Orders.",
+    "challengeSlots": [
+      {
+        "type": "keyword",
+        "value": "SELECT"
+      },
+      {
+        "type": "column",
+        "value": "order_id,"
+      },
+      {
+        "type": "column",
+        "value": "shipping_city"
+      },
+      {
+        "type": "keyword",
+        "value": "FROM"
+      },
+      {
+        "type": "table",
+        "value": "Orders"
+      },
+      {
+        "type": "keyword",
+        "value": "WHERE"
+      },
+      {
+        "type": "column",
+        "value": "shipping_city"
+      },
+      {
+        "type": "column",
+        "value": "="
+      },
+      {
+        "type": "column",
+        "value": "'Denver';"
+      }
+    ]
+  },
+  {
+    "id": 1686,
+    "drillNumber": 196,
+    "section": "Section 0: Foundations & Syntax Gym",
+    "title": "Syntax #196: Fix assignment syntax: 'WHERE genre = Rock%' (pattern matching requires LIKE, not =)",
+    "industry": "Foundations",
+    "difficulty": "Easy",
+    "scenario": "Fix assignment syntax: 'WHERE genre = Rock%' (pattern matching requires LIKE, not =).",
+    "businessObjective": "Fix assignment syntax: 'WHERE genre = Rock%' (pattern matching requires LIKE, not =).",
+    "schemaSnippet": "MusicTracks schema",
+    "targetQuery": "SELECT track_title, genre\nFROM MusicTracks\nWHERE genre LIKE 'Rock%';",
+    "syntaxBlueprint": "SELECT col_1, col_2\nFROM MusicTracks\nWHERE condition;",
+    "syntaxRule": "Strings use single quotes, numbers do not. AND precedes OR unless parentheses are used. NULL requires IS NULL.",
+    "syntaxTrap": "Never write col = NULL or omit parentheses in mixed AND/OR statements.",
+    "eli5Story": "[SYNTAX BLUEPRINT]:\nSELECT col_1, col_2\nFROM MusicTracks\nWHERE condition;\n\n[RULE]: Strings use single quotes, numbers do not. AND precedes OR unless parentheses are used. NULL requires IS NULL.\n\n[TRAP TO AVOID]: Never write col = NULL or omit parentheses in mixed AND/OR statements.",
+    "commonMistakes": "Unquoted strings, missing parentheses around OR, or using = instead of LIKE.",
+    "learningOutcomes": "Mastered 2.10 Multi-Condition Bug Hunts on MusicTracks.",
+    "challengeSlots": [
+      {
+        "type": "keyword",
+        "value": "SELECT"
+      },
+      {
+        "type": "column",
+        "value": "track_title,"
+      },
+      {
+        "type": "column",
+        "value": "genre"
+      },
+      {
+        "type": "keyword",
+        "value": "FROM"
+      },
+      {
+        "type": "table",
+        "value": "MusicTracks"
+      },
+      {
+        "type": "keyword",
+        "value": "WHERE"
+      },
+      {
+        "type": "column",
+        "value": "genre"
+      },
+      {
+        "type": "keyword",
+        "value": "LIKE"
+      },
+      {
+        "type": "column",
+        "value": "'Rock%';"
+      }
+    ]
+  },
+  {
+    "id": 1687,
+    "drillNumber": 197,
+    "section": "Section 0: Foundations & Syntax Gym",
+    "title": "Syntax #197: Fix missing second column comparison: 'WHERE monthly_fee >= 30.00 AND <= 70.00;'",
+    "industry": "Foundations",
+    "difficulty": "Easy",
+    "scenario": "Fix missing second column comparison: 'WHERE monthly_fee >= 30.00 AND <= 70.00;'.",
+    "businessObjective": "Fix missing second column comparison: 'WHERE monthly_fee >= 30.00 AND <= 70.00;'.",
+    "schemaSnippet": "GymMembers schema",
+    "targetQuery": "SELECT member_name, monthly_fee\nFROM GymMembers\nWHERE monthly_fee >= 30.00 AND monthly_fee <= 70.00;",
+    "syntaxBlueprint": "SELECT col_1, col_2\nFROM GymMembers\nWHERE condition;",
+    "syntaxRule": "Strings use single quotes, numbers do not. AND precedes OR unless parentheses are used. NULL requires IS NULL.",
+    "syntaxTrap": "Never write col = NULL or omit parentheses in mixed AND/OR statements.",
+    "eli5Story": "[SYNTAX BLUEPRINT]:\nSELECT col_1, col_2\nFROM GymMembers\nWHERE condition;\n\n[RULE]: Strings use single quotes, numbers do not. AND precedes OR unless parentheses are used. NULL requires IS NULL.\n\n[TRAP TO AVOID]: Never write col = NULL or omit parentheses in mixed AND/OR statements.",
+    "commonMistakes": "Unquoted strings, missing parentheses around OR, or using = instead of LIKE.",
+    "learningOutcomes": "Mastered 2.10 Multi-Condition Bug Hunts on GymMembers.",
+    "challengeSlots": [
+      {
+        "type": "keyword",
+        "value": "SELECT"
+      },
+      {
+        "type": "column",
+        "value": "member_name,"
+      },
+      {
+        "type": "column",
+        "value": "monthly_fee"
+      },
+      {
+        "type": "keyword",
+        "value": "FROM"
+      },
+      {
+        "type": "table",
+        "value": "GymMembers"
+      },
+      {
+        "type": "keyword",
+        "value": "WHERE"
+      },
+      {
+        "type": "column",
+        "value": "monthly_fee"
+      },
+      {
+        "type": "column",
+        "value": ">="
+      },
+      {
+        "type": "column",
+        "value": "30.00"
+      },
+      {
+        "type": "keyword",
+        "value": "AND"
+      },
+      {
+        "type": "column",
+        "value": "monthly_fee"
+      },
+      {
+        "type": "column",
+        "value": "<="
+      },
+      {
+        "type": "column",
+        "value": "70.00;"
+      }
+    ]
+  },
+  {
+    "id": 1688,
+    "drillNumber": 198,
+    "section": "Section 0: Foundations & Syntax Gym",
+    "title": "Syntax #198: Fix quoted numeric literal: \"WHERE star_rating > '4.0';\" (numeric comparisons should avoid string quotes)",
+    "industry": "Foundations",
+    "difficulty": "Easy",
+    "scenario": "Fix quoted numeric literal: \"WHERE star_rating > '4.0';\" (numeric comparisons should avoid string quotes).",
+    "businessObjective": "Fix quoted numeric literal: \"WHERE star_rating > '4.0';\" (numeric comparisons should avoid string quotes).",
+    "schemaSnippet": "MovieReviews schema",
+    "targetQuery": "SELECT movie_title, star_rating\nFROM MovieReviews\nWHERE star_rating > 4.0;",
+    "syntaxBlueprint": "SELECT col_1, col_2\nFROM MovieReviews\nWHERE condition;",
+    "syntaxRule": "Strings use single quotes, numbers do not. AND precedes OR unless parentheses are used. NULL requires IS NULL.",
+    "syntaxTrap": "Never write col = NULL or omit parentheses in mixed AND/OR statements.",
+    "eli5Story": "[SYNTAX BLUEPRINT]:\nSELECT col_1, col_2\nFROM MovieReviews\nWHERE condition;\n\n[RULE]: Strings use single quotes, numbers do not. AND precedes OR unless parentheses are used. NULL requires IS NULL.\n\n[TRAP TO AVOID]: Never write col = NULL or omit parentheses in mixed AND/OR statements.",
+    "commonMistakes": "Unquoted strings, missing parentheses around OR, or using = instead of LIKE.",
+    "learningOutcomes": "Mastered 2.10 Multi-Condition Bug Hunts on MovieReviews.",
+    "challengeSlots": [
+      {
+        "type": "keyword",
+        "value": "SELECT"
+      },
+      {
+        "type": "column",
+        "value": "movie_title,"
+      },
+      {
+        "type": "column",
+        "value": "star_rating"
+      },
+      {
+        "type": "keyword",
+        "value": "FROM"
+      },
+      {
+        "type": "table",
+        "value": "MovieReviews"
+      },
+      {
+        "type": "keyword",
+        "value": "WHERE"
+      },
+      {
+        "type": "column",
+        "value": "star_rating"
+      },
+      {
+        "type": "column",
+        "value": ">"
+      },
+      {
+        "type": "column",
+        "value": "4.0;"
+      }
+    ]
+  },
+  {
+    "id": 1689,
+    "drillNumber": 199,
+    "section": "Section 0: Foundations & Syntax Gym",
+    "title": "Syntax #199: Fix exclamation mark placement: 'WHERE delay_minutes =! 0;' (must be != or <>)",
+    "industry": "Foundations",
+    "difficulty": "Easy",
+    "scenario": "Fix exclamation mark placement: 'WHERE delay_minutes =! 0;' (must be != or <>).",
+    "businessObjective": "Fix exclamation mark placement: 'WHERE delay_minutes =! 0;' (must be != or <>).",
+    "schemaSnippet": "FlightSchedule schema",
+    "targetQuery": "SELECT flight_id, delay_minutes\nFROM FlightSchedule\nWHERE delay_minutes != 0;",
+    "syntaxBlueprint": "SELECT col_1, col_2\nFROM FlightSchedule\nWHERE condition;",
+    "syntaxRule": "Strings use single quotes, numbers do not. AND precedes OR unless parentheses are used. NULL requires IS NULL.",
+    "syntaxTrap": "Never write col = NULL or omit parentheses in mixed AND/OR statements.",
+    "eli5Story": "[SYNTAX BLUEPRINT]:\nSELECT col_1, col_2\nFROM FlightSchedule\nWHERE condition;\n\n[RULE]: Strings use single quotes, numbers do not. AND precedes OR unless parentheses are used. NULL requires IS NULL.\n\n[TRAP TO AVOID]: Never write col = NULL or omit parentheses in mixed AND/OR statements.",
+    "commonMistakes": "Unquoted strings, missing parentheses around OR, or using = instead of LIKE.",
+    "learningOutcomes": "Mastered 2.10 Multi-Condition Bug Hunts on FlightSchedule.",
+    "challengeSlots": [
+      {
+        "type": "keyword",
+        "value": "SELECT"
+      },
+      {
+        "type": "column",
+        "value": "flight_id,"
+      },
+      {
+        "type": "column",
+        "value": "delay_minutes"
+      },
+      {
+        "type": "keyword",
+        "value": "FROM"
+      },
+      {
+        "type": "table",
+        "value": "FlightSchedule"
+      },
+      {
+        "type": "keyword",
+        "value": "WHERE"
+      },
+      {
+        "type": "column",
+        "value": "delay_minutes"
+      },
+      {
+        "type": "column",
+        "value": "!="
+      },
+      {
+        "type": "column",
+        "value": "0;"
+      }
+    ]
+  },
+  {
+    "id": 1690,
+    "drillNumber": 200,
+    "section": "Section 0: Foundations & Syntax Gym",
+    "title": "Syntax #200: Fix shorthand OR trap: \"WHERE species = 'Cat' OR 'Dog';\" (each side of OR requires a full boolean test)",
+    "industry": "Foundations",
+    "difficulty": "Easy",
+    "scenario": "Fix shorthand OR trap: \"WHERE species = 'Cat' OR 'Dog';\" (each side of OR requires a full boolean test).",
+    "businessObjective": "Fix shorthand OR trap: \"WHERE species = 'Cat' OR 'Dog';\" (each side of OR requires a full boolean test).",
+    "schemaSnippet": "PetClinic schema",
+    "targetQuery": "SELECT pet_name, species\nFROM PetClinic\nWHERE species = 'Cat' OR species = 'Dog';",
+    "syntaxBlueprint": "SELECT col_1, col_2\nFROM PetClinic\nWHERE condition;",
+    "syntaxRule": "Strings use single quotes, numbers do not. AND precedes OR unless parentheses are used. NULL requires IS NULL.",
+    "syntaxTrap": "Never write col = NULL or omit parentheses in mixed AND/OR statements.",
+    "eli5Story": "[SYNTAX BLUEPRINT]:\nSELECT col_1, col_2\nFROM PetClinic\nWHERE condition;\n\n[RULE]: Strings use single quotes, numbers do not. AND precedes OR unless parentheses are used. NULL requires IS NULL.\n\n[TRAP TO AVOID]: Never write col = NULL or omit parentheses in mixed AND/OR statements.",
+    "commonMistakes": "Unquoted strings, missing parentheses around OR, or using = instead of LIKE.",
+    "learningOutcomes": "Mastered 2.10 Multi-Condition Bug Hunts on PetClinic.",
+    "challengeSlots": [
+      {
+        "type": "keyword",
+        "value": "SELECT"
+      },
+      {
+        "type": "column",
+        "value": "pet_name,"
+      },
+      {
+        "type": "column",
+        "value": "species"
+      },
+      {
+        "type": "keyword",
+        "value": "FROM"
+      },
+      {
+        "type": "table",
+        "value": "PetClinic"
+      },
+      {
+        "type": "keyword",
+        "value": "WHERE"
+      },
+      {
+        "type": "column",
+        "value": "species"
+      },
+      {
+        "type": "column",
+        "value": "="
+      },
+      {
+        "type": "column",
+        "value": "'Cat'"
+      },
+      {
+        "type": "keyword",
+        "value": "OR"
+      },
+      {
+        "type": "column",
+        "value": "species"
+      },
+      {
+        "type": "column",
+        "value": "="
+      },
+      {
+        "type": "column",
+        "value": "'Dog';"
+      }
+    ]
+  },
+  {
+    "id": 1691,
+    "drillNumber": 201,
+    "section": "Section 0: Foundations & Syntax Gym",
+    "title": "Syntax #201: Sort students by GPA in ascending order (lowest to highest score)",
+    "industry": "Foundations",
+    "difficulty": "Easy",
+    "scenario": "Sort students by GPA in ascending order (lowest to highest score).",
+    "businessObjective": "Sort students by GPA in ascending order (lowest to highest score).",
+    "schemaSnippet": "Students schema",
+    "targetQuery": "SELECT full_name, gpa\nFROM Students\nORDER BY gpa ASC;",
+    "syntaxBlueprint": "SELECT full_name, gpa\nFROM Students\nORDER BY gpa ASC;",
+    "syntaxRule": "ORDER BY comes after WHERE, and LIMIT comes after ORDER BY. ASC is default, DESC is descending.",
+    "syntaxTrap": "Never place LIMIT before ORDER BY, and always add a unique tie-breaker to prevent row-hopping.",
+    "eli5Story": "[SYNTAX BLUEPRINT]:\nSELECT full_name, gpa\nFROM Students\nORDER BY gpa ASC;\n\n[RULE]: ORDER BY comes after WHERE, and LIMIT comes after ORDER BY. ASC is default, DESC is descending.\n\n[TRAP TO AVOID]: Never place LIMIT before ORDER BY, and always add a unique tie-breaker to prevent row-hopping.",
+    "commonMistakes": "Putting semicolon before ORDER BY, reversing LIMIT and OFFSET, or misplacing DESC.",
+    "learningOutcomes": "Mastered 3.1 Single Column Ascending (ASC) on Students.",
+    "challengeSlots": [
+      {
+        "type": "keyword",
+        "value": "SELECT"
+      },
+      {
+        "type": "column",
+        "value": "full_name,"
+      },
+      {
+        "type": "column",
+        "value": "gpa"
+      },
+      {
+        "type": "keyword",
+        "value": "FROM"
+      },
+      {
+        "type": "table",
+        "value": "Students"
+      },
+      {
+        "type": "keyword",
+        "value": "ORDER"
+      },
+      {
+        "type": "keyword",
+        "value": "BY"
+      },
+      {
+        "type": "column",
+        "value": "gpa"
+      },
+      {
+        "type": "column",
+        "value": "ASC;"
+      }
+    ]
+  },
+  {
+    "id": 1692,
+    "drillNumber": 202,
+    "section": "Section 0: Foundations & Syntax Gym",
+    "title": "Syntax #202: Display books ordered by price from cheapest to most expensive",
+    "industry": "Foundations",
+    "difficulty": "Easy",
+    "scenario": "Display books ordered by price from cheapest to most expensive.",
+    "businessObjective": "Display books ordered by price from cheapest to most expensive.",
+    "schemaSnippet": "Books schema",
+    "targetQuery": "SELECT title, price\nFROM Books\nORDER BY price ASC;",
+    "syntaxBlueprint": "SELECT title, price\nFROM Books\nORDER BY price ASC;",
+    "syntaxRule": "ORDER BY comes after WHERE, and LIMIT comes after ORDER BY. ASC is default, DESC is descending.",
+    "syntaxTrap": "Never place LIMIT before ORDER BY, and always add a unique tie-breaker to prevent row-hopping.",
+    "eli5Story": "[SYNTAX BLUEPRINT]:\nSELECT title, price\nFROM Books\nORDER BY price ASC;\n\n[RULE]: ORDER BY comes after WHERE, and LIMIT comes after ORDER BY. ASC is default, DESC is descending.\n\n[TRAP TO AVOID]: Never place LIMIT before ORDER BY, and always add a unique tie-breaker to prevent row-hopping.",
+    "commonMistakes": "Putting semicolon before ORDER BY, reversing LIMIT and OFFSET, or misplacing DESC.",
+    "learningOutcomes": "Mastered 3.1 Single Column Ascending (ASC) on Books.",
+    "challengeSlots": [
+      {
+        "type": "keyword",
+        "value": "SELECT"
+      },
+      {
+        "type": "column",
+        "value": "title,"
+      },
+      {
+        "type": "column",
+        "value": "price"
+      },
+      {
+        "type": "keyword",
+        "value": "FROM"
+      },
+      {
+        "type": "table",
+        "value": "Books"
+      },
+      {
+        "type": "keyword",
+        "value": "ORDER"
+      },
+      {
+        "type": "keyword",
+        "value": "BY"
+      },
+      {
+        "type": "column",
+        "value": "price"
+      },
+      {
+        "type": "column",
+        "value": "ASC;"
+      }
+    ]
+  },
+  {
+    "id": 1693,
+    "drillNumber": 203,
+    "section": "Section 0: Foundations & Syntax Gym",
+    "title": "Syntax #203: List employees ordered chronologically by hire_date (most senior first)",
+    "industry": "Foundations",
+    "difficulty": "Easy",
+    "scenario": "List employees ordered chronologically by hire_date (most senior first).",
+    "businessObjective": "List employees ordered chronologically by hire_date (most senior first).",
+    "schemaSnippet": "Employees schema",
+    "targetQuery": "SELECT first_name, hire_date\nFROM Employees\nORDER BY hire_date ASC;",
+    "syntaxBlueprint": "SELECT first_name, hire_date\nFROM Employees\nORDER BY hire_date ASC;",
+    "syntaxRule": "ORDER BY comes after WHERE, and LIMIT comes after ORDER BY. ASC is default, DESC is descending.",
+    "syntaxTrap": "Never place LIMIT before ORDER BY, and always add a unique tie-breaker to prevent row-hopping.",
+    "eli5Story": "[SYNTAX BLUEPRINT]:\nSELECT first_name, hire_date\nFROM Employees\nORDER BY hire_date ASC;\n\n[RULE]: ORDER BY comes after WHERE, and LIMIT comes after ORDER BY. ASC is default, DESC is descending.\n\n[TRAP TO AVOID]: Never place LIMIT before ORDER BY, and always add a unique tie-breaker to prevent row-hopping.",
+    "commonMistakes": "Putting semicolon before ORDER BY, reversing LIMIT and OFFSET, or misplacing DESC.",
+    "learningOutcomes": "Mastered 3.1 Single Column Ascending (ASC) on Employees.",
+    "challengeSlots": [
+      {
+        "type": "keyword",
+        "value": "SELECT"
+      },
+      {
+        "type": "column",
+        "value": "first_name,"
+      },
+      {
+        "type": "column",
+        "value": "hire_date"
+      },
+      {
+        "type": "keyword",
+        "value": "FROM"
+      },
+      {
+        "type": "table",
+        "value": "Employees"
+      },
+      {
+        "type": "keyword",
+        "value": "ORDER"
+      },
+      {
+        "type": "keyword",
+        "value": "BY"
+      },
+      {
+        "type": "column",
+        "value": "hire_date"
+      },
+      {
+        "type": "column",
+        "value": "ASC;"
+      }
+    ]
+  },
+  {
+    "id": 1694,
+    "drillNumber": 204,
+    "section": "Section 0: Foundations & Syntax Gym",
+    "title": "Syntax #204: Order grocery items by unit price ascending",
+    "industry": "Foundations",
+    "difficulty": "Easy",
+    "scenario": "Order grocery items by unit price ascending.",
+    "businessObjective": "Order grocery items by unit price ascending.",
+    "schemaSnippet": "GroceryItems schema",
+    "targetQuery": "SELECT item_name, unit_price\nFROM GroceryItems\nORDER BY unit_price ASC;",
+    "syntaxBlueprint": "SELECT item_name, unit_price\nFROM GroceryItems\nORDER BY unit_price ASC;",
+    "syntaxRule": "ORDER BY comes after WHERE, and LIMIT comes after ORDER BY. ASC is default, DESC is descending.",
+    "syntaxTrap": "Never place LIMIT before ORDER BY, and always add a unique tie-breaker to prevent row-hopping.",
+    "eli5Story": "[SYNTAX BLUEPRINT]:\nSELECT item_name, unit_price\nFROM GroceryItems\nORDER BY unit_price ASC;\n\n[RULE]: ORDER BY comes after WHERE, and LIMIT comes after ORDER BY. ASC is default, DESC is descending.\n\n[TRAP TO AVOID]: Never place LIMIT before ORDER BY, and always add a unique tie-breaker to prevent row-hopping.",
+    "commonMistakes": "Putting semicolon before ORDER BY, reversing LIMIT and OFFSET, or misplacing DESC.",
+    "learningOutcomes": "Mastered 3.1 Single Column Ascending (ASC) on GroceryItems.",
+    "challengeSlots": [
+      {
+        "type": "keyword",
+        "value": "SELECT"
+      },
+      {
+        "type": "column",
+        "value": "item_name,"
+      },
+      {
+        "type": "column",
+        "value": "unit_price"
+      },
+      {
+        "type": "keyword",
+        "value": "FROM"
+      },
+      {
+        "type": "table",
+        "value": "GroceryItems"
+      },
+      {
+        "type": "keyword",
+        "value": "ORDER"
+      },
+      {
+        "type": "keyword",
+        "value": "BY"
+      },
+      {
+        "type": "column",
+        "value": "unit_price"
+      },
+      {
+        "type": "column",
+        "value": "ASC;"
+      }
+    ]
+  },
+  {
+    "id": 1695,
+    "drillNumber": 205,
+    "section": "Section 0: Foundations & Syntax Gym",
+    "title": "Syntax #205: Sort customer orders from smallest to largest quantity",
+    "industry": "Foundations",
+    "difficulty": "Easy",
+    "scenario": "Sort customer orders from smallest to largest quantity.",
+    "businessObjective": "Sort customer orders from smallest to largest quantity.",
+    "schemaSnippet": "Orders schema",
+    "targetQuery": "SELECT order_id, quantity\nFROM Orders\nORDER BY quantity ASC;",
+    "syntaxBlueprint": "SELECT order_id, quantity\nFROM Orders\nORDER BY quantity ASC;",
+    "syntaxRule": "ORDER BY comes after WHERE, and LIMIT comes after ORDER BY. ASC is default, DESC is descending.",
+    "syntaxTrap": "Never place LIMIT before ORDER BY, and always add a unique tie-breaker to prevent row-hopping.",
+    "eli5Story": "[SYNTAX BLUEPRINT]:\nSELECT order_id, quantity\nFROM Orders\nORDER BY quantity ASC;\n\n[RULE]: ORDER BY comes after WHERE, and LIMIT comes after ORDER BY. ASC is default, DESC is descending.\n\n[TRAP TO AVOID]: Never place LIMIT before ORDER BY, and always add a unique tie-breaker to prevent row-hopping.",
+    "commonMistakes": "Putting semicolon before ORDER BY, reversing LIMIT and OFFSET, or misplacing DESC.",
+    "learningOutcomes": "Mastered 3.1 Single Column Ascending (ASC) on Orders.",
+    "challengeSlots": [
+      {
+        "type": "keyword",
+        "value": "SELECT"
+      },
+      {
+        "type": "column",
+        "value": "order_id,"
+      },
+      {
+        "type": "column",
+        "value": "quantity"
+      },
+      {
+        "type": "keyword",
+        "value": "FROM"
+      },
+      {
+        "type": "table",
+        "value": "Orders"
+      },
+      {
+        "type": "keyword",
+        "value": "ORDER"
+      },
+      {
+        "type": "keyword",
+        "value": "BY"
+      },
+      {
+        "type": "column",
+        "value": "quantity"
+      },
+      {
+        "type": "column",
+        "value": "ASC;"
+      }
+    ]
+  },
+  {
+    "id": 1696,
+    "drillNumber": 206,
+    "section": "Section 0: Foundations & Syntax Gym",
+    "title": "Syntax #206: Order music tracks from shortest to longest duration",
+    "industry": "Foundations",
+    "difficulty": "Easy",
+    "scenario": "Order music tracks from shortest to longest duration.",
+    "businessObjective": "Order music tracks from shortest to longest duration.",
+    "schemaSnippet": "MusicTracks schema",
+    "targetQuery": "SELECT track_title, duration_seconds\nFROM MusicTracks\nORDER BY duration_seconds ASC;",
+    "syntaxBlueprint": "SELECT track_title, duration_seconds\nFROM MusicTracks\nORDER BY duration_seconds ASC;",
+    "syntaxRule": "ORDER BY comes after WHERE, and LIMIT comes after ORDER BY. ASC is default, DESC is descending.",
+    "syntaxTrap": "Never place LIMIT before ORDER BY, and always add a unique tie-breaker to prevent row-hopping.",
+    "eli5Story": "[SYNTAX BLUEPRINT]:\nSELECT track_title, duration_seconds\nFROM MusicTracks\nORDER BY duration_seconds ASC;\n\n[RULE]: ORDER BY comes after WHERE, and LIMIT comes after ORDER BY. ASC is default, DESC is descending.\n\n[TRAP TO AVOID]: Never place LIMIT before ORDER BY, and always add a unique tie-breaker to prevent row-hopping.",
+    "commonMistakes": "Putting semicolon before ORDER BY, reversing LIMIT and OFFSET, or misplacing DESC.",
+    "learningOutcomes": "Mastered 3.1 Single Column Ascending (ASC) on MusicTracks.",
+    "challengeSlots": [
+      {
+        "type": "keyword",
+        "value": "SELECT"
+      },
+      {
+        "type": "column",
+        "value": "track_title,"
+      },
+      {
+        "type": "column",
+        "value": "duration_seconds"
+      },
+      {
+        "type": "keyword",
+        "value": "FROM"
+      },
+      {
+        "type": "table",
+        "value": "MusicTracks"
+      },
+      {
+        "type": "keyword",
+        "value": "ORDER"
+      },
+      {
+        "type": "keyword",
+        "value": "BY"
+      },
+      {
+        "type": "column",
+        "value": "duration_seconds"
+      },
+      {
+        "type": "column",
+        "value": "ASC;"
+      }
+    ]
+  },
+  {
+    "id": 1697,
+    "drillNumber": 207,
+    "section": "Section 0: Foundations & Syntax Gym",
+    "title": "Syntax #207: List gym members by join date from earliest to latest",
+    "industry": "Foundations",
+    "difficulty": "Easy",
+    "scenario": "List gym members by join date from earliest to latest.",
+    "businessObjective": "List gym members by join date from earliest to latest.",
+    "schemaSnippet": "GymMembers schema",
+    "targetQuery": "SELECT member_name, join_date\nFROM GymMembers\nORDER BY join_date ASC;",
+    "syntaxBlueprint": "SELECT member_name, join_date\nFROM GymMembers\nORDER BY join_date ASC;",
+    "syntaxRule": "ORDER BY comes after WHERE, and LIMIT comes after ORDER BY. ASC is default, DESC is descending.",
+    "syntaxTrap": "Never place LIMIT before ORDER BY, and always add a unique tie-breaker to prevent row-hopping.",
+    "eli5Story": "[SYNTAX BLUEPRINT]:\nSELECT member_name, join_date\nFROM GymMembers\nORDER BY join_date ASC;\n\n[RULE]: ORDER BY comes after WHERE, and LIMIT comes after ORDER BY. ASC is default, DESC is descending.\n\n[TRAP TO AVOID]: Never place LIMIT before ORDER BY, and always add a unique tie-breaker to prevent row-hopping.",
+    "commonMistakes": "Putting semicolon before ORDER BY, reversing LIMIT and OFFSET, or misplacing DESC.",
+    "learningOutcomes": "Mastered 3.1 Single Column Ascending (ASC) on GymMembers.",
+    "challengeSlots": [
+      {
+        "type": "keyword",
+        "value": "SELECT"
+      },
+      {
+        "type": "column",
+        "value": "member_name,"
+      },
+      {
+        "type": "column",
+        "value": "join_date"
+      },
+      {
+        "type": "keyword",
+        "value": "FROM"
+      },
+      {
+        "type": "table",
+        "value": "GymMembers"
+      },
+      {
+        "type": "keyword",
+        "value": "ORDER"
+      },
+      {
+        "type": "keyword",
+        "value": "BY"
+      },
+      {
+        "type": "column",
+        "value": "join_date"
+      },
+      {
+        "type": "column",
+        "value": "ASC;"
+      }
+    ]
+  },
+  {
+    "id": 1698,
+    "drillNumber": 208,
+    "section": "Section 0: Foundations & Syntax Gym",
+    "title": "Syntax #208: Order movies chronologically by release year from oldest to newest",
+    "industry": "Foundations",
+    "difficulty": "Easy",
+    "scenario": "Order movies chronologically by release year from oldest to newest.",
+    "businessObjective": "Order movies chronologically by release year from oldest to newest.",
+    "schemaSnippet": "MovieReviews schema",
+    "targetQuery": "SELECT movie_title, release_year\nFROM MovieReviews\nORDER BY release_year ASC;",
+    "syntaxBlueprint": "SELECT movie_title, release_year\nFROM MovieReviews\nORDER BY release_year ASC;",
+    "syntaxRule": "ORDER BY comes after WHERE, and LIMIT comes after ORDER BY. ASC is default, DESC is descending.",
+    "syntaxTrap": "Never place LIMIT before ORDER BY, and always add a unique tie-breaker to prevent row-hopping.",
+    "eli5Story": "[SYNTAX BLUEPRINT]:\nSELECT movie_title, release_year\nFROM MovieReviews\nORDER BY release_year ASC;\n\n[RULE]: ORDER BY comes after WHERE, and LIMIT comes after ORDER BY. ASC is default, DESC is descending.\n\n[TRAP TO AVOID]: Never place LIMIT before ORDER BY, and always add a unique tie-breaker to prevent row-hopping.",
+    "commonMistakes": "Putting semicolon before ORDER BY, reversing LIMIT and OFFSET, or misplacing DESC.",
+    "learningOutcomes": "Mastered 3.1 Single Column Ascending (ASC) on MovieReviews.",
+    "challengeSlots": [
+      {
+        "type": "keyword",
+        "value": "SELECT"
+      },
+      {
+        "type": "column",
+        "value": "movie_title,"
+      },
+      {
+        "type": "column",
+        "value": "release_year"
+      },
+      {
+        "type": "keyword",
+        "value": "FROM"
+      },
+      {
+        "type": "table",
+        "value": "MovieReviews"
+      },
+      {
+        "type": "keyword",
+        "value": "ORDER"
+      },
+      {
+        "type": "keyword",
+        "value": "BY"
+      },
+      {
+        "type": "column",
+        "value": "release_year"
+      },
+      {
+        "type": "column",
+        "value": "ASC;"
+      }
+    ]
+  },
+  {
+    "id": 1699,
+    "drillNumber": 209,
+    "section": "Section 0: Foundations & Syntax Gym",
+    "title": "Syntax #209: Display flights ordered by departure time from earliest morning to latest night",
+    "industry": "Foundations",
+    "difficulty": "Easy",
+    "scenario": "Display flights ordered by departure time from earliest morning to latest night.",
+    "businessObjective": "Display flights ordered by departure time from earliest morning to latest night.",
+    "schemaSnippet": "FlightSchedule schema",
+    "targetQuery": "SELECT flight_id, departure_time\nFROM FlightSchedule\nORDER BY departure_time ASC;",
+    "syntaxBlueprint": "SELECT flight_id, departure_time\nFROM FlightSchedule\nORDER BY departure_time ASC;",
+    "syntaxRule": "ORDER BY comes after WHERE, and LIMIT comes after ORDER BY. ASC is default, DESC is descending.",
+    "syntaxTrap": "Never place LIMIT before ORDER BY, and always add a unique tie-breaker to prevent row-hopping.",
+    "eli5Story": "[SYNTAX BLUEPRINT]:\nSELECT flight_id, departure_time\nFROM FlightSchedule\nORDER BY departure_time ASC;\n\n[RULE]: ORDER BY comes after WHERE, and LIMIT comes after ORDER BY. ASC is default, DESC is descending.\n\n[TRAP TO AVOID]: Never place LIMIT before ORDER BY, and always add a unique tie-breaker to prevent row-hopping.",
+    "commonMistakes": "Putting semicolon before ORDER BY, reversing LIMIT and OFFSET, or misplacing DESC.",
+    "learningOutcomes": "Mastered 3.1 Single Column Ascending (ASC) on FlightSchedule.",
+    "challengeSlots": [
+      {
+        "type": "keyword",
+        "value": "SELECT"
+      },
+      {
+        "type": "column",
+        "value": "flight_id,"
+      },
+      {
+        "type": "column",
+        "value": "departure_time"
+      },
+      {
+        "type": "keyword",
+        "value": "FROM"
+      },
+      {
+        "type": "table",
+        "value": "FlightSchedule"
+      },
+      {
+        "type": "keyword",
+        "value": "ORDER"
+      },
+      {
+        "type": "keyword",
+        "value": "BY"
+      },
+      {
+        "type": "column",
+        "value": "departure_time"
+      },
+      {
+        "type": "column",
+        "value": "ASC;"
+      }
+    ]
+  },
+  {
+    "id": 1700,
+    "drillNumber": 210,
+    "section": "Section 0: Foundations & Syntax Gym",
+    "title": "Syntax #210: Sort veterinary patients by age from youngest to oldest",
+    "industry": "Foundations",
+    "difficulty": "Easy",
+    "scenario": "Sort veterinary patients by age from youngest to oldest.",
+    "businessObjective": "Sort veterinary patients by age from youngest to oldest.",
+    "schemaSnippet": "PetClinic schema",
+    "targetQuery": "SELECT pet_name, age_years\nFROM PetClinic\nORDER BY age_years ASC;",
+    "syntaxBlueprint": "SELECT pet_name, age_years\nFROM PetClinic\nORDER BY age_years ASC;",
+    "syntaxRule": "ORDER BY comes after WHERE, and LIMIT comes after ORDER BY. ASC is default, DESC is descending.",
+    "syntaxTrap": "Never place LIMIT before ORDER BY, and always add a unique tie-breaker to prevent row-hopping.",
+    "eli5Story": "[SYNTAX BLUEPRINT]:\nSELECT pet_name, age_years\nFROM PetClinic\nORDER BY age_years ASC;\n\n[RULE]: ORDER BY comes after WHERE, and LIMIT comes after ORDER BY. ASC is default, DESC is descending.\n\n[TRAP TO AVOID]: Never place LIMIT before ORDER BY, and always add a unique tie-breaker to prevent row-hopping.",
+    "commonMistakes": "Putting semicolon before ORDER BY, reversing LIMIT and OFFSET, or misplacing DESC.",
+    "learningOutcomes": "Mastered 3.1 Single Column Ascending (ASC) on PetClinic.",
+    "challengeSlots": [
+      {
+        "type": "keyword",
+        "value": "SELECT"
+      },
+      {
+        "type": "column",
+        "value": "pet_name,"
+      },
+      {
+        "type": "column",
+        "value": "age_years"
+      },
+      {
+        "type": "keyword",
+        "value": "FROM"
+      },
+      {
+        "type": "table",
+        "value": "PetClinic"
+      },
+      {
+        "type": "keyword",
+        "value": "ORDER"
+      },
+      {
+        "type": "keyword",
+        "value": "BY"
+      },
+      {
+        "type": "column",
+        "value": "age_years"
+      },
+      {
+        "type": "column",
+        "value": "ASC;"
+      }
+    ]
+  },
+  {
+    "id": 1701,
+    "drillNumber": 211,
+    "section": "Section 0: Foundations & Syntax Gym",
+    "title": "Syntax #211: Rank students by GPA descending (highest academic score first)",
+    "industry": "Foundations",
+    "difficulty": "Easy",
+    "scenario": "Rank students by GPA descending (highest academic score first).",
+    "businessObjective": "Rank students by GPA descending (highest academic score first).",
+    "schemaSnippet": "Students schema",
+    "targetQuery": "SELECT full_name, gpa\nFROM Students\nORDER BY gpa DESC;",
+    "syntaxBlueprint": "SELECT full_name, gpa\nFROM Students\nORDER BY gpa DESC;",
+    "syntaxRule": "ORDER BY comes after WHERE, and LIMIT comes after ORDER BY. ASC is default, DESC is descending.",
+    "syntaxTrap": "Never place LIMIT before ORDER BY, and always add a unique tie-breaker to prevent row-hopping.",
+    "eli5Story": "[SYNTAX BLUEPRINT]:\nSELECT full_name, gpa\nFROM Students\nORDER BY gpa DESC;\n\n[RULE]: ORDER BY comes after WHERE, and LIMIT comes after ORDER BY. ASC is default, DESC is descending.\n\n[TRAP TO AVOID]: Never place LIMIT before ORDER BY, and always add a unique tie-breaker to prevent row-hopping.",
+    "commonMistakes": "Putting semicolon before ORDER BY, reversing LIMIT and OFFSET, or misplacing DESC.",
+    "learningOutcomes": "Mastered 3.2 Single Column Descending (DESC) on Students.",
+    "challengeSlots": [
+      {
+        "type": "keyword",
+        "value": "SELECT"
+      },
+      {
+        "type": "column",
+        "value": "full_name,"
+      },
+      {
+        "type": "column",
+        "value": "gpa"
+      },
+      {
+        "type": "keyword",
+        "value": "FROM"
+      },
+      {
+        "type": "table",
+        "value": "Students"
+      },
+      {
+        "type": "keyword",
+        "value": "ORDER"
+      },
+      {
+        "type": "keyword",
+        "value": "BY"
+      },
+      {
+        "type": "column",
+        "value": "gpa"
+      },
+      {
+        "type": "column",
+        "value": "DESC;"
+      }
+    ]
+  },
+  {
+    "id": 1702,
+    "drillNumber": 212,
+    "section": "Section 0: Foundations & Syntax Gym",
+    "title": "Syntax #212: List books ordered from highest to lowest price",
+    "industry": "Foundations",
+    "difficulty": "Easy",
+    "scenario": "List books ordered from highest to lowest price.",
+    "businessObjective": "List books ordered from highest to lowest price.",
+    "schemaSnippet": "Books schema",
+    "targetQuery": "SELECT title, price\nFROM Books\nORDER BY price DESC;",
+    "syntaxBlueprint": "SELECT title, price\nFROM Books\nORDER BY price DESC;",
+    "syntaxRule": "ORDER BY comes after WHERE, and LIMIT comes after ORDER BY. ASC is default, DESC is descending.",
+    "syntaxTrap": "Never place LIMIT before ORDER BY, and always add a unique tie-breaker to prevent row-hopping.",
+    "eli5Story": "[SYNTAX BLUEPRINT]:\nSELECT title, price\nFROM Books\nORDER BY price DESC;\n\n[RULE]: ORDER BY comes after WHERE, and LIMIT comes after ORDER BY. ASC is default, DESC is descending.\n\n[TRAP TO AVOID]: Never place LIMIT before ORDER BY, and always add a unique tie-breaker to prevent row-hopping.",
+    "commonMistakes": "Putting semicolon before ORDER BY, reversing LIMIT and OFFSET, or misplacing DESC.",
+    "learningOutcomes": "Mastered 3.2 Single Column Descending (DESC) on Books.",
+    "challengeSlots": [
+      {
+        "type": "keyword",
+        "value": "SELECT"
+      },
+      {
+        "type": "column",
+        "value": "title,"
+      },
+      {
+        "type": "column",
+        "value": "price"
+      },
+      {
+        "type": "keyword",
+        "value": "FROM"
+      },
+      {
+        "type": "table",
+        "value": "Books"
+      },
+      {
+        "type": "keyword",
+        "value": "ORDER"
+      },
+      {
+        "type": "keyword",
+        "value": "BY"
+      },
+      {
+        "type": "column",
+        "value": "price"
+      },
+      {
+        "type": "column",
+        "value": "DESC;"
+      }
+    ]
+  },
+  {
+    "id": 1703,
+    "drillNumber": 213,
+    "section": "Section 0: Foundations & Syntax Gym",
+    "title": "Syntax #213: Order employees by annual salary from highest earner to lowest",
+    "industry": "Foundations",
+    "difficulty": "Easy",
+    "scenario": "Order employees by annual salary from highest earner to lowest.",
+    "businessObjective": "Order employees by annual salary from highest earner to lowest.",
+    "schemaSnippet": "Employees schema",
+    "targetQuery": "SELECT first_name, salary\nFROM Employees\nORDER BY salary DESC;",
+    "syntaxBlueprint": "SELECT first_name, salary\nFROM Employees\nORDER BY salary DESC;",
+    "syntaxRule": "ORDER BY comes after WHERE, and LIMIT comes after ORDER BY. ASC is default, DESC is descending.",
+    "syntaxTrap": "Never place LIMIT before ORDER BY, and always add a unique tie-breaker to prevent row-hopping.",
+    "eli5Story": "[SYNTAX BLUEPRINT]:\nSELECT first_name, salary\nFROM Employees\nORDER BY salary DESC;\n\n[RULE]: ORDER BY comes after WHERE, and LIMIT comes after ORDER BY. ASC is default, DESC is descending.\n\n[TRAP TO AVOID]: Never place LIMIT before ORDER BY, and always add a unique tie-breaker to prevent row-hopping.",
+    "commonMistakes": "Putting semicolon before ORDER BY, reversing LIMIT and OFFSET, or misplacing DESC.",
+    "learningOutcomes": "Mastered 3.2 Single Column Descending (DESC) on Employees.",
+    "challengeSlots": [
+      {
+        "type": "keyword",
+        "value": "SELECT"
+      },
+      {
+        "type": "column",
+        "value": "first_name,"
+      },
+      {
+        "type": "column",
+        "value": "salary"
+      },
+      {
+        "type": "keyword",
+        "value": "FROM"
+      },
+      {
+        "type": "table",
+        "value": "Employees"
+      },
+      {
+        "type": "keyword",
+        "value": "ORDER"
+      },
+      {
+        "type": "keyword",
+        "value": "BY"
+      },
+      {
+        "type": "column",
+        "value": "salary"
+      },
+      {
+        "type": "column",
+        "value": "DESC;"
+      }
+    ]
+  },
+  {
+    "id": 1704,
+    "drillNumber": 214,
+    "section": "Section 0: Foundations & Syntax Gym",
+    "title": "Syntax #214: View grocery items sorted by stock units from most abundant to least",
+    "industry": "Foundations",
+    "difficulty": "Easy",
+    "scenario": "View grocery items sorted by stock units from most abundant to least.",
+    "businessObjective": "View grocery items sorted by stock units from most abundant to least.",
+    "schemaSnippet": "GroceryItems schema",
+    "targetQuery": "SELECT item_name, stock_units\nFROM GroceryItems\nORDER BY stock_units DESC;",
+    "syntaxBlueprint": "SELECT item_name, stock_units\nFROM GroceryItems\nORDER BY stock_units DESC;",
+    "syntaxRule": "ORDER BY comes after WHERE, and LIMIT comes after ORDER BY. ASC is default, DESC is descending.",
+    "syntaxTrap": "Never place LIMIT before ORDER BY, and always add a unique tie-breaker to prevent row-hopping.",
+    "eli5Story": "[SYNTAX BLUEPRINT]:\nSELECT item_name, stock_units\nFROM GroceryItems\nORDER BY stock_units DESC;\n\n[RULE]: ORDER BY comes after WHERE, and LIMIT comes after ORDER BY. ASC is default, DESC is descending.\n\n[TRAP TO AVOID]: Never place LIMIT before ORDER BY, and always add a unique tie-breaker to prevent row-hopping.",
+    "commonMistakes": "Putting semicolon before ORDER BY, reversing LIMIT and OFFSET, or misplacing DESC.",
+    "learningOutcomes": "Mastered 3.2 Single Column Descending (DESC) on GroceryItems.",
+    "challengeSlots": [
+      {
+        "type": "keyword",
+        "value": "SELECT"
+      },
+      {
+        "type": "column",
+        "value": "item_name,"
+      },
+      {
+        "type": "column",
+        "value": "stock_units"
+      },
+      {
+        "type": "keyword",
+        "value": "FROM"
+      },
+      {
+        "type": "table",
+        "value": "GroceryItems"
+      },
+      {
+        "type": "keyword",
+        "value": "ORDER"
+      },
+      {
+        "type": "keyword",
+        "value": "BY"
+      },
+      {
+        "type": "column",
+        "value": "stock_units"
+      },
+      {
+        "type": "column",
+        "value": "DESC;"
+      }
+    ]
+  },
+  {
+    "id": 1705,
+    "drillNumber": 215,
+    "section": "Section 0: Foundations & Syntax Gym",
+    "title": "Syntax #215: Order customer purchases by unit price descending",
+    "industry": "Foundations",
+    "difficulty": "Easy",
+    "scenario": "Order customer purchases by unit price descending.",
+    "businessObjective": "Order customer purchases by unit price descending.",
+    "schemaSnippet": "Orders schema",
+    "targetQuery": "SELECT order_id, unit_price\nFROM Orders\nORDER BY unit_price DESC;",
+    "syntaxBlueprint": "SELECT order_id, unit_price\nFROM Orders\nORDER BY unit_price DESC;",
+    "syntaxRule": "ORDER BY comes after WHERE, and LIMIT comes after ORDER BY. ASC is default, DESC is descending.",
+    "syntaxTrap": "Never place LIMIT before ORDER BY, and always add a unique tie-breaker to prevent row-hopping.",
+    "eli5Story": "[SYNTAX BLUEPRINT]:\nSELECT order_id, unit_price\nFROM Orders\nORDER BY unit_price DESC;\n\n[RULE]: ORDER BY comes after WHERE, and LIMIT comes after ORDER BY. ASC is default, DESC is descending.\n\n[TRAP TO AVOID]: Never place LIMIT before ORDER BY, and always add a unique tie-breaker to prevent row-hopping.",
+    "commonMistakes": "Putting semicolon before ORDER BY, reversing LIMIT and OFFSET, or misplacing DESC.",
+    "learningOutcomes": "Mastered 3.2 Single Column Descending (DESC) on Orders.",
+    "challengeSlots": [
+      {
+        "type": "keyword",
+        "value": "SELECT"
+      },
+      {
+        "type": "column",
+        "value": "order_id,"
+      },
+      {
+        "type": "column",
+        "value": "unit_price"
+      },
+      {
+        "type": "keyword",
+        "value": "FROM"
+      },
+      {
+        "type": "table",
+        "value": "Orders"
+      },
+      {
+        "type": "keyword",
+        "value": "ORDER"
+      },
+      {
+        "type": "keyword",
+        "value": "BY"
+      },
+      {
+        "type": "column",
+        "value": "unit_price"
+      },
+      {
+        "type": "column",
+        "value": "DESC;"
+      }
+    ]
+  },
+  {
+    "id": 1706,
+    "drillNumber": 216,
+    "section": "Section 0: Foundations & Syntax Gym",
+    "title": "Syntax #216: Sort playlist by play count descending to find top hits",
+    "industry": "Foundations",
+    "difficulty": "Easy",
+    "scenario": "Sort playlist by play count descending to find top hits.",
+    "businessObjective": "Sort playlist by play count descending to find top hits.",
+    "schemaSnippet": "MusicTracks schema",
+    "targetQuery": "SELECT track_title, play_count\nFROM MusicTracks\nORDER BY play_count DESC;",
+    "syntaxBlueprint": "SELECT track_title, play_count\nFROM MusicTracks\nORDER BY play_count DESC;",
+    "syntaxRule": "ORDER BY comes after WHERE, and LIMIT comes after ORDER BY. ASC is default, DESC is descending.",
+    "syntaxTrap": "Never place LIMIT before ORDER BY, and always add a unique tie-breaker to prevent row-hopping.",
+    "eli5Story": "[SYNTAX BLUEPRINT]:\nSELECT track_title, play_count\nFROM MusicTracks\nORDER BY play_count DESC;\n\n[RULE]: ORDER BY comes after WHERE, and LIMIT comes after ORDER BY. ASC is default, DESC is descending.\n\n[TRAP TO AVOID]: Never place LIMIT before ORDER BY, and always add a unique tie-breaker to prevent row-hopping.",
+    "commonMistakes": "Putting semicolon before ORDER BY, reversing LIMIT and OFFSET, or misplacing DESC.",
+    "learningOutcomes": "Mastered 3.2 Single Column Descending (DESC) on MusicTracks.",
+    "challengeSlots": [
+      {
+        "type": "keyword",
+        "value": "SELECT"
+      },
+      {
+        "type": "column",
+        "value": "track_title,"
+      },
+      {
+        "type": "column",
+        "value": "play_count"
+      },
+      {
+        "type": "keyword",
+        "value": "FROM"
+      },
+      {
+        "type": "table",
+        "value": "MusicTracks"
+      },
+      {
+        "type": "keyword",
+        "value": "ORDER"
+      },
+      {
+        "type": "keyword",
+        "value": "BY"
+      },
+      {
+        "type": "column",
+        "value": "play_count"
+      },
+      {
+        "type": "column",
+        "value": "DESC;"
+      }
+    ]
+  },
+  {
+    "id": 1707,
+    "drillNumber": 217,
+    "section": "Section 0: Foundations & Syntax Gym",
+    "title": "Syntax #217: Rank gym members by monthly attendance from highest to lowest",
+    "industry": "Foundations",
+    "difficulty": "Easy",
+    "scenario": "Rank gym members by monthly attendance from highest to lowest.",
+    "businessObjective": "Rank gym members by monthly attendance from highest to lowest.",
+    "schemaSnippet": "GymMembers schema",
+    "targetQuery": "SELECT member_name, visits_this_month\nFROM GymMembers\nORDER BY visits_this_month DESC;",
+    "syntaxBlueprint": "SELECT member_name, visits_this_month\nFROM GymMembers\nORDER BY visits_this_month DESC;",
+    "syntaxRule": "ORDER BY comes after WHERE, and LIMIT comes after ORDER BY. ASC is default, DESC is descending.",
+    "syntaxTrap": "Never place LIMIT before ORDER BY, and always add a unique tie-breaker to prevent row-hopping.",
+    "eli5Story": "[SYNTAX BLUEPRINT]:\nSELECT member_name, visits_this_month\nFROM GymMembers\nORDER BY visits_this_month DESC;\n\n[RULE]: ORDER BY comes after WHERE, and LIMIT comes after ORDER BY. ASC is default, DESC is descending.\n\n[TRAP TO AVOID]: Never place LIMIT before ORDER BY, and always add a unique tie-breaker to prevent row-hopping.",
+    "commonMistakes": "Putting semicolon before ORDER BY, reversing LIMIT and OFFSET, or misplacing DESC.",
+    "learningOutcomes": "Mastered 3.2 Single Column Descending (DESC) on GymMembers.",
+    "challengeSlots": [
+      {
+        "type": "keyword",
+        "value": "SELECT"
+      },
+      {
+        "type": "column",
+        "value": "member_name,"
+      },
+      {
+        "type": "column",
+        "value": "visits_this_month"
+      },
+      {
+        "type": "keyword",
+        "value": "FROM"
+      },
+      {
+        "type": "table",
+        "value": "GymMembers"
+      },
+      {
+        "type": "keyword",
+        "value": "ORDER"
+      },
+      {
+        "type": "keyword",
+        "value": "BY"
+      },
+      {
+        "type": "column",
+        "value": "visits_this_month"
+      },
+      {
+        "type": "column",
+        "value": "DESC;"
+      }
+    ]
+  },
+  {
+    "id": 1708,
+    "drillNumber": 218,
+    "section": "Section 0: Foundations & Syntax Gym",
+    "title": "Syntax #218: Sort movie reviews by star rating descending (best reviewed films first)",
+    "industry": "Foundations",
+    "difficulty": "Easy",
+    "scenario": "Sort movie reviews by star rating descending (best reviewed films first).",
+    "businessObjective": "Sort movie reviews by star rating descending (best reviewed films first).",
+    "schemaSnippet": "MovieReviews schema",
+    "targetQuery": "SELECT movie_title, star_rating\nFROM MovieReviews\nORDER BY star_rating DESC;",
+    "syntaxBlueprint": "SELECT movie_title, star_rating\nFROM MovieReviews\nORDER BY star_rating DESC;",
+    "syntaxRule": "ORDER BY comes after WHERE, and LIMIT comes after ORDER BY. ASC is default, DESC is descending.",
+    "syntaxTrap": "Never place LIMIT before ORDER BY, and always add a unique tie-breaker to prevent row-hopping.",
+    "eli5Story": "[SYNTAX BLUEPRINT]:\nSELECT movie_title, star_rating\nFROM MovieReviews\nORDER BY star_rating DESC;\n\n[RULE]: ORDER BY comes after WHERE, and LIMIT comes after ORDER BY. ASC is default, DESC is descending.\n\n[TRAP TO AVOID]: Never place LIMIT before ORDER BY, and always add a unique tie-breaker to prevent row-hopping.",
+    "commonMistakes": "Putting semicolon before ORDER BY, reversing LIMIT and OFFSET, or misplacing DESC.",
+    "learningOutcomes": "Mastered 3.2 Single Column Descending (DESC) on MovieReviews.",
+    "challengeSlots": [
+      {
+        "type": "keyword",
+        "value": "SELECT"
+      },
+      {
+        "type": "column",
+        "value": "movie_title,"
+      },
+      {
+        "type": "column",
+        "value": "star_rating"
+      },
+      {
+        "type": "keyword",
+        "value": "FROM"
+      },
+      {
+        "type": "table",
+        "value": "MovieReviews"
+      },
+      {
+        "type": "keyword",
+        "value": "ORDER"
+      },
+      {
+        "type": "keyword",
+        "value": "BY"
+      },
+      {
+        "type": "column",
+        "value": "star_rating"
+      },
+      {
+        "type": "column",
+        "value": "DESC;"
+      }
+    ]
+  },
+  {
+    "id": 1709,
+    "drillNumber": 219,
+    "section": "Section 0: Foundations & Syntax Gym",
+    "title": "Syntax #219: Order flight schedule by ticket price descending",
+    "industry": "Foundations",
+    "difficulty": "Easy",
+    "scenario": "Order flight schedule by ticket price descending.",
+    "businessObjective": "Order flight schedule by ticket price descending.",
+    "schemaSnippet": "FlightSchedule schema",
+    "targetQuery": "SELECT flight_id, ticket_price\nFROM FlightSchedule\nORDER BY ticket_price DESC;",
+    "syntaxBlueprint": "SELECT flight_id, ticket_price\nFROM FlightSchedule\nORDER BY ticket_price DESC;",
+    "syntaxRule": "ORDER BY comes after WHERE, and LIMIT comes after ORDER BY. ASC is default, DESC is descending.",
+    "syntaxTrap": "Never place LIMIT before ORDER BY, and always add a unique tie-breaker to prevent row-hopping.",
+    "eli5Story": "[SYNTAX BLUEPRINT]:\nSELECT flight_id, ticket_price\nFROM FlightSchedule\nORDER BY ticket_price DESC;\n\n[RULE]: ORDER BY comes after WHERE, and LIMIT comes after ORDER BY. ASC is default, DESC is descending.\n\n[TRAP TO AVOID]: Never place LIMIT before ORDER BY, and always add a unique tie-breaker to prevent row-hopping.",
+    "commonMistakes": "Putting semicolon before ORDER BY, reversing LIMIT and OFFSET, or misplacing DESC.",
+    "learningOutcomes": "Mastered 3.2 Single Column Descending (DESC) on FlightSchedule.",
+    "challengeSlots": [
+      {
+        "type": "keyword",
+        "value": "SELECT"
+      },
+      {
+        "type": "column",
+        "value": "flight_id,"
+      },
+      {
+        "type": "column",
+        "value": "ticket_price"
+      },
+      {
+        "type": "keyword",
+        "value": "FROM"
+      },
+      {
+        "type": "table",
+        "value": "FlightSchedule"
+      },
+      {
+        "type": "keyword",
+        "value": "ORDER"
+      },
+      {
+        "type": "keyword",
+        "value": "BY"
+      },
+      {
+        "type": "column",
+        "value": "ticket_price"
+      },
+      {
+        "type": "column",
+        "value": "DESC;"
+      }
+    ]
+  },
+  {
+    "id": 1710,
+    "drillNumber": 220,
+    "section": "Section 0: Foundations & Syntax Gym",
+    "title": "Syntax #220: Sort clinic patients by weight in kilograms descending",
+    "industry": "Foundations",
+    "difficulty": "Easy",
+    "scenario": "Sort clinic patients by weight in kilograms descending.",
+    "businessObjective": "Sort clinic patients by weight in kilograms descending.",
+    "schemaSnippet": "PetClinic schema",
+    "targetQuery": "SELECT pet_name, weight_kg\nFROM PetClinic\nORDER BY weight_kg DESC;",
+    "syntaxBlueprint": "SELECT pet_name, weight_kg\nFROM PetClinic\nORDER BY weight_kg DESC;",
+    "syntaxRule": "ORDER BY comes after WHERE, and LIMIT comes after ORDER BY. ASC is default, DESC is descending.",
+    "syntaxTrap": "Never place LIMIT before ORDER BY, and always add a unique tie-breaker to prevent row-hopping.",
+    "eli5Story": "[SYNTAX BLUEPRINT]:\nSELECT pet_name, weight_kg\nFROM PetClinic\nORDER BY weight_kg DESC;\n\n[RULE]: ORDER BY comes after WHERE, and LIMIT comes after ORDER BY. ASC is default, DESC is descending.\n\n[TRAP TO AVOID]: Never place LIMIT before ORDER BY, and always add a unique tie-breaker to prevent row-hopping.",
+    "commonMistakes": "Putting semicolon before ORDER BY, reversing LIMIT and OFFSET, or misplacing DESC.",
+    "learningOutcomes": "Mastered 3.2 Single Column Descending (DESC) on PetClinic.",
+    "challengeSlots": [
+      {
+        "type": "keyword",
+        "value": "SELECT"
+      },
+      {
+        "type": "column",
+        "value": "pet_name,"
+      },
+      {
+        "type": "column",
+        "value": "weight_kg"
+      },
+      {
+        "type": "keyword",
+        "value": "FROM"
+      },
+      {
+        "type": "table",
+        "value": "PetClinic"
+      },
+      {
+        "type": "keyword",
+        "value": "ORDER"
+      },
+      {
+        "type": "keyword",
+        "value": "BY"
+      },
+      {
+        "type": "column",
+        "value": "weight_kg"
+      },
+      {
+        "type": "column",
+        "value": "DESC;"
+      }
+    ]
+  },
+  {
+    "id": 1711,
+    "drillNumber": 221,
+    "section": "Section 0: Foundations & Syntax Gym",
+    "title": "Syntax #221: Sort students first by city alphabetically, and within each city by GPA descending",
+    "industry": "Foundations",
+    "difficulty": "Easy",
+    "scenario": "Sort students first by city alphabetically, and within each city by GPA descending.",
+    "businessObjective": "Sort students first by city alphabetically, and within each city by GPA descending.",
+    "schemaSnippet": "Students schema",
+    "targetQuery": "SELECT city, full_name, gpa\nFROM Students\nORDER BY city ASC, gpa DESC;",
+    "syntaxBlueprint": "SELECT city, full_name, gpa\nFROM Students\nORDER BY city ASC, gpa DESC;",
+    "syntaxRule": "ORDER BY comes after WHERE, and LIMIT comes after ORDER BY. ASC is default, DESC is descending.",
+    "syntaxTrap": "Never place LIMIT before ORDER BY, and always add a unique tie-breaker to prevent row-hopping.",
+    "eli5Story": "[SYNTAX BLUEPRINT]:\nSELECT city, full_name, gpa\nFROM Students\nORDER BY city ASC, gpa DESC;\n\n[RULE]: ORDER BY comes after WHERE, and LIMIT comes after ORDER BY. ASC is default, DESC is descending.\n\n[TRAP TO AVOID]: Never place LIMIT before ORDER BY, and always add a unique tie-breaker to prevent row-hopping.",
+    "commonMistakes": "Putting semicolon before ORDER BY, reversing LIMIT and OFFSET, or misplacing DESC.",
+    "learningOutcomes": "Mastered 3.3 Multi-Column Sorting on Students.",
+    "challengeSlots": [
+      {
+        "type": "keyword",
+        "value": "SELECT"
+      },
+      {
+        "type": "column",
+        "value": "city,"
+      },
+      {
+        "type": "column",
+        "value": "full_name,"
+      },
+      {
+        "type": "column",
+        "value": "gpa"
+      },
+      {
+        "type": "keyword",
+        "value": "FROM"
+      },
+      {
+        "type": "table",
+        "value": "Students"
+      },
+      {
+        "type": "keyword",
+        "value": "ORDER"
+      },
+      {
+        "type": "keyword",
+        "value": "BY"
+      },
+      {
+        "type": "column",
+        "value": "city"
+      },
+      {
+        "type": "column",
+        "value": "ASC,"
+      },
+      {
+        "type": "column",
+        "value": "gpa"
+      },
+      {
+        "type": "column",
+        "value": "DESC;"
+      }
+    ]
+  },
+  {
+    "id": 1712,
+    "drillNumber": 222,
+    "section": "Section 0: Foundations & Syntax Gym",
+    "title": "Syntax #222: Sort books by genre alphabetically, and then by price ascending",
+    "industry": "Foundations",
+    "difficulty": "Easy",
+    "scenario": "Sort books by genre alphabetically, and then by price ascending.",
+    "businessObjective": "Sort books by genre alphabetically, and then by price ascending.",
+    "schemaSnippet": "Books schema",
+    "targetQuery": "SELECT genre, title, price\nFROM Books\nORDER BY genre ASC, price ASC;",
+    "syntaxBlueprint": "SELECT genre, title, price\nFROM Books\nORDER BY genre ASC, price ASC;",
+    "syntaxRule": "ORDER BY comes after WHERE, and LIMIT comes after ORDER BY. ASC is default, DESC is descending.",
+    "syntaxTrap": "Never place LIMIT before ORDER BY, and always add a unique tie-breaker to prevent row-hopping.",
+    "eli5Story": "[SYNTAX BLUEPRINT]:\nSELECT genre, title, price\nFROM Books\nORDER BY genre ASC, price ASC;\n\n[RULE]: ORDER BY comes after WHERE, and LIMIT comes after ORDER BY. ASC is default, DESC is descending.\n\n[TRAP TO AVOID]: Never place LIMIT before ORDER BY, and always add a unique tie-breaker to prevent row-hopping.",
+    "commonMistakes": "Putting semicolon before ORDER BY, reversing LIMIT and OFFSET, or misplacing DESC.",
+    "learningOutcomes": "Mastered 3.3 Multi-Column Sorting on Books.",
+    "challengeSlots": [
+      {
+        "type": "keyword",
+        "value": "SELECT"
+      },
+      {
+        "type": "column",
+        "value": "genre,"
+      },
+      {
+        "type": "column",
+        "value": "title,"
+      },
+      {
+        "type": "column",
+        "value": "price"
+      },
+      {
+        "type": "keyword",
+        "value": "FROM"
+      },
+      {
+        "type": "table",
+        "value": "Books"
+      },
+      {
+        "type": "keyword",
+        "value": "ORDER"
+      },
+      {
+        "type": "keyword",
+        "value": "BY"
+      },
+      {
+        "type": "column",
+        "value": "genre"
+      },
+      {
+        "type": "column",
+        "value": "ASC,"
+      },
+      {
+        "type": "column",
+        "value": "price"
+      },
+      {
+        "type": "column",
+        "value": "ASC;"
+      }
+    ]
+  },
+  {
+    "id": 1713,
+    "drillNumber": 223,
+    "section": "Section 0: Foundations & Syntax Gym",
+    "title": "Syntax #223: Group output by department alphabetically, then sort by highest salary descending",
+    "industry": "Foundations",
+    "difficulty": "Easy",
+    "scenario": "Group output by department alphabetically, then sort by highest salary descending.",
+    "businessObjective": "Group output by department alphabetically, then sort by highest salary descending.",
+    "schemaSnippet": "Employees schema",
+    "targetQuery": "SELECT department, salary, first_name\nFROM Employees\nORDER BY department ASC, salary DESC;",
+    "syntaxBlueprint": "SELECT department, salary, first_name\nFROM Employees\nORDER BY department ASC, salary DESC;",
+    "syntaxRule": "ORDER BY comes after WHERE, and LIMIT comes after ORDER BY. ASC is default, DESC is descending.",
+    "syntaxTrap": "Never place LIMIT before ORDER BY, and always add a unique tie-breaker to prevent row-hopping.",
+    "eli5Story": "[SYNTAX BLUEPRINT]:\nSELECT department, salary, first_name\nFROM Employees\nORDER BY department ASC, salary DESC;\n\n[RULE]: ORDER BY comes after WHERE, and LIMIT comes after ORDER BY. ASC is default, DESC is descending.\n\n[TRAP TO AVOID]: Never place LIMIT before ORDER BY, and always add a unique tie-breaker to prevent row-hopping.",
+    "commonMistakes": "Putting semicolon before ORDER BY, reversing LIMIT and OFFSET, or misplacing DESC.",
+    "learningOutcomes": "Mastered 3.3 Multi-Column Sorting on Employees.",
+    "challengeSlots": [
+      {
+        "type": "keyword",
+        "value": "SELECT"
+      },
+      {
+        "type": "column",
+        "value": "department,"
+      },
+      {
+        "type": "column",
+        "value": "salary,"
+      },
+      {
+        "type": "column",
+        "value": "first_name"
+      },
+      {
+        "type": "keyword",
+        "value": "FROM"
+      },
+      {
+        "type": "table",
+        "value": "Employees"
+      },
+      {
+        "type": "keyword",
+        "value": "ORDER"
+      },
+      {
+        "type": "keyword",
+        "value": "BY"
+      },
+      {
+        "type": "column",
+        "value": "department"
+      },
+      {
+        "type": "column",
+        "value": "ASC,"
+      },
+      {
+        "type": "column",
+        "value": "salary"
+      },
+      {
+        "type": "column",
+        "value": "DESC;"
+      }
+    ]
+  },
+  {
+    "id": 1714,
+    "drillNumber": 224,
+    "section": "Section 0: Foundations & Syntax Gym",
+    "title": "Syntax #224: Order grocery items by category alphabetically, then by price cheapest first",
+    "industry": "Foundations",
+    "difficulty": "Easy",
+    "scenario": "Order grocery items by category alphabetically, then by price cheapest first.",
+    "businessObjective": "Order grocery items by category alphabetically, then by price cheapest first.",
+    "schemaSnippet": "GroceryItems schema",
+    "targetQuery": "SELECT category, item_name, unit_price\nFROM GroceryItems\nORDER BY category ASC, unit_price ASC;",
+    "syntaxBlueprint": "SELECT category, item_name, unit_price\nFROM GroceryItems\nORDER BY category ASC, unit_price ASC;",
+    "syntaxRule": "ORDER BY comes after WHERE, and LIMIT comes after ORDER BY. ASC is default, DESC is descending.",
+    "syntaxTrap": "Never place LIMIT before ORDER BY, and always add a unique tie-breaker to prevent row-hopping.",
+    "eli5Story": "[SYNTAX BLUEPRINT]:\nSELECT category, item_name, unit_price\nFROM GroceryItems\nORDER BY category ASC, unit_price ASC;\n\n[RULE]: ORDER BY comes after WHERE, and LIMIT comes after ORDER BY. ASC is default, DESC is descending.\n\n[TRAP TO AVOID]: Never place LIMIT before ORDER BY, and always add a unique tie-breaker to prevent row-hopping.",
+    "commonMistakes": "Putting semicolon before ORDER BY, reversing LIMIT and OFFSET, or misplacing DESC.",
+    "learningOutcomes": "Mastered 3.3 Multi-Column Sorting on GroceryItems.",
+    "challengeSlots": [
+      {
+        "type": "keyword",
+        "value": "SELECT"
+      },
+      {
+        "type": "column",
+        "value": "category,"
+      },
+      {
+        "type": "column",
+        "value": "item_name,"
+      },
+      {
+        "type": "column",
+        "value": "unit_price"
+      },
+      {
+        "type": "keyword",
+        "value": "FROM"
+      },
+      {
+        "type": "table",
+        "value": "GroceryItems"
+      },
+      {
+        "type": "keyword",
+        "value": "ORDER"
+      },
+      {
+        "type": "keyword",
+        "value": "BY"
+      },
+      {
+        "type": "column",
+        "value": "category"
+      },
+      {
+        "type": "column",
+        "value": "ASC,"
+      },
+      {
+        "type": "column",
+        "value": "unit_price"
+      },
+      {
+        "type": "column",
+        "value": "ASC;"
+      }
+    ]
+  },
+  {
+    "id": 1715,
+    "drillNumber": 225,
+    "section": "Section 0: Foundations & Syntax Gym",
+    "title": "Syntax #225: Sort orders primarily by shipping city, secondarily by order status",
+    "industry": "Foundations",
+    "difficulty": "Easy",
+    "scenario": "Sort orders primarily by shipping city, secondarily by order status.",
+    "businessObjective": "Sort orders primarily by shipping city, secondarily by order status.",
+    "schemaSnippet": "Orders schema",
+    "targetQuery": "SELECT shipping_city, order_status, order_id\nFROM Orders\nORDER BY shipping_city ASC, order_status ASC;",
+    "syntaxBlueprint": "SELECT shipping_city, order_status, order_id\nFROM Orders\nORDER BY shipping_city ASC, order_status ASC;",
+    "syntaxRule": "ORDER BY comes after WHERE, and LIMIT comes after ORDER BY. ASC is default, DESC is descending.",
+    "syntaxTrap": "Never place LIMIT before ORDER BY, and always add a unique tie-breaker to prevent row-hopping.",
+    "eli5Story": "[SYNTAX BLUEPRINT]:\nSELECT shipping_city, order_status, order_id\nFROM Orders\nORDER BY shipping_city ASC, order_status ASC;\n\n[RULE]: ORDER BY comes after WHERE, and LIMIT comes after ORDER BY. ASC is default, DESC is descending.\n\n[TRAP TO AVOID]: Never place LIMIT before ORDER BY, and always add a unique tie-breaker to prevent row-hopping.",
+    "commonMistakes": "Putting semicolon before ORDER BY, reversing LIMIT and OFFSET, or misplacing DESC.",
+    "learningOutcomes": "Mastered 3.3 Multi-Column Sorting on Orders.",
+    "challengeSlots": [
+      {
+        "type": "keyword",
+        "value": "SELECT"
+      },
+      {
+        "type": "column",
+        "value": "shipping_city,"
+      },
+      {
+        "type": "column",
+        "value": "order_status,"
+      },
+      {
+        "type": "column",
+        "value": "order_id"
+      },
+      {
+        "type": "keyword",
+        "value": "FROM"
+      },
+      {
+        "type": "table",
+        "value": "Orders"
+      },
+      {
+        "type": "keyword",
+        "value": "ORDER"
+      },
+      {
+        "type": "keyword",
+        "value": "BY"
+      },
+      {
+        "type": "column",
+        "value": "shipping_city"
+      },
+      {
+        "type": "column",
+        "value": "ASC,"
+      },
+      {
+        "type": "column",
+        "value": "order_status"
+      },
+      {
+        "type": "column",
+        "value": "ASC;"
+      }
+    ]
+  },
+  {
+    "id": 1716,
+    "drillNumber": 226,
+    "section": "Section 0: Foundations & Syntax Gym",
+    "title": "Syntax #226: Sort tracks by genre alphabetically, then by play count descending",
+    "industry": "Foundations",
+    "difficulty": "Easy",
+    "scenario": "Sort tracks by genre alphabetically, then by play count descending.",
+    "businessObjective": "Sort tracks by genre alphabetically, then by play count descending.",
+    "schemaSnippet": "MusicTracks schema",
+    "targetQuery": "SELECT genre, play_count, track_title\nFROM MusicTracks\nORDER BY genre ASC, play_count DESC;",
+    "syntaxBlueprint": "SELECT genre, play_count, track_title\nFROM MusicTracks\nORDER BY genre ASC, play_count DESC;",
+    "syntaxRule": "ORDER BY comes after WHERE, and LIMIT comes after ORDER BY. ASC is default, DESC is descending.",
+    "syntaxTrap": "Never place LIMIT before ORDER BY, and always add a unique tie-breaker to prevent row-hopping.",
+    "eli5Story": "[SYNTAX BLUEPRINT]:\nSELECT genre, play_count, track_title\nFROM MusicTracks\nORDER BY genre ASC, play_count DESC;\n\n[RULE]: ORDER BY comes after WHERE, and LIMIT comes after ORDER BY. ASC is default, DESC is descending.\n\n[TRAP TO AVOID]: Never place LIMIT before ORDER BY, and always add a unique tie-breaker to prevent row-hopping.",
+    "commonMistakes": "Putting semicolon before ORDER BY, reversing LIMIT and OFFSET, or misplacing DESC.",
+    "learningOutcomes": "Mastered 3.3 Multi-Column Sorting on MusicTracks.",
+    "challengeSlots": [
+      {
+        "type": "keyword",
+        "value": "SELECT"
+      },
+      {
+        "type": "column",
+        "value": "genre,"
+      },
+      {
+        "type": "column",
+        "value": "play_count,"
+      },
+      {
+        "type": "column",
+        "value": "track_title"
+      },
+      {
+        "type": "keyword",
+        "value": "FROM"
+      },
+      {
+        "type": "table",
+        "value": "MusicTracks"
+      },
+      {
+        "type": "keyword",
+        "value": "ORDER"
+      },
+      {
+        "type": "keyword",
+        "value": "BY"
+      },
+      {
+        "type": "column",
+        "value": "genre"
+      },
+      {
+        "type": "column",
+        "value": "ASC,"
+      },
+      {
+        "type": "column",
+        "value": "play_count"
+      },
+      {
+        "type": "column",
+        "value": "DESC;"
+      }
+    ]
+  },
+  {
+    "id": 1717,
+    "drillNumber": 227,
+    "section": "Section 0: Foundations & Syntax Gym",
+    "title": "Syntax #227: Sort gym members by plan tier, then by monthly visits descending",
+    "industry": "Foundations",
+    "difficulty": "Easy",
+    "scenario": "Sort gym members by plan tier, then by monthly visits descending.",
+    "businessObjective": "Sort gym members by plan tier, then by monthly visits descending.",
+    "schemaSnippet": "GymMembers schema",
+    "targetQuery": "SELECT membership_plan, visits_this_month, member_name\nFROM GymMembers\nORDER BY membership_plan ASC, visits_this_month DESC;",
+    "syntaxBlueprint": "SELECT membership_plan, visits_this_month, member_name\nFROM GymMembers\nORDER BY membership_plan ASC, visits_this_month DESC;",
+    "syntaxRule": "ORDER BY comes after WHERE, and LIMIT comes after ORDER BY. ASC is default, DESC is descending.",
+    "syntaxTrap": "Never place LIMIT before ORDER BY, and always add a unique tie-breaker to prevent row-hopping.",
+    "eli5Story": "[SYNTAX BLUEPRINT]:\nSELECT membership_plan, visits_this_month, member_name\nFROM GymMembers\nORDER BY membership_plan ASC, visits_this_month DESC;\n\n[RULE]: ORDER BY comes after WHERE, and LIMIT comes after ORDER BY. ASC is default, DESC is descending.\n\n[TRAP TO AVOID]: Never place LIMIT before ORDER BY, and always add a unique tie-breaker to prevent row-hopping.",
+    "commonMistakes": "Putting semicolon before ORDER BY, reversing LIMIT and OFFSET, or misplacing DESC.",
+    "learningOutcomes": "Mastered 3.3 Multi-Column Sorting on GymMembers.",
+    "challengeSlots": [
+      {
+        "type": "keyword",
+        "value": "SELECT"
+      },
+      {
+        "type": "column",
+        "value": "membership_plan,"
+      },
+      {
+        "type": "column",
+        "value": "visits_this_month,"
+      },
+      {
+        "type": "column",
+        "value": "member_name"
+      },
+      {
+        "type": "keyword",
+        "value": "FROM"
+      },
+      {
+        "type": "table",
+        "value": "GymMembers"
+      },
+      {
+        "type": "keyword",
+        "value": "ORDER"
+      },
+      {
+        "type": "keyword",
+        "value": "BY"
+      },
+      {
+        "type": "column",
+        "value": "membership_plan"
+      },
+      {
+        "type": "column",
+        "value": "ASC,"
+      },
+      {
+        "type": "column",
+        "value": "visits_this_month"
+      },
+      {
+        "type": "column",
+        "value": "DESC;"
+      }
+    ]
+  },
+  {
+    "id": 1718,
+    "drillNumber": 228,
+    "section": "Section 0: Foundations & Syntax Gym",
+    "title": "Syntax #228: Sort movie reviews by genre, then by star rating highest first",
+    "industry": "Foundations",
+    "difficulty": "Easy",
+    "scenario": "Sort movie reviews by genre, then by star rating highest first.",
+    "businessObjective": "Sort movie reviews by genre, then by star rating highest first.",
+    "schemaSnippet": "MovieReviews schema",
+    "targetQuery": "SELECT genre, star_rating, movie_title\nFROM MovieReviews\nORDER BY genre ASC, star_rating DESC;",
+    "syntaxBlueprint": "SELECT genre, star_rating, movie_title\nFROM MovieReviews\nORDER BY genre ASC, star_rating DESC;",
+    "syntaxRule": "ORDER BY comes after WHERE, and LIMIT comes after ORDER BY. ASC is default, DESC is descending.",
+    "syntaxTrap": "Never place LIMIT before ORDER BY, and always add a unique tie-breaker to prevent row-hopping.",
+    "eli5Story": "[SYNTAX BLUEPRINT]:\nSELECT genre, star_rating, movie_title\nFROM MovieReviews\nORDER BY genre ASC, star_rating DESC;\n\n[RULE]: ORDER BY comes after WHERE, and LIMIT comes after ORDER BY. ASC is default, DESC is descending.\n\n[TRAP TO AVOID]: Never place LIMIT before ORDER BY, and always add a unique tie-breaker to prevent row-hopping.",
+    "commonMistakes": "Putting semicolon before ORDER BY, reversing LIMIT and OFFSET, or misplacing DESC.",
+    "learningOutcomes": "Mastered 3.3 Multi-Column Sorting on MovieReviews.",
+    "challengeSlots": [
+      {
+        "type": "keyword",
+        "value": "SELECT"
+      },
+      {
+        "type": "column",
+        "value": "genre,"
+      },
+      {
+        "type": "column",
+        "value": "star_rating,"
+      },
+      {
+        "type": "column",
+        "value": "movie_title"
+      },
+      {
+        "type": "keyword",
+        "value": "FROM"
+      },
+      {
+        "type": "table",
+        "value": "MovieReviews"
+      },
+      {
+        "type": "keyword",
+        "value": "ORDER"
+      },
+      {
+        "type": "keyword",
+        "value": "BY"
+      },
+      {
+        "type": "column",
+        "value": "genre"
+      },
+      {
+        "type": "column",
+        "value": "ASC,"
+      },
+      {
+        "type": "column",
+        "value": "star_rating"
+      },
+      {
+        "type": "column",
+        "value": "DESC;"
+      }
+    ]
+  },
+  {
+    "id": 1719,
+    "drillNumber": 229,
+    "section": "Section 0: Foundations & Syntax Gym",
+    "title": "Syntax #229: Order flights by origin airport, then chronologically by departure time",
+    "industry": "Foundations",
+    "difficulty": "Easy",
+    "scenario": "Order flights by origin airport, then chronologically by departure time.",
+    "businessObjective": "Order flights by origin airport, then chronologically by departure time.",
+    "schemaSnippet": "FlightSchedule schema",
+    "targetQuery": "SELECT origin_airport, departure_time, flight_id\nFROM FlightSchedule\nORDER BY origin_airport ASC, departure_time ASC;",
+    "syntaxBlueprint": "SELECT origin_airport, departure_time, flight_id\nFROM FlightSchedule\nORDER BY origin_airport ASC, departure_time ASC;",
+    "syntaxRule": "ORDER BY comes after WHERE, and LIMIT comes after ORDER BY. ASC is default, DESC is descending.",
+    "syntaxTrap": "Never place LIMIT before ORDER BY, and always add a unique tie-breaker to prevent row-hopping.",
+    "eli5Story": "[SYNTAX BLUEPRINT]:\nSELECT origin_airport, departure_time, flight_id\nFROM FlightSchedule\nORDER BY origin_airport ASC, departure_time ASC;\n\n[RULE]: ORDER BY comes after WHERE, and LIMIT comes after ORDER BY. ASC is default, DESC is descending.\n\n[TRAP TO AVOID]: Never place LIMIT before ORDER BY, and always add a unique tie-breaker to prevent row-hopping.",
+    "commonMistakes": "Putting semicolon before ORDER BY, reversing LIMIT and OFFSET, or misplacing DESC.",
+    "learningOutcomes": "Mastered 3.3 Multi-Column Sorting on FlightSchedule.",
+    "challengeSlots": [
+      {
+        "type": "keyword",
+        "value": "SELECT"
+      },
+      {
+        "type": "column",
+        "value": "origin_airport,"
+      },
+      {
+        "type": "column",
+        "value": "departure_time,"
+      },
+      {
+        "type": "column",
+        "value": "flight_id"
+      },
+      {
+        "type": "keyword",
+        "value": "FROM"
+      },
+      {
+        "type": "table",
+        "value": "FlightSchedule"
+      },
+      {
+        "type": "keyword",
+        "value": "ORDER"
+      },
+      {
+        "type": "keyword",
+        "value": "BY"
+      },
+      {
+        "type": "column",
+        "value": "origin_airport"
+      },
+      {
+        "type": "column",
+        "value": "ASC,"
+      },
+      {
+        "type": "column",
+        "value": "departure_time"
+      },
+      {
+        "type": "column",
+        "value": "ASC;"
+      }
+    ]
+  },
+  {
+    "id": 1720,
+    "drillNumber": 230,
+    "section": "Section 0: Foundations & Syntax Gym",
+    "title": "Syntax #230: Sort clinic patients by species, then by weight from heaviest to lightest",
+    "industry": "Foundations",
+    "difficulty": "Easy",
+    "scenario": "Sort clinic patients by species, then by weight from heaviest to lightest.",
+    "businessObjective": "Sort clinic patients by species, then by weight from heaviest to lightest.",
+    "schemaSnippet": "PetClinic schema",
+    "targetQuery": "SELECT species, weight_kg, pet_name\nFROM PetClinic\nORDER BY species ASC, weight_kg DESC;",
+    "syntaxBlueprint": "SELECT species, weight_kg, pet_name\nFROM PetClinic\nORDER BY species ASC, weight_kg DESC;",
+    "syntaxRule": "ORDER BY comes after WHERE, and LIMIT comes after ORDER BY. ASC is default, DESC is descending.",
+    "syntaxTrap": "Never place LIMIT before ORDER BY, and always add a unique tie-breaker to prevent row-hopping.",
+    "eli5Story": "[SYNTAX BLUEPRINT]:\nSELECT species, weight_kg, pet_name\nFROM PetClinic\nORDER BY species ASC, weight_kg DESC;\n\n[RULE]: ORDER BY comes after WHERE, and LIMIT comes after ORDER BY. ASC is default, DESC is descending.\n\n[TRAP TO AVOID]: Never place LIMIT before ORDER BY, and always add a unique tie-breaker to prevent row-hopping.",
+    "commonMistakes": "Putting semicolon before ORDER BY, reversing LIMIT and OFFSET, or misplacing DESC.",
+    "learningOutcomes": "Mastered 3.3 Multi-Column Sorting on PetClinic.",
+    "challengeSlots": [
+      {
+        "type": "keyword",
+        "value": "SELECT"
+      },
+      {
+        "type": "column",
+        "value": "species,"
+      },
+      {
+        "type": "column",
+        "value": "weight_kg,"
+      },
+      {
+        "type": "column",
+        "value": "pet_name"
+      },
+      {
+        "type": "keyword",
+        "value": "FROM"
+      },
+      {
+        "type": "table",
+        "value": "PetClinic"
+      },
+      {
+        "type": "keyword",
+        "value": "ORDER"
+      },
+      {
+        "type": "keyword",
+        "value": "BY"
+      },
+      {
+        "type": "column",
+        "value": "species"
+      },
+      {
+        "type": "column",
+        "value": "ASC,"
+      },
+      {
+        "type": "column",
+        "value": "weight_kg"
+      },
+      {
+        "type": "column",
+        "value": "DESC;"
+      }
+    ]
+  },
+  {
+    "id": 1721,
+    "drillNumber": 231,
+    "section": "Section 0: Foundations & Syntax Gym",
+    "title": "Syntax #231: Sort by city with student_id as a deterministic primary key tie-breaker",
+    "industry": "Foundations",
+    "difficulty": "Easy",
+    "scenario": "Sort by city with student_id as a deterministic primary key tie-breaker.",
+    "businessObjective": "Sort by city with student_id as a deterministic primary key tie-breaker.",
+    "schemaSnippet": "Students schema",
+    "targetQuery": "SELECT city, student_id, full_name\nFROM Students\nORDER BY city ASC, student_id ASC;",
+    "syntaxBlueprint": "SELECT city, student_id, full_name\nFROM Students\nORDER BY city ASC, student_id ASC;",
+    "syntaxRule": "ORDER BY comes after WHERE, and LIMIT comes after ORDER BY. ASC is default, DESC is descending.",
+    "syntaxTrap": "Never place LIMIT before ORDER BY, and always add a unique tie-breaker to prevent row-hopping.",
+    "eli5Story": "[SYNTAX BLUEPRINT]:\nSELECT city, student_id, full_name\nFROM Students\nORDER BY city ASC, student_id ASC;\n\n[RULE]: ORDER BY comes after WHERE, and LIMIT comes after ORDER BY. ASC is default, DESC is descending.\n\n[TRAP TO AVOID]: Never place LIMIT before ORDER BY, and always add a unique tie-breaker to prevent row-hopping.",
+    "commonMistakes": "Putting semicolon before ORDER BY, reversing LIMIT and OFFSET, or misplacing DESC.",
+    "learningOutcomes": "Mastered 3.4 Deterministic Tie-Breakers on Students.",
+    "challengeSlots": [
+      {
+        "type": "keyword",
+        "value": "SELECT"
+      },
+      {
+        "type": "column",
+        "value": "city,"
+      },
+      {
+        "type": "column",
+        "value": "student_id,"
+      },
+      {
+        "type": "column",
+        "value": "full_name"
+      },
+      {
+        "type": "keyword",
+        "value": "FROM"
+      },
+      {
+        "type": "table",
+        "value": "Students"
+      },
+      {
+        "type": "keyword",
+        "value": "ORDER"
+      },
+      {
+        "type": "keyword",
+        "value": "BY"
+      },
+      {
+        "type": "column",
+        "value": "city"
+      },
+      {
+        "type": "column",
+        "value": "ASC,"
+      },
+      {
+        "type": "column",
+        "value": "student_id"
+      },
+      {
+        "type": "column",
+        "value": "ASC;"
+      }
+    ]
+  },
+  {
+    "id": 1722,
+    "drillNumber": 232,
+    "section": "Section 0: Foundations & Syntax Gym",
+    "title": "Syntax #232: Sort books by genre with book_id tie-breaker to prevent row-hopping",
+    "industry": "Foundations",
+    "difficulty": "Easy",
+    "scenario": "Sort books by genre with book_id tie-breaker to prevent row-hopping.",
+    "businessObjective": "Sort books by genre with book_id tie-breaker to prevent row-hopping.",
+    "schemaSnippet": "Books schema",
+    "targetQuery": "SELECT genre, book_id, title\nFROM Books\nORDER BY genre ASC, book_id ASC;",
+    "syntaxBlueprint": "SELECT genre, book_id, title\nFROM Books\nORDER BY genre ASC, book_id ASC;",
+    "syntaxRule": "ORDER BY comes after WHERE, and LIMIT comes after ORDER BY. ASC is default, DESC is descending.",
+    "syntaxTrap": "Never place LIMIT before ORDER BY, and always add a unique tie-breaker to prevent row-hopping.",
+    "eli5Story": "[SYNTAX BLUEPRINT]:\nSELECT genre, book_id, title\nFROM Books\nORDER BY genre ASC, book_id ASC;\n\n[RULE]: ORDER BY comes after WHERE, and LIMIT comes after ORDER BY. ASC is default, DESC is descending.\n\n[TRAP TO AVOID]: Never place LIMIT before ORDER BY, and always add a unique tie-breaker to prevent row-hopping.",
+    "commonMistakes": "Putting semicolon before ORDER BY, reversing LIMIT and OFFSET, or misplacing DESC.",
+    "learningOutcomes": "Mastered 3.4 Deterministic Tie-Breakers on Books.",
+    "challengeSlots": [
+      {
+        "type": "keyword",
+        "value": "SELECT"
+      },
+      {
+        "type": "column",
+        "value": "genre,"
+      },
+      {
+        "type": "column",
+        "value": "book_id,"
+      },
+      {
+        "type": "column",
+        "value": "title"
+      },
+      {
+        "type": "keyword",
+        "value": "FROM"
+      },
+      {
+        "type": "table",
+        "value": "Books"
+      },
+      {
+        "type": "keyword",
+        "value": "ORDER"
+      },
+      {
+        "type": "keyword",
+        "value": "BY"
+      },
+      {
+        "type": "column",
+        "value": "genre"
+      },
+      {
+        "type": "column",
+        "value": "ASC,"
+      },
+      {
+        "type": "column",
+        "value": "book_id"
+      },
+      {
+        "type": "column",
+        "value": "ASC;"
+      }
+    ]
+  },
+  {
+    "id": 1723,
+    "drillNumber": 233,
+    "section": "Section 0: Foundations & Syntax Gym",
+    "title": "Syntax #233: Order by department with emp_id tie-breaker",
+    "industry": "Foundations",
+    "difficulty": "Easy",
+    "scenario": "Order by department with emp_id tie-breaker.",
+    "businessObjective": "Order by department with emp_id tie-breaker.",
+    "schemaSnippet": "Employees schema",
+    "targetQuery": "SELECT department, emp_id, first_name\nFROM Employees\nORDER BY department ASC, emp_id ASC;",
+    "syntaxBlueprint": "SELECT department, emp_id, first_name\nFROM Employees\nORDER BY department ASC, emp_id ASC;",
+    "syntaxRule": "ORDER BY comes after WHERE, and LIMIT comes after ORDER BY. ASC is default, DESC is descending.",
+    "syntaxTrap": "Never place LIMIT before ORDER BY, and always add a unique tie-breaker to prevent row-hopping.",
+    "eli5Story": "[SYNTAX BLUEPRINT]:\nSELECT department, emp_id, first_name\nFROM Employees\nORDER BY department ASC, emp_id ASC;\n\n[RULE]: ORDER BY comes after WHERE, and LIMIT comes after ORDER BY. ASC is default, DESC is descending.\n\n[TRAP TO AVOID]: Never place LIMIT before ORDER BY, and always add a unique tie-breaker to prevent row-hopping.",
+    "commonMistakes": "Putting semicolon before ORDER BY, reversing LIMIT and OFFSET, or misplacing DESC.",
+    "learningOutcomes": "Mastered 3.4 Deterministic Tie-Breakers on Employees.",
+    "challengeSlots": [
+      {
+        "type": "keyword",
+        "value": "SELECT"
+      },
+      {
+        "type": "column",
+        "value": "department,"
+      },
+      {
+        "type": "column",
+        "value": "emp_id,"
+      },
+      {
+        "type": "column",
+        "value": "first_name"
+      },
+      {
+        "type": "keyword",
+        "value": "FROM"
+      },
+      {
+        "type": "table",
+        "value": "Employees"
+      },
+      {
+        "type": "keyword",
+        "value": "ORDER"
+      },
+      {
+        "type": "keyword",
+        "value": "BY"
+      },
+      {
+        "type": "column",
+        "value": "department"
+      },
+      {
+        "type": "column",
+        "value": "ASC,"
+      },
+      {
+        "type": "column",
+        "value": "emp_id"
+      },
+      {
+        "type": "column",
+        "value": "ASC;"
+      }
+    ]
+  },
+  {
+    "id": 1724,
+    "drillNumber": 234,
+    "section": "Section 0: Foundations & Syntax Gym",
+    "title": "Syntax #234: Sort grocery items by category with unique item_id tie-breaker",
+    "industry": "Foundations",
+    "difficulty": "Easy",
+    "scenario": "Sort grocery items by category with unique item_id tie-breaker.",
+    "businessObjective": "Sort grocery items by category with unique item_id tie-breaker.",
+    "schemaSnippet": "GroceryItems schema",
+    "targetQuery": "SELECT category, item_id, item_name\nFROM GroceryItems\nORDER BY category ASC, item_id ASC;",
+    "syntaxBlueprint": "SELECT category, item_id, item_name\nFROM GroceryItems\nORDER BY category ASC, item_id ASC;",
+    "syntaxRule": "ORDER BY comes after WHERE, and LIMIT comes after ORDER BY. ASC is default, DESC is descending.",
+    "syntaxTrap": "Never place LIMIT before ORDER BY, and always add a unique tie-breaker to prevent row-hopping.",
+    "eli5Story": "[SYNTAX BLUEPRINT]:\nSELECT category, item_id, item_name\nFROM GroceryItems\nORDER BY category ASC, item_id ASC;\n\n[RULE]: ORDER BY comes after WHERE, and LIMIT comes after ORDER BY. ASC is default, DESC is descending.\n\n[TRAP TO AVOID]: Never place LIMIT before ORDER BY, and always add a unique tie-breaker to prevent row-hopping.",
+    "commonMistakes": "Putting semicolon before ORDER BY, reversing LIMIT and OFFSET, or misplacing DESC.",
+    "learningOutcomes": "Mastered 3.4 Deterministic Tie-Breakers on GroceryItems.",
+    "challengeSlots": [
+      {
+        "type": "keyword",
+        "value": "SELECT"
+      },
+      {
+        "type": "column",
+        "value": "category,"
+      },
+      {
+        "type": "column",
+        "value": "item_id,"
+      },
+      {
+        "type": "column",
+        "value": "item_name"
+      },
+      {
+        "type": "keyword",
+        "value": "FROM"
+      },
+      {
+        "type": "table",
+        "value": "GroceryItems"
+      },
+      {
+        "type": "keyword",
+        "value": "ORDER"
+      },
+      {
+        "type": "keyword",
+        "value": "BY"
+      },
+      {
+        "type": "column",
+        "value": "category"
+      },
+      {
+        "type": "column",
+        "value": "ASC,"
+      },
+      {
+        "type": "column",
+        "value": "item_id"
+      },
+      {
+        "type": "column",
+        "value": "ASC;"
+      }
+    ]
+  },
+  {
+    "id": 1725,
+    "drillNumber": 235,
+    "section": "Section 0: Foundations & Syntax Gym",
+    "title": "Syntax #235: Order by status with order_id tie-breaker",
+    "industry": "Foundations",
+    "difficulty": "Easy",
+    "scenario": "Order by status with order_id tie-breaker.",
+    "businessObjective": "Order by status with order_id tie-breaker.",
+    "schemaSnippet": "Orders schema",
+    "targetQuery": "SELECT order_status, order_id, customer_name\nFROM Orders\nORDER BY order_status ASC, order_id ASC;",
+    "syntaxBlueprint": "SELECT order_status, order_id, customer_name\nFROM Orders\nORDER BY order_status ASC, order_id ASC;",
+    "syntaxRule": "ORDER BY comes after WHERE, and LIMIT comes after ORDER BY. ASC is default, DESC is descending.",
+    "syntaxTrap": "Never place LIMIT before ORDER BY, and always add a unique tie-breaker to prevent row-hopping.",
+    "eli5Story": "[SYNTAX BLUEPRINT]:\nSELECT order_status, order_id, customer_name\nFROM Orders\nORDER BY order_status ASC, order_id ASC;\n\n[RULE]: ORDER BY comes after WHERE, and LIMIT comes after ORDER BY. ASC is default, DESC is descending.\n\n[TRAP TO AVOID]: Never place LIMIT before ORDER BY, and always add a unique tie-breaker to prevent row-hopping.",
+    "commonMistakes": "Putting semicolon before ORDER BY, reversing LIMIT and OFFSET, or misplacing DESC.",
+    "learningOutcomes": "Mastered 3.4 Deterministic Tie-Breakers on Orders.",
+    "challengeSlots": [
+      {
+        "type": "keyword",
+        "value": "SELECT"
+      },
+      {
+        "type": "column",
+        "value": "order_status,"
+      },
+      {
+        "type": "column",
+        "value": "order_id,"
+      },
+      {
+        "type": "column",
+        "value": "customer_name"
+      },
+      {
+        "type": "keyword",
+        "value": "FROM"
+      },
+      {
+        "type": "table",
+        "value": "Orders"
+      },
+      {
+        "type": "keyword",
+        "value": "ORDER"
+      },
+      {
+        "type": "keyword",
+        "value": "BY"
+      },
+      {
+        "type": "column",
+        "value": "order_status"
+      },
+      {
+        "type": "column",
+        "value": "ASC,"
+      },
+      {
+        "type": "column",
+        "value": "order_id"
+      },
+      {
+        "type": "column",
+        "value": "ASC;"
+      }
+    ]
+  },
+  {
+    "id": 1726,
+    "drillNumber": 236,
+    "section": "Section 0: Foundations & Syntax Gym",
+    "title": "Syntax #236: Sort by artist name with track_id tie-breaker",
+    "industry": "Foundations",
+    "difficulty": "Easy",
+    "scenario": "Sort by artist name with track_id tie-breaker.",
+    "businessObjective": "Sort by artist name with track_id tie-breaker.",
+    "schemaSnippet": "MusicTracks schema",
+    "targetQuery": "SELECT artist_name, track_id, track_title\nFROM MusicTracks\nORDER BY artist_name ASC, track_id ASC;",
+    "syntaxBlueprint": "SELECT artist_name, track_id, track_title\nFROM MusicTracks\nORDER BY artist_name ASC, track_id ASC;",
+    "syntaxRule": "ORDER BY comes after WHERE, and LIMIT comes after ORDER BY. ASC is default, DESC is descending.",
+    "syntaxTrap": "Never place LIMIT before ORDER BY, and always add a unique tie-breaker to prevent row-hopping.",
+    "eli5Story": "[SYNTAX BLUEPRINT]:\nSELECT artist_name, track_id, track_title\nFROM MusicTracks\nORDER BY artist_name ASC, track_id ASC;\n\n[RULE]: ORDER BY comes after WHERE, and LIMIT comes after ORDER BY. ASC is default, DESC is descending.\n\n[TRAP TO AVOID]: Never place LIMIT before ORDER BY, and always add a unique tie-breaker to prevent row-hopping.",
+    "commonMistakes": "Putting semicolon before ORDER BY, reversing LIMIT and OFFSET, or misplacing DESC.",
+    "learningOutcomes": "Mastered 3.4 Deterministic Tie-Breakers on MusicTracks.",
+    "challengeSlots": [
+      {
+        "type": "keyword",
+        "value": "SELECT"
+      },
+      {
+        "type": "column",
+        "value": "artist_name,"
+      },
+      {
+        "type": "column",
+        "value": "track_id,"
+      },
+      {
+        "type": "column",
+        "value": "track_title"
+      },
+      {
+        "type": "keyword",
+        "value": "FROM"
+      },
+      {
+        "type": "table",
+        "value": "MusicTracks"
+      },
+      {
+        "type": "keyword",
+        "value": "ORDER"
+      },
+      {
+        "type": "keyword",
+        "value": "BY"
+      },
+      {
+        "type": "column",
+        "value": "artist_name"
+      },
+      {
+        "type": "column",
+        "value": "ASC,"
+      },
+      {
+        "type": "column",
+        "value": "track_id"
+      },
+      {
+        "type": "column",
+        "value": "ASC;"
+      }
+    ]
+  },
+  {
+    "id": 1727,
+    "drillNumber": 237,
+    "section": "Section 0: Foundations & Syntax Gym",
+    "title": "Syntax #237: Sort by membership plan with member_id tie-breaker",
+    "industry": "Foundations",
+    "difficulty": "Easy",
+    "scenario": "Sort by membership plan with member_id tie-breaker.",
+    "businessObjective": "Sort by membership plan with member_id tie-breaker.",
+    "schemaSnippet": "GymMembers schema",
+    "targetQuery": "SELECT membership_plan, member_id, member_name\nFROM GymMembers\nORDER BY membership_plan ASC, member_id ASC;",
+    "syntaxBlueprint": "SELECT membership_plan, member_id, member_name\nFROM GymMembers\nORDER BY membership_plan ASC, member_id ASC;",
+    "syntaxRule": "ORDER BY comes after WHERE, and LIMIT comes after ORDER BY. ASC is default, DESC is descending.",
+    "syntaxTrap": "Never place LIMIT before ORDER BY, and always add a unique tie-breaker to prevent row-hopping.",
+    "eli5Story": "[SYNTAX BLUEPRINT]:\nSELECT membership_plan, member_id, member_name\nFROM GymMembers\nORDER BY membership_plan ASC, member_id ASC;\n\n[RULE]: ORDER BY comes after WHERE, and LIMIT comes after ORDER BY. ASC is default, DESC is descending.\n\n[TRAP TO AVOID]: Never place LIMIT before ORDER BY, and always add a unique tie-breaker to prevent row-hopping.",
+    "commonMistakes": "Putting semicolon before ORDER BY, reversing LIMIT and OFFSET, or misplacing DESC.",
+    "learningOutcomes": "Mastered 3.4 Deterministic Tie-Breakers on GymMembers.",
+    "challengeSlots": [
+      {
+        "type": "keyword",
+        "value": "SELECT"
+      },
+      {
+        "type": "column",
+        "value": "membership_plan,"
+      },
+      {
+        "type": "column",
+        "value": "member_id,"
+      },
+      {
+        "type": "column",
+        "value": "member_name"
+      },
+      {
+        "type": "keyword",
+        "value": "FROM"
+      },
+      {
+        "type": "table",
+        "value": "GymMembers"
+      },
+      {
+        "type": "keyword",
+        "value": "ORDER"
+      },
+      {
+        "type": "keyword",
+        "value": "BY"
+      },
+      {
+        "type": "column",
+        "value": "membership_plan"
+      },
+      {
+        "type": "column",
+        "value": "ASC,"
+      },
+      {
+        "type": "column",
+        "value": "member_id"
+      },
+      {
+        "type": "column",
+        "value": "ASC;"
+      }
+    ]
+  },
+  {
+    "id": 1728,
+    "drillNumber": 238,
+    "section": "Section 0: Foundations & Syntax Gym",
+    "title": "Syntax #238: Sort by director with review_id tie-breaker",
+    "industry": "Foundations",
+    "difficulty": "Easy",
+    "scenario": "Sort by director with review_id tie-breaker.",
+    "businessObjective": "Sort by director with review_id tie-breaker.",
+    "schemaSnippet": "MovieReviews schema",
+    "targetQuery": "SELECT director, review_id, movie_title\nFROM MovieReviews\nORDER BY director ASC, review_id ASC;",
+    "syntaxBlueprint": "SELECT director, review_id, movie_title\nFROM MovieReviews\nORDER BY director ASC, review_id ASC;",
+    "syntaxRule": "ORDER BY comes after WHERE, and LIMIT comes after ORDER BY. ASC is default, DESC is descending.",
+    "syntaxTrap": "Never place LIMIT before ORDER BY, and always add a unique tie-breaker to prevent row-hopping.",
+    "eli5Story": "[SYNTAX BLUEPRINT]:\nSELECT director, review_id, movie_title\nFROM MovieReviews\nORDER BY director ASC, review_id ASC;\n\n[RULE]: ORDER BY comes after WHERE, and LIMIT comes after ORDER BY. ASC is default, DESC is descending.\n\n[TRAP TO AVOID]: Never place LIMIT before ORDER BY, and always add a unique tie-breaker to prevent row-hopping.",
+    "commonMistakes": "Putting semicolon before ORDER BY, reversing LIMIT and OFFSET, or misplacing DESC.",
+    "learningOutcomes": "Mastered 3.4 Deterministic Tie-Breakers on MovieReviews.",
+    "challengeSlots": [
+      {
+        "type": "keyword",
+        "value": "SELECT"
+      },
+      {
+        "type": "column",
+        "value": "director,"
+      },
+      {
+        "type": "column",
+        "value": "review_id,"
+      },
+      {
+        "type": "column",
+        "value": "movie_title"
+      },
+      {
+        "type": "keyword",
+        "value": "FROM"
+      },
+      {
+        "type": "table",
+        "value": "MovieReviews"
+      },
+      {
+        "type": "keyword",
+        "value": "ORDER"
+      },
+      {
+        "type": "keyword",
+        "value": "BY"
+      },
+      {
+        "type": "column",
+        "value": "director"
+      },
+      {
+        "type": "column",
+        "value": "ASC,"
+      },
+      {
+        "type": "column",
+        "value": "review_id"
+      },
+      {
+        "type": "column",
+        "value": "ASC;"
+      }
+    ]
+  },
+  {
+    "id": 1729,
+    "drillNumber": 239,
+    "section": "Section 0: Foundations & Syntax Gym",
+    "title": "Syntax #239: Sort by airline with flight_id tie-breaker",
+    "industry": "Foundations",
+    "difficulty": "Easy",
+    "scenario": "Sort by airline with flight_id tie-breaker.",
+    "businessObjective": "Sort by airline with flight_id tie-breaker.",
+    "schemaSnippet": "FlightSchedule schema",
+    "targetQuery": "SELECT airline, flight_id\nFROM FlightSchedule\nORDER BY airline ASC, flight_id ASC;",
+    "syntaxBlueprint": "SELECT airline, flight_id\nFROM FlightSchedule\nORDER BY airline ASC, flight_id ASC;",
+    "syntaxRule": "ORDER BY comes after WHERE, and LIMIT comes after ORDER BY. ASC is default, DESC is descending.",
+    "syntaxTrap": "Never place LIMIT before ORDER BY, and always add a unique tie-breaker to prevent row-hopping.",
+    "eli5Story": "[SYNTAX BLUEPRINT]:\nSELECT airline, flight_id\nFROM FlightSchedule\nORDER BY airline ASC, flight_id ASC;\n\n[RULE]: ORDER BY comes after WHERE, and LIMIT comes after ORDER BY. ASC is default, DESC is descending.\n\n[TRAP TO AVOID]: Never place LIMIT before ORDER BY, and always add a unique tie-breaker to prevent row-hopping.",
+    "commonMistakes": "Putting semicolon before ORDER BY, reversing LIMIT and OFFSET, or misplacing DESC.",
+    "learningOutcomes": "Mastered 3.4 Deterministic Tie-Breakers on FlightSchedule.",
+    "challengeSlots": [
+      {
+        "type": "keyword",
+        "value": "SELECT"
+      },
+      {
+        "type": "column",
+        "value": "airline,"
+      },
+      {
+        "type": "column",
+        "value": "flight_id"
+      },
+      {
+        "type": "keyword",
+        "value": "FROM"
+      },
+      {
+        "type": "table",
+        "value": "FlightSchedule"
+      },
+      {
+        "type": "keyword",
+        "value": "ORDER"
+      },
+      {
+        "type": "keyword",
+        "value": "BY"
+      },
+      {
+        "type": "column",
+        "value": "airline"
+      },
+      {
+        "type": "column",
+        "value": "ASC,"
+      },
+      {
+        "type": "column",
+        "value": "flight_id"
+      },
+      {
+        "type": "column",
+        "value": "ASC;"
+      }
+    ]
+  },
+  {
+    "id": 1730,
+    "drillNumber": 240,
+    "section": "Section 0: Foundations & Syntax Gym",
+    "title": "Syntax #240: Sort by owner city with pet_id tie-breaker",
+    "industry": "Foundations",
+    "difficulty": "Easy",
+    "scenario": "Sort by owner city with pet_id tie-breaker.",
+    "businessObjective": "Sort by owner city with pet_id tie-breaker.",
+    "schemaSnippet": "PetClinic schema",
+    "targetQuery": "SELECT owner_city, pet_id, pet_name\nFROM PetClinic\nORDER BY owner_city ASC, pet_id ASC;",
+    "syntaxBlueprint": "SELECT owner_city, pet_id, pet_name\nFROM PetClinic\nORDER BY owner_city ASC, pet_id ASC;",
+    "syntaxRule": "ORDER BY comes after WHERE, and LIMIT comes after ORDER BY. ASC is default, DESC is descending.",
+    "syntaxTrap": "Never place LIMIT before ORDER BY, and always add a unique tie-breaker to prevent row-hopping.",
+    "eli5Story": "[SYNTAX BLUEPRINT]:\nSELECT owner_city, pet_id, pet_name\nFROM PetClinic\nORDER BY owner_city ASC, pet_id ASC;\n\n[RULE]: ORDER BY comes after WHERE, and LIMIT comes after ORDER BY. ASC is default, DESC is descending.\n\n[TRAP TO AVOID]: Never place LIMIT before ORDER BY, and always add a unique tie-breaker to prevent row-hopping.",
+    "commonMistakes": "Putting semicolon before ORDER BY, reversing LIMIT and OFFSET, or misplacing DESC.",
+    "learningOutcomes": "Mastered 3.4 Deterministic Tie-Breakers on PetClinic.",
+    "challengeSlots": [
+      {
+        "type": "keyword",
+        "value": "SELECT"
+      },
+      {
+        "type": "column",
+        "value": "owner_city,"
+      },
+      {
+        "type": "column",
+        "value": "pet_id,"
+      },
+      {
+        "type": "column",
+        "value": "pet_name"
+      },
+      {
+        "type": "keyword",
+        "value": "FROM"
+      },
+      {
+        "type": "table",
+        "value": "PetClinic"
+      },
+      {
+        "type": "keyword",
+        "value": "ORDER"
+      },
+      {
+        "type": "keyword",
+        "value": "BY"
+      },
+      {
+        "type": "column",
+        "value": "owner_city"
+      },
+      {
+        "type": "column",
+        "value": "ASC,"
+      },
+      {
+        "type": "column",
+        "value": "pet_id"
+      },
+      {
+        "type": "column",
+        "value": "ASC;"
+      }
+    ]
+  },
+  {
+    "id": 1731,
+    "drillNumber": 241,
+    "section": "Section 0: Foundations & Syntax Gym",
+    "title": "Syntax #241: Calculate inventory value and sort by the alias inventory_val descending",
+    "industry": "Foundations",
+    "difficulty": "Easy",
+    "scenario": "Calculate inventory value and sort by the alias inventory_val descending.",
+    "businessObjective": "Calculate inventory value and sort by the alias inventory_val descending.",
+    "schemaSnippet": "Books schema",
+    "targetQuery": "SELECT title, price, stock_qty, (price * stock_qty) AS inventory_val\nFROM Books\nORDER BY inventory_val DESC;",
+    "syntaxBlueprint": "SELECT title, price, stock_qty, (price * stock_qty) AS inventory_val\nFROM Books\nORDER BY inventory_val DESC;",
+    "syntaxRule": "ORDER BY comes after WHERE, and LIMIT comes after ORDER BY. ASC is default, DESC is descending.",
+    "syntaxTrap": "Never place LIMIT before ORDER BY, and always add a unique tie-breaker to prevent row-hopping.",
+    "eli5Story": "[SYNTAX BLUEPRINT]:\nSELECT title, price, stock_qty, (price * stock_qty) AS inventory_val\nFROM Books\nORDER BY inventory_val DESC;\n\n[RULE]: ORDER BY comes after WHERE, and LIMIT comes after ORDER BY. ASC is default, DESC is descending.\n\n[TRAP TO AVOID]: Never place LIMIT before ORDER BY, and always add a unique tie-breaker to prevent row-hopping.",
+    "commonMistakes": "Putting semicolon before ORDER BY, reversing LIMIT and OFFSET, or misplacing DESC.",
+    "learningOutcomes": "Mastered 3.5 Sorting by Aliases & Calculations on Books.",
+    "challengeSlots": [
+      {
+        "type": "keyword",
+        "value": "SELECT"
+      },
+      {
+        "type": "column",
+        "value": "title,"
+      },
+      {
+        "type": "column",
+        "value": "price,"
+      },
+      {
+        "type": "column",
+        "value": "stock_qty,"
+      },
+      {
+        "type": "column",
+        "value": "(price"
+      },
+      {
+        "type": "column",
+        "value": "*"
+      },
+      {
+        "type": "column",
+        "value": "stock_qty)"
+      },
+      {
+        "type": "column",
+        "value": "AS"
+      },
+      {
+        "type": "column",
+        "value": "inventory_val"
+      },
+      {
+        "type": "keyword",
+        "value": "FROM"
+      },
+      {
+        "type": "table",
+        "value": "Books"
+      },
+      {
+        "type": "keyword",
+        "value": "ORDER"
+      },
+      {
+        "type": "keyword",
+        "value": "BY"
+      },
+      {
+        "type": "column",
+        "value": "inventory_val"
+      },
+      {
+        "type": "column",
+        "value": "DESC;"
+      }
+    ]
+  },
+  {
+    "id": 1732,
+    "drillNumber": 242,
+    "section": "Section 0: Foundations & Syntax Gym",
+    "title": "Syntax #242: Compute order subtotal and sort by the alias subtotal descending",
+    "industry": "Foundations",
+    "difficulty": "Easy",
+    "scenario": "Compute order subtotal and sort by the alias subtotal descending.",
+    "businessObjective": "Compute order subtotal and sort by the alias subtotal descending.",
+    "schemaSnippet": "Orders schema",
+    "targetQuery": "SELECT order_id, unit_price, quantity, (unit_price * quantity) AS subtotal\nFROM Orders\nORDER BY subtotal DESC;",
+    "syntaxBlueprint": "SELECT order_id, unit_price, quantity, (unit_price * quantity) AS subtotal\nFROM Orders\nORDER BY subtotal DESC;",
+    "syntaxRule": "ORDER BY comes after WHERE, and LIMIT comes after ORDER BY. ASC is default, DESC is descending.",
+    "syntaxTrap": "Never place LIMIT before ORDER BY, and always add a unique tie-breaker to prevent row-hopping.",
+    "eli5Story": "[SYNTAX BLUEPRINT]:\nSELECT order_id, unit_price, quantity, (unit_price * quantity) AS subtotal\nFROM Orders\nORDER BY subtotal DESC;\n\n[RULE]: ORDER BY comes after WHERE, and LIMIT comes after ORDER BY. ASC is default, DESC is descending.\n\n[TRAP TO AVOID]: Never place LIMIT before ORDER BY, and always add a unique tie-breaker to prevent row-hopping.",
+    "commonMistakes": "Putting semicolon before ORDER BY, reversing LIMIT and OFFSET, or misplacing DESC.",
+    "learningOutcomes": "Mastered 3.5 Sorting by Aliases & Calculations on Orders.",
+    "challengeSlots": [
+      {
+        "type": "keyword",
+        "value": "SELECT"
+      },
+      {
+        "type": "column",
+        "value": "order_id,"
+      },
+      {
+        "type": "column",
+        "value": "unit_price,"
+      },
+      {
+        "type": "column",
+        "value": "quantity,"
+      },
+      {
+        "type": "column",
+        "value": "(unit_price"
+      },
+      {
+        "type": "column",
+        "value": "*"
+      },
+      {
+        "type": "column",
+        "value": "quantity)"
+      },
+      {
+        "type": "column",
+        "value": "AS"
+      },
+      {
+        "type": "column",
+        "value": "subtotal"
+      },
+      {
+        "type": "keyword",
+        "value": "FROM"
+      },
+      {
+        "type": "table",
+        "value": "Orders"
+      },
+      {
+        "type": "keyword",
+        "value": "ORDER"
+      },
+      {
+        "type": "keyword",
+        "value": "BY"
+      },
+      {
+        "type": "column",
+        "value": "subtotal"
+      },
+      {
+        "type": "column",
+        "value": "DESC;"
+      }
+    ]
+  },
+  {
+    "id": 1733,
+    "drillNumber": 243,
+    "section": "Section 0: Foundations & Syntax Gym",
+    "title": "Syntax #243: Compute total compensation (salary + bonus) and sort by total_comp descending",
+    "industry": "Foundations",
+    "difficulty": "Easy",
+    "scenario": "Compute total compensation (salary + bonus) and sort by total_comp descending.",
+    "businessObjective": "Compute total compensation (salary + bonus) and sort by total_comp descending.",
+    "schemaSnippet": "Employees schema",
+    "targetQuery": "SELECT first_name, salary, bonus, (salary + COALESCE(bonus, 0)) AS total_comp\nFROM Employees\nORDER BY total_comp DESC;",
+    "syntaxBlueprint": "SELECT first_name, salary, bonus, (salary + COALESCE(bonus, 0)) AS total_comp\nFROM Employees\nORDER BY total_comp DESC;",
+    "syntaxRule": "ORDER BY comes after WHERE, and LIMIT comes after ORDER BY. ASC is default, DESC is descending.",
+    "syntaxTrap": "Never place LIMIT before ORDER BY, and always add a unique tie-breaker to prevent row-hopping.",
+    "eli5Story": "[SYNTAX BLUEPRINT]:\nSELECT first_name, salary, bonus, (salary + COALESCE(bonus, 0)) AS total_comp\nFROM Employees\nORDER BY total_comp DESC;\n\n[RULE]: ORDER BY comes after WHERE, and LIMIT comes after ORDER BY. ASC is default, DESC is descending.\n\n[TRAP TO AVOID]: Never place LIMIT before ORDER BY, and always add a unique tie-breaker to prevent row-hopping.",
+    "commonMistakes": "Putting semicolon before ORDER BY, reversing LIMIT and OFFSET, or misplacing DESC.",
+    "learningOutcomes": "Mastered 3.5 Sorting by Aliases & Calculations on Employees.",
+    "challengeSlots": [
+      {
+        "type": "keyword",
+        "value": "SELECT"
+      },
+      {
+        "type": "column",
+        "value": "first_name,"
+      },
+      {
+        "type": "column",
+        "value": "salary,"
+      },
+      {
+        "type": "column",
+        "value": "bonus,"
+      },
+      {
+        "type": "column",
+        "value": "(salary"
+      },
+      {
+        "type": "column",
+        "value": "+"
+      },
+      {
+        "type": "column",
+        "value": "COALESCE(bonus,"
+      },
+      {
+        "type": "column",
+        "value": "0))"
+      },
+      {
+        "type": "column",
+        "value": "AS"
+      },
+      {
+        "type": "column",
+        "value": "total_comp"
+      },
+      {
+        "type": "keyword",
+        "value": "FROM"
+      },
+      {
+        "type": "table",
+        "value": "Employees"
+      },
+      {
+        "type": "keyword",
+        "value": "ORDER"
+      },
+      {
+        "type": "keyword",
+        "value": "BY"
+      },
+      {
+        "type": "column",
+        "value": "total_comp"
+      },
+      {
+        "type": "column",
+        "value": "DESC;"
+      }
+    ]
+  },
+  {
+    "id": 1734,
+    "drillNumber": 244,
+    "section": "Section 0: Foundations & Syntax Gym",
+    "title": "Syntax #244: Calculate tax_price and sort by the alias tax_price ascending",
+    "industry": "Foundations",
+    "difficulty": "Easy",
+    "scenario": "Calculate tax_price and sort by the alias tax_price ascending.",
+    "businessObjective": "Calculate tax_price and sort by the alias tax_price ascending.",
+    "schemaSnippet": "GroceryItems schema",
+    "targetQuery": "SELECT item_name, unit_price, (unit_price * 1.08) AS tax_price\nFROM GroceryItems\nORDER BY tax_price ASC;",
+    "syntaxBlueprint": "SELECT item_name, unit_price, (unit_price * 1.08) AS tax_price\nFROM GroceryItems\nORDER BY tax_price ASC;",
+    "syntaxRule": "ORDER BY comes after WHERE, and LIMIT comes after ORDER BY. ASC is default, DESC is descending.",
+    "syntaxTrap": "Never place LIMIT before ORDER BY, and always add a unique tie-breaker to prevent row-hopping.",
+    "eli5Story": "[SYNTAX BLUEPRINT]:\nSELECT item_name, unit_price, (unit_price * 1.08) AS tax_price\nFROM GroceryItems\nORDER BY tax_price ASC;\n\n[RULE]: ORDER BY comes after WHERE, and LIMIT comes after ORDER BY. ASC is default, DESC is descending.\n\n[TRAP TO AVOID]: Never place LIMIT before ORDER BY, and always add a unique tie-breaker to prevent row-hopping.",
+    "commonMistakes": "Putting semicolon before ORDER BY, reversing LIMIT and OFFSET, or misplacing DESC.",
+    "learningOutcomes": "Mastered 3.5 Sorting by Aliases & Calculations on GroceryItems.",
+    "challengeSlots": [
+      {
+        "type": "keyword",
+        "value": "SELECT"
+      },
+      {
+        "type": "column",
+        "value": "item_name,"
+      },
+      {
+        "type": "column",
+        "value": "unit_price,"
+      },
+      {
+        "type": "column",
+        "value": "(unit_price"
+      },
+      {
+        "type": "column",
+        "value": "*"
+      },
+      {
+        "type": "column",
+        "value": "1.08)"
+      },
+      {
+        "type": "column",
+        "value": "AS"
+      },
+      {
+        "type": "column",
+        "value": "tax_price"
+      },
+      {
+        "type": "keyword",
+        "value": "FROM"
+      },
+      {
+        "type": "table",
+        "value": "GroceryItems"
+      },
+      {
+        "type": "keyword",
+        "value": "ORDER"
+      },
+      {
+        "type": "keyword",
+        "value": "BY"
+      },
+      {
+        "type": "column",
+        "value": "tax_price"
+      },
+      {
+        "type": "column",
+        "value": "ASC;"
+      }
+    ]
+  },
+  {
+    "id": 1735,
+    "drillNumber": 245,
+    "section": "Section 0: Foundations & Syntax Gym",
+    "title": "Syntax #245: Compute pct_score and sort by pct_score descending",
+    "industry": "Foundations",
+    "difficulty": "Easy",
+    "scenario": "Compute pct_score and sort by pct_score descending.",
+    "businessObjective": "Compute pct_score and sort by pct_score descending.",
+    "schemaSnippet": "Students schema",
+    "targetQuery": "SELECT full_name, gpa, (gpa * 25.0) AS pct_score\nFROM Students\nORDER BY pct_score DESC;",
+    "syntaxBlueprint": "SELECT full_name, gpa, (gpa * 25.0) AS pct_score\nFROM Students\nORDER BY pct_score DESC;",
+    "syntaxRule": "ORDER BY comes after WHERE, and LIMIT comes after ORDER BY. ASC is default, DESC is descending.",
+    "syntaxTrap": "Never place LIMIT before ORDER BY, and always add a unique tie-breaker to prevent row-hopping.",
+    "eli5Story": "[SYNTAX BLUEPRINT]:\nSELECT full_name, gpa, (gpa * 25.0) AS pct_score\nFROM Students\nORDER BY pct_score DESC;\n\n[RULE]: ORDER BY comes after WHERE, and LIMIT comes after ORDER BY. ASC is default, DESC is descending.\n\n[TRAP TO AVOID]: Never place LIMIT before ORDER BY, and always add a unique tie-breaker to prevent row-hopping.",
+    "commonMistakes": "Putting semicolon before ORDER BY, reversing LIMIT and OFFSET, or misplacing DESC.",
+    "learningOutcomes": "Mastered 3.5 Sorting by Aliases & Calculations on Students.",
+    "challengeSlots": [
+      {
+        "type": "keyword",
+        "value": "SELECT"
+      },
+      {
+        "type": "column",
+        "value": "full_name,"
+      },
+      {
+        "type": "column",
+        "value": "gpa,"
+      },
+      {
+        "type": "column",
+        "value": "(gpa"
+      },
+      {
+        "type": "column",
+        "value": "*"
+      },
+      {
+        "type": "column",
+        "value": "25.0)"
+      },
+      {
+        "type": "column",
+        "value": "AS"
+      },
+      {
+        "type": "column",
+        "value": "pct_score"
+      },
+      {
+        "type": "keyword",
+        "value": "FROM"
+      },
+      {
+        "type": "table",
+        "value": "Students"
+      },
+      {
+        "type": "keyword",
+        "value": "ORDER"
+      },
+      {
+        "type": "keyword",
+        "value": "BY"
+      },
+      {
+        "type": "column",
+        "value": "pct_score"
+      },
+      {
+        "type": "column",
+        "value": "DESC;"
+      }
+    ]
+  },
+  {
+    "id": 1736,
+    "drillNumber": 246,
+    "section": "Section 0: Foundations & Syntax Gym",
+    "title": "Syntax #246: Convert to minutes and sort by the alias mins descending",
+    "industry": "Foundations",
+    "difficulty": "Easy",
+    "scenario": "Convert to minutes and sort by the alias mins descending.",
+    "businessObjective": "Convert to minutes and sort by the alias mins descending.",
+    "schemaSnippet": "MusicTracks schema",
+    "targetQuery": "SELECT track_title, duration_seconds, (duration_seconds / 60.0) AS mins\nFROM MusicTracks\nORDER BY mins DESC;",
+    "syntaxBlueprint": "SELECT track_title, duration_seconds, (duration_seconds / 60.0) AS mins\nFROM MusicTracks\nORDER BY mins DESC;",
+    "syntaxRule": "ORDER BY comes after WHERE, and LIMIT comes after ORDER BY. ASC is default, DESC is descending.",
+    "syntaxTrap": "Never place LIMIT before ORDER BY, and always add a unique tie-breaker to prevent row-hopping.",
+    "eli5Story": "[SYNTAX BLUEPRINT]:\nSELECT track_title, duration_seconds, (duration_seconds / 60.0) AS mins\nFROM MusicTracks\nORDER BY mins DESC;\n\n[RULE]: ORDER BY comes after WHERE, and LIMIT comes after ORDER BY. ASC is default, DESC is descending.\n\n[TRAP TO AVOID]: Never place LIMIT before ORDER BY, and always add a unique tie-breaker to prevent row-hopping.",
+    "commonMistakes": "Putting semicolon before ORDER BY, reversing LIMIT and OFFSET, or misplacing DESC.",
+    "learningOutcomes": "Mastered 3.5 Sorting by Aliases & Calculations on MusicTracks.",
+    "challengeSlots": [
+      {
+        "type": "keyword",
+        "value": "SELECT"
+      },
+      {
+        "type": "column",
+        "value": "track_title,"
+      },
+      {
+        "type": "column",
+        "value": "duration_seconds,"
+      },
+      {
+        "type": "column",
+        "value": "(duration_seconds"
+      },
+      {
+        "type": "column",
+        "value": "/"
+      },
+      {
+        "type": "column",
+        "value": "60.0)"
+      },
+      {
+        "type": "column",
+        "value": "AS"
+      },
+      {
+        "type": "column",
+        "value": "mins"
+      },
+      {
+        "type": "keyword",
+        "value": "FROM"
+      },
+      {
+        "type": "table",
+        "value": "MusicTracks"
+      },
+      {
+        "type": "keyword",
+        "value": "ORDER"
+      },
+      {
+        "type": "keyword",
+        "value": "BY"
+      },
+      {
+        "type": "column",
+        "value": "mins"
+      },
+      {
+        "type": "column",
+        "value": "DESC;"
+      }
+    ]
+  },
+  {
+    "id": 1737,
+    "drillNumber": 247,
+    "section": "Section 0: Foundations & Syntax Gym",
+    "title": "Syntax #247: Compute annual dues and sort by annual_dues ascending",
+    "industry": "Foundations",
+    "difficulty": "Easy",
+    "scenario": "Compute annual dues and sort by annual_dues ascending.",
+    "businessObjective": "Compute annual dues and sort by annual_dues ascending.",
+    "schemaSnippet": "GymMembers schema",
+    "targetQuery": "SELECT member_name, monthly_fee, (monthly_fee * 12) AS annual_dues\nFROM GymMembers\nORDER BY annual_dues ASC;",
+    "syntaxBlueprint": "SELECT member_name, monthly_fee, (monthly_fee * 12) AS annual_dues\nFROM GymMembers\nORDER BY annual_dues ASC;",
+    "syntaxRule": "ORDER BY comes after WHERE, and LIMIT comes after ORDER BY. ASC is default, DESC is descending.",
+    "syntaxTrap": "Never place LIMIT before ORDER BY, and always add a unique tie-breaker to prevent row-hopping.",
+    "eli5Story": "[SYNTAX BLUEPRINT]:\nSELECT member_name, monthly_fee, (monthly_fee * 12) AS annual_dues\nFROM GymMembers\nORDER BY annual_dues ASC;\n\n[RULE]: ORDER BY comes after WHERE, and LIMIT comes after ORDER BY. ASC is default, DESC is descending.\n\n[TRAP TO AVOID]: Never place LIMIT before ORDER BY, and always add a unique tie-breaker to prevent row-hopping.",
+    "commonMistakes": "Putting semicolon before ORDER BY, reversing LIMIT and OFFSET, or misplacing DESC.",
+    "learningOutcomes": "Mastered 3.5 Sorting by Aliases & Calculations on GymMembers.",
+    "challengeSlots": [
+      {
+        "type": "keyword",
+        "value": "SELECT"
+      },
+      {
+        "type": "column",
+        "value": "member_name,"
+      },
+      {
+        "type": "column",
+        "value": "monthly_fee,"
+      },
+      {
+        "type": "column",
+        "value": "(monthly_fee"
+      },
+      {
+        "type": "column",
+        "value": "*"
+      },
+      {
+        "type": "column",
+        "value": "12)"
+      },
+      {
+        "type": "column",
+        "value": "AS"
+      },
+      {
+        "type": "column",
+        "value": "annual_dues"
+      },
+      {
+        "type": "keyword",
+        "value": "FROM"
+      },
+      {
+        "type": "table",
+        "value": "GymMembers"
+      },
+      {
+        "type": "keyword",
+        "value": "ORDER"
+      },
+      {
+        "type": "keyword",
+        "value": "BY"
+      },
+      {
+        "type": "column",
+        "value": "annual_dues"
+      },
+      {
+        "type": "column",
+        "value": "ASC;"
+      }
+    ]
+  },
+  {
+    "id": 1738,
+    "drillNumber": 248,
+    "section": "Section 0: Foundations & Syntax Gym",
+    "title": "Syntax #248: Add baggage fee to ticket price and sort by total_fare ascending",
+    "industry": "Foundations",
+    "difficulty": "Easy",
+    "scenario": "Add baggage fee to ticket price and sort by total_fare ascending.",
+    "businessObjective": "Add baggage fee to ticket price and sort by total_fare ascending.",
+    "schemaSnippet": "FlightSchedule schema",
+    "targetQuery": "SELECT flight_id, ticket_price, (ticket_price + 35.00) AS total_fare\nFROM FlightSchedule\nORDER BY total_fare ASC;",
+    "syntaxBlueprint": "SELECT flight_id, ticket_price, (ticket_price + 35.00) AS total_fare\nFROM FlightSchedule\nORDER BY total_fare ASC;",
+    "syntaxRule": "ORDER BY comes after WHERE, and LIMIT comes after ORDER BY. ASC is default, DESC is descending.",
+    "syntaxTrap": "Never place LIMIT before ORDER BY, and always add a unique tie-breaker to prevent row-hopping.",
+    "eli5Story": "[SYNTAX BLUEPRINT]:\nSELECT flight_id, ticket_price, (ticket_price + 35.00) AS total_fare\nFROM FlightSchedule\nORDER BY total_fare ASC;\n\n[RULE]: ORDER BY comes after WHERE, and LIMIT comes after ORDER BY. ASC is default, DESC is descending.\n\n[TRAP TO AVOID]: Never place LIMIT before ORDER BY, and always add a unique tie-breaker to prevent row-hopping.",
+    "commonMistakes": "Putting semicolon before ORDER BY, reversing LIMIT and OFFSET, or misplacing DESC.",
+    "learningOutcomes": "Mastered 3.5 Sorting by Aliases & Calculations on FlightSchedule.",
+    "challengeSlots": [
+      {
+        "type": "keyword",
+        "value": "SELECT"
+      },
+      {
+        "type": "column",
+        "value": "flight_id,"
+      },
+      {
+        "type": "column",
+        "value": "ticket_price,"
+      },
+      {
+        "type": "column",
+        "value": "(ticket_price"
+      },
+      {
+        "type": "column",
+        "value": "+"
+      },
+      {
+        "type": "column",
+        "value": "35.00)"
+      },
+      {
+        "type": "column",
+        "value": "AS"
+      },
+      {
+        "type": "column",
+        "value": "total_fare"
+      },
+      {
+        "type": "keyword",
+        "value": "FROM"
+      },
+      {
+        "type": "table",
+        "value": "FlightSchedule"
+      },
+      {
+        "type": "keyword",
+        "value": "ORDER"
+      },
+      {
+        "type": "keyword",
+        "value": "BY"
+      },
+      {
+        "type": "column",
+        "value": "total_fare"
+      },
+      {
+        "type": "column",
+        "value": "ASC;"
+      }
+    ]
+  },
+  {
+    "id": 1739,
+    "drillNumber": 249,
+    "section": "Section 0: Foundations & Syntax Gym",
+    "title": "Syntax #249: Convert weight to lbs and sort by lbs descending",
+    "industry": "Foundations",
+    "difficulty": "Easy",
+    "scenario": "Convert weight to lbs and sort by lbs descending.",
+    "businessObjective": "Convert weight to lbs and sort by lbs descending.",
+    "schemaSnippet": "PetClinic schema",
+    "targetQuery": "SELECT pet_name, weight_kg, (weight_kg * 2.20462) AS lbs\nFROM PetClinic\nORDER BY lbs DESC;",
+    "syntaxBlueprint": "SELECT pet_name, weight_kg, (weight_kg * 2.20462) AS lbs\nFROM PetClinic\nORDER BY lbs DESC;",
+    "syntaxRule": "ORDER BY comes after WHERE, and LIMIT comes after ORDER BY. ASC is default, DESC is descending.",
+    "syntaxTrap": "Never place LIMIT before ORDER BY, and always add a unique tie-breaker to prevent row-hopping.",
+    "eli5Story": "[SYNTAX BLUEPRINT]:\nSELECT pet_name, weight_kg, (weight_kg * 2.20462) AS lbs\nFROM PetClinic\nORDER BY lbs DESC;\n\n[RULE]: ORDER BY comes after WHERE, and LIMIT comes after ORDER BY. ASC is default, DESC is descending.\n\n[TRAP TO AVOID]: Never place LIMIT before ORDER BY, and always add a unique tie-breaker to prevent row-hopping.",
+    "commonMistakes": "Putting semicolon before ORDER BY, reversing LIMIT and OFFSET, or misplacing DESC.",
+    "learningOutcomes": "Mastered 3.5 Sorting by Aliases & Calculations on PetClinic.",
+    "challengeSlots": [
+      {
+        "type": "keyword",
+        "value": "SELECT"
+      },
+      {
+        "type": "column",
+        "value": "pet_name,"
+      },
+      {
+        "type": "column",
+        "value": "weight_kg,"
+      },
+      {
+        "type": "column",
+        "value": "(weight_kg"
+      },
+      {
+        "type": "column",
+        "value": "*"
+      },
+      {
+        "type": "column",
+        "value": "2.20462)"
+      },
+      {
+        "type": "column",
+        "value": "AS"
+      },
+      {
+        "type": "column",
+        "value": "lbs"
+      },
+      {
+        "type": "keyword",
+        "value": "FROM"
+      },
+      {
+        "type": "table",
+        "value": "PetClinic"
+      },
+      {
+        "type": "keyword",
+        "value": "ORDER"
+      },
+      {
+        "type": "keyword",
+        "value": "BY"
+      },
+      {
+        "type": "column",
+        "value": "lbs"
+      },
+      {
+        "type": "column",
+        "value": "DESC;"
+      }
+    ]
+  },
+  {
+    "id": 1740,
+    "drillNumber": 250,
+    "section": "Section 0: Foundations & Syntax Gym",
+    "title": "Syntax #250: Compute movie age and sort by age ascending (newest films first)",
+    "industry": "Foundations",
+    "difficulty": "Easy",
+    "scenario": "Compute movie age and sort by age ascending (newest films first).",
+    "businessObjective": "Compute movie age and sort by age ascending (newest films first).",
+    "schemaSnippet": "MovieReviews schema",
+    "targetQuery": "SELECT movie_title, release_year, (2026 - release_year) AS age\nFROM MovieReviews\nORDER BY age ASC;",
+    "syntaxBlueprint": "SELECT movie_title, release_year, (2026 - release_year) AS age\nFROM MovieReviews\nORDER BY age ASC;",
+    "syntaxRule": "ORDER BY comes after WHERE, and LIMIT comes after ORDER BY. ASC is default, DESC is descending.",
+    "syntaxTrap": "Never place LIMIT before ORDER BY, and always add a unique tie-breaker to prevent row-hopping.",
+    "eli5Story": "[SYNTAX BLUEPRINT]:\nSELECT movie_title, release_year, (2026 - release_year) AS age\nFROM MovieReviews\nORDER BY age ASC;\n\n[RULE]: ORDER BY comes after WHERE, and LIMIT comes after ORDER BY. ASC is default, DESC is descending.\n\n[TRAP TO AVOID]: Never place LIMIT before ORDER BY, and always add a unique tie-breaker to prevent row-hopping.",
+    "commonMistakes": "Putting semicolon before ORDER BY, reversing LIMIT and OFFSET, or misplacing DESC.",
+    "learningOutcomes": "Mastered 3.5 Sorting by Aliases & Calculations on MovieReviews.",
+    "challengeSlots": [
+      {
+        "type": "keyword",
+        "value": "SELECT"
+      },
+      {
+        "type": "column",
+        "value": "movie_title,"
+      },
+      {
+        "type": "column",
+        "value": "release_year,"
+      },
+      {
+        "type": "column",
+        "value": "(2026"
+      },
+      {
+        "type": "column",
+        "value": "-"
+      },
+      {
+        "type": "column",
+        "value": "release_year)"
+      },
+      {
+        "type": "column",
+        "value": "AS"
+      },
+      {
+        "type": "column",
+        "value": "age"
+      },
+      {
+        "type": "keyword",
+        "value": "FROM"
+      },
+      {
+        "type": "table",
+        "value": "MovieReviews"
+      },
+      {
+        "type": "keyword",
+        "value": "ORDER"
+      },
+      {
+        "type": "keyword",
+        "value": "BY"
+      },
+      {
+        "type": "column",
+        "value": "age"
+      },
+      {
+        "type": "column",
+        "value": "ASC;"
+      }
+    ]
+  },
+  {
+    "id": 1741,
+    "drillNumber": 251,
+    "section": "Section 0: Foundations & Syntax Gym",
+    "title": "Syntax #251: Sort students by the character length of their full name from longest to shortest",
+    "industry": "Foundations",
+    "difficulty": "Easy",
+    "scenario": "Sort students by the character length of their full name from longest to shortest.",
+    "businessObjective": "Sort students by the character length of their full name from longest to shortest.",
+    "schemaSnippet": "Students schema",
+    "targetQuery": "SELECT full_name\nFROM Students\nORDER BY LENGTH(full_name) DESC;",
+    "syntaxBlueprint": "SELECT full_name\nFROM Students\nORDER BY LENGTH(full_name) DESC;",
+    "syntaxRule": "ORDER BY comes after WHERE, and LIMIT comes after ORDER BY. ASC is default, DESC is descending.",
+    "syntaxTrap": "Never place LIMIT before ORDER BY, and always add a unique tie-breaker to prevent row-hopping.",
+    "eli5Story": "[SYNTAX BLUEPRINT]:\nSELECT full_name\nFROM Students\nORDER BY LENGTH(full_name) DESC;\n\n[RULE]: ORDER BY comes after WHERE, and LIMIT comes after ORDER BY. ASC is default, DESC is descending.\n\n[TRAP TO AVOID]: Never place LIMIT before ORDER BY, and always add a unique tie-breaker to prevent row-hopping.",
+    "commonMistakes": "Putting semicolon before ORDER BY, reversing LIMIT and OFFSET, or misplacing DESC.",
+    "learningOutcomes": "Mastered 3.6 Sorting by Functions on Students.",
+    "challengeSlots": [
+      {
+        "type": "keyword",
+        "value": "SELECT"
+      },
+      {
+        "type": "column",
+        "value": "full_name"
+      },
+      {
+        "type": "keyword",
+        "value": "FROM"
+      },
+      {
+        "type": "table",
+        "value": "Students"
+      },
+      {
+        "type": "keyword",
+        "value": "ORDER"
+      },
+      {
+        "type": "keyword",
+        "value": "BY"
+      },
+      {
+        "type": "column",
+        "value": "LENGTH(full_name)"
+      },
+      {
+        "type": "column",
+        "value": "DESC;"
+      }
+    ]
+  },
+  {
+    "id": 1742,
+    "drillNumber": 252,
+    "section": "Section 0: Foundations & Syntax Gym",
+    "title": "Syntax #252: Sort book titles by character length from shortest to longest",
+    "industry": "Foundations",
+    "difficulty": "Easy",
+    "scenario": "Sort book titles by character length from shortest to longest.",
+    "businessObjective": "Sort book titles by character length from shortest to longest.",
+    "schemaSnippet": "Books schema",
+    "targetQuery": "SELECT title\nFROM Books\nORDER BY LENGTH(title) ASC;",
+    "syntaxBlueprint": "SELECT title\nFROM Books\nORDER BY LENGTH(title) ASC;",
+    "syntaxRule": "ORDER BY comes after WHERE, and LIMIT comes after ORDER BY. ASC is default, DESC is descending.",
+    "syntaxTrap": "Never place LIMIT before ORDER BY, and always add a unique tie-breaker to prevent row-hopping.",
+    "eli5Story": "[SYNTAX BLUEPRINT]:\nSELECT title\nFROM Books\nORDER BY LENGTH(title) ASC;\n\n[RULE]: ORDER BY comes after WHERE, and LIMIT comes after ORDER BY. ASC is default, DESC is descending.\n\n[TRAP TO AVOID]: Never place LIMIT before ORDER BY, and always add a unique tie-breaker to prevent row-hopping.",
+    "commonMistakes": "Putting semicolon before ORDER BY, reversing LIMIT and OFFSET, or misplacing DESC.",
+    "learningOutcomes": "Mastered 3.6 Sorting by Functions on Books.",
+    "challengeSlots": [
+      {
+        "type": "keyword",
+        "value": "SELECT"
+      },
+      {
+        "type": "column",
+        "value": "title"
+      },
+      {
+        "type": "keyword",
+        "value": "FROM"
+      },
+      {
+        "type": "table",
+        "value": "Books"
+      },
+      {
+        "type": "keyword",
+        "value": "ORDER"
+      },
+      {
+        "type": "keyword",
+        "value": "BY"
+      },
+      {
+        "type": "column",
+        "value": "LENGTH(title)"
+      },
+      {
+        "type": "column",
+        "value": "ASC;"
+      }
+    ]
+  },
+  {
+    "id": 1743,
+    "drillNumber": 253,
+    "section": "Section 0: Foundations & Syntax Gym",
+    "title": "Syntax #253: Order employees by hire year descending, then hire month descending",
+    "industry": "Foundations",
+    "difficulty": "Easy",
+    "scenario": "Order employees by hire year descending, then hire month descending.",
+    "businessObjective": "Order employees by hire year descending, then hire month descending.",
+    "schemaSnippet": "Employees schema",
+    "targetQuery": "SELECT first_name, hire_date\nFROM Employees\nORDER BY YEAR(hire_date) DESC, MONTH(hire_date) DESC;",
+    "syntaxBlueprint": "SELECT first_name, hire_date\nFROM Employees\nORDER BY YEAR(hire_date) DESC, MONTH(hire_date) DESC;",
+    "syntaxRule": "ORDER BY comes after WHERE, and LIMIT comes after ORDER BY. ASC is default, DESC is descending.",
+    "syntaxTrap": "Never place LIMIT before ORDER BY, and always add a unique tie-breaker to prevent row-hopping.",
+    "eli5Story": "[SYNTAX BLUEPRINT]:\nSELECT first_name, hire_date\nFROM Employees\nORDER BY YEAR(hire_date) DESC, MONTH(hire_date) DESC;\n\n[RULE]: ORDER BY comes after WHERE, and LIMIT comes after ORDER BY. ASC is default, DESC is descending.\n\n[TRAP TO AVOID]: Never place LIMIT before ORDER BY, and always add a unique tie-breaker to prevent row-hopping.",
+    "commonMistakes": "Putting semicolon before ORDER BY, reversing LIMIT and OFFSET, or misplacing DESC.",
+    "learningOutcomes": "Mastered 3.6 Sorting by Functions on Employees.",
+    "challengeSlots": [
+      {
+        "type": "keyword",
+        "value": "SELECT"
+      },
+      {
+        "type": "column",
+        "value": "first_name,"
+      },
+      {
+        "type": "column",
+        "value": "hire_date"
+      },
+      {
+        "type": "keyword",
+        "value": "FROM"
+      },
+      {
+        "type": "table",
+        "value": "Employees"
+      },
+      {
+        "type": "keyword",
+        "value": "ORDER"
+      },
+      {
+        "type": "keyword",
+        "value": "BY"
+      },
+      {
+        "type": "column",
+        "value": "YEAR(hire_date)"
+      },
+      {
+        "type": "column",
+        "value": "DESC,"
+      },
+      {
+        "type": "column",
+        "value": "MONTH(hire_date)"
+      },
+      {
+        "type": "column",
+        "value": "DESC;"
+      }
+    ]
+  },
+  {
+    "id": 1744,
+    "drillNumber": 254,
+    "section": "Section 0: Foundations & Syntax Gym",
+    "title": "Syntax #254: Sort grocery items by their rounded whole-dollar unit price descending",
+    "industry": "Foundations",
+    "difficulty": "Easy",
+    "scenario": "Sort grocery items by their rounded whole-dollar unit price descending.",
+    "businessObjective": "Sort grocery items by their rounded whole-dollar unit price descending.",
+    "schemaSnippet": "GroceryItems schema",
+    "targetQuery": "SELECT item_name, unit_price\nFROM GroceryItems\nORDER BY ROUND(unit_price) DESC;",
+    "syntaxBlueprint": "SELECT item_name, unit_price\nFROM GroceryItems\nORDER BY ROUND(unit_price) DESC;",
+    "syntaxRule": "ORDER BY comes after WHERE, and LIMIT comes after ORDER BY. ASC is default, DESC is descending.",
+    "syntaxTrap": "Never place LIMIT before ORDER BY, and always add a unique tie-breaker to prevent row-hopping.",
+    "eli5Story": "[SYNTAX BLUEPRINT]:\nSELECT item_name, unit_price\nFROM GroceryItems\nORDER BY ROUND(unit_price) DESC;\n\n[RULE]: ORDER BY comes after WHERE, and LIMIT comes after ORDER BY. ASC is default, DESC is descending.\n\n[TRAP TO AVOID]: Never place LIMIT before ORDER BY, and always add a unique tie-breaker to prevent row-hopping.",
+    "commonMistakes": "Putting semicolon before ORDER BY, reversing LIMIT and OFFSET, or misplacing DESC.",
+    "learningOutcomes": "Mastered 3.6 Sorting by Functions on GroceryItems.",
+    "challengeSlots": [
+      {
+        "type": "keyword",
+        "value": "SELECT"
+      },
+      {
+        "type": "column",
+        "value": "item_name,"
+      },
+      {
+        "type": "column",
+        "value": "unit_price"
+      },
+      {
+        "type": "keyword",
+        "value": "FROM"
+      },
+      {
+        "type": "table",
+        "value": "GroceryItems"
+      },
+      {
+        "type": "keyword",
+        "value": "ORDER"
+      },
+      {
+        "type": "keyword",
+        "value": "BY"
+      },
+      {
+        "type": "column",
+        "value": "ROUND(unit_price)"
+      },
+      {
+        "type": "column",
+        "value": "DESC;"
+      }
+    ]
+  },
+  {
+    "id": 1745,
+    "drillNumber": 255,
+    "section": "Section 0: Foundations & Syntax Gym",
+    "title": "Syntax #255: Sort customer names in case-insensitive alphabetical order using LOWER()",
+    "industry": "Foundations",
+    "difficulty": "Easy",
+    "scenario": "Sort customer names in case-insensitive alphabetical order using LOWER().",
+    "businessObjective": "Sort customer names in case-insensitive alphabetical order using LOWER().",
+    "schemaSnippet": "Orders schema",
+    "targetQuery": "SELECT customer_name\nFROM Orders\nORDER BY LOWER(customer_name) ASC;",
+    "syntaxBlueprint": "SELECT customer_name\nFROM Orders\nORDER BY LOWER(customer_name) ASC;",
+    "syntaxRule": "ORDER BY comes after WHERE, and LIMIT comes after ORDER BY. ASC is default, DESC is descending.",
+    "syntaxTrap": "Never place LIMIT before ORDER BY, and always add a unique tie-breaker to prevent row-hopping.",
+    "eli5Story": "[SYNTAX BLUEPRINT]:\nSELECT customer_name\nFROM Orders\nORDER BY LOWER(customer_name) ASC;\n\n[RULE]: ORDER BY comes after WHERE, and LIMIT comes after ORDER BY. ASC is default, DESC is descending.\n\n[TRAP TO AVOID]: Never place LIMIT before ORDER BY, and always add a unique tie-breaker to prevent row-hopping.",
+    "commonMistakes": "Putting semicolon before ORDER BY, reversing LIMIT and OFFSET, or misplacing DESC.",
+    "learningOutcomes": "Mastered 3.6 Sorting by Functions on Orders.",
+    "challengeSlots": [
+      {
+        "type": "keyword",
+        "value": "SELECT"
+      },
+      {
+        "type": "column",
+        "value": "customer_name"
+      },
+      {
+        "type": "keyword",
+        "value": "FROM"
+      },
+      {
+        "type": "table",
+        "value": "Orders"
+      },
+      {
+        "type": "keyword",
+        "value": "ORDER"
+      },
+      {
+        "type": "keyword",
+        "value": "BY"
+      },
+      {
+        "type": "column",
+        "value": "LOWER(customer_name)"
+      },
+      {
+        "type": "column",
+        "value": "ASC;"
+      }
+    ]
+  },
+  {
+    "id": 1746,
+    "drillNumber": 256,
+    "section": "Section 0: Foundations & Syntax Gym",
+    "title": "Syntax #256: Sort song titles by character count from longest to shortest",
+    "industry": "Foundations",
+    "difficulty": "Easy",
+    "scenario": "Sort song titles by character count from longest to shortest.",
+    "businessObjective": "Sort song titles by character count from longest to shortest.",
+    "schemaSnippet": "MusicTracks schema",
+    "targetQuery": "SELECT track_title\nFROM MusicTracks\nORDER BY LENGTH(track_title) DESC;",
+    "syntaxBlueprint": "SELECT track_title\nFROM MusicTracks\nORDER BY LENGTH(track_title) DESC;",
+    "syntaxRule": "ORDER BY comes after WHERE, and LIMIT comes after ORDER BY. ASC is default, DESC is descending.",
+    "syntaxTrap": "Never place LIMIT before ORDER BY, and always add a unique tie-breaker to prevent row-hopping.",
+    "eli5Story": "[SYNTAX BLUEPRINT]:\nSELECT track_title\nFROM MusicTracks\nORDER BY LENGTH(track_title) DESC;\n\n[RULE]: ORDER BY comes after WHERE, and LIMIT comes after ORDER BY. ASC is default, DESC is descending.\n\n[TRAP TO AVOID]: Never place LIMIT before ORDER BY, and always add a unique tie-breaker to prevent row-hopping.",
+    "commonMistakes": "Putting semicolon before ORDER BY, reversing LIMIT and OFFSET, or misplacing DESC.",
+    "learningOutcomes": "Mastered 3.6 Sorting by Functions on MusicTracks.",
+    "challengeSlots": [
+      {
+        "type": "keyword",
+        "value": "SELECT"
+      },
+      {
+        "type": "column",
+        "value": "track_title"
+      },
+      {
+        "type": "keyword",
+        "value": "FROM"
+      },
+      {
+        "type": "table",
+        "value": "MusicTracks"
+      },
+      {
+        "type": "keyword",
+        "value": "ORDER"
+      },
+      {
+        "type": "keyword",
+        "value": "BY"
+      },
+      {
+        "type": "column",
+        "value": "LENGTH(track_title)"
+      },
+      {
+        "type": "column",
+        "value": "DESC;"
+      }
+    ]
+  },
+  {
+    "id": 1747,
+    "drillNumber": 257,
+    "section": "Section 0: Foundations & Syntax Gym",
+    "title": "Syntax #257: Order gym members chronologically by the year they joined",
+    "industry": "Foundations",
+    "difficulty": "Easy",
+    "scenario": "Order gym members chronologically by the year they joined.",
+    "businessObjective": "Order gym members chronologically by the year they joined.",
+    "schemaSnippet": "GymMembers schema",
+    "targetQuery": "SELECT member_name, join_date\nFROM GymMembers\nORDER BY YEAR(join_date) ASC;",
+    "syntaxBlueprint": "SELECT member_name, join_date\nFROM GymMembers\nORDER BY YEAR(join_date) ASC;",
+    "syntaxRule": "ORDER BY comes after WHERE, and LIMIT comes after ORDER BY. ASC is default, DESC is descending.",
+    "syntaxTrap": "Never place LIMIT before ORDER BY, and always add a unique tie-breaker to prevent row-hopping.",
+    "eli5Story": "[SYNTAX BLUEPRINT]:\nSELECT member_name, join_date\nFROM GymMembers\nORDER BY YEAR(join_date) ASC;\n\n[RULE]: ORDER BY comes after WHERE, and LIMIT comes after ORDER BY. ASC is default, DESC is descending.\n\n[TRAP TO AVOID]: Never place LIMIT before ORDER BY, and always add a unique tie-breaker to prevent row-hopping.",
+    "commonMistakes": "Putting semicolon before ORDER BY, reversing LIMIT and OFFSET, or misplacing DESC.",
+    "learningOutcomes": "Mastered 3.6 Sorting by Functions on GymMembers.",
+    "challengeSlots": [
+      {
+        "type": "keyword",
+        "value": "SELECT"
+      },
+      {
+        "type": "column",
+        "value": "member_name,"
+      },
+      {
+        "type": "column",
+        "value": "join_date"
+      },
+      {
+        "type": "keyword",
+        "value": "FROM"
+      },
+      {
+        "type": "table",
+        "value": "GymMembers"
+      },
+      {
+        "type": "keyword",
+        "value": "ORDER"
+      },
+      {
+        "type": "keyword",
+        "value": "BY"
+      },
+      {
+        "type": "column",
+        "value": "YEAR(join_date)"
+      },
+      {
+        "type": "column",
+        "value": "ASC;"
+      }
+    ]
+  },
+  {
+    "id": 1748,
+    "drillNumber": 258,
+    "section": "Section 0: Foundations & Syntax Gym",
+    "title": "Syntax #258: Sort movie reviews by rounded star rating descending",
+    "industry": "Foundations",
+    "difficulty": "Easy",
+    "scenario": "Sort movie reviews by rounded star rating descending.",
+    "businessObjective": "Sort movie reviews by rounded star rating descending.",
+    "schemaSnippet": "MovieReviews schema",
+    "targetQuery": "SELECT movie_title, star_rating\nFROM MovieReviews\nORDER BY ROUND(star_rating) DESC;",
+    "syntaxBlueprint": "SELECT movie_title, star_rating\nFROM MovieReviews\nORDER BY ROUND(star_rating) DESC;",
+    "syntaxRule": "ORDER BY comes after WHERE, and LIMIT comes after ORDER BY. ASC is default, DESC is descending.",
+    "syntaxTrap": "Never place LIMIT before ORDER BY, and always add a unique tie-breaker to prevent row-hopping.",
+    "eli5Story": "[SYNTAX BLUEPRINT]:\nSELECT movie_title, star_rating\nFROM MovieReviews\nORDER BY ROUND(star_rating) DESC;\n\n[RULE]: ORDER BY comes after WHERE, and LIMIT comes after ORDER BY. ASC is default, DESC is descending.\n\n[TRAP TO AVOID]: Never place LIMIT before ORDER BY, and always add a unique tie-breaker to prevent row-hopping.",
+    "commonMistakes": "Putting semicolon before ORDER BY, reversing LIMIT and OFFSET, or misplacing DESC.",
+    "learningOutcomes": "Mastered 3.6 Sorting by Functions on MovieReviews.",
+    "challengeSlots": [
+      {
+        "type": "keyword",
+        "value": "SELECT"
+      },
+      {
+        "type": "column",
+        "value": "movie_title,"
+      },
+      {
+        "type": "column",
+        "value": "star_rating"
+      },
+      {
+        "type": "keyword",
+        "value": "FROM"
+      },
+      {
+        "type": "table",
+        "value": "MovieReviews"
+      },
+      {
+        "type": "keyword",
+        "value": "ORDER"
+      },
+      {
+        "type": "keyword",
+        "value": "BY"
+      },
+      {
+        "type": "column",
+        "value": "ROUND(star_rating)"
+      },
+      {
+        "type": "column",
+        "value": "DESC;"
+      }
+    ]
+  },
+  {
+    "id": 1749,
+    "drillNumber": 259,
+    "section": "Section 0: Foundations & Syntax Gym",
+    "title": "Syntax #259: Sort origin airport codes alphabetically using UPPER()",
+    "industry": "Foundations",
+    "difficulty": "Easy",
+    "scenario": "Sort origin airport codes alphabetically using UPPER().",
+    "businessObjective": "Sort origin airport codes alphabetically using UPPER().",
+    "schemaSnippet": "FlightSchedule schema",
+    "targetQuery": "SELECT flight_id, origin_airport\nFROM FlightSchedule\nORDER BY UPPER(origin_airport) ASC;",
+    "syntaxBlueprint": "SELECT flight_id, origin_airport\nFROM FlightSchedule\nORDER BY UPPER(origin_airport) ASC;",
+    "syntaxRule": "ORDER BY comes after WHERE, and LIMIT comes after ORDER BY. ASC is default, DESC is descending.",
+    "syntaxTrap": "Never place LIMIT before ORDER BY, and always add a unique tie-breaker to prevent row-hopping.",
+    "eli5Story": "[SYNTAX BLUEPRINT]:\nSELECT flight_id, origin_airport\nFROM FlightSchedule\nORDER BY UPPER(origin_airport) ASC;\n\n[RULE]: ORDER BY comes after WHERE, and LIMIT comes after ORDER BY. ASC is default, DESC is descending.\n\n[TRAP TO AVOID]: Never place LIMIT before ORDER BY, and always add a unique tie-breaker to prevent row-hopping.",
+    "commonMistakes": "Putting semicolon before ORDER BY, reversing LIMIT and OFFSET, or misplacing DESC.",
+    "learningOutcomes": "Mastered 3.6 Sorting by Functions on FlightSchedule.",
+    "challengeSlots": [
+      {
+        "type": "keyword",
+        "value": "SELECT"
+      },
+      {
+        "type": "column",
+        "value": "flight_id,"
+      },
+      {
+        "type": "column",
+        "value": "origin_airport"
+      },
+      {
+        "type": "keyword",
+        "value": "FROM"
+      },
+      {
+        "type": "table",
+        "value": "FlightSchedule"
+      },
+      {
+        "type": "keyword",
+        "value": "ORDER"
+      },
+      {
+        "type": "keyword",
+        "value": "BY"
+      },
+      {
+        "type": "column",
+        "value": "UPPER(origin_airport)"
+      },
+      {
+        "type": "column",
+        "value": "ASC;"
+      }
+    ]
+  },
+  {
+    "id": 1750,
+    "drillNumber": 260,
+    "section": "Section 0: Foundations & Syntax Gym",
+    "title": "Syntax #260: Sort pet names by length from shortest to longest",
+    "industry": "Foundations",
+    "difficulty": "Easy",
+    "scenario": "Sort pet names by length from shortest to longest.",
+    "businessObjective": "Sort pet names by length from shortest to longest.",
+    "schemaSnippet": "PetClinic schema",
+    "targetQuery": "SELECT pet_name\nFROM PetClinic\nORDER BY LENGTH(pet_name) ASC;",
+    "syntaxBlueprint": "SELECT pet_name\nFROM PetClinic\nORDER BY LENGTH(pet_name) ASC;",
+    "syntaxRule": "ORDER BY comes after WHERE, and LIMIT comes after ORDER BY. ASC is default, DESC is descending.",
+    "syntaxTrap": "Never place LIMIT before ORDER BY, and always add a unique tie-breaker to prevent row-hopping.",
+    "eli5Story": "[SYNTAX BLUEPRINT]:\nSELECT pet_name\nFROM PetClinic\nORDER BY LENGTH(pet_name) ASC;\n\n[RULE]: ORDER BY comes after WHERE, and LIMIT comes after ORDER BY. ASC is default, DESC is descending.\n\n[TRAP TO AVOID]: Never place LIMIT before ORDER BY, and always add a unique tie-breaker to prevent row-hopping.",
+    "commonMistakes": "Putting semicolon before ORDER BY, reversing LIMIT and OFFSET, or misplacing DESC.",
+    "learningOutcomes": "Mastered 3.6 Sorting by Functions on PetClinic.",
+    "challengeSlots": [
+      {
+        "type": "keyword",
+        "value": "SELECT"
+      },
+      {
+        "type": "column",
+        "value": "pet_name"
+      },
+      {
+        "type": "keyword",
+        "value": "FROM"
+      },
+      {
+        "type": "table",
+        "value": "PetClinic"
+      },
+      {
+        "type": "keyword",
+        "value": "ORDER"
+      },
+      {
+        "type": "keyword",
+        "value": "BY"
+      },
+      {
+        "type": "column",
+        "value": "LENGTH(pet_name)"
+      },
+      {
+        "type": "column",
+        "value": "ASC;"
+      }
+    ]
+  },
+  {
+    "id": 1751,
+    "drillNumber": 261,
+    "section": "Section 0: Foundations & Syntax Gym",
+    "title": "Syntax #261: Sort by column position: 1st column (city) ASC, 2nd column (full_name) ASC",
+    "industry": "Foundations",
+    "difficulty": "Easy",
+    "scenario": "Sort by column position: 1st column (city) ASC, 2nd column (full_name) ASC.",
+    "businessObjective": "Sort by column position: 1st column (city) ASC, 2nd column (full_name) ASC.",
+    "schemaSnippet": "Students schema",
+    "targetQuery": "SELECT city, full_name\nFROM Students\nORDER BY 1 ASC, 2 ASC;",
+    "syntaxBlueprint": "SELECT city, full_name\nFROM Students\nORDER BY 1 ASC, 2 ASC;",
+    "syntaxRule": "ORDER BY comes after WHERE, and LIMIT comes after ORDER BY. ASC is default, DESC is descending.",
+    "syntaxTrap": "Never place LIMIT before ORDER BY, and always add a unique tie-breaker to prevent row-hopping.",
+    "eli5Story": "[SYNTAX BLUEPRINT]:\nSELECT city, full_name\nFROM Students\nORDER BY 1 ASC, 2 ASC;\n\n[RULE]: ORDER BY comes after WHERE, and LIMIT comes after ORDER BY. ASC is default, DESC is descending.\n\n[TRAP TO AVOID]: Never place LIMIT before ORDER BY, and always add a unique tie-breaker to prevent row-hopping.",
+    "commonMistakes": "Putting semicolon before ORDER BY, reversing LIMIT and OFFSET, or misplacing DESC.",
+    "learningOutcomes": "Mastered 3.7 Positional Sorting (ORDER BY 1, 2) on Students.",
+    "challengeSlots": [
+      {
+        "type": "keyword",
+        "value": "SELECT"
+      },
+      {
+        "type": "column",
+        "value": "city,"
+      },
+      {
+        "type": "column",
+        "value": "full_name"
+      },
+      {
+        "type": "keyword",
+        "value": "FROM"
+      },
+      {
+        "type": "table",
+        "value": "Students"
+      },
+      {
+        "type": "keyword",
+        "value": "ORDER"
+      },
+      {
+        "type": "keyword",
+        "value": "BY"
+      },
+      {
+        "type": "column",
+        "value": "1"
+      },
+      {
+        "type": "column",
+        "value": "ASC,"
+      },
+      {
+        "type": "column",
+        "value": "2"
+      },
+      {
+        "type": "column",
+        "value": "ASC;"
+      }
+    ]
+  },
+  {
+    "id": 1752,
+    "drillNumber": 262,
+    "section": "Section 0: Foundations & Syntax Gym",
+    "title": "Syntax #262: Sort by position: 1st column (genre) ASC, 2nd column (price) DESC",
+    "industry": "Foundations",
+    "difficulty": "Easy",
+    "scenario": "Sort by position: 1st column (genre) ASC, 2nd column (price) DESC.",
+    "businessObjective": "Sort by position: 1st column (genre) ASC, 2nd column (price) DESC.",
+    "schemaSnippet": "Books schema",
+    "targetQuery": "SELECT genre, price\nFROM Books\nORDER BY 1 ASC, 2 DESC;",
+    "syntaxBlueprint": "SELECT genre, price\nFROM Books\nORDER BY 1 ASC, 2 DESC;",
+    "syntaxRule": "ORDER BY comes after WHERE, and LIMIT comes after ORDER BY. ASC is default, DESC is descending.",
+    "syntaxTrap": "Never place LIMIT before ORDER BY, and always add a unique tie-breaker to prevent row-hopping.",
+    "eli5Story": "[SYNTAX BLUEPRINT]:\nSELECT genre, price\nFROM Books\nORDER BY 1 ASC, 2 DESC;\n\n[RULE]: ORDER BY comes after WHERE, and LIMIT comes after ORDER BY. ASC is default, DESC is descending.\n\n[TRAP TO AVOID]: Never place LIMIT before ORDER BY, and always add a unique tie-breaker to prevent row-hopping.",
+    "commonMistakes": "Putting semicolon before ORDER BY, reversing LIMIT and OFFSET, or misplacing DESC.",
+    "learningOutcomes": "Mastered 3.7 Positional Sorting (ORDER BY 1, 2) on Books.",
+    "challengeSlots": [
+      {
+        "type": "keyword",
+        "value": "SELECT"
+      },
+      {
+        "type": "column",
+        "value": "genre,"
+      },
+      {
+        "type": "column",
+        "value": "price"
+      },
+      {
+        "type": "keyword",
+        "value": "FROM"
+      },
+      {
+        "type": "table",
+        "value": "Books"
+      },
+      {
+        "type": "keyword",
+        "value": "ORDER"
+      },
+      {
+        "type": "keyword",
+        "value": "BY"
+      },
+      {
+        "type": "column",
+        "value": "1"
+      },
+      {
+        "type": "column",
+        "value": "ASC,"
+      },
+      {
+        "type": "column",
+        "value": "2"
+      },
+      {
+        "type": "column",
+        "value": "DESC;"
+      }
+    ]
+  },
+  {
+    "id": 1753,
+    "drillNumber": 263,
+    "section": "Section 0: Foundations & Syntax Gym",
+    "title": "Syntax #263: Sort by position: 1st column (department) ASC, 2nd column (salary) DESC",
+    "industry": "Foundations",
+    "difficulty": "Easy",
+    "scenario": "Sort by position: 1st column (department) ASC, 2nd column (salary) DESC.",
+    "businessObjective": "Sort by position: 1st column (department) ASC, 2nd column (salary) DESC.",
+    "schemaSnippet": "Employees schema",
+    "targetQuery": "SELECT department, salary\nFROM Employees\nORDER BY 1 ASC, 2 DESC;",
+    "syntaxBlueprint": "SELECT department, salary\nFROM Employees\nORDER BY 1 ASC, 2 DESC;",
+    "syntaxRule": "ORDER BY comes after WHERE, and LIMIT comes after ORDER BY. ASC is default, DESC is descending.",
+    "syntaxTrap": "Never place LIMIT before ORDER BY, and always add a unique tie-breaker to prevent row-hopping.",
+    "eli5Story": "[SYNTAX BLUEPRINT]:\nSELECT department, salary\nFROM Employees\nORDER BY 1 ASC, 2 DESC;\n\n[RULE]: ORDER BY comes after WHERE, and LIMIT comes after ORDER BY. ASC is default, DESC is descending.\n\n[TRAP TO AVOID]: Never place LIMIT before ORDER BY, and always add a unique tie-breaker to prevent row-hopping.",
+    "commonMistakes": "Putting semicolon before ORDER BY, reversing LIMIT and OFFSET, or misplacing DESC.",
+    "learningOutcomes": "Mastered 3.7 Positional Sorting (ORDER BY 1, 2) on Employees.",
+    "challengeSlots": [
+      {
+        "type": "keyword",
+        "value": "SELECT"
+      },
+      {
+        "type": "column",
+        "value": "department,"
+      },
+      {
+        "type": "column",
+        "value": "salary"
+      },
+      {
+        "type": "keyword",
+        "value": "FROM"
+      },
+      {
+        "type": "table",
+        "value": "Employees"
+      },
+      {
+        "type": "keyword",
+        "value": "ORDER"
+      },
+      {
+        "type": "keyword",
+        "value": "BY"
+      },
+      {
+        "type": "column",
+        "value": "1"
+      },
+      {
+        "type": "column",
+        "value": "ASC,"
+      },
+      {
+        "type": "column",
+        "value": "2"
+      },
+      {
+        "type": "column",
+        "value": "DESC;"
+      }
+    ]
+  },
+  {
+    "id": 1754,
+    "drillNumber": 264,
+    "section": "Section 0: Foundations & Syntax Gym",
+    "title": "Syntax #264: Sort by position: 1st column (category) ASC, 2nd column (item_name) ASC",
+    "industry": "Foundations",
+    "difficulty": "Easy",
+    "scenario": "Sort by position: 1st column (category) ASC, 2nd column (item_name) ASC.",
+    "businessObjective": "Sort by position: 1st column (category) ASC, 2nd column (item_name) ASC.",
+    "schemaSnippet": "GroceryItems schema",
+    "targetQuery": "SELECT category, item_name\nFROM GroceryItems\nORDER BY 1 ASC, 2 ASC;",
+    "syntaxBlueprint": "SELECT category, item_name\nFROM GroceryItems\nORDER BY 1 ASC, 2 ASC;",
+    "syntaxRule": "ORDER BY comes after WHERE, and LIMIT comes after ORDER BY. ASC is default, DESC is descending.",
+    "syntaxTrap": "Never place LIMIT before ORDER BY, and always add a unique tie-breaker to prevent row-hopping.",
+    "eli5Story": "[SYNTAX BLUEPRINT]:\nSELECT category, item_name\nFROM GroceryItems\nORDER BY 1 ASC, 2 ASC;\n\n[RULE]: ORDER BY comes after WHERE, and LIMIT comes after ORDER BY. ASC is default, DESC is descending.\n\n[TRAP TO AVOID]: Never place LIMIT before ORDER BY, and always add a unique tie-breaker to prevent row-hopping.",
+    "commonMistakes": "Putting semicolon before ORDER BY, reversing LIMIT and OFFSET, or misplacing DESC.",
+    "learningOutcomes": "Mastered 3.7 Positional Sorting (ORDER BY 1, 2) on GroceryItems.",
+    "challengeSlots": [
+      {
+        "type": "keyword",
+        "value": "SELECT"
+      },
+      {
+        "type": "column",
+        "value": "category,"
+      },
+      {
+        "type": "column",
+        "value": "item_name"
+      },
+      {
+        "type": "keyword",
+        "value": "FROM"
+      },
+      {
+        "type": "table",
+        "value": "GroceryItems"
+      },
+      {
+        "type": "keyword",
+        "value": "ORDER"
+      },
+      {
+        "type": "keyword",
+        "value": "BY"
+      },
+      {
+        "type": "column",
+        "value": "1"
+      },
+      {
+        "type": "column",
+        "value": "ASC,"
+      },
+      {
+        "type": "column",
+        "value": "2"
+      },
+      {
+        "type": "column",
+        "value": "ASC;"
+      }
+    ]
+  },
+  {
+    "id": 1755,
+    "drillNumber": 265,
+    "section": "Section 0: Foundations & Syntax Gym",
+    "title": "Syntax #265: Sort by position: 1st column (shipping_city) ASC, 2nd column (unit_price) DESC",
+    "industry": "Foundations",
+    "difficulty": "Easy",
+    "scenario": "Sort by position: 1st column (shipping_city) ASC, 2nd column (unit_price) DESC.",
+    "businessObjective": "Sort by position: 1st column (shipping_city) ASC, 2nd column (unit_price) DESC.",
+    "schemaSnippet": "Orders schema",
+    "targetQuery": "SELECT shipping_city, unit_price\nFROM Orders\nORDER BY 1 ASC, 2 DESC;",
+    "syntaxBlueprint": "SELECT shipping_city, unit_price\nFROM Orders\nORDER BY 1 ASC, 2 DESC;",
+    "syntaxRule": "ORDER BY comes after WHERE, and LIMIT comes after ORDER BY. ASC is default, DESC is descending.",
+    "syntaxTrap": "Never place LIMIT before ORDER BY, and always add a unique tie-breaker to prevent row-hopping.",
+    "eli5Story": "[SYNTAX BLUEPRINT]:\nSELECT shipping_city, unit_price\nFROM Orders\nORDER BY 1 ASC, 2 DESC;\n\n[RULE]: ORDER BY comes after WHERE, and LIMIT comes after ORDER BY. ASC is default, DESC is descending.\n\n[TRAP TO AVOID]: Never place LIMIT before ORDER BY, and always add a unique tie-breaker to prevent row-hopping.",
+    "commonMistakes": "Putting semicolon before ORDER BY, reversing LIMIT and OFFSET, or misplacing DESC.",
+    "learningOutcomes": "Mastered 3.7 Positional Sorting (ORDER BY 1, 2) on Orders.",
+    "challengeSlots": [
+      {
+        "type": "keyword",
+        "value": "SELECT"
+      },
+      {
+        "type": "column",
+        "value": "shipping_city,"
+      },
+      {
+        "type": "column",
+        "value": "unit_price"
+      },
+      {
+        "type": "keyword",
+        "value": "FROM"
+      },
+      {
+        "type": "table",
+        "value": "Orders"
+      },
+      {
+        "type": "keyword",
+        "value": "ORDER"
+      },
+      {
+        "type": "keyword",
+        "value": "BY"
+      },
+      {
+        "type": "column",
+        "value": "1"
+      },
+      {
+        "type": "column",
+        "value": "ASC,"
+      },
+      {
+        "type": "column",
+        "value": "2"
+      },
+      {
+        "type": "column",
+        "value": "DESC;"
+      }
+    ]
+  },
+  {
+    "id": 1756,
+    "drillNumber": 266,
+    "section": "Section 0: Foundations & Syntax Gym",
+    "title": "Syntax #266: Sort by position: 1st column (genre) ASC, 2nd column (play_count) DESC",
+    "industry": "Foundations",
+    "difficulty": "Easy",
+    "scenario": "Sort by position: 1st column (genre) ASC, 2nd column (play_count) DESC.",
+    "businessObjective": "Sort by position: 1st column (genre) ASC, 2nd column (play_count) DESC.",
+    "schemaSnippet": "MusicTracks schema",
+    "targetQuery": "SELECT genre, play_count\nFROM MusicTracks\nORDER BY 1 ASC, 2 DESC;",
+    "syntaxBlueprint": "SELECT genre, play_count\nFROM MusicTracks\nORDER BY 1 ASC, 2 DESC;",
+    "syntaxRule": "ORDER BY comes after WHERE, and LIMIT comes after ORDER BY. ASC is default, DESC is descending.",
+    "syntaxTrap": "Never place LIMIT before ORDER BY, and always add a unique tie-breaker to prevent row-hopping.",
+    "eli5Story": "[SYNTAX BLUEPRINT]:\nSELECT genre, play_count\nFROM MusicTracks\nORDER BY 1 ASC, 2 DESC;\n\n[RULE]: ORDER BY comes after WHERE, and LIMIT comes after ORDER BY. ASC is default, DESC is descending.\n\n[TRAP TO AVOID]: Never place LIMIT before ORDER BY, and always add a unique tie-breaker to prevent row-hopping.",
+    "commonMistakes": "Putting semicolon before ORDER BY, reversing LIMIT and OFFSET, or misplacing DESC.",
+    "learningOutcomes": "Mastered 3.7 Positional Sorting (ORDER BY 1, 2) on MusicTracks.",
+    "challengeSlots": [
+      {
+        "type": "keyword",
+        "value": "SELECT"
+      },
+      {
+        "type": "column",
+        "value": "genre,"
+      },
+      {
+        "type": "column",
+        "value": "play_count"
+      },
+      {
+        "type": "keyword",
+        "value": "FROM"
+      },
+      {
+        "type": "table",
+        "value": "MusicTracks"
+      },
+      {
+        "type": "keyword",
+        "value": "ORDER"
+      },
+      {
+        "type": "keyword",
+        "value": "BY"
+      },
+      {
+        "type": "column",
+        "value": "1"
+      },
+      {
+        "type": "column",
+        "value": "ASC,"
+      },
+      {
+        "type": "column",
+        "value": "2"
+      },
+      {
+        "type": "column",
+        "value": "DESC;"
+      }
+    ]
+  },
+  {
+    "id": 1757,
+    "drillNumber": 267,
+    "section": "Section 0: Foundations & Syntax Gym",
+    "title": "Syntax #267: Sort by position: 1st column (plan) ASC, 2nd column (fee) ASC",
+    "industry": "Foundations",
+    "difficulty": "Easy",
+    "scenario": "Sort by position: 1st column (plan) ASC, 2nd column (fee) ASC.",
+    "businessObjective": "Sort by position: 1st column (plan) ASC, 2nd column (fee) ASC.",
+    "schemaSnippet": "GymMembers schema",
+    "targetQuery": "SELECT membership_plan, monthly_fee\nFROM GymMembers\nORDER BY 1 ASC, 2 ASC;",
+    "syntaxBlueprint": "SELECT membership_plan, monthly_fee\nFROM GymMembers\nORDER BY 1 ASC, 2 ASC;",
+    "syntaxRule": "ORDER BY comes after WHERE, and LIMIT comes after ORDER BY. ASC is default, DESC is descending.",
+    "syntaxTrap": "Never place LIMIT before ORDER BY, and always add a unique tie-breaker to prevent row-hopping.",
+    "eli5Story": "[SYNTAX BLUEPRINT]:\nSELECT membership_plan, monthly_fee\nFROM GymMembers\nORDER BY 1 ASC, 2 ASC;\n\n[RULE]: ORDER BY comes after WHERE, and LIMIT comes after ORDER BY. ASC is default, DESC is descending.\n\n[TRAP TO AVOID]: Never place LIMIT before ORDER BY, and always add a unique tie-breaker to prevent row-hopping.",
+    "commonMistakes": "Putting semicolon before ORDER BY, reversing LIMIT and OFFSET, or misplacing DESC.",
+    "learningOutcomes": "Mastered 3.7 Positional Sorting (ORDER BY 1, 2) on GymMembers.",
+    "challengeSlots": [
+      {
+        "type": "keyword",
+        "value": "SELECT"
+      },
+      {
+        "type": "column",
+        "value": "membership_plan,"
+      },
+      {
+        "type": "column",
+        "value": "monthly_fee"
+      },
+      {
+        "type": "keyword",
+        "value": "FROM"
+      },
+      {
+        "type": "table",
+        "value": "GymMembers"
+      },
+      {
+        "type": "keyword",
+        "value": "ORDER"
+      },
+      {
+        "type": "keyword",
+        "value": "BY"
+      },
+      {
+        "type": "column",
+        "value": "1"
+      },
+      {
+        "type": "column",
+        "value": "ASC,"
+      },
+      {
+        "type": "column",
+        "value": "2"
+      },
+      {
+        "type": "column",
+        "value": "ASC;"
+      }
+    ]
+  },
+  {
+    "id": 1758,
+    "drillNumber": 268,
+    "section": "Section 0: Foundations & Syntax Gym",
+    "title": "Syntax #268: Sort by position: 1st column (genre) ASC, 2nd column (star_rating) DESC",
+    "industry": "Foundations",
+    "difficulty": "Easy",
+    "scenario": "Sort by position: 1st column (genre) ASC, 2nd column (star_rating) DESC.",
+    "businessObjective": "Sort by position: 1st column (genre) ASC, 2nd column (star_rating) DESC.",
+    "schemaSnippet": "MovieReviews schema",
+    "targetQuery": "SELECT genre, star_rating\nFROM MovieReviews\nORDER BY 1 ASC, 2 DESC;",
+    "syntaxBlueprint": "SELECT genre, star_rating\nFROM MovieReviews\nORDER BY 1 ASC, 2 DESC;",
+    "syntaxRule": "ORDER BY comes after WHERE, and LIMIT comes after ORDER BY. ASC is default, DESC is descending.",
+    "syntaxTrap": "Never place LIMIT before ORDER BY, and always add a unique tie-breaker to prevent row-hopping.",
+    "eli5Story": "[SYNTAX BLUEPRINT]:\nSELECT genre, star_rating\nFROM MovieReviews\nORDER BY 1 ASC, 2 DESC;\n\n[RULE]: ORDER BY comes after WHERE, and LIMIT comes after ORDER BY. ASC is default, DESC is descending.\n\n[TRAP TO AVOID]: Never place LIMIT before ORDER BY, and always add a unique tie-breaker to prevent row-hopping.",
+    "commonMistakes": "Putting semicolon before ORDER BY, reversing LIMIT and OFFSET, or misplacing DESC.",
+    "learningOutcomes": "Mastered 3.7 Positional Sorting (ORDER BY 1, 2) on MovieReviews.",
+    "challengeSlots": [
+      {
+        "type": "keyword",
+        "value": "SELECT"
+      },
+      {
+        "type": "column",
+        "value": "genre,"
+      },
+      {
+        "type": "column",
+        "value": "star_rating"
+      },
+      {
+        "type": "keyword",
+        "value": "FROM"
+      },
+      {
+        "type": "table",
+        "value": "MovieReviews"
+      },
+      {
+        "type": "keyword",
+        "value": "ORDER"
+      },
+      {
+        "type": "keyword",
+        "value": "BY"
+      },
+      {
+        "type": "column",
+        "value": "1"
+      },
+      {
+        "type": "column",
+        "value": "ASC,"
+      },
+      {
+        "type": "column",
+        "value": "2"
+      },
+      {
+        "type": "column",
+        "value": "DESC;"
+      }
+    ]
+  },
+  {
+    "id": 1759,
+    "drillNumber": 269,
+    "section": "Section 0: Foundations & Syntax Gym",
+    "title": "Syntax #269: Sort by position: 1st column (origin) ASC, 2nd column (dest) ASC",
+    "industry": "Foundations",
+    "difficulty": "Easy",
+    "scenario": "Sort by position: 1st column (origin) ASC, 2nd column (dest) ASC.",
+    "businessObjective": "Sort by position: 1st column (origin) ASC, 2nd column (dest) ASC.",
+    "schemaSnippet": "FlightSchedule schema",
+    "targetQuery": "SELECT origin_airport, dest_airport\nFROM FlightSchedule\nORDER BY 1 ASC, 2 ASC;",
+    "syntaxBlueprint": "SELECT origin_airport, dest_airport\nFROM FlightSchedule\nORDER BY 1 ASC, 2 ASC;",
+    "syntaxRule": "ORDER BY comes after WHERE, and LIMIT comes after ORDER BY. ASC is default, DESC is descending.",
+    "syntaxTrap": "Never place LIMIT before ORDER BY, and always add a unique tie-breaker to prevent row-hopping.",
+    "eli5Story": "[SYNTAX BLUEPRINT]:\nSELECT origin_airport, dest_airport\nFROM FlightSchedule\nORDER BY 1 ASC, 2 ASC;\n\n[RULE]: ORDER BY comes after WHERE, and LIMIT comes after ORDER BY. ASC is default, DESC is descending.\n\n[TRAP TO AVOID]: Never place LIMIT before ORDER BY, and always add a unique tie-breaker to prevent row-hopping.",
+    "commonMistakes": "Putting semicolon before ORDER BY, reversing LIMIT and OFFSET, or misplacing DESC.",
+    "learningOutcomes": "Mastered 3.7 Positional Sorting (ORDER BY 1, 2) on FlightSchedule.",
+    "challengeSlots": [
+      {
+        "type": "keyword",
+        "value": "SELECT"
+      },
+      {
+        "type": "column",
+        "value": "origin_airport,"
+      },
+      {
+        "type": "column",
+        "value": "dest_airport"
+      },
+      {
+        "type": "keyword",
+        "value": "FROM"
+      },
+      {
+        "type": "table",
+        "value": "FlightSchedule"
+      },
+      {
+        "type": "keyword",
+        "value": "ORDER"
+      },
+      {
+        "type": "keyword",
+        "value": "BY"
+      },
+      {
+        "type": "column",
+        "value": "1"
+      },
+      {
+        "type": "column",
+        "value": "ASC,"
+      },
+      {
+        "type": "column",
+        "value": "2"
+      },
+      {
+        "type": "column",
+        "value": "ASC;"
+      }
+    ]
+  },
+  {
+    "id": 1760,
+    "drillNumber": 270,
+    "section": "Section 0: Foundations & Syntax Gym",
+    "title": "Syntax #270: Sort by position: 1st column (species) ASC, 2nd column (weight) DESC",
+    "industry": "Foundations",
+    "difficulty": "Easy",
+    "scenario": "Sort by position: 1st column (species) ASC, 2nd column (weight) DESC.",
+    "businessObjective": "Sort by position: 1st column (species) ASC, 2nd column (weight) DESC.",
+    "schemaSnippet": "PetClinic schema",
+    "targetQuery": "SELECT species, weight_kg\nFROM PetClinic\nORDER BY 1 ASC, 2 DESC;",
+    "syntaxBlueprint": "SELECT species, weight_kg\nFROM PetClinic\nORDER BY 1 ASC, 2 DESC;",
+    "syntaxRule": "ORDER BY comes after WHERE, and LIMIT comes after ORDER BY. ASC is default, DESC is descending.",
+    "syntaxTrap": "Never place LIMIT before ORDER BY, and always add a unique tie-breaker to prevent row-hopping.",
+    "eli5Story": "[SYNTAX BLUEPRINT]:\nSELECT species, weight_kg\nFROM PetClinic\nORDER BY 1 ASC, 2 DESC;\n\n[RULE]: ORDER BY comes after WHERE, and LIMIT comes after ORDER BY. ASC is default, DESC is descending.\n\n[TRAP TO AVOID]: Never place LIMIT before ORDER BY, and always add a unique tie-breaker to prevent row-hopping.",
+    "commonMistakes": "Putting semicolon before ORDER BY, reversing LIMIT and OFFSET, or misplacing DESC.",
+    "learningOutcomes": "Mastered 3.7 Positional Sorting (ORDER BY 1, 2) on PetClinic.",
+    "challengeSlots": [
+      {
+        "type": "keyword",
+        "value": "SELECT"
+      },
+      {
+        "type": "column",
+        "value": "species,"
+      },
+      {
+        "type": "column",
+        "value": "weight_kg"
+      },
+      {
+        "type": "keyword",
+        "value": "FROM"
+      },
+      {
+        "type": "table",
+        "value": "PetClinic"
+      },
+      {
+        "type": "keyword",
+        "value": "ORDER"
+      },
+      {
+        "type": "keyword",
+        "value": "BY"
+      },
+      {
+        "type": "column",
+        "value": "1"
+      },
+      {
+        "type": "column",
+        "value": "ASC,"
+      },
+      {
+        "type": "column",
+        "value": "2"
+      },
+      {
+        "type": "column",
+        "value": "DESC;"
+      }
+    ]
+  },
+  {
+    "id": 1761,
+    "drillNumber": 271,
+    "section": "Section 0: Foundations & Syntax Gym",
+    "title": "Syntax #271: Find the single top-scoring student (Valedictorian) using ORDER BY gpa DESC LIMIT 1",
+    "industry": "Foundations",
+    "difficulty": "Easy",
+    "scenario": "Find the single top-scoring student (Valedictorian) using ORDER BY gpa DESC LIMIT 1.",
+    "businessObjective": "Find the single top-scoring student (Valedictorian) using ORDER BY gpa DESC LIMIT 1.",
+    "schemaSnippet": "Students schema",
+    "targetQuery": "SELECT full_name, gpa\nFROM Students\nORDER BY gpa DESC\nLIMIT 1;",
+    "syntaxBlueprint": "SELECT full_name, gpa\nFROM Students\nORDER BY gpa DESC\nLIMIT 1;",
+    "syntaxRule": "ORDER BY comes after WHERE, and LIMIT comes after ORDER BY. ASC is default, DESC is descending.",
+    "syntaxTrap": "Never place LIMIT before ORDER BY, and always add a unique tie-breaker to prevent row-hopping.",
+    "eli5Story": "[SYNTAX BLUEPRINT]:\nSELECT full_name, gpa\nFROM Students\nORDER BY gpa DESC\nLIMIT 1;\n\n[RULE]: ORDER BY comes after WHERE, and LIMIT comes after ORDER BY. ASC is default, DESC is descending.\n\n[TRAP TO AVOID]: Never place LIMIT before ORDER BY, and always add a unique tie-breaker to prevent row-hopping.",
+    "commonMistakes": "Putting semicolon before ORDER BY, reversing LIMIT and OFFSET, or misplacing DESC.",
+    "learningOutcomes": "Mastered 3.8 Truncation & Top-N (LIMIT) on Students.",
+    "challengeSlots": [
+      {
+        "type": "keyword",
+        "value": "SELECT"
+      },
+      {
+        "type": "column",
+        "value": "full_name,"
+      },
+      {
+        "type": "column",
+        "value": "gpa"
+      },
+      {
+        "type": "keyword",
+        "value": "FROM"
+      },
+      {
+        "type": "table",
+        "value": "Students"
+      },
+      {
+        "type": "keyword",
+        "value": "ORDER"
+      },
+      {
+        "type": "keyword",
+        "value": "BY"
+      },
+      {
+        "type": "column",
+        "value": "gpa"
+      },
+      {
+        "type": "keyword",
+        "value": "DESC"
+      },
+      {
+        "type": "keyword",
+        "value": "LIMIT"
+      },
+      {
+        "type": "column",
+        "value": "1;"
+      }
+    ]
+  },
+  {
+    "id": 1762,
+    "drillNumber": 272,
+    "section": "Section 0: Foundations & Syntax Gym",
+    "title": "Syntax #272: Find the Top 3 most expensive books in the bookstore",
+    "industry": "Foundations",
+    "difficulty": "Easy",
+    "scenario": "Find the Top 3 most expensive books in the bookstore.",
+    "businessObjective": "Find the Top 3 most expensive books in the bookstore.",
+    "schemaSnippet": "Books schema",
+    "targetQuery": "SELECT title, price\nFROM Books\nORDER BY price DESC\nLIMIT 3;",
+    "syntaxBlueprint": "SELECT title, price\nFROM Books\nORDER BY price DESC\nLIMIT 3;",
+    "syntaxRule": "ORDER BY comes after WHERE, and LIMIT comes after ORDER BY. ASC is default, DESC is descending.",
+    "syntaxTrap": "Never place LIMIT before ORDER BY, and always add a unique tie-breaker to prevent row-hopping.",
+    "eli5Story": "[SYNTAX BLUEPRINT]:\nSELECT title, price\nFROM Books\nORDER BY price DESC\nLIMIT 3;\n\n[RULE]: ORDER BY comes after WHERE, and LIMIT comes after ORDER BY. ASC is default, DESC is descending.\n\n[TRAP TO AVOID]: Never place LIMIT before ORDER BY, and always add a unique tie-breaker to prevent row-hopping.",
+    "commonMistakes": "Putting semicolon before ORDER BY, reversing LIMIT and OFFSET, or misplacing DESC.",
+    "learningOutcomes": "Mastered 3.8 Truncation & Top-N (LIMIT) on Books.",
+    "challengeSlots": [
+      {
+        "type": "keyword",
+        "value": "SELECT"
+      },
+      {
+        "type": "column",
+        "value": "title,"
+      },
+      {
+        "type": "column",
+        "value": "price"
+      },
+      {
+        "type": "keyword",
+        "value": "FROM"
+      },
+      {
+        "type": "table",
+        "value": "Books"
+      },
+      {
+        "type": "keyword",
+        "value": "ORDER"
+      },
+      {
+        "type": "keyword",
+        "value": "BY"
+      },
+      {
+        "type": "column",
+        "value": "price"
+      },
+      {
+        "type": "keyword",
+        "value": "DESC"
+      },
+      {
+        "type": "keyword",
+        "value": "LIMIT"
+      },
+      {
+        "type": "column",
+        "value": "3;"
+      }
+    ]
+  },
+  {
+    "id": 1763,
+    "drillNumber": 273,
+    "section": "Section 0: Foundations & Syntax Gym",
+    "title": "Syntax #273: Retrieve the Top 5 highest-paid employees in the company",
+    "industry": "Foundations",
+    "difficulty": "Easy",
+    "scenario": "Retrieve the Top 5 highest-paid employees in the company.",
+    "businessObjective": "Retrieve the Top 5 highest-paid employees in the company.",
+    "schemaSnippet": "Employees schema",
+    "targetQuery": "SELECT first_name, salary\nFROM Employees\nORDER BY salary DESC\nLIMIT 5;",
+    "syntaxBlueprint": "SELECT first_name, salary\nFROM Employees\nORDER BY salary DESC\nLIMIT 5;",
+    "syntaxRule": "ORDER BY comes after WHERE, and LIMIT comes after ORDER BY. ASC is default, DESC is descending.",
+    "syntaxTrap": "Never place LIMIT before ORDER BY, and always add a unique tie-breaker to prevent row-hopping.",
+    "eli5Story": "[SYNTAX BLUEPRINT]:\nSELECT first_name, salary\nFROM Employees\nORDER BY salary DESC\nLIMIT 5;\n\n[RULE]: ORDER BY comes after WHERE, and LIMIT comes after ORDER BY. ASC is default, DESC is descending.\n\n[TRAP TO AVOID]: Never place LIMIT before ORDER BY, and always add a unique tie-breaker to prevent row-hopping.",
+    "commonMistakes": "Putting semicolon before ORDER BY, reversing LIMIT and OFFSET, or misplacing DESC.",
+    "learningOutcomes": "Mastered 3.8 Truncation & Top-N (LIMIT) on Employees.",
+    "challengeSlots": [
+      {
+        "type": "keyword",
+        "value": "SELECT"
+      },
+      {
+        "type": "column",
+        "value": "first_name,"
+      },
+      {
+        "type": "column",
+        "value": "salary"
+      },
+      {
+        "type": "keyword",
+        "value": "FROM"
+      },
+      {
+        "type": "table",
+        "value": "Employees"
+      },
+      {
+        "type": "keyword",
+        "value": "ORDER"
+      },
+      {
+        "type": "keyword",
+        "value": "BY"
+      },
+      {
+        "type": "column",
+        "value": "salary"
+      },
+      {
+        "type": "keyword",
+        "value": "DESC"
+      },
+      {
+        "type": "keyword",
+        "value": "LIMIT"
+      },
+      {
+        "type": "column",
+        "value": "5;"
+      }
+    ]
+  },
+  {
+    "id": 1764,
+    "drillNumber": 274,
+    "section": "Section 0: Foundations & Syntax Gym",
+    "title": "Syntax #274: Find the 3 cheapest grocery items in the store",
+    "industry": "Foundations",
+    "difficulty": "Easy",
+    "scenario": "Find the 3 cheapest grocery items in the store.",
+    "businessObjective": "Find the 3 cheapest grocery items in the store.",
+    "schemaSnippet": "GroceryItems schema",
+    "targetQuery": "SELECT item_name, unit_price\nFROM GroceryItems\nORDER BY unit_price ASC\nLIMIT 3;",
+    "syntaxBlueprint": "SELECT item_name, unit_price\nFROM GroceryItems\nORDER BY unit_price ASC\nLIMIT 3;",
+    "syntaxRule": "ORDER BY comes after WHERE, and LIMIT comes after ORDER BY. ASC is default, DESC is descending.",
+    "syntaxTrap": "Never place LIMIT before ORDER BY, and always add a unique tie-breaker to prevent row-hopping.",
+    "eli5Story": "[SYNTAX BLUEPRINT]:\nSELECT item_name, unit_price\nFROM GroceryItems\nORDER BY unit_price ASC\nLIMIT 3;\n\n[RULE]: ORDER BY comes after WHERE, and LIMIT comes after ORDER BY. ASC is default, DESC is descending.\n\n[TRAP TO AVOID]: Never place LIMIT before ORDER BY, and always add a unique tie-breaker to prevent row-hopping.",
+    "commonMistakes": "Putting semicolon before ORDER BY, reversing LIMIT and OFFSET, or misplacing DESC.",
+    "learningOutcomes": "Mastered 3.8 Truncation & Top-N (LIMIT) on GroceryItems.",
+    "challengeSlots": [
+      {
+        "type": "keyword",
+        "value": "SELECT"
+      },
+      {
+        "type": "column",
+        "value": "item_name,"
+      },
+      {
+        "type": "column",
+        "value": "unit_price"
+      },
+      {
+        "type": "keyword",
+        "value": "FROM"
+      },
+      {
+        "type": "table",
+        "value": "GroceryItems"
+      },
+      {
+        "type": "keyword",
+        "value": "ORDER"
+      },
+      {
+        "type": "keyword",
+        "value": "BY"
+      },
+      {
+        "type": "column",
+        "value": "unit_price"
+      },
+      {
+        "type": "keyword",
+        "value": "ASC"
+      },
+      {
+        "type": "keyword",
+        "value": "LIMIT"
+      },
+      {
+        "type": "column",
+        "value": "3;"
+      }
+    ]
+  },
+  {
+    "id": 1765,
+    "drillNumber": 275,
+    "section": "Section 0: Foundations & Syntax Gym",
+    "title": "Syntax #275: Find the 5 largest customer orders by quantity",
+    "industry": "Foundations",
+    "difficulty": "Easy",
+    "scenario": "Find the 5 largest customer orders by quantity.",
+    "businessObjective": "Find the 5 largest customer orders by quantity.",
+    "schemaSnippet": "Orders schema",
+    "targetQuery": "SELECT order_id, quantity\nFROM Orders\nORDER BY quantity DESC\nLIMIT 5;",
+    "syntaxBlueprint": "SELECT order_id, quantity\nFROM Orders\nORDER BY quantity DESC\nLIMIT 5;",
+    "syntaxRule": "ORDER BY comes after WHERE, and LIMIT comes after ORDER BY. ASC is default, DESC is descending.",
+    "syntaxTrap": "Never place LIMIT before ORDER BY, and always add a unique tie-breaker to prevent row-hopping.",
+    "eli5Story": "[SYNTAX BLUEPRINT]:\nSELECT order_id, quantity\nFROM Orders\nORDER BY quantity DESC\nLIMIT 5;\n\n[RULE]: ORDER BY comes after WHERE, and LIMIT comes after ORDER BY. ASC is default, DESC is descending.\n\n[TRAP TO AVOID]: Never place LIMIT before ORDER BY, and always add a unique tie-breaker to prevent row-hopping.",
+    "commonMistakes": "Putting semicolon before ORDER BY, reversing LIMIT and OFFSET, or misplacing DESC.",
+    "learningOutcomes": "Mastered 3.8 Truncation & Top-N (LIMIT) on Orders.",
+    "challengeSlots": [
+      {
+        "type": "keyword",
+        "value": "SELECT"
+      },
+      {
+        "type": "column",
+        "value": "order_id,"
+      },
+      {
+        "type": "column",
+        "value": "quantity"
+      },
+      {
+        "type": "keyword",
+        "value": "FROM"
+      },
+      {
+        "type": "table",
+        "value": "Orders"
+      },
+      {
+        "type": "keyword",
+        "value": "ORDER"
+      },
+      {
+        "type": "keyword",
+        "value": "BY"
+      },
+      {
+        "type": "column",
+        "value": "quantity"
+      },
+      {
+        "type": "keyword",
+        "value": "DESC"
+      },
+      {
+        "type": "keyword",
+        "value": "LIMIT"
+      },
+      {
+        "type": "column",
+        "value": "5;"
+      }
+    ]
+  },
+  {
+    "id": 1766,
+    "drillNumber": 276,
+    "section": "Section 0: Foundations & Syntax Gym",
+    "title": "Syntax #276: Fetch the Top 10 most played tracks for the streaming leaderboard",
+    "industry": "Foundations",
+    "difficulty": "Easy",
+    "scenario": "Fetch the Top 10 most played tracks for the streaming leaderboard.",
+    "businessObjective": "Fetch the Top 10 most played tracks for the streaming leaderboard.",
+    "schemaSnippet": "MusicTracks schema",
+    "targetQuery": "SELECT track_title, play_count\nFROM MusicTracks\nORDER BY play_count DESC\nLIMIT 10;",
+    "syntaxBlueprint": "SELECT track_title, play_count\nFROM MusicTracks\nORDER BY play_count DESC\nLIMIT 10;",
+    "syntaxRule": "ORDER BY comes after WHERE, and LIMIT comes after ORDER BY. ASC is default, DESC is descending.",
+    "syntaxTrap": "Never place LIMIT before ORDER BY, and always add a unique tie-breaker to prevent row-hopping.",
+    "eli5Story": "[SYNTAX BLUEPRINT]:\nSELECT track_title, play_count\nFROM MusicTracks\nORDER BY play_count DESC\nLIMIT 10;\n\n[RULE]: ORDER BY comes after WHERE, and LIMIT comes after ORDER BY. ASC is default, DESC is descending.\n\n[TRAP TO AVOID]: Never place LIMIT before ORDER BY, and always add a unique tie-breaker to prevent row-hopping.",
+    "commonMistakes": "Putting semicolon before ORDER BY, reversing LIMIT and OFFSET, or misplacing DESC.",
+    "learningOutcomes": "Mastered 3.8 Truncation & Top-N (LIMIT) on MusicTracks.",
+    "challengeSlots": [
+      {
+        "type": "keyword",
+        "value": "SELECT"
+      },
+      {
+        "type": "column",
+        "value": "track_title,"
+      },
+      {
+        "type": "column",
+        "value": "play_count"
+      },
+      {
+        "type": "keyword",
+        "value": "FROM"
+      },
+      {
+        "type": "table",
+        "value": "MusicTracks"
+      },
+      {
+        "type": "keyword",
+        "value": "ORDER"
+      },
+      {
+        "type": "keyword",
+        "value": "BY"
+      },
+      {
+        "type": "column",
+        "value": "play_count"
+      },
+      {
+        "type": "keyword",
+        "value": "DESC"
+      },
+      {
+        "type": "keyword",
+        "value": "LIMIT"
+      },
+      {
+        "type": "column",
+        "value": "10;"
+      }
+    ]
+  },
+  {
+    "id": 1767,
+    "drillNumber": 277,
+    "section": "Section 0: Foundations & Syntax Gym",
+    "title": "Syntax #277: Identify the Top 3 most active gym members of the month",
+    "industry": "Foundations",
+    "difficulty": "Easy",
+    "scenario": "Identify the Top 3 most active gym members of the month.",
+    "businessObjective": "Identify the Top 3 most active gym members of the month.",
+    "schemaSnippet": "GymMembers schema",
+    "targetQuery": "SELECT member_name, visits_this_month\nFROM GymMembers\nORDER BY visits_this_month DESC\nLIMIT 3;",
+    "syntaxBlueprint": "SELECT member_name, visits_this_month\nFROM GymMembers\nORDER BY visits_this_month DESC\nLIMIT 3;",
+    "syntaxRule": "ORDER BY comes after WHERE, and LIMIT comes after ORDER BY. ASC is default, DESC is descending.",
+    "syntaxTrap": "Never place LIMIT before ORDER BY, and always add a unique tie-breaker to prevent row-hopping.",
+    "eli5Story": "[SYNTAX BLUEPRINT]:\nSELECT member_name, visits_this_month\nFROM GymMembers\nORDER BY visits_this_month DESC\nLIMIT 3;\n\n[RULE]: ORDER BY comes after WHERE, and LIMIT comes after ORDER BY. ASC is default, DESC is descending.\n\n[TRAP TO AVOID]: Never place LIMIT before ORDER BY, and always add a unique tie-breaker to prevent row-hopping.",
+    "commonMistakes": "Putting semicolon before ORDER BY, reversing LIMIT and OFFSET, or misplacing DESC.",
+    "learningOutcomes": "Mastered 3.8 Truncation & Top-N (LIMIT) on GymMembers.",
+    "challengeSlots": [
+      {
+        "type": "keyword",
+        "value": "SELECT"
+      },
+      {
+        "type": "column",
+        "value": "member_name,"
+      },
+      {
+        "type": "column",
+        "value": "visits_this_month"
+      },
+      {
+        "type": "keyword",
+        "value": "FROM"
+      },
+      {
+        "type": "table",
+        "value": "GymMembers"
+      },
+      {
+        "type": "keyword",
+        "value": "ORDER"
+      },
+      {
+        "type": "keyword",
+        "value": "BY"
+      },
+      {
+        "type": "column",
+        "value": "visits_this_month"
+      },
+      {
+        "type": "keyword",
+        "value": "DESC"
+      },
+      {
+        "type": "keyword",
+        "value": "LIMIT"
+      },
+      {
+        "type": "column",
+        "value": "3;"
+      }
+    ]
+  },
+  {
+    "id": 1768,
+    "drillNumber": 278,
+    "section": "Section 0: Foundations & Syntax Gym",
+    "title": "Syntax #278: Display the Top 5 highest-rated movies of all time",
+    "industry": "Foundations",
+    "difficulty": "Easy",
+    "scenario": "Display the Top 5 highest-rated movies of all time.",
+    "businessObjective": "Display the Top 5 highest-rated movies of all time.",
+    "schemaSnippet": "MovieReviews schema",
+    "targetQuery": "SELECT movie_title, star_rating\nFROM MovieReviews\nORDER BY star_rating DESC\nLIMIT 5;",
+    "syntaxBlueprint": "SELECT movie_title, star_rating\nFROM MovieReviews\nORDER BY star_rating DESC\nLIMIT 5;",
+    "syntaxRule": "ORDER BY comes after WHERE, and LIMIT comes after ORDER BY. ASC is default, DESC is descending.",
+    "syntaxTrap": "Never place LIMIT before ORDER BY, and always add a unique tie-breaker to prevent row-hopping.",
+    "eli5Story": "[SYNTAX BLUEPRINT]:\nSELECT movie_title, star_rating\nFROM MovieReviews\nORDER BY star_rating DESC\nLIMIT 5;\n\n[RULE]: ORDER BY comes after WHERE, and LIMIT comes after ORDER BY. ASC is default, DESC is descending.\n\n[TRAP TO AVOID]: Never place LIMIT before ORDER BY, and always add a unique tie-breaker to prevent row-hopping.",
+    "commonMistakes": "Putting semicolon before ORDER BY, reversing LIMIT and OFFSET, or misplacing DESC.",
+    "learningOutcomes": "Mastered 3.8 Truncation & Top-N (LIMIT) on MovieReviews.",
+    "challengeSlots": [
+      {
+        "type": "keyword",
+        "value": "SELECT"
+      },
+      {
+        "type": "column",
+        "value": "movie_title,"
+      },
+      {
+        "type": "column",
+        "value": "star_rating"
+      },
+      {
+        "type": "keyword",
+        "value": "FROM"
+      },
+      {
+        "type": "table",
+        "value": "MovieReviews"
+      },
+      {
+        "type": "keyword",
+        "value": "ORDER"
+      },
+      {
+        "type": "keyword",
+        "value": "BY"
+      },
+      {
+        "type": "column",
+        "value": "star_rating"
+      },
+      {
+        "type": "keyword",
+        "value": "DESC"
+      },
+      {
+        "type": "keyword",
+        "value": "LIMIT"
+      },
+      {
+        "type": "column",
+        "value": "5;"
+      }
+    ]
+  },
+  {
+    "id": 1769,
+    "drillNumber": 279,
+    "section": "Section 0: Foundations & Syntax Gym",
+    "title": "Syntax #279: Find the 3 flights with the worst arrival delays",
+    "industry": "Foundations",
+    "difficulty": "Easy",
+    "scenario": "Find the 3 flights with the worst arrival delays.",
+    "businessObjective": "Find the 3 flights with the worst arrival delays.",
+    "schemaSnippet": "FlightSchedule schema",
+    "targetQuery": "SELECT flight_id, delay_minutes\nFROM FlightSchedule\nORDER BY delay_minutes DESC\nLIMIT 3;",
+    "syntaxBlueprint": "SELECT flight_id, delay_minutes\nFROM FlightSchedule\nORDER BY delay_minutes DESC\nLIMIT 3;",
+    "syntaxRule": "ORDER BY comes after WHERE, and LIMIT comes after ORDER BY. ASC is default, DESC is descending.",
+    "syntaxTrap": "Never place LIMIT before ORDER BY, and always add a unique tie-breaker to prevent row-hopping.",
+    "eli5Story": "[SYNTAX BLUEPRINT]:\nSELECT flight_id, delay_minutes\nFROM FlightSchedule\nORDER BY delay_minutes DESC\nLIMIT 3;\n\n[RULE]: ORDER BY comes after WHERE, and LIMIT comes after ORDER BY. ASC is default, DESC is descending.\n\n[TRAP TO AVOID]: Never place LIMIT before ORDER BY, and always add a unique tie-breaker to prevent row-hopping.",
+    "commonMistakes": "Putting semicolon before ORDER BY, reversing LIMIT and OFFSET, or misplacing DESC.",
+    "learningOutcomes": "Mastered 3.8 Truncation & Top-N (LIMIT) on FlightSchedule.",
+    "challengeSlots": [
+      {
+        "type": "keyword",
+        "value": "SELECT"
+      },
+      {
+        "type": "column",
+        "value": "flight_id,"
+      },
+      {
+        "type": "column",
+        "value": "delay_minutes"
+      },
+      {
+        "type": "keyword",
+        "value": "FROM"
+      },
+      {
+        "type": "table",
+        "value": "FlightSchedule"
+      },
+      {
+        "type": "keyword",
+        "value": "ORDER"
+      },
+      {
+        "type": "keyword",
+        "value": "BY"
+      },
+      {
+        "type": "column",
+        "value": "delay_minutes"
+      },
+      {
+        "type": "keyword",
+        "value": "DESC"
+      },
+      {
+        "type": "keyword",
+        "value": "LIMIT"
+      },
+      {
+        "type": "column",
+        "value": "3;"
+      }
+    ]
+  },
+  {
+    "id": 1770,
+    "drillNumber": 280,
+    "section": "Section 0: Foundations & Syntax Gym",
+    "title": "Syntax #280: Find the single heaviest animal patient registered at the clinic",
+    "industry": "Foundations",
+    "difficulty": "Easy",
+    "scenario": "Find the single heaviest animal patient registered at the clinic.",
+    "businessObjective": "Find the single heaviest animal patient registered at the clinic.",
+    "schemaSnippet": "PetClinic schema",
+    "targetQuery": "SELECT pet_name, weight_kg\nFROM PetClinic\nORDER BY weight_kg DESC\nLIMIT 1;",
+    "syntaxBlueprint": "SELECT pet_name, weight_kg\nFROM PetClinic\nORDER BY weight_kg DESC\nLIMIT 1;",
+    "syntaxRule": "ORDER BY comes after WHERE, and LIMIT comes after ORDER BY. ASC is default, DESC is descending.",
+    "syntaxTrap": "Never place LIMIT before ORDER BY, and always add a unique tie-breaker to prevent row-hopping.",
+    "eli5Story": "[SYNTAX BLUEPRINT]:\nSELECT pet_name, weight_kg\nFROM PetClinic\nORDER BY weight_kg DESC\nLIMIT 1;\n\n[RULE]: ORDER BY comes after WHERE, and LIMIT comes after ORDER BY. ASC is default, DESC is descending.\n\n[TRAP TO AVOID]: Never place LIMIT before ORDER BY, and always add a unique tie-breaker to prevent row-hopping.",
+    "commonMistakes": "Putting semicolon before ORDER BY, reversing LIMIT and OFFSET, or misplacing DESC.",
+    "learningOutcomes": "Mastered 3.8 Truncation & Top-N (LIMIT) on PetClinic.",
+    "challengeSlots": [
+      {
+        "type": "keyword",
+        "value": "SELECT"
+      },
+      {
+        "type": "column",
+        "value": "pet_name,"
+      },
+      {
+        "type": "column",
+        "value": "weight_kg"
+      },
+      {
+        "type": "keyword",
+        "value": "FROM"
+      },
+      {
+        "type": "table",
+        "value": "PetClinic"
+      },
+      {
+        "type": "keyword",
+        "value": "ORDER"
+      },
+      {
+        "type": "keyword",
+        "value": "BY"
+      },
+      {
+        "type": "column",
+        "value": "weight_kg"
+      },
+      {
+        "type": "keyword",
+        "value": "DESC"
+      },
+      {
+        "type": "keyword",
+        "value": "LIMIT"
+      },
+      {
+        "type": "column",
+        "value": "1;"
+      }
+    ]
+  },
+  {
+    "id": 1771,
+    "drillNumber": 281,
+    "section": "Section 0: Foundations & Syntax Gym",
+    "title": "Syntax #281: Fetch Page 1 of the student directory (5 rows, skip 0)",
+    "industry": "Foundations",
+    "difficulty": "Easy",
+    "scenario": "Fetch Page 1 of the student directory (5 rows, skip 0).",
+    "businessObjective": "Fetch Page 1 of the student directory (5 rows, skip 0).",
+    "schemaSnippet": "Students schema",
+    "targetQuery": "SELECT student_id, full_name\nFROM Students\nORDER BY student_id ASC\nLIMIT 5 OFFSET 0;",
+    "syntaxBlueprint": "SELECT student_id, full_name\nFROM Students\nORDER BY student_id ASC\nLIMIT 5 OFFSET 0;",
+    "syntaxRule": "ORDER BY comes after WHERE, and LIMIT comes after ORDER BY. ASC is default, DESC is descending.",
+    "syntaxTrap": "Never place LIMIT before ORDER BY, and always add a unique tie-breaker to prevent row-hopping.",
+    "eli5Story": "[SYNTAX BLUEPRINT]:\nSELECT student_id, full_name\nFROM Students\nORDER BY student_id ASC\nLIMIT 5 OFFSET 0;\n\n[RULE]: ORDER BY comes after WHERE, and LIMIT comes after ORDER BY. ASC is default, DESC is descending.\n\n[TRAP TO AVOID]: Never place LIMIT before ORDER BY, and always add a unique tie-breaker to prevent row-hopping.",
+    "commonMistakes": "Putting semicolon before ORDER BY, reversing LIMIT and OFFSET, or misplacing DESC.",
+    "learningOutcomes": "Mastered 3.9 Pagination Slices (LIMIT & OFFSET) on Students.",
+    "challengeSlots": [
+      {
+        "type": "keyword",
+        "value": "SELECT"
+      },
+      {
+        "type": "column",
+        "value": "student_id,"
+      },
+      {
+        "type": "column",
+        "value": "full_name"
+      },
+      {
+        "type": "keyword",
+        "value": "FROM"
+      },
+      {
+        "type": "table",
+        "value": "Students"
+      },
+      {
+        "type": "keyword",
+        "value": "ORDER"
+      },
+      {
+        "type": "keyword",
+        "value": "BY"
+      },
+      {
+        "type": "column",
+        "value": "student_id"
+      },
+      {
+        "type": "keyword",
+        "value": "ASC"
+      },
+      {
+        "type": "keyword",
+        "value": "LIMIT"
+      },
+      {
+        "type": "column",
+        "value": "5"
+      },
+      {
+        "type": "keyword",
+        "value": "OFFSET"
+      },
+      {
+        "type": "column",
+        "value": "0;"
+      }
+    ]
+  },
+  {
+    "id": 1772,
+    "drillNumber": 282,
+    "section": "Section 0: Foundations & Syntax Gym",
+    "title": "Syntax #282: Fetch Page 2 of the student directory (5 rows, skip 5)",
+    "industry": "Foundations",
+    "difficulty": "Easy",
+    "scenario": "Fetch Page 2 of the student directory (5 rows, skip 5).",
+    "businessObjective": "Fetch Page 2 of the student directory (5 rows, skip 5).",
+    "schemaSnippet": "Students schema",
+    "targetQuery": "SELECT student_id, full_name\nFROM Students\nORDER BY student_id ASC\nLIMIT 5 OFFSET 5;",
+    "syntaxBlueprint": "SELECT student_id, full_name\nFROM Students\nORDER BY student_id ASC\nLIMIT 5 OFFSET 5;",
+    "syntaxRule": "ORDER BY comes after WHERE, and LIMIT comes after ORDER BY. ASC is default, DESC is descending.",
+    "syntaxTrap": "Never place LIMIT before ORDER BY, and always add a unique tie-breaker to prevent row-hopping.",
+    "eli5Story": "[SYNTAX BLUEPRINT]:\nSELECT student_id, full_name\nFROM Students\nORDER BY student_id ASC\nLIMIT 5 OFFSET 5;\n\n[RULE]: ORDER BY comes after WHERE, and LIMIT comes after ORDER BY. ASC is default, DESC is descending.\n\n[TRAP TO AVOID]: Never place LIMIT before ORDER BY, and always add a unique tie-breaker to prevent row-hopping.",
+    "commonMistakes": "Putting semicolon before ORDER BY, reversing LIMIT and OFFSET, or misplacing DESC.",
+    "learningOutcomes": "Mastered 3.9 Pagination Slices (LIMIT & OFFSET) on Students.",
+    "challengeSlots": [
+      {
+        "type": "keyword",
+        "value": "SELECT"
+      },
+      {
+        "type": "column",
+        "value": "student_id,"
+      },
+      {
+        "type": "column",
+        "value": "full_name"
+      },
+      {
+        "type": "keyword",
+        "value": "FROM"
+      },
+      {
+        "type": "table",
+        "value": "Students"
+      },
+      {
+        "type": "keyword",
+        "value": "ORDER"
+      },
+      {
+        "type": "keyword",
+        "value": "BY"
+      },
+      {
+        "type": "column",
+        "value": "student_id"
+      },
+      {
+        "type": "keyword",
+        "value": "ASC"
+      },
+      {
+        "type": "keyword",
+        "value": "LIMIT"
+      },
+      {
+        "type": "column",
+        "value": "5"
+      },
+      {
+        "type": "keyword",
+        "value": "OFFSET"
+      },
+      {
+        "type": "column",
+        "value": "5;"
+      }
+    ]
+  },
+  {
+    "id": 1773,
+    "drillNumber": 283,
+    "section": "Section 0: Foundations & Syntax Gym",
+    "title": "Syntax #283: Fetch Page 1 of the book catalog (5 rows, skip 0)",
+    "industry": "Foundations",
+    "difficulty": "Easy",
+    "scenario": "Fetch Page 1 of the book catalog (5 rows, skip 0).",
+    "businessObjective": "Fetch Page 1 of the book catalog (5 rows, skip 0).",
+    "schemaSnippet": "Books schema",
+    "targetQuery": "SELECT book_id, title\nFROM Books\nORDER BY book_id ASC\nLIMIT 5 OFFSET 0;",
+    "syntaxBlueprint": "SELECT book_id, title\nFROM Books\nORDER BY book_id ASC\nLIMIT 5 OFFSET 0;",
+    "syntaxRule": "ORDER BY comes after WHERE, and LIMIT comes after ORDER BY. ASC is default, DESC is descending.",
+    "syntaxTrap": "Never place LIMIT before ORDER BY, and always add a unique tie-breaker to prevent row-hopping.",
+    "eli5Story": "[SYNTAX BLUEPRINT]:\nSELECT book_id, title\nFROM Books\nORDER BY book_id ASC\nLIMIT 5 OFFSET 0;\n\n[RULE]: ORDER BY comes after WHERE, and LIMIT comes after ORDER BY. ASC is default, DESC is descending.\n\n[TRAP TO AVOID]: Never place LIMIT before ORDER BY, and always add a unique tie-breaker to prevent row-hopping.",
+    "commonMistakes": "Putting semicolon before ORDER BY, reversing LIMIT and OFFSET, or misplacing DESC.",
+    "learningOutcomes": "Mastered 3.9 Pagination Slices (LIMIT & OFFSET) on Books.",
+    "challengeSlots": [
+      {
+        "type": "keyword",
+        "value": "SELECT"
+      },
+      {
+        "type": "column",
+        "value": "book_id,"
+      },
+      {
+        "type": "column",
+        "value": "title"
+      },
+      {
+        "type": "keyword",
+        "value": "FROM"
+      },
+      {
+        "type": "table",
+        "value": "Books"
+      },
+      {
+        "type": "keyword",
+        "value": "ORDER"
+      },
+      {
+        "type": "keyword",
+        "value": "BY"
+      },
+      {
+        "type": "column",
+        "value": "book_id"
+      },
+      {
+        "type": "keyword",
+        "value": "ASC"
+      },
+      {
+        "type": "keyword",
+        "value": "LIMIT"
+      },
+      {
+        "type": "column",
+        "value": "5"
+      },
+      {
+        "type": "keyword",
+        "value": "OFFSET"
+      },
+      {
+        "type": "column",
+        "value": "0;"
+      }
+    ]
+  },
+  {
+    "id": 1774,
+    "drillNumber": 284,
+    "section": "Section 0: Foundations & Syntax Gym",
+    "title": "Syntax #284: Fetch Page 2 of the book catalog (5 rows, skip 5)",
+    "industry": "Foundations",
+    "difficulty": "Easy",
+    "scenario": "Fetch Page 2 of the book catalog (5 rows, skip 5).",
+    "businessObjective": "Fetch Page 2 of the book catalog (5 rows, skip 5).",
+    "schemaSnippet": "Books schema",
+    "targetQuery": "SELECT book_id, title\nFROM Books\nORDER BY book_id ASC\nLIMIT 5 OFFSET 5;",
+    "syntaxBlueprint": "SELECT book_id, title\nFROM Books\nORDER BY book_id ASC\nLIMIT 5 OFFSET 5;",
+    "syntaxRule": "ORDER BY comes after WHERE, and LIMIT comes after ORDER BY. ASC is default, DESC is descending.",
+    "syntaxTrap": "Never place LIMIT before ORDER BY, and always add a unique tie-breaker to prevent row-hopping.",
+    "eli5Story": "[SYNTAX BLUEPRINT]:\nSELECT book_id, title\nFROM Books\nORDER BY book_id ASC\nLIMIT 5 OFFSET 5;\n\n[RULE]: ORDER BY comes after WHERE, and LIMIT comes after ORDER BY. ASC is default, DESC is descending.\n\n[TRAP TO AVOID]: Never place LIMIT before ORDER BY, and always add a unique tie-breaker to prevent row-hopping.",
+    "commonMistakes": "Putting semicolon before ORDER BY, reversing LIMIT and OFFSET, or misplacing DESC.",
+    "learningOutcomes": "Mastered 3.9 Pagination Slices (LIMIT & OFFSET) on Books.",
+    "challengeSlots": [
+      {
+        "type": "keyword",
+        "value": "SELECT"
+      },
+      {
+        "type": "column",
+        "value": "book_id,"
+      },
+      {
+        "type": "column",
+        "value": "title"
+      },
+      {
+        "type": "keyword",
+        "value": "FROM"
+      },
+      {
+        "type": "table",
+        "value": "Books"
+      },
+      {
+        "type": "keyword",
+        "value": "ORDER"
+      },
+      {
+        "type": "keyword",
+        "value": "BY"
+      },
+      {
+        "type": "column",
+        "value": "book_id"
+      },
+      {
+        "type": "keyword",
+        "value": "ASC"
+      },
+      {
+        "type": "keyword",
+        "value": "LIMIT"
+      },
+      {
+        "type": "column",
+        "value": "5"
+      },
+      {
+        "type": "keyword",
+        "value": "OFFSET"
+      },
+      {
+        "type": "column",
+        "value": "5;"
+      }
+    ]
+  },
+  {
+    "id": 1775,
+    "drillNumber": 285,
+    "section": "Section 0: Foundations & Syntax Gym",
+    "title": "Syntax #285: Fetch Page 2 of the employee roster (page size 4, offset 4)",
+    "industry": "Foundations",
+    "difficulty": "Easy",
+    "scenario": "Fetch Page 2 of the employee roster (page size 4, offset 4).",
+    "businessObjective": "Fetch Page 2 of the employee roster (page size 4, offset 4).",
+    "schemaSnippet": "Employees schema",
+    "targetQuery": "SELECT emp_id, first_name\nFROM Employees\nORDER BY emp_id ASC\nLIMIT 4 OFFSET 4;",
+    "syntaxBlueprint": "SELECT emp_id, first_name\nFROM Employees\nORDER BY emp_id ASC\nLIMIT 4 OFFSET 4;",
+    "syntaxRule": "ORDER BY comes after WHERE, and LIMIT comes after ORDER BY. ASC is default, DESC is descending.",
+    "syntaxTrap": "Never place LIMIT before ORDER BY, and always add a unique tie-breaker to prevent row-hopping.",
+    "eli5Story": "[SYNTAX BLUEPRINT]:\nSELECT emp_id, first_name\nFROM Employees\nORDER BY emp_id ASC\nLIMIT 4 OFFSET 4;\n\n[RULE]: ORDER BY comes after WHERE, and LIMIT comes after ORDER BY. ASC is default, DESC is descending.\n\n[TRAP TO AVOID]: Never place LIMIT before ORDER BY, and always add a unique tie-breaker to prevent row-hopping.",
+    "commonMistakes": "Putting semicolon before ORDER BY, reversing LIMIT and OFFSET, or misplacing DESC.",
+    "learningOutcomes": "Mastered 3.9 Pagination Slices (LIMIT & OFFSET) on Employees.",
+    "challengeSlots": [
+      {
+        "type": "keyword",
+        "value": "SELECT"
+      },
+      {
+        "type": "column",
+        "value": "emp_id,"
+      },
+      {
+        "type": "column",
+        "value": "first_name"
+      },
+      {
+        "type": "keyword",
+        "value": "FROM"
+      },
+      {
+        "type": "table",
+        "value": "Employees"
+      },
+      {
+        "type": "keyword",
+        "value": "ORDER"
+      },
+      {
+        "type": "keyword",
+        "value": "BY"
+      },
+      {
+        "type": "column",
+        "value": "emp_id"
+      },
+      {
+        "type": "keyword",
+        "value": "ASC"
+      },
+      {
+        "type": "keyword",
+        "value": "LIMIT"
+      },
+      {
+        "type": "column",
+        "value": "4"
+      },
+      {
+        "type": "keyword",
+        "value": "OFFSET"
+      },
+      {
+        "type": "column",
+        "value": "4;"
+      }
+    ]
+  },
+  {
+    "id": 1776,
+    "drillNumber": 286,
+    "section": "Section 0: Foundations & Syntax Gym",
+    "title": "Syntax #286: Fetch Page 3 of the grocery items list (page size 5, offset 10)",
+    "industry": "Foundations",
+    "difficulty": "Easy",
+    "scenario": "Fetch Page 3 of the grocery items list (page size 5, offset 10).",
+    "businessObjective": "Fetch Page 3 of the grocery items list (page size 5, offset 10).",
+    "schemaSnippet": "GroceryItems schema",
+    "targetQuery": "SELECT item_id, item_name\nFROM GroceryItems\nORDER BY item_id ASC\nLIMIT 5 OFFSET 10;",
+    "syntaxBlueprint": "SELECT item_id, item_name\nFROM GroceryItems\nORDER BY item_id ASC\nLIMIT 5 OFFSET 10;",
+    "syntaxRule": "ORDER BY comes after WHERE, and LIMIT comes after ORDER BY. ASC is default, DESC is descending.",
+    "syntaxTrap": "Never place LIMIT before ORDER BY, and always add a unique tie-breaker to prevent row-hopping.",
+    "eli5Story": "[SYNTAX BLUEPRINT]:\nSELECT item_id, item_name\nFROM GroceryItems\nORDER BY item_id ASC\nLIMIT 5 OFFSET 10;\n\n[RULE]: ORDER BY comes after WHERE, and LIMIT comes after ORDER BY. ASC is default, DESC is descending.\n\n[TRAP TO AVOID]: Never place LIMIT before ORDER BY, and always add a unique tie-breaker to prevent row-hopping.",
+    "commonMistakes": "Putting semicolon before ORDER BY, reversing LIMIT and OFFSET, or misplacing DESC.",
+    "learningOutcomes": "Mastered 3.9 Pagination Slices (LIMIT & OFFSET) on GroceryItems.",
+    "challengeSlots": [
+      {
+        "type": "keyword",
+        "value": "SELECT"
+      },
+      {
+        "type": "column",
+        "value": "item_id,"
+      },
+      {
+        "type": "column",
+        "value": "item_name"
+      },
+      {
+        "type": "keyword",
+        "value": "FROM"
+      },
+      {
+        "type": "table",
+        "value": "GroceryItems"
+      },
+      {
+        "type": "keyword",
+        "value": "ORDER"
+      },
+      {
+        "type": "keyword",
+        "value": "BY"
+      },
+      {
+        "type": "column",
+        "value": "item_id"
+      },
+      {
+        "type": "keyword",
+        "value": "ASC"
+      },
+      {
+        "type": "keyword",
+        "value": "LIMIT"
+      },
+      {
+        "type": "column",
+        "value": "5"
+      },
+      {
+        "type": "keyword",
+        "value": "OFFSET"
+      },
+      {
+        "type": "column",
+        "value": "10;"
+      }
+    ]
+  },
+  {
+    "id": 1777,
+    "drillNumber": 287,
+    "section": "Section 0: Foundations & Syntax Gym",
+    "title": "Syntax #287: Fetch Page 2 of the track list (page size 5, skip 5)",
+    "industry": "Foundations",
+    "difficulty": "Easy",
+    "scenario": "Fetch Page 2 of the track list (page size 5, skip 5).",
+    "businessObjective": "Fetch Page 2 of the track list (page size 5, skip 5).",
+    "schemaSnippet": "MusicTracks schema",
+    "targetQuery": "SELECT track_id, track_title\nFROM MusicTracks\nORDER BY track_id ASC\nLIMIT 5 OFFSET 5;",
+    "syntaxBlueprint": "SELECT track_id, track_title\nFROM MusicTracks\nORDER BY track_id ASC\nLIMIT 5 OFFSET 5;",
+    "syntaxRule": "ORDER BY comes after WHERE, and LIMIT comes after ORDER BY. ASC is default, DESC is descending.",
+    "syntaxTrap": "Never place LIMIT before ORDER BY, and always add a unique tie-breaker to prevent row-hopping.",
+    "eli5Story": "[SYNTAX BLUEPRINT]:\nSELECT track_id, track_title\nFROM MusicTracks\nORDER BY track_id ASC\nLIMIT 5 OFFSET 5;\n\n[RULE]: ORDER BY comes after WHERE, and LIMIT comes after ORDER BY. ASC is default, DESC is descending.\n\n[TRAP TO AVOID]: Never place LIMIT before ORDER BY, and always add a unique tie-breaker to prevent row-hopping.",
+    "commonMistakes": "Putting semicolon before ORDER BY, reversing LIMIT and OFFSET, or misplacing DESC.",
+    "learningOutcomes": "Mastered 3.9 Pagination Slices (LIMIT & OFFSET) on MusicTracks.",
+    "challengeSlots": [
+      {
+        "type": "keyword",
+        "value": "SELECT"
+      },
+      {
+        "type": "column",
+        "value": "track_id,"
+      },
+      {
+        "type": "column",
+        "value": "track_title"
+      },
+      {
+        "type": "keyword",
+        "value": "FROM"
+      },
+      {
+        "type": "table",
+        "value": "MusicTracks"
+      },
+      {
+        "type": "keyword",
+        "value": "ORDER"
+      },
+      {
+        "type": "keyword",
+        "value": "BY"
+      },
+      {
+        "type": "column",
+        "value": "track_id"
+      },
+      {
+        "type": "keyword",
+        "value": "ASC"
+      },
+      {
+        "type": "keyword",
+        "value": "LIMIT"
+      },
+      {
+        "type": "column",
+        "value": "5"
+      },
+      {
+        "type": "keyword",
+        "value": "OFFSET"
+      },
+      {
+        "type": "column",
+        "value": "5;"
+      }
+    ]
+  },
+  {
+    "id": 1778,
+    "drillNumber": 288,
+    "section": "Section 0: Foundations & Syntax Gym",
+    "title": "Syntax #288: Fetch Page 3 of order history (page size 3, skip 6)",
+    "industry": "Foundations",
+    "difficulty": "Easy",
+    "scenario": "Fetch Page 3 of order history (page size 3, skip 6).",
+    "businessObjective": "Fetch Page 3 of order history (page size 3, skip 6).",
+    "schemaSnippet": "Orders schema",
+    "targetQuery": "SELECT order_id, customer_name\nFROM Orders\nORDER BY order_id ASC\nLIMIT 3 OFFSET 6;",
+    "syntaxBlueprint": "SELECT order_id, customer_name\nFROM Orders\nORDER BY order_id ASC\nLIMIT 3 OFFSET 6;",
+    "syntaxRule": "ORDER BY comes after WHERE, and LIMIT comes after ORDER BY. ASC is default, DESC is descending.",
+    "syntaxTrap": "Never place LIMIT before ORDER BY, and always add a unique tie-breaker to prevent row-hopping.",
+    "eli5Story": "[SYNTAX BLUEPRINT]:\nSELECT order_id, customer_name\nFROM Orders\nORDER BY order_id ASC\nLIMIT 3 OFFSET 6;\n\n[RULE]: ORDER BY comes after WHERE, and LIMIT comes after ORDER BY. ASC is default, DESC is descending.\n\n[TRAP TO AVOID]: Never place LIMIT before ORDER BY, and always add a unique tie-breaker to prevent row-hopping.",
+    "commonMistakes": "Putting semicolon before ORDER BY, reversing LIMIT and OFFSET, or misplacing DESC.",
+    "learningOutcomes": "Mastered 3.9 Pagination Slices (LIMIT & OFFSET) on Orders.",
+    "challengeSlots": [
+      {
+        "type": "keyword",
+        "value": "SELECT"
+      },
+      {
+        "type": "column",
+        "value": "order_id,"
+      },
+      {
+        "type": "column",
+        "value": "customer_name"
+      },
+      {
+        "type": "keyword",
+        "value": "FROM"
+      },
+      {
+        "type": "table",
+        "value": "Orders"
+      },
+      {
+        "type": "keyword",
+        "value": "ORDER"
+      },
+      {
+        "type": "keyword",
+        "value": "BY"
+      },
+      {
+        "type": "column",
+        "value": "order_id"
+      },
+      {
+        "type": "keyword",
+        "value": "ASC"
+      },
+      {
+        "type": "keyword",
+        "value": "LIMIT"
+      },
+      {
+        "type": "column",
+        "value": "3"
+      },
+      {
+        "type": "keyword",
+        "value": "OFFSET"
+      },
+      {
+        "type": "column",
+        "value": "6;"
+      }
+    ]
+  },
+  {
+    "id": 1779,
+    "drillNumber": 289,
+    "section": "Section 0: Foundations & Syntax Gym",
+    "title": "Syntax #289: Fetch Page 1 of gym memberships (page size 4, skip 0)",
+    "industry": "Foundations",
+    "difficulty": "Easy",
+    "scenario": "Fetch Page 1 of gym memberships (page size 4, skip 0).",
+    "businessObjective": "Fetch Page 1 of gym memberships (page size 4, skip 0).",
+    "schemaSnippet": "GymMembers schema",
+    "targetQuery": "SELECT member_id, member_name\nFROM GymMembers\nORDER BY member_id ASC\nLIMIT 4 OFFSET 0;",
+    "syntaxBlueprint": "SELECT member_id, member_name\nFROM GymMembers\nORDER BY member_id ASC\nLIMIT 4 OFFSET 0;",
+    "syntaxRule": "ORDER BY comes after WHERE, and LIMIT comes after ORDER BY. ASC is default, DESC is descending.",
+    "syntaxTrap": "Never place LIMIT before ORDER BY, and always add a unique tie-breaker to prevent row-hopping.",
+    "eli5Story": "[SYNTAX BLUEPRINT]:\nSELECT member_id, member_name\nFROM GymMembers\nORDER BY member_id ASC\nLIMIT 4 OFFSET 0;\n\n[RULE]: ORDER BY comes after WHERE, and LIMIT comes after ORDER BY. ASC is default, DESC is descending.\n\n[TRAP TO AVOID]: Never place LIMIT before ORDER BY, and always add a unique tie-breaker to prevent row-hopping.",
+    "commonMistakes": "Putting semicolon before ORDER BY, reversing LIMIT and OFFSET, or misplacing DESC.",
+    "learningOutcomes": "Mastered 3.9 Pagination Slices (LIMIT & OFFSET) on GymMembers.",
+    "challengeSlots": [
+      {
+        "type": "keyword",
+        "value": "SELECT"
+      },
+      {
+        "type": "column",
+        "value": "member_id,"
+      },
+      {
+        "type": "column",
+        "value": "member_name"
+      },
+      {
+        "type": "keyword",
+        "value": "FROM"
+      },
+      {
+        "type": "table",
+        "value": "GymMembers"
+      },
+      {
+        "type": "keyword",
+        "value": "ORDER"
+      },
+      {
+        "type": "keyword",
+        "value": "BY"
+      },
+      {
+        "type": "column",
+        "value": "member_id"
+      },
+      {
+        "type": "keyword",
+        "value": "ASC"
+      },
+      {
+        "type": "keyword",
+        "value": "LIMIT"
+      },
+      {
+        "type": "column",
+        "value": "4"
+      },
+      {
+        "type": "keyword",
+        "value": "OFFSET"
+      },
+      {
+        "type": "column",
+        "value": "0;"
+      }
+    ]
+  },
+  {
+    "id": 1780,
+    "drillNumber": 290,
+    "section": "Section 0: Foundations & Syntax Gym",
+    "title": "Syntax #290: Fetch Page 2 of clinic patient records (page size 5, skip 5)",
+    "industry": "Foundations",
+    "difficulty": "Easy",
+    "scenario": "Fetch Page 2 of clinic patient records (page size 5, skip 5).",
+    "businessObjective": "Fetch Page 2 of clinic patient records (page size 5, skip 5).",
+    "schemaSnippet": "PetClinic schema",
+    "targetQuery": "SELECT pet_id, pet_name\nFROM PetClinic\nORDER BY pet_id ASC\nLIMIT 5 OFFSET 5;",
+    "syntaxBlueprint": "SELECT pet_id, pet_name\nFROM PetClinic\nORDER BY pet_id ASC\nLIMIT 5 OFFSET 5;",
+    "syntaxRule": "ORDER BY comes after WHERE, and LIMIT comes after ORDER BY. ASC is default, DESC is descending.",
+    "syntaxTrap": "Never place LIMIT before ORDER BY, and always add a unique tie-breaker to prevent row-hopping.",
+    "eli5Story": "[SYNTAX BLUEPRINT]:\nSELECT pet_id, pet_name\nFROM PetClinic\nORDER BY pet_id ASC\nLIMIT 5 OFFSET 5;\n\n[RULE]: ORDER BY comes after WHERE, and LIMIT comes after ORDER BY. ASC is default, DESC is descending.\n\n[TRAP TO AVOID]: Never place LIMIT before ORDER BY, and always add a unique tie-breaker to prevent row-hopping.",
+    "commonMistakes": "Putting semicolon before ORDER BY, reversing LIMIT and OFFSET, or misplacing DESC.",
+    "learningOutcomes": "Mastered 3.9 Pagination Slices (LIMIT & OFFSET) on PetClinic.",
+    "challengeSlots": [
+      {
+        "type": "keyword",
+        "value": "SELECT"
+      },
+      {
+        "type": "column",
+        "value": "pet_id,"
+      },
+      {
+        "type": "column",
+        "value": "pet_name"
+      },
+      {
+        "type": "keyword",
+        "value": "FROM"
+      },
+      {
+        "type": "table",
+        "value": "PetClinic"
+      },
+      {
+        "type": "keyword",
+        "value": "ORDER"
+      },
+      {
+        "type": "keyword",
+        "value": "BY"
+      },
+      {
+        "type": "column",
+        "value": "pet_id"
+      },
+      {
+        "type": "keyword",
+        "value": "ASC"
+      },
+      {
+        "type": "keyword",
+        "value": "LIMIT"
+      },
+      {
+        "type": "column",
+        "value": "5"
+      },
+      {
+        "type": "keyword",
+        "value": "OFFSET"
+      },
+      {
+        "type": "column",
+        "value": "5;"
+      }
+    ]
+  },
+  {
+    "id": 1781,
+    "drillNumber": 291,
+    "section": "Section 0: Foundations & Syntax Gym",
+    "title": "Syntax #291: Fix the clause sequence error: 'LIMIT 5 ORDER BY price DESC;' (ORDER BY must precede LIMIT)",
+    "industry": "Foundations",
+    "difficulty": "Easy",
+    "scenario": "Fix the clause sequence error: 'LIMIT 5 ORDER BY price DESC;' (ORDER BY must precede LIMIT).",
+    "businessObjective": "Fix the clause sequence error: 'LIMIT 5 ORDER BY price DESC;' (ORDER BY must precede LIMIT).",
+    "schemaSnippet": "Books schema",
+    "targetQuery": "SELECT title, price\nFROM Books\nORDER BY price DESC\nLIMIT 5;",
+    "syntaxBlueprint": "SELECT col_1, col_2\nFROM Books\nORDER BY col_1 ASC;",
+    "syntaxRule": "ORDER BY comes after WHERE, and LIMIT comes after ORDER BY. ASC is default, DESC is descending.",
+    "syntaxTrap": "Never place LIMIT before ORDER BY, and always add a unique tie-breaker to prevent row-hopping.",
+    "eli5Story": "[SYNTAX BLUEPRINT]:\nSELECT col_1, col_2\nFROM Books\nORDER BY col_1 ASC;\n\n[RULE]: ORDER BY comes after WHERE, and LIMIT comes after ORDER BY. ASC is default, DESC is descending.\n\n[TRAP TO AVOID]: Never place LIMIT before ORDER BY, and always add a unique tie-breaker to prevent row-hopping.",
+    "commonMistakes": "Putting semicolon before ORDER BY, reversing LIMIT and OFFSET, or misplacing DESC.",
+    "learningOutcomes": "Mastered 3.10 Sorting & Slicing Bug Hunts on Books.",
+    "challengeSlots": [
+      {
+        "type": "keyword",
+        "value": "SELECT"
+      },
+      {
+        "type": "column",
+        "value": "title,"
+      },
+      {
+        "type": "column",
+        "value": "price"
+      },
+      {
+        "type": "keyword",
+        "value": "FROM"
+      },
+      {
+        "type": "table",
+        "value": "Books"
+      },
+      {
+        "type": "keyword",
+        "value": "ORDER"
+      },
+      {
+        "type": "keyword",
+        "value": "BY"
+      },
+      {
+        "type": "column",
+        "value": "price"
+      },
+      {
+        "type": "keyword",
+        "value": "DESC"
+      },
+      {
+        "type": "keyword",
+        "value": "LIMIT"
+      },
+      {
+        "type": "column",
+        "value": "5;"
+      }
+    ]
+  },
+  {
+    "id": 1782,
+    "drillNumber": 292,
+    "section": "Section 0: Foundations & Syntax Gym",
+    "title": "Syntax #292: Fix the misspelled sort order keyword: 'ORDER BY gpa DESENDING;' (must be DESC)",
+    "industry": "Foundations",
+    "difficulty": "Easy",
+    "scenario": "Fix the misspelled sort order keyword: 'ORDER BY gpa DESENDING;' (must be DESC).",
+    "businessObjective": "Fix the misspelled sort order keyword: 'ORDER BY gpa DESENDING;' (must be DESC).",
+    "schemaSnippet": "Students schema",
+    "targetQuery": "SELECT full_name, gpa\nFROM Students\nORDER BY gpa DESC;",
+    "syntaxBlueprint": "SELECT col_1, col_2\nFROM Students\nORDER BY col_1 ASC;",
+    "syntaxRule": "ORDER BY comes after WHERE, and LIMIT comes after ORDER BY. ASC is default, DESC is descending.",
+    "syntaxTrap": "Never place LIMIT before ORDER BY, and always add a unique tie-breaker to prevent row-hopping.",
+    "eli5Story": "[SYNTAX BLUEPRINT]:\nSELECT col_1, col_2\nFROM Students\nORDER BY col_1 ASC;\n\n[RULE]: ORDER BY comes after WHERE, and LIMIT comes after ORDER BY. ASC is default, DESC is descending.\n\n[TRAP TO AVOID]: Never place LIMIT before ORDER BY, and always add a unique tie-breaker to prevent row-hopping.",
+    "commonMistakes": "Putting semicolon before ORDER BY, reversing LIMIT and OFFSET, or misplacing DESC.",
+    "learningOutcomes": "Mastered 3.10 Sorting & Slicing Bug Hunts on Students.",
+    "challengeSlots": [
+      {
+        "type": "keyword",
+        "value": "SELECT"
+      },
+      {
+        "type": "column",
+        "value": "full_name,"
+      },
+      {
+        "type": "column",
+        "value": "gpa"
+      },
+      {
+        "type": "keyword",
+        "value": "FROM"
+      },
+      {
+        "type": "table",
+        "value": "Students"
+      },
+      {
+        "type": "keyword",
+        "value": "ORDER"
+      },
+      {
+        "type": "keyword",
+        "value": "BY"
+      },
+      {
+        "type": "column",
+        "value": "gpa"
+      },
+      {
+        "type": "column",
+        "value": "DESC;"
+      }
+    ]
+  },
+  {
+    "id": 1783,
+    "drillNumber": 293,
+    "section": "Section 0: Foundations & Syntax Gym",
+    "title": "Syntax #293: Fix missing ORDER BY when requesting top record: 'SELECT first_name, salary FROM Employees LIMIT 1;' (produces arbitrary row without ORDER BY)",
+    "industry": "Foundations",
+    "difficulty": "Easy",
+    "scenario": "Fix missing ORDER BY when requesting top record: 'SELECT first_name, salary FROM Employees LIMIT 1;' (produces arbitrary row without ORDER BY).",
+    "businessObjective": "Fix missing ORDER BY when requesting top record: 'SELECT first_name, salary FROM Employees LIMIT 1;' (produces arbitrary row without ORDER BY).",
+    "schemaSnippet": "Employees schema",
+    "targetQuery": "SELECT first_name, salary\nFROM Employees\nORDER BY salary DESC\nLIMIT 1;",
+    "syntaxBlueprint": "SELECT col_1, col_2\nFROM Employees\nORDER BY col_1 ASC;",
+    "syntaxRule": "ORDER BY comes after WHERE, and LIMIT comes after ORDER BY. ASC is default, DESC is descending.",
+    "syntaxTrap": "Never place LIMIT before ORDER BY, and always add a unique tie-breaker to prevent row-hopping.",
+    "eli5Story": "[SYNTAX BLUEPRINT]:\nSELECT col_1, col_2\nFROM Employees\nORDER BY col_1 ASC;\n\n[RULE]: ORDER BY comes after WHERE, and LIMIT comes after ORDER BY. ASC is default, DESC is descending.\n\n[TRAP TO AVOID]: Never place LIMIT before ORDER BY, and always add a unique tie-breaker to prevent row-hopping.",
+    "commonMistakes": "Putting semicolon before ORDER BY, reversing LIMIT and OFFSET, or misplacing DESC.",
+    "learningOutcomes": "Mastered 3.10 Sorting & Slicing Bug Hunts on Employees.",
+    "challengeSlots": [
+      {
+        "type": "keyword",
+        "value": "SELECT"
+      },
+      {
+        "type": "column",
+        "value": "first_name,"
+      },
+      {
+        "type": "column",
+        "value": "salary"
+      },
+      {
+        "type": "keyword",
+        "value": "FROM"
+      },
+      {
+        "type": "table",
+        "value": "Employees"
+      },
+      {
+        "type": "keyword",
+        "value": "ORDER"
+      },
+      {
+        "type": "keyword",
+        "value": "BY"
+      },
+      {
+        "type": "column",
+        "value": "salary"
+      },
+      {
+        "type": "keyword",
+        "value": "DESC"
+      },
+      {
+        "type": "keyword",
+        "value": "LIMIT"
+      },
+      {
+        "type": "column",
+        "value": "1;"
+      }
+    ]
+  },
+  {
+    "id": 1784,
+    "drillNumber": 294,
+    "section": "Section 0: Foundations & Syntax Gym",
+    "title": "Syntax #294: Fix missing BY keyword: 'ORDER unit_price ASC;' (must be ORDER BY)",
+    "industry": "Foundations",
+    "difficulty": "Easy",
+    "scenario": "Fix missing BY keyword: 'ORDER unit_price ASC;' (must be ORDER BY).",
+    "businessObjective": "Fix missing BY keyword: 'ORDER unit_price ASC;' (must be ORDER BY).",
+    "schemaSnippet": "GroceryItems schema",
+    "targetQuery": "SELECT item_name, unit_price\nFROM GroceryItems\nORDER BY unit_price ASC;",
+    "syntaxBlueprint": "SELECT col_1, col_2\nFROM GroceryItems\nORDER BY col_1 ASC;",
+    "syntaxRule": "ORDER BY comes after WHERE, and LIMIT comes after ORDER BY. ASC is default, DESC is descending.",
+    "syntaxTrap": "Never place LIMIT before ORDER BY, and always add a unique tie-breaker to prevent row-hopping.",
+    "eli5Story": "[SYNTAX BLUEPRINT]:\nSELECT col_1, col_2\nFROM GroceryItems\nORDER BY col_1 ASC;\n\n[RULE]: ORDER BY comes after WHERE, and LIMIT comes after ORDER BY. ASC is default, DESC is descending.\n\n[TRAP TO AVOID]: Never place LIMIT before ORDER BY, and always add a unique tie-breaker to prevent row-hopping.",
+    "commonMistakes": "Putting semicolon before ORDER BY, reversing LIMIT and OFFSET, or misplacing DESC.",
+    "learningOutcomes": "Mastered 3.10 Sorting & Slicing Bug Hunts on GroceryItems.",
+    "challengeSlots": [
+      {
+        "type": "keyword",
+        "value": "SELECT"
+      },
+      {
+        "type": "column",
+        "value": "item_name,"
+      },
+      {
+        "type": "column",
+        "value": "unit_price"
+      },
+      {
+        "type": "keyword",
+        "value": "FROM"
+      },
+      {
+        "type": "table",
+        "value": "GroceryItems"
+      },
+      {
+        "type": "keyword",
+        "value": "ORDER"
+      },
+      {
+        "type": "keyword",
+        "value": "BY"
+      },
+      {
+        "type": "column",
+        "value": "unit_price"
+      },
+      {
+        "type": "column",
+        "value": "ASC;"
+      }
+    ]
+  },
+  {
+    "id": 1785,
+    "drillNumber": 295,
+    "section": "Section 0: Foundations & Syntax Gym",
+    "title": "Syntax #295: Fix syntax error sorting by computed expression: ensure total alias is recognized in ORDER BY",
+    "industry": "Foundations",
+    "difficulty": "Easy",
+    "scenario": "Fix syntax error sorting by computed expression: ensure total alias is recognized in ORDER BY.",
+    "businessObjective": "Fix syntax error sorting by computed expression: ensure total alias is recognized in ORDER BY.",
+    "schemaSnippet": "Orders schema",
+    "targetQuery": "SELECT order_id, quantity * unit_price AS total\nFROM Orders\nORDER BY total DESC;",
+    "syntaxBlueprint": "SELECT col_1, col_2\nFROM Orders\nORDER BY col_1 ASC;",
+    "syntaxRule": "ORDER BY comes after WHERE, and LIMIT comes after ORDER BY. ASC is default, DESC is descending.",
+    "syntaxTrap": "Never place LIMIT before ORDER BY, and always add a unique tie-breaker to prevent row-hopping.",
+    "eli5Story": "[SYNTAX BLUEPRINT]:\nSELECT col_1, col_2\nFROM Orders\nORDER BY col_1 ASC;\n\n[RULE]: ORDER BY comes after WHERE, and LIMIT comes after ORDER BY. ASC is default, DESC is descending.\n\n[TRAP TO AVOID]: Never place LIMIT before ORDER BY, and always add a unique tie-breaker to prevent row-hopping.",
+    "commonMistakes": "Putting semicolon before ORDER BY, reversing LIMIT and OFFSET, or misplacing DESC.",
+    "learningOutcomes": "Mastered 3.10 Sorting & Slicing Bug Hunts on Orders.",
+    "challengeSlots": [
+      {
+        "type": "keyword",
+        "value": "SELECT"
+      },
+      {
+        "type": "column",
+        "value": "order_id,"
+      },
+      {
+        "type": "column",
+        "value": "quantity"
+      },
+      {
+        "type": "column",
+        "value": "*"
+      },
+      {
+        "type": "column",
+        "value": "unit_price"
+      },
+      {
+        "type": "column",
+        "value": "AS"
+      },
+      {
+        "type": "column",
+        "value": "total"
+      },
+      {
+        "type": "keyword",
+        "value": "FROM"
+      },
+      {
+        "type": "table",
+        "value": "Orders"
+      },
+      {
+        "type": "keyword",
+        "value": "ORDER"
+      },
+      {
+        "type": "keyword",
+        "value": "BY"
+      },
+      {
+        "type": "column",
+        "value": "total"
+      },
+      {
+        "type": "column",
+        "value": "DESC;"
+      }
+    ]
+  },
+  {
+    "id": 1786,
+    "drillNumber": 296,
+    "section": "Section 0: Foundations & Syntax Gym",
+    "title": "Syntax #296: Fix comma used in OFFSET syntax: 'LIMIT 10, OFFSET 0;' (no comma before OFFSET)",
+    "industry": "Foundations",
+    "difficulty": "Easy",
+    "scenario": "Fix comma used in OFFSET syntax: 'LIMIT 10, OFFSET 0;' (no comma before OFFSET).",
+    "businessObjective": "Fix comma used in OFFSET syntax: 'LIMIT 10, OFFSET 0;' (no comma before OFFSET).",
+    "schemaSnippet": "MusicTracks schema",
+    "targetQuery": "SELECT track_title, duration_seconds\nFROM MusicTracks\nORDER BY duration_seconds ASC\nLIMIT 10 OFFSET 0;",
+    "syntaxBlueprint": "SELECT col_1, col_2\nFROM MusicTracks\nORDER BY col_1 ASC;",
+    "syntaxRule": "ORDER BY comes after WHERE, and LIMIT comes after ORDER BY. ASC is default, DESC is descending.",
+    "syntaxTrap": "Never place LIMIT before ORDER BY, and always add a unique tie-breaker to prevent row-hopping.",
+    "eli5Story": "[SYNTAX BLUEPRINT]:\nSELECT col_1, col_2\nFROM MusicTracks\nORDER BY col_1 ASC;\n\n[RULE]: ORDER BY comes after WHERE, and LIMIT comes after ORDER BY. ASC is default, DESC is descending.\n\n[TRAP TO AVOID]: Never place LIMIT before ORDER BY, and always add a unique tie-breaker to prevent row-hopping.",
+    "commonMistakes": "Putting semicolon before ORDER BY, reversing LIMIT and OFFSET, or misplacing DESC.",
+    "learningOutcomes": "Mastered 3.10 Sorting & Slicing Bug Hunts on MusicTracks.",
+    "challengeSlots": [
+      {
+        "type": "keyword",
+        "value": "SELECT"
+      },
+      {
+        "type": "column",
+        "value": "track_title,"
+      },
+      {
+        "type": "column",
+        "value": "duration_seconds"
+      },
+      {
+        "type": "keyword",
+        "value": "FROM"
+      },
+      {
+        "type": "table",
+        "value": "MusicTracks"
+      },
+      {
+        "type": "keyword",
+        "value": "ORDER"
+      },
+      {
+        "type": "keyword",
+        "value": "BY"
+      },
+      {
+        "type": "column",
+        "value": "duration_seconds"
+      },
+      {
+        "type": "keyword",
+        "value": "ASC"
+      },
+      {
+        "type": "keyword",
+        "value": "LIMIT"
+      },
+      {
+        "type": "column",
+        "value": "10"
+      },
+      {
+        "type": "keyword",
+        "value": "OFFSET"
+      },
+      {
+        "type": "column",
+        "value": "0;"
+      }
+    ]
+  },
+  {
+    "id": 1787,
+    "drillNumber": 297,
+    "section": "Section 0: Foundations & Syntax Gym",
+    "title": "Syntax #297: Fix missing comma between multiple sort columns: 'ORDER BY membership_plan ASC visits_this_month DESC;'",
+    "industry": "Foundations",
+    "difficulty": "Easy",
+    "scenario": "Fix missing comma between multiple sort columns: 'ORDER BY membership_plan ASC visits_this_month DESC;'.",
+    "businessObjective": "Fix missing comma between multiple sort columns: 'ORDER BY membership_plan ASC visits_this_month DESC;'.",
+    "schemaSnippet": "GymMembers schema",
+    "targetQuery": "SELECT member_name, membership_plan, visits_this_month\nFROM GymMembers\nORDER BY membership_plan ASC, visits_this_month DESC;",
+    "syntaxBlueprint": "SELECT col_1, col_2\nFROM GymMembers\nORDER BY col_1 ASC;",
+    "syntaxRule": "ORDER BY comes after WHERE, and LIMIT comes after ORDER BY. ASC is default, DESC is descending.",
+    "syntaxTrap": "Never place LIMIT before ORDER BY, and always add a unique tie-breaker to prevent row-hopping.",
+    "eli5Story": "[SYNTAX BLUEPRINT]:\nSELECT col_1, col_2\nFROM GymMembers\nORDER BY col_1 ASC;\n\n[RULE]: ORDER BY comes after WHERE, and LIMIT comes after ORDER BY. ASC is default, DESC is descending.\n\n[TRAP TO AVOID]: Never place LIMIT before ORDER BY, and always add a unique tie-breaker to prevent row-hopping.",
+    "commonMistakes": "Putting semicolon before ORDER BY, reversing LIMIT and OFFSET, or misplacing DESC.",
+    "learningOutcomes": "Mastered 3.10 Sorting & Slicing Bug Hunts on GymMembers.",
+    "challengeSlots": [
+      {
+        "type": "keyword",
+        "value": "SELECT"
+      },
+      {
+        "type": "column",
+        "value": "member_name,"
+      },
+      {
+        "type": "column",
+        "value": "membership_plan,"
+      },
+      {
+        "type": "column",
+        "value": "visits_this_month"
+      },
+      {
+        "type": "keyword",
+        "value": "FROM"
+      },
+      {
+        "type": "table",
+        "value": "GymMembers"
+      },
+      {
+        "type": "keyword",
+        "value": "ORDER"
+      },
+      {
+        "type": "keyword",
+        "value": "BY"
+      },
+      {
+        "type": "column",
+        "value": "membership_plan"
+      },
+      {
+        "type": "column",
+        "value": "ASC,"
+      },
+      {
+        "type": "column",
+        "value": "visits_this_month"
+      },
+      {
+        "type": "column",
+        "value": "DESC;"
+      }
+    ]
+  },
+  {
+    "id": 1788,
+    "drillNumber": 298,
+    "section": "Section 0: Foundations & Syntax Gym",
+    "title": "Syntax #298: Fix invalid position number in ORDER BY: 'ORDER BY 0 DESC;' (column positions are 1-indexed)",
+    "industry": "Foundations",
+    "difficulty": "Easy",
+    "scenario": "Fix invalid position number in ORDER BY: 'ORDER BY 0 DESC;' (column positions are 1-indexed).",
+    "businessObjective": "Fix invalid position number in ORDER BY: 'ORDER BY 0 DESC;' (column positions are 1-indexed).",
+    "schemaSnippet": "MovieReviews schema",
+    "targetQuery": "SELECT movie_title, star_rating\nFROM MovieReviews\nORDER BY star_rating DESC\nLIMIT 3;",
+    "syntaxBlueprint": "SELECT col_1, col_2\nFROM MovieReviews\nORDER BY col_1 ASC;",
+    "syntaxRule": "ORDER BY comes after WHERE, and LIMIT comes after ORDER BY. ASC is default, DESC is descending.",
+    "syntaxTrap": "Never place LIMIT before ORDER BY, and always add a unique tie-breaker to prevent row-hopping.",
+    "eli5Story": "[SYNTAX BLUEPRINT]:\nSELECT col_1, col_2\nFROM MovieReviews\nORDER BY col_1 ASC;\n\n[RULE]: ORDER BY comes after WHERE, and LIMIT comes after ORDER BY. ASC is default, DESC is descending.\n\n[TRAP TO AVOID]: Never place LIMIT before ORDER BY, and always add a unique tie-breaker to prevent row-hopping.",
+    "commonMistakes": "Putting semicolon before ORDER BY, reversing LIMIT and OFFSET, or misplacing DESC.",
+    "learningOutcomes": "Mastered 3.10 Sorting & Slicing Bug Hunts on MovieReviews.",
+    "challengeSlots": [
+      {
+        "type": "keyword",
+        "value": "SELECT"
+      },
+      {
+        "type": "column",
+        "value": "movie_title,"
+      },
+      {
+        "type": "column",
+        "value": "star_rating"
+      },
+      {
+        "type": "keyword",
+        "value": "FROM"
+      },
+      {
+        "type": "table",
+        "value": "MovieReviews"
+      },
+      {
+        "type": "keyword",
+        "value": "ORDER"
+      },
+      {
+        "type": "keyword",
+        "value": "BY"
+      },
+      {
+        "type": "column",
+        "value": "star_rating"
+      },
+      {
+        "type": "keyword",
+        "value": "DESC"
+      },
+      {
+        "type": "keyword",
+        "value": "LIMIT"
+      },
+      {
+        "type": "column",
+        "value": "3;"
+      }
+    ]
+  },
+  {
+    "id": 1789,
+    "drillNumber": 299,
+    "section": "Section 0: Foundations & Syntax Gym",
+    "title": "Syntax #299: Fix semicolon placed before ORDER BY: 'FROM FlightSchedule; ORDER BY departure_time ASC;'",
+    "industry": "Foundations",
+    "difficulty": "Easy",
+    "scenario": "Fix semicolon placed before ORDER BY: 'FROM FlightSchedule; ORDER BY departure_time ASC;'.",
+    "businessObjective": "Fix semicolon placed before ORDER BY: 'FROM FlightSchedule; ORDER BY departure_time ASC;'.",
+    "schemaSnippet": "FlightSchedule schema",
+    "targetQuery": "SELECT flight_id, departure_time\nFROM FlightSchedule\nORDER BY departure_time ASC;",
+    "syntaxBlueprint": "SELECT col_1, col_2\nFROM FlightSchedule\nORDER BY col_1 ASC;",
+    "syntaxRule": "ORDER BY comes after WHERE, and LIMIT comes after ORDER BY. ASC is default, DESC is descending.",
+    "syntaxTrap": "Never place LIMIT before ORDER BY, and always add a unique tie-breaker to prevent row-hopping.",
+    "eli5Story": "[SYNTAX BLUEPRINT]:\nSELECT col_1, col_2\nFROM FlightSchedule\nORDER BY col_1 ASC;\n\n[RULE]: ORDER BY comes after WHERE, and LIMIT comes after ORDER BY. ASC is default, DESC is descending.\n\n[TRAP TO AVOID]: Never place LIMIT before ORDER BY, and always add a unique tie-breaker to prevent row-hopping.",
+    "commonMistakes": "Putting semicolon before ORDER BY, reversing LIMIT and OFFSET, or misplacing DESC.",
+    "learningOutcomes": "Mastered 3.10 Sorting & Slicing Bug Hunts on FlightSchedule.",
+    "challengeSlots": [
+      {
+        "type": "keyword",
+        "value": "SELECT"
+      },
+      {
+        "type": "column",
+        "value": "flight_id,"
+      },
+      {
+        "type": "column",
+        "value": "departure_time"
+      },
+      {
+        "type": "keyword",
+        "value": "FROM"
+      },
+      {
+        "type": "table",
+        "value": "FlightSchedule"
+      },
+      {
+        "type": "keyword",
+        "value": "ORDER"
+      },
+      {
+        "type": "keyword",
+        "value": "BY"
+      },
+      {
+        "type": "column",
+        "value": "departure_time"
+      },
+      {
+        "type": "column",
+        "value": "ASC;"
+      }
+    ]
+  },
+  {
+    "id": 1790,
+    "drillNumber": 300,
+    "section": "Section 0: Foundations & Syntax Gym",
+    "title": "Syntax #300: Fix reversed LIMIT and OFFSET order: 'OFFSET 10 LIMIT 5;' (LIMIT must precede OFFSET in standard SQL)",
+    "industry": "Foundations",
+    "difficulty": "Easy",
+    "scenario": "Fix reversed LIMIT and OFFSET order: 'OFFSET 10 LIMIT 5;' (LIMIT must precede OFFSET in standard SQL).",
+    "businessObjective": "Fix reversed LIMIT and OFFSET order: 'OFFSET 10 LIMIT 5;' (LIMIT must precede OFFSET in standard SQL).",
+    "schemaSnippet": "PetClinic schema",
+    "targetQuery": "SELECT pet_name, weight_kg\nFROM PetClinic\nORDER BY weight_kg DESC\nLIMIT 5 OFFSET 10;",
+    "syntaxBlueprint": "SELECT col_1, col_2\nFROM PetClinic\nORDER BY col_1 ASC;",
+    "syntaxRule": "ORDER BY comes after WHERE, and LIMIT comes after ORDER BY. ASC is default, DESC is descending.",
+    "syntaxTrap": "Never place LIMIT before ORDER BY, and always add a unique tie-breaker to prevent row-hopping.",
+    "eli5Story": "[SYNTAX BLUEPRINT]:\nSELECT col_1, col_2\nFROM PetClinic\nORDER BY col_1 ASC;\n\n[RULE]: ORDER BY comes after WHERE, and LIMIT comes after ORDER BY. ASC is default, DESC is descending.\n\n[TRAP TO AVOID]: Never place LIMIT before ORDER BY, and always add a unique tie-breaker to prevent row-hopping.",
+    "commonMistakes": "Putting semicolon before ORDER BY, reversing LIMIT and OFFSET, or misplacing DESC.",
+    "learningOutcomes": "Mastered 3.10 Sorting & Slicing Bug Hunts on PetClinic.",
+    "challengeSlots": [
+      {
+        "type": "keyword",
+        "value": "SELECT"
+      },
+      {
+        "type": "column",
+        "value": "pet_name,"
+      },
+      {
+        "type": "column",
+        "value": "weight_kg"
+      },
+      {
+        "type": "keyword",
+        "value": "FROM"
+      },
+      {
+        "type": "table",
+        "value": "PetClinic"
+      },
+      {
+        "type": "keyword",
+        "value": "ORDER"
+      },
+      {
+        "type": "keyword",
+        "value": "BY"
+      },
+      {
+        "type": "column",
+        "value": "weight_kg"
+      },
+      {
+        "type": "keyword",
+        "value": "DESC"
+      },
+      {
+        "type": "keyword",
+        "value": "LIMIT"
+      },
+      {
+        "type": "column",
+        "value": "5"
+      },
+      {
+        "type": "keyword",
+        "value": "OFFSET"
+      },
+      {
+        "type": "column",
+        "value": "10;"
+      }
+    ]
   }
 ];
 
-// Normalize properties across all cases for uniform UI rendering
-for (let i = 0; i < ALL_500_CASE_STUDIES.length; i++) {
-  const cs = ALL_500_CASE_STUDIES[i];
-  if (!cs.industry && cs.domain) cs.industry = cs.domain;
-  if (!cs.scenario && cs.businessProblem) cs.scenario = cs.businessProblem;
-  if (!cs.businessObjective && cs.businessProblem) cs.businessObjective = cs.businessProblem;
-  if (!cs.schemaSnippet && cs.schema) cs.schemaSnippet = cs.schema;
-  if (!cs.learningOutcomes && cs.takeaway) cs.learningOutcomes = cs.takeaway;
-}
-
 // Backward compatibility aliases
-const ALL_600_CASE_STUDIES = ALL_500_CASE_STUDIES;
-const ALL_650_CASE_STUDIES = ALL_500_CASE_STUDIES;
-const ALL_700_CASE_STUDIES = ALL_500_CASE_STUDIES;
-const ALL_1040_CASE_STUDIES = ALL_500_CASE_STUDIES;
-const ALL_1340_CASE_STUDIES = ALL_500_CASE_STUDIES;
+const ALL_1790_CASE_STUDIES = ALL_500_CASE_STUDIES;
 const ALL_1490_CASE_STUDIES = ALL_500_CASE_STUDIES;
+const ALL_1340_CASE_STUDIES = ALL_500_CASE_STUDIES;
+const ALL_1040_CASE_STUDIES = ALL_500_CASE_STUDIES;
+const ALL_700_CASE_STUDIES = ALL_500_CASE_STUDIES;
+const ALL_650_CASE_STUDIES = ALL_500_CASE_STUDIES;
+const ALL_600_CASE_STUDIES = ALL_500_CASE_STUDIES;
+const ALL_300_CASE_STUDIES = ALL_500_CASE_STUDIES;
 
-// Explicitly attach to browser window object
 if (typeof window !== 'undefined') {
   window.ALL_500_CASE_STUDIES = ALL_500_CASE_STUDIES;
-  window.ALL_600_CASE_STUDIES = ALL_500_CASE_STUDIES;
-  window.ALL_650_CASE_STUDIES = ALL_500_CASE_STUDIES;
-  window.ALL_700_CASE_STUDIES = ALL_500_CASE_STUDIES;
-  window.ALL_1040_CASE_STUDIES = ALL_500_CASE_STUDIES;
-  window.ALL_1340_CASE_STUDIES = ALL_500_CASE_STUDIES;
-  window.ALL_1490_CASE_STUDIES = ALL_500_CASE_STUDIES;
+  window.ALL_1790_CASE_STUDIES = ALL_1790_CASE_STUDIES;
+  window.ALL_1490_CASE_STUDIES = ALL_1490_CASE_STUDIES;
+  window.ALL_1340_CASE_STUDIES = ALL_1340_CASE_STUDIES;
+  window.ALL_1040_CASE_STUDIES = ALL_1040_CASE_STUDIES;
+  window.ALL_700_CASE_STUDIES = ALL_700_CASE_STUDIES;
+  window.ALL_650_CASE_STUDIES = ALL_650_CASE_STUDIES;
+  window.ALL_600_CASE_STUDIES = ALL_600_CASE_STUDIES;
+  window.ALL_300_CASE_STUDIES = ALL_300_CASE_STUDIES;
 }
 
 if (typeof module !== 'undefined' && module.exports) {
-  module.exports = { ALL_500_CASE_STUDIES, ALL_1040_CASE_STUDIES, ALL_1340_CASE_STUDIES, ALL_1490_CASE_STUDIES };
+  module.exports = {
+    ALL_500_CASE_STUDIES,
+    ALL_1790_CASE_STUDIES,
+    ALL_1490_CASE_STUDIES,
+    ALL_1340_CASE_STUDIES,
+    ALL_1040_CASE_STUDIES,
+    ALL_700_CASE_STUDIES,
+    ALL_650_CASE_STUDIES,
+    ALL_600_CASE_STUDIES,
+    ALL_300_CASE_STUDIES
+  };
 }
-

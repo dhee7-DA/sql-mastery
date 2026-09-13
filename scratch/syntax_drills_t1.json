@@ -1,0 +1,4810 @@
+[
+  {
+    "drillNumber": 1,
+    "subcluster": "1.1 Basic Projections",
+    "level": "Level 1 (Foundations)",
+    "title": "Retrieve the Entire Students Table",
+    "table": "Students",
+    "scenario": "You are setting up the classroom roster. Retrieve all columns and all records for every enrolled student.",
+    "businessObjective": "Pull every column using the universal asterisk wildcard.",
+    "schemaSnippet": "Students(student_id INT, first_name VARCHAR, last_name VARCHAR, age INT, major VARCHAR, gpa DECIMAL, city VARCHAR, enrolled_year INT)",
+    "targetQuery": "SELECT *\nFROM Students;",
+    "syntaxBlueprint": "SELECT *\nFROM table_name;",
+    "syntaxRule": "The asterisk (*) represents all columns. Always follow SELECT * with FROM and your table name.",
+    "syntaxTrap": "Writing 'SELECT ALL FROM Students;' (ALL is an aggregate modifier, not a column wildcard).",
+    "eli5Story": "Think of SELECT * like taking a wide-angle snapshot of the entire room—everyone and everything is captured.",
+    "commonMistakes": "Putting a semicolon after SELECT or forgetting the FROM keyword.",
+    "learningOutcomes": "Mastered basic table scanning and wildcard projections.",
+    "challengeSlots": [
+      {
+        "type": "keyword",
+        "value": "SELECT"
+      },
+      {
+        "type": "column",
+        "value": "*"
+      },
+      {
+        "type": "keyword",
+        "value": "FROM"
+      },
+      {
+        "type": "table",
+        "value": "Students;"
+      }
+    ]
+  },
+  {
+    "drillNumber": 2,
+    "subcluster": "1.1 Basic Projections",
+    "level": "Level 1 (Foundations)",
+    "title": "Inspect Available Library Books",
+    "table": "Books",
+    "scenario": "The librarian wants to review the full catalog including inventory and pricing.",
+    "businessObjective": "Select every column from the Books catalog.",
+    "schemaSnippet": "Books(book_id INT, title VARCHAR, author VARCHAR, genre VARCHAR, price DECIMAL, stock_qty INT, published_year INT, is_hardcover BOOLEAN)",
+    "targetQuery": "SELECT *\nFROM Books;",
+    "syntaxBlueprint": "SELECT *\nFROM table_name;",
+    "syntaxRule": "A query must end with a semicolon in standard SQL clients.",
+    "syntaxTrap": "Typing the table name before SELECT.",
+    "eli5Story": "Opening the master binder that has every detail of every book.",
+    "commonMistakes": "Omitting the semicolon at the end of the query.",
+    "learningOutcomes": "Mastered full catalog inspection.",
+    "challengeSlots": [
+      {
+        "type": "keyword",
+        "value": "SELECT"
+      },
+      {
+        "type": "column",
+        "value": "*"
+      },
+      {
+        "type": "keyword",
+        "value": "FROM"
+      },
+      {
+        "type": "table",
+        "value": "Books;"
+      }
+    ]
+  },
+  {
+    "drillNumber": 3,
+    "subcluster": "1.1 Basic Projections",
+    "level": "Level 1 (Foundations)",
+    "title": "Display Student First Names Only",
+    "table": "Students",
+    "scenario": "Generate an attendance roll call sheet displaying only the first name of each student.",
+    "businessObjective": "Extract a single specific column to minimize memory overhead.",
+    "schemaSnippet": "Students(student_id INT, first_name VARCHAR, last_name VARCHAR, age INT, major VARCHAR, gpa DECIMAL, city VARCHAR, enrolled_year INT)",
+    "targetQuery": "SELECT first_name\nFROM Students;",
+    "syntaxBlueprint": "SELECT column_name\nFROM table_name;",
+    "syntaxRule": "When selecting a single column, no commas are used anywhere in the query.",
+    "syntaxTrap": "Writing 'SELECT first_name, FROM Students;' (trailing comma before FROM).",
+    "eli5Story": "Calling out roll call by first names only—no need to say last names or birth dates.",
+    "commonMistakes": "Accidentally adding a comma after the single column name.",
+    "learningOutcomes": "Mastered single-column extraction without unnecessary commas.",
+    "challengeSlots": [
+      {
+        "type": "keyword",
+        "value": "SELECT"
+      },
+      {
+        "type": "column",
+        "value": "first_name"
+      },
+      {
+        "type": "keyword",
+        "value": "FROM"
+      },
+      {
+        "type": "table",
+        "value": "Students;"
+      }
+    ]
+  },
+  {
+    "drillNumber": 4,
+    "subcluster": "1.1 Basic Projections",
+    "level": "Level 1 (Foundations)",
+    "title": "List All Book Titles",
+    "table": "Books",
+    "scenario": "Print the spine labels for bookstore shelves showing only book titles.",
+    "businessObjective": "Select the title column from the Books table.",
+    "schemaSnippet": "Books(book_id INT, title VARCHAR, author VARCHAR, genre VARCHAR, price DECIMAL, stock_qty INT, published_year INT, is_hardcover BOOLEAN)",
+    "targetQuery": "SELECT title\nFROM Books;",
+    "syntaxBlueprint": "SELECT column_name\nFROM table_name;",
+    "syntaxRule": "Column names are case-insensitive in ANSI SQL, but snake_case is standard practice.",
+    "syntaxTrap": "Wrapping the column name in single quotes ('title' will output the literal word 'title' for every row!).",
+    "eli5Story": "Printing a list of book titles to tape onto the bookshelf edges.",
+    "commonMistakes": "Putting single quotes around column identifiers.",
+    "learningOutcomes": "Understood the difference between column names and text literals.",
+    "challengeSlots": [
+      {
+        "type": "keyword",
+        "value": "SELECT"
+      },
+      {
+        "type": "column",
+        "value": "title"
+      },
+      {
+        "type": "keyword",
+        "value": "FROM"
+      },
+      {
+        "type": "table",
+        "value": "Books;"
+      }
+    ]
+  },
+  {
+    "drillNumber": 5,
+    "subcluster": "1.1 Basic Projections",
+    "level": "Level 1 (Foundations)",
+    "title": "Extract Music Track Titles",
+    "table": "MusicTracks",
+    "scenario": "A music streaming app needs to fetch just the track titles for an index screen.",
+    "businessObjective": "Select the track_title column from MusicTracks.",
+    "schemaSnippet": "MusicTracks(track_id INT, track_title VARCHAR, artist_name VARCHAR, genre VARCHAR, duration_seconds INT, play_count INT, release_year INT)",
+    "targetQuery": "SELECT track_title\nFROM MusicTracks;",
+    "syntaxBlueprint": "SELECT column_name\nFROM table_name;",
+    "syntaxRule": "Ensure exact column spelling matches the database schema definition.",
+    "syntaxTrap": "Misspelling 'track_title' as 'track_name' or 'song'.",
+    "eli5Story": "Displaying the song titles on your phone's lock screen.",
+    "commonMistakes": "Guessing column names instead of referencing the schema.",
+    "learningOutcomes": "Learned schema column alignment.",
+    "challengeSlots": [
+      {
+        "type": "keyword",
+        "value": "SELECT"
+      },
+      {
+        "type": "column",
+        "value": "track_title"
+      },
+      {
+        "type": "keyword",
+        "value": "FROM"
+      },
+      {
+        "type": "table",
+        "value": "MusicTracks;"
+      }
+    ]
+  },
+  {
+    "drillNumber": 6,
+    "subcluster": "1.1 Basic Projections",
+    "level": "Level 1 (Foundations)",
+    "title": "View All Grocery Inventory Items",
+    "table": "GroceryItems",
+    "scenario": "The supermarket stock manager performs an initial scan of the entire product table.",
+    "businessObjective": "Retrieve all columns from GroceryItems.",
+    "schemaSnippet": "GroceryItems(item_id INT, item_name VARCHAR, category VARCHAR, unit_price DECIMAL, is_organic BOOLEAN, calories INT, stock_units INT)",
+    "targetQuery": "SELECT *\nFROM GroceryItems;",
+    "syntaxBlueprint": "SELECT *\nFROM table_name;",
+    "syntaxRule": "Asterisk selects columns in their physical storage order.",
+    "syntaxTrap": "Writing 'SELECT GroceryItems.*' when only one table is involved (redundant prefix).",
+    "eli5Story": "Opening the full stock inventory sheet on the store scanner.",
+    "commonMistakes": "Overcomplicating the query with table qualifiers when scanning a single table.",
+    "learningOutcomes": "Mastered full table scan syntax.",
+    "challengeSlots": [
+      {
+        "type": "keyword",
+        "value": "SELECT"
+      },
+      {
+        "type": "column",
+        "value": "*"
+      },
+      {
+        "type": "keyword",
+        "value": "FROM"
+      },
+      {
+        "type": "table",
+        "value": "GroceryItems;"
+      }
+    ]
+  },
+  {
+    "drillNumber": 7,
+    "subcluster": "1.1 Basic Projections",
+    "level": "Level 1 (Foundations)",
+    "title": "Extract Employee Email Handles (Last Names)",
+    "table": "Employees",
+    "scenario": "The IT department needs all employee last names to verify domain directory entries.",
+    "businessObjective": "Select last_name from Employees.",
+    "schemaSnippet": "Employees(emp_id INT, first_name VARCHAR, last_name VARCHAR, department VARCHAR, salary DECIMAL, bonus DECIMAL, hire_date DATE)",
+    "targetQuery": "SELECT last_name\nFROM Employees;",
+    "syntaxBlueprint": "SELECT column_name\nFROM table_name;",
+    "syntaxRule": "Specifying only the needed column saves network bandwidth and buffer cache.",
+    "syntaxTrap": "Using 'SELECT last_name;' without a FROM clause.",
+    "eli5Story": "Printing a list of family names for mailbox labels in the office lobby.",
+    "commonMistakes": "Forgetting the FROM clause.",
+    "learningOutcomes": "Reinforced mandatory FROM clause syntax.",
+    "challengeSlots": [
+      {
+        "type": "keyword",
+        "value": "SELECT"
+      },
+      {
+        "type": "column",
+        "value": "last_name"
+      },
+      {
+        "type": "keyword",
+        "value": "FROM"
+      },
+      {
+        "type": "table",
+        "value": "Employees;"
+      }
+    ]
+  },
+  {
+    "drillNumber": 8,
+    "subcluster": "1.1 Basic Projections",
+    "level": "Level 1 (Foundations)",
+    "title": "List Registered Pet Names",
+    "table": "PetClinic",
+    "scenario": "The receptionist at the veterinary clinic needs a list of all patient pet names.",
+    "businessObjective": "Select pet_name from PetClinic.",
+    "schemaSnippet": "PetClinic(pet_id INT, pet_name VARCHAR, species VARCHAR, breed VARCHAR, age_years INT, weight_kg DECIMAL, is_vaccinated BOOLEAN, owner_city VARCHAR)",
+    "targetQuery": "SELECT pet_name\nFROM PetClinic;",
+    "syntaxBlueprint": "SELECT column_name\nFROM table_name;",
+    "syntaxRule": "Target table follows immediately after the FROM keyword.",
+    "syntaxTrap": "Writing 'FROM PetClinic SELECT pet_name' (lexical syntax requires SELECT first).",
+    "eli5Story": "Checking the appointment book to see which dogs, cats, and birds are visiting today.",
+    "commonMistakes": "Inverting SELECT and FROM order.",
+    "learningOutcomes": "Solidified lexical statement ordering.",
+    "challengeSlots": [
+      {
+        "type": "keyword",
+        "value": "SELECT"
+      },
+      {
+        "type": "column",
+        "value": "pet_name"
+      },
+      {
+        "type": "keyword",
+        "value": "FROM"
+      },
+      {
+        "type": "table",
+        "value": "PetClinic;"
+      }
+    ]
+  },
+  {
+    "drillNumber": 9,
+    "subcluster": "1.1 Basic Projections",
+    "level": "Level 1 (Foundations)",
+    "title": "Fetch Movie Titles for Marquee",
+    "table": "MovieReviews",
+    "scenario": "The cinema manager updates the outdoor marquee sign with all film titles.",
+    "businessObjective": "Select movie_title from MovieReviews.",
+    "schemaSnippet": "MovieReviews(review_id INT, movie_title VARCHAR, director VARCHAR, genre VARCHAR, star_rating DECIMAL, release_year INT, review_length_words INT)",
+    "targetQuery": "SELECT movie_title\nFROM MovieReviews;",
+    "syntaxBlueprint": "SELECT column_name\nFROM table_name;",
+    "syntaxRule": "Keywords are traditionally uppercase and column names lowercase for readability.",
+    "syntaxTrap": "Writing 'SELECT movie title' without the underscore (space causes syntax parse failure).",
+    "eli5Story": "Putting letter tiles on the big illuminated movie theater sign outside.",
+    "commonMistakes": "Omitting the underscore in multi-word column names.",
+    "learningOutcomes": "Learned identifier formatting without spaces.",
+    "challengeSlots": [
+      {
+        "type": "keyword",
+        "value": "SELECT"
+      },
+      {
+        "type": "column",
+        "value": "movie_title"
+      },
+      {
+        "type": "keyword",
+        "value": "FROM"
+      },
+      {
+        "type": "table",
+        "value": "MovieReviews;"
+      }
+    ]
+  },
+  {
+    "drillNumber": 10,
+    "subcluster": "1.1 Basic Projections",
+    "level": "Level 1 (Foundations)",
+    "title": "Check Flight Number Schedule",
+    "table": "FlightSchedule",
+    "scenario": "The departure board updates the list of all operating flight numbers.",
+    "businessObjective": "Select flight_id from FlightSchedule.",
+    "schemaSnippet": "FlightSchedule(flight_id VARCHAR, airline VARCHAR, origin_airport VARCHAR, dest_airport VARCHAR, departure_time VARCHAR, delay_minutes INT, ticket_price DECIMAL, is_international BOOLEAN)",
+    "targetQuery": "SELECT flight_id\nFROM FlightSchedule;",
+    "syntaxBlueprint": "SELECT column_name\nFROM table_name;",
+    "syntaxRule": "Identifiers can contain numbers and underscores but cannot start with a number.",
+    "syntaxTrap": "Writing 'SELECT flight-id' with a hyphen (hyphen means subtraction!).",
+    "eli5Story": "Looking at the big yellow departure board at the airport terminal.",
+    "commonMistakes": "Using a hyphen instead of an underscore.",
+    "learningOutcomes": "Understood SQL identifier syntax rules.",
+    "challengeSlots": [
+      {
+        "type": "keyword",
+        "value": "SELECT"
+      },
+      {
+        "type": "column",
+        "value": "flight_id"
+      },
+      {
+        "type": "keyword",
+        "value": "FROM"
+      },
+      {
+        "type": "table",
+        "value": "FlightSchedule;"
+      }
+    ]
+  },
+  {
+    "drillNumber": 11,
+    "subcluster": "1.2 Multi-Column & Commas",
+    "level": "Level 1 (Foundations)",
+    "title": "Syntax #011: Select the first name, last name, and GPA for all students",
+    "table": "Students",
+    "scenario": "Select the first name, last name, and GPA for all students.",
+    "businessObjective": "Select the first name, last name, and GPA for all students.",
+    "schemaSnippet": "Students schema",
+    "targetQuery": "SELECT undefined\nFROM Students;",
+    "syntaxBlueprint": "SELECT column_1, column_2\nFROM Students;",
+    "syntaxRule": "Keywords are SELECT, FROM, AS, DISTINCT. Keep commas between columns only.",
+    "syntaxTrap": "Do not add trailing commas before FROM or quote column identifiers.",
+    "eli5Story": "Simple everyday task on Students: Select the first name, last name, and GPA for all students.",
+    "commonMistakes": "Punctuation errors, trailing commas, or quotes around column names.",
+    "learningOutcomes": "Mastered 1.2 Multi-Column & Commas on Students.",
+    "challengeSlots": [
+      {
+        "type": "keyword",
+        "value": "SELECT"
+      },
+      {
+        "type": "column",
+        "value": "undefined"
+      },
+      {
+        "type": "keyword",
+        "value": "FROM"
+      },
+      {
+        "type": "table",
+        "value": "Students;"
+      }
+    ]
+  },
+  {
+    "drillNumber": 12,
+    "subcluster": "1.2 Multi-Column & Commas",
+    "level": "Level 1 (Foundations)",
+    "title": "Syntax #012: Display book title, author, and price for a book fair catalog",
+    "table": "Books",
+    "scenario": "Display book title, author, and price for a book fair catalog.",
+    "businessObjective": "Display book title, author, and price for a book fair catalog.",
+    "schemaSnippet": "Books schema",
+    "targetQuery": "SELECT undefined\nFROM Books;",
+    "syntaxBlueprint": "SELECT column_1, column_2\nFROM Books;",
+    "syntaxRule": "Keywords are SELECT, FROM, AS, DISTINCT. Keep commas between columns only.",
+    "syntaxTrap": "Do not add trailing commas before FROM or quote column identifiers.",
+    "eli5Story": "Simple everyday task on Books: Display book title, author, and price for a book fair catalog.",
+    "commonMistakes": "Punctuation errors, trailing commas, or quotes around column names.",
+    "learningOutcomes": "Mastered 1.2 Multi-Column & Commas on Books.",
+    "challengeSlots": [
+      {
+        "type": "keyword",
+        "value": "SELECT"
+      },
+      {
+        "type": "column",
+        "value": "undefined"
+      },
+      {
+        "type": "keyword",
+        "value": "FROM"
+      },
+      {
+        "type": "table",
+        "value": "Books;"
+      }
+    ]
+  },
+  {
+    "drillNumber": 13,
+    "subcluster": "1.2 Multi-Column & Commas",
+    "level": "Level 1 (Foundations)",
+    "title": "Syntax #013: Extract first name, department, and salary for the monthly compensation review",
+    "table": "Employees",
+    "scenario": "Extract first name, department, and salary for the monthly compensation review.",
+    "businessObjective": "Extract first name, department, and salary for the monthly compensation review.",
+    "schemaSnippet": "Employees schema",
+    "targetQuery": "SELECT undefined\nFROM Employees;",
+    "syntaxBlueprint": "SELECT column_1, column_2\nFROM Employees;",
+    "syntaxRule": "Keywords are SELECT, FROM, AS, DISTINCT. Keep commas between columns only.",
+    "syntaxTrap": "Do not add trailing commas before FROM or quote column identifiers.",
+    "eli5Story": "Simple everyday task on Employees: Extract first name, department, and salary for the monthly compensation review.",
+    "commonMistakes": "Punctuation errors, trailing commas, or quotes around column names.",
+    "learningOutcomes": "Mastered 1.2 Multi-Column & Commas on Employees.",
+    "challengeSlots": [
+      {
+        "type": "keyword",
+        "value": "SELECT"
+      },
+      {
+        "type": "column",
+        "value": "undefined"
+      },
+      {
+        "type": "keyword",
+        "value": "FROM"
+      },
+      {
+        "type": "table",
+        "value": "Employees;"
+      }
+    ]
+  },
+  {
+    "drillNumber": 14,
+    "subcluster": "1.2 Multi-Column & Commas",
+    "level": "Level 1 (Foundations)",
+    "title": "Syntax #014: List grocery item name, its category, and unit price for shelf price tags",
+    "table": "GroceryItems",
+    "scenario": "List grocery item name, its category, and unit price for shelf price tags.",
+    "businessObjective": "List grocery item name, its category, and unit price for shelf price tags.",
+    "schemaSnippet": "GroceryItems schema",
+    "targetQuery": "SELECT undefined\nFROM GroceryItems;",
+    "syntaxBlueprint": "SELECT column_1, column_2\nFROM GroceryItems;",
+    "syntaxRule": "Keywords are SELECT, FROM, AS, DISTINCT. Keep commas between columns only.",
+    "syntaxTrap": "Do not add trailing commas before FROM or quote column identifiers.",
+    "eli5Story": "Simple everyday task on GroceryItems: List grocery item name, its category, and unit price for shelf price tags.",
+    "commonMistakes": "Punctuation errors, trailing commas, or quotes around column names.",
+    "learningOutcomes": "Mastered 1.2 Multi-Column & Commas on GroceryItems.",
+    "challengeSlots": [
+      {
+        "type": "keyword",
+        "value": "SELECT"
+      },
+      {
+        "type": "column",
+        "value": "undefined"
+      },
+      {
+        "type": "keyword",
+        "value": "FROM"
+      },
+      {
+        "type": "table",
+        "value": "GroceryItems;"
+      }
+    ]
+  },
+  {
+    "drillNumber": 15,
+    "subcluster": "1.2 Multi-Column & Commas",
+    "level": "Level 1 (Foundations)",
+    "title": "Syntax #015: View customer name, purchased product, and ordered quantity on packing slips",
+    "table": "Orders",
+    "scenario": "View customer name, purchased product, and ordered quantity on packing slips.",
+    "businessObjective": "View customer name, purchased product, and ordered quantity on packing slips.",
+    "schemaSnippet": "Orders schema",
+    "targetQuery": "SELECT undefined\nFROM Orders;",
+    "syntaxBlueprint": "SELECT column_1, column_2\nFROM Orders;",
+    "syntaxRule": "Keywords are SELECT, FROM, AS, DISTINCT. Keep commas between columns only.",
+    "syntaxTrap": "Do not add trailing commas before FROM or quote column identifiers.",
+    "eli5Story": "Simple everyday task on Orders: View customer name, purchased product, and ordered quantity on packing slips.",
+    "commonMistakes": "Punctuation errors, trailing commas, or quotes around column names.",
+    "learningOutcomes": "Mastered 1.2 Multi-Column & Commas on Orders.",
+    "challengeSlots": [
+      {
+        "type": "keyword",
+        "value": "SELECT"
+      },
+      {
+        "type": "column",
+        "value": "undefined"
+      },
+      {
+        "type": "keyword",
+        "value": "FROM"
+      },
+      {
+        "type": "table",
+        "value": "Orders;"
+      }
+    ]
+  },
+  {
+    "drillNumber": 16,
+    "subcluster": "1.2 Multi-Column & Commas",
+    "level": "Level 1 (Foundations)",
+    "title": "Syntax #016: Show track title, artist name, and duration in seconds for the media player",
+    "table": "MusicTracks",
+    "scenario": "Show track title, artist name, and duration in seconds for the media player.",
+    "businessObjective": "Show track title, artist name, and duration in seconds for the media player.",
+    "schemaSnippet": "MusicTracks schema",
+    "targetQuery": "SELECT undefined\nFROM MusicTracks;",
+    "syntaxBlueprint": "SELECT column_1, column_2\nFROM MusicTracks;",
+    "syntaxRule": "Keywords are SELECT, FROM, AS, DISTINCT. Keep commas between columns only.",
+    "syntaxTrap": "Do not add trailing commas before FROM or quote column identifiers.",
+    "eli5Story": "Simple everyday task on MusicTracks: Show track title, artist name, and duration in seconds for the media player.",
+    "commonMistakes": "Punctuation errors, trailing commas, or quotes around column names.",
+    "learningOutcomes": "Mastered 1.2 Multi-Column & Commas on MusicTracks.",
+    "challengeSlots": [
+      {
+        "type": "keyword",
+        "value": "SELECT"
+      },
+      {
+        "type": "column",
+        "value": "undefined"
+      },
+      {
+        "type": "keyword",
+        "value": "FROM"
+      },
+      {
+        "type": "table",
+        "value": "MusicTracks;"
+      }
+    ]
+  },
+  {
+    "drillNumber": 17,
+    "subcluster": "1.2 Multi-Column & Commas",
+    "level": "Level 1 (Foundations)",
+    "title": "Syntax #017: Fetch gym member name, plan type, and monthly fee for billing",
+    "table": "GymMembers",
+    "scenario": "Fetch gym member name, plan type, and monthly fee for billing.",
+    "businessObjective": "Fetch gym member name, plan type, and monthly fee for billing.",
+    "schemaSnippet": "GymMembers schema",
+    "targetQuery": "SELECT undefined\nFROM GymMembers;",
+    "syntaxBlueprint": "SELECT column_1, column_2\nFROM GymMembers;",
+    "syntaxRule": "Keywords are SELECT, FROM, AS, DISTINCT. Keep commas between columns only.",
+    "syntaxTrap": "Do not add trailing commas before FROM or quote column identifiers.",
+    "eli5Story": "Simple everyday task on GymMembers: Fetch gym member name, plan type, and monthly fee for billing.",
+    "commonMistakes": "Punctuation errors, trailing commas, or quotes around column names.",
+    "learningOutcomes": "Mastered 1.2 Multi-Column & Commas on GymMembers.",
+    "challengeSlots": [
+      {
+        "type": "keyword",
+        "value": "SELECT"
+      },
+      {
+        "type": "column",
+        "value": "undefined"
+      },
+      {
+        "type": "keyword",
+        "value": "FROM"
+      },
+      {
+        "type": "table",
+        "value": "GymMembers;"
+      }
+    ]
+  },
+  {
+    "drillNumber": 18,
+    "subcluster": "1.2 Multi-Column & Commas",
+    "level": "Level 1 (Foundations)",
+    "title": "Syntax #018: Output movie title, director, and star rating for a film review website",
+    "table": "MovieReviews",
+    "scenario": "Output movie title, director, and star rating for a film review website.",
+    "businessObjective": "Output movie title, director, and star rating for a film review website.",
+    "schemaSnippet": "MovieReviews schema",
+    "targetQuery": "SELECT undefined\nFROM MovieReviews;",
+    "syntaxBlueprint": "SELECT column_1, column_2\nFROM MovieReviews;",
+    "syntaxRule": "Keywords are SELECT, FROM, AS, DISTINCT. Keep commas between columns only.",
+    "syntaxTrap": "Do not add trailing commas before FROM or quote column identifiers.",
+    "eli5Story": "Simple everyday task on MovieReviews: Output movie title, director, and star rating for a film review website.",
+    "commonMistakes": "Punctuation errors, trailing commas, or quotes around column names.",
+    "learningOutcomes": "Mastered 1.2 Multi-Column & Commas on MovieReviews.",
+    "challengeSlots": [
+      {
+        "type": "keyword",
+        "value": "SELECT"
+      },
+      {
+        "type": "column",
+        "value": "undefined"
+      },
+      {
+        "type": "keyword",
+        "value": "FROM"
+      },
+      {
+        "type": "table",
+        "value": "MovieReviews;"
+      }
+    ]
+  },
+  {
+    "drillNumber": 19,
+    "subcluster": "1.2 Multi-Column & Commas",
+    "level": "Level 1 (Foundations)",
+    "title": "Syntax #019: Display flight ID, airline, origin airport, and destination airport for the flight gate monitor",
+    "table": "FlightSchedule",
+    "scenario": "Display flight ID, airline, origin airport, and destination airport for the flight gate monitor.",
+    "businessObjective": "Display flight ID, airline, origin airport, and destination airport for the flight gate monitor.",
+    "schemaSnippet": "FlightSchedule schema",
+    "targetQuery": "SELECT undefined\nFROM FlightSchedule;",
+    "syntaxBlueprint": "SELECT column_1, column_2\nFROM FlightSchedule;",
+    "syntaxRule": "Keywords are SELECT, FROM, AS, DISTINCT. Keep commas between columns only.",
+    "syntaxTrap": "Do not add trailing commas before FROM or quote column identifiers.",
+    "eli5Story": "Simple everyday task on FlightSchedule: Display flight ID, airline, origin airport, and destination airport for the flight gate monitor.",
+    "commonMistakes": "Punctuation errors, trailing commas, or quotes around column names.",
+    "learningOutcomes": "Mastered 1.2 Multi-Column & Commas on FlightSchedule.",
+    "challengeSlots": [
+      {
+        "type": "keyword",
+        "value": "SELECT"
+      },
+      {
+        "type": "column",
+        "value": "undefined"
+      },
+      {
+        "type": "keyword",
+        "value": "FROM"
+      },
+      {
+        "type": "table",
+        "value": "FlightSchedule;"
+      }
+    ]
+  },
+  {
+    "drillNumber": 20,
+    "subcluster": "1.2 Multi-Column & Commas",
+    "level": "Level 1 (Foundations)",
+    "title": "Syntax #020: Retrieve pet name, species, age in years, and weight in kg for veterinary patient intake",
+    "table": "PetClinic",
+    "scenario": "Retrieve pet name, species, age in years, and weight in kg for veterinary patient intake.",
+    "businessObjective": "Retrieve pet name, species, age in years, and weight in kg for veterinary patient intake.",
+    "schemaSnippet": "PetClinic schema",
+    "targetQuery": "SELECT undefined\nFROM PetClinic;",
+    "syntaxBlueprint": "SELECT column_1, column_2\nFROM PetClinic;",
+    "syntaxRule": "Keywords are SELECT, FROM, AS, DISTINCT. Keep commas between columns only.",
+    "syntaxTrap": "Do not add trailing commas before FROM or quote column identifiers.",
+    "eli5Story": "Simple everyday task on PetClinic: Retrieve pet name, species, age in years, and weight in kg for veterinary patient intake.",
+    "commonMistakes": "Punctuation errors, trailing commas, or quotes around column names.",
+    "learningOutcomes": "Mastered 1.2 Multi-Column & Commas on PetClinic.",
+    "challengeSlots": [
+      {
+        "type": "keyword",
+        "value": "SELECT"
+      },
+      {
+        "type": "column",
+        "value": "undefined"
+      },
+      {
+        "type": "keyword",
+        "value": "FROM"
+      },
+      {
+        "type": "table",
+        "value": "PetClinic;"
+      }
+    ]
+  },
+  {
+    "drillNumber": 21,
+    "subcluster": "1.3 Column Aliases (AS)",
+    "level": "Level 1 (Foundations)",
+    "title": "Syntax #021: Rename full_name to student_name and gpa to academic_gpa",
+    "table": "Students",
+    "scenario": "Rename full_name to student_name and gpa to academic_gpa.",
+    "businessObjective": "Rename full_name to student_name and gpa to academic_gpa.",
+    "schemaSnippet": "Students schema",
+    "targetQuery": "SELECT full_name AS student_name, gpa AS academic_gpa\nFROM Students;",
+    "syntaxBlueprint": "SELECT full_name AS student_name, gpa AS academic_gpa\nFROM Students;",
+    "syntaxRule": "Keywords are SELECT, FROM, AS, DISTINCT. Keep commas between columns only.",
+    "syntaxTrap": "Do not add trailing commas before FROM or quote column identifiers.",
+    "eli5Story": "Simple everyday task on Students: Rename full_name to student_name and gpa to academic_gpa.",
+    "commonMistakes": "Punctuation errors, trailing commas, or quotes around column names.",
+    "learningOutcomes": "Mastered 1.3 Column Aliases (AS) on Students.",
+    "challengeSlots": [
+      {
+        "type": "keyword",
+        "value": "SELECT"
+      },
+      {
+        "type": "column",
+        "value": "full_name"
+      },
+      {
+        "type": "keyword",
+        "value": "AS"
+      },
+      {
+        "type": "column",
+        "value": "student_name,"
+      },
+      {
+        "type": "column",
+        "value": "gpa"
+      },
+      {
+        "type": "keyword",
+        "value": "AS"
+      },
+      {
+        "type": "column",
+        "value": "academic_gpa"
+      },
+      {
+        "type": "keyword",
+        "value": "FROM"
+      },
+      {
+        "type": "table",
+        "value": "Students;"
+      }
+    ]
+  },
+  {
+    "drillNumber": 22,
+    "subcluster": "1.3 Column Aliases (AS)",
+    "level": "Level 1 (Foundations)",
+    "title": "Syntax #022: Rename title to book_title and price to retail_price_usd",
+    "table": "Books",
+    "scenario": "Rename title to book_title and price to retail_price_usd.",
+    "businessObjective": "Rename title to book_title and price to retail_price_usd.",
+    "schemaSnippet": "Books schema",
+    "targetQuery": "SELECT title AS book_title, price AS retail_price_usd\nFROM Books;",
+    "syntaxBlueprint": "SELECT title AS book_title, price AS retail_price_usd\nFROM Books;",
+    "syntaxRule": "Keywords are SELECT, FROM, AS, DISTINCT. Keep commas between columns only.",
+    "syntaxTrap": "Do not add trailing commas before FROM or quote column identifiers.",
+    "eli5Story": "Simple everyday task on Books: Rename title to book_title and price to retail_price_usd.",
+    "commonMistakes": "Punctuation errors, trailing commas, or quotes around column names.",
+    "learningOutcomes": "Mastered 1.3 Column Aliases (AS) on Books.",
+    "challengeSlots": [
+      {
+        "type": "keyword",
+        "value": "SELECT"
+      },
+      {
+        "type": "column",
+        "value": "title"
+      },
+      {
+        "type": "keyword",
+        "value": "AS"
+      },
+      {
+        "type": "column",
+        "value": "book_title,"
+      },
+      {
+        "type": "column",
+        "value": "price"
+      },
+      {
+        "type": "keyword",
+        "value": "AS"
+      },
+      {
+        "type": "column",
+        "value": "retail_price_usd"
+      },
+      {
+        "type": "keyword",
+        "value": "FROM"
+      },
+      {
+        "type": "table",
+        "value": "Books;"
+      }
+    ]
+  },
+  {
+    "drillNumber": 23,
+    "subcluster": "1.3 Column Aliases (AS)",
+    "level": "Level 1 (Foundations)",
+    "title": "Syntax #023: Alias first_name as employee and salary as base_compensation",
+    "table": "Employees",
+    "scenario": "Alias first_name as employee and salary as base_compensation.",
+    "businessObjective": "Alias first_name as employee and salary as base_compensation.",
+    "schemaSnippet": "Employees schema",
+    "targetQuery": "SELECT first_name AS employee, salary AS base_compensation\nFROM Employees;",
+    "syntaxBlueprint": "SELECT first_name AS employee, salary AS base_compensation\nFROM Employees;",
+    "syntaxRule": "Keywords are SELECT, FROM, AS, DISTINCT. Keep commas between columns only.",
+    "syntaxTrap": "Do not add trailing commas before FROM or quote column identifiers.",
+    "eli5Story": "Simple everyday task on Employees: Alias first_name as employee and salary as base_compensation.",
+    "commonMistakes": "Punctuation errors, trailing commas, or quotes around column names.",
+    "learningOutcomes": "Mastered 1.3 Column Aliases (AS) on Employees.",
+    "challengeSlots": [
+      {
+        "type": "keyword",
+        "value": "SELECT"
+      },
+      {
+        "type": "column",
+        "value": "first_name"
+      },
+      {
+        "type": "keyword",
+        "value": "AS"
+      },
+      {
+        "type": "column",
+        "value": "employee,"
+      },
+      {
+        "type": "column",
+        "value": "salary"
+      },
+      {
+        "type": "keyword",
+        "value": "AS"
+      },
+      {
+        "type": "column",
+        "value": "base_compensation"
+      },
+      {
+        "type": "keyword",
+        "value": "FROM"
+      },
+      {
+        "type": "table",
+        "value": "Employees;"
+      }
+    ]
+  },
+  {
+    "drillNumber": 24,
+    "subcluster": "1.3 Column Aliases (AS)",
+    "level": "Level 1 (Foundations)",
+    "title": "Syntax #024: Alias item_name to product and unit_price to cost_per_unit",
+    "table": "GroceryItems",
+    "scenario": "Alias item_name to product and unit_price to cost_per_unit.",
+    "businessObjective": "Alias item_name to product and unit_price to cost_per_unit.",
+    "schemaSnippet": "GroceryItems schema",
+    "targetQuery": "SELECT item_name AS product, unit_price AS cost_per_unit\nFROM GroceryItems;",
+    "syntaxBlueprint": "SELECT item_name AS product, unit_price AS cost_per_unit\nFROM GroceryItems;",
+    "syntaxRule": "Keywords are SELECT, FROM, AS, DISTINCT. Keep commas between columns only.",
+    "syntaxTrap": "Do not add trailing commas before FROM or quote column identifiers.",
+    "eli5Story": "Simple everyday task on GroceryItems: Alias item_name to product and unit_price to cost_per_unit.",
+    "commonMistakes": "Punctuation errors, trailing commas, or quotes around column names.",
+    "learningOutcomes": "Mastered 1.3 Column Aliases (AS) on GroceryItems.",
+    "challengeSlots": [
+      {
+        "type": "keyword",
+        "value": "SELECT"
+      },
+      {
+        "type": "column",
+        "value": "item_name"
+      },
+      {
+        "type": "keyword",
+        "value": "AS"
+      },
+      {
+        "type": "column",
+        "value": "product,"
+      },
+      {
+        "type": "column",
+        "value": "unit_price"
+      },
+      {
+        "type": "keyword",
+        "value": "AS"
+      },
+      {
+        "type": "column",
+        "value": "cost_per_unit"
+      },
+      {
+        "type": "keyword",
+        "value": "FROM"
+      },
+      {
+        "type": "table",
+        "value": "GroceryItems;"
+      }
+    ]
+  },
+  {
+    "drillNumber": 25,
+    "subcluster": "1.3 Column Aliases (AS)",
+    "level": "Level 1 (Foundations)",
+    "title": "Syntax #025: Rename customer_name to buyer and quantity to units_ordered",
+    "table": "Orders",
+    "scenario": "Rename customer_name to buyer and quantity to units_ordered.",
+    "businessObjective": "Rename customer_name to buyer and quantity to units_ordered.",
+    "schemaSnippet": "Orders schema",
+    "targetQuery": "SELECT customer_name AS buyer, quantity AS units_ordered\nFROM Orders;",
+    "syntaxBlueprint": "SELECT customer_name AS buyer, quantity AS units_ordered\nFROM Orders;",
+    "syntaxRule": "Keywords are SELECT, FROM, AS, DISTINCT. Keep commas between columns only.",
+    "syntaxTrap": "Do not add trailing commas before FROM or quote column identifiers.",
+    "eli5Story": "Simple everyday task on Orders: Rename customer_name to buyer and quantity to units_ordered.",
+    "commonMistakes": "Punctuation errors, trailing commas, or quotes around column names.",
+    "learningOutcomes": "Mastered 1.3 Column Aliases (AS) on Orders.",
+    "challengeSlots": [
+      {
+        "type": "keyword",
+        "value": "SELECT"
+      },
+      {
+        "type": "column",
+        "value": "customer_name"
+      },
+      {
+        "type": "keyword",
+        "value": "AS"
+      },
+      {
+        "type": "column",
+        "value": "buyer,"
+      },
+      {
+        "type": "column",
+        "value": "quantity"
+      },
+      {
+        "type": "keyword",
+        "value": "AS"
+      },
+      {
+        "type": "column",
+        "value": "units_ordered"
+      },
+      {
+        "type": "keyword",
+        "value": "FROM"
+      },
+      {
+        "type": "table",
+        "value": "Orders;"
+      }
+    ]
+  },
+  {
+    "drillNumber": 26,
+    "subcluster": "1.3 Column Aliases (AS)",
+    "level": "Level 1 (Foundations)",
+    "title": "Syntax #026: Alias track_title as song and artist_name as musician",
+    "table": "MusicTracks",
+    "scenario": "Alias track_title as song and artist_name as musician.",
+    "businessObjective": "Alias track_title as song and artist_name as musician.",
+    "schemaSnippet": "MusicTracks schema",
+    "targetQuery": "SELECT track_title AS song, artist_name AS musician\nFROM MusicTracks;",
+    "syntaxBlueprint": "SELECT track_title AS song, artist_name AS musician\nFROM MusicTracks;",
+    "syntaxRule": "Keywords are SELECT, FROM, AS, DISTINCT. Keep commas between columns only.",
+    "syntaxTrap": "Do not add trailing commas before FROM or quote column identifiers.",
+    "eli5Story": "Simple everyday task on MusicTracks: Alias track_title as song and artist_name as musician.",
+    "commonMistakes": "Punctuation errors, trailing commas, or quotes around column names.",
+    "learningOutcomes": "Mastered 1.3 Column Aliases (AS) on MusicTracks.",
+    "challengeSlots": [
+      {
+        "type": "keyword",
+        "value": "SELECT"
+      },
+      {
+        "type": "column",
+        "value": "track_title"
+      },
+      {
+        "type": "keyword",
+        "value": "AS"
+      },
+      {
+        "type": "column",
+        "value": "song,"
+      },
+      {
+        "type": "column",
+        "value": "artist_name"
+      },
+      {
+        "type": "keyword",
+        "value": "AS"
+      },
+      {
+        "type": "column",
+        "value": "musician"
+      },
+      {
+        "type": "keyword",
+        "value": "FROM"
+      },
+      {
+        "type": "table",
+        "value": "MusicTracks;"
+      }
+    ]
+  },
+  {
+    "drillNumber": 27,
+    "subcluster": "1.3 Column Aliases (AS)",
+    "level": "Level 1 (Foundations)",
+    "title": "Syntax #027: Rename member_name to client and monthly_fee to rate",
+    "table": "GymMembers",
+    "scenario": "Rename member_name to client and monthly_fee to rate.",
+    "businessObjective": "Rename member_name to client and monthly_fee to rate.",
+    "schemaSnippet": "GymMembers schema",
+    "targetQuery": "SELECT member_name AS client, monthly_fee AS rate\nFROM GymMembers;",
+    "syntaxBlueprint": "SELECT member_name AS client, monthly_fee AS rate\nFROM GymMembers;",
+    "syntaxRule": "Keywords are SELECT, FROM, AS, DISTINCT. Keep commas between columns only.",
+    "syntaxTrap": "Do not add trailing commas before FROM or quote column identifiers.",
+    "eli5Story": "Simple everyday task on GymMembers: Rename member_name to client and monthly_fee to rate.",
+    "commonMistakes": "Punctuation errors, trailing commas, or quotes around column names.",
+    "learningOutcomes": "Mastered 1.3 Column Aliases (AS) on GymMembers.",
+    "challengeSlots": [
+      {
+        "type": "keyword",
+        "value": "SELECT"
+      },
+      {
+        "type": "column",
+        "value": "member_name"
+      },
+      {
+        "type": "keyword",
+        "value": "AS"
+      },
+      {
+        "type": "column",
+        "value": "client,"
+      },
+      {
+        "type": "column",
+        "value": "monthly_fee"
+      },
+      {
+        "type": "keyword",
+        "value": "AS"
+      },
+      {
+        "type": "column",
+        "value": "rate"
+      },
+      {
+        "type": "keyword",
+        "value": "FROM"
+      },
+      {
+        "type": "table",
+        "value": "GymMembers;"
+      }
+    ]
+  },
+  {
+    "drillNumber": 28,
+    "subcluster": "1.3 Column Aliases (AS)",
+    "level": "Level 1 (Foundations)",
+    "title": "Syntax #028: Alias movie_title to film and star_rating to score",
+    "table": "MovieReviews",
+    "scenario": "Alias movie_title to film and star_rating to score.",
+    "businessObjective": "Alias movie_title to film and star_rating to score.",
+    "schemaSnippet": "MovieReviews schema",
+    "targetQuery": "SELECT movie_title AS film, star_rating AS score\nFROM MovieReviews;",
+    "syntaxBlueprint": "SELECT movie_title AS film, star_rating AS score\nFROM MovieReviews;",
+    "syntaxRule": "Keywords are SELECT, FROM, AS, DISTINCT. Keep commas between columns only.",
+    "syntaxTrap": "Do not add trailing commas before FROM or quote column identifiers.",
+    "eli5Story": "Simple everyday task on MovieReviews: Alias movie_title to film and star_rating to score.",
+    "commonMistakes": "Punctuation errors, trailing commas, or quotes around column names.",
+    "learningOutcomes": "Mastered 1.3 Column Aliases (AS) on MovieReviews.",
+    "challengeSlots": [
+      {
+        "type": "keyword",
+        "value": "SELECT"
+      },
+      {
+        "type": "column",
+        "value": "movie_title"
+      },
+      {
+        "type": "keyword",
+        "value": "AS"
+      },
+      {
+        "type": "column",
+        "value": "film,"
+      },
+      {
+        "type": "column",
+        "value": "star_rating"
+      },
+      {
+        "type": "keyword",
+        "value": "AS"
+      },
+      {
+        "type": "column",
+        "value": "score"
+      },
+      {
+        "type": "keyword",
+        "value": "FROM"
+      },
+      {
+        "type": "table",
+        "value": "MovieReviews;"
+      }
+    ]
+  },
+  {
+    "drillNumber": 29,
+    "subcluster": "1.3 Column Aliases (AS)",
+    "level": "Level 1 (Foundations)",
+    "title": "Syntax #029: Rename flight_id to flight_code and ticket_price to fare_usd",
+    "table": "FlightSchedule",
+    "scenario": "Rename flight_id to flight_code and ticket_price to fare_usd.",
+    "businessObjective": "Rename flight_id to flight_code and ticket_price to fare_usd.",
+    "schemaSnippet": "FlightSchedule schema",
+    "targetQuery": "SELECT flight_id AS flight_code, ticket_price AS fare_usd\nFROM FlightSchedule;",
+    "syntaxBlueprint": "SELECT flight_id AS flight_code, ticket_price AS fare_usd\nFROM FlightSchedule;",
+    "syntaxRule": "Keywords are SELECT, FROM, AS, DISTINCT. Keep commas between columns only.",
+    "syntaxTrap": "Do not add trailing commas before FROM or quote column identifiers.",
+    "eli5Story": "Simple everyday task on FlightSchedule: Rename flight_id to flight_code and ticket_price to fare_usd.",
+    "commonMistakes": "Punctuation errors, trailing commas, or quotes around column names.",
+    "learningOutcomes": "Mastered 1.3 Column Aliases (AS) on FlightSchedule.",
+    "challengeSlots": [
+      {
+        "type": "keyword",
+        "value": "SELECT"
+      },
+      {
+        "type": "column",
+        "value": "flight_id"
+      },
+      {
+        "type": "keyword",
+        "value": "AS"
+      },
+      {
+        "type": "column",
+        "value": "flight_code,"
+      },
+      {
+        "type": "column",
+        "value": "ticket_price"
+      },
+      {
+        "type": "keyword",
+        "value": "AS"
+      },
+      {
+        "type": "column",
+        "value": "fare_usd"
+      },
+      {
+        "type": "keyword",
+        "value": "FROM"
+      },
+      {
+        "type": "table",
+        "value": "FlightSchedule;"
+      }
+    ]
+  },
+  {
+    "drillNumber": 30,
+    "subcluster": "1.3 Column Aliases (AS)",
+    "level": "Level 1 (Foundations)",
+    "title": "Syntax #030: Alias pet_name to patient_name and age_years to patient_age",
+    "table": "PetClinic",
+    "scenario": "Alias pet_name to patient_name and age_years to patient_age.",
+    "businessObjective": "Alias pet_name to patient_name and age_years to patient_age.",
+    "schemaSnippet": "PetClinic schema",
+    "targetQuery": "SELECT pet_name AS patient_name, age_years AS patient_age\nFROM PetClinic;",
+    "syntaxBlueprint": "SELECT pet_name AS patient_name, age_years AS patient_age\nFROM PetClinic;",
+    "syntaxRule": "Keywords are SELECT, FROM, AS, DISTINCT. Keep commas between columns only.",
+    "syntaxTrap": "Do not add trailing commas before FROM or quote column identifiers.",
+    "eli5Story": "Simple everyday task on PetClinic: Alias pet_name to patient_name and age_years to patient_age.",
+    "commonMistakes": "Punctuation errors, trailing commas, or quotes around column names.",
+    "learningOutcomes": "Mastered 1.3 Column Aliases (AS) on PetClinic.",
+    "challengeSlots": [
+      {
+        "type": "keyword",
+        "value": "SELECT"
+      },
+      {
+        "type": "column",
+        "value": "pet_name"
+      },
+      {
+        "type": "keyword",
+        "value": "AS"
+      },
+      {
+        "type": "column",
+        "value": "patient_name,"
+      },
+      {
+        "type": "column",
+        "value": "age_years"
+      },
+      {
+        "type": "keyword",
+        "value": "AS"
+      },
+      {
+        "type": "column",
+        "value": "patient_age"
+      },
+      {
+        "type": "keyword",
+        "value": "FROM"
+      },
+      {
+        "type": "table",
+        "value": "PetClinic;"
+      }
+    ]
+  },
+  {
+    "drillNumber": 31,
+    "subcluster": "1.4 Constant Literals",
+    "level": "Level 1 (Foundations)",
+    "title": "Syntax #031: Select full_name alongside a static text label 'Active' as enrollment_status",
+    "table": "Students",
+    "scenario": "Select full_name alongside a static text label 'Active' as enrollment_status.",
+    "businessObjective": "Select full_name alongside a static text label 'Active' as enrollment_status.",
+    "schemaSnippet": "Students schema",
+    "targetQuery": "SELECT full_name, 'Active' AS enrollment_status\nFROM Students;",
+    "syntaxBlueprint": "SELECT full_name, 'Active' AS enrollment_status\nFROM Students;",
+    "syntaxRule": "Keywords are SELECT, FROM, AS, DISTINCT. Keep commas between columns only.",
+    "syntaxTrap": "Do not add trailing commas before FROM or quote column identifiers.",
+    "eli5Story": "Simple everyday task on Students: Select full_name alongside a static text label 'Active' as enrollment_status.",
+    "commonMistakes": "Punctuation errors, trailing commas, or quotes around column names.",
+    "learningOutcomes": "Mastered 1.4 Constant Literals on Students.",
+    "challengeSlots": [
+      {
+        "type": "keyword",
+        "value": "SELECT"
+      },
+      {
+        "type": "column",
+        "value": "full_name,"
+      },
+      {
+        "type": "column",
+        "value": "'Active'"
+      },
+      {
+        "type": "keyword",
+        "value": "AS"
+      },
+      {
+        "type": "column",
+        "value": "enrollment_status"
+      },
+      {
+        "type": "keyword",
+        "value": "FROM"
+      },
+      {
+        "type": "table",
+        "value": "Students;"
+      }
+    ]
+  },
+  {
+    "drillNumber": 32,
+    "subcluster": "1.4 Constant Literals",
+    "level": "Level 1 (Foundations)",
+    "title": "Syntax #032: Select book title and a fixed location string 'Central Library' as branch_location",
+    "table": "Books",
+    "scenario": "Select book title and a fixed location string 'Central Library' as branch_location.",
+    "businessObjective": "Select book title and a fixed location string 'Central Library' as branch_location.",
+    "schemaSnippet": "Books schema",
+    "targetQuery": "SELECT title, 'Central Library' AS branch_location\nFROM Books;",
+    "syntaxBlueprint": "SELECT title, 'Central Library' AS branch_location\nFROM Books;",
+    "syntaxRule": "Keywords are SELECT, FROM, AS, DISTINCT. Keep commas between columns only.",
+    "syntaxTrap": "Do not add trailing commas before FROM or quote column identifiers.",
+    "eli5Story": "Simple everyday task on Books: Select book title and a fixed location string 'Central Library' as branch_location.",
+    "commonMistakes": "Punctuation errors, trailing commas, or quotes around column names.",
+    "learningOutcomes": "Mastered 1.4 Constant Literals on Books.",
+    "challengeSlots": [
+      {
+        "type": "keyword",
+        "value": "SELECT"
+      },
+      {
+        "type": "column",
+        "value": "title,"
+      },
+      {
+        "type": "column",
+        "value": "'Central"
+      },
+      {
+        "type": "column",
+        "value": "Library'"
+      },
+      {
+        "type": "keyword",
+        "value": "AS"
+      },
+      {
+        "type": "column",
+        "value": "branch_location"
+      },
+      {
+        "type": "keyword",
+        "value": "FROM"
+      },
+      {
+        "type": "table",
+        "value": "Books;"
+      }
+    ]
+  },
+  {
+    "drillNumber": 33,
+    "subcluster": "1.4 Constant Literals",
+    "level": "Level 1 (Foundations)",
+    "title": "Syntax #033: Select employee first_name alongside a fixed numerical year 2026 as review_year",
+    "table": "Employees",
+    "scenario": "Select employee first_name alongside a fixed numerical year 2026 as review_year.",
+    "businessObjective": "Select employee first_name alongside a fixed numerical year 2026 as review_year.",
+    "schemaSnippet": "Employees schema",
+    "targetQuery": "SELECT first_name, 2026 AS review_year\nFROM Employees;",
+    "syntaxBlueprint": "SELECT first_name, 2026 AS review_year\nFROM Employees;",
+    "syntaxRule": "Keywords are SELECT, FROM, AS, DISTINCT. Keep commas between columns only.",
+    "syntaxTrap": "Do not add trailing commas before FROM or quote column identifiers.",
+    "eli5Story": "Simple everyday task on Employees: Select employee first_name alongside a fixed numerical year 2026 as review_year.",
+    "commonMistakes": "Punctuation errors, trailing commas, or quotes around column names.",
+    "learningOutcomes": "Mastered 1.4 Constant Literals on Employees.",
+    "challengeSlots": [
+      {
+        "type": "keyword",
+        "value": "SELECT"
+      },
+      {
+        "type": "column",
+        "value": "first_name,"
+      },
+      {
+        "type": "column",
+        "value": "2026"
+      },
+      {
+        "type": "keyword",
+        "value": "AS"
+      },
+      {
+        "type": "column",
+        "value": "review_year"
+      },
+      {
+        "type": "keyword",
+        "value": "FROM"
+      },
+      {
+        "type": "table",
+        "value": "Employees;"
+      }
+    ]
+  },
+  {
+    "drillNumber": 34,
+    "subcluster": "1.4 Constant Literals",
+    "level": "Level 1 (Foundations)",
+    "title": "Syntax #034: Display item_name with a constant string 'In Stock' as availability",
+    "table": "GroceryItems",
+    "scenario": "Display item_name with a constant string 'In Stock' as availability.",
+    "businessObjective": "Display item_name with a constant string 'In Stock' as availability.",
+    "schemaSnippet": "GroceryItems schema",
+    "targetQuery": "SELECT item_name, 'In Stock' AS availability\nFROM GroceryItems;",
+    "syntaxBlueprint": "SELECT item_name, 'In Stock' AS availability\nFROM GroceryItems;",
+    "syntaxRule": "Keywords are SELECT, FROM, AS, DISTINCT. Keep commas between columns only.",
+    "syntaxTrap": "Do not add trailing commas before FROM or quote column identifiers.",
+    "eli5Story": "Simple everyday task on GroceryItems: Display item_name with a constant string 'In Stock' as availability.",
+    "commonMistakes": "Punctuation errors, trailing commas, or quotes around column names.",
+    "learningOutcomes": "Mastered 1.4 Constant Literals on GroceryItems.",
+    "challengeSlots": [
+      {
+        "type": "keyword",
+        "value": "SELECT"
+      },
+      {
+        "type": "column",
+        "value": "item_name,"
+      },
+      {
+        "type": "column",
+        "value": "'In"
+      },
+      {
+        "type": "column",
+        "value": "Stock'"
+      },
+      {
+        "type": "keyword",
+        "value": "AS"
+      },
+      {
+        "type": "column",
+        "value": "availability"
+      },
+      {
+        "type": "keyword",
+        "value": "FROM"
+      },
+      {
+        "type": "table",
+        "value": "GroceryItems;"
+      }
+    ]
+  },
+  {
+    "drillNumber": 35,
+    "subcluster": "1.4 Constant Literals",
+    "level": "Level 1 (Foundations)",
+    "title": "Syntax #035: Select order_id with a boolean literal TRUE as is_verified",
+    "table": "Orders",
+    "scenario": "Select order_id with a boolean literal TRUE as is_verified.",
+    "businessObjective": "Select order_id with a boolean literal TRUE as is_verified.",
+    "schemaSnippet": "Orders schema",
+    "targetQuery": "SELECT order_id, TRUE AS is_verified\nFROM Orders;",
+    "syntaxBlueprint": "SELECT order_id, TRUE AS is_verified\nFROM Orders;",
+    "syntaxRule": "Keywords are SELECT, FROM, AS, DISTINCT. Keep commas between columns only.",
+    "syntaxTrap": "Do not add trailing commas before FROM or quote column identifiers.",
+    "eli5Story": "Simple everyday task on Orders: Select order_id with a boolean literal TRUE as is_verified.",
+    "commonMistakes": "Punctuation errors, trailing commas, or quotes around column names.",
+    "learningOutcomes": "Mastered 1.4 Constant Literals on Orders.",
+    "challengeSlots": [
+      {
+        "type": "keyword",
+        "value": "SELECT"
+      },
+      {
+        "type": "column",
+        "value": "order_id,"
+      },
+      {
+        "type": "column",
+        "value": "TRUE"
+      },
+      {
+        "type": "keyword",
+        "value": "AS"
+      },
+      {
+        "type": "column",
+        "value": "is_verified"
+      },
+      {
+        "type": "keyword",
+        "value": "FROM"
+      },
+      {
+        "type": "table",
+        "value": "Orders;"
+      }
+    ]
+  },
+  {
+    "drillNumber": 36,
+    "subcluster": "1.4 Constant Literals",
+    "level": "Level 1 (Foundations)",
+    "title": "Syntax #036: Select track_title with constant text 'HQ Audio' as format_type",
+    "table": "MusicTracks",
+    "scenario": "Select track_title with constant text 'HQ Audio' as format_type.",
+    "businessObjective": "Select track_title with constant text 'HQ Audio' as format_type.",
+    "schemaSnippet": "MusicTracks schema",
+    "targetQuery": "SELECT track_title, 'HQ Audio' AS format_type\nFROM MusicTracks;",
+    "syntaxBlueprint": "SELECT track_title, 'HQ Audio' AS format_type\nFROM MusicTracks;",
+    "syntaxRule": "Keywords are SELECT, FROM, AS, DISTINCT. Keep commas between columns only.",
+    "syntaxTrap": "Do not add trailing commas before FROM or quote column identifiers.",
+    "eli5Story": "Simple everyday task on MusicTracks: Select track_title with constant text 'HQ Audio' as format_type.",
+    "commonMistakes": "Punctuation errors, trailing commas, or quotes around column names.",
+    "learningOutcomes": "Mastered 1.4 Constant Literals on MusicTracks.",
+    "challengeSlots": [
+      {
+        "type": "keyword",
+        "value": "SELECT"
+      },
+      {
+        "type": "column",
+        "value": "track_title,"
+      },
+      {
+        "type": "column",
+        "value": "'HQ"
+      },
+      {
+        "type": "column",
+        "value": "Audio'"
+      },
+      {
+        "type": "keyword",
+        "value": "AS"
+      },
+      {
+        "type": "column",
+        "value": "format_type"
+      },
+      {
+        "type": "keyword",
+        "value": "FROM"
+      },
+      {
+        "type": "table",
+        "value": "MusicTracks;"
+      }
+    ]
+  },
+  {
+    "drillNumber": 37,
+    "subcluster": "1.4 Constant Literals",
+    "level": "Level 1 (Foundations)",
+    "title": "Syntax #037: Display member_name with a constant integer 30 as grace_period_days",
+    "table": "GymMembers",
+    "scenario": "Display member_name with a constant integer 30 as grace_period_days.",
+    "businessObjective": "Display member_name with a constant integer 30 as grace_period_days.",
+    "schemaSnippet": "GymMembers schema",
+    "targetQuery": "SELECT member_name, 30 AS grace_period_days\nFROM GymMembers;",
+    "syntaxBlueprint": "SELECT member_name, 30 AS grace_period_days\nFROM GymMembers;",
+    "syntaxRule": "Keywords are SELECT, FROM, AS, DISTINCT. Keep commas between columns only.",
+    "syntaxTrap": "Do not add trailing commas before FROM or quote column identifiers.",
+    "eli5Story": "Simple everyday task on GymMembers: Display member_name with a constant integer 30 as grace_period_days.",
+    "commonMistakes": "Punctuation errors, trailing commas, or quotes around column names.",
+    "learningOutcomes": "Mastered 1.4 Constant Literals on GymMembers.",
+    "challengeSlots": [
+      {
+        "type": "keyword",
+        "value": "SELECT"
+      },
+      {
+        "type": "column",
+        "value": "member_name,"
+      },
+      {
+        "type": "column",
+        "value": "30"
+      },
+      {
+        "type": "keyword",
+        "value": "AS"
+      },
+      {
+        "type": "column",
+        "value": "grace_period_days"
+      },
+      {
+        "type": "keyword",
+        "value": "FROM"
+      },
+      {
+        "type": "table",
+        "value": "GymMembers;"
+      }
+    ]
+  },
+  {
+    "drillNumber": 38,
+    "subcluster": "1.4 Constant Literals",
+    "level": "Level 1 (Foundations)",
+    "title": "Syntax #038: Select movie_title with a decimal constant 5.0 as max_possible_rating",
+    "table": "MovieReviews",
+    "scenario": "Select movie_title with a decimal constant 5.0 as max_possible_rating.",
+    "businessObjective": "Select movie_title with a decimal constant 5.0 as max_possible_rating.",
+    "schemaSnippet": "MovieReviews schema",
+    "targetQuery": "SELECT movie_title, 5.0 AS max_possible_rating\nFROM MovieReviews;",
+    "syntaxBlueprint": "SELECT movie_title, 5.0 AS max_possible_rating\nFROM MovieReviews;",
+    "syntaxRule": "Keywords are SELECT, FROM, AS, DISTINCT. Keep commas between columns only.",
+    "syntaxTrap": "Do not add trailing commas before FROM or quote column identifiers.",
+    "eli5Story": "Simple everyday task on MovieReviews: Select movie_title with a decimal constant 5.0 as max_possible_rating.",
+    "commonMistakes": "Punctuation errors, trailing commas, or quotes around column names.",
+    "learningOutcomes": "Mastered 1.4 Constant Literals on MovieReviews.",
+    "challengeSlots": [
+      {
+        "type": "keyword",
+        "value": "SELECT"
+      },
+      {
+        "type": "column",
+        "value": "movie_title,"
+      },
+      {
+        "type": "column",
+        "value": "5.0"
+      },
+      {
+        "type": "keyword",
+        "value": "AS"
+      },
+      {
+        "type": "column",
+        "value": "max_possible_rating"
+      },
+      {
+        "type": "keyword",
+        "value": "FROM"
+      },
+      {
+        "type": "table",
+        "value": "MovieReviews;"
+      }
+    ]
+  },
+  {
+    "drillNumber": 39,
+    "subcluster": "1.4 Constant Literals",
+    "level": "Level 1 (Foundations)",
+    "title": "Syntax #039: Select flight_id with a static string 'Terminal 2' as assigned_terminal",
+    "table": "FlightSchedule",
+    "scenario": "Select flight_id with a static string 'Terminal 2' as assigned_terminal.",
+    "businessObjective": "Select flight_id with a static string 'Terminal 2' as assigned_terminal.",
+    "schemaSnippet": "FlightSchedule schema",
+    "targetQuery": "SELECT flight_id, 'Terminal 2' AS assigned_terminal\nFROM FlightSchedule;",
+    "syntaxBlueprint": "SELECT flight_id, 'Terminal 2' AS assigned_terminal\nFROM FlightSchedule;",
+    "syntaxRule": "Keywords are SELECT, FROM, AS, DISTINCT. Keep commas between columns only.",
+    "syntaxTrap": "Do not add trailing commas before FROM or quote column identifiers.",
+    "eli5Story": "Simple everyday task on FlightSchedule: Select flight_id with a static string 'Terminal 2' as assigned_terminal.",
+    "commonMistakes": "Punctuation errors, trailing commas, or quotes around column names.",
+    "learningOutcomes": "Mastered 1.4 Constant Literals on FlightSchedule.",
+    "challengeSlots": [
+      {
+        "type": "keyword",
+        "value": "SELECT"
+      },
+      {
+        "type": "column",
+        "value": "flight_id,"
+      },
+      {
+        "type": "column",
+        "value": "'Terminal"
+      },
+      {
+        "type": "column",
+        "value": "2'"
+      },
+      {
+        "type": "keyword",
+        "value": "AS"
+      },
+      {
+        "type": "column",
+        "value": "assigned_terminal"
+      },
+      {
+        "type": "keyword",
+        "value": "FROM"
+      },
+      {
+        "type": "table",
+        "value": "FlightSchedule;"
+      }
+    ]
+  },
+  {
+    "drillNumber": 40,
+    "subcluster": "1.4 Constant Literals",
+    "level": "Level 1 (Foundations)",
+    "title": "Syntax #040: Display pet_name with fixed text 'Downtown Vet' as clinic_name",
+    "table": "PetClinic",
+    "scenario": "Display pet_name with fixed text 'Downtown Vet' as clinic_name.",
+    "businessObjective": "Display pet_name with fixed text 'Downtown Vet' as clinic_name.",
+    "schemaSnippet": "PetClinic schema",
+    "targetQuery": "SELECT pet_name, 'Downtown Vet' AS clinic_name\nFROM PetClinic;",
+    "syntaxBlueprint": "SELECT pet_name, 'Downtown Vet' AS clinic_name\nFROM PetClinic;",
+    "syntaxRule": "Keywords are SELECT, FROM, AS, DISTINCT. Keep commas between columns only.",
+    "syntaxTrap": "Do not add trailing commas before FROM or quote column identifiers.",
+    "eli5Story": "Simple everyday task on PetClinic: Display pet_name with fixed text 'Downtown Vet' as clinic_name.",
+    "commonMistakes": "Punctuation errors, trailing commas, or quotes around column names.",
+    "learningOutcomes": "Mastered 1.4 Constant Literals on PetClinic.",
+    "challengeSlots": [
+      {
+        "type": "keyword",
+        "value": "SELECT"
+      },
+      {
+        "type": "column",
+        "value": "pet_name,"
+      },
+      {
+        "type": "column",
+        "value": "'Downtown"
+      },
+      {
+        "type": "column",
+        "value": "Vet'"
+      },
+      {
+        "type": "keyword",
+        "value": "AS"
+      },
+      {
+        "type": "column",
+        "value": "clinic_name"
+      },
+      {
+        "type": "keyword",
+        "value": "FROM"
+      },
+      {
+        "type": "table",
+        "value": "PetClinic;"
+      }
+    ]
+  },
+  {
+    "drillNumber": 41,
+    "subcluster": "1.5 Arithmetic Operators",
+    "level": "Level 2 (Calculations)",
+    "title": "Syntax #041: Calculate the total inventory value by multiplying price by stock_qty",
+    "table": "Books",
+    "scenario": "Calculate the total inventory value by multiplying price by stock_qty.",
+    "businessObjective": "Calculate the total inventory value by multiplying price by stock_qty.",
+    "schemaSnippet": "Books schema",
+    "targetQuery": "SELECT title, price, (price * stock_qty) AS total_inventory_value\nFROM Books;",
+    "syntaxBlueprint": "SELECT title, price, (price * stock_qty) AS total_inventory_value\nFROM Books;",
+    "syntaxRule": "Keywords are SELECT, FROM, AS, DISTINCT. Keep commas between columns only.",
+    "syntaxTrap": "Do not add trailing commas before FROM or quote column identifiers.",
+    "eli5Story": "Simple everyday task on Books: Calculate the total inventory value by multiplying price by stock_qty.",
+    "commonMistakes": "Punctuation errors, trailing commas, or quotes around column names.",
+    "learningOutcomes": "Mastered 1.5 Arithmetic Operators on Books.",
+    "challengeSlots": [
+      {
+        "type": "keyword",
+        "value": "SELECT"
+      },
+      {
+        "type": "column",
+        "value": "title,"
+      },
+      {
+        "type": "column",
+        "value": "price,"
+      },
+      {
+        "type": "column",
+        "value": "(price"
+      },
+      {
+        "type": "column",
+        "value": "*"
+      },
+      {
+        "type": "column",
+        "value": "stock_qty)"
+      },
+      {
+        "type": "keyword",
+        "value": "AS"
+      },
+      {
+        "type": "column",
+        "value": "total_inventory_value"
+      },
+      {
+        "type": "keyword",
+        "value": "FROM"
+      },
+      {
+        "type": "table",
+        "value": "Books;"
+      }
+    ]
+  },
+  {
+    "drillNumber": 42,
+    "subcluster": "1.5 Arithmetic Operators",
+    "level": "Level 2 (Calculations)",
+    "title": "Syntax #042: Compute order subtotal by multiplying unit_price by quantity",
+    "table": "Orders",
+    "scenario": "Compute order subtotal by multiplying unit_price by quantity.",
+    "businessObjective": "Compute order subtotal by multiplying unit_price by quantity.",
+    "schemaSnippet": "Orders schema",
+    "targetQuery": "SELECT order_id, (unit_price * quantity) AS subtotal\nFROM Orders;",
+    "syntaxBlueprint": "SELECT order_id, (unit_price * quantity) AS subtotal\nFROM Orders;",
+    "syntaxRule": "Keywords are SELECT, FROM, AS, DISTINCT. Keep commas between columns only.",
+    "syntaxTrap": "Do not add trailing commas before FROM or quote column identifiers.",
+    "eli5Story": "Simple everyday task on Orders: Compute order subtotal by multiplying unit_price by quantity.",
+    "commonMistakes": "Punctuation errors, trailing commas, or quotes around column names.",
+    "learningOutcomes": "Mastered 1.5 Arithmetic Operators on Orders.",
+    "challengeSlots": [
+      {
+        "type": "keyword",
+        "value": "SELECT"
+      },
+      {
+        "type": "column",
+        "value": "order_id,"
+      },
+      {
+        "type": "column",
+        "value": "(unit_price"
+      },
+      {
+        "type": "column",
+        "value": "*"
+      },
+      {
+        "type": "column",
+        "value": "quantity)"
+      },
+      {
+        "type": "keyword",
+        "value": "AS"
+      },
+      {
+        "type": "column",
+        "value": "subtotal"
+      },
+      {
+        "type": "keyword",
+        "value": "FROM"
+      },
+      {
+        "type": "table",
+        "value": "Orders;"
+      }
+    ]
+  },
+  {
+    "drillNumber": 43,
+    "subcluster": "1.5 Arithmetic Operators",
+    "level": "Level 2 (Calculations)",
+    "title": "Syntax #043: Calculate a 10% raise amount and the resulting projected salary",
+    "table": "Employees",
+    "scenario": "Calculate a 10% raise amount and the resulting projected salary.",
+    "businessObjective": "Calculate a 10% raise amount and the resulting projected salary.",
+    "schemaSnippet": "Employees schema",
+    "targetQuery": "SELECT first_name, salary, (salary * 0.10) AS raise_amount, (salary * 1.10) AS projected_salary\nFROM Employees;",
+    "syntaxBlueprint": "SELECT first_name, salary, (salary * 0.10) AS raise_amount, (salary * 1.10) AS projected_salary\nFROM Employees;",
+    "syntaxRule": "Keywords are SELECT, FROM, AS, DISTINCT. Keep commas between columns only.",
+    "syntaxTrap": "Do not add trailing commas before FROM or quote column identifiers.",
+    "eli5Story": "Simple everyday task on Employees: Calculate a 10% raise amount and the resulting projected salary.",
+    "commonMistakes": "Punctuation errors, trailing commas, or quotes around column names.",
+    "learningOutcomes": "Mastered 1.5 Arithmetic Operators on Employees.",
+    "challengeSlots": [
+      {
+        "type": "keyword",
+        "value": "SELECT"
+      },
+      {
+        "type": "column",
+        "value": "first_name,"
+      },
+      {
+        "type": "column",
+        "value": "salary,"
+      },
+      {
+        "type": "column",
+        "value": "(salary"
+      },
+      {
+        "type": "column",
+        "value": "*"
+      },
+      {
+        "type": "column",
+        "value": "0.10)"
+      },
+      {
+        "type": "keyword",
+        "value": "AS"
+      },
+      {
+        "type": "column",
+        "value": "raise_amount,"
+      },
+      {
+        "type": "column",
+        "value": "(salary"
+      },
+      {
+        "type": "column",
+        "value": "*"
+      },
+      {
+        "type": "column",
+        "value": "1.10)"
+      },
+      {
+        "type": "keyword",
+        "value": "AS"
+      },
+      {
+        "type": "column",
+        "value": "projected_salary"
+      },
+      {
+        "type": "keyword",
+        "value": "FROM"
+      },
+      {
+        "type": "table",
+        "value": "Employees;"
+      }
+    ]
+  },
+  {
+    "drillNumber": 44,
+    "subcluster": "1.5 Arithmetic Operators",
+    "level": "Level 2 (Calculations)",
+    "title": "Syntax #044: Convert a 4.0 GPA to an approximate 100-point scale by multiplying by 25.0",
+    "table": "Students",
+    "scenario": "Convert a 4.0 GPA to an approximate 100-point scale by multiplying by 25.0.",
+    "businessObjective": "Convert a 4.0 GPA to an approximate 100-point scale by multiplying by 25.0.",
+    "schemaSnippet": "Students schema",
+    "targetQuery": "SELECT full_name, gpa, (gpa * 25.0) AS gpa_percentage\nFROM Students;",
+    "syntaxBlueprint": "SELECT full_name, gpa, (gpa * 25.0) AS gpa_percentage\nFROM Students;",
+    "syntaxRule": "Keywords are SELECT, FROM, AS, DISTINCT. Keep commas between columns only.",
+    "syntaxTrap": "Do not add trailing commas before FROM or quote column identifiers.",
+    "eli5Story": "Simple everyday task on Students: Convert a 4.0 GPA to an approximate 100-point scale by multiplying by 25.0.",
+    "commonMistakes": "Punctuation errors, trailing commas, or quotes around column names.",
+    "learningOutcomes": "Mastered 1.5 Arithmetic Operators on Students.",
+    "challengeSlots": [
+      {
+        "type": "keyword",
+        "value": "SELECT"
+      },
+      {
+        "type": "column",
+        "value": "full_name,"
+      },
+      {
+        "type": "column",
+        "value": "gpa,"
+      },
+      {
+        "type": "column",
+        "value": "(gpa"
+      },
+      {
+        "type": "column",
+        "value": "*"
+      },
+      {
+        "type": "column",
+        "value": "25.0)"
+      },
+      {
+        "type": "keyword",
+        "value": "AS"
+      },
+      {
+        "type": "column",
+        "value": "gpa_percentage"
+      },
+      {
+        "type": "keyword",
+        "value": "FROM"
+      },
+      {
+        "type": "table",
+        "value": "Students;"
+      }
+    ]
+  },
+  {
+    "drillNumber": 45,
+    "subcluster": "1.5 Arithmetic Operators",
+    "level": "Level 2 (Calculations)",
+    "title": "Syntax #045: Calculate the item price including an 8% sales tax (unit_price * 1.08)",
+    "table": "GroceryItems",
+    "scenario": "Calculate the item price including an 8% sales tax (unit_price * 1.08).",
+    "businessObjective": "Calculate the item price including an 8% sales tax (unit_price * 1.08).",
+    "schemaSnippet": "GroceryItems schema",
+    "targetQuery": "SELECT item_name, unit_price, (unit_price * 1.08) AS price_with_tax\nFROM GroceryItems;",
+    "syntaxBlueprint": "SELECT item_name, unit_price, (unit_price * 1.08) AS price_with_tax\nFROM GroceryItems;",
+    "syntaxRule": "Keywords are SELECT, FROM, AS, DISTINCT. Keep commas between columns only.",
+    "syntaxTrap": "Do not add trailing commas before FROM or quote column identifiers.",
+    "eli5Story": "Simple everyday task on GroceryItems: Calculate the item price including an 8% sales tax (unit_price * 1.08).",
+    "commonMistakes": "Punctuation errors, trailing commas, or quotes around column names.",
+    "learningOutcomes": "Mastered 1.5 Arithmetic Operators on GroceryItems.",
+    "challengeSlots": [
+      {
+        "type": "keyword",
+        "value": "SELECT"
+      },
+      {
+        "type": "column",
+        "value": "item_name,"
+      },
+      {
+        "type": "column",
+        "value": "unit_price,"
+      },
+      {
+        "type": "column",
+        "value": "(unit_price"
+      },
+      {
+        "type": "column",
+        "value": "*"
+      },
+      {
+        "type": "column",
+        "value": "1.08)"
+      },
+      {
+        "type": "keyword",
+        "value": "AS"
+      },
+      {
+        "type": "column",
+        "value": "price_with_tax"
+      },
+      {
+        "type": "keyword",
+        "value": "FROM"
+      },
+      {
+        "type": "table",
+        "value": "GroceryItems;"
+      }
+    ]
+  },
+  {
+    "drillNumber": 46,
+    "subcluster": "1.5 Arithmetic Operators",
+    "level": "Level 2 (Calculations)",
+    "title": "Syntax #046: Convert duration in seconds into fractional minutes by dividing by 60.0",
+    "table": "MusicTracks",
+    "scenario": "Convert duration in seconds into fractional minutes by dividing by 60.0.",
+    "businessObjective": "Convert duration in seconds into fractional minutes by dividing by 60.0.",
+    "schemaSnippet": "MusicTracks schema",
+    "targetQuery": "SELECT track_title, duration_seconds, (duration_seconds / 60.0) AS duration_minutes\nFROM MusicTracks;",
+    "syntaxBlueprint": "SELECT track_title, duration_seconds, (duration_seconds / 60.0) AS duration_minutes\nFROM MusicTracks;",
+    "syntaxRule": "Keywords are SELECT, FROM, AS, DISTINCT. Keep commas between columns only.",
+    "syntaxTrap": "Do not add trailing commas before FROM or quote column identifiers.",
+    "eli5Story": "Simple everyday task on MusicTracks: Convert duration in seconds into fractional minutes by dividing by 60.0.",
+    "commonMistakes": "Punctuation errors, trailing commas, or quotes around column names.",
+    "learningOutcomes": "Mastered 1.5 Arithmetic Operators on MusicTracks.",
+    "challengeSlots": [
+      {
+        "type": "keyword",
+        "value": "SELECT"
+      },
+      {
+        "type": "column",
+        "value": "track_title,"
+      },
+      {
+        "type": "column",
+        "value": "duration_seconds,"
+      },
+      {
+        "type": "column",
+        "value": "(duration_seconds"
+      },
+      {
+        "type": "column",
+        "value": "/"
+      },
+      {
+        "type": "column",
+        "value": "60.0)"
+      },
+      {
+        "type": "keyword",
+        "value": "AS"
+      },
+      {
+        "type": "column",
+        "value": "duration_minutes"
+      },
+      {
+        "type": "keyword",
+        "value": "FROM"
+      },
+      {
+        "type": "table",
+        "value": "MusicTracks;"
+      }
+    ]
+  },
+  {
+    "drillNumber": 47,
+    "subcluster": "1.5 Arithmetic Operators",
+    "level": "Level 2 (Calculations)",
+    "title": "Syntax #047: Compute the total annual membership cost by multiplying monthly_fee by 12",
+    "table": "GymMembers",
+    "scenario": "Compute the total annual membership cost by multiplying monthly_fee by 12.",
+    "businessObjective": "Compute the total annual membership cost by multiplying monthly_fee by 12.",
+    "schemaSnippet": "GymMembers schema",
+    "targetQuery": "SELECT member_name, monthly_fee, (monthly_fee * 12) AS annual_cost\nFROM GymMembers;",
+    "syntaxBlueprint": "SELECT member_name, monthly_fee, (monthly_fee * 12) AS annual_cost\nFROM GymMembers;",
+    "syntaxRule": "Keywords are SELECT, FROM, AS, DISTINCT. Keep commas between columns only.",
+    "syntaxTrap": "Do not add trailing commas before FROM or quote column identifiers.",
+    "eli5Story": "Simple everyday task on GymMembers: Compute the total annual membership cost by multiplying monthly_fee by 12.",
+    "commonMistakes": "Punctuation errors, trailing commas, or quotes around column names.",
+    "learningOutcomes": "Mastered 1.5 Arithmetic Operators on GymMembers.",
+    "challengeSlots": [
+      {
+        "type": "keyword",
+        "value": "SELECT"
+      },
+      {
+        "type": "column",
+        "value": "member_name,"
+      },
+      {
+        "type": "column",
+        "value": "monthly_fee,"
+      },
+      {
+        "type": "column",
+        "value": "(monthly_fee"
+      },
+      {
+        "type": "column",
+        "value": "*"
+      },
+      {
+        "type": "column",
+        "value": "12)"
+      },
+      {
+        "type": "keyword",
+        "value": "AS"
+      },
+      {
+        "type": "column",
+        "value": "annual_cost"
+      },
+      {
+        "type": "keyword",
+        "value": "FROM"
+      },
+      {
+        "type": "table",
+        "value": "GymMembers;"
+      }
+    ]
+  },
+  {
+    "drillNumber": 48,
+    "subcluster": "1.5 Arithmetic Operators",
+    "level": "Level 2 (Calculations)",
+    "title": "Syntax #048: Add a $35 standard checked bag fee to ticket_price",
+    "table": "FlightSchedule",
+    "scenario": "Add a $35 standard checked bag fee to ticket_price.",
+    "businessObjective": "Add a $35 standard checked bag fee to ticket_price.",
+    "schemaSnippet": "FlightSchedule schema",
+    "targetQuery": "SELECT flight_id, ticket_price, (ticket_price + 35.00) AS price_with_baggage\nFROM FlightSchedule;",
+    "syntaxBlueprint": "SELECT flight_id, ticket_price, (ticket_price + 35.00) AS price_with_baggage\nFROM FlightSchedule;",
+    "syntaxRule": "Keywords are SELECT, FROM, AS, DISTINCT. Keep commas between columns only.",
+    "syntaxTrap": "Do not add trailing commas before FROM or quote column identifiers.",
+    "eli5Story": "Simple everyday task on FlightSchedule: Add a $35 standard checked bag fee to ticket_price.",
+    "commonMistakes": "Punctuation errors, trailing commas, or quotes around column names.",
+    "learningOutcomes": "Mastered 1.5 Arithmetic Operators on FlightSchedule.",
+    "challengeSlots": [
+      {
+        "type": "keyword",
+        "value": "SELECT"
+      },
+      {
+        "type": "column",
+        "value": "flight_id,"
+      },
+      {
+        "type": "column",
+        "value": "ticket_price,"
+      },
+      {
+        "type": "column",
+        "value": "(ticket_price"
+      },
+      {
+        "type": "column",
+        "value": "+"
+      },
+      {
+        "type": "column",
+        "value": "35.00)"
+      },
+      {
+        "type": "keyword",
+        "value": "AS"
+      },
+      {
+        "type": "column",
+        "value": "price_with_baggage"
+      },
+      {
+        "type": "keyword",
+        "value": "FROM"
+      },
+      {
+        "type": "table",
+        "value": "FlightSchedule;"
+      }
+    ]
+  },
+  {
+    "drillNumber": 49,
+    "subcluster": "1.5 Arithmetic Operators",
+    "level": "Level 2 (Calculations)",
+    "title": "Syntax #049: Convert pet weight from kilograms to pounds by multiplying by 2.20462",
+    "table": "PetClinic",
+    "scenario": "Convert pet weight from kilograms to pounds by multiplying by 2.20462.",
+    "businessObjective": "Convert pet weight from kilograms to pounds by multiplying by 2.20462.",
+    "schemaSnippet": "PetClinic schema",
+    "targetQuery": "SELECT pet_name, weight_kg, (weight_kg * 2.20462) AS weight_lbs\nFROM PetClinic;",
+    "syntaxBlueprint": "SELECT pet_name, weight_kg, (weight_kg * 2.20462) AS weight_lbs\nFROM PetClinic;",
+    "syntaxRule": "Keywords are SELECT, FROM, AS, DISTINCT. Keep commas between columns only.",
+    "syntaxTrap": "Do not add trailing commas before FROM or quote column identifiers.",
+    "eli5Story": "Simple everyday task on PetClinic: Convert pet weight from kilograms to pounds by multiplying by 2.20462.",
+    "commonMistakes": "Punctuation errors, trailing commas, or quotes around column names.",
+    "learningOutcomes": "Mastered 1.5 Arithmetic Operators on PetClinic.",
+    "challengeSlots": [
+      {
+        "type": "keyword",
+        "value": "SELECT"
+      },
+      {
+        "type": "column",
+        "value": "pet_name,"
+      },
+      {
+        "type": "column",
+        "value": "weight_kg,"
+      },
+      {
+        "type": "column",
+        "value": "(weight_kg"
+      },
+      {
+        "type": "column",
+        "value": "*"
+      },
+      {
+        "type": "column",
+        "value": "2.20462)"
+      },
+      {
+        "type": "keyword",
+        "value": "AS"
+      },
+      {
+        "type": "column",
+        "value": "weight_lbs"
+      },
+      {
+        "type": "keyword",
+        "value": "FROM"
+      },
+      {
+        "type": "table",
+        "value": "PetClinic;"
+      }
+    ]
+  },
+  {
+    "drillNumber": 50,
+    "subcluster": "1.5 Arithmetic Operators",
+    "level": "Level 2 (Calculations)",
+    "title": "Syntax #050: Calculate the final discounted total: subtotal times (1 - discount_pct)",
+    "table": "Orders",
+    "scenario": "Calculate the final discounted total: subtotal times (1 - discount_pct).",
+    "businessObjective": "Calculate the final discounted total: subtotal times (1 - discount_pct).",
+    "schemaSnippet": "Orders schema",
+    "targetQuery": "SELECT order_id, unit_price, quantity, ((unit_price * quantity) * (1 - discount_pct)) AS final_charged_amount\nFROM Orders;",
+    "syntaxBlueprint": "SELECT order_id, unit_price, quantity, ((unit_price * quantity) * (1 - discount_pct)) AS final_charged_amount\nFROM Orders;",
+    "syntaxRule": "Keywords are SELECT, FROM, AS, DISTINCT. Keep commas between columns only.",
+    "syntaxTrap": "Do not add trailing commas before FROM or quote column identifiers.",
+    "eli5Story": "Simple everyday task on Orders: Calculate the final discounted total: subtotal times (1 - discount_pct).",
+    "commonMistakes": "Punctuation errors, trailing commas, or quotes around column names.",
+    "learningOutcomes": "Mastered 1.5 Arithmetic Operators on Orders.",
+    "challengeSlots": [
+      {
+        "type": "keyword",
+        "value": "SELECT"
+      },
+      {
+        "type": "column",
+        "value": "order_id,"
+      },
+      {
+        "type": "column",
+        "value": "unit_price,"
+      },
+      {
+        "type": "column",
+        "value": "quantity,"
+      },
+      {
+        "type": "column",
+        "value": "((unit_price"
+      },
+      {
+        "type": "column",
+        "value": "*"
+      },
+      {
+        "type": "column",
+        "value": "quantity)"
+      },
+      {
+        "type": "column",
+        "value": "*"
+      },
+      {
+        "type": "column",
+        "value": "(1"
+      },
+      {
+        "type": "column",
+        "value": "-"
+      },
+      {
+        "type": "column",
+        "value": "discount_pct))"
+      },
+      {
+        "type": "keyword",
+        "value": "AS"
+      },
+      {
+        "type": "column",
+        "value": "final_charged_amount"
+      },
+      {
+        "type": "keyword",
+        "value": "FROM"
+      },
+      {
+        "type": "table",
+        "value": "Orders;"
+      }
+    ]
+  },
+  {
+    "drillNumber": 51,
+    "subcluster": "1.6 Math & Rounding Functions",
+    "level": "Level 2 (Calculations)",
+    "title": "Syntax #051: Round calculated price with 8.25% sales tax to 2 decimal places using ROUND()",
+    "table": "GroceryItems",
+    "scenario": "Round calculated price with 8.25% sales tax to 2 decimal places using ROUND().",
+    "businessObjective": "Round calculated price with 8.25% sales tax to 2 decimal places using ROUND().",
+    "schemaSnippet": "GroceryItems schema",
+    "targetQuery": "SELECT item_name, ROUND(unit_price * 1.0825, 2) AS rounded_tax_price\nFROM GroceryItems;",
+    "syntaxBlueprint": "SELECT item_name, ROUND(unit_price * 1.0825, 2) AS rounded_tax_price\nFROM GroceryItems;",
+    "syntaxRule": "Keywords are SELECT, FROM, AS, DISTINCT. Keep commas between columns only.",
+    "syntaxTrap": "Do not add trailing commas before FROM or quote column identifiers.",
+    "eli5Story": "Simple everyday task on GroceryItems: Round calculated price with 8.25% sales tax to 2 decimal places using ROUND().",
+    "commonMistakes": "Punctuation errors, trailing commas, or quotes around column names.",
+    "learningOutcomes": "Mastered 1.6 Math & Rounding Functions on GroceryItems.",
+    "challengeSlots": [
+      {
+        "type": "keyword",
+        "value": "SELECT"
+      },
+      {
+        "type": "column",
+        "value": "item_name,"
+      },
+      {
+        "type": "column",
+        "value": "ROUND(unit_price"
+      },
+      {
+        "type": "column",
+        "value": "*"
+      },
+      {
+        "type": "column",
+        "value": "1.0825,"
+      },
+      {
+        "type": "column",
+        "value": "2)"
+      },
+      {
+        "type": "keyword",
+        "value": "AS"
+      },
+      {
+        "type": "column",
+        "value": "rounded_tax_price"
+      },
+      {
+        "type": "keyword",
+        "value": "FROM"
+      },
+      {
+        "type": "table",
+        "value": "GroceryItems;"
+      }
+    ]
+  },
+  {
+    "drillNumber": 52,
+    "subcluster": "1.6 Math & Rounding Functions",
+    "level": "Level 2 (Calculations)",
+    "title": "Syntax #052: Round GPA to 1 decimal place using ROUND(gpa, 1)",
+    "table": "Students",
+    "scenario": "Round GPA to 1 decimal place using ROUND(gpa, 1).",
+    "businessObjective": "Round GPA to 1 decimal place using ROUND(gpa, 1).",
+    "schemaSnippet": "Students schema",
+    "targetQuery": "SELECT full_name, ROUND(gpa, 1) AS rounded_gpa\nFROM Students;",
+    "syntaxBlueprint": "SELECT full_name, ROUND(gpa, 1) AS rounded_gpa\nFROM Students;",
+    "syntaxRule": "Keywords are SELECT, FROM, AS, DISTINCT. Keep commas between columns only.",
+    "syntaxTrap": "Do not add trailing commas before FROM or quote column identifiers.",
+    "eli5Story": "Simple everyday task on Students: Round GPA to 1 decimal place using ROUND(gpa, 1).",
+    "commonMistakes": "Punctuation errors, trailing commas, or quotes around column names.",
+    "learningOutcomes": "Mastered 1.6 Math & Rounding Functions on Students.",
+    "challengeSlots": [
+      {
+        "type": "keyword",
+        "value": "SELECT"
+      },
+      {
+        "type": "column",
+        "value": "full_name,"
+      },
+      {
+        "type": "column",
+        "value": "ROUND(gpa,"
+      },
+      {
+        "type": "column",
+        "value": "1)"
+      },
+      {
+        "type": "keyword",
+        "value": "AS"
+      },
+      {
+        "type": "column",
+        "value": "rounded_gpa"
+      },
+      {
+        "type": "keyword",
+        "value": "FROM"
+      },
+      {
+        "type": "table",
+        "value": "Students;"
+      }
+    ]
+  },
+  {
+    "drillNumber": 53,
+    "subcluster": "1.6 Math & Rounding Functions",
+    "level": "Level 2 (Calculations)",
+    "title": "Syntax #053: Extract whole minutes of track duration using FLOOR(duration_seconds / 60)",
+    "table": "MusicTracks",
+    "scenario": "Extract whole minutes of track duration using FLOOR(duration_seconds / 60).",
+    "businessObjective": "Extract whole minutes of track duration using FLOOR(duration_seconds / 60).",
+    "schemaSnippet": "MusicTracks schema",
+    "targetQuery": "SELECT track_title, FLOOR(duration_seconds / 60) AS whole_minutes\nFROM MusicTracks;",
+    "syntaxBlueprint": "SELECT track_title, FLOOR(duration_seconds / 60) AS whole_minutes\nFROM MusicTracks;",
+    "syntaxRule": "Keywords are SELECT, FROM, AS, DISTINCT. Keep commas between columns only.",
+    "syntaxTrap": "Do not add trailing commas before FROM or quote column identifiers.",
+    "eli5Story": "Simple everyday task on MusicTracks: Extract whole minutes of track duration using FLOOR(duration_seconds / 60).",
+    "commonMistakes": "Punctuation errors, trailing commas, or quotes around column names.",
+    "learningOutcomes": "Mastered 1.6 Math & Rounding Functions on MusicTracks.",
+    "challengeSlots": [
+      {
+        "type": "keyword",
+        "value": "SELECT"
+      },
+      {
+        "type": "column",
+        "value": "track_title,"
+      },
+      {
+        "type": "column",
+        "value": "FLOOR(duration_seconds"
+      },
+      {
+        "type": "column",
+        "value": "/"
+      },
+      {
+        "type": "column",
+        "value": "60)"
+      },
+      {
+        "type": "keyword",
+        "value": "AS"
+      },
+      {
+        "type": "column",
+        "value": "whole_minutes"
+      },
+      {
+        "type": "keyword",
+        "value": "FROM"
+      },
+      {
+        "type": "table",
+        "value": "MusicTracks;"
+      }
+    ]
+  },
+  {
+    "drillNumber": 54,
+    "subcluster": "1.6 Math & Rounding Functions",
+    "level": "Level 2 (Calculations)",
+    "title": "Syntax #054: Round monthly fee up to the nearest whole integer using CEIL()",
+    "table": "GymMembers",
+    "scenario": "Round monthly fee up to the nearest whole integer using CEIL().",
+    "businessObjective": "Round monthly fee up to the nearest whole integer using CEIL().",
+    "schemaSnippet": "GymMembers schema",
+    "targetQuery": "SELECT member_name, CEIL(monthly_fee) AS rounded_up_fee\nFROM GymMembers;",
+    "syntaxBlueprint": "SELECT member_name, CEIL(monthly_fee) AS rounded_up_fee\nFROM GymMembers;",
+    "syntaxRule": "Keywords are SELECT, FROM, AS, DISTINCT. Keep commas between columns only.",
+    "syntaxTrap": "Do not add trailing commas before FROM or quote column identifiers.",
+    "eli5Story": "Simple everyday task on GymMembers: Round monthly fee up to the nearest whole integer using CEIL().",
+    "commonMistakes": "Punctuation errors, trailing commas, or quotes around column names.",
+    "learningOutcomes": "Mastered 1.6 Math & Rounding Functions on GymMembers.",
+    "challengeSlots": [
+      {
+        "type": "keyword",
+        "value": "SELECT"
+      },
+      {
+        "type": "column",
+        "value": "member_name,"
+      },
+      {
+        "type": "column",
+        "value": "CEIL(monthly_fee)"
+      },
+      {
+        "type": "keyword",
+        "value": "AS"
+      },
+      {
+        "type": "column",
+        "value": "rounded_up_fee"
+      },
+      {
+        "type": "keyword",
+        "value": "FROM"
+      },
+      {
+        "type": "table",
+        "value": "GymMembers;"
+      }
+    ]
+  },
+  {
+    "drillNumber": 55,
+    "subcluster": "1.6 Math & Rounding Functions",
+    "level": "Level 2 (Calculations)",
+    "title": "Syntax #055: Calculate and round exact discount savings to 2 decimal places",
+    "table": "Orders",
+    "scenario": "Calculate and round exact discount savings to 2 decimal places.",
+    "businessObjective": "Calculate and round exact discount savings to 2 decimal places.",
+    "schemaSnippet": "Orders schema",
+    "targetQuery": "SELECT order_id, ROUND((unit_price * quantity) * discount_pct, 2) AS discount_savings\nFROM Orders;",
+    "syntaxBlueprint": "SELECT order_id, ROUND((unit_price * quantity) * discount_pct, 2) AS discount_savings\nFROM Orders;",
+    "syntaxRule": "Keywords are SELECT, FROM, AS, DISTINCT. Keep commas between columns only.",
+    "syntaxTrap": "Do not add trailing commas before FROM or quote column identifiers.",
+    "eli5Story": "Simple everyday task on Orders: Calculate and round exact discount savings to 2 decimal places.",
+    "commonMistakes": "Punctuation errors, trailing commas, or quotes around column names.",
+    "learningOutcomes": "Mastered 1.6 Math & Rounding Functions on Orders.",
+    "challengeSlots": [
+      {
+        "type": "keyword",
+        "value": "SELECT"
+      },
+      {
+        "type": "column",
+        "value": "order_id,"
+      },
+      {
+        "type": "column",
+        "value": "ROUND((unit_price"
+      },
+      {
+        "type": "column",
+        "value": "*"
+      },
+      {
+        "type": "column",
+        "value": "quantity)"
+      },
+      {
+        "type": "column",
+        "value": "*"
+      },
+      {
+        "type": "column",
+        "value": "discount_pct,"
+      },
+      {
+        "type": "column",
+        "value": "2)"
+      },
+      {
+        "type": "keyword",
+        "value": "AS"
+      },
+      {
+        "type": "column",
+        "value": "discount_savings"
+      },
+      {
+        "type": "keyword",
+        "value": "FROM"
+      },
+      {
+        "type": "table",
+        "value": "Orders;"
+      }
+    ]
+  },
+  {
+    "drillNumber": 56,
+    "subcluster": "1.6 Math & Rounding Functions",
+    "level": "Level 2 (Calculations)",
+    "title": "Syntax #056: Calculate and round base fare before 15% airport fees",
+    "table": "FlightSchedule",
+    "scenario": "Calculate and round base fare before 15% airport fees.",
+    "businessObjective": "Calculate and round base fare before 15% airport fees.",
+    "schemaSnippet": "FlightSchedule schema",
+    "targetQuery": "SELECT flight_id, ROUND(ticket_price / 1.15, 2) AS base_fare_before_tax\nFROM FlightSchedule;",
+    "syntaxBlueprint": "SELECT flight_id, ROUND(ticket_price / 1.15, 2) AS base_fare_before_tax\nFROM FlightSchedule;",
+    "syntaxRule": "Keywords are SELECT, FROM, AS, DISTINCT. Keep commas between columns only.",
+    "syntaxTrap": "Do not add trailing commas before FROM or quote column identifiers.",
+    "eli5Story": "Simple everyday task on FlightSchedule: Calculate and round base fare before 15% airport fees.",
+    "commonMistakes": "Punctuation errors, trailing commas, or quotes around column names.",
+    "learningOutcomes": "Mastered 1.6 Math & Rounding Functions on FlightSchedule.",
+    "challengeSlots": [
+      {
+        "type": "keyword",
+        "value": "SELECT"
+      },
+      {
+        "type": "column",
+        "value": "flight_id,"
+      },
+      {
+        "type": "column",
+        "value": "ROUND(ticket_price"
+      },
+      {
+        "type": "column",
+        "value": "/"
+      },
+      {
+        "type": "column",
+        "value": "1.15,"
+      },
+      {
+        "type": "column",
+        "value": "2)"
+      },
+      {
+        "type": "keyword",
+        "value": "AS"
+      },
+      {
+        "type": "column",
+        "value": "base_fare_before_tax"
+      },
+      {
+        "type": "keyword",
+        "value": "FROM"
+      },
+      {
+        "type": "table",
+        "value": "FlightSchedule;"
+      }
+    ]
+  },
+  {
+    "drillNumber": 57,
+    "subcluster": "1.6 Math & Rounding Functions",
+    "level": "Level 2 (Calculations)",
+    "title": "Syntax #057: Convert weight to pounds and round to 1 decimal place",
+    "table": "PetClinic",
+    "scenario": "Convert weight to pounds and round to 1 decimal place.",
+    "businessObjective": "Convert weight to pounds and round to 1 decimal place.",
+    "schemaSnippet": "PetClinic schema",
+    "targetQuery": "SELECT pet_name, ROUND(weight_kg * 2.20462, 1) AS rounded_lbs\nFROM PetClinic;",
+    "syntaxBlueprint": "SELECT pet_name, ROUND(weight_kg * 2.20462, 1) AS rounded_lbs\nFROM PetClinic;",
+    "syntaxRule": "Keywords are SELECT, FROM, AS, DISTINCT. Keep commas between columns only.",
+    "syntaxTrap": "Do not add trailing commas before FROM or quote column identifiers.",
+    "eli5Story": "Simple everyday task on PetClinic: Convert weight to pounds and round to 1 decimal place.",
+    "commonMistakes": "Punctuation errors, trailing commas, or quotes around column names.",
+    "learningOutcomes": "Mastered 1.6 Math & Rounding Functions on PetClinic.",
+    "challengeSlots": [
+      {
+        "type": "keyword",
+        "value": "SELECT"
+      },
+      {
+        "type": "column",
+        "value": "pet_name,"
+      },
+      {
+        "type": "column",
+        "value": "ROUND(weight_kg"
+      },
+      {
+        "type": "column",
+        "value": "*"
+      },
+      {
+        "type": "column",
+        "value": "2.20462,"
+      },
+      {
+        "type": "column",
+        "value": "1)"
+      },
+      {
+        "type": "keyword",
+        "value": "AS"
+      },
+      {
+        "type": "column",
+        "value": "rounded_lbs"
+      },
+      {
+        "type": "keyword",
+        "value": "FROM"
+      },
+      {
+        "type": "table",
+        "value": "PetClinic;"
+      }
+    ]
+  },
+  {
+    "drillNumber": 58,
+    "subcluster": "1.6 Math & Rounding Functions",
+    "level": "Level 2 (Calculations)",
+    "title": "Syntax #058: Calculate the absolute deviation from target inventory level (10) using ABS()",
+    "table": "Books",
+    "scenario": "Calculate the absolute deviation from target inventory level (10) using ABS().",
+    "businessObjective": "Calculate the absolute deviation from target inventory level (10) using ABS().",
+    "schemaSnippet": "Books schema",
+    "targetQuery": "SELECT title, ABS(stock_qty - 10) AS distance_from_target_stock\nFROM Books;",
+    "syntaxBlueprint": "SELECT title, ABS(stock_qty - 10) AS distance_from_target_stock\nFROM Books;",
+    "syntaxRule": "Keywords are SELECT, FROM, AS, DISTINCT. Keep commas between columns only.",
+    "syntaxTrap": "Do not add trailing commas before FROM or quote column identifiers.",
+    "eli5Story": "Simple everyday task on Books: Calculate the absolute deviation from target inventory level (10) using ABS().",
+    "commonMistakes": "Punctuation errors, trailing commas, or quotes around column names.",
+    "learningOutcomes": "Mastered 1.6 Math & Rounding Functions on Books.",
+    "challengeSlots": [
+      {
+        "type": "keyword",
+        "value": "SELECT"
+      },
+      {
+        "type": "column",
+        "value": "title,"
+      },
+      {
+        "type": "column",
+        "value": "ABS(stock_qty"
+      },
+      {
+        "type": "column",
+        "value": "-"
+      },
+      {
+        "type": "column",
+        "value": "10)"
+      },
+      {
+        "type": "keyword",
+        "value": "AS"
+      },
+      {
+        "type": "column",
+        "value": "distance_from_target_stock"
+      },
+      {
+        "type": "keyword",
+        "value": "FROM"
+      },
+      {
+        "type": "table",
+        "value": "Books;"
+      }
+    ]
+  },
+  {
+    "drillNumber": 59,
+    "subcluster": "1.6 Math & Rounding Functions",
+    "level": "Level 2 (Calculations)",
+    "title": "Syntax #059: Calculate biweekly paycheck by dividing annual salary by 26 pay periods and rounding to 2 decimals",
+    "table": "Employees",
+    "scenario": "Calculate biweekly paycheck by dividing annual salary by 26 pay periods and rounding to 2 decimals.",
+    "businessObjective": "Calculate biweekly paycheck by dividing annual salary by 26 pay periods and rounding to 2 decimals.",
+    "schemaSnippet": "Employees schema",
+    "targetQuery": "SELECT first_name, ROUND(salary / 26.0, 2) AS biweekly_paycheck\nFROM Employees;",
+    "syntaxBlueprint": "SELECT first_name, ROUND(salary / 26.0, 2) AS biweekly_paycheck\nFROM Employees;",
+    "syntaxRule": "Keywords are SELECT, FROM, AS, DISTINCT. Keep commas between columns only.",
+    "syntaxTrap": "Do not add trailing commas before FROM or quote column identifiers.",
+    "eli5Story": "Simple everyday task on Employees: Calculate biweekly paycheck by dividing annual salary by 26 pay periods and rounding to 2 decimals.",
+    "commonMistakes": "Punctuation errors, trailing commas, or quotes around column names.",
+    "learningOutcomes": "Mastered 1.6 Math & Rounding Functions on Employees.",
+    "challengeSlots": [
+      {
+        "type": "keyword",
+        "value": "SELECT"
+      },
+      {
+        "type": "column",
+        "value": "first_name,"
+      },
+      {
+        "type": "column",
+        "value": "ROUND(salary"
+      },
+      {
+        "type": "column",
+        "value": "/"
+      },
+      {
+        "type": "column",
+        "value": "26.0,"
+      },
+      {
+        "type": "column",
+        "value": "2)"
+      },
+      {
+        "type": "keyword",
+        "value": "AS"
+      },
+      {
+        "type": "column",
+        "value": "biweekly_paycheck"
+      },
+      {
+        "type": "keyword",
+        "value": "FROM"
+      },
+      {
+        "type": "table",
+        "value": "Employees;"
+      }
+    ]
+  },
+  {
+    "drillNumber": 60,
+    "subcluster": "1.6 Math & Rounding Functions",
+    "level": "Level 2 (Calculations)",
+    "title": "Syntax #060: Round star ratings to the nearest whole star using ROUND(star_rating, 0)",
+    "table": "MovieReviews",
+    "scenario": "Round star ratings to the nearest whole star using ROUND(star_rating, 0).",
+    "businessObjective": "Round star ratings to the nearest whole star using ROUND(star_rating, 0).",
+    "schemaSnippet": "MovieReviews schema",
+    "targetQuery": "SELECT movie_title, ROUND(star_rating, 0) AS rounded_star_rating\nFROM MovieReviews;",
+    "syntaxBlueprint": "SELECT movie_title, ROUND(star_rating, 0) AS rounded_star_rating\nFROM MovieReviews;",
+    "syntaxRule": "Keywords are SELECT, FROM, AS, DISTINCT. Keep commas between columns only.",
+    "syntaxTrap": "Do not add trailing commas before FROM or quote column identifiers.",
+    "eli5Story": "Simple everyday task on MovieReviews: Round star ratings to the nearest whole star using ROUND(star_rating, 0).",
+    "commonMistakes": "Punctuation errors, trailing commas, or quotes around column names.",
+    "learningOutcomes": "Mastered 1.6 Math & Rounding Functions on MovieReviews.",
+    "challengeSlots": [
+      {
+        "type": "keyword",
+        "value": "SELECT"
+      },
+      {
+        "type": "column",
+        "value": "movie_title,"
+      },
+      {
+        "type": "column",
+        "value": "ROUND(star_rating,"
+      },
+      {
+        "type": "column",
+        "value": "0)"
+      },
+      {
+        "type": "keyword",
+        "value": "AS"
+      },
+      {
+        "type": "column",
+        "value": "rounded_star_rating"
+      },
+      {
+        "type": "keyword",
+        "value": "FROM"
+      },
+      {
+        "type": "table",
+        "value": "MovieReviews;"
+      }
+    ]
+  },
+  {
+    "drillNumber": 61,
+    "subcluster": "1.7 String Functions",
+    "level": "Level 2 (Calculations)",
+    "title": "Syntax #061: Glue first_name and last_name together with a space using CONCAT()",
+    "table": "Students",
+    "scenario": "Glue first_name and last_name together with a space using CONCAT().",
+    "businessObjective": "Glue first_name and last_name together with a space using CONCAT().",
+    "schemaSnippet": "Students schema",
+    "targetQuery": "SELECT CONCAT(first_name, ' ', last_name) AS full_student_name\nFROM Students;",
+    "syntaxBlueprint": "SELECT CONCAT(first_name, ' ', last_name) AS full_student_name\nFROM Students;",
+    "syntaxRule": "Keywords are SELECT, FROM, AS, DISTINCT. Keep commas between columns only.",
+    "syntaxTrap": "Do not add trailing commas before FROM or quote column identifiers.",
+    "eli5Story": "Simple everyday task on Students: Glue first_name and last_name together with a space using CONCAT().",
+    "commonMistakes": "Punctuation errors, trailing commas, or quotes around column names.",
+    "learningOutcomes": "Mastered 1.7 String Functions on Students.",
+    "challengeSlots": [
+      {
+        "type": "keyword",
+        "value": "SELECT"
+      },
+      {
+        "type": "column",
+        "value": "CONCAT(first_name,"
+      },
+      {
+        "type": "column",
+        "value": "'"
+      },
+      {
+        "type": "column",
+        "value": "',"
+      },
+      {
+        "type": "column",
+        "value": "last_name)"
+      },
+      {
+        "type": "keyword",
+        "value": "AS"
+      },
+      {
+        "type": "column",
+        "value": "full_student_name"
+      },
+      {
+        "type": "keyword",
+        "value": "FROM"
+      },
+      {
+        "type": "table",
+        "value": "Students;"
+      }
+    ]
+  },
+  {
+    "drillNumber": 62,
+    "subcluster": "1.7 String Functions",
+    "level": "Level 2 (Calculations)",
+    "title": "Syntax #062: Transform title to uppercase and genre to lowercase",
+    "table": "Books",
+    "scenario": "Transform title to uppercase and genre to lowercase.",
+    "businessObjective": "Transform title to uppercase and genre to lowercase.",
+    "schemaSnippet": "Books schema",
+    "targetQuery": "SELECT UPPER(title) AS uppercase_title, LOWER(genre) AS lowercase_genre\nFROM Books;",
+    "syntaxBlueprint": "SELECT UPPER(title) AS uppercase_title, LOWER(genre) AS lowercase_genre\nFROM Books;",
+    "syntaxRule": "Keywords are SELECT, FROM, AS, DISTINCT. Keep commas between columns only.",
+    "syntaxTrap": "Do not add trailing commas before FROM or quote column identifiers.",
+    "eli5Story": "Simple everyday task on Books: Transform title to uppercase and genre to lowercase.",
+    "commonMistakes": "Punctuation errors, trailing commas, or quotes around column names.",
+    "learningOutcomes": "Mastered 1.7 String Functions on Books.",
+    "challengeSlots": [
+      {
+        "type": "keyword",
+        "value": "SELECT"
+      },
+      {
+        "type": "column",
+        "value": "UPPER(title)"
+      },
+      {
+        "type": "keyword",
+        "value": "AS"
+      },
+      {
+        "type": "column",
+        "value": "uppercase_title,"
+      },
+      {
+        "type": "column",
+        "value": "LOWER(genre)"
+      },
+      {
+        "type": "keyword",
+        "value": "AS"
+      },
+      {
+        "type": "column",
+        "value": "lowercase_genre"
+      },
+      {
+        "type": "keyword",
+        "value": "FROM"
+      },
+      {
+        "type": "table",
+        "value": "Books;"
+      }
+    ]
+  },
+  {
+    "drillNumber": 63,
+    "subcluster": "1.7 String Functions",
+    "level": "Level 2 (Calculations)",
+    "title": "Syntax #063: Format employee name as 'LastName, FirstName' using CONCAT()",
+    "table": "Employees",
+    "scenario": "Format employee name as 'LastName, FirstName' using CONCAT().",
+    "businessObjective": "Format employee name as 'LastName, FirstName' using CONCAT().",
+    "schemaSnippet": "Employees schema",
+    "targetQuery": "SELECT CONCAT(last_name, ', ', first_name) AS formal_directory_name\nFROM Employees;",
+    "syntaxBlueprint": "SELECT CONCAT(last_name, ', ', first_name) AS formal_directory_name\nFROM Employees;",
+    "syntaxRule": "Keywords are SELECT, FROM, AS, DISTINCT. Keep commas between columns only.",
+    "syntaxTrap": "Do not add trailing commas before FROM or quote column identifiers.",
+    "eli5Story": "Simple everyday task on Employees: Format employee name as 'LastName, FirstName' using CONCAT().",
+    "commonMistakes": "Punctuation errors, trailing commas, or quotes around column names.",
+    "learningOutcomes": "Mastered 1.7 String Functions on Employees.",
+    "challengeSlots": [
+      {
+        "type": "keyword",
+        "value": "SELECT"
+      },
+      {
+        "type": "column",
+        "value": "CONCAT(last_name,"
+      },
+      {
+        "type": "column",
+        "value": "',"
+      },
+      {
+        "type": "column",
+        "value": "',"
+      },
+      {
+        "type": "column",
+        "value": "first_name)"
+      },
+      {
+        "type": "keyword",
+        "value": "AS"
+      },
+      {
+        "type": "column",
+        "value": "formal_directory_name"
+      },
+      {
+        "type": "keyword",
+        "value": "FROM"
+      },
+      {
+        "type": "table",
+        "value": "Employees;"
+      }
+    ]
+  },
+  {
+    "drillNumber": 64,
+    "subcluster": "1.7 String Functions",
+    "level": "Level 2 (Calculations)",
+    "title": "Syntax #064: Count the number of characters in track_title using LENGTH()",
+    "table": "MusicTracks",
+    "scenario": "Count the number of characters in track_title using LENGTH().",
+    "businessObjective": "Count the number of characters in track_title using LENGTH().",
+    "schemaSnippet": "MusicTracks schema",
+    "targetQuery": "SELECT track_title, LENGTH(track_title) AS title_char_count\nFROM MusicTracks;",
+    "syntaxBlueprint": "SELECT track_title, LENGTH(track_title) AS title_char_count\nFROM MusicTracks;",
+    "syntaxRule": "Keywords are SELECT, FROM, AS, DISTINCT. Keep commas between columns only.",
+    "syntaxTrap": "Do not add trailing commas before FROM or quote column identifiers.",
+    "eli5Story": "Simple everyday task on MusicTracks: Count the number of characters in track_title using LENGTH().",
+    "commonMistakes": "Punctuation errors, trailing commas, or quotes around column names.",
+    "learningOutcomes": "Mastered 1.7 String Functions on MusicTracks.",
+    "challengeSlots": [
+      {
+        "type": "keyword",
+        "value": "SELECT"
+      },
+      {
+        "type": "column",
+        "value": "track_title,"
+      },
+      {
+        "type": "column",
+        "value": "LENGTH(track_title)"
+      },
+      {
+        "type": "keyword",
+        "value": "AS"
+      },
+      {
+        "type": "column",
+        "value": "title_char_count"
+      },
+      {
+        "type": "keyword",
+        "value": "FROM"
+      },
+      {
+        "type": "table",
+        "value": "MusicTracks;"
+      }
+    ]
+  },
+  {
+    "drillNumber": 65,
+    "subcluster": "1.7 String Functions",
+    "level": "Level 2 (Calculations)",
+    "title": "Syntax #065: Convert item_name to all capital letters for shelf printing",
+    "table": "GroceryItems",
+    "scenario": "Convert item_name to all capital letters for shelf printing.",
+    "businessObjective": "Convert item_name to all capital letters for shelf printing.",
+    "schemaSnippet": "GroceryItems schema",
+    "targetQuery": "SELECT UPPER(item_name) AS label_name\nFROM GroceryItems;",
+    "syntaxBlueprint": "SELECT UPPER(item_name) AS label_name\nFROM GroceryItems;",
+    "syntaxRule": "Keywords are SELECT, FROM, AS, DISTINCT. Keep commas between columns only.",
+    "syntaxTrap": "Do not add trailing commas before FROM or quote column identifiers.",
+    "eli5Story": "Simple everyday task on GroceryItems: Convert item_name to all capital letters for shelf printing.",
+    "commonMistakes": "Punctuation errors, trailing commas, or quotes around column names.",
+    "learningOutcomes": "Mastered 1.7 String Functions on GroceryItems.",
+    "challengeSlots": [
+      {
+        "type": "keyword",
+        "value": "SELECT"
+      },
+      {
+        "type": "column",
+        "value": "UPPER(item_name)"
+      },
+      {
+        "type": "keyword",
+        "value": "AS"
+      },
+      {
+        "type": "column",
+        "value": "label_name"
+      },
+      {
+        "type": "keyword",
+        "value": "FROM"
+      },
+      {
+        "type": "table",
+        "value": "GroceryItems;"
+      }
+    ]
+  },
+  {
+    "drillNumber": 66,
+    "subcluster": "1.7 String Functions",
+    "level": "Level 2 (Calculations)",
+    "title": "Syntax #066: Combine origin and destination into a route string like 'ORD -> LAX'",
+    "table": "FlightSchedule",
+    "scenario": "Combine origin and destination into a route string like 'ORD -> LAX'.",
+    "businessObjective": "Combine origin and destination into a route string like 'ORD -> LAX'.",
+    "schemaSnippet": "FlightSchedule schema",
+    "targetQuery": "SELECT flight_id, CONCAT(origin_airport, ' -> ', dest_airport) AS route\nFROM FlightSchedule;",
+    "syntaxBlueprint": "SELECT flight_id, CONCAT(origin_airport, ' -> ', dest_airport) AS route\nFROM FlightSchedule;",
+    "syntaxRule": "Keywords are SELECT, FROM, AS, DISTINCT. Keep commas between columns only.",
+    "syntaxTrap": "Do not add trailing commas before FROM or quote column identifiers.",
+    "eli5Story": "Simple everyday task on FlightSchedule: Combine origin and destination into a route string like 'ORD -> LAX'.",
+    "commonMistakes": "Punctuation errors, trailing commas, or quotes around column names.",
+    "learningOutcomes": "Mastered 1.7 String Functions on FlightSchedule.",
+    "challengeSlots": [
+      {
+        "type": "keyword",
+        "value": "SELECT"
+      },
+      {
+        "type": "column",
+        "value": "flight_id,"
+      },
+      {
+        "type": "column",
+        "value": "CONCAT(origin_airport,"
+      },
+      {
+        "type": "column",
+        "value": "'"
+      },
+      {
+        "type": "column",
+        "value": "->"
+      },
+      {
+        "type": "column",
+        "value": "',"
+      },
+      {
+        "type": "column",
+        "value": "dest_airport)"
+      },
+      {
+        "type": "keyword",
+        "value": "AS"
+      },
+      {
+        "type": "column",
+        "value": "route"
+      },
+      {
+        "type": "keyword",
+        "value": "FROM"
+      },
+      {
+        "type": "table",
+        "value": "FlightSchedule;"
+      }
+    ]
+  },
+  {
+    "drillNumber": 67,
+    "subcluster": "1.7 String Functions",
+    "level": "Level 2 (Calculations)",
+    "title": "Syntax #067: Extract the first 3 letters of species using LEFT(species, 3)",
+    "table": "PetClinic",
+    "scenario": "Extract the first 3 letters of species using LEFT(species, 3).",
+    "businessObjective": "Extract the first 3 letters of species using LEFT(species, 3).",
+    "schemaSnippet": "PetClinic schema",
+    "targetQuery": "SELECT pet_name, LEFT(species, 3) AS species_short_code\nFROM PetClinic;",
+    "syntaxBlueprint": "SELECT pet_name, LEFT(species, 3) AS species_short_code\nFROM PetClinic;",
+    "syntaxRule": "Keywords are SELECT, FROM, AS, DISTINCT. Keep commas between columns only.",
+    "syntaxTrap": "Do not add trailing commas before FROM or quote column identifiers.",
+    "eli5Story": "Simple everyday task on PetClinic: Extract the first 3 letters of species using LEFT(species, 3).",
+    "commonMistakes": "Punctuation errors, trailing commas, or quotes around column names.",
+    "learningOutcomes": "Mastered 1.7 String Functions on PetClinic.",
+    "challengeSlots": [
+      {
+        "type": "keyword",
+        "value": "SELECT"
+      },
+      {
+        "type": "column",
+        "value": "pet_name,"
+      },
+      {
+        "type": "column",
+        "value": "LEFT(species,"
+      },
+      {
+        "type": "column",
+        "value": "3)"
+      },
+      {
+        "type": "keyword",
+        "value": "AS"
+      },
+      {
+        "type": "column",
+        "value": "species_short_code"
+      },
+      {
+        "type": "keyword",
+        "value": "FROM"
+      },
+      {
+        "type": "table",
+        "value": "PetClinic;"
+      }
+    ]
+  },
+  {
+    "drillNumber": 68,
+    "subcluster": "1.7 String Functions",
+    "level": "Level 2 (Calculations)",
+    "title": "Syntax #068: Extract the last 4 characters of movie_title using RIGHT()",
+    "table": "MovieReviews",
+    "scenario": "Extract the last 4 characters of movie_title using RIGHT().",
+    "businessObjective": "Extract the last 4 characters of movie_title using RIGHT().",
+    "schemaSnippet": "MovieReviews schema",
+    "targetQuery": "SELECT movie_title, RIGHT(movie_title, 4) AS title_suffix\nFROM MovieReviews;",
+    "syntaxBlueprint": "SELECT movie_title, RIGHT(movie_title, 4) AS title_suffix\nFROM MovieReviews;",
+    "syntaxRule": "Keywords are SELECT, FROM, AS, DISTINCT. Keep commas between columns only.",
+    "syntaxTrap": "Do not add trailing commas before FROM or quote column identifiers.",
+    "eli5Story": "Simple everyday task on MovieReviews: Extract the last 4 characters of movie_title using RIGHT().",
+    "commonMistakes": "Punctuation errors, trailing commas, or quotes around column names.",
+    "learningOutcomes": "Mastered 1.7 String Functions on MovieReviews.",
+    "challengeSlots": [
+      {
+        "type": "keyword",
+        "value": "SELECT"
+      },
+      {
+        "type": "column",
+        "value": "movie_title,"
+      },
+      {
+        "type": "column",
+        "value": "RIGHT(movie_title,"
+      },
+      {
+        "type": "column",
+        "value": "4)"
+      },
+      {
+        "type": "keyword",
+        "value": "AS"
+      },
+      {
+        "type": "column",
+        "value": "title_suffix"
+      },
+      {
+        "type": "keyword",
+        "value": "FROM"
+      },
+      {
+        "type": "table",
+        "value": "MovieReviews;"
+      }
+    ]
+  },
+  {
+    "drillNumber": 69,
+    "subcluster": "1.7 String Functions",
+    "level": "Level 2 (Calculations)",
+    "title": "Syntax #069: Convert membership plan to uppercase for keycard printing",
+    "table": "GymMembers",
+    "scenario": "Convert membership plan to uppercase for keycard printing.",
+    "businessObjective": "Convert membership plan to uppercase for keycard printing.",
+    "schemaSnippet": "GymMembers schema",
+    "targetQuery": "SELECT UPPER(membership_plan) AS plan_badge\nFROM GymMembers;",
+    "syntaxBlueprint": "SELECT UPPER(membership_plan) AS plan_badge\nFROM GymMembers;",
+    "syntaxRule": "Keywords are SELECT, FROM, AS, DISTINCT. Keep commas between columns only.",
+    "syntaxTrap": "Do not add trailing commas before FROM or quote column identifiers.",
+    "eli5Story": "Simple everyday task on GymMembers: Convert membership plan to uppercase for keycard printing.",
+    "commonMistakes": "Punctuation errors, trailing commas, or quotes around column names.",
+    "learningOutcomes": "Mastered 1.7 String Functions on GymMembers.",
+    "challengeSlots": [
+      {
+        "type": "keyword",
+        "value": "SELECT"
+      },
+      {
+        "type": "column",
+        "value": "UPPER(membership_plan)"
+      },
+      {
+        "type": "keyword",
+        "value": "AS"
+      },
+      {
+        "type": "column",
+        "value": "plan_badge"
+      },
+      {
+        "type": "keyword",
+        "value": "FROM"
+      },
+      {
+        "type": "table",
+        "value": "GymMembers;"
+      }
+    ]
+  },
+  {
+    "drillNumber": 70,
+    "subcluster": "1.7 String Functions",
+    "level": "Level 2 (Calculations)",
+    "title": "Syntax #070: Format an order label like 'Zoe Hart (Order #5001)' using CONCAT()",
+    "table": "Orders",
+    "scenario": "Format an order label like 'Zoe Hart (Order #5001)' using CONCAT().",
+    "businessObjective": "Format an order label like 'Zoe Hart (Order #5001)' using CONCAT().",
+    "schemaSnippet": "Orders schema",
+    "targetQuery": "SELECT CONCAT(customer_name, ' (Order #', order_id, ')') AS order_summary\nFROM Orders;",
+    "syntaxBlueprint": "SELECT CONCAT(customer_name, ' (Order #', order_id, ')') AS order_summary\nFROM Orders;",
+    "syntaxRule": "Keywords are SELECT, FROM, AS, DISTINCT. Keep commas between columns only.",
+    "syntaxTrap": "Do not add trailing commas before FROM or quote column identifiers.",
+    "eli5Story": "Simple everyday task on Orders: Format an order label like 'Zoe Hart (Order #5001)' using CONCAT().",
+    "commonMistakes": "Punctuation errors, trailing commas, or quotes around column names.",
+    "learningOutcomes": "Mastered 1.7 String Functions on Orders.",
+    "challengeSlots": [
+      {
+        "type": "keyword",
+        "value": "SELECT"
+      },
+      {
+        "type": "column",
+        "value": "CONCAT(customer_name,"
+      },
+      {
+        "type": "column",
+        "value": "'"
+      },
+      {
+        "type": "column",
+        "value": "(Order"
+      },
+      {
+        "type": "column",
+        "value": "#',"
+      },
+      {
+        "type": "column",
+        "value": "order_id,"
+      },
+      {
+        "type": "column",
+        "value": "')')"
+      },
+      {
+        "type": "keyword",
+        "value": "AS"
+      },
+      {
+        "type": "column",
+        "value": "order_summary"
+      },
+      {
+        "type": "keyword",
+        "value": "FROM"
+      },
+      {
+        "type": "table",
+        "value": "Orders;"
+      }
+    ]
+  },
+  {
+    "drillNumber": 71,
+    "subcluster": "1.8 Date Projections",
+    "level": "Level 2 (Calculations)",
+    "title": "Syntax #071: Extract the four-digit year from hire_date using YEAR()",
+    "table": "Employees",
+    "scenario": "Extract the four-digit year from hire_date using YEAR().",
+    "businessObjective": "Extract the four-digit year from hire_date using YEAR().",
+    "schemaSnippet": "Employees schema",
+    "targetQuery": "SELECT first_name, hire_date, YEAR(hire_date) AS hire_year\nFROM Employees;",
+    "syntaxBlueprint": "SELECT first_name, hire_date, YEAR(hire_date) AS hire_year\nFROM Employees;",
+    "syntaxRule": "Keywords are SELECT, FROM, AS, DISTINCT. Keep commas between columns only.",
+    "syntaxTrap": "Do not add trailing commas before FROM or quote column identifiers.",
+    "eli5Story": "Simple everyday task on Employees: Extract the four-digit year from hire_date using YEAR().",
+    "commonMistakes": "Punctuation errors, trailing commas, or quotes around column names.",
+    "learningOutcomes": "Mastered 1.8 Date Projections on Employees.",
+    "challengeSlots": [
+      {
+        "type": "keyword",
+        "value": "SELECT"
+      },
+      {
+        "type": "column",
+        "value": "first_name,"
+      },
+      {
+        "type": "column",
+        "value": "hire_date,"
+      },
+      {
+        "type": "column",
+        "value": "YEAR(hire_date)"
+      },
+      {
+        "type": "keyword",
+        "value": "AS"
+      },
+      {
+        "type": "column",
+        "value": "hire_year"
+      },
+      {
+        "type": "keyword",
+        "value": "FROM"
+      },
+      {
+        "type": "table",
+        "value": "Employees;"
+      }
+    ]
+  },
+  {
+    "drillNumber": 72,
+    "subcluster": "1.8 Date Projections",
+    "level": "Level 2 (Calculations)",
+    "title": "Syntax #072: Extract the numerical month from hire_date using MONTH()",
+    "table": "Employees",
+    "scenario": "Extract the numerical month from hire_date using MONTH().",
+    "businessObjective": "Extract the numerical month from hire_date using MONTH().",
+    "schemaSnippet": "Employees schema",
+    "targetQuery": "SELECT first_name, hire_date, MONTH(hire_date) AS hire_month\nFROM Employees;",
+    "syntaxBlueprint": "SELECT first_name, hire_date, MONTH(hire_date) AS hire_month\nFROM Employees;",
+    "syntaxRule": "Keywords are SELECT, FROM, AS, DISTINCT. Keep commas between columns only.",
+    "syntaxTrap": "Do not add trailing commas before FROM or quote column identifiers.",
+    "eli5Story": "Simple everyday task on Employees: Extract the numerical month from hire_date using MONTH().",
+    "commonMistakes": "Punctuation errors, trailing commas, or quotes around column names.",
+    "learningOutcomes": "Mastered 1.8 Date Projections on Employees.",
+    "challengeSlots": [
+      {
+        "type": "keyword",
+        "value": "SELECT"
+      },
+      {
+        "type": "column",
+        "value": "first_name,"
+      },
+      {
+        "type": "column",
+        "value": "hire_date,"
+      },
+      {
+        "type": "column",
+        "value": "MONTH(hire_date)"
+      },
+      {
+        "type": "keyword",
+        "value": "AS"
+      },
+      {
+        "type": "column",
+        "value": "hire_month"
+      },
+      {
+        "type": "keyword",
+        "value": "FROM"
+      },
+      {
+        "type": "table",
+        "value": "Employees;"
+      }
+    ]
+  },
+  {
+    "drillNumber": 73,
+    "subcluster": "1.8 Date Projections",
+    "level": "Level 2 (Calculations)",
+    "title": "Syntax #073: Calculate how many years a student has been in school relative to 2026",
+    "table": "Students",
+    "scenario": "Calculate how many years a student has been in school relative to 2026.",
+    "businessObjective": "Calculate how many years a student has been in school relative to 2026.",
+    "schemaSnippet": "Students schema",
+    "targetQuery": "SELECT full_name, enrolled_year, (2026 - enrolled_year) AS years_in_school\nFROM Students;",
+    "syntaxBlueprint": "SELECT full_name, enrolled_year, (2026 - enrolled_year) AS years_in_school\nFROM Students;",
+    "syntaxRule": "Keywords are SELECT, FROM, AS, DISTINCT. Keep commas between columns only.",
+    "syntaxTrap": "Do not add trailing commas before FROM or quote column identifiers.",
+    "eli5Story": "Simple everyday task on Students: Calculate how many years a student has been in school relative to 2026.",
+    "commonMistakes": "Punctuation errors, trailing commas, or quotes around column names.",
+    "learningOutcomes": "Mastered 1.8 Date Projections on Students.",
+    "challengeSlots": [
+      {
+        "type": "keyword",
+        "value": "SELECT"
+      },
+      {
+        "type": "column",
+        "value": "full_name,"
+      },
+      {
+        "type": "column",
+        "value": "enrolled_year,"
+      },
+      {
+        "type": "column",
+        "value": "(2026"
+      },
+      {
+        "type": "column",
+        "value": "-"
+      },
+      {
+        "type": "column",
+        "value": "enrolled_year)"
+      },
+      {
+        "type": "keyword",
+        "value": "AS"
+      },
+      {
+        "type": "column",
+        "value": "years_in_school"
+      },
+      {
+        "type": "keyword",
+        "value": "FROM"
+      },
+      {
+        "type": "table",
+        "value": "Students;"
+      }
+    ]
+  },
+  {
+    "drillNumber": 74,
+    "subcluster": "1.8 Date Projections",
+    "level": "Level 2 (Calculations)",
+    "title": "Syntax #074: Extract the membership start year from join_date",
+    "table": "GymMembers",
+    "scenario": "Extract the membership start year from join_date.",
+    "businessObjective": "Extract the membership start year from join_date.",
+    "schemaSnippet": "GymMembers schema",
+    "targetQuery": "SELECT member_name, join_date, YEAR(join_date) AS joined_year\nFROM GymMembers;",
+    "syntaxBlueprint": "SELECT member_name, join_date, YEAR(join_date) AS joined_year\nFROM GymMembers;",
+    "syntaxRule": "Keywords are SELECT, FROM, AS, DISTINCT. Keep commas between columns only.",
+    "syntaxTrap": "Do not add trailing commas before FROM or quote column identifiers.",
+    "eli5Story": "Simple everyday task on GymMembers: Extract the membership start year from join_date.",
+    "commonMistakes": "Punctuation errors, trailing commas, or quotes around column names.",
+    "learningOutcomes": "Mastered 1.8 Date Projections on GymMembers.",
+    "challengeSlots": [
+      {
+        "type": "keyword",
+        "value": "SELECT"
+      },
+      {
+        "type": "column",
+        "value": "member_name,"
+      },
+      {
+        "type": "column",
+        "value": "join_date,"
+      },
+      {
+        "type": "column",
+        "value": "YEAR(join_date)"
+      },
+      {
+        "type": "keyword",
+        "value": "AS"
+      },
+      {
+        "type": "column",
+        "value": "joined_year"
+      },
+      {
+        "type": "keyword",
+        "value": "FROM"
+      },
+      {
+        "type": "table",
+        "value": "GymMembers;"
+      }
+    ]
+  },
+  {
+    "drillNumber": 75,
+    "subcluster": "1.8 Date Projections",
+    "level": "Level 2 (Calculations)",
+    "title": "Syntax #075: Calculate the age of a book in years relative to 2026",
+    "table": "Books",
+    "scenario": "Calculate the age of a book in years relative to 2026.",
+    "businessObjective": "Calculate the age of a book in years relative to 2026.",
+    "schemaSnippet": "Books schema",
+    "targetQuery": "SELECT title, published_year, (2026 - published_year) AS book_age_years\nFROM Books;",
+    "syntaxBlueprint": "SELECT title, published_year, (2026 - published_year) AS book_age_years\nFROM Books;",
+    "syntaxRule": "Keywords are SELECT, FROM, AS, DISTINCT. Keep commas between columns only.",
+    "syntaxTrap": "Do not add trailing commas before FROM or quote column identifiers.",
+    "eli5Story": "Simple everyday task on Books: Calculate the age of a book in years relative to 2026.",
+    "commonMistakes": "Punctuation errors, trailing commas, or quotes around column names.",
+    "learningOutcomes": "Mastered 1.8 Date Projections on Books.",
+    "challengeSlots": [
+      {
+        "type": "keyword",
+        "value": "SELECT"
+      },
+      {
+        "type": "column",
+        "value": "title,"
+      },
+      {
+        "type": "column",
+        "value": "published_year,"
+      },
+      {
+        "type": "column",
+        "value": "(2026"
+      },
+      {
+        "type": "column",
+        "value": "-"
+      },
+      {
+        "type": "column",
+        "value": "published_year)"
+      },
+      {
+        "type": "keyword",
+        "value": "AS"
+      },
+      {
+        "type": "column",
+        "value": "book_age_years"
+      },
+      {
+        "type": "keyword",
+        "value": "FROM"
+      },
+      {
+        "type": "table",
+        "value": "Books;"
+      }
+    ]
+  },
+  {
+    "drillNumber": 76,
+    "subcluster": "1.8 Date Projections",
+    "level": "Level 2 (Calculations)",
+    "title": "Syntax #076: Compute how many years ago a movie was released",
+    "table": "MovieReviews",
+    "scenario": "Compute how many years ago a movie was released.",
+    "businessObjective": "Compute how many years ago a movie was released.",
+    "schemaSnippet": "MovieReviews schema",
+    "targetQuery": "SELECT movie_title, release_year, (2026 - release_year) AS film_age\nFROM MovieReviews;",
+    "syntaxBlueprint": "SELECT movie_title, release_year, (2026 - release_year) AS film_age\nFROM MovieReviews;",
+    "syntaxRule": "Keywords are SELECT, FROM, AS, DISTINCT. Keep commas between columns only.",
+    "syntaxTrap": "Do not add trailing commas before FROM or quote column identifiers.",
+    "eli5Story": "Simple everyday task on MovieReviews: Compute how many years ago a movie was released.",
+    "commonMistakes": "Punctuation errors, trailing commas, or quotes around column names.",
+    "learningOutcomes": "Mastered 1.8 Date Projections on MovieReviews.",
+    "challengeSlots": [
+      {
+        "type": "keyword",
+        "value": "SELECT"
+      },
+      {
+        "type": "column",
+        "value": "movie_title,"
+      },
+      {
+        "type": "column",
+        "value": "release_year,"
+      },
+      {
+        "type": "column",
+        "value": "(2026"
+      },
+      {
+        "type": "column",
+        "value": "-"
+      },
+      {
+        "type": "column",
+        "value": "release_year)"
+      },
+      {
+        "type": "keyword",
+        "value": "AS"
+      },
+      {
+        "type": "column",
+        "value": "film_age"
+      },
+      {
+        "type": "keyword",
+        "value": "FROM"
+      },
+      {
+        "type": "table",
+        "value": "MovieReviews;"
+      }
+    ]
+  },
+  {
+    "drillNumber": 77,
+    "subcluster": "1.8 Date Projections",
+    "level": "Level 2 (Calculations)",
+    "title": "Syntax #077: Project the system's current calendar date using CURRENT_DATE",
+    "table": "Employees",
+    "scenario": "Project the system's current calendar date using CURRENT_DATE.",
+    "businessObjective": "Project the system's current calendar date using CURRENT_DATE.",
+    "schemaSnippet": "Employees schema",
+    "targetQuery": "SELECT first_name, CURRENT_DATE AS report_generated_on\nFROM Employees;",
+    "syntaxBlueprint": "SELECT first_name, CURRENT_DATE AS report_generated_on\nFROM Employees;",
+    "syntaxRule": "Keywords are SELECT, FROM, AS, DISTINCT. Keep commas between columns only.",
+    "syntaxTrap": "Do not add trailing commas before FROM or quote column identifiers.",
+    "eli5Story": "Simple everyday task on Employees: Project the system's current calendar date using CURRENT_DATE.",
+    "commonMistakes": "Punctuation errors, trailing commas, or quotes around column names.",
+    "learningOutcomes": "Mastered 1.8 Date Projections on Employees.",
+    "challengeSlots": [
+      {
+        "type": "keyword",
+        "value": "SELECT"
+      },
+      {
+        "type": "column",
+        "value": "first_name,"
+      },
+      {
+        "type": "column",
+        "value": "CURRENT_DATE"
+      },
+      {
+        "type": "keyword",
+        "value": "AS"
+      },
+      {
+        "type": "column",
+        "value": "report_generated_on"
+      },
+      {
+        "type": "keyword",
+        "value": "FROM"
+      },
+      {
+        "type": "table",
+        "value": "Employees;"
+      }
+    ]
+  },
+  {
+    "drillNumber": 78,
+    "subcluster": "1.8 Date Projections",
+    "level": "Level 2 (Calculations)",
+    "title": "Syntax #078: Extract the membership anniversary month from join_date",
+    "table": "GymMembers",
+    "scenario": "Extract the membership anniversary month from join_date.",
+    "businessObjective": "Extract the membership anniversary month from join_date.",
+    "schemaSnippet": "GymMembers schema",
+    "targetQuery": "SELECT member_name, join_date, MONTH(join_date) AS anniversary_month\nFROM GymMembers;",
+    "syntaxBlueprint": "SELECT member_name, join_date, MONTH(join_date) AS anniversary_month\nFROM GymMembers;",
+    "syntaxRule": "Keywords are SELECT, FROM, AS, DISTINCT. Keep commas between columns only.",
+    "syntaxTrap": "Do not add trailing commas before FROM or quote column identifiers.",
+    "eli5Story": "Simple everyday task on GymMembers: Extract the membership anniversary month from join_date.",
+    "commonMistakes": "Punctuation errors, trailing commas, or quotes around column names.",
+    "learningOutcomes": "Mastered 1.8 Date Projections on GymMembers.",
+    "challengeSlots": [
+      {
+        "type": "keyword",
+        "value": "SELECT"
+      },
+      {
+        "type": "column",
+        "value": "member_name,"
+      },
+      {
+        "type": "column",
+        "value": "join_date,"
+      },
+      {
+        "type": "column",
+        "value": "MONTH(join_date)"
+      },
+      {
+        "type": "keyword",
+        "value": "AS"
+      },
+      {
+        "type": "column",
+        "value": "anniversary_month"
+      },
+      {
+        "type": "keyword",
+        "value": "FROM"
+      },
+      {
+        "type": "table",
+        "value": "GymMembers;"
+      }
+    ]
+  },
+  {
+    "drillNumber": 79,
+    "subcluster": "1.8 Date Projections",
+    "level": "Level 2 (Calculations)",
+    "title": "Syntax #079: Extract the specific day of the month (1-31) when the employee was hired",
+    "table": "Employees",
+    "scenario": "Extract the specific day of the month (1-31) when the employee was hired.",
+    "businessObjective": "Extract the specific day of the month (1-31) when the employee was hired.",
+    "schemaSnippet": "Employees schema",
+    "targetQuery": "SELECT first_name, hire_date, DAY(hire_date) AS hire_day_of_month\nFROM Employees;",
+    "syntaxBlueprint": "SELECT first_name, hire_date, DAY(hire_date) AS hire_day_of_month\nFROM Employees;",
+    "syntaxRule": "Keywords are SELECT, FROM, AS, DISTINCT. Keep commas between columns only.",
+    "syntaxTrap": "Do not add trailing commas before FROM or quote column identifiers.",
+    "eli5Story": "Simple everyday task on Employees: Extract the specific day of the month (1-31) when the employee was hired.",
+    "commonMistakes": "Punctuation errors, trailing commas, or quotes around column names.",
+    "learningOutcomes": "Mastered 1.8 Date Projections on Employees.",
+    "challengeSlots": [
+      {
+        "type": "keyword",
+        "value": "SELECT"
+      },
+      {
+        "type": "column",
+        "value": "first_name,"
+      },
+      {
+        "type": "column",
+        "value": "hire_date,"
+      },
+      {
+        "type": "column",
+        "value": "DAY(hire_date)"
+      },
+      {
+        "type": "keyword",
+        "value": "AS"
+      },
+      {
+        "type": "column",
+        "value": "hire_day_of_month"
+      },
+      {
+        "type": "keyword",
+        "value": "FROM"
+      },
+      {
+        "type": "table",
+        "value": "Employees;"
+      }
+    ]
+  },
+  {
+    "drillNumber": 80,
+    "subcluster": "1.8 Date Projections",
+    "level": "Level 2 (Calculations)",
+    "title": "Syntax #080: Project expected graduation year by adding 4 to enrolled_year",
+    "table": "Students",
+    "scenario": "Project expected graduation year by adding 4 to enrolled_year.",
+    "businessObjective": "Project expected graduation year by adding 4 to enrolled_year.",
+    "schemaSnippet": "Students schema",
+    "targetQuery": "SELECT full_name, enrolled_year, CONCAT('Class of ', (enrolled_year + 4)) AS expected_graduation\nFROM Students;",
+    "syntaxBlueprint": "SELECT full_name, enrolled_year, CONCAT('Class of ', (enrolled_year + 4)) AS expected_graduation\nFROM Students;",
+    "syntaxRule": "Keywords are SELECT, FROM, AS, DISTINCT. Keep commas between columns only.",
+    "syntaxTrap": "Do not add trailing commas before FROM or quote column identifiers.",
+    "eli5Story": "Simple everyday task on Students: Project expected graduation year by adding 4 to enrolled_year.",
+    "commonMistakes": "Punctuation errors, trailing commas, or quotes around column names.",
+    "learningOutcomes": "Mastered 1.8 Date Projections on Students.",
+    "challengeSlots": [
+      {
+        "type": "keyword",
+        "value": "SELECT"
+      },
+      {
+        "type": "column",
+        "value": "full_name,"
+      },
+      {
+        "type": "column",
+        "value": "enrolled_year,"
+      },
+      {
+        "type": "column",
+        "value": "CONCAT('Class"
+      },
+      {
+        "type": "column",
+        "value": "of"
+      },
+      {
+        "type": "column",
+        "value": "',"
+      },
+      {
+        "type": "column",
+        "value": "(enrolled_year"
+      },
+      {
+        "type": "column",
+        "value": "+"
+      },
+      {
+        "type": "column",
+        "value": "4))"
+      },
+      {
+        "type": "keyword",
+        "value": "AS"
+      },
+      {
+        "type": "column",
+        "value": "expected_graduation"
+      },
+      {
+        "type": "keyword",
+        "value": "FROM"
+      },
+      {
+        "type": "table",
+        "value": "Students;"
+      }
+    ]
+  },
+  {
+    "drillNumber": 81,
+    "subcluster": "1.9 DISTINCT Deduplication",
+    "level": "Level 2 (Deduplication)",
+    "title": "Syntax #081: Find all unique home cities where enrolled students live without duplicates",
+    "table": "Students",
+    "scenario": "Find all unique home cities where enrolled students live without duplicates.",
+    "businessObjective": "Find all unique home cities where enrolled students live without duplicates.",
+    "schemaSnippet": "Students schema",
+    "targetQuery": "SELECT DISTINCT city\nFROM Students;",
+    "syntaxBlueprint": "SELECT DISTINCT city\nFROM Students;",
+    "syntaxRule": "Keywords are SELECT, FROM, AS, DISTINCT. Keep commas between columns only.",
+    "syntaxTrap": "Do not add trailing commas before FROM or quote column identifiers.",
+    "eli5Story": "Simple everyday task on Students: Find all unique home cities where enrolled students live without duplicates.",
+    "commonMistakes": "Punctuation errors, trailing commas, or quotes around column names.",
+    "learningOutcomes": "Mastered 1.9 DISTINCT Deduplication on Students.",
+    "challengeSlots": [
+      {
+        "type": "keyword",
+        "value": "SELECT"
+      },
+      {
+        "type": "keyword",
+        "value": "DISTINCT"
+      },
+      {
+        "type": "column",
+        "value": "city"
+      },
+      {
+        "type": "keyword",
+        "value": "FROM"
+      },
+      {
+        "type": "table",
+        "value": "Students;"
+      }
+    ]
+  },
+  {
+    "drillNumber": 82,
+    "subcluster": "1.9 DISTINCT Deduplication",
+    "level": "Level 2 (Deduplication)",
+    "title": "Syntax #082: List all distinct literary genres available in the bookstore catalog",
+    "table": "Books",
+    "scenario": "List all distinct literary genres available in the bookstore catalog.",
+    "businessObjective": "List all distinct literary genres available in the bookstore catalog.",
+    "schemaSnippet": "Books schema",
+    "targetQuery": "SELECT DISTINCT genre\nFROM Books;",
+    "syntaxBlueprint": "SELECT DISTINCT genre\nFROM Books;",
+    "syntaxRule": "Keywords are SELECT, FROM, AS, DISTINCT. Keep commas between columns only.",
+    "syntaxTrap": "Do not add trailing commas before FROM or quote column identifiers.",
+    "eli5Story": "Simple everyday task on Books: List all distinct literary genres available in the bookstore catalog.",
+    "commonMistakes": "Punctuation errors, trailing commas, or quotes around column names.",
+    "learningOutcomes": "Mastered 1.9 DISTINCT Deduplication on Books.",
+    "challengeSlots": [
+      {
+        "type": "keyword",
+        "value": "SELECT"
+      },
+      {
+        "type": "keyword",
+        "value": "DISTINCT"
+      },
+      {
+        "type": "column",
+        "value": "genre"
+      },
+      {
+        "type": "keyword",
+        "value": "FROM"
+      },
+      {
+        "type": "table",
+        "value": "Books;"
+      }
+    ]
+  },
+  {
+    "drillNumber": 83,
+    "subcluster": "1.9 DISTINCT Deduplication",
+    "level": "Level 2 (Deduplication)",
+    "title": "Syntax #083: Retrieve the list of distinct company departments without duplicate rows",
+    "table": "Employees",
+    "scenario": "Retrieve the list of distinct company departments without duplicate rows.",
+    "businessObjective": "Retrieve the list of distinct company departments without duplicate rows.",
+    "schemaSnippet": "Employees schema",
+    "targetQuery": "SELECT DISTINCT department\nFROM Employees;",
+    "syntaxBlueprint": "SELECT DISTINCT department\nFROM Employees;",
+    "syntaxRule": "Keywords are SELECT, FROM, AS, DISTINCT. Keep commas between columns only.",
+    "syntaxTrap": "Do not add trailing commas before FROM or quote column identifiers.",
+    "eli5Story": "Simple everyday task on Employees: Retrieve the list of distinct company departments without duplicate rows.",
+    "commonMistakes": "Punctuation errors, trailing commas, or quotes around column names.",
+    "learningOutcomes": "Mastered 1.9 DISTINCT Deduplication on Employees.",
+    "challengeSlots": [
+      {
+        "type": "keyword",
+        "value": "SELECT"
+      },
+      {
+        "type": "keyword",
+        "value": "DISTINCT"
+      },
+      {
+        "type": "column",
+        "value": "department"
+      },
+      {
+        "type": "keyword",
+        "value": "FROM"
+      },
+      {
+        "type": "table",
+        "value": "Employees;"
+      }
+    ]
+  },
+  {
+    "drillNumber": 84,
+    "subcluster": "1.9 DISTINCT Deduplication",
+    "level": "Level 2 (Deduplication)",
+    "title": "Syntax #084: Display all unique grocery product categories",
+    "table": "GroceryItems",
+    "scenario": "Display all unique grocery product categories.",
+    "businessObjective": "Display all unique grocery product categories.",
+    "schemaSnippet": "GroceryItems schema",
+    "targetQuery": "SELECT DISTINCT category\nFROM GroceryItems;",
+    "syntaxBlueprint": "SELECT DISTINCT category\nFROM GroceryItems;",
+    "syntaxRule": "Keywords are SELECT, FROM, AS, DISTINCT. Keep commas between columns only.",
+    "syntaxTrap": "Do not add trailing commas before FROM or quote column identifiers.",
+    "eli5Story": "Simple everyday task on GroceryItems: Display all unique grocery product categories.",
+    "commonMistakes": "Punctuation errors, trailing commas, or quotes around column names.",
+    "learningOutcomes": "Mastered 1.9 DISTINCT Deduplication on GroceryItems.",
+    "challengeSlots": [
+      {
+        "type": "keyword",
+        "value": "SELECT"
+      },
+      {
+        "type": "keyword",
+        "value": "DISTINCT"
+      },
+      {
+        "type": "column",
+        "value": "category"
+      },
+      {
+        "type": "keyword",
+        "value": "FROM"
+      },
+      {
+        "type": "table",
+        "value": "GroceryItems;"
+      }
+    ]
+  },
+  {
+    "drillNumber": 85,
+    "subcluster": "1.9 DISTINCT Deduplication",
+    "level": "Level 2 (Deduplication)",
+    "title": "Syntax #085: List all unique musical genres featured in the streaming library",
+    "table": "MusicTracks",
+    "scenario": "List all unique musical genres featured in the streaming library.",
+    "businessObjective": "List all unique musical genres featured in the streaming library.",
+    "schemaSnippet": "MusicTracks schema",
+    "targetQuery": "SELECT DISTINCT genre\nFROM MusicTracks;",
+    "syntaxBlueprint": "SELECT DISTINCT genre\nFROM MusicTracks;",
+    "syntaxRule": "Keywords are SELECT, FROM, AS, DISTINCT. Keep commas between columns only.",
+    "syntaxTrap": "Do not add trailing commas before FROM or quote column identifiers.",
+    "eli5Story": "Simple everyday task on MusicTracks: List all unique musical genres featured in the streaming library.",
+    "commonMistakes": "Punctuation errors, trailing commas, or quotes around column names.",
+    "learningOutcomes": "Mastered 1.9 DISTINCT Deduplication on MusicTracks.",
+    "challengeSlots": [
+      {
+        "type": "keyword",
+        "value": "SELECT"
+      },
+      {
+        "type": "keyword",
+        "value": "DISTINCT"
+      },
+      {
+        "type": "column",
+        "value": "genre"
+      },
+      {
+        "type": "keyword",
+        "value": "FROM"
+      },
+      {
+        "type": "table",
+        "value": "MusicTracks;"
+      }
+    ]
+  },
+  {
+    "drillNumber": 86,
+    "subcluster": "1.9 DISTINCT Deduplication",
+    "level": "Level 2 (Deduplication)",
+    "title": "Syntax #086: Extract all distinct membership plan tiers",
+    "table": "GymMembers",
+    "scenario": "Extract all distinct membership plan tiers.",
+    "businessObjective": "Extract all distinct membership plan tiers.",
+    "schemaSnippet": "GymMembers schema",
+    "targetQuery": "SELECT DISTINCT membership_plan\nFROM GymMembers;",
+    "syntaxBlueprint": "SELECT DISTINCT membership_plan\nFROM GymMembers;",
+    "syntaxRule": "Keywords are SELECT, FROM, AS, DISTINCT. Keep commas between columns only.",
+    "syntaxTrap": "Do not add trailing commas before FROM or quote column identifiers.",
+    "eli5Story": "Simple everyday task on GymMembers: Extract all distinct membership plan tiers.",
+    "commonMistakes": "Punctuation errors, trailing commas, or quotes around column names.",
+    "learningOutcomes": "Mastered 1.9 DISTINCT Deduplication on GymMembers.",
+    "challengeSlots": [
+      {
+        "type": "keyword",
+        "value": "SELECT"
+      },
+      {
+        "type": "keyword",
+        "value": "DISTINCT"
+      },
+      {
+        "type": "column",
+        "value": "membership_plan"
+      },
+      {
+        "type": "keyword",
+        "value": "FROM"
+      },
+      {
+        "type": "table",
+        "value": "GymMembers;"
+      }
+    ]
+  },
+  {
+    "drillNumber": 87,
+    "subcluster": "1.9 DISTINCT Deduplication",
+    "level": "Level 2 (Deduplication)",
+    "title": "Syntax #087: Find all unique movie directors who have reviews recorded",
+    "table": "MovieReviews",
+    "scenario": "Find all unique movie directors who have reviews recorded.",
+    "businessObjective": "Find all unique movie directors who have reviews recorded.",
+    "schemaSnippet": "MovieReviews schema",
+    "targetQuery": "SELECT DISTINCT director\nFROM MovieReviews;",
+    "syntaxBlueprint": "SELECT DISTINCT director\nFROM MovieReviews;",
+    "syntaxRule": "Keywords are SELECT, FROM, AS, DISTINCT. Keep commas between columns only.",
+    "syntaxTrap": "Do not add trailing commas before FROM or quote column identifiers.",
+    "eli5Story": "Simple everyday task on MovieReviews: Find all unique movie directors who have reviews recorded.",
+    "commonMistakes": "Punctuation errors, trailing commas, or quotes around column names.",
+    "learningOutcomes": "Mastered 1.9 DISTINCT Deduplication on MovieReviews.",
+    "challengeSlots": [
+      {
+        "type": "keyword",
+        "value": "SELECT"
+      },
+      {
+        "type": "keyword",
+        "value": "DISTINCT"
+      },
+      {
+        "type": "column",
+        "value": "director"
+      },
+      {
+        "type": "keyword",
+        "value": "FROM"
+      },
+      {
+        "type": "table",
+        "value": "MovieReviews;"
+      }
+    ]
+  },
+  {
+    "drillNumber": 88,
+    "subcluster": "1.9 DISTINCT Deduplication",
+    "level": "Level 2 (Deduplication)",
+    "title": "Syntax #088: List all unique origin departure airports",
+    "table": "FlightSchedule",
+    "scenario": "List all unique origin departure airports.",
+    "businessObjective": "List all unique origin departure airports.",
+    "schemaSnippet": "FlightSchedule schema",
+    "targetQuery": "SELECT DISTINCT origin_airport\nFROM FlightSchedule;",
+    "syntaxBlueprint": "SELECT DISTINCT origin_airport\nFROM FlightSchedule;",
+    "syntaxRule": "Keywords are SELECT, FROM, AS, DISTINCT. Keep commas between columns only.",
+    "syntaxTrap": "Do not add trailing commas before FROM or quote column identifiers.",
+    "eli5Story": "Simple everyday task on FlightSchedule: List all unique origin departure airports.",
+    "commonMistakes": "Punctuation errors, trailing commas, or quotes around column names.",
+    "learningOutcomes": "Mastered 1.9 DISTINCT Deduplication on FlightSchedule.",
+    "challengeSlots": [
+      {
+        "type": "keyword",
+        "value": "SELECT"
+      },
+      {
+        "type": "keyword",
+        "value": "DISTINCT"
+      },
+      {
+        "type": "column",
+        "value": "origin_airport"
+      },
+      {
+        "type": "keyword",
+        "value": "FROM"
+      },
+      {
+        "type": "table",
+        "value": "FlightSchedule;"
+      }
+    ]
+  },
+  {
+    "drillNumber": 89,
+    "subcluster": "1.9 DISTINCT Deduplication",
+    "level": "Level 2 (Deduplication)",
+    "title": "Syntax #089: Find all distinct animal species treated at the clinic",
+    "table": "PetClinic",
+    "scenario": "Find all distinct animal species treated at the clinic.",
+    "businessObjective": "Find all distinct animal species treated at the clinic.",
+    "schemaSnippet": "PetClinic schema",
+    "targetQuery": "SELECT DISTINCT species\nFROM PetClinic;",
+    "syntaxBlueprint": "SELECT DISTINCT species\nFROM PetClinic;",
+    "syntaxRule": "Keywords are SELECT, FROM, AS, DISTINCT. Keep commas between columns only.",
+    "syntaxTrap": "Do not add trailing commas before FROM or quote column identifiers.",
+    "eli5Story": "Simple everyday task on PetClinic: Find all distinct animal species treated at the clinic.",
+    "commonMistakes": "Punctuation errors, trailing commas, or quotes around column names.",
+    "learningOutcomes": "Mastered 1.9 DISTINCT Deduplication on PetClinic.",
+    "challengeSlots": [
+      {
+        "type": "keyword",
+        "value": "SELECT"
+      },
+      {
+        "type": "keyword",
+        "value": "DISTINCT"
+      },
+      {
+        "type": "column",
+        "value": "species"
+      },
+      {
+        "type": "keyword",
+        "value": "FROM"
+      },
+      {
+        "type": "table",
+        "value": "PetClinic;"
+      }
+    ]
+  },
+  {
+    "drillNumber": 90,
+    "subcluster": "1.9 DISTINCT Deduplication",
+    "level": "Level 2 (Deduplication)",
+    "title": "Syntax #090: Find distinct combinations of customer name and shipping city (multi-column DISTINCT)",
+    "table": "Orders",
+    "scenario": "Find distinct combinations of customer name and shipping city (multi-column DISTINCT).",
+    "businessObjective": "Find distinct combinations of customer name and shipping city (multi-column DISTINCT).",
+    "schemaSnippet": "Orders schema",
+    "targetQuery": "SELECT DISTINCT customer_name, shipping_city\nFROM Orders;",
+    "syntaxBlueprint": "SELECT DISTINCT customer_name, shipping_city\nFROM Orders;",
+    "syntaxRule": "Keywords are SELECT, FROM, AS, DISTINCT. Keep commas between columns only.",
+    "syntaxTrap": "Do not add trailing commas before FROM or quote column identifiers.",
+    "eli5Story": "Simple everyday task on Orders: Find distinct combinations of customer name and shipping city (multi-column DISTINCT).",
+    "commonMistakes": "Punctuation errors, trailing commas, or quotes around column names.",
+    "learningOutcomes": "Mastered 1.9 DISTINCT Deduplication on Orders.",
+    "challengeSlots": [
+      {
+        "type": "keyword",
+        "value": "SELECT"
+      },
+      {
+        "type": "keyword",
+        "value": "DISTINCT"
+      },
+      {
+        "type": "column",
+        "value": "customer_name,"
+      },
+      {
+        "type": "column",
+        "value": "shipping_city"
+      },
+      {
+        "type": "keyword",
+        "value": "FROM"
+      },
+      {
+        "type": "table",
+        "value": "Orders;"
+      }
+    ]
+  },
+  {
+    "drillNumber": 91,
+    "subcluster": "1.10 Bug Hunts & Edge Cases",
+    "level": "Level 3 (Bug Hunts)",
+    "title": "Syntax #091: Fix the trailing comma bug: 'SELECT full_name, city, FROM Students;'",
+    "table": "Students",
+    "scenario": "Fix the trailing comma bug: 'SELECT full_name, city, FROM Students;'",
+    "businessObjective": "Fix the trailing comma bug: 'SELECT full_name, city, FROM Students;'",
+    "schemaSnippet": "Students schema",
+    "targetQuery": "SELECT full_name, city\nFROM Students;",
+    "syntaxBlueprint": "SELECT column_1, column_2\nFROM Students;",
+    "syntaxRule": "Keywords are SELECT, FROM, AS, DISTINCT. Keep commas between columns only.",
+    "syntaxTrap": "Do not add trailing commas before FROM or quote column identifiers.",
+    "eli5Story": "Simple everyday task on Students: Fix the trailing comma bug: 'SELECT full_name, city, FROM Students;'",
+    "commonMistakes": "Punctuation errors, trailing commas, or quotes around column names.",
+    "learningOutcomes": "Mastered 1.10 Bug Hunts & Edge Cases on Students.",
+    "challengeSlots": [
+      {
+        "type": "keyword",
+        "value": "SELECT"
+      },
+      {
+        "type": "column",
+        "value": "full_name,"
+      },
+      {
+        "type": "column",
+        "value": "city"
+      },
+      {
+        "type": "keyword",
+        "value": "FROM"
+      },
+      {
+        "type": "table",
+        "value": "Students;"
+      }
+    ]
+  },
+  {
+    "drillNumber": 92,
+    "subcluster": "1.10 Bug Hunts & Edge Cases",
+    "level": "Level 3 (Bug Hunts)",
+    "title": "Syntax #092: Fix the unquoted column alias containing spaces: 'SELECT title, price AS Retail Price FROM Books;'",
+    "table": "Books",
+    "scenario": "Fix the unquoted column alias containing spaces: 'SELECT title, price AS Retail Price FROM Books;'",
+    "businessObjective": "Fix the unquoted column alias containing spaces: 'SELECT title, price AS Retail Price FROM Books;'",
+    "schemaSnippet": "Books schema",
+    "targetQuery": "SELECT title, price\nFROM Books;",
+    "syntaxBlueprint": "SELECT column_1, column_2\nFROM Books;",
+    "syntaxRule": "Keywords are SELECT, FROM, AS, DISTINCT. Keep commas between columns only.",
+    "syntaxTrap": "Do not add trailing commas before FROM or quote column identifiers.",
+    "eli5Story": "Simple everyday task on Books: Fix the unquoted column alias containing spaces: 'SELECT title, price AS Retail Price FROM Books;'",
+    "commonMistakes": "Punctuation errors, trailing commas, or quotes around column names.",
+    "learningOutcomes": "Mastered 1.10 Bug Hunts & Edge Cases on Books.",
+    "challengeSlots": [
+      {
+        "type": "keyword",
+        "value": "SELECT"
+      },
+      {
+        "type": "column",
+        "value": "title,"
+      },
+      {
+        "type": "column",
+        "value": "price"
+      },
+      {
+        "type": "keyword",
+        "value": "FROM"
+      },
+      {
+        "type": "table",
+        "value": "Books;"
+      }
+    ]
+  },
+  {
+    "drillNumber": 93,
+    "subcluster": "1.10 Bug Hunts & Edge Cases",
+    "level": "Level 3 (Bug Hunts)",
+    "title": "Syntax #093: Fix the misplaced DISTINCT keyword: 'SELECT first_name, DISTINCT department FROM Employees;'",
+    "table": "Employees",
+    "scenario": "Fix the misplaced DISTINCT keyword: 'SELECT first_name, DISTINCT department FROM Employees;'",
+    "businessObjective": "Fix the misplaced DISTINCT keyword: 'SELECT first_name, DISTINCT department FROM Employees;'",
+    "schemaSnippet": "Employees schema",
+    "targetQuery": "SELECT first_name, salary\nFROM Employees;",
+    "syntaxBlueprint": "SELECT column_1, column_2\nFROM Employees;",
+    "syntaxRule": "Keywords are SELECT, FROM, AS, DISTINCT. Keep commas between columns only.",
+    "syntaxTrap": "Do not add trailing commas before FROM or quote column identifiers.",
+    "eli5Story": "Simple everyday task on Employees: Fix the misplaced DISTINCT keyword: 'SELECT first_name, DISTINCT department FROM Employees;'",
+    "commonMistakes": "Punctuation errors, trailing commas, or quotes around column names.",
+    "learningOutcomes": "Mastered 1.10 Bug Hunts & Edge Cases on Employees.",
+    "challengeSlots": [
+      {
+        "type": "keyword",
+        "value": "SELECT"
+      },
+      {
+        "type": "column",
+        "value": "first_name,"
+      },
+      {
+        "type": "column",
+        "value": "salary"
+      },
+      {
+        "type": "keyword",
+        "value": "FROM"
+      },
+      {
+        "type": "table",
+        "value": "Employees;"
+      }
+    ]
+  },
+  {
+    "drillNumber": 94,
+    "subcluster": "1.10 Bug Hunts & Edge Cases",
+    "level": "Level 3 (Bug Hunts)",
+    "title": "Syntax #094: Fix the single-quoted column name: \"SELECT 'item_name' FROM GroceryItems;\" (outputs literal string instead of column)",
+    "table": "GroceryItems",
+    "scenario": "Fix the single-quoted column name: \"SELECT 'item_name' FROM GroceryItems;\" (outputs literal string instead of column).",
+    "businessObjective": "Fix the single-quoted column name: \"SELECT 'item_name' FROM GroceryItems;\" (outputs literal string instead of column).",
+    "schemaSnippet": "GroceryItems schema",
+    "targetQuery": "SELECT item_name, unit_price\nFROM GroceryItems;",
+    "syntaxBlueprint": "SELECT column_1, column_2\nFROM GroceryItems;",
+    "syntaxRule": "Keywords are SELECT, FROM, AS, DISTINCT. Keep commas between columns only.",
+    "syntaxTrap": "Do not add trailing commas before FROM or quote column identifiers.",
+    "eli5Story": "Simple everyday task on GroceryItems: Fix the single-quoted column name: \"SELECT 'item_name' FROM GroceryItems;\" (outputs literal string instead of column).",
+    "commonMistakes": "Punctuation errors, trailing commas, or quotes around column names.",
+    "learningOutcomes": "Mastered 1.10 Bug Hunts & Edge Cases on GroceryItems.",
+    "challengeSlots": [
+      {
+        "type": "keyword",
+        "value": "SELECT"
+      },
+      {
+        "type": "column",
+        "value": "item_name,"
+      },
+      {
+        "type": "column",
+        "value": "unit_price"
+      },
+      {
+        "type": "keyword",
+        "value": "FROM"
+      },
+      {
+        "type": "table",
+        "value": "GroceryItems;"
+      }
+    ]
+  },
+  {
+    "drillNumber": 95,
+    "subcluster": "1.10 Bug Hunts & Edge Cases",
+    "level": "Level 3 (Bug Hunts)",
+    "title": "Syntax #095: Fix missing comma between calculated expression and next column",
+    "table": "Orders",
+    "scenario": "Fix missing comma between calculated expression and next column.",
+    "businessObjective": "Fix missing comma between calculated expression and next column.",
+    "schemaSnippet": "Orders schema",
+    "targetQuery": "SELECT order_id, quantity * unit_price AS subtotal\nFROM Orders;",
+    "syntaxBlueprint": "SELECT column_1, column_2\nFROM Orders;",
+    "syntaxRule": "Keywords are SELECT, FROM, AS, DISTINCT. Keep commas between columns only.",
+    "syntaxTrap": "Do not add trailing commas before FROM or quote column identifiers.",
+    "eli5Story": "Simple everyday task on Orders: Fix missing comma between calculated expression and next column.",
+    "commonMistakes": "Punctuation errors, trailing commas, or quotes around column names.",
+    "learningOutcomes": "Mastered 1.10 Bug Hunts & Edge Cases on Orders.",
+    "challengeSlots": [
+      {
+        "type": "keyword",
+        "value": "SELECT"
+      },
+      {
+        "type": "column",
+        "value": "order_id,"
+      },
+      {
+        "type": "column",
+        "value": "quantity"
+      },
+      {
+        "type": "column",
+        "value": "*"
+      },
+      {
+        "type": "column",
+        "value": "unit_price"
+      },
+      {
+        "type": "keyword",
+        "value": "AS"
+      },
+      {
+        "type": "column",
+        "value": "subtotal"
+      },
+      {
+        "type": "keyword",
+        "value": "FROM"
+      },
+      {
+        "type": "table",
+        "value": "Orders;"
+      }
+    ]
+  },
+  {
+    "drillNumber": 96,
+    "subcluster": "1.10 Bug Hunts & Edge Cases",
+    "level": "Level 3 (Bug Hunts)",
+    "title": "Syntax #096: Fix misspelled column identifier: 'SELECT song_title FROM MusicTracks;'",
+    "table": "MusicTracks",
+    "scenario": "Fix misspelled column identifier: 'SELECT song_title FROM MusicTracks;'",
+    "businessObjective": "Fix misspelled column identifier: 'SELECT song_title FROM MusicTracks;'",
+    "schemaSnippet": "MusicTracks schema",
+    "targetQuery": "SELECT track_title, artist_name\nFROM MusicTracks;",
+    "syntaxBlueprint": "SELECT column_1, column_2\nFROM MusicTracks;",
+    "syntaxRule": "Keywords are SELECT, FROM, AS, DISTINCT. Keep commas between columns only.",
+    "syntaxTrap": "Do not add trailing commas before FROM or quote column identifiers.",
+    "eli5Story": "Simple everyday task on MusicTracks: Fix misspelled column identifier: 'SELECT song_title FROM MusicTracks;'",
+    "commonMistakes": "Punctuation errors, trailing commas, or quotes around column names.",
+    "learningOutcomes": "Mastered 1.10 Bug Hunts & Edge Cases on MusicTracks.",
+    "challengeSlots": [
+      {
+        "type": "keyword",
+        "value": "SELECT"
+      },
+      {
+        "type": "column",
+        "value": "track_title,"
+      },
+      {
+        "type": "column",
+        "value": "artist_name"
+      },
+      {
+        "type": "keyword",
+        "value": "FROM"
+      },
+      {
+        "type": "table",
+        "value": "MusicTracks;"
+      }
+    ]
+  },
+  {
+    "drillNumber": 97,
+    "subcluster": "1.10 Bug Hunts & Edge Cases",
+    "level": "Level 3 (Bug Hunts)",
+    "title": "Syntax #097: Fix table name typo: 'SELECT member_name FROM GymMember;' (singular vs plural)",
+    "table": "GymMembers",
+    "scenario": "Fix table name typo: 'SELECT member_name FROM GymMember;' (singular vs plural).",
+    "businessObjective": "Fix table name typo: 'SELECT member_name FROM GymMember;' (singular vs plural).",
+    "schemaSnippet": "GymMembers schema",
+    "targetQuery": "SELECT member_name, monthly_fee\nFROM GymMembers;",
+    "syntaxBlueprint": "SELECT column_1, column_2\nFROM GymMembers;",
+    "syntaxRule": "Keywords are SELECT, FROM, AS, DISTINCT. Keep commas between columns only.",
+    "syntaxTrap": "Do not add trailing commas before FROM or quote column identifiers.",
+    "eli5Story": "Simple everyday task on GymMembers: Fix table name typo: 'SELECT member_name FROM GymMember;' (singular vs plural).",
+    "commonMistakes": "Punctuation errors, trailing commas, or quotes around column names.",
+    "learningOutcomes": "Mastered 1.10 Bug Hunts & Edge Cases on GymMembers.",
+    "challengeSlots": [
+      {
+        "type": "keyword",
+        "value": "SELECT"
+      },
+      {
+        "type": "column",
+        "value": "member_name,"
+      },
+      {
+        "type": "column",
+        "value": "monthly_fee"
+      },
+      {
+        "type": "keyword",
+        "value": "FROM"
+      },
+      {
+        "type": "table",
+        "value": "GymMembers;"
+      }
+    ]
+  },
+  {
+    "drillNumber": 98,
+    "subcluster": "1.10 Bug Hunts & Edge Cases",
+    "level": "Level 3 (Bug Hunts)",
+    "title": "Syntax #098: Fix hyphen used in column alias: 'SELECT movie_title AS movie-name FROM MovieReviews;'",
+    "table": "MovieReviews",
+    "scenario": "Fix hyphen used in column alias: 'SELECT movie_title AS movie-name FROM MovieReviews;'",
+    "businessObjective": "Fix hyphen used in column alias: 'SELECT movie_title AS movie-name FROM MovieReviews;'",
+    "schemaSnippet": "MovieReviews schema",
+    "targetQuery": "SELECT movie_title, star_rating\nFROM MovieReviews;",
+    "syntaxBlueprint": "SELECT column_1, column_2\nFROM MovieReviews;",
+    "syntaxRule": "Keywords are SELECT, FROM, AS, DISTINCT. Keep commas between columns only.",
+    "syntaxTrap": "Do not add trailing commas before FROM or quote column identifiers.",
+    "eli5Story": "Simple everyday task on MovieReviews: Fix hyphen used in column alias: 'SELECT movie_title AS movie-name FROM MovieReviews;'",
+    "commonMistakes": "Punctuation errors, trailing commas, or quotes around column names.",
+    "learningOutcomes": "Mastered 1.10 Bug Hunts & Edge Cases on MovieReviews.",
+    "challengeSlots": [
+      {
+        "type": "keyword",
+        "value": "SELECT"
+      },
+      {
+        "type": "column",
+        "value": "movie_title,"
+      },
+      {
+        "type": "column",
+        "value": "star_rating"
+      },
+      {
+        "type": "keyword",
+        "value": "FROM"
+      },
+      {
+        "type": "table",
+        "value": "MovieReviews;"
+      }
+    ]
+  },
+  {
+    "drillNumber": 99,
+    "subcluster": "1.10 Bug Hunts & Edge Cases",
+    "level": "Level 3 (Bug Hunts)",
+    "title": "Syntax #099: Fix missing FROM keyword: 'SELECT flight_id, origin_airport FlightSchedule;'",
+    "table": "FlightSchedule",
+    "scenario": "Fix missing FROM keyword: 'SELECT flight_id, origin_airport FlightSchedule;'",
+    "businessObjective": "Fix missing FROM keyword: 'SELECT flight_id, origin_airport FlightSchedule;'",
+    "schemaSnippet": "FlightSchedule schema",
+    "targetQuery": "SELECT flight_id, origin_airport, dest_airport\nFROM FlightSchedule;",
+    "syntaxBlueprint": "SELECT column_1, column_2\nFROM FlightSchedule;",
+    "syntaxRule": "Keywords are SELECT, FROM, AS, DISTINCT. Keep commas between columns only.",
+    "syntaxTrap": "Do not add trailing commas before FROM or quote column identifiers.",
+    "eli5Story": "Simple everyday task on FlightSchedule: Fix missing FROM keyword: 'SELECT flight_id, origin_airport FlightSchedule;'",
+    "commonMistakes": "Punctuation errors, trailing commas, or quotes around column names.",
+    "learningOutcomes": "Mastered 1.10 Bug Hunts & Edge Cases on FlightSchedule.",
+    "challengeSlots": [
+      {
+        "type": "keyword",
+        "value": "SELECT"
+      },
+      {
+        "type": "column",
+        "value": "flight_id,"
+      },
+      {
+        "type": "column",
+        "value": "origin_airport,"
+      },
+      {
+        "type": "column",
+        "value": "dest_airport"
+      },
+      {
+        "type": "keyword",
+        "value": "FROM"
+      },
+      {
+        "type": "table",
+        "value": "FlightSchedule;"
+      }
+    ]
+  },
+  {
+    "drillNumber": 100,
+    "subcluster": "1.10 Bug Hunts & Edge Cases",
+    "level": "Level 3 (Bug Hunts)",
+    "title": "Syntax #100: Fix premature semicolon: 'SELECT pet_name; FROM PetClinic;'",
+    "table": "PetClinic",
+    "scenario": "Fix premature semicolon: 'SELECT pet_name; FROM PetClinic;'",
+    "businessObjective": "Fix premature semicolon: 'SELECT pet_name; FROM PetClinic;'",
+    "schemaSnippet": "PetClinic schema",
+    "targetQuery": "SELECT pet_name, age_years\nFROM PetClinic;",
+    "syntaxBlueprint": "SELECT column_1, column_2\nFROM PetClinic;",
+    "syntaxRule": "Keywords are SELECT, FROM, AS, DISTINCT. Keep commas between columns only.",
+    "syntaxTrap": "Do not add trailing commas before FROM or quote column identifiers.",
+    "eli5Story": "Simple everyday task on PetClinic: Fix premature semicolon: 'SELECT pet_name; FROM PetClinic;'",
+    "commonMistakes": "Punctuation errors, trailing commas, or quotes around column names.",
+    "learningOutcomes": "Mastered 1.10 Bug Hunts & Edge Cases on PetClinic.",
+    "challengeSlots": [
+      {
+        "type": "keyword",
+        "value": "SELECT"
+      },
+      {
+        "type": "column",
+        "value": "pet_name,"
+      },
+      {
+        "type": "column",
+        "value": "age_years"
+      },
+      {
+        "type": "keyword",
+        "value": "FROM"
+      },
+      {
+        "type": "table",
+        "value": "PetClinic;"
+      }
+    ]
+  }
+]
