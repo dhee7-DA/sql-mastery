@@ -58,7 +58,17 @@ window.CASE_BLANKS_ENGINE = (() => {
     'LEFT JOIN': ['LEFT JOIN', 'INNER JOIN', 'RIGHT JOIN', 'OUTER JOIN'],
     'RIGHT JOIN': ['RIGHT JOIN', 'LEFT JOIN', 'INNER JOIN', 'CROSS JOIN'],
     'CROSS JOIN': ['CROSS JOIN', 'INNER JOIN', 'FULL JOIN', 'LEFT JOIN'],
-    'ON': ['ON', 'WHERE', 'USING', 'MATCHING']
+    'ON': ['ON', 'WHERE', 'USING', 'MATCHING'],
+    'SELECT': ['SELECT', 'EXTRACT', 'GET', 'CHOOSE'],
+    'FROM': ['FROM', 'INTO', 'SOURCE', 'IN'],
+    'AS': ['AS', 'ALIAS', 'NAME', 'LABEL'],
+    'CONCAT': ['CONCAT', 'COMBINE', 'APPEND', 'MERGE'],
+    'UPPER': ['UPPER', 'UCASE', 'CAPITAL', 'BIG'],
+    'LOWER': ['LOWER', 'LCASE', 'SMALL', 'DOWN'],
+    'YEAR': ['YEAR', 'DATE_YEAR', 'EXTRACT_YEAR', 'YR'],
+    'MONTH': ['MONTH', 'DATE_MONTH', 'EXTRACT_MONTH', 'MO'],
+    'DAY': ['DAY', 'DATE_DAY', 'EXTRACT_DAY', 'DY'],
+    'CURRENT_DATE': ['CURRENT_DATE', 'TODAY', 'NOW()', 'CURDATE()']
   };
 
   // Keywords ranked by educational / interview trap value
@@ -102,7 +112,22 @@ window.CASE_BLANKS_ENGINE = (() => {
     'SUBSTRING',
     'AND',
     'OR',
-    'NOT'
+    'NOT',
+    'SELECT',
+    'FROM',
+    'AS',
+    'CONCAT',
+    'UPPER',
+    'LOWER',
+    'YEAR',
+    'MONTH',
+    'DAY',
+    'CURRENT_DATE',
+    'COUNT',
+    'SUM',
+    'AVG',
+    'MIN',
+    'MAX'
   ];
 
   // Utility: Shuffle an array in place

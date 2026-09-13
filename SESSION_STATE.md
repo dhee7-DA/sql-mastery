@@ -17,13 +17,13 @@
 - **Visualizer & Masterclass Super-Upgrades**:
   - **12 Visual Masterclass Modules with Poppy Neo-Brutalist SVGs**: Textbook CS theory, formulas, storage physics, and gotchas covering Modules 01 through 12 (now including Module 12: Analytical Window Functions & Sliding Frame Physics).
   - **The 2,100 Master MCQ Technical Vault**: 2,100 deep technical checks across 23 distinct categories, including **350 Dedicated Join MCQs**, **500 Dedicated Window Function MCQs**, and **150 Section 10 Subquery/CTE/Set Operation MCQs** with strictly balanced 25% option distribution.
-  - **The 1,490 Corporate Case Study Master Vault**: Scaled across 10 sections spanning 10 corporate domains (including 390 Relational Joins cases, 300 Window Functions cases, and 150 Section 10 Advanced SQL Engine cases with zero repetitive loops, 530 Easy, 530 Medium, 430 Hard).
+  - **The 1,790 Corporate & Foundations Case Study Master Vault**: Scaled across 11 sections spanning 10 corporate domains plus Section 0 Syntax Gym (including 300 foundational micro-drills, 390 Relational Joins cases, 300 Window Functions cases, and 150 Section 10 Advanced SQL Engine cases with zero repetitive loops, 830 Easy, 530 Medium, 430 Hard).
   - **30 Interactive Quests**: Levels 1–30 with audio FX, token puzzle mechanics, and instant evaluation.
   - **Track 04 in Guided Learning Lab**: 8 dedicated steps covering Inner, Left, Right, Full Outer, Anti, Cross, Self, and Non-Equi Joins.
   - **🤖 "Byte" the Animated SQL Cyber-Bot Companion**: Reactive SVG buddy with 5 facial expressions (idle, happy, star-eyes celebrating, confused, pensive), contextual hints, view-switch commentary, poke interactions, and audio integration.
 - **Next Immediate Action**: Advance to Day 13 (*Real-World Business Analytics: Retention Cohort Heatmaps, Customer Churn Rates & LTV*)
 - **Total Problems Completed in Intensive**: 66 / 68 Problems
-- **Last Updated**: 2026-09-13 17:40 IST
+- **Last Updated**: 2026-09-13 20:30 IST
 
 ---
 
@@ -82,6 +82,12 @@
 - **150 Section 10 MCQs Added**: Vault scaled to 2,100 technical MCQs across 23 categories with balanced 25% option distribution ([38, 38, 37, 37]).
 - **150 Section 10 Case Studies Added**: Vault scaled to 1,490 enterprise problems across 10 sections (#1 to #1490 contiguous, 0 duplicate titles, exactly 50 Easy, 50 Medium, 50 Hard).
 - **Visualizer Platform Upgraded**: Added dedicated Section 10 category button, updated counters to 1,490 cases / 2,100 MCQs, and extended live simulation engine.
+
+### 7. 2026-09-13 (Section 0: Foundations & The SQL Syntax Gym + Inline Table Previews)
+- **300 Foundational Micro-Drills Added**: Built Section 0 covering 10 everyday, relatable tables across SELECT (100 drills), WHERE (100 drills), and ORDER BY/LIMIT (100 drills) to cement syntax fluency before corporate case studies.
+- **Vault Scaled to 1,790 Case Studies**: All 1,790 cases strictly contiguous (#1 to #1790) with 100% unique titles (830 Easy, 530 Medium, 430 Hard).
+- **Visual Relational Data Matrix**: Integrated interactive inline table previews directly onto case study cards with dynamic 3/5 row toggles and syntax-colored values.
+- **100% Audit Verified**: Automated audit suites verified perfect schema integrity, zero null attributes, and zero broken links.
 
 
 

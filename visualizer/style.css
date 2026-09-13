@@ -2925,6 +2925,329 @@ body {
   color: var(--text-secondary);
 }
 
+/* =============================================================================
+   INLINE CASE STUDY TABLE PREVIEW (Visual Relational Data Matrix)
+   ============================================================================= */
+.case-table-preview-card {
+  margin: 10px 0 12px 0;
+  background: rgba(12, 16, 26, 0.85);
+  border: 2px solid #000000;
+  border-radius: 10px;
+  box-shadow: 3px 3px 0px #000000;
+  overflow: hidden;
+  font-family: var(--font-mono);
+}
+
+.case-table-preview-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 6px 12px;
+  background: rgba(30, 41, 59, 0.7);
+  border-bottom: 1.5px solid #000000;
+}
+
+.case-table-title-group {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+}
+
+.case-table-badge {
+  font-size: 11.5px;
+  font-weight: 800;
+  color: #000000;
+  background: #fef08a;
+  border: 1.5px solid #000000;
+  padding: 2px 7px;
+  border-radius: 5px;
+  box-shadow: 1px 1px 0px #000000;
+  letter-spacing: 0.3px;
+}
+
+.case-table-count-pill {
+  font-size: 10.5px;
+  color: var(--text-muted);
+  font-weight: 600;
+}
+
+.case-table-expand-btn {
+  background: rgba(56, 189, 248, 0.15);
+  color: #38bdf8;
+  border: 1.5px solid #38bdf8;
+  border-radius: 5px;
+  padding: 1px 8px;
+  font-size: 10px;
+  font-family: var(--font-mono);
+  font-weight: 700;
+  cursor: pointer;
+  transition: all 0.15s ease;
+}
+
+.case-table-expand-btn:hover {
+  background: #38bdf8;
+  color: #000000;
+}
+
+.case-table-scroll-wrap {
+  max-height: 140px;
+  overflow-x: auto;
+  overflow-y: auto;
+  scrollbar-width: thin;
+}
+
+.case-inline-table {
+  width: 100%;
+  border-collapse: collapse;
+  font-size: 11px;
+  text-align: left;
+}
+
+.case-inline-table th {
+  position: sticky;
+  top: 0;
+  background: #090d16;
+  color: #94a3b8;
+  font-weight: 700;
+  padding: 5px 10px;
+  border-bottom: 1.5px solid rgba(255, 255, 255, 0.1);
+  white-space: nowrap;
+  font-size: 10.5px;
+  text-transform: uppercase;
+  letter-spacing: 0.4px;
+  z-index: 1;
+}
+
+.case-inline-table td {
+  padding: 4.5px 10px;
+  border-bottom: 1px solid rgba(255, 255, 255, 0.05);
+  white-space: nowrap;
+  color: var(--text-secondary);
+}
+
+.case-inline-table tr:last-child td {
+  border-bottom: none;
+}
+
+.case-inline-table tr:hover td {
+  background: rgba(56, 189, 248, 0.08);
+}
+
+.case-inline-table .val-str {
+  color: #34d399;
+}
+
+.case-inline-table .val-num {
+  color: #38bdf8;
+  font-weight: 600;
+}
+
+.case-inline-table .val-bool {
+  color: #f472b6;
+  font-weight: 700;
+}
+
+.case-inline-table .val-null {
+  color: #94a3b8;
+  font-style: italic;
+  opacity: 0.6;
+}
+
+/* Light Theme Overrides */
+[data-theme="paper-white"] .case-table-preview-card,
+[data-theme="warm-cream"] .case-table-preview-card {
+  background: #ffffff;
+  border: 2px solid #000000;
+  box-shadow: 3px 3px 0px #000000;
+}
+
+[data-theme="paper-white"] .case-table-preview-header,
+[data-theme="warm-cream"] .case-table-preview-header {
+  background: #f1f5f9;
+  border-bottom: 1.5px solid #000000;
+}
+
+[data-theme="paper-white"] .case-inline-table th,
+[data-theme="warm-cream"] .case-inline-table th {
+  background: #e2e8f0;
+  color: #1e293b;
+  border-bottom: 1.5px solid #cbd5e1;
+}
+
+[data-theme="paper-white"] .case-inline-table td,
+[data-theme="warm-cream"] .case-inline-table td {
+  color: #0f172a;
+  border-bottom: 1px solid #f1f5f9;
+}
+
+[data-theme="paper-white"] .case-inline-table .val-str,
+[data-theme="warm-cream"] .case-inline-table .val-str {
+  color: #059669;
+}
+
+[data-theme="paper-white"] .case-inline-table .val-num,
+[data-theme="warm-cream"] .case-inline-table .val-num {
+  color: #0284c7;
+}
+
+[data-theme="paper-white"] .case-inline-table .val-bool,
+[data-theme="warm-cream"] .case-inline-table .val-bool {
+  color: #db2777;
+}
+
+/* =============================================================================
+   SYNTAX GYM: 10 EVERYDAY RELATIONAL TABLES BROWSER
+   ============================================================================= */
+.gym-tables-browser-card {
+  margin: 14px 0 20px 0;
+  background: var(--bg-card);
+  border: 2px solid #000000;
+  border-radius: 12px;
+  box-shadow: 4px 4px 0px #000000;
+  padding: 16px;
+  display: flex;
+  flex-direction: column;
+  gap: 14px;
+}
+
+.gym-browser-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  flex-wrap: wrap;
+  gap: 10px;
+}
+
+.gym-browser-title-wrap {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+}
+
+.gym-browser-badge {
+  font-size: 11px;
+  font-weight: 800;
+  background: #f59e0b;
+  color: #000000;
+  padding: 3px 8px;
+  border-radius: 6px;
+  border: 1.5px solid #000000;
+  box-shadow: 1px 1px 0px #000000;
+  letter-spacing: 0.5px;
+}
+
+.gym-browser-title {
+  font-size: 15px;
+  font-weight: 800;
+  color: var(--text-primary);
+  margin: 0;
+}
+
+.gym-browser-subtitle {
+  font-size: 11.5px;
+  color: var(--text-muted);
+  margin: 2px 0 0 0;
+}
+
+.gym-tables-tabs-strip {
+  display: flex;
+  gap: 6px;
+  flex-wrap: wrap;
+  padding: 4px 0;
+}
+
+.gym-table-tab-btn {
+  background: var(--bg-primary);
+  color: var(--text-secondary);
+  border: 1.5px solid #000000;
+  border-radius: 8px;
+  padding: 6px 12px;
+  font-size: 11.5px;
+  font-weight: 700;
+  cursor: pointer;
+  box-shadow: 2px 2px 0px #000000;
+  transition: all 0.15s ease;
+  display: flex;
+  align-items: center;
+  gap: 6px;
+}
+
+.gym-table-tab-btn:hover {
+  transform: translate(-1px, -1px);
+  box-shadow: 3px 3px 0px #000000;
+  color: var(--text-primary);
+}
+
+.gym-table-tab-btn.active {
+  background: #38bdf8;
+  color: #000000;
+  transform: translate(-1px, -1px);
+  box-shadow: 3px 3px 0px #000000;
+}
+
+.gym-table-detail-box {
+  background: rgba(10, 14, 22, 0.75);
+  border: 1.5px solid #000000;
+  border-radius: 10px;
+  padding: 14px;
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+}
+
+.gym-table-meta-row {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  flex-wrap: wrap;
+  gap: 8px;
+}
+
+.gym-table-meta-info {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+}
+
+.gym-table-schema-code {
+  font-family: var(--font-mono);
+  font-size: 11px;
+  color: #a5b4fc;
+  background: rgba(99, 102, 241, 0.12);
+  border: 1px solid rgba(99, 102, 241, 0.3);
+  padding: 2px 8px;
+  border-radius: 5px;
+}
+
+.gym-table-cols-list {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 6px;
+}
+
+.gym-col-chip {
+  font-family: var(--font-mono);
+  font-size: 10.5px;
+  background: rgba(30, 41, 59, 0.8);
+  border: 1px solid rgba(255, 255, 255, 0.1);
+  padding: 2px 7px;
+  border-radius: 5px;
+  color: #e2e8f0;
+}
+
+.gym-col-chip.pk {
+  border-color: #f59e0b;
+  color: #fef08a;
+  background: rgba(245, 158, 11, 0.15);
+}
+
+.gym-table-sample-preview {
+  overflow-x: auto;
+  border-radius: 8px;
+  border: 1.5px solid #000000;
+}
+
+
 /* Modern Code Terminal Canvas - Neo-Brutalist Console */
 .case-terminal-box {
   background: #080c14;

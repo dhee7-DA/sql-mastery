@@ -37,17 +37,17 @@ const { ALL_500_CASE_STUDIES } = require(caseFile);
 
 console.log(`\n--- CASE STUDIES VAULT AUDIT ---`);
 console.log(`Total Case Studies: ${ALL_500_CASE_STUDIES.length}`);
-if (ALL_500_CASE_STUDIES.length !== 1490) {
-  throw new Error(`Expected 1490 Case Studies, found ${ALL_500_CASE_STUDIES.length}`);
+if (ALL_500_CASE_STUDIES.length !== 1790) {
+  throw new Error(`Expected 1790 Case Studies, found ${ALL_500_CASE_STUDIES.length}`);
 }
 
 // Check IDs
-for (let i = 0; i < 1490; i++) {
+for (let i = 0; i < 1790; i++) {
   if (ALL_500_CASE_STUDIES[i].id !== i + 1) {
     throw new Error(`ID mismatch at index ${i}: expected ${i+1}, found ${ALL_500_CASE_STUDIES[i].id}`);
   }
 }
-console.log(`All IDs strictly contiguous from #1 to #1490.`);
+console.log(`All IDs strictly contiguous from #1 to #1790.`);
 
 // Check titles uniqueness
 const titles = new Set();
@@ -57,7 +57,7 @@ ALL_500_CASE_STUDIES.forEach((c, idx) => {
   }
   titles.add(c.title);
 });
-console.log(`All 1,490 case study titles are 100% unique.`);
+console.log(`All 1,790 case study titles are 100% unique.`);
 
 // Section 9 audit
 const sec9 = ALL_500_CASE_STUDIES.filter(c => c.section && c.section.includes("Section 9"));

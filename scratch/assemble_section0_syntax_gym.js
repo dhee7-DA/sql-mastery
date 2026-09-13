@@ -41,6 +41,7 @@ const caseStudiesSection0 = all300.map((d, index) => {
     section: "Section 0: Foundations & Syntax Gym",
     title: d.title,
     industry: "Foundations",
+    table: d.table,
     difficulty: "Easy",
     scenario: d.scenario,
     businessObjective: d.businessObjective,

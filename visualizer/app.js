@@ -1866,6 +1866,10 @@ function switchMainView(targetId) {
     renderMcqs();
     if (window.SQL_BUDDY) window.SQL_BUDDY.say("🧠 2,100 Master MCQs loaded! Watch out for 3-valued logic and tie-breaking edge cases!", 4500, 'thinking');
   }
+  if (targetId === 'viewSyntaxGym') {
+    renderSyntaxGym();
+    if (window.SQL_BUDDY) window.SQL_BUDDY.say("🏋️ Welcome to the Syntax Gym! 300 micro-drills to build muscle memory across 10 everyday schemas!", 4500, 'happy');
+  }
   if (targetId === 'viewCases') {
     renderCaseStudies();
     if (window.SQL_BUDDY) window.SQL_BUDDY.say("💼 1,490 Enterprise Case Studies! Pick an industry vertical and let's solve real data challenges!", 4500, 'happy');
@@ -3910,6 +3914,282 @@ function escapeHtml(str) {
     .replace(/'/g, '&#039;');
 }
 
+function renderCaseInlineTablePreview(cs) {
+  let rows = [];
+  if (window.CASE_SIMULATOR_ENGINE && typeof window.CASE_SIMULATOR_ENGINE.generateSampleRows === 'function') {
+    rows = window.CASE_SIMULATOR_ENGINE.generateSampleRows(cs) || [];
+  }
+
+  // Ensure table name is clean
+  let tableName = cs.table;
+  if (!tableName || tableName === 'undefined') {
+    if (cs.schemaSnippet && cs.schemaSnippet.includes('(')) {
+      tableName = cs.schemaSnippet.split('(')[0].trim();
+    } else {
+      tableName = 'Target_Table';
+    }
+  }
+
+  if (!rows || rows.length === 0) {
+    return `
+      <div class="case-table-preview-card">
+        <div class="case-table-preview-header">
+          <span class="case-table-badge">🗄️ Table: <strong>${escapeHtml(tableName)}</strong></span>
+          <span class="case-table-count-pill">${escapeHtml(cs.schemaSnippet || '')}</span>
+        </div>
+      </div>
+    `;
+  }
+
+  const columns = Object.keys(rows[0]);
+  const previewRows = rows.slice(0, 3);
+
+  return `
+    <div class="case-table-preview-card" id="caseTableCard_${cs.id}">
+      <div class="case-table-preview-header">
+        <div class="case-table-title-group">
+          <span class="case-table-badge">🗄️ <strong>${escapeHtml(tableName)}</strong></span>
+          <span class="case-table-count-pill">${columns.length} cols &bull; ${rows.length} rows sample</span>
+        </div>
+        <button class="case-table-expand-btn" onclick="toggleCaseTableRows(${cs.id})" id="btnTableRows_${cs.id}" title="Toggle full sample rows">
+          3/${rows.length} rows
+        </button>
+      </div>
+      <div class="case-table-scroll-wrap" id="caseTableScroll_${cs.id}">
+        <table class="case-inline-table">
+          <thead>
+            <tr>
+              ${columns.map(c => `<th>${escapeHtml(c)}</th>`).join('')}
+            </tr>
+          </thead>
+          <tbody id="caseTableBody_${cs.id}">
+            ${renderCaseTableRowsHtml(columns, previewRows)}
+          </tbody>
+        </table>
+      </div>
+    </div>
+  `;
+}
+
+function renderCaseTableRowsHtml(columns, rows) {
+  return rows.map(r => `
+    <tr>
+      ${columns.map(c => {
+        const val = r[c];
+        let cls = 'val-str';
+        let formatted = escapeHtml(String(val));
+        if (val === null || val === undefined) {
+          cls = 'val-null';
+          formatted = 'NULL';
+        } else if (typeof val === 'boolean') {
+          cls = 'val-bool';
+          formatted = val ? 'TRUE' : 'FALSE';
+        } else if (typeof val === 'number') {
+          cls = 'val-num';
+          formatted = String(val);
+        }
+        return `<td><span class="${cls}">${formatted}</span></td>`;
+      }).join('')}
+    </tr>
+  `).join('');
+}
+
+window.toggleCaseTableRows = function(caseId) {
+  const allCases = window.ALL_1790_CASE_STUDIES || window.ALL_500_CASE_STUDIES || [];
+  const cs = allCases.find(c => c.id === caseId);
+  if (!cs) return;
+  const tbody = document.getElementById(`caseTableBody_${caseId}`);
+  const btn = document.getElementById(`btnTableRows_${caseId}`);
+  if (!tbody || !btn) return;
+
+  const rows = window.CASE_SIMULATOR_ENGINE ? window.CASE_SIMULATOR_ENGINE.generateSampleRows(cs) : [];
+  if (!rows || rows.length === 0) return;
+  const columns = Object.keys(rows[0]);
+
+  if (tbody.getAttribute('data-expanded') === 'true') {
+    tbody.innerHTML = renderCaseTableRowsHtml(columns, rows.slice(0, 3));
+    tbody.setAttribute('data-expanded', 'false');
+    btn.textContent = `3/${rows.length} rows`;
+  } else {
+    tbody.innerHTML = renderCaseTableRowsHtml(columns, rows);
+    tbody.setAttribute('data-expanded', 'true');
+    btn.textContent = `All ${rows.length} rows`;
+  }
+};
+
+function renderCaseCardHtml(cs) {
+  const isSolved = window.CASE_BLANKS_ENGINE && window.CASE_BLANKS_ENGINE.isSolved(cs.id);
+  const challenge = window.CASE_BLANKS_ENGINE ? window.CASE_BLANKS_ENGINE.createChallenge(cs) : null;
+  const activeState = window.CASE_BLANKS_ENGINE ? window.CASE_BLANKS_ENGINE.getCaseState(cs.id) : { slots: {}, usedTokens: new Set() };
+
+  const diffClass = cs.difficulty === 'Easy' ? 'diff-pill-easy' : (cs.difficulty === 'Medium' ? 'diff-pill-medium' : 'diff-pill-hard');
+  const diffEmoji = cs.difficulty === 'Easy' ? '🟢' : (cs.difficulty === 'Medium' ? '🟡' : '🔴');
+  const highlightedSolution = window.CASE_DOSSIER_ENGINE ? window.CASE_DOSSIER_ENGINE.highlightSQL(cs.targetQuery) : escapeHtml(cs.targetQuery);
+
+  let queryBlockHtml = '';
+  if (currentCaseMode === 'study' || !challenge) {
+    queryBlockHtml = `
+      <div class="case-terminal-box">
+        <div class="case-terminal-header">
+          <div class="terminal-dots">
+            <span class="terminal-dot dot-red"></span>
+            <span class="terminal-dot dot-yellow"></span>
+            <span class="terminal-dot dot-green"></span>
+          </div>
+          <span class="terminal-title">MySQL 8.0 • Reference Query</span>
+          <button class="micro-text-btn" style="font-size: 10px;" onclick="navigator.clipboard.writeText(decodeURIComponent('${encodeURIComponent(cs.targetQuery)}')); if(window.soundFX) window.soundFX.playPop(); this.textContent='Copied!'; setTimeout(()=>this.textContent='Copy', 1500);">Copy</button>
+        </div>
+        <div class="case-terminal-code">
+          <code>${highlightedSolution}</code>
+        </div>
+      </div>
+    `;
+  } else {
+    // Challenge / Token Puzzle Mode
+    let renderedMasked = escapeHtml(challenge.maskedQuery);
+    for (const [slotId, slotInfo] of Object.entries(challenge.slots)) {
+      const placedVal = activeState.slots[slotId] || '';
+      const isFilled = Boolean(placedVal);
+      const slotSpan = `
+        <span class="query-slot-target ${isFilled ? 'filled' : ''}" 
+              id="target_${cs.id}_${slotId}"
+              data-case-id="${cs.id}" 
+              data-slot-id="${slotId}" 
+              onclick="handleSlotEject(${cs.id}, '${slotId}')"
+              ondragover="handleSlotDragOver(event)"
+              ondragleave="handleSlotDragLeave(event)"
+              ondrop="handleSlotDrop(event, ${cs.id}, '${slotId}')"
+              title="${isFilled ? 'Click to remove token' : 'Click a token below or drag here'}">
+          ${isFilled ? `${escapeHtml(placedVal)} <span class="slot-eject-icon">✕</span>` : `[ ${slotId.toUpperCase()} ]`}
+        </span>
+      `;
+      renderedMasked = renderedMasked.replace(`[[${slotId}]]`, slotSpan);
+    }
+
+    queryBlockHtml = `
+      <div class="case-terminal-box">
+        <div class="case-terminal-header">
+          <div class="terminal-dots">
+            <span class="terminal-dot dot-red"></span>
+            <span class="terminal-dot dot-yellow"></span>
+            <span class="terminal-dot dot-green"></span>
+          </div>
+          <span class="terminal-title">Interactive Canvas • Fill the Missing Clauses</span>
+          ${isSolved ? '<span class="status-pill terminal-solved-pill">✓ Solved (+15 XP)</span>' : '<span class="terminal-hint-pill">Click or drag chips into slots</span>'}
+        </div>
+        <div class="case-terminal-code" id="canvas_code_${cs.id}">
+          ${renderedMasked}
+        </div>
+      </div>
+
+      <!-- Jumbled Token Bank Dock -->
+      <div class="token-bank-dock" id="dock_${cs.id}">
+        <div class="token-bank-header">
+          <span>🏷️ <strong>Jumbled Keyword Bank:</strong> Click or drag into blanks</span>
+          <button class="token-bank-reset-btn" onclick="handleResetCase(${cs.id})">↺ Reset Slots</button>
+        </div>
+        <div class="token-chips-grid" id="chips_grid_${cs.id}">
+          ${challenge.tokenBank.map(tok => {
+            const isPlaced = activeState.usedTokens && activeState.usedTokens.has(tok.id);
+            return `
+              <button class="token-chip ${isPlaced ? 'placed' : ''}" 
+                      id="chip_${tok.id}"
+                      draggable="${!isPlaced}"
+                      data-case-id="${cs.id}"
+                      data-token-id="${tok.id}"
+                      data-token-text="${escapeHtml(tok.text)}"
+                      onclick="handleTokenClick(${cs.id}, '${tok.id}', '${escapeHtml(tok.text)}')"
+                      ondragstart="handleTokenDragStart(event, ${cs.id}, '${tok.id}', '${escapeHtml(tok.text)}')">
+                ${escapeHtml(tok.text)}
+              </button>
+            `;
+          }).join('')}
+        </div>
+      </div>
+
+      <!-- Real-time Verification Feedback -->
+      <div class="case-feedback-banner" id="feedback_${cs.id}" style="display: none;"></div>
+
+      <!-- Collapsible Official Solution Shield -->
+      <div class="case-solution-shield" id="solution_${cs.id}" style="display: none;">
+        <div class="solution-shield-header">
+          <span>💡 Official Syntax-Highlighted Solution:</span>
+          <button class="btn-case-action" style="padding: 3px 10px; font-size: 10px;" onclick="toggleCaseSolution(${cs.id})">Hide Solution</button>
+        </div>
+        <div class="case-terminal-code" style="padding: 12px 14px; background: #0b0f17; border-radius: 8px;">
+          <code>${highlightedSolution}</code>
+        </div>
+      </div>
+    `;
+  }
+
+  return `
+    <div class="case-card ${isSolved ? 'case-solved' : ''}" id="case_card_${cs.id}">
+      <div class="case-card-header">
+        <div>
+          <div style="display: flex; align-items: center; gap: 6px; margin-bottom: 6px; flex-wrap: wrap;">
+            <span class="status-pill case-id-pill">#${cs.id < 10 ? '00' + cs.id : (cs.id < 100 ? '0' + cs.id : cs.id)}</span>
+            <span class="case-diff-filter-btn ${diffClass} active">${diffEmoji} ${cs.difficulty}</span>
+            <span class="case-industry-pill">${cs.industry}</span>
+            ${isSolved ? '<span style="font-size: 11px;" title="Solved!">🏆</span>' : ''}
+          </div>
+          <h3 class="case-title" onclick="openCaseDossier(${cs.id})" title="Click to open full case study dossier">${cs.title}</h3>
+        </div>
+        <span class="case-section-pill">${cs.section ? cs.section.split(':')[0] : 'Section'}</span>
+      </div>
+
+      ${window.isEli5ModeActive && window.CASE_DOSSIER_ENGINE ? `
+        <div class="eli5-story-box">
+          ${window.CASE_DOSSIER_ENGINE.getEli5Story(cs)}
+        </div>
+      ` : `
+        <p class="case-scenario-text">${cs.scenario}</p>
+      `}
+
+      <!-- Modern Sleek Objective Strip -->
+      <div class="case-objective-strip">
+        <span class="case-objective-icon">🎯</span>
+        <div class="case-objective-content">
+          <div class="case-objective-body"><strong class="case-objective-label">Objective:</strong> ${cs.businessObjective}</div>
+        </div>
+      </div>
+
+      <!-- Inline Visual Table Preview Component -->
+      ${renderCaseInlineTablePreview(cs)}
+
+      ${queryBlockHtml}
+
+      <div class="case-actions-bar">
+        <div class="case-actions-group">
+          ${currentCaseMode === 'challenge' && challenge ? `
+            <button class="btn-case-action btn-verify-puzzle" onclick="handleVerifyCase(${cs.id})">
+              <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><polyline points="20 6 9 17 4 12"></polyline></svg>
+              Verify
+            </button>
+            <button class="btn-case-action btn-reveal-shield" onclick="toggleCaseSolution(${cs.id})">
+              👁️ Reveal Answer
+            </button>
+          ` : ''}
+        </div>
+        <div class="case-actions-group">
+          <button class="btn-case-action btn-case-dossier" onclick="openCaseDossier(${cs.id})" title="View Executive Dossier">
+            📖 Dossier
+          </button>
+          <button class="btn-case-action btn-case-sim" onclick="toggleCaseSim(${cs.id})" title="Simulate 5-Row Table">
+            📊 Simulator
+          </button>
+          <button class="btn-case-action btn-case-studio" onclick="switchToStudioWithQuery(decodeURIComponent('${encodeURIComponent(cs.targetQuery)}'), '${cs.table}')" title="Test in Studio">
+            ⚡ Studio
+          </button>
+        </div>
+      </div>
+
+      <!-- In-Card Live Data Simulator Collapsible Drawer -->
+      <div class="live-sim-drawer" id="sim_drawer_${cs.id}" style="display: none;"></div>
+    </div>
+  `;
+}
+
 function renderCaseStudies(
   industryFilter = currentCaseIndustryFilter,
   sectionFilter = currentCaseSectionFilter,
@@ -3928,11 +4208,14 @@ function renderCaseStudies(
 
   // Mount or synchronize the persistent Top Domain ERD Showcase
   if (window.DOMAIN_ERD_ENGINE && document.getElementById('caseStudiesDomainErdShowcase')) {
-    const targetDomain = (currentCaseIndustryFilter === 'all' || !currentCaseIndustryFilter) ? 'Fintech' : currentCaseIndustryFilter;
+    let targetDomain = (currentCaseIndustryFilter === 'all' || !currentCaseIndustryFilter) ? 'Fintech' : currentCaseIndustryFilter;
+    if (currentCaseSectionFilter && (currentCaseSectionFilter.includes('Section 0') || currentCaseSectionFilter.includes('Syntax Gym'))) {
+      targetDomain = 'Foundations';
+    }
     window.DOMAIN_ERD_ENGINE.renderTopShowcase(targetDomain);
   }
 
-  let allCases = window.ALL_1040_CASE_STUDIES || window.ALL_700_CASE_STUDIES || window.ALL_600_CASE_STUDIES || window.ALL_500_CASE_STUDIES || window.ALL_300_CASE_STUDIES || [];
+  let allCases = window.ALL_1790_CASE_STUDIES || window.ALL_1490_CASE_STUDIES || window.ALL_1340_CASE_STUDIES || window.ALL_1040_CASE_STUDIES || window.ALL_700_CASE_STUDIES || window.ALL_600_CASE_STUDIES || window.ALL_500_CASE_STUDIES || window.ALL_300_CASE_STUDIES || [];
   let cases = allCases.slice();
 
   // 1. Filter by Section
@@ -3956,40 +4239,34 @@ function renderCaseStudies(
     cases = cases.filter(cs => cs.difficulty && cs.difficulty.toLowerCase() === currentCaseDiffFilter.toLowerCase());
   }
 
-  // 4. Search Filter
-  if (currentCaseSearchQuery) {
-    const q = currentCaseSearchQuery.toLowerCase();
+  // 4. Filter by Search Query
+  if (currentCaseSearchQuery && currentCaseSearchQuery.trim() !== '') {
+    const q = currentCaseSearchQuery.toLowerCase().trim();
     cases = cases.filter(cs => 
-      cs.title.toLowerCase().includes(q) ||
-      cs.scenario.toLowerCase().includes(q) ||
+      (cs.title && cs.title.toLowerCase().includes(q)) ||
+      (cs.scenario && cs.scenario.toLowerCase().includes(q)) ||
+      (cs.table && cs.table.toLowerCase().includes(q)) ||
       (cs.businessObjective && cs.businessObjective.toLowerCase().includes(q)) ||
-      (cs.schemaSnippet && cs.schemaSnippet.toLowerCase().includes(q)) ||
-      (cs.targetQuery && cs.targetQuery.toLowerCase().includes(q))
+      (cs.industry && cs.industry.toLowerCase().includes(q)) ||
+      (cs.section && cs.section.toLowerCase().includes(q))
     );
   }
 
-  // 5. Sort Cases (Progressive Difficulty Order)
-  const diffRank = { 'Easy': 1, 'Medium': 2, 'Hard': 3 };
-  if (currentCaseSortOrder === 'diff_asc') {
-    cases.sort((a, b) => {
-      const rA = diffRank[a.difficulty] || 2;
-      const rB = diffRank[b.difficulty] || 2;
-      if (rA !== rB) return rA - rB;
-      return a.id - b.id;
-    });
-  } else if (currentCaseSortOrder === 'diff_desc') {
-    cases.sort((a, b) => {
-      const rA = diffRank[a.difficulty] || 2;
-      const rB = diffRank[b.difficulty] || 2;
-      if (rA !== rB) return rB - rA;
-      return a.id - b.id;
-    });
-  } else if (currentCaseSortOrder === 'id_asc') {
+  // 5. Sort Cases
+  if (currentCaseSortOrder === 'id_asc') {
     cases.sort((a, b) => a.id - b.id);
+  } else if (currentCaseSortOrder === 'id_desc') {
+    cases.sort((a, b) => b.id - a.id);
+  } else if (currentCaseSortOrder === 'diff_asc') {
+    const weights = { 'Easy': 1, 'Medium': 2, 'Hard': 3 };
+    cases.sort((a, b) => (weights[a.difficulty] || 2) - (weights[b.difficulty] || 2));
+  } else if (currentCaseSortOrder === 'diff_desc') {
+    const weights = { 'Easy': 1, 'Medium': 2, 'Hard': 3 };
+    cases.sort((a, b) => (weights[b.difficulty] || 2) - (weights[a.difficulty] || 2));
   }
 
   if (countBadge) {
-    countBadge.textContent = `${cases.length} of ${allCases.length} Cases`;
+    countBadge.textContent = `${cases.length} Cases`;
   }
   if (solvedCountSpan && window.CASE_BLANKS_ENGINE) {
     solvedCountSpan.textContent = window.CASE_BLANKS_ENGINE.getSolvedCount();
@@ -4010,177 +4287,7 @@ function renderCaseStudies(
   const visibleCases = cases.slice(0, currentCaseDisplayLimit);
 
   visibleCases.forEach(cs => {
-    const isSolved = window.CASE_BLANKS_ENGINE && window.CASE_BLANKS_ENGINE.isSolved(cs.id);
-    const challenge = window.CASE_BLANKS_ENGINE ? window.CASE_BLANKS_ENGINE.createChallenge(cs) : null;
-    const activeState = window.CASE_BLANKS_ENGINE ? window.CASE_BLANKS_ENGINE.getCaseState(cs.id) : { slots: {}, usedTokens: new Set() };
-
-    const diffClass = cs.difficulty === 'Easy' ? 'diff-pill-easy' : (cs.difficulty === 'Medium' ? 'diff-pill-medium' : 'diff-pill-hard');
-    const diffEmoji = cs.difficulty === 'Easy' ? '🟢' : (cs.difficulty === 'Medium' ? '🟡' : '🔴');
-    const highlightedSolution = window.CASE_DOSSIER_ENGINE ? window.CASE_DOSSIER_ENGINE.highlightSQL(cs.targetQuery) : escapeHtml(cs.targetQuery);
-
-    let queryBlockHtml = '';
-    if (currentCaseMode === 'study' || !challenge) {
-      queryBlockHtml = `
-        <div class="case-terminal-box">
-          <div class="case-terminal-header">
-            <div class="terminal-dots">
-              <span class="terminal-dot dot-red"></span>
-              <span class="terminal-dot dot-yellow"></span>
-              <span class="terminal-dot dot-green"></span>
-            </div>
-            <span class="terminal-title">MySQL 8.0 • Reference Query</span>
-            <button class="micro-text-btn" style="font-size: 10px;" onclick="navigator.clipboard.writeText(decodeURIComponent('${encodeURIComponent(cs.targetQuery)}')); if(window.soundFX) window.soundFX.playPop(); this.textContent='Copied!'; setTimeout(()=>this.textContent='Copy', 1500);">Copy</button>
-          </div>
-          <div class="case-terminal-code">
-            <code>${highlightedSolution}</code>
-          </div>
-        </div>
-      `;
-    } else {
-      // Challenge / Token Puzzle Mode
-      let renderedMasked = escapeHtml(challenge.maskedQuery);
-      for (const [slotId, slotInfo] of Object.entries(challenge.slots)) {
-        const placedVal = activeState.slots[slotId] || '';
-        const isFilled = Boolean(placedVal);
-        const slotSpan = `
-          <span class="query-slot-target ${isFilled ? 'filled' : ''}" 
-                id="target_${cs.id}_${slotId}"
-                data-case-id="${cs.id}" 
-                data-slot-id="${slotId}" 
-                onclick="handleSlotEject(${cs.id}, '${slotId}')"
-                ondragover="handleSlotDragOver(event)"
-                ondragleave="handleSlotDragLeave(event)"
-                ondrop="handleSlotDrop(event, ${cs.id}, '${slotId}')"
-                title="${isFilled ? 'Click to remove token' : 'Click a token below or drag here'}">
-            ${isFilled ? `${escapeHtml(placedVal)} <span class="slot-eject-icon">✕</span>` : `[ ${slotId.toUpperCase()} ]`}
-          </span>
-        `;
-        renderedMasked = renderedMasked.replace(`[[${slotId}]]`, slotSpan);
-      }
-
-      queryBlockHtml = `
-        <div class="case-terminal-box">
-          <div class="case-terminal-header">
-            <div class="terminal-dots">
-              <span class="terminal-dot dot-red"></span>
-              <span class="terminal-dot dot-yellow"></span>
-              <span class="terminal-dot dot-green"></span>
-            </div>
-            <span class="terminal-title">Interactive Canvas • Fill the Missing Clauses</span>
-            ${isSolved ? '<span class="status-pill terminal-solved-pill">✓ Solved (+15 XP)</span>' : '<span class="terminal-hint-pill">Click or drag chips into slots</span>'}
-          </div>
-          <div class="case-terminal-code" id="canvas_code_${cs.id}">
-            ${renderedMasked}
-          </div>
-        </div>
-
-        <!-- Jumbled Token Bank Dock -->
-        <div class="token-bank-dock" id="dock_${cs.id}">
-          <div class="token-bank-header">
-            <span>🏷️ <strong>Jumbled Keyword Bank:</strong> Click or drag into blanks</span>
-            <button class="token-bank-reset-btn" onclick="handleResetCase(${cs.id})">↺ Reset Slots</button>
-          </div>
-          <div class="token-chips-grid" id="chips_grid_${cs.id}">
-            ${challenge.tokenBank.map(tok => {
-              const isPlaced = activeState.usedTokens && activeState.usedTokens.has(tok.id);
-              return `
-                <button class="token-chip ${isPlaced ? 'placed' : ''}" 
-                        id="chip_${tok.id}"
-                        draggable="${!isPlaced}"
-                        data-case-id="${cs.id}"
-                        data-token-id="${tok.id}"
-                        data-token-text="${escapeHtml(tok.text)}"
-                        onclick="handleTokenClick(${cs.id}, '${tok.id}', '${escapeHtml(tok.text)}')"
-                        ondragstart="handleTokenDragStart(event, ${cs.id}, '${tok.id}', '${escapeHtml(tok.text)}')">
-                  ${escapeHtml(tok.text)}
-                </button>
-              `;
-            }).join('')}
-          </div>
-        </div>
-
-        <!-- Real-time Verification Feedback -->
-        <div class="case-feedback-banner" id="feedback_${cs.id}" style="display: none;"></div>
-
-        <!-- Collapsible Official Solution Shield -->
-        <div class="case-solution-shield" id="solution_${cs.id}" style="display: none;">
-          <div class="solution-shield-header">
-            <span>💡 Official Syntax-Highlighted Solution:</span>
-            <button class="btn-case-action" style="padding: 3px 10px; font-size: 10px;" onclick="toggleCaseSolution(${cs.id})">Hide Solution</button>
-          </div>
-          <div class="case-terminal-code" style="padding: 12px 14px; background: #0b0f17; border-radius: 8px;">
-            <code>${highlightedSolution}</code>
-          </div>
-        </div>
-      `;
-    }
-
-    html += `
-      <div class="case-card ${isSolved ? 'case-solved' : ''}" id="case_card_${cs.id}">
-        <div class="case-card-header">
-          <div>
-            <div style="display: flex; align-items: center; gap: 6px; margin-bottom: 6px; flex-wrap: wrap;">
-              <span class="status-pill case-id-pill">#${cs.id < 10 ? '00' + cs.id : (cs.id < 100 ? '0' + cs.id : cs.id)}</span>
-              <span class="case-diff-filter-btn ${diffClass} active">${diffEmoji} ${cs.difficulty}</span>
-              <span class="case-industry-pill">${cs.industry}</span>
-              ${isSolved ? '<span style="font-size: 11px;" title="Solved!">🏆</span>' : ''}
-            </div>
-            <h3 class="case-title" onclick="openCaseDossier(${cs.id})" title="Click to open full case study dossier">${cs.title}</h3>
-          </div>
-          <span class="case-section-pill">${cs.section ? cs.section.split(':')[0] : 'Section'}</span>
-        </div>
-
-        ${window.isEli5ModeActive && window.CASE_DOSSIER_ENGINE ? `
-          <div class="eli5-story-box">
-            ${window.CASE_DOSSIER_ENGINE.getEli5Story(cs)}
-          </div>
-        ` : `
-          <p class="case-scenario-text">${cs.scenario}</p>
-        `}
-
-        <!-- Modern Sleek Meta Strip -->
-        <div class="case-objective-strip">
-          <span class="case-objective-icon">🎯</span>
-          <div class="case-objective-content">
-            <div class="case-objective-body"><strong class="case-objective-label">Objective:</strong> ${cs.businessObjective}</div>
-            <div class="case-meta-substrip">
-              <span class="case-meta-table">🗄️ <strong>Table:</strong> <code class="case-code-pill">${cs.table}</code></span>
-              <span class="case-meta-schema">&bull; Schema: <code class="case-schema-snippet">${cs.schemaSnippet}</code></span>
-            </div>
-          </div>
-        </div>
-
-        ${queryBlockHtml}
-
-        <div class="case-actions-bar">
-          <div class="case-actions-group">
-            ${currentCaseMode === 'challenge' && challenge ? `
-              <button class="btn-case-action btn-verify-puzzle" onclick="handleVerifyCase(${cs.id})">
-                <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><polyline points="20 6 9 17 4 12"></polyline></svg>
-                Verify
-              </button>
-              <button class="btn-case-action btn-reveal-shield" onclick="toggleCaseSolution(${cs.id})">
-                👁️ Reveal Answer
-              </button>
-            ` : ''}
-          </div>
-          <div class="case-actions-group">
-            <button class="btn-case-action btn-case-dossier" onclick="openCaseDossier(${cs.id})" title="View Executive Dossier">
-              📖 Dossier
-            </button>
-            <button class="btn-case-action btn-case-sim" onclick="toggleCaseSim(${cs.id})" title="Simulate 5-Row Table">
-              📊 Simulator
-            </button>
-            <button class="btn-case-action btn-case-studio" onclick="switchToStudioWithQuery(decodeURIComponent('${encodeURIComponent(cs.targetQuery)}'), '${cs.table}')" title="Test in Studio">
-              ⚡ Studio
-            </button>
-          </div>
-        </div>
-
-        <!-- In-Card Live Data Simulator Collapsible Drawer -->
-        <div class="live-sim-drawer" id="sim_drawer_${cs.id}" style="display: none;"></div>
-      </div>
-    `;
+    html += renderCaseCardHtml(cs);
   });
 
   if (totalMatching > currentCaseDisplayLimit) {
@@ -4407,7 +4514,7 @@ function renderCaseStudies(
     delete state.slots[slotId];
     if (window.soundFX) window.soundFX.playClick();
 
-    const allCases = window.ALL_1040_CASE_STUDIES || window.ALL_700_CASE_STUDIES || window.ALL_650_CASE_STUDIES || window.ALL_600_CASE_STUDIES || window.ALL_500_CASE_STUDIES || [];
+    const allCases = window.ALL_1790_CASE_STUDIES || window.ALL_1490_CASE_STUDIES || window.ALL_1340_CASE_STUDIES || window.ALL_1040_CASE_STUDIES || window.ALL_700_CASE_STUDIES || window.ALL_650_CASE_STUDIES || window.ALL_600_CASE_STUDIES || window.ALL_500_CASE_STUDIES || [];
     const cs = allCases.find(c => c.id === caseId);
     if (cs) {
       const challenge = window.CASE_BLANKS_ENGINE.createChallenge(cs);

@@ -30,7 +30,7 @@ An institutional-grade, in-browser execution studio and visual masterclass locat
   11. *Common Table Expressions (CTEs) & Recursive Hierarchies*
   12. *Analytical Window Functions, Value Offsets & Sliding Window Physics*
 - 🧠 **2,100 Master Technical MCQs Vault**: 23 technical categories with 350 dedicated Relational Join questions, 500 dedicated Window Function questions, and 150 Section 10 Subquery/CTE/Set Operations questions, instant answer validation, sound FX, and balanced 25% option distribution.
-- 💼 **1,490 Enterprise Case Studies Vault**: 10 corporate sections spanning 10 industry verticals (Fintech, Healthcare, SaaS, E-Commerce, Logistics, etc.), including 390 Relational Join cases, 300 Section 9 Window Analytics cases, and 150 Section 10 Advanced SQL Engine Mastery cases.
+- 💼 **1,790 Corporate & Foundations Case Study Master Vault**: 11 sections spanning 10 industry verticals plus Section 0 Syntax Gym (300 foundational micro-drills, 390 Relational Join cases, 300 Section 9 Window Analytics cases, and 150 Section 10 Advanced SQL Engine Mastery cases with interactive token puzzles and live execution simulation).
 - 🔗 **8-Step Dual-Table Relational Joins Linker**: Interactive step-through simulator in Guided Lab (Track 04) covering Inner, Left, Right, Full Outer, Left Anti, Cross, Self, and Non-Equi joins.
 - 🎮 **30 Gamified Quests**: Live token puzzle solver with sound FX and real-time AST evaluation.
 - 🚀 **Zero Dependencies**: Pure HTML5, Vanilla CSS, and Vanilla JavaScript. Double-click [`visualizer/index.html`](./visualizer/index.html) or run a local server to launch!

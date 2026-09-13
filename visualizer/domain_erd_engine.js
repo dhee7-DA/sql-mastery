@@ -511,6 +511,172 @@ window.DOMAIN_ERD_ENGINE = (() => {
       relationships: [
         { from: 'PLATFORM_USERS', to: 'TRIPS', label: '1 : N [Riders book many trips; Drivers fulfill many fares]' }
       ]
+    },
+    'Foundations': {
+      domain: 'Foundations',
+      icon: '🏋️',
+      title: 'Everyday Foundations & Syntax Gym Schema Architecture',
+      overview: '10 intuitive, real-world schemas designed for muscle-memory practice: Students, Books, Employees, Grocery, Orders, Music, Gym, Movies, Flights, and Pets.',
+      tables: [
+        {
+          name: 'Students',
+          caption: 'Classroom & Enrolled Roster',
+          icon: '🎓',
+          desc: 'Enrolled university students with majors, GPAs, and enrollment years.',
+          columns: [
+            { name: 'student_id', type: 'INT', isPk: true, desc: 'Unique Student ID' },
+            { name: 'full_name', type: 'VARCHAR(64)', isPk: false, desc: 'Student Name' },
+            { name: 'age', type: 'INT', isPk: false, desc: 'Age in Years' },
+            { name: 'major', type: 'VARCHAR(40)', isPk: false, desc: 'Academic Major' },
+            { name: 'gpa', type: 'DECIMAL(3,2)', isPk: false, desc: 'Cumulative Grade Point Average' },
+            { name: 'city', type: 'VARCHAR(40)', isPk: false, desc: 'Hometown City' },
+            { name: 'enrolled_year', type: 'INT', isPk: false, desc: 'Year Enrolled' }
+          ]
+        },
+        {
+          name: 'Books',
+          caption: 'Public Library Catalog',
+          icon: '📚',
+          desc: 'Inventory of published titles, authors, genres, and stock quantities.',
+          columns: [
+            { name: 'book_id', type: 'INT', isPk: true, desc: 'Unique Book Identifier' },
+            { name: 'title', type: 'VARCHAR(128)', isPk: false, desc: 'Book Title' },
+            { name: 'author', type: 'VARCHAR(64)', isPk: false, desc: 'Author Full Name' },
+            { name: 'genre', type: 'VARCHAR(32)', isPk: false, desc: 'Literary Category' },
+            { name: 'price', type: 'DECIMAL(6,2)', isPk: false, desc: 'Retail Price ($)' },
+            { name: 'stock_qty', type: 'INT', isPk: false, desc: 'Available Stock Units' },
+            { name: 'published_year', type: 'INT', isPk: false, desc: 'Year of Publication' },
+            { name: 'is_hardcover', type: 'BOOLEAN', isPk: false, desc: 'Binding Format Flag' }
+          ]
+        },
+        {
+          name: 'Employees',
+          caption: 'Staff & Payroll Roster',
+          icon: '💼',
+          desc: 'Company personnel across departments, base salaries, and quarterly bonuses.',
+          columns: [
+            { name: 'emp_id', type: 'INT', isPk: true, desc: 'Unique Employee Badge ID' },
+            { name: 'first_name', type: 'VARCHAR(40)', isPk: false, desc: 'First Name' },
+            { name: 'last_name', type: 'VARCHAR(40)', isPk: false, desc: 'Last Name' },
+            { name: 'department', type: 'VARCHAR(40)', isPk: false, desc: 'Department Name' },
+            { name: 'salary', type: 'DECIMAL(10,2)', isPk: false, desc: 'Base Annual Salary ($)' },
+            { name: 'bonus', type: 'DECIMAL(10,2)', isPk: false, desc: 'Discretionary Bonus ($)' },
+            { name: 'hire_date', type: 'DATE', isPk: false, desc: 'Start Date at Company' }
+          ]
+        },
+        {
+          name: 'GroceryItems',
+          caption: 'Supermarket Inventory',
+          icon: '🛒',
+          desc: 'Supermarket shelf products, unit prices, organic flags, and calorie counts.',
+          columns: [
+            { name: 'item_id', type: 'INT', isPk: true, desc: 'Unique SKU / Item ID' },
+            { name: 'item_name', type: 'VARCHAR(64)', isPk: false, desc: 'Product Description' },
+            { name: 'category', type: 'VARCHAR(32)', isPk: false, desc: 'Aisle Category' },
+            { name: 'unit_price', type: 'DECIMAL(6,2)', isPk: false, desc: 'Price per Unit ($)' },
+            { name: 'is_organic', type: 'BOOLEAN', isPk: false, desc: 'Certified Organic Flag' },
+            { name: 'calories', type: 'INT', isPk: false, desc: 'Calories per Serving' },
+            { name: 'stock_units', type: 'INT', isPk: false, desc: 'Quantity on Shelf' }
+          ]
+        },
+        {
+          name: 'Orders',
+          caption: 'E-Commerce Transactions',
+          icon: '📦',
+          desc: 'Customer purchase orders with quantities, discounts, and fulfillment statuses.',
+          columns: [
+            { name: 'order_id', type: 'INT', isPk: true, desc: 'Unique Purchase Order #' },
+            { name: 'customer_name', type: 'VARCHAR(64)', isPk: false, desc: 'Buyer Full Name' },
+            { name: 'item_name', type: 'VARCHAR(64)', isPk: false, desc: 'Purchased Item' },
+            { name: 'unit_price', type: 'DECIMAL(8,2)', isPk: false, desc: 'Unit Price ($)' },
+            { name: 'quantity', type: 'INT', isPk: false, desc: 'Order Quantity' },
+            { name: 'discount_pct', type: 'DECIMAL(4,2)', isPk: false, desc: 'Promotional Discount' },
+            { name: 'order_status', type: 'VARCHAR(24)', isPk: false, desc: 'Fulfillment State' },
+            { name: 'shipping_city', type: 'VARCHAR(40)', isPk: false, desc: 'Destination City' }
+          ]
+        },
+        {
+          name: 'MusicTracks',
+          caption: 'Streaming Catalog',
+          icon: '🎵',
+          desc: 'Audio tracks across musical genres with durations and streaming play counts.',
+          columns: [
+            { name: 'track_id', type: 'INT', isPk: true, desc: 'Unique Track ID' },
+            { name: 'track_title', type: 'VARCHAR(80)', isPk: false, desc: 'Song Title' },
+            { name: 'artist_name', type: 'VARCHAR(64)', isPk: false, desc: 'Performing Artist' },
+            { name: 'genre', type: 'VARCHAR(32)', isPk: false, desc: 'Music Genre' },
+            { name: 'duration_seconds', type: 'INT', isPk: false, desc: 'Length in Seconds' },
+            { name: 'play_count', type: 'INT', isPk: false, desc: 'Total Stream Plays' },
+            { name: 'release_year', type: 'INT', isPk: false, desc: 'Year Released' }
+          ]
+        },
+        {
+          name: 'GymMembers',
+          caption: 'Fitness Club Memberships',
+          icon: '💪',
+          desc: 'Health club member plans, monthly dues, monthly visits, and personal trainers.',
+          columns: [
+            { name: 'member_id', type: 'INT', isPk: true, desc: 'Unique Member ID' },
+            { name: 'member_name', type: 'VARCHAR(64)', isPk: false, desc: 'Member Full Name' },
+            { name: 'membership_plan', type: 'VARCHAR(24)', isPk: false, desc: 'Tier: Basic, Gold, Platinum' },
+            { name: 'monthly_fee', type: 'DECIMAL(6,2)', isPk: false, desc: 'Monthly Membership Fee ($)' },
+            { name: 'visits_this_month', type: 'INT', isPk: false, desc: 'Monthly Check-in Count' },
+            { name: 'has_trainer', type: 'BOOLEAN', isPk: false, desc: 'Assigned Personal Trainer' },
+            { name: 'join_date', type: 'DATE', isPk: false, desc: 'Membership Enrollment Date' }
+          ]
+        },
+        {
+          name: 'MovieReviews',
+          caption: 'Film Critic Database',
+          icon: '🎬',
+          desc: 'Cinema releases with director credits, star ratings (1-5), and review length.',
+          columns: [
+            { name: 'review_id', type: 'INT', isPk: true, desc: 'Unique Review ID' },
+            { name: 'movie_title', type: 'VARCHAR(80)', isPk: false, desc: 'Feature Film Title' },
+            { name: 'director', type: 'VARCHAR(64)', isPk: false, desc: 'Film Director' },
+            { name: 'genre', type: 'VARCHAR(32)', isPk: false, desc: 'Film Genre' },
+            { name: 'star_rating', type: 'DECIMAL(2,1)', isPk: false, desc: 'Critic Score (1.0 - 5.0)' },
+            { name: 'release_year', type: 'INT', isPk: false, desc: 'Release Year' },
+            { name: 'review_length_words', type: 'INT', isPk: false, desc: 'Review Word Count' }
+          ]
+        },
+        {
+          name: 'FlightSchedule',
+          caption: 'Airport Boarding Log',
+          icon: '✈️',
+          desc: 'Airline flight routing, origin/destination hubs, departure delays, and fares.',
+          columns: [
+            { name: 'flight_id', type: 'VARCHAR(16)', isPk: true, desc: 'Flight Code' },
+            { name: 'airline', type: 'VARCHAR(48)', isPk: false, desc: 'Operating Carrier' },
+            { name: 'origin_airport', type: 'VARCHAR(8)', isPk: false, desc: 'Origin Airport IATA' },
+            { name: 'dest_airport', type: 'VARCHAR(8)', isPk: false, desc: 'Destination Airport IATA' },
+            { name: 'departure_time', type: 'VARCHAR(8)', isPk: false, desc: 'Scheduled Departure (HH:MM)' },
+            { name: 'delay_minutes', type: 'INT', isPk: false, desc: 'Delay in Minutes (0=On Time)' },
+            { name: 'ticket_price', type: 'DECIMAL(8,2)', isPk: false, desc: 'Economy Fare ($)' },
+            { name: 'is_international', type: 'BOOLEAN', isPk: false, desc: 'Cross-Border Flight Flag' }
+          ]
+        },
+        {
+          name: 'PetClinic',
+          caption: 'Veterinary Patient Records',
+          icon: '🐾',
+          desc: 'Animal hospital patient cards with species, breed, weights, and vaccine flags.',
+          columns: [
+            { name: 'pet_id', type: 'INT', isPk: true, desc: 'Unique Medical Record #' },
+            { name: 'pet_name', type: 'VARCHAR(40)', isPk: false, desc: 'Pet Name' },
+            { name: 'species', type: 'VARCHAR(24)', isPk: false, desc: 'Dog, Cat, Hamster, Bird' },
+            { name: 'breed', type: 'VARCHAR(40)', isPk: false, desc: 'Breed Description' },
+            { name: 'age_years', type: 'INT', isPk: false, desc: 'Age in Years' },
+            { name: 'weight_kg', type: 'DECIMAL(5,2)', isPk: false, desc: 'Body Weight (kg)' },
+            { name: 'is_vaccinated', type: 'BOOLEAN', isPk: false, desc: 'Rabies Vaccination Status' },
+            { name: 'owner_city', type: 'VARCHAR(40)', isPk: false, desc: 'Owner City Residence' }
+          ]
+        }
+      ],
+      relationships: [
+        { from: 'Students', to: 'Books', label: 'Reference [Campus Library Reading Lists]' },
+        { from: 'Employees', to: 'Orders', label: 'Fulfillment [Staff Processing Orders]' }
+      ]
     }
   };
 

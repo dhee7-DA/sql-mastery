@@ -363,3 +363,27 @@
   - Upgraded `case_simulator_engine.js` with mock data generation for all 10 everyday tables and execution simulation for `SELECT`, `WHERE`, and `LIMIT` steps.
 - **Automated Verification**:
   - `scratch/audit_section0_syntax_gym.js` verified 100% test pass rate.
+
+---
+
+## 2026-09-13 — Entry 20: Visual Relational Data Matrix (Inline Sample Table Previews on Case Study Cards)
+
+### 1. Architectural Motivation & Problem Statement
+- Previously, case study cards displayed table metadata as a plain text string: `🗄️ Table: Students • Schema: student_id INT, full_name VARCHAR(100)...`.
+- Learners were forced to mentally picture table contents or trigger modal popups to understand the data schema before writing queries.
+- **Solution**: Implemented an ultra-sleek, interactive **Inline Visual Table Preview component** rendered directly on each case study card beneath the Objective.
+
+### 2. Technical Design & Implementation
+- **Data Resolution & Synthesis Engine**:
+  - `getCaseTableData(tableName, schemaSnippet)` inspects `SYNTAX_GYM_TABLES` (Section 0 tables) or extracts relational attributes from `schemaSnippet`.
+  - Generates realistic, enterprise/educational sample rows with appropriate typed values (integers, floats, dates, categories, booleans).
+- **Interactive UI Component (`renderCaseInlineTablePreview(cs)`)**:
+  - Prominent Neo-brutalist table badge (e.g. `🗄️ Students`, `🗄️ Books`).
+  - Column count and sample size indicator (`7 cols • 5 rows sample`).
+  - Dynamic `3/5 rows` expand/collapse toggle pill allowing learners to view compact or full sample tables without card layout disruption.
+  - Sticky table headers with uppercase column names and subtle separation borders.
+  - Value-aware syntax coloring: emerald strings (`val-str`), cyan numeric constants (`val-num`), pink booleans (`val-bool`), and muted italicized nulls (`val-null`).
+  - Seamless support for both Dark mode (`#080c14` matrix console) and Light themes (`paper-white`, `warm-cream`).
+- **Comprehensive Visual Verification**:
+  - Browser subagent verified live rendering across Section 0 case studies and captured high-resolution screenshot (`section0_case_card_1789316088302.png`).
+
