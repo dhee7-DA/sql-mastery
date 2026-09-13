@@ -6,22 +6,23 @@
 
 ## 📌 Current Snapshot
 
-- **Current Sprint**: **Day 11 Completed (Window Functions: Ranking & Partitioning) ➡️ Ready for Day 12 (Window Aggregates & Offsets)**
-- **Active Module**: `day-11-window-ranking` (Completed) ➡️ Next: `day-12-window-aggregates`
+- **Current Sprint**: **Day 12 Completed (Window Functions: Aggregates, Offsets & Rolling Frames) ➡️ Ready for Day 13 (Business Analytics & Churn Cohorts)**
+- **Active Module**: `day-12-window-aggregates` (Completed) ➡️ Next: `day-13-business-analytics`
 - **Current Dialect**: **MySQL 8.0+ / ANSI SQL**
 - **Major Milestones Achieved**: 
   - 🏆 **ALL HACKERRANK BASIC & ADVANCED JOINS CONQUERED (Contest Leaderboard, Placements, Symmetric Pairs)!**
   - 🏆 **SECTION 8 JOIN CASE STUDIES COMPLETELY OVERHAULED (390 Handcrafted Production Cases, Total 1,040 in Vault)!**
-  - 🏆 **DAY 11 WINDOW FUNCTIONS RANKING & PARTITIONING CONQUERED (Top 3 Salaries, Deduplication, NTILE Deciles, Gaps-and-Islands)!**
+  - 🏆 **WINDOW FUNCTIONS TRACK 100% COMPLETE (Days 11 & 12 Conquered)!**
+  - 🏆 **MODULE 12 ADDED TO VISUAL MASTERCLASS STUDY LIBRARY (12 Complete SVG Masterclass Modules)!**
 - **Visualizer & Masterclass Super-Upgrades**:
-  - **11 Visual Masterclass Modules with Poppy Neo-Brutalist SVGs**: Textbook CS theory, formulas, storage physics, and gotchas covering Modules 01 through 11 (including Subqueries, Correlated Logic, and Recursive CTEs).
-  - **The 1,450 Master MCQ Technical Vault**: 1,450 deep technical checks across 21 distinct categories, including **350 Dedicated Join MCQs** (35 each across 10 join families: Inner, Left, Right, Full Outer, Cross, Anti, Semi, Self, Non-Equi, and Physical Algorithms) with balanced 25% option distribution.
+  - **12 Visual Masterclass Modules with Poppy Neo-Brutalist SVGs**: Textbook CS theory, formulas, storage physics, and gotchas covering Modules 01 through 12 (now including Module 12: Analytical Window Functions & Sliding Frame Physics).
+  - **The 1,450 Master MCQ Technical Vault**: 1,450 deep technical checks across 21 distinct categories, including **350 Dedicated Join MCQs** (35 each across 10 join families) with balanced 25% option distribution.
   - **The 1,040 Corporate Case Study Master Vault**: Scaled across 8 sections spanning 10 corporate domains (including 390 Relational Joins cases with zero repetitive loops, 130 Easy, 130 Medium, 130 Hard).
   - **30 Interactive Quests**: Levels 1–30 with audio FX, token puzzle mechanics, and instant evaluation.
   - **Track 04 in Guided Learning Lab**: 8 dedicated steps covering Inner, Left, Right, Full Outer, Anti, Cross, Self, and Non-Equi Joins.
-- **Next Immediate Action**: Advance to Day 12 (*Window Functions: Aggregates, LAG, LEAD, Running Totals, Moving Averages*)
-- **Total Problems Completed in Intensive**: 52 / 58 Problems
-- **Last Updated**: 2026-09-13 03:15 IST
+- **Next Immediate Action**: Advance to Day 13 (*Real-World Business Analytics: Retention Cohort Heatmaps, Customer Churn Rates & LTV*)
+- **Total Problems Completed in Intensive**: 56 / 58 Problems
+- **Last Updated**: 2026-09-13 14:15 IST
 
 ---
 
@@ -39,10 +40,8 @@
 | **09** | [`day-09-intermediate-joins`](./day-09-intermediate-joins) | The Report, Top Competitors, Ollivander's Inventory, Non-Equi Joins | 3/3 | ✅ Completed (100%) |
 | **10** | [`day-10-advanced-joins-scoring`](./day-10-advanced-joins-scoring) | Contest Leaderboard, Placements, Symmetric Pairs | 3/3 | ✅ Completed (100%) |
 | **11** | [`day-11-window-ranking`](./day-11-window-ranking) | `ROW_NUMBER()`, `RANK()`, `DENSE_RANK()`, `NTILE()` | 4/4 | ✅ Completed (100%) |
-| **12** | `day-12-window-aggregates` | `LAG()`, `LEAD()`, Running Totals, Moving Averages | 0/8 | 🟡 Next Up |
-| **13** | `day-13-business-analytics` | Churn Analysis, Retention Cohorts, MoM Growth Queries | 0/6 | ⚪ Pending |
-| **14** | `day-14-capstone-project` | Comprehensive End-to-End Analytics Case Study & Presentation | 0/1 | ⚪ Pending |
-| **13** | `day-13-business-analytics` | Churn Analysis, Retention Cohorts, MoM Growth Queries | 0/6 | ⚪ Pending |
+| **12** | [`day-12-window-aggregates`](./day-12-window-aggregates) | `LAG()`, `LEAD()`, Running Totals, Moving Averages | 4/4 | ✅ Completed (100%) |
+| **13** | `day-13-business-analytics` | Churn Analysis, Retention Cohorts, MoM Growth Queries | 0/6 | 🟡 Next Up |
 | **14** | `day-14-capstone-project` | Comprehensive End-to-End Analytics Case Study & Presentation | 0/1 | ⚪ Pending |
 
 ---

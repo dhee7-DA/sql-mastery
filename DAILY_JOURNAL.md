@@ -181,3 +181,19 @@
 - Committed all 12 generator and assembly scripts to `scratch/` for total reproducibility.
 - Established this centralized `DAILY_JOURNAL.md` to preserve full narrative history.
 - Structured the roadmap for **Day 12: Window Functions Part 2 (Aggregates, Value Offsets & Rolling Frames)**.
+
+---
+
+### 📅 Entry 14: 2026-09-13 (13:15 to 14:15 IST)
+**Sprint Focus**: Window Functions Completion — Value Offsets, Rolling Frames & Masterclass Module 12  
+**Modules**: [`day-12-window-aggregates/`](./day-12-window-aggregates/) & [`visualizer/study_library_data.js`](./visualizer/study_library_data.js)
+
+#### Accomplishments:
+- Deployed the complete 7-file Day 12 module suite:
+  1. **SaaS MoM Revenue Growth**: `LAG(mrr, 1)` with `NULLIF()` division-by-zero protection.
+  2. **Bank Account Running Balance**: `SUM(amount) OVER (ROWS BETWEEN UNBOUNDED PRECEDING AND CURRENT ROW)` solving the tied-timestamp balance jump disaster.
+  3. **7-Day Smoothed Moving Average**: `AVG(signups) OVER (ROWS BETWEEN 6 PRECEDING AND CURRENT ROW)` removing cyclical weekend noise.
+  4. **User Inactivity Timeouts & Drop-Offs**: `LEAD(event_time, 1)` measuring inter-event elapsed seconds.
+  5. **High-Water Mark Peak Tracker**: `MAX(revenue) OVER (ROWS UNBOUNDED PRECEDING)`.
+- Added **Module 12: Analytical Window Functions, Value Offsets & Sliding Window Physics** to the Visual Masterclass Study Library (`visualizer/study_library_data.js`) complete with custom Neo-Brutalist SVG engineering diagram.
+- 🏆 **MILESTONE**: **WINDOW FUNCTIONS TRACK 100% CONQUERED (Both Ranking and Aggregates)!** Total problems solved: **56 / 58**. Ready for Day 13 (Business Analytics & Churn Cohorts).

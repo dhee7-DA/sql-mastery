@@ -16,7 +16,7 @@ Welcome to the **14-Day SQL Intensive**. This repository is an institutional-gra
 
 An institutional-grade, in-browser execution studio and visual masterclass located in [`visualizer/`](./visualizer):
 - 🎨 **Poppy Neo-Brutalist Design System**: High-contrast, tactile UI with raw 3px solid black outlines, offset ink drop shadows, and punchy sticker palettes (`#fef08a`, `#38bdf8`, `#f472b6`, `#22c55e`, `#fbbf24`, `#c084fc`).
-- 📖 **11 Visual Masterclass Modules**: Textbook-grade CS theory, engine storage physics, and custom Neo-Brutalist SVG Explainer Diagrams:
+- 📖 **12 Visual Masterclass Modules**: Textbook-grade CS theory, engine storage physics, and custom Neo-Brutalist SVG Explainer Diagrams:
   1. *Physical Execution Pipeline & Lexical Sequencing*
   2. *Filtering, Predicates & Three-Valued Logic (3VL)*
   3. *Sorting, Determinism & Keyset Pagination*
@@ -28,7 +28,8 @@ An institutional-grade, in-browser execution studio and visual masterclass locat
   9. *Intermediate Joins, Non-Equi Conditions & Chains*
   10. *Subqueries, Derived Tables & Correlated Logic*
   11. *Common Table Expressions (CTEs) & Recursive Hierarchies*
-- 🧠 **1,200 Master Technical MCQs Vault**: 12 core SQL categories $\times$ 100 deep technical questions with instant answer validation, sound FX, and detailed rationales.
+  12. *Analytical Window Functions, Value Offsets & Sliding Window Physics*
+- 🧠 **1,450 Master Technical MCQs Vault**: 21 technical categories with 350 dedicated Relational Join questions, instant answer validation, sound FX, and detailed rationales.
 - 💼 **1,040 Enterprise Case Studies Vault**: 8 corporate sections spanning 10 industry verticals (Fintech, Healthcare, SaaS, E-Commerce, Logistics, etc.), including 390 multi-table financial modeling cases.
 - 🔗 **8-Step Dual-Table Relational Joins Linker**: Interactive step-through simulator in Guided Lab (Track 04) covering Inner, Left, Right, Full Outer, Left Anti, Cross, Self, and Non-Equi joins.
 - 🎮 **30 Gamified Quests**: Live token puzzle solver with sound FX and real-time AST evaluation.
@@ -68,8 +69,8 @@ An institutional-grade, in-browser execution studio and visual masterclass locat
 | Day | Module Directory | HackerRank Subdomain & Focus | Difficulty | Status |
 |---|---|---|---|---|
 | **Day 08** | [`day-08-basic-joins`](./day-08-basic-joins) | `INNER JOIN`, `LEFT JOIN`, Asian Pop, African Cities, Continents | Easy | ✅ Completed (3/3) |
-| **Day 09** | `day-09-intermediate-joins` | The Report, Top Competitors, Ollivander's Inventory, Non-Equi Joins | Medium | 🟡 Next Up |
-| **Day 10** | `day-10-advanced-joins-scoring` | Contest Leaderboard, Placements, Symmetric Pairs, Subqueries | Medium / Hard | ⚪ Pending |
+| **Day 09** | [`day-09-intermediate-joins`](./day-09-intermediate-joins) | The Report, Top Competitors, Ollivander's Inventory, Non-Equi Joins | Medium | ✅ Completed (3/3) |
+| **Day 10** | [`day-10-advanced-joins-scoring`](./day-10-advanced-joins-scoring) | Contest Leaderboard, Placements, Symmetric Pairs, Subqueries | Medium / Hard | ✅ Completed (3/3) |
 
 ---
 
@@ -77,8 +78,8 @@ An institutional-grade, in-browser execution studio and visual masterclass locat
 | Day | Module Directory | Focus & Enterprise Skills | Difficulty | Status |
 |---|---|---|---|---|
 | **Day 11** | [`day-11-window-ranking`](./day-11-window-ranking) | `ROW_NUMBER()`, `RANK()`, `DENSE_RANK()`, `NTILE()` | Advanced | ✅ Completed (4/4) |
-| **Day 12** | `day-12-window-aggregates` | `LAG()`, `LEAD()`, Running Totals, Moving Averages | Advanced | 🟡 Next Up |
-| **Day 13** | `day-13-business-analytics` | Churn Analysis, Retention Cohorts, MoM Growth Queries | Advanced | ⚪ Pending |
+| **Day 12** | [`day-12-window-aggregates`](./day-12-window-aggregates) | `LAG()`, `LEAD()`, Running Totals, Moving Averages | Advanced | ✅ Completed (4/4) |
+| **Day 13** | `day-13-business-analytics` | Churn Analysis, Retention Cohorts, MoM Growth Queries | Advanced | 🟡 Next Up |
 | **Day 14** | `day-14-capstone-project` | Comprehensive End-to-End Analytics Case Study & Presentation | Capstone | ⚪ Pending |
 
 ---
