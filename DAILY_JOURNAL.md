@@ -232,3 +232,26 @@
 - **Comprehensive Automated Audit Passed**:
   - Created `scratch/audit_master_vaults.js` and verified 100% data integrity, schema consistency, and zero null fields.
 
+---
+
+### 📅 Entry 16: 2026-09-13 (15:45 to 16:05 IST)
+**Sprint Focus**: Pure SQL Core Mastery Completion — Subqueries, Correlated Execution, Recursive CTEs & Set Operations  
+**Modules**: [`day-07-subqueries-and-ctes/`](./day-07-subqueries-and-ctes/) & [`day-07b-set-operations-and-grouping/`](./day-07b-set-operations-and-grouping/)
+
+#### Accomplishments:
+- Deployed **Day 07: Subqueries, Correlated Subqueries & Recursive CTEs** with full 7-file institutional suite:
+  1. **Above Department Average Earners**: Outer row-binding correlation mechanics vs pre-aggregated CTE joins.
+  2. **Active Buyers with Zero Category Churn**: Mathematical proof of the 3VL `NOT IN (NULL)` trap vs production `NOT EXISTS` anti-semi joins.
+  3. **Top-N Earners Per Department Without Window Functions**: Correlated subquery count comparison (`COUNT(*) < N`) interview idiom.
+  4. **Multi-Tier Regional Revenue Variance**: 3-tier modular CTE dataflow pipeline.
+  5. **Org Hierarchy Depth & Breadcrumb Path**: `WITH RECURSIVE` iterative BFS queue evaluation, depth level tracking, and cycle-aware path concatenation.
+- Deployed **Day 07b: Set Operations, Multi-Dimensional Grouping & Indexing Physics** with full 7-file institutional suite:
+  1. **Multi-System Customer Reconciliation**: Vertical stacking algebra, `UNION ALL` streaming memory vs `UNION` sort/hash deduplication cost.
+  2. **Discrepancy Audit via Set Difference**: `EXCEPT` / `MINUS` bidirectional ledger reconciliation.
+  3. **Cross-Platform Identity Overlap**: `INTERSECT` set intersection logic.
+  4. **Corporate Financial Reporting with ROLLUP**: `GROUPING()` indicator flags distinguishing data `NULL`s from super-aggregate subtotal `NULL`s.
+  5. **Multi-Dimensional CUBE Matrix**: Cross-tabulation power set combinations.
+  6. **B-Tree Indexing & Sargability**: Preventing table scan degradation from function-wrapped column predicates.
+- 🏆 **MILESTONE**: **PURE SQL ENGINE TOPICS 100% COMPLETE ACROSS ALL REPOSITORY MODULES!** Total problems solved: **66 / 68**. Ready for Day 13 (Business Analytics & Churn Cohorts).
+
+

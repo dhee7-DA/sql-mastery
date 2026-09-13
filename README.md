@@ -65,9 +65,11 @@ An institutional-grade, in-browser execution studio and visual masterclass locat
 
 ---
 
-### 🔴 Phase 4: Relational Joins Track
+### 🔴 Phase 4: Relational Joins, Subqueries & Set Operations Track
 | Day | Module Directory | HackerRank Subdomain & Focus | Difficulty | Status |
 |---|---|---|---|---|
+| **Day 07** | [`day-07-subqueries-and-ctes`](./day-07-subqueries-and-ctes) | Scalar/Correlated Subqueries, `EXISTS`, Modular CTEs, Recursive Trees | Medium / Hard | ✅ Completed (5/5) |
+| **Day 07b** | [`day-07b-set-operations-and-grouping`](./day-07b-set-operations-and-grouping) | `UNION [ALL]`, `INTERSECT`, `EXCEPT`, `ROLLUP`, `CUBE`, Sargability | Medium / Hard | ✅ Completed (5/5) |
 | **Day 08** | [`day-08-basic-joins`](./day-08-basic-joins) | `INNER JOIN`, `LEFT JOIN`, Asian Pop, African Cities, Continents | Easy | ✅ Completed (3/3) |
 | **Day 09** | [`day-09-intermediate-joins`](./day-09-intermediate-joins) | The Report, Top Competitors, Ollivander's Inventory, Non-Equi Joins | Medium | ✅ Completed (3/3) |
 | **Day 10** | [`day-10-advanced-joins-scoring`](./day-10-advanced-joins-scoring) | Contest Leaderboard, Placements, Symmetric Pairs, Subqueries | Medium / Hard | ✅ Completed (3/3) |

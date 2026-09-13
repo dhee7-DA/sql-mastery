@@ -21,8 +21,8 @@
   - **30 Interactive Quests**: Levels 1–30 with audio FX, token puzzle mechanics, and instant evaluation.
   - **Track 04 in Guided Learning Lab**: 8 dedicated steps covering Inner, Left, Right, Full Outer, Anti, Cross, Self, and Non-Equi Joins.
 - **Next Immediate Action**: Advance to Day 13 (*Real-World Business Analytics: Retention Cohort Heatmaps, Customer Churn Rates & LTV*)
-- **Total Problems Completed in Intensive**: 56 / 58 Problems
-- **Last Updated**: 2026-09-13 15:30 IST
+- **Total Problems Completed in Intensive**: 66 / 68 Problems
+- **Last Updated**: 2026-09-13 16:00 IST
 
 ---
 
@@ -36,6 +36,8 @@
 | **04** | [`day-04-advanced-select-case`](./day-04-advanced-select-case) | `CASE WHEN`, Type of Triangle, Multi-branching logic | 1/1 | ✅ Completed (100%) |
 | **05** | [`day-05-basic-aggregations`](./day-05-basic-aggregations) | `COUNT`, `SUM`, `AVG`, `ROUND`, Top Earners, Density Diff | 10/10 | ✅ Completed (100%) |
 | **06** | [`day-06-station-math-aggregates`](./day-06-station-math-aggregates) | Station 2, 13–20 (Manhattan & Euclidean Distances, Medians) | 9/9 | ✅ Completed (100%) |
+| **07** | [`day-07-subqueries-and-ctes`](./day-07-subqueries-and-ctes) | Scalar/Correlated Subqueries, `EXISTS`, Modular CTEs, Recursive Trees | 5/5 | ✅ Completed (100%) |
+| **07b**| [`day-07b-set-operations-and-grouping`](./day-07b-set-operations-and-grouping) | `UNION ALL`, `INTERSECT`, `EXCEPT`, `ROLLUP`, `CUBE`, Sargability | 5/5 | ✅ Completed (100%) |
 | **08** | [`day-08-basic-joins`](./day-08-basic-joins) | `INNER JOIN`, `LEFT JOIN`, Asian Pop, African Cities, Continents, Anti-Joins | 3/3 | ✅ Completed (100%) |
 | **09** | [`day-09-intermediate-joins`](./day-09-intermediate-joins) | The Report, Top Competitors, Ollivander's Inventory, Non-Equi Joins | 3/3 | ✅ Completed (100%) |
 | **10** | [`day-10-advanced-joins-scoring`](./day-10-advanced-joins-scoring) | Contest Leaderboard, Placements, Symmetric Pairs | 3/3 | ✅ Completed (100%) |
