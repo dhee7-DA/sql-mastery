@@ -5,13 +5,14 @@
 ---
 
 ## 🧭 Executive Summary of Progress
-- **Current Milestone**: 🏆 **Phase 1–4 100% Conquered | Phase 5 Underway (Day 11 Complete)**
-- **Total Problems Conquered**: **52 / 58 HackerRank & LeetCode Benchmarks**
+- **Current Milestone**: 🏆 **Phase 1–5 100% Conquered | Days 11 & 12 Window Functions + Days 07 & 07b Subqueries/CTEs/Set Ops Complete ➡️ Ready for Day 13**
+- **Total Problems Conquered**: **66 / 68 HackerRank & LeetCode Benchmarks**
 - **Interactive Masterclass Assets**:
-  - **11 Visual Masterclass Modules**: With custom Neo-Brutalist SVG engineering diagrams.
-  - **1,450 Master Technical MCQs**: Across 21 categories (including 350 dedicated Relational Join questions).
-  - **1,040 Enterprise Case Studies**: Handcrafted production scenarios across 10 industries (including 390 Relational Join cases with zero template repetition).
+  - **12 Visual Masterclass Modules**: With custom Neo-Brutalist SVG engineering diagrams (now including Module 12: Analytical Window Functions & Sliding Frame Physics).
+  - **2,100 Master Technical MCQs**: Across 23 categories (including 350 dedicated Relational Join questions, 500 Window Functions questions, and 150 Subqueries/CTEs/Set Ops questions).
+  - **1,490 Enterprise Case Studies**: Handcrafted production scenarios across 10 sections and 10 industries (including 390 Relational Join cases, 300 Window Functions cases, and 150 Advanced SQL Engine cases).
   - **30 Gamified Quests**: In-browser AST validation studio.
+  - **🤖 "Byte" the Animated SQL Cyber-Bot Companion**: Expressive reactive SVG assistant with 5 emotional states and 10 curated pro-tips.
 
 ---
 

@@ -20566,6 +20566,16 @@ const ALL_500_CASE_STUDIES = [
   }
 ];
 
+// Normalize properties across all cases for uniform UI rendering
+for (let i = 0; i < ALL_500_CASE_STUDIES.length; i++) {
+  const cs = ALL_500_CASE_STUDIES[i];
+  if (!cs.industry && cs.domain) cs.industry = cs.domain;
+  if (!cs.scenario && cs.businessProblem) cs.scenario = cs.businessProblem;
+  if (!cs.businessObjective && cs.businessProblem) cs.businessObjective = cs.businessProblem;
+  if (!cs.schemaSnippet && cs.schema) cs.schemaSnippet = cs.schema;
+  if (!cs.learningOutcomes && cs.takeaway) cs.learningOutcomes = cs.takeaway;
+}
+
 // Backward compatibility aliases
 const ALL_600_CASE_STUDIES = ALL_500_CASE_STUDIES;
 const ALL_650_CASE_STUDIES = ALL_500_CASE_STUDIES;
@@ -20574,6 +20584,18 @@ const ALL_1040_CASE_STUDIES = ALL_500_CASE_STUDIES;
 const ALL_1340_CASE_STUDIES = ALL_500_CASE_STUDIES;
 const ALL_1490_CASE_STUDIES = ALL_500_CASE_STUDIES;
 
-if (typeof module !== 'undefined' && module.exports) {
-  module.exports = { ALL_500_CASE_STUDIES };
+// Explicitly attach to browser window object
+if (typeof window !== 'undefined') {
+  window.ALL_500_CASE_STUDIES = ALL_500_CASE_STUDIES;
+  window.ALL_600_CASE_STUDIES = ALL_500_CASE_STUDIES;
+  window.ALL_650_CASE_STUDIES = ALL_500_CASE_STUDIES;
+  window.ALL_700_CASE_STUDIES = ALL_500_CASE_STUDIES;
+  window.ALL_1040_CASE_STUDIES = ALL_500_CASE_STUDIES;
+  window.ALL_1340_CASE_STUDIES = ALL_500_CASE_STUDIES;
+  window.ALL_1490_CASE_STUDIES = ALL_500_CASE_STUDIES;
 }
+
+if (typeof module !== 'undefined' && module.exports) {
+  module.exports = { ALL_500_CASE_STUDIES, ALL_1040_CASE_STUDIES, ALL_1340_CASE_STUDIES, ALL_1490_CASE_STUDIES };
+}
+

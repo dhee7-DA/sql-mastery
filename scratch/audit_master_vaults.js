@@ -14,8 +14,8 @@ vm.runInContext(mcqContent, mcqSandbox);
 const mcqs = mcqSandbox.window.MCQS_VAULT_500;
 console.log(`\n--- MCQ VAULT AUDIT ---`);
 console.log(`Total MCQs in vault: ${mcqs.length}`);
-if (mcqs.length !== 1950) {
-  throw new Error(`Expected 1950 MCQs, found ${mcqs.length}`);
+if (mcqs.length !== 2100) {
+  throw new Error(`Expected 2100 MCQs, found ${mcqs.length}`);
 }
 
 const windowMcqs = mcqs.filter(m => m.id && m.id.startsWith('mcq_window_'));
@@ -37,17 +37,17 @@ const { ALL_500_CASE_STUDIES } = require(caseFile);
 
 console.log(`\n--- CASE STUDIES VAULT AUDIT ---`);
 console.log(`Total Case Studies: ${ALL_500_CASE_STUDIES.length}`);
-if (ALL_500_CASE_STUDIES.length !== 1340) {
-  throw new Error(`Expected 1340 Case Studies, found ${ALL_500_CASE_STUDIES.length}`);
+if (ALL_500_CASE_STUDIES.length !== 1490) {
+  throw new Error(`Expected 1490 Case Studies, found ${ALL_500_CASE_STUDIES.length}`);
 }
 
 // Check IDs
-for (let i = 0; i < 1340; i++) {
+for (let i = 0; i < 1490; i++) {
   if (ALL_500_CASE_STUDIES[i].id !== i + 1) {
     throw new Error(`ID mismatch at index ${i}: expected ${i+1}, found ${ALL_500_CASE_STUDIES[i].id}`);
   }
 }
-console.log(`All IDs strictly contiguous from #1 to #1340.`);
+console.log(`All IDs strictly contiguous from #1 to #1490.`);
 
 // Check titles uniqueness
 const titles = new Set();
@@ -57,7 +57,7 @@ ALL_500_CASE_STUDIES.forEach((c, idx) => {
   }
   titles.add(c.title);
 });
-console.log(`All 1,340 case study titles are 100% unique.`);
+console.log(`All 1,490 case study titles are 100% unique.`);
 
 // Section 9 audit
 const sec9 = ALL_500_CASE_STUDIES.filter(c => c.section && c.section.includes("Section 9"));
