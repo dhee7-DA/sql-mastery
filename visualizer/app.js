@@ -1849,12 +1849,27 @@ function switchMainView(targetId) {
 
   // Lazy render on view switch
   if (targetId === 'viewPathways') renderTopicPathways();
-  if (targetId === 'viewGuidedLab') renderGuidedStep(currentGuidedStep);
-  if (targetId === 'viewQuests') renderActiveQuest(currentQuestIndex);
+  if (targetId === 'viewGuidedLab') {
+    renderGuidedStep(currentGuidedStep);
+    if (window.SQL_BUDDY) window.SQL_BUDDY.say("🔬 Welcome to the Guided Lab! Step through each physical execution phase row-by-row!", 4500, 'thinking');
+  }
+  if (targetId === 'viewQuests') {
+    renderActiveQuest(currentQuestIndex);
+    if (window.SQL_BUDDY) window.SQL_BUDDY.say("🎮 Quest Mode! Drag and assemble the AST query tokens to solve the puzzle!", 4500, 'happy');
+  }
   if (targetId === 'viewDeconstructor') renderDeconstructedProblem(activeDeconstructorId);
-  if (targetId === 'viewExplainer') renderStudyLibrary();
-  if (targetId === 'viewMcqs') renderMcqs();
-  if (targetId === 'viewCases') renderCaseStudies();
+  if (targetId === 'viewExplainer') {
+    renderStudyLibrary();
+    if (window.SQL_BUDDY) window.SQL_BUDDY.say("📚 Masterclass Study Library: 12 modules with deep storage physics and gotchas!", 4500, 'happy');
+  }
+  if (targetId === 'viewMcqs') {
+    renderMcqs();
+    if (window.SQL_BUDDY) window.SQL_BUDDY.say("🧠 2,100 Master MCQs loaded! Watch out for 3-valued logic and tie-breaking edge cases!", 4500, 'thinking');
+  }
+  if (targetId === 'viewCases') {
+    renderCaseStudies();
+    if (window.SQL_BUDDY) window.SQL_BUDDY.say("💼 1,490 Enterprise Case Studies! Pick an industry vertical and let's solve real data challenges!", 4500, 'happy');
+  }
   if (targetId === 'viewEnterpriseERD') initEnterpriseERD();
   if (targetId === 'viewProblems') renderProblemBank();
 }
@@ -3861,11 +3876,13 @@ function handleMcqAnswer(qid, selectedIdx) {
   if (isCorrect) {
     QuizState.score++;
     if (window.soundFX) window.soundFX.playSuccess();
+    if (window.SQL_BUDDY) window.SQL_BUDDY.onCorrectAnswer(mcq.topic || mcq.keyword);
     document.getElementById('quizScoreCount').textContent = QuizState.score;
     optionBtns[selectedIdx].classList.add('opt-correct');
     verdict.innerHTML = `<span style="color: #4ade80; font-weight: 700;">&check; Correct Reasoning! 🌸</span>`;
   } else {
     if (window.soundFX) window.soundFX.playError();
+    if (window.SQL_BUDDY) window.SQL_BUDDY.onIncorrectAnswer();
     optionBtns[selectedIdx].classList.add('opt-wrong');
     if (optionBtns[correctIdx]) optionBtns[correctIdx].classList.add('opt-correct');
     verdict.innerHTML = `<span style="color: #fb7185; font-weight: 700;">&cross; Not quite!</span> &mdash; Correct answer is <strong>Option ${String.fromCharCode(65 + correctIdx)}</strong>`;

@@ -8920,5 +8920,211 @@ body {
   box-shadow: 1px 1px 0px #000000;
 }
 
+/* =============================================================================
+   SQL COMPANION BUDDY: "BYTE" THE CYBER-BOT STYLING & ANIMATIONS
+   ============================================================================= */
+.sql-buddy-container {
+  position: fixed;
+  bottom: 24px;
+  right: 28px;
+  z-index: 9999;
+  display: flex;
+  flex-direction: column;
+  align-items: flex-end;
+  pointer-events: none;
+  transition: all 0.3s cubic-bezier(0.34, 1.56, 0.64, 1);
+}
+
+.sql-buddy-container.minimized {
+  transform: translateY(60px);
+  opacity: 0.6;
+}
+
+.sql-buddy-container.minimized:hover {
+  transform: translateY(0px);
+  opacity: 1;
+}
+
+/* Speech Bubble */
+.buddy-speech-bubble {
+  pointer-events: auto;
+  position: relative;
+  max-width: 290px;
+  background: #ffffff;
+  color: #0f172a;
+  border: 2.5px solid #000000;
+  border-radius: 12px;
+  padding: 10px 14px;
+  box-shadow: 4px 4px 0px #000000;
+  margin-bottom: 12px;
+  font-family: system-ui, -apple-system, sans-serif;
+  animation: buddyPop 0.25s cubic-bezier(0.34, 1.56, 0.64, 1);
+}
+
+.buddy-speech-bubble::after {
+  content: '';
+  position: absolute;
+  bottom: -10px;
+  right: 42px;
+  width: 0;
+  height: 0;
+  border-left: 10px solid transparent;
+  border-right: 10px solid transparent;
+  border-top: 10px solid #000000;
+}
+
+.buddy-bubble-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 4px;
+}
+
+.buddy-name {
+  font-size: 11px;
+  font-weight: 900;
+  text-transform: uppercase;
+  letter-spacing: 0.5px;
+  color: #0284c7;
+}
+
+.buddy-close-speech {
+  background: none;
+  border: none;
+  font-size: 16px;
+  font-weight: 900;
+  cursor: pointer;
+  color: #64748b;
+  line-height: 1;
+  padding: 0 4px;
+}
+
+.buddy-close-speech:hover {
+  color: #ef4444;
+}
+
+.buddy-speech-text {
+  font-size: 12.5px;
+  font-weight: 700;
+  line-height: 1.45;
+  color: #0f172a;
+}
+
+/* Interactive Avatar Unit */
+.buddy-interactive-unit {
+  pointer-events: auto;
+  position: relative;
+  cursor: pointer;
+  user-select: none;
+  transition: transform 0.15s cubic-bezier(0.34, 1.56, 0.64, 1);
+}
+
+.buddy-interactive-unit:hover {
+  transform: scale(1.08) translateY(-4px);
+}
+
+.buddy-interactive-unit:active {
+  transform: scale(0.94) translateY(2px);
+}
+
+/* Floating Bob Animation */
+.buddy-bot-svg {
+  display: block;
+  animation: buddyFloat 3.2s ease-in-out infinite;
+  filter: drop-shadow(0 4px 6px rgba(0, 0, 0, 0.25));
+}
+
+@keyframes buddyFloat {
+  0%, 100% {
+    transform: translateY(0px);
+  }
+  50% {
+    transform: translateY(-8px);
+  }
+}
+
+@keyframes buddyPop {
+  0% {
+    opacity: 0;
+    transform: scale(0.7) translateY(15px);
+  }
+  100% {
+    opacity: 1;
+    transform: scale(1) translateY(0);
+  }
+}
+
+/* Eye Blinking */
+.buddy-eye {
+  transform-origin: center;
+  animation: eyeBlink 4s infinite;
+}
+
+@keyframes eyeBlink {
+  0%, 96%, 100% {
+    transform: scaleY(1);
+  }
+  98% {
+    transform: scaleY(0.1);
+  }
+}
+
+/* Antenna Pulse */
+.buddy-antenna-orb {
+  animation: antennaGlow 1.8s ease-in-out infinite alternate;
+}
+
+@keyframes antennaGlow {
+  from {
+    filter: drop-shadow(0 0 2px #fbbf24);
+    fill: #fbbf24;
+  }
+  to {
+    filter: drop-shadow(0 0 8px #f59e0b);
+    fill: #fef08a;
+  }
+}
+
+/* Thruster Flame Flicker */
+.buddy-thruster-flame {
+  animation: thrusterFlicker 0.4s infinite alternate;
+}
+
+@keyframes thrusterFlicker {
+  from {
+    transform: scaleY(1);
+    opacity: 0.7;
+  }
+  to {
+    transform: scaleY(1.35);
+    opacity: 1;
+  }
+}
+
+/* Sleep / Minimize Toggle Button */
+.buddy-toggle-btn {
+  position: absolute;
+  top: 14px;
+  right: 0px;
+  width: 24px;
+  height: 24px;
+  border-radius: 50%;
+  background: #1e293b;
+  border: 2px solid #000000;
+  box-shadow: 2px 2px 0px #000000;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 11px;
+  cursor: pointer;
+  transition: all 0.15s ease;
+  z-index: 10;
+}
+
+.buddy-toggle-btn:hover {
+  background: #334155;
+  transform: scale(1.15);
+}
+
 
 
