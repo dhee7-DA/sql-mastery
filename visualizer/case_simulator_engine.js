@@ -14,7 +14,36 @@ const CASE_SIMULATOR_ENGINE = (() => {
     const section = (caseStudy.section || '').toLowerCase();
     const query = (caseStudy.targetQuery || '').toUpperCase();
 
-    // 0. SECTION 8: RELATIONAL JOINS & FINANCIAL DATA MODELING (FA / DA / BA FOCUS)
+    // 0A. SECTION 9: WINDOW FUNCTIONS & QUANTITATIVE FINANCIAL ANALYTICS
+    if (section.includes('window') || (caseStudy.id >= 1041 && caseStudy.id <= 1340) || query.includes('OVER (')) {
+      if (title.includes('balance') || title.includes('ledger') || title.includes('cash') || query.includes('UNBOUNDED PRECEDING')) {
+        return [
+          { tx_id: "tx_901", entry_date: "2026-03-01", amount_usd: 5000.00, running_balance_usd: 5000.00, window_state: "INITIAL_ANCHOR" },
+          { tx_id: "tx_902", entry_date: "2026-03-02", amount_usd: -1200.00, running_balance_usd: 3800.00, window_state: "RUNNING_ACCUMULATOR" },
+          { tx_id: "tx_903", entry_date: "2026-03-03", amount_usd: 3500.00, running_balance_usd: 7300.00, window_state: "RUNNING_ACCUMULATOR" },
+          { tx_id: "tx_904", entry_date: "2026-03-04", amount_usd: -500.00, running_balance_usd: 6800.00, window_state: "RUNNING_ACCUMULATOR" },
+          { tx_id: "tx_905", entry_date: "2026-03-05", amount_usd: 8000.00, running_balance_usd: 14800.00, window_state: "HIGH_WATER_MARK" }
+        ];
+      }
+      if (title.includes('rank') || title.includes('top') || title.includes('leaderboard') || query.includes('DENSE_RANK') || query.includes('ROW_NUMBER')) {
+        return [
+          { entity_id: "ent_01", score_metric: 9800.00, dense_rank: 1, row_num: 1, qualify_status: "TOP_TIER_PASS" },
+          { entity_id: "ent_02", score_metric: 8450.00, dense_rank: 2, row_num: 2, qualify_status: "TOP_TIER_PASS" },
+          { entity_id: "ent_03", score_metric: 8450.00, dense_rank: 2, row_num: 3, qualify_status: "TIED_TIER_PASS" },
+          { entity_id: "ent_04", score_metric: 6200.00, dense_rank: 3, row_num: 4, qualify_status: "MEDAL_TIER_PASS" },
+          { entity_id: "ent_05", score_metric: 3100.00, dense_rank: 4, row_num: 5, qualify_status: "CUTOFF_EXCLUDED" }
+        ];
+      }
+      return [
+        { time_step: "T-04", raw_metric: 104.20, partition_baseline: 106.35, window_eval: 104.20, status: "IN_WINDOW_SCOPE" },
+        { time_step: "T-03", raw_metric: 108.50, partition_baseline: 106.35, window_eval: 106.35, status: "IN_WINDOW_SCOPE" },
+        { time_step: "T-02", raw_metric: 102.10, partition_baseline: 106.35, window_eval: 104.93, status: "IN_WINDOW_SCOPE" },
+        { time_step: "T-01", raw_metric: 115.80, partition_baseline: 106.35, window_eval: 107.65, status: "IN_WINDOW_SCOPE" },
+        { time_step: "T-00", raw_metric: 112.40, partition_baseline: 106.35, window_eval: 108.60, status: "IN_WINDOW_SCOPE" }
+      ];
+    }
+
+    // 0B. SECTION 8: RELATIONAL JOINS & FINANCIAL DATA MODELING (FA / DA / BA FOCUS)
     if (section.includes('joins') || (caseStudy.id >= 651 && caseStudy.id <= 1040) || query.includes(' JOIN ')) {
       // Bank Reconciliation / Anti-Join
       if (title.includes('bank') || title.includes('reconciliation') || title.includes('disbursement') || query.includes('IS NULL')) {
@@ -140,6 +169,7 @@ const CASE_SIMULATOR_ENGINE = (() => {
     const rawRows = generateSampleRows(caseStudy);
     const query = (caseStudy.targetQuery || '').toUpperCase();
     const section = (caseStudy.section || '').toLowerCase();
+    const isWindowSection = section.includes('window') || (caseStudy.id >= 1041 && caseStudy.id <= 1340) || query.includes('OVER (');
     const isJoinSection = section.includes('joins') || (caseStudy.id >= 651 && caseStudy.id <= 1040) || query.includes(' JOIN ');
 
     // Parse conditions
@@ -147,8 +177,21 @@ const CASE_SIMULATOR_ENGINE = (() => {
       let passed = true;
       let reason = "Satisfies all WHERE predicates";
 
+      // 0. Window Functions & Quantitative Financial Analytics
+      if (isWindowSection) {
+        if (query.includes("= 1") || query.includes("<= 1") || query.includes("RN = 1") || query.includes("DEDUPLICAT")) {
+          passed = (idx === 0);
+          reason = passed ? "Selected by Window Step: ROW_NUMBER() = 1 (Latest state / Dedup champion)" : "Pruned by Window Step: ROW_NUMBER() > 1 (Superseded historical duplicate)";
+        } else if (query.includes("<= 3") || query.includes("QUALIFY") || query.includes("TOP") || query.includes("TIER <= 3")) {
+          passed = (idx < 3 || (row.dense_rank && row.dense_rank <= 3));
+          reason = passed ? "Qualified by Window Step: Rank meets top-tier predicate" : "Filtered by Window Step: Rank exceeds qualification cutoff";
+        } else {
+          passed = true;
+          reason = "Evaluated in Step 5: Window partition frame computed without row collapse";
+        }
+      }
       // 1. Relational Joins & Financial Analysis Conditions
-      if (isJoinSection) {
+      else if (isJoinSection) {
         // Anti-Join Filter: WHERE right_table.key IS NULL
         if (query.includes("IS NULL")) {
           const hasNullKey = Object.values(row).some(v => v === null);

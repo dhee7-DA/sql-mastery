@@ -16,13 +16,13 @@
   - 🏆 **MODULE 12 ADDED TO VISUAL MASTERCLASS STUDY LIBRARY (12 Complete SVG Masterclass Modules)!**
 - **Visualizer & Masterclass Super-Upgrades**:
   - **12 Visual Masterclass Modules with Poppy Neo-Brutalist SVGs**: Textbook CS theory, formulas, storage physics, and gotchas covering Modules 01 through 12 (now including Module 12: Analytical Window Functions & Sliding Frame Physics).
-  - **The 1,450 Master MCQ Technical Vault**: 1,450 deep technical checks across 21 distinct categories, including **350 Dedicated Join MCQs** (35 each across 10 join families) with balanced 25% option distribution.
-  - **The 1,040 Corporate Case Study Master Vault**: Scaled across 8 sections spanning 10 corporate domains (including 390 Relational Joins cases with zero repetitive loops, 130 Easy, 130 Medium, 130 Hard).
+  - **The 1,950 Master MCQ Technical Vault**: 1,950 deep technical checks across 22 distinct categories, including **350 Dedicated Join MCQs** and **500 Dedicated Window Function MCQs** (50 each across 10 disciplines) with strictly balanced 25% option distribution.
+  - **The 1,340 Corporate Case Study Master Vault**: Scaled across 9 sections spanning 10 corporate domains (including 390 Relational Joins cases and 300 Window Functions & Quant Analytics cases with zero repetitive loops, 480 Easy, 480 Medium, 380 Hard).
   - **30 Interactive Quests**: Levels 1–30 with audio FX, token puzzle mechanics, and instant evaluation.
   - **Track 04 in Guided Learning Lab**: 8 dedicated steps covering Inner, Left, Right, Full Outer, Anti, Cross, Self, and Non-Equi Joins.
 - **Next Immediate Action**: Advance to Day 13 (*Real-World Business Analytics: Retention Cohort Heatmaps, Customer Churn Rates & LTV*)
 - **Total Problems Completed in Intensive**: 56 / 58 Problems
-- **Last Updated**: 2026-09-13 14:15 IST
+- **Last Updated**: 2026-09-13 15:30 IST
 
 ---
 
@@ -68,4 +68,10 @@
 - **500 Master MCQs Options Jumbled**: Shuffled answer positions across options A, B, C, D to achieve 25% equal distribution.
 - **Persistent Domain ERD Showcase**: Mounted live multi-domain ERD at the top of Case Studies across 10 industries; replaced in-card black boxes with sleek single-line table pills.
 - **Studio Dynamic Table Injection Engine**: Query Studio now dynamically synthesizes and registers disk tables for ANY of the 600 case studies or custom queries, complete with WHERE evaluation and column projections.
+
+### 5. 2026-09-13 (Window Functions Mastery Vault Expansion)
+- **500 Master Window MCQs Added**: Vault expanded to 1,950 technical questions across 22 categories, with strict 25% option distribution ([125, 125, 125, 125]).
+- **300 Section 9 Case Studies Added**: Scaled case study vault to 1,340 enterprise problems across 9 sections (#1 to #1340 contiguous, 0 duplicate titles, exactly 100 Easy, 100 Medium, 100 Hard).
+- **Execution Simulator Engine & UI Upgraded**: Added dedicated Section 9 category button, updated counter badges to 1,340, and extended `case_simulator_engine.js` with window frame and offset simulation mechanics.
+
 
