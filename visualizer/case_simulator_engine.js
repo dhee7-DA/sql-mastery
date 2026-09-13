@@ -14,6 +14,44 @@ const CASE_SIMULATOR_ENGINE = (() => {
     const section = (caseStudy.section || '').toLowerCase();
     const query = (caseStudy.targetQuery || '').toUpperCase();
 
+    // 00. SECTION 10: ADVANCED SQL ENGINE MASTERY (SUBQUERIES, CTES, RECURSION & SET OPERATIONS)
+    if (section.includes('sec 10') || section.includes('subquer') || section.includes('engine mastery') || (caseStudy.id >= 1341 && caseStudy.id <= 1490)) {
+      if (title.includes('hierarchy') || title.includes('depth') || title.includes('recursive') || query.includes('RECURSIVE')) {
+        return [
+          { node_id: 1, node_name: "Executive Root (CEO)", depth_level: 1, path_string: "CEO", recursion_state: "ANCHOR_MEMBER" },
+          { node_id: 2, node_name: "EVP Operations", depth_level: 2, path_string: "CEO -> EVP Ops", recursion_state: "RECURSIVE_HOP_1" },
+          { node_id: 3, node_name: "EVP Engineering", depth_level: 2, path_string: "CEO -> EVP Eng", recursion_state: "RECURSIVE_HOP_1" },
+          { node_id: 4, node_name: "Director Core Tech", depth_level: 3, path_string: "CEO -> EVP Eng -> Dir Core", recursion_state: "RECURSIVE_HOP_2" },
+          { node_id: 5, node_name: "Principal Architect", depth_level: 4, path_string: "CEO -> EVP Eng -> Dir Core -> Architect", recursion_state: "LEAF_NODE" }
+        ];
+      }
+      if (title.includes('union') || title.includes('reconciliation') || title.includes('consolidate') || query.includes('UNION')) {
+        return [
+          { record_id: "TX-101", source_system: "Production Cloud", entity_id: 801, amount_usd: 12500.00, stream_status: "STREAMED_APPEND" },
+          { record_id: "TX-102", source_system: "Production Cloud", entity_id: 802, amount_usd: 850.00, stream_status: "STREAMED_APPEND" },
+          { record_id: "TX-201", source_system: "Legacy On-Prem", entity_id: 803, amount_usd: 3400.00, stream_status: "STREAMED_APPEND" },
+          { record_id: "TX-202", source_system: "Legacy On-Prem", entity_id: 804, amount_usd: 19500.00, stream_status: "STREAMED_APPEND" },
+          { record_id: "TX-203", source_system: "Legacy On-Prem", entity_id: 805, amount_usd: 420.00, stream_status: "STREAMED_APPEND" }
+        ];
+      }
+      if (title.includes('rollup') || title.includes('cube') || title.includes('grouping') || query.includes('ROLLUP')) {
+        return [
+          { dimension_a: "Americas", dimension_b: "USA", subtotal_metric: 820000.00, grouping_flag_a: 0, grouping_flag_b: 0, level_label: "Granular Unit" },
+          { dimension_a: "Americas", dimension_b: "Canada", subtotal_metric: 280000.00, grouping_flag_a: 0, grouping_flag_b: 0, level_label: "Granular Unit" },
+          { dimension_a: "Americas", dimension_b: "ALL COUNTRIES", subtotal_metric: 1100000.00, grouping_flag_a: 0, grouping_flag_b: 1, level_label: "Regional Subtotal" },
+          { dimension_a: "EMEA", dimension_b: "ALL COUNTRIES", subtotal_metric: 1050000.00, grouping_flag_a: 0, grouping_flag_b: 1, level_label: "Regional Subtotal" },
+          { dimension_a: "GLOBAL", dimension_b: "ALL REGIONS", subtotal_metric: 2150000.00, grouping_flag_a: 1, grouping_flag_b: 1, level_label: "Grand Total" }
+        ];
+      }
+      return [
+        { entity_id: 501, metric_value: 145000.00, subquery_benchmark: 120000.00, variance: +25000.00, semi_join_match: true, pipeline_tier: "TIER_1_FILTER" },
+        { entity_id: 502, metric_value: 190000.00, subquery_benchmark: 120000.00, variance: +70000.00, semi_join_match: true, pipeline_tier: "TIER_1_FILTER" },
+        { entity_id: 503, metric_value: 95000.00, subquery_benchmark: 120000.00, variance: -25000.00, semi_join_match: false, pipeline_tier: "BELOW_BENCHMARK" },
+        { entity_id: 504, metric_value: 165000.00, subquery_benchmark: 120000.00, variance: +45000.00, semi_join_match: true, pipeline_tier: "TIER_1_FILTER" },
+        { entity_id: 505, metric_value: 110000.00, subquery_benchmark: 120000.00, variance: -10000.00, semi_join_match: false, pipeline_tier: "BELOW_BENCHMARK" }
+      ];
+    }
+
     // 0A. SECTION 9: WINDOW FUNCTIONS & QUANTITATIVE FINANCIAL ANALYTICS
     if (section.includes('window') || (caseStudy.id >= 1041 && caseStudy.id <= 1340) || query.includes('OVER (')) {
       if (title.includes('balance') || title.includes('ledger') || title.includes('cash') || query.includes('UNBOUNDED PRECEDING')) {
@@ -169,6 +207,7 @@ const CASE_SIMULATOR_ENGINE = (() => {
     const rawRows = generateSampleRows(caseStudy);
     const query = (caseStudy.targetQuery || '').toUpperCase();
     const section = (caseStudy.section || '').toLowerCase();
+    const isSec10 = section.includes('sec 10') || section.includes('subquer') || section.includes('engine mastery') || (caseStudy.id >= 1341 && caseStudy.id <= 1490);
     const isWindowSection = section.includes('window') || (caseStudy.id >= 1041 && caseStudy.id <= 1340) || query.includes('OVER (');
     const isJoinSection = section.includes('joins') || (caseStudy.id >= 651 && caseStudy.id <= 1040) || query.includes(' JOIN ');
 
@@ -177,8 +216,27 @@ const CASE_SIMULATOR_ENGINE = (() => {
       let passed = true;
       let reason = "Satisfies all WHERE predicates";
 
+      // 00. Section 10: Subqueries, CTEs, Recursion & Set Ops
+      if (isSec10) {
+        if (row.semi_join_match === false || row.pipeline_tier === "BELOW_BENCHMARK") {
+          passed = false;
+          reason = "Filtered by Outer WHERE: Value does not satisfy correlated subquery benchmark";
+        } else if (row.recursion_state === "LEAF_NODE") {
+          passed = true;
+          reason = "Emitted by Recursive CTE: Terminal leaf reached in working table queue";
+        } else if (row.stream_status === "STREAMED_APPEND") {
+          passed = true;
+          reason = "Emitted by Set Operator: Row streamed into union pipeline without memory deduplication";
+        } else if (row.level_label === "Grand Total" || row.level_label === "Regional Subtotal") {
+          passed = true;
+          reason = "Aggregated by ROLLUP/CUBE: Super-aggregate subtotal emitted";
+        } else {
+          passed = true;
+          reason = "Preserved: Meets CTE dataflow filtering criteria";
+        }
+      }
       // 0. Window Functions & Quantitative Financial Analytics
-      if (isWindowSection) {
+      else if (isWindowSection) {
         if (query.includes("= 1") || query.includes("<= 1") || query.includes("RN = 1") || query.includes("DEDUPLICAT")) {
           passed = (idx === 0);
           reason = passed ? "Selected by Window Step: ROW_NUMBER() = 1 (Latest state / Dedup champion)" : "Pruned by Window Step: ROW_NUMBER() > 1 (Superseded historical duplicate)";

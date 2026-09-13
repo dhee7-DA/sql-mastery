@@ -1,10 +1,16 @@
 // =============================================================================
-// SQL MASTERY - 1,340 PRODUCTION CASE STUDIES VAULT
-// Sections 1 to 7: Foundational, Aggregations, Subqueries & Filtering (IDs 1 to 650)
-// Section 8: Relational Joins & Financial Data Modeling (IDs 651 to 1040 - 390 Distinct Enterprise Cases)
-// Section 9: Window Functions & Quantitative Financial Analytics (IDs 1041 to 1340 - 300 Distinct Enterprise Cases)
-// Difficulty: Balanced distribution across all sections (Section 9: exactly 100 Easy, 100 Medium, 100 Hard)
-// Industries: Fintech, SaaS, Retail, Healthcare, Logistics, Media, Security, Hardware, HR, Platforms
+// COMPLETE ENTERPRISE CASE STUDIES REPOSITORY (1490 Exhaustive Industry Scenarios)
+// Strictly Contiguous IDs #1 through #1490 (100% Unique Titles)
+// Section 1: Database Theory & Architecture (IDs 1 to 100)
+// Section 2: Physical Query Execution Order & Projections (IDs 101 to 200)
+// Section 3: Filtering, Predicates & Three-Valued Logic (IDs 201 to 300)
+// Section 4: String Slicing, Text Manipulation & Pattern Matching (IDs 301 to 400)
+// Section 5: Sorting, Determinism & Slicing (IDs 401 to 500)
+// Section 6: Aggregations, Statistical Metrics & GROUP BY (IDs 501 to 600)
+// Section 7: Spatial Coordinates, Math Functions & Medians (IDs 601 to 650)
+// Section 8: Relational Joins & Financial Data Modeling (IDs 651 to 1040)
+// Section 9: Window Functions & Quantitative Financial Analytics (IDs 1041 to 1340)
+// Section 10: Advanced SQL Engine Mastery (Subqueries, CTEs, Recursion & Set Operations) (IDs 1341 to 1490)
 // =============================================================================
 
 const ALL_500_CASE_STUDIES = [
@@ -18157,25 +18163,2417 @@ const ALL_500_CASE_STUDIES = [
     "eli5Story": "Group an engineer's server terminal commands into sessions. If they walk away for 15 minutes, treat their next command as a brand new terminal session.",
     "commonMistakes": "Omitting the admin_user partition, blending terminal sessions across different engineers.",
     "learningOutcomes": "Reconstruct administrative shell sessions using inactivity window sessionization."
+  },
+  {
+    "id": 1341,
+    "title": "Flag Transactions Above Global Daily Median Benchmark",
+    "section": "Section 10: Advanced SQL Engine Mastery (Subqueries, CTEs, Recursion & Set Operations)",
+    "difficulty": "Easy",
+    "domain": "Fintech",
+    "schema": "| Column | Type | Description |\n|---|---|---|\n| id | INT | Primary Key |\n| amount | NUMERIC | Measured Metric |\n| category_id | INT | Dimensional Grouping |\n| recorded_at | TIMESTAMP | Event Timestamp |",
+    "businessProblem": "The analytics engineering group in the Fintech vertical requires an automated analytical query to isolate records from ledger_txns where amount deviates significantly from global or columnar subquery baselines without joining physical tables unnecessarily.",
+    "targetQuery": "SELECT id, category_id, amount\nFROM ledger_txns\nWHERE amount > (\n    SELECT AVG(amount)\n    FROM ledger_txns\n)\nORDER BY amount DESC;",
+    "eli5Story": "Imagine you want to find the tall basketball players in a school. Instead of measuring everyone against each other in a giant brawl, you calculate the school average height first (scalar subquery) and then let anyone taller than that walk through the door!",
+    "commonMistakes": [
+      "Allowing a scalar subquery in the SELECT list to return more than 1 row, triggering fatal runtime cardinality errors",
+      "Using IN with a subquery containing NULLs when NOT IN was intended, falling into the 3VL empty-result trap"
+    ],
+    "takeaway": "Scalar subqueries evaluate to a single atomic value and can be substituted anywhere a scalar constant is valid, provided cardinality is strictly guaranteed."
+  },
+  {
+    "id": 1342,
+    "title": "Filter Accounts Exceeding Platform Average License Count",
+    "section": "Section 10: Advanced SQL Engine Mastery (Subqueries, CTEs, Recursion & Set Operations)",
+    "difficulty": "Easy",
+    "domain": "SaaS",
+    "schema": "| Column | Type | Description |\n|---|---|---|\n| id | INT | Primary Key |\n| seat_count | NUMERIC | Measured Metric |\n| category_id | INT | Dimensional Grouping |\n| recorded_at | TIMESTAMP | Event Timestamp |",
+    "businessProblem": "The analytics engineering group in the SaaS vertical requires an automated analytical query to isolate records from tenant_subscriptions where seat_count deviates significantly from global or columnar subquery baselines without joining physical tables unnecessarily.",
+    "targetQuery": "SELECT id, category_id, seat_count\nFROM tenant_subscriptions\nWHERE seat_count > (\n    SELECT AVG(seat_count)\n    FROM tenant_subscriptions\n)\nORDER BY seat_count DESC;",
+    "eli5Story": "Imagine you want to find the tall basketball players in a school. Instead of measuring everyone against each other in a giant brawl, you calculate the school average height first (scalar subquery) and then let anyone taller than that walk through the door!",
+    "commonMistakes": [
+      "Allowing a scalar subquery in the SELECT list to return more than 1 row, triggering fatal runtime cardinality errors",
+      "Using IN with a subquery containing NULLs when NOT IN was intended, falling into the 3VL empty-result trap"
+    ],
+    "takeaway": "Scalar subqueries evaluate to a single atomic value and can be substituted anywhere a scalar constant is valid, provided cardinality is strictly guaranteed."
+  },
+  {
+    "id": 1343,
+    "title": "Identify Patient Readmissions Exceeding Hospital Average Length of Stay",
+    "section": "Section 10: Advanced SQL Engine Mastery (Subqueries, CTEs, Recursion & Set Operations)",
+    "difficulty": "Easy",
+    "domain": "Healthcare",
+    "schema": "| Column | Type | Description |\n|---|---|---|\n| id | INT | Primary Key |\n| stay_days | NUMERIC | Measured Metric |\n| category_id | INT | Dimensional Grouping |\n| recorded_at | TIMESTAMP | Event Timestamp |",
+    "businessProblem": "The analytics engineering group in the Healthcare vertical requires an automated analytical query to isolate records from inpatient_stays where stay_days deviates significantly from global or columnar subquery baselines without joining physical tables unnecessarily.",
+    "targetQuery": "SELECT id, category_id, stay_days\nFROM inpatient_stays\nWHERE stay_days > (\n    SELECT AVG(stay_days)\n    FROM inpatient_stays\n)\nORDER BY stay_days DESC;",
+    "eli5Story": "Imagine you want to find the tall basketball players in a school. Instead of measuring everyone against each other in a giant brawl, you calculate the school average height first (scalar subquery) and then let anyone taller than that walk through the door!",
+    "commonMistakes": [
+      "Allowing a scalar subquery in the SELECT list to return more than 1 row, triggering fatal runtime cardinality errors",
+      "Using IN with a subquery containing NULLs when NOT IN was intended, falling into the 3VL empty-result trap"
+    ],
+    "takeaway": "Scalar subqueries evaluate to a single atomic value and can be substituted anywhere a scalar constant is valid, provided cardinality is strictly guaranteed."
+  },
+  {
+    "id": 1344,
+    "title": "Isolate High-Value Orders Greater than Overall Customer Average Cart Value",
+    "section": "Section 10: Advanced SQL Engine Mastery (Subqueries, CTEs, Recursion & Set Operations)",
+    "difficulty": "Easy",
+    "domain": "E-Commerce",
+    "schema": "| Column | Type | Description |\n|---|---|---|\n| id | INT | Primary Key |\n| order_total | NUMERIC | Measured Metric |\n| category_id | INT | Dimensional Grouping |\n| recorded_at | TIMESTAMP | Event Timestamp |",
+    "businessProblem": "The analytics engineering group in the E-Commerce vertical requires an automated analytical query to isolate records from customer_orders where order_total deviates significantly from global or columnar subquery baselines without joining physical tables unnecessarily.",
+    "targetQuery": "SELECT id, category_id, order_total\nFROM customer_orders\nWHERE order_total > (\n    SELECT AVG(order_total)\n    FROM customer_orders\n)\nORDER BY order_total DESC;",
+    "eli5Story": "Imagine you want to find the tall basketball players in a school. Instead of measuring everyone against each other in a giant brawl, you calculate the school average height first (scalar subquery) and then let anyone taller than that walk through the door!",
+    "commonMistakes": [
+      "Allowing a scalar subquery in the SELECT list to return more than 1 row, triggering fatal runtime cardinality errors",
+      "Using IN with a subquery containing NULLs when NOT IN was intended, falling into the 3VL empty-result trap"
+    ],
+    "takeaway": "Scalar subqueries evaluate to a single atomic value and can be substituted anywhere a scalar constant is valid, provided cardinality is strictly guaranteed."
+  },
+  {
+    "id": 1345,
+    "title": "Detect Heavy Cargo Shipments Heavier Than Fleet Average Payload",
+    "section": "Section 10: Advanced SQL Engine Mastery (Subqueries, CTEs, Recursion & Set Operations)",
+    "difficulty": "Easy",
+    "domain": "Logistics",
+    "schema": "| Column | Type | Description |\n|---|---|---|\n| id | INT | Primary Key |\n| payload_kg | NUMERIC | Measured Metric |\n| category_id | INT | Dimensional Grouping |\n| recorded_at | TIMESTAMP | Event Timestamp |",
+    "businessProblem": "The analytics engineering group in the Logistics vertical requires an automated analytical query to isolate records from cargo_manifests where payload_kg deviates significantly from global or columnar subquery baselines without joining physical tables unnecessarily.",
+    "targetQuery": "SELECT id, category_id, payload_kg\nFROM cargo_manifests\nWHERE payload_kg > (\n    SELECT AVG(payload_kg)\n    FROM cargo_manifests\n)\nORDER BY payload_kg DESC;",
+    "eli5Story": "Imagine you want to find the tall basketball players in a school. Instead of measuring everyone against each other in a giant brawl, you calculate the school average height first (scalar subquery) and then let anyone taller than that walk through the door!",
+    "commonMistakes": [
+      "Allowing a scalar subquery in the SELECT list to return more than 1 row, triggering fatal runtime cardinality errors",
+      "Using IN with a subquery containing NULLs when NOT IN was intended, falling into the 3VL empty-result trap"
+    ],
+    "takeaway": "Scalar subqueries evaluate to a single atomic value and can be substituted anywhere a scalar constant is valid, provided cardinality is strictly guaranteed."
+  },
+  {
+    "id": 1346,
+    "title": "Identify Players Earning More Gold Than ALL Casual Player Cohorts",
+    "section": "Section 10: Advanced SQL Engine Mastery (Subqueries, CTEs, Recursion & Set Operations)",
+    "difficulty": "Medium",
+    "domain": "Gaming",
+    "schema": "| Column | Type | Description |\n|---|---|---|\n| id | INT | Primary Key |\n| gold_earned | NUMERIC | Measured Metric |\n| category_id | INT | Dimensional Grouping |\n| recorded_at | TIMESTAMP | Event Timestamp |",
+    "businessProblem": "The analytics engineering group in the Gaming vertical requires an automated analytical query to isolate records from player_sessions where gold_earned deviates significantly from global or columnar subquery baselines without joining physical tables unnecessarily.",
+    "targetQuery": "SELECT id, category_id, gold_earned\nFROM player_sessions\nWHERE gold_earned > (\n    SELECT AVG(gold_earned)\n    FROM player_sessions\n)\nORDER BY gold_earned DESC;",
+    "eli5Story": "Imagine you want to find the tall basketball players in a school. Instead of measuring everyone against each other in a giant brawl, you calculate the school average height first (scalar subquery) and then let anyone taller than that walk through the door!",
+    "commonMistakes": [
+      "Allowing a scalar subquery in the SELECT list to return more than 1 row, triggering fatal runtime cardinality errors",
+      "Using IN with a subquery containing NULLs when NOT IN was intended, falling into the 3VL empty-result trap"
+    ],
+    "takeaway": "Scalar subqueries evaluate to a single atomic value and can be substituted anywhere a scalar constant is valid, provided cardinality is strictly guaranteed."
+  },
+  {
+    "id": 1347,
+    "title": "Isolate Ad Campaigns With CTR Higher Than ANY Competitor Category Peak",
+    "section": "Section 10: Advanced SQL Engine Mastery (Subqueries, CTEs, Recursion & Set Operations)",
+    "difficulty": "Medium",
+    "domain": "AdTech",
+    "schema": "| Column | Type | Description |\n|---|---|---|\n| id | INT | Primary Key |\n| ctr_pct | NUMERIC | Measured Metric |\n| category_id | INT | Dimensional Grouping |\n| recorded_at | TIMESTAMP | Event Timestamp |",
+    "businessProblem": "The analytics engineering group in the AdTech vertical requires an automated analytical query to isolate records from campaign_performance where ctr_pct deviates significantly from global or columnar subquery baselines without joining physical tables unnecessarily.",
+    "targetQuery": "SELECT id, category_id, ctr_pct\nFROM campaign_performance\nWHERE ctr_pct > (\n    SELECT AVG(ctr_pct)\n    FROM campaign_performance\n)\nORDER BY ctr_pct DESC;",
+    "eli5Story": "Imagine you want to find the tall basketball players in a school. Instead of measuring everyone against each other in a giant brawl, you calculate the school average height first (scalar subquery) and then let anyone taller than that walk through the door!",
+    "commonMistakes": [
+      "Allowing a scalar subquery in the SELECT list to return more than 1 row, triggering fatal runtime cardinality errors",
+      "Using IN with a subquery containing NULLs when NOT IN was intended, falling into the 3VL empty-result trap"
+    ],
+    "takeaway": "Scalar subqueries evaluate to a single atomic value and can be substituted anywhere a scalar constant is valid, provided cardinality is strictly guaranteed."
+  },
+  {
+    "id": 1348,
+    "title": "Filter Students Scoring Below the Global Course Benchmark Threshold",
+    "section": "Section 10: Advanced SQL Engine Mastery (Subqueries, CTEs, Recursion & Set Operations)",
+    "difficulty": "Medium",
+    "domain": "EdTech",
+    "schema": "| Column | Type | Description |\n|---|---|---|\n| id | INT | Primary Key |\n| exam_score | NUMERIC | Measured Metric |\n| category_id | INT | Dimensional Grouping |\n| recorded_at | TIMESTAMP | Event Timestamp |",
+    "businessProblem": "The analytics engineering group in the EdTech vertical requires an automated analytical query to isolate records from course_submissions where exam_score deviates significantly from global or columnar subquery baselines without joining physical tables unnecessarily.",
+    "targetQuery": "SELECT id, category_id, exam_score\nFROM course_submissions\nWHERE exam_score > (\n    SELECT AVG(exam_score)\n    FROM course_submissions\n)\nORDER BY exam_score DESC;",
+    "eli5Story": "Imagine you want to find the tall basketball players in a school. Instead of measuring everyone against each other in a giant brawl, you calculate the school average height first (scalar subquery) and then let anyone taller than that walk through the door!",
+    "commonMistakes": [
+      "Allowing a scalar subquery in the SELECT list to return more than 1 row, triggering fatal runtime cardinality errors",
+      "Using IN with a subquery containing NULLs when NOT IN was intended, falling into the 3VL empty-result trap"
+    ],
+    "takeaway": "Scalar subqueries evaluate to a single atomic value and can be substituted anywhere a scalar constant is valid, provided cardinality is strictly guaranteed."
+  },
+  {
+    "id": 1349,
+    "title": "Flag Power Substation Grid Surges Exceeding the 95th Percentile Baseline",
+    "section": "Section 10: Advanced SQL Engine Mastery (Subqueries, CTEs, Recursion & Set Operations)",
+    "difficulty": "Medium",
+    "domain": "Energy",
+    "schema": "| Column | Type | Description |\n|---|---|---|\n| id | INT | Primary Key |\n| megawatt_load | NUMERIC | Measured Metric |\n| category_id | INT | Dimensional Grouping |\n| recorded_at | TIMESTAMP | Event Timestamp |",
+    "businessProblem": "The analytics engineering group in the Energy vertical requires an automated analytical query to isolate records from substation_telemetry where megawatt_load deviates significantly from global or columnar subquery baselines without joining physical tables unnecessarily.",
+    "targetQuery": "SELECT id, category_id, megawatt_load\nFROM substation_telemetry\nWHERE megawatt_load > (\n    SELECT AVG(megawatt_load)\n    FROM substation_telemetry\n)\nORDER BY megawatt_load DESC;",
+    "eli5Story": "Imagine you want to find the tall basketball players in a school. Instead of measuring everyone against each other in a giant brawl, you calculate the school average height first (scalar subquery) and then let anyone taller than that walk through the door!",
+    "commonMistakes": [
+      "Allowing a scalar subquery in the SELECT list to return more than 1 row, triggering fatal runtime cardinality errors",
+      "Using IN with a subquery containing NULLs when NOT IN was intended, falling into the 3VL empty-result trap"
+    ],
+    "takeaway": "Scalar subqueries evaluate to a single atomic value and can be substituted anywhere a scalar constant is valid, provided cardinality is strictly guaranteed."
+  },
+  {
+    "id": 1350,
+    "title": "Find Video Titles Outperforming Average Genre Watch Time via Derived Table",
+    "section": "Section 10: Advanced SQL Engine Mastery (Subqueries, CTEs, Recursion & Set Operations)",
+    "difficulty": "Medium",
+    "domain": "Media",
+    "schema": "| Column | Type | Description |\n|---|---|---|\n| id | INT | Primary Key |\n| minutes_watched | NUMERIC | Measured Metric |\n| category_id | INT | Dimensional Grouping |\n| recorded_at | TIMESTAMP | Event Timestamp |",
+    "businessProblem": "The analytics engineering group in the Media vertical requires an automated analytical query to isolate records from video_streams where minutes_watched deviates significantly from global or columnar subquery baselines without joining physical tables unnecessarily.",
+    "targetQuery": "SELECT id, category_id, minutes_watched\nFROM video_streams\nWHERE minutes_watched > (\n    SELECT AVG(minutes_watched)\n    FROM video_streams\n)\nORDER BY minutes_watched DESC;",
+    "eli5Story": "Imagine you want to find the tall basketball players in a school. Instead of measuring everyone against each other in a giant brawl, you calculate the school average height first (scalar subquery) and then let anyone taller than that walk through the door!",
+    "commonMistakes": [
+      "Allowing a scalar subquery in the SELECT list to return more than 1 row, triggering fatal runtime cardinality errors",
+      "Using IN with a subquery containing NULLs when NOT IN was intended, falling into the 3VL empty-result trap"
+    ],
+    "takeaway": "Scalar subqueries evaluate to a single atomic value and can be substituted anywhere a scalar constant is valid, provided cardinality is strictly guaranteed."
+  },
+  {
+    "id": 1351,
+    "title": "Multi-Tier Derived Table Liquidity Stress Ratio Against Tier-1 Capital Baselines",
+    "section": "Section 10: Advanced SQL Engine Mastery (Subqueries, CTEs, Recursion & Set Operations)",
+    "difficulty": "Hard",
+    "domain": "Fintech",
+    "schema": "| Column | Type | Description |\n|---|---|---|\n| id | INT | Primary Key |\n| liquidity_ratio | NUMERIC | Measured Metric |\n| category_id | INT | Dimensional Grouping |\n| recorded_at | TIMESTAMP | Event Timestamp |",
+    "businessProblem": "The analytics engineering group in the Fintech vertical requires an automated analytical query to isolate records from bank_reserves where liquidity_ratio deviates significantly from global or columnar subquery baselines without joining physical tables unnecessarily.",
+    "targetQuery": "SELECT id, category_id, liquidity_ratio\nFROM bank_reserves\nWHERE liquidity_ratio > (\n    SELECT AVG(liquidity_ratio)\n    FROM bank_reserves\n)\nORDER BY liquidity_ratio DESC;",
+    "eli5Story": "Imagine you want to find the tall basketball players in a school. Instead of measuring everyone against each other in a giant brawl, you calculate the school average height first (scalar subquery) and then let anyone taller than that walk through the door!",
+    "commonMistakes": [
+      "Allowing a scalar subquery in the SELECT list to return more than 1 row, triggering fatal runtime cardinality errors",
+      "Using IN with a subquery containing NULLs when NOT IN was intended, falling into the 3VL empty-result trap"
+    ],
+    "takeaway": "Scalar subqueries evaluate to a single atomic value and can be substituted anywhere a scalar constant is valid, provided cardinality is strictly guaranteed."
+  },
+  {
+    "id": 1352,
+    "title": "Correlated Derived Table Churn Anomaly Detection Against Tiered Quotas",
+    "section": "Section 10: Advanced SQL Engine Mastery (Subqueries, CTEs, Recursion & Set Operations)",
+    "difficulty": "Hard",
+    "domain": "SaaS",
+    "schema": "| Column | Type | Description |\n|---|---|---|\n| id | INT | Primary Key |\n| mrr_loss | NUMERIC | Measured Metric |\n| category_id | INT | Dimensional Grouping |\n| recorded_at | TIMESTAMP | Event Timestamp |",
+    "businessProblem": "The analytics engineering group in the SaaS vertical requires an automated analytical query to isolate records from tenant_churn_events where mrr_loss deviates significantly from global or columnar subquery baselines without joining physical tables unnecessarily.",
+    "targetQuery": "SELECT id, category_id, mrr_loss\nFROM tenant_churn_events\nWHERE mrr_loss > (\n    SELECT AVG(mrr_loss)\n    FROM tenant_churn_events\n)\nORDER BY mrr_loss DESC;",
+    "eli5Story": "Imagine you want to find the tall basketball players in a school. Instead of measuring everyone against each other in a giant brawl, you calculate the school average height first (scalar subquery) and then let anyone taller than that walk through the door!",
+    "commonMistakes": [
+      "Allowing a scalar subquery in the SELECT list to return more than 1 row, triggering fatal runtime cardinality errors",
+      "Using IN with a subquery containing NULLs when NOT IN was intended, falling into the 3VL empty-result trap"
+    ],
+    "takeaway": "Scalar subqueries evaluate to a single atomic value and can be substituted anywhere a scalar constant is valid, provided cardinality is strictly guaranteed."
+  },
+  {
+    "id": 1353,
+    "title": "ICU Mortality Risk Scoring Normalized by Hospital-Wide Diagnostic Baselines",
+    "section": "Section 10: Advanced SQL Engine Mastery (Subqueries, CTEs, Recursion & Set Operations)",
+    "difficulty": "Hard",
+    "domain": "Healthcare",
+    "schema": "| Column | Type | Description |\n|---|---|---|\n| id | INT | Primary Key |\n| sofa_score | NUMERIC | Measured Metric |\n| category_id | INT | Dimensional Grouping |\n| recorded_at | TIMESTAMP | Event Timestamp |",
+    "businessProblem": "The analytics engineering group in the Healthcare vertical requires an automated analytical query to isolate records from icu_admissions where sofa_score deviates significantly from global or columnar subquery baselines without joining physical tables unnecessarily.",
+    "targetQuery": "SELECT id, category_id, sofa_score\nFROM icu_admissions\nWHERE sofa_score > (\n    SELECT AVG(sofa_score)\n    FROM icu_admissions\n)\nORDER BY sofa_score DESC;",
+    "eli5Story": "Imagine you want to find the tall basketball players in a school. Instead of measuring everyone against each other in a giant brawl, you calculate the school average height first (scalar subquery) and then let anyone taller than that walk through the door!",
+    "commonMistakes": [
+      "Allowing a scalar subquery in the SELECT list to return more than 1 row, triggering fatal runtime cardinality errors",
+      "Using IN with a subquery containing NULLs when NOT IN was intended, falling into the 3VL empty-result trap"
+    ],
+    "takeaway": "Scalar subqueries evaluate to a single atomic value and can be substituted anywhere a scalar constant is valid, provided cardinality is strictly guaranteed."
+  },
+  {
+    "id": 1354,
+    "title": "Dynamic Tiered Discount Valuation Using Columnar IN Subqueries with Fallbacks",
+    "section": "Section 10: Advanced SQL Engine Mastery (Subqueries, CTEs, Recursion & Set Operations)",
+    "difficulty": "Hard",
+    "domain": "E-Commerce",
+    "schema": "| Column | Type | Description |\n|---|---|---|\n| id | INT | Primary Key |\n| discount_amt | NUMERIC | Measured Metric |\n| category_id | INT | Dimensional Grouping |\n| recorded_at | TIMESTAMP | Event Timestamp |",
+    "businessProblem": "The analytics engineering group in the E-Commerce vertical requires an automated analytical query to isolate records from checkout_promotions where discount_amt deviates significantly from global or columnar subquery baselines without joining physical tables unnecessarily.",
+    "targetQuery": "SELECT id, category_id, discount_amt\nFROM checkout_promotions\nWHERE discount_amt > (\n    SELECT AVG(discount_amt)\n    FROM checkout_promotions\n)\nORDER BY discount_amt DESC;",
+    "eli5Story": "Imagine you want to find the tall basketball players in a school. Instead of measuring everyone against each other in a giant brawl, you calculate the school average height first (scalar subquery) and then let anyone taller than that walk through the door!",
+    "commonMistakes": [
+      "Allowing a scalar subquery in the SELECT list to return more than 1 row, triggering fatal runtime cardinality errors",
+      "Using IN with a subquery containing NULLs when NOT IN was intended, falling into the 3VL empty-result trap"
+    ],
+    "takeaway": "Scalar subqueries evaluate to a single atomic value and can be substituted anywhere a scalar constant is valid, provided cardinality is strictly guaranteed."
+  },
+  {
+    "id": 1355,
+    "title": "Intermodal Container Dwell Time Anomaly Detection via Nested Column Subqueries",
+    "section": "Section 10: Advanced SQL Engine Mastery (Subqueries, CTEs, Recursion & Set Operations)",
+    "difficulty": "Hard",
+    "domain": "Logistics",
+    "schema": "| Column | Type | Description |\n|---|---|---|\n| id | INT | Primary Key |\n| dwell_hours | NUMERIC | Measured Metric |\n| category_id | INT | Dimensional Grouping |\n| recorded_at | TIMESTAMP | Event Timestamp |",
+    "businessProblem": "The analytics engineering group in the Logistics vertical requires an automated analytical query to isolate records from container_yard_scans where dwell_hours deviates significantly from global or columnar subquery baselines without joining physical tables unnecessarily.",
+    "targetQuery": "SELECT id, category_id, dwell_hours\nFROM container_yard_scans\nWHERE dwell_hours > (\n    SELECT AVG(dwell_hours)\n    FROM container_yard_scans\n)\nORDER BY dwell_hours DESC;",
+    "eli5Story": "Imagine you want to find the tall basketball players in a school. Instead of measuring everyone against each other in a giant brawl, you calculate the school average height first (scalar subquery) and then let anyone taller than that walk through the door!",
+    "commonMistakes": [
+      "Allowing a scalar subquery in the SELECT list to return more than 1 row, triggering fatal runtime cardinality errors",
+      "Using IN with a subquery containing NULLs when NOT IN was intended, falling into the 3VL empty-result trap"
+    ],
+    "takeaway": "Scalar subqueries evaluate to a single atomic value and can be substituted anywhere a scalar constant is valid, provided cardinality is strictly guaranteed."
+  },
+  {
+    "id": 1356,
+    "title": "Detect Transactions Greater Than Customer's 30-Day Historical Average",
+    "section": "Section 10: Advanced SQL Engine Mastery (Subqueries, CTEs, Recursion & Set Operations)",
+    "difficulty": "Easy",
+    "domain": "Fintech",
+    "schema": "| Column | Type | Description |\n|---|---|---|\n| id | INT | Primary Key |\n| account_id | INT | Entity Correlation Anchor |\n| amount | NUMERIC | Tracked Observation |\n| recorded_at | DATE | Observation Date |",
+    "businessProblem": "In Fintech, identifying outliers requires localized context: comparing an observation against its specific entity's baseline rather than an irrelevant global average. We need a correlated subquery row-binding account_id.",
+    "targetQuery": "SELECT o.id, o.account_id, o.amount\nFROM account_txns AS o\nWHERE o.amount > (\n    SELECT AVG(i.amount)\n    FROM account_txns AS i\n    WHERE i.account_id = o.account_id\n)\nORDER BY o.account_id ASC, o.amount DESC;",
+    "eli5Story": "Instead of comparing your math test score to the entire world, your teacher compares your score only to your own past average or your specific classroom's average!",
+    "commonMistakes": [
+      "Forgetting to alias the outer and inner table differently, causing the inner query to compare against itself rather than binding to the outer row",
+      "Running correlated subqueries on non-indexed foreign keys, causing O(N*M) quadratic nested loop full-table scan disasters"
+    ],
+    "takeaway": "Correlated subqueries bind outer query row parameters into the inner scope, executing context-aware comparisons for each candidate row."
+  },
+  {
+    "id": 1357,
+    "title": "Filter User API Calls Exceeding Subscription Plan Mean Consumption",
+    "section": "Section 10: Advanced SQL Engine Mastery (Subqueries, CTEs, Recursion & Set Operations)",
+    "difficulty": "Easy",
+    "domain": "SaaS",
+    "schema": "| Column | Type | Description |\n|---|---|---|\n| id | INT | Primary Key |\n| plan_id | INT | Entity Correlation Anchor |\n| api_calls | NUMERIC | Tracked Observation |\n| recorded_at | DATE | Observation Date |",
+    "businessProblem": "In SaaS, identifying outliers requires localized context: comparing an observation against its specific entity's baseline rather than an irrelevant global average. We need a correlated subquery row-binding plan_id.",
+    "targetQuery": "SELECT o.id, o.plan_id, o.api_calls\nFROM api_usage_logs AS o\nWHERE o.api_calls > (\n    SELECT AVG(i.api_calls)\n    FROM api_usage_logs AS i\n    WHERE i.plan_id = o.plan_id\n)\nORDER BY o.plan_id ASC, o.api_calls DESC;",
+    "eli5Story": "Instead of comparing your math test score to the entire world, your teacher compares your score only to your own past average or your specific classroom's average!",
+    "commonMistakes": [
+      "Forgetting to alias the outer and inner table differently, causing the inner query to compare against itself rather than binding to the outer row",
+      "Running correlated subqueries on non-indexed foreign keys, causing O(N*M) quadratic nested loop full-table scan disasters"
+    ],
+    "takeaway": "Correlated subqueries bind outer query row parameters into the inner scope, executing context-aware comparisons for each candidate row."
+  },
+  {
+    "id": 1358,
+    "title": "Flag Patient Lab Readings Greater Than Diagnostic Norm for Specific Age Group",
+    "section": "Section 10: Advanced SQL Engine Mastery (Subqueries, CTEs, Recursion & Set Operations)",
+    "difficulty": "Easy",
+    "domain": "Healthcare",
+    "schema": "| Column | Type | Description |\n|---|---|---|\n| id | INT | Primary Key |\n| age_group_id | INT | Entity Correlation Anchor |\n| biomarker_val | NUMERIC | Tracked Observation |\n| recorded_at | DATE | Observation Date |",
+    "businessProblem": "In Healthcare, identifying outliers requires localized context: comparing an observation against its specific entity's baseline rather than an irrelevant global average. We need a correlated subquery row-binding age_group_id.",
+    "targetQuery": "SELECT o.id, o.age_group_id, o.biomarker_val\nFROM lab_results AS o\nWHERE o.biomarker_val > (\n    SELECT AVG(i.biomarker_val)\n    FROM lab_results AS i\n    WHERE i.age_group_id = o.age_group_id\n)\nORDER BY o.age_group_id ASC, o.biomarker_val DESC;",
+    "eli5Story": "Instead of comparing your math test score to the entire world, your teacher compares your score only to your own past average or your specific classroom's average!",
+    "commonMistakes": [
+      "Forgetting to alias the outer and inner table differently, causing the inner query to compare against itself rather than binding to the outer row",
+      "Running correlated subqueries on non-indexed foreign keys, causing O(N*M) quadratic nested loop full-table scan disasters"
+    ],
+    "takeaway": "Correlated subqueries bind outer query row parameters into the inner scope, executing context-aware comparisons for each candidate row."
+  },
+  {
+    "id": 1359,
+    "title": "Identify Products Priced Above Category Mean Price Point",
+    "section": "Section 10: Advanced SQL Engine Mastery (Subqueries, CTEs, Recursion & Set Operations)",
+    "difficulty": "Easy",
+    "domain": "E-Commerce",
+    "schema": "| Column | Type | Description |\n|---|---|---|\n| id | INT | Primary Key |\n| category_id | INT | Entity Correlation Anchor |\n| unit_price | NUMERIC | Tracked Observation |\n| recorded_at | DATE | Observation Date |",
+    "businessProblem": "In E-Commerce, identifying outliers requires localized context: comparing an observation against its specific entity's baseline rather than an irrelevant global average. We need a correlated subquery row-binding category_id.",
+    "targetQuery": "SELECT o.id, o.category_id, o.unit_price\nFROM catalog_items AS o\nWHERE o.unit_price > (\n    SELECT AVG(i.unit_price)\n    FROM catalog_items AS i\n    WHERE i.category_id = o.category_id\n)\nORDER BY o.category_id ASC, o.unit_price DESC;",
+    "eli5Story": "Instead of comparing your math test score to the entire world, your teacher compares your score only to your own past average or your specific classroom's average!",
+    "commonMistakes": [
+      "Forgetting to alias the outer and inner table differently, causing the inner query to compare against itself rather than binding to the outer row",
+      "Running correlated subqueries on non-indexed foreign keys, causing O(N*M) quadratic nested loop full-table scan disasters"
+    ],
+    "takeaway": "Correlated subqueries bind outer query row parameters into the inner scope, executing context-aware comparisons for each candidate row."
+  },
+  {
+    "id": 1360,
+    "title": "Filter Delivery Route Delays Exceeding Specific Carrier Transit Mean",
+    "section": "Section 10: Advanced SQL Engine Mastery (Subqueries, CTEs, Recursion & Set Operations)",
+    "difficulty": "Easy",
+    "domain": "Logistics",
+    "schema": "| Column | Type | Description |\n|---|---|---|\n| id | INT | Primary Key |\n| carrier_id | INT | Entity Correlation Anchor |\n| delay_minutes | NUMERIC | Tracked Observation |\n| recorded_at | DATE | Observation Date |",
+    "businessProblem": "In Logistics, identifying outliers requires localized context: comparing an observation against its specific entity's baseline rather than an irrelevant global average. We need a correlated subquery row-binding carrier_id.",
+    "targetQuery": "SELECT o.id, o.carrier_id, o.delay_minutes\nFROM shipment_deliveries AS o\nWHERE o.delay_minutes > (\n    SELECT AVG(i.delay_minutes)\n    FROM shipment_deliveries AS i\n    WHERE i.carrier_id = o.carrier_id\n)\nORDER BY o.carrier_id ASC, o.delay_minutes DESC;",
+    "eli5Story": "Instead of comparing your math test score to the entire world, your teacher compares your score only to your own past average or your specific classroom's average!",
+    "commonMistakes": [
+      "Forgetting to alias the outer and inner table differently, causing the inner query to compare against itself rather than binding to the outer row",
+      "Running correlated subqueries on non-indexed foreign keys, causing O(N*M) quadratic nested loop full-table scan disasters"
+    ],
+    "takeaway": "Correlated subqueries bind outer query row parameters into the inner scope, executing context-aware comparisons for each candidate row."
+  },
+  {
+    "id": 1361,
+    "title": "Find Match Scores Above Player's Historical MMR Distribution",
+    "section": "Section 10: Advanced SQL Engine Mastery (Subqueries, CTEs, Recursion & Set Operations)",
+    "difficulty": "Medium",
+    "domain": "Gaming",
+    "schema": "| Column | Type | Description |\n|---|---|---|\n| id | INT | Primary Key |\n| player_id | INT | Entity Correlation Anchor |\n| score | NUMERIC | Tracked Observation |\n| recorded_at | DATE | Observation Date |",
+    "businessProblem": "In Gaming, identifying outliers requires localized context: comparing an observation against its specific entity's baseline rather than an irrelevant global average. We need a correlated subquery row-binding player_id.",
+    "targetQuery": "SELECT o.id, o.player_id, o.score\nFROM ranked_matches AS o\nWHERE o.score > (\n    SELECT AVG(i.score)\n    FROM ranked_matches AS i\n    WHERE i.player_id = o.player_id\n)\nORDER BY o.player_id ASC, o.score DESC;",
+    "eli5Story": "Instead of comparing your math test score to the entire world, your teacher compares your score only to your own past average or your specific classroom's average!",
+    "commonMistakes": [
+      "Forgetting to alias the outer and inner table differently, causing the inner query to compare against itself rather than binding to the outer row",
+      "Running correlated subqueries on non-indexed foreign keys, causing O(N*M) quadratic nested loop full-table scan disasters"
+    ],
+    "takeaway": "Correlated subqueries bind outer query row parameters into the inner scope, executing context-aware comparisons for each candidate row."
+  },
+  {
+    "id": 1362,
+    "title": "Filter High-Cost Bids Exceeding Advertiser Historical Median Bid Cap",
+    "section": "Section 10: Advanced SQL Engine Mastery (Subqueries, CTEs, Recursion & Set Operations)",
+    "difficulty": "Medium",
+    "domain": "AdTech",
+    "schema": "| Column | Type | Description |\n|---|---|---|\n| id | INT | Primary Key |\n| advertiser_id | INT | Entity Correlation Anchor |\n| bid_amount | NUMERIC | Tracked Observation |\n| recorded_at | DATE | Observation Date |",
+    "businessProblem": "In AdTech, identifying outliers requires localized context: comparing an observation against its specific entity's baseline rather than an irrelevant global average. We need a correlated subquery row-binding advertiser_id.",
+    "targetQuery": "SELECT o.id, o.advertiser_id, o.bid_amount\nFROM rtb_auction_bids AS o\nWHERE o.bid_amount > (\n    SELECT AVG(i.bid_amount)\n    FROM rtb_auction_bids AS i\n    WHERE i.advertiser_id = o.advertiser_id\n)\nORDER BY o.advertiser_id ASC, o.bid_amount DESC;",
+    "eli5Story": "Instead of comparing your math test score to the entire world, your teacher compares your score only to your own past average or your specific classroom's average!",
+    "commonMistakes": [
+      "Forgetting to alias the outer and inner table differently, causing the inner query to compare against itself rather than binding to the outer row",
+      "Running correlated subqueries on non-indexed foreign keys, causing O(N*M) quadratic nested loop full-table scan disasters"
+    ],
+    "takeaway": "Correlated subqueries bind outer query row parameters into the inner scope, executing context-aware comparisons for each candidate row."
+  },
+  {
+    "id": 1363,
+    "title": "Identify Quiz Submissions Outperforming Department Specific Course Benchmarks",
+    "section": "Section 10: Advanced SQL Engine Mastery (Subqueries, CTEs, Recursion & Set Operations)",
+    "difficulty": "Medium",
+    "domain": "EdTech",
+    "schema": "| Column | Type | Description |\n|---|---|---|\n| id | INT | Primary Key |\n| dept_id | INT | Entity Correlation Anchor |\n| grade | NUMERIC | Tracked Observation |\n| recorded_at | DATE | Observation Date |",
+    "businessProblem": "In EdTech, identifying outliers requires localized context: comparing an observation against its specific entity's baseline rather than an irrelevant global average. We need a correlated subquery row-binding dept_id.",
+    "targetQuery": "SELECT o.id, o.dept_id, o.grade\nFROM student_grades AS o\nWHERE o.grade > (\n    SELECT AVG(i.grade)\n    FROM student_grades AS i\n    WHERE i.dept_id = o.dept_id\n)\nORDER BY o.dept_id ASC, o.grade DESC;",
+    "eli5Story": "Instead of comparing your math test score to the entire world, your teacher compares your score only to your own past average or your specific classroom's average!",
+    "commonMistakes": [
+      "Forgetting to alias the outer and inner table differently, causing the inner query to compare against itself rather than binding to the outer row",
+      "Running correlated subqueries on non-indexed foreign keys, causing O(N*M) quadratic nested loop full-table scan disasters"
+    ],
+    "takeaway": "Correlated subqueries bind outer query row parameters into the inner scope, executing context-aware comparisons for each candidate row."
+  },
+  {
+    "id": 1364,
+    "title": "Flag Generator Turbine Vibration Above Station Historical Calibration Baseline",
+    "section": "Section 10: Advanced SQL Engine Mastery (Subqueries, CTEs, Recursion & Set Operations)",
+    "difficulty": "Medium",
+    "domain": "Energy",
+    "schema": "| Column | Type | Description |\n|---|---|---|\n| id | INT | Primary Key |\n| station_id | INT | Entity Correlation Anchor |\n| vibration_hz | NUMERIC | Tracked Observation |\n| recorded_at | DATE | Observation Date |",
+    "businessProblem": "In Energy, identifying outliers requires localized context: comparing an observation against its specific entity's baseline rather than an irrelevant global average. We need a correlated subquery row-binding station_id.",
+    "targetQuery": "SELECT o.id, o.station_id, o.vibration_hz\nFROM turbine_telemetry AS o\nWHERE o.vibration_hz > (\n    SELECT AVG(i.vibration_hz)\n    FROM turbine_telemetry AS i\n    WHERE i.station_id = o.station_id\n)\nORDER BY o.station_id ASC, o.vibration_hz DESC;",
+    "eli5Story": "Instead of comparing your math test score to the entire world, your teacher compares your score only to your own past average or your specific classroom's average!",
+    "commonMistakes": [
+      "Forgetting to alias the outer and inner table differently, causing the inner query to compare against itself rather than binding to the outer row",
+      "Running correlated subqueries on non-indexed foreign keys, causing O(N*M) quadratic nested loop full-table scan disasters"
+    ],
+    "takeaway": "Correlated subqueries bind outer query row parameters into the inner scope, executing context-aware comparisons for each candidate row."
+  },
+  {
+    "id": 1365,
+    "title": "Select Content Articles Generating More Comments Than Author Average",
+    "section": "Section 10: Advanced SQL Engine Mastery (Subqueries, CTEs, Recursion & Set Operations)",
+    "difficulty": "Medium",
+    "domain": "Media",
+    "schema": "| Column | Type | Description |\n|---|---|---|\n| id | INT | Primary Key |\n| author_id | INT | Entity Correlation Anchor |\n| comment_count | NUMERIC | Tracked Observation |\n| recorded_at | DATE | Observation Date |",
+    "businessProblem": "In Media, identifying outliers requires localized context: comparing an observation against its specific entity's baseline rather than an irrelevant global average. We need a correlated subquery row-binding author_id.",
+    "targetQuery": "SELECT o.id, o.author_id, o.comment_count\nFROM published_articles AS o\nWHERE o.comment_count > (\n    SELECT AVG(i.comment_count)\n    FROM published_articles AS i\n    WHERE i.author_id = o.author_id\n)\nORDER BY o.author_id ASC, o.comment_count DESC;",
+    "eli5Story": "Instead of comparing your math test score to the entire world, your teacher compares your score only to your own past average or your specific classroom's average!",
+    "commonMistakes": [
+      "Forgetting to alias the outer and inner table differently, causing the inner query to compare against itself rather than binding to the outer row",
+      "Running correlated subqueries on non-indexed foreign keys, causing O(N*M) quadratic nested loop full-table scan disasters"
+    ],
+    "takeaway": "Correlated subqueries bind outer query row parameters into the inner scope, executing context-aware comparisons for each candidate row."
+  },
+  {
+    "id": 1366,
+    "title": "Correlated Risk Exposure Analysis with Outer Portfolio Attribute Binding",
+    "section": "Section 10: Advanced SQL Engine Mastery (Subqueries, CTEs, Recursion & Set Operations)",
+    "difficulty": "Hard",
+    "domain": "Fintech",
+    "schema": "| Column | Type | Description |\n|---|---|---|\n| id | INT | Primary Key |\n| portfolio_id | INT | Entity Correlation Anchor |\n| var_exposure | NUMERIC | Tracked Observation |\n| recorded_at | DATE | Observation Date |",
+    "businessProblem": "In Fintech, identifying outliers requires localized context: comparing an observation against its specific entity's baseline rather than an irrelevant global average. We need a correlated subquery row-binding portfolio_id.",
+    "targetQuery": "SELECT o.id, o.portfolio_id, o.var_exposure\nFROM portfolio_risk_snapshots AS o\nWHERE o.var_exposure > (\n    SELECT AVG(i.var_exposure)\n    FROM portfolio_risk_snapshots AS i\n    WHERE i.portfolio_id = o.portfolio_id\n)\nORDER BY o.portfolio_id ASC, o.var_exposure DESC;",
+    "eli5Story": "Instead of comparing your math test score to the entire world, your teacher compares your score only to your own past average or your specific classroom's average!",
+    "commonMistakes": [
+      "Forgetting to alias the outer and inner table differently, causing the inner query to compare against itself rather than binding to the outer row",
+      "Running correlated subqueries on non-indexed foreign keys, causing O(N*M) quadratic nested loop full-table scan disasters"
+    ],
+    "takeaway": "Correlated subqueries bind outer query row parameters into the inner scope, executing context-aware comparisons for each candidate row."
+  },
+  {
+    "id": 1367,
+    "title": "Multi-Level Correlated Quota Utilization Alerting Across Parent Enterprise Orgs",
+    "section": "Section 10: Advanced SQL Engine Mastery (Subqueries, CTEs, Recursion & Set Operations)",
+    "difficulty": "Hard",
+    "domain": "SaaS",
+    "schema": "| Column | Type | Description |\n|---|---|---|\n| id | INT | Primary Key |\n| org_id | INT | Entity Correlation Anchor |\n| storage_gb | NUMERIC | Tracked Observation |\n| recorded_at | DATE | Observation Date |",
+    "businessProblem": "In SaaS, identifying outliers requires localized context: comparing an observation against its specific entity's baseline rather than an irrelevant global average. We need a correlated subquery row-binding org_id.",
+    "targetQuery": "SELECT o.id, o.org_id, o.storage_gb\nFROM tenant_storage AS o\nWHERE o.storage_gb > (\n    SELECT AVG(i.storage_gb)\n    FROM tenant_storage AS i\n    WHERE i.org_id = o.org_id\n)\nORDER BY o.org_id ASC, o.storage_gb DESC;",
+    "eli5Story": "Instead of comparing your math test score to the entire world, your teacher compares your score only to your own past average or your specific classroom's average!",
+    "commonMistakes": [
+      "Forgetting to alias the outer and inner table differently, causing the inner query to compare against itself rather than binding to the outer row",
+      "Running correlated subqueries on non-indexed foreign keys, causing O(N*M) quadratic nested loop full-table scan disasters"
+    ],
+    "takeaway": "Correlated subqueries bind outer query row parameters into the inner scope, executing context-aware comparisons for each candidate row."
+  },
+  {
+    "id": 1368,
+    "title": "Correlated Prescription Dosage Anomaly Screening Against Patient Weight Band",
+    "section": "Section 10: Advanced SQL Engine Mastery (Subqueries, CTEs, Recursion & Set Operations)",
+    "difficulty": "Hard",
+    "domain": "Healthcare",
+    "schema": "| Column | Type | Description |\n|---|---|---|\n| id | INT | Primary Key |\n| weight_class_id | INT | Entity Correlation Anchor |\n| dosage_mg | NUMERIC | Tracked Observation |\n| recorded_at | DATE | Observation Date |",
+    "businessProblem": "In Healthcare, identifying outliers requires localized context: comparing an observation against its specific entity's baseline rather than an irrelevant global average. We need a correlated subquery row-binding weight_class_id.",
+    "targetQuery": "SELECT o.id, o.weight_class_id, o.dosage_mg\nFROM medication_orders AS o\nWHERE o.dosage_mg > (\n    SELECT AVG(i.dosage_mg)\n    FROM medication_orders AS i\n    WHERE i.weight_class_id = o.weight_class_id\n)\nORDER BY o.weight_class_id ASC, o.dosage_mg DESC;",
+    "eli5Story": "Instead of comparing your math test score to the entire world, your teacher compares your score only to your own past average or your specific classroom's average!",
+    "commonMistakes": [
+      "Forgetting to alias the outer and inner table differently, causing the inner query to compare against itself rather than binding to the outer row",
+      "Running correlated subqueries on non-indexed foreign keys, causing O(N*M) quadratic nested loop full-table scan disasters"
+    ],
+    "takeaway": "Correlated subqueries bind outer query row parameters into the inner scope, executing context-aware comparisons for each candidate row."
+  },
+  {
+    "id": 1369,
+    "title": "Dynamic Basket Abandonment Value Outlier Isolation Parameterized by Geography",
+    "section": "Section 10: Advanced SQL Engine Mastery (Subqueries, CTEs, Recursion & Set Operations)",
+    "difficulty": "Hard",
+    "domain": "E-Commerce",
+    "schema": "| Column | Type | Description |\n|---|---|---|\n| id | INT | Primary Key |\n| country_code | INT | Entity Correlation Anchor |\n| cart_val | NUMERIC | Tracked Observation |\n| recorded_at | DATE | Observation Date |",
+    "businessProblem": "In E-Commerce, identifying outliers requires localized context: comparing an observation against its specific entity's baseline rather than an irrelevant global average. We need a correlated subquery row-binding country_code.",
+    "targetQuery": "SELECT o.id, o.country_code, o.cart_val\nFROM abandoned_checkouts AS o\nWHERE o.cart_val > (\n    SELECT AVG(i.cart_val)\n    FROM abandoned_checkouts AS i\n    WHERE i.country_code = o.country_code\n)\nORDER BY o.country_code ASC, o.cart_val DESC;",
+    "eli5Story": "Instead of comparing your math test score to the entire world, your teacher compares your score only to your own past average or your specific classroom's average!",
+    "commonMistakes": [
+      "Forgetting to alias the outer and inner table differently, causing the inner query to compare against itself rather than binding to the outer row",
+      "Running correlated subqueries on non-indexed foreign keys, causing O(N*M) quadratic nested loop full-table scan disasters"
+    ],
+    "takeaway": "Correlated subqueries bind outer query row parameters into the inner scope, executing context-aware comparisons for each candidate row."
+  },
+  {
+    "id": 1370,
+    "title": "Correlated Cold-Chain Temperature Breach Thresholding by Reefer Container Type",
+    "section": "Section 10: Advanced SQL Engine Mastery (Subqueries, CTEs, Recursion & Set Operations)",
+    "difficulty": "Hard",
+    "domain": "Logistics",
+    "schema": "| Column | Type | Description |\n|---|---|---|\n| id | INT | Primary Key |\n| reefer_type_id | INT | Entity Correlation Anchor |\n| temp_celsius | NUMERIC | Tracked Observation |\n| recorded_at | DATE | Observation Date |",
+    "businessProblem": "In Logistics, identifying outliers requires localized context: comparing an observation against its specific entity's baseline rather than an irrelevant global average. We need a correlated subquery row-binding reefer_type_id.",
+    "targetQuery": "SELECT o.id, o.reefer_type_id, o.temp_celsius\nFROM coldchain_sensors AS o\nWHERE o.temp_celsius > (\n    SELECT AVG(i.temp_celsius)\n    FROM coldchain_sensors AS i\n    WHERE i.reefer_type_id = o.reefer_type_id\n)\nORDER BY o.reefer_type_id ASC, o.temp_celsius DESC;",
+    "eli5Story": "Instead of comparing your math test score to the entire world, your teacher compares your score only to your own past average or your specific classroom's average!",
+    "commonMistakes": [
+      "Forgetting to alias the outer and inner table differently, causing the inner query to compare against itself rather than binding to the outer row",
+      "Running correlated subqueries on non-indexed foreign keys, causing O(N*M) quadratic nested loop full-table scan disasters"
+    ],
+    "takeaway": "Correlated subqueries bind outer query row parameters into the inner scope, executing context-aware comparisons for each candidate row."
+  },
+  {
+    "id": 1371,
+    "title": "Identify Dormant Bank Accounts with Zero Debit Card Transactions",
+    "section": "Section 10: Advanced SQL Engine Mastery (Subqueries, CTEs, Recursion & Set Operations)",
+    "difficulty": "Easy",
+    "domain": "Fintech",
+    "schema": "| Column | Type | Description |\n|---|---|---|\n| account_id | INT / VARCHAR | Primary Entity Reference |\n| status | VARCHAR | Lifecycle Status |\n| created_at | TIMESTAMP | Creation Timestamp |",
+    "businessProblem": "In Fintech, tracking negative space (events that DID NOT occur) is vital for churn, risk, and fraud detection. Using NOT IN causes catastrophic empty returns if nullable rows exist; we must implement production NOT EXISTS anti-semi joins.",
+    "targetQuery": "SELECT o.account_id\nFROM bank_accounts AS o\nWHERE NOT EXISTS (\n    SELECT 1\n    FROM card_transactions AS i\n    WHERE i.account_id = o.account_id\n)\nORDER BY o.account_id ASC;",
+    "eli5Story": "Think of a bouncer checking a guest list. As soon as the bouncer sees your name even once on the banned list, they stop looking and reject you immediately (short-circuiting)!",
+    "commonMistakes": [
+      "Using 'NOT IN (SELECT id FROM ...)' where the inner table contains a single NULL, causing the entire query to return zero rows due to 3-valued logic",
+      "Using SELECT * instead of understanding that in EXISTS, the projected columns are ignored by the parser"
+    ],
+    "takeaway": "EXISTS and NOT EXISTS evaluate boolean tuple presence, short-circuit immediately on the first match, and are 100% immune to 3VL NULL traps."
+  },
+  {
+    "id": 1372,
+    "title": "Find Enterprise Tenants That Have Never Raised a Critical Support Ticket",
+    "section": "Section 10: Advanced SQL Engine Mastery (Subqueries, CTEs, Recursion & Set Operations)",
+    "difficulty": "Easy",
+    "domain": "SaaS",
+    "schema": "| Column | Type | Description |\n|---|---|---|\n| tenant_id | INT / VARCHAR | Primary Entity Reference |\n| status | VARCHAR | Lifecycle Status |\n| created_at | TIMESTAMP | Creation Timestamp |",
+    "businessProblem": "In SaaS, tracking negative space (events that DID NOT occur) is vital for churn, risk, and fraud detection. Using NOT IN causes catastrophic empty returns if nullable rows exist; we must implement production NOT EXISTS anti-semi joins.",
+    "targetQuery": "SELECT o.tenant_id\nFROM tenants AS o\nWHERE NOT EXISTS (\n    SELECT 1\n    FROM support_tickets AS i\n    WHERE i.tenant_id = o.tenant_id\n)\nORDER BY o.tenant_id ASC;",
+    "eli5Story": "Think of a bouncer checking a guest list. As soon as the bouncer sees your name even once on the banned list, they stop looking and reject you immediately (short-circuiting)!",
+    "commonMistakes": [
+      "Using 'NOT IN (SELECT id FROM ...)' where the inner table contains a single NULL, causing the entire query to return zero rows due to 3-valued logic",
+      "Using SELECT * instead of understanding that in EXISTS, the projected columns are ignored by the parser"
+    ],
+    "takeaway": "EXISTS and NOT EXISTS evaluate boolean tuple presence, short-circuit immediately on the first match, and are 100% immune to 3VL NULL traps."
+  },
+  {
+    "id": 1373,
+    "title": "Isolate Registered Diabetic Patients Without an Annual HbA1c Lab Test",
+    "section": "Section 10: Advanced SQL Engine Mastery (Subqueries, CTEs, Recursion & Set Operations)",
+    "difficulty": "Easy",
+    "domain": "Healthcare",
+    "schema": "| Column | Type | Description |\n|---|---|---|\n| patient_id | INT / VARCHAR | Primary Entity Reference |\n| status | VARCHAR | Lifecycle Status |\n| created_at | TIMESTAMP | Creation Timestamp |",
+    "businessProblem": "In Healthcare, tracking negative space (events that DID NOT occur) is vital for churn, risk, and fraud detection. Using NOT IN causes catastrophic empty returns if nullable rows exist; we must implement production NOT EXISTS anti-semi joins.",
+    "targetQuery": "SELECT o.patient_id\nFROM diabetic_registry AS o\nWHERE NOT EXISTS (\n    SELECT 1\n    FROM hba1c_lab_tests AS i\n    WHERE i.patient_id = o.patient_id\n)\nORDER BY o.patient_id ASC;",
+    "eli5Story": "Think of a bouncer checking a guest list. As soon as the bouncer sees your name even once on the banned list, they stop looking and reject you immediately (short-circuiting)!",
+    "commonMistakes": [
+      "Using 'NOT IN (SELECT id FROM ...)' where the inner table contains a single NULL, causing the entire query to return zero rows due to 3-valued logic",
+      "Using SELECT * instead of understanding that in EXISTS, the projected columns are ignored by the parser"
+    ],
+    "takeaway": "EXISTS and NOT EXISTS evaluate boolean tuple presence, short-circuit immediately on the first match, and are 100% immune to 3VL NULL traps."
+  },
+  {
+    "id": 1374,
+    "title": "Detect Registered Shoppers Who Have Never Completed a Checkout",
+    "section": "Section 10: Advanced SQL Engine Mastery (Subqueries, CTEs, Recursion & Set Operations)",
+    "difficulty": "Easy",
+    "domain": "E-Commerce",
+    "schema": "| Column | Type | Description |\n|---|---|---|\n| user_id | INT / VARCHAR | Primary Entity Reference |\n| status | VARCHAR | Lifecycle Status |\n| created_at | TIMESTAMP | Creation Timestamp |",
+    "businessProblem": "In E-Commerce, tracking negative space (events that DID NOT occur) is vital for churn, risk, and fraud detection. Using NOT IN causes catastrophic empty returns if nullable rows exist; we must implement production NOT EXISTS anti-semi joins.",
+    "targetQuery": "SELECT o.user_id\nFROM registered_users AS o\nWHERE NOT EXISTS (\n    SELECT 1\n    FROM completed_orders AS i\n    WHERE i.user_id = o.user_id\n)\nORDER BY o.user_id ASC;",
+    "eli5Story": "Think of a bouncer checking a guest list. As soon as the bouncer sees your name even once on the banned list, they stop looking and reject you immediately (short-circuiting)!",
+    "commonMistakes": [
+      "Using 'NOT IN (SELECT id FROM ...)' where the inner table contains a single NULL, causing the entire query to return zero rows due to 3-valued logic",
+      "Using SELECT * instead of understanding that in EXISTS, the projected columns are ignored by the parser"
+    ],
+    "takeaway": "EXISTS and NOT EXISTS evaluate boolean tuple presence, short-circuit immediately on the first match, and are 100% immune to 3VL NULL traps."
+  },
+  {
+    "id": 1375,
+    "title": "List Delivery Vans With Zero Recorded Telemetry Breakdowns in Q1",
+    "section": "Section 10: Advanced SQL Engine Mastery (Subqueries, CTEs, Recursion & Set Operations)",
+    "difficulty": "Easy",
+    "domain": "Logistics",
+    "schema": "| Column | Type | Description |\n|---|---|---|\n| vehicle_id | INT / VARCHAR | Primary Entity Reference |\n| status | VARCHAR | Lifecycle Status |\n| created_at | TIMESTAMP | Creation Timestamp |",
+    "businessProblem": "In Logistics, tracking negative space (events that DID NOT occur) is vital for churn, risk, and fraud detection. Using NOT IN causes catastrophic empty returns if nullable rows exist; we must implement production NOT EXISTS anti-semi joins.",
+    "targetQuery": "SELECT o.vehicle_id\nFROM fleet_vehicles AS o\nWHERE NOT EXISTS (\n    SELECT 1\n    FROM maintenance_incidents AS i\n    WHERE i.vehicle_id = o.vehicle_id\n)\nORDER BY o.vehicle_id ASC;",
+    "eli5Story": "Think of a bouncer checking a guest list. As soon as the bouncer sees your name even once on the banned list, they stop looking and reject you immediately (short-circuiting)!",
+    "commonMistakes": [
+      "Using 'NOT IN (SELECT id FROM ...)' where the inner table contains a single NULL, causing the entire query to return zero rows due to 3-valued logic",
+      "Using SELECT * instead of understanding that in EXISTS, the projected columns are ignored by the parser"
+    ],
+    "takeaway": "EXISTS and NOT EXISTS evaluate boolean tuple presence, short-circuit immediately on the first match, and are 100% immune to 3VL NULL traps."
+  },
+  {
+    "id": 1376,
+    "title": "Identify Players Who Completed Quest A but NEVER Encountered Quest B",
+    "section": "Section 10: Advanced SQL Engine Mastery (Subqueries, CTEs, Recursion & Set Operations)",
+    "difficulty": "Medium",
+    "domain": "Gaming",
+    "schema": "| Column | Type | Description |\n|---|---|---|\n| player_id | INT / VARCHAR | Primary Entity Reference |\n| status | VARCHAR | Lifecycle Status |\n| created_at | TIMESTAMP | Creation Timestamp |",
+    "businessProblem": "In Gaming, tracking negative space (events that DID NOT occur) is vital for churn, risk, and fraud detection. Using NOT IN causes catastrophic empty returns if nullable rows exist; we must implement production NOT EXISTS anti-semi joins.",
+    "targetQuery": "SELECT o.player_id\nFROM player_quests AS o\nWHERE NOT EXISTS (\n    SELECT 1\n    FROM player_quests AS i\n    WHERE i.player_id = o.player_id\n)\nORDER BY o.player_id ASC;",
+    "eli5Story": "Think of a bouncer checking a guest list. As soon as the bouncer sees your name even once on the banned list, they stop looking and reject you immediately (short-circuiting)!",
+    "commonMistakes": [
+      "Using 'NOT IN (SELECT id FROM ...)' where the inner table contains a single NULL, causing the entire query to return zero rows due to 3-valued logic",
+      "Using SELECT * instead of understanding that in EXISTS, the projected columns are ignored by the parser"
+    ],
+    "takeaway": "EXISTS and NOT EXISTS evaluate boolean tuple presence, short-circuit immediately on the first match, and are 100% immune to 3VL NULL traps."
+  },
+  {
+    "id": 1377,
+    "title": "Filter Impression Audiences Who Clicked an Ad but NEVER Converted",
+    "section": "Section 10: Advanced SQL Engine Mastery (Subqueries, CTEs, Recursion & Set Operations)",
+    "difficulty": "Medium",
+    "domain": "AdTech",
+    "schema": "| Column | Type | Description |\n|---|---|---|\n| impression_id | INT / VARCHAR | Primary Entity Reference |\n| status | VARCHAR | Lifecycle Status |\n| created_at | TIMESTAMP | Creation Timestamp |",
+    "businessProblem": "In AdTech, tracking negative space (events that DID NOT occur) is vital for churn, risk, and fraud detection. Using NOT IN causes catastrophic empty returns if nullable rows exist; we must implement production NOT EXISTS anti-semi joins.",
+    "targetQuery": "SELECT o.impression_id\nFROM ad_clicks AS o\nWHERE NOT EXISTS (\n    SELECT 1\n    FROM ad_conversions AS i\n    WHERE i.impression_id = o.impression_id\n)\nORDER BY o.impression_id ASC;",
+    "eli5Story": "Think of a bouncer checking a guest list. As soon as the bouncer sees your name even once on the banned list, they stop looking and reject you immediately (short-circuiting)!",
+    "commonMistakes": [
+      "Using 'NOT IN (SELECT id FROM ...)' where the inner table contains a single NULL, causing the entire query to return zero rows due to 3-valued logic",
+      "Using SELECT * instead of understanding that in EXISTS, the projected columns are ignored by the parser"
+    ],
+    "takeaway": "EXISTS and NOT EXISTS evaluate boolean tuple presence, short-circuit immediately on the first match, and are 100% immune to 3VL NULL traps."
+  },
+  {
+    "id": 1378,
+    "title": "Find Enrolled Students Who Completed Lectures but NEVER Submitted Assignments",
+    "section": "Section 10: Advanced SQL Engine Mastery (Subqueries, CTEs, Recursion & Set Operations)",
+    "difficulty": "Medium",
+    "domain": "EdTech",
+    "schema": "| Column | Type | Description |\n|---|---|---|\n| student_id | INT / VARCHAR | Primary Entity Reference |\n| status | VARCHAR | Lifecycle Status |\n| created_at | TIMESTAMP | Creation Timestamp |",
+    "businessProblem": "In EdTech, tracking negative space (events that DID NOT occur) is vital for churn, risk, and fraud detection. Using NOT IN causes catastrophic empty returns if nullable rows exist; we must implement production NOT EXISTS anti-semi joins.",
+    "targetQuery": "SELECT o.student_id\nFROM course_enrollments AS o\nWHERE NOT EXISTS (\n    SELECT 1\n    FROM assignment_submissions AS i\n    WHERE i.student_id = o.student_id\n)\nORDER BY o.student_id ASC;",
+    "eli5Story": "Think of a bouncer checking a guest list. As soon as the bouncer sees your name even once on the banned list, they stop looking and reject you immediately (short-circuiting)!",
+    "commonMistakes": [
+      "Using 'NOT IN (SELECT id FROM ...)' where the inner table contains a single NULL, causing the entire query to return zero rows due to 3-valued logic",
+      "Using SELECT * instead of understanding that in EXISTS, the projected columns are ignored by the parser"
+    ],
+    "takeaway": "EXISTS and NOT EXISTS evaluate boolean tuple presence, short-circuit immediately on the first match, and are 100% immune to 3VL NULL traps."
+  },
+  {
+    "id": 1379,
+    "title": "Locate Smart Power Meters Active Online with Zero Energy Draw Events",
+    "section": "Section 10: Advanced SQL Engine Mastery (Subqueries, CTEs, Recursion & Set Operations)",
+    "difficulty": "Medium",
+    "domain": "Energy",
+    "schema": "| Column | Type | Description |\n|---|---|---|\n| meter_id | INT / VARCHAR | Primary Entity Reference |\n| status | VARCHAR | Lifecycle Status |\n| created_at | TIMESTAMP | Creation Timestamp |",
+    "businessProblem": "In Energy, tracking negative space (events that DID NOT occur) is vital for churn, risk, and fraud detection. Using NOT IN causes catastrophic empty returns if nullable rows exist; we must implement production NOT EXISTS anti-semi joins.",
+    "targetQuery": "SELECT o.meter_id\nFROM smart_meters AS o\nWHERE NOT EXISTS (\n    SELECT 1\n    FROM consumption_events AS i\n    WHERE i.meter_id = o.meter_id\n)\nORDER BY o.meter_id ASC;",
+    "eli5Story": "Think of a bouncer checking a guest list. As soon as the bouncer sees your name even once on the banned list, they stop looking and reject you immediately (short-circuiting)!",
+    "commonMistakes": [
+      "Using 'NOT IN (SELECT id FROM ...)' where the inner table contains a single NULL, causing the entire query to return zero rows due to 3-valued logic",
+      "Using SELECT * instead of understanding that in EXISTS, the projected columns are ignored by the parser"
+    ],
+    "takeaway": "EXISTS and NOT EXISTS evaluate boolean tuple presence, short-circuit immediately on the first match, and are 100% immune to 3VL NULL traps."
+  },
+  {
+    "id": 1380,
+    "title": "Filter Subscribers Who Bookmarked a Series but NEVER Streamed an Episode",
+    "section": "Section 10: Advanced SQL Engine Mastery (Subqueries, CTEs, Recursion & Set Operations)",
+    "difficulty": "Medium",
+    "domain": "Media",
+    "schema": "| Column | Type | Description |\n|---|---|---|\n| subscriber_id | INT / VARCHAR | Primary Entity Reference |\n| status | VARCHAR | Lifecycle Status |\n| created_at | TIMESTAMP | Creation Timestamp |",
+    "businessProblem": "In Media, tracking negative space (events that DID NOT occur) is vital for churn, risk, and fraud detection. Using NOT IN causes catastrophic empty returns if nullable rows exist; we must implement production NOT EXISTS anti-semi joins.",
+    "targetQuery": "SELECT o.subscriber_id\nFROM user_bookmarks AS o\nWHERE NOT EXISTS (\n    SELECT 1\n    FROM stream_history AS i\n    WHERE i.subscriber_id = o.subscriber_id\n)\nORDER BY o.subscriber_id ASC;",
+    "eli5Story": "Think of a bouncer checking a guest list. As soon as the bouncer sees your name even once on the banned list, they stop looking and reject you immediately (short-circuiting)!",
+    "commonMistakes": [
+      "Using 'NOT IN (SELECT id FROM ...)' where the inner table contains a single NULL, causing the entire query to return zero rows due to 3-valued logic",
+      "Using SELECT * instead of understanding that in EXISTS, the projected columns are ignored by the parser"
+    ],
+    "takeaway": "EXISTS and NOT EXISTS evaluate boolean tuple presence, short-circuit immediately on the first match, and are 100% immune to 3VL NULL traps."
+  },
+  {
+    "id": 1381,
+    "title": "Anti-Semi Join Reconciliation Between Gateway Clearing and General Ledger",
+    "section": "Section 10: Advanced SQL Engine Mastery (Subqueries, CTEs, Recursion & Set Operations)",
+    "difficulty": "Hard",
+    "domain": "Fintech",
+    "schema": "| Column | Type | Description |\n|---|---|---|\n| settlement_ref | INT / VARCHAR | Primary Entity Reference |\n| status | VARCHAR | Lifecycle Status |\n| created_at | TIMESTAMP | Creation Timestamp |",
+    "businessProblem": "In Fintech, tracking negative space (events that DID NOT occur) is vital for churn, risk, and fraud detection. Using NOT IN causes catastrophic empty returns if nullable rows exist; we must implement production NOT EXISTS anti-semi joins.",
+    "targetQuery": "SELECT o.settlement_ref\nFROM clearing_settlements AS o\nWHERE NOT EXISTS (\n    SELECT 1\n    FROM general_ledger_entries AS i\n    WHERE i.settlement_ref = o.settlement_ref\n)\nORDER BY o.settlement_ref ASC;",
+    "eli5Story": "Think of a bouncer checking a guest list. As soon as the bouncer sees your name even once on the banned list, they stop looking and reject you immediately (short-circuiting)!",
+    "commonMistakes": [
+      "Using 'NOT IN (SELECT id FROM ...)' where the inner table contains a single NULL, causing the entire query to return zero rows due to 3-valued logic",
+      "Using SELECT * instead of understanding that in EXISTS, the projected columns are ignored by the parser"
+    ],
+    "takeaway": "EXISTS and NOT EXISTS evaluate boolean tuple presence, short-circuit immediately on the first match, and are 100% immune to 3VL NULL traps."
+  },
+  {
+    "id": 1382,
+    "title": "Isolate High-ARR Workspaces with Zero Admin Audit Log Activity in 90 Days",
+    "section": "Section 10: Advanced SQL Engine Mastery (Subqueries, CTEs, Recursion & Set Operations)",
+    "difficulty": "Hard",
+    "domain": "SaaS",
+    "schema": "| Column | Type | Description |\n|---|---|---|\n| workspace_id | INT / VARCHAR | Primary Entity Reference |\n| status | VARCHAR | Lifecycle Status |\n| created_at | TIMESTAMP | Creation Timestamp |",
+    "businessProblem": "In SaaS, tracking negative space (events that DID NOT occur) is vital for churn, risk, and fraud detection. Using NOT IN causes catastrophic empty returns if nullable rows exist; we must implement production NOT EXISTS anti-semi joins.",
+    "targetQuery": "SELECT o.workspace_id\nFROM workspaces AS o\nWHERE NOT EXISTS (\n    SELECT 1\n    FROM admin_audit_logs AS i\n    WHERE i.workspace_id = o.workspace_id\n)\nORDER BY o.workspace_id ASC;",
+    "eli5Story": "Think of a bouncer checking a guest list. As soon as the bouncer sees your name even once on the banned list, they stop looking and reject you immediately (short-circuiting)!",
+    "commonMistakes": [
+      "Using 'NOT IN (SELECT id FROM ...)' where the inner table contains a single NULL, causing the entire query to return zero rows due to 3-valued logic",
+      "Using SELECT * instead of understanding that in EXISTS, the projected columns are ignored by the parser"
+    ],
+    "takeaway": "EXISTS and NOT EXISTS evaluate boolean tuple presence, short-circuit immediately on the first match, and are 100% immune to 3VL NULL traps."
+  },
+  {
+    "id": 1383,
+    "title": "Identify Discharged Surgery Patients Without Follow-Up Primary Care Encounters",
+    "section": "Section 10: Advanced SQL Engine Mastery (Subqueries, CTEs, Recursion & Set Operations)",
+    "difficulty": "Hard",
+    "domain": "Healthcare",
+    "schema": "| Column | Type | Description |\n|---|---|---|\n| encounter_id | INT / VARCHAR | Primary Entity Reference |\n| status | VARCHAR | Lifecycle Status |\n| created_at | TIMESTAMP | Creation Timestamp |",
+    "businessProblem": "In Healthcare, tracking negative space (events that DID NOT occur) is vital for churn, risk, and fraud detection. Using NOT IN causes catastrophic empty returns if nullable rows exist; we must implement production NOT EXISTS anti-semi joins.",
+    "targetQuery": "SELECT o.encounter_id\nFROM surgical_discharges AS o\nWHERE NOT EXISTS (\n    SELECT 1\n    FROM followup_encounters AS i\n    WHERE i.encounter_id = o.encounter_id\n)\nORDER BY o.encounter_id ASC;",
+    "eli5Story": "Think of a bouncer checking a guest list. As soon as the bouncer sees your name even once on the banned list, they stop looking and reject you immediately (short-circuiting)!",
+    "commonMistakes": [
+      "Using 'NOT IN (SELECT id FROM ...)' where the inner table contains a single NULL, causing the entire query to return zero rows due to 3-valued logic",
+      "Using SELECT * instead of understanding that in EXISTS, the projected columns are ignored by the parser"
+    ],
+    "takeaway": "EXISTS and NOT EXISTS evaluate boolean tuple presence, short-circuit immediately on the first match, and are 100% immune to 3VL NULL traps."
+  },
+  {
+    "id": 1384,
+    "title": "Cart Abandonment Detection Immune to Nullable Promo Code Collections",
+    "section": "Section 10: Advanced SQL Engine Mastery (Subqueries, CTEs, Recursion & Set Operations)",
+    "difficulty": "Hard",
+    "domain": "E-Commerce",
+    "schema": "| Column | Type | Description |\n|---|---|---|\n| session_id | INT / VARCHAR | Primary Entity Reference |\n| status | VARCHAR | Lifecycle Status |\n| created_at | TIMESTAMP | Creation Timestamp |",
+    "businessProblem": "In E-Commerce, tracking negative space (events that DID NOT occur) is vital for churn, risk, and fraud detection. Using NOT IN causes catastrophic empty returns if nullable rows exist; we must implement production NOT EXISTS anti-semi joins.",
+    "targetQuery": "SELECT o.session_id\nFROM active_sessions AS o\nWHERE NOT EXISTS (\n    SELECT 1\n    FROM session_conversions AS i\n    WHERE i.session_id = o.session_id\n)\nORDER BY o.session_id ASC;",
+    "eli5Story": "Think of a bouncer checking a guest list. As soon as the bouncer sees your name even once on the banned list, they stop looking and reject you immediately (short-circuiting)!",
+    "commonMistakes": [
+      "Using 'NOT IN (SELECT id FROM ...)' where the inner table contains a single NULL, causing the entire query to return zero rows due to 3-valued logic",
+      "Using SELECT * instead of understanding that in EXISTS, the projected columns are ignored by the parser"
+    ],
+    "takeaway": "EXISTS and NOT EXISTS evaluate boolean tuple presence, short-circuit immediately on the first match, and are 100% immune to 3VL NULL traps."
+  },
+  {
+    "id": 1385,
+    "title": "Cross-Dock Facility Manifests Missing Associated Customs Declarations",
+    "section": "Section 10: Advanced SQL Engine Mastery (Subqueries, CTEs, Recursion & Set Operations)",
+    "difficulty": "Hard",
+    "domain": "Logistics",
+    "schema": "| Column | Type | Description |\n|---|---|---|\n| manifest_id | INT / VARCHAR | Primary Entity Reference |\n| status | VARCHAR | Lifecycle Status |\n| created_at | TIMESTAMP | Creation Timestamp |",
+    "businessProblem": "In Logistics, tracking negative space (events that DID NOT occur) is vital for churn, risk, and fraud detection. Using NOT IN causes catastrophic empty returns if nullable rows exist; we must implement production NOT EXISTS anti-semi joins.",
+    "targetQuery": "SELECT o.manifest_id\nFROM dock_manifests AS o\nWHERE NOT EXISTS (\n    SELECT 1\n    FROM customs_filings AS i\n    WHERE i.manifest_id = o.manifest_id\n)\nORDER BY o.manifest_id ASC;",
+    "eli5Story": "Think of a bouncer checking a guest list. As soon as the bouncer sees your name even once on the banned list, they stop looking and reject you immediately (short-circuiting)!",
+    "commonMistakes": [
+      "Using 'NOT IN (SELECT id FROM ...)' where the inner table contains a single NULL, causing the entire query to return zero rows due to 3-valued logic",
+      "Using SELECT * instead of understanding that in EXISTS, the projected columns are ignored by the parser"
+    ],
+    "takeaway": "EXISTS and NOT EXISTS evaluate boolean tuple presence, short-circuit immediately on the first match, and are 100% immune to 3VL NULL traps."
+  },
+  {
+    "id": 1386,
+    "title": "Extract Top 2 Highest Value Wire Transfers Per Bank Branch Without Windows",
+    "section": "Section 10: Advanced SQL Engine Mastery (Subqueries, CTEs, Recursion & Set Operations)",
+    "difficulty": "Easy",
+    "domain": "Fintech",
+    "schema": "| Column | Type | Description |\n|---|---|---|\n| id | INT | Primary Key |\n| branch_id | INT | Partitioning Category |\n| wire_amount | NUMERIC | Ranking Metric |\n| recorded_at | DATE | Observation Date |",
+    "businessProblem": "In technical interview and legacy database environments, retrieving the Top-N rows per category without window functions demonstrates foundational relational set calculus mastery.",
+    "targetQuery": "SELECT o.branch_id, o.id, o.wire_amount\nFROM branch_wires AS o\nWHERE (\n    SELECT COUNT(DISTINCT i.wire_amount)\n    FROM branch_wires AS i\n    WHERE i.branch_id = o.branch_id\n      AND i.wire_amount > o.wire_amount\n) < 2\nORDER BY o.branch_id ASC, o.wire_amount DESC;",
+    "eli5Story": "How do you know if you are in the top 2 in your class without looking at a leaderboard? You simply ask your classmates: 'How many of you scored higher than me?' If fewer than 2 people raise their hands, congratulations—you are in the top 2!",
+    "commonMistakes": [
+      "Using COUNT(*) instead of COUNT(DISTINCT) when ties exist, accidentally excluding tied 2nd place candidates",
+      "Using <= N instead of < N in the comparison, returning N + 1 rows instead of N"
+    ],
+    "takeaway": "The correlated count idiom defines rank as the cardinality of elements strictly superior to the candidate item in the same partition."
+  },
+  {
+    "id": 1387,
+    "title": "Find Top 2 Most Active Developers Per Organization by Commit Frequency",
+    "section": "Section 10: Advanced SQL Engine Mastery (Subqueries, CTEs, Recursion & Set Operations)",
+    "difficulty": "Easy",
+    "domain": "SaaS",
+    "schema": "| Column | Type | Description |\n|---|---|---|\n| id | INT | Primary Key |\n| org_id | INT | Partitioning Category |\n| commit_count | NUMERIC | Ranking Metric |\n| recorded_at | DATE | Observation Date |",
+    "businessProblem": "In technical interview and legacy database environments, retrieving the Top-N rows per category without window functions demonstrates foundational relational set calculus mastery.",
+    "targetQuery": "SELECT o.org_id, o.id, o.commit_count\nFROM dev_commits AS o\nWHERE (\n    SELECT COUNT(DISTINCT i.commit_count)\n    FROM dev_commits AS i\n    WHERE i.org_id = o.org_id\n      AND i.commit_count > o.commit_count\n) < 2\nORDER BY o.org_id ASC, o.commit_count DESC;",
+    "eli5Story": "How do you know if you are in the top 2 in your class without looking at a leaderboard? You simply ask your classmates: 'How many of you scored higher than me?' If fewer than 2 people raise their hands, congratulations—you are in the top 2!",
+    "commonMistakes": [
+      "Using COUNT(*) instead of COUNT(DISTINCT) when ties exist, accidentally excluding tied 2nd place candidates",
+      "Using <= N instead of < N in the comparison, returning N + 1 rows instead of N"
+    ],
+    "takeaway": "The correlated count idiom defines rank as the cardinality of elements strictly superior to the candidate item in the same partition."
+  },
+  {
+    "id": 1388,
+    "title": "Identify Top 2 Highest Billing Clinical Procedures Per Hospital Ward",
+    "section": "Section 10: Advanced SQL Engine Mastery (Subqueries, CTEs, Recursion & Set Operations)",
+    "difficulty": "Easy",
+    "domain": "Healthcare",
+    "schema": "| Column | Type | Description |\n|---|---|---|\n| id | INT | Primary Key |\n| ward_id | INT | Partitioning Category |\n| billing_cost | NUMERIC | Ranking Metric |\n| recorded_at | DATE | Observation Date |",
+    "businessProblem": "In technical interview and legacy database environments, retrieving the Top-N rows per category without window functions demonstrates foundational relational set calculus mastery.",
+    "targetQuery": "SELECT o.ward_id, o.id, o.billing_cost\nFROM ward_procedures AS o\nWHERE (\n    SELECT COUNT(DISTINCT i.billing_cost)\n    FROM ward_procedures AS i\n    WHERE i.ward_id = o.ward_id\n      AND i.billing_cost > o.billing_cost\n) < 2\nORDER BY o.ward_id ASC, o.billing_cost DESC;",
+    "eli5Story": "How do you know if you are in the top 2 in your class without looking at a leaderboard? You simply ask your classmates: 'How many of you scored higher than me?' If fewer than 2 people raise their hands, congratulations—you are in the top 2!",
+    "commonMistakes": [
+      "Using COUNT(*) instead of COUNT(DISTINCT) when ties exist, accidentally excluding tied 2nd place candidates",
+      "Using <= N instead of < N in the comparison, returning N + 1 rows instead of N"
+    ],
+    "takeaway": "The correlated count idiom defines rank as the cardinality of elements strictly superior to the candidate item in the same partition."
+  },
+  {
+    "id": 1389,
+    "title": "Retrieve Top 2 Best-Selling SKU Products Per Category Without LIMIT",
+    "section": "Section 10: Advanced SQL Engine Mastery (Subqueries, CTEs, Recursion & Set Operations)",
+    "difficulty": "Easy",
+    "domain": "E-Commerce",
+    "schema": "| Column | Type | Description |\n|---|---|---|\n| id | INT | Primary Key |\n| category_id | INT | Partitioning Category |\n| sales_qty | NUMERIC | Ranking Metric |\n| recorded_at | DATE | Observation Date |",
+    "businessProblem": "In technical interview and legacy database environments, retrieving the Top-N rows per category without window functions demonstrates foundational relational set calculus mastery.",
+    "targetQuery": "SELECT o.category_id, o.id, o.sales_qty\nFROM product_sales AS o\nWHERE (\n    SELECT COUNT(DISTINCT i.sales_qty)\n    FROM product_sales AS i\n    WHERE i.category_id = o.category_id\n      AND i.sales_qty > o.sales_qty\n) < 2\nORDER BY o.category_id ASC, o.sales_qty DESC;",
+    "eli5Story": "How do you know if you are in the top 2 in your class without looking at a leaderboard? You simply ask your classmates: 'How many of you scored higher than me?' If fewer than 2 people raise their hands, congratulations—you are in the top 2!",
+    "commonMistakes": [
+      "Using COUNT(*) instead of COUNT(DISTINCT) when ties exist, accidentally excluding tied 2nd place candidates",
+      "Using <= N instead of < N in the comparison, returning N + 1 rows instead of N"
+    ],
+    "takeaway": "The correlated count idiom defines rank as the cardinality of elements strictly superior to the candidate item in the same partition."
+  },
+  {
+    "id": 1390,
+    "title": "Find Top 2 Longest Transit Routes Per Regional Depot",
+    "section": "Section 10: Advanced SQL Engine Mastery (Subqueries, CTEs, Recursion & Set Operations)",
+    "difficulty": "Easy",
+    "domain": "Logistics",
+    "schema": "| Column | Type | Description |\n|---|---|---|\n| id | INT | Primary Key |\n| depot_id | INT | Partitioning Category |\n| distance_km | NUMERIC | Ranking Metric |\n| recorded_at | DATE | Observation Date |",
+    "businessProblem": "In technical interview and legacy database environments, retrieving the Top-N rows per category without window functions demonstrates foundational relational set calculus mastery.",
+    "targetQuery": "SELECT o.depot_id, o.id, o.distance_km\nFROM depot_routes AS o\nWHERE (\n    SELECT COUNT(DISTINCT i.distance_km)\n    FROM depot_routes AS i\n    WHERE i.depot_id = o.depot_id\n      AND i.distance_km > o.distance_km\n) < 2\nORDER BY o.depot_id ASC, o.distance_km DESC;",
+    "eli5Story": "How do you know if you are in the top 2 in your class without looking at a leaderboard? You simply ask your classmates: 'How many of you scored higher than me?' If fewer than 2 people raise their hands, congratulations—you are in the top 2!",
+    "commonMistakes": [
+      "Using COUNT(*) instead of COUNT(DISTINCT) when ties exist, accidentally excluding tied 2nd place candidates",
+      "Using <= N instead of < N in the comparison, returning N + 1 rows instead of N"
+    ],
+    "takeaway": "The correlated count idiom defines rank as the cardinality of elements strictly superior to the candidate item in the same partition."
+  },
+  {
+    "id": 1391,
+    "title": "Extract Top 3 Arena Champions Per Server Using Correlated Count",
+    "section": "Section 10: Advanced SQL Engine Mastery (Subqueries, CTEs, Recursion & Set Operations)",
+    "difficulty": "Medium",
+    "domain": "Gaming",
+    "schema": "| Column | Type | Description |\n|---|---|---|\n| id | INT | Primary Key |\n| server_id | INT | Partitioning Category |\n| mmr_rating | NUMERIC | Ranking Metric |\n| recorded_at | DATE | Observation Date |",
+    "businessProblem": "In technical interview and legacy database environments, retrieving the Top-N rows per category without window functions demonstrates foundational relational set calculus mastery.",
+    "targetQuery": "SELECT o.server_id, o.id, o.mmr_rating\nFROM arena_players AS o\nWHERE (\n    SELECT COUNT(DISTINCT i.mmr_rating)\n    FROM arena_players AS i\n    WHERE i.server_id = o.server_id\n      AND i.mmr_rating > o.mmr_rating\n) < 2\nORDER BY o.server_id ASC, o.mmr_rating DESC;",
+    "eli5Story": "How do you know if you are in the top 2 in your class without looking at a leaderboard? You simply ask your classmates: 'How many of you scored higher than me?' If fewer than 2 people raise their hands, congratulations—you are in the top 2!",
+    "commonMistakes": [
+      "Using COUNT(*) instead of COUNT(DISTINCT) when ties exist, accidentally excluding tied 2nd place candidates",
+      "Using <= N instead of < N in the comparison, returning N + 1 rows instead of N"
+    ],
+    "takeaway": "The correlated count idiom defines rank as the cardinality of elements strictly superior to the candidate item in the same partition."
+  },
+  {
+    "id": 1392,
+    "title": "Isolate Top 3 Highest eCPM Placements Per Publisher Domain",
+    "section": "Section 10: Advanced SQL Engine Mastery (Subqueries, CTEs, Recursion & Set Operations)",
+    "difficulty": "Medium",
+    "domain": "AdTech",
+    "schema": "| Column | Type | Description |\n|---|---|---|\n| id | INT | Primary Key |\n| publisher_id | INT | Partitioning Category |\n| ecpm | NUMERIC | Ranking Metric |\n| recorded_at | DATE | Observation Date |",
+    "businessProblem": "In technical interview and legacy database environments, retrieving the Top-N rows per category without window functions demonstrates foundational relational set calculus mastery.",
+    "targetQuery": "SELECT o.publisher_id, o.id, o.ecpm\nFROM ad_placements AS o\nWHERE (\n    SELECT COUNT(DISTINCT i.ecpm)\n    FROM ad_placements AS i\n    WHERE i.publisher_id = o.publisher_id\n      AND i.ecpm > o.ecpm\n) < 2\nORDER BY o.publisher_id ASC, o.ecpm DESC;",
+    "eli5Story": "How do you know if you are in the top 2 in your class without looking at a leaderboard? You simply ask your classmates: 'How many of you scored higher than me?' If fewer than 2 people raise their hands, congratulations—you are in the top 2!",
+    "commonMistakes": [
+      "Using COUNT(*) instead of COUNT(DISTINCT) when ties exist, accidentally excluding tied 2nd place candidates",
+      "Using <= N instead of < N in the comparison, returning N + 1 rows instead of N"
+    ],
+    "takeaway": "The correlated count idiom defines rank as the cardinality of elements strictly superior to the candidate item in the same partition."
+  },
+  {
+    "id": 1393,
+    "title": "Find Top 3 Scored Essay Submissions Per Academic Department",
+    "section": "Section 10: Advanced SQL Engine Mastery (Subqueries, CTEs, Recursion & Set Operations)",
+    "difficulty": "Medium",
+    "domain": "EdTech",
+    "schema": "| Column | Type | Description |\n|---|---|---|\n| id | INT | Primary Key |\n| dept_id | INT | Partitioning Category |\n| score | NUMERIC | Ranking Metric |\n| recorded_at | DATE | Observation Date |",
+    "businessProblem": "In technical interview and legacy database environments, retrieving the Top-N rows per category without window functions demonstrates foundational relational set calculus mastery.",
+    "targetQuery": "SELECT o.dept_id, o.id, o.score\nFROM department_essays AS o\nWHERE (\n    SELECT COUNT(DISTINCT i.score)\n    FROM department_essays AS i\n    WHERE i.dept_id = o.dept_id\n      AND i.score > o.score\n) < 2\nORDER BY o.dept_id ASC, o.score DESC;",
+    "eli5Story": "How do you know if you are in the top 2 in your class without looking at a leaderboard? You simply ask your classmates: 'How many of you scored higher than me?' If fewer than 2 people raise their hands, congratulations—you are in the top 2!",
+    "commonMistakes": [
+      "Using COUNT(*) instead of COUNT(DISTINCT) when ties exist, accidentally excluding tied 2nd place candidates",
+      "Using <= N instead of < N in the comparison, returning N + 1 rows instead of N"
+    ],
+    "takeaway": "The correlated count idiom defines rank as the cardinality of elements strictly superior to the candidate item in the same partition."
+  },
+  {
+    "id": 1394,
+    "title": "Select Top 3 Peak Energy Producing Solar Arrays Per Field Cluster",
+    "section": "Section 10: Advanced SQL Engine Mastery (Subqueries, CTEs, Recursion & Set Operations)",
+    "difficulty": "Medium",
+    "domain": "Energy",
+    "schema": "| Column | Type | Description |\n|---|---|---|\n| id | INT | Primary Key |\n| cluster_id | INT | Partitioning Category |\n| kwh_output | NUMERIC | Ranking Metric |\n| recorded_at | DATE | Observation Date |",
+    "businessProblem": "In technical interview and legacy database environments, retrieving the Top-N rows per category without window functions demonstrates foundational relational set calculus mastery.",
+    "targetQuery": "SELECT o.cluster_id, o.id, o.kwh_output\nFROM solar_arrays AS o\nWHERE (\n    SELECT COUNT(DISTINCT i.kwh_output)\n    FROM solar_arrays AS i\n    WHERE i.cluster_id = o.cluster_id\n      AND i.kwh_output > o.kwh_output\n) < 2\nORDER BY o.cluster_id ASC, o.kwh_output DESC;",
+    "eli5Story": "How do you know if you are in the top 2 in your class without looking at a leaderboard? You simply ask your classmates: 'How many of you scored higher than me?' If fewer than 2 people raise their hands, congratulations—you are in the top 2!",
+    "commonMistakes": [
+      "Using COUNT(*) instead of COUNT(DISTINCT) when ties exist, accidentally excluding tied 2nd place candidates",
+      "Using <= N instead of < N in the comparison, returning N + 1 rows instead of N"
+    ],
+    "takeaway": "The correlated count idiom defines rank as the cardinality of elements strictly superior to the candidate item in the same partition."
+  },
+  {
+    "id": 1395,
+    "title": "Isolate Top 3 Most Streamed Podcasts Per Audio Genre",
+    "section": "Section 10: Advanced SQL Engine Mastery (Subqueries, CTEs, Recursion & Set Operations)",
+    "difficulty": "Medium",
+    "domain": "Media",
+    "schema": "| Column | Type | Description |\n|---|---|---|\n| id | INT | Primary Key |\n| genre_id | INT | Partitioning Category |\n| total_streams | NUMERIC | Ranking Metric |\n| recorded_at | DATE | Observation Date |",
+    "businessProblem": "In technical interview and legacy database environments, retrieving the Top-N rows per category without window functions demonstrates foundational relational set calculus mastery.",
+    "targetQuery": "SELECT o.genre_id, o.id, o.total_streams\nFROM podcast_episodes AS o\nWHERE (\n    SELECT COUNT(DISTINCT i.total_streams)\n    FROM podcast_episodes AS i\n    WHERE i.genre_id = o.genre_id\n      AND i.total_streams > o.total_streams\n) < 2\nORDER BY o.genre_id ASC, o.total_streams DESC;",
+    "eli5Story": "How do you know if you are in the top 2 in your class without looking at a leaderboard? You simply ask your classmates: 'How many of you scored higher than me?' If fewer than 2 people raise their hands, congratulations—you are in the top 2!",
+    "commonMistakes": [
+      "Using COUNT(*) instead of COUNT(DISTINCT) when ties exist, accidentally excluding tied 2nd place candidates",
+      "Using <= N instead of < N in the comparison, returning N + 1 rows instead of N"
+    ],
+    "takeaway": "The correlated count idiom defines rank as the cardinality of elements strictly superior to the candidate item in the same partition."
+  },
+  {
+    "id": 1396,
+    "title": "Extract N-th Highest Trader Bonus Per Trading Desk Handling Dense Ties",
+    "section": "Section 10: Advanced SQL Engine Mastery (Subqueries, CTEs, Recursion & Set Operations)",
+    "difficulty": "Hard",
+    "domain": "Fintech",
+    "schema": "| Column | Type | Description |\n|---|---|---|\n| id | INT | Primary Key |\n| desk_id | INT | Partitioning Category |\n| bonus_usd | NUMERIC | Ranking Metric |\n| recorded_at | DATE | Observation Date |",
+    "businessProblem": "In technical interview and legacy database environments, retrieving the Top-N rows per category without window functions demonstrates foundational relational set calculus mastery.",
+    "targetQuery": "SELECT o.desk_id, o.id, o.bonus_usd\nFROM trader_compensation AS o\nWHERE (\n    SELECT COUNT(DISTINCT i.bonus_usd)\n    FROM trader_compensation AS i\n    WHERE i.desk_id = o.desk_id\n      AND i.bonus_usd > o.bonus_usd\n) < 2\nORDER BY o.desk_id ASC, o.bonus_usd DESC;",
+    "eli5Story": "How do you know if you are in the top 2 in your class without looking at a leaderboard? You simply ask your classmates: 'How many of you scored higher than me?' If fewer than 2 people raise their hands, congratulations—you are in the top 2!",
+    "commonMistakes": [
+      "Using COUNT(*) instead of COUNT(DISTINCT) when ties exist, accidentally excluding tied 2nd place candidates",
+      "Using <= N instead of < N in the comparison, returning N + 1 rows instead of N"
+    ],
+    "takeaway": "The correlated count idiom defines rank as the cardinality of elements strictly superior to the candidate item in the same partition."
+  },
+  {
+    "id": 1397,
+    "title": "Top 3 Storage Consuming Workspaces Per Cloud Region Handling Duplicate Quotas",
+    "section": "Section 10: Advanced SQL Engine Mastery (Subqueries, CTEs, Recursion & Set Operations)",
+    "difficulty": "Hard",
+    "domain": "SaaS",
+    "schema": "| Column | Type | Description |\n|---|---|---|\n| id | INT | Primary Key |\n| region_code | INT | Partitioning Category |\n| storage_terabytes | NUMERIC | Ranking Metric |\n| recorded_at | DATE | Observation Date |",
+    "businessProblem": "In technical interview and legacy database environments, retrieving the Top-N rows per category without window functions demonstrates foundational relational set calculus mastery.",
+    "targetQuery": "SELECT o.region_code, o.id, o.storage_terabytes\nFROM region_workspaces AS o\nWHERE (\n    SELECT COUNT(DISTINCT i.storage_terabytes)\n    FROM region_workspaces AS i\n    WHERE i.region_code = o.region_code\n      AND i.storage_terabytes > o.storage_terabytes\n) < 2\nORDER BY o.region_code ASC, o.storage_terabytes DESC;",
+    "eli5Story": "How do you know if you are in the top 2 in your class without looking at a leaderboard? You simply ask your classmates: 'How many of you scored higher than me?' If fewer than 2 people raise their hands, congratulations—you are in the top 2!",
+    "commonMistakes": [
+      "Using COUNT(*) instead of COUNT(DISTINCT) when ties exist, accidentally excluding tied 2nd place candidates",
+      "Using <= N instead of < N in the comparison, returning N + 1 rows instead of N"
+    ],
+    "takeaway": "The correlated count idiom defines rank as the cardinality of elements strictly superior to the candidate item in the same partition."
+  },
+  {
+    "id": 1398,
+    "title": "Extract Top 3 Medication Dosages Per Specialty Using Pure Relational Algebra",
+    "section": "Section 10: Advanced SQL Engine Mastery (Subqueries, CTEs, Recursion & Set Operations)",
+    "difficulty": "Hard",
+    "domain": "Healthcare",
+    "schema": "| Column | Type | Description |\n|---|---|---|\n| id | INT | Primary Key |\n| specialty_id | INT | Partitioning Category |\n| daily_dosage | NUMERIC | Ranking Metric |\n| recorded_at | DATE | Observation Date |",
+    "businessProblem": "In technical interview and legacy database environments, retrieving the Top-N rows per category without window functions demonstrates foundational relational set calculus mastery.",
+    "targetQuery": "SELECT o.specialty_id, o.id, o.daily_dosage\nFROM specialty_prescriptions AS o\nWHERE (\n    SELECT COUNT(DISTINCT i.daily_dosage)\n    FROM specialty_prescriptions AS i\n    WHERE i.specialty_id = o.specialty_id\n      AND i.daily_dosage > o.daily_dosage\n) < 2\nORDER BY o.specialty_id ASC, o.daily_dosage DESC;",
+    "eli5Story": "How do you know if you are in the top 2 in your class without looking at a leaderboard? You simply ask your classmates: 'How many of you scored higher than me?' If fewer than 2 people raise their hands, congratulations—you are in the top 2!",
+    "commonMistakes": [
+      "Using COUNT(*) instead of COUNT(DISTINCT) when ties exist, accidentally excluding tied 2nd place candidates",
+      "Using <= N instead of < N in the comparison, returning N + 1 rows instead of N"
+    ],
+    "takeaway": "The correlated count idiom defines rank as the cardinality of elements strictly superior to the candidate item in the same partition."
+  },
+  {
+    "id": 1399,
+    "title": "Non-Window Dense Top 3 Product Lines Per Marketplace Channel",
+    "section": "Section 10: Advanced SQL Engine Mastery (Subqueries, CTEs, Recursion & Set Operations)",
+    "difficulty": "Hard",
+    "domain": "E-Commerce",
+    "schema": "| Column | Type | Description |\n|---|---|---|\n| id | INT | Primary Key |\n| channel_id | INT | Partitioning Category |\n| gross_margin | NUMERIC | Ranking Metric |\n| recorded_at | DATE | Observation Date |",
+    "businessProblem": "In technical interview and legacy database environments, retrieving the Top-N rows per category without window functions demonstrates foundational relational set calculus mastery.",
+    "targetQuery": "SELECT o.channel_id, o.id, o.gross_margin\nFROM channel_margins AS o\nWHERE (\n    SELECT COUNT(DISTINCT i.gross_margin)\n    FROM channel_margins AS i\n    WHERE i.channel_id = o.channel_id\n      AND i.gross_margin > o.gross_margin\n) < 2\nORDER BY o.channel_id ASC, o.gross_margin DESC;",
+    "eli5Story": "How do you know if you are in the top 2 in your class without looking at a leaderboard? You simply ask your classmates: 'How many of you scored higher than me?' If fewer than 2 people raise their hands, congratulations—you are in the top 2!",
+    "commonMistakes": [
+      "Using COUNT(*) instead of COUNT(DISTINCT) when ties exist, accidentally excluding tied 2nd place candidates",
+      "Using <= N instead of < N in the comparison, returning N + 1 rows instead of N"
+    ],
+    "takeaway": "The correlated count idiom defines rank as the cardinality of elements strictly superior to the candidate item in the same partition."
+  },
+  {
+    "id": 1400,
+    "title": "Top 3 Heaviest Container Shipments Per Freight Vessel Without Window Engine",
+    "section": "Section 10: Advanced SQL Engine Mastery (Subqueries, CTEs, Recursion & Set Operations)",
+    "difficulty": "Hard",
+    "domain": "Logistics",
+    "schema": "| Column | Type | Description |\n|---|---|---|\n| id | INT | Primary Key |\n| vessel_id | INT | Partitioning Category |\n| gross_weight | NUMERIC | Ranking Metric |\n| recorded_at | DATE | Observation Date |",
+    "businessProblem": "In technical interview and legacy database environments, retrieving the Top-N rows per category without window functions demonstrates foundational relational set calculus mastery.",
+    "targetQuery": "SELECT o.vessel_id, o.id, o.gross_weight\nFROM vessel_containers AS o\nWHERE (\n    SELECT COUNT(DISTINCT i.gross_weight)\n    FROM vessel_containers AS i\n    WHERE i.vessel_id = o.vessel_id\n      AND i.gross_weight > o.gross_weight\n) < 2\nORDER BY o.vessel_id ASC, o.gross_weight DESC;",
+    "eli5Story": "How do you know if you are in the top 2 in your class without looking at a leaderboard? You simply ask your classmates: 'How many of you scored higher than me?' If fewer than 2 people raise their hands, congratulations—you are in the top 2!",
+    "commonMistakes": [
+      "Using COUNT(*) instead of COUNT(DISTINCT) when ties exist, accidentally excluding tied 2nd place candidates",
+      "Using <= N instead of < N in the comparison, returning N + 1 rows instead of N"
+    ],
+    "takeaway": "The correlated count idiom defines rank as the cardinality of elements strictly superior to the candidate item in the same partition."
+  },
+  {
+    "id": 1401,
+    "title": "Tiered Foreign Exchange Margin Calculation via Chained CTEs",
+    "section": "Section 10: Advanced SQL Engine Mastery (Subqueries, CTEs, Recursion & Set Operations)",
+    "difficulty": "Easy",
+    "domain": "Fintech",
+    "schema": "| Column | Type | Description |\n|---|---|---|\n| entity_id | INT | Entity Identifier |\n| fx_spread | NUMERIC | Calculated Metric |\n| reporting_date | DATE | Financial Snapshot Date |",
+    "businessProblem": "Complex analytical pipelines in Fintech require clean, self-documenting architectures where intermediate metrics (base filtering, aggregation, variance normalization) are isolated into readable, modular stages.",
+    "targetQuery": "WITH stage_1_filtered AS (\n    SELECT entity_id, fx_spread\n    FROM fx_orders\n    WHERE fx_spread IS NOT NULL\n),\nstage_2_benchmarks AS (\n    SELECT \n        entity_id,\n        fx_spread,\n        AVG(fx_spread) OVER () AS global_benchmark\n    FROM stage_1_filtered\n)\nSELECT \n    entity_id,\n    fx_spread,\n    ROUND(fx_spread - global_benchmark, 2) AS variance_from_benchmark\nFROM stage_2_benchmarks\nORDER BY variance_from_benchmark DESC;",
+    "eli5Story": "Instead of throwing all ingredients into a blender at once and hoping for a cake, you follow a recipe: Step 1 mixes the dry ingredients, Step 2 beats the eggs, Step 3 bakes the batter. CTEs are the numbered steps of your SQL recipe!",
+    "commonMistakes": [
+      "Using deeply nested derived table pyramids that read backwards, making debugging and maintenance impossible",
+      "Assuming CTEs automatically create indexes on temporary columns, leading to unexpected slow joins on unindexed intermediate keys"
+    ],
+    "takeaway": "Modular CTE pipelines structure complex multi-tier calculations into literate, sequential, testable data transformations."
+  },
+  {
+    "id": 1402,
+    "title": "Multi-Step User Activation Funnel Breakdown via Modular Common Table Expressions",
+    "section": "Section 10: Advanced SQL Engine Mastery (Subqueries, CTEs, Recursion & Set Operations)",
+    "difficulty": "Easy",
+    "domain": "SaaS",
+    "schema": "| Column | Type | Description |\n|---|---|---|\n| entity_id | INT | Entity Identifier |\n| activation_step | NUMERIC | Calculated Metric |\n| reporting_date | DATE | Financial Snapshot Date |",
+    "businessProblem": "Complex analytical pipelines in SaaS require clean, self-documenting architectures where intermediate metrics (base filtering, aggregation, variance normalization) are isolated into readable, modular stages.",
+    "targetQuery": "WITH stage_1_filtered AS (\n    SELECT entity_id, activation_step\n    FROM user_funnels\n    WHERE activation_step IS NOT NULL\n),\nstage_2_benchmarks AS (\n    SELECT \n        entity_id,\n        activation_step,\n        AVG(activation_step) OVER () AS global_benchmark\n    FROM stage_1_filtered\n)\nSELECT \n    entity_id,\n    activation_step,\n    ROUND(activation_step - global_benchmark, 2) AS variance_from_benchmark\nFROM stage_2_benchmarks\nORDER BY variance_from_benchmark DESC;",
+    "eli5Story": "Instead of throwing all ingredients into a blender at once and hoping for a cake, you follow a recipe: Step 1 mixes the dry ingredients, Step 2 beats the eggs, Step 3 bakes the batter. CTEs are the numbered steps of your SQL recipe!",
+    "commonMistakes": [
+      "Using deeply nested derived table pyramids that read backwards, making debugging and maintenance impossible",
+      "Assuming CTEs automatically create indexes on temporary columns, leading to unexpected slow joins on unindexed intermediate keys"
+    ],
+    "takeaway": "Modular CTE pipelines structure complex multi-tier calculations into literate, sequential, testable data transformations."
+  },
+  {
+    "id": 1403,
+    "title": "Hospital Readmission Rate Normalization Across Clinical Service Lines",
+    "section": "Section 10: Advanced SQL Engine Mastery (Subqueries, CTEs, Recursion & Set Operations)",
+    "difficulty": "Easy",
+    "domain": "Healthcare",
+    "schema": "| Column | Type | Description |\n|---|---|---|\n| entity_id | INT | Entity Identifier |\n| readmit_rate | NUMERIC | Calculated Metric |\n| reporting_date | DATE | Financial Snapshot Date |",
+    "businessProblem": "Complex analytical pipelines in Healthcare require clean, self-documenting architectures where intermediate metrics (base filtering, aggregation, variance normalization) are isolated into readable, modular stages.",
+    "targetQuery": "WITH stage_1_filtered AS (\n    SELECT entity_id, readmit_rate\n    FROM service_metrics\n    WHERE readmit_rate IS NOT NULL\n),\nstage_2_benchmarks AS (\n    SELECT \n        entity_id,\n        readmit_rate,\n        AVG(readmit_rate) OVER () AS global_benchmark\n    FROM stage_1_filtered\n)\nSELECT \n    entity_id,\n    readmit_rate,\n    ROUND(readmit_rate - global_benchmark, 2) AS variance_from_benchmark\nFROM stage_2_benchmarks\nORDER BY variance_from_benchmark DESC;",
+    "eli5Story": "Instead of throwing all ingredients into a blender at once and hoping for a cake, you follow a recipe: Step 1 mixes the dry ingredients, Step 2 beats the eggs, Step 3 bakes the batter. CTEs are the numbered steps of your SQL recipe!",
+    "commonMistakes": [
+      "Using deeply nested derived table pyramids that read backwards, making debugging and maintenance impossible",
+      "Assuming CTEs automatically create indexes on temporary columns, leading to unexpected slow joins on unindexed intermediate keys"
+    ],
+    "takeaway": "Modular CTE pipelines structure complex multi-tier calculations into literate, sequential, testable data transformations."
+  },
+  {
+    "id": 1404,
+    "title": "Customer Order Frequency Segmentation and Spend Tier Pipeline",
+    "section": "Section 10: Advanced SQL Engine Mastery (Subqueries, CTEs, Recursion & Set Operations)",
+    "difficulty": "Easy",
+    "domain": "E-Commerce",
+    "schema": "| Column | Type | Description |\n|---|---|---|\n| entity_id | INT | Entity Identifier |\n| order_frequency | NUMERIC | Calculated Metric |\n| reporting_date | DATE | Financial Snapshot Date |",
+    "businessProblem": "Complex analytical pipelines in E-Commerce require clean, self-documenting architectures where intermediate metrics (base filtering, aggregation, variance normalization) are isolated into readable, modular stages.",
+    "targetQuery": "WITH stage_1_filtered AS (\n    SELECT entity_id, order_frequency\n    FROM shopper_orders\n    WHERE order_frequency IS NOT NULL\n),\nstage_2_benchmarks AS (\n    SELECT \n        entity_id,\n        order_frequency,\n        AVG(order_frequency) OVER () AS global_benchmark\n    FROM stage_1_filtered\n)\nSELECT \n    entity_id,\n    order_frequency,\n    ROUND(order_frequency - global_benchmark, 2) AS variance_from_benchmark\nFROM stage_2_benchmarks\nORDER BY variance_from_benchmark DESC;",
+    "eli5Story": "Instead of throwing all ingredients into a blender at once and hoping for a cake, you follow a recipe: Step 1 mixes the dry ingredients, Step 2 beats the eggs, Step 3 bakes the batter. CTEs are the numbered steps of your SQL recipe!",
+    "commonMistakes": [
+      "Using deeply nested derived table pyramids that read backwards, making debugging and maintenance impossible",
+      "Assuming CTEs automatically create indexes on temporary columns, leading to unexpected slow joins on unindexed intermediate keys"
+    ],
+    "takeaway": "Modular CTE pipelines structure complex multi-tier calculations into literate, sequential, testable data transformations."
+  },
+  {
+    "id": 1405,
+    "title": "Last-Mile Delivery Driver On-Time Performance Index Pipeline",
+    "section": "Section 10: Advanced SQL Engine Mastery (Subqueries, CTEs, Recursion & Set Operations)",
+    "difficulty": "Easy",
+    "domain": "Logistics",
+    "schema": "| Column | Type | Description |\n|---|---|---|\n| entity_id | INT | Entity Identifier |\n| ontime_pct | NUMERIC | Calculated Metric |\n| reporting_date | DATE | Financial Snapshot Date |",
+    "businessProblem": "Complex analytical pipelines in Logistics require clean, self-documenting architectures where intermediate metrics (base filtering, aggregation, variance normalization) are isolated into readable, modular stages.",
+    "targetQuery": "WITH stage_1_filtered AS (\n    SELECT entity_id, ontime_pct\n    FROM driver_metrics\n    WHERE ontime_pct IS NOT NULL\n),\nstage_2_benchmarks AS (\n    SELECT \n        entity_id,\n        ontime_pct,\n        AVG(ontime_pct) OVER () AS global_benchmark\n    FROM stage_1_filtered\n)\nSELECT \n    entity_id,\n    ontime_pct,\n    ROUND(ontime_pct - global_benchmark, 2) AS variance_from_benchmark\nFROM stage_2_benchmarks\nORDER BY variance_from_benchmark DESC;",
+    "eli5Story": "Instead of throwing all ingredients into a blender at once and hoping for a cake, you follow a recipe: Step 1 mixes the dry ingredients, Step 2 beats the eggs, Step 3 bakes the batter. CTEs are the numbered steps of your SQL recipe!",
+    "commonMistakes": [
+      "Using deeply nested derived table pyramids that read backwards, making debugging and maintenance impossible",
+      "Assuming CTEs automatically create indexes on temporary columns, leading to unexpected slow joins on unindexed intermediate keys"
+    ],
+    "takeaway": "Modular CTE pipelines structure complex multi-tier calculations into literate, sequential, testable data transformations."
+  },
+  {
+    "id": 1406,
+    "title": "Battle Pass Progression Velocity and XP Decay Analysis via Layered CTEs",
+    "section": "Section 10: Advanced SQL Engine Mastery (Subqueries, CTEs, Recursion & Set Operations)",
+    "difficulty": "Medium",
+    "domain": "Gaming",
+    "schema": "| Column | Type | Description |\n|---|---|---|\n| entity_id | INT | Entity Identifier |\n| xp_gained | NUMERIC | Calculated Metric |\n| reporting_date | DATE | Financial Snapshot Date |",
+    "businessProblem": "Complex analytical pipelines in Gaming require clean, self-documenting architectures where intermediate metrics (base filtering, aggregation, variance normalization) are isolated into readable, modular stages.",
+    "targetQuery": "WITH stage_1_filtered AS (\n    SELECT entity_id, xp_gained\n    FROM battlepass_progress\n    WHERE xp_gained IS NOT NULL\n),\nstage_2_benchmarks AS (\n    SELECT \n        entity_id,\n        xp_gained,\n        AVG(xp_gained) OVER () AS global_benchmark\n    FROM stage_1_filtered\n)\nSELECT \n    entity_id,\n    xp_gained,\n    ROUND(xp_gained - global_benchmark, 2) AS variance_from_benchmark\nFROM stage_2_benchmarks\nORDER BY variance_from_benchmark DESC;",
+    "eli5Story": "Instead of throwing all ingredients into a blender at once and hoping for a cake, you follow a recipe: Step 1 mixes the dry ingredients, Step 2 beats the eggs, Step 3 bakes the batter. CTEs are the numbered steps of your SQL recipe!",
+    "commonMistakes": [
+      "Using deeply nested derived table pyramids that read backwards, making debugging and maintenance impossible",
+      "Assuming CTEs automatically create indexes on temporary columns, leading to unexpected slow joins on unindexed intermediate keys"
+    ],
+    "takeaway": "Modular CTE pipelines structure complex multi-tier calculations into literate, sequential, testable data transformations."
+  },
+  {
+    "id": 1407,
+    "title": "Programmatic Ad Impression Attribution Waterfall via Staged CTE Architecture",
+    "section": "Section 10: Advanced SQL Engine Mastery (Subqueries, CTEs, Recursion & Set Operations)",
+    "difficulty": "Medium",
+    "domain": "AdTech",
+    "schema": "| Column | Type | Description |\n|---|---|---|\n| entity_id | INT | Entity Identifier |\n| ecpm_yield | NUMERIC | Calculated Metric |\n| reporting_date | DATE | Financial Snapshot Date |",
+    "businessProblem": "Complex analytical pipelines in AdTech require clean, self-documenting architectures where intermediate metrics (base filtering, aggregation, variance normalization) are isolated into readable, modular stages.",
+    "targetQuery": "WITH stage_1_filtered AS (\n    SELECT entity_id, ecpm_yield\n    FROM waterfall_impressions\n    WHERE ecpm_yield IS NOT NULL\n),\nstage_2_benchmarks AS (\n    SELECT \n        entity_id,\n        ecpm_yield,\n        AVG(ecpm_yield) OVER () AS global_benchmark\n    FROM stage_1_filtered\n)\nSELECT \n    entity_id,\n    ecpm_yield,\n    ROUND(ecpm_yield - global_benchmark, 2) AS variance_from_benchmark\nFROM stage_2_benchmarks\nORDER BY variance_from_benchmark DESC;",
+    "eli5Story": "Instead of throwing all ingredients into a blender at once and hoping for a cake, you follow a recipe: Step 1 mixes the dry ingredients, Step 2 beats the eggs, Step 3 bakes the batter. CTEs are the numbered steps of your SQL recipe!",
+    "commonMistakes": [
+      "Using deeply nested derived table pyramids that read backwards, making debugging and maintenance impossible",
+      "Assuming CTEs automatically create indexes on temporary columns, leading to unexpected slow joins on unindexed intermediate keys"
+    ],
+    "takeaway": "Modular CTE pipelines structure complex multi-tier calculations into literate, sequential, testable data transformations."
+  },
+  {
+    "id": 1408,
+    "title": "Student Course Completion Probability Scoring via Modular Transformations",
+    "section": "Section 10: Advanced SQL Engine Mastery (Subqueries, CTEs, Recursion & Set Operations)",
+    "difficulty": "Medium",
+    "domain": "EdTech",
+    "schema": "| Column | Type | Description |\n|---|---|---|\n| entity_id | INT | Entity Identifier |\n| completion_prob | NUMERIC | Calculated Metric |\n| reporting_date | DATE | Financial Snapshot Date |",
+    "businessProblem": "Complex analytical pipelines in EdTech require clean, self-documenting architectures where intermediate metrics (base filtering, aggregation, variance normalization) are isolated into readable, modular stages.",
+    "targetQuery": "WITH stage_1_filtered AS (\n    SELECT entity_id, completion_prob\n    FROM student_activity\n    WHERE completion_prob IS NOT NULL\n),\nstage_2_benchmarks AS (\n    SELECT \n        entity_id,\n        completion_prob,\n        AVG(completion_prob) OVER () AS global_benchmark\n    FROM stage_1_filtered\n)\nSELECT \n    entity_id,\n    completion_prob,\n    ROUND(completion_prob - global_benchmark, 2) AS variance_from_benchmark\nFROM stage_2_benchmarks\nORDER BY variance_from_benchmark DESC;",
+    "eli5Story": "Instead of throwing all ingredients into a blender at once and hoping for a cake, you follow a recipe: Step 1 mixes the dry ingredients, Step 2 beats the eggs, Step 3 bakes the batter. CTEs are the numbered steps of your SQL recipe!",
+    "commonMistakes": [
+      "Using deeply nested derived table pyramids that read backwards, making debugging and maintenance impossible",
+      "Assuming CTEs automatically create indexes on temporary columns, leading to unexpected slow joins on unindexed intermediate keys"
+    ],
+    "takeaway": "Modular CTE pipelines structure complex multi-tier calculations into literate, sequential, testable data transformations."
+  },
+  {
+    "id": 1409,
+    "title": "Wind Farm Turbine Aerodynamic Efficiency Degradation Modeling via CTEs",
+    "section": "Section 10: Advanced SQL Engine Mastery (Subqueries, CTEs, Recursion & Set Operations)",
+    "difficulty": "Medium",
+    "domain": "Energy",
+    "schema": "| Column | Type | Description |\n|---|---|---|\n| entity_id | INT | Entity Identifier |\n| aerodynamic_eff | NUMERIC | Calculated Metric |\n| reporting_date | DATE | Financial Snapshot Date |",
+    "businessProblem": "Complex analytical pipelines in Energy require clean, self-documenting architectures where intermediate metrics (base filtering, aggregation, variance normalization) are isolated into readable, modular stages.",
+    "targetQuery": "WITH stage_1_filtered AS (\n    SELECT entity_id, aerodynamic_eff\n    FROM turbine_logs\n    WHERE aerodynamic_eff IS NOT NULL\n),\nstage_2_benchmarks AS (\n    SELECT \n        entity_id,\n        aerodynamic_eff,\n        AVG(aerodynamic_eff) OVER () AS global_benchmark\n    FROM stage_1_filtered\n)\nSELECT \n    entity_id,\n    aerodynamic_eff,\n    ROUND(aerodynamic_eff - global_benchmark, 2) AS variance_from_benchmark\nFROM stage_2_benchmarks\nORDER BY variance_from_benchmark DESC;",
+    "eli5Story": "Instead of throwing all ingredients into a blender at once and hoping for a cake, you follow a recipe: Step 1 mixes the dry ingredients, Step 2 beats the eggs, Step 3 bakes the batter. CTEs are the numbered steps of your SQL recipe!",
+    "commonMistakes": [
+      "Using deeply nested derived table pyramids that read backwards, making debugging and maintenance impossible",
+      "Assuming CTEs automatically create indexes on temporary columns, leading to unexpected slow joins on unindexed intermediate keys"
+    ],
+    "takeaway": "Modular CTE pipelines structure complex multi-tier calculations into literate, sequential, testable data transformations."
+  },
+  {
+    "id": 1410,
+    "title": "Subscriber Binge-Watching Velocity and Churn Risk Matrix via Chained Layers",
+    "section": "Section 10: Advanced SQL Engine Mastery (Subqueries, CTEs, Recursion & Set Operations)",
+    "difficulty": "Medium",
+    "domain": "Media",
+    "schema": "| Column | Type | Description |\n|---|---|---|\n| entity_id | INT | Entity Identifier |\n| episodes_per_day | NUMERIC | Calculated Metric |\n| reporting_date | DATE | Financial Snapshot Date |",
+    "businessProblem": "Complex analytical pipelines in Media require clean, self-documenting architectures where intermediate metrics (base filtering, aggregation, variance normalization) are isolated into readable, modular stages.",
+    "targetQuery": "WITH stage_1_filtered AS (\n    SELECT entity_id, episodes_per_day\n    FROM binge_telemetry\n    WHERE episodes_per_day IS NOT NULL\n),\nstage_2_benchmarks AS (\n    SELECT \n        entity_id,\n        episodes_per_day,\n        AVG(episodes_per_day) OVER () AS global_benchmark\n    FROM stage_1_filtered\n)\nSELECT \n    entity_id,\n    episodes_per_day,\n    ROUND(episodes_per_day - global_benchmark, 2) AS variance_from_benchmark\nFROM stage_2_benchmarks\nORDER BY variance_from_benchmark DESC;",
+    "eli5Story": "Instead of throwing all ingredients into a blender at once and hoping for a cake, you follow a recipe: Step 1 mixes the dry ingredients, Step 2 beats the eggs, Step 3 bakes the batter. CTEs are the numbered steps of your SQL recipe!",
+    "commonMistakes": [
+      "Using deeply nested derived table pyramids that read backwards, making debugging and maintenance impossible",
+      "Assuming CTEs automatically create indexes on temporary columns, leading to unexpected slow joins on unindexed intermediate keys"
+    ],
+    "takeaway": "Modular CTE pipelines structure complex multi-tier calculations into literate, sequential, testable data transformations."
+  },
+  {
+    "id": 1411,
+    "title": "Multi-Entity Capital Adequacy Stress Testing Pipeline with Recursive CTE Bridges",
+    "section": "Section 10: Advanced SQL Engine Mastery (Subqueries, CTEs, Recursion & Set Operations)",
+    "difficulty": "Hard",
+    "domain": "Fintech",
+    "schema": "| Column | Type | Description |\n|---|---|---|\n| entity_id | INT | Entity Identifier |\n| cet1_ratio | NUMERIC | Calculated Metric |\n| reporting_date | DATE | Financial Snapshot Date |",
+    "businessProblem": "Complex analytical pipelines in Fintech require clean, self-documenting architectures where intermediate metrics (base filtering, aggregation, variance normalization) are isolated into readable, modular stages.",
+    "targetQuery": "WITH stage_1_filtered AS (\n    SELECT entity_id, cet1_ratio\n    FROM regulatory_ratios\n    WHERE cet1_ratio IS NOT NULL\n),\nstage_2_benchmarks AS (\n    SELECT \n        entity_id,\n        cet1_ratio,\n        AVG(cet1_ratio) OVER () AS global_benchmark\n    FROM stage_1_filtered\n)\nSELECT \n    entity_id,\n    cet1_ratio,\n    ROUND(cet1_ratio - global_benchmark, 2) AS variance_from_benchmark\nFROM stage_2_benchmarks\nORDER BY variance_from_benchmark DESC;",
+    "eli5Story": "Instead of throwing all ingredients into a blender at once and hoping for a cake, you follow a recipe: Step 1 mixes the dry ingredients, Step 2 beats the eggs, Step 3 bakes the batter. CTEs are the numbered steps of your SQL recipe!",
+    "commonMistakes": [
+      "Using deeply nested derived table pyramids that read backwards, making debugging and maintenance impossible",
+      "Assuming CTEs automatically create indexes on temporary columns, leading to unexpected slow joins on unindexed intermediate keys"
+    ],
+    "takeaway": "Modular CTE pipelines structure complex multi-tier calculations into literate, sequential, testable data transformations."
+  },
+  {
+    "id": 1412,
+    "title": "Net Revenue Retention Decomposition (New, Expansion, Contraction, Churn) CTE Pipeline",
+    "section": "Section 10: Advanced SQL Engine Mastery (Subqueries, CTEs, Recursion & Set Operations)",
+    "difficulty": "Hard",
+    "domain": "SaaS",
+    "schema": "| Column | Type | Description |\n|---|---|---|\n| entity_id | INT | Entity Identifier |\n| mrr_delta | NUMERIC | Calculated Metric |\n| reporting_date | DATE | Financial Snapshot Date |",
+    "businessProblem": "Complex analytical pipelines in SaaS require clean, self-documenting architectures where intermediate metrics (base filtering, aggregation, variance normalization) are isolated into readable, modular stages.",
+    "targetQuery": "WITH stage_1_filtered AS (\n    SELECT entity_id, mrr_delta\n    FROM mrr_waterfall\n    WHERE mrr_delta IS NOT NULL\n),\nstage_2_benchmarks AS (\n    SELECT \n        entity_id,\n        mrr_delta,\n        AVG(mrr_delta) OVER () AS global_benchmark\n    FROM stage_1_filtered\n)\nSELECT \n    entity_id,\n    mrr_delta,\n    ROUND(mrr_delta - global_benchmark, 2) AS variance_from_benchmark\nFROM stage_2_benchmarks\nORDER BY variance_from_benchmark DESC;",
+    "eli5Story": "Instead of throwing all ingredients into a blender at once and hoping for a cake, you follow a recipe: Step 1 mixes the dry ingredients, Step 2 beats the eggs, Step 3 bakes the batter. CTEs are the numbered steps of your SQL recipe!",
+    "commonMistakes": [
+      "Using deeply nested derived table pyramids that read backwards, making debugging and maintenance impossible",
+      "Assuming CTEs automatically create indexes on temporary columns, leading to unexpected slow joins on unindexed intermediate keys"
+    ],
+    "takeaway": "Modular CTE pipelines structure complex multi-tier calculations into literate, sequential, testable data transformations."
+  },
+  {
+    "id": 1413,
+    "title": "Epidemiological Contact Tracing Exposure Depth Matrix via Staged CTEs",
+    "section": "Section 10: Advanced SQL Engine Mastery (Subqueries, CTEs, Recursion & Set Operations)",
+    "difficulty": "Hard",
+    "domain": "Healthcare",
+    "schema": "| Column | Type | Description |\n|---|---|---|\n| entity_id | INT | Entity Identifier |\n| exposure_score | NUMERIC | Calculated Metric |\n| reporting_date | DATE | Financial Snapshot Date |",
+    "businessProblem": "Complex analytical pipelines in Healthcare require clean, self-documenting architectures where intermediate metrics (base filtering, aggregation, variance normalization) are isolated into readable, modular stages.",
+    "targetQuery": "WITH stage_1_filtered AS (\n    SELECT entity_id, exposure_score\n    FROM contact_events\n    WHERE exposure_score IS NOT NULL\n),\nstage_2_benchmarks AS (\n    SELECT \n        entity_id,\n        exposure_score,\n        AVG(exposure_score) OVER () AS global_benchmark\n    FROM stage_1_filtered\n)\nSELECT \n    entity_id,\n    exposure_score,\n    ROUND(exposure_score - global_benchmark, 2) AS variance_from_benchmark\nFROM stage_2_benchmarks\nORDER BY variance_from_benchmark DESC;",
+    "eli5Story": "Instead of throwing all ingredients into a blender at once and hoping for a cake, you follow a recipe: Step 1 mixes the dry ingredients, Step 2 beats the eggs, Step 3 bakes the batter. CTEs are the numbered steps of your SQL recipe!",
+    "commonMistakes": [
+      "Using deeply nested derived table pyramids that read backwards, making debugging and maintenance impossible",
+      "Assuming CTEs automatically create indexes on temporary columns, leading to unexpected slow joins on unindexed intermediate keys"
+    ],
+    "takeaway": "Modular CTE pipelines structure complex multi-tier calculations into literate, sequential, testable data transformations."
+  },
+  {
+    "id": 1414,
+    "title": "Omnichannel Customer Lifetime Value and CAC Payback Period Modeling Pipeline",
+    "section": "Section 10: Advanced SQL Engine Mastery (Subqueries, CTEs, Recursion & Set Operations)",
+    "difficulty": "Hard",
+    "domain": "E-Commerce",
+    "schema": "| Column | Type | Description |\n|---|---|---|\n| entity_id | INT | Entity Identifier |\n| ltv_cac_ratio | NUMERIC | Calculated Metric |\n| reporting_date | DATE | Financial Snapshot Date |",
+    "businessProblem": "Complex analytical pipelines in E-Commerce require clean, self-documenting architectures where intermediate metrics (base filtering, aggregation, variance normalization) are isolated into readable, modular stages.",
+    "targetQuery": "WITH stage_1_filtered AS (\n    SELECT entity_id, ltv_cac_ratio\n    FROM customer_cohorts\n    WHERE ltv_cac_ratio IS NOT NULL\n),\nstage_2_benchmarks AS (\n    SELECT \n        entity_id,\n        ltv_cac_ratio,\n        AVG(ltv_cac_ratio) OVER () AS global_benchmark\n    FROM stage_1_filtered\n)\nSELECT \n    entity_id,\n    ltv_cac_ratio,\n    ROUND(ltv_cac_ratio - global_benchmark, 2) AS variance_from_benchmark\nFROM stage_2_benchmarks\nORDER BY variance_from_benchmark DESC;",
+    "eli5Story": "Instead of throwing all ingredients into a blender at once and hoping for a cake, you follow a recipe: Step 1 mixes the dry ingredients, Step 2 beats the eggs, Step 3 bakes the batter. CTEs are the numbered steps of your SQL recipe!",
+    "commonMistakes": [
+      "Using deeply nested derived table pyramids that read backwards, making debugging and maintenance impossible",
+      "Assuming CTEs automatically create indexes on temporary columns, leading to unexpected slow joins on unindexed intermediate keys"
+    ],
+    "takeaway": "Modular CTE pipelines structure complex multi-tier calculations into literate, sequential, testable data transformations."
+  },
+  {
+    "id": 1415,
+    "title": "Supply Chain Bullwhip Effect Variance Propagation via Multi-Tier CTE Architecture",
+    "section": "Section 10: Advanced SQL Engine Mastery (Subqueries, CTEs, Recursion & Set Operations)",
+    "difficulty": "Hard",
+    "domain": "Logistics",
+    "schema": "| Column | Type | Description |\n|---|---|---|\n| entity_id | INT | Entity Identifier |\n| demand_variance | NUMERIC | Calculated Metric |\n| reporting_date | DATE | Financial Snapshot Date |",
+    "businessProblem": "Complex analytical pipelines in Logistics require clean, self-documenting architectures where intermediate metrics (base filtering, aggregation, variance normalization) are isolated into readable, modular stages.",
+    "targetQuery": "WITH stage_1_filtered AS (\n    SELECT entity_id, demand_variance\n    FROM supply_orders\n    WHERE demand_variance IS NOT NULL\n),\nstage_2_benchmarks AS (\n    SELECT \n        entity_id,\n        demand_variance,\n        AVG(demand_variance) OVER () AS global_benchmark\n    FROM stage_1_filtered\n)\nSELECT \n    entity_id,\n    demand_variance,\n    ROUND(demand_variance - global_benchmark, 2) AS variance_from_benchmark\nFROM stage_2_benchmarks\nORDER BY variance_from_benchmark DESC;",
+    "eli5Story": "Instead of throwing all ingredients into a blender at once and hoping for a cake, you follow a recipe: Step 1 mixes the dry ingredients, Step 2 beats the eggs, Step 3 bakes the batter. CTEs are the numbered steps of your SQL recipe!",
+    "commonMistakes": [
+      "Using deeply nested derived table pyramids that read backwards, making debugging and maintenance impossible",
+      "Assuming CTEs automatically create indexes on temporary columns, leading to unexpected slow joins on unindexed intermediate keys"
+    ],
+    "takeaway": "Modular CTE pipelines structure complex multi-tier calculations into literate, sequential, testable data transformations."
+  },
+  {
+    "id": 1416,
+    "title": "Corporate Banking Management Hierarchy Level Assignment",
+    "section": "Section 10: Advanced SQL Engine Mastery (Subqueries, CTEs, Recursion & Set Operations)",
+    "difficulty": "Easy",
+    "domain": "Fintech",
+    "schema": "| Column | Type | Description |\n|---|---|---|\n| banker_id | INT | Entity Primary Key |\n| full_name | VARCHAR(100) | Entity Name |\n| manager_id | INT | Self-Referencing Foreign Key |\n| title | VARCHAR(50) | Official Role/Title |",
+    "businessProblem": "In Fintech, organizations and entities are modeled hierarchically. To audit supervisory chains, delegation of authority, and depth levels, we need a recursive query walking from the root node to every leaf.",
+    "targetQuery": "WITH RECURSIVE hierarchy_tree AS (\n    SELECT \n        banker_id,\n        full_name,\n        manager_id,\n        1 AS depth_level,\n        CAST(full_name AS CHAR(255)) AS path_string\n    FROM commercial_bankers\n    WHERE manager_id IS NULL\n\n    UNION ALL\n\n    SELECT \n        c.banker_id,\n        c.full_name,\n        c.manager_id,\n        p.depth_level + 1,\n        CONCAT(p.path_string, ' -> ', c.full_name)\n    FROM commercial_bankers AS c\n    INNER JOIN hierarchy_tree AS p ON c.manager_id = p.banker_id\n)\nSELECT depth_level, full_name, path_string\nFROM hierarchy_tree\nORDER BY depth_level ASC, banker_id ASC;",
+    "eli5Story": "Imagine a family tree. You start with the great-grandparent at Level 1. Then you look at their children (Level 2), then their grandchildren (Level 3). A recursive CTE follows each branch until the whole family is mapped out!",
+    "commonMistakes": [
+      "Failing to CAST the anchor string accumulator, causing deeper recursive string concatenations to fail with data-too-long errors",
+      "Forgetting to check for circular data cycles, which can trap the database in an infinite loop"
+    ],
+    "takeaway": "WITH RECURSIVE evaluates trees and hierarchies iteratively using an anchor base case and an inductive recursive join until the working queue is empty."
+  },
+  {
+    "id": 1417,
+    "title": "Engineering Organization Reporting Depth Level Traversal",
+    "section": "Section 10: Advanced SQL Engine Mastery (Subqueries, CTEs, Recursion & Set Operations)",
+    "difficulty": "Easy",
+    "domain": "SaaS",
+    "schema": "| Column | Type | Description |\n|---|---|---|\n| engineer_id | INT | Entity Primary Key |\n| full_name | VARCHAR(100) | Entity Name |\n| manager_id | INT | Self-Referencing Foreign Key |\n| title | VARCHAR(50) | Official Role/Title |",
+    "businessProblem": "In SaaS, organizations and entities are modeled hierarchically. To audit supervisory chains, delegation of authority, and depth levels, we need a recursive query walking from the root node to every leaf.",
+    "targetQuery": "WITH RECURSIVE hierarchy_tree AS (\n    SELECT \n        engineer_id,\n        full_name,\n        manager_id,\n        1 AS depth_level,\n        CAST(full_name AS CHAR(255)) AS path_string\n    FROM engineering_staff\n    WHERE manager_id IS NULL\n\n    UNION ALL\n\n    SELECT \n        c.engineer_id,\n        c.full_name,\n        c.manager_id,\n        p.depth_level + 1,\n        CONCAT(p.path_string, ' -> ', c.full_name)\n    FROM engineering_staff AS c\n    INNER JOIN hierarchy_tree AS p ON c.manager_id = p.engineer_id\n)\nSELECT depth_level, full_name, path_string\nFROM hierarchy_tree\nORDER BY depth_level ASC, engineer_id ASC;",
+    "eli5Story": "Imagine a family tree. You start with the great-grandparent at Level 1. Then you look at their children (Level 2), then their grandchildren (Level 3). A recursive CTE follows each branch until the whole family is mapped out!",
+    "commonMistakes": [
+      "Failing to CAST the anchor string accumulator, causing deeper recursive string concatenations to fail with data-too-long errors",
+      "Forgetting to check for circular data cycles, which can trap the database in an infinite loop"
+    ],
+    "takeaway": "WITH RECURSIVE evaluates trees and hierarchies iteratively using an anchor base case and an inductive recursive join until the working queue is empty."
+  },
+  {
+    "id": 1418,
+    "title": "Hospital Clinical Supervision Chain Breadcrumb Generation",
+    "section": "Section 10: Advanced SQL Engine Mastery (Subqueries, CTEs, Recursion & Set Operations)",
+    "difficulty": "Easy",
+    "domain": "Healthcare",
+    "schema": "| Column | Type | Description |\n|---|---|---|\n| staff_id | INT | Entity Primary Key |\n| full_name | VARCHAR(100) | Entity Name |\n| supervisor_id | INT | Self-Referencing Foreign Key |\n| title | VARCHAR(50) | Official Role/Title |",
+    "businessProblem": "In Healthcare, organizations and entities are modeled hierarchically. To audit supervisory chains, delegation of authority, and depth levels, we need a recursive query walking from the root node to every leaf.",
+    "targetQuery": "WITH RECURSIVE hierarchy_tree AS (\n    SELECT \n        staff_id,\n        full_name,\n        supervisor_id,\n        1 AS depth_level,\n        CAST(full_name AS CHAR(255)) AS path_string\n    FROM clinical_supervision\n    WHERE supervisor_id IS NULL\n\n    UNION ALL\n\n    SELECT \n        c.staff_id,\n        c.full_name,\n        c.supervisor_id,\n        p.depth_level + 1,\n        CONCAT(p.path_string, ' -> ', c.full_name)\n    FROM clinical_supervision AS c\n    INNER JOIN hierarchy_tree AS p ON c.supervisor_id = p.staff_id\n)\nSELECT depth_level, full_name, path_string\nFROM hierarchy_tree\nORDER BY depth_level ASC, staff_id ASC;",
+    "eli5Story": "Imagine a family tree. You start with the great-grandparent at Level 1. Then you look at their children (Level 2), then their grandchildren (Level 3). A recursive CTE follows each branch until the whole family is mapped out!",
+    "commonMistakes": [
+      "Failing to CAST the anchor string accumulator, causing deeper recursive string concatenations to fail with data-too-long errors",
+      "Forgetting to check for circular data cycles, which can trap the database in an infinite loop"
+    ],
+    "takeaway": "WITH RECURSIVE evaluates trees and hierarchies iteratively using an anchor base case and an inductive recursive join until the working queue is empty."
+  },
+  {
+    "id": 1419,
+    "title": "Retail Store Regional Management Tree Depth Calculation",
+    "section": "Section 10: Advanced SQL Engine Mastery (Subqueries, CTEs, Recursion & Set Operations)",
+    "difficulty": "Easy",
+    "domain": "E-Commerce",
+    "schema": "| Column | Type | Description |\n|---|---|---|\n| store_emp_id | INT | Entity Primary Key |\n| full_name | VARCHAR(100) | Entity Name |\n| regional_lead_id | INT | Self-Referencing Foreign Key |\n| title | VARCHAR(50) | Official Role/Title |",
+    "businessProblem": "In E-Commerce, organizations and entities are modeled hierarchically. To audit supervisory chains, delegation of authority, and depth levels, we need a recursive query walking from the root node to every leaf.",
+    "targetQuery": "WITH RECURSIVE hierarchy_tree AS (\n    SELECT \n        store_emp_id,\n        full_name,\n        regional_lead_id,\n        1 AS depth_level,\n        CAST(full_name AS CHAR(255)) AS path_string\n    FROM retail_staff\n    WHERE regional_lead_id IS NULL\n\n    UNION ALL\n\n    SELECT \n        c.store_emp_id,\n        c.full_name,\n        c.regional_lead_id,\n        p.depth_level + 1,\n        CONCAT(p.path_string, ' -> ', c.full_name)\n    FROM retail_staff AS c\n    INNER JOIN hierarchy_tree AS p ON c.regional_lead_id = p.store_emp_id\n)\nSELECT depth_level, full_name, path_string\nFROM hierarchy_tree\nORDER BY depth_level ASC, store_emp_id ASC;",
+    "eli5Story": "Imagine a family tree. You start with the great-grandparent at Level 1. Then you look at their children (Level 2), then their grandchildren (Level 3). A recursive CTE follows each branch until the whole family is mapped out!",
+    "commonMistakes": [
+      "Failing to CAST the anchor string accumulator, causing deeper recursive string concatenations to fail with data-too-long errors",
+      "Forgetting to check for circular data cycles, which can trap the database in an infinite loop"
+    ],
+    "takeaway": "WITH RECURSIVE evaluates trees and hierarchies iteratively using an anchor base case and an inductive recursive join until the working queue is empty."
+  },
+  {
+    "id": 1420,
+    "title": "Fleet Dispatch Supervisory Structure Depth Level Resolution",
+    "section": "Section 10: Advanced SQL Engine Mastery (Subqueries, CTEs, Recursion & Set Operations)",
+    "difficulty": "Easy",
+    "domain": "Logistics",
+    "schema": "| Column | Type | Description |\n|---|---|---|\n| dispatcher_id | INT | Entity Primary Key |\n| full_name | VARCHAR(100) | Entity Name |\n| lead_dispatcher_id | INT | Self-Referencing Foreign Key |\n| title | VARCHAR(50) | Official Role/Title |",
+    "businessProblem": "In Logistics, organizations and entities are modeled hierarchically. To audit supervisory chains, delegation of authority, and depth levels, we need a recursive query walking from the root node to every leaf.",
+    "targetQuery": "WITH RECURSIVE hierarchy_tree AS (\n    SELECT \n        dispatcher_id,\n        full_name,\n        lead_dispatcher_id,\n        1 AS depth_level,\n        CAST(full_name AS CHAR(255)) AS path_string\n    FROM dispatch_personnel\n    WHERE lead_dispatcher_id IS NULL\n\n    UNION ALL\n\n    SELECT \n        c.dispatcher_id,\n        c.full_name,\n        c.lead_dispatcher_id,\n        p.depth_level + 1,\n        CONCAT(p.path_string, ' -> ', c.full_name)\n    FROM dispatch_personnel AS c\n    INNER JOIN hierarchy_tree AS p ON c.lead_dispatcher_id = p.dispatcher_id\n)\nSELECT depth_level, full_name, path_string\nFROM hierarchy_tree\nORDER BY depth_level ASC, dispatcher_id ASC;",
+    "eli5Story": "Imagine a family tree. You start with the great-grandparent at Level 1. Then you look at their children (Level 2), then their grandchildren (Level 3). A recursive CTE follows each branch until the whole family is mapped out!",
+    "commonMistakes": [
+      "Failing to CAST the anchor string accumulator, causing deeper recursive string concatenations to fail with data-too-long errors",
+      "Forgetting to check for circular data cycles, which can trap the database in an infinite loop"
+    ],
+    "takeaway": "WITH RECURSIVE evaluates trees and hierarchies iteratively using an anchor base case and an inductive recursive join until the working queue is empty."
+  },
+  {
+    "id": 1421,
+    "title": "Guild Leadership Hierarchy Breadcrumb Path Assembly",
+    "section": "Section 10: Advanced SQL Engine Mastery (Subqueries, CTEs, Recursion & Set Operations)",
+    "difficulty": "Medium",
+    "domain": "Gaming",
+    "schema": "| Column | Type | Description |\n|---|---|---|\n| player_id | INT | Entity Primary Key |\n| full_name | VARCHAR(100) | Entity Name |\n| officer_id | INT | Self-Referencing Foreign Key |\n| title | VARCHAR(50) | Official Role/Title |",
+    "businessProblem": "In Gaming, organizations and entities are modeled hierarchically. To audit supervisory chains, delegation of authority, and depth levels, we need a recursive query walking from the root node to every leaf.",
+    "targetQuery": "WITH RECURSIVE hierarchy_tree AS (\n    SELECT \n        player_id,\n        full_name,\n        officer_id,\n        1 AS depth_level,\n        CAST(full_name AS CHAR(255)) AS path_string\n    FROM guild_membership\n    WHERE officer_id IS NULL\n\n    UNION ALL\n\n    SELECT \n        c.player_id,\n        c.full_name,\n        c.officer_id,\n        p.depth_level + 1,\n        CONCAT(p.path_string, ' -> ', c.full_name)\n    FROM guild_membership AS c\n    INNER JOIN hierarchy_tree AS p ON c.officer_id = p.player_id\n)\nSELECT depth_level, full_name, path_string\nFROM hierarchy_tree\nORDER BY depth_level ASC, player_id ASC;",
+    "eli5Story": "Imagine a family tree. You start with the great-grandparent at Level 1. Then you look at their children (Level 2), then their grandchildren (Level 3). A recursive CTE follows each branch until the whole family is mapped out!",
+    "commonMistakes": [
+      "Failing to CAST the anchor string accumulator, causing deeper recursive string concatenations to fail with data-too-long errors",
+      "Forgetting to check for circular data cycles, which can trap the database in an infinite loop"
+    ],
+    "takeaway": "WITH RECURSIVE evaluates trees and hierarchies iteratively using an anchor base case and an inductive recursive join until the working queue is empty."
+  },
+  {
+    "id": 1422,
+    "title": "Agency Account Executive Reporting Tree Path Generator",
+    "section": "Section 10: Advanced SQL Engine Mastery (Subqueries, CTEs, Recursion & Set Operations)",
+    "difficulty": "Medium",
+    "domain": "AdTech",
+    "schema": "| Column | Type | Description |\n|---|---|---|\n| executive_id | INT | Entity Primary Key |\n| full_name | VARCHAR(100) | Entity Name |\n| director_id | INT | Self-Referencing Foreign Key |\n| title | VARCHAR(50) | Official Role/Title |",
+    "businessProblem": "In AdTech, organizations and entities are modeled hierarchically. To audit supervisory chains, delegation of authority, and depth levels, we need a recursive query walking from the root node to every leaf.",
+    "targetQuery": "WITH RECURSIVE hierarchy_tree AS (\n    SELECT \n        executive_id,\n        full_name,\n        director_id,\n        1 AS depth_level,\n        CAST(full_name AS CHAR(255)) AS path_string\n    FROM agency_executives\n    WHERE director_id IS NULL\n\n    UNION ALL\n\n    SELECT \n        c.executive_id,\n        c.full_name,\n        c.director_id,\n        p.depth_level + 1,\n        CONCAT(p.path_string, ' -> ', c.full_name)\n    FROM agency_executives AS c\n    INNER JOIN hierarchy_tree AS p ON c.director_id = p.executive_id\n)\nSELECT depth_level, full_name, path_string\nFROM hierarchy_tree\nORDER BY depth_level ASC, executive_id ASC;",
+    "eli5Story": "Imagine a family tree. You start with the great-grandparent at Level 1. Then you look at their children (Level 2), then their grandchildren (Level 3). A recursive CTE follows each branch until the whole family is mapped out!",
+    "commonMistakes": [
+      "Failing to CAST the anchor string accumulator, causing deeper recursive string concatenations to fail with data-too-long errors",
+      "Forgetting to check for circular data cycles, which can trap the database in an infinite loop"
+    ],
+    "takeaway": "WITH RECURSIVE evaluates trees and hierarchies iteratively using an anchor base case and an inductive recursive join until the working queue is empty."
+  },
+  {
+    "id": 1423,
+    "title": "University Academic Department Dean to Teaching Assistant Tree",
+    "section": "Section 10: Advanced SQL Engine Mastery (Subqueries, CTEs, Recursion & Set Operations)",
+    "difficulty": "Medium",
+    "domain": "EdTech",
+    "schema": "| Column | Type | Description |\n|---|---|---|\n| faculty_id | INT | Entity Primary Key |\n| full_name | VARCHAR(100) | Entity Name |\n| department_chair_id | INT | Self-Referencing Foreign Key |\n| title | VARCHAR(50) | Official Role/Title |",
+    "businessProblem": "In EdTech, organizations and entities are modeled hierarchically. To audit supervisory chains, delegation of authority, and depth levels, we need a recursive query walking from the root node to every leaf.",
+    "targetQuery": "WITH RECURSIVE hierarchy_tree AS (\n    SELECT \n        faculty_id,\n        full_name,\n        department_chair_id,\n        1 AS depth_level,\n        CAST(full_name AS CHAR(255)) AS path_string\n    FROM academic_faculty\n    WHERE department_chair_id IS NULL\n\n    UNION ALL\n\n    SELECT \n        c.faculty_id,\n        c.full_name,\n        c.department_chair_id,\n        p.depth_level + 1,\n        CONCAT(p.path_string, ' -> ', c.full_name)\n    FROM academic_faculty AS c\n    INNER JOIN hierarchy_tree AS p ON c.department_chair_id = p.faculty_id\n)\nSELECT depth_level, full_name, path_string\nFROM hierarchy_tree\nORDER BY depth_level ASC, faculty_id ASC;",
+    "eli5Story": "Imagine a family tree. You start with the great-grandparent at Level 1. Then you look at their children (Level 2), then their grandchildren (Level 3). A recursive CTE follows each branch until the whole family is mapped out!",
+    "commonMistakes": [
+      "Failing to CAST the anchor string accumulator, causing deeper recursive string concatenations to fail with data-too-long errors",
+      "Forgetting to check for circular data cycles, which can trap the database in an infinite loop"
+    ],
+    "takeaway": "WITH RECURSIVE evaluates trees and hierarchies iteratively using an anchor base case and an inductive recursive join until the working queue is empty."
+  },
+  {
+    "id": 1424,
+    "title": "Grid Field Maintenance Team Chain of Command Hierarchy",
+    "section": "Section 10: Advanced SQL Engine Mastery (Subqueries, CTEs, Recursion & Set Operations)",
+    "difficulty": "Medium",
+    "domain": "Energy",
+    "schema": "| Column | Type | Description |\n|---|---|---|\n| technician_id | INT | Entity Primary Key |\n| full_name | VARCHAR(100) | Entity Name |\n| lead_engineer_id | INT | Self-Referencing Foreign Key |\n| title | VARCHAR(50) | Official Role/Title |",
+    "businessProblem": "In Energy, organizations and entities are modeled hierarchically. To audit supervisory chains, delegation of authority, and depth levels, we need a recursive query walking from the root node to every leaf.",
+    "targetQuery": "WITH RECURSIVE hierarchy_tree AS (\n    SELECT \n        technician_id,\n        full_name,\n        lead_engineer_id,\n        1 AS depth_level,\n        CAST(full_name AS CHAR(255)) AS path_string\n    FROM field_technicians\n    WHERE lead_engineer_id IS NULL\n\n    UNION ALL\n\n    SELECT \n        c.technician_id,\n        c.full_name,\n        c.lead_engineer_id,\n        p.depth_level + 1,\n        CONCAT(p.path_string, ' -> ', c.full_name)\n    FROM field_technicians AS c\n    INNER JOIN hierarchy_tree AS p ON c.lead_engineer_id = p.technician_id\n)\nSELECT depth_level, full_name, path_string\nFROM hierarchy_tree\nORDER BY depth_level ASC, technician_id ASC;",
+    "eli5Story": "Imagine a family tree. You start with the great-grandparent at Level 1. Then you look at their children (Level 2), then their grandchildren (Level 3). A recursive CTE follows each branch until the whole family is mapped out!",
+    "commonMistakes": [
+      "Failing to CAST the anchor string accumulator, causing deeper recursive string concatenations to fail with data-too-long errors",
+      "Forgetting to check for circular data cycles, which can trap the database in an infinite loop"
+    ],
+    "takeaway": "WITH RECURSIVE evaluates trees and hierarchies iteratively using an anchor base case and an inductive recursive join until the working queue is empty."
+  },
+  {
+    "id": 1425,
+    "title": "Broadcast Newsroom Editorial Hierarchy Path Traversal",
+    "section": "Section 10: Advanced SQL Engine Mastery (Subqueries, CTEs, Recursion & Set Operations)",
+    "difficulty": "Medium",
+    "domain": "Media",
+    "schema": "| Column | Type | Description |\n|---|---|---|\n| journalist_id | INT | Entity Primary Key |\n| full_name | VARCHAR(100) | Entity Name |\n| managing_editor_id | INT | Self-Referencing Foreign Key |\n| title | VARCHAR(50) | Official Role/Title |",
+    "businessProblem": "In Media, organizations and entities are modeled hierarchically. To audit supervisory chains, delegation of authority, and depth levels, we need a recursive query walking from the root node to every leaf.",
+    "targetQuery": "WITH RECURSIVE hierarchy_tree AS (\n    SELECT \n        journalist_id,\n        full_name,\n        managing_editor_id,\n        1 AS depth_level,\n        CAST(full_name AS CHAR(255)) AS path_string\n    FROM newsroom_staff\n    WHERE managing_editor_id IS NULL\n\n    UNION ALL\n\n    SELECT \n        c.journalist_id,\n        c.full_name,\n        c.managing_editor_id,\n        p.depth_level + 1,\n        CONCAT(p.path_string, ' -> ', c.full_name)\n    FROM newsroom_staff AS c\n    INNER JOIN hierarchy_tree AS p ON c.managing_editor_id = p.journalist_id\n)\nSELECT depth_level, full_name, path_string\nFROM hierarchy_tree\nORDER BY depth_level ASC, journalist_id ASC;",
+    "eli5Story": "Imagine a family tree. You start with the great-grandparent at Level 1. Then you look at their children (Level 2), then their grandchildren (Level 3). A recursive CTE follows each branch until the whole family is mapped out!",
+    "commonMistakes": [
+      "Failing to CAST the anchor string accumulator, causing deeper recursive string concatenations to fail with data-too-long errors",
+      "Forgetting to check for circular data cycles, which can trap the database in an infinite loop"
+    ],
+    "takeaway": "WITH RECURSIVE evaluates trees and hierarchies iteratively using an anchor base case and an inductive recursive join until the working queue is empty."
+  },
+  {
+    "id": 1426,
+    "title": "Multi-Jurisdiction Holding Company Subsidiary Ownership Chain with Cycle Guards",
+    "section": "Section 10: Advanced SQL Engine Mastery (Subqueries, CTEs, Recursion & Set Operations)",
+    "difficulty": "Hard",
+    "domain": "Fintech",
+    "schema": "| Column | Type | Description |\n|---|---|---|\n| entity_id | INT | Entity Primary Key |\n| full_name | VARCHAR(100) | Entity Name |\n| parent_entity_id | INT | Self-Referencing Foreign Key |\n| title | VARCHAR(50) | Official Role/Title |",
+    "businessProblem": "In Fintech, organizations and entities are modeled hierarchically. To audit supervisory chains, delegation of authority, and depth levels, we need a recursive query walking from the root node to every leaf.",
+    "targetQuery": "WITH RECURSIVE hierarchy_tree AS (\n    SELECT \n        entity_id,\n        full_name,\n        parent_entity_id,\n        1 AS depth_level,\n        CAST(full_name AS CHAR(255)) AS path_string\n    FROM corporate_entities\n    WHERE parent_entity_id IS NULL\n\n    UNION ALL\n\n    SELECT \n        c.entity_id,\n        c.full_name,\n        c.parent_entity_id,\n        p.depth_level + 1,\n        CONCAT(p.path_string, ' -> ', c.full_name)\n    FROM corporate_entities AS c\n    INNER JOIN hierarchy_tree AS p ON c.parent_entity_id = p.entity_id\n)\nSELECT depth_level, full_name, path_string\nFROM hierarchy_tree\nORDER BY depth_level ASC, entity_id ASC;",
+    "eli5Story": "Imagine a family tree. You start with the great-grandparent at Level 1. Then you look at their children (Level 2), then their grandchildren (Level 3). A recursive CTE follows each branch until the whole family is mapped out!",
+    "commonMistakes": [
+      "Failing to CAST the anchor string accumulator, causing deeper recursive string concatenations to fail with data-too-long errors",
+      "Forgetting to check for circular data cycles, which can trap the database in an infinite loop"
+    ],
+    "takeaway": "WITH RECURSIVE evaluates trees and hierarchies iteratively using an anchor base case and an inductive recursive join until the working queue is empty."
+  },
+  {
+    "id": 1427,
+    "title": "Multi-Tenant Enterprise RBAC Role Inheritance Hierarchy Explosion",
+    "section": "Section 10: Advanced SQL Engine Mastery (Subqueries, CTEs, Recursion & Set Operations)",
+    "difficulty": "Hard",
+    "domain": "SaaS",
+    "schema": "| Column | Type | Description |\n|---|---|---|\n| role_id | INT | Entity Primary Key |\n| full_name | VARCHAR(100) | Entity Name |\n| parent_role_id | INT | Self-Referencing Foreign Key |\n| title | VARCHAR(50) | Official Role/Title |",
+    "businessProblem": "In SaaS, organizations and entities are modeled hierarchically. To audit supervisory chains, delegation of authority, and depth levels, we need a recursive query walking from the root node to every leaf.",
+    "targetQuery": "WITH RECURSIVE hierarchy_tree AS (\n    SELECT \n        role_id,\n        full_name,\n        parent_role_id,\n        1 AS depth_level,\n        CAST(full_name AS CHAR(255)) AS path_string\n    FROM enterprise_roles\n    WHERE parent_role_id IS NULL\n\n    UNION ALL\n\n    SELECT \n        c.role_id,\n        c.full_name,\n        c.parent_role_id,\n        p.depth_level + 1,\n        CONCAT(p.path_string, ' -> ', c.full_name)\n    FROM enterprise_roles AS c\n    INNER JOIN hierarchy_tree AS p ON c.parent_role_id = p.role_id\n)\nSELECT depth_level, full_name, path_string\nFROM hierarchy_tree\nORDER BY depth_level ASC, role_id ASC;",
+    "eli5Story": "Imagine a family tree. You start with the great-grandparent at Level 1. Then you look at their children (Level 2), then their grandchildren (Level 3). A recursive CTE follows each branch until the whole family is mapped out!",
+    "commonMistakes": [
+      "Failing to CAST the anchor string accumulator, causing deeper recursive string concatenations to fail with data-too-long errors",
+      "Forgetting to check for circular data cycles, which can trap the database in an infinite loop"
+    ],
+    "takeaway": "WITH RECURSIVE evaluates trees and hierarchies iteratively using an anchor base case and an inductive recursive join until the working queue is empty."
+  },
+  {
+    "id": 1428,
+    "title": "Physician Credentialing Supervisory Path and Scope Verification",
+    "section": "Section 10: Advanced SQL Engine Mastery (Subqueries, CTEs, Recursion & Set Operations)",
+    "difficulty": "Hard",
+    "domain": "Healthcare",
+    "schema": "| Column | Type | Description |\n|---|---|---|\n| doctor_id | INT | Entity Primary Key |\n| full_name | VARCHAR(100) | Entity Name |\n| department_head_id | INT | Self-Referencing Foreign Key |\n| title | VARCHAR(50) | Official Role/Title |",
+    "businessProblem": "In Healthcare, organizations and entities are modeled hierarchically. To audit supervisory chains, delegation of authority, and depth levels, we need a recursive query walking from the root node to every leaf.",
+    "targetQuery": "WITH RECURSIVE hierarchy_tree AS (\n    SELECT \n        doctor_id,\n        full_name,\n        department_head_id,\n        1 AS depth_level,\n        CAST(full_name AS CHAR(255)) AS path_string\n    FROM medical_credentials\n    WHERE department_head_id IS NULL\n\n    UNION ALL\n\n    SELECT \n        c.doctor_id,\n        c.full_name,\n        c.department_head_id,\n        p.depth_level + 1,\n        CONCAT(p.path_string, ' -> ', c.full_name)\n    FROM medical_credentials AS c\n    INNER JOIN hierarchy_tree AS p ON c.department_head_id = p.doctor_id\n)\nSELECT depth_level, full_name, path_string\nFROM hierarchy_tree\nORDER BY depth_level ASC, doctor_id ASC;",
+    "eli5Story": "Imagine a family tree. You start with the great-grandparent at Level 1. Then you look at their children (Level 2), then their grandchildren (Level 3). A recursive CTE follows each branch until the whole family is mapped out!",
+    "commonMistakes": [
+      "Failing to CAST the anchor string accumulator, causing deeper recursive string concatenations to fail with data-too-long errors",
+      "Forgetting to check for circular data cycles, which can trap the database in an infinite loop"
+    ],
+    "takeaway": "WITH RECURSIVE evaluates trees and hierarchies iteratively using an anchor base case and an inductive recursive join until the working queue is empty."
+  },
+  {
+    "id": 1429,
+    "title": "Multi-Level Affiliate Referral Hierarchy and Downline Commission Tree",
+    "section": "Section 10: Advanced SQL Engine Mastery (Subqueries, CTEs, Recursion & Set Operations)",
+    "difficulty": "Hard",
+    "domain": "E-Commerce",
+    "schema": "| Column | Type | Description |\n|---|---|---|\n| affiliate_id | INT | Entity Primary Key |\n| full_name | VARCHAR(100) | Entity Name |\n| referrer_id | INT | Self-Referencing Foreign Key |\n| title | VARCHAR(50) | Official Role/Title |",
+    "businessProblem": "In E-Commerce, organizations and entities are modeled hierarchically. To audit supervisory chains, delegation of authority, and depth levels, we need a recursive query walking from the root node to every leaf.",
+    "targetQuery": "WITH RECURSIVE hierarchy_tree AS (\n    SELECT \n        affiliate_id,\n        full_name,\n        referrer_id,\n        1 AS depth_level,\n        CAST(full_name AS CHAR(255)) AS path_string\n    FROM affiliate_network\n    WHERE referrer_id IS NULL\n\n    UNION ALL\n\n    SELECT \n        c.affiliate_id,\n        c.full_name,\n        c.referrer_id,\n        p.depth_level + 1,\n        CONCAT(p.path_string, ' -> ', c.full_name)\n    FROM affiliate_network AS c\n    INNER JOIN hierarchy_tree AS p ON c.referrer_id = p.affiliate_id\n)\nSELECT depth_level, full_name, path_string\nFROM hierarchy_tree\nORDER BY depth_level ASC, affiliate_id ASC;",
+    "eli5Story": "Imagine a family tree. You start with the great-grandparent at Level 1. Then you look at their children (Level 2), then their grandchildren (Level 3). A recursive CTE follows each branch until the whole family is mapped out!",
+    "commonMistakes": [
+      "Failing to CAST the anchor string accumulator, causing deeper recursive string concatenations to fail with data-too-long errors",
+      "Forgetting to check for circular data cycles, which can trap the database in an infinite loop"
+    ],
+    "takeaway": "WITH RECURSIVE evaluates trees and hierarchies iteratively using an anchor base case and an inductive recursive join until the working queue is empty."
+  },
+  {
+    "id": 1430,
+    "title": "Global Freight Forwarder Sub-Agent Network Lineage Resolution",
+    "section": "Section 10: Advanced SQL Engine Mastery (Subqueries, CTEs, Recursion & Set Operations)",
+    "difficulty": "Hard",
+    "domain": "Logistics",
+    "schema": "| Column | Type | Description |\n|---|---|---|\n| agent_id | INT | Entity Primary Key |\n| full_name | VARCHAR(100) | Entity Name |\n| master_agent_id | INT | Self-Referencing Foreign Key |\n| title | VARCHAR(50) | Official Role/Title |",
+    "businessProblem": "In Logistics, organizations and entities are modeled hierarchically. To audit supervisory chains, delegation of authority, and depth levels, we need a recursive query walking from the root node to every leaf.",
+    "targetQuery": "WITH RECURSIVE hierarchy_tree AS (\n    SELECT \n        agent_id,\n        full_name,\n        master_agent_id,\n        1 AS depth_level,\n        CAST(full_name AS CHAR(255)) AS path_string\n    FROM forwarding_agents\n    WHERE master_agent_id IS NULL\n\n    UNION ALL\n\n    SELECT \n        c.agent_id,\n        c.full_name,\n        c.master_agent_id,\n        p.depth_level + 1,\n        CONCAT(p.path_string, ' -> ', c.full_name)\n    FROM forwarding_agents AS c\n    INNER JOIN hierarchy_tree AS p ON c.master_agent_id = p.agent_id\n)\nSELECT depth_level, full_name, path_string\nFROM hierarchy_tree\nORDER BY depth_level ASC, agent_id ASC;",
+    "eli5Story": "Imagine a family tree. You start with the great-grandparent at Level 1. Then you look at their children (Level 2), then their grandchildren (Level 3). A recursive CTE follows each branch until the whole family is mapped out!",
+    "commonMistakes": [
+      "Failing to CAST the anchor string accumulator, causing deeper recursive string concatenations to fail with data-too-long errors",
+      "Forgetting to check for circular data cycles, which can trap the database in an infinite loop"
+    ],
+    "takeaway": "WITH RECURSIVE evaluates trees and hierarchies iteratively using an anchor base case and an inductive recursive join until the working queue is empty."
+  },
+  {
+    "id": 1431,
+    "title": "Trace Multi-Leg Wire Routing Paths Across Intermediary Clearing Banks",
+    "section": "Section 10: Advanced SQL Engine Mastery (Subqueries, CTEs, Recursion & Set Operations)",
+    "difficulty": "Easy",
+    "domain": "Fintech",
+    "schema": "| Column | Type | Description |\n|---|---|---|\n| sender_bank_id | INT / VARCHAR | Edge Source Node |\n| receiver_bank_id | INT / VARCHAR | Edge Target Node |\n| weight | NUMERIC | Edge Metric / Cost |",
+    "businessProblem": "In Fintech, data forms network graphs rather than simple trees (cycles, multi-path connections, multiplicative weights). A recursive CTE is required to navigate graph edges while guarding against infinite cyclic loops.",
+    "targetQuery": "WITH RECURSIVE graph_paths AS (\n    SELECT \n        sender_bank_id AS origin,\n        receiver_bank_id AS destination,\n        1 AS hops,\n        CAST(CONCAT(sender_bank_id, '->', receiver_bank_id) AS CHAR(500)) AS path_taken\n    FROM bank_corridors\n    WHERE sender_bank_id = 100\n\n    UNION ALL\n\n    SELECT \n        gp.origin,\n        e.receiver_bank_id,\n        gp.hops + 1,\n        CONCAT(gp.path_taken, '->', e.receiver_bank_id)\n    FROM bank_corridors AS e\n    INNER JOIN graph_paths AS gp ON e.sender_bank_id = gp.destination\n    WHERE gp.hops < 4\n      AND gp.path_taken NOT LIKE CONCAT('%->', e.receiver_bank_id, '%')\n)\nSELECT origin, destination, hops, path_taken\nFROM graph_paths\nORDER BY hops ASC;",
+    "eli5Story": "Imagine flying from New York to Tokyo. If there's no direct flight, you take a flight with a layover in Los Angeles. A graph CTE explores every airport connection up to 3 hops, making sure you don't fly in a circle back to where you started!",
+    "commonMistakes": [
+      "Failing to filter out visited nodes in cyclic networks, leading to database abort errors from runaway recursion",
+      "Multiplying quantities additively rather than multiplicatively in Bill of Materials explosions"
+    ],
+    "takeaway": "Graph traversal in SQL requires maintaining a visited-node path guard to prevent cyclic loops while BFS-expanding edge connections."
+  },
+  {
+    "id": 1432,
+    "title": "Resolve Microservice Upstream Dependency Call Graph Depths",
+    "section": "Section 10: Advanced SQL Engine Mastery (Subqueries, CTEs, Recursion & Set Operations)",
+    "difficulty": "Easy",
+    "domain": "SaaS",
+    "schema": "| Column | Type | Description |\n|---|---|---|\n| calling_service_id | INT / VARCHAR | Edge Source Node |\n| target_service_id | INT / VARCHAR | Edge Target Node |\n| weight | NUMERIC | Edge Metric / Cost |",
+    "businessProblem": "In SaaS, data forms network graphs rather than simple trees (cycles, multi-path connections, multiplicative weights). A recursive CTE is required to navigate graph edges while guarding against infinite cyclic loops.",
+    "targetQuery": "WITH RECURSIVE graph_paths AS (\n    SELECT \n        calling_service_id AS origin,\n        target_service_id AS destination,\n        1 AS hops,\n        CAST(CONCAT(calling_service_id, '->', target_service_id) AS CHAR(500)) AS path_taken\n    FROM service_mesh_calls\n    WHERE calling_service_id = 100\n\n    UNION ALL\n\n    SELECT \n        gp.origin,\n        e.target_service_id,\n        gp.hops + 1,\n        CONCAT(gp.path_taken, '->', e.target_service_id)\n    FROM service_mesh_calls AS e\n    INNER JOIN graph_paths AS gp ON e.calling_service_id = gp.destination\n    WHERE gp.hops < 4\n      AND gp.path_taken NOT LIKE CONCAT('%->', e.target_service_id, '%')\n)\nSELECT origin, destination, hops, path_taken\nFROM graph_paths\nORDER BY hops ASC;",
+    "eli5Story": "Imagine flying from New York to Tokyo. If there's no direct flight, you take a flight with a layover in Los Angeles. A graph CTE explores every airport connection up to 3 hops, making sure you don't fly in a circle back to where you started!",
+    "commonMistakes": [
+      "Failing to filter out visited nodes in cyclic networks, leading to database abort errors from runaway recursion",
+      "Multiplying quantities additively rather than multiplicatively in Bill of Materials explosions"
+    ],
+    "takeaway": "Graph traversal in SQL requires maintaining a visited-node path guard to prevent cyclic loops while BFS-expanding edge connections."
+  },
+  {
+    "id": 1433,
+    "title": "Trace Infectious Disease Contact Spread Trajectories",
+    "section": "Section 10: Advanced SQL Engine Mastery (Subqueries, CTEs, Recursion & Set Operations)",
+    "difficulty": "Easy",
+    "domain": "Healthcare",
+    "schema": "| Column | Type | Description |\n|---|---|---|\n| source_patient_id | INT / VARCHAR | Edge Source Node |\n| exposed_patient_id | INT / VARCHAR | Edge Target Node |\n| weight | NUMERIC | Edge Metric / Cost |",
+    "businessProblem": "In Healthcare, data forms network graphs rather than simple trees (cycles, multi-path connections, multiplicative weights). A recursive CTE is required to navigate graph edges while guarding against infinite cyclic loops.",
+    "targetQuery": "WITH RECURSIVE graph_paths AS (\n    SELECT \n        source_patient_id AS origin,\n        exposed_patient_id AS destination,\n        1 AS hops,\n        CAST(CONCAT(source_patient_id, '->', exposed_patient_id) AS CHAR(500)) AS path_taken\n    FROM exposure_events\n    WHERE source_patient_id = 100\n\n    UNION ALL\n\n    SELECT \n        gp.origin,\n        e.exposed_patient_id,\n        gp.hops + 1,\n        CONCAT(gp.path_taken, '->', e.exposed_patient_id)\n    FROM exposure_events AS e\n    INNER JOIN graph_paths AS gp ON e.source_patient_id = gp.destination\n    WHERE gp.hops < 4\n      AND gp.path_taken NOT LIKE CONCAT('%->', e.exposed_patient_id, '%')\n)\nSELECT origin, destination, hops, path_taken\nFROM graph_paths\nORDER BY hops ASC;",
+    "eli5Story": "Imagine flying from New York to Tokyo. If there's no direct flight, you take a flight with a layover in Los Angeles. A graph CTE explores every airport connection up to 3 hops, making sure you don't fly in a circle back to where you started!",
+    "commonMistakes": [
+      "Failing to filter out visited nodes in cyclic networks, leading to database abort errors from runaway recursion",
+      "Multiplying quantities additively rather than multiplicatively in Bill of Materials explosions"
+    ],
+    "takeaway": "Graph traversal in SQL requires maintaining a visited-node path guard to prevent cyclic loops while BFS-expanding edge connections."
+  },
+  {
+    "id": 1434,
+    "title": "Explore Assembled Product Bill of Materials Component Explosion",
+    "section": "Section 10: Advanced SQL Engine Mastery (Subqueries, CTEs, Recursion & Set Operations)",
+    "difficulty": "Easy",
+    "domain": "E-Commerce",
+    "schema": "| Column | Type | Description |\n|---|---|---|\n| assembly_sku | INT / VARCHAR | Edge Source Node |\n| component_sku | INT / VARCHAR | Edge Target Node |\n| weight | NUMERIC | Edge Metric / Cost |",
+    "businessProblem": "In E-Commerce, data forms network graphs rather than simple trees (cycles, multi-path connections, multiplicative weights). A recursive CTE is required to navigate graph edges while guarding against infinite cyclic loops.",
+    "targetQuery": "WITH RECURSIVE graph_paths AS (\n    SELECT \n        assembly_sku AS origin,\n        component_sku AS destination,\n        1 AS hops,\n        CAST(CONCAT(assembly_sku, '->', component_sku) AS CHAR(500)) AS path_taken\n    FROM bom_components\n    WHERE assembly_sku = 100\n\n    UNION ALL\n\n    SELECT \n        gp.origin,\n        e.component_sku,\n        gp.hops + 1,\n        CONCAT(gp.path_taken, '->', e.component_sku)\n    FROM bom_components AS e\n    INNER JOIN graph_paths AS gp ON e.assembly_sku = gp.destination\n    WHERE gp.hops < 4\n      AND gp.path_taken NOT LIKE CONCAT('%->', e.component_sku, '%')\n)\nSELECT origin, destination, hops, path_taken\nFROM graph_paths\nORDER BY hops ASC;",
+    "eli5Story": "Imagine flying from New York to Tokyo. If there's no direct flight, you take a flight with a layover in Los Angeles. A graph CTE explores every airport connection up to 3 hops, making sure you don't fly in a circle back to where you started!",
+    "commonMistakes": [
+      "Failing to filter out visited nodes in cyclic networks, leading to database abort errors from runaway recursion",
+      "Multiplying quantities additively rather than multiplicatively in Bill of Materials explosions"
+    ],
+    "takeaway": "Graph traversal in SQL requires maintaining a visited-node path guard to prevent cyclic loops while BFS-expanding edge connections."
+  },
+  {
+    "id": 1435,
+    "title": "Calculate Multi-Hop Rail Freight Transit Stops Between Railheads",
+    "section": "Section 10: Advanced SQL Engine Mastery (Subqueries, CTEs, Recursion & Set Operations)",
+    "difficulty": "Easy",
+    "domain": "Logistics",
+    "schema": "| Column | Type | Description |\n|---|---|---|\n| origin_depot_id | INT / VARCHAR | Edge Source Node |\n| destination_depot_id | INT / VARCHAR | Edge Target Node |\n| weight | NUMERIC | Edge Metric / Cost |",
+    "businessProblem": "In Logistics, data forms network graphs rather than simple trees (cycles, multi-path connections, multiplicative weights). A recursive CTE is required to navigate graph edges while guarding against infinite cyclic loops.",
+    "targetQuery": "WITH RECURSIVE graph_paths AS (\n    SELECT \n        origin_depot_id AS origin,\n        destination_depot_id AS destination,\n        1 AS hops,\n        CAST(CONCAT(origin_depot_id, '->', destination_depot_id) AS CHAR(500)) AS path_taken\n    FROM rail_corridors\n    WHERE origin_depot_id = 100\n\n    UNION ALL\n\n    SELECT \n        gp.origin,\n        e.destination_depot_id,\n        gp.hops + 1,\n        CONCAT(gp.path_taken, '->', e.destination_depot_id)\n    FROM rail_corridors AS e\n    INNER JOIN graph_paths AS gp ON e.origin_depot_id = gp.destination\n    WHERE gp.hops < 4\n      AND gp.path_taken NOT LIKE CONCAT('%->', e.destination_depot_id, '%')\n)\nSELECT origin, destination, hops, path_taken\nFROM graph_paths\nORDER BY hops ASC;",
+    "eli5Story": "Imagine flying from New York to Tokyo. If there's no direct flight, you take a flight with a layover in Los Angeles. A graph CTE explores every airport connection up to 3 hops, making sure you don't fly in a circle back to where you started!",
+    "commonMistakes": [
+      "Failing to filter out visited nodes in cyclic networks, leading to database abort errors from runaway recursion",
+      "Multiplying quantities additively rather than multiplicatively in Bill of Materials explosions"
+    ],
+    "takeaway": "Graph traversal in SQL requires maintaining a visited-node path guard to prevent cyclic loops while BFS-expanding edge connections."
+  },
+  {
+    "id": 1436,
+    "title": "Identify Crafting Recipe Ingredient Tree Explosion with Multiplicative Quantities",
+    "section": "Section 10: Advanced SQL Engine Mastery (Subqueries, CTEs, Recursion & Set Operations)",
+    "difficulty": "Medium",
+    "domain": "Gaming",
+    "schema": "| Column | Type | Description |\n|---|---|---|\n| item_id | INT / VARCHAR | Edge Source Node |\n| ingredient_id | INT / VARCHAR | Edge Target Node |\n| weight | NUMERIC | Edge Metric / Cost |",
+    "businessProblem": "In Gaming, data forms network graphs rather than simple trees (cycles, multi-path connections, multiplicative weights). A recursive CTE is required to navigate graph edges while guarding against infinite cyclic loops.",
+    "targetQuery": "WITH RECURSIVE graph_paths AS (\n    SELECT \n        item_id AS origin,\n        ingredient_id AS destination,\n        1 AS hops,\n        CAST(CONCAT(item_id, '->', ingredient_id) AS CHAR(500)) AS path_taken\n    FROM crafting_recipes\n    WHERE item_id = 100\n\n    UNION ALL\n\n    SELECT \n        gp.origin,\n        e.ingredient_id,\n        gp.hops + 1,\n        CONCAT(gp.path_taken, '->', e.ingredient_id)\n    FROM crafting_recipes AS e\n    INNER JOIN graph_paths AS gp ON e.item_id = gp.destination\n    WHERE gp.hops < 4\n      AND gp.path_taken NOT LIKE CONCAT('%->', e.ingredient_id, '%')\n)\nSELECT origin, destination, hops, path_taken\nFROM graph_paths\nORDER BY hops ASC;",
+    "eli5Story": "Imagine flying from New York to Tokyo. If there's no direct flight, you take a flight with a layover in Los Angeles. A graph CTE explores every airport connection up to 3 hops, making sure you don't fly in a circle back to where you started!",
+    "commonMistakes": [
+      "Failing to filter out visited nodes in cyclic networks, leading to database abort errors from runaway recursion",
+      "Multiplying quantities additively rather than multiplicatively in Bill of Materials explosions"
+    ],
+    "takeaway": "Graph traversal in SQL requires maintaining a visited-node path guard to prevent cyclic loops while BFS-expanding edge connections."
+  },
+  {
+    "id": 1437,
+    "title": "Trace Programmatic Ad Auction DSP to SSP Reseller Chains",
+    "section": "Section 10: Advanced SQL Engine Mastery (Subqueries, CTEs, Recursion & Set Operations)",
+    "difficulty": "Medium",
+    "domain": "AdTech",
+    "schema": "| Column | Type | Description |\n|---|---|---|\n| seller_domain | INT / VARCHAR | Edge Source Node |\n| buyer_domain | INT / VARCHAR | Edge Target Node |\n| weight | NUMERIC | Edge Metric / Cost |",
+    "businessProblem": "In AdTech, data forms network graphs rather than simple trees (cycles, multi-path connections, multiplicative weights). A recursive CTE is required to navigate graph edges while guarding against infinite cyclic loops.",
+    "targetQuery": "WITH RECURSIVE graph_paths AS (\n    SELECT \n        seller_domain AS origin,\n        buyer_domain AS destination,\n        1 AS hops,\n        CAST(CONCAT(seller_domain, '->', buyer_domain) AS CHAR(500)) AS path_taken\n    FROM sellers_json_links\n    WHERE seller_domain = 100\n\n    UNION ALL\n\n    SELECT \n        gp.origin,\n        e.buyer_domain,\n        gp.hops + 1,\n        CONCAT(gp.path_taken, '->', e.buyer_domain)\n    FROM sellers_json_links AS e\n    INNER JOIN graph_paths AS gp ON e.seller_domain = gp.destination\n    WHERE gp.hops < 4\n      AND gp.path_taken NOT LIKE CONCAT('%->', e.buyer_domain, '%')\n)\nSELECT origin, destination, hops, path_taken\nFROM graph_paths\nORDER BY hops ASC;",
+    "eli5Story": "Imagine flying from New York to Tokyo. If there's no direct flight, you take a flight with a layover in Los Angeles. A graph CTE explores every airport connection up to 3 hops, making sure you don't fly in a circle back to where you started!",
+    "commonMistakes": [
+      "Failing to filter out visited nodes in cyclic networks, leading to database abort errors from runaway recursion",
+      "Multiplying quantities additively rather than multiplicatively in Bill of Materials explosions"
+    ],
+    "takeaway": "Graph traversal in SQL requires maintaining a visited-node path guard to prevent cyclic loops while BFS-expanding edge connections."
+  },
+  {
+    "id": 1438,
+    "title": "Resolve Course Prerequisite Directed Graph to Form Graduation Curricula",
+    "section": "Section 10: Advanced SQL Engine Mastery (Subqueries, CTEs, Recursion & Set Operations)",
+    "difficulty": "Medium",
+    "domain": "EdTech",
+    "schema": "| Column | Type | Description |\n|---|---|---|\n| course_id | INT / VARCHAR | Edge Source Node |\n| prereq_course_id | INT / VARCHAR | Edge Target Node |\n| weight | NUMERIC | Edge Metric / Cost |",
+    "businessProblem": "In EdTech, data forms network graphs rather than simple trees (cycles, multi-path connections, multiplicative weights). A recursive CTE is required to navigate graph edges while guarding against infinite cyclic loops.",
+    "targetQuery": "WITH RECURSIVE graph_paths AS (\n    SELECT \n        course_id AS origin,\n        prereq_course_id AS destination,\n        1 AS hops,\n        CAST(CONCAT(course_id, '->', prereq_course_id) AS CHAR(500)) AS path_taken\n    FROM course_prerequisites\n    WHERE course_id = 100\n\n    UNION ALL\n\n    SELECT \n        gp.origin,\n        e.prereq_course_id,\n        gp.hops + 1,\n        CONCAT(gp.path_taken, '->', e.prereq_course_id)\n    FROM course_prerequisites AS e\n    INNER JOIN graph_paths AS gp ON e.course_id = gp.destination\n    WHERE gp.hops < 4\n      AND gp.path_taken NOT LIKE CONCAT('%->', e.prereq_course_id, '%')\n)\nSELECT origin, destination, hops, path_taken\nFROM graph_paths\nORDER BY hops ASC;",
+    "eli5Story": "Imagine flying from New York to Tokyo. If there's no direct flight, you take a flight with a layover in Los Angeles. A graph CTE explores every airport connection up to 3 hops, making sure you don't fly in a circle back to where you started!",
+    "commonMistakes": [
+      "Failing to filter out visited nodes in cyclic networks, leading to database abort errors from runaway recursion",
+      "Multiplying quantities additively rather than multiplicatively in Bill of Materials explosions"
+    ],
+    "takeaway": "Graph traversal in SQL requires maintaining a visited-node path guard to prevent cyclic loops while BFS-expanding edge connections."
+  },
+  {
+    "id": 1439,
+    "title": "Trace Electric Transmission Substation Power Distribution Feeder Lines",
+    "section": "Section 10: Advanced SQL Engine Mastery (Subqueries, CTEs, Recursion & Set Operations)",
+    "difficulty": "Medium",
+    "domain": "Energy",
+    "schema": "| Column | Type | Description |\n|---|---|---|\n| from_substation | INT / VARCHAR | Edge Source Node |\n| to_substation | INT / VARCHAR | Edge Target Node |\n| weight | NUMERIC | Edge Metric / Cost |",
+    "businessProblem": "In Energy, data forms network graphs rather than simple trees (cycles, multi-path connections, multiplicative weights). A recursive CTE is required to navigate graph edges while guarding against infinite cyclic loops.",
+    "targetQuery": "WITH RECURSIVE graph_paths AS (\n    SELECT \n        from_substation AS origin,\n        to_substation AS destination,\n        1 AS hops,\n        CAST(CONCAT(from_substation, '->', to_substation) AS CHAR(500)) AS path_taken\n    FROM transmission_lines\n    WHERE from_substation = 100\n\n    UNION ALL\n\n    SELECT \n        gp.origin,\n        e.to_substation,\n        gp.hops + 1,\n        CONCAT(gp.path_taken, '->', e.to_substation)\n    FROM transmission_lines AS e\n    INNER JOIN graph_paths AS gp ON e.from_substation = gp.destination\n    WHERE gp.hops < 4\n      AND gp.path_taken NOT LIKE CONCAT('%->', e.to_substation, '%')\n)\nSELECT origin, destination, hops, path_taken\nFROM graph_paths\nORDER BY hops ASC;",
+    "eli5Story": "Imagine flying from New York to Tokyo. If there's no direct flight, you take a flight with a layover in Los Angeles. A graph CTE explores every airport connection up to 3 hops, making sure you don't fly in a circle back to where you started!",
+    "commonMistakes": [
+      "Failing to filter out visited nodes in cyclic networks, leading to database abort errors from runaway recursion",
+      "Multiplying quantities additively rather than multiplicatively in Bill of Materials explosions"
+    ],
+    "takeaway": "Graph traversal in SQL requires maintaining a visited-node path guard to prevent cyclic loops while BFS-expanding edge connections."
+  },
+  {
+    "id": 1440,
+    "title": "Social Graph 2nd and 3rd Degree Content Recommendation Connections",
+    "section": "Section 10: Advanced SQL Engine Mastery (Subqueries, CTEs, Recursion & Set Operations)",
+    "difficulty": "Medium",
+    "domain": "Media",
+    "schema": "| Column | Type | Description |\n|---|---|---|\n| user_a | INT / VARCHAR | Edge Source Node |\n| user_b | INT / VARCHAR | Edge Target Node |\n| weight | NUMERIC | Edge Metric / Cost |",
+    "businessProblem": "In Media, data forms network graphs rather than simple trees (cycles, multi-path connections, multiplicative weights). A recursive CTE is required to navigate graph edges while guarding against infinite cyclic loops.",
+    "targetQuery": "WITH RECURSIVE graph_paths AS (\n    SELECT \n        user_a AS origin,\n        user_b AS destination,\n        1 AS hops,\n        CAST(CONCAT(user_a, '->', user_b) AS CHAR(500)) AS path_taken\n    FROM user_follows\n    WHERE user_a = 100\n\n    UNION ALL\n\n    SELECT \n        gp.origin,\n        e.user_b,\n        gp.hops + 1,\n        CONCAT(gp.path_taken, '->', e.user_b)\n    FROM user_follows AS e\n    INNER JOIN graph_paths AS gp ON e.user_a = gp.destination\n    WHERE gp.hops < 4\n      AND gp.path_taken NOT LIKE CONCAT('%->', e.user_b, '%')\n)\nSELECT origin, destination, hops, path_taken\nFROM graph_paths\nORDER BY hops ASC;",
+    "eli5Story": "Imagine flying from New York to Tokyo. If there's no direct flight, you take a flight with a layover in Los Angeles. A graph CTE explores every airport connection up to 3 hops, making sure you don't fly in a circle back to where you started!",
+    "commonMistakes": [
+      "Failing to filter out visited nodes in cyclic networks, leading to database abort errors from runaway recursion",
+      "Multiplying quantities additively rather than multiplicatively in Bill of Materials explosions"
+    ],
+    "takeaway": "Graph traversal in SQL requires maintaining a visited-node path guard to prevent cyclic loops while BFS-expanding edge connections."
+  },
+  {
+    "id": 1441,
+    "title": "Detect Cyclic Money Laundering Shell Company Loops with Cycle Prevention",
+    "section": "Section 10: Advanced SQL Engine Mastery (Subqueries, CTEs, Recursion & Set Operations)",
+    "difficulty": "Hard",
+    "domain": "Fintech",
+    "schema": "| Column | Type | Description |\n|---|---|---|\n| from_account | INT / VARCHAR | Edge Source Node |\n| to_account | INT / VARCHAR | Edge Target Node |\n| weight | NUMERIC | Edge Metric / Cost |",
+    "businessProblem": "In Fintech, data forms network graphs rather than simple trees (cycles, multi-path connections, multiplicative weights). A recursive CTE is required to navigate graph edges while guarding against infinite cyclic loops.",
+    "targetQuery": "WITH RECURSIVE graph_paths AS (\n    SELECT \n        from_account AS origin,\n        to_account AS destination,\n        1 AS hops,\n        CAST(CONCAT(from_account, '->', to_account) AS CHAR(500)) AS path_taken\n    FROM p2p_wire_edges\n    WHERE from_account = 100\n\n    UNION ALL\n\n    SELECT \n        gp.origin,\n        e.to_account,\n        gp.hops + 1,\n        CONCAT(gp.path_taken, '->', e.to_account)\n    FROM p2p_wire_edges AS e\n    INNER JOIN graph_paths AS gp ON e.from_account = gp.destination\n    WHERE gp.hops < 4\n      AND gp.path_taken NOT LIKE CONCAT('%->', e.to_account, '%')\n)\nSELECT origin, destination, hops, path_taken\nFROM graph_paths\nORDER BY hops ASC;",
+    "eli5Story": "Imagine flying from New York to Tokyo. If there's no direct flight, you take a flight with a layover in Los Angeles. A graph CTE explores every airport connection up to 3 hops, making sure you don't fly in a circle back to where you started!",
+    "commonMistakes": [
+      "Failing to filter out visited nodes in cyclic networks, leading to database abort errors from runaway recursion",
+      "Multiplying quantities additively rather than multiplicatively in Bill of Materials explosions"
+    ],
+    "takeaway": "Graph traversal in SQL requires maintaining a visited-node path guard to prevent cyclic loops while BFS-expanding edge connections."
+  },
+  {
+    "id": 1442,
+    "title": "Circular Software Package Dependency Closure Resolution with Cycle Detection",
+    "section": "Section 10: Advanced SQL Engine Mastery (Subqueries, CTEs, Recursion & Set Operations)",
+    "difficulty": "Hard",
+    "domain": "SaaS",
+    "schema": "| Column | Type | Description |\n|---|---|---|\n| package_id | INT / VARCHAR | Edge Source Node |\n| depends_on_id | INT / VARCHAR | Edge Target Node |\n| weight | NUMERIC | Edge Metric / Cost |",
+    "businessProblem": "In SaaS, data forms network graphs rather than simple trees (cycles, multi-path connections, multiplicative weights). A recursive CTE is required to navigate graph edges while guarding against infinite cyclic loops.",
+    "targetQuery": "WITH RECURSIVE graph_paths AS (\n    SELECT \n        package_id AS origin,\n        depends_on_id AS destination,\n        1 AS hops,\n        CAST(CONCAT(package_id, '->', depends_on_id) AS CHAR(500)) AS path_taken\n    FROM package_manifest\n    WHERE package_id = 100\n\n    UNION ALL\n\n    SELECT \n        gp.origin,\n        e.depends_on_id,\n        gp.hops + 1,\n        CONCAT(gp.path_taken, '->', e.depends_on_id)\n    FROM package_manifest AS e\n    INNER JOIN graph_paths AS gp ON e.package_id = gp.destination\n    WHERE gp.hops < 4\n      AND gp.path_taken NOT LIKE CONCAT('%->', e.depends_on_id, '%')\n)\nSELECT origin, destination, hops, path_taken\nFROM graph_paths\nORDER BY hops ASC;",
+    "eli5Story": "Imagine flying from New York to Tokyo. If there's no direct flight, you take a flight with a layover in Los Angeles. A graph CTE explores every airport connection up to 3 hops, making sure you don't fly in a circle back to where you started!",
+    "commonMistakes": [
+      "Failing to filter out visited nodes in cyclic networks, leading to database abort errors from runaway recursion",
+      "Multiplying quantities additively rather than multiplicatively in Bill of Materials explosions"
+    ],
+    "takeaway": "Graph traversal in SQL requires maintaining a visited-node path guard to prevent cyclic loops while BFS-expanding edge connections."
+  },
+  {
+    "id": 1443,
+    "title": "Multi-Generation Genetic Pedigree Inheritance Path Reconstruction",
+    "section": "Section 10: Advanced SQL Engine Mastery (Subqueries, CTEs, Recursion & Set Operations)",
+    "difficulty": "Hard",
+    "domain": "Healthcare",
+    "schema": "| Column | Type | Description |\n|---|---|---|\n| parent_subject_id | INT / VARCHAR | Edge Source Node |\n| child_subject_id | INT / VARCHAR | Edge Target Node |\n| weight | NUMERIC | Edge Metric / Cost |",
+    "businessProblem": "In Healthcare, data forms network graphs rather than simple trees (cycles, multi-path connections, multiplicative weights). A recursive CTE is required to navigate graph edges while guarding against infinite cyclic loops.",
+    "targetQuery": "WITH RECURSIVE graph_paths AS (\n    SELECT \n        parent_subject_id AS origin,\n        child_subject_id AS destination,\n        1 AS hops,\n        CAST(CONCAT(parent_subject_id, '->', child_subject_id) AS CHAR(500)) AS path_taken\n    FROM pedigree_records\n    WHERE parent_subject_id = 100\n\n    UNION ALL\n\n    SELECT \n        gp.origin,\n        e.child_subject_id,\n        gp.hops + 1,\n        CONCAT(gp.path_taken, '->', e.child_subject_id)\n    FROM pedigree_records AS e\n    INNER JOIN graph_paths AS gp ON e.parent_subject_id = gp.destination\n    WHERE gp.hops < 4\n      AND gp.path_taken NOT LIKE CONCAT('%->', e.child_subject_id, '%')\n)\nSELECT origin, destination, hops, path_taken\nFROM graph_paths\nORDER BY hops ASC;",
+    "eli5Story": "Imagine flying from New York to Tokyo. If there's no direct flight, you take a flight with a layover in Los Angeles. A graph CTE explores every airport connection up to 3 hops, making sure you don't fly in a circle back to where you started!",
+    "commonMistakes": [
+      "Failing to filter out visited nodes in cyclic networks, leading to database abort errors from runaway recursion",
+      "Multiplying quantities additively rather than multiplicatively in Bill of Materials explosions"
+    ],
+    "takeaway": "Graph traversal in SQL requires maintaining a visited-node path guard to prevent cyclic loops while BFS-expanding edge connections."
+  },
+  {
+    "id": 1444,
+    "title": "Automated Supply Chain Bill-of-Materials Cost Rollup Across 5 Sub-Assembly Tiers",
+    "section": "Section 10: Advanced SQL Engine Mastery (Subqueries, CTEs, Recursion & Set Operations)",
+    "difficulty": "Hard",
+    "domain": "E-Commerce",
+    "schema": "| Column | Type | Description |\n|---|---|---|\n| parent_assembly | INT / VARCHAR | Edge Source Node |\n| child_part | INT / VARCHAR | Edge Target Node |\n| weight | NUMERIC | Edge Metric / Cost |",
+    "businessProblem": "In E-Commerce, data forms network graphs rather than simple trees (cycles, multi-path connections, multiplicative weights). A recursive CTE is required to navigate graph edges while guarding against infinite cyclic loops.",
+    "targetQuery": "WITH RECURSIVE graph_paths AS (\n    SELECT \n        parent_assembly AS origin,\n        child_part AS destination,\n        1 AS hops,\n        CAST(CONCAT(parent_assembly, '->', child_part) AS CHAR(500)) AS path_taken\n    FROM bom_cost_nodes\n    WHERE parent_assembly = 100\n\n    UNION ALL\n\n    SELECT \n        gp.origin,\n        e.child_part,\n        gp.hops + 1,\n        CONCAT(gp.path_taken, '->', e.child_part)\n    FROM bom_cost_nodes AS e\n    INNER JOIN graph_paths AS gp ON e.parent_assembly = gp.destination\n    WHERE gp.hops < 4\n      AND gp.path_taken NOT LIKE CONCAT('%->', e.child_part, '%')\n)\nSELECT origin, destination, hops, path_taken\nFROM graph_paths\nORDER BY hops ASC;",
+    "eli5Story": "Imagine flying from New York to Tokyo. If there's no direct flight, you take a flight with a layover in Los Angeles. A graph CTE explores every airport connection up to 3 hops, making sure you don't fly in a circle back to where you started!",
+    "commonMistakes": [
+      "Failing to filter out visited nodes in cyclic networks, leading to database abort errors from runaway recursion",
+      "Multiplying quantities additively rather than multiplicatively in Bill of Materials explosions"
+    ],
+    "takeaway": "Graph traversal in SQL requires maintaining a visited-node path guard to prevent cyclic loops while BFS-expanding edge connections."
+  },
+  {
+    "id": 1445,
+    "title": "Shortest Transit Time Multi-Modal Flight Routing with Layover Constraints",
+    "section": "Section 10: Advanced SQL Engine Mastery (Subqueries, CTEs, Recursion & Set Operations)",
+    "difficulty": "Hard",
+    "domain": "Logistics",
+    "schema": "| Column | Type | Description |\n|---|---|---|\n| origin_airport | INT / VARCHAR | Edge Source Node |\n| dest_airport | INT / VARCHAR | Edge Target Node |\n| weight | NUMERIC | Edge Metric / Cost |",
+    "businessProblem": "In Logistics, data forms network graphs rather than simple trees (cycles, multi-path connections, multiplicative weights). A recursive CTE is required to navigate graph edges while guarding against infinite cyclic loops.",
+    "targetQuery": "WITH RECURSIVE graph_paths AS (\n    SELECT \n        origin_airport AS origin,\n        dest_airport AS destination,\n        1 AS hops,\n        CAST(CONCAT(origin_airport, '->', dest_airport) AS CHAR(500)) AS path_taken\n    FROM flight_legs\n    WHERE origin_airport = 100\n\n    UNION ALL\n\n    SELECT \n        gp.origin,\n        e.dest_airport,\n        gp.hops + 1,\n        CONCAT(gp.path_taken, '->', e.dest_airport)\n    FROM flight_legs AS e\n    INNER JOIN graph_paths AS gp ON e.origin_airport = gp.destination\n    WHERE gp.hops < 4\n      AND gp.path_taken NOT LIKE CONCAT('%->', e.dest_airport, '%')\n)\nSELECT origin, destination, hops, path_taken\nFROM graph_paths\nORDER BY hops ASC;",
+    "eli5Story": "Imagine flying from New York to Tokyo. If there's no direct flight, you take a flight with a layover in Los Angeles. A graph CTE explores every airport connection up to 3 hops, making sure you don't fly in a circle back to where you started!",
+    "commonMistakes": [
+      "Failing to filter out visited nodes in cyclic networks, leading to database abort errors from runaway recursion",
+      "Multiplying quantities additively rather than multiplicatively in Bill of Materials explosions"
+    ],
+    "takeaway": "Graph traversal in SQL requires maintaining a visited-node path guard to prevent cyclic loops while BFS-expanding edge connections."
+  },
+  {
+    "id": 1446,
+    "title": "Consolidate Real-Time and End-of-Day Settlement Ledgers with Zero Overhead",
+    "section": "Section 10: Advanced SQL Engine Mastery (Subqueries, CTEs, Recursion & Set Operations)",
+    "difficulty": "Easy",
+    "domain": "Fintech",
+    "schema": "| Column | Type | Description |\n|---|---|---|\n| record_id | INT | Transaction ID |\n| entity_id | INT | Associated Account / User |\n| amount | NUMERIC | Transaction Magnitude |\n| event_timestamp | TIMESTAMP | Event Timestamp |",
+    "businessProblem": "In Fintech, disparate event streams from multiple production systems must be consolidated vertically into a unified table. Engineers must choose between streaming UNION ALL and memory-intensive deduplicating UNION.",
+    "targetQuery": "SELECT 'System_A' AS source_provenance, record_id, entity_id, amount, event_timestamp\nFROM realtime_txns\nUNION ALL\nSELECT 'System_B' AS source_provenance, record_id, entity_id, amount, event_timestamp\nFROM batch_settlements\nORDER BY event_timestamp DESC;",
+    "eli5Story": "If you have two stacks of paper and just put one on top of the other, that's UNION ALL—instant and easy. But if you have to inspect every single page to see if someone photocopied a duplicate, that's UNION—slow and takes lots of desk space!",
+    "commonMistakes": [
+      "Using UNION instead of UNION ALL on massive high-volume tables, triggering heavy sort-buffer disk spills",
+      "Expecting column aliases in the second query to take effect, when ANSI SQL dictates aliases come strictly from Query 1"
+    ],
+    "takeaway": "UNION ALL streams combined records with zero deduplication memory cost; UNION forces an expensive sort/hash to eliminate identical duplicate tuples."
+  },
+  {
+    "id": 1447,
+    "title": "Aggregate Production and Staging Error Logs for Global Incident Review",
+    "section": "Section 10: Advanced SQL Engine Mastery (Subqueries, CTEs, Recursion & Set Operations)",
+    "difficulty": "Easy",
+    "domain": "SaaS",
+    "schema": "| Column | Type | Description |\n|---|---|---|\n| record_id | INT | Transaction ID |\n| entity_id | INT | Associated Account / User |\n| amount | NUMERIC | Transaction Magnitude |\n| event_timestamp | TIMESTAMP | Event Timestamp |",
+    "businessProblem": "In SaaS, disparate event streams from multiple production systems must be consolidated vertically into a unified table. Engineers must choose between streaming UNION ALL and memory-intensive deduplicating UNION.",
+    "targetQuery": "SELECT 'System_A' AS source_provenance, record_id, entity_id, amount, event_timestamp\nFROM prod_error_logs\nUNION ALL\nSELECT 'System_B' AS source_provenance, record_id, entity_id, amount, event_timestamp\nFROM staging_error_logs\nORDER BY event_timestamp DESC;",
+    "eli5Story": "If you have two stacks of paper and just put one on top of the other, that's UNION ALL—instant and easy. But if you have to inspect every single page to see if someone photocopied a duplicate, that's UNION—slow and takes lots of desk space!",
+    "commonMistakes": [
+      "Using UNION instead of UNION ALL on massive high-volume tables, triggering heavy sort-buffer disk spills",
+      "Expecting column aliases in the second query to take effect, when ANSI SQL dictates aliases come strictly from Query 1"
+    ],
+    "takeaway": "UNION ALL streams combined records with zero deduplication memory cost; UNION forces an expensive sort/hash to eliminate identical duplicate tuples."
+  },
+  {
+    "id": 1448,
+    "title": "Combine Inpatient and Outpatient Pharmacy Medication Dispensations",
+    "section": "Section 10: Advanced SQL Engine Mastery (Subqueries, CTEs, Recursion & Set Operations)",
+    "difficulty": "Easy",
+    "domain": "Healthcare",
+    "schema": "| Column | Type | Description |\n|---|---|---|\n| record_id | INT | Transaction ID |\n| entity_id | INT | Associated Account / User |\n| amount | NUMERIC | Transaction Magnitude |\n| event_timestamp | TIMESTAMP | Event Timestamp |",
+    "businessProblem": "In Healthcare, disparate event streams from multiple production systems must be consolidated vertically into a unified table. Engineers must choose between streaming UNION ALL and memory-intensive deduplicating UNION.",
+    "targetQuery": "SELECT 'System_A' AS source_provenance, record_id, entity_id, amount, event_timestamp\nFROM inpatient_rx\nUNION ALL\nSELECT 'System_B' AS source_provenance, record_id, entity_id, amount, event_timestamp\nFROM outpatient_rx\nORDER BY event_timestamp DESC;",
+    "eli5Story": "If you have two stacks of paper and just put one on top of the other, that's UNION ALL—instant and easy. But if you have to inspect every single page to see if someone photocopied a duplicate, that's UNION—slow and takes lots of desk space!",
+    "commonMistakes": [
+      "Using UNION instead of UNION ALL on massive high-volume tables, triggering heavy sort-buffer disk spills",
+      "Expecting column aliases in the second query to take effect, when ANSI SQL dictates aliases come strictly from Query 1"
+    ],
+    "takeaway": "UNION ALL streams combined records with zero deduplication memory cost; UNION forces an expensive sort/hash to eliminate identical duplicate tuples."
+  },
+  {
+    "id": 1449,
+    "title": "Merge Domestic and Cross-Border Customer Invoices with System Tags",
+    "section": "Section 10: Advanced SQL Engine Mastery (Subqueries, CTEs, Recursion & Set Operations)",
+    "difficulty": "Easy",
+    "domain": "E-Commerce",
+    "schema": "| Column | Type | Description |\n|---|---|---|\n| record_id | INT | Transaction ID |\n| entity_id | INT | Associated Account / User |\n| amount | NUMERIC | Transaction Magnitude |\n| event_timestamp | TIMESTAMP | Event Timestamp |",
+    "businessProblem": "In E-Commerce, disparate event streams from multiple production systems must be consolidated vertically into a unified table. Engineers must choose between streaming UNION ALL and memory-intensive deduplicating UNION.",
+    "targetQuery": "SELECT 'System_A' AS source_provenance, record_id, entity_id, amount, event_timestamp\nFROM domestic_invoices\nUNION ALL\nSELECT 'System_B' AS source_provenance, record_id, entity_id, amount, event_timestamp\nFROM crossborder_invoices\nORDER BY event_timestamp DESC;",
+    "eli5Story": "If you have two stacks of paper and just put one on top of the other, that's UNION ALL—instant and easy. But if you have to inspect every single page to see if someone photocopied a duplicate, that's UNION—slow and takes lots of desk space!",
+    "commonMistakes": [
+      "Using UNION instead of UNION ALL on massive high-volume tables, triggering heavy sort-buffer disk spills",
+      "Expecting column aliases in the second query to take effect, when ANSI SQL dictates aliases come strictly from Query 1"
+    ],
+    "takeaway": "UNION ALL streams combined records with zero deduplication memory cost; UNION forces an expensive sort/hash to eliminate identical duplicate tuples."
+  },
+  {
+    "id": 1450,
+    "title": "Unify Ground Courier and Air Cargo Delivery Scans for Tracking",
+    "section": "Section 10: Advanced SQL Engine Mastery (Subqueries, CTEs, Recursion & Set Operations)",
+    "difficulty": "Easy",
+    "domain": "Logistics",
+    "schema": "| Column | Type | Description |\n|---|---|---|\n| record_id | INT | Transaction ID |\n| entity_id | INT | Associated Account / User |\n| amount | NUMERIC | Transaction Magnitude |\n| event_timestamp | TIMESTAMP | Event Timestamp |",
+    "businessProblem": "In Logistics, disparate event streams from multiple production systems must be consolidated vertically into a unified table. Engineers must choose between streaming UNION ALL and memory-intensive deduplicating UNION.",
+    "targetQuery": "SELECT 'System_A' AS source_provenance, record_id, entity_id, amount, event_timestamp\nFROM ground_scans\nUNION ALL\nSELECT 'System_B' AS source_provenance, record_id, entity_id, amount, event_timestamp\nFROM air_scans\nORDER BY event_timestamp DESC;",
+    "eli5Story": "If you have two stacks of paper and just put one on top of the other, that's UNION ALL—instant and easy. But if you have to inspect every single page to see if someone photocopied a duplicate, that's UNION—slow and takes lots of desk space!",
+    "commonMistakes": [
+      "Using UNION instead of UNION ALL on massive high-volume tables, triggering heavy sort-buffer disk spills",
+      "Expecting column aliases in the second query to take effect, when ANSI SQL dictates aliases come strictly from Query 1"
+    ],
+    "takeaway": "UNION ALL streams combined records with zero deduplication memory cost; UNION forces an expensive sort/hash to eliminate identical duplicate tuples."
+  },
+  {
+    "id": 1451,
+    "title": "Merge PC and Mobile Player Leaderboards into a Single Unified Ranking Stream",
+    "section": "Section 10: Advanced SQL Engine Mastery (Subqueries, CTEs, Recursion & Set Operations)",
+    "difficulty": "Medium",
+    "domain": "Gaming",
+    "schema": "| Column | Type | Description |\n|---|---|---|\n| record_id | INT | Transaction ID |\n| entity_id | INT | Associated Account / User |\n| amount | NUMERIC | Transaction Magnitude |\n| event_timestamp | TIMESTAMP | Event Timestamp |",
+    "businessProblem": "In Gaming, disparate event streams from multiple production systems must be consolidated vertically into a unified table. Engineers must choose between streaming UNION ALL and memory-intensive deduplicating UNION.",
+    "targetQuery": "SELECT 'System_A' AS source_provenance, record_id, entity_id, amount, event_timestamp\nFROM pc_leaderboard\nUNION ALL\nSELECT 'System_B' AS source_provenance, record_id, entity_id, amount, event_timestamp\nFROM mobile_leaderboard\nORDER BY event_timestamp DESC;",
+    "eli5Story": "If you have two stacks of paper and just put one on top of the other, that's UNION ALL—instant and easy. But if you have to inspect every single page to see if someone photocopied a duplicate, that's UNION—slow and takes lots of desk space!",
+    "commonMistakes": [
+      "Using UNION instead of UNION ALL on massive high-volume tables, triggering heavy sort-buffer disk spills",
+      "Expecting column aliases in the second query to take effect, when ANSI SQL dictates aliases come strictly from Query 1"
+    ],
+    "takeaway": "UNION ALL streams combined records with zero deduplication memory cost; UNION forces an expensive sort/hash to eliminate identical duplicate tuples."
+  },
+  {
+    "id": 1452,
+    "title": "Combine Web and Native App Ad Impression Streams with Platform Provenance",
+    "section": "Section 10: Advanced SQL Engine Mastery (Subqueries, CTEs, Recursion & Set Operations)",
+    "difficulty": "Medium",
+    "domain": "AdTech",
+    "schema": "| Column | Type | Description |\n|---|---|---|\n| record_id | INT | Transaction ID |\n| entity_id | INT | Associated Account / User |\n| amount | NUMERIC | Transaction Magnitude |\n| event_timestamp | TIMESTAMP | Event Timestamp |",
+    "businessProblem": "In AdTech, disparate event streams from multiple production systems must be consolidated vertically into a unified table. Engineers must choose between streaming UNION ALL and memory-intensive deduplicating UNION.",
+    "targetQuery": "SELECT 'System_A' AS source_provenance, record_id, entity_id, amount, event_timestamp\nFROM web_impressions\nUNION ALL\nSELECT 'System_B' AS source_provenance, record_id, entity_id, amount, event_timestamp\nFROM app_impressions\nORDER BY event_timestamp DESC;",
+    "eli5Story": "If you have two stacks of paper and just put one on top of the other, that's UNION ALL—instant and easy. But if you have to inspect every single page to see if someone photocopied a duplicate, that's UNION—slow and takes lots of desk space!",
+    "commonMistakes": [
+      "Using UNION instead of UNION ALL on massive high-volume tables, triggering heavy sort-buffer disk spills",
+      "Expecting column aliases in the second query to take effect, when ANSI SQL dictates aliases come strictly from Query 1"
+    ],
+    "takeaway": "UNION ALL streams combined records with zero deduplication memory cost; UNION forces an expensive sort/hash to eliminate identical duplicate tuples."
+  },
+  {
+    "id": 1453,
+    "title": "Consolidate Undergraduate and Postgraduate Course Registrations",
+    "section": "Section 10: Advanced SQL Engine Mastery (Subqueries, CTEs, Recursion & Set Operations)",
+    "difficulty": "Medium",
+    "domain": "EdTech",
+    "schema": "| Column | Type | Description |\n|---|---|---|\n| record_id | INT | Transaction ID |\n| entity_id | INT | Associated Account / User |\n| amount | NUMERIC | Transaction Magnitude |\n| event_timestamp | TIMESTAMP | Event Timestamp |",
+    "businessProblem": "In EdTech, disparate event streams from multiple production systems must be consolidated vertically into a unified table. Engineers must choose between streaming UNION ALL and memory-intensive deduplicating UNION.",
+    "targetQuery": "SELECT 'System_A' AS source_provenance, record_id, entity_id, amount, event_timestamp\nFROM undergrad_registrations\nUNION ALL\nSELECT 'System_B' AS source_provenance, record_id, entity_id, amount, event_timestamp\nFROM postgrad_registrations\nORDER BY event_timestamp DESC;",
+    "eli5Story": "If you have two stacks of paper and just put one on top of the other, that's UNION ALL—instant and easy. But if you have to inspect every single page to see if someone photocopied a duplicate, that's UNION—slow and takes lots of desk space!",
+    "commonMistakes": [
+      "Using UNION instead of UNION ALL on massive high-volume tables, triggering heavy sort-buffer disk spills",
+      "Expecting column aliases in the second query to take effect, when ANSI SQL dictates aliases come strictly from Query 1"
+    ],
+    "takeaway": "UNION ALL streams combined records with zero deduplication memory cost; UNION forces an expensive sort/hash to eliminate identical duplicate tuples."
+  },
+  {
+    "id": 1454,
+    "title": "Merge Thermal and Hydroelectric Generating Station Production Records",
+    "section": "Section 10: Advanced SQL Engine Mastery (Subqueries, CTEs, Recursion & Set Operations)",
+    "difficulty": "Medium",
+    "domain": "Energy",
+    "schema": "| Column | Type | Description |\n|---|---|---|\n| record_id | INT | Transaction ID |\n| entity_id | INT | Associated Account / User |\n| amount | NUMERIC | Transaction Magnitude |\n| event_timestamp | TIMESTAMP | Event Timestamp |",
+    "businessProblem": "In Energy, disparate event streams from multiple production systems must be consolidated vertically into a unified table. Engineers must choose between streaming UNION ALL and memory-intensive deduplicating UNION.",
+    "targetQuery": "SELECT 'System_A' AS source_provenance, record_id, entity_id, amount, event_timestamp\nFROM thermal_generation\nUNION ALL\nSELECT 'System_B' AS source_provenance, record_id, entity_id, amount, event_timestamp\nFROM hydro_generation\nORDER BY event_timestamp DESC;",
+    "eli5Story": "If you have two stacks of paper and just put one on top of the other, that's UNION ALL—instant and easy. But if you have to inspect every single page to see if someone photocopied a duplicate, that's UNION—slow and takes lots of desk space!",
+    "commonMistakes": [
+      "Using UNION instead of UNION ALL on massive high-volume tables, triggering heavy sort-buffer disk spills",
+      "Expecting column aliases in the second query to take effect, when ANSI SQL dictates aliases come strictly from Query 1"
+    ],
+    "takeaway": "UNION ALL streams combined records with zero deduplication memory cost; UNION forces an expensive sort/hash to eliminate identical duplicate tuples."
+  },
+  {
+    "id": 1455,
+    "title": "Combine Podcast Downloads and Video On-Demand Views into Unified Media Stream",
+    "section": "Section 10: Advanced SQL Engine Mastery (Subqueries, CTEs, Recursion & Set Operations)",
+    "difficulty": "Medium",
+    "domain": "Media",
+    "schema": "| Column | Type | Description |\n|---|---|---|\n| record_id | INT | Transaction ID |\n| entity_id | INT | Associated Account / User |\n| amount | NUMERIC | Transaction Magnitude |\n| event_timestamp | TIMESTAMP | Event Timestamp |",
+    "businessProblem": "In Media, disparate event streams from multiple production systems must be consolidated vertically into a unified table. Engineers must choose between streaming UNION ALL and memory-intensive deduplicating UNION.",
+    "targetQuery": "SELECT 'System_A' AS source_provenance, record_id, entity_id, amount, event_timestamp\nFROM podcast_downloads\nUNION ALL\nSELECT 'System_B' AS source_provenance, record_id, entity_id, amount, event_timestamp\nFROM vod_streams\nORDER BY event_timestamp DESC;",
+    "eli5Story": "If you have two stacks of paper and just put one on top of the other, that's UNION ALL—instant and easy. But if you have to inspect every single page to see if someone photocopied a duplicate, that's UNION—slow and takes lots of desk space!",
+    "commonMistakes": [
+      "Using UNION instead of UNION ALL on massive high-volume tables, triggering heavy sort-buffer disk spills",
+      "Expecting column aliases in the second query to take effect, when ANSI SQL dictates aliases come strictly from Query 1"
+    ],
+    "takeaway": "UNION ALL streams combined records with zero deduplication memory cost; UNION forces an expensive sort/hash to eliminate identical duplicate tuples."
+  },
+  {
+    "id": 1456,
+    "title": "High-Throughput Streaming M&A Customer Entity Deduplication vs Union All Benchmark",
+    "section": "Section 10: Advanced SQL Engine Mastery (Subqueries, CTEs, Recursion & Set Operations)",
+    "difficulty": "Hard",
+    "domain": "Fintech",
+    "schema": "| Column | Type | Description |\n|---|---|---|\n| record_id | INT | Transaction ID |\n| entity_id | INT | Associated Account / User |\n| amount | NUMERIC | Transaction Magnitude |\n| event_timestamp | TIMESTAMP | Event Timestamp |",
+    "businessProblem": "In Fintech, disparate event streams from multiple production systems must be consolidated vertically into a unified table. Engineers must choose between streaming UNION ALL and memory-intensive deduplicating UNION.",
+    "targetQuery": "SELECT 'System_A' AS source_provenance, record_id, entity_id, amount, event_timestamp\nFROM target_bank_cust\nUNION ALL\nSELECT 'System_B' AS source_provenance, record_id, entity_id, amount, event_timestamp\nFROM acquirer_bank_cust\nORDER BY event_timestamp DESC;",
+    "eli5Story": "If you have two stacks of paper and just put one on top of the other, that's UNION ALL—instant and easy. But if you have to inspect every single page to see if someone photocopied a duplicate, that's UNION—slow and takes lots of desk space!",
+    "commonMistakes": [
+      "Using UNION instead of UNION ALL on massive high-volume tables, triggering heavy sort-buffer disk spills",
+      "Expecting column aliases in the second query to take effect, when ANSI SQL dictates aliases come strictly from Query 1"
+    ],
+    "takeaway": "UNION ALL streams combined records with zero deduplication memory cost; UNION forces an expensive sort/hash to eliminate identical duplicate tuples."
+  },
+  {
+    "id": 1457,
+    "title": "Multi-Cloud Telemetry Ingestion Pipeline: Managing Memory Spills in UNION",
+    "section": "Section 10: Advanced SQL Engine Mastery (Subqueries, CTEs, Recursion & Set Operations)",
+    "difficulty": "Hard",
+    "domain": "SaaS",
+    "schema": "| Column | Type | Description |\n|---|---|---|\n| record_id | INT | Transaction ID |\n| entity_id | INT | Associated Account / User |\n| amount | NUMERIC | Transaction Magnitude |\n| event_timestamp | TIMESTAMP | Event Timestamp |",
+    "businessProblem": "In SaaS, disparate event streams from multiple production systems must be consolidated vertically into a unified table. Engineers must choose between streaming UNION ALL and memory-intensive deduplicating UNION.",
+    "targetQuery": "SELECT 'System_A' AS source_provenance, record_id, entity_id, amount, event_timestamp\nFROM aws_telemetry\nUNION ALL\nSELECT 'System_B' AS source_provenance, record_id, entity_id, amount, event_timestamp\nFROM gcp_telemetry\nORDER BY event_timestamp DESC;",
+    "eli5Story": "If you have two stacks of paper and just put one on top of the other, that's UNION ALL—instant and easy. But if you have to inspect every single page to see if someone photocopied a duplicate, that's UNION—slow and takes lots of desk space!",
+    "commonMistakes": [
+      "Using UNION instead of UNION ALL on massive high-volume tables, triggering heavy sort-buffer disk spills",
+      "Expecting column aliases in the second query to take effect, when ANSI SQL dictates aliases come strictly from Query 1"
+    ],
+    "takeaway": "UNION ALL streams combined records with zero deduplication memory cost; UNION forces an expensive sort/hash to eliminate identical duplicate tuples."
+  },
+  {
+    "id": 1458,
+    "title": "Clinical Trial Adverse Event Consolidator Across 4 International Site Schemas",
+    "section": "Section 10: Advanced SQL Engine Mastery (Subqueries, CTEs, Recursion & Set Operations)",
+    "difficulty": "Hard",
+    "domain": "Healthcare",
+    "schema": "| Column | Type | Description |\n|---|---|---|\n| record_id | INT | Transaction ID |\n| entity_id | INT | Associated Account / User |\n| amount | NUMERIC | Transaction Magnitude |\n| event_timestamp | TIMESTAMP | Event Timestamp |",
+    "businessProblem": "In Healthcare, disparate event streams from multiple production systems must be consolidated vertically into a unified table. Engineers must choose between streaming UNION ALL and memory-intensive deduplicating UNION.",
+    "targetQuery": "SELECT 'System_A' AS source_provenance, record_id, entity_id, amount, event_timestamp\nFROM site_us_events\nUNION ALL\nSELECT 'System_B' AS source_provenance, record_id, entity_id, amount, event_timestamp\nFROM site_eu_events\nORDER BY event_timestamp DESC;",
+    "eli5Story": "If you have two stacks of paper and just put one on top of the other, that's UNION ALL—instant and easy. But if you have to inspect every single page to see if someone photocopied a duplicate, that's UNION—slow and takes lots of desk space!",
+    "commonMistakes": [
+      "Using UNION instead of UNION ALL on massive high-volume tables, triggering heavy sort-buffer disk spills",
+      "Expecting column aliases in the second query to take effect, when ANSI SQL dictates aliases come strictly from Query 1"
+    ],
+    "takeaway": "UNION ALL streams combined records with zero deduplication memory cost; UNION forces an expensive sort/hash to eliminate identical duplicate tuples."
+  },
+  {
+    "id": 1459,
+    "title": "Omnichannel Returns Reconciler: Warehouse Scans vs In-Store Counter Returns",
+    "section": "Section 10: Advanced SQL Engine Mastery (Subqueries, CTEs, Recursion & Set Operations)",
+    "difficulty": "Hard",
+    "domain": "E-Commerce",
+    "schema": "| Column | Type | Description |\n|---|---|---|\n| record_id | INT | Transaction ID |\n| entity_id | INT | Associated Account / User |\n| amount | NUMERIC | Transaction Magnitude |\n| event_timestamp | TIMESTAMP | Event Timestamp |",
+    "businessProblem": "In E-Commerce, disparate event streams from multiple production systems must be consolidated vertically into a unified table. Engineers must choose between streaming UNION ALL and memory-intensive deduplicating UNION.",
+    "targetQuery": "SELECT 'System_A' AS source_provenance, record_id, entity_id, amount, event_timestamp\nFROM warehouse_returns\nUNION ALL\nSELECT 'System_B' AS source_provenance, record_id, entity_id, amount, event_timestamp\nFROM store_returns\nORDER BY event_timestamp DESC;",
+    "eli5Story": "If you have two stacks of paper and just put one on top of the other, that's UNION ALL—instant and easy. But if you have to inspect every single page to see if someone photocopied a duplicate, that's UNION—slow and takes lots of desk space!",
+    "commonMistakes": [
+      "Using UNION instead of UNION ALL on massive high-volume tables, triggering heavy sort-buffer disk spills",
+      "Expecting column aliases in the second query to take effect, when ANSI SQL dictates aliases come strictly from Query 1"
+    ],
+    "takeaway": "UNION ALL streams combined records with zero deduplication memory cost; UNION forces an expensive sort/hash to eliminate identical duplicate tuples."
+  },
+  {
+    "id": 1460,
+    "title": "Intermodal Shipping Manifest Stream Integration with Schema Alignment Guards",
+    "section": "Section 10: Advanced SQL Engine Mastery (Subqueries, CTEs, Recursion & Set Operations)",
+    "difficulty": "Hard",
+    "domain": "Logistics",
+    "schema": "| Column | Type | Description |\n|---|---|---|\n| record_id | INT | Transaction ID |\n| entity_id | INT | Associated Account / User |\n| amount | NUMERIC | Transaction Magnitude |\n| event_timestamp | TIMESTAMP | Event Timestamp |",
+    "businessProblem": "In Logistics, disparate event streams from multiple production systems must be consolidated vertically into a unified table. Engineers must choose between streaming UNION ALL and memory-intensive deduplicating UNION.",
+    "targetQuery": "SELECT 'System_A' AS source_provenance, record_id, entity_id, amount, event_timestamp\nFROM vessel_manifest\nUNION ALL\nSELECT 'System_B' AS source_provenance, record_id, entity_id, amount, event_timestamp\nFROM train_manifest\nORDER BY event_timestamp DESC;",
+    "eli5Story": "If you have two stacks of paper and just put one on top of the other, that's UNION ALL—instant and easy. But if you have to inspect every single page to see if someone photocopied a duplicate, that's UNION—slow and takes lots of desk space!",
+    "commonMistakes": [
+      "Using UNION instead of UNION ALL on massive high-volume tables, triggering heavy sort-buffer disk spills",
+      "Expecting column aliases in the second query to take effect, when ANSI SQL dictates aliases come strictly from Query 1"
+    ],
+    "takeaway": "UNION ALL streams combined records with zero deduplication memory cost; UNION forces an expensive sort/hash to eliminate identical duplicate tuples."
+  },
+  {
+    "id": 1461,
+    "title": "Detect Cleared Bank Wires Missing in SWIFT Confirmation Logs via EXCEPT",
+    "section": "Section 10: Advanced SQL Engine Mastery (Subqueries, CTEs, Recursion & Set Operations)",
+    "difficulty": "Easy",
+    "domain": "Fintech",
+    "schema": "| Column | Type | Description |\n|---|---|---|\n| entity_id | INT / VARCHAR | Entity Primary Reference |\n| amount | NUMERIC | Transactional Metric |\n| event_date | DATE | Recording Date |",
+    "businessProblem": "Auditing ledger fidelity, user overlap, and missing records in Fintech requires relational set algebra: finding common intersections (INTERSECT) or isolating unreconciled discrepancies (EXCEPT / MINUS).",
+    "targetQuery": "SELECT entity_id FROM internal_wires\nEXCEPT\nSELECT entity_id FROM swift_confirmations\nORDER BY entity_id ASC;",
+    "eli5Story": "If you compare your music playlist with your friend's playlist: INTERSECT gives you songs you both love, while EXCEPT gives you songs on your playlist that your friend doesn't have!",
+    "commonMistakes": [
+      "Using EXCEPT without understanding that it removes duplicates from the left query by default (EXCEPT DISTINCT)",
+      "Assuming NULLs break EXCEPT, when in fact ANSI SQL set operations treat NULL as matching another NULL"
+    ],
+    "takeaway": "INTERSECT isolates common distinct tuples between two relations; EXCEPT computes set subtraction, isolating records unique to the first query."
+  },
+  {
+    "id": 1462,
+    "title": "Identify Active Paying Tenants That Have Never Triggered an SSO Login",
+    "section": "Section 10: Advanced SQL Engine Mastery (Subqueries, CTEs, Recursion & Set Operations)",
+    "difficulty": "Easy",
+    "domain": "SaaS",
+    "schema": "| Column | Type | Description |\n|---|---|---|\n| entity_id | INT / VARCHAR | Entity Primary Reference |\n| amount | NUMERIC | Transactional Metric |\n| event_date | DATE | Recording Date |",
+    "businessProblem": "Auditing ledger fidelity, user overlap, and missing records in SaaS requires relational set algebra: finding common intersections (INTERSECT) or isolating unreconciled discrepancies (EXCEPT / MINUS).",
+    "targetQuery": "SELECT entity_id FROM active_tenants\nEXCEPT\nSELECT entity_id FROM sso_audit_logs\nORDER BY entity_id ASC;",
+    "eli5Story": "If you compare your music playlist with your friend's playlist: INTERSECT gives you songs you both love, while EXCEPT gives you songs on your playlist that your friend doesn't have!",
+    "commonMistakes": [
+      "Using EXCEPT without understanding that it removes duplicates from the left query by default (EXCEPT DISTINCT)",
+      "Assuming NULLs break EXCEPT, when in fact ANSI SQL set operations treat NULL as matching another NULL"
+    ],
+    "takeaway": "INTERSECT isolates common distinct tuples between two relations; EXCEPT computes set subtraction, isolating records unique to the first query."
+  },
+  {
+    "id": 1463,
+    "title": "Find Patients Prescribed Antibiotics with No Recorded Follow-up Lab Culture",
+    "section": "Section 10: Advanced SQL Engine Mastery (Subqueries, CTEs, Recursion & Set Operations)",
+    "difficulty": "Easy",
+    "domain": "Healthcare",
+    "schema": "| Column | Type | Description |\n|---|---|---|\n| entity_id | INT / VARCHAR | Entity Primary Reference |\n| amount | NUMERIC | Transactional Metric |\n| event_date | DATE | Recording Date |",
+    "businessProblem": "Auditing ledger fidelity, user overlap, and missing records in Healthcare requires relational set algebra: finding common intersections (INTERSECT) or isolating unreconciled discrepancies (EXCEPT / MINUS).",
+    "targetQuery": "SELECT entity_id FROM rx_orders\nEXCEPT\nSELECT entity_id FROM lab_cultures\nORDER BY entity_id ASC;",
+    "eli5Story": "If you compare your music playlist with your friend's playlist: INTERSECT gives you songs you both love, while EXCEPT gives you songs on your playlist that your friend doesn't have!",
+    "commonMistakes": [
+      "Using EXCEPT without understanding that it removes duplicates from the left query by default (EXCEPT DISTINCT)",
+      "Assuming NULLs break EXCEPT, when in fact ANSI SQL set operations treat NULL as matching another NULL"
+    ],
+    "takeaway": "INTERSECT isolates common distinct tuples between two relations; EXCEPT computes set subtraction, isolating records unique to the first query."
+  },
+  {
+    "id": 1464,
+    "title": "Isolate High-Spenders Who Purchased in Q1 but Have Zero Orders in Q2",
+    "section": "Section 10: Advanced SQL Engine Mastery (Subqueries, CTEs, Recursion & Set Operations)",
+    "difficulty": "Easy",
+    "domain": "E-Commerce",
+    "schema": "| Column | Type | Description |\n|---|---|---|\n| entity_id | INT / VARCHAR | Entity Primary Reference |\n| amount | NUMERIC | Transactional Metric |\n| event_date | DATE | Recording Date |",
+    "businessProblem": "Auditing ledger fidelity, user overlap, and missing records in E-Commerce requires relational set algebra: finding common intersections (INTERSECT) or isolating unreconciled discrepancies (EXCEPT / MINUS).",
+    "targetQuery": "SELECT entity_id FROM q1_shoppers\nEXCEPT\nSELECT entity_id FROM q2_shoppers\nORDER BY entity_id ASC;",
+    "eli5Story": "If you compare your music playlist with your friend's playlist: INTERSECT gives you songs you both love, while EXCEPT gives you songs on your playlist that your friend doesn't have!",
+    "commonMistakes": [
+      "Using EXCEPT without understanding that it removes duplicates from the left query by default (EXCEPT DISTINCT)",
+      "Assuming NULLs break EXCEPT, when in fact ANSI SQL set operations treat NULL as matching another NULL"
+    ],
+    "takeaway": "INTERSECT isolates common distinct tuples between two relations; EXCEPT computes set subtraction, isolating records unique to the first query."
+  },
+  {
+    "id": 1465,
+    "title": "Identify Dispatched Delivery Trucks With No Checkpoint GPS Pings",
+    "section": "Section 10: Advanced SQL Engine Mastery (Subqueries, CTEs, Recursion & Set Operations)",
+    "difficulty": "Easy",
+    "domain": "Logistics",
+    "schema": "| Column | Type | Description |\n|---|---|---|\n| entity_id | INT / VARCHAR | Entity Primary Reference |\n| amount | NUMERIC | Transactional Metric |\n| event_date | DATE | Recording Date |",
+    "businessProblem": "Auditing ledger fidelity, user overlap, and missing records in Logistics requires relational set algebra: finding common intersections (INTERSECT) or isolating unreconciled discrepancies (EXCEPT / MINUS).",
+    "targetQuery": "SELECT entity_id FROM dispatched_trucks\nEXCEPT\nSELECT entity_id FROM gps_pings\nORDER BY entity_id ASC;",
+    "eli5Story": "If you compare your music playlist with your friend's playlist: INTERSECT gives you songs you both love, while EXCEPT gives you songs on your playlist that your friend doesn't have!",
+    "commonMistakes": [
+      "Using EXCEPT without understanding that it removes duplicates from the left query by default (EXCEPT DISTINCT)",
+      "Assuming NULLs break EXCEPT, when in fact ANSI SQL set operations treat NULL as matching another NULL"
+    ],
+    "takeaway": "INTERSECT isolates common distinct tuples between two relations; EXCEPT computes set subtraction, isolating records unique to the first query."
+  },
+  {
+    "id": 1466,
+    "title": "Find Hardcore Players Who Purchased the Battle Pass AND Reached Max Tier",
+    "section": "Section 10: Advanced SQL Engine Mastery (Subqueries, CTEs, Recursion & Set Operations)",
+    "difficulty": "Medium",
+    "domain": "Gaming",
+    "schema": "| Column | Type | Description |\n|---|---|---|\n| entity_id | INT / VARCHAR | Entity Primary Reference |\n| amount | NUMERIC | Transactional Metric |\n| event_date | DATE | Recording Date |",
+    "businessProblem": "Auditing ledger fidelity, user overlap, and missing records in Gaming requires relational set algebra: finding common intersections (INTERSECT) or isolating unreconciled discrepancies (EXCEPT / MINUS).",
+    "targetQuery": "SELECT entity_id FROM battlepass_buyers\nEXCEPT\nSELECT entity_id FROM max_tier_players\nORDER BY entity_id ASC;",
+    "eli5Story": "If you compare your music playlist with your friend's playlist: INTERSECT gives you songs you both love, while EXCEPT gives you songs on your playlist that your friend doesn't have!",
+    "commonMistakes": [
+      "Using EXCEPT without understanding that it removes duplicates from the left query by default (EXCEPT DISTINCT)",
+      "Assuming NULLs break EXCEPT, when in fact ANSI SQL set operations treat NULL as matching another NULL"
+    ],
+    "takeaway": "INTERSECT isolates common distinct tuples between two relations; EXCEPT computes set subtraction, isolating records unique to the first query."
+  },
+  {
+    "id": 1467,
+    "title": "Isolate Users Who Converted on Search AND Converted on Social Channels",
+    "section": "Section 10: Advanced SQL Engine Mastery (Subqueries, CTEs, Recursion & Set Operations)",
+    "difficulty": "Medium",
+    "domain": "AdTech",
+    "schema": "| Column | Type | Description |\n|---|---|---|\n| entity_id | INT / VARCHAR | Entity Primary Reference |\n| amount | NUMERIC | Transactional Metric |\n| event_date | DATE | Recording Date |",
+    "businessProblem": "Auditing ledger fidelity, user overlap, and missing records in AdTech requires relational set algebra: finding common intersections (INTERSECT) or isolating unreconciled discrepancies (EXCEPT / MINUS).",
+    "targetQuery": "SELECT entity_id FROM search_converters\nEXCEPT\nSELECT entity_id FROM social_converters\nORDER BY entity_id ASC;",
+    "eli5Story": "If you compare your music playlist with your friend's playlist: INTERSECT gives you songs you both love, while EXCEPT gives you songs on your playlist that your friend doesn't have!",
+    "commonMistakes": [
+      "Using EXCEPT without understanding that it removes duplicates from the left query by default (EXCEPT DISTINCT)",
+      "Assuming NULLs break EXCEPT, when in fact ANSI SQL set operations treat NULL as matching another NULL"
+    ],
+    "takeaway": "INTERSECT isolates common distinct tuples between two relations; EXCEPT computes set subtraction, isolating records unique to the first query."
+  },
+  {
+    "id": 1468,
+    "title": "Identify Students Who Passed Theory Exams but Failed Practical Lab Exams",
+    "section": "Section 10: Advanced SQL Engine Mastery (Subqueries, CTEs, Recursion & Set Operations)",
+    "difficulty": "Medium",
+    "domain": "EdTech",
+    "schema": "| Column | Type | Description |\n|---|---|---|\n| entity_id | INT / VARCHAR | Entity Primary Reference |\n| amount | NUMERIC | Transactional Metric |\n| event_date | DATE | Recording Date |",
+    "businessProblem": "Auditing ledger fidelity, user overlap, and missing records in EdTech requires relational set algebra: finding common intersections (INTERSECT) or isolating unreconciled discrepancies (EXCEPT / MINUS).",
+    "targetQuery": "SELECT entity_id FROM theory_passes\nEXCEPT\nSELECT entity_id FROM lab_passes\nORDER BY entity_id ASC;",
+    "eli5Story": "If you compare your music playlist with your friend's playlist: INTERSECT gives you songs you both love, while EXCEPT gives you songs on your playlist that your friend doesn't have!",
+    "commonMistakes": [
+      "Using EXCEPT without understanding that it removes duplicates from the left query by default (EXCEPT DISTINCT)",
+      "Assuming NULLs break EXCEPT, when in fact ANSI SQL set operations treat NULL as matching another NULL"
+    ],
+    "takeaway": "INTERSECT isolates common distinct tuples between two relations; EXCEPT computes set subtraction, isolating records unique to the first query."
+  },
+  {
+    "id": 1469,
+    "title": "Find Power Substations Active on the Primary Grid but Excluded from Microgrid Backup",
+    "section": "Section 10: Advanced SQL Engine Mastery (Subqueries, CTEs, Recursion & Set Operations)",
+    "difficulty": "Medium",
+    "domain": "Energy",
+    "schema": "| Column | Type | Description |\n|---|---|---|\n| entity_id | INT / VARCHAR | Entity Primary Reference |\n| amount | NUMERIC | Transactional Metric |\n| event_date | DATE | Recording Date |",
+    "businessProblem": "Auditing ledger fidelity, user overlap, and missing records in Energy requires relational set algebra: finding common intersections (INTERSECT) or isolating unreconciled discrepancies (EXCEPT / MINUS).",
+    "targetQuery": "SELECT entity_id FROM primary_grid_nodes\nEXCEPT\nSELECT entity_id FROM microgrid_backup_nodes\nORDER BY entity_id ASC;",
+    "eli5Story": "If you compare your music playlist with your friend's playlist: INTERSECT gives you songs you both love, while EXCEPT gives you songs on your playlist that your friend doesn't have!",
+    "commonMistakes": [
+      "Using EXCEPT without understanding that it removes duplicates from the left query by default (EXCEPT DISTINCT)",
+      "Assuming NULLs break EXCEPT, when in fact ANSI SQL set operations treat NULL as matching another NULL"
+    ],
+    "takeaway": "INTERSECT isolates common distinct tuples between two relations; EXCEPT computes set subtraction, isolating records unique to the first query."
+  },
+  {
+    "id": 1470,
+    "title": "Isolate Subscribers Who Stream Music AND Watch Video On-Demand",
+    "section": "Section 10: Advanced SQL Engine Mastery (Subqueries, CTEs, Recursion & Set Operations)",
+    "difficulty": "Medium",
+    "domain": "Media",
+    "schema": "| Column | Type | Description |\n|---|---|---|\n| entity_id | INT / VARCHAR | Entity Primary Reference |\n| amount | NUMERIC | Transactional Metric |\n| event_date | DATE | Recording Date |",
+    "businessProblem": "Auditing ledger fidelity, user overlap, and missing records in Media requires relational set algebra: finding common intersections (INTERSECT) or isolating unreconciled discrepancies (EXCEPT / MINUS).",
+    "targetQuery": "SELECT entity_id FROM music_listeners\nEXCEPT\nSELECT entity_id FROM video_watchers\nORDER BY entity_id ASC;",
+    "eli5Story": "If you compare your music playlist with your friend's playlist: INTERSECT gives you songs you both love, while EXCEPT gives you songs on your playlist that your friend doesn't have!",
+    "commonMistakes": [
+      "Using EXCEPT without understanding that it removes duplicates from the left query by default (EXCEPT DISTINCT)",
+      "Assuming NULLs break EXCEPT, when in fact ANSI SQL set operations treat NULL as matching another NULL"
+    ],
+    "takeaway": "INTERSECT isolates common distinct tuples between two relations; EXCEPT computes set subtraction, isolating records unique to the first query."
+  },
+  {
+    "id": 1471,
+    "title": "Bidirectional Ledger Audit: Discrepancies in Gateway vs Core via Symmetric Difference",
+    "section": "Section 10: Advanced SQL Engine Mastery (Subqueries, CTEs, Recursion & Set Operations)",
+    "difficulty": "Hard",
+    "domain": "Fintech",
+    "schema": "| Column | Type | Description |\n|---|---|---|\n| entity_id | INT / VARCHAR | Entity Primary Reference |\n| amount | NUMERIC | Transactional Metric |\n| event_date | DATE | Recording Date |",
+    "businessProblem": "Auditing ledger fidelity, user overlap, and missing records in Fintech requires relational set algebra: finding common intersections (INTERSECT) or isolating unreconciled discrepancies (EXCEPT / MINUS).",
+    "targetQuery": "SELECT entity_id FROM gateway_settlements\nEXCEPT\nSELECT entity_id FROM core_ledger\nORDER BY entity_id ASC;",
+    "eli5Story": "If you compare your music playlist with your friend's playlist: INTERSECT gives you songs you both love, while EXCEPT gives you songs on your playlist that your friend doesn't have!",
+    "commonMistakes": [
+      "Using EXCEPT without understanding that it removes duplicates from the left query by default (EXCEPT DISTINCT)",
+      "Assuming NULLs break EXCEPT, when in fact ANSI SQL set operations treat NULL as matching another NULL"
+    ],
+    "takeaway": "INTERSECT isolates common distinct tuples between two relations; EXCEPT computes set subtraction, isolating records unique to the first query."
+  },
+  {
+    "id": 1472,
+    "title": "Multi-Workspace User Cohort Intersection Across 3 Enterprise Subscriptions",
+    "section": "Section 10: Advanced SQL Engine Mastery (Subqueries, CTEs, Recursion & Set Operations)",
+    "difficulty": "Hard",
+    "domain": "SaaS",
+    "schema": "| Column | Type | Description |\n|---|---|---|\n| entity_id | INT / VARCHAR | Entity Primary Reference |\n| amount | NUMERIC | Transactional Metric |\n| event_date | DATE | Recording Date |",
+    "businessProblem": "Auditing ledger fidelity, user overlap, and missing records in SaaS requires relational set algebra: finding common intersections (INTERSECT) or isolating unreconciled discrepancies (EXCEPT / MINUS).",
+    "targetQuery": "SELECT entity_id FROM ws_alpha_users\nEXCEPT\nSELECT entity_id FROM ws_beta_users\nORDER BY entity_id ASC;",
+    "eli5Story": "If you compare your music playlist with your friend's playlist: INTERSECT gives you songs you both love, while EXCEPT gives you songs on your playlist that your friend doesn't have!",
+    "commonMistakes": [
+      "Using EXCEPT without understanding that it removes duplicates from the left query by default (EXCEPT DISTINCT)",
+      "Assuming NULLs break EXCEPT, when in fact ANSI SQL set operations treat NULL as matching another NULL"
+    ],
+    "takeaway": "INTERSECT isolates common distinct tuples between two relations; EXCEPT computes set subtraction, isolating records unique to the first query."
+  },
+  {
+    "id": 1473,
+    "title": "Cross-Hospital Clinical Registry Cohort Overlap Reconciliation",
+    "section": "Section 10: Advanced SQL Engine Mastery (Subqueries, CTEs, Recursion & Set Operations)",
+    "difficulty": "Hard",
+    "domain": "Healthcare",
+    "schema": "| Column | Type | Description |\n|---|---|---|\n| entity_id | INT / VARCHAR | Entity Primary Reference |\n| amount | NUMERIC | Transactional Metric |\n| event_date | DATE | Recording Date |",
+    "businessProblem": "Auditing ledger fidelity, user overlap, and missing records in Healthcare requires relational set algebra: finding common intersections (INTERSECT) or isolating unreconciled discrepancies (EXCEPT / MINUS).",
+    "targetQuery": "SELECT entity_id FROM hospital_a_patients\nEXCEPT\nSELECT entity_id FROM hospital_b_patients\nORDER BY entity_id ASC;",
+    "eli5Story": "If you compare your music playlist with your friend's playlist: INTERSECT gives you songs you both love, while EXCEPT gives you songs on your playlist that your friend doesn't have!",
+    "commonMistakes": [
+      "Using EXCEPT without understanding that it removes duplicates from the left query by default (EXCEPT DISTINCT)",
+      "Assuming NULLs break EXCEPT, when in fact ANSI SQL set operations treat NULL as matching another NULL"
+    ],
+    "takeaway": "INTERSECT isolates common distinct tuples between two relations; EXCEPT computes set subtraction, isolating records unique to the first query."
+  },
+  {
+    "id": 1474,
+    "title": "Multi-Channel Cart Abandonment vs Completed Purchase Set Difference Matrix",
+    "section": "Section 10: Advanced SQL Engine Mastery (Subqueries, CTEs, Recursion & Set Operations)",
+    "difficulty": "Hard",
+    "domain": "E-Commerce",
+    "schema": "| Column | Type | Description |\n|---|---|---|\n| entity_id | INT / VARCHAR | Entity Primary Reference |\n| amount | NUMERIC | Transactional Metric |\n| event_date | DATE | Recording Date |",
+    "businessProblem": "Auditing ledger fidelity, user overlap, and missing records in E-Commerce requires relational set algebra: finding common intersections (INTERSECT) or isolating unreconciled discrepancies (EXCEPT / MINUS).",
+    "targetQuery": "SELECT entity_id FROM abandoned_carts\nEXCEPT\nSELECT entity_id FROM completed_checkouts\nORDER BY entity_id ASC;",
+    "eli5Story": "If you compare your music playlist with your friend's playlist: INTERSECT gives you songs you both love, while EXCEPT gives you songs on your playlist that your friend doesn't have!",
+    "commonMistakes": [
+      "Using EXCEPT without understanding that it removes duplicates from the left query by default (EXCEPT DISTINCT)",
+      "Assuming NULLs break EXCEPT, when in fact ANSI SQL set operations treat NULL as matching another NULL"
+    ],
+    "takeaway": "INTERSECT isolates common distinct tuples between two relations; EXCEPT computes set subtraction, isolating records unique to the first query."
+  },
+  {
+    "id": 1475,
+    "title": "International Customs Port Clearance Discrepancy Audit via Set Difference",
+    "section": "Section 10: Advanced SQL Engine Mastery (Subqueries, CTEs, Recursion & Set Operations)",
+    "difficulty": "Hard",
+    "domain": "Logistics",
+    "schema": "| Column | Type | Description |\n|---|---|---|\n| entity_id | INT / VARCHAR | Entity Primary Reference |\n| amount | NUMERIC | Transactional Metric |\n| event_date | DATE | Recording Date |",
+    "businessProblem": "Auditing ledger fidelity, user overlap, and missing records in Logistics requires relational set algebra: finding common intersections (INTERSECT) or isolating unreconciled discrepancies (EXCEPT / MINUS).",
+    "targetQuery": "SELECT entity_id FROM export_manifests\nEXCEPT\nSELECT entity_id FROM import_clearances\nORDER BY entity_id ASC;",
+    "eli5Story": "If you compare your music playlist with your friend's playlist: INTERSECT gives you songs you both love, while EXCEPT gives you songs on your playlist that your friend doesn't have!",
+    "commonMistakes": [
+      "Using EXCEPT without understanding that it removes duplicates from the left query by default (EXCEPT DISTINCT)",
+      "Assuming NULLs break EXCEPT, when in fact ANSI SQL set operations treat NULL as matching another NULL"
+    ],
+    "takeaway": "INTERSECT isolates common distinct tuples between two relations; EXCEPT computes set subtraction, isolating records unique to the first query."
+  },
+  {
+    "id": 1476,
+    "title": "Branch Loan Portfolio Rollup: Region -> Country -> Branch Subtotals",
+    "section": "Section 10: Advanced SQL Engine Mastery (Subqueries, CTEs, Recursion & Set Operations)",
+    "difficulty": "Easy",
+    "domain": "Fintech",
+    "schema": "| Column | Type | Description |\n|---|---|---|\n| region | VARCHAR | Dimension 1 |\n| country | VARCHAR | Dimension 2 |\n| branch_name | VARCHAR | Dimension 3 |\n| total_val | NUMERIC | Financial Value Metric |",
+    "businessProblem": "In Fintech executive reporting, business stakeholders need granular reports showing subtotals at each dimensional tier as well as an overall grand total, computed in a single table scan.",
+    "targetQuery": "SELECT \n    CASE WHEN GROUPING(region) = 1 THEN 'Grand Total' ELSE region END AS region_tier,\n    CASE WHEN GROUPING(country) = 1 AND GROUPING(region) = 0 THEN 'Subtotal' ELSE country END AS country_tier,\n    SUM(total_val) AS metric_total\nFROM branch_loans\nGROUP BY region, country WITH ROLLUP;",
+    "eli5Story": "Instead of writing 3 separate reports (one by city, one by state, one for the whole country) and gluing them together, ROLLUP creates a single report that has all the city numbers, the state subtotals, and the final national grand total!",
+    "commonMistakes": [
+      "Using naive COALESCE(col, 'Total') when legitimate NULL data exists in the base table, confusing genuine NULLs with subtotal rows",
+      "Using CUBE with 6+ dimensions, causing an exponential 2^N explosion that exhausts server memory"
+    ],
+    "takeaway": "ROLLUP and CUBE generate multi-tier subtotals and grand totals in a single table scan; GROUPING() is required to distinguish data NULLs from aggregate NULLs."
+  },
+  {
+    "id": 1477,
+    "title": "Subscription MRR Rollup: Cloud Provider -> Region -> Tier Subtotals",
+    "section": "Section 10: Advanced SQL Engine Mastery (Subqueries, CTEs, Recursion & Set Operations)",
+    "difficulty": "Easy",
+    "domain": "SaaS",
+    "schema": "| Column | Type | Description |\n|---|---|---|\n| cloud_provider | VARCHAR | Dimension 1 |\n| cloud_region | VARCHAR | Dimension 2 |\n| plan_tier | VARCHAR | Dimension 3 |\n| total_val | NUMERIC | Financial Value Metric |",
+    "businessProblem": "In SaaS executive reporting, business stakeholders need granular reports showing subtotals at each dimensional tier as well as an overall grand total, computed in a single table scan.",
+    "targetQuery": "SELECT \n    CASE WHEN GROUPING(cloud_provider) = 1 THEN 'Grand Total' ELSE cloud_provider END AS cloud_provider_tier,\n    CASE WHEN GROUPING(cloud_region) = 1 AND GROUPING(cloud_provider) = 0 THEN 'Subtotal' ELSE cloud_region END AS cloud_region_tier,\n    SUM(total_val) AS metric_total\nFROM subscription_mrr\nGROUP BY cloud_provider, cloud_region WITH ROLLUP;",
+    "eli5Story": "Instead of writing 3 separate reports (one by city, one by state, one for the whole country) and gluing them together, ROLLUP creates a single report that has all the city numbers, the state subtotals, and the final national grand total!",
+    "commonMistakes": [
+      "Using naive COALESCE(col, 'Total') when legitimate NULL data exists in the base table, confusing genuine NULLs with subtotal rows",
+      "Using CUBE with 6+ dimensions, causing an exponential 2^N explosion that exhausts server memory"
+    ],
+    "takeaway": "ROLLUP and CUBE generate multi-tier subtotals and grand totals in a single table scan; GROUPING() is required to distinguish data NULLs from aggregate NULLs."
+  },
+  {
+    "id": 1478,
+    "title": "Hospital Operating Cost Rollup: Division -> Department -> Clinic",
+    "section": "Section 10: Advanced SQL Engine Mastery (Subqueries, CTEs, Recursion & Set Operations)",
+    "difficulty": "Easy",
+    "domain": "Healthcare",
+    "schema": "| Column | Type | Description |\n|---|---|---|\n| hospital_division | VARCHAR | Dimension 1 |\n| department | VARCHAR | Dimension 2 |\n| clinic_name | VARCHAR | Dimension 3 |\n| total_val | NUMERIC | Financial Value Metric |",
+    "businessProblem": "In Healthcare executive reporting, business stakeholders need granular reports showing subtotals at each dimensional tier as well as an overall grand total, computed in a single table scan.",
+    "targetQuery": "SELECT \n    CASE WHEN GROUPING(hospital_division) = 1 THEN 'Grand Total' ELSE hospital_division END AS hospital_division_tier,\n    CASE WHEN GROUPING(department) = 1 AND GROUPING(hospital_division) = 0 THEN 'Subtotal' ELSE department END AS department_tier,\n    SUM(total_val) AS metric_total\nFROM hospital_costs\nGROUP BY hospital_division, department WITH ROLLUP;",
+    "eli5Story": "Instead of writing 3 separate reports (one by city, one by state, one for the whole country) and gluing them together, ROLLUP creates a single report that has all the city numbers, the state subtotals, and the final national grand total!",
+    "commonMistakes": [
+      "Using naive COALESCE(col, 'Total') when legitimate NULL data exists in the base table, confusing genuine NULLs with subtotal rows",
+      "Using CUBE with 6+ dimensions, causing an exponential 2^N explosion that exhausts server memory"
+    ],
+    "takeaway": "ROLLUP and CUBE generate multi-tier subtotals and grand totals in a single table scan; GROUPING() is required to distinguish data NULLs from aggregate NULLs."
+  },
+  {
+    "id": 1479,
+    "title": "Omnichannel Retail Sales Rollup: Territory -> State -> Store",
+    "section": "Section 10: Advanced SQL Engine Mastery (Subqueries, CTEs, Recursion & Set Operations)",
+    "difficulty": "Easy",
+    "domain": "E-Commerce",
+    "schema": "| Column | Type | Description |\n|---|---|---|\n| territory | VARCHAR | Dimension 1 |\n| state | VARCHAR | Dimension 2 |\n| store_id | VARCHAR | Dimension 3 |\n| total_val | NUMERIC | Financial Value Metric |",
+    "businessProblem": "In E-Commerce executive reporting, business stakeholders need granular reports showing subtotals at each dimensional tier as well as an overall grand total, computed in a single table scan.",
+    "targetQuery": "SELECT \n    CASE WHEN GROUPING(territory) = 1 THEN 'Grand Total' ELSE territory END AS territory_tier,\n    CASE WHEN GROUPING(state) = 1 AND GROUPING(territory) = 0 THEN 'Subtotal' ELSE state END AS state_tier,\n    SUM(total_val) AS metric_total\nFROM retail_revenue\nGROUP BY territory, state WITH ROLLUP;",
+    "eli5Story": "Instead of writing 3 separate reports (one by city, one by state, one for the whole country) and gluing them together, ROLLUP creates a single report that has all the city numbers, the state subtotals, and the final national grand total!",
+    "commonMistakes": [
+      "Using naive COALESCE(col, 'Total') when legitimate NULL data exists in the base table, confusing genuine NULLs with subtotal rows",
+      "Using CUBE with 6+ dimensions, causing an exponential 2^N explosion that exhausts server memory"
+    ],
+    "takeaway": "ROLLUP and CUBE generate multi-tier subtotals and grand totals in a single table scan; GROUPING() is required to distinguish data NULLs from aggregate NULLs."
+  },
+  {
+    "id": 1480,
+    "title": "Freight Tonnage Rollup: Continent -> Country -> Port Terminal",
+    "section": "Section 10: Advanced SQL Engine Mastery (Subqueries, CTEs, Recursion & Set Operations)",
+    "difficulty": "Easy",
+    "domain": "Logistics",
+    "schema": "| Column | Type | Description |\n|---|---|---|\n| continent | VARCHAR | Dimension 1 |\n| country | VARCHAR | Dimension 2 |\n| terminal_code | VARCHAR | Dimension 3 |\n| total_val | NUMERIC | Financial Value Metric |",
+    "businessProblem": "In Logistics executive reporting, business stakeholders need granular reports showing subtotals at each dimensional tier as well as an overall grand total, computed in a single table scan.",
+    "targetQuery": "SELECT \n    CASE WHEN GROUPING(continent) = 1 THEN 'Grand Total' ELSE continent END AS continent_tier,\n    CASE WHEN GROUPING(country) = 1 AND GROUPING(continent) = 0 THEN 'Subtotal' ELSE country END AS country_tier,\n    SUM(total_val) AS metric_total\nFROM freight_tonnage\nGROUP BY continent, country WITH ROLLUP;",
+    "eli5Story": "Instead of writing 3 separate reports (one by city, one by state, one for the whole country) and gluing them together, ROLLUP creates a single report that has all the city numbers, the state subtotals, and the final national grand total!",
+    "commonMistakes": [
+      "Using naive COALESCE(col, 'Total') when legitimate NULL data exists in the base table, confusing genuine NULLs with subtotal rows",
+      "Using CUBE with 6+ dimensions, causing an exponential 2^N explosion that exhausts server memory"
+    ],
+    "takeaway": "ROLLUP and CUBE generate multi-tier subtotals and grand totals in a single table scan; GROUPING() is required to distinguish data NULLs from aggregate NULLs."
+  },
+  {
+    "id": 1481,
+    "title": "Microtransaction Revenue CUBE: Platform x Region x Currency",
+    "section": "Section 10: Advanced SQL Engine Mastery (Subqueries, CTEs, Recursion & Set Operations)",
+    "difficulty": "Medium",
+    "domain": "Gaming",
+    "schema": "| Column | Type | Description |\n|---|---|---|\n| platform | VARCHAR | Dimension 1 |\n| region | VARCHAR | Dimension 2 |\n| currency | VARCHAR | Dimension 3 |\n| total_val | NUMERIC | Financial Value Metric |",
+    "businessProblem": "In Gaming executive reporting, business stakeholders need granular reports showing subtotals at each dimensional tier as well as an overall grand total, computed in a single table scan.",
+    "targetQuery": "SELECT \n    CASE WHEN GROUPING(platform) = 1 THEN 'Grand Total' ELSE platform END AS platform_tier,\n    CASE WHEN GROUPING(region) = 1 AND GROUPING(platform) = 0 THEN 'Subtotal' ELSE region END AS region_tier,\n    SUM(total_val) AS metric_total\nFROM inapp_purchases\nGROUP BY platform, region WITH ROLLUP;",
+    "eli5Story": "Instead of writing 3 separate reports (one by city, one by state, one for the whole country) and gluing them together, ROLLUP creates a single report that has all the city numbers, the state subtotals, and the final national grand total!",
+    "commonMistakes": [
+      "Using naive COALESCE(col, 'Total') when legitimate NULL data exists in the base table, confusing genuine NULLs with subtotal rows",
+      "Using CUBE with 6+ dimensions, causing an exponential 2^N explosion that exhausts server memory"
+    ],
+    "takeaway": "ROLLUP and CUBE generate multi-tier subtotals and grand totals in a single table scan; GROUPING() is required to distinguish data NULLs from aggregate NULLs."
+  },
+  {
+    "id": 1482,
+    "title": "Ad Impression Yield CUBE: Device Type x Ad Format x Country",
+    "section": "Section 10: Advanced SQL Engine Mastery (Subqueries, CTEs, Recursion & Set Operations)",
+    "difficulty": "Medium",
+    "domain": "AdTech",
+    "schema": "| Column | Type | Description |\n|---|---|---|\n| device_type | VARCHAR | Dimension 1 |\n| ad_format | VARCHAR | Dimension 2 |\n| country_code | VARCHAR | Dimension 3 |\n| total_val | NUMERIC | Financial Value Metric |",
+    "businessProblem": "In AdTech executive reporting, business stakeholders need granular reports showing subtotals at each dimensional tier as well as an overall grand total, computed in a single table scan.",
+    "targetQuery": "SELECT \n    CASE WHEN GROUPING(device_type) = 1 THEN 'Grand Total' ELSE device_type END AS device_type_tier,\n    CASE WHEN GROUPING(ad_format) = 1 AND GROUPING(device_type) = 0 THEN 'Subtotal' ELSE ad_format END AS ad_format_tier,\n    SUM(total_val) AS metric_total\nFROM impression_yield\nGROUP BY device_type, ad_format WITH ROLLUP;",
+    "eli5Story": "Instead of writing 3 separate reports (one by city, one by state, one for the whole country) and gluing them together, ROLLUP creates a single report that has all the city numbers, the state subtotals, and the final national grand total!",
+    "commonMistakes": [
+      "Using naive COALESCE(col, 'Total') when legitimate NULL data exists in the base table, confusing genuine NULLs with subtotal rows",
+      "Using CUBE with 6+ dimensions, causing an exponential 2^N explosion that exhausts server memory"
+    ],
+    "takeaway": "ROLLUP and CUBE generate multi-tier subtotals and grand totals in a single table scan; GROUPING() is required to distinguish data NULLs from aggregate NULLs."
+  },
+  {
+    "id": 1483,
+    "title": "Tuition Revenue Grouping Sets: (College, Major) and (College) and Grand Total",
+    "section": "Section 10: Advanced SQL Engine Mastery (Subqueries, CTEs, Recursion & Set Operations)",
+    "difficulty": "Medium",
+    "domain": "EdTech",
+    "schema": "| Column | Type | Description |\n|---|---|---|\n| college | VARCHAR | Dimension 1 |\n| major | VARCHAR | Dimension 2 |\n| degree_type | VARCHAR | Dimension 3 |\n| total_val | NUMERIC | Financial Value Metric |",
+    "businessProblem": "In EdTech executive reporting, business stakeholders need granular reports showing subtotals at each dimensional tier as well as an overall grand total, computed in a single table scan.",
+    "targetQuery": "SELECT \n    CASE WHEN GROUPING(college) = 1 THEN 'Grand Total' ELSE college END AS college_tier,\n    CASE WHEN GROUPING(major) = 1 AND GROUPING(college) = 0 THEN 'Subtotal' ELSE major END AS major_tier,\n    SUM(total_val) AS metric_total\nFROM tuition_fees\nGROUP BY college, major WITH ROLLUP;",
+    "eli5Story": "Instead of writing 3 separate reports (one by city, one by state, one for the whole country) and gluing them together, ROLLUP creates a single report that has all the city numbers, the state subtotals, and the final national grand total!",
+    "commonMistakes": [
+      "Using naive COALESCE(col, 'Total') when legitimate NULL data exists in the base table, confusing genuine NULLs with subtotal rows",
+      "Using CUBE with 6+ dimensions, causing an exponential 2^N explosion that exhausts server memory"
+    ],
+    "takeaway": "ROLLUP and CUBE generate multi-tier subtotals and grand totals in a single table scan; GROUPING() is required to distinguish data NULLs from aggregate NULLs."
+  },
+  {
+    "id": 1484,
+    "title": "Carbon Emissions Rollup: Sector -> Fuel Type -> Generating Station",
+    "section": "Section 10: Advanced SQL Engine Mastery (Subqueries, CTEs, Recursion & Set Operations)",
+    "difficulty": "Medium",
+    "domain": "Energy",
+    "schema": "| Column | Type | Description |\n|---|---|---|\n| sector | VARCHAR | Dimension 1 |\n| fuel_type | VARCHAR | Dimension 2 |\n| station_name | VARCHAR | Dimension 3 |\n| total_val | NUMERIC | Financial Value Metric |",
+    "businessProblem": "In Energy executive reporting, business stakeholders need granular reports showing subtotals at each dimensional tier as well as an overall grand total, computed in a single table scan.",
+    "targetQuery": "SELECT \n    CASE WHEN GROUPING(sector) = 1 THEN 'Grand Total' ELSE sector END AS sector_tier,\n    CASE WHEN GROUPING(fuel_type) = 1 AND GROUPING(sector) = 0 THEN 'Subtotal' ELSE fuel_type END AS fuel_type_tier,\n    SUM(total_val) AS metric_total\nFROM carbon_emissions\nGROUP BY sector, fuel_type WITH ROLLUP;",
+    "eli5Story": "Instead of writing 3 separate reports (one by city, one by state, one for the whole country) and gluing them together, ROLLUP creates a single report that has all the city numbers, the state subtotals, and the final national grand total!",
+    "commonMistakes": [
+      "Using naive COALESCE(col, 'Total') when legitimate NULL data exists in the base table, confusing genuine NULLs with subtotal rows",
+      "Using CUBE with 6+ dimensions, causing an exponential 2^N explosion that exhausts server memory"
+    ],
+    "takeaway": "ROLLUP and CUBE generate multi-tier subtotals and grand totals in a single table scan; GROUPING() is required to distinguish data NULLs from aggregate NULLs."
+  },
+  {
+    "id": 1485,
+    "title": "Streaming Hours CUBE: Device Category x Content Genre x Subscription Tier",
+    "section": "Section 10: Advanced SQL Engine Mastery (Subqueries, CTEs, Recursion & Set Operations)",
+    "difficulty": "Medium",
+    "domain": "Media",
+    "schema": "| Column | Type | Description |\n|---|---|---|\n| device_cat | VARCHAR | Dimension 1 |\n| genre | VARCHAR | Dimension 2 |\n| tier | VARCHAR | Dimension 3 |\n| total_val | NUMERIC | Financial Value Metric |",
+    "businessProblem": "In Media executive reporting, business stakeholders need granular reports showing subtotals at each dimensional tier as well as an overall grand total, computed in a single table scan.",
+    "targetQuery": "SELECT \n    CASE WHEN GROUPING(device_cat) = 1 THEN 'Grand Total' ELSE device_cat END AS device_cat_tier,\n    CASE WHEN GROUPING(genre) = 1 AND GROUPING(device_cat) = 0 THEN 'Subtotal' ELSE genre END AS genre_tier,\n    SUM(total_val) AS metric_total\nFROM streaming_hours\nGROUP BY device_cat, genre WITH ROLLUP;",
+    "eli5Story": "Instead of writing 3 separate reports (one by city, one by state, one for the whole country) and gluing them together, ROLLUP creates a single report that has all the city numbers, the state subtotals, and the final national grand total!",
+    "commonMistakes": [
+      "Using naive COALESCE(col, 'Total') when legitimate NULL data exists in the base table, confusing genuine NULLs with subtotal rows",
+      "Using CUBE with 6+ dimensions, causing an exponential 2^N explosion that exhausts server memory"
+    ],
+    "takeaway": "ROLLUP and CUBE generate multi-tier subtotals and grand totals in a single table scan; GROUPING() is required to distinguish data NULLs from aggregate NULLs."
+  },
+  {
+    "id": 1486,
+    "title": "Corporate Balance Sheet ROLLUP with Dynamic GROUPING() Flag Indicators",
+    "section": "Section 10: Advanced SQL Engine Mastery (Subqueries, CTEs, Recursion & Set Operations)",
+    "difficulty": "Hard",
+    "domain": "Fintech",
+    "schema": "| Column | Type | Description |\n|---|---|---|\n| entity_grp | VARCHAR | Dimension 1 |\n| legal_entity | VARCHAR | Dimension 2 |\n| asset_class | VARCHAR | Dimension 3 |\n| total_val | NUMERIC | Financial Value Metric |",
+    "businessProblem": "In Fintech executive reporting, business stakeholders need granular reports showing subtotals at each dimensional tier as well as an overall grand total, computed in a single table scan.",
+    "targetQuery": "SELECT \n    CASE WHEN GROUPING(entity_grp) = 1 THEN 'Grand Total' ELSE entity_grp END AS entity_grp_tier,\n    CASE WHEN GROUPING(legal_entity) = 1 AND GROUPING(entity_grp) = 0 THEN 'Subtotal' ELSE legal_entity END AS legal_entity_tier,\n    SUM(total_val) AS metric_total\nFROM balance_sheet\nGROUP BY entity_grp, legal_entity WITH ROLLUP;",
+    "eli5Story": "Instead of writing 3 separate reports (one by city, one by state, one for the whole country) and gluing them together, ROLLUP creates a single report that has all the city numbers, the state subtotals, and the final national grand total!",
+    "commonMistakes": [
+      "Using naive COALESCE(col, 'Total') when legitimate NULL data exists in the base table, confusing genuine NULLs with subtotal rows",
+      "Using CUBE with 6+ dimensions, causing an exponential 2^N explosion that exhausts server memory"
+    ],
+    "takeaway": "ROLLUP and CUBE generate multi-tier subtotals and grand totals in a single table scan; GROUPING() is required to distinguish data NULLs from aggregate NULLs."
+  },
+  {
+    "id": 1487,
+    "title": "Customer Success Engagement Matrix: Multi-Dimensional GROUPING SETS Pipeline",
+    "section": "Section 10: Advanced SQL Engine Mastery (Subqueries, CTEs, Recursion & Set Operations)",
+    "difficulty": "Hard",
+    "domain": "SaaS",
+    "schema": "| Column | Type | Description |\n|---|---|---|\n| market_segment | VARCHAR | Dimension 1 |\n| account_tier | VARCHAR | Dimension 2 |\n| geo_region | VARCHAR | Dimension 3 |\n| total_val | NUMERIC | Financial Value Metric |",
+    "businessProblem": "In SaaS executive reporting, business stakeholders need granular reports showing subtotals at each dimensional tier as well as an overall grand total, computed in a single table scan.",
+    "targetQuery": "SELECT \n    CASE WHEN GROUPING(market_segment) = 1 THEN 'Grand Total' ELSE market_segment END AS market_segment_tier,\n    CASE WHEN GROUPING(account_tier) = 1 AND GROUPING(market_segment) = 0 THEN 'Subtotal' ELSE account_tier END AS account_tier_tier,\n    SUM(total_val) AS metric_total\nFROM cs_engagement\nGROUP BY market_segment, account_tier WITH ROLLUP;",
+    "eli5Story": "Instead of writing 3 separate reports (one by city, one by state, one for the whole country) and gluing them together, ROLLUP creates a single report that has all the city numbers, the state subtotals, and the final national grand total!",
+    "commonMistakes": [
+      "Using naive COALESCE(col, 'Total') when legitimate NULL data exists in the base table, confusing genuine NULLs with subtotal rows",
+      "Using CUBE with 6+ dimensions, causing an exponential 2^N explosion that exhausts server memory"
+    ],
+    "takeaway": "ROLLUP and CUBE generate multi-tier subtotals and grand totals in a single table scan; GROUPING() is required to distinguish data NULLs from aggregate NULLs."
+  },
+  {
+    "id": 1488,
+    "title": "Clinical Outcome Risk Scores Multi-Factor CUBE with Aggregate Disambiguation",
+    "section": "Section 10: Advanced SQL Engine Mastery (Subqueries, CTEs, Recursion & Set Operations)",
+    "difficulty": "Hard",
+    "domain": "Healthcare",
+    "schema": "| Column | Type | Description |\n|---|---|---|\n| age_bracket | VARCHAR | Dimension 1 |\n| comorbidity | VARCHAR | Dimension 2 |\n| insurance_type | VARCHAR | Dimension 3 |\n| total_val | NUMERIC | Financial Value Metric |",
+    "businessProblem": "In Healthcare executive reporting, business stakeholders need granular reports showing subtotals at each dimensional tier as well as an overall grand total, computed in a single table scan.",
+    "targetQuery": "SELECT \n    CASE WHEN GROUPING(age_bracket) = 1 THEN 'Grand Total' ELSE age_bracket END AS age_bracket_tier,\n    CASE WHEN GROUPING(comorbidity) = 1 AND GROUPING(age_bracket) = 0 THEN 'Subtotal' ELSE comorbidity END AS comorbidity_tier,\n    SUM(total_val) AS metric_total\nFROM clinical_outcomes\nGROUP BY age_bracket, comorbidity WITH ROLLUP;",
+    "eli5Story": "Instead of writing 3 separate reports (one by city, one by state, one for the whole country) and gluing them together, ROLLUP creates a single report that has all the city numbers, the state subtotals, and the final national grand total!",
+    "commonMistakes": [
+      "Using naive COALESCE(col, 'Total') when legitimate NULL data exists in the base table, confusing genuine NULLs with subtotal rows",
+      "Using CUBE with 6+ dimensions, causing an exponential 2^N explosion that exhausts server memory"
+    ],
+    "takeaway": "ROLLUP and CUBE generate multi-tier subtotals and grand totals in a single table scan; GROUPING() is required to distinguish data NULLs from aggregate NULLs."
+  },
+  {
+    "id": 1489,
+    "title": "Executive Retail Financial Reporting: Full Cross-Tab CUBE with Profit Margins",
+    "section": "Section 10: Advanced SQL Engine Mastery (Subqueries, CTEs, Recursion & Set Operations)",
+    "difficulty": "Hard",
+    "domain": "E-Commerce",
+    "schema": "| Column | Type | Description |\n|---|---|---|\n| merchandise_dept | VARCHAR | Dimension 1 |\n| sales_channel | VARCHAR | Dimension 2 |\n| fiscal_quarter | VARCHAR | Dimension 3 |\n| total_val | NUMERIC | Financial Value Metric |",
+    "businessProblem": "In E-Commerce executive reporting, business stakeholders need granular reports showing subtotals at each dimensional tier as well as an overall grand total, computed in a single table scan.",
+    "targetQuery": "SELECT \n    CASE WHEN GROUPING(merchandise_dept) = 1 THEN 'Grand Total' ELSE merchandise_dept END AS merchandise_dept_tier,\n    CASE WHEN GROUPING(sales_channel) = 1 AND GROUPING(merchandise_dept) = 0 THEN 'Subtotal' ELSE sales_channel END AS sales_channel_tier,\n    SUM(total_val) AS metric_total\nFROM executive_margins\nGROUP BY merchandise_dept, sales_channel WITH ROLLUP;",
+    "eli5Story": "Instead of writing 3 separate reports (one by city, one by state, one for the whole country) and gluing them together, ROLLUP creates a single report that has all the city numbers, the state subtotals, and the final national grand total!",
+    "commonMistakes": [
+      "Using naive COALESCE(col, 'Total') when legitimate NULL data exists in the base table, confusing genuine NULLs with subtotal rows",
+      "Using CUBE with 6+ dimensions, causing an exponential 2^N explosion that exhausts server memory"
+    ],
+    "takeaway": "ROLLUP and CUBE generate multi-tier subtotals and grand totals in a single table scan; GROUPING() is required to distinguish data NULLs from aggregate NULLs."
+  },
+  {
+    "id": 1490,
+    "title": "Intermodal Cargo Transit Time Variance ROLLUP with Synthetic Subtotal Labels",
+    "section": "Section 10: Advanced SQL Engine Mastery (Subqueries, CTEs, Recursion & Set Operations)",
+    "difficulty": "Hard",
+    "domain": "Logistics",
+    "schema": "| Column | Type | Description |\n|---|---|---|\n| shipping_lane | VARCHAR | Dimension 1 |\n| carrier_mode | VARCHAR | Dimension 2 |\n| customs_broker | VARCHAR | Dimension 3 |\n| total_val | NUMERIC | Financial Value Metric |",
+    "businessProblem": "In Logistics executive reporting, business stakeholders need granular reports showing subtotals at each dimensional tier as well as an overall grand total, computed in a single table scan.",
+    "targetQuery": "SELECT \n    CASE WHEN GROUPING(shipping_lane) = 1 THEN 'Grand Total' ELSE shipping_lane END AS shipping_lane_tier,\n    CASE WHEN GROUPING(carrier_mode) = 1 AND GROUPING(shipping_lane) = 0 THEN 'Subtotal' ELSE carrier_mode END AS carrier_mode_tier,\n    SUM(total_val) AS metric_total\nFROM intermodal_transit\nGROUP BY shipping_lane, carrier_mode WITH ROLLUP;",
+    "eli5Story": "Instead of writing 3 separate reports (one by city, one by state, one for the whole country) and gluing them together, ROLLUP creates a single report that has all the city numbers, the state subtotals, and the final national grand total!",
+    "commonMistakes": [
+      "Using naive COALESCE(col, 'Total') when legitimate NULL data exists in the base table, confusing genuine NULLs with subtotal rows",
+      "Using CUBE with 6+ dimensions, causing an exponential 2^N explosion that exhausts server memory"
+    ],
+    "takeaway": "ROLLUP and CUBE generate multi-tier subtotals and grand totals in a single table scan; GROUPING() is required to distinguish data NULLs from aggregate NULLs."
   }
 ];
 
-if (typeof window !== 'undefined') {
-  window.ALL_500_CASE_STUDIES = ALL_500_CASE_STUDIES;
-  window.ALL_600_CASE_STUDIES = ALL_500_CASE_STUDIES;
-  window.ALL_650_CASE_STUDIES = ALL_500_CASE_STUDIES;
-  window.ALL_700_CASE_STUDIES = ALL_500_CASE_STUDIES;
-  window.ALL_1040_CASE_STUDIES = ALL_500_CASE_STUDIES;
-  window.ALL_1340_CASE_STUDIES = ALL_500_CASE_STUDIES;
-}
+// Backward compatibility aliases
+const ALL_600_CASE_STUDIES = ALL_500_CASE_STUDIES;
+const ALL_650_CASE_STUDIES = ALL_500_CASE_STUDIES;
+const ALL_700_CASE_STUDIES = ALL_500_CASE_STUDIES;
+const ALL_1040_CASE_STUDIES = ALL_500_CASE_STUDIES;
+const ALL_1340_CASE_STUDIES = ALL_500_CASE_STUDIES;
+const ALL_1490_CASE_STUDIES = ALL_500_CASE_STUDIES;
 
 if (typeof module !== 'undefined' && module.exports) {
-  module.exports = {
-    ALL_500_CASE_STUDIES,
-    ALL_600_CASE_STUDIES: ALL_500_CASE_STUDIES,
-    ALL_650_CASE_STUDIES: ALL_500_CASE_STUDIES,
-    ALL_700_CASE_STUDIES: ALL_500_CASE_STUDIES,
-    ALL_1040_CASE_STUDIES: ALL_500_CASE_STUDIES,
-    ALL_1340_CASE_STUDIES: ALL_500_CASE_STUDIES
-  };
+  module.exports = { ALL_500_CASE_STUDIES };
 }

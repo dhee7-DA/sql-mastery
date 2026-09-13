@@ -102,11 +102,11 @@
         </button>
         <button class="nav-tab" data-view="viewMcqs" onclick="switchMainView('viewMcqs')">
           <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M9 11l3 3L22 4"></path><path d="M21 12v7a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h11"></path></svg>
-          MCQs (1,200)
+          MCQs (2,100)
         </button>
         <button class="nav-tab" data-view="viewCases" onclick="switchMainView('viewCases')">
           <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="2" y="7" width="20" height="14" rx="2" ry="2"></rect><path d="M16 21V5a2 2 0 0 0-2-2h-4a2 2 0 0 0-2 2v16"></path></svg>
-          Case Studies (1,040)
+          Case Studies (1,490)
         </button>
         <button class="nav-tab" data-view="viewEnterpriseERD" onclick="switchMainView('viewEnterpriseERD')">
           <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="3" y="3" width="7" height="7"></rect><rect x="14" y="3" width="7" height="7"></rect><rect x="14" y="14" width="7" height="7"></rect><rect x="3" y="14" width="7" height="7"></rect><line x1="10" y1="6.5" x2="14" y2="6.5"></line><line x1="6.5" y1="10" x2="6.5" y2="14"></line></svg>
@@ -176,9 +176,9 @@
               <p class="pathways-subtitle">Master SQL systematically: 1. Visual Masterclass &rarr; 2. Traps &amp; Interview Secrets &rarr; 3. Topic MCQs &rarr; 4. Corporate Case Studies</p>
             </div>
             <div class="pathways-progress-summary">
-              <span>Vault: <strong>1,040 Cases</strong></span>
+              <span>Vault: <strong>1,490 Cases</strong></span>
               <span style="color: var(--border-default);">&bull;</span>
-              <span><strong>600 MCQs</strong></span>
+              <span><strong>2,100 MCQs</strong></span>
               <span style="color: var(--border-default);">&bull;</span>
               <span><strong>30 Traps &amp; Tips</strong></span>
             </div>
@@ -625,7 +625,7 @@
     <div class="curriculum-container">
       <div class="curriculum-header">
         <div>
-          <h2 class="view-title">The 1,200 Master MCQ Technical Vault</h2>
+          <h2 class="view-title">The 2,100 Master MCQ Technical Vault</h2>
           <p class="view-subtitle">100 deep technical checks per keyword across all 12 core SQL domains on physical execution sequence, NULL semantics, spatial coordinates, medians, and relational joins.</p>
         </div>
         <div class="quiz-header-right">
@@ -663,19 +663,19 @@
             <select id="caseSortSelect" class="case-sort-select">
               <option value="diff_asc">Sort: Easy &rarr; Medium &rarr; Hard (Curriculum Order)</option>
               <option value="diff_desc">Sort: Hard &rarr; Medium &rarr; Easy (Challenge Order)</option>
-              <option value="id_asc">Sort: Case ID #001 &rarr; #1340 (Chronological)</option>
+              <option value="id_asc">Sort: Case ID #001 &rarr; #1490 (Chronological)</option>
             </select>
-            <input type="text" id="caseSearchInput" class="case-search-input" placeholder="🔍 Search 1,340 cases by keyword, schema, query...">
-            <span id="caseCountBadge" class="status-pill">1,340 Cases</span>
-            <span id="caseSolvedBadge" class="status-pill" style="background: rgba(34, 197, 94, 0.15); color: #4ade80; border: 1px solid rgba(74, 222, 128, 0.3);">⚡ <span id="casesSolvedCount">0</span>/1340 Solved</span>
+            <input type="text" id="caseSearchInput" class="case-search-input" placeholder="🔍 Search 1,490 cases by keyword, schema, query...">
+            <span id="caseCountBadge" class="status-pill">1,490 Cases</span>
+            <span id="caseSolvedBadge" class="status-pill" style="background: rgba(34, 197, 94, 0.15); color: #4ade80; border: 1px solid rgba(74, 222, 128, 0.3);">⚡ <span id="casesSolvedCount">0</span>/1490 Solved</span>
           </div>
         </div>
 
         <!-- Deck 2: Section Switcher & Filter Strips -->
         <div class="toolbar-deck-bottom">
-          <!-- 9 Core Sections Switcher Bar -->
+          <!-- 10 Core Sections Switcher Bar -->
           <div class="case-section-group" id="caseSectionFilters" style="display: flex; gap: 8px; flex-wrap: wrap;">
-            <button class="case-section-btn active" data-section="all">All Sections (1340)</button>
+            <button class="case-section-btn active" data-section="all">All Sections (1490)</button>
             <button class="case-section-btn" data-section="Section 1: Database Theory &amp; Architecture">Sec 1: Theory &amp; Interview Prep (100)</button>
             <button class="case-section-btn" data-section="Section 2: Physical Query Execution Order &amp; Projections">Sec 2: Execution &amp; Projections (100)</button>
             <button class="case-section-btn" data-section="Section 3: Filtering, Predicates &amp; Three-Valued Logic">Sec 3: Filtering &amp; 3VL (100)</button>
@@ -685,21 +685,22 @@
             <button class="case-section-btn section-btn-math" data-section="Section 7: Spatial Coordinates, Math Functions &amp; Medians" style="border-color: rgba(56, 189, 248, 0.4); color: #38bdf8;">📍 Sec 7: Spatial Math &amp; Medians (50)</button>
             <button class="case-section-btn section-btn-joins" data-section="Section 8: Relational Joins &amp; Financial Data Modeling" style="border-color: rgba(74, 222, 128, 0.4); color: #4ade80;">🔗 Sec 8: Relational Joins (FA/DA/BA) (390)</button>
             <button class="case-section-btn section-btn-window" data-section="Section 9: Window Functions &amp; Quantitative Financial Analytics" style="border-color: rgba(168, 85, 247, 0.4); color: #c084fc;">🪟 Sec 9: Window Functions &amp; Quant Analytics (300)</button>
+            <button class="case-section-btn section-btn-sec10" data-section="Section 10: Advanced SQL Engine Mastery (Subqueries, CTEs, Recursion &amp; Set Operations)" style="border-color: rgba(244, 114, 182, 0.4); color: #f472b6;">🗂️ Sec 10: Subqueries, CTEs &amp; Set Ops (150)</button>
           </div>
 
           <!-- Difficulty & Industry Strips -->
           <div style="display: flex; flex-direction: column; gap: 8px;">
             <div class="filter-strip-row" id="caseDifficultyFilters">
               <span class="filter-strip-label">Difficulty:</span>
-              <button class="case-diff-filter-btn active" data-diff="all">All Difficulties (1340)</button>
-              <button class="case-diff-filter-btn diff-pill-easy" data-diff="Easy">🟢 Easy &bull; Foundations (480)</button>
-              <button class="case-diff-filter-btn diff-pill-medium" data-diff="Medium">🟡 Medium &bull; Production Standard (480)</button>
-              <button class="case-diff-filter-btn diff-pill-hard" data-diff="Hard">🔴 Hard &bull; Senior Edge Cases (380)</button>
+              <button class="case-diff-filter-btn active" data-diff="all">All Difficulties (1490)</button>
+              <button class="case-diff-filter-btn diff-pill-easy" data-diff="Easy">🟢 Easy &bull; Foundations (530)</button>
+              <button class="case-diff-filter-btn diff-pill-medium" data-diff="Medium">🟡 Medium &bull; Production Standard (530)</button>
+              <button class="case-diff-filter-btn diff-pill-hard" data-diff="Hard">🔴 Hard &bull; Senior Edge Cases (430)</button>
             </div>
 
             <div class="filter-strip-row" id="caseIndustryFilters">
               <span class="filter-strip-label">Industry:</span>
-              <button class="case-filter-btn active" data-industry="all">All (1340)</button>
+              <button class="case-filter-btn active" data-industry="all">All (1490)</button>
               <button class="case-filter-btn" data-industry="Fintech">Fintech (135)</button>
               <button class="case-filter-btn" data-industry="SaaS">SaaS (120)</button>
               <button class="case-filter-btn" data-industry="Retail">Retail (120)</button>

@@ -1,0 +1,2252 @@
+[
+  {
+    "id": "mcq_sec10_1",
+    "topic": "Scalar & Columnar Subqueries",
+    "keyword": "Subquery Dimensionality",
+    "tag": "Engine Mechanics",
+    "question": "Under standard ANSI SQL, what is the mandatory runtime requirement for a subquery placed in the SELECT projection list?",
+    "options": [
+      "It must return strictly a scalar value (at most one row and one column), or evaluate to NULL if zero rows are found",
+      "It must return exactly one row and at most two columns",
+      "It must be joined using an explicit LATERAL keyword",
+      "It must include a GROUP BY clause to aggregate outer tuples"
+    ],
+    "correctIndex": 0,
+    "explanation": "A scalar subquery in a SELECT list or WHERE comparison must return strictly 1 row and 1 column. If it returns > 1 row, a cardinality violation is thrown (e.g., MySQL Error 1242). If 0 rows return, it evaluates to NULL."
+  },
+  {
+    "id": "mcq_sec10_2",
+    "topic": "Scalar & Columnar Subqueries",
+    "keyword": "Subquery Dimensionality",
+    "tag": "Engine Mechanics",
+    "question": "If a scalar subquery in a WHERE clause comparison 'salary > (SELECT avg_salary FROM ...)' returns zero rows at runtime, what does the comparison evaluate to?",
+    "options": [
+      "TRUE because empty sets evaluate to zero",
+      "UNKNOWN because a zero-row scalar subquery produces a relational NULL",
+      "FALSE immediately without evaluating the predicate",
+      "A fatal runtime exception: EmptySubqueryException"
+    ],
+    "correctIndex": 1,
+    "explanation": "When a scalar subquery returns 0 rows, ANSI SQL dictates that its value is NULL. Any scalar comparison with NULL evaluates to UNKNOWN under Three-Valued Logic (3VL)."
+  },
+  {
+    "id": "mcq_sec10_3",
+    "topic": "Scalar & Columnar Subqueries",
+    "keyword": "Subquery Dimensionality",
+    "tag": "Engine Mechanics",
+    "question": "What is the key functional difference between 'col > ALL (subquery)' and 'col > ANY (subquery)'?",
+    "options": [
+      "ALL evaluates to TRUE if the subquery is empty; ANY throws an error on empty sets",
+      "ALL requires at least one row to match; ANY requires all rows to match",
+      "ALL requires col to be greater than the maximum value in the subquery; ANY requires col to be greater than the minimum value",
+      "ALL performs an index scan; ANY performs a full table scan"
+    ],
+    "correctIndex": 2,
+    "explanation": "col > ALL(set) means col must exceed every single value in the set (i.e. col > MAX(set)). col > ANY(set) means col must exceed at least one value (i.e. col > MIN(set))."
+  },
+  {
+    "id": "mcq_sec10_4",
+    "topic": "Scalar & Columnar Subqueries",
+    "keyword": "Subquery Dimensionality",
+    "tag": "Engine Mechanics",
+    "question": "In MySQL and ANSI SQL, why does the following query fail syntactically: 'SELECT * FROM (SELECT dept_id, AVG(salary) FROM employees GROUP BY dept_id);'?",
+    "options": [
+      "GROUP BY is illegal inside a FROM subquery",
+      "AVG() requires an explicit CAST inside a derived table",
+      "SELECT * cannot be used on an unindexed subquery",
+      "Every derived table (subquery in the FROM clause) must be given an explicit table alias"
+    ],
+    "correctIndex": 3,
+    "explanation": "ANSI SQL requires all derived tables in the FROM clause to have a mandatory correlation name (table alias), e.g., '... AS dt;'."
+  },
+  {
+    "id": "mcq_sec10_5",
+    "topic": "Scalar & Columnar Subqueries",
+    "keyword": "Subquery Dimensionality",
+    "tag": "Engine Mechanics",
+    "question": "What happens when an uncorrelated subquery is evaluated by a modern cost-based query optimizer?",
+    "options": [
+      "It is evaluated exactly once, its result is cached or placed into an ephemeral worktable, and then substituted into the execution plan",
+      "It is re-evaluated iteratively for each row in the outer table",
+      "It is always rewritten into an external stored procedure",
+      "It forces the outer query to disable all B-Tree indexes"
+    ],
+    "correctIndex": 0,
+    "explanation": "Uncorrelated subqueries do not depend on outer row attributes. The engine evaluates them once, materializes the result in memory, and reuses it across the entire outer query lifecycle."
+  },
+  {
+    "id": "mcq_sec10_6",
+    "topic": "Scalar & Columnar Subqueries",
+    "keyword": "Subquery Dimensionality",
+    "tag": "Engine Mechanics",
+    "question": "Under what condition does 'col IN (subquery)' evaluate to UNKNOWN under SQL Three-Valued Logic?",
+    "options": [
+      "Whenever the subquery contains more than 1,000 rows",
+      "When col does not match any non-NULL value in the subquery, and the subquery contains at least one NULL row",
+      "When col is a PRIMARY KEY",
+      "Only if col is explicitly cast to a VARCHAR"
+    ],
+    "correctIndex": 1,
+    "explanation": "If col is 10 and the subquery returns (20, 30, NULL), 10=20 is FALSE, 10=30 is FALSE, and 10=NULL is UNKNOWN. FALSE OR FALSE OR UNKNOWN evaluates to UNKNOWN."
+  },
+  {
+    "id": "mcq_sec10_7",
+    "topic": "Scalar & Columnar Subqueries",
+    "keyword": "Subquery Dimensionality",
+    "tag": "Engine Mechanics",
+    "question": "How does a database engine physically execute a multi-row subquery 'WHERE id IN (SELECT user_id FROM orders)'?",
+    "options": [
+      "By converting it into a Cursor loop",
+      "By locking the orders table with an exclusive table lock",
+      "By unnesting the subquery into a Hash Semi-Join or Materialized Index Scan",
+      "By evaluating the subquery into a text string and using regex"
+    ],
+    "correctIndex": 2,
+    "explanation": "Modern query optimizers convert 'IN (subquery)' into a Hash Semi-Join or Index Semi-Join, preventing nested loop degradation."
+  },
+  {
+    "id": "mcq_sec10_8",
+    "topic": "Scalar & Columnar Subqueries",
+    "keyword": "Subquery Dimensionality",
+    "tag": "Engine Mechanics",
+    "question": "What error does PostgreSQL throw if a scalar subquery returns 2 rows: 'SELECT (SELECT emp_name FROM employees WHERE dept_id = 10);'?",
+    "options": [
+      "ERROR: subquery in FROM must have an alias",
+      "ERROR: Cartesian product detected in projection",
+      "ERROR: aggregate functions are not allowed in scalar expressions",
+      "ERROR: more than one row returned by a subquery used as an expression"
+    ],
+    "correctIndex": 3,
+    "explanation": "Postgres raises 'ERROR: more than one row returned by a subquery used as an expression' when a scalar subquery violates single-row cardinality."
+  },
+  {
+    "id": "mcq_sec10_9",
+    "topic": "Scalar & Columnar Subqueries",
+    "keyword": "Subquery Dimensionality",
+    "tag": "Engine Mechanics",
+    "question": "What is a 'Row Subquery' in relational database systems?",
+    "options": [
+      "A subquery that returns a single row containing multiple columns, compared as a tuple: '(a, b) = (SELECT x, y FROM ...)'",
+      "A subquery that only executes on the first row of a physical table page",
+      "A subquery that can only appear in the LIMIT clause",
+      "A subquery that converts columnar storage into row-oriented storage"
+    ],
+    "correctIndex": 0,
+    "explanation": "Row subqueries return a tuple of 1 row with M columns, allowing tuple comparisons like '(country, city) IN (SELECT country, city FROM offices)'."
+  },
+  {
+    "id": "mcq_sec10_10",
+    "topic": "Scalar & Columnar Subqueries",
+    "keyword": "Subquery Dimensionality",
+    "tag": "Engine Mechanics",
+    "question": "Why is a scalar subquery in the SELECT list often termed a 'Hidden Correlated Subquery'?",
+    "options": [
+      "Because it cannot be viewed in EXPLAIN plans",
+      "Because if it references an outer column, it acts like a function invoked once per outer row, causing O(N) evaluations",
+      "Because it is hidden from the query cache",
+      "Because it automatically encrypts column values"
+    ],
+    "correctIndex": 1,
+    "explanation": "When a SELECT list subquery references outer columns, naive execution invokes the subquery for every projected row, behaving like an O(N) row-by-row function call."
+  },
+  {
+    "id": "mcq_sec10_11",
+    "topic": "Scalar & Columnar Subqueries",
+    "keyword": "Subquery Dimensionality",
+    "tag": "Engine Mechanics",
+    "question": "What is the behavior of 'col = SOME (subquery)' in ANSI SQL?",
+    "options": [
+      "It randomly selects one row from the subquery to compare against",
+      "It requires at least 50% of subquery rows to equal col",
+      "It is syntactically identical and semantically synonymous with 'col IN (subquery)'",
+      "It is deprecated and forbidden in modern ANSI standards"
+    ],
+    "correctIndex": 2,
+    "explanation": "'= ANY' and '= SOME' are exact semantic synonyms for 'IN' in SQL-92 and later standards."
+  },
+  {
+    "id": "mcq_sec10_12",
+    "topic": "Scalar & Columnar Subqueries",
+    "keyword": "Subquery Dimensionality",
+    "tag": "Engine Mechanics",
+    "question": "Which clause CANNOT host a scalar subquery under ANSI SQL-92?",
+    "options": [
+      "SELECT",
+      "WHERE",
+      "HAVING",
+      "GROUP BY"
+    ],
+    "correctIndex": 3,
+    "explanation": "Standard SQL forbids subqueries directly within the GROUP BY clause because the engine must establish grouping hash keys prior to subquery evaluation."
+  },
+  {
+    "id": "mcq_sec10_13",
+    "topic": "Scalar & Columnar Subqueries",
+    "keyword": "Subquery Dimensionality",
+    "tag": "Engine Mechanics",
+    "question": "If an inner subquery for 'WHERE val < ALL (subquery)' returns 0 rows, what is the boolean result of the predicate?",
+    "options": [
+      "TRUE because a universal quantifier over an empty set (vacuous truth) is always TRUE",
+      "UNKNOWN because cardinality is zero",
+      "FALSE because the set is empty",
+      "NULL"
+    ],
+    "correctIndex": 0,
+    "explanation": "In mathematical logic, universal quantification over an empty set (ALL of an empty set) is vacuously TRUE. Therefore, 'val < ALL (empty set)' evaluates to TRUE for all rows."
+  },
+  {
+    "id": "mcq_sec10_14",
+    "topic": "Scalar & Columnar Subqueries",
+    "keyword": "Subquery Dimensionality",
+    "tag": "Engine Mechanics",
+    "question": "What is the performance advantage of replacing a SELECT scalar subquery with a LEFT JOIN to an aggregated CTE?",
+    "options": [
+      "It bypasses the buffer pool entirely",
+      "It transforms row-by-row repeated evaluation into a single sequential table scan and a single hash join",
+      "It prevents deadlocks on read-only tables",
+      "It forces the query to execute in parallel without CPU limits"
+    ],
+    "correctIndex": 1,
+    "explanation": "Replacing scalar subqueries with an aggregated CTE and a LEFT JOIN allows the engine to compute aggregates once in a batch and join via hash probe in O(N) time."
+  },
+  {
+    "id": "mcq_sec10_15",
+    "topic": "Scalar & Columnar Subqueries",
+    "keyword": "Subquery Dimensionality",
+    "tag": "Engine Mechanics",
+    "question": "What is the relational definition of an 'Independent Derived Table'?",
+    "options": [
+      "A temporary table physically created on disk with explicit clustered indexes",
+      "A table generated by a window function",
+      "A subquery in the FROM clause that has zero correlation to other tables in the same FROM clause",
+      "A materialized view that auto-refreshes every minute"
+    ],
+    "correctIndex": 2,
+    "explanation": "An independent derived table contains no lateral or outer references and can be completely evaluated and materialized prior to main query processing."
+  },
+  {
+    "id": "mcq_sec10_16",
+    "topic": "Correlated Subqueries & Binding",
+    "keyword": "Correlation Parameter Binding",
+    "tag": "Execution Physics",
+    "question": "What uniquely defines a 'Correlated Subquery' compared to a standard subquery?",
+    "options": [
+      "It requires a COMMIT statement inside its body",
+      "It contains more than two JOIN operations in its FROM clause",
+      "It must be executed concurrently on multi-core CPUs",
+      "It references one or more columns from an outer query block, creating an execution dependency for each candidate outer row"
+    ],
+    "correctIndex": 3,
+    "explanation": "A correlated subquery references columns from the outer query. The inner query's execution and result depend dynamically on the values of each candidate outer row."
+  },
+  {
+    "id": "mcq_sec10_17",
+    "topic": "Correlated Subqueries & Binding",
+    "keyword": "Correlation Parameter Binding",
+    "tag": "Execution Physics",
+    "question": "In an unoptimized query engine, what is the theoretical algorithmic time complexity of a correlated subquery on an outer table of N rows and an inner table of M rows?",
+    "options": [
+      "O(N * M) (Quadratic Nested Loop)",
+      "O(N + M)",
+      "O(log(N * M))",
+      "O(1) constant time"
+    ],
+    "correctIndex": 0,
+    "explanation": "Without index optimization or decorrelation rewrites, the engine executes the inner query (scanning M rows) for each of the N outer rows, resulting in O(N * M) quadratic time complexity."
+  },
+  {
+    "id": "mcq_sec10_18",
+    "topic": "Correlated Subqueries & Binding",
+    "keyword": "Correlation Parameter Binding",
+    "tag": "Execution Physics",
+    "question": "What process does an optimizing database compiler perform when 'decorrelating' a subquery?",
+    "options": [
+      "It strips all comments and whitespace from the query text",
+      "It transforms the row-by-row correlated subquery into an equivalent relational Join (Semi-Join or Outer Join) with aggregation",
+      "It forces the subquery to run as an independent background transaction",
+      "It converts column data types into raw bytes"
+    ],
+    "correctIndex": 1,
+    "explanation": "Subquery decorrelation is an optimizer pass that rewrites correlated subqueries into semi-joins, anti-joins, or group-by joins, allowing hash or merge join algorithms."
+  },
+  {
+    "id": "mcq_sec10_19",
+    "topic": "Correlated Subqueries & Binding",
+    "keyword": "Correlation Parameter Binding",
+    "tag": "Execution Physics",
+    "question": "In the query 'SELECT * FROM emp e WHERE salary > (SELECT AVG(salary) FROM emp WHERE dept_id = e.dept_id)', what is 'e.dept_id' called?",
+    "options": [
+      "The Primary Key Anchor",
+      "The Foreign Key Constraint",
+      "The Correlation Attribute / Correlation Reference",
+      "The Lexical Parameter"
+    ],
+    "correctIndex": 2,
+    "explanation": "'e.dept_id' is the correlation attribute that binds the inner query to the current candidate row of the outer table 'e'."
+  },
+  {
+    "id": "mcq_sec10_20",
+    "topic": "Correlated Subqueries & Binding",
+    "keyword": "Correlation Parameter Binding",
+    "tag": "Execution Physics",
+    "question": "Can a correlated subquery be executed independently in a separate query window for debugging?",
+    "options": [
+      "Yes, if you wrap it in parentheses",
+      "Only in MySQL, but not in PostgreSQL",
+      "Yes, the database engine will substitute default values for outer columns",
+      "No, because it references outer table aliases that do not exist outside the outer query scope"
+    ],
+    "correctIndex": 3,
+    "explanation": "Correlated subqueries cannot be run standalone because they contain free variables (outer column references) that are undefined outside the outer query's context."
+  },
+  {
+    "id": "mcq_sec10_21",
+    "topic": "Correlated Subqueries & Binding",
+    "keyword": "Correlation Parameter Binding",
+    "tag": "Execution Physics",
+    "question": "How does a composite index on '(dept_id, salary)' optimize a correlated subquery calculating 'WHERE e.salary > (SELECT AVG(salary) FROM emp WHERE dept_id = e.dept_id)'?",
+    "options": [
+      "It allows the engine to perform an Index Range Scan on dept_id and compute the average directly from index leaf pages without visiting base table pages",
+      "It automatically converts the subquery into a stored procedure",
+      "It caches the result of the outer query in memory",
+      "It forces the engine to bypass the buffer pool"
+    ],
+    "correctIndex": 0,
+    "explanation": "A composite index covering (dept_id, salary) enables index-only scans (covering index), calculating the department average purely from the B-tree leaf nodes."
+  },
+  {
+    "id": "mcq_sec10_22",
+    "topic": "Correlated Subqueries & Binding",
+    "keyword": "Correlation Parameter Binding",
+    "tag": "Execution Physics",
+    "question": "In PostgreSQL and MySQL 8.0.14+, what clause allows a subquery in the FROM clause to reference columns from preceding FROM tables?",
+    "options": [
+      "CROSS JOIN CORRELATED",
+      "LATERAL",
+      "RECURSIVE",
+      "PIVOT"
+    ],
+    "correctIndex": 1,
+    "explanation": "The LATERAL keyword (e.g. 'FROM table1, LATERAL (SELECT ... WHERE col = table1.id) AS sub') enables subqueries in the FROM clause to reference prior tables."
+  },
+  {
+    "id": "mcq_sec10_23",
+    "topic": "Correlated Subqueries & Binding",
+    "keyword": "Correlation Parameter Binding",
+    "tag": "Execution Physics",
+    "question": "Why does a correlated subquery in the WHERE clause often outperform a CTE Join on massive tables when filtering with a highly selective outer WHERE condition?",
+    "options": [
+      "Because CTEs are always written to disk, whereas correlated subqueries are not",
+      "Because correlated subqueries run in parallel on all CPU cores",
+      "Because if the outer WHERE condition reduces candidate rows to 5 rows, the correlated subquery only executes 5 times, whereas a naive CTE pre-aggregates the entire table",
+      "Because correlated subqueries bypass transaction isolation locks"
+    ],
+    "correctIndex": 2,
+    "explanation": "If an outer WHERE filter reduces candidate rows from 100M to 5, a correlated subquery executes 5 index lookups. An unpushed CTE might pre-aggregate all 100M rows unnecessarily."
+  },
+  {
+    "id": "mcq_sec10_24",
+    "topic": "Correlated Subqueries & Binding",
+    "keyword": "Correlation Parameter Binding",
+    "tag": "Execution Physics",
+    "question": "What is a 'Correlated Subquery in HAVING' typically used for?",
+    "options": [
+      "To sort groups alphabetically",
+      "To define table primary keys dynamically",
+      "To reset auto-increment counters",
+      "To filter group summaries against an external benchmark that depends on group attributes (e.g., HAVING SUM(sales) > (SELECT target FROM targets WHERE region = sales.region))"
+    ],
+    "correctIndex": 3,
+    "explanation": "Correlated subqueries in HAVING compare group aggregated metrics against dynamic benchmarks parameterized by the grouping columns."
+  },
+  {
+    "id": "mcq_sec10_25",
+    "topic": "Correlated Subqueries & Binding",
+    "keyword": "Correlation Parameter Binding",
+    "tag": "Execution Physics",
+    "question": "What is an 'Anti-Correlated Subquery'?",
+    "options": [
+      "A subquery where outer rows are filtered out when the correlated condition finds a match (e.g. using NOT EXISTS)",
+      "A subquery that runs backwards from bottom to top",
+      "A subquery with syntax errors",
+      "A subquery that deletes rows from the outer table"
+    ],
+    "correctIndex": 0,
+    "explanation": "An anti-correlated subquery (typically expressed via NOT EXISTS) keeps outer rows only when the correlated subquery produces zero matching records."
+  },
+  {
+    "id": "mcq_sec10_26",
+    "topic": "Correlated Subqueries & Binding",
+    "keyword": "Correlation Parameter Binding",
+    "tag": "Execution Physics",
+    "question": "Which operator is physically executed when an optimizer converts a correlated subquery 'WHERE id IN (SELECT user_id FROM ... WHERE ...)' into an execution plan?",
+    "options": [
+      "Full Cross Join",
+      "Nested Loop Semi-Join or Hash Semi-Join",
+      "Cartesian Product Scan",
+      "Union Distinct"
+    ],
+    "correctIndex": 1,
+    "explanation": "Query planners convert correlated IN and EXISTS subqueries into Semi-Join operators (Nested Loop Semi-Join or Hash Semi-Join)."
+  },
+  {
+    "id": "mcq_sec10_27",
+    "topic": "Correlated Subqueries & Binding",
+    "keyword": "Correlation Parameter Binding",
+    "tag": "Execution Physics",
+    "question": "In Oracle and DB2, what happens if a correlated subquery references an outer column from two query levels above (grandparent query)?",
+    "options": [
+      "It fails because correlation is limited to strictly 1 level",
+      "It causes an infinite loop in the parser",
+      "It succeeds; ANSI SQL supports multi-level correlation across arbitrarily nested scopes",
+      "It executes only if the tables share the same schema"
+    ],
+    "correctIndex": 2,
+    "explanation": "ANSI SQL fully supports multi-level correlation, allowing inner subqueries to reference attributes from parent, grandparent, and root query blocks."
+  },
+  {
+    "id": "mcq_sec10_28",
+    "topic": "Correlated Subqueries & Binding",
+    "keyword": "Correlation Parameter Binding",
+    "tag": "Execution Physics",
+    "question": "What is the risk of using a correlated subquery inside an UPDATE statement: 'UPDATE accounts a SET balance = balance - (SELECT fee FROM fees WHERE account_id = a.id)'?",
+    "options": [
+      "It forces an immediate server reboot",
+      "The database will automatically drop the fees table",
+      "It locks all rows across the entire database instance",
+      "If the subquery returns NULL or zero rows, balance will be set to NULL, wiping out account balances!"
+    ],
+    "correctIndex": 3,
+    "explanation": "If the subquery matches zero rows, it evaluates to NULL. In SQL, 'balance - NULL' evaluates to NULL, overwriting legitimate data with NULL!"
+  },
+  {
+    "id": "mcq_sec10_29",
+    "topic": "Correlated Subqueries & Binding",
+    "keyword": "Correlation Parameter Binding",
+    "tag": "Execution Physics",
+    "question": "How can the UPDATE correlated subquery risk of setting values to NULL be mitigated?",
+    "options": [
+      "Using COALESCE((SELECT fee FROM ...), 0) to ensure a fallback scalar zero",
+      "Using DROP TABLE IF EXISTS",
+      "Running the query with AUTOCOMMIT disabled",
+      "Converting the column to an ENUM"
+    ],
+    "correctIndex": 0,
+    "explanation": "Wrapping the correlated subquery in COALESCE((SELECT ...), 0) guarantees that a zero-row subquery evaluates to 0 instead of NULL."
+  },
+  {
+    "id": "mcq_sec10_30",
+    "topic": "Correlated Subqueries & Binding",
+    "keyword": "Correlation Parameter Binding",
+    "tag": "Execution Physics",
+    "question": "In MySQL EXPLAIN output, what does 'DEPENDENT SUBQUERY' indicate?",
+    "options": [
+      "The subquery has foreign key dependencies on another database",
+      "The subquery is correlated and depends on outer query row attributes, meaning it may be evaluated for each outer row",
+      "The subquery can only run after disk cache flushing",
+      "The subquery is executed as a background worker task"
+    ],
+    "correctIndex": 1,
+    "explanation": "MySQL's EXPLAIN marks correlated subqueries as 'DEPENDENT SUBQUERY', highlighting that its execution depends on parameters passed from the outer context."
+  },
+  {
+    "id": "mcq_sec10_31",
+    "topic": "EXISTS & Anti-Semi Join Engine",
+    "keyword": "EXISTS Mechanics & 3VL",
+    "tag": "Semi-Join Optimization",
+    "question": "Why is 'NOT EXISTS' mathematically immune to the Three-Valued Logic NULL catastrophe that plagues 'NOT IN'?",
+    "options": [
+      "Because NOT EXISTS converts NULLs into empty strings",
+      "Because NOT EXISTS disables 3VL inside the storage engine",
+      "Because EXISTS tests strictly for tuple cardinality (row count >= 1), returning binary TRUE or FALSE and NEVER evaluating to UNKNOWN",
+      "Because NOT EXISTS creates an auto-increment column"
+    ],
+    "correctIndex": 2,
+    "explanation": "EXISTS evaluates purely whether the subquery returns >= 1 row. If 0 rows return, it is FALSE; if >= 1 row returns, it is TRUE. It never evaluates to UNKNOWN, making NOT EXISTS 100% safe with NULLs."
+  },
+  {
+    "id": "mcq_sec10_32",
+    "topic": "EXISTS & Anti-Semi Join Engine",
+    "keyword": "EXISTS Mechanics & 3VL",
+    "tag": "Semi-Join Optimization",
+    "question": "Consider: 'SELECT * FROM users WHERE user_id NOT IN (SELECT manager_id FROM departments)'. If departments contains 100 rows, and exactly one row has manager_id = NULL, what will the query return?",
+    "options": [
+      "All users who are not managers",
+      "Exactly one user",
+      "A database syntax error: NullPointerException",
+      "Zero rows (an empty set)!"
+    ],
+    "correctIndex": 3,
+    "explanation": "Under 3VL, 'val NOT IN (1, 2, NULL)' evaluates to '(val!=1 AND val!=2 AND val!=NULL)'. Since 'val!=NULL' is UNKNOWN, the entire conjunction is UNKNOWN. A WHERE clause rejects UNKNOWN, returning 0 rows."
+  },
+  {
+    "id": "mcq_sec10_33",
+    "topic": "EXISTS & Anti-Semi Join Engine",
+    "keyword": "EXISTS Mechanics & 3VL",
+    "tag": "Semi-Join Optimization",
+    "question": "In an EXISTS subquery 'WHERE EXISTS (SELECT col FROM t WHERE ...)', does the choice of projection (e.g. 'SELECT 1', 'SELECT *', 'SELECT NULL') impact query performance?",
+    "options": [
+      "No, the query optimizer ignores the projection list entirely; it only checks for row existence",
+      "Yes, SELECT * forces all table columns to be decoded from disk",
+      "Yes, SELECT 1 is much faster because it reads 1 byte from RAM",
+      "Yes, SELECT NULL throws an error"
+    ],
+    "correctIndex": 0,
+    "explanation": "In SQL engines, the SELECT projection list of an EXISTS subquery is completely ignored by the query planner. 'SELECT 1', 'SELECT *', and 'SELECT NULL' generate identical execution plans."
+  },
+  {
+    "id": "mcq_sec10_34",
+    "topic": "EXISTS & Anti-Semi Join Engine",
+    "keyword": "EXISTS Mechanics & 3VL",
+    "tag": "Semi-Join Optimization",
+    "question": "What is the physical short-circuiting behavior of the EXISTS operator?",
+    "options": [
+      "It evaluates all rows in the subquery and counts them",
+      "It halts scanning the underlying index/table the precise microsecond it encounters the very first qualifying tuple",
+      "It creates an asynchronous background thread that terminates on timeout",
+      "It buffers the entire table into memory before evaluating"
+    ],
+    "correctIndex": 1,
+    "explanation": "EXISTS is an existential quantifier. The moment the storage engine encounters a single row satisfying the condition, it short-circuits and emits TRUE without reading remaining rows."
+  },
+  {
+    "id": "mcq_sec10_35",
+    "topic": "EXISTS & Anti-Semi Join Engine",
+    "keyword": "EXISTS Mechanics & 3VL",
+    "tag": "Semi-Join Optimization",
+    "question": "Which relational algebra operator represents a query with a 'WHERE EXISTS' subquery?",
+    "options": [
+      "Cartesian Product",
+      "Anti-Join (▷)",
+      "Semi-Join (⋉)",
+      "Full Outer Join (⟗)"
+    ],
+    "correctIndex": 2,
+    "explanation": "A Semi-Join (denoted ⋉) returns rows from the left relation that have at least one matching row in the right relation, without duplicating left rows."
+  },
+  {
+    "id": "mcq_sec10_36",
+    "topic": "EXISTS & Anti-Semi Join Engine",
+    "keyword": "EXISTS Mechanics & 3VL",
+    "tag": "Semi-Join Optimization",
+    "question": "Which relational algebra operator represents a query with a 'WHERE NOT EXISTS' subquery?",
+    "options": [
+      "Natural Join",
+      "Inner Equi-Join",
+      "Theta Join",
+      "Anti-Semi-Join (▷)"
+    ],
+    "correctIndex": 3,
+    "explanation": "An Anti-Semi-Join (denoted ▷) returns rows from the left relation that have NO matching rows in the right relation."
+  },
+  {
+    "id": "mcq_sec10_37",
+    "topic": "EXISTS & Anti-Semi Join Engine",
+    "keyword": "EXISTS Mechanics & 3VL",
+    "tag": "Semi-Join Optimization",
+    "question": "How does a LEFT JOIN ... WHERE right.id IS NULL compare to NOT EXISTS in modern PostgreSQL and MySQL 8.0?",
+    "options": [
+      "Both patterns are recognized by modern optimizers and compiled into identical Anti-Semi-Join physical execution plans",
+      "LEFT JOIN IS NULL is always 10x slower because it materializes all outer rows",
+      "NOT EXISTS requires full table locks, while LEFT JOIN does not",
+      "LEFT JOIN IS NULL cannot be run on indexed columns"
+    ],
+    "correctIndex": 0,
+    "explanation": "Modern cost-based optimizers rewrite both 'LEFT JOIN ... WHERE right.pk IS NULL' and 'NOT EXISTS' into identical physical Anti-Semi-Join plans."
+  },
+  {
+    "id": "mcq_sec10_38",
+    "topic": "EXISTS & Anti-Semi Join Engine",
+    "keyword": "EXISTS Mechanics & 3VL",
+    "tag": "Semi-Join Optimization",
+    "question": "In MySQL 8.0, what optimization algorithm allows EXISTS subqueries to avoid nested loop execution?",
+    "options": [
+      "Index Skip Scan only",
+      "FirstMatch and Duplicate Weedout semi-join strategies",
+      "MRR (Multi-Range Read) only",
+      "Full Table Lock Bypass"
+    ],
+    "correctIndex": 1,
+    "explanation": "MySQL 8.0 provides dedicated Semi-Join strategies: FirstMatch, Materialize, Duplicate Weedout, and LooseScan to optimize EXISTS subqueries."
+  },
+  {
+    "id": "mcq_sec10_39",
+    "topic": "EXISTS & Anti-Semi Join Engine",
+    "keyword": "EXISTS Mechanics & 3VL",
+    "tag": "Semi-Join Optimization",
+    "question": "If an inner subquery in 'WHERE EXISTS (SELECT 1 FROM empty_table)' executes, what does EXISTS return?",
+    "options": [
+      "NULL",
+      "UNKNOWN",
+      "FALSE",
+      "0"
+    ],
+    "correctIndex": 2,
+    "explanation": "If the subquery returns 0 rows, EXISTS returns strictly FALSE."
+  },
+  {
+    "id": "mcq_sec10_40",
+    "topic": "EXISTS & Anti-Semi Join Engine",
+    "keyword": "EXISTS Mechanics & 3VL",
+    "tag": "Semi-Join Optimization",
+    "question": "Why is 'SELECT DISTINCT u.* FROM users u INNER JOIN orders o ON u.id = o.user_id' considered worse than 'WHERE EXISTS (SELECT 1 FROM orders WHERE user_id = u.id)' for finding active buyers?",
+    "options": [
+      "INNER JOIN cannot use indexes",
+      "DISTINCT is illegal with INNER JOIN in ANSI SQL",
+      "INNER JOIN does not support WHERE clauses",
+      "INNER JOIN creates duplicate rows for users with multiple orders, requiring an expensive DISTINCT sort/hash step; EXISTS short-circuits without generating duplicates"
+    ],
+    "correctIndex": 3,
+    "explanation": "INNER JOIN produces a row for every matching order (multiplying rows), requiring an expensive deduplication sort (DISTINCT). EXISTS stops at the first order, naturally preserving unique user rows."
+  },
+  {
+    "id": "mcq_sec10_41",
+    "topic": "EXISTS & Anti-Semi Join Engine",
+    "keyword": "EXISTS Mechanics & 3VL",
+    "tag": "Semi-Join Optimization",
+    "question": "What happens if a correlated subquery inside NOT EXISTS returns rows where every single column value is NULL?",
+    "options": [
+      "NOT EXISTS recognizes that a row exists (cardinality = 1) and correctly returns FALSE",
+      "NOT EXISTS treats it as an empty set and returns TRUE",
+      "It throws a NullPointerException in the execution engine",
+      "It converts the row to an empty string"
+    ],
+    "correctIndex": 0,
+    "explanation": "Even if a row consists entirely of NULL values, it is still a physical tuple. Because cardinality >= 1, EXISTS returns TRUE, and NOT EXISTS returns FALSE."
+  },
+  {
+    "id": "mcq_sec10_42",
+    "topic": "EXISTS & Anti-Semi Join Engine",
+    "keyword": "EXISTS Mechanics & 3VL",
+    "tag": "Semi-Join Optimization",
+    "question": "What is the 'FirstMatch' semi-join strategy in MySQL execution plans?",
+    "options": [
+      "It matches only the first row of the entire table and halts the query",
+      "It scans the inner table for a match; upon finding the first matching inner record for an outer row, it short-circuits and proceeds to the next outer row",
+      "It matches primary keys before foreign keys",
+      "It loads the first partition of a partitioned table"
+    ],
+    "correctIndex": 1,
+    "explanation": "FirstMatch is an execution strategy where the engine halts scanning the inner table the moment the first match for the current outer row is found."
+  },
+  {
+    "id": "mcq_sec10_43",
+    "topic": "EXISTS & Anti-Semi Join Engine",
+    "keyword": "EXISTS Mechanics & 3VL",
+    "tag": "Semi-Join Optimization",
+    "question": "Under what scenario would 'NOT IN' be preferable over 'NOT EXISTS'?",
+    "options": [
+      "When the subquery contains nullable foreign keys",
+      "When querying multi-million row tables",
+      "When checking membership against a small, static in-memory list of non-null constants (e.g. 'WHERE status NOT IN ('FAILED', 'CANCELLED')')",
+      "Never; NOT IN is forbidden in all SQL dialects"
+    ],
+    "correctIndex": 2,
+    "explanation": "NOT IN is clean, readable, and highly optimized when used against static, known non-null constant lists (e.g. status codes)."
+  },
+  {
+    "id": "mcq_sec10_44",
+    "topic": "EXISTS & Anti-Semi Join Engine",
+    "keyword": "EXISTS Mechanics & 3VL",
+    "tag": "Semi-Join Optimization",
+    "question": "In PostgreSQL EXPLAIN plans, how is an unnested NOT EXISTS query typically represented?",
+    "options": [
+      "Bitmap Heap Scan without Join",
+      "Nested Loop Cross Join",
+      "Seq Scan with Filter only",
+      "Hash Anti Join or Merge Anti Join"
+    ],
+    "correctIndex": 3,
+    "explanation": "PostgreSQL explicitly displays 'Hash Anti Join' or 'Merge Anti Join' when it unnests a NOT EXISTS subquery."
+  },
+  {
+    "id": "mcq_sec10_45",
+    "topic": "EXISTS & Anti-Semi Join Engine",
+    "keyword": "EXISTS Mechanics & 3VL",
+    "tag": "Semi-Join Optimization",
+    "question": "Can EXISTS be used in a CASE statement: 'CASE WHEN EXISTS (SELECT ...) THEN 'Yes' ELSE 'No' END'?",
+    "options": [
+      "Yes, EXISTS is a standard boolean expression valid in CASE WHEN, WHERE, and HAVING",
+      "No, EXISTS can only appear in WHERE clauses",
+      "Only if wrapped in an inline CTE",
+      "Only in Snowflake and BigQuery"
+    ],
+    "correctIndex": 0,
+    "explanation": "EXISTS produces a boolean value and is valid anywhere boolean predicates are permitted, including CASE WHEN conditional branches."
+  },
+  {
+    "id": "mcq_sec10_46",
+    "topic": "Non-Window Top-N Idioms",
+    "keyword": "Correlated Top-N",
+    "tag": "Relational Set Counting",
+    "question": "How does the classic correlated count idiom solve Top-N per category without window functions: 'WHERE (SELECT COUNT(*) FROM t t2 WHERE t2.dept = t1.dept AND t2.salary > t1.salary) < N'?",
+    "options": [
+      "It calculates the sum of all salaries and divides by N",
+      "An employee is in the Top-N if the count of colleagues in their department earning strictly more than them is strictly less than N",
+      "It generates random numbers for each department",
+      "It creates an external temporary table using a stored procedure"
+    ],
+    "correctIndex": 1,
+    "explanation": "By definition, the #1 earner has 0 colleagues earning more. The #2 earner has 1. Thus, if COUNT(salaries > current_salary) < N, the employee is in the Top N."
+  },
+  {
+    "id": "mcq_sec10_47",
+    "topic": "Non-Window Top-N Idioms",
+    "keyword": "Correlated Top-N",
+    "tag": "Relational Set Counting",
+    "question": "In the correlated Top-N idiom, how do you simulate DENSE_RANK() behavior instead of RANK() when duplicate salaries exist?",
+    "options": [
+      "By using MAX(salary) instead of COUNT",
+      "By adding a LIMIT clause to the inner query",
+      "By replacing COUNT(*) with COUNT(DISTINCT t2.salary)",
+      "By grouping by salary descending"
+    ],
+    "correctIndex": 2,
+    "explanation": "Using COUNT(DISTINCT t2.salary) ensures tied salaries are treated as a single rank tier, exactly matching DENSE_RANK() semantics."
+  },
+  {
+    "id": "mcq_sec10_48",
+    "topic": "Non-Window Top-N Idioms",
+    "keyword": "Correlated Top-N",
+    "tag": "Relational Set Counting",
+    "question": "Why is the correlated count Top-N idiom considered an O(N^2) operation on unindexed tables?",
+    "options": [
+      "Because it forces an index seek on primary keys",
+      "Because it doubles the memory allocation on each iteration",
+      "Because it uses recursive call stacks",
+      "Because for each of the N rows, it performs a full table scan of N rows to count higher salaries"
+    ],
+    "correctIndex": 3,
+    "explanation": "Evaluating a nested self-join where every row counts higher values across the table requires comparing every row against every other row: N * N = O(N^2)."
+  },
+  {
+    "id": "mcq_sec10_49",
+    "topic": "Non-Window Top-N Idioms",
+    "keyword": "Correlated Top-N",
+    "tag": "Relational Set Counting",
+    "question": "How can you find the exact N-th highest salary (e.g. 3rd highest) in a table without window functions or LIMIT?",
+    "options": [
+      "WHERE 2 = (SELECT COUNT(DISTINCT salary) FROM emp WHERE salary > e.salary)",
+      "WHERE salary = (SELECT AVG(salary) * 3 FROM emp)",
+      "WHERE salary < (SELECT MIN(salary) FROM emp)",
+      "WHERE 3 = (SELECT SUM(salary) FROM emp)"
+    ],
+    "correctIndex": 0,
+    "explanation": "The N-th highest distinct value has exactly N - 1 distinct values strictly greater than it. For the 3rd highest salary, exactly 2 distinct salaries are higher."
+  },
+  {
+    "id": "mcq_sec10_50",
+    "topic": "Non-Window Top-N Idioms",
+    "keyword": "Correlated Top-N",
+    "tag": "Relational Set Counting",
+    "question": "What is the primary reason senior technical interviews ask candidates to solve Top-N without window functions?",
+    "options": [
+      "Because window functions were removed from the SQL standard in 2023",
+      "To test fundamental understanding of relational set theory, self-joins, and correlated subquery evaluation",
+      "To prove that subqueries are faster than window functions",
+      "Because MySQL 8.0 does not support window functions"
+    ],
+    "correctIndex": 1,
+    "explanation": "Solving Top-N without window functions demonstrates that an engineer understands relational calculus, set cardinalities, and self-referencing joins."
+  },
+  {
+    "id": "mcq_sec10_51",
+    "topic": "Non-Window Top-N Idioms",
+    "keyword": "Correlated Top-N",
+    "tag": "Relational Set Counting",
+    "question": "In a table with salaries [100, 90, 90, 80], what does 'WHERE (SELECT COUNT(*) FROM t t2 WHERE t2.val > t1.val) < 2' return?",
+    "options": [
+      "100 and both 90s",
+      "100, 90, 90, 80",
+      "Only 100",
+      "Only 90"
+    ],
+    "correctIndex": 2,
+    "explanation": "For 100: 0 rows are greater (0 < 2 -> KEPT). For 90: exactly 1 row (100) is greater (1 < 2 -> KEPT). Both rows with 90 have 1 row greater, so both 90s are returned along with 100."
+  },
+  {
+    "id": "mcq_sec10_52",
+    "topic": "Non-Window Top-N Idioms",
+    "keyword": "Correlated Top-N",
+    "tag": "Relational Set Counting",
+    "question": "What index is required to make the correlated Top-N query performant?",
+    "options": [
+      "A Hash index on emp_name",
+      "A Spatial R-Tree index",
+      "A Full-text index on title",
+      "A Composite B-Tree index on (dept_id, salary DESC)"
+    ],
+    "correctIndex": 3,
+    "explanation": "A composite index on (dept_id, salary DESC) allows the inner query to perform a fast index range scan to count salaries greater than the target value."
+  },
+  {
+    "id": "mcq_sec10_53",
+    "topic": "Non-Window Top-N Idioms",
+    "keyword": "Correlated Top-N",
+    "tag": "Relational Set Counting",
+    "question": "How does the self-join Top-N approach compare to the correlated subquery approach: 'SELECT e1.* FROM emp e1 JOIN emp e2 ON e1.dept = e2.dept AND e1.salary <= e2.salary GROUP BY e1.id HAVING COUNT(...) <= N'?",
+    "options": [
+      "The self-join approach groups candidate pairs and uses HAVING; both express the same relational logic with similar O(N^2) join graphs",
+      "The self-join approach is illegal in ANSI SQL",
+      "The self-join approach only works for N=1",
+      "The self-join approach bypasses GROUP BY"
+    ],
+    "correctIndex": 0,
+    "explanation": "The self-join with GROUP BY and HAVING COUNT() <= N is the relational join equivalent of the correlated subquery Top-N idiom."
+  },
+  {
+    "id": "mcq_sec10_54",
+    "topic": "Non-Window Top-N Idioms",
+    "keyword": "Correlated Top-N",
+    "tag": "Relational Set Counting",
+    "question": "If an interviewer asks for the Top 1 record per group without window functions, what is the cleanest subquery pattern?",
+    "options": [
+      "WHERE salary > (SELECT MIN(salary) FROM emp)",
+      "WHERE salary = (SELECT MAX(salary) FROM emp e2 WHERE e2.dept = e1.dept)",
+      "WHERE salary = 0",
+      "WHERE dept IN (SELECT dept FROM dept)"
+    ],
+    "correctIndex": 1,
+    "explanation": "Matching the column against a correlated MAX() subquery ('WHERE salary = (SELECT MAX(salary) FROM emp e2 WHERE e2.dept = e1.dept)') is the canonical Top-1 pattern."
+  },
+  {
+    "id": "mcq_sec10_55",
+    "topic": "Non-Window Top-N Idioms",
+    "keyword": "Correlated Top-N",
+    "tag": "Relational Set Counting",
+    "question": "In a table with duplicate maximum values (e.g. two employees tied at $200K in Dept 10), what does 'WHERE salary = (SELECT MAX(salary)...)' return?",
+    "options": [
+      "Exactly 1 employee chosen arbitrarily",
+      "Zero employees",
+      "Both tied employees",
+      "A CardinalityViolation error"
+    ],
+    "correctIndex": 2,
+    "explanation": "Because the outer WHERE clause matches any row where 'salary = 200000', both tied employees satisfy the predicate and are returned."
+  },
+  {
+    "id": "mcq_sec10_56",
+    "topic": "Non-Window Top-N Idioms",
+    "keyword": "Correlated Top-N",
+    "tag": "Relational Set Counting",
+    "question": "How can you return strictly 1 employee in case of ties for Top-1 without window functions in MySQL?",
+    "options": [
+      "Convert emp_id to negative values",
+      "Use DROP DUPLICATES",
+      "Set SQL_MODE = 'NO_TIES'",
+      "Add 'AND emp_id = (SELECT MIN(emp_id) FROM emp e2 WHERE e2.dept = e1.dept AND e2.salary = e1.salary)' as a tie-breaker"
+    ],
+    "correctIndex": 3,
+    "explanation": "Adding a correlated secondary tie-breaker subquery on the primary key (e.g. MIN(emp_id)) enforces deterministic single-row Top-1 extraction."
+  },
+  {
+    "id": "mcq_sec10_57",
+    "topic": "Non-Window Top-N Idioms",
+    "keyword": "Correlated Top-N",
+    "tag": "Relational Set Counting",
+    "question": "Why do distributed MPP engines (Snowflake, BigQuery) penalize the correlated Top-N count pattern heavily?",
+    "options": [
+      "They lack B-Tree index lookups, forcing expensive full table cross-shuffles across cluster compute nodes",
+      "They do not support the COUNT() function",
+      "They only allow queries with fewer than 10 lines",
+      "They reject queries with subqueries in WHERE"
+    ],
+    "correctIndex": 0,
+    "explanation": "Cloud data warehouses do not have traditional B-Tree indexes for row-by-row lookups. A correlated self-join forces massive data shuffling across cluster nodes."
+  },
+  {
+    "id": "mcq_sec10_58",
+    "topic": "Non-Window Top-N Idioms",
+    "keyword": "Correlated Top-N",
+    "tag": "Relational Set Counting",
+    "question": "What is the relative frequency calculation idiom using subqueries: 'SELECT cat, COUNT(*) * 100.0 / (SELECT COUNT(*) FROM items) FROM items GROUP BY cat'?",
+    "options": [
+      "It counts items across multiple servers",
+      "It divides category count by a scalar subquery calculating total table count to produce percentage distribution",
+      "It creates a histogram using window framing",
+      "It deletes categories with under 100 items"
+    ],
+    "correctIndex": 1,
+    "explanation": "Using a scalar subquery '(SELECT COUNT(*) FROM items)' inside the SELECT list computes the global denominator, allowing inline percentage-of-total calculations without window functions."
+  },
+  {
+    "id": "mcq_sec10_59",
+    "topic": "Non-Window Top-N Idioms",
+    "keyword": "Correlated Top-N",
+    "tag": "Relational Set Counting",
+    "question": "Why is '100.0' used instead of '100' in percentage calculations in SQL Server and PostgreSQL?",
+    "options": [
+      "Because integers are forbidden in division",
+      "To satisfy syntax formatting linters",
+      "To indicate floating-point precision and prevent integer division truncation to 0",
+      "To round numbers to the nearest hundred"
+    ],
+    "correctIndex": 2,
+    "explanation": "In SQL Server and Postgres, dividing two integers yields an integer (e.g., 5 / 10 = 0). Multiplying by '100.0' casts the numerator to a decimal, preserving fractional precision."
+  },
+  {
+    "id": "mcq_sec10_60",
+    "topic": "Non-Window Top-N Idioms",
+    "keyword": "Correlated Top-N",
+    "tag": "Relational Set Counting",
+    "question": "Can the correlated Top-N idiom be used to find the Bottom-N records?",
+    "options": [
+      "Only by multiplying all values by -1",
+      "No, it only works for maximum values",
+      "Only if the table is sorted descending first",
+      "Yes, simply invert the comparison operator from '>' to '<': COUNT(salary < e.salary) < N"
+    ],
+    "correctIndex": 3,
+    "explanation": "Inverting the operator to 't2.salary < e1.salary' counts how many records are strictly smaller, identifying the Bottom-N records."
+  },
+  {
+    "id": "mcq_sec10_61",
+    "topic": "Modular CTE Pipelines",
+    "keyword": "Common Table Expressions",
+    "tag": "Pipeline Architecture",
+    "question": "What is a Common Table Expression (CTE) in SQL?",
+    "options": [
+      "A named temporary result set defined within the lexical scope of a single query using the WITH clause",
+      "A permanent view stored in the database catalog",
+      "A table physically stored in tempdb that survives across sessions",
+      "A transaction savepoint"
+    ],
+    "correctIndex": 0,
+    "explanation": "A CTE is a named temporary result set defined at the beginning of a query using the 'WITH' clause, existing only for the duration of that statement."
+  },
+  {
+    "id": "mcq_sec10_62",
+    "topic": "Modular CTE Pipelines",
+    "keyword": "Common Table Expressions",
+    "tag": "Pipeline Architecture",
+    "question": "How does a multi-tier CTE pipeline improve database engineering maintainability?",
+    "options": [
+      "It converts SQL into Java bytecode",
+      "It breaks monolithic, deeply nested subquery pyramids into modular, top-to-bottom, literate dataflow stages",
+      "It automatically creates clustered indexes on all columns",
+      "It bypasses transaction rollback logs"
+    ],
+    "correctIndex": 1,
+    "explanation": "Multi-tier CTEs allow developers to structure data transformations into clean, sequential, testable pipeline stages, eliminating unreadable deeply nested subquery spaghetti."
+  },
+  {
+    "id": "mcq_sec10_63",
+    "topic": "Modular CTE Pipelines",
+    "keyword": "Common Table Expressions",
+    "tag": "Pipeline Architecture",
+    "question": "Can a downstream CTE in a WITH clause reference an upstream CTE defined earlier in the same WITH clause?",
+    "options": [
+      "No, all CTEs in a WITH clause execute in complete isolation and cannot see each other",
+      "Only if they share the same table schema",
+      "Yes, any CTE defined later can reference any prior CTE defined earlier in the same statement",
+      "Only in Snowflake, but not in MySQL or PostgreSQL"
+    ],
+    "correctIndex": 2,
+    "explanation": "ANSI SQL allows chained CTEs: any CTE defined later in the WITH block can freely reference CTEs defined prior to it."
+  },
+  {
+    "id": "mcq_sec10_64",
+    "topic": "Modular CTE Pipelines",
+    "keyword": "Common Table Expressions",
+    "tag": "Pipeline Architecture",
+    "question": "What is an 'Optimization Fence' in relation to Common Table Expressions?",
+    "options": [
+      "A firewall preventing external connections to the database",
+      "A hardware limit on database memory",
+      "A syntax error caused by too many WITH statements",
+      "An execution boundary where the optimizer evaluates and materializes a CTE in isolation without pushing down external WHERE predicates"
+    ],
+    "correctIndex": 3,
+    "explanation": "Historically in PostgreSQL (prior to PG 12), CTEs acted as optimization fences: the engine materialized the CTE completely, preventing predicate pushdown from outer queries into the CTE."
+  },
+  {
+    "id": "mcq_sec10_65",
+    "topic": "Modular CTE Pipelines",
+    "keyword": "Common Table Expressions",
+    "tag": "Pipeline Architecture",
+    "question": "In PostgreSQL 12+, how can an engineer explicitly force a CTE to be materialized in temporary memory?",
+    "options": [
+      "WITH cte_name AS MATERIALIZED (SELECT ...)",
+      "WITH cte_name AS PERSISTENT (SELECT ...)",
+      "WITH cte_name FORCE INDEX (SELECT ...)",
+      "SET MATERIALIZE = TRUE;"
+    ],
+    "correctIndex": 0,
+    "explanation": "Postgres 12+ introduced the 'AS MATERIALIZED' and 'AS NOT MATERIALIZED' keywords to explicitly control whether the optimizer inlines or caches a CTE."
+  },
+  {
+    "id": "mcq_sec10_66",
+    "topic": "Modular CTE Pipelines",
+    "keyword": "Common Table Expressions",
+    "tag": "Pipeline Architecture",
+    "question": "How do MySQL 8.0 and SQLite handle non-recursive CTEs under the hood?",
+    "options": [
+      "They convert every CTE into a permanent table on disk",
+      "They inline and merge non-recursive CTEs directly into the outer query's Abstract Syntax Tree like derived tables",
+      "They execute them on external worker nodes",
+      "They reject CTEs with more than 10 rows"
+    ],
+    "correctIndex": 1,
+    "explanation": "Modern engines (MySQL 8.0, SQLite 3.8+) treat non-recursive CTEs as syntactic sugar for derived tables, inlining and optimizing them alongside the main query."
+  },
+  {
+    "id": "mcq_sec10_67",
+    "topic": "Modular CTE Pipelines",
+    "keyword": "Common Table Expressions",
+    "tag": "Pipeline Architecture",
+    "question": "Can a single WITH clause define multiple CTEs separated by commas?",
+    "options": [
+      "No, each CTE requires its own separate WITH keyword",
+      "Only up to a maximum of 2 CTEs",
+      "Yes: 'WITH cte1 AS (...), cte2 AS (...) SELECT ...'",
+      "Only if the first CTE is named 'main'"
+    ],
+    "correctIndex": 2,
+    "explanation": "A single WITH statement can declare multiple CTEs separated by commas: 'WITH cte1 AS (...), cte2 AS (...) SELECT ...'."
+  },
+  {
+    "id": "mcq_sec10_68",
+    "topic": "Modular CTE Pipelines",
+    "keyword": "Common Table Expressions",
+    "tag": "Pipeline Architecture",
+    "question": "Can a CTE be referenced multiple times within the same final query?",
+    "options": [
+      "No, a CTE can only be consumed once, like a streaming pipe",
+      "Only if it contains fewer than 100 rows",
+      "Only if it is declared RECURSIVE",
+      "Yes, a CTE can be referenced multiple times (e.g. joined to itself or unioned) in downstream queries"
+    ],
+    "correctIndex": 3,
+    "explanation": "A major benefit of CTEs is reusability: the same CTE can be referenced multiple times in JOINs, subqueries, or set operations within the same statement."
+  },
+  {
+    "id": "mcq_sec10_69",
+    "topic": "Modular CTE Pipelines",
+    "keyword": "Common Table Expressions",
+    "tag": "Pipeline Architecture",
+    "question": "Which SQL statements can be preceded by a WITH clause in modern ANSI SQL?",
+    "options": [
+      "SELECT, INSERT, UPDATE, and DELETE statements",
+      "Only SELECT statements",
+      "Only CREATE TABLE statements",
+      "Only ALTER DATABASE commands"
+    ],
+    "correctIndex": 0,
+    "explanation": "CTEs can precede SELECT, INSERT, UPDATE, and DELETE statements, providing dynamic datasets for data modification operations."
+  },
+  {
+    "id": "mcq_sec10_70",
+    "topic": "Modular CTE Pipelines",
+    "keyword": "Common Table Expressions",
+    "tag": "Pipeline Architecture",
+    "question": "What happens if a CTE defines column names in its header: 'WITH cte(a, b, c) AS (SELECT 1, 2, 3)'?",
+    "options": [
+      "It throws a syntax error",
+      "The header explicitly overrides and assigns aliases 'a', 'b', and 'c' to the projected columns",
+      "It creates physical columns in the database",
+      "It casts the columns to CHAR"
+    ],
+    "correctIndex": 1,
+    "explanation": "ANSI SQL allows explicit column aliasing in the CTE definition header: 'WITH my_cte(col1, col2) AS (...)', overriding any internal column names."
+  },
+  {
+    "id": "mcq_sec10_71",
+    "topic": "Modular CTE Pipelines",
+    "keyword": "Common Table Expressions",
+    "tag": "Pipeline Architecture",
+    "question": "What is a 'Data-Modifying CTE' in PostgreSQL?",
+    "options": [
+      "A CTE that truncates tables",
+      "A CTE that alters database table schemas",
+      "A CTE that contains INSERT, UPDATE, or DELETE with a RETURNING clause, allowing downstream queries to consume modified rows",
+      "A CTE that grants user permissions"
+    ],
+    "correctIndex": 2,
+    "explanation": "Postgres supports data-modifying CTEs: you can run an INSERT, UPDATE, or DELETE with 'RETURNING *' inside a CTE and immediately query those affected rows."
+  },
+  {
+    "id": "mcq_sec10_72",
+    "topic": "Modular CTE Pipelines",
+    "keyword": "Common Table Expressions",
+    "tag": "Pipeline Architecture",
+    "question": "Why might a CTE consume more memory than an equivalent subquery in older database versions?",
+    "options": [
+      "Because CTEs create double buffer pages",
+      "Because CTEs use 64-bit pointers instead of 32-bit",
+      "Because CTEs encrypt their contents",
+      "Because older engines materialized the entire CTE result set in memory or on disk without pruning unneeded columns or rows"
+    ],
+    "correctIndex": 3,
+    "explanation": "Older engines materialized CTEs fully without pushing down outer WHERE filters or unused column projections, leading to unnecessary memory consumption."
+  },
+  {
+    "id": "mcq_sec10_73",
+    "topic": "Modular CTE Pipelines",
+    "keyword": "Common Table Expressions",
+    "tag": "Pipeline Architecture",
+    "question": "Can a CTE contain window functions?",
+    "options": [
+      "Yes, wrapping window functions in a CTE is the standard idiom to filter on window outputs in an outer WHERE clause",
+      "No, window functions are forbidden in CTEs",
+      "Only if the CTE is recursive",
+      "Only in MySQL"
+    ],
+    "correctIndex": 0,
+    "explanation": "Because window functions cannot be placed directly in WHERE or HAVING clauses, wrapping them inside a CTE and filtering in the outer query is the universal standard."
+  },
+  {
+    "id": "mcq_sec10_74",
+    "topic": "Modular CTE Pipelines",
+    "keyword": "Common Table Expressions",
+    "tag": "Pipeline Architecture",
+    "question": "What is the scope of a CTE declared at the beginning of a query?",
+    "options": [
+      "The entire database cluster",
+      "Strictly the single statement to which the WITH clause is attached",
+      "The user's active session until disconnect",
+      "The stored procedure file only"
+    ],
+    "correctIndex": 1,
+    "explanation": "A CTE exists strictly for the single query statement it prefixes. Once that statement finishes executing, the CTE vanishes completely from memory."
+  },
+  {
+    "id": "mcq_sec10_75",
+    "topic": "Modular CTE Pipelines",
+    "keyword": "Common Table Expressions",
+    "tag": "Pipeline Architecture",
+    "question": "How does readability compare between a 4-level nested derived table query and a 4-step CTE pipeline?",
+    "options": [
+      "Derived tables are always more readable",
+      "They are identical in visual structure",
+      "Nested derived tables read outside-in and bottom-up; CTE pipelines read top-to-bottom in logical dataflow order",
+      "CTEs require reverse polish notation"
+    ],
+    "correctIndex": 2,
+    "explanation": "Deeply nested subqueries require reading from the innermost block outwards, whereas CTE pipelines read top-to-bottom, matching human ETL mental models."
+  },
+  {
+    "id": "mcq_sec10_76",
+    "topic": "Recursive CTEs & Hierarchies",
+    "keyword": "WITH RECURSIVE",
+    "tag": "Tree Traversal Physics",
+    "question": "What are the two mandatory structural members of an ANSI SQL Recursive CTE?",
+    "options": [
+      "The Master Member and the Worker Member",
+      "The Initializer and the Destructor",
+      "The Primary Key and the Foreign Key",
+      "The Anchor Member (base query) and the Recursive Member, combined via UNION ALL"
+    ],
+    "correctIndex": 3,
+    "explanation": "A recursive CTE must consist of an Anchor Member (base case) and a Recursive Member (inductive step that references the CTE name), unified by UNION or UNION ALL."
+  },
+  {
+    "id": "mcq_sec10_77",
+    "topic": "Recursive CTEs & Hierarchies",
+    "keyword": "WITH RECURSIVE",
+    "tag": "Tree Traversal Physics",
+    "question": "How does the database engine physically evaluate a recursive CTE without causing a stack overflow?",
+    "options": [
+      "It uses a procedural while-loop with an internal Working Table queue (Breadth-First Search)",
+      "It spawns a new operating system process for each recursion step",
+      "It rewrites the query into a multi-table cross join",
+      "It uses an external Python interpreter"
+    ],
+    "correctIndex": 0,
+    "explanation": "Relational engines evaluate recursive CTEs iteratively using a Working Table buffer. It evaluates the anchor, loads rows into the queue, and loops until the queue is empty."
+  },
+  {
+    "id": "mcq_sec10_78",
+    "topic": "Recursive CTEs & Hierarchies",
+    "keyword": "WITH RECURSIVE",
+    "tag": "Tree Traversal Physics",
+    "question": "What causes an infinite loop in a recursive CTE traversing an employee management hierarchy?",
+    "options": [
+      "An employee reporting to multiple managers",
+      "A cycle in the data graph (e.g. Employee A manages B, B manages C, and C manages A)",
+      "Having more than 100 employees in the table",
+      "Employees with NULL salaries"
+    ],
+    "correctIndex": 1,
+    "explanation": "Cycles in graph data (circular references) cause the recursive member to continuously produce rows, resulting in infinite recursion until the engine aborts."
+  },
+  {
+    "id": "mcq_sec10_79",
+    "topic": "Recursive CTEs & Hierarchies",
+    "keyword": "WITH RECURSIVE",
+    "tag": "Tree Traversal Physics",
+    "question": "In MySQL 8.0, what system variable prevents infinite recursion from crashing the database server?",
+    "options": [
+      "max_connections",
+      "innodb_buffer_pool_size",
+      "cte_max_recursion_depth (default 1,000 iterations)",
+      "net_read_timeout"
+    ],
+    "correctIndex": 2,
+    "explanation": "MySQL safeguards against runaway recursive loops with 'cte_max_recursion_depth', which defaults to 1,000 iterations before raising Error 3636."
+  },
+  {
+    "id": "mcq_sec10_80",
+    "topic": "Recursive CTEs & Hierarchies",
+    "keyword": "WITH RECURSIVE",
+    "tag": "Tree Traversal Physics",
+    "question": "Why must you cast string accumulators in the Anchor Member of a recursive CTE: 'CAST(emp_name AS CHAR(255)) AS path'?",
+    "options": [
+      "To convert characters to Unicode",
+      "To encrypt the breadcrumb path",
+      "Because recursive CTEs forbid variable-length strings",
+      "Because the recursive step concatenates strings; if the anchor defaults to VARCHAR(20), deeper iterations will fail with data truncation errors!"
+    ],
+    "correctIndex": 3,
+    "explanation": "The datatype of CTE columns is determined by the Anchor Member. If the anchor string is VARCHAR(20), concatenating longer paths in recursion throws a string truncation error."
+  },
+  {
+    "id": "mcq_sec10_81",
+    "topic": "Recursive CTEs & Hierarchies",
+    "keyword": "WITH RECURSIVE",
+    "tag": "Tree Traversal Physics",
+    "question": "Which clause is strictly FORBIDDEN inside the Recursive Member of a recursive CTE in ANSI SQL?",
+    "options": [
+      "GROUP BY / DISTINCT / Aggregate Functions on the recursive reference",
+      "INNER JOIN",
+      "WHERE",
+      "CASE WHEN"
+    ],
+    "correctIndex": 0,
+    "explanation": "ANSI SQL prohibits GROUP BY, HAVING, DISTINCT, and Window Functions inside the recursive member when applied to the recursive table reference."
+  },
+  {
+    "id": "mcq_sec10_82",
+    "topic": "Recursive CTEs & Hierarchies",
+    "keyword": "WITH RECURSIVE",
+    "tag": "Tree Traversal Physics",
+    "question": "How is the hierarchy depth level computed in a recursive CTE?",
+    "options": [
+      "By using the LENGTH() of employee names",
+      "By setting level = 1 in the Anchor Member and level + 1 in the Recursive Member",
+      "By counting foreign keys",
+      "By using ROW_NUMBER() in the anchor"
+    ],
+    "correctIndex": 1,
+    "explanation": "Setting a literal '1 AS depth' in the anchor and projecting 'parent.depth + 1' in the recursive member increments the depth level at each generational hop."
+  },
+  {
+    "id": "mcq_sec10_83",
+    "topic": "Recursive CTEs & Hierarchies",
+    "keyword": "WITH RECURSIVE",
+    "tag": "Tree Traversal Physics",
+    "question": "What is the Anchor Member condition to find the root of a top-down management hierarchy?",
+    "options": [
+      "WHERE manager_id = emp_id",
+      "WHERE salary = (SELECT MAX(salary) FROM emp)",
+      "WHERE manager_id IS NULL",
+      "WHERE title LIKE '%Executive%'"
+    ],
+    "correctIndex": 2,
+    "explanation": "In an organizational tree, root nodes (e.g. CEO) have no manager, represented by 'WHERE manager_id IS NULL'."
+  },
+  {
+    "id": "mcq_sec10_84",
+    "topic": "Recursive CTEs & Hierarchies",
+    "keyword": "WITH RECURSIVE",
+    "tag": "Tree Traversal Physics",
+    "question": "Can a recursive CTE be used to generate a continuous sequence of integers from 1 to 100?",
+    "options": [
+      "No, recursive CTEs can only query existing tables",
+      "Only in PostgreSQL, but not in MySQL or SQL Server",
+      "Only if an existing numbers table is joined",
+      "Yes: 'WITH RECURSIVE seq(n) AS (SELECT 1 UNION ALL SELECT n+1 FROM seq WHERE n < 100) SELECT n FROM seq;'"
+    ],
+    "correctIndex": 3,
+    "explanation": "Recursive CTEs are the standard mechanism to generate in-memory number series, date spines, and calendar sequences without physical tables."
+  },
+  {
+    "id": "mcq_sec10_85",
+    "topic": "Recursive CTEs & Hierarchies",
+    "keyword": "WITH RECURSIVE",
+    "tag": "Tree Traversal Physics",
+    "question": "How do you traverse a hierarchy bottom-up (finding all managers above an employee) vs top-down?",
+    "options": [
+      "Invert the join condition: join employee.manager_id = parent_cte.emp_id instead of employee.emp_id = parent_cte.manager_id",
+      "Sort the table descending before running the query",
+      "Set depth = depth - 1",
+      "Use UNION instead of UNION ALL"
+    ],
+    "correctIndex": 0,
+    "explanation": "To walk up the tree, the recursive member joins the employee's manager_id to the parent's emp_id, climbing upwards toward the root."
+  },
+  {
+    "id": "mcq_sec10_86",
+    "topic": "Recursive CTEs & Hierarchies",
+    "keyword": "WITH RECURSIVE",
+    "tag": "Tree Traversal Physics",
+    "question": "What is the termination condition of a recursive CTE?",
+    "options": [
+      "When the CPU reaches 100% utilization",
+      "When the recursive member produces an empty result set (0 rows added to the working table)",
+      "When the calling query's LIMIT is reached",
+      "When the database transaction commits"
+    ],
+    "correctIndex": 1,
+    "explanation": "Recursion naturally terminates when the recursive step returns 0 new rows (the Working Table becomes empty)."
+  },
+  {
+    "id": "mcq_sec10_87",
+    "topic": "Recursive CTEs & Hierarchies",
+    "keyword": "WITH RECURSIVE",
+    "tag": "Tree Traversal Physics",
+    "question": "What syntax does PostgreSQL 14+ introduce to automatically detect and prevent cycles in recursive CTEs?",
+    "options": [
+      "NO CYCLE",
+      "AVOID LOOP",
+      "CYCLE col_name SET is_cycle USING path",
+      "BREAK ON DUPLICATE"
+    ],
+    "correctIndex": 2,
+    "explanation": "SQL:2008 and PostgreSQL 14+ feature the official 'CYCLE ... SET ... USING ...' clause to detect cyclic graphs natively."
+  },
+  {
+    "id": "mcq_sec10_88",
+    "topic": "Recursive CTEs & Hierarchies",
+    "keyword": "WITH RECURSIVE",
+    "tag": "Tree Traversal Physics",
+    "question": "Why is 'UNION ALL' preferred over 'UNION' in recursive CTEs?",
+    "options": [
+      "UNION ALL prevents NULL values",
+      "UNION ALL is slower but safer",
+      "UNION deletes the anchor rows",
+      "UNION ALL is required by syntax in most databases; UNION requires an expensive duplicate purge on every recursive generation"
+    ],
+    "correctIndex": 3,
+    "explanation": "UNION ALL avoids running an expensive duplicate-elimination sort/hash on every iteration, making it the standard and often syntactically required operator."
+  },
+  {
+    "id": "mcq_sec10_89",
+    "topic": "Recursive CTEs & Hierarchies",
+    "keyword": "WITH RECURSIVE",
+    "tag": "Tree Traversal Physics",
+    "question": "Can the Recursive Member reference the CTE name more than once (e.g. self-joining the CTE within itself)?",
+    "options": [
+      "No, ANSI SQL mandates that the recursive member reference the recursive CTE exactly once",
+      "Yes, up to 5 times",
+      "Only if the CTE has fewer than 2 columns",
+      "Only in Oracle"
+    ],
+    "correctIndex": 0,
+    "explanation": "Standard SQL specifies linear recursion: the recursive CTE may be referenced at most once in the FROM clause of the recursive member."
+  },
+  {
+    "id": "mcq_sec10_90",
+    "topic": "Recursive CTEs & Hierarchies",
+    "keyword": "WITH RECURSIVE",
+    "tag": "Tree Traversal Physics",
+    "question": "How do you assemble a breadcrumb path like 'CEO -> VP -> Director' during recursive execution?",
+    "options": [
+      "Using the GROUP_CONCAT function in the anchor",
+      "CONCAT(parent.path, ' -> ', child.name)",
+      "Using ARRAY_AGG in the recursive member",
+      "Using an external Python script"
+    ],
+    "correctIndex": 1,
+    "explanation": "Projecting 'CONCAT(parent.path, ' -> ', child.name)' accumulates ancestry breadcrumb strings across each generational level."
+  },
+  {
+    "id": "mcq_sec10_91",
+    "topic": "Recursive Graph & Network Paths",
+    "keyword": "Graph Traversals",
+    "tag": "BOM & Network Paths",
+    "question": "In a Bill of Materials (BOM) database, what does a recursive CTE compute?",
+    "options": [
+      "The employee payroll for factory workers",
+      "The shipping tracking numbers",
+      "The total weight and component explosion of an assembled product across all sub-assembly levels",
+      "The database backup frequency"
+    ],
+    "correctIndex": 2,
+    "explanation": "A BOM explosion query uses recursive CTEs to drill down from a finished product through sub-assemblies down to raw materials, multiplying quantities at each tier."
+  },
+  {
+    "id": "mcq_sec10_92",
+    "topic": "Recursive Graph & Network Paths",
+    "keyword": "Graph Traversals",
+    "tag": "BOM & Network Paths",
+    "question": "How do you calculate the total quantity of a raw part in a multi-level BOM explosion?",
+    "options": [
+      "By dividing the price by quantity",
+      "By adding 1 to the quantity",
+      "By using MAX(qty)",
+      "By multiplying the parent's accumulated quantity by the child's unit quantity at each recursive level: 'parent.qty * child.qty'"
+    ],
+    "correctIndex": 3,
+    "explanation": "In BOM hierarchies, quantities compound multiplicatively: 1 car requires 4 doors, each door requires 3 hinges -> total hinges = 4 * 3 = 12."
+  },
+  {
+    "id": "mcq_sec10_93",
+    "topic": "Recursive Graph & Network Paths",
+    "keyword": "Graph Traversals",
+    "tag": "BOM & Network Paths",
+    "question": "In a flight route network 'flights(origin, dest, cost)', how does a recursive CTE find all destinations reachable within 2 layovers?",
+    "options": [
+      "By setting depth <= 3 in the recursive member's WHERE filter",
+      "By joining flights to itself 10 times",
+      "By grouping by origin and having count > 2",
+      "By using LIMIT 2"
+    ],
+    "correctIndex": 0,
+    "explanation": "Setting 'WHERE layovers <= 2' in the recursive step bounds graph traversal to paths with at most 2 intermediate stops."
+  },
+  {
+    "id": "mcq_sec10_94",
+    "topic": "Recursive Graph & Network Paths",
+    "keyword": "Graph Traversals",
+    "tag": "BOM & Network Paths",
+    "question": "How can you compute the total travel cost of a multi-leg itinerary in a recursive route query?",
+    "options": [
+      "Taking the MAX of leg costs",
+      "Accumulating the cost: 'parent.total_cost + child.leg_cost'",
+      "Multiplying leg costs",
+      "Using AVG(cost)"
+    ],
+    "correctIndex": 1,
+    "explanation": "Accumulating additive metrics along a graph path is done via 'parent.accumulated_val + child.edge_val'."
+  },
+  {
+    "id": "mcq_sec10_95",
+    "topic": "Recursive Graph & Network Paths",
+    "keyword": "Graph Traversals",
+    "tag": "BOM & Network Paths",
+    "question": "How do you prevent cyclic paths in flight networks (e.g. JFK -> ORD -> JFK) when PostgreSQL 14 CYCLE syntax is unavailable?",
+    "options": [
+      "Set AUTOCOMMIT to 0",
+      "Disable foreign keys",
+      "Track the path as a string and check: 'WHERE parent.path NOT LIKE CONCAT('%', child.dest, '%')'",
+      "Use DROP TABLE"
+    ],
+    "correctIndex": 2,
+    "explanation": "Tracking visited nodes in a path string (or array) and filtering out nodes already in the path prevents cyclic infinite loops."
+  },
+  {
+    "id": "mcq_sec10_96",
+    "topic": "Recursive Graph & Network Paths",
+    "keyword": "Graph Traversals",
+    "tag": "BOM & Network Paths",
+    "question": "What algorithm does a recursive CTE inherently simulate when traversing a graph?",
+    "options": [
+      "Dijkstra's Algorithm with Fibonacci Heaps",
+      "Binary Search on disk pages",
+      "Quicksort",
+      "Breadth-First Search (BFS)"
+    ],
+    "correctIndex": 3,
+    "explanation": "Because rows produced by iteration K become the input for iteration K+1, recursive CTEs evaluate graphs in Breadth-First Search (BFS) level-order."
+  },
+  {
+    "id": "mcq_sec10_97",
+    "topic": "Recursive Graph & Network Paths",
+    "keyword": "Graph Traversals",
+    "tag": "BOM & Network Paths",
+    "question": "How can you find the shortest path between two nodes in an unweighted graph using a recursive CTE?",
+    "options": [
+      "Order the recursive output by hop_count ASC and apply LIMIT 1",
+      "Use the MAX() function",
+      "Sum the node IDs",
+      "Use GROUP BY without ORDER BY"
+    ],
+    "correctIndex": 0,
+    "explanation": "Because BFS visits nodes in increasing order of distance, the first time the target node is reached represents the shortest hop path."
+  },
+  {
+    "id": "mcq_sec10_98",
+    "topic": "Recursive Graph & Network Paths",
+    "keyword": "Graph Traversals",
+    "tag": "BOM & Network Paths",
+    "question": "In a social network friend graph 'friendships(user_a, user_b)', how do you find 'Friends of Friends' (2nd degree connections)?",
+    "options": [
+      "Run a FULL OUTER JOIN on all users",
+      "Anchor on user_a, recurse to immediate friends (hop 1), then recurse once more (hop 2), filtering out self-connections",
+      "Use LIKE '%friend%'",
+      "Multiply user IDs"
+    ],
+    "correctIndex": 1,
+    "explanation": "A 2-hop recursive CTE identifies direct friends at hop 1 and friends of friends at hop 2, excluding the root user."
+  },
+  {
+    "id": "mcq_sec10_99",
+    "topic": "Recursive Graph & Network Paths",
+    "keyword": "Graph Traversals",
+    "tag": "BOM & Network Paths",
+    "question": "What is the Space Complexity of a recursive CTE working table on a dense graph with branching factor B and depth D?",
+    "options": [
+      "O(log D)",
+      "O(1)",
+      "O(B^D) rows in the worst-case working buffer",
+      "O(D)"
+    ],
+    "correctIndex": 2,
+    "explanation": "In dense graphs, the number of nodes at depth D grows exponentially with the branching factor (B^D), potentially exhausting memory if unbounded."
+  },
+  {
+    "id": "mcq_sec10_100",
+    "topic": "Recursive Graph & Network Paths",
+    "keyword": "Graph Traversals",
+    "tag": "BOM & Network Paths",
+    "question": "Can a recursive CTE traverse a Directed Acyclic Graph (DAG)?",
+    "options": [
+      "Only in SQLite",
+      "No, recursive CTEs only work on binary trees",
+      "Only if the DAG has fewer than 10 edges",
+      "Yes, DAGs are ideal for recursive CTEs because their lack of cycles guarantees deterministic termination without cycle guards"
+    ],
+    "correctIndex": 3,
+    "explanation": "A DAG has no directed cycles, guaranteeing that Breadth-First traversal will naturally reach leaf nodes and terminate cleanly."
+  },
+  {
+    "id": "mcq_sec10_101",
+    "topic": "Recursive Graph & Network Paths",
+    "keyword": "Graph Traversals",
+    "tag": "BOM & Network Paths",
+    "question": "How does PostgreSQL's 'ARRAY' feature assist in recursive graph traversal?",
+    "options": [
+      "It allows accumulating an array of visited node IDs: 'ARRAY[id]', and checking 'WHERE id != ALL(visited_array)' to avoid cycles",
+      "It compresses the table into zip format",
+      "It converts integers to floats",
+      "It speeds up network I/O"
+    ],
+    "correctIndex": 0,
+    "explanation": "In PostgreSQL, storing 'ARRAY[root_id]' in the anchor and appending 'visited || child_id' with 'NOT child_id = ANY(visited)' is the cleanest cycle guard."
+  },
+  {
+    "id": "mcq_sec10_102",
+    "topic": "Recursive Graph & Network Paths",
+    "keyword": "Graph Traversals",
+    "tag": "BOM & Network Paths",
+    "question": "What is the effect of setting 'SET SESSION cte_max_recursion_depth = 50;' in MySQL?",
+    "options": [
+      "The query is truncated and returns 50 rows",
+      "The recursive query is aborted with an error if it attempts to execute a 51st recursive step",
+      "It allocates 50MB of RAM",
+      "It limits the table to 50 columns"
+    ],
+    "correctIndex": 1,
+    "explanation": "It lowers the recursion depth threshold; if recursion reaches level 51, MySQL immediately terminates the query with Error 3636."
+  },
+  {
+    "id": "mcq_sec10_103",
+    "topic": "Recursive Graph & Network Paths",
+    "keyword": "Graph Traversals",
+    "tag": "BOM & Network Paths",
+    "question": "In package dependency managers (e.g. npm, apt), how are transitive dependencies resolved using SQL?",
+    "options": [
+      "Using a REGEX replace",
+      "Using a single INNER JOIN",
+      "Via a recursive CTE querying package_dependencies(pkg, depends_on) to resolve the complete dependency closure tree",
+      "Using DROP VIEW"
+    ],
+    "correctIndex": 2,
+    "explanation": "Transitive dependencies form a directed graph; a recursive CTE discovers all direct and indirect dependencies needed for installation."
+  },
+  {
+    "id": "mcq_sec10_104",
+    "topic": "Recursive Graph & Network Paths",
+    "keyword": "Graph Traversals",
+    "tag": "BOM & Network Paths",
+    "question": "What is a 'Transitive Closure' in relational database theory?",
+    "options": [
+      "A commit operation on two tables",
+      "Closing all database connections after 10 minutes",
+      "A table with zero foreign keys",
+      "The set of all pairs of nodes (x, y) such that y is reachable from x through a chain of one or more directed edges"
+    ],
+    "correctIndex": 3,
+    "explanation": "The transitive closure of a graph represents all reachability relationships, computed canonically via recursive CTEs."
+  },
+  {
+    "id": "mcq_sec10_105",
+    "topic": "Recursive Graph & Network Paths",
+    "keyword": "Graph Traversals",
+    "tag": "BOM & Network Paths",
+    "question": "What happens if both (A -> B) and (B -> A) exist in a graph and you run a recursive CTE without cycle protection?",
+    "options": [
+      "The query will loop indefinitely between A and B until it hits the recursion depth limit or runs out of memory",
+      "The database automatically deletes one of the edges",
+      "The query finishes instantly with NULL",
+      "The server ignores node B"
+    ],
+    "correctIndex": 0,
+    "explanation": "A reciprocal relationship forms a 2-node cycle. Without a cycle filter, the engine endlessly ping-pongs between A and B until aborted."
+  },
+  {
+    "id": "mcq_sec10_106",
+    "topic": "Vertical Set Operations",
+    "keyword": "UNION vs UNION ALL",
+    "tag": "Memory & Deduplication",
+    "question": "What is the primary difference between UNION and UNION ALL in SQL execution?",
+    "options": [
+      "UNION only works on numbers; UNION ALL works on text",
+      "UNION purges duplicate rows by sorting or hashing; UNION ALL streams all rows directly without checking for duplicates",
+      "UNION requires identical column names; UNION ALL allows different column names",
+      "UNION ALL is executed in parallel, UNION is single-threaded"
+    ],
+    "correctIndex": 1,
+    "explanation": "UNION enforces mathematical set uniqueness, requiring an expensive sort or hash deduplication step. UNION ALL preserves all rows, streaming directly with zero deduplication overhead."
+  },
+  {
+    "id": "mcq_sec10_107",
+    "topic": "Vertical Set Operations",
+    "keyword": "UNION vs UNION ALL",
+    "tag": "Memory & Deduplication",
+    "question": "Why should an engineer default to UNION ALL unless business requirements explicitly dictate deduplication?",
+    "options": [
+      "UNION drops NULL values permanently",
+      "UNION ALL is the only operator permitted in PostgreSQL",
+      "UNION ALL avoids memory allocation and CPU overhead for sort/hash deduplication, preventing expensive disk spills",
+      "UNION ALL automatically creates B-Tree indexes"
+    ],
+    "correctIndex": 2,
+    "explanation": "UNION ALL has zero deduplication overhead and never spills to disk for sorting, making it significantly faster and lighter on memory."
+  },
+  {
+    "id": "mcq_sec10_108",
+    "topic": "Vertical Set Operations",
+    "keyword": "UNION vs UNION ALL",
+    "tag": "Memory & Deduplication",
+    "question": "In a compound query with UNION, where are the final output column names determined?",
+    "options": [
+      "They are randomly generated",
+      "By the last SELECT query",
+      "By an alphabetical combination of all queries",
+      "Strictly by the column names or aliases projected in the FIRST SELECT query"
+    ],
+    "correctIndex": 3,
+    "explanation": "The column aliases of the first SELECT query define the output schema names. Aliases specified in subsequent UNION queries are completely ignored."
+  },
+  {
+    "id": "mcq_sec10_109",
+    "topic": "Vertical Set Operations",
+    "keyword": "UNION vs UNION ALL",
+    "tag": "Memory & Deduplication",
+    "question": "Where must the ORDER BY clause be placed when sorting the combined result of a UNION ALL statement?",
+    "options": [
+      "At the very end of the final query, sorting the entire combined result set",
+      "Inside each individual SELECT query",
+      "In a separate preceding WITH clause only",
+      "Directly after the UNION ALL keyword"
+    ],
+    "correctIndex": 0,
+    "explanation": "In ANSI SQL, a single global ORDER BY clause must appear at the end of the entire compound statement to sort the unified dataset."
+  },
+  {
+    "id": "mcq_sec10_110",
+    "topic": "Vertical Set Operations",
+    "keyword": "UNION vs UNION ALL",
+    "tag": "Memory & Deduplication",
+    "question": "What error occurs if two queries in a UNION statement project different numbers of columns?",
+    "options": [
+      "The engine pads missing columns with NULLs",
+      "A fatal syntax error: 'The used SELECT statements have a different number of columns'",
+      "The query truncates extra columns silently",
+      "The engine converts the query to a CROSS JOIN"
+    ],
+    "correctIndex": 1,
+    "explanation": "All queries participating in a set operation must project the exact same number of columns; otherwise, a schema mismatch error is raised."
+  },
+  {
+    "id": "mcq_sec10_111",
+    "topic": "Vertical Set Operations",
+    "keyword": "UNION vs UNION ALL",
+    "tag": "Memory & Deduplication",
+    "question": "What happens if Query 1 projects an INT column and Query 2 projects a VARCHAR column in a UNION?",
+    "options": [
+      "The entire table is dropped",
+      "The column is converted into a BLOB",
+      "The engine attempts implicit type conversion; if incompatible or failing, a type conversion error is raised",
+      "Query 2 is ignored"
+    ],
+    "correctIndex": 2,
+    "explanation": "The engine attempts to coerce data types to a common compatible type (or higher precedence type). If conversion fails, a type mismatch error occurs."
+  },
+  {
+    "id": "mcq_sec10_112",
+    "topic": "Vertical Set Operations",
+    "keyword": "UNION vs UNION ALL",
+    "tag": "Memory & Deduplication",
+    "question": "How does UNION treat rows where all column values are NULL?",
+    "options": [
+      "It converts them to zeros",
+      "It throws an error",
+      "It preserves all NULL rows",
+      "It treats multiple all-NULL rows as duplicates and collapses them into a single row"
+    ],
+    "correctIndex": 3,
+    "explanation": "Under set theory, duplicate all-NULL rows are identical tuples; UNION collapses multiple all-NULL rows into a single unique row."
+  },
+  {
+    "id": "mcq_sec10_113",
+    "topic": "Vertical Set Operations",
+    "keyword": "UNION vs UNION ALL",
+    "tag": "Memory & Deduplication",
+    "question": "In terms of database memory buffers, what buffer does UNION rely upon in MySQL?",
+    "options": [
+      "sort_buffer_size or tmp_table_size",
+      "innodb_log_buffer_size",
+      "thread_cache_size",
+      "key_buffer_size"
+    ],
+    "correctIndex": 0,
+    "explanation": "UNION uses in-memory temporary tables (tmp_table_size) or sort buffers (sort_buffer_size) to eliminate duplicates, spilling to disk if exceeded."
+  },
+  {
+    "id": "mcq_sec10_114",
+    "topic": "Vertical Set Operations",
+    "keyword": "UNION vs UNION ALL",
+    "tag": "Memory & Deduplication",
+    "question": "How do you add a provenance / source system tag to rows combined from two legacy tables?",
+    "options": [
+      "Use the TABLE_NAME() function",
+      "Project a string literal: 'SELECT 'System_A' AS source, ... FROM t1 UNION ALL SELECT 'System_B' AS source, ... FROM t2'",
+      "Add an ALTER TABLE command",
+      "Use a trigger"
+    ],
+    "correctIndex": 1,
+    "explanation": "Projecting a literal column in each SELECT statement (e.g. 'System_A') preserves record provenance across unioned sources."
+  },
+  {
+    "id": "mcq_sec10_115",
+    "topic": "Vertical Set Operations",
+    "keyword": "UNION vs UNION ALL",
+    "tag": "Memory & Deduplication",
+    "question": "Can individual queries in a UNION statement have their own independent LIMIT clauses?",
+    "options": [
+      "Only in Oracle",
+      "No, LIMIT can only appear at the end of the query",
+      "Yes, if each individual query is enclosed in parentheses: '(SELECT ... LIMIT 5) UNION ALL (SELECT ... LIMIT 5)'",
+      "Only if the table has no primary key"
+    ],
+    "correctIndex": 2,
+    "explanation": "Enclosing individual component queries in parentheses allows local LIMIT/ORDER BY clauses to take effect before the union operation."
+  },
+  {
+    "id": "mcq_sec10_116",
+    "topic": "Vertical Set Operations",
+    "keyword": "UNION vs UNION ALL",
+    "tag": "Memory & Deduplication",
+    "question": "What is the relational difference between a FULL OUTER JOIN and a UNION ALL of two tables?",
+    "options": [
+      "UNION ALL requires a common foreign key",
+      "They produce identical result tables",
+      "FULL OUTER JOIN is faster than UNION ALL",
+      "FULL OUTER JOIN aligns matching rows horizontally into wider records; UNION ALL stacks rows vertically into a taller table"
+    ],
+    "correctIndex": 3,
+    "explanation": "Joins combine data horizontally (expanding columns based on a key condition); Set operations combine data vertically (appending rows)."
+  },
+  {
+    "id": "mcq_sec10_117",
+    "topic": "Vertical Set Operations",
+    "keyword": "UNION vs UNION ALL",
+    "tag": "Memory & Deduplication",
+    "question": "If Table A has 10 rows and Table B has 10 identical rows, how many rows will 'SELECT * FROM A UNION SELECT * FROM B' return?",
+    "options": [
+      "10 rows",
+      "20 rows",
+      "0 rows",
+      "100 rows"
+    ],
+    "correctIndex": 0,
+    "explanation": "Because all 10 rows in B are identical duplicates of rows in A, UNION removes the duplicates and returns exactly 10 unique rows."
+  },
+  {
+    "id": "mcq_sec10_118",
+    "topic": "Vertical Set Operations",
+    "keyword": "UNION vs UNION ALL",
+    "tag": "Memory & Deduplication",
+    "question": "If Table A has 10 rows and Table B has 10 identical rows, how many rows will 'SELECT * FROM A UNION ALL SELECT * FROM B' return?",
+    "options": [
+      "10 rows",
+      "20 rows",
+      "100 rows",
+      "0 rows"
+    ],
+    "correctIndex": 1,
+    "explanation": "UNION ALL performs no deduplication and appends all rows directly: 10 + 10 = 20 rows."
+  },
+  {
+    "id": "mcq_sec10_119",
+    "topic": "Vertical Set Operations",
+    "keyword": "UNION vs UNION ALL",
+    "tag": "Memory & Deduplication",
+    "question": "Can you combine UNION and UNION ALL in the same compound query?",
+    "options": [
+      "Only if there are at least 4 queries",
+      "No, you cannot mix UNION and UNION ALL",
+      "Yes; operators evaluate according to precedence or parenthetical grouping",
+      "Only in Snowflake"
+    ],
+    "correctIndex": 2,
+    "explanation": "You can mix UNION and UNION ALL. Expressions in parentheses evaluate first; otherwise, evaluation proceeds sequentially from left to right."
+  },
+  {
+    "id": "mcq_sec10_120",
+    "topic": "Vertical Set Operations",
+    "keyword": "UNION vs UNION ALL",
+    "tag": "Memory & Deduplication",
+    "question": "In an EXPLAIN execution plan, what operator signifies the execution of a UNION ALL?",
+    "options": [
+      "Filter Scan",
+      "Sort Merge Join",
+      "Nested Loop",
+      "Append or UnionAll"
+    ],
+    "correctIndex": 3,
+    "explanation": "Database execution engines represent UNION ALL with an 'Append' (Postgres/SQL Server) or 'UnionAll' operator that simply streams subplans."
+  },
+  {
+    "id": "mcq_sec10_121",
+    "topic": "Set Difference & Intersection",
+    "keyword": "EXCEPT & INTERSECT",
+    "tag": "Set-Theoretic Algebra",
+    "question": "What is the mathematical result of 'Query A EXCEPT Query B' (or MINUS in Oracle)?",
+    "options": [
+      "All unique rows that appear in Query A and do NOT appear in Query B",
+      "All rows that appear in both A and B",
+      "All rows in B that do not appear in A",
+      "The sum of all numeric columns"
+    ],
+    "correctIndex": 0,
+    "explanation": "EXCEPT (set difference: A \\ B) returns distinct rows that are present in the result set of Query A but absent from Query B."
+  },
+  {
+    "id": "mcq_sec10_122",
+    "topic": "Set Difference & Intersection",
+    "keyword": "EXCEPT & INTERSECT",
+    "tag": "Set-Theoretic Algebra",
+    "question": "What is the mathematical result of 'Query A INTERSECT Query B'?",
+    "options": [
+      "All rows in A plus all rows in B",
+      "All distinct rows that are present in BOTH Query A and Query B",
+      "Only rows that have NULL values",
+      "The Cartesian product of A and B"
+    ],
+    "correctIndex": 1,
+    "explanation": "INTERSECT (set intersection: A ∩ B) returns only unique rows that are present in both the first and second query results."
+  },
+  {
+    "id": "mcq_sec10_123",
+    "topic": "Set Difference & Intersection",
+    "keyword": "EXCEPT & INTERSECT",
+    "tag": "Set-Theoretic Algebra",
+    "question": "In MySQL versions prior to 8.0.31, which lacked native INTERSECT and EXCEPT, how is 'A INTERSECT B' canonically simulated?",
+    "options": [
+      "SELECT * FROM A WHERE id NOT IN (SELECT id FROM B)",
+      "SELECT * FROM A, B",
+      "SELECT DISTINCT a.* FROM A a INNER JOIN B b ON a.id = b.id (or matching all projected columns)",
+      "Using GROUP BY without HAVING"
+    ],
+    "correctIndex": 2,
+    "explanation": "An INNER JOIN on all corresponding columns with a DISTINCT projection provides the exact relational equivalent of an INTERSECT operator."
+  },
+  {
+    "id": "mcq_sec10_124",
+    "topic": "Set Difference & Intersection",
+    "keyword": "EXCEPT & INTERSECT",
+    "tag": "Set-Theoretic Algebra",
+    "question": "In MySQL versions prior to 8.0.31, how is 'A EXCEPT B' canonically simulated?",
+    "options": [
+      "Using a CROSS JOIN",
+      "SELECT * FROM A UNION SELECT * FROM B",
+      "SELECT * FROM A, B WHERE a.id = b.id",
+      "SELECT DISTINCT a.* FROM A a WHERE NOT EXISTS (SELECT 1 FROM B b WHERE b.id = a.id)"
+    ],
+    "correctIndex": 3,
+    "explanation": "A correlated NOT EXISTS subquery (or LEFT JOIN ... WHERE right.id IS NULL) on matching keys simulates the EXCEPT (set difference) operator."
+  },
+  {
+    "id": "mcq_sec10_125",
+    "topic": "Set Difference & Intersection",
+    "keyword": "EXCEPT & INTERSECT",
+    "tag": "Set-Theoretic Algebra",
+    "question": "How does EXCEPT treat duplicate rows in the first query by default in standard SQL?",
+    "options": [
+      "It eliminates duplicates from the output, returning only unique rows (equivalent to EXCEPT DISTINCT)",
+      "It preserves all duplicate rows from A",
+      "It throws a DuplicateKey error",
+      "It converts duplicates to NULL"
+    ],
+    "correctIndex": 0,
+    "explanation": "Standard EXCEPT defaults to EXCEPT DISTINCT, returning unique rows from A that do not appear in B."
+  },
+  {
+    "id": "mcq_sec10_126",
+    "topic": "Set Difference & Intersection",
+    "keyword": "EXCEPT & INTERSECT",
+    "tag": "Set-Theoretic Algebra",
+    "question": "What does 'EXCEPT ALL' do in PostgreSQL and SQL Server?",
+    "options": [
+      "It deletes all rows from both tables",
+      "It preserves duplicate counts: if A has 3 identical rows and B has 1, EXCEPT ALL returns exactly 2 rows",
+      "It ignores WHERE clauses",
+      "It runs across all database schemas"
+    ],
+    "correctIndex": 1,
+    "explanation": "EXCEPT ALL operates on multisets (bags): if a row occurs m times in A and n times in B, it appears max(0, m - n) times in the result."
+  },
+  {
+    "id": "mcq_sec10_127",
+    "topic": "Set Difference & Intersection",
+    "keyword": "EXCEPT & INTERSECT",
+    "tag": "Set-Theoretic Algebra",
+    "question": "What is the operator precedence between UNION, INTERSECT, and EXCEPT in ANSI SQL?",
+    "options": [
+      "UNION has highest precedence",
+      "All set operators have equal precedence and evaluate left to right",
+      "INTERSECT has higher precedence than UNION and EXCEPT",
+      "EXCEPT has highest precedence"
+    ],
+    "correctIndex": 2,
+    "explanation": "In ANSI SQL standards, INTERSECT has higher operational precedence than UNION and EXCEPT, analogous to multiplication having higher precedence than addition."
+  },
+  {
+    "id": "mcq_sec10_128",
+    "topic": "Set Difference & Intersection",
+    "keyword": "EXCEPT & INTERSECT",
+    "tag": "Set-Theoretic Algebra",
+    "question": "What does evaluating '(SELECT id FROM A) EXCEPT (SELECT id FROM A)' always return?",
+    "options": [
+      "NULL",
+      "All rows in A",
+      "A syntax error",
+      "Zero rows (empty set)"
+    ],
+    "correctIndex": 3,
+    "explanation": "Subtracting any set from itself (A \\ A) always produces an empty set (0 rows)."
+  },
+  {
+    "id": "mcq_sec10_129",
+    "topic": "Set Difference & Intersection",
+    "keyword": "EXCEPT & INTERSECT",
+    "tag": "Set-Theoretic Algebra",
+    "question": "How can you perform a bidirectional ledger reconciliation to find discrepancies in both directions using EXCEPT?",
+    "options": [
+      "(A EXCEPT B) UNION ALL (B EXCEPT A)",
+      "(A INTERSECT B) EXCEPT (A UNION B)",
+      "(A UNION ALL B) INTERSECT A",
+      "A EXCEPT (B EXCEPT A)"
+    ],
+    "correctIndex": 0,
+    "explanation": "The symmetric difference (discrepancies in either table) is expressed as (A EXCEPT B) UNION ALL (B EXCEPT A)."
+  },
+  {
+    "id": "mcq_sec10_130",
+    "topic": "Set Difference & Intersection",
+    "keyword": "EXCEPT & INTERSECT",
+    "tag": "Set-Theoretic Algebra",
+    "question": "Does INTERSECT remove duplicate rows from its final output?",
+    "options": [
+      "No, it preserves all duplicates",
+      "Yes, INTERSECT defaults to INTERSECT DISTINCT and purges duplicate rows",
+      "Only if the columns are indexed",
+      "Only in MySQL"
+    ],
+    "correctIndex": 1,
+    "explanation": "Standard INTERSECT removes duplicates and returns only distinct tuples common to both datasets."
+  },
+  {
+    "id": "mcq_sec10_131",
+    "topic": "Set Difference & Intersection",
+    "keyword": "EXCEPT & INTERSECT",
+    "tag": "Set-Theoretic Algebra",
+    "question": "How do NULL values behave when comparing rows between two queries in an EXCEPT or INTERSECT operation?",
+    "options": [
+      "It throws a 3VL exception",
+      "NULLs are never equal, so rows with NULLs are always dropped",
+      "In set operations, NULLs are treated as equal to other NULLs (i.e. two rows with NULL match each other)",
+      "NULLs are converted to 0"
+    ],
+    "correctIndex": 2,
+    "explanation": "In SQL set operations (UNION, INTERSECT, EXCEPT), two NULL values are considered identical duplicates (matching 'IS NOT DISTINCT FROM' semantics)."
+  },
+  {
+    "id": "mcq_sec10_132",
+    "topic": "Set Difference & Intersection",
+    "keyword": "EXCEPT & INTERSECT",
+    "tag": "Set-Theoretic Algebra",
+    "question": "If Query A returns (1, 2, NULL) and Query B returns (NULL, 3), what does 'A INTERSECT B' return?",
+    "options": [
+      "(1)",
+      "Empty set",
+      "(1, 2, 3)",
+      "(NULL)"
+    ],
+    "correctIndex": 3,
+    "explanation": "Because NULL matches NULL in set operations, the common distinct value between the two sets is NULL."
+  },
+  {
+    "id": "mcq_sec10_133",
+    "topic": "Set Difference & Intersection",
+    "keyword": "EXCEPT & INTERSECT",
+    "tag": "Set-Theoretic Algebra",
+    "question": "In terms of physical query execution, how does an engine typically execute INTERSECT?",
+    "options": [
+      "Hash Intersection (building a hash table on Query A and probing with Query B) or Merge Intersection on presorted inputs",
+      "Nested cursor loops",
+      "Random sampling",
+      "Writing both tables to permanent disk storage"
+    ],
+    "correctIndex": 0,
+    "explanation": "Engines execute INTERSECT via Hash Intersection or Sort-Merge Intersection, matching keys between the two candidate streams."
+  },
+  {
+    "id": "mcq_sec10_134",
+    "topic": "Set Difference & Intersection",
+    "keyword": "EXCEPT & INTERSECT",
+    "tag": "Set-Theoretic Algebra",
+    "question": "Can INTERSECT be used to find users who have purchased products in all 3 categories (Electronics, Clothing, Home)?",
+    "options": [
+      "No, INTERSECT can only connect 2 queries",
+      "Yes, by chaining: (SELECT user_id FROM purchases WHERE cat='Electronics') INTERSECT (SELECT user_id FROM purchases WHERE cat='Clothing') INTERSECT (SELECT user_id FROM purchases WHERE cat='Home')",
+      "Only if categories are numeric",
+      "Only by using NOT IN"
+    ],
+    "correctIndex": 1,
+    "explanation": "Chaining INTERSECT across multiple category queries isolates users who exist in every individual category dataset."
+  },
+  {
+    "id": "mcq_sec10_135",
+    "topic": "Set Difference & Intersection",
+    "keyword": "EXCEPT & INTERSECT",
+    "tag": "Set-Theoretic Algebra",
+    "question": "What is the Oracle-specific keyword for the EXCEPT set operator?",
+    "options": [
+      "SUBTRACT",
+      "DIFFERENCE",
+      "MINUS",
+      "EXCLUDE"
+    ],
+    "correctIndex": 2,
+    "explanation": "Oracle uses the proprietary keyword 'MINUS' instead of the ANSI standard 'EXCEPT'."
+  },
+  {
+    "id": "mcq_sec10_136",
+    "topic": "Multi-Dimensional Grouping",
+    "keyword": "ROLLUP & CUBE",
+    "tag": "GROUPING Sets & Indicators",
+    "question": "What does 'GROUP BY ROLLUP(region, country, store)' produce?",
+    "options": [
+      "A Cartesian product of the 3 columns",
+      "All possible 8 combinations of the 3 columns",
+      "Only the grand total",
+      "Hierarchical subtotals: (region, country, store), (region, country), (region), and the grand total ()"
+    ],
+    "correctIndex": 3,
+    "explanation": "ROLLUP produces N + 1 hierarchical aggregation levels, rolling up from right to left: (A, B, C), (A, B), (A), and ()."
+  },
+  {
+    "id": "mcq_sec10_137",
+    "topic": "Multi-Dimensional Grouping",
+    "keyword": "ROLLUP & CUBE",
+    "tag": "GROUPING Sets & Indicators",
+    "question": "For N columns in a GROUP BY clause, how many grouping levels does 'CUBE(col1, ..., colN)' generate?",
+    "options": [
+      "2^N (the power set of all dimensional combinations)",
+      "N + 1",
+      "N * 2",
+      "N!"
+    ],
+    "correctIndex": 0,
+    "explanation": "CUBE generates all possible 2^N dimensional combinations (cross-tabulation matrix), including all subtotals and the grand total."
+  },
+  {
+    "id": "mcq_sec10_138",
+    "topic": "Multi-Dimensional Grouping",
+    "keyword": "ROLLUP & CUBE",
+    "tag": "GROUPING Sets & Indicators",
+    "question": "What is the primary operational advantage of 'GROUPING SETS' over chained 'UNION ALL' queries?",
+    "options": [
+      "GROUPING SETS runs only on memory-mapped files",
+      "GROUPING SETS computes all desired aggregation grains in a SINGLE scan of the underlying table, reducing disk I/O significantly",
+      "GROUPING SETS prevents duplicate rows from being inserted",
+      "GROUPING SETS auto-generates chart graphics"
+    ],
+    "correctIndex": 1,
+    "explanation": "Chained UNION ALL queries scan the base table N times. GROUPING SETS scans the table once and calculates all aggregations in a single pass."
+  },
+  {
+    "id": "mcq_sec10_139",
+    "topic": "Multi-Dimensional Grouping",
+    "keyword": "ROLLUP & CUBE",
+    "tag": "GROUPING Sets & Indicators",
+    "question": "What problem does the 'GROUPING(column_name)' function solve?",
+    "options": [
+      "It formats numeric columns as currency",
+      "It counts the number of groups created",
+      "It distinguishes a genuine NULL stored in the database row from a synthetic super-aggregate NULL generated by ROLLUP or CUBE",
+      "It encrypts grouping keys"
+    ],
+    "correctIndex": 2,
+    "explanation": "When a dimension is rolled up, its value is represented as NULL. GROUPING(col) returns 1 if the NULL was generated by the rollup, and 0 if it is a real data value."
+  },
+  {
+    "id": "mcq_sec10_140",
+    "topic": "Multi-Dimensional Grouping",
+    "keyword": "ROLLUP & CUBE",
+    "tag": "GROUPING Sets & Indicators",
+    "question": "In MySQL 8.0, what is the syntax for invoking a hierarchical rollup?",
+    "options": [
+      "GROUP BY col1, col2 HAVING ROLLUP",
+      "GROUP BY ROLLUP(col1, col2)",
+      "ROLLUP BY col1, col2",
+      "GROUP BY col1, col2 WITH ROLLUP"
+    ],
+    "correctIndex": 3,
+    "explanation": "MySQL uses the proprietary 'GROUP BY col1, col2 WITH ROLLUP' syntax, whereas PostgreSQL and SQL Server use standard 'GROUP BY ROLLUP(col1, col2)'."
+  },
+  {
+    "id": "mcq_sec10_141",
+    "topic": "Multi-Dimensional Grouping",
+    "keyword": "ROLLUP & CUBE",
+    "tag": "GROUPING Sets & Indicators",
+    "question": "Can an ORDER BY clause reference columns with ROLLUP in MySQL without causing an error?",
+    "options": [
+      "In older MySQL versions, ORDER BY with ROLLUP was forbidden; in MySQL 8.0.12+, explicit sorting is permitted",
+      "ORDER BY is never allowed with ROLLUP in any SQL dialect",
+      "ORDER BY is mandatory with ROLLUP",
+      "Only if ORDER BY uses column numbers"
+    ],
+    "correctIndex": 0,
+    "explanation": "Historically, MySQL threw an error if ORDER BY was used with WITH ROLLUP. MySQL 8.0.12+ relaxed this, allowing sorting of rolled-up results."
+  },
+  {
+    "id": "mcq_sec10_142",
+    "topic": "Multi-Dimensional Grouping",
+    "keyword": "ROLLUP & CUBE",
+    "tag": "GROUPING Sets & Indicators",
+    "question": "What does 'GROUPING_ID(region, country)' return in SQL Server and Oracle?",
+    "options": [
+      "The unique row ID of the group",
+      "An integer bitmask computed by concatenating the GROUPING() bit outputs for the specified columns",
+      "The foreign key ID",
+      "The number of rows in the group"
+    ],
+    "correctIndex": 1,
+    "explanation": "GROUPING_ID() converts the binary outputs of multiple GROUPING() functions into an integer bitmask, simplifying multi-level subtotal filtering."
+  },
+  {
+    "id": "mcq_sec10_143",
+    "topic": "Multi-Dimensional Grouping",
+    "keyword": "ROLLUP & CUBE",
+    "tag": "GROUPING Sets & Indicators",
+    "question": "How do you represent a Grand Total row only using GROUPING SETS?",
+    "options": [
+      "GROUP BY ALL",
+      "GROUP BY GRAND TOTAL",
+      "GROUP BY GROUPING SETS ( () )",
+      "GROUP BY NULL"
+    ],
+    "correctIndex": 2,
+    "explanation": "An empty parenthetical set '()' in GROUPING SETS denotes the global grand total (aggregation over the entire table)."
+  },
+  {
+    "id": "mcq_sec10_144",
+    "topic": "Multi-Dimensional Grouping",
+    "keyword": "ROLLUP & CUBE",
+    "tag": "GROUPING Sets & Indicators",
+    "question": "If a company wants subtotals by (Year, Quarter) and by (Brand), but NOT the full cross-cube, which construct is most efficient?",
+    "options": [
+      "Running 5 separate queries in Python",
+      "GROUP BY CUBE(Year, Quarter, Brand)",
+      "GROUP BY ROLLUP(Year, Quarter, Brand)",
+      "GROUP BY GROUPING SETS ( (Year, Quarter), (Brand), () )"
+    ],
+    "correctIndex": 3,
+    "explanation": "GROUPING SETS allows defining exactly the required dimensional grains ((Year, Quarter), (Brand), ()) without wasting compute on unneeded combinations."
+  },
+  {
+    "id": "mcq_sec10_145",
+    "topic": "Multi-Dimensional Grouping",
+    "keyword": "ROLLUP & CUBE",
+    "tag": "GROUPING Sets & Indicators",
+    "question": "Why does 'CUBE(a, b, c, d, e)' pose severe performance hazards on massive tables?",
+    "options": [
+      "Because 5 columns generate 2^5 = 32 distinct grouping aggregation tiers, multiplying intermediate calculation and memory overhead exponentially",
+      "Because CUBE is single-threaded only",
+      "Because CUBE requires primary keys on all 5 columns",
+      "Because it drops the base table"
+    ],
+    "correctIndex": 0,
+    "explanation": "The exponential 2^N explosion of CUBE means 5 dimensions generate 32 grouping sets, 10 dimensions generate 1,024 grouping sets, rapidly exhausting memory."
+  },
+  {
+    "id": "mcq_sec10_146",
+    "topic": "Multi-Dimensional Grouping",
+    "keyword": "ROLLUP & CUBE",
+    "tag": "GROUPING Sets & Indicators",
+    "question": "What value does 'GROUPING(dept_id)' return for an individual department's subtotal row?",
+    "options": [
+      "1",
+      "0, because dept_id is an active grouping key in this row, not aggregated away",
+      "NULL",
+      "10"
+    ],
+    "correctIndex": 1,
+    "explanation": "GROUPING(col) returns 0 when the column is part of the grouping grain for that row, and 1 when it has been collapsed into a super-aggregate."
+  },
+  {
+    "id": "mcq_sec10_147",
+    "topic": "Multi-Dimensional Grouping",
+    "keyword": "ROLLUP & CUBE",
+    "tag": "GROUPING Sets & Indicators",
+    "question": "How do you label a Grand Total row cleanly using CASE WHEN and GROUPING()?",
+    "options": [
+      "SELECT COALESCE(region, 'Grand Total')",
+      "SELECT IF(region IS NULL, 'Grand Total', region)",
+      "SELECT CASE WHEN GROUPING(region) = 1 THEN 'Grand Total' ELSE region END AS region_name, SUM(sales) ...",
+      "SELECT NVL(region, 'Grand Total')"
+    ],
+    "correctIndex": 2,
+    "explanation": "Using CASE WHEN GROUPING(col) = 1 ensures that real NULL data values are not erroneously renamed to 'Grand Total', unlike naive COALESCE()."
+  },
+  {
+    "id": "mcq_sec10_148",
+    "topic": "Multi-Dimensional Grouping",
+    "keyword": "ROLLUP & CUBE",
+    "tag": "GROUPING Sets & Indicators",
+    "question": "Why is using 'COALESCE(region, 'Grand Total')' dangerous with ROLLUP when data quality is imperfect?",
+    "options": [
+      "COALESCE disables index scans",
+      "COALESCE is slower than CASE WHEN",
+      "COALESCE crashes on text columns",
+      "If the base data has a row where region is legitimately NULL, COALESCE will mislabel that real row as the 'Grand Total'!"
+    ],
+    "correctIndex": 3,
+    "explanation": "If an actual record has region = NULL, COALESCE converts it to 'Grand Total', corrupting the business report. GROUPING() safely avoids this."
+  },
+  {
+    "id": "mcq_sec10_149",
+    "topic": "Multi-Dimensional Grouping",
+    "keyword": "ROLLUP & CUBE",
+    "tag": "GROUPING Sets & Indicators",
+    "question": "What is the physical operator used in PostgreSQL execution plans for GROUP BY ROLLUP and CUBE?",
+    "options": [
+      "Mixed Aggregate or GroupAggregate / HashAggregate with Grouping Sets",
+      "Nested Loop Join",
+      "Seq Scan with Limit",
+      "Bitmap Index Scan"
+    ],
+    "correctIndex": 0,
+    "explanation": "PostgreSQL displays 'Mixed Aggregate' or 'HashAggregate' with the list of Planned Partitions/Grouping Sets in EXPLAIN output."
+  },
+  {
+    "id": "mcq_sec10_150",
+    "topic": "Multi-Dimensional Grouping",
+    "keyword": "ROLLUP & CUBE",
+    "tag": "GROUPING Sets & Indicators",
+    "question": "Can you combine normal columns with ROLLUP in the same GROUP BY clause: 'GROUP BY department, ROLLUP(year, quarter)'?",
+    "options": [
+      "No, ROLLUP must wrap all columns in the GROUP BY",
+      "Yes; this performs a partial rollup where department is always preserved as a grouping key for every generated tier",
+      "Only in Snowflake",
+      "Only if department is an integer"
+    ],
+    "correctIndex": 1,
+    "explanation": "Partial rollups (e.g. 'GROUP BY department, ROLLUP(year, quarter)') hold department constant while rolling up year and quarter hierarchically."
+  }
+]
