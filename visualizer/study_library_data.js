@@ -474,3 +474,31 @@ window.STUDY_LIBRARY = [
   ]
 }
 ];
+
+// Ensure quickActions are attached to all study modules
+const STUDY_QUICK_ACTIONS = {
+  sec_execution_order: { labTrack: 'track01', questId: 0, presetQuery: "SELECT department, COUNT(*) AS headcount FROM Employees WHERE salary > 60000 GROUP BY department HAVING headcount >= 1 ORDER BY headcount DESC;" },
+  sec_filtering: { labTrack: 'track01', questId: 1, presetQuery: "SELECT emp_id, first_name, department, salary, bonus FROM Employees WHERE bonus IS NULL OR salary > 80000;" },
+  sec_sorting: { labTrack: 'track01', questId: 2, presetQuery: "SELECT emp_id, first_name, department, salary FROM Employees ORDER BY department ASC, salary DESC, emp_id ASC LIMIT 5;" },
+  sec_casewhen: { labTrack: 'track02', questId: 3, presetQuery: "SELECT emp_id, first_name, salary,\n  CASE\n    WHEN salary >= 100000 THEN 'Executive'\n    WHEN salary >= 75000 THEN 'Senior'\n    ELSE 'Standard'\n  END AS compensation_tier\nFROM Employees;" },
+  sec_aggregations: { labTrack: 'trackAggregations', questId: 4, presetQuery: "SELECT department, COUNT(*) AS employees_count, ROUND(AVG(salary), 2) AS avg_salary, MAX(salary) AS top_salary FROM Employees GROUP BY department HAVING employees_count >= 2;" },
+  sec_math: { labTrack: 'trackAggregations', questId: 5, presetQuery: "SELECT department, ROUND(AVG(salary), 2) AS rounded_avg, MAX(salary) - MIN(salary) AS salary_range FROM Employees GROUP BY department;" },
+  sec_joins: { labTrack: 'trackJoins', questId: 6, presetQuery: "SELECT e.emp_id, e.first_name, e.department, d.location FROM Employees e INNER JOIN Departments d ON e.department = d.dept_name;" },
+  sec_theory_architecture: { labTrack: 'track01', questId: 7, presetQuery: "SELECT emp_id, first_name, department, salary FROM Employees WHERE emp_id = 101;" },
+  sec_intermediate_joins: { labTrack: 'trackJoins', questId: 8, presetQuery: "SELECT e.emp_id, e.first_name, e.salary, s.grade_level FROM Employees e INNER JOIN SalaryGrades s ON e.salary BETWEEN s.min_salary AND s.max_salary;" },
+  sec_subqueries: { labTrack: 'track01', questId: 9, presetQuery: "SELECT emp_id, first_name, department, salary FROM Employees WHERE salary > (SELECT AVG(salary) FROM Employees);" },
+  sec_ctes: { labTrack: 'track01', questId: 10, presetQuery: "WITH DeptAvg AS (\n  SELECT department, AVG(salary) AS avg_sal\n  FROM Employees\n  GROUP BY department\n)\nSELECT e.emp_id, e.first_name, e.department, e.salary, ROUND(d.avg_sal, 2) AS dept_avg\nFROM Employees e\nJOIN DeptAvg d ON e.department = d.department\nWHERE e.salary > d.avg_sal;" },
+  sec_window_functions: { labTrack: 'track01', questId: 11, presetQuery: "SELECT emp_id, first_name, department, salary,\n  DENSE_RANK() OVER (PARTITION BY department ORDER BY salary DESC) AS dept_rank,\n  ROUND(AVG(salary) OVER (PARTITION BY department), 2) AS dept_avg\nFROM Employees;" }
+};
+
+if (typeof window !== 'undefined' && window.STUDY_LIBRARY) {
+  window.STUDY_LIBRARY.forEach(item => {
+    if (!item.quickActions && STUDY_QUICK_ACTIONS[item.id]) {
+      item.quickActions = STUDY_QUICK_ACTIONS[item.id];
+    }
+  });
+}
+
+if (typeof module !== 'undefined' && module.exports) {
+  module.exports = { STUDY_LIBRARY: window.STUDY_LIBRARY };
+}

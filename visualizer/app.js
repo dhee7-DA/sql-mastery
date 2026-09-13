@@ -3571,12 +3571,16 @@ function renderStudyLibrary(targetId = null) {
   }
 
   let gotchasHtml = '';
-  if (activeItem.gotchas && activeItem.gotchas.length > 0) {
+  const gotchasList = activeItem.interviewGotchas || activeItem.gotchas;
+  if (gotchasList && gotchasList.length > 0) {
     gotchasHtml = `
       <div class="study-gotchas-box">
         <div class="study-gotchas-title">⚡ CRITICAL PRODUCTION GOTCHAS &amp; INTERVIEW PITFALLS</div>
         <ul class="study-gotchas-list">
-          ${activeItem.gotchas.map(g => `<li>${g}</li>`).join('')}
+          ${gotchasList.map(g => {
+            if (typeof g === 'string') return `<li>${g}</li>`;
+            return `<li><strong>${g.title}:</strong> ${g.trap || g.explanation || ''}</li>`;
+          }).join('')}
         </ul>
       </div>
     `;
@@ -3600,15 +3604,19 @@ function renderStudyLibrary(targetId = null) {
     </div>
   `;
 
+  const hasLabTrack = activeItem.quickActions && activeItem.quickActions.labTrack;
+  const hasQuestId = activeItem.quickActions && activeItem.quickActions.questId !== undefined;
+  const presetQuery = (activeItem.quickActions && activeItem.quickActions.presetQuery) ? activeItem.quickActions.presetQuery : 'SELECT * FROM Employees;';
+
   mainReader.innerHTML = `
     ${quickPillsHtml}
     <div class="study-header-banner">
       <div class="study-meta-row">
-        <span class="clause-pill ${activeItem.badgeClass}">${activeItem.badge}</span>
-        <span class="status-pill">${activeItem.readTime}</span>
+        <span class="clause-pill ${activeItem.badgeClass || 'pill-from'}">${activeItem.badge || 'Core'}</span>
+        <span class="status-pill">${activeItem.readTime || '10 min read'}</span>
       </div>
       <h1 class="study-title">${activeItem.title}</h1>
-      <p class="study-summary-text">${activeItem.summary}</p>
+      <p class="study-summary-text">${activeItem.summary || ''}</p>
     </div>
 
     ${svgHtml}
@@ -3627,19 +3635,19 @@ function renderStudyLibrary(targetId = null) {
           }
         </button>
 
-        ${activeItem.quickActions.labTrack ? `
+        ${hasLabTrack ? `
           <button class="card-nav-btn" onclick="switchTrack('${activeItem.quickActions.labTrack}'); switchNavTab('viewGuidedLab');">
             🧪 Guided Lab &rarr;
           </button>
         ` : ''}
-        ${activeItem.quickActions.questId !== undefined ? `
+        ${hasQuestId ? `
           <button class="card-nav-btn" onclick="setQuestIndex(${activeItem.quickActions.questId}); switchNavTab('viewQuests');">
             🎮 Quest Level &rarr;
           </button>
         ` : ''}
       </div>
 
-      <button class="btn-solve-in-studio" onclick="switchToStudioWithQuery(\`${activeItem.quickActions.presetQuery.replace(/`/g, '\\`')}\`, 'Employees')">
+      <button class="btn-solve-in-studio" onclick="switchToStudioWithQuery(\`${presetQuery.replace(/`/g, '\\`')}\`, 'Employees')">
         <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polygon points="5 3 19 12 5 21 5 3"></polygon></svg>
         Simulate in Studio
       </button>
