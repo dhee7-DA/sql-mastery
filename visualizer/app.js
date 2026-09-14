@@ -1834,6 +1834,12 @@ let currentCaseMode = 'challenge'; // 'challenge' (Token Puzzle) or 'study' (Ref
 let activeDossierCaseId = 1;
 let currentCaseDisplayLimit = 30;
 
+// Syntax Gym (Section 0: 300 Micro-Drills) State
+let currentGymPillar = 'all'; // 'all', 'select', 'where', 'order'
+let currentGymTable = 'all'; // 'all' or specific table name
+let currentGymSearch = '';
+let currentGymDisplayLimit = 30;
+
 function switchMainView(targetId) {
   if (window.soundFX) window.soundFX.playWhoosh();
   document.querySelectorAll('.nav-tab').forEach(t => t.classList.remove('active'));
