@@ -1931,6 +1931,7 @@ function initCurriculumSystem() {
     window.DOMAIN_ERD_ENGINE.renderTopShowcase('Fintech');
   }
   renderCaseStudies();
+  renderSyntaxGym();
 
   // Difficulty filter pills in Problem Bank
   document.querySelectorAll('.diff-filter-btn').forEach(btn => {
@@ -1941,14 +1942,26 @@ function initCurriculumSystem() {
     });
   });
 
-  // Section filter pills in 500 Case Studies
-  document.querySelectorAll('.case-section-btn').forEach(btn => {
+  // Section filter pills in Case Studies (scoped to #caseSectionFilters)
+  document.querySelectorAll('#caseSectionFilters .case-section-btn').forEach(btn => {
     btn.addEventListener('click', () => {
-      document.querySelectorAll('.case-section-btn').forEach(b => b.classList.remove('active'));
+      document.querySelectorAll('#caseSectionFilters .case-section-btn').forEach(b => b.classList.remove('active'));
       btn.classList.add('active');
       if (window.soundFX) window.soundFX.playPop();
       currentCaseDisplayLimit = 30;
       renderCaseStudies(currentCaseIndustryFilter, btn.dataset.section, currentCaseDiffFilter, currentCaseSortOrder);
+    });
+  });
+
+  // Pillar filter pills in Syntax Gym (300)
+  document.querySelectorAll('#gymPillarFilters .case-section-btn').forEach(btn => {
+    btn.addEventListener('click', () => {
+      document.querySelectorAll('#gymPillarFilters .case-section-btn').forEach(b => b.classList.remove('active'));
+      btn.classList.add('active');
+      if (window.soundFX) window.soundFX.playPop();
+      currentGymPillar = btn.dataset.pillar || 'all';
+      currentGymDisplayLimit = 30;
+      renderSyntaxGym();
     });
   });
 
@@ -2033,6 +2046,16 @@ function initCurriculumSystem() {
     caseSearchInput.addEventListener('input', (e) => {
       currentCaseSearchQuery = e.target.value.trim();
       renderCaseStudies(currentCaseIndustryFilter, currentCaseSectionFilter, currentCaseDiffFilter, currentCaseSortOrder);
+    });
+  }
+
+  // Search input for Syntax Gym
+  const gymSearchInput = document.getElementById('gymSearchInput');
+  if (gymSearchInput) {
+    gymSearchInput.addEventListener('input', (e) => {
+      currentGymSearch = e.target.value.trim();
+      currentGymDisplayLimit = 30;
+      renderSyntaxGym();
     });
   }
 
