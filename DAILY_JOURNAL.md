@@ -387,3 +387,69 @@
 - **Comprehensive Visual Verification**:
   - Browser subagent verified live rendering across Section 0 case studies and captured high-resolution screenshot (`section0_case_card_1789316088302.png`).
 
+---
+
+## 2026-09-16 — Entry 21: The SQL Syntax Gym (300 In-Depth Micro-Drills) UI Integration & Universal Case Study Resolver
+
+### 1. Root Cause Analysis
+- While `visualizer/syntax_gym_data.js` and `visualizer/case_studies_500.js` contained all 300 drills (#1491 to #1790 across SELECT, WHERE, and ORDER BY), `renderSyntaxGym()` was never implemented in `visualizer/app.js`.
+- Navigating to the **Syntax Gym (300)** tab left `#syntaxGymGrid` and `#gymTablesBrowser` completely blank.
+- Furthermore, token interaction handlers (`handleTokenClick`, `handleSlotEject`, `handleVerifyCase`, `toggleCaseSim`, `openCaseDossier`) had hardcoded array lookups bounded to `ALL_1040_CASE_STUDIES`, causing cases with ID > 1040 to fail resolution.
+
+### 2. Implementation & Resolution
+- **Universal Case Study Resolver (`getCaseStudyById`)**:
+  - Added global helper `getCaseStudyById(caseId)` in `visualizer/app.js` resolving across `ALL_1790_CASE_STUDIES`, `ALL_500_CASE_STUDIES`, and falling back to `window.SYNTAX_GYM_DRILLS`.
+  - Re-routed all token puzzle click, drag, eject, and reset handlers to use `getCaseStudyById`.
+- **10 Everyday Schemas Browser (`renderSyntaxGymTablesBrowser`)**:
+  - Built interactive schema tab strip for all 10 everyday tables (`Students`, `Books`, `Employees`, `GroceryItems`, `Orders`, `MusicTracks`, `GymMembers`, `MovieReviews`, `FlightSchedule`, `PetClinic`) with column pills, PK tags, and table descriptions.
+  - Added click-to-filter support via `selectGymTable(tableName)`.
+- **Syntax Gym Grid Controller (`renderSyntaxGym`)**:
+  - Fully wired data loader fetching all 300 drills.
+  - Connected pillar filters (`select` for 1–100, `where` for 101–200, `order` for 201–300, `all` for 300).
+  - Connected table filtering, search query filtering, solved counters (`#gymSolvedCount`), and pagination ("Load Next 30 Drills" and "Load All 300 Drills").
+  - Each drill renders through `renderCaseCardHtml` with interactive keyword token puzzle blanks, 5-row live data simulator, studio runner, and inline sample table previews.
+
+### 3. Critical Debugging Principle: The "Dummy Test" UI Isolation Rule
+- **The Pitfall (CLI / Headless Mock Trap)**:
+  - When browser UI components fail to render, attempting to debug large front-end scripts (7,000+ lines in `app.js`) via terminal Node commands leads to wasted cycles. Node environments lack browser DOM primitives (`document.documentElement`, `createElement`, audio contexts, `DOMParser`), causing misleading mock crashes that obscure the real root cause.
+- **The Protocol (The "Dummy Test" Isolation Rule)**:
+  1. *Stop reading massive script lines and stop constructing complex CLI mocks.*
+  2. *Immediately isolate the render target by hardcoding a single dummy object right at the rendering function (`const dummy = [{ id: 1, ... }];`).*
+  3. *Force the DOM container to render that single dummy object on `localhost`.*
+  4. *Evaluate the binary result*:
+     - **If the dummy card appears**: The DOM container, CSS styling, and HTML mounting pipeline are 100% sound. The issue is purely data loading / variable resolution.
+     - **If the dummy card does not appear**: The HTML hierarchy, CSS layout, or view-switching logic is broken.
+  5. *This isolates the root cause in under 30 seconds.*
+
+- **Next Step**: Practice and verify drills across Topics 1, 2, and 3 or advance to Day 13 Business Analytics (Retention Cohorts & Churn).
+
+---
+
+## 2026-09-16 — Entry 22: Decoupling the 300 Syntax Gym Micro-Drills from Corporate Case Studies (Zero Clutter Architecture)
+
+### 1. Architectural Motivation
+- Merging the 300 everyday foundational micro-drills into the corporate case study vault inflated the case study count from 1,490 to 1,790 and cluttered the filter interface with non-enterprise categories (such as `Sec 0: Syntax Gym (300)` and `Foundations (300)`).
+- Furthermore, numbering micro-drills with high IDs (`#1491`–`#1790`) felt artificial for standalone practice.
+- To achieve a pristine, uncluttered user experience:
+  1. The **Case Studies** vault was restored to strictly **1,490 enterprise cases** across 10 corporate industry verticals (`#001` through `#1490`).
+  2. The **Syntax Gym** was established as a dedicated active-retrieval module housing all **300 foundational drills**, cleanly numbered as **`⚡ Drill #001` through `⚡ Drill #300`**.
+
+### 2. Implementation Summary
+- **Vault Restoration ([visualizer/case_studies_500.js](file:///i:/sqlmastery(github)/sql-mastery/visualizer/case_studies_500.js))**:
+  - Trimmed corporate vault to exactly 1,490 cases; updated export constants (`ALL_1490_CASE_STUDIES`).
+- **Case Studies UI Cleanup ([visualizer/index.html](file:///i:/sqlmastery(github)/sql-mastery/visualizer/index.html))**:
+  - Updated nav tab: `Case Studies (1,490)`.
+  - Removed `🏋️ Sec 0: Syntax Gym (300)` from `#caseSectionFilters` and `🏋️ Foundations (300)` from `#caseIndustryFilters`.
+  - Recalibrated difficulty filter counts to match the 1,490 enterprise scenarios (Easy: 530, Medium: 530, Hard: 430).
+- **Drill Renumbering & Collision-Free IDs ([visualizer/app.js](file:///i:/sqlmastery(github)/sql-mastery/visualizer/app.js))**:
+  - Mapped gym drills with unique IDs (`gym_1` .. `gym_300`) to eliminate DOM and state collisions with enterprise cases #1–#300.
+  - Card badges dynamically format as `⚡ Drill #001` .. `⚡ Drill #300`.
+  - Quoted string IDs across all token puzzle slot drops, token clicks, slot ejects, and solution reveal handlers.
+  - Enhanced `getCaseStudyById(caseId)` to seamlessly resolve `gym_X`, numeric corporate IDs, and legacy numeric IDs.
+- **Simulation Engine ([visualizer/case_simulator_engine.js](file:///i:/sqlmastery(github)/sql-mastery/visualizer/case_simulator_engine.js))**:
+  - Updated schema detection to check `caseStudy.drillNumber || caseStudy.isGymDrill` so everyday schemas trigger seamlessly without requiring legacy ID ranges.
+
+- **Next Step**: Advance to **Day 13: Real-World Business Analytics (Retention Cohort Heatmaps, Customer Churn Rates & LTV)**.
+
+
+

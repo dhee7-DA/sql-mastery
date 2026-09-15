@@ -14,8 +14,8 @@ const CASE_SIMULATOR_ENGINE = (() => {
     const section = (caseStudy.section || '').toLowerCase();
     const query = (caseStudy.targetQuery || '').toUpperCase();
 
-    // 000. SECTION 0: FOUNDATIONS & THE SQL SYNTAX GYM (DRILLS #1491 - #1790)
-    if (section.includes('sec 0') || section.includes('syntax') || section.includes('foundations') || (caseStudy.id >= 1491 && caseStudy.id <= 1790)) {
+    // 000. SECTION 0: FOUNDATIONS & THE SQL SYNTAX GYM (DRILLS #001 - #300 / #1491 - #1790)
+    if (caseStudy.drillNumber || caseStudy.isGymDrill || section.includes('sec 0') || section.includes('syntax') || section.includes('foundations') || (caseStudy.id >= 1491 && caseStudy.id <= 1790)) {
       const tbl = (caseStudy.table || '').toLowerCase() || title;
       if (tbl.includes('student')) {
         return [
@@ -302,7 +302,7 @@ const CASE_SIMULATOR_ENGINE = (() => {
     const rawRows = generateSampleRows(caseStudy);
     const query = (caseStudy.targetQuery || '').toUpperCase();
     const section = (caseStudy.section || '').toLowerCase();
-    const isSyntaxGym = section.includes('sec 0') || section.includes('syntax') || section.includes('foundations') || (caseStudy.id >= 1491 && caseStudy.id <= 1790);
+    const isSyntaxGym = Boolean(caseStudy.drillNumber || caseStudy.isGymDrill) || section.includes('sec 0') || section.includes('syntax') || section.includes('foundations') || (caseStudy.id >= 1491 && caseStudy.id <= 1790);
     const isSec10 = section.includes('sec 10') || section.includes('subquer') || section.includes('engine mastery') || (caseStudy.id >= 1341 && caseStudy.id <= 1490);
     const isWindowSection = section.includes('window') || (caseStudy.id >= 1041 && caseStudy.id <= 1340) || query.includes('OVER (');
     const isJoinSection = section.includes('joins') || (caseStudy.id >= 651 && caseStudy.id <= 1040) || query.includes(' JOIN ');

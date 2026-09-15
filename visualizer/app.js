@@ -4024,8 +4024,7 @@ function renderCaseTableRowsHtml(columns, rows) {
 }
 
 window.toggleCaseTableRows = function(caseId) {
-  const allCases = window.ALL_1790_CASE_STUDIES || window.ALL_500_CASE_STUDIES || [];
-  const cs = allCases.find(c => c.id === caseId);
+  const cs = (typeof getCaseStudyById === 'function' ? getCaseStudyById(caseId) : null) || (window.ALL_1490_CASE_STUDIES || window.ALL_500_CASE_STUDIES || []).find(c => c.id === caseId);
   if (!cs) return;
   const tbody = document.getElementById(`caseTableBody_${caseId}`);
   const btn = document.getElementById(`btnTableRows_${caseId}`);
@@ -4084,10 +4083,10 @@ function renderCaseCardHtml(cs) {
               id="target_${cs.id}_${slotId}"
               data-case-id="${cs.id}" 
               data-slot-id="${slotId}" 
-              onclick="handleSlotEject(${cs.id}, '${slotId}')"
+              onclick="handleSlotEject('${cs.id}', '${slotId}')"
               ondragover="handleSlotDragOver(event)"
               ondragleave="handleSlotDragLeave(event)"
-              ondrop="handleSlotDrop(event, ${cs.id}, '${slotId}')"
+              ondrop="handleSlotDrop(event, '${cs.id}', '${slotId}')"
               title="${isFilled ? 'Click to remove token' : 'Click a token below or drag here'}">
           ${isFilled ? `${escapeHtml(placedVal)} <span class="slot-eject-icon">✕</span>` : `[ ${slotId.toUpperCase()} ]`}
         </span>
@@ -4115,7 +4114,7 @@ function renderCaseCardHtml(cs) {
       <div class="token-bank-dock" id="dock_${cs.id}">
         <div class="token-bank-header">
           <span>🏷️ <strong>Jumbled Keyword Bank:</strong> Click or drag into blanks</span>
-          <button class="token-bank-reset-btn" onclick="handleResetCase(${cs.id})">↺ Reset Slots</button>
+          <button class="token-bank-reset-btn" onclick="handleResetCase('${cs.id}')">↺ Reset Slots</button>
         </div>
         <div class="token-chips-grid" id="chips_grid_${cs.id}">
           ${challenge.tokenBank.map(tok => {
@@ -4127,8 +4126,8 @@ function renderCaseCardHtml(cs) {
                       data-case-id="${cs.id}"
                       data-token-id="${tok.id}"
                       data-token-text="${escapeHtml(tok.text)}"
-                      onclick="handleTokenClick(${cs.id}, '${tok.id}', '${escapeHtml(tok.text)}')"
-                      ondragstart="handleTokenDragStart(event, ${cs.id}, '${tok.id}', '${escapeHtml(tok.text)}')">
+                      onclick="handleTokenClick('${cs.id}', '${tok.id}', '${escapeHtml(tok.text)}')"
+                      ondragstart="handleTokenDragStart(event, '${cs.id}', '${tok.id}', '${escapeHtml(tok.text)}')">
                 ${escapeHtml(tok.text)}
               </button>
             `;
@@ -4143,7 +4142,7 @@ function renderCaseCardHtml(cs) {
       <div class="case-solution-shield" id="solution_${cs.id}" style="display: none;">
         <div class="solution-shield-header">
           <span>💡 Official Syntax-Highlighted Solution:</span>
-          <button class="btn-case-action" style="padding: 3px 10px; font-size: 10px;" onclick="toggleCaseSolution(${cs.id})">Hide Solution</button>
+          <button class="btn-case-action" style="padding: 3px 10px; font-size: 10px;" onclick="toggleCaseSolution('${cs.id}')">Hide Solution</button>
         </div>
         <div class="case-terminal-code" style="padding: 12px 14px; background: #0b0f17; border-radius: 8px;">
           <code>${highlightedSolution}</code>
@@ -4157,12 +4156,14 @@ function renderCaseCardHtml(cs) {
       <div class="case-card-header">
         <div>
           <div style="display: flex; align-items: center; gap: 6px; margin-bottom: 6px; flex-wrap: wrap;">
-            <span class="status-pill case-id-pill">#${cs.id < 10 ? '00' + cs.id : (cs.id < 100 ? '0' + cs.id : cs.id)}</span>
+            ${(cs.isGymDrill || cs.drillNumber)
+              ? `<span class="status-pill case-id-pill" style="background: rgba(245, 158, 11, 0.15); color: #fbbf24; border-color: rgba(245, 158, 11, 0.3);">⚡ Drill #${String(cs.drillNumber || cs.id).padStart(3, '0')}</span>`
+              : `<span class="status-pill case-id-pill">#${String(cs.id).padStart(3, '0')}</span>`}
             <span class="case-diff-filter-btn ${diffClass} active">${diffEmoji} ${cs.difficulty}</span>
             <span class="case-industry-pill">${cs.industry}</span>
             ${isSolved ? '<span style="font-size: 11px;" title="Solved!">🏆</span>' : ''}
           </div>
-          <h3 class="case-title" onclick="openCaseDossier(${cs.id})" title="Click to open full case study dossier">${cs.title}</h3>
+          <h3 class="case-title" onclick="openCaseDossier('${cs.id}')" title="Click to open full case study dossier">${cs.title}</h3>
         </div>
         <span class="case-section-pill">${cs.section ? cs.section.split(':')[0] : 'Section'}</span>
       </div>
@@ -4191,20 +4192,20 @@ function renderCaseCardHtml(cs) {
       <div class="case-actions-bar">
         <div class="case-actions-group">
           ${currentCaseMode === 'challenge' && challenge ? `
-            <button class="btn-case-action btn-verify-puzzle" onclick="handleVerifyCase(${cs.id})">
+            <button class="btn-case-action btn-verify-puzzle" onclick="handleVerifyCase('${cs.id}')">
               <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><polyline points="20 6 9 17 4 12"></polyline></svg>
               Verify
             </button>
-            <button class="btn-case-action btn-reveal-shield" onclick="toggleCaseSolution(${cs.id})">
+            <button class="btn-case-action btn-reveal-shield" onclick="toggleCaseSolution('${cs.id}')">
               👁️ Reveal Answer
             </button>
           ` : ''}
         </div>
         <div class="case-actions-group">
-          <button class="btn-case-action btn-case-dossier" onclick="openCaseDossier(${cs.id})" title="View Executive Dossier">
+          <button class="btn-case-action btn-case-dossier" onclick="openCaseDossier('${cs.id}')" title="View Executive Dossier">
             📖 Dossier
           </button>
-          <button class="btn-case-action btn-case-sim" onclick="toggleCaseSim(${cs.id})" title="Simulate 5-Row Table">
+          <button class="btn-case-action btn-case-sim" onclick="toggleCaseSim('${cs.id}')" title="Simulate 5-Row Table">
             📊 Simulator
           </button>
           <button class="btn-case-action btn-case-studio" onclick="switchToStudioWithQuery(decodeURIComponent('${encodeURIComponent(cs.targetQuery)}'), '${cs.table}')" title="Test in Studio">
@@ -4244,7 +4245,7 @@ function renderCaseStudies(
     window.DOMAIN_ERD_ENGINE.renderTopShowcase(targetDomain);
   }
 
-  let allCases = window.ALL_1790_CASE_STUDIES || window.ALL_1490_CASE_STUDIES || window.ALL_1340_CASE_STUDIES || window.ALL_1040_CASE_STUDIES || window.ALL_700_CASE_STUDIES || window.ALL_600_CASE_STUDIES || window.ALL_500_CASE_STUDIES || window.ALL_300_CASE_STUDIES || [];
+  let allCases = window.ALL_1490_CASE_STUDIES || window.ALL_500_CASE_STUDIES || window.ALL_1340_CASE_STUDIES || window.ALL_1040_CASE_STUDIES || window.ALL_700_CASE_STUDIES || window.ALL_600_CASE_STUDIES || [];
   let cases = allCases.slice();
 
   // 1. Filter by Section
@@ -4485,11 +4486,83 @@ function renderCaseStudies(
     });
   });
 
+  // Universal Case Study & Syntax Drill Resolver
+  function getCaseStudyById(caseId) {
+    // 1. Check gym drills if caseId is string 'gym_X' or legacy 1491-1790
+    let drillNum = null;
+    if (typeof caseId === 'string' && caseId.startsWith('gym_')) {
+      drillNum = parseInt(caseId.replace('gym_', ''), 10);
+    } else if (typeof caseId === 'number' && caseId >= 1491 && caseId <= 1790) {
+      drillNum = caseId - 1490;
+    }
+
+    if (drillNum !== null && window.SYNTAX_GYM_DRILLS) {
+      const d = window.SYNTAX_GYM_DRILLS[drillNum - 1];
+      if (d) {
+        return {
+          id: `gym_${d.drillNumber}`,
+          drillNumber: d.drillNumber,
+          isGymDrill: true,
+          section: "Section 0: Foundations & Syntax Gym",
+          title: d.title,
+          industry: "Foundations",
+          table: d.table,
+          difficulty: "Easy",
+          scenario: d.scenario,
+          businessObjective: d.businessObjective,
+          schemaSnippet: d.schemaSnippet,
+          targetQuery: d.targetQuery,
+          syntaxBlueprint: d.syntaxBlueprint,
+          syntaxRule: d.syntaxRule,
+          syntaxTrap: d.syntaxTrap,
+          eli5Story: `[SYNTAX BLUEPRINT]:\n${d.syntaxBlueprint}\n\n[RULE]: ${d.syntaxRule}\n\n[TRAP TO AVOID]: ${d.syntaxTrap}`,
+          commonMistakes: d.commonMistakes,
+          learningOutcomes: d.learningOutcomes,
+          challengeSlots: d.challengeSlots
+        };
+      }
+    }
+
+    // 2. Check corporate enterprise cases
+    const allCases = window.ALL_1490_CASE_STUDIES || window.ALL_500_CASE_STUDIES || window.ALL_1340_CASE_STUDIES || window.ALL_1040_CASE_STUDIES || [];
+    const numId = typeof caseId === 'number' ? caseId : parseInt(caseId, 10);
+    let found = allCases.find(c => c.id === numId || c.id === caseId);
+
+    // 3. Fallback to gym drill if not found in corporate cases
+    if (!found && window.SYNTAX_GYM_DRILLS && numId >= 1 && numId <= 300) {
+      const d = window.SYNTAX_GYM_DRILLS[numId - 1];
+      if (d) {
+        found = {
+          id: `gym_${d.drillNumber}`,
+          drillNumber: d.drillNumber,
+          isGymDrill: true,
+          section: "Section 0: Foundations & Syntax Gym",
+          title: d.title,
+          industry: "Foundations",
+          table: d.table,
+          difficulty: "Easy",
+          scenario: d.scenario,
+          businessObjective: d.businessObjective,
+          schemaSnippet: d.schemaSnippet,
+          targetQuery: d.targetQuery,
+          syntaxBlueprint: d.syntaxBlueprint,
+          syntaxRule: d.syntaxRule,
+          syntaxTrap: d.syntaxTrap,
+          eli5Story: `[SYNTAX BLUEPRINT]:\n${d.syntaxBlueprint}\n\n[RULE]: ${d.syntaxRule}\n\n[TRAP TO AVOID]: ${d.syntaxTrap}`,
+          commonMistakes: d.commonMistakes,
+          learningOutcomes: d.learningOutcomes,
+          challengeSlots: d.challengeSlots
+        };
+      }
+    }
+    return found;
+  }
+  window.getCaseStudyById = getCaseStudyById;
+
   // Global Token Puzzle Event Handlers
   window.handleTokenClick = function(caseId, tokenId, tokenText) {
     if (!window.CASE_BLANKS_ENGINE) return;
-    const allCases = window.ALL_1040_CASE_STUDIES || window.ALL_700_CASE_STUDIES || window.ALL_650_CASE_STUDIES || window.ALL_600_CASE_STUDIES || window.ALL_500_CASE_STUDIES || [];
-    const cs = allCases.find(c => c.id === caseId);
+    const cs = getCaseStudyById(caseId);
     if (!cs) return;
 
     const challenge = window.CASE_BLANKS_ENGINE.createChallenge(cs);
@@ -4543,8 +4616,7 @@ function renderCaseStudies(
     delete state.slots[slotId];
     if (window.soundFX) window.soundFX.playClick();
 
-    const allCases = window.ALL_1790_CASE_STUDIES || window.ALL_1490_CASE_STUDIES || window.ALL_1340_CASE_STUDIES || window.ALL_1040_CASE_STUDIES || window.ALL_700_CASE_STUDIES || window.ALL_650_CASE_STUDIES || window.ALL_600_CASE_STUDIES || window.ALL_500_CASE_STUDIES || [];
-    const cs = allCases.find(c => c.id === caseId);
+    const cs = getCaseStudyById(caseId);
     if (cs) {
       const challenge = window.CASE_BLANKS_ENGINE.createChallenge(cs);
       if (challenge) {
@@ -4620,8 +4692,7 @@ function renderCaseStudies(
         chipEl.setAttribute('draggable', 'false');
       }
 
-      const allCases = window.ALL_1040_CASE_STUDIES || window.ALL_700_CASE_STUDIES || window.ALL_650_CASE_STUDIES || window.ALL_600_CASE_STUDIES || window.ALL_500_CASE_STUDIES || [];
-      const cs = allCases.find(c => c.id === caseId);
+      const cs = getCaseStudyById(caseId);
       if (cs) {
         const challenge = window.CASE_BLANKS_ENGINE.createChallenge(cs);
         if (challenge) {
@@ -4640,8 +4711,7 @@ function renderCaseStudies(
     window.CASE_BLANKS_ENGINE.clearCaseState(caseId);
     if (window.soundFX) window.soundFX.playClick();
 
-    const allCases = window.ALL_1040_CASE_STUDIES || window.ALL_700_CASE_STUDIES || window.ALL_650_CASE_STUDIES || window.ALL_600_CASE_STUDIES || window.ALL_500_CASE_STUDIES || [];
-    const cs = allCases.find(c => c.id === caseId);
+    const cs = getCaseStudyById(caseId);
     if (!cs) return;
 
     const challenge = window.CASE_BLANKS_ENGINE.createChallenge(cs);
@@ -4677,8 +4747,7 @@ function renderCaseStudies(
 
   window.handleVerifyCase = function(caseId) {
     if (!window.CASE_BLANKS_ENGINE) return;
-    const allCases = window.ALL_1040_CASE_STUDIES || window.ALL_700_CASE_STUDIES || window.ALL_650_CASE_STUDIES || window.ALL_600_CASE_STUDIES || window.ALL_500_CASE_STUDIES || [];
-    const cs = allCases.find(c => c.id === caseId);
+    const cs = getCaseStudyById(caseId);
     if (!cs) return;
 
     const state = window.CASE_BLANKS_ENGINE.getCaseState(caseId);
@@ -4706,6 +4775,13 @@ function renderCaseStudies(
 
       const solvedSpan = document.getElementById('casesSolvedCount');
       if (solvedSpan) solvedSpan.textContent = window.CASE_BLANKS_ENGINE.getSolvedCount();
+
+      const gymSolvedSpan = document.getElementById('gymSolvedCount');
+      if (gymSolvedSpan && window.SYNTAX_GYM_DRILLS) {
+        gymSolvedSpan.textContent = window.SYNTAX_GYM_DRILLS.filter((d, idx) => 
+          window.CASE_BLANKS_ENGINE.isSolved(`gym_${d.drillNumber || idx + 1}`) || window.CASE_BLANKS_ENGINE.isSolved(1491 + idx)
+        ).length;
+      }
     } else {
       Object.entries(result.results || {}).forEach(([sId, info]) => {
         const slotEl = document.getElementById(`target_${caseId}_${sId}`);
@@ -4730,7 +4806,7 @@ function renderCaseStudies(
 }
 
 function toggleCaseSim(caseId) {
-  const cs = (window.ALL_500_CASE_STUDIES || window.ALL_300_CASE_STUDIES || []).find(c => c.id === caseId);
+  const cs = getCaseStudyById(caseId);
   const drawer = document.getElementById(`sim_drawer_${caseId}`);
   const btn = document.querySelector(`.btn-toggle-sim[data-case-id="${caseId}"]`);
   if (!drawer || !cs || !window.CASE_SIMULATOR_ENGINE) return;
@@ -4834,8 +4910,7 @@ function toggleCaseSim(caseId) {
 window.toggleCaseSim = toggleCaseSim;
 
 function openCaseDossier(caseId) {
-  const allCases = window.ALL_1040_CASE_STUDIES || window.ALL_700_CASE_STUDIES || window.ALL_500_CASE_STUDIES || window.ALL_300_CASE_STUDIES || [];
-  const cs = allCases.find(c => c.id === caseId);
+  const cs = getCaseStudyById(caseId);
   if (!cs || !window.CASE_DOSSIER_ENGINE) return;
 
   activeDossierCaseId = caseId;
@@ -5080,7 +5155,7 @@ function closeCaseDossier() {
 window.closeCaseDossier = closeCaseDossier;
 
 function navigateDossierPrev() {
-  const allCases = window.ALL_1040_CASE_STUDIES || window.ALL_700_CASE_STUDIES || window.ALL_500_CASE_STUDIES || window.ALL_300_CASE_STUDIES || [];
+  const allCases = window.ALL_1490_CASE_STUDIES || window.ALL_500_CASE_STUDIES || [];
   const currentIdx = allCases.findIndex(c => c.id === activeDossierCaseId);
   if (currentIdx > 0) {
     openCaseDossier(allCases[currentIdx - 1].id);
@@ -5090,7 +5165,7 @@ function navigateDossierPrev() {
 }
 
 function navigateDossierNext() {
-  const allCases = window.ALL_1040_CASE_STUDIES || window.ALL_700_CASE_STUDIES || window.ALL_500_CASE_STUDIES || window.ALL_300_CASE_STUDIES || [];
+  const allCases = window.ALL_1490_CASE_STUDIES || window.ALL_500_CASE_STUDIES || [];
   const currentIdx = allCases.findIndex(c => c.id === activeDossierCaseId);
   if (currentIdx >= 0 && currentIdx < allCases.length - 1) {
     openCaseDossier(allCases[currentIdx + 1].id);
@@ -5105,6 +5180,221 @@ function toggleDossierSimulator() {
     drawer.style.display = (drawer.style.display === 'none') ? 'block' : 'none';
   }
 }
+
+// =============================================================================
+// SYNTAX GYM CONTROLLER (300 PROGRESSIVE MICRO-DRILLS & EVERYDAY SCHEMAS)
+// =============================================================================
+
+function renderSyntaxGymTablesBrowser() {
+  const browserEl = document.getElementById('gymTablesBrowser');
+  if (!browserEl) return;
+
+  const tables = [
+    { name: 'all', label: 'All 10 Tables', icon: '⚡', desc: 'Browse across all 10 everyday schemas (300 drills)', cols: [] },
+    { name: 'Students', label: 'Students', icon: '🎓', desc: 'Classroom rosters, academic majors, GPA scores, and enrolled cohorts.', cols: ['student_id INT (PK)', 'full_name VARCHAR', 'age INT', 'major VARCHAR', 'gpa DECIMAL', 'city VARCHAR', 'enrolled_year INT'] },
+    { name: 'Books', label: 'Books', icon: '📚', desc: 'Library inventory catalog, literary genres, unit pricing, and binding types.', cols: ['book_id INT (PK)', 'title VARCHAR', 'author VARCHAR', 'genre VARCHAR', 'price DECIMAL', 'stock_qty INT', 'published_year INT', 'is_hardcover BOOLEAN'] },
+    { name: 'Employees', label: 'Employees', icon: '💼', desc: 'Corporate staffing roster, salary distributions, departments, and tenure dates.', cols: ['emp_id INT (PK)', 'first_name VARCHAR', 'last_name VARCHAR', 'department VARCHAR', 'salary DECIMAL', 'bonus DECIMAL', 'hire_date DATE'] },
+    { name: 'GroceryItems', label: 'GroceryItems', icon: '🛒', desc: 'Supermarket inventory, organic certifications, caloric metrics, and shelf stock.', cols: ['item_id INT (PK)', 'item_name VARCHAR', 'category VARCHAR', 'unit_price DECIMAL', 'is_organic BOOLEAN', 'calories INT', 'stock_units INT'] },
+    { name: 'Orders', label: 'Orders', icon: '📦', desc: 'Customer sales transactions, discounts, shipping logistics, and order fulfillment.', cols: ['order_id INT (PK)', 'customer_name VARCHAR', 'item_name VARCHAR', 'unit_price DECIMAL', 'quantity INT', 'discount_pct DECIMAL', 'order_status VARCHAR', 'shipping_city VARCHAR'] },
+    { name: 'MusicTracks', label: 'MusicTracks', icon: '🎵', desc: 'Streaming music catalog, audio duration, play counts, and release chronology.', cols: ['track_id INT (PK)', 'title VARCHAR', 'artist VARCHAR', 'genre VARCHAR', 'duration_sec INT', 'release_year INT', 'plays_count INT', 'is_explicit BOOLEAN'] },
+    { name: 'GymMembers', label: 'GymMembers', icon: '🏋️', desc: 'Fitness club memberships, tier plans, monthly dues, and visit frequency.', cols: ['member_id INT (PK)', 'full_name VARCHAR', 'plan_type VARCHAR', 'monthly_fee DECIMAL', 'visits_per_month INT', 'join_date DATE', 'has_trainer BOOLEAN'] },
+    { name: 'MovieReviews', label: 'MovieReviews', icon: '🎬', desc: 'Film ratings, film critics, star metrics, and verified audience feedback.', cols: ['review_id INT (PK)', 'movie_title VARCHAR', 'reviewer_name VARCHAR', 'rating_stars DECIMAL', 'review_year INT', 'is_verified_viewer BOOLEAN'] },
+    { name: 'FlightSchedule', label: 'FlightSchedule', icon: '✈️', desc: 'Commercial air travel routes, origin/destination hubs, fares, and delays.', cols: ['flight_id INT (PK)', 'airline VARCHAR', 'origin_city VARCHAR', 'dest_city VARCHAR', 'departure_time TIME', 'duration_min INT', 'ticket_price DECIMAL', 'is_delayed BOOLEAN'] },
+    { name: 'PetClinic', label: 'PetClinic', icon: '🐾', desc: 'Veterinary patient records, species, breeds, weights, and immunization records.', cols: ['pet_id INT (PK)', 'pet_name VARCHAR', 'species VARCHAR', 'breed VARCHAR', 'age_years INT', 'weight_kg DECIMAL', 'owner_name VARCHAR', 'vaccinated BOOLEAN'] }
+  ];
+
+  const activeTableObj = tables.find(t => t.name.toLowerCase() === (currentGymTable || 'all').toLowerCase()) || tables[0];
+
+  let tabsHtml = '';
+  tables.forEach(t => {
+    const isActive = t.name.toLowerCase() === (currentGymTable || 'all').toLowerCase();
+    tabsHtml += `
+      <button class="gym-table-tab-btn ${isActive ? 'active' : ''}" data-table="${t.name}" onclick="selectGymTable('${t.name}')">
+        <span>${t.icon}</span> ${t.label}
+      </button>
+    `;
+  });
+
+  let detailBoxHtml = '';
+  if (activeTableObj.name !== 'all' && activeTableObj.cols && activeTableObj.cols.length > 0) {
+    const colsHtml = activeTableObj.cols.map(c => {
+      const isPk = c.includes('(PK)');
+      return `<span class="gym-col-chip ${isPk ? 'pk' : ''}">${escapeHtml(c)}</span>`;
+    }).join('');
+
+    detailBoxHtml = `
+      <div class="gym-table-detail-box">
+        <div class="gym-table-meta-row">
+          <div class="gym-table-meta-info">
+            <span style="font-size: 16px;">${activeTableObj.icon}</span>
+            <strong style="color: var(--text-primary); font-size: 13px;">${activeTableObj.name}</strong>
+            <span class="gym-table-schema-code">${activeTableObj.cols.length} Columns</span>
+          </div>
+          <p style="font-size: 11.5px; color: var(--text-muted); margin: 0;">${activeTableObj.desc}</p>
+        </div>
+        <div class="gym-table-cols-list">
+          ${colsHtml}
+        </div>
+      </div>
+    `;
+  } else {
+    detailBoxHtml = `
+      <div class="gym-table-detail-box" style="padding: 10px 14px;">
+        <p style="font-size: 11.5px; color: var(--text-secondary); margin: 0;">
+          💡 <strong>Punctuation &amp; Clause Muscle Memory:</strong> Click any of the 10 everyday schemas above to filter drills, or choose a topic pill above (SELECT, WHERE, ORDER BY) to practice active retrieval.
+        </p>
+      </div>
+    `;
+  }
+
+  browserEl.innerHTML = `
+    <div class="gym-browser-header">
+      <div class="gym-browser-title-wrap">
+        <span class="gym-browser-badge">RELATIONAL DATA MATRIX</span>
+        <div>
+          <h3 class="gym-browser-title">🗄️ 10 Everyday Schemas Inspector</h3>
+          <p class="gym-browser-subtitle">Punctuation &amp; clause muscle memory drills built exclusively on relatable everyday data.</p>
+        </div>
+      </div>
+    </div>
+    <div class="gym-tables-tabs-strip">
+      ${tabsHtml}
+    </div>
+    ${detailBoxHtml}
+  `;
+}
+
+window.selectGymTable = function(tableName) {
+  currentGymTable = tableName;
+  currentGymDisplayLimit = 30;
+  if (window.soundFX) window.soundFX.playPop();
+  renderSyntaxGym();
+};
+
+function renderSyntaxGym() {
+  const container = document.getElementById('syntaxGymGrid');
+  const countBadge = document.getElementById('gymCountBadge');
+  const solvedCountSpan = document.getElementById('gymSolvedCount');
+  if (!container) return;
+
+  renderSyntaxGymTablesBrowser();
+
+  // Retrieve 300 syntax drills directly from SYNTAX_GYM_DRILLS
+  let allDrills = [];
+  if (window.SYNTAX_GYM_DRILLS && window.SYNTAX_GYM_DRILLS.length > 0) {
+    allDrills = window.SYNTAX_GYM_DRILLS.map((d, index) => {
+      const num = d.drillNumber || (index + 1);
+      return {
+        id: `gym_${num}`,
+        drillNumber: num,
+        isGymDrill: true,
+        section: "Section 0: Foundations & Syntax Gym",
+        title: d.title,
+        industry: "Foundations",
+        table: d.table,
+        difficulty: "Easy",
+        scenario: d.scenario,
+        businessObjective: d.businessObjective,
+        schemaSnippet: d.schemaSnippet,
+        targetQuery: d.targetQuery,
+        syntaxBlueprint: d.syntaxBlueprint,
+        syntaxRule: d.syntaxRule,
+        syntaxTrap: d.syntaxTrap,
+        eli5Story: d.eli5Story || `[SYNTAX BLUEPRINT]:\n${d.syntaxBlueprint}\n\n[RULE]: ${d.syntaxRule}\n\n[TRAP TO AVOID]: ${d.syntaxTrap}`,
+        commonMistakes: d.commonMistakes,
+        learningOutcomes: d.learningOutcomes,
+        challengeSlots: d.challengeSlots
+      };
+    });
+  }
+
+  let filtered = allDrills.slice();
+
+  // 1. Pillar filter ('select' = 1-100, 'where' = 101-200, 'order' = 201-300, 'all' = 300)
+  if (currentGymPillar === 'select') {
+    filtered = filtered.filter(d => d.drillNumber >= 1 && d.drillNumber <= 100);
+  } else if (currentGymPillar === 'where') {
+    filtered = filtered.filter(d => d.drillNumber >= 101 && d.drillNumber <= 200);
+  } else if (currentGymPillar === 'order') {
+    filtered = filtered.filter(d => d.drillNumber >= 201 && d.drillNumber <= 300);
+  }
+
+  // 2. Table filter
+  if (currentGymTable && currentGymTable !== 'all') {
+    filtered = filtered.filter(d => d.table && d.table.toLowerCase() === currentGymTable.toLowerCase());
+  }
+
+  // 3. Search query filter
+  if (currentGymSearch && currentGymSearch.trim() !== '') {
+    const q = currentGymSearch.toLowerCase().trim();
+    filtered = filtered.filter(d => 
+      (d.title && d.title.toLowerCase().includes(q)) ||
+      (d.scenario && d.scenario.toLowerCase().includes(q)) ||
+      (d.businessObjective && d.businessObjective.toLowerCase().includes(q)) ||
+      (d.table && d.table.toLowerCase().includes(q)) ||
+      (d.targetQuery && d.targetQuery.toLowerCase().includes(q)) ||
+      (d.subcluster && d.subcluster.toLowerCase().includes(q))
+    );
+  }
+
+  // Update counts on UI badges
+  if (countBadge) {
+    countBadge.textContent = `${filtered.length} Drills`;
+  }
+  if (solvedCountSpan && window.CASE_BLANKS_ENGINE) {
+    const solvedTotal = allDrills.filter(d => window.CASE_BLANKS_ENGINE.isSolved(d.id)).length;
+    solvedCountSpan.textContent = solvedTotal;
+  }
+
+  if (filtered.length === 0) {
+    container.innerHTML = `
+      <div style="grid-column: 1 / -1; padding: 40px; text-align: center; color: var(--text-muted);">
+        <p style="font-size: 14px; margin-bottom: 8px;">No syntax drills match current filters.</p>
+        <button class="card-nav-btn" onclick="currentGymSearch = ''; currentGymTable = 'all'; currentGymPillar = 'all'; renderSyntaxGym();">Reset All Filters</button>
+      </div>
+    `;
+    return;
+  }
+
+  const totalMatching = filtered.length;
+  const visibleDrills = filtered.slice(0, currentGymDisplayLimit);
+
+  let html = '';
+  visibleDrills.forEach(drill => {
+    html += renderCaseCardHtml(drill);
+  });
+
+  if (totalMatching > currentGymDisplayLimit) {
+    html += `
+      <div style="grid-column: 1 / -1; display: flex; justify-content: center; gap: 12px; padding: 24px 10px; align-items: center; flex-wrap: wrap;">
+        <button class="btn-solve-in-studio" id="btnLoadMoreGymDrills" style="padding: 10px 24px; font-size: 13px; font-weight: 700;">
+          ⬇️ Load Next 30 Drills (${Math.min(currentGymDisplayLimit, totalMatching)} of ${totalMatching} Shown)
+        </button>
+        <button class="card-nav-btn" id="btnLoadAllGymDrills" style="padding: 10px 18px; font-size: 12px;">
+          ⚡ Load All ${totalMatching} Drills
+        </button>
+      </div>
+    `;
+  }
+
+  container.innerHTML = html;
+
+  const btnMore = container.querySelector('#btnLoadMoreGymDrills');
+  if (btnMore) {
+    btnMore.addEventListener('click', () => {
+      currentGymDisplayLimit += 30;
+      renderSyntaxGym();
+    });
+  }
+  const btnAll = container.querySelector('#btnLoadAllGymDrills');
+  if (btnAll) {
+    btnAll.addEventListener('click', () => {
+      currentGymDisplayLimit = totalMatching;
+      renderSyntaxGym();
+    });
+  }
+}
+window.renderSyntaxGym = renderSyntaxGym;
 
 // =============================================================================
 // ENTERPRISE PRODUCTION ERD EXPLORER CONTROLLER
