@@ -476,7 +476,35 @@
 - `visualizer/index.html`: Nav tab `Syntax Gym (400)`, badge `400 Drills`, and Topic 4 filter button (`📊 Topic 4: Aggregations & GROUP BY (100)`).
 - `visualizer/app.js`: Updated `renderSyntaxGym()` pillar filter for `aggregate` (#301–#400) and `getCaseStudyById` fallback bounds.
 
-- **Next Step**: Advance to **Day 13: Real-World Business Analytics (Retention Cohort Heatmaps, Customer Churn Rates & LTV)** or add Topic 5 (CASE WHEN & Conditional Logic).
+- **Next Step**: Advance to **Day 13: Real-World Business Analytics (Retention Cohort Heatmaps, Customer Churn Rates & LTV)** or add Topic 6 (String & Pattern Matching).
+
+---
+
+## 2026-09-16 — Entry 24: Topic 5 Expansion in the SQL Syntax Gym (500 Progressive Micro-Drills)
+
+### 1. Architectural Scope
+- Added **Topic 5: CASE WHEN & Conditional Logic** (100 progressive micro-drills, Drills **#401 to #500**) to the standalone Syntax Gym module.
+- Expanded the total gym capacity from **400 to 500 drills** across all 10 everyday relatable schemas (`Students`, `Books`, `Employees`, `GroceryItems`, `Orders`, `MusicTracks`, `GymMembers`, `MovieReviews`, `FlightSchedule`, `PetClinic`).
+
+### 2. Topic 5 Curriculum Subclusters (Drills #401–#500)
+1. **5.1 Simple Two-Branch CASE WHEN** (#401–#410): Binary labels, GPA thresholds, status mapping.
+2. **5.2 Multi-Branch Categorization** (#411–#420): Honors ranks, price brackets, inventory tiers, salary bands.
+3. **5.3 CASE with Mathematical Transformations** (#421–#430): Dynamic bonuses, volume discounts, clearance rates, surge pricing.
+4. **5.4 NULL Value Handling with CASE WHEN** (#431–#440): Replacing NULLs with descriptive fallback text.
+5. **5.5 The COALESCE Function (Quick Fallbacks)** (#441–#450): Rapid multi-column fallbacks and default values.
+6. **5.6 NULLIF Function (Zero-Division & Suppressions)** (#451–#460): Guarding division calculations against zero, suppressing test values.
+7. **5.7 Boolean Flagging & Binary Indicators (0/1)** (#461–#470): Generating binary metrics (`is_dean_list`, `is_fulfilled`, `is_sold_out`).
+8. **5.8 Custom Sorting via CASE in ORDER BY** (#471–#480): Non-alphabetical priority ordering (e.g., Platinum &rarr; Gold &rarr; Silver).
+9. **5.9 Conditional Aggregation (SUM/COUNT with CASE)** (#481–#490): Single-pass conditional metrics across departments, categories, and genres.
+10. **5.10 Full Lifecycle Conditional Queries & Bug Hunts** (#491–#500): Complete conditional analytics pipelines and fixing syntax bugs (missing `END`, threshold ordering).
+
+### 3. File Updates
+- `visualizer/syntax_gym_data.js`: Assembled 500 drills into `SYNTAX_GYM_DRILLS`.
+- `visualizer/index.html`: Nav tab `Syntax Gym (500)`, badge `500 Drills`, and Topic 5 filter button (`🧩 Topic 5: CASE WHEN & Conditional Logic (100)`).
+- `visualizer/app.js`: Updated `renderSyntaxGym()` pillar filter for `casewhen` (#401–#500) and `getCaseStudyById` fallback bounds.
+
+- **Next Step**: Advance to **Day 13: Real-World Business Analytics (Retention Cohort Heatmaps, Customer Churn Rates & LTV)**.
+
 
 
 

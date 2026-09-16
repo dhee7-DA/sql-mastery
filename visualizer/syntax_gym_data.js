@@ -1,6 +1,6 @@
 // =============================================================================
-// SECTION 0: THE SQL SYNTAX GYM (400 Progressive In-Depth Micro-Drills)
-// Topics 1, 2, 3, & 4: SELECT, WHERE, ORDER BY & LIMIT, Aggregations & GROUP BY
+// SECTION 0: THE SQL SYNTAX GYM (500 Progressive In-Depth Micro-Drills)
+// Topics 1, 2, 3, 4, & 5: SELECT, WHERE, ORDER BY & LIMIT, Aggregations & GROUP BY, CASE WHEN & Conditional Logic
 // =============================================================================
 
 const SYNTAX_GYM_DRILLS = [
@@ -23885,6 +23885,9786 @@ const SYNTAX_GYM_DRILLS = [
       {
         "type": "keyword",
         "value": "DESC;"
+      }
+    ]
+  },
+  {
+    "drillNumber": 401,
+    "subcluster": "5.1 Simple Two-Branch CASE WHEN",
+    "level": "Level 1 (Foundations)",
+    "title": "Syntax #401: Tag students with GPA >= 3.5 as 'Honor Roll' and all others as 'Standard'",
+    "table": "Students",
+    "scenario": "Tag students with GPA >= 3.5 as 'Honor Roll' and all others as 'Standard'.",
+    "businessObjective": "Tag students with GPA >= 3.5 as 'Honor Roll' and all others as 'Standard'.",
+    "schemaSnippet": "Students schema",
+    "targetQuery": "SELECT full_name, gpa,\n  CASE WHEN gpa >= 3.5 THEN 'Honor Roll' ELSE 'Standard' END AS academic_status\nFROM Students;",
+    "syntaxBlueprint": "SELECT col_name,\n  CASE WHEN condition THEN 'Val 1' ELSE 'Val 2' END AS alias_name\nFROM Students;",
+    "syntaxRule": "A CASE expression starts with CASE, tests conditions with WHEN...THEN, optionally falls back with ELSE, and MUST end with END. Every branch should return compatible data types.",
+    "syntaxTrap": "Forgetting the closing END keyword, or putting a comma between WHEN branches (branches must NOT be separated by commas).",
+    "eli5Story": "Conditional decision making on Students: Tag students with GPA >= 3.5 as 'Honor Roll' and all others as 'Standard'.",
+    "commonMistakes": "Omitting the END keyword, forgetting the ELSE fallback (defaults to NULL), or misordering WHEN thresholds.",
+    "learningOutcomes": "Mastered 5.1 Simple Two-Branch CASE WHEN on Students.",
+    "challengeSlots": [
+      {
+        "type": "keyword",
+        "value": "SELECT"
+      },
+      {
+        "type": "column",
+        "value": "full_name,"
+      },
+      {
+        "type": "column",
+        "value": "gpa,"
+      },
+      {
+        "type": "keyword",
+        "value": "CASE"
+      },
+      {
+        "type": "keyword",
+        "value": "WHEN"
+      },
+      {
+        "type": "column",
+        "value": "gpa"
+      },
+      {
+        "type": "column",
+        "value": ">="
+      },
+      {
+        "type": "column",
+        "value": "3.5"
+      },
+      {
+        "type": "keyword",
+        "value": "THEN"
+      },
+      {
+        "type": "column",
+        "value": "'Honor"
+      },
+      {
+        "type": "column",
+        "value": "Roll'"
+      },
+      {
+        "type": "keyword",
+        "value": "ELSE"
+      },
+      {
+        "type": "column",
+        "value": "'Standard'"
+      },
+      {
+        "type": "keyword",
+        "value": "END"
+      },
+      {
+        "type": "keyword",
+        "value": "AS"
+      },
+      {
+        "type": "column",
+        "value": "academic_status"
+      },
+      {
+        "type": "keyword",
+        "value": "FROM"
+      },
+      {
+        "type": "table",
+        "value": "Students;"
+      }
+    ]
+  },
+  {
+    "drillNumber": 402,
+    "subcluster": "5.1 Simple Two-Branch CASE WHEN",
+    "level": "Level 1 (Foundations)",
+    "title": "Syntax #402: Classify books over $20.00 as 'Premium' and all others as 'Affordable'",
+    "table": "Books",
+    "scenario": "Classify books over $20.00 as 'Premium' and all others as 'Affordable'.",
+    "businessObjective": "Classify books over $20.00 as 'Premium' and all others as 'Affordable'.",
+    "schemaSnippet": "Books schema",
+    "targetQuery": "SELECT title, price,\n  CASE WHEN price > 20.00 THEN 'Premium' ELSE 'Affordable' END AS price_tier\nFROM Books;",
+    "syntaxBlueprint": "SELECT col_name,\n  CASE WHEN condition THEN 'Val 1' ELSE 'Val 2' END AS alias_name\nFROM Books;",
+    "syntaxRule": "A CASE expression starts with CASE, tests conditions with WHEN...THEN, optionally falls back with ELSE, and MUST end with END. Every branch should return compatible data types.",
+    "syntaxTrap": "Forgetting the closing END keyword, or putting a comma between WHEN branches (branches must NOT be separated by commas).",
+    "eli5Story": "Conditional decision making on Books: Classify books over $20.00 as 'Premium' and all others as 'Affordable'.",
+    "commonMistakes": "Omitting the END keyword, forgetting the ELSE fallback (defaults to NULL), or misordering WHEN thresholds.",
+    "learningOutcomes": "Mastered 5.1 Simple Two-Branch CASE WHEN on Books.",
+    "challengeSlots": [
+      {
+        "type": "keyword",
+        "value": "SELECT"
+      },
+      {
+        "type": "column",
+        "value": "title,"
+      },
+      {
+        "type": "column",
+        "value": "price,"
+      },
+      {
+        "type": "keyword",
+        "value": "CASE"
+      },
+      {
+        "type": "keyword",
+        "value": "WHEN"
+      },
+      {
+        "type": "column",
+        "value": "price"
+      },
+      {
+        "type": "column",
+        "value": ">"
+      },
+      {
+        "type": "column",
+        "value": "20.00"
+      },
+      {
+        "type": "keyword",
+        "value": "THEN"
+      },
+      {
+        "type": "column",
+        "value": "'Premium'"
+      },
+      {
+        "type": "keyword",
+        "value": "ELSE"
+      },
+      {
+        "type": "column",
+        "value": "'Affordable'"
+      },
+      {
+        "type": "keyword",
+        "value": "END"
+      },
+      {
+        "type": "keyword",
+        "value": "AS"
+      },
+      {
+        "type": "column",
+        "value": "price_tier"
+      },
+      {
+        "type": "keyword",
+        "value": "FROM"
+      },
+      {
+        "type": "table",
+        "value": "Books;"
+      }
+    ]
+  },
+  {
+    "drillNumber": 403,
+    "subcluster": "5.1 Simple Two-Branch CASE WHEN",
+    "level": "Level 1 (Foundations)",
+    "title": "Syntax #403: Label employees earning $80,000+ as 'Senior Band' and others as 'Associate Band'",
+    "table": "Employees",
+    "scenario": "Label employees earning $80,000+ as 'Senior Band' and others as 'Associate Band'.",
+    "businessObjective": "Label employees earning $80,000+ as 'Senior Band' and others as 'Associate Band'.",
+    "schemaSnippet": "Employees schema",
+    "targetQuery": "SELECT first_name, salary,\n  CASE WHEN salary >= 80000 THEN 'Senior Band' ELSE 'Associate Band' END AS pay_bracket\nFROM Employees;",
+    "syntaxBlueprint": "SELECT col_name,\n  CASE WHEN condition THEN 'Val 1' ELSE 'Val 2' END AS alias_name\nFROM Employees;",
+    "syntaxRule": "A CASE expression starts with CASE, tests conditions with WHEN...THEN, optionally falls back with ELSE, and MUST end with END. Every branch should return compatible data types.",
+    "syntaxTrap": "Forgetting the closing END keyword, or putting a comma between WHEN branches (branches must NOT be separated by commas).",
+    "eli5Story": "Conditional decision making on Employees: Label employees earning $80,000+ as 'Senior Band' and others as 'Associate Band'.",
+    "commonMistakes": "Omitting the END keyword, forgetting the ELSE fallback (defaults to NULL), or misordering WHEN thresholds.",
+    "learningOutcomes": "Mastered 5.1 Simple Two-Branch CASE WHEN on Employees.",
+    "challengeSlots": [
+      {
+        "type": "keyword",
+        "value": "SELECT"
+      },
+      {
+        "type": "column",
+        "value": "first_name,"
+      },
+      {
+        "type": "column",
+        "value": "salary,"
+      },
+      {
+        "type": "keyword",
+        "value": "CASE"
+      },
+      {
+        "type": "keyword",
+        "value": "WHEN"
+      },
+      {
+        "type": "column",
+        "value": "salary"
+      },
+      {
+        "type": "column",
+        "value": ">="
+      },
+      {
+        "type": "column",
+        "value": "80000"
+      },
+      {
+        "type": "keyword",
+        "value": "THEN"
+      },
+      {
+        "type": "column",
+        "value": "'Senior"
+      },
+      {
+        "type": "column",
+        "value": "Band'"
+      },
+      {
+        "type": "keyword",
+        "value": "ELSE"
+      },
+      {
+        "type": "column",
+        "value": "'Associate"
+      },
+      {
+        "type": "column",
+        "value": "Band'"
+      },
+      {
+        "type": "keyword",
+        "value": "END"
+      },
+      {
+        "type": "keyword",
+        "value": "AS"
+      },
+      {
+        "type": "column",
+        "value": "pay_bracket"
+      },
+      {
+        "type": "keyword",
+        "value": "FROM"
+      },
+      {
+        "type": "table",
+        "value": "Employees;"
+      }
+    ]
+  },
+  {
+    "drillNumber": 404,
+    "subcluster": "5.1 Simple Two-Branch CASE WHEN",
+    "level": "Level 1 (Foundations)",
+    "title": "Syntax #404: Map binary organic flag (1/0) to descriptive labels 'Organic Certified' vs 'Conventional'",
+    "table": "GroceryItems",
+    "scenario": "Map binary organic flag (1/0) to descriptive labels 'Organic Certified' vs 'Conventional'.",
+    "businessObjective": "Map binary organic flag (1/0) to descriptive labels 'Organic Certified' vs 'Conventional'.",
+    "schemaSnippet": "GroceryItems schema",
+    "targetQuery": "SELECT item_name, is_organic,\n  CASE WHEN is_organic = 1 THEN 'Organic Certified' ELSE 'Conventional' END AS product_type\nFROM GroceryItems;",
+    "syntaxBlueprint": "SELECT col_name,\n  CASE WHEN condition THEN 'Val 1' ELSE 'Val 2' END AS alias_name\nFROM GroceryItems;",
+    "syntaxRule": "A CASE expression starts with CASE, tests conditions with WHEN...THEN, optionally falls back with ELSE, and MUST end with END. Every branch should return compatible data types.",
+    "syntaxTrap": "Forgetting the closing END keyword, or putting a comma between WHEN branches (branches must NOT be separated by commas).",
+    "eli5Story": "Conditional decision making on GroceryItems: Map binary organic flag (1/0) to descriptive labels 'Organic Certified' vs 'Conventional'.",
+    "commonMistakes": "Omitting the END keyword, forgetting the ELSE fallback (defaults to NULL), or misordering WHEN thresholds.",
+    "learningOutcomes": "Mastered 5.1 Simple Two-Branch CASE WHEN on GroceryItems.",
+    "challengeSlots": [
+      {
+        "type": "keyword",
+        "value": "SELECT"
+      },
+      {
+        "type": "column",
+        "value": "item_name,"
+      },
+      {
+        "type": "column",
+        "value": "is_organic,"
+      },
+      {
+        "type": "keyword",
+        "value": "CASE"
+      },
+      {
+        "type": "keyword",
+        "value": "WHEN"
+      },
+      {
+        "type": "column",
+        "value": "is_organic"
+      },
+      {
+        "type": "column",
+        "value": "="
+      },
+      {
+        "type": "column",
+        "value": "1"
+      },
+      {
+        "type": "keyword",
+        "value": "THEN"
+      },
+      {
+        "type": "column",
+        "value": "'Organic"
+      },
+      {
+        "type": "column",
+        "value": "Certified'"
+      },
+      {
+        "type": "keyword",
+        "value": "ELSE"
+      },
+      {
+        "type": "column",
+        "value": "'Conventional'"
+      },
+      {
+        "type": "keyword",
+        "value": "END"
+      },
+      {
+        "type": "keyword",
+        "value": "AS"
+      },
+      {
+        "type": "column",
+        "value": "product_type"
+      },
+      {
+        "type": "keyword",
+        "value": "FROM"
+      },
+      {
+        "type": "table",
+        "value": "GroceryItems;"
+      }
+    ]
+  },
+  {
+    "drillNumber": 405,
+    "subcluster": "5.1 Simple Two-Branch CASE WHEN",
+    "level": "Level 1 (Foundations)",
+    "title": "Syntax #405: Categorize orders as 'Completed' if status is 'Delivered', else 'In Progress'",
+    "table": "Orders",
+    "scenario": "Categorize orders as 'Completed' if status is 'Delivered', else 'In Progress'.",
+    "businessObjective": "Categorize orders as 'Completed' if status is 'Delivered', else 'In Progress'.",
+    "schemaSnippet": "Orders schema",
+    "targetQuery": "SELECT order_id, order_status,\n  CASE WHEN order_status = 'Delivered' THEN 'Completed' ELSE 'In Progress' END AS fulfillment_state\nFROM Orders;",
+    "syntaxBlueprint": "SELECT col_name,\n  CASE WHEN condition THEN 'Val 1' ELSE 'Val 2' END AS alias_name\nFROM Orders;",
+    "syntaxRule": "A CASE expression starts with CASE, tests conditions with WHEN...THEN, optionally falls back with ELSE, and MUST end with END. Every branch should return compatible data types.",
+    "syntaxTrap": "Forgetting the closing END keyword, or putting a comma between WHEN branches (branches must NOT be separated by commas).",
+    "eli5Story": "Conditional decision making on Orders: Categorize orders as 'Completed' if status is 'Delivered', else 'In Progress'.",
+    "commonMistakes": "Omitting the END keyword, forgetting the ELSE fallback (defaults to NULL), or misordering WHEN thresholds.",
+    "learningOutcomes": "Mastered 5.1 Simple Two-Branch CASE WHEN on Orders.",
+    "challengeSlots": [
+      {
+        "type": "keyword",
+        "value": "SELECT"
+      },
+      {
+        "type": "column",
+        "value": "order_id,"
+      },
+      {
+        "type": "column",
+        "value": "order_status,"
+      },
+      {
+        "type": "keyword",
+        "value": "CASE"
+      },
+      {
+        "type": "keyword",
+        "value": "WHEN"
+      },
+      {
+        "type": "column",
+        "value": "order_status"
+      },
+      {
+        "type": "column",
+        "value": "="
+      },
+      {
+        "type": "column",
+        "value": "'Delivered'"
+      },
+      {
+        "type": "keyword",
+        "value": "THEN"
+      },
+      {
+        "type": "column",
+        "value": "'Completed'"
+      },
+      {
+        "type": "keyword",
+        "value": "ELSE"
+      },
+      {
+        "type": "column",
+        "value": "'In"
+      },
+      {
+        "type": "column",
+        "value": "Progress'"
+      },
+      {
+        "type": "keyword",
+        "value": "END"
+      },
+      {
+        "type": "keyword",
+        "value": "AS"
+      },
+      {
+        "type": "column",
+        "value": "fulfillment_state"
+      },
+      {
+        "type": "keyword",
+        "value": "FROM"
+      },
+      {
+        "type": "table",
+        "value": "Orders;"
+      }
+    ]
+  },
+  {
+    "drillNumber": 406,
+    "subcluster": "5.1 Simple Two-Branch CASE WHEN",
+    "level": "Level 1 (Foundations)",
+    "title": "Syntax #406: Flag music tracks over 240 seconds as 'Long Track', otherwise 'Standard Length'",
+    "table": "MusicTracks",
+    "scenario": "Flag music tracks over 240 seconds as 'Long Track', otherwise 'Standard Length'.",
+    "businessObjective": "Flag music tracks over 240 seconds as 'Long Track', otherwise 'Standard Length'.",
+    "schemaSnippet": "MusicTracks schema",
+    "targetQuery": "SELECT track_title, duration_seconds,\n  CASE WHEN duration_seconds > 240 THEN 'Long Track' ELSE 'Standard Length' END AS length_category\nFROM MusicTracks;",
+    "syntaxBlueprint": "SELECT col_name,\n  CASE WHEN condition THEN 'Val 1' ELSE 'Val 2' END AS alias_name\nFROM MusicTracks;",
+    "syntaxRule": "A CASE expression starts with CASE, tests conditions with WHEN...THEN, optionally falls back with ELSE, and MUST end with END. Every branch should return compatible data types.",
+    "syntaxTrap": "Forgetting the closing END keyword, or putting a comma between WHEN branches (branches must NOT be separated by commas).",
+    "eli5Story": "Conditional decision making on MusicTracks: Flag music tracks over 240 seconds as 'Long Track', otherwise 'Standard Length'.",
+    "commonMistakes": "Omitting the END keyword, forgetting the ELSE fallback (defaults to NULL), or misordering WHEN thresholds.",
+    "learningOutcomes": "Mastered 5.1 Simple Two-Branch CASE WHEN on MusicTracks.",
+    "challengeSlots": [
+      {
+        "type": "keyword",
+        "value": "SELECT"
+      },
+      {
+        "type": "column",
+        "value": "track_title,"
+      },
+      {
+        "type": "column",
+        "value": "duration_seconds,"
+      },
+      {
+        "type": "keyword",
+        "value": "CASE"
+      },
+      {
+        "type": "keyword",
+        "value": "WHEN"
+      },
+      {
+        "type": "column",
+        "value": "duration_seconds"
+      },
+      {
+        "type": "column",
+        "value": ">"
+      },
+      {
+        "type": "column",
+        "value": "240"
+      },
+      {
+        "type": "keyword",
+        "value": "THEN"
+      },
+      {
+        "type": "column",
+        "value": "'Long"
+      },
+      {
+        "type": "column",
+        "value": "Track'"
+      },
+      {
+        "type": "keyword",
+        "value": "ELSE"
+      },
+      {
+        "type": "column",
+        "value": "'Standard"
+      },
+      {
+        "type": "column",
+        "value": "Length'"
+      },
+      {
+        "type": "keyword",
+        "value": "END"
+      },
+      {
+        "type": "keyword",
+        "value": "AS"
+      },
+      {
+        "type": "column",
+        "value": "length_category"
+      },
+      {
+        "type": "keyword",
+        "value": "FROM"
+      },
+      {
+        "type": "table",
+        "value": "MusicTracks;"
+      }
+    ]
+  },
+  {
+    "drillNumber": 407,
+    "subcluster": "5.1 Simple Two-Branch CASE WHEN",
+    "level": "Level 1 (Foundations)",
+    "title": "Syntax #407: Transform is_active flag into readable 'Current Member' or 'Lapsed Member' status",
+    "table": "GymMembers",
+    "scenario": "Transform is_active flag into readable 'Current Member' or 'Lapsed Member' status.",
+    "businessObjective": "Transform is_active flag into readable 'Current Member' or 'Lapsed Member' status.",
+    "schemaSnippet": "GymMembers schema",
+    "targetQuery": "SELECT member_name, is_active,\n  CASE WHEN is_active = 1 THEN 'Current Member' ELSE 'Lapsed Member' END AS member_status\nFROM GymMembers;",
+    "syntaxBlueprint": "SELECT col_name,\n  CASE WHEN condition THEN 'Val 1' ELSE 'Val 2' END AS alias_name\nFROM GymMembers;",
+    "syntaxRule": "A CASE expression starts with CASE, tests conditions with WHEN...THEN, optionally falls back with ELSE, and MUST end with END. Every branch should return compatible data types.",
+    "syntaxTrap": "Forgetting the closing END keyword, or putting a comma between WHEN branches (branches must NOT be separated by commas).",
+    "eli5Story": "Conditional decision making on GymMembers: Transform is_active flag into readable 'Current Member' or 'Lapsed Member' status.",
+    "commonMistakes": "Omitting the END keyword, forgetting the ELSE fallback (defaults to NULL), or misordering WHEN thresholds.",
+    "learningOutcomes": "Mastered 5.1 Simple Two-Branch CASE WHEN on GymMembers.",
+    "challengeSlots": [
+      {
+        "type": "keyword",
+        "value": "SELECT"
+      },
+      {
+        "type": "column",
+        "value": "member_name,"
+      },
+      {
+        "type": "column",
+        "value": "is_active,"
+      },
+      {
+        "type": "keyword",
+        "value": "CASE"
+      },
+      {
+        "type": "keyword",
+        "value": "WHEN"
+      },
+      {
+        "type": "column",
+        "value": "is_active"
+      },
+      {
+        "type": "column",
+        "value": "="
+      },
+      {
+        "type": "column",
+        "value": "1"
+      },
+      {
+        "type": "keyword",
+        "value": "THEN"
+      },
+      {
+        "type": "column",
+        "value": "'Current"
+      },
+      {
+        "type": "column",
+        "value": "Member'"
+      },
+      {
+        "type": "keyword",
+        "value": "ELSE"
+      },
+      {
+        "type": "column",
+        "value": "'Lapsed"
+      },
+      {
+        "type": "column",
+        "value": "Member'"
+      },
+      {
+        "type": "keyword",
+        "value": "END"
+      },
+      {
+        "type": "keyword",
+        "value": "AS"
+      },
+      {
+        "type": "column",
+        "value": "member_status"
+      },
+      {
+        "type": "keyword",
+        "value": "FROM"
+      },
+      {
+        "type": "table",
+        "value": "GymMembers;"
+      }
+    ]
+  },
+  {
+    "drillNumber": 408,
+    "subcluster": "5.1 Simple Two-Branch CASE WHEN",
+    "level": "Level 1 (Foundations)",
+    "title": "Syntax #408: Tag films with 4.0+ star ratings as 'Recommended' and others as 'Mixed'",
+    "table": "MovieReviews",
+    "scenario": "Tag films with 4.0+ star ratings as 'Recommended' and others as 'Mixed'.",
+    "businessObjective": "Tag films with 4.0+ star ratings as 'Recommended' and others as 'Mixed'.",
+    "schemaSnippet": "MovieReviews schema",
+    "targetQuery": "SELECT movie_title, star_rating,\n  CASE WHEN star_rating >= 4.0 THEN 'Recommended' ELSE 'Mixed' END AS recommendation\nFROM MovieReviews;",
+    "syntaxBlueprint": "SELECT col_name,\n  CASE WHEN condition THEN 'Val 1' ELSE 'Val 2' END AS alias_name\nFROM MovieReviews;",
+    "syntaxRule": "A CASE expression starts with CASE, tests conditions with WHEN...THEN, optionally falls back with ELSE, and MUST end with END. Every branch should return compatible data types.",
+    "syntaxTrap": "Forgetting the closing END keyword, or putting a comma between WHEN branches (branches must NOT be separated by commas).",
+    "eli5Story": "Conditional decision making on MovieReviews: Tag films with 4.0+ star ratings as 'Recommended' and others as 'Mixed'.",
+    "commonMistakes": "Omitting the END keyword, forgetting the ELSE fallback (defaults to NULL), or misordering WHEN thresholds.",
+    "learningOutcomes": "Mastered 5.1 Simple Two-Branch CASE WHEN on MovieReviews.",
+    "challengeSlots": [
+      {
+        "type": "keyword",
+        "value": "SELECT"
+      },
+      {
+        "type": "column",
+        "value": "movie_title,"
+      },
+      {
+        "type": "column",
+        "value": "star_rating,"
+      },
+      {
+        "type": "keyword",
+        "value": "CASE"
+      },
+      {
+        "type": "keyword",
+        "value": "WHEN"
+      },
+      {
+        "type": "column",
+        "value": "star_rating"
+      },
+      {
+        "type": "column",
+        "value": ">="
+      },
+      {
+        "type": "column",
+        "value": "4.0"
+      },
+      {
+        "type": "keyword",
+        "value": "THEN"
+      },
+      {
+        "type": "column",
+        "value": "'Recommended'"
+      },
+      {
+        "type": "keyword",
+        "value": "ELSE"
+      },
+      {
+        "type": "column",
+        "value": "'Mixed'"
+      },
+      {
+        "type": "keyword",
+        "value": "END"
+      },
+      {
+        "type": "keyword",
+        "value": "AS"
+      },
+      {
+        "type": "column",
+        "value": "recommendation"
+      },
+      {
+        "type": "keyword",
+        "value": "FROM"
+      },
+      {
+        "type": "table",
+        "value": "MovieReviews;"
+      }
+    ]
+  },
+  {
+    "drillNumber": 409,
+    "subcluster": "5.1 Simple Two-Branch CASE WHEN",
+    "level": "Level 1 (Foundations)",
+    "title": "Syntax #409: Label flights with over 20 seats as 'Available', else 'Almost Full'",
+    "table": "FlightSchedule",
+    "scenario": "Label flights with over 20 seats as 'Available', else 'Almost Full'.",
+    "businessObjective": "Label flights with over 20 seats as 'Available', else 'Almost Full'.",
+    "schemaSnippet": "FlightSchedule schema",
+    "targetQuery": "SELECT flight_id, seats_available,\n  CASE WHEN seats_available > 20 THEN 'Available' ELSE 'Almost Full' END AS booking_status\nFROM FlightSchedule;",
+    "syntaxBlueprint": "SELECT col_name,\n  CASE WHEN condition THEN 'Val 1' ELSE 'Val 2' END AS alias_name\nFROM FlightSchedule;",
+    "syntaxRule": "A CASE expression starts with CASE, tests conditions with WHEN...THEN, optionally falls back with ELSE, and MUST end with END. Every branch should return compatible data types.",
+    "syntaxTrap": "Forgetting the closing END keyword, or putting a comma between WHEN branches (branches must NOT be separated by commas).",
+    "eli5Story": "Conditional decision making on FlightSchedule: Label flights with over 20 seats as 'Available', else 'Almost Full'.",
+    "commonMistakes": "Omitting the END keyword, forgetting the ELSE fallback (defaults to NULL), or misordering WHEN thresholds.",
+    "learningOutcomes": "Mastered 5.1 Simple Two-Branch CASE WHEN on FlightSchedule.",
+    "challengeSlots": [
+      {
+        "type": "keyword",
+        "value": "SELECT"
+      },
+      {
+        "type": "column",
+        "value": "flight_id,"
+      },
+      {
+        "type": "column",
+        "value": "seats_available,"
+      },
+      {
+        "type": "keyword",
+        "value": "CASE"
+      },
+      {
+        "type": "keyword",
+        "value": "WHEN"
+      },
+      {
+        "type": "column",
+        "value": "seats_available"
+      },
+      {
+        "type": "column",
+        "value": ">"
+      },
+      {
+        "type": "column",
+        "value": "20"
+      },
+      {
+        "type": "keyword",
+        "value": "THEN"
+      },
+      {
+        "type": "column",
+        "value": "'Available'"
+      },
+      {
+        "type": "keyword",
+        "value": "ELSE"
+      },
+      {
+        "type": "column",
+        "value": "'Almost"
+      },
+      {
+        "type": "column",
+        "value": "Full'"
+      },
+      {
+        "type": "keyword",
+        "value": "END"
+      },
+      {
+        "type": "keyword",
+        "value": "AS"
+      },
+      {
+        "type": "column",
+        "value": "booking_status"
+      },
+      {
+        "type": "keyword",
+        "value": "FROM"
+      },
+      {
+        "type": "table",
+        "value": "FlightSchedule;"
+      }
+    ]
+  },
+  {
+    "drillNumber": 410,
+    "subcluster": "5.1 Simple Two-Branch CASE WHEN",
+    "level": "Level 1 (Foundations)",
+    "title": "Syntax #410: Categorize pets aged 7+ years as 'Senior', otherwise 'Young/Adult'",
+    "table": "PetClinic",
+    "scenario": "Categorize pets aged 7+ years as 'Senior', otherwise 'Young/Adult'.",
+    "businessObjective": "Categorize pets aged 7+ years as 'Senior', otherwise 'Young/Adult'.",
+    "schemaSnippet": "PetClinic schema",
+    "targetQuery": "SELECT pet_name, age_years,\n  CASE WHEN age_years >= 7 THEN 'Senior' ELSE 'Young/Adult' END AS life_stage\nFROM PetClinic;",
+    "syntaxBlueprint": "SELECT col_name,\n  CASE WHEN condition THEN 'Val 1' ELSE 'Val 2' END AS alias_name\nFROM PetClinic;",
+    "syntaxRule": "A CASE expression starts with CASE, tests conditions with WHEN...THEN, optionally falls back with ELSE, and MUST end with END. Every branch should return compatible data types.",
+    "syntaxTrap": "Forgetting the closing END keyword, or putting a comma between WHEN branches (branches must NOT be separated by commas).",
+    "eli5Story": "Conditional decision making on PetClinic: Categorize pets aged 7+ years as 'Senior', otherwise 'Young/Adult'.",
+    "commonMistakes": "Omitting the END keyword, forgetting the ELSE fallback (defaults to NULL), or misordering WHEN thresholds.",
+    "learningOutcomes": "Mastered 5.1 Simple Two-Branch CASE WHEN on PetClinic.",
+    "challengeSlots": [
+      {
+        "type": "keyword",
+        "value": "SELECT"
+      },
+      {
+        "type": "column",
+        "value": "pet_name,"
+      },
+      {
+        "type": "column",
+        "value": "age_years,"
+      },
+      {
+        "type": "keyword",
+        "value": "CASE"
+      },
+      {
+        "type": "keyword",
+        "value": "WHEN"
+      },
+      {
+        "type": "column",
+        "value": "age_years"
+      },
+      {
+        "type": "column",
+        "value": ">="
+      },
+      {
+        "type": "column",
+        "value": "7"
+      },
+      {
+        "type": "keyword",
+        "value": "THEN"
+      },
+      {
+        "type": "column",
+        "value": "'Senior'"
+      },
+      {
+        "type": "keyword",
+        "value": "ELSE"
+      },
+      {
+        "type": "column",
+        "value": "'Young/Adult'"
+      },
+      {
+        "type": "keyword",
+        "value": "END"
+      },
+      {
+        "type": "keyword",
+        "value": "AS"
+      },
+      {
+        "type": "column",
+        "value": "life_stage"
+      },
+      {
+        "type": "keyword",
+        "value": "FROM"
+      },
+      {
+        "type": "table",
+        "value": "PetClinic;"
+      }
+    ]
+  },
+  {
+    "drillNumber": 411,
+    "subcluster": "5.2 Multi-Branch Categorization",
+    "level": "Level 1 (Multi-Branch)",
+    "title": "Syntax #411: Classify students into 4 distinct honors ranks based on descending GPA thresholds",
+    "table": "Students",
+    "scenario": "Classify students into 4 distinct honors ranks based on descending GPA thresholds.",
+    "businessObjective": "Classify students into 4 distinct honors ranks based on descending GPA thresholds.",
+    "schemaSnippet": "Students schema",
+    "targetQuery": "SELECT full_name, gpa,\n  CASE\n    WHEN gpa >= 3.8 THEN 'Summa'\n    WHEN gpa >= 3.5 THEN 'Magna'\n    WHEN gpa >= 3.0 THEN 'Cum Laude'\n    ELSE 'Good Standing'\n  END AS honors_rank\nFROM Students;",
+    "syntaxBlueprint": "SELECT col_name,\n  CASE WHEN condition THEN 'Val 1' ELSE 'Val 2' END AS alias_name\nFROM Students;",
+    "syntaxRule": "A CASE expression starts with CASE, tests conditions with WHEN...THEN, optionally falls back with ELSE, and MUST end with END. Every branch should return compatible data types.",
+    "syntaxTrap": "Forgetting the closing END keyword, or putting a comma between WHEN branches (branches must NOT be separated by commas).",
+    "eli5Story": "Conditional decision making on Students: Classify students into 4 distinct honors ranks based on descending GPA thresholds.",
+    "commonMistakes": "Omitting the END keyword, forgetting the ELSE fallback (defaults to NULL), or misordering WHEN thresholds.",
+    "learningOutcomes": "Mastered 5.2 Multi-Branch Categorization on Students.",
+    "challengeSlots": [
+      {
+        "type": "keyword",
+        "value": "SELECT"
+      },
+      {
+        "type": "column",
+        "value": "full_name,"
+      },
+      {
+        "type": "column",
+        "value": "gpa,"
+      },
+      {
+        "type": "keyword",
+        "value": "CASE"
+      },
+      {
+        "type": "keyword",
+        "value": "WHEN"
+      },
+      {
+        "type": "column",
+        "value": "gpa"
+      },
+      {
+        "type": "column",
+        "value": ">="
+      },
+      {
+        "type": "column",
+        "value": "3.8"
+      },
+      {
+        "type": "keyword",
+        "value": "THEN"
+      },
+      {
+        "type": "column",
+        "value": "'Summa'"
+      },
+      {
+        "type": "keyword",
+        "value": "WHEN"
+      },
+      {
+        "type": "column",
+        "value": "gpa"
+      },
+      {
+        "type": "column",
+        "value": ">="
+      },
+      {
+        "type": "column",
+        "value": "3.5"
+      },
+      {
+        "type": "keyword",
+        "value": "THEN"
+      },
+      {
+        "type": "column",
+        "value": "'Magna'"
+      },
+      {
+        "type": "keyword",
+        "value": "WHEN"
+      },
+      {
+        "type": "column",
+        "value": "gpa"
+      },
+      {
+        "type": "column",
+        "value": ">="
+      },
+      {
+        "type": "column",
+        "value": "3.0"
+      },
+      {
+        "type": "keyword",
+        "value": "THEN"
+      },
+      {
+        "type": "column",
+        "value": "'Cum"
+      },
+      {
+        "type": "column",
+        "value": "Laude'"
+      },
+      {
+        "type": "keyword",
+        "value": "ELSE"
+      },
+      {
+        "type": "column",
+        "value": "'Good"
+      },
+      {
+        "type": "column",
+        "value": "Standing'"
+      },
+      {
+        "type": "keyword",
+        "value": "END"
+      },
+      {
+        "type": "keyword",
+        "value": "AS"
+      },
+      {
+        "type": "column",
+        "value": "honors_rank"
+      },
+      {
+        "type": "keyword",
+        "value": "FROM"
+      },
+      {
+        "type": "table",
+        "value": "Students;"
+      }
+    ]
+  },
+  {
+    "drillNumber": 412,
+    "subcluster": "5.2 Multi-Branch Categorization",
+    "level": "Level 1 (Multi-Branch)",
+    "title": "Syntax #412: Categorize book catalog into 'Budget', 'Mid-Tier', and 'Collector' price ranges",
+    "table": "Books",
+    "scenario": "Categorize book catalog into 'Budget', 'Mid-Tier', and 'Collector' price ranges.",
+    "businessObjective": "Categorize book catalog into 'Budget', 'Mid-Tier', and 'Collector' price ranges.",
+    "schemaSnippet": "Books schema",
+    "targetQuery": "SELECT title, price,\n  CASE\n    WHEN price < 10.00 THEN 'Budget'\n    WHEN price <= 25.00 THEN 'Mid-Tier'\n    ELSE 'Collector'\n  END AS price_category\nFROM Books;",
+    "syntaxBlueprint": "SELECT col_name,\n  CASE WHEN condition THEN 'Val 1' ELSE 'Val 2' END AS alias_name\nFROM Books;",
+    "syntaxRule": "A CASE expression starts with CASE, tests conditions with WHEN...THEN, optionally falls back with ELSE, and MUST end with END. Every branch should return compatible data types.",
+    "syntaxTrap": "Forgetting the closing END keyword, or putting a comma between WHEN branches (branches must NOT be separated by commas).",
+    "eli5Story": "Conditional decision making on Books: Categorize book catalog into 'Budget', 'Mid-Tier', and 'Collector' price ranges.",
+    "commonMistakes": "Omitting the END keyword, forgetting the ELSE fallback (defaults to NULL), or misordering WHEN thresholds.",
+    "learningOutcomes": "Mastered 5.2 Multi-Branch Categorization on Books.",
+    "challengeSlots": [
+      {
+        "type": "keyword",
+        "value": "SELECT"
+      },
+      {
+        "type": "column",
+        "value": "title,"
+      },
+      {
+        "type": "column",
+        "value": "price,"
+      },
+      {
+        "type": "keyword",
+        "value": "CASE"
+      },
+      {
+        "type": "keyword",
+        "value": "WHEN"
+      },
+      {
+        "type": "column",
+        "value": "price"
+      },
+      {
+        "type": "column",
+        "value": "<"
+      },
+      {
+        "type": "column",
+        "value": "10.00"
+      },
+      {
+        "type": "keyword",
+        "value": "THEN"
+      },
+      {
+        "type": "column",
+        "value": "'Budget'"
+      },
+      {
+        "type": "keyword",
+        "value": "WHEN"
+      },
+      {
+        "type": "column",
+        "value": "price"
+      },
+      {
+        "type": "column",
+        "value": "<="
+      },
+      {
+        "type": "column",
+        "value": "25.00"
+      },
+      {
+        "type": "keyword",
+        "value": "THEN"
+      },
+      {
+        "type": "column",
+        "value": "'Mid-Tier'"
+      },
+      {
+        "type": "keyword",
+        "value": "ELSE"
+      },
+      {
+        "type": "column",
+        "value": "'Collector'"
+      },
+      {
+        "type": "keyword",
+        "value": "END"
+      },
+      {
+        "type": "keyword",
+        "value": "AS"
+      },
+      {
+        "type": "column",
+        "value": "price_category"
+      },
+      {
+        "type": "keyword",
+        "value": "FROM"
+      },
+      {
+        "type": "table",
+        "value": "Books;"
+      }
+    ]
+  },
+  {
+    "drillNumber": 413,
+    "subcluster": "5.2 Multi-Branch Categorization",
+    "level": "Level 1 (Multi-Branch)",
+    "title": "Syntax #413: Assign employees to 4 compensation tiers based on annual salary cutoffs",
+    "table": "Employees",
+    "scenario": "Assign employees to 4 compensation tiers based on annual salary cutoffs.",
+    "businessObjective": "Assign employees to 4 compensation tiers based on annual salary cutoffs.",
+    "schemaSnippet": "Employees schema",
+    "targetQuery": "SELECT first_name, salary,\n  CASE\n    WHEN salary >= 100000 THEN 'Executive'\n    WHEN salary >= 70000 THEN 'Senior'\n    WHEN salary >= 50000 THEN 'Mid-Level'\n    ELSE 'Junior'\n  END AS compensation_tier\nFROM Employees;",
+    "syntaxBlueprint": "SELECT col_name,\n  CASE WHEN condition THEN 'Val 1' ELSE 'Val 2' END AS alias_name\nFROM Employees;",
+    "syntaxRule": "A CASE expression starts with CASE, tests conditions with WHEN...THEN, optionally falls back with ELSE, and MUST end with END. Every branch should return compatible data types.",
+    "syntaxTrap": "Forgetting the closing END keyword, or putting a comma between WHEN branches (branches must NOT be separated by commas).",
+    "eli5Story": "Conditional decision making on Employees: Assign employees to 4 compensation tiers based on annual salary cutoffs.",
+    "commonMistakes": "Omitting the END keyword, forgetting the ELSE fallback (defaults to NULL), or misordering WHEN thresholds.",
+    "learningOutcomes": "Mastered 5.2 Multi-Branch Categorization on Employees.",
+    "challengeSlots": [
+      {
+        "type": "keyword",
+        "value": "SELECT"
+      },
+      {
+        "type": "column",
+        "value": "first_name,"
+      },
+      {
+        "type": "column",
+        "value": "salary,"
+      },
+      {
+        "type": "keyword",
+        "value": "CASE"
+      },
+      {
+        "type": "keyword",
+        "value": "WHEN"
+      },
+      {
+        "type": "column",
+        "value": "salary"
+      },
+      {
+        "type": "column",
+        "value": ">="
+      },
+      {
+        "type": "column",
+        "value": "100000"
+      },
+      {
+        "type": "keyword",
+        "value": "THEN"
+      },
+      {
+        "type": "column",
+        "value": "'Executive'"
+      },
+      {
+        "type": "keyword",
+        "value": "WHEN"
+      },
+      {
+        "type": "column",
+        "value": "salary"
+      },
+      {
+        "type": "column",
+        "value": ">="
+      },
+      {
+        "type": "column",
+        "value": "70000"
+      },
+      {
+        "type": "keyword",
+        "value": "THEN"
+      },
+      {
+        "type": "column",
+        "value": "'Senior'"
+      },
+      {
+        "type": "keyword",
+        "value": "WHEN"
+      },
+      {
+        "type": "column",
+        "value": "salary"
+      },
+      {
+        "type": "column",
+        "value": ">="
+      },
+      {
+        "type": "column",
+        "value": "50000"
+      },
+      {
+        "type": "keyword",
+        "value": "THEN"
+      },
+      {
+        "type": "column",
+        "value": "'Mid-Level'"
+      },
+      {
+        "type": "keyword",
+        "value": "ELSE"
+      },
+      {
+        "type": "column",
+        "value": "'Junior'"
+      },
+      {
+        "type": "keyword",
+        "value": "END"
+      },
+      {
+        "type": "keyword",
+        "value": "AS"
+      },
+      {
+        "type": "column",
+        "value": "compensation_tier"
+      },
+      {
+        "type": "keyword",
+        "value": "FROM"
+      },
+      {
+        "type": "table",
+        "value": "Employees;"
+      }
+    ]
+  },
+  {
+    "drillNumber": 414,
+    "subcluster": "5.2 Multi-Branch Categorization",
+    "level": "Level 1 (Multi-Branch)",
+    "title": "Syntax #414: Flag inventory health as 'Out of Stock', 'Low Stock Alert', or 'Well Stocked'",
+    "table": "GroceryItems",
+    "scenario": "Flag inventory health as 'Out of Stock', 'Low Stock Alert', or 'Well Stocked'.",
+    "businessObjective": "Flag inventory health as 'Out of Stock', 'Low Stock Alert', or 'Well Stocked'.",
+    "schemaSnippet": "GroceryItems schema",
+    "targetQuery": "SELECT item_name, stock_units,\n  CASE\n    WHEN stock_units = 0 THEN 'Out of Stock'\n    WHEN stock_units < 20 THEN 'Low Stock Alert'\n    ELSE 'Well Stocked'\n  END AS inventory_health\nFROM GroceryItems;",
+    "syntaxBlueprint": "SELECT col_name,\n  CASE WHEN condition THEN 'Val 1' ELSE 'Val 2' END AS alias_name\nFROM GroceryItems;",
+    "syntaxRule": "A CASE expression starts with CASE, tests conditions with WHEN...THEN, optionally falls back with ELSE, and MUST end with END. Every branch should return compatible data types.",
+    "syntaxTrap": "Forgetting the closing END keyword, or putting a comma between WHEN branches (branches must NOT be separated by commas).",
+    "eli5Story": "Conditional decision making on GroceryItems: Flag inventory health as 'Out of Stock', 'Low Stock Alert', or 'Well Stocked'.",
+    "commonMistakes": "Omitting the END keyword, forgetting the ELSE fallback (defaults to NULL), or misordering WHEN thresholds.",
+    "learningOutcomes": "Mastered 5.2 Multi-Branch Categorization on GroceryItems.",
+    "challengeSlots": [
+      {
+        "type": "keyword",
+        "value": "SELECT"
+      },
+      {
+        "type": "column",
+        "value": "item_name,"
+      },
+      {
+        "type": "column",
+        "value": "stock_units,"
+      },
+      {
+        "type": "keyword",
+        "value": "CASE"
+      },
+      {
+        "type": "keyword",
+        "value": "WHEN"
+      },
+      {
+        "type": "column",
+        "value": "stock_units"
+      },
+      {
+        "type": "column",
+        "value": "="
+      },
+      {
+        "type": "column",
+        "value": "0"
+      },
+      {
+        "type": "keyword",
+        "value": "THEN"
+      },
+      {
+        "type": "column",
+        "value": "'Out"
+      },
+      {
+        "type": "column",
+        "value": "of"
+      },
+      {
+        "type": "column",
+        "value": "Stock'"
+      },
+      {
+        "type": "keyword",
+        "value": "WHEN"
+      },
+      {
+        "type": "column",
+        "value": "stock_units"
+      },
+      {
+        "type": "column",
+        "value": "<"
+      },
+      {
+        "type": "column",
+        "value": "20"
+      },
+      {
+        "type": "keyword",
+        "value": "THEN"
+      },
+      {
+        "type": "column",
+        "value": "'Low"
+      },
+      {
+        "type": "column",
+        "value": "Stock"
+      },
+      {
+        "type": "column",
+        "value": "Alert'"
+      },
+      {
+        "type": "keyword",
+        "value": "ELSE"
+      },
+      {
+        "type": "column",
+        "value": "'Well"
+      },
+      {
+        "type": "column",
+        "value": "Stocked'"
+      },
+      {
+        "type": "keyword",
+        "value": "END"
+      },
+      {
+        "type": "keyword",
+        "value": "AS"
+      },
+      {
+        "type": "column",
+        "value": "inventory_health"
+      },
+      {
+        "type": "keyword",
+        "value": "FROM"
+      },
+      {
+        "type": "table",
+        "value": "GroceryItems;"
+      }
+    ]
+  },
+  {
+    "drillNumber": 415,
+    "subcluster": "5.2 Multi-Branch Categorization",
+    "level": "Level 1 (Multi-Branch)",
+    "title": "Syntax #415: Classify customer orders by volume scale: 'Bulk Order', 'Wholesale Order', or 'Retail Single'",
+    "table": "Orders",
+    "scenario": "Classify customer orders by volume scale: 'Bulk Order', 'Wholesale Order', or 'Retail Single'.",
+    "businessObjective": "Classify customer orders by volume scale: 'Bulk Order', 'Wholesale Order', or 'Retail Single'.",
+    "schemaSnippet": "Orders schema",
+    "targetQuery": "SELECT order_id, quantity,\n  CASE\n    WHEN quantity >= 10 THEN 'Bulk Order'\n    WHEN quantity >= 5 THEN 'Wholesale Order'\n    ELSE 'Retail Single'\n  END AS order_scale\nFROM Orders;",
+    "syntaxBlueprint": "SELECT col_name,\n  CASE WHEN condition THEN 'Val 1' ELSE 'Val 2' END AS alias_name\nFROM Orders;",
+    "syntaxRule": "A CASE expression starts with CASE, tests conditions with WHEN...THEN, optionally falls back with ELSE, and MUST end with END. Every branch should return compatible data types.",
+    "syntaxTrap": "Forgetting the closing END keyword, or putting a comma between WHEN branches (branches must NOT be separated by commas).",
+    "eli5Story": "Conditional decision making on Orders: Classify customer orders by volume scale: 'Bulk Order', 'Wholesale Order', or 'Retail Single'.",
+    "commonMistakes": "Omitting the END keyword, forgetting the ELSE fallback (defaults to NULL), or misordering WHEN thresholds.",
+    "learningOutcomes": "Mastered 5.2 Multi-Branch Categorization on Orders.",
+    "challengeSlots": [
+      {
+        "type": "keyword",
+        "value": "SELECT"
+      },
+      {
+        "type": "column",
+        "value": "order_id,"
+      },
+      {
+        "type": "column",
+        "value": "quantity,"
+      },
+      {
+        "type": "keyword",
+        "value": "CASE"
+      },
+      {
+        "type": "keyword",
+        "value": "WHEN"
+      },
+      {
+        "type": "column",
+        "value": "quantity"
+      },
+      {
+        "type": "column",
+        "value": ">="
+      },
+      {
+        "type": "column",
+        "value": "10"
+      },
+      {
+        "type": "keyword",
+        "value": "THEN"
+      },
+      {
+        "type": "column",
+        "value": "'Bulk"
+      },
+      {
+        "type": "column",
+        "value": "Order'"
+      },
+      {
+        "type": "keyword",
+        "value": "WHEN"
+      },
+      {
+        "type": "column",
+        "value": "quantity"
+      },
+      {
+        "type": "column",
+        "value": ">="
+      },
+      {
+        "type": "column",
+        "value": "5"
+      },
+      {
+        "type": "keyword",
+        "value": "THEN"
+      },
+      {
+        "type": "column",
+        "value": "'Wholesale"
+      },
+      {
+        "type": "column",
+        "value": "Order'"
+      },
+      {
+        "type": "keyword",
+        "value": "ELSE"
+      },
+      {
+        "type": "column",
+        "value": "'Retail"
+      },
+      {
+        "type": "column",
+        "value": "Single'"
+      },
+      {
+        "type": "keyword",
+        "value": "END"
+      },
+      {
+        "type": "keyword",
+        "value": "AS"
+      },
+      {
+        "type": "column",
+        "value": "order_scale"
+      },
+      {
+        "type": "keyword",
+        "value": "FROM"
+      },
+      {
+        "type": "table",
+        "value": "Orders;"
+      }
+    ]
+  },
+  {
+    "drillNumber": 416,
+    "subcluster": "5.2 Multi-Branch Categorization",
+    "level": "Level 1 (Multi-Branch)",
+    "title": "Syntax #416: Rank songs into 'Superhit', 'Popular', or 'Indie Gem' based on stream counts",
+    "table": "MusicTracks",
+    "scenario": "Rank songs into 'Superhit', 'Popular', or 'Indie Gem' based on stream counts.",
+    "businessObjective": "Rank songs into 'Superhit', 'Popular', or 'Indie Gem' based on stream counts.",
+    "schemaSnippet": "MusicTracks schema",
+    "targetQuery": "SELECT track_title, play_count,\n  CASE\n    WHEN play_count >= 1000000 THEN 'Superhit'\n    WHEN play_count >= 250000 THEN 'Popular'\n    ELSE 'Indie Gem'\n  END AS popularity_rank\nFROM MusicTracks;",
+    "syntaxBlueprint": "SELECT col_name,\n  CASE WHEN condition THEN 'Val 1' ELSE 'Val 2' END AS alias_name\nFROM MusicTracks;",
+    "syntaxRule": "A CASE expression starts with CASE, tests conditions with WHEN...THEN, optionally falls back with ELSE, and MUST end with END. Every branch should return compatible data types.",
+    "syntaxTrap": "Forgetting the closing END keyword, or putting a comma between WHEN branches (branches must NOT be separated by commas).",
+    "eli5Story": "Conditional decision making on MusicTracks: Rank songs into 'Superhit', 'Popular', or 'Indie Gem' based on stream counts.",
+    "commonMistakes": "Omitting the END keyword, forgetting the ELSE fallback (defaults to NULL), or misordering WHEN thresholds.",
+    "learningOutcomes": "Mastered 5.2 Multi-Branch Categorization on MusicTracks.",
+    "challengeSlots": [
+      {
+        "type": "keyword",
+        "value": "SELECT"
+      },
+      {
+        "type": "column",
+        "value": "track_title,"
+      },
+      {
+        "type": "column",
+        "value": "play_count,"
+      },
+      {
+        "type": "keyword",
+        "value": "CASE"
+      },
+      {
+        "type": "keyword",
+        "value": "WHEN"
+      },
+      {
+        "type": "column",
+        "value": "play_count"
+      },
+      {
+        "type": "column",
+        "value": ">="
+      },
+      {
+        "type": "column",
+        "value": "1000000"
+      },
+      {
+        "type": "keyword",
+        "value": "THEN"
+      },
+      {
+        "type": "column",
+        "value": "'Superhit'"
+      },
+      {
+        "type": "keyword",
+        "value": "WHEN"
+      },
+      {
+        "type": "column",
+        "value": "play_count"
+      },
+      {
+        "type": "column",
+        "value": ">="
+      },
+      {
+        "type": "column",
+        "value": "250000"
+      },
+      {
+        "type": "keyword",
+        "value": "THEN"
+      },
+      {
+        "type": "column",
+        "value": "'Popular'"
+      },
+      {
+        "type": "keyword",
+        "value": "ELSE"
+      },
+      {
+        "type": "column",
+        "value": "'Indie"
+      },
+      {
+        "type": "column",
+        "value": "Gem'"
+      },
+      {
+        "type": "keyword",
+        "value": "END"
+      },
+      {
+        "type": "keyword",
+        "value": "AS"
+      },
+      {
+        "type": "column",
+        "value": "popularity_rank"
+      },
+      {
+        "type": "keyword",
+        "value": "FROM"
+      },
+      {
+        "type": "table",
+        "value": "MusicTracks;"
+      }
+    ]
+  },
+  {
+    "drillNumber": 417,
+    "subcluster": "5.2 Multi-Branch Categorization",
+    "level": "Level 1 (Multi-Branch)",
+    "title": "Syntax #417: Segment members into 4 engagement tiers based on monthly visit attendance",
+    "table": "GymMembers",
+    "scenario": "Segment members into 4 engagement tiers based on monthly visit attendance.",
+    "businessObjective": "Segment members into 4 engagement tiers based on monthly visit attendance.",
+    "schemaSnippet": "GymMembers schema",
+    "targetQuery": "SELECT member_name, visits_this_month,\n  CASE\n    WHEN visits_this_month >= 15 THEN 'Gym Fanatic'\n    WHEN visits_this_month >= 8 THEN 'Regular'\n    WHEN visits_this_month >= 1 THEN 'Occasional'\n    ELSE 'Inactive'\n  END AS engagement_level\nFROM GymMembers;",
+    "syntaxBlueprint": "SELECT col_name,\n  CASE WHEN condition THEN 'Val 1' ELSE 'Val 2' END AS alias_name\nFROM GymMembers;",
+    "syntaxRule": "A CASE expression starts with CASE, tests conditions with WHEN...THEN, optionally falls back with ELSE, and MUST end with END. Every branch should return compatible data types.",
+    "syntaxTrap": "Forgetting the closing END keyword, or putting a comma between WHEN branches (branches must NOT be separated by commas).",
+    "eli5Story": "Conditional decision making on GymMembers: Segment members into 4 engagement tiers based on monthly visit attendance.",
+    "commonMistakes": "Omitting the END keyword, forgetting the ELSE fallback (defaults to NULL), or misordering WHEN thresholds.",
+    "learningOutcomes": "Mastered 5.2 Multi-Branch Categorization on GymMembers.",
+    "challengeSlots": [
+      {
+        "type": "keyword",
+        "value": "SELECT"
+      },
+      {
+        "type": "column",
+        "value": "member_name,"
+      },
+      {
+        "type": "column",
+        "value": "visits_this_month,"
+      },
+      {
+        "type": "keyword",
+        "value": "CASE"
+      },
+      {
+        "type": "keyword",
+        "value": "WHEN"
+      },
+      {
+        "type": "column",
+        "value": "visits_this_month"
+      },
+      {
+        "type": "column",
+        "value": ">="
+      },
+      {
+        "type": "column",
+        "value": "15"
+      },
+      {
+        "type": "keyword",
+        "value": "THEN"
+      },
+      {
+        "type": "column",
+        "value": "'Gym"
+      },
+      {
+        "type": "column",
+        "value": "Fanatic'"
+      },
+      {
+        "type": "keyword",
+        "value": "WHEN"
+      },
+      {
+        "type": "column",
+        "value": "visits_this_month"
+      },
+      {
+        "type": "column",
+        "value": ">="
+      },
+      {
+        "type": "column",
+        "value": "8"
+      },
+      {
+        "type": "keyword",
+        "value": "THEN"
+      },
+      {
+        "type": "column",
+        "value": "'Regular'"
+      },
+      {
+        "type": "keyword",
+        "value": "WHEN"
+      },
+      {
+        "type": "column",
+        "value": "visits_this_month"
+      },
+      {
+        "type": "column",
+        "value": ">="
+      },
+      {
+        "type": "column",
+        "value": "1"
+      },
+      {
+        "type": "keyword",
+        "value": "THEN"
+      },
+      {
+        "type": "column",
+        "value": "'Occasional'"
+      },
+      {
+        "type": "keyword",
+        "value": "ELSE"
+      },
+      {
+        "type": "column",
+        "value": "'Inactive'"
+      },
+      {
+        "type": "keyword",
+        "value": "END"
+      },
+      {
+        "type": "keyword",
+        "value": "AS"
+      },
+      {
+        "type": "column",
+        "value": "engagement_level"
+      },
+      {
+        "type": "keyword",
+        "value": "FROM"
+      },
+      {
+        "type": "table",
+        "value": "GymMembers;"
+      }
+    ]
+  },
+  {
+    "drillNumber": 418,
+    "subcluster": "5.2 Multi-Branch Categorization",
+    "level": "Level 1 (Multi-Branch)",
+    "title": "Syntax #418: Translate numerical star ratings into critical grades ('Masterpiece' to 'Poor')",
+    "table": "MovieReviews",
+    "scenario": "Translate numerical star ratings into critical grades ('Masterpiece' to 'Poor').",
+    "businessObjective": "Translate numerical star ratings into critical grades ('Masterpiece' to 'Poor').",
+    "schemaSnippet": "MovieReviews schema",
+    "targetQuery": "SELECT movie_title, star_rating,\n  CASE\n    WHEN star_rating >= 4.5 THEN 'Masterpiece'\n    WHEN star_rating >= 3.5 THEN 'Good'\n    WHEN star_rating >= 2.5 THEN 'Average'\n    ELSE 'Poor'\n  END AS review_grade\nFROM MovieReviews;",
+    "syntaxBlueprint": "SELECT col_name,\n  CASE WHEN condition THEN 'Val 1' ELSE 'Val 2' END AS alias_name\nFROM MovieReviews;",
+    "syntaxRule": "A CASE expression starts with CASE, tests conditions with WHEN...THEN, optionally falls back with ELSE, and MUST end with END. Every branch should return compatible data types.",
+    "syntaxTrap": "Forgetting the closing END keyword, or putting a comma between WHEN branches (branches must NOT be separated by commas).",
+    "eli5Story": "Conditional decision making on MovieReviews: Translate numerical star ratings into critical grades ('Masterpiece' to 'Poor').",
+    "commonMistakes": "Omitting the END keyword, forgetting the ELSE fallback (defaults to NULL), or misordering WHEN thresholds.",
+    "learningOutcomes": "Mastered 5.2 Multi-Branch Categorization on MovieReviews.",
+    "challengeSlots": [
+      {
+        "type": "keyword",
+        "value": "SELECT"
+      },
+      {
+        "type": "column",
+        "value": "movie_title,"
+      },
+      {
+        "type": "column",
+        "value": "star_rating,"
+      },
+      {
+        "type": "keyword",
+        "value": "CASE"
+      },
+      {
+        "type": "keyword",
+        "value": "WHEN"
+      },
+      {
+        "type": "column",
+        "value": "star_rating"
+      },
+      {
+        "type": "column",
+        "value": ">="
+      },
+      {
+        "type": "column",
+        "value": "4.5"
+      },
+      {
+        "type": "keyword",
+        "value": "THEN"
+      },
+      {
+        "type": "column",
+        "value": "'Masterpiece'"
+      },
+      {
+        "type": "keyword",
+        "value": "WHEN"
+      },
+      {
+        "type": "column",
+        "value": "star_rating"
+      },
+      {
+        "type": "column",
+        "value": ">="
+      },
+      {
+        "type": "column",
+        "value": "3.5"
+      },
+      {
+        "type": "keyword",
+        "value": "THEN"
+      },
+      {
+        "type": "column",
+        "value": "'Good'"
+      },
+      {
+        "type": "keyword",
+        "value": "WHEN"
+      },
+      {
+        "type": "column",
+        "value": "star_rating"
+      },
+      {
+        "type": "column",
+        "value": ">="
+      },
+      {
+        "type": "column",
+        "value": "2.5"
+      },
+      {
+        "type": "keyword",
+        "value": "THEN"
+      },
+      {
+        "type": "column",
+        "value": "'Average'"
+      },
+      {
+        "type": "keyword",
+        "value": "ELSE"
+      },
+      {
+        "type": "column",
+        "value": "'Poor'"
+      },
+      {
+        "type": "keyword",
+        "value": "END"
+      },
+      {
+        "type": "keyword",
+        "value": "AS"
+      },
+      {
+        "type": "column",
+        "value": "review_grade"
+      },
+      {
+        "type": "keyword",
+        "value": "FROM"
+      },
+      {
+        "type": "table",
+        "value": "MovieReviews;"
+      }
+    ]
+  },
+  {
+    "drillNumber": 419,
+    "subcluster": "5.2 Multi-Branch Categorization",
+    "level": "Level 1 (Multi-Branch)",
+    "title": "Syntax #419: Categorize flights into fare tiers ('First Class', 'Business', 'Economy')",
+    "table": "FlightSchedule",
+    "scenario": "Categorize flights into fare tiers ('First Class', 'Business', 'Economy').",
+    "businessObjective": "Categorize flights into fare tiers ('First Class', 'Business', 'Economy').",
+    "schemaSnippet": "FlightSchedule schema",
+    "targetQuery": "SELECT flight_id, ticket_price,\n  CASE\n    WHEN ticket_price >= 400 THEN 'First Class'\n    WHEN ticket_price >= 200 THEN 'Business'\n    ELSE 'Economy'\n  END AS cabin_tier\nFROM FlightSchedule;",
+    "syntaxBlueprint": "SELECT col_name,\n  CASE WHEN condition THEN 'Val 1' ELSE 'Val 2' END AS alias_name\nFROM FlightSchedule;",
+    "syntaxRule": "A CASE expression starts with CASE, tests conditions with WHEN...THEN, optionally falls back with ELSE, and MUST end with END. Every branch should return compatible data types.",
+    "syntaxTrap": "Forgetting the closing END keyword, or putting a comma between WHEN branches (branches must NOT be separated by commas).",
+    "eli5Story": "Conditional decision making on FlightSchedule: Categorize flights into fare tiers ('First Class', 'Business', 'Economy').",
+    "commonMistakes": "Omitting the END keyword, forgetting the ELSE fallback (defaults to NULL), or misordering WHEN thresholds.",
+    "learningOutcomes": "Mastered 5.2 Multi-Branch Categorization on FlightSchedule.",
+    "challengeSlots": [
+      {
+        "type": "keyword",
+        "value": "SELECT"
+      },
+      {
+        "type": "column",
+        "value": "flight_id,"
+      },
+      {
+        "type": "column",
+        "value": "ticket_price,"
+      },
+      {
+        "type": "keyword",
+        "value": "CASE"
+      },
+      {
+        "type": "keyword",
+        "value": "WHEN"
+      },
+      {
+        "type": "column",
+        "value": "ticket_price"
+      },
+      {
+        "type": "column",
+        "value": ">="
+      },
+      {
+        "type": "column",
+        "value": "400"
+      },
+      {
+        "type": "keyword",
+        "value": "THEN"
+      },
+      {
+        "type": "column",
+        "value": "'First"
+      },
+      {
+        "type": "column",
+        "value": "Class'"
+      },
+      {
+        "type": "keyword",
+        "value": "WHEN"
+      },
+      {
+        "type": "column",
+        "value": "ticket_price"
+      },
+      {
+        "type": "column",
+        "value": ">="
+      },
+      {
+        "type": "column",
+        "value": "200"
+      },
+      {
+        "type": "keyword",
+        "value": "THEN"
+      },
+      {
+        "type": "column",
+        "value": "'Business'"
+      },
+      {
+        "type": "keyword",
+        "value": "ELSE"
+      },
+      {
+        "type": "column",
+        "value": "'Economy'"
+      },
+      {
+        "type": "keyword",
+        "value": "END"
+      },
+      {
+        "type": "keyword",
+        "value": "AS"
+      },
+      {
+        "type": "column",
+        "value": "cabin_tier"
+      },
+      {
+        "type": "keyword",
+        "value": "FROM"
+      },
+      {
+        "type": "table",
+        "value": "FlightSchedule;"
+      }
+    ]
+  },
+  {
+    "drillNumber": 420,
+    "subcluster": "5.2 Multi-Branch Categorization",
+    "level": "Level 1 (Multi-Branch)",
+    "title": "Syntax #420: Classify veterinary patient weight into 'Small Breed', 'Medium Breed', and 'Large Breed'",
+    "table": "PetClinic",
+    "scenario": "Classify veterinary patient weight into 'Small Breed', 'Medium Breed', and 'Large Breed'.",
+    "businessObjective": "Classify veterinary patient weight into 'Small Breed', 'Medium Breed', and 'Large Breed'.",
+    "schemaSnippet": "PetClinic schema",
+    "targetQuery": "SELECT pet_name, weight_kg,\n  CASE\n    WHEN weight_kg > 30 THEN 'Large Breed'\n    WHEN weight_kg >= 10 THEN 'Medium Breed'\n    ELSE 'Small Breed'\n  END AS size_category\nFROM PetClinic;",
+    "syntaxBlueprint": "SELECT col_name,\n  CASE WHEN condition THEN 'Val 1' ELSE 'Val 2' END AS alias_name\nFROM PetClinic;",
+    "syntaxRule": "A CASE expression starts with CASE, tests conditions with WHEN...THEN, optionally falls back with ELSE, and MUST end with END. Every branch should return compatible data types.",
+    "syntaxTrap": "Forgetting the closing END keyword, or putting a comma between WHEN branches (branches must NOT be separated by commas).",
+    "eli5Story": "Conditional decision making on PetClinic: Classify veterinary patient weight into 'Small Breed', 'Medium Breed', and 'Large Breed'.",
+    "commonMistakes": "Omitting the END keyword, forgetting the ELSE fallback (defaults to NULL), or misordering WHEN thresholds.",
+    "learningOutcomes": "Mastered 5.2 Multi-Branch Categorization on PetClinic.",
+    "challengeSlots": [
+      {
+        "type": "keyword",
+        "value": "SELECT"
+      },
+      {
+        "type": "column",
+        "value": "pet_name,"
+      },
+      {
+        "type": "column",
+        "value": "weight_kg,"
+      },
+      {
+        "type": "keyword",
+        "value": "CASE"
+      },
+      {
+        "type": "keyword",
+        "value": "WHEN"
+      },
+      {
+        "type": "column",
+        "value": "weight_kg"
+      },
+      {
+        "type": "column",
+        "value": ">"
+      },
+      {
+        "type": "column",
+        "value": "30"
+      },
+      {
+        "type": "keyword",
+        "value": "THEN"
+      },
+      {
+        "type": "column",
+        "value": "'Large"
+      },
+      {
+        "type": "column",
+        "value": "Breed'"
+      },
+      {
+        "type": "keyword",
+        "value": "WHEN"
+      },
+      {
+        "type": "column",
+        "value": "weight_kg"
+      },
+      {
+        "type": "column",
+        "value": ">="
+      },
+      {
+        "type": "column",
+        "value": "10"
+      },
+      {
+        "type": "keyword",
+        "value": "THEN"
+      },
+      {
+        "type": "column",
+        "value": "'Medium"
+      },
+      {
+        "type": "column",
+        "value": "Breed'"
+      },
+      {
+        "type": "keyword",
+        "value": "ELSE"
+      },
+      {
+        "type": "column",
+        "value": "'Small"
+      },
+      {
+        "type": "column",
+        "value": "Breed'"
+      },
+      {
+        "type": "keyword",
+        "value": "END"
+      },
+      {
+        "type": "keyword",
+        "value": "AS"
+      },
+      {
+        "type": "column",
+        "value": "size_category"
+      },
+      {
+        "type": "keyword",
+        "value": "FROM"
+      },
+      {
+        "type": "table",
+        "value": "PetClinic;"
+      }
+    ]
+  },
+  {
+    "drillNumber": 421,
+    "subcluster": "5.3 CASE with Mathematical Transformations",
+    "level": "Level 2 (Calculations)",
+    "title": "Syntax #421: Compute variable annual bonuses (15%, 10%, 5%) dynamically based on salary brackets",
+    "table": "Employees",
+    "scenario": "Compute variable annual bonuses (15%, 10%, 5%) dynamically based on salary brackets.",
+    "businessObjective": "Compute variable annual bonuses (15%, 10%, 5%) dynamically based on salary brackets.",
+    "schemaSnippet": "Employees schema",
+    "targetQuery": "SELECT first_name, salary,\n  ROUND(salary * (\n    CASE\n      WHEN salary < 60000 THEN 0.15\n      WHEN salary < 90000 THEN 0.10\n      ELSE 0.05\n    END\n  ), 2) AS annual_bonus\nFROM Employees;",
+    "syntaxBlueprint": "SELECT col_name,\n  CASE WHEN condition THEN 'Val 1' ELSE 'Val 2' END AS alias_name\nFROM Employees;",
+    "syntaxRule": "A CASE expression starts with CASE, tests conditions with WHEN...THEN, optionally falls back with ELSE, and MUST end with END. Every branch should return compatible data types.",
+    "syntaxTrap": "Forgetting the closing END keyword, or putting a comma between WHEN branches (branches must NOT be separated by commas).",
+    "eli5Story": "Conditional decision making on Employees: Compute variable annual bonuses (15%, 10%, 5%) dynamically based on salary brackets.",
+    "commonMistakes": "Omitting the END keyword, forgetting the ELSE fallback (defaults to NULL), or misordering WHEN thresholds.",
+    "learningOutcomes": "Mastered 5.3 CASE with Mathematical Transformations on Employees.",
+    "challengeSlots": [
+      {
+        "type": "keyword",
+        "value": "SELECT"
+      },
+      {
+        "type": "column",
+        "value": "first_name,"
+      },
+      {
+        "type": "column",
+        "value": "salary,"
+      },
+      {
+        "type": "column",
+        "value": "ROUND(salary"
+      },
+      {
+        "type": "column",
+        "value": "*"
+      },
+      {
+        "type": "column",
+        "value": "("
+      },
+      {
+        "type": "keyword",
+        "value": "CASE"
+      },
+      {
+        "type": "keyword",
+        "value": "WHEN"
+      },
+      {
+        "type": "column",
+        "value": "salary"
+      },
+      {
+        "type": "column",
+        "value": "<"
+      },
+      {
+        "type": "column",
+        "value": "60000"
+      },
+      {
+        "type": "keyword",
+        "value": "THEN"
+      },
+      {
+        "type": "column",
+        "value": "0.15"
+      },
+      {
+        "type": "keyword",
+        "value": "WHEN"
+      },
+      {
+        "type": "column",
+        "value": "salary"
+      },
+      {
+        "type": "column",
+        "value": "<"
+      },
+      {
+        "type": "column",
+        "value": "90000"
+      },
+      {
+        "type": "keyword",
+        "value": "THEN"
+      },
+      {
+        "type": "column",
+        "value": "0.10"
+      },
+      {
+        "type": "keyword",
+        "value": "ELSE"
+      },
+      {
+        "type": "column",
+        "value": "0.05"
+      },
+      {
+        "type": "keyword",
+        "value": "END"
+      },
+      {
+        "type": "column",
+        "value": "),"
+      },
+      {
+        "type": "column",
+        "value": "2)"
+      },
+      {
+        "type": "keyword",
+        "value": "AS"
+      },
+      {
+        "type": "column",
+        "value": "annual_bonus"
+      },
+      {
+        "type": "keyword",
+        "value": "FROM"
+      },
+      {
+        "type": "table",
+        "value": "Employees;"
+      }
+    ]
+  },
+  {
+    "drillNumber": 422,
+    "subcluster": "5.3 CASE with Mathematical Transformations",
+    "level": "Level 2 (Calculations)",
+    "title": "Syntax #422: Apply a 10% discount to organic items and 5% to non-organic items using CASE in math",
+    "table": "GroceryItems",
+    "scenario": "Apply a 10% discount to organic items and 5% to non-organic items using CASE in math.",
+    "businessObjective": "Apply a 10% discount to organic items and 5% to non-organic items using CASE in math.",
+    "schemaSnippet": "GroceryItems schema",
+    "targetQuery": "SELECT item_name, unit_price,\n  ROUND(unit_price * (\n    CASE\n      WHEN is_organic = 1 THEN 0.90\n      ELSE 0.95\n    END\n  ), 2) AS discounted_price\nFROM GroceryItems;",
+    "syntaxBlueprint": "SELECT col_name,\n  CASE WHEN condition THEN 'Val 1' ELSE 'Val 2' END AS alias_name\nFROM GroceryItems;",
+    "syntaxRule": "A CASE expression starts with CASE, tests conditions with WHEN...THEN, optionally falls back with ELSE, and MUST end with END. Every branch should return compatible data types.",
+    "syntaxTrap": "Forgetting the closing END keyword, or putting a comma between WHEN branches (branches must NOT be separated by commas).",
+    "eli5Story": "Conditional decision making on GroceryItems: Apply a 10% discount to organic items and 5% to non-organic items using CASE in math.",
+    "commonMistakes": "Omitting the END keyword, forgetting the ELSE fallback (defaults to NULL), or misordering WHEN thresholds.",
+    "learningOutcomes": "Mastered 5.3 CASE with Mathematical Transformations on GroceryItems.",
+    "challengeSlots": [
+      {
+        "type": "keyword",
+        "value": "SELECT"
+      },
+      {
+        "type": "column",
+        "value": "item_name,"
+      },
+      {
+        "type": "column",
+        "value": "unit_price,"
+      },
+      {
+        "type": "column",
+        "value": "ROUND(unit_price"
+      },
+      {
+        "type": "column",
+        "value": "*"
+      },
+      {
+        "type": "column",
+        "value": "("
+      },
+      {
+        "type": "keyword",
+        "value": "CASE"
+      },
+      {
+        "type": "keyword",
+        "value": "WHEN"
+      },
+      {
+        "type": "column",
+        "value": "is_organic"
+      },
+      {
+        "type": "column",
+        "value": "="
+      },
+      {
+        "type": "column",
+        "value": "1"
+      },
+      {
+        "type": "keyword",
+        "value": "THEN"
+      },
+      {
+        "type": "column",
+        "value": "0.90"
+      },
+      {
+        "type": "keyword",
+        "value": "ELSE"
+      },
+      {
+        "type": "column",
+        "value": "0.95"
+      },
+      {
+        "type": "keyword",
+        "value": "END"
+      },
+      {
+        "type": "column",
+        "value": "),"
+      },
+      {
+        "type": "column",
+        "value": "2)"
+      },
+      {
+        "type": "keyword",
+        "value": "AS"
+      },
+      {
+        "type": "column",
+        "value": "discounted_price"
+      },
+      {
+        "type": "keyword",
+        "value": "FROM"
+      },
+      {
+        "type": "table",
+        "value": "GroceryItems;"
+      }
+    ]
+  },
+  {
+    "drillNumber": 423,
+    "subcluster": "5.3 CASE with Mathematical Transformations",
+    "level": "Level 2 (Calculations)",
+    "title": "Syntax #423: Calculate final invoice total with tiered volume discounts (15%, 10%, 0%)",
+    "table": "Orders",
+    "scenario": "Calculate final invoice total with tiered volume discounts (15%, 10%, 0%).",
+    "businessObjective": "Calculate final invoice total with tiered volume discounts (15%, 10%, 0%).",
+    "schemaSnippet": "Orders schema",
+    "targetQuery": "SELECT order_id, quantity, unit_price,\n  ROUND((quantity * unit_price) * (\n    CASE\n      WHEN quantity >= 10 THEN 0.85\n      WHEN quantity >= 5 THEN 0.90\n      ELSE 1.00\n    END\n  ), 2) AS final_invoice_total\nFROM Orders;",
+    "syntaxBlueprint": "SELECT col_name,\n  CASE WHEN condition THEN 'Val 1' ELSE 'Val 2' END AS alias_name\nFROM Orders;",
+    "syntaxRule": "A CASE expression starts with CASE, tests conditions with WHEN...THEN, optionally falls back with ELSE, and MUST end with END. Every branch should return compatible data types.",
+    "syntaxTrap": "Forgetting the closing END keyword, or putting a comma between WHEN branches (branches must NOT be separated by commas).",
+    "eli5Story": "Conditional decision making on Orders: Calculate final invoice total with tiered volume discounts (15%, 10%, 0%).",
+    "commonMistakes": "Omitting the END keyword, forgetting the ELSE fallback (defaults to NULL), or misordering WHEN thresholds.",
+    "learningOutcomes": "Mastered 5.3 CASE with Mathematical Transformations on Orders.",
+    "challengeSlots": [
+      {
+        "type": "keyword",
+        "value": "SELECT"
+      },
+      {
+        "type": "column",
+        "value": "order_id,"
+      },
+      {
+        "type": "column",
+        "value": "quantity,"
+      },
+      {
+        "type": "column",
+        "value": "unit_price,"
+      },
+      {
+        "type": "column",
+        "value": "ROUND((quantity"
+      },
+      {
+        "type": "column",
+        "value": "*"
+      },
+      {
+        "type": "column",
+        "value": "unit_price)"
+      },
+      {
+        "type": "column",
+        "value": "*"
+      },
+      {
+        "type": "column",
+        "value": "("
+      },
+      {
+        "type": "keyword",
+        "value": "CASE"
+      },
+      {
+        "type": "keyword",
+        "value": "WHEN"
+      },
+      {
+        "type": "column",
+        "value": "quantity"
+      },
+      {
+        "type": "column",
+        "value": ">="
+      },
+      {
+        "type": "column",
+        "value": "10"
+      },
+      {
+        "type": "keyword",
+        "value": "THEN"
+      },
+      {
+        "type": "column",
+        "value": "0.85"
+      },
+      {
+        "type": "keyword",
+        "value": "WHEN"
+      },
+      {
+        "type": "column",
+        "value": "quantity"
+      },
+      {
+        "type": "column",
+        "value": ">="
+      },
+      {
+        "type": "column",
+        "value": "5"
+      },
+      {
+        "type": "keyword",
+        "value": "THEN"
+      },
+      {
+        "type": "column",
+        "value": "0.90"
+      },
+      {
+        "type": "keyword",
+        "value": "ELSE"
+      },
+      {
+        "type": "column",
+        "value": "1.00"
+      },
+      {
+        "type": "keyword",
+        "value": "END"
+      },
+      {
+        "type": "column",
+        "value": "),"
+      },
+      {
+        "type": "column",
+        "value": "2)"
+      },
+      {
+        "type": "keyword",
+        "value": "AS"
+      },
+      {
+        "type": "column",
+        "value": "final_invoice_total"
+      },
+      {
+        "type": "keyword",
+        "value": "FROM"
+      },
+      {
+        "type": "table",
+        "value": "Orders;"
+      }
+    ]
+  },
+  {
+    "drillNumber": 424,
+    "subcluster": "5.3 CASE with Mathematical Transformations",
+    "level": "Level 2 (Calculations)",
+    "title": "Syntax #424: Calculate discounted monthly gym fee based on membership contract type",
+    "table": "GymMembers",
+    "scenario": "Calculate discounted monthly gym fee based on membership contract type.",
+    "businessObjective": "Calculate discounted monthly gym fee based on membership contract type.",
+    "schemaSnippet": "GymMembers schema",
+    "targetQuery": "SELECT member_name, monthly_fee,\n  ROUND(monthly_fee * (\n    CASE\n      WHEN membership_plan = 'Annual' THEN 0.80\n      WHEN membership_plan = 'Student' THEN 0.70\n      ELSE 1.00\n    END\n  ), 2) AS adjusted_dues\nFROM GymMembers;",
+    "syntaxBlueprint": "SELECT col_name,\n  CASE WHEN condition THEN 'Val 1' ELSE 'Val 2' END AS alias_name\nFROM GymMembers;",
+    "syntaxRule": "A CASE expression starts with CASE, tests conditions with WHEN...THEN, optionally falls back with ELSE, and MUST end with END. Every branch should return compatible data types.",
+    "syntaxTrap": "Forgetting the closing END keyword, or putting a comma between WHEN branches (branches must NOT be separated by commas).",
+    "eli5Story": "Conditional decision making on GymMembers: Calculate discounted monthly gym fee based on membership contract type.",
+    "commonMistakes": "Omitting the END keyword, forgetting the ELSE fallback (defaults to NULL), or misordering WHEN thresholds.",
+    "learningOutcomes": "Mastered 5.3 CASE with Mathematical Transformations on GymMembers.",
+    "challengeSlots": [
+      {
+        "type": "keyword",
+        "value": "SELECT"
+      },
+      {
+        "type": "column",
+        "value": "member_name,"
+      },
+      {
+        "type": "column",
+        "value": "monthly_fee,"
+      },
+      {
+        "type": "column",
+        "value": "ROUND(monthly_fee"
+      },
+      {
+        "type": "column",
+        "value": "*"
+      },
+      {
+        "type": "column",
+        "value": "("
+      },
+      {
+        "type": "keyword",
+        "value": "CASE"
+      },
+      {
+        "type": "keyword",
+        "value": "WHEN"
+      },
+      {
+        "type": "column",
+        "value": "membership_plan"
+      },
+      {
+        "type": "column",
+        "value": "="
+      },
+      {
+        "type": "column",
+        "value": "'Annual'"
+      },
+      {
+        "type": "keyword",
+        "value": "THEN"
+      },
+      {
+        "type": "column",
+        "value": "0.80"
+      },
+      {
+        "type": "keyword",
+        "value": "WHEN"
+      },
+      {
+        "type": "column",
+        "value": "membership_plan"
+      },
+      {
+        "type": "column",
+        "value": "="
+      },
+      {
+        "type": "column",
+        "value": "'Student'"
+      },
+      {
+        "type": "keyword",
+        "value": "THEN"
+      },
+      {
+        "type": "column",
+        "value": "0.70"
+      },
+      {
+        "type": "keyword",
+        "value": "ELSE"
+      },
+      {
+        "type": "column",
+        "value": "1.00"
+      },
+      {
+        "type": "keyword",
+        "value": "END"
+      },
+      {
+        "type": "column",
+        "value": "),"
+      },
+      {
+        "type": "column",
+        "value": "2)"
+      },
+      {
+        "type": "keyword",
+        "value": "AS"
+      },
+      {
+        "type": "column",
+        "value": "adjusted_dues"
+      },
+      {
+        "type": "keyword",
+        "value": "FROM"
+      },
+      {
+        "type": "table",
+        "value": "GymMembers;"
+      }
+    ]
+  },
+  {
+    "drillNumber": 425,
+    "subcluster": "5.3 CASE with Mathematical Transformations",
+    "level": "Level 2 (Calculations)",
+    "title": "Syntax #425: Simulate dynamic surge pricing (30% or 15% increase) when seat inventory runs low",
+    "table": "FlightSchedule",
+    "scenario": "Simulate dynamic surge pricing (30% or 15% increase) when seat inventory runs low.",
+    "businessObjective": "Simulate dynamic surge pricing (30% or 15% increase) when seat inventory runs low.",
+    "schemaSnippet": "FlightSchedule schema",
+    "targetQuery": "SELECT flight_id, ticket_price,\n  ROUND(ticket_price * (\n    CASE\n      WHEN seats_available < 5 THEN 1.30\n      WHEN seats_available < 15 THEN 1.15\n      ELSE 1.00\n    END\n  ), 2) AS surge_price\nFROM FlightSchedule;",
+    "syntaxBlueprint": "SELECT col_name,\n  CASE WHEN condition THEN 'Val 1' ELSE 'Val 2' END AS alias_name\nFROM FlightSchedule;",
+    "syntaxRule": "A CASE expression starts with CASE, tests conditions with WHEN...THEN, optionally falls back with ELSE, and MUST end with END. Every branch should return compatible data types.",
+    "syntaxTrap": "Forgetting the closing END keyword, or putting a comma between WHEN branches (branches must NOT be separated by commas).",
+    "eli5Story": "Conditional decision making on FlightSchedule: Simulate dynamic surge pricing (30% or 15% increase) when seat inventory runs low.",
+    "commonMistakes": "Omitting the END keyword, forgetting the ELSE fallback (defaults to NULL), or misordering WHEN thresholds.",
+    "learningOutcomes": "Mastered 5.3 CASE with Mathematical Transformations on FlightSchedule.",
+    "challengeSlots": [
+      {
+        "type": "keyword",
+        "value": "SELECT"
+      },
+      {
+        "type": "column",
+        "value": "flight_id,"
+      },
+      {
+        "type": "column",
+        "value": "ticket_price,"
+      },
+      {
+        "type": "column",
+        "value": "ROUND(ticket_price"
+      },
+      {
+        "type": "column",
+        "value": "*"
+      },
+      {
+        "type": "column",
+        "value": "("
+      },
+      {
+        "type": "keyword",
+        "value": "CASE"
+      },
+      {
+        "type": "keyword",
+        "value": "WHEN"
+      },
+      {
+        "type": "column",
+        "value": "seats_available"
+      },
+      {
+        "type": "column",
+        "value": "<"
+      },
+      {
+        "type": "column",
+        "value": "5"
+      },
+      {
+        "type": "keyword",
+        "value": "THEN"
+      },
+      {
+        "type": "column",
+        "value": "1.30"
+      },
+      {
+        "type": "keyword",
+        "value": "WHEN"
+      },
+      {
+        "type": "column",
+        "value": "seats_available"
+      },
+      {
+        "type": "column",
+        "value": "<"
+      },
+      {
+        "type": "column",
+        "value": "15"
+      },
+      {
+        "type": "keyword",
+        "value": "THEN"
+      },
+      {
+        "type": "column",
+        "value": "1.15"
+      },
+      {
+        "type": "keyword",
+        "value": "ELSE"
+      },
+      {
+        "type": "column",
+        "value": "1.00"
+      },
+      {
+        "type": "keyword",
+        "value": "END"
+      },
+      {
+        "type": "column",
+        "value": "),"
+      },
+      {
+        "type": "column",
+        "value": "2)"
+      },
+      {
+        "type": "keyword",
+        "value": "AS"
+      },
+      {
+        "type": "column",
+        "value": "surge_price"
+      },
+      {
+        "type": "keyword",
+        "value": "FROM"
+      },
+      {
+        "type": "table",
+        "value": "FlightSchedule;"
+      }
+    ]
+  },
+  {
+    "drillNumber": 426,
+    "subcluster": "5.3 CASE with Mathematical Transformations",
+    "level": "Level 2 (Calculations)",
+    "title": "Syntax #426: Apply a 25% clearance discount to books published before 2020",
+    "table": "Books",
+    "scenario": "Apply a 25% clearance discount to books published before 2020.",
+    "businessObjective": "Apply a 25% clearance discount to books published before 2020.",
+    "schemaSnippet": "Books schema",
+    "targetQuery": "SELECT title, price, publish_year,\n  ROUND(price * (\n    CASE\n      WHEN publish_year < 2020 THEN 0.75\n      ELSE 1.00\n    END\n  ), 2) AS clearance_price\nFROM Books;",
+    "syntaxBlueprint": "SELECT col_name,\n  CASE WHEN condition THEN 'Val 1' ELSE 'Val 2' END AS alias_name\nFROM Books;",
+    "syntaxRule": "A CASE expression starts with CASE, tests conditions with WHEN...THEN, optionally falls back with ELSE, and MUST end with END. Every branch should return compatible data types.",
+    "syntaxTrap": "Forgetting the closing END keyword, or putting a comma between WHEN branches (branches must NOT be separated by commas).",
+    "eli5Story": "Conditional decision making on Books: Apply a 25% clearance discount to books published before 2020.",
+    "commonMistakes": "Omitting the END keyword, forgetting the ELSE fallback (defaults to NULL), or misordering WHEN thresholds.",
+    "learningOutcomes": "Mastered 5.3 CASE with Mathematical Transformations on Books.",
+    "challengeSlots": [
+      {
+        "type": "keyword",
+        "value": "SELECT"
+      },
+      {
+        "type": "column",
+        "value": "title,"
+      },
+      {
+        "type": "column",
+        "value": "price,"
+      },
+      {
+        "type": "column",
+        "value": "publish_year,"
+      },
+      {
+        "type": "column",
+        "value": "ROUND(price"
+      },
+      {
+        "type": "column",
+        "value": "*"
+      },
+      {
+        "type": "column",
+        "value": "("
+      },
+      {
+        "type": "keyword",
+        "value": "CASE"
+      },
+      {
+        "type": "keyword",
+        "value": "WHEN"
+      },
+      {
+        "type": "column",
+        "value": "publish_year"
+      },
+      {
+        "type": "column",
+        "value": "<"
+      },
+      {
+        "type": "column",
+        "value": "2020"
+      },
+      {
+        "type": "keyword",
+        "value": "THEN"
+      },
+      {
+        "type": "column",
+        "value": "0.75"
+      },
+      {
+        "type": "keyword",
+        "value": "ELSE"
+      },
+      {
+        "type": "column",
+        "value": "1.00"
+      },
+      {
+        "type": "keyword",
+        "value": "END"
+      },
+      {
+        "type": "column",
+        "value": "),"
+      },
+      {
+        "type": "column",
+        "value": "2)"
+      },
+      {
+        "type": "keyword",
+        "value": "AS"
+      },
+      {
+        "type": "column",
+        "value": "clearance_price"
+      },
+      {
+        "type": "keyword",
+        "value": "FROM"
+      },
+      {
+        "type": "table",
+        "value": "Books;"
+      }
+    ]
+  },
+  {
+    "drillNumber": 427,
+    "subcluster": "5.3 CASE with Mathematical Transformations",
+    "level": "Level 2 (Calculations)",
+    "title": "Syntax #427: Calculate medication dosage in milligrams based on patient body mass thresholds",
+    "table": "PetClinic",
+    "scenario": "Calculate medication dosage in milligrams based on patient body mass thresholds.",
+    "businessObjective": "Calculate medication dosage in milligrams based on patient body mass thresholds.",
+    "schemaSnippet": "PetClinic schema",
+    "targetQuery": "SELECT pet_name, weight_kg,\n  ROUND(CASE\n    WHEN weight_kg > 25 THEN weight_kg * 1.5\n    ELSE weight_kg * 1.0\n  END, 1) AS recommended_dosage_mg\nFROM PetClinic;",
+    "syntaxBlueprint": "SELECT col_name,\n  CASE WHEN condition THEN 'Val 1' ELSE 'Val 2' END AS alias_name\nFROM PetClinic;",
+    "syntaxRule": "A CASE expression starts with CASE, tests conditions with WHEN...THEN, optionally falls back with ELSE, and MUST end with END. Every branch should return compatible data types.",
+    "syntaxTrap": "Forgetting the closing END keyword, or putting a comma between WHEN branches (branches must NOT be separated by commas).",
+    "eli5Story": "Conditional decision making on PetClinic: Calculate medication dosage in milligrams based on patient body mass thresholds.",
+    "commonMistakes": "Omitting the END keyword, forgetting the ELSE fallback (defaults to NULL), or misordering WHEN thresholds.",
+    "learningOutcomes": "Mastered 5.3 CASE with Mathematical Transformations on PetClinic.",
+    "challengeSlots": [
+      {
+        "type": "keyword",
+        "value": "SELECT"
+      },
+      {
+        "type": "column",
+        "value": "pet_name,"
+      },
+      {
+        "type": "column",
+        "value": "weight_kg,"
+      },
+      {
+        "type": "column",
+        "value": "ROUND(CASE"
+      },
+      {
+        "type": "keyword",
+        "value": "WHEN"
+      },
+      {
+        "type": "column",
+        "value": "weight_kg"
+      },
+      {
+        "type": "column",
+        "value": ">"
+      },
+      {
+        "type": "column",
+        "value": "25"
+      },
+      {
+        "type": "keyword",
+        "value": "THEN"
+      },
+      {
+        "type": "column",
+        "value": "weight_kg"
+      },
+      {
+        "type": "column",
+        "value": "*"
+      },
+      {
+        "type": "column",
+        "value": "1.5"
+      },
+      {
+        "type": "keyword",
+        "value": "ELSE"
+      },
+      {
+        "type": "column",
+        "value": "weight_kg"
+      },
+      {
+        "type": "column",
+        "value": "*"
+      },
+      {
+        "type": "column",
+        "value": "1.0"
+      },
+      {
+        "type": "keyword",
+        "value": "END,"
+      },
+      {
+        "type": "column",
+        "value": "1)"
+      },
+      {
+        "type": "keyword",
+        "value": "AS"
+      },
+      {
+        "type": "column",
+        "value": "recommended_dosage_mg"
+      },
+      {
+        "type": "keyword",
+        "value": "FROM"
+      },
+      {
+        "type": "table",
+        "value": "PetClinic;"
+      }
+    ]
+  },
+  {
+    "drillNumber": 428,
+    "subcluster": "5.3 CASE with Mathematical Transformations",
+    "level": "Level 2 (Calculations)",
+    "title": "Syntax #428: Compute artist royalty payout using differentiated per-stream rates for new vs catalog releases",
+    "table": "MusicTracks",
+    "scenario": "Compute artist royalty payout using differentiated per-stream rates for new vs catalog releases.",
+    "businessObjective": "Compute artist royalty payout using differentiated per-stream rates for new vs catalog releases.",
+    "schemaSnippet": "MusicTracks schema",
+    "targetQuery": "SELECT track_title, play_count,\n  ROUND(play_count * (\n    CASE\n      WHEN release_year >= 2024 THEN 0.005\n      ELSE 0.003\n    END\n  ), 2) AS royalty_payout_usd\nFROM MusicTracks;",
+    "syntaxBlueprint": "SELECT col_name,\n  CASE WHEN condition THEN 'Val 1' ELSE 'Val 2' END AS alias_name\nFROM MusicTracks;",
+    "syntaxRule": "A CASE expression starts with CASE, tests conditions with WHEN...THEN, optionally falls back with ELSE, and MUST end with END. Every branch should return compatible data types.",
+    "syntaxTrap": "Forgetting the closing END keyword, or putting a comma between WHEN branches (branches must NOT be separated by commas).",
+    "eli5Story": "Conditional decision making on MusicTracks: Compute artist royalty payout using differentiated per-stream rates for new vs catalog releases.",
+    "commonMistakes": "Omitting the END keyword, forgetting the ELSE fallback (defaults to NULL), or misordering WHEN thresholds.",
+    "learningOutcomes": "Mastered 5.3 CASE with Mathematical Transformations on MusicTracks.",
+    "challengeSlots": [
+      {
+        "type": "keyword",
+        "value": "SELECT"
+      },
+      {
+        "type": "column",
+        "value": "track_title,"
+      },
+      {
+        "type": "column",
+        "value": "play_count,"
+      },
+      {
+        "type": "column",
+        "value": "ROUND(play_count"
+      },
+      {
+        "type": "column",
+        "value": "*"
+      },
+      {
+        "type": "column",
+        "value": "("
+      },
+      {
+        "type": "keyword",
+        "value": "CASE"
+      },
+      {
+        "type": "keyword",
+        "value": "WHEN"
+      },
+      {
+        "type": "column",
+        "value": "release_year"
+      },
+      {
+        "type": "column",
+        "value": ">="
+      },
+      {
+        "type": "column",
+        "value": "2024"
+      },
+      {
+        "type": "keyword",
+        "value": "THEN"
+      },
+      {
+        "type": "column",
+        "value": "0.005"
+      },
+      {
+        "type": "keyword",
+        "value": "ELSE"
+      },
+      {
+        "type": "column",
+        "value": "0.003"
+      },
+      {
+        "type": "keyword",
+        "value": "END"
+      },
+      {
+        "type": "column",
+        "value": "),"
+      },
+      {
+        "type": "column",
+        "value": "2)"
+      },
+      {
+        "type": "keyword",
+        "value": "AS"
+      },
+      {
+        "type": "column",
+        "value": "royalty_payout_usd"
+      },
+      {
+        "type": "keyword",
+        "value": "FROM"
+      },
+      {
+        "type": "table",
+        "value": "MusicTracks;"
+      }
+    ]
+  },
+  {
+    "drillNumber": 429,
+    "subcluster": "5.3 CASE with Mathematical Transformations",
+    "level": "Level 2 (Calculations)",
+    "title": "Syntax #429: Determine merit scholarship award grant amounts ($5000, $2500, $1000, $0) based on GPA",
+    "table": "Students",
+    "scenario": "Determine merit scholarship award grant amounts ($5000, $2500, $1000, $0) based on GPA.",
+    "businessObjective": "Determine merit scholarship award grant amounts ($5000, $2500, $1000, $0) based on GPA.",
+    "schemaSnippet": "Students schema",
+    "targetQuery": "SELECT full_name, gpa,\n  CASE\n    WHEN gpa >= 3.9 THEN 5000\n    WHEN gpa >= 3.7 THEN 2500\n    WHEN gpa >= 3.5 THEN 1000\n    ELSE 0\n  END AS scholarship_award\nFROM Students;",
+    "syntaxBlueprint": "SELECT col_name,\n  CASE WHEN condition THEN 'Val 1' ELSE 'Val 2' END AS alias_name\nFROM Students;",
+    "syntaxRule": "A CASE expression starts with CASE, tests conditions with WHEN...THEN, optionally falls back with ELSE, and MUST end with END. Every branch should return compatible data types.",
+    "syntaxTrap": "Forgetting the closing END keyword, or putting a comma between WHEN branches (branches must NOT be separated by commas).",
+    "eli5Story": "Conditional decision making on Students: Determine merit scholarship award grant amounts ($5000, $2500, $1000, $0) based on GPA.",
+    "commonMistakes": "Omitting the END keyword, forgetting the ELSE fallback (defaults to NULL), or misordering WHEN thresholds.",
+    "learningOutcomes": "Mastered 5.3 CASE with Mathematical Transformations on Students.",
+    "challengeSlots": [
+      {
+        "type": "keyword",
+        "value": "SELECT"
+      },
+      {
+        "type": "column",
+        "value": "full_name,"
+      },
+      {
+        "type": "column",
+        "value": "gpa,"
+      },
+      {
+        "type": "keyword",
+        "value": "CASE"
+      },
+      {
+        "type": "keyword",
+        "value": "WHEN"
+      },
+      {
+        "type": "column",
+        "value": "gpa"
+      },
+      {
+        "type": "column",
+        "value": ">="
+      },
+      {
+        "type": "column",
+        "value": "3.9"
+      },
+      {
+        "type": "keyword",
+        "value": "THEN"
+      },
+      {
+        "type": "column",
+        "value": "5000"
+      },
+      {
+        "type": "keyword",
+        "value": "WHEN"
+      },
+      {
+        "type": "column",
+        "value": "gpa"
+      },
+      {
+        "type": "column",
+        "value": ">="
+      },
+      {
+        "type": "column",
+        "value": "3.7"
+      },
+      {
+        "type": "keyword",
+        "value": "THEN"
+      },
+      {
+        "type": "column",
+        "value": "2500"
+      },
+      {
+        "type": "keyword",
+        "value": "WHEN"
+      },
+      {
+        "type": "column",
+        "value": "gpa"
+      },
+      {
+        "type": "column",
+        "value": ">="
+      },
+      {
+        "type": "column",
+        "value": "3.5"
+      },
+      {
+        "type": "keyword",
+        "value": "THEN"
+      },
+      {
+        "type": "column",
+        "value": "1000"
+      },
+      {
+        "type": "keyword",
+        "value": "ELSE"
+      },
+      {
+        "type": "column",
+        "value": "0"
+      },
+      {
+        "type": "keyword",
+        "value": "END"
+      },
+      {
+        "type": "keyword",
+        "value": "AS"
+      },
+      {
+        "type": "column",
+        "value": "scholarship_award"
+      },
+      {
+        "type": "keyword",
+        "value": "FROM"
+      },
+      {
+        "type": "table",
+        "value": "Students;"
+      }
+    ]
+  },
+  {
+    "drillNumber": 430,
+    "subcluster": "5.3 CASE with Mathematical Transformations",
+    "level": "Level 2 (Calculations)",
+    "title": "Syntax #430: Calculate a weighted critic score applying a 10% bonus boost for documentary films",
+    "table": "MovieReviews",
+    "scenario": "Calculate a weighted critic score applying a 10% bonus boost for documentary films.",
+    "businessObjective": "Calculate a weighted critic score applying a 10% bonus boost for documentary films.",
+    "schemaSnippet": "MovieReviews schema",
+    "targetQuery": "SELECT movie_title, star_rating,\n  ROUND(star_rating * (\n    CASE\n      WHEN genre = 'Documentary' THEN 1.1\n      ELSE 1.0\n    END\n  ), 2) AS weighted_rating\nFROM MovieReviews;",
+    "syntaxBlueprint": "SELECT col_name,\n  CASE WHEN condition THEN 'Val 1' ELSE 'Val 2' END AS alias_name\nFROM MovieReviews;",
+    "syntaxRule": "A CASE expression starts with CASE, tests conditions with WHEN...THEN, optionally falls back with ELSE, and MUST end with END. Every branch should return compatible data types.",
+    "syntaxTrap": "Forgetting the closing END keyword, or putting a comma between WHEN branches (branches must NOT be separated by commas).",
+    "eli5Story": "Conditional decision making on MovieReviews: Calculate a weighted critic score applying a 10% bonus boost for documentary films.",
+    "commonMistakes": "Omitting the END keyword, forgetting the ELSE fallback (defaults to NULL), or misordering WHEN thresholds.",
+    "learningOutcomes": "Mastered 5.3 CASE with Mathematical Transformations on MovieReviews.",
+    "challengeSlots": [
+      {
+        "type": "keyword",
+        "value": "SELECT"
+      },
+      {
+        "type": "column",
+        "value": "movie_title,"
+      },
+      {
+        "type": "column",
+        "value": "star_rating,"
+      },
+      {
+        "type": "column",
+        "value": "ROUND(star_rating"
+      },
+      {
+        "type": "column",
+        "value": "*"
+      },
+      {
+        "type": "column",
+        "value": "("
+      },
+      {
+        "type": "keyword",
+        "value": "CASE"
+      },
+      {
+        "type": "keyword",
+        "value": "WHEN"
+      },
+      {
+        "type": "column",
+        "value": "genre"
+      },
+      {
+        "type": "column",
+        "value": "="
+      },
+      {
+        "type": "column",
+        "value": "'Documentary'"
+      },
+      {
+        "type": "keyword",
+        "value": "THEN"
+      },
+      {
+        "type": "column",
+        "value": "1.1"
+      },
+      {
+        "type": "keyword",
+        "value": "ELSE"
+      },
+      {
+        "type": "column",
+        "value": "1.0"
+      },
+      {
+        "type": "keyword",
+        "value": "END"
+      },
+      {
+        "type": "column",
+        "value": "),"
+      },
+      {
+        "type": "column",
+        "value": "2)"
+      },
+      {
+        "type": "keyword",
+        "value": "AS"
+      },
+      {
+        "type": "column",
+        "value": "weighted_rating"
+      },
+      {
+        "type": "keyword",
+        "value": "FROM"
+      },
+      {
+        "type": "table",
+        "value": "MovieReviews;"
+      }
+    ]
+  },
+  {
+    "drillNumber": 431,
+    "subcluster": "5.4 NULL Value Handling with CASE WHEN",
+    "level": "Level 2 (NULL Handling)",
+    "title": "Syntax #431: Replace missing NULL student cities with 'Address Not Disclosed'",
+    "table": "Students",
+    "scenario": "Replace missing NULL student cities with 'Address Not Disclosed'.",
+    "businessObjective": "Replace missing NULL student cities with 'Address Not Disclosed'.",
+    "schemaSnippet": "Students schema",
+    "targetQuery": "SELECT full_name,\n  CASE\n    WHEN city IS NULL THEN 'Address Not Disclosed'\n    ELSE city\n  END AS residence_city\nFROM Students;",
+    "syntaxBlueprint": "SELECT col_name,\n  CASE WHEN condition THEN 'Val 1' ELSE 'Val 2' END AS alias_name\nFROM Students;",
+    "syntaxRule": "A CASE expression starts with CASE, tests conditions with WHEN...THEN, optionally falls back with ELSE, and MUST end with END. Every branch should return compatible data types.",
+    "syntaxTrap": "Forgetting the closing END keyword, or putting a comma between WHEN branches (branches must NOT be separated by commas).",
+    "eli5Story": "Conditional decision making on Students: Replace missing NULL student cities with 'Address Not Disclosed'.",
+    "commonMistakes": "Omitting the END keyword, forgetting the ELSE fallback (defaults to NULL), or misordering WHEN thresholds.",
+    "learningOutcomes": "Mastered 5.4 NULL Value Handling with CASE WHEN on Students.",
+    "challengeSlots": [
+      {
+        "type": "keyword",
+        "value": "SELECT"
+      },
+      {
+        "type": "column",
+        "value": "full_name,"
+      },
+      {
+        "type": "keyword",
+        "value": "CASE"
+      },
+      {
+        "type": "keyword",
+        "value": "WHEN"
+      },
+      {
+        "type": "column",
+        "value": "city"
+      },
+      {
+        "type": "keyword",
+        "value": "IS"
+      },
+      {
+        "type": "keyword",
+        "value": "NULL"
+      },
+      {
+        "type": "keyword",
+        "value": "THEN"
+      },
+      {
+        "type": "column",
+        "value": "'Address"
+      },
+      {
+        "type": "keyword",
+        "value": "Not"
+      },
+      {
+        "type": "column",
+        "value": "Disclosed'"
+      },
+      {
+        "type": "keyword",
+        "value": "ELSE"
+      },
+      {
+        "type": "column",
+        "value": "city"
+      },
+      {
+        "type": "keyword",
+        "value": "END"
+      },
+      {
+        "type": "keyword",
+        "value": "AS"
+      },
+      {
+        "type": "column",
+        "value": "residence_city"
+      },
+      {
+        "type": "keyword",
+        "value": "FROM"
+      },
+      {
+        "type": "table",
+        "value": "Students;"
+      }
+    ]
+  },
+  {
+    "drillNumber": 432,
+    "subcluster": "5.4 NULL Value Handling with CASE WHEN",
+    "level": "Level 2 (NULL Handling)",
+    "title": "Syntax #432: Identify unassigned employees by replacing NULL departments with 'Unassigned Staff'",
+    "table": "Employees",
+    "scenario": "Identify unassigned employees by replacing NULL departments with 'Unassigned Staff'.",
+    "businessObjective": "Identify unassigned employees by replacing NULL departments with 'Unassigned Staff'.",
+    "schemaSnippet": "Employees schema",
+    "targetQuery": "SELECT first_name,\n  CASE\n    WHEN department IS NULL THEN 'Unassigned Staff'\n    ELSE department\n  END AS department_assigned\nFROM Employees;",
+    "syntaxBlueprint": "SELECT col_name,\n  CASE WHEN condition THEN 'Val 1' ELSE 'Val 2' END AS alias_name\nFROM Employees;",
+    "syntaxRule": "A CASE expression starts with CASE, tests conditions with WHEN...THEN, optionally falls back with ELSE, and MUST end with END. Every branch should return compatible data types.",
+    "syntaxTrap": "Forgetting the closing END keyword, or putting a comma between WHEN branches (branches must NOT be separated by commas).",
+    "eli5Story": "Conditional decision making on Employees: Identify unassigned employees by replacing NULL departments with 'Unassigned Staff'.",
+    "commonMistakes": "Omitting the END keyword, forgetting the ELSE fallback (defaults to NULL), or misordering WHEN thresholds.",
+    "learningOutcomes": "Mastered 5.4 NULL Value Handling with CASE WHEN on Employees.",
+    "challengeSlots": [
+      {
+        "type": "keyword",
+        "value": "SELECT"
+      },
+      {
+        "type": "column",
+        "value": "first_name,"
+      },
+      {
+        "type": "keyword",
+        "value": "CASE"
+      },
+      {
+        "type": "keyword",
+        "value": "WHEN"
+      },
+      {
+        "type": "column",
+        "value": "department"
+      },
+      {
+        "type": "keyword",
+        "value": "IS"
+      },
+      {
+        "type": "keyword",
+        "value": "NULL"
+      },
+      {
+        "type": "keyword",
+        "value": "THEN"
+      },
+      {
+        "type": "column",
+        "value": "'Unassigned"
+      },
+      {
+        "type": "column",
+        "value": "Staff'"
+      },
+      {
+        "type": "keyword",
+        "value": "ELSE"
+      },
+      {
+        "type": "column",
+        "value": "department"
+      },
+      {
+        "type": "keyword",
+        "value": "END"
+      },
+      {
+        "type": "keyword",
+        "value": "AS"
+      },
+      {
+        "type": "column",
+        "value": "department_assigned"
+      },
+      {
+        "type": "keyword",
+        "value": "FROM"
+      },
+      {
+        "type": "table",
+        "value": "Employees;"
+      }
+    ]
+  },
+  {
+    "drillNumber": 433,
+    "subcluster": "5.4 NULL Value Handling with CASE WHEN",
+    "level": "Level 2 (NULL Handling)",
+    "title": "Syntax #433: Safely display book ratings, rendering 'Unrated Title' if rating is NULL",
+    "table": "Books",
+    "scenario": "Safely display book ratings, rendering 'Unrated Title' if rating is NULL.",
+    "businessObjective": "Safely display book ratings, rendering 'Unrated Title' if rating is NULL.",
+    "schemaSnippet": "Books schema",
+    "targetQuery": "SELECT title,\n  CASE\n    WHEN rating IS NULL THEN 'Unrated Title'\n    ELSE CAST(rating AS CHAR)\n  END AS display_rating\nFROM Books;",
+    "syntaxBlueprint": "SELECT col_name,\n  CASE WHEN condition THEN 'Val 1' ELSE 'Val 2' END AS alias_name\nFROM Books;",
+    "syntaxRule": "A CASE expression starts with CASE, tests conditions with WHEN...THEN, optionally falls back with ELSE, and MUST end with END. Every branch should return compatible data types.",
+    "syntaxTrap": "Forgetting the closing END keyword, or putting a comma between WHEN branches (branches must NOT be separated by commas).",
+    "eli5Story": "Conditional decision making on Books: Safely display book ratings, rendering 'Unrated Title' if rating is NULL.",
+    "commonMistakes": "Omitting the END keyword, forgetting the ELSE fallback (defaults to NULL), or misordering WHEN thresholds.",
+    "learningOutcomes": "Mastered 5.4 NULL Value Handling with CASE WHEN on Books.",
+    "challengeSlots": [
+      {
+        "type": "keyword",
+        "value": "SELECT"
+      },
+      {
+        "type": "column",
+        "value": "title,"
+      },
+      {
+        "type": "keyword",
+        "value": "CASE"
+      },
+      {
+        "type": "keyword",
+        "value": "WHEN"
+      },
+      {
+        "type": "column",
+        "value": "rating"
+      },
+      {
+        "type": "keyword",
+        "value": "IS"
+      },
+      {
+        "type": "keyword",
+        "value": "NULL"
+      },
+      {
+        "type": "keyword",
+        "value": "THEN"
+      },
+      {
+        "type": "column",
+        "value": "'Unrated"
+      },
+      {
+        "type": "column",
+        "value": "Title'"
+      },
+      {
+        "type": "keyword",
+        "value": "ELSE"
+      },
+      {
+        "type": "column",
+        "value": "CAST(rating"
+      },
+      {
+        "type": "keyword",
+        "value": "AS"
+      },
+      {
+        "type": "column",
+        "value": "CHAR)"
+      },
+      {
+        "type": "keyword",
+        "value": "END"
+      },
+      {
+        "type": "keyword",
+        "value": "AS"
+      },
+      {
+        "type": "column",
+        "value": "display_rating"
+      },
+      {
+        "type": "keyword",
+        "value": "FROM"
+      },
+      {
+        "type": "table",
+        "value": "Books;"
+      }
+    ]
+  },
+  {
+    "drillNumber": 434,
+    "subcluster": "5.4 NULL Value Handling with CASE WHEN",
+    "level": "Level 2 (NULL Handling)",
+    "title": "Syntax #434: Fallback NULL grocery categories to 'Miscellaneous'",
+    "table": "GroceryItems",
+    "scenario": "Fallback NULL grocery categories to 'Miscellaneous'.",
+    "businessObjective": "Fallback NULL grocery categories to 'Miscellaneous'.",
+    "schemaSnippet": "GroceryItems schema",
+    "targetQuery": "SELECT item_name,\n  CASE\n    WHEN category IS NULL THEN 'Miscellaneous'\n    ELSE category\n  END AS safe_category\nFROM GroceryItems;",
+    "syntaxBlueprint": "SELECT col_name,\n  CASE WHEN condition THEN 'Val 1' ELSE 'Val 2' END AS alias_name\nFROM GroceryItems;",
+    "syntaxRule": "A CASE expression starts with CASE, tests conditions with WHEN...THEN, optionally falls back with ELSE, and MUST end with END. Every branch should return compatible data types.",
+    "syntaxTrap": "Forgetting the closing END keyword, or putting a comma between WHEN branches (branches must NOT be separated by commas).",
+    "eli5Story": "Conditional decision making on GroceryItems: Fallback NULL grocery categories to 'Miscellaneous'.",
+    "commonMistakes": "Omitting the END keyword, forgetting the ELSE fallback (defaults to NULL), or misordering WHEN thresholds.",
+    "learningOutcomes": "Mastered 5.4 NULL Value Handling with CASE WHEN on GroceryItems.",
+    "challengeSlots": [
+      {
+        "type": "keyword",
+        "value": "SELECT"
+      },
+      {
+        "type": "column",
+        "value": "item_name,"
+      },
+      {
+        "type": "keyword",
+        "value": "CASE"
+      },
+      {
+        "type": "keyword",
+        "value": "WHEN"
+      },
+      {
+        "type": "column",
+        "value": "category"
+      },
+      {
+        "type": "keyword",
+        "value": "IS"
+      },
+      {
+        "type": "keyword",
+        "value": "NULL"
+      },
+      {
+        "type": "keyword",
+        "value": "THEN"
+      },
+      {
+        "type": "column",
+        "value": "'Miscellaneous'"
+      },
+      {
+        "type": "keyword",
+        "value": "ELSE"
+      },
+      {
+        "type": "column",
+        "value": "category"
+      },
+      {
+        "type": "keyword",
+        "value": "END"
+      },
+      {
+        "type": "keyword",
+        "value": "AS"
+      },
+      {
+        "type": "column",
+        "value": "safe_category"
+      },
+      {
+        "type": "keyword",
+        "value": "FROM"
+      },
+      {
+        "type": "table",
+        "value": "GroceryItems;"
+      }
+    ]
+  },
+  {
+    "drillNumber": 435,
+    "subcluster": "5.4 NULL Value Handling with CASE WHEN",
+    "level": "Level 2 (NULL Handling)",
+    "title": "Syntax #435: Display 'Store Pickup' whenever the order shipping city is NULL",
+    "table": "Orders",
+    "scenario": "Display 'Store Pickup' whenever the order shipping city is NULL.",
+    "businessObjective": "Display 'Store Pickup' whenever the order shipping city is NULL.",
+    "schemaSnippet": "Orders schema",
+    "targetQuery": "SELECT order_id,\n  CASE\n    WHEN shipping_city IS NULL THEN 'Store Pickup'\n    ELSE shipping_city\n  END AS delivery_destination\nFROM Orders;",
+    "syntaxBlueprint": "SELECT col_name,\n  CASE WHEN condition THEN 'Val 1' ELSE 'Val 2' END AS alias_name\nFROM Orders;",
+    "syntaxRule": "A CASE expression starts with CASE, tests conditions with WHEN...THEN, optionally falls back with ELSE, and MUST end with END. Every branch should return compatible data types.",
+    "syntaxTrap": "Forgetting the closing END keyword, or putting a comma between WHEN branches (branches must NOT be separated by commas).",
+    "eli5Story": "Conditional decision making on Orders: Display 'Store Pickup' whenever the order shipping city is NULL.",
+    "commonMistakes": "Omitting the END keyword, forgetting the ELSE fallback (defaults to NULL), or misordering WHEN thresholds.",
+    "learningOutcomes": "Mastered 5.4 NULL Value Handling with CASE WHEN on Orders.",
+    "challengeSlots": [
+      {
+        "type": "keyword",
+        "value": "SELECT"
+      },
+      {
+        "type": "column",
+        "value": "order_id,"
+      },
+      {
+        "type": "keyword",
+        "value": "CASE"
+      },
+      {
+        "type": "keyword",
+        "value": "WHEN"
+      },
+      {
+        "type": "column",
+        "value": "shipping_city"
+      },
+      {
+        "type": "keyword",
+        "value": "IS"
+      },
+      {
+        "type": "keyword",
+        "value": "NULL"
+      },
+      {
+        "type": "keyword",
+        "value": "THEN"
+      },
+      {
+        "type": "column",
+        "value": "'Store"
+      },
+      {
+        "type": "column",
+        "value": "Pickup'"
+      },
+      {
+        "type": "keyword",
+        "value": "ELSE"
+      },
+      {
+        "type": "column",
+        "value": "shipping_city"
+      },
+      {
+        "type": "keyword",
+        "value": "END"
+      },
+      {
+        "type": "keyword",
+        "value": "AS"
+      },
+      {
+        "type": "column",
+        "value": "delivery_destination"
+      },
+      {
+        "type": "keyword",
+        "value": "FROM"
+      },
+      {
+        "type": "table",
+        "value": "Orders;"
+      }
+    ]
+  },
+  {
+    "drillNumber": 436,
+    "subcluster": "5.4 NULL Value Handling with CASE WHEN",
+    "level": "Level 2 (NULL Handling)",
+    "title": "Syntax #436: Default unassigned music genres to 'Unclassified'",
+    "table": "MusicTracks",
+    "scenario": "Default unassigned music genres to 'Unclassified'.",
+    "businessObjective": "Default unassigned music genres to 'Unclassified'.",
+    "schemaSnippet": "MusicTracks schema",
+    "targetQuery": "SELECT track_title,\n  CASE\n    WHEN genre IS NULL THEN 'Unclassified'\n    ELSE genre\n  END AS musical_style\nFROM MusicTracks;",
+    "syntaxBlueprint": "SELECT col_name,\n  CASE WHEN condition THEN 'Val 1' ELSE 'Val 2' END AS alias_name\nFROM MusicTracks;",
+    "syntaxRule": "A CASE expression starts with CASE, tests conditions with WHEN...THEN, optionally falls back with ELSE, and MUST end with END. Every branch should return compatible data types.",
+    "syntaxTrap": "Forgetting the closing END keyword, or putting a comma between WHEN branches (branches must NOT be separated by commas).",
+    "eli5Story": "Conditional decision making on MusicTracks: Default unassigned music genres to 'Unclassified'.",
+    "commonMistakes": "Omitting the END keyword, forgetting the ELSE fallback (defaults to NULL), or misordering WHEN thresholds.",
+    "learningOutcomes": "Mastered 5.4 NULL Value Handling with CASE WHEN on MusicTracks.",
+    "challengeSlots": [
+      {
+        "type": "keyword",
+        "value": "SELECT"
+      },
+      {
+        "type": "column",
+        "value": "track_title,"
+      },
+      {
+        "type": "keyword",
+        "value": "CASE"
+      },
+      {
+        "type": "keyword",
+        "value": "WHEN"
+      },
+      {
+        "type": "column",
+        "value": "genre"
+      },
+      {
+        "type": "keyword",
+        "value": "IS"
+      },
+      {
+        "type": "keyword",
+        "value": "NULL"
+      },
+      {
+        "type": "keyword",
+        "value": "THEN"
+      },
+      {
+        "type": "column",
+        "value": "'Unclassified'"
+      },
+      {
+        "type": "keyword",
+        "value": "ELSE"
+      },
+      {
+        "type": "column",
+        "value": "genre"
+      },
+      {
+        "type": "keyword",
+        "value": "END"
+      },
+      {
+        "type": "keyword",
+        "value": "AS"
+      },
+      {
+        "type": "column",
+        "value": "musical_style"
+      },
+      {
+        "type": "keyword",
+        "value": "FROM"
+      },
+      {
+        "type": "table",
+        "value": "MusicTracks;"
+      }
+    ]
+  },
+  {
+    "drillNumber": 437,
+    "subcluster": "5.4 NULL Value Handling with CASE WHEN",
+    "level": "Level 2 (NULL Handling)",
+    "title": "Syntax #437: Replace NULL monthly gym fees with 0.00 to ensure financial calculation safety",
+    "table": "GymMembers",
+    "scenario": "Replace NULL monthly gym fees with 0.00 to ensure financial calculation safety.",
+    "businessObjective": "Replace NULL monthly gym fees with 0.00 to ensure financial calculation safety.",
+    "schemaSnippet": "GymMembers schema",
+    "targetQuery": "SELECT member_name,\n  CASE\n    WHEN monthly_fee IS NULL THEN 0.00\n    ELSE monthly_fee\n  END AS billed_fee\nFROM GymMembers;",
+    "syntaxBlueprint": "SELECT col_name,\n  CASE WHEN condition THEN 'Val 1' ELSE 'Val 2' END AS alias_name\nFROM GymMembers;",
+    "syntaxRule": "A CASE expression starts with CASE, tests conditions with WHEN...THEN, optionally falls back with ELSE, and MUST end with END. Every branch should return compatible data types.",
+    "syntaxTrap": "Forgetting the closing END keyword, or putting a comma between WHEN branches (branches must NOT be separated by commas).",
+    "eli5Story": "Conditional decision making on GymMembers: Replace NULL monthly gym fees with 0.00 to ensure financial calculation safety.",
+    "commonMistakes": "Omitting the END keyword, forgetting the ELSE fallback (defaults to NULL), or misordering WHEN thresholds.",
+    "learningOutcomes": "Mastered 5.4 NULL Value Handling with CASE WHEN on GymMembers.",
+    "challengeSlots": [
+      {
+        "type": "keyword",
+        "value": "SELECT"
+      },
+      {
+        "type": "column",
+        "value": "member_name,"
+      },
+      {
+        "type": "keyword",
+        "value": "CASE"
+      },
+      {
+        "type": "keyword",
+        "value": "WHEN"
+      },
+      {
+        "type": "column",
+        "value": "monthly_fee"
+      },
+      {
+        "type": "keyword",
+        "value": "IS"
+      },
+      {
+        "type": "keyword",
+        "value": "NULL"
+      },
+      {
+        "type": "keyword",
+        "value": "THEN"
+      },
+      {
+        "type": "column",
+        "value": "0.00"
+      },
+      {
+        "type": "keyword",
+        "value": "ELSE"
+      },
+      {
+        "type": "column",
+        "value": "monthly_fee"
+      },
+      {
+        "type": "keyword",
+        "value": "END"
+      },
+      {
+        "type": "keyword",
+        "value": "AS"
+      },
+      {
+        "type": "column",
+        "value": "billed_fee"
+      },
+      {
+        "type": "keyword",
+        "value": "FROM"
+      },
+      {
+        "type": "table",
+        "value": "GymMembers;"
+      }
+    ]
+  },
+  {
+    "drillNumber": 438,
+    "subcluster": "5.4 NULL Value Handling with CASE WHEN",
+    "level": "Level 2 (NULL Handling)",
+    "title": "Syntax #438: Credit missing reviewer names as 'Anonymous Reviewer'",
+    "table": "MovieReviews",
+    "scenario": "Credit missing reviewer names as 'Anonymous Reviewer'.",
+    "businessObjective": "Credit missing reviewer names as 'Anonymous Reviewer'.",
+    "schemaSnippet": "MovieReviews schema",
+    "targetQuery": "SELECT movie_title,\n  CASE\n    WHEN reviewer_name IS NULL THEN 'Anonymous Reviewer'\n    ELSE reviewer_name\n  END AS author_credit\nFROM MovieReviews;",
+    "syntaxBlueprint": "SELECT col_name,\n  CASE WHEN condition THEN 'Val 1' ELSE 'Val 2' END AS alias_name\nFROM MovieReviews;",
+    "syntaxRule": "A CASE expression starts with CASE, tests conditions with WHEN...THEN, optionally falls back with ELSE, and MUST end with END. Every branch should return compatible data types.",
+    "syntaxTrap": "Forgetting the closing END keyword, or putting a comma between WHEN branches (branches must NOT be separated by commas).",
+    "eli5Story": "Conditional decision making on MovieReviews: Credit missing reviewer names as 'Anonymous Reviewer'.",
+    "commonMistakes": "Omitting the END keyword, forgetting the ELSE fallback (defaults to NULL), or misordering WHEN thresholds.",
+    "learningOutcomes": "Mastered 5.4 NULL Value Handling with CASE WHEN on MovieReviews.",
+    "challengeSlots": [
+      {
+        "type": "keyword",
+        "value": "SELECT"
+      },
+      {
+        "type": "column",
+        "value": "movie_title,"
+      },
+      {
+        "type": "keyword",
+        "value": "CASE"
+      },
+      {
+        "type": "keyword",
+        "value": "WHEN"
+      },
+      {
+        "type": "column",
+        "value": "reviewer_name"
+      },
+      {
+        "type": "keyword",
+        "value": "IS"
+      },
+      {
+        "type": "keyword",
+        "value": "NULL"
+      },
+      {
+        "type": "keyword",
+        "value": "THEN"
+      },
+      {
+        "type": "column",
+        "value": "'Anonymous"
+      },
+      {
+        "type": "column",
+        "value": "Reviewer'"
+      },
+      {
+        "type": "keyword",
+        "value": "ELSE"
+      },
+      {
+        "type": "column",
+        "value": "reviewer_name"
+      },
+      {
+        "type": "keyword",
+        "value": "END"
+      },
+      {
+        "type": "keyword",
+        "value": "AS"
+      },
+      {
+        "type": "column",
+        "value": "author_credit"
+      },
+      {
+        "type": "keyword",
+        "value": "FROM"
+      },
+      {
+        "type": "table",
+        "value": "MovieReviews;"
+      }
+    ]
+  },
+  {
+    "drillNumber": 439,
+    "subcluster": "5.4 NULL Value Handling with CASE WHEN",
+    "level": "Level 2 (NULL Handling)",
+    "title": "Syntax #439: Default NULL flight flight statuses to 'Scheduled'",
+    "table": "FlightSchedule",
+    "scenario": "Default NULL flight flight statuses to 'Scheduled'.",
+    "businessObjective": "Default NULL flight flight statuses to 'Scheduled'.",
+    "schemaSnippet": "FlightSchedule schema",
+    "targetQuery": "SELECT flight_id,\n  CASE\n    WHEN status IS NULL THEN 'Scheduled'\n    ELSE status\n  END AS flight_status_clean\nFROM FlightSchedule;",
+    "syntaxBlueprint": "SELECT col_name,\n  CASE WHEN condition THEN 'Val 1' ELSE 'Val 2' END AS alias_name\nFROM FlightSchedule;",
+    "syntaxRule": "A CASE expression starts with CASE, tests conditions with WHEN...THEN, optionally falls back with ELSE, and MUST end with END. Every branch should return compatible data types.",
+    "syntaxTrap": "Forgetting the closing END keyword, or putting a comma between WHEN branches (branches must NOT be separated by commas).",
+    "eli5Story": "Conditional decision making on FlightSchedule: Default NULL flight flight statuses to 'Scheduled'.",
+    "commonMistakes": "Omitting the END keyword, forgetting the ELSE fallback (defaults to NULL), or misordering WHEN thresholds.",
+    "learningOutcomes": "Mastered 5.4 NULL Value Handling with CASE WHEN on FlightSchedule.",
+    "challengeSlots": [
+      {
+        "type": "keyword",
+        "value": "SELECT"
+      },
+      {
+        "type": "column",
+        "value": "flight_id,"
+      },
+      {
+        "type": "keyword",
+        "value": "CASE"
+      },
+      {
+        "type": "keyword",
+        "value": "WHEN"
+      },
+      {
+        "type": "column",
+        "value": "status"
+      },
+      {
+        "type": "keyword",
+        "value": "IS"
+      },
+      {
+        "type": "keyword",
+        "value": "NULL"
+      },
+      {
+        "type": "keyword",
+        "value": "THEN"
+      },
+      {
+        "type": "column",
+        "value": "'Scheduled'"
+      },
+      {
+        "type": "keyword",
+        "value": "ELSE"
+      },
+      {
+        "type": "column",
+        "value": "status"
+      },
+      {
+        "type": "keyword",
+        "value": "END"
+      },
+      {
+        "type": "keyword",
+        "value": "AS"
+      },
+      {
+        "type": "column",
+        "value": "flight_status_clean"
+      },
+      {
+        "type": "keyword",
+        "value": "FROM"
+      },
+      {
+        "type": "table",
+        "value": "FlightSchedule;"
+      }
+    ]
+  },
+  {
+    "drillNumber": 440,
+    "subcluster": "5.4 NULL Value Handling with CASE WHEN",
+    "level": "Level 2 (NULL Handling)",
+    "title": "Syntax #440: Show 'Mixed/Unknown' whenever the pet breed column contains NULL",
+    "table": "PetClinic",
+    "scenario": "Show 'Mixed/Unknown' whenever the pet breed column contains NULL.",
+    "businessObjective": "Show 'Mixed/Unknown' whenever the pet breed column contains NULL.",
+    "schemaSnippet": "PetClinic schema",
+    "targetQuery": "SELECT pet_name,\n  CASE\n    WHEN breed IS NULL THEN 'Mixed/Unknown'\n    ELSE breed\n  END AS breed_description\nFROM PetClinic;",
+    "syntaxBlueprint": "SELECT col_name,\n  CASE WHEN condition THEN 'Val 1' ELSE 'Val 2' END AS alias_name\nFROM PetClinic;",
+    "syntaxRule": "A CASE expression starts with CASE, tests conditions with WHEN...THEN, optionally falls back with ELSE, and MUST end with END. Every branch should return compatible data types.",
+    "syntaxTrap": "Forgetting the closing END keyword, or putting a comma between WHEN branches (branches must NOT be separated by commas).",
+    "eli5Story": "Conditional decision making on PetClinic: Show 'Mixed/Unknown' whenever the pet breed column contains NULL.",
+    "commonMistakes": "Omitting the END keyword, forgetting the ELSE fallback (defaults to NULL), or misordering WHEN thresholds.",
+    "learningOutcomes": "Mastered 5.4 NULL Value Handling with CASE WHEN on PetClinic.",
+    "challengeSlots": [
+      {
+        "type": "keyword",
+        "value": "SELECT"
+      },
+      {
+        "type": "column",
+        "value": "pet_name,"
+      },
+      {
+        "type": "keyword",
+        "value": "CASE"
+      },
+      {
+        "type": "keyword",
+        "value": "WHEN"
+      },
+      {
+        "type": "column",
+        "value": "breed"
+      },
+      {
+        "type": "keyword",
+        "value": "IS"
+      },
+      {
+        "type": "keyword",
+        "value": "NULL"
+      },
+      {
+        "type": "keyword",
+        "value": "THEN"
+      },
+      {
+        "type": "column",
+        "value": "'Mixed/Unknown'"
+      },
+      {
+        "type": "keyword",
+        "value": "ELSE"
+      },
+      {
+        "type": "column",
+        "value": "breed"
+      },
+      {
+        "type": "keyword",
+        "value": "END"
+      },
+      {
+        "type": "keyword",
+        "value": "AS"
+      },
+      {
+        "type": "column",
+        "value": "breed_description"
+      },
+      {
+        "type": "keyword",
+        "value": "FROM"
+      },
+      {
+        "type": "table",
+        "value": "PetClinic;"
+      }
+    ]
+  },
+  {
+    "drillNumber": 441,
+    "subcluster": "5.5 The COALESCE Function (Quick Fallbacks)",
+    "level": "Level 1 (COALESCE Shortcut)",
+    "title": "Syntax #441: Use COALESCE to provide a clean fallback of 'Unknown City' for NULL values",
+    "table": "Students",
+    "scenario": "Use COALESCE to provide a clean fallback of 'Unknown City' for NULL values.",
+    "businessObjective": "Use COALESCE to provide a clean fallback of 'Unknown City' for NULL values.",
+    "schemaSnippet": "Students schema",
+    "targetQuery": "SELECT full_name, COALESCE(city, 'Unknown City') AS student_city\nFROM Students;",
+    "syntaxBlueprint": "SELECT col_name,\n  CASE WHEN condition THEN 'Val 1' ELSE 'Val 2' END AS alias_name\nFROM Students;",
+    "syntaxRule": "A CASE expression starts with CASE, tests conditions with WHEN...THEN, optionally falls back with ELSE, and MUST end with END. Every branch should return compatible data types.",
+    "syntaxTrap": "Forgetting the closing END keyword, or putting a comma between WHEN branches (branches must NOT be separated by commas).",
+    "eli5Story": "Conditional decision making on Students: Use COALESCE to provide a clean fallback of 'Unknown City' for NULL values.",
+    "commonMistakes": "Omitting the END keyword, forgetting the ELSE fallback (defaults to NULL), or misordering WHEN thresholds.",
+    "learningOutcomes": "Mastered 5.5 The COALESCE Function (Quick Fallbacks) on Students.",
+    "challengeSlots": [
+      {
+        "type": "keyword",
+        "value": "SELECT"
+      },
+      {
+        "type": "column",
+        "value": "full_name,"
+      },
+      {
+        "type": "column",
+        "value": "COALESCE(city,"
+      },
+      {
+        "type": "column",
+        "value": "'Unknown"
+      },
+      {
+        "type": "column",
+        "value": "City')"
+      },
+      {
+        "type": "keyword",
+        "value": "AS"
+      },
+      {
+        "type": "column",
+        "value": "student_city"
+      },
+      {
+        "type": "keyword",
+        "value": "FROM"
+      },
+      {
+        "type": "table",
+        "value": "Students;"
+      }
+    ]
+  },
+  {
+    "drillNumber": 442,
+    "subcluster": "5.5 The COALESCE Function (Quick Fallbacks)",
+    "level": "Level 1 (COALESCE Shortcut)",
+    "title": "Syntax #442: Use COALESCE to fallback missing book authors to 'Various Authors'",
+    "table": "Books",
+    "scenario": "Use COALESCE to fallback missing book authors to 'Various Authors'.",
+    "businessObjective": "Use COALESCE to fallback missing book authors to 'Various Authors'.",
+    "schemaSnippet": "Books schema",
+    "targetQuery": "SELECT title, COALESCE(author, 'Various Authors') AS author_name\nFROM Books;",
+    "syntaxBlueprint": "SELECT col_name,\n  CASE WHEN condition THEN 'Val 1' ELSE 'Val 2' END AS alias_name\nFROM Books;",
+    "syntaxRule": "A CASE expression starts with CASE, tests conditions with WHEN...THEN, optionally falls back with ELSE, and MUST end with END. Every branch should return compatible data types.",
+    "syntaxTrap": "Forgetting the closing END keyword, or putting a comma between WHEN branches (branches must NOT be separated by commas).",
+    "eli5Story": "Conditional decision making on Books: Use COALESCE to fallback missing book authors to 'Various Authors'.",
+    "commonMistakes": "Omitting the END keyword, forgetting the ELSE fallback (defaults to NULL), or misordering WHEN thresholds.",
+    "learningOutcomes": "Mastered 5.5 The COALESCE Function (Quick Fallbacks) on Books.",
+    "challengeSlots": [
+      {
+        "type": "keyword",
+        "value": "SELECT"
+      },
+      {
+        "type": "column",
+        "value": "title,"
+      },
+      {
+        "type": "column",
+        "value": "COALESCE(author,"
+      },
+      {
+        "type": "column",
+        "value": "'Various"
+      },
+      {
+        "type": "column",
+        "value": "Authors')"
+      },
+      {
+        "type": "keyword",
+        "value": "AS"
+      },
+      {
+        "type": "column",
+        "value": "author_name"
+      },
+      {
+        "type": "keyword",
+        "value": "FROM"
+      },
+      {
+        "type": "table",
+        "value": "Books;"
+      }
+    ]
+  },
+  {
+    "drillNumber": 443,
+    "subcluster": "5.5 The COALESCE Function (Quick Fallbacks)",
+    "level": "Level 1 (COALESCE Shortcut)",
+    "title": "Syntax #443: Provide 'Remote / HQ' fallback for NULL employee city locations using COALESCE",
+    "table": "Employees",
+    "scenario": "Provide 'Remote / HQ' fallback for NULL employee city locations using COALESCE.",
+    "businessObjective": "Provide 'Remote / HQ' fallback for NULL employee city locations using COALESCE.",
+    "schemaSnippet": "Employees schema",
+    "targetQuery": "SELECT first_name, COALESCE(city, 'Remote / HQ') AS work_location\nFROM Employees;",
+    "syntaxBlueprint": "SELECT col_name,\n  CASE WHEN condition THEN 'Val 1' ELSE 'Val 2' END AS alias_name\nFROM Employees;",
+    "syntaxRule": "A CASE expression starts with CASE, tests conditions with WHEN...THEN, optionally falls back with ELSE, and MUST end with END. Every branch should return compatible data types.",
+    "syntaxTrap": "Forgetting the closing END keyword, or putting a comma between WHEN branches (branches must NOT be separated by commas).",
+    "eli5Story": "Conditional decision making on Employees: Provide 'Remote / HQ' fallback for NULL employee city locations using COALESCE.",
+    "commonMistakes": "Omitting the END keyword, forgetting the ELSE fallback (defaults to NULL), or misordering WHEN thresholds.",
+    "learningOutcomes": "Mastered 5.5 The COALESCE Function (Quick Fallbacks) on Employees.",
+    "challengeSlots": [
+      {
+        "type": "keyword",
+        "value": "SELECT"
+      },
+      {
+        "type": "column",
+        "value": "first_name,"
+      },
+      {
+        "type": "column",
+        "value": "COALESCE(city,"
+      },
+      {
+        "type": "column",
+        "value": "'Remote"
+      },
+      {
+        "type": "column",
+        "value": "/"
+      },
+      {
+        "type": "column",
+        "value": "HQ')"
+      },
+      {
+        "type": "keyword",
+        "value": "AS"
+      },
+      {
+        "type": "column",
+        "value": "work_location"
+      },
+      {
+        "type": "keyword",
+        "value": "FROM"
+      },
+      {
+        "type": "table",
+        "value": "Employees;"
+      }
+    ]
+  },
+  {
+    "drillNumber": 444,
+    "subcluster": "5.5 The COALESCE Function (Quick Fallbacks)",
+    "level": "Level 1 (COALESCE Shortcut)",
+    "title": "Syntax #444: Replace NULL stock units with integer 0 using COALESCE",
+    "table": "GroceryItems",
+    "scenario": "Replace NULL stock units with integer 0 using COALESCE.",
+    "businessObjective": "Replace NULL stock units with integer 0 using COALESCE.",
+    "schemaSnippet": "GroceryItems schema",
+    "targetQuery": "SELECT item_name, COALESCE(stock_units, 0) AS units_on_hand\nFROM GroceryItems;",
+    "syntaxBlueprint": "SELECT col_name,\n  CASE WHEN condition THEN 'Val 1' ELSE 'Val 2' END AS alias_name\nFROM GroceryItems;",
+    "syntaxRule": "A CASE expression starts with CASE, tests conditions with WHEN...THEN, optionally falls back with ELSE, and MUST end with END. Every branch should return compatible data types.",
+    "syntaxTrap": "Forgetting the closing END keyword, or putting a comma between WHEN branches (branches must NOT be separated by commas).",
+    "eli5Story": "Conditional decision making on GroceryItems: Replace NULL stock units with integer 0 using COALESCE.",
+    "commonMistakes": "Omitting the END keyword, forgetting the ELSE fallback (defaults to NULL), or misordering WHEN thresholds.",
+    "learningOutcomes": "Mastered 5.5 The COALESCE Function (Quick Fallbacks) on GroceryItems.",
+    "challengeSlots": [
+      {
+        "type": "keyword",
+        "value": "SELECT"
+      },
+      {
+        "type": "column",
+        "value": "item_name,"
+      },
+      {
+        "type": "column",
+        "value": "COALESCE(stock_units,"
+      },
+      {
+        "type": "column",
+        "value": "0)"
+      },
+      {
+        "type": "keyword",
+        "value": "AS"
+      },
+      {
+        "type": "column",
+        "value": "units_on_hand"
+      },
+      {
+        "type": "keyword",
+        "value": "FROM"
+      },
+      {
+        "type": "table",
+        "value": "GroceryItems;"
+      }
+    ]
+  },
+  {
+    "drillNumber": 445,
+    "subcluster": "5.5 The COALESCE Function (Quick Fallbacks)",
+    "level": "Level 1 (COALESCE Shortcut)",
+    "title": "Syntax #445: Substitute missing shipping cities with 'Local Depot' via COALESCE",
+    "table": "Orders",
+    "scenario": "Substitute missing shipping cities with 'Local Depot' via COALESCE.",
+    "businessObjective": "Substitute missing shipping cities with 'Local Depot' via COALESCE.",
+    "schemaSnippet": "Orders schema",
+    "targetQuery": "SELECT order_id, COALESCE(shipping_city, 'Local Depot') AS ship_to\nFROM Orders;",
+    "syntaxBlueprint": "SELECT col_name,\n  CASE WHEN condition THEN 'Val 1' ELSE 'Val 2' END AS alias_name\nFROM Orders;",
+    "syntaxRule": "A CASE expression starts with CASE, tests conditions with WHEN...THEN, optionally falls back with ELSE, and MUST end with END. Every branch should return compatible data types.",
+    "syntaxTrap": "Forgetting the closing END keyword, or putting a comma between WHEN branches (branches must NOT be separated by commas).",
+    "eli5Story": "Conditional decision making on Orders: Substitute missing shipping cities with 'Local Depot' via COALESCE.",
+    "commonMistakes": "Omitting the END keyword, forgetting the ELSE fallback (defaults to NULL), or misordering WHEN thresholds.",
+    "learningOutcomes": "Mastered 5.5 The COALESCE Function (Quick Fallbacks) on Orders.",
+    "challengeSlots": [
+      {
+        "type": "keyword",
+        "value": "SELECT"
+      },
+      {
+        "type": "column",
+        "value": "order_id,"
+      },
+      {
+        "type": "column",
+        "value": "COALESCE(shipping_city,"
+      },
+      {
+        "type": "column",
+        "value": "'Local"
+      },
+      {
+        "type": "column",
+        "value": "Depot')"
+      },
+      {
+        "type": "keyword",
+        "value": "AS"
+      },
+      {
+        "type": "column",
+        "value": "ship_to"
+      },
+      {
+        "type": "keyword",
+        "value": "FROM"
+      },
+      {
+        "type": "table",
+        "value": "Orders;"
+      }
+    ]
+  },
+  {
+    "drillNumber": 446,
+    "subcluster": "5.5 The COALESCE Function (Quick Fallbacks)",
+    "level": "Level 1 (COALESCE Shortcut)",
+    "title": "Syntax #446: Return 'Unknown Artist' when artist_name is NULL using COALESCE",
+    "table": "MusicTracks",
+    "scenario": "Return 'Unknown Artist' when artist_name is NULL using COALESCE.",
+    "businessObjective": "Return 'Unknown Artist' when artist_name is NULL using COALESCE.",
+    "schemaSnippet": "MusicTracks schema",
+    "targetQuery": "SELECT track_title, COALESCE(artist_name, 'Unknown Artist') AS performer\nFROM MusicTracks;",
+    "syntaxBlueprint": "SELECT col_name,\n  CASE WHEN condition THEN 'Val 1' ELSE 'Val 2' END AS alias_name\nFROM MusicTracks;",
+    "syntaxRule": "A CASE expression starts with CASE, tests conditions with WHEN...THEN, optionally falls back with ELSE, and MUST end with END. Every branch should return compatible data types.",
+    "syntaxTrap": "Forgetting the closing END keyword, or putting a comma between WHEN branches (branches must NOT be separated by commas).",
+    "eli5Story": "Conditional decision making on MusicTracks: Return 'Unknown Artist' when artist_name is NULL using COALESCE.",
+    "commonMistakes": "Omitting the END keyword, forgetting the ELSE fallback (defaults to NULL), or misordering WHEN thresholds.",
+    "learningOutcomes": "Mastered 5.5 The COALESCE Function (Quick Fallbacks) on MusicTracks.",
+    "challengeSlots": [
+      {
+        "type": "keyword",
+        "value": "SELECT"
+      },
+      {
+        "type": "column",
+        "value": "track_title,"
+      },
+      {
+        "type": "column",
+        "value": "COALESCE(artist_name,"
+      },
+      {
+        "type": "column",
+        "value": "'Unknown"
+      },
+      {
+        "type": "column",
+        "value": "Artist')"
+      },
+      {
+        "type": "keyword",
+        "value": "AS"
+      },
+      {
+        "type": "column",
+        "value": "performer"
+      },
+      {
+        "type": "keyword",
+        "value": "FROM"
+      },
+      {
+        "type": "table",
+        "value": "MusicTracks;"
+      }
+    ]
+  },
+  {
+    "drillNumber": 447,
+    "subcluster": "5.5 The COALESCE Function (Quick Fallbacks)",
+    "level": "Level 1 (COALESCE Shortcut)",
+    "title": "Syntax #447: Safely default NULL member monthly attendance visits to 0 with COALESCE",
+    "table": "GymMembers",
+    "scenario": "Safely default NULL member monthly attendance visits to 0 with COALESCE.",
+    "businessObjective": "Safely default NULL member monthly attendance visits to 0 with COALESCE.",
+    "schemaSnippet": "GymMembers schema",
+    "targetQuery": "SELECT member_name, COALESCE(visits_this_month, 0) AS total_visits\nFROM GymMembers;",
+    "syntaxBlueprint": "SELECT col_name,\n  CASE WHEN condition THEN 'Val 1' ELSE 'Val 2' END AS alias_name\nFROM GymMembers;",
+    "syntaxRule": "A CASE expression starts with CASE, tests conditions with WHEN...THEN, optionally falls back with ELSE, and MUST end with END. Every branch should return compatible data types.",
+    "syntaxTrap": "Forgetting the closing END keyword, or putting a comma between WHEN branches (branches must NOT be separated by commas).",
+    "eli5Story": "Conditional decision making on GymMembers: Safely default NULL member monthly attendance visits to 0 with COALESCE.",
+    "commonMistakes": "Omitting the END keyword, forgetting the ELSE fallback (defaults to NULL), or misordering WHEN thresholds.",
+    "learningOutcomes": "Mastered 5.5 The COALESCE Function (Quick Fallbacks) on GymMembers.",
+    "challengeSlots": [
+      {
+        "type": "keyword",
+        "value": "SELECT"
+      },
+      {
+        "type": "column",
+        "value": "member_name,"
+      },
+      {
+        "type": "column",
+        "value": "COALESCE(visits_this_month,"
+      },
+      {
+        "type": "column",
+        "value": "0)"
+      },
+      {
+        "type": "keyword",
+        "value": "AS"
+      },
+      {
+        "type": "column",
+        "value": "total_visits"
+      },
+      {
+        "type": "keyword",
+        "value": "FROM"
+      },
+      {
+        "type": "table",
+        "value": "GymMembers;"
+      }
+    ]
+  },
+  {
+    "drillNumber": 448,
+    "subcluster": "5.5 The COALESCE Function (Quick Fallbacks)",
+    "level": "Level 1 (COALESCE Shortcut)",
+    "title": "Syntax #448: Convert NULL movie ratings to 0.0 via COALESCE",
+    "table": "MovieReviews",
+    "scenario": "Convert NULL movie ratings to 0.0 via COALESCE.",
+    "businessObjective": "Convert NULL movie ratings to 0.0 via COALESCE.",
+    "schemaSnippet": "MovieReviews schema",
+    "targetQuery": "SELECT movie_title, COALESCE(star_rating, 0.0) AS final_stars\nFROM MovieReviews;",
+    "syntaxBlueprint": "SELECT col_name,\n  CASE WHEN condition THEN 'Val 1' ELSE 'Val 2' END AS alias_name\nFROM MovieReviews;",
+    "syntaxRule": "A CASE expression starts with CASE, tests conditions with WHEN...THEN, optionally falls back with ELSE, and MUST end with END. Every branch should return compatible data types.",
+    "syntaxTrap": "Forgetting the closing END keyword, or putting a comma between WHEN branches (branches must NOT be separated by commas).",
+    "eli5Story": "Conditional decision making on MovieReviews: Convert NULL movie ratings to 0.0 via COALESCE.",
+    "commonMistakes": "Omitting the END keyword, forgetting the ELSE fallback (defaults to NULL), or misordering WHEN thresholds.",
+    "learningOutcomes": "Mastered 5.5 The COALESCE Function (Quick Fallbacks) on MovieReviews.",
+    "challengeSlots": [
+      {
+        "type": "keyword",
+        "value": "SELECT"
+      },
+      {
+        "type": "column",
+        "value": "movie_title,"
+      },
+      {
+        "type": "column",
+        "value": "COALESCE(star_rating,"
+      },
+      {
+        "type": "column",
+        "value": "0.0)"
+      },
+      {
+        "type": "keyword",
+        "value": "AS"
+      },
+      {
+        "type": "column",
+        "value": "final_stars"
+      },
+      {
+        "type": "keyword",
+        "value": "FROM"
+      },
+      {
+        "type": "table",
+        "value": "MovieReviews;"
+      }
+    ]
+  },
+  {
+    "drillNumber": 449,
+    "subcluster": "5.5 The COALESCE Function (Quick Fallbacks)",
+    "level": "Level 1 (COALESCE Shortcut)",
+    "title": "Syntax #449: Default NULL available seat counts to 0 using COALESCE",
+    "table": "FlightSchedule",
+    "scenario": "Default NULL available seat counts to 0 using COALESCE.",
+    "businessObjective": "Default NULL available seat counts to 0 using COALESCE.",
+    "schemaSnippet": "FlightSchedule schema",
+    "targetQuery": "SELECT flight_id, COALESCE(seats_available, 0) AS open_seats\nFROM FlightSchedule;",
+    "syntaxBlueprint": "SELECT col_name,\n  CASE WHEN condition THEN 'Val 1' ELSE 'Val 2' END AS alias_name\nFROM FlightSchedule;",
+    "syntaxRule": "A CASE expression starts with CASE, tests conditions with WHEN...THEN, optionally falls back with ELSE, and MUST end with END. Every branch should return compatible data types.",
+    "syntaxTrap": "Forgetting the closing END keyword, or putting a comma between WHEN branches (branches must NOT be separated by commas).",
+    "eli5Story": "Conditional decision making on FlightSchedule: Default NULL available seat counts to 0 using COALESCE.",
+    "commonMistakes": "Omitting the END keyword, forgetting the ELSE fallback (defaults to NULL), or misordering WHEN thresholds.",
+    "learningOutcomes": "Mastered 5.5 The COALESCE Function (Quick Fallbacks) on FlightSchedule.",
+    "challengeSlots": [
+      {
+        "type": "keyword",
+        "value": "SELECT"
+      },
+      {
+        "type": "column",
+        "value": "flight_id,"
+      },
+      {
+        "type": "column",
+        "value": "COALESCE(seats_available,"
+      },
+      {
+        "type": "column",
+        "value": "0)"
+      },
+      {
+        "type": "keyword",
+        "value": "AS"
+      },
+      {
+        "type": "column",
+        "value": "open_seats"
+      },
+      {
+        "type": "keyword",
+        "value": "FROM"
+      },
+      {
+        "type": "table",
+        "value": "FlightSchedule;"
+      }
+    ]
+  },
+  {
+    "drillNumber": 450,
+    "subcluster": "5.5 The COALESCE Function (Quick Fallbacks)",
+    "level": "Level 1 (COALESCE Shortcut)",
+    "title": "Syntax #450: Return 'Shelter Rescue' if patient owner_name is NULL via COALESCE",
+    "table": "PetClinic",
+    "scenario": "Return 'Shelter Rescue' if patient owner_name is NULL via COALESCE.",
+    "businessObjective": "Return 'Shelter Rescue' if patient owner_name is NULL via COALESCE.",
+    "schemaSnippet": "PetClinic schema",
+    "targetQuery": "SELECT pet_name, COALESCE(owner_name, 'Shelter Rescue') AS guardian\nFROM PetClinic;",
+    "syntaxBlueprint": "SELECT col_name,\n  CASE WHEN condition THEN 'Val 1' ELSE 'Val 2' END AS alias_name\nFROM PetClinic;",
+    "syntaxRule": "A CASE expression starts with CASE, tests conditions with WHEN...THEN, optionally falls back with ELSE, and MUST end with END. Every branch should return compatible data types.",
+    "syntaxTrap": "Forgetting the closing END keyword, or putting a comma between WHEN branches (branches must NOT be separated by commas).",
+    "eli5Story": "Conditional decision making on PetClinic: Return 'Shelter Rescue' if patient owner_name is NULL via COALESCE.",
+    "commonMistakes": "Omitting the END keyword, forgetting the ELSE fallback (defaults to NULL), or misordering WHEN thresholds.",
+    "learningOutcomes": "Mastered 5.5 The COALESCE Function (Quick Fallbacks) on PetClinic.",
+    "challengeSlots": [
+      {
+        "type": "keyword",
+        "value": "SELECT"
+      },
+      {
+        "type": "column",
+        "value": "pet_name,"
+      },
+      {
+        "type": "column",
+        "value": "COALESCE(owner_name,"
+      },
+      {
+        "type": "column",
+        "value": "'Shelter"
+      },
+      {
+        "type": "column",
+        "value": "Rescue')"
+      },
+      {
+        "type": "keyword",
+        "value": "AS"
+      },
+      {
+        "type": "column",
+        "value": "guardian"
+      },
+      {
+        "type": "keyword",
+        "value": "FROM"
+      },
+      {
+        "type": "table",
+        "value": "PetClinic;"
+      }
+    ]
+  },
+  {
+    "drillNumber": 451,
+    "subcluster": "5.6 NULLIF Function (Zero-Division & Suppressions)",
+    "level": "Level 2 (NULLIF Precision)",
+    "title": "Syntax #451: Use NULLIF(quantity, 0) to guard against fatal divide-by-zero errors",
+    "table": "Orders",
+    "scenario": "Use NULLIF(quantity, 0) to guard against fatal divide-by-zero errors.",
+    "businessObjective": "Use NULLIF(quantity, 0) to guard against fatal divide-by-zero errors.",
+    "schemaSnippet": "Orders schema",
+    "targetQuery": "SELECT order_id, quantity,\n  ROUND(100.0 / NULLIF(quantity, 0), 2) AS units_ratio\nFROM Orders;",
+    "syntaxBlueprint": "SELECT col_name,\n  CASE WHEN condition THEN 'Val 1' ELSE 'Val 2' END AS alias_name\nFROM Orders;",
+    "syntaxRule": "A CASE expression starts with CASE, tests conditions with WHEN...THEN, optionally falls back with ELSE, and MUST end with END. Every branch should return compatible data types.",
+    "syntaxTrap": "Forgetting the closing END keyword, or putting a comma between WHEN branches (branches must NOT be separated by commas).",
+    "eli5Story": "Conditional decision making on Orders: Use NULLIF(quantity, 0) to guard against fatal divide-by-zero errors.",
+    "commonMistakes": "Omitting the END keyword, forgetting the ELSE fallback (defaults to NULL), or misordering WHEN thresholds.",
+    "learningOutcomes": "Mastered 5.6 NULLIF Function (Zero-Division & Suppressions) on Orders.",
+    "challengeSlots": [
+      {
+        "type": "keyword",
+        "value": "SELECT"
+      },
+      {
+        "type": "column",
+        "value": "order_id,"
+      },
+      {
+        "type": "column",
+        "value": "quantity,"
+      },
+      {
+        "type": "column",
+        "value": "ROUND(100.0"
+      },
+      {
+        "type": "column",
+        "value": "/"
+      },
+      {
+        "type": "column",
+        "value": "NULLIF(quantity,"
+      },
+      {
+        "type": "column",
+        "value": "0),"
+      },
+      {
+        "type": "column",
+        "value": "2)"
+      },
+      {
+        "type": "keyword",
+        "value": "AS"
+      },
+      {
+        "type": "column",
+        "value": "units_ratio"
+      },
+      {
+        "type": "keyword",
+        "value": "FROM"
+      },
+      {
+        "type": "table",
+        "value": "Orders;"
+      }
+    ]
+  },
+  {
+    "drillNumber": 452,
+    "subcluster": "5.6 NULLIF Function (Zero-Division & Suppressions)",
+    "level": "Level 2 (NULLIF Precision)",
+    "title": "Syntax #452: Convert 'Trial' memberships into NULL using NULLIF to isolate paying subscribers",
+    "table": "GymMembers",
+    "scenario": "Convert 'Trial' memberships into NULL using NULLIF to isolate paying subscribers.",
+    "businessObjective": "Convert 'Trial' memberships into NULL using NULLIF to isolate paying subscribers.",
+    "schemaSnippet": "GymMembers schema",
+    "targetQuery": "SELECT member_name,\n  NULLIF(membership_plan, 'Trial') AS paid_membership_plan\nFROM GymMembers;",
+    "syntaxBlueprint": "SELECT col_name,\n  CASE WHEN condition THEN 'Val 1' ELSE 'Val 2' END AS alias_name\nFROM GymMembers;",
+    "syntaxRule": "A CASE expression starts with CASE, tests conditions with WHEN...THEN, optionally falls back with ELSE, and MUST end with END. Every branch should return compatible data types.",
+    "syntaxTrap": "Forgetting the closing END keyword, or putting a comma between WHEN branches (branches must NOT be separated by commas).",
+    "eli5Story": "Conditional decision making on GymMembers: Convert 'Trial' memberships into NULL using NULLIF to isolate paying subscribers.",
+    "commonMistakes": "Omitting the END keyword, forgetting the ELSE fallback (defaults to NULL), or misordering WHEN thresholds.",
+    "learningOutcomes": "Mastered 5.6 NULLIF Function (Zero-Division & Suppressions) on GymMembers.",
+    "challengeSlots": [
+      {
+        "type": "keyword",
+        "value": "SELECT"
+      },
+      {
+        "type": "column",
+        "value": "member_name,"
+      },
+      {
+        "type": "column",
+        "value": "NULLIF(membership_plan,"
+      },
+      {
+        "type": "column",
+        "value": "'Trial')"
+      },
+      {
+        "type": "keyword",
+        "value": "AS"
+      },
+      {
+        "type": "column",
+        "value": "paid_membership_plan"
+      },
+      {
+        "type": "keyword",
+        "value": "FROM"
+      },
+      {
+        "type": "table",
+        "value": "GymMembers;"
+      }
+    ]
+  },
+  {
+    "drillNumber": 453,
+    "subcluster": "5.6 NULLIF Function (Zero-Division & Suppressions)",
+    "level": "Level 2 (NULLIF Precision)",
+    "title": "Syntax #453: Use NULLIF to suppress 'Temporary' assignments into NULL for official reporting",
+    "table": "Employees",
+    "scenario": "Use NULLIF to suppress 'Temporary' assignments into NULL for official reporting.",
+    "businessObjective": "Use NULLIF to suppress 'Temporary' assignments into NULL for official reporting.",
+    "schemaSnippet": "Employees schema",
+    "targetQuery": "SELECT first_name,\n  NULLIF(department, 'Temporary') AS official_department\nFROM Employees;",
+    "syntaxBlueprint": "SELECT col_name,\n  CASE WHEN condition THEN 'Val 1' ELSE 'Val 2' END AS alias_name\nFROM Employees;",
+    "syntaxRule": "A CASE expression starts with CASE, tests conditions with WHEN...THEN, optionally falls back with ELSE, and MUST end with END. Every branch should return compatible data types.",
+    "syntaxTrap": "Forgetting the closing END keyword, or putting a comma between WHEN branches (branches must NOT be separated by commas).",
+    "eli5Story": "Conditional decision making on Employees: Use NULLIF to suppress 'Temporary' assignments into NULL for official reporting.",
+    "commonMistakes": "Omitting the END keyword, forgetting the ELSE fallback (defaults to NULL), or misordering WHEN thresholds.",
+    "learningOutcomes": "Mastered 5.6 NULLIF Function (Zero-Division & Suppressions) on Employees.",
+    "challengeSlots": [
+      {
+        "type": "keyword",
+        "value": "SELECT"
+      },
+      {
+        "type": "column",
+        "value": "first_name,"
+      },
+      {
+        "type": "column",
+        "value": "NULLIF(department,"
+      },
+      {
+        "type": "column",
+        "value": "'Temporary')"
+      },
+      {
+        "type": "keyword",
+        "value": "AS"
+      },
+      {
+        "type": "column",
+        "value": "official_department"
+      },
+      {
+        "type": "keyword",
+        "value": "FROM"
+      },
+      {
+        "type": "table",
+        "value": "Employees;"
+      }
+    ]
+  },
+  {
+    "drillNumber": 454,
+    "subcluster": "5.6 NULLIF Function (Zero-Division & Suppressions)",
+    "level": "Level 2 (NULLIF Precision)",
+    "title": "Syntax #454: Protect turnover calculation against zero stock division using NULLIF(stock_units, 0)",
+    "table": "GroceryItems",
+    "scenario": "Protect turnover calculation against zero stock division using NULLIF(stock_units, 0).",
+    "businessObjective": "Protect turnover calculation against zero stock division using NULLIF(stock_units, 0).",
+    "schemaSnippet": "GroceryItems schema",
+    "targetQuery": "SELECT item_name,\n  ROUND(100.0 / NULLIF(stock_units, 0), 2) AS turnover_metric\nFROM GroceryItems;",
+    "syntaxBlueprint": "SELECT col_name,\n  CASE WHEN condition THEN 'Val 1' ELSE 'Val 2' END AS alias_name\nFROM GroceryItems;",
+    "syntaxRule": "A CASE expression starts with CASE, tests conditions with WHEN...THEN, optionally falls back with ELSE, and MUST end with END. Every branch should return compatible data types.",
+    "syntaxTrap": "Forgetting the closing END keyword, or putting a comma between WHEN branches (branches must NOT be separated by commas).",
+    "eli5Story": "Conditional decision making on GroceryItems: Protect turnover calculation against zero stock division using NULLIF(stock_units, 0).",
+    "commonMistakes": "Omitting the END keyword, forgetting the ELSE fallback (defaults to NULL), or misordering WHEN thresholds.",
+    "learningOutcomes": "Mastered 5.6 NULLIF Function (Zero-Division & Suppressions) on GroceryItems.",
+    "challengeSlots": [
+      {
+        "type": "keyword",
+        "value": "SELECT"
+      },
+      {
+        "type": "column",
+        "value": "item_name,"
+      },
+      {
+        "type": "column",
+        "value": "ROUND(100.0"
+      },
+      {
+        "type": "column",
+        "value": "/"
+      },
+      {
+        "type": "column",
+        "value": "NULLIF(stock_units,"
+      },
+      {
+        "type": "column",
+        "value": "0),"
+      },
+      {
+        "type": "column",
+        "value": "2)"
+      },
+      {
+        "type": "keyword",
+        "value": "AS"
+      },
+      {
+        "type": "column",
+        "value": "turnover_metric"
+      },
+      {
+        "type": "keyword",
+        "value": "FROM"
+      },
+      {
+        "type": "table",
+        "value": "GroceryItems;"
+      }
+    ]
+  },
+  {
+    "drillNumber": 455,
+    "subcluster": "5.6 NULLIF Function (Zero-Division & Suppressions)",
+    "level": "Level 2 (NULLIF Precision)",
+    "title": "Syntax #455: Convert placeholder string 'Undisclosed' into true database NULL using NULLIF",
+    "table": "Students",
+    "scenario": "Convert placeholder string 'Undisclosed' into true database NULL using NULLIF.",
+    "businessObjective": "Convert placeholder string 'Undisclosed' into true database NULL using NULLIF.",
+    "schemaSnippet": "Students schema",
+    "targetQuery": "SELECT full_name,\n  NULLIF(city, 'Undisclosed') AS standardized_city\nFROM Students;",
+    "syntaxBlueprint": "SELECT col_name,\n  CASE WHEN condition THEN 'Val 1' ELSE 'Val 2' END AS alias_name\nFROM Students;",
+    "syntaxRule": "A CASE expression starts with CASE, tests conditions with WHEN...THEN, optionally falls back with ELSE, and MUST end with END. Every branch should return compatible data types.",
+    "syntaxTrap": "Forgetting the closing END keyword, or putting a comma between WHEN branches (branches must NOT be separated by commas).",
+    "eli5Story": "Conditional decision making on Students: Convert placeholder string 'Undisclosed' into true database NULL using NULLIF.",
+    "commonMistakes": "Omitting the END keyword, forgetting the ELSE fallback (defaults to NULL), or misordering WHEN thresholds.",
+    "learningOutcomes": "Mastered 5.6 NULLIF Function (Zero-Division & Suppressions) on Students.",
+    "challengeSlots": [
+      {
+        "type": "keyword",
+        "value": "SELECT"
+      },
+      {
+        "type": "column",
+        "value": "full_name,"
+      },
+      {
+        "type": "column",
+        "value": "NULLIF(city,"
+      },
+      {
+        "type": "column",
+        "value": "'Undisclosed')"
+      },
+      {
+        "type": "keyword",
+        "value": "AS"
+      },
+      {
+        "type": "column",
+        "value": "standardized_city"
+      },
+      {
+        "type": "keyword",
+        "value": "FROM"
+      },
+      {
+        "type": "table",
+        "value": "Students;"
+      }
+    ]
+  },
+  {
+    "drillNumber": 456,
+    "subcluster": "5.6 NULLIF Function (Zero-Division & Suppressions)",
+    "level": "Level 2 (NULLIF Precision)",
+    "title": "Syntax #456: Suppress free promotional items ($0.00 price) into NULL using NULLIF",
+    "table": "Books",
+    "scenario": "Suppress free promotional items ($0.00 price) into NULL using NULLIF.",
+    "businessObjective": "Suppress free promotional items ($0.00 price) into NULL using NULLIF.",
+    "schemaSnippet": "Books schema",
+    "targetQuery": "SELECT title,\n  NULLIF(price, 0.00) AS non_zero_price\nFROM Books;",
+    "syntaxBlueprint": "SELECT col_name,\n  CASE WHEN condition THEN 'Val 1' ELSE 'Val 2' END AS alias_name\nFROM Books;",
+    "syntaxRule": "A CASE expression starts with CASE, tests conditions with WHEN...THEN, optionally falls back with ELSE, and MUST end with END. Every branch should return compatible data types.",
+    "syntaxTrap": "Forgetting the closing END keyword, or putting a comma between WHEN branches (branches must NOT be separated by commas).",
+    "eli5Story": "Conditional decision making on Books: Suppress free promotional items ($0.00 price) into NULL using NULLIF.",
+    "commonMistakes": "Omitting the END keyword, forgetting the ELSE fallback (defaults to NULL), or misordering WHEN thresholds.",
+    "learningOutcomes": "Mastered 5.6 NULLIF Function (Zero-Division & Suppressions) on Books.",
+    "challengeSlots": [
+      {
+        "type": "keyword",
+        "value": "SELECT"
+      },
+      {
+        "type": "column",
+        "value": "title,"
+      },
+      {
+        "type": "column",
+        "value": "NULLIF(price,"
+      },
+      {
+        "type": "column",
+        "value": "0.00)"
+      },
+      {
+        "type": "keyword",
+        "value": "AS"
+      },
+      {
+        "type": "column",
+        "value": "non_zero_price"
+      },
+      {
+        "type": "keyword",
+        "value": "FROM"
+      },
+      {
+        "type": "table",
+        "value": "Books;"
+      }
+    ]
+  },
+  {
+    "drillNumber": 457,
+    "subcluster": "5.6 NULLIF Function (Zero-Division & Suppressions)",
+    "level": "Level 2 (NULLIF Precision)",
+    "title": "Syntax #457: Guard division by play_count using NULLIF(play_count, 0) to prevent runtime crashes",
+    "table": "MusicTracks",
+    "scenario": "Guard division by play_count using NULLIF(play_count, 0) to prevent runtime crashes.",
+    "businessObjective": "Guard division by play_count using NULLIF(play_count, 0) to prevent runtime crashes.",
+    "schemaSnippet": "MusicTracks schema",
+    "targetQuery": "SELECT track_title,\n  ROUND(duration_seconds / NULLIF(play_count, 0), 2) AS sec_per_play\nFROM MusicTracks;",
+    "syntaxBlueprint": "SELECT col_name,\n  CASE WHEN condition THEN 'Val 1' ELSE 'Val 2' END AS alias_name\nFROM MusicTracks;",
+    "syntaxRule": "A CASE expression starts with CASE, tests conditions with WHEN...THEN, optionally falls back with ELSE, and MUST end with END. Every branch should return compatible data types.",
+    "syntaxTrap": "Forgetting the closing END keyword, or putting a comma between WHEN branches (branches must NOT be separated by commas).",
+    "eli5Story": "Conditional decision making on MusicTracks: Guard division by play_count using NULLIF(play_count, 0) to prevent runtime crashes.",
+    "commonMistakes": "Omitting the END keyword, forgetting the ELSE fallback (defaults to NULL), or misordering WHEN thresholds.",
+    "learningOutcomes": "Mastered 5.6 NULLIF Function (Zero-Division & Suppressions) on MusicTracks.",
+    "challengeSlots": [
+      {
+        "type": "keyword",
+        "value": "SELECT"
+      },
+      {
+        "type": "column",
+        "value": "track_title,"
+      },
+      {
+        "type": "column",
+        "value": "ROUND(duration_seconds"
+      },
+      {
+        "type": "column",
+        "value": "/"
+      },
+      {
+        "type": "column",
+        "value": "NULLIF(play_count,"
+      },
+      {
+        "type": "column",
+        "value": "0),"
+      },
+      {
+        "type": "column",
+        "value": "2)"
+      },
+      {
+        "type": "keyword",
+        "value": "AS"
+      },
+      {
+        "type": "column",
+        "value": "sec_per_play"
+      },
+      {
+        "type": "keyword",
+        "value": "FROM"
+      },
+      {
+        "type": "table",
+        "value": "MusicTracks;"
+      }
+    ]
+  },
+  {
+    "drillNumber": 458,
+    "subcluster": "5.6 NULLIF Function (Zero-Division & Suppressions)",
+    "level": "Level 2 (NULLIF Precision)",
+    "title": "Syntax #458: Conceal internal testing 'admin' usernames into NULL using NULLIF",
+    "table": "MovieReviews",
+    "scenario": "Conceal internal testing 'admin' usernames into NULL using NULLIF.",
+    "businessObjective": "Conceal internal testing 'admin' usernames into NULL using NULLIF.",
+    "schemaSnippet": "MovieReviews schema",
+    "targetQuery": "SELECT movie_title,\n  NULLIF(reviewer_name, 'admin') AS public_reviewer_name\nFROM MovieReviews;",
+    "syntaxBlueprint": "SELECT col_name,\n  CASE WHEN condition THEN 'Val 1' ELSE 'Val 2' END AS alias_name\nFROM MovieReviews;",
+    "syntaxRule": "A CASE expression starts with CASE, tests conditions with WHEN...THEN, optionally falls back with ELSE, and MUST end with END. Every branch should return compatible data types.",
+    "syntaxTrap": "Forgetting the closing END keyword, or putting a comma between WHEN branches (branches must NOT be separated by commas).",
+    "eli5Story": "Conditional decision making on MovieReviews: Conceal internal testing 'admin' usernames into NULL using NULLIF.",
+    "commonMistakes": "Omitting the END keyword, forgetting the ELSE fallback (defaults to NULL), or misordering WHEN thresholds.",
+    "learningOutcomes": "Mastered 5.6 NULLIF Function (Zero-Division & Suppressions) on MovieReviews.",
+    "challengeSlots": [
+      {
+        "type": "keyword",
+        "value": "SELECT"
+      },
+      {
+        "type": "column",
+        "value": "movie_title,"
+      },
+      {
+        "type": "column",
+        "value": "NULLIF(reviewer_name,"
+      },
+      {
+        "type": "column",
+        "value": "'admin')"
+      },
+      {
+        "type": "keyword",
+        "value": "AS"
+      },
+      {
+        "type": "column",
+        "value": "public_reviewer_name"
+      },
+      {
+        "type": "keyword",
+        "value": "FROM"
+      },
+      {
+        "type": "table",
+        "value": "MovieReviews;"
+      }
+    ]
+  },
+  {
+    "drillNumber": 459,
+    "subcluster": "5.6 NULLIF Function (Zero-Division & Suppressions)",
+    "level": "Level 2 (NULLIF Precision)",
+    "title": "Syntax #459: Nullify 'Cancelled' flights using NULLIF to focus queries strictly on active statuses",
+    "table": "FlightSchedule",
+    "scenario": "Nullify 'Cancelled' flights using NULLIF to focus queries strictly on active statuses.",
+    "businessObjective": "Nullify 'Cancelled' flights using NULLIF to focus queries strictly on active statuses.",
+    "schemaSnippet": "FlightSchedule schema",
+    "targetQuery": "SELECT flight_id,\n  NULLIF(status, 'Cancelled') AS active_flight_status\nFROM FlightSchedule;",
+    "syntaxBlueprint": "SELECT col_name,\n  CASE WHEN condition THEN 'Val 1' ELSE 'Val 2' END AS alias_name\nFROM FlightSchedule;",
+    "syntaxRule": "A CASE expression starts with CASE, tests conditions with WHEN...THEN, optionally falls back with ELSE, and MUST end with END. Every branch should return compatible data types.",
+    "syntaxTrap": "Forgetting the closing END keyword, or putting a comma between WHEN branches (branches must NOT be separated by commas).",
+    "eli5Story": "Conditional decision making on FlightSchedule: Nullify 'Cancelled' flights using NULLIF to focus queries strictly on active statuses.",
+    "commonMistakes": "Omitting the END keyword, forgetting the ELSE fallback (defaults to NULL), or misordering WHEN thresholds.",
+    "learningOutcomes": "Mastered 5.6 NULLIF Function (Zero-Division & Suppressions) on FlightSchedule.",
+    "challengeSlots": [
+      {
+        "type": "keyword",
+        "value": "SELECT"
+      },
+      {
+        "type": "column",
+        "value": "flight_id,"
+      },
+      {
+        "type": "column",
+        "value": "NULLIF(status,"
+      },
+      {
+        "type": "column",
+        "value": "'Cancelled')"
+      },
+      {
+        "type": "keyword",
+        "value": "AS"
+      },
+      {
+        "type": "column",
+        "value": "active_flight_status"
+      },
+      {
+        "type": "keyword",
+        "value": "FROM"
+      },
+      {
+        "type": "table",
+        "value": "FlightSchedule;"
+      }
+    ]
+  },
+  {
+    "drillNumber": 460,
+    "subcluster": "5.6 NULLIF Function (Zero-Division & Suppressions)",
+    "level": "Level 2 (NULLIF Precision)",
+    "title": "Syntax #460: Calculate growth index (weight / age) while preventing zero-division on newborn pets using NULLIF",
+    "table": "PetClinic",
+    "scenario": "Calculate growth index (weight / age) while preventing zero-division on newborn pets using NULLIF.",
+    "businessObjective": "Calculate growth index (weight / age) while preventing zero-division on newborn pets using NULLIF.",
+    "schemaSnippet": "PetClinic schema",
+    "targetQuery": "SELECT pet_name,\n  ROUND(weight_kg / NULLIF(age_years, 0), 2) AS growth_index\nFROM PetClinic;",
+    "syntaxBlueprint": "SELECT col_name,\n  CASE WHEN condition THEN 'Val 1' ELSE 'Val 2' END AS alias_name\nFROM PetClinic;",
+    "syntaxRule": "A CASE expression starts with CASE, tests conditions with WHEN...THEN, optionally falls back with ELSE, and MUST end with END. Every branch should return compatible data types.",
+    "syntaxTrap": "Forgetting the closing END keyword, or putting a comma between WHEN branches (branches must NOT be separated by commas).",
+    "eli5Story": "Conditional decision making on PetClinic: Calculate growth index (weight / age) while preventing zero-division on newborn pets using NULLIF.",
+    "commonMistakes": "Omitting the END keyword, forgetting the ELSE fallback (defaults to NULL), or misordering WHEN thresholds.",
+    "learningOutcomes": "Mastered 5.6 NULLIF Function (Zero-Division & Suppressions) on PetClinic.",
+    "challengeSlots": [
+      {
+        "type": "keyword",
+        "value": "SELECT"
+      },
+      {
+        "type": "column",
+        "value": "pet_name,"
+      },
+      {
+        "type": "column",
+        "value": "ROUND(weight_kg"
+      },
+      {
+        "type": "column",
+        "value": "/"
+      },
+      {
+        "type": "column",
+        "value": "NULLIF(age_years,"
+      },
+      {
+        "type": "column",
+        "value": "0),"
+      },
+      {
+        "type": "column",
+        "value": "2)"
+      },
+      {
+        "type": "keyword",
+        "value": "AS"
+      },
+      {
+        "type": "column",
+        "value": "growth_index"
+      },
+      {
+        "type": "keyword",
+        "value": "FROM"
+      },
+      {
+        "type": "table",
+        "value": "PetClinic;"
+      }
+    ]
+  },
+  {
+    "drillNumber": 461,
+    "subcluster": "5.7 Boolean Flagging & Binary Indicators (0/1)",
+    "level": "Level 2 (Binary Flags)",
+    "title": "Syntax #461: Create a binary 1/0 indicator column 'is_dean_list' for students with GPA >= 3.5",
+    "table": "Students",
+    "scenario": "Create a binary 1/0 indicator column 'is_dean_list' for students with GPA >= 3.5.",
+    "businessObjective": "Create a binary 1/0 indicator column 'is_dean_list' for students with GPA >= 3.5.",
+    "schemaSnippet": "Students schema",
+    "targetQuery": "SELECT full_name, gpa,\n  CASE WHEN gpa >= 3.5 THEN 1 ELSE 0 END AS is_dean_list\nFROM Students;",
+    "syntaxBlueprint": "SELECT col_name,\n  CASE WHEN condition THEN 'Val 1' ELSE 'Val 2' END AS alias_name\nFROM Students;",
+    "syntaxRule": "A CASE expression starts with CASE, tests conditions with WHEN...THEN, optionally falls back with ELSE, and MUST end with END. Every branch should return compatible data types.",
+    "syntaxTrap": "Forgetting the closing END keyword, or putting a comma between WHEN branches (branches must NOT be separated by commas).",
+    "eli5Story": "Conditional decision making on Students: Create a binary 1/0 indicator column 'is_dean_list' for students with GPA >= 3.5.",
+    "commonMistakes": "Omitting the END keyword, forgetting the ELSE fallback (defaults to NULL), or misordering WHEN thresholds.",
+    "learningOutcomes": "Mastered 5.7 Boolean Flagging & Binary Indicators (0/1) on Students.",
+    "challengeSlots": [
+      {
+        "type": "keyword",
+        "value": "SELECT"
+      },
+      {
+        "type": "column",
+        "value": "full_name,"
+      },
+      {
+        "type": "column",
+        "value": "gpa,"
+      },
+      {
+        "type": "keyword",
+        "value": "CASE"
+      },
+      {
+        "type": "keyword",
+        "value": "WHEN"
+      },
+      {
+        "type": "column",
+        "value": "gpa"
+      },
+      {
+        "type": "column",
+        "value": ">="
+      },
+      {
+        "type": "column",
+        "value": "3.5"
+      },
+      {
+        "type": "keyword",
+        "value": "THEN"
+      },
+      {
+        "type": "column",
+        "value": "1"
+      },
+      {
+        "type": "keyword",
+        "value": "ELSE"
+      },
+      {
+        "type": "column",
+        "value": "0"
+      },
+      {
+        "type": "keyword",
+        "value": "END"
+      },
+      {
+        "type": "keyword",
+        "value": "AS"
+      },
+      {
+        "type": "column",
+        "value": "is_dean_list"
+      },
+      {
+        "type": "keyword",
+        "value": "FROM"
+      },
+      {
+        "type": "table",
+        "value": "Students;"
+      }
+    ]
+  },
+  {
+    "drillNumber": 462,
+    "subcluster": "5.7 Boolean Flagging & Binary Indicators (0/1)",
+    "level": "Level 2 (Binary Flags)",
+    "title": "Syntax #462: Flag books published in 2020 or later as binary 1, otherwise 0",
+    "table": "Books",
+    "scenario": "Flag books published in 2020 or later as binary 1, otherwise 0.",
+    "businessObjective": "Flag books published in 2020 or later as binary 1, otherwise 0.",
+    "schemaSnippet": "Books schema",
+    "targetQuery": "SELECT title, publish_year,\n  CASE WHEN publish_year >= 2020 THEN 1 ELSE 0 END AS is_recent_release\nFROM Books;",
+    "syntaxBlueprint": "SELECT col_name,\n  CASE WHEN condition THEN 'Val 1' ELSE 'Val 2' END AS alias_name\nFROM Books;",
+    "syntaxRule": "A CASE expression starts with CASE, tests conditions with WHEN...THEN, optionally falls back with ELSE, and MUST end with END. Every branch should return compatible data types.",
+    "syntaxTrap": "Forgetting the closing END keyword, or putting a comma between WHEN branches (branches must NOT be separated by commas).",
+    "eli5Story": "Conditional decision making on Books: Flag books published in 2020 or later as binary 1, otherwise 0.",
+    "commonMistakes": "Omitting the END keyword, forgetting the ELSE fallback (defaults to NULL), or misordering WHEN thresholds.",
+    "learningOutcomes": "Mastered 5.7 Boolean Flagging & Binary Indicators (0/1) on Books.",
+    "challengeSlots": [
+      {
+        "type": "keyword",
+        "value": "SELECT"
+      },
+      {
+        "type": "column",
+        "value": "title,"
+      },
+      {
+        "type": "column",
+        "value": "publish_year,"
+      },
+      {
+        "type": "keyword",
+        "value": "CASE"
+      },
+      {
+        "type": "keyword",
+        "value": "WHEN"
+      },
+      {
+        "type": "column",
+        "value": "publish_year"
+      },
+      {
+        "type": "column",
+        "value": ">="
+      },
+      {
+        "type": "column",
+        "value": "2020"
+      },
+      {
+        "type": "keyword",
+        "value": "THEN"
+      },
+      {
+        "type": "column",
+        "value": "1"
+      },
+      {
+        "type": "keyword",
+        "value": "ELSE"
+      },
+      {
+        "type": "column",
+        "value": "0"
+      },
+      {
+        "type": "keyword",
+        "value": "END"
+      },
+      {
+        "type": "keyword",
+        "value": "AS"
+      },
+      {
+        "type": "column",
+        "value": "is_recent_release"
+      },
+      {
+        "type": "keyword",
+        "value": "FROM"
+      },
+      {
+        "type": "table",
+        "value": "Books;"
+      }
+    ]
+  },
+  {
+    "drillNumber": 463,
+    "subcluster": "5.7 Boolean Flagging & Binary Indicators (0/1)",
+    "level": "Level 2 (Binary Flags)",
+    "title": "Syntax #463: Generate an 'is_high_earner' binary flag for salaries $80,000 and higher",
+    "table": "Employees",
+    "scenario": "Generate an 'is_high_earner' binary flag for salaries $80,000 and higher.",
+    "businessObjective": "Generate an 'is_high_earner' binary flag for salaries $80,000 and higher.",
+    "schemaSnippet": "Employees schema",
+    "targetQuery": "SELECT first_name, salary,\n  CASE WHEN salary >= 80000 THEN 1 ELSE 0 END AS is_high_earner\nFROM Employees;",
+    "syntaxBlueprint": "SELECT col_name,\n  CASE WHEN condition THEN 'Val 1' ELSE 'Val 2' END AS alias_name\nFROM Employees;",
+    "syntaxRule": "A CASE expression starts with CASE, tests conditions with WHEN...THEN, optionally falls back with ELSE, and MUST end with END. Every branch should return compatible data types.",
+    "syntaxTrap": "Forgetting the closing END keyword, or putting a comma between WHEN branches (branches must NOT be separated by commas).",
+    "eli5Story": "Conditional decision making on Employees: Generate an 'is_high_earner' binary flag for salaries $80,000 and higher.",
+    "commonMistakes": "Omitting the END keyword, forgetting the ELSE fallback (defaults to NULL), or misordering WHEN thresholds.",
+    "learningOutcomes": "Mastered 5.7 Boolean Flagging & Binary Indicators (0/1) on Employees.",
+    "challengeSlots": [
+      {
+        "type": "keyword",
+        "value": "SELECT"
+      },
+      {
+        "type": "column",
+        "value": "first_name,"
+      },
+      {
+        "type": "column",
+        "value": "salary,"
+      },
+      {
+        "type": "keyword",
+        "value": "CASE"
+      },
+      {
+        "type": "keyword",
+        "value": "WHEN"
+      },
+      {
+        "type": "column",
+        "value": "salary"
+      },
+      {
+        "type": "column",
+        "value": ">="
+      },
+      {
+        "type": "column",
+        "value": "80000"
+      },
+      {
+        "type": "keyword",
+        "value": "THEN"
+      },
+      {
+        "type": "column",
+        "value": "1"
+      },
+      {
+        "type": "keyword",
+        "value": "ELSE"
+      },
+      {
+        "type": "column",
+        "value": "0"
+      },
+      {
+        "type": "keyword",
+        "value": "END"
+      },
+      {
+        "type": "keyword",
+        "value": "AS"
+      },
+      {
+        "type": "column",
+        "value": "is_high_earner"
+      },
+      {
+        "type": "keyword",
+        "value": "FROM"
+      },
+      {
+        "type": "table",
+        "value": "Employees;"
+      }
+    ]
+  },
+  {
+    "drillNumber": 464,
+    "subcluster": "5.7 Boolean Flagging & Binary Indicators (0/1)",
+    "level": "Level 2 (Binary Flags)",
+    "title": "Syntax #464: Flag budget grocery items priced under $5.00 with binary 1, else 0",
+    "table": "GroceryItems",
+    "scenario": "Flag budget grocery items priced under $5.00 with binary 1, else 0.",
+    "businessObjective": "Flag budget grocery items priced under $5.00 with binary 1, else 0.",
+    "schemaSnippet": "GroceryItems schema",
+    "targetQuery": "SELECT item_name, unit_price,\n  CASE WHEN unit_price < 5.00 THEN 1 ELSE 0 END AS is_bargain_item\nFROM GroceryItems;",
+    "syntaxBlueprint": "SELECT col_name,\n  CASE WHEN condition THEN 'Val 1' ELSE 'Val 2' END AS alias_name\nFROM GroceryItems;",
+    "syntaxRule": "A CASE expression starts with CASE, tests conditions with WHEN...THEN, optionally falls back with ELSE, and MUST end with END. Every branch should return compatible data types.",
+    "syntaxTrap": "Forgetting the closing END keyword, or putting a comma between WHEN branches (branches must NOT be separated by commas).",
+    "eli5Story": "Conditional decision making on GroceryItems: Flag budget grocery items priced under $5.00 with binary 1, else 0.",
+    "commonMistakes": "Omitting the END keyword, forgetting the ELSE fallback (defaults to NULL), or misordering WHEN thresholds.",
+    "learningOutcomes": "Mastered 5.7 Boolean Flagging & Binary Indicators (0/1) on GroceryItems.",
+    "challengeSlots": [
+      {
+        "type": "keyword",
+        "value": "SELECT"
+      },
+      {
+        "type": "column",
+        "value": "item_name,"
+      },
+      {
+        "type": "column",
+        "value": "unit_price,"
+      },
+      {
+        "type": "keyword",
+        "value": "CASE"
+      },
+      {
+        "type": "keyword",
+        "value": "WHEN"
+      },
+      {
+        "type": "column",
+        "value": "unit_price"
+      },
+      {
+        "type": "column",
+        "value": "<"
+      },
+      {
+        "type": "column",
+        "value": "5.00"
+      },
+      {
+        "type": "keyword",
+        "value": "THEN"
+      },
+      {
+        "type": "column",
+        "value": "1"
+      },
+      {
+        "type": "keyword",
+        "value": "ELSE"
+      },
+      {
+        "type": "column",
+        "value": "0"
+      },
+      {
+        "type": "keyword",
+        "value": "END"
+      },
+      {
+        "type": "keyword",
+        "value": "AS"
+      },
+      {
+        "type": "column",
+        "value": "is_bargain_item"
+      },
+      {
+        "type": "keyword",
+        "value": "FROM"
+      },
+      {
+        "type": "table",
+        "value": "GroceryItems;"
+      }
+    ]
+  },
+  {
+    "drillNumber": 465,
+    "subcluster": "5.7 Boolean Flagging & Binary Indicators (0/1)",
+    "level": "Level 2 (Binary Flags)",
+    "title": "Syntax #465: Create a binary 1/0 'is_fulfilled' indicator for delivered customer orders",
+    "table": "Orders",
+    "scenario": "Create a binary 1/0 'is_fulfilled' indicator for delivered customer orders.",
+    "businessObjective": "Create a binary 1/0 'is_fulfilled' indicator for delivered customer orders.",
+    "schemaSnippet": "Orders schema",
+    "targetQuery": "SELECT order_id, order_status,\n  CASE WHEN order_status = 'Delivered' THEN 1 ELSE 0 END AS is_fulfilled\nFROM Orders;",
+    "syntaxBlueprint": "SELECT col_name,\n  CASE WHEN condition THEN 'Val 1' ELSE 'Val 2' END AS alias_name\nFROM Orders;",
+    "syntaxRule": "A CASE expression starts with CASE, tests conditions with WHEN...THEN, optionally falls back with ELSE, and MUST end with END. Every branch should return compatible data types.",
+    "syntaxTrap": "Forgetting the closing END keyword, or putting a comma between WHEN branches (branches must NOT be separated by commas).",
+    "eli5Story": "Conditional decision making on Orders: Create a binary 1/0 'is_fulfilled' indicator for delivered customer orders.",
+    "commonMistakes": "Omitting the END keyword, forgetting the ELSE fallback (defaults to NULL), or misordering WHEN thresholds.",
+    "learningOutcomes": "Mastered 5.7 Boolean Flagging & Binary Indicators (0/1) on Orders.",
+    "challengeSlots": [
+      {
+        "type": "keyword",
+        "value": "SELECT"
+      },
+      {
+        "type": "column",
+        "value": "order_id,"
+      },
+      {
+        "type": "column",
+        "value": "order_status,"
+      },
+      {
+        "type": "keyword",
+        "value": "CASE"
+      },
+      {
+        "type": "keyword",
+        "value": "WHEN"
+      },
+      {
+        "type": "column",
+        "value": "order_status"
+      },
+      {
+        "type": "column",
+        "value": "="
+      },
+      {
+        "type": "column",
+        "value": "'Delivered'"
+      },
+      {
+        "type": "keyword",
+        "value": "THEN"
+      },
+      {
+        "type": "column",
+        "value": "1"
+      },
+      {
+        "type": "keyword",
+        "value": "ELSE"
+      },
+      {
+        "type": "column",
+        "value": "0"
+      },
+      {
+        "type": "keyword",
+        "value": "END"
+      },
+      {
+        "type": "keyword",
+        "value": "AS"
+      },
+      {
+        "type": "column",
+        "value": "is_fulfilled"
+      },
+      {
+        "type": "keyword",
+        "value": "FROM"
+      },
+      {
+        "type": "table",
+        "value": "Orders;"
+      }
+    ]
+  },
+  {
+    "drillNumber": 466,
+    "subcluster": "5.7 Boolean Flagging & Binary Indicators (0/1)",
+    "level": "Level 2 (Binary Flags)",
+    "title": "Syntax #466: Tag music tracks with over 500,000 streams with binary flag 1, else 0",
+    "table": "MusicTracks",
+    "scenario": "Tag music tracks with over 500,000 streams with binary flag 1, else 0.",
+    "businessObjective": "Tag music tracks with over 500,000 streams with binary flag 1, else 0.",
+    "schemaSnippet": "MusicTracks schema",
+    "targetQuery": "SELECT track_title, play_count,\n  CASE WHEN play_count > 500000 THEN 1 ELSE 0 END AS is_viral_hit\nFROM MusicTracks;",
+    "syntaxBlueprint": "SELECT col_name,\n  CASE WHEN condition THEN 'Val 1' ELSE 'Val 2' END AS alias_name\nFROM MusicTracks;",
+    "syntaxRule": "A CASE expression starts with CASE, tests conditions with WHEN...THEN, optionally falls back with ELSE, and MUST end with END. Every branch should return compatible data types.",
+    "syntaxTrap": "Forgetting the closing END keyword, or putting a comma between WHEN branches (branches must NOT be separated by commas).",
+    "eli5Story": "Conditional decision making on MusicTracks: Tag music tracks with over 500,000 streams with binary flag 1, else 0.",
+    "commonMistakes": "Omitting the END keyword, forgetting the ELSE fallback (defaults to NULL), or misordering WHEN thresholds.",
+    "learningOutcomes": "Mastered 5.7 Boolean Flagging & Binary Indicators (0/1) on MusicTracks.",
+    "challengeSlots": [
+      {
+        "type": "keyword",
+        "value": "SELECT"
+      },
+      {
+        "type": "column",
+        "value": "track_title,"
+      },
+      {
+        "type": "column",
+        "value": "play_count,"
+      },
+      {
+        "type": "keyword",
+        "value": "CASE"
+      },
+      {
+        "type": "keyword",
+        "value": "WHEN"
+      },
+      {
+        "type": "column",
+        "value": "play_count"
+      },
+      {
+        "type": "column",
+        "value": ">"
+      },
+      {
+        "type": "column",
+        "value": "500000"
+      },
+      {
+        "type": "keyword",
+        "value": "THEN"
+      },
+      {
+        "type": "column",
+        "value": "1"
+      },
+      {
+        "type": "keyword",
+        "value": "ELSE"
+      },
+      {
+        "type": "column",
+        "value": "0"
+      },
+      {
+        "type": "keyword",
+        "value": "END"
+      },
+      {
+        "type": "keyword",
+        "value": "AS"
+      },
+      {
+        "type": "column",
+        "value": "is_viral_hit"
+      },
+      {
+        "type": "keyword",
+        "value": "FROM"
+      },
+      {
+        "type": "table",
+        "value": "MusicTracks;"
+      }
+    ]
+  },
+  {
+    "drillNumber": 467,
+    "subcluster": "5.7 Boolean Flagging & Binary Indicators (0/1)",
+    "level": "Level 2 (Binary Flags)",
+    "title": "Syntax #467: Create binary flag 'is_frequent_user' for members visiting 10+ times this month",
+    "table": "GymMembers",
+    "scenario": "Create binary flag 'is_frequent_user' for members visiting 10+ times this month.",
+    "businessObjective": "Create binary flag 'is_frequent_user' for members visiting 10+ times this month.",
+    "schemaSnippet": "GymMembers schema",
+    "targetQuery": "SELECT member_name, visits_this_month,\n  CASE WHEN visits_this_month >= 10 THEN 1 ELSE 0 END AS is_frequent_user\nFROM GymMembers;",
+    "syntaxBlueprint": "SELECT col_name,\n  CASE WHEN condition THEN 'Val 1' ELSE 'Val 2' END AS alias_name\nFROM GymMembers;",
+    "syntaxRule": "A CASE expression starts with CASE, tests conditions with WHEN...THEN, optionally falls back with ELSE, and MUST end with END. Every branch should return compatible data types.",
+    "syntaxTrap": "Forgetting the closing END keyword, or putting a comma between WHEN branches (branches must NOT be separated by commas).",
+    "eli5Story": "Conditional decision making on GymMembers: Create binary flag 'is_frequent_user' for members visiting 10+ times this month.",
+    "commonMistakes": "Omitting the END keyword, forgetting the ELSE fallback (defaults to NULL), or misordering WHEN thresholds.",
+    "learningOutcomes": "Mastered 5.7 Boolean Flagging & Binary Indicators (0/1) on GymMembers.",
+    "challengeSlots": [
+      {
+        "type": "keyword",
+        "value": "SELECT"
+      },
+      {
+        "type": "column",
+        "value": "member_name,"
+      },
+      {
+        "type": "column",
+        "value": "visits_this_month,"
+      },
+      {
+        "type": "keyword",
+        "value": "CASE"
+      },
+      {
+        "type": "keyword",
+        "value": "WHEN"
+      },
+      {
+        "type": "column",
+        "value": "visits_this_month"
+      },
+      {
+        "type": "column",
+        "value": ">="
+      },
+      {
+        "type": "column",
+        "value": "10"
+      },
+      {
+        "type": "keyword",
+        "value": "THEN"
+      },
+      {
+        "type": "column",
+        "value": "1"
+      },
+      {
+        "type": "keyword",
+        "value": "ELSE"
+      },
+      {
+        "type": "column",
+        "value": "0"
+      },
+      {
+        "type": "keyword",
+        "value": "END"
+      },
+      {
+        "type": "keyword",
+        "value": "AS"
+      },
+      {
+        "type": "column",
+        "value": "is_frequent_user"
+      },
+      {
+        "type": "keyword",
+        "value": "FROM"
+      },
+      {
+        "type": "table",
+        "value": "GymMembers;"
+      }
+    ]
+  },
+  {
+    "drillNumber": 468,
+    "subcluster": "5.7 Boolean Flagging & Binary Indicators (0/1)",
+    "level": "Level 2 (Binary Flags)",
+    "title": "Syntax #468: Tag highly rated movies (4.0+ stars) with binary indicator 1, else 0",
+    "table": "MovieReviews",
+    "scenario": "Tag highly rated movies (4.0+ stars) with binary indicator 1, else 0.",
+    "businessObjective": "Tag highly rated movies (4.0+ stars) with binary indicator 1, else 0.",
+    "schemaSnippet": "MovieReviews schema",
+    "targetQuery": "SELECT movie_title, star_rating,\n  CASE WHEN star_rating >= 4.0 THEN 1 ELSE 0 END AS is_certified_fresh\nFROM MovieReviews;",
+    "syntaxBlueprint": "SELECT col_name,\n  CASE WHEN condition THEN 'Val 1' ELSE 'Val 2' END AS alias_name\nFROM MovieReviews;",
+    "syntaxRule": "A CASE expression starts with CASE, tests conditions with WHEN...THEN, optionally falls back with ELSE, and MUST end with END. Every branch should return compatible data types.",
+    "syntaxTrap": "Forgetting the closing END keyword, or putting a comma between WHEN branches (branches must NOT be separated by commas).",
+    "eli5Story": "Conditional decision making on MovieReviews: Tag highly rated movies (4.0+ stars) with binary indicator 1, else 0.",
+    "commonMistakes": "Omitting the END keyword, forgetting the ELSE fallback (defaults to NULL), or misordering WHEN thresholds.",
+    "learningOutcomes": "Mastered 5.7 Boolean Flagging & Binary Indicators (0/1) on MovieReviews.",
+    "challengeSlots": [
+      {
+        "type": "keyword",
+        "value": "SELECT"
+      },
+      {
+        "type": "column",
+        "value": "movie_title,"
+      },
+      {
+        "type": "column",
+        "value": "star_rating,"
+      },
+      {
+        "type": "keyword",
+        "value": "CASE"
+      },
+      {
+        "type": "keyword",
+        "value": "WHEN"
+      },
+      {
+        "type": "column",
+        "value": "star_rating"
+      },
+      {
+        "type": "column",
+        "value": ">="
+      },
+      {
+        "type": "column",
+        "value": "4.0"
+      },
+      {
+        "type": "keyword",
+        "value": "THEN"
+      },
+      {
+        "type": "column",
+        "value": "1"
+      },
+      {
+        "type": "keyword",
+        "value": "ELSE"
+      },
+      {
+        "type": "column",
+        "value": "0"
+      },
+      {
+        "type": "keyword",
+        "value": "END"
+      },
+      {
+        "type": "keyword",
+        "value": "AS"
+      },
+      {
+        "type": "column",
+        "value": "is_certified_fresh"
+      },
+      {
+        "type": "keyword",
+        "value": "FROM"
+      },
+      {
+        "type": "table",
+        "value": "MovieReviews;"
+      }
+    ]
+  },
+  {
+    "drillNumber": 469,
+    "subcluster": "5.7 Boolean Flagging & Binary Indicators (0/1)",
+    "level": "Level 2 (Binary Flags)",
+    "title": "Syntax #469: Create binary flag 'is_sold_out' identifying flights with 0 open seats",
+    "table": "FlightSchedule",
+    "scenario": "Create binary flag 'is_sold_out' identifying flights with 0 open seats.",
+    "businessObjective": "Create binary flag 'is_sold_out' identifying flights with 0 open seats.",
+    "schemaSnippet": "FlightSchedule schema",
+    "targetQuery": "SELECT flight_id, seats_available,\n  CASE WHEN seats_available = 0 THEN 1 ELSE 0 END AS is_sold_out\nFROM FlightSchedule;",
+    "syntaxBlueprint": "SELECT col_name,\n  CASE WHEN condition THEN 'Val 1' ELSE 'Val 2' END AS alias_name\nFROM FlightSchedule;",
+    "syntaxRule": "A CASE expression starts with CASE, tests conditions with WHEN...THEN, optionally falls back with ELSE, and MUST end with END. Every branch should return compatible data types.",
+    "syntaxTrap": "Forgetting the closing END keyword, or putting a comma between WHEN branches (branches must NOT be separated by commas).",
+    "eli5Story": "Conditional decision making on FlightSchedule: Create binary flag 'is_sold_out' identifying flights with 0 open seats.",
+    "commonMistakes": "Omitting the END keyword, forgetting the ELSE fallback (defaults to NULL), or misordering WHEN thresholds.",
+    "learningOutcomes": "Mastered 5.7 Boolean Flagging & Binary Indicators (0/1) on FlightSchedule.",
+    "challengeSlots": [
+      {
+        "type": "keyword",
+        "value": "SELECT"
+      },
+      {
+        "type": "column",
+        "value": "flight_id,"
+      },
+      {
+        "type": "column",
+        "value": "seats_available,"
+      },
+      {
+        "type": "keyword",
+        "value": "CASE"
+      },
+      {
+        "type": "keyword",
+        "value": "WHEN"
+      },
+      {
+        "type": "column",
+        "value": "seats_available"
+      },
+      {
+        "type": "column",
+        "value": "="
+      },
+      {
+        "type": "column",
+        "value": "0"
+      },
+      {
+        "type": "keyword",
+        "value": "THEN"
+      },
+      {
+        "type": "column",
+        "value": "1"
+      },
+      {
+        "type": "keyword",
+        "value": "ELSE"
+      },
+      {
+        "type": "column",
+        "value": "0"
+      },
+      {
+        "type": "keyword",
+        "value": "END"
+      },
+      {
+        "type": "keyword",
+        "value": "AS"
+      },
+      {
+        "type": "column",
+        "value": "is_sold_out"
+      },
+      {
+        "type": "keyword",
+        "value": "FROM"
+      },
+      {
+        "type": "table",
+        "value": "FlightSchedule;"
+      }
+    ]
+  },
+  {
+    "drillNumber": 470,
+    "subcluster": "5.7 Boolean Flagging & Binary Indicators (0/1)",
+    "level": "Level 2 (Binary Flags)",
+    "title": "Syntax #470: Flag young patients under 1 year old as binary 1 ('is_puppy_or_kitten'), else 0",
+    "table": "PetClinic",
+    "scenario": "Flag young patients under 1 year old as binary 1 ('is_puppy_or_kitten'), else 0.",
+    "businessObjective": "Flag young patients under 1 year old as binary 1 ('is_puppy_or_kitten'), else 0.",
+    "schemaSnippet": "PetClinic schema",
+    "targetQuery": "SELECT pet_name, age_years,\n  CASE WHEN age_years < 1 THEN 1 ELSE 0 END AS is_puppy_or_kitten\nFROM PetClinic;",
+    "syntaxBlueprint": "SELECT col_name,\n  CASE WHEN condition THEN 'Val 1' ELSE 'Val 2' END AS alias_name\nFROM PetClinic;",
+    "syntaxRule": "A CASE expression starts with CASE, tests conditions with WHEN...THEN, optionally falls back with ELSE, and MUST end with END. Every branch should return compatible data types.",
+    "syntaxTrap": "Forgetting the closing END keyword, or putting a comma between WHEN branches (branches must NOT be separated by commas).",
+    "eli5Story": "Conditional decision making on PetClinic: Flag young patients under 1 year old as binary 1 ('is_puppy_or_kitten'), else 0.",
+    "commonMistakes": "Omitting the END keyword, forgetting the ELSE fallback (defaults to NULL), or misordering WHEN thresholds.",
+    "learningOutcomes": "Mastered 5.7 Boolean Flagging & Binary Indicators (0/1) on PetClinic.",
+    "challengeSlots": [
+      {
+        "type": "keyword",
+        "value": "SELECT"
+      },
+      {
+        "type": "column",
+        "value": "pet_name,"
+      },
+      {
+        "type": "column",
+        "value": "age_years,"
+      },
+      {
+        "type": "keyword",
+        "value": "CASE"
+      },
+      {
+        "type": "keyword",
+        "value": "WHEN"
+      },
+      {
+        "type": "column",
+        "value": "age_years"
+      },
+      {
+        "type": "column",
+        "value": "<"
+      },
+      {
+        "type": "column",
+        "value": "1"
+      },
+      {
+        "type": "keyword",
+        "value": "THEN"
+      },
+      {
+        "type": "column",
+        "value": "1"
+      },
+      {
+        "type": "keyword",
+        "value": "ELSE"
+      },
+      {
+        "type": "column",
+        "value": "0"
+      },
+      {
+        "type": "keyword",
+        "value": "END"
+      },
+      {
+        "type": "keyword",
+        "value": "AS"
+      },
+      {
+        "type": "column",
+        "value": "is_puppy_or_kitten"
+      },
+      {
+        "type": "keyword",
+        "value": "FROM"
+      },
+      {
+        "type": "table",
+        "value": "PetClinic;"
+      }
+    ]
+  },
+  {
+    "drillNumber": 471,
+    "subcluster": "5.8 Custom Sorting via CASE in ORDER BY",
+    "level": "Level 3 (Custom Ordering)",
+    "title": "Syntax #471: Order gym members by custom tier hierarchy: Platinum first, then Gold, Silver, Bronze",
+    "table": "GymMembers",
+    "scenario": "Order gym members by custom tier hierarchy: Platinum first, then Gold, Silver, Bronze.",
+    "businessObjective": "Order gym members by custom tier hierarchy: Platinum first, then Gold, Silver, Bronze.",
+    "schemaSnippet": "GymMembers schema",
+    "targetQuery": "SELECT member_name, membership_plan\nFROM GymMembers\nORDER BY\n  CASE membership_plan\n    WHEN 'Platinum' THEN 1\n    WHEN 'Gold' THEN 2\n    WHEN 'Silver' THEN 3\n    ELSE 4\n  END ASC;",
+    "syntaxBlueprint": "SELECT col_name,\n  CASE WHEN condition THEN 'Val 1' ELSE 'Val 2' END AS alias_name\nFROM GymMembers;",
+    "syntaxRule": "A CASE expression starts with CASE, tests conditions with WHEN...THEN, optionally falls back with ELSE, and MUST end with END. Every branch should return compatible data types.",
+    "syntaxTrap": "Forgetting the closing END keyword, or putting a comma between WHEN branches (branches must NOT be separated by commas).",
+    "eli5Story": "Conditional decision making on GymMembers: Order gym members by custom tier hierarchy: Platinum first, then Gold, Silver, Bronze.",
+    "commonMistakes": "Omitting the END keyword, forgetting the ELSE fallback (defaults to NULL), or misordering WHEN thresholds.",
+    "learningOutcomes": "Mastered 5.8 Custom Sorting via CASE in ORDER BY on GymMembers.",
+    "challengeSlots": [
+      {
+        "type": "keyword",
+        "value": "SELECT"
+      },
+      {
+        "type": "column",
+        "value": "member_name,"
+      },
+      {
+        "type": "column",
+        "value": "membership_plan"
+      },
+      {
+        "type": "keyword",
+        "value": "FROM"
+      },
+      {
+        "type": "table",
+        "value": "GymMembers"
+      },
+      {
+        "type": "keyword",
+        "value": "ORDER"
+      },
+      {
+        "type": "keyword",
+        "value": "BY"
+      },
+      {
+        "type": "keyword",
+        "value": "CASE"
+      },
+      {
+        "type": "column",
+        "value": "membership_plan"
+      },
+      {
+        "type": "keyword",
+        "value": "WHEN"
+      },
+      {
+        "type": "column",
+        "value": "'Platinum'"
+      },
+      {
+        "type": "keyword",
+        "value": "THEN"
+      },
+      {
+        "type": "column",
+        "value": "1"
+      },
+      {
+        "type": "keyword",
+        "value": "WHEN"
+      },
+      {
+        "type": "column",
+        "value": "'Gold'"
+      },
+      {
+        "type": "keyword",
+        "value": "THEN"
+      },
+      {
+        "type": "column",
+        "value": "2"
+      },
+      {
+        "type": "keyword",
+        "value": "WHEN"
+      },
+      {
+        "type": "column",
+        "value": "'Silver'"
+      },
+      {
+        "type": "keyword",
+        "value": "THEN"
+      },
+      {
+        "type": "column",
+        "value": "3"
+      },
+      {
+        "type": "keyword",
+        "value": "ELSE"
+      },
+      {
+        "type": "column",
+        "value": "4"
+      },
+      {
+        "type": "keyword",
+        "value": "END"
+      },
+      {
+        "type": "keyword",
+        "value": "ASC;"
+      }
+    ]
+  },
+  {
+    "drillNumber": 472,
+    "subcluster": "5.8 Custom Sorting via CASE in ORDER BY",
+    "level": "Level 3 (Custom Ordering)",
+    "title": "Syntax #472: Sort order status in workflow priority sequence: Pending -> Processing -> Shipped -> Delivered",
+    "table": "Orders",
+    "scenario": "Sort order status in workflow priority sequence: Pending -> Processing -> Shipped -> Delivered.",
+    "businessObjective": "Sort order status in workflow priority sequence: Pending -> Processing -> Shipped -> Delivered.",
+    "schemaSnippet": "Orders schema",
+    "targetQuery": "SELECT order_id, order_status\nFROM Orders\nORDER BY\n  CASE order_status\n    WHEN 'Pending' THEN 1\n    WHEN 'Processing' THEN 2\n    WHEN 'Shipped' THEN 3\n    WHEN 'Delivered' THEN 4\n    ELSE 5\n  END ASC;",
+    "syntaxBlueprint": "SELECT col_name,\n  CASE WHEN condition THEN 'Val 1' ELSE 'Val 2' END AS alias_name\nFROM Orders;",
+    "syntaxRule": "A CASE expression starts with CASE, tests conditions with WHEN...THEN, optionally falls back with ELSE, and MUST end with END. Every branch should return compatible data types.",
+    "syntaxTrap": "Forgetting the closing END keyword, or putting a comma between WHEN branches (branches must NOT be separated by commas).",
+    "eli5Story": "Conditional decision making on Orders: Sort order status in workflow priority sequence: Pending -> Processing -> Shipped -> Delivered.",
+    "commonMistakes": "Omitting the END keyword, forgetting the ELSE fallback (defaults to NULL), or misordering WHEN thresholds.",
+    "learningOutcomes": "Mastered 5.8 Custom Sorting via CASE in ORDER BY on Orders.",
+    "challengeSlots": [
+      {
+        "type": "keyword",
+        "value": "SELECT"
+      },
+      {
+        "type": "column",
+        "value": "order_id,"
+      },
+      {
+        "type": "column",
+        "value": "order_status"
+      },
+      {
+        "type": "keyword",
+        "value": "FROM"
+      },
+      {
+        "type": "table",
+        "value": "Orders"
+      },
+      {
+        "type": "keyword",
+        "value": "ORDER"
+      },
+      {
+        "type": "keyword",
+        "value": "BY"
+      },
+      {
+        "type": "keyword",
+        "value": "CASE"
+      },
+      {
+        "type": "column",
+        "value": "order_status"
+      },
+      {
+        "type": "keyword",
+        "value": "WHEN"
+      },
+      {
+        "type": "column",
+        "value": "'Pending'"
+      },
+      {
+        "type": "keyword",
+        "value": "THEN"
+      },
+      {
+        "type": "column",
+        "value": "1"
+      },
+      {
+        "type": "keyword",
+        "value": "WHEN"
+      },
+      {
+        "type": "column",
+        "value": "'Processing'"
+      },
+      {
+        "type": "keyword",
+        "value": "THEN"
+      },
+      {
+        "type": "column",
+        "value": "2"
+      },
+      {
+        "type": "keyword",
+        "value": "WHEN"
+      },
+      {
+        "type": "column",
+        "value": "'Shipped'"
+      },
+      {
+        "type": "keyword",
+        "value": "THEN"
+      },
+      {
+        "type": "column",
+        "value": "3"
+      },
+      {
+        "type": "keyword",
+        "value": "WHEN"
+      },
+      {
+        "type": "column",
+        "value": "'Delivered'"
+      },
+      {
+        "type": "keyword",
+        "value": "THEN"
+      },
+      {
+        "type": "column",
+        "value": "4"
+      },
+      {
+        "type": "keyword",
+        "value": "ELSE"
+      },
+      {
+        "type": "column",
+        "value": "5"
+      },
+      {
+        "type": "keyword",
+        "value": "END"
+      },
+      {
+        "type": "keyword",
+        "value": "ASC;"
+      }
+    ]
+  },
+  {
+    "drillNumber": 473,
+    "subcluster": "5.8 Custom Sorting via CASE in ORDER BY",
+    "level": "Level 3 (Custom Ordering)",
+    "title": "Syntax #473: Pin CS and Math students at the top of the roster, sorting all others alphabetically",
+    "table": "Students",
+    "scenario": "Pin CS and Math students at the top of the roster, sorting all others alphabetically.",
+    "businessObjective": "Pin CS and Math students at the top of the roster, sorting all others alphabetically.",
+    "schemaSnippet": "Students schema",
+    "targetQuery": "SELECT full_name, major\nFROM Students\nORDER BY\n  CASE\n    WHEN major = 'Computer Science' THEN 1\n    WHEN major = 'Mathematics' THEN 2\n    ELSE 3\n  END ASC, full_name ASC;",
+    "syntaxBlueprint": "SELECT col_name,\n  CASE WHEN condition THEN 'Val 1' ELSE 'Val 2' END AS alias_name\nFROM Students;",
+    "syntaxRule": "A CASE expression starts with CASE, tests conditions with WHEN...THEN, optionally falls back with ELSE, and MUST end with END. Every branch should return compatible data types.",
+    "syntaxTrap": "Forgetting the closing END keyword, or putting a comma between WHEN branches (branches must NOT be separated by commas).",
+    "eli5Story": "Conditional decision making on Students: Pin CS and Math students at the top of the roster, sorting all others alphabetically.",
+    "commonMistakes": "Omitting the END keyword, forgetting the ELSE fallback (defaults to NULL), or misordering WHEN thresholds.",
+    "learningOutcomes": "Mastered 5.8 Custom Sorting via CASE in ORDER BY on Students.",
+    "challengeSlots": [
+      {
+        "type": "keyword",
+        "value": "SELECT"
+      },
+      {
+        "type": "column",
+        "value": "full_name,"
+      },
+      {
+        "type": "column",
+        "value": "major"
+      },
+      {
+        "type": "keyword",
+        "value": "FROM"
+      },
+      {
+        "type": "table",
+        "value": "Students"
+      },
+      {
+        "type": "keyword",
+        "value": "ORDER"
+      },
+      {
+        "type": "keyword",
+        "value": "BY"
+      },
+      {
+        "type": "keyword",
+        "value": "CASE"
+      },
+      {
+        "type": "keyword",
+        "value": "WHEN"
+      },
+      {
+        "type": "column",
+        "value": "major"
+      },
+      {
+        "type": "column",
+        "value": "="
+      },
+      {
+        "type": "column",
+        "value": "'Computer"
+      },
+      {
+        "type": "column",
+        "value": "Science'"
+      },
+      {
+        "type": "keyword",
+        "value": "THEN"
+      },
+      {
+        "type": "column",
+        "value": "1"
+      },
+      {
+        "type": "keyword",
+        "value": "WHEN"
+      },
+      {
+        "type": "column",
+        "value": "major"
+      },
+      {
+        "type": "column",
+        "value": "="
+      },
+      {
+        "type": "column",
+        "value": "'Mathematics'"
+      },
+      {
+        "type": "keyword",
+        "value": "THEN"
+      },
+      {
+        "type": "column",
+        "value": "2"
+      },
+      {
+        "type": "keyword",
+        "value": "ELSE"
+      },
+      {
+        "type": "column",
+        "value": "3"
+      },
+      {
+        "type": "keyword",
+        "value": "END"
+      },
+      {
+        "type": "keyword",
+        "value": "ASC,"
+      },
+      {
+        "type": "column",
+        "value": "full_name"
+      },
+      {
+        "type": "keyword",
+        "value": "ASC;"
+      }
+    ]
+  },
+  {
+    "drillNumber": 474,
+    "subcluster": "5.8 Custom Sorting via CASE in ORDER BY",
+    "level": "Level 3 (Custom Ordering)",
+    "title": "Syntax #474: Prioritize department display order: Executive, Engineering, Sales, and then all other departments",
+    "table": "Employees",
+    "scenario": "Prioritize department display order: Executive, Engineering, Sales, and then all other departments.",
+    "businessObjective": "Prioritize department display order: Executive, Engineering, Sales, and then all other departments.",
+    "schemaSnippet": "Employees schema",
+    "targetQuery": "SELECT first_name, department\nFROM Employees\nORDER BY\n  CASE department\n    WHEN 'Executive' THEN 1\n    WHEN 'Engineering' THEN 2\n    WHEN 'Sales' THEN 3\n    ELSE 4\n  END ASC, first_name ASC;",
+    "syntaxBlueprint": "SELECT col_name,\n  CASE WHEN condition THEN 'Val 1' ELSE 'Val 2' END AS alias_name\nFROM Employees;",
+    "syntaxRule": "A CASE expression starts with CASE, tests conditions with WHEN...THEN, optionally falls back with ELSE, and MUST end with END. Every branch should return compatible data types.",
+    "syntaxTrap": "Forgetting the closing END keyword, or putting a comma between WHEN branches (branches must NOT be separated by commas).",
+    "eli5Story": "Conditional decision making on Employees: Prioritize department display order: Executive, Engineering, Sales, and then all other departments.",
+    "commonMistakes": "Omitting the END keyword, forgetting the ELSE fallback (defaults to NULL), or misordering WHEN thresholds.",
+    "learningOutcomes": "Mastered 5.8 Custom Sorting via CASE in ORDER BY on Employees.",
+    "challengeSlots": [
+      {
+        "type": "keyword",
+        "value": "SELECT"
+      },
+      {
+        "type": "column",
+        "value": "first_name,"
+      },
+      {
+        "type": "column",
+        "value": "department"
+      },
+      {
+        "type": "keyword",
+        "value": "FROM"
+      },
+      {
+        "type": "table",
+        "value": "Employees"
+      },
+      {
+        "type": "keyword",
+        "value": "ORDER"
+      },
+      {
+        "type": "keyword",
+        "value": "BY"
+      },
+      {
+        "type": "keyword",
+        "value": "CASE"
+      },
+      {
+        "type": "column",
+        "value": "department"
+      },
+      {
+        "type": "keyword",
+        "value": "WHEN"
+      },
+      {
+        "type": "column",
+        "value": "'Executive'"
+      },
+      {
+        "type": "keyword",
+        "value": "THEN"
+      },
+      {
+        "type": "column",
+        "value": "1"
+      },
+      {
+        "type": "keyword",
+        "value": "WHEN"
+      },
+      {
+        "type": "column",
+        "value": "'Engineering'"
+      },
+      {
+        "type": "keyword",
+        "value": "THEN"
+      },
+      {
+        "type": "column",
+        "value": "2"
+      },
+      {
+        "type": "keyword",
+        "value": "WHEN"
+      },
+      {
+        "type": "column",
+        "value": "'Sales'"
+      },
+      {
+        "type": "keyword",
+        "value": "THEN"
+      },
+      {
+        "type": "column",
+        "value": "3"
+      },
+      {
+        "type": "keyword",
+        "value": "ELSE"
+      },
+      {
+        "type": "column",
+        "value": "4"
+      },
+      {
+        "type": "keyword",
+        "value": "END"
+      },
+      {
+        "type": "keyword",
+        "value": "ASC,"
+      },
+      {
+        "type": "column",
+        "value": "first_name"
+      },
+      {
+        "type": "keyword",
+        "value": "ASC;"
+      }
+    ]
+  },
+  {
+    "drillNumber": 475,
+    "subcluster": "5.8 Custom Sorting via CASE in ORDER BY",
+    "level": "Level 3 (Custom Ordering)",
+    "title": "Syntax #475: Display Sci-Fi and Fantasy books before other genres using custom CASE sorting",
+    "table": "Books",
+    "scenario": "Display Sci-Fi and Fantasy books before other genres using custom CASE sorting.",
+    "businessObjective": "Display Sci-Fi and Fantasy books before other genres using custom CASE sorting.",
+    "schemaSnippet": "Books schema",
+    "targetQuery": "SELECT title, genre\nFROM Books\nORDER BY\n  CASE genre\n    WHEN 'Sci-Fi' THEN 1\n    WHEN 'Fantasy' THEN 2\n    ELSE 3\n  END ASC, title ASC;",
+    "syntaxBlueprint": "SELECT col_name,\n  CASE WHEN condition THEN 'Val 1' ELSE 'Val 2' END AS alias_name\nFROM Books;",
+    "syntaxRule": "A CASE expression starts with CASE, tests conditions with WHEN...THEN, optionally falls back with ELSE, and MUST end with END. Every branch should return compatible data types.",
+    "syntaxTrap": "Forgetting the closing END keyword, or putting a comma between WHEN branches (branches must NOT be separated by commas).",
+    "eli5Story": "Conditional decision making on Books: Display Sci-Fi and Fantasy books before other genres using custom CASE sorting.",
+    "commonMistakes": "Omitting the END keyword, forgetting the ELSE fallback (defaults to NULL), or misordering WHEN thresholds.",
+    "learningOutcomes": "Mastered 5.8 Custom Sorting via CASE in ORDER BY on Books.",
+    "challengeSlots": [
+      {
+        "type": "keyword",
+        "value": "SELECT"
+      },
+      {
+        "type": "column",
+        "value": "title,"
+      },
+      {
+        "type": "column",
+        "value": "genre"
+      },
+      {
+        "type": "keyword",
+        "value": "FROM"
+      },
+      {
+        "type": "table",
+        "value": "Books"
+      },
+      {
+        "type": "keyword",
+        "value": "ORDER"
+      },
+      {
+        "type": "keyword",
+        "value": "BY"
+      },
+      {
+        "type": "keyword",
+        "value": "CASE"
+      },
+      {
+        "type": "column",
+        "value": "genre"
+      },
+      {
+        "type": "keyword",
+        "value": "WHEN"
+      },
+      {
+        "type": "column",
+        "value": "'Sci-Fi'"
+      },
+      {
+        "type": "keyword",
+        "value": "THEN"
+      },
+      {
+        "type": "column",
+        "value": "1"
+      },
+      {
+        "type": "keyword",
+        "value": "WHEN"
+      },
+      {
+        "type": "column",
+        "value": "'Fantasy'"
+      },
+      {
+        "type": "keyword",
+        "value": "THEN"
+      },
+      {
+        "type": "column",
+        "value": "2"
+      },
+      {
+        "type": "keyword",
+        "value": "ELSE"
+      },
+      {
+        "type": "column",
+        "value": "3"
+      },
+      {
+        "type": "keyword",
+        "value": "END"
+      },
+      {
+        "type": "keyword",
+        "value": "ASC,"
+      },
+      {
+        "type": "column",
+        "value": "title"
+      },
+      {
+        "type": "keyword",
+        "value": "ASC;"
+      }
+    ]
+  },
+  {
+    "drillNumber": 476,
+    "subcluster": "5.8 Custom Sorting via CASE in ORDER BY",
+    "level": "Level 3 (Custom Ordering)",
+    "title": "Syntax #476: Force all organic certified items to the top of the price catalog",
+    "table": "GroceryItems",
+    "scenario": "Force all organic certified items to the top of the price catalog.",
+    "businessObjective": "Force all organic certified items to the top of the price catalog.",
+    "schemaSnippet": "GroceryItems schema",
+    "targetQuery": "SELECT item_name, is_organic\nFROM GroceryItems\nORDER BY\n  CASE WHEN is_organic = 1 THEN 0 ELSE 1 END ASC, item_name ASC;",
+    "syntaxBlueprint": "SELECT col_name,\n  CASE WHEN condition THEN 'Val 1' ELSE 'Val 2' END AS alias_name\nFROM GroceryItems;",
+    "syntaxRule": "A CASE expression starts with CASE, tests conditions with WHEN...THEN, optionally falls back with ELSE, and MUST end with END. Every branch should return compatible data types.",
+    "syntaxTrap": "Forgetting the closing END keyword, or putting a comma between WHEN branches (branches must NOT be separated by commas).",
+    "eli5Story": "Conditional decision making on GroceryItems: Force all organic certified items to the top of the price catalog.",
+    "commonMistakes": "Omitting the END keyword, forgetting the ELSE fallback (defaults to NULL), or misordering WHEN thresholds.",
+    "learningOutcomes": "Mastered 5.8 Custom Sorting via CASE in ORDER BY on GroceryItems.",
+    "challengeSlots": [
+      {
+        "type": "keyword",
+        "value": "SELECT"
+      },
+      {
+        "type": "column",
+        "value": "item_name,"
+      },
+      {
+        "type": "column",
+        "value": "is_organic"
+      },
+      {
+        "type": "keyword",
+        "value": "FROM"
+      },
+      {
+        "type": "table",
+        "value": "GroceryItems"
+      },
+      {
+        "type": "keyword",
+        "value": "ORDER"
+      },
+      {
+        "type": "keyword",
+        "value": "BY"
+      },
+      {
+        "type": "keyword",
+        "value": "CASE"
+      },
+      {
+        "type": "keyword",
+        "value": "WHEN"
+      },
+      {
+        "type": "column",
+        "value": "is_organic"
+      },
+      {
+        "type": "column",
+        "value": "="
+      },
+      {
+        "type": "column",
+        "value": "1"
+      },
+      {
+        "type": "keyword",
+        "value": "THEN"
+      },
+      {
+        "type": "column",
+        "value": "0"
+      },
+      {
+        "type": "keyword",
+        "value": "ELSE"
+      },
+      {
+        "type": "column",
+        "value": "1"
+      },
+      {
+        "type": "keyword",
+        "value": "END"
+      },
+      {
+        "type": "keyword",
+        "value": "ASC,"
+      },
+      {
+        "type": "column",
+        "value": "item_name"
+      },
+      {
+        "type": "keyword",
+        "value": "ASC;"
+      }
+    ]
+  },
+  {
+    "drillNumber": 477,
+    "subcluster": "5.8 Custom Sorting via CASE in ORDER BY",
+    "level": "Level 3 (Custom Ordering)",
+    "title": "Syntax #477: Sort movies with ratings highest first, while pushing unrated NULLs to the bottom",
+    "table": "MovieReviews",
+    "scenario": "Sort movies with ratings highest first, while pushing unrated NULLs to the bottom.",
+    "businessObjective": "Sort movies with ratings highest first, while pushing unrated NULLs to the bottom.",
+    "schemaSnippet": "MovieReviews schema",
+    "targetQuery": "SELECT movie_title, star_rating\nFROM MovieReviews\nORDER BY\n  CASE\n    WHEN star_rating IS NULL THEN 1\n    ELSE 0\n  END ASC, star_rating DESC;",
+    "syntaxBlueprint": "SELECT col_name,\n  CASE WHEN condition THEN 'Val 1' ELSE 'Val 2' END AS alias_name\nFROM MovieReviews;",
+    "syntaxRule": "A CASE expression starts with CASE, tests conditions with WHEN...THEN, optionally falls back with ELSE, and MUST end with END. Every branch should return compatible data types.",
+    "syntaxTrap": "Forgetting the closing END keyword, or putting a comma between WHEN branches (branches must NOT be separated by commas).",
+    "eli5Story": "Conditional decision making on MovieReviews: Sort movies with ratings highest first, while pushing unrated NULLs to the bottom.",
+    "commonMistakes": "Omitting the END keyword, forgetting the ELSE fallback (defaults to NULL), or misordering WHEN thresholds.",
+    "learningOutcomes": "Mastered 5.8 Custom Sorting via CASE in ORDER BY on MovieReviews.",
+    "challengeSlots": [
+      {
+        "type": "keyword",
+        "value": "SELECT"
+      },
+      {
+        "type": "column",
+        "value": "movie_title,"
+      },
+      {
+        "type": "column",
+        "value": "star_rating"
+      },
+      {
+        "type": "keyword",
+        "value": "FROM"
+      },
+      {
+        "type": "table",
+        "value": "MovieReviews"
+      },
+      {
+        "type": "keyword",
+        "value": "ORDER"
+      },
+      {
+        "type": "keyword",
+        "value": "BY"
+      },
+      {
+        "type": "keyword",
+        "value": "CASE"
+      },
+      {
+        "type": "keyword",
+        "value": "WHEN"
+      },
+      {
+        "type": "column",
+        "value": "star_rating"
+      },
+      {
+        "type": "keyword",
+        "value": "IS"
+      },
+      {
+        "type": "keyword",
+        "value": "NULL"
+      },
+      {
+        "type": "keyword",
+        "value": "THEN"
+      },
+      {
+        "type": "column",
+        "value": "1"
+      },
+      {
+        "type": "keyword",
+        "value": "ELSE"
+      },
+      {
+        "type": "column",
+        "value": "0"
+      },
+      {
+        "type": "keyword",
+        "value": "END"
+      },
+      {
+        "type": "keyword",
+        "value": "ASC,"
+      },
+      {
+        "type": "column",
+        "value": "star_rating"
+      },
+      {
+        "type": "keyword",
+        "value": "DESC;"
+      }
+    ]
+  },
+  {
+    "drillNumber": 478,
+    "subcluster": "5.8 Custom Sorting via CASE in ORDER BY",
+    "level": "Level 3 (Custom Ordering)",
+    "title": "Syntax #478: Pin urgent flight alerts at top of departures board (Delayed -> Boarding -> On Time)",
+    "table": "FlightSchedule",
+    "scenario": "Pin urgent flight alerts at top of departures board (Delayed -> Boarding -> On Time).",
+    "businessObjective": "Pin urgent flight alerts at top of departures board (Delayed -> Boarding -> On Time).",
+    "schemaSnippet": "FlightSchedule schema",
+    "targetQuery": "SELECT flight_id, status\nFROM FlightSchedule\nORDER BY\n  CASE status\n    WHEN 'Delayed' THEN 1\n    WHEN 'Boarding' THEN 2\n    WHEN 'On Time' THEN 3\n    ELSE 4\n  END ASC;",
+    "syntaxBlueprint": "SELECT col_name,\n  CASE WHEN condition THEN 'Val 1' ELSE 'Val 2' END AS alias_name\nFROM FlightSchedule;",
+    "syntaxRule": "A CASE expression starts with CASE, tests conditions with WHEN...THEN, optionally falls back with ELSE, and MUST end with END. Every branch should return compatible data types.",
+    "syntaxTrap": "Forgetting the closing END keyword, or putting a comma between WHEN branches (branches must NOT be separated by commas).",
+    "eli5Story": "Conditional decision making on FlightSchedule: Pin urgent flight alerts at top of departures board (Delayed -> Boarding -> On Time).",
+    "commonMistakes": "Omitting the END keyword, forgetting the ELSE fallback (defaults to NULL), or misordering WHEN thresholds.",
+    "learningOutcomes": "Mastered 5.8 Custom Sorting via CASE in ORDER BY on FlightSchedule.",
+    "challengeSlots": [
+      {
+        "type": "keyword",
+        "value": "SELECT"
+      },
+      {
+        "type": "column",
+        "value": "flight_id,"
+      },
+      {
+        "type": "column",
+        "value": "status"
+      },
+      {
+        "type": "keyword",
+        "value": "FROM"
+      },
+      {
+        "type": "table",
+        "value": "FlightSchedule"
+      },
+      {
+        "type": "keyword",
+        "value": "ORDER"
+      },
+      {
+        "type": "keyword",
+        "value": "BY"
+      },
+      {
+        "type": "keyword",
+        "value": "CASE"
+      },
+      {
+        "type": "column",
+        "value": "status"
+      },
+      {
+        "type": "keyword",
+        "value": "WHEN"
+      },
+      {
+        "type": "column",
+        "value": "'Delayed'"
+      },
+      {
+        "type": "keyword",
+        "value": "THEN"
+      },
+      {
+        "type": "column",
+        "value": "1"
+      },
+      {
+        "type": "keyword",
+        "value": "WHEN"
+      },
+      {
+        "type": "column",
+        "value": "'Boarding'"
+      },
+      {
+        "type": "keyword",
+        "value": "THEN"
+      },
+      {
+        "type": "column",
+        "value": "2"
+      },
+      {
+        "type": "keyword",
+        "value": "WHEN"
+      },
+      {
+        "type": "column",
+        "value": "'On"
+      },
+      {
+        "type": "column",
+        "value": "Time'"
+      },
+      {
+        "type": "keyword",
+        "value": "THEN"
+      },
+      {
+        "type": "column",
+        "value": "3"
+      },
+      {
+        "type": "keyword",
+        "value": "ELSE"
+      },
+      {
+        "type": "column",
+        "value": "4"
+      },
+      {
+        "type": "keyword",
+        "value": "END"
+      },
+      {
+        "type": "keyword",
+        "value": "ASC;"
+      }
+    ]
+  },
+  {
+    "drillNumber": 479,
+    "subcluster": "5.8 Custom Sorting via CASE in ORDER BY",
+    "level": "Level 3 (Custom Ordering)",
+    "title": "Syntax #479: Order veterinary patient list by species priority: Dog, Cat, Bird, and others",
+    "table": "PetClinic",
+    "scenario": "Order veterinary patient list by species priority: Dog, Cat, Bird, and others.",
+    "businessObjective": "Order veterinary patient list by species priority: Dog, Cat, Bird, and others.",
+    "schemaSnippet": "PetClinic schema",
+    "targetQuery": "SELECT pet_name, species\nFROM PetClinic\nORDER BY\n  CASE species\n    WHEN 'Dog' THEN 1\n    WHEN 'Cat' THEN 2\n    WHEN 'Bird' THEN 3\n    ELSE 4\n  END ASC, pet_name ASC;",
+    "syntaxBlueprint": "SELECT col_name,\n  CASE WHEN condition THEN 'Val 1' ELSE 'Val 2' END AS alias_name\nFROM PetClinic;",
+    "syntaxRule": "A CASE expression starts with CASE, tests conditions with WHEN...THEN, optionally falls back with ELSE, and MUST end with END. Every branch should return compatible data types.",
+    "syntaxTrap": "Forgetting the closing END keyword, or putting a comma between WHEN branches (branches must NOT be separated by commas).",
+    "eli5Story": "Conditional decision making on PetClinic: Order veterinary patient list by species priority: Dog, Cat, Bird, and others.",
+    "commonMistakes": "Omitting the END keyword, forgetting the ELSE fallback (defaults to NULL), or misordering WHEN thresholds.",
+    "learningOutcomes": "Mastered 5.8 Custom Sorting via CASE in ORDER BY on PetClinic.",
+    "challengeSlots": [
+      {
+        "type": "keyword",
+        "value": "SELECT"
+      },
+      {
+        "type": "column",
+        "value": "pet_name,"
+      },
+      {
+        "type": "column",
+        "value": "species"
+      },
+      {
+        "type": "keyword",
+        "value": "FROM"
+      },
+      {
+        "type": "table",
+        "value": "PetClinic"
+      },
+      {
+        "type": "keyword",
+        "value": "ORDER"
+      },
+      {
+        "type": "keyword",
+        "value": "BY"
+      },
+      {
+        "type": "keyword",
+        "value": "CASE"
+      },
+      {
+        "type": "column",
+        "value": "species"
+      },
+      {
+        "type": "keyword",
+        "value": "WHEN"
+      },
+      {
+        "type": "column",
+        "value": "'Dog'"
+      },
+      {
+        "type": "keyword",
+        "value": "THEN"
+      },
+      {
+        "type": "column",
+        "value": "1"
+      },
+      {
+        "type": "keyword",
+        "value": "WHEN"
+      },
+      {
+        "type": "column",
+        "value": "'Cat'"
+      },
+      {
+        "type": "keyword",
+        "value": "THEN"
+      },
+      {
+        "type": "column",
+        "value": "2"
+      },
+      {
+        "type": "keyword",
+        "value": "WHEN"
+      },
+      {
+        "type": "column",
+        "value": "'Bird'"
+      },
+      {
+        "type": "keyword",
+        "value": "THEN"
+      },
+      {
+        "type": "column",
+        "value": "3"
+      },
+      {
+        "type": "keyword",
+        "value": "ELSE"
+      },
+      {
+        "type": "column",
+        "value": "4"
+      },
+      {
+        "type": "keyword",
+        "value": "END"
+      },
+      {
+        "type": "keyword",
+        "value": "ASC,"
+      },
+      {
+        "type": "column",
+        "value": "pet_name"
+      },
+      {
+        "type": "keyword",
+        "value": "ASC;"
+      }
+    ]
+  },
+  {
+    "drillNumber": 480,
+    "subcluster": "5.8 Custom Sorting via CASE in ORDER BY",
+    "level": "Level 3 (Custom Ordering)",
+    "title": "Syntax #480: Sort playlist featuring Rock and Electronic tracks first, followed by remaining genres",
+    "table": "MusicTracks",
+    "scenario": "Sort playlist featuring Rock and Electronic tracks first, followed by remaining genres.",
+    "businessObjective": "Sort playlist featuring Rock and Electronic tracks first, followed by remaining genres.",
+    "schemaSnippet": "MusicTracks schema",
+    "targetQuery": "SELECT track_title, genre\nFROM MusicTracks\nORDER BY\n  CASE genre\n    WHEN 'Rock' THEN 1\n    WHEN 'Electronic' THEN 2\n    ELSE 3\n  END ASC, track_title ASC;",
+    "syntaxBlueprint": "SELECT col_name,\n  CASE WHEN condition THEN 'Val 1' ELSE 'Val 2' END AS alias_name\nFROM MusicTracks;",
+    "syntaxRule": "A CASE expression starts with CASE, tests conditions with WHEN...THEN, optionally falls back with ELSE, and MUST end with END. Every branch should return compatible data types.",
+    "syntaxTrap": "Forgetting the closing END keyword, or putting a comma between WHEN branches (branches must NOT be separated by commas).",
+    "eli5Story": "Conditional decision making on MusicTracks: Sort playlist featuring Rock and Electronic tracks first, followed by remaining genres.",
+    "commonMistakes": "Omitting the END keyword, forgetting the ELSE fallback (defaults to NULL), or misordering WHEN thresholds.",
+    "learningOutcomes": "Mastered 5.8 Custom Sorting via CASE in ORDER BY on MusicTracks.",
+    "challengeSlots": [
+      {
+        "type": "keyword",
+        "value": "SELECT"
+      },
+      {
+        "type": "column",
+        "value": "track_title,"
+      },
+      {
+        "type": "column",
+        "value": "genre"
+      },
+      {
+        "type": "keyword",
+        "value": "FROM"
+      },
+      {
+        "type": "table",
+        "value": "MusicTracks"
+      },
+      {
+        "type": "keyword",
+        "value": "ORDER"
+      },
+      {
+        "type": "keyword",
+        "value": "BY"
+      },
+      {
+        "type": "keyword",
+        "value": "CASE"
+      },
+      {
+        "type": "column",
+        "value": "genre"
+      },
+      {
+        "type": "keyword",
+        "value": "WHEN"
+      },
+      {
+        "type": "column",
+        "value": "'Rock'"
+      },
+      {
+        "type": "keyword",
+        "value": "THEN"
+      },
+      {
+        "type": "column",
+        "value": "1"
+      },
+      {
+        "type": "keyword",
+        "value": "WHEN"
+      },
+      {
+        "type": "column",
+        "value": "'Electronic'"
+      },
+      {
+        "type": "keyword",
+        "value": "THEN"
+      },
+      {
+        "type": "column",
+        "value": "2"
+      },
+      {
+        "type": "keyword",
+        "value": "ELSE"
+      },
+      {
+        "type": "column",
+        "value": "3"
+      },
+      {
+        "type": "keyword",
+        "value": "END"
+      },
+      {
+        "type": "keyword",
+        "value": "ASC,"
+      },
+      {
+        "type": "column",
+        "value": "track_title"
+      },
+      {
+        "type": "keyword",
+        "value": "ASC;"
+      }
+    ]
+  },
+  {
+    "drillNumber": 481,
+    "subcluster": "5.9 Conditional Aggregation (SUM/COUNT with CASE)",
+    "level": "Level 3 (Conditional Aggregation)",
+    "title": "Syntax #481: Count total students, honor students (GPA >= 3.5), and struggling students in a single query",
+    "table": "Students",
+    "scenario": "Count total students, honor students (GPA >= 3.5), and struggling students in a single query.",
+    "businessObjective": "Count total students, honor students (GPA >= 3.5), and struggling students in a single query.",
+    "schemaSnippet": "Students schema",
+    "targetQuery": "SELECT\n  COUNT(*) AS total_students,\n  SUM(CASE WHEN gpa >= 3.5 THEN 1 ELSE 0 END) AS honor_students,\n  SUM(CASE WHEN gpa < 3.0 THEN 1 ELSE 0 END) AS struggling_students\nFROM Students;",
+    "syntaxBlueprint": "SELECT col_name,\n  CASE WHEN condition THEN 'Val 1' ELSE 'Val 2' END AS alias_name\nFROM Students;",
+    "syntaxRule": "A CASE expression starts with CASE, tests conditions with WHEN...THEN, optionally falls back with ELSE, and MUST end with END. Every branch should return compatible data types.",
+    "syntaxTrap": "Forgetting the closing END keyword, or putting a comma between WHEN branches (branches must NOT be separated by commas).",
+    "eli5Story": "Conditional decision making on Students: Count total students, honor students (GPA >= 3.5), and struggling students in a single query.",
+    "commonMistakes": "Omitting the END keyword, forgetting the ELSE fallback (defaults to NULL), or misordering WHEN thresholds.",
+    "learningOutcomes": "Mastered 5.9 Conditional Aggregation (SUM/COUNT with CASE) on Students.",
+    "challengeSlots": [
+      {
+        "type": "keyword",
+        "value": "SELECT"
+      },
+      {
+        "type": "column",
+        "value": "COUNT(*)"
+      },
+      {
+        "type": "keyword",
+        "value": "AS"
+      },
+      {
+        "type": "column",
+        "value": "total_students,"
+      },
+      {
+        "type": "column",
+        "value": "SUM(CASE"
+      },
+      {
+        "type": "keyword",
+        "value": "WHEN"
+      },
+      {
+        "type": "column",
+        "value": "gpa"
+      },
+      {
+        "type": "column",
+        "value": ">="
+      },
+      {
+        "type": "column",
+        "value": "3.5"
+      },
+      {
+        "type": "keyword",
+        "value": "THEN"
+      },
+      {
+        "type": "column",
+        "value": "1"
+      },
+      {
+        "type": "keyword",
+        "value": "ELSE"
+      },
+      {
+        "type": "column",
+        "value": "0"
+      },
+      {
+        "type": "keyword",
+        "value": "END)"
+      },
+      {
+        "type": "keyword",
+        "value": "AS"
+      },
+      {
+        "type": "column",
+        "value": "honor_students,"
+      },
+      {
+        "type": "column",
+        "value": "SUM(CASE"
+      },
+      {
+        "type": "keyword",
+        "value": "WHEN"
+      },
+      {
+        "type": "column",
+        "value": "gpa"
+      },
+      {
+        "type": "column",
+        "value": "<"
+      },
+      {
+        "type": "column",
+        "value": "3.0"
+      },
+      {
+        "type": "keyword",
+        "value": "THEN"
+      },
+      {
+        "type": "column",
+        "value": "1"
+      },
+      {
+        "type": "keyword",
+        "value": "ELSE"
+      },
+      {
+        "type": "column",
+        "value": "0"
+      },
+      {
+        "type": "keyword",
+        "value": "END)"
+      },
+      {
+        "type": "keyword",
+        "value": "AS"
+      },
+      {
+        "type": "column",
+        "value": "struggling_students"
+      },
+      {
+        "type": "keyword",
+        "value": "FROM"
+      },
+      {
+        "type": "table",
+        "value": "Students;"
+      }
+    ]
+  },
+  {
+    "drillNumber": 482,
+    "subcluster": "5.9 Conditional Aggregation (SUM/COUNT with CASE)",
+    "level": "Level 3 (Conditional Aggregation)",
+    "title": "Syntax #482: Report total staff and count of high earners (salary >= 80,000) per department",
+    "table": "Employees",
+    "scenario": "Report total staff and count of high earners (salary >= 80,000) per department.",
+    "businessObjective": "Report total staff and count of high earners (salary >= 80,000) per department.",
+    "schemaSnippet": "Employees schema",
+    "targetQuery": "SELECT department,\n  COUNT(*) AS staff_count,\n  SUM(CASE WHEN salary >= 80000 THEN 1 ELSE 0 END) AS high_earners\nFROM Employees\nGROUP BY department;",
+    "syntaxBlueprint": "SELECT col_name,\n  CASE WHEN condition THEN 'Val 1' ELSE 'Val 2' END AS alias_name\nFROM Employees;",
+    "syntaxRule": "A CASE expression starts with CASE, tests conditions with WHEN...THEN, optionally falls back with ELSE, and MUST end with END. Every branch should return compatible data types.",
+    "syntaxTrap": "Forgetting the closing END keyword, or putting a comma between WHEN branches (branches must NOT be separated by commas).",
+    "eli5Story": "Conditional decision making on Employees: Report total staff and count of high earners (salary >= 80,000) per department.",
+    "commonMistakes": "Omitting the END keyword, forgetting the ELSE fallback (defaults to NULL), or misordering WHEN thresholds.",
+    "learningOutcomes": "Mastered 5.9 Conditional Aggregation (SUM/COUNT with CASE) on Employees.",
+    "challengeSlots": [
+      {
+        "type": "keyword",
+        "value": "SELECT"
+      },
+      {
+        "type": "column",
+        "value": "department,"
+      },
+      {
+        "type": "column",
+        "value": "COUNT(*)"
+      },
+      {
+        "type": "keyword",
+        "value": "AS"
+      },
+      {
+        "type": "column",
+        "value": "staff_count,"
+      },
+      {
+        "type": "column",
+        "value": "SUM(CASE"
+      },
+      {
+        "type": "keyword",
+        "value": "WHEN"
+      },
+      {
+        "type": "column",
+        "value": "salary"
+      },
+      {
+        "type": "column",
+        "value": ">="
+      },
+      {
+        "type": "column",
+        "value": "80000"
+      },
+      {
+        "type": "keyword",
+        "value": "THEN"
+      },
+      {
+        "type": "column",
+        "value": "1"
+      },
+      {
+        "type": "keyword",
+        "value": "ELSE"
+      },
+      {
+        "type": "column",
+        "value": "0"
+      },
+      {
+        "type": "keyword",
+        "value": "END)"
+      },
+      {
+        "type": "keyword",
+        "value": "AS"
+      },
+      {
+        "type": "column",
+        "value": "high_earners"
+      },
+      {
+        "type": "keyword",
+        "value": "FROM"
+      },
+      {
+        "type": "table",
+        "value": "Employees"
+      },
+      {
+        "type": "keyword",
+        "value": "GROUP"
+      },
+      {
+        "type": "keyword",
+        "value": "BY"
+      },
+      {
+        "type": "column",
+        "value": "department;"
+      }
+    ]
+  },
+  {
+    "drillNumber": 483,
+    "subcluster": "5.9 Conditional Aggregation (SUM/COUNT with CASE)",
+    "level": "Level 3 (Conditional Aggregation)",
+    "title": "Syntax #483: Count total products and organic products per grocery category in one rollup",
+    "table": "GroceryItems",
+    "scenario": "Count total products and organic products per grocery category in one rollup.",
+    "businessObjective": "Count total products and organic products per grocery category in one rollup.",
+    "schemaSnippet": "GroceryItems schema",
+    "targetQuery": "SELECT category,\n  COUNT(*) AS total_items,\n  SUM(CASE WHEN is_organic = 1 THEN 1 ELSE 0 END) AS organic_count\nFROM GroceryItems\nGROUP BY category;",
+    "syntaxBlueprint": "SELECT col_name,\n  CASE WHEN condition THEN 'Val 1' ELSE 'Val 2' END AS alias_name\nFROM GroceryItems;",
+    "syntaxRule": "A CASE expression starts with CASE, tests conditions with WHEN...THEN, optionally falls back with ELSE, and MUST end with END. Every branch should return compatible data types.",
+    "syntaxTrap": "Forgetting the closing END keyword, or putting a comma between WHEN branches (branches must NOT be separated by commas).",
+    "eli5Story": "Conditional decision making on GroceryItems: Count total products and organic products per grocery category in one rollup.",
+    "commonMistakes": "Omitting the END keyword, forgetting the ELSE fallback (defaults to NULL), or misordering WHEN thresholds.",
+    "learningOutcomes": "Mastered 5.9 Conditional Aggregation (SUM/COUNT with CASE) on GroceryItems.",
+    "challengeSlots": [
+      {
+        "type": "keyword",
+        "value": "SELECT"
+      },
+      {
+        "type": "column",
+        "value": "category,"
+      },
+      {
+        "type": "column",
+        "value": "COUNT(*)"
+      },
+      {
+        "type": "keyword",
+        "value": "AS"
+      },
+      {
+        "type": "column",
+        "value": "total_items,"
+      },
+      {
+        "type": "column",
+        "value": "SUM(CASE"
+      },
+      {
+        "type": "keyword",
+        "value": "WHEN"
+      },
+      {
+        "type": "column",
+        "value": "is_organic"
+      },
+      {
+        "type": "column",
+        "value": "="
+      },
+      {
+        "type": "column",
+        "value": "1"
+      },
+      {
+        "type": "keyword",
+        "value": "THEN"
+      },
+      {
+        "type": "column",
+        "value": "1"
+      },
+      {
+        "type": "keyword",
+        "value": "ELSE"
+      },
+      {
+        "type": "column",
+        "value": "0"
+      },
+      {
+        "type": "keyword",
+        "value": "END)"
+      },
+      {
+        "type": "keyword",
+        "value": "AS"
+      },
+      {
+        "type": "column",
+        "value": "organic_count"
+      },
+      {
+        "type": "keyword",
+        "value": "FROM"
+      },
+      {
+        "type": "table",
+        "value": "GroceryItems"
+      },
+      {
+        "type": "keyword",
+        "value": "GROUP"
+      },
+      {
+        "type": "keyword",
+        "value": "BY"
+      },
+      {
+        "type": "column",
+        "value": "category;"
+      }
+    ]
+  },
+  {
+    "drillNumber": 484,
+    "subcluster": "5.9 Conditional Aggregation (SUM/COUNT with CASE)",
+    "level": "Level 3 (Conditional Aggregation)",
+    "title": "Syntax #484: Calculate total orders and delivered orders count per destination city",
+    "table": "Orders",
+    "scenario": "Calculate total orders and delivered orders count per destination city.",
+    "businessObjective": "Calculate total orders and delivered orders count per destination city.",
+    "schemaSnippet": "Orders schema",
+    "targetQuery": "SELECT shipping_city,\n  COUNT(*) AS total_orders,\n  SUM(CASE WHEN order_status = 'Delivered' THEN 1 ELSE 0 END) AS delivered_count\nFROM Orders\nGROUP BY shipping_city;",
+    "syntaxBlueprint": "SELECT col_name,\n  CASE WHEN condition THEN 'Val 1' ELSE 'Val 2' END AS alias_name\nFROM Orders;",
+    "syntaxRule": "A CASE expression starts with CASE, tests conditions with WHEN...THEN, optionally falls back with ELSE, and MUST end with END. Every branch should return compatible data types.",
+    "syntaxTrap": "Forgetting the closing END keyword, or putting a comma between WHEN branches (branches must NOT be separated by commas).",
+    "eli5Story": "Conditional decision making on Orders: Calculate total orders and delivered orders count per destination city.",
+    "commonMistakes": "Omitting the END keyword, forgetting the ELSE fallback (defaults to NULL), or misordering WHEN thresholds.",
+    "learningOutcomes": "Mastered 5.9 Conditional Aggregation (SUM/COUNT with CASE) on Orders.",
+    "challengeSlots": [
+      {
+        "type": "keyword",
+        "value": "SELECT"
+      },
+      {
+        "type": "column",
+        "value": "shipping_city,"
+      },
+      {
+        "type": "column",
+        "value": "COUNT(*)"
+      },
+      {
+        "type": "keyword",
+        "value": "AS"
+      },
+      {
+        "type": "column",
+        "value": "total_orders,"
+      },
+      {
+        "type": "column",
+        "value": "SUM(CASE"
+      },
+      {
+        "type": "keyword",
+        "value": "WHEN"
+      },
+      {
+        "type": "column",
+        "value": "order_status"
+      },
+      {
+        "type": "column",
+        "value": "="
+      },
+      {
+        "type": "column",
+        "value": "'Delivered'"
+      },
+      {
+        "type": "keyword",
+        "value": "THEN"
+      },
+      {
+        "type": "column",
+        "value": "1"
+      },
+      {
+        "type": "keyword",
+        "value": "ELSE"
+      },
+      {
+        "type": "column",
+        "value": "0"
+      },
+      {
+        "type": "keyword",
+        "value": "END)"
+      },
+      {
+        "type": "keyword",
+        "value": "AS"
+      },
+      {
+        "type": "column",
+        "value": "delivered_count"
+      },
+      {
+        "type": "keyword",
+        "value": "FROM"
+      },
+      {
+        "type": "table",
+        "value": "Orders"
+      },
+      {
+        "type": "keyword",
+        "value": "GROUP"
+      },
+      {
+        "type": "keyword",
+        "value": "BY"
+      },
+      {
+        "type": "column",
+        "value": "shipping_city;"
+      }
+    ]
+  },
+  {
+    "drillNumber": 485,
+    "subcluster": "5.9 Conditional Aggregation (SUM/COUNT with CASE)",
+    "level": "Level 3 (Conditional Aggregation)",
+    "title": "Syntax #485: Calculate total titles and average price of books priced over $15 per genre",
+    "table": "Books",
+    "scenario": "Calculate total titles and average price of books priced over $15 per genre.",
+    "businessObjective": "Calculate total titles and average price of books priced over $15 per genre.",
+    "schemaSnippet": "Books schema",
+    "targetQuery": "SELECT genre,\n  COUNT(*) AS total_titles,\n  ROUND(AVG(CASE WHEN price > 15.00 THEN price END), 2) AS avg_premium_price\nFROM Books\nGROUP BY genre;",
+    "syntaxBlueprint": "SELECT col_name,\n  CASE WHEN condition THEN 'Val 1' ELSE 'Val 2' END AS alias_name\nFROM Books;",
+    "syntaxRule": "A CASE expression starts with CASE, tests conditions with WHEN...THEN, optionally falls back with ELSE, and MUST end with END. Every branch should return compatible data types.",
+    "syntaxTrap": "Forgetting the closing END keyword, or putting a comma between WHEN branches (branches must NOT be separated by commas).",
+    "eli5Story": "Conditional decision making on Books: Calculate total titles and average price of books priced over $15 per genre.",
+    "commonMistakes": "Omitting the END keyword, forgetting the ELSE fallback (defaults to NULL), or misordering WHEN thresholds.",
+    "learningOutcomes": "Mastered 5.9 Conditional Aggregation (SUM/COUNT with CASE) on Books.",
+    "challengeSlots": [
+      {
+        "type": "keyword",
+        "value": "SELECT"
+      },
+      {
+        "type": "column",
+        "value": "genre,"
+      },
+      {
+        "type": "column",
+        "value": "COUNT(*)"
+      },
+      {
+        "type": "keyword",
+        "value": "AS"
+      },
+      {
+        "type": "column",
+        "value": "total_titles,"
+      },
+      {
+        "type": "column",
+        "value": "ROUND(AVG(CASE"
+      },
+      {
+        "type": "keyword",
+        "value": "WHEN"
+      },
+      {
+        "type": "column",
+        "value": "price"
+      },
+      {
+        "type": "column",
+        "value": ">"
+      },
+      {
+        "type": "column",
+        "value": "15.00"
+      },
+      {
+        "type": "keyword",
+        "value": "THEN"
+      },
+      {
+        "type": "column",
+        "value": "price"
+      },
+      {
+        "type": "keyword",
+        "value": "END),"
+      },
+      {
+        "type": "column",
+        "value": "2)"
+      },
+      {
+        "type": "keyword",
+        "value": "AS"
+      },
+      {
+        "type": "column",
+        "value": "avg_premium_price"
+      },
+      {
+        "type": "keyword",
+        "value": "FROM"
+      },
+      {
+        "type": "table",
+        "value": "Books"
+      },
+      {
+        "type": "keyword",
+        "value": "GROUP"
+      },
+      {
+        "type": "keyword",
+        "value": "BY"
+      },
+      {
+        "type": "column",
+        "value": "genre;"
+      }
+    ]
+  },
+  {
+    "drillNumber": 486,
+    "subcluster": "5.9 Conditional Aggregation (SUM/COUNT with CASE)",
+    "level": "Level 3 (Conditional Aggregation)",
+    "title": "Syntax #486: Tally total songs and recent releases (2023+) per musical genre",
+    "table": "MusicTracks",
+    "scenario": "Tally total songs and recent releases (2023+) per musical genre.",
+    "businessObjective": "Tally total songs and recent releases (2023+) per musical genre.",
+    "schemaSnippet": "MusicTracks schema",
+    "targetQuery": "SELECT genre,\n  COUNT(*) AS total_tracks,\n  SUM(CASE WHEN release_year >= 2023 THEN 1 ELSE 0 END) AS new_tracks\nFROM MusicTracks\nGROUP BY genre;",
+    "syntaxBlueprint": "SELECT col_name,\n  CASE WHEN condition THEN 'Val 1' ELSE 'Val 2' END AS alias_name\nFROM MusicTracks;",
+    "syntaxRule": "A CASE expression starts with CASE, tests conditions with WHEN...THEN, optionally falls back with ELSE, and MUST end with END. Every branch should return compatible data types.",
+    "syntaxTrap": "Forgetting the closing END keyword, or putting a comma between WHEN branches (branches must NOT be separated by commas).",
+    "eli5Story": "Conditional decision making on MusicTracks: Tally total songs and recent releases (2023+) per musical genre.",
+    "commonMistakes": "Omitting the END keyword, forgetting the ELSE fallback (defaults to NULL), or misordering WHEN thresholds.",
+    "learningOutcomes": "Mastered 5.9 Conditional Aggregation (SUM/COUNT with CASE) on MusicTracks.",
+    "challengeSlots": [
+      {
+        "type": "keyword",
+        "value": "SELECT"
+      },
+      {
+        "type": "column",
+        "value": "genre,"
+      },
+      {
+        "type": "column",
+        "value": "COUNT(*)"
+      },
+      {
+        "type": "keyword",
+        "value": "AS"
+      },
+      {
+        "type": "column",
+        "value": "total_tracks,"
+      },
+      {
+        "type": "column",
+        "value": "SUM(CASE"
+      },
+      {
+        "type": "keyword",
+        "value": "WHEN"
+      },
+      {
+        "type": "column",
+        "value": "release_year"
+      },
+      {
+        "type": "column",
+        "value": ">="
+      },
+      {
+        "type": "column",
+        "value": "2023"
+      },
+      {
+        "type": "keyword",
+        "value": "THEN"
+      },
+      {
+        "type": "column",
+        "value": "1"
+      },
+      {
+        "type": "keyword",
+        "value": "ELSE"
+      },
+      {
+        "type": "column",
+        "value": "0"
+      },
+      {
+        "type": "keyword",
+        "value": "END)"
+      },
+      {
+        "type": "keyword",
+        "value": "AS"
+      },
+      {
+        "type": "column",
+        "value": "new_tracks"
+      },
+      {
+        "type": "keyword",
+        "value": "FROM"
+      },
+      {
+        "type": "table",
+        "value": "MusicTracks"
+      },
+      {
+        "type": "keyword",
+        "value": "GROUP"
+      },
+      {
+        "type": "keyword",
+        "value": "BY"
+      },
+      {
+        "type": "column",
+        "value": "genre;"
+      }
+    ]
+  },
+  {
+    "drillNumber": 487,
+    "subcluster": "5.9 Conditional Aggregation (SUM/COUNT with CASE)",
+    "level": "Level 3 (Conditional Aggregation)",
+    "title": "Syntax #487: Compute total registrations and active members per membership plan",
+    "table": "GymMembers",
+    "scenario": "Compute total registrations and active members per membership plan.",
+    "businessObjective": "Compute total registrations and active members per membership plan.",
+    "schemaSnippet": "GymMembers schema",
+    "targetQuery": "SELECT membership_plan,\n  COUNT(*) AS total_members,\n  SUM(CASE WHEN is_active = 1 THEN 1 ELSE 0 END) AS active_members\nFROM GymMembers\nGROUP BY membership_plan;",
+    "syntaxBlueprint": "SELECT col_name,\n  CASE WHEN condition THEN 'Val 1' ELSE 'Val 2' END AS alias_name\nFROM GymMembers;",
+    "syntaxRule": "A CASE expression starts with CASE, tests conditions with WHEN...THEN, optionally falls back with ELSE, and MUST end with END. Every branch should return compatible data types.",
+    "syntaxTrap": "Forgetting the closing END keyword, or putting a comma between WHEN branches (branches must NOT be separated by commas).",
+    "eli5Story": "Conditional decision making on GymMembers: Compute total registrations and active members per membership plan.",
+    "commonMistakes": "Omitting the END keyword, forgetting the ELSE fallback (defaults to NULL), or misordering WHEN thresholds.",
+    "learningOutcomes": "Mastered 5.9 Conditional Aggregation (SUM/COUNT with CASE) on GymMembers.",
+    "challengeSlots": [
+      {
+        "type": "keyword",
+        "value": "SELECT"
+      },
+      {
+        "type": "column",
+        "value": "membership_plan,"
+      },
+      {
+        "type": "column",
+        "value": "COUNT(*)"
+      },
+      {
+        "type": "keyword",
+        "value": "AS"
+      },
+      {
+        "type": "column",
+        "value": "total_members,"
+      },
+      {
+        "type": "column",
+        "value": "SUM(CASE"
+      },
+      {
+        "type": "keyword",
+        "value": "WHEN"
+      },
+      {
+        "type": "column",
+        "value": "is_active"
+      },
+      {
+        "type": "column",
+        "value": "="
+      },
+      {
+        "type": "column",
+        "value": "1"
+      },
+      {
+        "type": "keyword",
+        "value": "THEN"
+      },
+      {
+        "type": "column",
+        "value": "1"
+      },
+      {
+        "type": "keyword",
+        "value": "ELSE"
+      },
+      {
+        "type": "column",
+        "value": "0"
+      },
+      {
+        "type": "keyword",
+        "value": "END)"
+      },
+      {
+        "type": "keyword",
+        "value": "AS"
+      },
+      {
+        "type": "column",
+        "value": "active_members"
+      },
+      {
+        "type": "keyword",
+        "value": "FROM"
+      },
+      {
+        "type": "table",
+        "value": "GymMembers"
+      },
+      {
+        "type": "keyword",
+        "value": "GROUP"
+      },
+      {
+        "type": "keyword",
+        "value": "BY"
+      },
+      {
+        "type": "column",
+        "value": "membership_plan;"
+      }
+    ]
+  },
+  {
+    "drillNumber": 488,
+    "subcluster": "5.9 Conditional Aggregation (SUM/COUNT with CASE)",
+    "level": "Level 3 (Conditional Aggregation)",
+    "title": "Syntax #488: Calculate positive review counts (star rating >= 4.0) alongside total reviews per genre",
+    "table": "MovieReviews",
+    "scenario": "Calculate positive review counts (star rating >= 4.0) alongside total reviews per genre.",
+    "businessObjective": "Calculate positive review counts (star rating >= 4.0) alongside total reviews per genre.",
+    "schemaSnippet": "MovieReviews schema",
+    "targetQuery": "SELECT genre,\n  COUNT(*) AS total_reviews,\n  SUM(CASE WHEN star_rating >= 4.0 THEN 1 ELSE 0 END) AS positive_reviews\nFROM MovieReviews\nGROUP BY genre;",
+    "syntaxBlueprint": "SELECT col_name,\n  CASE WHEN condition THEN 'Val 1' ELSE 'Val 2' END AS alias_name\nFROM MovieReviews;",
+    "syntaxRule": "A CASE expression starts with CASE, tests conditions with WHEN...THEN, optionally falls back with ELSE, and MUST end with END. Every branch should return compatible data types.",
+    "syntaxTrap": "Forgetting the closing END keyword, or putting a comma between WHEN branches (branches must NOT be separated by commas).",
+    "eli5Story": "Conditional decision making on MovieReviews: Calculate positive review counts (star rating >= 4.0) alongside total reviews per genre.",
+    "commonMistakes": "Omitting the END keyword, forgetting the ELSE fallback (defaults to NULL), or misordering WHEN thresholds.",
+    "learningOutcomes": "Mastered 5.9 Conditional Aggregation (SUM/COUNT with CASE) on MovieReviews.",
+    "challengeSlots": [
+      {
+        "type": "keyword",
+        "value": "SELECT"
+      },
+      {
+        "type": "column",
+        "value": "genre,"
+      },
+      {
+        "type": "column",
+        "value": "COUNT(*)"
+      },
+      {
+        "type": "keyword",
+        "value": "AS"
+      },
+      {
+        "type": "column",
+        "value": "total_reviews,"
+      },
+      {
+        "type": "column",
+        "value": "SUM(CASE"
+      },
+      {
+        "type": "keyword",
+        "value": "WHEN"
+      },
+      {
+        "type": "column",
+        "value": "star_rating"
+      },
+      {
+        "type": "column",
+        "value": ">="
+      },
+      {
+        "type": "column",
+        "value": "4.0"
+      },
+      {
+        "type": "keyword",
+        "value": "THEN"
+      },
+      {
+        "type": "column",
+        "value": "1"
+      },
+      {
+        "type": "keyword",
+        "value": "ELSE"
+      },
+      {
+        "type": "column",
+        "value": "0"
+      },
+      {
+        "type": "keyword",
+        "value": "END)"
+      },
+      {
+        "type": "keyword",
+        "value": "AS"
+      },
+      {
+        "type": "column",
+        "value": "positive_reviews"
+      },
+      {
+        "type": "keyword",
+        "value": "FROM"
+      },
+      {
+        "type": "table",
+        "value": "MovieReviews"
+      },
+      {
+        "type": "keyword",
+        "value": "GROUP"
+      },
+      {
+        "type": "keyword",
+        "value": "BY"
+      },
+      {
+        "type": "column",
+        "value": "genre;"
+      }
+    ]
+  },
+  {
+    "drillNumber": 489,
+    "subcluster": "5.9 Conditional Aggregation (SUM/COUNT with CASE)",
+    "level": "Level 3 (Conditional Aggregation)",
+    "title": "Syntax #489: Track on-time flight counts alongside total departures originating from each airport",
+    "table": "FlightSchedule",
+    "scenario": "Track on-time flight counts alongside total departures originating from each airport.",
+    "businessObjective": "Track on-time flight counts alongside total departures originating from each airport.",
+    "schemaSnippet": "FlightSchedule schema",
+    "targetQuery": "SELECT origin_airport,\n  COUNT(*) AS total_flights,\n  SUM(CASE WHEN status = 'On Time' THEN 1 ELSE 0 END) AS on_time_flights\nFROM FlightSchedule\nGROUP BY origin_airport;",
+    "syntaxBlueprint": "SELECT col_name,\n  CASE WHEN condition THEN 'Val 1' ELSE 'Val 2' END AS alias_name\nFROM FlightSchedule;",
+    "syntaxRule": "A CASE expression starts with CASE, tests conditions with WHEN...THEN, optionally falls back with ELSE, and MUST end with END. Every branch should return compatible data types.",
+    "syntaxTrap": "Forgetting the closing END keyword, or putting a comma between WHEN branches (branches must NOT be separated by commas).",
+    "eli5Story": "Conditional decision making on FlightSchedule: Track on-time flight counts alongside total departures originating from each airport.",
+    "commonMistakes": "Omitting the END keyword, forgetting the ELSE fallback (defaults to NULL), or misordering WHEN thresholds.",
+    "learningOutcomes": "Mastered 5.9 Conditional Aggregation (SUM/COUNT with CASE) on FlightSchedule.",
+    "challengeSlots": [
+      {
+        "type": "keyword",
+        "value": "SELECT"
+      },
+      {
+        "type": "column",
+        "value": "origin_airport,"
+      },
+      {
+        "type": "column",
+        "value": "COUNT(*)"
+      },
+      {
+        "type": "keyword",
+        "value": "AS"
+      },
+      {
+        "type": "column",
+        "value": "total_flights,"
+      },
+      {
+        "type": "column",
+        "value": "SUM(CASE"
+      },
+      {
+        "type": "keyword",
+        "value": "WHEN"
+      },
+      {
+        "type": "column",
+        "value": "status"
+      },
+      {
+        "type": "column",
+        "value": "="
+      },
+      {
+        "type": "column",
+        "value": "'On"
+      },
+      {
+        "type": "column",
+        "value": "Time'"
+      },
+      {
+        "type": "keyword",
+        "value": "THEN"
+      },
+      {
+        "type": "column",
+        "value": "1"
+      },
+      {
+        "type": "keyword",
+        "value": "ELSE"
+      },
+      {
+        "type": "column",
+        "value": "0"
+      },
+      {
+        "type": "keyword",
+        "value": "END)"
+      },
+      {
+        "type": "keyword",
+        "value": "AS"
+      },
+      {
+        "type": "column",
+        "value": "on_time_flights"
+      },
+      {
+        "type": "keyword",
+        "value": "FROM"
+      },
+      {
+        "type": "table",
+        "value": "FlightSchedule"
+      },
+      {
+        "type": "keyword",
+        "value": "GROUP"
+      },
+      {
+        "type": "keyword",
+        "value": "BY"
+      },
+      {
+        "type": "column",
+        "value": "origin_airport;"
+      }
+    ]
+  },
+  {
+    "drillNumber": 490,
+    "subcluster": "5.9 Conditional Aggregation (SUM/COUNT with CASE)",
+    "level": "Level 3 (Conditional Aggregation)",
+    "title": "Syntax #490: Count total patients and senior patients (age >= 7) grouped by animal species",
+    "table": "PetClinic",
+    "scenario": "Count total patients and senior patients (age >= 7) grouped by animal species.",
+    "businessObjective": "Count total patients and senior patients (age >= 7) grouped by animal species.",
+    "schemaSnippet": "PetClinic schema",
+    "targetQuery": "SELECT species,\n  COUNT(*) AS patient_count,\n  SUM(CASE WHEN age_years >= 7 THEN 1 ELSE 0 END) AS senior_patient_count\nFROM PetClinic\nGROUP BY species;",
+    "syntaxBlueprint": "SELECT col_name,\n  CASE WHEN condition THEN 'Val 1' ELSE 'Val 2' END AS alias_name\nFROM PetClinic;",
+    "syntaxRule": "A CASE expression starts with CASE, tests conditions with WHEN...THEN, optionally falls back with ELSE, and MUST end with END. Every branch should return compatible data types.",
+    "syntaxTrap": "Forgetting the closing END keyword, or putting a comma between WHEN branches (branches must NOT be separated by commas).",
+    "eli5Story": "Conditional decision making on PetClinic: Count total patients and senior patients (age >= 7) grouped by animal species.",
+    "commonMistakes": "Omitting the END keyword, forgetting the ELSE fallback (defaults to NULL), or misordering WHEN thresholds.",
+    "learningOutcomes": "Mastered 5.9 Conditional Aggregation (SUM/COUNT with CASE) on PetClinic.",
+    "challengeSlots": [
+      {
+        "type": "keyword",
+        "value": "SELECT"
+      },
+      {
+        "type": "column",
+        "value": "species,"
+      },
+      {
+        "type": "column",
+        "value": "COUNT(*)"
+      },
+      {
+        "type": "keyword",
+        "value": "AS"
+      },
+      {
+        "type": "column",
+        "value": "patient_count,"
+      },
+      {
+        "type": "column",
+        "value": "SUM(CASE"
+      },
+      {
+        "type": "keyword",
+        "value": "WHEN"
+      },
+      {
+        "type": "column",
+        "value": "age_years"
+      },
+      {
+        "type": "column",
+        "value": ">="
+      },
+      {
+        "type": "column",
+        "value": "7"
+      },
+      {
+        "type": "keyword",
+        "value": "THEN"
+      },
+      {
+        "type": "column",
+        "value": "1"
+      },
+      {
+        "type": "keyword",
+        "value": "ELSE"
+      },
+      {
+        "type": "column",
+        "value": "0"
+      },
+      {
+        "type": "keyword",
+        "value": "END)"
+      },
+      {
+        "type": "keyword",
+        "value": "AS"
+      },
+      {
+        "type": "column",
+        "value": "senior_patient_count"
+      },
+      {
+        "type": "keyword",
+        "value": "FROM"
+      },
+      {
+        "type": "table",
+        "value": "PetClinic"
+      },
+      {
+        "type": "keyword",
+        "value": "GROUP"
+      },
+      {
+        "type": "keyword",
+        "value": "BY"
+      },
+      {
+        "type": "column",
+        "value": "species;"
+      }
+    ]
+  },
+  {
+    "drillNumber": 491,
+    "subcluster": "5.10 Full Lifecycle Conditional Queries & Bug Hunts",
+    "level": "Level 3 (Bug Hunts & Complex Pipelines)",
+    "title": "Syntax #491: Fix missing END keyword in CASE expression: 'CASE WHEN gpa >= 3.5 THEN 'Honor' ELSE 'Standard'' (every CASE must close with END)",
+    "table": "Students",
+    "scenario": "Fix missing END keyword in CASE expression: 'CASE WHEN gpa >= 3.5 THEN 'Honor' ELSE 'Standard'' (every CASE must close with END).",
+    "businessObjective": "Fix missing END keyword in CASE expression: 'CASE WHEN gpa >= 3.5 THEN 'Honor' ELSE 'Standard'' (every CASE must close with END).",
+    "schemaSnippet": "Students schema",
+    "targetQuery": "SELECT full_name, gpa,\n  CASE WHEN gpa >= 3.5 THEN 'Honor' ELSE 'Standard' END AS status\nFROM Students\nWHERE major = 'Computer Science'\nORDER BY gpa DESC;",
+    "syntaxBlueprint": "SELECT col_name,\n  CASE WHEN condition THEN 'Val 1' ELSE 'Val 2' END AS alias_name\nFROM Students;",
+    "syntaxRule": "A CASE expression starts with CASE, tests conditions with WHEN...THEN, optionally falls back with ELSE, and MUST end with END. Every branch should return compatible data types.",
+    "syntaxTrap": "Forgetting the closing END keyword, or putting a comma between WHEN branches (branches must NOT be separated by commas).",
+    "eli5Story": "Conditional decision making on Students: Fix missing END keyword in CASE expression: 'CASE WHEN gpa >= 3.5 THEN 'Honor' ELSE 'Standard'' (every CASE must close with END).",
+    "commonMistakes": "Omitting the END keyword, forgetting the ELSE fallback (defaults to NULL), or misordering WHEN thresholds.",
+    "learningOutcomes": "Mastered 5.10 Full Lifecycle Conditional Queries & Bug Hunts on Students.",
+    "challengeSlots": [
+      {
+        "type": "keyword",
+        "value": "SELECT"
+      },
+      {
+        "type": "column",
+        "value": "full_name,"
+      },
+      {
+        "type": "column",
+        "value": "gpa,"
+      },
+      {
+        "type": "keyword",
+        "value": "CASE"
+      },
+      {
+        "type": "keyword",
+        "value": "WHEN"
+      },
+      {
+        "type": "column",
+        "value": "gpa"
+      },
+      {
+        "type": "column",
+        "value": ">="
+      },
+      {
+        "type": "column",
+        "value": "3.5"
+      },
+      {
+        "type": "keyword",
+        "value": "THEN"
+      },
+      {
+        "type": "column",
+        "value": "'Honor'"
+      },
+      {
+        "type": "keyword",
+        "value": "ELSE"
+      },
+      {
+        "type": "column",
+        "value": "'Standard'"
+      },
+      {
+        "type": "keyword",
+        "value": "END"
+      },
+      {
+        "type": "keyword",
+        "value": "AS"
+      },
+      {
+        "type": "column",
+        "value": "status"
+      },
+      {
+        "type": "keyword",
+        "value": "FROM"
+      },
+      {
+        "type": "table",
+        "value": "Students"
+      },
+      {
+        "type": "keyword",
+        "value": "WHERE"
+      },
+      {
+        "type": "column",
+        "value": "major"
+      },
+      {
+        "type": "column",
+        "value": "="
+      },
+      {
+        "type": "column",
+        "value": "'Computer"
+      },
+      {
+        "type": "column",
+        "value": "Science'"
+      },
+      {
+        "type": "keyword",
+        "value": "ORDER"
+      },
+      {
+        "type": "keyword",
+        "value": "BY"
+      },
+      {
+        "type": "column",
+        "value": "gpa"
+      },
+      {
+        "type": "keyword",
+        "value": "DESC;"
+      }
+    ]
+  },
+  {
+    "drillNumber": 492,
+    "subcluster": "5.10 Full Lifecycle Conditional Queries & Bug Hunts",
+    "level": "Level 3 (Bug Hunts & Complex Pipelines)",
+    "title": "Syntax #492: Fix branch ordering bug: ensure higher thresholds are evaluated before lower thresholds in descending WHEN checks",
+    "table": "Books",
+    "scenario": "Fix branch ordering bug: ensure higher thresholds are evaluated before lower thresholds in descending WHEN checks.",
+    "businessObjective": "Fix branch ordering bug: ensure higher thresholds are evaluated before lower thresholds in descending WHEN checks.",
+    "schemaSnippet": "Books schema",
+    "targetQuery": "SELECT title, price,\n  CASE\n    WHEN price > 20 THEN 'High'\n    WHEN price > 10 THEN 'Medium'\n    ELSE 'Low'\n  END AS cost_band\nFROM Books\nORDER BY price DESC;",
+    "syntaxBlueprint": "SELECT col_name,\n  CASE WHEN condition THEN 'Val 1' ELSE 'Val 2' END AS alias_name\nFROM Books;",
+    "syntaxRule": "A CASE expression starts with CASE, tests conditions with WHEN...THEN, optionally falls back with ELSE, and MUST end with END. Every branch should return compatible data types.",
+    "syntaxTrap": "Forgetting the closing END keyword, or putting a comma between WHEN branches (branches must NOT be separated by commas).",
+    "eli5Story": "Conditional decision making on Books: Fix branch ordering bug: ensure higher thresholds are evaluated before lower thresholds in descending WHEN checks.",
+    "commonMistakes": "Omitting the END keyword, forgetting the ELSE fallback (defaults to NULL), or misordering WHEN thresholds.",
+    "learningOutcomes": "Mastered 5.10 Full Lifecycle Conditional Queries & Bug Hunts on Books.",
+    "challengeSlots": [
+      {
+        "type": "keyword",
+        "value": "SELECT"
+      },
+      {
+        "type": "column",
+        "value": "title,"
+      },
+      {
+        "type": "column",
+        "value": "price,"
+      },
+      {
+        "type": "keyword",
+        "value": "CASE"
+      },
+      {
+        "type": "keyword",
+        "value": "WHEN"
+      },
+      {
+        "type": "column",
+        "value": "price"
+      },
+      {
+        "type": "column",
+        "value": ">"
+      },
+      {
+        "type": "column",
+        "value": "20"
+      },
+      {
+        "type": "keyword",
+        "value": "THEN"
+      },
+      {
+        "type": "column",
+        "value": "'High'"
+      },
+      {
+        "type": "keyword",
+        "value": "WHEN"
+      },
+      {
+        "type": "column",
+        "value": "price"
+      },
+      {
+        "type": "column",
+        "value": ">"
+      },
+      {
+        "type": "column",
+        "value": "10"
+      },
+      {
+        "type": "keyword",
+        "value": "THEN"
+      },
+      {
+        "type": "column",
+        "value": "'Medium'"
+      },
+      {
+        "type": "keyword",
+        "value": "ELSE"
+      },
+      {
+        "type": "column",
+        "value": "'Low'"
+      },
+      {
+        "type": "keyword",
+        "value": "END"
+      },
+      {
+        "type": "keyword",
+        "value": "AS"
+      },
+      {
+        "type": "column",
+        "value": "cost_band"
+      },
+      {
+        "type": "keyword",
+        "value": "FROM"
+      },
+      {
+        "type": "table",
+        "value": "Books"
+      },
+      {
+        "type": "keyword",
+        "value": "ORDER"
+      },
+      {
+        "type": "keyword",
+        "value": "BY"
+      },
+      {
+        "type": "column",
+        "value": "price"
+      },
+      {
+        "type": "keyword",
+        "value": "DESC;"
+      }
+    ]
+  },
+  {
+    "drillNumber": 493,
+    "subcluster": "5.10 Full Lifecycle Conditional Queries & Bug Hunts",
+    "level": "Level 3 (Bug Hunts & Complex Pipelines)",
+    "title": "Syntax #493: Combine conditional aggregation with GROUP BY and HAVING filters in a complete department pipeline",
+    "table": "Employees",
+    "scenario": "Combine conditional aggregation with GROUP BY and HAVING filters in a complete department pipeline.",
+    "businessObjective": "Combine conditional aggregation with GROUP BY and HAVING filters in a complete department pipeline.",
+    "schemaSnippet": "Employees schema",
+    "targetQuery": "SELECT department,\n  ROUND(AVG(CASE WHEN salary >= 60000 THEN salary END), 2) AS avg_mid_senior_salary\nFROM Employees\nGROUP BY department\nHAVING COUNT(*) >= 2;",
+    "syntaxBlueprint": "SELECT col_name,\n  CASE WHEN condition THEN 'Val 1' ELSE 'Val 2' END AS alias_name\nFROM Employees;",
+    "syntaxRule": "A CASE expression starts with CASE, tests conditions with WHEN...THEN, optionally falls back with ELSE, and MUST end with END. Every branch should return compatible data types.",
+    "syntaxTrap": "Forgetting the closing END keyword, or putting a comma between WHEN branches (branches must NOT be separated by commas).",
+    "eli5Story": "Conditional decision making on Employees: Combine conditional aggregation with GROUP BY and HAVING filters in a complete department pipeline.",
+    "commonMistakes": "Omitting the END keyword, forgetting the ELSE fallback (defaults to NULL), or misordering WHEN thresholds.",
+    "learningOutcomes": "Mastered 5.10 Full Lifecycle Conditional Queries & Bug Hunts on Employees.",
+    "challengeSlots": [
+      {
+        "type": "keyword",
+        "value": "SELECT"
+      },
+      {
+        "type": "column",
+        "value": "department,"
+      },
+      {
+        "type": "column",
+        "value": "ROUND(AVG(CASE"
+      },
+      {
+        "type": "keyword",
+        "value": "WHEN"
+      },
+      {
+        "type": "column",
+        "value": "salary"
+      },
+      {
+        "type": "column",
+        "value": ">="
+      },
+      {
+        "type": "column",
+        "value": "60000"
+      },
+      {
+        "type": "keyword",
+        "value": "THEN"
+      },
+      {
+        "type": "column",
+        "value": "salary"
+      },
+      {
+        "type": "keyword",
+        "value": "END),"
+      },
+      {
+        "type": "column",
+        "value": "2)"
+      },
+      {
+        "type": "keyword",
+        "value": "AS"
+      },
+      {
+        "type": "column",
+        "value": "avg_mid_senior_salary"
+      },
+      {
+        "type": "keyword",
+        "value": "FROM"
+      },
+      {
+        "type": "table",
+        "value": "Employees"
+      },
+      {
+        "type": "keyword",
+        "value": "GROUP"
+      },
+      {
+        "type": "keyword",
+        "value": "BY"
+      },
+      {
+        "type": "column",
+        "value": "department"
+      },
+      {
+        "type": "keyword",
+        "value": "HAVING"
+      },
+      {
+        "type": "column",
+        "value": "COUNT(*)"
+      },
+      {
+        "type": "column",
+        "value": ">="
+      },
+      {
+        "type": "column",
+        "value": "2;"
+      }
+    ]
+  },
+  {
+    "drillNumber": 494,
+    "subcluster": "5.10 Full Lifecycle Conditional Queries & Bug Hunts",
+    "level": "Level 3 (Bug Hunts & Complex Pipelines)",
+    "title": "Syntax #494: Fix misplaced comma before CASE keyword: 'SELECT item_name, unit_price, CASE ...' (ensure clean syntax)",
+    "table": "GroceryItems",
+    "scenario": "Fix misplaced comma before CASE keyword: 'SELECT item_name, unit_price, CASE ...' (ensure clean syntax).",
+    "businessObjective": "Fix misplaced comma before CASE keyword: 'SELECT item_name, unit_price, CASE ...' (ensure clean syntax).",
+    "schemaSnippet": "GroceryItems schema",
+    "targetQuery": "SELECT item_name, unit_price,\n  CASE WHEN unit_price > 5.00 THEN 'Expensive' ELSE 'Cheap' END AS price_tag\nFROM GroceryItems\nWHERE category = 'Produce';",
+    "syntaxBlueprint": "SELECT col_name,\n  CASE WHEN condition THEN 'Val 1' ELSE 'Val 2' END AS alias_name\nFROM GroceryItems;",
+    "syntaxRule": "A CASE expression starts with CASE, tests conditions with WHEN...THEN, optionally falls back with ELSE, and MUST end with END. Every branch should return compatible data types.",
+    "syntaxTrap": "Forgetting the closing END keyword, or putting a comma between WHEN branches (branches must NOT be separated by commas).",
+    "eli5Story": "Conditional decision making on GroceryItems: Fix misplaced comma before CASE keyword: 'SELECT item_name, unit_price, CASE ...' (ensure clean syntax).",
+    "commonMistakes": "Omitting the END keyword, forgetting the ELSE fallback (defaults to NULL), or misordering WHEN thresholds.",
+    "learningOutcomes": "Mastered 5.10 Full Lifecycle Conditional Queries & Bug Hunts on GroceryItems.",
+    "challengeSlots": [
+      {
+        "type": "keyword",
+        "value": "SELECT"
+      },
+      {
+        "type": "column",
+        "value": "item_name,"
+      },
+      {
+        "type": "column",
+        "value": "unit_price,"
+      },
+      {
+        "type": "keyword",
+        "value": "CASE"
+      },
+      {
+        "type": "keyword",
+        "value": "WHEN"
+      },
+      {
+        "type": "column",
+        "value": "unit_price"
+      },
+      {
+        "type": "column",
+        "value": ">"
+      },
+      {
+        "type": "column",
+        "value": "5.00"
+      },
+      {
+        "type": "keyword",
+        "value": "THEN"
+      },
+      {
+        "type": "column",
+        "value": "'Expensive'"
+      },
+      {
+        "type": "keyword",
+        "value": "ELSE"
+      },
+      {
+        "type": "column",
+        "value": "'Cheap'"
+      },
+      {
+        "type": "keyword",
+        "value": "END"
+      },
+      {
+        "type": "keyword",
+        "value": "AS"
+      },
+      {
+        "type": "column",
+        "value": "price_tag"
+      },
+      {
+        "type": "keyword",
+        "value": "FROM"
+      },
+      {
+        "type": "table",
+        "value": "GroceryItems"
+      },
+      {
+        "type": "keyword",
+        "value": "WHERE"
+      },
+      {
+        "type": "column",
+        "value": "category"
+      },
+      {
+        "type": "column",
+        "value": "="
+      },
+      {
+        "type": "column",
+        "value": "'Produce';"
+      }
+    ]
+  },
+  {
+    "drillNumber": 495,
+    "subcluster": "5.10 Full Lifecycle Conditional Queries & Bug Hunts",
+    "level": "Level 3 (Bug Hunts & Complex Pipelines)",
+    "title": "Syntax #495: Combine COALESCE with CASE WHEN to clean destination and label high-value orders simultaneously",
+    "table": "Orders",
+    "scenario": "Combine COALESCE with CASE WHEN to clean destination and label high-value orders simultaneously.",
+    "businessObjective": "Combine COALESCE with CASE WHEN to clean destination and label high-value orders simultaneously.",
+    "schemaSnippet": "Orders schema",
+    "targetQuery": "SELECT order_id,\n  COALESCE(shipping_city, 'Store Pickup') AS ship_destination,\n  CASE WHEN quantity * unit_price >= 100 THEN 'VIP Order' ELSE 'Standard Order' END AS tier\nFROM Orders\nORDER BY order_id ASC;",
+    "syntaxBlueprint": "SELECT col_name,\n  CASE WHEN condition THEN 'Val 1' ELSE 'Val 2' END AS alias_name\nFROM Orders;",
+    "syntaxRule": "A CASE expression starts with CASE, tests conditions with WHEN...THEN, optionally falls back with ELSE, and MUST end with END. Every branch should return compatible data types.",
+    "syntaxTrap": "Forgetting the closing END keyword, or putting a comma between WHEN branches (branches must NOT be separated by commas).",
+    "eli5Story": "Conditional decision making on Orders: Combine COALESCE with CASE WHEN to clean destination and label high-value orders simultaneously.",
+    "commonMistakes": "Omitting the END keyword, forgetting the ELSE fallback (defaults to NULL), or misordering WHEN thresholds.",
+    "learningOutcomes": "Mastered 5.10 Full Lifecycle Conditional Queries & Bug Hunts on Orders.",
+    "challengeSlots": [
+      {
+        "type": "keyword",
+        "value": "SELECT"
+      },
+      {
+        "type": "column",
+        "value": "order_id,"
+      },
+      {
+        "type": "column",
+        "value": "COALESCE(shipping_city,"
+      },
+      {
+        "type": "column",
+        "value": "'Store"
+      },
+      {
+        "type": "column",
+        "value": "Pickup')"
+      },
+      {
+        "type": "keyword",
+        "value": "AS"
+      },
+      {
+        "type": "column",
+        "value": "ship_destination,"
+      },
+      {
+        "type": "keyword",
+        "value": "CASE"
+      },
+      {
+        "type": "keyword",
+        "value": "WHEN"
+      },
+      {
+        "type": "column",
+        "value": "quantity"
+      },
+      {
+        "type": "column",
+        "value": "*"
+      },
+      {
+        "type": "column",
+        "value": "unit_price"
+      },
+      {
+        "type": "column",
+        "value": ">="
+      },
+      {
+        "type": "column",
+        "value": "100"
+      },
+      {
+        "type": "keyword",
+        "value": "THEN"
+      },
+      {
+        "type": "column",
+        "value": "'VIP"
+      },
+      {
+        "type": "column",
+        "value": "Order'"
+      },
+      {
+        "type": "keyword",
+        "value": "ELSE"
+      },
+      {
+        "type": "column",
+        "value": "'Standard"
+      },
+      {
+        "type": "column",
+        "value": "Order'"
+      },
+      {
+        "type": "keyword",
+        "value": "END"
+      },
+      {
+        "type": "keyword",
+        "value": "AS"
+      },
+      {
+        "type": "column",
+        "value": "tier"
+      },
+      {
+        "type": "keyword",
+        "value": "FROM"
+      },
+      {
+        "type": "table",
+        "value": "Orders"
+      },
+      {
+        "type": "keyword",
+        "value": "ORDER"
+      },
+      {
+        "type": "keyword",
+        "value": "BY"
+      },
+      {
+        "type": "column",
+        "value": "order_id"
+      },
+      {
+        "type": "keyword",
+        "value": "ASC;"
+      }
+    ]
+  },
+  {
+    "drillNumber": 496,
+    "subcluster": "5.10 Full Lifecycle Conditional Queries & Bug Hunts",
+    "level": "Level 3 (Bug Hunts & Complex Pipelines)",
+    "title": "Syntax #496: Calculate hit track percentage per genre using conditional SUM divided by total count",
+    "table": "MusicTracks",
+    "scenario": "Calculate hit track percentage per genre using conditional SUM divided by total count.",
+    "businessObjective": "Calculate hit track percentage per genre using conditional SUM divided by total count.",
+    "schemaSnippet": "MusicTracks schema",
+    "targetQuery": "SELECT genre,\n  COUNT(*) AS total_songs,\n  ROUND(100.0 * SUM(CASE WHEN play_count > 100000 THEN 1 ELSE 0 END) / COUNT(*), 1) AS hit_percentage\nFROM MusicTracks\nGROUP BY genre\nHAVING COUNT(*) >= 2;",
+    "syntaxBlueprint": "SELECT col_name,\n  CASE WHEN condition THEN 'Val 1' ELSE 'Val 2' END AS alias_name\nFROM MusicTracks;",
+    "syntaxRule": "A CASE expression starts with CASE, tests conditions with WHEN...THEN, optionally falls back with ELSE, and MUST end with END. Every branch should return compatible data types.",
+    "syntaxTrap": "Forgetting the closing END keyword, or putting a comma between WHEN branches (branches must NOT be separated by commas).",
+    "eli5Story": "Conditional decision making on MusicTracks: Calculate hit track percentage per genre using conditional SUM divided by total count.",
+    "commonMistakes": "Omitting the END keyword, forgetting the ELSE fallback (defaults to NULL), or misordering WHEN thresholds.",
+    "learningOutcomes": "Mastered 5.10 Full Lifecycle Conditional Queries & Bug Hunts on MusicTracks.",
+    "challengeSlots": [
+      {
+        "type": "keyword",
+        "value": "SELECT"
+      },
+      {
+        "type": "column",
+        "value": "genre,"
+      },
+      {
+        "type": "column",
+        "value": "COUNT(*)"
+      },
+      {
+        "type": "keyword",
+        "value": "AS"
+      },
+      {
+        "type": "column",
+        "value": "total_songs,"
+      },
+      {
+        "type": "column",
+        "value": "ROUND(100.0"
+      },
+      {
+        "type": "column",
+        "value": "*"
+      },
+      {
+        "type": "column",
+        "value": "SUM(CASE"
+      },
+      {
+        "type": "keyword",
+        "value": "WHEN"
+      },
+      {
+        "type": "column",
+        "value": "play_count"
+      },
+      {
+        "type": "column",
+        "value": ">"
+      },
+      {
+        "type": "column",
+        "value": "100000"
+      },
+      {
+        "type": "keyword",
+        "value": "THEN"
+      },
+      {
+        "type": "column",
+        "value": "1"
+      },
+      {
+        "type": "keyword",
+        "value": "ELSE"
+      },
+      {
+        "type": "column",
+        "value": "0"
+      },
+      {
+        "type": "keyword",
+        "value": "END)"
+      },
+      {
+        "type": "column",
+        "value": "/"
+      },
+      {
+        "type": "column",
+        "value": "COUNT(*),"
+      },
+      {
+        "type": "column",
+        "value": "1)"
+      },
+      {
+        "type": "keyword",
+        "value": "AS"
+      },
+      {
+        "type": "column",
+        "value": "hit_percentage"
+      },
+      {
+        "type": "keyword",
+        "value": "FROM"
+      },
+      {
+        "type": "table",
+        "value": "MusicTracks"
+      },
+      {
+        "type": "keyword",
+        "value": "GROUP"
+      },
+      {
+        "type": "keyword",
+        "value": "BY"
+      },
+      {
+        "type": "column",
+        "value": "genre"
+      },
+      {
+        "type": "keyword",
+        "value": "HAVING"
+      },
+      {
+        "type": "column",
+        "value": "COUNT(*)"
+      },
+      {
+        "type": "column",
+        "value": ">="
+      },
+      {
+        "type": "column",
+        "value": "2;"
+      }
+    ]
+  },
+  {
+    "drillNumber": 497,
+    "subcluster": "5.10 Full Lifecycle Conditional Queries & Bug Hunts",
+    "level": "Level 3 (Bug Hunts & Complex Pipelines)",
+    "title": "Syntax #497: Filter active gym members and classify attendance into 3 clean descriptive tiers",
+    "table": "GymMembers",
+    "scenario": "Filter active gym members and classify attendance into 3 clean descriptive tiers.",
+    "businessObjective": "Filter active gym members and classify attendance into 3 clean descriptive tiers.",
+    "schemaSnippet": "GymMembers schema",
+    "targetQuery": "SELECT member_name,\n  CASE\n    WHEN visits_this_month = 0 THEN 'Zero Attendance'\n    WHEN visits_this_month < 5 THEN 'Low Attendance'\n    ELSE 'Active Attendance'\n  END AS attendance_status\nFROM GymMembers\nWHERE is_active = 1;",
+    "syntaxBlueprint": "SELECT col_name,\n  CASE WHEN condition THEN 'Val 1' ELSE 'Val 2' END AS alias_name\nFROM GymMembers;",
+    "syntaxRule": "A CASE expression starts with CASE, tests conditions with WHEN...THEN, optionally falls back with ELSE, and MUST end with END. Every branch should return compatible data types.",
+    "syntaxTrap": "Forgetting the closing END keyword, or putting a comma between WHEN branches (branches must NOT be separated by commas).",
+    "eli5Story": "Conditional decision making on GymMembers: Filter active gym members and classify attendance into 3 clean descriptive tiers.",
+    "commonMistakes": "Omitting the END keyword, forgetting the ELSE fallback (defaults to NULL), or misordering WHEN thresholds.",
+    "learningOutcomes": "Mastered 5.10 Full Lifecycle Conditional Queries & Bug Hunts on GymMembers.",
+    "challengeSlots": [
+      {
+        "type": "keyword",
+        "value": "SELECT"
+      },
+      {
+        "type": "column",
+        "value": "member_name,"
+      },
+      {
+        "type": "keyword",
+        "value": "CASE"
+      },
+      {
+        "type": "keyword",
+        "value": "WHEN"
+      },
+      {
+        "type": "column",
+        "value": "visits_this_month"
+      },
+      {
+        "type": "column",
+        "value": "="
+      },
+      {
+        "type": "column",
+        "value": "0"
+      },
+      {
+        "type": "keyword",
+        "value": "THEN"
+      },
+      {
+        "type": "column",
+        "value": "'Zero"
+      },
+      {
+        "type": "column",
+        "value": "Attendance'"
+      },
+      {
+        "type": "keyword",
+        "value": "WHEN"
+      },
+      {
+        "type": "column",
+        "value": "visits_this_month"
+      },
+      {
+        "type": "column",
+        "value": "<"
+      },
+      {
+        "type": "column",
+        "value": "5"
+      },
+      {
+        "type": "keyword",
+        "value": "THEN"
+      },
+      {
+        "type": "column",
+        "value": "'Low"
+      },
+      {
+        "type": "column",
+        "value": "Attendance'"
+      },
+      {
+        "type": "keyword",
+        "value": "ELSE"
+      },
+      {
+        "type": "column",
+        "value": "'Active"
+      },
+      {
+        "type": "column",
+        "value": "Attendance'"
+      },
+      {
+        "type": "keyword",
+        "value": "END"
+      },
+      {
+        "type": "keyword",
+        "value": "AS"
+      },
+      {
+        "type": "column",
+        "value": "attendance_status"
+      },
+      {
+        "type": "keyword",
+        "value": "FROM"
+      },
+      {
+        "type": "table",
+        "value": "GymMembers"
+      },
+      {
+        "type": "keyword",
+        "value": "WHERE"
+      },
+      {
+        "type": "column",
+        "value": "is_active"
+      },
+      {
+        "type": "column",
+        "value": "="
+      },
+      {
+        "type": "column",
+        "value": "1;"
+      }
+    ]
+  },
+  {
+    "drillNumber": 498,
+    "subcluster": "5.10 Full Lifecycle Conditional Queries & Bug Hunts",
+    "level": "Level 3 (Bug Hunts & Complex Pipelines)",
+    "title": "Syntax #498: Sort reviews segregating reviewed films from pending reviews using CASE expression",
+    "table": "MovieReviews",
+    "scenario": "Sort reviews segregating reviewed films from pending reviews using CASE expression.",
+    "businessObjective": "Sort reviews segregating reviewed films from pending reviews using CASE expression.",
+    "schemaSnippet": "MovieReviews schema",
+    "targetQuery": "SELECT movie_title, star_rating,\n  CASE WHEN star_rating IS NOT NULL THEN 'Reviewed' ELSE 'Pending Review' END AS review_state\nFROM MovieReviews\nORDER BY review_state ASC, star_rating DESC;",
+    "syntaxBlueprint": "SELECT col_name,\n  CASE WHEN condition THEN 'Val 1' ELSE 'Val 2' END AS alias_name\nFROM MovieReviews;",
+    "syntaxRule": "A CASE expression starts with CASE, tests conditions with WHEN...THEN, optionally falls back with ELSE, and MUST end with END. Every branch should return compatible data types.",
+    "syntaxTrap": "Forgetting the closing END keyword, or putting a comma between WHEN branches (branches must NOT be separated by commas).",
+    "eli5Story": "Conditional decision making on MovieReviews: Sort reviews segregating reviewed films from pending reviews using CASE expression.",
+    "commonMistakes": "Omitting the END keyword, forgetting the ELSE fallback (defaults to NULL), or misordering WHEN thresholds.",
+    "learningOutcomes": "Mastered 5.10 Full Lifecycle Conditional Queries & Bug Hunts on MovieReviews.",
+    "challengeSlots": [
+      {
+        "type": "keyword",
+        "value": "SELECT"
+      },
+      {
+        "type": "column",
+        "value": "movie_title,"
+      },
+      {
+        "type": "column",
+        "value": "star_rating,"
+      },
+      {
+        "type": "keyword",
+        "value": "CASE"
+      },
+      {
+        "type": "keyword",
+        "value": "WHEN"
+      },
+      {
+        "type": "column",
+        "value": "star_rating"
+      },
+      {
+        "type": "keyword",
+        "value": "IS"
+      },
+      {
+        "type": "keyword",
+        "value": "NOT"
+      },
+      {
+        "type": "keyword",
+        "value": "NULL"
+      },
+      {
+        "type": "keyword",
+        "value": "THEN"
+      },
+      {
+        "type": "column",
+        "value": "'Reviewed'"
+      },
+      {
+        "type": "keyword",
+        "value": "ELSE"
+      },
+      {
+        "type": "column",
+        "value": "'Pending"
+      },
+      {
+        "type": "column",
+        "value": "Review'"
+      },
+      {
+        "type": "keyword",
+        "value": "END"
+      },
+      {
+        "type": "keyword",
+        "value": "AS"
+      },
+      {
+        "type": "column",
+        "value": "review_state"
+      },
+      {
+        "type": "keyword",
+        "value": "FROM"
+      },
+      {
+        "type": "table",
+        "value": "MovieReviews"
+      },
+      {
+        "type": "keyword",
+        "value": "ORDER"
+      },
+      {
+        "type": "keyword",
+        "value": "BY"
+      },
+      {
+        "type": "column",
+        "value": "review_state"
+      },
+      {
+        "type": "keyword",
+        "value": "ASC,"
+      },
+      {
+        "type": "column",
+        "value": "star_rating"
+      },
+      {
+        "type": "keyword",
+        "value": "DESC;"
+      }
+    ]
+  },
+  {
+    "drillNumber": 499,
+    "subcluster": "5.10 Full Lifecycle Conditional Queries & Bug Hunts",
+    "level": "Level 3 (Bug Hunts & Complex Pipelines)",
+    "title": "Syntax #499: Detect route validation anomalies by flagging flights where origin equals destination",
+    "table": "FlightSchedule",
+    "scenario": "Detect route validation anomalies by flagging flights where origin equals destination.",
+    "businessObjective": "Detect route validation anomalies by flagging flights where origin equals destination.",
+    "schemaSnippet": "FlightSchedule schema",
+    "targetQuery": "SELECT flight_id, origin_airport, destination_airport,\n  CASE WHEN origin_airport = destination_airport THEN 'Invalid Route' ELSE 'Valid Route' END AS route_validity\nFROM FlightSchedule;",
+    "syntaxBlueprint": "SELECT col_name,\n  CASE WHEN condition THEN 'Val 1' ELSE 'Val 2' END AS alias_name\nFROM FlightSchedule;",
+    "syntaxRule": "A CASE expression starts with CASE, tests conditions with WHEN...THEN, optionally falls back with ELSE, and MUST end with END. Every branch should return compatible data types.",
+    "syntaxTrap": "Forgetting the closing END keyword, or putting a comma between WHEN branches (branches must NOT be separated by commas).",
+    "eli5Story": "Conditional decision making on FlightSchedule: Detect route validation anomalies by flagging flights where origin equals destination.",
+    "commonMistakes": "Omitting the END keyword, forgetting the ELSE fallback (defaults to NULL), or misordering WHEN thresholds.",
+    "learningOutcomes": "Mastered 5.10 Full Lifecycle Conditional Queries & Bug Hunts on FlightSchedule.",
+    "challengeSlots": [
+      {
+        "type": "keyword",
+        "value": "SELECT"
+      },
+      {
+        "type": "column",
+        "value": "flight_id,"
+      },
+      {
+        "type": "column",
+        "value": "origin_airport,"
+      },
+      {
+        "type": "column",
+        "value": "destination_airport,"
+      },
+      {
+        "type": "keyword",
+        "value": "CASE"
+      },
+      {
+        "type": "keyword",
+        "value": "WHEN"
+      },
+      {
+        "type": "column",
+        "value": "origin_airport"
+      },
+      {
+        "type": "column",
+        "value": "="
+      },
+      {
+        "type": "column",
+        "value": "destination_airport"
+      },
+      {
+        "type": "keyword",
+        "value": "THEN"
+      },
+      {
+        "type": "column",
+        "value": "'Invalid"
+      },
+      {
+        "type": "column",
+        "value": "Route'"
+      },
+      {
+        "type": "keyword",
+        "value": "ELSE"
+      },
+      {
+        "type": "column",
+        "value": "'Valid"
+      },
+      {
+        "type": "column",
+        "value": "Route'"
+      },
+      {
+        "type": "keyword",
+        "value": "END"
+      },
+      {
+        "type": "keyword",
+        "value": "AS"
+      },
+      {
+        "type": "column",
+        "value": "route_validity"
+      },
+      {
+        "type": "keyword",
+        "value": "FROM"
+      },
+      {
+        "type": "table",
+        "value": "FlightSchedule;"
+      }
+    ]
+  },
+  {
+    "drillNumber": 500,
+    "subcluster": "5.10 Full Lifecycle Conditional Queries & Bug Hunts",
+    "level": "Level 3 (Bug Hunts & Complex Pipelines)",
+    "title": "Syntax #500: Multi-condition compound predicates inside CASE WHEN: evaluate species AND weight simultaneously",
+    "table": "PetClinic",
+    "scenario": "Multi-condition compound predicates inside CASE WHEN: evaluate species AND weight simultaneously.",
+    "businessObjective": "Multi-condition compound predicates inside CASE WHEN: evaluate species AND weight simultaneously.",
+    "schemaSnippet": "PetClinic schema",
+    "targetQuery": "SELECT pet_name, species, weight_kg,\n  CASE\n    WHEN species = 'Dog' AND weight_kg > 25 THEN 'Large Canine'\n    WHEN species = 'Dog' THEN 'Standard Canine'\n    WHEN species = 'Cat' THEN 'Feline Patient'\n    ELSE 'Other Species'\n  END AS patient_classification\nFROM PetClinic\nORDER BY patient_classification ASC;",
+    "syntaxBlueprint": "SELECT col_name,\n  CASE WHEN condition THEN 'Val 1' ELSE 'Val 2' END AS alias_name\nFROM PetClinic;",
+    "syntaxRule": "A CASE expression starts with CASE, tests conditions with WHEN...THEN, optionally falls back with ELSE, and MUST end with END. Every branch should return compatible data types.",
+    "syntaxTrap": "Forgetting the closing END keyword, or putting a comma between WHEN branches (branches must NOT be separated by commas).",
+    "eli5Story": "Conditional decision making on PetClinic: Multi-condition compound predicates inside CASE WHEN: evaluate species AND weight simultaneously.",
+    "commonMistakes": "Omitting the END keyword, forgetting the ELSE fallback (defaults to NULL), or misordering WHEN thresholds.",
+    "learningOutcomes": "Mastered 5.10 Full Lifecycle Conditional Queries & Bug Hunts on PetClinic.",
+    "challengeSlots": [
+      {
+        "type": "keyword",
+        "value": "SELECT"
+      },
+      {
+        "type": "column",
+        "value": "pet_name,"
+      },
+      {
+        "type": "column",
+        "value": "species,"
+      },
+      {
+        "type": "column",
+        "value": "weight_kg,"
+      },
+      {
+        "type": "keyword",
+        "value": "CASE"
+      },
+      {
+        "type": "keyword",
+        "value": "WHEN"
+      },
+      {
+        "type": "column",
+        "value": "species"
+      },
+      {
+        "type": "column",
+        "value": "="
+      },
+      {
+        "type": "column",
+        "value": "'Dog'"
+      },
+      {
+        "type": "keyword",
+        "value": "AND"
+      },
+      {
+        "type": "column",
+        "value": "weight_kg"
+      },
+      {
+        "type": "column",
+        "value": ">"
+      },
+      {
+        "type": "column",
+        "value": "25"
+      },
+      {
+        "type": "keyword",
+        "value": "THEN"
+      },
+      {
+        "type": "column",
+        "value": "'Large"
+      },
+      {
+        "type": "column",
+        "value": "Canine'"
+      },
+      {
+        "type": "keyword",
+        "value": "WHEN"
+      },
+      {
+        "type": "column",
+        "value": "species"
+      },
+      {
+        "type": "column",
+        "value": "="
+      },
+      {
+        "type": "column",
+        "value": "'Dog'"
+      },
+      {
+        "type": "keyword",
+        "value": "THEN"
+      },
+      {
+        "type": "column",
+        "value": "'Standard"
+      },
+      {
+        "type": "column",
+        "value": "Canine'"
+      },
+      {
+        "type": "keyword",
+        "value": "WHEN"
+      },
+      {
+        "type": "column",
+        "value": "species"
+      },
+      {
+        "type": "column",
+        "value": "="
+      },
+      {
+        "type": "column",
+        "value": "'Cat'"
+      },
+      {
+        "type": "keyword",
+        "value": "THEN"
+      },
+      {
+        "type": "column",
+        "value": "'Feline"
+      },
+      {
+        "type": "column",
+        "value": "Patient'"
+      },
+      {
+        "type": "keyword",
+        "value": "ELSE"
+      },
+      {
+        "type": "column",
+        "value": "'Other"
+      },
+      {
+        "type": "column",
+        "value": "Species'"
+      },
+      {
+        "type": "keyword",
+        "value": "END"
+      },
+      {
+        "type": "keyword",
+        "value": "AS"
+      },
+      {
+        "type": "column",
+        "value": "patient_classification"
+      },
+      {
+        "type": "keyword",
+        "value": "FROM"
+      },
+      {
+        "type": "table",
+        "value": "PetClinic"
+      },
+      {
+        "type": "keyword",
+        "value": "ORDER"
+      },
+      {
+        "type": "keyword",
+        "value": "BY"
+      },
+      {
+        "type": "column",
+        "value": "patient_classification"
+      },
+      {
+        "type": "keyword",
+        "value": "ASC;"
       }
     ]
   }
