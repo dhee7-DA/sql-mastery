@@ -17,13 +17,13 @@
 - **Visualizer & Masterclass Super-Upgrades**:
   - **12 Visual Masterclass Modules with Poppy Neo-Brutalist SVGs**: Textbook CS theory, formulas, storage physics, and gotchas covering Modules 01 through 12 (now including Module 12: Analytical Window Functions & Sliding Frame Physics).
   - **The 2,100 Master MCQ Technical Vault**: 2,100 deep technical checks across 23 distinct categories, including **350 Dedicated Join MCQs**, **500 Dedicated Window Function MCQs**, and **150 Section 10 Subquery/CTE/Set Operation MCQs** with strictly balanced 25% option distribution.
-  - **The 1,490 Corporate Case Study Master Vault & Standalone Syntax Gym (1,200 Drills)**: Decoupled for clean UX without clutter: 1,490 production analytics scenarios across 10 corporate sections (530 Easy, 530 Medium, 430 Hard), alongside a standalone **Syntax Gym** housing 1,200 active-retrieval foundational micro-drills (`⚡ Drill #0001`–`#1200`) across 12 pillars: SELECT (100), WHERE (100), ORDER BY (100), Aggregations & GROUP BY (100), CASE WHEN & Conditional Logic (100), String Manipulation & Patterns (100), Relational Joins Core (100), Advanced Joins & Structural Patterns (100), Multi-Table Chaining & Joined Aggregations (100), Date, Time & Temporal Arithmetic (100), Subqueries & Derived Tables (100), and Modular CTEs & Multi-Step Pipelines (100) with interactive blanks and jumbled keyword banks across 10 everyday schemas.
+  - **The 1,490 Corporate Case Study Master Vault & Standalone Syntax Gym (1,500 Drills)**: Decoupled for clean UX without clutter: 1,490 production analytics scenarios across 10 corporate sections (530 Easy, 530 Medium, 430 Hard), alongside a standalone **Syntax Gym** housing 1,500 active-retrieval foundational micro-drills (`⚡ Drill #0001`–`#1500`) across 15 pillars: SELECT (100), WHERE (100), ORDER BY (100), Aggregations & GROUP BY (100), CASE WHEN & Conditional Logic (100), String Manipulation & Patterns (100), Relational Joins Core (100), Advanced Joins & Structural Patterns (100), Multi-Table Chaining & Joined Aggregations (100), Date, Time & Temporal Arithmetic (100), Subqueries & Derived Tables (100), Modular CTEs & Multi-Step Pipelines (100), Window Ranking & Percentiles (100), Value Offsets & Deltas (100), and Running Balances & Frames (100) with interactive blanks and jumbled keyword banks across 10 everyday schemas.
   - **30 Interactive Quests**: Levels 1–30 with audio FX, token puzzle mechanics, and instant evaluation.
   - **Track 04 in Guided Learning Lab**: 8 dedicated steps covering Inner, Left, Right, Full Outer, Anti, Cross, Self, and Non-Equi Joins.
   - **🤖 "Byte" the Animated SQL Cyber-Bot Companion**: Reactive SVG buddy with 5 facial expressions (idle, happy, star-eyes celebrating, confused, pensive), contextual hints, view-switch commentary, poke interactions, and audio integration.
 - **Next Immediate Action**: Advance to Day 13 (*Real-World Business Analytics: Retention Cohort Heatmaps, Customer Churn Rates & LTV*)
 - **Total Problems Completed in Intensive**: 66 / 68 Problems
-- **Last Updated**: 2026-09-17 01:50 IST
+- **Last Updated**: 2026-09-17 02:15 IST
 
 ---
 
@@ -95,6 +95,27 @@
 - **Universal Case Resolver**: Upgraded token handlers with `getCaseStudyById()` to resolve drills with IDs 1491 to 1790.
 - **Pillar & Search Controls**: Connected 100-drill sub-track filters (`select`, `where`, `order`, `all`), search query input, and solved tally badge.
 - **Critical Debugging Rule Adopted (The "Dummy Test" Isolation Rule)**: Never attempt to debug complex browser front-end rendering through terminal headless Node mocks. Immediately inject a single hardcoded dummy object at the target renderer to establish whether the issue is DOM/CSS mounting vs. data resolution in 30 seconds.
+
+### 9. 2026-09-17 (Syntax Gym 1,500 Micro-Drills Full Expansion across 15 Pillars)
+- **1,500 Micro-Drills Complete**: Scaled the standalone SQL Syntax Gym from 300 to 1,500 active-retrieval foundational drills (`⚡ Drill #0001`–`#1500`) across 15 complete pillars (exactly 100 drills per topic):
+  1. Topic 1: SELECT & Projections (#001–#100)
+  2. Topic 2: WHERE & Predicates (#101–#200)
+  3. Topic 3: ORDER BY & LIMIT Slicing (#201–#300)
+  4. Topic 4: Aggregations & GROUP BY (#301–#400)
+  5. Topic 5: CASE WHEN & Conditional Logic (#401–#500)
+  6. Topic 6: String Manipulation & Patterns (#501–#600)
+  7. Topic 7: Relational Joins Core (#601–#700)
+  8. Topic 8: Advanced Joins & Structural Patterns (#701–#800)
+  9. Topic 9: Multi-Table Chaining & Joined Aggregations (#801–#900)
+  10. Topic 10: Date, Time & Temporal Arithmetic (#901–#1000)
+  11. Topic 11: Subqueries & Derived Tables (#1001–#1100)
+  12. Topic 12: Modular CTEs & Multi-Step Pipelines (#1101–#1200)
+  13. Topic 13: Window Ranking & Percentiles (#1201–#1300)
+  14. Topic 14: Value Offsets & Deltas (#1301–#1400)
+  15. Topic 15: Running Balances & Frames (#1401–#1500)
+- **10 Everyday Relational Schemas**: Balanced distribution with zero corporate clutter across 10 relatable domains.
+- **UI & Assembly**: Assembled into `visualizer/syntax_gym_data.js`, wired in `visualizer/app.js` with instant category filtering, and updated `visualizer/index.html` navigation badges.
+
 
 
 

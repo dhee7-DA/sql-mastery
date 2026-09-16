@@ -106,7 +106,7 @@
         </button>
         <button class="nav-tab" data-view="viewSyntaxGym" onclick="switchMainView('viewSyntaxGym')">
           <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M18 6h4v12h-4zM2 6h4v12H2zM6 10h12v4H6z"/></svg>
-          Syntax Gym (1,200)
+          Syntax Gym (1,500)
         </button>
         <button class="nav-tab" data-view="viewCases" onclick="switchMainView('viewCases')">
           <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="2" y="7" width="20" height="14" rx="2" ry="2"></rect><path d="M16 21V5a2 2 0 0 0-2-2h-4a2 2 0 0 0-2 2v16"></path></svg>
@@ -647,27 +647,27 @@
     </div>
   </div>
 
-  <!-- VIEW: Dedicated Syntax Gym (1,200 Foundational Micro-Drills & Everyday Schemas) -->
+  <!-- VIEW: Dedicated Syntax Gym (1,500 Foundational Micro-Drills & Everyday Schemas) -->
   <div class="view-panel" id="viewSyntaxGym">
     <div class="curriculum-container">
       <div class="curriculum-toolbar-deck">
         <!-- Deck 1: Title, Solved Tally & Search -->
         <div class="toolbar-deck-top">
           <div>
-            <h2 class="view-title">🏋️ The SQL Syntax Gym (1,200 Progressive Micro-Drills)</h2>
+            <h2 class="view-title">🏋️ The SQL Syntax Gym (1,500 Progressive Micro-Drills)</h2>
             <p class="view-subtitle">High-repetition punctuation &amp; clause muscle memory across 10 everyday relatable schemas. Zero corporate confusion.</p>
           </div>
           <div class="toolbar-deck-controls">
-            <input type="text" id="gymSearchInput" class="case-search-input" placeholder="🔍 Search 1,200 drills by keyword, table, query...">
-            <span id="gymCountBadge" class="status-pill">1,200 Drills</span>
-            <span id="gymSolvedBadge" class="status-pill" style="background: rgba(34, 197, 94, 0.15); color: #4ade80; border: 1px solid rgba(74, 222, 128, 0.3);">⚡ <span id="gymSolvedCount">0</span>/1,200 Solved</span>
+            <input type="text" id="gymSearchInput" class="case-search-input" placeholder="🔍 Search 1,500 drills by keyword, table, query...">
+            <span id="gymCountBadge" class="status-pill">1,500 Drills</span>
+            <span id="gymSolvedBadge" class="status-pill" style="background: rgba(34, 197, 94, 0.15); color: #4ade80; border: 1px solid rgba(74, 222, 128, 0.3);">⚡ <span id="gymSolvedCount">0</span>/1,500 Solved</span>
           </div>
         </div>
 
         <!-- Deck 2: Syllabus Pillars Switcher Bar -->
         <div class="toolbar-deck-bottom">
           <div class="case-section-group" id="gymPillarFilters" style="display: flex; gap: 8px; flex-wrap: wrap;">
-            <button class="case-section-btn active" data-pillar="all">All 1,200 Drills</button>
+            <button class="case-section-btn active" data-pillar="all">All 1,500 Drills</button>
             <button class="case-section-btn" data-pillar="select" style="border-color: #38bdf8; color: #38bdf8; font-weight: 700;">💎 Topic 1: SELECT &amp; Projections (100)</button>
             <button class="case-section-btn" data-pillar="where" style="border-color: #f59e0b; color: #fbbf24; font-weight: 700;">🎯 Topic 2: WHERE &amp; Predicates (100)</button>
             <button class="case-section-btn" data-pillar="order" style="border-color: #a855f7; color: #c084fc; font-weight: 700;">⚡ Topic 3: ORDER BY &amp; LIMIT Slicing (100)</button>
@@ -680,6 +680,9 @@
             <button class="case-section-btn" data-pillar="date_time" style="border-color: #8b5cf6; color: #a78bfa; font-weight: 700;">⏱️ Topic 10: Date, Time &amp; Temporal (100)</button>
             <button class="case-section-btn" data-pillar="subqueries" style="border-color: #14b8a6; color: #2dd4bf; font-weight: 700;">🧱 Topic 11: Subqueries &amp; Derived (100)</button>
             <button class="case-section-btn" data-pillar="ctes" style="border-color: #f97316; color: #fb923c; font-weight: 700;">🏗️ Topic 12: Modular CTEs &amp; Pipelines (100)</button>
+            <button class="case-section-btn" data-pillar="window_ranking" style="border-color: #0ea5e9; color: #38bdf8; font-weight: 700;">🏆 Topic 13: Window Ranking &amp; Percentiles (100)</button>
+            <button class="case-section-btn" data-pillar="window_offsets" style="border-color: #10b981; color: #34d399; font-weight: 700;">📈 Topic 14: Value Offsets &amp; Deltas (100)</button>
+            <button class="case-section-btn" data-pillar="window_running" style="border-color: #8b5cf6; color: #a78bfa; font-weight: 700;">🌊 Topic 15: Running Balances &amp; Frames (100)</button>
           </div>
         </div>
       </div>

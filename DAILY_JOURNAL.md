@@ -658,3 +658,61 @@
 - `SESSION_STATE.md`: Updated platform snapshot to 1,200 drills across 12 pillars.
 
 - **Next Step**: Advance to **Day 13: Real-World Business Analytics (Retention Cohort Heatmaps, Customer Churn Rates & LTV)** or begin scaffolding the **Interview Arena & Edge-Case Gauntlet**.
+
+---
+
+## 2026-09-17 — Entry 29: The 300-Drill Analytical Window Functions Trilogy in the SQL Syntax Gym (1,500 Progressive Micro-Drills)
+
+### 1. Architectural Scope
+- Deployed the complete **300-Drill Analytical Window Functions Trilogy** across 3 foundational quantitative analytics topics (Drills **#1201 to #1500**) in the standalone Syntax Gym:
+  - **Topic 13: Window Ranking & Percentiles** (100 drills, #1201–#1300)
+  - **Topic 14: Value Offsets & Deltas** (100 drills, #1301–#1400)
+  - **Topic 15: Running Balances & Frames** (100 drills, #1401–#1500)
+- Expanded total gym capacity from **1,200 to 1,500 active-retrieval drills** across all 10 everyday relatable schemas (`Students`, `Books`, `Employees`, `GroceryItems`, `Orders`, `MusicTracks`, `GymMembers`, `MovieReviews`, `FlightSchedule`, `PetClinic`).
+- Corporate Case Studies remain cleanly decoupled at 1,490 scenarios.
+
+### 2. The 30 Window Function Subclusters (#1201–#1500)
+#### Topic 13: Window Ranking & Percentiles (#1201–#1300)
+1. **13.1 Global ROW_NUMBER() Ordering** (#1201–#1210): Unique consecutive integer sequencing over ordered datasets.
+2. **13.2 Partitioned ROW_NUMBER() per Group** (#1211–#1220): Group-level indexing (`OVER (PARTITION BY ... ORDER BY ...)`).
+3. **13.3 RANK() with Competition Ties** (#1221–#1230): Standard ranking where duplicate values share ranks and skip following numbers (1, 2, 2, 4).
+4. **13.4 DENSE_RANK() with Gapless Ties** (#1231–#1240): Gapless ranking where duplicate values share ranks without skipping subsequent integers (1, 2, 2, 3).
+5. **13.5 Top-1 Row Extraction via Subquery / CTE Filtering** (#1241–#1250): Isolating leader records using derived tables to overcome window WHERE restrictions.
+6. **13.6 Top-N Filtering with DENSE_RANK() in CTEs** (#1242–#1260): Retrieving top 3 highest performers while cleanly handling ties.
+7. **13.7 Quantile Bucketing with NTILE(n)** (#1261–#1270): Quartile, quintile, and decile segmentations across ordered cohorts.
+8. **13.8 Relative Percentiles with PERCENT_RANK() & CUME_DIST()** (#1271–#1280): Statistical percentile rankings and cumulative relative distribution scores.
+9. **13.9 Multi-Column Partitioning & Multi-Attribute Ordering** (#1281–#1290): Hierarchical partitioning with tie-breaker ordering columns.
+10. **13.10 End-to-End Ranking & Leaderboard Pipelines** (#1291–#1300): Production analytics reporting pipelines combining ranking, CTEs, and group filtering.
+
+#### Topic 14: Value Offsets & Deltas (#1301–#1400)
+1. **14.1 Previous Row Access with LAG(col)** (#1301–#1310): Accessing immediate predecessor values without self-joins.
+2. **14.2 Next Row Access with LEAD(col)** (#1311–#1320): Inspecting upcoming successor values.
+3. **14.3 Multi-Step Offsets with Default Values (LAG(col, n, def))** (#1321–#1330): N-step lookbacks with explicit zero/fallback replacement for boundary NULLs.
+4. **14.4 Partitioned LAG & LEAD per Category** (#1331–#1340): Boundary-isolated historical lookbacks per category, author, or customer.
+5. **14.5 Absolute Delta Calculation (Current - Previous)** (#1341–#1350): Measuring variance, price jumps, grade shifts, and salary increments.
+6. **14.6 Percentage Growth & Rate of Change Computation** (#1351–#1360): Percentage delta modeling: `(curr - prev) * 100.0 / prev`.
+7. **14.7 Detecting State Changes & Status Transitions** (#1361–#1370): Flagging boolean milestones, status progression, and shelf-life changes.
+8. **14.8 FIRST_VALUE() across Partition** (#1371–#1380): Baseline benchmarking against the cohort inception or lowest price.
+9. **14.9 LAST_VALUE() with Explicit Frame Definition** (#1381–#1390): Correctly anchoring window frames to prevent default truncated frames.
+10. **14.10 Complete Time-Series Delta Pipelines & Traps** (#1391–#1400): Multi-step growth analysis pipelines guarding against NULL division and partition spills.
+
+#### Topic 15: Running Balances & Frames (#1401–#1500)
+1. **15.1 Cumulative Running Totals (SUM() OVER (ORDER BY))** (#1401–#1410): Progressive continuous accumulation across chronological rows.
+2. **15.2 Partitioned Running Totals** (#1411–#1420): Category-isolated accumulators resetting at group boundaries.
+3. **15.3 Cumulative Running Counts (Progressive Volume)** (#1421–#1430): Progressive event tracking and headcount milestones.
+4. **15.4 Cumulative Moving Averages (Progressive Mean)** (#1431–#1440): Smoothing progressive historical performance averages.
+5. **15.5 Explicit Frame: ROWS BETWEEN UNBOUNDED PRECEDING AND CURRENT ROW** (#1441–#1450): Guaranteed physical row accumulation syntax regardless of duplicate ordering values.
+6. **15.6 Sliding Moving Window (ROWS BETWEEN 2 PRECEDING AND CURRENT ROW)** (#1451–#1460): 3-point rolling metric smoothing and recent trend filters.
+7. **15.7 Centered Moving Windows (1 PRECEDING AND 1 FOLLOWING)** (#1461–#1470): Symmetric local smoothing filters.
+8. **15.8 Category Total Ratio (% of Partition Total)** (#1471–#1480): Computing share of wallet and percentage of department budget using unpartitioned vs partitioned sums.
+9. **15.9 Extremes over Sliding Frames (Running MIN & MAX)** (#1481–#1490): Dynamic 52-week highs/lows, ceiling benchmarks, and floor monitoring.
+10. **15.10 Full Analytical Financial Ledger & Cumulative Pipelines** (#1491–#1500): Complete corporate ledger balancing, rolling variance, and multi-window aggregations.
+
+### 3. File Updates
+- `visualizer/syntax_gym_data.js`: Assembled all 1,500 drills into `SYNTAX_GYM_DRILLS` (#0001–#1500 contiguous).
+- `visualizer/index.html`: Nav tab `Syntax Gym (1,500)`, title `(1,500 Progressive Micro-Drills)`, badge `1,500 Drills`, solved badge `/1,500 Solved`, button `All 1,500 Drills`, and filter buttons for Topics 13, 14, 15.
+- `visualizer/app.js`: Updated `renderSyntaxGym()` with `window_ranking` (#1201–#1300), `window_offsets` (#1301–#1400), and `window_running` (#1401–#1500) pillar filters.
+- `SESSION_STATE.md`: Updated platform snapshot to 1,500 drills across 15 pillars.
+
+- **Next Step**: Advance to **Day 13: Real-World Business Analytics (Retention Cohort Heatmaps, Customer Churn Rates & LTV)** or begin scaffolding the **Interview Arena & Edge-Case Gauntlet**.
+

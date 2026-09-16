@@ -5335,6 +5335,12 @@ function renderSyntaxGym() {
     filtered = filtered.filter(d => d.drillNumber >= 1001 && d.drillNumber <= 1100);
   } else if (currentGymPillar === 'ctes') {
     filtered = filtered.filter(d => d.drillNumber >= 1101 && d.drillNumber <= 1200);
+  } else if (currentGymPillar === 'window_ranking') {
+    filtered = filtered.filter(d => d.drillNumber >= 1201 && d.drillNumber <= 1300);
+  } else if (currentGymPillar === 'window_offsets') {
+    filtered = filtered.filter(d => d.drillNumber >= 1301 && d.drillNumber <= 1400);
+  } else if (currentGymPillar === 'window_running') {
+    filtered = filtered.filter(d => d.drillNumber >= 1401 && d.drillNumber <= 1500);
   }
 
   // 2. Table filter

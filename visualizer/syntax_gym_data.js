@@ -1,6 +1,6 @@
 // =============================================================================
-// SECTION 0: THE SQL SYNTAX GYM (1,200 Progressive In-Depth Micro-Drills)
-// Topics 1–12:
+// SECTION 0: THE SQL SYNTAX GYM (1,500 Progressive In-Depth Micro-Drills)
+// Topics 1–15:
 //   1. SELECT & Projections (#001–#100)
 //   2. WHERE & Predicates (#101–#200)
 //   3. ORDER BY & LIMIT Slicing (#201–#300)
@@ -13,6 +13,9 @@
 //  10. Date, Time & Temporal Arithmetic (#901–#1000)
 //  11. Subqueries & Derived Tables (#1001–#1100)
 //  12. Modular CTEs & Multi-Step Pipelines (#1101–#1200)
+//  13. Window Ranking & Percentiles (#1201–#1300)
+//  14. Value Offsets & Deltas (#1301–#1400)
+//  15. Running Balances & Frames (#1401–#1500)
 // =============================================================================
 
 const SYNTAX_GYM_DRILLS = [
@@ -101281,6 +101284,28498 @@ const SYNTAX_GYM_DRILLS = [
       {
         "type": "column",
         "value": "5;"
+      }
+    ]
+  },
+  {
+    "drillNumber": 1201,
+    "subcluster": "13.1 Global ROW_NUMBER() OVER (ORDER BY col)",
+    "level": "Level 2 (Global Row Number)",
+    "title": "Syntax #1201: Assign a unique sequential academic rank to every student ordered by GPA descending",
+    "table": "Students",
+    "scenario": "Assign a unique sequential academic rank to every student ordered by GPA descending.",
+    "businessObjective": "Assign a unique sequential academic rank to every student ordered by GPA descending.",
+    "schemaSnippet": "Students analytical schema",
+    "targetQuery": "SELECT full_name, gpa,\n  ROW_NUMBER() OVER (ORDER BY gpa DESC) AS academic_rank\nFROM Students;",
+    "syntaxBlueprint": "SELECT col1, col2,\n  ROW_NUMBER() OVER (ORDER BY metric DESC) AS global_rank\nFROM table_name;",
+    "syntaxRule": "ROW_NUMBER() assigns a unique, sequential integer (1, 2, 3...) to each row ordered by the specified expression in the OVER clause.",
+    "syntaxTrap": "ROW_NUMBER() never produces ties. If two rows have identical metric values, the tie-breaker is arbitrary unless a deterministic secondary sort column is provided.",
+    "eli5Story": "Analytical Window Functions on Students: Assign a unique sequential academic rank to every student ordered by GPA descending.",
+    "commonMistakes": "Omitting ORDER BY inside OVER() for running totals, confusing PARTITION BY with GROUP BY, or attempting to filter window functions in WHERE without a CTE wrapper.",
+    "learningOutcomes": "Mastered 13.1 Global ROW_NUMBER() OVER (ORDER BY col) on Students.",
+    "challengeSlots": [
+      {
+        "type": "keyword",
+        "value": "SELECT"
+      },
+      {
+        "type": "column",
+        "value": "full_name,"
+      },
+      {
+        "type": "column",
+        "value": "gpa,"
+      },
+      {
+        "type": "keyword",
+        "value": "ROW_NUMBER()"
+      },
+      {
+        "type": "keyword",
+        "value": "OVER"
+      },
+      {
+        "type": "keyword",
+        "value": "(ORDER"
+      },
+      {
+        "type": "keyword",
+        "value": "BY"
+      },
+      {
+        "type": "column",
+        "value": "gpa"
+      },
+      {
+        "type": "keyword",
+        "value": "DESC)"
+      },
+      {
+        "type": "keyword",
+        "value": "AS"
+      },
+      {
+        "type": "column",
+        "value": "academic_rank"
+      },
+      {
+        "type": "keyword",
+        "value": "FROM"
+      },
+      {
+        "type": "table",
+        "value": "Students;"
+      }
+    ]
+  },
+  {
+    "drillNumber": 1202,
+    "subcluster": "13.1 Global ROW_NUMBER() OVER (ORDER BY col)",
+    "level": "Level 2 (Global Row Number)",
+    "title": "Syntax #1202: Rank catalog books from most expensive to cheapest using ROW_NUMBER()",
+    "table": "Books",
+    "scenario": "Rank catalog books from most expensive to cheapest using ROW_NUMBER().",
+    "businessObjective": "Rank catalog books from most expensive to cheapest using ROW_NUMBER().",
+    "schemaSnippet": "Books analytical schema",
+    "targetQuery": "SELECT title, price,\n  ROW_NUMBER() OVER (ORDER BY price DESC) AS price_rank\nFROM Books;",
+    "syntaxBlueprint": "SELECT col1, col2,\n  ROW_NUMBER() OVER (ORDER BY metric DESC) AS global_rank\nFROM table_name;",
+    "syntaxRule": "ROW_NUMBER() assigns a unique, sequential integer (1, 2, 3...) to each row ordered by the specified expression in the OVER clause.",
+    "syntaxTrap": "ROW_NUMBER() never produces ties. If two rows have identical metric values, the tie-breaker is arbitrary unless a deterministic secondary sort column is provided.",
+    "eli5Story": "Analytical Window Functions on Books: Rank catalog books from most expensive to cheapest using ROW_NUMBER().",
+    "commonMistakes": "Omitting ORDER BY inside OVER() for running totals, confusing PARTITION BY with GROUP BY, or attempting to filter window functions in WHERE without a CTE wrapper.",
+    "learningOutcomes": "Mastered 13.1 Global ROW_NUMBER() OVER (ORDER BY col) on Books.",
+    "challengeSlots": [
+      {
+        "type": "keyword",
+        "value": "SELECT"
+      },
+      {
+        "type": "column",
+        "value": "title,"
+      },
+      {
+        "type": "column",
+        "value": "price,"
+      },
+      {
+        "type": "keyword",
+        "value": "ROW_NUMBER()"
+      },
+      {
+        "type": "keyword",
+        "value": "OVER"
+      },
+      {
+        "type": "keyword",
+        "value": "(ORDER"
+      },
+      {
+        "type": "keyword",
+        "value": "BY"
+      },
+      {
+        "type": "column",
+        "value": "price"
+      },
+      {
+        "type": "keyword",
+        "value": "DESC)"
+      },
+      {
+        "type": "keyword",
+        "value": "AS"
+      },
+      {
+        "type": "column",
+        "value": "price_rank"
+      },
+      {
+        "type": "keyword",
+        "value": "FROM"
+      },
+      {
+        "type": "table",
+        "value": "Books;"
+      }
+    ]
+  },
+  {
+    "drillNumber": 1203,
+    "subcluster": "13.1 Global ROW_NUMBER() OVER (ORDER BY col)",
+    "level": "Level 2 (Global Row Number)",
+    "title": "Syntax #1203: Assign a global compensation rank to all corporate employees",
+    "table": "Employees",
+    "scenario": "Assign a global compensation rank to all corporate employees.",
+    "businessObjective": "Assign a global compensation rank to all corporate employees.",
+    "schemaSnippet": "Employees analytical schema",
+    "targetQuery": "SELECT first_name, salary,\n  ROW_NUMBER() OVER (ORDER BY salary DESC) AS compensation_rank\nFROM Employees;",
+    "syntaxBlueprint": "SELECT col1, col2,\n  ROW_NUMBER() OVER (ORDER BY metric DESC) AS global_rank\nFROM table_name;",
+    "syntaxRule": "ROW_NUMBER() assigns a unique, sequential integer (1, 2, 3...) to each row ordered by the specified expression in the OVER clause.",
+    "syntaxTrap": "ROW_NUMBER() never produces ties. If two rows have identical metric values, the tie-breaker is arbitrary unless a deterministic secondary sort column is provided.",
+    "eli5Story": "Analytical Window Functions on Employees: Assign a global compensation rank to all corporate employees.",
+    "commonMistakes": "Omitting ORDER BY inside OVER() for running totals, confusing PARTITION BY with GROUP BY, or attempting to filter window functions in WHERE without a CTE wrapper.",
+    "learningOutcomes": "Mastered 13.1 Global ROW_NUMBER() OVER (ORDER BY col) on Employees.",
+    "challengeSlots": [
+      {
+        "type": "keyword",
+        "value": "SELECT"
+      },
+      {
+        "type": "column",
+        "value": "first_name,"
+      },
+      {
+        "type": "column",
+        "value": "salary,"
+      },
+      {
+        "type": "keyword",
+        "value": "ROW_NUMBER()"
+      },
+      {
+        "type": "keyword",
+        "value": "OVER"
+      },
+      {
+        "type": "keyword",
+        "value": "(ORDER"
+      },
+      {
+        "type": "keyword",
+        "value": "BY"
+      },
+      {
+        "type": "column",
+        "value": "salary"
+      },
+      {
+        "type": "keyword",
+        "value": "DESC)"
+      },
+      {
+        "type": "keyword",
+        "value": "AS"
+      },
+      {
+        "type": "column",
+        "value": "compensation_rank"
+      },
+      {
+        "type": "keyword",
+        "value": "FROM"
+      },
+      {
+        "type": "table",
+        "value": "Employees;"
+      }
+    ]
+  },
+  {
+    "drillNumber": 1204,
+    "subcluster": "13.1 Global ROW_NUMBER() OVER (ORDER BY col)",
+    "level": "Level 2 (Global Row Number)",
+    "title": "Syntax #1204: Rank grocery items by lowest stock to establish restock priority numbers",
+    "table": "GroceryItems",
+    "scenario": "Rank grocery items by lowest stock to establish restock priority numbers.",
+    "businessObjective": "Rank grocery items by lowest stock to establish restock priority numbers.",
+    "schemaSnippet": "GroceryItems analytical schema",
+    "targetQuery": "SELECT item_name, stock_qty,\n  ROW_NUMBER() OVER (ORDER BY stock_qty ASC) AS restock_priority\nFROM GroceryItems;",
+    "syntaxBlueprint": "SELECT col1, col2,\n  ROW_NUMBER() OVER (ORDER BY metric DESC) AS global_rank\nFROM table_name;",
+    "syntaxRule": "ROW_NUMBER() assigns a unique, sequential integer (1, 2, 3...) to each row ordered by the specified expression in the OVER clause.",
+    "syntaxTrap": "ROW_NUMBER() never produces ties. If two rows have identical metric values, the tie-breaker is arbitrary unless a deterministic secondary sort column is provided.",
+    "eli5Story": "Analytical Window Functions on GroceryItems: Rank grocery items by lowest stock to establish restock priority numbers.",
+    "commonMistakes": "Omitting ORDER BY inside OVER() for running totals, confusing PARTITION BY with GROUP BY, or attempting to filter window functions in WHERE without a CTE wrapper.",
+    "learningOutcomes": "Mastered 13.1 Global ROW_NUMBER() OVER (ORDER BY col) on GroceryItems.",
+    "challengeSlots": [
+      {
+        "type": "keyword",
+        "value": "SELECT"
+      },
+      {
+        "type": "column",
+        "value": "item_name,"
+      },
+      {
+        "type": "column",
+        "value": "stock_qty,"
+      },
+      {
+        "type": "keyword",
+        "value": "ROW_NUMBER()"
+      },
+      {
+        "type": "keyword",
+        "value": "OVER"
+      },
+      {
+        "type": "keyword",
+        "value": "(ORDER"
+      },
+      {
+        "type": "keyword",
+        "value": "BY"
+      },
+      {
+        "type": "column",
+        "value": "stock_qty"
+      },
+      {
+        "type": "keyword",
+        "value": "ASC)"
+      },
+      {
+        "type": "keyword",
+        "value": "AS"
+      },
+      {
+        "type": "column",
+        "value": "restock_priority"
+      },
+      {
+        "type": "keyword",
+        "value": "FROM"
+      },
+      {
+        "type": "table",
+        "value": "GroceryItems;"
+      }
+    ]
+  },
+  {
+    "drillNumber": 1205,
+    "subcluster": "13.1 Global ROW_NUMBER() OVER (ORDER BY col)",
+    "level": "Level 2 (Global Row Number)",
+    "title": "Syntax #1205: Rank customer orders from largest dollar value to smallest via ROW_NUMBER()",
+    "table": "Orders",
+    "scenario": "Rank customer orders from largest dollar value to smallest via ROW_NUMBER().",
+    "businessObjective": "Rank customer orders from largest dollar value to smallest via ROW_NUMBER().",
+    "schemaSnippet": "Orders analytical schema",
+    "targetQuery": "SELECT order_id, total_amount,\n  ROW_NUMBER() OVER (ORDER BY total_amount DESC) AS order_size_rank\nFROM Orders;",
+    "syntaxBlueprint": "SELECT col1, col2,\n  ROW_NUMBER() OVER (ORDER BY metric DESC) AS global_rank\nFROM table_name;",
+    "syntaxRule": "ROW_NUMBER() assigns a unique, sequential integer (1, 2, 3...) to each row ordered by the specified expression in the OVER clause.",
+    "syntaxTrap": "ROW_NUMBER() never produces ties. If two rows have identical metric values, the tie-breaker is arbitrary unless a deterministic secondary sort column is provided.",
+    "eli5Story": "Analytical Window Functions on Orders: Rank customer orders from largest dollar value to smallest via ROW_NUMBER().",
+    "commonMistakes": "Omitting ORDER BY inside OVER() for running totals, confusing PARTITION BY with GROUP BY, or attempting to filter window functions in WHERE without a CTE wrapper.",
+    "learningOutcomes": "Mastered 13.1 Global ROW_NUMBER() OVER (ORDER BY col) on Orders.",
+    "challengeSlots": [
+      {
+        "type": "keyword",
+        "value": "SELECT"
+      },
+      {
+        "type": "column",
+        "value": "order_id,"
+      },
+      {
+        "type": "column",
+        "value": "total_amount,"
+      },
+      {
+        "type": "keyword",
+        "value": "ROW_NUMBER()"
+      },
+      {
+        "type": "keyword",
+        "value": "OVER"
+      },
+      {
+        "type": "keyword",
+        "value": "(ORDER"
+      },
+      {
+        "type": "keyword",
+        "value": "BY"
+      },
+      {
+        "type": "column",
+        "value": "total_amount"
+      },
+      {
+        "type": "keyword",
+        "value": "DESC)"
+      },
+      {
+        "type": "keyword",
+        "value": "AS"
+      },
+      {
+        "type": "column",
+        "value": "order_size_rank"
+      },
+      {
+        "type": "keyword",
+        "value": "FROM"
+      },
+      {
+        "type": "table",
+        "value": "Orders;"
+      }
+    ]
+  },
+  {
+    "drillNumber": 1206,
+    "subcluster": "13.1 Global ROW_NUMBER() OVER (ORDER BY col)",
+    "level": "Level 2 (Global Row Number)",
+    "title": "Syntax #1206: Rank music tracks from longest to shortest using ROW_NUMBER()",
+    "table": "MusicTracks",
+    "scenario": "Rank music tracks from longest to shortest using ROW_NUMBER().",
+    "businessObjective": "Rank music tracks from longest to shortest using ROW_NUMBER().",
+    "schemaSnippet": "MusicTracks analytical schema",
+    "targetQuery": "SELECT track_title, duration_seconds,\n  ROW_NUMBER() OVER (ORDER BY duration_seconds DESC) AS length_rank\nFROM MusicTracks;",
+    "syntaxBlueprint": "SELECT col1, col2,\n  ROW_NUMBER() OVER (ORDER BY metric DESC) AS global_rank\nFROM table_name;",
+    "syntaxRule": "ROW_NUMBER() assigns a unique, sequential integer (1, 2, 3...) to each row ordered by the specified expression in the OVER clause.",
+    "syntaxTrap": "ROW_NUMBER() never produces ties. If two rows have identical metric values, the tie-breaker is arbitrary unless a deterministic secondary sort column is provided.",
+    "eli5Story": "Analytical Window Functions on MusicTracks: Rank music tracks from longest to shortest using ROW_NUMBER().",
+    "commonMistakes": "Omitting ORDER BY inside OVER() for running totals, confusing PARTITION BY with GROUP BY, or attempting to filter window functions in WHERE without a CTE wrapper.",
+    "learningOutcomes": "Mastered 13.1 Global ROW_NUMBER() OVER (ORDER BY col) on MusicTracks.",
+    "challengeSlots": [
+      {
+        "type": "keyword",
+        "value": "SELECT"
+      },
+      {
+        "type": "column",
+        "value": "track_title,"
+      },
+      {
+        "type": "column",
+        "value": "duration_seconds,"
+      },
+      {
+        "type": "keyword",
+        "value": "ROW_NUMBER()"
+      },
+      {
+        "type": "keyword",
+        "value": "OVER"
+      },
+      {
+        "type": "keyword",
+        "value": "(ORDER"
+      },
+      {
+        "type": "keyword",
+        "value": "BY"
+      },
+      {
+        "type": "column",
+        "value": "duration_seconds"
+      },
+      {
+        "type": "keyword",
+        "value": "DESC)"
+      },
+      {
+        "type": "keyword",
+        "value": "AS"
+      },
+      {
+        "type": "column",
+        "value": "length_rank"
+      },
+      {
+        "type": "keyword",
+        "value": "FROM"
+      },
+      {
+        "type": "table",
+        "value": "MusicTracks;"
+      }
+    ]
+  },
+  {
+    "drillNumber": 1207,
+    "subcluster": "13.1 Global ROW_NUMBER() OVER (ORDER BY col)",
+    "level": "Level 2 (Global Row Number)",
+    "title": "Syntax #1207: Rank gym members by workout consistency from most active to least",
+    "table": "GymMembers",
+    "scenario": "Rank gym members by workout consistency from most active to least.",
+    "businessObjective": "Rank gym members by workout consistency from most active to least.",
+    "schemaSnippet": "GymMembers analytical schema",
+    "targetQuery": "SELECT member_name, attendance_days,\n  ROW_NUMBER() OVER (ORDER BY attendance_days DESC) AS attendance_rank\nFROM GymMembers;",
+    "syntaxBlueprint": "SELECT col1, col2,\n  ROW_NUMBER() OVER (ORDER BY metric DESC) AS global_rank\nFROM table_name;",
+    "syntaxRule": "ROW_NUMBER() assigns a unique, sequential integer (1, 2, 3...) to each row ordered by the specified expression in the OVER clause.",
+    "syntaxTrap": "ROW_NUMBER() never produces ties. If two rows have identical metric values, the tie-breaker is arbitrary unless a deterministic secondary sort column is provided.",
+    "eli5Story": "Analytical Window Functions on GymMembers: Rank gym members by workout consistency from most active to least.",
+    "commonMistakes": "Omitting ORDER BY inside OVER() for running totals, confusing PARTITION BY with GROUP BY, or attempting to filter window functions in WHERE without a CTE wrapper.",
+    "learningOutcomes": "Mastered 13.1 Global ROW_NUMBER() OVER (ORDER BY col) on GymMembers.",
+    "challengeSlots": [
+      {
+        "type": "keyword",
+        "value": "SELECT"
+      },
+      {
+        "type": "column",
+        "value": "member_name,"
+      },
+      {
+        "type": "column",
+        "value": "attendance_days,"
+      },
+      {
+        "type": "keyword",
+        "value": "ROW_NUMBER()"
+      },
+      {
+        "type": "keyword",
+        "value": "OVER"
+      },
+      {
+        "type": "keyword",
+        "value": "(ORDER"
+      },
+      {
+        "type": "keyword",
+        "value": "BY"
+      },
+      {
+        "type": "column",
+        "value": "attendance_days"
+      },
+      {
+        "type": "keyword",
+        "value": "DESC)"
+      },
+      {
+        "type": "keyword",
+        "value": "AS"
+      },
+      {
+        "type": "column",
+        "value": "attendance_rank"
+      },
+      {
+        "type": "keyword",
+        "value": "FROM"
+      },
+      {
+        "type": "table",
+        "value": "GymMembers;"
+      }
+    ]
+  },
+  {
+    "drillNumber": 1208,
+    "subcluster": "13.1 Global ROW_NUMBER() OVER (ORDER BY col)",
+    "level": "Level 2 (Global Row Number)",
+    "title": "Syntax #1208: Assign a critical standing rank to movie reviews based on star rating",
+    "table": "MovieReviews",
+    "scenario": "Assign a critical standing rank to movie reviews based on star rating.",
+    "businessObjective": "Assign a critical standing rank to movie reviews based on star rating.",
+    "schemaSnippet": "MovieReviews analytical schema",
+    "targetQuery": "SELECT movie_title, star_rating,\n  ROW_NUMBER() OVER (ORDER BY star_rating DESC) AS critical_rank\nFROM MovieReviews;",
+    "syntaxBlueprint": "SELECT col1, col2,\n  ROW_NUMBER() OVER (ORDER BY metric DESC) AS global_rank\nFROM table_name;",
+    "syntaxRule": "ROW_NUMBER() assigns a unique, sequential integer (1, 2, 3...) to each row ordered by the specified expression in the OVER clause.",
+    "syntaxTrap": "ROW_NUMBER() never produces ties. If two rows have identical metric values, the tie-breaker is arbitrary unless a deterministic secondary sort column is provided.",
+    "eli5Story": "Analytical Window Functions on MovieReviews: Assign a critical standing rank to movie reviews based on star rating.",
+    "commonMistakes": "Omitting ORDER BY inside OVER() for running totals, confusing PARTITION BY with GROUP BY, or attempting to filter window functions in WHERE without a CTE wrapper.",
+    "learningOutcomes": "Mastered 13.1 Global ROW_NUMBER() OVER (ORDER BY col) on MovieReviews.",
+    "challengeSlots": [
+      {
+        "type": "keyword",
+        "value": "SELECT"
+      },
+      {
+        "type": "column",
+        "value": "movie_title,"
+      },
+      {
+        "type": "column",
+        "value": "star_rating,"
+      },
+      {
+        "type": "keyword",
+        "value": "ROW_NUMBER()"
+      },
+      {
+        "type": "keyword",
+        "value": "OVER"
+      },
+      {
+        "type": "keyword",
+        "value": "(ORDER"
+      },
+      {
+        "type": "keyword",
+        "value": "BY"
+      },
+      {
+        "type": "column",
+        "value": "star_rating"
+      },
+      {
+        "type": "keyword",
+        "value": "DESC)"
+      },
+      {
+        "type": "keyword",
+        "value": "AS"
+      },
+      {
+        "type": "column",
+        "value": "critical_rank"
+      },
+      {
+        "type": "keyword",
+        "value": "FROM"
+      },
+      {
+        "type": "table",
+        "value": "MovieReviews;"
+      }
+    ]
+  },
+  {
+    "drillNumber": 1209,
+    "subcluster": "13.1 Global ROW_NUMBER() OVER (ORDER BY col)",
+    "level": "Level 2 (Global Row Number)",
+    "title": "Syntax #1209: Rank scheduled flights by route distance from longest to shortest",
+    "table": "FlightSchedule",
+    "scenario": "Rank scheduled flights by route distance from longest to shortest.",
+    "businessObjective": "Rank scheduled flights by route distance from longest to shortest.",
+    "schemaSnippet": "FlightSchedule analytical schema",
+    "targetQuery": "SELECT flight_id, distance_miles,\n  ROW_NUMBER() OVER (ORDER BY distance_miles DESC) AS distance_rank\nFROM FlightSchedule;",
+    "syntaxBlueprint": "SELECT col1, col2,\n  ROW_NUMBER() OVER (ORDER BY metric DESC) AS global_rank\nFROM table_name;",
+    "syntaxRule": "ROW_NUMBER() assigns a unique, sequential integer (1, 2, 3...) to each row ordered by the specified expression in the OVER clause.",
+    "syntaxTrap": "ROW_NUMBER() never produces ties. If two rows have identical metric values, the tie-breaker is arbitrary unless a deterministic secondary sort column is provided.",
+    "eli5Story": "Analytical Window Functions on FlightSchedule: Rank scheduled flights by route distance from longest to shortest.",
+    "commonMistakes": "Omitting ORDER BY inside OVER() for running totals, confusing PARTITION BY with GROUP BY, or attempting to filter window functions in WHERE without a CTE wrapper.",
+    "learningOutcomes": "Mastered 13.1 Global ROW_NUMBER() OVER (ORDER BY col) on FlightSchedule.",
+    "challengeSlots": [
+      {
+        "type": "keyword",
+        "value": "SELECT"
+      },
+      {
+        "type": "column",
+        "value": "flight_id,"
+      },
+      {
+        "type": "column",
+        "value": "distance_miles,"
+      },
+      {
+        "type": "keyword",
+        "value": "ROW_NUMBER()"
+      },
+      {
+        "type": "keyword",
+        "value": "OVER"
+      },
+      {
+        "type": "keyword",
+        "value": "(ORDER"
+      },
+      {
+        "type": "keyword",
+        "value": "BY"
+      },
+      {
+        "type": "column",
+        "value": "distance_miles"
+      },
+      {
+        "type": "keyword",
+        "value": "DESC)"
+      },
+      {
+        "type": "keyword",
+        "value": "AS"
+      },
+      {
+        "type": "column",
+        "value": "distance_rank"
+      },
+      {
+        "type": "keyword",
+        "value": "FROM"
+      },
+      {
+        "type": "table",
+        "value": "FlightSchedule;"
+      }
+    ]
+  },
+  {
+    "drillNumber": 1210,
+    "subcluster": "13.1 Global ROW_NUMBER() OVER (ORDER BY col)",
+    "level": "Level 2 (Global Row Number)",
+    "title": "Syntax #1210: Assign a weight rank to veterinary patients from heaviest to lightest",
+    "table": "PetClinic",
+    "scenario": "Assign a weight rank to veterinary patients from heaviest to lightest.",
+    "businessObjective": "Assign a weight rank to veterinary patients from heaviest to lightest.",
+    "schemaSnippet": "PetClinic analytical schema",
+    "targetQuery": "SELECT pet_name, weight_kg,\n  ROW_NUMBER() OVER (ORDER BY weight_kg DESC) AS weight_rank\nFROM PetClinic;",
+    "syntaxBlueprint": "SELECT col1, col2,\n  ROW_NUMBER() OVER (ORDER BY metric DESC) AS global_rank\nFROM table_name;",
+    "syntaxRule": "ROW_NUMBER() assigns a unique, sequential integer (1, 2, 3...) to each row ordered by the specified expression in the OVER clause.",
+    "syntaxTrap": "ROW_NUMBER() never produces ties. If two rows have identical metric values, the tie-breaker is arbitrary unless a deterministic secondary sort column is provided.",
+    "eli5Story": "Analytical Window Functions on PetClinic: Assign a weight rank to veterinary patients from heaviest to lightest.",
+    "commonMistakes": "Omitting ORDER BY inside OVER() for running totals, confusing PARTITION BY with GROUP BY, or attempting to filter window functions in WHERE without a CTE wrapper.",
+    "learningOutcomes": "Mastered 13.1 Global ROW_NUMBER() OVER (ORDER BY col) on PetClinic.",
+    "challengeSlots": [
+      {
+        "type": "keyword",
+        "value": "SELECT"
+      },
+      {
+        "type": "column",
+        "value": "pet_name,"
+      },
+      {
+        "type": "column",
+        "value": "weight_kg,"
+      },
+      {
+        "type": "keyword",
+        "value": "ROW_NUMBER()"
+      },
+      {
+        "type": "keyword",
+        "value": "OVER"
+      },
+      {
+        "type": "keyword",
+        "value": "(ORDER"
+      },
+      {
+        "type": "keyword",
+        "value": "BY"
+      },
+      {
+        "type": "column",
+        "value": "weight_kg"
+      },
+      {
+        "type": "keyword",
+        "value": "DESC)"
+      },
+      {
+        "type": "keyword",
+        "value": "AS"
+      },
+      {
+        "type": "column",
+        "value": "weight_rank"
+      },
+      {
+        "type": "keyword",
+        "value": "FROM"
+      },
+      {
+        "type": "table",
+        "value": "PetClinic;"
+      }
+    ]
+  },
+  {
+    "drillNumber": 1211,
+    "subcluster": "13.2 Partitioned ROW_NUMBER() (Rank per Category)",
+    "level": "Level 2 (Partitioned Row Number)",
+    "title": "Syntax #1211: Rank students within their respective academic majors based on GPA",
+    "table": "Students",
+    "scenario": "Rank students within their respective academic majors based on GPA.",
+    "businessObjective": "Rank students within their respective academic majors based on GPA.",
+    "schemaSnippet": "Students analytical schema",
+    "targetQuery": "SELECT full_name, major, gpa,\n  ROW_NUMBER() OVER (PARTITION BY major ORDER BY gpa DESC) AS major_rank\nFROM Students;",
+    "syntaxBlueprint": "SELECT col1, category, metric,\n  ROW_NUMBER() OVER (PARTITION BY category ORDER BY metric DESC) AS category_rank\nFROM table_name;",
+    "syntaxRule": "Adding PARTITION BY restarts the row numbering sequence at 1 for each distinct partition group.",
+    "syntaxTrap": "Confusing PARTITION BY with GROUP BY. PARTITION BY does not collapse rows—every row retains its identity.",
+    "eli5Story": "Analytical Window Functions on Students: Rank students within their respective academic majors based on GPA.",
+    "commonMistakes": "Omitting ORDER BY inside OVER() for running totals, confusing PARTITION BY with GROUP BY, or attempting to filter window functions in WHERE without a CTE wrapper.",
+    "learningOutcomes": "Mastered 13.2 Partitioned ROW_NUMBER() (Rank per Category) on Students.",
+    "challengeSlots": [
+      {
+        "type": "keyword",
+        "value": "SELECT"
+      },
+      {
+        "type": "column",
+        "value": "full_name,"
+      },
+      {
+        "type": "column",
+        "value": "major,"
+      },
+      {
+        "type": "column",
+        "value": "gpa,"
+      },
+      {
+        "type": "keyword",
+        "value": "ROW_NUMBER()"
+      },
+      {
+        "type": "keyword",
+        "value": "OVER"
+      },
+      {
+        "type": "keyword",
+        "value": "(PARTITION"
+      },
+      {
+        "type": "keyword",
+        "value": "BY"
+      },
+      {
+        "type": "column",
+        "value": "major"
+      },
+      {
+        "type": "keyword",
+        "value": "ORDER"
+      },
+      {
+        "type": "keyword",
+        "value": "BY"
+      },
+      {
+        "type": "column",
+        "value": "gpa"
+      },
+      {
+        "type": "keyword",
+        "value": "DESC)"
+      },
+      {
+        "type": "keyword",
+        "value": "AS"
+      },
+      {
+        "type": "column",
+        "value": "major_rank"
+      },
+      {
+        "type": "keyword",
+        "value": "FROM"
+      },
+      {
+        "type": "table",
+        "value": "Students;"
+      }
+    ]
+  },
+  {
+    "drillNumber": 1212,
+    "subcluster": "13.2 Partitioned ROW_NUMBER() (Rank per Category)",
+    "level": "Level 2 (Partitioned Row Number)",
+    "title": "Syntax #1212: Rank books by price within each literary genre",
+    "table": "Books",
+    "scenario": "Rank books by price within each literary genre.",
+    "businessObjective": "Rank books by price within each literary genre.",
+    "schemaSnippet": "Books analytical schema",
+    "targetQuery": "SELECT title, genre, price,\n  ROW_NUMBER() OVER (PARTITION BY genre ORDER BY price DESC) AS genre_price_rank\nFROM Books;",
+    "syntaxBlueprint": "SELECT col1, category, metric,\n  ROW_NUMBER() OVER (PARTITION BY category ORDER BY metric DESC) AS category_rank\nFROM table_name;",
+    "syntaxRule": "Adding PARTITION BY restarts the row numbering sequence at 1 for each distinct partition group.",
+    "syntaxTrap": "Confusing PARTITION BY with GROUP BY. PARTITION BY does not collapse rows—every row retains its identity.",
+    "eli5Story": "Analytical Window Functions on Books: Rank books by price within each literary genre.",
+    "commonMistakes": "Omitting ORDER BY inside OVER() for running totals, confusing PARTITION BY with GROUP BY, or attempting to filter window functions in WHERE without a CTE wrapper.",
+    "learningOutcomes": "Mastered 13.2 Partitioned ROW_NUMBER() (Rank per Category) on Books.",
+    "challengeSlots": [
+      {
+        "type": "keyword",
+        "value": "SELECT"
+      },
+      {
+        "type": "column",
+        "value": "title,"
+      },
+      {
+        "type": "column",
+        "value": "genre,"
+      },
+      {
+        "type": "column",
+        "value": "price,"
+      },
+      {
+        "type": "keyword",
+        "value": "ROW_NUMBER()"
+      },
+      {
+        "type": "keyword",
+        "value": "OVER"
+      },
+      {
+        "type": "keyword",
+        "value": "(PARTITION"
+      },
+      {
+        "type": "keyword",
+        "value": "BY"
+      },
+      {
+        "type": "column",
+        "value": "genre"
+      },
+      {
+        "type": "keyword",
+        "value": "ORDER"
+      },
+      {
+        "type": "keyword",
+        "value": "BY"
+      },
+      {
+        "type": "column",
+        "value": "price"
+      },
+      {
+        "type": "keyword",
+        "value": "DESC)"
+      },
+      {
+        "type": "keyword",
+        "value": "AS"
+      },
+      {
+        "type": "column",
+        "value": "genre_price_rank"
+      },
+      {
+        "type": "keyword",
+        "value": "FROM"
+      },
+      {
+        "type": "table",
+        "value": "Books;"
+      }
+    ]
+  },
+  {
+    "drillNumber": 1213,
+    "subcluster": "13.2 Partitioned ROW_NUMBER() (Rank per Category)",
+    "level": "Level 2 (Partitioned Row Number)",
+    "title": "Syntax #1213: Rank employees by salary within each corporate department",
+    "table": "Employees",
+    "scenario": "Rank employees by salary within each corporate department.",
+    "businessObjective": "Rank employees by salary within each corporate department.",
+    "schemaSnippet": "Employees analytical schema",
+    "targetQuery": "SELECT first_name, department, salary,\n  ROW_NUMBER() OVER (PARTITION BY department ORDER BY salary DESC) AS dept_salary_rank\nFROM Employees;",
+    "syntaxBlueprint": "SELECT col1, category, metric,\n  ROW_NUMBER() OVER (PARTITION BY category ORDER BY metric DESC) AS category_rank\nFROM table_name;",
+    "syntaxRule": "Adding PARTITION BY restarts the row numbering sequence at 1 for each distinct partition group.",
+    "syntaxTrap": "Confusing PARTITION BY with GROUP BY. PARTITION BY does not collapse rows—every row retains its identity.",
+    "eli5Story": "Analytical Window Functions on Employees: Rank employees by salary within each corporate department.",
+    "commonMistakes": "Omitting ORDER BY inside OVER() for running totals, confusing PARTITION BY with GROUP BY, or attempting to filter window functions in WHERE without a CTE wrapper.",
+    "learningOutcomes": "Mastered 13.2 Partitioned ROW_NUMBER() (Rank per Category) on Employees.",
+    "challengeSlots": [
+      {
+        "type": "keyword",
+        "value": "SELECT"
+      },
+      {
+        "type": "column",
+        "value": "first_name,"
+      },
+      {
+        "type": "column",
+        "value": "department,"
+      },
+      {
+        "type": "column",
+        "value": "salary,"
+      },
+      {
+        "type": "keyword",
+        "value": "ROW_NUMBER()"
+      },
+      {
+        "type": "keyword",
+        "value": "OVER"
+      },
+      {
+        "type": "keyword",
+        "value": "(PARTITION"
+      },
+      {
+        "type": "keyword",
+        "value": "BY"
+      },
+      {
+        "type": "column",
+        "value": "department"
+      },
+      {
+        "type": "keyword",
+        "value": "ORDER"
+      },
+      {
+        "type": "keyword",
+        "value": "BY"
+      },
+      {
+        "type": "column",
+        "value": "salary"
+      },
+      {
+        "type": "keyword",
+        "value": "DESC)"
+      },
+      {
+        "type": "keyword",
+        "value": "AS"
+      },
+      {
+        "type": "column",
+        "value": "dept_salary_rank"
+      },
+      {
+        "type": "keyword",
+        "value": "FROM"
+      },
+      {
+        "type": "table",
+        "value": "Employees;"
+      }
+    ]
+  },
+  {
+    "drillNumber": 1214,
+    "subcluster": "13.2 Partitioned ROW_NUMBER() (Rank per Category)",
+    "level": "Level 2 (Partitioned Row Number)",
+    "title": "Syntax #1214: Rank grocery products from highest to lowest price within each aisle category",
+    "table": "GroceryItems",
+    "scenario": "Rank grocery products from highest to lowest price within each aisle category.",
+    "businessObjective": "Rank grocery products from highest to lowest price within each aisle category.",
+    "schemaSnippet": "GroceryItems analytical schema",
+    "targetQuery": "SELECT item_name, category, unit_price,\n  ROW_NUMBER() OVER (PARTITION BY category ORDER BY unit_price DESC) AS category_price_rank\nFROM GroceryItems;",
+    "syntaxBlueprint": "SELECT col1, category, metric,\n  ROW_NUMBER() OVER (PARTITION BY category ORDER BY metric DESC) AS category_rank\nFROM table_name;",
+    "syntaxRule": "Adding PARTITION BY restarts the row numbering sequence at 1 for each distinct partition group.",
+    "syntaxTrap": "Confusing PARTITION BY with GROUP BY. PARTITION BY does not collapse rows—every row retains its identity.",
+    "eli5Story": "Analytical Window Functions on GroceryItems: Rank grocery products from highest to lowest price within each aisle category.",
+    "commonMistakes": "Omitting ORDER BY inside OVER() for running totals, confusing PARTITION BY with GROUP BY, or attempting to filter window functions in WHERE without a CTE wrapper.",
+    "learningOutcomes": "Mastered 13.2 Partitioned ROW_NUMBER() (Rank per Category) on GroceryItems.",
+    "challengeSlots": [
+      {
+        "type": "keyword",
+        "value": "SELECT"
+      },
+      {
+        "type": "column",
+        "value": "item_name,"
+      },
+      {
+        "type": "column",
+        "value": "category,"
+      },
+      {
+        "type": "column",
+        "value": "unit_price,"
+      },
+      {
+        "type": "keyword",
+        "value": "ROW_NUMBER()"
+      },
+      {
+        "type": "keyword",
+        "value": "OVER"
+      },
+      {
+        "type": "keyword",
+        "value": "(PARTITION"
+      },
+      {
+        "type": "keyword",
+        "value": "BY"
+      },
+      {
+        "type": "column",
+        "value": "category"
+      },
+      {
+        "type": "keyword",
+        "value": "ORDER"
+      },
+      {
+        "type": "keyword",
+        "value": "BY"
+      },
+      {
+        "type": "column",
+        "value": "unit_price"
+      },
+      {
+        "type": "keyword",
+        "value": "DESC)"
+      },
+      {
+        "type": "keyword",
+        "value": "AS"
+      },
+      {
+        "type": "column",
+        "value": "category_price_rank"
+      },
+      {
+        "type": "keyword",
+        "value": "FROM"
+      },
+      {
+        "type": "table",
+        "value": "GroceryItems;"
+      }
+    ]
+  },
+  {
+    "drillNumber": 1215,
+    "subcluster": "13.2 Partitioned ROW_NUMBER() (Rank per Category)",
+    "level": "Level 2 (Partitioned Row Number)",
+    "title": "Syntax #1215: Rank orders from highest to lowest amount for each individual customer",
+    "table": "Orders",
+    "scenario": "Rank orders from highest to lowest amount for each individual customer.",
+    "businessObjective": "Rank orders from highest to lowest amount for each individual customer.",
+    "schemaSnippet": "Orders analytical schema",
+    "targetQuery": "SELECT order_id, customer_name, total_amount,\n  ROW_NUMBER() OVER (PARTITION BY customer_name ORDER BY total_amount DESC) AS customer_order_rank\nFROM Orders;",
+    "syntaxBlueprint": "SELECT col1, category, metric,\n  ROW_NUMBER() OVER (PARTITION BY category ORDER BY metric DESC) AS category_rank\nFROM table_name;",
+    "syntaxRule": "Adding PARTITION BY restarts the row numbering sequence at 1 for each distinct partition group.",
+    "syntaxTrap": "Confusing PARTITION BY with GROUP BY. PARTITION BY does not collapse rows—every row retains its identity.",
+    "eli5Story": "Analytical Window Functions on Orders: Rank orders from highest to lowest amount for each individual customer.",
+    "commonMistakes": "Omitting ORDER BY inside OVER() for running totals, confusing PARTITION BY with GROUP BY, or attempting to filter window functions in WHERE without a CTE wrapper.",
+    "learningOutcomes": "Mastered 13.2 Partitioned ROW_NUMBER() (Rank per Category) on Orders.",
+    "challengeSlots": [
+      {
+        "type": "keyword",
+        "value": "SELECT"
+      },
+      {
+        "type": "column",
+        "value": "order_id,"
+      },
+      {
+        "type": "column",
+        "value": "customer_name,"
+      },
+      {
+        "type": "column",
+        "value": "total_amount,"
+      },
+      {
+        "type": "keyword",
+        "value": "ROW_NUMBER()"
+      },
+      {
+        "type": "keyword",
+        "value": "OVER"
+      },
+      {
+        "type": "keyword",
+        "value": "(PARTITION"
+      },
+      {
+        "type": "keyword",
+        "value": "BY"
+      },
+      {
+        "type": "column",
+        "value": "customer_name"
+      },
+      {
+        "type": "keyword",
+        "value": "ORDER"
+      },
+      {
+        "type": "keyword",
+        "value": "BY"
+      },
+      {
+        "type": "column",
+        "value": "total_amount"
+      },
+      {
+        "type": "keyword",
+        "value": "DESC)"
+      },
+      {
+        "type": "keyword",
+        "value": "AS"
+      },
+      {
+        "type": "column",
+        "value": "customer_order_rank"
+      },
+      {
+        "type": "keyword",
+        "value": "FROM"
+      },
+      {
+        "type": "table",
+        "value": "Orders;"
+      }
+    ]
+  },
+  {
+    "drillNumber": 1216,
+    "subcluster": "13.2 Partitioned ROW_NUMBER() (Rank per Category)",
+    "level": "Level 2 (Partitioned Row Number)",
+    "title": "Syntax #1216: Rank music tracks by duration within each musical genre",
+    "table": "MusicTracks",
+    "scenario": "Rank music tracks by duration within each musical genre.",
+    "businessObjective": "Rank music tracks by duration within each musical genre.",
+    "schemaSnippet": "MusicTracks analytical schema",
+    "targetQuery": "SELECT track_title, genre, duration_seconds,\n  ROW_NUMBER() OVER (PARTITION BY genre ORDER BY duration_seconds DESC) AS genre_duration_rank\nFROM MusicTracks;",
+    "syntaxBlueprint": "SELECT col1, category, metric,\n  ROW_NUMBER() OVER (PARTITION BY category ORDER BY metric DESC) AS category_rank\nFROM table_name;",
+    "syntaxRule": "Adding PARTITION BY restarts the row numbering sequence at 1 for each distinct partition group.",
+    "syntaxTrap": "Confusing PARTITION BY with GROUP BY. PARTITION BY does not collapse rows—every row retains its identity.",
+    "eli5Story": "Analytical Window Functions on MusicTracks: Rank music tracks by duration within each musical genre.",
+    "commonMistakes": "Omitting ORDER BY inside OVER() for running totals, confusing PARTITION BY with GROUP BY, or attempting to filter window functions in WHERE without a CTE wrapper.",
+    "learningOutcomes": "Mastered 13.2 Partitioned ROW_NUMBER() (Rank per Category) on MusicTracks.",
+    "challengeSlots": [
+      {
+        "type": "keyword",
+        "value": "SELECT"
+      },
+      {
+        "type": "column",
+        "value": "track_title,"
+      },
+      {
+        "type": "column",
+        "value": "genre,"
+      },
+      {
+        "type": "column",
+        "value": "duration_seconds,"
+      },
+      {
+        "type": "keyword",
+        "value": "ROW_NUMBER()"
+      },
+      {
+        "type": "keyword",
+        "value": "OVER"
+      },
+      {
+        "type": "keyword",
+        "value": "(PARTITION"
+      },
+      {
+        "type": "keyword",
+        "value": "BY"
+      },
+      {
+        "type": "column",
+        "value": "genre"
+      },
+      {
+        "type": "keyword",
+        "value": "ORDER"
+      },
+      {
+        "type": "keyword",
+        "value": "BY"
+      },
+      {
+        "type": "column",
+        "value": "duration_seconds"
+      },
+      {
+        "type": "keyword",
+        "value": "DESC)"
+      },
+      {
+        "type": "keyword",
+        "value": "AS"
+      },
+      {
+        "type": "column",
+        "value": "genre_duration_rank"
+      },
+      {
+        "type": "keyword",
+        "value": "FROM"
+      },
+      {
+        "type": "table",
+        "value": "MusicTracks;"
+      }
+    ]
+  },
+  {
+    "drillNumber": 1217,
+    "subcluster": "13.2 Partitioned ROW_NUMBER() (Rank per Category)",
+    "level": "Level 2 (Partitioned Row Number)",
+    "title": "Syntax #1217: Rank gym members by attendance within each membership plan tier",
+    "table": "GymMembers",
+    "scenario": "Rank gym members by attendance within each membership plan tier.",
+    "businessObjective": "Rank gym members by attendance within each membership plan tier.",
+    "schemaSnippet": "GymMembers analytical schema",
+    "targetQuery": "SELECT member_name, membership_plan, attendance_days,\n  ROW_NUMBER() OVER (PARTITION BY membership_plan ORDER BY attendance_days DESC) AS plan_attendance_rank\nFROM GymMembers;",
+    "syntaxBlueprint": "SELECT col1, category, metric,\n  ROW_NUMBER() OVER (PARTITION BY category ORDER BY metric DESC) AS category_rank\nFROM table_name;",
+    "syntaxRule": "Adding PARTITION BY restarts the row numbering sequence at 1 for each distinct partition group.",
+    "syntaxTrap": "Confusing PARTITION BY with GROUP BY. PARTITION BY does not collapse rows—every row retains its identity.",
+    "eli5Story": "Analytical Window Functions on GymMembers: Rank gym members by attendance within each membership plan tier.",
+    "commonMistakes": "Omitting ORDER BY inside OVER() for running totals, confusing PARTITION BY with GROUP BY, or attempting to filter window functions in WHERE without a CTE wrapper.",
+    "learningOutcomes": "Mastered 13.2 Partitioned ROW_NUMBER() (Rank per Category) on GymMembers.",
+    "challengeSlots": [
+      {
+        "type": "keyword",
+        "value": "SELECT"
+      },
+      {
+        "type": "column",
+        "value": "member_name,"
+      },
+      {
+        "type": "column",
+        "value": "membership_plan,"
+      },
+      {
+        "type": "column",
+        "value": "attendance_days,"
+      },
+      {
+        "type": "keyword",
+        "value": "ROW_NUMBER()"
+      },
+      {
+        "type": "keyword",
+        "value": "OVER"
+      },
+      {
+        "type": "keyword",
+        "value": "(PARTITION"
+      },
+      {
+        "type": "keyword",
+        "value": "BY"
+      },
+      {
+        "type": "column",
+        "value": "membership_plan"
+      },
+      {
+        "type": "keyword",
+        "value": "ORDER"
+      },
+      {
+        "type": "keyword",
+        "value": "BY"
+      },
+      {
+        "type": "column",
+        "value": "attendance_days"
+      },
+      {
+        "type": "keyword",
+        "value": "DESC)"
+      },
+      {
+        "type": "keyword",
+        "value": "AS"
+      },
+      {
+        "type": "column",
+        "value": "plan_attendance_rank"
+      },
+      {
+        "type": "keyword",
+        "value": "FROM"
+      },
+      {
+        "type": "table",
+        "value": "GymMembers;"
+      }
+    ]
+  },
+  {
+    "drillNumber": 1218,
+    "subcluster": "13.2 Partitioned ROW_NUMBER() (Rank per Category)",
+    "level": "Level 2 (Partitioned Row Number)",
+    "title": "Syntax #1218: Rank film reviews by star rating within each film genre",
+    "table": "MovieReviews",
+    "scenario": "Rank film reviews by star rating within each film genre.",
+    "businessObjective": "Rank film reviews by star rating within each film genre.",
+    "schemaSnippet": "MovieReviews analytical schema",
+    "targetQuery": "SELECT movie_title, genre, star_rating,\n  ROW_NUMBER() OVER (PARTITION BY genre ORDER BY star_rating DESC) AS genre_rating_rank\nFROM MovieReviews;",
+    "syntaxBlueprint": "SELECT col1, category, metric,\n  ROW_NUMBER() OVER (PARTITION BY category ORDER BY metric DESC) AS category_rank\nFROM table_name;",
+    "syntaxRule": "Adding PARTITION BY restarts the row numbering sequence at 1 for each distinct partition group.",
+    "syntaxTrap": "Confusing PARTITION BY with GROUP BY. PARTITION BY does not collapse rows—every row retains its identity.",
+    "eli5Story": "Analytical Window Functions on MovieReviews: Rank film reviews by star rating within each film genre.",
+    "commonMistakes": "Omitting ORDER BY inside OVER() for running totals, confusing PARTITION BY with GROUP BY, or attempting to filter window functions in WHERE without a CTE wrapper.",
+    "learningOutcomes": "Mastered 13.2 Partitioned ROW_NUMBER() (Rank per Category) on MovieReviews.",
+    "challengeSlots": [
+      {
+        "type": "keyword",
+        "value": "SELECT"
+      },
+      {
+        "type": "column",
+        "value": "movie_title,"
+      },
+      {
+        "type": "column",
+        "value": "genre,"
+      },
+      {
+        "type": "column",
+        "value": "star_rating,"
+      },
+      {
+        "type": "keyword",
+        "value": "ROW_NUMBER()"
+      },
+      {
+        "type": "keyword",
+        "value": "OVER"
+      },
+      {
+        "type": "keyword",
+        "value": "(PARTITION"
+      },
+      {
+        "type": "keyword",
+        "value": "BY"
+      },
+      {
+        "type": "column",
+        "value": "genre"
+      },
+      {
+        "type": "keyword",
+        "value": "ORDER"
+      },
+      {
+        "type": "keyword",
+        "value": "BY"
+      },
+      {
+        "type": "column",
+        "value": "star_rating"
+      },
+      {
+        "type": "keyword",
+        "value": "DESC)"
+      },
+      {
+        "type": "keyword",
+        "value": "AS"
+      },
+      {
+        "type": "column",
+        "value": "genre_rating_rank"
+      },
+      {
+        "type": "keyword",
+        "value": "FROM"
+      },
+      {
+        "type": "table",
+        "value": "MovieReviews;"
+      }
+    ]
+  },
+  {
+    "drillNumber": 1219,
+    "subcluster": "13.2 Partitioned ROW_NUMBER() (Rank per Category)",
+    "level": "Level 2 (Partitioned Row Number)",
+    "title": "Syntax #1219: Rank flights by route distance departing from each airport hub",
+    "table": "FlightSchedule",
+    "scenario": "Rank flights by route distance departing from each airport hub.",
+    "businessObjective": "Rank flights by route distance departing from each airport hub.",
+    "schemaSnippet": "FlightSchedule analytical schema",
+    "targetQuery": "SELECT flight_id, origin_airport, distance_miles,\n  ROW_NUMBER() OVER (PARTITION BY origin_airport ORDER BY distance_miles DESC) AS airport_distance_rank\nFROM FlightSchedule;",
+    "syntaxBlueprint": "SELECT col1, category, metric,\n  ROW_NUMBER() OVER (PARTITION BY category ORDER BY metric DESC) AS category_rank\nFROM table_name;",
+    "syntaxRule": "Adding PARTITION BY restarts the row numbering sequence at 1 for each distinct partition group.",
+    "syntaxTrap": "Confusing PARTITION BY with GROUP BY. PARTITION BY does not collapse rows—every row retains its identity.",
+    "eli5Story": "Analytical Window Functions on FlightSchedule: Rank flights by route distance departing from each airport hub.",
+    "commonMistakes": "Omitting ORDER BY inside OVER() for running totals, confusing PARTITION BY with GROUP BY, or attempting to filter window functions in WHERE without a CTE wrapper.",
+    "learningOutcomes": "Mastered 13.2 Partitioned ROW_NUMBER() (Rank per Category) on FlightSchedule.",
+    "challengeSlots": [
+      {
+        "type": "keyword",
+        "value": "SELECT"
+      },
+      {
+        "type": "column",
+        "value": "flight_id,"
+      },
+      {
+        "type": "column",
+        "value": "origin_airport,"
+      },
+      {
+        "type": "column",
+        "value": "distance_miles,"
+      },
+      {
+        "type": "keyword",
+        "value": "ROW_NUMBER()"
+      },
+      {
+        "type": "keyword",
+        "value": "OVER"
+      },
+      {
+        "type": "keyword",
+        "value": "(PARTITION"
+      },
+      {
+        "type": "keyword",
+        "value": "BY"
+      },
+      {
+        "type": "column",
+        "value": "origin_airport"
+      },
+      {
+        "type": "keyword",
+        "value": "ORDER"
+      },
+      {
+        "type": "keyword",
+        "value": "BY"
+      },
+      {
+        "type": "column",
+        "value": "distance_miles"
+      },
+      {
+        "type": "keyword",
+        "value": "DESC)"
+      },
+      {
+        "type": "keyword",
+        "value": "AS"
+      },
+      {
+        "type": "column",
+        "value": "airport_distance_rank"
+      },
+      {
+        "type": "keyword",
+        "value": "FROM"
+      },
+      {
+        "type": "table",
+        "value": "FlightSchedule;"
+      }
+    ]
+  },
+  {
+    "drillNumber": 1220,
+    "subcluster": "13.2 Partitioned ROW_NUMBER() (Rank per Category)",
+    "level": "Level 2 (Partitioned Row Number)",
+    "title": "Syntax #1220: Rank veterinary patients by weight within each animal species",
+    "table": "PetClinic",
+    "scenario": "Rank veterinary patients by weight within each animal species.",
+    "businessObjective": "Rank veterinary patients by weight within each animal species.",
+    "schemaSnippet": "PetClinic analytical schema",
+    "targetQuery": "SELECT pet_name, species, weight_kg,\n  ROW_NUMBER() OVER (PARTITION BY species ORDER BY weight_kg DESC) AS species_weight_rank\nFROM PetClinic;",
+    "syntaxBlueprint": "SELECT col1, category, metric,\n  ROW_NUMBER() OVER (PARTITION BY category ORDER BY metric DESC) AS category_rank\nFROM table_name;",
+    "syntaxRule": "Adding PARTITION BY restarts the row numbering sequence at 1 for each distinct partition group.",
+    "syntaxTrap": "Confusing PARTITION BY with GROUP BY. PARTITION BY does not collapse rows—every row retains its identity.",
+    "eli5Story": "Analytical Window Functions on PetClinic: Rank veterinary patients by weight within each animal species.",
+    "commonMistakes": "Omitting ORDER BY inside OVER() for running totals, confusing PARTITION BY with GROUP BY, or attempting to filter window functions in WHERE without a CTE wrapper.",
+    "learningOutcomes": "Mastered 13.2 Partitioned ROW_NUMBER() (Rank per Category) on PetClinic.",
+    "challengeSlots": [
+      {
+        "type": "keyword",
+        "value": "SELECT"
+      },
+      {
+        "type": "column",
+        "value": "pet_name,"
+      },
+      {
+        "type": "column",
+        "value": "species,"
+      },
+      {
+        "type": "column",
+        "value": "weight_kg,"
+      },
+      {
+        "type": "keyword",
+        "value": "ROW_NUMBER()"
+      },
+      {
+        "type": "keyword",
+        "value": "OVER"
+      },
+      {
+        "type": "keyword",
+        "value": "(PARTITION"
+      },
+      {
+        "type": "keyword",
+        "value": "BY"
+      },
+      {
+        "type": "column",
+        "value": "species"
+      },
+      {
+        "type": "keyword",
+        "value": "ORDER"
+      },
+      {
+        "type": "keyword",
+        "value": "BY"
+      },
+      {
+        "type": "column",
+        "value": "weight_kg"
+      },
+      {
+        "type": "keyword",
+        "value": "DESC)"
+      },
+      {
+        "type": "keyword",
+        "value": "AS"
+      },
+      {
+        "type": "column",
+        "value": "species_weight_rank"
+      },
+      {
+        "type": "keyword",
+        "value": "FROM"
+      },
+      {
+        "type": "table",
+        "value": "PetClinic;"
+      }
+    ]
+  },
+  {
+    "drillNumber": 1221,
+    "subcluster": "13.3 RANK() OVER (...) with Gaps for Ties",
+    "level": "Level 2 (Olympic Rank)",
+    "title": "Syntax #1221: Assign Olympic-style ranks to students by GPA where ties share a rank with gaps following",
+    "table": "Students",
+    "scenario": "Assign Olympic-style ranks to students by GPA where ties share a rank with gaps following.",
+    "businessObjective": "Assign Olympic-style ranks to students by GPA where ties share a rank with gaps following.",
+    "schemaSnippet": "Students analytical schema",
+    "targetQuery": "SELECT full_name, gpa,\n  RANK() OVER (ORDER BY gpa DESC) AS gpa_rank\nFROM Students;",
+    "syntaxBlueprint": "SELECT col1, metric,\n  RANK() OVER (ORDER BY metric DESC) AS olympic_rank\nFROM table_name;",
+    "syntaxRule": "RANK() assigns identical ranks to rows with equal values, but skips subsequent rank numbers (Olympic style: 1, 2, 2, 4).",
+    "syntaxTrap": "Using RANK() when you need sequential ranking without gaps. Use DENSE_RANK() instead.",
+    "eli5Story": "Analytical Window Functions on Students: Assign Olympic-style ranks to students by GPA where ties share a rank with gaps following.",
+    "commonMistakes": "Omitting ORDER BY inside OVER() for running totals, confusing PARTITION BY with GROUP BY, or attempting to filter window functions in WHERE without a CTE wrapper.",
+    "learningOutcomes": "Mastered 13.3 RANK() OVER (...) with Gaps for Ties on Students.",
+    "challengeSlots": [
+      {
+        "type": "keyword",
+        "value": "SELECT"
+      },
+      {
+        "type": "column",
+        "value": "full_name,"
+      },
+      {
+        "type": "column",
+        "value": "gpa,"
+      },
+      {
+        "type": "keyword",
+        "value": "RANK()"
+      },
+      {
+        "type": "keyword",
+        "value": "OVER"
+      },
+      {
+        "type": "keyword",
+        "value": "(ORDER"
+      },
+      {
+        "type": "keyword",
+        "value": "BY"
+      },
+      {
+        "type": "column",
+        "value": "gpa"
+      },
+      {
+        "type": "keyword",
+        "value": "DESC)"
+      },
+      {
+        "type": "keyword",
+        "value": "AS"
+      },
+      {
+        "type": "column",
+        "value": "gpa_rank"
+      },
+      {
+        "type": "keyword",
+        "value": "FROM"
+      },
+      {
+        "type": "table",
+        "value": "Students;"
+      }
+    ]
+  },
+  {
+    "drillNumber": 1222,
+    "subcluster": "13.3 RANK() OVER (...) with Gaps for Ties",
+    "level": "Level 2 (Olympic Rank)",
+    "title": "Syntax #1222: Rank book catalog prices using RANK() to handle identical prices",
+    "table": "Books",
+    "scenario": "Rank book catalog prices using RANK() to handle identical prices.",
+    "businessObjective": "Rank book catalog prices using RANK() to handle identical prices.",
+    "schemaSnippet": "Books analytical schema",
+    "targetQuery": "SELECT title, price,\n  RANK() OVER (ORDER BY price DESC) AS book_rank\nFROM Books;",
+    "syntaxBlueprint": "SELECT col1, metric,\n  RANK() OVER (ORDER BY metric DESC) AS olympic_rank\nFROM table_name;",
+    "syntaxRule": "RANK() assigns identical ranks to rows with equal values, but skips subsequent rank numbers (Olympic style: 1, 2, 2, 4).",
+    "syntaxTrap": "Using RANK() when you need sequential ranking without gaps. Use DENSE_RANK() instead.",
+    "eli5Story": "Analytical Window Functions on Books: Rank book catalog prices using RANK() to handle identical prices.",
+    "commonMistakes": "Omitting ORDER BY inside OVER() for running totals, confusing PARTITION BY with GROUP BY, or attempting to filter window functions in WHERE without a CTE wrapper.",
+    "learningOutcomes": "Mastered 13.3 RANK() OVER (...) with Gaps for Ties on Books.",
+    "challengeSlots": [
+      {
+        "type": "keyword",
+        "value": "SELECT"
+      },
+      {
+        "type": "column",
+        "value": "title,"
+      },
+      {
+        "type": "column",
+        "value": "price,"
+      },
+      {
+        "type": "keyword",
+        "value": "RANK()"
+      },
+      {
+        "type": "keyword",
+        "value": "OVER"
+      },
+      {
+        "type": "keyword",
+        "value": "(ORDER"
+      },
+      {
+        "type": "keyword",
+        "value": "BY"
+      },
+      {
+        "type": "column",
+        "value": "price"
+      },
+      {
+        "type": "keyword",
+        "value": "DESC)"
+      },
+      {
+        "type": "keyword",
+        "value": "AS"
+      },
+      {
+        "type": "column",
+        "value": "book_rank"
+      },
+      {
+        "type": "keyword",
+        "value": "FROM"
+      },
+      {
+        "type": "table",
+        "value": "Books;"
+      }
+    ]
+  },
+  {
+    "drillNumber": 1223,
+    "subcluster": "13.3 RANK() OVER (...) with Gaps for Ties",
+    "level": "Level 2 (Olympic Rank)",
+    "title": "Syntax #1223: Rank employee salaries where identical salaries receive tied ranks with gaps",
+    "table": "Employees",
+    "scenario": "Rank employee salaries where identical salaries receive tied ranks with gaps.",
+    "businessObjective": "Rank employee salaries where identical salaries receive tied ranks with gaps.",
+    "schemaSnippet": "Employees analytical schema",
+    "targetQuery": "SELECT first_name, salary,\n  RANK() OVER (ORDER BY salary DESC) AS salary_rank\nFROM Employees;",
+    "syntaxBlueprint": "SELECT col1, metric,\n  RANK() OVER (ORDER BY metric DESC) AS olympic_rank\nFROM table_name;",
+    "syntaxRule": "RANK() assigns identical ranks to rows with equal values, but skips subsequent rank numbers (Olympic style: 1, 2, 2, 4).",
+    "syntaxTrap": "Using RANK() when you need sequential ranking without gaps. Use DENSE_RANK() instead.",
+    "eli5Story": "Analytical Window Functions on Employees: Rank employee salaries where identical salaries receive tied ranks with gaps.",
+    "commonMistakes": "Omitting ORDER BY inside OVER() for running totals, confusing PARTITION BY with GROUP BY, or attempting to filter window functions in WHERE without a CTE wrapper.",
+    "learningOutcomes": "Mastered 13.3 RANK() OVER (...) with Gaps for Ties on Employees.",
+    "challengeSlots": [
+      {
+        "type": "keyword",
+        "value": "SELECT"
+      },
+      {
+        "type": "column",
+        "value": "first_name,"
+      },
+      {
+        "type": "column",
+        "value": "salary,"
+      },
+      {
+        "type": "keyword",
+        "value": "RANK()"
+      },
+      {
+        "type": "keyword",
+        "value": "OVER"
+      },
+      {
+        "type": "keyword",
+        "value": "(ORDER"
+      },
+      {
+        "type": "keyword",
+        "value": "BY"
+      },
+      {
+        "type": "column",
+        "value": "salary"
+      },
+      {
+        "type": "keyword",
+        "value": "DESC)"
+      },
+      {
+        "type": "keyword",
+        "value": "AS"
+      },
+      {
+        "type": "column",
+        "value": "salary_rank"
+      },
+      {
+        "type": "keyword",
+        "value": "FROM"
+      },
+      {
+        "type": "table",
+        "value": "Employees;"
+      }
+    ]
+  },
+  {
+    "drillNumber": 1224,
+    "subcluster": "13.3 RANK() OVER (...) with Gaps for Ties",
+    "level": "Level 2 (Olympic Rank)",
+    "title": "Syntax #1224: Rank grocery products by cheapest price handling price ties with RANK()",
+    "table": "GroceryItems",
+    "scenario": "Rank grocery products by cheapest price handling price ties with RANK().",
+    "businessObjective": "Rank grocery products by cheapest price handling price ties with RANK().",
+    "schemaSnippet": "GroceryItems analytical schema",
+    "targetQuery": "SELECT item_name, unit_price,\n  RANK() OVER (ORDER BY unit_price ASC) AS budget_rank\nFROM GroceryItems;",
+    "syntaxBlueprint": "SELECT col1, metric,\n  RANK() OVER (ORDER BY metric DESC) AS olympic_rank\nFROM table_name;",
+    "syntaxRule": "RANK() assigns identical ranks to rows with equal values, but skips subsequent rank numbers (Olympic style: 1, 2, 2, 4).",
+    "syntaxTrap": "Using RANK() when you need sequential ranking without gaps. Use DENSE_RANK() instead.",
+    "eli5Story": "Analytical Window Functions on GroceryItems: Rank grocery products by cheapest price handling price ties with RANK().",
+    "commonMistakes": "Omitting ORDER BY inside OVER() for running totals, confusing PARTITION BY with GROUP BY, or attempting to filter window functions in WHERE without a CTE wrapper.",
+    "learningOutcomes": "Mastered 13.3 RANK() OVER (...) with Gaps for Ties on GroceryItems.",
+    "challengeSlots": [
+      {
+        "type": "keyword",
+        "value": "SELECT"
+      },
+      {
+        "type": "column",
+        "value": "item_name,"
+      },
+      {
+        "type": "column",
+        "value": "unit_price,"
+      },
+      {
+        "type": "keyword",
+        "value": "RANK()"
+      },
+      {
+        "type": "keyword",
+        "value": "OVER"
+      },
+      {
+        "type": "keyword",
+        "value": "(ORDER"
+      },
+      {
+        "type": "keyword",
+        "value": "BY"
+      },
+      {
+        "type": "column",
+        "value": "unit_price"
+      },
+      {
+        "type": "keyword",
+        "value": "ASC)"
+      },
+      {
+        "type": "keyword",
+        "value": "AS"
+      },
+      {
+        "type": "column",
+        "value": "budget_rank"
+      },
+      {
+        "type": "keyword",
+        "value": "FROM"
+      },
+      {
+        "type": "table",
+        "value": "GroceryItems;"
+      }
+    ]
+  },
+  {
+    "drillNumber": 1225,
+    "subcluster": "13.3 RANK() OVER (...) with Gaps for Ties",
+    "level": "Level 2 (Olympic Rank)",
+    "title": "Syntax #1225: Rank customer orders by total dollar amount using RANK()",
+    "table": "Orders",
+    "scenario": "Rank customer orders by total dollar amount using RANK().",
+    "businessObjective": "Rank customer orders by total dollar amount using RANK().",
+    "schemaSnippet": "Orders analytical schema",
+    "targetQuery": "SELECT order_id, total_amount,\n  RANK() OVER (ORDER BY total_amount DESC) AS spend_rank\nFROM Orders;",
+    "syntaxBlueprint": "SELECT col1, metric,\n  RANK() OVER (ORDER BY metric DESC) AS olympic_rank\nFROM table_name;",
+    "syntaxRule": "RANK() assigns identical ranks to rows with equal values, but skips subsequent rank numbers (Olympic style: 1, 2, 2, 4).",
+    "syntaxTrap": "Using RANK() when you need sequential ranking without gaps. Use DENSE_RANK() instead.",
+    "eli5Story": "Analytical Window Functions on Orders: Rank customer orders by total dollar amount using RANK().",
+    "commonMistakes": "Omitting ORDER BY inside OVER() for running totals, confusing PARTITION BY with GROUP BY, or attempting to filter window functions in WHERE without a CTE wrapper.",
+    "learningOutcomes": "Mastered 13.3 RANK() OVER (...) with Gaps for Ties on Orders.",
+    "challengeSlots": [
+      {
+        "type": "keyword",
+        "value": "SELECT"
+      },
+      {
+        "type": "column",
+        "value": "order_id,"
+      },
+      {
+        "type": "column",
+        "value": "total_amount,"
+      },
+      {
+        "type": "keyword",
+        "value": "RANK()"
+      },
+      {
+        "type": "keyword",
+        "value": "OVER"
+      },
+      {
+        "type": "keyword",
+        "value": "(ORDER"
+      },
+      {
+        "type": "keyword",
+        "value": "BY"
+      },
+      {
+        "type": "column",
+        "value": "total_amount"
+      },
+      {
+        "type": "keyword",
+        "value": "DESC)"
+      },
+      {
+        "type": "keyword",
+        "value": "AS"
+      },
+      {
+        "type": "column",
+        "value": "spend_rank"
+      },
+      {
+        "type": "keyword",
+        "value": "FROM"
+      },
+      {
+        "type": "table",
+        "value": "Orders;"
+      }
+    ]
+  },
+  {
+    "drillNumber": 1226,
+    "subcluster": "13.3 RANK() OVER (...) with Gaps for Ties",
+    "level": "Level 2 (Olympic Rank)",
+    "title": "Syntax #1226: Rank track runtimes allowing ties for identical durations",
+    "table": "MusicTracks",
+    "scenario": "Rank track runtimes allowing ties for identical durations.",
+    "businessObjective": "Rank track runtimes allowing ties for identical durations.",
+    "schemaSnippet": "MusicTracks analytical schema",
+    "targetQuery": "SELECT track_title, duration_seconds,\n  RANK() OVER (ORDER BY duration_seconds DESC) AS runtime_rank\nFROM MusicTracks;",
+    "syntaxBlueprint": "SELECT col1, metric,\n  RANK() OVER (ORDER BY metric DESC) AS olympic_rank\nFROM table_name;",
+    "syntaxRule": "RANK() assigns identical ranks to rows with equal values, but skips subsequent rank numbers (Olympic style: 1, 2, 2, 4).",
+    "syntaxTrap": "Using RANK() when you need sequential ranking without gaps. Use DENSE_RANK() instead.",
+    "eli5Story": "Analytical Window Functions on MusicTracks: Rank track runtimes allowing ties for identical durations.",
+    "commonMistakes": "Omitting ORDER BY inside OVER() for running totals, confusing PARTITION BY with GROUP BY, or attempting to filter window functions in WHERE without a CTE wrapper.",
+    "learningOutcomes": "Mastered 13.3 RANK() OVER (...) with Gaps for Ties on MusicTracks.",
+    "challengeSlots": [
+      {
+        "type": "keyword",
+        "value": "SELECT"
+      },
+      {
+        "type": "column",
+        "value": "track_title,"
+      },
+      {
+        "type": "column",
+        "value": "duration_seconds,"
+      },
+      {
+        "type": "keyword",
+        "value": "RANK()"
+      },
+      {
+        "type": "keyword",
+        "value": "OVER"
+      },
+      {
+        "type": "keyword",
+        "value": "(ORDER"
+      },
+      {
+        "type": "keyword",
+        "value": "BY"
+      },
+      {
+        "type": "column",
+        "value": "duration_seconds"
+      },
+      {
+        "type": "keyword",
+        "value": "DESC)"
+      },
+      {
+        "type": "keyword",
+        "value": "AS"
+      },
+      {
+        "type": "column",
+        "value": "runtime_rank"
+      },
+      {
+        "type": "keyword",
+        "value": "FROM"
+      },
+      {
+        "type": "table",
+        "value": "MusicTracks;"
+      }
+    ]
+  },
+  {
+    "drillNumber": 1227,
+    "subcluster": "13.3 RANK() OVER (...) with Gaps for Ties",
+    "level": "Level 2 (Olympic Rank)",
+    "title": "Syntax #1227: Rank gym members by attendance frequency with Olympic tie handling",
+    "table": "GymMembers",
+    "scenario": "Rank gym members by attendance frequency with Olympic tie handling.",
+    "businessObjective": "Rank gym members by attendance frequency with Olympic tie handling.",
+    "schemaSnippet": "GymMembers analytical schema",
+    "targetQuery": "SELECT member_name, attendance_days,\n  RANK() OVER (ORDER BY attendance_days DESC) AS visit_rank\nFROM GymMembers;",
+    "syntaxBlueprint": "SELECT col1, metric,\n  RANK() OVER (ORDER BY metric DESC) AS olympic_rank\nFROM table_name;",
+    "syntaxRule": "RANK() assigns identical ranks to rows with equal values, but skips subsequent rank numbers (Olympic style: 1, 2, 2, 4).",
+    "syntaxTrap": "Using RANK() when you need sequential ranking without gaps. Use DENSE_RANK() instead.",
+    "eli5Story": "Analytical Window Functions on GymMembers: Rank gym members by attendance frequency with Olympic tie handling.",
+    "commonMistakes": "Omitting ORDER BY inside OVER() for running totals, confusing PARTITION BY with GROUP BY, or attempting to filter window functions in WHERE without a CTE wrapper.",
+    "learningOutcomes": "Mastered 13.3 RANK() OVER (...) with Gaps for Ties on GymMembers.",
+    "challengeSlots": [
+      {
+        "type": "keyword",
+        "value": "SELECT"
+      },
+      {
+        "type": "column",
+        "value": "member_name,"
+      },
+      {
+        "type": "column",
+        "value": "attendance_days,"
+      },
+      {
+        "type": "keyword",
+        "value": "RANK()"
+      },
+      {
+        "type": "keyword",
+        "value": "OVER"
+      },
+      {
+        "type": "keyword",
+        "value": "(ORDER"
+      },
+      {
+        "type": "keyword",
+        "value": "BY"
+      },
+      {
+        "type": "column",
+        "value": "attendance_days"
+      },
+      {
+        "type": "keyword",
+        "value": "DESC)"
+      },
+      {
+        "type": "keyword",
+        "value": "AS"
+      },
+      {
+        "type": "column",
+        "value": "visit_rank"
+      },
+      {
+        "type": "keyword",
+        "value": "FROM"
+      },
+      {
+        "type": "table",
+        "value": "GymMembers;"
+      }
+    ]
+  },
+  {
+    "drillNumber": 1228,
+    "subcluster": "13.3 RANK() OVER (...) with Gaps for Ties",
+    "level": "Level 2 (Olympic Rank)",
+    "title": "Syntax #1228: Rank film reviews by star rating handling tied scores with RANK()",
+    "table": "MovieReviews",
+    "scenario": "Rank film reviews by star rating handling tied scores with RANK().",
+    "businessObjective": "Rank film reviews by star rating handling tied scores with RANK().",
+    "schemaSnippet": "MovieReviews analytical schema",
+    "targetQuery": "SELECT movie_title, star_rating,\n  RANK() OVER (ORDER BY star_rating DESC) AS star_rank\nFROM MovieReviews;",
+    "syntaxBlueprint": "SELECT col1, metric,\n  RANK() OVER (ORDER BY metric DESC) AS olympic_rank\nFROM table_name;",
+    "syntaxRule": "RANK() assigns identical ranks to rows with equal values, but skips subsequent rank numbers (Olympic style: 1, 2, 2, 4).",
+    "syntaxTrap": "Using RANK() when you need sequential ranking without gaps. Use DENSE_RANK() instead.",
+    "eli5Story": "Analytical Window Functions on MovieReviews: Rank film reviews by star rating handling tied scores with RANK().",
+    "commonMistakes": "Omitting ORDER BY inside OVER() for running totals, confusing PARTITION BY with GROUP BY, or attempting to filter window functions in WHERE without a CTE wrapper.",
+    "learningOutcomes": "Mastered 13.3 RANK() OVER (...) with Gaps for Ties on MovieReviews.",
+    "challengeSlots": [
+      {
+        "type": "keyword",
+        "value": "SELECT"
+      },
+      {
+        "type": "column",
+        "value": "movie_title,"
+      },
+      {
+        "type": "column",
+        "value": "star_rating,"
+      },
+      {
+        "type": "keyword",
+        "value": "RANK()"
+      },
+      {
+        "type": "keyword",
+        "value": "OVER"
+      },
+      {
+        "type": "keyword",
+        "value": "(ORDER"
+      },
+      {
+        "type": "keyword",
+        "value": "BY"
+      },
+      {
+        "type": "column",
+        "value": "star_rating"
+      },
+      {
+        "type": "keyword",
+        "value": "DESC)"
+      },
+      {
+        "type": "keyword",
+        "value": "AS"
+      },
+      {
+        "type": "column",
+        "value": "star_rank"
+      },
+      {
+        "type": "keyword",
+        "value": "FROM"
+      },
+      {
+        "type": "table",
+        "value": "MovieReviews;"
+      }
+    ]
+  },
+  {
+    "drillNumber": 1229,
+    "subcluster": "13.3 RANK() OVER (...) with Gaps for Ties",
+    "level": "Level 2 (Olympic Rank)",
+    "title": "Syntax #1229: Rank flight routes by distance using standard tie-skipping RANK()",
+    "table": "FlightSchedule",
+    "scenario": "Rank flight routes by distance using standard tie-skipping RANK().",
+    "businessObjective": "Rank flight routes by distance using standard tie-skipping RANK().",
+    "schemaSnippet": "FlightSchedule analytical schema",
+    "targetQuery": "SELECT flight_id, distance_miles,\n  RANK() OVER (ORDER BY distance_miles DESC) AS route_rank\nFROM FlightSchedule;",
+    "syntaxBlueprint": "SELECT col1, metric,\n  RANK() OVER (ORDER BY metric DESC) AS olympic_rank\nFROM table_name;",
+    "syntaxRule": "RANK() assigns identical ranks to rows with equal values, but skips subsequent rank numbers (Olympic style: 1, 2, 2, 4).",
+    "syntaxTrap": "Using RANK() when you need sequential ranking without gaps. Use DENSE_RANK() instead.",
+    "eli5Story": "Analytical Window Functions on FlightSchedule: Rank flight routes by distance using standard tie-skipping RANK().",
+    "commonMistakes": "Omitting ORDER BY inside OVER() for running totals, confusing PARTITION BY with GROUP BY, or attempting to filter window functions in WHERE without a CTE wrapper.",
+    "learningOutcomes": "Mastered 13.3 RANK() OVER (...) with Gaps for Ties on FlightSchedule.",
+    "challengeSlots": [
+      {
+        "type": "keyword",
+        "value": "SELECT"
+      },
+      {
+        "type": "column",
+        "value": "flight_id,"
+      },
+      {
+        "type": "column",
+        "value": "distance_miles,"
+      },
+      {
+        "type": "keyword",
+        "value": "RANK()"
+      },
+      {
+        "type": "keyword",
+        "value": "OVER"
+      },
+      {
+        "type": "keyword",
+        "value": "(ORDER"
+      },
+      {
+        "type": "keyword",
+        "value": "BY"
+      },
+      {
+        "type": "column",
+        "value": "distance_miles"
+      },
+      {
+        "type": "keyword",
+        "value": "DESC)"
+      },
+      {
+        "type": "keyword",
+        "value": "AS"
+      },
+      {
+        "type": "column",
+        "value": "route_rank"
+      },
+      {
+        "type": "keyword",
+        "value": "FROM"
+      },
+      {
+        "type": "table",
+        "value": "FlightSchedule;"
+      }
+    ]
+  },
+  {
+    "drillNumber": 1230,
+    "subcluster": "13.3 RANK() OVER (...) with Gaps for Ties",
+    "level": "Level 2 (Olympic Rank)",
+    "title": "Syntax #1230: Rank veterinary patients by age in years handling tied ages via RANK()",
+    "table": "PetClinic",
+    "scenario": "Rank veterinary patients by age in years handling tied ages via RANK().",
+    "businessObjective": "Rank veterinary patients by age in years handling tied ages via RANK().",
+    "schemaSnippet": "PetClinic analytical schema",
+    "targetQuery": "SELECT pet_name, age_years,\n  RANK() OVER (ORDER BY age_years DESC) AS age_rank\nFROM PetClinic;",
+    "syntaxBlueprint": "SELECT col1, metric,\n  RANK() OVER (ORDER BY metric DESC) AS olympic_rank\nFROM table_name;",
+    "syntaxRule": "RANK() assigns identical ranks to rows with equal values, but skips subsequent rank numbers (Olympic style: 1, 2, 2, 4).",
+    "syntaxTrap": "Using RANK() when you need sequential ranking without gaps. Use DENSE_RANK() instead.",
+    "eli5Story": "Analytical Window Functions on PetClinic: Rank veterinary patients by age in years handling tied ages via RANK().",
+    "commonMistakes": "Omitting ORDER BY inside OVER() for running totals, confusing PARTITION BY with GROUP BY, or attempting to filter window functions in WHERE without a CTE wrapper.",
+    "learningOutcomes": "Mastered 13.3 RANK() OVER (...) with Gaps for Ties on PetClinic.",
+    "challengeSlots": [
+      {
+        "type": "keyword",
+        "value": "SELECT"
+      },
+      {
+        "type": "column",
+        "value": "pet_name,"
+      },
+      {
+        "type": "column",
+        "value": "age_years,"
+      },
+      {
+        "type": "keyword",
+        "value": "RANK()"
+      },
+      {
+        "type": "keyword",
+        "value": "OVER"
+      },
+      {
+        "type": "keyword",
+        "value": "(ORDER"
+      },
+      {
+        "type": "keyword",
+        "value": "BY"
+      },
+      {
+        "type": "column",
+        "value": "age_years"
+      },
+      {
+        "type": "keyword",
+        "value": "DESC)"
+      },
+      {
+        "type": "keyword",
+        "value": "AS"
+      },
+      {
+        "type": "column",
+        "value": "age_rank"
+      },
+      {
+        "type": "keyword",
+        "value": "FROM"
+      },
+      {
+        "type": "table",
+        "value": "PetClinic;"
+      }
+    ]
+  },
+  {
+    "drillNumber": 1231,
+    "subcluster": "13.4 DENSE_RANK() OVER (...) without Gaps",
+    "level": "Level 2 (Dense Rank)",
+    "title": "Syntax #1231: Assign continuous ranks to student GPAs without gaps (1, 2, 2, 3) using DENSE_RANK()",
+    "table": "Students",
+    "scenario": "Assign continuous ranks to student GPAs without gaps (1, 2, 2, 3) using DENSE_RANK().",
+    "businessObjective": "Assign continuous ranks to student GPAs without gaps (1, 2, 2, 3) using DENSE_RANK().",
+    "schemaSnippet": "Students analytical schema",
+    "targetQuery": "SELECT full_name, gpa,\n  DENSE_RANK() OVER (ORDER BY gpa DESC) AS dense_gpa_rank\nFROM Students;",
+    "syntaxBlueprint": "SELECT col1, metric,\n  DENSE_RANK() OVER (ORDER BY metric DESC) AS dense_rank_val\nFROM table_name;",
+    "syntaxRule": "DENSE_RANK() assigns identical ranks to tied values, but does NOT skip any numbers (1, 2, 2, 3, 4).",
+    "syntaxTrap": "Using DENSE_RANK() to find the 'Top 3' might return more than 3 rows if there are ties, but guaranteed to cover the 3 highest distinct values.",
+    "eli5Story": "Analytical Window Functions on Students: Assign continuous ranks to student GPAs without gaps (1, 2, 2, 3) using DENSE_RANK().",
+    "commonMistakes": "Omitting ORDER BY inside OVER() for running totals, confusing PARTITION BY with GROUP BY, or attempting to filter window functions in WHERE without a CTE wrapper.",
+    "learningOutcomes": "Mastered 13.4 DENSE_RANK() OVER (...) without Gaps on Students.",
+    "challengeSlots": [
+      {
+        "type": "keyword",
+        "value": "SELECT"
+      },
+      {
+        "type": "column",
+        "value": "full_name,"
+      },
+      {
+        "type": "column",
+        "value": "gpa,"
+      },
+      {
+        "type": "keyword",
+        "value": "DENSE_RANK()"
+      },
+      {
+        "type": "keyword",
+        "value": "OVER"
+      },
+      {
+        "type": "keyword",
+        "value": "(ORDER"
+      },
+      {
+        "type": "keyword",
+        "value": "BY"
+      },
+      {
+        "type": "column",
+        "value": "gpa"
+      },
+      {
+        "type": "keyword",
+        "value": "DESC)"
+      },
+      {
+        "type": "keyword",
+        "value": "AS"
+      },
+      {
+        "type": "column",
+        "value": "dense_gpa_rank"
+      },
+      {
+        "type": "keyword",
+        "value": "FROM"
+      },
+      {
+        "type": "table",
+        "value": "Students;"
+      }
+    ]
+  },
+  {
+    "drillNumber": 1232,
+    "subcluster": "13.4 DENSE_RANK() OVER (...) without Gaps",
+    "level": "Level 2 (Dense Rank)",
+    "title": "Syntax #1232: Rank book prices continuously using DENSE_RANK()",
+    "table": "Books",
+    "scenario": "Rank book prices continuously using DENSE_RANK().",
+    "businessObjective": "Rank book prices continuously using DENSE_RANK().",
+    "schemaSnippet": "Books analytical schema",
+    "targetQuery": "SELECT title, price,\n  DENSE_RANK() OVER (ORDER BY price DESC) AS dense_price_rank\nFROM Books;",
+    "syntaxBlueprint": "SELECT col1, metric,\n  DENSE_RANK() OVER (ORDER BY metric DESC) AS dense_rank_val\nFROM table_name;",
+    "syntaxRule": "DENSE_RANK() assigns identical ranks to tied values, but does NOT skip any numbers (1, 2, 2, 3, 4).",
+    "syntaxTrap": "Using DENSE_RANK() to find the 'Top 3' might return more than 3 rows if there are ties, but guaranteed to cover the 3 highest distinct values.",
+    "eli5Story": "Analytical Window Functions on Books: Rank book prices continuously using DENSE_RANK().",
+    "commonMistakes": "Omitting ORDER BY inside OVER() for running totals, confusing PARTITION BY with GROUP BY, or attempting to filter window functions in WHERE without a CTE wrapper.",
+    "learningOutcomes": "Mastered 13.4 DENSE_RANK() OVER (...) without Gaps on Books.",
+    "challengeSlots": [
+      {
+        "type": "keyword",
+        "value": "SELECT"
+      },
+      {
+        "type": "column",
+        "value": "title,"
+      },
+      {
+        "type": "column",
+        "value": "price,"
+      },
+      {
+        "type": "keyword",
+        "value": "DENSE_RANK()"
+      },
+      {
+        "type": "keyword",
+        "value": "OVER"
+      },
+      {
+        "type": "keyword",
+        "value": "(ORDER"
+      },
+      {
+        "type": "keyword",
+        "value": "BY"
+      },
+      {
+        "type": "column",
+        "value": "price"
+      },
+      {
+        "type": "keyword",
+        "value": "DESC)"
+      },
+      {
+        "type": "keyword",
+        "value": "AS"
+      },
+      {
+        "type": "column",
+        "value": "dense_price_rank"
+      },
+      {
+        "type": "keyword",
+        "value": "FROM"
+      },
+      {
+        "type": "table",
+        "value": "Books;"
+      }
+    ]
+  },
+  {
+    "drillNumber": 1233,
+    "subcluster": "13.4 DENSE_RANK() OVER (...) without Gaps",
+    "level": "Level 2 (Dense Rank)",
+    "title": "Syntax #1233: Rank employee salaries without rank gaps to establish distinct compensation levels",
+    "table": "Employees",
+    "scenario": "Rank employee salaries without rank gaps to establish distinct compensation levels.",
+    "businessObjective": "Rank employee salaries without rank gaps to establish distinct compensation levels.",
+    "schemaSnippet": "Employees analytical schema",
+    "targetQuery": "SELECT first_name, salary,\n  DENSE_RANK() OVER (ORDER BY salary DESC) AS dense_salary_rank\nFROM Employees;",
+    "syntaxBlueprint": "SELECT col1, metric,\n  DENSE_RANK() OVER (ORDER BY metric DESC) AS dense_rank_val\nFROM table_name;",
+    "syntaxRule": "DENSE_RANK() assigns identical ranks to tied values, but does NOT skip any numbers (1, 2, 2, 3, 4).",
+    "syntaxTrap": "Using DENSE_RANK() to find the 'Top 3' might return more than 3 rows if there are ties, but guaranteed to cover the 3 highest distinct values.",
+    "eli5Story": "Analytical Window Functions on Employees: Rank employee salaries without rank gaps to establish distinct compensation levels.",
+    "commonMistakes": "Omitting ORDER BY inside OVER() for running totals, confusing PARTITION BY with GROUP BY, or attempting to filter window functions in WHERE without a CTE wrapper.",
+    "learningOutcomes": "Mastered 13.4 DENSE_RANK() OVER (...) without Gaps on Employees.",
+    "challengeSlots": [
+      {
+        "type": "keyword",
+        "value": "SELECT"
+      },
+      {
+        "type": "column",
+        "value": "first_name,"
+      },
+      {
+        "type": "column",
+        "value": "salary,"
+      },
+      {
+        "type": "keyword",
+        "value": "DENSE_RANK()"
+      },
+      {
+        "type": "keyword",
+        "value": "OVER"
+      },
+      {
+        "type": "keyword",
+        "value": "(ORDER"
+      },
+      {
+        "type": "keyword",
+        "value": "BY"
+      },
+      {
+        "type": "column",
+        "value": "salary"
+      },
+      {
+        "type": "keyword",
+        "value": "DESC)"
+      },
+      {
+        "type": "keyword",
+        "value": "AS"
+      },
+      {
+        "type": "column",
+        "value": "dense_salary_rank"
+      },
+      {
+        "type": "keyword",
+        "value": "FROM"
+      },
+      {
+        "type": "table",
+        "value": "Employees;"
+      }
+    ]
+  },
+  {
+    "drillNumber": 1234,
+    "subcluster": "13.4 DENSE_RANK() OVER (...) without Gaps",
+    "level": "Level 2 (Dense Rank)",
+    "title": "Syntax #1234: Assign continuous price tiers to grocery products using DENSE_RANK()",
+    "table": "GroceryItems",
+    "scenario": "Assign continuous price tiers to grocery products using DENSE_RANK().",
+    "businessObjective": "Assign continuous price tiers to grocery products using DENSE_RANK().",
+    "schemaSnippet": "GroceryItems analytical schema",
+    "targetQuery": "SELECT item_name, unit_price,\n  DENSE_RANK() OVER (ORDER BY unit_price DESC) AS dense_price_tier\nFROM GroceryItems;",
+    "syntaxBlueprint": "SELECT col1, metric,\n  DENSE_RANK() OVER (ORDER BY metric DESC) AS dense_rank_val\nFROM table_name;",
+    "syntaxRule": "DENSE_RANK() assigns identical ranks to tied values, but does NOT skip any numbers (1, 2, 2, 3, 4).",
+    "syntaxTrap": "Using DENSE_RANK() to find the 'Top 3' might return more than 3 rows if there are ties, but guaranteed to cover the 3 highest distinct values.",
+    "eli5Story": "Analytical Window Functions on GroceryItems: Assign continuous price tiers to grocery products using DENSE_RANK().",
+    "commonMistakes": "Omitting ORDER BY inside OVER() for running totals, confusing PARTITION BY with GROUP BY, or attempting to filter window functions in WHERE without a CTE wrapper.",
+    "learningOutcomes": "Mastered 13.4 DENSE_RANK() OVER (...) without Gaps on GroceryItems.",
+    "challengeSlots": [
+      {
+        "type": "keyword",
+        "value": "SELECT"
+      },
+      {
+        "type": "column",
+        "value": "item_name,"
+      },
+      {
+        "type": "column",
+        "value": "unit_price,"
+      },
+      {
+        "type": "keyword",
+        "value": "DENSE_RANK()"
+      },
+      {
+        "type": "keyword",
+        "value": "OVER"
+      },
+      {
+        "type": "keyword",
+        "value": "(ORDER"
+      },
+      {
+        "type": "keyword",
+        "value": "BY"
+      },
+      {
+        "type": "column",
+        "value": "unit_price"
+      },
+      {
+        "type": "keyword",
+        "value": "DESC)"
+      },
+      {
+        "type": "keyword",
+        "value": "AS"
+      },
+      {
+        "type": "column",
+        "value": "dense_price_tier"
+      },
+      {
+        "type": "keyword",
+        "value": "FROM"
+      },
+      {
+        "type": "table",
+        "value": "GroceryItems;"
+      }
+    ]
+  },
+  {
+    "drillNumber": 1235,
+    "subcluster": "13.4 DENSE_RANK() OVER (...) without Gaps",
+    "level": "Level 2 (Dense Rank)",
+    "title": "Syntax #1235: Rank orders continuously by dollar value without skipping numbers",
+    "table": "Orders",
+    "scenario": "Rank orders continuously by dollar value without skipping numbers.",
+    "businessObjective": "Rank orders continuously by dollar value without skipping numbers.",
+    "schemaSnippet": "Orders analytical schema",
+    "targetQuery": "SELECT order_id, total_amount,\n  DENSE_RANK() OVER (ORDER BY total_amount DESC) AS dense_order_rank\nFROM Orders;",
+    "syntaxBlueprint": "SELECT col1, metric,\n  DENSE_RANK() OVER (ORDER BY metric DESC) AS dense_rank_val\nFROM table_name;",
+    "syntaxRule": "DENSE_RANK() assigns identical ranks to tied values, but does NOT skip any numbers (1, 2, 2, 3, 4).",
+    "syntaxTrap": "Using DENSE_RANK() to find the 'Top 3' might return more than 3 rows if there are ties, but guaranteed to cover the 3 highest distinct values.",
+    "eli5Story": "Analytical Window Functions on Orders: Rank orders continuously by dollar value without skipping numbers.",
+    "commonMistakes": "Omitting ORDER BY inside OVER() for running totals, confusing PARTITION BY with GROUP BY, or attempting to filter window functions in WHERE without a CTE wrapper.",
+    "learningOutcomes": "Mastered 13.4 DENSE_RANK() OVER (...) without Gaps on Orders.",
+    "challengeSlots": [
+      {
+        "type": "keyword",
+        "value": "SELECT"
+      },
+      {
+        "type": "column",
+        "value": "order_id,"
+      },
+      {
+        "type": "column",
+        "value": "total_amount,"
+      },
+      {
+        "type": "keyword",
+        "value": "DENSE_RANK()"
+      },
+      {
+        "type": "keyword",
+        "value": "OVER"
+      },
+      {
+        "type": "keyword",
+        "value": "(ORDER"
+      },
+      {
+        "type": "keyword",
+        "value": "BY"
+      },
+      {
+        "type": "column",
+        "value": "total_amount"
+      },
+      {
+        "type": "keyword",
+        "value": "DESC)"
+      },
+      {
+        "type": "keyword",
+        "value": "AS"
+      },
+      {
+        "type": "column",
+        "value": "dense_order_rank"
+      },
+      {
+        "type": "keyword",
+        "value": "FROM"
+      },
+      {
+        "type": "table",
+        "value": "Orders;"
+      }
+    ]
+  },
+  {
+    "drillNumber": 1236,
+    "subcluster": "13.4 DENSE_RANK() OVER (...) without Gaps",
+    "level": "Level 2 (Dense Rank)",
+    "title": "Syntax #1236: Rank track durations continuously using DENSE_RANK()",
+    "table": "MusicTracks",
+    "scenario": "Rank track durations continuously using DENSE_RANK().",
+    "businessObjective": "Rank track durations continuously using DENSE_RANK().",
+    "schemaSnippet": "MusicTracks analytical schema",
+    "targetQuery": "SELECT track_title, duration_seconds,\n  DENSE_RANK() OVER (ORDER BY duration_seconds DESC) AS dense_length_rank\nFROM MusicTracks;",
+    "syntaxBlueprint": "SELECT col1, metric,\n  DENSE_RANK() OVER (ORDER BY metric DESC) AS dense_rank_val\nFROM table_name;",
+    "syntaxRule": "DENSE_RANK() assigns identical ranks to tied values, but does NOT skip any numbers (1, 2, 2, 3, 4).",
+    "syntaxTrap": "Using DENSE_RANK() to find the 'Top 3' might return more than 3 rows if there are ties, but guaranteed to cover the 3 highest distinct values.",
+    "eli5Story": "Analytical Window Functions on MusicTracks: Rank track durations continuously using DENSE_RANK().",
+    "commonMistakes": "Omitting ORDER BY inside OVER() for running totals, confusing PARTITION BY with GROUP BY, or attempting to filter window functions in WHERE without a CTE wrapper.",
+    "learningOutcomes": "Mastered 13.4 DENSE_RANK() OVER (...) without Gaps on MusicTracks.",
+    "challengeSlots": [
+      {
+        "type": "keyword",
+        "value": "SELECT"
+      },
+      {
+        "type": "column",
+        "value": "track_title,"
+      },
+      {
+        "type": "column",
+        "value": "duration_seconds,"
+      },
+      {
+        "type": "keyword",
+        "value": "DENSE_RANK()"
+      },
+      {
+        "type": "keyword",
+        "value": "OVER"
+      },
+      {
+        "type": "keyword",
+        "value": "(ORDER"
+      },
+      {
+        "type": "keyword",
+        "value": "BY"
+      },
+      {
+        "type": "column",
+        "value": "duration_seconds"
+      },
+      {
+        "type": "keyword",
+        "value": "DESC)"
+      },
+      {
+        "type": "keyword",
+        "value": "AS"
+      },
+      {
+        "type": "column",
+        "value": "dense_length_rank"
+      },
+      {
+        "type": "keyword",
+        "value": "FROM"
+      },
+      {
+        "type": "table",
+        "value": "MusicTracks;"
+      }
+    ]
+  },
+  {
+    "drillNumber": 1237,
+    "subcluster": "13.4 DENSE_RANK() OVER (...) without Gaps",
+    "level": "Level 2 (Dense Rank)",
+    "title": "Syntax #1237: Rank member attendance frequency with gap-free ranks",
+    "table": "GymMembers",
+    "scenario": "Rank member attendance frequency with gap-free ranks.",
+    "businessObjective": "Rank member attendance frequency with gap-free ranks.",
+    "schemaSnippet": "GymMembers analytical schema",
+    "targetQuery": "SELECT member_name, attendance_days,\n  DENSE_RANK() OVER (ORDER BY attendance_days DESC) AS dense_attendance_rank\nFROM GymMembers;",
+    "syntaxBlueprint": "SELECT col1, metric,\n  DENSE_RANK() OVER (ORDER BY metric DESC) AS dense_rank_val\nFROM table_name;",
+    "syntaxRule": "DENSE_RANK() assigns identical ranks to tied values, but does NOT skip any numbers (1, 2, 2, 3, 4).",
+    "syntaxTrap": "Using DENSE_RANK() to find the 'Top 3' might return more than 3 rows if there are ties, but guaranteed to cover the 3 highest distinct values.",
+    "eli5Story": "Analytical Window Functions on GymMembers: Rank member attendance frequency with gap-free ranks.",
+    "commonMistakes": "Omitting ORDER BY inside OVER() for running totals, confusing PARTITION BY with GROUP BY, or attempting to filter window functions in WHERE without a CTE wrapper.",
+    "learningOutcomes": "Mastered 13.4 DENSE_RANK() OVER (...) without Gaps on GymMembers.",
+    "challengeSlots": [
+      {
+        "type": "keyword",
+        "value": "SELECT"
+      },
+      {
+        "type": "column",
+        "value": "member_name,"
+      },
+      {
+        "type": "column",
+        "value": "attendance_days,"
+      },
+      {
+        "type": "keyword",
+        "value": "DENSE_RANK()"
+      },
+      {
+        "type": "keyword",
+        "value": "OVER"
+      },
+      {
+        "type": "keyword",
+        "value": "(ORDER"
+      },
+      {
+        "type": "keyword",
+        "value": "BY"
+      },
+      {
+        "type": "column",
+        "value": "attendance_days"
+      },
+      {
+        "type": "keyword",
+        "value": "DESC)"
+      },
+      {
+        "type": "keyword",
+        "value": "AS"
+      },
+      {
+        "type": "column",
+        "value": "dense_attendance_rank"
+      },
+      {
+        "type": "keyword",
+        "value": "FROM"
+      },
+      {
+        "type": "table",
+        "value": "GymMembers;"
+      }
+    ]
+  },
+  {
+    "drillNumber": 1238,
+    "subcluster": "13.4 DENSE_RANK() OVER (...) without Gaps",
+    "level": "Level 2 (Dense Rank)",
+    "title": "Syntax #1238: Rank film ratings without skipping numbers via DENSE_RANK()",
+    "table": "MovieReviews",
+    "scenario": "Rank film ratings without skipping numbers via DENSE_RANK().",
+    "businessObjective": "Rank film ratings without skipping numbers via DENSE_RANK().",
+    "schemaSnippet": "MovieReviews analytical schema",
+    "targetQuery": "SELECT movie_title, star_rating,\n  DENSE_RANK() OVER (ORDER BY star_rating DESC) AS dense_star_rank\nFROM MovieReviews;",
+    "syntaxBlueprint": "SELECT col1, metric,\n  DENSE_RANK() OVER (ORDER BY metric DESC) AS dense_rank_val\nFROM table_name;",
+    "syntaxRule": "DENSE_RANK() assigns identical ranks to tied values, but does NOT skip any numbers (1, 2, 2, 3, 4).",
+    "syntaxTrap": "Using DENSE_RANK() to find the 'Top 3' might return more than 3 rows if there are ties, but guaranteed to cover the 3 highest distinct values.",
+    "eli5Story": "Analytical Window Functions on MovieReviews: Rank film ratings without skipping numbers via DENSE_RANK().",
+    "commonMistakes": "Omitting ORDER BY inside OVER() for running totals, confusing PARTITION BY with GROUP BY, or attempting to filter window functions in WHERE without a CTE wrapper.",
+    "learningOutcomes": "Mastered 13.4 DENSE_RANK() OVER (...) without Gaps on MovieReviews.",
+    "challengeSlots": [
+      {
+        "type": "keyword",
+        "value": "SELECT"
+      },
+      {
+        "type": "column",
+        "value": "movie_title,"
+      },
+      {
+        "type": "column",
+        "value": "star_rating,"
+      },
+      {
+        "type": "keyword",
+        "value": "DENSE_RANK()"
+      },
+      {
+        "type": "keyword",
+        "value": "OVER"
+      },
+      {
+        "type": "keyword",
+        "value": "(ORDER"
+      },
+      {
+        "type": "keyword",
+        "value": "BY"
+      },
+      {
+        "type": "column",
+        "value": "star_rating"
+      },
+      {
+        "type": "keyword",
+        "value": "DESC)"
+      },
+      {
+        "type": "keyword",
+        "value": "AS"
+      },
+      {
+        "type": "column",
+        "value": "dense_star_rank"
+      },
+      {
+        "type": "keyword",
+        "value": "FROM"
+      },
+      {
+        "type": "table",
+        "value": "MovieReviews;"
+      }
+    ]
+  },
+  {
+    "drillNumber": 1239,
+    "subcluster": "13.4 DENSE_RANK() OVER (...) without Gaps",
+    "level": "Level 2 (Dense Rank)",
+    "title": "Syntax #1239: Rank flight distances continuously without rank gaps",
+    "table": "FlightSchedule",
+    "scenario": "Rank flight distances continuously without rank gaps.",
+    "businessObjective": "Rank flight distances continuously without rank gaps.",
+    "schemaSnippet": "FlightSchedule analytical schema",
+    "targetQuery": "SELECT flight_id, distance_miles,\n  DENSE_RANK() OVER (ORDER BY distance_miles DESC) AS dense_distance_rank\nFROM FlightSchedule;",
+    "syntaxBlueprint": "SELECT col1, metric,\n  DENSE_RANK() OVER (ORDER BY metric DESC) AS dense_rank_val\nFROM table_name;",
+    "syntaxRule": "DENSE_RANK() assigns identical ranks to tied values, but does NOT skip any numbers (1, 2, 2, 3, 4).",
+    "syntaxTrap": "Using DENSE_RANK() to find the 'Top 3' might return more than 3 rows if there are ties, but guaranteed to cover the 3 highest distinct values.",
+    "eli5Story": "Analytical Window Functions on FlightSchedule: Rank flight distances continuously without rank gaps.",
+    "commonMistakes": "Omitting ORDER BY inside OVER() for running totals, confusing PARTITION BY with GROUP BY, or attempting to filter window functions in WHERE without a CTE wrapper.",
+    "learningOutcomes": "Mastered 13.4 DENSE_RANK() OVER (...) without Gaps on FlightSchedule.",
+    "challengeSlots": [
+      {
+        "type": "keyword",
+        "value": "SELECT"
+      },
+      {
+        "type": "column",
+        "value": "flight_id,"
+      },
+      {
+        "type": "column",
+        "value": "distance_miles,"
+      },
+      {
+        "type": "keyword",
+        "value": "DENSE_RANK()"
+      },
+      {
+        "type": "keyword",
+        "value": "OVER"
+      },
+      {
+        "type": "keyword",
+        "value": "(ORDER"
+      },
+      {
+        "type": "keyword",
+        "value": "BY"
+      },
+      {
+        "type": "column",
+        "value": "distance_miles"
+      },
+      {
+        "type": "keyword",
+        "value": "DESC)"
+      },
+      {
+        "type": "keyword",
+        "value": "AS"
+      },
+      {
+        "type": "column",
+        "value": "dense_distance_rank"
+      },
+      {
+        "type": "keyword",
+        "value": "FROM"
+      },
+      {
+        "type": "table",
+        "value": "FlightSchedule;"
+      }
+    ]
+  },
+  {
+    "drillNumber": 1240,
+    "subcluster": "13.4 DENSE_RANK() OVER (...) without Gaps",
+    "level": "Level 2 (Dense Rank)",
+    "title": "Syntax #1240: Rank clinic animal weights continuously using DENSE_RANK()",
+    "table": "PetClinic",
+    "scenario": "Rank clinic animal weights continuously using DENSE_RANK().",
+    "businessObjective": "Rank clinic animal weights continuously using DENSE_RANK().",
+    "schemaSnippet": "PetClinic analytical schema",
+    "targetQuery": "SELECT pet_name, weight_kg,\n  DENSE_RANK() OVER (ORDER BY weight_kg DESC) AS dense_weight_rank\nFROM PetClinic;",
+    "syntaxBlueprint": "SELECT col1, metric,\n  DENSE_RANK() OVER (ORDER BY metric DESC) AS dense_rank_val\nFROM table_name;",
+    "syntaxRule": "DENSE_RANK() assigns identical ranks to tied values, but does NOT skip any numbers (1, 2, 2, 3, 4).",
+    "syntaxTrap": "Using DENSE_RANK() to find the 'Top 3' might return more than 3 rows if there are ties, but guaranteed to cover the 3 highest distinct values.",
+    "eli5Story": "Analytical Window Functions on PetClinic: Rank clinic animal weights continuously using DENSE_RANK().",
+    "commonMistakes": "Omitting ORDER BY inside OVER() for running totals, confusing PARTITION BY with GROUP BY, or attempting to filter window functions in WHERE without a CTE wrapper.",
+    "learningOutcomes": "Mastered 13.4 DENSE_RANK() OVER (...) without Gaps on PetClinic.",
+    "challengeSlots": [
+      {
+        "type": "keyword",
+        "value": "SELECT"
+      },
+      {
+        "type": "column",
+        "value": "pet_name,"
+      },
+      {
+        "type": "column",
+        "value": "weight_kg,"
+      },
+      {
+        "type": "keyword",
+        "value": "DENSE_RANK()"
+      },
+      {
+        "type": "keyword",
+        "value": "OVER"
+      },
+      {
+        "type": "keyword",
+        "value": "(ORDER"
+      },
+      {
+        "type": "keyword",
+        "value": "BY"
+      },
+      {
+        "type": "column",
+        "value": "weight_kg"
+      },
+      {
+        "type": "keyword",
+        "value": "DESC)"
+      },
+      {
+        "type": "keyword",
+        "value": "AS"
+      },
+      {
+        "type": "column",
+        "value": "dense_weight_rank"
+      },
+      {
+        "type": "keyword",
+        "value": "FROM"
+      },
+      {
+        "type": "table",
+        "value": "PetClinic;"
+      }
+    ]
+  },
+  {
+    "drillNumber": 1241,
+    "subcluster": "13.5 Top-N per Group via CTE Filter (The Gold Standard Pattern)",
+    "level": "Level 3 (Top-N Partitioned Filter)",
+    "title": "Syntax #1241: Find the top 2 highest-GPA students within each academic major using a CTE wrapper",
+    "table": "Students",
+    "scenario": "Find the top 2 highest-GPA students within each academic major using a CTE wrapper.",
+    "businessObjective": "Find the top 2 highest-GPA students within each academic major using a CTE wrapper.",
+    "schemaSnippet": "Students analytical schema",
+    "targetQuery": "WITH RankedStudents AS (\n  SELECT full_name, major, gpa,\n    DENSE_RANK() OVER (PARTITION BY major ORDER BY gpa DESC) AS rnk\n  FROM Students\n)\nSELECT full_name, major, gpa\nFROM RankedStudents\nWHERE rnk <= 2;",
+    "syntaxBlueprint": "WITH Ranked AS (\n  SELECT col1, category, metric,\n    DENSE_RANK() OVER (PARTITION BY category ORDER BY metric DESC) AS rnk\n  FROM table_name\n)\nSELECT *\nFROM Ranked\nWHERE rnk <= 3;",
+    "syntaxRule": "You cannot filter window functions directly in WHERE (due to logical execution order). Wrap the window function in a CTE, then filter 'WHERE rnk <= N'.",
+    "syntaxTrap": "Writing 'WHERE ROW_NUMBER() OVER (...) <= 3' in the same query; window functions evaluate AFTER the WHERE clause.",
+    "eli5Story": "Analytical Window Functions on Students: Find the top 2 highest-GPA students within each academic major using a CTE wrapper.",
+    "commonMistakes": "Omitting ORDER BY inside OVER() for running totals, confusing PARTITION BY with GROUP BY, or attempting to filter window functions in WHERE without a CTE wrapper.",
+    "learningOutcomes": "Mastered 13.5 Top-N per Group via CTE Filter (The Gold Standard Pattern) on Students.",
+    "challengeSlots": [
+      {
+        "type": "keyword",
+        "value": "WITH"
+      },
+      {
+        "type": "table",
+        "value": "RankedStudents"
+      },
+      {
+        "type": "keyword",
+        "value": "AS"
+      },
+      {
+        "type": "column",
+        "value": "("
+      },
+      {
+        "type": "keyword",
+        "value": "SELECT"
+      },
+      {
+        "type": "column",
+        "value": "full_name,"
+      },
+      {
+        "type": "column",
+        "value": "major,"
+      },
+      {
+        "type": "column",
+        "value": "gpa,"
+      },
+      {
+        "type": "keyword",
+        "value": "DENSE_RANK()"
+      },
+      {
+        "type": "keyword",
+        "value": "OVER"
+      },
+      {
+        "type": "keyword",
+        "value": "(PARTITION"
+      },
+      {
+        "type": "keyword",
+        "value": "BY"
+      },
+      {
+        "type": "column",
+        "value": "major"
+      },
+      {
+        "type": "keyword",
+        "value": "ORDER"
+      },
+      {
+        "type": "keyword",
+        "value": "BY"
+      },
+      {
+        "type": "column",
+        "value": "gpa"
+      },
+      {
+        "type": "keyword",
+        "value": "DESC)"
+      },
+      {
+        "type": "keyword",
+        "value": "AS"
+      },
+      {
+        "type": "column",
+        "value": "rnk"
+      },
+      {
+        "type": "keyword",
+        "value": "FROM"
+      },
+      {
+        "type": "table",
+        "value": "Students"
+      },
+      {
+        "type": "column",
+        "value": ")"
+      },
+      {
+        "type": "keyword",
+        "value": "SELECT"
+      },
+      {
+        "type": "column",
+        "value": "full_name,"
+      },
+      {
+        "type": "column",
+        "value": "major,"
+      },
+      {
+        "type": "column",
+        "value": "gpa"
+      },
+      {
+        "type": "keyword",
+        "value": "FROM"
+      },
+      {
+        "type": "table",
+        "value": "RankedStudents"
+      },
+      {
+        "type": "keyword",
+        "value": "WHERE"
+      },
+      {
+        "type": "column",
+        "value": "rnk"
+      },
+      {
+        "type": "column",
+        "value": "<="
+      },
+      {
+        "type": "column",
+        "value": "2;"
+      }
+    ]
+  },
+  {
+    "drillNumber": 1242,
+    "subcluster": "13.5 Top-N per Group via CTE Filter (The Gold Standard Pattern)",
+    "level": "Level 3 (Top-N Partitioned Filter)",
+    "title": "Syntax #1242: Retrieve the top 2 most expensive books within each literary genre",
+    "table": "Books",
+    "scenario": "Retrieve the top 2 most expensive books within each literary genre.",
+    "businessObjective": "Retrieve the top 2 most expensive books within each literary genre.",
+    "schemaSnippet": "Books analytical schema",
+    "targetQuery": "WITH RankedBooks AS (\n  SELECT title, genre, price,\n    DENSE_RANK() OVER (PARTITION BY genre ORDER BY price DESC) AS rnk\n  FROM Books\n)\nSELECT title, genre, price\nFROM RankedBooks\nWHERE rnk <= 2;",
+    "syntaxBlueprint": "WITH Ranked AS (\n  SELECT col1, category, metric,\n    DENSE_RANK() OVER (PARTITION BY category ORDER BY metric DESC) AS rnk\n  FROM table_name\n)\nSELECT *\nFROM Ranked\nWHERE rnk <= 3;",
+    "syntaxRule": "You cannot filter window functions directly in WHERE (due to logical execution order). Wrap the window function in a CTE, then filter 'WHERE rnk <= N'.",
+    "syntaxTrap": "Writing 'WHERE ROW_NUMBER() OVER (...) <= 3' in the same query; window functions evaluate AFTER the WHERE clause.",
+    "eli5Story": "Analytical Window Functions on Books: Retrieve the top 2 most expensive books within each literary genre.",
+    "commonMistakes": "Omitting ORDER BY inside OVER() for running totals, confusing PARTITION BY with GROUP BY, or attempting to filter window functions in WHERE without a CTE wrapper.",
+    "learningOutcomes": "Mastered 13.5 Top-N per Group via CTE Filter (The Gold Standard Pattern) on Books.",
+    "challengeSlots": [
+      {
+        "type": "keyword",
+        "value": "WITH"
+      },
+      {
+        "type": "table",
+        "value": "RankedBooks"
+      },
+      {
+        "type": "keyword",
+        "value": "AS"
+      },
+      {
+        "type": "column",
+        "value": "("
+      },
+      {
+        "type": "keyword",
+        "value": "SELECT"
+      },
+      {
+        "type": "column",
+        "value": "title,"
+      },
+      {
+        "type": "column",
+        "value": "genre,"
+      },
+      {
+        "type": "column",
+        "value": "price,"
+      },
+      {
+        "type": "keyword",
+        "value": "DENSE_RANK()"
+      },
+      {
+        "type": "keyword",
+        "value": "OVER"
+      },
+      {
+        "type": "keyword",
+        "value": "(PARTITION"
+      },
+      {
+        "type": "keyword",
+        "value": "BY"
+      },
+      {
+        "type": "column",
+        "value": "genre"
+      },
+      {
+        "type": "keyword",
+        "value": "ORDER"
+      },
+      {
+        "type": "keyword",
+        "value": "BY"
+      },
+      {
+        "type": "column",
+        "value": "price"
+      },
+      {
+        "type": "keyword",
+        "value": "DESC)"
+      },
+      {
+        "type": "keyword",
+        "value": "AS"
+      },
+      {
+        "type": "column",
+        "value": "rnk"
+      },
+      {
+        "type": "keyword",
+        "value": "FROM"
+      },
+      {
+        "type": "table",
+        "value": "Books"
+      },
+      {
+        "type": "column",
+        "value": ")"
+      },
+      {
+        "type": "keyword",
+        "value": "SELECT"
+      },
+      {
+        "type": "column",
+        "value": "title,"
+      },
+      {
+        "type": "column",
+        "value": "genre,"
+      },
+      {
+        "type": "column",
+        "value": "price"
+      },
+      {
+        "type": "keyword",
+        "value": "FROM"
+      },
+      {
+        "type": "table",
+        "value": "RankedBooks"
+      },
+      {
+        "type": "keyword",
+        "value": "WHERE"
+      },
+      {
+        "type": "column",
+        "value": "rnk"
+      },
+      {
+        "type": "column",
+        "value": "<="
+      },
+      {
+        "type": "column",
+        "value": "2;"
+      }
+    ]
+  },
+  {
+    "drillNumber": 1243,
+    "subcluster": "13.5 Top-N per Group via CTE Filter (The Gold Standard Pattern)",
+    "level": "Level 3 (Top-N Partitioned Filter)",
+    "title": "Syntax #1243: Identify the top 3 highest-paid employees in each corporate department",
+    "table": "Employees",
+    "scenario": "Identify the top 3 highest-paid employees in each corporate department.",
+    "businessObjective": "Identify the top 3 highest-paid employees in each corporate department.",
+    "schemaSnippet": "Employees analytical schema",
+    "targetQuery": "WITH RankedStaff AS (\n  SELECT first_name, department, salary,\n    DENSE_RANK() OVER (PARTITION BY department ORDER BY salary DESC) AS rnk\n  FROM Employees\n)\nSELECT first_name, department, salary\nFROM RankedStaff\nWHERE rnk <= 3;",
+    "syntaxBlueprint": "WITH Ranked AS (\n  SELECT col1, category, metric,\n    DENSE_RANK() OVER (PARTITION BY category ORDER BY metric DESC) AS rnk\n  FROM table_name\n)\nSELECT *\nFROM Ranked\nWHERE rnk <= 3;",
+    "syntaxRule": "You cannot filter window functions directly in WHERE (due to logical execution order). Wrap the window function in a CTE, then filter 'WHERE rnk <= N'.",
+    "syntaxTrap": "Writing 'WHERE ROW_NUMBER() OVER (...) <= 3' in the same query; window functions evaluate AFTER the WHERE clause.",
+    "eli5Story": "Analytical Window Functions on Employees: Identify the top 3 highest-paid employees in each corporate department.",
+    "commonMistakes": "Omitting ORDER BY inside OVER() for running totals, confusing PARTITION BY with GROUP BY, or attempting to filter window functions in WHERE without a CTE wrapper.",
+    "learningOutcomes": "Mastered 13.5 Top-N per Group via CTE Filter (The Gold Standard Pattern) on Employees.",
+    "challengeSlots": [
+      {
+        "type": "keyword",
+        "value": "WITH"
+      },
+      {
+        "type": "column",
+        "value": "RankedStaff"
+      },
+      {
+        "type": "keyword",
+        "value": "AS"
+      },
+      {
+        "type": "column",
+        "value": "("
+      },
+      {
+        "type": "keyword",
+        "value": "SELECT"
+      },
+      {
+        "type": "column",
+        "value": "first_name,"
+      },
+      {
+        "type": "column",
+        "value": "department,"
+      },
+      {
+        "type": "column",
+        "value": "salary,"
+      },
+      {
+        "type": "keyword",
+        "value": "DENSE_RANK()"
+      },
+      {
+        "type": "keyword",
+        "value": "OVER"
+      },
+      {
+        "type": "keyword",
+        "value": "(PARTITION"
+      },
+      {
+        "type": "keyword",
+        "value": "BY"
+      },
+      {
+        "type": "column",
+        "value": "department"
+      },
+      {
+        "type": "keyword",
+        "value": "ORDER"
+      },
+      {
+        "type": "keyword",
+        "value": "BY"
+      },
+      {
+        "type": "column",
+        "value": "salary"
+      },
+      {
+        "type": "keyword",
+        "value": "DESC)"
+      },
+      {
+        "type": "keyword",
+        "value": "AS"
+      },
+      {
+        "type": "column",
+        "value": "rnk"
+      },
+      {
+        "type": "keyword",
+        "value": "FROM"
+      },
+      {
+        "type": "table",
+        "value": "Employees"
+      },
+      {
+        "type": "column",
+        "value": ")"
+      },
+      {
+        "type": "keyword",
+        "value": "SELECT"
+      },
+      {
+        "type": "column",
+        "value": "first_name,"
+      },
+      {
+        "type": "column",
+        "value": "department,"
+      },
+      {
+        "type": "column",
+        "value": "salary"
+      },
+      {
+        "type": "keyword",
+        "value": "FROM"
+      },
+      {
+        "type": "column",
+        "value": "RankedStaff"
+      },
+      {
+        "type": "keyword",
+        "value": "WHERE"
+      },
+      {
+        "type": "column",
+        "value": "rnk"
+      },
+      {
+        "type": "column",
+        "value": "<="
+      },
+      {
+        "type": "column",
+        "value": "3;"
+      }
+    ]
+  },
+  {
+    "drillNumber": 1244,
+    "subcluster": "13.5 Top-N per Group via CTE Filter (The Gold Standard Pattern)",
+    "level": "Level 3 (Top-N Partitioned Filter)",
+    "title": "Syntax #1244: Find the top 2 highest priced products within each grocery category",
+    "table": "GroceryItems",
+    "scenario": "Find the top 2 highest priced products within each grocery category.",
+    "businessObjective": "Find the top 2 highest priced products within each grocery category.",
+    "schemaSnippet": "GroceryItems analytical schema",
+    "targetQuery": "WITH RankedGrocery AS (\n  SELECT item_name, category, unit_price,\n    DENSE_RANK() OVER (PARTITION BY category ORDER BY unit_price DESC) AS rnk\n  FROM GroceryItems\n)\nSELECT item_name, category, unit_price\nFROM RankedGrocery\nWHERE rnk <= 2;",
+    "syntaxBlueprint": "WITH Ranked AS (\n  SELECT col1, category, metric,\n    DENSE_RANK() OVER (PARTITION BY category ORDER BY metric DESC) AS rnk\n  FROM table_name\n)\nSELECT *\nFROM Ranked\nWHERE rnk <= 3;",
+    "syntaxRule": "You cannot filter window functions directly in WHERE (due to logical execution order). Wrap the window function in a CTE, then filter 'WHERE rnk <= N'.",
+    "syntaxTrap": "Writing 'WHERE ROW_NUMBER() OVER (...) <= 3' in the same query; window functions evaluate AFTER the WHERE clause.",
+    "eli5Story": "Analytical Window Functions on GroceryItems: Find the top 2 highest priced products within each grocery category.",
+    "commonMistakes": "Omitting ORDER BY inside OVER() for running totals, confusing PARTITION BY with GROUP BY, or attempting to filter window functions in WHERE without a CTE wrapper.",
+    "learningOutcomes": "Mastered 13.5 Top-N per Group via CTE Filter (The Gold Standard Pattern) on GroceryItems.",
+    "challengeSlots": [
+      {
+        "type": "keyword",
+        "value": "WITH"
+      },
+      {
+        "type": "column",
+        "value": "RankedGrocery"
+      },
+      {
+        "type": "keyword",
+        "value": "AS"
+      },
+      {
+        "type": "column",
+        "value": "("
+      },
+      {
+        "type": "keyword",
+        "value": "SELECT"
+      },
+      {
+        "type": "column",
+        "value": "item_name,"
+      },
+      {
+        "type": "column",
+        "value": "category,"
+      },
+      {
+        "type": "column",
+        "value": "unit_price,"
+      },
+      {
+        "type": "keyword",
+        "value": "DENSE_RANK()"
+      },
+      {
+        "type": "keyword",
+        "value": "OVER"
+      },
+      {
+        "type": "keyword",
+        "value": "(PARTITION"
+      },
+      {
+        "type": "keyword",
+        "value": "BY"
+      },
+      {
+        "type": "column",
+        "value": "category"
+      },
+      {
+        "type": "keyword",
+        "value": "ORDER"
+      },
+      {
+        "type": "keyword",
+        "value": "BY"
+      },
+      {
+        "type": "column",
+        "value": "unit_price"
+      },
+      {
+        "type": "keyword",
+        "value": "DESC)"
+      },
+      {
+        "type": "keyword",
+        "value": "AS"
+      },
+      {
+        "type": "column",
+        "value": "rnk"
+      },
+      {
+        "type": "keyword",
+        "value": "FROM"
+      },
+      {
+        "type": "table",
+        "value": "GroceryItems"
+      },
+      {
+        "type": "column",
+        "value": ")"
+      },
+      {
+        "type": "keyword",
+        "value": "SELECT"
+      },
+      {
+        "type": "column",
+        "value": "item_name,"
+      },
+      {
+        "type": "column",
+        "value": "category,"
+      },
+      {
+        "type": "column",
+        "value": "unit_price"
+      },
+      {
+        "type": "keyword",
+        "value": "FROM"
+      },
+      {
+        "type": "column",
+        "value": "RankedGrocery"
+      },
+      {
+        "type": "keyword",
+        "value": "WHERE"
+      },
+      {
+        "type": "column",
+        "value": "rnk"
+      },
+      {
+        "type": "column",
+        "value": "<="
+      },
+      {
+        "type": "column",
+        "value": "2;"
+      }
+    ]
+  },
+  {
+    "drillNumber": 1245,
+    "subcluster": "13.5 Top-N per Group via CTE Filter (The Gold Standard Pattern)",
+    "level": "Level 3 (Top-N Partitioned Filter)",
+    "title": "Syntax #1245: Find each customer's single largest historical order using 'WHERE rnk = 1'",
+    "table": "Orders",
+    "scenario": "Find each customer's single largest historical order using 'WHERE rnk = 1'.",
+    "businessObjective": "Find each customer's single largest historical order using 'WHERE rnk = 1'.",
+    "schemaSnippet": "Orders analytical schema",
+    "targetQuery": "WITH RankedOrders AS (\n  SELECT order_id, customer_name, total_amount,\n    ROW_NUMBER() OVER (PARTITION BY customer_name ORDER BY total_amount DESC) AS rnk\n  FROM Orders\n)\nSELECT order_id, customer_name, total_amount\nFROM RankedOrders\nWHERE rnk = 1;",
+    "syntaxBlueprint": "WITH Ranked AS (\n  SELECT col1, category, metric,\n    DENSE_RANK() OVER (PARTITION BY category ORDER BY metric DESC) AS rnk\n  FROM table_name\n)\nSELECT *\nFROM Ranked\nWHERE rnk <= 3;",
+    "syntaxRule": "You cannot filter window functions directly in WHERE (due to logical execution order). Wrap the window function in a CTE, then filter 'WHERE rnk <= N'.",
+    "syntaxTrap": "Writing 'WHERE ROW_NUMBER() OVER (...) <= 3' in the same query; window functions evaluate AFTER the WHERE clause.",
+    "eli5Story": "Analytical Window Functions on Orders: Find each customer's single largest historical order using 'WHERE rnk = 1'.",
+    "commonMistakes": "Omitting ORDER BY inside OVER() for running totals, confusing PARTITION BY with GROUP BY, or attempting to filter window functions in WHERE without a CTE wrapper.",
+    "learningOutcomes": "Mastered 13.5 Top-N per Group via CTE Filter (The Gold Standard Pattern) on Orders.",
+    "challengeSlots": [
+      {
+        "type": "keyword",
+        "value": "WITH"
+      },
+      {
+        "type": "table",
+        "value": "RankedOrders"
+      },
+      {
+        "type": "keyword",
+        "value": "AS"
+      },
+      {
+        "type": "column",
+        "value": "("
+      },
+      {
+        "type": "keyword",
+        "value": "SELECT"
+      },
+      {
+        "type": "column",
+        "value": "order_id,"
+      },
+      {
+        "type": "column",
+        "value": "customer_name,"
+      },
+      {
+        "type": "column",
+        "value": "total_amount,"
+      },
+      {
+        "type": "keyword",
+        "value": "ROW_NUMBER()"
+      },
+      {
+        "type": "keyword",
+        "value": "OVER"
+      },
+      {
+        "type": "keyword",
+        "value": "(PARTITION"
+      },
+      {
+        "type": "keyword",
+        "value": "BY"
+      },
+      {
+        "type": "column",
+        "value": "customer_name"
+      },
+      {
+        "type": "keyword",
+        "value": "ORDER"
+      },
+      {
+        "type": "keyword",
+        "value": "BY"
+      },
+      {
+        "type": "column",
+        "value": "total_amount"
+      },
+      {
+        "type": "keyword",
+        "value": "DESC)"
+      },
+      {
+        "type": "keyword",
+        "value": "AS"
+      },
+      {
+        "type": "column",
+        "value": "rnk"
+      },
+      {
+        "type": "keyword",
+        "value": "FROM"
+      },
+      {
+        "type": "table",
+        "value": "Orders"
+      },
+      {
+        "type": "column",
+        "value": ")"
+      },
+      {
+        "type": "keyword",
+        "value": "SELECT"
+      },
+      {
+        "type": "column",
+        "value": "order_id,"
+      },
+      {
+        "type": "column",
+        "value": "customer_name,"
+      },
+      {
+        "type": "column",
+        "value": "total_amount"
+      },
+      {
+        "type": "keyword",
+        "value": "FROM"
+      },
+      {
+        "type": "table",
+        "value": "RankedOrders"
+      },
+      {
+        "type": "keyword",
+        "value": "WHERE"
+      },
+      {
+        "type": "column",
+        "value": "rnk"
+      },
+      {
+        "type": "column",
+        "value": "="
+      },
+      {
+        "type": "column",
+        "value": "1;"
+      }
+    ]
+  },
+  {
+    "drillNumber": 1246,
+    "subcluster": "13.5 Top-N per Group via CTE Filter (The Gold Standard Pattern)",
+    "level": "Level 3 (Top-N Partitioned Filter)",
+    "title": "Syntax #1246: Find the 2 longest songs within each musical genre",
+    "table": "MusicTracks",
+    "scenario": "Find the 2 longest songs within each musical genre.",
+    "businessObjective": "Find the 2 longest songs within each musical genre.",
+    "schemaSnippet": "MusicTracks analytical schema",
+    "targetQuery": "WITH RankedTracks AS (\n  SELECT track_title, genre, duration_seconds,\n    DENSE_RANK() OVER (PARTITION BY genre ORDER BY duration_seconds DESC) AS rnk\n  FROM MusicTracks\n)\nSELECT track_title, genre, duration_seconds\nFROM RankedTracks\nWHERE rnk <= 2;",
+    "syntaxBlueprint": "WITH Ranked AS (\n  SELECT col1, category, metric,\n    DENSE_RANK() OVER (PARTITION BY category ORDER BY metric DESC) AS rnk\n  FROM table_name\n)\nSELECT *\nFROM Ranked\nWHERE rnk <= 3;",
+    "syntaxRule": "You cannot filter window functions directly in WHERE (due to logical execution order). Wrap the window function in a CTE, then filter 'WHERE rnk <= N'.",
+    "syntaxTrap": "Writing 'WHERE ROW_NUMBER() OVER (...) <= 3' in the same query; window functions evaluate AFTER the WHERE clause.",
+    "eli5Story": "Analytical Window Functions on MusicTracks: Find the 2 longest songs within each musical genre.",
+    "commonMistakes": "Omitting ORDER BY inside OVER() for running totals, confusing PARTITION BY with GROUP BY, or attempting to filter window functions in WHERE without a CTE wrapper.",
+    "learningOutcomes": "Mastered 13.5 Top-N per Group via CTE Filter (The Gold Standard Pattern) on MusicTracks.",
+    "challengeSlots": [
+      {
+        "type": "keyword",
+        "value": "WITH"
+      },
+      {
+        "type": "column",
+        "value": "RankedTracks"
+      },
+      {
+        "type": "keyword",
+        "value": "AS"
+      },
+      {
+        "type": "column",
+        "value": "("
+      },
+      {
+        "type": "keyword",
+        "value": "SELECT"
+      },
+      {
+        "type": "column",
+        "value": "track_title,"
+      },
+      {
+        "type": "column",
+        "value": "genre,"
+      },
+      {
+        "type": "column",
+        "value": "duration_seconds,"
+      },
+      {
+        "type": "keyword",
+        "value": "DENSE_RANK()"
+      },
+      {
+        "type": "keyword",
+        "value": "OVER"
+      },
+      {
+        "type": "keyword",
+        "value": "(PARTITION"
+      },
+      {
+        "type": "keyword",
+        "value": "BY"
+      },
+      {
+        "type": "column",
+        "value": "genre"
+      },
+      {
+        "type": "keyword",
+        "value": "ORDER"
+      },
+      {
+        "type": "keyword",
+        "value": "BY"
+      },
+      {
+        "type": "column",
+        "value": "duration_seconds"
+      },
+      {
+        "type": "keyword",
+        "value": "DESC)"
+      },
+      {
+        "type": "keyword",
+        "value": "AS"
+      },
+      {
+        "type": "column",
+        "value": "rnk"
+      },
+      {
+        "type": "keyword",
+        "value": "FROM"
+      },
+      {
+        "type": "table",
+        "value": "MusicTracks"
+      },
+      {
+        "type": "column",
+        "value": ")"
+      },
+      {
+        "type": "keyword",
+        "value": "SELECT"
+      },
+      {
+        "type": "column",
+        "value": "track_title,"
+      },
+      {
+        "type": "column",
+        "value": "genre,"
+      },
+      {
+        "type": "column",
+        "value": "duration_seconds"
+      },
+      {
+        "type": "keyword",
+        "value": "FROM"
+      },
+      {
+        "type": "column",
+        "value": "RankedTracks"
+      },
+      {
+        "type": "keyword",
+        "value": "WHERE"
+      },
+      {
+        "type": "column",
+        "value": "rnk"
+      },
+      {
+        "type": "column",
+        "value": "<="
+      },
+      {
+        "type": "column",
+        "value": "2;"
+      }
+    ]
+  },
+  {
+    "drillNumber": 1247,
+    "subcluster": "13.5 Top-N per Group via CTE Filter (The Gold Standard Pattern)",
+    "level": "Level 3 (Top-N Partitioned Filter)",
+    "title": "Syntax #1247: Find the top 3 most dedicated members within each gym membership tier",
+    "table": "GymMembers",
+    "scenario": "Find the top 3 most dedicated members within each gym membership tier.",
+    "businessObjective": "Find the top 3 most dedicated members within each gym membership tier.",
+    "schemaSnippet": "GymMembers analytical schema",
+    "targetQuery": "WITH RankedMembers AS (\n  SELECT member_name, membership_plan, attendance_days,\n    DENSE_RANK() OVER (PARTITION BY membership_plan ORDER BY attendance_days DESC) AS rnk\n  FROM GymMembers\n)\nSELECT member_name, membership_plan, attendance_days\nFROM RankedMembers\nWHERE rnk <= 3;",
+    "syntaxBlueprint": "WITH Ranked AS (\n  SELECT col1, category, metric,\n    DENSE_RANK() OVER (PARTITION BY category ORDER BY metric DESC) AS rnk\n  FROM table_name\n)\nSELECT *\nFROM Ranked\nWHERE rnk <= 3;",
+    "syntaxRule": "You cannot filter window functions directly in WHERE (due to logical execution order). Wrap the window function in a CTE, then filter 'WHERE rnk <= N'.",
+    "syntaxTrap": "Writing 'WHERE ROW_NUMBER() OVER (...) <= 3' in the same query; window functions evaluate AFTER the WHERE clause.",
+    "eli5Story": "Analytical Window Functions on GymMembers: Find the top 3 most dedicated members within each gym membership tier.",
+    "commonMistakes": "Omitting ORDER BY inside OVER() for running totals, confusing PARTITION BY with GROUP BY, or attempting to filter window functions in WHERE without a CTE wrapper.",
+    "learningOutcomes": "Mastered 13.5 Top-N per Group via CTE Filter (The Gold Standard Pattern) on GymMembers.",
+    "challengeSlots": [
+      {
+        "type": "keyword",
+        "value": "WITH"
+      },
+      {
+        "type": "column",
+        "value": "RankedMembers"
+      },
+      {
+        "type": "keyword",
+        "value": "AS"
+      },
+      {
+        "type": "column",
+        "value": "("
+      },
+      {
+        "type": "keyword",
+        "value": "SELECT"
+      },
+      {
+        "type": "column",
+        "value": "member_name,"
+      },
+      {
+        "type": "column",
+        "value": "membership_plan,"
+      },
+      {
+        "type": "column",
+        "value": "attendance_days,"
+      },
+      {
+        "type": "keyword",
+        "value": "DENSE_RANK()"
+      },
+      {
+        "type": "keyword",
+        "value": "OVER"
+      },
+      {
+        "type": "keyword",
+        "value": "(PARTITION"
+      },
+      {
+        "type": "keyword",
+        "value": "BY"
+      },
+      {
+        "type": "column",
+        "value": "membership_plan"
+      },
+      {
+        "type": "keyword",
+        "value": "ORDER"
+      },
+      {
+        "type": "keyword",
+        "value": "BY"
+      },
+      {
+        "type": "column",
+        "value": "attendance_days"
+      },
+      {
+        "type": "keyword",
+        "value": "DESC)"
+      },
+      {
+        "type": "keyword",
+        "value": "AS"
+      },
+      {
+        "type": "column",
+        "value": "rnk"
+      },
+      {
+        "type": "keyword",
+        "value": "FROM"
+      },
+      {
+        "type": "table",
+        "value": "GymMembers"
+      },
+      {
+        "type": "column",
+        "value": ")"
+      },
+      {
+        "type": "keyword",
+        "value": "SELECT"
+      },
+      {
+        "type": "column",
+        "value": "member_name,"
+      },
+      {
+        "type": "column",
+        "value": "membership_plan,"
+      },
+      {
+        "type": "column",
+        "value": "attendance_days"
+      },
+      {
+        "type": "keyword",
+        "value": "FROM"
+      },
+      {
+        "type": "column",
+        "value": "RankedMembers"
+      },
+      {
+        "type": "keyword",
+        "value": "WHERE"
+      },
+      {
+        "type": "column",
+        "value": "rnk"
+      },
+      {
+        "type": "column",
+        "value": "<="
+      },
+      {
+        "type": "column",
+        "value": "3;"
+      }
+    ]
+  },
+  {
+    "drillNumber": 1248,
+    "subcluster": "13.5 Top-N per Group via CTE Filter (The Gold Standard Pattern)",
+    "level": "Level 3 (Top-N Partitioned Filter)",
+    "title": "Syntax #1248: Retrieve the top 2 highest rated reviews within each film genre",
+    "table": "MovieReviews",
+    "scenario": "Retrieve the top 2 highest rated reviews within each film genre.",
+    "businessObjective": "Retrieve the top 2 highest rated reviews within each film genre.",
+    "schemaSnippet": "MovieReviews analytical schema",
+    "targetQuery": "WITH RankedReviews AS (\n  SELECT movie_title, genre, star_rating,\n    DENSE_RANK() OVER (PARTITION BY genre ORDER BY star_rating DESC) AS rnk\n  FROM MovieReviews\n)\nSELECT movie_title, genre, star_rating\nFROM RankedReviews\nWHERE rnk <= 2;",
+    "syntaxBlueprint": "WITH Ranked AS (\n  SELECT col1, category, metric,\n    DENSE_RANK() OVER (PARTITION BY category ORDER BY metric DESC) AS rnk\n  FROM table_name\n)\nSELECT *\nFROM Ranked\nWHERE rnk <= 3;",
+    "syntaxRule": "You cannot filter window functions directly in WHERE (due to logical execution order). Wrap the window function in a CTE, then filter 'WHERE rnk <= N'.",
+    "syntaxTrap": "Writing 'WHERE ROW_NUMBER() OVER (...) <= 3' in the same query; window functions evaluate AFTER the WHERE clause.",
+    "eli5Story": "Analytical Window Functions on MovieReviews: Retrieve the top 2 highest rated reviews within each film genre.",
+    "commonMistakes": "Omitting ORDER BY inside OVER() for running totals, confusing PARTITION BY with GROUP BY, or attempting to filter window functions in WHERE without a CTE wrapper.",
+    "learningOutcomes": "Mastered 13.5 Top-N per Group via CTE Filter (The Gold Standard Pattern) on MovieReviews.",
+    "challengeSlots": [
+      {
+        "type": "keyword",
+        "value": "WITH"
+      },
+      {
+        "type": "column",
+        "value": "RankedReviews"
+      },
+      {
+        "type": "keyword",
+        "value": "AS"
+      },
+      {
+        "type": "column",
+        "value": "("
+      },
+      {
+        "type": "keyword",
+        "value": "SELECT"
+      },
+      {
+        "type": "column",
+        "value": "movie_title,"
+      },
+      {
+        "type": "column",
+        "value": "genre,"
+      },
+      {
+        "type": "column",
+        "value": "star_rating,"
+      },
+      {
+        "type": "keyword",
+        "value": "DENSE_RANK()"
+      },
+      {
+        "type": "keyword",
+        "value": "OVER"
+      },
+      {
+        "type": "keyword",
+        "value": "(PARTITION"
+      },
+      {
+        "type": "keyword",
+        "value": "BY"
+      },
+      {
+        "type": "column",
+        "value": "genre"
+      },
+      {
+        "type": "keyword",
+        "value": "ORDER"
+      },
+      {
+        "type": "keyword",
+        "value": "BY"
+      },
+      {
+        "type": "column",
+        "value": "star_rating"
+      },
+      {
+        "type": "keyword",
+        "value": "DESC)"
+      },
+      {
+        "type": "keyword",
+        "value": "AS"
+      },
+      {
+        "type": "column",
+        "value": "rnk"
+      },
+      {
+        "type": "keyword",
+        "value": "FROM"
+      },
+      {
+        "type": "table",
+        "value": "MovieReviews"
+      },
+      {
+        "type": "column",
+        "value": ")"
+      },
+      {
+        "type": "keyword",
+        "value": "SELECT"
+      },
+      {
+        "type": "column",
+        "value": "movie_title,"
+      },
+      {
+        "type": "column",
+        "value": "genre,"
+      },
+      {
+        "type": "column",
+        "value": "star_rating"
+      },
+      {
+        "type": "keyword",
+        "value": "FROM"
+      },
+      {
+        "type": "column",
+        "value": "RankedReviews"
+      },
+      {
+        "type": "keyword",
+        "value": "WHERE"
+      },
+      {
+        "type": "column",
+        "value": "rnk"
+      },
+      {
+        "type": "column",
+        "value": "<="
+      },
+      {
+        "type": "column",
+        "value": "2;"
+      }
+    ]
+  },
+  {
+    "drillNumber": 1249,
+    "subcluster": "13.5 Top-N per Group via CTE Filter (The Gold Standard Pattern)",
+    "level": "Level 3 (Top-N Partitioned Filter)",
+    "title": "Syntax #1249: Identify the single longest flight route departing from each airport hub",
+    "table": "FlightSchedule",
+    "scenario": "Identify the single longest flight route departing from each airport hub.",
+    "businessObjective": "Identify the single longest flight route departing from each airport hub.",
+    "schemaSnippet": "FlightSchedule analytical schema",
+    "targetQuery": "WITH RankedFlights AS (\n  SELECT flight_id, origin_airport, distance_miles,\n    ROW_NUMBER() OVER (PARTITION BY origin_airport ORDER BY distance_miles DESC) AS rnk\n  FROM FlightSchedule\n)\nSELECT flight_id, origin_airport, distance_miles\nFROM RankedFlights\nWHERE rnk = 1;",
+    "syntaxBlueprint": "WITH Ranked AS (\n  SELECT col1, category, metric,\n    DENSE_RANK() OVER (PARTITION BY category ORDER BY metric DESC) AS rnk\n  FROM table_name\n)\nSELECT *\nFROM Ranked\nWHERE rnk <= 3;",
+    "syntaxRule": "You cannot filter window functions directly in WHERE (due to logical execution order). Wrap the window function in a CTE, then filter 'WHERE rnk <= N'.",
+    "syntaxTrap": "Writing 'WHERE ROW_NUMBER() OVER (...) <= 3' in the same query; window functions evaluate AFTER the WHERE clause.",
+    "eli5Story": "Analytical Window Functions on FlightSchedule: Identify the single longest flight route departing from each airport hub.",
+    "commonMistakes": "Omitting ORDER BY inside OVER() for running totals, confusing PARTITION BY with GROUP BY, or attempting to filter window functions in WHERE without a CTE wrapper.",
+    "learningOutcomes": "Mastered 13.5 Top-N per Group via CTE Filter (The Gold Standard Pattern) on FlightSchedule.",
+    "challengeSlots": [
+      {
+        "type": "keyword",
+        "value": "WITH"
+      },
+      {
+        "type": "column",
+        "value": "RankedFlights"
+      },
+      {
+        "type": "keyword",
+        "value": "AS"
+      },
+      {
+        "type": "column",
+        "value": "("
+      },
+      {
+        "type": "keyword",
+        "value": "SELECT"
+      },
+      {
+        "type": "column",
+        "value": "flight_id,"
+      },
+      {
+        "type": "column",
+        "value": "origin_airport,"
+      },
+      {
+        "type": "column",
+        "value": "distance_miles,"
+      },
+      {
+        "type": "keyword",
+        "value": "ROW_NUMBER()"
+      },
+      {
+        "type": "keyword",
+        "value": "OVER"
+      },
+      {
+        "type": "keyword",
+        "value": "(PARTITION"
+      },
+      {
+        "type": "keyword",
+        "value": "BY"
+      },
+      {
+        "type": "column",
+        "value": "origin_airport"
+      },
+      {
+        "type": "keyword",
+        "value": "ORDER"
+      },
+      {
+        "type": "keyword",
+        "value": "BY"
+      },
+      {
+        "type": "column",
+        "value": "distance_miles"
+      },
+      {
+        "type": "keyword",
+        "value": "DESC)"
+      },
+      {
+        "type": "keyword",
+        "value": "AS"
+      },
+      {
+        "type": "column",
+        "value": "rnk"
+      },
+      {
+        "type": "keyword",
+        "value": "FROM"
+      },
+      {
+        "type": "table",
+        "value": "FlightSchedule"
+      },
+      {
+        "type": "column",
+        "value": ")"
+      },
+      {
+        "type": "keyword",
+        "value": "SELECT"
+      },
+      {
+        "type": "column",
+        "value": "flight_id,"
+      },
+      {
+        "type": "column",
+        "value": "origin_airport,"
+      },
+      {
+        "type": "column",
+        "value": "distance_miles"
+      },
+      {
+        "type": "keyword",
+        "value": "FROM"
+      },
+      {
+        "type": "column",
+        "value": "RankedFlights"
+      },
+      {
+        "type": "keyword",
+        "value": "WHERE"
+      },
+      {
+        "type": "column",
+        "value": "rnk"
+      },
+      {
+        "type": "column",
+        "value": "="
+      },
+      {
+        "type": "column",
+        "value": "1;"
+      }
+    ]
+  },
+  {
+    "drillNumber": 1250,
+    "subcluster": "13.5 Top-N per Group via CTE Filter (The Gold Standard Pattern)",
+    "level": "Level 3 (Top-N Partitioned Filter)",
+    "title": "Syntax #1250: Find the 2 heaviest animal patients within each species category",
+    "table": "PetClinic",
+    "scenario": "Find the 2 heaviest animal patients within each species category.",
+    "businessObjective": "Find the 2 heaviest animal patients within each species category.",
+    "schemaSnippet": "PetClinic analytical schema",
+    "targetQuery": "WITH RankedPatients AS (\n  SELECT pet_name, species, weight_kg,\n    DENSE_RANK() OVER (PARTITION BY species ORDER BY weight_kg DESC) AS rnk\n  FROM PetClinic\n)\nSELECT pet_name, species, weight_kg\nFROM RankedPatients\nWHERE rnk <= 2;",
+    "syntaxBlueprint": "WITH Ranked AS (\n  SELECT col1, category, metric,\n    DENSE_RANK() OVER (PARTITION BY category ORDER BY metric DESC) AS rnk\n  FROM table_name\n)\nSELECT *\nFROM Ranked\nWHERE rnk <= 3;",
+    "syntaxRule": "You cannot filter window functions directly in WHERE (due to logical execution order). Wrap the window function in a CTE, then filter 'WHERE rnk <= N'.",
+    "syntaxTrap": "Writing 'WHERE ROW_NUMBER() OVER (...) <= 3' in the same query; window functions evaluate AFTER the WHERE clause.",
+    "eli5Story": "Analytical Window Functions on PetClinic: Find the 2 heaviest animal patients within each species category.",
+    "commonMistakes": "Omitting ORDER BY inside OVER() for running totals, confusing PARTITION BY with GROUP BY, or attempting to filter window functions in WHERE without a CTE wrapper.",
+    "learningOutcomes": "Mastered 13.5 Top-N per Group via CTE Filter (The Gold Standard Pattern) on PetClinic.",
+    "challengeSlots": [
+      {
+        "type": "keyword",
+        "value": "WITH"
+      },
+      {
+        "type": "column",
+        "value": "RankedPatients"
+      },
+      {
+        "type": "keyword",
+        "value": "AS"
+      },
+      {
+        "type": "column",
+        "value": "("
+      },
+      {
+        "type": "keyword",
+        "value": "SELECT"
+      },
+      {
+        "type": "column",
+        "value": "pet_name,"
+      },
+      {
+        "type": "column",
+        "value": "species,"
+      },
+      {
+        "type": "column",
+        "value": "weight_kg,"
+      },
+      {
+        "type": "keyword",
+        "value": "DENSE_RANK()"
+      },
+      {
+        "type": "keyword",
+        "value": "OVER"
+      },
+      {
+        "type": "keyword",
+        "value": "(PARTITION"
+      },
+      {
+        "type": "keyword",
+        "value": "BY"
+      },
+      {
+        "type": "column",
+        "value": "species"
+      },
+      {
+        "type": "keyword",
+        "value": "ORDER"
+      },
+      {
+        "type": "keyword",
+        "value": "BY"
+      },
+      {
+        "type": "column",
+        "value": "weight_kg"
+      },
+      {
+        "type": "keyword",
+        "value": "DESC)"
+      },
+      {
+        "type": "keyword",
+        "value": "AS"
+      },
+      {
+        "type": "column",
+        "value": "rnk"
+      },
+      {
+        "type": "keyword",
+        "value": "FROM"
+      },
+      {
+        "type": "table",
+        "value": "PetClinic"
+      },
+      {
+        "type": "column",
+        "value": ")"
+      },
+      {
+        "type": "keyword",
+        "value": "SELECT"
+      },
+      {
+        "type": "column",
+        "value": "pet_name,"
+      },
+      {
+        "type": "column",
+        "value": "species,"
+      },
+      {
+        "type": "column",
+        "value": "weight_kg"
+      },
+      {
+        "type": "keyword",
+        "value": "FROM"
+      },
+      {
+        "type": "column",
+        "value": "RankedPatients"
+      },
+      {
+        "type": "keyword",
+        "value": "WHERE"
+      },
+      {
+        "type": "column",
+        "value": "rnk"
+      },
+      {
+        "type": "column",
+        "value": "<="
+      },
+      {
+        "type": "column",
+        "value": "2;"
+      }
+    ]
+  },
+  {
+    "drillNumber": 1251,
+    "subcluster": "13.6 Bottom-N per Group (Ascending Ranks)",
+    "level": "Level 3 (Bottom-N Partitioned Filter)",
+    "title": "Syntax #1251: Find the earliest enrolled student within each major using ascending ROW_NUMBER",
+    "table": "Students",
+    "scenario": "Find the earliest enrolled student within each major using ascending ROW_NUMBER.",
+    "businessObjective": "Find the earliest enrolled student within each major using ascending ROW_NUMBER.",
+    "schemaSnippet": "Students analytical schema",
+    "targetQuery": "WITH EarliestEnrolled AS (\n  SELECT full_name, major, enrolled_year,\n    ROW_NUMBER() OVER (PARTITION BY major ORDER BY enrolled_year ASC) AS rnk\n  FROM Students\n)\nSELECT full_name, major, enrolled_year\nFROM EarliestEnrolled\nWHERE rnk = 1;",
+    "syntaxBlueprint": "WITH LowestRanked AS (\n  SELECT col1, category, metric,\n    ROW_NUMBER() OVER (PARTITION BY category ORDER BY metric ASC) AS rnk\n  FROM table_name\n)\nSELECT *\nFROM LowestRanked\nWHERE rnk = 1;",
+    "syntaxRule": "Order by ASC inside the window function to identify the lowest, cheapest, or earliest records within each partition.",
+    "syntaxTrap": "Using DESC when searching for minimum or earliest values.",
+    "eli5Story": "Analytical Window Functions on Students: Find the earliest enrolled student within each major using ascending ROW_NUMBER.",
+    "commonMistakes": "Omitting ORDER BY inside OVER() for running totals, confusing PARTITION BY with GROUP BY, or attempting to filter window functions in WHERE without a CTE wrapper.",
+    "learningOutcomes": "Mastered 13.6 Bottom-N per Group (Ascending Ranks) on Students.",
+    "challengeSlots": [
+      {
+        "type": "keyword",
+        "value": "WITH"
+      },
+      {
+        "type": "column",
+        "value": "EarliestEnrolled"
+      },
+      {
+        "type": "keyword",
+        "value": "AS"
+      },
+      {
+        "type": "column",
+        "value": "("
+      },
+      {
+        "type": "keyword",
+        "value": "SELECT"
+      },
+      {
+        "type": "column",
+        "value": "full_name,"
+      },
+      {
+        "type": "column",
+        "value": "major,"
+      },
+      {
+        "type": "column",
+        "value": "enrolled_year,"
+      },
+      {
+        "type": "keyword",
+        "value": "ROW_NUMBER()"
+      },
+      {
+        "type": "keyword",
+        "value": "OVER"
+      },
+      {
+        "type": "keyword",
+        "value": "(PARTITION"
+      },
+      {
+        "type": "keyword",
+        "value": "BY"
+      },
+      {
+        "type": "column",
+        "value": "major"
+      },
+      {
+        "type": "keyword",
+        "value": "ORDER"
+      },
+      {
+        "type": "keyword",
+        "value": "BY"
+      },
+      {
+        "type": "column",
+        "value": "enrolled_year"
+      },
+      {
+        "type": "keyword",
+        "value": "ASC)"
+      },
+      {
+        "type": "keyword",
+        "value": "AS"
+      },
+      {
+        "type": "column",
+        "value": "rnk"
+      },
+      {
+        "type": "keyword",
+        "value": "FROM"
+      },
+      {
+        "type": "table",
+        "value": "Students"
+      },
+      {
+        "type": "column",
+        "value": ")"
+      },
+      {
+        "type": "keyword",
+        "value": "SELECT"
+      },
+      {
+        "type": "column",
+        "value": "full_name,"
+      },
+      {
+        "type": "column",
+        "value": "major,"
+      },
+      {
+        "type": "column",
+        "value": "enrolled_year"
+      },
+      {
+        "type": "keyword",
+        "value": "FROM"
+      },
+      {
+        "type": "column",
+        "value": "EarliestEnrolled"
+      },
+      {
+        "type": "keyword",
+        "value": "WHERE"
+      },
+      {
+        "type": "column",
+        "value": "rnk"
+      },
+      {
+        "type": "column",
+        "value": "="
+      },
+      {
+        "type": "column",
+        "value": "1;"
+      }
+    ]
+  },
+  {
+    "drillNumber": 1252,
+    "subcluster": "13.6 Bottom-N per Group (Ascending Ranks)",
+    "level": "Level 3 (Bottom-N Partitioned Filter)",
+    "title": "Syntax #1252: Find the single most affordable book within each literary genre",
+    "table": "Books",
+    "scenario": "Find the single most affordable book within each literary genre.",
+    "businessObjective": "Find the single most affordable book within each literary genre.",
+    "schemaSnippet": "Books analytical schema",
+    "targetQuery": "WITH CheapestBooks AS (\n  SELECT title, genre, price,\n    ROW_NUMBER() OVER (PARTITION BY genre ORDER BY price ASC) AS rnk\n  FROM Books\n)\nSELECT title, genre, price\nFROM CheapestBooks\nWHERE rnk = 1;",
+    "syntaxBlueprint": "WITH LowestRanked AS (\n  SELECT col1, category, metric,\n    ROW_NUMBER() OVER (PARTITION BY category ORDER BY metric ASC) AS rnk\n  FROM table_name\n)\nSELECT *\nFROM LowestRanked\nWHERE rnk = 1;",
+    "syntaxRule": "Order by ASC inside the window function to identify the lowest, cheapest, or earliest records within each partition.",
+    "syntaxTrap": "Using DESC when searching for minimum or earliest values.",
+    "eli5Story": "Analytical Window Functions on Books: Find the single most affordable book within each literary genre.",
+    "commonMistakes": "Omitting ORDER BY inside OVER() for running totals, confusing PARTITION BY with GROUP BY, or attempting to filter window functions in WHERE without a CTE wrapper.",
+    "learningOutcomes": "Mastered 13.6 Bottom-N per Group (Ascending Ranks) on Books.",
+    "challengeSlots": [
+      {
+        "type": "keyword",
+        "value": "WITH"
+      },
+      {
+        "type": "table",
+        "value": "CheapestBooks"
+      },
+      {
+        "type": "keyword",
+        "value": "AS"
+      },
+      {
+        "type": "column",
+        "value": "("
+      },
+      {
+        "type": "keyword",
+        "value": "SELECT"
+      },
+      {
+        "type": "column",
+        "value": "title,"
+      },
+      {
+        "type": "column",
+        "value": "genre,"
+      },
+      {
+        "type": "column",
+        "value": "price,"
+      },
+      {
+        "type": "keyword",
+        "value": "ROW_NUMBER()"
+      },
+      {
+        "type": "keyword",
+        "value": "OVER"
+      },
+      {
+        "type": "keyword",
+        "value": "(PARTITION"
+      },
+      {
+        "type": "keyword",
+        "value": "BY"
+      },
+      {
+        "type": "column",
+        "value": "genre"
+      },
+      {
+        "type": "keyword",
+        "value": "ORDER"
+      },
+      {
+        "type": "keyword",
+        "value": "BY"
+      },
+      {
+        "type": "column",
+        "value": "price"
+      },
+      {
+        "type": "keyword",
+        "value": "ASC)"
+      },
+      {
+        "type": "keyword",
+        "value": "AS"
+      },
+      {
+        "type": "column",
+        "value": "rnk"
+      },
+      {
+        "type": "keyword",
+        "value": "FROM"
+      },
+      {
+        "type": "table",
+        "value": "Books"
+      },
+      {
+        "type": "column",
+        "value": ")"
+      },
+      {
+        "type": "keyword",
+        "value": "SELECT"
+      },
+      {
+        "type": "column",
+        "value": "title,"
+      },
+      {
+        "type": "column",
+        "value": "genre,"
+      },
+      {
+        "type": "column",
+        "value": "price"
+      },
+      {
+        "type": "keyword",
+        "value": "FROM"
+      },
+      {
+        "type": "table",
+        "value": "CheapestBooks"
+      },
+      {
+        "type": "keyword",
+        "value": "WHERE"
+      },
+      {
+        "type": "column",
+        "value": "rnk"
+      },
+      {
+        "type": "column",
+        "value": "="
+      },
+      {
+        "type": "column",
+        "value": "1;"
+      }
+    ]
+  },
+  {
+    "drillNumber": 1253,
+    "subcluster": "13.6 Bottom-N per Group (Ascending Ranks)",
+    "level": "Level 3 (Bottom-N Partitioned Filter)",
+    "title": "Syntax #1253: Find the most veteran employee (earliest hire date) in each department",
+    "table": "Employees",
+    "scenario": "Find the most veteran employee (earliest hire date) in each department.",
+    "businessObjective": "Find the most veteran employee (earliest hire date) in each department.",
+    "schemaSnippet": "Employees analytical schema",
+    "targetQuery": "WITH EarliestHires AS (\n  SELECT first_name, department, hire_date,\n    ROW_NUMBER() OVER (PARTITION BY department ORDER BY hire_date ASC) AS rnk\n  FROM Employees\n)\nSELECT first_name, department, hire_date\nFROM EarliestHires\nWHERE rnk = 1;",
+    "syntaxBlueprint": "WITH LowestRanked AS (\n  SELECT col1, category, metric,\n    ROW_NUMBER() OVER (PARTITION BY category ORDER BY metric ASC) AS rnk\n  FROM table_name\n)\nSELECT *\nFROM LowestRanked\nWHERE rnk = 1;",
+    "syntaxRule": "Order by ASC inside the window function to identify the lowest, cheapest, or earliest records within each partition.",
+    "syntaxTrap": "Using DESC when searching for minimum or earliest values.",
+    "eli5Story": "Analytical Window Functions on Employees: Find the most veteran employee (earliest hire date) in each department.",
+    "commonMistakes": "Omitting ORDER BY inside OVER() for running totals, confusing PARTITION BY with GROUP BY, or attempting to filter window functions in WHERE without a CTE wrapper.",
+    "learningOutcomes": "Mastered 13.6 Bottom-N per Group (Ascending Ranks) on Employees.",
+    "challengeSlots": [
+      {
+        "type": "keyword",
+        "value": "WITH"
+      },
+      {
+        "type": "column",
+        "value": "EarliestHires"
+      },
+      {
+        "type": "keyword",
+        "value": "AS"
+      },
+      {
+        "type": "column",
+        "value": "("
+      },
+      {
+        "type": "keyword",
+        "value": "SELECT"
+      },
+      {
+        "type": "column",
+        "value": "first_name,"
+      },
+      {
+        "type": "column",
+        "value": "department,"
+      },
+      {
+        "type": "column",
+        "value": "hire_date,"
+      },
+      {
+        "type": "keyword",
+        "value": "ROW_NUMBER()"
+      },
+      {
+        "type": "keyword",
+        "value": "OVER"
+      },
+      {
+        "type": "keyword",
+        "value": "(PARTITION"
+      },
+      {
+        "type": "keyword",
+        "value": "BY"
+      },
+      {
+        "type": "column",
+        "value": "department"
+      },
+      {
+        "type": "keyword",
+        "value": "ORDER"
+      },
+      {
+        "type": "keyword",
+        "value": "BY"
+      },
+      {
+        "type": "column",
+        "value": "hire_date"
+      },
+      {
+        "type": "keyword",
+        "value": "ASC)"
+      },
+      {
+        "type": "keyword",
+        "value": "AS"
+      },
+      {
+        "type": "column",
+        "value": "rnk"
+      },
+      {
+        "type": "keyword",
+        "value": "FROM"
+      },
+      {
+        "type": "table",
+        "value": "Employees"
+      },
+      {
+        "type": "column",
+        "value": ")"
+      },
+      {
+        "type": "keyword",
+        "value": "SELECT"
+      },
+      {
+        "type": "column",
+        "value": "first_name,"
+      },
+      {
+        "type": "column",
+        "value": "department,"
+      },
+      {
+        "type": "column",
+        "value": "hire_date"
+      },
+      {
+        "type": "keyword",
+        "value": "FROM"
+      },
+      {
+        "type": "column",
+        "value": "EarliestHires"
+      },
+      {
+        "type": "keyword",
+        "value": "WHERE"
+      },
+      {
+        "type": "column",
+        "value": "rnk"
+      },
+      {
+        "type": "column",
+        "value": "="
+      },
+      {
+        "type": "column",
+        "value": "1;"
+      }
+    ]
+  },
+  {
+    "drillNumber": 1254,
+    "subcluster": "13.6 Bottom-N per Group (Ascending Ranks)",
+    "level": "Level 3 (Bottom-N Partitioned Filter)",
+    "title": "Syntax #1254: Identify the single lowest-inventory product in each grocery department",
+    "table": "GroceryItems",
+    "scenario": "Identify the single lowest-inventory product in each grocery department.",
+    "businessObjective": "Identify the single lowest-inventory product in each grocery department.",
+    "schemaSnippet": "GroceryItems analytical schema",
+    "targetQuery": "WITH LowestStockItems AS (\n  SELECT item_name, category, stock_qty,\n    ROW_NUMBER() OVER (PARTITION BY category ORDER BY stock_qty ASC) AS rnk\n  FROM GroceryItems\n)\nSELECT item_name, category, stock_qty\nFROM LowestStockItems\nWHERE rnk = 1;",
+    "syntaxBlueprint": "WITH LowestRanked AS (\n  SELECT col1, category, metric,\n    ROW_NUMBER() OVER (PARTITION BY category ORDER BY metric ASC) AS rnk\n  FROM table_name\n)\nSELECT *\nFROM LowestRanked\nWHERE rnk = 1;",
+    "syntaxRule": "Order by ASC inside the window function to identify the lowest, cheapest, or earliest records within each partition.",
+    "syntaxTrap": "Using DESC when searching for minimum or earliest values.",
+    "eli5Story": "Analytical Window Functions on GroceryItems: Identify the single lowest-inventory product in each grocery department.",
+    "commonMistakes": "Omitting ORDER BY inside OVER() for running totals, confusing PARTITION BY with GROUP BY, or attempting to filter window functions in WHERE without a CTE wrapper.",
+    "learningOutcomes": "Mastered 13.6 Bottom-N per Group (Ascending Ranks) on GroceryItems.",
+    "challengeSlots": [
+      {
+        "type": "keyword",
+        "value": "WITH"
+      },
+      {
+        "type": "column",
+        "value": "LowestStockItems"
+      },
+      {
+        "type": "keyword",
+        "value": "AS"
+      },
+      {
+        "type": "column",
+        "value": "("
+      },
+      {
+        "type": "keyword",
+        "value": "SELECT"
+      },
+      {
+        "type": "column",
+        "value": "item_name,"
+      },
+      {
+        "type": "column",
+        "value": "category,"
+      },
+      {
+        "type": "column",
+        "value": "stock_qty,"
+      },
+      {
+        "type": "keyword",
+        "value": "ROW_NUMBER()"
+      },
+      {
+        "type": "keyword",
+        "value": "OVER"
+      },
+      {
+        "type": "keyword",
+        "value": "(PARTITION"
+      },
+      {
+        "type": "keyword",
+        "value": "BY"
+      },
+      {
+        "type": "column",
+        "value": "category"
+      },
+      {
+        "type": "keyword",
+        "value": "ORDER"
+      },
+      {
+        "type": "keyword",
+        "value": "BY"
+      },
+      {
+        "type": "column",
+        "value": "stock_qty"
+      },
+      {
+        "type": "keyword",
+        "value": "ASC)"
+      },
+      {
+        "type": "keyword",
+        "value": "AS"
+      },
+      {
+        "type": "column",
+        "value": "rnk"
+      },
+      {
+        "type": "keyword",
+        "value": "FROM"
+      },
+      {
+        "type": "table",
+        "value": "GroceryItems"
+      },
+      {
+        "type": "column",
+        "value": ")"
+      },
+      {
+        "type": "keyword",
+        "value": "SELECT"
+      },
+      {
+        "type": "column",
+        "value": "item_name,"
+      },
+      {
+        "type": "column",
+        "value": "category,"
+      },
+      {
+        "type": "column",
+        "value": "stock_qty"
+      },
+      {
+        "type": "keyword",
+        "value": "FROM"
+      },
+      {
+        "type": "column",
+        "value": "LowestStockItems"
+      },
+      {
+        "type": "keyword",
+        "value": "WHERE"
+      },
+      {
+        "type": "column",
+        "value": "rnk"
+      },
+      {
+        "type": "column",
+        "value": "="
+      },
+      {
+        "type": "column",
+        "value": "1;"
+      }
+    ]
+  },
+  {
+    "drillNumber": 1255,
+    "subcluster": "13.6 Bottom-N per Group (Ascending Ranks)",
+    "level": "Level 3 (Bottom-N Partitioned Filter)",
+    "title": "Syntax #1255: Retrieve each customer's inaugural first order using 'WHERE rnk = 1'",
+    "table": "Orders",
+    "scenario": "Retrieve each customer's inaugural first order using 'WHERE rnk = 1'.",
+    "businessObjective": "Retrieve each customer's inaugural first order using 'WHERE rnk = 1'.",
+    "schemaSnippet": "Orders analytical schema",
+    "targetQuery": "WITH EarliestOrders AS (\n  SELECT order_id, customer_name, order_date,\n    ROW_NUMBER() OVER (PARTITION BY customer_name ORDER BY order_date ASC) AS rnk\n  FROM Orders\n)\nSELECT order_id, customer_name, order_date\nFROM EarliestOrders\nWHERE rnk = 1;",
+    "syntaxBlueprint": "WITH LowestRanked AS (\n  SELECT col1, category, metric,\n    ROW_NUMBER() OVER (PARTITION BY category ORDER BY metric ASC) AS rnk\n  FROM table_name\n)\nSELECT *\nFROM LowestRanked\nWHERE rnk = 1;",
+    "syntaxRule": "Order by ASC inside the window function to identify the lowest, cheapest, or earliest records within each partition.",
+    "syntaxTrap": "Using DESC when searching for minimum or earliest values.",
+    "eli5Story": "Analytical Window Functions on Orders: Retrieve each customer's inaugural first order using 'WHERE rnk = 1'.",
+    "commonMistakes": "Omitting ORDER BY inside OVER() for running totals, confusing PARTITION BY with GROUP BY, or attempting to filter window functions in WHERE without a CTE wrapper.",
+    "learningOutcomes": "Mastered 13.6 Bottom-N per Group (Ascending Ranks) on Orders.",
+    "challengeSlots": [
+      {
+        "type": "keyword",
+        "value": "WITH"
+      },
+      {
+        "type": "table",
+        "value": "EarliestOrders"
+      },
+      {
+        "type": "keyword",
+        "value": "AS"
+      },
+      {
+        "type": "column",
+        "value": "("
+      },
+      {
+        "type": "keyword",
+        "value": "SELECT"
+      },
+      {
+        "type": "column",
+        "value": "order_id,"
+      },
+      {
+        "type": "column",
+        "value": "customer_name,"
+      },
+      {
+        "type": "column",
+        "value": "order_date,"
+      },
+      {
+        "type": "keyword",
+        "value": "ROW_NUMBER()"
+      },
+      {
+        "type": "keyword",
+        "value": "OVER"
+      },
+      {
+        "type": "keyword",
+        "value": "(PARTITION"
+      },
+      {
+        "type": "keyword",
+        "value": "BY"
+      },
+      {
+        "type": "column",
+        "value": "customer_name"
+      },
+      {
+        "type": "keyword",
+        "value": "ORDER"
+      },
+      {
+        "type": "keyword",
+        "value": "BY"
+      },
+      {
+        "type": "column",
+        "value": "order_date"
+      },
+      {
+        "type": "keyword",
+        "value": "ASC)"
+      },
+      {
+        "type": "keyword",
+        "value": "AS"
+      },
+      {
+        "type": "column",
+        "value": "rnk"
+      },
+      {
+        "type": "keyword",
+        "value": "FROM"
+      },
+      {
+        "type": "table",
+        "value": "Orders"
+      },
+      {
+        "type": "column",
+        "value": ")"
+      },
+      {
+        "type": "keyword",
+        "value": "SELECT"
+      },
+      {
+        "type": "column",
+        "value": "order_id,"
+      },
+      {
+        "type": "column",
+        "value": "customer_name,"
+      },
+      {
+        "type": "column",
+        "value": "order_date"
+      },
+      {
+        "type": "keyword",
+        "value": "FROM"
+      },
+      {
+        "type": "table",
+        "value": "EarliestOrders"
+      },
+      {
+        "type": "keyword",
+        "value": "WHERE"
+      },
+      {
+        "type": "column",
+        "value": "rnk"
+      },
+      {
+        "type": "column",
+        "value": "="
+      },
+      {
+        "type": "column",
+        "value": "1;"
+      }
+    ]
+  },
+  {
+    "drillNumber": 1256,
+    "subcluster": "13.6 Bottom-N per Group (Ascending Ranks)",
+    "level": "Level 3 (Bottom-N Partitioned Filter)",
+    "title": "Syntax #1256: Find the shortest music track within each musical genre",
+    "table": "MusicTracks",
+    "scenario": "Find the shortest music track within each musical genre.",
+    "businessObjective": "Find the shortest music track within each musical genre.",
+    "schemaSnippet": "MusicTracks analytical schema",
+    "targetQuery": "WITH ShortestTracks AS (\n  SELECT track_title, genre, duration_seconds,\n    ROW_NUMBER() OVER (PARTITION BY genre ORDER BY duration_seconds ASC) AS rnk\n  FROM MusicTracks\n)\nSELECT track_title, genre, duration_seconds\nFROM ShortestTracks\nWHERE rnk = 1;",
+    "syntaxBlueprint": "WITH LowestRanked AS (\n  SELECT col1, category, metric,\n    ROW_NUMBER() OVER (PARTITION BY category ORDER BY metric ASC) AS rnk\n  FROM table_name\n)\nSELECT *\nFROM LowestRanked\nWHERE rnk = 1;",
+    "syntaxRule": "Order by ASC inside the window function to identify the lowest, cheapest, or earliest records within each partition.",
+    "syntaxTrap": "Using DESC when searching for minimum or earliest values.",
+    "eli5Story": "Analytical Window Functions on MusicTracks: Find the shortest music track within each musical genre.",
+    "commonMistakes": "Omitting ORDER BY inside OVER() for running totals, confusing PARTITION BY with GROUP BY, or attempting to filter window functions in WHERE without a CTE wrapper.",
+    "learningOutcomes": "Mastered 13.6 Bottom-N per Group (Ascending Ranks) on MusicTracks.",
+    "challengeSlots": [
+      {
+        "type": "keyword",
+        "value": "WITH"
+      },
+      {
+        "type": "column",
+        "value": "ShortestTracks"
+      },
+      {
+        "type": "keyword",
+        "value": "AS"
+      },
+      {
+        "type": "column",
+        "value": "("
+      },
+      {
+        "type": "keyword",
+        "value": "SELECT"
+      },
+      {
+        "type": "column",
+        "value": "track_title,"
+      },
+      {
+        "type": "column",
+        "value": "genre,"
+      },
+      {
+        "type": "column",
+        "value": "duration_seconds,"
+      },
+      {
+        "type": "keyword",
+        "value": "ROW_NUMBER()"
+      },
+      {
+        "type": "keyword",
+        "value": "OVER"
+      },
+      {
+        "type": "keyword",
+        "value": "(PARTITION"
+      },
+      {
+        "type": "keyword",
+        "value": "BY"
+      },
+      {
+        "type": "column",
+        "value": "genre"
+      },
+      {
+        "type": "keyword",
+        "value": "ORDER"
+      },
+      {
+        "type": "keyword",
+        "value": "BY"
+      },
+      {
+        "type": "column",
+        "value": "duration_seconds"
+      },
+      {
+        "type": "keyword",
+        "value": "ASC)"
+      },
+      {
+        "type": "keyword",
+        "value": "AS"
+      },
+      {
+        "type": "column",
+        "value": "rnk"
+      },
+      {
+        "type": "keyword",
+        "value": "FROM"
+      },
+      {
+        "type": "table",
+        "value": "MusicTracks"
+      },
+      {
+        "type": "column",
+        "value": ")"
+      },
+      {
+        "type": "keyword",
+        "value": "SELECT"
+      },
+      {
+        "type": "column",
+        "value": "track_title,"
+      },
+      {
+        "type": "column",
+        "value": "genre,"
+      },
+      {
+        "type": "column",
+        "value": "duration_seconds"
+      },
+      {
+        "type": "keyword",
+        "value": "FROM"
+      },
+      {
+        "type": "column",
+        "value": "ShortestTracks"
+      },
+      {
+        "type": "keyword",
+        "value": "WHERE"
+      },
+      {
+        "type": "column",
+        "value": "rnk"
+      },
+      {
+        "type": "column",
+        "value": "="
+      },
+      {
+        "type": "column",
+        "value": "1;"
+      }
+    ]
+  },
+  {
+    "drillNumber": 1257,
+    "subcluster": "13.6 Bottom-N per Group (Ascending Ranks)",
+    "level": "Level 3 (Bottom-N Partitioned Filter)",
+    "title": "Syntax #1257: Find the founding member of each gym membership plan tier",
+    "table": "GymMembers",
+    "scenario": "Find the founding member of each gym membership plan tier.",
+    "businessObjective": "Find the founding member of each gym membership plan tier.",
+    "schemaSnippet": "GymMembers analytical schema",
+    "targetQuery": "WITH EarliestMembers AS (\n  SELECT member_name, membership_plan, join_date,\n    ROW_NUMBER() OVER (PARTITION BY membership_plan ORDER BY join_date ASC) AS rnk\n  FROM GymMembers\n)\nSELECT member_name, membership_plan, join_date\nFROM EarliestMembers\nWHERE rnk = 1;",
+    "syntaxBlueprint": "WITH LowestRanked AS (\n  SELECT col1, category, metric,\n    ROW_NUMBER() OVER (PARTITION BY category ORDER BY metric ASC) AS rnk\n  FROM table_name\n)\nSELECT *\nFROM LowestRanked\nWHERE rnk = 1;",
+    "syntaxRule": "Order by ASC inside the window function to identify the lowest, cheapest, or earliest records within each partition.",
+    "syntaxTrap": "Using DESC when searching for minimum or earliest values.",
+    "eli5Story": "Analytical Window Functions on GymMembers: Find the founding member of each gym membership plan tier.",
+    "commonMistakes": "Omitting ORDER BY inside OVER() for running totals, confusing PARTITION BY with GROUP BY, or attempting to filter window functions in WHERE without a CTE wrapper.",
+    "learningOutcomes": "Mastered 13.6 Bottom-N per Group (Ascending Ranks) on GymMembers.",
+    "challengeSlots": [
+      {
+        "type": "keyword",
+        "value": "WITH"
+      },
+      {
+        "type": "column",
+        "value": "EarliestMembers"
+      },
+      {
+        "type": "keyword",
+        "value": "AS"
+      },
+      {
+        "type": "column",
+        "value": "("
+      },
+      {
+        "type": "keyword",
+        "value": "SELECT"
+      },
+      {
+        "type": "column",
+        "value": "member_name,"
+      },
+      {
+        "type": "column",
+        "value": "membership_plan,"
+      },
+      {
+        "type": "column",
+        "value": "join_date,"
+      },
+      {
+        "type": "keyword",
+        "value": "ROW_NUMBER()"
+      },
+      {
+        "type": "keyword",
+        "value": "OVER"
+      },
+      {
+        "type": "keyword",
+        "value": "(PARTITION"
+      },
+      {
+        "type": "keyword",
+        "value": "BY"
+      },
+      {
+        "type": "column",
+        "value": "membership_plan"
+      },
+      {
+        "type": "keyword",
+        "value": "ORDER"
+      },
+      {
+        "type": "keyword",
+        "value": "BY"
+      },
+      {
+        "type": "column",
+        "value": "join_date"
+      },
+      {
+        "type": "keyword",
+        "value": "ASC)"
+      },
+      {
+        "type": "keyword",
+        "value": "AS"
+      },
+      {
+        "type": "column",
+        "value": "rnk"
+      },
+      {
+        "type": "keyword",
+        "value": "FROM"
+      },
+      {
+        "type": "table",
+        "value": "GymMembers"
+      },
+      {
+        "type": "column",
+        "value": ")"
+      },
+      {
+        "type": "keyword",
+        "value": "SELECT"
+      },
+      {
+        "type": "column",
+        "value": "member_name,"
+      },
+      {
+        "type": "column",
+        "value": "membership_plan,"
+      },
+      {
+        "type": "column",
+        "value": "join_date"
+      },
+      {
+        "type": "keyword",
+        "value": "FROM"
+      },
+      {
+        "type": "column",
+        "value": "EarliestMembers"
+      },
+      {
+        "type": "keyword",
+        "value": "WHERE"
+      },
+      {
+        "type": "column",
+        "value": "rnk"
+      },
+      {
+        "type": "column",
+        "value": "="
+      },
+      {
+        "type": "column",
+        "value": "1;"
+      }
+    ]
+  },
+  {
+    "drillNumber": 1258,
+    "subcluster": "13.6 Bottom-N per Group (Ascending Ranks)",
+    "level": "Level 3 (Bottom-N Partitioned Filter)",
+    "title": "Syntax #1258: Find the lowest-rated review within each film genre",
+    "table": "MovieReviews",
+    "scenario": "Find the lowest-rated review within each film genre.",
+    "businessObjective": "Find the lowest-rated review within each film genre.",
+    "schemaSnippet": "MovieReviews analytical schema",
+    "targetQuery": "WITH CriticalOutliers AS (\n  SELECT movie_title, genre, star_rating,\n    ROW_NUMBER() OVER (PARTITION BY genre ORDER BY star_rating ASC) AS rnk\n  FROM MovieReviews\n)\nSELECT movie_title, genre, star_rating\nFROM CriticalOutliers\nWHERE rnk = 1;",
+    "syntaxBlueprint": "WITH LowestRanked AS (\n  SELECT col1, category, metric,\n    ROW_NUMBER() OVER (PARTITION BY category ORDER BY metric ASC) AS rnk\n  FROM table_name\n)\nSELECT *\nFROM LowestRanked\nWHERE rnk = 1;",
+    "syntaxRule": "Order by ASC inside the window function to identify the lowest, cheapest, or earliest records within each partition.",
+    "syntaxTrap": "Using DESC when searching for minimum or earliest values.",
+    "eli5Story": "Analytical Window Functions on MovieReviews: Find the lowest-rated review within each film genre.",
+    "commonMistakes": "Omitting ORDER BY inside OVER() for running totals, confusing PARTITION BY with GROUP BY, or attempting to filter window functions in WHERE without a CTE wrapper.",
+    "learningOutcomes": "Mastered 13.6 Bottom-N per Group (Ascending Ranks) on MovieReviews.",
+    "challengeSlots": [
+      {
+        "type": "keyword",
+        "value": "WITH"
+      },
+      {
+        "type": "column",
+        "value": "CriticalOutliers"
+      },
+      {
+        "type": "keyword",
+        "value": "AS"
+      },
+      {
+        "type": "column",
+        "value": "("
+      },
+      {
+        "type": "keyword",
+        "value": "SELECT"
+      },
+      {
+        "type": "column",
+        "value": "movie_title,"
+      },
+      {
+        "type": "column",
+        "value": "genre,"
+      },
+      {
+        "type": "column",
+        "value": "star_rating,"
+      },
+      {
+        "type": "keyword",
+        "value": "ROW_NUMBER()"
+      },
+      {
+        "type": "keyword",
+        "value": "OVER"
+      },
+      {
+        "type": "keyword",
+        "value": "(PARTITION"
+      },
+      {
+        "type": "keyword",
+        "value": "BY"
+      },
+      {
+        "type": "column",
+        "value": "genre"
+      },
+      {
+        "type": "keyword",
+        "value": "ORDER"
+      },
+      {
+        "type": "keyword",
+        "value": "BY"
+      },
+      {
+        "type": "column",
+        "value": "star_rating"
+      },
+      {
+        "type": "keyword",
+        "value": "ASC)"
+      },
+      {
+        "type": "keyword",
+        "value": "AS"
+      },
+      {
+        "type": "column",
+        "value": "rnk"
+      },
+      {
+        "type": "keyword",
+        "value": "FROM"
+      },
+      {
+        "type": "table",
+        "value": "MovieReviews"
+      },
+      {
+        "type": "column",
+        "value": ")"
+      },
+      {
+        "type": "keyword",
+        "value": "SELECT"
+      },
+      {
+        "type": "column",
+        "value": "movie_title,"
+      },
+      {
+        "type": "column",
+        "value": "genre,"
+      },
+      {
+        "type": "column",
+        "value": "star_rating"
+      },
+      {
+        "type": "keyword",
+        "value": "FROM"
+      },
+      {
+        "type": "column",
+        "value": "CriticalOutliers"
+      },
+      {
+        "type": "keyword",
+        "value": "WHERE"
+      },
+      {
+        "type": "column",
+        "value": "rnk"
+      },
+      {
+        "type": "column",
+        "value": "="
+      },
+      {
+        "type": "column",
+        "value": "1;"
+      }
+    ]
+  },
+  {
+    "drillNumber": 1259,
+    "subcluster": "13.6 Bottom-N per Group (Ascending Ranks)",
+    "level": "Level 3 (Bottom-N Partitioned Filter)",
+    "title": "Syntax #1259: Find the shortest flight route departing from each airport hub",
+    "table": "FlightSchedule",
+    "scenario": "Find the shortest flight route departing from each airport hub.",
+    "businessObjective": "Find the shortest flight route departing from each airport hub.",
+    "schemaSnippet": "FlightSchedule analytical schema",
+    "targetQuery": "WITH ShortestRoutes AS (\n  SELECT flight_id, origin_airport, distance_miles,\n    ROW_NUMBER() OVER (PARTITION BY origin_airport ORDER BY distance_miles ASC) AS rnk\n  FROM FlightSchedule\n)\nSELECT flight_id, origin_airport, distance_miles\nFROM ShortestRoutes\nWHERE rnk = 1;",
+    "syntaxBlueprint": "WITH LowestRanked AS (\n  SELECT col1, category, metric,\n    ROW_NUMBER() OVER (PARTITION BY category ORDER BY metric ASC) AS rnk\n  FROM table_name\n)\nSELECT *\nFROM LowestRanked\nWHERE rnk = 1;",
+    "syntaxRule": "Order by ASC inside the window function to identify the lowest, cheapest, or earliest records within each partition.",
+    "syntaxTrap": "Using DESC when searching for minimum or earliest values.",
+    "eli5Story": "Analytical Window Functions on FlightSchedule: Find the shortest flight route departing from each airport hub.",
+    "commonMistakes": "Omitting ORDER BY inside OVER() for running totals, confusing PARTITION BY with GROUP BY, or attempting to filter window functions in WHERE without a CTE wrapper.",
+    "learningOutcomes": "Mastered 13.6 Bottom-N per Group (Ascending Ranks) on FlightSchedule.",
+    "challengeSlots": [
+      {
+        "type": "keyword",
+        "value": "WITH"
+      },
+      {
+        "type": "column",
+        "value": "ShortestRoutes"
+      },
+      {
+        "type": "keyword",
+        "value": "AS"
+      },
+      {
+        "type": "column",
+        "value": "("
+      },
+      {
+        "type": "keyword",
+        "value": "SELECT"
+      },
+      {
+        "type": "column",
+        "value": "flight_id,"
+      },
+      {
+        "type": "column",
+        "value": "origin_airport,"
+      },
+      {
+        "type": "column",
+        "value": "distance_miles,"
+      },
+      {
+        "type": "keyword",
+        "value": "ROW_NUMBER()"
+      },
+      {
+        "type": "keyword",
+        "value": "OVER"
+      },
+      {
+        "type": "keyword",
+        "value": "(PARTITION"
+      },
+      {
+        "type": "keyword",
+        "value": "BY"
+      },
+      {
+        "type": "column",
+        "value": "origin_airport"
+      },
+      {
+        "type": "keyword",
+        "value": "ORDER"
+      },
+      {
+        "type": "keyword",
+        "value": "BY"
+      },
+      {
+        "type": "column",
+        "value": "distance_miles"
+      },
+      {
+        "type": "keyword",
+        "value": "ASC)"
+      },
+      {
+        "type": "keyword",
+        "value": "AS"
+      },
+      {
+        "type": "column",
+        "value": "rnk"
+      },
+      {
+        "type": "keyword",
+        "value": "FROM"
+      },
+      {
+        "type": "table",
+        "value": "FlightSchedule"
+      },
+      {
+        "type": "column",
+        "value": ")"
+      },
+      {
+        "type": "keyword",
+        "value": "SELECT"
+      },
+      {
+        "type": "column",
+        "value": "flight_id,"
+      },
+      {
+        "type": "column",
+        "value": "origin_airport,"
+      },
+      {
+        "type": "column",
+        "value": "distance_miles"
+      },
+      {
+        "type": "keyword",
+        "value": "FROM"
+      },
+      {
+        "type": "column",
+        "value": "ShortestRoutes"
+      },
+      {
+        "type": "keyword",
+        "value": "WHERE"
+      },
+      {
+        "type": "column",
+        "value": "rnk"
+      },
+      {
+        "type": "column",
+        "value": "="
+      },
+      {
+        "type": "column",
+        "value": "1;"
+      }
+    ]
+  },
+  {
+    "drillNumber": 1260,
+    "subcluster": "13.6 Bottom-N per Group (Ascending Ranks)",
+    "level": "Level 3 (Bottom-N Partitioned Filter)",
+    "title": "Syntax #1260: Find the lightest patient within each animal species category",
+    "table": "PetClinic",
+    "scenario": "Find the lightest patient within each animal species category.",
+    "businessObjective": "Find the lightest patient within each animal species category.",
+    "schemaSnippet": "PetClinic analytical schema",
+    "targetQuery": "WITH SmallestPatients AS (\n  SELECT pet_name, species, weight_kg,\n    ROW_NUMBER() OVER (PARTITION BY species ORDER BY weight_kg ASC) AS rnk\n  FROM PetClinic\n)\nSELECT pet_name, species, weight_kg\nFROM SmallestPatients\nWHERE rnk = 1;",
+    "syntaxBlueprint": "WITH LowestRanked AS (\n  SELECT col1, category, metric,\n    ROW_NUMBER() OVER (PARTITION BY category ORDER BY metric ASC) AS rnk\n  FROM table_name\n)\nSELECT *\nFROM LowestRanked\nWHERE rnk = 1;",
+    "syntaxRule": "Order by ASC inside the window function to identify the lowest, cheapest, or earliest records within each partition.",
+    "syntaxTrap": "Using DESC when searching for minimum or earliest values.",
+    "eli5Story": "Analytical Window Functions on PetClinic: Find the lightest patient within each animal species category.",
+    "commonMistakes": "Omitting ORDER BY inside OVER() for running totals, confusing PARTITION BY with GROUP BY, or attempting to filter window functions in WHERE without a CTE wrapper.",
+    "learningOutcomes": "Mastered 13.6 Bottom-N per Group (Ascending Ranks) on PetClinic.",
+    "challengeSlots": [
+      {
+        "type": "keyword",
+        "value": "WITH"
+      },
+      {
+        "type": "column",
+        "value": "SmallestPatients"
+      },
+      {
+        "type": "keyword",
+        "value": "AS"
+      },
+      {
+        "type": "column",
+        "value": "("
+      },
+      {
+        "type": "keyword",
+        "value": "SELECT"
+      },
+      {
+        "type": "column",
+        "value": "pet_name,"
+      },
+      {
+        "type": "column",
+        "value": "species,"
+      },
+      {
+        "type": "column",
+        "value": "weight_kg,"
+      },
+      {
+        "type": "keyword",
+        "value": "ROW_NUMBER()"
+      },
+      {
+        "type": "keyword",
+        "value": "OVER"
+      },
+      {
+        "type": "keyword",
+        "value": "(PARTITION"
+      },
+      {
+        "type": "keyword",
+        "value": "BY"
+      },
+      {
+        "type": "column",
+        "value": "species"
+      },
+      {
+        "type": "keyword",
+        "value": "ORDER"
+      },
+      {
+        "type": "keyword",
+        "value": "BY"
+      },
+      {
+        "type": "column",
+        "value": "weight_kg"
+      },
+      {
+        "type": "keyword",
+        "value": "ASC)"
+      },
+      {
+        "type": "keyword",
+        "value": "AS"
+      },
+      {
+        "type": "column",
+        "value": "rnk"
+      },
+      {
+        "type": "keyword",
+        "value": "FROM"
+      },
+      {
+        "type": "table",
+        "value": "PetClinic"
+      },
+      {
+        "type": "column",
+        "value": ")"
+      },
+      {
+        "type": "keyword",
+        "value": "SELECT"
+      },
+      {
+        "type": "column",
+        "value": "pet_name,"
+      },
+      {
+        "type": "column",
+        "value": "species,"
+      },
+      {
+        "type": "column",
+        "value": "weight_kg"
+      },
+      {
+        "type": "keyword",
+        "value": "FROM"
+      },
+      {
+        "type": "column",
+        "value": "SmallestPatients"
+      },
+      {
+        "type": "keyword",
+        "value": "WHERE"
+      },
+      {
+        "type": "column",
+        "value": "rnk"
+      },
+      {
+        "type": "column",
+        "value": "="
+      },
+      {
+        "type": "column",
+        "value": "1;"
+      }
+    ]
+  },
+  {
+    "drillNumber": 1261,
+    "subcluster": "13.7 NTILE(4) Quartile Bucketing",
+    "level": "Level 2 (Quartiles)",
+    "title": "Syntax #1261: Segment students into 4 academic quartiles (Q1 = Top 25% GPA)",
+    "table": "Students",
+    "scenario": "Segment students into 4 academic quartiles (Q1 = Top 25% GPA).",
+    "businessObjective": "Segment students into 4 academic quartiles (Q1 = Top 25% GPA).",
+    "schemaSnippet": "Students analytical schema",
+    "targetQuery": "SELECT full_name, gpa,\n  NTILE(4) OVER (ORDER BY gpa DESC) AS gpa_quartile\nFROM Students;",
+    "syntaxBlueprint": "SELECT col1, metric,\n  NTILE(4) OVER (ORDER BY metric DESC) AS quartile\nFROM table_name;",
+    "syntaxRule": "NTILE(n) divides ordered rows into 'n' roughly equal buckets, assigning bucket integers from 1 to n (e.g. 1 = Top 25%).",
+    "syntaxTrap": "If the row count is not evenly divisible by n, NTILE places the extra rows in the earliest buckets.",
+    "eli5Story": "Analytical Window Functions on Students: Segment students into 4 academic quartiles (Q1 = Top 25% GPA).",
+    "commonMistakes": "Omitting ORDER BY inside OVER() for running totals, confusing PARTITION BY with GROUP BY, or attempting to filter window functions in WHERE without a CTE wrapper.",
+    "learningOutcomes": "Mastered 13.7 NTILE(4) Quartile Bucketing on Students.",
+    "challengeSlots": [
+      {
+        "type": "keyword",
+        "value": "SELECT"
+      },
+      {
+        "type": "column",
+        "value": "full_name,"
+      },
+      {
+        "type": "column",
+        "value": "gpa,"
+      },
+      {
+        "type": "column",
+        "value": "NTILE(4)"
+      },
+      {
+        "type": "keyword",
+        "value": "OVER"
+      },
+      {
+        "type": "keyword",
+        "value": "(ORDER"
+      },
+      {
+        "type": "keyword",
+        "value": "BY"
+      },
+      {
+        "type": "column",
+        "value": "gpa"
+      },
+      {
+        "type": "keyword",
+        "value": "DESC)"
+      },
+      {
+        "type": "keyword",
+        "value": "AS"
+      },
+      {
+        "type": "column",
+        "value": "gpa_quartile"
+      },
+      {
+        "type": "keyword",
+        "value": "FROM"
+      },
+      {
+        "type": "table",
+        "value": "Students;"
+      }
+    ]
+  },
+  {
+    "drillNumber": 1262,
+    "subcluster": "13.7 NTILE(4) Quartile Bucketing",
+    "level": "Level 2 (Quartiles)",
+    "title": "Syntax #1262: Bucket books into 4 price quartiles from high-end to budget",
+    "table": "Books",
+    "scenario": "Bucket books into 4 price quartiles from high-end to budget.",
+    "businessObjective": "Bucket books into 4 price quartiles from high-end to budget.",
+    "schemaSnippet": "Books analytical schema",
+    "targetQuery": "SELECT title, price,\n  NTILE(4) OVER (ORDER BY price DESC) AS price_quartile\nFROM Books;",
+    "syntaxBlueprint": "SELECT col1, metric,\n  NTILE(4) OVER (ORDER BY metric DESC) AS quartile\nFROM table_name;",
+    "syntaxRule": "NTILE(n) divides ordered rows into 'n' roughly equal buckets, assigning bucket integers from 1 to n (e.g. 1 = Top 25%).",
+    "syntaxTrap": "If the row count is not evenly divisible by n, NTILE places the extra rows in the earliest buckets.",
+    "eli5Story": "Analytical Window Functions on Books: Bucket books into 4 price quartiles from high-end to budget.",
+    "commonMistakes": "Omitting ORDER BY inside OVER() for running totals, confusing PARTITION BY with GROUP BY, or attempting to filter window functions in WHERE without a CTE wrapper.",
+    "learningOutcomes": "Mastered 13.7 NTILE(4) Quartile Bucketing on Books.",
+    "challengeSlots": [
+      {
+        "type": "keyword",
+        "value": "SELECT"
+      },
+      {
+        "type": "column",
+        "value": "title,"
+      },
+      {
+        "type": "column",
+        "value": "price,"
+      },
+      {
+        "type": "column",
+        "value": "NTILE(4)"
+      },
+      {
+        "type": "keyword",
+        "value": "OVER"
+      },
+      {
+        "type": "keyword",
+        "value": "(ORDER"
+      },
+      {
+        "type": "keyword",
+        "value": "BY"
+      },
+      {
+        "type": "column",
+        "value": "price"
+      },
+      {
+        "type": "keyword",
+        "value": "DESC)"
+      },
+      {
+        "type": "keyword",
+        "value": "AS"
+      },
+      {
+        "type": "column",
+        "value": "price_quartile"
+      },
+      {
+        "type": "keyword",
+        "value": "FROM"
+      },
+      {
+        "type": "table",
+        "value": "Books;"
+      }
+    ]
+  },
+  {
+    "drillNumber": 1263,
+    "subcluster": "13.7 NTILE(4) Quartile Bucketing",
+    "level": "Level 2 (Quartiles)",
+    "title": "Syntax #1263: Divide employees into 4 compensation quartiles using NTILE(4)",
+    "table": "Employees",
+    "scenario": "Divide employees into 4 compensation quartiles using NTILE(4).",
+    "businessObjective": "Divide employees into 4 compensation quartiles using NTILE(4).",
+    "schemaSnippet": "Employees analytical schema",
+    "targetQuery": "SELECT first_name, salary,\n  NTILE(4) OVER (ORDER BY salary DESC) AS salary_quartile\nFROM Employees;",
+    "syntaxBlueprint": "SELECT col1, metric,\n  NTILE(4) OVER (ORDER BY metric DESC) AS quartile\nFROM table_name;",
+    "syntaxRule": "NTILE(n) divides ordered rows into 'n' roughly equal buckets, assigning bucket integers from 1 to n (e.g. 1 = Top 25%).",
+    "syntaxTrap": "If the row count is not evenly divisible by n, NTILE places the extra rows in the earliest buckets.",
+    "eli5Story": "Analytical Window Functions on Employees: Divide employees into 4 compensation quartiles using NTILE(4).",
+    "commonMistakes": "Omitting ORDER BY inside OVER() for running totals, confusing PARTITION BY with GROUP BY, or attempting to filter window functions in WHERE without a CTE wrapper.",
+    "learningOutcomes": "Mastered 13.7 NTILE(4) Quartile Bucketing on Employees.",
+    "challengeSlots": [
+      {
+        "type": "keyword",
+        "value": "SELECT"
+      },
+      {
+        "type": "column",
+        "value": "first_name,"
+      },
+      {
+        "type": "column",
+        "value": "salary,"
+      },
+      {
+        "type": "column",
+        "value": "NTILE(4)"
+      },
+      {
+        "type": "keyword",
+        "value": "OVER"
+      },
+      {
+        "type": "keyword",
+        "value": "(ORDER"
+      },
+      {
+        "type": "keyword",
+        "value": "BY"
+      },
+      {
+        "type": "column",
+        "value": "salary"
+      },
+      {
+        "type": "keyword",
+        "value": "DESC)"
+      },
+      {
+        "type": "keyword",
+        "value": "AS"
+      },
+      {
+        "type": "column",
+        "value": "salary_quartile"
+      },
+      {
+        "type": "keyword",
+        "value": "FROM"
+      },
+      {
+        "type": "table",
+        "value": "Employees;"
+      }
+    ]
+  },
+  {
+    "drillNumber": 1264,
+    "subcluster": "13.7 NTILE(4) Quartile Bucketing",
+    "level": "Level 2 (Quartiles)",
+    "title": "Syntax #1264: Segment grocery products into 4 pricing brackets",
+    "table": "GroceryItems",
+    "scenario": "Segment grocery products into 4 pricing brackets.",
+    "businessObjective": "Segment grocery products into 4 pricing brackets.",
+    "schemaSnippet": "GroceryItems analytical schema",
+    "targetQuery": "SELECT item_name, unit_price,\n  NTILE(4) OVER (ORDER BY unit_price DESC) AS price_bracket\nFROM GroceryItems;",
+    "syntaxBlueprint": "SELECT col1, metric,\n  NTILE(4) OVER (ORDER BY metric DESC) AS quartile\nFROM table_name;",
+    "syntaxRule": "NTILE(n) divides ordered rows into 'n' roughly equal buckets, assigning bucket integers from 1 to n (e.g. 1 = Top 25%).",
+    "syntaxTrap": "If the row count is not evenly divisible by n, NTILE places the extra rows in the earliest buckets.",
+    "eli5Story": "Analytical Window Functions on GroceryItems: Segment grocery products into 4 pricing brackets.",
+    "commonMistakes": "Omitting ORDER BY inside OVER() for running totals, confusing PARTITION BY with GROUP BY, or attempting to filter window functions in WHERE without a CTE wrapper.",
+    "learningOutcomes": "Mastered 13.7 NTILE(4) Quartile Bucketing on GroceryItems.",
+    "challengeSlots": [
+      {
+        "type": "keyword",
+        "value": "SELECT"
+      },
+      {
+        "type": "column",
+        "value": "item_name,"
+      },
+      {
+        "type": "column",
+        "value": "unit_price,"
+      },
+      {
+        "type": "column",
+        "value": "NTILE(4)"
+      },
+      {
+        "type": "keyword",
+        "value": "OVER"
+      },
+      {
+        "type": "keyword",
+        "value": "(ORDER"
+      },
+      {
+        "type": "keyword",
+        "value": "BY"
+      },
+      {
+        "type": "column",
+        "value": "unit_price"
+      },
+      {
+        "type": "keyword",
+        "value": "DESC)"
+      },
+      {
+        "type": "keyword",
+        "value": "AS"
+      },
+      {
+        "type": "column",
+        "value": "price_bracket"
+      },
+      {
+        "type": "keyword",
+        "value": "FROM"
+      },
+      {
+        "type": "table",
+        "value": "GroceryItems;"
+      }
+    ]
+  },
+  {
+    "drillNumber": 1265,
+    "subcluster": "13.7 NTILE(4) Quartile Bucketing",
+    "level": "Level 2 (Quartiles)",
+    "title": "Syntax #1265: Divide customer orders into 4 transaction value quartiles",
+    "table": "Orders",
+    "scenario": "Divide customer orders into 4 transaction value quartiles.",
+    "businessObjective": "Divide customer orders into 4 transaction value quartiles.",
+    "schemaSnippet": "Orders analytical schema",
+    "targetQuery": "SELECT order_id, total_amount,\n  NTILE(4) OVER (ORDER BY total_amount DESC) AS order_quartile\nFROM Orders;",
+    "syntaxBlueprint": "SELECT col1, metric,\n  NTILE(4) OVER (ORDER BY metric DESC) AS quartile\nFROM table_name;",
+    "syntaxRule": "NTILE(n) divides ordered rows into 'n' roughly equal buckets, assigning bucket integers from 1 to n (e.g. 1 = Top 25%).",
+    "syntaxTrap": "If the row count is not evenly divisible by n, NTILE places the extra rows in the earliest buckets.",
+    "eli5Story": "Analytical Window Functions on Orders: Divide customer orders into 4 transaction value quartiles.",
+    "commonMistakes": "Omitting ORDER BY inside OVER() for running totals, confusing PARTITION BY with GROUP BY, or attempting to filter window functions in WHERE without a CTE wrapper.",
+    "learningOutcomes": "Mastered 13.7 NTILE(4) Quartile Bucketing on Orders.",
+    "challengeSlots": [
+      {
+        "type": "keyword",
+        "value": "SELECT"
+      },
+      {
+        "type": "column",
+        "value": "order_id,"
+      },
+      {
+        "type": "column",
+        "value": "total_amount,"
+      },
+      {
+        "type": "column",
+        "value": "NTILE(4)"
+      },
+      {
+        "type": "keyword",
+        "value": "OVER"
+      },
+      {
+        "type": "keyword",
+        "value": "(ORDER"
+      },
+      {
+        "type": "keyword",
+        "value": "BY"
+      },
+      {
+        "type": "column",
+        "value": "total_amount"
+      },
+      {
+        "type": "keyword",
+        "value": "DESC)"
+      },
+      {
+        "type": "keyword",
+        "value": "AS"
+      },
+      {
+        "type": "column",
+        "value": "order_quartile"
+      },
+      {
+        "type": "keyword",
+        "value": "FROM"
+      },
+      {
+        "type": "table",
+        "value": "Orders;"
+      }
+    ]
+  },
+  {
+    "drillNumber": 1266,
+    "subcluster": "13.7 NTILE(4) Quartile Bucketing",
+    "level": "Level 2 (Quartiles)",
+    "title": "Syntax #1266: Segment music tracks into 4 runtime duration quartiles",
+    "table": "MusicTracks",
+    "scenario": "Segment music tracks into 4 runtime duration quartiles.",
+    "businessObjective": "Segment music tracks into 4 runtime duration quartiles.",
+    "schemaSnippet": "MusicTracks analytical schema",
+    "targetQuery": "SELECT track_title, duration_seconds,\n  NTILE(4) OVER (ORDER BY duration_seconds DESC) AS length_quartile\nFROM MusicTracks;",
+    "syntaxBlueprint": "SELECT col1, metric,\n  NTILE(4) OVER (ORDER BY metric DESC) AS quartile\nFROM table_name;",
+    "syntaxRule": "NTILE(n) divides ordered rows into 'n' roughly equal buckets, assigning bucket integers from 1 to n (e.g. 1 = Top 25%).",
+    "syntaxTrap": "If the row count is not evenly divisible by n, NTILE places the extra rows in the earliest buckets.",
+    "eli5Story": "Analytical Window Functions on MusicTracks: Segment music tracks into 4 runtime duration quartiles.",
+    "commonMistakes": "Omitting ORDER BY inside OVER() for running totals, confusing PARTITION BY with GROUP BY, or attempting to filter window functions in WHERE without a CTE wrapper.",
+    "learningOutcomes": "Mastered 13.7 NTILE(4) Quartile Bucketing on MusicTracks.",
+    "challengeSlots": [
+      {
+        "type": "keyword",
+        "value": "SELECT"
+      },
+      {
+        "type": "column",
+        "value": "track_title,"
+      },
+      {
+        "type": "column",
+        "value": "duration_seconds,"
+      },
+      {
+        "type": "column",
+        "value": "NTILE(4)"
+      },
+      {
+        "type": "keyword",
+        "value": "OVER"
+      },
+      {
+        "type": "keyword",
+        "value": "(ORDER"
+      },
+      {
+        "type": "keyword",
+        "value": "BY"
+      },
+      {
+        "type": "column",
+        "value": "duration_seconds"
+      },
+      {
+        "type": "keyword",
+        "value": "DESC)"
+      },
+      {
+        "type": "keyword",
+        "value": "AS"
+      },
+      {
+        "type": "column",
+        "value": "length_quartile"
+      },
+      {
+        "type": "keyword",
+        "value": "FROM"
+      },
+      {
+        "type": "table",
+        "value": "MusicTracks;"
+      }
+    ]
+  },
+  {
+    "drillNumber": 1267,
+    "subcluster": "13.7 NTILE(4) Quartile Bucketing",
+    "level": "Level 2 (Quartiles)",
+    "title": "Syntax #1267: Segment gym members into 4 workout activity quartiles",
+    "table": "GymMembers",
+    "scenario": "Segment gym members into 4 workout activity quartiles.",
+    "businessObjective": "Segment gym members into 4 workout activity quartiles.",
+    "schemaSnippet": "GymMembers analytical schema",
+    "targetQuery": "SELECT member_name, attendance_days,\n  NTILE(4) OVER (ORDER BY attendance_days DESC) AS activity_quartile\nFROM GymMembers;",
+    "syntaxBlueprint": "SELECT col1, metric,\n  NTILE(4) OVER (ORDER BY metric DESC) AS quartile\nFROM table_name;",
+    "syntaxRule": "NTILE(n) divides ordered rows into 'n' roughly equal buckets, assigning bucket integers from 1 to n (e.g. 1 = Top 25%).",
+    "syntaxTrap": "If the row count is not evenly divisible by n, NTILE places the extra rows in the earliest buckets.",
+    "eli5Story": "Analytical Window Functions on GymMembers: Segment gym members into 4 workout activity quartiles.",
+    "commonMistakes": "Omitting ORDER BY inside OVER() for running totals, confusing PARTITION BY with GROUP BY, or attempting to filter window functions in WHERE without a CTE wrapper.",
+    "learningOutcomes": "Mastered 13.7 NTILE(4) Quartile Bucketing on GymMembers.",
+    "challengeSlots": [
+      {
+        "type": "keyword",
+        "value": "SELECT"
+      },
+      {
+        "type": "column",
+        "value": "member_name,"
+      },
+      {
+        "type": "column",
+        "value": "attendance_days,"
+      },
+      {
+        "type": "column",
+        "value": "NTILE(4)"
+      },
+      {
+        "type": "keyword",
+        "value": "OVER"
+      },
+      {
+        "type": "keyword",
+        "value": "(ORDER"
+      },
+      {
+        "type": "keyword",
+        "value": "BY"
+      },
+      {
+        "type": "column",
+        "value": "attendance_days"
+      },
+      {
+        "type": "keyword",
+        "value": "DESC)"
+      },
+      {
+        "type": "keyword",
+        "value": "AS"
+      },
+      {
+        "type": "column",
+        "value": "activity_quartile"
+      },
+      {
+        "type": "keyword",
+        "value": "FROM"
+      },
+      {
+        "type": "table",
+        "value": "GymMembers;"
+      }
+    ]
+  },
+  {
+    "drillNumber": 1268,
+    "subcluster": "13.7 NTILE(4) Quartile Bucketing",
+    "level": "Level 2 (Quartiles)",
+    "title": "Syntax #1268: Bucket movie reviews into 4 rating tiers via NTILE(4)",
+    "table": "MovieReviews",
+    "scenario": "Bucket movie reviews into 4 rating tiers via NTILE(4).",
+    "businessObjective": "Bucket movie reviews into 4 rating tiers via NTILE(4).",
+    "schemaSnippet": "MovieReviews analytical schema",
+    "targetQuery": "SELECT movie_title, star_rating,\n  NTILE(4) OVER (ORDER BY star_rating DESC) AS rating_quartile\nFROM MovieReviews;",
+    "syntaxBlueprint": "SELECT col1, metric,\n  NTILE(4) OVER (ORDER BY metric DESC) AS quartile\nFROM table_name;",
+    "syntaxRule": "NTILE(n) divides ordered rows into 'n' roughly equal buckets, assigning bucket integers from 1 to n (e.g. 1 = Top 25%).",
+    "syntaxTrap": "If the row count is not evenly divisible by n, NTILE places the extra rows in the earliest buckets.",
+    "eli5Story": "Analytical Window Functions on MovieReviews: Bucket movie reviews into 4 rating tiers via NTILE(4).",
+    "commonMistakes": "Omitting ORDER BY inside OVER() for running totals, confusing PARTITION BY with GROUP BY, or attempting to filter window functions in WHERE without a CTE wrapper.",
+    "learningOutcomes": "Mastered 13.7 NTILE(4) Quartile Bucketing on MovieReviews.",
+    "challengeSlots": [
+      {
+        "type": "keyword",
+        "value": "SELECT"
+      },
+      {
+        "type": "column",
+        "value": "movie_title,"
+      },
+      {
+        "type": "column",
+        "value": "star_rating,"
+      },
+      {
+        "type": "column",
+        "value": "NTILE(4)"
+      },
+      {
+        "type": "keyword",
+        "value": "OVER"
+      },
+      {
+        "type": "keyword",
+        "value": "(ORDER"
+      },
+      {
+        "type": "keyword",
+        "value": "BY"
+      },
+      {
+        "type": "column",
+        "value": "star_rating"
+      },
+      {
+        "type": "keyword",
+        "value": "DESC)"
+      },
+      {
+        "type": "keyword",
+        "value": "AS"
+      },
+      {
+        "type": "column",
+        "value": "rating_quartile"
+      },
+      {
+        "type": "keyword",
+        "value": "FROM"
+      },
+      {
+        "type": "table",
+        "value": "MovieReviews;"
+      }
+    ]
+  },
+  {
+    "drillNumber": 1269,
+    "subcluster": "13.7 NTILE(4) Quartile Bucketing",
+    "level": "Level 2 (Quartiles)",
+    "title": "Syntax #1269: Segment flight distances into 4 flight length tiers",
+    "table": "FlightSchedule",
+    "scenario": "Segment flight distances into 4 flight length tiers.",
+    "businessObjective": "Segment flight distances into 4 flight length tiers.",
+    "schemaSnippet": "FlightSchedule analytical schema",
+    "targetQuery": "SELECT flight_id, distance_miles,\n  NTILE(4) OVER (ORDER BY distance_miles DESC) AS distance_tier\nFROM FlightSchedule;",
+    "syntaxBlueprint": "SELECT col1, metric,\n  NTILE(4) OVER (ORDER BY metric DESC) AS quartile\nFROM table_name;",
+    "syntaxRule": "NTILE(n) divides ordered rows into 'n' roughly equal buckets, assigning bucket integers from 1 to n (e.g. 1 = Top 25%).",
+    "syntaxTrap": "If the row count is not evenly divisible by n, NTILE places the extra rows in the earliest buckets.",
+    "eli5Story": "Analytical Window Functions on FlightSchedule: Segment flight distances into 4 flight length tiers.",
+    "commonMistakes": "Omitting ORDER BY inside OVER() for running totals, confusing PARTITION BY with GROUP BY, or attempting to filter window functions in WHERE without a CTE wrapper.",
+    "learningOutcomes": "Mastered 13.7 NTILE(4) Quartile Bucketing on FlightSchedule.",
+    "challengeSlots": [
+      {
+        "type": "keyword",
+        "value": "SELECT"
+      },
+      {
+        "type": "column",
+        "value": "flight_id,"
+      },
+      {
+        "type": "column",
+        "value": "distance_miles,"
+      },
+      {
+        "type": "column",
+        "value": "NTILE(4)"
+      },
+      {
+        "type": "keyword",
+        "value": "OVER"
+      },
+      {
+        "type": "keyword",
+        "value": "(ORDER"
+      },
+      {
+        "type": "keyword",
+        "value": "BY"
+      },
+      {
+        "type": "column",
+        "value": "distance_miles"
+      },
+      {
+        "type": "keyword",
+        "value": "DESC)"
+      },
+      {
+        "type": "keyword",
+        "value": "AS"
+      },
+      {
+        "type": "column",
+        "value": "distance_tier"
+      },
+      {
+        "type": "keyword",
+        "value": "FROM"
+      },
+      {
+        "type": "table",
+        "value": "FlightSchedule;"
+      }
+    ]
+  },
+  {
+    "drillNumber": 1270,
+    "subcluster": "13.7 NTILE(4) Quartile Bucketing",
+    "level": "Level 2 (Quartiles)",
+    "title": "Syntax #1270: Divide veterinary patients into 4 weight quartiles",
+    "table": "PetClinic",
+    "scenario": "Divide veterinary patients into 4 weight quartiles.",
+    "businessObjective": "Divide veterinary patients into 4 weight quartiles.",
+    "schemaSnippet": "PetClinic analytical schema",
+    "targetQuery": "SELECT pet_name, weight_kg,\n  NTILE(4) OVER (ORDER BY weight_kg DESC) AS weight_quartile\nFROM PetClinic;",
+    "syntaxBlueprint": "SELECT col1, metric,\n  NTILE(4) OVER (ORDER BY metric DESC) AS quartile\nFROM table_name;",
+    "syntaxRule": "NTILE(n) divides ordered rows into 'n' roughly equal buckets, assigning bucket integers from 1 to n (e.g. 1 = Top 25%).",
+    "syntaxTrap": "If the row count is not evenly divisible by n, NTILE places the extra rows in the earliest buckets.",
+    "eli5Story": "Analytical Window Functions on PetClinic: Divide veterinary patients into 4 weight quartiles.",
+    "commonMistakes": "Omitting ORDER BY inside OVER() for running totals, confusing PARTITION BY with GROUP BY, or attempting to filter window functions in WHERE without a CTE wrapper.",
+    "learningOutcomes": "Mastered 13.7 NTILE(4) Quartile Bucketing on PetClinic.",
+    "challengeSlots": [
+      {
+        "type": "keyword",
+        "value": "SELECT"
+      },
+      {
+        "type": "column",
+        "value": "pet_name,"
+      },
+      {
+        "type": "column",
+        "value": "weight_kg,"
+      },
+      {
+        "type": "column",
+        "value": "NTILE(4)"
+      },
+      {
+        "type": "keyword",
+        "value": "OVER"
+      },
+      {
+        "type": "keyword",
+        "value": "(ORDER"
+      },
+      {
+        "type": "keyword",
+        "value": "BY"
+      },
+      {
+        "type": "column",
+        "value": "weight_kg"
+      },
+      {
+        "type": "keyword",
+        "value": "DESC)"
+      },
+      {
+        "type": "keyword",
+        "value": "AS"
+      },
+      {
+        "type": "column",
+        "value": "weight_quartile"
+      },
+      {
+        "type": "keyword",
+        "value": "FROM"
+      },
+      {
+        "type": "table",
+        "value": "PetClinic;"
+      }
+    ]
+  },
+  {
+    "drillNumber": 1271,
+    "subcluster": "13.8 NTILE(10) Decile Segmentation (Top 10%)",
+    "level": "Level 2 (Deciles)",
+    "title": "Syntax #1271: Identify top 10% academic scholars using NTILE(10)",
+    "table": "Students",
+    "scenario": "Identify top 10% academic scholars using NTILE(10).",
+    "businessObjective": "Identify top 10% academic scholars using NTILE(10).",
+    "schemaSnippet": "Students analytical schema",
+    "targetQuery": "SELECT full_name, gpa,\n  NTILE(10) OVER (ORDER BY gpa DESC) AS academic_decile\nFROM Students;",
+    "syntaxBlueprint": "SELECT col1, metric,\n  NTILE(10) OVER (ORDER BY metric DESC) AS decile\nFROM table_name;",
+    "syntaxRule": "NTILE(10) divides a population into 10 deciles (1 = Top 10%, 10 = Bottom 10%), commonly used in marketing and credit risk scoring.",
+    "syntaxTrap": "Using NTILE on tables with very few rows (e.g. 5 rows with NTILE(10) will only populate buckets 1 to 5).",
+    "eli5Story": "Analytical Window Functions on Students: Identify top 10% academic scholars using NTILE(10).",
+    "commonMistakes": "Omitting ORDER BY inside OVER() for running totals, confusing PARTITION BY with GROUP BY, or attempting to filter window functions in WHERE without a CTE wrapper.",
+    "learningOutcomes": "Mastered 13.8 NTILE(10) Decile Segmentation (Top 10%) on Students.",
+    "challengeSlots": [
+      {
+        "type": "keyword",
+        "value": "SELECT"
+      },
+      {
+        "type": "column",
+        "value": "full_name,"
+      },
+      {
+        "type": "column",
+        "value": "gpa,"
+      },
+      {
+        "type": "column",
+        "value": "NTILE(10)"
+      },
+      {
+        "type": "keyword",
+        "value": "OVER"
+      },
+      {
+        "type": "keyword",
+        "value": "(ORDER"
+      },
+      {
+        "type": "keyword",
+        "value": "BY"
+      },
+      {
+        "type": "column",
+        "value": "gpa"
+      },
+      {
+        "type": "keyword",
+        "value": "DESC)"
+      },
+      {
+        "type": "keyword",
+        "value": "AS"
+      },
+      {
+        "type": "column",
+        "value": "academic_decile"
+      },
+      {
+        "type": "keyword",
+        "value": "FROM"
+      },
+      {
+        "type": "table",
+        "value": "Students;"
+      }
+    ]
+  },
+  {
+    "drillNumber": 1272,
+    "subcluster": "13.8 NTILE(10) Decile Segmentation (Top 10%)",
+    "level": "Level 2 (Deciles)",
+    "title": "Syntax #1272: Divide bookstore catalog into 10 pricing deciles",
+    "table": "Books",
+    "scenario": "Divide bookstore catalog into 10 pricing deciles.",
+    "businessObjective": "Divide bookstore catalog into 10 pricing deciles.",
+    "schemaSnippet": "Books analytical schema",
+    "targetQuery": "SELECT title, price,\n  NTILE(10) OVER (ORDER BY price DESC) AS pricing_decile\nFROM Books;",
+    "syntaxBlueprint": "SELECT col1, metric,\n  NTILE(10) OVER (ORDER BY metric DESC) AS decile\nFROM table_name;",
+    "syntaxRule": "NTILE(10) divides a population into 10 deciles (1 = Top 10%, 10 = Bottom 10%), commonly used in marketing and credit risk scoring.",
+    "syntaxTrap": "Using NTILE on tables with very few rows (e.g. 5 rows with NTILE(10) will only populate buckets 1 to 5).",
+    "eli5Story": "Analytical Window Functions on Books: Divide bookstore catalog into 10 pricing deciles.",
+    "commonMistakes": "Omitting ORDER BY inside OVER() for running totals, confusing PARTITION BY with GROUP BY, or attempting to filter window functions in WHERE without a CTE wrapper.",
+    "learningOutcomes": "Mastered 13.8 NTILE(10) Decile Segmentation (Top 10%) on Books.",
+    "challengeSlots": [
+      {
+        "type": "keyword",
+        "value": "SELECT"
+      },
+      {
+        "type": "column",
+        "value": "title,"
+      },
+      {
+        "type": "column",
+        "value": "price,"
+      },
+      {
+        "type": "column",
+        "value": "NTILE(10)"
+      },
+      {
+        "type": "keyword",
+        "value": "OVER"
+      },
+      {
+        "type": "keyword",
+        "value": "(ORDER"
+      },
+      {
+        "type": "keyword",
+        "value": "BY"
+      },
+      {
+        "type": "column",
+        "value": "price"
+      },
+      {
+        "type": "keyword",
+        "value": "DESC)"
+      },
+      {
+        "type": "keyword",
+        "value": "AS"
+      },
+      {
+        "type": "column",
+        "value": "pricing_decile"
+      },
+      {
+        "type": "keyword",
+        "value": "FROM"
+      },
+      {
+        "type": "table",
+        "value": "Books;"
+      }
+    ]
+  },
+  {
+    "drillNumber": 1273,
+    "subcluster": "13.8 NTILE(10) Decile Segmentation (Top 10%)",
+    "level": "Level 2 (Deciles)",
+    "title": "Syntax #1273: Segment employee salaries into 10 compensation deciles",
+    "table": "Employees",
+    "scenario": "Segment employee salaries into 10 compensation deciles.",
+    "businessObjective": "Segment employee salaries into 10 compensation deciles.",
+    "schemaSnippet": "Employees analytical schema",
+    "targetQuery": "SELECT first_name, salary,\n  NTILE(10) OVER (ORDER BY salary DESC) AS compensation_decile\nFROM Employees;",
+    "syntaxBlueprint": "SELECT col1, metric,\n  NTILE(10) OVER (ORDER BY metric DESC) AS decile\nFROM table_name;",
+    "syntaxRule": "NTILE(10) divides a population into 10 deciles (1 = Top 10%, 10 = Bottom 10%), commonly used in marketing and credit risk scoring.",
+    "syntaxTrap": "Using NTILE on tables with very few rows (e.g. 5 rows with NTILE(10) will only populate buckets 1 to 5).",
+    "eli5Story": "Analytical Window Functions on Employees: Segment employee salaries into 10 compensation deciles.",
+    "commonMistakes": "Omitting ORDER BY inside OVER() for running totals, confusing PARTITION BY with GROUP BY, or attempting to filter window functions in WHERE without a CTE wrapper.",
+    "learningOutcomes": "Mastered 13.8 NTILE(10) Decile Segmentation (Top 10%) on Employees.",
+    "challengeSlots": [
+      {
+        "type": "keyword",
+        "value": "SELECT"
+      },
+      {
+        "type": "column",
+        "value": "first_name,"
+      },
+      {
+        "type": "column",
+        "value": "salary,"
+      },
+      {
+        "type": "column",
+        "value": "NTILE(10)"
+      },
+      {
+        "type": "keyword",
+        "value": "OVER"
+      },
+      {
+        "type": "keyword",
+        "value": "(ORDER"
+      },
+      {
+        "type": "keyword",
+        "value": "BY"
+      },
+      {
+        "type": "column",
+        "value": "salary"
+      },
+      {
+        "type": "keyword",
+        "value": "DESC)"
+      },
+      {
+        "type": "keyword",
+        "value": "AS"
+      },
+      {
+        "type": "column",
+        "value": "compensation_decile"
+      },
+      {
+        "type": "keyword",
+        "value": "FROM"
+      },
+      {
+        "type": "table",
+        "value": "Employees;"
+      }
+    ]
+  },
+  {
+    "drillNumber": 1274,
+    "subcluster": "13.8 NTILE(10) Decile Segmentation (Top 10%)",
+    "level": "Level 2 (Deciles)",
+    "title": "Syntax #1274: Segment inventory stock levels into 10 deciles",
+    "table": "GroceryItems",
+    "scenario": "Segment inventory stock levels into 10 deciles.",
+    "businessObjective": "Segment inventory stock levels into 10 deciles.",
+    "schemaSnippet": "GroceryItems analytical schema",
+    "targetQuery": "SELECT item_name, stock_qty,\n  NTILE(10) OVER (ORDER BY stock_qty DESC) AS inventory_decile\nFROM GroceryItems;",
+    "syntaxBlueprint": "SELECT col1, metric,\n  NTILE(10) OVER (ORDER BY metric DESC) AS decile\nFROM table_name;",
+    "syntaxRule": "NTILE(10) divides a population into 10 deciles (1 = Top 10%, 10 = Bottom 10%), commonly used in marketing and credit risk scoring.",
+    "syntaxTrap": "Using NTILE on tables with very few rows (e.g. 5 rows with NTILE(10) will only populate buckets 1 to 5).",
+    "eli5Story": "Analytical Window Functions on GroceryItems: Segment inventory stock levels into 10 deciles.",
+    "commonMistakes": "Omitting ORDER BY inside OVER() for running totals, confusing PARTITION BY with GROUP BY, or attempting to filter window functions in WHERE without a CTE wrapper.",
+    "learningOutcomes": "Mastered 13.8 NTILE(10) Decile Segmentation (Top 10%) on GroceryItems.",
+    "challengeSlots": [
+      {
+        "type": "keyword",
+        "value": "SELECT"
+      },
+      {
+        "type": "column",
+        "value": "item_name,"
+      },
+      {
+        "type": "column",
+        "value": "stock_qty,"
+      },
+      {
+        "type": "column",
+        "value": "NTILE(10)"
+      },
+      {
+        "type": "keyword",
+        "value": "OVER"
+      },
+      {
+        "type": "keyword",
+        "value": "(ORDER"
+      },
+      {
+        "type": "keyword",
+        "value": "BY"
+      },
+      {
+        "type": "column",
+        "value": "stock_qty"
+      },
+      {
+        "type": "keyword",
+        "value": "DESC)"
+      },
+      {
+        "type": "keyword",
+        "value": "AS"
+      },
+      {
+        "type": "column",
+        "value": "inventory_decile"
+      },
+      {
+        "type": "keyword",
+        "value": "FROM"
+      },
+      {
+        "type": "table",
+        "value": "GroceryItems;"
+      }
+    ]
+  },
+  {
+    "drillNumber": 1275,
+    "subcluster": "13.8 NTILE(10) Decile Segmentation (Top 10%)",
+    "level": "Level 2 (Deciles)",
+    "title": "Syntax #1275: Segment orders into 10 revenue deciles to identify top 10% VIP transactions",
+    "table": "Orders",
+    "scenario": "Segment orders into 10 revenue deciles to identify top 10% VIP transactions.",
+    "businessObjective": "Segment orders into 10 revenue deciles to identify top 10% VIP transactions.",
+    "schemaSnippet": "Orders analytical schema",
+    "targetQuery": "SELECT order_id, total_amount,\n  NTILE(10) OVER (ORDER BY total_amount DESC) AS revenue_decile\nFROM Orders;",
+    "syntaxBlueprint": "SELECT col1, metric,\n  NTILE(10) OVER (ORDER BY metric DESC) AS decile\nFROM table_name;",
+    "syntaxRule": "NTILE(10) divides a population into 10 deciles (1 = Top 10%, 10 = Bottom 10%), commonly used in marketing and credit risk scoring.",
+    "syntaxTrap": "Using NTILE on tables with very few rows (e.g. 5 rows with NTILE(10) will only populate buckets 1 to 5).",
+    "eli5Story": "Analytical Window Functions on Orders: Segment orders into 10 revenue deciles to identify top 10% VIP transactions.",
+    "commonMistakes": "Omitting ORDER BY inside OVER() for running totals, confusing PARTITION BY with GROUP BY, or attempting to filter window functions in WHERE without a CTE wrapper.",
+    "learningOutcomes": "Mastered 13.8 NTILE(10) Decile Segmentation (Top 10%) on Orders.",
+    "challengeSlots": [
+      {
+        "type": "keyword",
+        "value": "SELECT"
+      },
+      {
+        "type": "column",
+        "value": "order_id,"
+      },
+      {
+        "type": "column",
+        "value": "total_amount,"
+      },
+      {
+        "type": "column",
+        "value": "NTILE(10)"
+      },
+      {
+        "type": "keyword",
+        "value": "OVER"
+      },
+      {
+        "type": "keyword",
+        "value": "(ORDER"
+      },
+      {
+        "type": "keyword",
+        "value": "BY"
+      },
+      {
+        "type": "column",
+        "value": "total_amount"
+      },
+      {
+        "type": "keyword",
+        "value": "DESC)"
+      },
+      {
+        "type": "keyword",
+        "value": "AS"
+      },
+      {
+        "type": "column",
+        "value": "revenue_decile"
+      },
+      {
+        "type": "keyword",
+        "value": "FROM"
+      },
+      {
+        "type": "table",
+        "value": "Orders;"
+      }
+    ]
+  },
+  {
+    "drillNumber": 1276,
+    "subcluster": "13.8 NTILE(10) Decile Segmentation (Top 10%)",
+    "level": "Level 2 (Deciles)",
+    "title": "Syntax #1276: Divide track lengths into 10 duration deciles",
+    "table": "MusicTracks",
+    "scenario": "Divide track lengths into 10 duration deciles.",
+    "businessObjective": "Divide track lengths into 10 duration deciles.",
+    "schemaSnippet": "MusicTracks analytical schema",
+    "targetQuery": "SELECT track_title, duration_seconds,\n  NTILE(10) OVER (ORDER BY duration_seconds DESC) AS duration_decile\nFROM MusicTracks;",
+    "syntaxBlueprint": "SELECT col1, metric,\n  NTILE(10) OVER (ORDER BY metric DESC) AS decile\nFROM table_name;",
+    "syntaxRule": "NTILE(10) divides a population into 10 deciles (1 = Top 10%, 10 = Bottom 10%), commonly used in marketing and credit risk scoring.",
+    "syntaxTrap": "Using NTILE on tables with very few rows (e.g. 5 rows with NTILE(10) will only populate buckets 1 to 5).",
+    "eli5Story": "Analytical Window Functions on MusicTracks: Divide track lengths into 10 duration deciles.",
+    "commonMistakes": "Omitting ORDER BY inside OVER() for running totals, confusing PARTITION BY with GROUP BY, or attempting to filter window functions in WHERE without a CTE wrapper.",
+    "learningOutcomes": "Mastered 13.8 NTILE(10) Decile Segmentation (Top 10%) on MusicTracks.",
+    "challengeSlots": [
+      {
+        "type": "keyword",
+        "value": "SELECT"
+      },
+      {
+        "type": "column",
+        "value": "track_title,"
+      },
+      {
+        "type": "column",
+        "value": "duration_seconds,"
+      },
+      {
+        "type": "column",
+        "value": "NTILE(10)"
+      },
+      {
+        "type": "keyword",
+        "value": "OVER"
+      },
+      {
+        "type": "keyword",
+        "value": "(ORDER"
+      },
+      {
+        "type": "keyword",
+        "value": "BY"
+      },
+      {
+        "type": "column",
+        "value": "duration_seconds"
+      },
+      {
+        "type": "keyword",
+        "value": "DESC)"
+      },
+      {
+        "type": "keyword",
+        "value": "AS"
+      },
+      {
+        "type": "column",
+        "value": "duration_decile"
+      },
+      {
+        "type": "keyword",
+        "value": "FROM"
+      },
+      {
+        "type": "table",
+        "value": "MusicTracks;"
+      }
+    ]
+  },
+  {
+    "drillNumber": 1277,
+    "subcluster": "13.8 NTILE(10) Decile Segmentation (Top 10%)",
+    "level": "Level 2 (Deciles)",
+    "title": "Syntax #1277: Segment gym members into 10 dedication deciles",
+    "table": "GymMembers",
+    "scenario": "Segment gym members into 10 dedication deciles.",
+    "businessObjective": "Segment gym members into 10 dedication deciles.",
+    "schemaSnippet": "GymMembers analytical schema",
+    "targetQuery": "SELECT member_name, attendance_days,\n  NTILE(10) OVER (ORDER BY attendance_days DESC) AS loyalty_decile\nFROM GymMembers;",
+    "syntaxBlueprint": "SELECT col1, metric,\n  NTILE(10) OVER (ORDER BY metric DESC) AS decile\nFROM table_name;",
+    "syntaxRule": "NTILE(10) divides a population into 10 deciles (1 = Top 10%, 10 = Bottom 10%), commonly used in marketing and credit risk scoring.",
+    "syntaxTrap": "Using NTILE on tables with very few rows (e.g. 5 rows with NTILE(10) will only populate buckets 1 to 5).",
+    "eli5Story": "Analytical Window Functions on GymMembers: Segment gym members into 10 dedication deciles.",
+    "commonMistakes": "Omitting ORDER BY inside OVER() for running totals, confusing PARTITION BY with GROUP BY, or attempting to filter window functions in WHERE without a CTE wrapper.",
+    "learningOutcomes": "Mastered 13.8 NTILE(10) Decile Segmentation (Top 10%) on GymMembers.",
+    "challengeSlots": [
+      {
+        "type": "keyword",
+        "value": "SELECT"
+      },
+      {
+        "type": "column",
+        "value": "member_name,"
+      },
+      {
+        "type": "column",
+        "value": "attendance_days,"
+      },
+      {
+        "type": "column",
+        "value": "NTILE(10)"
+      },
+      {
+        "type": "keyword",
+        "value": "OVER"
+      },
+      {
+        "type": "keyword",
+        "value": "(ORDER"
+      },
+      {
+        "type": "keyword",
+        "value": "BY"
+      },
+      {
+        "type": "column",
+        "value": "attendance_days"
+      },
+      {
+        "type": "keyword",
+        "value": "DESC)"
+      },
+      {
+        "type": "keyword",
+        "value": "AS"
+      },
+      {
+        "type": "column",
+        "value": "loyalty_decile"
+      },
+      {
+        "type": "keyword",
+        "value": "FROM"
+      },
+      {
+        "type": "table",
+        "value": "GymMembers;"
+      }
+    ]
+  },
+  {
+    "drillNumber": 1278,
+    "subcluster": "13.8 NTILE(10) Decile Segmentation (Top 10%)",
+    "level": "Level 2 (Deciles)",
+    "title": "Syntax #1278: Bucket film ratings into 10 deciles via NTILE(10)",
+    "table": "MovieReviews",
+    "scenario": "Bucket film ratings into 10 deciles via NTILE(10).",
+    "businessObjective": "Bucket film ratings into 10 deciles via NTILE(10).",
+    "schemaSnippet": "MovieReviews analytical schema",
+    "targetQuery": "SELECT movie_title, star_rating,\n  NTILE(10) OVER (ORDER BY star_rating DESC) AS quality_decile\nFROM MovieReviews;",
+    "syntaxBlueprint": "SELECT col1, metric,\n  NTILE(10) OVER (ORDER BY metric DESC) AS decile\nFROM table_name;",
+    "syntaxRule": "NTILE(10) divides a population into 10 deciles (1 = Top 10%, 10 = Bottom 10%), commonly used in marketing and credit risk scoring.",
+    "syntaxTrap": "Using NTILE on tables with very few rows (e.g. 5 rows with NTILE(10) will only populate buckets 1 to 5).",
+    "eli5Story": "Analytical Window Functions on MovieReviews: Bucket film ratings into 10 deciles via NTILE(10).",
+    "commonMistakes": "Omitting ORDER BY inside OVER() for running totals, confusing PARTITION BY with GROUP BY, or attempting to filter window functions in WHERE without a CTE wrapper.",
+    "learningOutcomes": "Mastered 13.8 NTILE(10) Decile Segmentation (Top 10%) on MovieReviews.",
+    "challengeSlots": [
+      {
+        "type": "keyword",
+        "value": "SELECT"
+      },
+      {
+        "type": "column",
+        "value": "movie_title,"
+      },
+      {
+        "type": "column",
+        "value": "star_rating,"
+      },
+      {
+        "type": "column",
+        "value": "NTILE(10)"
+      },
+      {
+        "type": "keyword",
+        "value": "OVER"
+      },
+      {
+        "type": "keyword",
+        "value": "(ORDER"
+      },
+      {
+        "type": "keyword",
+        "value": "BY"
+      },
+      {
+        "type": "column",
+        "value": "star_rating"
+      },
+      {
+        "type": "keyword",
+        "value": "DESC)"
+      },
+      {
+        "type": "keyword",
+        "value": "AS"
+      },
+      {
+        "type": "column",
+        "value": "quality_decile"
+      },
+      {
+        "type": "keyword",
+        "value": "FROM"
+      },
+      {
+        "type": "table",
+        "value": "MovieReviews;"
+      }
+    ]
+  },
+  {
+    "drillNumber": 1279,
+    "subcluster": "13.8 NTILE(10) Decile Segmentation (Top 10%)",
+    "level": "Level 2 (Deciles)",
+    "title": "Syntax #1279: Divide flight route distances into 10 decile bands",
+    "table": "FlightSchedule",
+    "scenario": "Divide flight route distances into 10 decile bands.",
+    "businessObjective": "Divide flight route distances into 10 decile bands.",
+    "schemaSnippet": "FlightSchedule analytical schema",
+    "targetQuery": "SELECT flight_id, distance_miles,\n  NTILE(10) OVER (ORDER BY distance_miles DESC) AS flight_decile\nFROM FlightSchedule;",
+    "syntaxBlueprint": "SELECT col1, metric,\n  NTILE(10) OVER (ORDER BY metric DESC) AS decile\nFROM table_name;",
+    "syntaxRule": "NTILE(10) divides a population into 10 deciles (1 = Top 10%, 10 = Bottom 10%), commonly used in marketing and credit risk scoring.",
+    "syntaxTrap": "Using NTILE on tables with very few rows (e.g. 5 rows with NTILE(10) will only populate buckets 1 to 5).",
+    "eli5Story": "Analytical Window Functions on FlightSchedule: Divide flight route distances into 10 decile bands.",
+    "commonMistakes": "Omitting ORDER BY inside OVER() for running totals, confusing PARTITION BY with GROUP BY, or attempting to filter window functions in WHERE without a CTE wrapper.",
+    "learningOutcomes": "Mastered 13.8 NTILE(10) Decile Segmentation (Top 10%) on FlightSchedule.",
+    "challengeSlots": [
+      {
+        "type": "keyword",
+        "value": "SELECT"
+      },
+      {
+        "type": "column",
+        "value": "flight_id,"
+      },
+      {
+        "type": "column",
+        "value": "distance_miles,"
+      },
+      {
+        "type": "column",
+        "value": "NTILE(10)"
+      },
+      {
+        "type": "keyword",
+        "value": "OVER"
+      },
+      {
+        "type": "keyword",
+        "value": "(ORDER"
+      },
+      {
+        "type": "keyword",
+        "value": "BY"
+      },
+      {
+        "type": "column",
+        "value": "distance_miles"
+      },
+      {
+        "type": "keyword",
+        "value": "DESC)"
+      },
+      {
+        "type": "keyword",
+        "value": "AS"
+      },
+      {
+        "type": "column",
+        "value": "flight_decile"
+      },
+      {
+        "type": "keyword",
+        "value": "FROM"
+      },
+      {
+        "type": "table",
+        "value": "FlightSchedule;"
+      }
+    ]
+  },
+  {
+    "drillNumber": 1280,
+    "subcluster": "13.8 NTILE(10) Decile Segmentation (Top 10%)",
+    "level": "Level 2 (Deciles)",
+    "title": "Syntax #1280: Segment clinic animal weights into 10 deciles",
+    "table": "PetClinic",
+    "scenario": "Segment clinic animal weights into 10 deciles.",
+    "businessObjective": "Segment clinic animal weights into 10 deciles.",
+    "schemaSnippet": "PetClinic analytical schema",
+    "targetQuery": "SELECT pet_name, weight_kg,\n  NTILE(10) OVER (ORDER BY weight_kg DESC) AS weight_decile\nFROM PetClinic;",
+    "syntaxBlueprint": "SELECT col1, metric,\n  NTILE(10) OVER (ORDER BY metric DESC) AS decile\nFROM table_name;",
+    "syntaxRule": "NTILE(10) divides a population into 10 deciles (1 = Top 10%, 10 = Bottom 10%), commonly used in marketing and credit risk scoring.",
+    "syntaxTrap": "Using NTILE on tables with very few rows (e.g. 5 rows with NTILE(10) will only populate buckets 1 to 5).",
+    "eli5Story": "Analytical Window Functions on PetClinic: Segment clinic animal weights into 10 deciles.",
+    "commonMistakes": "Omitting ORDER BY inside OVER() for running totals, confusing PARTITION BY with GROUP BY, or attempting to filter window functions in WHERE without a CTE wrapper.",
+    "learningOutcomes": "Mastered 13.8 NTILE(10) Decile Segmentation (Top 10%) on PetClinic.",
+    "challengeSlots": [
+      {
+        "type": "keyword",
+        "value": "SELECT"
+      },
+      {
+        "type": "column",
+        "value": "pet_name,"
+      },
+      {
+        "type": "column",
+        "value": "weight_kg,"
+      },
+      {
+        "type": "column",
+        "value": "NTILE(10)"
+      },
+      {
+        "type": "keyword",
+        "value": "OVER"
+      },
+      {
+        "type": "keyword",
+        "value": "(ORDER"
+      },
+      {
+        "type": "keyword",
+        "value": "BY"
+      },
+      {
+        "type": "column",
+        "value": "weight_kg"
+      },
+      {
+        "type": "keyword",
+        "value": "DESC)"
+      },
+      {
+        "type": "keyword",
+        "value": "AS"
+      },
+      {
+        "type": "column",
+        "value": "weight_decile"
+      },
+      {
+        "type": "keyword",
+        "value": "FROM"
+      },
+      {
+        "type": "table",
+        "value": "PetClinic;"
+      }
+    ]
+  },
+  {
+    "drillNumber": 1281,
+    "subcluster": "13.9 Cumulative Distribution (CUME_DIST)",
+    "level": "Level 3 (Cumulative Distribution)",
+    "title": "Syntax #1281: Compute the exact cumulative distribution percentile for student GPAs",
+    "table": "Students",
+    "scenario": "Compute the exact cumulative distribution percentile for student GPAs.",
+    "businessObjective": "Compute the exact cumulative distribution percentile for student GPAs.",
+    "schemaSnippet": "Students analytical schema",
+    "targetQuery": "SELECT full_name, gpa,\n  CUME_DIST() OVER (ORDER BY gpa ASC) AS gpa_percentile\nFROM Students;",
+    "syntaxBlueprint": "SELECT col1, metric,\n  CUME_DIST() OVER (ORDER BY metric ASC) AS cumulative_pct\nFROM table_name;",
+    "syntaxRule": "CUME_DIST() computes the relative position of a value: (number of rows with values <= current row) / (total rows). Returns a decimal between 0 and 1.0.",
+    "syntaxTrap": "Tied values receive the exact same cumulative distribution score (the highest value among the ties).",
+    "eli5Story": "Analytical Window Functions on Students: Compute the exact cumulative distribution percentile for student GPAs.",
+    "commonMistakes": "Omitting ORDER BY inside OVER() for running totals, confusing PARTITION BY with GROUP BY, or attempting to filter window functions in WHERE without a CTE wrapper.",
+    "learningOutcomes": "Mastered 13.9 Cumulative Distribution (CUME_DIST) on Students.",
+    "challengeSlots": [
+      {
+        "type": "keyword",
+        "value": "SELECT"
+      },
+      {
+        "type": "column",
+        "value": "full_name,"
+      },
+      {
+        "type": "column",
+        "value": "gpa,"
+      },
+      {
+        "type": "keyword",
+        "value": "CUME_DIST()"
+      },
+      {
+        "type": "keyword",
+        "value": "OVER"
+      },
+      {
+        "type": "keyword",
+        "value": "(ORDER"
+      },
+      {
+        "type": "keyword",
+        "value": "BY"
+      },
+      {
+        "type": "column",
+        "value": "gpa"
+      },
+      {
+        "type": "keyword",
+        "value": "ASC)"
+      },
+      {
+        "type": "keyword",
+        "value": "AS"
+      },
+      {
+        "type": "column",
+        "value": "gpa_percentile"
+      },
+      {
+        "type": "keyword",
+        "value": "FROM"
+      },
+      {
+        "type": "table",
+        "value": "Students;"
+      }
+    ]
+  },
+  {
+    "drillNumber": 1282,
+    "subcluster": "13.9 Cumulative Distribution (CUME_DIST)",
+    "level": "Level 3 (Cumulative Distribution)",
+    "title": "Syntax #1282: Compute the cumulative distribution of book prices",
+    "table": "Books",
+    "scenario": "Compute the cumulative distribution of book prices.",
+    "businessObjective": "Compute the cumulative distribution of book prices.",
+    "schemaSnippet": "Books analytical schema",
+    "targetQuery": "SELECT title, price,\n  CUME_DIST() OVER (ORDER BY price ASC) AS price_percentile\nFROM Books;",
+    "syntaxBlueprint": "SELECT col1, metric,\n  CUME_DIST() OVER (ORDER BY metric ASC) AS cumulative_pct\nFROM table_name;",
+    "syntaxRule": "CUME_DIST() computes the relative position of a value: (number of rows with values <= current row) / (total rows). Returns a decimal between 0 and 1.0.",
+    "syntaxTrap": "Tied values receive the exact same cumulative distribution score (the highest value among the ties).",
+    "eli5Story": "Analytical Window Functions on Books: Compute the cumulative distribution of book prices.",
+    "commonMistakes": "Omitting ORDER BY inside OVER() for running totals, confusing PARTITION BY with GROUP BY, or attempting to filter window functions in WHERE without a CTE wrapper.",
+    "learningOutcomes": "Mastered 13.9 Cumulative Distribution (CUME_DIST) on Books.",
+    "challengeSlots": [
+      {
+        "type": "keyword",
+        "value": "SELECT"
+      },
+      {
+        "type": "column",
+        "value": "title,"
+      },
+      {
+        "type": "column",
+        "value": "price,"
+      },
+      {
+        "type": "keyword",
+        "value": "CUME_DIST()"
+      },
+      {
+        "type": "keyword",
+        "value": "OVER"
+      },
+      {
+        "type": "keyword",
+        "value": "(ORDER"
+      },
+      {
+        "type": "keyword",
+        "value": "BY"
+      },
+      {
+        "type": "column",
+        "value": "price"
+      },
+      {
+        "type": "keyword",
+        "value": "ASC)"
+      },
+      {
+        "type": "keyword",
+        "value": "AS"
+      },
+      {
+        "type": "column",
+        "value": "price_percentile"
+      },
+      {
+        "type": "keyword",
+        "value": "FROM"
+      },
+      {
+        "type": "table",
+        "value": "Books;"
+      }
+    ]
+  },
+  {
+    "drillNumber": 1283,
+    "subcluster": "13.9 Cumulative Distribution (CUME_DIST)",
+    "level": "Level 3 (Cumulative Distribution)",
+    "title": "Syntax #1283: Calculate the exact cumulative salary distribution for compensation benchmarking",
+    "table": "Employees",
+    "scenario": "Calculate the exact cumulative salary distribution for compensation benchmarking.",
+    "businessObjective": "Calculate the exact cumulative salary distribution for compensation benchmarking.",
+    "schemaSnippet": "Employees analytical schema",
+    "targetQuery": "SELECT first_name, salary,\n  CUME_DIST() OVER (ORDER BY salary ASC) AS salary_cume_dist\nFROM Employees;",
+    "syntaxBlueprint": "SELECT col1, metric,\n  CUME_DIST() OVER (ORDER BY metric ASC) AS cumulative_pct\nFROM table_name;",
+    "syntaxRule": "CUME_DIST() computes the relative position of a value: (number of rows with values <= current row) / (total rows). Returns a decimal between 0 and 1.0.",
+    "syntaxTrap": "Tied values receive the exact same cumulative distribution score (the highest value among the ties).",
+    "eli5Story": "Analytical Window Functions on Employees: Calculate the exact cumulative salary distribution for compensation benchmarking.",
+    "commonMistakes": "Omitting ORDER BY inside OVER() for running totals, confusing PARTITION BY with GROUP BY, or attempting to filter window functions in WHERE without a CTE wrapper.",
+    "learningOutcomes": "Mastered 13.9 Cumulative Distribution (CUME_DIST) on Employees.",
+    "challengeSlots": [
+      {
+        "type": "keyword",
+        "value": "SELECT"
+      },
+      {
+        "type": "column",
+        "value": "first_name,"
+      },
+      {
+        "type": "column",
+        "value": "salary,"
+      },
+      {
+        "type": "keyword",
+        "value": "CUME_DIST()"
+      },
+      {
+        "type": "keyword",
+        "value": "OVER"
+      },
+      {
+        "type": "keyword",
+        "value": "(ORDER"
+      },
+      {
+        "type": "keyword",
+        "value": "BY"
+      },
+      {
+        "type": "column",
+        "value": "salary"
+      },
+      {
+        "type": "keyword",
+        "value": "ASC)"
+      },
+      {
+        "type": "keyword",
+        "value": "AS"
+      },
+      {
+        "type": "column",
+        "value": "salary_cume_dist"
+      },
+      {
+        "type": "keyword",
+        "value": "FROM"
+      },
+      {
+        "type": "table",
+        "value": "Employees;"
+      }
+    ]
+  },
+  {
+    "drillNumber": 1284,
+    "subcluster": "13.9 Cumulative Distribution (CUME_DIST)",
+    "level": "Level 3 (Cumulative Distribution)",
+    "title": "Syntax #1284: Compute the cumulative price distribution across grocery inventory",
+    "table": "GroceryItems",
+    "scenario": "Compute the cumulative price distribution across grocery inventory.",
+    "businessObjective": "Compute the cumulative price distribution across grocery inventory.",
+    "schemaSnippet": "GroceryItems analytical schema",
+    "targetQuery": "SELECT item_name, unit_price,\n  CUME_DIST() OVER (ORDER BY unit_price ASC) AS cost_distribution\nFROM GroceryItems;",
+    "syntaxBlueprint": "SELECT col1, metric,\n  CUME_DIST() OVER (ORDER BY metric ASC) AS cumulative_pct\nFROM table_name;",
+    "syntaxRule": "CUME_DIST() computes the relative position of a value: (number of rows with values <= current row) / (total rows). Returns a decimal between 0 and 1.0.",
+    "syntaxTrap": "Tied values receive the exact same cumulative distribution score (the highest value among the ties).",
+    "eli5Story": "Analytical Window Functions on GroceryItems: Compute the cumulative price distribution across grocery inventory.",
+    "commonMistakes": "Omitting ORDER BY inside OVER() for running totals, confusing PARTITION BY with GROUP BY, or attempting to filter window functions in WHERE without a CTE wrapper.",
+    "learningOutcomes": "Mastered 13.9 Cumulative Distribution (CUME_DIST) on GroceryItems.",
+    "challengeSlots": [
+      {
+        "type": "keyword",
+        "value": "SELECT"
+      },
+      {
+        "type": "column",
+        "value": "item_name,"
+      },
+      {
+        "type": "column",
+        "value": "unit_price,"
+      },
+      {
+        "type": "keyword",
+        "value": "CUME_DIST()"
+      },
+      {
+        "type": "keyword",
+        "value": "OVER"
+      },
+      {
+        "type": "keyword",
+        "value": "(ORDER"
+      },
+      {
+        "type": "keyword",
+        "value": "BY"
+      },
+      {
+        "type": "column",
+        "value": "unit_price"
+      },
+      {
+        "type": "keyword",
+        "value": "ASC)"
+      },
+      {
+        "type": "keyword",
+        "value": "AS"
+      },
+      {
+        "type": "column",
+        "value": "cost_distribution"
+      },
+      {
+        "type": "keyword",
+        "value": "FROM"
+      },
+      {
+        "type": "table",
+        "value": "GroceryItems;"
+      }
+    ]
+  },
+  {
+    "drillNumber": 1285,
+    "subcluster": "13.9 Cumulative Distribution (CUME_DIST)",
+    "level": "Level 3 (Cumulative Distribution)",
+    "title": "Syntax #1285: Calculate the cumulative distribution of customer order values",
+    "table": "Orders",
+    "scenario": "Calculate the cumulative distribution of customer order values.",
+    "businessObjective": "Calculate the cumulative distribution of customer order values.",
+    "schemaSnippet": "Orders analytical schema",
+    "targetQuery": "SELECT order_id, total_amount,\n  CUME_DIST() OVER (ORDER BY total_amount ASC) AS spend_distribution\nFROM Orders;",
+    "syntaxBlueprint": "SELECT col1, metric,\n  CUME_DIST() OVER (ORDER BY metric ASC) AS cumulative_pct\nFROM table_name;",
+    "syntaxRule": "CUME_DIST() computes the relative position of a value: (number of rows with values <= current row) / (total rows). Returns a decimal between 0 and 1.0.",
+    "syntaxTrap": "Tied values receive the exact same cumulative distribution score (the highest value among the ties).",
+    "eli5Story": "Analytical Window Functions on Orders: Calculate the cumulative distribution of customer order values.",
+    "commonMistakes": "Omitting ORDER BY inside OVER() for running totals, confusing PARTITION BY with GROUP BY, or attempting to filter window functions in WHERE without a CTE wrapper.",
+    "learningOutcomes": "Mastered 13.9 Cumulative Distribution (CUME_DIST) on Orders.",
+    "challengeSlots": [
+      {
+        "type": "keyword",
+        "value": "SELECT"
+      },
+      {
+        "type": "column",
+        "value": "order_id,"
+      },
+      {
+        "type": "column",
+        "value": "total_amount,"
+      },
+      {
+        "type": "keyword",
+        "value": "CUME_DIST()"
+      },
+      {
+        "type": "keyword",
+        "value": "OVER"
+      },
+      {
+        "type": "keyword",
+        "value": "(ORDER"
+      },
+      {
+        "type": "keyword",
+        "value": "BY"
+      },
+      {
+        "type": "column",
+        "value": "total_amount"
+      },
+      {
+        "type": "keyword",
+        "value": "ASC)"
+      },
+      {
+        "type": "keyword",
+        "value": "AS"
+      },
+      {
+        "type": "column",
+        "value": "spend_distribution"
+      },
+      {
+        "type": "keyword",
+        "value": "FROM"
+      },
+      {
+        "type": "table",
+        "value": "Orders;"
+      }
+    ]
+  },
+  {
+    "drillNumber": 1286,
+    "subcluster": "13.9 Cumulative Distribution (CUME_DIST)",
+    "level": "Level 3 (Cumulative Distribution)",
+    "title": "Syntax #1286: Compute the cumulative duration distribution of music tracks",
+    "table": "MusicTracks",
+    "scenario": "Compute the cumulative duration distribution of music tracks.",
+    "businessObjective": "Compute the cumulative duration distribution of music tracks.",
+    "schemaSnippet": "MusicTracks analytical schema",
+    "targetQuery": "SELECT track_title, duration_seconds,\n  CUME_DIST() OVER (ORDER BY duration_seconds ASC) AS duration_distribution\nFROM MusicTracks;",
+    "syntaxBlueprint": "SELECT col1, metric,\n  CUME_DIST() OVER (ORDER BY metric ASC) AS cumulative_pct\nFROM table_name;",
+    "syntaxRule": "CUME_DIST() computes the relative position of a value: (number of rows with values <= current row) / (total rows). Returns a decimal between 0 and 1.0.",
+    "syntaxTrap": "Tied values receive the exact same cumulative distribution score (the highest value among the ties).",
+    "eli5Story": "Analytical Window Functions on MusicTracks: Compute the cumulative duration distribution of music tracks.",
+    "commonMistakes": "Omitting ORDER BY inside OVER() for running totals, confusing PARTITION BY with GROUP BY, or attempting to filter window functions in WHERE without a CTE wrapper.",
+    "learningOutcomes": "Mastered 13.9 Cumulative Distribution (CUME_DIST) on MusicTracks.",
+    "challengeSlots": [
+      {
+        "type": "keyword",
+        "value": "SELECT"
+      },
+      {
+        "type": "column",
+        "value": "track_title,"
+      },
+      {
+        "type": "column",
+        "value": "duration_seconds,"
+      },
+      {
+        "type": "keyword",
+        "value": "CUME_DIST()"
+      },
+      {
+        "type": "keyword",
+        "value": "OVER"
+      },
+      {
+        "type": "keyword",
+        "value": "(ORDER"
+      },
+      {
+        "type": "keyword",
+        "value": "BY"
+      },
+      {
+        "type": "column",
+        "value": "duration_seconds"
+      },
+      {
+        "type": "keyword",
+        "value": "ASC)"
+      },
+      {
+        "type": "keyword",
+        "value": "AS"
+      },
+      {
+        "type": "column",
+        "value": "duration_distribution"
+      },
+      {
+        "type": "keyword",
+        "value": "FROM"
+      },
+      {
+        "type": "table",
+        "value": "MusicTracks;"
+      }
+    ]
+  },
+  {
+    "drillNumber": 1287,
+    "subcluster": "13.9 Cumulative Distribution (CUME_DIST)",
+    "level": "Level 3 (Cumulative Distribution)",
+    "title": "Syntax #1287: Compute the cumulative distribution of member gym attendance",
+    "table": "GymMembers",
+    "scenario": "Compute the cumulative distribution of member gym attendance.",
+    "businessObjective": "Compute the cumulative distribution of member gym attendance.",
+    "schemaSnippet": "GymMembers analytical schema",
+    "targetQuery": "SELECT member_name, attendance_days,\n  CUME_DIST() OVER (ORDER BY attendance_days ASC) AS attendance_distribution\nFROM GymMembers;",
+    "syntaxBlueprint": "SELECT col1, metric,\n  CUME_DIST() OVER (ORDER BY metric ASC) AS cumulative_pct\nFROM table_name;",
+    "syntaxRule": "CUME_DIST() computes the relative position of a value: (number of rows with values <= current row) / (total rows). Returns a decimal between 0 and 1.0.",
+    "syntaxTrap": "Tied values receive the exact same cumulative distribution score (the highest value among the ties).",
+    "eli5Story": "Analytical Window Functions on GymMembers: Compute the cumulative distribution of member gym attendance.",
+    "commonMistakes": "Omitting ORDER BY inside OVER() for running totals, confusing PARTITION BY with GROUP BY, or attempting to filter window functions in WHERE without a CTE wrapper.",
+    "learningOutcomes": "Mastered 13.9 Cumulative Distribution (CUME_DIST) on GymMembers.",
+    "challengeSlots": [
+      {
+        "type": "keyword",
+        "value": "SELECT"
+      },
+      {
+        "type": "column",
+        "value": "member_name,"
+      },
+      {
+        "type": "column",
+        "value": "attendance_days,"
+      },
+      {
+        "type": "keyword",
+        "value": "CUME_DIST()"
+      },
+      {
+        "type": "keyword",
+        "value": "OVER"
+      },
+      {
+        "type": "keyword",
+        "value": "(ORDER"
+      },
+      {
+        "type": "keyword",
+        "value": "BY"
+      },
+      {
+        "type": "column",
+        "value": "attendance_days"
+      },
+      {
+        "type": "keyword",
+        "value": "ASC)"
+      },
+      {
+        "type": "keyword",
+        "value": "AS"
+      },
+      {
+        "type": "column",
+        "value": "attendance_distribution"
+      },
+      {
+        "type": "keyword",
+        "value": "FROM"
+      },
+      {
+        "type": "table",
+        "value": "GymMembers;"
+      }
+    ]
+  },
+  {
+    "drillNumber": 1288,
+    "subcluster": "13.9 Cumulative Distribution (CUME_DIST)",
+    "level": "Level 3 (Cumulative Distribution)",
+    "title": "Syntax #1288: Calculate cumulative distribution of movie star ratings",
+    "table": "MovieReviews",
+    "scenario": "Calculate cumulative distribution of movie star ratings.",
+    "businessObjective": "Calculate cumulative distribution of movie star ratings.",
+    "schemaSnippet": "MovieReviews analytical schema",
+    "targetQuery": "SELECT movie_title, star_rating,\n  CUME_DIST() OVER (ORDER BY star_rating ASC) AS rating_distribution\nFROM MovieReviews;",
+    "syntaxBlueprint": "SELECT col1, metric,\n  CUME_DIST() OVER (ORDER BY metric ASC) AS cumulative_pct\nFROM table_name;",
+    "syntaxRule": "CUME_DIST() computes the relative position of a value: (number of rows with values <= current row) / (total rows). Returns a decimal between 0 and 1.0.",
+    "syntaxTrap": "Tied values receive the exact same cumulative distribution score (the highest value among the ties).",
+    "eli5Story": "Analytical Window Functions on MovieReviews: Calculate cumulative distribution of movie star ratings.",
+    "commonMistakes": "Omitting ORDER BY inside OVER() for running totals, confusing PARTITION BY with GROUP BY, or attempting to filter window functions in WHERE without a CTE wrapper.",
+    "learningOutcomes": "Mastered 13.9 Cumulative Distribution (CUME_DIST) on MovieReviews.",
+    "challengeSlots": [
+      {
+        "type": "keyword",
+        "value": "SELECT"
+      },
+      {
+        "type": "column",
+        "value": "movie_title,"
+      },
+      {
+        "type": "column",
+        "value": "star_rating,"
+      },
+      {
+        "type": "keyword",
+        "value": "CUME_DIST()"
+      },
+      {
+        "type": "keyword",
+        "value": "OVER"
+      },
+      {
+        "type": "keyword",
+        "value": "(ORDER"
+      },
+      {
+        "type": "keyword",
+        "value": "BY"
+      },
+      {
+        "type": "column",
+        "value": "star_rating"
+      },
+      {
+        "type": "keyword",
+        "value": "ASC)"
+      },
+      {
+        "type": "keyword",
+        "value": "AS"
+      },
+      {
+        "type": "column",
+        "value": "rating_distribution"
+      },
+      {
+        "type": "keyword",
+        "value": "FROM"
+      },
+      {
+        "type": "table",
+        "value": "MovieReviews;"
+      }
+    ]
+  },
+  {
+    "drillNumber": 1289,
+    "subcluster": "13.9 Cumulative Distribution (CUME_DIST)",
+    "level": "Level 3 (Cumulative Distribution)",
+    "title": "Syntax #1289: Compute cumulative distribution of scheduled flight distances",
+    "table": "FlightSchedule",
+    "scenario": "Compute cumulative distribution of scheduled flight distances.",
+    "businessObjective": "Compute cumulative distribution of scheduled flight distances.",
+    "schemaSnippet": "FlightSchedule analytical schema",
+    "targetQuery": "SELECT flight_id, distance_miles,\n  CUME_DIST() OVER (ORDER BY distance_miles ASC) AS distance_distribution\nFROM FlightSchedule;",
+    "syntaxBlueprint": "SELECT col1, metric,\n  CUME_DIST() OVER (ORDER BY metric ASC) AS cumulative_pct\nFROM table_name;",
+    "syntaxRule": "CUME_DIST() computes the relative position of a value: (number of rows with values <= current row) / (total rows). Returns a decimal between 0 and 1.0.",
+    "syntaxTrap": "Tied values receive the exact same cumulative distribution score (the highest value among the ties).",
+    "eli5Story": "Analytical Window Functions on FlightSchedule: Compute cumulative distribution of scheduled flight distances.",
+    "commonMistakes": "Omitting ORDER BY inside OVER() for running totals, confusing PARTITION BY with GROUP BY, or attempting to filter window functions in WHERE without a CTE wrapper.",
+    "learningOutcomes": "Mastered 13.9 Cumulative Distribution (CUME_DIST) on FlightSchedule.",
+    "challengeSlots": [
+      {
+        "type": "keyword",
+        "value": "SELECT"
+      },
+      {
+        "type": "column",
+        "value": "flight_id,"
+      },
+      {
+        "type": "column",
+        "value": "distance_miles,"
+      },
+      {
+        "type": "keyword",
+        "value": "CUME_DIST()"
+      },
+      {
+        "type": "keyword",
+        "value": "OVER"
+      },
+      {
+        "type": "keyword",
+        "value": "(ORDER"
+      },
+      {
+        "type": "keyword",
+        "value": "BY"
+      },
+      {
+        "type": "column",
+        "value": "distance_miles"
+      },
+      {
+        "type": "keyword",
+        "value": "ASC)"
+      },
+      {
+        "type": "keyword",
+        "value": "AS"
+      },
+      {
+        "type": "column",
+        "value": "distance_distribution"
+      },
+      {
+        "type": "keyword",
+        "value": "FROM"
+      },
+      {
+        "type": "table",
+        "value": "FlightSchedule;"
+      }
+    ]
+  },
+  {
+    "drillNumber": 1290,
+    "subcluster": "13.9 Cumulative Distribution (CUME_DIST)",
+    "level": "Level 3 (Cumulative Distribution)",
+    "title": "Syntax #1290: Compute cumulative distribution of animal patient weights",
+    "table": "PetClinic",
+    "scenario": "Compute cumulative distribution of animal patient weights.",
+    "businessObjective": "Compute cumulative distribution of animal patient weights.",
+    "schemaSnippet": "PetClinic analytical schema",
+    "targetQuery": "SELECT pet_name, weight_kg,\n  CUME_DIST() OVER (ORDER BY weight_kg ASC) AS weight_distribution\nFROM PetClinic;",
+    "syntaxBlueprint": "SELECT col1, metric,\n  CUME_DIST() OVER (ORDER BY metric ASC) AS cumulative_pct\nFROM table_name;",
+    "syntaxRule": "CUME_DIST() computes the relative position of a value: (number of rows with values <= current row) / (total rows). Returns a decimal between 0 and 1.0.",
+    "syntaxTrap": "Tied values receive the exact same cumulative distribution score (the highest value among the ties).",
+    "eli5Story": "Analytical Window Functions on PetClinic: Compute cumulative distribution of animal patient weights.",
+    "commonMistakes": "Omitting ORDER BY inside OVER() for running totals, confusing PARTITION BY with GROUP BY, or attempting to filter window functions in WHERE without a CTE wrapper.",
+    "learningOutcomes": "Mastered 13.9 Cumulative Distribution (CUME_DIST) on PetClinic.",
+    "challengeSlots": [
+      {
+        "type": "keyword",
+        "value": "SELECT"
+      },
+      {
+        "type": "column",
+        "value": "pet_name,"
+      },
+      {
+        "type": "column",
+        "value": "weight_kg,"
+      },
+      {
+        "type": "keyword",
+        "value": "CUME_DIST()"
+      },
+      {
+        "type": "keyword",
+        "value": "OVER"
+      },
+      {
+        "type": "keyword",
+        "value": "(ORDER"
+      },
+      {
+        "type": "keyword",
+        "value": "BY"
+      },
+      {
+        "type": "column",
+        "value": "weight_kg"
+      },
+      {
+        "type": "keyword",
+        "value": "ASC)"
+      },
+      {
+        "type": "keyword",
+        "value": "AS"
+      },
+      {
+        "type": "column",
+        "value": "weight_distribution"
+      },
+      {
+        "type": "keyword",
+        "value": "FROM"
+      },
+      {
+        "type": "table",
+        "value": "PetClinic;"
+      }
+    ]
+  },
+  {
+    "drillNumber": 1291,
+    "subcluster": "13.10 Relative Percentile Rank (PERCENT_RANK)",
+    "level": "Level 3 (Relative Percent Rank)",
+    "title": "Syntax #1291: Calculate relative percentile rank (0.0 to 1.0) for student GPAs",
+    "table": "Students",
+    "scenario": "Calculate relative percentile rank (0.0 to 1.0) for student GPAs.",
+    "businessObjective": "Calculate relative percentile rank (0.0 to 1.0) for student GPAs.",
+    "schemaSnippet": "Students analytical schema",
+    "targetQuery": "SELECT full_name, gpa,\n  PERCENT_RANK() OVER (ORDER BY gpa ASC) AS gpa_rank_ratio\nFROM Students;",
+    "syntaxBlueprint": "SELECT col1, metric,\n  PERCENT_RANK() OVER (ORDER BY metric ASC) AS pct_rank\nFROM table_name;",
+    "syntaxRule": "PERCENT_RANK() evaluates (rank - 1) / (total_rows - 1). The first row always returns 0.0, and the highest row returns 1.0.",
+    "syntaxTrap": "PERCENT_RANK() is strictly 0.0-based, whereas CUME_DIST() is never 0.0.",
+    "eli5Story": "Analytical Window Functions on Students: Calculate relative percentile rank (0.0 to 1.0) for student GPAs.",
+    "commonMistakes": "Omitting ORDER BY inside OVER() for running totals, confusing PARTITION BY with GROUP BY, or attempting to filter window functions in WHERE without a CTE wrapper.",
+    "learningOutcomes": "Mastered 13.10 Relative Percentile Rank (PERCENT_RANK) on Students.",
+    "challengeSlots": [
+      {
+        "type": "keyword",
+        "value": "SELECT"
+      },
+      {
+        "type": "column",
+        "value": "full_name,"
+      },
+      {
+        "type": "column",
+        "value": "gpa,"
+      },
+      {
+        "type": "keyword",
+        "value": "PERCENT_RANK()"
+      },
+      {
+        "type": "keyword",
+        "value": "OVER"
+      },
+      {
+        "type": "keyword",
+        "value": "(ORDER"
+      },
+      {
+        "type": "keyword",
+        "value": "BY"
+      },
+      {
+        "type": "column",
+        "value": "gpa"
+      },
+      {
+        "type": "keyword",
+        "value": "ASC)"
+      },
+      {
+        "type": "keyword",
+        "value": "AS"
+      },
+      {
+        "type": "column",
+        "value": "gpa_rank_ratio"
+      },
+      {
+        "type": "keyword",
+        "value": "FROM"
+      },
+      {
+        "type": "table",
+        "value": "Students;"
+      }
+    ]
+  },
+  {
+    "drillNumber": 1292,
+    "subcluster": "13.10 Relative Percentile Rank (PERCENT_RANK)",
+    "level": "Level 3 (Relative Percent Rank)",
+    "title": "Syntax #1292: Compute relative price percentile ranks for library books",
+    "table": "Books",
+    "scenario": "Compute relative price percentile ranks for library books.",
+    "businessObjective": "Compute relative price percentile ranks for library books.",
+    "schemaSnippet": "Books analytical schema",
+    "targetQuery": "SELECT title, price,\n  PERCENT_RANK() OVER (ORDER BY price ASC) AS relative_price_rank\nFROM Books;",
+    "syntaxBlueprint": "SELECT col1, metric,\n  PERCENT_RANK() OVER (ORDER BY metric ASC) AS pct_rank\nFROM table_name;",
+    "syntaxRule": "PERCENT_RANK() evaluates (rank - 1) / (total_rows - 1). The first row always returns 0.0, and the highest row returns 1.0.",
+    "syntaxTrap": "PERCENT_RANK() is strictly 0.0-based, whereas CUME_DIST() is never 0.0.",
+    "eli5Story": "Analytical Window Functions on Books: Compute relative price percentile ranks for library books.",
+    "commonMistakes": "Omitting ORDER BY inside OVER() for running totals, confusing PARTITION BY with GROUP BY, or attempting to filter window functions in WHERE without a CTE wrapper.",
+    "learningOutcomes": "Mastered 13.10 Relative Percentile Rank (PERCENT_RANK) on Books.",
+    "challengeSlots": [
+      {
+        "type": "keyword",
+        "value": "SELECT"
+      },
+      {
+        "type": "column",
+        "value": "title,"
+      },
+      {
+        "type": "column",
+        "value": "price,"
+      },
+      {
+        "type": "keyword",
+        "value": "PERCENT_RANK()"
+      },
+      {
+        "type": "keyword",
+        "value": "OVER"
+      },
+      {
+        "type": "keyword",
+        "value": "(ORDER"
+      },
+      {
+        "type": "keyword",
+        "value": "BY"
+      },
+      {
+        "type": "column",
+        "value": "price"
+      },
+      {
+        "type": "keyword",
+        "value": "ASC)"
+      },
+      {
+        "type": "keyword",
+        "value": "AS"
+      },
+      {
+        "type": "column",
+        "value": "relative_price_rank"
+      },
+      {
+        "type": "keyword",
+        "value": "FROM"
+      },
+      {
+        "type": "table",
+        "value": "Books;"
+      }
+    ]
+  },
+  {
+    "drillNumber": 1293,
+    "subcluster": "13.10 Relative Percentile Rank (PERCENT_RANK)",
+    "level": "Level 3 (Relative Percent Rank)",
+    "title": "Syntax #1293: Calculate relative salary rank percentiles across corporate staff",
+    "table": "Employees",
+    "scenario": "Calculate relative salary rank percentiles across corporate staff.",
+    "businessObjective": "Calculate relative salary rank percentiles across corporate staff.",
+    "schemaSnippet": "Employees analytical schema",
+    "targetQuery": "SELECT first_name, salary,\n  PERCENT_RANK() OVER (ORDER BY salary ASC) AS comp_percent_rank\nFROM Employees;",
+    "syntaxBlueprint": "SELECT col1, metric,\n  PERCENT_RANK() OVER (ORDER BY metric ASC) AS pct_rank\nFROM table_name;",
+    "syntaxRule": "PERCENT_RANK() evaluates (rank - 1) / (total_rows - 1). The first row always returns 0.0, and the highest row returns 1.0.",
+    "syntaxTrap": "PERCENT_RANK() is strictly 0.0-based, whereas CUME_DIST() is never 0.0.",
+    "eli5Story": "Analytical Window Functions on Employees: Calculate relative salary rank percentiles across corporate staff.",
+    "commonMistakes": "Omitting ORDER BY inside OVER() for running totals, confusing PARTITION BY with GROUP BY, or attempting to filter window functions in WHERE without a CTE wrapper.",
+    "learningOutcomes": "Mastered 13.10 Relative Percentile Rank (PERCENT_RANK) on Employees.",
+    "challengeSlots": [
+      {
+        "type": "keyword",
+        "value": "SELECT"
+      },
+      {
+        "type": "column",
+        "value": "first_name,"
+      },
+      {
+        "type": "column",
+        "value": "salary,"
+      },
+      {
+        "type": "keyword",
+        "value": "PERCENT_RANK()"
+      },
+      {
+        "type": "keyword",
+        "value": "OVER"
+      },
+      {
+        "type": "keyword",
+        "value": "(ORDER"
+      },
+      {
+        "type": "keyword",
+        "value": "BY"
+      },
+      {
+        "type": "column",
+        "value": "salary"
+      },
+      {
+        "type": "keyword",
+        "value": "ASC)"
+      },
+      {
+        "type": "keyword",
+        "value": "AS"
+      },
+      {
+        "type": "column",
+        "value": "comp_percent_rank"
+      },
+      {
+        "type": "keyword",
+        "value": "FROM"
+      },
+      {
+        "type": "table",
+        "value": "Employees;"
+      }
+    ]
+  },
+  {
+    "drillNumber": 1294,
+    "subcluster": "13.10 Relative Percentile Rank (PERCENT_RANK)",
+    "level": "Level 3 (Relative Percent Rank)",
+    "title": "Syntax #1294: Compute relative price rank percentiles across grocery inventory",
+    "table": "GroceryItems",
+    "scenario": "Compute relative price rank percentiles across grocery inventory.",
+    "businessObjective": "Compute relative price rank percentiles across grocery inventory.",
+    "schemaSnippet": "GroceryItems analytical schema",
+    "targetQuery": "SELECT item_name, unit_price,\n  PERCENT_RANK() OVER (ORDER BY unit_price ASC) AS price_percent_rank\nFROM GroceryItems;",
+    "syntaxBlueprint": "SELECT col1, metric,\n  PERCENT_RANK() OVER (ORDER BY metric ASC) AS pct_rank\nFROM table_name;",
+    "syntaxRule": "PERCENT_RANK() evaluates (rank - 1) / (total_rows - 1). The first row always returns 0.0, and the highest row returns 1.0.",
+    "syntaxTrap": "PERCENT_RANK() is strictly 0.0-based, whereas CUME_DIST() is never 0.0.",
+    "eli5Story": "Analytical Window Functions on GroceryItems: Compute relative price rank percentiles across grocery inventory.",
+    "commonMistakes": "Omitting ORDER BY inside OVER() for running totals, confusing PARTITION BY with GROUP BY, or attempting to filter window functions in WHERE without a CTE wrapper.",
+    "learningOutcomes": "Mastered 13.10 Relative Percentile Rank (PERCENT_RANK) on GroceryItems.",
+    "challengeSlots": [
+      {
+        "type": "keyword",
+        "value": "SELECT"
+      },
+      {
+        "type": "column",
+        "value": "item_name,"
+      },
+      {
+        "type": "column",
+        "value": "unit_price,"
+      },
+      {
+        "type": "keyword",
+        "value": "PERCENT_RANK()"
+      },
+      {
+        "type": "keyword",
+        "value": "OVER"
+      },
+      {
+        "type": "keyword",
+        "value": "(ORDER"
+      },
+      {
+        "type": "keyword",
+        "value": "BY"
+      },
+      {
+        "type": "column",
+        "value": "unit_price"
+      },
+      {
+        "type": "keyword",
+        "value": "ASC)"
+      },
+      {
+        "type": "keyword",
+        "value": "AS"
+      },
+      {
+        "type": "column",
+        "value": "price_percent_rank"
+      },
+      {
+        "type": "keyword",
+        "value": "FROM"
+      },
+      {
+        "type": "table",
+        "value": "GroceryItems;"
+      }
+    ]
+  },
+  {
+    "drillNumber": 1295,
+    "subcluster": "13.10 Relative Percentile Rank (PERCENT_RANK)",
+    "level": "Level 3 (Relative Percent Rank)",
+    "title": "Syntax #1295: Calculate relative percentile rank for customer order values",
+    "table": "Orders",
+    "scenario": "Calculate relative percentile rank for customer order values.",
+    "businessObjective": "Calculate relative percentile rank for customer order values.",
+    "schemaSnippet": "Orders analytical schema",
+    "targetQuery": "SELECT order_id, total_amount,\n  PERCENT_RANK() OVER (ORDER BY total_amount ASC) AS order_percent_rank\nFROM Orders;",
+    "syntaxBlueprint": "SELECT col1, metric,\n  PERCENT_RANK() OVER (ORDER BY metric ASC) AS pct_rank\nFROM table_name;",
+    "syntaxRule": "PERCENT_RANK() evaluates (rank - 1) / (total_rows - 1). The first row always returns 0.0, and the highest row returns 1.0.",
+    "syntaxTrap": "PERCENT_RANK() is strictly 0.0-based, whereas CUME_DIST() is never 0.0.",
+    "eli5Story": "Analytical Window Functions on Orders: Calculate relative percentile rank for customer order values.",
+    "commonMistakes": "Omitting ORDER BY inside OVER() for running totals, confusing PARTITION BY with GROUP BY, or attempting to filter window functions in WHERE without a CTE wrapper.",
+    "learningOutcomes": "Mastered 13.10 Relative Percentile Rank (PERCENT_RANK) on Orders.",
+    "challengeSlots": [
+      {
+        "type": "keyword",
+        "value": "SELECT"
+      },
+      {
+        "type": "column",
+        "value": "order_id,"
+      },
+      {
+        "type": "column",
+        "value": "total_amount,"
+      },
+      {
+        "type": "keyword",
+        "value": "PERCENT_RANK()"
+      },
+      {
+        "type": "keyword",
+        "value": "OVER"
+      },
+      {
+        "type": "keyword",
+        "value": "(ORDER"
+      },
+      {
+        "type": "keyword",
+        "value": "BY"
+      },
+      {
+        "type": "column",
+        "value": "total_amount"
+      },
+      {
+        "type": "keyword",
+        "value": "ASC)"
+      },
+      {
+        "type": "keyword",
+        "value": "AS"
+      },
+      {
+        "type": "column",
+        "value": "order_percent_rank"
+      },
+      {
+        "type": "keyword",
+        "value": "FROM"
+      },
+      {
+        "type": "table",
+        "value": "Orders;"
+      }
+    ]
+  },
+  {
+    "drillNumber": 1296,
+    "subcluster": "13.10 Relative Percentile Rank (PERCENT_RANK)",
+    "level": "Level 3 (Relative Percent Rank)",
+    "title": "Syntax #1296: Calculate track duration relative rank percentiles via PERCENT_RANK",
+    "table": "MusicTracks",
+    "scenario": "Calculate track duration relative rank percentiles via PERCENT_RANK.",
+    "businessObjective": "Calculate track duration relative rank percentiles via PERCENT_RANK.",
+    "schemaSnippet": "MusicTracks analytical schema",
+    "targetQuery": "SELECT track_title, duration_seconds,\n  PERCENT_RANK() OVER (ORDER BY duration_seconds ASC) AS duration_pct_rank\nFROM MusicTracks;",
+    "syntaxBlueprint": "SELECT col1, metric,\n  PERCENT_RANK() OVER (ORDER BY metric ASC) AS pct_rank\nFROM table_name;",
+    "syntaxRule": "PERCENT_RANK() evaluates (rank - 1) / (total_rows - 1). The first row always returns 0.0, and the highest row returns 1.0.",
+    "syntaxTrap": "PERCENT_RANK() is strictly 0.0-based, whereas CUME_DIST() is never 0.0.",
+    "eli5Story": "Analytical Window Functions on MusicTracks: Calculate track duration relative rank percentiles via PERCENT_RANK.",
+    "commonMistakes": "Omitting ORDER BY inside OVER() for running totals, confusing PARTITION BY with GROUP BY, or attempting to filter window functions in WHERE without a CTE wrapper.",
+    "learningOutcomes": "Mastered 13.10 Relative Percentile Rank (PERCENT_RANK) on MusicTracks.",
+    "challengeSlots": [
+      {
+        "type": "keyword",
+        "value": "SELECT"
+      },
+      {
+        "type": "column",
+        "value": "track_title,"
+      },
+      {
+        "type": "column",
+        "value": "duration_seconds,"
+      },
+      {
+        "type": "keyword",
+        "value": "PERCENT_RANK()"
+      },
+      {
+        "type": "keyword",
+        "value": "OVER"
+      },
+      {
+        "type": "keyword",
+        "value": "(ORDER"
+      },
+      {
+        "type": "keyword",
+        "value": "BY"
+      },
+      {
+        "type": "column",
+        "value": "duration_seconds"
+      },
+      {
+        "type": "keyword",
+        "value": "ASC)"
+      },
+      {
+        "type": "keyword",
+        "value": "AS"
+      },
+      {
+        "type": "column",
+        "value": "duration_pct_rank"
+      },
+      {
+        "type": "keyword",
+        "value": "FROM"
+      },
+      {
+        "type": "table",
+        "value": "MusicTracks;"
+      }
+    ]
+  },
+  {
+    "drillNumber": 1297,
+    "subcluster": "13.10 Relative Percentile Rank (PERCENT_RANK)",
+    "level": "Level 3 (Relative Percent Rank)",
+    "title": "Syntax #1297: Compute relative activity rank percentiles for gym members",
+    "table": "GymMembers",
+    "scenario": "Compute relative activity rank percentiles for gym members.",
+    "businessObjective": "Compute relative activity rank percentiles for gym members.",
+    "schemaSnippet": "GymMembers analytical schema",
+    "targetQuery": "SELECT member_name, attendance_days,\n  PERCENT_RANK() OVER (ORDER BY attendance_days ASC) AS activity_percent_rank\nFROM GymMembers;",
+    "syntaxBlueprint": "SELECT col1, metric,\n  PERCENT_RANK() OVER (ORDER BY metric ASC) AS pct_rank\nFROM table_name;",
+    "syntaxRule": "PERCENT_RANK() evaluates (rank - 1) / (total_rows - 1). The first row always returns 0.0, and the highest row returns 1.0.",
+    "syntaxTrap": "PERCENT_RANK() is strictly 0.0-based, whereas CUME_DIST() is never 0.0.",
+    "eli5Story": "Analytical Window Functions on GymMembers: Compute relative activity rank percentiles for gym members.",
+    "commonMistakes": "Omitting ORDER BY inside OVER() for running totals, confusing PARTITION BY with GROUP BY, or attempting to filter window functions in WHERE without a CTE wrapper.",
+    "learningOutcomes": "Mastered 13.10 Relative Percentile Rank (PERCENT_RANK) on GymMembers.",
+    "challengeSlots": [
+      {
+        "type": "keyword",
+        "value": "SELECT"
+      },
+      {
+        "type": "column",
+        "value": "member_name,"
+      },
+      {
+        "type": "column",
+        "value": "attendance_days,"
+      },
+      {
+        "type": "keyword",
+        "value": "PERCENT_RANK()"
+      },
+      {
+        "type": "keyword",
+        "value": "OVER"
+      },
+      {
+        "type": "keyword",
+        "value": "(ORDER"
+      },
+      {
+        "type": "keyword",
+        "value": "BY"
+      },
+      {
+        "type": "column",
+        "value": "attendance_days"
+      },
+      {
+        "type": "keyword",
+        "value": "ASC)"
+      },
+      {
+        "type": "keyword",
+        "value": "AS"
+      },
+      {
+        "type": "column",
+        "value": "activity_percent_rank"
+      },
+      {
+        "type": "keyword",
+        "value": "FROM"
+      },
+      {
+        "type": "table",
+        "value": "GymMembers;"
+      }
+    ]
+  },
+  {
+    "drillNumber": 1298,
+    "subcluster": "13.10 Relative Percentile Rank (PERCENT_RANK)",
+    "level": "Level 3 (Relative Percent Rank)",
+    "title": "Syntax #1298: Calculate relative star rating percentiles for movie reviews",
+    "table": "MovieReviews",
+    "scenario": "Calculate relative star rating percentiles for movie reviews.",
+    "businessObjective": "Calculate relative star rating percentiles for movie reviews.",
+    "schemaSnippet": "MovieReviews analytical schema",
+    "targetQuery": "SELECT movie_title, star_rating,\n  PERCENT_RANK() OVER (ORDER BY star_rating ASC) AS rating_percent_rank\nFROM MovieReviews;",
+    "syntaxBlueprint": "SELECT col1, metric,\n  PERCENT_RANK() OVER (ORDER BY metric ASC) AS pct_rank\nFROM table_name;",
+    "syntaxRule": "PERCENT_RANK() evaluates (rank - 1) / (total_rows - 1). The first row always returns 0.0, and the highest row returns 1.0.",
+    "syntaxTrap": "PERCENT_RANK() is strictly 0.0-based, whereas CUME_DIST() is never 0.0.",
+    "eli5Story": "Analytical Window Functions on MovieReviews: Calculate relative star rating percentiles for movie reviews.",
+    "commonMistakes": "Omitting ORDER BY inside OVER() for running totals, confusing PARTITION BY with GROUP BY, or attempting to filter window functions in WHERE without a CTE wrapper.",
+    "learningOutcomes": "Mastered 13.10 Relative Percentile Rank (PERCENT_RANK) on MovieReviews.",
+    "challengeSlots": [
+      {
+        "type": "keyword",
+        "value": "SELECT"
+      },
+      {
+        "type": "column",
+        "value": "movie_title,"
+      },
+      {
+        "type": "column",
+        "value": "star_rating,"
+      },
+      {
+        "type": "keyword",
+        "value": "PERCENT_RANK()"
+      },
+      {
+        "type": "keyword",
+        "value": "OVER"
+      },
+      {
+        "type": "keyword",
+        "value": "(ORDER"
+      },
+      {
+        "type": "keyword",
+        "value": "BY"
+      },
+      {
+        "type": "column",
+        "value": "star_rating"
+      },
+      {
+        "type": "keyword",
+        "value": "ASC)"
+      },
+      {
+        "type": "keyword",
+        "value": "AS"
+      },
+      {
+        "type": "column",
+        "value": "rating_percent_rank"
+      },
+      {
+        "type": "keyword",
+        "value": "FROM"
+      },
+      {
+        "type": "table",
+        "value": "MovieReviews;"
+      }
+    ]
+  },
+  {
+    "drillNumber": 1299,
+    "subcluster": "13.10 Relative Percentile Rank (PERCENT_RANK)",
+    "level": "Level 3 (Relative Percent Rank)",
+    "title": "Syntax #1299: Compute flight distance relative rank percentiles",
+    "table": "FlightSchedule",
+    "scenario": "Compute flight distance relative rank percentiles.",
+    "businessObjective": "Compute flight distance relative rank percentiles.",
+    "schemaSnippet": "FlightSchedule analytical schema",
+    "targetQuery": "SELECT flight_id, distance_miles,\n  PERCENT_RANK() OVER (ORDER BY distance_miles ASC) AS distance_pct_rank\nFROM FlightSchedule;",
+    "syntaxBlueprint": "SELECT col1, metric,\n  PERCENT_RANK() OVER (ORDER BY metric ASC) AS pct_rank\nFROM table_name;",
+    "syntaxRule": "PERCENT_RANK() evaluates (rank - 1) / (total_rows - 1). The first row always returns 0.0, and the highest row returns 1.0.",
+    "syntaxTrap": "PERCENT_RANK() is strictly 0.0-based, whereas CUME_DIST() is never 0.0.",
+    "eli5Story": "Analytical Window Functions on FlightSchedule: Compute flight distance relative rank percentiles.",
+    "commonMistakes": "Omitting ORDER BY inside OVER() for running totals, confusing PARTITION BY with GROUP BY, or attempting to filter window functions in WHERE without a CTE wrapper.",
+    "learningOutcomes": "Mastered 13.10 Relative Percentile Rank (PERCENT_RANK) on FlightSchedule.",
+    "challengeSlots": [
+      {
+        "type": "keyword",
+        "value": "SELECT"
+      },
+      {
+        "type": "column",
+        "value": "flight_id,"
+      },
+      {
+        "type": "column",
+        "value": "distance_miles,"
+      },
+      {
+        "type": "keyword",
+        "value": "PERCENT_RANK()"
+      },
+      {
+        "type": "keyword",
+        "value": "OVER"
+      },
+      {
+        "type": "keyword",
+        "value": "(ORDER"
+      },
+      {
+        "type": "keyword",
+        "value": "BY"
+      },
+      {
+        "type": "column",
+        "value": "distance_miles"
+      },
+      {
+        "type": "keyword",
+        "value": "ASC)"
+      },
+      {
+        "type": "keyword",
+        "value": "AS"
+      },
+      {
+        "type": "column",
+        "value": "distance_pct_rank"
+      },
+      {
+        "type": "keyword",
+        "value": "FROM"
+      },
+      {
+        "type": "table",
+        "value": "FlightSchedule;"
+      }
+    ]
+  },
+  {
+    "drillNumber": 1300,
+    "subcluster": "13.10 Relative Percentile Rank (PERCENT_RANK)",
+    "level": "Level 3 (Relative Percent Rank)",
+    "title": "Syntax #1300: Calculate patient weight relative rank percentiles in the veterinary clinic",
+    "table": "PetClinic",
+    "scenario": "Calculate patient weight relative rank percentiles in the veterinary clinic.",
+    "businessObjective": "Calculate patient weight relative rank percentiles in the veterinary clinic.",
+    "schemaSnippet": "PetClinic analytical schema",
+    "targetQuery": "SELECT pet_name, weight_kg,\n  PERCENT_RANK() OVER (ORDER BY weight_kg ASC) AS weight_pct_rank\nFROM PetClinic;",
+    "syntaxBlueprint": "SELECT col1, metric,\n  PERCENT_RANK() OVER (ORDER BY metric ASC) AS pct_rank\nFROM table_name;",
+    "syntaxRule": "PERCENT_RANK() evaluates (rank - 1) / (total_rows - 1). The first row always returns 0.0, and the highest row returns 1.0.",
+    "syntaxTrap": "PERCENT_RANK() is strictly 0.0-based, whereas CUME_DIST() is never 0.0.",
+    "eli5Story": "Analytical Window Functions on PetClinic: Calculate patient weight relative rank percentiles in the veterinary clinic.",
+    "commonMistakes": "Omitting ORDER BY inside OVER() for running totals, confusing PARTITION BY with GROUP BY, or attempting to filter window functions in WHERE without a CTE wrapper.",
+    "learningOutcomes": "Mastered 13.10 Relative Percentile Rank (PERCENT_RANK) on PetClinic.",
+    "challengeSlots": [
+      {
+        "type": "keyword",
+        "value": "SELECT"
+      },
+      {
+        "type": "column",
+        "value": "pet_name,"
+      },
+      {
+        "type": "column",
+        "value": "weight_kg,"
+      },
+      {
+        "type": "keyword",
+        "value": "PERCENT_RANK()"
+      },
+      {
+        "type": "keyword",
+        "value": "OVER"
+      },
+      {
+        "type": "keyword",
+        "value": "(ORDER"
+      },
+      {
+        "type": "keyword",
+        "value": "BY"
+      },
+      {
+        "type": "column",
+        "value": "weight_kg"
+      },
+      {
+        "type": "keyword",
+        "value": "ASC)"
+      },
+      {
+        "type": "keyword",
+        "value": "AS"
+      },
+      {
+        "type": "column",
+        "value": "weight_pct_rank"
+      },
+      {
+        "type": "keyword",
+        "value": "FROM"
+      },
+      {
+        "type": "table",
+        "value": "PetClinic;"
+      }
+    ]
+  },
+  {
+    "drillNumber": 1301,
+    "subcluster": "14.1 Previous Value Lookup (LAG(col, 1))",
+    "level": "Level 2 (Basic LAG)",
+    "title": "Syntax #1301: Look up the previous order amount chronologically using LAG(total_amount, 1)",
+    "table": "Orders",
+    "scenario": "Look up the previous order amount chronologically using LAG(total_amount, 1).",
+    "businessObjective": "Look up the previous order amount chronologically using LAG(total_amount, 1).",
+    "schemaSnippet": "Orders analytical schema",
+    "targetQuery": "SELECT order_id, order_date, total_amount,\n  LAG(total_amount, 1) OVER (ORDER BY order_date ASC) AS prev_order_amount\nFROM Orders;",
+    "syntaxBlueprint": "SELECT col1, date_col, metric,\n  LAG(metric, 1) OVER (ORDER BY date_col ASC) AS prev_metric\nFROM table_name;",
+    "syntaxRule": "LAG(col, 1) accesses data from the preceding row without performing a self-join. The first row always returns NULL.",
+    "syntaxTrap": "Forgetting the ORDER BY clause inside OVER(); LAG requires a strict deterministic ordering to know what 'previous' means.",
+    "eli5Story": "Analytical Window Functions on Orders: Look up the previous order amount chronologically using LAG(total_amount, 1).",
+    "commonMistakes": "Omitting ORDER BY inside OVER() for running totals, confusing PARTITION BY with GROUP BY, or attempting to filter window functions in WHERE without a CTE wrapper.",
+    "learningOutcomes": "Mastered 14.1 Previous Value Lookup (LAG(col, 1)) on Orders.",
+    "challengeSlots": [
+      {
+        "type": "keyword",
+        "value": "SELECT"
+      },
+      {
+        "type": "column",
+        "value": "order_id,"
+      },
+      {
+        "type": "column",
+        "value": "order_date,"
+      },
+      {
+        "type": "column",
+        "value": "total_amount,"
+      },
+      {
+        "type": "column",
+        "value": "LAG(total_amount,"
+      },
+      {
+        "type": "column",
+        "value": "1)"
+      },
+      {
+        "type": "keyword",
+        "value": "OVER"
+      },
+      {
+        "type": "keyword",
+        "value": "(ORDER"
+      },
+      {
+        "type": "keyword",
+        "value": "BY"
+      },
+      {
+        "type": "column",
+        "value": "order_date"
+      },
+      {
+        "type": "keyword",
+        "value": "ASC)"
+      },
+      {
+        "type": "keyword",
+        "value": "AS"
+      },
+      {
+        "type": "column",
+        "value": "prev_order_amount"
+      },
+      {
+        "type": "keyword",
+        "value": "FROM"
+      },
+      {
+        "type": "table",
+        "value": "Orders;"
+      }
+    ]
+  },
+  {
+    "drillNumber": 1302,
+    "subcluster": "14.1 Previous Value Lookup (LAG(col, 1))",
+    "level": "Level 2 (Basic LAG)",
+    "title": "Syntax #1302: Project preceding student GPA along the enrollment timeline",
+    "table": "Students",
+    "scenario": "Project preceding student GPA along the enrollment timeline.",
+    "businessObjective": "Project preceding student GPA along the enrollment timeline.",
+    "schemaSnippet": "Students analytical schema",
+    "targetQuery": "SELECT student_id, enrolled_year, gpa,\n  LAG(gpa, 1) OVER (ORDER BY enrolled_year ASC) AS prev_student_gpa\nFROM Students;",
+    "syntaxBlueprint": "SELECT col1, date_col, metric,\n  LAG(metric, 1) OVER (ORDER BY date_col ASC) AS prev_metric\nFROM table_name;",
+    "syntaxRule": "LAG(col, 1) accesses data from the preceding row without performing a self-join. The first row always returns NULL.",
+    "syntaxTrap": "Forgetting the ORDER BY clause inside OVER(); LAG requires a strict deterministic ordering to know what 'previous' means.",
+    "eli5Story": "Analytical Window Functions on Students: Project preceding student GPA along the enrollment timeline.",
+    "commonMistakes": "Omitting ORDER BY inside OVER() for running totals, confusing PARTITION BY with GROUP BY, or attempting to filter window functions in WHERE without a CTE wrapper.",
+    "learningOutcomes": "Mastered 14.1 Previous Value Lookup (LAG(col, 1)) on Students.",
+    "challengeSlots": [
+      {
+        "type": "keyword",
+        "value": "SELECT"
+      },
+      {
+        "type": "column",
+        "value": "student_id,"
+      },
+      {
+        "type": "column",
+        "value": "enrolled_year,"
+      },
+      {
+        "type": "column",
+        "value": "gpa,"
+      },
+      {
+        "type": "column",
+        "value": "LAG(gpa,"
+      },
+      {
+        "type": "column",
+        "value": "1)"
+      },
+      {
+        "type": "keyword",
+        "value": "OVER"
+      },
+      {
+        "type": "keyword",
+        "value": "(ORDER"
+      },
+      {
+        "type": "keyword",
+        "value": "BY"
+      },
+      {
+        "type": "column",
+        "value": "enrolled_year"
+      },
+      {
+        "type": "keyword",
+        "value": "ASC)"
+      },
+      {
+        "type": "keyword",
+        "value": "AS"
+      },
+      {
+        "type": "column",
+        "value": "prev_student_gpa"
+      },
+      {
+        "type": "keyword",
+        "value": "FROM"
+      },
+      {
+        "type": "table",
+        "value": "Students;"
+      }
+    ]
+  },
+  {
+    "drillNumber": 1303,
+    "subcluster": "14.1 Previous Value Lookup (LAG(col, 1))",
+    "level": "Level 2 (Basic LAG)",
+    "title": "Syntax #1303: Inspect previous book publication price chronologically",
+    "table": "Books",
+    "scenario": "Inspect previous book publication price chronologically.",
+    "businessObjective": "Inspect previous book publication price chronologically.",
+    "schemaSnippet": "Books analytical schema",
+    "targetQuery": "SELECT book_id, published_date, price,\n  LAG(price, 1) OVER (ORDER BY published_date ASC) AS prev_book_price\nFROM Books;",
+    "syntaxBlueprint": "SELECT col1, date_col, metric,\n  LAG(metric, 1) OVER (ORDER BY date_col ASC) AS prev_metric\nFROM table_name;",
+    "syntaxRule": "LAG(col, 1) accesses data from the preceding row without performing a self-join. The first row always returns NULL.",
+    "syntaxTrap": "Forgetting the ORDER BY clause inside OVER(); LAG requires a strict deterministic ordering to know what 'previous' means.",
+    "eli5Story": "Analytical Window Functions on Books: Inspect previous book publication price chronologically.",
+    "commonMistakes": "Omitting ORDER BY inside OVER() for running totals, confusing PARTITION BY with GROUP BY, or attempting to filter window functions in WHERE without a CTE wrapper.",
+    "learningOutcomes": "Mastered 14.1 Previous Value Lookup (LAG(col, 1)) on Books.",
+    "challengeSlots": [
+      {
+        "type": "keyword",
+        "value": "SELECT"
+      },
+      {
+        "type": "column",
+        "value": "book_id,"
+      },
+      {
+        "type": "column",
+        "value": "published_date,"
+      },
+      {
+        "type": "column",
+        "value": "price,"
+      },
+      {
+        "type": "column",
+        "value": "LAG(price,"
+      },
+      {
+        "type": "column",
+        "value": "1)"
+      },
+      {
+        "type": "keyword",
+        "value": "OVER"
+      },
+      {
+        "type": "keyword",
+        "value": "(ORDER"
+      },
+      {
+        "type": "keyword",
+        "value": "BY"
+      },
+      {
+        "type": "column",
+        "value": "published_date"
+      },
+      {
+        "type": "keyword",
+        "value": "ASC)"
+      },
+      {
+        "type": "keyword",
+        "value": "AS"
+      },
+      {
+        "type": "column",
+        "value": "prev_book_price"
+      },
+      {
+        "type": "keyword",
+        "value": "FROM"
+      },
+      {
+        "type": "table",
+        "value": "Books;"
+      }
+    ]
+  },
+  {
+    "drillNumber": 1304,
+    "subcluster": "14.1 Previous Value Lookup (LAG(col, 1))",
+    "level": "Level 2 (Basic LAG)",
+    "title": "Syntax #1304: Inspect the salary of the previously hired employee",
+    "table": "Employees",
+    "scenario": "Inspect the salary of the previously hired employee.",
+    "businessObjective": "Inspect the salary of the previously hired employee.",
+    "schemaSnippet": "Employees analytical schema",
+    "targetQuery": "SELECT first_name, hire_date, salary,\n  LAG(salary, 1) OVER (ORDER BY hire_date ASC) AS prev_hire_salary\nFROM Employees;",
+    "syntaxBlueprint": "SELECT col1, date_col, metric,\n  LAG(metric, 1) OVER (ORDER BY date_col ASC) AS prev_metric\nFROM table_name;",
+    "syntaxRule": "LAG(col, 1) accesses data from the preceding row without performing a self-join. The first row always returns NULL.",
+    "syntaxTrap": "Forgetting the ORDER BY clause inside OVER(); LAG requires a strict deterministic ordering to know what 'previous' means.",
+    "eli5Story": "Analytical Window Functions on Employees: Inspect the salary of the previously hired employee.",
+    "commonMistakes": "Omitting ORDER BY inside OVER() for running totals, confusing PARTITION BY with GROUP BY, or attempting to filter window functions in WHERE without a CTE wrapper.",
+    "learningOutcomes": "Mastered 14.1 Previous Value Lookup (LAG(col, 1)) on Employees.",
+    "challengeSlots": [
+      {
+        "type": "keyword",
+        "value": "SELECT"
+      },
+      {
+        "type": "column",
+        "value": "first_name,"
+      },
+      {
+        "type": "column",
+        "value": "hire_date,"
+      },
+      {
+        "type": "column",
+        "value": "salary,"
+      },
+      {
+        "type": "column",
+        "value": "LAG(salary,"
+      },
+      {
+        "type": "column",
+        "value": "1)"
+      },
+      {
+        "type": "keyword",
+        "value": "OVER"
+      },
+      {
+        "type": "keyword",
+        "value": "(ORDER"
+      },
+      {
+        "type": "keyword",
+        "value": "BY"
+      },
+      {
+        "type": "column",
+        "value": "hire_date"
+      },
+      {
+        "type": "keyword",
+        "value": "ASC)"
+      },
+      {
+        "type": "keyword",
+        "value": "AS"
+      },
+      {
+        "type": "column",
+        "value": "prev_hire_salary"
+      },
+      {
+        "type": "keyword",
+        "value": "FROM"
+      },
+      {
+        "type": "table",
+        "value": "Employees;"
+      }
+    ]
+  },
+  {
+    "drillNumber": 1305,
+    "subcluster": "14.1 Previous Value Lookup (LAG(col, 1))",
+    "level": "Level 2 (Basic LAG)",
+    "title": "Syntax #1305: Inspect the price of the previously expiring grocery product",
+    "table": "GroceryItems",
+    "scenario": "Inspect the price of the previously expiring grocery product.",
+    "businessObjective": "Inspect the price of the previously expiring grocery product.",
+    "schemaSnippet": "GroceryItems analytical schema",
+    "targetQuery": "SELECT item_name, expiry_date, unit_price,\n  LAG(unit_price, 1) OVER (ORDER BY expiry_date ASC) AS prev_item_price\nFROM GroceryItems;",
+    "syntaxBlueprint": "SELECT col1, date_col, metric,\n  LAG(metric, 1) OVER (ORDER BY date_col ASC) AS prev_metric\nFROM table_name;",
+    "syntaxRule": "LAG(col, 1) accesses data from the preceding row without performing a self-join. The first row always returns NULL.",
+    "syntaxTrap": "Forgetting the ORDER BY clause inside OVER(); LAG requires a strict deterministic ordering to know what 'previous' means.",
+    "eli5Story": "Analytical Window Functions on GroceryItems: Inspect the price of the previously expiring grocery product.",
+    "commonMistakes": "Omitting ORDER BY inside OVER() for running totals, confusing PARTITION BY with GROUP BY, or attempting to filter window functions in WHERE without a CTE wrapper.",
+    "learningOutcomes": "Mastered 14.1 Previous Value Lookup (LAG(col, 1)) on GroceryItems.",
+    "challengeSlots": [
+      {
+        "type": "keyword",
+        "value": "SELECT"
+      },
+      {
+        "type": "column",
+        "value": "item_name,"
+      },
+      {
+        "type": "column",
+        "value": "expiry_date,"
+      },
+      {
+        "type": "column",
+        "value": "unit_price,"
+      },
+      {
+        "type": "column",
+        "value": "LAG(unit_price,"
+      },
+      {
+        "type": "column",
+        "value": "1)"
+      },
+      {
+        "type": "keyword",
+        "value": "OVER"
+      },
+      {
+        "type": "keyword",
+        "value": "(ORDER"
+      },
+      {
+        "type": "keyword",
+        "value": "BY"
+      },
+      {
+        "type": "column",
+        "value": "expiry_date"
+      },
+      {
+        "type": "keyword",
+        "value": "ASC)"
+      },
+      {
+        "type": "keyword",
+        "value": "AS"
+      },
+      {
+        "type": "column",
+        "value": "prev_item_price"
+      },
+      {
+        "type": "keyword",
+        "value": "FROM"
+      },
+      {
+        "type": "table",
+        "value": "GroceryItems;"
+      }
+    ]
+  },
+  {
+    "drillNumber": 1306,
+    "subcluster": "14.1 Previous Value Lookup (LAG(col, 1))",
+    "level": "Level 2 (Basic LAG)",
+    "title": "Syntax #1306: Retrieve the duration of the previously released track",
+    "table": "MusicTracks",
+    "scenario": "Retrieve the duration of the previously released track.",
+    "businessObjective": "Retrieve the duration of the previously released track.",
+    "schemaSnippet": "MusicTracks analytical schema",
+    "targetQuery": "SELECT track_title, release_date, duration_seconds,\n  LAG(duration_seconds, 1) OVER (ORDER BY release_date ASC) AS prev_track_duration\nFROM MusicTracks;",
+    "syntaxBlueprint": "SELECT col1, date_col, metric,\n  LAG(metric, 1) OVER (ORDER BY date_col ASC) AS prev_metric\nFROM table_name;",
+    "syntaxRule": "LAG(col, 1) accesses data from the preceding row without performing a self-join. The first row always returns NULL.",
+    "syntaxTrap": "Forgetting the ORDER BY clause inside OVER(); LAG requires a strict deterministic ordering to know what 'previous' means.",
+    "eli5Story": "Analytical Window Functions on MusicTracks: Retrieve the duration of the previously released track.",
+    "commonMistakes": "Omitting ORDER BY inside OVER() for running totals, confusing PARTITION BY with GROUP BY, or attempting to filter window functions in WHERE without a CTE wrapper.",
+    "learningOutcomes": "Mastered 14.1 Previous Value Lookup (LAG(col, 1)) on MusicTracks.",
+    "challengeSlots": [
+      {
+        "type": "keyword",
+        "value": "SELECT"
+      },
+      {
+        "type": "column",
+        "value": "track_title,"
+      },
+      {
+        "type": "column",
+        "value": "release_date,"
+      },
+      {
+        "type": "column",
+        "value": "duration_seconds,"
+      },
+      {
+        "type": "column",
+        "value": "LAG(duration_seconds,"
+      },
+      {
+        "type": "column",
+        "value": "1)"
+      },
+      {
+        "type": "keyword",
+        "value": "OVER"
+      },
+      {
+        "type": "keyword",
+        "value": "(ORDER"
+      },
+      {
+        "type": "keyword",
+        "value": "BY"
+      },
+      {
+        "type": "column",
+        "value": "release_date"
+      },
+      {
+        "type": "keyword",
+        "value": "ASC)"
+      },
+      {
+        "type": "keyword",
+        "value": "AS"
+      },
+      {
+        "type": "column",
+        "value": "prev_track_duration"
+      },
+      {
+        "type": "keyword",
+        "value": "FROM"
+      },
+      {
+        "type": "table",
+        "value": "MusicTracks;"
+      }
+    ]
+  },
+  {
+    "drillNumber": 1307,
+    "subcluster": "14.1 Previous Value Lookup (LAG(col, 1))",
+    "level": "Level 2 (Basic LAG)",
+    "title": "Syntax #1307: Inspect the membership fee of the previously registered gym member",
+    "table": "GymMembers",
+    "scenario": "Inspect the membership fee of the previously registered gym member.",
+    "businessObjective": "Inspect the membership fee of the previously registered gym member.",
+    "schemaSnippet": "GymMembers analytical schema",
+    "targetQuery": "SELECT member_name, join_date, monthly_fee,\n  LAG(monthly_fee, 1) OVER (ORDER BY join_date ASC) AS prev_member_fee\nFROM GymMembers;",
+    "syntaxBlueprint": "SELECT col1, date_col, metric,\n  LAG(metric, 1) OVER (ORDER BY date_col ASC) AS prev_metric\nFROM table_name;",
+    "syntaxRule": "LAG(col, 1) accesses data from the preceding row without performing a self-join. The first row always returns NULL.",
+    "syntaxTrap": "Forgetting the ORDER BY clause inside OVER(); LAG requires a strict deterministic ordering to know what 'previous' means.",
+    "eli5Story": "Analytical Window Functions on GymMembers: Inspect the membership fee of the previously registered gym member.",
+    "commonMistakes": "Omitting ORDER BY inside OVER() for running totals, confusing PARTITION BY with GROUP BY, or attempting to filter window functions in WHERE without a CTE wrapper.",
+    "learningOutcomes": "Mastered 14.1 Previous Value Lookup (LAG(col, 1)) on GymMembers.",
+    "challengeSlots": [
+      {
+        "type": "keyword",
+        "value": "SELECT"
+      },
+      {
+        "type": "column",
+        "value": "member_name,"
+      },
+      {
+        "type": "column",
+        "value": "join_date,"
+      },
+      {
+        "type": "column",
+        "value": "monthly_fee,"
+      },
+      {
+        "type": "column",
+        "value": "LAG(monthly_fee,"
+      },
+      {
+        "type": "column",
+        "value": "1)"
+      },
+      {
+        "type": "keyword",
+        "value": "OVER"
+      },
+      {
+        "type": "keyword",
+        "value": "(ORDER"
+      },
+      {
+        "type": "keyword",
+        "value": "BY"
+      },
+      {
+        "type": "column",
+        "value": "join_date"
+      },
+      {
+        "type": "keyword",
+        "value": "ASC)"
+      },
+      {
+        "type": "keyword",
+        "value": "AS"
+      },
+      {
+        "type": "column",
+        "value": "prev_member_fee"
+      },
+      {
+        "type": "keyword",
+        "value": "FROM"
+      },
+      {
+        "type": "table",
+        "value": "GymMembers;"
+      }
+    ]
+  },
+  {
+    "drillNumber": 1308,
+    "subcluster": "14.1 Previous Value Lookup (LAG(col, 1))",
+    "level": "Level 2 (Basic LAG)",
+    "title": "Syntax #1308: Inspect the star rating of the previously published film review",
+    "table": "MovieReviews",
+    "scenario": "Inspect the star rating of the previously published film review.",
+    "businessObjective": "Inspect the star rating of the previously published film review.",
+    "schemaSnippet": "MovieReviews analytical schema",
+    "targetQuery": "SELECT movie_title, review_date, star_rating,\n  LAG(star_rating, 1) OVER (ORDER BY review_date ASC) AS prev_review_stars\nFROM MovieReviews;",
+    "syntaxBlueprint": "SELECT col1, date_col, metric,\n  LAG(metric, 1) OVER (ORDER BY date_col ASC) AS prev_metric\nFROM table_name;",
+    "syntaxRule": "LAG(col, 1) accesses data from the preceding row without performing a self-join. The first row always returns NULL.",
+    "syntaxTrap": "Forgetting the ORDER BY clause inside OVER(); LAG requires a strict deterministic ordering to know what 'previous' means.",
+    "eli5Story": "Analytical Window Functions on MovieReviews: Inspect the star rating of the previously published film review.",
+    "commonMistakes": "Omitting ORDER BY inside OVER() for running totals, confusing PARTITION BY with GROUP BY, or attempting to filter window functions in WHERE without a CTE wrapper.",
+    "learningOutcomes": "Mastered 14.1 Previous Value Lookup (LAG(col, 1)) on MovieReviews.",
+    "challengeSlots": [
+      {
+        "type": "keyword",
+        "value": "SELECT"
+      },
+      {
+        "type": "column",
+        "value": "movie_title,"
+      },
+      {
+        "type": "column",
+        "value": "review_date,"
+      },
+      {
+        "type": "column",
+        "value": "star_rating,"
+      },
+      {
+        "type": "column",
+        "value": "LAG(star_rating,"
+      },
+      {
+        "type": "column",
+        "value": "1)"
+      },
+      {
+        "type": "keyword",
+        "value": "OVER"
+      },
+      {
+        "type": "keyword",
+        "value": "(ORDER"
+      },
+      {
+        "type": "keyword",
+        "value": "BY"
+      },
+      {
+        "type": "column",
+        "value": "review_date"
+      },
+      {
+        "type": "keyword",
+        "value": "ASC)"
+      },
+      {
+        "type": "keyword",
+        "value": "AS"
+      },
+      {
+        "type": "column",
+        "value": "prev_review_stars"
+      },
+      {
+        "type": "keyword",
+        "value": "FROM"
+      },
+      {
+        "type": "table",
+        "value": "MovieReviews;"
+      }
+    ]
+  },
+  {
+    "drillNumber": 1309,
+    "subcluster": "14.1 Previous Value Lookup (LAG(col, 1))",
+    "level": "Level 2 (Basic LAG)",
+    "title": "Syntax #1309: Look up the ticket price of the previously scheduled flight departure",
+    "table": "FlightSchedule",
+    "scenario": "Look up the ticket price of the previously scheduled flight departure.",
+    "businessObjective": "Look up the ticket price of the previously scheduled flight departure.",
+    "schemaSnippet": "FlightSchedule analytical schema",
+    "targetQuery": "SELECT flight_id, departure_time, ticket_price,\n  LAG(ticket_price, 1) OVER (ORDER BY departure_time ASC) AS prev_flight_price\nFROM FlightSchedule;",
+    "syntaxBlueprint": "SELECT col1, date_col, metric,\n  LAG(metric, 1) OVER (ORDER BY date_col ASC) AS prev_metric\nFROM table_name;",
+    "syntaxRule": "LAG(col, 1) accesses data from the preceding row without performing a self-join. The first row always returns NULL.",
+    "syntaxTrap": "Forgetting the ORDER BY clause inside OVER(); LAG requires a strict deterministic ordering to know what 'previous' means.",
+    "eli5Story": "Analytical Window Functions on FlightSchedule: Look up the ticket price of the previously scheduled flight departure.",
+    "commonMistakes": "Omitting ORDER BY inside OVER() for running totals, confusing PARTITION BY with GROUP BY, or attempting to filter window functions in WHERE without a CTE wrapper.",
+    "learningOutcomes": "Mastered 14.1 Previous Value Lookup (LAG(col, 1)) on FlightSchedule.",
+    "challengeSlots": [
+      {
+        "type": "keyword",
+        "value": "SELECT"
+      },
+      {
+        "type": "column",
+        "value": "flight_id,"
+      },
+      {
+        "type": "column",
+        "value": "departure_time,"
+      },
+      {
+        "type": "column",
+        "value": "ticket_price,"
+      },
+      {
+        "type": "column",
+        "value": "LAG(ticket_price,"
+      },
+      {
+        "type": "column",
+        "value": "1)"
+      },
+      {
+        "type": "keyword",
+        "value": "OVER"
+      },
+      {
+        "type": "keyword",
+        "value": "(ORDER"
+      },
+      {
+        "type": "keyword",
+        "value": "BY"
+      },
+      {
+        "type": "column",
+        "value": "departure_time"
+      },
+      {
+        "type": "keyword",
+        "value": "ASC)"
+      },
+      {
+        "type": "keyword",
+        "value": "AS"
+      },
+      {
+        "type": "column",
+        "value": "prev_flight_price"
+      },
+      {
+        "type": "keyword",
+        "value": "FROM"
+      },
+      {
+        "type": "table",
+        "value": "FlightSchedule;"
+      }
+    ]
+  },
+  {
+    "drillNumber": 1310,
+    "subcluster": "14.1 Previous Value Lookup (LAG(col, 1))",
+    "level": "Level 2 (Basic LAG)",
+    "title": "Syntax #1310: Look up the weight of the previously seen clinic animal patient",
+    "table": "PetClinic",
+    "scenario": "Look up the weight of the previously seen clinic animal patient.",
+    "businessObjective": "Look up the weight of the previously seen clinic animal patient.",
+    "schemaSnippet": "PetClinic analytical schema",
+    "targetQuery": "SELECT pet_name, visit_date, weight_kg,\n  LAG(weight_kg, 1) OVER (ORDER BY visit_date ASC) AS prev_patient_weight\nFROM PetClinic;",
+    "syntaxBlueprint": "SELECT col1, date_col, metric,\n  LAG(metric, 1) OVER (ORDER BY date_col ASC) AS prev_metric\nFROM table_name;",
+    "syntaxRule": "LAG(col, 1) accesses data from the preceding row without performing a self-join. The first row always returns NULL.",
+    "syntaxTrap": "Forgetting the ORDER BY clause inside OVER(); LAG requires a strict deterministic ordering to know what 'previous' means.",
+    "eli5Story": "Analytical Window Functions on PetClinic: Look up the weight of the previously seen clinic animal patient.",
+    "commonMistakes": "Omitting ORDER BY inside OVER() for running totals, confusing PARTITION BY with GROUP BY, or attempting to filter window functions in WHERE without a CTE wrapper.",
+    "learningOutcomes": "Mastered 14.1 Previous Value Lookup (LAG(col, 1)) on PetClinic.",
+    "challengeSlots": [
+      {
+        "type": "keyword",
+        "value": "SELECT"
+      },
+      {
+        "type": "column",
+        "value": "pet_name,"
+      },
+      {
+        "type": "column",
+        "value": "visit_date,"
+      },
+      {
+        "type": "column",
+        "value": "weight_kg,"
+      },
+      {
+        "type": "column",
+        "value": "LAG(weight_kg,"
+      },
+      {
+        "type": "column",
+        "value": "1)"
+      },
+      {
+        "type": "keyword",
+        "value": "OVER"
+      },
+      {
+        "type": "keyword",
+        "value": "(ORDER"
+      },
+      {
+        "type": "keyword",
+        "value": "BY"
+      },
+      {
+        "type": "column",
+        "value": "visit_date"
+      },
+      {
+        "type": "keyword",
+        "value": "ASC)"
+      },
+      {
+        "type": "keyword",
+        "value": "AS"
+      },
+      {
+        "type": "column",
+        "value": "prev_patient_weight"
+      },
+      {
+        "type": "keyword",
+        "value": "FROM"
+      },
+      {
+        "type": "table",
+        "value": "PetClinic;"
+      }
+    ]
+  },
+  {
+    "drillNumber": 1311,
+    "subcluster": "14.2 Partitioned LAG() by Entity Group",
+    "level": "Level 2 (Partitioned LAG)",
+    "title": "Syntax #1311: Retrieve each customer's previous order amount partitioned by customer name",
+    "table": "Orders",
+    "scenario": "Retrieve each customer's previous order amount partitioned by customer name.",
+    "businessObjective": "Retrieve each customer's previous order amount partitioned by customer name.",
+    "schemaSnippet": "Orders analytical schema",
+    "targetQuery": "SELECT order_id, customer_name, order_date, total_amount,\n  LAG(total_amount, 1) OVER (PARTITION BY customer_name ORDER BY order_date ASC) AS prev_customer_order\nFROM Orders;",
+    "syntaxBlueprint": "SELECT entity_id, date_col, metric,\n  LAG(metric, 1) OVER (PARTITION BY entity_id ORDER BY date_col ASC) AS prev_entity_val\nFROM table_name;",
+    "syntaxRule": "Combining LAG() with PARTITION BY guarantees that the offset only references the previous row FOR THAT SPECIFIC ENTITY (e.g. same customer).",
+    "syntaxTrap": "Omitting PARTITION BY will accidentally bleed the previous customer's last order into the new customer's first order.",
+    "eli5Story": "Analytical Window Functions on Orders: Retrieve each customer's previous order amount partitioned by customer name.",
+    "commonMistakes": "Omitting ORDER BY inside OVER() for running totals, confusing PARTITION BY with GROUP BY, or attempting to filter window functions in WHERE without a CTE wrapper.",
+    "learningOutcomes": "Mastered 14.2 Partitioned LAG() by Entity Group on Orders.",
+    "challengeSlots": [
+      {
+        "type": "keyword",
+        "value": "SELECT"
+      },
+      {
+        "type": "column",
+        "value": "order_id,"
+      },
+      {
+        "type": "column",
+        "value": "customer_name,"
+      },
+      {
+        "type": "column",
+        "value": "order_date,"
+      },
+      {
+        "type": "column",
+        "value": "total_amount,"
+      },
+      {
+        "type": "column",
+        "value": "LAG(total_amount,"
+      },
+      {
+        "type": "column",
+        "value": "1)"
+      },
+      {
+        "type": "keyword",
+        "value": "OVER"
+      },
+      {
+        "type": "keyword",
+        "value": "(PARTITION"
+      },
+      {
+        "type": "keyword",
+        "value": "BY"
+      },
+      {
+        "type": "column",
+        "value": "customer_name"
+      },
+      {
+        "type": "keyword",
+        "value": "ORDER"
+      },
+      {
+        "type": "keyword",
+        "value": "BY"
+      },
+      {
+        "type": "column",
+        "value": "order_date"
+      },
+      {
+        "type": "keyword",
+        "value": "ASC)"
+      },
+      {
+        "type": "keyword",
+        "value": "AS"
+      },
+      {
+        "type": "column",
+        "value": "prev_customer_order"
+      },
+      {
+        "type": "keyword",
+        "value": "FROM"
+      },
+      {
+        "type": "table",
+        "value": "Orders;"
+      }
+    ]
+  },
+  {
+    "drillNumber": 1312,
+    "subcluster": "14.2 Partitioned LAG() by Entity Group",
+    "level": "Level 2 (Partitioned LAG)",
+    "title": "Syntax #1312: Retrieve the GPA of the previous student who enrolled in the same major",
+    "table": "Students",
+    "scenario": "Retrieve the GPA of the previous student who enrolled in the same major.",
+    "businessObjective": "Retrieve the GPA of the previous student who enrolled in the same major.",
+    "schemaSnippet": "Students analytical schema",
+    "targetQuery": "SELECT full_name, major, enrolled_year, gpa,\n  LAG(gpa, 1) OVER (PARTITION BY major ORDER BY enrolled_year ASC) AS prev_major_gpa\nFROM Students;",
+    "syntaxBlueprint": "SELECT entity_id, date_col, metric,\n  LAG(metric, 1) OVER (PARTITION BY entity_id ORDER BY date_col ASC) AS prev_entity_val\nFROM table_name;",
+    "syntaxRule": "Combining LAG() with PARTITION BY guarantees that the offset only references the previous row FOR THAT SPECIFIC ENTITY (e.g. same customer).",
+    "syntaxTrap": "Omitting PARTITION BY will accidentally bleed the previous customer's last order into the new customer's first order.",
+    "eli5Story": "Analytical Window Functions on Students: Retrieve the GPA of the previous student who enrolled in the same major.",
+    "commonMistakes": "Omitting ORDER BY inside OVER() for running totals, confusing PARTITION BY with GROUP BY, or attempting to filter window functions in WHERE without a CTE wrapper.",
+    "learningOutcomes": "Mastered 14.2 Partitioned LAG() by Entity Group on Students.",
+    "challengeSlots": [
+      {
+        "type": "keyword",
+        "value": "SELECT"
+      },
+      {
+        "type": "column",
+        "value": "full_name,"
+      },
+      {
+        "type": "column",
+        "value": "major,"
+      },
+      {
+        "type": "column",
+        "value": "enrolled_year,"
+      },
+      {
+        "type": "column",
+        "value": "gpa,"
+      },
+      {
+        "type": "column",
+        "value": "LAG(gpa,"
+      },
+      {
+        "type": "column",
+        "value": "1)"
+      },
+      {
+        "type": "keyword",
+        "value": "OVER"
+      },
+      {
+        "type": "keyword",
+        "value": "(PARTITION"
+      },
+      {
+        "type": "keyword",
+        "value": "BY"
+      },
+      {
+        "type": "column",
+        "value": "major"
+      },
+      {
+        "type": "keyword",
+        "value": "ORDER"
+      },
+      {
+        "type": "keyword",
+        "value": "BY"
+      },
+      {
+        "type": "column",
+        "value": "enrolled_year"
+      },
+      {
+        "type": "keyword",
+        "value": "ASC)"
+      },
+      {
+        "type": "keyword",
+        "value": "AS"
+      },
+      {
+        "type": "column",
+        "value": "prev_major_gpa"
+      },
+      {
+        "type": "keyword",
+        "value": "FROM"
+      },
+      {
+        "type": "table",
+        "value": "Students;"
+      }
+    ]
+  },
+  {
+    "drillNumber": 1313,
+    "subcluster": "14.2 Partitioned LAG() by Entity Group",
+    "level": "Level 2 (Partitioned LAG)",
+    "title": "Syntax #1313: Look up the price of the author's previous book release",
+    "table": "Books",
+    "scenario": "Look up the price of the author's previous book release.",
+    "businessObjective": "Look up the price of the author's previous book release.",
+    "schemaSnippet": "Books analytical schema",
+    "targetQuery": "SELECT title, author, published_date, price,\n  LAG(price, 1) OVER (PARTITION BY author ORDER BY published_date ASC) AS prev_author_book_price\nFROM Books;",
+    "syntaxBlueprint": "SELECT entity_id, date_col, metric,\n  LAG(metric, 1) OVER (PARTITION BY entity_id ORDER BY date_col ASC) AS prev_entity_val\nFROM table_name;",
+    "syntaxRule": "Combining LAG() with PARTITION BY guarantees that the offset only references the previous row FOR THAT SPECIFIC ENTITY (e.g. same customer).",
+    "syntaxTrap": "Omitting PARTITION BY will accidentally bleed the previous customer's last order into the new customer's first order.",
+    "eli5Story": "Analytical Window Functions on Books: Look up the price of the author's previous book release.",
+    "commonMistakes": "Omitting ORDER BY inside OVER() for running totals, confusing PARTITION BY with GROUP BY, or attempting to filter window functions in WHERE without a CTE wrapper.",
+    "learningOutcomes": "Mastered 14.2 Partitioned LAG() by Entity Group on Books.",
+    "challengeSlots": [
+      {
+        "type": "keyword",
+        "value": "SELECT"
+      },
+      {
+        "type": "column",
+        "value": "title,"
+      },
+      {
+        "type": "column",
+        "value": "author,"
+      },
+      {
+        "type": "column",
+        "value": "published_date,"
+      },
+      {
+        "type": "column",
+        "value": "price,"
+      },
+      {
+        "type": "column",
+        "value": "LAG(price,"
+      },
+      {
+        "type": "column",
+        "value": "1)"
+      },
+      {
+        "type": "keyword",
+        "value": "OVER"
+      },
+      {
+        "type": "keyword",
+        "value": "(PARTITION"
+      },
+      {
+        "type": "keyword",
+        "value": "BY"
+      },
+      {
+        "type": "column",
+        "value": "author"
+      },
+      {
+        "type": "keyword",
+        "value": "ORDER"
+      },
+      {
+        "type": "keyword",
+        "value": "BY"
+      },
+      {
+        "type": "column",
+        "value": "published_date"
+      },
+      {
+        "type": "keyword",
+        "value": "ASC)"
+      },
+      {
+        "type": "keyword",
+        "value": "AS"
+      },
+      {
+        "type": "column",
+        "value": "prev_author_book_price"
+      },
+      {
+        "type": "keyword",
+        "value": "FROM"
+      },
+      {
+        "type": "table",
+        "value": "Books;"
+      }
+    ]
+  },
+  {
+    "drillNumber": 1314,
+    "subcluster": "14.2 Partitioned LAG() by Entity Group",
+    "level": "Level 2 (Partitioned LAG)",
+    "title": "Syntax #1314: Look up the salary of the previous employee hired within the same department",
+    "table": "Employees",
+    "scenario": "Look up the salary of the previous employee hired within the same department.",
+    "businessObjective": "Look up the salary of the previous employee hired within the same department.",
+    "schemaSnippet": "Employees analytical schema",
+    "targetQuery": "SELECT first_name, department, hire_date, salary,\n  LAG(salary, 1) OVER (PARTITION BY department ORDER BY hire_date ASC) AS prev_dept_hire_salary\nFROM Employees;",
+    "syntaxBlueprint": "SELECT entity_id, date_col, metric,\n  LAG(metric, 1) OVER (PARTITION BY entity_id ORDER BY date_col ASC) AS prev_entity_val\nFROM table_name;",
+    "syntaxRule": "Combining LAG() with PARTITION BY guarantees that the offset only references the previous row FOR THAT SPECIFIC ENTITY (e.g. same customer).",
+    "syntaxTrap": "Omitting PARTITION BY will accidentally bleed the previous customer's last order into the new customer's first order.",
+    "eli5Story": "Analytical Window Functions on Employees: Look up the salary of the previous employee hired within the same department.",
+    "commonMistakes": "Omitting ORDER BY inside OVER() for running totals, confusing PARTITION BY with GROUP BY, or attempting to filter window functions in WHERE without a CTE wrapper.",
+    "learningOutcomes": "Mastered 14.2 Partitioned LAG() by Entity Group on Employees.",
+    "challengeSlots": [
+      {
+        "type": "keyword",
+        "value": "SELECT"
+      },
+      {
+        "type": "column",
+        "value": "first_name,"
+      },
+      {
+        "type": "column",
+        "value": "department,"
+      },
+      {
+        "type": "column",
+        "value": "hire_date,"
+      },
+      {
+        "type": "column",
+        "value": "salary,"
+      },
+      {
+        "type": "column",
+        "value": "LAG(salary,"
+      },
+      {
+        "type": "column",
+        "value": "1)"
+      },
+      {
+        "type": "keyword",
+        "value": "OVER"
+      },
+      {
+        "type": "keyword",
+        "value": "(PARTITION"
+      },
+      {
+        "type": "keyword",
+        "value": "BY"
+      },
+      {
+        "type": "column",
+        "value": "department"
+      },
+      {
+        "type": "keyword",
+        "value": "ORDER"
+      },
+      {
+        "type": "keyword",
+        "value": "BY"
+      },
+      {
+        "type": "column",
+        "value": "hire_date"
+      },
+      {
+        "type": "keyword",
+        "value": "ASC)"
+      },
+      {
+        "type": "keyword",
+        "value": "AS"
+      },
+      {
+        "type": "column",
+        "value": "prev_dept_hire_salary"
+      },
+      {
+        "type": "keyword",
+        "value": "FROM"
+      },
+      {
+        "type": "table",
+        "value": "Employees;"
+      }
+    ]
+  },
+  {
+    "drillNumber": 1315,
+    "subcluster": "14.2 Partitioned LAG() by Entity Group",
+    "level": "Level 2 (Partitioned LAG)",
+    "title": "Syntax #1315: Look up the price of the previous item in the same category",
+    "table": "GroceryItems",
+    "scenario": "Look up the price of the previous item in the same category.",
+    "businessObjective": "Look up the price of the previous item in the same category.",
+    "schemaSnippet": "GroceryItems analytical schema",
+    "targetQuery": "SELECT item_name, category, expiry_date, unit_price,\n  LAG(unit_price, 1) OVER (PARTITION BY category ORDER BY expiry_date ASC) AS prev_category_item_price\nFROM GroceryItems;",
+    "syntaxBlueprint": "SELECT entity_id, date_col, metric,\n  LAG(metric, 1) OVER (PARTITION BY entity_id ORDER BY date_col ASC) AS prev_entity_val\nFROM table_name;",
+    "syntaxRule": "Combining LAG() with PARTITION BY guarantees that the offset only references the previous row FOR THAT SPECIFIC ENTITY (e.g. same customer).",
+    "syntaxTrap": "Omitting PARTITION BY will accidentally bleed the previous customer's last order into the new customer's first order.",
+    "eli5Story": "Analytical Window Functions on GroceryItems: Look up the price of the previous item in the same category.",
+    "commonMistakes": "Omitting ORDER BY inside OVER() for running totals, confusing PARTITION BY with GROUP BY, or attempting to filter window functions in WHERE without a CTE wrapper.",
+    "learningOutcomes": "Mastered 14.2 Partitioned LAG() by Entity Group on GroceryItems.",
+    "challengeSlots": [
+      {
+        "type": "keyword",
+        "value": "SELECT"
+      },
+      {
+        "type": "column",
+        "value": "item_name,"
+      },
+      {
+        "type": "column",
+        "value": "category,"
+      },
+      {
+        "type": "column",
+        "value": "expiry_date,"
+      },
+      {
+        "type": "column",
+        "value": "unit_price,"
+      },
+      {
+        "type": "column",
+        "value": "LAG(unit_price,"
+      },
+      {
+        "type": "column",
+        "value": "1)"
+      },
+      {
+        "type": "keyword",
+        "value": "OVER"
+      },
+      {
+        "type": "keyword",
+        "value": "(PARTITION"
+      },
+      {
+        "type": "keyword",
+        "value": "BY"
+      },
+      {
+        "type": "column",
+        "value": "category"
+      },
+      {
+        "type": "keyword",
+        "value": "ORDER"
+      },
+      {
+        "type": "keyword",
+        "value": "BY"
+      },
+      {
+        "type": "column",
+        "value": "expiry_date"
+      },
+      {
+        "type": "keyword",
+        "value": "ASC)"
+      },
+      {
+        "type": "keyword",
+        "value": "AS"
+      },
+      {
+        "type": "column",
+        "value": "prev_category_item_price"
+      },
+      {
+        "type": "keyword",
+        "value": "FROM"
+      },
+      {
+        "type": "table",
+        "value": "GroceryItems;"
+      }
+    ]
+  },
+  {
+    "drillNumber": 1316,
+    "subcluster": "14.2 Partitioned LAG() by Entity Group",
+    "level": "Level 2 (Partitioned LAG)",
+    "title": "Syntax #1316: Look up the runtime duration of the artist's previous song release",
+    "table": "MusicTracks",
+    "scenario": "Look up the runtime duration of the artist's previous song release.",
+    "businessObjective": "Look up the runtime duration of the artist's previous song release.",
+    "schemaSnippet": "MusicTracks analytical schema",
+    "targetQuery": "SELECT track_title, artist_name, release_date, duration_seconds,\n  LAG(duration_seconds, 1) OVER (PARTITION BY artist_name ORDER BY release_date ASC) AS prev_artist_track_len\nFROM MusicTracks;",
+    "syntaxBlueprint": "SELECT entity_id, date_col, metric,\n  LAG(metric, 1) OVER (PARTITION BY entity_id ORDER BY date_col ASC) AS prev_entity_val\nFROM table_name;",
+    "syntaxRule": "Combining LAG() with PARTITION BY guarantees that the offset only references the previous row FOR THAT SPECIFIC ENTITY (e.g. same customer).",
+    "syntaxTrap": "Omitting PARTITION BY will accidentally bleed the previous customer's last order into the new customer's first order.",
+    "eli5Story": "Analytical Window Functions on MusicTracks: Look up the runtime duration of the artist's previous song release.",
+    "commonMistakes": "Omitting ORDER BY inside OVER() for running totals, confusing PARTITION BY with GROUP BY, or attempting to filter window functions in WHERE without a CTE wrapper.",
+    "learningOutcomes": "Mastered 14.2 Partitioned LAG() by Entity Group on MusicTracks.",
+    "challengeSlots": [
+      {
+        "type": "keyword",
+        "value": "SELECT"
+      },
+      {
+        "type": "column",
+        "value": "track_title,"
+      },
+      {
+        "type": "column",
+        "value": "artist_name,"
+      },
+      {
+        "type": "column",
+        "value": "release_date,"
+      },
+      {
+        "type": "column",
+        "value": "duration_seconds,"
+      },
+      {
+        "type": "column",
+        "value": "LAG(duration_seconds,"
+      },
+      {
+        "type": "column",
+        "value": "1)"
+      },
+      {
+        "type": "keyword",
+        "value": "OVER"
+      },
+      {
+        "type": "keyword",
+        "value": "(PARTITION"
+      },
+      {
+        "type": "keyword",
+        "value": "BY"
+      },
+      {
+        "type": "column",
+        "value": "artist_name"
+      },
+      {
+        "type": "keyword",
+        "value": "ORDER"
+      },
+      {
+        "type": "keyword",
+        "value": "BY"
+      },
+      {
+        "type": "column",
+        "value": "release_date"
+      },
+      {
+        "type": "keyword",
+        "value": "ASC)"
+      },
+      {
+        "type": "keyword",
+        "value": "AS"
+      },
+      {
+        "type": "column",
+        "value": "prev_artist_track_len"
+      },
+      {
+        "type": "keyword",
+        "value": "FROM"
+      },
+      {
+        "type": "table",
+        "value": "MusicTracks;"
+      }
+    ]
+  },
+  {
+    "drillNumber": 1317,
+    "subcluster": "14.2 Partitioned LAG() by Entity Group",
+    "level": "Level 2 (Partitioned LAG)",
+    "title": "Syntax #1317: Look up the previous signup fee within the same membership plan",
+    "table": "GymMembers",
+    "scenario": "Look up the previous signup fee within the same membership plan.",
+    "businessObjective": "Look up the previous signup fee within the same membership plan.",
+    "schemaSnippet": "GymMembers analytical schema",
+    "targetQuery": "SELECT member_name, membership_plan, join_date, monthly_fee,\n  LAG(monthly_fee, 1) OVER (PARTITION BY membership_plan ORDER BY join_date ASC) AS prev_plan_signup_fee\nFROM GymMembers;",
+    "syntaxBlueprint": "SELECT entity_id, date_col, metric,\n  LAG(metric, 1) OVER (PARTITION BY entity_id ORDER BY date_col ASC) AS prev_entity_val\nFROM table_name;",
+    "syntaxRule": "Combining LAG() with PARTITION BY guarantees that the offset only references the previous row FOR THAT SPECIFIC ENTITY (e.g. same customer).",
+    "syntaxTrap": "Omitting PARTITION BY will accidentally bleed the previous customer's last order into the new customer's first order.",
+    "eli5Story": "Analytical Window Functions on GymMembers: Look up the previous signup fee within the same membership plan.",
+    "commonMistakes": "Omitting ORDER BY inside OVER() for running totals, confusing PARTITION BY with GROUP BY, or attempting to filter window functions in WHERE without a CTE wrapper.",
+    "learningOutcomes": "Mastered 14.2 Partitioned LAG() by Entity Group on GymMembers.",
+    "challengeSlots": [
+      {
+        "type": "keyword",
+        "value": "SELECT"
+      },
+      {
+        "type": "column",
+        "value": "member_name,"
+      },
+      {
+        "type": "column",
+        "value": "membership_plan,"
+      },
+      {
+        "type": "column",
+        "value": "join_date,"
+      },
+      {
+        "type": "column",
+        "value": "monthly_fee,"
+      },
+      {
+        "type": "column",
+        "value": "LAG(monthly_fee,"
+      },
+      {
+        "type": "column",
+        "value": "1)"
+      },
+      {
+        "type": "keyword",
+        "value": "OVER"
+      },
+      {
+        "type": "keyword",
+        "value": "(PARTITION"
+      },
+      {
+        "type": "keyword",
+        "value": "BY"
+      },
+      {
+        "type": "column",
+        "value": "membership_plan"
+      },
+      {
+        "type": "keyword",
+        "value": "ORDER"
+      },
+      {
+        "type": "keyword",
+        "value": "BY"
+      },
+      {
+        "type": "column",
+        "value": "join_date"
+      },
+      {
+        "type": "keyword",
+        "value": "ASC)"
+      },
+      {
+        "type": "keyword",
+        "value": "AS"
+      },
+      {
+        "type": "column",
+        "value": "prev_plan_signup_fee"
+      },
+      {
+        "type": "keyword",
+        "value": "FROM"
+      },
+      {
+        "type": "table",
+        "value": "GymMembers;"
+      }
+    ]
+  },
+  {
+    "drillNumber": 1318,
+    "subcluster": "14.2 Partitioned LAG() by Entity Group",
+    "level": "Level 2 (Partitioned LAG)",
+    "title": "Syntax #1318: Retrieve the star rating given by the same critic in their previous review",
+    "table": "MovieReviews",
+    "scenario": "Retrieve the star rating given by the same critic in their previous review.",
+    "businessObjective": "Retrieve the star rating given by the same critic in their previous review.",
+    "schemaSnippet": "MovieReviews analytical schema",
+    "targetQuery": "SELECT movie_title, reviewer_name, review_date, star_rating,\n  LAG(star_rating, 1) OVER (PARTITION BY reviewer_name ORDER BY review_date ASC) AS prev_critic_score\nFROM MovieReviews;",
+    "syntaxBlueprint": "SELECT entity_id, date_col, metric,\n  LAG(metric, 1) OVER (PARTITION BY entity_id ORDER BY date_col ASC) AS prev_entity_val\nFROM table_name;",
+    "syntaxRule": "Combining LAG() with PARTITION BY guarantees that the offset only references the previous row FOR THAT SPECIFIC ENTITY (e.g. same customer).",
+    "syntaxTrap": "Omitting PARTITION BY will accidentally bleed the previous customer's last order into the new customer's first order.",
+    "eli5Story": "Analytical Window Functions on MovieReviews: Retrieve the star rating given by the same critic in their previous review.",
+    "commonMistakes": "Omitting ORDER BY inside OVER() for running totals, confusing PARTITION BY with GROUP BY, or attempting to filter window functions in WHERE without a CTE wrapper.",
+    "learningOutcomes": "Mastered 14.2 Partitioned LAG() by Entity Group on MovieReviews.",
+    "challengeSlots": [
+      {
+        "type": "keyword",
+        "value": "SELECT"
+      },
+      {
+        "type": "column",
+        "value": "movie_title,"
+      },
+      {
+        "type": "column",
+        "value": "reviewer_name,"
+      },
+      {
+        "type": "column",
+        "value": "review_date,"
+      },
+      {
+        "type": "column",
+        "value": "star_rating,"
+      },
+      {
+        "type": "column",
+        "value": "LAG(star_rating,"
+      },
+      {
+        "type": "column",
+        "value": "1)"
+      },
+      {
+        "type": "keyword",
+        "value": "OVER"
+      },
+      {
+        "type": "keyword",
+        "value": "(PARTITION"
+      },
+      {
+        "type": "keyword",
+        "value": "BY"
+      },
+      {
+        "type": "column",
+        "value": "reviewer_name"
+      },
+      {
+        "type": "keyword",
+        "value": "ORDER"
+      },
+      {
+        "type": "keyword",
+        "value": "BY"
+      },
+      {
+        "type": "column",
+        "value": "review_date"
+      },
+      {
+        "type": "keyword",
+        "value": "ASC)"
+      },
+      {
+        "type": "keyword",
+        "value": "AS"
+      },
+      {
+        "type": "column",
+        "value": "prev_critic_score"
+      },
+      {
+        "type": "keyword",
+        "value": "FROM"
+      },
+      {
+        "type": "table",
+        "value": "MovieReviews;"
+      }
+    ]
+  },
+  {
+    "drillNumber": 1319,
+    "subcluster": "14.2 Partitioned LAG() by Entity Group",
+    "level": "Level 2 (Partitioned LAG)",
+    "title": "Syntax #1319: Look up the previous flight fare charged by the same airline carrier",
+    "table": "FlightSchedule",
+    "scenario": "Look up the previous flight fare charged by the same airline carrier.",
+    "businessObjective": "Look up the previous flight fare charged by the same airline carrier.",
+    "schemaSnippet": "FlightSchedule analytical schema",
+    "targetQuery": "SELECT flight_id, airline_id, departure_time, ticket_price,\n  LAG(ticket_price, 1) OVER (PARTITION BY airline_id ORDER BY departure_time ASC) AS prev_airline_fare\nFROM FlightSchedule;",
+    "syntaxBlueprint": "SELECT entity_id, date_col, metric,\n  LAG(metric, 1) OVER (PARTITION BY entity_id ORDER BY date_col ASC) AS prev_entity_val\nFROM table_name;",
+    "syntaxRule": "Combining LAG() with PARTITION BY guarantees that the offset only references the previous row FOR THAT SPECIFIC ENTITY (e.g. same customer).",
+    "syntaxTrap": "Omitting PARTITION BY will accidentally bleed the previous customer's last order into the new customer's first order.",
+    "eli5Story": "Analytical Window Functions on FlightSchedule: Look up the previous flight fare charged by the same airline carrier.",
+    "commonMistakes": "Omitting ORDER BY inside OVER() for running totals, confusing PARTITION BY with GROUP BY, or attempting to filter window functions in WHERE without a CTE wrapper.",
+    "learningOutcomes": "Mastered 14.2 Partitioned LAG() by Entity Group on FlightSchedule.",
+    "challengeSlots": [
+      {
+        "type": "keyword",
+        "value": "SELECT"
+      },
+      {
+        "type": "column",
+        "value": "flight_id,"
+      },
+      {
+        "type": "column",
+        "value": "airline_id,"
+      },
+      {
+        "type": "column",
+        "value": "departure_time,"
+      },
+      {
+        "type": "column",
+        "value": "ticket_price,"
+      },
+      {
+        "type": "column",
+        "value": "LAG(ticket_price,"
+      },
+      {
+        "type": "column",
+        "value": "1)"
+      },
+      {
+        "type": "keyword",
+        "value": "OVER"
+      },
+      {
+        "type": "keyword",
+        "value": "(PARTITION"
+      },
+      {
+        "type": "keyword",
+        "value": "BY"
+      },
+      {
+        "type": "column",
+        "value": "airline_id"
+      },
+      {
+        "type": "keyword",
+        "value": "ORDER"
+      },
+      {
+        "type": "keyword",
+        "value": "BY"
+      },
+      {
+        "type": "column",
+        "value": "departure_time"
+      },
+      {
+        "type": "keyword",
+        "value": "ASC)"
+      },
+      {
+        "type": "keyword",
+        "value": "AS"
+      },
+      {
+        "type": "column",
+        "value": "prev_airline_fare"
+      },
+      {
+        "type": "keyword",
+        "value": "FROM"
+      },
+      {
+        "type": "table",
+        "value": "FlightSchedule;"
+      }
+    ]
+  },
+  {
+    "drillNumber": 1320,
+    "subcluster": "14.2 Partitioned LAG() by Entity Group",
+    "level": "Level 2 (Partitioned LAG)",
+    "title": "Syntax #1320: Track patient weight history: look up the pet's weight on their previous clinic visit",
+    "table": "PetClinic",
+    "scenario": "Track patient weight history: look up the pet's weight on their previous clinic visit.",
+    "businessObjective": "Track patient weight history: look up the pet's weight on their previous clinic visit.",
+    "schemaSnippet": "PetClinic analytical schema",
+    "targetQuery": "SELECT pet_name, visit_date, weight_kg,\n  LAG(weight_kg, 1) OVER (PARTITION BY pet_name ORDER BY visit_date ASC) AS prev_visit_weight\nFROM PetClinic;",
+    "syntaxBlueprint": "SELECT entity_id, date_col, metric,\n  LAG(metric, 1) OVER (PARTITION BY entity_id ORDER BY date_col ASC) AS prev_entity_val\nFROM table_name;",
+    "syntaxRule": "Combining LAG() with PARTITION BY guarantees that the offset only references the previous row FOR THAT SPECIFIC ENTITY (e.g. same customer).",
+    "syntaxTrap": "Omitting PARTITION BY will accidentally bleed the previous customer's last order into the new customer's first order.",
+    "eli5Story": "Analytical Window Functions on PetClinic: Track patient weight history: look up the pet's weight on their previous clinic visit.",
+    "commonMistakes": "Omitting ORDER BY inside OVER() for running totals, confusing PARTITION BY with GROUP BY, or attempting to filter window functions in WHERE without a CTE wrapper.",
+    "learningOutcomes": "Mastered 14.2 Partitioned LAG() by Entity Group on PetClinic.",
+    "challengeSlots": [
+      {
+        "type": "keyword",
+        "value": "SELECT"
+      },
+      {
+        "type": "column",
+        "value": "pet_name,"
+      },
+      {
+        "type": "column",
+        "value": "visit_date,"
+      },
+      {
+        "type": "column",
+        "value": "weight_kg,"
+      },
+      {
+        "type": "column",
+        "value": "LAG(weight_kg,"
+      },
+      {
+        "type": "column",
+        "value": "1)"
+      },
+      {
+        "type": "keyword",
+        "value": "OVER"
+      },
+      {
+        "type": "keyword",
+        "value": "(PARTITION"
+      },
+      {
+        "type": "keyword",
+        "value": "BY"
+      },
+      {
+        "type": "column",
+        "value": "pet_name"
+      },
+      {
+        "type": "keyword",
+        "value": "ORDER"
+      },
+      {
+        "type": "keyword",
+        "value": "BY"
+      },
+      {
+        "type": "column",
+        "value": "visit_date"
+      },
+      {
+        "type": "keyword",
+        "value": "ASC)"
+      },
+      {
+        "type": "keyword",
+        "value": "AS"
+      },
+      {
+        "type": "column",
+        "value": "prev_visit_weight"
+      },
+      {
+        "type": "keyword",
+        "value": "FROM"
+      },
+      {
+        "type": "table",
+        "value": "PetClinic;"
+      }
+    ]
+  },
+  {
+    "drillNumber": 1321,
+    "subcluster": "14.3 Future Value Lookup (LEAD(col, 1))",
+    "level": "Level 2 (Basic LEAD)",
+    "title": "Syntax #1321: Look ahead to identify each customer's next subsequent purchase date",
+    "table": "Orders",
+    "scenario": "Look ahead to identify each customer's next subsequent purchase date.",
+    "businessObjective": "Look ahead to identify each customer's next subsequent purchase date.",
+    "schemaSnippet": "Orders analytical schema",
+    "targetQuery": "SELECT order_id, customer_name, order_date,\n  LEAD(order_date, 1) OVER (PARTITION BY customer_name ORDER BY order_date ASC) AS next_order_date\nFROM Orders;",
+    "syntaxBlueprint": "SELECT col1, date_col, metric,\n  LEAD(metric, 1) OVER (ORDER BY date_col ASC) AS next_metric\nFROM table_name;",
+    "syntaxRule": "LEAD(col, 1) looks forward to the next row in the partition. The final row always returns NULL.",
+    "syntaxTrap": "Using LEAD() when you intended to look backward; LEAD is for next events, LAG is for past events.",
+    "eli5Story": "Analytical Window Functions on Orders: Look ahead to identify each customer's next subsequent purchase date.",
+    "commonMistakes": "Omitting ORDER BY inside OVER() for running totals, confusing PARTITION BY with GROUP BY, or attempting to filter window functions in WHERE without a CTE wrapper.",
+    "learningOutcomes": "Mastered 14.3 Future Value Lookup (LEAD(col, 1)) on Orders.",
+    "challengeSlots": [
+      {
+        "type": "keyword",
+        "value": "SELECT"
+      },
+      {
+        "type": "column",
+        "value": "order_id,"
+      },
+      {
+        "type": "column",
+        "value": "customer_name,"
+      },
+      {
+        "type": "column",
+        "value": "order_date,"
+      },
+      {
+        "type": "column",
+        "value": "LEAD(order_date,"
+      },
+      {
+        "type": "column",
+        "value": "1)"
+      },
+      {
+        "type": "keyword",
+        "value": "OVER"
+      },
+      {
+        "type": "keyword",
+        "value": "(PARTITION"
+      },
+      {
+        "type": "keyword",
+        "value": "BY"
+      },
+      {
+        "type": "column",
+        "value": "customer_name"
+      },
+      {
+        "type": "keyword",
+        "value": "ORDER"
+      },
+      {
+        "type": "keyword",
+        "value": "BY"
+      },
+      {
+        "type": "column",
+        "value": "order_date"
+      },
+      {
+        "type": "keyword",
+        "value": "ASC)"
+      },
+      {
+        "type": "keyword",
+        "value": "AS"
+      },
+      {
+        "type": "column",
+        "value": "next_order_date"
+      },
+      {
+        "type": "keyword",
+        "value": "FROM"
+      },
+      {
+        "type": "table",
+        "value": "Orders;"
+      }
+    ]
+  },
+  {
+    "drillNumber": 1322,
+    "subcluster": "14.3 Future Value Lookup (LEAD(col, 1))",
+    "level": "Level 2 (Basic LEAD)",
+    "title": "Syntax #1322: Inspect the enrollment year of the next chronological student",
+    "table": "Students",
+    "scenario": "Inspect the enrollment year of the next chronological student.",
+    "businessObjective": "Inspect the enrollment year of the next chronological student.",
+    "schemaSnippet": "Students analytical schema",
+    "targetQuery": "SELECT full_name, enrolled_year,\n  LEAD(enrolled_year, 1) OVER (ORDER BY enrolled_year ASC) AS next_enroll_year\nFROM Students;",
+    "syntaxBlueprint": "SELECT col1, date_col, metric,\n  LEAD(metric, 1) OVER (ORDER BY date_col ASC) AS next_metric\nFROM table_name;",
+    "syntaxRule": "LEAD(col, 1) looks forward to the next row in the partition. The final row always returns NULL.",
+    "syntaxTrap": "Using LEAD() when you intended to look backward; LEAD is for next events, LAG is for past events.",
+    "eli5Story": "Analytical Window Functions on Students: Inspect the enrollment year of the next chronological student.",
+    "commonMistakes": "Omitting ORDER BY inside OVER() for running totals, confusing PARTITION BY with GROUP BY, or attempting to filter window functions in WHERE without a CTE wrapper.",
+    "learningOutcomes": "Mastered 14.3 Future Value Lookup (LEAD(col, 1)) on Students.",
+    "challengeSlots": [
+      {
+        "type": "keyword",
+        "value": "SELECT"
+      },
+      {
+        "type": "column",
+        "value": "full_name,"
+      },
+      {
+        "type": "column",
+        "value": "enrolled_year,"
+      },
+      {
+        "type": "column",
+        "value": "LEAD(enrolled_year,"
+      },
+      {
+        "type": "column",
+        "value": "1)"
+      },
+      {
+        "type": "keyword",
+        "value": "OVER"
+      },
+      {
+        "type": "keyword",
+        "value": "(ORDER"
+      },
+      {
+        "type": "keyword",
+        "value": "BY"
+      },
+      {
+        "type": "column",
+        "value": "enrolled_year"
+      },
+      {
+        "type": "keyword",
+        "value": "ASC)"
+      },
+      {
+        "type": "keyword",
+        "value": "AS"
+      },
+      {
+        "type": "column",
+        "value": "next_enroll_year"
+      },
+      {
+        "type": "keyword",
+        "value": "FROM"
+      },
+      {
+        "type": "table",
+        "value": "Students;"
+      }
+    ]
+  },
+  {
+    "drillNumber": 1323,
+    "subcluster": "14.3 Future Value Lookup (LEAD(col, 1))",
+    "level": "Level 2 (Basic LEAD)",
+    "title": "Syntax #1323: Find the release date of the author's next book in sequence",
+    "table": "Books",
+    "scenario": "Find the release date of the author's next book in sequence.",
+    "businessObjective": "Find the release date of the author's next book in sequence.",
+    "schemaSnippet": "Books analytical schema",
+    "targetQuery": "SELECT title, published_date,\n  LEAD(published_date, 1) OVER (PARTITION BY author ORDER BY published_date ASC) AS next_book_date\nFROM Books;",
+    "syntaxBlueprint": "SELECT col1, date_col, metric,\n  LEAD(metric, 1) OVER (ORDER BY date_col ASC) AS next_metric\nFROM table_name;",
+    "syntaxRule": "LEAD(col, 1) looks forward to the next row in the partition. The final row always returns NULL.",
+    "syntaxTrap": "Using LEAD() when you intended to look backward; LEAD is for next events, LAG is for past events.",
+    "eli5Story": "Analytical Window Functions on Books: Find the release date of the author's next book in sequence.",
+    "commonMistakes": "Omitting ORDER BY inside OVER() for running totals, confusing PARTITION BY with GROUP BY, or attempting to filter window functions in WHERE without a CTE wrapper.",
+    "learningOutcomes": "Mastered 14.3 Future Value Lookup (LEAD(col, 1)) on Books.",
+    "challengeSlots": [
+      {
+        "type": "keyword",
+        "value": "SELECT"
+      },
+      {
+        "type": "column",
+        "value": "title,"
+      },
+      {
+        "type": "column",
+        "value": "published_date,"
+      },
+      {
+        "type": "column",
+        "value": "LEAD(published_date,"
+      },
+      {
+        "type": "column",
+        "value": "1)"
+      },
+      {
+        "type": "keyword",
+        "value": "OVER"
+      },
+      {
+        "type": "keyword",
+        "value": "(PARTITION"
+      },
+      {
+        "type": "keyword",
+        "value": "BY"
+      },
+      {
+        "type": "column",
+        "value": "author"
+      },
+      {
+        "type": "keyword",
+        "value": "ORDER"
+      },
+      {
+        "type": "keyword",
+        "value": "BY"
+      },
+      {
+        "type": "column",
+        "value": "published_date"
+      },
+      {
+        "type": "keyword",
+        "value": "ASC)"
+      },
+      {
+        "type": "keyword",
+        "value": "AS"
+      },
+      {
+        "type": "column",
+        "value": "next_book_date"
+      },
+      {
+        "type": "keyword",
+        "value": "FROM"
+      },
+      {
+        "type": "table",
+        "value": "Books;"
+      }
+    ]
+  },
+  {
+    "drillNumber": 1324,
+    "subcluster": "14.3 Future Value Lookup (LEAD(col, 1))",
+    "level": "Level 2 (Basic LEAD)",
+    "title": "Syntax #1324: Identify when the next employee was onboarded after this employee",
+    "table": "Employees",
+    "scenario": "Identify when the next employee was onboarded after this employee.",
+    "businessObjective": "Identify when the next employee was onboarded after this employee.",
+    "schemaSnippet": "Employees analytical schema",
+    "targetQuery": "SELECT first_name, hire_date,\n  LEAD(hire_date, 1) OVER (ORDER BY hire_date ASC) AS next_company_hire_date\nFROM Employees;",
+    "syntaxBlueprint": "SELECT col1, date_col, metric,\n  LEAD(metric, 1) OVER (ORDER BY date_col ASC) AS next_metric\nFROM table_name;",
+    "syntaxRule": "LEAD(col, 1) looks forward to the next row in the partition. The final row always returns NULL.",
+    "syntaxTrap": "Using LEAD() when you intended to look backward; LEAD is for next events, LAG is for past events.",
+    "eli5Story": "Analytical Window Functions on Employees: Identify when the next employee was onboarded after this employee.",
+    "commonMistakes": "Omitting ORDER BY inside OVER() for running totals, confusing PARTITION BY with GROUP BY, or attempting to filter window functions in WHERE without a CTE wrapper.",
+    "learningOutcomes": "Mastered 14.3 Future Value Lookup (LEAD(col, 1)) on Employees.",
+    "challengeSlots": [
+      {
+        "type": "keyword",
+        "value": "SELECT"
+      },
+      {
+        "type": "column",
+        "value": "first_name,"
+      },
+      {
+        "type": "column",
+        "value": "hire_date,"
+      },
+      {
+        "type": "column",
+        "value": "LEAD(hire_date,"
+      },
+      {
+        "type": "column",
+        "value": "1)"
+      },
+      {
+        "type": "keyword",
+        "value": "OVER"
+      },
+      {
+        "type": "keyword",
+        "value": "(ORDER"
+      },
+      {
+        "type": "keyword",
+        "value": "BY"
+      },
+      {
+        "type": "column",
+        "value": "hire_date"
+      },
+      {
+        "type": "keyword",
+        "value": "ASC)"
+      },
+      {
+        "type": "keyword",
+        "value": "AS"
+      },
+      {
+        "type": "column",
+        "value": "next_company_hire_date"
+      },
+      {
+        "type": "keyword",
+        "value": "FROM"
+      },
+      {
+        "type": "table",
+        "value": "Employees;"
+      }
+    ]
+  },
+  {
+    "drillNumber": 1325,
+    "subcluster": "14.3 Future Value Lookup (LEAD(col, 1))",
+    "level": "Level 2 (Basic LEAD)",
+    "title": "Syntax #1325: Look ahead to the next scheduled product expiration in the category",
+    "table": "GroceryItems",
+    "scenario": "Look ahead to the next scheduled product expiration in the category.",
+    "businessObjective": "Look ahead to the next scheduled product expiration in the category.",
+    "schemaSnippet": "GroceryItems analytical schema",
+    "targetQuery": "SELECT item_name, expiry_date,\n  LEAD(expiry_date, 1) OVER (PARTITION BY category ORDER BY expiry_date ASC) AS next_expiring_date\nFROM GroceryItems;",
+    "syntaxBlueprint": "SELECT col1, date_col, metric,\n  LEAD(metric, 1) OVER (ORDER BY date_col ASC) AS next_metric\nFROM table_name;",
+    "syntaxRule": "LEAD(col, 1) looks forward to the next row in the partition. The final row always returns NULL.",
+    "syntaxTrap": "Using LEAD() when you intended to look backward; LEAD is for next events, LAG is for past events.",
+    "eli5Story": "Analytical Window Functions on GroceryItems: Look ahead to the next scheduled product expiration in the category.",
+    "commonMistakes": "Omitting ORDER BY inside OVER() for running totals, confusing PARTITION BY with GROUP BY, or attempting to filter window functions in WHERE without a CTE wrapper.",
+    "learningOutcomes": "Mastered 14.3 Future Value Lookup (LEAD(col, 1)) on GroceryItems.",
+    "challengeSlots": [
+      {
+        "type": "keyword",
+        "value": "SELECT"
+      },
+      {
+        "type": "column",
+        "value": "item_name,"
+      },
+      {
+        "type": "column",
+        "value": "expiry_date,"
+      },
+      {
+        "type": "column",
+        "value": "LEAD(expiry_date,"
+      },
+      {
+        "type": "column",
+        "value": "1)"
+      },
+      {
+        "type": "keyword",
+        "value": "OVER"
+      },
+      {
+        "type": "keyword",
+        "value": "(PARTITION"
+      },
+      {
+        "type": "keyword",
+        "value": "BY"
+      },
+      {
+        "type": "column",
+        "value": "category"
+      },
+      {
+        "type": "keyword",
+        "value": "ORDER"
+      },
+      {
+        "type": "keyword",
+        "value": "BY"
+      },
+      {
+        "type": "column",
+        "value": "expiry_date"
+      },
+      {
+        "type": "keyword",
+        "value": "ASC)"
+      },
+      {
+        "type": "keyword",
+        "value": "AS"
+      },
+      {
+        "type": "column",
+        "value": "next_expiring_date"
+      },
+      {
+        "type": "keyword",
+        "value": "FROM"
+      },
+      {
+        "type": "table",
+        "value": "GroceryItems;"
+      }
+    ]
+  },
+  {
+    "drillNumber": 1326,
+    "subcluster": "14.3 Future Value Lookup (LEAD(col, 1))",
+    "level": "Level 2 (Basic LEAD)",
+    "title": "Syntax #1326: Identify when the artist released their next music single",
+    "table": "MusicTracks",
+    "scenario": "Identify when the artist released their next music single.",
+    "businessObjective": "Identify when the artist released their next music single.",
+    "schemaSnippet": "MusicTracks analytical schema",
+    "targetQuery": "SELECT track_title, release_date,\n  LEAD(release_date, 1) OVER (PARTITION BY artist_name ORDER BY release_date ASC) AS next_release_date\nFROM MusicTracks;",
+    "syntaxBlueprint": "SELECT col1, date_col, metric,\n  LEAD(metric, 1) OVER (ORDER BY date_col ASC) AS next_metric\nFROM table_name;",
+    "syntaxRule": "LEAD(col, 1) looks forward to the next row in the partition. The final row always returns NULL.",
+    "syntaxTrap": "Using LEAD() when you intended to look backward; LEAD is for next events, LAG is for past events.",
+    "eli5Story": "Analytical Window Functions on MusicTracks: Identify when the artist released their next music single.",
+    "commonMistakes": "Omitting ORDER BY inside OVER() for running totals, confusing PARTITION BY with GROUP BY, or attempting to filter window functions in WHERE without a CTE wrapper.",
+    "learningOutcomes": "Mastered 14.3 Future Value Lookup (LEAD(col, 1)) on MusicTracks.",
+    "challengeSlots": [
+      {
+        "type": "keyword",
+        "value": "SELECT"
+      },
+      {
+        "type": "column",
+        "value": "track_title,"
+      },
+      {
+        "type": "column",
+        "value": "release_date,"
+      },
+      {
+        "type": "column",
+        "value": "LEAD(release_date,"
+      },
+      {
+        "type": "column",
+        "value": "1)"
+      },
+      {
+        "type": "keyword",
+        "value": "OVER"
+      },
+      {
+        "type": "keyword",
+        "value": "(PARTITION"
+      },
+      {
+        "type": "keyword",
+        "value": "BY"
+      },
+      {
+        "type": "column",
+        "value": "artist_name"
+      },
+      {
+        "type": "keyword",
+        "value": "ORDER"
+      },
+      {
+        "type": "keyword",
+        "value": "BY"
+      },
+      {
+        "type": "column",
+        "value": "release_date"
+      },
+      {
+        "type": "keyword",
+        "value": "ASC)"
+      },
+      {
+        "type": "keyword",
+        "value": "AS"
+      },
+      {
+        "type": "column",
+        "value": "next_release_date"
+      },
+      {
+        "type": "keyword",
+        "value": "FROM"
+      },
+      {
+        "type": "table",
+        "value": "MusicTracks;"
+      }
+    ]
+  },
+  {
+    "drillNumber": 1327,
+    "subcluster": "14.3 Future Value Lookup (LEAD(col, 1))",
+    "level": "Level 2 (Basic LEAD)",
+    "title": "Syntax #1327: Look ahead to the registration date of the next gym member",
+    "table": "GymMembers",
+    "scenario": "Look ahead to the registration date of the next gym member.",
+    "businessObjective": "Look ahead to the registration date of the next gym member.",
+    "schemaSnippet": "GymMembers analytical schema",
+    "targetQuery": "SELECT member_name, join_date,\n  LEAD(join_date, 1) OVER (ORDER BY join_date ASC) AS next_member_join_date\nFROM GymMembers;",
+    "syntaxBlueprint": "SELECT col1, date_col, metric,\n  LEAD(metric, 1) OVER (ORDER BY date_col ASC) AS next_metric\nFROM table_name;",
+    "syntaxRule": "LEAD(col, 1) looks forward to the next row in the partition. The final row always returns NULL.",
+    "syntaxTrap": "Using LEAD() when you intended to look backward; LEAD is for next events, LAG is for past events.",
+    "eli5Story": "Analytical Window Functions on GymMembers: Look ahead to the registration date of the next gym member.",
+    "commonMistakes": "Omitting ORDER BY inside OVER() for running totals, confusing PARTITION BY with GROUP BY, or attempting to filter window functions in WHERE without a CTE wrapper.",
+    "learningOutcomes": "Mastered 14.3 Future Value Lookup (LEAD(col, 1)) on GymMembers.",
+    "challengeSlots": [
+      {
+        "type": "keyword",
+        "value": "SELECT"
+      },
+      {
+        "type": "column",
+        "value": "member_name,"
+      },
+      {
+        "type": "column",
+        "value": "join_date,"
+      },
+      {
+        "type": "column",
+        "value": "LEAD(join_date,"
+      },
+      {
+        "type": "column",
+        "value": "1)"
+      },
+      {
+        "type": "keyword",
+        "value": "OVER"
+      },
+      {
+        "type": "keyword",
+        "value": "(ORDER"
+      },
+      {
+        "type": "keyword",
+        "value": "BY"
+      },
+      {
+        "type": "column",
+        "value": "join_date"
+      },
+      {
+        "type": "keyword",
+        "value": "ASC)"
+      },
+      {
+        "type": "keyword",
+        "value": "AS"
+      },
+      {
+        "type": "column",
+        "value": "next_member_join_date"
+      },
+      {
+        "type": "keyword",
+        "value": "FROM"
+      },
+      {
+        "type": "table",
+        "value": "GymMembers;"
+      }
+    ]
+  },
+  {
+    "drillNumber": 1328,
+    "subcluster": "14.3 Future Value Lookup (LEAD(col, 1))",
+    "level": "Level 2 (Basic LEAD)",
+    "title": "Syntax #1328: Look ahead to the critic's next review submission date",
+    "table": "MovieReviews",
+    "scenario": "Look ahead to the critic's next review submission date.",
+    "businessObjective": "Look ahead to the critic's next review submission date.",
+    "schemaSnippet": "MovieReviews analytical schema",
+    "targetQuery": "SELECT movie_title, review_date,\n  LEAD(review_date, 1) OVER (PARTITION BY reviewer_name ORDER BY review_date ASC) AS next_review_date\nFROM MovieReviews;",
+    "syntaxBlueprint": "SELECT col1, date_col, metric,\n  LEAD(metric, 1) OVER (ORDER BY date_col ASC) AS next_metric\nFROM table_name;",
+    "syntaxRule": "LEAD(col, 1) looks forward to the next row in the partition. The final row always returns NULL.",
+    "syntaxTrap": "Using LEAD() when you intended to look backward; LEAD is for next events, LAG is for past events.",
+    "eli5Story": "Analytical Window Functions on MovieReviews: Look ahead to the critic's next review submission date.",
+    "commonMistakes": "Omitting ORDER BY inside OVER() for running totals, confusing PARTITION BY with GROUP BY, or attempting to filter window functions in WHERE without a CTE wrapper.",
+    "learningOutcomes": "Mastered 14.3 Future Value Lookup (LEAD(col, 1)) on MovieReviews.",
+    "challengeSlots": [
+      {
+        "type": "keyword",
+        "value": "SELECT"
+      },
+      {
+        "type": "column",
+        "value": "movie_title,"
+      },
+      {
+        "type": "column",
+        "value": "review_date,"
+      },
+      {
+        "type": "column",
+        "value": "LEAD(review_date,"
+      },
+      {
+        "type": "column",
+        "value": "1)"
+      },
+      {
+        "type": "keyword",
+        "value": "OVER"
+      },
+      {
+        "type": "keyword",
+        "value": "(PARTITION"
+      },
+      {
+        "type": "keyword",
+        "value": "BY"
+      },
+      {
+        "type": "column",
+        "value": "reviewer_name"
+      },
+      {
+        "type": "keyword",
+        "value": "ORDER"
+      },
+      {
+        "type": "keyword",
+        "value": "BY"
+      },
+      {
+        "type": "column",
+        "value": "review_date"
+      },
+      {
+        "type": "keyword",
+        "value": "ASC)"
+      },
+      {
+        "type": "keyword",
+        "value": "AS"
+      },
+      {
+        "type": "column",
+        "value": "next_review_date"
+      },
+      {
+        "type": "keyword",
+        "value": "FROM"
+      },
+      {
+        "type": "table",
+        "value": "MovieReviews;"
+      }
+    ]
+  },
+  {
+    "drillNumber": 1329,
+    "subcluster": "14.3 Future Value Lookup (LEAD(col, 1))",
+    "level": "Level 2 (Basic LEAD)",
+    "title": "Syntax #1329: Identify the departure time of the next scheduled flight from the same airport",
+    "table": "FlightSchedule",
+    "scenario": "Identify the departure time of the next scheduled flight from the same airport.",
+    "businessObjective": "Identify the departure time of the next scheduled flight from the same airport.",
+    "schemaSnippet": "FlightSchedule analytical schema",
+    "targetQuery": "SELECT flight_id, origin_airport, departure_time,\n  LEAD(departure_time, 1) OVER (PARTITION BY origin_airport ORDER BY departure_time ASC) AS next_departure_time\nFROM FlightSchedule;",
+    "syntaxBlueprint": "SELECT col1, date_col, metric,\n  LEAD(metric, 1) OVER (ORDER BY date_col ASC) AS next_metric\nFROM table_name;",
+    "syntaxRule": "LEAD(col, 1) looks forward to the next row in the partition. The final row always returns NULL.",
+    "syntaxTrap": "Using LEAD() when you intended to look backward; LEAD is for next events, LAG is for past events.",
+    "eli5Story": "Analytical Window Functions on FlightSchedule: Identify the departure time of the next scheduled flight from the same airport.",
+    "commonMistakes": "Omitting ORDER BY inside OVER() for running totals, confusing PARTITION BY with GROUP BY, or attempting to filter window functions in WHERE without a CTE wrapper.",
+    "learningOutcomes": "Mastered 14.3 Future Value Lookup (LEAD(col, 1)) on FlightSchedule.",
+    "challengeSlots": [
+      {
+        "type": "keyword",
+        "value": "SELECT"
+      },
+      {
+        "type": "column",
+        "value": "flight_id,"
+      },
+      {
+        "type": "column",
+        "value": "origin_airport,"
+      },
+      {
+        "type": "column",
+        "value": "departure_time,"
+      },
+      {
+        "type": "column",
+        "value": "LEAD(departure_time,"
+      },
+      {
+        "type": "column",
+        "value": "1)"
+      },
+      {
+        "type": "keyword",
+        "value": "OVER"
+      },
+      {
+        "type": "keyword",
+        "value": "(PARTITION"
+      },
+      {
+        "type": "keyword",
+        "value": "BY"
+      },
+      {
+        "type": "column",
+        "value": "origin_airport"
+      },
+      {
+        "type": "keyword",
+        "value": "ORDER"
+      },
+      {
+        "type": "keyword",
+        "value": "BY"
+      },
+      {
+        "type": "column",
+        "value": "departure_time"
+      },
+      {
+        "type": "keyword",
+        "value": "ASC)"
+      },
+      {
+        "type": "keyword",
+        "value": "AS"
+      },
+      {
+        "type": "column",
+        "value": "next_departure_time"
+      },
+      {
+        "type": "keyword",
+        "value": "FROM"
+      },
+      {
+        "type": "table",
+        "value": "FlightSchedule;"
+      }
+    ]
+  },
+  {
+    "drillNumber": 1330,
+    "subcluster": "14.3 Future Value Lookup (LEAD(col, 1))",
+    "level": "Level 2 (Basic LEAD)",
+    "title": "Syntax #1330: Identify the date of the pet's subsequent clinic follow-up visit",
+    "table": "PetClinic",
+    "scenario": "Identify the date of the pet's subsequent clinic follow-up visit.",
+    "businessObjective": "Identify the date of the pet's subsequent clinic follow-up visit.",
+    "schemaSnippet": "PetClinic analytical schema",
+    "targetQuery": "SELECT pet_name, visit_date,\n  LEAD(visit_date, 1) OVER (PARTITION BY pet_name ORDER BY visit_date ASC) AS next_appointment_date\nFROM PetClinic;",
+    "syntaxBlueprint": "SELECT col1, date_col, metric,\n  LEAD(metric, 1) OVER (ORDER BY date_col ASC) AS next_metric\nFROM table_name;",
+    "syntaxRule": "LEAD(col, 1) looks forward to the next row in the partition. The final row always returns NULL.",
+    "syntaxTrap": "Using LEAD() when you intended to look backward; LEAD is for next events, LAG is for past events.",
+    "eli5Story": "Analytical Window Functions on PetClinic: Identify the date of the pet's subsequent clinic follow-up visit.",
+    "commonMistakes": "Omitting ORDER BY inside OVER() for running totals, confusing PARTITION BY with GROUP BY, or attempting to filter window functions in WHERE without a CTE wrapper.",
+    "learningOutcomes": "Mastered 14.3 Future Value Lookup (LEAD(col, 1)) on PetClinic.",
+    "challengeSlots": [
+      {
+        "type": "keyword",
+        "value": "SELECT"
+      },
+      {
+        "type": "column",
+        "value": "pet_name,"
+      },
+      {
+        "type": "column",
+        "value": "visit_date,"
+      },
+      {
+        "type": "column",
+        "value": "LEAD(visit_date,"
+      },
+      {
+        "type": "column",
+        "value": "1)"
+      },
+      {
+        "type": "keyword",
+        "value": "OVER"
+      },
+      {
+        "type": "keyword",
+        "value": "(PARTITION"
+      },
+      {
+        "type": "keyword",
+        "value": "BY"
+      },
+      {
+        "type": "column",
+        "value": "pet_name"
+      },
+      {
+        "type": "keyword",
+        "value": "ORDER"
+      },
+      {
+        "type": "keyword",
+        "value": "BY"
+      },
+      {
+        "type": "column",
+        "value": "visit_date"
+      },
+      {
+        "type": "keyword",
+        "value": "ASC)"
+      },
+      {
+        "type": "keyword",
+        "value": "AS"
+      },
+      {
+        "type": "column",
+        "value": "next_appointment_date"
+      },
+      {
+        "type": "keyword",
+        "value": "FROM"
+      },
+      {
+        "type": "table",
+        "value": "PetClinic;"
+      }
+    ]
+  },
+  {
+    "drillNumber": 1331,
+    "subcluster": "14.4 LAG() with Fallback Defaults (LAG(col, 1, default))",
+    "level": "Level 2 (LAG with Default)",
+    "title": "Syntax #1331: Retrieve previous order amount using 0.00 as safe fallback default for initial order",
+    "table": "Orders",
+    "scenario": "Retrieve previous order amount using 0.00 as safe fallback default for initial order.",
+    "businessObjective": "Retrieve previous order amount using 0.00 as safe fallback default for initial order.",
+    "schemaSnippet": "Orders analytical schema",
+    "targetQuery": "SELECT order_id, order_date, total_amount,\n  LAG(total_amount, 1, 0.00) OVER (ORDER BY order_date ASC) AS prev_amount_safe\nFROM Orders;",
+    "syntaxBlueprint": "SELECT col1, metric,\n  LAG(metric, 1, 0) OVER (ORDER BY date_col ASC) AS prev_metric_safe\nFROM table_name;",
+    "syntaxRule": "LAG accepts a 3rd parameter: LAG(col, offset, default_val). This prevents NULL values on the first row by supplying a safe numeric or text fallback.",
+    "syntaxTrap": "The default value must match the data type of the column being evaluated (e.g. 0 for integers, 'N/A' for strings).",
+    "eli5Story": "Analytical Window Functions on Orders: Retrieve previous order amount using 0.00 as safe fallback default for initial order.",
+    "commonMistakes": "Omitting ORDER BY inside OVER() for running totals, confusing PARTITION BY with GROUP BY, or attempting to filter window functions in WHERE without a CTE wrapper.",
+    "learningOutcomes": "Mastered 14.4 LAG() with Fallback Defaults (LAG(col, 1, default)) on Orders.",
+    "challengeSlots": [
+      {
+        "type": "keyword",
+        "value": "SELECT"
+      },
+      {
+        "type": "column",
+        "value": "order_id,"
+      },
+      {
+        "type": "column",
+        "value": "order_date,"
+      },
+      {
+        "type": "column",
+        "value": "total_amount,"
+      },
+      {
+        "type": "column",
+        "value": "LAG(total_amount,"
+      },
+      {
+        "type": "column",
+        "value": "1,"
+      },
+      {
+        "type": "column",
+        "value": "0.00)"
+      },
+      {
+        "type": "keyword",
+        "value": "OVER"
+      },
+      {
+        "type": "keyword",
+        "value": "(ORDER"
+      },
+      {
+        "type": "keyword",
+        "value": "BY"
+      },
+      {
+        "type": "column",
+        "value": "order_date"
+      },
+      {
+        "type": "keyword",
+        "value": "ASC)"
+      },
+      {
+        "type": "keyword",
+        "value": "AS"
+      },
+      {
+        "type": "column",
+        "value": "prev_amount_safe"
+      },
+      {
+        "type": "keyword",
+        "value": "FROM"
+      },
+      {
+        "type": "table",
+        "value": "Orders;"
+      }
+    ]
+  },
+  {
+    "drillNumber": 1332,
+    "subcluster": "14.4 LAG() with Fallback Defaults (LAG(col, 1, default))",
+    "level": "Level 2 (LAG with Default)",
+    "title": "Syntax #1332: Provide a 0.00 default fallback for the first student's previous GPA",
+    "table": "Students",
+    "scenario": "Provide a 0.00 default fallback for the first student's previous GPA.",
+    "businessObjective": "Provide a 0.00 default fallback for the first student's previous GPA.",
+    "schemaSnippet": "Students analytical schema",
+    "targetQuery": "SELECT full_name, enrolled_year, gpa,\n  LAG(gpa, 1, 0.00) OVER (ORDER BY enrolled_year ASC) AS prev_gpa_safe\nFROM Students;",
+    "syntaxBlueprint": "SELECT col1, metric,\n  LAG(metric, 1, 0) OVER (ORDER BY date_col ASC) AS prev_metric_safe\nFROM table_name;",
+    "syntaxRule": "LAG accepts a 3rd parameter: LAG(col, offset, default_val). This prevents NULL values on the first row by supplying a safe numeric or text fallback.",
+    "syntaxTrap": "The default value must match the data type of the column being evaluated (e.g. 0 for integers, 'N/A' for strings).",
+    "eli5Story": "Analytical Window Functions on Students: Provide a 0.00 default fallback for the first student's previous GPA.",
+    "commonMistakes": "Omitting ORDER BY inside OVER() for running totals, confusing PARTITION BY with GROUP BY, or attempting to filter window functions in WHERE without a CTE wrapper.",
+    "learningOutcomes": "Mastered 14.4 LAG() with Fallback Defaults (LAG(col, 1, default)) on Students.",
+    "challengeSlots": [
+      {
+        "type": "keyword",
+        "value": "SELECT"
+      },
+      {
+        "type": "column",
+        "value": "full_name,"
+      },
+      {
+        "type": "column",
+        "value": "enrolled_year,"
+      },
+      {
+        "type": "column",
+        "value": "gpa,"
+      },
+      {
+        "type": "column",
+        "value": "LAG(gpa,"
+      },
+      {
+        "type": "column",
+        "value": "1,"
+      },
+      {
+        "type": "column",
+        "value": "0.00)"
+      },
+      {
+        "type": "keyword",
+        "value": "OVER"
+      },
+      {
+        "type": "keyword",
+        "value": "(ORDER"
+      },
+      {
+        "type": "keyword",
+        "value": "BY"
+      },
+      {
+        "type": "column",
+        "value": "enrolled_year"
+      },
+      {
+        "type": "keyword",
+        "value": "ASC)"
+      },
+      {
+        "type": "keyword",
+        "value": "AS"
+      },
+      {
+        "type": "column",
+        "value": "prev_gpa_safe"
+      },
+      {
+        "type": "keyword",
+        "value": "FROM"
+      },
+      {
+        "type": "table",
+        "value": "Students;"
+      }
+    ]
+  },
+  {
+    "drillNumber": 1333,
+    "subcluster": "14.4 LAG() with Fallback Defaults (LAG(col, 1, default))",
+    "level": "Level 2 (LAG with Default)",
+    "title": "Syntax #1333: Use 0.00 default fallback for previous book price",
+    "table": "Books",
+    "scenario": "Use 0.00 default fallback for previous book price.",
+    "businessObjective": "Use 0.00 default fallback for previous book price.",
+    "schemaSnippet": "Books analytical schema",
+    "targetQuery": "SELECT title, published_date, price,\n  LAG(price, 1, 0.00) OVER (ORDER BY published_date ASC) AS prev_price_safe\nFROM Books;",
+    "syntaxBlueprint": "SELECT col1, metric,\n  LAG(metric, 1, 0) OVER (ORDER BY date_col ASC) AS prev_metric_safe\nFROM table_name;",
+    "syntaxRule": "LAG accepts a 3rd parameter: LAG(col, offset, default_val). This prevents NULL values on the first row by supplying a safe numeric or text fallback.",
+    "syntaxTrap": "The default value must match the data type of the column being evaluated (e.g. 0 for integers, 'N/A' for strings).",
+    "eli5Story": "Analytical Window Functions on Books: Use 0.00 default fallback for previous book price.",
+    "commonMistakes": "Omitting ORDER BY inside OVER() for running totals, confusing PARTITION BY with GROUP BY, or attempting to filter window functions in WHERE without a CTE wrapper.",
+    "learningOutcomes": "Mastered 14.4 LAG() with Fallback Defaults (LAG(col, 1, default)) on Books.",
+    "challengeSlots": [
+      {
+        "type": "keyword",
+        "value": "SELECT"
+      },
+      {
+        "type": "column",
+        "value": "title,"
+      },
+      {
+        "type": "column",
+        "value": "published_date,"
+      },
+      {
+        "type": "column",
+        "value": "price,"
+      },
+      {
+        "type": "column",
+        "value": "LAG(price,"
+      },
+      {
+        "type": "column",
+        "value": "1,"
+      },
+      {
+        "type": "column",
+        "value": "0.00)"
+      },
+      {
+        "type": "keyword",
+        "value": "OVER"
+      },
+      {
+        "type": "keyword",
+        "value": "(ORDER"
+      },
+      {
+        "type": "keyword",
+        "value": "BY"
+      },
+      {
+        "type": "column",
+        "value": "published_date"
+      },
+      {
+        "type": "keyword",
+        "value": "ASC)"
+      },
+      {
+        "type": "keyword",
+        "value": "AS"
+      },
+      {
+        "type": "column",
+        "value": "prev_price_safe"
+      },
+      {
+        "type": "keyword",
+        "value": "FROM"
+      },
+      {
+        "type": "table",
+        "value": "Books;"
+      }
+    ]
+  },
+  {
+    "drillNumber": 1334,
+    "subcluster": "14.4 LAG() with Fallback Defaults (LAG(col, 1, default))",
+    "level": "Level 2 (LAG with Default)",
+    "title": "Syntax #1334: Supply 0.00 as default fallback for previous hire salary",
+    "table": "Employees",
+    "scenario": "Supply 0.00 as default fallback for previous hire salary.",
+    "businessObjective": "Supply 0.00 as default fallback for previous hire salary.",
+    "schemaSnippet": "Employees analytical schema",
+    "targetQuery": "SELECT first_name, hire_date, salary,\n  LAG(salary, 1, 0.00) OVER (ORDER BY hire_date ASC) AS prev_salary_safe\nFROM Employees;",
+    "syntaxBlueprint": "SELECT col1, metric,\n  LAG(metric, 1, 0) OVER (ORDER BY date_col ASC) AS prev_metric_safe\nFROM table_name;",
+    "syntaxRule": "LAG accepts a 3rd parameter: LAG(col, offset, default_val). This prevents NULL values on the first row by supplying a safe numeric or text fallback.",
+    "syntaxTrap": "The default value must match the data type of the column being evaluated (e.g. 0 for integers, 'N/A' for strings).",
+    "eli5Story": "Analytical Window Functions on Employees: Supply 0.00 as default fallback for previous hire salary.",
+    "commonMistakes": "Omitting ORDER BY inside OVER() for running totals, confusing PARTITION BY with GROUP BY, or attempting to filter window functions in WHERE without a CTE wrapper.",
+    "learningOutcomes": "Mastered 14.4 LAG() with Fallback Defaults (LAG(col, 1, default)) on Employees.",
+    "challengeSlots": [
+      {
+        "type": "keyword",
+        "value": "SELECT"
+      },
+      {
+        "type": "column",
+        "value": "first_name,"
+      },
+      {
+        "type": "column",
+        "value": "hire_date,"
+      },
+      {
+        "type": "column",
+        "value": "salary,"
+      },
+      {
+        "type": "column",
+        "value": "LAG(salary,"
+      },
+      {
+        "type": "column",
+        "value": "1,"
+      },
+      {
+        "type": "column",
+        "value": "0.00)"
+      },
+      {
+        "type": "keyword",
+        "value": "OVER"
+      },
+      {
+        "type": "keyword",
+        "value": "(ORDER"
+      },
+      {
+        "type": "keyword",
+        "value": "BY"
+      },
+      {
+        "type": "column",
+        "value": "hire_date"
+      },
+      {
+        "type": "keyword",
+        "value": "ASC)"
+      },
+      {
+        "type": "keyword",
+        "value": "AS"
+      },
+      {
+        "type": "column",
+        "value": "prev_salary_safe"
+      },
+      {
+        "type": "keyword",
+        "value": "FROM"
+      },
+      {
+        "type": "table",
+        "value": "Employees;"
+      }
+    ]
+  },
+  {
+    "drillNumber": 1335,
+    "subcluster": "14.4 LAG() with Fallback Defaults (LAG(col, 1, default))",
+    "level": "Level 2 (LAG with Default)",
+    "title": "Syntax #1335: Provide 0.00 default fallback for previous grocery product price",
+    "table": "GroceryItems",
+    "scenario": "Provide 0.00 default fallback for previous grocery product price.",
+    "businessObjective": "Provide 0.00 default fallback for previous grocery product price.",
+    "schemaSnippet": "GroceryItems analytical schema",
+    "targetQuery": "SELECT item_name, unit_price,\n  LAG(unit_price, 1, 0.00) OVER (ORDER BY item_id ASC) AS prev_unit_price_safe\nFROM GroceryItems;",
+    "syntaxBlueprint": "SELECT col1, metric,\n  LAG(metric, 1, 0) OVER (ORDER BY date_col ASC) AS prev_metric_safe\nFROM table_name;",
+    "syntaxRule": "LAG accepts a 3rd parameter: LAG(col, offset, default_val). This prevents NULL values on the first row by supplying a safe numeric or text fallback.",
+    "syntaxTrap": "The default value must match the data type of the column being evaluated (e.g. 0 for integers, 'N/A' for strings).",
+    "eli5Story": "Analytical Window Functions on GroceryItems: Provide 0.00 default fallback for previous grocery product price.",
+    "commonMistakes": "Omitting ORDER BY inside OVER() for running totals, confusing PARTITION BY with GROUP BY, or attempting to filter window functions in WHERE without a CTE wrapper.",
+    "learningOutcomes": "Mastered 14.4 LAG() with Fallback Defaults (LAG(col, 1, default)) on GroceryItems.",
+    "challengeSlots": [
+      {
+        "type": "keyword",
+        "value": "SELECT"
+      },
+      {
+        "type": "column",
+        "value": "item_name,"
+      },
+      {
+        "type": "column",
+        "value": "unit_price,"
+      },
+      {
+        "type": "column",
+        "value": "LAG(unit_price,"
+      },
+      {
+        "type": "column",
+        "value": "1,"
+      },
+      {
+        "type": "column",
+        "value": "0.00)"
+      },
+      {
+        "type": "keyword",
+        "value": "OVER"
+      },
+      {
+        "type": "keyword",
+        "value": "(ORDER"
+      },
+      {
+        "type": "keyword",
+        "value": "BY"
+      },
+      {
+        "type": "column",
+        "value": "item_id"
+      },
+      {
+        "type": "keyword",
+        "value": "ASC)"
+      },
+      {
+        "type": "keyword",
+        "value": "AS"
+      },
+      {
+        "type": "column",
+        "value": "prev_unit_price_safe"
+      },
+      {
+        "type": "keyword",
+        "value": "FROM"
+      },
+      {
+        "type": "table",
+        "value": "GroceryItems;"
+      }
+    ]
+  },
+  {
+    "drillNumber": 1336,
+    "subcluster": "14.4 LAG() with Fallback Defaults (LAG(col, 1, default))",
+    "level": "Level 2 (LAG with Default)",
+    "title": "Syntax #1336: Use 0 seconds as default fallback for previous track duration",
+    "table": "MusicTracks",
+    "scenario": "Use 0 seconds as default fallback for previous track duration.",
+    "businessObjective": "Use 0 seconds as default fallback for previous track duration.",
+    "schemaSnippet": "MusicTracks analytical schema",
+    "targetQuery": "SELECT track_title, duration_seconds,\n  LAG(duration_seconds, 1, 0) OVER (ORDER BY track_id ASC) AS prev_duration_safe\nFROM MusicTracks;",
+    "syntaxBlueprint": "SELECT col1, metric,\n  LAG(metric, 1, 0) OVER (ORDER BY date_col ASC) AS prev_metric_safe\nFROM table_name;",
+    "syntaxRule": "LAG accepts a 3rd parameter: LAG(col, offset, default_val). This prevents NULL values on the first row by supplying a safe numeric or text fallback.",
+    "syntaxTrap": "The default value must match the data type of the column being evaluated (e.g. 0 for integers, 'N/A' for strings).",
+    "eli5Story": "Analytical Window Functions on MusicTracks: Use 0 seconds as default fallback for previous track duration.",
+    "commonMistakes": "Omitting ORDER BY inside OVER() for running totals, confusing PARTITION BY with GROUP BY, or attempting to filter window functions in WHERE without a CTE wrapper.",
+    "learningOutcomes": "Mastered 14.4 LAG() with Fallback Defaults (LAG(col, 1, default)) on MusicTracks.",
+    "challengeSlots": [
+      {
+        "type": "keyword",
+        "value": "SELECT"
+      },
+      {
+        "type": "column",
+        "value": "track_title,"
+      },
+      {
+        "type": "column",
+        "value": "duration_seconds,"
+      },
+      {
+        "type": "column",
+        "value": "LAG(duration_seconds,"
+      },
+      {
+        "type": "column",
+        "value": "1,"
+      },
+      {
+        "type": "column",
+        "value": "0)"
+      },
+      {
+        "type": "keyword",
+        "value": "OVER"
+      },
+      {
+        "type": "keyword",
+        "value": "(ORDER"
+      },
+      {
+        "type": "keyword",
+        "value": "BY"
+      },
+      {
+        "type": "column",
+        "value": "track_id"
+      },
+      {
+        "type": "keyword",
+        "value": "ASC)"
+      },
+      {
+        "type": "keyword",
+        "value": "AS"
+      },
+      {
+        "type": "column",
+        "value": "prev_duration_safe"
+      },
+      {
+        "type": "keyword",
+        "value": "FROM"
+      },
+      {
+        "type": "table",
+        "value": "MusicTracks;"
+      }
+    ]
+  },
+  {
+    "drillNumber": 1337,
+    "subcluster": "14.4 LAG() with Fallback Defaults (LAG(col, 1, default))",
+    "level": "Level 2 (LAG with Default)",
+    "title": "Syntax #1337: Supply 0 as default fallback for previous member attendance count",
+    "table": "GymMembers",
+    "scenario": "Supply 0 as default fallback for previous member attendance count.",
+    "businessObjective": "Supply 0 as default fallback for previous member attendance count.",
+    "schemaSnippet": "GymMembers analytical schema",
+    "targetQuery": "SELECT member_name, attendance_days,\n  LAG(attendance_days, 1, 0) OVER (ORDER BY member_id ASC) AS prev_attendance_safe\nFROM GymMembers;",
+    "syntaxBlueprint": "SELECT col1, metric,\n  LAG(metric, 1, 0) OVER (ORDER BY date_col ASC) AS prev_metric_safe\nFROM table_name;",
+    "syntaxRule": "LAG accepts a 3rd parameter: LAG(col, offset, default_val). This prevents NULL values on the first row by supplying a safe numeric or text fallback.",
+    "syntaxTrap": "The default value must match the data type of the column being evaluated (e.g. 0 for integers, 'N/A' for strings).",
+    "eli5Story": "Analytical Window Functions on GymMembers: Supply 0 as default fallback for previous member attendance count.",
+    "commonMistakes": "Omitting ORDER BY inside OVER() for running totals, confusing PARTITION BY with GROUP BY, or attempting to filter window functions in WHERE without a CTE wrapper.",
+    "learningOutcomes": "Mastered 14.4 LAG() with Fallback Defaults (LAG(col, 1, default)) on GymMembers.",
+    "challengeSlots": [
+      {
+        "type": "keyword",
+        "value": "SELECT"
+      },
+      {
+        "type": "column",
+        "value": "member_name,"
+      },
+      {
+        "type": "column",
+        "value": "attendance_days,"
+      },
+      {
+        "type": "column",
+        "value": "LAG(attendance_days,"
+      },
+      {
+        "type": "column",
+        "value": "1,"
+      },
+      {
+        "type": "column",
+        "value": "0)"
+      },
+      {
+        "type": "keyword",
+        "value": "OVER"
+      },
+      {
+        "type": "keyword",
+        "value": "(ORDER"
+      },
+      {
+        "type": "keyword",
+        "value": "BY"
+      },
+      {
+        "type": "column",
+        "value": "member_id"
+      },
+      {
+        "type": "keyword",
+        "value": "ASC)"
+      },
+      {
+        "type": "keyword",
+        "value": "AS"
+      },
+      {
+        "type": "column",
+        "value": "prev_attendance_safe"
+      },
+      {
+        "type": "keyword",
+        "value": "FROM"
+      },
+      {
+        "type": "table",
+        "value": "GymMembers;"
+      }
+    ]
+  },
+  {
+    "drillNumber": 1338,
+    "subcluster": "14.4 LAG() with Fallback Defaults (LAG(col, 1, default))",
+    "level": "Level 2 (LAG with Default)",
+    "title": "Syntax #1338: Provide 0 as default fallback for previous review star rating",
+    "table": "MovieReviews",
+    "scenario": "Provide 0 as default fallback for previous review star rating.",
+    "businessObjective": "Provide 0 as default fallback for previous review star rating.",
+    "schemaSnippet": "MovieReviews analytical schema",
+    "targetQuery": "SELECT movie_title, star_rating,\n  LAG(star_rating, 1, 0) OVER (ORDER BY review_id ASC) AS prev_stars_safe\nFROM MovieReviews;",
+    "syntaxBlueprint": "SELECT col1, metric,\n  LAG(metric, 1, 0) OVER (ORDER BY date_col ASC) AS prev_metric_safe\nFROM table_name;",
+    "syntaxRule": "LAG accepts a 3rd parameter: LAG(col, offset, default_val). This prevents NULL values on the first row by supplying a safe numeric or text fallback.",
+    "syntaxTrap": "The default value must match the data type of the column being evaluated (e.g. 0 for integers, 'N/A' for strings).",
+    "eli5Story": "Analytical Window Functions on MovieReviews: Provide 0 as default fallback for previous review star rating.",
+    "commonMistakes": "Omitting ORDER BY inside OVER() for running totals, confusing PARTITION BY with GROUP BY, or attempting to filter window functions in WHERE without a CTE wrapper.",
+    "learningOutcomes": "Mastered 14.4 LAG() with Fallback Defaults (LAG(col, 1, default)) on MovieReviews.",
+    "challengeSlots": [
+      {
+        "type": "keyword",
+        "value": "SELECT"
+      },
+      {
+        "type": "column",
+        "value": "movie_title,"
+      },
+      {
+        "type": "column",
+        "value": "star_rating,"
+      },
+      {
+        "type": "column",
+        "value": "LAG(star_rating,"
+      },
+      {
+        "type": "column",
+        "value": "1,"
+      },
+      {
+        "type": "column",
+        "value": "0)"
+      },
+      {
+        "type": "keyword",
+        "value": "OVER"
+      },
+      {
+        "type": "keyword",
+        "value": "(ORDER"
+      },
+      {
+        "type": "keyword",
+        "value": "BY"
+      },
+      {
+        "type": "column",
+        "value": "review_id"
+      },
+      {
+        "type": "keyword",
+        "value": "ASC)"
+      },
+      {
+        "type": "keyword",
+        "value": "AS"
+      },
+      {
+        "type": "column",
+        "value": "prev_stars_safe"
+      },
+      {
+        "type": "keyword",
+        "value": "FROM"
+      },
+      {
+        "type": "table",
+        "value": "MovieReviews;"
+      }
+    ]
+  },
+  {
+    "drillNumber": 1339,
+    "subcluster": "14.4 LAG() with Fallback Defaults (LAG(col, 1, default))",
+    "level": "Level 2 (LAG with Default)",
+    "title": "Syntax #1339: Use 0.00 as fallback default for previous flight ticket price",
+    "table": "FlightSchedule",
+    "scenario": "Use 0.00 as fallback default for previous flight ticket price.",
+    "businessObjective": "Use 0.00 as fallback default for previous flight ticket price.",
+    "schemaSnippet": "FlightSchedule analytical schema",
+    "targetQuery": "SELECT flight_id, ticket_price,\n  LAG(ticket_price, 1, 0.00) OVER (ORDER BY flight_id ASC) AS prev_fare_safe\nFROM FlightSchedule;",
+    "syntaxBlueprint": "SELECT col1, metric,\n  LAG(metric, 1, 0) OVER (ORDER BY date_col ASC) AS prev_metric_safe\nFROM table_name;",
+    "syntaxRule": "LAG accepts a 3rd parameter: LAG(col, offset, default_val). This prevents NULL values on the first row by supplying a safe numeric or text fallback.",
+    "syntaxTrap": "The default value must match the data type of the column being evaluated (e.g. 0 for integers, 'N/A' for strings).",
+    "eli5Story": "Analytical Window Functions on FlightSchedule: Use 0.00 as fallback default for previous flight ticket price.",
+    "commonMistakes": "Omitting ORDER BY inside OVER() for running totals, confusing PARTITION BY with GROUP BY, or attempting to filter window functions in WHERE without a CTE wrapper.",
+    "learningOutcomes": "Mastered 14.4 LAG() with Fallback Defaults (LAG(col, 1, default)) on FlightSchedule.",
+    "challengeSlots": [
+      {
+        "type": "keyword",
+        "value": "SELECT"
+      },
+      {
+        "type": "column",
+        "value": "flight_id,"
+      },
+      {
+        "type": "column",
+        "value": "ticket_price,"
+      },
+      {
+        "type": "column",
+        "value": "LAG(ticket_price,"
+      },
+      {
+        "type": "column",
+        "value": "1,"
+      },
+      {
+        "type": "column",
+        "value": "0.00)"
+      },
+      {
+        "type": "keyword",
+        "value": "OVER"
+      },
+      {
+        "type": "keyword",
+        "value": "(ORDER"
+      },
+      {
+        "type": "keyword",
+        "value": "BY"
+      },
+      {
+        "type": "column",
+        "value": "flight_id"
+      },
+      {
+        "type": "keyword",
+        "value": "ASC)"
+      },
+      {
+        "type": "keyword",
+        "value": "AS"
+      },
+      {
+        "type": "column",
+        "value": "prev_fare_safe"
+      },
+      {
+        "type": "keyword",
+        "value": "FROM"
+      },
+      {
+        "type": "table",
+        "value": "FlightSchedule;"
+      }
+    ]
+  },
+  {
+    "drillNumber": 1340,
+    "subcluster": "14.4 LAG() with Fallback Defaults (LAG(col, 1, default))",
+    "level": "Level 2 (LAG with Default)",
+    "title": "Syntax #1340: Supply 0.0 as default fallback for previous veterinary patient weight",
+    "table": "PetClinic",
+    "scenario": "Supply 0.0 as default fallback for previous veterinary patient weight.",
+    "businessObjective": "Supply 0.0 as default fallback for previous veterinary patient weight.",
+    "schemaSnippet": "PetClinic analytical schema",
+    "targetQuery": "SELECT pet_name, weight_kg,\n  LAG(weight_kg, 1, 0.0) OVER (ORDER BY pet_id ASC) AS prev_weight_safe\nFROM PetClinic;",
+    "syntaxBlueprint": "SELECT col1, metric,\n  LAG(metric, 1, 0) OVER (ORDER BY date_col ASC) AS prev_metric_safe\nFROM table_name;",
+    "syntaxRule": "LAG accepts a 3rd parameter: LAG(col, offset, default_val). This prevents NULL values on the first row by supplying a safe numeric or text fallback.",
+    "syntaxTrap": "The default value must match the data type of the column being evaluated (e.g. 0 for integers, 'N/A' for strings).",
+    "eli5Story": "Analytical Window Functions on PetClinic: Supply 0.0 as default fallback for previous veterinary patient weight.",
+    "commonMistakes": "Omitting ORDER BY inside OVER() for running totals, confusing PARTITION BY with GROUP BY, or attempting to filter window functions in WHERE without a CTE wrapper.",
+    "learningOutcomes": "Mastered 14.4 LAG() with Fallback Defaults (LAG(col, 1, default)) on PetClinic.",
+    "challengeSlots": [
+      {
+        "type": "keyword",
+        "value": "SELECT"
+      },
+      {
+        "type": "column",
+        "value": "pet_name,"
+      },
+      {
+        "type": "column",
+        "value": "weight_kg,"
+      },
+      {
+        "type": "column",
+        "value": "LAG(weight_kg,"
+      },
+      {
+        "type": "column",
+        "value": "1,"
+      },
+      {
+        "type": "column",
+        "value": "0.0)"
+      },
+      {
+        "type": "keyword",
+        "value": "OVER"
+      },
+      {
+        "type": "keyword",
+        "value": "(ORDER"
+      },
+      {
+        "type": "keyword",
+        "value": "BY"
+      },
+      {
+        "type": "column",
+        "value": "pet_id"
+      },
+      {
+        "type": "keyword",
+        "value": "ASC)"
+      },
+      {
+        "type": "keyword",
+        "value": "AS"
+      },
+      {
+        "type": "column",
+        "value": "prev_weight_safe"
+      },
+      {
+        "type": "keyword",
+        "value": "FROM"
+      },
+      {
+        "type": "table",
+        "value": "PetClinic;"
+      }
+    ]
+  },
+  {
+    "drillNumber": 1341,
+    "subcluster": "14.5 Absolute Delta Calculations (val - LAG(val))",
+    "level": "Level 3 (Absolute Delta)",
+    "title": "Syntax #1341: Calculate the net dollar change between each customer order and the previous order",
+    "table": "Orders",
+    "scenario": "Calculate the net dollar change between each customer order and the previous order.",
+    "businessObjective": "Calculate the net dollar change between each customer order and the previous order.",
+    "schemaSnippet": "Orders analytical schema",
+    "targetQuery": "SELECT order_id, order_date, total_amount,\n  total_amount - LAG(total_amount, 1) OVER (ORDER BY order_date ASC) AS order_dollar_delta\nFROM Orders;",
+    "syntaxBlueprint": "SELECT col1, metric,\n  metric - LAG(metric, 1) OVER (ORDER BY date_col ASC) AS absolute_change\nFROM table_name;",
+    "syntaxRule": "Subtract the lagged value from the current row value to compute the net dollar, point, or volume change between consecutive events.",
+    "syntaxTrap": "Arithmetic on NULL returns NULL. The first row in any delta query will naturally return NULL unless a default is used.",
+    "eli5Story": "Analytical Window Functions on Orders: Calculate the net dollar change between each customer order and the previous order.",
+    "commonMistakes": "Omitting ORDER BY inside OVER() for running totals, confusing PARTITION BY with GROUP BY, or attempting to filter window functions in WHERE without a CTE wrapper.",
+    "learningOutcomes": "Mastered 14.5 Absolute Delta Calculations (val - LAG(val)) on Orders.",
+    "challengeSlots": [
+      {
+        "type": "keyword",
+        "value": "SELECT"
+      },
+      {
+        "type": "column",
+        "value": "order_id,"
+      },
+      {
+        "type": "column",
+        "value": "order_date,"
+      },
+      {
+        "type": "column",
+        "value": "total_amount,"
+      },
+      {
+        "type": "column",
+        "value": "total_amount"
+      },
+      {
+        "type": "column",
+        "value": "-"
+      },
+      {
+        "type": "column",
+        "value": "LAG(total_amount,"
+      },
+      {
+        "type": "column",
+        "value": "1)"
+      },
+      {
+        "type": "keyword",
+        "value": "OVER"
+      },
+      {
+        "type": "keyword",
+        "value": "(ORDER"
+      },
+      {
+        "type": "keyword",
+        "value": "BY"
+      },
+      {
+        "type": "column",
+        "value": "order_date"
+      },
+      {
+        "type": "keyword",
+        "value": "ASC)"
+      },
+      {
+        "type": "keyword",
+        "value": "AS"
+      },
+      {
+        "type": "column",
+        "value": "order_dollar_delta"
+      },
+      {
+        "type": "keyword",
+        "value": "FROM"
+      },
+      {
+        "type": "table",
+        "value": "Orders;"
+      }
+    ]
+  },
+  {
+    "drillNumber": 1342,
+    "subcluster": "14.5 Absolute Delta Calculations (val - LAG(val))",
+    "level": "Level 3 (Absolute Delta)",
+    "title": "Syntax #1342: Calculate the GPA delta between consecutive enrolled students",
+    "table": "Students",
+    "scenario": "Calculate the GPA delta between consecutive enrolled students.",
+    "businessObjective": "Calculate the GPA delta between consecutive enrolled students.",
+    "schemaSnippet": "Students analytical schema",
+    "targetQuery": "SELECT full_name, enrolled_year, gpa,\n  gpa - LAG(gpa, 1) OVER (ORDER BY enrolled_year ASC) AS gpa_trend_delta\nFROM Students;",
+    "syntaxBlueprint": "SELECT col1, metric,\n  metric - LAG(metric, 1) OVER (ORDER BY date_col ASC) AS absolute_change\nFROM table_name;",
+    "syntaxRule": "Subtract the lagged value from the current row value to compute the net dollar, point, or volume change between consecutive events.",
+    "syntaxTrap": "Arithmetic on NULL returns NULL. The first row in any delta query will naturally return NULL unless a default is used.",
+    "eli5Story": "Analytical Window Functions on Students: Calculate the GPA delta between consecutive enrolled students.",
+    "commonMistakes": "Omitting ORDER BY inside OVER() for running totals, confusing PARTITION BY with GROUP BY, or attempting to filter window functions in WHERE without a CTE wrapper.",
+    "learningOutcomes": "Mastered 14.5 Absolute Delta Calculations (val - LAG(val)) on Students.",
+    "challengeSlots": [
+      {
+        "type": "keyword",
+        "value": "SELECT"
+      },
+      {
+        "type": "column",
+        "value": "full_name,"
+      },
+      {
+        "type": "column",
+        "value": "enrolled_year,"
+      },
+      {
+        "type": "column",
+        "value": "gpa,"
+      },
+      {
+        "type": "column",
+        "value": "gpa"
+      },
+      {
+        "type": "column",
+        "value": "-"
+      },
+      {
+        "type": "column",
+        "value": "LAG(gpa,"
+      },
+      {
+        "type": "column",
+        "value": "1)"
+      },
+      {
+        "type": "keyword",
+        "value": "OVER"
+      },
+      {
+        "type": "keyword",
+        "value": "(ORDER"
+      },
+      {
+        "type": "keyword",
+        "value": "BY"
+      },
+      {
+        "type": "column",
+        "value": "enrolled_year"
+      },
+      {
+        "type": "keyword",
+        "value": "ASC)"
+      },
+      {
+        "type": "keyword",
+        "value": "AS"
+      },
+      {
+        "type": "column",
+        "value": "gpa_trend_delta"
+      },
+      {
+        "type": "keyword",
+        "value": "FROM"
+      },
+      {
+        "type": "table",
+        "value": "Students;"
+      }
+    ]
+  },
+  {
+    "drillNumber": 1343,
+    "subcluster": "14.5 Absolute Delta Calculations (val - LAG(val))",
+    "level": "Level 3 (Absolute Delta)",
+    "title": "Syntax #1343: Measure book price changes across an author's successive publications",
+    "table": "Books",
+    "scenario": "Measure book price changes across an author's successive publications.",
+    "businessObjective": "Measure book price changes across an author's successive publications.",
+    "schemaSnippet": "Books analytical schema",
+    "targetQuery": "SELECT title, published_date, price,\n  price - LAG(price, 1) OVER (PARTITION BY author ORDER BY published_date ASC) AS author_price_delta\nFROM Books;",
+    "syntaxBlueprint": "SELECT col1, metric,\n  metric - LAG(metric, 1) OVER (ORDER BY date_col ASC) AS absolute_change\nFROM table_name;",
+    "syntaxRule": "Subtract the lagged value from the current row value to compute the net dollar, point, or volume change between consecutive events.",
+    "syntaxTrap": "Arithmetic on NULL returns NULL. The first row in any delta query will naturally return NULL unless a default is used.",
+    "eli5Story": "Analytical Window Functions on Books: Measure book price changes across an author's successive publications.",
+    "commonMistakes": "Omitting ORDER BY inside OVER() for running totals, confusing PARTITION BY with GROUP BY, or attempting to filter window functions in WHERE without a CTE wrapper.",
+    "learningOutcomes": "Mastered 14.5 Absolute Delta Calculations (val - LAG(val)) on Books.",
+    "challengeSlots": [
+      {
+        "type": "keyword",
+        "value": "SELECT"
+      },
+      {
+        "type": "column",
+        "value": "title,"
+      },
+      {
+        "type": "column",
+        "value": "published_date,"
+      },
+      {
+        "type": "column",
+        "value": "price,"
+      },
+      {
+        "type": "column",
+        "value": "price"
+      },
+      {
+        "type": "column",
+        "value": "-"
+      },
+      {
+        "type": "column",
+        "value": "LAG(price,"
+      },
+      {
+        "type": "column",
+        "value": "1)"
+      },
+      {
+        "type": "keyword",
+        "value": "OVER"
+      },
+      {
+        "type": "keyword",
+        "value": "(PARTITION"
+      },
+      {
+        "type": "keyword",
+        "value": "BY"
+      },
+      {
+        "type": "column",
+        "value": "author"
+      },
+      {
+        "type": "keyword",
+        "value": "ORDER"
+      },
+      {
+        "type": "keyword",
+        "value": "BY"
+      },
+      {
+        "type": "column",
+        "value": "published_date"
+      },
+      {
+        "type": "keyword",
+        "value": "ASC)"
+      },
+      {
+        "type": "keyword",
+        "value": "AS"
+      },
+      {
+        "type": "column",
+        "value": "author_price_delta"
+      },
+      {
+        "type": "keyword",
+        "value": "FROM"
+      },
+      {
+        "type": "table",
+        "value": "Books;"
+      }
+    ]
+  },
+  {
+    "drillNumber": 1344,
+    "subcluster": "14.5 Absolute Delta Calculations (val - LAG(val))",
+    "level": "Level 3 (Absolute Delta)",
+    "title": "Syntax #1344: Calculate salary difference between consecutive hires in the same department",
+    "table": "Employees",
+    "scenario": "Calculate salary difference between consecutive hires in the same department.",
+    "businessObjective": "Calculate salary difference between consecutive hires in the same department.",
+    "schemaSnippet": "Employees analytical schema",
+    "targetQuery": "SELECT first_name, hire_date, salary,\n  salary - LAG(salary, 1) OVER (PARTITION BY department ORDER BY hire_date ASC) AS dept_hiring_salary_delta\nFROM Employees;",
+    "syntaxBlueprint": "SELECT col1, metric,\n  metric - LAG(metric, 1) OVER (ORDER BY date_col ASC) AS absolute_change\nFROM table_name;",
+    "syntaxRule": "Subtract the lagged value from the current row value to compute the net dollar, point, or volume change between consecutive events.",
+    "syntaxTrap": "Arithmetic on NULL returns NULL. The first row in any delta query will naturally return NULL unless a default is used.",
+    "eli5Story": "Analytical Window Functions on Employees: Calculate salary difference between consecutive hires in the same department.",
+    "commonMistakes": "Omitting ORDER BY inside OVER() for running totals, confusing PARTITION BY with GROUP BY, or attempting to filter window functions in WHERE without a CTE wrapper.",
+    "learningOutcomes": "Mastered 14.5 Absolute Delta Calculations (val - LAG(val)) on Employees.",
+    "challengeSlots": [
+      {
+        "type": "keyword",
+        "value": "SELECT"
+      },
+      {
+        "type": "column",
+        "value": "first_name,"
+      },
+      {
+        "type": "column",
+        "value": "hire_date,"
+      },
+      {
+        "type": "column",
+        "value": "salary,"
+      },
+      {
+        "type": "column",
+        "value": "salary"
+      },
+      {
+        "type": "column",
+        "value": "-"
+      },
+      {
+        "type": "column",
+        "value": "LAG(salary,"
+      },
+      {
+        "type": "column",
+        "value": "1)"
+      },
+      {
+        "type": "keyword",
+        "value": "OVER"
+      },
+      {
+        "type": "keyword",
+        "value": "(PARTITION"
+      },
+      {
+        "type": "keyword",
+        "value": "BY"
+      },
+      {
+        "type": "column",
+        "value": "department"
+      },
+      {
+        "type": "keyword",
+        "value": "ORDER"
+      },
+      {
+        "type": "keyword",
+        "value": "BY"
+      },
+      {
+        "type": "column",
+        "value": "hire_date"
+      },
+      {
+        "type": "keyword",
+        "value": "ASC)"
+      },
+      {
+        "type": "keyword",
+        "value": "AS"
+      },
+      {
+        "type": "column",
+        "value": "dept_hiring_salary_delta"
+      },
+      {
+        "type": "keyword",
+        "value": "FROM"
+      },
+      {
+        "type": "table",
+        "value": "Employees;"
+      }
+    ]
+  },
+  {
+    "drillNumber": 1345,
+    "subcluster": "14.5 Absolute Delta Calculations (val - LAG(val))",
+    "level": "Level 3 (Absolute Delta)",
+    "title": "Syntax #1345: Calculate step-price differences between consecutive sorted inventory items",
+    "table": "GroceryItems",
+    "scenario": "Calculate step-price differences between consecutive sorted inventory items.",
+    "businessObjective": "Calculate step-price differences between consecutive sorted inventory items.",
+    "schemaSnippet": "GroceryItems analytical schema",
+    "targetQuery": "SELECT item_name, unit_price,\n  unit_price - LAG(unit_price, 1) OVER (ORDER BY unit_price ASC) AS step_price_diff\nFROM GroceryItems;",
+    "syntaxBlueprint": "SELECT col1, metric,\n  metric - LAG(metric, 1) OVER (ORDER BY date_col ASC) AS absolute_change\nFROM table_name;",
+    "syntaxRule": "Subtract the lagged value from the current row value to compute the net dollar, point, or volume change between consecutive events.",
+    "syntaxTrap": "Arithmetic on NULL returns NULL. The first row in any delta query will naturally return NULL unless a default is used.",
+    "eli5Story": "Analytical Window Functions on GroceryItems: Calculate step-price differences between consecutive sorted inventory items.",
+    "commonMistakes": "Omitting ORDER BY inside OVER() for running totals, confusing PARTITION BY with GROUP BY, or attempting to filter window functions in WHERE without a CTE wrapper.",
+    "learningOutcomes": "Mastered 14.5 Absolute Delta Calculations (val - LAG(val)) on GroceryItems.",
+    "challengeSlots": [
+      {
+        "type": "keyword",
+        "value": "SELECT"
+      },
+      {
+        "type": "column",
+        "value": "item_name,"
+      },
+      {
+        "type": "column",
+        "value": "unit_price,"
+      },
+      {
+        "type": "column",
+        "value": "unit_price"
+      },
+      {
+        "type": "column",
+        "value": "-"
+      },
+      {
+        "type": "column",
+        "value": "LAG(unit_price,"
+      },
+      {
+        "type": "column",
+        "value": "1)"
+      },
+      {
+        "type": "keyword",
+        "value": "OVER"
+      },
+      {
+        "type": "keyword",
+        "value": "(ORDER"
+      },
+      {
+        "type": "keyword",
+        "value": "BY"
+      },
+      {
+        "type": "column",
+        "value": "unit_price"
+      },
+      {
+        "type": "keyword",
+        "value": "ASC)"
+      },
+      {
+        "type": "keyword",
+        "value": "AS"
+      },
+      {
+        "type": "column",
+        "value": "step_price_diff"
+      },
+      {
+        "type": "keyword",
+        "value": "FROM"
+      },
+      {
+        "type": "table",
+        "value": "GroceryItems;"
+      }
+    ]
+  },
+  {
+    "drillNumber": 1346,
+    "subcluster": "14.5 Absolute Delta Calculations (val - LAG(val))",
+    "level": "Level 3 (Absolute Delta)",
+    "title": "Syntax #1346: Calculate track length delta across an artist's sequential singles",
+    "table": "MusicTracks",
+    "scenario": "Calculate track length delta across an artist's sequential singles.",
+    "businessObjective": "Calculate track length delta across an artist's sequential singles.",
+    "schemaSnippet": "MusicTracks analytical schema",
+    "targetQuery": "SELECT track_title, release_date, duration_seconds,\n  duration_seconds - LAG(duration_seconds, 1) OVER (PARTITION BY artist_name ORDER BY release_date ASC) AS song_length_delta\nFROM MusicTracks;",
+    "syntaxBlueprint": "SELECT col1, metric,\n  metric - LAG(metric, 1) OVER (ORDER BY date_col ASC) AS absolute_change\nFROM table_name;",
+    "syntaxRule": "Subtract the lagged value from the current row value to compute the net dollar, point, or volume change between consecutive events.",
+    "syntaxTrap": "Arithmetic on NULL returns NULL. The first row in any delta query will naturally return NULL unless a default is used.",
+    "eli5Story": "Analytical Window Functions on MusicTracks: Calculate track length delta across an artist's sequential singles.",
+    "commonMistakes": "Omitting ORDER BY inside OVER() for running totals, confusing PARTITION BY with GROUP BY, or attempting to filter window functions in WHERE without a CTE wrapper.",
+    "learningOutcomes": "Mastered 14.5 Absolute Delta Calculations (val - LAG(val)) on MusicTracks.",
+    "challengeSlots": [
+      {
+        "type": "keyword",
+        "value": "SELECT"
+      },
+      {
+        "type": "column",
+        "value": "track_title,"
+      },
+      {
+        "type": "column",
+        "value": "release_date,"
+      },
+      {
+        "type": "column",
+        "value": "duration_seconds,"
+      },
+      {
+        "type": "column",
+        "value": "duration_seconds"
+      },
+      {
+        "type": "column",
+        "value": "-"
+      },
+      {
+        "type": "column",
+        "value": "LAG(duration_seconds,"
+      },
+      {
+        "type": "column",
+        "value": "1)"
+      },
+      {
+        "type": "keyword",
+        "value": "OVER"
+      },
+      {
+        "type": "keyword",
+        "value": "(PARTITION"
+      },
+      {
+        "type": "keyword",
+        "value": "BY"
+      },
+      {
+        "type": "column",
+        "value": "artist_name"
+      },
+      {
+        "type": "keyword",
+        "value": "ORDER"
+      },
+      {
+        "type": "keyword",
+        "value": "BY"
+      },
+      {
+        "type": "column",
+        "value": "release_date"
+      },
+      {
+        "type": "keyword",
+        "value": "ASC)"
+      },
+      {
+        "type": "keyword",
+        "value": "AS"
+      },
+      {
+        "type": "column",
+        "value": "song_length_delta"
+      },
+      {
+        "type": "keyword",
+        "value": "FROM"
+      },
+      {
+        "type": "table",
+        "value": "MusicTracks;"
+      }
+    ]
+  },
+  {
+    "drillNumber": 1347,
+    "subcluster": "14.5 Absolute Delta Calculations (val - LAG(val))",
+    "level": "Level 3 (Absolute Delta)",
+    "title": "Syntax #1347: Calculate fee differences between consecutive gym membership signups",
+    "table": "GymMembers",
+    "scenario": "Calculate fee differences between consecutive gym membership signups.",
+    "businessObjective": "Calculate fee differences between consecutive gym membership signups.",
+    "schemaSnippet": "GymMembers analytical schema",
+    "targetQuery": "SELECT member_name, join_date, monthly_fee,\n  monthly_fee - LAG(monthly_fee, 1) OVER (ORDER BY join_date ASC) AS membership_price_hike\nFROM GymMembers;",
+    "syntaxBlueprint": "SELECT col1, metric,\n  metric - LAG(metric, 1) OVER (ORDER BY date_col ASC) AS absolute_change\nFROM table_name;",
+    "syntaxRule": "Subtract the lagged value from the current row value to compute the net dollar, point, or volume change between consecutive events.",
+    "syntaxTrap": "Arithmetic on NULL returns NULL. The first row in any delta query will naturally return NULL unless a default is used.",
+    "eli5Story": "Analytical Window Functions on GymMembers: Calculate fee differences between consecutive gym membership signups.",
+    "commonMistakes": "Omitting ORDER BY inside OVER() for running totals, confusing PARTITION BY with GROUP BY, or attempting to filter window functions in WHERE without a CTE wrapper.",
+    "learningOutcomes": "Mastered 14.5 Absolute Delta Calculations (val - LAG(val)) on GymMembers.",
+    "challengeSlots": [
+      {
+        "type": "keyword",
+        "value": "SELECT"
+      },
+      {
+        "type": "column",
+        "value": "member_name,"
+      },
+      {
+        "type": "column",
+        "value": "join_date,"
+      },
+      {
+        "type": "column",
+        "value": "monthly_fee,"
+      },
+      {
+        "type": "column",
+        "value": "monthly_fee"
+      },
+      {
+        "type": "column",
+        "value": "-"
+      },
+      {
+        "type": "column",
+        "value": "LAG(monthly_fee,"
+      },
+      {
+        "type": "column",
+        "value": "1)"
+      },
+      {
+        "type": "keyword",
+        "value": "OVER"
+      },
+      {
+        "type": "keyword",
+        "value": "(ORDER"
+      },
+      {
+        "type": "keyword",
+        "value": "BY"
+      },
+      {
+        "type": "column",
+        "value": "join_date"
+      },
+      {
+        "type": "keyword",
+        "value": "ASC)"
+      },
+      {
+        "type": "keyword",
+        "value": "AS"
+      },
+      {
+        "type": "column",
+        "value": "membership_price_hike"
+      },
+      {
+        "type": "keyword",
+        "value": "FROM"
+      },
+      {
+        "type": "table",
+        "value": "GymMembers;"
+      }
+    ]
+  },
+  {
+    "drillNumber": 1348,
+    "subcluster": "14.5 Absolute Delta Calculations (val - LAG(val))",
+    "level": "Level 3 (Absolute Delta)",
+    "title": "Syntax #1348: Calculate star rating delta between consecutive movie reviews",
+    "table": "MovieReviews",
+    "scenario": "Calculate star rating delta between consecutive movie reviews.",
+    "businessObjective": "Calculate star rating delta between consecutive movie reviews.",
+    "schemaSnippet": "MovieReviews analytical schema",
+    "targetQuery": "SELECT movie_title, review_date, star_rating,\n  star_rating - LAG(star_rating, 1) OVER (ORDER BY review_date ASC) AS star_delta\nFROM MovieReviews;",
+    "syntaxBlueprint": "SELECT col1, metric,\n  metric - LAG(metric, 1) OVER (ORDER BY date_col ASC) AS absolute_change\nFROM table_name;",
+    "syntaxRule": "Subtract the lagged value from the current row value to compute the net dollar, point, or volume change between consecutive events.",
+    "syntaxTrap": "Arithmetic on NULL returns NULL. The first row in any delta query will naturally return NULL unless a default is used.",
+    "eli5Story": "Analytical Window Functions on MovieReviews: Calculate star rating delta between consecutive movie reviews.",
+    "commonMistakes": "Omitting ORDER BY inside OVER() for running totals, confusing PARTITION BY with GROUP BY, or attempting to filter window functions in WHERE without a CTE wrapper.",
+    "learningOutcomes": "Mastered 14.5 Absolute Delta Calculations (val - LAG(val)) on MovieReviews.",
+    "challengeSlots": [
+      {
+        "type": "keyword",
+        "value": "SELECT"
+      },
+      {
+        "type": "column",
+        "value": "movie_title,"
+      },
+      {
+        "type": "column",
+        "value": "review_date,"
+      },
+      {
+        "type": "column",
+        "value": "star_rating,"
+      },
+      {
+        "type": "column",
+        "value": "star_rating"
+      },
+      {
+        "type": "column",
+        "value": "-"
+      },
+      {
+        "type": "column",
+        "value": "LAG(star_rating,"
+      },
+      {
+        "type": "column",
+        "value": "1)"
+      },
+      {
+        "type": "keyword",
+        "value": "OVER"
+      },
+      {
+        "type": "keyword",
+        "value": "(ORDER"
+      },
+      {
+        "type": "keyword",
+        "value": "BY"
+      },
+      {
+        "type": "column",
+        "value": "review_date"
+      },
+      {
+        "type": "keyword",
+        "value": "ASC)"
+      },
+      {
+        "type": "keyword",
+        "value": "AS"
+      },
+      {
+        "type": "column",
+        "value": "star_delta"
+      },
+      {
+        "type": "keyword",
+        "value": "FROM"
+      },
+      {
+        "type": "table",
+        "value": "MovieReviews;"
+      }
+    ]
+  },
+  {
+    "drillNumber": 1349,
+    "subcluster": "14.5 Absolute Delta Calculations (val - LAG(val))",
+    "level": "Level 3 (Absolute Delta)",
+    "title": "Syntax #1349: Calculate fare price fluctuations between consecutive airport departures",
+    "table": "FlightSchedule",
+    "scenario": "Calculate fare price fluctuations between consecutive airport departures.",
+    "businessObjective": "Calculate fare price fluctuations between consecutive airport departures.",
+    "schemaSnippet": "FlightSchedule analytical schema",
+    "targetQuery": "SELECT flight_id, departure_time, ticket_price,\n  ticket_price - LAG(ticket_price, 1) OVER (PARTITION BY origin_airport ORDER BY departure_time ASC) AS fare_change\nFROM FlightSchedule;",
+    "syntaxBlueprint": "SELECT col1, metric,\n  metric - LAG(metric, 1) OVER (ORDER BY date_col ASC) AS absolute_change\nFROM table_name;",
+    "syntaxRule": "Subtract the lagged value from the current row value to compute the net dollar, point, or volume change between consecutive events.",
+    "syntaxTrap": "Arithmetic on NULL returns NULL. The first row in any delta query will naturally return NULL unless a default is used.",
+    "eli5Story": "Analytical Window Functions on FlightSchedule: Calculate fare price fluctuations between consecutive airport departures.",
+    "commonMistakes": "Omitting ORDER BY inside OVER() for running totals, confusing PARTITION BY with GROUP BY, or attempting to filter window functions in WHERE without a CTE wrapper.",
+    "learningOutcomes": "Mastered 14.5 Absolute Delta Calculations (val - LAG(val)) on FlightSchedule.",
+    "challengeSlots": [
+      {
+        "type": "keyword",
+        "value": "SELECT"
+      },
+      {
+        "type": "column",
+        "value": "flight_id,"
+      },
+      {
+        "type": "column",
+        "value": "departure_time,"
+      },
+      {
+        "type": "column",
+        "value": "ticket_price,"
+      },
+      {
+        "type": "column",
+        "value": "ticket_price"
+      },
+      {
+        "type": "column",
+        "value": "-"
+      },
+      {
+        "type": "column",
+        "value": "LAG(ticket_price,"
+      },
+      {
+        "type": "column",
+        "value": "1)"
+      },
+      {
+        "type": "keyword",
+        "value": "OVER"
+      },
+      {
+        "type": "keyword",
+        "value": "(PARTITION"
+      },
+      {
+        "type": "keyword",
+        "value": "BY"
+      },
+      {
+        "type": "column",
+        "value": "origin_airport"
+      },
+      {
+        "type": "keyword",
+        "value": "ORDER"
+      },
+      {
+        "type": "keyword",
+        "value": "BY"
+      },
+      {
+        "type": "column",
+        "value": "departure_time"
+      },
+      {
+        "type": "keyword",
+        "value": "ASC)"
+      },
+      {
+        "type": "keyword",
+        "value": "AS"
+      },
+      {
+        "type": "column",
+        "value": "fare_change"
+      },
+      {
+        "type": "keyword",
+        "value": "FROM"
+      },
+      {
+        "type": "table",
+        "value": "FlightSchedule;"
+      }
+    ]
+  },
+  {
+    "drillNumber": 1350,
+    "subcluster": "14.5 Absolute Delta Calculations (val - LAG(val))",
+    "level": "Level 3 (Absolute Delta)",
+    "title": "Syntax #1350: Calculate weight gain or loss (delta) between consecutive veterinary visits for the same pet",
+    "table": "PetClinic",
+    "scenario": "Calculate weight gain or loss (delta) between consecutive veterinary visits for the same pet.",
+    "businessObjective": "Calculate weight gain or loss (delta) between consecutive veterinary visits for the same pet.",
+    "schemaSnippet": "PetClinic analytical schema",
+    "targetQuery": "SELECT pet_name, visit_date, weight_kg,\n  weight_kg - LAG(weight_kg, 1) OVER (PARTITION BY pet_name ORDER BY visit_date ASC) AS patient_weight_change\nFROM PetClinic;",
+    "syntaxBlueprint": "SELECT col1, metric,\n  metric - LAG(metric, 1) OVER (ORDER BY date_col ASC) AS absolute_change\nFROM table_name;",
+    "syntaxRule": "Subtract the lagged value from the current row value to compute the net dollar, point, or volume change between consecutive events.",
+    "syntaxTrap": "Arithmetic on NULL returns NULL. The first row in any delta query will naturally return NULL unless a default is used.",
+    "eli5Story": "Analytical Window Functions on PetClinic: Calculate weight gain or loss (delta) between consecutive veterinary visits for the same pet.",
+    "commonMistakes": "Omitting ORDER BY inside OVER() for running totals, confusing PARTITION BY with GROUP BY, or attempting to filter window functions in WHERE without a CTE wrapper.",
+    "learningOutcomes": "Mastered 14.5 Absolute Delta Calculations (val - LAG(val)) on PetClinic.",
+    "challengeSlots": [
+      {
+        "type": "keyword",
+        "value": "SELECT"
+      },
+      {
+        "type": "column",
+        "value": "pet_name,"
+      },
+      {
+        "type": "column",
+        "value": "visit_date,"
+      },
+      {
+        "type": "column",
+        "value": "weight_kg,"
+      },
+      {
+        "type": "column",
+        "value": "weight_kg"
+      },
+      {
+        "type": "column",
+        "value": "-"
+      },
+      {
+        "type": "column",
+        "value": "LAG(weight_kg,"
+      },
+      {
+        "type": "column",
+        "value": "1)"
+      },
+      {
+        "type": "keyword",
+        "value": "OVER"
+      },
+      {
+        "type": "keyword",
+        "value": "(PARTITION"
+      },
+      {
+        "type": "keyword",
+        "value": "BY"
+      },
+      {
+        "type": "column",
+        "value": "pet_name"
+      },
+      {
+        "type": "keyword",
+        "value": "ORDER"
+      },
+      {
+        "type": "keyword",
+        "value": "BY"
+      },
+      {
+        "type": "column",
+        "value": "visit_date"
+      },
+      {
+        "type": "keyword",
+        "value": "ASC)"
+      },
+      {
+        "type": "keyword",
+        "value": "AS"
+      },
+      {
+        "type": "column",
+        "value": "patient_weight_change"
+      },
+      {
+        "type": "keyword",
+        "value": "FROM"
+      },
+      {
+        "type": "table",
+        "value": "PetClinic;"
+      }
+    ]
+  },
+  {
+    "drillNumber": 1351,
+    "subcluster": "14.6 Percentage Growth Rates ((val - LAG) / LAG * 100)",
+    "level": "Level 3 (Percentage Growth)",
+    "title": "Syntax #1351: Calculate the percentage growth rate between consecutive customer orders",
+    "table": "Orders",
+    "scenario": "Calculate the percentage growth rate between consecutive customer orders.",
+    "businessObjective": "Calculate the percentage growth rate between consecutive customer orders.",
+    "schemaSnippet": "Orders analytical schema",
+    "targetQuery": "SELECT order_id, order_date, total_amount,\n  ROUND((total_amount - LAG(total_amount, 1) OVER (ORDER BY order_date ASC)) / LAG(total_amount, 1) OVER (ORDER BY order_date ASC) * 100, 2) AS order_growth_pct\nFROM Orders;",
+    "syntaxBlueprint": "SELECT date_col, metric,\n  ROUND((metric - LAG(metric, 1) OVER (ORDER BY date_col ASC)) / LAG(metric, 1) OVER (ORDER BY date_col ASC) * 100, 2) AS growth_pct\nFROM table_name;",
+    "syntaxRule": "Period-over-Period growth rate formula: ((current - previous) / previous) * 100. Always round to 2 decimal places.",
+    "syntaxTrap": "Division by zero if the lagged value is 0. Use NULLIF(LAG(...), 0) in production.",
+    "eli5Story": "Analytical Window Functions on Orders: Calculate the percentage growth rate between consecutive customer orders.",
+    "commonMistakes": "Omitting ORDER BY inside OVER() for running totals, confusing PARTITION BY with GROUP BY, or attempting to filter window functions in WHERE without a CTE wrapper.",
+    "learningOutcomes": "Mastered 14.6 Percentage Growth Rates ((val - LAG) / LAG * 100) on Orders.",
+    "challengeSlots": [
+      {
+        "type": "keyword",
+        "value": "SELECT"
+      },
+      {
+        "type": "column",
+        "value": "order_id,"
+      },
+      {
+        "type": "column",
+        "value": "order_date,"
+      },
+      {
+        "type": "column",
+        "value": "total_amount,"
+      },
+      {
+        "type": "column",
+        "value": "ROUND((total_amount"
+      },
+      {
+        "type": "column",
+        "value": "-"
+      },
+      {
+        "type": "column",
+        "value": "LAG(total_amount,"
+      },
+      {
+        "type": "column",
+        "value": "1)"
+      },
+      {
+        "type": "keyword",
+        "value": "OVER"
+      },
+      {
+        "type": "keyword",
+        "value": "(ORDER"
+      },
+      {
+        "type": "keyword",
+        "value": "BY"
+      },
+      {
+        "type": "column",
+        "value": "order_date"
+      },
+      {
+        "type": "keyword",
+        "value": "ASC))"
+      },
+      {
+        "type": "column",
+        "value": "/"
+      },
+      {
+        "type": "column",
+        "value": "LAG(total_amount,"
+      },
+      {
+        "type": "column",
+        "value": "1)"
+      },
+      {
+        "type": "keyword",
+        "value": "OVER"
+      },
+      {
+        "type": "keyword",
+        "value": "(ORDER"
+      },
+      {
+        "type": "keyword",
+        "value": "BY"
+      },
+      {
+        "type": "column",
+        "value": "order_date"
+      },
+      {
+        "type": "keyword",
+        "value": "ASC)"
+      },
+      {
+        "type": "column",
+        "value": "*"
+      },
+      {
+        "type": "column",
+        "value": "100,"
+      },
+      {
+        "type": "column",
+        "value": "2)"
+      },
+      {
+        "type": "keyword",
+        "value": "AS"
+      },
+      {
+        "type": "column",
+        "value": "order_growth_pct"
+      },
+      {
+        "type": "keyword",
+        "value": "FROM"
+      },
+      {
+        "type": "table",
+        "value": "Orders;"
+      }
+    ]
+  },
+  {
+    "drillNumber": 1352,
+    "subcluster": "14.6 Percentage Growth Rates ((val - LAG) / LAG * 100)",
+    "level": "Level 3 (Percentage Growth)",
+    "title": "Syntax #1352: Calculate percentage change in student GPAs along the enrollment timeline",
+    "table": "Students",
+    "scenario": "Calculate percentage change in student GPAs along the enrollment timeline.",
+    "businessObjective": "Calculate percentage change in student GPAs along the enrollment timeline.",
+    "schemaSnippet": "Students analytical schema",
+    "targetQuery": "SELECT full_name, enrolled_year, gpa,\n  ROUND((gpa - LAG(gpa, 1) OVER (ORDER BY enrolled_year ASC)) / LAG(gpa, 1) OVER (ORDER BY enrolled_year ASC) * 100, 2) AS gpa_growth_pct\nFROM Students;",
+    "syntaxBlueprint": "SELECT date_col, metric,\n  ROUND((metric - LAG(metric, 1) OVER (ORDER BY date_col ASC)) / LAG(metric, 1) OVER (ORDER BY date_col ASC) * 100, 2) AS growth_pct\nFROM table_name;",
+    "syntaxRule": "Period-over-Period growth rate formula: ((current - previous) / previous) * 100. Always round to 2 decimal places.",
+    "syntaxTrap": "Division by zero if the lagged value is 0. Use NULLIF(LAG(...), 0) in production.",
+    "eli5Story": "Analytical Window Functions on Students: Calculate percentage change in student GPAs along the enrollment timeline.",
+    "commonMistakes": "Omitting ORDER BY inside OVER() for running totals, confusing PARTITION BY with GROUP BY, or attempting to filter window functions in WHERE without a CTE wrapper.",
+    "learningOutcomes": "Mastered 14.6 Percentage Growth Rates ((val - LAG) / LAG * 100) on Students.",
+    "challengeSlots": [
+      {
+        "type": "keyword",
+        "value": "SELECT"
+      },
+      {
+        "type": "column",
+        "value": "full_name,"
+      },
+      {
+        "type": "column",
+        "value": "enrolled_year,"
+      },
+      {
+        "type": "column",
+        "value": "gpa,"
+      },
+      {
+        "type": "column",
+        "value": "ROUND((gpa"
+      },
+      {
+        "type": "column",
+        "value": "-"
+      },
+      {
+        "type": "column",
+        "value": "LAG(gpa,"
+      },
+      {
+        "type": "column",
+        "value": "1)"
+      },
+      {
+        "type": "keyword",
+        "value": "OVER"
+      },
+      {
+        "type": "keyword",
+        "value": "(ORDER"
+      },
+      {
+        "type": "keyword",
+        "value": "BY"
+      },
+      {
+        "type": "column",
+        "value": "enrolled_year"
+      },
+      {
+        "type": "keyword",
+        "value": "ASC))"
+      },
+      {
+        "type": "column",
+        "value": "/"
+      },
+      {
+        "type": "column",
+        "value": "LAG(gpa,"
+      },
+      {
+        "type": "column",
+        "value": "1)"
+      },
+      {
+        "type": "keyword",
+        "value": "OVER"
+      },
+      {
+        "type": "keyword",
+        "value": "(ORDER"
+      },
+      {
+        "type": "keyword",
+        "value": "BY"
+      },
+      {
+        "type": "column",
+        "value": "enrolled_year"
+      },
+      {
+        "type": "keyword",
+        "value": "ASC)"
+      },
+      {
+        "type": "column",
+        "value": "*"
+      },
+      {
+        "type": "column",
+        "value": "100,"
+      },
+      {
+        "type": "column",
+        "value": "2)"
+      },
+      {
+        "type": "keyword",
+        "value": "AS"
+      },
+      {
+        "type": "column",
+        "value": "gpa_growth_pct"
+      },
+      {
+        "type": "keyword",
+        "value": "FROM"
+      },
+      {
+        "type": "table",
+        "value": "Students;"
+      }
+    ]
+  },
+  {
+    "drillNumber": 1353,
+    "subcluster": "14.6 Percentage Growth Rates ((val - LAG) / LAG * 100)",
+    "level": "Level 3 (Percentage Growth)",
+    "title": "Syntax #1353: Compute percentage price growth between an author's successive publications",
+    "table": "Books",
+    "scenario": "Compute percentage price growth between an author's successive publications.",
+    "businessObjective": "Compute percentage price growth between an author's successive publications.",
+    "schemaSnippet": "Books analytical schema",
+    "targetQuery": "SELECT title, published_date, price,\n  ROUND((price - LAG(price, 1) OVER (PARTITION BY author ORDER BY published_date ASC)) / LAG(price, 1) OVER (PARTITION BY author ORDER BY published_date ASC) * 100, 2) AS author_price_growth_pct\nFROM Books;",
+    "syntaxBlueprint": "SELECT date_col, metric,\n  ROUND((metric - LAG(metric, 1) OVER (ORDER BY date_col ASC)) / LAG(metric, 1) OVER (ORDER BY date_col ASC) * 100, 2) AS growth_pct\nFROM table_name;",
+    "syntaxRule": "Period-over-Period growth rate formula: ((current - previous) / previous) * 100. Always round to 2 decimal places.",
+    "syntaxTrap": "Division by zero if the lagged value is 0. Use NULLIF(LAG(...), 0) in production.",
+    "eli5Story": "Analytical Window Functions on Books: Compute percentage price growth between an author's successive publications.",
+    "commonMistakes": "Omitting ORDER BY inside OVER() for running totals, confusing PARTITION BY with GROUP BY, or attempting to filter window functions in WHERE without a CTE wrapper.",
+    "learningOutcomes": "Mastered 14.6 Percentage Growth Rates ((val - LAG) / LAG * 100) on Books.",
+    "challengeSlots": [
+      {
+        "type": "keyword",
+        "value": "SELECT"
+      },
+      {
+        "type": "column",
+        "value": "title,"
+      },
+      {
+        "type": "column",
+        "value": "published_date,"
+      },
+      {
+        "type": "column",
+        "value": "price,"
+      },
+      {
+        "type": "column",
+        "value": "ROUND((price"
+      },
+      {
+        "type": "column",
+        "value": "-"
+      },
+      {
+        "type": "column",
+        "value": "LAG(price,"
+      },
+      {
+        "type": "column",
+        "value": "1)"
+      },
+      {
+        "type": "keyword",
+        "value": "OVER"
+      },
+      {
+        "type": "keyword",
+        "value": "(PARTITION"
+      },
+      {
+        "type": "keyword",
+        "value": "BY"
+      },
+      {
+        "type": "column",
+        "value": "author"
+      },
+      {
+        "type": "keyword",
+        "value": "ORDER"
+      },
+      {
+        "type": "keyword",
+        "value": "BY"
+      },
+      {
+        "type": "column",
+        "value": "published_date"
+      },
+      {
+        "type": "keyword",
+        "value": "ASC))"
+      },
+      {
+        "type": "column",
+        "value": "/"
+      },
+      {
+        "type": "column",
+        "value": "LAG(price,"
+      },
+      {
+        "type": "column",
+        "value": "1)"
+      },
+      {
+        "type": "keyword",
+        "value": "OVER"
+      },
+      {
+        "type": "keyword",
+        "value": "(PARTITION"
+      },
+      {
+        "type": "keyword",
+        "value": "BY"
+      },
+      {
+        "type": "column",
+        "value": "author"
+      },
+      {
+        "type": "keyword",
+        "value": "ORDER"
+      },
+      {
+        "type": "keyword",
+        "value": "BY"
+      },
+      {
+        "type": "column",
+        "value": "published_date"
+      },
+      {
+        "type": "keyword",
+        "value": "ASC)"
+      },
+      {
+        "type": "column",
+        "value": "*"
+      },
+      {
+        "type": "column",
+        "value": "100,"
+      },
+      {
+        "type": "column",
+        "value": "2)"
+      },
+      {
+        "type": "keyword",
+        "value": "AS"
+      },
+      {
+        "type": "column",
+        "value": "author_price_growth_pct"
+      },
+      {
+        "type": "keyword",
+        "value": "FROM"
+      },
+      {
+        "type": "table",
+        "value": "Books;"
+      }
+    ]
+  },
+  {
+    "drillNumber": 1354,
+    "subcluster": "14.6 Percentage Growth Rates ((val - LAG) / LAG * 100)",
+    "level": "Level 3 (Percentage Growth)",
+    "title": "Syntax #1354: Calculate percentage increase in hiring salary within a department",
+    "table": "Employees",
+    "scenario": "Calculate percentage increase in hiring salary within a department.",
+    "businessObjective": "Calculate percentage increase in hiring salary within a department.",
+    "schemaSnippet": "Employees analytical schema",
+    "targetQuery": "SELECT first_name, hire_date, salary,\n  ROUND((salary - LAG(salary, 1) OVER (PARTITION BY department ORDER BY hire_date ASC)) / LAG(salary, 1) OVER (PARTITION BY department ORDER BY hire_date ASC) * 100, 2) AS salary_hiring_growth_pct\nFROM Employees;",
+    "syntaxBlueprint": "SELECT date_col, metric,\n  ROUND((metric - LAG(metric, 1) OVER (ORDER BY date_col ASC)) / LAG(metric, 1) OVER (ORDER BY date_col ASC) * 100, 2) AS growth_pct\nFROM table_name;",
+    "syntaxRule": "Period-over-Period growth rate formula: ((current - previous) / previous) * 100. Always round to 2 decimal places.",
+    "syntaxTrap": "Division by zero if the lagged value is 0. Use NULLIF(LAG(...), 0) in production.",
+    "eli5Story": "Analytical Window Functions on Employees: Calculate percentage increase in hiring salary within a department.",
+    "commonMistakes": "Omitting ORDER BY inside OVER() for running totals, confusing PARTITION BY with GROUP BY, or attempting to filter window functions in WHERE without a CTE wrapper.",
+    "learningOutcomes": "Mastered 14.6 Percentage Growth Rates ((val - LAG) / LAG * 100) on Employees.",
+    "challengeSlots": [
+      {
+        "type": "keyword",
+        "value": "SELECT"
+      },
+      {
+        "type": "column",
+        "value": "first_name,"
+      },
+      {
+        "type": "column",
+        "value": "hire_date,"
+      },
+      {
+        "type": "column",
+        "value": "salary,"
+      },
+      {
+        "type": "column",
+        "value": "ROUND((salary"
+      },
+      {
+        "type": "column",
+        "value": "-"
+      },
+      {
+        "type": "column",
+        "value": "LAG(salary,"
+      },
+      {
+        "type": "column",
+        "value": "1)"
+      },
+      {
+        "type": "keyword",
+        "value": "OVER"
+      },
+      {
+        "type": "keyword",
+        "value": "(PARTITION"
+      },
+      {
+        "type": "keyword",
+        "value": "BY"
+      },
+      {
+        "type": "column",
+        "value": "department"
+      },
+      {
+        "type": "keyword",
+        "value": "ORDER"
+      },
+      {
+        "type": "keyword",
+        "value": "BY"
+      },
+      {
+        "type": "column",
+        "value": "hire_date"
+      },
+      {
+        "type": "keyword",
+        "value": "ASC))"
+      },
+      {
+        "type": "column",
+        "value": "/"
+      },
+      {
+        "type": "column",
+        "value": "LAG(salary,"
+      },
+      {
+        "type": "column",
+        "value": "1)"
+      },
+      {
+        "type": "keyword",
+        "value": "OVER"
+      },
+      {
+        "type": "keyword",
+        "value": "(PARTITION"
+      },
+      {
+        "type": "keyword",
+        "value": "BY"
+      },
+      {
+        "type": "column",
+        "value": "department"
+      },
+      {
+        "type": "keyword",
+        "value": "ORDER"
+      },
+      {
+        "type": "keyword",
+        "value": "BY"
+      },
+      {
+        "type": "column",
+        "value": "hire_date"
+      },
+      {
+        "type": "keyword",
+        "value": "ASC)"
+      },
+      {
+        "type": "column",
+        "value": "*"
+      },
+      {
+        "type": "column",
+        "value": "100,"
+      },
+      {
+        "type": "column",
+        "value": "2)"
+      },
+      {
+        "type": "keyword",
+        "value": "AS"
+      },
+      {
+        "type": "column",
+        "value": "salary_hiring_growth_pct"
+      },
+      {
+        "type": "keyword",
+        "value": "FROM"
+      },
+      {
+        "type": "table",
+        "value": "Employees;"
+      }
+    ]
+  },
+  {
+    "drillNumber": 1355,
+    "subcluster": "14.6 Percentage Growth Rates ((val - LAG) / LAG * 100)",
+    "level": "Level 3 (Percentage Growth)",
+    "title": "Syntax #1355: Calculate percentage step increase between consecutive item prices",
+    "table": "GroceryItems",
+    "scenario": "Calculate percentage step increase between consecutive item prices.",
+    "businessObjective": "Calculate percentage step increase between consecutive item prices.",
+    "schemaSnippet": "GroceryItems analytical schema",
+    "targetQuery": "SELECT item_name, unit_price,\n  ROUND((unit_price - LAG(unit_price, 1) OVER (ORDER BY unit_price ASC)) / LAG(unit_price, 1) OVER (ORDER BY unit_price ASC) * 100, 2) AS price_step_pct\nFROM GroceryItems;",
+    "syntaxBlueprint": "SELECT date_col, metric,\n  ROUND((metric - LAG(metric, 1) OVER (ORDER BY date_col ASC)) / LAG(metric, 1) OVER (ORDER BY date_col ASC) * 100, 2) AS growth_pct\nFROM table_name;",
+    "syntaxRule": "Period-over-Period growth rate formula: ((current - previous) / previous) * 100. Always round to 2 decimal places.",
+    "syntaxTrap": "Division by zero if the lagged value is 0. Use NULLIF(LAG(...), 0) in production.",
+    "eli5Story": "Analytical Window Functions on GroceryItems: Calculate percentage step increase between consecutive item prices.",
+    "commonMistakes": "Omitting ORDER BY inside OVER() for running totals, confusing PARTITION BY with GROUP BY, or attempting to filter window functions in WHERE without a CTE wrapper.",
+    "learningOutcomes": "Mastered 14.6 Percentage Growth Rates ((val - LAG) / LAG * 100) on GroceryItems.",
+    "challengeSlots": [
+      {
+        "type": "keyword",
+        "value": "SELECT"
+      },
+      {
+        "type": "column",
+        "value": "item_name,"
+      },
+      {
+        "type": "column",
+        "value": "unit_price,"
+      },
+      {
+        "type": "column",
+        "value": "ROUND((unit_price"
+      },
+      {
+        "type": "column",
+        "value": "-"
+      },
+      {
+        "type": "column",
+        "value": "LAG(unit_price,"
+      },
+      {
+        "type": "column",
+        "value": "1)"
+      },
+      {
+        "type": "keyword",
+        "value": "OVER"
+      },
+      {
+        "type": "keyword",
+        "value": "(ORDER"
+      },
+      {
+        "type": "keyword",
+        "value": "BY"
+      },
+      {
+        "type": "column",
+        "value": "unit_price"
+      },
+      {
+        "type": "keyword",
+        "value": "ASC))"
+      },
+      {
+        "type": "column",
+        "value": "/"
+      },
+      {
+        "type": "column",
+        "value": "LAG(unit_price,"
+      },
+      {
+        "type": "column",
+        "value": "1)"
+      },
+      {
+        "type": "keyword",
+        "value": "OVER"
+      },
+      {
+        "type": "keyword",
+        "value": "(ORDER"
+      },
+      {
+        "type": "keyword",
+        "value": "BY"
+      },
+      {
+        "type": "column",
+        "value": "unit_price"
+      },
+      {
+        "type": "keyword",
+        "value": "ASC)"
+      },
+      {
+        "type": "column",
+        "value": "*"
+      },
+      {
+        "type": "column",
+        "value": "100,"
+      },
+      {
+        "type": "column",
+        "value": "2)"
+      },
+      {
+        "type": "keyword",
+        "value": "AS"
+      },
+      {
+        "type": "column",
+        "value": "price_step_pct"
+      },
+      {
+        "type": "keyword",
+        "value": "FROM"
+      },
+      {
+        "type": "table",
+        "value": "GroceryItems;"
+      }
+    ]
+  },
+  {
+    "drillNumber": 1356,
+    "subcluster": "14.6 Percentage Growth Rates ((val - LAG) / LAG * 100)",
+    "level": "Level 3 (Percentage Growth)",
+    "title": "Syntax #1356: Compute percentage duration change across an artist's sequential singles",
+    "table": "MusicTracks",
+    "scenario": "Compute percentage duration change across an artist's sequential singles.",
+    "businessObjective": "Compute percentage duration change across an artist's sequential singles.",
+    "schemaSnippet": "MusicTracks analytical schema",
+    "targetQuery": "SELECT track_title, release_date, duration_seconds,\n  ROUND((duration_seconds - LAG(duration_seconds, 1) OVER (PARTITION BY artist_name ORDER BY release_date ASC)) / LAG(duration_seconds, 1) OVER (PARTITION BY artist_name ORDER BY release_date ASC) * 100, 2) AS track_duration_change_pct\nFROM MusicTracks;",
+    "syntaxBlueprint": "SELECT date_col, metric,\n  ROUND((metric - LAG(metric, 1) OVER (ORDER BY date_col ASC)) / LAG(metric, 1) OVER (ORDER BY date_col ASC) * 100, 2) AS growth_pct\nFROM table_name;",
+    "syntaxRule": "Period-over-Period growth rate formula: ((current - previous) / previous) * 100. Always round to 2 decimal places.",
+    "syntaxTrap": "Division by zero if the lagged value is 0. Use NULLIF(LAG(...), 0) in production.",
+    "eli5Story": "Analytical Window Functions on MusicTracks: Compute percentage duration change across an artist's sequential singles.",
+    "commonMistakes": "Omitting ORDER BY inside OVER() for running totals, confusing PARTITION BY with GROUP BY, or attempting to filter window functions in WHERE without a CTE wrapper.",
+    "learningOutcomes": "Mastered 14.6 Percentage Growth Rates ((val - LAG) / LAG * 100) on MusicTracks.",
+    "challengeSlots": [
+      {
+        "type": "keyword",
+        "value": "SELECT"
+      },
+      {
+        "type": "column",
+        "value": "track_title,"
+      },
+      {
+        "type": "column",
+        "value": "release_date,"
+      },
+      {
+        "type": "column",
+        "value": "duration_seconds,"
+      },
+      {
+        "type": "column",
+        "value": "ROUND((duration_seconds"
+      },
+      {
+        "type": "column",
+        "value": "-"
+      },
+      {
+        "type": "column",
+        "value": "LAG(duration_seconds,"
+      },
+      {
+        "type": "column",
+        "value": "1)"
+      },
+      {
+        "type": "keyword",
+        "value": "OVER"
+      },
+      {
+        "type": "keyword",
+        "value": "(PARTITION"
+      },
+      {
+        "type": "keyword",
+        "value": "BY"
+      },
+      {
+        "type": "column",
+        "value": "artist_name"
+      },
+      {
+        "type": "keyword",
+        "value": "ORDER"
+      },
+      {
+        "type": "keyword",
+        "value": "BY"
+      },
+      {
+        "type": "column",
+        "value": "release_date"
+      },
+      {
+        "type": "keyword",
+        "value": "ASC))"
+      },
+      {
+        "type": "column",
+        "value": "/"
+      },
+      {
+        "type": "column",
+        "value": "LAG(duration_seconds,"
+      },
+      {
+        "type": "column",
+        "value": "1)"
+      },
+      {
+        "type": "keyword",
+        "value": "OVER"
+      },
+      {
+        "type": "keyword",
+        "value": "(PARTITION"
+      },
+      {
+        "type": "keyword",
+        "value": "BY"
+      },
+      {
+        "type": "column",
+        "value": "artist_name"
+      },
+      {
+        "type": "keyword",
+        "value": "ORDER"
+      },
+      {
+        "type": "keyword",
+        "value": "BY"
+      },
+      {
+        "type": "column",
+        "value": "release_date"
+      },
+      {
+        "type": "keyword",
+        "value": "ASC)"
+      },
+      {
+        "type": "column",
+        "value": "*"
+      },
+      {
+        "type": "column",
+        "value": "100,"
+      },
+      {
+        "type": "column",
+        "value": "2)"
+      },
+      {
+        "type": "keyword",
+        "value": "AS"
+      },
+      {
+        "type": "column",
+        "value": "track_duration_change_pct"
+      },
+      {
+        "type": "keyword",
+        "value": "FROM"
+      },
+      {
+        "type": "table",
+        "value": "MusicTracks;"
+      }
+    ]
+  },
+  {
+    "drillNumber": 1357,
+    "subcluster": "14.6 Percentage Growth Rates ((val - LAG) / LAG * 100)",
+    "level": "Level 3 (Percentage Growth)",
+    "title": "Syntax #1357: Measure percentage fee inflation between consecutive gym signups",
+    "table": "GymMembers",
+    "scenario": "Measure percentage fee inflation between consecutive gym signups.",
+    "businessObjective": "Measure percentage fee inflation between consecutive gym signups.",
+    "schemaSnippet": "GymMembers analytical schema",
+    "targetQuery": "SELECT member_name, join_date, monthly_fee,\n  ROUND((monthly_fee - LAG(monthly_fee, 1) OVER (ORDER BY join_date ASC)) / LAG(monthly_fee, 1) OVER (ORDER BY join_date ASC) * 100, 2) AS fee_inflation_pct\nFROM GymMembers;",
+    "syntaxBlueprint": "SELECT date_col, metric,\n  ROUND((metric - LAG(metric, 1) OVER (ORDER BY date_col ASC)) / LAG(metric, 1) OVER (ORDER BY date_col ASC) * 100, 2) AS growth_pct\nFROM table_name;",
+    "syntaxRule": "Period-over-Period growth rate formula: ((current - previous) / previous) * 100. Always round to 2 decimal places.",
+    "syntaxTrap": "Division by zero if the lagged value is 0. Use NULLIF(LAG(...), 0) in production.",
+    "eli5Story": "Analytical Window Functions on GymMembers: Measure percentage fee inflation between consecutive gym signups.",
+    "commonMistakes": "Omitting ORDER BY inside OVER() for running totals, confusing PARTITION BY with GROUP BY, or attempting to filter window functions in WHERE without a CTE wrapper.",
+    "learningOutcomes": "Mastered 14.6 Percentage Growth Rates ((val - LAG) / LAG * 100) on GymMembers.",
+    "challengeSlots": [
+      {
+        "type": "keyword",
+        "value": "SELECT"
+      },
+      {
+        "type": "column",
+        "value": "member_name,"
+      },
+      {
+        "type": "column",
+        "value": "join_date,"
+      },
+      {
+        "type": "column",
+        "value": "monthly_fee,"
+      },
+      {
+        "type": "column",
+        "value": "ROUND((monthly_fee"
+      },
+      {
+        "type": "column",
+        "value": "-"
+      },
+      {
+        "type": "column",
+        "value": "LAG(monthly_fee,"
+      },
+      {
+        "type": "column",
+        "value": "1)"
+      },
+      {
+        "type": "keyword",
+        "value": "OVER"
+      },
+      {
+        "type": "keyword",
+        "value": "(ORDER"
+      },
+      {
+        "type": "keyword",
+        "value": "BY"
+      },
+      {
+        "type": "column",
+        "value": "join_date"
+      },
+      {
+        "type": "keyword",
+        "value": "ASC))"
+      },
+      {
+        "type": "column",
+        "value": "/"
+      },
+      {
+        "type": "column",
+        "value": "LAG(monthly_fee,"
+      },
+      {
+        "type": "column",
+        "value": "1)"
+      },
+      {
+        "type": "keyword",
+        "value": "OVER"
+      },
+      {
+        "type": "keyword",
+        "value": "(ORDER"
+      },
+      {
+        "type": "keyword",
+        "value": "BY"
+      },
+      {
+        "type": "column",
+        "value": "join_date"
+      },
+      {
+        "type": "keyword",
+        "value": "ASC)"
+      },
+      {
+        "type": "column",
+        "value": "*"
+      },
+      {
+        "type": "column",
+        "value": "100,"
+      },
+      {
+        "type": "column",
+        "value": "2)"
+      },
+      {
+        "type": "keyword",
+        "value": "AS"
+      },
+      {
+        "type": "column",
+        "value": "fee_inflation_pct"
+      },
+      {
+        "type": "keyword",
+        "value": "FROM"
+      },
+      {
+        "type": "table",
+        "value": "GymMembers;"
+      }
+    ]
+  },
+  {
+    "drillNumber": 1358,
+    "subcluster": "14.6 Percentage Growth Rates ((val - LAG) / LAG * 100)",
+    "level": "Level 3 (Percentage Growth)",
+    "title": "Syntax #1358: Calculate percentage rating fluctuation between consecutive reviews",
+    "table": "MovieReviews",
+    "scenario": "Calculate percentage rating fluctuation between consecutive reviews.",
+    "businessObjective": "Calculate percentage rating fluctuation between consecutive reviews.",
+    "schemaSnippet": "MovieReviews analytical schema",
+    "targetQuery": "SELECT movie_title, review_date, star_rating,\n  ROUND((star_rating - LAG(star_rating, 1) OVER (ORDER BY review_date ASC)) / LAG(star_rating, 1) OVER (ORDER BY review_date ASC) * 100, 2) AS rating_delta_pct\nFROM MovieReviews;",
+    "syntaxBlueprint": "SELECT date_col, metric,\n  ROUND((metric - LAG(metric, 1) OVER (ORDER BY date_col ASC)) / LAG(metric, 1) OVER (ORDER BY date_col ASC) * 100, 2) AS growth_pct\nFROM table_name;",
+    "syntaxRule": "Period-over-Period growth rate formula: ((current - previous) / previous) * 100. Always round to 2 decimal places.",
+    "syntaxTrap": "Division by zero if the lagged value is 0. Use NULLIF(LAG(...), 0) in production.",
+    "eli5Story": "Analytical Window Functions on MovieReviews: Calculate percentage rating fluctuation between consecutive reviews.",
+    "commonMistakes": "Omitting ORDER BY inside OVER() for running totals, confusing PARTITION BY with GROUP BY, or attempting to filter window functions in WHERE without a CTE wrapper.",
+    "learningOutcomes": "Mastered 14.6 Percentage Growth Rates ((val - LAG) / LAG * 100) on MovieReviews.",
+    "challengeSlots": [
+      {
+        "type": "keyword",
+        "value": "SELECT"
+      },
+      {
+        "type": "column",
+        "value": "movie_title,"
+      },
+      {
+        "type": "column",
+        "value": "review_date,"
+      },
+      {
+        "type": "column",
+        "value": "star_rating,"
+      },
+      {
+        "type": "column",
+        "value": "ROUND((star_rating"
+      },
+      {
+        "type": "column",
+        "value": "-"
+      },
+      {
+        "type": "column",
+        "value": "LAG(star_rating,"
+      },
+      {
+        "type": "column",
+        "value": "1)"
+      },
+      {
+        "type": "keyword",
+        "value": "OVER"
+      },
+      {
+        "type": "keyword",
+        "value": "(ORDER"
+      },
+      {
+        "type": "keyword",
+        "value": "BY"
+      },
+      {
+        "type": "column",
+        "value": "review_date"
+      },
+      {
+        "type": "keyword",
+        "value": "ASC))"
+      },
+      {
+        "type": "column",
+        "value": "/"
+      },
+      {
+        "type": "column",
+        "value": "LAG(star_rating,"
+      },
+      {
+        "type": "column",
+        "value": "1)"
+      },
+      {
+        "type": "keyword",
+        "value": "OVER"
+      },
+      {
+        "type": "keyword",
+        "value": "(ORDER"
+      },
+      {
+        "type": "keyword",
+        "value": "BY"
+      },
+      {
+        "type": "column",
+        "value": "review_date"
+      },
+      {
+        "type": "keyword",
+        "value": "ASC)"
+      },
+      {
+        "type": "column",
+        "value": "*"
+      },
+      {
+        "type": "column",
+        "value": "100,"
+      },
+      {
+        "type": "column",
+        "value": "2)"
+      },
+      {
+        "type": "keyword",
+        "value": "AS"
+      },
+      {
+        "type": "column",
+        "value": "rating_delta_pct"
+      },
+      {
+        "type": "keyword",
+        "value": "FROM"
+      },
+      {
+        "type": "table",
+        "value": "MovieReviews;"
+      }
+    ]
+  },
+  {
+    "drillNumber": 1359,
+    "subcluster": "14.6 Percentage Growth Rates ((val - LAG) / LAG * 100)",
+    "level": "Level 3 (Percentage Growth)",
+    "title": "Syntax #1359: Compute percentage fare surge between consecutive airport departures",
+    "table": "FlightSchedule",
+    "scenario": "Compute percentage fare surge between consecutive airport departures.",
+    "businessObjective": "Compute percentage fare surge between consecutive airport departures.",
+    "schemaSnippet": "FlightSchedule analytical schema",
+    "targetQuery": "SELECT flight_id, departure_time, ticket_price,\n  ROUND((ticket_price - LAG(ticket_price, 1) OVER (PARTITION BY origin_airport ORDER BY departure_time ASC)) / LAG(ticket_price, 1) OVER (PARTITION BY origin_airport ORDER BY departure_time ASC) * 100, 2) AS fare_surge_pct\nFROM FlightSchedule;",
+    "syntaxBlueprint": "SELECT date_col, metric,\n  ROUND((metric - LAG(metric, 1) OVER (ORDER BY date_col ASC)) / LAG(metric, 1) OVER (ORDER BY date_col ASC) * 100, 2) AS growth_pct\nFROM table_name;",
+    "syntaxRule": "Period-over-Period growth rate formula: ((current - previous) / previous) * 100. Always round to 2 decimal places.",
+    "syntaxTrap": "Division by zero if the lagged value is 0. Use NULLIF(LAG(...), 0) in production.",
+    "eli5Story": "Analytical Window Functions on FlightSchedule: Compute percentage fare surge between consecutive airport departures.",
+    "commonMistakes": "Omitting ORDER BY inside OVER() for running totals, confusing PARTITION BY with GROUP BY, or attempting to filter window functions in WHERE without a CTE wrapper.",
+    "learningOutcomes": "Mastered 14.6 Percentage Growth Rates ((val - LAG) / LAG * 100) on FlightSchedule.",
+    "challengeSlots": [
+      {
+        "type": "keyword",
+        "value": "SELECT"
+      },
+      {
+        "type": "column",
+        "value": "flight_id,"
+      },
+      {
+        "type": "column",
+        "value": "departure_time,"
+      },
+      {
+        "type": "column",
+        "value": "ticket_price,"
+      },
+      {
+        "type": "column",
+        "value": "ROUND((ticket_price"
+      },
+      {
+        "type": "column",
+        "value": "-"
+      },
+      {
+        "type": "column",
+        "value": "LAG(ticket_price,"
+      },
+      {
+        "type": "column",
+        "value": "1)"
+      },
+      {
+        "type": "keyword",
+        "value": "OVER"
+      },
+      {
+        "type": "keyword",
+        "value": "(PARTITION"
+      },
+      {
+        "type": "keyword",
+        "value": "BY"
+      },
+      {
+        "type": "column",
+        "value": "origin_airport"
+      },
+      {
+        "type": "keyword",
+        "value": "ORDER"
+      },
+      {
+        "type": "keyword",
+        "value": "BY"
+      },
+      {
+        "type": "column",
+        "value": "departure_time"
+      },
+      {
+        "type": "keyword",
+        "value": "ASC))"
+      },
+      {
+        "type": "column",
+        "value": "/"
+      },
+      {
+        "type": "column",
+        "value": "LAG(ticket_price,"
+      },
+      {
+        "type": "column",
+        "value": "1)"
+      },
+      {
+        "type": "keyword",
+        "value": "OVER"
+      },
+      {
+        "type": "keyword",
+        "value": "(PARTITION"
+      },
+      {
+        "type": "keyword",
+        "value": "BY"
+      },
+      {
+        "type": "column",
+        "value": "origin_airport"
+      },
+      {
+        "type": "keyword",
+        "value": "ORDER"
+      },
+      {
+        "type": "keyword",
+        "value": "BY"
+      },
+      {
+        "type": "column",
+        "value": "departure_time"
+      },
+      {
+        "type": "keyword",
+        "value": "ASC)"
+      },
+      {
+        "type": "column",
+        "value": "*"
+      },
+      {
+        "type": "column",
+        "value": "100,"
+      },
+      {
+        "type": "column",
+        "value": "2)"
+      },
+      {
+        "type": "keyword",
+        "value": "AS"
+      },
+      {
+        "type": "column",
+        "value": "fare_surge_pct"
+      },
+      {
+        "type": "keyword",
+        "value": "FROM"
+      },
+      {
+        "type": "table",
+        "value": "FlightSchedule;"
+      }
+    ]
+  },
+  {
+    "drillNumber": 1360,
+    "subcluster": "14.6 Percentage Growth Rates ((val - LAG) / LAG * 100)",
+    "level": "Level 3 (Percentage Growth)",
+    "title": "Syntax #1360: Calculate percentage weight change between veterinary checkups for the same pet",
+    "table": "PetClinic",
+    "scenario": "Calculate percentage weight change between veterinary checkups for the same pet.",
+    "businessObjective": "Calculate percentage weight change between veterinary checkups for the same pet.",
+    "schemaSnippet": "PetClinic analytical schema",
+    "targetQuery": "SELECT pet_name, visit_date, weight_kg,\n  ROUND((weight_kg - LAG(weight_kg, 1) OVER (PARTITION BY pet_name ORDER BY visit_date ASC)) / LAG(weight_kg, 1) OVER (PARTITION BY pet_name ORDER BY visit_date ASC) * 100, 2) AS weight_gain_pct\nFROM PetClinic;",
+    "syntaxBlueprint": "SELECT date_col, metric,\n  ROUND((metric - LAG(metric, 1) OVER (ORDER BY date_col ASC)) / LAG(metric, 1) OVER (ORDER BY date_col ASC) * 100, 2) AS growth_pct\nFROM table_name;",
+    "syntaxRule": "Period-over-Period growth rate formula: ((current - previous) / previous) * 100. Always round to 2 decimal places.",
+    "syntaxTrap": "Division by zero if the lagged value is 0. Use NULLIF(LAG(...), 0) in production.",
+    "eli5Story": "Analytical Window Functions on PetClinic: Calculate percentage weight change between veterinary checkups for the same pet.",
+    "commonMistakes": "Omitting ORDER BY inside OVER() for running totals, confusing PARTITION BY with GROUP BY, or attempting to filter window functions in WHERE without a CTE wrapper.",
+    "learningOutcomes": "Mastered 14.6 Percentage Growth Rates ((val - LAG) / LAG * 100) on PetClinic.",
+    "challengeSlots": [
+      {
+        "type": "keyword",
+        "value": "SELECT"
+      },
+      {
+        "type": "column",
+        "value": "pet_name,"
+      },
+      {
+        "type": "column",
+        "value": "visit_date,"
+      },
+      {
+        "type": "column",
+        "value": "weight_kg,"
+      },
+      {
+        "type": "column",
+        "value": "ROUND((weight_kg"
+      },
+      {
+        "type": "column",
+        "value": "-"
+      },
+      {
+        "type": "column",
+        "value": "LAG(weight_kg,"
+      },
+      {
+        "type": "column",
+        "value": "1)"
+      },
+      {
+        "type": "keyword",
+        "value": "OVER"
+      },
+      {
+        "type": "keyword",
+        "value": "(PARTITION"
+      },
+      {
+        "type": "keyword",
+        "value": "BY"
+      },
+      {
+        "type": "column",
+        "value": "pet_name"
+      },
+      {
+        "type": "keyword",
+        "value": "ORDER"
+      },
+      {
+        "type": "keyword",
+        "value": "BY"
+      },
+      {
+        "type": "column",
+        "value": "visit_date"
+      },
+      {
+        "type": "keyword",
+        "value": "ASC))"
+      },
+      {
+        "type": "column",
+        "value": "/"
+      },
+      {
+        "type": "column",
+        "value": "LAG(weight_kg,"
+      },
+      {
+        "type": "column",
+        "value": "1)"
+      },
+      {
+        "type": "keyword",
+        "value": "OVER"
+      },
+      {
+        "type": "keyword",
+        "value": "(PARTITION"
+      },
+      {
+        "type": "keyword",
+        "value": "BY"
+      },
+      {
+        "type": "column",
+        "value": "pet_name"
+      },
+      {
+        "type": "keyword",
+        "value": "ORDER"
+      },
+      {
+        "type": "keyword",
+        "value": "BY"
+      },
+      {
+        "type": "column",
+        "value": "visit_date"
+      },
+      {
+        "type": "keyword",
+        "value": "ASC)"
+      },
+      {
+        "type": "column",
+        "value": "*"
+      },
+      {
+        "type": "column",
+        "value": "100,"
+      },
+      {
+        "type": "column",
+        "value": "2)"
+      },
+      {
+        "type": "keyword",
+        "value": "AS"
+      },
+      {
+        "type": "column",
+        "value": "weight_gain_pct"
+      },
+      {
+        "type": "keyword",
+        "value": "FROM"
+      },
+      {
+        "type": "table",
+        "value": "PetClinic;"
+      }
+    ]
+  },
+  {
+    "drillNumber": 1361,
+    "subcluster": "14.7 Multi-Row Lookups (LAG(col, 2) & LAG(col, 7))",
+    "level": "Level 3 (Multi-Row Offsets)",
+    "title": "Syntax #1361: Look up the transaction amount from 2 orders prior using LAG(total_amount, 2)",
+    "table": "Orders",
+    "scenario": "Look up the transaction amount from 2 orders prior using LAG(total_amount, 2).",
+    "businessObjective": "Look up the transaction amount from 2 orders prior using LAG(total_amount, 2).",
+    "schemaSnippet": "Orders analytical schema",
+    "targetQuery": "SELECT order_id, order_date, total_amount,\n  LAG(total_amount, 2) OVER (ORDER BY order_date ASC) AS two_orders_prior_amount\nFROM Orders;",
+    "syntaxBlueprint": "SELECT col1, date_col, metric,\n  LAG(metric, 2) OVER (ORDER BY date_col ASC) AS two_events_prior\nFROM table_name;",
+    "syntaxRule": "The second parameter of LAG specifies the step offset (e.g. LAG(metric, 2) skips 2 rows back, LAG(metric, 7) skips 7 rows back for week-over-week comparisons).",
+    "syntaxTrap": "Requesting an offset larger than the table row count returns NULL for all rows.",
+    "eli5Story": "Analytical Window Functions on Orders: Look up the transaction amount from 2 orders prior using LAG(total_amount, 2).",
+    "commonMistakes": "Omitting ORDER BY inside OVER() for running totals, confusing PARTITION BY with GROUP BY, or attempting to filter window functions in WHERE without a CTE wrapper.",
+    "learningOutcomes": "Mastered 14.7 Multi-Row Lookups (LAG(col, 2) & LAG(col, 7)) on Orders.",
+    "challengeSlots": [
+      {
+        "type": "keyword",
+        "value": "SELECT"
+      },
+      {
+        "type": "column",
+        "value": "order_id,"
+      },
+      {
+        "type": "column",
+        "value": "order_date,"
+      },
+      {
+        "type": "column",
+        "value": "total_amount,"
+      },
+      {
+        "type": "column",
+        "value": "LAG(total_amount,"
+      },
+      {
+        "type": "column",
+        "value": "2)"
+      },
+      {
+        "type": "keyword",
+        "value": "OVER"
+      },
+      {
+        "type": "keyword",
+        "value": "(ORDER"
+      },
+      {
+        "type": "keyword",
+        "value": "BY"
+      },
+      {
+        "type": "column",
+        "value": "order_date"
+      },
+      {
+        "type": "keyword",
+        "value": "ASC)"
+      },
+      {
+        "type": "keyword",
+        "value": "AS"
+      },
+      {
+        "type": "column",
+        "value": "two_orders_prior_amount"
+      },
+      {
+        "type": "keyword",
+        "value": "FROM"
+      },
+      {
+        "type": "table",
+        "value": "Orders;"
+      }
+    ]
+  },
+  {
+    "drillNumber": 1362,
+    "subcluster": "14.7 Multi-Row Lookups (LAG(col, 2) & LAG(col, 7))",
+    "level": "Level 3 (Multi-Row Offsets)",
+    "title": "Syntax #1362: Retrieve the GPA from 2 students prior in enrollment sequence",
+    "table": "Students",
+    "scenario": "Retrieve the GPA from 2 students prior in enrollment sequence.",
+    "businessObjective": "Retrieve the GPA from 2 students prior in enrollment sequence.",
+    "schemaSnippet": "Students analytical schema",
+    "targetQuery": "SELECT full_name, enrolled_year, gpa,\n  LAG(gpa, 2) OVER (ORDER BY enrolled_year ASC) AS two_students_prior_gpa\nFROM Students;",
+    "syntaxBlueprint": "SELECT col1, date_col, metric,\n  LAG(metric, 2) OVER (ORDER BY date_col ASC) AS two_events_prior\nFROM table_name;",
+    "syntaxRule": "The second parameter of LAG specifies the step offset (e.g. LAG(metric, 2) skips 2 rows back, LAG(metric, 7) skips 7 rows back for week-over-week comparisons).",
+    "syntaxTrap": "Requesting an offset larger than the table row count returns NULL for all rows.",
+    "eli5Story": "Analytical Window Functions on Students: Retrieve the GPA from 2 students prior in enrollment sequence.",
+    "commonMistakes": "Omitting ORDER BY inside OVER() for running totals, confusing PARTITION BY with GROUP BY, or attempting to filter window functions in WHERE without a CTE wrapper.",
+    "learningOutcomes": "Mastered 14.7 Multi-Row Lookups (LAG(col, 2) & LAG(col, 7)) on Students.",
+    "challengeSlots": [
+      {
+        "type": "keyword",
+        "value": "SELECT"
+      },
+      {
+        "type": "column",
+        "value": "full_name,"
+      },
+      {
+        "type": "column",
+        "value": "enrolled_year,"
+      },
+      {
+        "type": "column",
+        "value": "gpa,"
+      },
+      {
+        "type": "column",
+        "value": "LAG(gpa,"
+      },
+      {
+        "type": "column",
+        "value": "2)"
+      },
+      {
+        "type": "keyword",
+        "value": "OVER"
+      },
+      {
+        "type": "keyword",
+        "value": "(ORDER"
+      },
+      {
+        "type": "keyword",
+        "value": "BY"
+      },
+      {
+        "type": "column",
+        "value": "enrolled_year"
+      },
+      {
+        "type": "keyword",
+        "value": "ASC)"
+      },
+      {
+        "type": "keyword",
+        "value": "AS"
+      },
+      {
+        "type": "column",
+        "value": "two_students_prior_gpa"
+      },
+      {
+        "type": "keyword",
+        "value": "FROM"
+      },
+      {
+        "type": "table",
+        "value": "Students;"
+      }
+    ]
+  },
+  {
+    "drillNumber": 1363,
+    "subcluster": "14.7 Multi-Row Lookups (LAG(col, 2) & LAG(col, 7))",
+    "level": "Level 3 (Multi-Row Offsets)",
+    "title": "Syntax #1363: Look up the price from 2 publications prior for the same author",
+    "table": "Books",
+    "scenario": "Look up the price from 2 publications prior for the same author.",
+    "businessObjective": "Look up the price from 2 publications prior for the same author.",
+    "schemaSnippet": "Books analytical schema",
+    "targetQuery": "SELECT title, published_date, price,\n  LAG(price, 2) OVER (PARTITION BY author ORDER BY published_date ASC) AS two_books_prior_price\nFROM Books;",
+    "syntaxBlueprint": "SELECT col1, date_col, metric,\n  LAG(metric, 2) OVER (ORDER BY date_col ASC) AS two_events_prior\nFROM table_name;",
+    "syntaxRule": "The second parameter of LAG specifies the step offset (e.g. LAG(metric, 2) skips 2 rows back, LAG(metric, 7) skips 7 rows back for week-over-week comparisons).",
+    "syntaxTrap": "Requesting an offset larger than the table row count returns NULL for all rows.",
+    "eli5Story": "Analytical Window Functions on Books: Look up the price from 2 publications prior for the same author.",
+    "commonMistakes": "Omitting ORDER BY inside OVER() for running totals, confusing PARTITION BY with GROUP BY, or attempting to filter window functions in WHERE without a CTE wrapper.",
+    "learningOutcomes": "Mastered 14.7 Multi-Row Lookups (LAG(col, 2) & LAG(col, 7)) on Books.",
+    "challengeSlots": [
+      {
+        "type": "keyword",
+        "value": "SELECT"
+      },
+      {
+        "type": "column",
+        "value": "title,"
+      },
+      {
+        "type": "column",
+        "value": "published_date,"
+      },
+      {
+        "type": "column",
+        "value": "price,"
+      },
+      {
+        "type": "column",
+        "value": "LAG(price,"
+      },
+      {
+        "type": "column",
+        "value": "2)"
+      },
+      {
+        "type": "keyword",
+        "value": "OVER"
+      },
+      {
+        "type": "keyword",
+        "value": "(PARTITION"
+      },
+      {
+        "type": "keyword",
+        "value": "BY"
+      },
+      {
+        "type": "column",
+        "value": "author"
+      },
+      {
+        "type": "keyword",
+        "value": "ORDER"
+      },
+      {
+        "type": "keyword",
+        "value": "BY"
+      },
+      {
+        "type": "column",
+        "value": "published_date"
+      },
+      {
+        "type": "keyword",
+        "value": "ASC)"
+      },
+      {
+        "type": "keyword",
+        "value": "AS"
+      },
+      {
+        "type": "column",
+        "value": "two_books_prior_price"
+      },
+      {
+        "type": "keyword",
+        "value": "FROM"
+      },
+      {
+        "type": "table",
+        "value": "Books;"
+      }
+    ]
+  },
+  {
+    "drillNumber": 1364,
+    "subcluster": "14.7 Multi-Row Lookups (LAG(col, 2) & LAG(col, 7))",
+    "level": "Level 3 (Multi-Row Offsets)",
+    "title": "Syntax #1364: Inspect the salary of the worker hired 2 spots prior",
+    "table": "Employees",
+    "scenario": "Inspect the salary of the worker hired 2 spots prior.",
+    "businessObjective": "Inspect the salary of the worker hired 2 spots prior.",
+    "schemaSnippet": "Employees analytical schema",
+    "targetQuery": "SELECT first_name, hire_date, salary,\n  LAG(salary, 2) OVER (ORDER BY hire_date ASC) AS two_hires_prior_salary\nFROM Employees;",
+    "syntaxBlueprint": "SELECT col1, date_col, metric,\n  LAG(metric, 2) OVER (ORDER BY date_col ASC) AS two_events_prior\nFROM table_name;",
+    "syntaxRule": "The second parameter of LAG specifies the step offset (e.g. LAG(metric, 2) skips 2 rows back, LAG(metric, 7) skips 7 rows back for week-over-week comparisons).",
+    "syntaxTrap": "Requesting an offset larger than the table row count returns NULL for all rows.",
+    "eli5Story": "Analytical Window Functions on Employees: Inspect the salary of the worker hired 2 spots prior.",
+    "commonMistakes": "Omitting ORDER BY inside OVER() for running totals, confusing PARTITION BY with GROUP BY, or attempting to filter window functions in WHERE without a CTE wrapper.",
+    "learningOutcomes": "Mastered 14.7 Multi-Row Lookups (LAG(col, 2) & LAG(col, 7)) on Employees.",
+    "challengeSlots": [
+      {
+        "type": "keyword",
+        "value": "SELECT"
+      },
+      {
+        "type": "column",
+        "value": "first_name,"
+      },
+      {
+        "type": "column",
+        "value": "hire_date,"
+      },
+      {
+        "type": "column",
+        "value": "salary,"
+      },
+      {
+        "type": "column",
+        "value": "LAG(salary,"
+      },
+      {
+        "type": "column",
+        "value": "2)"
+      },
+      {
+        "type": "keyword",
+        "value": "OVER"
+      },
+      {
+        "type": "keyword",
+        "value": "(ORDER"
+      },
+      {
+        "type": "keyword",
+        "value": "BY"
+      },
+      {
+        "type": "column",
+        "value": "hire_date"
+      },
+      {
+        "type": "keyword",
+        "value": "ASC)"
+      },
+      {
+        "type": "keyword",
+        "value": "AS"
+      },
+      {
+        "type": "column",
+        "value": "two_hires_prior_salary"
+      },
+      {
+        "type": "keyword",
+        "value": "FROM"
+      },
+      {
+        "type": "table",
+        "value": "Employees;"
+      }
+    ]
+  },
+  {
+    "drillNumber": 1365,
+    "subcluster": "14.7 Multi-Row Lookups (LAG(col, 2) & LAG(col, 7))",
+    "level": "Level 3 (Multi-Row Offsets)",
+    "title": "Syntax #1365: Inspect the price from 2 inventory items prior",
+    "table": "GroceryItems",
+    "scenario": "Inspect the price from 2 inventory items prior.",
+    "businessObjective": "Inspect the price from 2 inventory items prior.",
+    "schemaSnippet": "GroceryItems analytical schema",
+    "targetQuery": "SELECT item_name, unit_price,\n  LAG(unit_price, 2) OVER (ORDER BY item_id ASC) AS two_items_prior_price\nFROM GroceryItems;",
+    "syntaxBlueprint": "SELECT col1, date_col, metric,\n  LAG(metric, 2) OVER (ORDER BY date_col ASC) AS two_events_prior\nFROM table_name;",
+    "syntaxRule": "The second parameter of LAG specifies the step offset (e.g. LAG(metric, 2) skips 2 rows back, LAG(metric, 7) skips 7 rows back for week-over-week comparisons).",
+    "syntaxTrap": "Requesting an offset larger than the table row count returns NULL for all rows.",
+    "eli5Story": "Analytical Window Functions on GroceryItems: Inspect the price from 2 inventory items prior.",
+    "commonMistakes": "Omitting ORDER BY inside OVER() for running totals, confusing PARTITION BY with GROUP BY, or attempting to filter window functions in WHERE without a CTE wrapper.",
+    "learningOutcomes": "Mastered 14.7 Multi-Row Lookups (LAG(col, 2) & LAG(col, 7)) on GroceryItems.",
+    "challengeSlots": [
+      {
+        "type": "keyword",
+        "value": "SELECT"
+      },
+      {
+        "type": "column",
+        "value": "item_name,"
+      },
+      {
+        "type": "column",
+        "value": "unit_price,"
+      },
+      {
+        "type": "column",
+        "value": "LAG(unit_price,"
+      },
+      {
+        "type": "column",
+        "value": "2)"
+      },
+      {
+        "type": "keyword",
+        "value": "OVER"
+      },
+      {
+        "type": "keyword",
+        "value": "(ORDER"
+      },
+      {
+        "type": "keyword",
+        "value": "BY"
+      },
+      {
+        "type": "column",
+        "value": "item_id"
+      },
+      {
+        "type": "keyword",
+        "value": "ASC)"
+      },
+      {
+        "type": "keyword",
+        "value": "AS"
+      },
+      {
+        "type": "column",
+        "value": "two_items_prior_price"
+      },
+      {
+        "type": "keyword",
+        "value": "FROM"
+      },
+      {
+        "type": "table",
+        "value": "GroceryItems;"
+      }
+    ]
+  },
+  {
+    "drillNumber": 1366,
+    "subcluster": "14.7 Multi-Row Lookups (LAG(col, 2) & LAG(col, 7))",
+    "level": "Level 3 (Multi-Row Offsets)",
+    "title": "Syntax #1366: Identify the release date from 2 singles prior for the same artist",
+    "table": "MusicTracks",
+    "scenario": "Identify the release date from 2 singles prior for the same artist.",
+    "businessObjective": "Identify the release date from 2 singles prior for the same artist.",
+    "schemaSnippet": "MusicTracks analytical schema",
+    "targetQuery": "SELECT track_title, release_date,\n  LAG(release_date, 2) OVER (PARTITION BY artist_name ORDER BY release_date ASC) AS two_singles_prior_date\nFROM MusicTracks;",
+    "syntaxBlueprint": "SELECT col1, date_col, metric,\n  LAG(metric, 2) OVER (ORDER BY date_col ASC) AS two_events_prior\nFROM table_name;",
+    "syntaxRule": "The second parameter of LAG specifies the step offset (e.g. LAG(metric, 2) skips 2 rows back, LAG(metric, 7) skips 7 rows back for week-over-week comparisons).",
+    "syntaxTrap": "Requesting an offset larger than the table row count returns NULL for all rows.",
+    "eli5Story": "Analytical Window Functions on MusicTracks: Identify the release date from 2 singles prior for the same artist.",
+    "commonMistakes": "Omitting ORDER BY inside OVER() for running totals, confusing PARTITION BY with GROUP BY, or attempting to filter window functions in WHERE without a CTE wrapper.",
+    "learningOutcomes": "Mastered 14.7 Multi-Row Lookups (LAG(col, 2) & LAG(col, 7)) on MusicTracks.",
+    "challengeSlots": [
+      {
+        "type": "keyword",
+        "value": "SELECT"
+      },
+      {
+        "type": "column",
+        "value": "track_title,"
+      },
+      {
+        "type": "column",
+        "value": "release_date,"
+      },
+      {
+        "type": "column",
+        "value": "LAG(release_date,"
+      },
+      {
+        "type": "column",
+        "value": "2)"
+      },
+      {
+        "type": "keyword",
+        "value": "OVER"
+      },
+      {
+        "type": "keyword",
+        "value": "(PARTITION"
+      },
+      {
+        "type": "keyword",
+        "value": "BY"
+      },
+      {
+        "type": "column",
+        "value": "artist_name"
+      },
+      {
+        "type": "keyword",
+        "value": "ORDER"
+      },
+      {
+        "type": "keyword",
+        "value": "BY"
+      },
+      {
+        "type": "column",
+        "value": "release_date"
+      },
+      {
+        "type": "keyword",
+        "value": "ASC)"
+      },
+      {
+        "type": "keyword",
+        "value": "AS"
+      },
+      {
+        "type": "column",
+        "value": "two_singles_prior_date"
+      },
+      {
+        "type": "keyword",
+        "value": "FROM"
+      },
+      {
+        "type": "table",
+        "value": "MusicTracks;"
+      }
+    ]
+  },
+  {
+    "drillNumber": 1367,
+    "subcluster": "14.7 Multi-Row Lookups (LAG(col, 2) & LAG(col, 7))",
+    "level": "Level 3 (Multi-Row Offsets)",
+    "title": "Syntax #1367: Look up the join date from 2 gym members prior",
+    "table": "GymMembers",
+    "scenario": "Look up the join date from 2 gym members prior.",
+    "businessObjective": "Look up the join date from 2 gym members prior.",
+    "schemaSnippet": "GymMembers analytical schema",
+    "targetQuery": "SELECT member_name, join_date,\n  LAG(join_date, 2) OVER (ORDER BY join_date ASC) AS two_members_prior_join_date\nFROM GymMembers;",
+    "syntaxBlueprint": "SELECT col1, date_col, metric,\n  LAG(metric, 2) OVER (ORDER BY date_col ASC) AS two_events_prior\nFROM table_name;",
+    "syntaxRule": "The second parameter of LAG specifies the step offset (e.g. LAG(metric, 2) skips 2 rows back, LAG(metric, 7) skips 7 rows back for week-over-week comparisons).",
+    "syntaxTrap": "Requesting an offset larger than the table row count returns NULL for all rows.",
+    "eli5Story": "Analytical Window Functions on GymMembers: Look up the join date from 2 gym members prior.",
+    "commonMistakes": "Omitting ORDER BY inside OVER() for running totals, confusing PARTITION BY with GROUP BY, or attempting to filter window functions in WHERE without a CTE wrapper.",
+    "learningOutcomes": "Mastered 14.7 Multi-Row Lookups (LAG(col, 2) & LAG(col, 7)) on GymMembers.",
+    "challengeSlots": [
+      {
+        "type": "keyword",
+        "value": "SELECT"
+      },
+      {
+        "type": "column",
+        "value": "member_name,"
+      },
+      {
+        "type": "column",
+        "value": "join_date,"
+      },
+      {
+        "type": "column",
+        "value": "LAG(join_date,"
+      },
+      {
+        "type": "column",
+        "value": "2)"
+      },
+      {
+        "type": "keyword",
+        "value": "OVER"
+      },
+      {
+        "type": "keyword",
+        "value": "(ORDER"
+      },
+      {
+        "type": "keyword",
+        "value": "BY"
+      },
+      {
+        "type": "column",
+        "value": "join_date"
+      },
+      {
+        "type": "keyword",
+        "value": "ASC)"
+      },
+      {
+        "type": "keyword",
+        "value": "AS"
+      },
+      {
+        "type": "column",
+        "value": "two_members_prior_join_date"
+      },
+      {
+        "type": "keyword",
+        "value": "FROM"
+      },
+      {
+        "type": "table",
+        "value": "GymMembers;"
+      }
+    ]
+  },
+  {
+    "drillNumber": 1368,
+    "subcluster": "14.7 Multi-Row Lookups (LAG(col, 2) & LAG(col, 7))",
+    "level": "Level 3 (Multi-Row Offsets)",
+    "title": "Syntax #1368: Retrieve the star rating from 2 reviews prior",
+    "table": "MovieReviews",
+    "scenario": "Retrieve the star rating from 2 reviews prior.",
+    "businessObjective": "Retrieve the star rating from 2 reviews prior.",
+    "schemaSnippet": "MovieReviews analytical schema",
+    "targetQuery": "SELECT movie_title, review_date, star_rating,\n  LAG(star_rating, 2) OVER (ORDER BY review_date ASC) AS two_reviews_prior_score\nFROM MovieReviews;",
+    "syntaxBlueprint": "SELECT col1, date_col, metric,\n  LAG(metric, 2) OVER (ORDER BY date_col ASC) AS two_events_prior\nFROM table_name;",
+    "syntaxRule": "The second parameter of LAG specifies the step offset (e.g. LAG(metric, 2) skips 2 rows back, LAG(metric, 7) skips 7 rows back for week-over-week comparisons).",
+    "syntaxTrap": "Requesting an offset larger than the table row count returns NULL for all rows.",
+    "eli5Story": "Analytical Window Functions on MovieReviews: Retrieve the star rating from 2 reviews prior.",
+    "commonMistakes": "Omitting ORDER BY inside OVER() for running totals, confusing PARTITION BY with GROUP BY, or attempting to filter window functions in WHERE without a CTE wrapper.",
+    "learningOutcomes": "Mastered 14.7 Multi-Row Lookups (LAG(col, 2) & LAG(col, 7)) on MovieReviews.",
+    "challengeSlots": [
+      {
+        "type": "keyword",
+        "value": "SELECT"
+      },
+      {
+        "type": "column",
+        "value": "movie_title,"
+      },
+      {
+        "type": "column",
+        "value": "review_date,"
+      },
+      {
+        "type": "column",
+        "value": "star_rating,"
+      },
+      {
+        "type": "column",
+        "value": "LAG(star_rating,"
+      },
+      {
+        "type": "column",
+        "value": "2)"
+      },
+      {
+        "type": "keyword",
+        "value": "OVER"
+      },
+      {
+        "type": "keyword",
+        "value": "(ORDER"
+      },
+      {
+        "type": "keyword",
+        "value": "BY"
+      },
+      {
+        "type": "column",
+        "value": "review_date"
+      },
+      {
+        "type": "keyword",
+        "value": "ASC)"
+      },
+      {
+        "type": "keyword",
+        "value": "AS"
+      },
+      {
+        "type": "column",
+        "value": "two_reviews_prior_score"
+      },
+      {
+        "type": "keyword",
+        "value": "FROM"
+      },
+      {
+        "type": "table",
+        "value": "MovieReviews;"
+      }
+    ]
+  },
+  {
+    "drillNumber": 1369,
+    "subcluster": "14.7 Multi-Row Lookups (LAG(col, 2) & LAG(col, 7))",
+    "level": "Level 3 (Multi-Row Offsets)",
+    "title": "Syntax #1369: Look up the departure timestamp from 2 flights prior at the same airport",
+    "table": "FlightSchedule",
+    "scenario": "Look up the departure timestamp from 2 flights prior at the same airport.",
+    "businessObjective": "Look up the departure timestamp from 2 flights prior at the same airport.",
+    "schemaSnippet": "FlightSchedule analytical schema",
+    "targetQuery": "SELECT flight_id, departure_time,\n  LAG(departure_time, 2) OVER (PARTITION BY origin_airport ORDER BY departure_time ASC) AS two_flights_prior_departure\nFROM FlightSchedule;",
+    "syntaxBlueprint": "SELECT col1, date_col, metric,\n  LAG(metric, 2) OVER (ORDER BY date_col ASC) AS two_events_prior\nFROM table_name;",
+    "syntaxRule": "The second parameter of LAG specifies the step offset (e.g. LAG(metric, 2) skips 2 rows back, LAG(metric, 7) skips 7 rows back for week-over-week comparisons).",
+    "syntaxTrap": "Requesting an offset larger than the table row count returns NULL for all rows.",
+    "eli5Story": "Analytical Window Functions on FlightSchedule: Look up the departure timestamp from 2 flights prior at the same airport.",
+    "commonMistakes": "Omitting ORDER BY inside OVER() for running totals, confusing PARTITION BY with GROUP BY, or attempting to filter window functions in WHERE without a CTE wrapper.",
+    "learningOutcomes": "Mastered 14.7 Multi-Row Lookups (LAG(col, 2) & LAG(col, 7)) on FlightSchedule.",
+    "challengeSlots": [
+      {
+        "type": "keyword",
+        "value": "SELECT"
+      },
+      {
+        "type": "column",
+        "value": "flight_id,"
+      },
+      {
+        "type": "column",
+        "value": "departure_time,"
+      },
+      {
+        "type": "column",
+        "value": "LAG(departure_time,"
+      },
+      {
+        "type": "column",
+        "value": "2)"
+      },
+      {
+        "type": "keyword",
+        "value": "OVER"
+      },
+      {
+        "type": "keyword",
+        "value": "(PARTITION"
+      },
+      {
+        "type": "keyword",
+        "value": "BY"
+      },
+      {
+        "type": "column",
+        "value": "origin_airport"
+      },
+      {
+        "type": "keyword",
+        "value": "ORDER"
+      },
+      {
+        "type": "keyword",
+        "value": "BY"
+      },
+      {
+        "type": "column",
+        "value": "departure_time"
+      },
+      {
+        "type": "keyword",
+        "value": "ASC)"
+      },
+      {
+        "type": "keyword",
+        "value": "AS"
+      },
+      {
+        "type": "column",
+        "value": "two_flights_prior_departure"
+      },
+      {
+        "type": "keyword",
+        "value": "FROM"
+      },
+      {
+        "type": "table",
+        "value": "FlightSchedule;"
+      }
+    ]
+  },
+  {
+    "drillNumber": 1370,
+    "subcluster": "14.7 Multi-Row Lookups (LAG(col, 2) & LAG(col, 7))",
+    "level": "Level 3 (Multi-Row Offsets)",
+    "title": "Syntax #1370: Compare current patient weight with their weight from 2 visits prior",
+    "table": "PetClinic",
+    "scenario": "Compare current patient weight with their weight from 2 visits prior.",
+    "businessObjective": "Compare current patient weight with their weight from 2 visits prior.",
+    "schemaSnippet": "PetClinic analytical schema",
+    "targetQuery": "SELECT pet_name, visit_date, weight_kg,\n  LAG(weight_kg, 2) OVER (PARTITION BY pet_name ORDER BY visit_date ASC) AS two_visits_prior_weight\nFROM PetClinic;",
+    "syntaxBlueprint": "SELECT col1, date_col, metric,\n  LAG(metric, 2) OVER (ORDER BY date_col ASC) AS two_events_prior\nFROM table_name;",
+    "syntaxRule": "The second parameter of LAG specifies the step offset (e.g. LAG(metric, 2) skips 2 rows back, LAG(metric, 7) skips 7 rows back for week-over-week comparisons).",
+    "syntaxTrap": "Requesting an offset larger than the table row count returns NULL for all rows.",
+    "eli5Story": "Analytical Window Functions on PetClinic: Compare current patient weight with their weight from 2 visits prior.",
+    "commonMistakes": "Omitting ORDER BY inside OVER() for running totals, confusing PARTITION BY with GROUP BY, or attempting to filter window functions in WHERE without a CTE wrapper.",
+    "learningOutcomes": "Mastered 14.7 Multi-Row Lookups (LAG(col, 2) & LAG(col, 7)) on PetClinic.",
+    "challengeSlots": [
+      {
+        "type": "keyword",
+        "value": "SELECT"
+      },
+      {
+        "type": "column",
+        "value": "pet_name,"
+      },
+      {
+        "type": "column",
+        "value": "visit_date,"
+      },
+      {
+        "type": "column",
+        "value": "weight_kg,"
+      },
+      {
+        "type": "column",
+        "value": "LAG(weight_kg,"
+      },
+      {
+        "type": "column",
+        "value": "2)"
+      },
+      {
+        "type": "keyword",
+        "value": "OVER"
+      },
+      {
+        "type": "keyword",
+        "value": "(PARTITION"
+      },
+      {
+        "type": "keyword",
+        "value": "BY"
+      },
+      {
+        "type": "column",
+        "value": "pet_name"
+      },
+      {
+        "type": "keyword",
+        "value": "ORDER"
+      },
+      {
+        "type": "keyword",
+        "value": "BY"
+      },
+      {
+        "type": "column",
+        "value": "visit_date"
+      },
+      {
+        "type": "keyword",
+        "value": "ASC)"
+      },
+      {
+        "type": "keyword",
+        "value": "AS"
+      },
+      {
+        "type": "column",
+        "value": "two_visits_prior_weight"
+      },
+      {
+        "type": "keyword",
+        "value": "FROM"
+      },
+      {
+        "type": "table",
+        "value": "PetClinic;"
+      }
+    ]
+  },
+  {
+    "drillNumber": 1371,
+    "subcluster": "14.8 Inactivity & Time Gaps (DATEDIFF(date, LAG(date)))",
+    "level": "Level 3 (Time Gap Detection)",
+    "title": "Syntax #1371: Calculate the exact number of days elapsed between successive purchases for each customer",
+    "table": "Orders",
+    "scenario": "Calculate the exact number of days elapsed between successive purchases for each customer.",
+    "businessObjective": "Calculate the exact number of days elapsed between successive purchases for each customer.",
+    "schemaSnippet": "Orders analytical schema",
+    "targetQuery": "SELECT order_id, customer_name, order_date,\n  DATEDIFF(order_date, LAG(order_date, 1) OVER (PARTITION BY customer_name ORDER BY order_date ASC)) AS days_between_orders\nFROM Orders;",
+    "syntaxBlueprint": "SELECT user_id, event_date,\n  DATEDIFF(event_date, LAG(event_date, 1) OVER (PARTITION BY user_id ORDER BY event_date ASC)) AS days_since_last_event\nFROM table_name;",
+    "syntaxRule": "Combine DATEDIFF with LAG to calculate the exact number of days elapsed between consecutive interactions for each user (crucial for churn & lapse detection).",
+    "syntaxTrap": "Passing arguments to DATEDIFF in wrong order; always write DATEDIFF(current_date, LAG(event_date)).",
+    "eli5Story": "Analytical Window Functions on Orders: Calculate the exact number of days elapsed between successive purchases for each customer.",
+    "commonMistakes": "Omitting ORDER BY inside OVER() for running totals, confusing PARTITION BY with GROUP BY, or attempting to filter window functions in WHERE without a CTE wrapper.",
+    "learningOutcomes": "Mastered 14.8 Inactivity & Time Gaps (DATEDIFF(date, LAG(date))) on Orders.",
+    "challengeSlots": [
+      {
+        "type": "keyword",
+        "value": "SELECT"
+      },
+      {
+        "type": "column",
+        "value": "order_id,"
+      },
+      {
+        "type": "column",
+        "value": "customer_name,"
+      },
+      {
+        "type": "column",
+        "value": "order_date,"
+      },
+      {
+        "type": "column",
+        "value": "DATEDIFF(order_date,"
+      },
+      {
+        "type": "column",
+        "value": "LAG(order_date,"
+      },
+      {
+        "type": "column",
+        "value": "1)"
+      },
+      {
+        "type": "keyword",
+        "value": "OVER"
+      },
+      {
+        "type": "keyword",
+        "value": "(PARTITION"
+      },
+      {
+        "type": "keyword",
+        "value": "BY"
+      },
+      {
+        "type": "column",
+        "value": "customer_name"
+      },
+      {
+        "type": "keyword",
+        "value": "ORDER"
+      },
+      {
+        "type": "keyword",
+        "value": "BY"
+      },
+      {
+        "type": "column",
+        "value": "order_date"
+      },
+      {
+        "type": "keyword",
+        "value": "ASC))"
+      },
+      {
+        "type": "keyword",
+        "value": "AS"
+      },
+      {
+        "type": "column",
+        "value": "days_between_orders"
+      },
+      {
+        "type": "keyword",
+        "value": "FROM"
+      },
+      {
+        "type": "table",
+        "value": "Orders;"
+      }
+    ]
+  },
+  {
+    "drillNumber": 1372,
+    "subcluster": "14.8 Inactivity & Time Gaps (DATEDIFF(date, LAG(date)))",
+    "level": "Level 3 (Time Gap Detection)",
+    "title": "Syntax #1372: Measure days elapsed between consecutive student enrollment events",
+    "table": "Students",
+    "scenario": "Measure days elapsed between consecutive student enrollment events.",
+    "businessObjective": "Measure days elapsed between consecutive student enrollment events.",
+    "schemaSnippet": "Students analytical schema",
+    "targetQuery": "SELECT student_id, enrolled_date,\n  DATEDIFF(enrolled_date, LAG(enrolled_date, 1) OVER (ORDER BY enrolled_date ASC)) AS days_between_enrollments\nFROM Students;",
+    "syntaxBlueprint": "SELECT user_id, event_date,\n  DATEDIFF(event_date, LAG(event_date, 1) OVER (PARTITION BY user_id ORDER BY event_date ASC)) AS days_since_last_event\nFROM table_name;",
+    "syntaxRule": "Combine DATEDIFF with LAG to calculate the exact number of days elapsed between consecutive interactions for each user (crucial for churn & lapse detection).",
+    "syntaxTrap": "Passing arguments to DATEDIFF in wrong order; always write DATEDIFF(current_date, LAG(event_date)).",
+    "eli5Story": "Analytical Window Functions on Students: Measure days elapsed between consecutive student enrollment events.",
+    "commonMistakes": "Omitting ORDER BY inside OVER() for running totals, confusing PARTITION BY with GROUP BY, or attempting to filter window functions in WHERE without a CTE wrapper.",
+    "learningOutcomes": "Mastered 14.8 Inactivity & Time Gaps (DATEDIFF(date, LAG(date))) on Students.",
+    "challengeSlots": [
+      {
+        "type": "keyword",
+        "value": "SELECT"
+      },
+      {
+        "type": "column",
+        "value": "student_id,"
+      },
+      {
+        "type": "column",
+        "value": "enrolled_date,"
+      },
+      {
+        "type": "column",
+        "value": "DATEDIFF(enrolled_date,"
+      },
+      {
+        "type": "column",
+        "value": "LAG(enrolled_date,"
+      },
+      {
+        "type": "column",
+        "value": "1)"
+      },
+      {
+        "type": "keyword",
+        "value": "OVER"
+      },
+      {
+        "type": "keyword",
+        "value": "(ORDER"
+      },
+      {
+        "type": "keyword",
+        "value": "BY"
+      },
+      {
+        "type": "column",
+        "value": "enrolled_date"
+      },
+      {
+        "type": "keyword",
+        "value": "ASC))"
+      },
+      {
+        "type": "keyword",
+        "value": "AS"
+      },
+      {
+        "type": "column",
+        "value": "days_between_enrollments"
+      },
+      {
+        "type": "keyword",
+        "value": "FROM"
+      },
+      {
+        "type": "table",
+        "value": "Students;"
+      }
+    ]
+  },
+  {
+    "drillNumber": 1373,
+    "subcluster": "14.8 Inactivity & Time Gaps (DATEDIFF(date, LAG(date)))",
+    "level": "Level 3 (Time Gap Detection)",
+    "title": "Syntax #1373: Calculate the publishing hiatus in days between an author's consecutive releases",
+    "table": "Books",
+    "scenario": "Calculate the publishing hiatus in days between an author's consecutive releases.",
+    "businessObjective": "Calculate the publishing hiatus in days between an author's consecutive releases.",
+    "schemaSnippet": "Books analytical schema",
+    "targetQuery": "SELECT title, author, published_date,\n  DATEDIFF(published_date, LAG(published_date, 1) OVER (PARTITION BY author ORDER BY published_date ASC)) AS days_between_books\nFROM Books;",
+    "syntaxBlueprint": "SELECT user_id, event_date,\n  DATEDIFF(event_date, LAG(event_date, 1) OVER (PARTITION BY user_id ORDER BY event_date ASC)) AS days_since_last_event\nFROM table_name;",
+    "syntaxRule": "Combine DATEDIFF with LAG to calculate the exact number of days elapsed between consecutive interactions for each user (crucial for churn & lapse detection).",
+    "syntaxTrap": "Passing arguments to DATEDIFF in wrong order; always write DATEDIFF(current_date, LAG(event_date)).",
+    "eli5Story": "Analytical Window Functions on Books: Calculate the publishing hiatus in days between an author's consecutive releases.",
+    "commonMistakes": "Omitting ORDER BY inside OVER() for running totals, confusing PARTITION BY with GROUP BY, or attempting to filter window functions in WHERE without a CTE wrapper.",
+    "learningOutcomes": "Mastered 14.8 Inactivity & Time Gaps (DATEDIFF(date, LAG(date))) on Books.",
+    "challengeSlots": [
+      {
+        "type": "keyword",
+        "value": "SELECT"
+      },
+      {
+        "type": "column",
+        "value": "title,"
+      },
+      {
+        "type": "column",
+        "value": "author,"
+      },
+      {
+        "type": "column",
+        "value": "published_date,"
+      },
+      {
+        "type": "column",
+        "value": "DATEDIFF(published_date,"
+      },
+      {
+        "type": "column",
+        "value": "LAG(published_date,"
+      },
+      {
+        "type": "column",
+        "value": "1)"
+      },
+      {
+        "type": "keyword",
+        "value": "OVER"
+      },
+      {
+        "type": "keyword",
+        "value": "(PARTITION"
+      },
+      {
+        "type": "keyword",
+        "value": "BY"
+      },
+      {
+        "type": "column",
+        "value": "author"
+      },
+      {
+        "type": "keyword",
+        "value": "ORDER"
+      },
+      {
+        "type": "keyword",
+        "value": "BY"
+      },
+      {
+        "type": "column",
+        "value": "published_date"
+      },
+      {
+        "type": "keyword",
+        "value": "ASC))"
+      },
+      {
+        "type": "keyword",
+        "value": "AS"
+      },
+      {
+        "type": "column",
+        "value": "days_between_books"
+      },
+      {
+        "type": "keyword",
+        "value": "FROM"
+      },
+      {
+        "type": "table",
+        "value": "Books;"
+      }
+    ]
+  },
+  {
+    "drillNumber": 1374,
+    "subcluster": "14.8 Inactivity & Time Gaps (DATEDIFF(date, LAG(date)))",
+    "level": "Level 3 (Time Gap Detection)",
+    "title": "Syntax #1374: Measure hiring velocity: calculate days elapsed between successive department hires",
+    "table": "Employees",
+    "scenario": "Measure hiring velocity: calculate days elapsed between successive department hires.",
+    "businessObjective": "Measure hiring velocity: calculate days elapsed between successive department hires.",
+    "schemaSnippet": "Employees analytical schema",
+    "targetQuery": "SELECT first_name, department, hire_date,\n  DATEDIFF(hire_date, LAG(hire_date, 1) OVER (PARTITION BY department ORDER BY hire_date ASC)) AS days_between_dept_hires\nFROM Employees;",
+    "syntaxBlueprint": "SELECT user_id, event_date,\n  DATEDIFF(event_date, LAG(event_date, 1) OVER (PARTITION BY user_id ORDER BY event_date ASC)) AS days_since_last_event\nFROM table_name;",
+    "syntaxRule": "Combine DATEDIFF with LAG to calculate the exact number of days elapsed between consecutive interactions for each user (crucial for churn & lapse detection).",
+    "syntaxTrap": "Passing arguments to DATEDIFF in wrong order; always write DATEDIFF(current_date, LAG(event_date)).",
+    "eli5Story": "Analytical Window Functions on Employees: Measure hiring velocity: calculate days elapsed between successive department hires.",
+    "commonMistakes": "Omitting ORDER BY inside OVER() for running totals, confusing PARTITION BY with GROUP BY, or attempting to filter window functions in WHERE without a CTE wrapper.",
+    "learningOutcomes": "Mastered 14.8 Inactivity & Time Gaps (DATEDIFF(date, LAG(date))) on Employees.",
+    "challengeSlots": [
+      {
+        "type": "keyword",
+        "value": "SELECT"
+      },
+      {
+        "type": "column",
+        "value": "first_name,"
+      },
+      {
+        "type": "column",
+        "value": "department,"
+      },
+      {
+        "type": "column",
+        "value": "hire_date,"
+      },
+      {
+        "type": "column",
+        "value": "DATEDIFF(hire_date,"
+      },
+      {
+        "type": "column",
+        "value": "LAG(hire_date,"
+      },
+      {
+        "type": "column",
+        "value": "1)"
+      },
+      {
+        "type": "keyword",
+        "value": "OVER"
+      },
+      {
+        "type": "keyword",
+        "value": "(PARTITION"
+      },
+      {
+        "type": "keyword",
+        "value": "BY"
+      },
+      {
+        "type": "column",
+        "value": "department"
+      },
+      {
+        "type": "keyword",
+        "value": "ORDER"
+      },
+      {
+        "type": "keyword",
+        "value": "BY"
+      },
+      {
+        "type": "column",
+        "value": "hire_date"
+      },
+      {
+        "type": "keyword",
+        "value": "ASC))"
+      },
+      {
+        "type": "keyword",
+        "value": "AS"
+      },
+      {
+        "type": "column",
+        "value": "days_between_dept_hires"
+      },
+      {
+        "type": "keyword",
+        "value": "FROM"
+      },
+      {
+        "type": "table",
+        "value": "Employees;"
+      }
+    ]
+  },
+  {
+    "drillNumber": 1375,
+    "subcluster": "14.8 Inactivity & Time Gaps (DATEDIFF(date, LAG(date)))",
+    "level": "Level 3 (Time Gap Detection)",
+    "title": "Syntax #1375: Calculate gap in days between successive product expiration dates in each category",
+    "table": "GroceryItems",
+    "scenario": "Calculate gap in days between successive product expiration dates in each category.",
+    "businessObjective": "Calculate gap in days between successive product expiration dates in each category.",
+    "schemaSnippet": "GroceryItems analytical schema",
+    "targetQuery": "SELECT item_name, expiry_date,\n  DATEDIFF(expiry_date, LAG(expiry_date, 1) OVER (PARTITION BY category ORDER BY expiry_date ASC)) AS days_between_expirations\nFROM GroceryItems;",
+    "syntaxBlueprint": "SELECT user_id, event_date,\n  DATEDIFF(event_date, LAG(event_date, 1) OVER (PARTITION BY user_id ORDER BY event_date ASC)) AS days_since_last_event\nFROM table_name;",
+    "syntaxRule": "Combine DATEDIFF with LAG to calculate the exact number of days elapsed between consecutive interactions for each user (crucial for churn & lapse detection).",
+    "syntaxTrap": "Passing arguments to DATEDIFF in wrong order; always write DATEDIFF(current_date, LAG(event_date)).",
+    "eli5Story": "Analytical Window Functions on GroceryItems: Calculate gap in days between successive product expiration dates in each category.",
+    "commonMistakes": "Omitting ORDER BY inside OVER() for running totals, confusing PARTITION BY with GROUP BY, or attempting to filter window functions in WHERE without a CTE wrapper.",
+    "learningOutcomes": "Mastered 14.8 Inactivity & Time Gaps (DATEDIFF(date, LAG(date))) on GroceryItems.",
+    "challengeSlots": [
+      {
+        "type": "keyword",
+        "value": "SELECT"
+      },
+      {
+        "type": "column",
+        "value": "item_name,"
+      },
+      {
+        "type": "column",
+        "value": "expiry_date,"
+      },
+      {
+        "type": "column",
+        "value": "DATEDIFF(expiry_date,"
+      },
+      {
+        "type": "column",
+        "value": "LAG(expiry_date,"
+      },
+      {
+        "type": "column",
+        "value": "1)"
+      },
+      {
+        "type": "keyword",
+        "value": "OVER"
+      },
+      {
+        "type": "keyword",
+        "value": "(PARTITION"
+      },
+      {
+        "type": "keyword",
+        "value": "BY"
+      },
+      {
+        "type": "column",
+        "value": "category"
+      },
+      {
+        "type": "keyword",
+        "value": "ORDER"
+      },
+      {
+        "type": "keyword",
+        "value": "BY"
+      },
+      {
+        "type": "column",
+        "value": "expiry_date"
+      },
+      {
+        "type": "keyword",
+        "value": "ASC))"
+      },
+      {
+        "type": "keyword",
+        "value": "AS"
+      },
+      {
+        "type": "column",
+        "value": "days_between_expirations"
+      },
+      {
+        "type": "keyword",
+        "value": "FROM"
+      },
+      {
+        "type": "table",
+        "value": "GroceryItems;"
+      }
+    ]
+  },
+  {
+    "drillNumber": 1376,
+    "subcluster": "14.8 Inactivity & Time Gaps (DATEDIFF(date, LAG(date)))",
+    "level": "Level 3 (Time Gap Detection)",
+    "title": "Syntax #1376: Measure release gap in days between an artist's consecutive track drops",
+    "table": "MusicTracks",
+    "scenario": "Measure release gap in days between an artist's consecutive track drops.",
+    "businessObjective": "Measure release gap in days between an artist's consecutive track drops.",
+    "schemaSnippet": "MusicTracks analytical schema",
+    "targetQuery": "SELECT track_title, artist_name, release_date,\n  DATEDIFF(release_date, LAG(release_date, 1) OVER (PARTITION BY artist_name ORDER BY release_date ASC)) AS days_between_releases\nFROM MusicTracks;",
+    "syntaxBlueprint": "SELECT user_id, event_date,\n  DATEDIFF(event_date, LAG(event_date, 1) OVER (PARTITION BY user_id ORDER BY event_date ASC)) AS days_since_last_event\nFROM table_name;",
+    "syntaxRule": "Combine DATEDIFF with LAG to calculate the exact number of days elapsed between consecutive interactions for each user (crucial for churn & lapse detection).",
+    "syntaxTrap": "Passing arguments to DATEDIFF in wrong order; always write DATEDIFF(current_date, LAG(event_date)).",
+    "eli5Story": "Analytical Window Functions on MusicTracks: Measure release gap in days between an artist's consecutive track drops.",
+    "commonMistakes": "Omitting ORDER BY inside OVER() for running totals, confusing PARTITION BY with GROUP BY, or attempting to filter window functions in WHERE without a CTE wrapper.",
+    "learningOutcomes": "Mastered 14.8 Inactivity & Time Gaps (DATEDIFF(date, LAG(date))) on MusicTracks.",
+    "challengeSlots": [
+      {
+        "type": "keyword",
+        "value": "SELECT"
+      },
+      {
+        "type": "column",
+        "value": "track_title,"
+      },
+      {
+        "type": "column",
+        "value": "artist_name,"
+      },
+      {
+        "type": "column",
+        "value": "release_date,"
+      },
+      {
+        "type": "column",
+        "value": "DATEDIFF(release_date,"
+      },
+      {
+        "type": "column",
+        "value": "LAG(release_date,"
+      },
+      {
+        "type": "column",
+        "value": "1)"
+      },
+      {
+        "type": "keyword",
+        "value": "OVER"
+      },
+      {
+        "type": "keyword",
+        "value": "(PARTITION"
+      },
+      {
+        "type": "keyword",
+        "value": "BY"
+      },
+      {
+        "type": "column",
+        "value": "artist_name"
+      },
+      {
+        "type": "keyword",
+        "value": "ORDER"
+      },
+      {
+        "type": "keyword",
+        "value": "BY"
+      },
+      {
+        "type": "column",
+        "value": "release_date"
+      },
+      {
+        "type": "keyword",
+        "value": "ASC))"
+      },
+      {
+        "type": "keyword",
+        "value": "AS"
+      },
+      {
+        "type": "column",
+        "value": "days_between_releases"
+      },
+      {
+        "type": "keyword",
+        "value": "FROM"
+      },
+      {
+        "type": "table",
+        "value": "MusicTracks;"
+      }
+    ]
+  },
+  {
+    "drillNumber": 1377,
+    "subcluster": "14.8 Inactivity & Time Gaps (DATEDIFF(date, LAG(date)))",
+    "level": "Level 3 (Time Gap Detection)",
+    "title": "Syntax #1377: Measure acquisition pacing: days elapsed between consecutive gym member signups",
+    "table": "GymMembers",
+    "scenario": "Measure acquisition pacing: days elapsed between consecutive gym member signups.",
+    "businessObjective": "Measure acquisition pacing: days elapsed between consecutive gym member signups.",
+    "schemaSnippet": "GymMembers analytical schema",
+    "targetQuery": "SELECT member_name, join_date,\n  DATEDIFF(join_date, LAG(join_date, 1) OVER (ORDER BY join_date ASC)) AS days_between_member_signups\nFROM GymMembers;",
+    "syntaxBlueprint": "SELECT user_id, event_date,\n  DATEDIFF(event_date, LAG(event_date, 1) OVER (PARTITION BY user_id ORDER BY event_date ASC)) AS days_since_last_event\nFROM table_name;",
+    "syntaxRule": "Combine DATEDIFF with LAG to calculate the exact number of days elapsed between consecutive interactions for each user (crucial for churn & lapse detection).",
+    "syntaxTrap": "Passing arguments to DATEDIFF in wrong order; always write DATEDIFF(current_date, LAG(event_date)).",
+    "eli5Story": "Analytical Window Functions on GymMembers: Measure acquisition pacing: days elapsed between consecutive gym member signups.",
+    "commonMistakes": "Omitting ORDER BY inside OVER() for running totals, confusing PARTITION BY with GROUP BY, or attempting to filter window functions in WHERE without a CTE wrapper.",
+    "learningOutcomes": "Mastered 14.8 Inactivity & Time Gaps (DATEDIFF(date, LAG(date))) on GymMembers.",
+    "challengeSlots": [
+      {
+        "type": "keyword",
+        "value": "SELECT"
+      },
+      {
+        "type": "column",
+        "value": "member_name,"
+      },
+      {
+        "type": "column",
+        "value": "join_date,"
+      },
+      {
+        "type": "column",
+        "value": "DATEDIFF(join_date,"
+      },
+      {
+        "type": "column",
+        "value": "LAG(join_date,"
+      },
+      {
+        "type": "column",
+        "value": "1)"
+      },
+      {
+        "type": "keyword",
+        "value": "OVER"
+      },
+      {
+        "type": "keyword",
+        "value": "(ORDER"
+      },
+      {
+        "type": "keyword",
+        "value": "BY"
+      },
+      {
+        "type": "column",
+        "value": "join_date"
+      },
+      {
+        "type": "keyword",
+        "value": "ASC))"
+      },
+      {
+        "type": "keyword",
+        "value": "AS"
+      },
+      {
+        "type": "column",
+        "value": "days_between_member_signups"
+      },
+      {
+        "type": "keyword",
+        "value": "FROM"
+      },
+      {
+        "type": "table",
+        "value": "GymMembers;"
+      }
+    ]
+  },
+  {
+    "drillNumber": 1378,
+    "subcluster": "14.8 Inactivity & Time Gaps (DATEDIFF(date, LAG(date)))",
+    "level": "Level 3 (Time Gap Detection)",
+    "title": "Syntax #1378: Measure critic turnaround time: days between successive reviews by the same critic",
+    "table": "MovieReviews",
+    "scenario": "Measure critic turnaround time: days between successive reviews by the same critic.",
+    "businessObjective": "Measure critic turnaround time: days between successive reviews by the same critic.",
+    "schemaSnippet": "MovieReviews analytical schema",
+    "targetQuery": "SELECT movie_title, reviewer_name, review_date,\n  DATEDIFF(review_date, LAG(review_date, 1) OVER (PARTITION BY reviewer_name ORDER BY review_date ASC)) AS days_between_reviews\nFROM MovieReviews;",
+    "syntaxBlueprint": "SELECT user_id, event_date,\n  DATEDIFF(event_date, LAG(event_date, 1) OVER (PARTITION BY user_id ORDER BY event_date ASC)) AS days_since_last_event\nFROM table_name;",
+    "syntaxRule": "Combine DATEDIFF with LAG to calculate the exact number of days elapsed between consecutive interactions for each user (crucial for churn & lapse detection).",
+    "syntaxTrap": "Passing arguments to DATEDIFF in wrong order; always write DATEDIFF(current_date, LAG(event_date)).",
+    "eli5Story": "Analytical Window Functions on MovieReviews: Measure critic turnaround time: days between successive reviews by the same critic.",
+    "commonMistakes": "Omitting ORDER BY inside OVER() for running totals, confusing PARTITION BY with GROUP BY, or attempting to filter window functions in WHERE without a CTE wrapper.",
+    "learningOutcomes": "Mastered 14.8 Inactivity & Time Gaps (DATEDIFF(date, LAG(date))) on MovieReviews.",
+    "challengeSlots": [
+      {
+        "type": "keyword",
+        "value": "SELECT"
+      },
+      {
+        "type": "column",
+        "value": "movie_title,"
+      },
+      {
+        "type": "column",
+        "value": "reviewer_name,"
+      },
+      {
+        "type": "column",
+        "value": "review_date,"
+      },
+      {
+        "type": "column",
+        "value": "DATEDIFF(review_date,"
+      },
+      {
+        "type": "column",
+        "value": "LAG(review_date,"
+      },
+      {
+        "type": "column",
+        "value": "1)"
+      },
+      {
+        "type": "keyword",
+        "value": "OVER"
+      },
+      {
+        "type": "keyword",
+        "value": "(PARTITION"
+      },
+      {
+        "type": "keyword",
+        "value": "BY"
+      },
+      {
+        "type": "column",
+        "value": "reviewer_name"
+      },
+      {
+        "type": "keyword",
+        "value": "ORDER"
+      },
+      {
+        "type": "keyword",
+        "value": "BY"
+      },
+      {
+        "type": "column",
+        "value": "review_date"
+      },
+      {
+        "type": "keyword",
+        "value": "ASC))"
+      },
+      {
+        "type": "keyword",
+        "value": "AS"
+      },
+      {
+        "type": "column",
+        "value": "days_between_reviews"
+      },
+      {
+        "type": "keyword",
+        "value": "FROM"
+      },
+      {
+        "type": "table",
+        "value": "MovieReviews;"
+      }
+    ]
+  },
+  {
+    "drillNumber": 1379,
+    "subcluster": "14.8 Inactivity & Time Gaps (DATEDIFF(date, LAG(date)))",
+    "level": "Level 3 (Time Gap Detection)",
+    "title": "Syntax #1379: Calculate gap in days between scheduled flights from the same airport",
+    "table": "FlightSchedule",
+    "scenario": "Calculate gap in days between scheduled flights from the same airport.",
+    "businessObjective": "Calculate gap in days between scheduled flights from the same airport.",
+    "schemaSnippet": "FlightSchedule analytical schema",
+    "targetQuery": "SELECT flight_id, origin_airport, departure_time,\n  DATEDIFF(departure_time, LAG(departure_time, 1) OVER (PARTITION BY origin_airport ORDER BY departure_time ASC)) AS days_between_flights\nFROM FlightSchedule;",
+    "syntaxBlueprint": "SELECT user_id, event_date,\n  DATEDIFF(event_date, LAG(event_date, 1) OVER (PARTITION BY user_id ORDER BY event_date ASC)) AS days_since_last_event\nFROM table_name;",
+    "syntaxRule": "Combine DATEDIFF with LAG to calculate the exact number of days elapsed between consecutive interactions for each user (crucial for churn & lapse detection).",
+    "syntaxTrap": "Passing arguments to DATEDIFF in wrong order; always write DATEDIFF(current_date, LAG(event_date)).",
+    "eli5Story": "Analytical Window Functions on FlightSchedule: Calculate gap in days between scheduled flights from the same airport.",
+    "commonMistakes": "Omitting ORDER BY inside OVER() for running totals, confusing PARTITION BY with GROUP BY, or attempting to filter window functions in WHERE without a CTE wrapper.",
+    "learningOutcomes": "Mastered 14.8 Inactivity & Time Gaps (DATEDIFF(date, LAG(date))) on FlightSchedule.",
+    "challengeSlots": [
+      {
+        "type": "keyword",
+        "value": "SELECT"
+      },
+      {
+        "type": "column",
+        "value": "flight_id,"
+      },
+      {
+        "type": "column",
+        "value": "origin_airport,"
+      },
+      {
+        "type": "column",
+        "value": "departure_time,"
+      },
+      {
+        "type": "column",
+        "value": "DATEDIFF(departure_time,"
+      },
+      {
+        "type": "column",
+        "value": "LAG(departure_time,"
+      },
+      {
+        "type": "column",
+        "value": "1)"
+      },
+      {
+        "type": "keyword",
+        "value": "OVER"
+      },
+      {
+        "type": "keyword",
+        "value": "(PARTITION"
+      },
+      {
+        "type": "keyword",
+        "value": "BY"
+      },
+      {
+        "type": "column",
+        "value": "origin_airport"
+      },
+      {
+        "type": "keyword",
+        "value": "ORDER"
+      },
+      {
+        "type": "keyword",
+        "value": "BY"
+      },
+      {
+        "type": "column",
+        "value": "departure_time"
+      },
+      {
+        "type": "keyword",
+        "value": "ASC))"
+      },
+      {
+        "type": "keyword",
+        "value": "AS"
+      },
+      {
+        "type": "column",
+        "value": "days_between_flights"
+      },
+      {
+        "type": "keyword",
+        "value": "FROM"
+      },
+      {
+        "type": "table",
+        "value": "FlightSchedule;"
+      }
+    ]
+  },
+  {
+    "drillNumber": 1380,
+    "subcluster": "14.8 Inactivity & Time Gaps (DATEDIFF(date, LAG(date)))",
+    "level": "Level 3 (Time Gap Detection)",
+    "title": "Syntax #1380: Calculate the number of days elapsed between consecutive clinic visits for each patient",
+    "table": "PetClinic",
+    "scenario": "Calculate the number of days elapsed between consecutive clinic visits for each patient.",
+    "businessObjective": "Calculate the number of days elapsed between consecutive clinic visits for each patient.",
+    "schemaSnippet": "PetClinic analytical schema",
+    "targetQuery": "SELECT pet_name, visit_date,\n  DATEDIFF(visit_date, LAG(visit_date, 1) OVER (PARTITION BY pet_name ORDER BY visit_date ASC)) AS days_between_vet_visits\nFROM PetClinic;",
+    "syntaxBlueprint": "SELECT user_id, event_date,\n  DATEDIFF(event_date, LAG(event_date, 1) OVER (PARTITION BY user_id ORDER BY event_date ASC)) AS days_since_last_event\nFROM table_name;",
+    "syntaxRule": "Combine DATEDIFF with LAG to calculate the exact number of days elapsed between consecutive interactions for each user (crucial for churn & lapse detection).",
+    "syntaxTrap": "Passing arguments to DATEDIFF in wrong order; always write DATEDIFF(current_date, LAG(event_date)).",
+    "eli5Story": "Analytical Window Functions on PetClinic: Calculate the number of days elapsed between consecutive clinic visits for each patient.",
+    "commonMistakes": "Omitting ORDER BY inside OVER() for running totals, confusing PARTITION BY with GROUP BY, or attempting to filter window functions in WHERE without a CTE wrapper.",
+    "learningOutcomes": "Mastered 14.8 Inactivity & Time Gaps (DATEDIFF(date, LAG(date))) on PetClinic.",
+    "challengeSlots": [
+      {
+        "type": "keyword",
+        "value": "SELECT"
+      },
+      {
+        "type": "column",
+        "value": "pet_name,"
+      },
+      {
+        "type": "column",
+        "value": "visit_date,"
+      },
+      {
+        "type": "column",
+        "value": "DATEDIFF(visit_date,"
+      },
+      {
+        "type": "column",
+        "value": "LAG(visit_date,"
+      },
+      {
+        "type": "column",
+        "value": "1)"
+      },
+      {
+        "type": "keyword",
+        "value": "OVER"
+      },
+      {
+        "type": "keyword",
+        "value": "(PARTITION"
+      },
+      {
+        "type": "keyword",
+        "value": "BY"
+      },
+      {
+        "type": "column",
+        "value": "pet_name"
+      },
+      {
+        "type": "keyword",
+        "value": "ORDER"
+      },
+      {
+        "type": "keyword",
+        "value": "BY"
+      },
+      {
+        "type": "column",
+        "value": "visit_date"
+      },
+      {
+        "type": "keyword",
+        "value": "ASC))"
+      },
+      {
+        "type": "keyword",
+        "value": "AS"
+      },
+      {
+        "type": "column",
+        "value": "days_between_vet_visits"
+      },
+      {
+        "type": "keyword",
+        "value": "FROM"
+      },
+      {
+        "type": "table",
+        "value": "PetClinic;"
+      }
+    ]
+  },
+  {
+    "drillNumber": 1381,
+    "subcluster": "14.9 Churn & Status Transition Flagging (CASE with LAG)",
+    "level": "Level 3 (State Transition Flagging)",
+    "title": "Syntax #1381: Flag customer order trends: categorize as 'Upsell' if amount increased over their previous purchase",
+    "table": "Orders",
+    "scenario": "Flag customer order trends: categorize as 'Upsell' if amount increased over their previous purchase.",
+    "businessObjective": "Flag customer order trends: categorize as 'Upsell' if amount increased over their previous purchase.",
+    "schemaSnippet": "Orders analytical schema",
+    "targetQuery": "SELECT order_id, customer_name, total_amount,\n  CASE WHEN total_amount > LAG(total_amount, 1, total_amount) OVER (PARTITION BY customer_name ORDER BY order_date ASC) THEN 'Upsell' ELSE 'Flat/Down' END AS order_trend\nFROM Orders;",
+    "syntaxBlueprint": "SELECT user_id, status,\n  CASE WHEN LAG(status, 1) OVER (PARTITION BY user_id ORDER BY date_col) != status THEN 1 ELSE 0 END AS has_status_changed\nFROM table_name;",
+    "syntaxRule": "Embed LAG inside a CASE WHEN expression to detect state changes, plan upgrades, or sudden price spikes between consecutive records.",
+    "syntaxTrap": "Comparing against LAG on the first row evaluates to NULL (neither TRUE nor FALSE); handle the initial row explicitly.",
+    "eli5Story": "Analytical Window Functions on Orders: Flag customer order trends: categorize as 'Upsell' if amount increased over their previous purchase.",
+    "commonMistakes": "Omitting ORDER BY inside OVER() for running totals, confusing PARTITION BY with GROUP BY, or attempting to filter window functions in WHERE without a CTE wrapper.",
+    "learningOutcomes": "Mastered 14.9 Churn & Status Transition Flagging (CASE with LAG) on Orders.",
+    "challengeSlots": [
+      {
+        "type": "keyword",
+        "value": "SELECT"
+      },
+      {
+        "type": "column",
+        "value": "order_id,"
+      },
+      {
+        "type": "column",
+        "value": "customer_name,"
+      },
+      {
+        "type": "column",
+        "value": "total_amount,"
+      },
+      {
+        "type": "keyword",
+        "value": "CASE"
+      },
+      {
+        "type": "keyword",
+        "value": "WHEN"
+      },
+      {
+        "type": "column",
+        "value": "total_amount"
+      },
+      {
+        "type": "column",
+        "value": ">"
+      },
+      {
+        "type": "column",
+        "value": "LAG(total_amount,"
+      },
+      {
+        "type": "column",
+        "value": "1,"
+      },
+      {
+        "type": "column",
+        "value": "total_amount)"
+      },
+      {
+        "type": "keyword",
+        "value": "OVER"
+      },
+      {
+        "type": "keyword",
+        "value": "(PARTITION"
+      },
+      {
+        "type": "keyword",
+        "value": "BY"
+      },
+      {
+        "type": "column",
+        "value": "customer_name"
+      },
+      {
+        "type": "keyword",
+        "value": "ORDER"
+      },
+      {
+        "type": "keyword",
+        "value": "BY"
+      },
+      {
+        "type": "column",
+        "value": "order_date"
+      },
+      {
+        "type": "keyword",
+        "value": "ASC)"
+      },
+      {
+        "type": "keyword",
+        "value": "THEN"
+      },
+      {
+        "type": "column",
+        "value": "'Upsell'"
+      },
+      {
+        "type": "keyword",
+        "value": "ELSE"
+      },
+      {
+        "type": "column",
+        "value": "'Flat/Down'"
+      },
+      {
+        "type": "keyword",
+        "value": "END"
+      },
+      {
+        "type": "keyword",
+        "value": "AS"
+      },
+      {
+        "type": "column",
+        "value": "order_trend"
+      },
+      {
+        "type": "keyword",
+        "value": "FROM"
+      },
+      {
+        "type": "table",
+        "value": "Orders;"
+      }
+    ]
+  },
+  {
+    "drillNumber": 1382,
+    "subcluster": "14.9 Churn & Status Transition Flagging (CASE with LAG)",
+    "level": "Level 3 (State Transition Flagging)",
+    "title": "Syntax #1382: Flag GPA trajectory comparing each student to previous enrollment",
+    "table": "Students",
+    "scenario": "Flag GPA trajectory comparing each student to previous enrollment.",
+    "businessObjective": "Flag GPA trajectory comparing each student to previous enrollment.",
+    "schemaSnippet": "Students analytical schema",
+    "targetQuery": "SELECT full_name, enrolled_year, gpa,\n  CASE WHEN gpa > LAG(gpa, 1, gpa) OVER (ORDER BY enrolled_year ASC) THEN 'Improving' ELSE 'Steady/Drop' END AS gpa_direction\nFROM Students;",
+    "syntaxBlueprint": "SELECT user_id, status,\n  CASE WHEN LAG(status, 1) OVER (PARTITION BY user_id ORDER BY date_col) != status THEN 1 ELSE 0 END AS has_status_changed\nFROM table_name;",
+    "syntaxRule": "Embed LAG inside a CASE WHEN expression to detect state changes, plan upgrades, or sudden price spikes between consecutive records.",
+    "syntaxTrap": "Comparing against LAG on the first row evaluates to NULL (neither TRUE nor FALSE); handle the initial row explicitly.",
+    "eli5Story": "Analytical Window Functions on Students: Flag GPA trajectory comparing each student to previous enrollment.",
+    "commonMistakes": "Omitting ORDER BY inside OVER() for running totals, confusing PARTITION BY with GROUP BY, or attempting to filter window functions in WHERE without a CTE wrapper.",
+    "learningOutcomes": "Mastered 14.9 Churn & Status Transition Flagging (CASE with LAG) on Students.",
+    "challengeSlots": [
+      {
+        "type": "keyword",
+        "value": "SELECT"
+      },
+      {
+        "type": "column",
+        "value": "full_name,"
+      },
+      {
+        "type": "column",
+        "value": "enrolled_year,"
+      },
+      {
+        "type": "column",
+        "value": "gpa,"
+      },
+      {
+        "type": "keyword",
+        "value": "CASE"
+      },
+      {
+        "type": "keyword",
+        "value": "WHEN"
+      },
+      {
+        "type": "column",
+        "value": "gpa"
+      },
+      {
+        "type": "column",
+        "value": ">"
+      },
+      {
+        "type": "column",
+        "value": "LAG(gpa,"
+      },
+      {
+        "type": "column",
+        "value": "1,"
+      },
+      {
+        "type": "column",
+        "value": "gpa)"
+      },
+      {
+        "type": "keyword",
+        "value": "OVER"
+      },
+      {
+        "type": "keyword",
+        "value": "(ORDER"
+      },
+      {
+        "type": "keyword",
+        "value": "BY"
+      },
+      {
+        "type": "column",
+        "value": "enrolled_year"
+      },
+      {
+        "type": "keyword",
+        "value": "ASC)"
+      },
+      {
+        "type": "keyword",
+        "value": "THEN"
+      },
+      {
+        "type": "column",
+        "value": "'Improving'"
+      },
+      {
+        "type": "keyword",
+        "value": "ELSE"
+      },
+      {
+        "type": "column",
+        "value": "'Steady/Drop'"
+      },
+      {
+        "type": "keyword",
+        "value": "END"
+      },
+      {
+        "type": "keyword",
+        "value": "AS"
+      },
+      {
+        "type": "column",
+        "value": "gpa_direction"
+      },
+      {
+        "type": "keyword",
+        "value": "FROM"
+      },
+      {
+        "type": "table",
+        "value": "Students;"
+      }
+    ]
+  },
+  {
+    "drillNumber": 1383,
+    "subcluster": "14.9 Churn & Status Transition Flagging (CASE with LAG)",
+    "level": "Level 3 (State Transition Flagging)",
+    "title": "Syntax #1383: Flag author price hikes comparing each book to their previous release",
+    "table": "Books",
+    "scenario": "Flag author price hikes comparing each book to their previous release.",
+    "businessObjective": "Flag author price hikes comparing each book to their previous release.",
+    "schemaSnippet": "Books analytical schema",
+    "targetQuery": "SELECT title, author, price,\n  CASE WHEN price > LAG(price, 1, price) OVER (PARTITION BY author ORDER BY published_date ASC) THEN 'Price Hike' ELSE 'Same/Lower' END AS price_trend\nFROM Books;",
+    "syntaxBlueprint": "SELECT user_id, status,\n  CASE WHEN LAG(status, 1) OVER (PARTITION BY user_id ORDER BY date_col) != status THEN 1 ELSE 0 END AS has_status_changed\nFROM table_name;",
+    "syntaxRule": "Embed LAG inside a CASE WHEN expression to detect state changes, plan upgrades, or sudden price spikes between consecutive records.",
+    "syntaxTrap": "Comparing against LAG on the first row evaluates to NULL (neither TRUE nor FALSE); handle the initial row explicitly.",
+    "eli5Story": "Analytical Window Functions on Books: Flag author price hikes comparing each book to their previous release.",
+    "commonMistakes": "Omitting ORDER BY inside OVER() for running totals, confusing PARTITION BY with GROUP BY, or attempting to filter window functions in WHERE without a CTE wrapper.",
+    "learningOutcomes": "Mastered 14.9 Churn & Status Transition Flagging (CASE with LAG) on Books.",
+    "challengeSlots": [
+      {
+        "type": "keyword",
+        "value": "SELECT"
+      },
+      {
+        "type": "column",
+        "value": "title,"
+      },
+      {
+        "type": "column",
+        "value": "author,"
+      },
+      {
+        "type": "column",
+        "value": "price,"
+      },
+      {
+        "type": "keyword",
+        "value": "CASE"
+      },
+      {
+        "type": "keyword",
+        "value": "WHEN"
+      },
+      {
+        "type": "column",
+        "value": "price"
+      },
+      {
+        "type": "column",
+        "value": ">"
+      },
+      {
+        "type": "column",
+        "value": "LAG(price,"
+      },
+      {
+        "type": "column",
+        "value": "1,"
+      },
+      {
+        "type": "column",
+        "value": "price)"
+      },
+      {
+        "type": "keyword",
+        "value": "OVER"
+      },
+      {
+        "type": "keyword",
+        "value": "(PARTITION"
+      },
+      {
+        "type": "keyword",
+        "value": "BY"
+      },
+      {
+        "type": "column",
+        "value": "author"
+      },
+      {
+        "type": "keyword",
+        "value": "ORDER"
+      },
+      {
+        "type": "keyword",
+        "value": "BY"
+      },
+      {
+        "type": "column",
+        "value": "published_date"
+      },
+      {
+        "type": "keyword",
+        "value": "ASC)"
+      },
+      {
+        "type": "keyword",
+        "value": "THEN"
+      },
+      {
+        "type": "column",
+        "value": "'Price"
+      },
+      {
+        "type": "column",
+        "value": "Hike'"
+      },
+      {
+        "type": "keyword",
+        "value": "ELSE"
+      },
+      {
+        "type": "column",
+        "value": "'Same/Lower'"
+      },
+      {
+        "type": "keyword",
+        "value": "END"
+      },
+      {
+        "type": "keyword",
+        "value": "AS"
+      },
+      {
+        "type": "column",
+        "value": "price_trend"
+      },
+      {
+        "type": "keyword",
+        "value": "FROM"
+      },
+      {
+        "type": "table",
+        "value": "Books;"
+      }
+    ]
+  },
+  {
+    "drillNumber": 1384,
+    "subcluster": "14.9 Churn & Status Transition Flagging (CASE with LAG)",
+    "level": "Level 3 (State Transition Flagging)",
+    "title": "Syntax #1384: Flag hiring compensation trends within departments",
+    "table": "Employees",
+    "scenario": "Flag hiring compensation trends within departments.",
+    "businessObjective": "Flag hiring compensation trends within departments.",
+    "schemaSnippet": "Employees analytical schema",
+    "targetQuery": "SELECT first_name, department, salary,\n  CASE WHEN salary > LAG(salary, 1, salary) OVER (PARTITION BY department ORDER BY hire_date ASC) THEN 'Higher Than Prev Hire' ELSE 'Lower/Equal' END AS hire_comp_trend\nFROM Employees;",
+    "syntaxBlueprint": "SELECT user_id, status,\n  CASE WHEN LAG(status, 1) OVER (PARTITION BY user_id ORDER BY date_col) != status THEN 1 ELSE 0 END AS has_status_changed\nFROM table_name;",
+    "syntaxRule": "Embed LAG inside a CASE WHEN expression to detect state changes, plan upgrades, or sudden price spikes between consecutive records.",
+    "syntaxTrap": "Comparing against LAG on the first row evaluates to NULL (neither TRUE nor FALSE); handle the initial row explicitly.",
+    "eli5Story": "Analytical Window Functions on Employees: Flag hiring compensation trends within departments.",
+    "commonMistakes": "Omitting ORDER BY inside OVER() for running totals, confusing PARTITION BY with GROUP BY, or attempting to filter window functions in WHERE without a CTE wrapper.",
+    "learningOutcomes": "Mastered 14.9 Churn & Status Transition Flagging (CASE with LAG) on Employees.",
+    "challengeSlots": [
+      {
+        "type": "keyword",
+        "value": "SELECT"
+      },
+      {
+        "type": "column",
+        "value": "first_name,"
+      },
+      {
+        "type": "column",
+        "value": "department,"
+      },
+      {
+        "type": "column",
+        "value": "salary,"
+      },
+      {
+        "type": "keyword",
+        "value": "CASE"
+      },
+      {
+        "type": "keyword",
+        "value": "WHEN"
+      },
+      {
+        "type": "column",
+        "value": "salary"
+      },
+      {
+        "type": "column",
+        "value": ">"
+      },
+      {
+        "type": "column",
+        "value": "LAG(salary,"
+      },
+      {
+        "type": "column",
+        "value": "1,"
+      },
+      {
+        "type": "column",
+        "value": "salary)"
+      },
+      {
+        "type": "keyword",
+        "value": "OVER"
+      },
+      {
+        "type": "keyword",
+        "value": "(PARTITION"
+      },
+      {
+        "type": "keyword",
+        "value": "BY"
+      },
+      {
+        "type": "column",
+        "value": "department"
+      },
+      {
+        "type": "keyword",
+        "value": "ORDER"
+      },
+      {
+        "type": "keyword",
+        "value": "BY"
+      },
+      {
+        "type": "column",
+        "value": "hire_date"
+      },
+      {
+        "type": "keyword",
+        "value": "ASC)"
+      },
+      {
+        "type": "keyword",
+        "value": "THEN"
+      },
+      {
+        "type": "column",
+        "value": "'Higher"
+      },
+      {
+        "type": "column",
+        "value": "Than"
+      },
+      {
+        "type": "column",
+        "value": "Prev"
+      },
+      {
+        "type": "column",
+        "value": "Hire'"
+      },
+      {
+        "type": "keyword",
+        "value": "ELSE"
+      },
+      {
+        "type": "column",
+        "value": "'Lower/Equal'"
+      },
+      {
+        "type": "keyword",
+        "value": "END"
+      },
+      {
+        "type": "keyword",
+        "value": "AS"
+      },
+      {
+        "type": "column",
+        "value": "hire_comp_trend"
+      },
+      {
+        "type": "keyword",
+        "value": "FROM"
+      },
+      {
+        "type": "table",
+        "value": "Employees;"
+      }
+    ]
+  },
+  {
+    "drillNumber": 1385,
+    "subcluster": "14.9 Churn & Status Transition Flagging (CASE with LAG)",
+    "level": "Level 3 (State Transition Flagging)",
+    "title": "Syntax #1385: Flag cost increases across sorted grocery catalog items",
+    "table": "GroceryItems",
+    "scenario": "Flag cost increases across sorted grocery catalog items.",
+    "businessObjective": "Flag cost increases across sorted grocery catalog items.",
+    "schemaSnippet": "GroceryItems analytical schema",
+    "targetQuery": "SELECT item_name, unit_price,\n  CASE WHEN unit_price > LAG(unit_price, 1, unit_price) OVER (ORDER BY item_id ASC) THEN 'Cost Increase' ELSE 'Stable' END AS cost_flag\nFROM GroceryItems;",
+    "syntaxBlueprint": "SELECT user_id, status,\n  CASE WHEN LAG(status, 1) OVER (PARTITION BY user_id ORDER BY date_col) != status THEN 1 ELSE 0 END AS has_status_changed\nFROM table_name;",
+    "syntaxRule": "Embed LAG inside a CASE WHEN expression to detect state changes, plan upgrades, or sudden price spikes between consecutive records.",
+    "syntaxTrap": "Comparing against LAG on the first row evaluates to NULL (neither TRUE nor FALSE); handle the initial row explicitly.",
+    "eli5Story": "Analytical Window Functions on GroceryItems: Flag cost increases across sorted grocery catalog items.",
+    "commonMistakes": "Omitting ORDER BY inside OVER() for running totals, confusing PARTITION BY with GROUP BY, or attempting to filter window functions in WHERE without a CTE wrapper.",
+    "learningOutcomes": "Mastered 14.9 Churn & Status Transition Flagging (CASE with LAG) on GroceryItems.",
+    "challengeSlots": [
+      {
+        "type": "keyword",
+        "value": "SELECT"
+      },
+      {
+        "type": "column",
+        "value": "item_name,"
+      },
+      {
+        "type": "column",
+        "value": "unit_price,"
+      },
+      {
+        "type": "keyword",
+        "value": "CASE"
+      },
+      {
+        "type": "keyword",
+        "value": "WHEN"
+      },
+      {
+        "type": "column",
+        "value": "unit_price"
+      },
+      {
+        "type": "column",
+        "value": ">"
+      },
+      {
+        "type": "column",
+        "value": "LAG(unit_price,"
+      },
+      {
+        "type": "column",
+        "value": "1,"
+      },
+      {
+        "type": "column",
+        "value": "unit_price)"
+      },
+      {
+        "type": "keyword",
+        "value": "OVER"
+      },
+      {
+        "type": "keyword",
+        "value": "(ORDER"
+      },
+      {
+        "type": "keyword",
+        "value": "BY"
+      },
+      {
+        "type": "column",
+        "value": "item_id"
+      },
+      {
+        "type": "keyword",
+        "value": "ASC)"
+      },
+      {
+        "type": "keyword",
+        "value": "THEN"
+      },
+      {
+        "type": "column",
+        "value": "'Cost"
+      },
+      {
+        "type": "column",
+        "value": "Increase'"
+      },
+      {
+        "type": "keyword",
+        "value": "ELSE"
+      },
+      {
+        "type": "column",
+        "value": "'Stable'"
+      },
+      {
+        "type": "keyword",
+        "value": "END"
+      },
+      {
+        "type": "keyword",
+        "value": "AS"
+      },
+      {
+        "type": "column",
+        "value": "cost_flag"
+      },
+      {
+        "type": "keyword",
+        "value": "FROM"
+      },
+      {
+        "type": "table",
+        "value": "GroceryItems;"
+      }
+    ]
+  },
+  {
+    "drillNumber": 1386,
+    "subcluster": "14.9 Churn & Status Transition Flagging (CASE with LAG)",
+    "level": "Level 3 (State Transition Flagging)",
+    "title": "Syntax #1386: Flag single duration trends for music artists",
+    "table": "MusicTracks",
+    "scenario": "Flag single duration trends for music artists.",
+    "businessObjective": "Flag single duration trends for music artists.",
+    "schemaSnippet": "MusicTracks analytical schema",
+    "targetQuery": "SELECT track_title, artist_name, duration_seconds,\n  CASE WHEN duration_seconds > LAG(duration_seconds, 1, duration_seconds) OVER (PARTITION BY artist_name ORDER BY release_date ASC) THEN 'Longer Single' ELSE 'Shorter/Equal' END AS duration_trend\nFROM MusicTracks;",
+    "syntaxBlueprint": "SELECT user_id, status,\n  CASE WHEN LAG(status, 1) OVER (PARTITION BY user_id ORDER BY date_col) != status THEN 1 ELSE 0 END AS has_status_changed\nFROM table_name;",
+    "syntaxRule": "Embed LAG inside a CASE WHEN expression to detect state changes, plan upgrades, or sudden price spikes between consecutive records.",
+    "syntaxTrap": "Comparing against LAG on the first row evaluates to NULL (neither TRUE nor FALSE); handle the initial row explicitly.",
+    "eli5Story": "Analytical Window Functions on MusicTracks: Flag single duration trends for music artists.",
+    "commonMistakes": "Omitting ORDER BY inside OVER() for running totals, confusing PARTITION BY with GROUP BY, or attempting to filter window functions in WHERE without a CTE wrapper.",
+    "learningOutcomes": "Mastered 14.9 Churn & Status Transition Flagging (CASE with LAG) on MusicTracks.",
+    "challengeSlots": [
+      {
+        "type": "keyword",
+        "value": "SELECT"
+      },
+      {
+        "type": "column",
+        "value": "track_title,"
+      },
+      {
+        "type": "column",
+        "value": "artist_name,"
+      },
+      {
+        "type": "column",
+        "value": "duration_seconds,"
+      },
+      {
+        "type": "keyword",
+        "value": "CASE"
+      },
+      {
+        "type": "keyword",
+        "value": "WHEN"
+      },
+      {
+        "type": "column",
+        "value": "duration_seconds"
+      },
+      {
+        "type": "column",
+        "value": ">"
+      },
+      {
+        "type": "column",
+        "value": "LAG(duration_seconds,"
+      },
+      {
+        "type": "column",
+        "value": "1,"
+      },
+      {
+        "type": "column",
+        "value": "duration_seconds)"
+      },
+      {
+        "type": "keyword",
+        "value": "OVER"
+      },
+      {
+        "type": "keyword",
+        "value": "(PARTITION"
+      },
+      {
+        "type": "keyword",
+        "value": "BY"
+      },
+      {
+        "type": "column",
+        "value": "artist_name"
+      },
+      {
+        "type": "keyword",
+        "value": "ORDER"
+      },
+      {
+        "type": "keyword",
+        "value": "BY"
+      },
+      {
+        "type": "column",
+        "value": "release_date"
+      },
+      {
+        "type": "keyword",
+        "value": "ASC)"
+      },
+      {
+        "type": "keyword",
+        "value": "THEN"
+      },
+      {
+        "type": "column",
+        "value": "'Longer"
+      },
+      {
+        "type": "column",
+        "value": "Single'"
+      },
+      {
+        "type": "keyword",
+        "value": "ELSE"
+      },
+      {
+        "type": "column",
+        "value": "'Shorter/Equal'"
+      },
+      {
+        "type": "keyword",
+        "value": "END"
+      },
+      {
+        "type": "keyword",
+        "value": "AS"
+      },
+      {
+        "type": "column",
+        "value": "duration_trend"
+      },
+      {
+        "type": "keyword",
+        "value": "FROM"
+      },
+      {
+        "type": "table",
+        "value": "MusicTracks;"
+      }
+    ]
+  },
+  {
+    "drillNumber": 1387,
+    "subcluster": "14.9 Churn & Status Transition Flagging (CASE with LAG)",
+    "level": "Level 3 (State Transition Flagging)",
+    "title": "Syntax #1387: Detect gym membership plan modifications over time",
+    "table": "GymMembers",
+    "scenario": "Detect gym membership plan modifications over time.",
+    "businessObjective": "Detect gym membership plan modifications over time.",
+    "schemaSnippet": "GymMembers analytical schema",
+    "targetQuery": "SELECT member_name, membership_plan,\n  CASE WHEN membership_plan != LAG(membership_plan, 1, membership_plan) OVER (PARTITION BY member_name ORDER BY join_date ASC) THEN 'Plan Modified' ELSE 'Unchanged' END AS plan_status_flag\nFROM GymMembers;",
+    "syntaxBlueprint": "SELECT user_id, status,\n  CASE WHEN LAG(status, 1) OVER (PARTITION BY user_id ORDER BY date_col) != status THEN 1 ELSE 0 END AS has_status_changed\nFROM table_name;",
+    "syntaxRule": "Embed LAG inside a CASE WHEN expression to detect state changes, plan upgrades, or sudden price spikes between consecutive records.",
+    "syntaxTrap": "Comparing against LAG on the first row evaluates to NULL (neither TRUE nor FALSE); handle the initial row explicitly.",
+    "eli5Story": "Analytical Window Functions on GymMembers: Detect gym membership plan modifications over time.",
+    "commonMistakes": "Omitting ORDER BY inside OVER() for running totals, confusing PARTITION BY with GROUP BY, or attempting to filter window functions in WHERE without a CTE wrapper.",
+    "learningOutcomes": "Mastered 14.9 Churn & Status Transition Flagging (CASE with LAG) on GymMembers.",
+    "challengeSlots": [
+      {
+        "type": "keyword",
+        "value": "SELECT"
+      },
+      {
+        "type": "column",
+        "value": "member_name,"
+      },
+      {
+        "type": "column",
+        "value": "membership_plan,"
+      },
+      {
+        "type": "keyword",
+        "value": "CASE"
+      },
+      {
+        "type": "keyword",
+        "value": "WHEN"
+      },
+      {
+        "type": "column",
+        "value": "membership_plan"
+      },
+      {
+        "type": "column",
+        "value": "!="
+      },
+      {
+        "type": "column",
+        "value": "LAG(membership_plan,"
+      },
+      {
+        "type": "column",
+        "value": "1,"
+      },
+      {
+        "type": "column",
+        "value": "membership_plan)"
+      },
+      {
+        "type": "keyword",
+        "value": "OVER"
+      },
+      {
+        "type": "keyword",
+        "value": "(PARTITION"
+      },
+      {
+        "type": "keyword",
+        "value": "BY"
+      },
+      {
+        "type": "column",
+        "value": "member_name"
+      },
+      {
+        "type": "keyword",
+        "value": "ORDER"
+      },
+      {
+        "type": "keyword",
+        "value": "BY"
+      },
+      {
+        "type": "column",
+        "value": "join_date"
+      },
+      {
+        "type": "keyword",
+        "value": "ASC)"
+      },
+      {
+        "type": "keyword",
+        "value": "THEN"
+      },
+      {
+        "type": "column",
+        "value": "'Plan"
+      },
+      {
+        "type": "column",
+        "value": "Modified'"
+      },
+      {
+        "type": "keyword",
+        "value": "ELSE"
+      },
+      {
+        "type": "column",
+        "value": "'Unchanged'"
+      },
+      {
+        "type": "keyword",
+        "value": "END"
+      },
+      {
+        "type": "keyword",
+        "value": "AS"
+      },
+      {
+        "type": "column",
+        "value": "plan_status_flag"
+      },
+      {
+        "type": "keyword",
+        "value": "FROM"
+      },
+      {
+        "type": "table",
+        "value": "GymMembers;"
+      }
+    ]
+  },
+  {
+    "drillNumber": 1388,
+    "subcluster": "14.9 Churn & Status Transition Flagging (CASE with LAG)",
+    "level": "Level 3 (State Transition Flagging)",
+    "title": "Syntax #1388: Detect sentiment shifts in critic reviews over time",
+    "table": "MovieReviews",
+    "scenario": "Detect sentiment shifts in critic reviews over time.",
+    "businessObjective": "Detect sentiment shifts in critic reviews over time.",
+    "schemaSnippet": "MovieReviews analytical schema",
+    "targetQuery": "SELECT movie_title, reviewer_name, star_rating,\n  CASE WHEN star_rating > LAG(star_rating, 1, star_rating) OVER (PARTITION BY reviewer_name ORDER BY review_date ASC) THEN 'More Favorable' ELSE 'Less/Equal' END AS sentiment_shift\nFROM MovieReviews;",
+    "syntaxBlueprint": "SELECT user_id, status,\n  CASE WHEN LAG(status, 1) OVER (PARTITION BY user_id ORDER BY date_col) != status THEN 1 ELSE 0 END AS has_status_changed\nFROM table_name;",
+    "syntaxRule": "Embed LAG inside a CASE WHEN expression to detect state changes, plan upgrades, or sudden price spikes between consecutive records.",
+    "syntaxTrap": "Comparing against LAG on the first row evaluates to NULL (neither TRUE nor FALSE); handle the initial row explicitly.",
+    "eli5Story": "Analytical Window Functions on MovieReviews: Detect sentiment shifts in critic reviews over time.",
+    "commonMistakes": "Omitting ORDER BY inside OVER() for running totals, confusing PARTITION BY with GROUP BY, or attempting to filter window functions in WHERE without a CTE wrapper.",
+    "learningOutcomes": "Mastered 14.9 Churn & Status Transition Flagging (CASE with LAG) on MovieReviews.",
+    "challengeSlots": [
+      {
+        "type": "keyword",
+        "value": "SELECT"
+      },
+      {
+        "type": "column",
+        "value": "movie_title,"
+      },
+      {
+        "type": "column",
+        "value": "reviewer_name,"
+      },
+      {
+        "type": "column",
+        "value": "star_rating,"
+      },
+      {
+        "type": "keyword",
+        "value": "CASE"
+      },
+      {
+        "type": "keyword",
+        "value": "WHEN"
+      },
+      {
+        "type": "column",
+        "value": "star_rating"
+      },
+      {
+        "type": "column",
+        "value": ">"
+      },
+      {
+        "type": "column",
+        "value": "LAG(star_rating,"
+      },
+      {
+        "type": "column",
+        "value": "1,"
+      },
+      {
+        "type": "column",
+        "value": "star_rating)"
+      },
+      {
+        "type": "keyword",
+        "value": "OVER"
+      },
+      {
+        "type": "keyword",
+        "value": "(PARTITION"
+      },
+      {
+        "type": "keyword",
+        "value": "BY"
+      },
+      {
+        "type": "column",
+        "value": "reviewer_name"
+      },
+      {
+        "type": "keyword",
+        "value": "ORDER"
+      },
+      {
+        "type": "keyword",
+        "value": "BY"
+      },
+      {
+        "type": "column",
+        "value": "review_date"
+      },
+      {
+        "type": "keyword",
+        "value": "ASC)"
+      },
+      {
+        "type": "keyword",
+        "value": "THEN"
+      },
+      {
+        "type": "column",
+        "value": "'More"
+      },
+      {
+        "type": "column",
+        "value": "Favorable'"
+      },
+      {
+        "type": "keyword",
+        "value": "ELSE"
+      },
+      {
+        "type": "column",
+        "value": "'Less/Equal'"
+      },
+      {
+        "type": "keyword",
+        "value": "END"
+      },
+      {
+        "type": "keyword",
+        "value": "AS"
+      },
+      {
+        "type": "column",
+        "value": "sentiment_shift"
+      },
+      {
+        "type": "keyword",
+        "value": "FROM"
+      },
+      {
+        "type": "table",
+        "value": "MovieReviews;"
+      }
+    ]
+  },
+  {
+    "drillNumber": 1389,
+    "subcluster": "14.9 Churn & Status Transition Flagging (CASE with LAG)",
+    "level": "Level 3 (State Transition Flagging)",
+    "title": "Syntax #1389: Flag schedule status changes between consecutive updates",
+    "table": "FlightSchedule",
+    "scenario": "Flag schedule status changes between consecutive updates.",
+    "businessObjective": "Flag schedule status changes between consecutive updates.",
+    "schemaSnippet": "FlightSchedule analytical schema",
+    "targetQuery": "SELECT flight_id, status,\n  CASE WHEN status != LAG(status, 1, status) OVER (PARTITION BY flight_id ORDER BY departure_time ASC) THEN 'Status Update' ELSE 'Static' END AS schedule_change_flag\nFROM FlightSchedule;",
+    "syntaxBlueprint": "SELECT user_id, status,\n  CASE WHEN LAG(status, 1) OVER (PARTITION BY user_id ORDER BY date_col) != status THEN 1 ELSE 0 END AS has_status_changed\nFROM table_name;",
+    "syntaxRule": "Embed LAG inside a CASE WHEN expression to detect state changes, plan upgrades, or sudden price spikes between consecutive records.",
+    "syntaxTrap": "Comparing against LAG on the first row evaluates to NULL (neither TRUE nor FALSE); handle the initial row explicitly.",
+    "eli5Story": "Analytical Window Functions on FlightSchedule: Flag schedule status changes between consecutive updates.",
+    "commonMistakes": "Omitting ORDER BY inside OVER() for running totals, confusing PARTITION BY with GROUP BY, or attempting to filter window functions in WHERE without a CTE wrapper.",
+    "learningOutcomes": "Mastered 14.9 Churn & Status Transition Flagging (CASE with LAG) on FlightSchedule.",
+    "challengeSlots": [
+      {
+        "type": "keyword",
+        "value": "SELECT"
+      },
+      {
+        "type": "column",
+        "value": "flight_id,"
+      },
+      {
+        "type": "column",
+        "value": "status,"
+      },
+      {
+        "type": "keyword",
+        "value": "CASE"
+      },
+      {
+        "type": "keyword",
+        "value": "WHEN"
+      },
+      {
+        "type": "column",
+        "value": "status"
+      },
+      {
+        "type": "column",
+        "value": "!="
+      },
+      {
+        "type": "column",
+        "value": "LAG(status,"
+      },
+      {
+        "type": "column",
+        "value": "1,"
+      },
+      {
+        "type": "column",
+        "value": "status)"
+      },
+      {
+        "type": "keyword",
+        "value": "OVER"
+      },
+      {
+        "type": "keyword",
+        "value": "(PARTITION"
+      },
+      {
+        "type": "keyword",
+        "value": "BY"
+      },
+      {
+        "type": "column",
+        "value": "flight_id"
+      },
+      {
+        "type": "keyword",
+        "value": "ORDER"
+      },
+      {
+        "type": "keyword",
+        "value": "BY"
+      },
+      {
+        "type": "column",
+        "value": "departure_time"
+      },
+      {
+        "type": "keyword",
+        "value": "ASC)"
+      },
+      {
+        "type": "keyword",
+        "value": "THEN"
+      },
+      {
+        "type": "column",
+        "value": "'Status"
+      },
+      {
+        "type": "column",
+        "value": "Update'"
+      },
+      {
+        "type": "keyword",
+        "value": "ELSE"
+      },
+      {
+        "type": "column",
+        "value": "'Static'"
+      },
+      {
+        "type": "keyword",
+        "value": "END"
+      },
+      {
+        "type": "keyword",
+        "value": "AS"
+      },
+      {
+        "type": "column",
+        "value": "schedule_change_flag"
+      },
+      {
+        "type": "keyword",
+        "value": "FROM"
+      },
+      {
+        "type": "table",
+        "value": "FlightSchedule;"
+      }
+    ]
+  },
+  {
+    "drillNumber": 1390,
+    "subcluster": "14.9 Churn & Status Transition Flagging (CASE with LAG)",
+    "level": "Level 3 (State Transition Flagging)",
+    "title": "Syntax #1390: Flag patient weight gain vs loss between consecutive veterinary visits",
+    "table": "PetClinic",
+    "scenario": "Flag patient weight gain vs loss between consecutive veterinary visits.",
+    "businessObjective": "Flag patient weight gain vs loss between consecutive veterinary visits.",
+    "schemaSnippet": "PetClinic analytical schema",
+    "targetQuery": "SELECT pet_name, visit_date, weight_kg,\n  CASE WHEN weight_kg > LAG(weight_kg, 1, weight_kg) OVER (PARTITION BY pet_name ORDER BY visit_date ASC) THEN 'Weight Gained' ELSE 'Weight Lost/Maintained' END AS health_trend\nFROM PetClinic;",
+    "syntaxBlueprint": "SELECT user_id, status,\n  CASE WHEN LAG(status, 1) OVER (PARTITION BY user_id ORDER BY date_col) != status THEN 1 ELSE 0 END AS has_status_changed\nFROM table_name;",
+    "syntaxRule": "Embed LAG inside a CASE WHEN expression to detect state changes, plan upgrades, or sudden price spikes between consecutive records.",
+    "syntaxTrap": "Comparing against LAG on the first row evaluates to NULL (neither TRUE nor FALSE); handle the initial row explicitly.",
+    "eli5Story": "Analytical Window Functions on PetClinic: Flag patient weight gain vs loss between consecutive veterinary visits.",
+    "commonMistakes": "Omitting ORDER BY inside OVER() for running totals, confusing PARTITION BY with GROUP BY, or attempting to filter window functions in WHERE without a CTE wrapper.",
+    "learningOutcomes": "Mastered 14.9 Churn & Status Transition Flagging (CASE with LAG) on PetClinic.",
+    "challengeSlots": [
+      {
+        "type": "keyword",
+        "value": "SELECT"
+      },
+      {
+        "type": "column",
+        "value": "pet_name,"
+      },
+      {
+        "type": "column",
+        "value": "visit_date,"
+      },
+      {
+        "type": "column",
+        "value": "weight_kg,"
+      },
+      {
+        "type": "keyword",
+        "value": "CASE"
+      },
+      {
+        "type": "keyword",
+        "value": "WHEN"
+      },
+      {
+        "type": "column",
+        "value": "weight_kg"
+      },
+      {
+        "type": "column",
+        "value": ">"
+      },
+      {
+        "type": "column",
+        "value": "LAG(weight_kg,"
+      },
+      {
+        "type": "column",
+        "value": "1,"
+      },
+      {
+        "type": "column",
+        "value": "weight_kg)"
+      },
+      {
+        "type": "keyword",
+        "value": "OVER"
+      },
+      {
+        "type": "keyword",
+        "value": "(PARTITION"
+      },
+      {
+        "type": "keyword",
+        "value": "BY"
+      },
+      {
+        "type": "column",
+        "value": "pet_name"
+      },
+      {
+        "type": "keyword",
+        "value": "ORDER"
+      },
+      {
+        "type": "keyword",
+        "value": "BY"
+      },
+      {
+        "type": "column",
+        "value": "visit_date"
+      },
+      {
+        "type": "keyword",
+        "value": "ASC)"
+      },
+      {
+        "type": "keyword",
+        "value": "THEN"
+      },
+      {
+        "type": "column",
+        "value": "'Weight"
+      },
+      {
+        "type": "column",
+        "value": "Gained'"
+      },
+      {
+        "type": "keyword",
+        "value": "ELSE"
+      },
+      {
+        "type": "column",
+        "value": "'Weight"
+      },
+      {
+        "type": "column",
+        "value": "Lost/Maintained'"
+      },
+      {
+        "type": "keyword",
+        "value": "END"
+      },
+      {
+        "type": "keyword",
+        "value": "AS"
+      },
+      {
+        "type": "column",
+        "value": "health_trend"
+      },
+      {
+        "type": "keyword",
+        "value": "FROM"
+      },
+      {
+        "type": "table",
+        "value": "PetClinic;"
+      }
+    ]
+  },
+  {
+    "drillNumber": 1391,
+    "subcluster": "14.10 Offset Analytics Pipelines & Gotchas",
+    "level": "Level 3 (Offset Analytics Master)",
+    "title": "Syntax #1391: Analytics Pipeline: Find top 5 largest expansion upsells where customer order value increased",
+    "table": "Orders",
+    "scenario": "Analytics Pipeline: Find top 5 largest expansion upsells where customer order value increased.",
+    "businessObjective": "Analytics Pipeline: Find top 5 largest expansion upsells where customer order value increased.",
+    "schemaSnippet": "Orders analytical schema",
+    "targetQuery": "WITH OrderDeltas AS (\n  SELECT order_id, customer_name, order_date, total_amount,\n    LAG(total_amount, 1) OVER (PARTITION BY customer_name ORDER BY order_date ASC) AS prev_amount\n  FROM Orders\n)\nSELECT order_id, customer_name, total_amount, prev_amount,\n  total_amount - prev_amount AS expansion_revenue\nFROM OrderDeltas\nWHERE prev_amount IS NOT NULL AND total_amount > prev_amount\nORDER BY expansion_revenue DESC\nLIMIT 5;",
+    "syntaxBlueprint": "WITH StageDeltas AS (\n  SELECT col1, date_col, metric,\n    LAG(metric, 1) OVER (PARTITION BY col1 ORDER BY date_col ASC) AS prev_val\n  FROM table_name\n)\nSELECT col1, date_col, metric, prev_val,\n  metric - prev_val AS net_delta\nFROM StageDeltas\nWHERE prev_val IS NOT NULL\nORDER BY net_delta DESC\nLIMIT 5;",
+    "syntaxRule": "Combine partitioned offsets, delta calculations, and NULL-row filtering in a clean multi-stage reporting query.",
+    "syntaxTrap": "Attempting to filter 'WHERE prev_val IS NOT NULL' without a CTE wrapper; window functions cannot be filtered in the query where they are defined.",
+    "eli5Story": "Analytical Window Functions on Orders: Analytics Pipeline: Find top 5 largest expansion upsells where customer order value increased.",
+    "commonMistakes": "Omitting ORDER BY inside OVER() for running totals, confusing PARTITION BY with GROUP BY, or attempting to filter window functions in WHERE without a CTE wrapper.",
+    "learningOutcomes": "Mastered 14.10 Offset Analytics Pipelines & Gotchas on Orders.",
+    "challengeSlots": [
+      {
+        "type": "keyword",
+        "value": "WITH"
+      },
+      {
+        "type": "column",
+        "value": "OrderDeltas"
+      },
+      {
+        "type": "keyword",
+        "value": "AS"
+      },
+      {
+        "type": "column",
+        "value": "("
+      },
+      {
+        "type": "keyword",
+        "value": "SELECT"
+      },
+      {
+        "type": "column",
+        "value": "order_id,"
+      },
+      {
+        "type": "column",
+        "value": "customer_name,"
+      },
+      {
+        "type": "column",
+        "value": "order_date,"
+      },
+      {
+        "type": "column",
+        "value": "total_amount,"
+      },
+      {
+        "type": "column",
+        "value": "LAG(total_amount,"
+      },
+      {
+        "type": "column",
+        "value": "1)"
+      },
+      {
+        "type": "keyword",
+        "value": "OVER"
+      },
+      {
+        "type": "keyword",
+        "value": "(PARTITION"
+      },
+      {
+        "type": "keyword",
+        "value": "BY"
+      },
+      {
+        "type": "column",
+        "value": "customer_name"
+      },
+      {
+        "type": "keyword",
+        "value": "ORDER"
+      },
+      {
+        "type": "keyword",
+        "value": "BY"
+      },
+      {
+        "type": "column",
+        "value": "order_date"
+      },
+      {
+        "type": "keyword",
+        "value": "ASC)"
+      },
+      {
+        "type": "keyword",
+        "value": "AS"
+      },
+      {
+        "type": "column",
+        "value": "prev_amount"
+      },
+      {
+        "type": "keyword",
+        "value": "FROM"
+      },
+      {
+        "type": "table",
+        "value": "Orders"
+      },
+      {
+        "type": "column",
+        "value": ")"
+      },
+      {
+        "type": "keyword",
+        "value": "SELECT"
+      },
+      {
+        "type": "column",
+        "value": "order_id,"
+      },
+      {
+        "type": "column",
+        "value": "customer_name,"
+      },
+      {
+        "type": "column",
+        "value": "total_amount,"
+      },
+      {
+        "type": "column",
+        "value": "prev_amount,"
+      },
+      {
+        "type": "column",
+        "value": "total_amount"
+      },
+      {
+        "type": "column",
+        "value": "-"
+      },
+      {
+        "type": "column",
+        "value": "prev_amount"
+      },
+      {
+        "type": "keyword",
+        "value": "AS"
+      },
+      {
+        "type": "column",
+        "value": "expansion_revenue"
+      },
+      {
+        "type": "keyword",
+        "value": "FROM"
+      },
+      {
+        "type": "column",
+        "value": "OrderDeltas"
+      },
+      {
+        "type": "keyword",
+        "value": "WHERE"
+      },
+      {
+        "type": "column",
+        "value": "prev_amount"
+      },
+      {
+        "type": "keyword",
+        "value": "IS"
+      },
+      {
+        "type": "keyword",
+        "value": "NOT"
+      },
+      {
+        "type": "keyword",
+        "value": "NULL"
+      },
+      {
+        "type": "keyword",
+        "value": "AND"
+      },
+      {
+        "type": "column",
+        "value": "total_amount"
+      },
+      {
+        "type": "column",
+        "value": ">"
+      },
+      {
+        "type": "column",
+        "value": "prev_amount"
+      },
+      {
+        "type": "keyword",
+        "value": "ORDER"
+      },
+      {
+        "type": "keyword",
+        "value": "BY"
+      },
+      {
+        "type": "column",
+        "value": "expansion_revenue"
+      },
+      {
+        "type": "keyword",
+        "value": "DESC"
+      },
+      {
+        "type": "keyword",
+        "value": "LIMIT"
+      },
+      {
+        "type": "column",
+        "value": "5;"
+      }
+    ]
+  },
+  {
+    "drillNumber": 1392,
+    "subcluster": "14.10 Offset Analytics Pipelines & Gotchas",
+    "level": "Level 3 (Offset Analytics Master)",
+    "title": "Syntax #1392: Analytics Pipeline: Find top 5 positive GPA leaps within academic majors",
+    "table": "Students",
+    "scenario": "Analytics Pipeline: Find top 5 positive GPA leaps within academic majors.",
+    "businessObjective": "Analytics Pipeline: Find top 5 positive GPA leaps within academic majors.",
+    "schemaSnippet": "Students analytical schema",
+    "targetQuery": "WITH StudentGPADeltas AS (\n  SELECT full_name, major, enrolled_year, gpa,\n    LAG(gpa, 1) OVER (PARTITION BY major ORDER BY enrolled_year ASC) AS prev_gpa\n  FROM Students\n)\nSELECT full_name, major, gpa, prev_gpa,\n  gpa - prev_gpa AS gpa_delta\nFROM StudentGPADeltas\nWHERE prev_gpa IS NOT NULL\nORDER BY gpa_delta DESC\nLIMIT 5;",
+    "syntaxBlueprint": "WITH StageDeltas AS (\n  SELECT col1, date_col, metric,\n    LAG(metric, 1) OVER (PARTITION BY col1 ORDER BY date_col ASC) AS prev_val\n  FROM table_name\n)\nSELECT col1, date_col, metric, prev_val,\n  metric - prev_val AS net_delta\nFROM StageDeltas\nWHERE prev_val IS NOT NULL\nORDER BY net_delta DESC\nLIMIT 5;",
+    "syntaxRule": "Combine partitioned offsets, delta calculations, and NULL-row filtering in a clean multi-stage reporting query.",
+    "syntaxTrap": "Attempting to filter 'WHERE prev_val IS NOT NULL' without a CTE wrapper; window functions cannot be filtered in the query where they are defined.",
+    "eli5Story": "Analytical Window Functions on Students: Analytics Pipeline: Find top 5 positive GPA leaps within academic majors.",
+    "commonMistakes": "Omitting ORDER BY inside OVER() for running totals, confusing PARTITION BY with GROUP BY, or attempting to filter window functions in WHERE without a CTE wrapper.",
+    "learningOutcomes": "Mastered 14.10 Offset Analytics Pipelines & Gotchas on Students.",
+    "challengeSlots": [
+      {
+        "type": "keyword",
+        "value": "WITH"
+      },
+      {
+        "type": "column",
+        "value": "StudentGPADeltas"
+      },
+      {
+        "type": "keyword",
+        "value": "AS"
+      },
+      {
+        "type": "column",
+        "value": "("
+      },
+      {
+        "type": "keyword",
+        "value": "SELECT"
+      },
+      {
+        "type": "column",
+        "value": "full_name,"
+      },
+      {
+        "type": "column",
+        "value": "major,"
+      },
+      {
+        "type": "column",
+        "value": "enrolled_year,"
+      },
+      {
+        "type": "column",
+        "value": "gpa,"
+      },
+      {
+        "type": "column",
+        "value": "LAG(gpa,"
+      },
+      {
+        "type": "column",
+        "value": "1)"
+      },
+      {
+        "type": "keyword",
+        "value": "OVER"
+      },
+      {
+        "type": "keyword",
+        "value": "(PARTITION"
+      },
+      {
+        "type": "keyword",
+        "value": "BY"
+      },
+      {
+        "type": "column",
+        "value": "major"
+      },
+      {
+        "type": "keyword",
+        "value": "ORDER"
+      },
+      {
+        "type": "keyword",
+        "value": "BY"
+      },
+      {
+        "type": "column",
+        "value": "enrolled_year"
+      },
+      {
+        "type": "keyword",
+        "value": "ASC)"
+      },
+      {
+        "type": "keyword",
+        "value": "AS"
+      },
+      {
+        "type": "column",
+        "value": "prev_gpa"
+      },
+      {
+        "type": "keyword",
+        "value": "FROM"
+      },
+      {
+        "type": "table",
+        "value": "Students"
+      },
+      {
+        "type": "column",
+        "value": ")"
+      },
+      {
+        "type": "keyword",
+        "value": "SELECT"
+      },
+      {
+        "type": "column",
+        "value": "full_name,"
+      },
+      {
+        "type": "column",
+        "value": "major,"
+      },
+      {
+        "type": "column",
+        "value": "gpa,"
+      },
+      {
+        "type": "column",
+        "value": "prev_gpa,"
+      },
+      {
+        "type": "column",
+        "value": "gpa"
+      },
+      {
+        "type": "column",
+        "value": "-"
+      },
+      {
+        "type": "column",
+        "value": "prev_gpa"
+      },
+      {
+        "type": "keyword",
+        "value": "AS"
+      },
+      {
+        "type": "column",
+        "value": "gpa_delta"
+      },
+      {
+        "type": "keyword",
+        "value": "FROM"
+      },
+      {
+        "type": "column",
+        "value": "StudentGPADeltas"
+      },
+      {
+        "type": "keyword",
+        "value": "WHERE"
+      },
+      {
+        "type": "column",
+        "value": "prev_gpa"
+      },
+      {
+        "type": "keyword",
+        "value": "IS"
+      },
+      {
+        "type": "keyword",
+        "value": "NOT"
+      },
+      {
+        "type": "keyword",
+        "value": "NULL"
+      },
+      {
+        "type": "keyword",
+        "value": "ORDER"
+      },
+      {
+        "type": "keyword",
+        "value": "BY"
+      },
+      {
+        "type": "column",
+        "value": "gpa_delta"
+      },
+      {
+        "type": "keyword",
+        "value": "DESC"
+      },
+      {
+        "type": "keyword",
+        "value": "LIMIT"
+      },
+      {
+        "type": "column",
+        "value": "5;"
+      }
+    ]
+  },
+  {
+    "drillNumber": 1393,
+    "subcluster": "14.10 Offset Analytics Pipelines & Gotchas",
+    "level": "Level 3 (Offset Analytics Master)",
+    "title": "Syntax #1393: Analytics Pipeline: Top 5 biggest book price jumps across author publications",
+    "table": "Books",
+    "scenario": "Analytics Pipeline: Top 5 biggest book price jumps across author publications.",
+    "businessObjective": "Analytics Pipeline: Top 5 biggest book price jumps across author publications.",
+    "schemaSnippet": "Books analytical schema",
+    "targetQuery": "WITH BookPriceDeltas AS (\n  SELECT title, author, price,\n    LAG(price, 1) OVER (PARTITION BY author ORDER BY published_date ASC) AS prev_price\n  FROM Books\n)\nSELECT title, author, price, prev_price,\n  price - prev_price AS price_increase\nFROM BookPriceDeltas\nWHERE prev_price IS NOT NULL\nORDER BY price_increase DESC\nLIMIT 5;",
+    "syntaxBlueprint": "WITH StageDeltas AS (\n  SELECT col1, date_col, metric,\n    LAG(metric, 1) OVER (PARTITION BY col1 ORDER BY date_col ASC) AS prev_val\n  FROM table_name\n)\nSELECT col1, date_col, metric, prev_val,\n  metric - prev_val AS net_delta\nFROM StageDeltas\nWHERE prev_val IS NOT NULL\nORDER BY net_delta DESC\nLIMIT 5;",
+    "syntaxRule": "Combine partitioned offsets, delta calculations, and NULL-row filtering in a clean multi-stage reporting query.",
+    "syntaxTrap": "Attempting to filter 'WHERE prev_val IS NOT NULL' without a CTE wrapper; window functions cannot be filtered in the query where they are defined.",
+    "eli5Story": "Analytical Window Functions on Books: Analytics Pipeline: Top 5 biggest book price jumps across author publications.",
+    "commonMistakes": "Omitting ORDER BY inside OVER() for running totals, confusing PARTITION BY with GROUP BY, or attempting to filter window functions in WHERE without a CTE wrapper.",
+    "learningOutcomes": "Mastered 14.10 Offset Analytics Pipelines & Gotchas on Books.",
+    "challengeSlots": [
+      {
+        "type": "keyword",
+        "value": "WITH"
+      },
+      {
+        "type": "column",
+        "value": "BookPriceDeltas"
+      },
+      {
+        "type": "keyword",
+        "value": "AS"
+      },
+      {
+        "type": "column",
+        "value": "("
+      },
+      {
+        "type": "keyword",
+        "value": "SELECT"
+      },
+      {
+        "type": "column",
+        "value": "title,"
+      },
+      {
+        "type": "column",
+        "value": "author,"
+      },
+      {
+        "type": "column",
+        "value": "price,"
+      },
+      {
+        "type": "column",
+        "value": "LAG(price,"
+      },
+      {
+        "type": "column",
+        "value": "1)"
+      },
+      {
+        "type": "keyword",
+        "value": "OVER"
+      },
+      {
+        "type": "keyword",
+        "value": "(PARTITION"
+      },
+      {
+        "type": "keyword",
+        "value": "BY"
+      },
+      {
+        "type": "column",
+        "value": "author"
+      },
+      {
+        "type": "keyword",
+        "value": "ORDER"
+      },
+      {
+        "type": "keyword",
+        "value": "BY"
+      },
+      {
+        "type": "column",
+        "value": "published_date"
+      },
+      {
+        "type": "keyword",
+        "value": "ASC)"
+      },
+      {
+        "type": "keyword",
+        "value": "AS"
+      },
+      {
+        "type": "column",
+        "value": "prev_price"
+      },
+      {
+        "type": "keyword",
+        "value": "FROM"
+      },
+      {
+        "type": "table",
+        "value": "Books"
+      },
+      {
+        "type": "column",
+        "value": ")"
+      },
+      {
+        "type": "keyword",
+        "value": "SELECT"
+      },
+      {
+        "type": "column",
+        "value": "title,"
+      },
+      {
+        "type": "column",
+        "value": "author,"
+      },
+      {
+        "type": "column",
+        "value": "price,"
+      },
+      {
+        "type": "column",
+        "value": "prev_price,"
+      },
+      {
+        "type": "column",
+        "value": "price"
+      },
+      {
+        "type": "column",
+        "value": "-"
+      },
+      {
+        "type": "column",
+        "value": "prev_price"
+      },
+      {
+        "type": "keyword",
+        "value": "AS"
+      },
+      {
+        "type": "column",
+        "value": "price_increase"
+      },
+      {
+        "type": "keyword",
+        "value": "FROM"
+      },
+      {
+        "type": "column",
+        "value": "BookPriceDeltas"
+      },
+      {
+        "type": "keyword",
+        "value": "WHERE"
+      },
+      {
+        "type": "column",
+        "value": "prev_price"
+      },
+      {
+        "type": "keyword",
+        "value": "IS"
+      },
+      {
+        "type": "keyword",
+        "value": "NOT"
+      },
+      {
+        "type": "keyword",
+        "value": "NULL"
+      },
+      {
+        "type": "keyword",
+        "value": "ORDER"
+      },
+      {
+        "type": "keyword",
+        "value": "BY"
+      },
+      {
+        "type": "column",
+        "value": "price_increase"
+      },
+      {
+        "type": "keyword",
+        "value": "DESC"
+      },
+      {
+        "type": "keyword",
+        "value": "LIMIT"
+      },
+      {
+        "type": "column",
+        "value": "5;"
+      }
+    ]
+  },
+  {
+    "drillNumber": 1394,
+    "subcluster": "14.10 Offset Analytics Pipelines & Gotchas",
+    "level": "Level 3 (Offset Analytics Master)",
+    "title": "Syntax #1394: Analytics Pipeline: Top 5 departmental salary jumps between successive hires",
+    "table": "Employees",
+    "scenario": "Analytics Pipeline: Top 5 departmental salary jumps between successive hires.",
+    "businessObjective": "Analytics Pipeline: Top 5 departmental salary jumps between successive hires.",
+    "schemaSnippet": "Employees analytical schema",
+    "targetQuery": "WITH SalarySteps AS (\n  SELECT first_name, department, salary,\n    LAG(salary, 1) OVER (PARTITION BY department ORDER BY hire_date ASC) AS prev_salary\n  FROM Employees\n)\nSELECT first_name, department, salary, prev_salary,\n  salary - prev_salary AS compensation_jump\nFROM SalarySteps\nWHERE prev_salary IS NOT NULL\nORDER BY compensation_jump DESC\nLIMIT 5;",
+    "syntaxBlueprint": "WITH StageDeltas AS (\n  SELECT col1, date_col, metric,\n    LAG(metric, 1) OVER (PARTITION BY col1 ORDER BY date_col ASC) AS prev_val\n  FROM table_name\n)\nSELECT col1, date_col, metric, prev_val,\n  metric - prev_val AS net_delta\nFROM StageDeltas\nWHERE prev_val IS NOT NULL\nORDER BY net_delta DESC\nLIMIT 5;",
+    "syntaxRule": "Combine partitioned offsets, delta calculations, and NULL-row filtering in a clean multi-stage reporting query.",
+    "syntaxTrap": "Attempting to filter 'WHERE prev_val IS NOT NULL' without a CTE wrapper; window functions cannot be filtered in the query where they are defined.",
+    "eli5Story": "Analytical Window Functions on Employees: Analytics Pipeline: Top 5 departmental salary jumps between successive hires.",
+    "commonMistakes": "Omitting ORDER BY inside OVER() for running totals, confusing PARTITION BY with GROUP BY, or attempting to filter window functions in WHERE without a CTE wrapper.",
+    "learningOutcomes": "Mastered 14.10 Offset Analytics Pipelines & Gotchas on Employees.",
+    "challengeSlots": [
+      {
+        "type": "keyword",
+        "value": "WITH"
+      },
+      {
+        "type": "column",
+        "value": "SalarySteps"
+      },
+      {
+        "type": "keyword",
+        "value": "AS"
+      },
+      {
+        "type": "column",
+        "value": "("
+      },
+      {
+        "type": "keyword",
+        "value": "SELECT"
+      },
+      {
+        "type": "column",
+        "value": "first_name,"
+      },
+      {
+        "type": "column",
+        "value": "department,"
+      },
+      {
+        "type": "column",
+        "value": "salary,"
+      },
+      {
+        "type": "column",
+        "value": "LAG(salary,"
+      },
+      {
+        "type": "column",
+        "value": "1)"
+      },
+      {
+        "type": "keyword",
+        "value": "OVER"
+      },
+      {
+        "type": "keyword",
+        "value": "(PARTITION"
+      },
+      {
+        "type": "keyword",
+        "value": "BY"
+      },
+      {
+        "type": "column",
+        "value": "department"
+      },
+      {
+        "type": "keyword",
+        "value": "ORDER"
+      },
+      {
+        "type": "keyword",
+        "value": "BY"
+      },
+      {
+        "type": "column",
+        "value": "hire_date"
+      },
+      {
+        "type": "keyword",
+        "value": "ASC)"
+      },
+      {
+        "type": "keyword",
+        "value": "AS"
+      },
+      {
+        "type": "column",
+        "value": "prev_salary"
+      },
+      {
+        "type": "keyword",
+        "value": "FROM"
+      },
+      {
+        "type": "table",
+        "value": "Employees"
+      },
+      {
+        "type": "column",
+        "value": ")"
+      },
+      {
+        "type": "keyword",
+        "value": "SELECT"
+      },
+      {
+        "type": "column",
+        "value": "first_name,"
+      },
+      {
+        "type": "column",
+        "value": "department,"
+      },
+      {
+        "type": "column",
+        "value": "salary,"
+      },
+      {
+        "type": "column",
+        "value": "prev_salary,"
+      },
+      {
+        "type": "column",
+        "value": "salary"
+      },
+      {
+        "type": "column",
+        "value": "-"
+      },
+      {
+        "type": "column",
+        "value": "prev_salary"
+      },
+      {
+        "type": "keyword",
+        "value": "AS"
+      },
+      {
+        "type": "column",
+        "value": "compensation_jump"
+      },
+      {
+        "type": "keyword",
+        "value": "FROM"
+      },
+      {
+        "type": "column",
+        "value": "SalarySteps"
+      },
+      {
+        "type": "keyword",
+        "value": "WHERE"
+      },
+      {
+        "type": "column",
+        "value": "prev_salary"
+      },
+      {
+        "type": "keyword",
+        "value": "IS"
+      },
+      {
+        "type": "keyword",
+        "value": "NOT"
+      },
+      {
+        "type": "keyword",
+        "value": "NULL"
+      },
+      {
+        "type": "keyword",
+        "value": "ORDER"
+      },
+      {
+        "type": "keyword",
+        "value": "BY"
+      },
+      {
+        "type": "column",
+        "value": "compensation_jump"
+      },
+      {
+        "type": "keyword",
+        "value": "DESC"
+      },
+      {
+        "type": "keyword",
+        "value": "LIMIT"
+      },
+      {
+        "type": "column",
+        "value": "5;"
+      }
+    ]
+  },
+  {
+    "drillNumber": 1395,
+    "subcluster": "14.10 Offset Analytics Pipelines & Gotchas",
+    "level": "Level 3 (Offset Analytics Master)",
+    "title": "Syntax #1395: Analytics Pipeline: Top 5 largest price tier gaps within grocery categories",
+    "table": "GroceryItems",
+    "scenario": "Analytics Pipeline: Top 5 largest price tier gaps within grocery categories.",
+    "businessObjective": "Analytics Pipeline: Top 5 largest price tier gaps within grocery categories.",
+    "schemaSnippet": "GroceryItems analytical schema",
+    "targetQuery": "WITH CategoryPriceDeltas AS (\n  SELECT item_name, category, unit_price,\n    LAG(unit_price, 1) OVER (PARTITION BY category ORDER BY unit_price ASC) AS prev_price\n  FROM GroceryItems\n)\nSELECT item_name, category, unit_price, prev_price,\n  unit_price - prev_price AS price_gap\nFROM CategoryPriceDeltas\nWHERE prev_price IS NOT NULL\nORDER BY price_gap DESC\nLIMIT 5;",
+    "syntaxBlueprint": "WITH StageDeltas AS (\n  SELECT col1, date_col, metric,\n    LAG(metric, 1) OVER (PARTITION BY col1 ORDER BY date_col ASC) AS prev_val\n  FROM table_name\n)\nSELECT col1, date_col, metric, prev_val,\n  metric - prev_val AS net_delta\nFROM StageDeltas\nWHERE prev_val IS NOT NULL\nORDER BY net_delta DESC\nLIMIT 5;",
+    "syntaxRule": "Combine partitioned offsets, delta calculations, and NULL-row filtering in a clean multi-stage reporting query.",
+    "syntaxTrap": "Attempting to filter 'WHERE prev_val IS NOT NULL' without a CTE wrapper; window functions cannot be filtered in the query where they are defined.",
+    "eli5Story": "Analytical Window Functions on GroceryItems: Analytics Pipeline: Top 5 largest price tier gaps within grocery categories.",
+    "commonMistakes": "Omitting ORDER BY inside OVER() for running totals, confusing PARTITION BY with GROUP BY, or attempting to filter window functions in WHERE without a CTE wrapper.",
+    "learningOutcomes": "Mastered 14.10 Offset Analytics Pipelines & Gotchas on GroceryItems.",
+    "challengeSlots": [
+      {
+        "type": "keyword",
+        "value": "WITH"
+      },
+      {
+        "type": "column",
+        "value": "CategoryPriceDeltas"
+      },
+      {
+        "type": "keyword",
+        "value": "AS"
+      },
+      {
+        "type": "column",
+        "value": "("
+      },
+      {
+        "type": "keyword",
+        "value": "SELECT"
+      },
+      {
+        "type": "column",
+        "value": "item_name,"
+      },
+      {
+        "type": "column",
+        "value": "category,"
+      },
+      {
+        "type": "column",
+        "value": "unit_price,"
+      },
+      {
+        "type": "column",
+        "value": "LAG(unit_price,"
+      },
+      {
+        "type": "column",
+        "value": "1)"
+      },
+      {
+        "type": "keyword",
+        "value": "OVER"
+      },
+      {
+        "type": "keyword",
+        "value": "(PARTITION"
+      },
+      {
+        "type": "keyword",
+        "value": "BY"
+      },
+      {
+        "type": "column",
+        "value": "category"
+      },
+      {
+        "type": "keyword",
+        "value": "ORDER"
+      },
+      {
+        "type": "keyword",
+        "value": "BY"
+      },
+      {
+        "type": "column",
+        "value": "unit_price"
+      },
+      {
+        "type": "keyword",
+        "value": "ASC)"
+      },
+      {
+        "type": "keyword",
+        "value": "AS"
+      },
+      {
+        "type": "column",
+        "value": "prev_price"
+      },
+      {
+        "type": "keyword",
+        "value": "FROM"
+      },
+      {
+        "type": "table",
+        "value": "GroceryItems"
+      },
+      {
+        "type": "column",
+        "value": ")"
+      },
+      {
+        "type": "keyword",
+        "value": "SELECT"
+      },
+      {
+        "type": "column",
+        "value": "item_name,"
+      },
+      {
+        "type": "column",
+        "value": "category,"
+      },
+      {
+        "type": "column",
+        "value": "unit_price,"
+      },
+      {
+        "type": "column",
+        "value": "prev_price,"
+      },
+      {
+        "type": "column",
+        "value": "unit_price"
+      },
+      {
+        "type": "column",
+        "value": "-"
+      },
+      {
+        "type": "column",
+        "value": "prev_price"
+      },
+      {
+        "type": "keyword",
+        "value": "AS"
+      },
+      {
+        "type": "column",
+        "value": "price_gap"
+      },
+      {
+        "type": "keyword",
+        "value": "FROM"
+      },
+      {
+        "type": "column",
+        "value": "CategoryPriceDeltas"
+      },
+      {
+        "type": "keyword",
+        "value": "WHERE"
+      },
+      {
+        "type": "column",
+        "value": "prev_price"
+      },
+      {
+        "type": "keyword",
+        "value": "IS"
+      },
+      {
+        "type": "keyword",
+        "value": "NOT"
+      },
+      {
+        "type": "keyword",
+        "value": "NULL"
+      },
+      {
+        "type": "keyword",
+        "value": "ORDER"
+      },
+      {
+        "type": "keyword",
+        "value": "BY"
+      },
+      {
+        "type": "column",
+        "value": "price_gap"
+      },
+      {
+        "type": "keyword",
+        "value": "DESC"
+      },
+      {
+        "type": "keyword",
+        "value": "LIMIT"
+      },
+      {
+        "type": "column",
+        "value": "5;"
+      }
+    ]
+  },
+  {
+    "drillNumber": 1396,
+    "subcluster": "14.10 Offset Analytics Pipelines & Gotchas",
+    "level": "Level 3 (Offset Analytics Master)",
+    "title": "Syntax #1396: Analytics Pipeline: Top 5 largest song runtime expansions by an artist",
+    "table": "MusicTracks",
+    "scenario": "Analytics Pipeline: Top 5 largest song runtime expansions by an artist.",
+    "businessObjective": "Analytics Pipeline: Top 5 largest song runtime expansions by an artist.",
+    "schemaSnippet": "MusicTracks analytical schema",
+    "targetQuery": "WITH TrackLengthDeltas AS (\n  SELECT track_title, artist_name, duration_seconds,\n    LAG(duration_seconds, 1) OVER (PARTITION BY artist_name ORDER BY release_date ASC) AS prev_duration\n  FROM MusicTracks\n)\nSELECT track_title, artist_name, duration_seconds, prev_duration,\n  duration_seconds - prev_duration AS runtime_jump\nFROM TrackLengthDeltas\nWHERE prev_duration IS NOT NULL\nORDER BY runtime_jump DESC\nLIMIT 5;",
+    "syntaxBlueprint": "WITH StageDeltas AS (\n  SELECT col1, date_col, metric,\n    LAG(metric, 1) OVER (PARTITION BY col1 ORDER BY date_col ASC) AS prev_val\n  FROM table_name\n)\nSELECT col1, date_col, metric, prev_val,\n  metric - prev_val AS net_delta\nFROM StageDeltas\nWHERE prev_val IS NOT NULL\nORDER BY net_delta DESC\nLIMIT 5;",
+    "syntaxRule": "Combine partitioned offsets, delta calculations, and NULL-row filtering in a clean multi-stage reporting query.",
+    "syntaxTrap": "Attempting to filter 'WHERE prev_val IS NOT NULL' without a CTE wrapper; window functions cannot be filtered in the query where they are defined.",
+    "eli5Story": "Analytical Window Functions on MusicTracks: Analytics Pipeline: Top 5 largest song runtime expansions by an artist.",
+    "commonMistakes": "Omitting ORDER BY inside OVER() for running totals, confusing PARTITION BY with GROUP BY, or attempting to filter window functions in WHERE without a CTE wrapper.",
+    "learningOutcomes": "Mastered 14.10 Offset Analytics Pipelines & Gotchas on MusicTracks.",
+    "challengeSlots": [
+      {
+        "type": "keyword",
+        "value": "WITH"
+      },
+      {
+        "type": "column",
+        "value": "TrackLengthDeltas"
+      },
+      {
+        "type": "keyword",
+        "value": "AS"
+      },
+      {
+        "type": "column",
+        "value": "("
+      },
+      {
+        "type": "keyword",
+        "value": "SELECT"
+      },
+      {
+        "type": "column",
+        "value": "track_title,"
+      },
+      {
+        "type": "column",
+        "value": "artist_name,"
+      },
+      {
+        "type": "column",
+        "value": "duration_seconds,"
+      },
+      {
+        "type": "column",
+        "value": "LAG(duration_seconds,"
+      },
+      {
+        "type": "column",
+        "value": "1)"
+      },
+      {
+        "type": "keyword",
+        "value": "OVER"
+      },
+      {
+        "type": "keyword",
+        "value": "(PARTITION"
+      },
+      {
+        "type": "keyword",
+        "value": "BY"
+      },
+      {
+        "type": "column",
+        "value": "artist_name"
+      },
+      {
+        "type": "keyword",
+        "value": "ORDER"
+      },
+      {
+        "type": "keyword",
+        "value": "BY"
+      },
+      {
+        "type": "column",
+        "value": "release_date"
+      },
+      {
+        "type": "keyword",
+        "value": "ASC)"
+      },
+      {
+        "type": "keyword",
+        "value": "AS"
+      },
+      {
+        "type": "column",
+        "value": "prev_duration"
+      },
+      {
+        "type": "keyword",
+        "value": "FROM"
+      },
+      {
+        "type": "table",
+        "value": "MusicTracks"
+      },
+      {
+        "type": "column",
+        "value": ")"
+      },
+      {
+        "type": "keyword",
+        "value": "SELECT"
+      },
+      {
+        "type": "column",
+        "value": "track_title,"
+      },
+      {
+        "type": "column",
+        "value": "artist_name,"
+      },
+      {
+        "type": "column",
+        "value": "duration_seconds,"
+      },
+      {
+        "type": "column",
+        "value": "prev_duration,"
+      },
+      {
+        "type": "column",
+        "value": "duration_seconds"
+      },
+      {
+        "type": "column",
+        "value": "-"
+      },
+      {
+        "type": "column",
+        "value": "prev_duration"
+      },
+      {
+        "type": "keyword",
+        "value": "AS"
+      },
+      {
+        "type": "column",
+        "value": "runtime_jump"
+      },
+      {
+        "type": "keyword",
+        "value": "FROM"
+      },
+      {
+        "type": "column",
+        "value": "TrackLengthDeltas"
+      },
+      {
+        "type": "keyword",
+        "value": "WHERE"
+      },
+      {
+        "type": "column",
+        "value": "prev_duration"
+      },
+      {
+        "type": "keyword",
+        "value": "IS"
+      },
+      {
+        "type": "keyword",
+        "value": "NOT"
+      },
+      {
+        "type": "keyword",
+        "value": "NULL"
+      },
+      {
+        "type": "keyword",
+        "value": "ORDER"
+      },
+      {
+        "type": "keyword",
+        "value": "BY"
+      },
+      {
+        "type": "column",
+        "value": "runtime_jump"
+      },
+      {
+        "type": "keyword",
+        "value": "DESC"
+      },
+      {
+        "type": "keyword",
+        "value": "LIMIT"
+      },
+      {
+        "type": "column",
+        "value": "5;"
+      }
+    ]
+  },
+  {
+    "drillNumber": 1397,
+    "subcluster": "14.10 Offset Analytics Pipelines & Gotchas",
+    "level": "Level 3 (Offset Analytics Master)",
+    "title": "Syntax #1397: Analytics Pipeline: Track top 5 gym plan fee increases over time",
+    "table": "GymMembers",
+    "scenario": "Analytics Pipeline: Track top 5 gym plan fee increases over time.",
+    "businessObjective": "Analytics Pipeline: Track top 5 gym plan fee increases over time.",
+    "schemaSnippet": "GymMembers analytical schema",
+    "targetQuery": "WITH MembershipFeeDeltas AS (\n  SELECT member_name, membership_plan, monthly_fee,\n    LAG(monthly_fee, 1) OVER (PARTITION BY membership_plan ORDER BY join_date ASC) AS prev_fee\n  FROM GymMembers\n)\nSELECT member_name, membership_plan, monthly_fee, prev_fee,\n  monthly_fee - prev_fee AS fee_difference\nFROM MembershipFeeDeltas\nWHERE prev_fee IS NOT NULL\nORDER BY fee_difference DESC\nLIMIT 5;",
+    "syntaxBlueprint": "WITH StageDeltas AS (\n  SELECT col1, date_col, metric,\n    LAG(metric, 1) OVER (PARTITION BY col1 ORDER BY date_col ASC) AS prev_val\n  FROM table_name\n)\nSELECT col1, date_col, metric, prev_val,\n  metric - prev_val AS net_delta\nFROM StageDeltas\nWHERE prev_val IS NOT NULL\nORDER BY net_delta DESC\nLIMIT 5;",
+    "syntaxRule": "Combine partitioned offsets, delta calculations, and NULL-row filtering in a clean multi-stage reporting query.",
+    "syntaxTrap": "Attempting to filter 'WHERE prev_val IS NOT NULL' without a CTE wrapper; window functions cannot be filtered in the query where they are defined.",
+    "eli5Story": "Analytical Window Functions on GymMembers: Analytics Pipeline: Track top 5 gym plan fee increases over time.",
+    "commonMistakes": "Omitting ORDER BY inside OVER() for running totals, confusing PARTITION BY with GROUP BY, or attempting to filter window functions in WHERE without a CTE wrapper.",
+    "learningOutcomes": "Mastered 14.10 Offset Analytics Pipelines & Gotchas on GymMembers.",
+    "challengeSlots": [
+      {
+        "type": "keyword",
+        "value": "WITH"
+      },
+      {
+        "type": "column",
+        "value": "MembershipFeeDeltas"
+      },
+      {
+        "type": "keyword",
+        "value": "AS"
+      },
+      {
+        "type": "column",
+        "value": "("
+      },
+      {
+        "type": "keyword",
+        "value": "SELECT"
+      },
+      {
+        "type": "column",
+        "value": "member_name,"
+      },
+      {
+        "type": "column",
+        "value": "membership_plan,"
+      },
+      {
+        "type": "column",
+        "value": "monthly_fee,"
+      },
+      {
+        "type": "column",
+        "value": "LAG(monthly_fee,"
+      },
+      {
+        "type": "column",
+        "value": "1)"
+      },
+      {
+        "type": "keyword",
+        "value": "OVER"
+      },
+      {
+        "type": "keyword",
+        "value": "(PARTITION"
+      },
+      {
+        "type": "keyword",
+        "value": "BY"
+      },
+      {
+        "type": "column",
+        "value": "membership_plan"
+      },
+      {
+        "type": "keyword",
+        "value": "ORDER"
+      },
+      {
+        "type": "keyword",
+        "value": "BY"
+      },
+      {
+        "type": "column",
+        "value": "join_date"
+      },
+      {
+        "type": "keyword",
+        "value": "ASC)"
+      },
+      {
+        "type": "keyword",
+        "value": "AS"
+      },
+      {
+        "type": "column",
+        "value": "prev_fee"
+      },
+      {
+        "type": "keyword",
+        "value": "FROM"
+      },
+      {
+        "type": "table",
+        "value": "GymMembers"
+      },
+      {
+        "type": "column",
+        "value": ")"
+      },
+      {
+        "type": "keyword",
+        "value": "SELECT"
+      },
+      {
+        "type": "column",
+        "value": "member_name,"
+      },
+      {
+        "type": "column",
+        "value": "membership_plan,"
+      },
+      {
+        "type": "column",
+        "value": "monthly_fee,"
+      },
+      {
+        "type": "column",
+        "value": "prev_fee,"
+      },
+      {
+        "type": "column",
+        "value": "monthly_fee"
+      },
+      {
+        "type": "column",
+        "value": "-"
+      },
+      {
+        "type": "column",
+        "value": "prev_fee"
+      },
+      {
+        "type": "keyword",
+        "value": "AS"
+      },
+      {
+        "type": "column",
+        "value": "fee_difference"
+      },
+      {
+        "type": "keyword",
+        "value": "FROM"
+      },
+      {
+        "type": "column",
+        "value": "MembershipFeeDeltas"
+      },
+      {
+        "type": "keyword",
+        "value": "WHERE"
+      },
+      {
+        "type": "column",
+        "value": "prev_fee"
+      },
+      {
+        "type": "keyword",
+        "value": "IS"
+      },
+      {
+        "type": "keyword",
+        "value": "NOT"
+      },
+      {
+        "type": "keyword",
+        "value": "NULL"
+      },
+      {
+        "type": "keyword",
+        "value": "ORDER"
+      },
+      {
+        "type": "keyword",
+        "value": "BY"
+      },
+      {
+        "type": "column",
+        "value": "fee_difference"
+      },
+      {
+        "type": "keyword",
+        "value": "DESC"
+      },
+      {
+        "type": "keyword",
+        "value": "LIMIT"
+      },
+      {
+        "type": "column",
+        "value": "5;"
+      }
+    ]
+  },
+  {
+    "drillNumber": 1398,
+    "subcluster": "14.10 Offset Analytics Pipelines & Gotchas",
+    "level": "Level 3 (Offset Analytics Master)",
+    "title": "Syntax #1398: Analytics Pipeline: Top 5 largest positive critical rating swings by individual critics",
+    "table": "MovieReviews",
+    "scenario": "Analytics Pipeline: Top 5 largest positive critical rating swings by individual critics.",
+    "businessObjective": "Analytics Pipeline: Top 5 largest positive critical rating swings by individual critics.",
+    "schemaSnippet": "MovieReviews analytical schema",
+    "targetQuery": "WITH ReviewDeltas AS (\n  SELECT movie_title, reviewer_name, star_rating,\n    LAG(star_rating, 1) OVER (PARTITION BY reviewer_name ORDER BY review_date ASC) AS prev_rating\n  FROM MovieReviews\n)\nSELECT movie_title, reviewer_name, star_rating, prev_rating,\n  star_rating - prev_rating AS rating_swing\nFROM ReviewDeltas\nWHERE prev_rating IS NOT NULL\nORDER BY rating_swing DESC\nLIMIT 5;",
+    "syntaxBlueprint": "WITH StageDeltas AS (\n  SELECT col1, date_col, metric,\n    LAG(metric, 1) OVER (PARTITION BY col1 ORDER BY date_col ASC) AS prev_val\n  FROM table_name\n)\nSELECT col1, date_col, metric, prev_val,\n  metric - prev_val AS net_delta\nFROM StageDeltas\nWHERE prev_val IS NOT NULL\nORDER BY net_delta DESC\nLIMIT 5;",
+    "syntaxRule": "Combine partitioned offsets, delta calculations, and NULL-row filtering in a clean multi-stage reporting query.",
+    "syntaxTrap": "Attempting to filter 'WHERE prev_val IS NOT NULL' without a CTE wrapper; window functions cannot be filtered in the query where they are defined.",
+    "eli5Story": "Analytical Window Functions on MovieReviews: Analytics Pipeline: Top 5 largest positive critical rating swings by individual critics.",
+    "commonMistakes": "Omitting ORDER BY inside OVER() for running totals, confusing PARTITION BY with GROUP BY, or attempting to filter window functions in WHERE without a CTE wrapper.",
+    "learningOutcomes": "Mastered 14.10 Offset Analytics Pipelines & Gotchas on MovieReviews.",
+    "challengeSlots": [
+      {
+        "type": "keyword",
+        "value": "WITH"
+      },
+      {
+        "type": "column",
+        "value": "ReviewDeltas"
+      },
+      {
+        "type": "keyword",
+        "value": "AS"
+      },
+      {
+        "type": "column",
+        "value": "("
+      },
+      {
+        "type": "keyword",
+        "value": "SELECT"
+      },
+      {
+        "type": "column",
+        "value": "movie_title,"
+      },
+      {
+        "type": "column",
+        "value": "reviewer_name,"
+      },
+      {
+        "type": "column",
+        "value": "star_rating,"
+      },
+      {
+        "type": "column",
+        "value": "LAG(star_rating,"
+      },
+      {
+        "type": "column",
+        "value": "1)"
+      },
+      {
+        "type": "keyword",
+        "value": "OVER"
+      },
+      {
+        "type": "keyword",
+        "value": "(PARTITION"
+      },
+      {
+        "type": "keyword",
+        "value": "BY"
+      },
+      {
+        "type": "column",
+        "value": "reviewer_name"
+      },
+      {
+        "type": "keyword",
+        "value": "ORDER"
+      },
+      {
+        "type": "keyword",
+        "value": "BY"
+      },
+      {
+        "type": "column",
+        "value": "review_date"
+      },
+      {
+        "type": "keyword",
+        "value": "ASC)"
+      },
+      {
+        "type": "keyword",
+        "value": "AS"
+      },
+      {
+        "type": "column",
+        "value": "prev_rating"
+      },
+      {
+        "type": "keyword",
+        "value": "FROM"
+      },
+      {
+        "type": "table",
+        "value": "MovieReviews"
+      },
+      {
+        "type": "column",
+        "value": ")"
+      },
+      {
+        "type": "keyword",
+        "value": "SELECT"
+      },
+      {
+        "type": "column",
+        "value": "movie_title,"
+      },
+      {
+        "type": "column",
+        "value": "reviewer_name,"
+      },
+      {
+        "type": "column",
+        "value": "star_rating,"
+      },
+      {
+        "type": "column",
+        "value": "prev_rating,"
+      },
+      {
+        "type": "column",
+        "value": "star_rating"
+      },
+      {
+        "type": "column",
+        "value": "-"
+      },
+      {
+        "type": "column",
+        "value": "prev_rating"
+      },
+      {
+        "type": "keyword",
+        "value": "AS"
+      },
+      {
+        "type": "column",
+        "value": "rating_swing"
+      },
+      {
+        "type": "keyword",
+        "value": "FROM"
+      },
+      {
+        "type": "column",
+        "value": "ReviewDeltas"
+      },
+      {
+        "type": "keyword",
+        "value": "WHERE"
+      },
+      {
+        "type": "column",
+        "value": "prev_rating"
+      },
+      {
+        "type": "keyword",
+        "value": "IS"
+      },
+      {
+        "type": "keyword",
+        "value": "NOT"
+      },
+      {
+        "type": "keyword",
+        "value": "NULL"
+      },
+      {
+        "type": "keyword",
+        "value": "ORDER"
+      },
+      {
+        "type": "keyword",
+        "value": "BY"
+      },
+      {
+        "type": "column",
+        "value": "rating_swing"
+      },
+      {
+        "type": "keyword",
+        "value": "DESC"
+      },
+      {
+        "type": "keyword",
+        "value": "LIMIT"
+      },
+      {
+        "type": "column",
+        "value": "5;"
+      }
+    ]
+  },
+  {
+    "drillNumber": 1399,
+    "subcluster": "14.10 Offset Analytics Pipelines & Gotchas",
+    "level": "Level 3 (Offset Analytics Master)",
+    "title": "Syntax #1399: Analytics Pipeline: Top 5 largest flight fare increases departing from same hub",
+    "table": "FlightSchedule",
+    "scenario": "Analytics Pipeline: Top 5 largest flight fare increases departing from same hub.",
+    "businessObjective": "Analytics Pipeline: Top 5 largest flight fare increases departing from same hub.",
+    "schemaSnippet": "FlightSchedule analytical schema",
+    "targetQuery": "WITH FlightFareDeltas AS (\n  SELECT flight_id, origin_airport, ticket_price,\n    LAG(ticket_price, 1) OVER (PARTITION BY origin_airport ORDER BY departure_time ASC) AS prev_fare\n  FROM FlightSchedule\n)\nSELECT flight_id, origin_airport, ticket_price, prev_fare,\n  ticket_price - prev_fare AS fare_increase\nFROM FlightFareDeltas\nWHERE prev_fare IS NOT NULL\nORDER BY fare_increase DESC\nLIMIT 5;",
+    "syntaxBlueprint": "WITH StageDeltas AS (\n  SELECT col1, date_col, metric,\n    LAG(metric, 1) OVER (PARTITION BY col1 ORDER BY date_col ASC) AS prev_val\n  FROM table_name\n)\nSELECT col1, date_col, metric, prev_val,\n  metric - prev_val AS net_delta\nFROM StageDeltas\nWHERE prev_val IS NOT NULL\nORDER BY net_delta DESC\nLIMIT 5;",
+    "syntaxRule": "Combine partitioned offsets, delta calculations, and NULL-row filtering in a clean multi-stage reporting query.",
+    "syntaxTrap": "Attempting to filter 'WHERE prev_val IS NOT NULL' without a CTE wrapper; window functions cannot be filtered in the query where they are defined.",
+    "eli5Story": "Analytical Window Functions on FlightSchedule: Analytics Pipeline: Top 5 largest flight fare increases departing from same hub.",
+    "commonMistakes": "Omitting ORDER BY inside OVER() for running totals, confusing PARTITION BY with GROUP BY, or attempting to filter window functions in WHERE without a CTE wrapper.",
+    "learningOutcomes": "Mastered 14.10 Offset Analytics Pipelines & Gotchas on FlightSchedule.",
+    "challengeSlots": [
+      {
+        "type": "keyword",
+        "value": "WITH"
+      },
+      {
+        "type": "column",
+        "value": "FlightFareDeltas"
+      },
+      {
+        "type": "keyword",
+        "value": "AS"
+      },
+      {
+        "type": "column",
+        "value": "("
+      },
+      {
+        "type": "keyword",
+        "value": "SELECT"
+      },
+      {
+        "type": "column",
+        "value": "flight_id,"
+      },
+      {
+        "type": "column",
+        "value": "origin_airport,"
+      },
+      {
+        "type": "column",
+        "value": "ticket_price,"
+      },
+      {
+        "type": "column",
+        "value": "LAG(ticket_price,"
+      },
+      {
+        "type": "column",
+        "value": "1)"
+      },
+      {
+        "type": "keyword",
+        "value": "OVER"
+      },
+      {
+        "type": "keyword",
+        "value": "(PARTITION"
+      },
+      {
+        "type": "keyword",
+        "value": "BY"
+      },
+      {
+        "type": "column",
+        "value": "origin_airport"
+      },
+      {
+        "type": "keyword",
+        "value": "ORDER"
+      },
+      {
+        "type": "keyword",
+        "value": "BY"
+      },
+      {
+        "type": "column",
+        "value": "departure_time"
+      },
+      {
+        "type": "keyword",
+        "value": "ASC)"
+      },
+      {
+        "type": "keyword",
+        "value": "AS"
+      },
+      {
+        "type": "column",
+        "value": "prev_fare"
+      },
+      {
+        "type": "keyword",
+        "value": "FROM"
+      },
+      {
+        "type": "table",
+        "value": "FlightSchedule"
+      },
+      {
+        "type": "column",
+        "value": ")"
+      },
+      {
+        "type": "keyword",
+        "value": "SELECT"
+      },
+      {
+        "type": "column",
+        "value": "flight_id,"
+      },
+      {
+        "type": "column",
+        "value": "origin_airport,"
+      },
+      {
+        "type": "column",
+        "value": "ticket_price,"
+      },
+      {
+        "type": "column",
+        "value": "prev_fare,"
+      },
+      {
+        "type": "column",
+        "value": "ticket_price"
+      },
+      {
+        "type": "column",
+        "value": "-"
+      },
+      {
+        "type": "column",
+        "value": "prev_fare"
+      },
+      {
+        "type": "keyword",
+        "value": "AS"
+      },
+      {
+        "type": "column",
+        "value": "fare_increase"
+      },
+      {
+        "type": "keyword",
+        "value": "FROM"
+      },
+      {
+        "type": "column",
+        "value": "FlightFareDeltas"
+      },
+      {
+        "type": "keyword",
+        "value": "WHERE"
+      },
+      {
+        "type": "column",
+        "value": "prev_fare"
+      },
+      {
+        "type": "keyword",
+        "value": "IS"
+      },
+      {
+        "type": "keyword",
+        "value": "NOT"
+      },
+      {
+        "type": "keyword",
+        "value": "NULL"
+      },
+      {
+        "type": "keyword",
+        "value": "ORDER"
+      },
+      {
+        "type": "keyword",
+        "value": "BY"
+      },
+      {
+        "type": "column",
+        "value": "fare_increase"
+      },
+      {
+        "type": "keyword",
+        "value": "DESC"
+      },
+      {
+        "type": "keyword",
+        "value": "LIMIT"
+      },
+      {
+        "type": "column",
+        "value": "5;"
+      }
+    ]
+  },
+  {
+    "drillNumber": 1400,
+    "subcluster": "14.10 Offset Analytics Pipelines & Gotchas",
+    "level": "Level 3 (Offset Analytics Master)",
+    "title": "Syntax #1400: Analytics Pipeline: Identify top 5 patient weight gains across consecutive clinic visits",
+    "table": "PetClinic",
+    "scenario": "Analytics Pipeline: Identify top 5 patient weight gains across consecutive clinic visits.",
+    "businessObjective": "Analytics Pipeline: Identify top 5 patient weight gains across consecutive clinic visits.",
+    "schemaSnippet": "PetClinic analytical schema",
+    "targetQuery": "WITH PatientWeightDeltas AS (\n  SELECT pet_name, visit_date, weight_kg,\n    LAG(weight_kg, 1) OVER (PARTITION BY pet_name ORDER BY visit_date ASC) AS prev_weight\n  FROM PetClinic\n)\nSELECT pet_name, visit_date, weight_kg, prev_weight,\n  weight_kg - prev_weight AS weight_gain\nFROM PatientWeightDeltas\nWHERE prev_weight IS NOT NULL\nORDER BY weight_gain DESC\nLIMIT 5;",
+    "syntaxBlueprint": "WITH StageDeltas AS (\n  SELECT col1, date_col, metric,\n    LAG(metric, 1) OVER (PARTITION BY col1 ORDER BY date_col ASC) AS prev_val\n  FROM table_name\n)\nSELECT col1, date_col, metric, prev_val,\n  metric - prev_val AS net_delta\nFROM StageDeltas\nWHERE prev_val IS NOT NULL\nORDER BY net_delta DESC\nLIMIT 5;",
+    "syntaxRule": "Combine partitioned offsets, delta calculations, and NULL-row filtering in a clean multi-stage reporting query.",
+    "syntaxTrap": "Attempting to filter 'WHERE prev_val IS NOT NULL' without a CTE wrapper; window functions cannot be filtered in the query where they are defined.",
+    "eli5Story": "Analytical Window Functions on PetClinic: Analytics Pipeline: Identify top 5 patient weight gains across consecutive clinic visits.",
+    "commonMistakes": "Omitting ORDER BY inside OVER() for running totals, confusing PARTITION BY with GROUP BY, or attempting to filter window functions in WHERE without a CTE wrapper.",
+    "learningOutcomes": "Mastered 14.10 Offset Analytics Pipelines & Gotchas on PetClinic.",
+    "challengeSlots": [
+      {
+        "type": "keyword",
+        "value": "WITH"
+      },
+      {
+        "type": "column",
+        "value": "PatientWeightDeltas"
+      },
+      {
+        "type": "keyword",
+        "value": "AS"
+      },
+      {
+        "type": "column",
+        "value": "("
+      },
+      {
+        "type": "keyword",
+        "value": "SELECT"
+      },
+      {
+        "type": "column",
+        "value": "pet_name,"
+      },
+      {
+        "type": "column",
+        "value": "visit_date,"
+      },
+      {
+        "type": "column",
+        "value": "weight_kg,"
+      },
+      {
+        "type": "column",
+        "value": "LAG(weight_kg,"
+      },
+      {
+        "type": "column",
+        "value": "1)"
+      },
+      {
+        "type": "keyword",
+        "value": "OVER"
+      },
+      {
+        "type": "keyword",
+        "value": "(PARTITION"
+      },
+      {
+        "type": "keyword",
+        "value": "BY"
+      },
+      {
+        "type": "column",
+        "value": "pet_name"
+      },
+      {
+        "type": "keyword",
+        "value": "ORDER"
+      },
+      {
+        "type": "keyword",
+        "value": "BY"
+      },
+      {
+        "type": "column",
+        "value": "visit_date"
+      },
+      {
+        "type": "keyword",
+        "value": "ASC)"
+      },
+      {
+        "type": "keyword",
+        "value": "AS"
+      },
+      {
+        "type": "column",
+        "value": "prev_weight"
+      },
+      {
+        "type": "keyword",
+        "value": "FROM"
+      },
+      {
+        "type": "table",
+        "value": "PetClinic"
+      },
+      {
+        "type": "column",
+        "value": ")"
+      },
+      {
+        "type": "keyword",
+        "value": "SELECT"
+      },
+      {
+        "type": "column",
+        "value": "pet_name,"
+      },
+      {
+        "type": "column",
+        "value": "visit_date,"
+      },
+      {
+        "type": "column",
+        "value": "weight_kg,"
+      },
+      {
+        "type": "column",
+        "value": "prev_weight,"
+      },
+      {
+        "type": "column",
+        "value": "weight_kg"
+      },
+      {
+        "type": "column",
+        "value": "-"
+      },
+      {
+        "type": "column",
+        "value": "prev_weight"
+      },
+      {
+        "type": "keyword",
+        "value": "AS"
+      },
+      {
+        "type": "column",
+        "value": "weight_gain"
+      },
+      {
+        "type": "keyword",
+        "value": "FROM"
+      },
+      {
+        "type": "column",
+        "value": "PatientWeightDeltas"
+      },
+      {
+        "type": "keyword",
+        "value": "WHERE"
+      },
+      {
+        "type": "column",
+        "value": "prev_weight"
+      },
+      {
+        "type": "keyword",
+        "value": "IS"
+      },
+      {
+        "type": "keyword",
+        "value": "NOT"
+      },
+      {
+        "type": "keyword",
+        "value": "NULL"
+      },
+      {
+        "type": "keyword",
+        "value": "ORDER"
+      },
+      {
+        "type": "keyword",
+        "value": "BY"
+      },
+      {
+        "type": "column",
+        "value": "weight_gain"
+      },
+      {
+        "type": "keyword",
+        "value": "DESC"
+      },
+      {
+        "type": "keyword",
+        "value": "LIMIT"
+      },
+      {
+        "type": "column",
+        "value": "5;"
+      }
+    ]
+  },
+  {
+    "drillNumber": 1401,
+    "subcluster": "15.1 Global Running Total (SUM() OVER (ORDER BY col))",
+    "level": "Level 2 (Global Running Total)",
+    "title": "Syntax #1401: Calculate the cumulative running revenue from the first order to the latest",
+    "table": "Orders",
+    "scenario": "Calculate the cumulative running revenue from the first order to the latest.",
+    "businessObjective": "Calculate the cumulative running revenue from the first order to the latest.",
+    "schemaSnippet": "Orders analytical schema",
+    "targetQuery": "SELECT order_id, order_date, total_amount,\n  SUM(total_amount) OVER (ORDER BY order_date ASC) AS cumulative_sales\nFROM Orders;",
+    "syntaxBlueprint": "SELECT col1, date_col, metric,\n  SUM(metric) OVER (ORDER BY date_col ASC) AS running_total\nFROM table_name;",
+    "syntaxRule": "When ORDER BY is present in an OVER clause, the default frame is 'RANGE BETWEEN UNBOUNDED PRECEDING AND CURRENT ROW', producing an accumulative running sum.",
+    "syntaxTrap": "Omitting ORDER BY turns the window into the entire table, giving the grand total on every row rather than a running sum.",
+    "eli5Story": "Analytical Window Functions on Orders: Calculate the cumulative running revenue from the first order to the latest.",
+    "commonMistakes": "Omitting ORDER BY inside OVER() for running totals, confusing PARTITION BY with GROUP BY, or attempting to filter window functions in WHERE without a CTE wrapper.",
+    "learningOutcomes": "Mastered 15.1 Global Running Total (SUM() OVER (ORDER BY col)) on Orders.",
+    "challengeSlots": [
+      {
+        "type": "keyword",
+        "value": "SELECT"
+      },
+      {
+        "type": "column",
+        "value": "order_id,"
+      },
+      {
+        "type": "column",
+        "value": "order_date,"
+      },
+      {
+        "type": "column",
+        "value": "total_amount,"
+      },
+      {
+        "type": "column",
+        "value": "SUM(total_amount)"
+      },
+      {
+        "type": "keyword",
+        "value": "OVER"
+      },
+      {
+        "type": "keyword",
+        "value": "(ORDER"
+      },
+      {
+        "type": "keyword",
+        "value": "BY"
+      },
+      {
+        "type": "column",
+        "value": "order_date"
+      },
+      {
+        "type": "keyword",
+        "value": "ASC)"
+      },
+      {
+        "type": "keyword",
+        "value": "AS"
+      },
+      {
+        "type": "column",
+        "value": "cumulative_sales"
+      },
+      {
+        "type": "keyword",
+        "value": "FROM"
+      },
+      {
+        "type": "table",
+        "value": "Orders;"
+      }
+    ]
+  },
+  {
+    "drillNumber": 1402,
+    "subcluster": "15.1 Global Running Total (SUM() OVER (ORDER BY col))",
+    "level": "Level 2 (Global Running Total)",
+    "title": "Syntax #1402: Calculate the running cumulative count of enrolled students over time",
+    "table": "Students",
+    "scenario": "Calculate the running cumulative count of enrolled students over time.",
+    "businessObjective": "Calculate the running cumulative count of enrolled students over time.",
+    "schemaSnippet": "Students analytical schema",
+    "targetQuery": "SELECT student_id, enrolled_year,\n  COUNT(*) OVER (ORDER BY enrolled_year ASC) AS cumulative_enrollment_count\nFROM Students;",
+    "syntaxBlueprint": "SELECT col1, date_col, metric,\n  SUM(metric) OVER (ORDER BY date_col ASC) AS running_total\nFROM table_name;",
+    "syntaxRule": "When ORDER BY is present in an OVER clause, the default frame is 'RANGE BETWEEN UNBOUNDED PRECEDING AND CURRENT ROW', producing an accumulative running sum.",
+    "syntaxTrap": "Omitting ORDER BY turns the window into the entire table, giving the grand total on every row rather than a running sum.",
+    "eli5Story": "Analytical Window Functions on Students: Calculate the running cumulative count of enrolled students over time.",
+    "commonMistakes": "Omitting ORDER BY inside OVER() for running totals, confusing PARTITION BY with GROUP BY, or attempting to filter window functions in WHERE without a CTE wrapper.",
+    "learningOutcomes": "Mastered 15.1 Global Running Total (SUM() OVER (ORDER BY col)) on Students.",
+    "challengeSlots": [
+      {
+        "type": "keyword",
+        "value": "SELECT"
+      },
+      {
+        "type": "column",
+        "value": "student_id,"
+      },
+      {
+        "type": "column",
+        "value": "enrolled_year,"
+      },
+      {
+        "type": "column",
+        "value": "COUNT(*)"
+      },
+      {
+        "type": "keyword",
+        "value": "OVER"
+      },
+      {
+        "type": "keyword",
+        "value": "(ORDER"
+      },
+      {
+        "type": "keyword",
+        "value": "BY"
+      },
+      {
+        "type": "column",
+        "value": "enrolled_year"
+      },
+      {
+        "type": "keyword",
+        "value": "ASC)"
+      },
+      {
+        "type": "keyword",
+        "value": "AS"
+      },
+      {
+        "type": "column",
+        "value": "cumulative_enrollment_count"
+      },
+      {
+        "type": "keyword",
+        "value": "FROM"
+      },
+      {
+        "type": "table",
+        "value": "Students;"
+      }
+    ]
+  },
+  {
+    "drillNumber": 1403,
+    "subcluster": "15.1 Global Running Total (SUM() OVER (ORDER BY col))",
+    "level": "Level 2 (Global Running Total)",
+    "title": "Syntax #1403: Compute the cumulative dollar value of catalog books as they were published",
+    "table": "Books",
+    "scenario": "Compute the cumulative dollar value of catalog books as they were published.",
+    "businessObjective": "Compute the cumulative dollar value of catalog books as they were published.",
+    "schemaSnippet": "Books analytical schema",
+    "targetQuery": "SELECT book_id, published_date, price,\n  SUM(price) OVER (ORDER BY published_date ASC) AS cumulative_catalog_value\nFROM Books;",
+    "syntaxBlueprint": "SELECT col1, date_col, metric,\n  SUM(metric) OVER (ORDER BY date_col ASC) AS running_total\nFROM table_name;",
+    "syntaxRule": "When ORDER BY is present in an OVER clause, the default frame is 'RANGE BETWEEN UNBOUNDED PRECEDING AND CURRENT ROW', producing an accumulative running sum.",
+    "syntaxTrap": "Omitting ORDER BY turns the window into the entire table, giving the grand total on every row rather than a running sum.",
+    "eli5Story": "Analytical Window Functions on Books: Compute the cumulative dollar value of catalog books as they were published.",
+    "commonMistakes": "Omitting ORDER BY inside OVER() for running totals, confusing PARTITION BY with GROUP BY, or attempting to filter window functions in WHERE without a CTE wrapper.",
+    "learningOutcomes": "Mastered 15.1 Global Running Total (SUM() OVER (ORDER BY col)) on Books.",
+    "challengeSlots": [
+      {
+        "type": "keyword",
+        "value": "SELECT"
+      },
+      {
+        "type": "column",
+        "value": "book_id,"
+      },
+      {
+        "type": "column",
+        "value": "published_date,"
+      },
+      {
+        "type": "column",
+        "value": "price,"
+      },
+      {
+        "type": "column",
+        "value": "SUM(price)"
+      },
+      {
+        "type": "keyword",
+        "value": "OVER"
+      },
+      {
+        "type": "keyword",
+        "value": "(ORDER"
+      },
+      {
+        "type": "keyword",
+        "value": "BY"
+      },
+      {
+        "type": "column",
+        "value": "published_date"
+      },
+      {
+        "type": "keyword",
+        "value": "ASC)"
+      },
+      {
+        "type": "keyword",
+        "value": "AS"
+      },
+      {
+        "type": "column",
+        "value": "cumulative_catalog_value"
+      },
+      {
+        "type": "keyword",
+        "value": "FROM"
+      },
+      {
+        "type": "table",
+        "value": "Books;"
+      }
+    ]
+  },
+  {
+    "drillNumber": 1404,
+    "subcluster": "15.1 Global Running Total (SUM() OVER (ORDER BY col))",
+    "level": "Level 2 (Global Running Total)",
+    "title": "Syntax #1404: Calculate cumulative payroll expansion as employees were hired chronologically",
+    "table": "Employees",
+    "scenario": "Calculate cumulative payroll expansion as employees were hired chronologically.",
+    "businessObjective": "Calculate cumulative payroll expansion as employees were hired chronologically.",
+    "schemaSnippet": "Employees analytical schema",
+    "targetQuery": "SELECT first_name, hire_date, salary,\n  SUM(salary) OVER (ORDER BY hire_date ASC) AS cumulative_payroll_liability\nFROM Employees;",
+    "syntaxBlueprint": "SELECT col1, date_col, metric,\n  SUM(metric) OVER (ORDER BY date_col ASC) AS running_total\nFROM table_name;",
+    "syntaxRule": "When ORDER BY is present in an OVER clause, the default frame is 'RANGE BETWEEN UNBOUNDED PRECEDING AND CURRENT ROW', producing an accumulative running sum.",
+    "syntaxTrap": "Omitting ORDER BY turns the window into the entire table, giving the grand total on every row rather than a running sum.",
+    "eli5Story": "Analytical Window Functions on Employees: Calculate cumulative payroll expansion as employees were hired chronologically.",
+    "commonMistakes": "Omitting ORDER BY inside OVER() for running totals, confusing PARTITION BY with GROUP BY, or attempting to filter window functions in WHERE without a CTE wrapper.",
+    "learningOutcomes": "Mastered 15.1 Global Running Total (SUM() OVER (ORDER BY col)) on Employees.",
+    "challengeSlots": [
+      {
+        "type": "keyword",
+        "value": "SELECT"
+      },
+      {
+        "type": "column",
+        "value": "first_name,"
+      },
+      {
+        "type": "column",
+        "value": "hire_date,"
+      },
+      {
+        "type": "column",
+        "value": "salary,"
+      },
+      {
+        "type": "column",
+        "value": "SUM(salary)"
+      },
+      {
+        "type": "keyword",
+        "value": "OVER"
+      },
+      {
+        "type": "keyword",
+        "value": "(ORDER"
+      },
+      {
+        "type": "keyword",
+        "value": "BY"
+      },
+      {
+        "type": "column",
+        "value": "hire_date"
+      },
+      {
+        "type": "keyword",
+        "value": "ASC)"
+      },
+      {
+        "type": "keyword",
+        "value": "AS"
+      },
+      {
+        "type": "column",
+        "value": "cumulative_payroll_liability"
+      },
+      {
+        "type": "keyword",
+        "value": "FROM"
+      },
+      {
+        "type": "table",
+        "value": "Employees;"
+      }
+    ]
+  },
+  {
+    "drillNumber": 1405,
+    "subcluster": "15.1 Global Running Total (SUM() OVER (ORDER BY col))",
+    "level": "Level 2 (Global Running Total)",
+    "title": "Syntax #1405: Compute a running total of warehouse inventory units across item IDs",
+    "table": "GroceryItems",
+    "scenario": "Compute a running total of warehouse inventory units across item IDs.",
+    "businessObjective": "Compute a running total of warehouse inventory units across item IDs.",
+    "schemaSnippet": "GroceryItems analytical schema",
+    "targetQuery": "SELECT item_name, stock_qty,\n  SUM(stock_qty) OVER (ORDER BY item_id ASC) AS running_inventory_units\nFROM GroceryItems;",
+    "syntaxBlueprint": "SELECT col1, date_col, metric,\n  SUM(metric) OVER (ORDER BY date_col ASC) AS running_total\nFROM table_name;",
+    "syntaxRule": "When ORDER BY is present in an OVER clause, the default frame is 'RANGE BETWEEN UNBOUNDED PRECEDING AND CURRENT ROW', producing an accumulative running sum.",
+    "syntaxTrap": "Omitting ORDER BY turns the window into the entire table, giving the grand total on every row rather than a running sum.",
+    "eli5Story": "Analytical Window Functions on GroceryItems: Compute a running total of warehouse inventory units across item IDs.",
+    "commonMistakes": "Omitting ORDER BY inside OVER() for running totals, confusing PARTITION BY with GROUP BY, or attempting to filter window functions in WHERE without a CTE wrapper.",
+    "learningOutcomes": "Mastered 15.1 Global Running Total (SUM() OVER (ORDER BY col)) on GroceryItems.",
+    "challengeSlots": [
+      {
+        "type": "keyword",
+        "value": "SELECT"
+      },
+      {
+        "type": "column",
+        "value": "item_name,"
+      },
+      {
+        "type": "column",
+        "value": "stock_qty,"
+      },
+      {
+        "type": "column",
+        "value": "SUM(stock_qty)"
+      },
+      {
+        "type": "keyword",
+        "value": "OVER"
+      },
+      {
+        "type": "keyword",
+        "value": "(ORDER"
+      },
+      {
+        "type": "keyword",
+        "value": "BY"
+      },
+      {
+        "type": "column",
+        "value": "item_id"
+      },
+      {
+        "type": "keyword",
+        "value": "ASC)"
+      },
+      {
+        "type": "keyword",
+        "value": "AS"
+      },
+      {
+        "type": "column",
+        "value": "running_inventory_units"
+      },
+      {
+        "type": "keyword",
+        "value": "FROM"
+      },
+      {
+        "type": "table",
+        "value": "GroceryItems;"
+      }
+    ]
+  },
+  {
+    "drillNumber": 1406,
+    "subcluster": "15.1 Global Running Total (SUM() OVER (ORDER BY col))",
+    "level": "Level 2 (Global Running Total)",
+    "title": "Syntax #1406: Calculate the cumulative runtime seconds of the music catalog over time",
+    "table": "MusicTracks",
+    "scenario": "Calculate the cumulative runtime seconds of the music catalog over time.",
+    "businessObjective": "Calculate the cumulative runtime seconds of the music catalog over time.",
+    "schemaSnippet": "MusicTracks analytical schema",
+    "targetQuery": "SELECT track_title, release_date, duration_seconds,\n  SUM(duration_seconds) OVER (ORDER BY release_date ASC) AS cumulative_catalog_seconds\nFROM MusicTracks;",
+    "syntaxBlueprint": "SELECT col1, date_col, metric,\n  SUM(metric) OVER (ORDER BY date_col ASC) AS running_total\nFROM table_name;",
+    "syntaxRule": "When ORDER BY is present in an OVER clause, the default frame is 'RANGE BETWEEN UNBOUNDED PRECEDING AND CURRENT ROW', producing an accumulative running sum.",
+    "syntaxTrap": "Omitting ORDER BY turns the window into the entire table, giving the grand total on every row rather than a running sum.",
+    "eli5Story": "Analytical Window Functions on MusicTracks: Calculate the cumulative runtime seconds of the music catalog over time.",
+    "commonMistakes": "Omitting ORDER BY inside OVER() for running totals, confusing PARTITION BY with GROUP BY, or attempting to filter window functions in WHERE without a CTE wrapper.",
+    "learningOutcomes": "Mastered 15.1 Global Running Total (SUM() OVER (ORDER BY col)) on MusicTracks.",
+    "challengeSlots": [
+      {
+        "type": "keyword",
+        "value": "SELECT"
+      },
+      {
+        "type": "column",
+        "value": "track_title,"
+      },
+      {
+        "type": "column",
+        "value": "release_date,"
+      },
+      {
+        "type": "column",
+        "value": "duration_seconds,"
+      },
+      {
+        "type": "column",
+        "value": "SUM(duration_seconds)"
+      },
+      {
+        "type": "keyword",
+        "value": "OVER"
+      },
+      {
+        "type": "keyword",
+        "value": "(ORDER"
+      },
+      {
+        "type": "keyword",
+        "value": "BY"
+      },
+      {
+        "type": "column",
+        "value": "release_date"
+      },
+      {
+        "type": "keyword",
+        "value": "ASC)"
+      },
+      {
+        "type": "keyword",
+        "value": "AS"
+      },
+      {
+        "type": "column",
+        "value": "cumulative_catalog_seconds"
+      },
+      {
+        "type": "keyword",
+        "value": "FROM"
+      },
+      {
+        "type": "table",
+        "value": "MusicTracks;"
+      }
+    ]
+  },
+  {
+    "drillNumber": 1407,
+    "subcluster": "15.1 Global Running Total (SUM() OVER (ORDER BY col))",
+    "level": "Level 2 (Global Running Total)",
+    "title": "Syntax #1407: Compute running monthly recurring revenue (MRR) as new gym members joined",
+    "table": "GymMembers",
+    "scenario": "Compute running monthly recurring revenue (MRR) as new gym members joined.",
+    "businessObjective": "Compute running monthly recurring revenue (MRR) as new gym members joined.",
+    "schemaSnippet": "GymMembers analytical schema",
+    "targetQuery": "SELECT member_name, join_date, monthly_fee,\n  SUM(monthly_fee) OVER (ORDER BY join_date ASC) AS cumulative_mrr\nFROM GymMembers;",
+    "syntaxBlueprint": "SELECT col1, date_col, metric,\n  SUM(metric) OVER (ORDER BY date_col ASC) AS running_total\nFROM table_name;",
+    "syntaxRule": "When ORDER BY is present in an OVER clause, the default frame is 'RANGE BETWEEN UNBOUNDED PRECEDING AND CURRENT ROW', producing an accumulative running sum.",
+    "syntaxTrap": "Omitting ORDER BY turns the window into the entire table, giving the grand total on every row rather than a running sum.",
+    "eli5Story": "Analytical Window Functions on GymMembers: Compute running monthly recurring revenue (MRR) as new gym members joined.",
+    "commonMistakes": "Omitting ORDER BY inside OVER() for running totals, confusing PARTITION BY with GROUP BY, or attempting to filter window functions in WHERE without a CTE wrapper.",
+    "learningOutcomes": "Mastered 15.1 Global Running Total (SUM() OVER (ORDER BY col)) on GymMembers.",
+    "challengeSlots": [
+      {
+        "type": "keyword",
+        "value": "SELECT"
+      },
+      {
+        "type": "column",
+        "value": "member_name,"
+      },
+      {
+        "type": "column",
+        "value": "join_date,"
+      },
+      {
+        "type": "column",
+        "value": "monthly_fee,"
+      },
+      {
+        "type": "column",
+        "value": "SUM(monthly_fee)"
+      },
+      {
+        "type": "keyword",
+        "value": "OVER"
+      },
+      {
+        "type": "keyword",
+        "value": "(ORDER"
+      },
+      {
+        "type": "keyword",
+        "value": "BY"
+      },
+      {
+        "type": "column",
+        "value": "join_date"
+      },
+      {
+        "type": "keyword",
+        "value": "ASC)"
+      },
+      {
+        "type": "keyword",
+        "value": "AS"
+      },
+      {
+        "type": "column",
+        "value": "cumulative_mrr"
+      },
+      {
+        "type": "keyword",
+        "value": "FROM"
+      },
+      {
+        "type": "table",
+        "value": "GymMembers;"
+      }
+    ]
+  },
+  {
+    "drillNumber": 1408,
+    "subcluster": "15.1 Global Running Total (SUM() OVER (ORDER BY col))",
+    "level": "Level 2 (Global Running Total)",
+    "title": "Syntax #1408: Calculate cumulative review volume published over time",
+    "table": "MovieReviews",
+    "scenario": "Calculate cumulative review volume published over time.",
+    "businessObjective": "Calculate cumulative review volume published over time.",
+    "schemaSnippet": "MovieReviews analytical schema",
+    "targetQuery": "SELECT movie_title, review_date,\n  COUNT(*) OVER (ORDER BY review_date ASC) AS cumulative_review_volume\nFROM MovieReviews;",
+    "syntaxBlueprint": "SELECT col1, date_col, metric,\n  SUM(metric) OVER (ORDER BY date_col ASC) AS running_total\nFROM table_name;",
+    "syntaxRule": "When ORDER BY is present in an OVER clause, the default frame is 'RANGE BETWEEN UNBOUNDED PRECEDING AND CURRENT ROW', producing an accumulative running sum.",
+    "syntaxTrap": "Omitting ORDER BY turns the window into the entire table, giving the grand total on every row rather than a running sum.",
+    "eli5Story": "Analytical Window Functions on MovieReviews: Calculate cumulative review volume published over time.",
+    "commonMistakes": "Omitting ORDER BY inside OVER() for running totals, confusing PARTITION BY with GROUP BY, or attempting to filter window functions in WHERE without a CTE wrapper.",
+    "learningOutcomes": "Mastered 15.1 Global Running Total (SUM() OVER (ORDER BY col)) on MovieReviews.",
+    "challengeSlots": [
+      {
+        "type": "keyword",
+        "value": "SELECT"
+      },
+      {
+        "type": "column",
+        "value": "movie_title,"
+      },
+      {
+        "type": "column",
+        "value": "review_date,"
+      },
+      {
+        "type": "column",
+        "value": "COUNT(*)"
+      },
+      {
+        "type": "keyword",
+        "value": "OVER"
+      },
+      {
+        "type": "keyword",
+        "value": "(ORDER"
+      },
+      {
+        "type": "keyword",
+        "value": "BY"
+      },
+      {
+        "type": "column",
+        "value": "review_date"
+      },
+      {
+        "type": "keyword",
+        "value": "ASC)"
+      },
+      {
+        "type": "keyword",
+        "value": "AS"
+      },
+      {
+        "type": "column",
+        "value": "cumulative_review_volume"
+      },
+      {
+        "type": "keyword",
+        "value": "FROM"
+      },
+      {
+        "type": "table",
+        "value": "MovieReviews;"
+      }
+    ]
+  },
+  {
+    "drillNumber": 1409,
+    "subcluster": "15.1 Global Running Total (SUM() OVER (ORDER BY col))",
+    "level": "Level 2 (Global Running Total)",
+    "title": "Syntax #1409: Calculate cumulative flight miles flown across scheduled departures",
+    "table": "FlightSchedule",
+    "scenario": "Calculate cumulative flight miles flown across scheduled departures.",
+    "businessObjective": "Calculate cumulative flight miles flown across scheduled departures.",
+    "schemaSnippet": "FlightSchedule analytical schema",
+    "targetQuery": "SELECT flight_id, departure_time, distance_miles,\n  SUM(distance_miles) OVER (ORDER BY departure_time ASC) AS cumulative_network_miles\nFROM FlightSchedule;",
+    "syntaxBlueprint": "SELECT col1, date_col, metric,\n  SUM(metric) OVER (ORDER BY date_col ASC) AS running_total\nFROM table_name;",
+    "syntaxRule": "When ORDER BY is present in an OVER clause, the default frame is 'RANGE BETWEEN UNBOUNDED PRECEDING AND CURRENT ROW', producing an accumulative running sum.",
+    "syntaxTrap": "Omitting ORDER BY turns the window into the entire table, giving the grand total on every row rather than a running sum.",
+    "eli5Story": "Analytical Window Functions on FlightSchedule: Calculate cumulative flight miles flown across scheduled departures.",
+    "commonMistakes": "Omitting ORDER BY inside OVER() for running totals, confusing PARTITION BY with GROUP BY, or attempting to filter window functions in WHERE without a CTE wrapper.",
+    "learningOutcomes": "Mastered 15.1 Global Running Total (SUM() OVER (ORDER BY col)) on FlightSchedule.",
+    "challengeSlots": [
+      {
+        "type": "keyword",
+        "value": "SELECT"
+      },
+      {
+        "type": "column",
+        "value": "flight_id,"
+      },
+      {
+        "type": "column",
+        "value": "departure_time,"
+      },
+      {
+        "type": "column",
+        "value": "distance_miles,"
+      },
+      {
+        "type": "column",
+        "value": "SUM(distance_miles)"
+      },
+      {
+        "type": "keyword",
+        "value": "OVER"
+      },
+      {
+        "type": "keyword",
+        "value": "(ORDER"
+      },
+      {
+        "type": "keyword",
+        "value": "BY"
+      },
+      {
+        "type": "column",
+        "value": "departure_time"
+      },
+      {
+        "type": "keyword",
+        "value": "ASC)"
+      },
+      {
+        "type": "keyword",
+        "value": "AS"
+      },
+      {
+        "type": "column",
+        "value": "cumulative_network_miles"
+      },
+      {
+        "type": "keyword",
+        "value": "FROM"
+      },
+      {
+        "type": "table",
+        "value": "FlightSchedule;"
+      }
+    ]
+  },
+  {
+    "drillNumber": 1410,
+    "subcluster": "15.1 Global Running Total (SUM() OVER (ORDER BY col))",
+    "level": "Level 2 (Global Running Total)",
+    "title": "Syntax #1410: Track cumulative veterinary clinic patient visits chronologically",
+    "table": "PetClinic",
+    "scenario": "Track cumulative veterinary clinic patient visits chronologically.",
+    "businessObjective": "Track cumulative veterinary clinic patient visits chronologically.",
+    "schemaSnippet": "PetClinic analytical schema",
+    "targetQuery": "SELECT pet_name, visit_date,\n  COUNT(*) OVER (ORDER BY visit_date ASC) AS cumulative_patient_visits\nFROM PetClinic;",
+    "syntaxBlueprint": "SELECT col1, date_col, metric,\n  SUM(metric) OVER (ORDER BY date_col ASC) AS running_total\nFROM table_name;",
+    "syntaxRule": "When ORDER BY is present in an OVER clause, the default frame is 'RANGE BETWEEN UNBOUNDED PRECEDING AND CURRENT ROW', producing an accumulative running sum.",
+    "syntaxTrap": "Omitting ORDER BY turns the window into the entire table, giving the grand total on every row rather than a running sum.",
+    "eli5Story": "Analytical Window Functions on PetClinic: Track cumulative veterinary clinic patient visits chronologically.",
+    "commonMistakes": "Omitting ORDER BY inside OVER() for running totals, confusing PARTITION BY with GROUP BY, or attempting to filter window functions in WHERE without a CTE wrapper.",
+    "learningOutcomes": "Mastered 15.1 Global Running Total (SUM() OVER (ORDER BY col)) on PetClinic.",
+    "challengeSlots": [
+      {
+        "type": "keyword",
+        "value": "SELECT"
+      },
+      {
+        "type": "column",
+        "value": "pet_name,"
+      },
+      {
+        "type": "column",
+        "value": "visit_date,"
+      },
+      {
+        "type": "column",
+        "value": "COUNT(*)"
+      },
+      {
+        "type": "keyword",
+        "value": "OVER"
+      },
+      {
+        "type": "keyword",
+        "value": "(ORDER"
+      },
+      {
+        "type": "keyword",
+        "value": "BY"
+      },
+      {
+        "type": "column",
+        "value": "visit_date"
+      },
+      {
+        "type": "keyword",
+        "value": "ASC)"
+      },
+      {
+        "type": "keyword",
+        "value": "AS"
+      },
+      {
+        "type": "column",
+        "value": "cumulative_patient_visits"
+      },
+      {
+        "type": "keyword",
+        "value": "FROM"
+      },
+      {
+        "type": "table",
+        "value": "PetClinic;"
+      }
+    ]
+  },
+  {
+    "drillNumber": 1411,
+    "subcluster": "15.2 Partitioned Cumulative Ledger (Running Balance per Entity)",
+    "level": "Level 3 (Partitioned Running Ledger)",
+    "title": "Syntax #1411: Compute running cumulative spend per customer across their order history",
+    "table": "Orders",
+    "scenario": "Compute running cumulative spend per customer across their order history.",
+    "businessObjective": "Compute running cumulative spend per customer across their order history.",
+    "schemaSnippet": "Orders analytical schema",
+    "targetQuery": "SELECT order_id, customer_name, order_date, total_amount,\n  SUM(total_amount) OVER (PARTITION BY customer_name ORDER BY order_date ASC) AS customer_cumulative_spend\nFROM Orders;",
+    "syntaxBlueprint": "SELECT entity_id, date_col, amount,\n  SUM(amount) OVER (PARTITION BY entity_id ORDER BY date_col ASC) AS running_balance\nFROM table_name;",
+    "syntaxRule": "Combining SUM() with PARTITION BY and ORDER BY computes the ledger balance per customer or account, restarting from 0 for each new entity.",
+    "syntaxTrap": "The core financial ledger pattern. Never forget both PARTITION BY (who) AND ORDER BY (when).",
+    "eli5Story": "Analytical Window Functions on Orders: Compute running cumulative spend per customer across their order history.",
+    "commonMistakes": "Omitting ORDER BY inside OVER() for running totals, confusing PARTITION BY with GROUP BY, or attempting to filter window functions in WHERE without a CTE wrapper.",
+    "learningOutcomes": "Mastered 15.2 Partitioned Cumulative Ledger (Running Balance per Entity) on Orders.",
+    "challengeSlots": [
+      {
+        "type": "keyword",
+        "value": "SELECT"
+      },
+      {
+        "type": "column",
+        "value": "order_id,"
+      },
+      {
+        "type": "column",
+        "value": "customer_name,"
+      },
+      {
+        "type": "column",
+        "value": "order_date,"
+      },
+      {
+        "type": "column",
+        "value": "total_amount,"
+      },
+      {
+        "type": "column",
+        "value": "SUM(total_amount)"
+      },
+      {
+        "type": "keyword",
+        "value": "OVER"
+      },
+      {
+        "type": "keyword",
+        "value": "(PARTITION"
+      },
+      {
+        "type": "keyword",
+        "value": "BY"
+      },
+      {
+        "type": "column",
+        "value": "customer_name"
+      },
+      {
+        "type": "keyword",
+        "value": "ORDER"
+      },
+      {
+        "type": "keyword",
+        "value": "BY"
+      },
+      {
+        "type": "column",
+        "value": "order_date"
+      },
+      {
+        "type": "keyword",
+        "value": "ASC)"
+      },
+      {
+        "type": "keyword",
+        "value": "AS"
+      },
+      {
+        "type": "column",
+        "value": "customer_cumulative_spend"
+      },
+      {
+        "type": "keyword",
+        "value": "FROM"
+      },
+      {
+        "type": "table",
+        "value": "Orders;"
+      }
+    ]
+  },
+  {
+    "drillNumber": 1412,
+    "subcluster": "15.2 Partitioned Cumulative Ledger (Running Balance per Entity)",
+    "level": "Level 3 (Partitioned Running Ledger)",
+    "title": "Syntax #1412: Track running cumulative student enrollment headcount within each major",
+    "table": "Students",
+    "scenario": "Track running cumulative student enrollment headcount within each major.",
+    "businessObjective": "Track running cumulative student enrollment headcount within each major.",
+    "schemaSnippet": "Students analytical schema",
+    "targetQuery": "SELECT full_name, major, enrolled_year,\n  COUNT(*) OVER (PARTITION BY major ORDER BY enrolled_year ASC) AS major_cumulative_headcount\nFROM Students;",
+    "syntaxBlueprint": "SELECT entity_id, date_col, amount,\n  SUM(amount) OVER (PARTITION BY entity_id ORDER BY date_col ASC) AS running_balance\nFROM table_name;",
+    "syntaxRule": "Combining SUM() with PARTITION BY and ORDER BY computes the ledger balance per customer or account, restarting from 0 for each new entity.",
+    "syntaxTrap": "The core financial ledger pattern. Never forget both PARTITION BY (who) AND ORDER BY (when).",
+    "eli5Story": "Analytical Window Functions on Students: Track running cumulative student enrollment headcount within each major.",
+    "commonMistakes": "Omitting ORDER BY inside OVER() for running totals, confusing PARTITION BY with GROUP BY, or attempting to filter window functions in WHERE without a CTE wrapper.",
+    "learningOutcomes": "Mastered 15.2 Partitioned Cumulative Ledger (Running Balance per Entity) on Students.",
+    "challengeSlots": [
+      {
+        "type": "keyword",
+        "value": "SELECT"
+      },
+      {
+        "type": "column",
+        "value": "full_name,"
+      },
+      {
+        "type": "column",
+        "value": "major,"
+      },
+      {
+        "type": "column",
+        "value": "enrolled_year,"
+      },
+      {
+        "type": "column",
+        "value": "COUNT(*)"
+      },
+      {
+        "type": "keyword",
+        "value": "OVER"
+      },
+      {
+        "type": "keyword",
+        "value": "(PARTITION"
+      },
+      {
+        "type": "keyword",
+        "value": "BY"
+      },
+      {
+        "type": "column",
+        "value": "major"
+      },
+      {
+        "type": "keyword",
+        "value": "ORDER"
+      },
+      {
+        "type": "keyword",
+        "value": "BY"
+      },
+      {
+        "type": "column",
+        "value": "enrolled_year"
+      },
+      {
+        "type": "keyword",
+        "value": "ASC)"
+      },
+      {
+        "type": "keyword",
+        "value": "AS"
+      },
+      {
+        "type": "column",
+        "value": "major_cumulative_headcount"
+      },
+      {
+        "type": "keyword",
+        "value": "FROM"
+      },
+      {
+        "type": "table",
+        "value": "Students;"
+      }
+    ]
+  },
+  {
+    "drillNumber": 1413,
+    "subcluster": "15.2 Partitioned Cumulative Ledger (Running Balance per Entity)",
+    "level": "Level 3 (Partitioned Running Ledger)",
+    "title": "Syntax #1413: Calculate running cumulative catalog value per author over time",
+    "table": "Books",
+    "scenario": "Calculate running cumulative catalog value per author over time.",
+    "businessObjective": "Calculate running cumulative catalog value per author over time.",
+    "schemaSnippet": "Books analytical schema",
+    "targetQuery": "SELECT title, author, published_date, price,\n  SUM(price) OVER (PARTITION BY author ORDER BY published_date ASC) AS author_running_catalog_val\nFROM Books;",
+    "syntaxBlueprint": "SELECT entity_id, date_col, amount,\n  SUM(amount) OVER (PARTITION BY entity_id ORDER BY date_col ASC) AS running_balance\nFROM table_name;",
+    "syntaxRule": "Combining SUM() with PARTITION BY and ORDER BY computes the ledger balance per customer or account, restarting from 0 for each new entity.",
+    "syntaxTrap": "The core financial ledger pattern. Never forget both PARTITION BY (who) AND ORDER BY (when).",
+    "eli5Story": "Analytical Window Functions on Books: Calculate running cumulative catalog value per author over time.",
+    "commonMistakes": "Omitting ORDER BY inside OVER() for running totals, confusing PARTITION BY with GROUP BY, or attempting to filter window functions in WHERE without a CTE wrapper.",
+    "learningOutcomes": "Mastered 15.2 Partitioned Cumulative Ledger (Running Balance per Entity) on Books.",
+    "challengeSlots": [
+      {
+        "type": "keyword",
+        "value": "SELECT"
+      },
+      {
+        "type": "column",
+        "value": "title,"
+      },
+      {
+        "type": "column",
+        "value": "author,"
+      },
+      {
+        "type": "column",
+        "value": "published_date,"
+      },
+      {
+        "type": "column",
+        "value": "price,"
+      },
+      {
+        "type": "column",
+        "value": "SUM(price)"
+      },
+      {
+        "type": "keyword",
+        "value": "OVER"
+      },
+      {
+        "type": "keyword",
+        "value": "(PARTITION"
+      },
+      {
+        "type": "keyword",
+        "value": "BY"
+      },
+      {
+        "type": "column",
+        "value": "author"
+      },
+      {
+        "type": "keyword",
+        "value": "ORDER"
+      },
+      {
+        "type": "keyword",
+        "value": "BY"
+      },
+      {
+        "type": "column",
+        "value": "published_date"
+      },
+      {
+        "type": "keyword",
+        "value": "ASC)"
+      },
+      {
+        "type": "keyword",
+        "value": "AS"
+      },
+      {
+        "type": "column",
+        "value": "author_running_catalog_val"
+      },
+      {
+        "type": "keyword",
+        "value": "FROM"
+      },
+      {
+        "type": "table",
+        "value": "Books;"
+      }
+    ]
+  },
+  {
+    "drillNumber": 1414,
+    "subcluster": "15.2 Partitioned Cumulative Ledger (Running Balance per Entity)",
+    "level": "Level 3 (Partitioned Running Ledger)",
+    "title": "Syntax #1414: Calculate running payroll accumulation within each corporate department",
+    "table": "Employees",
+    "scenario": "Calculate running payroll accumulation within each corporate department.",
+    "businessObjective": "Calculate running payroll accumulation within each corporate department.",
+    "schemaSnippet": "Employees analytical schema",
+    "targetQuery": "SELECT first_name, department, hire_date, salary,\n  SUM(salary) OVER (PARTITION BY department ORDER BY hire_date ASC) AS dept_running_payroll\nFROM Employees;",
+    "syntaxBlueprint": "SELECT entity_id, date_col, amount,\n  SUM(amount) OVER (PARTITION BY entity_id ORDER BY date_col ASC) AS running_balance\nFROM table_name;",
+    "syntaxRule": "Combining SUM() with PARTITION BY and ORDER BY computes the ledger balance per customer or account, restarting from 0 for each new entity.",
+    "syntaxTrap": "The core financial ledger pattern. Never forget both PARTITION BY (who) AND ORDER BY (when).",
+    "eli5Story": "Analytical Window Functions on Employees: Calculate running payroll accumulation within each corporate department.",
+    "commonMistakes": "Omitting ORDER BY inside OVER() for running totals, confusing PARTITION BY with GROUP BY, or attempting to filter window functions in WHERE without a CTE wrapper.",
+    "learningOutcomes": "Mastered 15.2 Partitioned Cumulative Ledger (Running Balance per Entity) on Employees.",
+    "challengeSlots": [
+      {
+        "type": "keyword",
+        "value": "SELECT"
+      },
+      {
+        "type": "column",
+        "value": "first_name,"
+      },
+      {
+        "type": "column",
+        "value": "department,"
+      },
+      {
+        "type": "column",
+        "value": "hire_date,"
+      },
+      {
+        "type": "column",
+        "value": "salary,"
+      },
+      {
+        "type": "column",
+        "value": "SUM(salary)"
+      },
+      {
+        "type": "keyword",
+        "value": "OVER"
+      },
+      {
+        "type": "keyword",
+        "value": "(PARTITION"
+      },
+      {
+        "type": "keyword",
+        "value": "BY"
+      },
+      {
+        "type": "column",
+        "value": "department"
+      },
+      {
+        "type": "keyword",
+        "value": "ORDER"
+      },
+      {
+        "type": "keyword",
+        "value": "BY"
+      },
+      {
+        "type": "column",
+        "value": "hire_date"
+      },
+      {
+        "type": "keyword",
+        "value": "ASC)"
+      },
+      {
+        "type": "keyword",
+        "value": "AS"
+      },
+      {
+        "type": "column",
+        "value": "dept_running_payroll"
+      },
+      {
+        "type": "keyword",
+        "value": "FROM"
+      },
+      {
+        "type": "table",
+        "value": "Employees;"
+      }
+    ]
+  },
+  {
+    "drillNumber": 1415,
+    "subcluster": "15.2 Partitioned Cumulative Ledger (Running Balance per Entity)",
+    "level": "Level 3 (Partitioned Running Ledger)",
+    "title": "Syntax #1415: Track running inventory stock within each grocery category",
+    "table": "GroceryItems",
+    "scenario": "Track running inventory stock within each grocery category.",
+    "businessObjective": "Track running inventory stock within each grocery category.",
+    "schemaSnippet": "GroceryItems analytical schema",
+    "targetQuery": "SELECT item_name, category, stock_qty,\n  SUM(stock_qty) OVER (PARTITION BY category ORDER BY item_id ASC) AS category_running_stock\nFROM GroceryItems;",
+    "syntaxBlueprint": "SELECT entity_id, date_col, amount,\n  SUM(amount) OVER (PARTITION BY entity_id ORDER BY date_col ASC) AS running_balance\nFROM table_name;",
+    "syntaxRule": "Combining SUM() with PARTITION BY and ORDER BY computes the ledger balance per customer or account, restarting from 0 for each new entity.",
+    "syntaxTrap": "The core financial ledger pattern. Never forget both PARTITION BY (who) AND ORDER BY (when).",
+    "eli5Story": "Analytical Window Functions on GroceryItems: Track running inventory stock within each grocery category.",
+    "commonMistakes": "Omitting ORDER BY inside OVER() for running totals, confusing PARTITION BY with GROUP BY, or attempting to filter window functions in WHERE without a CTE wrapper.",
+    "learningOutcomes": "Mastered 15.2 Partitioned Cumulative Ledger (Running Balance per Entity) on GroceryItems.",
+    "challengeSlots": [
+      {
+        "type": "keyword",
+        "value": "SELECT"
+      },
+      {
+        "type": "column",
+        "value": "item_name,"
+      },
+      {
+        "type": "column",
+        "value": "category,"
+      },
+      {
+        "type": "column",
+        "value": "stock_qty,"
+      },
+      {
+        "type": "column",
+        "value": "SUM(stock_qty)"
+      },
+      {
+        "type": "keyword",
+        "value": "OVER"
+      },
+      {
+        "type": "keyword",
+        "value": "(PARTITION"
+      },
+      {
+        "type": "keyword",
+        "value": "BY"
+      },
+      {
+        "type": "column",
+        "value": "category"
+      },
+      {
+        "type": "keyword",
+        "value": "ORDER"
+      },
+      {
+        "type": "keyword",
+        "value": "BY"
+      },
+      {
+        "type": "column",
+        "value": "item_id"
+      },
+      {
+        "type": "keyword",
+        "value": "ASC)"
+      },
+      {
+        "type": "keyword",
+        "value": "AS"
+      },
+      {
+        "type": "column",
+        "value": "category_running_stock"
+      },
+      {
+        "type": "keyword",
+        "value": "FROM"
+      },
+      {
+        "type": "table",
+        "value": "GroceryItems;"
+      }
+    ]
+  },
+  {
+    "drillNumber": 1416,
+    "subcluster": "15.2 Partitioned Cumulative Ledger (Running Balance per Entity)",
+    "level": "Level 3 (Partitioned Running Ledger)",
+    "title": "Syntax #1416: Calculate running discography runtime in seconds for each music artist",
+    "table": "MusicTracks",
+    "scenario": "Calculate running discography runtime in seconds for each music artist.",
+    "businessObjective": "Calculate running discography runtime in seconds for each music artist.",
+    "schemaSnippet": "MusicTracks analytical schema",
+    "targetQuery": "SELECT track_title, artist_name, duration_seconds,\n  SUM(duration_seconds) OVER (PARTITION BY artist_name ORDER BY release_date ASC) AS artist_running_runtime\nFROM MusicTracks;",
+    "syntaxBlueprint": "SELECT entity_id, date_col, amount,\n  SUM(amount) OVER (PARTITION BY entity_id ORDER BY date_col ASC) AS running_balance\nFROM table_name;",
+    "syntaxRule": "Combining SUM() with PARTITION BY and ORDER BY computes the ledger balance per customer or account, restarting from 0 for each new entity.",
+    "syntaxTrap": "The core financial ledger pattern. Never forget both PARTITION BY (who) AND ORDER BY (when).",
+    "eli5Story": "Analytical Window Functions on MusicTracks: Calculate running discography runtime in seconds for each music artist.",
+    "commonMistakes": "Omitting ORDER BY inside OVER() for running totals, confusing PARTITION BY with GROUP BY, or attempting to filter window functions in WHERE without a CTE wrapper.",
+    "learningOutcomes": "Mastered 15.2 Partitioned Cumulative Ledger (Running Balance per Entity) on MusicTracks.",
+    "challengeSlots": [
+      {
+        "type": "keyword",
+        "value": "SELECT"
+      },
+      {
+        "type": "column",
+        "value": "track_title,"
+      },
+      {
+        "type": "column",
+        "value": "artist_name,"
+      },
+      {
+        "type": "column",
+        "value": "duration_seconds,"
+      },
+      {
+        "type": "column",
+        "value": "SUM(duration_seconds)"
+      },
+      {
+        "type": "keyword",
+        "value": "OVER"
+      },
+      {
+        "type": "keyword",
+        "value": "(PARTITION"
+      },
+      {
+        "type": "keyword",
+        "value": "BY"
+      },
+      {
+        "type": "column",
+        "value": "artist_name"
+      },
+      {
+        "type": "keyword",
+        "value": "ORDER"
+      },
+      {
+        "type": "keyword",
+        "value": "BY"
+      },
+      {
+        "type": "column",
+        "value": "release_date"
+      },
+      {
+        "type": "keyword",
+        "value": "ASC)"
+      },
+      {
+        "type": "keyword",
+        "value": "AS"
+      },
+      {
+        "type": "column",
+        "value": "artist_running_runtime"
+      },
+      {
+        "type": "keyword",
+        "value": "FROM"
+      },
+      {
+        "type": "table",
+        "value": "MusicTracks;"
+      }
+    ]
+  },
+  {
+    "drillNumber": 1417,
+    "subcluster": "15.2 Partitioned Cumulative Ledger (Running Balance per Entity)",
+    "level": "Level 3 (Partitioned Running Ledger)",
+    "title": "Syntax #1417: Calculate running monthly revenue accumulation per membership plan",
+    "table": "GymMembers",
+    "scenario": "Calculate running monthly revenue accumulation per membership plan.",
+    "businessObjective": "Calculate running monthly revenue accumulation per membership plan.",
+    "schemaSnippet": "GymMembers analytical schema",
+    "targetQuery": "SELECT member_name, membership_plan, join_date, monthly_fee,\n  SUM(monthly_fee) OVER (PARTITION BY membership_plan ORDER BY join_date ASC) AS plan_running_revenue\nFROM GymMembers;",
+    "syntaxBlueprint": "SELECT entity_id, date_col, amount,\n  SUM(amount) OVER (PARTITION BY entity_id ORDER BY date_col ASC) AS running_balance\nFROM table_name;",
+    "syntaxRule": "Combining SUM() with PARTITION BY and ORDER BY computes the ledger balance per customer or account, restarting from 0 for each new entity.",
+    "syntaxTrap": "The core financial ledger pattern. Never forget both PARTITION BY (who) AND ORDER BY (when).",
+    "eli5Story": "Analytical Window Functions on GymMembers: Calculate running monthly revenue accumulation per membership plan.",
+    "commonMistakes": "Omitting ORDER BY inside OVER() for running totals, confusing PARTITION BY with GROUP BY, or attempting to filter window functions in WHERE without a CTE wrapper.",
+    "learningOutcomes": "Mastered 15.2 Partitioned Cumulative Ledger (Running Balance per Entity) on GymMembers.",
+    "challengeSlots": [
+      {
+        "type": "keyword",
+        "value": "SELECT"
+      },
+      {
+        "type": "column",
+        "value": "member_name,"
+      },
+      {
+        "type": "column",
+        "value": "membership_plan,"
+      },
+      {
+        "type": "column",
+        "value": "join_date,"
+      },
+      {
+        "type": "column",
+        "value": "monthly_fee,"
+      },
+      {
+        "type": "column",
+        "value": "SUM(monthly_fee)"
+      },
+      {
+        "type": "keyword",
+        "value": "OVER"
+      },
+      {
+        "type": "keyword",
+        "value": "(PARTITION"
+      },
+      {
+        "type": "keyword",
+        "value": "BY"
+      },
+      {
+        "type": "column",
+        "value": "membership_plan"
+      },
+      {
+        "type": "keyword",
+        "value": "ORDER"
+      },
+      {
+        "type": "keyword",
+        "value": "BY"
+      },
+      {
+        "type": "column",
+        "value": "join_date"
+      },
+      {
+        "type": "keyword",
+        "value": "ASC)"
+      },
+      {
+        "type": "keyword",
+        "value": "AS"
+      },
+      {
+        "type": "column",
+        "value": "plan_running_revenue"
+      },
+      {
+        "type": "keyword",
+        "value": "FROM"
+      },
+      {
+        "type": "table",
+        "value": "GymMembers;"
+      }
+    ]
+  },
+  {
+    "drillNumber": 1418,
+    "subcluster": "15.2 Partitioned Cumulative Ledger (Running Balance per Entity)",
+    "level": "Level 3 (Partitioned Running Ledger)",
+    "title": "Syntax #1418: Track cumulative review count per critic over time",
+    "table": "MovieReviews",
+    "scenario": "Track cumulative review count per critic over time.",
+    "businessObjective": "Track cumulative review count per critic over time.",
+    "schemaSnippet": "MovieReviews analytical schema",
+    "targetQuery": "SELECT movie_title, reviewer_name, review_date,\n  COUNT(*) OVER (PARTITION BY reviewer_name ORDER BY review_date ASC) AS reviewer_cumulative_count\nFROM MovieReviews;",
+    "syntaxBlueprint": "SELECT entity_id, date_col, amount,\n  SUM(amount) OVER (PARTITION BY entity_id ORDER BY date_col ASC) AS running_balance\nFROM table_name;",
+    "syntaxRule": "Combining SUM() with PARTITION BY and ORDER BY computes the ledger balance per customer or account, restarting from 0 for each new entity.",
+    "syntaxTrap": "The core financial ledger pattern. Never forget both PARTITION BY (who) AND ORDER BY (when).",
+    "eli5Story": "Analytical Window Functions on MovieReviews: Track cumulative review count per critic over time.",
+    "commonMistakes": "Omitting ORDER BY inside OVER() for running totals, confusing PARTITION BY with GROUP BY, or attempting to filter window functions in WHERE without a CTE wrapper.",
+    "learningOutcomes": "Mastered 15.2 Partitioned Cumulative Ledger (Running Balance per Entity) on MovieReviews.",
+    "challengeSlots": [
+      {
+        "type": "keyword",
+        "value": "SELECT"
+      },
+      {
+        "type": "column",
+        "value": "movie_title,"
+      },
+      {
+        "type": "column",
+        "value": "reviewer_name,"
+      },
+      {
+        "type": "column",
+        "value": "review_date,"
+      },
+      {
+        "type": "column",
+        "value": "COUNT(*)"
+      },
+      {
+        "type": "keyword",
+        "value": "OVER"
+      },
+      {
+        "type": "keyword",
+        "value": "(PARTITION"
+      },
+      {
+        "type": "keyword",
+        "value": "BY"
+      },
+      {
+        "type": "column",
+        "value": "reviewer_name"
+      },
+      {
+        "type": "keyword",
+        "value": "ORDER"
+      },
+      {
+        "type": "keyword",
+        "value": "BY"
+      },
+      {
+        "type": "column",
+        "value": "review_date"
+      },
+      {
+        "type": "keyword",
+        "value": "ASC)"
+      },
+      {
+        "type": "keyword",
+        "value": "AS"
+      },
+      {
+        "type": "column",
+        "value": "reviewer_cumulative_count"
+      },
+      {
+        "type": "keyword",
+        "value": "FROM"
+      },
+      {
+        "type": "table",
+        "value": "MovieReviews;"
+      }
+    ]
+  },
+  {
+    "drillNumber": 1419,
+    "subcluster": "15.2 Partitioned Cumulative Ledger (Running Balance per Entity)",
+    "level": "Level 3 (Partitioned Running Ledger)",
+    "title": "Syntax #1419: Calculate cumulative flight miles departed per airport hub",
+    "table": "FlightSchedule",
+    "scenario": "Calculate cumulative flight miles departed per airport hub.",
+    "businessObjective": "Calculate cumulative flight miles departed per airport hub.",
+    "schemaSnippet": "FlightSchedule analytical schema",
+    "targetQuery": "SELECT flight_id, origin_airport, departure_time, distance_miles,\n  SUM(distance_miles) OVER (PARTITION BY origin_airport ORDER BY departure_time ASC) AS hub_running_miles\nFROM FlightSchedule;",
+    "syntaxBlueprint": "SELECT entity_id, date_col, amount,\n  SUM(amount) OVER (PARTITION BY entity_id ORDER BY date_col ASC) AS running_balance\nFROM table_name;",
+    "syntaxRule": "Combining SUM() with PARTITION BY and ORDER BY computes the ledger balance per customer or account, restarting from 0 for each new entity.",
+    "syntaxTrap": "The core financial ledger pattern. Never forget both PARTITION BY (who) AND ORDER BY (when).",
+    "eli5Story": "Analytical Window Functions on FlightSchedule: Calculate cumulative flight miles departed per airport hub.",
+    "commonMistakes": "Omitting ORDER BY inside OVER() for running totals, confusing PARTITION BY with GROUP BY, or attempting to filter window functions in WHERE without a CTE wrapper.",
+    "learningOutcomes": "Mastered 15.2 Partitioned Cumulative Ledger (Running Balance per Entity) on FlightSchedule.",
+    "challengeSlots": [
+      {
+        "type": "keyword",
+        "value": "SELECT"
+      },
+      {
+        "type": "column",
+        "value": "flight_id,"
+      },
+      {
+        "type": "column",
+        "value": "origin_airport,"
+      },
+      {
+        "type": "column",
+        "value": "departure_time,"
+      },
+      {
+        "type": "column",
+        "value": "distance_miles,"
+      },
+      {
+        "type": "column",
+        "value": "SUM(distance_miles)"
+      },
+      {
+        "type": "keyword",
+        "value": "OVER"
+      },
+      {
+        "type": "keyword",
+        "value": "(PARTITION"
+      },
+      {
+        "type": "keyword",
+        "value": "BY"
+      },
+      {
+        "type": "column",
+        "value": "origin_airport"
+      },
+      {
+        "type": "keyword",
+        "value": "ORDER"
+      },
+      {
+        "type": "keyword",
+        "value": "BY"
+      },
+      {
+        "type": "column",
+        "value": "departure_time"
+      },
+      {
+        "type": "keyword",
+        "value": "ASC)"
+      },
+      {
+        "type": "keyword",
+        "value": "AS"
+      },
+      {
+        "type": "column",
+        "value": "hub_running_miles"
+      },
+      {
+        "type": "keyword",
+        "value": "FROM"
+      },
+      {
+        "type": "table",
+        "value": "FlightSchedule;"
+      }
+    ]
+  },
+  {
+    "drillNumber": 1420,
+    "subcluster": "15.2 Partitioned Cumulative Ledger (Running Balance per Entity)",
+    "level": "Level 3 (Partitioned Running Ledger)",
+    "title": "Syntax #1420: Track cumulative visit count per individual pet patient over time",
+    "table": "PetClinic",
+    "scenario": "Track cumulative visit count per individual pet patient over time.",
+    "businessObjective": "Track cumulative visit count per individual pet patient over time.",
+    "schemaSnippet": "PetClinic analytical schema",
+    "targetQuery": "SELECT pet_name, visit_date,\n  COUNT(*) OVER (PARTITION BY pet_name ORDER BY visit_date ASC) AS pet_cumulative_visits\nFROM PetClinic;",
+    "syntaxBlueprint": "SELECT entity_id, date_col, amount,\n  SUM(amount) OVER (PARTITION BY entity_id ORDER BY date_col ASC) AS running_balance\nFROM table_name;",
+    "syntaxRule": "Combining SUM() with PARTITION BY and ORDER BY computes the ledger balance per customer or account, restarting from 0 for each new entity.",
+    "syntaxTrap": "The core financial ledger pattern. Never forget both PARTITION BY (who) AND ORDER BY (when).",
+    "eli5Story": "Analytical Window Functions on PetClinic: Track cumulative visit count per individual pet patient over time.",
+    "commonMistakes": "Omitting ORDER BY inside OVER() for running totals, confusing PARTITION BY with GROUP BY, or attempting to filter window functions in WHERE without a CTE wrapper.",
+    "learningOutcomes": "Mastered 15.2 Partitioned Cumulative Ledger (Running Balance per Entity) on PetClinic.",
+    "challengeSlots": [
+      {
+        "type": "keyword",
+        "value": "SELECT"
+      },
+      {
+        "type": "column",
+        "value": "pet_name,"
+      },
+      {
+        "type": "column",
+        "value": "visit_date,"
+      },
+      {
+        "type": "column",
+        "value": "COUNT(*)"
+      },
+      {
+        "type": "keyword",
+        "value": "OVER"
+      },
+      {
+        "type": "keyword",
+        "value": "(PARTITION"
+      },
+      {
+        "type": "keyword",
+        "value": "BY"
+      },
+      {
+        "type": "column",
+        "value": "pet_name"
+      },
+      {
+        "type": "keyword",
+        "value": "ORDER"
+      },
+      {
+        "type": "keyword",
+        "value": "BY"
+      },
+      {
+        "type": "column",
+        "value": "visit_date"
+      },
+      {
+        "type": "keyword",
+        "value": "ASC)"
+      },
+      {
+        "type": "keyword",
+        "value": "AS"
+      },
+      {
+        "type": "column",
+        "value": "pet_cumulative_visits"
+      },
+      {
+        "type": "keyword",
+        "value": "FROM"
+      },
+      {
+        "type": "table",
+        "value": "PetClinic;"
+      }
+    ]
+  },
+  {
+    "drillNumber": 1421,
+    "subcluster": "15.3 Running Averages (Expanding Mean)",
+    "level": "Level 2 (Running Average)",
+    "title": "Syntax #1421: Calculate the progressive running average order value (AOV) over time",
+    "table": "Orders",
+    "scenario": "Calculate the progressive running average order value (AOV) over time.",
+    "businessObjective": "Calculate the progressive running average order value (AOV) over time.",
+    "schemaSnippet": "Orders analytical schema",
+    "targetQuery": "SELECT order_id, order_date, total_amount,\n  ROUND(AVG(total_amount) OVER (ORDER BY order_date ASC), 2) AS running_avg_order_value\nFROM Orders;",
+    "syntaxBlueprint": "SELECT col1, date_col, metric,\n  ROUND(AVG(metric) OVER (ORDER BY date_col ASC), 2) AS running_avg\nFROM table_name;",
+    "syntaxRule": "AVG() with an expanding window calculates the progressive historical average from the first record up to the current row.",
+    "syntaxTrap": "Always round running averages to 2 decimal places to avoid floating-point noise.",
+    "eli5Story": "Analytical Window Functions on Orders: Calculate the progressive running average order value (AOV) over time.",
+    "commonMistakes": "Omitting ORDER BY inside OVER() for running totals, confusing PARTITION BY with GROUP BY, or attempting to filter window functions in WHERE without a CTE wrapper.",
+    "learningOutcomes": "Mastered 15.3 Running Averages (Expanding Mean) on Orders.",
+    "challengeSlots": [
+      {
+        "type": "keyword",
+        "value": "SELECT"
+      },
+      {
+        "type": "column",
+        "value": "order_id,"
+      },
+      {
+        "type": "column",
+        "value": "order_date,"
+      },
+      {
+        "type": "column",
+        "value": "total_amount,"
+      },
+      {
+        "type": "column",
+        "value": "ROUND(AVG(total_amount)"
+      },
+      {
+        "type": "keyword",
+        "value": "OVER"
+      },
+      {
+        "type": "keyword",
+        "value": "(ORDER"
+      },
+      {
+        "type": "keyword",
+        "value": "BY"
+      },
+      {
+        "type": "column",
+        "value": "order_date"
+      },
+      {
+        "type": "keyword",
+        "value": "ASC),"
+      },
+      {
+        "type": "column",
+        "value": "2)"
+      },
+      {
+        "type": "keyword",
+        "value": "AS"
+      },
+      {
+        "type": "column",
+        "value": "running_avg_order_value"
+      },
+      {
+        "type": "keyword",
+        "value": "FROM"
+      },
+      {
+        "type": "table",
+        "value": "Orders;"
+      }
+    ]
+  },
+  {
+    "drillNumber": 1422,
+    "subcluster": "15.3 Running Averages (Expanding Mean)",
+    "level": "Level 2 (Running Average)",
+    "title": "Syntax #1422: Track progressive cumulative GPA average across enrollment years",
+    "table": "Students",
+    "scenario": "Track progressive cumulative GPA average across enrollment years.",
+    "businessObjective": "Track progressive cumulative GPA average across enrollment years.",
+    "schemaSnippet": "Students analytical schema",
+    "targetQuery": "SELECT full_name, enrolled_year, gpa,\n  ROUND(AVG(gpa) OVER (ORDER BY enrolled_year ASC), 2) AS progressive_campus_gpa\nFROM Students;",
+    "syntaxBlueprint": "SELECT col1, date_col, metric,\n  ROUND(AVG(metric) OVER (ORDER BY date_col ASC), 2) AS running_avg\nFROM table_name;",
+    "syntaxRule": "AVG() with an expanding window calculates the progressive historical average from the first record up to the current row.",
+    "syntaxTrap": "Always round running averages to 2 decimal places to avoid floating-point noise.",
+    "eli5Story": "Analytical Window Functions on Students: Track progressive cumulative GPA average across enrollment years.",
+    "commonMistakes": "Omitting ORDER BY inside OVER() for running totals, confusing PARTITION BY with GROUP BY, or attempting to filter window functions in WHERE without a CTE wrapper.",
+    "learningOutcomes": "Mastered 15.3 Running Averages (Expanding Mean) on Students.",
+    "challengeSlots": [
+      {
+        "type": "keyword",
+        "value": "SELECT"
+      },
+      {
+        "type": "column",
+        "value": "full_name,"
+      },
+      {
+        "type": "column",
+        "value": "enrolled_year,"
+      },
+      {
+        "type": "column",
+        "value": "gpa,"
+      },
+      {
+        "type": "column",
+        "value": "ROUND(AVG(gpa)"
+      },
+      {
+        "type": "keyword",
+        "value": "OVER"
+      },
+      {
+        "type": "keyword",
+        "value": "(ORDER"
+      },
+      {
+        "type": "keyword",
+        "value": "BY"
+      },
+      {
+        "type": "column",
+        "value": "enrolled_year"
+      },
+      {
+        "type": "keyword",
+        "value": "ASC),"
+      },
+      {
+        "type": "column",
+        "value": "2)"
+      },
+      {
+        "type": "keyword",
+        "value": "AS"
+      },
+      {
+        "type": "column",
+        "value": "progressive_campus_gpa"
+      },
+      {
+        "type": "keyword",
+        "value": "FROM"
+      },
+      {
+        "type": "table",
+        "value": "Students;"
+      }
+    ]
+  },
+  {
+    "drillNumber": 1423,
+    "subcluster": "15.3 Running Averages (Expanding Mean)",
+    "level": "Level 2 (Running Average)",
+    "title": "Syntax #1423: Calculate the progressive running average price of published books",
+    "table": "Books",
+    "scenario": "Calculate the progressive running average price of published books.",
+    "businessObjective": "Calculate the progressive running average price of published books.",
+    "schemaSnippet": "Books analytical schema",
+    "targetQuery": "SELECT title, published_date, price,\n  ROUND(AVG(price) OVER (ORDER BY published_date ASC), 2) AS running_avg_book_price\nFROM Books;",
+    "syntaxBlueprint": "SELECT col1, date_col, metric,\n  ROUND(AVG(metric) OVER (ORDER BY date_col ASC), 2) AS running_avg\nFROM table_name;",
+    "syntaxRule": "AVG() with an expanding window calculates the progressive historical average from the first record up to the current row.",
+    "syntaxTrap": "Always round running averages to 2 decimal places to avoid floating-point noise.",
+    "eli5Story": "Analytical Window Functions on Books: Calculate the progressive running average price of published books.",
+    "commonMistakes": "Omitting ORDER BY inside OVER() for running totals, confusing PARTITION BY with GROUP BY, or attempting to filter window functions in WHERE without a CTE wrapper.",
+    "learningOutcomes": "Mastered 15.3 Running Averages (Expanding Mean) on Books.",
+    "challengeSlots": [
+      {
+        "type": "keyword",
+        "value": "SELECT"
+      },
+      {
+        "type": "column",
+        "value": "title,"
+      },
+      {
+        "type": "column",
+        "value": "published_date,"
+      },
+      {
+        "type": "column",
+        "value": "price,"
+      },
+      {
+        "type": "column",
+        "value": "ROUND(AVG(price)"
+      },
+      {
+        "type": "keyword",
+        "value": "OVER"
+      },
+      {
+        "type": "keyword",
+        "value": "(ORDER"
+      },
+      {
+        "type": "keyword",
+        "value": "BY"
+      },
+      {
+        "type": "column",
+        "value": "published_date"
+      },
+      {
+        "type": "keyword",
+        "value": "ASC),"
+      },
+      {
+        "type": "column",
+        "value": "2)"
+      },
+      {
+        "type": "keyword",
+        "value": "AS"
+      },
+      {
+        "type": "column",
+        "value": "running_avg_book_price"
+      },
+      {
+        "type": "keyword",
+        "value": "FROM"
+      },
+      {
+        "type": "table",
+        "value": "Books;"
+      }
+    ]
+  },
+  {
+    "drillNumber": 1424,
+    "subcluster": "15.3 Running Averages (Expanding Mean)",
+    "level": "Level 2 (Running Average)",
+    "title": "Syntax #1424: Track progressive average salary of hired employees over time",
+    "table": "Employees",
+    "scenario": "Track progressive average salary of hired employees over time.",
+    "businessObjective": "Track progressive average salary of hired employees over time.",
+    "schemaSnippet": "Employees analytical schema",
+    "targetQuery": "SELECT first_name, hire_date, salary,\n  ROUND(AVG(salary) OVER (ORDER BY hire_date ASC), 2) AS progressive_avg_hiring_sal\nFROM Employees;",
+    "syntaxBlueprint": "SELECT col1, date_col, metric,\n  ROUND(AVG(metric) OVER (ORDER BY date_col ASC), 2) AS running_avg\nFROM table_name;",
+    "syntaxRule": "AVG() with an expanding window calculates the progressive historical average from the first record up to the current row.",
+    "syntaxTrap": "Always round running averages to 2 decimal places to avoid floating-point noise.",
+    "eli5Story": "Analytical Window Functions on Employees: Track progressive average salary of hired employees over time.",
+    "commonMistakes": "Omitting ORDER BY inside OVER() for running totals, confusing PARTITION BY with GROUP BY, or attempting to filter window functions in WHERE without a CTE wrapper.",
+    "learningOutcomes": "Mastered 15.3 Running Averages (Expanding Mean) on Employees.",
+    "challengeSlots": [
+      {
+        "type": "keyword",
+        "value": "SELECT"
+      },
+      {
+        "type": "column",
+        "value": "first_name,"
+      },
+      {
+        "type": "column",
+        "value": "hire_date,"
+      },
+      {
+        "type": "column",
+        "value": "salary,"
+      },
+      {
+        "type": "column",
+        "value": "ROUND(AVG(salary)"
+      },
+      {
+        "type": "keyword",
+        "value": "OVER"
+      },
+      {
+        "type": "keyword",
+        "value": "(ORDER"
+      },
+      {
+        "type": "keyword",
+        "value": "BY"
+      },
+      {
+        "type": "column",
+        "value": "hire_date"
+      },
+      {
+        "type": "keyword",
+        "value": "ASC),"
+      },
+      {
+        "type": "column",
+        "value": "2)"
+      },
+      {
+        "type": "keyword",
+        "value": "AS"
+      },
+      {
+        "type": "column",
+        "value": "progressive_avg_hiring_sal"
+      },
+      {
+        "type": "keyword",
+        "value": "FROM"
+      },
+      {
+        "type": "table",
+        "value": "Employees;"
+      }
+    ]
+  },
+  {
+    "drillNumber": 1425,
+    "subcluster": "15.3 Running Averages (Expanding Mean)",
+    "level": "Level 2 (Running Average)",
+    "title": "Syntax #1425: Compute the progressive running average unit price of grocery inventory",
+    "table": "GroceryItems",
+    "scenario": "Compute the progressive running average unit price of grocery inventory.",
+    "businessObjective": "Compute the progressive running average unit price of grocery inventory.",
+    "schemaSnippet": "GroceryItems analytical schema",
+    "targetQuery": "SELECT item_name, unit_price,\n  ROUND(AVG(unit_price) OVER (ORDER BY item_id ASC), 2) AS running_avg_item_price\nFROM GroceryItems;",
+    "syntaxBlueprint": "SELECT col1, date_col, metric,\n  ROUND(AVG(metric) OVER (ORDER BY date_col ASC), 2) AS running_avg\nFROM table_name;",
+    "syntaxRule": "AVG() with an expanding window calculates the progressive historical average from the first record up to the current row.",
+    "syntaxTrap": "Always round running averages to 2 decimal places to avoid floating-point noise.",
+    "eli5Story": "Analytical Window Functions on GroceryItems: Compute the progressive running average unit price of grocery inventory.",
+    "commonMistakes": "Omitting ORDER BY inside OVER() for running totals, confusing PARTITION BY with GROUP BY, or attempting to filter window functions in WHERE without a CTE wrapper.",
+    "learningOutcomes": "Mastered 15.3 Running Averages (Expanding Mean) on GroceryItems.",
+    "challengeSlots": [
+      {
+        "type": "keyword",
+        "value": "SELECT"
+      },
+      {
+        "type": "column",
+        "value": "item_name,"
+      },
+      {
+        "type": "column",
+        "value": "unit_price,"
+      },
+      {
+        "type": "column",
+        "value": "ROUND(AVG(unit_price)"
+      },
+      {
+        "type": "keyword",
+        "value": "OVER"
+      },
+      {
+        "type": "keyword",
+        "value": "(ORDER"
+      },
+      {
+        "type": "keyword",
+        "value": "BY"
+      },
+      {
+        "type": "column",
+        "value": "item_id"
+      },
+      {
+        "type": "keyword",
+        "value": "ASC),"
+      },
+      {
+        "type": "column",
+        "value": "2)"
+      },
+      {
+        "type": "keyword",
+        "value": "AS"
+      },
+      {
+        "type": "column",
+        "value": "running_avg_item_price"
+      },
+      {
+        "type": "keyword",
+        "value": "FROM"
+      },
+      {
+        "type": "table",
+        "value": "GroceryItems;"
+      }
+    ]
+  },
+  {
+    "drillNumber": 1426,
+    "subcluster": "15.3 Running Averages (Expanding Mean)",
+    "level": "Level 2 (Running Average)",
+    "title": "Syntax #1426: Track progressive running average track length in seconds",
+    "table": "MusicTracks",
+    "scenario": "Track progressive running average track length in seconds.",
+    "businessObjective": "Track progressive running average track length in seconds.",
+    "schemaSnippet": "MusicTracks analytical schema",
+    "targetQuery": "SELECT track_title, release_date, duration_seconds,\n  ROUND(AVG(duration_seconds) OVER (ORDER BY release_date ASC), 2) AS running_avg_song_length\nFROM MusicTracks;",
+    "syntaxBlueprint": "SELECT col1, date_col, metric,\n  ROUND(AVG(metric) OVER (ORDER BY date_col ASC), 2) AS running_avg\nFROM table_name;",
+    "syntaxRule": "AVG() with an expanding window calculates the progressive historical average from the first record up to the current row.",
+    "syntaxTrap": "Always round running averages to 2 decimal places to avoid floating-point noise.",
+    "eli5Story": "Analytical Window Functions on MusicTracks: Track progressive running average track length in seconds.",
+    "commonMistakes": "Omitting ORDER BY inside OVER() for running totals, confusing PARTITION BY with GROUP BY, or attempting to filter window functions in WHERE without a CTE wrapper.",
+    "learningOutcomes": "Mastered 15.3 Running Averages (Expanding Mean) on MusicTracks.",
+    "challengeSlots": [
+      {
+        "type": "keyword",
+        "value": "SELECT"
+      },
+      {
+        "type": "column",
+        "value": "track_title,"
+      },
+      {
+        "type": "column",
+        "value": "release_date,"
+      },
+      {
+        "type": "column",
+        "value": "duration_seconds,"
+      },
+      {
+        "type": "column",
+        "value": "ROUND(AVG(duration_seconds)"
+      },
+      {
+        "type": "keyword",
+        "value": "OVER"
+      },
+      {
+        "type": "keyword",
+        "value": "(ORDER"
+      },
+      {
+        "type": "keyword",
+        "value": "BY"
+      },
+      {
+        "type": "column",
+        "value": "release_date"
+      },
+      {
+        "type": "keyword",
+        "value": "ASC),"
+      },
+      {
+        "type": "column",
+        "value": "2)"
+      },
+      {
+        "type": "keyword",
+        "value": "AS"
+      },
+      {
+        "type": "column",
+        "value": "running_avg_song_length"
+      },
+      {
+        "type": "keyword",
+        "value": "FROM"
+      },
+      {
+        "type": "table",
+        "value": "MusicTracks;"
+      }
+    ]
+  },
+  {
+    "drillNumber": 1427,
+    "subcluster": "15.3 Running Averages (Expanding Mean)",
+    "level": "Level 2 (Running Average)",
+    "title": "Syntax #1427: Calculate running average membership dues as new members join",
+    "table": "GymMembers",
+    "scenario": "Calculate running average membership dues as new members join.",
+    "businessObjective": "Calculate running average membership dues as new members join.",
+    "schemaSnippet": "GymMembers analytical schema",
+    "targetQuery": "SELECT member_name, join_date, monthly_fee,\n  ROUND(AVG(monthly_fee) OVER (ORDER BY join_date ASC), 2) AS running_avg_dues\nFROM GymMembers;",
+    "syntaxBlueprint": "SELECT col1, date_col, metric,\n  ROUND(AVG(metric) OVER (ORDER BY date_col ASC), 2) AS running_avg\nFROM table_name;",
+    "syntaxRule": "AVG() with an expanding window calculates the progressive historical average from the first record up to the current row.",
+    "syntaxTrap": "Always round running averages to 2 decimal places to avoid floating-point noise.",
+    "eli5Story": "Analytical Window Functions on GymMembers: Calculate running average membership dues as new members join.",
+    "commonMistakes": "Omitting ORDER BY inside OVER() for running totals, confusing PARTITION BY with GROUP BY, or attempting to filter window functions in WHERE without a CTE wrapper.",
+    "learningOutcomes": "Mastered 15.3 Running Averages (Expanding Mean) on GymMembers.",
+    "challengeSlots": [
+      {
+        "type": "keyword",
+        "value": "SELECT"
+      },
+      {
+        "type": "column",
+        "value": "member_name,"
+      },
+      {
+        "type": "column",
+        "value": "join_date,"
+      },
+      {
+        "type": "column",
+        "value": "monthly_fee,"
+      },
+      {
+        "type": "column",
+        "value": "ROUND(AVG(monthly_fee)"
+      },
+      {
+        "type": "keyword",
+        "value": "OVER"
+      },
+      {
+        "type": "keyword",
+        "value": "(ORDER"
+      },
+      {
+        "type": "keyword",
+        "value": "BY"
+      },
+      {
+        "type": "column",
+        "value": "join_date"
+      },
+      {
+        "type": "keyword",
+        "value": "ASC),"
+      },
+      {
+        "type": "column",
+        "value": "2)"
+      },
+      {
+        "type": "keyword",
+        "value": "AS"
+      },
+      {
+        "type": "column",
+        "value": "running_avg_dues"
+      },
+      {
+        "type": "keyword",
+        "value": "FROM"
+      },
+      {
+        "type": "table",
+        "value": "GymMembers;"
+      }
+    ]
+  },
+  {
+    "drillNumber": 1428,
+    "subcluster": "15.3 Running Averages (Expanding Mean)",
+    "level": "Level 2 (Running Average)",
+    "title": "Syntax #1428: Track progressive running average star rating over time",
+    "table": "MovieReviews",
+    "scenario": "Track progressive running average star rating over time.",
+    "businessObjective": "Track progressive running average star rating over time.",
+    "schemaSnippet": "MovieReviews analytical schema",
+    "targetQuery": "SELECT movie_title, review_date, star_rating,\n  ROUND(AVG(star_rating) OVER (ORDER BY review_date ASC), 2) AS running_avg_stars\nFROM MovieReviews;",
+    "syntaxBlueprint": "SELECT col1, date_col, metric,\n  ROUND(AVG(metric) OVER (ORDER BY date_col ASC), 2) AS running_avg\nFROM table_name;",
+    "syntaxRule": "AVG() with an expanding window calculates the progressive historical average from the first record up to the current row.",
+    "syntaxTrap": "Always round running averages to 2 decimal places to avoid floating-point noise.",
+    "eli5Story": "Analytical Window Functions on MovieReviews: Track progressive running average star rating over time.",
+    "commonMistakes": "Omitting ORDER BY inside OVER() for running totals, confusing PARTITION BY with GROUP BY, or attempting to filter window functions in WHERE without a CTE wrapper.",
+    "learningOutcomes": "Mastered 15.3 Running Averages (Expanding Mean) on MovieReviews.",
+    "challengeSlots": [
+      {
+        "type": "keyword",
+        "value": "SELECT"
+      },
+      {
+        "type": "column",
+        "value": "movie_title,"
+      },
+      {
+        "type": "column",
+        "value": "review_date,"
+      },
+      {
+        "type": "column",
+        "value": "star_rating,"
+      },
+      {
+        "type": "column",
+        "value": "ROUND(AVG(star_rating)"
+      },
+      {
+        "type": "keyword",
+        "value": "OVER"
+      },
+      {
+        "type": "keyword",
+        "value": "(ORDER"
+      },
+      {
+        "type": "keyword",
+        "value": "BY"
+      },
+      {
+        "type": "column",
+        "value": "review_date"
+      },
+      {
+        "type": "keyword",
+        "value": "ASC),"
+      },
+      {
+        "type": "column",
+        "value": "2)"
+      },
+      {
+        "type": "keyword",
+        "value": "AS"
+      },
+      {
+        "type": "column",
+        "value": "running_avg_stars"
+      },
+      {
+        "type": "keyword",
+        "value": "FROM"
+      },
+      {
+        "type": "table",
+        "value": "MovieReviews;"
+      }
+    ]
+  },
+  {
+    "drillNumber": 1429,
+    "subcluster": "15.3 Running Averages (Expanding Mean)",
+    "level": "Level 2 (Running Average)",
+    "title": "Syntax #1429: Calculate progressive average route distance flown over scheduled departures",
+    "table": "FlightSchedule",
+    "scenario": "Calculate progressive average route distance flown over scheduled departures.",
+    "businessObjective": "Calculate progressive average route distance flown over scheduled departures.",
+    "schemaSnippet": "FlightSchedule analytical schema",
+    "targetQuery": "SELECT flight_id, departure_time, distance_miles,\n  ROUND(AVG(distance_miles) OVER (ORDER BY departure_time ASC), 2) AS running_avg_flight_dist\nFROM FlightSchedule;",
+    "syntaxBlueprint": "SELECT col1, date_col, metric,\n  ROUND(AVG(metric) OVER (ORDER BY date_col ASC), 2) AS running_avg\nFROM table_name;",
+    "syntaxRule": "AVG() with an expanding window calculates the progressive historical average from the first record up to the current row.",
+    "syntaxTrap": "Always round running averages to 2 decimal places to avoid floating-point noise.",
+    "eli5Story": "Analytical Window Functions on FlightSchedule: Calculate progressive average route distance flown over scheduled departures.",
+    "commonMistakes": "Omitting ORDER BY inside OVER() for running totals, confusing PARTITION BY with GROUP BY, or attempting to filter window functions in WHERE without a CTE wrapper.",
+    "learningOutcomes": "Mastered 15.3 Running Averages (Expanding Mean) on FlightSchedule.",
+    "challengeSlots": [
+      {
+        "type": "keyword",
+        "value": "SELECT"
+      },
+      {
+        "type": "column",
+        "value": "flight_id,"
+      },
+      {
+        "type": "column",
+        "value": "departure_time,"
+      },
+      {
+        "type": "column",
+        "value": "distance_miles,"
+      },
+      {
+        "type": "column",
+        "value": "ROUND(AVG(distance_miles)"
+      },
+      {
+        "type": "keyword",
+        "value": "OVER"
+      },
+      {
+        "type": "keyword",
+        "value": "(ORDER"
+      },
+      {
+        "type": "keyword",
+        "value": "BY"
+      },
+      {
+        "type": "column",
+        "value": "departure_time"
+      },
+      {
+        "type": "keyword",
+        "value": "ASC),"
+      },
+      {
+        "type": "column",
+        "value": "2)"
+      },
+      {
+        "type": "keyword",
+        "value": "AS"
+      },
+      {
+        "type": "column",
+        "value": "running_avg_flight_dist"
+      },
+      {
+        "type": "keyword",
+        "value": "FROM"
+      },
+      {
+        "type": "table",
+        "value": "FlightSchedule;"
+      }
+    ]
+  },
+  {
+    "drillNumber": 1430,
+    "subcluster": "15.3 Running Averages (Expanding Mean)",
+    "level": "Level 2 (Running Average)",
+    "title": "Syntax #1430: Compute progressive running average weight of clinic animal patients",
+    "table": "PetClinic",
+    "scenario": "Compute progressive running average weight of clinic animal patients.",
+    "businessObjective": "Compute progressive running average weight of clinic animal patients.",
+    "schemaSnippet": "PetClinic analytical schema",
+    "targetQuery": "SELECT pet_name, visit_date, weight_kg,\n  ROUND(AVG(weight_kg) OVER (ORDER BY visit_date ASC), 2) AS running_avg_patient_weight\nFROM PetClinic;",
+    "syntaxBlueprint": "SELECT col1, date_col, metric,\n  ROUND(AVG(metric) OVER (ORDER BY date_col ASC), 2) AS running_avg\nFROM table_name;",
+    "syntaxRule": "AVG() with an expanding window calculates the progressive historical average from the first record up to the current row.",
+    "syntaxTrap": "Always round running averages to 2 decimal places to avoid floating-point noise.",
+    "eli5Story": "Analytical Window Functions on PetClinic: Compute progressive running average weight of clinic animal patients.",
+    "commonMistakes": "Omitting ORDER BY inside OVER() for running totals, confusing PARTITION BY with GROUP BY, or attempting to filter window functions in WHERE without a CTE wrapper.",
+    "learningOutcomes": "Mastered 15.3 Running Averages (Expanding Mean) on PetClinic.",
+    "challengeSlots": [
+      {
+        "type": "keyword",
+        "value": "SELECT"
+      },
+      {
+        "type": "column",
+        "value": "pet_name,"
+      },
+      {
+        "type": "column",
+        "value": "visit_date,"
+      },
+      {
+        "type": "column",
+        "value": "weight_kg,"
+      },
+      {
+        "type": "column",
+        "value": "ROUND(AVG(weight_kg)"
+      },
+      {
+        "type": "keyword",
+        "value": "OVER"
+      },
+      {
+        "type": "keyword",
+        "value": "(ORDER"
+      },
+      {
+        "type": "keyword",
+        "value": "BY"
+      },
+      {
+        "type": "column",
+        "value": "visit_date"
+      },
+      {
+        "type": "keyword",
+        "value": "ASC),"
+      },
+      {
+        "type": "column",
+        "value": "2)"
+      },
+      {
+        "type": "keyword",
+        "value": "AS"
+      },
+      {
+        "type": "column",
+        "value": "running_avg_patient_weight"
+      },
+      {
+        "type": "keyword",
+        "value": "FROM"
+      },
+      {
+        "type": "table",
+        "value": "PetClinic;"
+      }
+    ]
+  },
+  {
+    "drillNumber": 1431,
+    "subcluster": "15.4 Running Counts & Cumulative Event Frequency",
+    "level": "Level 2 (Running Count)",
+    "title": "Syntax #1431: Number each customer's successive orders sequentially (1st purchase, 2nd, 3rd...)",
+    "table": "Orders",
+    "scenario": "Number each customer's successive orders sequentially (1st purchase, 2nd, 3rd...).",
+    "businessObjective": "Number each customer's successive orders sequentially (1st purchase, 2nd, 3rd...).",
+    "schemaSnippet": "Orders analytical schema",
+    "targetQuery": "SELECT order_id, customer_name, order_date,\n  COUNT(*) OVER (PARTITION BY customer_name ORDER BY order_date ASC) AS customer_order_sequence_number\nFROM Orders;",
+    "syntaxBlueprint": "SELECT col1, date_col,\n  COUNT(*) OVER (ORDER BY date_col ASC) AS running_event_count\nFROM table_name;",
+    "syntaxRule": "COUNT(*) with an ORDER BY clause numbers events cumulatively as they happen in sequence.",
+    "syntaxTrap": "COUNT(col) skips NULLs, whereas COUNT(*) counts every physical row.",
+    "eli5Story": "Analytical Window Functions on Orders: Number each customer's successive orders sequentially (1st purchase, 2nd, 3rd...).",
+    "commonMistakes": "Omitting ORDER BY inside OVER() for running totals, confusing PARTITION BY with GROUP BY, or attempting to filter window functions in WHERE without a CTE wrapper.",
+    "learningOutcomes": "Mastered 15.4 Running Counts & Cumulative Event Frequency on Orders.",
+    "challengeSlots": [
+      {
+        "type": "keyword",
+        "value": "SELECT"
+      },
+      {
+        "type": "column",
+        "value": "order_id,"
+      },
+      {
+        "type": "column",
+        "value": "customer_name,"
+      },
+      {
+        "type": "column",
+        "value": "order_date,"
+      },
+      {
+        "type": "column",
+        "value": "COUNT(*)"
+      },
+      {
+        "type": "keyword",
+        "value": "OVER"
+      },
+      {
+        "type": "keyword",
+        "value": "(PARTITION"
+      },
+      {
+        "type": "keyword",
+        "value": "BY"
+      },
+      {
+        "type": "column",
+        "value": "customer_name"
+      },
+      {
+        "type": "keyword",
+        "value": "ORDER"
+      },
+      {
+        "type": "keyword",
+        "value": "BY"
+      },
+      {
+        "type": "column",
+        "value": "order_date"
+      },
+      {
+        "type": "keyword",
+        "value": "ASC)"
+      },
+      {
+        "type": "keyword",
+        "value": "AS"
+      },
+      {
+        "type": "column",
+        "value": "customer_order_sequence_number"
+      },
+      {
+        "type": "keyword",
+        "value": "FROM"
+      },
+      {
+        "type": "table",
+        "value": "Orders;"
+      }
+    ]
+  },
+  {
+    "drillNumber": 1432,
+    "subcluster": "15.4 Running Counts & Cumulative Event Frequency",
+    "level": "Level 2 (Running Count)",
+    "title": "Syntax #1432: Assign cumulative student seniority numbers within each academic major",
+    "table": "Students",
+    "scenario": "Assign cumulative student seniority numbers within each academic major.",
+    "businessObjective": "Assign cumulative student seniority numbers within each academic major.",
+    "schemaSnippet": "Students analytical schema",
+    "targetQuery": "SELECT full_name, major, enrolled_year,\n  COUNT(*) OVER (PARTITION BY major ORDER BY enrolled_year ASC) AS major_seniority_number\nFROM Students;",
+    "syntaxBlueprint": "SELECT col1, date_col,\n  COUNT(*) OVER (ORDER BY date_col ASC) AS running_event_count\nFROM table_name;",
+    "syntaxRule": "COUNT(*) with an ORDER BY clause numbers events cumulatively as they happen in sequence.",
+    "syntaxTrap": "COUNT(col) skips NULLs, whereas COUNT(*) counts every physical row.",
+    "eli5Story": "Analytical Window Functions on Students: Assign cumulative student seniority numbers within each academic major.",
+    "commonMistakes": "Omitting ORDER BY inside OVER() for running totals, confusing PARTITION BY with GROUP BY, or attempting to filter window functions in WHERE without a CTE wrapper.",
+    "learningOutcomes": "Mastered 15.4 Running Counts & Cumulative Event Frequency on Students.",
+    "challengeSlots": [
+      {
+        "type": "keyword",
+        "value": "SELECT"
+      },
+      {
+        "type": "column",
+        "value": "full_name,"
+      },
+      {
+        "type": "column",
+        "value": "major,"
+      },
+      {
+        "type": "column",
+        "value": "enrolled_year,"
+      },
+      {
+        "type": "column",
+        "value": "COUNT(*)"
+      },
+      {
+        "type": "keyword",
+        "value": "OVER"
+      },
+      {
+        "type": "keyword",
+        "value": "(PARTITION"
+      },
+      {
+        "type": "keyword",
+        "value": "BY"
+      },
+      {
+        "type": "column",
+        "value": "major"
+      },
+      {
+        "type": "keyword",
+        "value": "ORDER"
+      },
+      {
+        "type": "keyword",
+        "value": "BY"
+      },
+      {
+        "type": "column",
+        "value": "enrolled_year"
+      },
+      {
+        "type": "keyword",
+        "value": "ASC)"
+      },
+      {
+        "type": "keyword",
+        "value": "AS"
+      },
+      {
+        "type": "column",
+        "value": "major_seniority_number"
+      },
+      {
+        "type": "keyword",
+        "value": "FROM"
+      },
+      {
+        "type": "table",
+        "value": "Students;"
+      }
+    ]
+  },
+  {
+    "drillNumber": 1433,
+    "subcluster": "15.4 Running Counts & Cumulative Event Frequency",
+    "level": "Level 2 (Running Count)",
+    "title": "Syntax #1433: Number each author's books in order of publication (Book #1, #2, #3...)",
+    "table": "Books",
+    "scenario": "Number each author's books in order of publication (Book #1, #2, #3...).",
+    "businessObjective": "Number each author's books in order of publication (Book #1, #2, #3...).",
+    "schemaSnippet": "Books analytical schema",
+    "targetQuery": "SELECT title, author, published_date,\n  COUNT(*) OVER (PARTITION BY author ORDER BY published_date ASC) AS author_book_number\nFROM Books;",
+    "syntaxBlueprint": "SELECT col1, date_col,\n  COUNT(*) OVER (ORDER BY date_col ASC) AS running_event_count\nFROM table_name;",
+    "syntaxRule": "COUNT(*) with an ORDER BY clause numbers events cumulatively as they happen in sequence.",
+    "syntaxTrap": "COUNT(col) skips NULLs, whereas COUNT(*) counts every physical row.",
+    "eli5Story": "Analytical Window Functions on Books: Number each author's books in order of publication (Book #1, #2, #3...).",
+    "commonMistakes": "Omitting ORDER BY inside OVER() for running totals, confusing PARTITION BY with GROUP BY, or attempting to filter window functions in WHERE without a CTE wrapper.",
+    "learningOutcomes": "Mastered 15.4 Running Counts & Cumulative Event Frequency on Books.",
+    "challengeSlots": [
+      {
+        "type": "keyword",
+        "value": "SELECT"
+      },
+      {
+        "type": "column",
+        "value": "title,"
+      },
+      {
+        "type": "column",
+        "value": "author,"
+      },
+      {
+        "type": "column",
+        "value": "published_date,"
+      },
+      {
+        "type": "column",
+        "value": "COUNT(*)"
+      },
+      {
+        "type": "keyword",
+        "value": "OVER"
+      },
+      {
+        "type": "keyword",
+        "value": "(PARTITION"
+      },
+      {
+        "type": "keyword",
+        "value": "BY"
+      },
+      {
+        "type": "column",
+        "value": "author"
+      },
+      {
+        "type": "keyword",
+        "value": "ORDER"
+      },
+      {
+        "type": "keyword",
+        "value": "BY"
+      },
+      {
+        "type": "column",
+        "value": "published_date"
+      },
+      {
+        "type": "keyword",
+        "value": "ASC)"
+      },
+      {
+        "type": "keyword",
+        "value": "AS"
+      },
+      {
+        "type": "column",
+        "value": "author_book_number"
+      },
+      {
+        "type": "keyword",
+        "value": "FROM"
+      },
+      {
+        "type": "table",
+        "value": "Books;"
+      }
+    ]
+  },
+  {
+    "drillNumber": 1434,
+    "subcluster": "15.4 Running Counts & Cumulative Event Frequency",
+    "level": "Level 2 (Running Count)",
+    "title": "Syntax #1434: Assign sequential badge numbers to departmental staff based on hire order",
+    "table": "Employees",
+    "scenario": "Assign sequential badge numbers to departmental staff based on hire order.",
+    "businessObjective": "Assign sequential badge numbers to departmental staff based on hire order.",
+    "schemaSnippet": "Employees analytical schema",
+    "targetQuery": "SELECT first_name, department, hire_date,\n  COUNT(*) OVER (PARTITION BY department ORDER BY hire_date ASC) AS dept_staff_badge_number\nFROM Employees;",
+    "syntaxBlueprint": "SELECT col1, date_col,\n  COUNT(*) OVER (ORDER BY date_col ASC) AS running_event_count\nFROM table_name;",
+    "syntaxRule": "COUNT(*) with an ORDER BY clause numbers events cumulatively as they happen in sequence.",
+    "syntaxTrap": "COUNT(col) skips NULLs, whereas COUNT(*) counts every physical row.",
+    "eli5Story": "Analytical Window Functions on Employees: Assign sequential badge numbers to departmental staff based on hire order.",
+    "commonMistakes": "Omitting ORDER BY inside OVER() for running totals, confusing PARTITION BY with GROUP BY, or attempting to filter window functions in WHERE without a CTE wrapper.",
+    "learningOutcomes": "Mastered 15.4 Running Counts & Cumulative Event Frequency on Employees.",
+    "challengeSlots": [
+      {
+        "type": "keyword",
+        "value": "SELECT"
+      },
+      {
+        "type": "column",
+        "value": "first_name,"
+      },
+      {
+        "type": "column",
+        "value": "department,"
+      },
+      {
+        "type": "column",
+        "value": "hire_date,"
+      },
+      {
+        "type": "column",
+        "value": "COUNT(*)"
+      },
+      {
+        "type": "keyword",
+        "value": "OVER"
+      },
+      {
+        "type": "keyword",
+        "value": "(PARTITION"
+      },
+      {
+        "type": "keyword",
+        "value": "BY"
+      },
+      {
+        "type": "column",
+        "value": "department"
+      },
+      {
+        "type": "keyword",
+        "value": "ORDER"
+      },
+      {
+        "type": "keyword",
+        "value": "BY"
+      },
+      {
+        "type": "column",
+        "value": "hire_date"
+      },
+      {
+        "type": "keyword",
+        "value": "ASC)"
+      },
+      {
+        "type": "keyword",
+        "value": "AS"
+      },
+      {
+        "type": "column",
+        "value": "dept_staff_badge_number"
+      },
+      {
+        "type": "keyword",
+        "value": "FROM"
+      },
+      {
+        "type": "table",
+        "value": "Employees;"
+      }
+    ]
+  },
+  {
+    "drillNumber": 1435,
+    "subcluster": "15.4 Running Counts & Cumulative Event Frequency",
+    "level": "Level 2 (Running Count)",
+    "title": "Syntax #1435: Index grocery items sequentially within their respective categories",
+    "table": "GroceryItems",
+    "scenario": "Index grocery items sequentially within their respective categories.",
+    "businessObjective": "Index grocery items sequentially within their respective categories.",
+    "schemaSnippet": "GroceryItems analytical schema",
+    "targetQuery": "SELECT item_name, category,\n  COUNT(*) OVER (PARTITION BY category ORDER BY item_id ASC) AS category_item_index\nFROM GroceryItems;",
+    "syntaxBlueprint": "SELECT col1, date_col,\n  COUNT(*) OVER (ORDER BY date_col ASC) AS running_event_count\nFROM table_name;",
+    "syntaxRule": "COUNT(*) with an ORDER BY clause numbers events cumulatively as they happen in sequence.",
+    "syntaxTrap": "COUNT(col) skips NULLs, whereas COUNT(*) counts every physical row.",
+    "eli5Story": "Analytical Window Functions on GroceryItems: Index grocery items sequentially within their respective categories.",
+    "commonMistakes": "Omitting ORDER BY inside OVER() for running totals, confusing PARTITION BY with GROUP BY, or attempting to filter window functions in WHERE without a CTE wrapper.",
+    "learningOutcomes": "Mastered 15.4 Running Counts & Cumulative Event Frequency on GroceryItems.",
+    "challengeSlots": [
+      {
+        "type": "keyword",
+        "value": "SELECT"
+      },
+      {
+        "type": "column",
+        "value": "item_name,"
+      },
+      {
+        "type": "column",
+        "value": "category,"
+      },
+      {
+        "type": "column",
+        "value": "COUNT(*)"
+      },
+      {
+        "type": "keyword",
+        "value": "OVER"
+      },
+      {
+        "type": "keyword",
+        "value": "(PARTITION"
+      },
+      {
+        "type": "keyword",
+        "value": "BY"
+      },
+      {
+        "type": "column",
+        "value": "category"
+      },
+      {
+        "type": "keyword",
+        "value": "ORDER"
+      },
+      {
+        "type": "keyword",
+        "value": "BY"
+      },
+      {
+        "type": "column",
+        "value": "item_id"
+      },
+      {
+        "type": "keyword",
+        "value": "ASC)"
+      },
+      {
+        "type": "keyword",
+        "value": "AS"
+      },
+      {
+        "type": "column",
+        "value": "category_item_index"
+      },
+      {
+        "type": "keyword",
+        "value": "FROM"
+      },
+      {
+        "type": "table",
+        "value": "GroceryItems;"
+      }
+    ]
+  },
+  {
+    "drillNumber": 1436,
+    "subcluster": "15.4 Running Counts & Cumulative Event Frequency",
+    "level": "Level 2 (Running Count)",
+    "title": "Syntax #1436: Number songs chronologically across an artist's discography",
+    "table": "MusicTracks",
+    "scenario": "Number songs chronologically across an artist's discography.",
+    "businessObjective": "Number songs chronologically across an artist's discography.",
+    "schemaSnippet": "MusicTracks analytical schema",
+    "targetQuery": "SELECT track_title, artist_name, release_date,\n  COUNT(*) OVER (PARTITION BY artist_name ORDER BY release_date ASC) AS artist_discography_track_num\nFROM MusicTracks;",
+    "syntaxBlueprint": "SELECT col1, date_col,\n  COUNT(*) OVER (ORDER BY date_col ASC) AS running_event_count\nFROM table_name;",
+    "syntaxRule": "COUNT(*) with an ORDER BY clause numbers events cumulatively as they happen in sequence.",
+    "syntaxTrap": "COUNT(col) skips NULLs, whereas COUNT(*) counts every physical row.",
+    "eli5Story": "Analytical Window Functions on MusicTracks: Number songs chronologically across an artist's discography.",
+    "commonMistakes": "Omitting ORDER BY inside OVER() for running totals, confusing PARTITION BY with GROUP BY, or attempting to filter window functions in WHERE without a CTE wrapper.",
+    "learningOutcomes": "Mastered 15.4 Running Counts & Cumulative Event Frequency on MusicTracks.",
+    "challengeSlots": [
+      {
+        "type": "keyword",
+        "value": "SELECT"
+      },
+      {
+        "type": "column",
+        "value": "track_title,"
+      },
+      {
+        "type": "column",
+        "value": "artist_name,"
+      },
+      {
+        "type": "column",
+        "value": "release_date,"
+      },
+      {
+        "type": "column",
+        "value": "COUNT(*)"
+      },
+      {
+        "type": "keyword",
+        "value": "OVER"
+      },
+      {
+        "type": "keyword",
+        "value": "(PARTITION"
+      },
+      {
+        "type": "keyword",
+        "value": "BY"
+      },
+      {
+        "type": "column",
+        "value": "artist_name"
+      },
+      {
+        "type": "keyword",
+        "value": "ORDER"
+      },
+      {
+        "type": "keyword",
+        "value": "BY"
+      },
+      {
+        "type": "column",
+        "value": "release_date"
+      },
+      {
+        "type": "keyword",
+        "value": "ASC)"
+      },
+      {
+        "type": "keyword",
+        "value": "AS"
+      },
+      {
+        "type": "column",
+        "value": "artist_discography_track_num"
+      },
+      {
+        "type": "keyword",
+        "value": "FROM"
+      },
+      {
+        "type": "table",
+        "value": "MusicTracks;"
+      }
+    ]
+  },
+  {
+    "drillNumber": 1437,
+    "subcluster": "15.4 Running Counts & Cumulative Event Frequency",
+    "level": "Level 2 (Running Count)",
+    "title": "Syntax #1437: Index members chronologically within their membership plan",
+    "table": "GymMembers",
+    "scenario": "Index members chronologically within their membership plan.",
+    "businessObjective": "Index members chronologically within their membership plan.",
+    "schemaSnippet": "GymMembers analytical schema",
+    "targetQuery": "SELECT member_name, membership_plan, join_date,\n  COUNT(*) OVER (PARTITION BY membership_plan ORDER BY join_date ASC) AS plan_enrollment_index\nFROM GymMembers;",
+    "syntaxBlueprint": "SELECT col1, date_col,\n  COUNT(*) OVER (ORDER BY date_col ASC) AS running_event_count\nFROM table_name;",
+    "syntaxRule": "COUNT(*) with an ORDER BY clause numbers events cumulatively as they happen in sequence.",
+    "syntaxTrap": "COUNT(col) skips NULLs, whereas COUNT(*) counts every physical row.",
+    "eli5Story": "Analytical Window Functions on GymMembers: Index members chronologically within their membership plan.",
+    "commonMistakes": "Omitting ORDER BY inside OVER() for running totals, confusing PARTITION BY with GROUP BY, or attempting to filter window functions in WHERE without a CTE wrapper.",
+    "learningOutcomes": "Mastered 15.4 Running Counts & Cumulative Event Frequency on GymMembers.",
+    "challengeSlots": [
+      {
+        "type": "keyword",
+        "value": "SELECT"
+      },
+      {
+        "type": "column",
+        "value": "member_name,"
+      },
+      {
+        "type": "column",
+        "value": "membership_plan,"
+      },
+      {
+        "type": "column",
+        "value": "join_date,"
+      },
+      {
+        "type": "column",
+        "value": "COUNT(*)"
+      },
+      {
+        "type": "keyword",
+        "value": "OVER"
+      },
+      {
+        "type": "keyword",
+        "value": "(PARTITION"
+      },
+      {
+        "type": "keyword",
+        "value": "BY"
+      },
+      {
+        "type": "column",
+        "value": "membership_plan"
+      },
+      {
+        "type": "keyword",
+        "value": "ORDER"
+      },
+      {
+        "type": "keyword",
+        "value": "BY"
+      },
+      {
+        "type": "column",
+        "value": "join_date"
+      },
+      {
+        "type": "keyword",
+        "value": "ASC)"
+      },
+      {
+        "type": "keyword",
+        "value": "AS"
+      },
+      {
+        "type": "column",
+        "value": "plan_enrollment_index"
+      },
+      {
+        "type": "keyword",
+        "value": "FROM"
+      },
+      {
+        "type": "table",
+        "value": "GymMembers;"
+      }
+    ]
+  },
+  {
+    "drillNumber": 1438,
+    "subcluster": "15.4 Running Counts & Cumulative Event Frequency",
+    "level": "Level 2 (Running Count)",
+    "title": "Syntax #1438: Number each critic's career reviews in chronological order",
+    "table": "MovieReviews",
+    "scenario": "Number each critic's career reviews in chronological order.",
+    "businessObjective": "Number each critic's career reviews in chronological order.",
+    "schemaSnippet": "MovieReviews analytical schema",
+    "targetQuery": "SELECT movie_title, reviewer_name, review_date,\n  COUNT(*) OVER (PARTITION BY reviewer_name ORDER BY review_date ASC) AS critic_review_career_index\nFROM MovieReviews;",
+    "syntaxBlueprint": "SELECT col1, date_col,\n  COUNT(*) OVER (ORDER BY date_col ASC) AS running_event_count\nFROM table_name;",
+    "syntaxRule": "COUNT(*) with an ORDER BY clause numbers events cumulatively as they happen in sequence.",
+    "syntaxTrap": "COUNT(col) skips NULLs, whereas COUNT(*) counts every physical row.",
+    "eli5Story": "Analytical Window Functions on MovieReviews: Number each critic's career reviews in chronological order.",
+    "commonMistakes": "Omitting ORDER BY inside OVER() for running totals, confusing PARTITION BY with GROUP BY, or attempting to filter window functions in WHERE without a CTE wrapper.",
+    "learningOutcomes": "Mastered 15.4 Running Counts & Cumulative Event Frequency on MovieReviews.",
+    "challengeSlots": [
+      {
+        "type": "keyword",
+        "value": "SELECT"
+      },
+      {
+        "type": "column",
+        "value": "movie_title,"
+      },
+      {
+        "type": "column",
+        "value": "reviewer_name,"
+      },
+      {
+        "type": "column",
+        "value": "review_date,"
+      },
+      {
+        "type": "column",
+        "value": "COUNT(*)"
+      },
+      {
+        "type": "keyword",
+        "value": "OVER"
+      },
+      {
+        "type": "keyword",
+        "value": "(PARTITION"
+      },
+      {
+        "type": "keyword",
+        "value": "BY"
+      },
+      {
+        "type": "column",
+        "value": "reviewer_name"
+      },
+      {
+        "type": "keyword",
+        "value": "ORDER"
+      },
+      {
+        "type": "keyword",
+        "value": "BY"
+      },
+      {
+        "type": "column",
+        "value": "review_date"
+      },
+      {
+        "type": "keyword",
+        "value": "ASC)"
+      },
+      {
+        "type": "keyword",
+        "value": "AS"
+      },
+      {
+        "type": "column",
+        "value": "critic_review_career_index"
+      },
+      {
+        "type": "keyword",
+        "value": "FROM"
+      },
+      {
+        "type": "table",
+        "value": "MovieReviews;"
+      }
+    ]
+  },
+  {
+    "drillNumber": 1439,
+    "subcluster": "15.4 Running Counts & Cumulative Event Frequency",
+    "level": "Level 2 (Running Count)",
+    "title": "Syntax #1439: Number departure slots sequentially for flights leaving each airport hub",
+    "table": "FlightSchedule",
+    "scenario": "Number departure slots sequentially for flights leaving each airport hub.",
+    "businessObjective": "Number departure slots sequentially for flights leaving each airport hub.",
+    "schemaSnippet": "FlightSchedule analytical schema",
+    "targetQuery": "SELECT flight_id, origin_airport, departure_time,\n  COUNT(*) OVER (PARTITION BY origin_airport ORDER BY departure_time ASC) AS daily_hub_departure_slot\nFROM FlightSchedule;",
+    "syntaxBlueprint": "SELECT col1, date_col,\n  COUNT(*) OVER (ORDER BY date_col ASC) AS running_event_count\nFROM table_name;",
+    "syntaxRule": "COUNT(*) with an ORDER BY clause numbers events cumulatively as they happen in sequence.",
+    "syntaxTrap": "COUNT(col) skips NULLs, whereas COUNT(*) counts every physical row.",
+    "eli5Story": "Analytical Window Functions on FlightSchedule: Number departure slots sequentially for flights leaving each airport hub.",
+    "commonMistakes": "Omitting ORDER BY inside OVER() for running totals, confusing PARTITION BY with GROUP BY, or attempting to filter window functions in WHERE without a CTE wrapper.",
+    "learningOutcomes": "Mastered 15.4 Running Counts & Cumulative Event Frequency on FlightSchedule.",
+    "challengeSlots": [
+      {
+        "type": "keyword",
+        "value": "SELECT"
+      },
+      {
+        "type": "column",
+        "value": "flight_id,"
+      },
+      {
+        "type": "column",
+        "value": "origin_airport,"
+      },
+      {
+        "type": "column",
+        "value": "departure_time,"
+      },
+      {
+        "type": "column",
+        "value": "COUNT(*)"
+      },
+      {
+        "type": "keyword",
+        "value": "OVER"
+      },
+      {
+        "type": "keyword",
+        "value": "(PARTITION"
+      },
+      {
+        "type": "keyword",
+        "value": "BY"
+      },
+      {
+        "type": "column",
+        "value": "origin_airport"
+      },
+      {
+        "type": "keyword",
+        "value": "ORDER"
+      },
+      {
+        "type": "keyword",
+        "value": "BY"
+      },
+      {
+        "type": "column",
+        "value": "departure_time"
+      },
+      {
+        "type": "keyword",
+        "value": "ASC)"
+      },
+      {
+        "type": "keyword",
+        "value": "AS"
+      },
+      {
+        "type": "column",
+        "value": "daily_hub_departure_slot"
+      },
+      {
+        "type": "keyword",
+        "value": "FROM"
+      },
+      {
+        "type": "table",
+        "value": "FlightSchedule;"
+      }
+    ]
+  },
+  {
+    "drillNumber": 1440,
+    "subcluster": "15.4 Running Counts & Cumulative Event Frequency",
+    "level": "Level 2 (Running Count)",
+    "title": "Syntax #1440: Number lifetime clinic checkups for each animal patient (Visit #1, #2...)",
+    "table": "PetClinic",
+    "scenario": "Number lifetime clinic checkups for each animal patient (Visit #1, #2...).",
+    "businessObjective": "Number lifetime clinic checkups for each animal patient (Visit #1, #2...).",
+    "schemaSnippet": "PetClinic analytical schema",
+    "targetQuery": "SELECT pet_name, visit_date,\n  COUNT(*) OVER (PARTITION BY pet_name ORDER BY visit_date ASC) AS pet_lifetime_visit_number\nFROM PetClinic;",
+    "syntaxBlueprint": "SELECT col1, date_col,\n  COUNT(*) OVER (ORDER BY date_col ASC) AS running_event_count\nFROM table_name;",
+    "syntaxRule": "COUNT(*) with an ORDER BY clause numbers events cumulatively as they happen in sequence.",
+    "syntaxTrap": "COUNT(col) skips NULLs, whereas COUNT(*) counts every physical row.",
+    "eli5Story": "Analytical Window Functions on PetClinic: Number lifetime clinic checkups for each animal patient (Visit #1, #2...).",
+    "commonMistakes": "Omitting ORDER BY inside OVER() for running totals, confusing PARTITION BY with GROUP BY, or attempting to filter window functions in WHERE without a CTE wrapper.",
+    "learningOutcomes": "Mastered 15.4 Running Counts & Cumulative Event Frequency on PetClinic.",
+    "challengeSlots": [
+      {
+        "type": "keyword",
+        "value": "SELECT"
+      },
+      {
+        "type": "column",
+        "value": "pet_name,"
+      },
+      {
+        "type": "column",
+        "value": "visit_date,"
+      },
+      {
+        "type": "column",
+        "value": "COUNT(*)"
+      },
+      {
+        "type": "keyword",
+        "value": "OVER"
+      },
+      {
+        "type": "keyword",
+        "value": "(PARTITION"
+      },
+      {
+        "type": "keyword",
+        "value": "BY"
+      },
+      {
+        "type": "column",
+        "value": "pet_name"
+      },
+      {
+        "type": "keyword",
+        "value": "ORDER"
+      },
+      {
+        "type": "keyword",
+        "value": "BY"
+      },
+      {
+        "type": "column",
+        "value": "visit_date"
+      },
+      {
+        "type": "keyword",
+        "value": "ASC)"
+      },
+      {
+        "type": "keyword",
+        "value": "AS"
+      },
+      {
+        "type": "column",
+        "value": "pet_lifetime_visit_number"
+      },
+      {
+        "type": "keyword",
+        "value": "FROM"
+      },
+      {
+        "type": "table",
+        "value": "PetClinic;"
+      }
+    ]
+  },
+  {
+    "drillNumber": 1441,
+    "subcluster": "15.5 Sliding Moving Averages (ROWS BETWEEN 2 PRECEDING AND CURRENT ROW)",
+    "level": "Level 3 (3-Point Moving Average)",
+    "title": "Syntax #1441: Compute a 3-order rolling moving average to smooth short-term sales volatility",
+    "table": "Orders",
+    "scenario": "Compute a 3-order rolling moving average to smooth short-term sales volatility.",
+    "businessObjective": "Compute a 3-order rolling moving average to smooth short-term sales volatility.",
+    "schemaSnippet": "Orders analytical schema",
+    "targetQuery": "SELECT order_id, order_date, total_amount,\n  ROUND(AVG(total_amount) OVER (ORDER BY order_date ASC ROWS BETWEEN 2 PRECEDING AND CURRENT ROW), 2) AS mavg_3_orders\nFROM Orders;",
+    "syntaxBlueprint": "SELECT col1, date_col, metric,\n  ROUND(AVG(metric) OVER (ORDER BY date_col ASC ROWS BETWEEN 2 PRECEDING AND CURRENT ROW), 2) AS mavg_3_point\nFROM table_name;",
+    "syntaxRule": "'ROWS BETWEEN 2 PRECEDING AND CURRENT ROW' restricts the aggregation window to exactly 3 rows (the current row plus the 2 rows immediately prior).",
+    "syntaxTrap": "Using RANGE instead of ROWS: RANGE groups duplicate order values into one frame; ROWS counts physical rows.",
+    "eli5Story": "Analytical Window Functions on Orders: Compute a 3-order rolling moving average to smooth short-term sales volatility.",
+    "commonMistakes": "Omitting ORDER BY inside OVER() for running totals, confusing PARTITION BY with GROUP BY, or attempting to filter window functions in WHERE without a CTE wrapper.",
+    "learningOutcomes": "Mastered 15.5 Sliding Moving Averages (ROWS BETWEEN 2 PRECEDING AND CURRENT ROW) on Orders.",
+    "challengeSlots": [
+      {
+        "type": "keyword",
+        "value": "SELECT"
+      },
+      {
+        "type": "column",
+        "value": "order_id,"
+      },
+      {
+        "type": "column",
+        "value": "order_date,"
+      },
+      {
+        "type": "column",
+        "value": "total_amount,"
+      },
+      {
+        "type": "column",
+        "value": "ROUND(AVG(total_amount)"
+      },
+      {
+        "type": "keyword",
+        "value": "OVER"
+      },
+      {
+        "type": "keyword",
+        "value": "(ORDER"
+      },
+      {
+        "type": "keyword",
+        "value": "BY"
+      },
+      {
+        "type": "column",
+        "value": "order_date"
+      },
+      {
+        "type": "keyword",
+        "value": "ASC"
+      },
+      {
+        "type": "keyword",
+        "value": "ROWS"
+      },
+      {
+        "type": "keyword",
+        "value": "BETWEEN"
+      },
+      {
+        "type": "column",
+        "value": "2"
+      },
+      {
+        "type": "keyword",
+        "value": "PRECEDING"
+      },
+      {
+        "type": "keyword",
+        "value": "AND"
+      },
+      {
+        "type": "keyword",
+        "value": "CURRENT"
+      },
+      {
+        "type": "keyword",
+        "value": "ROW),"
+      },
+      {
+        "type": "column",
+        "value": "2)"
+      },
+      {
+        "type": "keyword",
+        "value": "AS"
+      },
+      {
+        "type": "column",
+        "value": "mavg_3_orders"
+      },
+      {
+        "type": "keyword",
+        "value": "FROM"
+      },
+      {
+        "type": "table",
+        "value": "Orders;"
+      }
+    ]
+  },
+  {
+    "drillNumber": 1442,
+    "subcluster": "15.5 Sliding Moving Averages (ROWS BETWEEN 2 PRECEDING AND CURRENT ROW)",
+    "level": "Level 3 (3-Point Moving Average)",
+    "title": "Syntax #1442: Calculate a 3-student moving average GPA along the enrollment timeline",
+    "table": "Students",
+    "scenario": "Calculate a 3-student moving average GPA along the enrollment timeline.",
+    "businessObjective": "Calculate a 3-student moving average GPA along the enrollment timeline.",
+    "schemaSnippet": "Students analytical schema",
+    "targetQuery": "SELECT full_name, enrolled_year, gpa,\n  ROUND(AVG(gpa) OVER (ORDER BY enrolled_year ASC ROWS BETWEEN 2 PRECEDING AND CURRENT ROW), 2) AS mavg_3_student_gpa\nFROM Students;",
+    "syntaxBlueprint": "SELECT col1, date_col, metric,\n  ROUND(AVG(metric) OVER (ORDER BY date_col ASC ROWS BETWEEN 2 PRECEDING AND CURRENT ROW), 2) AS mavg_3_point\nFROM table_name;",
+    "syntaxRule": "'ROWS BETWEEN 2 PRECEDING AND CURRENT ROW' restricts the aggregation window to exactly 3 rows (the current row plus the 2 rows immediately prior).",
+    "syntaxTrap": "Using RANGE instead of ROWS: RANGE groups duplicate order values into one frame; ROWS counts physical rows.",
+    "eli5Story": "Analytical Window Functions on Students: Calculate a 3-student moving average GPA along the enrollment timeline.",
+    "commonMistakes": "Omitting ORDER BY inside OVER() for running totals, confusing PARTITION BY with GROUP BY, or attempting to filter window functions in WHERE without a CTE wrapper.",
+    "learningOutcomes": "Mastered 15.5 Sliding Moving Averages (ROWS BETWEEN 2 PRECEDING AND CURRENT ROW) on Students.",
+    "challengeSlots": [
+      {
+        "type": "keyword",
+        "value": "SELECT"
+      },
+      {
+        "type": "column",
+        "value": "full_name,"
+      },
+      {
+        "type": "column",
+        "value": "enrolled_year,"
+      },
+      {
+        "type": "column",
+        "value": "gpa,"
+      },
+      {
+        "type": "column",
+        "value": "ROUND(AVG(gpa)"
+      },
+      {
+        "type": "keyword",
+        "value": "OVER"
+      },
+      {
+        "type": "keyword",
+        "value": "(ORDER"
+      },
+      {
+        "type": "keyword",
+        "value": "BY"
+      },
+      {
+        "type": "column",
+        "value": "enrolled_year"
+      },
+      {
+        "type": "keyword",
+        "value": "ASC"
+      },
+      {
+        "type": "keyword",
+        "value": "ROWS"
+      },
+      {
+        "type": "keyword",
+        "value": "BETWEEN"
+      },
+      {
+        "type": "column",
+        "value": "2"
+      },
+      {
+        "type": "keyword",
+        "value": "PRECEDING"
+      },
+      {
+        "type": "keyword",
+        "value": "AND"
+      },
+      {
+        "type": "keyword",
+        "value": "CURRENT"
+      },
+      {
+        "type": "keyword",
+        "value": "ROW),"
+      },
+      {
+        "type": "column",
+        "value": "2)"
+      },
+      {
+        "type": "keyword",
+        "value": "AS"
+      },
+      {
+        "type": "column",
+        "value": "mavg_3_student_gpa"
+      },
+      {
+        "type": "keyword",
+        "value": "FROM"
+      },
+      {
+        "type": "table",
+        "value": "Students;"
+      }
+    ]
+  },
+  {
+    "drillNumber": 1443,
+    "subcluster": "15.5 Sliding Moving Averages (ROWS BETWEEN 2 PRECEDING AND CURRENT ROW)",
+    "level": "Level 3 (3-Point Moving Average)",
+    "title": "Syntax #1443: Compute a 3-book rolling moving average of publication prices",
+    "table": "Books",
+    "scenario": "Compute a 3-book rolling moving average of publication prices.",
+    "businessObjective": "Compute a 3-book rolling moving average of publication prices.",
+    "schemaSnippet": "Books analytical schema",
+    "targetQuery": "SELECT title, published_date, price,\n  ROUND(AVG(price) OVER (ORDER BY published_date ASC ROWS BETWEEN 2 PRECEDING AND CURRENT ROW), 2) AS mavg_3_book_price\nFROM Books;",
+    "syntaxBlueprint": "SELECT col1, date_col, metric,\n  ROUND(AVG(metric) OVER (ORDER BY date_col ASC ROWS BETWEEN 2 PRECEDING AND CURRENT ROW), 2) AS mavg_3_point\nFROM table_name;",
+    "syntaxRule": "'ROWS BETWEEN 2 PRECEDING AND CURRENT ROW' restricts the aggregation window to exactly 3 rows (the current row plus the 2 rows immediately prior).",
+    "syntaxTrap": "Using RANGE instead of ROWS: RANGE groups duplicate order values into one frame; ROWS counts physical rows.",
+    "eli5Story": "Analytical Window Functions on Books: Compute a 3-book rolling moving average of publication prices.",
+    "commonMistakes": "Omitting ORDER BY inside OVER() for running totals, confusing PARTITION BY with GROUP BY, or attempting to filter window functions in WHERE without a CTE wrapper.",
+    "learningOutcomes": "Mastered 15.5 Sliding Moving Averages (ROWS BETWEEN 2 PRECEDING AND CURRENT ROW) on Books.",
+    "challengeSlots": [
+      {
+        "type": "keyword",
+        "value": "SELECT"
+      },
+      {
+        "type": "column",
+        "value": "title,"
+      },
+      {
+        "type": "column",
+        "value": "published_date,"
+      },
+      {
+        "type": "column",
+        "value": "price,"
+      },
+      {
+        "type": "column",
+        "value": "ROUND(AVG(price)"
+      },
+      {
+        "type": "keyword",
+        "value": "OVER"
+      },
+      {
+        "type": "keyword",
+        "value": "(ORDER"
+      },
+      {
+        "type": "keyword",
+        "value": "BY"
+      },
+      {
+        "type": "column",
+        "value": "published_date"
+      },
+      {
+        "type": "keyword",
+        "value": "ASC"
+      },
+      {
+        "type": "keyword",
+        "value": "ROWS"
+      },
+      {
+        "type": "keyword",
+        "value": "BETWEEN"
+      },
+      {
+        "type": "column",
+        "value": "2"
+      },
+      {
+        "type": "keyword",
+        "value": "PRECEDING"
+      },
+      {
+        "type": "keyword",
+        "value": "AND"
+      },
+      {
+        "type": "keyword",
+        "value": "CURRENT"
+      },
+      {
+        "type": "keyword",
+        "value": "ROW),"
+      },
+      {
+        "type": "column",
+        "value": "2)"
+      },
+      {
+        "type": "keyword",
+        "value": "AS"
+      },
+      {
+        "type": "column",
+        "value": "mavg_3_book_price"
+      },
+      {
+        "type": "keyword",
+        "value": "FROM"
+      },
+      {
+        "type": "table",
+        "value": "Books;"
+      }
+    ]
+  },
+  {
+    "drillNumber": 1444,
+    "subcluster": "15.5 Sliding Moving Averages (ROWS BETWEEN 2 PRECEDING AND CURRENT ROW)",
+    "level": "Level 3 (3-Point Moving Average)",
+    "title": "Syntax #1444: Calculate a 3-hire rolling average salary to track recent compensation trends",
+    "table": "Employees",
+    "scenario": "Calculate a 3-hire rolling average salary to track recent compensation trends.",
+    "businessObjective": "Calculate a 3-hire rolling average salary to track recent compensation trends.",
+    "schemaSnippet": "Employees analytical schema",
+    "targetQuery": "SELECT first_name, hire_date, salary,\n  ROUND(AVG(salary) OVER (ORDER BY hire_date ASC ROWS BETWEEN 2 PRECEDING AND CURRENT ROW), 2) AS mavg_3_hire_salary\nFROM Employees;",
+    "syntaxBlueprint": "SELECT col1, date_col, metric,\n  ROUND(AVG(metric) OVER (ORDER BY date_col ASC ROWS BETWEEN 2 PRECEDING AND CURRENT ROW), 2) AS mavg_3_point\nFROM table_name;",
+    "syntaxRule": "'ROWS BETWEEN 2 PRECEDING AND CURRENT ROW' restricts the aggregation window to exactly 3 rows (the current row plus the 2 rows immediately prior).",
+    "syntaxTrap": "Using RANGE instead of ROWS: RANGE groups duplicate order values into one frame; ROWS counts physical rows.",
+    "eli5Story": "Analytical Window Functions on Employees: Calculate a 3-hire rolling average salary to track recent compensation trends.",
+    "commonMistakes": "Omitting ORDER BY inside OVER() for running totals, confusing PARTITION BY with GROUP BY, or attempting to filter window functions in WHERE without a CTE wrapper.",
+    "learningOutcomes": "Mastered 15.5 Sliding Moving Averages (ROWS BETWEEN 2 PRECEDING AND CURRENT ROW) on Employees.",
+    "challengeSlots": [
+      {
+        "type": "keyword",
+        "value": "SELECT"
+      },
+      {
+        "type": "column",
+        "value": "first_name,"
+      },
+      {
+        "type": "column",
+        "value": "hire_date,"
+      },
+      {
+        "type": "column",
+        "value": "salary,"
+      },
+      {
+        "type": "column",
+        "value": "ROUND(AVG(salary)"
+      },
+      {
+        "type": "keyword",
+        "value": "OVER"
+      },
+      {
+        "type": "keyword",
+        "value": "(ORDER"
+      },
+      {
+        "type": "keyword",
+        "value": "BY"
+      },
+      {
+        "type": "column",
+        "value": "hire_date"
+      },
+      {
+        "type": "keyword",
+        "value": "ASC"
+      },
+      {
+        "type": "keyword",
+        "value": "ROWS"
+      },
+      {
+        "type": "keyword",
+        "value": "BETWEEN"
+      },
+      {
+        "type": "column",
+        "value": "2"
+      },
+      {
+        "type": "keyword",
+        "value": "PRECEDING"
+      },
+      {
+        "type": "keyword",
+        "value": "AND"
+      },
+      {
+        "type": "keyword",
+        "value": "CURRENT"
+      },
+      {
+        "type": "keyword",
+        "value": "ROW),"
+      },
+      {
+        "type": "column",
+        "value": "2)"
+      },
+      {
+        "type": "keyword",
+        "value": "AS"
+      },
+      {
+        "type": "column",
+        "value": "mavg_3_hire_salary"
+      },
+      {
+        "type": "keyword",
+        "value": "FROM"
+      },
+      {
+        "type": "table",
+        "value": "Employees;"
+      }
+    ]
+  },
+  {
+    "drillNumber": 1445,
+    "subcluster": "15.5 Sliding Moving Averages (ROWS BETWEEN 2 PRECEDING AND CURRENT ROW)",
+    "level": "Level 3 (3-Point Moving Average)",
+    "title": "Syntax #1445: Calculate a 3-item moving average unit price across grocery inventory",
+    "table": "GroceryItems",
+    "scenario": "Calculate a 3-item moving average unit price across grocery inventory.",
+    "businessObjective": "Calculate a 3-item moving average unit price across grocery inventory.",
+    "schemaSnippet": "GroceryItems analytical schema",
+    "targetQuery": "SELECT item_name, unit_price,\n  ROUND(AVG(unit_price) OVER (ORDER BY item_id ASC ROWS BETWEEN 2 PRECEDING AND CURRENT ROW), 2) AS mavg_3_item_price\nFROM GroceryItems;",
+    "syntaxBlueprint": "SELECT col1, date_col, metric,\n  ROUND(AVG(metric) OVER (ORDER BY date_col ASC ROWS BETWEEN 2 PRECEDING AND CURRENT ROW), 2) AS mavg_3_point\nFROM table_name;",
+    "syntaxRule": "'ROWS BETWEEN 2 PRECEDING AND CURRENT ROW' restricts the aggregation window to exactly 3 rows (the current row plus the 2 rows immediately prior).",
+    "syntaxTrap": "Using RANGE instead of ROWS: RANGE groups duplicate order values into one frame; ROWS counts physical rows.",
+    "eli5Story": "Analytical Window Functions on GroceryItems: Calculate a 3-item moving average unit price across grocery inventory.",
+    "commonMistakes": "Omitting ORDER BY inside OVER() for running totals, confusing PARTITION BY with GROUP BY, or attempting to filter window functions in WHERE without a CTE wrapper.",
+    "learningOutcomes": "Mastered 15.5 Sliding Moving Averages (ROWS BETWEEN 2 PRECEDING AND CURRENT ROW) on GroceryItems.",
+    "challengeSlots": [
+      {
+        "type": "keyword",
+        "value": "SELECT"
+      },
+      {
+        "type": "column",
+        "value": "item_name,"
+      },
+      {
+        "type": "column",
+        "value": "unit_price,"
+      },
+      {
+        "type": "column",
+        "value": "ROUND(AVG(unit_price)"
+      },
+      {
+        "type": "keyword",
+        "value": "OVER"
+      },
+      {
+        "type": "keyword",
+        "value": "(ORDER"
+      },
+      {
+        "type": "keyword",
+        "value": "BY"
+      },
+      {
+        "type": "column",
+        "value": "item_id"
+      },
+      {
+        "type": "keyword",
+        "value": "ASC"
+      },
+      {
+        "type": "keyword",
+        "value": "ROWS"
+      },
+      {
+        "type": "keyword",
+        "value": "BETWEEN"
+      },
+      {
+        "type": "column",
+        "value": "2"
+      },
+      {
+        "type": "keyword",
+        "value": "PRECEDING"
+      },
+      {
+        "type": "keyword",
+        "value": "AND"
+      },
+      {
+        "type": "keyword",
+        "value": "CURRENT"
+      },
+      {
+        "type": "keyword",
+        "value": "ROW),"
+      },
+      {
+        "type": "column",
+        "value": "2)"
+      },
+      {
+        "type": "keyword",
+        "value": "AS"
+      },
+      {
+        "type": "column",
+        "value": "mavg_3_item_price"
+      },
+      {
+        "type": "keyword",
+        "value": "FROM"
+      },
+      {
+        "type": "table",
+        "value": "GroceryItems;"
+      }
+    ]
+  },
+  {
+    "drillNumber": 1446,
+    "subcluster": "15.5 Sliding Moving Averages (ROWS BETWEEN 2 PRECEDING AND CURRENT ROW)",
+    "level": "Level 3 (3-Point Moving Average)",
+    "title": "Syntax #1446: Compute a 3-track rolling moving average of song duration",
+    "table": "MusicTracks",
+    "scenario": "Compute a 3-track rolling moving average of song duration.",
+    "businessObjective": "Compute a 3-track rolling moving average of song duration.",
+    "schemaSnippet": "MusicTracks analytical schema",
+    "targetQuery": "SELECT track_title, release_date, duration_seconds,\n  ROUND(AVG(duration_seconds) OVER (ORDER BY release_date ASC ROWS BETWEEN 2 PRECEDING AND CURRENT ROW), 2) AS mavg_3_song_duration\nFROM MusicTracks;",
+    "syntaxBlueprint": "SELECT col1, date_col, metric,\n  ROUND(AVG(metric) OVER (ORDER BY date_col ASC ROWS BETWEEN 2 PRECEDING AND CURRENT ROW), 2) AS mavg_3_point\nFROM table_name;",
+    "syntaxRule": "'ROWS BETWEEN 2 PRECEDING AND CURRENT ROW' restricts the aggregation window to exactly 3 rows (the current row plus the 2 rows immediately prior).",
+    "syntaxTrap": "Using RANGE instead of ROWS: RANGE groups duplicate order values into one frame; ROWS counts physical rows.",
+    "eli5Story": "Analytical Window Functions on MusicTracks: Compute a 3-track rolling moving average of song duration.",
+    "commonMistakes": "Omitting ORDER BY inside OVER() for running totals, confusing PARTITION BY with GROUP BY, or attempting to filter window functions in WHERE without a CTE wrapper.",
+    "learningOutcomes": "Mastered 15.5 Sliding Moving Averages (ROWS BETWEEN 2 PRECEDING AND CURRENT ROW) on MusicTracks.",
+    "challengeSlots": [
+      {
+        "type": "keyword",
+        "value": "SELECT"
+      },
+      {
+        "type": "column",
+        "value": "track_title,"
+      },
+      {
+        "type": "column",
+        "value": "release_date,"
+      },
+      {
+        "type": "column",
+        "value": "duration_seconds,"
+      },
+      {
+        "type": "column",
+        "value": "ROUND(AVG(duration_seconds)"
+      },
+      {
+        "type": "keyword",
+        "value": "OVER"
+      },
+      {
+        "type": "keyword",
+        "value": "(ORDER"
+      },
+      {
+        "type": "keyword",
+        "value": "BY"
+      },
+      {
+        "type": "column",
+        "value": "release_date"
+      },
+      {
+        "type": "keyword",
+        "value": "ASC"
+      },
+      {
+        "type": "keyword",
+        "value": "ROWS"
+      },
+      {
+        "type": "keyword",
+        "value": "BETWEEN"
+      },
+      {
+        "type": "column",
+        "value": "2"
+      },
+      {
+        "type": "keyword",
+        "value": "PRECEDING"
+      },
+      {
+        "type": "keyword",
+        "value": "AND"
+      },
+      {
+        "type": "keyword",
+        "value": "CURRENT"
+      },
+      {
+        "type": "keyword",
+        "value": "ROW),"
+      },
+      {
+        "type": "column",
+        "value": "2)"
+      },
+      {
+        "type": "keyword",
+        "value": "AS"
+      },
+      {
+        "type": "column",
+        "value": "mavg_3_song_duration"
+      },
+      {
+        "type": "keyword",
+        "value": "FROM"
+      },
+      {
+        "type": "table",
+        "value": "MusicTracks;"
+      }
+    ]
+  },
+  {
+    "drillNumber": 1447,
+    "subcluster": "15.5 Sliding Moving Averages (ROWS BETWEEN 2 PRECEDING AND CURRENT ROW)",
+    "level": "Level 3 (3-Point Moving Average)",
+    "title": "Syntax #1447: Calculate a 3-signup moving average of gym membership dues",
+    "table": "GymMembers",
+    "scenario": "Calculate a 3-signup moving average of gym membership dues.",
+    "businessObjective": "Calculate a 3-signup moving average of gym membership dues.",
+    "schemaSnippet": "GymMembers analytical schema",
+    "targetQuery": "SELECT member_name, join_date, monthly_fee,\n  ROUND(AVG(monthly_fee) OVER (ORDER BY join_date ASC ROWS BETWEEN 2 PRECEDING AND CURRENT ROW), 2) AS mavg_3_signup_fees\nFROM GymMembers;",
+    "syntaxBlueprint": "SELECT col1, date_col, metric,\n  ROUND(AVG(metric) OVER (ORDER BY date_col ASC ROWS BETWEEN 2 PRECEDING AND CURRENT ROW), 2) AS mavg_3_point\nFROM table_name;",
+    "syntaxRule": "'ROWS BETWEEN 2 PRECEDING AND CURRENT ROW' restricts the aggregation window to exactly 3 rows (the current row plus the 2 rows immediately prior).",
+    "syntaxTrap": "Using RANGE instead of ROWS: RANGE groups duplicate order values into one frame; ROWS counts physical rows.",
+    "eli5Story": "Analytical Window Functions on GymMembers: Calculate a 3-signup moving average of gym membership dues.",
+    "commonMistakes": "Omitting ORDER BY inside OVER() for running totals, confusing PARTITION BY with GROUP BY, or attempting to filter window functions in WHERE without a CTE wrapper.",
+    "learningOutcomes": "Mastered 15.5 Sliding Moving Averages (ROWS BETWEEN 2 PRECEDING AND CURRENT ROW) on GymMembers.",
+    "challengeSlots": [
+      {
+        "type": "keyword",
+        "value": "SELECT"
+      },
+      {
+        "type": "column",
+        "value": "member_name,"
+      },
+      {
+        "type": "column",
+        "value": "join_date,"
+      },
+      {
+        "type": "column",
+        "value": "monthly_fee,"
+      },
+      {
+        "type": "column",
+        "value": "ROUND(AVG(monthly_fee)"
+      },
+      {
+        "type": "keyword",
+        "value": "OVER"
+      },
+      {
+        "type": "keyword",
+        "value": "(ORDER"
+      },
+      {
+        "type": "keyword",
+        "value": "BY"
+      },
+      {
+        "type": "column",
+        "value": "join_date"
+      },
+      {
+        "type": "keyword",
+        "value": "ASC"
+      },
+      {
+        "type": "keyword",
+        "value": "ROWS"
+      },
+      {
+        "type": "keyword",
+        "value": "BETWEEN"
+      },
+      {
+        "type": "column",
+        "value": "2"
+      },
+      {
+        "type": "keyword",
+        "value": "PRECEDING"
+      },
+      {
+        "type": "keyword",
+        "value": "AND"
+      },
+      {
+        "type": "keyword",
+        "value": "CURRENT"
+      },
+      {
+        "type": "keyword",
+        "value": "ROW),"
+      },
+      {
+        "type": "column",
+        "value": "2)"
+      },
+      {
+        "type": "keyword",
+        "value": "AS"
+      },
+      {
+        "type": "column",
+        "value": "mavg_3_signup_fees"
+      },
+      {
+        "type": "keyword",
+        "value": "FROM"
+      },
+      {
+        "type": "table",
+        "value": "GymMembers;"
+      }
+    ]
+  },
+  {
+    "drillNumber": 1448,
+    "subcluster": "15.5 Sliding Moving Averages (ROWS BETWEEN 2 PRECEDING AND CURRENT ROW)",
+    "level": "Level 3 (3-Point Moving Average)",
+    "title": "Syntax #1448: Calculate a 3-review moving average of critic star ratings",
+    "table": "MovieReviews",
+    "scenario": "Calculate a 3-review moving average of critic star ratings.",
+    "businessObjective": "Calculate a 3-review moving average of critic star ratings.",
+    "schemaSnippet": "MovieReviews analytical schema",
+    "targetQuery": "SELECT movie_title, review_date, star_rating,\n  ROUND(AVG(star_rating) OVER (ORDER BY review_date ASC ROWS BETWEEN 2 PRECEDING AND CURRENT ROW), 2) AS mavg_3_star_ratings\nFROM MovieReviews;",
+    "syntaxBlueprint": "SELECT col1, date_col, metric,\n  ROUND(AVG(metric) OVER (ORDER BY date_col ASC ROWS BETWEEN 2 PRECEDING AND CURRENT ROW), 2) AS mavg_3_point\nFROM table_name;",
+    "syntaxRule": "'ROWS BETWEEN 2 PRECEDING AND CURRENT ROW' restricts the aggregation window to exactly 3 rows (the current row plus the 2 rows immediately prior).",
+    "syntaxTrap": "Using RANGE instead of ROWS: RANGE groups duplicate order values into one frame; ROWS counts physical rows.",
+    "eli5Story": "Analytical Window Functions on MovieReviews: Calculate a 3-review moving average of critic star ratings.",
+    "commonMistakes": "Omitting ORDER BY inside OVER() for running totals, confusing PARTITION BY with GROUP BY, or attempting to filter window functions in WHERE without a CTE wrapper.",
+    "learningOutcomes": "Mastered 15.5 Sliding Moving Averages (ROWS BETWEEN 2 PRECEDING AND CURRENT ROW) on MovieReviews.",
+    "challengeSlots": [
+      {
+        "type": "keyword",
+        "value": "SELECT"
+      },
+      {
+        "type": "column",
+        "value": "movie_title,"
+      },
+      {
+        "type": "column",
+        "value": "review_date,"
+      },
+      {
+        "type": "column",
+        "value": "star_rating,"
+      },
+      {
+        "type": "column",
+        "value": "ROUND(AVG(star_rating)"
+      },
+      {
+        "type": "keyword",
+        "value": "OVER"
+      },
+      {
+        "type": "keyword",
+        "value": "(ORDER"
+      },
+      {
+        "type": "keyword",
+        "value": "BY"
+      },
+      {
+        "type": "column",
+        "value": "review_date"
+      },
+      {
+        "type": "keyword",
+        "value": "ASC"
+      },
+      {
+        "type": "keyword",
+        "value": "ROWS"
+      },
+      {
+        "type": "keyword",
+        "value": "BETWEEN"
+      },
+      {
+        "type": "column",
+        "value": "2"
+      },
+      {
+        "type": "keyword",
+        "value": "PRECEDING"
+      },
+      {
+        "type": "keyword",
+        "value": "AND"
+      },
+      {
+        "type": "keyword",
+        "value": "CURRENT"
+      },
+      {
+        "type": "keyword",
+        "value": "ROW),"
+      },
+      {
+        "type": "column",
+        "value": "2)"
+      },
+      {
+        "type": "keyword",
+        "value": "AS"
+      },
+      {
+        "type": "column",
+        "value": "mavg_3_star_ratings"
+      },
+      {
+        "type": "keyword",
+        "value": "FROM"
+      },
+      {
+        "type": "table",
+        "value": "MovieReviews;"
+      }
+    ]
+  },
+  {
+    "drillNumber": 1449,
+    "subcluster": "15.5 Sliding Moving Averages (ROWS BETWEEN 2 PRECEDING AND CURRENT ROW)",
+    "level": "Level 3 (3-Point Moving Average)",
+    "title": "Syntax #1449: Compute a 3-flight rolling moving average of ticket fares",
+    "table": "FlightSchedule",
+    "scenario": "Compute a 3-flight rolling moving average of ticket fares.",
+    "businessObjective": "Compute a 3-flight rolling moving average of ticket fares.",
+    "schemaSnippet": "FlightSchedule analytical schema",
+    "targetQuery": "SELECT flight_id, departure_time, ticket_price,\n  ROUND(AVG(ticket_price) OVER (ORDER BY departure_time ASC ROWS BETWEEN 2 PRECEDING AND CURRENT ROW), 2) AS mavg_3_flight_fares\nFROM FlightSchedule;",
+    "syntaxBlueprint": "SELECT col1, date_col, metric,\n  ROUND(AVG(metric) OVER (ORDER BY date_col ASC ROWS BETWEEN 2 PRECEDING AND CURRENT ROW), 2) AS mavg_3_point\nFROM table_name;",
+    "syntaxRule": "'ROWS BETWEEN 2 PRECEDING AND CURRENT ROW' restricts the aggregation window to exactly 3 rows (the current row plus the 2 rows immediately prior).",
+    "syntaxTrap": "Using RANGE instead of ROWS: RANGE groups duplicate order values into one frame; ROWS counts physical rows.",
+    "eli5Story": "Analytical Window Functions on FlightSchedule: Compute a 3-flight rolling moving average of ticket fares.",
+    "commonMistakes": "Omitting ORDER BY inside OVER() for running totals, confusing PARTITION BY with GROUP BY, or attempting to filter window functions in WHERE without a CTE wrapper.",
+    "learningOutcomes": "Mastered 15.5 Sliding Moving Averages (ROWS BETWEEN 2 PRECEDING AND CURRENT ROW) on FlightSchedule.",
+    "challengeSlots": [
+      {
+        "type": "keyword",
+        "value": "SELECT"
+      },
+      {
+        "type": "column",
+        "value": "flight_id,"
+      },
+      {
+        "type": "column",
+        "value": "departure_time,"
+      },
+      {
+        "type": "column",
+        "value": "ticket_price,"
+      },
+      {
+        "type": "column",
+        "value": "ROUND(AVG(ticket_price)"
+      },
+      {
+        "type": "keyword",
+        "value": "OVER"
+      },
+      {
+        "type": "keyword",
+        "value": "(ORDER"
+      },
+      {
+        "type": "keyword",
+        "value": "BY"
+      },
+      {
+        "type": "column",
+        "value": "departure_time"
+      },
+      {
+        "type": "keyword",
+        "value": "ASC"
+      },
+      {
+        "type": "keyword",
+        "value": "ROWS"
+      },
+      {
+        "type": "keyword",
+        "value": "BETWEEN"
+      },
+      {
+        "type": "column",
+        "value": "2"
+      },
+      {
+        "type": "keyword",
+        "value": "PRECEDING"
+      },
+      {
+        "type": "keyword",
+        "value": "AND"
+      },
+      {
+        "type": "keyword",
+        "value": "CURRENT"
+      },
+      {
+        "type": "keyword",
+        "value": "ROW),"
+      },
+      {
+        "type": "column",
+        "value": "2)"
+      },
+      {
+        "type": "keyword",
+        "value": "AS"
+      },
+      {
+        "type": "column",
+        "value": "mavg_3_flight_fares"
+      },
+      {
+        "type": "keyword",
+        "value": "FROM"
+      },
+      {
+        "type": "table",
+        "value": "FlightSchedule;"
+      }
+    ]
+  },
+  {
+    "drillNumber": 1450,
+    "subcluster": "15.5 Sliding Moving Averages (ROWS BETWEEN 2 PRECEDING AND CURRENT ROW)",
+    "level": "Level 3 (3-Point Moving Average)",
+    "title": "Syntax #1450: Compute a 3-visit rolling moving average weight for each veterinary patient",
+    "table": "PetClinic",
+    "scenario": "Compute a 3-visit rolling moving average weight for each veterinary patient.",
+    "businessObjective": "Compute a 3-visit rolling moving average weight for each veterinary patient.",
+    "schemaSnippet": "PetClinic analytical schema",
+    "targetQuery": "SELECT pet_name, visit_date, weight_kg,\n  ROUND(AVG(weight_kg) OVER (PARTITION BY pet_name ORDER BY visit_date ASC ROWS BETWEEN 2 PRECEDING AND CURRENT ROW), 2) AS mavg_3_patient_weight\nFROM PetClinic;",
+    "syntaxBlueprint": "SELECT col1, date_col, metric,\n  ROUND(AVG(metric) OVER (ORDER BY date_col ASC ROWS BETWEEN 2 PRECEDING AND CURRENT ROW), 2) AS mavg_3_point\nFROM table_name;",
+    "syntaxRule": "'ROWS BETWEEN 2 PRECEDING AND CURRENT ROW' restricts the aggregation window to exactly 3 rows (the current row plus the 2 rows immediately prior).",
+    "syntaxTrap": "Using RANGE instead of ROWS: RANGE groups duplicate order values into one frame; ROWS counts physical rows.",
+    "eli5Story": "Analytical Window Functions on PetClinic: Compute a 3-visit rolling moving average weight for each veterinary patient.",
+    "commonMistakes": "Omitting ORDER BY inside OVER() for running totals, confusing PARTITION BY with GROUP BY, or attempting to filter window functions in WHERE without a CTE wrapper.",
+    "learningOutcomes": "Mastered 15.5 Sliding Moving Averages (ROWS BETWEEN 2 PRECEDING AND CURRENT ROW) on PetClinic.",
+    "challengeSlots": [
+      {
+        "type": "keyword",
+        "value": "SELECT"
+      },
+      {
+        "type": "column",
+        "value": "pet_name,"
+      },
+      {
+        "type": "column",
+        "value": "visit_date,"
+      },
+      {
+        "type": "column",
+        "value": "weight_kg,"
+      },
+      {
+        "type": "column",
+        "value": "ROUND(AVG(weight_kg)"
+      },
+      {
+        "type": "keyword",
+        "value": "OVER"
+      },
+      {
+        "type": "keyword",
+        "value": "(PARTITION"
+      },
+      {
+        "type": "keyword",
+        "value": "BY"
+      },
+      {
+        "type": "column",
+        "value": "pet_name"
+      },
+      {
+        "type": "keyword",
+        "value": "ORDER"
+      },
+      {
+        "type": "keyword",
+        "value": "BY"
+      },
+      {
+        "type": "column",
+        "value": "visit_date"
+      },
+      {
+        "type": "keyword",
+        "value": "ASC"
+      },
+      {
+        "type": "keyword",
+        "value": "ROWS"
+      },
+      {
+        "type": "keyword",
+        "value": "BETWEEN"
+      },
+      {
+        "type": "column",
+        "value": "2"
+      },
+      {
+        "type": "keyword",
+        "value": "PRECEDING"
+      },
+      {
+        "type": "keyword",
+        "value": "AND"
+      },
+      {
+        "type": "keyword",
+        "value": "CURRENT"
+      },
+      {
+        "type": "keyword",
+        "value": "ROW),"
+      },
+      {
+        "type": "column",
+        "value": "2)"
+      },
+      {
+        "type": "keyword",
+        "value": "AS"
+      },
+      {
+        "type": "column",
+        "value": "mavg_3_patient_weight"
+      },
+      {
+        "type": "keyword",
+        "value": "FROM"
+      },
+      {
+        "type": "table",
+        "value": "PetClinic;"
+      }
+    ]
+  },
+  {
+    "drillNumber": 1451,
+    "subcluster": "15.6 Centered Moving Averages (ROWS BETWEEN 1 PRECEDING AND 1 FOLLOWING)",
+    "level": "Level 3 (Centered Moving Average)",
+    "title": "Syntax #1451: Calculate a centered 3-order moving average of transaction values",
+    "table": "Orders",
+    "scenario": "Calculate a centered 3-order moving average of transaction values.",
+    "businessObjective": "Calculate a centered 3-order moving average of transaction values.",
+    "schemaSnippet": "Orders analytical schema",
+    "targetQuery": "SELECT order_id, order_date, total_amount,\n  ROUND(AVG(total_amount) OVER (ORDER BY order_date ASC ROWS BETWEEN 1 PRECEDING AND 1 FOLLOWING), 2) AS centered_3_order_avg\nFROM Orders;",
+    "syntaxBlueprint": "SELECT col1, date_col, metric,\n  ROUND(AVG(metric) OVER (ORDER BY date_col ASC ROWS BETWEEN 1 PRECEDING AND 1 FOLLOWING), 2) AS centered_avg\nFROM table_name;",
+    "syntaxRule": "'ROWS BETWEEN 1 PRECEDING AND 1 FOLLOWING' looks 1 row behind AND 1 row ahead, producing a symmetrical, centered moving average.",
+    "syntaxTrap": "Centered moving averages cannot be computed in real-time streaming because future rows haven't arrived yet; they are strictly historical analytics tools.",
+    "eli5Story": "Analytical Window Functions on Orders: Calculate a centered 3-order moving average of transaction values.",
+    "commonMistakes": "Omitting ORDER BY inside OVER() for running totals, confusing PARTITION BY with GROUP BY, or attempting to filter window functions in WHERE without a CTE wrapper.",
+    "learningOutcomes": "Mastered 15.6 Centered Moving Averages (ROWS BETWEEN 1 PRECEDING AND 1 FOLLOWING) on Orders.",
+    "challengeSlots": [
+      {
+        "type": "keyword",
+        "value": "SELECT"
+      },
+      {
+        "type": "column",
+        "value": "order_id,"
+      },
+      {
+        "type": "column",
+        "value": "order_date,"
+      },
+      {
+        "type": "column",
+        "value": "total_amount,"
+      },
+      {
+        "type": "column",
+        "value": "ROUND(AVG(total_amount)"
+      },
+      {
+        "type": "keyword",
+        "value": "OVER"
+      },
+      {
+        "type": "keyword",
+        "value": "(ORDER"
+      },
+      {
+        "type": "keyword",
+        "value": "BY"
+      },
+      {
+        "type": "column",
+        "value": "order_date"
+      },
+      {
+        "type": "keyword",
+        "value": "ASC"
+      },
+      {
+        "type": "keyword",
+        "value": "ROWS"
+      },
+      {
+        "type": "keyword",
+        "value": "BETWEEN"
+      },
+      {
+        "type": "column",
+        "value": "1"
+      },
+      {
+        "type": "keyword",
+        "value": "PRECEDING"
+      },
+      {
+        "type": "keyword",
+        "value": "AND"
+      },
+      {
+        "type": "column",
+        "value": "1"
+      },
+      {
+        "type": "keyword",
+        "value": "FOLLOWING),"
+      },
+      {
+        "type": "column",
+        "value": "2)"
+      },
+      {
+        "type": "keyword",
+        "value": "AS"
+      },
+      {
+        "type": "column",
+        "value": "centered_3_order_avg"
+      },
+      {
+        "type": "keyword",
+        "value": "FROM"
+      },
+      {
+        "type": "table",
+        "value": "Orders;"
+      }
+    ]
+  },
+  {
+    "drillNumber": 1452,
+    "subcluster": "15.6 Centered Moving Averages (ROWS BETWEEN 1 PRECEDING AND 1 FOLLOWING)",
+    "level": "Level 3 (Centered Moving Average)",
+    "title": "Syntax #1452: Compute a centered 3-student moving average GPA",
+    "table": "Students",
+    "scenario": "Compute a centered 3-student moving average GPA.",
+    "businessObjective": "Compute a centered 3-student moving average GPA.",
+    "schemaSnippet": "Students analytical schema",
+    "targetQuery": "SELECT full_name, enrolled_year, gpa,\n  ROUND(AVG(gpa) OVER (ORDER BY enrolled_year ASC ROWS BETWEEN 1 PRECEDING AND 1 FOLLOWING), 2) AS centered_gpa_avg\nFROM Students;",
+    "syntaxBlueprint": "SELECT col1, date_col, metric,\n  ROUND(AVG(metric) OVER (ORDER BY date_col ASC ROWS BETWEEN 1 PRECEDING AND 1 FOLLOWING), 2) AS centered_avg\nFROM table_name;",
+    "syntaxRule": "'ROWS BETWEEN 1 PRECEDING AND 1 FOLLOWING' looks 1 row behind AND 1 row ahead, producing a symmetrical, centered moving average.",
+    "syntaxTrap": "Centered moving averages cannot be computed in real-time streaming because future rows haven't arrived yet; they are strictly historical analytics tools.",
+    "eli5Story": "Analytical Window Functions on Students: Compute a centered 3-student moving average GPA.",
+    "commonMistakes": "Omitting ORDER BY inside OVER() for running totals, confusing PARTITION BY with GROUP BY, or attempting to filter window functions in WHERE without a CTE wrapper.",
+    "learningOutcomes": "Mastered 15.6 Centered Moving Averages (ROWS BETWEEN 1 PRECEDING AND 1 FOLLOWING) on Students.",
+    "challengeSlots": [
+      {
+        "type": "keyword",
+        "value": "SELECT"
+      },
+      {
+        "type": "column",
+        "value": "full_name,"
+      },
+      {
+        "type": "column",
+        "value": "enrolled_year,"
+      },
+      {
+        "type": "column",
+        "value": "gpa,"
+      },
+      {
+        "type": "column",
+        "value": "ROUND(AVG(gpa)"
+      },
+      {
+        "type": "keyword",
+        "value": "OVER"
+      },
+      {
+        "type": "keyword",
+        "value": "(ORDER"
+      },
+      {
+        "type": "keyword",
+        "value": "BY"
+      },
+      {
+        "type": "column",
+        "value": "enrolled_year"
+      },
+      {
+        "type": "keyword",
+        "value": "ASC"
+      },
+      {
+        "type": "keyword",
+        "value": "ROWS"
+      },
+      {
+        "type": "keyword",
+        "value": "BETWEEN"
+      },
+      {
+        "type": "column",
+        "value": "1"
+      },
+      {
+        "type": "keyword",
+        "value": "PRECEDING"
+      },
+      {
+        "type": "keyword",
+        "value": "AND"
+      },
+      {
+        "type": "column",
+        "value": "1"
+      },
+      {
+        "type": "keyword",
+        "value": "FOLLOWING),"
+      },
+      {
+        "type": "column",
+        "value": "2)"
+      },
+      {
+        "type": "keyword",
+        "value": "AS"
+      },
+      {
+        "type": "column",
+        "value": "centered_gpa_avg"
+      },
+      {
+        "type": "keyword",
+        "value": "FROM"
+      },
+      {
+        "type": "table",
+        "value": "Students;"
+      }
+    ]
+  },
+  {
+    "drillNumber": 1453,
+    "subcluster": "15.6 Centered Moving Averages (ROWS BETWEEN 1 PRECEDING AND 1 FOLLOWING)",
+    "level": "Level 3 (Centered Moving Average)",
+    "title": "Syntax #1453: Calculate a centered moving average price across published books",
+    "table": "Books",
+    "scenario": "Calculate a centered moving average price across published books.",
+    "businessObjective": "Calculate a centered moving average price across published books.",
+    "schemaSnippet": "Books analytical schema",
+    "targetQuery": "SELECT title, published_date, price,\n  ROUND(AVG(price) OVER (ORDER BY published_date ASC ROWS BETWEEN 1 PRECEDING AND 1 FOLLOWING), 2) AS centered_price_avg\nFROM Books;",
+    "syntaxBlueprint": "SELECT col1, date_col, metric,\n  ROUND(AVG(metric) OVER (ORDER BY date_col ASC ROWS BETWEEN 1 PRECEDING AND 1 FOLLOWING), 2) AS centered_avg\nFROM table_name;",
+    "syntaxRule": "'ROWS BETWEEN 1 PRECEDING AND 1 FOLLOWING' looks 1 row behind AND 1 row ahead, producing a symmetrical, centered moving average.",
+    "syntaxTrap": "Centered moving averages cannot be computed in real-time streaming because future rows haven't arrived yet; they are strictly historical analytics tools.",
+    "eli5Story": "Analytical Window Functions on Books: Calculate a centered moving average price across published books.",
+    "commonMistakes": "Omitting ORDER BY inside OVER() for running totals, confusing PARTITION BY with GROUP BY, or attempting to filter window functions in WHERE without a CTE wrapper.",
+    "learningOutcomes": "Mastered 15.6 Centered Moving Averages (ROWS BETWEEN 1 PRECEDING AND 1 FOLLOWING) on Books.",
+    "challengeSlots": [
+      {
+        "type": "keyword",
+        "value": "SELECT"
+      },
+      {
+        "type": "column",
+        "value": "title,"
+      },
+      {
+        "type": "column",
+        "value": "published_date,"
+      },
+      {
+        "type": "column",
+        "value": "price,"
+      },
+      {
+        "type": "column",
+        "value": "ROUND(AVG(price)"
+      },
+      {
+        "type": "keyword",
+        "value": "OVER"
+      },
+      {
+        "type": "keyword",
+        "value": "(ORDER"
+      },
+      {
+        "type": "keyword",
+        "value": "BY"
+      },
+      {
+        "type": "column",
+        "value": "published_date"
+      },
+      {
+        "type": "keyword",
+        "value": "ASC"
+      },
+      {
+        "type": "keyword",
+        "value": "ROWS"
+      },
+      {
+        "type": "keyword",
+        "value": "BETWEEN"
+      },
+      {
+        "type": "column",
+        "value": "1"
+      },
+      {
+        "type": "keyword",
+        "value": "PRECEDING"
+      },
+      {
+        "type": "keyword",
+        "value": "AND"
+      },
+      {
+        "type": "column",
+        "value": "1"
+      },
+      {
+        "type": "keyword",
+        "value": "FOLLOWING),"
+      },
+      {
+        "type": "column",
+        "value": "2)"
+      },
+      {
+        "type": "keyword",
+        "value": "AS"
+      },
+      {
+        "type": "column",
+        "value": "centered_price_avg"
+      },
+      {
+        "type": "keyword",
+        "value": "FROM"
+      },
+      {
+        "type": "table",
+        "value": "Books;"
+      }
+    ]
+  },
+  {
+    "drillNumber": 1454,
+    "subcluster": "15.6 Centered Moving Averages (ROWS BETWEEN 1 PRECEDING AND 1 FOLLOWING)",
+    "level": "Level 3 (Centered Moving Average)",
+    "title": "Syntax #1454: Compute a centered 3-hire moving average salary",
+    "table": "Employees",
+    "scenario": "Compute a centered 3-hire moving average salary.",
+    "businessObjective": "Compute a centered 3-hire moving average salary.",
+    "schemaSnippet": "Employees analytical schema",
+    "targetQuery": "SELECT first_name, hire_date, salary,\n  ROUND(AVG(salary) OVER (ORDER BY hire_date ASC ROWS BETWEEN 1 PRECEDING AND 1 FOLLOWING), 2) AS centered_salary_avg\nFROM Employees;",
+    "syntaxBlueprint": "SELECT col1, date_col, metric,\n  ROUND(AVG(metric) OVER (ORDER BY date_col ASC ROWS BETWEEN 1 PRECEDING AND 1 FOLLOWING), 2) AS centered_avg\nFROM table_name;",
+    "syntaxRule": "'ROWS BETWEEN 1 PRECEDING AND 1 FOLLOWING' looks 1 row behind AND 1 row ahead, producing a symmetrical, centered moving average.",
+    "syntaxTrap": "Centered moving averages cannot be computed in real-time streaming because future rows haven't arrived yet; they are strictly historical analytics tools.",
+    "eli5Story": "Analytical Window Functions on Employees: Compute a centered 3-hire moving average salary.",
+    "commonMistakes": "Omitting ORDER BY inside OVER() for running totals, confusing PARTITION BY with GROUP BY, or attempting to filter window functions in WHERE without a CTE wrapper.",
+    "learningOutcomes": "Mastered 15.6 Centered Moving Averages (ROWS BETWEEN 1 PRECEDING AND 1 FOLLOWING) on Employees.",
+    "challengeSlots": [
+      {
+        "type": "keyword",
+        "value": "SELECT"
+      },
+      {
+        "type": "column",
+        "value": "first_name,"
+      },
+      {
+        "type": "column",
+        "value": "hire_date,"
+      },
+      {
+        "type": "column",
+        "value": "salary,"
+      },
+      {
+        "type": "column",
+        "value": "ROUND(AVG(salary)"
+      },
+      {
+        "type": "keyword",
+        "value": "OVER"
+      },
+      {
+        "type": "keyword",
+        "value": "(ORDER"
+      },
+      {
+        "type": "keyword",
+        "value": "BY"
+      },
+      {
+        "type": "column",
+        "value": "hire_date"
+      },
+      {
+        "type": "keyword",
+        "value": "ASC"
+      },
+      {
+        "type": "keyword",
+        "value": "ROWS"
+      },
+      {
+        "type": "keyword",
+        "value": "BETWEEN"
+      },
+      {
+        "type": "column",
+        "value": "1"
+      },
+      {
+        "type": "keyword",
+        "value": "PRECEDING"
+      },
+      {
+        "type": "keyword",
+        "value": "AND"
+      },
+      {
+        "type": "column",
+        "value": "1"
+      },
+      {
+        "type": "keyword",
+        "value": "FOLLOWING),"
+      },
+      {
+        "type": "column",
+        "value": "2)"
+      },
+      {
+        "type": "keyword",
+        "value": "AS"
+      },
+      {
+        "type": "column",
+        "value": "centered_salary_avg"
+      },
+      {
+        "type": "keyword",
+        "value": "FROM"
+      },
+      {
+        "type": "table",
+        "value": "Employees;"
+      }
+    ]
+  },
+  {
+    "drillNumber": 1455,
+    "subcluster": "15.6 Centered Moving Averages (ROWS BETWEEN 1 PRECEDING AND 1 FOLLOWING)",
+    "level": "Level 3 (Centered Moving Average)",
+    "title": "Syntax #1455: Compute a centered moving average of unit prices across inventory",
+    "table": "GroceryItems",
+    "scenario": "Compute a centered moving average of unit prices across inventory.",
+    "businessObjective": "Compute a centered moving average of unit prices across inventory.",
+    "schemaSnippet": "GroceryItems analytical schema",
+    "targetQuery": "SELECT item_name, unit_price,\n  ROUND(AVG(unit_price) OVER (ORDER BY item_id ASC ROWS BETWEEN 1 PRECEDING AND 1 FOLLOWING), 2) AS centered_item_price_avg\nFROM GroceryItems;",
+    "syntaxBlueprint": "SELECT col1, date_col, metric,\n  ROUND(AVG(metric) OVER (ORDER BY date_col ASC ROWS BETWEEN 1 PRECEDING AND 1 FOLLOWING), 2) AS centered_avg\nFROM table_name;",
+    "syntaxRule": "'ROWS BETWEEN 1 PRECEDING AND 1 FOLLOWING' looks 1 row behind AND 1 row ahead, producing a symmetrical, centered moving average.",
+    "syntaxTrap": "Centered moving averages cannot be computed in real-time streaming because future rows haven't arrived yet; they are strictly historical analytics tools.",
+    "eli5Story": "Analytical Window Functions on GroceryItems: Compute a centered moving average of unit prices across inventory.",
+    "commonMistakes": "Omitting ORDER BY inside OVER() for running totals, confusing PARTITION BY with GROUP BY, or attempting to filter window functions in WHERE without a CTE wrapper.",
+    "learningOutcomes": "Mastered 15.6 Centered Moving Averages (ROWS BETWEEN 1 PRECEDING AND 1 FOLLOWING) on GroceryItems.",
+    "challengeSlots": [
+      {
+        "type": "keyword",
+        "value": "SELECT"
+      },
+      {
+        "type": "column",
+        "value": "item_name,"
+      },
+      {
+        "type": "column",
+        "value": "unit_price,"
+      },
+      {
+        "type": "column",
+        "value": "ROUND(AVG(unit_price)"
+      },
+      {
+        "type": "keyword",
+        "value": "OVER"
+      },
+      {
+        "type": "keyword",
+        "value": "(ORDER"
+      },
+      {
+        "type": "keyword",
+        "value": "BY"
+      },
+      {
+        "type": "column",
+        "value": "item_id"
+      },
+      {
+        "type": "keyword",
+        "value": "ASC"
+      },
+      {
+        "type": "keyword",
+        "value": "ROWS"
+      },
+      {
+        "type": "keyword",
+        "value": "BETWEEN"
+      },
+      {
+        "type": "column",
+        "value": "1"
+      },
+      {
+        "type": "keyword",
+        "value": "PRECEDING"
+      },
+      {
+        "type": "keyword",
+        "value": "AND"
+      },
+      {
+        "type": "column",
+        "value": "1"
+      },
+      {
+        "type": "keyword",
+        "value": "FOLLOWING),"
+      },
+      {
+        "type": "column",
+        "value": "2)"
+      },
+      {
+        "type": "keyword",
+        "value": "AS"
+      },
+      {
+        "type": "column",
+        "value": "centered_item_price_avg"
+      },
+      {
+        "type": "keyword",
+        "value": "FROM"
+      },
+      {
+        "type": "table",
+        "value": "GroceryItems;"
+      }
+    ]
+  },
+  {
+    "drillNumber": 1456,
+    "subcluster": "15.6 Centered Moving Averages (ROWS BETWEEN 1 PRECEDING AND 1 FOLLOWING)",
+    "level": "Level 3 (Centered Moving Average)",
+    "title": "Syntax #1456: Compute a centered moving average of music track durations",
+    "table": "MusicTracks",
+    "scenario": "Compute a centered moving average of music track durations.",
+    "businessObjective": "Compute a centered moving average of music track durations.",
+    "schemaSnippet": "MusicTracks analytical schema",
+    "targetQuery": "SELECT track_title, release_date, duration_seconds,\n  ROUND(AVG(duration_seconds) OVER (ORDER BY release_date ASC ROWS BETWEEN 1 PRECEDING AND 1 FOLLOWING), 2) AS centered_track_len_avg\nFROM MusicTracks;",
+    "syntaxBlueprint": "SELECT col1, date_col, metric,\n  ROUND(AVG(metric) OVER (ORDER BY date_col ASC ROWS BETWEEN 1 PRECEDING AND 1 FOLLOWING), 2) AS centered_avg\nFROM table_name;",
+    "syntaxRule": "'ROWS BETWEEN 1 PRECEDING AND 1 FOLLOWING' looks 1 row behind AND 1 row ahead, producing a symmetrical, centered moving average.",
+    "syntaxTrap": "Centered moving averages cannot be computed in real-time streaming because future rows haven't arrived yet; they are strictly historical analytics tools.",
+    "eli5Story": "Analytical Window Functions on MusicTracks: Compute a centered moving average of music track durations.",
+    "commonMistakes": "Omitting ORDER BY inside OVER() for running totals, confusing PARTITION BY with GROUP BY, or attempting to filter window functions in WHERE without a CTE wrapper.",
+    "learningOutcomes": "Mastered 15.6 Centered Moving Averages (ROWS BETWEEN 1 PRECEDING AND 1 FOLLOWING) on MusicTracks.",
+    "challengeSlots": [
+      {
+        "type": "keyword",
+        "value": "SELECT"
+      },
+      {
+        "type": "column",
+        "value": "track_title,"
+      },
+      {
+        "type": "column",
+        "value": "release_date,"
+      },
+      {
+        "type": "column",
+        "value": "duration_seconds,"
+      },
+      {
+        "type": "column",
+        "value": "ROUND(AVG(duration_seconds)"
+      },
+      {
+        "type": "keyword",
+        "value": "OVER"
+      },
+      {
+        "type": "keyword",
+        "value": "(ORDER"
+      },
+      {
+        "type": "keyword",
+        "value": "BY"
+      },
+      {
+        "type": "column",
+        "value": "release_date"
+      },
+      {
+        "type": "keyword",
+        "value": "ASC"
+      },
+      {
+        "type": "keyword",
+        "value": "ROWS"
+      },
+      {
+        "type": "keyword",
+        "value": "BETWEEN"
+      },
+      {
+        "type": "column",
+        "value": "1"
+      },
+      {
+        "type": "keyword",
+        "value": "PRECEDING"
+      },
+      {
+        "type": "keyword",
+        "value": "AND"
+      },
+      {
+        "type": "column",
+        "value": "1"
+      },
+      {
+        "type": "keyword",
+        "value": "FOLLOWING),"
+      },
+      {
+        "type": "column",
+        "value": "2)"
+      },
+      {
+        "type": "keyword",
+        "value": "AS"
+      },
+      {
+        "type": "column",
+        "value": "centered_track_len_avg"
+      },
+      {
+        "type": "keyword",
+        "value": "FROM"
+      },
+      {
+        "type": "table",
+        "value": "MusicTracks;"
+      }
+    ]
+  },
+  {
+    "drillNumber": 1457,
+    "subcluster": "15.6 Centered Moving Averages (ROWS BETWEEN 1 PRECEDING AND 1 FOLLOWING)",
+    "level": "Level 3 (Centered Moving Average)",
+    "title": "Syntax #1457: Calculate a centered moving average of gym membership fees",
+    "table": "GymMembers",
+    "scenario": "Calculate a centered moving average of gym membership fees.",
+    "businessObjective": "Calculate a centered moving average of gym membership fees.",
+    "schemaSnippet": "GymMembers analytical schema",
+    "targetQuery": "SELECT member_name, join_date, monthly_fee,\n  ROUND(AVG(monthly_fee) OVER (ORDER BY join_date ASC ROWS BETWEEN 1 PRECEDING AND 1 FOLLOWING), 2) AS centered_dues_avg\nFROM GymMembers;",
+    "syntaxBlueprint": "SELECT col1, date_col, metric,\n  ROUND(AVG(metric) OVER (ORDER BY date_col ASC ROWS BETWEEN 1 PRECEDING AND 1 FOLLOWING), 2) AS centered_avg\nFROM table_name;",
+    "syntaxRule": "'ROWS BETWEEN 1 PRECEDING AND 1 FOLLOWING' looks 1 row behind AND 1 row ahead, producing a symmetrical, centered moving average.",
+    "syntaxTrap": "Centered moving averages cannot be computed in real-time streaming because future rows haven't arrived yet; they are strictly historical analytics tools.",
+    "eli5Story": "Analytical Window Functions on GymMembers: Calculate a centered moving average of gym membership fees.",
+    "commonMistakes": "Omitting ORDER BY inside OVER() for running totals, confusing PARTITION BY with GROUP BY, or attempting to filter window functions in WHERE without a CTE wrapper.",
+    "learningOutcomes": "Mastered 15.6 Centered Moving Averages (ROWS BETWEEN 1 PRECEDING AND 1 FOLLOWING) on GymMembers.",
+    "challengeSlots": [
+      {
+        "type": "keyword",
+        "value": "SELECT"
+      },
+      {
+        "type": "column",
+        "value": "member_name,"
+      },
+      {
+        "type": "column",
+        "value": "join_date,"
+      },
+      {
+        "type": "column",
+        "value": "monthly_fee,"
+      },
+      {
+        "type": "column",
+        "value": "ROUND(AVG(monthly_fee)"
+      },
+      {
+        "type": "keyword",
+        "value": "OVER"
+      },
+      {
+        "type": "keyword",
+        "value": "(ORDER"
+      },
+      {
+        "type": "keyword",
+        "value": "BY"
+      },
+      {
+        "type": "column",
+        "value": "join_date"
+      },
+      {
+        "type": "keyword",
+        "value": "ASC"
+      },
+      {
+        "type": "keyword",
+        "value": "ROWS"
+      },
+      {
+        "type": "keyword",
+        "value": "BETWEEN"
+      },
+      {
+        "type": "column",
+        "value": "1"
+      },
+      {
+        "type": "keyword",
+        "value": "PRECEDING"
+      },
+      {
+        "type": "keyword",
+        "value": "AND"
+      },
+      {
+        "type": "column",
+        "value": "1"
+      },
+      {
+        "type": "keyword",
+        "value": "FOLLOWING),"
+      },
+      {
+        "type": "column",
+        "value": "2)"
+      },
+      {
+        "type": "keyword",
+        "value": "AS"
+      },
+      {
+        "type": "column",
+        "value": "centered_dues_avg"
+      },
+      {
+        "type": "keyword",
+        "value": "FROM"
+      },
+      {
+        "type": "table",
+        "value": "GymMembers;"
+      }
+    ]
+  },
+  {
+    "drillNumber": 1458,
+    "subcluster": "15.6 Centered Moving Averages (ROWS BETWEEN 1 PRECEDING AND 1 FOLLOWING)",
+    "level": "Level 3 (Centered Moving Average)",
+    "title": "Syntax #1458: Compute a centered moving average of movie star ratings",
+    "table": "MovieReviews",
+    "scenario": "Compute a centered moving average of movie star ratings.",
+    "businessObjective": "Compute a centered moving average of movie star ratings.",
+    "schemaSnippet": "MovieReviews analytical schema",
+    "targetQuery": "SELECT movie_title, review_date, star_rating,\n  ROUND(AVG(star_rating) OVER (ORDER BY review_date ASC ROWS BETWEEN 1 PRECEDING AND 1 FOLLOWING), 2) AS centered_star_avg\nFROM MovieReviews;",
+    "syntaxBlueprint": "SELECT col1, date_col, metric,\n  ROUND(AVG(metric) OVER (ORDER BY date_col ASC ROWS BETWEEN 1 PRECEDING AND 1 FOLLOWING), 2) AS centered_avg\nFROM table_name;",
+    "syntaxRule": "'ROWS BETWEEN 1 PRECEDING AND 1 FOLLOWING' looks 1 row behind AND 1 row ahead, producing a symmetrical, centered moving average.",
+    "syntaxTrap": "Centered moving averages cannot be computed in real-time streaming because future rows haven't arrived yet; they are strictly historical analytics tools.",
+    "eli5Story": "Analytical Window Functions on MovieReviews: Compute a centered moving average of movie star ratings.",
+    "commonMistakes": "Omitting ORDER BY inside OVER() for running totals, confusing PARTITION BY with GROUP BY, or attempting to filter window functions in WHERE without a CTE wrapper.",
+    "learningOutcomes": "Mastered 15.6 Centered Moving Averages (ROWS BETWEEN 1 PRECEDING AND 1 FOLLOWING) on MovieReviews.",
+    "challengeSlots": [
+      {
+        "type": "keyword",
+        "value": "SELECT"
+      },
+      {
+        "type": "column",
+        "value": "movie_title,"
+      },
+      {
+        "type": "column",
+        "value": "review_date,"
+      },
+      {
+        "type": "column",
+        "value": "star_rating,"
+      },
+      {
+        "type": "column",
+        "value": "ROUND(AVG(star_rating)"
+      },
+      {
+        "type": "keyword",
+        "value": "OVER"
+      },
+      {
+        "type": "keyword",
+        "value": "(ORDER"
+      },
+      {
+        "type": "keyword",
+        "value": "BY"
+      },
+      {
+        "type": "column",
+        "value": "review_date"
+      },
+      {
+        "type": "keyword",
+        "value": "ASC"
+      },
+      {
+        "type": "keyword",
+        "value": "ROWS"
+      },
+      {
+        "type": "keyword",
+        "value": "BETWEEN"
+      },
+      {
+        "type": "column",
+        "value": "1"
+      },
+      {
+        "type": "keyword",
+        "value": "PRECEDING"
+      },
+      {
+        "type": "keyword",
+        "value": "AND"
+      },
+      {
+        "type": "column",
+        "value": "1"
+      },
+      {
+        "type": "keyword",
+        "value": "FOLLOWING),"
+      },
+      {
+        "type": "column",
+        "value": "2)"
+      },
+      {
+        "type": "keyword",
+        "value": "AS"
+      },
+      {
+        "type": "column",
+        "value": "centered_star_avg"
+      },
+      {
+        "type": "keyword",
+        "value": "FROM"
+      },
+      {
+        "type": "table",
+        "value": "MovieReviews;"
+      }
+    ]
+  },
+  {
+    "drillNumber": 1459,
+    "subcluster": "15.6 Centered Moving Averages (ROWS BETWEEN 1 PRECEDING AND 1 FOLLOWING)",
+    "level": "Level 3 (Centered Moving Average)",
+    "title": "Syntax #1459: Calculate a centered moving average of flight ticket fares",
+    "table": "FlightSchedule",
+    "scenario": "Calculate a centered moving average of flight ticket fares.",
+    "businessObjective": "Calculate a centered moving average of flight ticket fares.",
+    "schemaSnippet": "FlightSchedule analytical schema",
+    "targetQuery": "SELECT flight_id, departure_time, ticket_price,\n  ROUND(AVG(ticket_price) OVER (ORDER BY departure_time ASC ROWS BETWEEN 1 PRECEDING AND 1 FOLLOWING), 2) AS centered_fare_avg\nFROM FlightSchedule;",
+    "syntaxBlueprint": "SELECT col1, date_col, metric,\n  ROUND(AVG(metric) OVER (ORDER BY date_col ASC ROWS BETWEEN 1 PRECEDING AND 1 FOLLOWING), 2) AS centered_avg\nFROM table_name;",
+    "syntaxRule": "'ROWS BETWEEN 1 PRECEDING AND 1 FOLLOWING' looks 1 row behind AND 1 row ahead, producing a symmetrical, centered moving average.",
+    "syntaxTrap": "Centered moving averages cannot be computed in real-time streaming because future rows haven't arrived yet; they are strictly historical analytics tools.",
+    "eli5Story": "Analytical Window Functions on FlightSchedule: Calculate a centered moving average of flight ticket fares.",
+    "commonMistakes": "Omitting ORDER BY inside OVER() for running totals, confusing PARTITION BY with GROUP BY, or attempting to filter window functions in WHERE without a CTE wrapper.",
+    "learningOutcomes": "Mastered 15.6 Centered Moving Averages (ROWS BETWEEN 1 PRECEDING AND 1 FOLLOWING) on FlightSchedule.",
+    "challengeSlots": [
+      {
+        "type": "keyword",
+        "value": "SELECT"
+      },
+      {
+        "type": "column",
+        "value": "flight_id,"
+      },
+      {
+        "type": "column",
+        "value": "departure_time,"
+      },
+      {
+        "type": "column",
+        "value": "ticket_price,"
+      },
+      {
+        "type": "column",
+        "value": "ROUND(AVG(ticket_price)"
+      },
+      {
+        "type": "keyword",
+        "value": "OVER"
+      },
+      {
+        "type": "keyword",
+        "value": "(ORDER"
+      },
+      {
+        "type": "keyword",
+        "value": "BY"
+      },
+      {
+        "type": "column",
+        "value": "departure_time"
+      },
+      {
+        "type": "keyword",
+        "value": "ASC"
+      },
+      {
+        "type": "keyword",
+        "value": "ROWS"
+      },
+      {
+        "type": "keyword",
+        "value": "BETWEEN"
+      },
+      {
+        "type": "column",
+        "value": "1"
+      },
+      {
+        "type": "keyword",
+        "value": "PRECEDING"
+      },
+      {
+        "type": "keyword",
+        "value": "AND"
+      },
+      {
+        "type": "column",
+        "value": "1"
+      },
+      {
+        "type": "keyword",
+        "value": "FOLLOWING),"
+      },
+      {
+        "type": "column",
+        "value": "2)"
+      },
+      {
+        "type": "keyword",
+        "value": "AS"
+      },
+      {
+        "type": "column",
+        "value": "centered_fare_avg"
+      },
+      {
+        "type": "keyword",
+        "value": "FROM"
+      },
+      {
+        "type": "table",
+        "value": "FlightSchedule;"
+      }
+    ]
+  },
+  {
+    "drillNumber": 1460,
+    "subcluster": "15.6 Centered Moving Averages (ROWS BETWEEN 1 PRECEDING AND 1 FOLLOWING)",
+    "level": "Level 3 (Centered Moving Average)",
+    "title": "Syntax #1460: Calculate a centered moving average weight across veterinary visits for each pet",
+    "table": "PetClinic",
+    "scenario": "Calculate a centered moving average weight across veterinary visits for each pet.",
+    "businessObjective": "Calculate a centered moving average weight across veterinary visits for each pet.",
+    "schemaSnippet": "PetClinic analytical schema",
+    "targetQuery": "SELECT pet_name, visit_date, weight_kg,\n  ROUND(AVG(weight_kg) OVER (PARTITION BY pet_name ORDER BY visit_date ASC ROWS BETWEEN 1 PRECEDING AND 1 FOLLOWING), 2) AS centered_weight_avg\nFROM PetClinic;",
+    "syntaxBlueprint": "SELECT col1, date_col, metric,\n  ROUND(AVG(metric) OVER (ORDER BY date_col ASC ROWS BETWEEN 1 PRECEDING AND 1 FOLLOWING), 2) AS centered_avg\nFROM table_name;",
+    "syntaxRule": "'ROWS BETWEEN 1 PRECEDING AND 1 FOLLOWING' looks 1 row behind AND 1 row ahead, producing a symmetrical, centered moving average.",
+    "syntaxTrap": "Centered moving averages cannot be computed in real-time streaming because future rows haven't arrived yet; they are strictly historical analytics tools.",
+    "eli5Story": "Analytical Window Functions on PetClinic: Calculate a centered moving average weight across veterinary visits for each pet.",
+    "commonMistakes": "Omitting ORDER BY inside OVER() for running totals, confusing PARTITION BY with GROUP BY, or attempting to filter window functions in WHERE without a CTE wrapper.",
+    "learningOutcomes": "Mastered 15.6 Centered Moving Averages (ROWS BETWEEN 1 PRECEDING AND 1 FOLLOWING) on PetClinic.",
+    "challengeSlots": [
+      {
+        "type": "keyword",
+        "value": "SELECT"
+      },
+      {
+        "type": "column",
+        "value": "pet_name,"
+      },
+      {
+        "type": "column",
+        "value": "visit_date,"
+      },
+      {
+        "type": "column",
+        "value": "weight_kg,"
+      },
+      {
+        "type": "column",
+        "value": "ROUND(AVG(weight_kg)"
+      },
+      {
+        "type": "keyword",
+        "value": "OVER"
+      },
+      {
+        "type": "keyword",
+        "value": "(PARTITION"
+      },
+      {
+        "type": "keyword",
+        "value": "BY"
+      },
+      {
+        "type": "column",
+        "value": "pet_name"
+      },
+      {
+        "type": "keyword",
+        "value": "ORDER"
+      },
+      {
+        "type": "keyword",
+        "value": "BY"
+      },
+      {
+        "type": "column",
+        "value": "visit_date"
+      },
+      {
+        "type": "keyword",
+        "value": "ASC"
+      },
+      {
+        "type": "keyword",
+        "value": "ROWS"
+      },
+      {
+        "type": "keyword",
+        "value": "BETWEEN"
+      },
+      {
+        "type": "column",
+        "value": "1"
+      },
+      {
+        "type": "keyword",
+        "value": "PRECEDING"
+      },
+      {
+        "type": "keyword",
+        "value": "AND"
+      },
+      {
+        "type": "column",
+        "value": "1"
+      },
+      {
+        "type": "keyword",
+        "value": "FOLLOWING),"
+      },
+      {
+        "type": "column",
+        "value": "2)"
+      },
+      {
+        "type": "keyword",
+        "value": "AS"
+      },
+      {
+        "type": "column",
+        "value": "centered_weight_avg"
+      },
+      {
+        "type": "keyword",
+        "value": "FROM"
+      },
+      {
+        "type": "table",
+        "value": "PetClinic;"
+      }
+    ]
+  },
+  {
+    "drillNumber": 1461,
+    "subcluster": "15.7 Unbounded Total as Denominator (Percentage of Total)",
+    "level": "Level 2 (Ratio of Total)",
+    "title": "Syntax #1461: Calculate each order's percentage contribution to the company's total revenue",
+    "table": "Orders",
+    "scenario": "Calculate each order's percentage contribution to the company's total revenue.",
+    "businessObjective": "Calculate each order's percentage contribution to the company's total revenue.",
+    "schemaSnippet": "Orders analytical schema",
+    "targetQuery": "SELECT order_id, total_amount,\n  ROUND(total_amount / SUM(total_amount) OVER () * 100, 2) AS pct_of_total_revenue\nFROM Orders;",
+    "syntaxBlueprint": "SELECT col1, metric,\n  ROUND(metric / SUM(metric) OVER () * 100, 2) AS pct_of_global_total\nFROM table_name;",
+    "syntaxRule": "'SUM(col) OVER ()' without PARTITION BY or ORDER BY returns the grand total of the entire table on every single row, enabling instant ratio-to-total math.",
+    "syntaxTrap": "If you add ORDER BY inside OVER(), it turns into a running sum instead of the grand total!",
+    "eli5Story": "Analytical Window Functions on Orders: Calculate each order's percentage contribution to the company's total revenue.",
+    "commonMistakes": "Omitting ORDER BY inside OVER() for running totals, confusing PARTITION BY with GROUP BY, or attempting to filter window functions in WHERE without a CTE wrapper.",
+    "learningOutcomes": "Mastered 15.7 Unbounded Total as Denominator (Percentage of Total) on Orders.",
+    "challengeSlots": [
+      {
+        "type": "keyword",
+        "value": "SELECT"
+      },
+      {
+        "type": "column",
+        "value": "order_id,"
+      },
+      {
+        "type": "column",
+        "value": "total_amount,"
+      },
+      {
+        "type": "column",
+        "value": "ROUND(total_amount"
+      },
+      {
+        "type": "column",
+        "value": "/"
+      },
+      {
+        "type": "column",
+        "value": "SUM(total_amount)"
+      },
+      {
+        "type": "keyword",
+        "value": "OVER"
+      },
+      {
+        "type": "column",
+        "value": "()"
+      },
+      {
+        "type": "column",
+        "value": "*"
+      },
+      {
+        "type": "column",
+        "value": "100,"
+      },
+      {
+        "type": "column",
+        "value": "2)"
+      },
+      {
+        "type": "keyword",
+        "value": "AS"
+      },
+      {
+        "type": "column",
+        "value": "pct_of_total_revenue"
+      },
+      {
+        "type": "keyword",
+        "value": "FROM"
+      },
+      {
+        "type": "table",
+        "value": "Orders;"
+      }
+    ]
+  },
+  {
+    "drillNumber": 1462,
+    "subcluster": "15.7 Unbounded Total as Denominator (Percentage of Total)",
+    "level": "Level 2 (Ratio of Total)",
+    "title": "Syntax #1462: Calculate what percentage of total catalog inventory value each book represents",
+    "table": "Books",
+    "scenario": "Calculate what percentage of total catalog inventory value each book represents.",
+    "businessObjective": "Calculate what percentage of total catalog inventory value each book represents.",
+    "schemaSnippet": "Books analytical schema",
+    "targetQuery": "SELECT title, price,\n  ROUND(price / SUM(price) OVER () * 100, 2) AS pct_of_catalog_value\nFROM Books;",
+    "syntaxBlueprint": "SELECT col1, metric,\n  ROUND(metric / SUM(metric) OVER () * 100, 2) AS pct_of_global_total\nFROM table_name;",
+    "syntaxRule": "'SUM(col) OVER ()' without PARTITION BY or ORDER BY returns the grand total of the entire table on every single row, enabling instant ratio-to-total math.",
+    "syntaxTrap": "If you add ORDER BY inside OVER(), it turns into a running sum instead of the grand total!",
+    "eli5Story": "Analytical Window Functions on Books: Calculate what percentage of total catalog inventory value each book represents.",
+    "commonMistakes": "Omitting ORDER BY inside OVER() for running totals, confusing PARTITION BY with GROUP BY, or attempting to filter window functions in WHERE without a CTE wrapper.",
+    "learningOutcomes": "Mastered 15.7 Unbounded Total as Denominator (Percentage of Total) on Books.",
+    "challengeSlots": [
+      {
+        "type": "keyword",
+        "value": "SELECT"
+      },
+      {
+        "type": "column",
+        "value": "title,"
+      },
+      {
+        "type": "column",
+        "value": "price,"
+      },
+      {
+        "type": "column",
+        "value": "ROUND(price"
+      },
+      {
+        "type": "column",
+        "value": "/"
+      },
+      {
+        "type": "column",
+        "value": "SUM(price)"
+      },
+      {
+        "type": "keyword",
+        "value": "OVER"
+      },
+      {
+        "type": "column",
+        "value": "()"
+      },
+      {
+        "type": "column",
+        "value": "*"
+      },
+      {
+        "type": "column",
+        "value": "100,"
+      },
+      {
+        "type": "column",
+        "value": "2)"
+      },
+      {
+        "type": "keyword",
+        "value": "AS"
+      },
+      {
+        "type": "column",
+        "value": "pct_of_catalog_value"
+      },
+      {
+        "type": "keyword",
+        "value": "FROM"
+      },
+      {
+        "type": "table",
+        "value": "Books;"
+      }
+    ]
+  },
+  {
+    "drillNumber": 1463,
+    "subcluster": "15.7 Unbounded Total as Denominator (Percentage of Total)",
+    "level": "Level 2 (Ratio of Total)",
+    "title": "Syntax #1463: Calculate each employee's salary as a percentage of total corporate payroll",
+    "table": "Employees",
+    "scenario": "Calculate each employee's salary as a percentage of total corporate payroll.",
+    "businessObjective": "Calculate each employee's salary as a percentage of total corporate payroll.",
+    "schemaSnippet": "Employees analytical schema",
+    "targetQuery": "SELECT first_name, salary,\n  ROUND(salary / SUM(salary) OVER () * 100, 2) AS pct_of_total_payroll\nFROM Employees;",
+    "syntaxBlueprint": "SELECT col1, metric,\n  ROUND(metric / SUM(metric) OVER () * 100, 2) AS pct_of_global_total\nFROM table_name;",
+    "syntaxRule": "'SUM(col) OVER ()' without PARTITION BY or ORDER BY returns the grand total of the entire table on every single row, enabling instant ratio-to-total math.",
+    "syntaxTrap": "If you add ORDER BY inside OVER(), it turns into a running sum instead of the grand total!",
+    "eli5Story": "Analytical Window Functions on Employees: Calculate each employee's salary as a percentage of total corporate payroll.",
+    "commonMistakes": "Omitting ORDER BY inside OVER() for running totals, confusing PARTITION BY with GROUP BY, or attempting to filter window functions in WHERE without a CTE wrapper.",
+    "learningOutcomes": "Mastered 15.7 Unbounded Total as Denominator (Percentage of Total) on Employees.",
+    "challengeSlots": [
+      {
+        "type": "keyword",
+        "value": "SELECT"
+      },
+      {
+        "type": "column",
+        "value": "first_name,"
+      },
+      {
+        "type": "column",
+        "value": "salary,"
+      },
+      {
+        "type": "column",
+        "value": "ROUND(salary"
+      },
+      {
+        "type": "column",
+        "value": "/"
+      },
+      {
+        "type": "column",
+        "value": "SUM(salary)"
+      },
+      {
+        "type": "keyword",
+        "value": "OVER"
+      },
+      {
+        "type": "column",
+        "value": "()"
+      },
+      {
+        "type": "column",
+        "value": "*"
+      },
+      {
+        "type": "column",
+        "value": "100,"
+      },
+      {
+        "type": "column",
+        "value": "2)"
+      },
+      {
+        "type": "keyword",
+        "value": "AS"
+      },
+      {
+        "type": "column",
+        "value": "pct_of_total_payroll"
+      },
+      {
+        "type": "keyword",
+        "value": "FROM"
+      },
+      {
+        "type": "table",
+        "value": "Employees;"
+      }
+    ]
+  },
+  {
+    "drillNumber": 1464,
+    "subcluster": "15.7 Unbounded Total as Denominator (Percentage of Total)",
+    "level": "Level 2 (Ratio of Total)",
+    "title": "Syntax #1464: Calculate each item's share of total warehouse inventory stock units",
+    "table": "GroceryItems",
+    "scenario": "Calculate each item's share of total warehouse inventory stock units.",
+    "businessObjective": "Calculate each item's share of total warehouse inventory stock units.",
+    "schemaSnippet": "GroceryItems analytical schema",
+    "targetQuery": "SELECT item_name, stock_qty,\n  ROUND(stock_qty / SUM(stock_qty) OVER () * 100, 2) AS pct_of_total_stock\nFROM GroceryItems;",
+    "syntaxBlueprint": "SELECT col1, metric,\n  ROUND(metric / SUM(metric) OVER () * 100, 2) AS pct_of_global_total\nFROM table_name;",
+    "syntaxRule": "'SUM(col) OVER ()' without PARTITION BY or ORDER BY returns the grand total of the entire table on every single row, enabling instant ratio-to-total math.",
+    "syntaxTrap": "If you add ORDER BY inside OVER(), it turns into a running sum instead of the grand total!",
+    "eli5Story": "Analytical Window Functions on GroceryItems: Calculate each item's share of total warehouse inventory stock units.",
+    "commonMistakes": "Omitting ORDER BY inside OVER() for running totals, confusing PARTITION BY with GROUP BY, or attempting to filter window functions in WHERE without a CTE wrapper.",
+    "learningOutcomes": "Mastered 15.7 Unbounded Total as Denominator (Percentage of Total) on GroceryItems.",
+    "challengeSlots": [
+      {
+        "type": "keyword",
+        "value": "SELECT"
+      },
+      {
+        "type": "column",
+        "value": "item_name,"
+      },
+      {
+        "type": "column",
+        "value": "stock_qty,"
+      },
+      {
+        "type": "column",
+        "value": "ROUND(stock_qty"
+      },
+      {
+        "type": "column",
+        "value": "/"
+      },
+      {
+        "type": "column",
+        "value": "SUM(stock_qty)"
+      },
+      {
+        "type": "keyword",
+        "value": "OVER"
+      },
+      {
+        "type": "column",
+        "value": "()"
+      },
+      {
+        "type": "column",
+        "value": "*"
+      },
+      {
+        "type": "column",
+        "value": "100,"
+      },
+      {
+        "type": "column",
+        "value": "2)"
+      },
+      {
+        "type": "keyword",
+        "value": "AS"
+      },
+      {
+        "type": "column",
+        "value": "pct_of_total_stock"
+      },
+      {
+        "type": "keyword",
+        "value": "FROM"
+      },
+      {
+        "type": "table",
+        "value": "GroceryItems;"
+      }
+    ]
+  },
+  {
+    "drillNumber": 1465,
+    "subcluster": "15.7 Unbounded Total as Denominator (Percentage of Total)",
+    "level": "Level 2 (Ratio of Total)",
+    "title": "Syntax #1465: Calculate each track's percentage share of the total library audio runtime",
+    "table": "MusicTracks",
+    "scenario": "Calculate each track's percentage share of the total library audio runtime.",
+    "businessObjective": "Calculate each track's percentage share of the total library audio runtime.",
+    "schemaSnippet": "MusicTracks analytical schema",
+    "targetQuery": "SELECT track_title, duration_seconds,\n  ROUND(duration_seconds / SUM(duration_seconds) OVER () * 100, 2) AS pct_of_total_library_runtime\nFROM MusicTracks;",
+    "syntaxBlueprint": "SELECT col1, metric,\n  ROUND(metric / SUM(metric) OVER () * 100, 2) AS pct_of_global_total\nFROM table_name;",
+    "syntaxRule": "'SUM(col) OVER ()' without PARTITION BY or ORDER BY returns the grand total of the entire table on every single row, enabling instant ratio-to-total math.",
+    "syntaxTrap": "If you add ORDER BY inside OVER(), it turns into a running sum instead of the grand total!",
+    "eli5Story": "Analytical Window Functions on MusicTracks: Calculate each track's percentage share of the total library audio runtime.",
+    "commonMistakes": "Omitting ORDER BY inside OVER() for running totals, confusing PARTITION BY with GROUP BY, or attempting to filter window functions in WHERE without a CTE wrapper.",
+    "learningOutcomes": "Mastered 15.7 Unbounded Total as Denominator (Percentage of Total) on MusicTracks.",
+    "challengeSlots": [
+      {
+        "type": "keyword",
+        "value": "SELECT"
+      },
+      {
+        "type": "column",
+        "value": "track_title,"
+      },
+      {
+        "type": "column",
+        "value": "duration_seconds,"
+      },
+      {
+        "type": "column",
+        "value": "ROUND(duration_seconds"
+      },
+      {
+        "type": "column",
+        "value": "/"
+      },
+      {
+        "type": "column",
+        "value": "SUM(duration_seconds)"
+      },
+      {
+        "type": "keyword",
+        "value": "OVER"
+      },
+      {
+        "type": "column",
+        "value": "()"
+      },
+      {
+        "type": "column",
+        "value": "*"
+      },
+      {
+        "type": "column",
+        "value": "100,"
+      },
+      {
+        "type": "column",
+        "value": "2)"
+      },
+      {
+        "type": "keyword",
+        "value": "AS"
+      },
+      {
+        "type": "column",
+        "value": "pct_of_total_library_runtime"
+      },
+      {
+        "type": "keyword",
+        "value": "FROM"
+      },
+      {
+        "type": "table",
+        "value": "MusicTracks;"
+      }
+    ]
+  },
+  {
+    "drillNumber": 1466,
+    "subcluster": "15.7 Unbounded Total as Denominator (Percentage of Total)",
+    "level": "Level 2 (Ratio of Total)",
+    "title": "Syntax #1466: Calculate each member's percentage contribution to monthly recurring revenue",
+    "table": "GymMembers",
+    "scenario": "Calculate each member's percentage contribution to monthly recurring revenue.",
+    "businessObjective": "Calculate each member's percentage contribution to monthly recurring revenue.",
+    "schemaSnippet": "GymMembers analytical schema",
+    "targetQuery": "SELECT member_name, monthly_fee,\n  ROUND(monthly_fee / SUM(monthly_fee) OVER () * 100, 2) AS pct_of_total_mrr\nFROM GymMembers;",
+    "syntaxBlueprint": "SELECT col1, metric,\n  ROUND(metric / SUM(metric) OVER () * 100, 2) AS pct_of_global_total\nFROM table_name;",
+    "syntaxRule": "'SUM(col) OVER ()' without PARTITION BY or ORDER BY returns the grand total of the entire table on every single row, enabling instant ratio-to-total math.",
+    "syntaxTrap": "If you add ORDER BY inside OVER(), it turns into a running sum instead of the grand total!",
+    "eli5Story": "Analytical Window Functions on GymMembers: Calculate each member's percentage contribution to monthly recurring revenue.",
+    "commonMistakes": "Omitting ORDER BY inside OVER() for running totals, confusing PARTITION BY with GROUP BY, or attempting to filter window functions in WHERE without a CTE wrapper.",
+    "learningOutcomes": "Mastered 15.7 Unbounded Total as Denominator (Percentage of Total) on GymMembers.",
+    "challengeSlots": [
+      {
+        "type": "keyword",
+        "value": "SELECT"
+      },
+      {
+        "type": "column",
+        "value": "member_name,"
+      },
+      {
+        "type": "column",
+        "value": "monthly_fee,"
+      },
+      {
+        "type": "column",
+        "value": "ROUND(monthly_fee"
+      },
+      {
+        "type": "column",
+        "value": "/"
+      },
+      {
+        "type": "column",
+        "value": "SUM(monthly_fee)"
+      },
+      {
+        "type": "keyword",
+        "value": "OVER"
+      },
+      {
+        "type": "column",
+        "value": "()"
+      },
+      {
+        "type": "column",
+        "value": "*"
+      },
+      {
+        "type": "column",
+        "value": "100,"
+      },
+      {
+        "type": "column",
+        "value": "2)"
+      },
+      {
+        "type": "keyword",
+        "value": "AS"
+      },
+      {
+        "type": "column",
+        "value": "pct_of_total_mrr"
+      },
+      {
+        "type": "keyword",
+        "value": "FROM"
+      },
+      {
+        "type": "table",
+        "value": "GymMembers;"
+      }
+    ]
+  },
+  {
+    "drillNumber": 1467,
+    "subcluster": "15.7 Unbounded Total as Denominator (Percentage of Total)",
+    "level": "Level 2 (Ratio of Total)",
+    "title": "Syntax #1467: Calculate each film review's percentage share of all stars awarded",
+    "table": "MovieReviews",
+    "scenario": "Calculate each film review's percentage share of all stars awarded.",
+    "businessObjective": "Calculate each film review's percentage share of all stars awarded.",
+    "schemaSnippet": "MovieReviews analytical schema",
+    "targetQuery": "SELECT movie_title, star_rating,\n  ROUND(star_rating / SUM(star_rating) OVER () * 100, 2) AS pct_of_total_stars\nFROM MovieReviews;",
+    "syntaxBlueprint": "SELECT col1, metric,\n  ROUND(metric / SUM(metric) OVER () * 100, 2) AS pct_of_global_total\nFROM table_name;",
+    "syntaxRule": "'SUM(col) OVER ()' without PARTITION BY or ORDER BY returns the grand total of the entire table on every single row, enabling instant ratio-to-total math.",
+    "syntaxTrap": "If you add ORDER BY inside OVER(), it turns into a running sum instead of the grand total!",
+    "eli5Story": "Analytical Window Functions on MovieReviews: Calculate each film review's percentage share of all stars awarded.",
+    "commonMistakes": "Omitting ORDER BY inside OVER() for running totals, confusing PARTITION BY with GROUP BY, or attempting to filter window functions in WHERE without a CTE wrapper.",
+    "learningOutcomes": "Mastered 15.7 Unbounded Total as Denominator (Percentage of Total) on MovieReviews.",
+    "challengeSlots": [
+      {
+        "type": "keyword",
+        "value": "SELECT"
+      },
+      {
+        "type": "column",
+        "value": "movie_title,"
+      },
+      {
+        "type": "column",
+        "value": "star_rating,"
+      },
+      {
+        "type": "column",
+        "value": "ROUND(star_rating"
+      },
+      {
+        "type": "column",
+        "value": "/"
+      },
+      {
+        "type": "column",
+        "value": "SUM(star_rating)"
+      },
+      {
+        "type": "keyword",
+        "value": "OVER"
+      },
+      {
+        "type": "column",
+        "value": "()"
+      },
+      {
+        "type": "column",
+        "value": "*"
+      },
+      {
+        "type": "column",
+        "value": "100,"
+      },
+      {
+        "type": "column",
+        "value": "2)"
+      },
+      {
+        "type": "keyword",
+        "value": "AS"
+      },
+      {
+        "type": "column",
+        "value": "pct_of_total_stars"
+      },
+      {
+        "type": "keyword",
+        "value": "FROM"
+      },
+      {
+        "type": "table",
+        "value": "MovieReviews;"
+      }
+    ]
+  },
+  {
+    "drillNumber": 1468,
+    "subcluster": "15.7 Unbounded Total as Denominator (Percentage of Total)",
+    "level": "Level 2 (Ratio of Total)",
+    "title": "Syntax #1468: Calculate each flight's percentage share of total airline network miles",
+    "table": "FlightSchedule",
+    "scenario": "Calculate each flight's percentage share of total airline network miles.",
+    "businessObjective": "Calculate each flight's percentage share of total airline network miles.",
+    "schemaSnippet": "FlightSchedule analytical schema",
+    "targetQuery": "SELECT flight_id, distance_miles,\n  ROUND(distance_miles / SUM(distance_miles) OVER () * 100, 2) AS pct_of_total_network_distance\nFROM FlightSchedule;",
+    "syntaxBlueprint": "SELECT col1, metric,\n  ROUND(metric / SUM(metric) OVER () * 100, 2) AS pct_of_global_total\nFROM table_name;",
+    "syntaxRule": "'SUM(col) OVER ()' without PARTITION BY or ORDER BY returns the grand total of the entire table on every single row, enabling instant ratio-to-total math.",
+    "syntaxTrap": "If you add ORDER BY inside OVER(), it turns into a running sum instead of the grand total!",
+    "eli5Story": "Analytical Window Functions on FlightSchedule: Calculate each flight's percentage share of total airline network miles.",
+    "commonMistakes": "Omitting ORDER BY inside OVER() for running totals, confusing PARTITION BY with GROUP BY, or attempting to filter window functions in WHERE without a CTE wrapper.",
+    "learningOutcomes": "Mastered 15.7 Unbounded Total as Denominator (Percentage of Total) on FlightSchedule.",
+    "challengeSlots": [
+      {
+        "type": "keyword",
+        "value": "SELECT"
+      },
+      {
+        "type": "column",
+        "value": "flight_id,"
+      },
+      {
+        "type": "column",
+        "value": "distance_miles,"
+      },
+      {
+        "type": "column",
+        "value": "ROUND(distance_miles"
+      },
+      {
+        "type": "column",
+        "value": "/"
+      },
+      {
+        "type": "column",
+        "value": "SUM(distance_miles)"
+      },
+      {
+        "type": "keyword",
+        "value": "OVER"
+      },
+      {
+        "type": "column",
+        "value": "()"
+      },
+      {
+        "type": "column",
+        "value": "*"
+      },
+      {
+        "type": "column",
+        "value": "100,"
+      },
+      {
+        "type": "column",
+        "value": "2)"
+      },
+      {
+        "type": "keyword",
+        "value": "AS"
+      },
+      {
+        "type": "column",
+        "value": "pct_of_total_network_distance"
+      },
+      {
+        "type": "keyword",
+        "value": "FROM"
+      },
+      {
+        "type": "table",
+        "value": "FlightSchedule;"
+      }
+    ]
+  },
+  {
+    "drillNumber": 1469,
+    "subcluster": "15.7 Unbounded Total as Denominator (Percentage of Total)",
+    "level": "Level 2 (Ratio of Total)",
+    "title": "Syntax #1469: Calculate each student's share of total cumulative academic GPA points",
+    "table": "Students",
+    "scenario": "Calculate each student's share of total cumulative academic GPA points.",
+    "businessObjective": "Calculate each student's share of total cumulative academic GPA points.",
+    "schemaSnippet": "Students analytical schema",
+    "targetQuery": "SELECT full_name, gpa,\n  ROUND(gpa / SUM(gpa) OVER () * 100, 2) AS pct_of_total_gpa_points\nFROM Students;",
+    "syntaxBlueprint": "SELECT col1, metric,\n  ROUND(metric / SUM(metric) OVER () * 100, 2) AS pct_of_global_total\nFROM table_name;",
+    "syntaxRule": "'SUM(col) OVER ()' without PARTITION BY or ORDER BY returns the grand total of the entire table on every single row, enabling instant ratio-to-total math.",
+    "syntaxTrap": "If you add ORDER BY inside OVER(), it turns into a running sum instead of the grand total!",
+    "eli5Story": "Analytical Window Functions on Students: Calculate each student's share of total cumulative academic GPA points.",
+    "commonMistakes": "Omitting ORDER BY inside OVER() for running totals, confusing PARTITION BY with GROUP BY, or attempting to filter window functions in WHERE without a CTE wrapper.",
+    "learningOutcomes": "Mastered 15.7 Unbounded Total as Denominator (Percentage of Total) on Students.",
+    "challengeSlots": [
+      {
+        "type": "keyword",
+        "value": "SELECT"
+      },
+      {
+        "type": "column",
+        "value": "full_name,"
+      },
+      {
+        "type": "column",
+        "value": "gpa,"
+      },
+      {
+        "type": "column",
+        "value": "ROUND(gpa"
+      },
+      {
+        "type": "column",
+        "value": "/"
+      },
+      {
+        "type": "column",
+        "value": "SUM(gpa)"
+      },
+      {
+        "type": "keyword",
+        "value": "OVER"
+      },
+      {
+        "type": "column",
+        "value": "()"
+      },
+      {
+        "type": "column",
+        "value": "*"
+      },
+      {
+        "type": "column",
+        "value": "100,"
+      },
+      {
+        "type": "column",
+        "value": "2)"
+      },
+      {
+        "type": "keyword",
+        "value": "AS"
+      },
+      {
+        "type": "column",
+        "value": "pct_of_total_gpa_points"
+      },
+      {
+        "type": "keyword",
+        "value": "FROM"
+      },
+      {
+        "type": "table",
+        "value": "Students;"
+      }
+    ]
+  },
+  {
+    "drillNumber": 1470,
+    "subcluster": "15.7 Unbounded Total as Denominator (Percentage of Total)",
+    "level": "Level 2 (Ratio of Total)",
+    "title": "Syntax #1470: Calculate each patient's percentage share of total clinic animal patient weight",
+    "table": "PetClinic",
+    "scenario": "Calculate each patient's percentage share of total clinic animal patient weight.",
+    "businessObjective": "Calculate each patient's percentage share of total clinic animal patient weight.",
+    "schemaSnippet": "PetClinic analytical schema",
+    "targetQuery": "SELECT pet_name, weight_kg,\n  ROUND(weight_kg / SUM(weight_kg) OVER () * 100, 2) AS pct_of_total_biomass\nFROM PetClinic;",
+    "syntaxBlueprint": "SELECT col1, metric,\n  ROUND(metric / SUM(metric) OVER () * 100, 2) AS pct_of_global_total\nFROM table_name;",
+    "syntaxRule": "'SUM(col) OVER ()' without PARTITION BY or ORDER BY returns the grand total of the entire table on every single row, enabling instant ratio-to-total math.",
+    "syntaxTrap": "If you add ORDER BY inside OVER(), it turns into a running sum instead of the grand total!",
+    "eli5Story": "Analytical Window Functions on PetClinic: Calculate each patient's percentage share of total clinic animal patient weight.",
+    "commonMistakes": "Omitting ORDER BY inside OVER() for running totals, confusing PARTITION BY with GROUP BY, or attempting to filter window functions in WHERE without a CTE wrapper.",
+    "learningOutcomes": "Mastered 15.7 Unbounded Total as Denominator (Percentage of Total) on PetClinic.",
+    "challengeSlots": [
+      {
+        "type": "keyword",
+        "value": "SELECT"
+      },
+      {
+        "type": "column",
+        "value": "pet_name,"
+      },
+      {
+        "type": "column",
+        "value": "weight_kg,"
+      },
+      {
+        "type": "column",
+        "value": "ROUND(weight_kg"
+      },
+      {
+        "type": "column",
+        "value": "/"
+      },
+      {
+        "type": "column",
+        "value": "SUM(weight_kg)"
+      },
+      {
+        "type": "keyword",
+        "value": "OVER"
+      },
+      {
+        "type": "column",
+        "value": "()"
+      },
+      {
+        "type": "column",
+        "value": "*"
+      },
+      {
+        "type": "column",
+        "value": "100,"
+      },
+      {
+        "type": "column",
+        "value": "2)"
+      },
+      {
+        "type": "keyword",
+        "value": "AS"
+      },
+      {
+        "type": "column",
+        "value": "pct_of_total_biomass"
+      },
+      {
+        "type": "keyword",
+        "value": "FROM"
+      },
+      {
+        "type": "table",
+        "value": "PetClinic;"
+      }
+    ]
+  },
+  {
+    "drillNumber": 1471,
+    "subcluster": "15.8 Category Ratio Denominator (Percentage of Category Total)",
+    "level": "Level 2 (Ratio of Partition)",
+    "title": "Syntax #1471: Calculate each employee's salary as a percentage of their department's total payroll",
+    "table": "Employees",
+    "scenario": "Calculate each employee's salary as a percentage of their department's total payroll.",
+    "businessObjective": "Calculate each employee's salary as a percentage of their department's total payroll.",
+    "schemaSnippet": "Employees analytical schema",
+    "targetQuery": "SELECT first_name, department, salary,\n  ROUND(salary / SUM(salary) OVER (PARTITION BY department) * 100, 2) AS pct_of_dept_payroll\nFROM Employees;",
+    "syntaxBlueprint": "SELECT col1, category, metric,\n  ROUND(metric / SUM(metric) OVER (PARTITION BY category) * 100, 2) AS pct_of_category_total\nFROM table_name;",
+    "syntaxRule": "'SUM(col) OVER (PARTITION BY category)' calculates the group total on every row, enabling percentage-of-department or percentage-of-category calculations.",
+    "syntaxTrap": "Including an ORDER BY inside OVER turns the denominator into a running sum! Keep OVER(PARTITION BY ...) without ORDER BY for totals.",
+    "eli5Story": "Analytical Window Functions on Employees: Calculate each employee's salary as a percentage of their department's total payroll.",
+    "commonMistakes": "Omitting ORDER BY inside OVER() for running totals, confusing PARTITION BY with GROUP BY, or attempting to filter window functions in WHERE without a CTE wrapper.",
+    "learningOutcomes": "Mastered 15.8 Category Ratio Denominator (Percentage of Category Total) on Employees.",
+    "challengeSlots": [
+      {
+        "type": "keyword",
+        "value": "SELECT"
+      },
+      {
+        "type": "column",
+        "value": "first_name,"
+      },
+      {
+        "type": "column",
+        "value": "department,"
+      },
+      {
+        "type": "column",
+        "value": "salary,"
+      },
+      {
+        "type": "column",
+        "value": "ROUND(salary"
+      },
+      {
+        "type": "column",
+        "value": "/"
+      },
+      {
+        "type": "column",
+        "value": "SUM(salary)"
+      },
+      {
+        "type": "keyword",
+        "value": "OVER"
+      },
+      {
+        "type": "keyword",
+        "value": "(PARTITION"
+      },
+      {
+        "type": "keyword",
+        "value": "BY"
+      },
+      {
+        "type": "column",
+        "value": "department)"
+      },
+      {
+        "type": "column",
+        "value": "*"
+      },
+      {
+        "type": "column",
+        "value": "100,"
+      },
+      {
+        "type": "column",
+        "value": "2)"
+      },
+      {
+        "type": "keyword",
+        "value": "AS"
+      },
+      {
+        "type": "column",
+        "value": "pct_of_dept_payroll"
+      },
+      {
+        "type": "keyword",
+        "value": "FROM"
+      },
+      {
+        "type": "table",
+        "value": "Employees;"
+      }
+    ]
+  },
+  {
+    "drillNumber": 1472,
+    "subcluster": "15.8 Category Ratio Denominator (Percentage of Category Total)",
+    "level": "Level 2 (Ratio of Partition)",
+    "title": "Syntax #1472: Calculate what percentage of a genre's total catalog value each book represents",
+    "table": "Books",
+    "scenario": "Calculate what percentage of a genre's total catalog value each book represents.",
+    "businessObjective": "Calculate what percentage of a genre's total catalog value each book represents.",
+    "schemaSnippet": "Books analytical schema",
+    "targetQuery": "SELECT title, genre, price,\n  ROUND(price / SUM(price) OVER (PARTITION BY genre) * 100, 2) AS pct_of_genre_value\nFROM Books;",
+    "syntaxBlueprint": "SELECT col1, category, metric,\n  ROUND(metric / SUM(metric) OVER (PARTITION BY category) * 100, 2) AS pct_of_category_total\nFROM table_name;",
+    "syntaxRule": "'SUM(col) OVER (PARTITION BY category)' calculates the group total on every row, enabling percentage-of-department or percentage-of-category calculations.",
+    "syntaxTrap": "Including an ORDER BY inside OVER turns the denominator into a running sum! Keep OVER(PARTITION BY ...) without ORDER BY for totals.",
+    "eli5Story": "Analytical Window Functions on Books: Calculate what percentage of a genre's total catalog value each book represents.",
+    "commonMistakes": "Omitting ORDER BY inside OVER() for running totals, confusing PARTITION BY with GROUP BY, or attempting to filter window functions in WHERE without a CTE wrapper.",
+    "learningOutcomes": "Mastered 15.8 Category Ratio Denominator (Percentage of Category Total) on Books.",
+    "challengeSlots": [
+      {
+        "type": "keyword",
+        "value": "SELECT"
+      },
+      {
+        "type": "column",
+        "value": "title,"
+      },
+      {
+        "type": "column",
+        "value": "genre,"
+      },
+      {
+        "type": "column",
+        "value": "price,"
+      },
+      {
+        "type": "column",
+        "value": "ROUND(price"
+      },
+      {
+        "type": "column",
+        "value": "/"
+      },
+      {
+        "type": "column",
+        "value": "SUM(price)"
+      },
+      {
+        "type": "keyword",
+        "value": "OVER"
+      },
+      {
+        "type": "keyword",
+        "value": "(PARTITION"
+      },
+      {
+        "type": "keyword",
+        "value": "BY"
+      },
+      {
+        "type": "column",
+        "value": "genre)"
+      },
+      {
+        "type": "column",
+        "value": "*"
+      },
+      {
+        "type": "column",
+        "value": "100,"
+      },
+      {
+        "type": "column",
+        "value": "2)"
+      },
+      {
+        "type": "keyword",
+        "value": "AS"
+      },
+      {
+        "type": "column",
+        "value": "pct_of_genre_value"
+      },
+      {
+        "type": "keyword",
+        "value": "FROM"
+      },
+      {
+        "type": "table",
+        "value": "Books;"
+      }
+    ]
+  },
+  {
+    "drillNumber": 1473,
+    "subcluster": "15.8 Category Ratio Denominator (Percentage of Category Total)",
+    "level": "Level 2 (Ratio of Partition)",
+    "title": "Syntax #1473: Calculate each product's share of inventory units within its grocery category",
+    "table": "GroceryItems",
+    "scenario": "Calculate each product's share of inventory units within its grocery category.",
+    "businessObjective": "Calculate each product's share of inventory units within its grocery category.",
+    "schemaSnippet": "GroceryItems analytical schema",
+    "targetQuery": "SELECT item_name, category, stock_qty,\n  ROUND(stock_qty / SUM(stock_qty) OVER (PARTITION BY category) * 100, 2) AS pct_of_category_inventory\nFROM GroceryItems;",
+    "syntaxBlueprint": "SELECT col1, category, metric,\n  ROUND(metric / SUM(metric) OVER (PARTITION BY category) * 100, 2) AS pct_of_category_total\nFROM table_name;",
+    "syntaxRule": "'SUM(col) OVER (PARTITION BY category)' calculates the group total on every row, enabling percentage-of-department or percentage-of-category calculations.",
+    "syntaxTrap": "Including an ORDER BY inside OVER turns the denominator into a running sum! Keep OVER(PARTITION BY ...) without ORDER BY for totals.",
+    "eli5Story": "Analytical Window Functions on GroceryItems: Calculate each product's share of inventory units within its grocery category.",
+    "commonMistakes": "Omitting ORDER BY inside OVER() for running totals, confusing PARTITION BY with GROUP BY, or attempting to filter window functions in WHERE without a CTE wrapper.",
+    "learningOutcomes": "Mastered 15.8 Category Ratio Denominator (Percentage of Category Total) on GroceryItems.",
+    "challengeSlots": [
+      {
+        "type": "keyword",
+        "value": "SELECT"
+      },
+      {
+        "type": "column",
+        "value": "item_name,"
+      },
+      {
+        "type": "column",
+        "value": "category,"
+      },
+      {
+        "type": "column",
+        "value": "stock_qty,"
+      },
+      {
+        "type": "column",
+        "value": "ROUND(stock_qty"
+      },
+      {
+        "type": "column",
+        "value": "/"
+      },
+      {
+        "type": "column",
+        "value": "SUM(stock_qty)"
+      },
+      {
+        "type": "keyword",
+        "value": "OVER"
+      },
+      {
+        "type": "keyword",
+        "value": "(PARTITION"
+      },
+      {
+        "type": "keyword",
+        "value": "BY"
+      },
+      {
+        "type": "column",
+        "value": "category)"
+      },
+      {
+        "type": "column",
+        "value": "*"
+      },
+      {
+        "type": "column",
+        "value": "100,"
+      },
+      {
+        "type": "column",
+        "value": "2)"
+      },
+      {
+        "type": "keyword",
+        "value": "AS"
+      },
+      {
+        "type": "column",
+        "value": "pct_of_category_inventory"
+      },
+      {
+        "type": "keyword",
+        "value": "FROM"
+      },
+      {
+        "type": "table",
+        "value": "GroceryItems;"
+      }
+    ]
+  },
+  {
+    "drillNumber": 1474,
+    "subcluster": "15.8 Category Ratio Denominator (Percentage of Category Total)",
+    "level": "Level 2 (Ratio of Partition)",
+    "title": "Syntax #1474: Calculate each order's percentage contribution to its destination city's revenue",
+    "table": "Orders",
+    "scenario": "Calculate each order's percentage contribution to its destination city's revenue.",
+    "businessObjective": "Calculate each order's percentage contribution to its destination city's revenue.",
+    "schemaSnippet": "Orders analytical schema",
+    "targetQuery": "SELECT order_id, shipping_city, total_amount,\n  ROUND(total_amount / SUM(total_amount) OVER (PARTITION BY shipping_city) * 100, 2) AS pct_of_city_sales\nFROM Orders;",
+    "syntaxBlueprint": "SELECT col1, category, metric,\n  ROUND(metric / SUM(metric) OVER (PARTITION BY category) * 100, 2) AS pct_of_category_total\nFROM table_name;",
+    "syntaxRule": "'SUM(col) OVER (PARTITION BY category)' calculates the group total on every row, enabling percentage-of-department or percentage-of-category calculations.",
+    "syntaxTrap": "Including an ORDER BY inside OVER turns the denominator into a running sum! Keep OVER(PARTITION BY ...) without ORDER BY for totals.",
+    "eli5Story": "Analytical Window Functions on Orders: Calculate each order's percentage contribution to its destination city's revenue.",
+    "commonMistakes": "Omitting ORDER BY inside OVER() for running totals, confusing PARTITION BY with GROUP BY, or attempting to filter window functions in WHERE without a CTE wrapper.",
+    "learningOutcomes": "Mastered 15.8 Category Ratio Denominator (Percentage of Category Total) on Orders.",
+    "challengeSlots": [
+      {
+        "type": "keyword",
+        "value": "SELECT"
+      },
+      {
+        "type": "column",
+        "value": "order_id,"
+      },
+      {
+        "type": "column",
+        "value": "shipping_city,"
+      },
+      {
+        "type": "column",
+        "value": "total_amount,"
+      },
+      {
+        "type": "column",
+        "value": "ROUND(total_amount"
+      },
+      {
+        "type": "column",
+        "value": "/"
+      },
+      {
+        "type": "column",
+        "value": "SUM(total_amount)"
+      },
+      {
+        "type": "keyword",
+        "value": "OVER"
+      },
+      {
+        "type": "keyword",
+        "value": "(PARTITION"
+      },
+      {
+        "type": "keyword",
+        "value": "BY"
+      },
+      {
+        "type": "column",
+        "value": "shipping_city)"
+      },
+      {
+        "type": "column",
+        "value": "*"
+      },
+      {
+        "type": "column",
+        "value": "100,"
+      },
+      {
+        "type": "column",
+        "value": "2)"
+      },
+      {
+        "type": "keyword",
+        "value": "AS"
+      },
+      {
+        "type": "column",
+        "value": "pct_of_city_sales"
+      },
+      {
+        "type": "keyword",
+        "value": "FROM"
+      },
+      {
+        "type": "table",
+        "value": "Orders;"
+      }
+    ]
+  },
+  {
+    "drillNumber": 1475,
+    "subcluster": "15.8 Category Ratio Denominator (Percentage of Category Total)",
+    "level": "Level 2 (Ratio of Partition)",
+    "title": "Syntax #1475: Calculate each track's percentage share of its genre's total duration",
+    "table": "MusicTracks",
+    "scenario": "Calculate each track's percentage share of its genre's total duration.",
+    "businessObjective": "Calculate each track's percentage share of its genre's total duration.",
+    "schemaSnippet": "MusicTracks analytical schema",
+    "targetQuery": "SELECT track_title, genre, duration_seconds,\n  ROUND(duration_seconds / SUM(duration_seconds) OVER (PARTITION BY genre) * 100, 2) AS pct_of_genre_duration\nFROM MusicTracks;",
+    "syntaxBlueprint": "SELECT col1, category, metric,\n  ROUND(metric / SUM(metric) OVER (PARTITION BY category) * 100, 2) AS pct_of_category_total\nFROM table_name;",
+    "syntaxRule": "'SUM(col) OVER (PARTITION BY category)' calculates the group total on every row, enabling percentage-of-department or percentage-of-category calculations.",
+    "syntaxTrap": "Including an ORDER BY inside OVER turns the denominator into a running sum! Keep OVER(PARTITION BY ...) without ORDER BY for totals.",
+    "eli5Story": "Analytical Window Functions on MusicTracks: Calculate each track's percentage share of its genre's total duration.",
+    "commonMistakes": "Omitting ORDER BY inside OVER() for running totals, confusing PARTITION BY with GROUP BY, or attempting to filter window functions in WHERE without a CTE wrapper.",
+    "learningOutcomes": "Mastered 15.8 Category Ratio Denominator (Percentage of Category Total) on MusicTracks.",
+    "challengeSlots": [
+      {
+        "type": "keyword",
+        "value": "SELECT"
+      },
+      {
+        "type": "column",
+        "value": "track_title,"
+      },
+      {
+        "type": "column",
+        "value": "genre,"
+      },
+      {
+        "type": "column",
+        "value": "duration_seconds,"
+      },
+      {
+        "type": "column",
+        "value": "ROUND(duration_seconds"
+      },
+      {
+        "type": "column",
+        "value": "/"
+      },
+      {
+        "type": "column",
+        "value": "SUM(duration_seconds)"
+      },
+      {
+        "type": "keyword",
+        "value": "OVER"
+      },
+      {
+        "type": "keyword",
+        "value": "(PARTITION"
+      },
+      {
+        "type": "keyword",
+        "value": "BY"
+      },
+      {
+        "type": "column",
+        "value": "genre)"
+      },
+      {
+        "type": "column",
+        "value": "*"
+      },
+      {
+        "type": "column",
+        "value": "100,"
+      },
+      {
+        "type": "column",
+        "value": "2)"
+      },
+      {
+        "type": "keyword",
+        "value": "AS"
+      },
+      {
+        "type": "column",
+        "value": "pct_of_genre_duration"
+      },
+      {
+        "type": "keyword",
+        "value": "FROM"
+      },
+      {
+        "type": "table",
+        "value": "MusicTracks;"
+      }
+    ]
+  },
+  {
+    "drillNumber": 1476,
+    "subcluster": "15.8 Category Ratio Denominator (Percentage of Category Total)",
+    "level": "Level 2 (Ratio of Partition)",
+    "title": "Syntax #1476: Calculate member contribution as a percentage of their plan tier's revenue",
+    "table": "GymMembers",
+    "scenario": "Calculate member contribution as a percentage of their plan tier's revenue.",
+    "businessObjective": "Calculate member contribution as a percentage of their plan tier's revenue.",
+    "schemaSnippet": "GymMembers analytical schema",
+    "targetQuery": "SELECT member_name, membership_plan, monthly_fee,\n  ROUND(monthly_fee / SUM(monthly_fee) OVER (PARTITION BY membership_plan) * 100, 2) AS pct_of_plan_revenue\nFROM GymMembers;",
+    "syntaxBlueprint": "SELECT col1, category, metric,\n  ROUND(metric / SUM(metric) OVER (PARTITION BY category) * 100, 2) AS pct_of_category_total\nFROM table_name;",
+    "syntaxRule": "'SUM(col) OVER (PARTITION BY category)' calculates the group total on every row, enabling percentage-of-department or percentage-of-category calculations.",
+    "syntaxTrap": "Including an ORDER BY inside OVER turns the denominator into a running sum! Keep OVER(PARTITION BY ...) without ORDER BY for totals.",
+    "eli5Story": "Analytical Window Functions on GymMembers: Calculate member contribution as a percentage of their plan tier's revenue.",
+    "commonMistakes": "Omitting ORDER BY inside OVER() for running totals, confusing PARTITION BY with GROUP BY, or attempting to filter window functions in WHERE without a CTE wrapper.",
+    "learningOutcomes": "Mastered 15.8 Category Ratio Denominator (Percentage of Category Total) on GymMembers.",
+    "challengeSlots": [
+      {
+        "type": "keyword",
+        "value": "SELECT"
+      },
+      {
+        "type": "column",
+        "value": "member_name,"
+      },
+      {
+        "type": "column",
+        "value": "membership_plan,"
+      },
+      {
+        "type": "column",
+        "value": "monthly_fee,"
+      },
+      {
+        "type": "column",
+        "value": "ROUND(monthly_fee"
+      },
+      {
+        "type": "column",
+        "value": "/"
+      },
+      {
+        "type": "column",
+        "value": "SUM(monthly_fee)"
+      },
+      {
+        "type": "keyword",
+        "value": "OVER"
+      },
+      {
+        "type": "keyword",
+        "value": "(PARTITION"
+      },
+      {
+        "type": "keyword",
+        "value": "BY"
+      },
+      {
+        "type": "column",
+        "value": "membership_plan)"
+      },
+      {
+        "type": "column",
+        "value": "*"
+      },
+      {
+        "type": "column",
+        "value": "100,"
+      },
+      {
+        "type": "column",
+        "value": "2)"
+      },
+      {
+        "type": "keyword",
+        "value": "AS"
+      },
+      {
+        "type": "column",
+        "value": "pct_of_plan_revenue"
+      },
+      {
+        "type": "keyword",
+        "value": "FROM"
+      },
+      {
+        "type": "table",
+        "value": "GymMembers;"
+      }
+    ]
+  },
+  {
+    "drillNumber": 1477,
+    "subcluster": "15.8 Category Ratio Denominator (Percentage of Category Total)",
+    "level": "Level 2 (Ratio of Partition)",
+    "title": "Syntax #1477: Calculate review share of total stars awarded in that genre",
+    "table": "MovieReviews",
+    "scenario": "Calculate review share of total stars awarded in that genre.",
+    "businessObjective": "Calculate review share of total stars awarded in that genre.",
+    "schemaSnippet": "MovieReviews analytical schema",
+    "targetQuery": "SELECT movie_title, genre, star_rating,\n  ROUND(star_rating / SUM(star_rating) OVER (PARTITION BY genre) * 100, 2) AS pct_of_genre_stars\nFROM MovieReviews;",
+    "syntaxBlueprint": "SELECT col1, category, metric,\n  ROUND(metric / SUM(metric) OVER (PARTITION BY category) * 100, 2) AS pct_of_category_total\nFROM table_name;",
+    "syntaxRule": "'SUM(col) OVER (PARTITION BY category)' calculates the group total on every row, enabling percentage-of-department or percentage-of-category calculations.",
+    "syntaxTrap": "Including an ORDER BY inside OVER turns the denominator into a running sum! Keep OVER(PARTITION BY ...) without ORDER BY for totals.",
+    "eli5Story": "Analytical Window Functions on MovieReviews: Calculate review share of total stars awarded in that genre.",
+    "commonMistakes": "Omitting ORDER BY inside OVER() for running totals, confusing PARTITION BY with GROUP BY, or attempting to filter window functions in WHERE without a CTE wrapper.",
+    "learningOutcomes": "Mastered 15.8 Category Ratio Denominator (Percentage of Category Total) on MovieReviews.",
+    "challengeSlots": [
+      {
+        "type": "keyword",
+        "value": "SELECT"
+      },
+      {
+        "type": "column",
+        "value": "movie_title,"
+      },
+      {
+        "type": "column",
+        "value": "genre,"
+      },
+      {
+        "type": "column",
+        "value": "star_rating,"
+      },
+      {
+        "type": "column",
+        "value": "ROUND(star_rating"
+      },
+      {
+        "type": "column",
+        "value": "/"
+      },
+      {
+        "type": "column",
+        "value": "SUM(star_rating)"
+      },
+      {
+        "type": "keyword",
+        "value": "OVER"
+      },
+      {
+        "type": "keyword",
+        "value": "(PARTITION"
+      },
+      {
+        "type": "keyword",
+        "value": "BY"
+      },
+      {
+        "type": "column",
+        "value": "genre)"
+      },
+      {
+        "type": "column",
+        "value": "*"
+      },
+      {
+        "type": "column",
+        "value": "100,"
+      },
+      {
+        "type": "column",
+        "value": "2)"
+      },
+      {
+        "type": "keyword",
+        "value": "AS"
+      },
+      {
+        "type": "column",
+        "value": "pct_of_genre_stars"
+      },
+      {
+        "type": "keyword",
+        "value": "FROM"
+      },
+      {
+        "type": "table",
+        "value": "MovieReviews;"
+      }
+    ]
+  },
+  {
+    "drillNumber": 1478,
+    "subcluster": "15.8 Category Ratio Denominator (Percentage of Category Total)",
+    "level": "Level 2 (Ratio of Partition)",
+    "title": "Syntax #1478: Calculate flight share of total miles departing from that airport hub",
+    "table": "FlightSchedule",
+    "scenario": "Calculate flight share of total miles departing from that airport hub.",
+    "businessObjective": "Calculate flight share of total miles departing from that airport hub.",
+    "schemaSnippet": "FlightSchedule analytical schema",
+    "targetQuery": "SELECT flight_id, origin_airport, distance_miles,\n  ROUND(distance_miles / SUM(distance_miles) OVER (PARTITION BY origin_airport) * 100, 2) AS pct_of_hub_miles\nFROM FlightSchedule;",
+    "syntaxBlueprint": "SELECT col1, category, metric,\n  ROUND(metric / SUM(metric) OVER (PARTITION BY category) * 100, 2) AS pct_of_category_total\nFROM table_name;",
+    "syntaxRule": "'SUM(col) OVER (PARTITION BY category)' calculates the group total on every row, enabling percentage-of-department or percentage-of-category calculations.",
+    "syntaxTrap": "Including an ORDER BY inside OVER turns the denominator into a running sum! Keep OVER(PARTITION BY ...) without ORDER BY for totals.",
+    "eli5Story": "Analytical Window Functions on FlightSchedule: Calculate flight share of total miles departing from that airport hub.",
+    "commonMistakes": "Omitting ORDER BY inside OVER() for running totals, confusing PARTITION BY with GROUP BY, or attempting to filter window functions in WHERE without a CTE wrapper.",
+    "learningOutcomes": "Mastered 15.8 Category Ratio Denominator (Percentage of Category Total) on FlightSchedule.",
+    "challengeSlots": [
+      {
+        "type": "keyword",
+        "value": "SELECT"
+      },
+      {
+        "type": "column",
+        "value": "flight_id,"
+      },
+      {
+        "type": "column",
+        "value": "origin_airport,"
+      },
+      {
+        "type": "column",
+        "value": "distance_miles,"
+      },
+      {
+        "type": "column",
+        "value": "ROUND(distance_miles"
+      },
+      {
+        "type": "column",
+        "value": "/"
+      },
+      {
+        "type": "column",
+        "value": "SUM(distance_miles)"
+      },
+      {
+        "type": "keyword",
+        "value": "OVER"
+      },
+      {
+        "type": "keyword",
+        "value": "(PARTITION"
+      },
+      {
+        "type": "keyword",
+        "value": "BY"
+      },
+      {
+        "type": "column",
+        "value": "origin_airport)"
+      },
+      {
+        "type": "column",
+        "value": "*"
+      },
+      {
+        "type": "column",
+        "value": "100,"
+      },
+      {
+        "type": "column",
+        "value": "2)"
+      },
+      {
+        "type": "keyword",
+        "value": "AS"
+      },
+      {
+        "type": "column",
+        "value": "pct_of_hub_miles"
+      },
+      {
+        "type": "keyword",
+        "value": "FROM"
+      },
+      {
+        "type": "table",
+        "value": "FlightSchedule;"
+      }
+    ]
+  },
+  {
+    "drillNumber": 1479,
+    "subcluster": "15.8 Category Ratio Denominator (Percentage of Category Total)",
+    "level": "Level 2 (Ratio of Partition)",
+    "title": "Syntax #1479: Calculate student share of total GPA points within their academic major",
+    "table": "Students",
+    "scenario": "Calculate student share of total GPA points within their academic major.",
+    "businessObjective": "Calculate student share of total GPA points within their academic major.",
+    "schemaSnippet": "Students analytical schema",
+    "targetQuery": "SELECT full_name, major, gpa,\n  ROUND(gpa / SUM(gpa) OVER (PARTITION BY major) * 100, 2) AS pct_of_major_gpa\nFROM Students;",
+    "syntaxBlueprint": "SELECT col1, category, metric,\n  ROUND(metric / SUM(metric) OVER (PARTITION BY category) * 100, 2) AS pct_of_category_total\nFROM table_name;",
+    "syntaxRule": "'SUM(col) OVER (PARTITION BY category)' calculates the group total on every row, enabling percentage-of-department or percentage-of-category calculations.",
+    "syntaxTrap": "Including an ORDER BY inside OVER turns the denominator into a running sum! Keep OVER(PARTITION BY ...) without ORDER BY for totals.",
+    "eli5Story": "Analytical Window Functions on Students: Calculate student share of total GPA points within their academic major.",
+    "commonMistakes": "Omitting ORDER BY inside OVER() for running totals, confusing PARTITION BY with GROUP BY, or attempting to filter window functions in WHERE without a CTE wrapper.",
+    "learningOutcomes": "Mastered 15.8 Category Ratio Denominator (Percentage of Category Total) on Students.",
+    "challengeSlots": [
+      {
+        "type": "keyword",
+        "value": "SELECT"
+      },
+      {
+        "type": "column",
+        "value": "full_name,"
+      },
+      {
+        "type": "column",
+        "value": "major,"
+      },
+      {
+        "type": "column",
+        "value": "gpa,"
+      },
+      {
+        "type": "column",
+        "value": "ROUND(gpa"
+      },
+      {
+        "type": "column",
+        "value": "/"
+      },
+      {
+        "type": "column",
+        "value": "SUM(gpa)"
+      },
+      {
+        "type": "keyword",
+        "value": "OVER"
+      },
+      {
+        "type": "keyword",
+        "value": "(PARTITION"
+      },
+      {
+        "type": "keyword",
+        "value": "BY"
+      },
+      {
+        "type": "column",
+        "value": "major)"
+      },
+      {
+        "type": "column",
+        "value": "*"
+      },
+      {
+        "type": "column",
+        "value": "100,"
+      },
+      {
+        "type": "column",
+        "value": "2)"
+      },
+      {
+        "type": "keyword",
+        "value": "AS"
+      },
+      {
+        "type": "column",
+        "value": "pct_of_major_gpa"
+      },
+      {
+        "type": "keyword",
+        "value": "FROM"
+      },
+      {
+        "type": "table",
+        "value": "Students;"
+      }
+    ]
+  },
+  {
+    "drillNumber": 1480,
+    "subcluster": "15.8 Category Ratio Denominator (Percentage of Category Total)",
+    "level": "Level 2 (Ratio of Partition)",
+    "title": "Syntax #1480: Calculate patient weight as a percentage of that species' total clinic weight",
+    "table": "PetClinic",
+    "scenario": "Calculate patient weight as a percentage of that species' total clinic weight.",
+    "businessObjective": "Calculate patient weight as a percentage of that species' total clinic weight.",
+    "schemaSnippet": "PetClinic analytical schema",
+    "targetQuery": "SELECT pet_name, species, weight_kg,\n  ROUND(weight_kg / SUM(weight_kg) OVER (PARTITION BY species) * 100, 2) AS pct_of_species_weight\nFROM PetClinic;",
+    "syntaxBlueprint": "SELECT col1, category, metric,\n  ROUND(metric / SUM(metric) OVER (PARTITION BY category) * 100, 2) AS pct_of_category_total\nFROM table_name;",
+    "syntaxRule": "'SUM(col) OVER (PARTITION BY category)' calculates the group total on every row, enabling percentage-of-department or percentage-of-category calculations.",
+    "syntaxTrap": "Including an ORDER BY inside OVER turns the denominator into a running sum! Keep OVER(PARTITION BY ...) without ORDER BY for totals.",
+    "eli5Story": "Analytical Window Functions on PetClinic: Calculate patient weight as a percentage of that species' total clinic weight.",
+    "commonMistakes": "Omitting ORDER BY inside OVER() for running totals, confusing PARTITION BY with GROUP BY, or attempting to filter window functions in WHERE without a CTE wrapper.",
+    "learningOutcomes": "Mastered 15.8 Category Ratio Denominator (Percentage of Category Total) on PetClinic.",
+    "challengeSlots": [
+      {
+        "type": "keyword",
+        "value": "SELECT"
+      },
+      {
+        "type": "column",
+        "value": "pet_name,"
+      },
+      {
+        "type": "column",
+        "value": "species,"
+      },
+      {
+        "type": "column",
+        "value": "weight_kg,"
+      },
+      {
+        "type": "column",
+        "value": "ROUND(weight_kg"
+      },
+      {
+        "type": "column",
+        "value": "/"
+      },
+      {
+        "type": "column",
+        "value": "SUM(weight_kg)"
+      },
+      {
+        "type": "keyword",
+        "value": "OVER"
+      },
+      {
+        "type": "keyword",
+        "value": "(PARTITION"
+      },
+      {
+        "type": "keyword",
+        "value": "BY"
+      },
+      {
+        "type": "column",
+        "value": "species)"
+      },
+      {
+        "type": "column",
+        "value": "*"
+      },
+      {
+        "type": "column",
+        "value": "100,"
+      },
+      {
+        "type": "column",
+        "value": "2)"
+      },
+      {
+        "type": "keyword",
+        "value": "AS"
+      },
+      {
+        "type": "column",
+        "value": "pct_of_species_weight"
+      },
+      {
+        "type": "keyword",
+        "value": "FROM"
+      },
+      {
+        "type": "table",
+        "value": "PetClinic;"
+      }
+    ]
+  },
+  {
+    "drillNumber": 1481,
+    "subcluster": "15.9 Boundary Extremes (FIRST_VALUE & LAST_VALUE)",
+    "level": "Level 3 (Boundary Framing)",
+    "title": "Syntax #1481: Project opening order value alongside final closing order value using boundary window functions",
+    "table": "Orders",
+    "scenario": "Project opening order value alongside final closing order value using boundary window functions.",
+    "businessObjective": "Project opening order value alongside final closing order value using boundary window functions.",
+    "schemaSnippet": "Orders analytical schema",
+    "targetQuery": "SELECT order_id, order_date, total_amount,\n  FIRST_VALUE(total_amount) OVER (ORDER BY order_date ASC) AS inaugural_order_val,\n  LAST_VALUE(total_amount) OVER (ORDER BY order_date ASC ROWS BETWEEN UNBOUNDED PRECEDING AND UNBOUNDED FOLLOWING) AS latest_order_val\nFROM Orders;",
+    "syntaxBlueprint": "SELECT col1, date_col, metric,\n  FIRST_VALUE(metric) OVER (ORDER BY date_col ASC) AS initial_baseline,\n  LAST_VALUE(metric) OVER (ORDER BY date_col ASC ROWS BETWEEN UNBOUNDED PRECEDING AND UNBOUNDED FOLLOWING) AS final_closing_val\nFROM table_name;",
+    "syntaxRule": "FIRST_VALUE() pulls the opening value. LAST_VALUE() requires 'ROWS BETWEEN UNBOUNDED PRECEDING AND UNBOUNDED FOLLOWING' to reach the true end of the window.",
+    "syntaxTrap": "THE LAST_VALUE TRAP: Without explicit UNBOUNDED FOLLOWING framing, LAST_VALUE() stops at the CURRENT ROW, effectively returning the current row's own value!",
+    "eli5Story": "Analytical Window Functions on Orders: Project opening order value alongside final closing order value using boundary window functions.",
+    "commonMistakes": "Omitting ORDER BY inside OVER() for running totals, confusing PARTITION BY with GROUP BY, or attempting to filter window functions in WHERE without a CTE wrapper.",
+    "learningOutcomes": "Mastered 15.9 Boundary Extremes (FIRST_VALUE & LAST_VALUE) on Orders.",
+    "challengeSlots": [
+      {
+        "type": "keyword",
+        "value": "SELECT"
+      },
+      {
+        "type": "column",
+        "value": "order_id,"
+      },
+      {
+        "type": "column",
+        "value": "order_date,"
+      },
+      {
+        "type": "column",
+        "value": "total_amount,"
+      },
+      {
+        "type": "column",
+        "value": "FIRST_VALUE(total_amount)"
+      },
+      {
+        "type": "keyword",
+        "value": "OVER"
+      },
+      {
+        "type": "keyword",
+        "value": "(ORDER"
+      },
+      {
+        "type": "keyword",
+        "value": "BY"
+      },
+      {
+        "type": "column",
+        "value": "order_date"
+      },
+      {
+        "type": "keyword",
+        "value": "ASC)"
+      },
+      {
+        "type": "keyword",
+        "value": "AS"
+      },
+      {
+        "type": "column",
+        "value": "inaugural_order_val,"
+      },
+      {
+        "type": "column",
+        "value": "LAST_VALUE(total_amount)"
+      },
+      {
+        "type": "keyword",
+        "value": "OVER"
+      },
+      {
+        "type": "keyword",
+        "value": "(ORDER"
+      },
+      {
+        "type": "keyword",
+        "value": "BY"
+      },
+      {
+        "type": "column",
+        "value": "order_date"
+      },
+      {
+        "type": "keyword",
+        "value": "ASC"
+      },
+      {
+        "type": "keyword",
+        "value": "ROWS"
+      },
+      {
+        "type": "keyword",
+        "value": "BETWEEN"
+      },
+      {
+        "type": "keyword",
+        "value": "UNBOUNDED"
+      },
+      {
+        "type": "keyword",
+        "value": "PRECEDING"
+      },
+      {
+        "type": "keyword",
+        "value": "AND"
+      },
+      {
+        "type": "keyword",
+        "value": "UNBOUNDED"
+      },
+      {
+        "type": "keyword",
+        "value": "FOLLOWING)"
+      },
+      {
+        "type": "keyword",
+        "value": "AS"
+      },
+      {
+        "type": "column",
+        "value": "latest_order_val"
+      },
+      {
+        "type": "keyword",
+        "value": "FROM"
+      },
+      {
+        "type": "table",
+        "value": "Orders;"
+      }
+    ]
+  },
+  {
+    "drillNumber": 1482,
+    "subcluster": "15.9 Boundary Extremes (FIRST_VALUE & LAST_VALUE)",
+    "level": "Level 3 (Boundary Framing)",
+    "title": "Syntax #1482: Compare student GPAs against the founding class baseline using FIRST_VALUE",
+    "table": "Students",
+    "scenario": "Compare student GPAs against the founding class baseline using FIRST_VALUE.",
+    "businessObjective": "Compare student GPAs against the founding class baseline using FIRST_VALUE.",
+    "schemaSnippet": "Students analytical schema",
+    "targetQuery": "SELECT full_name, enrolled_year, gpa,\n  FIRST_VALUE(gpa) OVER (ORDER BY enrolled_year ASC) AS founding_class_gpa\nFROM Students;",
+    "syntaxBlueprint": "SELECT col1, date_col, metric,\n  FIRST_VALUE(metric) OVER (ORDER BY date_col ASC) AS initial_baseline,\n  LAST_VALUE(metric) OVER (ORDER BY date_col ASC ROWS BETWEEN UNBOUNDED PRECEDING AND UNBOUNDED FOLLOWING) AS final_closing_val\nFROM table_name;",
+    "syntaxRule": "FIRST_VALUE() pulls the opening value. LAST_VALUE() requires 'ROWS BETWEEN UNBOUNDED PRECEDING AND UNBOUNDED FOLLOWING' to reach the true end of the window.",
+    "syntaxTrap": "THE LAST_VALUE TRAP: Without explicit UNBOUNDED FOLLOWING framing, LAST_VALUE() stops at the CURRENT ROW, effectively returning the current row's own value!",
+    "eli5Story": "Analytical Window Functions on Students: Compare student GPAs against the founding class baseline using FIRST_VALUE.",
+    "commonMistakes": "Omitting ORDER BY inside OVER() for running totals, confusing PARTITION BY with GROUP BY, or attempting to filter window functions in WHERE without a CTE wrapper.",
+    "learningOutcomes": "Mastered 15.9 Boundary Extremes (FIRST_VALUE & LAST_VALUE) on Students.",
+    "challengeSlots": [
+      {
+        "type": "keyword",
+        "value": "SELECT"
+      },
+      {
+        "type": "column",
+        "value": "full_name,"
+      },
+      {
+        "type": "column",
+        "value": "enrolled_year,"
+      },
+      {
+        "type": "column",
+        "value": "gpa,"
+      },
+      {
+        "type": "column",
+        "value": "FIRST_VALUE(gpa)"
+      },
+      {
+        "type": "keyword",
+        "value": "OVER"
+      },
+      {
+        "type": "keyword",
+        "value": "(ORDER"
+      },
+      {
+        "type": "keyword",
+        "value": "BY"
+      },
+      {
+        "type": "column",
+        "value": "enrolled_year"
+      },
+      {
+        "type": "keyword",
+        "value": "ASC)"
+      },
+      {
+        "type": "keyword",
+        "value": "AS"
+      },
+      {
+        "type": "column",
+        "value": "founding_class_gpa"
+      },
+      {
+        "type": "keyword",
+        "value": "FROM"
+      },
+      {
+        "type": "table",
+        "value": "Students;"
+      }
+    ]
+  },
+  {
+    "drillNumber": 1483,
+    "subcluster": "15.9 Boundary Extremes (FIRST_VALUE & LAST_VALUE)",
+    "level": "Level 3 (Boundary Framing)",
+    "title": "Syntax #1483: Compare book prices against the author's debut book price using FIRST_VALUE",
+    "table": "Books",
+    "scenario": "Compare book prices against the author's debut book price using FIRST_VALUE.",
+    "businessObjective": "Compare book prices against the author's debut book price using FIRST_VALUE.",
+    "schemaSnippet": "Books analytical schema",
+    "targetQuery": "SELECT title, author, published_date, price,\n  FIRST_VALUE(price) OVER (PARTITION BY author ORDER BY published_date ASC) AS author_debut_price\nFROM Books;",
+    "syntaxBlueprint": "SELECT col1, date_col, metric,\n  FIRST_VALUE(metric) OVER (ORDER BY date_col ASC) AS initial_baseline,\n  LAST_VALUE(metric) OVER (ORDER BY date_col ASC ROWS BETWEEN UNBOUNDED PRECEDING AND UNBOUNDED FOLLOWING) AS final_closing_val\nFROM table_name;",
+    "syntaxRule": "FIRST_VALUE() pulls the opening value. LAST_VALUE() requires 'ROWS BETWEEN UNBOUNDED PRECEDING AND UNBOUNDED FOLLOWING' to reach the true end of the window.",
+    "syntaxTrap": "THE LAST_VALUE TRAP: Without explicit UNBOUNDED FOLLOWING framing, LAST_VALUE() stops at the CURRENT ROW, effectively returning the current row's own value!",
+    "eli5Story": "Analytical Window Functions on Books: Compare book prices against the author's debut book price using FIRST_VALUE.",
+    "commonMistakes": "Omitting ORDER BY inside OVER() for running totals, confusing PARTITION BY with GROUP BY, or attempting to filter window functions in WHERE without a CTE wrapper.",
+    "learningOutcomes": "Mastered 15.9 Boundary Extremes (FIRST_VALUE & LAST_VALUE) on Books.",
+    "challengeSlots": [
+      {
+        "type": "keyword",
+        "value": "SELECT"
+      },
+      {
+        "type": "column",
+        "value": "title,"
+      },
+      {
+        "type": "column",
+        "value": "author,"
+      },
+      {
+        "type": "column",
+        "value": "published_date,"
+      },
+      {
+        "type": "column",
+        "value": "price,"
+      },
+      {
+        "type": "column",
+        "value": "FIRST_VALUE(price)"
+      },
+      {
+        "type": "keyword",
+        "value": "OVER"
+      },
+      {
+        "type": "keyword",
+        "value": "(PARTITION"
+      },
+      {
+        "type": "keyword",
+        "value": "BY"
+      },
+      {
+        "type": "column",
+        "value": "author"
+      },
+      {
+        "type": "keyword",
+        "value": "ORDER"
+      },
+      {
+        "type": "keyword",
+        "value": "BY"
+      },
+      {
+        "type": "column",
+        "value": "published_date"
+      },
+      {
+        "type": "keyword",
+        "value": "ASC)"
+      },
+      {
+        "type": "keyword",
+        "value": "AS"
+      },
+      {
+        "type": "column",
+        "value": "author_debut_price"
+      },
+      {
+        "type": "keyword",
+        "value": "FROM"
+      },
+      {
+        "type": "table",
+        "value": "Books;"
+      }
+    ]
+  },
+  {
+    "drillNumber": 1484,
+    "subcluster": "15.9 Boundary Extremes (FIRST_VALUE & LAST_VALUE)",
+    "level": "Level 3 (Boundary Framing)",
+    "title": "Syntax #1484: Compare employee salaries to the department founder's starting salary",
+    "table": "Employees",
+    "scenario": "Compare employee salaries to the department founder's starting salary.",
+    "businessObjective": "Compare employee salaries to the department founder's starting salary.",
+    "schemaSnippet": "Employees analytical schema",
+    "targetQuery": "SELECT first_name, department, hire_date, salary,\n  FIRST_VALUE(salary) OVER (PARTITION BY department ORDER BY hire_date ASC) AS founding_dept_salary\nFROM Employees;",
+    "syntaxBlueprint": "SELECT col1, date_col, metric,\n  FIRST_VALUE(metric) OVER (ORDER BY date_col ASC) AS initial_baseline,\n  LAST_VALUE(metric) OVER (ORDER BY date_col ASC ROWS BETWEEN UNBOUNDED PRECEDING AND UNBOUNDED FOLLOWING) AS final_closing_val\nFROM table_name;",
+    "syntaxRule": "FIRST_VALUE() pulls the opening value. LAST_VALUE() requires 'ROWS BETWEEN UNBOUNDED PRECEDING AND UNBOUNDED FOLLOWING' to reach the true end of the window.",
+    "syntaxTrap": "THE LAST_VALUE TRAP: Without explicit UNBOUNDED FOLLOWING framing, LAST_VALUE() stops at the CURRENT ROW, effectively returning the current row's own value!",
+    "eli5Story": "Analytical Window Functions on Employees: Compare employee salaries to the department founder's starting salary.",
+    "commonMistakes": "Omitting ORDER BY inside OVER() for running totals, confusing PARTITION BY with GROUP BY, or attempting to filter window functions in WHERE without a CTE wrapper.",
+    "learningOutcomes": "Mastered 15.9 Boundary Extremes (FIRST_VALUE & LAST_VALUE) on Employees.",
+    "challengeSlots": [
+      {
+        "type": "keyword",
+        "value": "SELECT"
+      },
+      {
+        "type": "column",
+        "value": "first_name,"
+      },
+      {
+        "type": "column",
+        "value": "department,"
+      },
+      {
+        "type": "column",
+        "value": "hire_date,"
+      },
+      {
+        "type": "column",
+        "value": "salary,"
+      },
+      {
+        "type": "column",
+        "value": "FIRST_VALUE(salary)"
+      },
+      {
+        "type": "keyword",
+        "value": "OVER"
+      },
+      {
+        "type": "keyword",
+        "value": "(PARTITION"
+      },
+      {
+        "type": "keyword",
+        "value": "BY"
+      },
+      {
+        "type": "column",
+        "value": "department"
+      },
+      {
+        "type": "keyword",
+        "value": "ORDER"
+      },
+      {
+        "type": "keyword",
+        "value": "BY"
+      },
+      {
+        "type": "column",
+        "value": "hire_date"
+      },
+      {
+        "type": "keyword",
+        "value": "ASC)"
+      },
+      {
+        "type": "keyword",
+        "value": "AS"
+      },
+      {
+        "type": "column",
+        "value": "founding_dept_salary"
+      },
+      {
+        "type": "keyword",
+        "value": "FROM"
+      },
+      {
+        "type": "table",
+        "value": "Employees;"
+      }
+    ]
+  },
+  {
+    "drillNumber": 1485,
+    "subcluster": "15.9 Boundary Extremes (FIRST_VALUE & LAST_VALUE)",
+    "level": "Level 3 (Boundary Framing)",
+    "title": "Syntax #1485: Retrieve the first registered item's price within each category via FIRST_VALUE",
+    "table": "GroceryItems",
+    "scenario": "Retrieve the first registered item's price within each category via FIRST_VALUE.",
+    "businessObjective": "Retrieve the first registered item's price within each category via FIRST_VALUE.",
+    "schemaSnippet": "GroceryItems analytical schema",
+    "targetQuery": "SELECT item_name, category, unit_price,\n  FIRST_VALUE(unit_price) OVER (PARTITION BY category ORDER BY item_id ASC) AS category_baseline_price\nFROM GroceryItems;",
+    "syntaxBlueprint": "SELECT col1, date_col, metric,\n  FIRST_VALUE(metric) OVER (ORDER BY date_col ASC) AS initial_baseline,\n  LAST_VALUE(metric) OVER (ORDER BY date_col ASC ROWS BETWEEN UNBOUNDED PRECEDING AND UNBOUNDED FOLLOWING) AS final_closing_val\nFROM table_name;",
+    "syntaxRule": "FIRST_VALUE() pulls the opening value. LAST_VALUE() requires 'ROWS BETWEEN UNBOUNDED PRECEDING AND UNBOUNDED FOLLOWING' to reach the true end of the window.",
+    "syntaxTrap": "THE LAST_VALUE TRAP: Without explicit UNBOUNDED FOLLOWING framing, LAST_VALUE() stops at the CURRENT ROW, effectively returning the current row's own value!",
+    "eli5Story": "Analytical Window Functions on GroceryItems: Retrieve the first registered item's price within each category via FIRST_VALUE.",
+    "commonMistakes": "Omitting ORDER BY inside OVER() for running totals, confusing PARTITION BY with GROUP BY, or attempting to filter window functions in WHERE without a CTE wrapper.",
+    "learningOutcomes": "Mastered 15.9 Boundary Extremes (FIRST_VALUE & LAST_VALUE) on GroceryItems.",
+    "challengeSlots": [
+      {
+        "type": "keyword",
+        "value": "SELECT"
+      },
+      {
+        "type": "column",
+        "value": "item_name,"
+      },
+      {
+        "type": "column",
+        "value": "category,"
+      },
+      {
+        "type": "column",
+        "value": "unit_price,"
+      },
+      {
+        "type": "column",
+        "value": "FIRST_VALUE(unit_price)"
+      },
+      {
+        "type": "keyword",
+        "value": "OVER"
+      },
+      {
+        "type": "keyword",
+        "value": "(PARTITION"
+      },
+      {
+        "type": "keyword",
+        "value": "BY"
+      },
+      {
+        "type": "column",
+        "value": "category"
+      },
+      {
+        "type": "keyword",
+        "value": "ORDER"
+      },
+      {
+        "type": "keyword",
+        "value": "BY"
+      },
+      {
+        "type": "column",
+        "value": "item_id"
+      },
+      {
+        "type": "keyword",
+        "value": "ASC)"
+      },
+      {
+        "type": "keyword",
+        "value": "AS"
+      },
+      {
+        "type": "column",
+        "value": "category_baseline_price"
+      },
+      {
+        "type": "keyword",
+        "value": "FROM"
+      },
+      {
+        "type": "table",
+        "value": "GroceryItems;"
+      }
+    ]
+  },
+  {
+    "drillNumber": 1486,
+    "subcluster": "15.9 Boundary Extremes (FIRST_VALUE & LAST_VALUE)",
+    "level": "Level 3 (Boundary Framing)",
+    "title": "Syntax #1486: Compare track length against an artist's debut single duration",
+    "table": "MusicTracks",
+    "scenario": "Compare track length against an artist's debut single duration.",
+    "businessObjective": "Compare track length against an artist's debut single duration.",
+    "schemaSnippet": "MusicTracks analytical schema",
+    "targetQuery": "SELECT track_title, artist_name, release_date, duration_seconds,\n  FIRST_VALUE(duration_seconds) OVER (PARTITION BY artist_name ORDER BY release_date ASC) AS debut_single_duration\nFROM MusicTracks;",
+    "syntaxBlueprint": "SELECT col1, date_col, metric,\n  FIRST_VALUE(metric) OVER (ORDER BY date_col ASC) AS initial_baseline,\n  LAST_VALUE(metric) OVER (ORDER BY date_col ASC ROWS BETWEEN UNBOUNDED PRECEDING AND UNBOUNDED FOLLOWING) AS final_closing_val\nFROM table_name;",
+    "syntaxRule": "FIRST_VALUE() pulls the opening value. LAST_VALUE() requires 'ROWS BETWEEN UNBOUNDED PRECEDING AND UNBOUNDED FOLLOWING' to reach the true end of the window.",
+    "syntaxTrap": "THE LAST_VALUE TRAP: Without explicit UNBOUNDED FOLLOWING framing, LAST_VALUE() stops at the CURRENT ROW, effectively returning the current row's own value!",
+    "eli5Story": "Analytical Window Functions on MusicTracks: Compare track length against an artist's debut single duration.",
+    "commonMistakes": "Omitting ORDER BY inside OVER() for running totals, confusing PARTITION BY with GROUP BY, or attempting to filter window functions in WHERE without a CTE wrapper.",
+    "learningOutcomes": "Mastered 15.9 Boundary Extremes (FIRST_VALUE & LAST_VALUE) on MusicTracks.",
+    "challengeSlots": [
+      {
+        "type": "keyword",
+        "value": "SELECT"
+      },
+      {
+        "type": "column",
+        "value": "track_title,"
+      },
+      {
+        "type": "column",
+        "value": "artist_name,"
+      },
+      {
+        "type": "column",
+        "value": "release_date,"
+      },
+      {
+        "type": "column",
+        "value": "duration_seconds,"
+      },
+      {
+        "type": "column",
+        "value": "FIRST_VALUE(duration_seconds)"
+      },
+      {
+        "type": "keyword",
+        "value": "OVER"
+      },
+      {
+        "type": "keyword",
+        "value": "(PARTITION"
+      },
+      {
+        "type": "keyword",
+        "value": "BY"
+      },
+      {
+        "type": "column",
+        "value": "artist_name"
+      },
+      {
+        "type": "keyword",
+        "value": "ORDER"
+      },
+      {
+        "type": "keyword",
+        "value": "BY"
+      },
+      {
+        "type": "column",
+        "value": "release_date"
+      },
+      {
+        "type": "keyword",
+        "value": "ASC)"
+      },
+      {
+        "type": "keyword",
+        "value": "AS"
+      },
+      {
+        "type": "column",
+        "value": "debut_single_duration"
+      },
+      {
+        "type": "keyword",
+        "value": "FROM"
+      },
+      {
+        "type": "table",
+        "value": "MusicTracks;"
+      }
+    ]
+  },
+  {
+    "drillNumber": 1487,
+    "subcluster": "15.9 Boundary Extremes (FIRST_VALUE & LAST_VALUE)",
+    "level": "Level 3 (Boundary Framing)",
+    "title": "Syntax #1487: Compare membership fees against the initial founding plan rate",
+    "table": "GymMembers",
+    "scenario": "Compare membership fees against the initial founding plan rate.",
+    "businessObjective": "Compare membership fees against the initial founding plan rate.",
+    "schemaSnippet": "GymMembers analytical schema",
+    "targetQuery": "SELECT member_name, membership_plan, join_date, monthly_fee,\n  FIRST_VALUE(monthly_fee) OVER (PARTITION BY membership_plan ORDER BY join_date ASC) AS initial_plan_rate\nFROM GymMembers;",
+    "syntaxBlueprint": "SELECT col1, date_col, metric,\n  FIRST_VALUE(metric) OVER (ORDER BY date_col ASC) AS initial_baseline,\n  LAST_VALUE(metric) OVER (ORDER BY date_col ASC ROWS BETWEEN UNBOUNDED PRECEDING AND UNBOUNDED FOLLOWING) AS final_closing_val\nFROM table_name;",
+    "syntaxRule": "FIRST_VALUE() pulls the opening value. LAST_VALUE() requires 'ROWS BETWEEN UNBOUNDED PRECEDING AND UNBOUNDED FOLLOWING' to reach the true end of the window.",
+    "syntaxTrap": "THE LAST_VALUE TRAP: Without explicit UNBOUNDED FOLLOWING framing, LAST_VALUE() stops at the CURRENT ROW, effectively returning the current row's own value!",
+    "eli5Story": "Analytical Window Functions on GymMembers: Compare membership fees against the initial founding plan rate.",
+    "commonMistakes": "Omitting ORDER BY inside OVER() for running totals, confusing PARTITION BY with GROUP BY, or attempting to filter window functions in WHERE without a CTE wrapper.",
+    "learningOutcomes": "Mastered 15.9 Boundary Extremes (FIRST_VALUE & LAST_VALUE) on GymMembers.",
+    "challengeSlots": [
+      {
+        "type": "keyword",
+        "value": "SELECT"
+      },
+      {
+        "type": "column",
+        "value": "member_name,"
+      },
+      {
+        "type": "column",
+        "value": "membership_plan,"
+      },
+      {
+        "type": "column",
+        "value": "join_date,"
+      },
+      {
+        "type": "column",
+        "value": "monthly_fee,"
+      },
+      {
+        "type": "column",
+        "value": "FIRST_VALUE(monthly_fee)"
+      },
+      {
+        "type": "keyword",
+        "value": "OVER"
+      },
+      {
+        "type": "keyword",
+        "value": "(PARTITION"
+      },
+      {
+        "type": "keyword",
+        "value": "BY"
+      },
+      {
+        "type": "column",
+        "value": "membership_plan"
+      },
+      {
+        "type": "keyword",
+        "value": "ORDER"
+      },
+      {
+        "type": "keyword",
+        "value": "BY"
+      },
+      {
+        "type": "column",
+        "value": "join_date"
+      },
+      {
+        "type": "keyword",
+        "value": "ASC)"
+      },
+      {
+        "type": "keyword",
+        "value": "AS"
+      },
+      {
+        "type": "column",
+        "value": "initial_plan_rate"
+      },
+      {
+        "type": "keyword",
+        "value": "FROM"
+      },
+      {
+        "type": "table",
+        "value": "GymMembers;"
+      }
+    ]
+  },
+  {
+    "drillNumber": 1488,
+    "subcluster": "15.9 Boundary Extremes (FIRST_VALUE & LAST_VALUE)",
+    "level": "Level 3 (Boundary Framing)",
+    "title": "Syntax #1488: Compare movie reviews against the opening premiere review score",
+    "table": "MovieReviews",
+    "scenario": "Compare movie reviews against the opening premiere review score.",
+    "businessObjective": "Compare movie reviews against the opening premiere review score.",
+    "schemaSnippet": "MovieReviews analytical schema",
+    "targetQuery": "SELECT movie_title, review_date, star_rating,\n  FIRST_VALUE(star_rating) OVER (ORDER BY review_date ASC) AS opening_review_stars\nFROM MovieReviews;",
+    "syntaxBlueprint": "SELECT col1, date_col, metric,\n  FIRST_VALUE(metric) OVER (ORDER BY date_col ASC) AS initial_baseline,\n  LAST_VALUE(metric) OVER (ORDER BY date_col ASC ROWS BETWEEN UNBOUNDED PRECEDING AND UNBOUNDED FOLLOWING) AS final_closing_val\nFROM table_name;",
+    "syntaxRule": "FIRST_VALUE() pulls the opening value. LAST_VALUE() requires 'ROWS BETWEEN UNBOUNDED PRECEDING AND UNBOUNDED FOLLOWING' to reach the true end of the window.",
+    "syntaxTrap": "THE LAST_VALUE TRAP: Without explicit UNBOUNDED FOLLOWING framing, LAST_VALUE() stops at the CURRENT ROW, effectively returning the current row's own value!",
+    "eli5Story": "Analytical Window Functions on MovieReviews: Compare movie reviews against the opening premiere review score.",
+    "commonMistakes": "Omitting ORDER BY inside OVER() for running totals, confusing PARTITION BY with GROUP BY, or attempting to filter window functions in WHERE without a CTE wrapper.",
+    "learningOutcomes": "Mastered 15.9 Boundary Extremes (FIRST_VALUE & LAST_VALUE) on MovieReviews.",
+    "challengeSlots": [
+      {
+        "type": "keyword",
+        "value": "SELECT"
+      },
+      {
+        "type": "column",
+        "value": "movie_title,"
+      },
+      {
+        "type": "column",
+        "value": "review_date,"
+      },
+      {
+        "type": "column",
+        "value": "star_rating,"
+      },
+      {
+        "type": "column",
+        "value": "FIRST_VALUE(star_rating)"
+      },
+      {
+        "type": "keyword",
+        "value": "OVER"
+      },
+      {
+        "type": "keyword",
+        "value": "(ORDER"
+      },
+      {
+        "type": "keyword",
+        "value": "BY"
+      },
+      {
+        "type": "column",
+        "value": "review_date"
+      },
+      {
+        "type": "keyword",
+        "value": "ASC)"
+      },
+      {
+        "type": "keyword",
+        "value": "AS"
+      },
+      {
+        "type": "column",
+        "value": "opening_review_stars"
+      },
+      {
+        "type": "keyword",
+        "value": "FROM"
+      },
+      {
+        "type": "table",
+        "value": "MovieReviews;"
+      }
+    ]
+  },
+  {
+    "drillNumber": 1489,
+    "subcluster": "15.9 Boundary Extremes (FIRST_VALUE & LAST_VALUE)",
+    "level": "Level 3 (Boundary Framing)",
+    "title": "Syntax #1489: Compare flight fares against the opening morning flight fare",
+    "table": "FlightSchedule",
+    "scenario": "Compare flight fares against the opening morning flight fare.",
+    "businessObjective": "Compare flight fares against the opening morning flight fare.",
+    "schemaSnippet": "FlightSchedule analytical schema",
+    "targetQuery": "SELECT flight_id, origin_airport, departure_time, ticket_price,\n  FIRST_VALUE(ticket_price) OVER (PARTITION BY origin_airport ORDER BY departure_time ASC) AS first_flight_fare\nFROM FlightSchedule;",
+    "syntaxBlueprint": "SELECT col1, date_col, metric,\n  FIRST_VALUE(metric) OVER (ORDER BY date_col ASC) AS initial_baseline,\n  LAST_VALUE(metric) OVER (ORDER BY date_col ASC ROWS BETWEEN UNBOUNDED PRECEDING AND UNBOUNDED FOLLOWING) AS final_closing_val\nFROM table_name;",
+    "syntaxRule": "FIRST_VALUE() pulls the opening value. LAST_VALUE() requires 'ROWS BETWEEN UNBOUNDED PRECEDING AND UNBOUNDED FOLLOWING' to reach the true end of the window.",
+    "syntaxTrap": "THE LAST_VALUE TRAP: Without explicit UNBOUNDED FOLLOWING framing, LAST_VALUE() stops at the CURRENT ROW, effectively returning the current row's own value!",
+    "eli5Story": "Analytical Window Functions on FlightSchedule: Compare flight fares against the opening morning flight fare.",
+    "commonMistakes": "Omitting ORDER BY inside OVER() for running totals, confusing PARTITION BY with GROUP BY, or attempting to filter window functions in WHERE without a CTE wrapper.",
+    "learningOutcomes": "Mastered 15.9 Boundary Extremes (FIRST_VALUE & LAST_VALUE) on FlightSchedule.",
+    "challengeSlots": [
+      {
+        "type": "keyword",
+        "value": "SELECT"
+      },
+      {
+        "type": "column",
+        "value": "flight_id,"
+      },
+      {
+        "type": "column",
+        "value": "origin_airport,"
+      },
+      {
+        "type": "column",
+        "value": "departure_time,"
+      },
+      {
+        "type": "column",
+        "value": "ticket_price,"
+      },
+      {
+        "type": "column",
+        "value": "FIRST_VALUE(ticket_price)"
+      },
+      {
+        "type": "keyword",
+        "value": "OVER"
+      },
+      {
+        "type": "keyword",
+        "value": "(PARTITION"
+      },
+      {
+        "type": "keyword",
+        "value": "BY"
+      },
+      {
+        "type": "column",
+        "value": "origin_airport"
+      },
+      {
+        "type": "keyword",
+        "value": "ORDER"
+      },
+      {
+        "type": "keyword",
+        "value": "BY"
+      },
+      {
+        "type": "column",
+        "value": "departure_time"
+      },
+      {
+        "type": "keyword",
+        "value": "ASC)"
+      },
+      {
+        "type": "keyword",
+        "value": "AS"
+      },
+      {
+        "type": "column",
+        "value": "first_flight_fare"
+      },
+      {
+        "type": "keyword",
+        "value": "FROM"
+      },
+      {
+        "type": "table",
+        "value": "FlightSchedule;"
+      }
+    ]
+  },
+  {
+    "drillNumber": 1490,
+    "subcluster": "15.9 Boundary Extremes (FIRST_VALUE & LAST_VALUE)",
+    "level": "Level 3 (Boundary Framing)",
+    "title": "Syntax #1490: Compare current patient weight against their inaugural checkup weight using FIRST_VALUE",
+    "table": "PetClinic",
+    "scenario": "Compare current patient weight against their inaugural checkup weight using FIRST_VALUE.",
+    "businessObjective": "Compare current patient weight against their inaugural checkup weight using FIRST_VALUE.",
+    "schemaSnippet": "PetClinic analytical schema",
+    "targetQuery": "SELECT pet_name, visit_date, weight_kg,\n  FIRST_VALUE(weight_kg) OVER (PARTITION BY pet_name ORDER BY visit_date ASC) AS initial_baseline_weight\nFROM PetClinic;",
+    "syntaxBlueprint": "SELECT col1, date_col, metric,\n  FIRST_VALUE(metric) OVER (ORDER BY date_col ASC) AS initial_baseline,\n  LAST_VALUE(metric) OVER (ORDER BY date_col ASC ROWS BETWEEN UNBOUNDED PRECEDING AND UNBOUNDED FOLLOWING) AS final_closing_val\nFROM table_name;",
+    "syntaxRule": "FIRST_VALUE() pulls the opening value. LAST_VALUE() requires 'ROWS BETWEEN UNBOUNDED PRECEDING AND UNBOUNDED FOLLOWING' to reach the true end of the window.",
+    "syntaxTrap": "THE LAST_VALUE TRAP: Without explicit UNBOUNDED FOLLOWING framing, LAST_VALUE() stops at the CURRENT ROW, effectively returning the current row's own value!",
+    "eli5Story": "Analytical Window Functions on PetClinic: Compare current patient weight against their inaugural checkup weight using FIRST_VALUE.",
+    "commonMistakes": "Omitting ORDER BY inside OVER() for running totals, confusing PARTITION BY with GROUP BY, or attempting to filter window functions in WHERE without a CTE wrapper.",
+    "learningOutcomes": "Mastered 15.9 Boundary Extremes (FIRST_VALUE & LAST_VALUE) on PetClinic.",
+    "challengeSlots": [
+      {
+        "type": "keyword",
+        "value": "SELECT"
+      },
+      {
+        "type": "column",
+        "value": "pet_name,"
+      },
+      {
+        "type": "column",
+        "value": "visit_date,"
+      },
+      {
+        "type": "column",
+        "value": "weight_kg,"
+      },
+      {
+        "type": "column",
+        "value": "FIRST_VALUE(weight_kg)"
+      },
+      {
+        "type": "keyword",
+        "value": "OVER"
+      },
+      {
+        "type": "keyword",
+        "value": "(PARTITION"
+      },
+      {
+        "type": "keyword",
+        "value": "BY"
+      },
+      {
+        "type": "column",
+        "value": "pet_name"
+      },
+      {
+        "type": "keyword",
+        "value": "ORDER"
+      },
+      {
+        "type": "keyword",
+        "value": "BY"
+      },
+      {
+        "type": "column",
+        "value": "visit_date"
+      },
+      {
+        "type": "keyword",
+        "value": "ASC)"
+      },
+      {
+        "type": "keyword",
+        "value": "AS"
+      },
+      {
+        "type": "column",
+        "value": "initial_baseline_weight"
+      },
+      {
+        "type": "keyword",
+        "value": "FROM"
+      },
+      {
+        "type": "table",
+        "value": "PetClinic;"
+      }
+    ]
+  },
+  {
+    "drillNumber": 1491,
+    "subcluster": "15.10 Full Production Financial Waterfalls & Peak Highs",
+    "level": "Level 3 (Financial Waterfall Master)",
+    "title": "Syntax #1491: Financial waterfall: Track peak order value to date and distance from peak for each order",
+    "table": "Orders",
+    "scenario": "Financial waterfall: Track peak order value to date and distance from peak for each order.",
+    "businessObjective": "Financial waterfall: Track peak order value to date and distance from peak for each order.",
+    "schemaSnippet": "Orders analytical schema",
+    "targetQuery": "SELECT order_id, order_date, total_amount,\n  MAX(total_amount) OVER (ORDER BY order_date ASC) AS peak_order_to_date,\n  total_amount - MAX(total_amount) OVER (ORDER BY order_date ASC) AS delta_from_peak\nFROM Orders;",
+    "syntaxBlueprint": "SELECT date_col, balance,\n  MAX(balance) OVER (ORDER BY date_col ASC) AS peak_balance,\n  balance - MAX(balance) OVER (ORDER BY date_col ASC) AS drawdown\nFROM table_name;",
+    "syntaxRule": "Use 'MAX(col) OVER (ORDER BY date)' to track all-time peak portfolio values, then subtract the peak to calculate maximum financial drawdown.",
+    "syntaxTrap": "Forgetting ORDER BY inside MAX() turns it into the global maximum rather than the running peak.",
+    "eli5Story": "Analytical Window Functions on Orders: Financial waterfall: Track peak order value to date and distance from peak for each order.",
+    "commonMistakes": "Omitting ORDER BY inside OVER() for running totals, confusing PARTITION BY with GROUP BY, or attempting to filter window functions in WHERE without a CTE wrapper.",
+    "learningOutcomes": "Mastered 15.10 Full Production Financial Waterfalls & Peak Highs on Orders.",
+    "challengeSlots": [
+      {
+        "type": "keyword",
+        "value": "SELECT"
+      },
+      {
+        "type": "column",
+        "value": "order_id,"
+      },
+      {
+        "type": "column",
+        "value": "order_date,"
+      },
+      {
+        "type": "column",
+        "value": "total_amount,"
+      },
+      {
+        "type": "column",
+        "value": "MAX(total_amount)"
+      },
+      {
+        "type": "keyword",
+        "value": "OVER"
+      },
+      {
+        "type": "keyword",
+        "value": "(ORDER"
+      },
+      {
+        "type": "keyword",
+        "value": "BY"
+      },
+      {
+        "type": "column",
+        "value": "order_date"
+      },
+      {
+        "type": "keyword",
+        "value": "ASC)"
+      },
+      {
+        "type": "keyword",
+        "value": "AS"
+      },
+      {
+        "type": "column",
+        "value": "peak_order_to_date,"
+      },
+      {
+        "type": "column",
+        "value": "total_amount"
+      },
+      {
+        "type": "column",
+        "value": "-"
+      },
+      {
+        "type": "column",
+        "value": "MAX(total_amount)"
+      },
+      {
+        "type": "keyword",
+        "value": "OVER"
+      },
+      {
+        "type": "keyword",
+        "value": "(ORDER"
+      },
+      {
+        "type": "keyword",
+        "value": "BY"
+      },
+      {
+        "type": "column",
+        "value": "order_date"
+      },
+      {
+        "type": "keyword",
+        "value": "ASC)"
+      },
+      {
+        "type": "keyword",
+        "value": "AS"
+      },
+      {
+        "type": "column",
+        "value": "delta_from_peak"
+      },
+      {
+        "type": "keyword",
+        "value": "FROM"
+      },
+      {
+        "type": "table",
+        "value": "Orders;"
+      }
+    ]
+  },
+  {
+    "drillNumber": 1492,
+    "subcluster": "15.10 Full Production Financial Waterfalls & Peak Highs",
+    "level": "Level 3 (Financial Waterfall Master)",
+    "title": "Syntax #1492: Track the all-time record student GPA as it was achieved over time",
+    "table": "Students",
+    "scenario": "Track the all-time record student GPA as it was achieved over time.",
+    "businessObjective": "Track the all-time record student GPA as it was achieved over time.",
+    "schemaSnippet": "Students analytical schema",
+    "targetQuery": "SELECT full_name, enrolled_year, gpa,\n  MAX(gpa) OVER (ORDER BY enrolled_year ASC) AS running_record_gpa\nFROM Students;",
+    "syntaxBlueprint": "SELECT date_col, balance,\n  MAX(balance) OVER (ORDER BY date_col ASC) AS peak_balance,\n  balance - MAX(balance) OVER (ORDER BY date_col ASC) AS drawdown\nFROM table_name;",
+    "syntaxRule": "Use 'MAX(col) OVER (ORDER BY date)' to track all-time peak portfolio values, then subtract the peak to calculate maximum financial drawdown.",
+    "syntaxTrap": "Forgetting ORDER BY inside MAX() turns it into the global maximum rather than the running peak.",
+    "eli5Story": "Analytical Window Functions on Students: Track the all-time record student GPA as it was achieved over time.",
+    "commonMistakes": "Omitting ORDER BY inside OVER() for running totals, confusing PARTITION BY with GROUP BY, or attempting to filter window functions in WHERE without a CTE wrapper.",
+    "learningOutcomes": "Mastered 15.10 Full Production Financial Waterfalls & Peak Highs on Students.",
+    "challengeSlots": [
+      {
+        "type": "keyword",
+        "value": "SELECT"
+      },
+      {
+        "type": "column",
+        "value": "full_name,"
+      },
+      {
+        "type": "column",
+        "value": "enrolled_year,"
+      },
+      {
+        "type": "column",
+        "value": "gpa,"
+      },
+      {
+        "type": "column",
+        "value": "MAX(gpa)"
+      },
+      {
+        "type": "keyword",
+        "value": "OVER"
+      },
+      {
+        "type": "keyword",
+        "value": "(ORDER"
+      },
+      {
+        "type": "keyword",
+        "value": "BY"
+      },
+      {
+        "type": "column",
+        "value": "enrolled_year"
+      },
+      {
+        "type": "keyword",
+        "value": "ASC)"
+      },
+      {
+        "type": "keyword",
+        "value": "AS"
+      },
+      {
+        "type": "column",
+        "value": "running_record_gpa"
+      },
+      {
+        "type": "keyword",
+        "value": "FROM"
+      },
+      {
+        "type": "table",
+        "value": "Students;"
+      }
+    ]
+  },
+  {
+    "drillNumber": 1493,
+    "subcluster": "15.10 Full Production Financial Waterfalls & Peak Highs",
+    "level": "Level 3 (Financial Waterfall Master)",
+    "title": "Syntax #1493: Track the highest book price ceiling established in bookstore history",
+    "table": "Books",
+    "scenario": "Track the highest book price ceiling established in bookstore history.",
+    "businessObjective": "Track the highest book price ceiling established in bookstore history.",
+    "schemaSnippet": "Books analytical schema",
+    "targetQuery": "SELECT title, published_date, price,\n  MAX(price) OVER (ORDER BY published_date ASC) AS running_max_catalog_price\nFROM Books;",
+    "syntaxBlueprint": "SELECT date_col, balance,\n  MAX(balance) OVER (ORDER BY date_col ASC) AS peak_balance,\n  balance - MAX(balance) OVER (ORDER BY date_col ASC) AS drawdown\nFROM table_name;",
+    "syntaxRule": "Use 'MAX(col) OVER (ORDER BY date)' to track all-time peak portfolio values, then subtract the peak to calculate maximum financial drawdown.",
+    "syntaxTrap": "Forgetting ORDER BY inside MAX() turns it into the global maximum rather than the running peak.",
+    "eli5Story": "Analytical Window Functions on Books: Track the highest book price ceiling established in bookstore history.",
+    "commonMistakes": "Omitting ORDER BY inside OVER() for running totals, confusing PARTITION BY with GROUP BY, or attempting to filter window functions in WHERE without a CTE wrapper.",
+    "learningOutcomes": "Mastered 15.10 Full Production Financial Waterfalls & Peak Highs on Books.",
+    "challengeSlots": [
+      {
+        "type": "keyword",
+        "value": "SELECT"
+      },
+      {
+        "type": "column",
+        "value": "title,"
+      },
+      {
+        "type": "column",
+        "value": "published_date,"
+      },
+      {
+        "type": "column",
+        "value": "price,"
+      },
+      {
+        "type": "column",
+        "value": "MAX(price)"
+      },
+      {
+        "type": "keyword",
+        "value": "OVER"
+      },
+      {
+        "type": "keyword",
+        "value": "(ORDER"
+      },
+      {
+        "type": "keyword",
+        "value": "BY"
+      },
+      {
+        "type": "column",
+        "value": "published_date"
+      },
+      {
+        "type": "keyword",
+        "value": "ASC)"
+      },
+      {
+        "type": "keyword",
+        "value": "AS"
+      },
+      {
+        "type": "column",
+        "value": "running_max_catalog_price"
+      },
+      {
+        "type": "keyword",
+        "value": "FROM"
+      },
+      {
+        "type": "table",
+        "value": "Books;"
+      }
+    ]
+  },
+  {
+    "drillNumber": 1494,
+    "subcluster": "15.10 Full Production Financial Waterfalls & Peak Highs",
+    "level": "Level 3 (Financial Waterfall Master)",
+    "title": "Syntax #1494: Track the running peak compensation ceiling established within each department",
+    "table": "Employees",
+    "scenario": "Track the running peak compensation ceiling established within each department.",
+    "businessObjective": "Track the running peak compensation ceiling established within each department.",
+    "schemaSnippet": "Employees analytical schema",
+    "targetQuery": "SELECT first_name, hire_date, salary,\n  MAX(salary) OVER (PARTITION BY department ORDER BY hire_date ASC) AS dept_peak_salary_to_date\nFROM Employees;",
+    "syntaxBlueprint": "SELECT date_col, balance,\n  MAX(balance) OVER (ORDER BY date_col ASC) AS peak_balance,\n  balance - MAX(balance) OVER (ORDER BY date_col ASC) AS drawdown\nFROM table_name;",
+    "syntaxRule": "Use 'MAX(col) OVER (ORDER BY date)' to track all-time peak portfolio values, then subtract the peak to calculate maximum financial drawdown.",
+    "syntaxTrap": "Forgetting ORDER BY inside MAX() turns it into the global maximum rather than the running peak.",
+    "eli5Story": "Analytical Window Functions on Employees: Track the running peak compensation ceiling established within each department.",
+    "commonMistakes": "Omitting ORDER BY inside OVER() for running totals, confusing PARTITION BY with GROUP BY, or attempting to filter window functions in WHERE without a CTE wrapper.",
+    "learningOutcomes": "Mastered 15.10 Full Production Financial Waterfalls & Peak Highs on Employees.",
+    "challengeSlots": [
+      {
+        "type": "keyword",
+        "value": "SELECT"
+      },
+      {
+        "type": "column",
+        "value": "first_name,"
+      },
+      {
+        "type": "column",
+        "value": "hire_date,"
+      },
+      {
+        "type": "column",
+        "value": "salary,"
+      },
+      {
+        "type": "column",
+        "value": "MAX(salary)"
+      },
+      {
+        "type": "keyword",
+        "value": "OVER"
+      },
+      {
+        "type": "keyword",
+        "value": "(PARTITION"
+      },
+      {
+        "type": "keyword",
+        "value": "BY"
+      },
+      {
+        "type": "column",
+        "value": "department"
+      },
+      {
+        "type": "keyword",
+        "value": "ORDER"
+      },
+      {
+        "type": "keyword",
+        "value": "BY"
+      },
+      {
+        "type": "column",
+        "value": "hire_date"
+      },
+      {
+        "type": "keyword",
+        "value": "ASC)"
+      },
+      {
+        "type": "keyword",
+        "value": "AS"
+      },
+      {
+        "type": "column",
+        "value": "dept_peak_salary_to_date"
+      },
+      {
+        "type": "keyword",
+        "value": "FROM"
+      },
+      {
+        "type": "table",
+        "value": "Employees;"
+      }
+    ]
+  },
+  {
+    "drillNumber": 1495,
+    "subcluster": "15.10 Full Production Financial Waterfalls & Peak Highs",
+    "level": "Level 3 (Financial Waterfall Master)",
+    "title": "Syntax #1495: Track running maximum item price ceilings within grocery categories",
+    "table": "GroceryItems",
+    "scenario": "Track running maximum item price ceilings within grocery categories.",
+    "businessObjective": "Track running maximum item price ceilings within grocery categories.",
+    "schemaSnippet": "GroceryItems analytical schema",
+    "targetQuery": "SELECT item_name, unit_price,\n  MAX(unit_price) OVER (PARTITION BY category ORDER BY item_id ASC) AS running_max_category_price\nFROM GroceryItems;",
+    "syntaxBlueprint": "SELECT date_col, balance,\n  MAX(balance) OVER (ORDER BY date_col ASC) AS peak_balance,\n  balance - MAX(balance) OVER (ORDER BY date_col ASC) AS drawdown\nFROM table_name;",
+    "syntaxRule": "Use 'MAX(col) OVER (ORDER BY date)' to track all-time peak portfolio values, then subtract the peak to calculate maximum financial drawdown.",
+    "syntaxTrap": "Forgetting ORDER BY inside MAX() turns it into the global maximum rather than the running peak.",
+    "eli5Story": "Analytical Window Functions on GroceryItems: Track running maximum item price ceilings within grocery categories.",
+    "commonMistakes": "Omitting ORDER BY inside OVER() for running totals, confusing PARTITION BY with GROUP BY, or attempting to filter window functions in WHERE without a CTE wrapper.",
+    "learningOutcomes": "Mastered 15.10 Full Production Financial Waterfalls & Peak Highs on GroceryItems.",
+    "challengeSlots": [
+      {
+        "type": "keyword",
+        "value": "SELECT"
+      },
+      {
+        "type": "column",
+        "value": "item_name,"
+      },
+      {
+        "type": "column",
+        "value": "unit_price,"
+      },
+      {
+        "type": "column",
+        "value": "MAX(unit_price)"
+      },
+      {
+        "type": "keyword",
+        "value": "OVER"
+      },
+      {
+        "type": "keyword",
+        "value": "(PARTITION"
+      },
+      {
+        "type": "keyword",
+        "value": "BY"
+      },
+      {
+        "type": "column",
+        "value": "category"
+      },
+      {
+        "type": "keyword",
+        "value": "ORDER"
+      },
+      {
+        "type": "keyword",
+        "value": "BY"
+      },
+      {
+        "type": "column",
+        "value": "item_id"
+      },
+      {
+        "type": "keyword",
+        "value": "ASC)"
+      },
+      {
+        "type": "keyword",
+        "value": "AS"
+      },
+      {
+        "type": "column",
+        "value": "running_max_category_price"
+      },
+      {
+        "type": "keyword",
+        "value": "FROM"
+      },
+      {
+        "type": "table",
+        "value": "GroceryItems;"
+      }
+    ]
+  },
+  {
+    "drillNumber": 1496,
+    "subcluster": "15.10 Full Production Financial Waterfalls & Peak Highs",
+    "level": "Level 3 (Financial Waterfall Master)",
+    "title": "Syntax #1496: Track an artist's personal record for longest song as their career unfolded",
+    "table": "MusicTracks",
+    "scenario": "Track an artist's personal record for longest song as their career unfolded.",
+    "businessObjective": "Track an artist's personal record for longest song as their career unfolded.",
+    "schemaSnippet": "MusicTracks analytical schema",
+    "targetQuery": "SELECT track_title, release_date, duration_seconds,\n  MAX(duration_seconds) OVER (PARTITION BY artist_name ORDER BY release_date ASC) AS artist_record_length\nFROM MusicTracks;",
+    "syntaxBlueprint": "SELECT date_col, balance,\n  MAX(balance) OVER (ORDER BY date_col ASC) AS peak_balance,\n  balance - MAX(balance) OVER (ORDER BY date_col ASC) AS drawdown\nFROM table_name;",
+    "syntaxRule": "Use 'MAX(col) OVER (ORDER BY date)' to track all-time peak portfolio values, then subtract the peak to calculate maximum financial drawdown.",
+    "syntaxTrap": "Forgetting ORDER BY inside MAX() turns it into the global maximum rather than the running peak.",
+    "eli5Story": "Analytical Window Functions on MusicTracks: Track an artist's personal record for longest song as their career unfolded.",
+    "commonMistakes": "Omitting ORDER BY inside OVER() for running totals, confusing PARTITION BY with GROUP BY, or attempting to filter window functions in WHERE without a CTE wrapper.",
+    "learningOutcomes": "Mastered 15.10 Full Production Financial Waterfalls & Peak Highs on MusicTracks.",
+    "challengeSlots": [
+      {
+        "type": "keyword",
+        "value": "SELECT"
+      },
+      {
+        "type": "column",
+        "value": "track_title,"
+      },
+      {
+        "type": "column",
+        "value": "release_date,"
+      },
+      {
+        "type": "column",
+        "value": "duration_seconds,"
+      },
+      {
+        "type": "column",
+        "value": "MAX(duration_seconds)"
+      },
+      {
+        "type": "keyword",
+        "value": "OVER"
+      },
+      {
+        "type": "keyword",
+        "value": "(PARTITION"
+      },
+      {
+        "type": "keyword",
+        "value": "BY"
+      },
+      {
+        "type": "column",
+        "value": "artist_name"
+      },
+      {
+        "type": "keyword",
+        "value": "ORDER"
+      },
+      {
+        "type": "keyword",
+        "value": "BY"
+      },
+      {
+        "type": "column",
+        "value": "release_date"
+      },
+      {
+        "type": "keyword",
+        "value": "ASC)"
+      },
+      {
+        "type": "keyword",
+        "value": "AS"
+      },
+      {
+        "type": "column",
+        "value": "artist_record_length"
+      },
+      {
+        "type": "keyword",
+        "value": "FROM"
+      },
+      {
+        "type": "table",
+        "value": "MusicTracks;"
+      }
+    ]
+  },
+  {
+    "drillNumber": 1497,
+    "subcluster": "15.10 Full Production Financial Waterfalls & Peak Highs",
+    "level": "Level 3 (Financial Waterfall Master)",
+    "title": "Syntax #1497: Track running peak membership fee records over gym signups",
+    "table": "GymMembers",
+    "scenario": "Track running peak membership fee records over gym signups.",
+    "businessObjective": "Track running peak membership fee records over gym signups.",
+    "schemaSnippet": "GymMembers analytical schema",
+    "targetQuery": "SELECT member_name, join_date, monthly_fee,\n  MAX(monthly_fee) OVER (ORDER BY join_date ASC) AS peak_fee_collected\nFROM GymMembers;",
+    "syntaxBlueprint": "SELECT date_col, balance,\n  MAX(balance) OVER (ORDER BY date_col ASC) AS peak_balance,\n  balance - MAX(balance) OVER (ORDER BY date_col ASC) AS drawdown\nFROM table_name;",
+    "syntaxRule": "Use 'MAX(col) OVER (ORDER BY date)' to track all-time peak portfolio values, then subtract the peak to calculate maximum financial drawdown.",
+    "syntaxTrap": "Forgetting ORDER BY inside MAX() turns it into the global maximum rather than the running peak.",
+    "eli5Story": "Analytical Window Functions on GymMembers: Track running peak membership fee records over gym signups.",
+    "commonMistakes": "Omitting ORDER BY inside OVER() for running totals, confusing PARTITION BY with GROUP BY, or attempting to filter window functions in WHERE without a CTE wrapper.",
+    "learningOutcomes": "Mastered 15.10 Full Production Financial Waterfalls & Peak Highs on GymMembers.",
+    "challengeSlots": [
+      {
+        "type": "keyword",
+        "value": "SELECT"
+      },
+      {
+        "type": "column",
+        "value": "member_name,"
+      },
+      {
+        "type": "column",
+        "value": "join_date,"
+      },
+      {
+        "type": "column",
+        "value": "monthly_fee,"
+      },
+      {
+        "type": "column",
+        "value": "MAX(monthly_fee)"
+      },
+      {
+        "type": "keyword",
+        "value": "OVER"
+      },
+      {
+        "type": "keyword",
+        "value": "(ORDER"
+      },
+      {
+        "type": "keyword",
+        "value": "BY"
+      },
+      {
+        "type": "column",
+        "value": "join_date"
+      },
+      {
+        "type": "keyword",
+        "value": "ASC)"
+      },
+      {
+        "type": "keyword",
+        "value": "AS"
+      },
+      {
+        "type": "column",
+        "value": "peak_fee_collected"
+      },
+      {
+        "type": "keyword",
+        "value": "FROM"
+      },
+      {
+        "type": "table",
+        "value": "GymMembers;"
+      }
+    ]
+  },
+  {
+    "drillNumber": 1498,
+    "subcluster": "15.10 Full Production Financial Waterfalls & Peak Highs",
+    "level": "Level 3 (Financial Waterfall Master)",
+    "title": "Syntax #1498: Track historical peak movie rating milestones chronologically",
+    "table": "MovieReviews",
+    "scenario": "Track historical peak movie rating milestones chronologically.",
+    "businessObjective": "Track historical peak movie rating milestones chronologically.",
+    "schemaSnippet": "MovieReviews analytical schema",
+    "targetQuery": "SELECT movie_title, review_date, star_rating,\n  MAX(star_rating) OVER (ORDER BY review_date ASC) AS peak_rating_to_date\nFROM MovieReviews;",
+    "syntaxBlueprint": "SELECT date_col, balance,\n  MAX(balance) OVER (ORDER BY date_col ASC) AS peak_balance,\n  balance - MAX(balance) OVER (ORDER BY date_col ASC) AS drawdown\nFROM table_name;",
+    "syntaxRule": "Use 'MAX(col) OVER (ORDER BY date)' to track all-time peak portfolio values, then subtract the peak to calculate maximum financial drawdown.",
+    "syntaxTrap": "Forgetting ORDER BY inside MAX() turns it into the global maximum rather than the running peak.",
+    "eli5Story": "Analytical Window Functions on MovieReviews: Track historical peak movie rating milestones chronologically.",
+    "commonMistakes": "Omitting ORDER BY inside OVER() for running totals, confusing PARTITION BY with GROUP BY, or attempting to filter window functions in WHERE without a CTE wrapper.",
+    "learningOutcomes": "Mastered 15.10 Full Production Financial Waterfalls & Peak Highs on MovieReviews.",
+    "challengeSlots": [
+      {
+        "type": "keyword",
+        "value": "SELECT"
+      },
+      {
+        "type": "column",
+        "value": "movie_title,"
+      },
+      {
+        "type": "column",
+        "value": "review_date,"
+      },
+      {
+        "type": "column",
+        "value": "star_rating,"
+      },
+      {
+        "type": "column",
+        "value": "MAX(star_rating)"
+      },
+      {
+        "type": "keyword",
+        "value": "OVER"
+      },
+      {
+        "type": "keyword",
+        "value": "(ORDER"
+      },
+      {
+        "type": "keyword",
+        "value": "BY"
+      },
+      {
+        "type": "column",
+        "value": "review_date"
+      },
+      {
+        "type": "keyword",
+        "value": "ASC)"
+      },
+      {
+        "type": "keyword",
+        "value": "AS"
+      },
+      {
+        "type": "column",
+        "value": "peak_rating_to_date"
+      },
+      {
+        "type": "keyword",
+        "value": "FROM"
+      },
+      {
+        "type": "table",
+        "value": "MovieReviews;"
+      }
+    ]
+  },
+  {
+    "drillNumber": 1499,
+    "subcluster": "15.10 Full Production Financial Waterfalls & Peak Highs",
+    "level": "Level 3 (Financial Waterfall Master)",
+    "title": "Syntax #1499: Track the airline's longest flight record as new routes opened",
+    "table": "FlightSchedule",
+    "scenario": "Track the airline's longest flight record as new routes opened.",
+    "businessObjective": "Track the airline's longest flight record as new routes opened.",
+    "schemaSnippet": "FlightSchedule analytical schema",
+    "targetQuery": "SELECT flight_id, departure_time, distance_miles,\n  MAX(distance_miles) OVER (ORDER BY departure_time ASC) AS peak_flight_distance\nFROM FlightSchedule;",
+    "syntaxBlueprint": "SELECT date_col, balance,\n  MAX(balance) OVER (ORDER BY date_col ASC) AS peak_balance,\n  balance - MAX(balance) OVER (ORDER BY date_col ASC) AS drawdown\nFROM table_name;",
+    "syntaxRule": "Use 'MAX(col) OVER (ORDER BY date)' to track all-time peak portfolio values, then subtract the peak to calculate maximum financial drawdown.",
+    "syntaxTrap": "Forgetting ORDER BY inside MAX() turns it into the global maximum rather than the running peak.",
+    "eli5Story": "Analytical Window Functions on FlightSchedule: Track the airline's longest flight record as new routes opened.",
+    "commonMistakes": "Omitting ORDER BY inside OVER() for running totals, confusing PARTITION BY with GROUP BY, or attempting to filter window functions in WHERE without a CTE wrapper.",
+    "learningOutcomes": "Mastered 15.10 Full Production Financial Waterfalls & Peak Highs on FlightSchedule.",
+    "challengeSlots": [
+      {
+        "type": "keyword",
+        "value": "SELECT"
+      },
+      {
+        "type": "column",
+        "value": "flight_id,"
+      },
+      {
+        "type": "column",
+        "value": "departure_time,"
+      },
+      {
+        "type": "column",
+        "value": "distance_miles,"
+      },
+      {
+        "type": "column",
+        "value": "MAX(distance_miles)"
+      },
+      {
+        "type": "keyword",
+        "value": "OVER"
+      },
+      {
+        "type": "keyword",
+        "value": "(ORDER"
+      },
+      {
+        "type": "keyword",
+        "value": "BY"
+      },
+      {
+        "type": "column",
+        "value": "departure_time"
+      },
+      {
+        "type": "keyword",
+        "value": "ASC)"
+      },
+      {
+        "type": "keyword",
+        "value": "AS"
+      },
+      {
+        "type": "column",
+        "value": "peak_flight_distance"
+      },
+      {
+        "type": "keyword",
+        "value": "FROM"
+      },
+      {
+        "type": "table",
+        "value": "FlightSchedule;"
+      }
+    ]
+  },
+  {
+    "drillNumber": 1500,
+    "subcluster": "15.10 Full Production Financial Waterfalls & Peak Highs",
+    "level": "Level 3 (Financial Waterfall Master)",
+    "title": "Syntax #1500: Track all-time peak lifetime body weight for each veterinary patient",
+    "table": "PetClinic",
+    "scenario": "Track all-time peak lifetime body weight for each veterinary patient.",
+    "businessObjective": "Track all-time peak lifetime body weight for each veterinary patient.",
+    "schemaSnippet": "PetClinic analytical schema",
+    "targetQuery": "SELECT pet_name, visit_date, weight_kg,\n  MAX(weight_kg) OVER (PARTITION BY pet_name ORDER BY visit_date ASC) AS patient_peak_lifetime_weight\nFROM PetClinic;",
+    "syntaxBlueprint": "SELECT date_col, balance,\n  MAX(balance) OVER (ORDER BY date_col ASC) AS peak_balance,\n  balance - MAX(balance) OVER (ORDER BY date_col ASC) AS drawdown\nFROM table_name;",
+    "syntaxRule": "Use 'MAX(col) OVER (ORDER BY date)' to track all-time peak portfolio values, then subtract the peak to calculate maximum financial drawdown.",
+    "syntaxTrap": "Forgetting ORDER BY inside MAX() turns it into the global maximum rather than the running peak.",
+    "eli5Story": "Analytical Window Functions on PetClinic: Track all-time peak lifetime body weight for each veterinary patient.",
+    "commonMistakes": "Omitting ORDER BY inside OVER() for running totals, confusing PARTITION BY with GROUP BY, or attempting to filter window functions in WHERE without a CTE wrapper.",
+    "learningOutcomes": "Mastered 15.10 Full Production Financial Waterfalls & Peak Highs on PetClinic.",
+    "challengeSlots": [
+      {
+        "type": "keyword",
+        "value": "SELECT"
+      },
+      {
+        "type": "column",
+        "value": "pet_name,"
+      },
+      {
+        "type": "column",
+        "value": "visit_date,"
+      },
+      {
+        "type": "column",
+        "value": "weight_kg,"
+      },
+      {
+        "type": "column",
+        "value": "MAX(weight_kg)"
+      },
+      {
+        "type": "keyword",
+        "value": "OVER"
+      },
+      {
+        "type": "keyword",
+        "value": "(PARTITION"
+      },
+      {
+        "type": "keyword",
+        "value": "BY"
+      },
+      {
+        "type": "column",
+        "value": "pet_name"
+      },
+      {
+        "type": "keyword",
+        "value": "ORDER"
+      },
+      {
+        "type": "keyword",
+        "value": "BY"
+      },
+      {
+        "type": "column",
+        "value": "visit_date"
+      },
+      {
+        "type": "keyword",
+        "value": "ASC)"
+      },
+      {
+        "type": "keyword",
+        "value": "AS"
+      },
+      {
+        "type": "column",
+        "value": "patient_peak_lifetime_weight"
+      },
+      {
+        "type": "keyword",
+        "value": "FROM"
+      },
+      {
+        "type": "table",
+        "value": "PetClinic;"
       }
     ]
   }
