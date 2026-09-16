@@ -716,3 +716,34 @@
 
 - **Next Step**: Advance to **Day 13: Real-World Business Analytics (Retention Cohort Heatmaps, Customer Churn Rates & LTV)** or begin scaffolding the **Interview Arena & Edge-Case Gauntlet**.
 
+---
+
+## 2026-09-17 — Entry 30: Topic 16 Set Operations & Combined Queries in the SQL Syntax Gym (1,600 Progressive Micro-Drills)
+
+### 1. Architectural Scope
+- Deployed **Topic 16: Set Operations & Combined Queries** (100 progressive micro-drills, Drills **#1501 to #1600**) in the standalone Syntax Gym:
+  - Covers `UNION`, `UNION ALL`, `INTERSECT`, and `EXCEPT` / `MINUS`.
+- Expanded total gym capacity from **1,500 to 1,600 active-retrieval drills** across all 10 everyday relatable schemas (`Students`, `Books`, `Employees`, `GroceryItems`, `Orders`, `MusicTracks`, `GymMembers`, `MovieReviews`, `FlightSchedule`, `PetClinic`).
+- Corporate Case Studies remain cleanly decoupled at 1,490 scenarios.
+
+### 2. Topic 16 Curriculum Subclusters (Drills #1501–#1600)
+1. **16.1 UNION ALL Simple Row Stacking** (#1501–#1510): Fast concatenation preserving duplicates across similar tables/subsets.
+2. **16.2 UNION with Implicit Deduplication** (#1511–#1520): Combining distinct values across queries, understanding sort/hash deduplication overhead.
+3. **16.3 Matching Column Arity & Compatibility** (#1521–#1530): Strict validation of identical column counts and data type compatibility.
+4. **16.4 Positional Alias Naming Rule** (#1531–#1540): First query determines output column headers; subsequent aliases are ignored.
+5. **16.5 Global ORDER BY Placement** (#1541–#1550): Placing single global ORDER BY at the very end of combined sets.
+6. **16.6 Combining Disjoint Filters from Same Table** (#1551–#1560): Emulating complex OR/conditional partitions with high-performance UNION ALL.
+7. **16.7 INTERSECT (Common Elements Between Sets)** (#1561–#1570): Finding rows present in both queries (ANSI SQL intersection).
+8. **16.8 EXCEPT / MINUS (Set Difference)** (#1571–#1580): Finding rows in Query 1 not present in Query 2 (order-dependent set subtraction).
+9. **16.9 Source Tagging with Literal Discriminator Columns** (#1581–#1590): Injecting hardcoded string tags (e.g. 'VIP Tier' vs 'Standard Tier') for data lineage.
+10. **16.10 Multi-Branch Pipelines & Set Traps** (#1591–#1600): Chaining 3+ queries in a multi-tier pipeline with global sorting and equal operator precedence.
+
+### 3. File Updates
+- `visualizer/syntax_gym_data.js`: Assembled all 1,600 drills into `SYNTAX_GYM_DRILLS` (#0001–#1600 contiguous).
+- `visualizer/index.html`: Nav tab `Syntax Gym (1,600)`, title `(1,600 Progressive Micro-Drills)`, badge `1,600 Drills`, solved badge `/1,600 Solved`, button `All 1,600 Drills`, and filter button for Topic 16 (`🔀 Topic 16: Set Operations & Combined (100)`).
+- `visualizer/app.js`: Updated `renderSyntaxGym()` with `set_ops` (#1501–#1600) pillar filter.
+- `SESSION_STATE.md`: Updated platform snapshot to 1,600 drills across 16 pillars.
+
+- **Next Step**: Advance to **Day 13: Real-World Business Analytics (Retention Cohort Heatmaps, Customer Churn Rates & LTV)** or continue with Section 0 expansions.
+
+
