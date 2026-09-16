@@ -5343,6 +5343,8 @@ function renderSyntaxGym() {
     filtered = filtered.filter(d => d.drillNumber >= 1401 && d.drillNumber <= 1500);
   } else if (currentGymPillar === 'set_ops') {
     filtered = filtered.filter(d => d.drillNumber >= 1501 && d.drillNumber <= 1600);
+  } else if (currentGymPillar === 'ddl_dml') {
+    filtered = filtered.filter(d => d.drillNumber >= 1601 && d.drillNumber <= 1700);
   }
 
   // 2. Table filter

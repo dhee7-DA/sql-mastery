@@ -17,13 +17,13 @@
 - **Visualizer & Masterclass Super-Upgrades**:
   - **12 Visual Masterclass Modules with Poppy Neo-Brutalist SVGs**: Textbook CS theory, formulas, storage physics, and gotchas covering Modules 01 through 12 (now including Module 12: Analytical Window Functions & Sliding Frame Physics).
   - **The 2,100 Master MCQ Technical Vault**: 2,100 deep technical checks across 23 distinct categories, including **350 Dedicated Join MCQs**, **500 Dedicated Window Function MCQs**, and **150 Section 10 Subquery/CTE/Set Operation MCQs** with strictly balanced 25% option distribution.
-  - **The 1,490 Corporate Case Study Master Vault & Standalone Syntax Gym (1,600 Drills)**: Decoupled for clean UX without clutter: 1,490 production analytics scenarios across 10 corporate sections (530 Easy, 530 Medium, 430 Hard), alongside a standalone **Syntax Gym** housing 1,600 active-retrieval foundational micro-drills (`⚡ Drill #0001`–`#1600`) across 16 pillars: SELECT (100), WHERE (100), ORDER BY (100), Aggregations & GROUP BY (100), CASE WHEN & Conditional Logic (100), String Manipulation & Patterns (100), Relational Joins Core (100), Advanced Joins & Structural Patterns (100), Multi-Table Chaining & Joined Aggregations (100), Date, Time & Temporal Arithmetic (100), Subqueries & Derived Tables (100), Modular CTEs & Multi-Step Pipelines (100), Window Ranking & Percentiles (100), Value Offsets & Deltas (100), Running Balances & Frames (100), and Set Operations & Combined Queries (100) with interactive blanks and jumbled keyword banks across 10 everyday schemas.
+  - **The 1,490 Corporate Case Study Master Vault & Standalone Syntax Gym (1,700 Drills)**: Decoupled for clean UX without clutter: 1,490 production analytics scenarios across 10 corporate sections (530 Easy, 530 Medium, 430 Hard), alongside a standalone **Syntax Gym** housing 1,700 active-retrieval foundational micro-drills (`⚡ Drill #0001`–`#1700`) across 17 pillars: SELECT (100), WHERE (100), ORDER BY (100), Aggregations & GROUP BY (100), CASE WHEN & Conditional Logic (100), String Manipulation & Patterns (100), Relational Joins Core (100), Advanced Joins & Structural Patterns (100), Multi-Table Chaining & Joined Aggregations (100), Date, Time & Temporal Arithmetic (100), Subqueries & Derived Tables (100), Modular CTEs & Multi-Step Pipelines (100), Window Ranking & Percentiles (100), Value Offsets & Deltas (100), Running Balances & Frames (100), Set Operations & Combined Queries (100), and DDL & DML Schema Modifications (100) with interactive blanks and jumbled keyword banks across 10 everyday schemas.
   - **30 Interactive Quests**: Levels 1–30 with audio FX, token puzzle mechanics, and instant evaluation.
   - **Track 04 in Guided Learning Lab**: 8 dedicated steps covering Inner, Left, Right, Full Outer, Anti, Cross, Self, and Non-Equi Joins.
   - **🤖 "Byte" the Animated SQL Cyber-Bot Companion**: Reactive SVG buddy with 5 facial expressions (idle, happy, star-eyes celebrating, confused, pensive), contextual hints, view-switch commentary, poke interactions, and audio integration.
 - **Next Immediate Action**: Advance to Day 13 (*Real-World Business Analytics: Retention Cohort Heatmaps, Customer Churn Rates & LTV*)
 - **Total Problems Completed in Intensive**: 66 / 68 Problems
-- **Last Updated**: 2026-09-17 02:35 IST
+- **Last Updated**: 2026-09-17 02:50 IST
 
 ---
 
@@ -120,6 +120,11 @@
 - **1,600 Micro-Drills Milestone**: Added Topic 16 (100 drills, #1501–#1600) covering `UNION`, `UNION ALL`, `INTERSECT`, and `EXCEPT` / `MINUS`.
 - **16 Complete Pillars**: SELECT, WHERE, ORDER BY, GROUP BY, CASE WHEN, String Functions, Relational Joins Core, Advanced Joins, Join Chains & Aggs, Date/Time, Subqueries, CTEs, Window Ranking, Value Offsets, Running Frames, and Set Operations.
 - **UI & Assembly**: Assembled into `visualizer/syntax_gym_data.js`, filter button added to `visualizer/index.html`, and `set_ops` filter wired into `visualizer/app.js`.
+
+### 11. 2026-09-17 (Topic 17 DDL & DML Schema Modifications Added — 1,700 Drills Total)
+- **1,700 Micro-Drills Milestone**: Added Topic 17 (100 drills, #1601–#1700) covering `CREATE TABLE`, `ALTER TABLE`, `INSERT INTO`, `INSERT INTO ... SELECT`, `UPDATE`, `DELETE`, `TRUNCATE`, and `ON DUPLICATE KEY UPDATE` (UPSERT).
+- **17 Complete Pillars**: SELECT, WHERE, ORDER BY, GROUP BY, CASE WHEN, String Functions, Relational Joins Core, Advanced Joins, Join Chains & Aggs, Date/Time, Subqueries, CTEs, Window Ranking, Value Offsets, Running Frames, Set Operations, and DDL/DML Data Mutations.
+- **UI & Assembly**: Assembled into `visualizer/syntax_gym_data.js`, filter button added to `visualizer/index.html`, and `ddl_dml` filter wired into `visualizer/app.js`.
 
 
 

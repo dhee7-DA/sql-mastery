@@ -746,4 +746,35 @@
 
 - **Next Step**: Advance to **Day 13: Real-World Business Analytics (Retention Cohort Heatmaps, Customer Churn Rates & LTV)** or continue with Section 0 expansions.
 
+---
+
+## 2026-09-17 — Entry 31: Topic 17 DDL & DML Schema Modifications in the SQL Syntax Gym (1,700 Progressive Micro-Drills)
+
+### 1. Architectural Scope
+- Deployed **Topic 17: DDL & DML Schema Modifications & Data Mutation** (100 progressive micro-drills, Drills **#1601 to #1700**) in the standalone Syntax Gym:
+  - Covers `CREATE TABLE`, `ALTER TABLE`, `INSERT INTO`, `INSERT INTO ... SELECT`, `UPDATE`, `DELETE`, `TRUNCATE`, and `ON DUPLICATE KEY UPDATE` (UPSERT).
+- Expanded total gym capacity from **1,600 to 1,700 active-retrieval drills** across all 10 everyday relatable schemas (`Students`, `Books`, `Employees`, `GroceryItems`, `Orders`, `MusicTracks`, `GymMembers`, `MovieReviews`, `FlightSchedule`, `PetClinic`).
+- Corporate Case Studies remain cleanly decoupled at 1,490 scenarios.
+
+### 2. Topic 17 Curriculum Subclusters (Drills #1601–#1700)
+1. **17.1 Basic Single-Row INSERT INTO** (#1601–#1610): Explicit-target column lists guarding against schema evolution.
+2. **17.2 Multi-Row Bulk INSERT INTO** (#1611–#1620): Comma-separated tuples inside `VALUES` for high-throughput batch ingestion.
+3. **17.3 INSERT INTO ... SELECT (ETL Staging)** (#1621–#1630): Direct in-engine pipeline copying without application roundtrips.
+4. **17.4 Targeted UPDATE with WHERE Clause** (#1631–#1640): Primary-key targeted mutation guarding against accidental table-wide overwrites.
+5. **17.5 Multi-Column & Arithmetic UPDATE** (#1641–#1650): Simultaneous arithmetic updates using comma-separated `SET` assignments.
+6. **17.6 Safe DELETE with WHERE Predicate** (#1651–#1660): Safe row-level purge maintaining schema and constraints.
+7. **17.7 High-Performance TRUNCATE TABLE** (#1661–#1670): Fast DDL deallocation vs row-by-row transaction logging.
+8. **17.8 Basic CREATE TABLE with Constraints** (#1671–#1680): Provisioning tables with `PRIMARY KEY`, `NOT NULL`, and `DEFAULT` values.
+9. **17.9 Schema Evolution with ALTER TABLE** (#1681–#1690): Adding columns with safe defaults to live populated tables.
+10. **17.10 Idempotent UPSERT (ON DUPLICATE KEY UPDATE)** (#1691–#1700): Atomic conflict handling eliminating race conditions.
+
+### 3. File Updates
+- `visualizer/syntax_gym_data.js`: Assembled all 1,700 drills into `SYNTAX_GYM_DRILLS` (#0001–#1700 contiguous).
+- `visualizer/index.html`: Nav tab `Syntax Gym (1,700)`, title `(1,700 Progressive Micro-Drills)`, badge `1,700 Drills`, solved badge `/1,700 Solved`, button `All 1,700 Drills`, and filter button for Topic 17 (`⚙️ Topic 17: DDL & DML Mutations (100)`).
+- `visualizer/app.js`: Updated `renderSyntaxGym()` with `ddl_dml` (#1601–#1700) pillar filter.
+- `SESSION_STATE.md`: Updated platform snapshot to 1,700 drills across 17 pillars.
+
+- **Next Step**: Advance to **Day 13: Real-World Business Analytics (Retention Cohort Heatmaps, Customer Churn Rates & LTV)** or continue with Section 0 expansions.
+
+
 
