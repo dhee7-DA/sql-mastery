@@ -5310,7 +5310,7 @@ function renderSyntaxGym() {
 
   let filtered = allDrills.slice();
 
-  // 1. Pillar filter ('select' = 1-100, 'where' = 101-200, 'order' = 201-300, 'aggregate' = 301-400, 'casewhen' = 401-500, 'all' = 500)
+  // 1. Pillar filter ('select' = 1-100, 'where' = 101-200, 'order' = 201-300, 'aggregate' = 301-400, 'casewhen' = 401-500, 'string' = 501-600, 'all' = 600)
   if (currentGymPillar === 'select') {
     filtered = filtered.filter(d => d.drillNumber >= 1 && d.drillNumber <= 100);
   } else if (currentGymPillar === 'where') {
@@ -5321,6 +5321,8 @@ function renderSyntaxGym() {
     filtered = filtered.filter(d => d.drillNumber >= 301 && d.drillNumber <= 400);
   } else if (currentGymPillar === 'casewhen') {
     filtered = filtered.filter(d => d.drillNumber >= 401 && d.drillNumber <= 500);
+  } else if (currentGymPillar === 'string') {
+    filtered = filtered.filter(d => d.drillNumber >= 501 && d.drillNumber <= 600);
   }
 
   // 2. Table filter

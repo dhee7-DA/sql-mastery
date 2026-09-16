@@ -503,7 +503,35 @@
 - `visualizer/index.html`: Nav tab `Syntax Gym (500)`, badge `500 Drills`, and Topic 5 filter button (`🧩 Topic 5: CASE WHEN & Conditional Logic (100)`).
 - `visualizer/app.js`: Updated `renderSyntaxGym()` pillar filter for `casewhen` (#401–#500) and `getCaseStudyById` fallback bounds.
 
+- **Next Step**: Advance to **Day 13: Real-World Business Analytics (Retention Cohort Heatmaps, Customer Churn Rates & LTV)** or expand Syntax Gym Topic 7 (Basic Relational Joins).
+
+---
+
+## 2026-09-16 — Entry 25: Topic 6 Expansion in the SQL Syntax Gym (600 Progressive Micro-Drills)
+
+### 1. Architectural Scope
+- Added **Topic 6: String Manipulation & Pattern Matching** (100 progressive micro-drills, Drills **#501 to #600**) to the standalone Syntax Gym module.
+- Expanded the total gym capacity from **500 to 600 drills** across all 10 everyday relatable schemas (`Students`, `Books`, `Employees`, `GroceryItems`, `Orders`, `MusicTracks`, `GymMembers`, `MovieReviews`, `FlightSchedule`, `PetClinic`).
+
+### 2. Topic 6 Curriculum Subclusters (Drills #501–#600)
+1. **6.1 Prefix Pattern Matching ('text%')** (#501–#510): Name initials, title prefixes ('The %'), code prefixes.
+2. **6.2 Suffix Pattern Matching ('%text')** (#511–#520): Surnames ('%son'), city endings ('%ton', '%land'), editions.
+3. **6.3 Substring Contains Search ('%text%')** (#521–#530): Searching keywords inside titles, categories, reviews.
+4. **6.4 Single-Character Wildcard Match ('_')** (#531–#540): Exact character counts, 3-letter airport codes, 4-letter names.
+5. **6.5 Case Normalization (UPPER & LOWER)** (#541–#550): Case-insensitive searches and formatted presentation strings.
+6. **6.6 String Slicing (LEFT, RIGHT, SUBSTRING)** (#551–#560): Initial extraction, suffix slicing, substring code carving.
+7. **6.7 String Length & Character Metrics (LENGTH)** (#561–#570): Filtering and ordering by name/title length.
+8. **6.8 String Concatenation (CONCAT)** (#571–#580): Template assembly ('Name from City', 'Artist - Title', route strings).
+9. **6.9 Cleaning & Replacement (TRIM, REPLACE)** (#581–#590): Whitespace stripping, terminology standardization.
+10. **6.10 Full Lifecycle Text Queries & Bug Hunts** (#591–#600): Multi-condition text matching, `NOT LIKE`, and fixing syntax traps (`*` vs `%` wildcards).
+
+### 3. File Updates
+- `visualizer/syntax_gym_data.js`: Assembled 600 drills into `SYNTAX_GYM_DRILLS`.
+- `visualizer/index.html`: Nav tab `Syntax Gym (600)`, badge `600 Drills`, and Topic 6 filter button (`🔤 Topic 6: String Manipulation & Patterns (100)`).
+- `visualizer/app.js`: Updated `renderSyntaxGym()` pillar filter for `string` (#501–#600) and `getCaseStudyById` fallback bounds.
+
 - **Next Step**: Advance to **Day 13: Real-World Business Analytics (Retention Cohort Heatmaps, Customer Churn Rates & LTV)**.
+
 
 
 
