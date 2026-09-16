@@ -449,7 +449,35 @@
 - **Simulation Engine ([visualizer/case_simulator_engine.js](file:///i:/sqlmastery(github)/sql-mastery/visualizer/case_simulator_engine.js))**:
   - Updated schema detection to check `caseStudy.drillNumber || caseStudy.isGymDrill` so everyday schemas trigger seamlessly without requiring legacy ID ranges.
 
-- **Next Step**: Advance to **Day 13: Real-World Business Analytics (Retention Cohort Heatmaps, Customer Churn Rates & LTV)**.
+- **Next Step**: Advance to **Day 13: Real-World Business Analytics (Retention Cohort Heatmaps, Customer Churn Rates & LTV)** or expand Syntax Gym Topic 5.
+
+---
+
+## 2026-09-16 — Entry 23: Topic 4 Expansion in the SQL Syntax Gym (400 Progressive Micro-Drills)
+
+### 1. Architectural Scope
+- Added **Topic 4: Aggregations & GROUP BY** (100 progressive micro-drills, Drills **#301 to #400**) to the standalone Syntax Gym module.
+- Expanded the total gym capacity from **300 to 400 drills** across 10 everyday relatable schemas (`Students`, `Books`, `Employees`, `GroceryItems`, `Orders`, `MusicTracks`, `GymMembers`, `MovieReviews`, `FlightSchedule`, `PetClinic`).
+
+### 2. Topic 4 Curriculum Subclusters (Drills #301–#400)
+1. **4.1 Basic COUNT & Non-Null Values** (#301–#310): Total rows, `COUNT(*)`, column counts.
+2. **4.2 Basic SUM & Total Accumulation** (#311–#320): Payroll, total stock, gross revenue, audio seconds.
+3. **4.3 AVG & Statistical Means** (#321–#330): Average GPA, prices, salaries, visit frequencies with `ROUND()`.
+4. **4.4 MIN & MAX Extrema Discovery** (#331–#340): Lowest/highest scores, prices, dates, weights.
+5. **4.5 COUNT(DISTINCT) Cardinality** (#341–#350): Unique hometowns, authors, departments, genres, species.
+6. **4.6 Single-Column GROUP BY** (#351–#360): Headcount per department, titles per genre, orders per status.
+7. **4.7 Multi-Metric GROUP BY Rollups** (#361–#370): Simultaneous `COUNT(*)`, `AVG()`, `SUM()`, and `MAX()` per group.
+8. **4.8 Multi-Column GROUP BY** (#371–#380): Grouping by `(city, major)`, `(department, city)`, `(origin, destination)`.
+9. **4.9 Filtering Groups with HAVING** (#381–#390): `HAVING COUNT(*) >= 2`, `HAVING AVG(price) > 15`, `HAVING SUM() > 100`.
+10. **4.10 Full Lifecycle SQL & Bug Hunts** (#391–#400): Complete `SELECT ... WHERE ... GROUP BY ... HAVING ... ORDER BY ... LIMIT` pipelines and fixing common traps (aggregates in `WHERE`, missing `GROUP BY` with projections).
+
+### 3. File Updates
+- `visualizer/syntax_gym_data.js`: Assembled 400 drills into `SYNTAX_GYM_DRILLS`.
+- `visualizer/index.html`: Nav tab `Syntax Gym (400)`, badge `400 Drills`, and Topic 4 filter button (`📊 Topic 4: Aggregations & GROUP BY (100)`).
+- `visualizer/app.js`: Updated `renderSyntaxGym()` pillar filter for `aggregate` (#301–#400) and `getCaseStudyById` fallback bounds.
+
+- **Next Step**: Advance to **Day 13: Real-World Business Analytics (Retention Cohort Heatmaps, Customer Churn Rates & LTV)** or add Topic 5 (CASE WHEN & Conditional Logic).
+
 
 
 

@@ -4529,7 +4529,7 @@ function renderCaseStudies(
     let found = allCases.find(c => c.id === numId || c.id === caseId);
 
     // 3. Fallback to gym drill if not found in corporate cases
-    if (!found && window.SYNTAX_GYM_DRILLS && numId >= 1 && numId <= 300) {
+    if (!found && window.SYNTAX_GYM_DRILLS && numId >= 1 && numId <= (window.SYNTAX_GYM_DRILLS.length || 400)) {
       const d = window.SYNTAX_GYM_DRILLS[numId - 1];
       if (d) {
         found = {
@@ -5310,13 +5310,15 @@ function renderSyntaxGym() {
 
   let filtered = allDrills.slice();
 
-  // 1. Pillar filter ('select' = 1-100, 'where' = 101-200, 'order' = 201-300, 'all' = 300)
+  // 1. Pillar filter ('select' = 1-100, 'where' = 101-200, 'order' = 201-300, 'aggregate' = 301-400, 'all' = 400)
   if (currentGymPillar === 'select') {
     filtered = filtered.filter(d => d.drillNumber >= 1 && d.drillNumber <= 100);
   } else if (currentGymPillar === 'where') {
     filtered = filtered.filter(d => d.drillNumber >= 101 && d.drillNumber <= 200);
   } else if (currentGymPillar === 'order') {
     filtered = filtered.filter(d => d.drillNumber >= 201 && d.drillNumber <= 300);
+  } else if (currentGymPillar === 'aggregate') {
+    filtered = filtered.filter(d => d.drillNumber >= 301 && d.drillNumber <= 400);
   }
 
   // 2. Table filter

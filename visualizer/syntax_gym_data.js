@@ -1,6 +1,6 @@
 // =============================================================================
-// SECTION 0: THE SQL SYNTAX GYM (300 Progressive In-Depth Micro-Drills)
-// Topics 1, 2, & 3: SELECT & Projections, WHERE & Predicates, ORDER BY & LIMIT
+// SECTION 0: THE SQL SYNTAX GYM (400 Progressive In-Depth Micro-Drills)
+// Topics 1, 2, 3, & 4: SELECT, WHERE, ORDER BY & LIMIT, Aggregations & GROUP BY
 // =============================================================================
 
 const SYNTAX_GYM_DRILLS = [
@@ -17557,6 +17557,6334 @@ const SYNTAX_GYM_DRILLS = [
       {
         "type": "column",
         "value": "10;"
+      }
+    ]
+  },
+  {
+    "drillNumber": 301,
+    "subcluster": "4.1 Basic COUNT & Non-Null Values",
+    "level": "Level 1 (Foundations)",
+    "title": "Syntax #301: Count the total number of enrolled students across all majors",
+    "table": "Students",
+    "scenario": "Count the total number of enrolled students across all majors.",
+    "businessObjective": "Count the total number of enrolled students across all majors.",
+    "schemaSnippet": "Students schema",
+    "targetQuery": "SELECT COUNT(*) AS total_students\nFROM Students;",
+    "syntaxBlueprint": "SELECT COUNT(*) AS total_students\nFROM Students;",
+    "syntaxRule": "Aggregate functions compute summary metrics. In GROUP BY queries, every column in SELECT must either be aggregated or listed in GROUP BY. Filter rows with WHERE; filter aggregate groups with HAVING.",
+    "syntaxTrap": "Writing an aggregate function like 'WHERE COUNT(*) > 1' in the WHERE clause (illegal; use HAVING instead), or omitting a non-aggregated column from the GROUP BY clause.",
+    "eli5Story": "Grouping and aggregating data on Students: Count the total number of enrolled students across all majors.",
+    "commonMistakes": "Using WHERE instead of HAVING for aggregate conditions, forgetting GROUP BY when projecting both raw columns and aggregates, or placing HAVING before GROUP BY.",
+    "learningOutcomes": "Mastered 4.1 Basic COUNT & Non-Null Values on Students.",
+    "challengeSlots": [
+      {
+        "type": "keyword",
+        "value": "SELECT"
+      },
+      {
+        "type": "column",
+        "value": "COUNT(*)"
+      },
+      {
+        "type": "keyword",
+        "value": "AS"
+      },
+      {
+        "type": "column",
+        "value": "total_students"
+      },
+      {
+        "type": "keyword",
+        "value": "FROM"
+      },
+      {
+        "type": "table",
+        "value": "Students;"
+      }
+    ]
+  },
+  {
+    "drillNumber": 302,
+    "subcluster": "4.1 Basic COUNT & Non-Null Values",
+    "level": "Level 1 (Foundations)",
+    "title": "Syntax #302: Count total book titles available in the inventory",
+    "table": "Books",
+    "scenario": "Count total book titles available in the inventory.",
+    "businessObjective": "Count total book titles available in the inventory.",
+    "schemaSnippet": "Books schema",
+    "targetQuery": "SELECT COUNT(book_id) AS total_titles\nFROM Books;",
+    "syntaxBlueprint": "SELECT COUNT(book_id) AS total_titles\nFROM Books;",
+    "syntaxRule": "Aggregate functions compute summary metrics. In GROUP BY queries, every column in SELECT must either be aggregated or listed in GROUP BY. Filter rows with WHERE; filter aggregate groups with HAVING.",
+    "syntaxTrap": "Writing an aggregate function like 'WHERE COUNT(*) > 1' in the WHERE clause (illegal; use HAVING instead), or omitting a non-aggregated column from the GROUP BY clause.",
+    "eli5Story": "Grouping and aggregating data on Books: Count total book titles available in the inventory.",
+    "commonMistakes": "Using WHERE instead of HAVING for aggregate conditions, forgetting GROUP BY when projecting both raw columns and aggregates, or placing HAVING before GROUP BY.",
+    "learningOutcomes": "Mastered 4.1 Basic COUNT & Non-Null Values on Books.",
+    "challengeSlots": [
+      {
+        "type": "keyword",
+        "value": "SELECT"
+      },
+      {
+        "type": "column",
+        "value": "COUNT(book_id)"
+      },
+      {
+        "type": "keyword",
+        "value": "AS"
+      },
+      {
+        "type": "column",
+        "value": "total_titles"
+      },
+      {
+        "type": "keyword",
+        "value": "FROM"
+      },
+      {
+        "type": "table",
+        "value": "Books;"
+      }
+    ]
+  },
+  {
+    "drillNumber": 303,
+    "subcluster": "4.1 Basic COUNT & Non-Null Values",
+    "level": "Level 1 (Foundations)",
+    "title": "Syntax #303: Compute the total headcount of all employees in the directory",
+    "table": "Employees",
+    "scenario": "Compute the total headcount of all employees in the directory.",
+    "businessObjective": "Compute the total headcount of all employees in the directory.",
+    "schemaSnippet": "Employees schema",
+    "targetQuery": "SELECT COUNT(*) AS total_staff\nFROM Employees;",
+    "syntaxBlueprint": "SELECT COUNT(*) AS total_staff\nFROM Employees;",
+    "syntaxRule": "Aggregate functions compute summary metrics. In GROUP BY queries, every column in SELECT must either be aggregated or listed in GROUP BY. Filter rows with WHERE; filter aggregate groups with HAVING.",
+    "syntaxTrap": "Writing an aggregate function like 'WHERE COUNT(*) > 1' in the WHERE clause (illegal; use HAVING instead), or omitting a non-aggregated column from the GROUP BY clause.",
+    "eli5Story": "Grouping and aggregating data on Employees: Compute the total headcount of all employees in the directory.",
+    "commonMistakes": "Using WHERE instead of HAVING for aggregate conditions, forgetting GROUP BY when projecting both raw columns and aggregates, or placing HAVING before GROUP BY.",
+    "learningOutcomes": "Mastered 4.1 Basic COUNT & Non-Null Values on Employees.",
+    "challengeSlots": [
+      {
+        "type": "keyword",
+        "value": "SELECT"
+      },
+      {
+        "type": "column",
+        "value": "COUNT(*)"
+      },
+      {
+        "type": "keyword",
+        "value": "AS"
+      },
+      {
+        "type": "column",
+        "value": "total_staff"
+      },
+      {
+        "type": "keyword",
+        "value": "FROM"
+      },
+      {
+        "type": "table",
+        "value": "Employees;"
+      }
+    ]
+  },
+  {
+    "drillNumber": 304,
+    "subcluster": "4.1 Basic COUNT & Non-Null Values",
+    "level": "Level 1 (Foundations)",
+    "title": "Syntax #304: Calculate the total count of grocery items stocked in the store",
+    "table": "GroceryItems",
+    "scenario": "Calculate the total count of grocery items stocked in the store.",
+    "businessObjective": "Calculate the total count of grocery items stocked in the store.",
+    "schemaSnippet": "GroceryItems schema",
+    "targetQuery": "SELECT COUNT(item_id) AS total_products\nFROM GroceryItems;",
+    "syntaxBlueprint": "SELECT COUNT(item_id) AS total_products\nFROM GroceryItems;",
+    "syntaxRule": "Aggregate functions compute summary metrics. In GROUP BY queries, every column in SELECT must either be aggregated or listed in GROUP BY. Filter rows with WHERE; filter aggregate groups with HAVING.",
+    "syntaxTrap": "Writing an aggregate function like 'WHERE COUNT(*) > 1' in the WHERE clause (illegal; use HAVING instead), or omitting a non-aggregated column from the GROUP BY clause.",
+    "eli5Story": "Grouping and aggregating data on GroceryItems: Calculate the total count of grocery items stocked in the store.",
+    "commonMistakes": "Using WHERE instead of HAVING for aggregate conditions, forgetting GROUP BY when projecting both raw columns and aggregates, or placing HAVING before GROUP BY.",
+    "learningOutcomes": "Mastered 4.1 Basic COUNT & Non-Null Values on GroceryItems.",
+    "challengeSlots": [
+      {
+        "type": "keyword",
+        "value": "SELECT"
+      },
+      {
+        "type": "column",
+        "value": "COUNT(item_id)"
+      },
+      {
+        "type": "keyword",
+        "value": "AS"
+      },
+      {
+        "type": "column",
+        "value": "total_products"
+      },
+      {
+        "type": "keyword",
+        "value": "FROM"
+      },
+      {
+        "type": "table",
+        "value": "GroceryItems;"
+      }
+    ]
+  },
+  {
+    "drillNumber": 305,
+    "subcluster": "4.1 Basic COUNT & Non-Null Values",
+    "level": "Level 1 (Foundations)",
+    "title": "Syntax #305: Count the total number of orders placed by customers",
+    "table": "Orders",
+    "scenario": "Count the total number of orders placed by customers.",
+    "businessObjective": "Count the total number of orders placed by customers.",
+    "schemaSnippet": "Orders schema",
+    "targetQuery": "SELECT COUNT(*) AS total_placed_orders\nFROM Orders;",
+    "syntaxBlueprint": "SELECT COUNT(*) AS total_placed_orders\nFROM Orders;",
+    "syntaxRule": "Aggregate functions compute summary metrics. In GROUP BY queries, every column in SELECT must either be aggregated or listed in GROUP BY. Filter rows with WHERE; filter aggregate groups with HAVING.",
+    "syntaxTrap": "Writing an aggregate function like 'WHERE COUNT(*) > 1' in the WHERE clause (illegal; use HAVING instead), or omitting a non-aggregated column from the GROUP BY clause.",
+    "eli5Story": "Grouping and aggregating data on Orders: Count the total number of orders placed by customers.",
+    "commonMistakes": "Using WHERE instead of HAVING for aggregate conditions, forgetting GROUP BY when projecting both raw columns and aggregates, or placing HAVING before GROUP BY.",
+    "learningOutcomes": "Mastered 4.1 Basic COUNT & Non-Null Values on Orders.",
+    "challengeSlots": [
+      {
+        "type": "keyword",
+        "value": "SELECT"
+      },
+      {
+        "type": "column",
+        "value": "COUNT(*)"
+      },
+      {
+        "type": "keyword",
+        "value": "AS"
+      },
+      {
+        "type": "column",
+        "value": "total_placed_orders"
+      },
+      {
+        "type": "keyword",
+        "value": "FROM"
+      },
+      {
+        "type": "table",
+        "value": "Orders;"
+      }
+    ]
+  },
+  {
+    "drillNumber": 306,
+    "subcluster": "4.1 Basic COUNT & Non-Null Values",
+    "level": "Level 1 (Foundations)",
+    "title": "Syntax #306: Count the total number of tracks in the music library",
+    "table": "MusicTracks",
+    "scenario": "Count the total number of tracks in the music library.",
+    "businessObjective": "Count the total number of tracks in the music library.",
+    "schemaSnippet": "MusicTracks schema",
+    "targetQuery": "SELECT COUNT(track_id) AS track_count\nFROM MusicTracks;",
+    "syntaxBlueprint": "SELECT COUNT(track_id) AS track_count\nFROM MusicTracks;",
+    "syntaxRule": "Aggregate functions compute summary metrics. In GROUP BY queries, every column in SELECT must either be aggregated or listed in GROUP BY. Filter rows with WHERE; filter aggregate groups with HAVING.",
+    "syntaxTrap": "Writing an aggregate function like 'WHERE COUNT(*) > 1' in the WHERE clause (illegal; use HAVING instead), or omitting a non-aggregated column from the GROUP BY clause.",
+    "eli5Story": "Grouping and aggregating data on MusicTracks: Count the total number of tracks in the music library.",
+    "commonMistakes": "Using WHERE instead of HAVING for aggregate conditions, forgetting GROUP BY when projecting both raw columns and aggregates, or placing HAVING before GROUP BY.",
+    "learningOutcomes": "Mastered 4.1 Basic COUNT & Non-Null Values on MusicTracks.",
+    "challengeSlots": [
+      {
+        "type": "keyword",
+        "value": "SELECT"
+      },
+      {
+        "type": "column",
+        "value": "COUNT(track_id)"
+      },
+      {
+        "type": "keyword",
+        "value": "AS"
+      },
+      {
+        "type": "column",
+        "value": "track_count"
+      },
+      {
+        "type": "keyword",
+        "value": "FROM"
+      },
+      {
+        "type": "table",
+        "value": "MusicTracks;"
+      }
+    ]
+  },
+  {
+    "drillNumber": 307,
+    "subcluster": "4.1 Basic COUNT & Non-Null Values",
+    "level": "Level 1 (Foundations)",
+    "title": "Syntax #307: Count total active and inactive gym member registrations",
+    "table": "GymMembers",
+    "scenario": "Count total active and inactive gym member registrations.",
+    "businessObjective": "Count total active and inactive gym member registrations.",
+    "schemaSnippet": "GymMembers schema",
+    "targetQuery": "SELECT COUNT(*) AS total_memberships\nFROM GymMembers;",
+    "syntaxBlueprint": "SELECT COUNT(*) AS total_memberships\nFROM GymMembers;",
+    "syntaxRule": "Aggregate functions compute summary metrics. In GROUP BY queries, every column in SELECT must either be aggregated or listed in GROUP BY. Filter rows with WHERE; filter aggregate groups with HAVING.",
+    "syntaxTrap": "Writing an aggregate function like 'WHERE COUNT(*) > 1' in the WHERE clause (illegal; use HAVING instead), or omitting a non-aggregated column from the GROUP BY clause.",
+    "eli5Story": "Grouping and aggregating data on GymMembers: Count total active and inactive gym member registrations.",
+    "commonMistakes": "Using WHERE instead of HAVING for aggregate conditions, forgetting GROUP BY when projecting both raw columns and aggregates, or placing HAVING before GROUP BY.",
+    "learningOutcomes": "Mastered 4.1 Basic COUNT & Non-Null Values on GymMembers.",
+    "challengeSlots": [
+      {
+        "type": "keyword",
+        "value": "SELECT"
+      },
+      {
+        "type": "column",
+        "value": "COUNT(*)"
+      },
+      {
+        "type": "keyword",
+        "value": "AS"
+      },
+      {
+        "type": "column",
+        "value": "total_memberships"
+      },
+      {
+        "type": "keyword",
+        "value": "FROM"
+      },
+      {
+        "type": "table",
+        "value": "GymMembers;"
+      }
+    ]
+  },
+  {
+    "drillNumber": 308,
+    "subcluster": "4.1 Basic COUNT & Non-Null Values",
+    "level": "Level 1 (Foundations)",
+    "title": "Syntax #308: Calculate the total number of movie reviews submitted",
+    "table": "MovieReviews",
+    "scenario": "Calculate the total number of movie reviews submitted.",
+    "businessObjective": "Calculate the total number of movie reviews submitted.",
+    "schemaSnippet": "MovieReviews schema",
+    "targetQuery": "SELECT COUNT(review_id) AS total_reviews_logged\nFROM MovieReviews;",
+    "syntaxBlueprint": "SELECT COUNT(review_id) AS total_reviews_logged\nFROM MovieReviews;",
+    "syntaxRule": "Aggregate functions compute summary metrics. In GROUP BY queries, every column in SELECT must either be aggregated or listed in GROUP BY. Filter rows with WHERE; filter aggregate groups with HAVING.",
+    "syntaxTrap": "Writing an aggregate function like 'WHERE COUNT(*) > 1' in the WHERE clause (illegal; use HAVING instead), or omitting a non-aggregated column from the GROUP BY clause.",
+    "eli5Story": "Grouping and aggregating data on MovieReviews: Calculate the total number of movie reviews submitted.",
+    "commonMistakes": "Using WHERE instead of HAVING for aggregate conditions, forgetting GROUP BY when projecting both raw columns and aggregates, or placing HAVING before GROUP BY.",
+    "learningOutcomes": "Mastered 4.1 Basic COUNT & Non-Null Values on MovieReviews.",
+    "challengeSlots": [
+      {
+        "type": "keyword",
+        "value": "SELECT"
+      },
+      {
+        "type": "column",
+        "value": "COUNT(review_id)"
+      },
+      {
+        "type": "keyword",
+        "value": "AS"
+      },
+      {
+        "type": "column",
+        "value": "total_reviews_logged"
+      },
+      {
+        "type": "keyword",
+        "value": "FROM"
+      },
+      {
+        "type": "table",
+        "value": "MovieReviews;"
+      }
+    ]
+  },
+  {
+    "drillNumber": 309,
+    "subcluster": "4.1 Basic COUNT & Non-Null Values",
+    "level": "Level 1 (Foundations)",
+    "title": "Syntax #309: Count the total number of scheduled flights on the board",
+    "table": "FlightSchedule",
+    "scenario": "Count the total number of scheduled flights on the board.",
+    "businessObjective": "Count the total number of scheduled flights on the board.",
+    "schemaSnippet": "FlightSchedule schema",
+    "targetQuery": "SELECT COUNT(*) AS scheduled_flights\nFROM FlightSchedule;",
+    "syntaxBlueprint": "SELECT COUNT(*) AS scheduled_flights\nFROM FlightSchedule;",
+    "syntaxRule": "Aggregate functions compute summary metrics. In GROUP BY queries, every column in SELECT must either be aggregated or listed in GROUP BY. Filter rows with WHERE; filter aggregate groups with HAVING.",
+    "syntaxTrap": "Writing an aggregate function like 'WHERE COUNT(*) > 1' in the WHERE clause (illegal; use HAVING instead), or omitting a non-aggregated column from the GROUP BY clause.",
+    "eli5Story": "Grouping and aggregating data on FlightSchedule: Count the total number of scheduled flights on the board.",
+    "commonMistakes": "Using WHERE instead of HAVING for aggregate conditions, forgetting GROUP BY when projecting both raw columns and aggregates, or placing HAVING before GROUP BY.",
+    "learningOutcomes": "Mastered 4.1 Basic COUNT & Non-Null Values on FlightSchedule.",
+    "challengeSlots": [
+      {
+        "type": "keyword",
+        "value": "SELECT"
+      },
+      {
+        "type": "column",
+        "value": "COUNT(*)"
+      },
+      {
+        "type": "keyword",
+        "value": "AS"
+      },
+      {
+        "type": "column",
+        "value": "scheduled_flights"
+      },
+      {
+        "type": "keyword",
+        "value": "FROM"
+      },
+      {
+        "type": "table",
+        "value": "FlightSchedule;"
+      }
+    ]
+  },
+  {
+    "drillNumber": 310,
+    "subcluster": "4.1 Basic COUNT & Non-Null Values",
+    "level": "Level 1 (Foundations)",
+    "title": "Syntax #310: Count total veterinary patients registered at the clinic",
+    "table": "PetClinic",
+    "scenario": "Count total veterinary patients registered at the clinic.",
+    "businessObjective": "Count total veterinary patients registered at the clinic.",
+    "schemaSnippet": "PetClinic schema",
+    "targetQuery": "SELECT COUNT(pet_id) AS patient_count\nFROM PetClinic;",
+    "syntaxBlueprint": "SELECT COUNT(pet_id) AS patient_count\nFROM PetClinic;",
+    "syntaxRule": "Aggregate functions compute summary metrics. In GROUP BY queries, every column in SELECT must either be aggregated or listed in GROUP BY. Filter rows with WHERE; filter aggregate groups with HAVING.",
+    "syntaxTrap": "Writing an aggregate function like 'WHERE COUNT(*) > 1' in the WHERE clause (illegal; use HAVING instead), or omitting a non-aggregated column from the GROUP BY clause.",
+    "eli5Story": "Grouping and aggregating data on PetClinic: Count total veterinary patients registered at the clinic.",
+    "commonMistakes": "Using WHERE instead of HAVING for aggregate conditions, forgetting GROUP BY when projecting both raw columns and aggregates, or placing HAVING before GROUP BY.",
+    "learningOutcomes": "Mastered 4.1 Basic COUNT & Non-Null Values on PetClinic.",
+    "challengeSlots": [
+      {
+        "type": "keyword",
+        "value": "SELECT"
+      },
+      {
+        "type": "column",
+        "value": "COUNT(pet_id)"
+      },
+      {
+        "type": "keyword",
+        "value": "AS"
+      },
+      {
+        "type": "column",
+        "value": "patient_count"
+      },
+      {
+        "type": "keyword",
+        "value": "FROM"
+      },
+      {
+        "type": "table",
+        "value": "PetClinic;"
+      }
+    ]
+  },
+  {
+    "drillNumber": 311,
+    "subcluster": "4.2 Basic SUM & Total Accumulation",
+    "level": "Level 1 (Foundations)",
+    "title": "Syntax #311: Calculate the total payroll expenditure across all employees",
+    "table": "Employees",
+    "scenario": "Calculate the total payroll expenditure across all employees.",
+    "businessObjective": "Calculate the total payroll expenditure across all employees.",
+    "schemaSnippet": "Employees schema",
+    "targetQuery": "SELECT SUM(salary) AS total_payroll\nFROM Employees;",
+    "syntaxBlueprint": "SELECT SUM(salary) AS total_payroll\nFROM Employees;",
+    "syntaxRule": "Aggregate functions compute summary metrics. In GROUP BY queries, every column in SELECT must either be aggregated or listed in GROUP BY. Filter rows with WHERE; filter aggregate groups with HAVING.",
+    "syntaxTrap": "Writing an aggregate function like 'WHERE COUNT(*) > 1' in the WHERE clause (illegal; use HAVING instead), or omitting a non-aggregated column from the GROUP BY clause.",
+    "eli5Story": "Grouping and aggregating data on Employees: Calculate the total payroll expenditure across all employees.",
+    "commonMistakes": "Using WHERE instead of HAVING for aggregate conditions, forgetting GROUP BY when projecting both raw columns and aggregates, or placing HAVING before GROUP BY.",
+    "learningOutcomes": "Mastered 4.2 Basic SUM & Total Accumulation on Employees.",
+    "challengeSlots": [
+      {
+        "type": "keyword",
+        "value": "SELECT"
+      },
+      {
+        "type": "column",
+        "value": "SUM(salary)"
+      },
+      {
+        "type": "keyword",
+        "value": "AS"
+      },
+      {
+        "type": "column",
+        "value": "total_payroll"
+      },
+      {
+        "type": "keyword",
+        "value": "FROM"
+      },
+      {
+        "type": "table",
+        "value": "Employees;"
+      }
+    ]
+  },
+  {
+    "drillNumber": 312,
+    "subcluster": "4.2 Basic SUM & Total Accumulation",
+    "level": "Level 1 (Foundations)",
+    "title": "Syntax #312: Sum the total number of physical units currently in stock",
+    "table": "GroceryItems",
+    "scenario": "Sum the total number of physical units currently in stock.",
+    "businessObjective": "Sum the total number of physical units currently in stock.",
+    "schemaSnippet": "GroceryItems schema",
+    "targetQuery": "SELECT SUM(stock_units) AS total_inventory_units\nFROM GroceryItems;",
+    "syntaxBlueprint": "SELECT SUM(stock_units) AS total_inventory_units\nFROM GroceryItems;",
+    "syntaxRule": "Aggregate functions compute summary metrics. In GROUP BY queries, every column in SELECT must either be aggregated or listed in GROUP BY. Filter rows with WHERE; filter aggregate groups with HAVING.",
+    "syntaxTrap": "Writing an aggregate function like 'WHERE COUNT(*) > 1' in the WHERE clause (illegal; use HAVING instead), or omitting a non-aggregated column from the GROUP BY clause.",
+    "eli5Story": "Grouping and aggregating data on GroceryItems: Sum the total number of physical units currently in stock.",
+    "commonMistakes": "Using WHERE instead of HAVING for aggregate conditions, forgetting GROUP BY when projecting both raw columns and aggregates, or placing HAVING before GROUP BY.",
+    "learningOutcomes": "Mastered 4.2 Basic SUM & Total Accumulation on GroceryItems.",
+    "challengeSlots": [
+      {
+        "type": "keyword",
+        "value": "SELECT"
+      },
+      {
+        "type": "column",
+        "value": "SUM(stock_units)"
+      },
+      {
+        "type": "keyword",
+        "value": "AS"
+      },
+      {
+        "type": "column",
+        "value": "total_inventory_units"
+      },
+      {
+        "type": "keyword",
+        "value": "FROM"
+      },
+      {
+        "type": "table",
+        "value": "GroceryItems;"
+      }
+    ]
+  },
+  {
+    "drillNumber": 313,
+    "subcluster": "4.2 Basic SUM & Total Accumulation",
+    "level": "Level 1 (Foundations)",
+    "title": "Syntax #313: Calculate the overall sum of item quantities purchased across all orders",
+    "table": "Orders",
+    "scenario": "Calculate the overall sum of item quantities purchased across all orders.",
+    "businessObjective": "Calculate the overall sum of item quantities purchased across all orders.",
+    "schemaSnippet": "Orders schema",
+    "targetQuery": "SELECT SUM(quantity) AS total_items_sold\nFROM Orders;",
+    "syntaxBlueprint": "SELECT SUM(quantity) AS total_items_sold\nFROM Orders;",
+    "syntaxRule": "Aggregate functions compute summary metrics. In GROUP BY queries, every column in SELECT must either be aggregated or listed in GROUP BY. Filter rows with WHERE; filter aggregate groups with HAVING.",
+    "syntaxTrap": "Writing an aggregate function like 'WHERE COUNT(*) > 1' in the WHERE clause (illegal; use HAVING instead), or omitting a non-aggregated column from the GROUP BY clause.",
+    "eli5Story": "Grouping and aggregating data on Orders: Calculate the overall sum of item quantities purchased across all orders.",
+    "commonMistakes": "Using WHERE instead of HAVING for aggregate conditions, forgetting GROUP BY when projecting both raw columns and aggregates, or placing HAVING before GROUP BY.",
+    "learningOutcomes": "Mastered 4.2 Basic SUM & Total Accumulation on Orders.",
+    "challengeSlots": [
+      {
+        "type": "keyword",
+        "value": "SELECT"
+      },
+      {
+        "type": "column",
+        "value": "SUM(quantity)"
+      },
+      {
+        "type": "keyword",
+        "value": "AS"
+      },
+      {
+        "type": "column",
+        "value": "total_items_sold"
+      },
+      {
+        "type": "keyword",
+        "value": "FROM"
+      },
+      {
+        "type": "table",
+        "value": "Orders;"
+      }
+    ]
+  },
+  {
+    "drillNumber": 314,
+    "subcluster": "4.2 Basic SUM & Total Accumulation",
+    "level": "Level 1 (Foundations)",
+    "title": "Syntax #314: Compute total gross revenue by summing the line item totals (quantity * unit_price)",
+    "table": "Orders",
+    "scenario": "Compute total gross revenue by summing the line item totals (quantity * unit_price).",
+    "businessObjective": "Compute total gross revenue by summing the line item totals (quantity * unit_price).",
+    "schemaSnippet": "Orders schema",
+    "targetQuery": "SELECT SUM(quantity * unit_price) AS gross_revenue\nFROM Orders;",
+    "syntaxBlueprint": "SELECT SUM(quantity * unit_price) AS gross_revenue\nFROM Orders;",
+    "syntaxRule": "Aggregate functions compute summary metrics. In GROUP BY queries, every column in SELECT must either be aggregated or listed in GROUP BY. Filter rows with WHERE; filter aggregate groups with HAVING.",
+    "syntaxTrap": "Writing an aggregate function like 'WHERE COUNT(*) > 1' in the WHERE clause (illegal; use HAVING instead), or omitting a non-aggregated column from the GROUP BY clause.",
+    "eli5Story": "Grouping and aggregating data on Orders: Compute total gross revenue by summing the line item totals (quantity * unit_price).",
+    "commonMistakes": "Using WHERE instead of HAVING for aggregate conditions, forgetting GROUP BY when projecting both raw columns and aggregates, or placing HAVING before GROUP BY.",
+    "learningOutcomes": "Mastered 4.2 Basic SUM & Total Accumulation on Orders.",
+    "challengeSlots": [
+      {
+        "type": "keyword",
+        "value": "SELECT"
+      },
+      {
+        "type": "column",
+        "value": "SUM(quantity"
+      },
+      {
+        "type": "column",
+        "value": "*"
+      },
+      {
+        "type": "column",
+        "value": "unit_price)"
+      },
+      {
+        "type": "keyword",
+        "value": "AS"
+      },
+      {
+        "type": "column",
+        "value": "gross_revenue"
+      },
+      {
+        "type": "keyword",
+        "value": "FROM"
+      },
+      {
+        "type": "table",
+        "value": "Orders;"
+      }
+    ]
+  },
+  {
+    "drillNumber": 315,
+    "subcluster": "4.2 Basic SUM & Total Accumulation",
+    "level": "Level 1 (Foundations)",
+    "title": "Syntax #315: Calculate the grand total duration of all tracks combined in seconds",
+    "table": "MusicTracks",
+    "scenario": "Calculate the grand total duration of all tracks combined in seconds.",
+    "businessObjective": "Calculate the grand total duration of all tracks combined in seconds.",
+    "schemaSnippet": "MusicTracks schema",
+    "targetQuery": "SELECT SUM(duration_seconds) AS total_audio_seconds\nFROM MusicTracks;",
+    "syntaxBlueprint": "SELECT SUM(duration_seconds) AS total_audio_seconds\nFROM MusicTracks;",
+    "syntaxRule": "Aggregate functions compute summary metrics. In GROUP BY queries, every column in SELECT must either be aggregated or listed in GROUP BY. Filter rows with WHERE; filter aggregate groups with HAVING.",
+    "syntaxTrap": "Writing an aggregate function like 'WHERE COUNT(*) > 1' in the WHERE clause (illegal; use HAVING instead), or omitting a non-aggregated column from the GROUP BY clause.",
+    "eli5Story": "Grouping and aggregating data on MusicTracks: Calculate the grand total duration of all tracks combined in seconds.",
+    "commonMistakes": "Using WHERE instead of HAVING for aggregate conditions, forgetting GROUP BY when projecting both raw columns and aggregates, or placing HAVING before GROUP BY.",
+    "learningOutcomes": "Mastered 4.2 Basic SUM & Total Accumulation on MusicTracks.",
+    "challengeSlots": [
+      {
+        "type": "keyword",
+        "value": "SELECT"
+      },
+      {
+        "type": "column",
+        "value": "SUM(duration_seconds)"
+      },
+      {
+        "type": "keyword",
+        "value": "AS"
+      },
+      {
+        "type": "column",
+        "value": "total_audio_seconds"
+      },
+      {
+        "type": "keyword",
+        "value": "FROM"
+      },
+      {
+        "type": "table",
+        "value": "MusicTracks;"
+      }
+    ]
+  },
+  {
+    "drillNumber": 316,
+    "subcluster": "4.2 Basic SUM & Total Accumulation",
+    "level": "Level 1 (Foundations)",
+    "title": "Syntax #316: Sum the total monthly membership fee dues collected by the gym",
+    "table": "GymMembers",
+    "scenario": "Sum the total monthly membership fee dues collected by the gym.",
+    "businessObjective": "Sum the total monthly membership fee dues collected by the gym.",
+    "schemaSnippet": "GymMembers schema",
+    "targetQuery": "SELECT SUM(monthly_fee) AS total_monthly_dues\nFROM GymMembers;",
+    "syntaxBlueprint": "SELECT SUM(monthly_fee) AS total_monthly_dues\nFROM GymMembers;",
+    "syntaxRule": "Aggregate functions compute summary metrics. In GROUP BY queries, every column in SELECT must either be aggregated or listed in GROUP BY. Filter rows with WHERE; filter aggregate groups with HAVING.",
+    "syntaxTrap": "Writing an aggregate function like 'WHERE COUNT(*) > 1' in the WHERE clause (illegal; use HAVING instead), or omitting a non-aggregated column from the GROUP BY clause.",
+    "eli5Story": "Grouping and aggregating data on GymMembers: Sum the total monthly membership fee dues collected by the gym.",
+    "commonMistakes": "Using WHERE instead of HAVING for aggregate conditions, forgetting GROUP BY when projecting both raw columns and aggregates, or placing HAVING before GROUP BY.",
+    "learningOutcomes": "Mastered 4.2 Basic SUM & Total Accumulation on GymMembers.",
+    "challengeSlots": [
+      {
+        "type": "keyword",
+        "value": "SELECT"
+      },
+      {
+        "type": "column",
+        "value": "SUM(monthly_fee)"
+      },
+      {
+        "type": "keyword",
+        "value": "AS"
+      },
+      {
+        "type": "column",
+        "value": "total_monthly_dues"
+      },
+      {
+        "type": "keyword",
+        "value": "FROM"
+      },
+      {
+        "type": "table",
+        "value": "GymMembers;"
+      }
+    ]
+  },
+  {
+    "drillNumber": 317,
+    "subcluster": "4.2 Basic SUM & Total Accumulation",
+    "level": "Level 1 (Foundations)",
+    "title": "Syntax #317: Calculate total visits logged across all members this month",
+    "table": "GymMembers",
+    "scenario": "Calculate total visits logged across all members this month.",
+    "businessObjective": "Calculate total visits logged across all members this month.",
+    "schemaSnippet": "GymMembers schema",
+    "targetQuery": "SELECT SUM(visits_this_month) AS aggregate_visits\nFROM GymMembers;",
+    "syntaxBlueprint": "SELECT SUM(visits_this_month) AS aggregate_visits\nFROM GymMembers;",
+    "syntaxRule": "Aggregate functions compute summary metrics. In GROUP BY queries, every column in SELECT must either be aggregated or listed in GROUP BY. Filter rows with WHERE; filter aggregate groups with HAVING.",
+    "syntaxTrap": "Writing an aggregate function like 'WHERE COUNT(*) > 1' in the WHERE clause (illegal; use HAVING instead), or omitting a non-aggregated column from the GROUP BY clause.",
+    "eli5Story": "Grouping and aggregating data on GymMembers: Calculate total visits logged across all members this month.",
+    "commonMistakes": "Using WHERE instead of HAVING for aggregate conditions, forgetting GROUP BY when projecting both raw columns and aggregates, or placing HAVING before GROUP BY.",
+    "learningOutcomes": "Mastered 4.2 Basic SUM & Total Accumulation on GymMembers.",
+    "challengeSlots": [
+      {
+        "type": "keyword",
+        "value": "SELECT"
+      },
+      {
+        "type": "column",
+        "value": "SUM(visits_this_month)"
+      },
+      {
+        "type": "keyword",
+        "value": "AS"
+      },
+      {
+        "type": "column",
+        "value": "aggregate_visits"
+      },
+      {
+        "type": "keyword",
+        "value": "FROM"
+      },
+      {
+        "type": "table",
+        "value": "GymMembers;"
+      }
+    ]
+  },
+  {
+    "drillNumber": 318,
+    "subcluster": "4.2 Basic SUM & Total Accumulation",
+    "level": "Level 1 (Foundations)",
+    "title": "Syntax #318: Compute the total number of unbooked seats across all departures",
+    "table": "FlightSchedule",
+    "scenario": "Compute the total number of unbooked seats across all departures.",
+    "businessObjective": "Compute the total number of unbooked seats across all departures.",
+    "schemaSnippet": "FlightSchedule schema",
+    "targetQuery": "SELECT SUM(seats_available) AS total_empty_seats\nFROM FlightSchedule;",
+    "syntaxBlueprint": "SELECT SUM(seats_available) AS total_empty_seats\nFROM FlightSchedule;",
+    "syntaxRule": "Aggregate functions compute summary metrics. In GROUP BY queries, every column in SELECT must either be aggregated or listed in GROUP BY. Filter rows with WHERE; filter aggregate groups with HAVING.",
+    "syntaxTrap": "Writing an aggregate function like 'WHERE COUNT(*) > 1' in the WHERE clause (illegal; use HAVING instead), or omitting a non-aggregated column from the GROUP BY clause.",
+    "eli5Story": "Grouping and aggregating data on FlightSchedule: Compute the total number of unbooked seats across all departures.",
+    "commonMistakes": "Using WHERE instead of HAVING for aggregate conditions, forgetting GROUP BY when projecting both raw columns and aggregates, or placing HAVING before GROUP BY.",
+    "learningOutcomes": "Mastered 4.2 Basic SUM & Total Accumulation on FlightSchedule.",
+    "challengeSlots": [
+      {
+        "type": "keyword",
+        "value": "SELECT"
+      },
+      {
+        "type": "column",
+        "value": "SUM(seats_available)"
+      },
+      {
+        "type": "keyword",
+        "value": "AS"
+      },
+      {
+        "type": "column",
+        "value": "total_empty_seats"
+      },
+      {
+        "type": "keyword",
+        "value": "FROM"
+      },
+      {
+        "type": "table",
+        "value": "FlightSchedule;"
+      }
+    ]
+  },
+  {
+    "drillNumber": 319,
+    "subcluster": "4.2 Basic SUM & Total Accumulation",
+    "level": "Level 1 (Foundations)",
+    "title": "Syntax #319: Sum the total collective weight in kilograms of all clinic patients",
+    "table": "PetClinic",
+    "scenario": "Sum the total collective weight in kilograms of all clinic patients.",
+    "businessObjective": "Sum the total collective weight in kilograms of all clinic patients.",
+    "schemaSnippet": "PetClinic schema",
+    "targetQuery": "SELECT SUM(weight_kg) AS combined_patient_weight\nFROM PetClinic;",
+    "syntaxBlueprint": "SELECT SUM(weight_kg) AS combined_patient_weight\nFROM PetClinic;",
+    "syntaxRule": "Aggregate functions compute summary metrics. In GROUP BY queries, every column in SELECT must either be aggregated or listed in GROUP BY. Filter rows with WHERE; filter aggregate groups with HAVING.",
+    "syntaxTrap": "Writing an aggregate function like 'WHERE COUNT(*) > 1' in the WHERE clause (illegal; use HAVING instead), or omitting a non-aggregated column from the GROUP BY clause.",
+    "eli5Story": "Grouping and aggregating data on PetClinic: Sum the total collective weight in kilograms of all clinic patients.",
+    "commonMistakes": "Using WHERE instead of HAVING for aggregate conditions, forgetting GROUP BY when projecting both raw columns and aggregates, or placing HAVING before GROUP BY.",
+    "learningOutcomes": "Mastered 4.2 Basic SUM & Total Accumulation on PetClinic.",
+    "challengeSlots": [
+      {
+        "type": "keyword",
+        "value": "SELECT"
+      },
+      {
+        "type": "column",
+        "value": "SUM(weight_kg)"
+      },
+      {
+        "type": "keyword",
+        "value": "AS"
+      },
+      {
+        "type": "column",
+        "value": "combined_patient_weight"
+      },
+      {
+        "type": "keyword",
+        "value": "FROM"
+      },
+      {
+        "type": "table",
+        "value": "PetClinic;"
+      }
+    ]
+  },
+  {
+    "drillNumber": 320,
+    "subcluster": "4.2 Basic SUM & Total Accumulation",
+    "level": "Level 1 (Foundations)",
+    "title": "Syntax #320: Sum the total physical copies in warehouse stock across all titles",
+    "table": "Books",
+    "scenario": "Sum the total physical copies in warehouse stock across all titles.",
+    "businessObjective": "Sum the total physical copies in warehouse stock across all titles.",
+    "schemaSnippet": "Books schema",
+    "targetQuery": "SELECT SUM(stock_count) AS total_books_in_warehouse\nFROM Books;",
+    "syntaxBlueprint": "SELECT SUM(stock_count) AS total_books_in_warehouse\nFROM Books;",
+    "syntaxRule": "Aggregate functions compute summary metrics. In GROUP BY queries, every column in SELECT must either be aggregated or listed in GROUP BY. Filter rows with WHERE; filter aggregate groups with HAVING.",
+    "syntaxTrap": "Writing an aggregate function like 'WHERE COUNT(*) > 1' in the WHERE clause (illegal; use HAVING instead), or omitting a non-aggregated column from the GROUP BY clause.",
+    "eli5Story": "Grouping and aggregating data on Books: Sum the total physical copies in warehouse stock across all titles.",
+    "commonMistakes": "Using WHERE instead of HAVING for aggregate conditions, forgetting GROUP BY when projecting both raw columns and aggregates, or placing HAVING before GROUP BY.",
+    "learningOutcomes": "Mastered 4.2 Basic SUM & Total Accumulation on Books.",
+    "challengeSlots": [
+      {
+        "type": "keyword",
+        "value": "SELECT"
+      },
+      {
+        "type": "column",
+        "value": "SUM(stock_count)"
+      },
+      {
+        "type": "keyword",
+        "value": "AS"
+      },
+      {
+        "type": "column",
+        "value": "total_books_in_warehouse"
+      },
+      {
+        "type": "keyword",
+        "value": "FROM"
+      },
+      {
+        "type": "table",
+        "value": "Books;"
+      }
+    ]
+  },
+  {
+    "drillNumber": 321,
+    "subcluster": "4.3 AVG & Statistical Means",
+    "level": "Level 1 (Foundations)",
+    "title": "Syntax #321: Calculate the average GPA across all students rounded to 2 decimal places",
+    "table": "Students",
+    "scenario": "Calculate the average GPA across all students rounded to 2 decimal places.",
+    "businessObjective": "Calculate the average GPA across all students rounded to 2 decimal places.",
+    "schemaSnippet": "Students schema",
+    "targetQuery": "SELECT ROUND(AVG(gpa), 2) AS average_gpa\nFROM Students;",
+    "syntaxBlueprint": "SELECT ROUND(AVG(gpa), 2) AS average_gpa\nFROM Students;",
+    "syntaxRule": "Aggregate functions compute summary metrics. In GROUP BY queries, every column in SELECT must either be aggregated or listed in GROUP BY. Filter rows with WHERE; filter aggregate groups with HAVING.",
+    "syntaxTrap": "Writing an aggregate function like 'WHERE COUNT(*) > 1' in the WHERE clause (illegal; use HAVING instead), or omitting a non-aggregated column from the GROUP BY clause.",
+    "eli5Story": "Grouping and aggregating data on Students: Calculate the average GPA across all students rounded to 2 decimal places.",
+    "commonMistakes": "Using WHERE instead of HAVING for aggregate conditions, forgetting GROUP BY when projecting both raw columns and aggregates, or placing HAVING before GROUP BY.",
+    "learningOutcomes": "Mastered 4.3 AVG & Statistical Means on Students.",
+    "challengeSlots": [
+      {
+        "type": "keyword",
+        "value": "SELECT"
+      },
+      {
+        "type": "column",
+        "value": "ROUND(AVG(gpa),"
+      },
+      {
+        "type": "column",
+        "value": "2)"
+      },
+      {
+        "type": "keyword",
+        "value": "AS"
+      },
+      {
+        "type": "column",
+        "value": "average_gpa"
+      },
+      {
+        "type": "keyword",
+        "value": "FROM"
+      },
+      {
+        "type": "table",
+        "value": "Students;"
+      }
+    ]
+  },
+  {
+    "drillNumber": 322,
+    "subcluster": "4.3 AVG & Statistical Means",
+    "level": "Level 1 (Foundations)",
+    "title": "Syntax #322: Compute the average retail price of books in the catalog",
+    "table": "Books",
+    "scenario": "Compute the average retail price of books in the catalog.",
+    "businessObjective": "Compute the average retail price of books in the catalog.",
+    "schemaSnippet": "Books schema",
+    "targetQuery": "SELECT ROUND(AVG(price), 2) AS average_book_price\nFROM Books;",
+    "syntaxBlueprint": "SELECT ROUND(AVG(price), 2) AS average_book_price\nFROM Books;",
+    "syntaxRule": "Aggregate functions compute summary metrics. In GROUP BY queries, every column in SELECT must either be aggregated or listed in GROUP BY. Filter rows with WHERE; filter aggregate groups with HAVING.",
+    "syntaxTrap": "Writing an aggregate function like 'WHERE COUNT(*) > 1' in the WHERE clause (illegal; use HAVING instead), or omitting a non-aggregated column from the GROUP BY clause.",
+    "eli5Story": "Grouping and aggregating data on Books: Compute the average retail price of books in the catalog.",
+    "commonMistakes": "Using WHERE instead of HAVING for aggregate conditions, forgetting GROUP BY when projecting both raw columns and aggregates, or placing HAVING before GROUP BY.",
+    "learningOutcomes": "Mastered 4.3 AVG & Statistical Means on Books.",
+    "challengeSlots": [
+      {
+        "type": "keyword",
+        "value": "SELECT"
+      },
+      {
+        "type": "column",
+        "value": "ROUND(AVG(price),"
+      },
+      {
+        "type": "column",
+        "value": "2)"
+      },
+      {
+        "type": "keyword",
+        "value": "AS"
+      },
+      {
+        "type": "column",
+        "value": "average_book_price"
+      },
+      {
+        "type": "keyword",
+        "value": "FROM"
+      },
+      {
+        "type": "table",
+        "value": "Books;"
+      }
+    ]
+  },
+  {
+    "drillNumber": 323,
+    "subcluster": "4.3 AVG & Statistical Means",
+    "level": "Level 1 (Foundations)",
+    "title": "Syntax #323: Calculate the overall average employee salary",
+    "table": "Employees",
+    "scenario": "Calculate the overall average employee salary.",
+    "businessObjective": "Calculate the overall average employee salary.",
+    "schemaSnippet": "Employees schema",
+    "targetQuery": "SELECT ROUND(AVG(salary), 2) AS mean_company_salary\nFROM Employees;",
+    "syntaxBlueprint": "SELECT ROUND(AVG(salary), 2) AS mean_company_salary\nFROM Employees;",
+    "syntaxRule": "Aggregate functions compute summary metrics. In GROUP BY queries, every column in SELECT must either be aggregated or listed in GROUP BY. Filter rows with WHERE; filter aggregate groups with HAVING.",
+    "syntaxTrap": "Writing an aggregate function like 'WHERE COUNT(*) > 1' in the WHERE clause (illegal; use HAVING instead), or omitting a non-aggregated column from the GROUP BY clause.",
+    "eli5Story": "Grouping and aggregating data on Employees: Calculate the overall average employee salary.",
+    "commonMistakes": "Using WHERE instead of HAVING for aggregate conditions, forgetting GROUP BY when projecting both raw columns and aggregates, or placing HAVING before GROUP BY.",
+    "learningOutcomes": "Mastered 4.3 AVG & Statistical Means on Employees.",
+    "challengeSlots": [
+      {
+        "type": "keyword",
+        "value": "SELECT"
+      },
+      {
+        "type": "column",
+        "value": "ROUND(AVG(salary),"
+      },
+      {
+        "type": "column",
+        "value": "2)"
+      },
+      {
+        "type": "keyword",
+        "value": "AS"
+      },
+      {
+        "type": "column",
+        "value": "mean_company_salary"
+      },
+      {
+        "type": "keyword",
+        "value": "FROM"
+      },
+      {
+        "type": "table",
+        "value": "Employees;"
+      }
+    ]
+  },
+  {
+    "drillNumber": 324,
+    "subcluster": "4.3 AVG & Statistical Means",
+    "level": "Level 1 (Foundations)",
+    "title": "Syntax #324: Find the average price per unit across all grocery items",
+    "table": "GroceryItems",
+    "scenario": "Find the average price per unit across all grocery items.",
+    "businessObjective": "Find the average price per unit across all grocery items.",
+    "schemaSnippet": "GroceryItems schema",
+    "targetQuery": "SELECT ROUND(AVG(unit_price), 2) AS average_item_cost\nFROM GroceryItems;",
+    "syntaxBlueprint": "SELECT ROUND(AVG(unit_price), 2) AS average_item_cost\nFROM GroceryItems;",
+    "syntaxRule": "Aggregate functions compute summary metrics. In GROUP BY queries, every column in SELECT must either be aggregated or listed in GROUP BY. Filter rows with WHERE; filter aggregate groups with HAVING.",
+    "syntaxTrap": "Writing an aggregate function like 'WHERE COUNT(*) > 1' in the WHERE clause (illegal; use HAVING instead), or omitting a non-aggregated column from the GROUP BY clause.",
+    "eli5Story": "Grouping and aggregating data on GroceryItems: Find the average price per unit across all grocery items.",
+    "commonMistakes": "Using WHERE instead of HAVING for aggregate conditions, forgetting GROUP BY when projecting both raw columns and aggregates, or placing HAVING before GROUP BY.",
+    "learningOutcomes": "Mastered 4.3 AVG & Statistical Means on GroceryItems.",
+    "challengeSlots": [
+      {
+        "type": "keyword",
+        "value": "SELECT"
+      },
+      {
+        "type": "column",
+        "value": "ROUND(AVG(unit_price),"
+      },
+      {
+        "type": "column",
+        "value": "2)"
+      },
+      {
+        "type": "keyword",
+        "value": "AS"
+      },
+      {
+        "type": "column",
+        "value": "average_item_cost"
+      },
+      {
+        "type": "keyword",
+        "value": "FROM"
+      },
+      {
+        "type": "table",
+        "value": "GroceryItems;"
+      }
+    ]
+  },
+  {
+    "drillNumber": 325,
+    "subcluster": "4.3 AVG & Statistical Means",
+    "level": "Level 1 (Foundations)",
+    "title": "Syntax #325: Calculate the average order quantity per transaction rounded to 1 decimal place",
+    "table": "Orders",
+    "scenario": "Calculate the average order quantity per transaction rounded to 1 decimal place.",
+    "businessObjective": "Calculate the average order quantity per transaction rounded to 1 decimal place.",
+    "schemaSnippet": "Orders schema",
+    "targetQuery": "SELECT ROUND(AVG(quantity), 1) AS avg_items_per_order\nFROM Orders;",
+    "syntaxBlueprint": "SELECT ROUND(AVG(quantity), 1) AS avg_items_per_order\nFROM Orders;",
+    "syntaxRule": "Aggregate functions compute summary metrics. In GROUP BY queries, every column in SELECT must either be aggregated or listed in GROUP BY. Filter rows with WHERE; filter aggregate groups with HAVING.",
+    "syntaxTrap": "Writing an aggregate function like 'WHERE COUNT(*) > 1' in the WHERE clause (illegal; use HAVING instead), or omitting a non-aggregated column from the GROUP BY clause.",
+    "eli5Story": "Grouping and aggregating data on Orders: Calculate the average order quantity per transaction rounded to 1 decimal place.",
+    "commonMistakes": "Using WHERE instead of HAVING for aggregate conditions, forgetting GROUP BY when projecting both raw columns and aggregates, or placing HAVING before GROUP BY.",
+    "learningOutcomes": "Mastered 4.3 AVG & Statistical Means on Orders.",
+    "challengeSlots": [
+      {
+        "type": "keyword",
+        "value": "SELECT"
+      },
+      {
+        "type": "column",
+        "value": "ROUND(AVG(quantity),"
+      },
+      {
+        "type": "column",
+        "value": "1)"
+      },
+      {
+        "type": "keyword",
+        "value": "AS"
+      },
+      {
+        "type": "column",
+        "value": "avg_items_per_order"
+      },
+      {
+        "type": "keyword",
+        "value": "FROM"
+      },
+      {
+        "type": "table",
+        "value": "Orders;"
+      }
+    ]
+  },
+  {
+    "drillNumber": 326,
+    "subcluster": "4.3 AVG & Statistical Means",
+    "level": "Level 1 (Foundations)",
+    "title": "Syntax #326: Calculate the mean track length in seconds across the playlist",
+    "table": "MusicTracks",
+    "scenario": "Calculate the mean track length in seconds across the playlist.",
+    "businessObjective": "Calculate the mean track length in seconds across the playlist.",
+    "schemaSnippet": "MusicTracks schema",
+    "targetQuery": "SELECT ROUND(AVG(duration_seconds), 0) AS avg_track_length\nFROM MusicTracks;",
+    "syntaxBlueprint": "SELECT ROUND(AVG(duration_seconds), 0) AS avg_track_length\nFROM MusicTracks;",
+    "syntaxRule": "Aggregate functions compute summary metrics. In GROUP BY queries, every column in SELECT must either be aggregated or listed in GROUP BY. Filter rows with WHERE; filter aggregate groups with HAVING.",
+    "syntaxTrap": "Writing an aggregate function like 'WHERE COUNT(*) > 1' in the WHERE clause (illegal; use HAVING instead), or omitting a non-aggregated column from the GROUP BY clause.",
+    "eli5Story": "Grouping and aggregating data on MusicTracks: Calculate the mean track length in seconds across the playlist.",
+    "commonMistakes": "Using WHERE instead of HAVING for aggregate conditions, forgetting GROUP BY when projecting both raw columns and aggregates, or placing HAVING before GROUP BY.",
+    "learningOutcomes": "Mastered 4.3 AVG & Statistical Means on MusicTracks.",
+    "challengeSlots": [
+      {
+        "type": "keyword",
+        "value": "SELECT"
+      },
+      {
+        "type": "column",
+        "value": "ROUND(AVG(duration_seconds),"
+      },
+      {
+        "type": "column",
+        "value": "0)"
+      },
+      {
+        "type": "keyword",
+        "value": "AS"
+      },
+      {
+        "type": "column",
+        "value": "avg_track_length"
+      },
+      {
+        "type": "keyword",
+        "value": "FROM"
+      },
+      {
+        "type": "table",
+        "value": "MusicTracks;"
+      }
+    ]
+  },
+  {
+    "drillNumber": 327,
+    "subcluster": "4.3 AVG & Statistical Means",
+    "level": "Level 1 (Foundations)",
+    "title": "Syntax #327: Determine the average monthly visit frequency per member",
+    "table": "GymMembers",
+    "scenario": "Determine the average monthly visit frequency per member.",
+    "businessObjective": "Determine the average monthly visit frequency per member.",
+    "schemaSnippet": "GymMembers schema",
+    "targetQuery": "SELECT ROUND(AVG(visits_this_month), 1) AS avg_member_attendance\nFROM GymMembers;",
+    "syntaxBlueprint": "SELECT ROUND(AVG(visits_this_month), 1) AS avg_member_attendance\nFROM GymMembers;",
+    "syntaxRule": "Aggregate functions compute summary metrics. In GROUP BY queries, every column in SELECT must either be aggregated or listed in GROUP BY. Filter rows with WHERE; filter aggregate groups with HAVING.",
+    "syntaxTrap": "Writing an aggregate function like 'WHERE COUNT(*) > 1' in the WHERE clause (illegal; use HAVING instead), or omitting a non-aggregated column from the GROUP BY clause.",
+    "eli5Story": "Grouping and aggregating data on GymMembers: Determine the average monthly visit frequency per member.",
+    "commonMistakes": "Using WHERE instead of HAVING for aggregate conditions, forgetting GROUP BY when projecting both raw columns and aggregates, or placing HAVING before GROUP BY.",
+    "learningOutcomes": "Mastered 4.3 AVG & Statistical Means on GymMembers.",
+    "challengeSlots": [
+      {
+        "type": "keyword",
+        "value": "SELECT"
+      },
+      {
+        "type": "column",
+        "value": "ROUND(AVG(visits_this_month),"
+      },
+      {
+        "type": "column",
+        "value": "1)"
+      },
+      {
+        "type": "keyword",
+        "value": "AS"
+      },
+      {
+        "type": "column",
+        "value": "avg_member_attendance"
+      },
+      {
+        "type": "keyword",
+        "value": "FROM"
+      },
+      {
+        "type": "table",
+        "value": "GymMembers;"
+      }
+    ]
+  },
+  {
+    "drillNumber": 328,
+    "subcluster": "4.3 AVG & Statistical Means",
+    "level": "Level 1 (Foundations)",
+    "title": "Syntax #328: Compute the universal average star rating across all reviews",
+    "table": "MovieReviews",
+    "scenario": "Compute the universal average star rating across all reviews.",
+    "businessObjective": "Compute the universal average star rating across all reviews.",
+    "schemaSnippet": "MovieReviews schema",
+    "targetQuery": "SELECT ROUND(AVG(star_rating), 2) AS platform_avg_rating\nFROM MovieReviews;",
+    "syntaxBlueprint": "SELECT ROUND(AVG(star_rating), 2) AS platform_avg_rating\nFROM MovieReviews;",
+    "syntaxRule": "Aggregate functions compute summary metrics. In GROUP BY queries, every column in SELECT must either be aggregated or listed in GROUP BY. Filter rows with WHERE; filter aggregate groups with HAVING.",
+    "syntaxTrap": "Writing an aggregate function like 'WHERE COUNT(*) > 1' in the WHERE clause (illegal; use HAVING instead), or omitting a non-aggregated column from the GROUP BY clause.",
+    "eli5Story": "Grouping and aggregating data on MovieReviews: Compute the universal average star rating across all reviews.",
+    "commonMistakes": "Using WHERE instead of HAVING for aggregate conditions, forgetting GROUP BY when projecting both raw columns and aggregates, or placing HAVING before GROUP BY.",
+    "learningOutcomes": "Mastered 4.3 AVG & Statistical Means on MovieReviews.",
+    "challengeSlots": [
+      {
+        "type": "keyword",
+        "value": "SELECT"
+      },
+      {
+        "type": "column",
+        "value": "ROUND(AVG(star_rating),"
+      },
+      {
+        "type": "column",
+        "value": "2)"
+      },
+      {
+        "type": "keyword",
+        "value": "AS"
+      },
+      {
+        "type": "column",
+        "value": "platform_avg_rating"
+      },
+      {
+        "type": "keyword",
+        "value": "FROM"
+      },
+      {
+        "type": "table",
+        "value": "MovieReviews;"
+      }
+    ]
+  },
+  {
+    "drillNumber": 329,
+    "subcluster": "4.3 AVG & Statistical Means",
+    "level": "Level 1 (Foundations)",
+    "title": "Syntax #329: Calculate the average ticket price across all scheduled flights",
+    "table": "FlightSchedule",
+    "scenario": "Calculate the average ticket price across all scheduled flights.",
+    "businessObjective": "Calculate the average ticket price across all scheduled flights.",
+    "schemaSnippet": "FlightSchedule schema",
+    "targetQuery": "SELECT ROUND(AVG(ticket_price), 2) AS average_fare\nFROM FlightSchedule;",
+    "syntaxBlueprint": "SELECT ROUND(AVG(ticket_price), 2) AS average_fare\nFROM FlightSchedule;",
+    "syntaxRule": "Aggregate functions compute summary metrics. In GROUP BY queries, every column in SELECT must either be aggregated or listed in GROUP BY. Filter rows with WHERE; filter aggregate groups with HAVING.",
+    "syntaxTrap": "Writing an aggregate function like 'WHERE COUNT(*) > 1' in the WHERE clause (illegal; use HAVING instead), or omitting a non-aggregated column from the GROUP BY clause.",
+    "eli5Story": "Grouping and aggregating data on FlightSchedule: Calculate the average ticket price across all scheduled flights.",
+    "commonMistakes": "Using WHERE instead of HAVING for aggregate conditions, forgetting GROUP BY when projecting both raw columns and aggregates, or placing HAVING before GROUP BY.",
+    "learningOutcomes": "Mastered 4.3 AVG & Statistical Means on FlightSchedule.",
+    "challengeSlots": [
+      {
+        "type": "keyword",
+        "value": "SELECT"
+      },
+      {
+        "type": "column",
+        "value": "ROUND(AVG(ticket_price),"
+      },
+      {
+        "type": "column",
+        "value": "2)"
+      },
+      {
+        "type": "keyword",
+        "value": "AS"
+      },
+      {
+        "type": "column",
+        "value": "average_fare"
+      },
+      {
+        "type": "keyword",
+        "value": "FROM"
+      },
+      {
+        "type": "table",
+        "value": "FlightSchedule;"
+      }
+    ]
+  },
+  {
+    "drillNumber": 330,
+    "subcluster": "4.3 AVG & Statistical Means",
+    "level": "Level 1 (Foundations)",
+    "title": "Syntax #330: Calculate the mean age of clinic patients in years",
+    "table": "PetClinic",
+    "scenario": "Calculate the mean age of clinic patients in years.",
+    "businessObjective": "Calculate the mean age of clinic patients in years.",
+    "schemaSnippet": "PetClinic schema",
+    "targetQuery": "SELECT ROUND(AVG(age_years), 1) AS average_patient_age\nFROM PetClinic;",
+    "syntaxBlueprint": "SELECT ROUND(AVG(age_years), 1) AS average_patient_age\nFROM PetClinic;",
+    "syntaxRule": "Aggregate functions compute summary metrics. In GROUP BY queries, every column in SELECT must either be aggregated or listed in GROUP BY. Filter rows with WHERE; filter aggregate groups with HAVING.",
+    "syntaxTrap": "Writing an aggregate function like 'WHERE COUNT(*) > 1' in the WHERE clause (illegal; use HAVING instead), or omitting a non-aggregated column from the GROUP BY clause.",
+    "eli5Story": "Grouping and aggregating data on PetClinic: Calculate the mean age of clinic patients in years.",
+    "commonMistakes": "Using WHERE instead of HAVING for aggregate conditions, forgetting GROUP BY when projecting both raw columns and aggregates, or placing HAVING before GROUP BY.",
+    "learningOutcomes": "Mastered 4.3 AVG & Statistical Means on PetClinic.",
+    "challengeSlots": [
+      {
+        "type": "keyword",
+        "value": "SELECT"
+      },
+      {
+        "type": "column",
+        "value": "ROUND(AVG(age_years),"
+      },
+      {
+        "type": "column",
+        "value": "1)"
+      },
+      {
+        "type": "keyword",
+        "value": "AS"
+      },
+      {
+        "type": "column",
+        "value": "average_patient_age"
+      },
+      {
+        "type": "keyword",
+        "value": "FROM"
+      },
+      {
+        "type": "table",
+        "value": "PetClinic;"
+      }
+    ]
+  },
+  {
+    "drillNumber": 331,
+    "subcluster": "4.4 MIN & MAX Extrema Discovery",
+    "level": "Level 1 (Extrema)",
+    "title": "Syntax #331: Find both the minimum and maximum GPA in the student body",
+    "table": "Students",
+    "scenario": "Find both the minimum and maximum GPA in the student body.",
+    "businessObjective": "Find both the minimum and maximum GPA in the student body.",
+    "schemaSnippet": "Students schema",
+    "targetQuery": "SELECT MIN(gpa) AS lowest_gpa, MAX(gpa) AS highest_gpa\nFROM Students;",
+    "syntaxBlueprint": "SELECT MIN(gpa) AS lowest_gpa, MAX(gpa) AS highest_gpa\nFROM Students;",
+    "syntaxRule": "Aggregate functions compute summary metrics. In GROUP BY queries, every column in SELECT must either be aggregated or listed in GROUP BY. Filter rows with WHERE; filter aggregate groups with HAVING.",
+    "syntaxTrap": "Writing an aggregate function like 'WHERE COUNT(*) > 1' in the WHERE clause (illegal; use HAVING instead), or omitting a non-aggregated column from the GROUP BY clause.",
+    "eli5Story": "Grouping and aggregating data on Students: Find both the minimum and maximum GPA in the student body.",
+    "commonMistakes": "Using WHERE instead of HAVING for aggregate conditions, forgetting GROUP BY when projecting both raw columns and aggregates, or placing HAVING before GROUP BY.",
+    "learningOutcomes": "Mastered 4.4 MIN & MAX Extrema Discovery on Students.",
+    "challengeSlots": [
+      {
+        "type": "keyword",
+        "value": "SELECT"
+      },
+      {
+        "type": "column",
+        "value": "MIN(gpa)"
+      },
+      {
+        "type": "keyword",
+        "value": "AS"
+      },
+      {
+        "type": "column",
+        "value": "lowest_gpa,"
+      },
+      {
+        "type": "column",
+        "value": "MAX(gpa)"
+      },
+      {
+        "type": "keyword",
+        "value": "AS"
+      },
+      {
+        "type": "column",
+        "value": "highest_gpa"
+      },
+      {
+        "type": "keyword",
+        "value": "FROM"
+      },
+      {
+        "type": "table",
+        "value": "Students;"
+      }
+    ]
+  },
+  {
+    "drillNumber": 332,
+    "subcluster": "4.4 MIN & MAX Extrema Discovery",
+    "level": "Level 1 (Extrema)",
+    "title": "Syntax #332: Discover the lowest and highest book prices in the store",
+    "table": "Books",
+    "scenario": "Discover the lowest and highest book prices in the store.",
+    "businessObjective": "Discover the lowest and highest book prices in the store.",
+    "schemaSnippet": "Books schema",
+    "targetQuery": "SELECT MIN(price) AS cheapest_book, MAX(price) AS priciest_book\nFROM Books;",
+    "syntaxBlueprint": "SELECT MIN(price) AS cheapest_book, MAX(price) AS priciest_book\nFROM Books;",
+    "syntaxRule": "Aggregate functions compute summary metrics. In GROUP BY queries, every column in SELECT must either be aggregated or listed in GROUP BY. Filter rows with WHERE; filter aggregate groups with HAVING.",
+    "syntaxTrap": "Writing an aggregate function like 'WHERE COUNT(*) > 1' in the WHERE clause (illegal; use HAVING instead), or omitting a non-aggregated column from the GROUP BY clause.",
+    "eli5Story": "Grouping and aggregating data on Books: Discover the lowest and highest book prices in the store.",
+    "commonMistakes": "Using WHERE instead of HAVING for aggregate conditions, forgetting GROUP BY when projecting both raw columns and aggregates, or placing HAVING before GROUP BY.",
+    "learningOutcomes": "Mastered 4.4 MIN & MAX Extrema Discovery on Books.",
+    "challengeSlots": [
+      {
+        "type": "keyword",
+        "value": "SELECT"
+      },
+      {
+        "type": "column",
+        "value": "MIN(price)"
+      },
+      {
+        "type": "keyword",
+        "value": "AS"
+      },
+      {
+        "type": "column",
+        "value": "cheapest_book,"
+      },
+      {
+        "type": "column",
+        "value": "MAX(price)"
+      },
+      {
+        "type": "keyword",
+        "value": "AS"
+      },
+      {
+        "type": "column",
+        "value": "priciest_book"
+      },
+      {
+        "type": "keyword",
+        "value": "FROM"
+      },
+      {
+        "type": "table",
+        "value": "Books;"
+      }
+    ]
+  },
+  {
+    "drillNumber": 333,
+    "subcluster": "4.4 MIN & MAX Extrema Discovery",
+    "level": "Level 1 (Extrema)",
+    "title": "Syntax #333: Identify the minimum and maximum salaries paid in the company",
+    "table": "Employees",
+    "scenario": "Identify the minimum and maximum salaries paid in the company.",
+    "businessObjective": "Identify the minimum and maximum salaries paid in the company.",
+    "schemaSnippet": "Employees schema",
+    "targetQuery": "SELECT MIN(salary) AS entry_salary, MAX(salary) AS executive_salary\nFROM Employees;",
+    "syntaxBlueprint": "SELECT MIN(salary) AS entry_salary, MAX(salary) AS executive_salary\nFROM Employees;",
+    "syntaxRule": "Aggregate functions compute summary metrics. In GROUP BY queries, every column in SELECT must either be aggregated or listed in GROUP BY. Filter rows with WHERE; filter aggregate groups with HAVING.",
+    "syntaxTrap": "Writing an aggregate function like 'WHERE COUNT(*) > 1' in the WHERE clause (illegal; use HAVING instead), or omitting a non-aggregated column from the GROUP BY clause.",
+    "eli5Story": "Grouping and aggregating data on Employees: Identify the minimum and maximum salaries paid in the company.",
+    "commonMistakes": "Using WHERE instead of HAVING for aggregate conditions, forgetting GROUP BY when projecting both raw columns and aggregates, or placing HAVING before GROUP BY.",
+    "learningOutcomes": "Mastered 4.4 MIN & MAX Extrema Discovery on Employees.",
+    "challengeSlots": [
+      {
+        "type": "keyword",
+        "value": "SELECT"
+      },
+      {
+        "type": "column",
+        "value": "MIN(salary)"
+      },
+      {
+        "type": "keyword",
+        "value": "AS"
+      },
+      {
+        "type": "column",
+        "value": "entry_salary,"
+      },
+      {
+        "type": "column",
+        "value": "MAX(salary)"
+      },
+      {
+        "type": "keyword",
+        "value": "AS"
+      },
+      {
+        "type": "column",
+        "value": "executive_salary"
+      },
+      {
+        "type": "keyword",
+        "value": "FROM"
+      },
+      {
+        "type": "table",
+        "value": "Employees;"
+      }
+    ]
+  },
+  {
+    "drillNumber": 334,
+    "subcluster": "4.4 MIN & MAX Extrema Discovery",
+    "level": "Level 1 (Extrema)",
+    "title": "Syntax #334: Find the lowest grocery unit price and the highest stock count",
+    "table": "GroceryItems",
+    "scenario": "Find the lowest grocery unit price and the highest stock count.",
+    "businessObjective": "Find the lowest grocery unit price and the highest stock count.",
+    "schemaSnippet": "GroceryItems schema",
+    "targetQuery": "SELECT MIN(unit_price) AS min_price, MAX(stock_units) AS peak_stock\nFROM GroceryItems;",
+    "syntaxBlueprint": "SELECT MIN(unit_price) AS min_price, MAX(stock_units) AS peak_stock\nFROM GroceryItems;",
+    "syntaxRule": "Aggregate functions compute summary metrics. In GROUP BY queries, every column in SELECT must either be aggregated or listed in GROUP BY. Filter rows with WHERE; filter aggregate groups with HAVING.",
+    "syntaxTrap": "Writing an aggregate function like 'WHERE COUNT(*) > 1' in the WHERE clause (illegal; use HAVING instead), or omitting a non-aggregated column from the GROUP BY clause.",
+    "eli5Story": "Grouping and aggregating data on GroceryItems: Find the lowest grocery unit price and the highest stock count.",
+    "commonMistakes": "Using WHERE instead of HAVING for aggregate conditions, forgetting GROUP BY when projecting both raw columns and aggregates, or placing HAVING before GROUP BY.",
+    "learningOutcomes": "Mastered 4.4 MIN & MAX Extrema Discovery on GroceryItems.",
+    "challengeSlots": [
+      {
+        "type": "keyword",
+        "value": "SELECT"
+      },
+      {
+        "type": "column",
+        "value": "MIN(unit_price)"
+      },
+      {
+        "type": "keyword",
+        "value": "AS"
+      },
+      {
+        "type": "column",
+        "value": "min_price,"
+      },
+      {
+        "type": "column",
+        "value": "MAX(stock_units)"
+      },
+      {
+        "type": "keyword",
+        "value": "AS"
+      },
+      {
+        "type": "column",
+        "value": "peak_stock"
+      },
+      {
+        "type": "keyword",
+        "value": "FROM"
+      },
+      {
+        "type": "table",
+        "value": "GroceryItems;"
+      }
+    ]
+  },
+  {
+    "drillNumber": 335,
+    "subcluster": "4.4 MIN & MAX Extrema Discovery",
+    "level": "Level 1 (Extrema)",
+    "title": "Syntax #335: Identify the earliest and most recent order dates in history",
+    "table": "Orders",
+    "scenario": "Identify the earliest and most recent order dates in history.",
+    "businessObjective": "Identify the earliest and most recent order dates in history.",
+    "schemaSnippet": "Orders schema",
+    "targetQuery": "SELECT MIN(order_date) AS earliest_order, MAX(order_date) AS latest_order\nFROM Orders;",
+    "syntaxBlueprint": "SELECT MIN(order_date) AS earliest_order, MAX(order_date) AS latest_order\nFROM Orders;",
+    "syntaxRule": "Aggregate functions compute summary metrics. In GROUP BY queries, every column in SELECT must either be aggregated or listed in GROUP BY. Filter rows with WHERE; filter aggregate groups with HAVING.",
+    "syntaxTrap": "Writing an aggregate function like 'WHERE COUNT(*) > 1' in the WHERE clause (illegal; use HAVING instead), or omitting a non-aggregated column from the GROUP BY clause.",
+    "eli5Story": "Grouping and aggregating data on Orders: Identify the earliest and most recent order dates in history.",
+    "commonMistakes": "Using WHERE instead of HAVING for aggregate conditions, forgetting GROUP BY when projecting both raw columns and aggregates, or placing HAVING before GROUP BY.",
+    "learningOutcomes": "Mastered 4.4 MIN & MAX Extrema Discovery on Orders.",
+    "challengeSlots": [
+      {
+        "type": "keyword",
+        "value": "SELECT"
+      },
+      {
+        "type": "column",
+        "value": "MIN(order_date)"
+      },
+      {
+        "type": "keyword",
+        "value": "AS"
+      },
+      {
+        "type": "column",
+        "value": "earliest_order,"
+      },
+      {
+        "type": "column",
+        "value": "MAX(order_date)"
+      },
+      {
+        "type": "keyword",
+        "value": "AS"
+      },
+      {
+        "type": "column",
+        "value": "latest_order"
+      },
+      {
+        "type": "keyword",
+        "value": "FROM"
+      },
+      {
+        "type": "table",
+        "value": "Orders;"
+      }
+    ]
+  },
+  {
+    "drillNumber": 336,
+    "subcluster": "4.4 MIN & MAX Extrema Discovery",
+    "level": "Level 1 (Extrema)",
+    "title": "Syntax #336: Find the lowest and highest play counts across all songs",
+    "table": "MusicTracks",
+    "scenario": "Find the lowest and highest play counts across all songs.",
+    "businessObjective": "Find the lowest and highest play counts across all songs.",
+    "schemaSnippet": "MusicTracks schema",
+    "targetQuery": "SELECT MIN(play_count) AS least_played, MAX(play_count) AS top_streamed\nFROM MusicTracks;",
+    "syntaxBlueprint": "SELECT MIN(play_count) AS least_played, MAX(play_count) AS top_streamed\nFROM MusicTracks;",
+    "syntaxRule": "Aggregate functions compute summary metrics. In GROUP BY queries, every column in SELECT must either be aggregated or listed in GROUP BY. Filter rows with WHERE; filter aggregate groups with HAVING.",
+    "syntaxTrap": "Writing an aggregate function like 'WHERE COUNT(*) > 1' in the WHERE clause (illegal; use HAVING instead), or omitting a non-aggregated column from the GROUP BY clause.",
+    "eli5Story": "Grouping and aggregating data on MusicTracks: Find the lowest and highest play counts across all songs.",
+    "commonMistakes": "Using WHERE instead of HAVING for aggregate conditions, forgetting GROUP BY when projecting both raw columns and aggregates, or placing HAVING before GROUP BY.",
+    "learningOutcomes": "Mastered 4.4 MIN & MAX Extrema Discovery on MusicTracks.",
+    "challengeSlots": [
+      {
+        "type": "keyword",
+        "value": "SELECT"
+      },
+      {
+        "type": "column",
+        "value": "MIN(play_count)"
+      },
+      {
+        "type": "keyword",
+        "value": "AS"
+      },
+      {
+        "type": "column",
+        "value": "least_played,"
+      },
+      {
+        "type": "column",
+        "value": "MAX(play_count)"
+      },
+      {
+        "type": "keyword",
+        "value": "AS"
+      },
+      {
+        "type": "column",
+        "value": "top_streamed"
+      },
+      {
+        "type": "keyword",
+        "value": "FROM"
+      },
+      {
+        "type": "table",
+        "value": "MusicTracks;"
+      }
+    ]
+  },
+  {
+    "drillNumber": 337,
+    "subcluster": "4.4 MIN & MAX Extrema Discovery",
+    "level": "Level 1 (Extrema)",
+    "title": "Syntax #337: Find the earliest and latest member join dates",
+    "table": "GymMembers",
+    "scenario": "Find the earliest and latest member join dates.",
+    "businessObjective": "Find the earliest and latest member join dates.",
+    "schemaSnippet": "GymMembers schema",
+    "targetQuery": "SELECT MIN(join_date) AS oldest_member_date, MAX(join_date) AS newest_join_date\nFROM GymMembers;",
+    "syntaxBlueprint": "SELECT MIN(join_date) AS oldest_member_date, MAX(join_date) AS newest_join_date\nFROM GymMembers;",
+    "syntaxRule": "Aggregate functions compute summary metrics. In GROUP BY queries, every column in SELECT must either be aggregated or listed in GROUP BY. Filter rows with WHERE; filter aggregate groups with HAVING.",
+    "syntaxTrap": "Writing an aggregate function like 'WHERE COUNT(*) > 1' in the WHERE clause (illegal; use HAVING instead), or omitting a non-aggregated column from the GROUP BY clause.",
+    "eli5Story": "Grouping and aggregating data on GymMembers: Find the earliest and latest member join dates.",
+    "commonMistakes": "Using WHERE instead of HAVING for aggregate conditions, forgetting GROUP BY when projecting both raw columns and aggregates, or placing HAVING before GROUP BY.",
+    "learningOutcomes": "Mastered 4.4 MIN & MAX Extrema Discovery on GymMembers.",
+    "challengeSlots": [
+      {
+        "type": "keyword",
+        "value": "SELECT"
+      },
+      {
+        "type": "column",
+        "value": "MIN(join_date)"
+      },
+      {
+        "type": "keyword",
+        "value": "AS"
+      },
+      {
+        "type": "column",
+        "value": "oldest_member_date,"
+      },
+      {
+        "type": "column",
+        "value": "MAX(join_date)"
+      },
+      {
+        "type": "keyword",
+        "value": "AS"
+      },
+      {
+        "type": "column",
+        "value": "newest_join_date"
+      },
+      {
+        "type": "keyword",
+        "value": "FROM"
+      },
+      {
+        "type": "table",
+        "value": "GymMembers;"
+      }
+    ]
+  },
+  {
+    "drillNumber": 338,
+    "subcluster": "4.4 MIN & MAX Extrema Discovery",
+    "level": "Level 1 (Extrema)",
+    "title": "Syntax #338: Find the lowest and highest star ratings logged by viewers",
+    "table": "MovieReviews",
+    "scenario": "Find the lowest and highest star ratings logged by viewers.",
+    "businessObjective": "Find the lowest and highest star ratings logged by viewers.",
+    "schemaSnippet": "MovieReviews schema",
+    "targetQuery": "SELECT MIN(star_rating) AS lowest_score, MAX(star_rating) AS highest_score\nFROM MovieReviews;",
+    "syntaxBlueprint": "SELECT MIN(star_rating) AS lowest_score, MAX(star_rating) AS highest_score\nFROM MovieReviews;",
+    "syntaxRule": "Aggregate functions compute summary metrics. In GROUP BY queries, every column in SELECT must either be aggregated or listed in GROUP BY. Filter rows with WHERE; filter aggregate groups with HAVING.",
+    "syntaxTrap": "Writing an aggregate function like 'WHERE COUNT(*) > 1' in the WHERE clause (illegal; use HAVING instead), or omitting a non-aggregated column from the GROUP BY clause.",
+    "eli5Story": "Grouping and aggregating data on MovieReviews: Find the lowest and highest star ratings logged by viewers.",
+    "commonMistakes": "Using WHERE instead of HAVING for aggregate conditions, forgetting GROUP BY when projecting both raw columns and aggregates, or placing HAVING before GROUP BY.",
+    "learningOutcomes": "Mastered 4.4 MIN & MAX Extrema Discovery on MovieReviews.",
+    "challengeSlots": [
+      {
+        "type": "keyword",
+        "value": "SELECT"
+      },
+      {
+        "type": "column",
+        "value": "MIN(star_rating)"
+      },
+      {
+        "type": "keyword",
+        "value": "AS"
+      },
+      {
+        "type": "column",
+        "value": "lowest_score,"
+      },
+      {
+        "type": "column",
+        "value": "MAX(star_rating)"
+      },
+      {
+        "type": "keyword",
+        "value": "AS"
+      },
+      {
+        "type": "column",
+        "value": "highest_score"
+      },
+      {
+        "type": "keyword",
+        "value": "FROM"
+      },
+      {
+        "type": "table",
+        "value": "MovieReviews;"
+      }
+    ]
+  },
+  {
+    "drillNumber": 339,
+    "subcluster": "4.4 MIN & MAX Extrema Discovery",
+    "level": "Level 1 (Extrema)",
+    "title": "Syntax #339: Find the cheapest and most expensive flight ticket prices",
+    "table": "FlightSchedule",
+    "scenario": "Find the cheapest and most expensive flight ticket prices.",
+    "businessObjective": "Find the cheapest and most expensive flight ticket prices.",
+    "schemaSnippet": "FlightSchedule schema",
+    "targetQuery": "SELECT MIN(ticket_price) AS bargain_fare, MAX(ticket_price) AS premium_fare\nFROM FlightSchedule;",
+    "syntaxBlueprint": "SELECT MIN(ticket_price) AS bargain_fare, MAX(ticket_price) AS premium_fare\nFROM FlightSchedule;",
+    "syntaxRule": "Aggregate functions compute summary metrics. In GROUP BY queries, every column in SELECT must either be aggregated or listed in GROUP BY. Filter rows with WHERE; filter aggregate groups with HAVING.",
+    "syntaxTrap": "Writing an aggregate function like 'WHERE COUNT(*) > 1' in the WHERE clause (illegal; use HAVING instead), or omitting a non-aggregated column from the GROUP BY clause.",
+    "eli5Story": "Grouping and aggregating data on FlightSchedule: Find the cheapest and most expensive flight ticket prices.",
+    "commonMistakes": "Using WHERE instead of HAVING for aggregate conditions, forgetting GROUP BY when projecting both raw columns and aggregates, or placing HAVING before GROUP BY.",
+    "learningOutcomes": "Mastered 4.4 MIN & MAX Extrema Discovery on FlightSchedule.",
+    "challengeSlots": [
+      {
+        "type": "keyword",
+        "value": "SELECT"
+      },
+      {
+        "type": "column",
+        "value": "MIN(ticket_price)"
+      },
+      {
+        "type": "keyword",
+        "value": "AS"
+      },
+      {
+        "type": "column",
+        "value": "bargain_fare,"
+      },
+      {
+        "type": "column",
+        "value": "MAX(ticket_price)"
+      },
+      {
+        "type": "keyword",
+        "value": "AS"
+      },
+      {
+        "type": "column",
+        "value": "premium_fare"
+      },
+      {
+        "type": "keyword",
+        "value": "FROM"
+      },
+      {
+        "type": "table",
+        "value": "FlightSchedule;"
+      }
+    ]
+  },
+  {
+    "drillNumber": 340,
+    "subcluster": "4.4 MIN & MAX Extrema Discovery",
+    "level": "Level 1 (Extrema)",
+    "title": "Syntax #340: Find the minimum and maximum pet weights recorded in kilograms",
+    "table": "PetClinic",
+    "scenario": "Find the minimum and maximum pet weights recorded in kilograms.",
+    "businessObjective": "Find the minimum and maximum pet weights recorded in kilograms.",
+    "schemaSnippet": "PetClinic schema",
+    "targetQuery": "SELECT MIN(weight_kg) AS lightest_pet, MAX(weight_kg) AS heaviest_pet\nFROM PetClinic;",
+    "syntaxBlueprint": "SELECT MIN(weight_kg) AS lightest_pet, MAX(weight_kg) AS heaviest_pet\nFROM PetClinic;",
+    "syntaxRule": "Aggregate functions compute summary metrics. In GROUP BY queries, every column in SELECT must either be aggregated or listed in GROUP BY. Filter rows with WHERE; filter aggregate groups with HAVING.",
+    "syntaxTrap": "Writing an aggregate function like 'WHERE COUNT(*) > 1' in the WHERE clause (illegal; use HAVING instead), or omitting a non-aggregated column from the GROUP BY clause.",
+    "eli5Story": "Grouping and aggregating data on PetClinic: Find the minimum and maximum pet weights recorded in kilograms.",
+    "commonMistakes": "Using WHERE instead of HAVING for aggregate conditions, forgetting GROUP BY when projecting both raw columns and aggregates, or placing HAVING before GROUP BY.",
+    "learningOutcomes": "Mastered 4.4 MIN & MAX Extrema Discovery on PetClinic.",
+    "challengeSlots": [
+      {
+        "type": "keyword",
+        "value": "SELECT"
+      },
+      {
+        "type": "column",
+        "value": "MIN(weight_kg)"
+      },
+      {
+        "type": "keyword",
+        "value": "AS"
+      },
+      {
+        "type": "column",
+        "value": "lightest_pet,"
+      },
+      {
+        "type": "column",
+        "value": "MAX(weight_kg)"
+      },
+      {
+        "type": "keyword",
+        "value": "AS"
+      },
+      {
+        "type": "column",
+        "value": "heaviest_pet"
+      },
+      {
+        "type": "keyword",
+        "value": "FROM"
+      },
+      {
+        "type": "table",
+        "value": "PetClinic;"
+      }
+    ]
+  },
+  {
+    "drillNumber": 341,
+    "subcluster": "4.5 COUNT(DISTINCT) Cardinality",
+    "level": "Level 2 (Cardinality)",
+    "title": "Syntax #341: Count the number of distinct cities where students reside",
+    "table": "Students",
+    "scenario": "Count the number of distinct cities where students reside.",
+    "businessObjective": "Count the number of distinct cities where students reside.",
+    "schemaSnippet": "Students schema",
+    "targetQuery": "SELECT COUNT(DISTINCT city) AS unique_hometowns\nFROM Students;",
+    "syntaxBlueprint": "SELECT COUNT(DISTINCT city) AS unique_hometowns\nFROM Students;",
+    "syntaxRule": "Aggregate functions compute summary metrics. In GROUP BY queries, every column in SELECT must either be aggregated or listed in GROUP BY. Filter rows with WHERE; filter aggregate groups with HAVING.",
+    "syntaxTrap": "Writing an aggregate function like 'WHERE COUNT(*) > 1' in the WHERE clause (illegal; use HAVING instead), or omitting a non-aggregated column from the GROUP BY clause.",
+    "eli5Story": "Grouping and aggregating data on Students: Count the number of distinct cities where students reside.",
+    "commonMistakes": "Using WHERE instead of HAVING for aggregate conditions, forgetting GROUP BY when projecting both raw columns and aggregates, or placing HAVING before GROUP BY.",
+    "learningOutcomes": "Mastered 4.5 COUNT(DISTINCT) Cardinality on Students.",
+    "challengeSlots": [
+      {
+        "type": "keyword",
+        "value": "SELECT"
+      },
+      {
+        "type": "column",
+        "value": "COUNT(DISTINCT"
+      },
+      {
+        "type": "column",
+        "value": "city)"
+      },
+      {
+        "type": "keyword",
+        "value": "AS"
+      },
+      {
+        "type": "column",
+        "value": "unique_hometowns"
+      },
+      {
+        "type": "keyword",
+        "value": "FROM"
+      },
+      {
+        "type": "table",
+        "value": "Students;"
+      }
+    ]
+  },
+  {
+    "drillNumber": 342,
+    "subcluster": "4.5 COUNT(DISTINCT) Cardinality",
+    "level": "Level 2 (Cardinality)",
+    "title": "Syntax #342: Count how many unique authors are represented in the catalog",
+    "table": "Books",
+    "scenario": "Count how many unique authors are represented in the catalog.",
+    "businessObjective": "Count how many unique authors are represented in the catalog.",
+    "schemaSnippet": "Books schema",
+    "targetQuery": "SELECT COUNT(DISTINCT author) AS unique_authors\nFROM Books;",
+    "syntaxBlueprint": "SELECT COUNT(DISTINCT author) AS unique_authors\nFROM Books;",
+    "syntaxRule": "Aggregate functions compute summary metrics. In GROUP BY queries, every column in SELECT must either be aggregated or listed in GROUP BY. Filter rows with WHERE; filter aggregate groups with HAVING.",
+    "syntaxTrap": "Writing an aggregate function like 'WHERE COUNT(*) > 1' in the WHERE clause (illegal; use HAVING instead), or omitting a non-aggregated column from the GROUP BY clause.",
+    "eli5Story": "Grouping and aggregating data on Books: Count how many unique authors are represented in the catalog.",
+    "commonMistakes": "Using WHERE instead of HAVING for aggregate conditions, forgetting GROUP BY when projecting both raw columns and aggregates, or placing HAVING before GROUP BY.",
+    "learningOutcomes": "Mastered 4.5 COUNT(DISTINCT) Cardinality on Books.",
+    "challengeSlots": [
+      {
+        "type": "keyword",
+        "value": "SELECT"
+      },
+      {
+        "type": "column",
+        "value": "COUNT(DISTINCT"
+      },
+      {
+        "type": "column",
+        "value": "author)"
+      },
+      {
+        "type": "keyword",
+        "value": "AS"
+      },
+      {
+        "type": "column",
+        "value": "unique_authors"
+      },
+      {
+        "type": "keyword",
+        "value": "FROM"
+      },
+      {
+        "type": "table",
+        "value": "Books;"
+      }
+    ]
+  },
+  {
+    "drillNumber": 343,
+    "subcluster": "4.5 COUNT(DISTINCT) Cardinality",
+    "level": "Level 2 (Cardinality)",
+    "title": "Syntax #343: Count the number of unique departments operating in the firm",
+    "table": "Employees",
+    "scenario": "Count the number of unique departments operating in the firm.",
+    "businessObjective": "Count the number of unique departments operating in the firm.",
+    "schemaSnippet": "Employees schema",
+    "targetQuery": "SELECT COUNT(DISTINCT department) AS active_departments\nFROM Employees;",
+    "syntaxBlueprint": "SELECT COUNT(DISTINCT department) AS active_departments\nFROM Employees;",
+    "syntaxRule": "Aggregate functions compute summary metrics. In GROUP BY queries, every column in SELECT must either be aggregated or listed in GROUP BY. Filter rows with WHERE; filter aggregate groups with HAVING.",
+    "syntaxTrap": "Writing an aggregate function like 'WHERE COUNT(*) > 1' in the WHERE clause (illegal; use HAVING instead), or omitting a non-aggregated column from the GROUP BY clause.",
+    "eli5Story": "Grouping and aggregating data on Employees: Count the number of unique departments operating in the firm.",
+    "commonMistakes": "Using WHERE instead of HAVING for aggregate conditions, forgetting GROUP BY when projecting both raw columns and aggregates, or placing HAVING before GROUP BY.",
+    "learningOutcomes": "Mastered 4.5 COUNT(DISTINCT) Cardinality on Employees.",
+    "challengeSlots": [
+      {
+        "type": "keyword",
+        "value": "SELECT"
+      },
+      {
+        "type": "column",
+        "value": "COUNT(DISTINCT"
+      },
+      {
+        "type": "column",
+        "value": "department)"
+      },
+      {
+        "type": "keyword",
+        "value": "AS"
+      },
+      {
+        "type": "column",
+        "value": "active_departments"
+      },
+      {
+        "type": "keyword",
+        "value": "FROM"
+      },
+      {
+        "type": "table",
+        "value": "Employees;"
+      }
+    ]
+  },
+  {
+    "drillNumber": 344,
+    "subcluster": "4.5 COUNT(DISTINCT) Cardinality",
+    "level": "Level 2 (Cardinality)",
+    "title": "Syntax #344: Count how many distinct grocery categories exist in inventory",
+    "table": "GroceryItems",
+    "scenario": "Count how many distinct grocery categories exist in inventory.",
+    "businessObjective": "Count how many distinct grocery categories exist in inventory.",
+    "schemaSnippet": "GroceryItems schema",
+    "targetQuery": "SELECT COUNT(DISTINCT category) AS category_count\nFROM GroceryItems;",
+    "syntaxBlueprint": "SELECT COUNT(DISTINCT category) AS category_count\nFROM GroceryItems;",
+    "syntaxRule": "Aggregate functions compute summary metrics. In GROUP BY queries, every column in SELECT must either be aggregated or listed in GROUP BY. Filter rows with WHERE; filter aggregate groups with HAVING.",
+    "syntaxTrap": "Writing an aggregate function like 'WHERE COUNT(*) > 1' in the WHERE clause (illegal; use HAVING instead), or omitting a non-aggregated column from the GROUP BY clause.",
+    "eli5Story": "Grouping and aggregating data on GroceryItems: Count how many distinct grocery categories exist in inventory.",
+    "commonMistakes": "Using WHERE instead of HAVING for aggregate conditions, forgetting GROUP BY when projecting both raw columns and aggregates, or placing HAVING before GROUP BY.",
+    "learningOutcomes": "Mastered 4.5 COUNT(DISTINCT) Cardinality on GroceryItems.",
+    "challengeSlots": [
+      {
+        "type": "keyword",
+        "value": "SELECT"
+      },
+      {
+        "type": "column",
+        "value": "COUNT(DISTINCT"
+      },
+      {
+        "type": "column",
+        "value": "category)"
+      },
+      {
+        "type": "keyword",
+        "value": "AS"
+      },
+      {
+        "type": "column",
+        "value": "category_count"
+      },
+      {
+        "type": "keyword",
+        "value": "FROM"
+      },
+      {
+        "type": "table",
+        "value": "GroceryItems;"
+      }
+    ]
+  },
+  {
+    "drillNumber": 345,
+    "subcluster": "4.5 COUNT(DISTINCT) Cardinality",
+    "level": "Level 2 (Cardinality)",
+    "title": "Syntax #345: Count the total number of distinct customers who placed orders",
+    "table": "Orders",
+    "scenario": "Count the total number of distinct customers who placed orders.",
+    "businessObjective": "Count the total number of distinct customers who placed orders.",
+    "schemaSnippet": "Orders schema",
+    "targetQuery": "SELECT COUNT(DISTINCT customer_name) AS unique_buyers\nFROM Orders;",
+    "syntaxBlueprint": "SELECT COUNT(DISTINCT customer_name) AS unique_buyers\nFROM Orders;",
+    "syntaxRule": "Aggregate functions compute summary metrics. In GROUP BY queries, every column in SELECT must either be aggregated or listed in GROUP BY. Filter rows with WHERE; filter aggregate groups with HAVING.",
+    "syntaxTrap": "Writing an aggregate function like 'WHERE COUNT(*) > 1' in the WHERE clause (illegal; use HAVING instead), or omitting a non-aggregated column from the GROUP BY clause.",
+    "eli5Story": "Grouping and aggregating data on Orders: Count the total number of distinct customers who placed orders.",
+    "commonMistakes": "Using WHERE instead of HAVING for aggregate conditions, forgetting GROUP BY when projecting both raw columns and aggregates, or placing HAVING before GROUP BY.",
+    "learningOutcomes": "Mastered 4.5 COUNT(DISTINCT) Cardinality on Orders.",
+    "challengeSlots": [
+      {
+        "type": "keyword",
+        "value": "SELECT"
+      },
+      {
+        "type": "column",
+        "value": "COUNT(DISTINCT"
+      },
+      {
+        "type": "column",
+        "value": "customer_name)"
+      },
+      {
+        "type": "keyword",
+        "value": "AS"
+      },
+      {
+        "type": "column",
+        "value": "unique_buyers"
+      },
+      {
+        "type": "keyword",
+        "value": "FROM"
+      },
+      {
+        "type": "table",
+        "value": "Orders;"
+      }
+    ]
+  },
+  {
+    "drillNumber": 346,
+    "subcluster": "4.5 COUNT(DISTINCT) Cardinality",
+    "level": "Level 2 (Cardinality)",
+    "title": "Syntax #346: Count the number of unique musical genres in the catalog",
+    "table": "MusicTracks",
+    "scenario": "Count the number of unique musical genres in the catalog.",
+    "businessObjective": "Count the number of unique musical genres in the catalog.",
+    "schemaSnippet": "MusicTracks schema",
+    "targetQuery": "SELECT COUNT(DISTINCT genre) AS distinct_genres\nFROM MusicTracks;",
+    "syntaxBlueprint": "SELECT COUNT(DISTINCT genre) AS distinct_genres\nFROM MusicTracks;",
+    "syntaxRule": "Aggregate functions compute summary metrics. In GROUP BY queries, every column in SELECT must either be aggregated or listed in GROUP BY. Filter rows with WHERE; filter aggregate groups with HAVING.",
+    "syntaxTrap": "Writing an aggregate function like 'WHERE COUNT(*) > 1' in the WHERE clause (illegal; use HAVING instead), or omitting a non-aggregated column from the GROUP BY clause.",
+    "eli5Story": "Grouping and aggregating data on MusicTracks: Count the number of unique musical genres in the catalog.",
+    "commonMistakes": "Using WHERE instead of HAVING for aggregate conditions, forgetting GROUP BY when projecting both raw columns and aggregates, or placing HAVING before GROUP BY.",
+    "learningOutcomes": "Mastered 4.5 COUNT(DISTINCT) Cardinality on MusicTracks.",
+    "challengeSlots": [
+      {
+        "type": "keyword",
+        "value": "SELECT"
+      },
+      {
+        "type": "column",
+        "value": "COUNT(DISTINCT"
+      },
+      {
+        "type": "column",
+        "value": "genre)"
+      },
+      {
+        "type": "keyword",
+        "value": "AS"
+      },
+      {
+        "type": "column",
+        "value": "distinct_genres"
+      },
+      {
+        "type": "keyword",
+        "value": "FROM"
+      },
+      {
+        "type": "table",
+        "value": "MusicTracks;"
+      }
+    ]
+  },
+  {
+    "drillNumber": 347,
+    "subcluster": "4.5 COUNT(DISTINCT) Cardinality",
+    "level": "Level 2 (Cardinality)",
+    "title": "Syntax #347: Count the number of distinct membership plan tiers available",
+    "table": "GymMembers",
+    "scenario": "Count the number of distinct membership plan tiers available.",
+    "businessObjective": "Count the number of distinct membership plan tiers available.",
+    "schemaSnippet": "GymMembers schema",
+    "targetQuery": "SELECT COUNT(DISTINCT membership_plan) AS plan_tiers_offered\nFROM GymMembers;",
+    "syntaxBlueprint": "SELECT COUNT(DISTINCT membership_plan) AS plan_tiers_offered\nFROM GymMembers;",
+    "syntaxRule": "Aggregate functions compute summary metrics. In GROUP BY queries, every column in SELECT must either be aggregated or listed in GROUP BY. Filter rows with WHERE; filter aggregate groups with HAVING.",
+    "syntaxTrap": "Writing an aggregate function like 'WHERE COUNT(*) > 1' in the WHERE clause (illegal; use HAVING instead), or omitting a non-aggregated column from the GROUP BY clause.",
+    "eli5Story": "Grouping and aggregating data on GymMembers: Count the number of distinct membership plan tiers available.",
+    "commonMistakes": "Using WHERE instead of HAVING for aggregate conditions, forgetting GROUP BY when projecting both raw columns and aggregates, or placing HAVING before GROUP BY.",
+    "learningOutcomes": "Mastered 4.5 COUNT(DISTINCT) Cardinality on GymMembers.",
+    "challengeSlots": [
+      {
+        "type": "keyword",
+        "value": "SELECT"
+      },
+      {
+        "type": "column",
+        "value": "COUNT(DISTINCT"
+      },
+      {
+        "type": "column",
+        "value": "membership_plan)"
+      },
+      {
+        "type": "keyword",
+        "value": "AS"
+      },
+      {
+        "type": "column",
+        "value": "plan_tiers_offered"
+      },
+      {
+        "type": "keyword",
+        "value": "FROM"
+      },
+      {
+        "type": "table",
+        "value": "GymMembers;"
+      }
+    ]
+  },
+  {
+    "drillNumber": 348,
+    "subcluster": "4.5 COUNT(DISTINCT) Cardinality",
+    "level": "Level 2 (Cardinality)",
+    "title": "Syntax #348: Count how many different movies have received at least one review",
+    "table": "MovieReviews",
+    "scenario": "Count how many different movies have received at least one review.",
+    "businessObjective": "Count how many different movies have received at least one review.",
+    "schemaSnippet": "MovieReviews schema",
+    "targetQuery": "SELECT COUNT(DISTINCT movie_title) AS unique_movies_reviewed\nFROM MovieReviews;",
+    "syntaxBlueprint": "SELECT COUNT(DISTINCT movie_title) AS unique_movies_reviewed\nFROM MovieReviews;",
+    "syntaxRule": "Aggregate functions compute summary metrics. In GROUP BY queries, every column in SELECT must either be aggregated or listed in GROUP BY. Filter rows with WHERE; filter aggregate groups with HAVING.",
+    "syntaxTrap": "Writing an aggregate function like 'WHERE COUNT(*) > 1' in the WHERE clause (illegal; use HAVING instead), or omitting a non-aggregated column from the GROUP BY clause.",
+    "eli5Story": "Grouping and aggregating data on MovieReviews: Count how many different movies have received at least one review.",
+    "commonMistakes": "Using WHERE instead of HAVING for aggregate conditions, forgetting GROUP BY when projecting both raw columns and aggregates, or placing HAVING before GROUP BY.",
+    "learningOutcomes": "Mastered 4.5 COUNT(DISTINCT) Cardinality on MovieReviews.",
+    "challengeSlots": [
+      {
+        "type": "keyword",
+        "value": "SELECT"
+      },
+      {
+        "type": "column",
+        "value": "COUNT(DISTINCT"
+      },
+      {
+        "type": "column",
+        "value": "movie_title)"
+      },
+      {
+        "type": "keyword",
+        "value": "AS"
+      },
+      {
+        "type": "column",
+        "value": "unique_movies_reviewed"
+      },
+      {
+        "type": "keyword",
+        "value": "FROM"
+      },
+      {
+        "type": "table",
+        "value": "MovieReviews;"
+      }
+    ]
+  },
+  {
+    "drillNumber": 349,
+    "subcluster": "4.5 COUNT(DISTINCT) Cardinality",
+    "level": "Level 2 (Cardinality)",
+    "title": "Syntax #349: Count how many distinct origin airports have outbound departures",
+    "table": "FlightSchedule",
+    "scenario": "Count how many distinct origin airports have outbound departures.",
+    "businessObjective": "Count how many distinct origin airports have outbound departures.",
+    "schemaSnippet": "FlightSchedule schema",
+    "targetQuery": "SELECT COUNT(DISTINCT origin_airport) AS unique_origins\nFROM FlightSchedule;",
+    "syntaxBlueprint": "SELECT COUNT(DISTINCT origin_airport) AS unique_origins\nFROM FlightSchedule;",
+    "syntaxRule": "Aggregate functions compute summary metrics. In GROUP BY queries, every column in SELECT must either be aggregated or listed in GROUP BY. Filter rows with WHERE; filter aggregate groups with HAVING.",
+    "syntaxTrap": "Writing an aggregate function like 'WHERE COUNT(*) > 1' in the WHERE clause (illegal; use HAVING instead), or omitting a non-aggregated column from the GROUP BY clause.",
+    "eli5Story": "Grouping and aggregating data on FlightSchedule: Count how many distinct origin airports have outbound departures.",
+    "commonMistakes": "Using WHERE instead of HAVING for aggregate conditions, forgetting GROUP BY when projecting both raw columns and aggregates, or placing HAVING before GROUP BY.",
+    "learningOutcomes": "Mastered 4.5 COUNT(DISTINCT) Cardinality on FlightSchedule.",
+    "challengeSlots": [
+      {
+        "type": "keyword",
+        "value": "SELECT"
+      },
+      {
+        "type": "column",
+        "value": "COUNT(DISTINCT"
+      },
+      {
+        "type": "column",
+        "value": "origin_airport)"
+      },
+      {
+        "type": "keyword",
+        "value": "AS"
+      },
+      {
+        "type": "column",
+        "value": "unique_origins"
+      },
+      {
+        "type": "keyword",
+        "value": "FROM"
+      },
+      {
+        "type": "table",
+        "value": "FlightSchedule;"
+      }
+    ]
+  },
+  {
+    "drillNumber": 350,
+    "subcluster": "4.5 COUNT(DISTINCT) Cardinality",
+    "level": "Level 2 (Cardinality)",
+    "title": "Syntax #350: Count the number of unique animal species treated at the clinic",
+    "table": "PetClinic",
+    "scenario": "Count the number of unique animal species treated at the clinic.",
+    "businessObjective": "Count the number of unique animal species treated at the clinic.",
+    "schemaSnippet": "PetClinic schema",
+    "targetQuery": "SELECT COUNT(DISTINCT species) AS species_treated\nFROM PetClinic;",
+    "syntaxBlueprint": "SELECT COUNT(DISTINCT species) AS species_treated\nFROM PetClinic;",
+    "syntaxRule": "Aggregate functions compute summary metrics. In GROUP BY queries, every column in SELECT must either be aggregated or listed in GROUP BY. Filter rows with WHERE; filter aggregate groups with HAVING.",
+    "syntaxTrap": "Writing an aggregate function like 'WHERE COUNT(*) > 1' in the WHERE clause (illegal; use HAVING instead), or omitting a non-aggregated column from the GROUP BY clause.",
+    "eli5Story": "Grouping and aggregating data on PetClinic: Count the number of unique animal species treated at the clinic.",
+    "commonMistakes": "Using WHERE instead of HAVING for aggregate conditions, forgetting GROUP BY when projecting both raw columns and aggregates, or placing HAVING before GROUP BY.",
+    "learningOutcomes": "Mastered 4.5 COUNT(DISTINCT) Cardinality on PetClinic.",
+    "challengeSlots": [
+      {
+        "type": "keyword",
+        "value": "SELECT"
+      },
+      {
+        "type": "column",
+        "value": "COUNT(DISTINCT"
+      },
+      {
+        "type": "column",
+        "value": "species)"
+      },
+      {
+        "type": "keyword",
+        "value": "AS"
+      },
+      {
+        "type": "column",
+        "value": "species_treated"
+      },
+      {
+        "type": "keyword",
+        "value": "FROM"
+      },
+      {
+        "type": "table",
+        "value": "PetClinic;"
+      }
+    ]
+  },
+  {
+    "drillNumber": 351,
+    "subcluster": "4.6 Single-Column GROUP BY",
+    "level": "Level 2 (Grouping)",
+    "title": "Syntax #351: Group students by major and count how many students are enrolled in each",
+    "table": "Students",
+    "scenario": "Group students by major and count how many students are enrolled in each.",
+    "businessObjective": "Group students by major and count how many students are enrolled in each.",
+    "schemaSnippet": "Students schema",
+    "targetQuery": "SELECT major, COUNT(*) AS student_count\nFROM Students\nGROUP BY major;",
+    "syntaxBlueprint": "SELECT major, COUNT(*) AS student_count\nFROM Students\nGROUP BY major;",
+    "syntaxRule": "Aggregate functions compute summary metrics. In GROUP BY queries, every column in SELECT must either be aggregated or listed in GROUP BY. Filter rows with WHERE; filter aggregate groups with HAVING.",
+    "syntaxTrap": "Writing an aggregate function like 'WHERE COUNT(*) > 1' in the WHERE clause (illegal; use HAVING instead), or omitting a non-aggregated column from the GROUP BY clause.",
+    "eli5Story": "Grouping and aggregating data on Students: Group students by major and count how many students are enrolled in each.",
+    "commonMistakes": "Using WHERE instead of HAVING for aggregate conditions, forgetting GROUP BY when projecting both raw columns and aggregates, or placing HAVING before GROUP BY.",
+    "learningOutcomes": "Mastered 4.6 Single-Column GROUP BY on Students.",
+    "challengeSlots": [
+      {
+        "type": "keyword",
+        "value": "SELECT"
+      },
+      {
+        "type": "column",
+        "value": "major,"
+      },
+      {
+        "type": "column",
+        "value": "COUNT(*)"
+      },
+      {
+        "type": "keyword",
+        "value": "AS"
+      },
+      {
+        "type": "column",
+        "value": "student_count"
+      },
+      {
+        "type": "keyword",
+        "value": "FROM"
+      },
+      {
+        "type": "table",
+        "value": "Students"
+      },
+      {
+        "type": "keyword",
+        "value": "GROUP"
+      },
+      {
+        "type": "keyword",
+        "value": "BY"
+      },
+      {
+        "type": "column",
+        "value": "major;"
+      }
+    ]
+  },
+  {
+    "drillNumber": 352,
+    "subcluster": "4.6 Single-Column GROUP BY",
+    "level": "Level 2 (Grouping)",
+    "title": "Syntax #352: Group books by genre and count total titles per category",
+    "table": "Books",
+    "scenario": "Group books by genre and count total titles per category.",
+    "businessObjective": "Group books by genre and count total titles per category.",
+    "schemaSnippet": "Books schema",
+    "targetQuery": "SELECT genre, COUNT(*) AS title_count\nFROM Books\nGROUP BY genre;",
+    "syntaxBlueprint": "SELECT genre, COUNT(*) AS title_count\nFROM Books\nGROUP BY genre;",
+    "syntaxRule": "Aggregate functions compute summary metrics. In GROUP BY queries, every column in SELECT must either be aggregated or listed in GROUP BY. Filter rows with WHERE; filter aggregate groups with HAVING.",
+    "syntaxTrap": "Writing an aggregate function like 'WHERE COUNT(*) > 1' in the WHERE clause (illegal; use HAVING instead), or omitting a non-aggregated column from the GROUP BY clause.",
+    "eli5Story": "Grouping and aggregating data on Books: Group books by genre and count total titles per category.",
+    "commonMistakes": "Using WHERE instead of HAVING for aggregate conditions, forgetting GROUP BY when projecting both raw columns and aggregates, or placing HAVING before GROUP BY.",
+    "learningOutcomes": "Mastered 4.6 Single-Column GROUP BY on Books.",
+    "challengeSlots": [
+      {
+        "type": "keyword",
+        "value": "SELECT"
+      },
+      {
+        "type": "column",
+        "value": "genre,"
+      },
+      {
+        "type": "column",
+        "value": "COUNT(*)"
+      },
+      {
+        "type": "keyword",
+        "value": "AS"
+      },
+      {
+        "type": "column",
+        "value": "title_count"
+      },
+      {
+        "type": "keyword",
+        "value": "FROM"
+      },
+      {
+        "type": "table",
+        "value": "Books"
+      },
+      {
+        "type": "keyword",
+        "value": "GROUP"
+      },
+      {
+        "type": "keyword",
+        "value": "BY"
+      },
+      {
+        "type": "column",
+        "value": "genre;"
+      }
+    ]
+  },
+  {
+    "drillNumber": 353,
+    "subcluster": "4.6 Single-Column GROUP BY",
+    "level": "Level 2 (Grouping)",
+    "title": "Syntax #353: Group employees by department and count staff headcount per department",
+    "table": "Employees",
+    "scenario": "Group employees by department and count staff headcount per department.",
+    "businessObjective": "Group employees by department and count staff headcount per department.",
+    "schemaSnippet": "Employees schema",
+    "targetQuery": "SELECT department, COUNT(*) AS headcount\nFROM Employees\nGROUP BY department;",
+    "syntaxBlueprint": "SELECT department, COUNT(*) AS headcount\nFROM Employees\nGROUP BY department;",
+    "syntaxRule": "Aggregate functions compute summary metrics. In GROUP BY queries, every column in SELECT must either be aggregated or listed in GROUP BY. Filter rows with WHERE; filter aggregate groups with HAVING.",
+    "syntaxTrap": "Writing an aggregate function like 'WHERE COUNT(*) > 1' in the WHERE clause (illegal; use HAVING instead), or omitting a non-aggregated column from the GROUP BY clause.",
+    "eli5Story": "Grouping and aggregating data on Employees: Group employees by department and count staff headcount per department.",
+    "commonMistakes": "Using WHERE instead of HAVING for aggregate conditions, forgetting GROUP BY when projecting both raw columns and aggregates, or placing HAVING before GROUP BY.",
+    "learningOutcomes": "Mastered 4.6 Single-Column GROUP BY on Employees.",
+    "challengeSlots": [
+      {
+        "type": "keyword",
+        "value": "SELECT"
+      },
+      {
+        "type": "column",
+        "value": "department,"
+      },
+      {
+        "type": "column",
+        "value": "COUNT(*)"
+      },
+      {
+        "type": "keyword",
+        "value": "AS"
+      },
+      {
+        "type": "column",
+        "value": "headcount"
+      },
+      {
+        "type": "keyword",
+        "value": "FROM"
+      },
+      {
+        "type": "table",
+        "value": "Employees"
+      },
+      {
+        "type": "keyword",
+        "value": "GROUP"
+      },
+      {
+        "type": "keyword",
+        "value": "BY"
+      },
+      {
+        "type": "column",
+        "value": "department;"
+      }
+    ]
+  },
+  {
+    "drillNumber": 354,
+    "subcluster": "4.6 Single-Column GROUP BY",
+    "level": "Level 2 (Grouping)",
+    "title": "Syntax #354: Group grocery items by category and display count of products per category",
+    "table": "GroceryItems",
+    "scenario": "Group grocery items by category and display count of products per category.",
+    "businessObjective": "Group grocery items by category and display count of products per category.",
+    "schemaSnippet": "GroceryItems schema",
+    "targetQuery": "SELECT category, COUNT(*) AS product_count\nFROM GroceryItems\nGROUP BY category;",
+    "syntaxBlueprint": "SELECT category, COUNT(*) AS product_count\nFROM GroceryItems\nGROUP BY category;",
+    "syntaxRule": "Aggregate functions compute summary metrics. In GROUP BY queries, every column in SELECT must either be aggregated or listed in GROUP BY. Filter rows with WHERE; filter aggregate groups with HAVING.",
+    "syntaxTrap": "Writing an aggregate function like 'WHERE COUNT(*) > 1' in the WHERE clause (illegal; use HAVING instead), or omitting a non-aggregated column from the GROUP BY clause.",
+    "eli5Story": "Grouping and aggregating data on GroceryItems: Group grocery items by category and display count of products per category.",
+    "commonMistakes": "Using WHERE instead of HAVING for aggregate conditions, forgetting GROUP BY when projecting both raw columns and aggregates, or placing HAVING before GROUP BY.",
+    "learningOutcomes": "Mastered 4.6 Single-Column GROUP BY on GroceryItems.",
+    "challengeSlots": [
+      {
+        "type": "keyword",
+        "value": "SELECT"
+      },
+      {
+        "type": "column",
+        "value": "category,"
+      },
+      {
+        "type": "column",
+        "value": "COUNT(*)"
+      },
+      {
+        "type": "keyword",
+        "value": "AS"
+      },
+      {
+        "type": "column",
+        "value": "product_count"
+      },
+      {
+        "type": "keyword",
+        "value": "FROM"
+      },
+      {
+        "type": "table",
+        "value": "GroceryItems"
+      },
+      {
+        "type": "keyword",
+        "value": "GROUP"
+      },
+      {
+        "type": "keyword",
+        "value": "BY"
+      },
+      {
+        "type": "column",
+        "value": "category;"
+      }
+    ]
+  },
+  {
+    "drillNumber": 355,
+    "subcluster": "4.6 Single-Column GROUP BY",
+    "level": "Level 2 (Grouping)",
+    "title": "Syntax #355: Group orders by status (Pending, Shipped, Delivered) and count each",
+    "table": "Orders",
+    "scenario": "Group orders by status (Pending, Shipped, Delivered) and count each.",
+    "businessObjective": "Group orders by status (Pending, Shipped, Delivered) and count each.",
+    "schemaSnippet": "Orders schema",
+    "targetQuery": "SELECT order_status, COUNT(*) AS order_count\nFROM Orders\nGROUP BY order_status;",
+    "syntaxBlueprint": "SELECT order_status, COUNT(*) AS order_count\nFROM Orders\nGROUP BY order_status;",
+    "syntaxRule": "Aggregate functions compute summary metrics. In GROUP BY queries, every column in SELECT must either be aggregated or listed in GROUP BY. Filter rows with WHERE; filter aggregate groups with HAVING.",
+    "syntaxTrap": "Writing an aggregate function like 'WHERE COUNT(*) > 1' in the WHERE clause (illegal; use HAVING instead), or omitting a non-aggregated column from the GROUP BY clause.",
+    "eli5Story": "Grouping and aggregating data on Orders: Group orders by status (Pending, Shipped, Delivered) and count each.",
+    "commonMistakes": "Using WHERE instead of HAVING for aggregate conditions, forgetting GROUP BY when projecting both raw columns and aggregates, or placing HAVING before GROUP BY.",
+    "learningOutcomes": "Mastered 4.6 Single-Column GROUP BY on Orders.",
+    "challengeSlots": [
+      {
+        "type": "keyword",
+        "value": "SELECT"
+      },
+      {
+        "type": "column",
+        "value": "order_status,"
+      },
+      {
+        "type": "column",
+        "value": "COUNT(*)"
+      },
+      {
+        "type": "keyword",
+        "value": "AS"
+      },
+      {
+        "type": "column",
+        "value": "order_count"
+      },
+      {
+        "type": "keyword",
+        "value": "FROM"
+      },
+      {
+        "type": "table",
+        "value": "Orders"
+      },
+      {
+        "type": "keyword",
+        "value": "GROUP"
+      },
+      {
+        "type": "keyword",
+        "value": "BY"
+      },
+      {
+        "type": "column",
+        "value": "order_status;"
+      }
+    ]
+  },
+  {
+    "drillNumber": 356,
+    "subcluster": "4.6 Single-Column GROUP BY",
+    "level": "Level 2 (Grouping)",
+    "title": "Syntax #356: Group music tracks by genre and count total songs in each genre",
+    "table": "MusicTracks",
+    "scenario": "Group music tracks by genre and count total songs in each genre.",
+    "businessObjective": "Group music tracks by genre and count total songs in each genre.",
+    "schemaSnippet": "MusicTracks schema",
+    "targetQuery": "SELECT genre, COUNT(*) AS track_count\nFROM MusicTracks\nGROUP BY genre;",
+    "syntaxBlueprint": "SELECT genre, COUNT(*) AS track_count\nFROM MusicTracks\nGROUP BY genre;",
+    "syntaxRule": "Aggregate functions compute summary metrics. In GROUP BY queries, every column in SELECT must either be aggregated or listed in GROUP BY. Filter rows with WHERE; filter aggregate groups with HAVING.",
+    "syntaxTrap": "Writing an aggregate function like 'WHERE COUNT(*) > 1' in the WHERE clause (illegal; use HAVING instead), or omitting a non-aggregated column from the GROUP BY clause.",
+    "eli5Story": "Grouping and aggregating data on MusicTracks: Group music tracks by genre and count total songs in each genre.",
+    "commonMistakes": "Using WHERE instead of HAVING for aggregate conditions, forgetting GROUP BY when projecting both raw columns and aggregates, or placing HAVING before GROUP BY.",
+    "learningOutcomes": "Mastered 4.6 Single-Column GROUP BY on MusicTracks.",
+    "challengeSlots": [
+      {
+        "type": "keyword",
+        "value": "SELECT"
+      },
+      {
+        "type": "column",
+        "value": "genre,"
+      },
+      {
+        "type": "column",
+        "value": "COUNT(*)"
+      },
+      {
+        "type": "keyword",
+        "value": "AS"
+      },
+      {
+        "type": "column",
+        "value": "track_count"
+      },
+      {
+        "type": "keyword",
+        "value": "FROM"
+      },
+      {
+        "type": "table",
+        "value": "MusicTracks"
+      },
+      {
+        "type": "keyword",
+        "value": "GROUP"
+      },
+      {
+        "type": "keyword",
+        "value": "BY"
+      },
+      {
+        "type": "column",
+        "value": "genre;"
+      }
+    ]
+  },
+  {
+    "drillNumber": 357,
+    "subcluster": "4.6 Single-Column GROUP BY",
+    "level": "Level 2 (Grouping)",
+    "title": "Syntax #357: Group members by membership plan tier and count subscriptions in each",
+    "table": "GymMembers",
+    "scenario": "Group members by membership plan tier and count subscriptions in each.",
+    "businessObjective": "Group members by membership plan tier and count subscriptions in each.",
+    "schemaSnippet": "GymMembers schema",
+    "targetQuery": "SELECT membership_plan, COUNT(*) AS member_count\nFROM GymMembers\nGROUP BY membership_plan;",
+    "syntaxBlueprint": "SELECT membership_plan, COUNT(*) AS member_count\nFROM GymMembers\nGROUP BY membership_plan;",
+    "syntaxRule": "Aggregate functions compute summary metrics. In GROUP BY queries, every column in SELECT must either be aggregated or listed in GROUP BY. Filter rows with WHERE; filter aggregate groups with HAVING.",
+    "syntaxTrap": "Writing an aggregate function like 'WHERE COUNT(*) > 1' in the WHERE clause (illegal; use HAVING instead), or omitting a non-aggregated column from the GROUP BY clause.",
+    "eli5Story": "Grouping and aggregating data on GymMembers: Group members by membership plan tier and count subscriptions in each.",
+    "commonMistakes": "Using WHERE instead of HAVING for aggregate conditions, forgetting GROUP BY when projecting both raw columns and aggregates, or placing HAVING before GROUP BY.",
+    "learningOutcomes": "Mastered 4.6 Single-Column GROUP BY on GymMembers.",
+    "challengeSlots": [
+      {
+        "type": "keyword",
+        "value": "SELECT"
+      },
+      {
+        "type": "column",
+        "value": "membership_plan,"
+      },
+      {
+        "type": "column",
+        "value": "COUNT(*)"
+      },
+      {
+        "type": "keyword",
+        "value": "AS"
+      },
+      {
+        "type": "column",
+        "value": "member_count"
+      },
+      {
+        "type": "keyword",
+        "value": "FROM"
+      },
+      {
+        "type": "table",
+        "value": "GymMembers"
+      },
+      {
+        "type": "keyword",
+        "value": "GROUP"
+      },
+      {
+        "type": "keyword",
+        "value": "BY"
+      },
+      {
+        "type": "column",
+        "value": "membership_plan;"
+      }
+    ]
+  },
+  {
+    "drillNumber": 358,
+    "subcluster": "4.6 Single-Column GROUP BY",
+    "level": "Level 2 (Grouping)",
+    "title": "Syntax #358: Group movie reviews by genre and count total reviews per genre",
+    "table": "MovieReviews",
+    "scenario": "Group movie reviews by genre and count total reviews per genre.",
+    "businessObjective": "Group movie reviews by genre and count total reviews per genre.",
+    "schemaSnippet": "MovieReviews schema",
+    "targetQuery": "SELECT genre, COUNT(*) AS review_count\nFROM MovieReviews\nGROUP BY genre;",
+    "syntaxBlueprint": "SELECT genre, COUNT(*) AS review_count\nFROM MovieReviews\nGROUP BY genre;",
+    "syntaxRule": "Aggregate functions compute summary metrics. In GROUP BY queries, every column in SELECT must either be aggregated or listed in GROUP BY. Filter rows with WHERE; filter aggregate groups with HAVING.",
+    "syntaxTrap": "Writing an aggregate function like 'WHERE COUNT(*) > 1' in the WHERE clause (illegal; use HAVING instead), or omitting a non-aggregated column from the GROUP BY clause.",
+    "eli5Story": "Grouping and aggregating data on MovieReviews: Group movie reviews by genre and count total reviews per genre.",
+    "commonMistakes": "Using WHERE instead of HAVING for aggregate conditions, forgetting GROUP BY when projecting both raw columns and aggregates, or placing HAVING before GROUP BY.",
+    "learningOutcomes": "Mastered 4.6 Single-Column GROUP BY on MovieReviews.",
+    "challengeSlots": [
+      {
+        "type": "keyword",
+        "value": "SELECT"
+      },
+      {
+        "type": "column",
+        "value": "genre,"
+      },
+      {
+        "type": "column",
+        "value": "COUNT(*)"
+      },
+      {
+        "type": "keyword",
+        "value": "AS"
+      },
+      {
+        "type": "column",
+        "value": "review_count"
+      },
+      {
+        "type": "keyword",
+        "value": "FROM"
+      },
+      {
+        "type": "table",
+        "value": "MovieReviews"
+      },
+      {
+        "type": "keyword",
+        "value": "GROUP"
+      },
+      {
+        "type": "keyword",
+        "value": "BY"
+      },
+      {
+        "type": "column",
+        "value": "genre;"
+      }
+    ]
+  },
+  {
+    "drillNumber": 359,
+    "subcluster": "4.6 Single-Column GROUP BY",
+    "level": "Level 2 (Grouping)",
+    "title": "Syntax #359: Group flights by origin airport and count departures originating from each",
+    "table": "FlightSchedule",
+    "scenario": "Group flights by origin airport and count departures originating from each.",
+    "businessObjective": "Group flights by origin airport and count departures originating from each.",
+    "schemaSnippet": "FlightSchedule schema",
+    "targetQuery": "SELECT origin_airport, COUNT(*) AS departures_count\nFROM FlightSchedule\nGROUP BY origin_airport;",
+    "syntaxBlueprint": "SELECT origin_airport, COUNT(*) AS departures_count\nFROM FlightSchedule\nGROUP BY origin_airport;",
+    "syntaxRule": "Aggregate functions compute summary metrics. In GROUP BY queries, every column in SELECT must either be aggregated or listed in GROUP BY. Filter rows with WHERE; filter aggregate groups with HAVING.",
+    "syntaxTrap": "Writing an aggregate function like 'WHERE COUNT(*) > 1' in the WHERE clause (illegal; use HAVING instead), or omitting a non-aggregated column from the GROUP BY clause.",
+    "eli5Story": "Grouping and aggregating data on FlightSchedule: Group flights by origin airport and count departures originating from each.",
+    "commonMistakes": "Using WHERE instead of HAVING for aggregate conditions, forgetting GROUP BY when projecting both raw columns and aggregates, or placing HAVING before GROUP BY.",
+    "learningOutcomes": "Mastered 4.6 Single-Column GROUP BY on FlightSchedule.",
+    "challengeSlots": [
+      {
+        "type": "keyword",
+        "value": "SELECT"
+      },
+      {
+        "type": "column",
+        "value": "origin_airport,"
+      },
+      {
+        "type": "column",
+        "value": "COUNT(*)"
+      },
+      {
+        "type": "keyword",
+        "value": "AS"
+      },
+      {
+        "type": "column",
+        "value": "departures_count"
+      },
+      {
+        "type": "keyword",
+        "value": "FROM"
+      },
+      {
+        "type": "table",
+        "value": "FlightSchedule"
+      },
+      {
+        "type": "keyword",
+        "value": "GROUP"
+      },
+      {
+        "type": "keyword",
+        "value": "BY"
+      },
+      {
+        "type": "column",
+        "value": "origin_airport;"
+      }
+    ]
+  },
+  {
+    "drillNumber": 360,
+    "subcluster": "4.6 Single-Column GROUP BY",
+    "level": "Level 2 (Grouping)",
+    "title": "Syntax #360: Group veterinary patients by species and count patients per animal type",
+    "table": "PetClinic",
+    "scenario": "Group veterinary patients by species and count patients per animal type.",
+    "businessObjective": "Group veterinary patients by species and count patients per animal type.",
+    "schemaSnippet": "PetClinic schema",
+    "targetQuery": "SELECT species, COUNT(*) AS patient_count\nFROM PetClinic\nGROUP BY species;",
+    "syntaxBlueprint": "SELECT species, COUNT(*) AS patient_count\nFROM PetClinic\nGROUP BY species;",
+    "syntaxRule": "Aggregate functions compute summary metrics. In GROUP BY queries, every column in SELECT must either be aggregated or listed in GROUP BY. Filter rows with WHERE; filter aggregate groups with HAVING.",
+    "syntaxTrap": "Writing an aggregate function like 'WHERE COUNT(*) > 1' in the WHERE clause (illegal; use HAVING instead), or omitting a non-aggregated column from the GROUP BY clause.",
+    "eli5Story": "Grouping and aggregating data on PetClinic: Group veterinary patients by species and count patients per animal type.",
+    "commonMistakes": "Using WHERE instead of HAVING for aggregate conditions, forgetting GROUP BY when projecting both raw columns and aggregates, or placing HAVING before GROUP BY.",
+    "learningOutcomes": "Mastered 4.6 Single-Column GROUP BY on PetClinic.",
+    "challengeSlots": [
+      {
+        "type": "keyword",
+        "value": "SELECT"
+      },
+      {
+        "type": "column",
+        "value": "species,"
+      },
+      {
+        "type": "column",
+        "value": "COUNT(*)"
+      },
+      {
+        "type": "keyword",
+        "value": "AS"
+      },
+      {
+        "type": "column",
+        "value": "patient_count"
+      },
+      {
+        "type": "keyword",
+        "value": "FROM"
+      },
+      {
+        "type": "table",
+        "value": "PetClinic"
+      },
+      {
+        "type": "keyword",
+        "value": "GROUP"
+      },
+      {
+        "type": "keyword",
+        "value": "BY"
+      },
+      {
+        "type": "column",
+        "value": "species;"
+      }
+    ]
+  },
+  {
+    "drillNumber": 361,
+    "subcluster": "4.7 Multi-Metric GROUP BY Rollups",
+    "level": "Level 2 (Multi-Metric)",
+    "title": "Syntax #361: Compute student count and average GPA per major",
+    "table": "Students",
+    "scenario": "Compute student count and average GPA per major.",
+    "businessObjective": "Compute student count and average GPA per major.",
+    "schemaSnippet": "Students schema",
+    "targetQuery": "SELECT major, COUNT(*) AS total_students, ROUND(AVG(gpa), 2) AS avg_gpa\nFROM Students\nGROUP BY major;",
+    "syntaxBlueprint": "SELECT major, COUNT(*) AS total_students, ROUND(AVG(gpa), 2) AS avg_gpa\nFROM Students\nGROUP BY major;",
+    "syntaxRule": "Aggregate functions compute summary metrics. In GROUP BY queries, every column in SELECT must either be aggregated or listed in GROUP BY. Filter rows with WHERE; filter aggregate groups with HAVING.",
+    "syntaxTrap": "Writing an aggregate function like 'WHERE COUNT(*) > 1' in the WHERE clause (illegal; use HAVING instead), or omitting a non-aggregated column from the GROUP BY clause.",
+    "eli5Story": "Grouping and aggregating data on Students: Compute student count and average GPA per major.",
+    "commonMistakes": "Using WHERE instead of HAVING for aggregate conditions, forgetting GROUP BY when projecting both raw columns and aggregates, or placing HAVING before GROUP BY.",
+    "learningOutcomes": "Mastered 4.7 Multi-Metric GROUP BY Rollups on Students.",
+    "challengeSlots": [
+      {
+        "type": "keyword",
+        "value": "SELECT"
+      },
+      {
+        "type": "column",
+        "value": "major,"
+      },
+      {
+        "type": "column",
+        "value": "COUNT(*)"
+      },
+      {
+        "type": "keyword",
+        "value": "AS"
+      },
+      {
+        "type": "column",
+        "value": "total_students,"
+      },
+      {
+        "type": "column",
+        "value": "ROUND(AVG(gpa),"
+      },
+      {
+        "type": "column",
+        "value": "2)"
+      },
+      {
+        "type": "keyword",
+        "value": "AS"
+      },
+      {
+        "type": "column",
+        "value": "avg_gpa"
+      },
+      {
+        "type": "keyword",
+        "value": "FROM"
+      },
+      {
+        "type": "table",
+        "value": "Students"
+      },
+      {
+        "type": "keyword",
+        "value": "GROUP"
+      },
+      {
+        "type": "keyword",
+        "value": "BY"
+      },
+      {
+        "type": "column",
+        "value": "major;"
+      }
+    ]
+  },
+  {
+    "drillNumber": 362,
+    "subcluster": "4.7 Multi-Metric GROUP BY Rollups",
+    "level": "Level 2 (Multi-Metric)",
+    "title": "Syntax #362: Calculate title count, average price, and highest price per genre",
+    "table": "Books",
+    "scenario": "Calculate title count, average price, and highest price per genre.",
+    "businessObjective": "Calculate title count, average price, and highest price per genre.",
+    "schemaSnippet": "Books schema",
+    "targetQuery": "SELECT genre, COUNT(*) AS titles, ROUND(AVG(price), 2) AS avg_price, MAX(price) AS max_price\nFROM Books\nGROUP BY genre;",
+    "syntaxBlueprint": "SELECT genre, COUNT(*) AS titles, ROUND(AVG(price), 2) AS avg_price, MAX(price) AS max_price\nFROM Books\nGROUP BY genre;",
+    "syntaxRule": "Aggregate functions compute summary metrics. In GROUP BY queries, every column in SELECT must either be aggregated or listed in GROUP BY. Filter rows with WHERE; filter aggregate groups with HAVING.",
+    "syntaxTrap": "Writing an aggregate function like 'WHERE COUNT(*) > 1' in the WHERE clause (illegal; use HAVING instead), or omitting a non-aggregated column from the GROUP BY clause.",
+    "eli5Story": "Grouping and aggregating data on Books: Calculate title count, average price, and highest price per genre.",
+    "commonMistakes": "Using WHERE instead of HAVING for aggregate conditions, forgetting GROUP BY when projecting both raw columns and aggregates, or placing HAVING before GROUP BY.",
+    "learningOutcomes": "Mastered 4.7 Multi-Metric GROUP BY Rollups on Books.",
+    "challengeSlots": [
+      {
+        "type": "keyword",
+        "value": "SELECT"
+      },
+      {
+        "type": "column",
+        "value": "genre,"
+      },
+      {
+        "type": "column",
+        "value": "COUNT(*)"
+      },
+      {
+        "type": "keyword",
+        "value": "AS"
+      },
+      {
+        "type": "column",
+        "value": "titles,"
+      },
+      {
+        "type": "column",
+        "value": "ROUND(AVG(price),"
+      },
+      {
+        "type": "column",
+        "value": "2)"
+      },
+      {
+        "type": "keyword",
+        "value": "AS"
+      },
+      {
+        "type": "column",
+        "value": "avg_price,"
+      },
+      {
+        "type": "column",
+        "value": "MAX(price)"
+      },
+      {
+        "type": "keyword",
+        "value": "AS"
+      },
+      {
+        "type": "column",
+        "value": "max_price"
+      },
+      {
+        "type": "keyword",
+        "value": "FROM"
+      },
+      {
+        "type": "table",
+        "value": "Books"
+      },
+      {
+        "type": "keyword",
+        "value": "GROUP"
+      },
+      {
+        "type": "keyword",
+        "value": "BY"
+      },
+      {
+        "type": "column",
+        "value": "genre;"
+      }
+    ]
+  },
+  {
+    "drillNumber": 363,
+    "subcluster": "4.7 Multi-Metric GROUP BY Rollups",
+    "level": "Level 2 (Multi-Metric)",
+    "title": "Syntax #363: Calculate staff count, total payroll, and average salary for each department",
+    "table": "Employees",
+    "scenario": "Calculate staff count, total payroll, and average salary for each department.",
+    "businessObjective": "Calculate staff count, total payroll, and average salary for each department.",
+    "schemaSnippet": "Employees schema",
+    "targetQuery": "SELECT department, COUNT(*) AS staff, SUM(salary) AS payroll, ROUND(AVG(salary), 2) AS avg_salary\nFROM Employees\nGROUP BY department;",
+    "syntaxBlueprint": "SELECT department, COUNT(*) AS staff, SUM(salary) AS payroll, ROUND(AVG(salary), 2) AS avg_salary\nFROM Employees\nGROUP BY department;",
+    "syntaxRule": "Aggregate functions compute summary metrics. In GROUP BY queries, every column in SELECT must either be aggregated or listed in GROUP BY. Filter rows with WHERE; filter aggregate groups with HAVING.",
+    "syntaxTrap": "Writing an aggregate function like 'WHERE COUNT(*) > 1' in the WHERE clause (illegal; use HAVING instead), or omitting a non-aggregated column from the GROUP BY clause.",
+    "eli5Story": "Grouping and aggregating data on Employees: Calculate staff count, total payroll, and average salary for each department.",
+    "commonMistakes": "Using WHERE instead of HAVING for aggregate conditions, forgetting GROUP BY when projecting both raw columns and aggregates, or placing HAVING before GROUP BY.",
+    "learningOutcomes": "Mastered 4.7 Multi-Metric GROUP BY Rollups on Employees.",
+    "challengeSlots": [
+      {
+        "type": "keyword",
+        "value": "SELECT"
+      },
+      {
+        "type": "column",
+        "value": "department,"
+      },
+      {
+        "type": "column",
+        "value": "COUNT(*)"
+      },
+      {
+        "type": "keyword",
+        "value": "AS"
+      },
+      {
+        "type": "column",
+        "value": "staff,"
+      },
+      {
+        "type": "column",
+        "value": "SUM(salary)"
+      },
+      {
+        "type": "keyword",
+        "value": "AS"
+      },
+      {
+        "type": "column",
+        "value": "payroll,"
+      },
+      {
+        "type": "column",
+        "value": "ROUND(AVG(salary),"
+      },
+      {
+        "type": "column",
+        "value": "2)"
+      },
+      {
+        "type": "keyword",
+        "value": "AS"
+      },
+      {
+        "type": "column",
+        "value": "avg_salary"
+      },
+      {
+        "type": "keyword",
+        "value": "FROM"
+      },
+      {
+        "type": "table",
+        "value": "Employees"
+      },
+      {
+        "type": "keyword",
+        "value": "GROUP"
+      },
+      {
+        "type": "keyword",
+        "value": "BY"
+      },
+      {
+        "type": "column",
+        "value": "department;"
+      }
+    ]
+  },
+  {
+    "drillNumber": 364,
+    "subcluster": "4.7 Multi-Metric GROUP BY Rollups",
+    "level": "Level 2 (Multi-Metric)",
+    "title": "Syntax #364: Report item count, total inventory units, and average price per category",
+    "table": "GroceryItems",
+    "scenario": "Report item count, total inventory units, and average price per category.",
+    "businessObjective": "Report item count, total inventory units, and average price per category.",
+    "schemaSnippet": "GroceryItems schema",
+    "targetQuery": "SELECT category, COUNT(*) AS items, SUM(stock_units) AS total_units, ROUND(AVG(unit_price), 2) AS avg_cost\nFROM GroceryItems\nGROUP BY category;",
+    "syntaxBlueprint": "SELECT category, COUNT(*) AS items, SUM(stock_units) AS total_units, ROUND(AVG(unit_price), 2) AS avg_cost\nFROM GroceryItems\nGROUP BY category;",
+    "syntaxRule": "Aggregate functions compute summary metrics. In GROUP BY queries, every column in SELECT must either be aggregated or listed in GROUP BY. Filter rows with WHERE; filter aggregate groups with HAVING.",
+    "syntaxTrap": "Writing an aggregate function like 'WHERE COUNT(*) > 1' in the WHERE clause (illegal; use HAVING instead), or omitting a non-aggregated column from the GROUP BY clause.",
+    "eli5Story": "Grouping and aggregating data on GroceryItems: Report item count, total inventory units, and average price per category.",
+    "commonMistakes": "Using WHERE instead of HAVING for aggregate conditions, forgetting GROUP BY when projecting both raw columns and aggregates, or placing HAVING before GROUP BY.",
+    "learningOutcomes": "Mastered 4.7 Multi-Metric GROUP BY Rollups on GroceryItems.",
+    "challengeSlots": [
+      {
+        "type": "keyword",
+        "value": "SELECT"
+      },
+      {
+        "type": "column",
+        "value": "category,"
+      },
+      {
+        "type": "column",
+        "value": "COUNT(*)"
+      },
+      {
+        "type": "keyword",
+        "value": "AS"
+      },
+      {
+        "type": "column",
+        "value": "items,"
+      },
+      {
+        "type": "column",
+        "value": "SUM(stock_units)"
+      },
+      {
+        "type": "keyword",
+        "value": "AS"
+      },
+      {
+        "type": "column",
+        "value": "total_units,"
+      },
+      {
+        "type": "column",
+        "value": "ROUND(AVG(unit_price),"
+      },
+      {
+        "type": "column",
+        "value": "2)"
+      },
+      {
+        "type": "keyword",
+        "value": "AS"
+      },
+      {
+        "type": "column",
+        "value": "avg_cost"
+      },
+      {
+        "type": "keyword",
+        "value": "FROM"
+      },
+      {
+        "type": "table",
+        "value": "GroceryItems"
+      },
+      {
+        "type": "keyword",
+        "value": "GROUP"
+      },
+      {
+        "type": "keyword",
+        "value": "BY"
+      },
+      {
+        "type": "column",
+        "value": "category;"
+      }
+    ]
+  },
+  {
+    "drillNumber": 365,
+    "subcluster": "4.7 Multi-Metric GROUP BY Rollups",
+    "level": "Level 2 (Multi-Metric)",
+    "title": "Syntax #365: Compute order volume and total revenue generated per shipping destination city",
+    "table": "Orders",
+    "scenario": "Compute order volume and total revenue generated per shipping destination city.",
+    "businessObjective": "Compute order volume and total revenue generated per shipping destination city.",
+    "schemaSnippet": "Orders schema",
+    "targetQuery": "SELECT shipping_city, COUNT(*) AS order_vol, SUM(quantity * unit_price) AS city_revenue\nFROM Orders\nGROUP BY shipping_city;",
+    "syntaxBlueprint": "SELECT shipping_city, COUNT(*) AS order_vol, SUM(quantity * unit_price) AS city_revenue\nFROM Orders\nGROUP BY shipping_city;",
+    "syntaxRule": "Aggregate functions compute summary metrics. In GROUP BY queries, every column in SELECT must either be aggregated or listed in GROUP BY. Filter rows with WHERE; filter aggregate groups with HAVING.",
+    "syntaxTrap": "Writing an aggregate function like 'WHERE COUNT(*) > 1' in the WHERE clause (illegal; use HAVING instead), or omitting a non-aggregated column from the GROUP BY clause.",
+    "eli5Story": "Grouping and aggregating data on Orders: Compute order volume and total revenue generated per shipping destination city.",
+    "commonMistakes": "Using WHERE instead of HAVING for aggregate conditions, forgetting GROUP BY when projecting both raw columns and aggregates, or placing HAVING before GROUP BY.",
+    "learningOutcomes": "Mastered 4.7 Multi-Metric GROUP BY Rollups on Orders.",
+    "challengeSlots": [
+      {
+        "type": "keyword",
+        "value": "SELECT"
+      },
+      {
+        "type": "column",
+        "value": "shipping_city,"
+      },
+      {
+        "type": "column",
+        "value": "COUNT(*)"
+      },
+      {
+        "type": "keyword",
+        "value": "AS"
+      },
+      {
+        "type": "column",
+        "value": "order_vol,"
+      },
+      {
+        "type": "column",
+        "value": "SUM(quantity"
+      },
+      {
+        "type": "column",
+        "value": "*"
+      },
+      {
+        "type": "column",
+        "value": "unit_price)"
+      },
+      {
+        "type": "keyword",
+        "value": "AS"
+      },
+      {
+        "type": "column",
+        "value": "city_revenue"
+      },
+      {
+        "type": "keyword",
+        "value": "FROM"
+      },
+      {
+        "type": "table",
+        "value": "Orders"
+      },
+      {
+        "type": "keyword",
+        "value": "GROUP"
+      },
+      {
+        "type": "keyword",
+        "value": "BY"
+      },
+      {
+        "type": "column",
+        "value": "shipping_city;"
+      }
+    ]
+  },
+  {
+    "drillNumber": 366,
+    "subcluster": "4.7 Multi-Metric GROUP BY Rollups",
+    "level": "Level 2 (Multi-Metric)",
+    "title": "Syntax #366: Report song count, total stream plays, and average length per music genre",
+    "table": "MusicTracks",
+    "scenario": "Report song count, total stream plays, and average length per music genre.",
+    "businessObjective": "Report song count, total stream plays, and average length per music genre.",
+    "schemaSnippet": "MusicTracks schema",
+    "targetQuery": "SELECT genre, COUNT(*) AS song_count, SUM(play_count) AS total_plays, ROUND(AVG(duration_seconds), 0) AS avg_sec\nFROM MusicTracks\nGROUP BY genre;",
+    "syntaxBlueprint": "SELECT genre, COUNT(*) AS song_count, SUM(play_count) AS total_plays, ROUND(AVG(duration_seconds), 0) AS avg_sec\nFROM MusicTracks\nGROUP BY genre;",
+    "syntaxRule": "Aggregate functions compute summary metrics. In GROUP BY queries, every column in SELECT must either be aggregated or listed in GROUP BY. Filter rows with WHERE; filter aggregate groups with HAVING.",
+    "syntaxTrap": "Writing an aggregate function like 'WHERE COUNT(*) > 1' in the WHERE clause (illegal; use HAVING instead), or omitting a non-aggregated column from the GROUP BY clause.",
+    "eli5Story": "Grouping and aggregating data on MusicTracks: Report song count, total stream plays, and average length per music genre.",
+    "commonMistakes": "Using WHERE instead of HAVING for aggregate conditions, forgetting GROUP BY when projecting both raw columns and aggregates, or placing HAVING before GROUP BY.",
+    "learningOutcomes": "Mastered 4.7 Multi-Metric GROUP BY Rollups on MusicTracks.",
+    "challengeSlots": [
+      {
+        "type": "keyword",
+        "value": "SELECT"
+      },
+      {
+        "type": "column",
+        "value": "genre,"
+      },
+      {
+        "type": "column",
+        "value": "COUNT(*)"
+      },
+      {
+        "type": "keyword",
+        "value": "AS"
+      },
+      {
+        "type": "column",
+        "value": "song_count,"
+      },
+      {
+        "type": "column",
+        "value": "SUM(play_count)"
+      },
+      {
+        "type": "keyword",
+        "value": "AS"
+      },
+      {
+        "type": "column",
+        "value": "total_plays,"
+      },
+      {
+        "type": "column",
+        "value": "ROUND(AVG(duration_seconds),"
+      },
+      {
+        "type": "column",
+        "value": "0)"
+      },
+      {
+        "type": "keyword",
+        "value": "AS"
+      },
+      {
+        "type": "column",
+        "value": "avg_sec"
+      },
+      {
+        "type": "keyword",
+        "value": "FROM"
+      },
+      {
+        "type": "table",
+        "value": "MusicTracks"
+      },
+      {
+        "type": "keyword",
+        "value": "GROUP"
+      },
+      {
+        "type": "keyword",
+        "value": "BY"
+      },
+      {
+        "type": "column",
+        "value": "genre;"
+      }
+    ]
+  },
+  {
+    "drillNumber": 367,
+    "subcluster": "4.7 Multi-Metric GROUP BY Rollups",
+    "level": "Level 2 (Multi-Metric)",
+    "title": "Syntax #367: Calculate membership count and average monthly visits per plan tier",
+    "table": "GymMembers",
+    "scenario": "Calculate membership count and average monthly visits per plan tier.",
+    "businessObjective": "Calculate membership count and average monthly visits per plan tier.",
+    "schemaSnippet": "GymMembers schema",
+    "targetQuery": "SELECT membership_plan, COUNT(*) AS members, ROUND(AVG(visits_this_month), 1) AS avg_attendance\nFROM GymMembers\nGROUP BY membership_plan;",
+    "syntaxBlueprint": "SELECT membership_plan, COUNT(*) AS members, ROUND(AVG(visits_this_month), 1) AS avg_attendance\nFROM GymMembers\nGROUP BY membership_plan;",
+    "syntaxRule": "Aggregate functions compute summary metrics. In GROUP BY queries, every column in SELECT must either be aggregated or listed in GROUP BY. Filter rows with WHERE; filter aggregate groups with HAVING.",
+    "syntaxTrap": "Writing an aggregate function like 'WHERE COUNT(*) > 1' in the WHERE clause (illegal; use HAVING instead), or omitting a non-aggregated column from the GROUP BY clause.",
+    "eli5Story": "Grouping and aggregating data on GymMembers: Calculate membership count and average monthly visits per plan tier.",
+    "commonMistakes": "Using WHERE instead of HAVING for aggregate conditions, forgetting GROUP BY when projecting both raw columns and aggregates, or placing HAVING before GROUP BY.",
+    "learningOutcomes": "Mastered 4.7 Multi-Metric GROUP BY Rollups on GymMembers.",
+    "challengeSlots": [
+      {
+        "type": "keyword",
+        "value": "SELECT"
+      },
+      {
+        "type": "column",
+        "value": "membership_plan,"
+      },
+      {
+        "type": "column",
+        "value": "COUNT(*)"
+      },
+      {
+        "type": "keyword",
+        "value": "AS"
+      },
+      {
+        "type": "column",
+        "value": "members,"
+      },
+      {
+        "type": "column",
+        "value": "ROUND(AVG(visits_this_month),"
+      },
+      {
+        "type": "column",
+        "value": "1)"
+      },
+      {
+        "type": "keyword",
+        "value": "AS"
+      },
+      {
+        "type": "column",
+        "value": "avg_attendance"
+      },
+      {
+        "type": "keyword",
+        "value": "FROM"
+      },
+      {
+        "type": "table",
+        "value": "GymMembers"
+      },
+      {
+        "type": "keyword",
+        "value": "GROUP"
+      },
+      {
+        "type": "keyword",
+        "value": "BY"
+      },
+      {
+        "type": "column",
+        "value": "membership_plan;"
+      }
+    ]
+  },
+  {
+    "drillNumber": 368,
+    "subcluster": "4.7 Multi-Metric GROUP BY Rollups",
+    "level": "Level 2 (Multi-Metric)",
+    "title": "Syntax #368: Analyze films reviewed and average star rating per release year",
+    "table": "MovieReviews",
+    "scenario": "Analyze films reviewed and average star rating per release year.",
+    "businessObjective": "Analyze films reviewed and average star rating per release year.",
+    "schemaSnippet": "MovieReviews schema",
+    "targetQuery": "SELECT release_year, COUNT(*) AS films_reviewed, ROUND(AVG(star_rating), 2) AS year_avg_rating\nFROM MovieReviews\nGROUP BY release_year;",
+    "syntaxBlueprint": "SELECT release_year, COUNT(*) AS films_reviewed, ROUND(AVG(star_rating), 2) AS year_avg_rating\nFROM MovieReviews\nGROUP BY release_year;",
+    "syntaxRule": "Aggregate functions compute summary metrics. In GROUP BY queries, every column in SELECT must either be aggregated or listed in GROUP BY. Filter rows with WHERE; filter aggregate groups with HAVING.",
+    "syntaxTrap": "Writing an aggregate function like 'WHERE COUNT(*) > 1' in the WHERE clause (illegal; use HAVING instead), or omitting a non-aggregated column from the GROUP BY clause.",
+    "eli5Story": "Grouping and aggregating data on MovieReviews: Analyze films reviewed and average star rating per release year.",
+    "commonMistakes": "Using WHERE instead of HAVING for aggregate conditions, forgetting GROUP BY when projecting both raw columns and aggregates, or placing HAVING before GROUP BY.",
+    "learningOutcomes": "Mastered 4.7 Multi-Metric GROUP BY Rollups on MovieReviews.",
+    "challengeSlots": [
+      {
+        "type": "keyword",
+        "value": "SELECT"
+      },
+      {
+        "type": "column",
+        "value": "release_year,"
+      },
+      {
+        "type": "column",
+        "value": "COUNT(*)"
+      },
+      {
+        "type": "keyword",
+        "value": "AS"
+      },
+      {
+        "type": "column",
+        "value": "films_reviewed,"
+      },
+      {
+        "type": "column",
+        "value": "ROUND(AVG(star_rating),"
+      },
+      {
+        "type": "column",
+        "value": "2)"
+      },
+      {
+        "type": "keyword",
+        "value": "AS"
+      },
+      {
+        "type": "column",
+        "value": "year_avg_rating"
+      },
+      {
+        "type": "keyword",
+        "value": "FROM"
+      },
+      {
+        "type": "table",
+        "value": "MovieReviews"
+      },
+      {
+        "type": "keyword",
+        "value": "GROUP"
+      },
+      {
+        "type": "keyword",
+        "value": "BY"
+      },
+      {
+        "type": "column",
+        "value": "release_year;"
+      }
+    ]
+  },
+  {
+    "drillNumber": 369,
+    "subcluster": "4.7 Multi-Metric GROUP BY Rollups",
+    "level": "Level 2 (Multi-Metric)",
+    "title": "Syntax #369: Calculate flight count and average fare per destination airport",
+    "table": "FlightSchedule",
+    "scenario": "Calculate flight count and average fare per destination airport.",
+    "businessObjective": "Calculate flight count and average fare per destination airport.",
+    "schemaSnippet": "FlightSchedule schema",
+    "targetQuery": "SELECT destination_airport, COUNT(*) AS flights, ROUND(AVG(ticket_price), 2) AS avg_fare\nFROM FlightSchedule\nGROUP BY destination_airport;",
+    "syntaxBlueprint": "SELECT destination_airport, COUNT(*) AS flights, ROUND(AVG(ticket_price), 2) AS avg_fare\nFROM FlightSchedule\nGROUP BY destination_airport;",
+    "syntaxRule": "Aggregate functions compute summary metrics. In GROUP BY queries, every column in SELECT must either be aggregated or listed in GROUP BY. Filter rows with WHERE; filter aggregate groups with HAVING.",
+    "syntaxTrap": "Writing an aggregate function like 'WHERE COUNT(*) > 1' in the WHERE clause (illegal; use HAVING instead), or omitting a non-aggregated column from the GROUP BY clause.",
+    "eli5Story": "Grouping and aggregating data on FlightSchedule: Calculate flight count and average fare per destination airport.",
+    "commonMistakes": "Using WHERE instead of HAVING for aggregate conditions, forgetting GROUP BY when projecting both raw columns and aggregates, or placing HAVING before GROUP BY.",
+    "learningOutcomes": "Mastered 4.7 Multi-Metric GROUP BY Rollups on FlightSchedule.",
+    "challengeSlots": [
+      {
+        "type": "keyword",
+        "value": "SELECT"
+      },
+      {
+        "type": "column",
+        "value": "destination_airport,"
+      },
+      {
+        "type": "column",
+        "value": "COUNT(*)"
+      },
+      {
+        "type": "keyword",
+        "value": "AS"
+      },
+      {
+        "type": "column",
+        "value": "flights,"
+      },
+      {
+        "type": "column",
+        "value": "ROUND(AVG(ticket_price),"
+      },
+      {
+        "type": "column",
+        "value": "2)"
+      },
+      {
+        "type": "keyword",
+        "value": "AS"
+      },
+      {
+        "type": "column",
+        "value": "avg_fare"
+      },
+      {
+        "type": "keyword",
+        "value": "FROM"
+      },
+      {
+        "type": "table",
+        "value": "FlightSchedule"
+      },
+      {
+        "type": "keyword",
+        "value": "GROUP"
+      },
+      {
+        "type": "keyword",
+        "value": "BY"
+      },
+      {
+        "type": "column",
+        "value": "destination_airport;"
+      }
+    ]
+  },
+  {
+    "drillNumber": 370,
+    "subcluster": "4.7 Multi-Metric GROUP BY Rollups",
+    "level": "Level 2 (Multi-Metric)",
+    "title": "Syntax #370: Determine patient count, average weight, and oldest age per animal species",
+    "table": "PetClinic",
+    "scenario": "Determine patient count, average weight, and oldest age per animal species.",
+    "businessObjective": "Determine patient count, average weight, and oldest age per animal species.",
+    "schemaSnippet": "PetClinic schema",
+    "targetQuery": "SELECT species, COUNT(*) AS patients, ROUND(AVG(weight_kg), 1) AS avg_weight, MAX(age_years) AS oldest_age\nFROM PetClinic\nGROUP BY species;",
+    "syntaxBlueprint": "SELECT species, COUNT(*) AS patients, ROUND(AVG(weight_kg), 1) AS avg_weight, MAX(age_years) AS oldest_age\nFROM PetClinic\nGROUP BY species;",
+    "syntaxRule": "Aggregate functions compute summary metrics. In GROUP BY queries, every column in SELECT must either be aggregated or listed in GROUP BY. Filter rows with WHERE; filter aggregate groups with HAVING.",
+    "syntaxTrap": "Writing an aggregate function like 'WHERE COUNT(*) > 1' in the WHERE clause (illegal; use HAVING instead), or omitting a non-aggregated column from the GROUP BY clause.",
+    "eli5Story": "Grouping and aggregating data on PetClinic: Determine patient count, average weight, and oldest age per animal species.",
+    "commonMistakes": "Using WHERE instead of HAVING for aggregate conditions, forgetting GROUP BY when projecting both raw columns and aggregates, or placing HAVING before GROUP BY.",
+    "learningOutcomes": "Mastered 4.7 Multi-Metric GROUP BY Rollups on PetClinic.",
+    "challengeSlots": [
+      {
+        "type": "keyword",
+        "value": "SELECT"
+      },
+      {
+        "type": "column",
+        "value": "species,"
+      },
+      {
+        "type": "column",
+        "value": "COUNT(*)"
+      },
+      {
+        "type": "keyword",
+        "value": "AS"
+      },
+      {
+        "type": "column",
+        "value": "patients,"
+      },
+      {
+        "type": "column",
+        "value": "ROUND(AVG(weight_kg),"
+      },
+      {
+        "type": "column",
+        "value": "1)"
+      },
+      {
+        "type": "keyword",
+        "value": "AS"
+      },
+      {
+        "type": "column",
+        "value": "avg_weight,"
+      },
+      {
+        "type": "column",
+        "value": "MAX(age_years)"
+      },
+      {
+        "type": "keyword",
+        "value": "AS"
+      },
+      {
+        "type": "column",
+        "value": "oldest_age"
+      },
+      {
+        "type": "keyword",
+        "value": "FROM"
+      },
+      {
+        "type": "table",
+        "value": "PetClinic"
+      },
+      {
+        "type": "keyword",
+        "value": "GROUP"
+      },
+      {
+        "type": "keyword",
+        "value": "BY"
+      },
+      {
+        "type": "column",
+        "value": "species;"
+      }
+    ]
+  },
+  {
+    "drillNumber": 371,
+    "subcluster": "4.8 Multi-Column GROUP BY",
+    "level": "Level 3 (Multi-Column Grouping)",
+    "title": "Syntax #371: Group students by both city and major to see geographical major distribution",
+    "table": "Students",
+    "scenario": "Group students by both city and major to see geographical major distribution.",
+    "businessObjective": "Group students by both city and major to see geographical major distribution.",
+    "schemaSnippet": "Students schema",
+    "targetQuery": "SELECT city, major, COUNT(*) AS student_count\nFROM Students\nGROUP BY city, major;",
+    "syntaxBlueprint": "SELECT city, major, COUNT(*) AS student_count\nFROM Students\nGROUP BY city, major;",
+    "syntaxRule": "Aggregate functions compute summary metrics. In GROUP BY queries, every column in SELECT must either be aggregated or listed in GROUP BY. Filter rows with WHERE; filter aggregate groups with HAVING.",
+    "syntaxTrap": "Writing an aggregate function like 'WHERE COUNT(*) > 1' in the WHERE clause (illegal; use HAVING instead), or omitting a non-aggregated column from the GROUP BY clause.",
+    "eli5Story": "Grouping and aggregating data on Students: Group students by both city and major to see geographical major distribution.",
+    "commonMistakes": "Using WHERE instead of HAVING for aggregate conditions, forgetting GROUP BY when projecting both raw columns and aggregates, or placing HAVING before GROUP BY.",
+    "learningOutcomes": "Mastered 4.8 Multi-Column GROUP BY on Students.",
+    "challengeSlots": [
+      {
+        "type": "keyword",
+        "value": "SELECT"
+      },
+      {
+        "type": "column",
+        "value": "city,"
+      },
+      {
+        "type": "column",
+        "value": "major,"
+      },
+      {
+        "type": "column",
+        "value": "COUNT(*)"
+      },
+      {
+        "type": "keyword",
+        "value": "AS"
+      },
+      {
+        "type": "column",
+        "value": "student_count"
+      },
+      {
+        "type": "keyword",
+        "value": "FROM"
+      },
+      {
+        "type": "table",
+        "value": "Students"
+      },
+      {
+        "type": "keyword",
+        "value": "GROUP"
+      },
+      {
+        "type": "keyword",
+        "value": "BY"
+      },
+      {
+        "type": "column",
+        "value": "city,"
+      },
+      {
+        "type": "column",
+        "value": "major;"
+      }
+    ]
+  },
+  {
+    "drillNumber": 372,
+    "subcluster": "4.8 Multi-Column GROUP BY",
+    "level": "Level 3 (Multi-Column Grouping)",
+    "title": "Syntax #372: Count published books grouped by both genre and publication year",
+    "table": "Books",
+    "scenario": "Count published books grouped by both genre and publication year.",
+    "businessObjective": "Count published books grouped by both genre and publication year.",
+    "schemaSnippet": "Books schema",
+    "targetQuery": "SELECT genre, publish_year, COUNT(*) AS book_count\nFROM Books\nGROUP BY genre, publish_year;",
+    "syntaxBlueprint": "SELECT genre, publish_year, COUNT(*) AS book_count\nFROM Books\nGROUP BY genre, publish_year;",
+    "syntaxRule": "Aggregate functions compute summary metrics. In GROUP BY queries, every column in SELECT must either be aggregated or listed in GROUP BY. Filter rows with WHERE; filter aggregate groups with HAVING.",
+    "syntaxTrap": "Writing an aggregate function like 'WHERE COUNT(*) > 1' in the WHERE clause (illegal; use HAVING instead), or omitting a non-aggregated column from the GROUP BY clause.",
+    "eli5Story": "Grouping and aggregating data on Books: Count published books grouped by both genre and publication year.",
+    "commonMistakes": "Using WHERE instead of HAVING for aggregate conditions, forgetting GROUP BY when projecting both raw columns and aggregates, or placing HAVING before GROUP BY.",
+    "learningOutcomes": "Mastered 4.8 Multi-Column GROUP BY on Books.",
+    "challengeSlots": [
+      {
+        "type": "keyword",
+        "value": "SELECT"
+      },
+      {
+        "type": "column",
+        "value": "genre,"
+      },
+      {
+        "type": "column",
+        "value": "publish_year,"
+      },
+      {
+        "type": "column",
+        "value": "COUNT(*)"
+      },
+      {
+        "type": "keyword",
+        "value": "AS"
+      },
+      {
+        "type": "column",
+        "value": "book_count"
+      },
+      {
+        "type": "keyword",
+        "value": "FROM"
+      },
+      {
+        "type": "table",
+        "value": "Books"
+      },
+      {
+        "type": "keyword",
+        "value": "GROUP"
+      },
+      {
+        "type": "keyword",
+        "value": "BY"
+      },
+      {
+        "type": "column",
+        "value": "genre,"
+      },
+      {
+        "type": "column",
+        "value": "publish_year;"
+      }
+    ]
+  },
+  {
+    "drillNumber": 373,
+    "subcluster": "4.8 Multi-Column GROUP BY",
+    "level": "Level 3 (Multi-Column Grouping)",
+    "title": "Syntax #373: Count employees grouped by department and office city",
+    "table": "Employees",
+    "scenario": "Count employees grouped by department and office city.",
+    "businessObjective": "Count employees grouped by department and office city.",
+    "schemaSnippet": "Employees schema",
+    "targetQuery": "SELECT department, city, COUNT(*) AS office_headcount\nFROM Employees\nGROUP BY department, city;",
+    "syntaxBlueprint": "SELECT department, city, COUNT(*) AS office_headcount\nFROM Employees\nGROUP BY department, city;",
+    "syntaxRule": "Aggregate functions compute summary metrics. In GROUP BY queries, every column in SELECT must either be aggregated or listed in GROUP BY. Filter rows with WHERE; filter aggregate groups with HAVING.",
+    "syntaxTrap": "Writing an aggregate function like 'WHERE COUNT(*) > 1' in the WHERE clause (illegal; use HAVING instead), or omitting a non-aggregated column from the GROUP BY clause.",
+    "eli5Story": "Grouping and aggregating data on Employees: Count employees grouped by department and office city.",
+    "commonMistakes": "Using WHERE instead of HAVING for aggregate conditions, forgetting GROUP BY when projecting both raw columns and aggregates, or placing HAVING before GROUP BY.",
+    "learningOutcomes": "Mastered 4.8 Multi-Column GROUP BY on Employees.",
+    "challengeSlots": [
+      {
+        "type": "keyword",
+        "value": "SELECT"
+      },
+      {
+        "type": "column",
+        "value": "department,"
+      },
+      {
+        "type": "column",
+        "value": "city,"
+      },
+      {
+        "type": "column",
+        "value": "COUNT(*)"
+      },
+      {
+        "type": "keyword",
+        "value": "AS"
+      },
+      {
+        "type": "column",
+        "value": "office_headcount"
+      },
+      {
+        "type": "keyword",
+        "value": "FROM"
+      },
+      {
+        "type": "table",
+        "value": "Employees"
+      },
+      {
+        "type": "keyword",
+        "value": "GROUP"
+      },
+      {
+        "type": "keyword",
+        "value": "BY"
+      },
+      {
+        "type": "column",
+        "value": "department,"
+      },
+      {
+        "type": "column",
+        "value": "city;"
+      }
+    ]
+  },
+  {
+    "drillNumber": 374,
+    "subcluster": "4.8 Multi-Column GROUP BY",
+    "level": "Level 3 (Multi-Column Grouping)",
+    "title": "Syntax #374: Group grocery items by category and organic status (0 or 1), computing count and avg price",
+    "table": "GroceryItems",
+    "scenario": "Group grocery items by category and organic status (0 or 1), computing count and avg price.",
+    "businessObjective": "Group grocery items by category and organic status (0 or 1), computing count and avg price.",
+    "schemaSnippet": "GroceryItems schema",
+    "targetQuery": "SELECT category, is_organic, COUNT(*) AS product_count, ROUND(AVG(unit_price), 2) AS avg_price\nFROM GroceryItems\nGROUP BY category, is_organic;",
+    "syntaxBlueprint": "SELECT category, is_organic, COUNT(*) AS product_count, ROUND(AVG(unit_price), 2) AS avg_price\nFROM GroceryItems\nGROUP BY category, is_organic;",
+    "syntaxRule": "Aggregate functions compute summary metrics. In GROUP BY queries, every column in SELECT must either be aggregated or listed in GROUP BY. Filter rows with WHERE; filter aggregate groups with HAVING.",
+    "syntaxTrap": "Writing an aggregate function like 'WHERE COUNT(*) > 1' in the WHERE clause (illegal; use HAVING instead), or omitting a non-aggregated column from the GROUP BY clause.",
+    "eli5Story": "Grouping and aggregating data on GroceryItems: Group grocery items by category and organic status (0 or 1), computing count and avg price.",
+    "commonMistakes": "Using WHERE instead of HAVING for aggregate conditions, forgetting GROUP BY when projecting both raw columns and aggregates, or placing HAVING before GROUP BY.",
+    "learningOutcomes": "Mastered 4.8 Multi-Column GROUP BY on GroceryItems.",
+    "challengeSlots": [
+      {
+        "type": "keyword",
+        "value": "SELECT"
+      },
+      {
+        "type": "column",
+        "value": "category,"
+      },
+      {
+        "type": "column",
+        "value": "is_organic,"
+      },
+      {
+        "type": "column",
+        "value": "COUNT(*)"
+      },
+      {
+        "type": "keyword",
+        "value": "AS"
+      },
+      {
+        "type": "column",
+        "value": "product_count,"
+      },
+      {
+        "type": "column",
+        "value": "ROUND(AVG(unit_price),"
+      },
+      {
+        "type": "column",
+        "value": "2)"
+      },
+      {
+        "type": "keyword",
+        "value": "AS"
+      },
+      {
+        "type": "column",
+        "value": "avg_price"
+      },
+      {
+        "type": "keyword",
+        "value": "FROM"
+      },
+      {
+        "type": "table",
+        "value": "GroceryItems"
+      },
+      {
+        "type": "keyword",
+        "value": "GROUP"
+      },
+      {
+        "type": "keyword",
+        "value": "BY"
+      },
+      {
+        "type": "column",
+        "value": "category,"
+      },
+      {
+        "type": "column",
+        "value": "is_organic;"
+      }
+    ]
+  },
+  {
+    "drillNumber": 375,
+    "subcluster": "4.8 Multi-Column GROUP BY",
+    "level": "Level 3 (Multi-Column Grouping)",
+    "title": "Syntax #375: Track order counts partitioned by both shipping city and order status",
+    "table": "Orders",
+    "scenario": "Track order counts partitioned by both shipping city and order status.",
+    "businessObjective": "Track order counts partitioned by both shipping city and order status.",
+    "schemaSnippet": "Orders schema",
+    "targetQuery": "SELECT shipping_city, order_status, COUNT(*) AS order_count\nFROM Orders\nGROUP BY shipping_city, order_status;",
+    "syntaxBlueprint": "SELECT shipping_city, order_status, COUNT(*) AS order_count\nFROM Orders\nGROUP BY shipping_city, order_status;",
+    "syntaxRule": "Aggregate functions compute summary metrics. In GROUP BY queries, every column in SELECT must either be aggregated or listed in GROUP BY. Filter rows with WHERE; filter aggregate groups with HAVING.",
+    "syntaxTrap": "Writing an aggregate function like 'WHERE COUNT(*) > 1' in the WHERE clause (illegal; use HAVING instead), or omitting a non-aggregated column from the GROUP BY clause.",
+    "eli5Story": "Grouping and aggregating data on Orders: Track order counts partitioned by both shipping city and order status.",
+    "commonMistakes": "Using WHERE instead of HAVING for aggregate conditions, forgetting GROUP BY when projecting both raw columns and aggregates, or placing HAVING before GROUP BY.",
+    "learningOutcomes": "Mastered 4.8 Multi-Column GROUP BY on Orders.",
+    "challengeSlots": [
+      {
+        "type": "keyword",
+        "value": "SELECT"
+      },
+      {
+        "type": "column",
+        "value": "shipping_city,"
+      },
+      {
+        "type": "column",
+        "value": "order_status,"
+      },
+      {
+        "type": "column",
+        "value": "COUNT(*)"
+      },
+      {
+        "type": "keyword",
+        "value": "AS"
+      },
+      {
+        "type": "column",
+        "value": "order_count"
+      },
+      {
+        "type": "keyword",
+        "value": "FROM"
+      },
+      {
+        "type": "table",
+        "value": "Orders"
+      },
+      {
+        "type": "keyword",
+        "value": "GROUP"
+      },
+      {
+        "type": "keyword",
+        "value": "BY"
+      },
+      {
+        "type": "column",
+        "value": "shipping_city,"
+      },
+      {
+        "type": "column",
+        "value": "order_status;"
+      }
+    ]
+  },
+  {
+    "drillNumber": 376,
+    "subcluster": "4.8 Multi-Column GROUP BY",
+    "level": "Level 3 (Multi-Column Grouping)",
+    "title": "Syntax #376: Analyze track count and total plays grouped by genre and release year",
+    "table": "MusicTracks",
+    "scenario": "Analyze track count and total plays grouped by genre and release year.",
+    "businessObjective": "Analyze track count and total plays grouped by genre and release year.",
+    "schemaSnippet": "MusicTracks schema",
+    "targetQuery": "SELECT genre, release_year, COUNT(*) AS tracks, SUM(play_count) AS yearly_plays\nFROM MusicTracks\nGROUP BY genre, release_year;",
+    "syntaxBlueprint": "SELECT genre, release_year, COUNT(*) AS tracks, SUM(play_count) AS yearly_plays\nFROM MusicTracks\nGROUP BY genre, release_year;",
+    "syntaxRule": "Aggregate functions compute summary metrics. In GROUP BY queries, every column in SELECT must either be aggregated or listed in GROUP BY. Filter rows with WHERE; filter aggregate groups with HAVING.",
+    "syntaxTrap": "Writing an aggregate function like 'WHERE COUNT(*) > 1' in the WHERE clause (illegal; use HAVING instead), or omitting a non-aggregated column from the GROUP BY clause.",
+    "eli5Story": "Grouping and aggregating data on MusicTracks: Analyze track count and total plays grouped by genre and release year.",
+    "commonMistakes": "Using WHERE instead of HAVING for aggregate conditions, forgetting GROUP BY when projecting both raw columns and aggregates, or placing HAVING before GROUP BY.",
+    "learningOutcomes": "Mastered 4.8 Multi-Column GROUP BY on MusicTracks.",
+    "challengeSlots": [
+      {
+        "type": "keyword",
+        "value": "SELECT"
+      },
+      {
+        "type": "column",
+        "value": "genre,"
+      },
+      {
+        "type": "column",
+        "value": "release_year,"
+      },
+      {
+        "type": "column",
+        "value": "COUNT(*)"
+      },
+      {
+        "type": "keyword",
+        "value": "AS"
+      },
+      {
+        "type": "column",
+        "value": "tracks,"
+      },
+      {
+        "type": "column",
+        "value": "SUM(play_count)"
+      },
+      {
+        "type": "keyword",
+        "value": "AS"
+      },
+      {
+        "type": "column",
+        "value": "yearly_plays"
+      },
+      {
+        "type": "keyword",
+        "value": "FROM"
+      },
+      {
+        "type": "table",
+        "value": "MusicTracks"
+      },
+      {
+        "type": "keyword",
+        "value": "GROUP"
+      },
+      {
+        "type": "keyword",
+        "value": "BY"
+      },
+      {
+        "type": "column",
+        "value": "genre,"
+      },
+      {
+        "type": "column",
+        "value": "release_year;"
+      }
+    ]
+  },
+  {
+    "drillNumber": 377,
+    "subcluster": "4.8 Multi-Column GROUP BY",
+    "level": "Level 3 (Multi-Column Grouping)",
+    "title": "Syntax #377: Segment gym members by plan tier and active membership status",
+    "table": "GymMembers",
+    "scenario": "Segment gym members by plan tier and active membership status.",
+    "businessObjective": "Segment gym members by plan tier and active membership status.",
+    "schemaSnippet": "GymMembers schema",
+    "targetQuery": "SELECT membership_plan, is_active, COUNT(*) AS member_count\nFROM GymMembers\nGROUP BY membership_plan, is_active;",
+    "syntaxBlueprint": "SELECT membership_plan, is_active, COUNT(*) AS member_count\nFROM GymMembers\nGROUP BY membership_plan, is_active;",
+    "syntaxRule": "Aggregate functions compute summary metrics. In GROUP BY queries, every column in SELECT must either be aggregated or listed in GROUP BY. Filter rows with WHERE; filter aggregate groups with HAVING.",
+    "syntaxTrap": "Writing an aggregate function like 'WHERE COUNT(*) > 1' in the WHERE clause (illegal; use HAVING instead), or omitting a non-aggregated column from the GROUP BY clause.",
+    "eli5Story": "Grouping and aggregating data on GymMembers: Segment gym members by plan tier and active membership status.",
+    "commonMistakes": "Using WHERE instead of HAVING for aggregate conditions, forgetting GROUP BY when projecting both raw columns and aggregates, or placing HAVING before GROUP BY.",
+    "learningOutcomes": "Mastered 4.8 Multi-Column GROUP BY on GymMembers.",
+    "challengeSlots": [
+      {
+        "type": "keyword",
+        "value": "SELECT"
+      },
+      {
+        "type": "column",
+        "value": "membership_plan,"
+      },
+      {
+        "type": "column",
+        "value": "is_active,"
+      },
+      {
+        "type": "column",
+        "value": "COUNT(*)"
+      },
+      {
+        "type": "keyword",
+        "value": "AS"
+      },
+      {
+        "type": "column",
+        "value": "member_count"
+      },
+      {
+        "type": "keyword",
+        "value": "FROM"
+      },
+      {
+        "type": "table",
+        "value": "GymMembers"
+      },
+      {
+        "type": "keyword",
+        "value": "GROUP"
+      },
+      {
+        "type": "keyword",
+        "value": "BY"
+      },
+      {
+        "type": "column",
+        "value": "membership_plan,"
+      },
+      {
+        "type": "column",
+        "value": "is_active;"
+      }
+    ]
+  },
+  {
+    "drillNumber": 378,
+    "subcluster": "4.8 Multi-Column GROUP BY",
+    "level": "Level 3 (Multi-Column Grouping)",
+    "title": "Syntax #378: Group film reviews by genre and release year, analyzing count and average score",
+    "table": "MovieReviews",
+    "scenario": "Group film reviews by genre and release year, analyzing count and average score.",
+    "businessObjective": "Group film reviews by genre and release year, analyzing count and average score.",
+    "schemaSnippet": "MovieReviews schema",
+    "targetQuery": "SELECT genre, release_year, COUNT(*) AS total_reviews, ROUND(AVG(star_rating), 2) AS avg_rating\nFROM MovieReviews\nGROUP BY genre, release_year;",
+    "syntaxBlueprint": "SELECT genre, release_year, COUNT(*) AS total_reviews, ROUND(AVG(star_rating), 2) AS avg_rating\nFROM MovieReviews\nGROUP BY genre, release_year;",
+    "syntaxRule": "Aggregate functions compute summary metrics. In GROUP BY queries, every column in SELECT must either be aggregated or listed in GROUP BY. Filter rows with WHERE; filter aggregate groups with HAVING.",
+    "syntaxTrap": "Writing an aggregate function like 'WHERE COUNT(*) > 1' in the WHERE clause (illegal; use HAVING instead), or omitting a non-aggregated column from the GROUP BY clause.",
+    "eli5Story": "Grouping and aggregating data on MovieReviews: Group film reviews by genre and release year, analyzing count and average score.",
+    "commonMistakes": "Using WHERE instead of HAVING for aggregate conditions, forgetting GROUP BY when projecting both raw columns and aggregates, or placing HAVING before GROUP BY.",
+    "learningOutcomes": "Mastered 4.8 Multi-Column GROUP BY on MovieReviews.",
+    "challengeSlots": [
+      {
+        "type": "keyword",
+        "value": "SELECT"
+      },
+      {
+        "type": "column",
+        "value": "genre,"
+      },
+      {
+        "type": "column",
+        "value": "release_year,"
+      },
+      {
+        "type": "column",
+        "value": "COUNT(*)"
+      },
+      {
+        "type": "keyword",
+        "value": "AS"
+      },
+      {
+        "type": "column",
+        "value": "total_reviews,"
+      },
+      {
+        "type": "column",
+        "value": "ROUND(AVG(star_rating),"
+      },
+      {
+        "type": "column",
+        "value": "2)"
+      },
+      {
+        "type": "keyword",
+        "value": "AS"
+      },
+      {
+        "type": "column",
+        "value": "avg_rating"
+      },
+      {
+        "type": "keyword",
+        "value": "FROM"
+      },
+      {
+        "type": "table",
+        "value": "MovieReviews"
+      },
+      {
+        "type": "keyword",
+        "value": "GROUP"
+      },
+      {
+        "type": "keyword",
+        "value": "BY"
+      },
+      {
+        "type": "column",
+        "value": "genre,"
+      },
+      {
+        "type": "column",
+        "value": "release_year;"
+      }
+    ]
+  },
+  {
+    "drillNumber": 379,
+    "subcluster": "4.8 Multi-Column GROUP BY",
+    "level": "Level 3 (Multi-Column Grouping)",
+    "title": "Syntax #379: Count scheduled flights for every distinct origin-to-destination flight route",
+    "table": "FlightSchedule",
+    "scenario": "Count scheduled flights for every distinct origin-to-destination flight route.",
+    "businessObjective": "Count scheduled flights for every distinct origin-to-destination flight route.",
+    "schemaSnippet": "FlightSchedule schema",
+    "targetQuery": "SELECT origin_airport, destination_airport, COUNT(*) AS route_flights\nFROM FlightSchedule\nGROUP BY origin_airport, destination_airport;",
+    "syntaxBlueprint": "SELECT origin_airport, destination_airport, COUNT(*) AS route_flights\nFROM FlightSchedule\nGROUP BY origin_airport, destination_airport;",
+    "syntaxRule": "Aggregate functions compute summary metrics. In GROUP BY queries, every column in SELECT must either be aggregated or listed in GROUP BY. Filter rows with WHERE; filter aggregate groups with HAVING.",
+    "syntaxTrap": "Writing an aggregate function like 'WHERE COUNT(*) > 1' in the WHERE clause (illegal; use HAVING instead), or omitting a non-aggregated column from the GROUP BY clause.",
+    "eli5Story": "Grouping and aggregating data on FlightSchedule: Count scheduled flights for every distinct origin-to-destination flight route.",
+    "commonMistakes": "Using WHERE instead of HAVING for aggregate conditions, forgetting GROUP BY when projecting both raw columns and aggregates, or placing HAVING before GROUP BY.",
+    "learningOutcomes": "Mastered 4.8 Multi-Column GROUP BY on FlightSchedule.",
+    "challengeSlots": [
+      {
+        "type": "keyword",
+        "value": "SELECT"
+      },
+      {
+        "type": "column",
+        "value": "origin_airport,"
+      },
+      {
+        "type": "column",
+        "value": "destination_airport,"
+      },
+      {
+        "type": "column",
+        "value": "COUNT(*)"
+      },
+      {
+        "type": "keyword",
+        "value": "AS"
+      },
+      {
+        "type": "column",
+        "value": "route_flights"
+      },
+      {
+        "type": "keyword",
+        "value": "FROM"
+      },
+      {
+        "type": "table",
+        "value": "FlightSchedule"
+      },
+      {
+        "type": "keyword",
+        "value": "GROUP"
+      },
+      {
+        "type": "keyword",
+        "value": "BY"
+      },
+      {
+        "type": "column",
+        "value": "origin_airport,"
+      },
+      {
+        "type": "column",
+        "value": "destination_airport;"
+      }
+    ]
+  },
+  {
+    "drillNumber": 380,
+    "subcluster": "4.8 Multi-Column GROUP BY",
+    "level": "Level 3 (Multi-Column Grouping)",
+    "title": "Syntax #380: Count registered pets grouped by species and specific breed",
+    "table": "PetClinic",
+    "scenario": "Count registered pets grouped by species and specific breed.",
+    "businessObjective": "Count registered pets grouped by species and specific breed.",
+    "schemaSnippet": "PetClinic schema",
+    "targetQuery": "SELECT species, breed, COUNT(*) AS pet_count\nFROM PetClinic\nGROUP BY species, breed;",
+    "syntaxBlueprint": "SELECT species, breed, COUNT(*) AS pet_count\nFROM PetClinic\nGROUP BY species, breed;",
+    "syntaxRule": "Aggregate functions compute summary metrics. In GROUP BY queries, every column in SELECT must either be aggregated or listed in GROUP BY. Filter rows with WHERE; filter aggregate groups with HAVING.",
+    "syntaxTrap": "Writing an aggregate function like 'WHERE COUNT(*) > 1' in the WHERE clause (illegal; use HAVING instead), or omitting a non-aggregated column from the GROUP BY clause.",
+    "eli5Story": "Grouping and aggregating data on PetClinic: Count registered pets grouped by species and specific breed.",
+    "commonMistakes": "Using WHERE instead of HAVING for aggregate conditions, forgetting GROUP BY when projecting both raw columns and aggregates, or placing HAVING before GROUP BY.",
+    "learningOutcomes": "Mastered 4.8 Multi-Column GROUP BY on PetClinic.",
+    "challengeSlots": [
+      {
+        "type": "keyword",
+        "value": "SELECT"
+      },
+      {
+        "type": "column",
+        "value": "species,"
+      },
+      {
+        "type": "column",
+        "value": "breed,"
+      },
+      {
+        "type": "column",
+        "value": "COUNT(*)"
+      },
+      {
+        "type": "keyword",
+        "value": "AS"
+      },
+      {
+        "type": "column",
+        "value": "pet_count"
+      },
+      {
+        "type": "keyword",
+        "value": "FROM"
+      },
+      {
+        "type": "table",
+        "value": "PetClinic"
+      },
+      {
+        "type": "keyword",
+        "value": "GROUP"
+      },
+      {
+        "type": "keyword",
+        "value": "BY"
+      },
+      {
+        "type": "column",
+        "value": "species,"
+      },
+      {
+        "type": "column",
+        "value": "breed;"
+      }
+    ]
+  },
+  {
+    "drillNumber": 381,
+    "subcluster": "4.9 Filtering Groups with HAVING",
+    "level": "Level 3 (HAVING Clauses)",
+    "title": "Syntax #381: Find majors that have 2 or more enrolled students using HAVING",
+    "table": "Students",
+    "scenario": "Find majors that have 2 or more enrolled students using HAVING.",
+    "businessObjective": "Find majors that have 2 or more enrolled students using HAVING.",
+    "schemaSnippet": "Students schema",
+    "targetQuery": "SELECT major, COUNT(*) AS student_count\nFROM Students\nGROUP BY major\nHAVING COUNT(*) >= 2;",
+    "syntaxBlueprint": "SELECT major, COUNT(*) AS student_count\nFROM Students\nGROUP BY major\nHAVING COUNT(*) >= 2;",
+    "syntaxRule": "Aggregate functions compute summary metrics. In GROUP BY queries, every column in SELECT must either be aggregated or listed in GROUP BY. Filter rows with WHERE; filter aggregate groups with HAVING.",
+    "syntaxTrap": "Writing an aggregate function like 'WHERE COUNT(*) > 1' in the WHERE clause (illegal; use HAVING instead), or omitting a non-aggregated column from the GROUP BY clause.",
+    "eli5Story": "Grouping and aggregating data on Students: Find majors that have 2 or more enrolled students using HAVING.",
+    "commonMistakes": "Using WHERE instead of HAVING for aggregate conditions, forgetting GROUP BY when projecting both raw columns and aggregates, or placing HAVING before GROUP BY.",
+    "learningOutcomes": "Mastered 4.9 Filtering Groups with HAVING on Students.",
+    "challengeSlots": [
+      {
+        "type": "keyword",
+        "value": "SELECT"
+      },
+      {
+        "type": "column",
+        "value": "major,"
+      },
+      {
+        "type": "column",
+        "value": "COUNT(*)"
+      },
+      {
+        "type": "keyword",
+        "value": "AS"
+      },
+      {
+        "type": "column",
+        "value": "student_count"
+      },
+      {
+        "type": "keyword",
+        "value": "FROM"
+      },
+      {
+        "type": "table",
+        "value": "Students"
+      },
+      {
+        "type": "keyword",
+        "value": "GROUP"
+      },
+      {
+        "type": "keyword",
+        "value": "BY"
+      },
+      {
+        "type": "column",
+        "value": "major"
+      },
+      {
+        "type": "keyword",
+        "value": "HAVING"
+      },
+      {
+        "type": "column",
+        "value": "COUNT(*)"
+      },
+      {
+        "type": "column",
+        "value": ">="
+      },
+      {
+        "type": "column",
+        "value": "2;"
+      }
+    ]
+  },
+  {
+    "drillNumber": 382,
+    "subcluster": "4.9 Filtering Groups with HAVING",
+    "level": "Level 3 (HAVING Clauses)",
+    "title": "Syntax #382: Identify book genres where the average price exceeds $15.00",
+    "table": "Books",
+    "scenario": "Identify book genres where the average price exceeds $15.00.",
+    "businessObjective": "Identify book genres where the average price exceeds $15.00.",
+    "schemaSnippet": "Books schema",
+    "targetQuery": "SELECT genre, ROUND(AVG(price), 2) AS avg_price\nFROM Books\nGROUP BY genre\nHAVING AVG(price) > 15.00;",
+    "syntaxBlueprint": "SELECT genre, ROUND(AVG(price), 2) AS avg_price\nFROM Books\nGROUP BY genre\nHAVING AVG(price) > 15.00;",
+    "syntaxRule": "Aggregate functions compute summary metrics. In GROUP BY queries, every column in SELECT must either be aggregated or listed in GROUP BY. Filter rows with WHERE; filter aggregate groups with HAVING.",
+    "syntaxTrap": "Writing an aggregate function like 'WHERE COUNT(*) > 1' in the WHERE clause (illegal; use HAVING instead), or omitting a non-aggregated column from the GROUP BY clause.",
+    "eli5Story": "Grouping and aggregating data on Books: Identify book genres where the average price exceeds $15.00.",
+    "commonMistakes": "Using WHERE instead of HAVING for aggregate conditions, forgetting GROUP BY when projecting both raw columns and aggregates, or placing HAVING before GROUP BY.",
+    "learningOutcomes": "Mastered 4.9 Filtering Groups with HAVING on Books.",
+    "challengeSlots": [
+      {
+        "type": "keyword",
+        "value": "SELECT"
+      },
+      {
+        "type": "column",
+        "value": "genre,"
+      },
+      {
+        "type": "column",
+        "value": "ROUND(AVG(price),"
+      },
+      {
+        "type": "column",
+        "value": "2)"
+      },
+      {
+        "type": "keyword",
+        "value": "AS"
+      },
+      {
+        "type": "column",
+        "value": "avg_price"
+      },
+      {
+        "type": "keyword",
+        "value": "FROM"
+      },
+      {
+        "type": "table",
+        "value": "Books"
+      },
+      {
+        "type": "keyword",
+        "value": "GROUP"
+      },
+      {
+        "type": "keyword",
+        "value": "BY"
+      },
+      {
+        "type": "column",
+        "value": "genre"
+      },
+      {
+        "type": "keyword",
+        "value": "HAVING"
+      },
+      {
+        "type": "column",
+        "value": "AVG(price)"
+      },
+      {
+        "type": "column",
+        "value": ">"
+      },
+      {
+        "type": "column",
+        "value": "15.00;"
+      }
+    ]
+  },
+  {
+    "drillNumber": 383,
+    "subcluster": "4.9 Filtering Groups with HAVING",
+    "level": "Level 3 (HAVING Clauses)",
+    "title": "Syntax #383: List departments whose average employee salary is at least $80,000",
+    "table": "Employees",
+    "scenario": "List departments whose average employee salary is at least $80,000.",
+    "businessObjective": "List departments whose average employee salary is at least $80,000.",
+    "schemaSnippet": "Employees schema",
+    "targetQuery": "SELECT department, ROUND(AVG(salary), 2) AS avg_salary\nFROM Employees\nGROUP BY department\nHAVING AVG(salary) >= 80000;",
+    "syntaxBlueprint": "SELECT department, ROUND(AVG(salary), 2) AS avg_salary\nFROM Employees\nGROUP BY department\nHAVING AVG(salary) >= 80000;",
+    "syntaxRule": "Aggregate functions compute summary metrics. In GROUP BY queries, every column in SELECT must either be aggregated or listed in GROUP BY. Filter rows with WHERE; filter aggregate groups with HAVING.",
+    "syntaxTrap": "Writing an aggregate function like 'WHERE COUNT(*) > 1' in the WHERE clause (illegal; use HAVING instead), or omitting a non-aggregated column from the GROUP BY clause.",
+    "eli5Story": "Grouping and aggregating data on Employees: List departments whose average employee salary is at least $80,000.",
+    "commonMistakes": "Using WHERE instead of HAVING for aggregate conditions, forgetting GROUP BY when projecting both raw columns and aggregates, or placing HAVING before GROUP BY.",
+    "learningOutcomes": "Mastered 4.9 Filtering Groups with HAVING on Employees.",
+    "challengeSlots": [
+      {
+        "type": "keyword",
+        "value": "SELECT"
+      },
+      {
+        "type": "column",
+        "value": "department,"
+      },
+      {
+        "type": "column",
+        "value": "ROUND(AVG(salary),"
+      },
+      {
+        "type": "column",
+        "value": "2)"
+      },
+      {
+        "type": "keyword",
+        "value": "AS"
+      },
+      {
+        "type": "column",
+        "value": "avg_salary"
+      },
+      {
+        "type": "keyword",
+        "value": "FROM"
+      },
+      {
+        "type": "table",
+        "value": "Employees"
+      },
+      {
+        "type": "keyword",
+        "value": "GROUP"
+      },
+      {
+        "type": "keyword",
+        "value": "BY"
+      },
+      {
+        "type": "column",
+        "value": "department"
+      },
+      {
+        "type": "keyword",
+        "value": "HAVING"
+      },
+      {
+        "type": "column",
+        "value": "AVG(salary)"
+      },
+      {
+        "type": "column",
+        "value": ">="
+      },
+      {
+        "type": "column",
+        "value": "80000;"
+      }
+    ]
+  },
+  {
+    "drillNumber": 384,
+    "subcluster": "4.9 Filtering Groups with HAVING",
+    "level": "Level 3 (HAVING Clauses)",
+    "title": "Syntax #384: Find grocery categories with over 100 total units in warehouse stock",
+    "table": "GroceryItems",
+    "scenario": "Find grocery categories with over 100 total units in warehouse stock.",
+    "businessObjective": "Find grocery categories with over 100 total units in warehouse stock.",
+    "schemaSnippet": "GroceryItems schema",
+    "targetQuery": "SELECT category, SUM(stock_units) AS total_units\nFROM GroceryItems\nGROUP BY category\nHAVING SUM(stock_units) > 100;",
+    "syntaxBlueprint": "SELECT category, SUM(stock_units) AS total_units\nFROM GroceryItems\nGROUP BY category\nHAVING SUM(stock_units) > 100;",
+    "syntaxRule": "Aggregate functions compute summary metrics. In GROUP BY queries, every column in SELECT must either be aggregated or listed in GROUP BY. Filter rows with WHERE; filter aggregate groups with HAVING.",
+    "syntaxTrap": "Writing an aggregate function like 'WHERE COUNT(*) > 1' in the WHERE clause (illegal; use HAVING instead), or omitting a non-aggregated column from the GROUP BY clause.",
+    "eli5Story": "Grouping and aggregating data on GroceryItems: Find grocery categories with over 100 total units in warehouse stock.",
+    "commonMistakes": "Using WHERE instead of HAVING for aggregate conditions, forgetting GROUP BY when projecting both raw columns and aggregates, or placing HAVING before GROUP BY.",
+    "learningOutcomes": "Mastered 4.9 Filtering Groups with HAVING on GroceryItems.",
+    "challengeSlots": [
+      {
+        "type": "keyword",
+        "value": "SELECT"
+      },
+      {
+        "type": "column",
+        "value": "category,"
+      },
+      {
+        "type": "column",
+        "value": "SUM(stock_units)"
+      },
+      {
+        "type": "keyword",
+        "value": "AS"
+      },
+      {
+        "type": "column",
+        "value": "total_units"
+      },
+      {
+        "type": "keyword",
+        "value": "FROM"
+      },
+      {
+        "type": "table",
+        "value": "GroceryItems"
+      },
+      {
+        "type": "keyword",
+        "value": "GROUP"
+      },
+      {
+        "type": "keyword",
+        "value": "BY"
+      },
+      {
+        "type": "column",
+        "value": "category"
+      },
+      {
+        "type": "keyword",
+        "value": "HAVING"
+      },
+      {
+        "type": "column",
+        "value": "SUM(stock_units)"
+      },
+      {
+        "type": "column",
+        "value": ">"
+      },
+      {
+        "type": "column",
+        "value": "100;"
+      }
+    ]
+  },
+  {
+    "drillNumber": 385,
+    "subcluster": "4.9 Filtering Groups with HAVING",
+    "level": "Level 3 (HAVING Clauses)",
+    "title": "Syntax #385: Show cities that have received 2 or more total orders",
+    "table": "Orders",
+    "scenario": "Show cities that have received 2 or more total orders.",
+    "businessObjective": "Show cities that have received 2 or more total orders.",
+    "schemaSnippet": "Orders schema",
+    "targetQuery": "SELECT shipping_city, COUNT(*) AS order_volume\nFROM Orders\nGROUP BY shipping_city\nHAVING COUNT(*) >= 2;",
+    "syntaxBlueprint": "SELECT shipping_city, COUNT(*) AS order_volume\nFROM Orders\nGROUP BY shipping_city\nHAVING COUNT(*) >= 2;",
+    "syntaxRule": "Aggregate functions compute summary metrics. In GROUP BY queries, every column in SELECT must either be aggregated or listed in GROUP BY. Filter rows with WHERE; filter aggregate groups with HAVING.",
+    "syntaxTrap": "Writing an aggregate function like 'WHERE COUNT(*) > 1' in the WHERE clause (illegal; use HAVING instead), or omitting a non-aggregated column from the GROUP BY clause.",
+    "eli5Story": "Grouping and aggregating data on Orders: Show cities that have received 2 or more total orders.",
+    "commonMistakes": "Using WHERE instead of HAVING for aggregate conditions, forgetting GROUP BY when projecting both raw columns and aggregates, or placing HAVING before GROUP BY.",
+    "learningOutcomes": "Mastered 4.9 Filtering Groups with HAVING on Orders.",
+    "challengeSlots": [
+      {
+        "type": "keyword",
+        "value": "SELECT"
+      },
+      {
+        "type": "column",
+        "value": "shipping_city,"
+      },
+      {
+        "type": "column",
+        "value": "COUNT(*)"
+      },
+      {
+        "type": "keyword",
+        "value": "AS"
+      },
+      {
+        "type": "column",
+        "value": "order_volume"
+      },
+      {
+        "type": "keyword",
+        "value": "FROM"
+      },
+      {
+        "type": "table",
+        "value": "Orders"
+      },
+      {
+        "type": "keyword",
+        "value": "GROUP"
+      },
+      {
+        "type": "keyword",
+        "value": "BY"
+      },
+      {
+        "type": "column",
+        "value": "shipping_city"
+      },
+      {
+        "type": "keyword",
+        "value": "HAVING"
+      },
+      {
+        "type": "column",
+        "value": "COUNT(*)"
+      },
+      {
+        "type": "column",
+        "value": ">="
+      },
+      {
+        "type": "column",
+        "value": "2;"
+      }
+    ]
+  },
+  {
+    "drillNumber": 386,
+    "subcluster": "4.9 Filtering Groups with HAVING",
+    "level": "Level 3 (HAVING Clauses)",
+    "title": "Syntax #386: Identify music genres with over 1,000,000 collective play streams",
+    "table": "MusicTracks",
+    "scenario": "Identify music genres with over 1,000,000 collective play streams.",
+    "businessObjective": "Identify music genres with over 1,000,000 collective play streams.",
+    "schemaSnippet": "MusicTracks schema",
+    "targetQuery": "SELECT genre, SUM(play_count) AS total_plays\nFROM MusicTracks\nGROUP BY genre\nHAVING SUM(play_count) > 1000000;",
+    "syntaxBlueprint": "SELECT genre, SUM(play_count) AS total_plays\nFROM MusicTracks\nGROUP BY genre\nHAVING SUM(play_count) > 1000000;",
+    "syntaxRule": "Aggregate functions compute summary metrics. In GROUP BY queries, every column in SELECT must either be aggregated or listed in GROUP BY. Filter rows with WHERE; filter aggregate groups with HAVING.",
+    "syntaxTrap": "Writing an aggregate function like 'WHERE COUNT(*) > 1' in the WHERE clause (illegal; use HAVING instead), or omitting a non-aggregated column from the GROUP BY clause.",
+    "eli5Story": "Grouping and aggregating data on MusicTracks: Identify music genres with over 1,000,000 collective play streams.",
+    "commonMistakes": "Using WHERE instead of HAVING for aggregate conditions, forgetting GROUP BY when projecting both raw columns and aggregates, or placing HAVING before GROUP BY.",
+    "learningOutcomes": "Mastered 4.9 Filtering Groups with HAVING on MusicTracks.",
+    "challengeSlots": [
+      {
+        "type": "keyword",
+        "value": "SELECT"
+      },
+      {
+        "type": "column",
+        "value": "genre,"
+      },
+      {
+        "type": "column",
+        "value": "SUM(play_count)"
+      },
+      {
+        "type": "keyword",
+        "value": "AS"
+      },
+      {
+        "type": "column",
+        "value": "total_plays"
+      },
+      {
+        "type": "keyword",
+        "value": "FROM"
+      },
+      {
+        "type": "table",
+        "value": "MusicTracks"
+      },
+      {
+        "type": "keyword",
+        "value": "GROUP"
+      },
+      {
+        "type": "keyword",
+        "value": "BY"
+      },
+      {
+        "type": "column",
+        "value": "genre"
+      },
+      {
+        "type": "keyword",
+        "value": "HAVING"
+      },
+      {
+        "type": "column",
+        "value": "SUM(play_count)"
+      },
+      {
+        "type": "column",
+        "value": ">"
+      },
+      {
+        "type": "column",
+        "value": "1000000;"
+      }
+    ]
+  },
+  {
+    "drillNumber": 387,
+    "subcluster": "4.9 Filtering Groups with HAVING",
+    "level": "Level 3 (HAVING Clauses)",
+    "title": "Syntax #387: Find membership tiers where members average 8 or more visits per month",
+    "table": "GymMembers",
+    "scenario": "Find membership tiers where members average 8 or more visits per month.",
+    "businessObjective": "Find membership tiers where members average 8 or more visits per month.",
+    "schemaSnippet": "GymMembers schema",
+    "targetQuery": "SELECT membership_plan, ROUND(AVG(visits_this_month), 1) AS avg_visits\nFROM GymMembers\nGROUP BY membership_plan\nHAVING AVG(visits_this_month) >= 8.0;",
+    "syntaxBlueprint": "SELECT membership_plan, ROUND(AVG(visits_this_month), 1) AS avg_visits\nFROM GymMembers\nGROUP BY membership_plan\nHAVING AVG(visits_this_month) >= 8.0;",
+    "syntaxRule": "Aggregate functions compute summary metrics. In GROUP BY queries, every column in SELECT must either be aggregated or listed in GROUP BY. Filter rows with WHERE; filter aggregate groups with HAVING.",
+    "syntaxTrap": "Writing an aggregate function like 'WHERE COUNT(*) > 1' in the WHERE clause (illegal; use HAVING instead), or omitting a non-aggregated column from the GROUP BY clause.",
+    "eli5Story": "Grouping and aggregating data on GymMembers: Find membership tiers where members average 8 or more visits per month.",
+    "commonMistakes": "Using WHERE instead of HAVING for aggregate conditions, forgetting GROUP BY when projecting both raw columns and aggregates, or placing HAVING before GROUP BY.",
+    "learningOutcomes": "Mastered 4.9 Filtering Groups with HAVING on GymMembers.",
+    "challengeSlots": [
+      {
+        "type": "keyword",
+        "value": "SELECT"
+      },
+      {
+        "type": "column",
+        "value": "membership_plan,"
+      },
+      {
+        "type": "column",
+        "value": "ROUND(AVG(visits_this_month),"
+      },
+      {
+        "type": "column",
+        "value": "1)"
+      },
+      {
+        "type": "keyword",
+        "value": "AS"
+      },
+      {
+        "type": "column",
+        "value": "avg_visits"
+      },
+      {
+        "type": "keyword",
+        "value": "FROM"
+      },
+      {
+        "type": "table",
+        "value": "GymMembers"
+      },
+      {
+        "type": "keyword",
+        "value": "GROUP"
+      },
+      {
+        "type": "keyword",
+        "value": "BY"
+      },
+      {
+        "type": "column",
+        "value": "membership_plan"
+      },
+      {
+        "type": "keyword",
+        "value": "HAVING"
+      },
+      {
+        "type": "column",
+        "value": "AVG(visits_this_month)"
+      },
+      {
+        "type": "column",
+        "value": ">="
+      },
+      {
+        "type": "column",
+        "value": "8.0;"
+      }
+    ]
+  },
+  {
+    "drillNumber": 388,
+    "subcluster": "4.9 Filtering Groups with HAVING",
+    "level": "Level 3 (HAVING Clauses)",
+    "title": "Syntax #388: List movie genres maintaining a stellar average rating of 4.0 or higher",
+    "table": "MovieReviews",
+    "scenario": "List movie genres maintaining a stellar average rating of 4.0 or higher.",
+    "businessObjective": "List movie genres maintaining a stellar average rating of 4.0 or higher.",
+    "schemaSnippet": "MovieReviews schema",
+    "targetQuery": "SELECT genre, ROUND(AVG(star_rating), 2) AS avg_rating\nFROM MovieReviews\nGROUP BY genre\nHAVING AVG(star_rating) >= 4.0;",
+    "syntaxBlueprint": "SELECT genre, ROUND(AVG(star_rating), 2) AS avg_rating\nFROM MovieReviews\nGROUP BY genre\nHAVING AVG(star_rating) >= 4.0;",
+    "syntaxRule": "Aggregate functions compute summary metrics. In GROUP BY queries, every column in SELECT must either be aggregated or listed in GROUP BY. Filter rows with WHERE; filter aggregate groups with HAVING.",
+    "syntaxTrap": "Writing an aggregate function like 'WHERE COUNT(*) > 1' in the WHERE clause (illegal; use HAVING instead), or omitting a non-aggregated column from the GROUP BY clause.",
+    "eli5Story": "Grouping and aggregating data on MovieReviews: List movie genres maintaining a stellar average rating of 4.0 or higher.",
+    "commonMistakes": "Using WHERE instead of HAVING for aggregate conditions, forgetting GROUP BY when projecting both raw columns and aggregates, or placing HAVING before GROUP BY.",
+    "learningOutcomes": "Mastered 4.9 Filtering Groups with HAVING on MovieReviews.",
+    "challengeSlots": [
+      {
+        "type": "keyword",
+        "value": "SELECT"
+      },
+      {
+        "type": "column",
+        "value": "genre,"
+      },
+      {
+        "type": "column",
+        "value": "ROUND(AVG(star_rating),"
+      },
+      {
+        "type": "column",
+        "value": "2)"
+      },
+      {
+        "type": "keyword",
+        "value": "AS"
+      },
+      {
+        "type": "column",
+        "value": "avg_rating"
+      },
+      {
+        "type": "keyword",
+        "value": "FROM"
+      },
+      {
+        "type": "table",
+        "value": "MovieReviews"
+      },
+      {
+        "type": "keyword",
+        "value": "GROUP"
+      },
+      {
+        "type": "keyword",
+        "value": "BY"
+      },
+      {
+        "type": "column",
+        "value": "genre"
+      },
+      {
+        "type": "keyword",
+        "value": "HAVING"
+      },
+      {
+        "type": "column",
+        "value": "AVG(star_rating)"
+      },
+      {
+        "type": "column",
+        "value": ">="
+      },
+      {
+        "type": "column",
+        "value": "4.0;"
+      }
+    ]
+  },
+  {
+    "drillNumber": 389,
+    "subcluster": "4.9 Filtering Groups with HAVING",
+    "level": "Level 3 (HAVING Clauses)",
+    "title": "Syntax #389: Find origin airports operating 3 or more outgoing flights",
+    "table": "FlightSchedule",
+    "scenario": "Find origin airports operating 3 or more outgoing flights.",
+    "businessObjective": "Find origin airports operating 3 or more outgoing flights.",
+    "schemaSnippet": "FlightSchedule schema",
+    "targetQuery": "SELECT origin_airport, COUNT(*) AS flight_count\nFROM FlightSchedule\nGROUP BY origin_airport\nHAVING COUNT(*) >= 3;",
+    "syntaxBlueprint": "SELECT origin_airport, COUNT(*) AS flight_count\nFROM FlightSchedule\nGROUP BY origin_airport\nHAVING COUNT(*) >= 3;",
+    "syntaxRule": "Aggregate functions compute summary metrics. In GROUP BY queries, every column in SELECT must either be aggregated or listed in GROUP BY. Filter rows with WHERE; filter aggregate groups with HAVING.",
+    "syntaxTrap": "Writing an aggregate function like 'WHERE COUNT(*) > 1' in the WHERE clause (illegal; use HAVING instead), or omitting a non-aggregated column from the GROUP BY clause.",
+    "eli5Story": "Grouping and aggregating data on FlightSchedule: Find origin airports operating 3 or more outgoing flights.",
+    "commonMistakes": "Using WHERE instead of HAVING for aggregate conditions, forgetting GROUP BY when projecting both raw columns and aggregates, or placing HAVING before GROUP BY.",
+    "learningOutcomes": "Mastered 4.9 Filtering Groups with HAVING on FlightSchedule.",
+    "challengeSlots": [
+      {
+        "type": "keyword",
+        "value": "SELECT"
+      },
+      {
+        "type": "column",
+        "value": "origin_airport,"
+      },
+      {
+        "type": "column",
+        "value": "COUNT(*)"
+      },
+      {
+        "type": "keyword",
+        "value": "AS"
+      },
+      {
+        "type": "column",
+        "value": "flight_count"
+      },
+      {
+        "type": "keyword",
+        "value": "FROM"
+      },
+      {
+        "type": "table",
+        "value": "FlightSchedule"
+      },
+      {
+        "type": "keyword",
+        "value": "GROUP"
+      },
+      {
+        "type": "keyword",
+        "value": "BY"
+      },
+      {
+        "type": "column",
+        "value": "origin_airport"
+      },
+      {
+        "type": "keyword",
+        "value": "HAVING"
+      },
+      {
+        "type": "column",
+        "value": "COUNT(*)"
+      },
+      {
+        "type": "column",
+        "value": ">="
+      },
+      {
+        "type": "column",
+        "value": "3;"
+      }
+    ]
+  },
+  {
+    "drillNumber": 390,
+    "subcluster": "4.9 Filtering Groups with HAVING",
+    "level": "Level 3 (HAVING Clauses)",
+    "title": "Syntax #390: Find species whose average patient weight exceeds 10.0 kilograms",
+    "table": "PetClinic",
+    "scenario": "Find species whose average patient weight exceeds 10.0 kilograms.",
+    "businessObjective": "Find species whose average patient weight exceeds 10.0 kilograms.",
+    "schemaSnippet": "PetClinic schema",
+    "targetQuery": "SELECT species, ROUND(AVG(weight_kg), 1) AS avg_weight\nFROM PetClinic\nGROUP BY species\nHAVING AVG(weight_kg) > 10.0;",
+    "syntaxBlueprint": "SELECT species, ROUND(AVG(weight_kg), 1) AS avg_weight\nFROM PetClinic\nGROUP BY species\nHAVING AVG(weight_kg) > 10.0;",
+    "syntaxRule": "Aggregate functions compute summary metrics. In GROUP BY queries, every column in SELECT must either be aggregated or listed in GROUP BY. Filter rows with WHERE; filter aggregate groups with HAVING.",
+    "syntaxTrap": "Writing an aggregate function like 'WHERE COUNT(*) > 1' in the WHERE clause (illegal; use HAVING instead), or omitting a non-aggregated column from the GROUP BY clause.",
+    "eli5Story": "Grouping and aggregating data on PetClinic: Find species whose average patient weight exceeds 10.0 kilograms.",
+    "commonMistakes": "Using WHERE instead of HAVING for aggregate conditions, forgetting GROUP BY when projecting both raw columns and aggregates, or placing HAVING before GROUP BY.",
+    "learningOutcomes": "Mastered 4.9 Filtering Groups with HAVING on PetClinic.",
+    "challengeSlots": [
+      {
+        "type": "keyword",
+        "value": "SELECT"
+      },
+      {
+        "type": "column",
+        "value": "species,"
+      },
+      {
+        "type": "column",
+        "value": "ROUND(AVG(weight_kg),"
+      },
+      {
+        "type": "column",
+        "value": "1)"
+      },
+      {
+        "type": "keyword",
+        "value": "AS"
+      },
+      {
+        "type": "column",
+        "value": "avg_weight"
+      },
+      {
+        "type": "keyword",
+        "value": "FROM"
+      },
+      {
+        "type": "table",
+        "value": "PetClinic"
+      },
+      {
+        "type": "keyword",
+        "value": "GROUP"
+      },
+      {
+        "type": "keyword",
+        "value": "BY"
+      },
+      {
+        "type": "column",
+        "value": "species"
+      },
+      {
+        "type": "keyword",
+        "value": "HAVING"
+      },
+      {
+        "type": "column",
+        "value": "AVG(weight_kg)"
+      },
+      {
+        "type": "column",
+        "value": ">"
+      },
+      {
+        "type": "column",
+        "value": "10.0;"
+      }
+    ]
+  },
+  {
+    "drillNumber": 391,
+    "subcluster": "4.10 Full Lifecycle SQL & Bug Hunts",
+    "level": "Level 3 (Bug Hunts & Full Pipelines)",
+    "title": "Syntax #391: Full lifecycle query: filter by salary > 50000, group by department, keep groups with >= 2 staff, and order descending",
+    "table": "Employees",
+    "scenario": "Full lifecycle query: filter by salary > 50000, group by department, keep groups with >= 2 staff, and order descending.",
+    "businessObjective": "Full lifecycle query: filter by salary > 50000, group by department, keep groups with >= 2 staff, and order descending.",
+    "schemaSnippet": "Employees schema",
+    "targetQuery": "SELECT department, COUNT(*) AS staff_count\nFROM Employees\nWHERE salary > 50000\nGROUP BY department\nHAVING COUNT(*) >= 2\nORDER BY staff_count DESC;",
+    "syntaxBlueprint": "SELECT undefined\nFROM Employees;",
+    "syntaxRule": "Aggregate functions compute summary metrics. In GROUP BY queries, every column in SELECT must either be aggregated or listed in GROUP BY. Filter rows with WHERE; filter aggregate groups with HAVING.",
+    "syntaxTrap": "Writing an aggregate function like 'WHERE COUNT(*) > 1' in the WHERE clause (illegal; use HAVING instead), or omitting a non-aggregated column from the GROUP BY clause.",
+    "eli5Story": "Grouping and aggregating data on Employees: Full lifecycle query: filter by salary > 50000, group by department, keep groups with >= 2 staff, and order descending.",
+    "commonMistakes": "Using WHERE instead of HAVING for aggregate conditions, forgetting GROUP BY when projecting both raw columns and aggregates, or placing HAVING before GROUP BY.",
+    "learningOutcomes": "Mastered 4.10 Full Lifecycle SQL & Bug Hunts on Employees.",
+    "challengeSlots": [
+      {
+        "type": "keyword",
+        "value": "SELECT"
+      },
+      {
+        "type": "column",
+        "value": "department,"
+      },
+      {
+        "type": "column",
+        "value": "COUNT(*)"
+      },
+      {
+        "type": "keyword",
+        "value": "AS"
+      },
+      {
+        "type": "column",
+        "value": "staff_count"
+      },
+      {
+        "type": "keyword",
+        "value": "FROM"
+      },
+      {
+        "type": "table",
+        "value": "Employees"
+      },
+      {
+        "type": "keyword",
+        "value": "WHERE"
+      },
+      {
+        "type": "column",
+        "value": "salary"
+      },
+      {
+        "type": "column",
+        "value": ">"
+      },
+      {
+        "type": "column",
+        "value": "50000"
+      },
+      {
+        "type": "keyword",
+        "value": "GROUP"
+      },
+      {
+        "type": "keyword",
+        "value": "BY"
+      },
+      {
+        "type": "column",
+        "value": "department"
+      },
+      {
+        "type": "keyword",
+        "value": "HAVING"
+      },
+      {
+        "type": "column",
+        "value": "COUNT(*)"
+      },
+      {
+        "type": "column",
+        "value": ">="
+      },
+      {
+        "type": "column",
+        "value": "2"
+      },
+      {
+        "type": "keyword",
+        "value": "ORDER"
+      },
+      {
+        "type": "keyword",
+        "value": "BY"
+      },
+      {
+        "type": "column",
+        "value": "staff_count"
+      },
+      {
+        "type": "keyword",
+        "value": "DESC;"
+      }
+    ]
+  },
+  {
+    "drillNumber": 392,
+    "subcluster": "4.10 Full Lifecycle SQL & Bug Hunts",
+    "level": "Level 3 (Bug Hunts & Full Pipelines)",
+    "title": "Syntax #392: Filter recent students (>= 2023), group by major, filter high-GPA majors (>= 3.5), and sort top 3",
+    "table": "Students",
+    "scenario": "Filter recent students (>= 2023), group by major, filter high-GPA majors (>= 3.5), and sort top 3.",
+    "businessObjective": "Filter recent students (>= 2023), group by major, filter high-GPA majors (>= 3.5), and sort top 3.",
+    "schemaSnippet": "Students schema",
+    "targetQuery": "SELECT major, ROUND(AVG(gpa), 2) AS avg_gpa\nFROM Students\nWHERE enrolled_year >= 2023\nGROUP BY major\nHAVING AVG(gpa) >= 3.5\nORDER BY avg_gpa DESC\nLIMIT 3;",
+    "syntaxBlueprint": "SELECT undefined\nFROM Students;",
+    "syntaxRule": "Aggregate functions compute summary metrics. In GROUP BY queries, every column in SELECT must either be aggregated or listed in GROUP BY. Filter rows with WHERE; filter aggregate groups with HAVING.",
+    "syntaxTrap": "Writing an aggregate function like 'WHERE COUNT(*) > 1' in the WHERE clause (illegal; use HAVING instead), or omitting a non-aggregated column from the GROUP BY clause.",
+    "eli5Story": "Grouping and aggregating data on Students: Filter recent students (>= 2023), group by major, filter high-GPA majors (>= 3.5), and sort top 3.",
+    "commonMistakes": "Using WHERE instead of HAVING for aggregate conditions, forgetting GROUP BY when projecting both raw columns and aggregates, or placing HAVING before GROUP BY.",
+    "learningOutcomes": "Mastered 4.10 Full Lifecycle SQL & Bug Hunts on Students.",
+    "challengeSlots": [
+      {
+        "type": "keyword",
+        "value": "SELECT"
+      },
+      {
+        "type": "column",
+        "value": "major,"
+      },
+      {
+        "type": "column",
+        "value": "ROUND(AVG(gpa),"
+      },
+      {
+        "type": "column",
+        "value": "2)"
+      },
+      {
+        "type": "keyword",
+        "value": "AS"
+      },
+      {
+        "type": "column",
+        "value": "avg_gpa"
+      },
+      {
+        "type": "keyword",
+        "value": "FROM"
+      },
+      {
+        "type": "table",
+        "value": "Students"
+      },
+      {
+        "type": "keyword",
+        "value": "WHERE"
+      },
+      {
+        "type": "column",
+        "value": "enrolled_year"
+      },
+      {
+        "type": "column",
+        "value": ">="
+      },
+      {
+        "type": "column",
+        "value": "2023"
+      },
+      {
+        "type": "keyword",
+        "value": "GROUP"
+      },
+      {
+        "type": "keyword",
+        "value": "BY"
+      },
+      {
+        "type": "column",
+        "value": "major"
+      },
+      {
+        "type": "keyword",
+        "value": "HAVING"
+      },
+      {
+        "type": "column",
+        "value": "AVG(gpa)"
+      },
+      {
+        "type": "column",
+        "value": ">="
+      },
+      {
+        "type": "column",
+        "value": "3.5"
+      },
+      {
+        "type": "keyword",
+        "value": "ORDER"
+      },
+      {
+        "type": "keyword",
+        "value": "BY"
+      },
+      {
+        "type": "column",
+        "value": "avg_gpa"
+      },
+      {
+        "type": "keyword",
+        "value": "DESC"
+      },
+      {
+        "type": "keyword",
+        "value": "LIMIT"
+      },
+      {
+        "type": "column",
+        "value": "3;"
+      }
+    ]
+  },
+  {
+    "drillNumber": 393,
+    "subcluster": "4.10 Full Lifecycle SQL & Bug Hunts",
+    "level": "Level 3 (Bug Hunts & Full Pipelines)",
+    "title": "Syntax #393: Fix the WHERE vs HAVING trap: replace 'WHERE COUNT(*) >= 2' with 'HAVING COUNT(*) >= 2' (aggregates cannot be in WHERE)",
+    "table": "Books",
+    "scenario": "Fix the WHERE vs HAVING trap: replace 'WHERE COUNT(*) >= 2' with 'HAVING COUNT(*) >= 2' (aggregates cannot be in WHERE).",
+    "businessObjective": "Fix the WHERE vs HAVING trap: replace 'WHERE COUNT(*) >= 2' with 'HAVING COUNT(*) >= 2' (aggregates cannot be in WHERE).",
+    "schemaSnippet": "Books schema",
+    "targetQuery": "SELECT genre, COUNT(*) AS title_count\nFROM Books\nGROUP BY genre\nHAVING COUNT(*) >= 2\nORDER BY title_count DESC;",
+    "syntaxBlueprint": "SELECT undefined\nFROM Books;",
+    "syntaxRule": "Aggregate functions compute summary metrics. In GROUP BY queries, every column in SELECT must either be aggregated or listed in GROUP BY. Filter rows with WHERE; filter aggregate groups with HAVING.",
+    "syntaxTrap": "Writing an aggregate function like 'WHERE COUNT(*) > 1' in the WHERE clause (illegal; use HAVING instead), or omitting a non-aggregated column from the GROUP BY clause.",
+    "eli5Story": "Grouping and aggregating data on Books: Fix the WHERE vs HAVING trap: replace 'WHERE COUNT(*) >= 2' with 'HAVING COUNT(*) >= 2' (aggregates cannot be in WHERE).",
+    "commonMistakes": "Using WHERE instead of HAVING for aggregate conditions, forgetting GROUP BY when projecting both raw columns and aggregates, or placing HAVING before GROUP BY.",
+    "learningOutcomes": "Mastered 4.10 Full Lifecycle SQL & Bug Hunts on Books.",
+    "challengeSlots": [
+      {
+        "type": "keyword",
+        "value": "SELECT"
+      },
+      {
+        "type": "column",
+        "value": "genre,"
+      },
+      {
+        "type": "column",
+        "value": "COUNT(*)"
+      },
+      {
+        "type": "keyword",
+        "value": "AS"
+      },
+      {
+        "type": "column",
+        "value": "title_count"
+      },
+      {
+        "type": "keyword",
+        "value": "FROM"
+      },
+      {
+        "type": "table",
+        "value": "Books"
+      },
+      {
+        "type": "keyword",
+        "value": "GROUP"
+      },
+      {
+        "type": "keyword",
+        "value": "BY"
+      },
+      {
+        "type": "column",
+        "value": "genre"
+      },
+      {
+        "type": "keyword",
+        "value": "HAVING"
+      },
+      {
+        "type": "column",
+        "value": "COUNT(*)"
+      },
+      {
+        "type": "column",
+        "value": ">="
+      },
+      {
+        "type": "column",
+        "value": "2"
+      },
+      {
+        "type": "keyword",
+        "value": "ORDER"
+      },
+      {
+        "type": "keyword",
+        "value": "BY"
+      },
+      {
+        "type": "column",
+        "value": "title_count"
+      },
+      {
+        "type": "keyword",
+        "value": "DESC;"
+      }
+    ]
+  },
+  {
+    "drillNumber": 394,
+    "subcluster": "4.10 Full Lifecycle SQL & Bug Hunts",
+    "level": "Level 3 (Bug Hunts & Full Pipelines)",
+    "title": "Syntax #394: Properly combine row filtering in WHERE (stock_units > 10) with group filtering in HAVING (avg_price > 3.00)",
+    "table": "GroceryItems",
+    "scenario": "Properly combine row filtering in WHERE (stock_units > 10) with group filtering in HAVING (avg_price > 3.00).",
+    "businessObjective": "Properly combine row filtering in WHERE (stock_units > 10) with group filtering in HAVING (avg_price > 3.00).",
+    "schemaSnippet": "GroceryItems schema",
+    "targetQuery": "SELECT category, ROUND(AVG(unit_price), 2) AS avg_price\nFROM GroceryItems\nWHERE stock_units > 10\nGROUP BY category\nHAVING AVG(unit_price) > 3.00\nORDER BY avg_price ASC;",
+    "syntaxBlueprint": "SELECT undefined\nFROM GroceryItems;",
+    "syntaxRule": "Aggregate functions compute summary metrics. In GROUP BY queries, every column in SELECT must either be aggregated or listed in GROUP BY. Filter rows with WHERE; filter aggregate groups with HAVING.",
+    "syntaxTrap": "Writing an aggregate function like 'WHERE COUNT(*) > 1' in the WHERE clause (illegal; use HAVING instead), or omitting a non-aggregated column from the GROUP BY clause.",
+    "eli5Story": "Grouping and aggregating data on GroceryItems: Properly combine row filtering in WHERE (stock_units > 10) with group filtering in HAVING (avg_price > 3.00).",
+    "commonMistakes": "Using WHERE instead of HAVING for aggregate conditions, forgetting GROUP BY when projecting both raw columns and aggregates, or placing HAVING before GROUP BY.",
+    "learningOutcomes": "Mastered 4.10 Full Lifecycle SQL & Bug Hunts on GroceryItems.",
+    "challengeSlots": [
+      {
+        "type": "keyword",
+        "value": "SELECT"
+      },
+      {
+        "type": "column",
+        "value": "category,"
+      },
+      {
+        "type": "column",
+        "value": "ROUND(AVG(unit_price),"
+      },
+      {
+        "type": "column",
+        "value": "2)"
+      },
+      {
+        "type": "keyword",
+        "value": "AS"
+      },
+      {
+        "type": "column",
+        "value": "avg_price"
+      },
+      {
+        "type": "keyword",
+        "value": "FROM"
+      },
+      {
+        "type": "table",
+        "value": "GroceryItems"
+      },
+      {
+        "type": "keyword",
+        "value": "WHERE"
+      },
+      {
+        "type": "column",
+        "value": "stock_units"
+      },
+      {
+        "type": "column",
+        "value": ">"
+      },
+      {
+        "type": "column",
+        "value": "10"
+      },
+      {
+        "type": "keyword",
+        "value": "GROUP"
+      },
+      {
+        "type": "keyword",
+        "value": "BY"
+      },
+      {
+        "type": "column",
+        "value": "category"
+      },
+      {
+        "type": "keyword",
+        "value": "HAVING"
+      },
+      {
+        "type": "column",
+        "value": "AVG(unit_price)"
+      },
+      {
+        "type": "column",
+        "value": ">"
+      },
+      {
+        "type": "column",
+        "value": "3.00"
+      },
+      {
+        "type": "keyword",
+        "value": "ORDER"
+      },
+      {
+        "type": "keyword",
+        "value": "BY"
+      },
+      {
+        "type": "column",
+        "value": "avg_price"
+      },
+      {
+        "type": "keyword",
+        "value": "ASC;"
+      }
+    ]
+  },
+  {
+    "drillNumber": 395,
+    "subcluster": "4.10 Full Lifecycle SQL & Bug Hunts",
+    "level": "Level 3 (Bug Hunts & Full Pipelines)",
+    "title": "Syntax #395: Full lifecycle sales pipeline: filter delivered orders, group by city, filter revenue > 500, order by top revenue",
+    "table": "Orders",
+    "scenario": "Full lifecycle sales pipeline: filter delivered orders, group by city, filter revenue > 500, order by top revenue.",
+    "businessObjective": "Full lifecycle sales pipeline: filter delivered orders, group by city, filter revenue > 500, order by top revenue.",
+    "schemaSnippet": "Orders schema",
+    "targetQuery": "SELECT shipping_city, SUM(quantity * unit_price) AS total_revenue\nFROM Orders\nWHERE order_status = 'Delivered'\nGROUP BY shipping_city\nHAVING SUM(quantity * unit_price) > 500\nORDER BY total_revenue DESC;",
+    "syntaxBlueprint": "SELECT undefined\nFROM Orders;",
+    "syntaxRule": "Aggregate functions compute summary metrics. In GROUP BY queries, every column in SELECT must either be aggregated or listed in GROUP BY. Filter rows with WHERE; filter aggregate groups with HAVING.",
+    "syntaxTrap": "Writing an aggregate function like 'WHERE COUNT(*) > 1' in the WHERE clause (illegal; use HAVING instead), or omitting a non-aggregated column from the GROUP BY clause.",
+    "eli5Story": "Grouping and aggregating data on Orders: Full lifecycle sales pipeline: filter delivered orders, group by city, filter revenue > 500, order by top revenue.",
+    "commonMistakes": "Using WHERE instead of HAVING for aggregate conditions, forgetting GROUP BY when projecting both raw columns and aggregates, or placing HAVING before GROUP BY.",
+    "learningOutcomes": "Mastered 4.10 Full Lifecycle SQL & Bug Hunts on Orders.",
+    "challengeSlots": [
+      {
+        "type": "keyword",
+        "value": "SELECT"
+      },
+      {
+        "type": "column",
+        "value": "shipping_city,"
+      },
+      {
+        "type": "column",
+        "value": "SUM(quantity"
+      },
+      {
+        "type": "column",
+        "value": "*"
+      },
+      {
+        "type": "column",
+        "value": "unit_price)"
+      },
+      {
+        "type": "keyword",
+        "value": "AS"
+      },
+      {
+        "type": "column",
+        "value": "total_revenue"
+      },
+      {
+        "type": "keyword",
+        "value": "FROM"
+      },
+      {
+        "type": "table",
+        "value": "Orders"
+      },
+      {
+        "type": "keyword",
+        "value": "WHERE"
+      },
+      {
+        "type": "column",
+        "value": "order_status"
+      },
+      {
+        "type": "column",
+        "value": "="
+      },
+      {
+        "type": "column",
+        "value": "'Delivered'"
+      },
+      {
+        "type": "keyword",
+        "value": "GROUP"
+      },
+      {
+        "type": "keyword",
+        "value": "BY"
+      },
+      {
+        "type": "column",
+        "value": "shipping_city"
+      },
+      {
+        "type": "keyword",
+        "value": "HAVING"
+      },
+      {
+        "type": "column",
+        "value": "SUM(quantity"
+      },
+      {
+        "type": "column",
+        "value": "*"
+      },
+      {
+        "type": "column",
+        "value": "unit_price)"
+      },
+      {
+        "type": "column",
+        "value": ">"
+      },
+      {
+        "type": "column",
+        "value": "500"
+      },
+      {
+        "type": "keyword",
+        "value": "ORDER"
+      },
+      {
+        "type": "keyword",
+        "value": "BY"
+      },
+      {
+        "type": "column",
+        "value": "total_revenue"
+      },
+      {
+        "type": "keyword",
+        "value": "DESC;"
+      }
+    ]
+  },
+  {
+    "drillNumber": 396,
+    "subcluster": "4.10 Full Lifecycle SQL & Bug Hunts",
+    "level": "Level 3 (Bug Hunts & Full Pipelines)",
+    "title": "Syntax #396: Fix the missing GROUP BY error: 'SELECT genre, COUNT(*) FROM MusicTracks ORDER BY 2 DESC;' (must GROUP BY genre)",
+    "table": "MusicTracks",
+    "scenario": "Fix the missing GROUP BY error: 'SELECT genre, COUNT(*) FROM MusicTracks ORDER BY 2 DESC;' (must GROUP BY genre).",
+    "businessObjective": "Fix the missing GROUP BY error: 'SELECT genre, COUNT(*) FROM MusicTracks ORDER BY 2 DESC;' (must GROUP BY genre).",
+    "schemaSnippet": "MusicTracks schema",
+    "targetQuery": "SELECT genre, COUNT(*) AS track_count\nFROM MusicTracks\nGROUP BY genre\nORDER BY track_count DESC\nLIMIT 5;",
+    "syntaxBlueprint": "SELECT undefined\nFROM MusicTracks;",
+    "syntaxRule": "Aggregate functions compute summary metrics. In GROUP BY queries, every column in SELECT must either be aggregated or listed in GROUP BY. Filter rows with WHERE; filter aggregate groups with HAVING.",
+    "syntaxTrap": "Writing an aggregate function like 'WHERE COUNT(*) > 1' in the WHERE clause (illegal; use HAVING instead), or omitting a non-aggregated column from the GROUP BY clause.",
+    "eli5Story": "Grouping and aggregating data on MusicTracks: Fix the missing GROUP BY error: 'SELECT genre, COUNT(*) FROM MusicTracks ORDER BY 2 DESC;' (must GROUP BY genre).",
+    "commonMistakes": "Using WHERE instead of HAVING for aggregate conditions, forgetting GROUP BY when projecting both raw columns and aggregates, or placing HAVING before GROUP BY.",
+    "learningOutcomes": "Mastered 4.10 Full Lifecycle SQL & Bug Hunts on MusicTracks.",
+    "challengeSlots": [
+      {
+        "type": "keyword",
+        "value": "SELECT"
+      },
+      {
+        "type": "column",
+        "value": "genre,"
+      },
+      {
+        "type": "column",
+        "value": "COUNT(*)"
+      },
+      {
+        "type": "keyword",
+        "value": "AS"
+      },
+      {
+        "type": "column",
+        "value": "track_count"
+      },
+      {
+        "type": "keyword",
+        "value": "FROM"
+      },
+      {
+        "type": "table",
+        "value": "MusicTracks"
+      },
+      {
+        "type": "keyword",
+        "value": "GROUP"
+      },
+      {
+        "type": "keyword",
+        "value": "BY"
+      },
+      {
+        "type": "column",
+        "value": "genre"
+      },
+      {
+        "type": "keyword",
+        "value": "ORDER"
+      },
+      {
+        "type": "keyword",
+        "value": "BY"
+      },
+      {
+        "type": "column",
+        "value": "track_count"
+      },
+      {
+        "type": "keyword",
+        "value": "DESC"
+      },
+      {
+        "type": "keyword",
+        "value": "LIMIT"
+      },
+      {
+        "type": "column",
+        "value": "5;"
+      }
+    ]
+  },
+  {
+    "drillNumber": 397,
+    "subcluster": "4.10 Full Lifecycle SQL & Bug Hunts",
+    "level": "Level 3 (Bug Hunts & Full Pipelines)",
+    "title": "Syntax #397: Filter active gym members, group by plan, enforce active_count >= 2 with HAVING, and order descending",
+    "table": "GymMembers",
+    "scenario": "Filter active gym members, group by plan, enforce active_count >= 2 with HAVING, and order descending.",
+    "businessObjective": "Filter active gym members, group by plan, enforce active_count >= 2 with HAVING, and order descending.",
+    "schemaSnippet": "GymMembers schema",
+    "targetQuery": "SELECT membership_plan, COUNT(*) AS active_count\nFROM GymMembers\nWHERE is_active = 1\nGROUP BY membership_plan\nHAVING COUNT(*) >= 2\nORDER BY active_count DESC;",
+    "syntaxBlueprint": "SELECT undefined\nFROM GymMembers;",
+    "syntaxRule": "Aggregate functions compute summary metrics. In GROUP BY queries, every column in SELECT must either be aggregated or listed in GROUP BY. Filter rows with WHERE; filter aggregate groups with HAVING.",
+    "syntaxTrap": "Writing an aggregate function like 'WHERE COUNT(*) > 1' in the WHERE clause (illegal; use HAVING instead), or omitting a non-aggregated column from the GROUP BY clause.",
+    "eli5Story": "Grouping and aggregating data on GymMembers: Filter active gym members, group by plan, enforce active_count >= 2 with HAVING, and order descending.",
+    "commonMistakes": "Using WHERE instead of HAVING for aggregate conditions, forgetting GROUP BY when projecting both raw columns and aggregates, or placing HAVING before GROUP BY.",
+    "learningOutcomes": "Mastered 4.10 Full Lifecycle SQL & Bug Hunts on GymMembers.",
+    "challengeSlots": [
+      {
+        "type": "keyword",
+        "value": "SELECT"
+      },
+      {
+        "type": "column",
+        "value": "membership_plan,"
+      },
+      {
+        "type": "column",
+        "value": "COUNT(*)"
+      },
+      {
+        "type": "keyword",
+        "value": "AS"
+      },
+      {
+        "type": "column",
+        "value": "active_count"
+      },
+      {
+        "type": "keyword",
+        "value": "FROM"
+      },
+      {
+        "type": "table",
+        "value": "GymMembers"
+      },
+      {
+        "type": "keyword",
+        "value": "WHERE"
+      },
+      {
+        "type": "column",
+        "value": "is_active"
+      },
+      {
+        "type": "column",
+        "value": "="
+      },
+      {
+        "type": "column",
+        "value": "1"
+      },
+      {
+        "type": "keyword",
+        "value": "GROUP"
+      },
+      {
+        "type": "keyword",
+        "value": "BY"
+      },
+      {
+        "type": "column",
+        "value": "membership_plan"
+      },
+      {
+        "type": "keyword",
+        "value": "HAVING"
+      },
+      {
+        "type": "column",
+        "value": "COUNT(*)"
+      },
+      {
+        "type": "column",
+        "value": ">="
+      },
+      {
+        "type": "column",
+        "value": "2"
+      },
+      {
+        "type": "keyword",
+        "value": "ORDER"
+      },
+      {
+        "type": "keyword",
+        "value": "BY"
+      },
+      {
+        "type": "column",
+        "value": "active_count"
+      },
+      {
+        "type": "keyword",
+        "value": "DESC;"
+      }
+    ]
+  },
+  {
+    "drillNumber": 398,
+    "subcluster": "4.10 Full Lifecycle SQL & Bug Hunts",
+    "level": "Level 3 (Bug Hunts & Full Pipelines)",
+    "title": "Syntax #398: Filter reviews >= 3.0 stars, group by release year, filter years with >= 2 reviews, and sort chronologically",
+    "table": "MovieReviews",
+    "scenario": "Filter reviews >= 3.0 stars, group by release year, filter years with >= 2 reviews, and sort chronologically.",
+    "businessObjective": "Filter reviews >= 3.0 stars, group by release year, filter years with >= 2 reviews, and sort chronologically.",
+    "schemaSnippet": "MovieReviews schema",
+    "targetQuery": "SELECT release_year, ROUND(AVG(star_rating), 2) AS avg_rating\nFROM MovieReviews\nWHERE star_rating >= 3.0\nGROUP BY release_year\nHAVING COUNT(*) >= 2\nORDER BY release_year ASC;",
+    "syntaxBlueprint": "SELECT undefined\nFROM MovieReviews;",
+    "syntaxRule": "Aggregate functions compute summary metrics. In GROUP BY queries, every column in SELECT must either be aggregated or listed in GROUP BY. Filter rows with WHERE; filter aggregate groups with HAVING.",
+    "syntaxTrap": "Writing an aggregate function like 'WHERE COUNT(*) > 1' in the WHERE clause (illegal; use HAVING instead), or omitting a non-aggregated column from the GROUP BY clause.",
+    "eli5Story": "Grouping and aggregating data on MovieReviews: Filter reviews >= 3.0 stars, group by release year, filter years with >= 2 reviews, and sort chronologically.",
+    "commonMistakes": "Using WHERE instead of HAVING for aggregate conditions, forgetting GROUP BY when projecting both raw columns and aggregates, or placing HAVING before GROUP BY.",
+    "learningOutcomes": "Mastered 4.10 Full Lifecycle SQL & Bug Hunts on MovieReviews.",
+    "challengeSlots": [
+      {
+        "type": "keyword",
+        "value": "SELECT"
+      },
+      {
+        "type": "column",
+        "value": "release_year,"
+      },
+      {
+        "type": "column",
+        "value": "ROUND(AVG(star_rating),"
+      },
+      {
+        "type": "column",
+        "value": "2)"
+      },
+      {
+        "type": "keyword",
+        "value": "AS"
+      },
+      {
+        "type": "column",
+        "value": "avg_rating"
+      },
+      {
+        "type": "keyword",
+        "value": "FROM"
+      },
+      {
+        "type": "table",
+        "value": "MovieReviews"
+      },
+      {
+        "type": "keyword",
+        "value": "WHERE"
+      },
+      {
+        "type": "column",
+        "value": "star_rating"
+      },
+      {
+        "type": "column",
+        "value": ">="
+      },
+      {
+        "type": "column",
+        "value": "3.0"
+      },
+      {
+        "type": "keyword",
+        "value": "GROUP"
+      },
+      {
+        "type": "keyword",
+        "value": "BY"
+      },
+      {
+        "type": "column",
+        "value": "release_year"
+      },
+      {
+        "type": "keyword",
+        "value": "HAVING"
+      },
+      {
+        "type": "column",
+        "value": "COUNT(*)"
+      },
+      {
+        "type": "column",
+        "value": ">="
+      },
+      {
+        "type": "column",
+        "value": "2"
+      },
+      {
+        "type": "keyword",
+        "value": "ORDER"
+      },
+      {
+        "type": "keyword",
+        "value": "BY"
+      },
+      {
+        "type": "column",
+        "value": "release_year"
+      },
+      {
+        "type": "keyword",
+        "value": "ASC;"
+      }
+    ]
+  },
+  {
+    "drillNumber": 399,
+    "subcluster": "4.10 Full Lifecycle SQL & Bug Hunts",
+    "level": "Level 3 (Bug Hunts & Full Pipelines)",
+    "title": "Syntax #399: Analyze popular destinations: filter on-time flights, group by destination, filter count >= 2, return top 3",
+    "table": "FlightSchedule",
+    "scenario": "Analyze popular destinations: filter on-time flights, group by destination, filter count >= 2, return top 3.",
+    "businessObjective": "Analyze popular destinations: filter on-time flights, group by destination, filter count >= 2, return top 3.",
+    "schemaSnippet": "FlightSchedule schema",
+    "targetQuery": "SELECT destination_airport, COUNT(*) AS flight_count\nFROM FlightSchedule\nWHERE status = 'On Time'\nGROUP BY destination_airport\nHAVING COUNT(*) >= 2\nORDER BY flight_count DESC\nLIMIT 3;",
+    "syntaxBlueprint": "SELECT undefined\nFROM FlightSchedule;",
+    "syntaxRule": "Aggregate functions compute summary metrics. In GROUP BY queries, every column in SELECT must either be aggregated or listed in GROUP BY. Filter rows with WHERE; filter aggregate groups with HAVING.",
+    "syntaxTrap": "Writing an aggregate function like 'WHERE COUNT(*) > 1' in the WHERE clause (illegal; use HAVING instead), or omitting a non-aggregated column from the GROUP BY clause.",
+    "eli5Story": "Grouping and aggregating data on FlightSchedule: Analyze popular destinations: filter on-time flights, group by destination, filter count >= 2, return top 3.",
+    "commonMistakes": "Using WHERE instead of HAVING for aggregate conditions, forgetting GROUP BY when projecting both raw columns and aggregates, or placing HAVING before GROUP BY.",
+    "learningOutcomes": "Mastered 4.10 Full Lifecycle SQL & Bug Hunts on FlightSchedule.",
+    "challengeSlots": [
+      {
+        "type": "keyword",
+        "value": "SELECT"
+      },
+      {
+        "type": "column",
+        "value": "destination_airport,"
+      },
+      {
+        "type": "column",
+        "value": "COUNT(*)"
+      },
+      {
+        "type": "keyword",
+        "value": "AS"
+      },
+      {
+        "type": "column",
+        "value": "flight_count"
+      },
+      {
+        "type": "keyword",
+        "value": "FROM"
+      },
+      {
+        "type": "table",
+        "value": "FlightSchedule"
+      },
+      {
+        "type": "keyword",
+        "value": "WHERE"
+      },
+      {
+        "type": "column",
+        "value": "status"
+      },
+      {
+        "type": "column",
+        "value": "="
+      },
+      {
+        "type": "column",
+        "value": "'On"
+      },
+      {
+        "type": "column",
+        "value": "Time'"
+      },
+      {
+        "type": "keyword",
+        "value": "GROUP"
+      },
+      {
+        "type": "keyword",
+        "value": "BY"
+      },
+      {
+        "type": "column",
+        "value": "destination_airport"
+      },
+      {
+        "type": "keyword",
+        "value": "HAVING"
+      },
+      {
+        "type": "column",
+        "value": "COUNT(*)"
+      },
+      {
+        "type": "column",
+        "value": ">="
+      },
+      {
+        "type": "column",
+        "value": "2"
+      },
+      {
+        "type": "keyword",
+        "value": "ORDER"
+      },
+      {
+        "type": "keyword",
+        "value": "BY"
+      },
+      {
+        "type": "column",
+        "value": "flight_count"
+      },
+      {
+        "type": "keyword",
+        "value": "DESC"
+      },
+      {
+        "type": "keyword",
+        "value": "LIMIT"
+      },
+      {
+        "type": "column",
+        "value": "3;"
+      }
+    ]
+  },
+  {
+    "drillNumber": 400,
+    "subcluster": "4.10 Full Lifecycle SQL & Bug Hunts",
+    "level": "Level 3 (Bug Hunts & Full Pipelines)",
+    "title": "Syntax #400: Fix clause order trap: ensure WHERE comes before GROUP BY and HAVING comes after GROUP BY",
+    "table": "PetClinic",
+    "scenario": "Fix clause order trap: ensure WHERE comes before GROUP BY and HAVING comes after GROUP BY.",
+    "businessObjective": "Fix clause order trap: ensure WHERE comes before GROUP BY and HAVING comes after GROUP BY.",
+    "schemaSnippet": "PetClinic schema",
+    "targetQuery": "SELECT species, ROUND(AVG(weight_kg), 1) AS avg_weight\nFROM PetClinic\nWHERE age_years >= 1\nGROUP BY species\nHAVING AVG(weight_kg) > 5.0\nORDER BY avg_weight DESC;",
+    "syntaxBlueprint": "SELECT undefined\nFROM PetClinic;",
+    "syntaxRule": "Aggregate functions compute summary metrics. In GROUP BY queries, every column in SELECT must either be aggregated or listed in GROUP BY. Filter rows with WHERE; filter aggregate groups with HAVING.",
+    "syntaxTrap": "Writing an aggregate function like 'WHERE COUNT(*) > 1' in the WHERE clause (illegal; use HAVING instead), or omitting a non-aggregated column from the GROUP BY clause.",
+    "eli5Story": "Grouping and aggregating data on PetClinic: Fix clause order trap: ensure WHERE comes before GROUP BY and HAVING comes after GROUP BY.",
+    "commonMistakes": "Using WHERE instead of HAVING for aggregate conditions, forgetting GROUP BY when projecting both raw columns and aggregates, or placing HAVING before GROUP BY.",
+    "learningOutcomes": "Mastered 4.10 Full Lifecycle SQL & Bug Hunts on PetClinic.",
+    "challengeSlots": [
+      {
+        "type": "keyword",
+        "value": "SELECT"
+      },
+      {
+        "type": "column",
+        "value": "species,"
+      },
+      {
+        "type": "column",
+        "value": "ROUND(AVG(weight_kg),"
+      },
+      {
+        "type": "column",
+        "value": "1)"
+      },
+      {
+        "type": "keyword",
+        "value": "AS"
+      },
+      {
+        "type": "column",
+        "value": "avg_weight"
+      },
+      {
+        "type": "keyword",
+        "value": "FROM"
+      },
+      {
+        "type": "table",
+        "value": "PetClinic"
+      },
+      {
+        "type": "keyword",
+        "value": "WHERE"
+      },
+      {
+        "type": "column",
+        "value": "age_years"
+      },
+      {
+        "type": "column",
+        "value": ">="
+      },
+      {
+        "type": "column",
+        "value": "1"
+      },
+      {
+        "type": "keyword",
+        "value": "GROUP"
+      },
+      {
+        "type": "keyword",
+        "value": "BY"
+      },
+      {
+        "type": "column",
+        "value": "species"
+      },
+      {
+        "type": "keyword",
+        "value": "HAVING"
+      },
+      {
+        "type": "column",
+        "value": "AVG(weight_kg)"
+      },
+      {
+        "type": "column",
+        "value": ">"
+      },
+      {
+        "type": "column",
+        "value": "5.0"
+      },
+      {
+        "type": "keyword",
+        "value": "ORDER"
+      },
+      {
+        "type": "keyword",
+        "value": "BY"
+      },
+      {
+        "type": "column",
+        "value": "avg_weight"
+      },
+      {
+        "type": "keyword",
+        "value": "DESC;"
       }
     ]
   }
