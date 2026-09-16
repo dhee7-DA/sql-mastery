@@ -1,6 +1,6 @@
 // =============================================================================
-// SECTION 0: THE SQL SYNTAX GYM (1,000 Progressive In-Depth Micro-Drills)
-// Topics 1–10:
+// SECTION 0: THE SQL SYNTAX GYM (1,200 Progressive In-Depth Micro-Drills)
+// Topics 1–12:
 //   1. SELECT & Projections (#001–#100)
 //   2. WHERE & Predicates (#101–#200)
 //   3. ORDER BY & LIMIT Slicing (#201–#300)
@@ -11,6 +11,8 @@
 //   8. Advanced Joins & Structural Patterns (#701–#800)
 //   9. Multi-Table Chaining & Joined Aggregations (#801–#900)
 //  10. Date, Time & Temporal Arithmetic (#901–#1000)
+//  11. Subqueries & Derived Tables (#1001–#1100)
+//  12. Modular CTEs & Multi-Step Pipelines (#1101–#1200)
 // =============================================================================
 
 const SYNTAX_GYM_DRILLS = [
@@ -77147,6 +77149,24138 @@ const SYNTAX_GYM_DRILLS = [
       {
         "type": "keyword",
         "value": "DESC;"
+      }
+    ]
+  },
+  {
+    "drillNumber": 1001,
+    "subcluster": "11.1 Scalar Subqueries in WHERE (Above/Below Benchmark)",
+    "level": "Level 2 (Scalar Subquery)",
+    "title": "Syntax #1001: Find all students whose GPA is strictly above the campus-wide average",
+    "table": "Students",
+    "scenario": "Find all students whose GPA is strictly above the campus-wide average.",
+    "businessObjective": "Find all students whose GPA is strictly above the campus-wide average.",
+    "schemaSnippet": "Students relational schema",
+    "targetQuery": "SELECT full_name, gpa\nFROM Students\nWHERE gpa > (SELECT AVG(gpa) FROM Students);",
+    "syntaxBlueprint": "SELECT col1, col2\nFROM table_name\nWHERE metric > (SELECT AVG(metric) FROM table_name);",
+    "syntaxRule": "A scalar subquery returns exactly one value (1 row, 1 column). It can be used anywhere an atomic literal is expected, such as in WHERE comparisons.",
+    "syntaxTrap": "If the subquery returns multiple rows, standard comparison operators (=, >, <) will fail with a 'Subquery returns more than 1 row' runtime error.",
+    "eli5Story": "Subqueries & CTEs on Students: Find all students whose GPA is strictly above the campus-wide average.",
+    "commonMistakes": "Forgetting to alias derived tables in FROM, writing multiple WITH keywords in multi-CTE pipelines, or suffering the NOT IN NULL trap.",
+    "learningOutcomes": "Mastered 11.1 Scalar Subqueries in WHERE (Above/Below Benchmark) on Students.",
+    "challengeSlots": [
+      {
+        "type": "keyword",
+        "value": "SELECT"
+      },
+      {
+        "type": "column",
+        "value": "full_name,"
+      },
+      {
+        "type": "column",
+        "value": "gpa"
+      },
+      {
+        "type": "keyword",
+        "value": "FROM"
+      },
+      {
+        "type": "table",
+        "value": "Students"
+      },
+      {
+        "type": "keyword",
+        "value": "WHERE"
+      },
+      {
+        "type": "column",
+        "value": "gpa"
+      },
+      {
+        "type": "column",
+        "value": ">"
+      },
+      {
+        "type": "keyword",
+        "value": "(SELECT"
+      },
+      {
+        "type": "column",
+        "value": "AVG(gpa)"
+      },
+      {
+        "type": "keyword",
+        "value": "FROM"
+      },
+      {
+        "type": "table",
+        "value": "Students);"
+      }
+    ]
+  },
+  {
+    "drillNumber": 1002,
+    "subcluster": "11.1 Scalar Subqueries in WHERE (Above/Below Benchmark)",
+    "level": "Level 2 (Scalar Subquery)",
+    "title": "Syntax #1002: Filter books priced higher than the average catalog book price",
+    "table": "Books",
+    "scenario": "Filter books priced higher than the average catalog book price.",
+    "businessObjective": "Filter books priced higher than the average catalog book price.",
+    "schemaSnippet": "Books relational schema",
+    "targetQuery": "SELECT title, price\nFROM Books\nWHERE price > (SELECT AVG(price) FROM Books);",
+    "syntaxBlueprint": "SELECT col1, col2\nFROM table_name\nWHERE metric > (SELECT AVG(metric) FROM table_name);",
+    "syntaxRule": "A scalar subquery returns exactly one value (1 row, 1 column). It can be used anywhere an atomic literal is expected, such as in WHERE comparisons.",
+    "syntaxTrap": "If the subquery returns multiple rows, standard comparison operators (=, >, <) will fail with a 'Subquery returns more than 1 row' runtime error.",
+    "eli5Story": "Subqueries & CTEs on Books: Filter books priced higher than the average catalog book price.",
+    "commonMistakes": "Forgetting to alias derived tables in FROM, writing multiple WITH keywords in multi-CTE pipelines, or suffering the NOT IN NULL trap.",
+    "learningOutcomes": "Mastered 11.1 Scalar Subqueries in WHERE (Above/Below Benchmark) on Books.",
+    "challengeSlots": [
+      {
+        "type": "keyword",
+        "value": "SELECT"
+      },
+      {
+        "type": "column",
+        "value": "title,"
+      },
+      {
+        "type": "column",
+        "value": "price"
+      },
+      {
+        "type": "keyword",
+        "value": "FROM"
+      },
+      {
+        "type": "table",
+        "value": "Books"
+      },
+      {
+        "type": "keyword",
+        "value": "WHERE"
+      },
+      {
+        "type": "column",
+        "value": "price"
+      },
+      {
+        "type": "column",
+        "value": ">"
+      },
+      {
+        "type": "keyword",
+        "value": "(SELECT"
+      },
+      {
+        "type": "column",
+        "value": "AVG(price)"
+      },
+      {
+        "type": "keyword",
+        "value": "FROM"
+      },
+      {
+        "type": "table",
+        "value": "Books);"
+      }
+    ]
+  },
+  {
+    "drillNumber": 1003,
+    "subcluster": "11.1 Scalar Subqueries in WHERE (Above/Below Benchmark)",
+    "level": "Level 2 (Scalar Subquery)",
+    "title": "Syntax #1003: Find employees earning more than the company-wide average salary",
+    "table": "Employees",
+    "scenario": "Find employees earning more than the company-wide average salary.",
+    "businessObjective": "Find employees earning more than the company-wide average salary.",
+    "schemaSnippet": "Employees relational schema",
+    "targetQuery": "SELECT first_name, salary\nFROM Employees\nWHERE salary > (SELECT AVG(salary) FROM Employees);",
+    "syntaxBlueprint": "SELECT col1, col2\nFROM table_name\nWHERE metric > (SELECT AVG(metric) FROM table_name);",
+    "syntaxRule": "A scalar subquery returns exactly one value (1 row, 1 column). It can be used anywhere an atomic literal is expected, such as in WHERE comparisons.",
+    "syntaxTrap": "If the subquery returns multiple rows, standard comparison operators (=, >, <) will fail with a 'Subquery returns more than 1 row' runtime error.",
+    "eli5Story": "Subqueries & CTEs on Employees: Find employees earning more than the company-wide average salary.",
+    "commonMistakes": "Forgetting to alias derived tables in FROM, writing multiple WITH keywords in multi-CTE pipelines, or suffering the NOT IN NULL trap.",
+    "learningOutcomes": "Mastered 11.1 Scalar Subqueries in WHERE (Above/Below Benchmark) on Employees.",
+    "challengeSlots": [
+      {
+        "type": "keyword",
+        "value": "SELECT"
+      },
+      {
+        "type": "column",
+        "value": "first_name,"
+      },
+      {
+        "type": "column",
+        "value": "salary"
+      },
+      {
+        "type": "keyword",
+        "value": "FROM"
+      },
+      {
+        "type": "table",
+        "value": "Employees"
+      },
+      {
+        "type": "keyword",
+        "value": "WHERE"
+      },
+      {
+        "type": "column",
+        "value": "salary"
+      },
+      {
+        "type": "column",
+        "value": ">"
+      },
+      {
+        "type": "keyword",
+        "value": "(SELECT"
+      },
+      {
+        "type": "column",
+        "value": "AVG(salary)"
+      },
+      {
+        "type": "keyword",
+        "value": "FROM"
+      },
+      {
+        "type": "table",
+        "value": "Employees);"
+      }
+    ]
+  },
+  {
+    "drillNumber": 1004,
+    "subcluster": "11.1 Scalar Subqueries in WHERE (Above/Below Benchmark)",
+    "level": "Level 2 (Scalar Subquery)",
+    "title": "Syntax #1004: Find bargain grocery products priced below the store average",
+    "table": "GroceryItems",
+    "scenario": "Find bargain grocery products priced below the store average.",
+    "businessObjective": "Find bargain grocery products priced below the store average.",
+    "schemaSnippet": "GroceryItems relational schema",
+    "targetQuery": "SELECT item_name, unit_price\nFROM GroceryItems\nWHERE unit_price < (SELECT AVG(unit_price) FROM GroceryItems);",
+    "syntaxBlueprint": "SELECT col1, col2\nFROM table_name\nWHERE metric > (SELECT AVG(metric) FROM table_name);",
+    "syntaxRule": "A scalar subquery returns exactly one value (1 row, 1 column). It can be used anywhere an atomic literal is expected, such as in WHERE comparisons.",
+    "syntaxTrap": "If the subquery returns multiple rows, standard comparison operators (=, >, <) will fail with a 'Subquery returns more than 1 row' runtime error.",
+    "eli5Story": "Subqueries & CTEs on GroceryItems: Find bargain grocery products priced below the store average.",
+    "commonMistakes": "Forgetting to alias derived tables in FROM, writing multiple WITH keywords in multi-CTE pipelines, or suffering the NOT IN NULL trap.",
+    "learningOutcomes": "Mastered 11.1 Scalar Subqueries in WHERE (Above/Below Benchmark) on GroceryItems.",
+    "challengeSlots": [
+      {
+        "type": "keyword",
+        "value": "SELECT"
+      },
+      {
+        "type": "column",
+        "value": "item_name,"
+      },
+      {
+        "type": "column",
+        "value": "unit_price"
+      },
+      {
+        "type": "keyword",
+        "value": "FROM"
+      },
+      {
+        "type": "table",
+        "value": "GroceryItems"
+      },
+      {
+        "type": "keyword",
+        "value": "WHERE"
+      },
+      {
+        "type": "column",
+        "value": "unit_price"
+      },
+      {
+        "type": "column",
+        "value": "<"
+      },
+      {
+        "type": "keyword",
+        "value": "(SELECT"
+      },
+      {
+        "type": "column",
+        "value": "AVG(unit_price)"
+      },
+      {
+        "type": "keyword",
+        "value": "FROM"
+      },
+      {
+        "type": "table",
+        "value": "GroceryItems);"
+      }
+    ]
+  },
+  {
+    "drillNumber": 1005,
+    "subcluster": "11.1 Scalar Subqueries in WHERE (Above/Below Benchmark)",
+    "level": "Level 2 (Scalar Subquery)",
+    "title": "Syntax #1005: Filter high-value orders that exceed the overall average order amount",
+    "table": "Orders",
+    "scenario": "Filter high-value orders that exceed the overall average order amount.",
+    "businessObjective": "Filter high-value orders that exceed the overall average order amount.",
+    "schemaSnippet": "Orders relational schema",
+    "targetQuery": "SELECT order_id, total_amount\nFROM Orders\nWHERE total_amount > (SELECT AVG(total_amount) FROM Orders);",
+    "syntaxBlueprint": "SELECT col1, col2\nFROM table_name\nWHERE metric > (SELECT AVG(metric) FROM table_name);",
+    "syntaxRule": "A scalar subquery returns exactly one value (1 row, 1 column). It can be used anywhere an atomic literal is expected, such as in WHERE comparisons.",
+    "syntaxTrap": "If the subquery returns multiple rows, standard comparison operators (=, >, <) will fail with a 'Subquery returns more than 1 row' runtime error.",
+    "eli5Story": "Subqueries & CTEs on Orders: Filter high-value orders that exceed the overall average order amount.",
+    "commonMistakes": "Forgetting to alias derived tables in FROM, writing multiple WITH keywords in multi-CTE pipelines, or suffering the NOT IN NULL trap.",
+    "learningOutcomes": "Mastered 11.1 Scalar Subqueries in WHERE (Above/Below Benchmark) on Orders.",
+    "challengeSlots": [
+      {
+        "type": "keyword",
+        "value": "SELECT"
+      },
+      {
+        "type": "column",
+        "value": "order_id,"
+      },
+      {
+        "type": "column",
+        "value": "total_amount"
+      },
+      {
+        "type": "keyword",
+        "value": "FROM"
+      },
+      {
+        "type": "table",
+        "value": "Orders"
+      },
+      {
+        "type": "keyword",
+        "value": "WHERE"
+      },
+      {
+        "type": "column",
+        "value": "total_amount"
+      },
+      {
+        "type": "column",
+        "value": ">"
+      },
+      {
+        "type": "keyword",
+        "value": "(SELECT"
+      },
+      {
+        "type": "column",
+        "value": "AVG(total_amount)"
+      },
+      {
+        "type": "keyword",
+        "value": "FROM"
+      },
+      {
+        "type": "table",
+        "value": "Orders);"
+      }
+    ]
+  },
+  {
+    "drillNumber": 1006,
+    "subcluster": "11.1 Scalar Subqueries in WHERE (Above/Below Benchmark)",
+    "level": "Level 2 (Scalar Subquery)",
+    "title": "Syntax #1006: Identify long music tracks whose duration exceeds the catalog average",
+    "table": "MusicTracks",
+    "scenario": "Identify long music tracks whose duration exceeds the catalog average.",
+    "businessObjective": "Identify long music tracks whose duration exceeds the catalog average.",
+    "schemaSnippet": "MusicTracks relational schema",
+    "targetQuery": "SELECT track_title, duration_seconds\nFROM MusicTracks\nWHERE duration_seconds > (SELECT AVG(duration_seconds) FROM MusicTracks);",
+    "syntaxBlueprint": "SELECT col1, col2\nFROM table_name\nWHERE metric > (SELECT AVG(metric) FROM table_name);",
+    "syntaxRule": "A scalar subquery returns exactly one value (1 row, 1 column). It can be used anywhere an atomic literal is expected, such as in WHERE comparisons.",
+    "syntaxTrap": "If the subquery returns multiple rows, standard comparison operators (=, >, <) will fail with a 'Subquery returns more than 1 row' runtime error.",
+    "eli5Story": "Subqueries & CTEs on MusicTracks: Identify long music tracks whose duration exceeds the catalog average.",
+    "commonMistakes": "Forgetting to alias derived tables in FROM, writing multiple WITH keywords in multi-CTE pipelines, or suffering the NOT IN NULL trap.",
+    "learningOutcomes": "Mastered 11.1 Scalar Subqueries in WHERE (Above/Below Benchmark) on MusicTracks.",
+    "challengeSlots": [
+      {
+        "type": "keyword",
+        "value": "SELECT"
+      },
+      {
+        "type": "column",
+        "value": "track_title,"
+      },
+      {
+        "type": "column",
+        "value": "duration_seconds"
+      },
+      {
+        "type": "keyword",
+        "value": "FROM"
+      },
+      {
+        "type": "table",
+        "value": "MusicTracks"
+      },
+      {
+        "type": "keyword",
+        "value": "WHERE"
+      },
+      {
+        "type": "column",
+        "value": "duration_seconds"
+      },
+      {
+        "type": "column",
+        "value": ">"
+      },
+      {
+        "type": "keyword",
+        "value": "(SELECT"
+      },
+      {
+        "type": "column",
+        "value": "AVG(duration_seconds)"
+      },
+      {
+        "type": "keyword",
+        "value": "FROM"
+      },
+      {
+        "type": "table",
+        "value": "MusicTracks);"
+      }
+    ]
+  },
+  {
+    "drillNumber": 1007,
+    "subcluster": "11.1 Scalar Subqueries in WHERE (Above/Below Benchmark)",
+    "level": "Level 2 (Scalar Subquery)",
+    "title": "Syntax #1007: Find gym members who work out more frequently than the average member",
+    "table": "GymMembers",
+    "scenario": "Find gym members who work out more frequently than the average member.",
+    "businessObjective": "Find gym members who work out more frequently than the average member.",
+    "schemaSnippet": "GymMembers relational schema",
+    "targetQuery": "SELECT member_name, attendance_days\nFROM GymMembers\nWHERE attendance_days > (SELECT AVG(attendance_days) FROM GymMembers);",
+    "syntaxBlueprint": "SELECT col1, col2\nFROM table_name\nWHERE metric > (SELECT AVG(metric) FROM table_name);",
+    "syntaxRule": "A scalar subquery returns exactly one value (1 row, 1 column). It can be used anywhere an atomic literal is expected, such as in WHERE comparisons.",
+    "syntaxTrap": "If the subquery returns multiple rows, standard comparison operators (=, >, <) will fail with a 'Subquery returns more than 1 row' runtime error.",
+    "eli5Story": "Subqueries & CTEs on GymMembers: Find gym members who work out more frequently than the average member.",
+    "commonMistakes": "Forgetting to alias derived tables in FROM, writing multiple WITH keywords in multi-CTE pipelines, or suffering the NOT IN NULL trap.",
+    "learningOutcomes": "Mastered 11.1 Scalar Subqueries in WHERE (Above/Below Benchmark) on GymMembers.",
+    "challengeSlots": [
+      {
+        "type": "keyword",
+        "value": "SELECT"
+      },
+      {
+        "type": "column",
+        "value": "member_name,"
+      },
+      {
+        "type": "column",
+        "value": "attendance_days"
+      },
+      {
+        "type": "keyword",
+        "value": "FROM"
+      },
+      {
+        "type": "table",
+        "value": "GymMembers"
+      },
+      {
+        "type": "keyword",
+        "value": "WHERE"
+      },
+      {
+        "type": "column",
+        "value": "attendance_days"
+      },
+      {
+        "type": "column",
+        "value": ">"
+      },
+      {
+        "type": "keyword",
+        "value": "(SELECT"
+      },
+      {
+        "type": "column",
+        "value": "AVG(attendance_days)"
+      },
+      {
+        "type": "keyword",
+        "value": "FROM"
+      },
+      {
+        "type": "table",
+        "value": "GymMembers);"
+      }
+    ]
+  },
+  {
+    "drillNumber": 1008,
+    "subcluster": "11.1 Scalar Subqueries in WHERE (Above/Below Benchmark)",
+    "level": "Level 2 (Scalar Subquery)",
+    "title": "Syntax #1008: Filter reviews with star ratings strictly higher than the overall review average",
+    "table": "MovieReviews",
+    "scenario": "Filter reviews with star ratings strictly higher than the overall review average.",
+    "businessObjective": "Filter reviews with star ratings strictly higher than the overall review average.",
+    "schemaSnippet": "MovieReviews relational schema",
+    "targetQuery": "SELECT movie_title, star_rating\nFROM MovieReviews\nWHERE star_rating > (SELECT AVG(star_rating) FROM MovieReviews);",
+    "syntaxBlueprint": "SELECT col1, col2\nFROM table_name\nWHERE metric > (SELECT AVG(metric) FROM table_name);",
+    "syntaxRule": "A scalar subquery returns exactly one value (1 row, 1 column). It can be used anywhere an atomic literal is expected, such as in WHERE comparisons.",
+    "syntaxTrap": "If the subquery returns multiple rows, standard comparison operators (=, >, <) will fail with a 'Subquery returns more than 1 row' runtime error.",
+    "eli5Story": "Subqueries & CTEs on MovieReviews: Filter reviews with star ratings strictly higher than the overall review average.",
+    "commonMistakes": "Forgetting to alias derived tables in FROM, writing multiple WITH keywords in multi-CTE pipelines, or suffering the NOT IN NULL trap.",
+    "learningOutcomes": "Mastered 11.1 Scalar Subqueries in WHERE (Above/Below Benchmark) on MovieReviews.",
+    "challengeSlots": [
+      {
+        "type": "keyword",
+        "value": "SELECT"
+      },
+      {
+        "type": "column",
+        "value": "movie_title,"
+      },
+      {
+        "type": "column",
+        "value": "star_rating"
+      },
+      {
+        "type": "keyword",
+        "value": "FROM"
+      },
+      {
+        "type": "table",
+        "value": "MovieReviews"
+      },
+      {
+        "type": "keyword",
+        "value": "WHERE"
+      },
+      {
+        "type": "column",
+        "value": "star_rating"
+      },
+      {
+        "type": "column",
+        "value": ">"
+      },
+      {
+        "type": "keyword",
+        "value": "(SELECT"
+      },
+      {
+        "type": "column",
+        "value": "AVG(star_rating)"
+      },
+      {
+        "type": "keyword",
+        "value": "FROM"
+      },
+      {
+        "type": "table",
+        "value": "MovieReviews);"
+      }
+    ]
+  },
+  {
+    "drillNumber": 1009,
+    "subcluster": "11.1 Scalar Subqueries in WHERE (Above/Below Benchmark)",
+    "level": "Level 2 (Scalar Subquery)",
+    "title": "Syntax #1009: Find flights whose route distance is greater than the fleet-wide average",
+    "table": "FlightSchedule",
+    "scenario": "Find flights whose route distance is greater than the fleet-wide average.",
+    "businessObjective": "Find flights whose route distance is greater than the fleet-wide average.",
+    "schemaSnippet": "FlightSchedule relational schema",
+    "targetQuery": "SELECT flight_id, distance_miles\nFROM FlightSchedule\nWHERE distance_miles > (SELECT AVG(distance_miles) FROM FlightSchedule);",
+    "syntaxBlueprint": "SELECT col1, col2\nFROM table_name\nWHERE metric > (SELECT AVG(metric) FROM table_name);",
+    "syntaxRule": "A scalar subquery returns exactly one value (1 row, 1 column). It can be used anywhere an atomic literal is expected, such as in WHERE comparisons.",
+    "syntaxTrap": "If the subquery returns multiple rows, standard comparison operators (=, >, <) will fail with a 'Subquery returns more than 1 row' runtime error.",
+    "eli5Story": "Subqueries & CTEs on FlightSchedule: Find flights whose route distance is greater than the fleet-wide average.",
+    "commonMistakes": "Forgetting to alias derived tables in FROM, writing multiple WITH keywords in multi-CTE pipelines, or suffering the NOT IN NULL trap.",
+    "learningOutcomes": "Mastered 11.1 Scalar Subqueries in WHERE (Above/Below Benchmark) on FlightSchedule.",
+    "challengeSlots": [
+      {
+        "type": "keyword",
+        "value": "SELECT"
+      },
+      {
+        "type": "column",
+        "value": "flight_id,"
+      },
+      {
+        "type": "column",
+        "value": "distance_miles"
+      },
+      {
+        "type": "keyword",
+        "value": "FROM"
+      },
+      {
+        "type": "table",
+        "value": "FlightSchedule"
+      },
+      {
+        "type": "keyword",
+        "value": "WHERE"
+      },
+      {
+        "type": "column",
+        "value": "distance_miles"
+      },
+      {
+        "type": "column",
+        "value": ">"
+      },
+      {
+        "type": "keyword",
+        "value": "(SELECT"
+      },
+      {
+        "type": "column",
+        "value": "AVG(distance_miles)"
+      },
+      {
+        "type": "keyword",
+        "value": "FROM"
+      },
+      {
+        "type": "table",
+        "value": "FlightSchedule);"
+      }
+    ]
+  },
+  {
+    "drillNumber": 1010,
+    "subcluster": "11.1 Scalar Subqueries in WHERE (Above/Below Benchmark)",
+    "level": "Level 2 (Scalar Subquery)",
+    "title": "Syntax #1010: Find clinic patients whose body weight exceeds the patient average",
+    "table": "PetClinic",
+    "scenario": "Find clinic patients whose body weight exceeds the patient average.",
+    "businessObjective": "Find clinic patients whose body weight exceeds the patient average.",
+    "schemaSnippet": "PetClinic relational schema",
+    "targetQuery": "SELECT pet_name, weight_kg\nFROM PetClinic\nWHERE weight_kg > (SELECT AVG(weight_kg) FROM PetClinic);",
+    "syntaxBlueprint": "SELECT col1, col2\nFROM table_name\nWHERE metric > (SELECT AVG(metric) FROM table_name);",
+    "syntaxRule": "A scalar subquery returns exactly one value (1 row, 1 column). It can be used anywhere an atomic literal is expected, such as in WHERE comparisons.",
+    "syntaxTrap": "If the subquery returns multiple rows, standard comparison operators (=, >, <) will fail with a 'Subquery returns more than 1 row' runtime error.",
+    "eli5Story": "Subqueries & CTEs on PetClinic: Find clinic patients whose body weight exceeds the patient average.",
+    "commonMistakes": "Forgetting to alias derived tables in FROM, writing multiple WITH keywords in multi-CTE pipelines, or suffering the NOT IN NULL trap.",
+    "learningOutcomes": "Mastered 11.1 Scalar Subqueries in WHERE (Above/Below Benchmark) on PetClinic.",
+    "challengeSlots": [
+      {
+        "type": "keyword",
+        "value": "SELECT"
+      },
+      {
+        "type": "column",
+        "value": "pet_name,"
+      },
+      {
+        "type": "column",
+        "value": "weight_kg"
+      },
+      {
+        "type": "keyword",
+        "value": "FROM"
+      },
+      {
+        "type": "table",
+        "value": "PetClinic"
+      },
+      {
+        "type": "keyword",
+        "value": "WHERE"
+      },
+      {
+        "type": "column",
+        "value": "weight_kg"
+      },
+      {
+        "type": "column",
+        "value": ">"
+      },
+      {
+        "type": "keyword",
+        "value": "(SELECT"
+      },
+      {
+        "type": "column",
+        "value": "AVG(weight_kg)"
+      },
+      {
+        "type": "keyword",
+        "value": "FROM"
+      },
+      {
+        "type": "table",
+        "value": "PetClinic);"
+      }
+    ]
+  },
+  {
+    "drillNumber": 1011,
+    "subcluster": "11.2 Scalar Subqueries in SELECT (Projections & Baselines)",
+    "level": "Level 2 (Projected Scalar Subquery)",
+    "title": "Syntax #1011: Project each student's GPA alongside the school-wide maximum GPA",
+    "table": "Students",
+    "scenario": "Project each student's GPA alongside the school-wide maximum GPA.",
+    "businessObjective": "Project each student's GPA alongside the school-wide maximum GPA.",
+    "schemaSnippet": "Students relational schema",
+    "targetQuery": "SELECT full_name, gpa, (SELECT MAX(gpa) FROM Students) AS top_gpa\nFROM Students;",
+    "syntaxBlueprint": "SELECT col1, (SELECT AVG(metric) FROM table_name) AS overall_avg\nFROM table_name;",
+    "syntaxRule": "Placing a scalar subquery in the SELECT clause attaches a global benchmark or single calculated value to every projected row.",
+    "syntaxTrap": "Placing an uncorrelated subquery in SELECT evaluates once in modern optimizers, but if written sloppily it can trigger N-times re-evaluations.",
+    "eli5Story": "Subqueries & CTEs on Students: Project each student's GPA alongside the school-wide maximum GPA.",
+    "commonMistakes": "Forgetting to alias derived tables in FROM, writing multiple WITH keywords in multi-CTE pipelines, or suffering the NOT IN NULL trap.",
+    "learningOutcomes": "Mastered 11.2 Scalar Subqueries in SELECT (Projections & Baselines) on Students.",
+    "challengeSlots": [
+      {
+        "type": "keyword",
+        "value": "SELECT"
+      },
+      {
+        "type": "column",
+        "value": "full_name,"
+      },
+      {
+        "type": "column",
+        "value": "gpa,"
+      },
+      {
+        "type": "keyword",
+        "value": "(SELECT"
+      },
+      {
+        "type": "column",
+        "value": "MAX(gpa)"
+      },
+      {
+        "type": "keyword",
+        "value": "FROM"
+      },
+      {
+        "type": "table",
+        "value": "Students)"
+      },
+      {
+        "type": "keyword",
+        "value": "AS"
+      },
+      {
+        "type": "column",
+        "value": "top_gpa"
+      },
+      {
+        "type": "keyword",
+        "value": "FROM"
+      },
+      {
+        "type": "table",
+        "value": "Students;"
+      }
+    ]
+  },
+  {
+    "drillNumber": 1012,
+    "subcluster": "11.2 Scalar Subqueries in SELECT (Projections & Baselines)",
+    "level": "Level 2 (Projected Scalar Subquery)",
+    "title": "Syntax #1012: Show book prices alongside the highest priced book in the bookstore",
+    "table": "Books",
+    "scenario": "Show book prices alongside the highest priced book in the bookstore.",
+    "businessObjective": "Show book prices alongside the highest priced book in the bookstore.",
+    "schemaSnippet": "Books relational schema",
+    "targetQuery": "SELECT title, price, (SELECT MAX(price) FROM Books) AS highest_price\nFROM Books;",
+    "syntaxBlueprint": "SELECT col1, (SELECT AVG(metric) FROM table_name) AS overall_avg\nFROM table_name;",
+    "syntaxRule": "Placing a scalar subquery in the SELECT clause attaches a global benchmark or single calculated value to every projected row.",
+    "syntaxTrap": "Placing an uncorrelated subquery in SELECT evaluates once in modern optimizers, but if written sloppily it can trigger N-times re-evaluations.",
+    "eli5Story": "Subqueries & CTEs on Books: Show book prices alongside the highest priced book in the bookstore.",
+    "commonMistakes": "Forgetting to alias derived tables in FROM, writing multiple WITH keywords in multi-CTE pipelines, or suffering the NOT IN NULL trap.",
+    "learningOutcomes": "Mastered 11.2 Scalar Subqueries in SELECT (Projections & Baselines) on Books.",
+    "challengeSlots": [
+      {
+        "type": "keyword",
+        "value": "SELECT"
+      },
+      {
+        "type": "column",
+        "value": "title,"
+      },
+      {
+        "type": "column",
+        "value": "price,"
+      },
+      {
+        "type": "keyword",
+        "value": "(SELECT"
+      },
+      {
+        "type": "column",
+        "value": "MAX(price)"
+      },
+      {
+        "type": "keyword",
+        "value": "FROM"
+      },
+      {
+        "type": "table",
+        "value": "Books)"
+      },
+      {
+        "type": "keyword",
+        "value": "AS"
+      },
+      {
+        "type": "column",
+        "value": "highest_price"
+      },
+      {
+        "type": "keyword",
+        "value": "FROM"
+      },
+      {
+        "type": "table",
+        "value": "Books;"
+      }
+    ]
+  },
+  {
+    "drillNumber": 1013,
+    "subcluster": "11.2 Scalar Subqueries in SELECT (Projections & Baselines)",
+    "level": "Level 2 (Projected Scalar Subquery)",
+    "title": "Syntax #1013: Display employee salary with company average salary for direct comparison",
+    "table": "Employees",
+    "scenario": "Display employee salary with company average salary for direct comparison.",
+    "businessObjective": "Display employee salary with company average salary for direct comparison.",
+    "schemaSnippet": "Employees relational schema",
+    "targetQuery": "SELECT first_name, salary, (SELECT AVG(salary) FROM Employees) AS company_avg_sal\nFROM Employees;",
+    "syntaxBlueprint": "SELECT col1, (SELECT AVG(metric) FROM table_name) AS overall_avg\nFROM table_name;",
+    "syntaxRule": "Placing a scalar subquery in the SELECT clause attaches a global benchmark or single calculated value to every projected row.",
+    "syntaxTrap": "Placing an uncorrelated subquery in SELECT evaluates once in modern optimizers, but if written sloppily it can trigger N-times re-evaluations.",
+    "eli5Story": "Subqueries & CTEs on Employees: Display employee salary with company average salary for direct comparison.",
+    "commonMistakes": "Forgetting to alias derived tables in FROM, writing multiple WITH keywords in multi-CTE pipelines, or suffering the NOT IN NULL trap.",
+    "learningOutcomes": "Mastered 11.2 Scalar Subqueries in SELECT (Projections & Baselines) on Employees.",
+    "challengeSlots": [
+      {
+        "type": "keyword",
+        "value": "SELECT"
+      },
+      {
+        "type": "column",
+        "value": "first_name,"
+      },
+      {
+        "type": "column",
+        "value": "salary,"
+      },
+      {
+        "type": "keyword",
+        "value": "(SELECT"
+      },
+      {
+        "type": "column",
+        "value": "AVG(salary)"
+      },
+      {
+        "type": "keyword",
+        "value": "FROM"
+      },
+      {
+        "type": "table",
+        "value": "Employees)"
+      },
+      {
+        "type": "keyword",
+        "value": "AS"
+      },
+      {
+        "type": "column",
+        "value": "company_avg_sal"
+      },
+      {
+        "type": "keyword",
+        "value": "FROM"
+      },
+      {
+        "type": "table",
+        "value": "Employees;"
+      }
+    ]
+  },
+  {
+    "drillNumber": 1014,
+    "subcluster": "11.2 Scalar Subqueries in SELECT (Projections & Baselines)",
+    "level": "Level 2 (Projected Scalar Subquery)",
+    "title": "Syntax #1014: Project grocery inventory quantities alongside the lowest stock quantity",
+    "table": "GroceryItems",
+    "scenario": "Project grocery inventory quantities alongside the lowest stock quantity.",
+    "businessObjective": "Project grocery inventory quantities alongside the lowest stock quantity.",
+    "schemaSnippet": "GroceryItems relational schema",
+    "targetQuery": "SELECT item_name, stock_qty, (SELECT MIN(stock_qty) FROM GroceryItems) AS min_inventory\nFROM GroceryItems;",
+    "syntaxBlueprint": "SELECT col1, (SELECT AVG(metric) FROM table_name) AS overall_avg\nFROM table_name;",
+    "syntaxRule": "Placing a scalar subquery in the SELECT clause attaches a global benchmark or single calculated value to every projected row.",
+    "syntaxTrap": "Placing an uncorrelated subquery in SELECT evaluates once in modern optimizers, but if written sloppily it can trigger N-times re-evaluations.",
+    "eli5Story": "Subqueries & CTEs on GroceryItems: Project grocery inventory quantities alongside the lowest stock quantity.",
+    "commonMistakes": "Forgetting to alias derived tables in FROM, writing multiple WITH keywords in multi-CTE pipelines, or suffering the NOT IN NULL trap.",
+    "learningOutcomes": "Mastered 11.2 Scalar Subqueries in SELECT (Projections & Baselines) on GroceryItems.",
+    "challengeSlots": [
+      {
+        "type": "keyword",
+        "value": "SELECT"
+      },
+      {
+        "type": "column",
+        "value": "item_name,"
+      },
+      {
+        "type": "column",
+        "value": "stock_qty,"
+      },
+      {
+        "type": "keyword",
+        "value": "(SELECT"
+      },
+      {
+        "type": "column",
+        "value": "MIN(stock_qty)"
+      },
+      {
+        "type": "keyword",
+        "value": "FROM"
+      },
+      {
+        "type": "table",
+        "value": "GroceryItems)"
+      },
+      {
+        "type": "keyword",
+        "value": "AS"
+      },
+      {
+        "type": "column",
+        "value": "min_inventory"
+      },
+      {
+        "type": "keyword",
+        "value": "FROM"
+      },
+      {
+        "type": "table",
+        "value": "GroceryItems;"
+      }
+    ]
+  },
+  {
+    "drillNumber": 1015,
+    "subcluster": "11.2 Scalar Subqueries in SELECT (Projections & Baselines)",
+    "level": "Level 2 (Projected Scalar Subquery)",
+    "title": "Syntax #1015: Show order amount alongside the largest order recorded in company history",
+    "table": "Orders",
+    "scenario": "Show order amount alongside the largest order recorded in company history.",
+    "businessObjective": "Show order amount alongside the largest order recorded in company history.",
+    "schemaSnippet": "Orders relational schema",
+    "targetQuery": "SELECT order_id, total_amount, (SELECT MAX(total_amount) FROM Orders) AS biggest_order\nFROM Orders;",
+    "syntaxBlueprint": "SELECT col1, (SELECT AVG(metric) FROM table_name) AS overall_avg\nFROM table_name;",
+    "syntaxRule": "Placing a scalar subquery in the SELECT clause attaches a global benchmark or single calculated value to every projected row.",
+    "syntaxTrap": "Placing an uncorrelated subquery in SELECT evaluates once in modern optimizers, but if written sloppily it can trigger N-times re-evaluations.",
+    "eli5Story": "Subqueries & CTEs on Orders: Show order amount alongside the largest order recorded in company history.",
+    "commonMistakes": "Forgetting to alias derived tables in FROM, writing multiple WITH keywords in multi-CTE pipelines, or suffering the NOT IN NULL trap.",
+    "learningOutcomes": "Mastered 11.2 Scalar Subqueries in SELECT (Projections & Baselines) on Orders.",
+    "challengeSlots": [
+      {
+        "type": "keyword",
+        "value": "SELECT"
+      },
+      {
+        "type": "column",
+        "value": "order_id,"
+      },
+      {
+        "type": "column",
+        "value": "total_amount,"
+      },
+      {
+        "type": "keyword",
+        "value": "(SELECT"
+      },
+      {
+        "type": "column",
+        "value": "MAX(total_amount)"
+      },
+      {
+        "type": "keyword",
+        "value": "FROM"
+      },
+      {
+        "type": "table",
+        "value": "Orders)"
+      },
+      {
+        "type": "keyword",
+        "value": "AS"
+      },
+      {
+        "type": "column",
+        "value": "biggest_order"
+      },
+      {
+        "type": "keyword",
+        "value": "FROM"
+      },
+      {
+        "type": "table",
+        "value": "Orders;"
+      }
+    ]
+  },
+  {
+    "drillNumber": 1016,
+    "subcluster": "11.2 Scalar Subqueries in SELECT (Projections & Baselines)",
+    "level": "Level 2 (Projected Scalar Subquery)",
+    "title": "Syntax #1016: Compare track length against the longest song in the catalog",
+    "table": "MusicTracks",
+    "scenario": "Compare track length against the longest song in the catalog.",
+    "businessObjective": "Compare track length against the longest song in the catalog.",
+    "schemaSnippet": "MusicTracks relational schema",
+    "targetQuery": "SELECT track_title, duration_seconds, (SELECT MAX(duration_seconds) FROM MusicTracks) AS max_duration\nFROM MusicTracks;",
+    "syntaxBlueprint": "SELECT col1, (SELECT AVG(metric) FROM table_name) AS overall_avg\nFROM table_name;",
+    "syntaxRule": "Placing a scalar subquery in the SELECT clause attaches a global benchmark or single calculated value to every projected row.",
+    "syntaxTrap": "Placing an uncorrelated subquery in SELECT evaluates once in modern optimizers, but if written sloppily it can trigger N-times re-evaluations.",
+    "eli5Story": "Subqueries & CTEs on MusicTracks: Compare track length against the longest song in the catalog.",
+    "commonMistakes": "Forgetting to alias derived tables in FROM, writing multiple WITH keywords in multi-CTE pipelines, or suffering the NOT IN NULL trap.",
+    "learningOutcomes": "Mastered 11.2 Scalar Subqueries in SELECT (Projections & Baselines) on MusicTracks.",
+    "challengeSlots": [
+      {
+        "type": "keyword",
+        "value": "SELECT"
+      },
+      {
+        "type": "column",
+        "value": "track_title,"
+      },
+      {
+        "type": "column",
+        "value": "duration_seconds,"
+      },
+      {
+        "type": "keyword",
+        "value": "(SELECT"
+      },
+      {
+        "type": "column",
+        "value": "MAX(duration_seconds)"
+      },
+      {
+        "type": "keyword",
+        "value": "FROM"
+      },
+      {
+        "type": "table",
+        "value": "MusicTracks)"
+      },
+      {
+        "type": "keyword",
+        "value": "AS"
+      },
+      {
+        "type": "column",
+        "value": "max_duration"
+      },
+      {
+        "type": "keyword",
+        "value": "FROM"
+      },
+      {
+        "type": "table",
+        "value": "MusicTracks;"
+      }
+    ]
+  },
+  {
+    "drillNumber": 1017,
+    "subcluster": "11.2 Scalar Subqueries in SELECT (Projections & Baselines)",
+    "level": "Level 2 (Projected Scalar Subquery)",
+    "title": "Syntax #1017: Show individual membership dues next to the average gym membership price",
+    "table": "GymMembers",
+    "scenario": "Show individual membership dues next to the average gym membership price.",
+    "businessObjective": "Show individual membership dues next to the average gym membership price.",
+    "schemaSnippet": "GymMembers relational schema",
+    "targetQuery": "SELECT member_name, monthly_fee, (SELECT AVG(monthly_fee) FROM GymMembers) AS avg_fee\nFROM GymMembers;",
+    "syntaxBlueprint": "SELECT col1, (SELECT AVG(metric) FROM table_name) AS overall_avg\nFROM table_name;",
+    "syntaxRule": "Placing a scalar subquery in the SELECT clause attaches a global benchmark or single calculated value to every projected row.",
+    "syntaxTrap": "Placing an uncorrelated subquery in SELECT evaluates once in modern optimizers, but if written sloppily it can trigger N-times re-evaluations.",
+    "eli5Story": "Subqueries & CTEs on GymMembers: Show individual membership dues next to the average gym membership price.",
+    "commonMistakes": "Forgetting to alias derived tables in FROM, writing multiple WITH keywords in multi-CTE pipelines, or suffering the NOT IN NULL trap.",
+    "learningOutcomes": "Mastered 11.2 Scalar Subqueries in SELECT (Projections & Baselines) on GymMembers.",
+    "challengeSlots": [
+      {
+        "type": "keyword",
+        "value": "SELECT"
+      },
+      {
+        "type": "column",
+        "value": "member_name,"
+      },
+      {
+        "type": "column",
+        "value": "monthly_fee,"
+      },
+      {
+        "type": "keyword",
+        "value": "(SELECT"
+      },
+      {
+        "type": "column",
+        "value": "AVG(monthly_fee)"
+      },
+      {
+        "type": "keyword",
+        "value": "FROM"
+      },
+      {
+        "type": "table",
+        "value": "GymMembers)"
+      },
+      {
+        "type": "keyword",
+        "value": "AS"
+      },
+      {
+        "type": "column",
+        "value": "avg_fee"
+      },
+      {
+        "type": "keyword",
+        "value": "FROM"
+      },
+      {
+        "type": "table",
+        "value": "GymMembers;"
+      }
+    ]
+  },
+  {
+    "drillNumber": 1018,
+    "subcluster": "11.2 Scalar Subqueries in SELECT (Projections & Baselines)",
+    "level": "Level 2 (Projected Scalar Subquery)",
+    "title": "Syntax #1018: Display individual review ratings alongside the global review baseline",
+    "table": "MovieReviews",
+    "scenario": "Display individual review ratings alongside the global review baseline.",
+    "businessObjective": "Display individual review ratings alongside the global review baseline.",
+    "schemaSnippet": "MovieReviews relational schema",
+    "targetQuery": "SELECT movie_title, star_rating, (SELECT AVG(star_rating) FROM MovieReviews) AS global_avg_rating\nFROM MovieReviews;",
+    "syntaxBlueprint": "SELECT col1, (SELECT AVG(metric) FROM table_name) AS overall_avg\nFROM table_name;",
+    "syntaxRule": "Placing a scalar subquery in the SELECT clause attaches a global benchmark or single calculated value to every projected row.",
+    "syntaxTrap": "Placing an uncorrelated subquery in SELECT evaluates once in modern optimizers, but if written sloppily it can trigger N-times re-evaluations.",
+    "eli5Story": "Subqueries & CTEs on MovieReviews: Display individual review ratings alongside the global review baseline.",
+    "commonMistakes": "Forgetting to alias derived tables in FROM, writing multiple WITH keywords in multi-CTE pipelines, or suffering the NOT IN NULL trap.",
+    "learningOutcomes": "Mastered 11.2 Scalar Subqueries in SELECT (Projections & Baselines) on MovieReviews.",
+    "challengeSlots": [
+      {
+        "type": "keyword",
+        "value": "SELECT"
+      },
+      {
+        "type": "column",
+        "value": "movie_title,"
+      },
+      {
+        "type": "column",
+        "value": "star_rating,"
+      },
+      {
+        "type": "keyword",
+        "value": "(SELECT"
+      },
+      {
+        "type": "column",
+        "value": "AVG(star_rating)"
+      },
+      {
+        "type": "keyword",
+        "value": "FROM"
+      },
+      {
+        "type": "table",
+        "value": "MovieReviews)"
+      },
+      {
+        "type": "keyword",
+        "value": "AS"
+      },
+      {
+        "type": "column",
+        "value": "global_avg_rating"
+      },
+      {
+        "type": "keyword",
+        "value": "FROM"
+      },
+      {
+        "type": "table",
+        "value": "MovieReviews;"
+      }
+    ]
+  },
+  {
+    "drillNumber": 1019,
+    "subcluster": "11.2 Scalar Subqueries in SELECT (Projections & Baselines)",
+    "level": "Level 2 (Projected Scalar Subquery)",
+    "title": "Syntax #1019: Project flight route distance alongside the longest flight in the network",
+    "table": "FlightSchedule",
+    "scenario": "Project flight route distance alongside the longest flight in the network.",
+    "businessObjective": "Project flight route distance alongside the longest flight in the network.",
+    "schemaSnippet": "FlightSchedule relational schema",
+    "targetQuery": "SELECT flight_id, distance_miles, (SELECT MAX(distance_miles) FROM FlightSchedule) AS longest_flight\nFROM FlightSchedule;",
+    "syntaxBlueprint": "SELECT col1, (SELECT AVG(metric) FROM table_name) AS overall_avg\nFROM table_name;",
+    "syntaxRule": "Placing a scalar subquery in the SELECT clause attaches a global benchmark or single calculated value to every projected row.",
+    "syntaxTrap": "Placing an uncorrelated subquery in SELECT evaluates once in modern optimizers, but if written sloppily it can trigger N-times re-evaluations.",
+    "eli5Story": "Subqueries & CTEs on FlightSchedule: Project flight route distance alongside the longest flight in the network.",
+    "commonMistakes": "Forgetting to alias derived tables in FROM, writing multiple WITH keywords in multi-CTE pipelines, or suffering the NOT IN NULL trap.",
+    "learningOutcomes": "Mastered 11.2 Scalar Subqueries in SELECT (Projections & Baselines) on FlightSchedule.",
+    "challengeSlots": [
+      {
+        "type": "keyword",
+        "value": "SELECT"
+      },
+      {
+        "type": "column",
+        "value": "flight_id,"
+      },
+      {
+        "type": "column",
+        "value": "distance_miles,"
+      },
+      {
+        "type": "keyword",
+        "value": "(SELECT"
+      },
+      {
+        "type": "column",
+        "value": "MAX(distance_miles)"
+      },
+      {
+        "type": "keyword",
+        "value": "FROM"
+      },
+      {
+        "type": "table",
+        "value": "FlightSchedule)"
+      },
+      {
+        "type": "keyword",
+        "value": "AS"
+      },
+      {
+        "type": "column",
+        "value": "longest_flight"
+      },
+      {
+        "type": "keyword",
+        "value": "FROM"
+      },
+      {
+        "type": "table",
+        "value": "FlightSchedule;"
+      }
+    ]
+  },
+  {
+    "drillNumber": 1020,
+    "subcluster": "11.2 Scalar Subqueries in SELECT (Projections & Baselines)",
+    "level": "Level 2 (Projected Scalar Subquery)",
+    "title": "Syntax #1020: Display pet age alongside the maximum pet age registered in the clinic",
+    "table": "PetClinic",
+    "scenario": "Display pet age alongside the maximum pet age registered in the clinic.",
+    "businessObjective": "Display pet age alongside the maximum pet age registered in the clinic.",
+    "schemaSnippet": "PetClinic relational schema",
+    "targetQuery": "SELECT pet_name, age_years, (SELECT MAX(age_years) FROM PetClinic) AS oldest_pet_age\nFROM PetClinic;",
+    "syntaxBlueprint": "SELECT col1, (SELECT AVG(metric) FROM table_name) AS overall_avg\nFROM table_name;",
+    "syntaxRule": "Placing a scalar subquery in the SELECT clause attaches a global benchmark or single calculated value to every projected row.",
+    "syntaxTrap": "Placing an uncorrelated subquery in SELECT evaluates once in modern optimizers, but if written sloppily it can trigger N-times re-evaluations.",
+    "eli5Story": "Subqueries & CTEs on PetClinic: Display pet age alongside the maximum pet age registered in the clinic.",
+    "commonMistakes": "Forgetting to alias derived tables in FROM, writing multiple WITH keywords in multi-CTE pipelines, or suffering the NOT IN NULL trap.",
+    "learningOutcomes": "Mastered 11.2 Scalar Subqueries in SELECT (Projections & Baselines) on PetClinic.",
+    "challengeSlots": [
+      {
+        "type": "keyword",
+        "value": "SELECT"
+      },
+      {
+        "type": "column",
+        "value": "pet_name,"
+      },
+      {
+        "type": "column",
+        "value": "age_years,"
+      },
+      {
+        "type": "keyword",
+        "value": "(SELECT"
+      },
+      {
+        "type": "column",
+        "value": "MAX(age_years)"
+      },
+      {
+        "type": "keyword",
+        "value": "FROM"
+      },
+      {
+        "type": "table",
+        "value": "PetClinic)"
+      },
+      {
+        "type": "keyword",
+        "value": "AS"
+      },
+      {
+        "type": "column",
+        "value": "oldest_pet_age"
+      },
+      {
+        "type": "keyword",
+        "value": "FROM"
+      },
+      {
+        "type": "table",
+        "value": "PetClinic;"
+      }
+    ]
+  },
+  {
+    "drillNumber": 1021,
+    "subcluster": "11.3 Set Membership with IN (Subquery Lists)",
+    "level": "Level 2 (IN Subquery)",
+    "title": "Syntax #1021: Find students enrolled in rigorous 4+ credit courses using an IN subquery",
+    "table": "Students",
+    "scenario": "Find students enrolled in rigorous 4+ credit courses using an IN subquery.",
+    "businessObjective": "Find students enrolled in rigorous 4+ credit courses using an IN subquery.",
+    "schemaSnippet": "Students relational schema",
+    "targetQuery": "SELECT full_name, city\nFROM Students\nWHERE student_id IN (SELECT student_id FROM Courses WHERE credits >= 4);",
+    "syntaxBlueprint": "SELECT col1, col2\nFROM table_name\nWHERE key_col IN (SELECT fk_col FROM other_table WHERE condition);",
+    "syntaxRule": "The IN subquery checks whether a row's column value exists in the dynamic list of values returned by the subquery.",
+    "syntaxTrap": "Selecting multiple columns in the IN subquery (e.g. IN (SELECT id, name ...)) will throw an operand error. IN requires exactly 1 column.",
+    "eli5Story": "Subqueries & CTEs on Students: Find students enrolled in rigorous 4+ credit courses using an IN subquery.",
+    "commonMistakes": "Forgetting to alias derived tables in FROM, writing multiple WITH keywords in multi-CTE pipelines, or suffering the NOT IN NULL trap.",
+    "learningOutcomes": "Mastered 11.3 Set Membership with IN (Subquery Lists) on Students.",
+    "challengeSlots": [
+      {
+        "type": "keyword",
+        "value": "SELECT"
+      },
+      {
+        "type": "column",
+        "value": "full_name,"
+      },
+      {
+        "type": "column",
+        "value": "city"
+      },
+      {
+        "type": "keyword",
+        "value": "FROM"
+      },
+      {
+        "type": "table",
+        "value": "Students"
+      },
+      {
+        "type": "keyword",
+        "value": "WHERE"
+      },
+      {
+        "type": "column",
+        "value": "student_id"
+      },
+      {
+        "type": "keyword",
+        "value": "IN"
+      },
+      {
+        "type": "keyword",
+        "value": "(SELECT"
+      },
+      {
+        "type": "column",
+        "value": "student_id"
+      },
+      {
+        "type": "keyword",
+        "value": "FROM"
+      },
+      {
+        "type": "table",
+        "value": "Courses"
+      },
+      {
+        "type": "keyword",
+        "value": "WHERE"
+      },
+      {
+        "type": "column",
+        "value": "credits"
+      },
+      {
+        "type": "column",
+        "value": ">="
+      },
+      {
+        "type": "column",
+        "value": "4);"
+      }
+    ]
+  },
+  {
+    "drillNumber": 1022,
+    "subcluster": "11.3 Set Membership with IN (Subquery Lists)",
+    "level": "Level 2 (IN Subquery)",
+    "title": "Syntax #1022: Find books written by Japanese authors using an IN subquery",
+    "table": "Books",
+    "scenario": "Find books written by Japanese authors using an IN subquery.",
+    "businessObjective": "Find books written by Japanese authors using an IN subquery.",
+    "schemaSnippet": "Books relational schema",
+    "targetQuery": "SELECT title, author\nFROM Books\nWHERE author_id IN (SELECT author_id FROM Authors WHERE country = 'Japan');",
+    "syntaxBlueprint": "SELECT col1, col2\nFROM table_name\nWHERE key_col IN (SELECT fk_col FROM other_table WHERE condition);",
+    "syntaxRule": "The IN subquery checks whether a row's column value exists in the dynamic list of values returned by the subquery.",
+    "syntaxTrap": "Selecting multiple columns in the IN subquery (e.g. IN (SELECT id, name ...)) will throw an operand error. IN requires exactly 1 column.",
+    "eli5Story": "Subqueries & CTEs on Books: Find books written by Japanese authors using an IN subquery.",
+    "commonMistakes": "Forgetting to alias derived tables in FROM, writing multiple WITH keywords in multi-CTE pipelines, or suffering the NOT IN NULL trap.",
+    "learningOutcomes": "Mastered 11.3 Set Membership with IN (Subquery Lists) on Books.",
+    "challengeSlots": [
+      {
+        "type": "keyword",
+        "value": "SELECT"
+      },
+      {
+        "type": "column",
+        "value": "title,"
+      },
+      {
+        "type": "column",
+        "value": "author"
+      },
+      {
+        "type": "keyword",
+        "value": "FROM"
+      },
+      {
+        "type": "table",
+        "value": "Books"
+      },
+      {
+        "type": "keyword",
+        "value": "WHERE"
+      },
+      {
+        "type": "column",
+        "value": "author_id"
+      },
+      {
+        "type": "keyword",
+        "value": "IN"
+      },
+      {
+        "type": "keyword",
+        "value": "(SELECT"
+      },
+      {
+        "type": "column",
+        "value": "author_id"
+      },
+      {
+        "type": "keyword",
+        "value": "FROM"
+      },
+      {
+        "type": "table",
+        "value": "Authors"
+      },
+      {
+        "type": "keyword",
+        "value": "WHERE"
+      },
+      {
+        "type": "column",
+        "value": "country"
+      },
+      {
+        "type": "column",
+        "value": "="
+      },
+      {
+        "type": "column",
+        "value": "'Japan');"
+      }
+    ]
+  },
+  {
+    "drillNumber": 1023,
+    "subcluster": "11.3 Set Membership with IN (Subquery Lists)",
+    "level": "Level 2 (IN Subquery)",
+    "title": "Syntax #1023: Find staff working in departments with budgets exceeding $500,000",
+    "table": "Employees",
+    "scenario": "Find staff working in departments with budgets exceeding $500,000.",
+    "businessObjective": "Find staff working in departments with budgets exceeding $500,000.",
+    "schemaSnippet": "Employees relational schema",
+    "targetQuery": "SELECT first_name, department\nFROM Employees\nWHERE department_id IN (SELECT department_id FROM Departments WHERE budget > 500000);",
+    "syntaxBlueprint": "SELECT col1, col2\nFROM table_name\nWHERE key_col IN (SELECT fk_col FROM other_table WHERE condition);",
+    "syntaxRule": "The IN subquery checks whether a row's column value exists in the dynamic list of values returned by the subquery.",
+    "syntaxTrap": "Selecting multiple columns in the IN subquery (e.g. IN (SELECT id, name ...)) will throw an operand error. IN requires exactly 1 column.",
+    "eli5Story": "Subqueries & CTEs on Employees: Find staff working in departments with budgets exceeding $500,000.",
+    "commonMistakes": "Forgetting to alias derived tables in FROM, writing multiple WITH keywords in multi-CTE pipelines, or suffering the NOT IN NULL trap.",
+    "learningOutcomes": "Mastered 11.3 Set Membership with IN (Subquery Lists) on Employees.",
+    "challengeSlots": [
+      {
+        "type": "keyword",
+        "value": "SELECT"
+      },
+      {
+        "type": "column",
+        "value": "first_name,"
+      },
+      {
+        "type": "column",
+        "value": "department"
+      },
+      {
+        "type": "keyword",
+        "value": "FROM"
+      },
+      {
+        "type": "table",
+        "value": "Employees"
+      },
+      {
+        "type": "keyword",
+        "value": "WHERE"
+      },
+      {
+        "type": "column",
+        "value": "department_id"
+      },
+      {
+        "type": "keyword",
+        "value": "IN"
+      },
+      {
+        "type": "keyword",
+        "value": "(SELECT"
+      },
+      {
+        "type": "column",
+        "value": "department_id"
+      },
+      {
+        "type": "keyword",
+        "value": "FROM"
+      },
+      {
+        "type": "table",
+        "value": "Departments"
+      },
+      {
+        "type": "keyword",
+        "value": "WHERE"
+      },
+      {
+        "type": "column",
+        "value": "budget"
+      },
+      {
+        "type": "column",
+        "value": ">"
+      },
+      {
+        "type": "column",
+        "value": "500000);"
+      }
+    ]
+  },
+  {
+    "drillNumber": 1024,
+    "subcluster": "11.3 Set Membership with IN (Subquery Lists)",
+    "level": "Level 2 (IN Subquery)",
+    "title": "Syntax #1024: Filter grocery items provided by Canadian suppliers via IN",
+    "table": "GroceryItems",
+    "scenario": "Filter grocery items provided by Canadian suppliers via IN.",
+    "businessObjective": "Filter grocery items provided by Canadian suppliers via IN.",
+    "schemaSnippet": "GroceryItems relational schema",
+    "targetQuery": "SELECT item_name, category\nFROM GroceryItems\nWHERE supplier_id IN (SELECT supplier_id FROM Suppliers WHERE country = 'Canada');",
+    "syntaxBlueprint": "SELECT col1, col2\nFROM table_name\nWHERE key_col IN (SELECT fk_col FROM other_table WHERE condition);",
+    "syntaxRule": "The IN subquery checks whether a row's column value exists in the dynamic list of values returned by the subquery.",
+    "syntaxTrap": "Selecting multiple columns in the IN subquery (e.g. IN (SELECT id, name ...)) will throw an operand error. IN requires exactly 1 column.",
+    "eli5Story": "Subqueries & CTEs on GroceryItems: Filter grocery items provided by Canadian suppliers via IN.",
+    "commonMistakes": "Forgetting to alias derived tables in FROM, writing multiple WITH keywords in multi-CTE pipelines, or suffering the NOT IN NULL trap.",
+    "learningOutcomes": "Mastered 11.3 Set Membership with IN (Subquery Lists) on GroceryItems.",
+    "challengeSlots": [
+      {
+        "type": "keyword",
+        "value": "SELECT"
+      },
+      {
+        "type": "column",
+        "value": "item_name,"
+      },
+      {
+        "type": "column",
+        "value": "category"
+      },
+      {
+        "type": "keyword",
+        "value": "FROM"
+      },
+      {
+        "type": "table",
+        "value": "GroceryItems"
+      },
+      {
+        "type": "keyword",
+        "value": "WHERE"
+      },
+      {
+        "type": "column",
+        "value": "supplier_id"
+      },
+      {
+        "type": "keyword",
+        "value": "IN"
+      },
+      {
+        "type": "keyword",
+        "value": "(SELECT"
+      },
+      {
+        "type": "column",
+        "value": "supplier_id"
+      },
+      {
+        "type": "keyword",
+        "value": "FROM"
+      },
+      {
+        "type": "table",
+        "value": "Suppliers"
+      },
+      {
+        "type": "keyword",
+        "value": "WHERE"
+      },
+      {
+        "type": "column",
+        "value": "country"
+      },
+      {
+        "type": "column",
+        "value": "="
+      },
+      {
+        "type": "column",
+        "value": "'Canada');"
+      }
+    ]
+  },
+  {
+    "drillNumber": 1025,
+    "subcluster": "11.3 Set Membership with IN (Subquery Lists)",
+    "level": "Level 2 (IN Subquery)",
+    "title": "Syntax #1025: Retrieve orders placed by customers residing in New York using an IN subquery",
+    "table": "Orders",
+    "scenario": "Retrieve orders placed by customers residing in New York using an IN subquery.",
+    "businessObjective": "Retrieve orders placed by customers residing in New York using an IN subquery.",
+    "schemaSnippet": "Orders relational schema",
+    "targetQuery": "SELECT order_id, total_amount\nFROM Orders\nWHERE customer_id IN (SELECT customer_id FROM Customers WHERE city = 'New York');",
+    "syntaxBlueprint": "SELECT col1, col2\nFROM table_name\nWHERE key_col IN (SELECT fk_col FROM other_table WHERE condition);",
+    "syntaxRule": "The IN subquery checks whether a row's column value exists in the dynamic list of values returned by the subquery.",
+    "syntaxTrap": "Selecting multiple columns in the IN subquery (e.g. IN (SELECT id, name ...)) will throw an operand error. IN requires exactly 1 column.",
+    "eli5Story": "Subqueries & CTEs on Orders: Retrieve orders placed by customers residing in New York using an IN subquery.",
+    "commonMistakes": "Forgetting to alias derived tables in FROM, writing multiple WITH keywords in multi-CTE pipelines, or suffering the NOT IN NULL trap.",
+    "learningOutcomes": "Mastered 11.3 Set Membership with IN (Subquery Lists) on Orders.",
+    "challengeSlots": [
+      {
+        "type": "keyword",
+        "value": "SELECT"
+      },
+      {
+        "type": "column",
+        "value": "order_id,"
+      },
+      {
+        "type": "column",
+        "value": "total_amount"
+      },
+      {
+        "type": "keyword",
+        "value": "FROM"
+      },
+      {
+        "type": "table",
+        "value": "Orders"
+      },
+      {
+        "type": "keyword",
+        "value": "WHERE"
+      },
+      {
+        "type": "column",
+        "value": "customer_id"
+      },
+      {
+        "type": "keyword",
+        "value": "IN"
+      },
+      {
+        "type": "keyword",
+        "value": "(SELECT"
+      },
+      {
+        "type": "column",
+        "value": "customer_id"
+      },
+      {
+        "type": "keyword",
+        "value": "FROM"
+      },
+      {
+        "type": "table",
+        "value": "Customers"
+      },
+      {
+        "type": "keyword",
+        "value": "WHERE"
+      },
+      {
+        "type": "column",
+        "value": "city"
+      },
+      {
+        "type": "column",
+        "value": "="
+      },
+      {
+        "type": "column",
+        "value": "'New"
+      },
+      {
+        "type": "column",
+        "value": "York');"
+      }
+    ]
+  },
+  {
+    "drillNumber": 1026,
+    "subcluster": "11.3 Set Membership with IN (Subquery Lists)",
+    "level": "Level 2 (IN Subquery)",
+    "title": "Syntax #1026: Find music tracks from albums released in 2024 or later",
+    "table": "MusicTracks",
+    "scenario": "Find music tracks from albums released in 2024 or later.",
+    "businessObjective": "Find music tracks from albums released in 2024 or later.",
+    "schemaSnippet": "MusicTracks relational schema",
+    "targetQuery": "SELECT track_title, genre\nFROM MusicTracks\nWHERE album_id IN (SELECT album_id FROM Albums WHERE release_year >= 2024);",
+    "syntaxBlueprint": "SELECT col1, col2\nFROM table_name\nWHERE key_col IN (SELECT fk_col FROM other_table WHERE condition);",
+    "syntaxRule": "The IN subquery checks whether a row's column value exists in the dynamic list of values returned by the subquery.",
+    "syntaxTrap": "Selecting multiple columns in the IN subquery (e.g. IN (SELECT id, name ...)) will throw an operand error. IN requires exactly 1 column.",
+    "eli5Story": "Subqueries & CTEs on MusicTracks: Find music tracks from albums released in 2024 or later.",
+    "commonMistakes": "Forgetting to alias derived tables in FROM, writing multiple WITH keywords in multi-CTE pipelines, or suffering the NOT IN NULL trap.",
+    "learningOutcomes": "Mastered 11.3 Set Membership with IN (Subquery Lists) on MusicTracks.",
+    "challengeSlots": [
+      {
+        "type": "keyword",
+        "value": "SELECT"
+      },
+      {
+        "type": "column",
+        "value": "track_title,"
+      },
+      {
+        "type": "column",
+        "value": "genre"
+      },
+      {
+        "type": "keyword",
+        "value": "FROM"
+      },
+      {
+        "type": "table",
+        "value": "MusicTracks"
+      },
+      {
+        "type": "keyword",
+        "value": "WHERE"
+      },
+      {
+        "type": "column",
+        "value": "album_id"
+      },
+      {
+        "type": "keyword",
+        "value": "IN"
+      },
+      {
+        "type": "keyword",
+        "value": "(SELECT"
+      },
+      {
+        "type": "column",
+        "value": "album_id"
+      },
+      {
+        "type": "keyword",
+        "value": "FROM"
+      },
+      {
+        "type": "table",
+        "value": "Albums"
+      },
+      {
+        "type": "keyword",
+        "value": "WHERE"
+      },
+      {
+        "type": "column",
+        "value": "release_year"
+      },
+      {
+        "type": "column",
+        "value": ">="
+      },
+      {
+        "type": "column",
+        "value": "2024);"
+      }
+    ]
+  },
+  {
+    "drillNumber": 1027,
+    "subcluster": "11.3 Set Membership with IN (Subquery Lists)",
+    "level": "Level 2 (IN Subquery)",
+    "title": "Syntax #1027: Find gym members whose trainer specializes in Strength coaching",
+    "table": "GymMembers",
+    "scenario": "Find gym members whose trainer specializes in Strength coaching.",
+    "businessObjective": "Find gym members whose trainer specializes in Strength coaching.",
+    "schemaSnippet": "GymMembers relational schema",
+    "targetQuery": "SELECT member_name, membership_plan\nFROM GymMembers\nWHERE trainer_id IN (SELECT trainer_id FROM Trainers WHERE specialty = 'Strength');",
+    "syntaxBlueprint": "SELECT col1, col2\nFROM table_name\nWHERE key_col IN (SELECT fk_col FROM other_table WHERE condition);",
+    "syntaxRule": "The IN subquery checks whether a row's column value exists in the dynamic list of values returned by the subquery.",
+    "syntaxTrap": "Selecting multiple columns in the IN subquery (e.g. IN (SELECT id, name ...)) will throw an operand error. IN requires exactly 1 column.",
+    "eli5Story": "Subqueries & CTEs on GymMembers: Find gym members whose trainer specializes in Strength coaching.",
+    "commonMistakes": "Forgetting to alias derived tables in FROM, writing multiple WITH keywords in multi-CTE pipelines, or suffering the NOT IN NULL trap.",
+    "learningOutcomes": "Mastered 11.3 Set Membership with IN (Subquery Lists) on GymMembers.",
+    "challengeSlots": [
+      {
+        "type": "keyword",
+        "value": "SELECT"
+      },
+      {
+        "type": "column",
+        "value": "member_name,"
+      },
+      {
+        "type": "column",
+        "value": "membership_plan"
+      },
+      {
+        "type": "keyword",
+        "value": "FROM"
+      },
+      {
+        "type": "table",
+        "value": "GymMembers"
+      },
+      {
+        "type": "keyword",
+        "value": "WHERE"
+      },
+      {
+        "type": "column",
+        "value": "trainer_id"
+      },
+      {
+        "type": "keyword",
+        "value": "IN"
+      },
+      {
+        "type": "keyword",
+        "value": "(SELECT"
+      },
+      {
+        "type": "column",
+        "value": "trainer_id"
+      },
+      {
+        "type": "keyword",
+        "value": "FROM"
+      },
+      {
+        "type": "table",
+        "value": "Trainers"
+      },
+      {
+        "type": "keyword",
+        "value": "WHERE"
+      },
+      {
+        "type": "column",
+        "value": "specialty"
+      },
+      {
+        "type": "column",
+        "value": "="
+      },
+      {
+        "type": "column",
+        "value": "'Strength');"
+      }
+    ]
+  },
+  {
+    "drillNumber": 1028,
+    "subcluster": "11.3 Set Membership with IN (Subquery Lists)",
+    "level": "Level 2 (IN Subquery)",
+    "title": "Syntax #1028: Retrieve reviews written for films released in the year 2023",
+    "table": "MovieReviews",
+    "scenario": "Retrieve reviews written for films released in the year 2023.",
+    "businessObjective": "Retrieve reviews written for films released in the year 2023.",
+    "schemaSnippet": "MovieReviews relational schema",
+    "targetQuery": "SELECT movie_title, star_rating\nFROM MovieReviews\nWHERE movie_id IN (SELECT movie_id FROM Movies WHERE release_year = 2023);",
+    "syntaxBlueprint": "SELECT col1, col2\nFROM table_name\nWHERE key_col IN (SELECT fk_col FROM other_table WHERE condition);",
+    "syntaxRule": "The IN subquery checks whether a row's column value exists in the dynamic list of values returned by the subquery.",
+    "syntaxTrap": "Selecting multiple columns in the IN subquery (e.g. IN (SELECT id, name ...)) will throw an operand error. IN requires exactly 1 column.",
+    "eli5Story": "Subqueries & CTEs on MovieReviews: Retrieve reviews written for films released in the year 2023.",
+    "commonMistakes": "Forgetting to alias derived tables in FROM, writing multiple WITH keywords in multi-CTE pipelines, or suffering the NOT IN NULL trap.",
+    "learningOutcomes": "Mastered 11.3 Set Membership with IN (Subquery Lists) on MovieReviews.",
+    "challengeSlots": [
+      {
+        "type": "keyword",
+        "value": "SELECT"
+      },
+      {
+        "type": "column",
+        "value": "movie_title,"
+      },
+      {
+        "type": "column",
+        "value": "star_rating"
+      },
+      {
+        "type": "keyword",
+        "value": "FROM"
+      },
+      {
+        "type": "table",
+        "value": "MovieReviews"
+      },
+      {
+        "type": "keyword",
+        "value": "WHERE"
+      },
+      {
+        "type": "column",
+        "value": "movie_id"
+      },
+      {
+        "type": "keyword",
+        "value": "IN"
+      },
+      {
+        "type": "keyword",
+        "value": "(SELECT"
+      },
+      {
+        "type": "column",
+        "value": "movie_id"
+      },
+      {
+        "type": "keyword",
+        "value": "FROM"
+      },
+      {
+        "type": "table",
+        "value": "Movies"
+      },
+      {
+        "type": "keyword",
+        "value": "WHERE"
+      },
+      {
+        "type": "column",
+        "value": "release_year"
+      },
+      {
+        "type": "column",
+        "value": "="
+      },
+      {
+        "type": "column",
+        "value": "2023);"
+      }
+    ]
+  },
+  {
+    "drillNumber": 1029,
+    "subcluster": "11.3 Set Membership with IN (Subquery Lists)",
+    "level": "Level 2 (IN Subquery)",
+    "title": "Syntax #1029: Find scheduled flights operated by US-headquartered airlines",
+    "table": "FlightSchedule",
+    "scenario": "Find scheduled flights operated by US-headquartered airlines.",
+    "businessObjective": "Find scheduled flights operated by US-headquartered airlines.",
+    "schemaSnippet": "FlightSchedule relational schema",
+    "targetQuery": "SELECT flight_id, origin_airport\nFROM FlightSchedule\nWHERE airline_id IN (SELECT airline_id FROM Airlines WHERE country = 'USA');",
+    "syntaxBlueprint": "SELECT col1, col2\nFROM table_name\nWHERE key_col IN (SELECT fk_col FROM other_table WHERE condition);",
+    "syntaxRule": "The IN subquery checks whether a row's column value exists in the dynamic list of values returned by the subquery.",
+    "syntaxTrap": "Selecting multiple columns in the IN subquery (e.g. IN (SELECT id, name ...)) will throw an operand error. IN requires exactly 1 column.",
+    "eli5Story": "Subqueries & CTEs on FlightSchedule: Find scheduled flights operated by US-headquartered airlines.",
+    "commonMistakes": "Forgetting to alias derived tables in FROM, writing multiple WITH keywords in multi-CTE pipelines, or suffering the NOT IN NULL trap.",
+    "learningOutcomes": "Mastered 11.3 Set Membership with IN (Subquery Lists) on FlightSchedule.",
+    "challengeSlots": [
+      {
+        "type": "keyword",
+        "value": "SELECT"
+      },
+      {
+        "type": "column",
+        "value": "flight_id,"
+      },
+      {
+        "type": "column",
+        "value": "origin_airport"
+      },
+      {
+        "type": "keyword",
+        "value": "FROM"
+      },
+      {
+        "type": "table",
+        "value": "FlightSchedule"
+      },
+      {
+        "type": "keyword",
+        "value": "WHERE"
+      },
+      {
+        "type": "column",
+        "value": "airline_id"
+      },
+      {
+        "type": "keyword",
+        "value": "IN"
+      },
+      {
+        "type": "keyword",
+        "value": "(SELECT"
+      },
+      {
+        "type": "column",
+        "value": "airline_id"
+      },
+      {
+        "type": "keyword",
+        "value": "FROM"
+      },
+      {
+        "type": "table",
+        "value": "Airlines"
+      },
+      {
+        "type": "keyword",
+        "value": "WHERE"
+      },
+      {
+        "type": "column",
+        "value": "country"
+      },
+      {
+        "type": "column",
+        "value": "="
+      },
+      {
+        "type": "column",
+        "value": "'USA');"
+      }
+    ]
+  },
+  {
+    "drillNumber": 1030,
+    "subcluster": "11.3 Set Membership with IN (Subquery Lists)",
+    "level": "Level 2 (IN Subquery)",
+    "title": "Syntax #1030: Filter clinic pets belonging to owners located in Chicago",
+    "table": "PetClinic",
+    "scenario": "Filter clinic pets belonging to owners located in Chicago.",
+    "businessObjective": "Filter clinic pets belonging to owners located in Chicago.",
+    "schemaSnippet": "PetClinic relational schema",
+    "targetQuery": "SELECT pet_name, species\nFROM PetClinic\nWHERE owner_id IN (SELECT owner_id FROM Owners WHERE city = 'Chicago');",
+    "syntaxBlueprint": "SELECT col1, col2\nFROM table_name\nWHERE key_col IN (SELECT fk_col FROM other_table WHERE condition);",
+    "syntaxRule": "The IN subquery checks whether a row's column value exists in the dynamic list of values returned by the subquery.",
+    "syntaxTrap": "Selecting multiple columns in the IN subquery (e.g. IN (SELECT id, name ...)) will throw an operand error. IN requires exactly 1 column.",
+    "eli5Story": "Subqueries & CTEs on PetClinic: Filter clinic pets belonging to owners located in Chicago.",
+    "commonMistakes": "Forgetting to alias derived tables in FROM, writing multiple WITH keywords in multi-CTE pipelines, or suffering the NOT IN NULL trap.",
+    "learningOutcomes": "Mastered 11.3 Set Membership with IN (Subquery Lists) on PetClinic.",
+    "challengeSlots": [
+      {
+        "type": "keyword",
+        "value": "SELECT"
+      },
+      {
+        "type": "column",
+        "value": "pet_name,"
+      },
+      {
+        "type": "column",
+        "value": "species"
+      },
+      {
+        "type": "keyword",
+        "value": "FROM"
+      },
+      {
+        "type": "table",
+        "value": "PetClinic"
+      },
+      {
+        "type": "keyword",
+        "value": "WHERE"
+      },
+      {
+        "type": "column",
+        "value": "owner_id"
+      },
+      {
+        "type": "keyword",
+        "value": "IN"
+      },
+      {
+        "type": "keyword",
+        "value": "(SELECT"
+      },
+      {
+        "type": "column",
+        "value": "owner_id"
+      },
+      {
+        "type": "keyword",
+        "value": "FROM"
+      },
+      {
+        "type": "table",
+        "value": "Owners"
+      },
+      {
+        "type": "keyword",
+        "value": "WHERE"
+      },
+      {
+        "type": "column",
+        "value": "city"
+      },
+      {
+        "type": "column",
+        "value": "="
+      },
+      {
+        "type": "column",
+        "value": "'Chicago');"
+      }
+    ]
+  },
+  {
+    "drillNumber": 1031,
+    "subcluster": "11.4 Negative Membership with NOT IN & The NULL Trap",
+    "level": "Level 2 (NOT IN Subquery)",
+    "title": "Syntax #1031: Find students with zero registered courses using NOT IN (with NULL protection)",
+    "table": "Students",
+    "scenario": "Find students with zero registered courses using NOT IN (with NULL protection).",
+    "businessObjective": "Find students with zero registered courses using NOT IN (with NULL protection).",
+    "schemaSnippet": "Students relational schema",
+    "targetQuery": "SELECT full_name\nFROM Students\nWHERE student_id NOT IN (SELECT student_id FROM Courses WHERE student_id IS NOT NULL);",
+    "syntaxBlueprint": "SELECT col1, col2\nFROM table_name\nWHERE key_col NOT IN (SELECT fk_col FROM other_table WHERE fk_col IS NOT NULL);",
+    "syntaxRule": "NOT IN excludes rows matching any value in the subquery result. You must ensure the subquery does not return any NULL values.",
+    "syntaxTrap": "THE NOT IN NULL TRAP: If a NOT IN subquery contains even a single NULL value, the entire query returns ZERO rows! Always filter 'WHERE col IS NOT NULL' inside.",
+    "eli5Story": "Subqueries & CTEs on Students: Find students with zero registered courses using NOT IN (with NULL protection).",
+    "commonMistakes": "Forgetting to alias derived tables in FROM, writing multiple WITH keywords in multi-CTE pipelines, or suffering the NOT IN NULL trap.",
+    "learningOutcomes": "Mastered 11.4 Negative Membership with NOT IN & The NULL Trap on Students.",
+    "challengeSlots": [
+      {
+        "type": "keyword",
+        "value": "SELECT"
+      },
+      {
+        "type": "column",
+        "value": "full_name"
+      },
+      {
+        "type": "keyword",
+        "value": "FROM"
+      },
+      {
+        "type": "table",
+        "value": "Students"
+      },
+      {
+        "type": "keyword",
+        "value": "WHERE"
+      },
+      {
+        "type": "column",
+        "value": "student_id"
+      },
+      {
+        "type": "keyword",
+        "value": "NOT"
+      },
+      {
+        "type": "keyword",
+        "value": "IN"
+      },
+      {
+        "type": "keyword",
+        "value": "(SELECT"
+      },
+      {
+        "type": "column",
+        "value": "student_id"
+      },
+      {
+        "type": "keyword",
+        "value": "FROM"
+      },
+      {
+        "type": "table",
+        "value": "Courses"
+      },
+      {
+        "type": "keyword",
+        "value": "WHERE"
+      },
+      {
+        "type": "column",
+        "value": "student_id"
+      },
+      {
+        "type": "keyword",
+        "value": "IS"
+      },
+      {
+        "type": "keyword",
+        "value": "NOT"
+      },
+      {
+        "type": "keyword",
+        "value": "NULL);"
+      }
+    ]
+  },
+  {
+    "drillNumber": 1032,
+    "subcluster": "11.4 Negative Membership with NOT IN & The NULL Trap",
+    "level": "Level 2 (NOT IN Subquery)",
+    "title": "Syntax #1032: Identify books that have never been checked out from the library via NOT IN",
+    "table": "Books",
+    "scenario": "Identify books that have never been checked out from the library via NOT IN.",
+    "businessObjective": "Identify books that have never been checked out from the library via NOT IN.",
+    "schemaSnippet": "Books relational schema",
+    "targetQuery": "SELECT title\nFROM Books\nWHERE book_id NOT IN (SELECT book_id FROM BorrowRecords WHERE book_id IS NOT NULL);",
+    "syntaxBlueprint": "SELECT col1, col2\nFROM table_name\nWHERE key_col NOT IN (SELECT fk_col FROM other_table WHERE fk_col IS NOT NULL);",
+    "syntaxRule": "NOT IN excludes rows matching any value in the subquery result. You must ensure the subquery does not return any NULL values.",
+    "syntaxTrap": "THE NOT IN NULL TRAP: If a NOT IN subquery contains even a single NULL value, the entire query returns ZERO rows! Always filter 'WHERE col IS NOT NULL' inside.",
+    "eli5Story": "Subqueries & CTEs on Books: Identify books that have never been checked out from the library via NOT IN.",
+    "commonMistakes": "Forgetting to alias derived tables in FROM, writing multiple WITH keywords in multi-CTE pipelines, or suffering the NOT IN NULL trap.",
+    "learningOutcomes": "Mastered 11.4 Negative Membership with NOT IN & The NULL Trap on Books.",
+    "challengeSlots": [
+      {
+        "type": "keyword",
+        "value": "SELECT"
+      },
+      {
+        "type": "column",
+        "value": "title"
+      },
+      {
+        "type": "keyword",
+        "value": "FROM"
+      },
+      {
+        "type": "table",
+        "value": "Books"
+      },
+      {
+        "type": "keyword",
+        "value": "WHERE"
+      },
+      {
+        "type": "column",
+        "value": "book_id"
+      },
+      {
+        "type": "keyword",
+        "value": "NOT"
+      },
+      {
+        "type": "keyword",
+        "value": "IN"
+      },
+      {
+        "type": "keyword",
+        "value": "(SELECT"
+      },
+      {
+        "type": "column",
+        "value": "book_id"
+      },
+      {
+        "type": "keyword",
+        "value": "FROM"
+      },
+      {
+        "type": "column",
+        "value": "BorrowRecords"
+      },
+      {
+        "type": "keyword",
+        "value": "WHERE"
+      },
+      {
+        "type": "column",
+        "value": "book_id"
+      },
+      {
+        "type": "keyword",
+        "value": "IS"
+      },
+      {
+        "type": "keyword",
+        "value": "NOT"
+      },
+      {
+        "type": "keyword",
+        "value": "NULL);"
+      }
+    ]
+  },
+  {
+    "drillNumber": 1033,
+    "subcluster": "11.4 Negative Membership with NOT IN & The NULL Trap",
+    "level": "Level 2 (NOT IN Subquery)",
+    "title": "Syntax #1033: Find non-manager individual contributor employees using NOT IN",
+    "table": "Employees",
+    "scenario": "Find non-manager individual contributor employees using NOT IN.",
+    "businessObjective": "Find non-manager individual contributor employees using NOT IN.",
+    "schemaSnippet": "Employees relational schema",
+    "targetQuery": "SELECT first_name, last_name\nFROM Employees\nWHERE employee_id NOT IN (SELECT manager_id FROM Employees WHERE manager_id IS NOT NULL);",
+    "syntaxBlueprint": "SELECT col1, col2\nFROM table_name\nWHERE key_col NOT IN (SELECT fk_col FROM other_table WHERE fk_col IS NOT NULL);",
+    "syntaxRule": "NOT IN excludes rows matching any value in the subquery result. You must ensure the subquery does not return any NULL values.",
+    "syntaxTrap": "THE NOT IN NULL TRAP: If a NOT IN subquery contains even a single NULL value, the entire query returns ZERO rows! Always filter 'WHERE col IS NOT NULL' inside.",
+    "eli5Story": "Subqueries & CTEs on Employees: Find non-manager individual contributor employees using NOT IN.",
+    "commonMistakes": "Forgetting to alias derived tables in FROM, writing multiple WITH keywords in multi-CTE pipelines, or suffering the NOT IN NULL trap.",
+    "learningOutcomes": "Mastered 11.4 Negative Membership with NOT IN & The NULL Trap on Employees.",
+    "challengeSlots": [
+      {
+        "type": "keyword",
+        "value": "SELECT"
+      },
+      {
+        "type": "column",
+        "value": "first_name,"
+      },
+      {
+        "type": "column",
+        "value": "last_name"
+      },
+      {
+        "type": "keyword",
+        "value": "FROM"
+      },
+      {
+        "type": "table",
+        "value": "Employees"
+      },
+      {
+        "type": "keyword",
+        "value": "WHERE"
+      },
+      {
+        "type": "column",
+        "value": "employee_id"
+      },
+      {
+        "type": "keyword",
+        "value": "NOT"
+      },
+      {
+        "type": "keyword",
+        "value": "IN"
+      },
+      {
+        "type": "keyword",
+        "value": "(SELECT"
+      },
+      {
+        "type": "column",
+        "value": "manager_id"
+      },
+      {
+        "type": "keyword",
+        "value": "FROM"
+      },
+      {
+        "type": "table",
+        "value": "Employees"
+      },
+      {
+        "type": "keyword",
+        "value": "WHERE"
+      },
+      {
+        "type": "column",
+        "value": "manager_id"
+      },
+      {
+        "type": "keyword",
+        "value": "IS"
+      },
+      {
+        "type": "keyword",
+        "value": "NOT"
+      },
+      {
+        "type": "keyword",
+        "value": "NULL);"
+      }
+    ]
+  },
+  {
+    "drillNumber": 1034,
+    "subcluster": "11.4 Negative Membership with NOT IN & The NULL Trap",
+    "level": "Level 2 (NOT IN Subquery)",
+    "title": "Syntax #1034: Find grocery items that have zero purchase history using NOT IN",
+    "table": "GroceryItems",
+    "scenario": "Find grocery items that have zero purchase history using NOT IN.",
+    "businessObjective": "Find grocery items that have zero purchase history using NOT IN.",
+    "schemaSnippet": "GroceryItems relational schema",
+    "targetQuery": "SELECT item_name\nFROM GroceryItems\nWHERE item_id NOT IN (SELECT item_id FROM OrderItems WHERE item_id IS NOT NULL);",
+    "syntaxBlueprint": "SELECT col1, col2\nFROM table_name\nWHERE key_col NOT IN (SELECT fk_col FROM other_table WHERE fk_col IS NOT NULL);",
+    "syntaxRule": "NOT IN excludes rows matching any value in the subquery result. You must ensure the subquery does not return any NULL values.",
+    "syntaxTrap": "THE NOT IN NULL TRAP: If a NOT IN subquery contains even a single NULL value, the entire query returns ZERO rows! Always filter 'WHERE col IS NOT NULL' inside.",
+    "eli5Story": "Subqueries & CTEs on GroceryItems: Find grocery items that have zero purchase history using NOT IN.",
+    "commonMistakes": "Forgetting to alias derived tables in FROM, writing multiple WITH keywords in multi-CTE pipelines, or suffering the NOT IN NULL trap.",
+    "learningOutcomes": "Mastered 11.4 Negative Membership with NOT IN & The NULL Trap on GroceryItems.",
+    "challengeSlots": [
+      {
+        "type": "keyword",
+        "value": "SELECT"
+      },
+      {
+        "type": "column",
+        "value": "item_name"
+      },
+      {
+        "type": "keyword",
+        "value": "FROM"
+      },
+      {
+        "type": "table",
+        "value": "GroceryItems"
+      },
+      {
+        "type": "keyword",
+        "value": "WHERE"
+      },
+      {
+        "type": "column",
+        "value": "item_id"
+      },
+      {
+        "type": "keyword",
+        "value": "NOT"
+      },
+      {
+        "type": "keyword",
+        "value": "IN"
+      },
+      {
+        "type": "keyword",
+        "value": "(SELECT"
+      },
+      {
+        "type": "column",
+        "value": "item_id"
+      },
+      {
+        "type": "keyword",
+        "value": "FROM"
+      },
+      {
+        "type": "column",
+        "value": "OrderItems"
+      },
+      {
+        "type": "keyword",
+        "value": "WHERE"
+      },
+      {
+        "type": "column",
+        "value": "item_id"
+      },
+      {
+        "type": "keyword",
+        "value": "IS"
+      },
+      {
+        "type": "keyword",
+        "value": "NOT"
+      },
+      {
+        "type": "keyword",
+        "value": "NULL);"
+      }
+    ]
+  },
+  {
+    "drillNumber": 1035,
+    "subcluster": "11.4 Negative Membership with NOT IN & The NULL Trap",
+    "level": "Level 2 (NOT IN Subquery)",
+    "title": "Syntax #1035: Identify inactive customer accounts that have never placed an order",
+    "table": "Orders",
+    "scenario": "Identify inactive customer accounts that have never placed an order.",
+    "businessObjective": "Identify inactive customer accounts that have never placed an order.",
+    "schemaSnippet": "Orders relational schema",
+    "targetQuery": "SELECT customer_id, customer_name\nFROM Customers\nWHERE customer_id NOT IN (SELECT customer_id FROM Orders WHERE customer_id IS NOT NULL);",
+    "syntaxBlueprint": "SELECT col1, col2\nFROM table_name\nWHERE key_col NOT IN (SELECT fk_col FROM other_table WHERE fk_col IS NOT NULL);",
+    "syntaxRule": "NOT IN excludes rows matching any value in the subquery result. You must ensure the subquery does not return any NULL values.",
+    "syntaxTrap": "THE NOT IN NULL TRAP: If a NOT IN subquery contains even a single NULL value, the entire query returns ZERO rows! Always filter 'WHERE col IS NOT NULL' inside.",
+    "eli5Story": "Subqueries & CTEs on Orders: Identify inactive customer accounts that have never placed an order.",
+    "commonMistakes": "Forgetting to alias derived tables in FROM, writing multiple WITH keywords in multi-CTE pipelines, or suffering the NOT IN NULL trap.",
+    "learningOutcomes": "Mastered 11.4 Negative Membership with NOT IN & The NULL Trap on Orders.",
+    "challengeSlots": [
+      {
+        "type": "keyword",
+        "value": "SELECT"
+      },
+      {
+        "type": "column",
+        "value": "customer_id,"
+      },
+      {
+        "type": "column",
+        "value": "customer_name"
+      },
+      {
+        "type": "keyword",
+        "value": "FROM"
+      },
+      {
+        "type": "table",
+        "value": "Customers"
+      },
+      {
+        "type": "keyword",
+        "value": "WHERE"
+      },
+      {
+        "type": "column",
+        "value": "customer_id"
+      },
+      {
+        "type": "keyword",
+        "value": "NOT"
+      },
+      {
+        "type": "keyword",
+        "value": "IN"
+      },
+      {
+        "type": "keyword",
+        "value": "(SELECT"
+      },
+      {
+        "type": "column",
+        "value": "customer_id"
+      },
+      {
+        "type": "keyword",
+        "value": "FROM"
+      },
+      {
+        "type": "table",
+        "value": "Orders"
+      },
+      {
+        "type": "keyword",
+        "value": "WHERE"
+      },
+      {
+        "type": "column",
+        "value": "customer_id"
+      },
+      {
+        "type": "keyword",
+        "value": "IS"
+      },
+      {
+        "type": "keyword",
+        "value": "NOT"
+      },
+      {
+        "type": "keyword",
+        "value": "NULL);"
+      }
+    ]
+  },
+  {
+    "drillNumber": 1036,
+    "subcluster": "11.4 Negative Membership with NOT IN & The NULL Trap",
+    "level": "Level 2 (NOT IN Subquery)",
+    "title": "Syntax #1036: Find music tracks that do not appear in any curated playlist",
+    "table": "MusicTracks",
+    "scenario": "Find music tracks that do not appear in any curated playlist.",
+    "businessObjective": "Find music tracks that do not appear in any curated playlist.",
+    "schemaSnippet": "MusicTracks relational schema",
+    "targetQuery": "SELECT track_title\nFROM MusicTracks\nWHERE track_id NOT IN (SELECT track_id FROM Playlists WHERE track_id IS NOT NULL);",
+    "syntaxBlueprint": "SELECT col1, col2\nFROM table_name\nWHERE key_col NOT IN (SELECT fk_col FROM other_table WHERE fk_col IS NOT NULL);",
+    "syntaxRule": "NOT IN excludes rows matching any value in the subquery result. You must ensure the subquery does not return any NULL values.",
+    "syntaxTrap": "THE NOT IN NULL TRAP: If a NOT IN subquery contains even a single NULL value, the entire query returns ZERO rows! Always filter 'WHERE col IS NOT NULL' inside.",
+    "eli5Story": "Subqueries & CTEs on MusicTracks: Find music tracks that do not appear in any curated playlist.",
+    "commonMistakes": "Forgetting to alias derived tables in FROM, writing multiple WITH keywords in multi-CTE pipelines, or suffering the NOT IN NULL trap.",
+    "learningOutcomes": "Mastered 11.4 Negative Membership with NOT IN & The NULL Trap on MusicTracks.",
+    "challengeSlots": [
+      {
+        "type": "keyword",
+        "value": "SELECT"
+      },
+      {
+        "type": "column",
+        "value": "track_title"
+      },
+      {
+        "type": "keyword",
+        "value": "FROM"
+      },
+      {
+        "type": "table",
+        "value": "MusicTracks"
+      },
+      {
+        "type": "keyword",
+        "value": "WHERE"
+      },
+      {
+        "type": "column",
+        "value": "track_id"
+      },
+      {
+        "type": "keyword",
+        "value": "NOT"
+      },
+      {
+        "type": "keyword",
+        "value": "IN"
+      },
+      {
+        "type": "keyword",
+        "value": "(SELECT"
+      },
+      {
+        "type": "column",
+        "value": "track_id"
+      },
+      {
+        "type": "keyword",
+        "value": "FROM"
+      },
+      {
+        "type": "column",
+        "value": "Playlists"
+      },
+      {
+        "type": "keyword",
+        "value": "WHERE"
+      },
+      {
+        "type": "column",
+        "value": "track_id"
+      },
+      {
+        "type": "keyword",
+        "value": "IS"
+      },
+      {
+        "type": "keyword",
+        "value": "NOT"
+      },
+      {
+        "type": "keyword",
+        "value": "NULL);"
+      }
+    ]
+  },
+  {
+    "drillNumber": 1037,
+    "subcluster": "11.4 Negative Membership with NOT IN & The NULL Trap",
+    "level": "Level 2 (NOT IN Subquery)",
+    "title": "Syntax #1037: Find gym members who have never booked a group fitness class",
+    "table": "GymMembers",
+    "scenario": "Find gym members who have never booked a group fitness class.",
+    "businessObjective": "Find gym members who have never booked a group fitness class.",
+    "schemaSnippet": "GymMembers relational schema",
+    "targetQuery": "SELECT member_name\nFROM GymMembers\nWHERE member_id NOT IN (SELECT member_id FROM ClassBookings WHERE member_id IS NOT NULL);",
+    "syntaxBlueprint": "SELECT col1, col2\nFROM table_name\nWHERE key_col NOT IN (SELECT fk_col FROM other_table WHERE fk_col IS NOT NULL);",
+    "syntaxRule": "NOT IN excludes rows matching any value in the subquery result. You must ensure the subquery does not return any NULL values.",
+    "syntaxTrap": "THE NOT IN NULL TRAP: If a NOT IN subquery contains even a single NULL value, the entire query returns ZERO rows! Always filter 'WHERE col IS NOT NULL' inside.",
+    "eli5Story": "Subqueries & CTEs on GymMembers: Find gym members who have never booked a group fitness class.",
+    "commonMistakes": "Forgetting to alias derived tables in FROM, writing multiple WITH keywords in multi-CTE pipelines, or suffering the NOT IN NULL trap.",
+    "learningOutcomes": "Mastered 11.4 Negative Membership with NOT IN & The NULL Trap on GymMembers.",
+    "challengeSlots": [
+      {
+        "type": "keyword",
+        "value": "SELECT"
+      },
+      {
+        "type": "column",
+        "value": "member_name"
+      },
+      {
+        "type": "keyword",
+        "value": "FROM"
+      },
+      {
+        "type": "table",
+        "value": "GymMembers"
+      },
+      {
+        "type": "keyword",
+        "value": "WHERE"
+      },
+      {
+        "type": "column",
+        "value": "member_id"
+      },
+      {
+        "type": "keyword",
+        "value": "NOT"
+      },
+      {
+        "type": "keyword",
+        "value": "IN"
+      },
+      {
+        "type": "keyword",
+        "value": "(SELECT"
+      },
+      {
+        "type": "column",
+        "value": "member_id"
+      },
+      {
+        "type": "keyword",
+        "value": "FROM"
+      },
+      {
+        "type": "column",
+        "value": "ClassBookings"
+      },
+      {
+        "type": "keyword",
+        "value": "WHERE"
+      },
+      {
+        "type": "column",
+        "value": "member_id"
+      },
+      {
+        "type": "keyword",
+        "value": "IS"
+      },
+      {
+        "type": "keyword",
+        "value": "NOT"
+      },
+      {
+        "type": "keyword",
+        "value": "NULL);"
+      }
+    ]
+  },
+  {
+    "drillNumber": 1038,
+    "subcluster": "11.4 Negative Membership with NOT IN & The NULL Trap",
+    "level": "Level 2 (NOT IN Subquery)",
+    "title": "Syntax #1038: Identify movies in the cinema registry that have zero reviews",
+    "table": "MovieReviews",
+    "scenario": "Identify movies in the cinema registry that have zero reviews.",
+    "businessObjective": "Identify movies in the cinema registry that have zero reviews.",
+    "schemaSnippet": "MovieReviews relational schema",
+    "targetQuery": "SELECT movie_title\nFROM Movies\nWHERE movie_id NOT IN (SELECT movie_id FROM MovieReviews WHERE movie_id IS NOT NULL);",
+    "syntaxBlueprint": "SELECT col1, col2\nFROM table_name\nWHERE key_col NOT IN (SELECT fk_col FROM other_table WHERE fk_col IS NOT NULL);",
+    "syntaxRule": "NOT IN excludes rows matching any value in the subquery result. You must ensure the subquery does not return any NULL values.",
+    "syntaxTrap": "THE NOT IN NULL TRAP: If a NOT IN subquery contains even a single NULL value, the entire query returns ZERO rows! Always filter 'WHERE col IS NOT NULL' inside.",
+    "eli5Story": "Subqueries & CTEs on MovieReviews: Identify movies in the cinema registry that have zero reviews.",
+    "commonMistakes": "Forgetting to alias derived tables in FROM, writing multiple WITH keywords in multi-CTE pipelines, or suffering the NOT IN NULL trap.",
+    "learningOutcomes": "Mastered 11.4 Negative Membership with NOT IN & The NULL Trap on MovieReviews.",
+    "challengeSlots": [
+      {
+        "type": "keyword",
+        "value": "SELECT"
+      },
+      {
+        "type": "column",
+        "value": "movie_title"
+      },
+      {
+        "type": "keyword",
+        "value": "FROM"
+      },
+      {
+        "type": "table",
+        "value": "Movies"
+      },
+      {
+        "type": "keyword",
+        "value": "WHERE"
+      },
+      {
+        "type": "column",
+        "value": "movie_id"
+      },
+      {
+        "type": "keyword",
+        "value": "NOT"
+      },
+      {
+        "type": "keyword",
+        "value": "IN"
+      },
+      {
+        "type": "keyword",
+        "value": "(SELECT"
+      },
+      {
+        "type": "column",
+        "value": "movie_id"
+      },
+      {
+        "type": "keyword",
+        "value": "FROM"
+      },
+      {
+        "type": "table",
+        "value": "MovieReviews"
+      },
+      {
+        "type": "keyword",
+        "value": "WHERE"
+      },
+      {
+        "type": "column",
+        "value": "movie_id"
+      },
+      {
+        "type": "keyword",
+        "value": "IS"
+      },
+      {
+        "type": "keyword",
+        "value": "NOT"
+      },
+      {
+        "type": "keyword",
+        "value": "NULL);"
+      }
+    ]
+  },
+  {
+    "drillNumber": 1039,
+    "subcluster": "11.4 Negative Membership with NOT IN & The NULL Trap",
+    "level": "Level 2 (NOT IN Subquery)",
+    "title": "Syntax #1039: Find partner airlines that currently have zero scheduled flight legs",
+    "table": "FlightSchedule",
+    "scenario": "Find partner airlines that currently have zero scheduled flight legs.",
+    "businessObjective": "Find partner airlines that currently have zero scheduled flight legs.",
+    "schemaSnippet": "FlightSchedule relational schema",
+    "targetQuery": "SELECT airline_name\nFROM Airlines\nWHERE airline_id NOT IN (SELECT airline_id FROM FlightSchedule WHERE airline_id IS NOT NULL);",
+    "syntaxBlueprint": "SELECT col1, col2\nFROM table_name\nWHERE key_col NOT IN (SELECT fk_col FROM other_table WHERE fk_col IS NOT NULL);",
+    "syntaxRule": "NOT IN excludes rows matching any value in the subquery result. You must ensure the subquery does not return any NULL values.",
+    "syntaxTrap": "THE NOT IN NULL TRAP: If a NOT IN subquery contains even a single NULL value, the entire query returns ZERO rows! Always filter 'WHERE col IS NOT NULL' inside.",
+    "eli5Story": "Subqueries & CTEs on FlightSchedule: Find partner airlines that currently have zero scheduled flight legs.",
+    "commonMistakes": "Forgetting to alias derived tables in FROM, writing multiple WITH keywords in multi-CTE pipelines, or suffering the NOT IN NULL trap.",
+    "learningOutcomes": "Mastered 11.4 Negative Membership with NOT IN & The NULL Trap on FlightSchedule.",
+    "challengeSlots": [
+      {
+        "type": "keyword",
+        "value": "SELECT"
+      },
+      {
+        "type": "column",
+        "value": "airline_name"
+      },
+      {
+        "type": "keyword",
+        "value": "FROM"
+      },
+      {
+        "type": "table",
+        "value": "Airlines"
+      },
+      {
+        "type": "keyword",
+        "value": "WHERE"
+      },
+      {
+        "type": "column",
+        "value": "airline_id"
+      },
+      {
+        "type": "keyword",
+        "value": "NOT"
+      },
+      {
+        "type": "keyword",
+        "value": "IN"
+      },
+      {
+        "type": "keyword",
+        "value": "(SELECT"
+      },
+      {
+        "type": "column",
+        "value": "airline_id"
+      },
+      {
+        "type": "keyword",
+        "value": "FROM"
+      },
+      {
+        "type": "table",
+        "value": "FlightSchedule"
+      },
+      {
+        "type": "keyword",
+        "value": "WHERE"
+      },
+      {
+        "type": "column",
+        "value": "airline_id"
+      },
+      {
+        "type": "keyword",
+        "value": "IS"
+      },
+      {
+        "type": "keyword",
+        "value": "NOT"
+      },
+      {
+        "type": "keyword",
+        "value": "NULL);"
+      }
+    ]
+  },
+  {
+    "drillNumber": 1040,
+    "subcluster": "11.4 Negative Membership with NOT IN & The NULL Trap",
+    "level": "Level 2 (NOT IN Subquery)",
+    "title": "Syntax #1040: Find registered pet owners who currently have zero pets in the clinic registry",
+    "table": "PetClinic",
+    "scenario": "Find registered pet owners who currently have zero pets in the clinic registry.",
+    "businessObjective": "Find registered pet owners who currently have zero pets in the clinic registry.",
+    "schemaSnippet": "PetClinic relational schema",
+    "targetQuery": "SELECT owner_name\nFROM Owners\nWHERE owner_id NOT IN (SELECT owner_id FROM PetClinic WHERE owner_id IS NOT NULL);",
+    "syntaxBlueprint": "SELECT col1, col2\nFROM table_name\nWHERE key_col NOT IN (SELECT fk_col FROM other_table WHERE fk_col IS NOT NULL);",
+    "syntaxRule": "NOT IN excludes rows matching any value in the subquery result. You must ensure the subquery does not return any NULL values.",
+    "syntaxTrap": "THE NOT IN NULL TRAP: If a NOT IN subquery contains even a single NULL value, the entire query returns ZERO rows! Always filter 'WHERE col IS NOT NULL' inside.",
+    "eli5Story": "Subqueries & CTEs on PetClinic: Find registered pet owners who currently have zero pets in the clinic registry.",
+    "commonMistakes": "Forgetting to alias derived tables in FROM, writing multiple WITH keywords in multi-CTE pipelines, or suffering the NOT IN NULL trap.",
+    "learningOutcomes": "Mastered 11.4 Negative Membership with NOT IN & The NULL Trap on PetClinic.",
+    "challengeSlots": [
+      {
+        "type": "keyword",
+        "value": "SELECT"
+      },
+      {
+        "type": "column",
+        "value": "owner_name"
+      },
+      {
+        "type": "keyword",
+        "value": "FROM"
+      },
+      {
+        "type": "table",
+        "value": "Owners"
+      },
+      {
+        "type": "keyword",
+        "value": "WHERE"
+      },
+      {
+        "type": "column",
+        "value": "owner_id"
+      },
+      {
+        "type": "keyword",
+        "value": "NOT"
+      },
+      {
+        "type": "keyword",
+        "value": "IN"
+      },
+      {
+        "type": "keyword",
+        "value": "(SELECT"
+      },
+      {
+        "type": "column",
+        "value": "owner_id"
+      },
+      {
+        "type": "keyword",
+        "value": "FROM"
+      },
+      {
+        "type": "table",
+        "value": "PetClinic"
+      },
+      {
+        "type": "keyword",
+        "value": "WHERE"
+      },
+      {
+        "type": "column",
+        "value": "owner_id"
+      },
+      {
+        "type": "keyword",
+        "value": "IS"
+      },
+      {
+        "type": "keyword",
+        "value": "NOT"
+      },
+      {
+        "type": "keyword",
+        "value": "NULL);"
+      }
+    ]
+  },
+  {
+    "drillNumber": 1041,
+    "subcluster": "11.5 Correlated Subqueries (Row-by-Row Context)",
+    "level": "Level 3 (Correlated Subquery)",
+    "title": "Syntax #1041: Find students whose GPA is higher than the average for their specific academic major",
+    "table": "Students",
+    "scenario": "Find students whose GPA is higher than the average for their specific academic major.",
+    "businessObjective": "Find students whose GPA is higher than the average for their specific academic major.",
+    "schemaSnippet": "Students relational schema",
+    "targetQuery": "SELECT s.full_name, s.gpa, s.major\nFROM Students s\nWHERE s.gpa > (SELECT AVG(sub.gpa) FROM Students sub WHERE sub.major = s.major);",
+    "syntaxBlueprint": "SELECT e.name, e.salary\nFROM Employees e\nWHERE e.salary > (SELECT AVG(sub.salary) FROM Employees sub WHERE sub.department_id = e.department_id);",
+    "syntaxRule": "A correlated subquery references columns from the outer query table, executing dynamically for each row evaluated in the outer query.",
+    "syntaxTrap": "Correlated subqueries can be slow on large unindexed tables because they execute once per outer row.",
+    "eli5Story": "Subqueries & CTEs on Students: Find students whose GPA is higher than the average for their specific academic major.",
+    "commonMistakes": "Forgetting to alias derived tables in FROM, writing multiple WITH keywords in multi-CTE pipelines, or suffering the NOT IN NULL trap.",
+    "learningOutcomes": "Mastered 11.5 Correlated Subqueries (Row-by-Row Context) on Students.",
+    "challengeSlots": [
+      {
+        "type": "keyword",
+        "value": "SELECT"
+      },
+      {
+        "type": "column",
+        "value": "s.full_name,"
+      },
+      {
+        "type": "column",
+        "value": "s.gpa,"
+      },
+      {
+        "type": "column",
+        "value": "s.major"
+      },
+      {
+        "type": "keyword",
+        "value": "FROM"
+      },
+      {
+        "type": "table",
+        "value": "Students"
+      },
+      {
+        "type": "column",
+        "value": "s"
+      },
+      {
+        "type": "keyword",
+        "value": "WHERE"
+      },
+      {
+        "type": "column",
+        "value": "s.gpa"
+      },
+      {
+        "type": "column",
+        "value": ">"
+      },
+      {
+        "type": "keyword",
+        "value": "(SELECT"
+      },
+      {
+        "type": "column",
+        "value": "AVG(sub.gpa)"
+      },
+      {
+        "type": "keyword",
+        "value": "FROM"
+      },
+      {
+        "type": "table",
+        "value": "Students"
+      },
+      {
+        "type": "column",
+        "value": "sub"
+      },
+      {
+        "type": "keyword",
+        "value": "WHERE"
+      },
+      {
+        "type": "column",
+        "value": "sub.major"
+      },
+      {
+        "type": "column",
+        "value": "="
+      },
+      {
+        "type": "column",
+        "value": "s.major);"
+      }
+    ]
+  },
+  {
+    "drillNumber": 1042,
+    "subcluster": "11.5 Correlated Subqueries (Row-by-Row Context)",
+    "level": "Level 3 (Correlated Subquery)",
+    "title": "Syntax #1042: Find books priced above the average price of their respective literary genre",
+    "table": "Books",
+    "scenario": "Find books priced above the average price of their respective literary genre.",
+    "businessObjective": "Find books priced above the average price of their respective literary genre.",
+    "schemaSnippet": "Books relational schema",
+    "targetQuery": "SELECT b.title, b.price, b.genre\nFROM Books b\nWHERE b.price > (SELECT AVG(sub.price) FROM Books sub WHERE sub.genre = b.genre);",
+    "syntaxBlueprint": "SELECT e.name, e.salary\nFROM Employees e\nWHERE e.salary > (SELECT AVG(sub.salary) FROM Employees sub WHERE sub.department_id = e.department_id);",
+    "syntaxRule": "A correlated subquery references columns from the outer query table, executing dynamically for each row evaluated in the outer query.",
+    "syntaxTrap": "Correlated subqueries can be slow on large unindexed tables because they execute once per outer row.",
+    "eli5Story": "Subqueries & CTEs on Books: Find books priced above the average price of their respective literary genre.",
+    "commonMistakes": "Forgetting to alias derived tables in FROM, writing multiple WITH keywords in multi-CTE pipelines, or suffering the NOT IN NULL trap.",
+    "learningOutcomes": "Mastered 11.5 Correlated Subqueries (Row-by-Row Context) on Books.",
+    "challengeSlots": [
+      {
+        "type": "keyword",
+        "value": "SELECT"
+      },
+      {
+        "type": "column",
+        "value": "b.title,"
+      },
+      {
+        "type": "column",
+        "value": "b.price,"
+      },
+      {
+        "type": "column",
+        "value": "b.genre"
+      },
+      {
+        "type": "keyword",
+        "value": "FROM"
+      },
+      {
+        "type": "table",
+        "value": "Books"
+      },
+      {
+        "type": "column",
+        "value": "b"
+      },
+      {
+        "type": "keyword",
+        "value": "WHERE"
+      },
+      {
+        "type": "column",
+        "value": "b.price"
+      },
+      {
+        "type": "column",
+        "value": ">"
+      },
+      {
+        "type": "keyword",
+        "value": "(SELECT"
+      },
+      {
+        "type": "column",
+        "value": "AVG(sub.price)"
+      },
+      {
+        "type": "keyword",
+        "value": "FROM"
+      },
+      {
+        "type": "table",
+        "value": "Books"
+      },
+      {
+        "type": "column",
+        "value": "sub"
+      },
+      {
+        "type": "keyword",
+        "value": "WHERE"
+      },
+      {
+        "type": "column",
+        "value": "sub.genre"
+      },
+      {
+        "type": "column",
+        "value": "="
+      },
+      {
+        "type": "column",
+        "value": "b.genre);"
+      }
+    ]
+  },
+  {
+    "drillNumber": 1043,
+    "subcluster": "11.5 Correlated Subqueries (Row-by-Row Context)",
+    "level": "Level 3 (Correlated Subquery)",
+    "title": "Syntax #1043: Identify employees earning above their own department's average salary",
+    "table": "Employees",
+    "scenario": "Identify employees earning above their own department's average salary.",
+    "businessObjective": "Identify employees earning above their own department's average salary.",
+    "schemaSnippet": "Employees relational schema",
+    "targetQuery": "SELECT e.first_name, e.salary, e.department\nFROM Employees e\nWHERE e.salary > (SELECT AVG(sub.salary) FROM Employees sub WHERE sub.department = e.department);",
+    "syntaxBlueprint": "SELECT e.name, e.salary\nFROM Employees e\nWHERE e.salary > (SELECT AVG(sub.salary) FROM Employees sub WHERE sub.department_id = e.department_id);",
+    "syntaxRule": "A correlated subquery references columns from the outer query table, executing dynamically for each row evaluated in the outer query.",
+    "syntaxTrap": "Correlated subqueries can be slow on large unindexed tables because they execute once per outer row.",
+    "eli5Story": "Subqueries & CTEs on Employees: Identify employees earning above their own department's average salary.",
+    "commonMistakes": "Forgetting to alias derived tables in FROM, writing multiple WITH keywords in multi-CTE pipelines, or suffering the NOT IN NULL trap.",
+    "learningOutcomes": "Mastered 11.5 Correlated Subqueries (Row-by-Row Context) on Employees.",
+    "challengeSlots": [
+      {
+        "type": "keyword",
+        "value": "SELECT"
+      },
+      {
+        "type": "column",
+        "value": "e.first_name,"
+      },
+      {
+        "type": "column",
+        "value": "e.salary,"
+      },
+      {
+        "type": "column",
+        "value": "e.department"
+      },
+      {
+        "type": "keyword",
+        "value": "FROM"
+      },
+      {
+        "type": "table",
+        "value": "Employees"
+      },
+      {
+        "type": "column",
+        "value": "e"
+      },
+      {
+        "type": "keyword",
+        "value": "WHERE"
+      },
+      {
+        "type": "column",
+        "value": "e.salary"
+      },
+      {
+        "type": "column",
+        "value": ">"
+      },
+      {
+        "type": "keyword",
+        "value": "(SELECT"
+      },
+      {
+        "type": "column",
+        "value": "AVG(sub.salary)"
+      },
+      {
+        "type": "keyword",
+        "value": "FROM"
+      },
+      {
+        "type": "table",
+        "value": "Employees"
+      },
+      {
+        "type": "column",
+        "value": "sub"
+      },
+      {
+        "type": "keyword",
+        "value": "WHERE"
+      },
+      {
+        "type": "column",
+        "value": "sub.department"
+      },
+      {
+        "type": "column",
+        "value": "="
+      },
+      {
+        "type": "column",
+        "value": "e.department);"
+      }
+    ]
+  },
+  {
+    "drillNumber": 1044,
+    "subcluster": "11.5 Correlated Subqueries (Row-by-Row Context)",
+    "level": "Level 3 (Correlated Subquery)",
+    "title": "Syntax #1044: Find grocery items priced higher than the average product in their grocery category",
+    "table": "GroceryItems",
+    "scenario": "Find grocery items priced higher than the average product in their grocery category.",
+    "businessObjective": "Find grocery items priced higher than the average product in their grocery category.",
+    "schemaSnippet": "GroceryItems relational schema",
+    "targetQuery": "SELECT g.item_name, g.unit_price, g.category\nFROM GroceryItems g\nWHERE g.unit_price > (SELECT AVG(sub.unit_price) FROM GroceryItems sub WHERE sub.category = g.category);",
+    "syntaxBlueprint": "SELECT e.name, e.salary\nFROM Employees e\nWHERE e.salary > (SELECT AVG(sub.salary) FROM Employees sub WHERE sub.department_id = e.department_id);",
+    "syntaxRule": "A correlated subquery references columns from the outer query table, executing dynamically for each row evaluated in the outer query.",
+    "syntaxTrap": "Correlated subqueries can be slow on large unindexed tables because they execute once per outer row.",
+    "eli5Story": "Subqueries & CTEs on GroceryItems: Find grocery items priced higher than the average product in their grocery category.",
+    "commonMistakes": "Forgetting to alias derived tables in FROM, writing multiple WITH keywords in multi-CTE pipelines, or suffering the NOT IN NULL trap.",
+    "learningOutcomes": "Mastered 11.5 Correlated Subqueries (Row-by-Row Context) on GroceryItems.",
+    "challengeSlots": [
+      {
+        "type": "keyword",
+        "value": "SELECT"
+      },
+      {
+        "type": "column",
+        "value": "g.item_name,"
+      },
+      {
+        "type": "column",
+        "value": "g.unit_price,"
+      },
+      {
+        "type": "column",
+        "value": "g.category"
+      },
+      {
+        "type": "keyword",
+        "value": "FROM"
+      },
+      {
+        "type": "table",
+        "value": "GroceryItems"
+      },
+      {
+        "type": "column",
+        "value": "g"
+      },
+      {
+        "type": "keyword",
+        "value": "WHERE"
+      },
+      {
+        "type": "column",
+        "value": "g.unit_price"
+      },
+      {
+        "type": "column",
+        "value": ">"
+      },
+      {
+        "type": "keyword",
+        "value": "(SELECT"
+      },
+      {
+        "type": "column",
+        "value": "AVG(sub.unit_price)"
+      },
+      {
+        "type": "keyword",
+        "value": "FROM"
+      },
+      {
+        "type": "table",
+        "value": "GroceryItems"
+      },
+      {
+        "type": "column",
+        "value": "sub"
+      },
+      {
+        "type": "keyword",
+        "value": "WHERE"
+      },
+      {
+        "type": "column",
+        "value": "sub.category"
+      },
+      {
+        "type": "column",
+        "value": "="
+      },
+      {
+        "type": "column",
+        "value": "g.category);"
+      }
+    ]
+  },
+  {
+    "drillNumber": 1045,
+    "subcluster": "11.5 Correlated Subqueries (Row-by-Row Context)",
+    "level": "Level 3 (Correlated Subquery)",
+    "title": "Syntax #1045: Identify orders that exceed the customer's personal average order value",
+    "table": "Orders",
+    "scenario": "Identify orders that exceed the customer's personal average order value.",
+    "businessObjective": "Identify orders that exceed the customer's personal average order value.",
+    "schemaSnippet": "Orders relational schema",
+    "targetQuery": "SELECT o.order_id, o.customer_id, o.total_amount\nFROM Orders o\nWHERE o.total_amount > (SELECT AVG(sub.total_amount) FROM Orders sub WHERE sub.customer_id = o.customer_id);",
+    "syntaxBlueprint": "SELECT e.name, e.salary\nFROM Employees e\nWHERE e.salary > (SELECT AVG(sub.salary) FROM Employees sub WHERE sub.department_id = e.department_id);",
+    "syntaxRule": "A correlated subquery references columns from the outer query table, executing dynamically for each row evaluated in the outer query.",
+    "syntaxTrap": "Correlated subqueries can be slow on large unindexed tables because they execute once per outer row.",
+    "eli5Story": "Subqueries & CTEs on Orders: Identify orders that exceed the customer's personal average order value.",
+    "commonMistakes": "Forgetting to alias derived tables in FROM, writing multiple WITH keywords in multi-CTE pipelines, or suffering the NOT IN NULL trap.",
+    "learningOutcomes": "Mastered 11.5 Correlated Subqueries (Row-by-Row Context) on Orders.",
+    "challengeSlots": [
+      {
+        "type": "keyword",
+        "value": "SELECT"
+      },
+      {
+        "type": "column",
+        "value": "o.order_id,"
+      },
+      {
+        "type": "column",
+        "value": "o.customer_id,"
+      },
+      {
+        "type": "column",
+        "value": "o.total_amount"
+      },
+      {
+        "type": "keyword",
+        "value": "FROM"
+      },
+      {
+        "type": "table",
+        "value": "Orders"
+      },
+      {
+        "type": "column",
+        "value": "o"
+      },
+      {
+        "type": "keyword",
+        "value": "WHERE"
+      },
+      {
+        "type": "column",
+        "value": "o.total_amount"
+      },
+      {
+        "type": "column",
+        "value": ">"
+      },
+      {
+        "type": "keyword",
+        "value": "(SELECT"
+      },
+      {
+        "type": "column",
+        "value": "AVG(sub.total_amount)"
+      },
+      {
+        "type": "keyword",
+        "value": "FROM"
+      },
+      {
+        "type": "table",
+        "value": "Orders"
+      },
+      {
+        "type": "column",
+        "value": "sub"
+      },
+      {
+        "type": "keyword",
+        "value": "WHERE"
+      },
+      {
+        "type": "column",
+        "value": "sub.customer_id"
+      },
+      {
+        "type": "column",
+        "value": "="
+      },
+      {
+        "type": "column",
+        "value": "o.customer_id);"
+      }
+    ]
+  },
+  {
+    "drillNumber": 1046,
+    "subcluster": "11.5 Correlated Subqueries (Row-by-Row Context)",
+    "level": "Level 3 (Correlated Subquery)",
+    "title": "Syntax #1046: Find music tracks longer than the average track duration for that genre",
+    "table": "MusicTracks",
+    "scenario": "Find music tracks longer than the average track duration for that genre.",
+    "businessObjective": "Find music tracks longer than the average track duration for that genre.",
+    "schemaSnippet": "MusicTracks relational schema",
+    "targetQuery": "SELECT t.track_title, t.duration_seconds, t.genre\nFROM MusicTracks t\nWHERE t.duration_seconds > (SELECT AVG(sub.duration_seconds) FROM MusicTracks sub WHERE sub.genre = t.genre);",
+    "syntaxBlueprint": "SELECT e.name, e.salary\nFROM Employees e\nWHERE e.salary > (SELECT AVG(sub.salary) FROM Employees sub WHERE sub.department_id = e.department_id);",
+    "syntaxRule": "A correlated subquery references columns from the outer query table, executing dynamically for each row evaluated in the outer query.",
+    "syntaxTrap": "Correlated subqueries can be slow on large unindexed tables because they execute once per outer row.",
+    "eli5Story": "Subqueries & CTEs on MusicTracks: Find music tracks longer than the average track duration for that genre.",
+    "commonMistakes": "Forgetting to alias derived tables in FROM, writing multiple WITH keywords in multi-CTE pipelines, or suffering the NOT IN NULL trap.",
+    "learningOutcomes": "Mastered 11.5 Correlated Subqueries (Row-by-Row Context) on MusicTracks.",
+    "challengeSlots": [
+      {
+        "type": "keyword",
+        "value": "SELECT"
+      },
+      {
+        "type": "column",
+        "value": "t.track_title,"
+      },
+      {
+        "type": "column",
+        "value": "t.duration_seconds,"
+      },
+      {
+        "type": "column",
+        "value": "t.genre"
+      },
+      {
+        "type": "keyword",
+        "value": "FROM"
+      },
+      {
+        "type": "table",
+        "value": "MusicTracks"
+      },
+      {
+        "type": "column",
+        "value": "t"
+      },
+      {
+        "type": "keyword",
+        "value": "WHERE"
+      },
+      {
+        "type": "column",
+        "value": "t.duration_seconds"
+      },
+      {
+        "type": "column",
+        "value": ">"
+      },
+      {
+        "type": "keyword",
+        "value": "(SELECT"
+      },
+      {
+        "type": "column",
+        "value": "AVG(sub.duration_seconds)"
+      },
+      {
+        "type": "keyword",
+        "value": "FROM"
+      },
+      {
+        "type": "table",
+        "value": "MusicTracks"
+      },
+      {
+        "type": "column",
+        "value": "sub"
+      },
+      {
+        "type": "keyword",
+        "value": "WHERE"
+      },
+      {
+        "type": "column",
+        "value": "sub.genre"
+      },
+      {
+        "type": "column",
+        "value": "="
+      },
+      {
+        "type": "column",
+        "value": "t.genre);"
+      }
+    ]
+  },
+  {
+    "drillNumber": 1047,
+    "subcluster": "11.5 Correlated Subqueries (Row-by-Row Context)",
+    "level": "Level 3 (Correlated Subquery)",
+    "title": "Syntax #1047: Find members attending gym more often than their plan tier's average",
+    "table": "GymMembers",
+    "scenario": "Find members attending gym more often than their plan tier's average.",
+    "businessObjective": "Find members attending gym more often than their plan tier's average.",
+    "schemaSnippet": "GymMembers relational schema",
+    "targetQuery": "SELECT m.member_name, m.attendance_days, m.membership_plan\nFROM GymMembers m\nWHERE m.attendance_days > (SELECT AVG(sub.attendance_days) FROM GymMembers sub WHERE sub.membership_plan = m.membership_plan);",
+    "syntaxBlueprint": "SELECT e.name, e.salary\nFROM Employees e\nWHERE e.salary > (SELECT AVG(sub.salary) FROM Employees sub WHERE sub.department_id = e.department_id);",
+    "syntaxRule": "A correlated subquery references columns from the outer query table, executing dynamically for each row evaluated in the outer query.",
+    "syntaxTrap": "Correlated subqueries can be slow on large unindexed tables because they execute once per outer row.",
+    "eli5Story": "Subqueries & CTEs on GymMembers: Find members attending gym more often than their plan tier's average.",
+    "commonMistakes": "Forgetting to alias derived tables in FROM, writing multiple WITH keywords in multi-CTE pipelines, or suffering the NOT IN NULL trap.",
+    "learningOutcomes": "Mastered 11.5 Correlated Subqueries (Row-by-Row Context) on GymMembers.",
+    "challengeSlots": [
+      {
+        "type": "keyword",
+        "value": "SELECT"
+      },
+      {
+        "type": "column",
+        "value": "m.member_name,"
+      },
+      {
+        "type": "column",
+        "value": "m.attendance_days,"
+      },
+      {
+        "type": "column",
+        "value": "m.membership_plan"
+      },
+      {
+        "type": "keyword",
+        "value": "FROM"
+      },
+      {
+        "type": "table",
+        "value": "GymMembers"
+      },
+      {
+        "type": "column",
+        "value": "m"
+      },
+      {
+        "type": "keyword",
+        "value": "WHERE"
+      },
+      {
+        "type": "column",
+        "value": "m.attendance_days"
+      },
+      {
+        "type": "column",
+        "value": ">"
+      },
+      {
+        "type": "keyword",
+        "value": "(SELECT"
+      },
+      {
+        "type": "column",
+        "value": "AVG(sub.attendance_days)"
+      },
+      {
+        "type": "keyword",
+        "value": "FROM"
+      },
+      {
+        "type": "table",
+        "value": "GymMembers"
+      },
+      {
+        "type": "column",
+        "value": "sub"
+      },
+      {
+        "type": "keyword",
+        "value": "WHERE"
+      },
+      {
+        "type": "column",
+        "value": "sub.membership_plan"
+      },
+      {
+        "type": "column",
+        "value": "="
+      },
+      {
+        "type": "column",
+        "value": "m.membership_plan);"
+      }
+    ]
+  },
+  {
+    "drillNumber": 1048,
+    "subcluster": "11.5 Correlated Subqueries (Row-by-Row Context)",
+    "level": "Level 3 (Correlated Subquery)",
+    "title": "Syntax #1048: Find movie reviews scoring higher than the genre average",
+    "table": "MovieReviews",
+    "scenario": "Find movie reviews scoring higher than the genre average.",
+    "businessObjective": "Find movie reviews scoring higher than the genre average.",
+    "schemaSnippet": "MovieReviews relational schema",
+    "targetQuery": "SELECT r.movie_title, r.star_rating, r.genre\nFROM MovieReviews r\nWHERE r.star_rating > (SELECT AVG(sub.star_rating) FROM MovieReviews sub WHERE sub.genre = r.genre);",
+    "syntaxBlueprint": "SELECT e.name, e.salary\nFROM Employees e\nWHERE e.salary > (SELECT AVG(sub.salary) FROM Employees sub WHERE sub.department_id = e.department_id);",
+    "syntaxRule": "A correlated subquery references columns from the outer query table, executing dynamically for each row evaluated in the outer query.",
+    "syntaxTrap": "Correlated subqueries can be slow on large unindexed tables because they execute once per outer row.",
+    "eli5Story": "Subqueries & CTEs on MovieReviews: Find movie reviews scoring higher than the genre average.",
+    "commonMistakes": "Forgetting to alias derived tables in FROM, writing multiple WITH keywords in multi-CTE pipelines, or suffering the NOT IN NULL trap.",
+    "learningOutcomes": "Mastered 11.5 Correlated Subqueries (Row-by-Row Context) on MovieReviews.",
+    "challengeSlots": [
+      {
+        "type": "keyword",
+        "value": "SELECT"
+      },
+      {
+        "type": "column",
+        "value": "r.movie_title,"
+      },
+      {
+        "type": "column",
+        "value": "r.star_rating,"
+      },
+      {
+        "type": "column",
+        "value": "r.genre"
+      },
+      {
+        "type": "keyword",
+        "value": "FROM"
+      },
+      {
+        "type": "table",
+        "value": "MovieReviews"
+      },
+      {
+        "type": "column",
+        "value": "r"
+      },
+      {
+        "type": "keyword",
+        "value": "WHERE"
+      },
+      {
+        "type": "column",
+        "value": "r.star_rating"
+      },
+      {
+        "type": "column",
+        "value": ">"
+      },
+      {
+        "type": "keyword",
+        "value": "(SELECT"
+      },
+      {
+        "type": "column",
+        "value": "AVG(sub.star_rating)"
+      },
+      {
+        "type": "keyword",
+        "value": "FROM"
+      },
+      {
+        "type": "table",
+        "value": "MovieReviews"
+      },
+      {
+        "type": "column",
+        "value": "sub"
+      },
+      {
+        "type": "keyword",
+        "value": "WHERE"
+      },
+      {
+        "type": "column",
+        "value": "sub.genre"
+      },
+      {
+        "type": "column",
+        "value": "="
+      },
+      {
+        "type": "column",
+        "value": "r.genre);"
+      }
+    ]
+  },
+  {
+    "drillNumber": 1049,
+    "subcluster": "11.5 Correlated Subqueries (Row-by-Row Context)",
+    "level": "Level 3 (Correlated Subquery)",
+    "title": "Syntax #1049: Find flights priced higher than the average departure flight from that airport",
+    "table": "FlightSchedule",
+    "scenario": "Find flights priced higher than the average departure flight from that airport.",
+    "businessObjective": "Find flights priced higher than the average departure flight from that airport.",
+    "schemaSnippet": "FlightSchedule relational schema",
+    "targetQuery": "SELECT f.flight_id, f.ticket_price, f.origin_airport\nFROM FlightSchedule f\nWHERE f.ticket_price > (SELECT AVG(sub.ticket_price) FROM FlightSchedule sub WHERE sub.origin_airport = f.origin_airport);",
+    "syntaxBlueprint": "SELECT e.name, e.salary\nFROM Employees e\nWHERE e.salary > (SELECT AVG(sub.salary) FROM Employees sub WHERE sub.department_id = e.department_id);",
+    "syntaxRule": "A correlated subquery references columns from the outer query table, executing dynamically for each row evaluated in the outer query.",
+    "syntaxTrap": "Correlated subqueries can be slow on large unindexed tables because they execute once per outer row.",
+    "eli5Story": "Subqueries & CTEs on FlightSchedule: Find flights priced higher than the average departure flight from that airport.",
+    "commonMistakes": "Forgetting to alias derived tables in FROM, writing multiple WITH keywords in multi-CTE pipelines, or suffering the NOT IN NULL trap.",
+    "learningOutcomes": "Mastered 11.5 Correlated Subqueries (Row-by-Row Context) on FlightSchedule.",
+    "challengeSlots": [
+      {
+        "type": "keyword",
+        "value": "SELECT"
+      },
+      {
+        "type": "column",
+        "value": "f.flight_id,"
+      },
+      {
+        "type": "column",
+        "value": "f.ticket_price,"
+      },
+      {
+        "type": "column",
+        "value": "f.origin_airport"
+      },
+      {
+        "type": "keyword",
+        "value": "FROM"
+      },
+      {
+        "type": "table",
+        "value": "FlightSchedule"
+      },
+      {
+        "type": "column",
+        "value": "f"
+      },
+      {
+        "type": "keyword",
+        "value": "WHERE"
+      },
+      {
+        "type": "column",
+        "value": "f.ticket_price"
+      },
+      {
+        "type": "column",
+        "value": ">"
+      },
+      {
+        "type": "keyword",
+        "value": "(SELECT"
+      },
+      {
+        "type": "column",
+        "value": "AVG(sub.ticket_price)"
+      },
+      {
+        "type": "keyword",
+        "value": "FROM"
+      },
+      {
+        "type": "table",
+        "value": "FlightSchedule"
+      },
+      {
+        "type": "column",
+        "value": "sub"
+      },
+      {
+        "type": "keyword",
+        "value": "WHERE"
+      },
+      {
+        "type": "column",
+        "value": "sub.origin_airport"
+      },
+      {
+        "type": "column",
+        "value": "="
+      },
+      {
+        "type": "column",
+        "value": "f.origin_airport);"
+      }
+    ]
+  },
+  {
+    "drillNumber": 1050,
+    "subcluster": "11.5 Correlated Subqueries (Row-by-Row Context)",
+    "level": "Level 3 (Correlated Subquery)",
+    "title": "Syntax #1050: Find clinic animal patients weighing more than their species average",
+    "table": "PetClinic",
+    "scenario": "Find clinic animal patients weighing more than their species average.",
+    "businessObjective": "Find clinic animal patients weighing more than their species average.",
+    "schemaSnippet": "PetClinic relational schema",
+    "targetQuery": "SELECT p.pet_name, p.weight_kg, p.species\nFROM PetClinic p\nWHERE p.weight_kg > (SELECT AVG(sub.weight_kg) FROM PetClinic sub WHERE sub.species = p.species);",
+    "syntaxBlueprint": "SELECT e.name, e.salary\nFROM Employees e\nWHERE e.salary > (SELECT AVG(sub.salary) FROM Employees sub WHERE sub.department_id = e.department_id);",
+    "syntaxRule": "A correlated subquery references columns from the outer query table, executing dynamically for each row evaluated in the outer query.",
+    "syntaxTrap": "Correlated subqueries can be slow on large unindexed tables because they execute once per outer row.",
+    "eli5Story": "Subqueries & CTEs on PetClinic: Find clinic animal patients weighing more than their species average.",
+    "commonMistakes": "Forgetting to alias derived tables in FROM, writing multiple WITH keywords in multi-CTE pipelines, or suffering the NOT IN NULL trap.",
+    "learningOutcomes": "Mastered 11.5 Correlated Subqueries (Row-by-Row Context) on PetClinic.",
+    "challengeSlots": [
+      {
+        "type": "keyword",
+        "value": "SELECT"
+      },
+      {
+        "type": "column",
+        "value": "p.pet_name,"
+      },
+      {
+        "type": "column",
+        "value": "p.weight_kg,"
+      },
+      {
+        "type": "column",
+        "value": "p.species"
+      },
+      {
+        "type": "keyword",
+        "value": "FROM"
+      },
+      {
+        "type": "table",
+        "value": "PetClinic"
+      },
+      {
+        "type": "column",
+        "value": "p"
+      },
+      {
+        "type": "keyword",
+        "value": "WHERE"
+      },
+      {
+        "type": "column",
+        "value": "p.weight_kg"
+      },
+      {
+        "type": "column",
+        "value": ">"
+      },
+      {
+        "type": "keyword",
+        "value": "(SELECT"
+      },
+      {
+        "type": "column",
+        "value": "AVG(sub.weight_kg)"
+      },
+      {
+        "type": "keyword",
+        "value": "FROM"
+      },
+      {
+        "type": "table",
+        "value": "PetClinic"
+      },
+      {
+        "type": "column",
+        "value": "sub"
+      },
+      {
+        "type": "keyword",
+        "value": "WHERE"
+      },
+      {
+        "type": "column",
+        "value": "sub.species"
+      },
+      {
+        "type": "column",
+        "value": "="
+      },
+      {
+        "type": "column",
+        "value": "p.species);"
+      }
+    ]
+  },
+  {
+    "drillNumber": 1051,
+    "subcluster": "11.6 Existence Checking with EXISTS",
+    "level": "Level 2 (EXISTS Subquery)",
+    "title": "Syntax #1051: Find students enrolled in at least one 3+ credit course using EXISTS",
+    "table": "Students",
+    "scenario": "Find students enrolled in at least one 3+ credit course using EXISTS.",
+    "businessObjective": "Find students enrolled in at least one 3+ credit course using EXISTS.",
+    "schemaSnippet": "Students relational schema",
+    "targetQuery": "SELECT s.full_name\nFROM Students s\nWHERE EXISTS (SELECT 1 FROM Courses c WHERE c.student_id = s.student_id AND c.credits >= 3);",
+    "syntaxBlueprint": "SELECT a.col1, a.col2\nFROM TableA a\nWHERE EXISTS (SELECT 1 FROM TableB b WHERE b.a_id = a.id AND b.condition);",
+    "syntaxRule": "EXISTS tests for the presence of ANY matching row. It short-circuits to TRUE as soon as the first match is found, making it extremely fast.",
+    "syntaxTrap": "Writing SELECT * inside EXISTS instead of SELECT 1. Modern engines optimize both identically, but 'SELECT 1' is standard clean convention.",
+    "eli5Story": "Subqueries & CTEs on Students: Find students enrolled in at least one 3+ credit course using EXISTS.",
+    "commonMistakes": "Forgetting to alias derived tables in FROM, writing multiple WITH keywords in multi-CTE pipelines, or suffering the NOT IN NULL trap.",
+    "learningOutcomes": "Mastered 11.6 Existence Checking with EXISTS on Students.",
+    "challengeSlots": [
+      {
+        "type": "keyword",
+        "value": "SELECT"
+      },
+      {
+        "type": "column",
+        "value": "s.full_name"
+      },
+      {
+        "type": "keyword",
+        "value": "FROM"
+      },
+      {
+        "type": "table",
+        "value": "Students"
+      },
+      {
+        "type": "column",
+        "value": "s"
+      },
+      {
+        "type": "keyword",
+        "value": "WHERE"
+      },
+      {
+        "type": "keyword",
+        "value": "EXISTS"
+      },
+      {
+        "type": "keyword",
+        "value": "(SELECT"
+      },
+      {
+        "type": "column",
+        "value": "1"
+      },
+      {
+        "type": "keyword",
+        "value": "FROM"
+      },
+      {
+        "type": "table",
+        "value": "Courses"
+      },
+      {
+        "type": "column",
+        "value": "c"
+      },
+      {
+        "type": "keyword",
+        "value": "WHERE"
+      },
+      {
+        "type": "column",
+        "value": "c.student_id"
+      },
+      {
+        "type": "column",
+        "value": "="
+      },
+      {
+        "type": "column",
+        "value": "s.student_id"
+      },
+      {
+        "type": "keyword",
+        "value": "AND"
+      },
+      {
+        "type": "column",
+        "value": "c.credits"
+      },
+      {
+        "type": "column",
+        "value": ">="
+      },
+      {
+        "type": "column",
+        "value": "3);"
+      }
+    ]
+  },
+  {
+    "drillNumber": 1052,
+    "subcluster": "11.6 Existence Checking with EXISTS",
+    "level": "Level 2 (EXISTS Subquery)",
+    "title": "Syntax #1052: Find authors who have published at least one premium book over $25.00 via EXISTS",
+    "table": "Books",
+    "scenario": "Find authors who have published at least one premium book over $25.00 via EXISTS.",
+    "businessObjective": "Find authors who have published at least one premium book over $25.00 via EXISTS.",
+    "schemaSnippet": "Books relational schema",
+    "targetQuery": "SELECT a.author_name\nFROM Authors a\nWHERE EXISTS (SELECT 1 FROM Books b WHERE b.author_id = a.author_id AND b.price > 25.00);",
+    "syntaxBlueprint": "SELECT a.col1, a.col2\nFROM TableA a\nWHERE EXISTS (SELECT 1 FROM TableB b WHERE b.a_id = a.id AND b.condition);",
+    "syntaxRule": "EXISTS tests for the presence of ANY matching row. It short-circuits to TRUE as soon as the first match is found, making it extremely fast.",
+    "syntaxTrap": "Writing SELECT * inside EXISTS instead of SELECT 1. Modern engines optimize both identically, but 'SELECT 1' is standard clean convention.",
+    "eli5Story": "Subqueries & CTEs on Books: Find authors who have published at least one premium book over $25.00 via EXISTS.",
+    "commonMistakes": "Forgetting to alias derived tables in FROM, writing multiple WITH keywords in multi-CTE pipelines, or suffering the NOT IN NULL trap.",
+    "learningOutcomes": "Mastered 11.6 Existence Checking with EXISTS on Books.",
+    "challengeSlots": [
+      {
+        "type": "keyword",
+        "value": "SELECT"
+      },
+      {
+        "type": "column",
+        "value": "a.author_name"
+      },
+      {
+        "type": "keyword",
+        "value": "FROM"
+      },
+      {
+        "type": "table",
+        "value": "Authors"
+      },
+      {
+        "type": "column",
+        "value": "a"
+      },
+      {
+        "type": "keyword",
+        "value": "WHERE"
+      },
+      {
+        "type": "keyword",
+        "value": "EXISTS"
+      },
+      {
+        "type": "keyword",
+        "value": "(SELECT"
+      },
+      {
+        "type": "column",
+        "value": "1"
+      },
+      {
+        "type": "keyword",
+        "value": "FROM"
+      },
+      {
+        "type": "table",
+        "value": "Books"
+      },
+      {
+        "type": "column",
+        "value": "b"
+      },
+      {
+        "type": "keyword",
+        "value": "WHERE"
+      },
+      {
+        "type": "column",
+        "value": "b.author_id"
+      },
+      {
+        "type": "column",
+        "value": "="
+      },
+      {
+        "type": "column",
+        "value": "a.author_id"
+      },
+      {
+        "type": "keyword",
+        "value": "AND"
+      },
+      {
+        "type": "column",
+        "value": "b.price"
+      },
+      {
+        "type": "column",
+        "value": ">"
+      },
+      {
+        "type": "column",
+        "value": "25.00);"
+      }
+    ]
+  },
+  {
+    "drillNumber": 1053,
+    "subcluster": "11.6 Existence Checking with EXISTS",
+    "level": "Level 2 (EXISTS Subquery)",
+    "title": "Syntax #1053: Find departments employing at least one executive earning $100k+",
+    "table": "Employees",
+    "scenario": "Find departments employing at least one executive earning $100k+.",
+    "businessObjective": "Find departments employing at least one executive earning $100k+.",
+    "schemaSnippet": "Employees relational schema",
+    "targetQuery": "SELECT d.department_name\nFROM Departments d\nWHERE EXISTS (SELECT 1 FROM Employees e WHERE e.department_id = d.department_id AND e.salary >= 100000);",
+    "syntaxBlueprint": "SELECT a.col1, a.col2\nFROM TableA a\nWHERE EXISTS (SELECT 1 FROM TableB b WHERE b.a_id = a.id AND b.condition);",
+    "syntaxRule": "EXISTS tests for the presence of ANY matching row. It short-circuits to TRUE as soon as the first match is found, making it extremely fast.",
+    "syntaxTrap": "Writing SELECT * inside EXISTS instead of SELECT 1. Modern engines optimize both identically, but 'SELECT 1' is standard clean convention.",
+    "eli5Story": "Subqueries & CTEs on Employees: Find departments employing at least one executive earning $100k+.",
+    "commonMistakes": "Forgetting to alias derived tables in FROM, writing multiple WITH keywords in multi-CTE pipelines, or suffering the NOT IN NULL trap.",
+    "learningOutcomes": "Mastered 11.6 Existence Checking with EXISTS on Employees.",
+    "challengeSlots": [
+      {
+        "type": "keyword",
+        "value": "SELECT"
+      },
+      {
+        "type": "column",
+        "value": "d.department_name"
+      },
+      {
+        "type": "keyword",
+        "value": "FROM"
+      },
+      {
+        "type": "table",
+        "value": "Departments"
+      },
+      {
+        "type": "column",
+        "value": "d"
+      },
+      {
+        "type": "keyword",
+        "value": "WHERE"
+      },
+      {
+        "type": "keyword",
+        "value": "EXISTS"
+      },
+      {
+        "type": "keyword",
+        "value": "(SELECT"
+      },
+      {
+        "type": "column",
+        "value": "1"
+      },
+      {
+        "type": "keyword",
+        "value": "FROM"
+      },
+      {
+        "type": "table",
+        "value": "Employees"
+      },
+      {
+        "type": "column",
+        "value": "e"
+      },
+      {
+        "type": "keyword",
+        "value": "WHERE"
+      },
+      {
+        "type": "column",
+        "value": "e.department_id"
+      },
+      {
+        "type": "column",
+        "value": "="
+      },
+      {
+        "type": "column",
+        "value": "d.department_id"
+      },
+      {
+        "type": "keyword",
+        "value": "AND"
+      },
+      {
+        "type": "column",
+        "value": "e.salary"
+      },
+      {
+        "type": "column",
+        "value": ">="
+      },
+      {
+        "type": "column",
+        "value": "100000);"
+      }
+    ]
+  },
+  {
+    "drillNumber": 1054,
+    "subcluster": "11.6 Existence Checking with EXISTS",
+    "level": "Level 2 (EXISTS Subquery)",
+    "title": "Syntax #1054: Identify suppliers who have at least one critical low-stock product (<5 units)",
+    "table": "GroceryItems",
+    "scenario": "Identify suppliers who have at least one critical low-stock product (<5 units).",
+    "businessObjective": "Identify suppliers who have at least one critical low-stock product (<5 units).",
+    "schemaSnippet": "GroceryItems relational schema",
+    "targetQuery": "SELECT s.supplier_name\nFROM Suppliers s\nWHERE EXISTS (SELECT 1 FROM GroceryItems g WHERE g.supplier_id = s.supplier_id AND g.stock_qty < 5);",
+    "syntaxBlueprint": "SELECT a.col1, a.col2\nFROM TableA a\nWHERE EXISTS (SELECT 1 FROM TableB b WHERE b.a_id = a.id AND b.condition);",
+    "syntaxRule": "EXISTS tests for the presence of ANY matching row. It short-circuits to TRUE as soon as the first match is found, making it extremely fast.",
+    "syntaxTrap": "Writing SELECT * inside EXISTS instead of SELECT 1. Modern engines optimize both identically, but 'SELECT 1' is standard clean convention.",
+    "eli5Story": "Subqueries & CTEs on GroceryItems: Identify suppliers who have at least one critical low-stock product (<5 units).",
+    "commonMistakes": "Forgetting to alias derived tables in FROM, writing multiple WITH keywords in multi-CTE pipelines, or suffering the NOT IN NULL trap.",
+    "learningOutcomes": "Mastered 11.6 Existence Checking with EXISTS on GroceryItems.",
+    "challengeSlots": [
+      {
+        "type": "keyword",
+        "value": "SELECT"
+      },
+      {
+        "type": "column",
+        "value": "s.supplier_name"
+      },
+      {
+        "type": "keyword",
+        "value": "FROM"
+      },
+      {
+        "type": "table",
+        "value": "Suppliers"
+      },
+      {
+        "type": "column",
+        "value": "s"
+      },
+      {
+        "type": "keyword",
+        "value": "WHERE"
+      },
+      {
+        "type": "keyword",
+        "value": "EXISTS"
+      },
+      {
+        "type": "keyword",
+        "value": "(SELECT"
+      },
+      {
+        "type": "column",
+        "value": "1"
+      },
+      {
+        "type": "keyword",
+        "value": "FROM"
+      },
+      {
+        "type": "table",
+        "value": "GroceryItems"
+      },
+      {
+        "type": "column",
+        "value": "g"
+      },
+      {
+        "type": "keyword",
+        "value": "WHERE"
+      },
+      {
+        "type": "column",
+        "value": "g.supplier_id"
+      },
+      {
+        "type": "column",
+        "value": "="
+      },
+      {
+        "type": "column",
+        "value": "s.supplier_id"
+      },
+      {
+        "type": "keyword",
+        "value": "AND"
+      },
+      {
+        "type": "column",
+        "value": "g.stock_qty"
+      },
+      {
+        "type": "column",
+        "value": "<"
+      },
+      {
+        "type": "column",
+        "value": "5);"
+      }
+    ]
+  },
+  {
+    "drillNumber": 1055,
+    "subcluster": "11.6 Existence Checking with EXISTS",
+    "level": "Level 2 (EXISTS Subquery)",
+    "title": "Syntax #1055: Find customers who have placed at least one high-value order of $500+ using EXISTS",
+    "table": "Orders",
+    "scenario": "Find customers who have placed at least one high-value order of $500+ using EXISTS.",
+    "businessObjective": "Find customers who have placed at least one high-value order of $500+ using EXISTS.",
+    "schemaSnippet": "Orders relational schema",
+    "targetQuery": "SELECT c.customer_name\nFROM Customers c\nWHERE EXISTS (SELECT 1 FROM Orders o WHERE o.customer_id = c.customer_id AND o.total_amount >= 500);",
+    "syntaxBlueprint": "SELECT a.col1, a.col2\nFROM TableA a\nWHERE EXISTS (SELECT 1 FROM TableB b WHERE b.a_id = a.id AND b.condition);",
+    "syntaxRule": "EXISTS tests for the presence of ANY matching row. It short-circuits to TRUE as soon as the first match is found, making it extremely fast.",
+    "syntaxTrap": "Writing SELECT * inside EXISTS instead of SELECT 1. Modern engines optimize both identically, but 'SELECT 1' is standard clean convention.",
+    "eli5Story": "Subqueries & CTEs on Orders: Find customers who have placed at least one high-value order of $500+ using EXISTS.",
+    "commonMistakes": "Forgetting to alias derived tables in FROM, writing multiple WITH keywords in multi-CTE pipelines, or suffering the NOT IN NULL trap.",
+    "learningOutcomes": "Mastered 11.6 Existence Checking with EXISTS on Orders.",
+    "challengeSlots": [
+      {
+        "type": "keyword",
+        "value": "SELECT"
+      },
+      {
+        "type": "column",
+        "value": "c.customer_name"
+      },
+      {
+        "type": "keyword",
+        "value": "FROM"
+      },
+      {
+        "type": "table",
+        "value": "Customers"
+      },
+      {
+        "type": "column",
+        "value": "c"
+      },
+      {
+        "type": "keyword",
+        "value": "WHERE"
+      },
+      {
+        "type": "keyword",
+        "value": "EXISTS"
+      },
+      {
+        "type": "keyword",
+        "value": "(SELECT"
+      },
+      {
+        "type": "column",
+        "value": "1"
+      },
+      {
+        "type": "keyword",
+        "value": "FROM"
+      },
+      {
+        "type": "table",
+        "value": "Orders"
+      },
+      {
+        "type": "column",
+        "value": "o"
+      },
+      {
+        "type": "keyword",
+        "value": "WHERE"
+      },
+      {
+        "type": "column",
+        "value": "o.customer_id"
+      },
+      {
+        "type": "column",
+        "value": "="
+      },
+      {
+        "type": "column",
+        "value": "c.customer_id"
+      },
+      {
+        "type": "keyword",
+        "value": "AND"
+      },
+      {
+        "type": "column",
+        "value": "o.total_amount"
+      },
+      {
+        "type": "column",
+        "value": ">="
+      },
+      {
+        "type": "column",
+        "value": "500);"
+      }
+    ]
+  },
+  {
+    "drillNumber": 1056,
+    "subcluster": "11.6 Existence Checking with EXISTS",
+    "level": "Level 2 (EXISTS Subquery)",
+    "title": "Syntax #1056: Find albums featuring at least one extended track longer than 5 minutes",
+    "table": "MusicTracks",
+    "scenario": "Find albums featuring at least one extended track longer than 5 minutes.",
+    "businessObjective": "Find albums featuring at least one extended track longer than 5 minutes.",
+    "schemaSnippet": "MusicTracks relational schema",
+    "targetQuery": "SELECT a.album_title\nFROM Albums a\nWHERE EXISTS (SELECT 1 FROM MusicTracks t WHERE t.album_id = a.album_id AND t.duration_seconds > 300);",
+    "syntaxBlueprint": "SELECT a.col1, a.col2\nFROM TableA a\nWHERE EXISTS (SELECT 1 FROM TableB b WHERE b.a_id = a.id AND b.condition);",
+    "syntaxRule": "EXISTS tests for the presence of ANY matching row. It short-circuits to TRUE as soon as the first match is found, making it extremely fast.",
+    "syntaxTrap": "Writing SELECT * inside EXISTS instead of SELECT 1. Modern engines optimize both identically, but 'SELECT 1' is standard clean convention.",
+    "eli5Story": "Subqueries & CTEs on MusicTracks: Find albums featuring at least one extended track longer than 5 minutes.",
+    "commonMistakes": "Forgetting to alias derived tables in FROM, writing multiple WITH keywords in multi-CTE pipelines, or suffering the NOT IN NULL trap.",
+    "learningOutcomes": "Mastered 11.6 Existence Checking with EXISTS on MusicTracks.",
+    "challengeSlots": [
+      {
+        "type": "keyword",
+        "value": "SELECT"
+      },
+      {
+        "type": "column",
+        "value": "a.album_title"
+      },
+      {
+        "type": "keyword",
+        "value": "FROM"
+      },
+      {
+        "type": "table",
+        "value": "Albums"
+      },
+      {
+        "type": "column",
+        "value": "a"
+      },
+      {
+        "type": "keyword",
+        "value": "WHERE"
+      },
+      {
+        "type": "keyword",
+        "value": "EXISTS"
+      },
+      {
+        "type": "keyword",
+        "value": "(SELECT"
+      },
+      {
+        "type": "column",
+        "value": "1"
+      },
+      {
+        "type": "keyword",
+        "value": "FROM"
+      },
+      {
+        "type": "table",
+        "value": "MusicTracks"
+      },
+      {
+        "type": "column",
+        "value": "t"
+      },
+      {
+        "type": "keyword",
+        "value": "WHERE"
+      },
+      {
+        "type": "column",
+        "value": "t.album_id"
+      },
+      {
+        "type": "column",
+        "value": "="
+      },
+      {
+        "type": "column",
+        "value": "a.album_id"
+      },
+      {
+        "type": "keyword",
+        "value": "AND"
+      },
+      {
+        "type": "column",
+        "value": "t.duration_seconds"
+      },
+      {
+        "type": "column",
+        "value": ">"
+      },
+      {
+        "type": "column",
+        "value": "300);"
+      }
+    ]
+  },
+  {
+    "drillNumber": 1057,
+    "subcluster": "11.6 Existence Checking with EXISTS",
+    "level": "Level 2 (EXISTS Subquery)",
+    "title": "Syntax #1057: Find trainers coaching at least one VIP gym client using EXISTS",
+    "table": "GymMembers",
+    "scenario": "Find trainers coaching at least one VIP gym client using EXISTS.",
+    "businessObjective": "Find trainers coaching at least one VIP gym client using EXISTS.",
+    "schemaSnippet": "GymMembers relational schema",
+    "targetQuery": "SELECT tr.trainer_name\nFROM Trainers tr\nWHERE EXISTS (SELECT 1 FROM GymMembers m WHERE m.trainer_id = tr.trainer_id AND m.membership_plan = 'VIP');",
+    "syntaxBlueprint": "SELECT a.col1, a.col2\nFROM TableA a\nWHERE EXISTS (SELECT 1 FROM TableB b WHERE b.a_id = a.id AND b.condition);",
+    "syntaxRule": "EXISTS tests for the presence of ANY matching row. It short-circuits to TRUE as soon as the first match is found, making it extremely fast.",
+    "syntaxTrap": "Writing SELECT * inside EXISTS instead of SELECT 1. Modern engines optimize both identically, but 'SELECT 1' is standard clean convention.",
+    "eli5Story": "Subqueries & CTEs on GymMembers: Find trainers coaching at least one VIP gym client using EXISTS.",
+    "commonMistakes": "Forgetting to alias derived tables in FROM, writing multiple WITH keywords in multi-CTE pipelines, or suffering the NOT IN NULL trap.",
+    "learningOutcomes": "Mastered 11.6 Existence Checking with EXISTS on GymMembers.",
+    "challengeSlots": [
+      {
+        "type": "keyword",
+        "value": "SELECT"
+      },
+      {
+        "type": "column",
+        "value": "tr.trainer_name"
+      },
+      {
+        "type": "keyword",
+        "value": "FROM"
+      },
+      {
+        "type": "table",
+        "value": "Trainers"
+      },
+      {
+        "type": "column",
+        "value": "tr"
+      },
+      {
+        "type": "keyword",
+        "value": "WHERE"
+      },
+      {
+        "type": "keyword",
+        "value": "EXISTS"
+      },
+      {
+        "type": "keyword",
+        "value": "(SELECT"
+      },
+      {
+        "type": "column",
+        "value": "1"
+      },
+      {
+        "type": "keyword",
+        "value": "FROM"
+      },
+      {
+        "type": "table",
+        "value": "GymMembers"
+      },
+      {
+        "type": "column",
+        "value": "m"
+      },
+      {
+        "type": "keyword",
+        "value": "WHERE"
+      },
+      {
+        "type": "column",
+        "value": "m.trainer_id"
+      },
+      {
+        "type": "column",
+        "value": "="
+      },
+      {
+        "type": "column",
+        "value": "tr.trainer_id"
+      },
+      {
+        "type": "keyword",
+        "value": "AND"
+      },
+      {
+        "type": "column",
+        "value": "m.membership_plan"
+      },
+      {
+        "type": "column",
+        "value": "="
+      },
+      {
+        "type": "column",
+        "value": "'VIP');"
+      }
+    ]
+  },
+  {
+    "drillNumber": 1058,
+    "subcluster": "11.6 Existence Checking with EXISTS",
+    "level": "Level 2 (EXISTS Subquery)",
+    "title": "Syntax #1058: Find movie titles that have received at least one perfect 5-star review",
+    "table": "MovieReviews",
+    "scenario": "Find movie titles that have received at least one perfect 5-star review.",
+    "businessObjective": "Find movie titles that have received at least one perfect 5-star review.",
+    "schemaSnippet": "MovieReviews relational schema",
+    "targetQuery": "SELECT m.movie_title\nFROM Movies m\nWHERE EXISTS (SELECT 1 FROM MovieReviews r WHERE r.movie_id = m.movie_id AND r.star_rating = 5);",
+    "syntaxBlueprint": "SELECT a.col1, a.col2\nFROM TableA a\nWHERE EXISTS (SELECT 1 FROM TableB b WHERE b.a_id = a.id AND b.condition);",
+    "syntaxRule": "EXISTS tests for the presence of ANY matching row. It short-circuits to TRUE as soon as the first match is found, making it extremely fast.",
+    "syntaxTrap": "Writing SELECT * inside EXISTS instead of SELECT 1. Modern engines optimize both identically, but 'SELECT 1' is standard clean convention.",
+    "eli5Story": "Subqueries & CTEs on MovieReviews: Find movie titles that have received at least one perfect 5-star review.",
+    "commonMistakes": "Forgetting to alias derived tables in FROM, writing multiple WITH keywords in multi-CTE pipelines, or suffering the NOT IN NULL trap.",
+    "learningOutcomes": "Mastered 11.6 Existence Checking with EXISTS on MovieReviews.",
+    "challengeSlots": [
+      {
+        "type": "keyword",
+        "value": "SELECT"
+      },
+      {
+        "type": "column",
+        "value": "m.movie_title"
+      },
+      {
+        "type": "keyword",
+        "value": "FROM"
+      },
+      {
+        "type": "table",
+        "value": "Movies"
+      },
+      {
+        "type": "column",
+        "value": "m"
+      },
+      {
+        "type": "keyword",
+        "value": "WHERE"
+      },
+      {
+        "type": "keyword",
+        "value": "EXISTS"
+      },
+      {
+        "type": "keyword",
+        "value": "(SELECT"
+      },
+      {
+        "type": "column",
+        "value": "1"
+      },
+      {
+        "type": "keyword",
+        "value": "FROM"
+      },
+      {
+        "type": "table",
+        "value": "MovieReviews"
+      },
+      {
+        "type": "column",
+        "value": "r"
+      },
+      {
+        "type": "keyword",
+        "value": "WHERE"
+      },
+      {
+        "type": "column",
+        "value": "r.movie_id"
+      },
+      {
+        "type": "column",
+        "value": "="
+      },
+      {
+        "type": "column",
+        "value": "m.movie_id"
+      },
+      {
+        "type": "keyword",
+        "value": "AND"
+      },
+      {
+        "type": "column",
+        "value": "r.star_rating"
+      },
+      {
+        "type": "column",
+        "value": "="
+      },
+      {
+        "type": "column",
+        "value": "5);"
+      }
+    ]
+  },
+  {
+    "drillNumber": 1059,
+    "subcluster": "11.6 Existence Checking with EXISTS",
+    "level": "Level 2 (EXISTS Subquery)",
+    "title": "Syntax #1059: Identify airlines currently experiencing at least one delayed flight",
+    "table": "FlightSchedule",
+    "scenario": "Identify airlines currently experiencing at least one delayed flight.",
+    "businessObjective": "Identify airlines currently experiencing at least one delayed flight.",
+    "schemaSnippet": "FlightSchedule relational schema",
+    "targetQuery": "SELECT al.airline_name\nFROM Airlines al\nWHERE EXISTS (SELECT 1 FROM FlightSchedule f WHERE f.airline_id = al.airline_id AND f.status = 'Delayed');",
+    "syntaxBlueprint": "SELECT a.col1, a.col2\nFROM TableA a\nWHERE EXISTS (SELECT 1 FROM TableB b WHERE b.a_id = a.id AND b.condition);",
+    "syntaxRule": "EXISTS tests for the presence of ANY matching row. It short-circuits to TRUE as soon as the first match is found, making it extremely fast.",
+    "syntaxTrap": "Writing SELECT * inside EXISTS instead of SELECT 1. Modern engines optimize both identically, but 'SELECT 1' is standard clean convention.",
+    "eli5Story": "Subqueries & CTEs on FlightSchedule: Identify airlines currently experiencing at least one delayed flight.",
+    "commonMistakes": "Forgetting to alias derived tables in FROM, writing multiple WITH keywords in multi-CTE pipelines, or suffering the NOT IN NULL trap.",
+    "learningOutcomes": "Mastered 11.6 Existence Checking with EXISTS on FlightSchedule.",
+    "challengeSlots": [
+      {
+        "type": "keyword",
+        "value": "SELECT"
+      },
+      {
+        "type": "column",
+        "value": "al.airline_name"
+      },
+      {
+        "type": "keyword",
+        "value": "FROM"
+      },
+      {
+        "type": "table",
+        "value": "Airlines"
+      },
+      {
+        "type": "column",
+        "value": "al"
+      },
+      {
+        "type": "keyword",
+        "value": "WHERE"
+      },
+      {
+        "type": "keyword",
+        "value": "EXISTS"
+      },
+      {
+        "type": "keyword",
+        "value": "(SELECT"
+      },
+      {
+        "type": "column",
+        "value": "1"
+      },
+      {
+        "type": "keyword",
+        "value": "FROM"
+      },
+      {
+        "type": "table",
+        "value": "FlightSchedule"
+      },
+      {
+        "type": "column",
+        "value": "f"
+      },
+      {
+        "type": "keyword",
+        "value": "WHERE"
+      },
+      {
+        "type": "column",
+        "value": "f.airline_id"
+      },
+      {
+        "type": "column",
+        "value": "="
+      },
+      {
+        "type": "column",
+        "value": "al.airline_id"
+      },
+      {
+        "type": "keyword",
+        "value": "AND"
+      },
+      {
+        "type": "column",
+        "value": "f.status"
+      },
+      {
+        "type": "column",
+        "value": "="
+      },
+      {
+        "type": "column",
+        "value": "'Delayed');"
+      }
+    ]
+  },
+  {
+    "drillNumber": 1060,
+    "subcluster": "11.6 Existence Checking with EXISTS",
+    "level": "Level 2 (EXISTS Subquery)",
+    "title": "Syntax #1060: Find pet owners who care for at least one dog patient using EXISTS",
+    "table": "PetClinic",
+    "scenario": "Find pet owners who care for at least one dog patient using EXISTS.",
+    "businessObjective": "Find pet owners who care for at least one dog patient using EXISTS.",
+    "schemaSnippet": "PetClinic relational schema",
+    "targetQuery": "SELECT o.owner_name\nFROM Owners o\nWHERE EXISTS (SELECT 1 FROM PetClinic p WHERE p.owner_id = o.owner_id AND p.species = 'Canine');",
+    "syntaxBlueprint": "SELECT a.col1, a.col2\nFROM TableA a\nWHERE EXISTS (SELECT 1 FROM TableB b WHERE b.a_id = a.id AND b.condition);",
+    "syntaxRule": "EXISTS tests for the presence of ANY matching row. It short-circuits to TRUE as soon as the first match is found, making it extremely fast.",
+    "syntaxTrap": "Writing SELECT * inside EXISTS instead of SELECT 1. Modern engines optimize both identically, but 'SELECT 1' is standard clean convention.",
+    "eli5Story": "Subqueries & CTEs on PetClinic: Find pet owners who care for at least one dog patient using EXISTS.",
+    "commonMistakes": "Forgetting to alias derived tables in FROM, writing multiple WITH keywords in multi-CTE pipelines, or suffering the NOT IN NULL trap.",
+    "learningOutcomes": "Mastered 11.6 Existence Checking with EXISTS on PetClinic.",
+    "challengeSlots": [
+      {
+        "type": "keyword",
+        "value": "SELECT"
+      },
+      {
+        "type": "column",
+        "value": "o.owner_name"
+      },
+      {
+        "type": "keyword",
+        "value": "FROM"
+      },
+      {
+        "type": "table",
+        "value": "Owners"
+      },
+      {
+        "type": "column",
+        "value": "o"
+      },
+      {
+        "type": "keyword",
+        "value": "WHERE"
+      },
+      {
+        "type": "keyword",
+        "value": "EXISTS"
+      },
+      {
+        "type": "keyword",
+        "value": "(SELECT"
+      },
+      {
+        "type": "column",
+        "value": "1"
+      },
+      {
+        "type": "keyword",
+        "value": "FROM"
+      },
+      {
+        "type": "table",
+        "value": "PetClinic"
+      },
+      {
+        "type": "column",
+        "value": "p"
+      },
+      {
+        "type": "keyword",
+        "value": "WHERE"
+      },
+      {
+        "type": "column",
+        "value": "p.owner_id"
+      },
+      {
+        "type": "column",
+        "value": "="
+      },
+      {
+        "type": "column",
+        "value": "o.owner_id"
+      },
+      {
+        "type": "keyword",
+        "value": "AND"
+      },
+      {
+        "type": "column",
+        "value": "p.species"
+      },
+      {
+        "type": "column",
+        "value": "="
+      },
+      {
+        "type": "column",
+        "value": "'Canine');"
+      }
+    ]
+  },
+  {
+    "drillNumber": 1061,
+    "subcluster": "11.7 Safe Anti-Matching with NOT EXISTS",
+    "level": "Level 2 (NOT EXISTS Anti-Match)",
+    "title": "Syntax #1061: Find students with zero registered courses safely using NOT EXISTS",
+    "table": "Students",
+    "scenario": "Find students with zero registered courses safely using NOT EXISTS.",
+    "businessObjective": "Find students with zero registered courses safely using NOT EXISTS.",
+    "schemaSnippet": "Students relational schema",
+    "targetQuery": "SELECT s.full_name\nFROM Students s\nWHERE NOT EXISTS (SELECT 1 FROM Courses c WHERE c.student_id = s.student_id);",
+    "syntaxBlueprint": "SELECT a.col1, a.col2\nFROM TableA a\nWHERE NOT EXISTS (SELECT 1 FROM TableB b WHERE b.a_id = a.id);",
+    "syntaxRule": "NOT EXISTS is the safest, most performant way to find records with ZERO related records. Unlike NOT IN, it handles NULL values safely without silent failure.",
+    "syntaxTrap": "Forgetting the correlation condition inside NOT EXISTS (e.g. omitting b.a_id = a.id) evaluates the subquery as global and returns 0 rows.",
+    "eli5Story": "Subqueries & CTEs on Students: Find students with zero registered courses safely using NOT EXISTS.",
+    "commonMistakes": "Forgetting to alias derived tables in FROM, writing multiple WITH keywords in multi-CTE pipelines, or suffering the NOT IN NULL trap.",
+    "learningOutcomes": "Mastered 11.7 Safe Anti-Matching with NOT EXISTS on Students.",
+    "challengeSlots": [
+      {
+        "type": "keyword",
+        "value": "SELECT"
+      },
+      {
+        "type": "column",
+        "value": "s.full_name"
+      },
+      {
+        "type": "keyword",
+        "value": "FROM"
+      },
+      {
+        "type": "table",
+        "value": "Students"
+      },
+      {
+        "type": "column",
+        "value": "s"
+      },
+      {
+        "type": "keyword",
+        "value": "WHERE"
+      },
+      {
+        "type": "keyword",
+        "value": "NOT"
+      },
+      {
+        "type": "keyword",
+        "value": "EXISTS"
+      },
+      {
+        "type": "keyword",
+        "value": "(SELECT"
+      },
+      {
+        "type": "column",
+        "value": "1"
+      },
+      {
+        "type": "keyword",
+        "value": "FROM"
+      },
+      {
+        "type": "table",
+        "value": "Courses"
+      },
+      {
+        "type": "column",
+        "value": "c"
+      },
+      {
+        "type": "keyword",
+        "value": "WHERE"
+      },
+      {
+        "type": "column",
+        "value": "c.student_id"
+      },
+      {
+        "type": "column",
+        "value": "="
+      },
+      {
+        "type": "column",
+        "value": "s.student_id);"
+      }
+    ]
+  },
+  {
+    "drillNumber": 1062,
+    "subcluster": "11.7 Safe Anti-Matching with NOT EXISTS",
+    "level": "Level 2 (NOT EXISTS Anti-Match)",
+    "title": "Syntax #1062: Identify catalog books that have never been borrowed using NOT EXISTS",
+    "table": "Books",
+    "scenario": "Identify catalog books that have never been borrowed using NOT EXISTS.",
+    "businessObjective": "Identify catalog books that have never been borrowed using NOT EXISTS.",
+    "schemaSnippet": "Books relational schema",
+    "targetQuery": "SELECT b.title\nFROM Books b\nWHERE NOT EXISTS (SELECT 1 FROM BorrowRecords r WHERE r.book_id = b.book_id);",
+    "syntaxBlueprint": "SELECT a.col1, a.col2\nFROM TableA a\nWHERE NOT EXISTS (SELECT 1 FROM TableB b WHERE b.a_id = a.id);",
+    "syntaxRule": "NOT EXISTS is the safest, most performant way to find records with ZERO related records. Unlike NOT IN, it handles NULL values safely without silent failure.",
+    "syntaxTrap": "Forgetting the correlation condition inside NOT EXISTS (e.g. omitting b.a_id = a.id) evaluates the subquery as global and returns 0 rows.",
+    "eli5Story": "Subqueries & CTEs on Books: Identify catalog books that have never been borrowed using NOT EXISTS.",
+    "commonMistakes": "Forgetting to alias derived tables in FROM, writing multiple WITH keywords in multi-CTE pipelines, or suffering the NOT IN NULL trap.",
+    "learningOutcomes": "Mastered 11.7 Safe Anti-Matching with NOT EXISTS on Books.",
+    "challengeSlots": [
+      {
+        "type": "keyword",
+        "value": "SELECT"
+      },
+      {
+        "type": "column",
+        "value": "b.title"
+      },
+      {
+        "type": "keyword",
+        "value": "FROM"
+      },
+      {
+        "type": "table",
+        "value": "Books"
+      },
+      {
+        "type": "column",
+        "value": "b"
+      },
+      {
+        "type": "keyword",
+        "value": "WHERE"
+      },
+      {
+        "type": "keyword",
+        "value": "NOT"
+      },
+      {
+        "type": "keyword",
+        "value": "EXISTS"
+      },
+      {
+        "type": "keyword",
+        "value": "(SELECT"
+      },
+      {
+        "type": "column",
+        "value": "1"
+      },
+      {
+        "type": "keyword",
+        "value": "FROM"
+      },
+      {
+        "type": "column",
+        "value": "BorrowRecords"
+      },
+      {
+        "type": "column",
+        "value": "r"
+      },
+      {
+        "type": "keyword",
+        "value": "WHERE"
+      },
+      {
+        "type": "column",
+        "value": "r.book_id"
+      },
+      {
+        "type": "column",
+        "value": "="
+      },
+      {
+        "type": "column",
+        "value": "b.book_id);"
+      }
+    ]
+  },
+  {
+    "drillNumber": 1063,
+    "subcluster": "11.7 Safe Anti-Matching with NOT EXISTS",
+    "level": "Level 2 (NOT EXISTS Anti-Match)",
+    "title": "Syntax #1063: Find staff members who are not leading any corporate project",
+    "table": "Employees",
+    "scenario": "Find staff members who are not leading any corporate project.",
+    "businessObjective": "Find staff members who are not leading any corporate project.",
+    "schemaSnippet": "Employees relational schema",
+    "targetQuery": "SELECT e.first_name, e.department\nFROM Employees e\nWHERE NOT EXISTS (SELECT 1 FROM Projects p WHERE p.lead_employee_id = e.employee_id);",
+    "syntaxBlueprint": "SELECT a.col1, a.col2\nFROM TableA a\nWHERE NOT EXISTS (SELECT 1 FROM TableB b WHERE b.a_id = a.id);",
+    "syntaxRule": "NOT EXISTS is the safest, most performant way to find records with ZERO related records. Unlike NOT IN, it handles NULL values safely without silent failure.",
+    "syntaxTrap": "Forgetting the correlation condition inside NOT EXISTS (e.g. omitting b.a_id = a.id) evaluates the subquery as global and returns 0 rows.",
+    "eli5Story": "Subqueries & CTEs on Employees: Find staff members who are not leading any corporate project.",
+    "commonMistakes": "Forgetting to alias derived tables in FROM, writing multiple WITH keywords in multi-CTE pipelines, or suffering the NOT IN NULL trap.",
+    "learningOutcomes": "Mastered 11.7 Safe Anti-Matching with NOT EXISTS on Employees.",
+    "challengeSlots": [
+      {
+        "type": "keyword",
+        "value": "SELECT"
+      },
+      {
+        "type": "column",
+        "value": "e.first_name,"
+      },
+      {
+        "type": "column",
+        "value": "e.department"
+      },
+      {
+        "type": "keyword",
+        "value": "FROM"
+      },
+      {
+        "type": "table",
+        "value": "Employees"
+      },
+      {
+        "type": "column",
+        "value": "e"
+      },
+      {
+        "type": "keyword",
+        "value": "WHERE"
+      },
+      {
+        "type": "keyword",
+        "value": "NOT"
+      },
+      {
+        "type": "keyword",
+        "value": "EXISTS"
+      },
+      {
+        "type": "keyword",
+        "value": "(SELECT"
+      },
+      {
+        "type": "column",
+        "value": "1"
+      },
+      {
+        "type": "keyword",
+        "value": "FROM"
+      },
+      {
+        "type": "column",
+        "value": "Projects"
+      },
+      {
+        "type": "column",
+        "value": "p"
+      },
+      {
+        "type": "keyword",
+        "value": "WHERE"
+      },
+      {
+        "type": "column",
+        "value": "p.lead_employee_id"
+      },
+      {
+        "type": "column",
+        "value": "="
+      },
+      {
+        "type": "column",
+        "value": "e.employee_id);"
+      }
+    ]
+  },
+  {
+    "drillNumber": 1064,
+    "subcluster": "11.7 Safe Anti-Matching with NOT EXISTS",
+    "level": "Level 2 (NOT EXISTS Anti-Match)",
+    "title": "Syntax #1064: Identify grocery inventory items that have never been ordered using NOT EXISTS",
+    "table": "GroceryItems",
+    "scenario": "Identify grocery inventory items that have never been ordered using NOT EXISTS.",
+    "businessObjective": "Identify grocery inventory items that have never been ordered using NOT EXISTS.",
+    "schemaSnippet": "GroceryItems relational schema",
+    "targetQuery": "SELECT g.item_name\nFROM GroceryItems g\nWHERE NOT EXISTS (SELECT 1 FROM OrderItems oi WHERE oi.item_id = g.item_id);",
+    "syntaxBlueprint": "SELECT a.col1, a.col2\nFROM TableA a\nWHERE NOT EXISTS (SELECT 1 FROM TableB b WHERE b.a_id = a.id);",
+    "syntaxRule": "NOT EXISTS is the safest, most performant way to find records with ZERO related records. Unlike NOT IN, it handles NULL values safely without silent failure.",
+    "syntaxTrap": "Forgetting the correlation condition inside NOT EXISTS (e.g. omitting b.a_id = a.id) evaluates the subquery as global and returns 0 rows.",
+    "eli5Story": "Subqueries & CTEs on GroceryItems: Identify grocery inventory items that have never been ordered using NOT EXISTS.",
+    "commonMistakes": "Forgetting to alias derived tables in FROM, writing multiple WITH keywords in multi-CTE pipelines, or suffering the NOT IN NULL trap.",
+    "learningOutcomes": "Mastered 11.7 Safe Anti-Matching with NOT EXISTS on GroceryItems.",
+    "challengeSlots": [
+      {
+        "type": "keyword",
+        "value": "SELECT"
+      },
+      {
+        "type": "column",
+        "value": "g.item_name"
+      },
+      {
+        "type": "keyword",
+        "value": "FROM"
+      },
+      {
+        "type": "table",
+        "value": "GroceryItems"
+      },
+      {
+        "type": "column",
+        "value": "g"
+      },
+      {
+        "type": "keyword",
+        "value": "WHERE"
+      },
+      {
+        "type": "keyword",
+        "value": "NOT"
+      },
+      {
+        "type": "keyword",
+        "value": "EXISTS"
+      },
+      {
+        "type": "keyword",
+        "value": "(SELECT"
+      },
+      {
+        "type": "column",
+        "value": "1"
+      },
+      {
+        "type": "keyword",
+        "value": "FROM"
+      },
+      {
+        "type": "column",
+        "value": "OrderItems"
+      },
+      {
+        "type": "column",
+        "value": "oi"
+      },
+      {
+        "type": "keyword",
+        "value": "WHERE"
+      },
+      {
+        "type": "column",
+        "value": "oi.item_id"
+      },
+      {
+        "type": "column",
+        "value": "="
+      },
+      {
+        "type": "column",
+        "value": "g.item_id);"
+      }
+    ]
+  },
+  {
+    "drillNumber": 1065,
+    "subcluster": "11.7 Safe Anti-Matching with NOT EXISTS",
+    "level": "Level 2 (NOT EXISTS Anti-Match)",
+    "title": "Syntax #1065: Find prospective customers who have never placed an order using NOT EXISTS",
+    "table": "Orders",
+    "scenario": "Find prospective customers who have never placed an order using NOT EXISTS.",
+    "businessObjective": "Find prospective customers who have never placed an order using NOT EXISTS.",
+    "schemaSnippet": "Orders relational schema",
+    "targetQuery": "SELECT c.customer_name\nFROM Customers c\nWHERE NOT EXISTS (SELECT 1 FROM Orders o WHERE o.customer_id = c.customer_id);",
+    "syntaxBlueprint": "SELECT a.col1, a.col2\nFROM TableA a\nWHERE NOT EXISTS (SELECT 1 FROM TableB b WHERE b.a_id = a.id);",
+    "syntaxRule": "NOT EXISTS is the safest, most performant way to find records with ZERO related records. Unlike NOT IN, it handles NULL values safely without silent failure.",
+    "syntaxTrap": "Forgetting the correlation condition inside NOT EXISTS (e.g. omitting b.a_id = a.id) evaluates the subquery as global and returns 0 rows.",
+    "eli5Story": "Subqueries & CTEs on Orders: Find prospective customers who have never placed an order using NOT EXISTS.",
+    "commonMistakes": "Forgetting to alias derived tables in FROM, writing multiple WITH keywords in multi-CTE pipelines, or suffering the NOT IN NULL trap.",
+    "learningOutcomes": "Mastered 11.7 Safe Anti-Matching with NOT EXISTS on Orders.",
+    "challengeSlots": [
+      {
+        "type": "keyword",
+        "value": "SELECT"
+      },
+      {
+        "type": "column",
+        "value": "c.customer_name"
+      },
+      {
+        "type": "keyword",
+        "value": "FROM"
+      },
+      {
+        "type": "table",
+        "value": "Customers"
+      },
+      {
+        "type": "column",
+        "value": "c"
+      },
+      {
+        "type": "keyword",
+        "value": "WHERE"
+      },
+      {
+        "type": "keyword",
+        "value": "NOT"
+      },
+      {
+        "type": "keyword",
+        "value": "EXISTS"
+      },
+      {
+        "type": "keyword",
+        "value": "(SELECT"
+      },
+      {
+        "type": "column",
+        "value": "1"
+      },
+      {
+        "type": "keyword",
+        "value": "FROM"
+      },
+      {
+        "type": "table",
+        "value": "Orders"
+      },
+      {
+        "type": "column",
+        "value": "o"
+      },
+      {
+        "type": "keyword",
+        "value": "WHERE"
+      },
+      {
+        "type": "column",
+        "value": "o.customer_id"
+      },
+      {
+        "type": "column",
+        "value": "="
+      },
+      {
+        "type": "column",
+        "value": "c.customer_id);"
+      }
+    ]
+  },
+  {
+    "drillNumber": 1066,
+    "subcluster": "11.7 Safe Anti-Matching with NOT EXISTS",
+    "level": "Level 2 (NOT EXISTS Anti-Match)",
+    "title": "Syntax #1066: Find music tracks that have never been included in any playlist",
+    "table": "MusicTracks",
+    "scenario": "Find music tracks that have never been included in any playlist.",
+    "businessObjective": "Find music tracks that have never been included in any playlist.",
+    "schemaSnippet": "MusicTracks relational schema",
+    "targetQuery": "SELECT t.track_title\nFROM MusicTracks t\nWHERE NOT EXISTS (SELECT 1 FROM PlaylistItems p WHERE p.track_id = t.track_id);",
+    "syntaxBlueprint": "SELECT a.col1, a.col2\nFROM TableA a\nWHERE NOT EXISTS (SELECT 1 FROM TableB b WHERE b.a_id = a.id);",
+    "syntaxRule": "NOT EXISTS is the safest, most performant way to find records with ZERO related records. Unlike NOT IN, it handles NULL values safely without silent failure.",
+    "syntaxTrap": "Forgetting the correlation condition inside NOT EXISTS (e.g. omitting b.a_id = a.id) evaluates the subquery as global and returns 0 rows.",
+    "eli5Story": "Subqueries & CTEs on MusicTracks: Find music tracks that have never been included in any playlist.",
+    "commonMistakes": "Forgetting to alias derived tables in FROM, writing multiple WITH keywords in multi-CTE pipelines, or suffering the NOT IN NULL trap.",
+    "learningOutcomes": "Mastered 11.7 Safe Anti-Matching with NOT EXISTS on MusicTracks.",
+    "challengeSlots": [
+      {
+        "type": "keyword",
+        "value": "SELECT"
+      },
+      {
+        "type": "column",
+        "value": "t.track_title"
+      },
+      {
+        "type": "keyword",
+        "value": "FROM"
+      },
+      {
+        "type": "table",
+        "value": "MusicTracks"
+      },
+      {
+        "type": "column",
+        "value": "t"
+      },
+      {
+        "type": "keyword",
+        "value": "WHERE"
+      },
+      {
+        "type": "keyword",
+        "value": "NOT"
+      },
+      {
+        "type": "keyword",
+        "value": "EXISTS"
+      },
+      {
+        "type": "keyword",
+        "value": "(SELECT"
+      },
+      {
+        "type": "column",
+        "value": "1"
+      },
+      {
+        "type": "keyword",
+        "value": "FROM"
+      },
+      {
+        "type": "column",
+        "value": "PlaylistItems"
+      },
+      {
+        "type": "column",
+        "value": "p"
+      },
+      {
+        "type": "keyword",
+        "value": "WHERE"
+      },
+      {
+        "type": "column",
+        "value": "p.track_id"
+      },
+      {
+        "type": "column",
+        "value": "="
+      },
+      {
+        "type": "column",
+        "value": "t.track_id);"
+      }
+    ]
+  },
+  {
+    "drillNumber": 1067,
+    "subcluster": "11.7 Safe Anti-Matching with NOT EXISTS",
+    "level": "Level 2 (NOT EXISTS Anti-Match)",
+    "title": "Syntax #1067: Identify gym members who have never attended a group fitness class",
+    "table": "GymMembers",
+    "scenario": "Identify gym members who have never attended a group fitness class.",
+    "businessObjective": "Identify gym members who have never attended a group fitness class.",
+    "schemaSnippet": "GymMembers relational schema",
+    "targetQuery": "SELECT m.member_name\nFROM GymMembers m\nWHERE NOT EXISTS (SELECT 1 FROM ClassBookings cb WHERE cb.member_id = m.member_id);",
+    "syntaxBlueprint": "SELECT a.col1, a.col2\nFROM TableA a\nWHERE NOT EXISTS (SELECT 1 FROM TableB b WHERE b.a_id = a.id);",
+    "syntaxRule": "NOT EXISTS is the safest, most performant way to find records with ZERO related records. Unlike NOT IN, it handles NULL values safely without silent failure.",
+    "syntaxTrap": "Forgetting the correlation condition inside NOT EXISTS (e.g. omitting b.a_id = a.id) evaluates the subquery as global and returns 0 rows.",
+    "eli5Story": "Subqueries & CTEs on GymMembers: Identify gym members who have never attended a group fitness class.",
+    "commonMistakes": "Forgetting to alias derived tables in FROM, writing multiple WITH keywords in multi-CTE pipelines, or suffering the NOT IN NULL trap.",
+    "learningOutcomes": "Mastered 11.7 Safe Anti-Matching with NOT EXISTS on GymMembers.",
+    "challengeSlots": [
+      {
+        "type": "keyword",
+        "value": "SELECT"
+      },
+      {
+        "type": "column",
+        "value": "m.member_name"
+      },
+      {
+        "type": "keyword",
+        "value": "FROM"
+      },
+      {
+        "type": "table",
+        "value": "GymMembers"
+      },
+      {
+        "type": "column",
+        "value": "m"
+      },
+      {
+        "type": "keyword",
+        "value": "WHERE"
+      },
+      {
+        "type": "keyword",
+        "value": "NOT"
+      },
+      {
+        "type": "keyword",
+        "value": "EXISTS"
+      },
+      {
+        "type": "keyword",
+        "value": "(SELECT"
+      },
+      {
+        "type": "column",
+        "value": "1"
+      },
+      {
+        "type": "keyword",
+        "value": "FROM"
+      },
+      {
+        "type": "column",
+        "value": "ClassBookings"
+      },
+      {
+        "type": "column",
+        "value": "cb"
+      },
+      {
+        "type": "keyword",
+        "value": "WHERE"
+      },
+      {
+        "type": "column",
+        "value": "cb.member_id"
+      },
+      {
+        "type": "column",
+        "value": "="
+      },
+      {
+        "type": "column",
+        "value": "m.member_id);"
+      }
+    ]
+  },
+  {
+    "drillNumber": 1068,
+    "subcluster": "11.7 Safe Anti-Matching with NOT EXISTS",
+    "level": "Level 2 (NOT EXISTS Anti-Match)",
+    "title": "Syntax #1068: Identify released films that have zero reviews in the archive",
+    "table": "MovieReviews",
+    "scenario": "Identify released films that have zero reviews in the archive.",
+    "businessObjective": "Identify released films that have zero reviews in the archive.",
+    "schemaSnippet": "MovieReviews relational schema",
+    "targetQuery": "SELECT m.movie_title\nFROM Movies m\nWHERE NOT EXISTS (SELECT 1 FROM MovieReviews r WHERE r.movie_id = m.movie_id);",
+    "syntaxBlueprint": "SELECT a.col1, a.col2\nFROM TableA a\nWHERE NOT EXISTS (SELECT 1 FROM TableB b WHERE b.a_id = a.id);",
+    "syntaxRule": "NOT EXISTS is the safest, most performant way to find records with ZERO related records. Unlike NOT IN, it handles NULL values safely without silent failure.",
+    "syntaxTrap": "Forgetting the correlation condition inside NOT EXISTS (e.g. omitting b.a_id = a.id) evaluates the subquery as global and returns 0 rows.",
+    "eli5Story": "Subqueries & CTEs on MovieReviews: Identify released films that have zero reviews in the archive.",
+    "commonMistakes": "Forgetting to alias derived tables in FROM, writing multiple WITH keywords in multi-CTE pipelines, or suffering the NOT IN NULL trap.",
+    "learningOutcomes": "Mastered 11.7 Safe Anti-Matching with NOT EXISTS on MovieReviews.",
+    "challengeSlots": [
+      {
+        "type": "keyword",
+        "value": "SELECT"
+      },
+      {
+        "type": "column",
+        "value": "m.movie_title"
+      },
+      {
+        "type": "keyword",
+        "value": "FROM"
+      },
+      {
+        "type": "table",
+        "value": "Movies"
+      },
+      {
+        "type": "column",
+        "value": "m"
+      },
+      {
+        "type": "keyword",
+        "value": "WHERE"
+      },
+      {
+        "type": "keyword",
+        "value": "NOT"
+      },
+      {
+        "type": "keyword",
+        "value": "EXISTS"
+      },
+      {
+        "type": "keyword",
+        "value": "(SELECT"
+      },
+      {
+        "type": "column",
+        "value": "1"
+      },
+      {
+        "type": "keyword",
+        "value": "FROM"
+      },
+      {
+        "type": "table",
+        "value": "MovieReviews"
+      },
+      {
+        "type": "column",
+        "value": "r"
+      },
+      {
+        "type": "keyword",
+        "value": "WHERE"
+      },
+      {
+        "type": "column",
+        "value": "r.movie_id"
+      },
+      {
+        "type": "column",
+        "value": "="
+      },
+      {
+        "type": "column",
+        "value": "m.movie_id);"
+      }
+    ]
+  },
+  {
+    "drillNumber": 1069,
+    "subcluster": "11.7 Safe Anti-Matching with NOT EXISTS",
+    "level": "Level 2 (NOT EXISTS Anti-Match)",
+    "title": "Syntax #1069: Find partner airlines with zero scheduled flights today using NOT EXISTS",
+    "table": "FlightSchedule",
+    "scenario": "Find partner airlines with zero scheduled flights today using NOT EXISTS.",
+    "businessObjective": "Find partner airlines with zero scheduled flights today using NOT EXISTS.",
+    "schemaSnippet": "FlightSchedule relational schema",
+    "targetQuery": "SELECT al.airline_name\nFROM Airlines al\nWHERE NOT EXISTS (SELECT 1 FROM FlightSchedule f WHERE f.airline_id = al.airline_id);",
+    "syntaxBlueprint": "SELECT a.col1, a.col2\nFROM TableA a\nWHERE NOT EXISTS (SELECT 1 FROM TableB b WHERE b.a_id = a.id);",
+    "syntaxRule": "NOT EXISTS is the safest, most performant way to find records with ZERO related records. Unlike NOT IN, it handles NULL values safely without silent failure.",
+    "syntaxTrap": "Forgetting the correlation condition inside NOT EXISTS (e.g. omitting b.a_id = a.id) evaluates the subquery as global and returns 0 rows.",
+    "eli5Story": "Subqueries & CTEs on FlightSchedule: Find partner airlines with zero scheduled flights today using NOT EXISTS.",
+    "commonMistakes": "Forgetting to alias derived tables in FROM, writing multiple WITH keywords in multi-CTE pipelines, or suffering the NOT IN NULL trap.",
+    "learningOutcomes": "Mastered 11.7 Safe Anti-Matching with NOT EXISTS on FlightSchedule.",
+    "challengeSlots": [
+      {
+        "type": "keyword",
+        "value": "SELECT"
+      },
+      {
+        "type": "column",
+        "value": "al.airline_name"
+      },
+      {
+        "type": "keyword",
+        "value": "FROM"
+      },
+      {
+        "type": "table",
+        "value": "Airlines"
+      },
+      {
+        "type": "column",
+        "value": "al"
+      },
+      {
+        "type": "keyword",
+        "value": "WHERE"
+      },
+      {
+        "type": "keyword",
+        "value": "NOT"
+      },
+      {
+        "type": "keyword",
+        "value": "EXISTS"
+      },
+      {
+        "type": "keyword",
+        "value": "(SELECT"
+      },
+      {
+        "type": "column",
+        "value": "1"
+      },
+      {
+        "type": "keyword",
+        "value": "FROM"
+      },
+      {
+        "type": "table",
+        "value": "FlightSchedule"
+      },
+      {
+        "type": "column",
+        "value": "f"
+      },
+      {
+        "type": "keyword",
+        "value": "WHERE"
+      },
+      {
+        "type": "column",
+        "value": "f.airline_id"
+      },
+      {
+        "type": "column",
+        "value": "="
+      },
+      {
+        "type": "column",
+        "value": "al.airline_id);"
+      }
+    ]
+  },
+  {
+    "drillNumber": 1070,
+    "subcluster": "11.7 Safe Anti-Matching with NOT EXISTS",
+    "level": "Level 2 (NOT EXISTS Anti-Match)",
+    "title": "Syntax #1070: Identify registered client accounts that have no active pets in the clinic",
+    "table": "PetClinic",
+    "scenario": "Identify registered client accounts that have no active pets in the clinic.",
+    "businessObjective": "Identify registered client accounts that have no active pets in the clinic.",
+    "schemaSnippet": "PetClinic relational schema",
+    "targetQuery": "SELECT o.owner_name\nFROM Owners o\nWHERE NOT EXISTS (SELECT 1 FROM PetClinic p WHERE p.owner_id = o.owner_id);",
+    "syntaxBlueprint": "SELECT a.col1, a.col2\nFROM TableA a\nWHERE NOT EXISTS (SELECT 1 FROM TableB b WHERE b.a_id = a.id);",
+    "syntaxRule": "NOT EXISTS is the safest, most performant way to find records with ZERO related records. Unlike NOT IN, it handles NULL values safely without silent failure.",
+    "syntaxTrap": "Forgetting the correlation condition inside NOT EXISTS (e.g. omitting b.a_id = a.id) evaluates the subquery as global and returns 0 rows.",
+    "eli5Story": "Subqueries & CTEs on PetClinic: Identify registered client accounts that have no active pets in the clinic.",
+    "commonMistakes": "Forgetting to alias derived tables in FROM, writing multiple WITH keywords in multi-CTE pipelines, or suffering the NOT IN NULL trap.",
+    "learningOutcomes": "Mastered 11.7 Safe Anti-Matching with NOT EXISTS on PetClinic.",
+    "challengeSlots": [
+      {
+        "type": "keyword",
+        "value": "SELECT"
+      },
+      {
+        "type": "column",
+        "value": "o.owner_name"
+      },
+      {
+        "type": "keyword",
+        "value": "FROM"
+      },
+      {
+        "type": "table",
+        "value": "Owners"
+      },
+      {
+        "type": "column",
+        "value": "o"
+      },
+      {
+        "type": "keyword",
+        "value": "WHERE"
+      },
+      {
+        "type": "keyword",
+        "value": "NOT"
+      },
+      {
+        "type": "keyword",
+        "value": "EXISTS"
+      },
+      {
+        "type": "keyword",
+        "value": "(SELECT"
+      },
+      {
+        "type": "column",
+        "value": "1"
+      },
+      {
+        "type": "keyword",
+        "value": "FROM"
+      },
+      {
+        "type": "table",
+        "value": "PetClinic"
+      },
+      {
+        "type": "column",
+        "value": "p"
+      },
+      {
+        "type": "keyword",
+        "value": "WHERE"
+      },
+      {
+        "type": "column",
+        "value": "p.owner_id"
+      },
+      {
+        "type": "column",
+        "value": "="
+      },
+      {
+        "type": "column",
+        "value": "o.owner_id);"
+      }
+    ]
+  },
+  {
+    "drillNumber": 1071,
+    "subcluster": "11.8 Quantified Subqueries with ALL",
+    "level": "Level 3 (ALL Operator)",
+    "title": "Syntax #1071: Find students whose GPA is higher than EVERY student who enrolled in 2021",
+    "table": "Students",
+    "scenario": "Find students whose GPA is higher than EVERY student who enrolled in 2021.",
+    "businessObjective": "Find students whose GPA is higher than EVERY student who enrolled in 2021.",
+    "schemaSnippet": "Students relational schema",
+    "targetQuery": "SELECT full_name, gpa\nFROM Students\nWHERE gpa > ALL (SELECT gpa FROM Students WHERE enrolled_year = 2021);",
+    "syntaxBlueprint": "SELECT col1, col2\nFROM table_name\nWHERE metric > ALL (SELECT metric FROM other_table WHERE condition);",
+    "syntaxRule": "'> ALL (subquery)' requires the outer column to be strictly greater than EVERY single value returned by the subquery (equivalent to > MAX).",
+    "syntaxTrap": "If the subquery returns an empty set, ALL evaluates to TRUE for every row.",
+    "eli5Story": "Subqueries & CTEs on Students: Find students whose GPA is higher than EVERY student who enrolled in 2021.",
+    "commonMistakes": "Forgetting to alias derived tables in FROM, writing multiple WITH keywords in multi-CTE pipelines, or suffering the NOT IN NULL trap.",
+    "learningOutcomes": "Mastered 11.8 Quantified Subqueries with ALL on Students.",
+    "challengeSlots": [
+      {
+        "type": "keyword",
+        "value": "SELECT"
+      },
+      {
+        "type": "column",
+        "value": "full_name,"
+      },
+      {
+        "type": "column",
+        "value": "gpa"
+      },
+      {
+        "type": "keyword",
+        "value": "FROM"
+      },
+      {
+        "type": "table",
+        "value": "Students"
+      },
+      {
+        "type": "keyword",
+        "value": "WHERE"
+      },
+      {
+        "type": "column",
+        "value": "gpa"
+      },
+      {
+        "type": "column",
+        "value": ">"
+      },
+      {
+        "type": "keyword",
+        "value": "ALL"
+      },
+      {
+        "type": "keyword",
+        "value": "(SELECT"
+      },
+      {
+        "type": "column",
+        "value": "gpa"
+      },
+      {
+        "type": "keyword",
+        "value": "FROM"
+      },
+      {
+        "type": "table",
+        "value": "Students"
+      },
+      {
+        "type": "keyword",
+        "value": "WHERE"
+      },
+      {
+        "type": "column",
+        "value": "enrolled_year"
+      },
+      {
+        "type": "column",
+        "value": "="
+      },
+      {
+        "type": "column",
+        "value": "2021);"
+      }
+    ]
+  },
+  {
+    "drillNumber": 1072,
+    "subcluster": "11.8 Quantified Subqueries with ALL",
+    "level": "Level 3 (ALL Operator)",
+    "title": "Syntax #1072: Find hardcover books priced higher than all paperback books",
+    "table": "Books",
+    "scenario": "Find hardcover books priced higher than all paperback books.",
+    "businessObjective": "Find hardcover books priced higher than all paperback books.",
+    "schemaSnippet": "Books relational schema",
+    "targetQuery": "SELECT title, price\nFROM Books\nWHERE price > ALL (SELECT price FROM Books WHERE genre = 'Paperback');",
+    "syntaxBlueprint": "SELECT col1, col2\nFROM table_name\nWHERE metric > ALL (SELECT metric FROM other_table WHERE condition);",
+    "syntaxRule": "'> ALL (subquery)' requires the outer column to be strictly greater than EVERY single value returned by the subquery (equivalent to > MAX).",
+    "syntaxTrap": "If the subquery returns an empty set, ALL evaluates to TRUE for every row.",
+    "eli5Story": "Subqueries & CTEs on Books: Find hardcover books priced higher than all paperback books.",
+    "commonMistakes": "Forgetting to alias derived tables in FROM, writing multiple WITH keywords in multi-CTE pipelines, or suffering the NOT IN NULL trap.",
+    "learningOutcomes": "Mastered 11.8 Quantified Subqueries with ALL on Books.",
+    "challengeSlots": [
+      {
+        "type": "keyword",
+        "value": "SELECT"
+      },
+      {
+        "type": "column",
+        "value": "title,"
+      },
+      {
+        "type": "column",
+        "value": "price"
+      },
+      {
+        "type": "keyword",
+        "value": "FROM"
+      },
+      {
+        "type": "table",
+        "value": "Books"
+      },
+      {
+        "type": "keyword",
+        "value": "WHERE"
+      },
+      {
+        "type": "column",
+        "value": "price"
+      },
+      {
+        "type": "column",
+        "value": ">"
+      },
+      {
+        "type": "keyword",
+        "value": "ALL"
+      },
+      {
+        "type": "keyword",
+        "value": "(SELECT"
+      },
+      {
+        "type": "column",
+        "value": "price"
+      },
+      {
+        "type": "keyword",
+        "value": "FROM"
+      },
+      {
+        "type": "table",
+        "value": "Books"
+      },
+      {
+        "type": "keyword",
+        "value": "WHERE"
+      },
+      {
+        "type": "column",
+        "value": "genre"
+      },
+      {
+        "type": "column",
+        "value": "="
+      },
+      {
+        "type": "column",
+        "value": "'Paperback');"
+      }
+    ]
+  },
+  {
+    "drillNumber": 1073,
+    "subcluster": "11.8 Quantified Subqueries with ALL",
+    "level": "Level 3 (ALL Operator)",
+    "title": "Syntax #1073: Find employees who earn more than every single worker in the Sales department",
+    "table": "Employees",
+    "scenario": "Find employees who earn more than every single worker in the Sales department.",
+    "businessObjective": "Find employees who earn more than every single worker in the Sales department.",
+    "schemaSnippet": "Employees relational schema",
+    "targetQuery": "SELECT first_name, salary\nFROM Employees\nWHERE salary > ALL (SELECT salary FROM Employees WHERE department = 'Sales');",
+    "syntaxBlueprint": "SELECT col1, col2\nFROM table_name\nWHERE metric > ALL (SELECT metric FROM other_table WHERE condition);",
+    "syntaxRule": "'> ALL (subquery)' requires the outer column to be strictly greater than EVERY single value returned by the subquery (equivalent to > MAX).",
+    "syntaxTrap": "If the subquery returns an empty set, ALL evaluates to TRUE for every row.",
+    "eli5Story": "Subqueries & CTEs on Employees: Find employees who earn more than every single worker in the Sales department.",
+    "commonMistakes": "Forgetting to alias derived tables in FROM, writing multiple WITH keywords in multi-CTE pipelines, or suffering the NOT IN NULL trap.",
+    "learningOutcomes": "Mastered 11.8 Quantified Subqueries with ALL on Employees.",
+    "challengeSlots": [
+      {
+        "type": "keyword",
+        "value": "SELECT"
+      },
+      {
+        "type": "column",
+        "value": "first_name,"
+      },
+      {
+        "type": "column",
+        "value": "salary"
+      },
+      {
+        "type": "keyword",
+        "value": "FROM"
+      },
+      {
+        "type": "table",
+        "value": "Employees"
+      },
+      {
+        "type": "keyword",
+        "value": "WHERE"
+      },
+      {
+        "type": "column",
+        "value": "salary"
+      },
+      {
+        "type": "column",
+        "value": ">"
+      },
+      {
+        "type": "keyword",
+        "value": "ALL"
+      },
+      {
+        "type": "keyword",
+        "value": "(SELECT"
+      },
+      {
+        "type": "column",
+        "value": "salary"
+      },
+      {
+        "type": "keyword",
+        "value": "FROM"
+      },
+      {
+        "type": "table",
+        "value": "Employees"
+      },
+      {
+        "type": "keyword",
+        "value": "WHERE"
+      },
+      {
+        "type": "column",
+        "value": "department"
+      },
+      {
+        "type": "column",
+        "value": "="
+      },
+      {
+        "type": "column",
+        "value": "'Sales');"
+      }
+    ]
+  },
+  {
+    "drillNumber": 1074,
+    "subcluster": "11.8 Quantified Subqueries with ALL",
+    "level": "Level 3 (ALL Operator)",
+    "title": "Syntax #1074: Find specialty items priced higher than all produce products",
+    "table": "GroceryItems",
+    "scenario": "Find specialty items priced higher than all produce products.",
+    "businessObjective": "Find specialty items priced higher than all produce products.",
+    "schemaSnippet": "GroceryItems relational schema",
+    "targetQuery": "SELECT item_name, unit_price\nFROM GroceryItems\nWHERE unit_price > ALL (SELECT unit_price FROM GroceryItems WHERE category = 'Produce');",
+    "syntaxBlueprint": "SELECT col1, col2\nFROM table_name\nWHERE metric > ALL (SELECT metric FROM other_table WHERE condition);",
+    "syntaxRule": "'> ALL (subquery)' requires the outer column to be strictly greater than EVERY single value returned by the subquery (equivalent to > MAX).",
+    "syntaxTrap": "If the subquery returns an empty set, ALL evaluates to TRUE for every row.",
+    "eli5Story": "Subqueries & CTEs on GroceryItems: Find specialty items priced higher than all produce products.",
+    "commonMistakes": "Forgetting to alias derived tables in FROM, writing multiple WITH keywords in multi-CTE pipelines, or suffering the NOT IN NULL trap.",
+    "learningOutcomes": "Mastered 11.8 Quantified Subqueries with ALL on GroceryItems.",
+    "challengeSlots": [
+      {
+        "type": "keyword",
+        "value": "SELECT"
+      },
+      {
+        "type": "column",
+        "value": "item_name,"
+      },
+      {
+        "type": "column",
+        "value": "unit_price"
+      },
+      {
+        "type": "keyword",
+        "value": "FROM"
+      },
+      {
+        "type": "table",
+        "value": "GroceryItems"
+      },
+      {
+        "type": "keyword",
+        "value": "WHERE"
+      },
+      {
+        "type": "column",
+        "value": "unit_price"
+      },
+      {
+        "type": "column",
+        "value": ">"
+      },
+      {
+        "type": "keyword",
+        "value": "ALL"
+      },
+      {
+        "type": "keyword",
+        "value": "(SELECT"
+      },
+      {
+        "type": "column",
+        "value": "unit_price"
+      },
+      {
+        "type": "keyword",
+        "value": "FROM"
+      },
+      {
+        "type": "table",
+        "value": "GroceryItems"
+      },
+      {
+        "type": "keyword",
+        "value": "WHERE"
+      },
+      {
+        "type": "column",
+        "value": "category"
+      },
+      {
+        "type": "column",
+        "value": "="
+      },
+      {
+        "type": "column",
+        "value": "'Produce');"
+      }
+    ]
+  },
+  {
+    "drillNumber": 1075,
+    "subcluster": "11.8 Quantified Subqueries with ALL",
+    "level": "Level 3 (ALL Operator)",
+    "title": "Syntax #1075: Find orders larger than every order shipped to Dallas using > ALL",
+    "table": "Orders",
+    "scenario": "Find orders larger than every order shipped to Dallas using > ALL.",
+    "businessObjective": "Find orders larger than every order shipped to Dallas using > ALL.",
+    "schemaSnippet": "Orders relational schema",
+    "targetQuery": "SELECT order_id, total_amount\nFROM Orders\nWHERE total_amount > ALL (SELECT total_amount FROM Orders WHERE shipping_city = 'Dallas');",
+    "syntaxBlueprint": "SELECT col1, col2\nFROM table_name\nWHERE metric > ALL (SELECT metric FROM other_table WHERE condition);",
+    "syntaxRule": "'> ALL (subquery)' requires the outer column to be strictly greater than EVERY single value returned by the subquery (equivalent to > MAX).",
+    "syntaxTrap": "If the subquery returns an empty set, ALL evaluates to TRUE for every row.",
+    "eli5Story": "Subqueries & CTEs on Orders: Find orders larger than every order shipped to Dallas using > ALL.",
+    "commonMistakes": "Forgetting to alias derived tables in FROM, writing multiple WITH keywords in multi-CTE pipelines, or suffering the NOT IN NULL trap.",
+    "learningOutcomes": "Mastered 11.8 Quantified Subqueries with ALL on Orders.",
+    "challengeSlots": [
+      {
+        "type": "keyword",
+        "value": "SELECT"
+      },
+      {
+        "type": "column",
+        "value": "order_id,"
+      },
+      {
+        "type": "column",
+        "value": "total_amount"
+      },
+      {
+        "type": "keyword",
+        "value": "FROM"
+      },
+      {
+        "type": "table",
+        "value": "Orders"
+      },
+      {
+        "type": "keyword",
+        "value": "WHERE"
+      },
+      {
+        "type": "column",
+        "value": "total_amount"
+      },
+      {
+        "type": "column",
+        "value": ">"
+      },
+      {
+        "type": "keyword",
+        "value": "ALL"
+      },
+      {
+        "type": "keyword",
+        "value": "(SELECT"
+      },
+      {
+        "type": "column",
+        "value": "total_amount"
+      },
+      {
+        "type": "keyword",
+        "value": "FROM"
+      },
+      {
+        "type": "table",
+        "value": "Orders"
+      },
+      {
+        "type": "keyword",
+        "value": "WHERE"
+      },
+      {
+        "type": "column",
+        "value": "shipping_city"
+      },
+      {
+        "type": "column",
+        "value": "="
+      },
+      {
+        "type": "column",
+        "value": "'Dallas');"
+      }
+    ]
+  },
+  {
+    "drillNumber": 1076,
+    "subcluster": "11.8 Quantified Subqueries with ALL",
+    "level": "Level 3 (ALL Operator)",
+    "title": "Syntax #1076: Find tracks longer than every single punk rock track in the library",
+    "table": "MusicTracks",
+    "scenario": "Find tracks longer than every single punk rock track in the library.",
+    "businessObjective": "Find tracks longer than every single punk rock track in the library.",
+    "schemaSnippet": "MusicTracks relational schema",
+    "targetQuery": "SELECT track_title, duration_seconds\nFROM MusicTracks\nWHERE duration_seconds > ALL (SELECT duration_seconds FROM MusicTracks WHERE genre = 'Punk');",
+    "syntaxBlueprint": "SELECT col1, col2\nFROM table_name\nWHERE metric > ALL (SELECT metric FROM other_table WHERE condition);",
+    "syntaxRule": "'> ALL (subquery)' requires the outer column to be strictly greater than EVERY single value returned by the subquery (equivalent to > MAX).",
+    "syntaxTrap": "If the subquery returns an empty set, ALL evaluates to TRUE for every row.",
+    "eli5Story": "Subqueries & CTEs on MusicTracks: Find tracks longer than every single punk rock track in the library.",
+    "commonMistakes": "Forgetting to alias derived tables in FROM, writing multiple WITH keywords in multi-CTE pipelines, or suffering the NOT IN NULL trap.",
+    "learningOutcomes": "Mastered 11.8 Quantified Subqueries with ALL on MusicTracks.",
+    "challengeSlots": [
+      {
+        "type": "keyword",
+        "value": "SELECT"
+      },
+      {
+        "type": "column",
+        "value": "track_title,"
+      },
+      {
+        "type": "column",
+        "value": "duration_seconds"
+      },
+      {
+        "type": "keyword",
+        "value": "FROM"
+      },
+      {
+        "type": "table",
+        "value": "MusicTracks"
+      },
+      {
+        "type": "keyword",
+        "value": "WHERE"
+      },
+      {
+        "type": "column",
+        "value": "duration_seconds"
+      },
+      {
+        "type": "column",
+        "value": ">"
+      },
+      {
+        "type": "keyword",
+        "value": "ALL"
+      },
+      {
+        "type": "keyword",
+        "value": "(SELECT"
+      },
+      {
+        "type": "column",
+        "value": "duration_seconds"
+      },
+      {
+        "type": "keyword",
+        "value": "FROM"
+      },
+      {
+        "type": "table",
+        "value": "MusicTracks"
+      },
+      {
+        "type": "keyword",
+        "value": "WHERE"
+      },
+      {
+        "type": "column",
+        "value": "genre"
+      },
+      {
+        "type": "column",
+        "value": "="
+      },
+      {
+        "type": "column",
+        "value": "'Punk');"
+      }
+    ]
+  },
+  {
+    "drillNumber": 1077,
+    "subcluster": "11.8 Quantified Subqueries with ALL",
+    "level": "Level 3 (ALL Operator)",
+    "title": "Syntax #1077: Find active members attending more days than all Bronze plan members",
+    "table": "GymMembers",
+    "scenario": "Find active members attending more days than all Bronze plan members.",
+    "businessObjective": "Find active members attending more days than all Bronze plan members.",
+    "schemaSnippet": "GymMembers relational schema",
+    "targetQuery": "SELECT member_name, attendance_days\nFROM GymMembers\nWHERE attendance_days > ALL (SELECT attendance_days FROM GymMembers WHERE membership_plan = 'Bronze');",
+    "syntaxBlueprint": "SELECT col1, col2\nFROM table_name\nWHERE metric > ALL (SELECT metric FROM other_table WHERE condition);",
+    "syntaxRule": "'> ALL (subquery)' requires the outer column to be strictly greater than EVERY single value returned by the subquery (equivalent to > MAX).",
+    "syntaxTrap": "If the subquery returns an empty set, ALL evaluates to TRUE for every row.",
+    "eli5Story": "Subqueries & CTEs on GymMembers: Find active members attending more days than all Bronze plan members.",
+    "commonMistakes": "Forgetting to alias derived tables in FROM, writing multiple WITH keywords in multi-CTE pipelines, or suffering the NOT IN NULL trap.",
+    "learningOutcomes": "Mastered 11.8 Quantified Subqueries with ALL on GymMembers.",
+    "challengeSlots": [
+      {
+        "type": "keyword",
+        "value": "SELECT"
+      },
+      {
+        "type": "column",
+        "value": "member_name,"
+      },
+      {
+        "type": "column",
+        "value": "attendance_days"
+      },
+      {
+        "type": "keyword",
+        "value": "FROM"
+      },
+      {
+        "type": "table",
+        "value": "GymMembers"
+      },
+      {
+        "type": "keyword",
+        "value": "WHERE"
+      },
+      {
+        "type": "column",
+        "value": "attendance_days"
+      },
+      {
+        "type": "column",
+        "value": ">"
+      },
+      {
+        "type": "keyword",
+        "value": "ALL"
+      },
+      {
+        "type": "keyword",
+        "value": "(SELECT"
+      },
+      {
+        "type": "column",
+        "value": "attendance_days"
+      },
+      {
+        "type": "keyword",
+        "value": "FROM"
+      },
+      {
+        "type": "table",
+        "value": "GymMembers"
+      },
+      {
+        "type": "keyword",
+        "value": "WHERE"
+      },
+      {
+        "type": "column",
+        "value": "membership_plan"
+      },
+      {
+        "type": "column",
+        "value": "="
+      },
+      {
+        "type": "column",
+        "value": "'Bronze');"
+      }
+    ]
+  },
+  {
+    "drillNumber": 1078,
+    "subcluster": "11.8 Quantified Subqueries with ALL",
+    "level": "Level 3 (ALL Operator)",
+    "title": "Syntax #1078: Find movies rated higher than every film reviewed by Critic X",
+    "table": "MovieReviews",
+    "scenario": "Find movies rated higher than every film reviewed by Critic X.",
+    "businessObjective": "Find movies rated higher than every film reviewed by Critic X.",
+    "schemaSnippet": "MovieReviews relational schema",
+    "targetQuery": "SELECT movie_title, star_rating\nFROM MovieReviews\nWHERE star_rating > ALL (SELECT star_rating FROM MovieReviews WHERE reviewer_name = 'Critic X');",
+    "syntaxBlueprint": "SELECT col1, col2\nFROM table_name\nWHERE metric > ALL (SELECT metric FROM other_table WHERE condition);",
+    "syntaxRule": "'> ALL (subquery)' requires the outer column to be strictly greater than EVERY single value returned by the subquery (equivalent to > MAX).",
+    "syntaxTrap": "If the subquery returns an empty set, ALL evaluates to TRUE for every row.",
+    "eli5Story": "Subqueries & CTEs on MovieReviews: Find movies rated higher than every film reviewed by Critic X.",
+    "commonMistakes": "Forgetting to alias derived tables in FROM, writing multiple WITH keywords in multi-CTE pipelines, or suffering the NOT IN NULL trap.",
+    "learningOutcomes": "Mastered 11.8 Quantified Subqueries with ALL on MovieReviews.",
+    "challengeSlots": [
+      {
+        "type": "keyword",
+        "value": "SELECT"
+      },
+      {
+        "type": "column",
+        "value": "movie_title,"
+      },
+      {
+        "type": "column",
+        "value": "star_rating"
+      },
+      {
+        "type": "keyword",
+        "value": "FROM"
+      },
+      {
+        "type": "table",
+        "value": "MovieReviews"
+      },
+      {
+        "type": "keyword",
+        "value": "WHERE"
+      },
+      {
+        "type": "column",
+        "value": "star_rating"
+      },
+      {
+        "type": "column",
+        "value": ">"
+      },
+      {
+        "type": "keyword",
+        "value": "ALL"
+      },
+      {
+        "type": "keyword",
+        "value": "(SELECT"
+      },
+      {
+        "type": "column",
+        "value": "star_rating"
+      },
+      {
+        "type": "keyword",
+        "value": "FROM"
+      },
+      {
+        "type": "table",
+        "value": "MovieReviews"
+      },
+      {
+        "type": "keyword",
+        "value": "WHERE"
+      },
+      {
+        "type": "column",
+        "value": "reviewer_name"
+      },
+      {
+        "type": "column",
+        "value": "="
+      },
+      {
+        "type": "column",
+        "value": "'Critic"
+      },
+      {
+        "type": "column",
+        "value": "X');"
+      }
+    ]
+  },
+  {
+    "drillNumber": 1079,
+    "subcluster": "11.8 Quantified Subqueries with ALL",
+    "level": "Level 3 (ALL Operator)",
+    "title": "Syntax #1079: Find flights longer than all flight routes departing from Boston (BOS)",
+    "table": "FlightSchedule",
+    "scenario": "Find flights longer than all flight routes departing from Boston (BOS).",
+    "businessObjective": "Find flights longer than all flight routes departing from Boston (BOS).",
+    "schemaSnippet": "FlightSchedule relational schema",
+    "targetQuery": "SELECT flight_id, distance_miles\nFROM FlightSchedule\nWHERE distance_miles > ALL (SELECT distance_miles FROM FlightSchedule WHERE origin_airport = 'BOS');",
+    "syntaxBlueprint": "SELECT col1, col2\nFROM table_name\nWHERE metric > ALL (SELECT metric FROM other_table WHERE condition);",
+    "syntaxRule": "'> ALL (subquery)' requires the outer column to be strictly greater than EVERY single value returned by the subquery (equivalent to > MAX).",
+    "syntaxTrap": "If the subquery returns an empty set, ALL evaluates to TRUE for every row.",
+    "eli5Story": "Subqueries & CTEs on FlightSchedule: Find flights longer than all flight routes departing from Boston (BOS).",
+    "commonMistakes": "Forgetting to alias derived tables in FROM, writing multiple WITH keywords in multi-CTE pipelines, or suffering the NOT IN NULL trap.",
+    "learningOutcomes": "Mastered 11.8 Quantified Subqueries with ALL on FlightSchedule.",
+    "challengeSlots": [
+      {
+        "type": "keyword",
+        "value": "SELECT"
+      },
+      {
+        "type": "column",
+        "value": "flight_id,"
+      },
+      {
+        "type": "column",
+        "value": "distance_miles"
+      },
+      {
+        "type": "keyword",
+        "value": "FROM"
+      },
+      {
+        "type": "table",
+        "value": "FlightSchedule"
+      },
+      {
+        "type": "keyword",
+        "value": "WHERE"
+      },
+      {
+        "type": "column",
+        "value": "distance_miles"
+      },
+      {
+        "type": "column",
+        "value": ">"
+      },
+      {
+        "type": "keyword",
+        "value": "ALL"
+      },
+      {
+        "type": "keyword",
+        "value": "(SELECT"
+      },
+      {
+        "type": "column",
+        "value": "distance_miles"
+      },
+      {
+        "type": "keyword",
+        "value": "FROM"
+      },
+      {
+        "type": "table",
+        "value": "FlightSchedule"
+      },
+      {
+        "type": "keyword",
+        "value": "WHERE"
+      },
+      {
+        "type": "column",
+        "value": "origin_airport"
+      },
+      {
+        "type": "column",
+        "value": "="
+      },
+      {
+        "type": "column",
+        "value": "'BOS');"
+      }
+    ]
+  },
+  {
+    "drillNumber": 1080,
+    "subcluster": "11.8 Quantified Subqueries with ALL",
+    "level": "Level 3 (ALL Operator)",
+    "title": "Syntax #1080: Find animal patients that weigh more than every cat in the veterinary clinic",
+    "table": "PetClinic",
+    "scenario": "Find animal patients that weigh more than every cat in the veterinary clinic.",
+    "businessObjective": "Find animal patients that weigh more than every cat in the veterinary clinic.",
+    "schemaSnippet": "PetClinic relational schema",
+    "targetQuery": "SELECT pet_name, weight_kg\nFROM PetClinic\nWHERE weight_kg > ALL (SELECT weight_kg FROM PetClinic WHERE species = 'Feline');",
+    "syntaxBlueprint": "SELECT col1, col2\nFROM table_name\nWHERE metric > ALL (SELECT metric FROM other_table WHERE condition);",
+    "syntaxRule": "'> ALL (subquery)' requires the outer column to be strictly greater than EVERY single value returned by the subquery (equivalent to > MAX).",
+    "syntaxTrap": "If the subquery returns an empty set, ALL evaluates to TRUE for every row.",
+    "eli5Story": "Subqueries & CTEs on PetClinic: Find animal patients that weigh more than every cat in the veterinary clinic.",
+    "commonMistakes": "Forgetting to alias derived tables in FROM, writing multiple WITH keywords in multi-CTE pipelines, or suffering the NOT IN NULL trap.",
+    "learningOutcomes": "Mastered 11.8 Quantified Subqueries with ALL on PetClinic.",
+    "challengeSlots": [
+      {
+        "type": "keyword",
+        "value": "SELECT"
+      },
+      {
+        "type": "column",
+        "value": "pet_name,"
+      },
+      {
+        "type": "column",
+        "value": "weight_kg"
+      },
+      {
+        "type": "keyword",
+        "value": "FROM"
+      },
+      {
+        "type": "table",
+        "value": "PetClinic"
+      },
+      {
+        "type": "keyword",
+        "value": "WHERE"
+      },
+      {
+        "type": "column",
+        "value": "weight_kg"
+      },
+      {
+        "type": "column",
+        "value": ">"
+      },
+      {
+        "type": "keyword",
+        "value": "ALL"
+      },
+      {
+        "type": "keyword",
+        "value": "(SELECT"
+      },
+      {
+        "type": "column",
+        "value": "weight_kg"
+      },
+      {
+        "type": "keyword",
+        "value": "FROM"
+      },
+      {
+        "type": "table",
+        "value": "PetClinic"
+      },
+      {
+        "type": "keyword",
+        "value": "WHERE"
+      },
+      {
+        "type": "column",
+        "value": "species"
+      },
+      {
+        "type": "column",
+        "value": "="
+      },
+      {
+        "type": "column",
+        "value": "'Feline');"
+      }
+    ]
+  },
+  {
+    "drillNumber": 1081,
+    "subcluster": "11.9 Quantified Subqueries with ANY / SOME",
+    "level": "Level 3 (ANY Operator)",
+    "title": "Syntax #1081: Find students with a GPA higher than at least one Art major student",
+    "table": "Students",
+    "scenario": "Find students with a GPA higher than at least one Art major student.",
+    "businessObjective": "Find students with a GPA higher than at least one Art major student.",
+    "schemaSnippet": "Students relational schema",
+    "targetQuery": "SELECT full_name, gpa\nFROM Students\nWHERE gpa > ANY (SELECT gpa FROM Students WHERE major = 'Art');",
+    "syntaxBlueprint": "SELECT col1, col2\nFROM table_name\nWHERE metric > ANY (SELECT metric FROM other_table WHERE condition);",
+    "syntaxRule": "'> ANY (subquery)' requires the outer column to be greater than AT LEAST ONE value returned by the subquery (equivalent to > MIN).",
+    "syntaxTrap": "'= ANY' is functionally identical to the 'IN' operator.",
+    "eli5Story": "Subqueries & CTEs on Students: Find students with a GPA higher than at least one Art major student.",
+    "commonMistakes": "Forgetting to alias derived tables in FROM, writing multiple WITH keywords in multi-CTE pipelines, or suffering the NOT IN NULL trap.",
+    "learningOutcomes": "Mastered 11.9 Quantified Subqueries with ANY / SOME on Students.",
+    "challengeSlots": [
+      {
+        "type": "keyword",
+        "value": "SELECT"
+      },
+      {
+        "type": "column",
+        "value": "full_name,"
+      },
+      {
+        "type": "column",
+        "value": "gpa"
+      },
+      {
+        "type": "keyword",
+        "value": "FROM"
+      },
+      {
+        "type": "table",
+        "value": "Students"
+      },
+      {
+        "type": "keyword",
+        "value": "WHERE"
+      },
+      {
+        "type": "column",
+        "value": "gpa"
+      },
+      {
+        "type": "column",
+        "value": ">"
+      },
+      {
+        "type": "keyword",
+        "value": "ANY"
+      },
+      {
+        "type": "keyword",
+        "value": "(SELECT"
+      },
+      {
+        "type": "column",
+        "value": "gpa"
+      },
+      {
+        "type": "keyword",
+        "value": "FROM"
+      },
+      {
+        "type": "table",
+        "value": "Students"
+      },
+      {
+        "type": "keyword",
+        "value": "WHERE"
+      },
+      {
+        "type": "column",
+        "value": "major"
+      },
+      {
+        "type": "column",
+        "value": "="
+      },
+      {
+        "type": "column",
+        "value": "'Art');"
+      }
+    ]
+  },
+  {
+    "drillNumber": 1082,
+    "subcluster": "11.9 Quantified Subqueries with ANY / SOME",
+    "level": "Level 3 (ANY Operator)",
+    "title": "Syntax #1082: Find books cheaper than at least one textbook in the catalog",
+    "table": "Books",
+    "scenario": "Find books cheaper than at least one textbook in the catalog.",
+    "businessObjective": "Find books cheaper than at least one textbook in the catalog.",
+    "schemaSnippet": "Books relational schema",
+    "targetQuery": "SELECT title, price\nFROM Books\nWHERE price < ANY (SELECT price FROM Books WHERE genre = 'Textbook');",
+    "syntaxBlueprint": "SELECT col1, col2\nFROM table_name\nWHERE metric > ANY (SELECT metric FROM other_table WHERE condition);",
+    "syntaxRule": "'> ANY (subquery)' requires the outer column to be greater than AT LEAST ONE value returned by the subquery (equivalent to > MIN).",
+    "syntaxTrap": "'= ANY' is functionally identical to the 'IN' operator.",
+    "eli5Story": "Subqueries & CTEs on Books: Find books cheaper than at least one textbook in the catalog.",
+    "commonMistakes": "Forgetting to alias derived tables in FROM, writing multiple WITH keywords in multi-CTE pipelines, or suffering the NOT IN NULL trap.",
+    "learningOutcomes": "Mastered 11.9 Quantified Subqueries with ANY / SOME on Books.",
+    "challengeSlots": [
+      {
+        "type": "keyword",
+        "value": "SELECT"
+      },
+      {
+        "type": "column",
+        "value": "title,"
+      },
+      {
+        "type": "column",
+        "value": "price"
+      },
+      {
+        "type": "keyword",
+        "value": "FROM"
+      },
+      {
+        "type": "table",
+        "value": "Books"
+      },
+      {
+        "type": "keyword",
+        "value": "WHERE"
+      },
+      {
+        "type": "column",
+        "value": "price"
+      },
+      {
+        "type": "column",
+        "value": "<"
+      },
+      {
+        "type": "keyword",
+        "value": "ANY"
+      },
+      {
+        "type": "keyword",
+        "value": "(SELECT"
+      },
+      {
+        "type": "column",
+        "value": "price"
+      },
+      {
+        "type": "keyword",
+        "value": "FROM"
+      },
+      {
+        "type": "table",
+        "value": "Books"
+      },
+      {
+        "type": "keyword",
+        "value": "WHERE"
+      },
+      {
+        "type": "column",
+        "value": "genre"
+      },
+      {
+        "type": "column",
+        "value": "="
+      },
+      {
+        "type": "column",
+        "value": "'Textbook');"
+      }
+    ]
+  },
+  {
+    "drillNumber": 1083,
+    "subcluster": "11.9 Quantified Subqueries with ANY / SOME",
+    "level": "Level 3 (ANY Operator)",
+    "title": "Syntax #1083: Find employees earning more than at least one member of Engineering",
+    "table": "Employees",
+    "scenario": "Find employees earning more than at least one member of Engineering.",
+    "businessObjective": "Find employees earning more than at least one member of Engineering.",
+    "schemaSnippet": "Employees relational schema",
+    "targetQuery": "SELECT first_name, salary\nFROM Employees\nWHERE salary > ANY (SELECT salary FROM Employees WHERE department = 'Engineering');",
+    "syntaxBlueprint": "SELECT col1, col2\nFROM table_name\nWHERE metric > ANY (SELECT metric FROM other_table WHERE condition);",
+    "syntaxRule": "'> ANY (subquery)' requires the outer column to be greater than AT LEAST ONE value returned by the subquery (equivalent to > MIN).",
+    "syntaxTrap": "'= ANY' is functionally identical to the 'IN' operator.",
+    "eli5Story": "Subqueries & CTEs on Employees: Find employees earning more than at least one member of Engineering.",
+    "commonMistakes": "Forgetting to alias derived tables in FROM, writing multiple WITH keywords in multi-CTE pipelines, or suffering the NOT IN NULL trap.",
+    "learningOutcomes": "Mastered 11.9 Quantified Subqueries with ANY / SOME on Employees.",
+    "challengeSlots": [
+      {
+        "type": "keyword",
+        "value": "SELECT"
+      },
+      {
+        "type": "column",
+        "value": "first_name,"
+      },
+      {
+        "type": "column",
+        "value": "salary"
+      },
+      {
+        "type": "keyword",
+        "value": "FROM"
+      },
+      {
+        "type": "table",
+        "value": "Employees"
+      },
+      {
+        "type": "keyword",
+        "value": "WHERE"
+      },
+      {
+        "type": "column",
+        "value": "salary"
+      },
+      {
+        "type": "column",
+        "value": ">"
+      },
+      {
+        "type": "keyword",
+        "value": "ANY"
+      },
+      {
+        "type": "keyword",
+        "value": "(SELECT"
+      },
+      {
+        "type": "column",
+        "value": "salary"
+      },
+      {
+        "type": "keyword",
+        "value": "FROM"
+      },
+      {
+        "type": "table",
+        "value": "Employees"
+      },
+      {
+        "type": "keyword",
+        "value": "WHERE"
+      },
+      {
+        "type": "column",
+        "value": "department"
+      },
+      {
+        "type": "column",
+        "value": "="
+      },
+      {
+        "type": "column",
+        "value": "'Engineering');"
+      }
+    ]
+  },
+  {
+    "drillNumber": 1084,
+    "subcluster": "11.9 Quantified Subqueries with ANY / SOME",
+    "level": "Level 3 (ANY Operator)",
+    "title": "Syntax #1084: Find items with stock lower than at least one dairy item",
+    "table": "GroceryItems",
+    "scenario": "Find items with stock lower than at least one dairy item.",
+    "businessObjective": "Find items with stock lower than at least one dairy item.",
+    "schemaSnippet": "GroceryItems relational schema",
+    "targetQuery": "SELECT item_name, stock_qty\nFROM GroceryItems\nWHERE stock_qty < ANY (SELECT stock_qty FROM GroceryItems WHERE category = 'Dairy');",
+    "syntaxBlueprint": "SELECT col1, col2\nFROM table_name\nWHERE metric > ANY (SELECT metric FROM other_table WHERE condition);",
+    "syntaxRule": "'> ANY (subquery)' requires the outer column to be greater than AT LEAST ONE value returned by the subquery (equivalent to > MIN).",
+    "syntaxTrap": "'= ANY' is functionally identical to the 'IN' operator.",
+    "eli5Story": "Subqueries & CTEs on GroceryItems: Find items with stock lower than at least one dairy item.",
+    "commonMistakes": "Forgetting to alias derived tables in FROM, writing multiple WITH keywords in multi-CTE pipelines, or suffering the NOT IN NULL trap.",
+    "learningOutcomes": "Mastered 11.9 Quantified Subqueries with ANY / SOME on GroceryItems.",
+    "challengeSlots": [
+      {
+        "type": "keyword",
+        "value": "SELECT"
+      },
+      {
+        "type": "column",
+        "value": "item_name,"
+      },
+      {
+        "type": "column",
+        "value": "stock_qty"
+      },
+      {
+        "type": "keyword",
+        "value": "FROM"
+      },
+      {
+        "type": "table",
+        "value": "GroceryItems"
+      },
+      {
+        "type": "keyword",
+        "value": "WHERE"
+      },
+      {
+        "type": "column",
+        "value": "stock_qty"
+      },
+      {
+        "type": "column",
+        "value": "<"
+      },
+      {
+        "type": "keyword",
+        "value": "ANY"
+      },
+      {
+        "type": "keyword",
+        "value": "(SELECT"
+      },
+      {
+        "type": "column",
+        "value": "stock_qty"
+      },
+      {
+        "type": "keyword",
+        "value": "FROM"
+      },
+      {
+        "type": "table",
+        "value": "GroceryItems"
+      },
+      {
+        "type": "keyword",
+        "value": "WHERE"
+      },
+      {
+        "type": "column",
+        "value": "category"
+      },
+      {
+        "type": "column",
+        "value": "="
+      },
+      {
+        "type": "column",
+        "value": "'Dairy');"
+      }
+    ]
+  },
+  {
+    "drillNumber": 1085,
+    "subcluster": "11.9 Quantified Subqueries with ANY / SOME",
+    "level": "Level 3 (ANY Operator)",
+    "title": "Syntax #1085: Find orders larger than at least one order placed by VIP Corp",
+    "table": "Orders",
+    "scenario": "Find orders larger than at least one order placed by VIP Corp.",
+    "businessObjective": "Find orders larger than at least one order placed by VIP Corp.",
+    "schemaSnippet": "Orders relational schema",
+    "targetQuery": "SELECT order_id, total_amount\nFROM Orders\nWHERE total_amount > ANY (SELECT total_amount FROM Orders WHERE customer_name = 'VIP Corp');",
+    "syntaxBlueprint": "SELECT col1, col2\nFROM table_name\nWHERE metric > ANY (SELECT metric FROM other_table WHERE condition);",
+    "syntaxRule": "'> ANY (subquery)' requires the outer column to be greater than AT LEAST ONE value returned by the subquery (equivalent to > MIN).",
+    "syntaxTrap": "'= ANY' is functionally identical to the 'IN' operator.",
+    "eli5Story": "Subqueries & CTEs on Orders: Find orders larger than at least one order placed by VIP Corp.",
+    "commonMistakes": "Forgetting to alias derived tables in FROM, writing multiple WITH keywords in multi-CTE pipelines, or suffering the NOT IN NULL trap.",
+    "learningOutcomes": "Mastered 11.9 Quantified Subqueries with ANY / SOME on Orders.",
+    "challengeSlots": [
+      {
+        "type": "keyword",
+        "value": "SELECT"
+      },
+      {
+        "type": "column",
+        "value": "order_id,"
+      },
+      {
+        "type": "column",
+        "value": "total_amount"
+      },
+      {
+        "type": "keyword",
+        "value": "FROM"
+      },
+      {
+        "type": "table",
+        "value": "Orders"
+      },
+      {
+        "type": "keyword",
+        "value": "WHERE"
+      },
+      {
+        "type": "column",
+        "value": "total_amount"
+      },
+      {
+        "type": "column",
+        "value": ">"
+      },
+      {
+        "type": "keyword",
+        "value": "ANY"
+      },
+      {
+        "type": "keyword",
+        "value": "(SELECT"
+      },
+      {
+        "type": "column",
+        "value": "total_amount"
+      },
+      {
+        "type": "keyword",
+        "value": "FROM"
+      },
+      {
+        "type": "table",
+        "value": "Orders"
+      },
+      {
+        "type": "keyword",
+        "value": "WHERE"
+      },
+      {
+        "type": "column",
+        "value": "customer_name"
+      },
+      {
+        "type": "column",
+        "value": "="
+      },
+      {
+        "type": "column",
+        "value": "'VIP"
+      },
+      {
+        "type": "column",
+        "value": "Corp');"
+      }
+    ]
+  },
+  {
+    "drillNumber": 1086,
+    "subcluster": "11.9 Quantified Subqueries with ANY / SOME",
+    "level": "Level 3 (ANY Operator)",
+    "title": "Syntax #1086: Find music tracks shorter than at least one classical recording",
+    "table": "MusicTracks",
+    "scenario": "Find music tracks shorter than at least one classical recording.",
+    "businessObjective": "Find music tracks shorter than at least one classical recording.",
+    "schemaSnippet": "MusicTracks relational schema",
+    "targetQuery": "SELECT track_title, duration_seconds\nFROM MusicTracks\nWHERE duration_seconds < ANY (SELECT duration_seconds FROM MusicTracks WHERE genre = 'Classical');",
+    "syntaxBlueprint": "SELECT col1, col2\nFROM table_name\nWHERE metric > ANY (SELECT metric FROM other_table WHERE condition);",
+    "syntaxRule": "'> ANY (subquery)' requires the outer column to be greater than AT LEAST ONE value returned by the subquery (equivalent to > MIN).",
+    "syntaxTrap": "'= ANY' is functionally identical to the 'IN' operator.",
+    "eli5Story": "Subqueries & CTEs on MusicTracks: Find music tracks shorter than at least one classical recording.",
+    "commonMistakes": "Forgetting to alias derived tables in FROM, writing multiple WITH keywords in multi-CTE pipelines, or suffering the NOT IN NULL trap.",
+    "learningOutcomes": "Mastered 11.9 Quantified Subqueries with ANY / SOME on MusicTracks.",
+    "challengeSlots": [
+      {
+        "type": "keyword",
+        "value": "SELECT"
+      },
+      {
+        "type": "column",
+        "value": "track_title,"
+      },
+      {
+        "type": "column",
+        "value": "duration_seconds"
+      },
+      {
+        "type": "keyword",
+        "value": "FROM"
+      },
+      {
+        "type": "table",
+        "value": "MusicTracks"
+      },
+      {
+        "type": "keyword",
+        "value": "WHERE"
+      },
+      {
+        "type": "column",
+        "value": "duration_seconds"
+      },
+      {
+        "type": "column",
+        "value": "<"
+      },
+      {
+        "type": "keyword",
+        "value": "ANY"
+      },
+      {
+        "type": "keyword",
+        "value": "(SELECT"
+      },
+      {
+        "type": "column",
+        "value": "duration_seconds"
+      },
+      {
+        "type": "keyword",
+        "value": "FROM"
+      },
+      {
+        "type": "table",
+        "value": "MusicTracks"
+      },
+      {
+        "type": "keyword",
+        "value": "WHERE"
+      },
+      {
+        "type": "column",
+        "value": "genre"
+      },
+      {
+        "type": "column",
+        "value": "="
+      },
+      {
+        "type": "column",
+        "value": "'Classical');"
+      }
+    ]
+  },
+  {
+    "drillNumber": 1087,
+    "subcluster": "11.9 Quantified Subqueries with ANY / SOME",
+    "level": "Level 3 (ANY Operator)",
+    "title": "Syntax #1087: Find members paying less than at least one Gold plan member",
+    "table": "GymMembers",
+    "scenario": "Find members paying less than at least one Gold plan member.",
+    "businessObjective": "Find members paying less than at least one Gold plan member.",
+    "schemaSnippet": "GymMembers relational schema",
+    "targetQuery": "SELECT member_name, monthly_fee\nFROM GymMembers\nWHERE monthly_fee < ANY (SELECT monthly_fee FROM GymMembers WHERE membership_plan = 'Gold');",
+    "syntaxBlueprint": "SELECT col1, col2\nFROM table_name\nWHERE metric > ANY (SELECT metric FROM other_table WHERE condition);",
+    "syntaxRule": "'> ANY (subquery)' requires the outer column to be greater than AT LEAST ONE value returned by the subquery (equivalent to > MIN).",
+    "syntaxTrap": "'= ANY' is functionally identical to the 'IN' operator.",
+    "eli5Story": "Subqueries & CTEs on GymMembers: Find members paying less than at least one Gold plan member.",
+    "commonMistakes": "Forgetting to alias derived tables in FROM, writing multiple WITH keywords in multi-CTE pipelines, or suffering the NOT IN NULL trap.",
+    "learningOutcomes": "Mastered 11.9 Quantified Subqueries with ANY / SOME on GymMembers.",
+    "challengeSlots": [
+      {
+        "type": "keyword",
+        "value": "SELECT"
+      },
+      {
+        "type": "column",
+        "value": "member_name,"
+      },
+      {
+        "type": "column",
+        "value": "monthly_fee"
+      },
+      {
+        "type": "keyword",
+        "value": "FROM"
+      },
+      {
+        "type": "table",
+        "value": "GymMembers"
+      },
+      {
+        "type": "keyword",
+        "value": "WHERE"
+      },
+      {
+        "type": "column",
+        "value": "monthly_fee"
+      },
+      {
+        "type": "column",
+        "value": "<"
+      },
+      {
+        "type": "keyword",
+        "value": "ANY"
+      },
+      {
+        "type": "keyword",
+        "value": "(SELECT"
+      },
+      {
+        "type": "column",
+        "value": "monthly_fee"
+      },
+      {
+        "type": "keyword",
+        "value": "FROM"
+      },
+      {
+        "type": "table",
+        "value": "GymMembers"
+      },
+      {
+        "type": "keyword",
+        "value": "WHERE"
+      },
+      {
+        "type": "column",
+        "value": "membership_plan"
+      },
+      {
+        "type": "column",
+        "value": "="
+      },
+      {
+        "type": "column",
+        "value": "'Gold');"
+      }
+    ]
+  },
+  {
+    "drillNumber": 1088,
+    "subcluster": "11.9 Quantified Subqueries with ANY / SOME",
+    "level": "Level 3 (ANY Operator)",
+    "title": "Syntax #1088: Find movie reviews rated higher than at least one horror film",
+    "table": "MovieReviews",
+    "scenario": "Find movie reviews rated higher than at least one horror film.",
+    "businessObjective": "Find movie reviews rated higher than at least one horror film.",
+    "schemaSnippet": "MovieReviews relational schema",
+    "targetQuery": "SELECT movie_title, star_rating\nFROM MovieReviews\nWHERE star_rating > ANY (SELECT star_rating FROM MovieReviews WHERE genre = 'Horror');",
+    "syntaxBlueprint": "SELECT col1, col2\nFROM table_name\nWHERE metric > ANY (SELECT metric FROM other_table WHERE condition);",
+    "syntaxRule": "'> ANY (subquery)' requires the outer column to be greater than AT LEAST ONE value returned by the subquery (equivalent to > MIN).",
+    "syntaxTrap": "'= ANY' is functionally identical to the 'IN' operator.",
+    "eli5Story": "Subqueries & CTEs on MovieReviews: Find movie reviews rated higher than at least one horror film.",
+    "commonMistakes": "Forgetting to alias derived tables in FROM, writing multiple WITH keywords in multi-CTE pipelines, or suffering the NOT IN NULL trap.",
+    "learningOutcomes": "Mastered 11.9 Quantified Subqueries with ANY / SOME on MovieReviews.",
+    "challengeSlots": [
+      {
+        "type": "keyword",
+        "value": "SELECT"
+      },
+      {
+        "type": "column",
+        "value": "movie_title,"
+      },
+      {
+        "type": "column",
+        "value": "star_rating"
+      },
+      {
+        "type": "keyword",
+        "value": "FROM"
+      },
+      {
+        "type": "table",
+        "value": "MovieReviews"
+      },
+      {
+        "type": "keyword",
+        "value": "WHERE"
+      },
+      {
+        "type": "column",
+        "value": "star_rating"
+      },
+      {
+        "type": "column",
+        "value": ">"
+      },
+      {
+        "type": "keyword",
+        "value": "ANY"
+      },
+      {
+        "type": "keyword",
+        "value": "(SELECT"
+      },
+      {
+        "type": "column",
+        "value": "star_rating"
+      },
+      {
+        "type": "keyword",
+        "value": "FROM"
+      },
+      {
+        "type": "table",
+        "value": "MovieReviews"
+      },
+      {
+        "type": "keyword",
+        "value": "WHERE"
+      },
+      {
+        "type": "column",
+        "value": "genre"
+      },
+      {
+        "type": "column",
+        "value": "="
+      },
+      {
+        "type": "column",
+        "value": "'Horror');"
+      }
+    ]
+  },
+  {
+    "drillNumber": 1089,
+    "subcluster": "11.9 Quantified Subqueries with ANY / SOME",
+    "level": "Level 3 (ANY Operator)",
+    "title": "Syntax #1089: Find flights cheaper than at least one flight departing from JFK",
+    "table": "FlightSchedule",
+    "scenario": "Find flights cheaper than at least one flight departing from JFK.",
+    "businessObjective": "Find flights cheaper than at least one flight departing from JFK.",
+    "schemaSnippet": "FlightSchedule relational schema",
+    "targetQuery": "SELECT flight_id, ticket_price\nFROM FlightSchedule\nWHERE ticket_price < ANY (SELECT ticket_price FROM FlightSchedule WHERE origin_airport = 'JFK');",
+    "syntaxBlueprint": "SELECT col1, col2\nFROM table_name\nWHERE metric > ANY (SELECT metric FROM other_table WHERE condition);",
+    "syntaxRule": "'> ANY (subquery)' requires the outer column to be greater than AT LEAST ONE value returned by the subquery (equivalent to > MIN).",
+    "syntaxTrap": "'= ANY' is functionally identical to the 'IN' operator.",
+    "eli5Story": "Subqueries & CTEs on FlightSchedule: Find flights cheaper than at least one flight departing from JFK.",
+    "commonMistakes": "Forgetting to alias derived tables in FROM, writing multiple WITH keywords in multi-CTE pipelines, or suffering the NOT IN NULL trap.",
+    "learningOutcomes": "Mastered 11.9 Quantified Subqueries with ANY / SOME on FlightSchedule.",
+    "challengeSlots": [
+      {
+        "type": "keyword",
+        "value": "SELECT"
+      },
+      {
+        "type": "column",
+        "value": "flight_id,"
+      },
+      {
+        "type": "column",
+        "value": "ticket_price"
+      },
+      {
+        "type": "keyword",
+        "value": "FROM"
+      },
+      {
+        "type": "table",
+        "value": "FlightSchedule"
+      },
+      {
+        "type": "keyword",
+        "value": "WHERE"
+      },
+      {
+        "type": "column",
+        "value": "ticket_price"
+      },
+      {
+        "type": "column",
+        "value": "<"
+      },
+      {
+        "type": "keyword",
+        "value": "ANY"
+      },
+      {
+        "type": "keyword",
+        "value": "(SELECT"
+      },
+      {
+        "type": "column",
+        "value": "ticket_price"
+      },
+      {
+        "type": "keyword",
+        "value": "FROM"
+      },
+      {
+        "type": "table",
+        "value": "FlightSchedule"
+      },
+      {
+        "type": "keyword",
+        "value": "WHERE"
+      },
+      {
+        "type": "column",
+        "value": "origin_airport"
+      },
+      {
+        "type": "column",
+        "value": "="
+      },
+      {
+        "type": "column",
+        "value": "'JFK');"
+      }
+    ]
+  },
+  {
+    "drillNumber": 1090,
+    "subcluster": "11.9 Quantified Subqueries with ANY / SOME",
+    "level": "Level 3 (ANY Operator)",
+    "title": "Syntax #1090: Find clinic animals older than at least one canine patient",
+    "table": "PetClinic",
+    "scenario": "Find clinic animals older than at least one canine patient.",
+    "businessObjective": "Find clinic animals older than at least one canine patient.",
+    "schemaSnippet": "PetClinic relational schema",
+    "targetQuery": "SELECT pet_name, age_years\nFROM PetClinic\nWHERE age_years > ANY (SELECT age_years FROM PetClinic WHERE species = 'Canine');",
+    "syntaxBlueprint": "SELECT col1, col2\nFROM table_name\nWHERE metric > ANY (SELECT metric FROM other_table WHERE condition);",
+    "syntaxRule": "'> ANY (subquery)' requires the outer column to be greater than AT LEAST ONE value returned by the subquery (equivalent to > MIN).",
+    "syntaxTrap": "'= ANY' is functionally identical to the 'IN' operator.",
+    "eli5Story": "Subqueries & CTEs on PetClinic: Find clinic animals older than at least one canine patient.",
+    "commonMistakes": "Forgetting to alias derived tables in FROM, writing multiple WITH keywords in multi-CTE pipelines, or suffering the NOT IN NULL trap.",
+    "learningOutcomes": "Mastered 11.9 Quantified Subqueries with ANY / SOME on PetClinic.",
+    "challengeSlots": [
+      {
+        "type": "keyword",
+        "value": "SELECT"
+      },
+      {
+        "type": "column",
+        "value": "pet_name,"
+      },
+      {
+        "type": "column",
+        "value": "age_years"
+      },
+      {
+        "type": "keyword",
+        "value": "FROM"
+      },
+      {
+        "type": "table",
+        "value": "PetClinic"
+      },
+      {
+        "type": "keyword",
+        "value": "WHERE"
+      },
+      {
+        "type": "column",
+        "value": "age_years"
+      },
+      {
+        "type": "column",
+        "value": ">"
+      },
+      {
+        "type": "keyword",
+        "value": "ANY"
+      },
+      {
+        "type": "keyword",
+        "value": "(SELECT"
+      },
+      {
+        "type": "column",
+        "value": "age_years"
+      },
+      {
+        "type": "keyword",
+        "value": "FROM"
+      },
+      {
+        "type": "table",
+        "value": "PetClinic"
+      },
+      {
+        "type": "keyword",
+        "value": "WHERE"
+      },
+      {
+        "type": "column",
+        "value": "species"
+      },
+      {
+        "type": "column",
+        "value": "="
+      },
+      {
+        "type": "column",
+        "value": "'Canine');"
+      }
+    ]
+  },
+  {
+    "drillNumber": 1091,
+    "subcluster": "11.10 Derived Tables in FROM with Mandatory Aliases",
+    "level": "Level 3 (FROM Derived Table)",
+    "title": "Syntax #1091: Select majors with average GPA >= 3.5 using a derived table in the FROM clause",
+    "table": "Students",
+    "scenario": "Select majors with average GPA >= 3.5 using a derived table in the FROM clause.",
+    "businessObjective": "Select majors with average GPA >= 3.5 using a derived table in the FROM clause.",
+    "schemaSnippet": "Students relational schema",
+    "targetQuery": "SELECT dt.major, dt.avg_gpa\nFROM (SELECT major, AVG(gpa) AS avg_gpa FROM Students GROUP BY major) AS dt\nWHERE dt.avg_gpa >= 3.5;",
+    "syntaxBlueprint": "SELECT dt.category, dt.avg_metric\nFROM (SELECT category, AVG(metric) AS avg_metric FROM table_name GROUP BY category) AS dt\nWHERE dt.avg_metric > 50;",
+    "syntaxRule": "A subquery in the FROM clause acts as a temporary in-line table (derived table). Every derived table MUST have an alias in SQL standard.",
+    "syntaxTrap": "Omitting the alias after the closing parenthesis in FROM (e.g. 'FROM (SELECT ...) WHERE') will immediately throw a syntax error.",
+    "eli5Story": "Subqueries & CTEs on Students: Select majors with average GPA >= 3.5 using a derived table in the FROM clause.",
+    "commonMistakes": "Forgetting to alias derived tables in FROM, writing multiple WITH keywords in multi-CTE pipelines, or suffering the NOT IN NULL trap.",
+    "learningOutcomes": "Mastered 11.10 Derived Tables in FROM with Mandatory Aliases on Students.",
+    "challengeSlots": [
+      {
+        "type": "keyword",
+        "value": "SELECT"
+      },
+      {
+        "type": "column",
+        "value": "dt.major,"
+      },
+      {
+        "type": "column",
+        "value": "dt.avg_gpa"
+      },
+      {
+        "type": "keyword",
+        "value": "FROM"
+      },
+      {
+        "type": "keyword",
+        "value": "(SELECT"
+      },
+      {
+        "type": "column",
+        "value": "major,"
+      },
+      {
+        "type": "column",
+        "value": "AVG(gpa)"
+      },
+      {
+        "type": "keyword",
+        "value": "AS"
+      },
+      {
+        "type": "column",
+        "value": "avg_gpa"
+      },
+      {
+        "type": "keyword",
+        "value": "FROM"
+      },
+      {
+        "type": "table",
+        "value": "Students"
+      },
+      {
+        "type": "keyword",
+        "value": "GROUP"
+      },
+      {
+        "type": "keyword",
+        "value": "BY"
+      },
+      {
+        "type": "column",
+        "value": "major)"
+      },
+      {
+        "type": "keyword",
+        "value": "AS"
+      },
+      {
+        "type": "column",
+        "value": "dt"
+      },
+      {
+        "type": "keyword",
+        "value": "WHERE"
+      },
+      {
+        "type": "column",
+        "value": "dt.avg_gpa"
+      },
+      {
+        "type": "column",
+        "value": ">="
+      },
+      {
+        "type": "column",
+        "value": "3.5;"
+      }
+    ]
+  },
+  {
+    "drillNumber": 1092,
+    "subcluster": "11.10 Derived Tables in FROM with Mandatory Aliases",
+    "level": "Level 3 (FROM Derived Table)",
+    "title": "Syntax #1092: Find authors with 3+ books using a derived table in FROM with mandatory alias",
+    "table": "Books",
+    "scenario": "Find authors with 3+ books using a derived table in FROM with mandatory alias.",
+    "businessObjective": "Find authors with 3+ books using a derived table in FROM with mandatory alias.",
+    "schemaSnippet": "Books relational schema",
+    "targetQuery": "SELECT dt.author, dt.book_count\nFROM (SELECT author, COUNT(*) AS book_count FROM Books GROUP BY author) AS dt\nWHERE dt.book_count >= 3;",
+    "syntaxBlueprint": "SELECT dt.category, dt.avg_metric\nFROM (SELECT category, AVG(metric) AS avg_metric FROM table_name GROUP BY category) AS dt\nWHERE dt.avg_metric > 50;",
+    "syntaxRule": "A subquery in the FROM clause acts as a temporary in-line table (derived table). Every derived table MUST have an alias in SQL standard.",
+    "syntaxTrap": "Omitting the alias after the closing parenthesis in FROM (e.g. 'FROM (SELECT ...) WHERE') will immediately throw a syntax error.",
+    "eli5Story": "Subqueries & CTEs on Books: Find authors with 3+ books using a derived table in FROM with mandatory alias.",
+    "commonMistakes": "Forgetting to alias derived tables in FROM, writing multiple WITH keywords in multi-CTE pipelines, or suffering the NOT IN NULL trap.",
+    "learningOutcomes": "Mastered 11.10 Derived Tables in FROM with Mandatory Aliases on Books.",
+    "challengeSlots": [
+      {
+        "type": "keyword",
+        "value": "SELECT"
+      },
+      {
+        "type": "column",
+        "value": "dt.author,"
+      },
+      {
+        "type": "column",
+        "value": "dt.book_count"
+      },
+      {
+        "type": "keyword",
+        "value": "FROM"
+      },
+      {
+        "type": "keyword",
+        "value": "(SELECT"
+      },
+      {
+        "type": "column",
+        "value": "author,"
+      },
+      {
+        "type": "column",
+        "value": "COUNT(*)"
+      },
+      {
+        "type": "keyword",
+        "value": "AS"
+      },
+      {
+        "type": "column",
+        "value": "book_count"
+      },
+      {
+        "type": "keyword",
+        "value": "FROM"
+      },
+      {
+        "type": "table",
+        "value": "Books"
+      },
+      {
+        "type": "keyword",
+        "value": "GROUP"
+      },
+      {
+        "type": "keyword",
+        "value": "BY"
+      },
+      {
+        "type": "column",
+        "value": "author)"
+      },
+      {
+        "type": "keyword",
+        "value": "AS"
+      },
+      {
+        "type": "column",
+        "value": "dt"
+      },
+      {
+        "type": "keyword",
+        "value": "WHERE"
+      },
+      {
+        "type": "column",
+        "value": "dt.book_count"
+      },
+      {
+        "type": "column",
+        "value": ">="
+      },
+      {
+        "type": "column",
+        "value": "3;"
+      }
+    ]
+  },
+  {
+    "drillNumber": 1093,
+    "subcluster": "11.10 Derived Tables in FROM with Mandatory Aliases",
+    "level": "Level 3 (FROM Derived Table)",
+    "title": "Syntax #1093: Filter departments with payroll > $200k using a FROM derived table",
+    "table": "Employees",
+    "scenario": "Filter departments with payroll > $200k using a FROM derived table.",
+    "businessObjective": "Filter departments with payroll > $200k using a FROM derived table.",
+    "schemaSnippet": "Employees relational schema",
+    "targetQuery": "SELECT dt.department, dt.total_payroll\nFROM (SELECT department, SUM(salary) AS total_payroll FROM Employees GROUP BY department) AS dt\nWHERE dt.total_payroll > 200000;",
+    "syntaxBlueprint": "SELECT dt.category, dt.avg_metric\nFROM (SELECT category, AVG(metric) AS avg_metric FROM table_name GROUP BY category) AS dt\nWHERE dt.avg_metric > 50;",
+    "syntaxRule": "A subquery in the FROM clause acts as a temporary in-line table (derived table). Every derived table MUST have an alias in SQL standard.",
+    "syntaxTrap": "Omitting the alias after the closing parenthesis in FROM (e.g. 'FROM (SELECT ...) WHERE') will immediately throw a syntax error.",
+    "eli5Story": "Subqueries & CTEs on Employees: Filter departments with payroll > $200k using a FROM derived table.",
+    "commonMistakes": "Forgetting to alias derived tables in FROM, writing multiple WITH keywords in multi-CTE pipelines, or suffering the NOT IN NULL trap.",
+    "learningOutcomes": "Mastered 11.10 Derived Tables in FROM with Mandatory Aliases on Employees.",
+    "challengeSlots": [
+      {
+        "type": "keyword",
+        "value": "SELECT"
+      },
+      {
+        "type": "column",
+        "value": "dt.department,"
+      },
+      {
+        "type": "column",
+        "value": "dt.total_payroll"
+      },
+      {
+        "type": "keyword",
+        "value": "FROM"
+      },
+      {
+        "type": "keyword",
+        "value": "(SELECT"
+      },
+      {
+        "type": "column",
+        "value": "department,"
+      },
+      {
+        "type": "column",
+        "value": "SUM(salary)"
+      },
+      {
+        "type": "keyword",
+        "value": "AS"
+      },
+      {
+        "type": "column",
+        "value": "total_payroll"
+      },
+      {
+        "type": "keyword",
+        "value": "FROM"
+      },
+      {
+        "type": "table",
+        "value": "Employees"
+      },
+      {
+        "type": "keyword",
+        "value": "GROUP"
+      },
+      {
+        "type": "keyword",
+        "value": "BY"
+      },
+      {
+        "type": "column",
+        "value": "department)"
+      },
+      {
+        "type": "keyword",
+        "value": "AS"
+      },
+      {
+        "type": "column",
+        "value": "dt"
+      },
+      {
+        "type": "keyword",
+        "value": "WHERE"
+      },
+      {
+        "type": "column",
+        "value": "dt.total_payroll"
+      },
+      {
+        "type": "column",
+        "value": ">"
+      },
+      {
+        "type": "column",
+        "value": "200000;"
+      }
+    ]
+  },
+  {
+    "drillNumber": 1094,
+    "subcluster": "11.10 Derived Tables in FROM with Mandatory Aliases",
+    "level": "Level 3 (FROM Derived Table)",
+    "title": "Syntax #1094: Identify understocked categories using a derived table in FROM",
+    "table": "GroceryItems",
+    "scenario": "Identify understocked categories using a derived table in FROM.",
+    "businessObjective": "Identify understocked categories using a derived table in FROM.",
+    "schemaSnippet": "GroceryItems relational schema",
+    "targetQuery": "SELECT dt.category, dt.total_stock\nFROM (SELECT category, SUM(stock_qty) AS total_stock FROM GroceryItems GROUP BY category) AS dt\nWHERE dt.total_stock < 100;",
+    "syntaxBlueprint": "SELECT dt.category, dt.avg_metric\nFROM (SELECT category, AVG(metric) AS avg_metric FROM table_name GROUP BY category) AS dt\nWHERE dt.avg_metric > 50;",
+    "syntaxRule": "A subquery in the FROM clause acts as a temporary in-line table (derived table). Every derived table MUST have an alias in SQL standard.",
+    "syntaxTrap": "Omitting the alias after the closing parenthesis in FROM (e.g. 'FROM (SELECT ...) WHERE') will immediately throw a syntax error.",
+    "eli5Story": "Subqueries & CTEs on GroceryItems: Identify understocked categories using a derived table in FROM.",
+    "commonMistakes": "Forgetting to alias derived tables in FROM, writing multiple WITH keywords in multi-CTE pipelines, or suffering the NOT IN NULL trap.",
+    "learningOutcomes": "Mastered 11.10 Derived Tables in FROM with Mandatory Aliases on GroceryItems.",
+    "challengeSlots": [
+      {
+        "type": "keyword",
+        "value": "SELECT"
+      },
+      {
+        "type": "column",
+        "value": "dt.category,"
+      },
+      {
+        "type": "column",
+        "value": "dt.total_stock"
+      },
+      {
+        "type": "keyword",
+        "value": "FROM"
+      },
+      {
+        "type": "keyword",
+        "value": "(SELECT"
+      },
+      {
+        "type": "column",
+        "value": "category,"
+      },
+      {
+        "type": "column",
+        "value": "SUM(stock_qty)"
+      },
+      {
+        "type": "keyword",
+        "value": "AS"
+      },
+      {
+        "type": "column",
+        "value": "total_stock"
+      },
+      {
+        "type": "keyword",
+        "value": "FROM"
+      },
+      {
+        "type": "table",
+        "value": "GroceryItems"
+      },
+      {
+        "type": "keyword",
+        "value": "GROUP"
+      },
+      {
+        "type": "keyword",
+        "value": "BY"
+      },
+      {
+        "type": "column",
+        "value": "category)"
+      },
+      {
+        "type": "keyword",
+        "value": "AS"
+      },
+      {
+        "type": "column",
+        "value": "dt"
+      },
+      {
+        "type": "keyword",
+        "value": "WHERE"
+      },
+      {
+        "type": "column",
+        "value": "dt.total_stock"
+      },
+      {
+        "type": "column",
+        "value": "<"
+      },
+      {
+        "type": "column",
+        "value": "100;"
+      }
+    ]
+  },
+  {
+    "drillNumber": 1095,
+    "subcluster": "11.10 Derived Tables in FROM with Mandatory Aliases",
+    "level": "Level 3 (FROM Derived Table)",
+    "title": "Syntax #1095: Filter high-revenue cities using an aliased derived table",
+    "table": "Orders",
+    "scenario": "Filter high-revenue cities using an aliased derived table.",
+    "businessObjective": "Filter high-revenue cities using an aliased derived table.",
+    "schemaSnippet": "Orders relational schema",
+    "targetQuery": "SELECT dt.shipping_city, dt.city_revenue\nFROM (SELECT shipping_city, SUM(total_amount) AS city_revenue FROM Orders GROUP BY shipping_city) AS dt\nWHERE dt.city_revenue >= 1000.00;",
+    "syntaxBlueprint": "SELECT dt.category, dt.avg_metric\nFROM (SELECT category, AVG(metric) AS avg_metric FROM table_name GROUP BY category) AS dt\nWHERE dt.avg_metric > 50;",
+    "syntaxRule": "A subquery in the FROM clause acts as a temporary in-line table (derived table). Every derived table MUST have an alias in SQL standard.",
+    "syntaxTrap": "Omitting the alias after the closing parenthesis in FROM (e.g. 'FROM (SELECT ...) WHERE') will immediately throw a syntax error.",
+    "eli5Story": "Subqueries & CTEs on Orders: Filter high-revenue cities using an aliased derived table.",
+    "commonMistakes": "Forgetting to alias derived tables in FROM, writing multiple WITH keywords in multi-CTE pipelines, or suffering the NOT IN NULL trap.",
+    "learningOutcomes": "Mastered 11.10 Derived Tables in FROM with Mandatory Aliases on Orders.",
+    "challengeSlots": [
+      {
+        "type": "keyword",
+        "value": "SELECT"
+      },
+      {
+        "type": "column",
+        "value": "dt.shipping_city,"
+      },
+      {
+        "type": "column",
+        "value": "dt.city_revenue"
+      },
+      {
+        "type": "keyword",
+        "value": "FROM"
+      },
+      {
+        "type": "keyword",
+        "value": "(SELECT"
+      },
+      {
+        "type": "column",
+        "value": "shipping_city,"
+      },
+      {
+        "type": "column",
+        "value": "SUM(total_amount)"
+      },
+      {
+        "type": "keyword",
+        "value": "AS"
+      },
+      {
+        "type": "column",
+        "value": "city_revenue"
+      },
+      {
+        "type": "keyword",
+        "value": "FROM"
+      },
+      {
+        "type": "table",
+        "value": "Orders"
+      },
+      {
+        "type": "keyword",
+        "value": "GROUP"
+      },
+      {
+        "type": "keyword",
+        "value": "BY"
+      },
+      {
+        "type": "column",
+        "value": "shipping_city)"
+      },
+      {
+        "type": "keyword",
+        "value": "AS"
+      },
+      {
+        "type": "column",
+        "value": "dt"
+      },
+      {
+        "type": "keyword",
+        "value": "WHERE"
+      },
+      {
+        "type": "column",
+        "value": "dt.city_revenue"
+      },
+      {
+        "type": "column",
+        "value": ">="
+      },
+      {
+        "type": "column",
+        "value": "1000.00;"
+      }
+    ]
+  },
+  {
+    "drillNumber": 1096,
+    "subcluster": "11.10 Derived Tables in FROM with Mandatory Aliases",
+    "level": "Level 3 (FROM Derived Table)",
+    "title": "Syntax #1096: Find genres with 10+ tracks via a derived table in FROM",
+    "table": "MusicTracks",
+    "scenario": "Find genres with 10+ tracks via a derived table in FROM.",
+    "businessObjective": "Find genres with 10+ tracks via a derived table in FROM.",
+    "schemaSnippet": "MusicTracks relational schema",
+    "targetQuery": "SELECT dt.genre, dt.song_count\nFROM (SELECT genre, COUNT(*) AS song_count FROM MusicTracks GROUP BY genre) AS dt\nWHERE dt.song_count >= 10;",
+    "syntaxBlueprint": "SELECT dt.category, dt.avg_metric\nFROM (SELECT category, AVG(metric) AS avg_metric FROM table_name GROUP BY category) AS dt\nWHERE dt.avg_metric > 50;",
+    "syntaxRule": "A subquery in the FROM clause acts as a temporary in-line table (derived table). Every derived table MUST have an alias in SQL standard.",
+    "syntaxTrap": "Omitting the alias after the closing parenthesis in FROM (e.g. 'FROM (SELECT ...) WHERE') will immediately throw a syntax error.",
+    "eli5Story": "Subqueries & CTEs on MusicTracks: Find genres with 10+ tracks via a derived table in FROM.",
+    "commonMistakes": "Forgetting to alias derived tables in FROM, writing multiple WITH keywords in multi-CTE pipelines, or suffering the NOT IN NULL trap.",
+    "learningOutcomes": "Mastered 11.10 Derived Tables in FROM with Mandatory Aliases on MusicTracks.",
+    "challengeSlots": [
+      {
+        "type": "keyword",
+        "value": "SELECT"
+      },
+      {
+        "type": "column",
+        "value": "dt.genre,"
+      },
+      {
+        "type": "column",
+        "value": "dt.song_count"
+      },
+      {
+        "type": "keyword",
+        "value": "FROM"
+      },
+      {
+        "type": "keyword",
+        "value": "(SELECT"
+      },
+      {
+        "type": "column",
+        "value": "genre,"
+      },
+      {
+        "type": "column",
+        "value": "COUNT(*)"
+      },
+      {
+        "type": "keyword",
+        "value": "AS"
+      },
+      {
+        "type": "column",
+        "value": "song_count"
+      },
+      {
+        "type": "keyword",
+        "value": "FROM"
+      },
+      {
+        "type": "table",
+        "value": "MusicTracks"
+      },
+      {
+        "type": "keyword",
+        "value": "GROUP"
+      },
+      {
+        "type": "keyword",
+        "value": "BY"
+      },
+      {
+        "type": "column",
+        "value": "genre)"
+      },
+      {
+        "type": "keyword",
+        "value": "AS"
+      },
+      {
+        "type": "column",
+        "value": "dt"
+      },
+      {
+        "type": "keyword",
+        "value": "WHERE"
+      },
+      {
+        "type": "column",
+        "value": "dt.song_count"
+      },
+      {
+        "type": "column",
+        "value": ">="
+      },
+      {
+        "type": "column",
+        "value": "10;"
+      }
+    ]
+  },
+  {
+    "drillNumber": 1097,
+    "subcluster": "11.10 Derived Tables in FROM with Mandatory Aliases",
+    "level": "Level 3 (FROM Derived Table)",
+    "title": "Syntax #1097: Filter popular membership plans using an aliased derived table",
+    "table": "GymMembers",
+    "scenario": "Filter popular membership plans using an aliased derived table.",
+    "businessObjective": "Filter popular membership plans using an aliased derived table.",
+    "schemaSnippet": "GymMembers relational schema",
+    "targetQuery": "SELECT dt.membership_plan, dt.member_total\nFROM (SELECT membership_plan, COUNT(*) AS member_total FROM GymMembers GROUP BY membership_plan) AS dt\nWHERE dt.member_total >= 5;",
+    "syntaxBlueprint": "SELECT dt.category, dt.avg_metric\nFROM (SELECT category, AVG(metric) AS avg_metric FROM table_name GROUP BY category) AS dt\nWHERE dt.avg_metric > 50;",
+    "syntaxRule": "A subquery in the FROM clause acts as a temporary in-line table (derived table). Every derived table MUST have an alias in SQL standard.",
+    "syntaxTrap": "Omitting the alias after the closing parenthesis in FROM (e.g. 'FROM (SELECT ...) WHERE') will immediately throw a syntax error.",
+    "eli5Story": "Subqueries & CTEs on GymMembers: Filter popular membership plans using an aliased derived table.",
+    "commonMistakes": "Forgetting to alias derived tables in FROM, writing multiple WITH keywords in multi-CTE pipelines, or suffering the NOT IN NULL trap.",
+    "learningOutcomes": "Mastered 11.10 Derived Tables in FROM with Mandatory Aliases on GymMembers.",
+    "challengeSlots": [
+      {
+        "type": "keyword",
+        "value": "SELECT"
+      },
+      {
+        "type": "column",
+        "value": "dt.membership_plan,"
+      },
+      {
+        "type": "column",
+        "value": "dt.member_total"
+      },
+      {
+        "type": "keyword",
+        "value": "FROM"
+      },
+      {
+        "type": "keyword",
+        "value": "(SELECT"
+      },
+      {
+        "type": "column",
+        "value": "membership_plan,"
+      },
+      {
+        "type": "column",
+        "value": "COUNT(*)"
+      },
+      {
+        "type": "keyword",
+        "value": "AS"
+      },
+      {
+        "type": "column",
+        "value": "member_total"
+      },
+      {
+        "type": "keyword",
+        "value": "FROM"
+      },
+      {
+        "type": "table",
+        "value": "GymMembers"
+      },
+      {
+        "type": "keyword",
+        "value": "GROUP"
+      },
+      {
+        "type": "keyword",
+        "value": "BY"
+      },
+      {
+        "type": "column",
+        "value": "membership_plan)"
+      },
+      {
+        "type": "keyword",
+        "value": "AS"
+      },
+      {
+        "type": "column",
+        "value": "dt"
+      },
+      {
+        "type": "keyword",
+        "value": "WHERE"
+      },
+      {
+        "type": "column",
+        "value": "dt.member_total"
+      },
+      {
+        "type": "column",
+        "value": ">="
+      },
+      {
+        "type": "column",
+        "value": "5;"
+      }
+    ]
+  },
+  {
+    "drillNumber": 1098,
+    "subcluster": "11.10 Derived Tables in FROM with Mandatory Aliases",
+    "level": "Level 3 (FROM Derived Table)",
+    "title": "Syntax #1098: Identify top-performing movie genres using a derived table in FROM",
+    "table": "MovieReviews",
+    "scenario": "Identify top-performing movie genres using a derived table in FROM.",
+    "businessObjective": "Identify top-performing movie genres using a derived table in FROM.",
+    "schemaSnippet": "MovieReviews relational schema",
+    "targetQuery": "SELECT dt.genre, dt.avg_rating\nFROM (SELECT genre, AVG(star_rating) AS avg_rating FROM MovieReviews GROUP BY genre) AS dt\nWHERE dt.avg_rating >= 4.0;",
+    "syntaxBlueprint": "SELECT dt.category, dt.avg_metric\nFROM (SELECT category, AVG(metric) AS avg_metric FROM table_name GROUP BY category) AS dt\nWHERE dt.avg_metric > 50;",
+    "syntaxRule": "A subquery in the FROM clause acts as a temporary in-line table (derived table). Every derived table MUST have an alias in SQL standard.",
+    "syntaxTrap": "Omitting the alias after the closing parenthesis in FROM (e.g. 'FROM (SELECT ...) WHERE') will immediately throw a syntax error.",
+    "eli5Story": "Subqueries & CTEs on MovieReviews: Identify top-performing movie genres using a derived table in FROM.",
+    "commonMistakes": "Forgetting to alias derived tables in FROM, writing multiple WITH keywords in multi-CTE pipelines, or suffering the NOT IN NULL trap.",
+    "learningOutcomes": "Mastered 11.10 Derived Tables in FROM with Mandatory Aliases on MovieReviews.",
+    "challengeSlots": [
+      {
+        "type": "keyword",
+        "value": "SELECT"
+      },
+      {
+        "type": "column",
+        "value": "dt.genre,"
+      },
+      {
+        "type": "column",
+        "value": "dt.avg_rating"
+      },
+      {
+        "type": "keyword",
+        "value": "FROM"
+      },
+      {
+        "type": "keyword",
+        "value": "(SELECT"
+      },
+      {
+        "type": "column",
+        "value": "genre,"
+      },
+      {
+        "type": "column",
+        "value": "AVG(star_rating)"
+      },
+      {
+        "type": "keyword",
+        "value": "AS"
+      },
+      {
+        "type": "column",
+        "value": "avg_rating"
+      },
+      {
+        "type": "keyword",
+        "value": "FROM"
+      },
+      {
+        "type": "table",
+        "value": "MovieReviews"
+      },
+      {
+        "type": "keyword",
+        "value": "GROUP"
+      },
+      {
+        "type": "keyword",
+        "value": "BY"
+      },
+      {
+        "type": "column",
+        "value": "genre)"
+      },
+      {
+        "type": "keyword",
+        "value": "AS"
+      },
+      {
+        "type": "column",
+        "value": "dt"
+      },
+      {
+        "type": "keyword",
+        "value": "WHERE"
+      },
+      {
+        "type": "column",
+        "value": "dt.avg_rating"
+      },
+      {
+        "type": "column",
+        "value": ">="
+      },
+      {
+        "type": "column",
+        "value": "4.0;"
+      }
+    ]
+  },
+  {
+    "drillNumber": 1099,
+    "subcluster": "11.10 Derived Tables in FROM with Mandatory Aliases",
+    "level": "Level 3 (FROM Derived Table)",
+    "title": "Syntax #1099: Find high-frequency airport hubs using an aliased derived table",
+    "table": "FlightSchedule",
+    "scenario": "Find high-frequency airport hubs using an aliased derived table.",
+    "businessObjective": "Find high-frequency airport hubs using an aliased derived table.",
+    "schemaSnippet": "FlightSchedule relational schema",
+    "targetQuery": "SELECT dt.origin_airport, dt.daily_flights\nFROM (SELECT origin_airport, COUNT(*) AS daily_flights FROM FlightSchedule GROUP BY origin_airport) AS dt\nWHERE dt.daily_flights >= 5;",
+    "syntaxBlueprint": "SELECT dt.category, dt.avg_metric\nFROM (SELECT category, AVG(metric) AS avg_metric FROM table_name GROUP BY category) AS dt\nWHERE dt.avg_metric > 50;",
+    "syntaxRule": "A subquery in the FROM clause acts as a temporary in-line table (derived table). Every derived table MUST have an alias in SQL standard.",
+    "syntaxTrap": "Omitting the alias after the closing parenthesis in FROM (e.g. 'FROM (SELECT ...) WHERE') will immediately throw a syntax error.",
+    "eli5Story": "Subqueries & CTEs on FlightSchedule: Find high-frequency airport hubs using an aliased derived table.",
+    "commonMistakes": "Forgetting to alias derived tables in FROM, writing multiple WITH keywords in multi-CTE pipelines, or suffering the NOT IN NULL trap.",
+    "learningOutcomes": "Mastered 11.10 Derived Tables in FROM with Mandatory Aliases on FlightSchedule.",
+    "challengeSlots": [
+      {
+        "type": "keyword",
+        "value": "SELECT"
+      },
+      {
+        "type": "column",
+        "value": "dt.origin_airport,"
+      },
+      {
+        "type": "column",
+        "value": "dt.daily_flights"
+      },
+      {
+        "type": "keyword",
+        "value": "FROM"
+      },
+      {
+        "type": "keyword",
+        "value": "(SELECT"
+      },
+      {
+        "type": "column",
+        "value": "origin_airport,"
+      },
+      {
+        "type": "column",
+        "value": "COUNT(*)"
+      },
+      {
+        "type": "keyword",
+        "value": "AS"
+      },
+      {
+        "type": "column",
+        "value": "daily_flights"
+      },
+      {
+        "type": "keyword",
+        "value": "FROM"
+      },
+      {
+        "type": "table",
+        "value": "FlightSchedule"
+      },
+      {
+        "type": "keyword",
+        "value": "GROUP"
+      },
+      {
+        "type": "keyword",
+        "value": "BY"
+      },
+      {
+        "type": "column",
+        "value": "origin_airport)"
+      },
+      {
+        "type": "keyword",
+        "value": "AS"
+      },
+      {
+        "type": "column",
+        "value": "dt"
+      },
+      {
+        "type": "keyword",
+        "value": "WHERE"
+      },
+      {
+        "type": "column",
+        "value": "dt.daily_flights"
+      },
+      {
+        "type": "column",
+        "value": ">="
+      },
+      {
+        "type": "column",
+        "value": "5;"
+      }
+    ]
+  },
+  {
+    "drillNumber": 1100,
+    "subcluster": "11.10 Derived Tables in FROM with Mandatory Aliases",
+    "level": "Level 3 (FROM Derived Table)",
+    "title": "Syntax #1100: Find top clinic species categories using a derived table in FROM",
+    "table": "PetClinic",
+    "scenario": "Find top clinic species categories using a derived table in FROM.",
+    "businessObjective": "Find top clinic species categories using a derived table in FROM.",
+    "schemaSnippet": "PetClinic relational schema",
+    "targetQuery": "SELECT dt.species, dt.patient_count\nFROM (SELECT species, COUNT(*) AS patient_count FROM PetClinic GROUP BY species) AS dt\nWHERE dt.patient_count >= 10;",
+    "syntaxBlueprint": "SELECT dt.category, dt.avg_metric\nFROM (SELECT category, AVG(metric) AS avg_metric FROM table_name GROUP BY category) AS dt\nWHERE dt.avg_metric > 50;",
+    "syntaxRule": "A subquery in the FROM clause acts as a temporary in-line table (derived table). Every derived table MUST have an alias in SQL standard.",
+    "syntaxTrap": "Omitting the alias after the closing parenthesis in FROM (e.g. 'FROM (SELECT ...) WHERE') will immediately throw a syntax error.",
+    "eli5Story": "Subqueries & CTEs on PetClinic: Find top clinic species categories using a derived table in FROM.",
+    "commonMistakes": "Forgetting to alias derived tables in FROM, writing multiple WITH keywords in multi-CTE pipelines, or suffering the NOT IN NULL trap.",
+    "learningOutcomes": "Mastered 11.10 Derived Tables in FROM with Mandatory Aliases on PetClinic.",
+    "challengeSlots": [
+      {
+        "type": "keyword",
+        "value": "SELECT"
+      },
+      {
+        "type": "column",
+        "value": "dt.species,"
+      },
+      {
+        "type": "column",
+        "value": "dt.patient_count"
+      },
+      {
+        "type": "keyword",
+        "value": "FROM"
+      },
+      {
+        "type": "keyword",
+        "value": "(SELECT"
+      },
+      {
+        "type": "column",
+        "value": "species,"
+      },
+      {
+        "type": "column",
+        "value": "COUNT(*)"
+      },
+      {
+        "type": "keyword",
+        "value": "AS"
+      },
+      {
+        "type": "column",
+        "value": "patient_count"
+      },
+      {
+        "type": "keyword",
+        "value": "FROM"
+      },
+      {
+        "type": "table",
+        "value": "PetClinic"
+      },
+      {
+        "type": "keyword",
+        "value": "GROUP"
+      },
+      {
+        "type": "keyword",
+        "value": "BY"
+      },
+      {
+        "type": "column",
+        "value": "species)"
+      },
+      {
+        "type": "keyword",
+        "value": "AS"
+      },
+      {
+        "type": "column",
+        "value": "dt"
+      },
+      {
+        "type": "keyword",
+        "value": "WHERE"
+      },
+      {
+        "type": "column",
+        "value": "dt.patient_count"
+      },
+      {
+        "type": "column",
+        "value": ">="
+      },
+      {
+        "type": "column",
+        "value": "10;"
+      }
+    ]
+  },
+  {
+    "drillNumber": 1101,
+    "subcluster": "12.1 Single-CTE Foundations (WITH clause)",
+    "level": "Level 2 (Basic CTE)",
+    "title": "Syntax #1101: Construct a clean single-CTE query isolating Honor Roll students (GPA >= 3.8)",
+    "table": "Students",
+    "scenario": "Construct a clean single-CTE query isolating Honor Roll students (GPA >= 3.8).",
+    "businessObjective": "Construct a clean single-CTE query isolating Honor Roll students (GPA >= 3.8).",
+    "schemaSnippet": "Students relational schema",
+    "targetQuery": "WITH HonorRoll AS (\n  SELECT student_id, full_name, gpa\n  FROM Students\n  WHERE gpa >= 3.8\n)\nSELECT full_name, gpa\nFROM HonorRoll\nORDER BY gpa DESC;",
+    "syntaxBlueprint": "WITH cte_name AS (\n  SELECT col1, AVG(col2) AS avg_col\n  FROM table_name\n  GROUP BY col1\n)\nSELECT *\nFROM cte_name\nWHERE avg_col > 50;",
+    "syntaxRule": "A Common Table Expression (CTE) defines a named temporary result set at the top of a query using 'WITH cte_name AS (...)'.",
+    "syntaxTrap": "Placing a semicolon inside the CTE parentheses or between the CTE definition and the main SELECT statement.",
+    "eli5Story": "Subqueries & CTEs on Students: Construct a clean single-CTE query isolating Honor Roll students (GPA >= 3.8).",
+    "commonMistakes": "Forgetting to alias derived tables in FROM, writing multiple WITH keywords in multi-CTE pipelines, or suffering the NOT IN NULL trap.",
+    "learningOutcomes": "Mastered 12.1 Single-CTE Foundations (WITH clause) on Students.",
+    "challengeSlots": [
+      {
+        "type": "keyword",
+        "value": "WITH"
+      },
+      {
+        "type": "column",
+        "value": "HonorRoll"
+      },
+      {
+        "type": "keyword",
+        "value": "AS"
+      },
+      {
+        "type": "column",
+        "value": "("
+      },
+      {
+        "type": "keyword",
+        "value": "SELECT"
+      },
+      {
+        "type": "column",
+        "value": "student_id,"
+      },
+      {
+        "type": "column",
+        "value": "full_name,"
+      },
+      {
+        "type": "column",
+        "value": "gpa"
+      },
+      {
+        "type": "keyword",
+        "value": "FROM"
+      },
+      {
+        "type": "table",
+        "value": "Students"
+      },
+      {
+        "type": "keyword",
+        "value": "WHERE"
+      },
+      {
+        "type": "column",
+        "value": "gpa"
+      },
+      {
+        "type": "column",
+        "value": ">="
+      },
+      {
+        "type": "column",
+        "value": "3.8"
+      },
+      {
+        "type": "column",
+        "value": ")"
+      },
+      {
+        "type": "keyword",
+        "value": "SELECT"
+      },
+      {
+        "type": "column",
+        "value": "full_name,"
+      },
+      {
+        "type": "column",
+        "value": "gpa"
+      },
+      {
+        "type": "keyword",
+        "value": "FROM"
+      },
+      {
+        "type": "column",
+        "value": "HonorRoll"
+      },
+      {
+        "type": "keyword",
+        "value": "ORDER"
+      },
+      {
+        "type": "keyword",
+        "value": "BY"
+      },
+      {
+        "type": "column",
+        "value": "gpa"
+      },
+      {
+        "type": "keyword",
+        "value": "DESC;"
+      }
+    ]
+  },
+  {
+    "drillNumber": 1102,
+    "subcluster": "12.1 Single-CTE Foundations (WITH clause)",
+    "level": "Level 2 (Basic CTE)",
+    "title": "Syntax #1102: Isolate expensive books ($30+) in a CTE before projecting final results",
+    "table": "Books",
+    "scenario": "Isolate expensive books ($30+) in a CTE before projecting final results.",
+    "businessObjective": "Isolate expensive books ($30+) in a CTE before projecting final results.",
+    "schemaSnippet": "Books relational schema",
+    "targetQuery": "WITH ExpensiveBooks AS (\n  SELECT title, author, price\n  FROM Books\n  WHERE price >= 30.00\n)\nSELECT title, price\nFROM ExpensiveBooks\nORDER BY price DESC;",
+    "syntaxBlueprint": "WITH cte_name AS (\n  SELECT col1, AVG(col2) AS avg_col\n  FROM table_name\n  GROUP BY col1\n)\nSELECT *\nFROM cte_name\nWHERE avg_col > 50;",
+    "syntaxRule": "A Common Table Expression (CTE) defines a named temporary result set at the top of a query using 'WITH cte_name AS (...)'.",
+    "syntaxTrap": "Placing a semicolon inside the CTE parentheses or between the CTE definition and the main SELECT statement.",
+    "eli5Story": "Subqueries & CTEs on Books: Isolate expensive books ($30+) in a CTE before projecting final results.",
+    "commonMistakes": "Forgetting to alias derived tables in FROM, writing multiple WITH keywords in multi-CTE pipelines, or suffering the NOT IN NULL trap.",
+    "learningOutcomes": "Mastered 12.1 Single-CTE Foundations (WITH clause) on Books.",
+    "challengeSlots": [
+      {
+        "type": "keyword",
+        "value": "WITH"
+      },
+      {
+        "type": "table",
+        "value": "ExpensiveBooks"
+      },
+      {
+        "type": "keyword",
+        "value": "AS"
+      },
+      {
+        "type": "column",
+        "value": "("
+      },
+      {
+        "type": "keyword",
+        "value": "SELECT"
+      },
+      {
+        "type": "column",
+        "value": "title,"
+      },
+      {
+        "type": "column",
+        "value": "author,"
+      },
+      {
+        "type": "column",
+        "value": "price"
+      },
+      {
+        "type": "keyword",
+        "value": "FROM"
+      },
+      {
+        "type": "table",
+        "value": "Books"
+      },
+      {
+        "type": "keyword",
+        "value": "WHERE"
+      },
+      {
+        "type": "column",
+        "value": "price"
+      },
+      {
+        "type": "column",
+        "value": ">="
+      },
+      {
+        "type": "column",
+        "value": "30.00"
+      },
+      {
+        "type": "column",
+        "value": ")"
+      },
+      {
+        "type": "keyword",
+        "value": "SELECT"
+      },
+      {
+        "type": "column",
+        "value": "title,"
+      },
+      {
+        "type": "column",
+        "value": "price"
+      },
+      {
+        "type": "keyword",
+        "value": "FROM"
+      },
+      {
+        "type": "table",
+        "value": "ExpensiveBooks"
+      },
+      {
+        "type": "keyword",
+        "value": "ORDER"
+      },
+      {
+        "type": "keyword",
+        "value": "BY"
+      },
+      {
+        "type": "column",
+        "value": "price"
+      },
+      {
+        "type": "keyword",
+        "value": "DESC;"
+      }
+    ]
+  },
+  {
+    "drillNumber": 1103,
+    "subcluster": "12.1 Single-CTE Foundations (WITH clause)",
+    "level": "Level 2 (Basic CTE)",
+    "title": "Syntax #1103: Define a HighEarners CTE to filter salaries >= $80k before sorting",
+    "table": "Employees",
+    "scenario": "Define a HighEarners CTE to filter salaries >= $80k before sorting.",
+    "businessObjective": "Define a HighEarners CTE to filter salaries >= $80k before sorting.",
+    "schemaSnippet": "Employees relational schema",
+    "targetQuery": "WITH HighEarners AS (\n  SELECT first_name, department, salary\n  FROM Employees\n  WHERE salary >= 80000\n)\nSELECT first_name, salary\nFROM HighEarners\nORDER BY salary DESC;",
+    "syntaxBlueprint": "WITH cte_name AS (\n  SELECT col1, AVG(col2) AS avg_col\n  FROM table_name\n  GROUP BY col1\n)\nSELECT *\nFROM cte_name\nWHERE avg_col > 50;",
+    "syntaxRule": "A Common Table Expression (CTE) defines a named temporary result set at the top of a query using 'WITH cte_name AS (...)'.",
+    "syntaxTrap": "Placing a semicolon inside the CTE parentheses or between the CTE definition and the main SELECT statement.",
+    "eli5Story": "Subqueries & CTEs on Employees: Define a HighEarners CTE to filter salaries >= $80k before sorting.",
+    "commonMistakes": "Forgetting to alias derived tables in FROM, writing multiple WITH keywords in multi-CTE pipelines, or suffering the NOT IN NULL trap.",
+    "learningOutcomes": "Mastered 12.1 Single-CTE Foundations (WITH clause) on Employees.",
+    "challengeSlots": [
+      {
+        "type": "keyword",
+        "value": "WITH"
+      },
+      {
+        "type": "column",
+        "value": "HighEarners"
+      },
+      {
+        "type": "keyword",
+        "value": "AS"
+      },
+      {
+        "type": "column",
+        "value": "("
+      },
+      {
+        "type": "keyword",
+        "value": "SELECT"
+      },
+      {
+        "type": "column",
+        "value": "first_name,"
+      },
+      {
+        "type": "column",
+        "value": "department,"
+      },
+      {
+        "type": "column",
+        "value": "salary"
+      },
+      {
+        "type": "keyword",
+        "value": "FROM"
+      },
+      {
+        "type": "table",
+        "value": "Employees"
+      },
+      {
+        "type": "keyword",
+        "value": "WHERE"
+      },
+      {
+        "type": "column",
+        "value": "salary"
+      },
+      {
+        "type": "column",
+        "value": ">="
+      },
+      {
+        "type": "column",
+        "value": "80000"
+      },
+      {
+        "type": "column",
+        "value": ")"
+      },
+      {
+        "type": "keyword",
+        "value": "SELECT"
+      },
+      {
+        "type": "column",
+        "value": "first_name,"
+      },
+      {
+        "type": "column",
+        "value": "salary"
+      },
+      {
+        "type": "keyword",
+        "value": "FROM"
+      },
+      {
+        "type": "column",
+        "value": "HighEarners"
+      },
+      {
+        "type": "keyword",
+        "value": "ORDER"
+      },
+      {
+        "type": "keyword",
+        "value": "BY"
+      },
+      {
+        "type": "column",
+        "value": "salary"
+      },
+      {
+        "type": "keyword",
+        "value": "DESC;"
+      }
+    ]
+  },
+  {
+    "drillNumber": 1104,
+    "subcluster": "12.1 Single-CTE Foundations (WITH clause)",
+    "level": "Level 2 (Basic CTE)",
+    "title": "Syntax #1104: Isolate critical stock grocery inventory in a CTE",
+    "table": "GroceryItems",
+    "scenario": "Isolate critical stock grocery inventory in a CTE.",
+    "businessObjective": "Isolate critical stock grocery inventory in a CTE.",
+    "schemaSnippet": "GroceryItems relational schema",
+    "targetQuery": "WITH CriticalStock AS (\n  SELECT item_name, category, stock_qty\n  FROM GroceryItems\n  WHERE stock_qty < 10\n)\nSELECT item_name, stock_qty\nFROM CriticalStock\nORDER BY stock_qty ASC;",
+    "syntaxBlueprint": "WITH cte_name AS (\n  SELECT col1, AVG(col2) AS avg_col\n  FROM table_name\n  GROUP BY col1\n)\nSELECT *\nFROM cte_name\nWHERE avg_col > 50;",
+    "syntaxRule": "A Common Table Expression (CTE) defines a named temporary result set at the top of a query using 'WITH cte_name AS (...)'.",
+    "syntaxTrap": "Placing a semicolon inside the CTE parentheses or between the CTE definition and the main SELECT statement.",
+    "eli5Story": "Subqueries & CTEs on GroceryItems: Isolate critical stock grocery inventory in a CTE.",
+    "commonMistakes": "Forgetting to alias derived tables in FROM, writing multiple WITH keywords in multi-CTE pipelines, or suffering the NOT IN NULL trap.",
+    "learningOutcomes": "Mastered 12.1 Single-CTE Foundations (WITH clause) on GroceryItems.",
+    "challengeSlots": [
+      {
+        "type": "keyword",
+        "value": "WITH"
+      },
+      {
+        "type": "column",
+        "value": "CriticalStock"
+      },
+      {
+        "type": "keyword",
+        "value": "AS"
+      },
+      {
+        "type": "column",
+        "value": "("
+      },
+      {
+        "type": "keyword",
+        "value": "SELECT"
+      },
+      {
+        "type": "column",
+        "value": "item_name,"
+      },
+      {
+        "type": "column",
+        "value": "category,"
+      },
+      {
+        "type": "column",
+        "value": "stock_qty"
+      },
+      {
+        "type": "keyword",
+        "value": "FROM"
+      },
+      {
+        "type": "table",
+        "value": "GroceryItems"
+      },
+      {
+        "type": "keyword",
+        "value": "WHERE"
+      },
+      {
+        "type": "column",
+        "value": "stock_qty"
+      },
+      {
+        "type": "column",
+        "value": "<"
+      },
+      {
+        "type": "column",
+        "value": "10"
+      },
+      {
+        "type": "column",
+        "value": ")"
+      },
+      {
+        "type": "keyword",
+        "value": "SELECT"
+      },
+      {
+        "type": "column",
+        "value": "item_name,"
+      },
+      {
+        "type": "column",
+        "value": "stock_qty"
+      },
+      {
+        "type": "keyword",
+        "value": "FROM"
+      },
+      {
+        "type": "column",
+        "value": "CriticalStock"
+      },
+      {
+        "type": "keyword",
+        "value": "ORDER"
+      },
+      {
+        "type": "keyword",
+        "value": "BY"
+      },
+      {
+        "type": "column",
+        "value": "stock_qty"
+      },
+      {
+        "type": "keyword",
+        "value": "ASC;"
+      }
+    ]
+  },
+  {
+    "drillNumber": 1105,
+    "subcluster": "12.1 Single-CTE Foundations (WITH clause)",
+    "level": "Level 2 (Basic CTE)",
+    "title": "Syntax #1105: Extract large orders ($500+) in a named CTE before sorting",
+    "table": "Orders",
+    "scenario": "Extract large orders ($500+) in a named CTE before sorting.",
+    "businessObjective": "Extract large orders ($500+) in a named CTE before sorting.",
+    "schemaSnippet": "Orders relational schema",
+    "targetQuery": "WITH LargeOrders AS (\n  SELECT order_id, customer_name, total_amount\n  FROM Orders\n  WHERE total_amount >= 500.00\n)\nSELECT order_id, total_amount\nFROM LargeOrders\nORDER BY total_amount DESC;",
+    "syntaxBlueprint": "WITH cte_name AS (\n  SELECT col1, AVG(col2) AS avg_col\n  FROM table_name\n  GROUP BY col1\n)\nSELECT *\nFROM cte_name\nWHERE avg_col > 50;",
+    "syntaxRule": "A Common Table Expression (CTE) defines a named temporary result set at the top of a query using 'WITH cte_name AS (...)'.",
+    "syntaxTrap": "Placing a semicolon inside the CTE parentheses or between the CTE definition and the main SELECT statement.",
+    "eli5Story": "Subqueries & CTEs on Orders: Extract large orders ($500+) in a named CTE before sorting.",
+    "commonMistakes": "Forgetting to alias derived tables in FROM, writing multiple WITH keywords in multi-CTE pipelines, or suffering the NOT IN NULL trap.",
+    "learningOutcomes": "Mastered 12.1 Single-CTE Foundations (WITH clause) on Orders.",
+    "challengeSlots": [
+      {
+        "type": "keyword",
+        "value": "WITH"
+      },
+      {
+        "type": "table",
+        "value": "LargeOrders"
+      },
+      {
+        "type": "keyword",
+        "value": "AS"
+      },
+      {
+        "type": "column",
+        "value": "("
+      },
+      {
+        "type": "keyword",
+        "value": "SELECT"
+      },
+      {
+        "type": "column",
+        "value": "order_id,"
+      },
+      {
+        "type": "column",
+        "value": "customer_name,"
+      },
+      {
+        "type": "column",
+        "value": "total_amount"
+      },
+      {
+        "type": "keyword",
+        "value": "FROM"
+      },
+      {
+        "type": "table",
+        "value": "Orders"
+      },
+      {
+        "type": "keyword",
+        "value": "WHERE"
+      },
+      {
+        "type": "column",
+        "value": "total_amount"
+      },
+      {
+        "type": "column",
+        "value": ">="
+      },
+      {
+        "type": "column",
+        "value": "500.00"
+      },
+      {
+        "type": "column",
+        "value": ")"
+      },
+      {
+        "type": "keyword",
+        "value": "SELECT"
+      },
+      {
+        "type": "column",
+        "value": "order_id,"
+      },
+      {
+        "type": "column",
+        "value": "total_amount"
+      },
+      {
+        "type": "keyword",
+        "value": "FROM"
+      },
+      {
+        "type": "table",
+        "value": "LargeOrders"
+      },
+      {
+        "type": "keyword",
+        "value": "ORDER"
+      },
+      {
+        "type": "keyword",
+        "value": "BY"
+      },
+      {
+        "type": "column",
+        "value": "total_amount"
+      },
+      {
+        "type": "keyword",
+        "value": "DESC;"
+      }
+    ]
+  },
+  {
+    "drillNumber": 1106,
+    "subcluster": "12.1 Single-CTE Foundations (WITH clause)",
+    "level": "Level 2 (Basic CTE)",
+    "title": "Syntax #1106: Isolate 5+ minute music tracks in a modular CTE",
+    "table": "MusicTracks",
+    "scenario": "Isolate 5+ minute music tracks in a modular CTE.",
+    "businessObjective": "Isolate 5+ minute music tracks in a modular CTE.",
+    "schemaSnippet": "MusicTracks relational schema",
+    "targetQuery": "WITH LongTracks AS (\n  SELECT track_title, artist_name, duration_seconds\n  FROM MusicTracks\n  WHERE duration_seconds >= 300\n)\nSELECT track_title, duration_seconds\nFROM LongTracks\nORDER BY duration_seconds DESC;",
+    "syntaxBlueprint": "WITH cte_name AS (\n  SELECT col1, AVG(col2) AS avg_col\n  FROM table_name\n  GROUP BY col1\n)\nSELECT *\nFROM cte_name\nWHERE avg_col > 50;",
+    "syntaxRule": "A Common Table Expression (CTE) defines a named temporary result set at the top of a query using 'WITH cte_name AS (...)'.",
+    "syntaxTrap": "Placing a semicolon inside the CTE parentheses or between the CTE definition and the main SELECT statement.",
+    "eli5Story": "Subqueries & CTEs on MusicTracks: Isolate 5+ minute music tracks in a modular CTE.",
+    "commonMistakes": "Forgetting to alias derived tables in FROM, writing multiple WITH keywords in multi-CTE pipelines, or suffering the NOT IN NULL trap.",
+    "learningOutcomes": "Mastered 12.1 Single-CTE Foundations (WITH clause) on MusicTracks.",
+    "challengeSlots": [
+      {
+        "type": "keyword",
+        "value": "WITH"
+      },
+      {
+        "type": "column",
+        "value": "LongTracks"
+      },
+      {
+        "type": "keyword",
+        "value": "AS"
+      },
+      {
+        "type": "column",
+        "value": "("
+      },
+      {
+        "type": "keyword",
+        "value": "SELECT"
+      },
+      {
+        "type": "column",
+        "value": "track_title,"
+      },
+      {
+        "type": "column",
+        "value": "artist_name,"
+      },
+      {
+        "type": "column",
+        "value": "duration_seconds"
+      },
+      {
+        "type": "keyword",
+        "value": "FROM"
+      },
+      {
+        "type": "table",
+        "value": "MusicTracks"
+      },
+      {
+        "type": "keyword",
+        "value": "WHERE"
+      },
+      {
+        "type": "column",
+        "value": "duration_seconds"
+      },
+      {
+        "type": "column",
+        "value": ">="
+      },
+      {
+        "type": "column",
+        "value": "300"
+      },
+      {
+        "type": "column",
+        "value": ")"
+      },
+      {
+        "type": "keyword",
+        "value": "SELECT"
+      },
+      {
+        "type": "column",
+        "value": "track_title,"
+      },
+      {
+        "type": "column",
+        "value": "duration_seconds"
+      },
+      {
+        "type": "keyword",
+        "value": "FROM"
+      },
+      {
+        "type": "column",
+        "value": "LongTracks"
+      },
+      {
+        "type": "keyword",
+        "value": "ORDER"
+      },
+      {
+        "type": "keyword",
+        "value": "BY"
+      },
+      {
+        "type": "column",
+        "value": "duration_seconds"
+      },
+      {
+        "type": "keyword",
+        "value": "DESC;"
+      }
+    ]
+  },
+  {
+    "drillNumber": 1107,
+    "subcluster": "12.1 Single-CTE Foundations (WITH clause)",
+    "level": "Level 2 (Basic CTE)",
+    "title": "Syntax #1107: Isolate VIP gym members in a CTE before chronological sorting",
+    "table": "GymMembers",
+    "scenario": "Isolate VIP gym members in a CTE before chronological sorting.",
+    "businessObjective": "Isolate VIP gym members in a CTE before chronological sorting.",
+    "schemaSnippet": "GymMembers relational schema",
+    "targetQuery": "WITH VIPMembers AS (\n  SELECT member_name, join_date, membership_plan\n  FROM GymMembers\n  WHERE membership_plan = 'VIP'\n)\nSELECT member_name, join_date\nFROM VIPMembers\nORDER BY join_date ASC;",
+    "syntaxBlueprint": "WITH cte_name AS (\n  SELECT col1, AVG(col2) AS avg_col\n  FROM table_name\n  GROUP BY col1\n)\nSELECT *\nFROM cte_name\nWHERE avg_col > 50;",
+    "syntaxRule": "A Common Table Expression (CTE) defines a named temporary result set at the top of a query using 'WITH cte_name AS (...)'.",
+    "syntaxTrap": "Placing a semicolon inside the CTE parentheses or between the CTE definition and the main SELECT statement.",
+    "eli5Story": "Subqueries & CTEs on GymMembers: Isolate VIP gym members in a CTE before chronological sorting.",
+    "commonMistakes": "Forgetting to alias derived tables in FROM, writing multiple WITH keywords in multi-CTE pipelines, or suffering the NOT IN NULL trap.",
+    "learningOutcomes": "Mastered 12.1 Single-CTE Foundations (WITH clause) on GymMembers.",
+    "challengeSlots": [
+      {
+        "type": "keyword",
+        "value": "WITH"
+      },
+      {
+        "type": "column",
+        "value": "VIPMembers"
+      },
+      {
+        "type": "keyword",
+        "value": "AS"
+      },
+      {
+        "type": "column",
+        "value": "("
+      },
+      {
+        "type": "keyword",
+        "value": "SELECT"
+      },
+      {
+        "type": "column",
+        "value": "member_name,"
+      },
+      {
+        "type": "column",
+        "value": "join_date,"
+      },
+      {
+        "type": "column",
+        "value": "membership_plan"
+      },
+      {
+        "type": "keyword",
+        "value": "FROM"
+      },
+      {
+        "type": "table",
+        "value": "GymMembers"
+      },
+      {
+        "type": "keyword",
+        "value": "WHERE"
+      },
+      {
+        "type": "column",
+        "value": "membership_plan"
+      },
+      {
+        "type": "column",
+        "value": "="
+      },
+      {
+        "type": "column",
+        "value": "'VIP'"
+      },
+      {
+        "type": "column",
+        "value": ")"
+      },
+      {
+        "type": "keyword",
+        "value": "SELECT"
+      },
+      {
+        "type": "column",
+        "value": "member_name,"
+      },
+      {
+        "type": "column",
+        "value": "join_date"
+      },
+      {
+        "type": "keyword",
+        "value": "FROM"
+      },
+      {
+        "type": "column",
+        "value": "VIPMembers"
+      },
+      {
+        "type": "keyword",
+        "value": "ORDER"
+      },
+      {
+        "type": "keyword",
+        "value": "BY"
+      },
+      {
+        "type": "column",
+        "value": "join_date"
+      },
+      {
+        "type": "keyword",
+        "value": "ASC;"
+      }
+    ]
+  },
+  {
+    "drillNumber": 1108,
+    "subcluster": "12.1 Single-CTE Foundations (WITH clause)",
+    "level": "Level 2 (Basic CTE)",
+    "title": "Syntax #1108: Isolate 5-star movie reviews in a CTE before fetching the first 5 records",
+    "table": "MovieReviews",
+    "scenario": "Isolate 5-star movie reviews in a CTE before fetching the first 5 records.",
+    "businessObjective": "Isolate 5-star movie reviews in a CTE before fetching the first 5 records.",
+    "schemaSnippet": "MovieReviews relational schema",
+    "targetQuery": "WITH TopRatedMovies AS (\n  SELECT movie_title, star_rating, review_text\n  FROM MovieReviews\n  WHERE star_rating = 5\n)\nSELECT movie_title, review_text\nFROM TopRatedMovies\nLIMIT 5;",
+    "syntaxBlueprint": "WITH cte_name AS (\n  SELECT col1, AVG(col2) AS avg_col\n  FROM table_name\n  GROUP BY col1\n)\nSELECT *\nFROM cte_name\nWHERE avg_col > 50;",
+    "syntaxRule": "A Common Table Expression (CTE) defines a named temporary result set at the top of a query using 'WITH cte_name AS (...)'.",
+    "syntaxTrap": "Placing a semicolon inside the CTE parentheses or between the CTE definition and the main SELECT statement.",
+    "eli5Story": "Subqueries & CTEs on MovieReviews: Isolate 5-star movie reviews in a CTE before fetching the first 5 records.",
+    "commonMistakes": "Forgetting to alias derived tables in FROM, writing multiple WITH keywords in multi-CTE pipelines, or suffering the NOT IN NULL trap.",
+    "learningOutcomes": "Mastered 12.1 Single-CTE Foundations (WITH clause) on MovieReviews.",
+    "challengeSlots": [
+      {
+        "type": "keyword",
+        "value": "WITH"
+      },
+      {
+        "type": "column",
+        "value": "TopRatedMovies"
+      },
+      {
+        "type": "keyword",
+        "value": "AS"
+      },
+      {
+        "type": "column",
+        "value": "("
+      },
+      {
+        "type": "keyword",
+        "value": "SELECT"
+      },
+      {
+        "type": "column",
+        "value": "movie_title,"
+      },
+      {
+        "type": "column",
+        "value": "star_rating,"
+      },
+      {
+        "type": "column",
+        "value": "review_text"
+      },
+      {
+        "type": "keyword",
+        "value": "FROM"
+      },
+      {
+        "type": "table",
+        "value": "MovieReviews"
+      },
+      {
+        "type": "keyword",
+        "value": "WHERE"
+      },
+      {
+        "type": "column",
+        "value": "star_rating"
+      },
+      {
+        "type": "column",
+        "value": "="
+      },
+      {
+        "type": "column",
+        "value": "5"
+      },
+      {
+        "type": "column",
+        "value": ")"
+      },
+      {
+        "type": "keyword",
+        "value": "SELECT"
+      },
+      {
+        "type": "column",
+        "value": "movie_title,"
+      },
+      {
+        "type": "column",
+        "value": "review_text"
+      },
+      {
+        "type": "keyword",
+        "value": "FROM"
+      },
+      {
+        "type": "column",
+        "value": "TopRatedMovies"
+      },
+      {
+        "type": "keyword",
+        "value": "LIMIT"
+      },
+      {
+        "type": "column",
+        "value": "5;"
+      }
+    ]
+  },
+  {
+    "drillNumber": 1109,
+    "subcluster": "12.1 Single-CTE Foundations (WITH clause)",
+    "level": "Level 2 (Basic CTE)",
+    "title": "Syntax #1109: Filter delayed flights in a CTE before ordering by flight ID",
+    "table": "FlightSchedule",
+    "scenario": "Filter delayed flights in a CTE before ordering by flight ID.",
+    "businessObjective": "Filter delayed flights in a CTE before ordering by flight ID.",
+    "schemaSnippet": "FlightSchedule relational schema",
+    "targetQuery": "WITH DelayedFlights AS (\n  SELECT flight_id, origin_airport, status\n  FROM FlightSchedule\n  WHERE status = 'Delayed'\n)\nSELECT flight_id, origin_airport\nFROM DelayedFlights\nORDER BY flight_id ASC;",
+    "syntaxBlueprint": "WITH cte_name AS (\n  SELECT col1, AVG(col2) AS avg_col\n  FROM table_name\n  GROUP BY col1\n)\nSELECT *\nFROM cte_name\nWHERE avg_col > 50;",
+    "syntaxRule": "A Common Table Expression (CTE) defines a named temporary result set at the top of a query using 'WITH cte_name AS (...)'.",
+    "syntaxTrap": "Placing a semicolon inside the CTE parentheses or between the CTE definition and the main SELECT statement.",
+    "eli5Story": "Subqueries & CTEs on FlightSchedule: Filter delayed flights in a CTE before ordering by flight ID.",
+    "commonMistakes": "Forgetting to alias derived tables in FROM, writing multiple WITH keywords in multi-CTE pipelines, or suffering the NOT IN NULL trap.",
+    "learningOutcomes": "Mastered 12.1 Single-CTE Foundations (WITH clause) on FlightSchedule.",
+    "challengeSlots": [
+      {
+        "type": "keyword",
+        "value": "WITH"
+      },
+      {
+        "type": "column",
+        "value": "DelayedFlights"
+      },
+      {
+        "type": "keyword",
+        "value": "AS"
+      },
+      {
+        "type": "column",
+        "value": "("
+      },
+      {
+        "type": "keyword",
+        "value": "SELECT"
+      },
+      {
+        "type": "column",
+        "value": "flight_id,"
+      },
+      {
+        "type": "column",
+        "value": "origin_airport,"
+      },
+      {
+        "type": "column",
+        "value": "status"
+      },
+      {
+        "type": "keyword",
+        "value": "FROM"
+      },
+      {
+        "type": "table",
+        "value": "FlightSchedule"
+      },
+      {
+        "type": "keyword",
+        "value": "WHERE"
+      },
+      {
+        "type": "column",
+        "value": "status"
+      },
+      {
+        "type": "column",
+        "value": "="
+      },
+      {
+        "type": "column",
+        "value": "'Delayed'"
+      },
+      {
+        "type": "column",
+        "value": ")"
+      },
+      {
+        "type": "keyword",
+        "value": "SELECT"
+      },
+      {
+        "type": "column",
+        "value": "flight_id,"
+      },
+      {
+        "type": "column",
+        "value": "origin_airport"
+      },
+      {
+        "type": "keyword",
+        "value": "FROM"
+      },
+      {
+        "type": "column",
+        "value": "DelayedFlights"
+      },
+      {
+        "type": "keyword",
+        "value": "ORDER"
+      },
+      {
+        "type": "keyword",
+        "value": "BY"
+      },
+      {
+        "type": "column",
+        "value": "flight_id"
+      },
+      {
+        "type": "keyword",
+        "value": "ASC;"
+      }
+    ]
+  },
+  {
+    "drillNumber": 1110,
+    "subcluster": "12.1 Single-CTE Foundations (WITH clause)",
+    "level": "Level 2 (Basic CTE)",
+    "title": "Syntax #1110: Isolate large veterinary patients (25kg+) in a named CTE",
+    "table": "PetClinic",
+    "scenario": "Isolate large veterinary patients (25kg+) in a named CTE.",
+    "businessObjective": "Isolate large veterinary patients (25kg+) in a named CTE.",
+    "schemaSnippet": "PetClinic relational schema",
+    "targetQuery": "WITH HeavyPatients AS (\n  SELECT pet_name, species, weight_kg\n  FROM PetClinic\n  WHERE weight_kg >= 25.0\n)\nSELECT pet_name, weight_kg\nFROM HeavyPatients\nORDER BY weight_kg DESC;",
+    "syntaxBlueprint": "WITH cte_name AS (\n  SELECT col1, AVG(col2) AS avg_col\n  FROM table_name\n  GROUP BY col1\n)\nSELECT *\nFROM cte_name\nWHERE avg_col > 50;",
+    "syntaxRule": "A Common Table Expression (CTE) defines a named temporary result set at the top of a query using 'WITH cte_name AS (...)'.",
+    "syntaxTrap": "Placing a semicolon inside the CTE parentheses or between the CTE definition and the main SELECT statement.",
+    "eli5Story": "Subqueries & CTEs on PetClinic: Isolate large veterinary patients (25kg+) in a named CTE.",
+    "commonMistakes": "Forgetting to alias derived tables in FROM, writing multiple WITH keywords in multi-CTE pipelines, or suffering the NOT IN NULL trap.",
+    "learningOutcomes": "Mastered 12.1 Single-CTE Foundations (WITH clause) on PetClinic.",
+    "challengeSlots": [
+      {
+        "type": "keyword",
+        "value": "WITH"
+      },
+      {
+        "type": "column",
+        "value": "HeavyPatients"
+      },
+      {
+        "type": "keyword",
+        "value": "AS"
+      },
+      {
+        "type": "column",
+        "value": "("
+      },
+      {
+        "type": "keyword",
+        "value": "SELECT"
+      },
+      {
+        "type": "column",
+        "value": "pet_name,"
+      },
+      {
+        "type": "column",
+        "value": "species,"
+      },
+      {
+        "type": "column",
+        "value": "weight_kg"
+      },
+      {
+        "type": "keyword",
+        "value": "FROM"
+      },
+      {
+        "type": "table",
+        "value": "PetClinic"
+      },
+      {
+        "type": "keyword",
+        "value": "WHERE"
+      },
+      {
+        "type": "column",
+        "value": "weight_kg"
+      },
+      {
+        "type": "column",
+        "value": ">="
+      },
+      {
+        "type": "column",
+        "value": "25.0"
+      },
+      {
+        "type": "column",
+        "value": ")"
+      },
+      {
+        "type": "keyword",
+        "value": "SELECT"
+      },
+      {
+        "type": "column",
+        "value": "pet_name,"
+      },
+      {
+        "type": "column",
+        "value": "weight_kg"
+      },
+      {
+        "type": "keyword",
+        "value": "FROM"
+      },
+      {
+        "type": "column",
+        "value": "HeavyPatients"
+      },
+      {
+        "type": "keyword",
+        "value": "ORDER"
+      },
+      {
+        "type": "keyword",
+        "value": "BY"
+      },
+      {
+        "type": "column",
+        "value": "weight_kg"
+      },
+      {
+        "type": "keyword",
+        "value": "DESC;"
+      }
+    ]
+  },
+  {
+    "drillNumber": 1111,
+    "subcluster": "12.2 CTE Column Alias Renaming (Explicit Signatures)",
+    "level": "Level 2 (Explicit CTE Signatures)",
+    "title": "Syntax #1111: Define explicit column signatures in a student major statistics CTE",
+    "table": "Students",
+    "scenario": "Define explicit column signatures in a student major statistics CTE.",
+    "businessObjective": "Define explicit column signatures in a student major statistics CTE.",
+    "schemaSnippet": "Students relational schema",
+    "targetQuery": "WITH MajorStats(major_name, student_count, avg_score) AS (\n  SELECT major, COUNT(*), AVG(gpa)\n  FROM Students\n  GROUP BY major\n)\nSELECT major_name, avg_score\nFROM MajorStats\nORDER BY avg_score DESC;",
+    "syntaxBlueprint": "WITH Summary(dept_name, staff_count, total_cost) AS (\n  SELECT department, COUNT(*), SUM(salary)\n  FROM Employees\n  GROUP BY department\n)\nSELECT dept_name, staff_count\nFROM Summary;",
+    "syntaxRule": "You can specify explicit column names in the CTE header signature 'WITH cte_name(c1, c2, c3) AS (...)', making the schema clear and concise.",
+    "syntaxTrap": "The number of column names in the signature list MUST exactly match the number of expressions in the CTE SELECT statement.",
+    "eli5Story": "Subqueries & CTEs on Students: Define explicit column signatures in a student major statistics CTE.",
+    "commonMistakes": "Forgetting to alias derived tables in FROM, writing multiple WITH keywords in multi-CTE pipelines, or suffering the NOT IN NULL trap.",
+    "learningOutcomes": "Mastered 12.2 CTE Column Alias Renaming (Explicit Signatures) on Students.",
+    "challengeSlots": [
+      {
+        "type": "keyword",
+        "value": "WITH"
+      },
+      {
+        "type": "column",
+        "value": "MajorStats(major_name,"
+      },
+      {
+        "type": "column",
+        "value": "student_count,"
+      },
+      {
+        "type": "column",
+        "value": "avg_score)"
+      },
+      {
+        "type": "keyword",
+        "value": "AS"
+      },
+      {
+        "type": "column",
+        "value": "("
+      },
+      {
+        "type": "keyword",
+        "value": "SELECT"
+      },
+      {
+        "type": "column",
+        "value": "major,"
+      },
+      {
+        "type": "column",
+        "value": "COUNT(*),"
+      },
+      {
+        "type": "column",
+        "value": "AVG(gpa)"
+      },
+      {
+        "type": "keyword",
+        "value": "FROM"
+      },
+      {
+        "type": "table",
+        "value": "Students"
+      },
+      {
+        "type": "keyword",
+        "value": "GROUP"
+      },
+      {
+        "type": "keyword",
+        "value": "BY"
+      },
+      {
+        "type": "column",
+        "value": "major"
+      },
+      {
+        "type": "column",
+        "value": ")"
+      },
+      {
+        "type": "keyword",
+        "value": "SELECT"
+      },
+      {
+        "type": "column",
+        "value": "major_name,"
+      },
+      {
+        "type": "column",
+        "value": "avg_score"
+      },
+      {
+        "type": "keyword",
+        "value": "FROM"
+      },
+      {
+        "type": "column",
+        "value": "MajorStats"
+      },
+      {
+        "type": "keyword",
+        "value": "ORDER"
+      },
+      {
+        "type": "keyword",
+        "value": "BY"
+      },
+      {
+        "type": "column",
+        "value": "avg_score"
+      },
+      {
+        "type": "keyword",
+        "value": "DESC;"
+      }
+    ]
+  },
+  {
+    "drillNumber": 1112,
+    "subcluster": "12.2 CTE Column Alias Renaming (Explicit Signatures)",
+    "level": "Level 2 (Explicit CTE Signatures)",
+    "title": "Syntax #1112: Assign explicit column aliases in the header of a genre overview CTE",
+    "table": "Books",
+    "scenario": "Assign explicit column aliases in the header of a genre overview CTE.",
+    "businessObjective": "Assign explicit column aliases in the header of a genre overview CTE.",
+    "schemaSnippet": "Books relational schema",
+    "targetQuery": "WITH GenreOverview(genre_name, total_titles, avg_cost) AS (\n  SELECT genre, COUNT(*), AVG(price)\n  FROM Books\n  GROUP BY genre\n)\nSELECT genre_name, total_titles\nFROM GenreOverview;",
+    "syntaxBlueprint": "WITH Summary(dept_name, staff_count, total_cost) AS (\n  SELECT department, COUNT(*), SUM(salary)\n  FROM Employees\n  GROUP BY department\n)\nSELECT dept_name, staff_count\nFROM Summary;",
+    "syntaxRule": "You can specify explicit column names in the CTE header signature 'WITH cte_name(c1, c2, c3) AS (...)', making the schema clear and concise.",
+    "syntaxTrap": "The number of column names in the signature list MUST exactly match the number of expressions in the CTE SELECT statement.",
+    "eli5Story": "Subqueries & CTEs on Books: Assign explicit column aliases in the header of a genre overview CTE.",
+    "commonMistakes": "Forgetting to alias derived tables in FROM, writing multiple WITH keywords in multi-CTE pipelines, or suffering the NOT IN NULL trap.",
+    "learningOutcomes": "Mastered 12.2 CTE Column Alias Renaming (Explicit Signatures) on Books.",
+    "challengeSlots": [
+      {
+        "type": "keyword",
+        "value": "WITH"
+      },
+      {
+        "type": "column",
+        "value": "GenreOverview(genre_name,"
+      },
+      {
+        "type": "column",
+        "value": "total_titles,"
+      },
+      {
+        "type": "column",
+        "value": "avg_cost)"
+      },
+      {
+        "type": "keyword",
+        "value": "AS"
+      },
+      {
+        "type": "column",
+        "value": "("
+      },
+      {
+        "type": "keyword",
+        "value": "SELECT"
+      },
+      {
+        "type": "column",
+        "value": "genre,"
+      },
+      {
+        "type": "column",
+        "value": "COUNT(*),"
+      },
+      {
+        "type": "column",
+        "value": "AVG(price)"
+      },
+      {
+        "type": "keyword",
+        "value": "FROM"
+      },
+      {
+        "type": "table",
+        "value": "Books"
+      },
+      {
+        "type": "keyword",
+        "value": "GROUP"
+      },
+      {
+        "type": "keyword",
+        "value": "BY"
+      },
+      {
+        "type": "column",
+        "value": "genre"
+      },
+      {
+        "type": "column",
+        "value": ")"
+      },
+      {
+        "type": "keyword",
+        "value": "SELECT"
+      },
+      {
+        "type": "column",
+        "value": "genre_name,"
+      },
+      {
+        "type": "column",
+        "value": "total_titles"
+      },
+      {
+        "type": "keyword",
+        "value": "FROM"
+      },
+      {
+        "type": "column",
+        "value": "GenreOverview;"
+      }
+    ]
+  },
+  {
+    "drillNumber": 1113,
+    "subcluster": "12.2 CTE Column Alias Renaming (Explicit Signatures)",
+    "level": "Level 2 (Explicit CTE Signatures)",
+    "title": "Syntax #1113: Rename CTE projection columns explicitly in the header definition",
+    "table": "Employees",
+    "scenario": "Rename CTE projection columns explicitly in the header definition.",
+    "businessObjective": "Rename CTE projection columns explicitly in the header definition.",
+    "schemaSnippet": "Employees relational schema",
+    "targetQuery": "WITH DeptPayroll(dept_title, headcount, payroll_sum) AS (\n  SELECT department, COUNT(*), SUM(salary)\n  FROM Employees\n  GROUP BY department\n)\nSELECT dept_title, payroll_sum\nFROM DeptPayroll\nORDER BY payroll_sum DESC;",
+    "syntaxBlueprint": "WITH Summary(dept_name, staff_count, total_cost) AS (\n  SELECT department, COUNT(*), SUM(salary)\n  FROM Employees\n  GROUP BY department\n)\nSELECT dept_name, staff_count\nFROM Summary;",
+    "syntaxRule": "You can specify explicit column names in the CTE header signature 'WITH cte_name(c1, c2, c3) AS (...)', making the schema clear and concise.",
+    "syntaxTrap": "The number of column names in the signature list MUST exactly match the number of expressions in the CTE SELECT statement.",
+    "eli5Story": "Subqueries & CTEs on Employees: Rename CTE projection columns explicitly in the header definition.",
+    "commonMistakes": "Forgetting to alias derived tables in FROM, writing multiple WITH keywords in multi-CTE pipelines, or suffering the NOT IN NULL trap.",
+    "learningOutcomes": "Mastered 12.2 CTE Column Alias Renaming (Explicit Signatures) on Employees.",
+    "challengeSlots": [
+      {
+        "type": "keyword",
+        "value": "WITH"
+      },
+      {
+        "type": "column",
+        "value": "DeptPayroll(dept_title,"
+      },
+      {
+        "type": "column",
+        "value": "headcount,"
+      },
+      {
+        "type": "column",
+        "value": "payroll_sum)"
+      },
+      {
+        "type": "keyword",
+        "value": "AS"
+      },
+      {
+        "type": "column",
+        "value": "("
+      },
+      {
+        "type": "keyword",
+        "value": "SELECT"
+      },
+      {
+        "type": "column",
+        "value": "department,"
+      },
+      {
+        "type": "column",
+        "value": "COUNT(*),"
+      },
+      {
+        "type": "column",
+        "value": "SUM(salary)"
+      },
+      {
+        "type": "keyword",
+        "value": "FROM"
+      },
+      {
+        "type": "table",
+        "value": "Employees"
+      },
+      {
+        "type": "keyword",
+        "value": "GROUP"
+      },
+      {
+        "type": "keyword",
+        "value": "BY"
+      },
+      {
+        "type": "column",
+        "value": "department"
+      },
+      {
+        "type": "column",
+        "value": ")"
+      },
+      {
+        "type": "keyword",
+        "value": "SELECT"
+      },
+      {
+        "type": "column",
+        "value": "dept_title,"
+      },
+      {
+        "type": "column",
+        "value": "payroll_sum"
+      },
+      {
+        "type": "keyword",
+        "value": "FROM"
+      },
+      {
+        "type": "column",
+        "value": "DeptPayroll"
+      },
+      {
+        "type": "keyword",
+        "value": "ORDER"
+      },
+      {
+        "type": "keyword",
+        "value": "BY"
+      },
+      {
+        "type": "column",
+        "value": "payroll_sum"
+      },
+      {
+        "type": "keyword",
+        "value": "DESC;"
+      }
+    ]
+  },
+  {
+    "drillNumber": 1114,
+    "subcluster": "12.2 CTE Column Alias Renaming (Explicit Signatures)",
+    "level": "Level 2 (Explicit CTE Signatures)",
+    "title": "Syntax #1114: Define category inventory metrics with explicit CTE column signatures",
+    "table": "GroceryItems",
+    "scenario": "Define category inventory metrics with explicit CTE column signatures.",
+    "businessObjective": "Define category inventory metrics with explicit CTE column signatures.",
+    "schemaSnippet": "GroceryItems relational schema",
+    "targetQuery": "WITH CategoryHealth(cat_name, sku_count, total_units) AS (\n  SELECT category, COUNT(*), SUM(stock_qty)\n  FROM GroceryItems\n  GROUP BY category\n)\nSELECT cat_name, total_units\nFROM CategoryHealth;",
+    "syntaxBlueprint": "WITH Summary(dept_name, staff_count, total_cost) AS (\n  SELECT department, COUNT(*), SUM(salary)\n  FROM Employees\n  GROUP BY department\n)\nSELECT dept_name, staff_count\nFROM Summary;",
+    "syntaxRule": "You can specify explicit column names in the CTE header signature 'WITH cte_name(c1, c2, c3) AS (...)', making the schema clear and concise.",
+    "syntaxTrap": "The number of column names in the signature list MUST exactly match the number of expressions in the CTE SELECT statement.",
+    "eli5Story": "Subqueries & CTEs on GroceryItems: Define category inventory metrics with explicit CTE column signatures.",
+    "commonMistakes": "Forgetting to alias derived tables in FROM, writing multiple WITH keywords in multi-CTE pipelines, or suffering the NOT IN NULL trap.",
+    "learningOutcomes": "Mastered 12.2 CTE Column Alias Renaming (Explicit Signatures) on GroceryItems.",
+    "challengeSlots": [
+      {
+        "type": "keyword",
+        "value": "WITH"
+      },
+      {
+        "type": "column",
+        "value": "CategoryHealth(cat_name,"
+      },
+      {
+        "type": "column",
+        "value": "sku_count,"
+      },
+      {
+        "type": "column",
+        "value": "total_units)"
+      },
+      {
+        "type": "keyword",
+        "value": "AS"
+      },
+      {
+        "type": "column",
+        "value": "("
+      },
+      {
+        "type": "keyword",
+        "value": "SELECT"
+      },
+      {
+        "type": "column",
+        "value": "category,"
+      },
+      {
+        "type": "column",
+        "value": "COUNT(*),"
+      },
+      {
+        "type": "column",
+        "value": "SUM(stock_qty)"
+      },
+      {
+        "type": "keyword",
+        "value": "FROM"
+      },
+      {
+        "type": "table",
+        "value": "GroceryItems"
+      },
+      {
+        "type": "keyword",
+        "value": "GROUP"
+      },
+      {
+        "type": "keyword",
+        "value": "BY"
+      },
+      {
+        "type": "column",
+        "value": "category"
+      },
+      {
+        "type": "column",
+        "value": ")"
+      },
+      {
+        "type": "keyword",
+        "value": "SELECT"
+      },
+      {
+        "type": "column",
+        "value": "cat_name,"
+      },
+      {
+        "type": "column",
+        "value": "total_units"
+      },
+      {
+        "type": "keyword",
+        "value": "FROM"
+      },
+      {
+        "type": "column",
+        "value": "CategoryHealth;"
+      }
+    ]
+  },
+  {
+    "drillNumber": 1115,
+    "subcluster": "12.2 CTE Column Alias Renaming (Explicit Signatures)",
+    "level": "Level 2 (Explicit CTE Signatures)",
+    "title": "Syntax #1115: Rename city aggregation columns explicitly in a CTE header signature",
+    "table": "Orders",
+    "scenario": "Rename city aggregation columns explicitly in a CTE header signature.",
+    "businessObjective": "Rename city aggregation columns explicitly in a CTE header signature.",
+    "schemaSnippet": "Orders relational schema",
+    "targetQuery": "WITH CityRevenue(city, order_volume, gross_sales) AS (\n  SELECT shipping_city, COUNT(*), SUM(total_amount)\n  FROM Orders\n  GROUP BY shipping_city\n)\nSELECT city, gross_sales\nFROM CityRevenue\nORDER BY gross_sales DESC;",
+    "syntaxBlueprint": "WITH Summary(dept_name, staff_count, total_cost) AS (\n  SELECT department, COUNT(*), SUM(salary)\n  FROM Employees\n  GROUP BY department\n)\nSELECT dept_name, staff_count\nFROM Summary;",
+    "syntaxRule": "You can specify explicit column names in the CTE header signature 'WITH cte_name(c1, c2, c3) AS (...)', making the schema clear and concise.",
+    "syntaxTrap": "The number of column names in the signature list MUST exactly match the number of expressions in the CTE SELECT statement.",
+    "eli5Story": "Subqueries & CTEs on Orders: Rename city aggregation columns explicitly in a CTE header signature.",
+    "commonMistakes": "Forgetting to alias derived tables in FROM, writing multiple WITH keywords in multi-CTE pipelines, or suffering the NOT IN NULL trap.",
+    "learningOutcomes": "Mastered 12.2 CTE Column Alias Renaming (Explicit Signatures) on Orders.",
+    "challengeSlots": [
+      {
+        "type": "keyword",
+        "value": "WITH"
+      },
+      {
+        "type": "column",
+        "value": "CityRevenue(city,"
+      },
+      {
+        "type": "column",
+        "value": "order_volume,"
+      },
+      {
+        "type": "column",
+        "value": "gross_sales)"
+      },
+      {
+        "type": "keyword",
+        "value": "AS"
+      },
+      {
+        "type": "column",
+        "value": "("
+      },
+      {
+        "type": "keyword",
+        "value": "SELECT"
+      },
+      {
+        "type": "column",
+        "value": "shipping_city,"
+      },
+      {
+        "type": "column",
+        "value": "COUNT(*),"
+      },
+      {
+        "type": "column",
+        "value": "SUM(total_amount)"
+      },
+      {
+        "type": "keyword",
+        "value": "FROM"
+      },
+      {
+        "type": "table",
+        "value": "Orders"
+      },
+      {
+        "type": "keyword",
+        "value": "GROUP"
+      },
+      {
+        "type": "keyword",
+        "value": "BY"
+      },
+      {
+        "type": "column",
+        "value": "shipping_city"
+      },
+      {
+        "type": "column",
+        "value": ")"
+      },
+      {
+        "type": "keyword",
+        "value": "SELECT"
+      },
+      {
+        "type": "column",
+        "value": "city,"
+      },
+      {
+        "type": "column",
+        "value": "gross_sales"
+      },
+      {
+        "type": "keyword",
+        "value": "FROM"
+      },
+      {
+        "type": "column",
+        "value": "CityRevenue"
+      },
+      {
+        "type": "keyword",
+        "value": "ORDER"
+      },
+      {
+        "type": "keyword",
+        "value": "BY"
+      },
+      {
+        "type": "column",
+        "value": "gross_sales"
+      },
+      {
+        "type": "keyword",
+        "value": "DESC;"
+      }
+    ]
+  },
+  {
+    "drillNumber": 1116,
+    "subcluster": "12.2 CTE Column Alias Renaming (Explicit Signatures)",
+    "level": "Level 2 (Explicit CTE Signatures)",
+    "title": "Syntax #1116: Project music metrics using explicit CTE signature column renaming",
+    "table": "MusicTracks",
+    "scenario": "Project music metrics using explicit CTE signature column renaming.",
+    "businessObjective": "Project music metrics using explicit CTE signature column renaming.",
+    "schemaSnippet": "MusicTracks relational schema",
+    "targetQuery": "WITH GenreMetrics(music_genre, song_tally, total_seconds) AS (\n  SELECT genre, COUNT(*), SUM(duration_seconds)\n  FROM MusicTracks\n  GROUP BY genre\n)\nSELECT music_genre, song_tally\nFROM GenreMetrics;",
+    "syntaxBlueprint": "WITH Summary(dept_name, staff_count, total_cost) AS (\n  SELECT department, COUNT(*), SUM(salary)\n  FROM Employees\n  GROUP BY department\n)\nSELECT dept_name, staff_count\nFROM Summary;",
+    "syntaxRule": "You can specify explicit column names in the CTE header signature 'WITH cte_name(c1, c2, c3) AS (...)', making the schema clear and concise.",
+    "syntaxTrap": "The number of column names in the signature list MUST exactly match the number of expressions in the CTE SELECT statement.",
+    "eli5Story": "Subqueries & CTEs on MusicTracks: Project music metrics using explicit CTE signature column renaming.",
+    "commonMistakes": "Forgetting to alias derived tables in FROM, writing multiple WITH keywords in multi-CTE pipelines, or suffering the NOT IN NULL trap.",
+    "learningOutcomes": "Mastered 12.2 CTE Column Alias Renaming (Explicit Signatures) on MusicTracks.",
+    "challengeSlots": [
+      {
+        "type": "keyword",
+        "value": "WITH"
+      },
+      {
+        "type": "column",
+        "value": "GenreMetrics(music_genre,"
+      },
+      {
+        "type": "column",
+        "value": "song_tally,"
+      },
+      {
+        "type": "column",
+        "value": "total_seconds)"
+      },
+      {
+        "type": "keyword",
+        "value": "AS"
+      },
+      {
+        "type": "column",
+        "value": "("
+      },
+      {
+        "type": "keyword",
+        "value": "SELECT"
+      },
+      {
+        "type": "column",
+        "value": "genre,"
+      },
+      {
+        "type": "column",
+        "value": "COUNT(*),"
+      },
+      {
+        "type": "column",
+        "value": "SUM(duration_seconds)"
+      },
+      {
+        "type": "keyword",
+        "value": "FROM"
+      },
+      {
+        "type": "table",
+        "value": "MusicTracks"
+      },
+      {
+        "type": "keyword",
+        "value": "GROUP"
+      },
+      {
+        "type": "keyword",
+        "value": "BY"
+      },
+      {
+        "type": "column",
+        "value": "genre"
+      },
+      {
+        "type": "column",
+        "value": ")"
+      },
+      {
+        "type": "keyword",
+        "value": "SELECT"
+      },
+      {
+        "type": "column",
+        "value": "music_genre,"
+      },
+      {
+        "type": "column",
+        "value": "song_tally"
+      },
+      {
+        "type": "keyword",
+        "value": "FROM"
+      },
+      {
+        "type": "column",
+        "value": "GenreMetrics;"
+      }
+    ]
+  },
+  {
+    "drillNumber": 1117,
+    "subcluster": "12.2 CTE Column Alias Renaming (Explicit Signatures)",
+    "level": "Level 2 (Explicit CTE Signatures)",
+    "title": "Syntax #1117: Explicitly rename gym plan aggregation columns in the CTE signature",
+    "table": "GymMembers",
+    "scenario": "Explicitly rename gym plan aggregation columns in the CTE signature.",
+    "businessObjective": "Explicitly rename gym plan aggregation columns in the CTE signature.",
+    "schemaSnippet": "GymMembers relational schema",
+    "targetQuery": "WITH PlanRoster(plan_type, enrolled_count, dues_collected) AS (\n  SELECT membership_plan, COUNT(*), SUM(monthly_fee)\n  FROM GymMembers\n  GROUP BY membership_plan\n)\nSELECT plan_type, enrolled_count\nFROM PlanRoster;",
+    "syntaxBlueprint": "WITH Summary(dept_name, staff_count, total_cost) AS (\n  SELECT department, COUNT(*), SUM(salary)\n  FROM Employees\n  GROUP BY department\n)\nSELECT dept_name, staff_count\nFROM Summary;",
+    "syntaxRule": "You can specify explicit column names in the CTE header signature 'WITH cte_name(c1, c2, c3) AS (...)', making the schema clear and concise.",
+    "syntaxTrap": "The number of column names in the signature list MUST exactly match the number of expressions in the CTE SELECT statement.",
+    "eli5Story": "Subqueries & CTEs on GymMembers: Explicitly rename gym plan aggregation columns in the CTE signature.",
+    "commonMistakes": "Forgetting to alias derived tables in FROM, writing multiple WITH keywords in multi-CTE pipelines, or suffering the NOT IN NULL trap.",
+    "learningOutcomes": "Mastered 12.2 CTE Column Alias Renaming (Explicit Signatures) on GymMembers.",
+    "challengeSlots": [
+      {
+        "type": "keyword",
+        "value": "WITH"
+      },
+      {
+        "type": "column",
+        "value": "PlanRoster(plan_type,"
+      },
+      {
+        "type": "column",
+        "value": "enrolled_count,"
+      },
+      {
+        "type": "column",
+        "value": "dues_collected)"
+      },
+      {
+        "type": "keyword",
+        "value": "AS"
+      },
+      {
+        "type": "column",
+        "value": "("
+      },
+      {
+        "type": "keyword",
+        "value": "SELECT"
+      },
+      {
+        "type": "column",
+        "value": "membership_plan,"
+      },
+      {
+        "type": "column",
+        "value": "COUNT(*),"
+      },
+      {
+        "type": "column",
+        "value": "SUM(monthly_fee)"
+      },
+      {
+        "type": "keyword",
+        "value": "FROM"
+      },
+      {
+        "type": "table",
+        "value": "GymMembers"
+      },
+      {
+        "type": "keyword",
+        "value": "GROUP"
+      },
+      {
+        "type": "keyword",
+        "value": "BY"
+      },
+      {
+        "type": "column",
+        "value": "membership_plan"
+      },
+      {
+        "type": "column",
+        "value": ")"
+      },
+      {
+        "type": "keyword",
+        "value": "SELECT"
+      },
+      {
+        "type": "column",
+        "value": "plan_type,"
+      },
+      {
+        "type": "column",
+        "value": "enrolled_count"
+      },
+      {
+        "type": "keyword",
+        "value": "FROM"
+      },
+      {
+        "type": "column",
+        "value": "PlanRoster;"
+      }
+    ]
+  },
+  {
+    "drillNumber": 1118,
+    "subcluster": "12.2 CTE Column Alias Renaming (Explicit Signatures)",
+    "level": "Level 2 (Explicit CTE Signatures)",
+    "title": "Syntax #1118: Assign clean column aliases in the header signature of a film genre CTE",
+    "table": "MovieReviews",
+    "scenario": "Assign clean column aliases in the header signature of a film genre CTE.",
+    "businessObjective": "Assign clean column aliases in the header signature of a film genre CTE.",
+    "schemaSnippet": "MovieReviews relational schema",
+    "targetQuery": "WITH FilmGenreAverages(genre_tag, review_count, avg_stars) AS (\n  SELECT genre, COUNT(*), AVG(star_rating)\n  FROM MovieReviews\n  GROUP BY genre\n)\nSELECT genre_tag, avg_stars\nFROM FilmGenreAverages;",
+    "syntaxBlueprint": "WITH Summary(dept_name, staff_count, total_cost) AS (\n  SELECT department, COUNT(*), SUM(salary)\n  FROM Employees\n  GROUP BY department\n)\nSELECT dept_name, staff_count\nFROM Summary;",
+    "syntaxRule": "You can specify explicit column names in the CTE header signature 'WITH cte_name(c1, c2, c3) AS (...)', making the schema clear and concise.",
+    "syntaxTrap": "The number of column names in the signature list MUST exactly match the number of expressions in the CTE SELECT statement.",
+    "eli5Story": "Subqueries & CTEs on MovieReviews: Assign clean column aliases in the header signature of a film genre CTE.",
+    "commonMistakes": "Forgetting to alias derived tables in FROM, writing multiple WITH keywords in multi-CTE pipelines, or suffering the NOT IN NULL trap.",
+    "learningOutcomes": "Mastered 12.2 CTE Column Alias Renaming (Explicit Signatures) on MovieReviews.",
+    "challengeSlots": [
+      {
+        "type": "keyword",
+        "value": "WITH"
+      },
+      {
+        "type": "column",
+        "value": "FilmGenreAverages(genre_tag,"
+      },
+      {
+        "type": "column",
+        "value": "review_count,"
+      },
+      {
+        "type": "column",
+        "value": "avg_stars)"
+      },
+      {
+        "type": "keyword",
+        "value": "AS"
+      },
+      {
+        "type": "column",
+        "value": "("
+      },
+      {
+        "type": "keyword",
+        "value": "SELECT"
+      },
+      {
+        "type": "column",
+        "value": "genre,"
+      },
+      {
+        "type": "column",
+        "value": "COUNT(*),"
+      },
+      {
+        "type": "column",
+        "value": "AVG(star_rating)"
+      },
+      {
+        "type": "keyword",
+        "value": "FROM"
+      },
+      {
+        "type": "table",
+        "value": "MovieReviews"
+      },
+      {
+        "type": "keyword",
+        "value": "GROUP"
+      },
+      {
+        "type": "keyword",
+        "value": "BY"
+      },
+      {
+        "type": "column",
+        "value": "genre"
+      },
+      {
+        "type": "column",
+        "value": ")"
+      },
+      {
+        "type": "keyword",
+        "value": "SELECT"
+      },
+      {
+        "type": "column",
+        "value": "genre_tag,"
+      },
+      {
+        "type": "column",
+        "value": "avg_stars"
+      },
+      {
+        "type": "keyword",
+        "value": "FROM"
+      },
+      {
+        "type": "column",
+        "value": "FilmGenreAverages;"
+      }
+    ]
+  },
+  {
+    "drillNumber": 1119,
+    "subcluster": "12.2 CTE Column Alias Renaming (Explicit Signatures)",
+    "level": "Level 2 (Explicit CTE Signatures)",
+    "title": "Syntax #1119: Define explicit column names in an airport departure hub CTE",
+    "table": "FlightSchedule",
+    "scenario": "Define explicit column names in an airport departure hub CTE.",
+    "businessObjective": "Define explicit column names in an airport departure hub CTE.",
+    "schemaSnippet": "FlightSchedule relational schema",
+    "targetQuery": "WITH HubVolume(hub_airport, departures_count) AS (\n  SELECT origin_airport, COUNT(*)\n  FROM FlightSchedule\n  GROUP BY origin_airport\n)\nSELECT hub_airport, departures_count\nFROM HubVolume\nORDER BY departures_count DESC;",
+    "syntaxBlueprint": "WITH Summary(dept_name, staff_count, total_cost) AS (\n  SELECT department, COUNT(*), SUM(salary)\n  FROM Employees\n  GROUP BY department\n)\nSELECT dept_name, staff_count\nFROM Summary;",
+    "syntaxRule": "You can specify explicit column names in the CTE header signature 'WITH cte_name(c1, c2, c3) AS (...)', making the schema clear and concise.",
+    "syntaxTrap": "The number of column names in the signature list MUST exactly match the number of expressions in the CTE SELECT statement.",
+    "eli5Story": "Subqueries & CTEs on FlightSchedule: Define explicit column names in an airport departure hub CTE.",
+    "commonMistakes": "Forgetting to alias derived tables in FROM, writing multiple WITH keywords in multi-CTE pipelines, or suffering the NOT IN NULL trap.",
+    "learningOutcomes": "Mastered 12.2 CTE Column Alias Renaming (Explicit Signatures) on FlightSchedule.",
+    "challengeSlots": [
+      {
+        "type": "keyword",
+        "value": "WITH"
+      },
+      {
+        "type": "column",
+        "value": "HubVolume(hub_airport,"
+      },
+      {
+        "type": "column",
+        "value": "departures_count)"
+      },
+      {
+        "type": "keyword",
+        "value": "AS"
+      },
+      {
+        "type": "column",
+        "value": "("
+      },
+      {
+        "type": "keyword",
+        "value": "SELECT"
+      },
+      {
+        "type": "column",
+        "value": "origin_airport,"
+      },
+      {
+        "type": "column",
+        "value": "COUNT(*)"
+      },
+      {
+        "type": "keyword",
+        "value": "FROM"
+      },
+      {
+        "type": "table",
+        "value": "FlightSchedule"
+      },
+      {
+        "type": "keyword",
+        "value": "GROUP"
+      },
+      {
+        "type": "keyword",
+        "value": "BY"
+      },
+      {
+        "type": "column",
+        "value": "origin_airport"
+      },
+      {
+        "type": "column",
+        "value": ")"
+      },
+      {
+        "type": "keyword",
+        "value": "SELECT"
+      },
+      {
+        "type": "column",
+        "value": "hub_airport,"
+      },
+      {
+        "type": "column",
+        "value": "departures_count"
+      },
+      {
+        "type": "keyword",
+        "value": "FROM"
+      },
+      {
+        "type": "column",
+        "value": "HubVolume"
+      },
+      {
+        "type": "keyword",
+        "value": "ORDER"
+      },
+      {
+        "type": "keyword",
+        "value": "BY"
+      },
+      {
+        "type": "column",
+        "value": "departures_count"
+      },
+      {
+        "type": "keyword",
+        "value": "DESC;"
+      }
+    ]
+  },
+  {
+    "drillNumber": 1120,
+    "subcluster": "12.2 CTE Column Alias Renaming (Explicit Signatures)",
+    "level": "Level 2 (Explicit CTE Signatures)",
+    "title": "Syntax #1120: Define explicit column signatures in a veterinary species census CTE",
+    "table": "PetClinic",
+    "scenario": "Define explicit column signatures in a veterinary species census CTE.",
+    "businessObjective": "Define explicit column signatures in a veterinary species census CTE.",
+    "schemaSnippet": "PetClinic relational schema",
+    "targetQuery": "WITH SpeciesCensus(animal_species, patient_total, avg_kg) AS (\n  SELECT species, COUNT(*), AVG(weight_kg)\n  FROM PetClinic\n  GROUP BY species\n)\nSELECT animal_species, patient_total\nFROM SpeciesCensus;",
+    "syntaxBlueprint": "WITH Summary(dept_name, staff_count, total_cost) AS (\n  SELECT department, COUNT(*), SUM(salary)\n  FROM Employees\n  GROUP BY department\n)\nSELECT dept_name, staff_count\nFROM Summary;",
+    "syntaxRule": "You can specify explicit column names in the CTE header signature 'WITH cte_name(c1, c2, c3) AS (...)', making the schema clear and concise.",
+    "syntaxTrap": "The number of column names in the signature list MUST exactly match the number of expressions in the CTE SELECT statement.",
+    "eli5Story": "Subqueries & CTEs on PetClinic: Define explicit column signatures in a veterinary species census CTE.",
+    "commonMistakes": "Forgetting to alias derived tables in FROM, writing multiple WITH keywords in multi-CTE pipelines, or suffering the NOT IN NULL trap.",
+    "learningOutcomes": "Mastered 12.2 CTE Column Alias Renaming (Explicit Signatures) on PetClinic.",
+    "challengeSlots": [
+      {
+        "type": "keyword",
+        "value": "WITH"
+      },
+      {
+        "type": "column",
+        "value": "SpeciesCensus(animal_species,"
+      },
+      {
+        "type": "column",
+        "value": "patient_total,"
+      },
+      {
+        "type": "column",
+        "value": "avg_kg)"
+      },
+      {
+        "type": "keyword",
+        "value": "AS"
+      },
+      {
+        "type": "column",
+        "value": "("
+      },
+      {
+        "type": "keyword",
+        "value": "SELECT"
+      },
+      {
+        "type": "column",
+        "value": "species,"
+      },
+      {
+        "type": "column",
+        "value": "COUNT(*),"
+      },
+      {
+        "type": "column",
+        "value": "AVG(weight_kg)"
+      },
+      {
+        "type": "keyword",
+        "value": "FROM"
+      },
+      {
+        "type": "table",
+        "value": "PetClinic"
+      },
+      {
+        "type": "keyword",
+        "value": "GROUP"
+      },
+      {
+        "type": "keyword",
+        "value": "BY"
+      },
+      {
+        "type": "column",
+        "value": "species"
+      },
+      {
+        "type": "column",
+        "value": ")"
+      },
+      {
+        "type": "keyword",
+        "value": "SELECT"
+      },
+      {
+        "type": "column",
+        "value": "animal_species,"
+      },
+      {
+        "type": "column",
+        "value": "patient_total"
+      },
+      {
+        "type": "keyword",
+        "value": "FROM"
+      },
+      {
+        "type": "column",
+        "value": "SpeciesCensus;"
+      }
+    ]
+  },
+  {
+    "drillNumber": 1121,
+    "subcluster": "12.3 Filtering against CTE Aggregated Metrics",
+    "level": "Level 2 (Aggregated CTE Filters)",
+    "title": "Syntax #1121: Compute average major GPA in a CTE, then filter for majors >= 3.6 in WHERE",
+    "table": "Students",
+    "scenario": "Compute average major GPA in a CTE, then filter for majors >= 3.6 in WHERE.",
+    "businessObjective": "Compute average major GPA in a CTE, then filter for majors >= 3.6 in WHERE.",
+    "schemaSnippet": "Students relational schema",
+    "targetQuery": "WITH MajorAvg AS (\n  SELECT major, AVG(gpa) AS avg_gpa\n  FROM Students\n  GROUP BY major\n)\nSELECT major, avg_gpa\nFROM MajorAvg\nWHERE avg_gpa >= 3.6;",
+    "syntaxBlueprint": "WITH DeptAvg AS (\n  SELECT department, AVG(salary) AS avg_sal\n  FROM Employees\n  GROUP BY department\n)\nSELECT department, avg_sal\nFROM DeptAvg\nWHERE avg_sal >= 70000;",
+    "syntaxRule": "Aggregating in a CTE allows you to filter calculated metrics in the outer WHERE clause cleanly without needing complex HAVING syntax.",
+    "syntaxTrap": "Trying to filter an alias in WHERE inside the same SELECT statement that created it; CTEs solve this by materializing the alias first.",
+    "eli5Story": "Subqueries & CTEs on Students: Compute average major GPA in a CTE, then filter for majors >= 3.6 in WHERE.",
+    "commonMistakes": "Forgetting to alias derived tables in FROM, writing multiple WITH keywords in multi-CTE pipelines, or suffering the NOT IN NULL trap.",
+    "learningOutcomes": "Mastered 12.3 Filtering against CTE Aggregated Metrics on Students.",
+    "challengeSlots": [
+      {
+        "type": "keyword",
+        "value": "WITH"
+      },
+      {
+        "type": "column",
+        "value": "MajorAvg"
+      },
+      {
+        "type": "keyword",
+        "value": "AS"
+      },
+      {
+        "type": "column",
+        "value": "("
+      },
+      {
+        "type": "keyword",
+        "value": "SELECT"
+      },
+      {
+        "type": "column",
+        "value": "major,"
+      },
+      {
+        "type": "column",
+        "value": "AVG(gpa)"
+      },
+      {
+        "type": "keyword",
+        "value": "AS"
+      },
+      {
+        "type": "column",
+        "value": "avg_gpa"
+      },
+      {
+        "type": "keyword",
+        "value": "FROM"
+      },
+      {
+        "type": "table",
+        "value": "Students"
+      },
+      {
+        "type": "keyword",
+        "value": "GROUP"
+      },
+      {
+        "type": "keyword",
+        "value": "BY"
+      },
+      {
+        "type": "column",
+        "value": "major"
+      },
+      {
+        "type": "column",
+        "value": ")"
+      },
+      {
+        "type": "keyword",
+        "value": "SELECT"
+      },
+      {
+        "type": "column",
+        "value": "major,"
+      },
+      {
+        "type": "column",
+        "value": "avg_gpa"
+      },
+      {
+        "type": "keyword",
+        "value": "FROM"
+      },
+      {
+        "type": "column",
+        "value": "MajorAvg"
+      },
+      {
+        "type": "keyword",
+        "value": "WHERE"
+      },
+      {
+        "type": "column",
+        "value": "avg_gpa"
+      },
+      {
+        "type": "column",
+        "value": ">="
+      },
+      {
+        "type": "column",
+        "value": "3.6;"
+      }
+    ]
+  },
+  {
+    "drillNumber": 1122,
+    "subcluster": "12.3 Filtering against CTE Aggregated Metrics",
+    "level": "Level 2 (Aggregated CTE Filters)",
+    "title": "Syntax #1122: Filter prolific affordable authors using metrics pre-aggregated in a CTE",
+    "table": "Books",
+    "scenario": "Filter prolific affordable authors using metrics pre-aggregated in a CTE.",
+    "businessObjective": "Filter prolific affordable authors using metrics pre-aggregated in a CTE.",
+    "schemaSnippet": "Books relational schema",
+    "targetQuery": "WITH AuthorCatalog AS (\n  SELECT author, COUNT(*) AS book_count, AVG(price) AS avg_price\n  FROM Books\n  GROUP BY author\n)\nSELECT author, book_count\nFROM AuthorCatalog\nWHERE book_count >= 2 AND avg_price < 25.00;",
+    "syntaxBlueprint": "WITH DeptAvg AS (\n  SELECT department, AVG(salary) AS avg_sal\n  FROM Employees\n  GROUP BY department\n)\nSELECT department, avg_sal\nFROM DeptAvg\nWHERE avg_sal >= 70000;",
+    "syntaxRule": "Aggregating in a CTE allows you to filter calculated metrics in the outer WHERE clause cleanly without needing complex HAVING syntax.",
+    "syntaxTrap": "Trying to filter an alias in WHERE inside the same SELECT statement that created it; CTEs solve this by materializing the alias first.",
+    "eli5Story": "Subqueries & CTEs on Books: Filter prolific affordable authors using metrics pre-aggregated in a CTE.",
+    "commonMistakes": "Forgetting to alias derived tables in FROM, writing multiple WITH keywords in multi-CTE pipelines, or suffering the NOT IN NULL trap.",
+    "learningOutcomes": "Mastered 12.3 Filtering against CTE Aggregated Metrics on Books.",
+    "challengeSlots": [
+      {
+        "type": "keyword",
+        "value": "WITH"
+      },
+      {
+        "type": "column",
+        "value": "AuthorCatalog"
+      },
+      {
+        "type": "keyword",
+        "value": "AS"
+      },
+      {
+        "type": "column",
+        "value": "("
+      },
+      {
+        "type": "keyword",
+        "value": "SELECT"
+      },
+      {
+        "type": "column",
+        "value": "author,"
+      },
+      {
+        "type": "column",
+        "value": "COUNT(*)"
+      },
+      {
+        "type": "keyword",
+        "value": "AS"
+      },
+      {
+        "type": "column",
+        "value": "book_count,"
+      },
+      {
+        "type": "column",
+        "value": "AVG(price)"
+      },
+      {
+        "type": "keyword",
+        "value": "AS"
+      },
+      {
+        "type": "column",
+        "value": "avg_price"
+      },
+      {
+        "type": "keyword",
+        "value": "FROM"
+      },
+      {
+        "type": "table",
+        "value": "Books"
+      },
+      {
+        "type": "keyword",
+        "value": "GROUP"
+      },
+      {
+        "type": "keyword",
+        "value": "BY"
+      },
+      {
+        "type": "column",
+        "value": "author"
+      },
+      {
+        "type": "column",
+        "value": ")"
+      },
+      {
+        "type": "keyword",
+        "value": "SELECT"
+      },
+      {
+        "type": "column",
+        "value": "author,"
+      },
+      {
+        "type": "column",
+        "value": "book_count"
+      },
+      {
+        "type": "keyword",
+        "value": "FROM"
+      },
+      {
+        "type": "column",
+        "value": "AuthorCatalog"
+      },
+      {
+        "type": "keyword",
+        "value": "WHERE"
+      },
+      {
+        "type": "column",
+        "value": "book_count"
+      },
+      {
+        "type": "column",
+        "value": ">="
+      },
+      {
+        "type": "column",
+        "value": "2"
+      },
+      {
+        "type": "keyword",
+        "value": "AND"
+      },
+      {
+        "type": "column",
+        "value": "avg_price"
+      },
+      {
+        "type": "column",
+        "value": "<"
+      },
+      {
+        "type": "column",
+        "value": "25.00;"
+      }
+    ]
+  },
+  {
+    "drillNumber": 1123,
+    "subcluster": "12.3 Filtering against CTE Aggregated Metrics",
+    "level": "Level 2 (Aggregated CTE Filters)",
+    "title": "Syntax #1123: Filter departments with payroll >= $250k using a pre-calculated CTE",
+    "table": "Employees",
+    "scenario": "Filter departments with payroll >= $250k using a pre-calculated CTE.",
+    "businessObjective": "Filter departments with payroll >= $250k using a pre-calculated CTE.",
+    "schemaSnippet": "Employees relational schema",
+    "targetQuery": "WITH DeptPayroll AS (\n  SELECT department, SUM(salary) AS total_payroll\n  FROM Employees\n  GROUP BY department\n)\nSELECT department, total_payroll\nFROM DeptPayroll\nWHERE total_payroll >= 250000;",
+    "syntaxBlueprint": "WITH DeptAvg AS (\n  SELECT department, AVG(salary) AS avg_sal\n  FROM Employees\n  GROUP BY department\n)\nSELECT department, avg_sal\nFROM DeptAvg\nWHERE avg_sal >= 70000;",
+    "syntaxRule": "Aggregating in a CTE allows you to filter calculated metrics in the outer WHERE clause cleanly without needing complex HAVING syntax.",
+    "syntaxTrap": "Trying to filter an alias in WHERE inside the same SELECT statement that created it; CTEs solve this by materializing the alias first.",
+    "eli5Story": "Subqueries & CTEs on Employees: Filter departments with payroll >= $250k using a pre-calculated CTE.",
+    "commonMistakes": "Forgetting to alias derived tables in FROM, writing multiple WITH keywords in multi-CTE pipelines, or suffering the NOT IN NULL trap.",
+    "learningOutcomes": "Mastered 12.3 Filtering against CTE Aggregated Metrics on Employees.",
+    "challengeSlots": [
+      {
+        "type": "keyword",
+        "value": "WITH"
+      },
+      {
+        "type": "column",
+        "value": "DeptPayroll"
+      },
+      {
+        "type": "keyword",
+        "value": "AS"
+      },
+      {
+        "type": "column",
+        "value": "("
+      },
+      {
+        "type": "keyword",
+        "value": "SELECT"
+      },
+      {
+        "type": "column",
+        "value": "department,"
+      },
+      {
+        "type": "column",
+        "value": "SUM(salary)"
+      },
+      {
+        "type": "keyword",
+        "value": "AS"
+      },
+      {
+        "type": "column",
+        "value": "total_payroll"
+      },
+      {
+        "type": "keyword",
+        "value": "FROM"
+      },
+      {
+        "type": "table",
+        "value": "Employees"
+      },
+      {
+        "type": "keyword",
+        "value": "GROUP"
+      },
+      {
+        "type": "keyword",
+        "value": "BY"
+      },
+      {
+        "type": "column",
+        "value": "department"
+      },
+      {
+        "type": "column",
+        "value": ")"
+      },
+      {
+        "type": "keyword",
+        "value": "SELECT"
+      },
+      {
+        "type": "column",
+        "value": "department,"
+      },
+      {
+        "type": "column",
+        "value": "total_payroll"
+      },
+      {
+        "type": "keyword",
+        "value": "FROM"
+      },
+      {
+        "type": "column",
+        "value": "DeptPayroll"
+      },
+      {
+        "type": "keyword",
+        "value": "WHERE"
+      },
+      {
+        "type": "column",
+        "value": "total_payroll"
+      },
+      {
+        "type": "column",
+        "value": ">="
+      },
+      {
+        "type": "column",
+        "value": "250000;"
+      }
+    ]
+  },
+  {
+    "drillNumber": 1124,
+    "subcluster": "12.3 Filtering against CTE Aggregated Metrics",
+    "level": "Level 2 (Aggregated CTE Filters)",
+    "title": "Syntax #1124: Filter budget grocery categories where average price is $4.00 or less via CTE",
+    "table": "GroceryItems",
+    "scenario": "Filter budget grocery categories where average price is $4.00 or less via CTE.",
+    "businessObjective": "Filter budget grocery categories where average price is $4.00 or less via CTE.",
+    "schemaSnippet": "GroceryItems relational schema",
+    "targetQuery": "WITH CategoryAverages AS (\n  SELECT category, AVG(unit_price) AS avg_price\n  FROM GroceryItems\n  GROUP BY category\n)\nSELECT category, avg_price\nFROM CategoryAverages\nWHERE avg_price <= 4.00;",
+    "syntaxBlueprint": "WITH DeptAvg AS (\n  SELECT department, AVG(salary) AS avg_sal\n  FROM Employees\n  GROUP BY department\n)\nSELECT department, avg_sal\nFROM DeptAvg\nWHERE avg_sal >= 70000;",
+    "syntaxRule": "Aggregating in a CTE allows you to filter calculated metrics in the outer WHERE clause cleanly without needing complex HAVING syntax.",
+    "syntaxTrap": "Trying to filter an alias in WHERE inside the same SELECT statement that created it; CTEs solve this by materializing the alias first.",
+    "eli5Story": "Subqueries & CTEs on GroceryItems: Filter budget grocery categories where average price is $4.00 or less via CTE.",
+    "commonMistakes": "Forgetting to alias derived tables in FROM, writing multiple WITH keywords in multi-CTE pipelines, or suffering the NOT IN NULL trap.",
+    "learningOutcomes": "Mastered 12.3 Filtering against CTE Aggregated Metrics on GroceryItems.",
+    "challengeSlots": [
+      {
+        "type": "keyword",
+        "value": "WITH"
+      },
+      {
+        "type": "column",
+        "value": "CategoryAverages"
+      },
+      {
+        "type": "keyword",
+        "value": "AS"
+      },
+      {
+        "type": "column",
+        "value": "("
+      },
+      {
+        "type": "keyword",
+        "value": "SELECT"
+      },
+      {
+        "type": "column",
+        "value": "category,"
+      },
+      {
+        "type": "column",
+        "value": "AVG(unit_price)"
+      },
+      {
+        "type": "keyword",
+        "value": "AS"
+      },
+      {
+        "type": "column",
+        "value": "avg_price"
+      },
+      {
+        "type": "keyword",
+        "value": "FROM"
+      },
+      {
+        "type": "table",
+        "value": "GroceryItems"
+      },
+      {
+        "type": "keyword",
+        "value": "GROUP"
+      },
+      {
+        "type": "keyword",
+        "value": "BY"
+      },
+      {
+        "type": "column",
+        "value": "category"
+      },
+      {
+        "type": "column",
+        "value": ")"
+      },
+      {
+        "type": "keyword",
+        "value": "SELECT"
+      },
+      {
+        "type": "column",
+        "value": "category,"
+      },
+      {
+        "type": "column",
+        "value": "avg_price"
+      },
+      {
+        "type": "keyword",
+        "value": "FROM"
+      },
+      {
+        "type": "column",
+        "value": "CategoryAverages"
+      },
+      {
+        "type": "keyword",
+        "value": "WHERE"
+      },
+      {
+        "type": "column",
+        "value": "avg_price"
+      },
+      {
+        "type": "column",
+        "value": "<="
+      },
+      {
+        "type": "column",
+        "value": "4.00;"
+      }
+    ]
+  },
+  {
+    "drillNumber": 1125,
+    "subcluster": "12.3 Filtering against CTE Aggregated Metrics",
+    "level": "Level 2 (Aggregated CTE Filters)",
+    "title": "Syntax #1125: Filter high-value customers with lifetime spend >= $1,000 using a CTE",
+    "table": "Orders",
+    "scenario": "Filter high-value customers with lifetime spend >= $1,000 using a CTE.",
+    "businessObjective": "Filter high-value customers with lifetime spend >= $1,000 using a CTE.",
+    "schemaSnippet": "Orders relational schema",
+    "targetQuery": "WITH CustomerSpend AS (\n  SELECT customer_name, SUM(total_amount) AS lifetime_val\n  FROM Orders\n  GROUP BY customer_name\n)\nSELECT customer_name, lifetime_val\nFROM CustomerSpend\nWHERE lifetime_val >= 1000.00;",
+    "syntaxBlueprint": "WITH DeptAvg AS (\n  SELECT department, AVG(salary) AS avg_sal\n  FROM Employees\n  GROUP BY department\n)\nSELECT department, avg_sal\nFROM DeptAvg\nWHERE avg_sal >= 70000;",
+    "syntaxRule": "Aggregating in a CTE allows you to filter calculated metrics in the outer WHERE clause cleanly without needing complex HAVING syntax.",
+    "syntaxTrap": "Trying to filter an alias in WHERE inside the same SELECT statement that created it; CTEs solve this by materializing the alias first.",
+    "eli5Story": "Subqueries & CTEs on Orders: Filter high-value customers with lifetime spend >= $1,000 using a CTE.",
+    "commonMistakes": "Forgetting to alias derived tables in FROM, writing multiple WITH keywords in multi-CTE pipelines, or suffering the NOT IN NULL trap.",
+    "learningOutcomes": "Mastered 12.3 Filtering against CTE Aggregated Metrics on Orders.",
+    "challengeSlots": [
+      {
+        "type": "keyword",
+        "value": "WITH"
+      },
+      {
+        "type": "column",
+        "value": "CustomerSpend"
+      },
+      {
+        "type": "keyword",
+        "value": "AS"
+      },
+      {
+        "type": "column",
+        "value": "("
+      },
+      {
+        "type": "keyword",
+        "value": "SELECT"
+      },
+      {
+        "type": "column",
+        "value": "customer_name,"
+      },
+      {
+        "type": "column",
+        "value": "SUM(total_amount)"
+      },
+      {
+        "type": "keyword",
+        "value": "AS"
+      },
+      {
+        "type": "column",
+        "value": "lifetime_val"
+      },
+      {
+        "type": "keyword",
+        "value": "FROM"
+      },
+      {
+        "type": "table",
+        "value": "Orders"
+      },
+      {
+        "type": "keyword",
+        "value": "GROUP"
+      },
+      {
+        "type": "keyword",
+        "value": "BY"
+      },
+      {
+        "type": "column",
+        "value": "customer_name"
+      },
+      {
+        "type": "column",
+        "value": ")"
+      },
+      {
+        "type": "keyword",
+        "value": "SELECT"
+      },
+      {
+        "type": "column",
+        "value": "customer_name,"
+      },
+      {
+        "type": "column",
+        "value": "lifetime_val"
+      },
+      {
+        "type": "keyword",
+        "value": "FROM"
+      },
+      {
+        "type": "column",
+        "value": "CustomerSpend"
+      },
+      {
+        "type": "keyword",
+        "value": "WHERE"
+      },
+      {
+        "type": "column",
+        "value": "lifetime_val"
+      },
+      {
+        "type": "column",
+        "value": ">="
+      },
+      {
+        "type": "column",
+        "value": "1000.00;"
+      }
+    ]
+  },
+  {
+    "drillNumber": 1126,
+    "subcluster": "12.3 Filtering against CTE Aggregated Metrics",
+    "level": "Level 2 (Aggregated CTE Filters)",
+    "title": "Syntax #1126: Identify prolific artists with 5+ tracks using a CTE aggregation filter",
+    "table": "MusicTracks",
+    "scenario": "Identify prolific artists with 5+ tracks using a CTE aggregation filter.",
+    "businessObjective": "Identify prolific artists with 5+ tracks using a CTE aggregation filter.",
+    "schemaSnippet": "MusicTracks relational schema",
+    "targetQuery": "WITH ArtistProductivity AS (\n  SELECT artist_name, COUNT(*) AS track_count\n  FROM MusicTracks\n  GROUP BY artist_name\n)\nSELECT artist_name, track_count\nFROM ArtistProductivity\nWHERE track_count >= 5;",
+    "syntaxBlueprint": "WITH DeptAvg AS (\n  SELECT department, AVG(salary) AS avg_sal\n  FROM Employees\n  GROUP BY department\n)\nSELECT department, avg_sal\nFROM DeptAvg\nWHERE avg_sal >= 70000;",
+    "syntaxRule": "Aggregating in a CTE allows you to filter calculated metrics in the outer WHERE clause cleanly without needing complex HAVING syntax.",
+    "syntaxTrap": "Trying to filter an alias in WHERE inside the same SELECT statement that created it; CTEs solve this by materializing the alias first.",
+    "eli5Story": "Subqueries & CTEs on MusicTracks: Identify prolific artists with 5+ tracks using a CTE aggregation filter.",
+    "commonMistakes": "Forgetting to alias derived tables in FROM, writing multiple WITH keywords in multi-CTE pipelines, or suffering the NOT IN NULL trap.",
+    "learningOutcomes": "Mastered 12.3 Filtering against CTE Aggregated Metrics on MusicTracks.",
+    "challengeSlots": [
+      {
+        "type": "keyword",
+        "value": "WITH"
+      },
+      {
+        "type": "column",
+        "value": "ArtistProductivity"
+      },
+      {
+        "type": "keyword",
+        "value": "AS"
+      },
+      {
+        "type": "column",
+        "value": "("
+      },
+      {
+        "type": "keyword",
+        "value": "SELECT"
+      },
+      {
+        "type": "column",
+        "value": "artist_name,"
+      },
+      {
+        "type": "column",
+        "value": "COUNT(*)"
+      },
+      {
+        "type": "keyword",
+        "value": "AS"
+      },
+      {
+        "type": "column",
+        "value": "track_count"
+      },
+      {
+        "type": "keyword",
+        "value": "FROM"
+      },
+      {
+        "type": "table",
+        "value": "MusicTracks"
+      },
+      {
+        "type": "keyword",
+        "value": "GROUP"
+      },
+      {
+        "type": "keyword",
+        "value": "BY"
+      },
+      {
+        "type": "column",
+        "value": "artist_name"
+      },
+      {
+        "type": "column",
+        "value": ")"
+      },
+      {
+        "type": "keyword",
+        "value": "SELECT"
+      },
+      {
+        "type": "column",
+        "value": "artist_name,"
+      },
+      {
+        "type": "column",
+        "value": "track_count"
+      },
+      {
+        "type": "keyword",
+        "value": "FROM"
+      },
+      {
+        "type": "column",
+        "value": "ArtistProductivity"
+      },
+      {
+        "type": "keyword",
+        "value": "WHERE"
+      },
+      {
+        "type": "column",
+        "value": "track_count"
+      },
+      {
+        "type": "column",
+        "value": ">="
+      },
+      {
+        "type": "column",
+        "value": "5;"
+      }
+    ]
+  },
+  {
+    "drillNumber": 1127,
+    "subcluster": "12.3 Filtering against CTE Aggregated Metrics",
+    "level": "Level 2 (Aggregated CTE Filters)",
+    "title": "Syntax #1127: Filter gym membership plans generating $500+ in monthly revenue via CTE",
+    "table": "GymMembers",
+    "scenario": "Filter gym membership plans generating $500+ in monthly revenue via CTE.",
+    "businessObjective": "Filter gym membership plans generating $500+ in monthly revenue via CTE.",
+    "schemaSnippet": "GymMembers relational schema",
+    "targetQuery": "WITH PlanRevenue AS (\n  SELECT membership_plan, SUM(monthly_fee) AS plan_revenue\n  FROM GymMembers\n  GROUP BY membership_plan\n)\nSELECT membership_plan, plan_revenue\nFROM PlanRevenue\nWHERE plan_revenue >= 500.00;",
+    "syntaxBlueprint": "WITH DeptAvg AS (\n  SELECT department, AVG(salary) AS avg_sal\n  FROM Employees\n  GROUP BY department\n)\nSELECT department, avg_sal\nFROM DeptAvg\nWHERE avg_sal >= 70000;",
+    "syntaxRule": "Aggregating in a CTE allows you to filter calculated metrics in the outer WHERE clause cleanly without needing complex HAVING syntax.",
+    "syntaxTrap": "Trying to filter an alias in WHERE inside the same SELECT statement that created it; CTEs solve this by materializing the alias first.",
+    "eli5Story": "Subqueries & CTEs on GymMembers: Filter gym membership plans generating $500+ in monthly revenue via CTE.",
+    "commonMistakes": "Forgetting to alias derived tables in FROM, writing multiple WITH keywords in multi-CTE pipelines, or suffering the NOT IN NULL trap.",
+    "learningOutcomes": "Mastered 12.3 Filtering against CTE Aggregated Metrics on GymMembers.",
+    "challengeSlots": [
+      {
+        "type": "keyword",
+        "value": "WITH"
+      },
+      {
+        "type": "column",
+        "value": "PlanRevenue"
+      },
+      {
+        "type": "keyword",
+        "value": "AS"
+      },
+      {
+        "type": "column",
+        "value": "("
+      },
+      {
+        "type": "keyword",
+        "value": "SELECT"
+      },
+      {
+        "type": "column",
+        "value": "membership_plan,"
+      },
+      {
+        "type": "column",
+        "value": "SUM(monthly_fee)"
+      },
+      {
+        "type": "keyword",
+        "value": "AS"
+      },
+      {
+        "type": "column",
+        "value": "plan_revenue"
+      },
+      {
+        "type": "keyword",
+        "value": "FROM"
+      },
+      {
+        "type": "table",
+        "value": "GymMembers"
+      },
+      {
+        "type": "keyword",
+        "value": "GROUP"
+      },
+      {
+        "type": "keyword",
+        "value": "BY"
+      },
+      {
+        "type": "column",
+        "value": "membership_plan"
+      },
+      {
+        "type": "column",
+        "value": ")"
+      },
+      {
+        "type": "keyword",
+        "value": "SELECT"
+      },
+      {
+        "type": "column",
+        "value": "membership_plan,"
+      },
+      {
+        "type": "column",
+        "value": "plan_revenue"
+      },
+      {
+        "type": "keyword",
+        "value": "FROM"
+      },
+      {
+        "type": "column",
+        "value": "PlanRevenue"
+      },
+      {
+        "type": "keyword",
+        "value": "WHERE"
+      },
+      {
+        "type": "column",
+        "value": "plan_revenue"
+      },
+      {
+        "type": "column",
+        "value": ">="
+      },
+      {
+        "type": "column",
+        "value": "500.00;"
+      }
+    ]
+  },
+  {
+    "drillNumber": 1128,
+    "subcluster": "12.3 Filtering against CTE Aggregated Metrics",
+    "level": "Level 2 (Aggregated CTE Filters)",
+    "title": "Syntax #1128: Filter top-rated movies with an average rating of 4.5+ using a CTE",
+    "table": "MovieReviews",
+    "scenario": "Filter top-rated movies with an average rating of 4.5+ using a CTE.",
+    "businessObjective": "Filter top-rated movies with an average rating of 4.5+ using a CTE.",
+    "schemaSnippet": "MovieReviews relational schema",
+    "targetQuery": "WITH MovieScores AS (\n  SELECT movie_title, AVG(star_rating) AS avg_stars\n  FROM MovieReviews\n  GROUP BY movie_title\n)\nSELECT movie_title, avg_stars\nFROM MovieScores\nWHERE avg_stars >= 4.5;",
+    "syntaxBlueprint": "WITH DeptAvg AS (\n  SELECT department, AVG(salary) AS avg_sal\n  FROM Employees\n  GROUP BY department\n)\nSELECT department, avg_sal\nFROM DeptAvg\nWHERE avg_sal >= 70000;",
+    "syntaxRule": "Aggregating in a CTE allows you to filter calculated metrics in the outer WHERE clause cleanly without needing complex HAVING syntax.",
+    "syntaxTrap": "Trying to filter an alias in WHERE inside the same SELECT statement that created it; CTEs solve this by materializing the alias first.",
+    "eli5Story": "Subqueries & CTEs on MovieReviews: Filter top-rated movies with an average rating of 4.5+ using a CTE.",
+    "commonMistakes": "Forgetting to alias derived tables in FROM, writing multiple WITH keywords in multi-CTE pipelines, or suffering the NOT IN NULL trap.",
+    "learningOutcomes": "Mastered 12.3 Filtering against CTE Aggregated Metrics on MovieReviews.",
+    "challengeSlots": [
+      {
+        "type": "keyword",
+        "value": "WITH"
+      },
+      {
+        "type": "column",
+        "value": "MovieScores"
+      },
+      {
+        "type": "keyword",
+        "value": "AS"
+      },
+      {
+        "type": "column",
+        "value": "("
+      },
+      {
+        "type": "keyword",
+        "value": "SELECT"
+      },
+      {
+        "type": "column",
+        "value": "movie_title,"
+      },
+      {
+        "type": "column",
+        "value": "AVG(star_rating)"
+      },
+      {
+        "type": "keyword",
+        "value": "AS"
+      },
+      {
+        "type": "column",
+        "value": "avg_stars"
+      },
+      {
+        "type": "keyword",
+        "value": "FROM"
+      },
+      {
+        "type": "table",
+        "value": "MovieReviews"
+      },
+      {
+        "type": "keyword",
+        "value": "GROUP"
+      },
+      {
+        "type": "keyword",
+        "value": "BY"
+      },
+      {
+        "type": "column",
+        "value": "movie_title"
+      },
+      {
+        "type": "column",
+        "value": ")"
+      },
+      {
+        "type": "keyword",
+        "value": "SELECT"
+      },
+      {
+        "type": "column",
+        "value": "movie_title,"
+      },
+      {
+        "type": "column",
+        "value": "avg_stars"
+      },
+      {
+        "type": "keyword",
+        "value": "FROM"
+      },
+      {
+        "type": "column",
+        "value": "MovieScores"
+      },
+      {
+        "type": "keyword",
+        "value": "WHERE"
+      },
+      {
+        "type": "column",
+        "value": "avg_stars"
+      },
+      {
+        "type": "column",
+        "value": ">="
+      },
+      {
+        "type": "column",
+        "value": "4.5;"
+      }
+    ]
+  },
+  {
+    "drillNumber": 1129,
+    "subcluster": "12.3 Filtering against CTE Aggregated Metrics",
+    "level": "Level 2 (Aggregated CTE Filters)",
+    "title": "Syntax #1129: Filter airport hubs with average flight distance >= 1,000 miles via CTE",
+    "table": "FlightSchedule",
+    "scenario": "Filter airport hubs with average flight distance >= 1,000 miles via CTE.",
+    "businessObjective": "Filter airport hubs with average flight distance >= 1,000 miles via CTE.",
+    "schemaSnippet": "FlightSchedule relational schema",
+    "targetQuery": "WITH RouteAverages AS (\n  SELECT origin_airport, AVG(distance_miles) AS avg_dist\n  FROM FlightSchedule\n  GROUP BY origin_airport\n)\nSELECT origin_airport, avg_dist\nFROM RouteAverages\nWHERE avg_dist >= 1000.0;",
+    "syntaxBlueprint": "WITH DeptAvg AS (\n  SELECT department, AVG(salary) AS avg_sal\n  FROM Employees\n  GROUP BY department\n)\nSELECT department, avg_sal\nFROM DeptAvg\nWHERE avg_sal >= 70000;",
+    "syntaxRule": "Aggregating in a CTE allows you to filter calculated metrics in the outer WHERE clause cleanly without needing complex HAVING syntax.",
+    "syntaxTrap": "Trying to filter an alias in WHERE inside the same SELECT statement that created it; CTEs solve this by materializing the alias first.",
+    "eli5Story": "Subqueries & CTEs on FlightSchedule: Filter airport hubs with average flight distance >= 1,000 miles via CTE.",
+    "commonMistakes": "Forgetting to alias derived tables in FROM, writing multiple WITH keywords in multi-CTE pipelines, or suffering the NOT IN NULL trap.",
+    "learningOutcomes": "Mastered 12.3 Filtering against CTE Aggregated Metrics on FlightSchedule.",
+    "challengeSlots": [
+      {
+        "type": "keyword",
+        "value": "WITH"
+      },
+      {
+        "type": "column",
+        "value": "RouteAverages"
+      },
+      {
+        "type": "keyword",
+        "value": "AS"
+      },
+      {
+        "type": "column",
+        "value": "("
+      },
+      {
+        "type": "keyword",
+        "value": "SELECT"
+      },
+      {
+        "type": "column",
+        "value": "origin_airport,"
+      },
+      {
+        "type": "column",
+        "value": "AVG(distance_miles)"
+      },
+      {
+        "type": "keyword",
+        "value": "AS"
+      },
+      {
+        "type": "column",
+        "value": "avg_dist"
+      },
+      {
+        "type": "keyword",
+        "value": "FROM"
+      },
+      {
+        "type": "table",
+        "value": "FlightSchedule"
+      },
+      {
+        "type": "keyword",
+        "value": "GROUP"
+      },
+      {
+        "type": "keyword",
+        "value": "BY"
+      },
+      {
+        "type": "column",
+        "value": "origin_airport"
+      },
+      {
+        "type": "column",
+        "value": ")"
+      },
+      {
+        "type": "keyword",
+        "value": "SELECT"
+      },
+      {
+        "type": "column",
+        "value": "origin_airport,"
+      },
+      {
+        "type": "column",
+        "value": "avg_dist"
+      },
+      {
+        "type": "keyword",
+        "value": "FROM"
+      },
+      {
+        "type": "column",
+        "value": "RouteAverages"
+      },
+      {
+        "type": "keyword",
+        "value": "WHERE"
+      },
+      {
+        "type": "column",
+        "value": "avg_dist"
+      },
+      {
+        "type": "column",
+        "value": ">="
+      },
+      {
+        "type": "column",
+        "value": "1000.0;"
+      }
+    ]
+  },
+  {
+    "drillNumber": 1130,
+    "subcluster": "12.3 Filtering against CTE Aggregated Metrics",
+    "level": "Level 2 (Aggregated CTE Filters)",
+    "title": "Syntax #1130: Filter species categories where average patient weight >= 15kg using a CTE",
+    "table": "PetClinic",
+    "scenario": "Filter species categories where average patient weight >= 15kg using a CTE.",
+    "businessObjective": "Filter species categories where average patient weight >= 15kg using a CTE.",
+    "schemaSnippet": "PetClinic relational schema",
+    "targetQuery": "WITH SpeciesWeights AS (\n  SELECT species, AVG(weight_kg) AS avg_weight\n  FROM PetClinic\n  GROUP BY species\n)\nSELECT species, avg_weight\nFROM SpeciesWeights\nWHERE avg_weight >= 15.0;",
+    "syntaxBlueprint": "WITH DeptAvg AS (\n  SELECT department, AVG(salary) AS avg_sal\n  FROM Employees\n  GROUP BY department\n)\nSELECT department, avg_sal\nFROM DeptAvg\nWHERE avg_sal >= 70000;",
+    "syntaxRule": "Aggregating in a CTE allows you to filter calculated metrics in the outer WHERE clause cleanly without needing complex HAVING syntax.",
+    "syntaxTrap": "Trying to filter an alias in WHERE inside the same SELECT statement that created it; CTEs solve this by materializing the alias first.",
+    "eli5Story": "Subqueries & CTEs on PetClinic: Filter species categories where average patient weight >= 15kg using a CTE.",
+    "commonMistakes": "Forgetting to alias derived tables in FROM, writing multiple WITH keywords in multi-CTE pipelines, or suffering the NOT IN NULL trap.",
+    "learningOutcomes": "Mastered 12.3 Filtering against CTE Aggregated Metrics on PetClinic.",
+    "challengeSlots": [
+      {
+        "type": "keyword",
+        "value": "WITH"
+      },
+      {
+        "type": "column",
+        "value": "SpeciesWeights"
+      },
+      {
+        "type": "keyword",
+        "value": "AS"
+      },
+      {
+        "type": "column",
+        "value": "("
+      },
+      {
+        "type": "keyword",
+        "value": "SELECT"
+      },
+      {
+        "type": "column",
+        "value": "species,"
+      },
+      {
+        "type": "column",
+        "value": "AVG(weight_kg)"
+      },
+      {
+        "type": "keyword",
+        "value": "AS"
+      },
+      {
+        "type": "column",
+        "value": "avg_weight"
+      },
+      {
+        "type": "keyword",
+        "value": "FROM"
+      },
+      {
+        "type": "table",
+        "value": "PetClinic"
+      },
+      {
+        "type": "keyword",
+        "value": "GROUP"
+      },
+      {
+        "type": "keyword",
+        "value": "BY"
+      },
+      {
+        "type": "column",
+        "value": "species"
+      },
+      {
+        "type": "column",
+        "value": ")"
+      },
+      {
+        "type": "keyword",
+        "value": "SELECT"
+      },
+      {
+        "type": "column",
+        "value": "species,"
+      },
+      {
+        "type": "column",
+        "value": "avg_weight"
+      },
+      {
+        "type": "keyword",
+        "value": "FROM"
+      },
+      {
+        "type": "column",
+        "value": "SpeciesWeights"
+      },
+      {
+        "type": "keyword",
+        "value": "WHERE"
+      },
+      {
+        "type": "column",
+        "value": "avg_weight"
+      },
+      {
+        "type": "column",
+        "value": ">="
+      },
+      {
+        "type": "column",
+        "value": "15.0;"
+      }
+    ]
+  },
+  {
+    "drillNumber": 1131,
+    "subcluster": "12.4 Chaining Multiple CTEs (cte1, cte2 Pipelines)",
+    "level": "Level 3 (Multi-CTE Chaining)",
+    "title": "Syntax #1131: Chain two CTEs: first filter active students, then compute major averages from the first CTE",
+    "table": "Students",
+    "scenario": "Chain two CTEs: first filter active students, then compute major averages from the first CTE.",
+    "businessObjective": "Chain two CTEs: first filter active students, then compute major averages from the first CTE.",
+    "schemaSnippet": "Students relational schema",
+    "targetQuery": "WITH ActiveStudents AS (\n  SELECT student_id, full_name, gpa, major\n  FROM Students\n  WHERE enrolled_year >= 2023\n),\nMajorAverages AS (\n  SELECT major, AVG(gpa) AS major_avg_gpa\n  FROM ActiveStudents\n  GROUP BY major\n)\nSELECT major, major_avg_gpa\nFROM MajorAverages\nWHERE major_avg_gpa >= 3.5;",
+    "syntaxBlueprint": "WITH FirstCTE AS (\n  SELECT col1, metric FROM TableA WHERE condition\n),\nSecondCTE AS (\n  SELECT col1, AVG(metric) AS avg_m FROM FirstCTE GROUP BY col1\n)\nSELECT *\nFROM SecondCTE;",
+    "syntaxRule": "Chain multiple CTEs by separating them with a single comma: 'WITH cte1 AS (...), cte2 AS (...)'. Never repeat the 'WITH' keyword!",
+    "syntaxTrap": "Writing 'WITH cte1 AS (...) WITH cte2 AS (...)'. The WITH keyword is written only once at the very top.",
+    "eli5Story": "Subqueries & CTEs on Students: Chain two CTEs: first filter active students, then compute major averages from the first CTE.",
+    "commonMistakes": "Forgetting to alias derived tables in FROM, writing multiple WITH keywords in multi-CTE pipelines, or suffering the NOT IN NULL trap.",
+    "learningOutcomes": "Mastered 12.4 Chaining Multiple CTEs (cte1, cte2 Pipelines) on Students.",
+    "challengeSlots": [
+      {
+        "type": "keyword",
+        "value": "WITH"
+      },
+      {
+        "type": "table",
+        "value": "ActiveStudents"
+      },
+      {
+        "type": "keyword",
+        "value": "AS"
+      },
+      {
+        "type": "column",
+        "value": "("
+      },
+      {
+        "type": "keyword",
+        "value": "SELECT"
+      },
+      {
+        "type": "column",
+        "value": "student_id,"
+      },
+      {
+        "type": "column",
+        "value": "full_name,"
+      },
+      {
+        "type": "column",
+        "value": "gpa,"
+      },
+      {
+        "type": "column",
+        "value": "major"
+      },
+      {
+        "type": "keyword",
+        "value": "FROM"
+      },
+      {
+        "type": "table",
+        "value": "Students"
+      },
+      {
+        "type": "keyword",
+        "value": "WHERE"
+      },
+      {
+        "type": "column",
+        "value": "enrolled_year"
+      },
+      {
+        "type": "column",
+        "value": ">="
+      },
+      {
+        "type": "column",
+        "value": "2023"
+      },
+      {
+        "type": "column",
+        "value": "),"
+      },
+      {
+        "type": "column",
+        "value": "MajorAverages"
+      },
+      {
+        "type": "keyword",
+        "value": "AS"
+      },
+      {
+        "type": "column",
+        "value": "("
+      },
+      {
+        "type": "keyword",
+        "value": "SELECT"
+      },
+      {
+        "type": "column",
+        "value": "major,"
+      },
+      {
+        "type": "column",
+        "value": "AVG(gpa)"
+      },
+      {
+        "type": "keyword",
+        "value": "AS"
+      },
+      {
+        "type": "column",
+        "value": "major_avg_gpa"
+      },
+      {
+        "type": "keyword",
+        "value": "FROM"
+      },
+      {
+        "type": "table",
+        "value": "ActiveStudents"
+      },
+      {
+        "type": "keyword",
+        "value": "GROUP"
+      },
+      {
+        "type": "keyword",
+        "value": "BY"
+      },
+      {
+        "type": "column",
+        "value": "major"
+      },
+      {
+        "type": "column",
+        "value": ")"
+      },
+      {
+        "type": "keyword",
+        "value": "SELECT"
+      },
+      {
+        "type": "column",
+        "value": "major,"
+      },
+      {
+        "type": "column",
+        "value": "major_avg_gpa"
+      },
+      {
+        "type": "keyword",
+        "value": "FROM"
+      },
+      {
+        "type": "column",
+        "value": "MajorAverages"
+      },
+      {
+        "type": "keyword",
+        "value": "WHERE"
+      },
+      {
+        "type": "column",
+        "value": "major_avg_gpa"
+      },
+      {
+        "type": "column",
+        "value": ">="
+      },
+      {
+        "type": "column",
+        "value": "3.5;"
+      }
+    ]
+  },
+  {
+    "drillNumber": 1132,
+    "subcluster": "12.4 Chaining Multiple CTEs (cte1, cte2 Pipelines)",
+    "level": "Level 3 (Multi-CTE Chaining)",
+    "title": "Syntax #1132: Chain two CTEs: filter recent publications, then calculate author average prices",
+    "table": "Books",
+    "scenario": "Chain two CTEs: filter recent publications, then calculate author average prices.",
+    "businessObjective": "Chain two CTEs: filter recent publications, then calculate author average prices.",
+    "schemaSnippet": "Books relational schema",
+    "targetQuery": "WITH RecentBooks AS (\n  SELECT title, author, price\n  FROM Books\n  WHERE published_date >= '2020-01-01'\n),\nAuthorPricing AS (\n  SELECT author, AVG(price) AS avg_author_price\n  FROM RecentBooks\n  GROUP BY author\n)\nSELECT author, avg_author_price\nFROM AuthorPricing\nORDER BY avg_author_price DESC;",
+    "syntaxBlueprint": "WITH FirstCTE AS (\n  SELECT col1, metric FROM TableA WHERE condition\n),\nSecondCTE AS (\n  SELECT col1, AVG(metric) AS avg_m FROM FirstCTE GROUP BY col1\n)\nSELECT *\nFROM SecondCTE;",
+    "syntaxRule": "Chain multiple CTEs by separating them with a single comma: 'WITH cte1 AS (...), cte2 AS (...)'. Never repeat the 'WITH' keyword!",
+    "syntaxTrap": "Writing 'WITH cte1 AS (...) WITH cte2 AS (...)'. The WITH keyword is written only once at the very top.",
+    "eli5Story": "Subqueries & CTEs on Books: Chain two CTEs: filter recent publications, then calculate author average prices.",
+    "commonMistakes": "Forgetting to alias derived tables in FROM, writing multiple WITH keywords in multi-CTE pipelines, or suffering the NOT IN NULL trap.",
+    "learningOutcomes": "Mastered 12.4 Chaining Multiple CTEs (cte1, cte2 Pipelines) on Books.",
+    "challengeSlots": [
+      {
+        "type": "keyword",
+        "value": "WITH"
+      },
+      {
+        "type": "table",
+        "value": "RecentBooks"
+      },
+      {
+        "type": "keyword",
+        "value": "AS"
+      },
+      {
+        "type": "column",
+        "value": "("
+      },
+      {
+        "type": "keyword",
+        "value": "SELECT"
+      },
+      {
+        "type": "column",
+        "value": "title,"
+      },
+      {
+        "type": "column",
+        "value": "author,"
+      },
+      {
+        "type": "column",
+        "value": "price"
+      },
+      {
+        "type": "keyword",
+        "value": "FROM"
+      },
+      {
+        "type": "table",
+        "value": "Books"
+      },
+      {
+        "type": "keyword",
+        "value": "WHERE"
+      },
+      {
+        "type": "column",
+        "value": "published_date"
+      },
+      {
+        "type": "column",
+        "value": ">="
+      },
+      {
+        "type": "column",
+        "value": "'2020-01-01'"
+      },
+      {
+        "type": "column",
+        "value": "),"
+      },
+      {
+        "type": "column",
+        "value": "AuthorPricing"
+      },
+      {
+        "type": "keyword",
+        "value": "AS"
+      },
+      {
+        "type": "column",
+        "value": "("
+      },
+      {
+        "type": "keyword",
+        "value": "SELECT"
+      },
+      {
+        "type": "column",
+        "value": "author,"
+      },
+      {
+        "type": "column",
+        "value": "AVG(price)"
+      },
+      {
+        "type": "keyword",
+        "value": "AS"
+      },
+      {
+        "type": "column",
+        "value": "avg_author_price"
+      },
+      {
+        "type": "keyword",
+        "value": "FROM"
+      },
+      {
+        "type": "table",
+        "value": "RecentBooks"
+      },
+      {
+        "type": "keyword",
+        "value": "GROUP"
+      },
+      {
+        "type": "keyword",
+        "value": "BY"
+      },
+      {
+        "type": "column",
+        "value": "author"
+      },
+      {
+        "type": "column",
+        "value": ")"
+      },
+      {
+        "type": "keyword",
+        "value": "SELECT"
+      },
+      {
+        "type": "column",
+        "value": "author,"
+      },
+      {
+        "type": "column",
+        "value": "avg_author_price"
+      },
+      {
+        "type": "keyword",
+        "value": "FROM"
+      },
+      {
+        "type": "column",
+        "value": "AuthorPricing"
+      },
+      {
+        "type": "keyword",
+        "value": "ORDER"
+      },
+      {
+        "type": "keyword",
+        "value": "BY"
+      },
+      {
+        "type": "column",
+        "value": "avg_author_price"
+      },
+      {
+        "type": "keyword",
+        "value": "DESC;"
+      }
+    ]
+  },
+  {
+    "drillNumber": 1133,
+    "subcluster": "12.4 Chaining Multiple CTEs (cte1, cte2 Pipelines)",
+    "level": "Level 3 (Multi-CTE Chaining)",
+    "title": "Syntax #1133: Chain two CTEs to compare individual engineers against engineering's average salary",
+    "table": "Employees",
+    "scenario": "Chain two CTEs to compare individual engineers against engineering's average salary.",
+    "businessObjective": "Chain two CTEs to compare individual engineers against engineering's average salary.",
+    "schemaSnippet": "Employees relational schema",
+    "targetQuery": "WITH TechStaff AS (\n  SELECT first_name, department, salary\n  FROM Employees\n  WHERE department = 'Engineering'\n),\nDeptStats AS (\n  SELECT AVG(salary) AS eng_avg_salary\n  FROM TechStaff\n)\nSELECT first_name, salary\nFROM TechStaff, DeptStats\nWHERE salary > eng_avg_salary;",
+    "syntaxBlueprint": "WITH FirstCTE AS (\n  SELECT col1, metric FROM TableA WHERE condition\n),\nSecondCTE AS (\n  SELECT col1, AVG(metric) AS avg_m FROM FirstCTE GROUP BY col1\n)\nSELECT *\nFROM SecondCTE;",
+    "syntaxRule": "Chain multiple CTEs by separating them with a single comma: 'WITH cte1 AS (...), cte2 AS (...)'. Never repeat the 'WITH' keyword!",
+    "syntaxTrap": "Writing 'WITH cte1 AS (...) WITH cte2 AS (...)'. The WITH keyword is written only once at the very top.",
+    "eli5Story": "Subqueries & CTEs on Employees: Chain two CTEs to compare individual engineers against engineering's average salary.",
+    "commonMistakes": "Forgetting to alias derived tables in FROM, writing multiple WITH keywords in multi-CTE pipelines, or suffering the NOT IN NULL trap.",
+    "learningOutcomes": "Mastered 12.4 Chaining Multiple CTEs (cte1, cte2 Pipelines) on Employees.",
+    "challengeSlots": [
+      {
+        "type": "keyword",
+        "value": "WITH"
+      },
+      {
+        "type": "column",
+        "value": "TechStaff"
+      },
+      {
+        "type": "keyword",
+        "value": "AS"
+      },
+      {
+        "type": "column",
+        "value": "("
+      },
+      {
+        "type": "keyword",
+        "value": "SELECT"
+      },
+      {
+        "type": "column",
+        "value": "first_name,"
+      },
+      {
+        "type": "column",
+        "value": "department,"
+      },
+      {
+        "type": "column",
+        "value": "salary"
+      },
+      {
+        "type": "keyword",
+        "value": "FROM"
+      },
+      {
+        "type": "table",
+        "value": "Employees"
+      },
+      {
+        "type": "keyword",
+        "value": "WHERE"
+      },
+      {
+        "type": "column",
+        "value": "department"
+      },
+      {
+        "type": "column",
+        "value": "="
+      },
+      {
+        "type": "column",
+        "value": "'Engineering'"
+      },
+      {
+        "type": "column",
+        "value": "),"
+      },
+      {
+        "type": "column",
+        "value": "DeptStats"
+      },
+      {
+        "type": "keyword",
+        "value": "AS"
+      },
+      {
+        "type": "column",
+        "value": "("
+      },
+      {
+        "type": "keyword",
+        "value": "SELECT"
+      },
+      {
+        "type": "column",
+        "value": "AVG(salary)"
+      },
+      {
+        "type": "keyword",
+        "value": "AS"
+      },
+      {
+        "type": "column",
+        "value": "eng_avg_salary"
+      },
+      {
+        "type": "keyword",
+        "value": "FROM"
+      },
+      {
+        "type": "column",
+        "value": "TechStaff"
+      },
+      {
+        "type": "column",
+        "value": ")"
+      },
+      {
+        "type": "keyword",
+        "value": "SELECT"
+      },
+      {
+        "type": "column",
+        "value": "first_name,"
+      },
+      {
+        "type": "column",
+        "value": "salary"
+      },
+      {
+        "type": "keyword",
+        "value": "FROM"
+      },
+      {
+        "type": "column",
+        "value": "TechStaff,"
+      },
+      {
+        "type": "column",
+        "value": "DeptStats"
+      },
+      {
+        "type": "keyword",
+        "value": "WHERE"
+      },
+      {
+        "type": "column",
+        "value": "salary"
+      },
+      {
+        "type": "column",
+        "value": ">"
+      },
+      {
+        "type": "column",
+        "value": "eng_avg_salary;"
+      }
+    ]
+  },
+  {
+    "drillNumber": 1134,
+    "subcluster": "12.4 Chaining Multiple CTEs (cte1, cte2 Pipelines)",
+    "level": "Level 3 (Multi-CTE Chaining)",
+    "title": "Syntax #1134: Chain two CTEs: filter in-stock grocery items, then aggregate category valuations",
+    "table": "GroceryItems",
+    "scenario": "Chain two CTEs: filter in-stock grocery items, then aggregate category valuations.",
+    "businessObjective": "Chain two CTEs: filter in-stock grocery items, then aggregate category valuations.",
+    "schemaSnippet": "GroceryItems relational schema",
+    "targetQuery": "WITH InStockItems AS (\n  SELECT item_name, category, unit_price, stock_qty\n  FROM GroceryItems\n  WHERE stock_qty > 0\n),\nCategoryValuation AS (\n  SELECT category, SUM(stock_qty * unit_price) AS total_val\n  FROM InStockItems\n  GROUP BY category\n)\nSELECT category, total_val\nFROM CategoryValuation\nWHERE total_val > 500;",
+    "syntaxBlueprint": "WITH FirstCTE AS (\n  SELECT col1, metric FROM TableA WHERE condition\n),\nSecondCTE AS (\n  SELECT col1, AVG(metric) AS avg_m FROM FirstCTE GROUP BY col1\n)\nSELECT *\nFROM SecondCTE;",
+    "syntaxRule": "Chain multiple CTEs by separating them with a single comma: 'WITH cte1 AS (...), cte2 AS (...)'. Never repeat the 'WITH' keyword!",
+    "syntaxTrap": "Writing 'WITH cte1 AS (...) WITH cte2 AS (...)'. The WITH keyword is written only once at the very top.",
+    "eli5Story": "Subqueries & CTEs on GroceryItems: Chain two CTEs: filter in-stock grocery items, then aggregate category valuations.",
+    "commonMistakes": "Forgetting to alias derived tables in FROM, writing multiple WITH keywords in multi-CTE pipelines, or suffering the NOT IN NULL trap.",
+    "learningOutcomes": "Mastered 12.4 Chaining Multiple CTEs (cte1, cte2 Pipelines) on GroceryItems.",
+    "challengeSlots": [
+      {
+        "type": "keyword",
+        "value": "WITH"
+      },
+      {
+        "type": "column",
+        "value": "InStockItems"
+      },
+      {
+        "type": "keyword",
+        "value": "AS"
+      },
+      {
+        "type": "column",
+        "value": "("
+      },
+      {
+        "type": "keyword",
+        "value": "SELECT"
+      },
+      {
+        "type": "column",
+        "value": "item_name,"
+      },
+      {
+        "type": "column",
+        "value": "category,"
+      },
+      {
+        "type": "column",
+        "value": "unit_price,"
+      },
+      {
+        "type": "column",
+        "value": "stock_qty"
+      },
+      {
+        "type": "keyword",
+        "value": "FROM"
+      },
+      {
+        "type": "table",
+        "value": "GroceryItems"
+      },
+      {
+        "type": "keyword",
+        "value": "WHERE"
+      },
+      {
+        "type": "column",
+        "value": "stock_qty"
+      },
+      {
+        "type": "column",
+        "value": ">"
+      },
+      {
+        "type": "column",
+        "value": "0"
+      },
+      {
+        "type": "column",
+        "value": "),"
+      },
+      {
+        "type": "column",
+        "value": "CategoryValuation"
+      },
+      {
+        "type": "keyword",
+        "value": "AS"
+      },
+      {
+        "type": "column",
+        "value": "("
+      },
+      {
+        "type": "keyword",
+        "value": "SELECT"
+      },
+      {
+        "type": "column",
+        "value": "category,"
+      },
+      {
+        "type": "column",
+        "value": "SUM(stock_qty"
+      },
+      {
+        "type": "column",
+        "value": "*"
+      },
+      {
+        "type": "column",
+        "value": "unit_price)"
+      },
+      {
+        "type": "keyword",
+        "value": "AS"
+      },
+      {
+        "type": "column",
+        "value": "total_val"
+      },
+      {
+        "type": "keyword",
+        "value": "FROM"
+      },
+      {
+        "type": "column",
+        "value": "InStockItems"
+      },
+      {
+        "type": "keyword",
+        "value": "GROUP"
+      },
+      {
+        "type": "keyword",
+        "value": "BY"
+      },
+      {
+        "type": "column",
+        "value": "category"
+      },
+      {
+        "type": "column",
+        "value": ")"
+      },
+      {
+        "type": "keyword",
+        "value": "SELECT"
+      },
+      {
+        "type": "column",
+        "value": "category,"
+      },
+      {
+        "type": "column",
+        "value": "total_val"
+      },
+      {
+        "type": "keyword",
+        "value": "FROM"
+      },
+      {
+        "type": "column",
+        "value": "CategoryValuation"
+      },
+      {
+        "type": "keyword",
+        "value": "WHERE"
+      },
+      {
+        "type": "column",
+        "value": "total_val"
+      },
+      {
+        "type": "column",
+        "value": ">"
+      },
+      {
+        "type": "column",
+        "value": "500;"
+      }
+    ]
+  },
+  {
+    "drillNumber": 1135,
+    "subcluster": "12.4 Chaining Multiple CTEs (cte1, cte2 Pipelines)",
+    "level": "Level 3 (Multi-CTE Chaining)",
+    "title": "Syntax #1135: Chain two CTEs: filter completed orders, then rank top customers by revenue",
+    "table": "Orders",
+    "scenario": "Chain two CTEs: filter completed orders, then rank top customers by revenue.",
+    "businessObjective": "Chain two CTEs: filter completed orders, then rank top customers by revenue.",
+    "schemaSnippet": "Orders relational schema",
+    "targetQuery": "WITH ValidOrders AS (\n  SELECT order_id, customer_name, total_amount\n  FROM Orders\n  WHERE status = 'Completed'\n),\nTopCustomers AS (\n  SELECT customer_name, SUM(total_amount) AS customer_rev\n  FROM ValidOrders\n  GROUP BY customer_name\n)\nSELECT customer_name, customer_rev\nFROM TopCustomers\nORDER BY customer_rev DESC\nLIMIT 5;",
+    "syntaxBlueprint": "WITH FirstCTE AS (\n  SELECT col1, metric FROM TableA WHERE condition\n),\nSecondCTE AS (\n  SELECT col1, AVG(metric) AS avg_m FROM FirstCTE GROUP BY col1\n)\nSELECT *\nFROM SecondCTE;",
+    "syntaxRule": "Chain multiple CTEs by separating them with a single comma: 'WITH cte1 AS (...), cte2 AS (...)'. Never repeat the 'WITH' keyword!",
+    "syntaxTrap": "Writing 'WITH cte1 AS (...) WITH cte2 AS (...)'. The WITH keyword is written only once at the very top.",
+    "eli5Story": "Subqueries & CTEs on Orders: Chain two CTEs: filter completed orders, then rank top customers by revenue.",
+    "commonMistakes": "Forgetting to alias derived tables in FROM, writing multiple WITH keywords in multi-CTE pipelines, or suffering the NOT IN NULL trap.",
+    "learningOutcomes": "Mastered 12.4 Chaining Multiple CTEs (cte1, cte2 Pipelines) on Orders.",
+    "challengeSlots": [
+      {
+        "type": "keyword",
+        "value": "WITH"
+      },
+      {
+        "type": "table",
+        "value": "ValidOrders"
+      },
+      {
+        "type": "keyword",
+        "value": "AS"
+      },
+      {
+        "type": "column",
+        "value": "("
+      },
+      {
+        "type": "keyword",
+        "value": "SELECT"
+      },
+      {
+        "type": "column",
+        "value": "order_id,"
+      },
+      {
+        "type": "column",
+        "value": "customer_name,"
+      },
+      {
+        "type": "column",
+        "value": "total_amount"
+      },
+      {
+        "type": "keyword",
+        "value": "FROM"
+      },
+      {
+        "type": "table",
+        "value": "Orders"
+      },
+      {
+        "type": "keyword",
+        "value": "WHERE"
+      },
+      {
+        "type": "column",
+        "value": "status"
+      },
+      {
+        "type": "column",
+        "value": "="
+      },
+      {
+        "type": "column",
+        "value": "'Completed'"
+      },
+      {
+        "type": "column",
+        "value": "),"
+      },
+      {
+        "type": "column",
+        "value": "TopCustomers"
+      },
+      {
+        "type": "keyword",
+        "value": "AS"
+      },
+      {
+        "type": "column",
+        "value": "("
+      },
+      {
+        "type": "keyword",
+        "value": "SELECT"
+      },
+      {
+        "type": "column",
+        "value": "customer_name,"
+      },
+      {
+        "type": "column",
+        "value": "SUM(total_amount)"
+      },
+      {
+        "type": "keyword",
+        "value": "AS"
+      },
+      {
+        "type": "column",
+        "value": "customer_rev"
+      },
+      {
+        "type": "keyword",
+        "value": "FROM"
+      },
+      {
+        "type": "table",
+        "value": "ValidOrders"
+      },
+      {
+        "type": "keyword",
+        "value": "GROUP"
+      },
+      {
+        "type": "keyword",
+        "value": "BY"
+      },
+      {
+        "type": "column",
+        "value": "customer_name"
+      },
+      {
+        "type": "column",
+        "value": ")"
+      },
+      {
+        "type": "keyword",
+        "value": "SELECT"
+      },
+      {
+        "type": "column",
+        "value": "customer_name,"
+      },
+      {
+        "type": "column",
+        "value": "customer_rev"
+      },
+      {
+        "type": "keyword",
+        "value": "FROM"
+      },
+      {
+        "type": "column",
+        "value": "TopCustomers"
+      },
+      {
+        "type": "keyword",
+        "value": "ORDER"
+      },
+      {
+        "type": "keyword",
+        "value": "BY"
+      },
+      {
+        "type": "column",
+        "value": "customer_rev"
+      },
+      {
+        "type": "keyword",
+        "value": "DESC"
+      },
+      {
+        "type": "keyword",
+        "value": "LIMIT"
+      },
+      {
+        "type": "column",
+        "value": "5;"
+      }
+    ]
+  },
+  {
+    "drillNumber": 1136,
+    "subcluster": "12.4 Chaining Multiple CTEs (cte1, cte2 Pipelines)",
+    "level": "Level 3 (Multi-CTE Chaining)",
+    "title": "Syntax #1136: Chain two CTEs: isolate modern music tracks, then calculate average genre duration",
+    "table": "MusicTracks",
+    "scenario": "Chain two CTEs: isolate modern music tracks, then calculate average genre duration.",
+    "businessObjective": "Chain two CTEs: isolate modern music tracks, then calculate average genre duration.",
+    "schemaSnippet": "MusicTracks relational schema",
+    "targetQuery": "WITH ModernTracks AS (\n  SELECT track_title, genre, duration_seconds\n  FROM MusicTracks\n  WHERE release_date >= '2020-01-01'\n),\nGenreLengths AS (\n  SELECT genre, AVG(duration_seconds) AS avg_sec\n  FROM ModernTracks\n  GROUP BY genre\n)\nSELECT genre, avg_sec\nFROM GenreLengths\nWHERE avg_sec > 200;",
+    "syntaxBlueprint": "WITH FirstCTE AS (\n  SELECT col1, metric FROM TableA WHERE condition\n),\nSecondCTE AS (\n  SELECT col1, AVG(metric) AS avg_m FROM FirstCTE GROUP BY col1\n)\nSELECT *\nFROM SecondCTE;",
+    "syntaxRule": "Chain multiple CTEs by separating them with a single comma: 'WITH cte1 AS (...), cte2 AS (...)'. Never repeat the 'WITH' keyword!",
+    "syntaxTrap": "Writing 'WITH cte1 AS (...) WITH cte2 AS (...)'. The WITH keyword is written only once at the very top.",
+    "eli5Story": "Subqueries & CTEs on MusicTracks: Chain two CTEs: isolate modern music tracks, then calculate average genre duration.",
+    "commonMistakes": "Forgetting to alias derived tables in FROM, writing multiple WITH keywords in multi-CTE pipelines, or suffering the NOT IN NULL trap.",
+    "learningOutcomes": "Mastered 12.4 Chaining Multiple CTEs (cte1, cte2 Pipelines) on MusicTracks.",
+    "challengeSlots": [
+      {
+        "type": "keyword",
+        "value": "WITH"
+      },
+      {
+        "type": "column",
+        "value": "ModernTracks"
+      },
+      {
+        "type": "keyword",
+        "value": "AS"
+      },
+      {
+        "type": "column",
+        "value": "("
+      },
+      {
+        "type": "keyword",
+        "value": "SELECT"
+      },
+      {
+        "type": "column",
+        "value": "track_title,"
+      },
+      {
+        "type": "column",
+        "value": "genre,"
+      },
+      {
+        "type": "column",
+        "value": "duration_seconds"
+      },
+      {
+        "type": "keyword",
+        "value": "FROM"
+      },
+      {
+        "type": "table",
+        "value": "MusicTracks"
+      },
+      {
+        "type": "keyword",
+        "value": "WHERE"
+      },
+      {
+        "type": "column",
+        "value": "release_date"
+      },
+      {
+        "type": "column",
+        "value": ">="
+      },
+      {
+        "type": "column",
+        "value": "'2020-01-01'"
+      },
+      {
+        "type": "column",
+        "value": "),"
+      },
+      {
+        "type": "column",
+        "value": "GenreLengths"
+      },
+      {
+        "type": "keyword",
+        "value": "AS"
+      },
+      {
+        "type": "column",
+        "value": "("
+      },
+      {
+        "type": "keyword",
+        "value": "SELECT"
+      },
+      {
+        "type": "column",
+        "value": "genre,"
+      },
+      {
+        "type": "column",
+        "value": "AVG(duration_seconds)"
+      },
+      {
+        "type": "keyword",
+        "value": "AS"
+      },
+      {
+        "type": "column",
+        "value": "avg_sec"
+      },
+      {
+        "type": "keyword",
+        "value": "FROM"
+      },
+      {
+        "type": "column",
+        "value": "ModernTracks"
+      },
+      {
+        "type": "keyword",
+        "value": "GROUP"
+      },
+      {
+        "type": "keyword",
+        "value": "BY"
+      },
+      {
+        "type": "column",
+        "value": "genre"
+      },
+      {
+        "type": "column",
+        "value": ")"
+      },
+      {
+        "type": "keyword",
+        "value": "SELECT"
+      },
+      {
+        "type": "column",
+        "value": "genre,"
+      },
+      {
+        "type": "column",
+        "value": "avg_sec"
+      },
+      {
+        "type": "keyword",
+        "value": "FROM"
+      },
+      {
+        "type": "column",
+        "value": "GenreLengths"
+      },
+      {
+        "type": "keyword",
+        "value": "WHERE"
+      },
+      {
+        "type": "column",
+        "value": "avg_sec"
+      },
+      {
+        "type": "column",
+        "value": ">"
+      },
+      {
+        "type": "column",
+        "value": "200;"
+      }
+    ]
+  },
+  {
+    "drillNumber": 1137,
+    "subcluster": "12.4 Chaining Multiple CTEs (cte1, cte2 Pipelines)",
+    "level": "Level 3 (Multi-CTE Chaining)",
+    "title": "Syntax #1137: Chain two CTEs: isolate active gym members, then compute plan attendance averages",
+    "table": "GymMembers",
+    "scenario": "Chain two CTEs: isolate active gym members, then compute plan attendance averages.",
+    "businessObjective": "Chain two CTEs: isolate active gym members, then compute plan attendance averages.",
+    "schemaSnippet": "GymMembers relational schema",
+    "targetQuery": "WITH ActiveMembers AS (\n  SELECT member_name, membership_plan, attendance_days\n  FROM GymMembers\n  WHERE attendance_days >= 10\n),\nPlanAverages AS (\n  SELECT membership_plan, AVG(attendance_days) AS avg_days\n  FROM ActiveMembers\n  GROUP BY membership_plan\n)\nSELECT membership_plan, avg_days\nFROM PlanAverages;",
+    "syntaxBlueprint": "WITH FirstCTE AS (\n  SELECT col1, metric FROM TableA WHERE condition\n),\nSecondCTE AS (\n  SELECT col1, AVG(metric) AS avg_m FROM FirstCTE GROUP BY col1\n)\nSELECT *\nFROM SecondCTE;",
+    "syntaxRule": "Chain multiple CTEs by separating them with a single comma: 'WITH cte1 AS (...), cte2 AS (...)'. Never repeat the 'WITH' keyword!",
+    "syntaxTrap": "Writing 'WITH cte1 AS (...) WITH cte2 AS (...)'. The WITH keyword is written only once at the very top.",
+    "eli5Story": "Subqueries & CTEs on GymMembers: Chain two CTEs: isolate active gym members, then compute plan attendance averages.",
+    "commonMistakes": "Forgetting to alias derived tables in FROM, writing multiple WITH keywords in multi-CTE pipelines, or suffering the NOT IN NULL trap.",
+    "learningOutcomes": "Mastered 12.4 Chaining Multiple CTEs (cte1, cte2 Pipelines) on GymMembers.",
+    "challengeSlots": [
+      {
+        "type": "keyword",
+        "value": "WITH"
+      },
+      {
+        "type": "column",
+        "value": "ActiveMembers"
+      },
+      {
+        "type": "keyword",
+        "value": "AS"
+      },
+      {
+        "type": "column",
+        "value": "("
+      },
+      {
+        "type": "keyword",
+        "value": "SELECT"
+      },
+      {
+        "type": "column",
+        "value": "member_name,"
+      },
+      {
+        "type": "column",
+        "value": "membership_plan,"
+      },
+      {
+        "type": "column",
+        "value": "attendance_days"
+      },
+      {
+        "type": "keyword",
+        "value": "FROM"
+      },
+      {
+        "type": "table",
+        "value": "GymMembers"
+      },
+      {
+        "type": "keyword",
+        "value": "WHERE"
+      },
+      {
+        "type": "column",
+        "value": "attendance_days"
+      },
+      {
+        "type": "column",
+        "value": ">="
+      },
+      {
+        "type": "column",
+        "value": "10"
+      },
+      {
+        "type": "column",
+        "value": "),"
+      },
+      {
+        "type": "column",
+        "value": "PlanAverages"
+      },
+      {
+        "type": "keyword",
+        "value": "AS"
+      },
+      {
+        "type": "column",
+        "value": "("
+      },
+      {
+        "type": "keyword",
+        "value": "SELECT"
+      },
+      {
+        "type": "column",
+        "value": "membership_plan,"
+      },
+      {
+        "type": "column",
+        "value": "AVG(attendance_days)"
+      },
+      {
+        "type": "keyword",
+        "value": "AS"
+      },
+      {
+        "type": "column",
+        "value": "avg_days"
+      },
+      {
+        "type": "keyword",
+        "value": "FROM"
+      },
+      {
+        "type": "column",
+        "value": "ActiveMembers"
+      },
+      {
+        "type": "keyword",
+        "value": "GROUP"
+      },
+      {
+        "type": "keyword",
+        "value": "BY"
+      },
+      {
+        "type": "column",
+        "value": "membership_plan"
+      },
+      {
+        "type": "column",
+        "value": ")"
+      },
+      {
+        "type": "keyword",
+        "value": "SELECT"
+      },
+      {
+        "type": "column",
+        "value": "membership_plan,"
+      },
+      {
+        "type": "column",
+        "value": "avg_days"
+      },
+      {
+        "type": "keyword",
+        "value": "FROM"
+      },
+      {
+        "type": "column",
+        "value": "PlanAverages;"
+      }
+    ]
+  },
+  {
+    "drillNumber": 1138,
+    "subcluster": "12.4 Chaining Multiple CTEs (cte1, cte2 Pipelines)",
+    "level": "Level 3 (Multi-CTE Chaining)",
+    "title": "Syntax #1138: Chain two CTEs: filter non-null reviews, then compute genre rating averages",
+    "table": "MovieReviews",
+    "scenario": "Chain two CTEs: filter non-null reviews, then compute genre rating averages.",
+    "businessObjective": "Chain two CTEs: filter non-null reviews, then compute genre rating averages.",
+    "schemaSnippet": "MovieReviews relational schema",
+    "targetQuery": "WITH ValidReviews AS (\n  SELECT movie_title, star_rating, genre\n  FROM MovieReviews\n  WHERE star_rating IS NOT NULL\n),\nGenreRatings AS (\n  SELECT genre, AVG(star_rating) AS avg_rating\n  FROM ValidReviews\n  GROUP BY genre\n)\nSELECT genre, avg_rating\nFROM GenreRatings\nORDER BY avg_rating DESC;",
+    "syntaxBlueprint": "WITH FirstCTE AS (\n  SELECT col1, metric FROM TableA WHERE condition\n),\nSecondCTE AS (\n  SELECT col1, AVG(metric) AS avg_m FROM FirstCTE GROUP BY col1\n)\nSELECT *\nFROM SecondCTE;",
+    "syntaxRule": "Chain multiple CTEs by separating them with a single comma: 'WITH cte1 AS (...), cte2 AS (...)'. Never repeat the 'WITH' keyword!",
+    "syntaxTrap": "Writing 'WITH cte1 AS (...) WITH cte2 AS (...)'. The WITH keyword is written only once at the very top.",
+    "eli5Story": "Subqueries & CTEs on MovieReviews: Chain two CTEs: filter non-null reviews, then compute genre rating averages.",
+    "commonMistakes": "Forgetting to alias derived tables in FROM, writing multiple WITH keywords in multi-CTE pipelines, or suffering the NOT IN NULL trap.",
+    "learningOutcomes": "Mastered 12.4 Chaining Multiple CTEs (cte1, cte2 Pipelines) on MovieReviews.",
+    "challengeSlots": [
+      {
+        "type": "keyword",
+        "value": "WITH"
+      },
+      {
+        "type": "column",
+        "value": "ValidReviews"
+      },
+      {
+        "type": "keyword",
+        "value": "AS"
+      },
+      {
+        "type": "column",
+        "value": "("
+      },
+      {
+        "type": "keyword",
+        "value": "SELECT"
+      },
+      {
+        "type": "column",
+        "value": "movie_title,"
+      },
+      {
+        "type": "column",
+        "value": "star_rating,"
+      },
+      {
+        "type": "column",
+        "value": "genre"
+      },
+      {
+        "type": "keyword",
+        "value": "FROM"
+      },
+      {
+        "type": "table",
+        "value": "MovieReviews"
+      },
+      {
+        "type": "keyword",
+        "value": "WHERE"
+      },
+      {
+        "type": "column",
+        "value": "star_rating"
+      },
+      {
+        "type": "keyword",
+        "value": "IS"
+      },
+      {
+        "type": "keyword",
+        "value": "NOT"
+      },
+      {
+        "type": "keyword",
+        "value": "NULL"
+      },
+      {
+        "type": "column",
+        "value": "),"
+      },
+      {
+        "type": "column",
+        "value": "GenreRatings"
+      },
+      {
+        "type": "keyword",
+        "value": "AS"
+      },
+      {
+        "type": "column",
+        "value": "("
+      },
+      {
+        "type": "keyword",
+        "value": "SELECT"
+      },
+      {
+        "type": "column",
+        "value": "genre,"
+      },
+      {
+        "type": "column",
+        "value": "AVG(star_rating)"
+      },
+      {
+        "type": "keyword",
+        "value": "AS"
+      },
+      {
+        "type": "column",
+        "value": "avg_rating"
+      },
+      {
+        "type": "keyword",
+        "value": "FROM"
+      },
+      {
+        "type": "column",
+        "value": "ValidReviews"
+      },
+      {
+        "type": "keyword",
+        "value": "GROUP"
+      },
+      {
+        "type": "keyword",
+        "value": "BY"
+      },
+      {
+        "type": "column",
+        "value": "genre"
+      },
+      {
+        "type": "column",
+        "value": ")"
+      },
+      {
+        "type": "keyword",
+        "value": "SELECT"
+      },
+      {
+        "type": "column",
+        "value": "genre,"
+      },
+      {
+        "type": "column",
+        "value": "avg_rating"
+      },
+      {
+        "type": "keyword",
+        "value": "FROM"
+      },
+      {
+        "type": "column",
+        "value": "GenreRatings"
+      },
+      {
+        "type": "keyword",
+        "value": "ORDER"
+      },
+      {
+        "type": "keyword",
+        "value": "BY"
+      },
+      {
+        "type": "column",
+        "value": "avg_rating"
+      },
+      {
+        "type": "keyword",
+        "value": "DESC;"
+      }
+    ]
+  },
+  {
+    "drillNumber": 1139,
+    "subcluster": "12.4 Chaining Multiple CTEs (cte1, cte2 Pipelines)",
+    "level": "Level 3 (Multi-CTE Chaining)",
+    "title": "Syntax #1139: Chain two CTEs: filter short-haul flights, then count departures per airport hub",
+    "table": "FlightSchedule",
+    "scenario": "Chain two CTEs: filter short-haul flights, then count departures per airport hub.",
+    "businessObjective": "Chain two CTEs: filter short-haul flights, then count departures per airport hub.",
+    "schemaSnippet": "FlightSchedule relational schema",
+    "targetQuery": "WITH DomesticFlights AS (\n  SELECT flight_id, origin_airport, destination_airport, distance_miles\n  FROM FlightSchedule\n  WHERE distance_miles <= 1500\n),\nHubMetrics AS (\n  SELECT origin_airport, COUNT(*) AS short_haul_count\n  FROM DomesticFlights\n  GROUP BY origin_airport\n)\nSELECT origin_airport, short_haul_count\nFROM HubMetrics\nORDER BY short_haul_count DESC;",
+    "syntaxBlueprint": "WITH FirstCTE AS (\n  SELECT col1, metric FROM TableA WHERE condition\n),\nSecondCTE AS (\n  SELECT col1, AVG(metric) AS avg_m FROM FirstCTE GROUP BY col1\n)\nSELECT *\nFROM SecondCTE;",
+    "syntaxRule": "Chain multiple CTEs by separating them with a single comma: 'WITH cte1 AS (...), cte2 AS (...)'. Never repeat the 'WITH' keyword!",
+    "syntaxTrap": "Writing 'WITH cte1 AS (...) WITH cte2 AS (...)'. The WITH keyword is written only once at the very top.",
+    "eli5Story": "Subqueries & CTEs on FlightSchedule: Chain two CTEs: filter short-haul flights, then count departures per airport hub.",
+    "commonMistakes": "Forgetting to alias derived tables in FROM, writing multiple WITH keywords in multi-CTE pipelines, or suffering the NOT IN NULL trap.",
+    "learningOutcomes": "Mastered 12.4 Chaining Multiple CTEs (cte1, cte2 Pipelines) on FlightSchedule.",
+    "challengeSlots": [
+      {
+        "type": "keyword",
+        "value": "WITH"
+      },
+      {
+        "type": "column",
+        "value": "DomesticFlights"
+      },
+      {
+        "type": "keyword",
+        "value": "AS"
+      },
+      {
+        "type": "column",
+        "value": "("
+      },
+      {
+        "type": "keyword",
+        "value": "SELECT"
+      },
+      {
+        "type": "column",
+        "value": "flight_id,"
+      },
+      {
+        "type": "column",
+        "value": "origin_airport,"
+      },
+      {
+        "type": "column",
+        "value": "destination_airport,"
+      },
+      {
+        "type": "column",
+        "value": "distance_miles"
+      },
+      {
+        "type": "keyword",
+        "value": "FROM"
+      },
+      {
+        "type": "table",
+        "value": "FlightSchedule"
+      },
+      {
+        "type": "keyword",
+        "value": "WHERE"
+      },
+      {
+        "type": "column",
+        "value": "distance_miles"
+      },
+      {
+        "type": "column",
+        "value": "<="
+      },
+      {
+        "type": "column",
+        "value": "1500"
+      },
+      {
+        "type": "column",
+        "value": "),"
+      },
+      {
+        "type": "column",
+        "value": "HubMetrics"
+      },
+      {
+        "type": "keyword",
+        "value": "AS"
+      },
+      {
+        "type": "column",
+        "value": "("
+      },
+      {
+        "type": "keyword",
+        "value": "SELECT"
+      },
+      {
+        "type": "column",
+        "value": "origin_airport,"
+      },
+      {
+        "type": "column",
+        "value": "COUNT(*)"
+      },
+      {
+        "type": "keyword",
+        "value": "AS"
+      },
+      {
+        "type": "column",
+        "value": "short_haul_count"
+      },
+      {
+        "type": "keyword",
+        "value": "FROM"
+      },
+      {
+        "type": "column",
+        "value": "DomesticFlights"
+      },
+      {
+        "type": "keyword",
+        "value": "GROUP"
+      },
+      {
+        "type": "keyword",
+        "value": "BY"
+      },
+      {
+        "type": "column",
+        "value": "origin_airport"
+      },
+      {
+        "type": "column",
+        "value": ")"
+      },
+      {
+        "type": "keyword",
+        "value": "SELECT"
+      },
+      {
+        "type": "column",
+        "value": "origin_airport,"
+      },
+      {
+        "type": "column",
+        "value": "short_haul_count"
+      },
+      {
+        "type": "keyword",
+        "value": "FROM"
+      },
+      {
+        "type": "column",
+        "value": "HubMetrics"
+      },
+      {
+        "type": "keyword",
+        "value": "ORDER"
+      },
+      {
+        "type": "keyword",
+        "value": "BY"
+      },
+      {
+        "type": "column",
+        "value": "short_haul_count"
+      },
+      {
+        "type": "keyword",
+        "value": "DESC;"
+      }
+    ]
+  },
+  {
+    "drillNumber": 1140,
+    "subcluster": "12.4 Chaining Multiple CTEs (cte1, cte2 Pipelines)",
+    "level": "Level 3 (Multi-CTE Chaining)",
+    "title": "Syntax #1140: Chain two CTEs: isolate adult clinic pets, then calculate species average weights",
+    "table": "PetClinic",
+    "scenario": "Chain two CTEs: isolate adult clinic pets, then calculate species average weights.",
+    "businessObjective": "Chain two CTEs: isolate adult clinic pets, then calculate species average weights.",
+    "schemaSnippet": "PetClinic relational schema",
+    "targetQuery": "WITH AdultPets AS (\n  SELECT pet_name, species, weight_kg\n  FROM PetClinic\n  WHERE age_years >= 2\n),\nSpeciesStats AS (\n  SELECT species, AVG(weight_kg) AS avg_adult_weight\n  FROM AdultPets\n  GROUP BY species\n)\nSELECT species, avg_adult_weight\nFROM SpeciesStats;",
+    "syntaxBlueprint": "WITH FirstCTE AS (\n  SELECT col1, metric FROM TableA WHERE condition\n),\nSecondCTE AS (\n  SELECT col1, AVG(metric) AS avg_m FROM FirstCTE GROUP BY col1\n)\nSELECT *\nFROM SecondCTE;",
+    "syntaxRule": "Chain multiple CTEs by separating them with a single comma: 'WITH cte1 AS (...), cte2 AS (...)'. Never repeat the 'WITH' keyword!",
+    "syntaxTrap": "Writing 'WITH cte1 AS (...) WITH cte2 AS (...)'. The WITH keyword is written only once at the very top.",
+    "eli5Story": "Subqueries & CTEs on PetClinic: Chain two CTEs: isolate adult clinic pets, then calculate species average weights.",
+    "commonMistakes": "Forgetting to alias derived tables in FROM, writing multiple WITH keywords in multi-CTE pipelines, or suffering the NOT IN NULL trap.",
+    "learningOutcomes": "Mastered 12.4 Chaining Multiple CTEs (cte1, cte2 Pipelines) on PetClinic.",
+    "challengeSlots": [
+      {
+        "type": "keyword",
+        "value": "WITH"
+      },
+      {
+        "type": "column",
+        "value": "AdultPets"
+      },
+      {
+        "type": "keyword",
+        "value": "AS"
+      },
+      {
+        "type": "column",
+        "value": "("
+      },
+      {
+        "type": "keyword",
+        "value": "SELECT"
+      },
+      {
+        "type": "column",
+        "value": "pet_name,"
+      },
+      {
+        "type": "column",
+        "value": "species,"
+      },
+      {
+        "type": "column",
+        "value": "weight_kg"
+      },
+      {
+        "type": "keyword",
+        "value": "FROM"
+      },
+      {
+        "type": "table",
+        "value": "PetClinic"
+      },
+      {
+        "type": "keyword",
+        "value": "WHERE"
+      },
+      {
+        "type": "column",
+        "value": "age_years"
+      },
+      {
+        "type": "column",
+        "value": ">="
+      },
+      {
+        "type": "column",
+        "value": "2"
+      },
+      {
+        "type": "column",
+        "value": "),"
+      },
+      {
+        "type": "column",
+        "value": "SpeciesStats"
+      },
+      {
+        "type": "keyword",
+        "value": "AS"
+      },
+      {
+        "type": "column",
+        "value": "("
+      },
+      {
+        "type": "keyword",
+        "value": "SELECT"
+      },
+      {
+        "type": "column",
+        "value": "species,"
+      },
+      {
+        "type": "column",
+        "value": "AVG(weight_kg)"
+      },
+      {
+        "type": "keyword",
+        "value": "AS"
+      },
+      {
+        "type": "column",
+        "value": "avg_adult_weight"
+      },
+      {
+        "type": "keyword",
+        "value": "FROM"
+      },
+      {
+        "type": "column",
+        "value": "AdultPets"
+      },
+      {
+        "type": "keyword",
+        "value": "GROUP"
+      },
+      {
+        "type": "keyword",
+        "value": "BY"
+      },
+      {
+        "type": "column",
+        "value": "species"
+      },
+      {
+        "type": "column",
+        "value": ")"
+      },
+      {
+        "type": "keyword",
+        "value": "SELECT"
+      },
+      {
+        "type": "column",
+        "value": "species,"
+      },
+      {
+        "type": "column",
+        "value": "avg_adult_weight"
+      },
+      {
+        "type": "keyword",
+        "value": "FROM"
+      },
+      {
+        "type": "column",
+        "value": "SpeciesStats;"
+      }
+    ]
+  },
+  {
+    "drillNumber": 1141,
+    "subcluster": "12.5 Joining CTEs in the Main Query",
+    "level": "Level 3 (Joined CTEs)",
+    "title": "Syntax #1141: Join a student dimension CTE to a course aggregation CTE on student_id",
+    "table": "Students",
+    "scenario": "Join a student dimension CTE to a course aggregation CTE on student_id.",
+    "businessObjective": "Join a student dimension CTE to a course aggregation CTE on student_id.",
+    "schemaSnippet": "Students relational schema",
+    "targetQuery": "WITH StudentList AS (\n  SELECT student_id, full_name FROM Students\n),\nCourseTotals AS (\n  SELECT student_id, COUNT(*) AS courses_enrolled FROM Courses GROUP BY student_id\n)\nSELECT s.full_name, c.courses_enrolled\nFROM StudentList s\nJOIN CourseTotals c ON s.student_id = c.student_id;",
+    "syntaxBlueprint": "WITH SummaryA AS (\n  SELECT id, metric FROM TableA\n),\nSummaryB AS (\n  SELECT a_id, other_metric FROM TableB\n)\nSELECT a.metric, b.other_metric\nFROM SummaryA a\nJOIN SummaryB b ON a.id = b.a_id;",
+    "syntaxRule": "CTEs act as first-class relational tables. You can join a CTE to base tables, or join two independent CTEs together in the final SELECT statement.",
+    "syntaxTrap": "Using an alias in the final query without defining it in FROM or JOIN.",
+    "eli5Story": "Subqueries & CTEs on Students: Join a student dimension CTE to a course aggregation CTE on student_id.",
+    "commonMistakes": "Forgetting to alias derived tables in FROM, writing multiple WITH keywords in multi-CTE pipelines, or suffering the NOT IN NULL trap.",
+    "learningOutcomes": "Mastered 12.5 Joining CTEs in the Main Query on Students.",
+    "challengeSlots": [
+      {
+        "type": "keyword",
+        "value": "WITH"
+      },
+      {
+        "type": "column",
+        "value": "StudentList"
+      },
+      {
+        "type": "keyword",
+        "value": "AS"
+      },
+      {
+        "type": "column",
+        "value": "("
+      },
+      {
+        "type": "keyword",
+        "value": "SELECT"
+      },
+      {
+        "type": "column",
+        "value": "student_id,"
+      },
+      {
+        "type": "column",
+        "value": "full_name"
+      },
+      {
+        "type": "keyword",
+        "value": "FROM"
+      },
+      {
+        "type": "table",
+        "value": "Students"
+      },
+      {
+        "type": "column",
+        "value": "),"
+      },
+      {
+        "type": "column",
+        "value": "CourseTotals"
+      },
+      {
+        "type": "keyword",
+        "value": "AS"
+      },
+      {
+        "type": "column",
+        "value": "("
+      },
+      {
+        "type": "keyword",
+        "value": "SELECT"
+      },
+      {
+        "type": "column",
+        "value": "student_id,"
+      },
+      {
+        "type": "column",
+        "value": "COUNT(*)"
+      },
+      {
+        "type": "keyword",
+        "value": "AS"
+      },
+      {
+        "type": "column",
+        "value": "courses_enrolled"
+      },
+      {
+        "type": "keyword",
+        "value": "FROM"
+      },
+      {
+        "type": "table",
+        "value": "Courses"
+      },
+      {
+        "type": "keyword",
+        "value": "GROUP"
+      },
+      {
+        "type": "keyword",
+        "value": "BY"
+      },
+      {
+        "type": "column",
+        "value": "student_id"
+      },
+      {
+        "type": "column",
+        "value": ")"
+      },
+      {
+        "type": "keyword",
+        "value": "SELECT"
+      },
+      {
+        "type": "column",
+        "value": "s.full_name,"
+      },
+      {
+        "type": "column",
+        "value": "c.courses_enrolled"
+      },
+      {
+        "type": "keyword",
+        "value": "FROM"
+      },
+      {
+        "type": "column",
+        "value": "StudentList"
+      },
+      {
+        "type": "column",
+        "value": "s"
+      },
+      {
+        "type": "keyword",
+        "value": "JOIN"
+      },
+      {
+        "type": "column",
+        "value": "CourseTotals"
+      },
+      {
+        "type": "column",
+        "value": "c"
+      },
+      {
+        "type": "keyword",
+        "value": "ON"
+      },
+      {
+        "type": "column",
+        "value": "s.student_id"
+      },
+      {
+        "type": "column",
+        "value": "="
+      },
+      {
+        "type": "column",
+        "value": "c.student_id;"
+      }
+    ]
+  },
+  {
+    "drillNumber": 1142,
+    "subcluster": "12.5 Joining CTEs in the Main Query",
+    "level": "Level 3 (Joined CTEs)",
+    "title": "Syntax #1142: Join two CTEs: BookCatalog and AuthorRoster on author_id",
+    "table": "Books",
+    "scenario": "Join two CTEs: BookCatalog and AuthorRoster on author_id.",
+    "businessObjective": "Join two CTEs: BookCatalog and AuthorRoster on author_id.",
+    "schemaSnippet": "Books relational schema",
+    "targetQuery": "WITH BookCatalog AS (\n  SELECT book_id, title, author_id FROM Books\n),\nAuthorRoster AS (\n  SELECT author_id, author_name FROM Authors\n)\nSELECT b.title, a.author_name\nFROM BookCatalog b\nJOIN AuthorRoster a ON b.author_id = a.author_id;",
+    "syntaxBlueprint": "WITH SummaryA AS (\n  SELECT id, metric FROM TableA\n),\nSummaryB AS (\n  SELECT a_id, other_metric FROM TableB\n)\nSELECT a.metric, b.other_metric\nFROM SummaryA a\nJOIN SummaryB b ON a.id = b.a_id;",
+    "syntaxRule": "CTEs act as first-class relational tables. You can join a CTE to base tables, or join two independent CTEs together in the final SELECT statement.",
+    "syntaxTrap": "Using an alias in the final query without defining it in FROM or JOIN.",
+    "eli5Story": "Subqueries & CTEs on Books: Join two CTEs: BookCatalog and AuthorRoster on author_id.",
+    "commonMistakes": "Forgetting to alias derived tables in FROM, writing multiple WITH keywords in multi-CTE pipelines, or suffering the NOT IN NULL trap.",
+    "learningOutcomes": "Mastered 12.5 Joining CTEs in the Main Query on Books.",
+    "challengeSlots": [
+      {
+        "type": "keyword",
+        "value": "WITH"
+      },
+      {
+        "type": "column",
+        "value": "BookCatalog"
+      },
+      {
+        "type": "keyword",
+        "value": "AS"
+      },
+      {
+        "type": "column",
+        "value": "("
+      },
+      {
+        "type": "keyword",
+        "value": "SELECT"
+      },
+      {
+        "type": "column",
+        "value": "book_id,"
+      },
+      {
+        "type": "column",
+        "value": "title,"
+      },
+      {
+        "type": "column",
+        "value": "author_id"
+      },
+      {
+        "type": "keyword",
+        "value": "FROM"
+      },
+      {
+        "type": "table",
+        "value": "Books"
+      },
+      {
+        "type": "column",
+        "value": "),"
+      },
+      {
+        "type": "column",
+        "value": "AuthorRoster"
+      },
+      {
+        "type": "keyword",
+        "value": "AS"
+      },
+      {
+        "type": "column",
+        "value": "("
+      },
+      {
+        "type": "keyword",
+        "value": "SELECT"
+      },
+      {
+        "type": "column",
+        "value": "author_id,"
+      },
+      {
+        "type": "column",
+        "value": "author_name"
+      },
+      {
+        "type": "keyword",
+        "value": "FROM"
+      },
+      {
+        "type": "table",
+        "value": "Authors"
+      },
+      {
+        "type": "column",
+        "value": ")"
+      },
+      {
+        "type": "keyword",
+        "value": "SELECT"
+      },
+      {
+        "type": "column",
+        "value": "b.title,"
+      },
+      {
+        "type": "column",
+        "value": "a.author_name"
+      },
+      {
+        "type": "keyword",
+        "value": "FROM"
+      },
+      {
+        "type": "column",
+        "value": "BookCatalog"
+      },
+      {
+        "type": "column",
+        "value": "b"
+      },
+      {
+        "type": "keyword",
+        "value": "JOIN"
+      },
+      {
+        "type": "column",
+        "value": "AuthorRoster"
+      },
+      {
+        "type": "column",
+        "value": "a"
+      },
+      {
+        "type": "keyword",
+        "value": "ON"
+      },
+      {
+        "type": "column",
+        "value": "b.author_id"
+      },
+      {
+        "type": "column",
+        "value": "="
+      },
+      {
+        "type": "column",
+        "value": "a.author_id;"
+      }
+    ]
+  },
+  {
+    "drillNumber": 1143,
+    "subcluster": "12.5 Joining CTEs in the Main Query",
+    "level": "Level 3 (Joined CTEs)",
+    "title": "Syntax #1143: Join an employee CTE with a department budget CTE on department_id",
+    "table": "Employees",
+    "scenario": "Join an employee CTE with a department budget CTE on department_id.",
+    "businessObjective": "Join an employee CTE with a department budget CTE on department_id.",
+    "schemaSnippet": "Employees relational schema",
+    "targetQuery": "WITH StaffList AS (\n  SELECT employee_id, first_name, department_id, salary FROM Employees\n),\nDeptBudgets AS (\n  SELECT department_id, department_name, budget FROM Departments\n)\nSELECT s.first_name, d.department_name, s.salary\nFROM StaffList s\nJOIN DeptBudgets d ON s.department_id = d.department_id;",
+    "syntaxBlueprint": "WITH SummaryA AS (\n  SELECT id, metric FROM TableA\n),\nSummaryB AS (\n  SELECT a_id, other_metric FROM TableB\n)\nSELECT a.metric, b.other_metric\nFROM SummaryA a\nJOIN SummaryB b ON a.id = b.a_id;",
+    "syntaxRule": "CTEs act as first-class relational tables. You can join a CTE to base tables, or join two independent CTEs together in the final SELECT statement.",
+    "syntaxTrap": "Using an alias in the final query without defining it in FROM or JOIN.",
+    "eli5Story": "Subqueries & CTEs on Employees: Join an employee CTE with a department budget CTE on department_id.",
+    "commonMistakes": "Forgetting to alias derived tables in FROM, writing multiple WITH keywords in multi-CTE pipelines, or suffering the NOT IN NULL trap.",
+    "learningOutcomes": "Mastered 12.5 Joining CTEs in the Main Query on Employees.",
+    "challengeSlots": [
+      {
+        "type": "keyword",
+        "value": "WITH"
+      },
+      {
+        "type": "column",
+        "value": "StaffList"
+      },
+      {
+        "type": "keyword",
+        "value": "AS"
+      },
+      {
+        "type": "column",
+        "value": "("
+      },
+      {
+        "type": "keyword",
+        "value": "SELECT"
+      },
+      {
+        "type": "column",
+        "value": "employee_id,"
+      },
+      {
+        "type": "column",
+        "value": "first_name,"
+      },
+      {
+        "type": "column",
+        "value": "department_id,"
+      },
+      {
+        "type": "column",
+        "value": "salary"
+      },
+      {
+        "type": "keyword",
+        "value": "FROM"
+      },
+      {
+        "type": "table",
+        "value": "Employees"
+      },
+      {
+        "type": "column",
+        "value": "),"
+      },
+      {
+        "type": "column",
+        "value": "DeptBudgets"
+      },
+      {
+        "type": "keyword",
+        "value": "AS"
+      },
+      {
+        "type": "column",
+        "value": "("
+      },
+      {
+        "type": "keyword",
+        "value": "SELECT"
+      },
+      {
+        "type": "column",
+        "value": "department_id,"
+      },
+      {
+        "type": "column",
+        "value": "department_name,"
+      },
+      {
+        "type": "column",
+        "value": "budget"
+      },
+      {
+        "type": "keyword",
+        "value": "FROM"
+      },
+      {
+        "type": "table",
+        "value": "Departments"
+      },
+      {
+        "type": "column",
+        "value": ")"
+      },
+      {
+        "type": "keyword",
+        "value": "SELECT"
+      },
+      {
+        "type": "column",
+        "value": "s.first_name,"
+      },
+      {
+        "type": "column",
+        "value": "d.department_name,"
+      },
+      {
+        "type": "column",
+        "value": "s.salary"
+      },
+      {
+        "type": "keyword",
+        "value": "FROM"
+      },
+      {
+        "type": "column",
+        "value": "StaffList"
+      },
+      {
+        "type": "column",
+        "value": "s"
+      },
+      {
+        "type": "keyword",
+        "value": "JOIN"
+      },
+      {
+        "type": "column",
+        "value": "DeptBudgets"
+      },
+      {
+        "type": "column",
+        "value": "d"
+      },
+      {
+        "type": "keyword",
+        "value": "ON"
+      },
+      {
+        "type": "column",
+        "value": "s.department_id"
+      },
+      {
+        "type": "column",
+        "value": "="
+      },
+      {
+        "type": "column",
+        "value": "d.department_id;"
+      }
+    ]
+  },
+  {
+    "drillNumber": 1144,
+    "subcluster": "12.5 Joining CTEs in the Main Query",
+    "level": "Level 3 (Joined CTEs)",
+    "title": "Syntax #1144: Join an inventory CTE with a vendor directory CTE on supplier_id",
+    "table": "GroceryItems",
+    "scenario": "Join an inventory CTE with a vendor directory CTE on supplier_id.",
+    "businessObjective": "Join an inventory CTE with a vendor directory CTE on supplier_id.",
+    "schemaSnippet": "GroceryItems relational schema",
+    "targetQuery": "WITH InventoryList AS (\n  SELECT item_id, item_name, supplier_id, unit_price FROM GroceryItems\n),\nVendorDirectory AS (\n  SELECT supplier_id, supplier_name FROM Suppliers\n)\nSELECT i.item_name, v.supplier_name, i.unit_price\nFROM InventoryList i\nJOIN VendorDirectory v ON i.supplier_id = v.supplier_id;",
+    "syntaxBlueprint": "WITH SummaryA AS (\n  SELECT id, metric FROM TableA\n),\nSummaryB AS (\n  SELECT a_id, other_metric FROM TableB\n)\nSELECT a.metric, b.other_metric\nFROM SummaryA a\nJOIN SummaryB b ON a.id = b.a_id;",
+    "syntaxRule": "CTEs act as first-class relational tables. You can join a CTE to base tables, or join two independent CTEs together in the final SELECT statement.",
+    "syntaxTrap": "Using an alias in the final query without defining it in FROM or JOIN.",
+    "eli5Story": "Subqueries & CTEs on GroceryItems: Join an inventory CTE with a vendor directory CTE on supplier_id.",
+    "commonMistakes": "Forgetting to alias derived tables in FROM, writing multiple WITH keywords in multi-CTE pipelines, or suffering the NOT IN NULL trap.",
+    "learningOutcomes": "Mastered 12.5 Joining CTEs in the Main Query on GroceryItems.",
+    "challengeSlots": [
+      {
+        "type": "keyword",
+        "value": "WITH"
+      },
+      {
+        "type": "column",
+        "value": "InventoryList"
+      },
+      {
+        "type": "keyword",
+        "value": "AS"
+      },
+      {
+        "type": "column",
+        "value": "("
+      },
+      {
+        "type": "keyword",
+        "value": "SELECT"
+      },
+      {
+        "type": "column",
+        "value": "item_id,"
+      },
+      {
+        "type": "column",
+        "value": "item_name,"
+      },
+      {
+        "type": "column",
+        "value": "supplier_id,"
+      },
+      {
+        "type": "column",
+        "value": "unit_price"
+      },
+      {
+        "type": "keyword",
+        "value": "FROM"
+      },
+      {
+        "type": "table",
+        "value": "GroceryItems"
+      },
+      {
+        "type": "column",
+        "value": "),"
+      },
+      {
+        "type": "column",
+        "value": "VendorDirectory"
+      },
+      {
+        "type": "keyword",
+        "value": "AS"
+      },
+      {
+        "type": "column",
+        "value": "("
+      },
+      {
+        "type": "keyword",
+        "value": "SELECT"
+      },
+      {
+        "type": "column",
+        "value": "supplier_id,"
+      },
+      {
+        "type": "column",
+        "value": "supplier_name"
+      },
+      {
+        "type": "keyword",
+        "value": "FROM"
+      },
+      {
+        "type": "table",
+        "value": "Suppliers"
+      },
+      {
+        "type": "column",
+        "value": ")"
+      },
+      {
+        "type": "keyword",
+        "value": "SELECT"
+      },
+      {
+        "type": "column",
+        "value": "i.item_name,"
+      },
+      {
+        "type": "column",
+        "value": "v.supplier_name,"
+      },
+      {
+        "type": "column",
+        "value": "i.unit_price"
+      },
+      {
+        "type": "keyword",
+        "value": "FROM"
+      },
+      {
+        "type": "column",
+        "value": "InventoryList"
+      },
+      {
+        "type": "column",
+        "value": "i"
+      },
+      {
+        "type": "keyword",
+        "value": "JOIN"
+      },
+      {
+        "type": "column",
+        "value": "VendorDirectory"
+      },
+      {
+        "type": "column",
+        "value": "v"
+      },
+      {
+        "type": "keyword",
+        "value": "ON"
+      },
+      {
+        "type": "column",
+        "value": "i.supplier_id"
+      },
+      {
+        "type": "column",
+        "value": "="
+      },
+      {
+        "type": "column",
+        "value": "v.supplier_id;"
+      }
+    ]
+  },
+  {
+    "drillNumber": 1145,
+    "subcluster": "12.5 Joining CTEs in the Main Query",
+    "level": "Level 3 (Joined CTEs)",
+    "title": "Syntax #1145: Join an order summary CTE to a customer details CTE on customer_id",
+    "table": "Orders",
+    "scenario": "Join an order summary CTE to a customer details CTE on customer_id.",
+    "businessObjective": "Join an order summary CTE to a customer details CTE on customer_id.",
+    "schemaSnippet": "Orders relational schema",
+    "targetQuery": "WITH OrderSummary AS (\n  SELECT order_id, customer_id, total_amount FROM Orders\n),\nCustomerDetails AS (\n  SELECT customer_id, customer_name, city FROM Customers\n)\nSELECT c.customer_name, o.order_id, o.total_amount\nFROM CustomerDetails c\nJOIN OrderSummary o ON c.customer_id = o.customer_id;",
+    "syntaxBlueprint": "WITH SummaryA AS (\n  SELECT id, metric FROM TableA\n),\nSummaryB AS (\n  SELECT a_id, other_metric FROM TableB\n)\nSELECT a.metric, b.other_metric\nFROM SummaryA a\nJOIN SummaryB b ON a.id = b.a_id;",
+    "syntaxRule": "CTEs act as first-class relational tables. You can join a CTE to base tables, or join two independent CTEs together in the final SELECT statement.",
+    "syntaxTrap": "Using an alias in the final query without defining it in FROM or JOIN.",
+    "eli5Story": "Subqueries & CTEs on Orders: Join an order summary CTE to a customer details CTE on customer_id.",
+    "commonMistakes": "Forgetting to alias derived tables in FROM, writing multiple WITH keywords in multi-CTE pipelines, or suffering the NOT IN NULL trap.",
+    "learningOutcomes": "Mastered 12.5 Joining CTEs in the Main Query on Orders.",
+    "challengeSlots": [
+      {
+        "type": "keyword",
+        "value": "WITH"
+      },
+      {
+        "type": "column",
+        "value": "OrderSummary"
+      },
+      {
+        "type": "keyword",
+        "value": "AS"
+      },
+      {
+        "type": "column",
+        "value": "("
+      },
+      {
+        "type": "keyword",
+        "value": "SELECT"
+      },
+      {
+        "type": "column",
+        "value": "order_id,"
+      },
+      {
+        "type": "column",
+        "value": "customer_id,"
+      },
+      {
+        "type": "column",
+        "value": "total_amount"
+      },
+      {
+        "type": "keyword",
+        "value": "FROM"
+      },
+      {
+        "type": "table",
+        "value": "Orders"
+      },
+      {
+        "type": "column",
+        "value": "),"
+      },
+      {
+        "type": "column",
+        "value": "CustomerDetails"
+      },
+      {
+        "type": "keyword",
+        "value": "AS"
+      },
+      {
+        "type": "column",
+        "value": "("
+      },
+      {
+        "type": "keyword",
+        "value": "SELECT"
+      },
+      {
+        "type": "column",
+        "value": "customer_id,"
+      },
+      {
+        "type": "column",
+        "value": "customer_name,"
+      },
+      {
+        "type": "column",
+        "value": "city"
+      },
+      {
+        "type": "keyword",
+        "value": "FROM"
+      },
+      {
+        "type": "table",
+        "value": "Customers"
+      },
+      {
+        "type": "column",
+        "value": ")"
+      },
+      {
+        "type": "keyword",
+        "value": "SELECT"
+      },
+      {
+        "type": "column",
+        "value": "c.customer_name,"
+      },
+      {
+        "type": "column",
+        "value": "o.order_id,"
+      },
+      {
+        "type": "column",
+        "value": "o.total_amount"
+      },
+      {
+        "type": "keyword",
+        "value": "FROM"
+      },
+      {
+        "type": "column",
+        "value": "CustomerDetails"
+      },
+      {
+        "type": "column",
+        "value": "c"
+      },
+      {
+        "type": "keyword",
+        "value": "JOIN"
+      },
+      {
+        "type": "column",
+        "value": "OrderSummary"
+      },
+      {
+        "type": "column",
+        "value": "o"
+      },
+      {
+        "type": "keyword",
+        "value": "ON"
+      },
+      {
+        "type": "column",
+        "value": "c.customer_id"
+      },
+      {
+        "type": "column",
+        "value": "="
+      },
+      {
+        "type": "column",
+        "value": "o.customer_id;"
+      }
+    ]
+  },
+  {
+    "drillNumber": 1146,
+    "subcluster": "12.5 Joining CTEs in the Main Query",
+    "level": "Level 3 (Joined CTEs)",
+    "title": "Syntax #1146: Join a track CTE with an album catalog CTE on album_id",
+    "table": "MusicTracks",
+    "scenario": "Join a track CTE with an album catalog CTE on album_id.",
+    "businessObjective": "Join a track CTE with an album catalog CTE on album_id.",
+    "schemaSnippet": "MusicTracks relational schema",
+    "targetQuery": "WITH SongList AS (\n  SELECT track_id, track_title, album_id FROM MusicTracks\n),\nAlbumCatalog AS (\n  SELECT album_id, album_title, release_year FROM Albums\n)\nSELECT s.track_title, a.album_title, a.release_year\nFROM SongList s\nJOIN AlbumCatalog a ON s.album_id = a.album_id;",
+    "syntaxBlueprint": "WITH SummaryA AS (\n  SELECT id, metric FROM TableA\n),\nSummaryB AS (\n  SELECT a_id, other_metric FROM TableB\n)\nSELECT a.metric, b.other_metric\nFROM SummaryA a\nJOIN SummaryB b ON a.id = b.a_id;",
+    "syntaxRule": "CTEs act as first-class relational tables. You can join a CTE to base tables, or join two independent CTEs together in the final SELECT statement.",
+    "syntaxTrap": "Using an alias in the final query without defining it in FROM or JOIN.",
+    "eli5Story": "Subqueries & CTEs on MusicTracks: Join a track CTE with an album catalog CTE on album_id.",
+    "commonMistakes": "Forgetting to alias derived tables in FROM, writing multiple WITH keywords in multi-CTE pipelines, or suffering the NOT IN NULL trap.",
+    "learningOutcomes": "Mastered 12.5 Joining CTEs in the Main Query on MusicTracks.",
+    "challengeSlots": [
+      {
+        "type": "keyword",
+        "value": "WITH"
+      },
+      {
+        "type": "column",
+        "value": "SongList"
+      },
+      {
+        "type": "keyword",
+        "value": "AS"
+      },
+      {
+        "type": "column",
+        "value": "("
+      },
+      {
+        "type": "keyword",
+        "value": "SELECT"
+      },
+      {
+        "type": "column",
+        "value": "track_id,"
+      },
+      {
+        "type": "column",
+        "value": "track_title,"
+      },
+      {
+        "type": "column",
+        "value": "album_id"
+      },
+      {
+        "type": "keyword",
+        "value": "FROM"
+      },
+      {
+        "type": "table",
+        "value": "MusicTracks"
+      },
+      {
+        "type": "column",
+        "value": "),"
+      },
+      {
+        "type": "column",
+        "value": "AlbumCatalog"
+      },
+      {
+        "type": "keyword",
+        "value": "AS"
+      },
+      {
+        "type": "column",
+        "value": "("
+      },
+      {
+        "type": "keyword",
+        "value": "SELECT"
+      },
+      {
+        "type": "column",
+        "value": "album_id,"
+      },
+      {
+        "type": "column",
+        "value": "album_title,"
+      },
+      {
+        "type": "column",
+        "value": "release_year"
+      },
+      {
+        "type": "keyword",
+        "value": "FROM"
+      },
+      {
+        "type": "table",
+        "value": "Albums"
+      },
+      {
+        "type": "column",
+        "value": ")"
+      },
+      {
+        "type": "keyword",
+        "value": "SELECT"
+      },
+      {
+        "type": "column",
+        "value": "s.track_title,"
+      },
+      {
+        "type": "column",
+        "value": "a.album_title,"
+      },
+      {
+        "type": "column",
+        "value": "a.release_year"
+      },
+      {
+        "type": "keyword",
+        "value": "FROM"
+      },
+      {
+        "type": "column",
+        "value": "SongList"
+      },
+      {
+        "type": "column",
+        "value": "s"
+      },
+      {
+        "type": "keyword",
+        "value": "JOIN"
+      },
+      {
+        "type": "column",
+        "value": "AlbumCatalog"
+      },
+      {
+        "type": "column",
+        "value": "a"
+      },
+      {
+        "type": "keyword",
+        "value": "ON"
+      },
+      {
+        "type": "column",
+        "value": "s.album_id"
+      },
+      {
+        "type": "column",
+        "value": "="
+      },
+      {
+        "type": "column",
+        "value": "a.album_id;"
+      }
+    ]
+  },
+  {
+    "drillNumber": 1147,
+    "subcluster": "12.5 Joining CTEs in the Main Query",
+    "level": "Level 3 (Joined CTEs)",
+    "title": "Syntax #1147: Join a gym member CTE with a trainer CTE on trainer_id",
+    "table": "GymMembers",
+    "scenario": "Join a gym member CTE with a trainer CTE on trainer_id.",
+    "businessObjective": "Join a gym member CTE with a trainer CTE on trainer_id.",
+    "schemaSnippet": "GymMembers relational schema",
+    "targetQuery": "WITH MemberRoster AS (\n  SELECT member_id, member_name, trainer_id FROM GymMembers\n),\nCoachRoster AS (\n  SELECT trainer_id, trainer_name, specialty FROM Trainers\n)\nSELECT m.member_name, c.trainer_name, c.specialty\nFROM MemberRoster m\nJOIN CoachRoster c ON m.trainer_id = c.trainer_id;",
+    "syntaxBlueprint": "WITH SummaryA AS (\n  SELECT id, metric FROM TableA\n),\nSummaryB AS (\n  SELECT a_id, other_metric FROM TableB\n)\nSELECT a.metric, b.other_metric\nFROM SummaryA a\nJOIN SummaryB b ON a.id = b.a_id;",
+    "syntaxRule": "CTEs act as first-class relational tables. You can join a CTE to base tables, or join two independent CTEs together in the final SELECT statement.",
+    "syntaxTrap": "Using an alias in the final query without defining it in FROM or JOIN.",
+    "eli5Story": "Subqueries & CTEs on GymMembers: Join a gym member CTE with a trainer CTE on trainer_id.",
+    "commonMistakes": "Forgetting to alias derived tables in FROM, writing multiple WITH keywords in multi-CTE pipelines, or suffering the NOT IN NULL trap.",
+    "learningOutcomes": "Mastered 12.5 Joining CTEs in the Main Query on GymMembers.",
+    "challengeSlots": [
+      {
+        "type": "keyword",
+        "value": "WITH"
+      },
+      {
+        "type": "column",
+        "value": "MemberRoster"
+      },
+      {
+        "type": "keyword",
+        "value": "AS"
+      },
+      {
+        "type": "column",
+        "value": "("
+      },
+      {
+        "type": "keyword",
+        "value": "SELECT"
+      },
+      {
+        "type": "column",
+        "value": "member_id,"
+      },
+      {
+        "type": "column",
+        "value": "member_name,"
+      },
+      {
+        "type": "column",
+        "value": "trainer_id"
+      },
+      {
+        "type": "keyword",
+        "value": "FROM"
+      },
+      {
+        "type": "table",
+        "value": "GymMembers"
+      },
+      {
+        "type": "column",
+        "value": "),"
+      },
+      {
+        "type": "column",
+        "value": "CoachRoster"
+      },
+      {
+        "type": "keyword",
+        "value": "AS"
+      },
+      {
+        "type": "column",
+        "value": "("
+      },
+      {
+        "type": "keyword",
+        "value": "SELECT"
+      },
+      {
+        "type": "column",
+        "value": "trainer_id,"
+      },
+      {
+        "type": "column",
+        "value": "trainer_name,"
+      },
+      {
+        "type": "column",
+        "value": "specialty"
+      },
+      {
+        "type": "keyword",
+        "value": "FROM"
+      },
+      {
+        "type": "table",
+        "value": "Trainers"
+      },
+      {
+        "type": "column",
+        "value": ")"
+      },
+      {
+        "type": "keyword",
+        "value": "SELECT"
+      },
+      {
+        "type": "column",
+        "value": "m.member_name,"
+      },
+      {
+        "type": "column",
+        "value": "c.trainer_name,"
+      },
+      {
+        "type": "column",
+        "value": "c.specialty"
+      },
+      {
+        "type": "keyword",
+        "value": "FROM"
+      },
+      {
+        "type": "column",
+        "value": "MemberRoster"
+      },
+      {
+        "type": "column",
+        "value": "m"
+      },
+      {
+        "type": "keyword",
+        "value": "JOIN"
+      },
+      {
+        "type": "column",
+        "value": "CoachRoster"
+      },
+      {
+        "type": "column",
+        "value": "c"
+      },
+      {
+        "type": "keyword",
+        "value": "ON"
+      },
+      {
+        "type": "column",
+        "value": "m.trainer_id"
+      },
+      {
+        "type": "column",
+        "value": "="
+      },
+      {
+        "type": "column",
+        "value": "c.trainer_id;"
+      }
+    ]
+  },
+  {
+    "drillNumber": 1148,
+    "subcluster": "12.5 Joining CTEs in the Main Query",
+    "level": "Level 3 (Joined CTEs)",
+    "title": "Syntax #1148: Join a film archive CTE with a review CTE on movie_id",
+    "table": "MovieReviews",
+    "scenario": "Join a film archive CTE with a review CTE on movie_id.",
+    "businessObjective": "Join a film archive CTE with a review CTE on movie_id.",
+    "schemaSnippet": "MovieReviews relational schema",
+    "targetQuery": "WITH ReviewList AS (\n  SELECT review_id, movie_id, star_rating FROM MovieReviews\n),\nFilmArchive AS (\n  SELECT movie_id, movie_title, director FROM Movies\n)\nSELECT f.movie_title, r.star_rating, f.director\nFROM FilmArchive f\nJOIN ReviewList r ON f.movie_id = r.movie_id;",
+    "syntaxBlueprint": "WITH SummaryA AS (\n  SELECT id, metric FROM TableA\n),\nSummaryB AS (\n  SELECT a_id, other_metric FROM TableB\n)\nSELECT a.metric, b.other_metric\nFROM SummaryA a\nJOIN SummaryB b ON a.id = b.a_id;",
+    "syntaxRule": "CTEs act as first-class relational tables. You can join a CTE to base tables, or join two independent CTEs together in the final SELECT statement.",
+    "syntaxTrap": "Using an alias in the final query without defining it in FROM or JOIN.",
+    "eli5Story": "Subqueries & CTEs on MovieReviews: Join a film archive CTE with a review CTE on movie_id.",
+    "commonMistakes": "Forgetting to alias derived tables in FROM, writing multiple WITH keywords in multi-CTE pipelines, or suffering the NOT IN NULL trap.",
+    "learningOutcomes": "Mastered 12.5 Joining CTEs in the Main Query on MovieReviews.",
+    "challengeSlots": [
+      {
+        "type": "keyword",
+        "value": "WITH"
+      },
+      {
+        "type": "column",
+        "value": "ReviewList"
+      },
+      {
+        "type": "keyword",
+        "value": "AS"
+      },
+      {
+        "type": "column",
+        "value": "("
+      },
+      {
+        "type": "keyword",
+        "value": "SELECT"
+      },
+      {
+        "type": "column",
+        "value": "review_id,"
+      },
+      {
+        "type": "column",
+        "value": "movie_id,"
+      },
+      {
+        "type": "column",
+        "value": "star_rating"
+      },
+      {
+        "type": "keyword",
+        "value": "FROM"
+      },
+      {
+        "type": "table",
+        "value": "MovieReviews"
+      },
+      {
+        "type": "column",
+        "value": "),"
+      },
+      {
+        "type": "column",
+        "value": "FilmArchive"
+      },
+      {
+        "type": "keyword",
+        "value": "AS"
+      },
+      {
+        "type": "column",
+        "value": "("
+      },
+      {
+        "type": "keyword",
+        "value": "SELECT"
+      },
+      {
+        "type": "column",
+        "value": "movie_id,"
+      },
+      {
+        "type": "column",
+        "value": "movie_title,"
+      },
+      {
+        "type": "column",
+        "value": "director"
+      },
+      {
+        "type": "keyword",
+        "value": "FROM"
+      },
+      {
+        "type": "table",
+        "value": "Movies"
+      },
+      {
+        "type": "column",
+        "value": ")"
+      },
+      {
+        "type": "keyword",
+        "value": "SELECT"
+      },
+      {
+        "type": "column",
+        "value": "f.movie_title,"
+      },
+      {
+        "type": "column",
+        "value": "r.star_rating,"
+      },
+      {
+        "type": "column",
+        "value": "f.director"
+      },
+      {
+        "type": "keyword",
+        "value": "FROM"
+      },
+      {
+        "type": "column",
+        "value": "FilmArchive"
+      },
+      {
+        "type": "column",
+        "value": "f"
+      },
+      {
+        "type": "keyword",
+        "value": "JOIN"
+      },
+      {
+        "type": "column",
+        "value": "ReviewList"
+      },
+      {
+        "type": "column",
+        "value": "r"
+      },
+      {
+        "type": "keyword",
+        "value": "ON"
+      },
+      {
+        "type": "column",
+        "value": "f.movie_id"
+      },
+      {
+        "type": "column",
+        "value": "="
+      },
+      {
+        "type": "column",
+        "value": "r.movie_id;"
+      }
+    ]
+  },
+  {
+    "drillNumber": 1149,
+    "subcluster": "12.5 Joining CTEs in the Main Query",
+    "level": "Level 3 (Joined CTEs)",
+    "title": "Syntax #1149: Join a flight legs CTE to an airline directory CTE on airline_id",
+    "table": "FlightSchedule",
+    "scenario": "Join a flight legs CTE to an airline directory CTE on airline_id.",
+    "businessObjective": "Join a flight legs CTE to an airline directory CTE on airline_id.",
+    "schemaSnippet": "FlightSchedule relational schema",
+    "targetQuery": "WITH FlightLegs AS (\n  SELECT flight_id, airline_id, origin_airport FROM FlightSchedule\n),\nAirlineDirectory AS (\n  SELECT airline_id, airline_name FROM Airlines\n)\nSELECT f.flight_id, a.airline_name, f.origin_airport\nFROM FlightLegs f\nJOIN AirlineDirectory a ON f.airline_id = a.airline_id;",
+    "syntaxBlueprint": "WITH SummaryA AS (\n  SELECT id, metric FROM TableA\n),\nSummaryB AS (\n  SELECT a_id, other_metric FROM TableB\n)\nSELECT a.metric, b.other_metric\nFROM SummaryA a\nJOIN SummaryB b ON a.id = b.a_id;",
+    "syntaxRule": "CTEs act as first-class relational tables. You can join a CTE to base tables, or join two independent CTEs together in the final SELECT statement.",
+    "syntaxTrap": "Using an alias in the final query without defining it in FROM or JOIN.",
+    "eli5Story": "Subqueries & CTEs on FlightSchedule: Join a flight legs CTE to an airline directory CTE on airline_id.",
+    "commonMistakes": "Forgetting to alias derived tables in FROM, writing multiple WITH keywords in multi-CTE pipelines, or suffering the NOT IN NULL trap.",
+    "learningOutcomes": "Mastered 12.5 Joining CTEs in the Main Query on FlightSchedule.",
+    "challengeSlots": [
+      {
+        "type": "keyword",
+        "value": "WITH"
+      },
+      {
+        "type": "column",
+        "value": "FlightLegs"
+      },
+      {
+        "type": "keyword",
+        "value": "AS"
+      },
+      {
+        "type": "column",
+        "value": "("
+      },
+      {
+        "type": "keyword",
+        "value": "SELECT"
+      },
+      {
+        "type": "column",
+        "value": "flight_id,"
+      },
+      {
+        "type": "column",
+        "value": "airline_id,"
+      },
+      {
+        "type": "column",
+        "value": "origin_airport"
+      },
+      {
+        "type": "keyword",
+        "value": "FROM"
+      },
+      {
+        "type": "table",
+        "value": "FlightSchedule"
+      },
+      {
+        "type": "column",
+        "value": "),"
+      },
+      {
+        "type": "column",
+        "value": "AirlineDirectory"
+      },
+      {
+        "type": "keyword",
+        "value": "AS"
+      },
+      {
+        "type": "column",
+        "value": "("
+      },
+      {
+        "type": "keyword",
+        "value": "SELECT"
+      },
+      {
+        "type": "column",
+        "value": "airline_id,"
+      },
+      {
+        "type": "column",
+        "value": "airline_name"
+      },
+      {
+        "type": "keyword",
+        "value": "FROM"
+      },
+      {
+        "type": "table",
+        "value": "Airlines"
+      },
+      {
+        "type": "column",
+        "value": ")"
+      },
+      {
+        "type": "keyword",
+        "value": "SELECT"
+      },
+      {
+        "type": "column",
+        "value": "f.flight_id,"
+      },
+      {
+        "type": "column",
+        "value": "a.airline_name,"
+      },
+      {
+        "type": "column",
+        "value": "f.origin_airport"
+      },
+      {
+        "type": "keyword",
+        "value": "FROM"
+      },
+      {
+        "type": "column",
+        "value": "FlightLegs"
+      },
+      {
+        "type": "column",
+        "value": "f"
+      },
+      {
+        "type": "keyword",
+        "value": "JOIN"
+      },
+      {
+        "type": "column",
+        "value": "AirlineDirectory"
+      },
+      {
+        "type": "column",
+        "value": "a"
+      },
+      {
+        "type": "keyword",
+        "value": "ON"
+      },
+      {
+        "type": "column",
+        "value": "f.airline_id"
+      },
+      {
+        "type": "column",
+        "value": "="
+      },
+      {
+        "type": "column",
+        "value": "a.airline_id;"
+      }
+    ]
+  },
+  {
+    "drillNumber": 1150,
+    "subcluster": "12.5 Joining CTEs in the Main Query",
+    "level": "Level 3 (Joined CTEs)",
+    "title": "Syntax #1150: Join a patient roster CTE with an owner directory CTE on owner_id",
+    "table": "PetClinic",
+    "scenario": "Join a patient roster CTE with an owner directory CTE on owner_id.",
+    "businessObjective": "Join a patient roster CTE with an owner directory CTE on owner_id.",
+    "schemaSnippet": "PetClinic relational schema",
+    "targetQuery": "WITH PatientRoster AS (\n  SELECT pet_id, pet_name, owner_id FROM PetClinic\n),\nOwnerDirectory AS (\n  SELECT owner_id, owner_name, emergency_phone FROM Owners\n)\nSELECT p.pet_name, o.owner_name, o.emergency_phone\nFROM PatientRoster p\nJOIN OwnerDirectory o ON p.owner_id = o.owner_id;",
+    "syntaxBlueprint": "WITH SummaryA AS (\n  SELECT id, metric FROM TableA\n),\nSummaryB AS (\n  SELECT a_id, other_metric FROM TableB\n)\nSELECT a.metric, b.other_metric\nFROM SummaryA a\nJOIN SummaryB b ON a.id = b.a_id;",
+    "syntaxRule": "CTEs act as first-class relational tables. You can join a CTE to base tables, or join two independent CTEs together in the final SELECT statement.",
+    "syntaxTrap": "Using an alias in the final query without defining it in FROM or JOIN.",
+    "eli5Story": "Subqueries & CTEs on PetClinic: Join a patient roster CTE with an owner directory CTE on owner_id.",
+    "commonMistakes": "Forgetting to alias derived tables in FROM, writing multiple WITH keywords in multi-CTE pipelines, or suffering the NOT IN NULL trap.",
+    "learningOutcomes": "Mastered 12.5 Joining CTEs in the Main Query on PetClinic.",
+    "challengeSlots": [
+      {
+        "type": "keyword",
+        "value": "WITH"
+      },
+      {
+        "type": "column",
+        "value": "PatientRoster"
+      },
+      {
+        "type": "keyword",
+        "value": "AS"
+      },
+      {
+        "type": "column",
+        "value": "("
+      },
+      {
+        "type": "keyword",
+        "value": "SELECT"
+      },
+      {
+        "type": "column",
+        "value": "pet_id,"
+      },
+      {
+        "type": "column",
+        "value": "pet_name,"
+      },
+      {
+        "type": "column",
+        "value": "owner_id"
+      },
+      {
+        "type": "keyword",
+        "value": "FROM"
+      },
+      {
+        "type": "table",
+        "value": "PetClinic"
+      },
+      {
+        "type": "column",
+        "value": "),"
+      },
+      {
+        "type": "column",
+        "value": "OwnerDirectory"
+      },
+      {
+        "type": "keyword",
+        "value": "AS"
+      },
+      {
+        "type": "column",
+        "value": "("
+      },
+      {
+        "type": "keyword",
+        "value": "SELECT"
+      },
+      {
+        "type": "column",
+        "value": "owner_id,"
+      },
+      {
+        "type": "column",
+        "value": "owner_name,"
+      },
+      {
+        "type": "column",
+        "value": "emergency_phone"
+      },
+      {
+        "type": "keyword",
+        "value": "FROM"
+      },
+      {
+        "type": "table",
+        "value": "Owners"
+      },
+      {
+        "type": "column",
+        "value": ")"
+      },
+      {
+        "type": "keyword",
+        "value": "SELECT"
+      },
+      {
+        "type": "column",
+        "value": "p.pet_name,"
+      },
+      {
+        "type": "column",
+        "value": "o.owner_name,"
+      },
+      {
+        "type": "column",
+        "value": "o.emergency_phone"
+      },
+      {
+        "type": "keyword",
+        "value": "FROM"
+      },
+      {
+        "type": "column",
+        "value": "PatientRoster"
+      },
+      {
+        "type": "column",
+        "value": "p"
+      },
+      {
+        "type": "keyword",
+        "value": "JOIN"
+      },
+      {
+        "type": "column",
+        "value": "OwnerDirectory"
+      },
+      {
+        "type": "column",
+        "value": "o"
+      },
+      {
+        "type": "keyword",
+        "value": "ON"
+      },
+      {
+        "type": "column",
+        "value": "p.owner_id"
+      },
+      {
+        "type": "column",
+        "value": "="
+      },
+      {
+        "type": "column",
+        "value": "o.owner_id;"
+      }
+    ]
+  },
+  {
+    "drillNumber": 1151,
+    "subcluster": "12.6 CTEs with Internal Joins",
+    "level": "Level 3 (CTE Internal Join)",
+    "title": "Syntax #1151: Encapsulate a student-course INNER JOIN inside a CTE, then filter for 4-credit courses",
+    "table": "Students",
+    "scenario": "Encapsulate a student-course INNER JOIN inside a CTE, then filter for 4-credit courses.",
+    "businessObjective": "Encapsulate a student-course INNER JOIN inside a CTE, then filter for 4-credit courses.",
+    "schemaSnippet": "Students relational schema",
+    "targetQuery": "WITH EnrolledStudentDetails AS (\n  SELECT s.student_id, s.full_name, c.course_name, c.credits\n  FROM Students s\n  INNER JOIN Courses c ON s.student_id = c.student_id\n)\nSELECT full_name, course_name\nFROM EnrolledStudentDetails\nWHERE credits >= 4;",
+    "syntaxBlueprint": "WITH JoinedData AS (\n  SELECT a.col1, b.col2\n  FROM TableA a\n  JOIN TableB b ON a.id = b.a_id\n)\nSELECT col1, col2\nFROM JoinedData\nWHERE col1 = 'val';",
+    "syntaxRule": "Perform multi-table relational joins INSIDE the CTE definition to prepare a unified, flattened dataset, keeping the main query remarkably clean.",
+    "syntaxTrap": "Overcomplicating the outer query when the complexity should have been encapsulated inside the CTE.",
+    "eli5Story": "Subqueries & CTEs on Students: Encapsulate a student-course INNER JOIN inside a CTE, then filter for 4-credit courses.",
+    "commonMistakes": "Forgetting to alias derived tables in FROM, writing multiple WITH keywords in multi-CTE pipelines, or suffering the NOT IN NULL trap.",
+    "learningOutcomes": "Mastered 12.6 CTEs with Internal Joins on Students.",
+    "challengeSlots": [
+      {
+        "type": "keyword",
+        "value": "WITH"
+      },
+      {
+        "type": "column",
+        "value": "EnrolledStudentDetails"
+      },
+      {
+        "type": "keyword",
+        "value": "AS"
+      },
+      {
+        "type": "column",
+        "value": "("
+      },
+      {
+        "type": "keyword",
+        "value": "SELECT"
+      },
+      {
+        "type": "column",
+        "value": "s.student_id,"
+      },
+      {
+        "type": "column",
+        "value": "s.full_name,"
+      },
+      {
+        "type": "column",
+        "value": "c.course_name,"
+      },
+      {
+        "type": "column",
+        "value": "c.credits"
+      },
+      {
+        "type": "keyword",
+        "value": "FROM"
+      },
+      {
+        "type": "table",
+        "value": "Students"
+      },
+      {
+        "type": "column",
+        "value": "s"
+      },
+      {
+        "type": "keyword",
+        "value": "INNER"
+      },
+      {
+        "type": "keyword",
+        "value": "JOIN"
+      },
+      {
+        "type": "table",
+        "value": "Courses"
+      },
+      {
+        "type": "column",
+        "value": "c"
+      },
+      {
+        "type": "keyword",
+        "value": "ON"
+      },
+      {
+        "type": "column",
+        "value": "s.student_id"
+      },
+      {
+        "type": "column",
+        "value": "="
+      },
+      {
+        "type": "column",
+        "value": "c.student_id"
+      },
+      {
+        "type": "column",
+        "value": ")"
+      },
+      {
+        "type": "keyword",
+        "value": "SELECT"
+      },
+      {
+        "type": "column",
+        "value": "full_name,"
+      },
+      {
+        "type": "column",
+        "value": "course_name"
+      },
+      {
+        "type": "keyword",
+        "value": "FROM"
+      },
+      {
+        "type": "column",
+        "value": "EnrolledStudentDetails"
+      },
+      {
+        "type": "keyword",
+        "value": "WHERE"
+      },
+      {
+        "type": "column",
+        "value": "credits"
+      },
+      {
+        "type": "column",
+        "value": ">="
+      },
+      {
+        "type": "column",
+        "value": "4;"
+      }
+    ]
+  },
+  {
+    "drillNumber": 1152,
+    "subcluster": "12.6 CTEs with Internal Joins",
+    "level": "Level 3 (CTE Internal Join)",
+    "title": "Syntax #1152: Join books and authors inside a CTE, then filter for affordable UK books",
+    "table": "Books",
+    "scenario": "Join books and authors inside a CTE, then filter for affordable UK books.",
+    "businessObjective": "Join books and authors inside a CTE, then filter for affordable UK books.",
+    "schemaSnippet": "Books relational schema",
+    "targetQuery": "WITH BookAuthorPairs AS (\n  SELECT b.title, a.author_name, a.country, b.price\n  FROM Books b\n  INNER JOIN Authors a ON b.author_id = a.author_id\n)\nSELECT title, author_name\nFROM BookAuthorPairs\nWHERE country = 'UK' AND price < 20.00;",
+    "syntaxBlueprint": "WITH JoinedData AS (\n  SELECT a.col1, b.col2\n  FROM TableA a\n  JOIN TableB b ON a.id = b.a_id\n)\nSELECT col1, col2\nFROM JoinedData\nWHERE col1 = 'val';",
+    "syntaxRule": "Perform multi-table relational joins INSIDE the CTE definition to prepare a unified, flattened dataset, keeping the main query remarkably clean.",
+    "syntaxTrap": "Overcomplicating the outer query when the complexity should have been encapsulated inside the CTE.",
+    "eli5Story": "Subqueries & CTEs on Books: Join books and authors inside a CTE, then filter for affordable UK books.",
+    "commonMistakes": "Forgetting to alias derived tables in FROM, writing multiple WITH keywords in multi-CTE pipelines, or suffering the NOT IN NULL trap.",
+    "learningOutcomes": "Mastered 12.6 CTEs with Internal Joins on Books.",
+    "challengeSlots": [
+      {
+        "type": "keyword",
+        "value": "WITH"
+      },
+      {
+        "type": "column",
+        "value": "BookAuthorPairs"
+      },
+      {
+        "type": "keyword",
+        "value": "AS"
+      },
+      {
+        "type": "column",
+        "value": "("
+      },
+      {
+        "type": "keyword",
+        "value": "SELECT"
+      },
+      {
+        "type": "column",
+        "value": "b.title,"
+      },
+      {
+        "type": "column",
+        "value": "a.author_name,"
+      },
+      {
+        "type": "column",
+        "value": "a.country,"
+      },
+      {
+        "type": "column",
+        "value": "b.price"
+      },
+      {
+        "type": "keyword",
+        "value": "FROM"
+      },
+      {
+        "type": "table",
+        "value": "Books"
+      },
+      {
+        "type": "column",
+        "value": "b"
+      },
+      {
+        "type": "keyword",
+        "value": "INNER"
+      },
+      {
+        "type": "keyword",
+        "value": "JOIN"
+      },
+      {
+        "type": "table",
+        "value": "Authors"
+      },
+      {
+        "type": "column",
+        "value": "a"
+      },
+      {
+        "type": "keyword",
+        "value": "ON"
+      },
+      {
+        "type": "column",
+        "value": "b.author_id"
+      },
+      {
+        "type": "column",
+        "value": "="
+      },
+      {
+        "type": "column",
+        "value": "a.author_id"
+      },
+      {
+        "type": "column",
+        "value": ")"
+      },
+      {
+        "type": "keyword",
+        "value": "SELECT"
+      },
+      {
+        "type": "column",
+        "value": "title,"
+      },
+      {
+        "type": "column",
+        "value": "author_name"
+      },
+      {
+        "type": "keyword",
+        "value": "FROM"
+      },
+      {
+        "type": "column",
+        "value": "BookAuthorPairs"
+      },
+      {
+        "type": "keyword",
+        "value": "WHERE"
+      },
+      {
+        "type": "column",
+        "value": "country"
+      },
+      {
+        "type": "column",
+        "value": "="
+      },
+      {
+        "type": "column",
+        "value": "'UK'"
+      },
+      {
+        "type": "keyword",
+        "value": "AND"
+      },
+      {
+        "type": "column",
+        "value": "price"
+      },
+      {
+        "type": "column",
+        "value": "<"
+      },
+      {
+        "type": "column",
+        "value": "20.00;"
+      }
+    ]
+  },
+  {
+    "drillNumber": 1153,
+    "subcluster": "12.6 CTEs with Internal Joins",
+    "level": "Level 3 (CTE Internal Join)",
+    "title": "Syntax #1153: Join employees and departments inside a CTE, then filter high earners",
+    "table": "Employees",
+    "scenario": "Join employees and departments inside a CTE, then filter high earners.",
+    "businessObjective": "Join employees and departments inside a CTE, then filter high earners.",
+    "schemaSnippet": "Employees relational schema",
+    "targetQuery": "WITH StaffDepartments AS (\n  SELECT e.first_name, e.salary, d.department_name, d.budget\n  FROM Employees e\n  INNER JOIN Departments d ON e.department_id = d.department_id\n)\nSELECT first_name, department_name\nFROM StaffDepartments\nWHERE salary > 75000;",
+    "syntaxBlueprint": "WITH JoinedData AS (\n  SELECT a.col1, b.col2\n  FROM TableA a\n  JOIN TableB b ON a.id = b.a_id\n)\nSELECT col1, col2\nFROM JoinedData\nWHERE col1 = 'val';",
+    "syntaxRule": "Perform multi-table relational joins INSIDE the CTE definition to prepare a unified, flattened dataset, keeping the main query remarkably clean.",
+    "syntaxTrap": "Overcomplicating the outer query when the complexity should have been encapsulated inside the CTE.",
+    "eli5Story": "Subqueries & CTEs on Employees: Join employees and departments inside a CTE, then filter high earners.",
+    "commonMistakes": "Forgetting to alias derived tables in FROM, writing multiple WITH keywords in multi-CTE pipelines, or suffering the NOT IN NULL trap.",
+    "learningOutcomes": "Mastered 12.6 CTEs with Internal Joins on Employees.",
+    "challengeSlots": [
+      {
+        "type": "keyword",
+        "value": "WITH"
+      },
+      {
+        "type": "column",
+        "value": "StaffDepartments"
+      },
+      {
+        "type": "keyword",
+        "value": "AS"
+      },
+      {
+        "type": "column",
+        "value": "("
+      },
+      {
+        "type": "keyword",
+        "value": "SELECT"
+      },
+      {
+        "type": "column",
+        "value": "e.first_name,"
+      },
+      {
+        "type": "column",
+        "value": "e.salary,"
+      },
+      {
+        "type": "column",
+        "value": "d.department_name,"
+      },
+      {
+        "type": "column",
+        "value": "d.budget"
+      },
+      {
+        "type": "keyword",
+        "value": "FROM"
+      },
+      {
+        "type": "table",
+        "value": "Employees"
+      },
+      {
+        "type": "column",
+        "value": "e"
+      },
+      {
+        "type": "keyword",
+        "value": "INNER"
+      },
+      {
+        "type": "keyword",
+        "value": "JOIN"
+      },
+      {
+        "type": "table",
+        "value": "Departments"
+      },
+      {
+        "type": "column",
+        "value": "d"
+      },
+      {
+        "type": "keyword",
+        "value": "ON"
+      },
+      {
+        "type": "column",
+        "value": "e.department_id"
+      },
+      {
+        "type": "column",
+        "value": "="
+      },
+      {
+        "type": "column",
+        "value": "d.department_id"
+      },
+      {
+        "type": "column",
+        "value": ")"
+      },
+      {
+        "type": "keyword",
+        "value": "SELECT"
+      },
+      {
+        "type": "column",
+        "value": "first_name,"
+      },
+      {
+        "type": "column",
+        "value": "department_name"
+      },
+      {
+        "type": "keyword",
+        "value": "FROM"
+      },
+      {
+        "type": "column",
+        "value": "StaffDepartments"
+      },
+      {
+        "type": "keyword",
+        "value": "WHERE"
+      },
+      {
+        "type": "column",
+        "value": "salary"
+      },
+      {
+        "type": "column",
+        "value": ">"
+      },
+      {
+        "type": "column",
+        "value": "75000;"
+      }
+    ]
+  },
+  {
+    "drillNumber": 1154,
+    "subcluster": "12.6 CTEs with Internal Joins",
+    "level": "Level 3 (CTE Internal Join)",
+    "title": "Syntax #1154: Join grocery inventory and suppliers inside a CTE, then project budget products",
+    "table": "GroceryItems",
+    "scenario": "Join grocery inventory and suppliers inside a CTE, then project budget products.",
+    "businessObjective": "Join grocery inventory and suppliers inside a CTE, then project budget products.",
+    "schemaSnippet": "GroceryItems relational schema",
+    "targetQuery": "WITH InventorySuppliers AS (\n  SELECT g.item_name, g.unit_price, s.supplier_name, s.contact_phone\n  FROM GroceryItems g\n  INNER JOIN Suppliers s ON g.supplier_id = s.supplier_id\n)\nSELECT item_name, supplier_name\nFROM InventorySuppliers\nWHERE unit_price < 5.00;",
+    "syntaxBlueprint": "WITH JoinedData AS (\n  SELECT a.col1, b.col2\n  FROM TableA a\n  JOIN TableB b ON a.id = b.a_id\n)\nSELECT col1, col2\nFROM JoinedData\nWHERE col1 = 'val';",
+    "syntaxRule": "Perform multi-table relational joins INSIDE the CTE definition to prepare a unified, flattened dataset, keeping the main query remarkably clean.",
+    "syntaxTrap": "Overcomplicating the outer query when the complexity should have been encapsulated inside the CTE.",
+    "eli5Story": "Subqueries & CTEs on GroceryItems: Join grocery inventory and suppliers inside a CTE, then project budget products.",
+    "commonMistakes": "Forgetting to alias derived tables in FROM, writing multiple WITH keywords in multi-CTE pipelines, or suffering the NOT IN NULL trap.",
+    "learningOutcomes": "Mastered 12.6 CTEs with Internal Joins on GroceryItems.",
+    "challengeSlots": [
+      {
+        "type": "keyword",
+        "value": "WITH"
+      },
+      {
+        "type": "column",
+        "value": "InventorySuppliers"
+      },
+      {
+        "type": "keyword",
+        "value": "AS"
+      },
+      {
+        "type": "column",
+        "value": "("
+      },
+      {
+        "type": "keyword",
+        "value": "SELECT"
+      },
+      {
+        "type": "column",
+        "value": "g.item_name,"
+      },
+      {
+        "type": "column",
+        "value": "g.unit_price,"
+      },
+      {
+        "type": "column",
+        "value": "s.supplier_name,"
+      },
+      {
+        "type": "column",
+        "value": "s.contact_phone"
+      },
+      {
+        "type": "keyword",
+        "value": "FROM"
+      },
+      {
+        "type": "table",
+        "value": "GroceryItems"
+      },
+      {
+        "type": "column",
+        "value": "g"
+      },
+      {
+        "type": "keyword",
+        "value": "INNER"
+      },
+      {
+        "type": "keyword",
+        "value": "JOIN"
+      },
+      {
+        "type": "table",
+        "value": "Suppliers"
+      },
+      {
+        "type": "column",
+        "value": "s"
+      },
+      {
+        "type": "keyword",
+        "value": "ON"
+      },
+      {
+        "type": "column",
+        "value": "g.supplier_id"
+      },
+      {
+        "type": "column",
+        "value": "="
+      },
+      {
+        "type": "column",
+        "value": "s.supplier_id"
+      },
+      {
+        "type": "column",
+        "value": ")"
+      },
+      {
+        "type": "keyword",
+        "value": "SELECT"
+      },
+      {
+        "type": "column",
+        "value": "item_name,"
+      },
+      {
+        "type": "column",
+        "value": "supplier_name"
+      },
+      {
+        "type": "keyword",
+        "value": "FROM"
+      },
+      {
+        "type": "column",
+        "value": "InventorySuppliers"
+      },
+      {
+        "type": "keyword",
+        "value": "WHERE"
+      },
+      {
+        "type": "column",
+        "value": "unit_price"
+      },
+      {
+        "type": "column",
+        "value": "<"
+      },
+      {
+        "type": "column",
+        "value": "5.00;"
+      }
+    ]
+  },
+  {
+    "drillNumber": 1155,
+    "subcluster": "12.6 CTEs with Internal Joins",
+    "level": "Level 3 (CTE Internal Join)",
+    "title": "Syntax #1155: Join orders and customers inside a CTE, then query Chicago orders",
+    "table": "Orders",
+    "scenario": "Join orders and customers inside a CTE, then query Chicago orders.",
+    "businessObjective": "Join orders and customers inside a CTE, then query Chicago orders.",
+    "schemaSnippet": "Orders relational schema",
+    "targetQuery": "WITH CustomerOrders AS (\n  SELECT o.order_id, c.customer_name, c.city, o.total_amount\n  FROM Orders o\n  INNER JOIN Customers c ON o.customer_id = c.customer_id\n)\nSELECT customer_name, order_id, total_amount\nFROM CustomerOrders\nWHERE city = 'Chicago';",
+    "syntaxBlueprint": "WITH JoinedData AS (\n  SELECT a.col1, b.col2\n  FROM TableA a\n  JOIN TableB b ON a.id = b.a_id\n)\nSELECT col1, col2\nFROM JoinedData\nWHERE col1 = 'val';",
+    "syntaxRule": "Perform multi-table relational joins INSIDE the CTE definition to prepare a unified, flattened dataset, keeping the main query remarkably clean.",
+    "syntaxTrap": "Overcomplicating the outer query when the complexity should have been encapsulated inside the CTE.",
+    "eli5Story": "Subqueries & CTEs on Orders: Join orders and customers inside a CTE, then query Chicago orders.",
+    "commonMistakes": "Forgetting to alias derived tables in FROM, writing multiple WITH keywords in multi-CTE pipelines, or suffering the NOT IN NULL trap.",
+    "learningOutcomes": "Mastered 12.6 CTEs with Internal Joins on Orders.",
+    "challengeSlots": [
+      {
+        "type": "keyword",
+        "value": "WITH"
+      },
+      {
+        "type": "table",
+        "value": "CustomerOrders"
+      },
+      {
+        "type": "keyword",
+        "value": "AS"
+      },
+      {
+        "type": "column",
+        "value": "("
+      },
+      {
+        "type": "keyword",
+        "value": "SELECT"
+      },
+      {
+        "type": "column",
+        "value": "o.order_id,"
+      },
+      {
+        "type": "column",
+        "value": "c.customer_name,"
+      },
+      {
+        "type": "column",
+        "value": "c.city,"
+      },
+      {
+        "type": "column",
+        "value": "o.total_amount"
+      },
+      {
+        "type": "keyword",
+        "value": "FROM"
+      },
+      {
+        "type": "table",
+        "value": "Orders"
+      },
+      {
+        "type": "column",
+        "value": "o"
+      },
+      {
+        "type": "keyword",
+        "value": "INNER"
+      },
+      {
+        "type": "keyword",
+        "value": "JOIN"
+      },
+      {
+        "type": "table",
+        "value": "Customers"
+      },
+      {
+        "type": "column",
+        "value": "c"
+      },
+      {
+        "type": "keyword",
+        "value": "ON"
+      },
+      {
+        "type": "column",
+        "value": "o.customer_id"
+      },
+      {
+        "type": "column",
+        "value": "="
+      },
+      {
+        "type": "column",
+        "value": "c.customer_id"
+      },
+      {
+        "type": "column",
+        "value": ")"
+      },
+      {
+        "type": "keyword",
+        "value": "SELECT"
+      },
+      {
+        "type": "column",
+        "value": "customer_name,"
+      },
+      {
+        "type": "column",
+        "value": "order_id,"
+      },
+      {
+        "type": "column",
+        "value": "total_amount"
+      },
+      {
+        "type": "keyword",
+        "value": "FROM"
+      },
+      {
+        "type": "table",
+        "value": "CustomerOrders"
+      },
+      {
+        "type": "keyword",
+        "value": "WHERE"
+      },
+      {
+        "type": "column",
+        "value": "city"
+      },
+      {
+        "type": "column",
+        "value": "="
+      },
+      {
+        "type": "column",
+        "value": "'Chicago';"
+      }
+    ]
+  },
+  {
+    "drillNumber": 1156,
+    "subcluster": "12.6 CTEs with Internal Joins",
+    "level": "Level 3 (CTE Internal Join)",
+    "title": "Syntax #1156: Join tracks and albums inside a CTE, then filter modern releases",
+    "table": "MusicTracks",
+    "scenario": "Join tracks and albums inside a CTE, then filter modern releases.",
+    "businessObjective": "Join tracks and albums inside a CTE, then filter modern releases.",
+    "schemaSnippet": "MusicTracks relational schema",
+    "targetQuery": "WITH TrackAlbumDetails AS (\n  SELECT t.track_title, a.album_title, a.release_year, t.duration_seconds\n  FROM MusicTracks t\n  INNER JOIN Albums a ON t.album_id = a.album_id\n)\nSELECT track_title, album_title\nFROM TrackAlbumDetails\nWHERE release_year >= 2022;",
+    "syntaxBlueprint": "WITH JoinedData AS (\n  SELECT a.col1, b.col2\n  FROM TableA a\n  JOIN TableB b ON a.id = b.a_id\n)\nSELECT col1, col2\nFROM JoinedData\nWHERE col1 = 'val';",
+    "syntaxRule": "Perform multi-table relational joins INSIDE the CTE definition to prepare a unified, flattened dataset, keeping the main query remarkably clean.",
+    "syntaxTrap": "Overcomplicating the outer query when the complexity should have been encapsulated inside the CTE.",
+    "eli5Story": "Subqueries & CTEs on MusicTracks: Join tracks and albums inside a CTE, then filter modern releases.",
+    "commonMistakes": "Forgetting to alias derived tables in FROM, writing multiple WITH keywords in multi-CTE pipelines, or suffering the NOT IN NULL trap.",
+    "learningOutcomes": "Mastered 12.6 CTEs with Internal Joins on MusicTracks.",
+    "challengeSlots": [
+      {
+        "type": "keyword",
+        "value": "WITH"
+      },
+      {
+        "type": "column",
+        "value": "TrackAlbumDetails"
+      },
+      {
+        "type": "keyword",
+        "value": "AS"
+      },
+      {
+        "type": "column",
+        "value": "("
+      },
+      {
+        "type": "keyword",
+        "value": "SELECT"
+      },
+      {
+        "type": "column",
+        "value": "t.track_title,"
+      },
+      {
+        "type": "column",
+        "value": "a.album_title,"
+      },
+      {
+        "type": "column",
+        "value": "a.release_year,"
+      },
+      {
+        "type": "column",
+        "value": "t.duration_seconds"
+      },
+      {
+        "type": "keyword",
+        "value": "FROM"
+      },
+      {
+        "type": "table",
+        "value": "MusicTracks"
+      },
+      {
+        "type": "column",
+        "value": "t"
+      },
+      {
+        "type": "keyword",
+        "value": "INNER"
+      },
+      {
+        "type": "keyword",
+        "value": "JOIN"
+      },
+      {
+        "type": "table",
+        "value": "Albums"
+      },
+      {
+        "type": "column",
+        "value": "a"
+      },
+      {
+        "type": "keyword",
+        "value": "ON"
+      },
+      {
+        "type": "column",
+        "value": "t.album_id"
+      },
+      {
+        "type": "column",
+        "value": "="
+      },
+      {
+        "type": "column",
+        "value": "a.album_id"
+      },
+      {
+        "type": "column",
+        "value": ")"
+      },
+      {
+        "type": "keyword",
+        "value": "SELECT"
+      },
+      {
+        "type": "column",
+        "value": "track_title,"
+      },
+      {
+        "type": "column",
+        "value": "album_title"
+      },
+      {
+        "type": "keyword",
+        "value": "FROM"
+      },
+      {
+        "type": "column",
+        "value": "TrackAlbumDetails"
+      },
+      {
+        "type": "keyword",
+        "value": "WHERE"
+      },
+      {
+        "type": "column",
+        "value": "release_year"
+      },
+      {
+        "type": "column",
+        "value": ">="
+      },
+      {
+        "type": "column",
+        "value": "2022;"
+      }
+    ]
+  },
+  {
+    "drillNumber": 1157,
+    "subcluster": "12.6 CTEs with Internal Joins",
+    "level": "Level 3 (CTE Internal Join)",
+    "title": "Syntax #1157: Join members and coaches inside a CTE, then filter VIP client assignments",
+    "table": "GymMembers",
+    "scenario": "Join members and coaches inside a CTE, then filter VIP client assignments.",
+    "businessObjective": "Join members and coaches inside a CTE, then filter VIP client assignments.",
+    "schemaSnippet": "GymMembers relational schema",
+    "targetQuery": "WITH MemberCoachSchedule AS (\n  SELECT m.member_name, tr.trainer_name, tr.specialty, m.membership_plan\n  FROM GymMembers m\n  INNER JOIN Trainers tr ON m.trainer_id = tr.trainer_id\n)\nSELECT member_name, trainer_name\nFROM MemberCoachSchedule\nWHERE membership_plan = 'VIP';",
+    "syntaxBlueprint": "WITH JoinedData AS (\n  SELECT a.col1, b.col2\n  FROM TableA a\n  JOIN TableB b ON a.id = b.a_id\n)\nSELECT col1, col2\nFROM JoinedData\nWHERE col1 = 'val';",
+    "syntaxRule": "Perform multi-table relational joins INSIDE the CTE definition to prepare a unified, flattened dataset, keeping the main query remarkably clean.",
+    "syntaxTrap": "Overcomplicating the outer query when the complexity should have been encapsulated inside the CTE.",
+    "eli5Story": "Subqueries & CTEs on GymMembers: Join members and coaches inside a CTE, then filter VIP client assignments.",
+    "commonMistakes": "Forgetting to alias derived tables in FROM, writing multiple WITH keywords in multi-CTE pipelines, or suffering the NOT IN NULL trap.",
+    "learningOutcomes": "Mastered 12.6 CTEs with Internal Joins on GymMembers.",
+    "challengeSlots": [
+      {
+        "type": "keyword",
+        "value": "WITH"
+      },
+      {
+        "type": "column",
+        "value": "MemberCoachSchedule"
+      },
+      {
+        "type": "keyword",
+        "value": "AS"
+      },
+      {
+        "type": "column",
+        "value": "("
+      },
+      {
+        "type": "keyword",
+        "value": "SELECT"
+      },
+      {
+        "type": "column",
+        "value": "m.member_name,"
+      },
+      {
+        "type": "column",
+        "value": "tr.trainer_name,"
+      },
+      {
+        "type": "column",
+        "value": "tr.specialty,"
+      },
+      {
+        "type": "column",
+        "value": "m.membership_plan"
+      },
+      {
+        "type": "keyword",
+        "value": "FROM"
+      },
+      {
+        "type": "table",
+        "value": "GymMembers"
+      },
+      {
+        "type": "column",
+        "value": "m"
+      },
+      {
+        "type": "keyword",
+        "value": "INNER"
+      },
+      {
+        "type": "keyword",
+        "value": "JOIN"
+      },
+      {
+        "type": "table",
+        "value": "Trainers"
+      },
+      {
+        "type": "column",
+        "value": "tr"
+      },
+      {
+        "type": "keyword",
+        "value": "ON"
+      },
+      {
+        "type": "column",
+        "value": "m.trainer_id"
+      },
+      {
+        "type": "column",
+        "value": "="
+      },
+      {
+        "type": "column",
+        "value": "tr.trainer_id"
+      },
+      {
+        "type": "column",
+        "value": ")"
+      },
+      {
+        "type": "keyword",
+        "value": "SELECT"
+      },
+      {
+        "type": "column",
+        "value": "member_name,"
+      },
+      {
+        "type": "column",
+        "value": "trainer_name"
+      },
+      {
+        "type": "keyword",
+        "value": "FROM"
+      },
+      {
+        "type": "column",
+        "value": "MemberCoachSchedule"
+      },
+      {
+        "type": "keyword",
+        "value": "WHERE"
+      },
+      {
+        "type": "column",
+        "value": "membership_plan"
+      },
+      {
+        "type": "column",
+        "value": "="
+      },
+      {
+        "type": "column",
+        "value": "'VIP';"
+      }
+    ]
+  },
+  {
+    "drillNumber": 1158,
+    "subcluster": "12.6 CTEs with Internal Joins",
+    "level": "Level 3 (CTE Internal Join)",
+    "title": "Syntax #1158: Join movies and reviews inside a CTE, then query 4+ star films",
+    "table": "MovieReviews",
+    "scenario": "Join movies and reviews inside a CTE, then query 4+ star films.",
+    "businessObjective": "Join movies and reviews inside a CTE, then query 4+ star films.",
+    "schemaSnippet": "MovieReviews relational schema",
+    "targetQuery": "WITH FilmReviewProfiles AS (\n  SELECT m.movie_title, m.director, r.star_rating, r.review_text\n  FROM Movies m\n  INNER JOIN MovieReviews r ON m.movie_id = r.movie_id\n)\nSELECT movie_title, director, star_rating\nFROM FilmReviewProfiles\nWHERE star_rating >= 4;",
+    "syntaxBlueprint": "WITH JoinedData AS (\n  SELECT a.col1, b.col2\n  FROM TableA a\n  JOIN TableB b ON a.id = b.a_id\n)\nSELECT col1, col2\nFROM JoinedData\nWHERE col1 = 'val';",
+    "syntaxRule": "Perform multi-table relational joins INSIDE the CTE definition to prepare a unified, flattened dataset, keeping the main query remarkably clean.",
+    "syntaxTrap": "Overcomplicating the outer query when the complexity should have been encapsulated inside the CTE.",
+    "eli5Story": "Subqueries & CTEs on MovieReviews: Join movies and reviews inside a CTE, then query 4+ star films.",
+    "commonMistakes": "Forgetting to alias derived tables in FROM, writing multiple WITH keywords in multi-CTE pipelines, or suffering the NOT IN NULL trap.",
+    "learningOutcomes": "Mastered 12.6 CTEs with Internal Joins on MovieReviews.",
+    "challengeSlots": [
+      {
+        "type": "keyword",
+        "value": "WITH"
+      },
+      {
+        "type": "column",
+        "value": "FilmReviewProfiles"
+      },
+      {
+        "type": "keyword",
+        "value": "AS"
+      },
+      {
+        "type": "column",
+        "value": "("
+      },
+      {
+        "type": "keyword",
+        "value": "SELECT"
+      },
+      {
+        "type": "column",
+        "value": "m.movie_title,"
+      },
+      {
+        "type": "column",
+        "value": "m.director,"
+      },
+      {
+        "type": "column",
+        "value": "r.star_rating,"
+      },
+      {
+        "type": "column",
+        "value": "r.review_text"
+      },
+      {
+        "type": "keyword",
+        "value": "FROM"
+      },
+      {
+        "type": "table",
+        "value": "Movies"
+      },
+      {
+        "type": "column",
+        "value": "m"
+      },
+      {
+        "type": "keyword",
+        "value": "INNER"
+      },
+      {
+        "type": "keyword",
+        "value": "JOIN"
+      },
+      {
+        "type": "table",
+        "value": "MovieReviews"
+      },
+      {
+        "type": "column",
+        "value": "r"
+      },
+      {
+        "type": "keyword",
+        "value": "ON"
+      },
+      {
+        "type": "column",
+        "value": "m.movie_id"
+      },
+      {
+        "type": "column",
+        "value": "="
+      },
+      {
+        "type": "column",
+        "value": "r.movie_id"
+      },
+      {
+        "type": "column",
+        "value": ")"
+      },
+      {
+        "type": "keyword",
+        "value": "SELECT"
+      },
+      {
+        "type": "column",
+        "value": "movie_title,"
+      },
+      {
+        "type": "column",
+        "value": "director,"
+      },
+      {
+        "type": "column",
+        "value": "star_rating"
+      },
+      {
+        "type": "keyword",
+        "value": "FROM"
+      },
+      {
+        "type": "column",
+        "value": "FilmReviewProfiles"
+      },
+      {
+        "type": "keyword",
+        "value": "WHERE"
+      },
+      {
+        "type": "column",
+        "value": "star_rating"
+      },
+      {
+        "type": "column",
+        "value": ">="
+      },
+      {
+        "type": "column",
+        "value": "4;"
+      }
+    ]
+  },
+  {
+    "drillNumber": 1159,
+    "subcluster": "12.6 CTEs with Internal Joins",
+    "level": "Level 3 (CTE Internal Join)",
+    "title": "Syntax #1159: Join flights and airlines inside a CTE, then query on-time departures",
+    "table": "FlightSchedule",
+    "scenario": "Join flights and airlines inside a CTE, then query on-time departures.",
+    "businessObjective": "Join flights and airlines inside a CTE, then query on-time departures.",
+    "schemaSnippet": "FlightSchedule relational schema",
+    "targetQuery": "WITH ActiveFlightCarriers AS (\n  SELECT f.flight_id, al.airline_name, f.origin_airport, f.status\n  FROM FlightSchedule f\n  INNER JOIN Airlines al ON f.airline_id = al.airline_id\n)\nSELECT flight_id, airline_name\nFROM ActiveFlightCarriers\nWHERE status = 'On-Time';",
+    "syntaxBlueprint": "WITH JoinedData AS (\n  SELECT a.col1, b.col2\n  FROM TableA a\n  JOIN TableB b ON a.id = b.a_id\n)\nSELECT col1, col2\nFROM JoinedData\nWHERE col1 = 'val';",
+    "syntaxRule": "Perform multi-table relational joins INSIDE the CTE definition to prepare a unified, flattened dataset, keeping the main query remarkably clean.",
+    "syntaxTrap": "Overcomplicating the outer query when the complexity should have been encapsulated inside the CTE.",
+    "eli5Story": "Subqueries & CTEs on FlightSchedule: Join flights and airlines inside a CTE, then query on-time departures.",
+    "commonMistakes": "Forgetting to alias derived tables in FROM, writing multiple WITH keywords in multi-CTE pipelines, or suffering the NOT IN NULL trap.",
+    "learningOutcomes": "Mastered 12.6 CTEs with Internal Joins on FlightSchedule.",
+    "challengeSlots": [
+      {
+        "type": "keyword",
+        "value": "WITH"
+      },
+      {
+        "type": "column",
+        "value": "ActiveFlightCarriers"
+      },
+      {
+        "type": "keyword",
+        "value": "AS"
+      },
+      {
+        "type": "column",
+        "value": "("
+      },
+      {
+        "type": "keyword",
+        "value": "SELECT"
+      },
+      {
+        "type": "column",
+        "value": "f.flight_id,"
+      },
+      {
+        "type": "column",
+        "value": "al.airline_name,"
+      },
+      {
+        "type": "column",
+        "value": "f.origin_airport,"
+      },
+      {
+        "type": "column",
+        "value": "f.status"
+      },
+      {
+        "type": "keyword",
+        "value": "FROM"
+      },
+      {
+        "type": "table",
+        "value": "FlightSchedule"
+      },
+      {
+        "type": "column",
+        "value": "f"
+      },
+      {
+        "type": "keyword",
+        "value": "INNER"
+      },
+      {
+        "type": "keyword",
+        "value": "JOIN"
+      },
+      {
+        "type": "table",
+        "value": "Airlines"
+      },
+      {
+        "type": "column",
+        "value": "al"
+      },
+      {
+        "type": "keyword",
+        "value": "ON"
+      },
+      {
+        "type": "column",
+        "value": "f.airline_id"
+      },
+      {
+        "type": "column",
+        "value": "="
+      },
+      {
+        "type": "column",
+        "value": "al.airline_id"
+      },
+      {
+        "type": "column",
+        "value": ")"
+      },
+      {
+        "type": "keyword",
+        "value": "SELECT"
+      },
+      {
+        "type": "column",
+        "value": "flight_id,"
+      },
+      {
+        "type": "column",
+        "value": "airline_name"
+      },
+      {
+        "type": "keyword",
+        "value": "FROM"
+      },
+      {
+        "type": "column",
+        "value": "ActiveFlightCarriers"
+      },
+      {
+        "type": "keyword",
+        "value": "WHERE"
+      },
+      {
+        "type": "column",
+        "value": "status"
+      },
+      {
+        "type": "column",
+        "value": "="
+      },
+      {
+        "type": "column",
+        "value": "'On-Time';"
+      }
+    ]
+  },
+  {
+    "drillNumber": 1160,
+    "subcluster": "12.6 CTEs with Internal Joins",
+    "level": "Level 3 (CTE Internal Join)",
+    "title": "Syntax #1160: Join pets and owners inside a CTE, then query canine emergency contacts",
+    "table": "PetClinic",
+    "scenario": "Join pets and owners inside a CTE, then query canine emergency contacts.",
+    "businessObjective": "Join pets and owners inside a CTE, then query canine emergency contacts.",
+    "schemaSnippet": "PetClinic relational schema",
+    "targetQuery": "WITH ClinicPatientProfiles AS (\n  SELECT p.pet_name, p.species, o.owner_name, o.emergency_phone\n  FROM PetClinic p\n  INNER JOIN Owners o ON p.owner_id = o.owner_id\n)\nSELECT pet_name, owner_name, emergency_phone\nFROM ClinicPatientProfiles\nWHERE species = 'Canine';",
+    "syntaxBlueprint": "WITH JoinedData AS (\n  SELECT a.col1, b.col2\n  FROM TableA a\n  JOIN TableB b ON a.id = b.a_id\n)\nSELECT col1, col2\nFROM JoinedData\nWHERE col1 = 'val';",
+    "syntaxRule": "Perform multi-table relational joins INSIDE the CTE definition to prepare a unified, flattened dataset, keeping the main query remarkably clean.",
+    "syntaxTrap": "Overcomplicating the outer query when the complexity should have been encapsulated inside the CTE.",
+    "eli5Story": "Subqueries & CTEs on PetClinic: Join pets and owners inside a CTE, then query canine emergency contacts.",
+    "commonMistakes": "Forgetting to alias derived tables in FROM, writing multiple WITH keywords in multi-CTE pipelines, or suffering the NOT IN NULL trap.",
+    "learningOutcomes": "Mastered 12.6 CTEs with Internal Joins on PetClinic.",
+    "challengeSlots": [
+      {
+        "type": "keyword",
+        "value": "WITH"
+      },
+      {
+        "type": "column",
+        "value": "ClinicPatientProfiles"
+      },
+      {
+        "type": "keyword",
+        "value": "AS"
+      },
+      {
+        "type": "column",
+        "value": "("
+      },
+      {
+        "type": "keyword",
+        "value": "SELECT"
+      },
+      {
+        "type": "column",
+        "value": "p.pet_name,"
+      },
+      {
+        "type": "column",
+        "value": "p.species,"
+      },
+      {
+        "type": "column",
+        "value": "o.owner_name,"
+      },
+      {
+        "type": "column",
+        "value": "o.emergency_phone"
+      },
+      {
+        "type": "keyword",
+        "value": "FROM"
+      },
+      {
+        "type": "table",
+        "value": "PetClinic"
+      },
+      {
+        "type": "column",
+        "value": "p"
+      },
+      {
+        "type": "keyword",
+        "value": "INNER"
+      },
+      {
+        "type": "keyword",
+        "value": "JOIN"
+      },
+      {
+        "type": "table",
+        "value": "Owners"
+      },
+      {
+        "type": "column",
+        "value": "o"
+      },
+      {
+        "type": "keyword",
+        "value": "ON"
+      },
+      {
+        "type": "column",
+        "value": "p.owner_id"
+      },
+      {
+        "type": "column",
+        "value": "="
+      },
+      {
+        "type": "column",
+        "value": "o.owner_id"
+      },
+      {
+        "type": "column",
+        "value": ")"
+      },
+      {
+        "type": "keyword",
+        "value": "SELECT"
+      },
+      {
+        "type": "column",
+        "value": "pet_name,"
+      },
+      {
+        "type": "column",
+        "value": "owner_name,"
+      },
+      {
+        "type": "column",
+        "value": "emergency_phone"
+      },
+      {
+        "type": "keyword",
+        "value": "FROM"
+      },
+      {
+        "type": "column",
+        "value": "ClinicPatientProfiles"
+      },
+      {
+        "type": "keyword",
+        "value": "WHERE"
+      },
+      {
+        "type": "column",
+        "value": "species"
+      },
+      {
+        "type": "column",
+        "value": "="
+      },
+      {
+        "type": "column",
+        "value": "'Canine';"
+      }
+    ]
+  },
+  {
+    "drillNumber": 1161,
+    "subcluster": "12.7 CTEs with CASE WHEN Categorization",
+    "level": "Level 3 (CTE with CASE Logic)",
+    "title": "Syntax #1161: Categorize students by GPA in a CTE, then aggregate headcounts per academic standing tier",
+    "table": "Students",
+    "scenario": "Categorize students by GPA in a CTE, then aggregate headcounts per academic standing tier.",
+    "businessObjective": "Categorize students by GPA in a CTE, then aggregate headcounts per academic standing tier.",
+    "schemaSnippet": "Students relational schema",
+    "targetQuery": "WITH AcademicTiers AS (\n  SELECT full_name, gpa,\n    CASE WHEN gpa >= 3.8 THEN 'High Honors' WHEN gpa >= 3.5 THEN 'Honors' ELSE 'Standard' END AS academic_standing\n  FROM Students\n)\nSELECT academic_standing, COUNT(*) AS student_count\nFROM AcademicTiers\nGROUP BY academic_standing;",
+    "syntaxBlueprint": "WITH Categorized AS (\n  SELECT col1,\n    CASE WHEN metric > 100 THEN 'High' ELSE 'Low' END AS tier\n  FROM table_name\n)\nSELECT tier, COUNT(*)\nFROM Categorized\nGROUP BY tier;",
+    "syntaxRule": "Assign descriptive categories using CASE WHEN inside a CTE, then cleanly group, count, or filter by those newly created category names in the outer query.",
+    "syntaxTrap": "Trying to GROUP BY a CASE expression directly can get messy; encapsulating the CASE inside a CTE gives clean, legible grouping.",
+    "eli5Story": "Subqueries & CTEs on Students: Categorize students by GPA in a CTE, then aggregate headcounts per academic standing tier.",
+    "commonMistakes": "Forgetting to alias derived tables in FROM, writing multiple WITH keywords in multi-CTE pipelines, or suffering the NOT IN NULL trap.",
+    "learningOutcomes": "Mastered 12.7 CTEs with CASE WHEN Categorization on Students.",
+    "challengeSlots": [
+      {
+        "type": "keyword",
+        "value": "WITH"
+      },
+      {
+        "type": "column",
+        "value": "AcademicTiers"
+      },
+      {
+        "type": "keyword",
+        "value": "AS"
+      },
+      {
+        "type": "column",
+        "value": "("
+      },
+      {
+        "type": "keyword",
+        "value": "SELECT"
+      },
+      {
+        "type": "column",
+        "value": "full_name,"
+      },
+      {
+        "type": "column",
+        "value": "gpa,"
+      },
+      {
+        "type": "keyword",
+        "value": "CASE"
+      },
+      {
+        "type": "keyword",
+        "value": "WHEN"
+      },
+      {
+        "type": "column",
+        "value": "gpa"
+      },
+      {
+        "type": "column",
+        "value": ">="
+      },
+      {
+        "type": "column",
+        "value": "3.8"
+      },
+      {
+        "type": "keyword",
+        "value": "THEN"
+      },
+      {
+        "type": "column",
+        "value": "'High"
+      },
+      {
+        "type": "column",
+        "value": "Honors'"
+      },
+      {
+        "type": "keyword",
+        "value": "WHEN"
+      },
+      {
+        "type": "column",
+        "value": "gpa"
+      },
+      {
+        "type": "column",
+        "value": ">="
+      },
+      {
+        "type": "column",
+        "value": "3.5"
+      },
+      {
+        "type": "keyword",
+        "value": "THEN"
+      },
+      {
+        "type": "column",
+        "value": "'Honors'"
+      },
+      {
+        "type": "keyword",
+        "value": "ELSE"
+      },
+      {
+        "type": "column",
+        "value": "'Standard'"
+      },
+      {
+        "type": "keyword",
+        "value": "END"
+      },
+      {
+        "type": "keyword",
+        "value": "AS"
+      },
+      {
+        "type": "column",
+        "value": "academic_standing"
+      },
+      {
+        "type": "keyword",
+        "value": "FROM"
+      },
+      {
+        "type": "table",
+        "value": "Students"
+      },
+      {
+        "type": "column",
+        "value": ")"
+      },
+      {
+        "type": "keyword",
+        "value": "SELECT"
+      },
+      {
+        "type": "column",
+        "value": "academic_standing,"
+      },
+      {
+        "type": "column",
+        "value": "COUNT(*)"
+      },
+      {
+        "type": "keyword",
+        "value": "AS"
+      },
+      {
+        "type": "column",
+        "value": "student_count"
+      },
+      {
+        "type": "keyword",
+        "value": "FROM"
+      },
+      {
+        "type": "column",
+        "value": "AcademicTiers"
+      },
+      {
+        "type": "keyword",
+        "value": "GROUP"
+      },
+      {
+        "type": "keyword",
+        "value": "BY"
+      },
+      {
+        "type": "column",
+        "value": "academic_standing;"
+      }
+    ]
+  },
+  {
+    "drillNumber": 1162,
+    "subcluster": "12.7 CTEs with CASE WHEN Categorization",
+    "level": "Level 3 (CTE with CASE Logic)",
+    "title": "Syntax #1162: Segment book prices into brackets in a CTE, then count titles per bracket",
+    "table": "Books",
+    "scenario": "Segment book prices into brackets in a CTE, then count titles per bracket.",
+    "businessObjective": "Segment book prices into brackets in a CTE, then count titles per bracket.",
+    "schemaSnippet": "Books relational schema",
+    "targetQuery": "WITH PriceTiers AS (\n  SELECT title, price,\n    CASE WHEN price >= 30.00 THEN 'Premium' WHEN price >= 15.00 THEN 'Standard' ELSE 'Budget' END AS price_bracket\n  FROM Books\n)\nSELECT price_bracket, COUNT(*) AS title_count\nFROM PriceTiers\nGROUP BY price_bracket;",
+    "syntaxBlueprint": "WITH Categorized AS (\n  SELECT col1,\n    CASE WHEN metric > 100 THEN 'High' ELSE 'Low' END AS tier\n  FROM table_name\n)\nSELECT tier, COUNT(*)\nFROM Categorized\nGROUP BY tier;",
+    "syntaxRule": "Assign descriptive categories using CASE WHEN inside a CTE, then cleanly group, count, or filter by those newly created category names in the outer query.",
+    "syntaxTrap": "Trying to GROUP BY a CASE expression directly can get messy; encapsulating the CASE inside a CTE gives clean, legible grouping.",
+    "eli5Story": "Subqueries & CTEs on Books: Segment book prices into brackets in a CTE, then count titles per bracket.",
+    "commonMistakes": "Forgetting to alias derived tables in FROM, writing multiple WITH keywords in multi-CTE pipelines, or suffering the NOT IN NULL trap.",
+    "learningOutcomes": "Mastered 12.7 CTEs with CASE WHEN Categorization on Books.",
+    "challengeSlots": [
+      {
+        "type": "keyword",
+        "value": "WITH"
+      },
+      {
+        "type": "column",
+        "value": "PriceTiers"
+      },
+      {
+        "type": "keyword",
+        "value": "AS"
+      },
+      {
+        "type": "column",
+        "value": "("
+      },
+      {
+        "type": "keyword",
+        "value": "SELECT"
+      },
+      {
+        "type": "column",
+        "value": "title,"
+      },
+      {
+        "type": "column",
+        "value": "price,"
+      },
+      {
+        "type": "keyword",
+        "value": "CASE"
+      },
+      {
+        "type": "keyword",
+        "value": "WHEN"
+      },
+      {
+        "type": "column",
+        "value": "price"
+      },
+      {
+        "type": "column",
+        "value": ">="
+      },
+      {
+        "type": "column",
+        "value": "30.00"
+      },
+      {
+        "type": "keyword",
+        "value": "THEN"
+      },
+      {
+        "type": "column",
+        "value": "'Premium'"
+      },
+      {
+        "type": "keyword",
+        "value": "WHEN"
+      },
+      {
+        "type": "column",
+        "value": "price"
+      },
+      {
+        "type": "column",
+        "value": ">="
+      },
+      {
+        "type": "column",
+        "value": "15.00"
+      },
+      {
+        "type": "keyword",
+        "value": "THEN"
+      },
+      {
+        "type": "column",
+        "value": "'Standard'"
+      },
+      {
+        "type": "keyword",
+        "value": "ELSE"
+      },
+      {
+        "type": "column",
+        "value": "'Budget'"
+      },
+      {
+        "type": "keyword",
+        "value": "END"
+      },
+      {
+        "type": "keyword",
+        "value": "AS"
+      },
+      {
+        "type": "column",
+        "value": "price_bracket"
+      },
+      {
+        "type": "keyword",
+        "value": "FROM"
+      },
+      {
+        "type": "table",
+        "value": "Books"
+      },
+      {
+        "type": "column",
+        "value": ")"
+      },
+      {
+        "type": "keyword",
+        "value": "SELECT"
+      },
+      {
+        "type": "column",
+        "value": "price_bracket,"
+      },
+      {
+        "type": "column",
+        "value": "COUNT(*)"
+      },
+      {
+        "type": "keyword",
+        "value": "AS"
+      },
+      {
+        "type": "column",
+        "value": "title_count"
+      },
+      {
+        "type": "keyword",
+        "value": "FROM"
+      },
+      {
+        "type": "column",
+        "value": "PriceTiers"
+      },
+      {
+        "type": "keyword",
+        "value": "GROUP"
+      },
+      {
+        "type": "keyword",
+        "value": "BY"
+      },
+      {
+        "type": "column",
+        "value": "price_bracket;"
+      }
+    ]
+  },
+  {
+    "drillNumber": 1163,
+    "subcluster": "12.7 CTEs with CASE WHEN Categorization",
+    "level": "Level 3 (CTE with CASE Logic)",
+    "title": "Syntax #1163: Bucket employees into compensation bands inside a CTE and compute band stats",
+    "table": "Employees",
+    "scenario": "Bucket employees into compensation bands inside a CTE and compute band stats.",
+    "businessObjective": "Bucket employees into compensation bands inside a CTE and compute band stats.",
+    "schemaSnippet": "Employees relational schema",
+    "targetQuery": "WITH SalaryBands AS (\n  SELECT first_name, salary,\n    CASE WHEN salary >= 90000 THEN 'Senior Band' WHEN salary >= 60000 THEN 'Mid Band' ELSE 'Junior Band' END AS comp_tier\n  FROM Employees\n)\nSELECT comp_tier, COUNT(*) AS headcount, AVG(salary) AS band_avg\nFROM SalaryBands\nGROUP BY comp_tier;",
+    "syntaxBlueprint": "WITH Categorized AS (\n  SELECT col1,\n    CASE WHEN metric > 100 THEN 'High' ELSE 'Low' END AS tier\n  FROM table_name\n)\nSELECT tier, COUNT(*)\nFROM Categorized\nGROUP BY tier;",
+    "syntaxRule": "Assign descriptive categories using CASE WHEN inside a CTE, then cleanly group, count, or filter by those newly created category names in the outer query.",
+    "syntaxTrap": "Trying to GROUP BY a CASE expression directly can get messy; encapsulating the CASE inside a CTE gives clean, legible grouping.",
+    "eli5Story": "Subqueries & CTEs on Employees: Bucket employees into compensation bands inside a CTE and compute band stats.",
+    "commonMistakes": "Forgetting to alias derived tables in FROM, writing multiple WITH keywords in multi-CTE pipelines, or suffering the NOT IN NULL trap.",
+    "learningOutcomes": "Mastered 12.7 CTEs with CASE WHEN Categorization on Employees.",
+    "challengeSlots": [
+      {
+        "type": "keyword",
+        "value": "WITH"
+      },
+      {
+        "type": "column",
+        "value": "SalaryBands"
+      },
+      {
+        "type": "keyword",
+        "value": "AS"
+      },
+      {
+        "type": "column",
+        "value": "("
+      },
+      {
+        "type": "keyword",
+        "value": "SELECT"
+      },
+      {
+        "type": "column",
+        "value": "first_name,"
+      },
+      {
+        "type": "column",
+        "value": "salary,"
+      },
+      {
+        "type": "keyword",
+        "value": "CASE"
+      },
+      {
+        "type": "keyword",
+        "value": "WHEN"
+      },
+      {
+        "type": "column",
+        "value": "salary"
+      },
+      {
+        "type": "column",
+        "value": ">="
+      },
+      {
+        "type": "column",
+        "value": "90000"
+      },
+      {
+        "type": "keyword",
+        "value": "THEN"
+      },
+      {
+        "type": "column",
+        "value": "'Senior"
+      },
+      {
+        "type": "column",
+        "value": "Band'"
+      },
+      {
+        "type": "keyword",
+        "value": "WHEN"
+      },
+      {
+        "type": "column",
+        "value": "salary"
+      },
+      {
+        "type": "column",
+        "value": ">="
+      },
+      {
+        "type": "column",
+        "value": "60000"
+      },
+      {
+        "type": "keyword",
+        "value": "THEN"
+      },
+      {
+        "type": "column",
+        "value": "'Mid"
+      },
+      {
+        "type": "column",
+        "value": "Band'"
+      },
+      {
+        "type": "keyword",
+        "value": "ELSE"
+      },
+      {
+        "type": "column",
+        "value": "'Junior"
+      },
+      {
+        "type": "column",
+        "value": "Band'"
+      },
+      {
+        "type": "keyword",
+        "value": "END"
+      },
+      {
+        "type": "keyword",
+        "value": "AS"
+      },
+      {
+        "type": "column",
+        "value": "comp_tier"
+      },
+      {
+        "type": "keyword",
+        "value": "FROM"
+      },
+      {
+        "type": "table",
+        "value": "Employees"
+      },
+      {
+        "type": "column",
+        "value": ")"
+      },
+      {
+        "type": "keyword",
+        "value": "SELECT"
+      },
+      {
+        "type": "column",
+        "value": "comp_tier,"
+      },
+      {
+        "type": "column",
+        "value": "COUNT(*)"
+      },
+      {
+        "type": "keyword",
+        "value": "AS"
+      },
+      {
+        "type": "column",
+        "value": "headcount,"
+      },
+      {
+        "type": "column",
+        "value": "AVG(salary)"
+      },
+      {
+        "type": "keyword",
+        "value": "AS"
+      },
+      {
+        "type": "column",
+        "value": "band_avg"
+      },
+      {
+        "type": "keyword",
+        "value": "FROM"
+      },
+      {
+        "type": "column",
+        "value": "SalaryBands"
+      },
+      {
+        "type": "keyword",
+        "value": "GROUP"
+      },
+      {
+        "type": "keyword",
+        "value": "BY"
+      },
+      {
+        "type": "column",
+        "value": "comp_tier;"
+      }
+    ]
+  },
+  {
+    "drillNumber": 1164,
+    "subcluster": "12.7 CTEs with CASE WHEN Categorization",
+    "level": "Level 3 (CTE with CASE Logic)",
+    "title": "Syntax #1164: Segment inventory stock health inside a CTE and tally SKUs per status",
+    "table": "GroceryItems",
+    "scenario": "Segment inventory stock health inside a CTE and tally SKUs per status.",
+    "businessObjective": "Segment inventory stock health inside a CTE and tally SKUs per status.",
+    "schemaSnippet": "GroceryItems relational schema",
+    "targetQuery": "WITH StockHealth AS (\n  SELECT item_name, stock_qty,\n    CASE WHEN stock_qty < 10 THEN 'Critical' WHEN stock_qty < 30 THEN 'Low' ELSE 'Adequate' END AS inventory_status\n  FROM GroceryItems\n)\nSELECT inventory_status, COUNT(*) AS sku_count\nFROM StockHealth\nGROUP BY inventory_status;",
+    "syntaxBlueprint": "WITH Categorized AS (\n  SELECT col1,\n    CASE WHEN metric > 100 THEN 'High' ELSE 'Low' END AS tier\n  FROM table_name\n)\nSELECT tier, COUNT(*)\nFROM Categorized\nGROUP BY tier;",
+    "syntaxRule": "Assign descriptive categories using CASE WHEN inside a CTE, then cleanly group, count, or filter by those newly created category names in the outer query.",
+    "syntaxTrap": "Trying to GROUP BY a CASE expression directly can get messy; encapsulating the CASE inside a CTE gives clean, legible grouping.",
+    "eli5Story": "Subqueries & CTEs on GroceryItems: Segment inventory stock health inside a CTE and tally SKUs per status.",
+    "commonMistakes": "Forgetting to alias derived tables in FROM, writing multiple WITH keywords in multi-CTE pipelines, or suffering the NOT IN NULL trap.",
+    "learningOutcomes": "Mastered 12.7 CTEs with CASE WHEN Categorization on GroceryItems.",
+    "challengeSlots": [
+      {
+        "type": "keyword",
+        "value": "WITH"
+      },
+      {
+        "type": "column",
+        "value": "StockHealth"
+      },
+      {
+        "type": "keyword",
+        "value": "AS"
+      },
+      {
+        "type": "column",
+        "value": "("
+      },
+      {
+        "type": "keyword",
+        "value": "SELECT"
+      },
+      {
+        "type": "column",
+        "value": "item_name,"
+      },
+      {
+        "type": "column",
+        "value": "stock_qty,"
+      },
+      {
+        "type": "keyword",
+        "value": "CASE"
+      },
+      {
+        "type": "keyword",
+        "value": "WHEN"
+      },
+      {
+        "type": "column",
+        "value": "stock_qty"
+      },
+      {
+        "type": "column",
+        "value": "<"
+      },
+      {
+        "type": "column",
+        "value": "10"
+      },
+      {
+        "type": "keyword",
+        "value": "THEN"
+      },
+      {
+        "type": "column",
+        "value": "'Critical'"
+      },
+      {
+        "type": "keyword",
+        "value": "WHEN"
+      },
+      {
+        "type": "column",
+        "value": "stock_qty"
+      },
+      {
+        "type": "column",
+        "value": "<"
+      },
+      {
+        "type": "column",
+        "value": "30"
+      },
+      {
+        "type": "keyword",
+        "value": "THEN"
+      },
+      {
+        "type": "column",
+        "value": "'Low'"
+      },
+      {
+        "type": "keyword",
+        "value": "ELSE"
+      },
+      {
+        "type": "column",
+        "value": "'Adequate'"
+      },
+      {
+        "type": "keyword",
+        "value": "END"
+      },
+      {
+        "type": "keyword",
+        "value": "AS"
+      },
+      {
+        "type": "column",
+        "value": "inventory_status"
+      },
+      {
+        "type": "keyword",
+        "value": "FROM"
+      },
+      {
+        "type": "table",
+        "value": "GroceryItems"
+      },
+      {
+        "type": "column",
+        "value": ")"
+      },
+      {
+        "type": "keyword",
+        "value": "SELECT"
+      },
+      {
+        "type": "column",
+        "value": "inventory_status,"
+      },
+      {
+        "type": "column",
+        "value": "COUNT(*)"
+      },
+      {
+        "type": "keyword",
+        "value": "AS"
+      },
+      {
+        "type": "column",
+        "value": "sku_count"
+      },
+      {
+        "type": "keyword",
+        "value": "FROM"
+      },
+      {
+        "type": "column",
+        "value": "StockHealth"
+      },
+      {
+        "type": "keyword",
+        "value": "GROUP"
+      },
+      {
+        "type": "keyword",
+        "value": "BY"
+      },
+      {
+        "type": "column",
+        "value": "inventory_status;"
+      }
+    ]
+  },
+  {
+    "drillNumber": 1165,
+    "subcluster": "12.7 CTEs with CASE WHEN Categorization",
+    "level": "Level 3 (CTE with CASE Logic)",
+    "title": "Syntax #1165: Bucket customer orders into value tiers in a CTE and compute tier revenues",
+    "table": "Orders",
+    "scenario": "Bucket customer orders into value tiers in a CTE and compute tier revenues.",
+    "businessObjective": "Bucket customer orders into value tiers in a CTE and compute tier revenues.",
+    "schemaSnippet": "Orders relational schema",
+    "targetQuery": "WITH OrderTiers AS (\n  SELECT order_id, total_amount,\n    CASE WHEN total_amount >= 500.00 THEN 'High Value' WHEN total_amount >= 100.00 THEN 'Medium Value' ELSE 'Low Value' END AS value_tier\n  FROM Orders\n)\nSELECT value_tier, COUNT(*) AS order_volume, SUM(total_amount) AS tier_revenue\nFROM OrderTiers\nGROUP BY value_tier;",
+    "syntaxBlueprint": "WITH Categorized AS (\n  SELECT col1,\n    CASE WHEN metric > 100 THEN 'High' ELSE 'Low' END AS tier\n  FROM table_name\n)\nSELECT tier, COUNT(*)\nFROM Categorized\nGROUP BY tier;",
+    "syntaxRule": "Assign descriptive categories using CASE WHEN inside a CTE, then cleanly group, count, or filter by those newly created category names in the outer query.",
+    "syntaxTrap": "Trying to GROUP BY a CASE expression directly can get messy; encapsulating the CASE inside a CTE gives clean, legible grouping.",
+    "eli5Story": "Subqueries & CTEs on Orders: Bucket customer orders into value tiers in a CTE and compute tier revenues.",
+    "commonMistakes": "Forgetting to alias derived tables in FROM, writing multiple WITH keywords in multi-CTE pipelines, or suffering the NOT IN NULL trap.",
+    "learningOutcomes": "Mastered 12.7 CTEs with CASE WHEN Categorization on Orders.",
+    "challengeSlots": [
+      {
+        "type": "keyword",
+        "value": "WITH"
+      },
+      {
+        "type": "column",
+        "value": "OrderTiers"
+      },
+      {
+        "type": "keyword",
+        "value": "AS"
+      },
+      {
+        "type": "column",
+        "value": "("
+      },
+      {
+        "type": "keyword",
+        "value": "SELECT"
+      },
+      {
+        "type": "column",
+        "value": "order_id,"
+      },
+      {
+        "type": "column",
+        "value": "total_amount,"
+      },
+      {
+        "type": "keyword",
+        "value": "CASE"
+      },
+      {
+        "type": "keyword",
+        "value": "WHEN"
+      },
+      {
+        "type": "column",
+        "value": "total_amount"
+      },
+      {
+        "type": "column",
+        "value": ">="
+      },
+      {
+        "type": "column",
+        "value": "500.00"
+      },
+      {
+        "type": "keyword",
+        "value": "THEN"
+      },
+      {
+        "type": "column",
+        "value": "'High"
+      },
+      {
+        "type": "column",
+        "value": "Value'"
+      },
+      {
+        "type": "keyword",
+        "value": "WHEN"
+      },
+      {
+        "type": "column",
+        "value": "total_amount"
+      },
+      {
+        "type": "column",
+        "value": ">="
+      },
+      {
+        "type": "column",
+        "value": "100.00"
+      },
+      {
+        "type": "keyword",
+        "value": "THEN"
+      },
+      {
+        "type": "column",
+        "value": "'Medium"
+      },
+      {
+        "type": "column",
+        "value": "Value'"
+      },
+      {
+        "type": "keyword",
+        "value": "ELSE"
+      },
+      {
+        "type": "column",
+        "value": "'Low"
+      },
+      {
+        "type": "column",
+        "value": "Value'"
+      },
+      {
+        "type": "keyword",
+        "value": "END"
+      },
+      {
+        "type": "keyword",
+        "value": "AS"
+      },
+      {
+        "type": "column",
+        "value": "value_tier"
+      },
+      {
+        "type": "keyword",
+        "value": "FROM"
+      },
+      {
+        "type": "table",
+        "value": "Orders"
+      },
+      {
+        "type": "column",
+        "value": ")"
+      },
+      {
+        "type": "keyword",
+        "value": "SELECT"
+      },
+      {
+        "type": "column",
+        "value": "value_tier,"
+      },
+      {
+        "type": "column",
+        "value": "COUNT(*)"
+      },
+      {
+        "type": "keyword",
+        "value": "AS"
+      },
+      {
+        "type": "column",
+        "value": "order_volume,"
+      },
+      {
+        "type": "column",
+        "value": "SUM(total_amount)"
+      },
+      {
+        "type": "keyword",
+        "value": "AS"
+      },
+      {
+        "type": "column",
+        "value": "tier_revenue"
+      },
+      {
+        "type": "keyword",
+        "value": "FROM"
+      },
+      {
+        "type": "column",
+        "value": "OrderTiers"
+      },
+      {
+        "type": "keyword",
+        "value": "GROUP"
+      },
+      {
+        "type": "keyword",
+        "value": "BY"
+      },
+      {
+        "type": "column",
+        "value": "value_tier;"
+      }
+    ]
+  },
+  {
+    "drillNumber": 1166,
+    "subcluster": "12.7 CTEs with CASE WHEN Categorization",
+    "level": "Level 3 (CTE with CASE Logic)",
+    "title": "Syntax #1166: Categorize track lengths inside a CTE and compute song counts per length type",
+    "table": "MusicTracks",
+    "scenario": "Categorize track lengths inside a CTE and compute song counts per length type.",
+    "businessObjective": "Categorize track lengths inside a CTE and compute song counts per length type.",
+    "schemaSnippet": "MusicTracks relational schema",
+    "targetQuery": "WITH TrackLengths AS (\n  SELECT track_title, duration_seconds,\n    CASE WHEN duration_seconds >= 300 THEN 'Epic' WHEN duration_seconds >= 180 THEN 'Standard' ELSE 'Short' END AS track_length_type\n  FROM MusicTracks\n)\nSELECT track_length_type, COUNT(*) AS song_count\nFROM TrackLengths\nGROUP BY track_length_type;",
+    "syntaxBlueprint": "WITH Categorized AS (\n  SELECT col1,\n    CASE WHEN metric > 100 THEN 'High' ELSE 'Low' END AS tier\n  FROM table_name\n)\nSELECT tier, COUNT(*)\nFROM Categorized\nGROUP BY tier;",
+    "syntaxRule": "Assign descriptive categories using CASE WHEN inside a CTE, then cleanly group, count, or filter by those newly created category names in the outer query.",
+    "syntaxTrap": "Trying to GROUP BY a CASE expression directly can get messy; encapsulating the CASE inside a CTE gives clean, legible grouping.",
+    "eli5Story": "Subqueries & CTEs on MusicTracks: Categorize track lengths inside a CTE and compute song counts per length type.",
+    "commonMistakes": "Forgetting to alias derived tables in FROM, writing multiple WITH keywords in multi-CTE pipelines, or suffering the NOT IN NULL trap.",
+    "learningOutcomes": "Mastered 12.7 CTEs with CASE WHEN Categorization on MusicTracks.",
+    "challengeSlots": [
+      {
+        "type": "keyword",
+        "value": "WITH"
+      },
+      {
+        "type": "column",
+        "value": "TrackLengths"
+      },
+      {
+        "type": "keyword",
+        "value": "AS"
+      },
+      {
+        "type": "column",
+        "value": "("
+      },
+      {
+        "type": "keyword",
+        "value": "SELECT"
+      },
+      {
+        "type": "column",
+        "value": "track_title,"
+      },
+      {
+        "type": "column",
+        "value": "duration_seconds,"
+      },
+      {
+        "type": "keyword",
+        "value": "CASE"
+      },
+      {
+        "type": "keyword",
+        "value": "WHEN"
+      },
+      {
+        "type": "column",
+        "value": "duration_seconds"
+      },
+      {
+        "type": "column",
+        "value": ">="
+      },
+      {
+        "type": "column",
+        "value": "300"
+      },
+      {
+        "type": "keyword",
+        "value": "THEN"
+      },
+      {
+        "type": "column",
+        "value": "'Epic'"
+      },
+      {
+        "type": "keyword",
+        "value": "WHEN"
+      },
+      {
+        "type": "column",
+        "value": "duration_seconds"
+      },
+      {
+        "type": "column",
+        "value": ">="
+      },
+      {
+        "type": "column",
+        "value": "180"
+      },
+      {
+        "type": "keyword",
+        "value": "THEN"
+      },
+      {
+        "type": "column",
+        "value": "'Standard'"
+      },
+      {
+        "type": "keyword",
+        "value": "ELSE"
+      },
+      {
+        "type": "column",
+        "value": "'Short'"
+      },
+      {
+        "type": "keyword",
+        "value": "END"
+      },
+      {
+        "type": "keyword",
+        "value": "AS"
+      },
+      {
+        "type": "column",
+        "value": "track_length_type"
+      },
+      {
+        "type": "keyword",
+        "value": "FROM"
+      },
+      {
+        "type": "table",
+        "value": "MusicTracks"
+      },
+      {
+        "type": "column",
+        "value": ")"
+      },
+      {
+        "type": "keyword",
+        "value": "SELECT"
+      },
+      {
+        "type": "column",
+        "value": "track_length_type,"
+      },
+      {
+        "type": "column",
+        "value": "COUNT(*)"
+      },
+      {
+        "type": "keyword",
+        "value": "AS"
+      },
+      {
+        "type": "column",
+        "value": "song_count"
+      },
+      {
+        "type": "keyword",
+        "value": "FROM"
+      },
+      {
+        "type": "column",
+        "value": "TrackLengths"
+      },
+      {
+        "type": "keyword",
+        "value": "GROUP"
+      },
+      {
+        "type": "keyword",
+        "value": "BY"
+      },
+      {
+        "type": "column",
+        "value": "track_length_type;"
+      }
+    ]
+  },
+  {
+    "drillNumber": 1167,
+    "subcluster": "12.7 CTEs with CASE WHEN Categorization",
+    "level": "Level 3 (CTE with CASE Logic)",
+    "title": "Syntax #1167: Classify member gym commitment in a CTE, then group by loyalty tier",
+    "table": "GymMembers",
+    "scenario": "Classify member gym commitment in a CTE, then group by loyalty tier.",
+    "businessObjective": "Classify member gym commitment in a CTE, then group by loyalty tier.",
+    "schemaSnippet": "GymMembers relational schema",
+    "targetQuery": "WITH CommitmentLevels AS (\n  SELECT member_name, attendance_days,\n    CASE WHEN attendance_days >= 20 THEN 'Dedicated' WHEN attendance_days >= 8 THEN 'Regular' ELSE 'Casual' END AS commitment_tier\n  FROM GymMembers\n)\nSELECT commitment_tier, COUNT(*) AS member_count\nFROM CommitmentLevels\nGROUP BY commitment_tier;",
+    "syntaxBlueprint": "WITH Categorized AS (\n  SELECT col1,\n    CASE WHEN metric > 100 THEN 'High' ELSE 'Low' END AS tier\n  FROM table_name\n)\nSELECT tier, COUNT(*)\nFROM Categorized\nGROUP BY tier;",
+    "syntaxRule": "Assign descriptive categories using CASE WHEN inside a CTE, then cleanly group, count, or filter by those newly created category names in the outer query.",
+    "syntaxTrap": "Trying to GROUP BY a CASE expression directly can get messy; encapsulating the CASE inside a CTE gives clean, legible grouping.",
+    "eli5Story": "Subqueries & CTEs on GymMembers: Classify member gym commitment in a CTE, then group by loyalty tier.",
+    "commonMistakes": "Forgetting to alias derived tables in FROM, writing multiple WITH keywords in multi-CTE pipelines, or suffering the NOT IN NULL trap.",
+    "learningOutcomes": "Mastered 12.7 CTEs with CASE WHEN Categorization on GymMembers.",
+    "challengeSlots": [
+      {
+        "type": "keyword",
+        "value": "WITH"
+      },
+      {
+        "type": "column",
+        "value": "CommitmentLevels"
+      },
+      {
+        "type": "keyword",
+        "value": "AS"
+      },
+      {
+        "type": "column",
+        "value": "("
+      },
+      {
+        "type": "keyword",
+        "value": "SELECT"
+      },
+      {
+        "type": "column",
+        "value": "member_name,"
+      },
+      {
+        "type": "column",
+        "value": "attendance_days,"
+      },
+      {
+        "type": "keyword",
+        "value": "CASE"
+      },
+      {
+        "type": "keyword",
+        "value": "WHEN"
+      },
+      {
+        "type": "column",
+        "value": "attendance_days"
+      },
+      {
+        "type": "column",
+        "value": ">="
+      },
+      {
+        "type": "column",
+        "value": "20"
+      },
+      {
+        "type": "keyword",
+        "value": "THEN"
+      },
+      {
+        "type": "column",
+        "value": "'Dedicated'"
+      },
+      {
+        "type": "keyword",
+        "value": "WHEN"
+      },
+      {
+        "type": "column",
+        "value": "attendance_days"
+      },
+      {
+        "type": "column",
+        "value": ">="
+      },
+      {
+        "type": "column",
+        "value": "8"
+      },
+      {
+        "type": "keyword",
+        "value": "THEN"
+      },
+      {
+        "type": "column",
+        "value": "'Regular'"
+      },
+      {
+        "type": "keyword",
+        "value": "ELSE"
+      },
+      {
+        "type": "column",
+        "value": "'Casual'"
+      },
+      {
+        "type": "keyword",
+        "value": "END"
+      },
+      {
+        "type": "keyword",
+        "value": "AS"
+      },
+      {
+        "type": "column",
+        "value": "commitment_tier"
+      },
+      {
+        "type": "keyword",
+        "value": "FROM"
+      },
+      {
+        "type": "table",
+        "value": "GymMembers"
+      },
+      {
+        "type": "column",
+        "value": ")"
+      },
+      {
+        "type": "keyword",
+        "value": "SELECT"
+      },
+      {
+        "type": "column",
+        "value": "commitment_tier,"
+      },
+      {
+        "type": "column",
+        "value": "COUNT(*)"
+      },
+      {
+        "type": "keyword",
+        "value": "AS"
+      },
+      {
+        "type": "column",
+        "value": "member_count"
+      },
+      {
+        "type": "keyword",
+        "value": "FROM"
+      },
+      {
+        "type": "column",
+        "value": "CommitmentLevels"
+      },
+      {
+        "type": "keyword",
+        "value": "GROUP"
+      },
+      {
+        "type": "keyword",
+        "value": "BY"
+      },
+      {
+        "type": "column",
+        "value": "commitment_tier;"
+      }
+    ]
+  },
+  {
+    "drillNumber": 1168,
+    "subcluster": "12.7 CTEs with CASE WHEN Categorization",
+    "level": "Level 3 (CTE with CASE Logic)",
+    "title": "Syntax #1168: Map review star ratings to sentiment labels in a CTE and tally review counts",
+    "table": "MovieReviews",
+    "scenario": "Map review star ratings to sentiment labels in a CTE and tally review counts.",
+    "businessObjective": "Map review star ratings to sentiment labels in a CTE and tally review counts.",
+    "schemaSnippet": "MovieReviews relational schema",
+    "targetQuery": "WITH ReviewSentiment AS (\n  SELECT movie_title, star_rating,\n    CASE WHEN star_rating >= 4 THEN 'Positive' WHEN star_rating = 3 THEN 'Mixed' ELSE 'Negative' END AS sentiment_label\n  FROM MovieReviews\n)\nSELECT sentiment_label, COUNT(*) AS review_count\nFROM ReviewSentiment\nGROUP BY sentiment_label;",
+    "syntaxBlueprint": "WITH Categorized AS (\n  SELECT col1,\n    CASE WHEN metric > 100 THEN 'High' ELSE 'Low' END AS tier\n  FROM table_name\n)\nSELECT tier, COUNT(*)\nFROM Categorized\nGROUP BY tier;",
+    "syntaxRule": "Assign descriptive categories using CASE WHEN inside a CTE, then cleanly group, count, or filter by those newly created category names in the outer query.",
+    "syntaxTrap": "Trying to GROUP BY a CASE expression directly can get messy; encapsulating the CASE inside a CTE gives clean, legible grouping.",
+    "eli5Story": "Subqueries & CTEs on MovieReviews: Map review star ratings to sentiment labels in a CTE and tally review counts.",
+    "commonMistakes": "Forgetting to alias derived tables in FROM, writing multiple WITH keywords in multi-CTE pipelines, or suffering the NOT IN NULL trap.",
+    "learningOutcomes": "Mastered 12.7 CTEs with CASE WHEN Categorization on MovieReviews.",
+    "challengeSlots": [
+      {
+        "type": "keyword",
+        "value": "WITH"
+      },
+      {
+        "type": "column",
+        "value": "ReviewSentiment"
+      },
+      {
+        "type": "keyword",
+        "value": "AS"
+      },
+      {
+        "type": "column",
+        "value": "("
+      },
+      {
+        "type": "keyword",
+        "value": "SELECT"
+      },
+      {
+        "type": "column",
+        "value": "movie_title,"
+      },
+      {
+        "type": "column",
+        "value": "star_rating,"
+      },
+      {
+        "type": "keyword",
+        "value": "CASE"
+      },
+      {
+        "type": "keyword",
+        "value": "WHEN"
+      },
+      {
+        "type": "column",
+        "value": "star_rating"
+      },
+      {
+        "type": "column",
+        "value": ">="
+      },
+      {
+        "type": "column",
+        "value": "4"
+      },
+      {
+        "type": "keyword",
+        "value": "THEN"
+      },
+      {
+        "type": "column",
+        "value": "'Positive'"
+      },
+      {
+        "type": "keyword",
+        "value": "WHEN"
+      },
+      {
+        "type": "column",
+        "value": "star_rating"
+      },
+      {
+        "type": "column",
+        "value": "="
+      },
+      {
+        "type": "column",
+        "value": "3"
+      },
+      {
+        "type": "keyword",
+        "value": "THEN"
+      },
+      {
+        "type": "column",
+        "value": "'Mixed'"
+      },
+      {
+        "type": "keyword",
+        "value": "ELSE"
+      },
+      {
+        "type": "column",
+        "value": "'Negative'"
+      },
+      {
+        "type": "keyword",
+        "value": "END"
+      },
+      {
+        "type": "keyword",
+        "value": "AS"
+      },
+      {
+        "type": "column",
+        "value": "sentiment_label"
+      },
+      {
+        "type": "keyword",
+        "value": "FROM"
+      },
+      {
+        "type": "table",
+        "value": "MovieReviews"
+      },
+      {
+        "type": "column",
+        "value": ")"
+      },
+      {
+        "type": "keyword",
+        "value": "SELECT"
+      },
+      {
+        "type": "column",
+        "value": "sentiment_label,"
+      },
+      {
+        "type": "column",
+        "value": "COUNT(*)"
+      },
+      {
+        "type": "keyword",
+        "value": "AS"
+      },
+      {
+        "type": "column",
+        "value": "review_count"
+      },
+      {
+        "type": "keyword",
+        "value": "FROM"
+      },
+      {
+        "type": "column",
+        "value": "ReviewSentiment"
+      },
+      {
+        "type": "keyword",
+        "value": "GROUP"
+      },
+      {
+        "type": "keyword",
+        "value": "BY"
+      },
+      {
+        "type": "column",
+        "value": "sentiment_label;"
+      }
+    ]
+  },
+  {
+    "drillNumber": 1169,
+    "subcluster": "12.7 CTEs with CASE WHEN Categorization",
+    "level": "Level 3 (CTE with CASE Logic)",
+    "title": "Syntax #1169: Segment flight distances into haul categories inside a CTE and tally flights",
+    "table": "FlightSchedule",
+    "scenario": "Segment flight distances into haul categories inside a CTE and tally flights.",
+    "businessObjective": "Segment flight distances into haul categories inside a CTE and tally flights.",
+    "schemaSnippet": "FlightSchedule relational schema",
+    "targetQuery": "WITH RouteHauls AS (\n  SELECT flight_id, distance_miles,\n    CASE WHEN distance_miles >= 2500 THEN 'Long Haul' WHEN distance_miles >= 800 THEN 'Medium Haul' ELSE 'Short Haul' END AS haul_category\n  FROM FlightSchedule\n)\nSELECT haul_category, COUNT(*) AS flight_count\nFROM RouteHauls\nGROUP BY haul_category;",
+    "syntaxBlueprint": "WITH Categorized AS (\n  SELECT col1,\n    CASE WHEN metric > 100 THEN 'High' ELSE 'Low' END AS tier\n  FROM table_name\n)\nSELECT tier, COUNT(*)\nFROM Categorized\nGROUP BY tier;",
+    "syntaxRule": "Assign descriptive categories using CASE WHEN inside a CTE, then cleanly group, count, or filter by those newly created category names in the outer query.",
+    "syntaxTrap": "Trying to GROUP BY a CASE expression directly can get messy; encapsulating the CASE inside a CTE gives clean, legible grouping.",
+    "eli5Story": "Subqueries & CTEs on FlightSchedule: Segment flight distances into haul categories inside a CTE and tally flights.",
+    "commonMistakes": "Forgetting to alias derived tables in FROM, writing multiple WITH keywords in multi-CTE pipelines, or suffering the NOT IN NULL trap.",
+    "learningOutcomes": "Mastered 12.7 CTEs with CASE WHEN Categorization on FlightSchedule.",
+    "challengeSlots": [
+      {
+        "type": "keyword",
+        "value": "WITH"
+      },
+      {
+        "type": "column",
+        "value": "RouteHauls"
+      },
+      {
+        "type": "keyword",
+        "value": "AS"
+      },
+      {
+        "type": "column",
+        "value": "("
+      },
+      {
+        "type": "keyword",
+        "value": "SELECT"
+      },
+      {
+        "type": "column",
+        "value": "flight_id,"
+      },
+      {
+        "type": "column",
+        "value": "distance_miles,"
+      },
+      {
+        "type": "keyword",
+        "value": "CASE"
+      },
+      {
+        "type": "keyword",
+        "value": "WHEN"
+      },
+      {
+        "type": "column",
+        "value": "distance_miles"
+      },
+      {
+        "type": "column",
+        "value": ">="
+      },
+      {
+        "type": "column",
+        "value": "2500"
+      },
+      {
+        "type": "keyword",
+        "value": "THEN"
+      },
+      {
+        "type": "column",
+        "value": "'Long"
+      },
+      {
+        "type": "column",
+        "value": "Haul'"
+      },
+      {
+        "type": "keyword",
+        "value": "WHEN"
+      },
+      {
+        "type": "column",
+        "value": "distance_miles"
+      },
+      {
+        "type": "column",
+        "value": ">="
+      },
+      {
+        "type": "column",
+        "value": "800"
+      },
+      {
+        "type": "keyword",
+        "value": "THEN"
+      },
+      {
+        "type": "column",
+        "value": "'Medium"
+      },
+      {
+        "type": "column",
+        "value": "Haul'"
+      },
+      {
+        "type": "keyword",
+        "value": "ELSE"
+      },
+      {
+        "type": "column",
+        "value": "'Short"
+      },
+      {
+        "type": "column",
+        "value": "Haul'"
+      },
+      {
+        "type": "keyword",
+        "value": "END"
+      },
+      {
+        "type": "keyword",
+        "value": "AS"
+      },
+      {
+        "type": "column",
+        "value": "haul_category"
+      },
+      {
+        "type": "keyword",
+        "value": "FROM"
+      },
+      {
+        "type": "table",
+        "value": "FlightSchedule"
+      },
+      {
+        "type": "column",
+        "value": ")"
+      },
+      {
+        "type": "keyword",
+        "value": "SELECT"
+      },
+      {
+        "type": "column",
+        "value": "haul_category,"
+      },
+      {
+        "type": "column",
+        "value": "COUNT(*)"
+      },
+      {
+        "type": "keyword",
+        "value": "AS"
+      },
+      {
+        "type": "column",
+        "value": "flight_count"
+      },
+      {
+        "type": "keyword",
+        "value": "FROM"
+      },
+      {
+        "type": "column",
+        "value": "RouteHauls"
+      },
+      {
+        "type": "keyword",
+        "value": "GROUP"
+      },
+      {
+        "type": "keyword",
+        "value": "BY"
+      },
+      {
+        "type": "column",
+        "value": "haul_category;"
+      }
+    ]
+  },
+  {
+    "drillNumber": 1170,
+    "subcluster": "12.7 CTEs with CASE WHEN Categorization",
+    "level": "Level 3 (CTE with CASE Logic)",
+    "title": "Syntax #1170: Classify veterinary patient weights into size classes in a CTE and group counts",
+    "table": "PetClinic",
+    "scenario": "Classify veterinary patient weights into size classes in a CTE and group counts.",
+    "businessObjective": "Classify veterinary patient weights into size classes in a CTE and group counts.",
+    "schemaSnippet": "PetClinic relational schema",
+    "targetQuery": "WITH PatientSizeClass AS (\n  SELECT pet_name, weight_kg,\n    CASE WHEN weight_kg >= 30.0 THEN 'Large' WHEN weight_kg >= 10.0 THEN 'Medium' ELSE 'Small' END AS patient_size\n  FROM PetClinic\n)\nSELECT patient_size, COUNT(*) AS pet_count\nFROM PatientSizeClass\nGROUP BY patient_size;",
+    "syntaxBlueprint": "WITH Categorized AS (\n  SELECT col1,\n    CASE WHEN metric > 100 THEN 'High' ELSE 'Low' END AS tier\n  FROM table_name\n)\nSELECT tier, COUNT(*)\nFROM Categorized\nGROUP BY tier;",
+    "syntaxRule": "Assign descriptive categories using CASE WHEN inside a CTE, then cleanly group, count, or filter by those newly created category names in the outer query.",
+    "syntaxTrap": "Trying to GROUP BY a CASE expression directly can get messy; encapsulating the CASE inside a CTE gives clean, legible grouping.",
+    "eli5Story": "Subqueries & CTEs on PetClinic: Classify veterinary patient weights into size classes in a CTE and group counts.",
+    "commonMistakes": "Forgetting to alias derived tables in FROM, writing multiple WITH keywords in multi-CTE pipelines, or suffering the NOT IN NULL trap.",
+    "learningOutcomes": "Mastered 12.7 CTEs with CASE WHEN Categorization on PetClinic.",
+    "challengeSlots": [
+      {
+        "type": "keyword",
+        "value": "WITH"
+      },
+      {
+        "type": "column",
+        "value": "PatientSizeClass"
+      },
+      {
+        "type": "keyword",
+        "value": "AS"
+      },
+      {
+        "type": "column",
+        "value": "("
+      },
+      {
+        "type": "keyword",
+        "value": "SELECT"
+      },
+      {
+        "type": "column",
+        "value": "pet_name,"
+      },
+      {
+        "type": "column",
+        "value": "weight_kg,"
+      },
+      {
+        "type": "keyword",
+        "value": "CASE"
+      },
+      {
+        "type": "keyword",
+        "value": "WHEN"
+      },
+      {
+        "type": "column",
+        "value": "weight_kg"
+      },
+      {
+        "type": "column",
+        "value": ">="
+      },
+      {
+        "type": "column",
+        "value": "30.0"
+      },
+      {
+        "type": "keyword",
+        "value": "THEN"
+      },
+      {
+        "type": "column",
+        "value": "'Large'"
+      },
+      {
+        "type": "keyword",
+        "value": "WHEN"
+      },
+      {
+        "type": "column",
+        "value": "weight_kg"
+      },
+      {
+        "type": "column",
+        "value": ">="
+      },
+      {
+        "type": "column",
+        "value": "10.0"
+      },
+      {
+        "type": "keyword",
+        "value": "THEN"
+      },
+      {
+        "type": "column",
+        "value": "'Medium'"
+      },
+      {
+        "type": "keyword",
+        "value": "ELSE"
+      },
+      {
+        "type": "column",
+        "value": "'Small'"
+      },
+      {
+        "type": "keyword",
+        "value": "END"
+      },
+      {
+        "type": "keyword",
+        "value": "AS"
+      },
+      {
+        "type": "column",
+        "value": "patient_size"
+      },
+      {
+        "type": "keyword",
+        "value": "FROM"
+      },
+      {
+        "type": "table",
+        "value": "PetClinic"
+      },
+      {
+        "type": "column",
+        "value": ")"
+      },
+      {
+        "type": "keyword",
+        "value": "SELECT"
+      },
+      {
+        "type": "column",
+        "value": "patient_size,"
+      },
+      {
+        "type": "column",
+        "value": "COUNT(*)"
+      },
+      {
+        "type": "keyword",
+        "value": "AS"
+      },
+      {
+        "type": "column",
+        "value": "pet_count"
+      },
+      {
+        "type": "keyword",
+        "value": "FROM"
+      },
+      {
+        "type": "column",
+        "value": "PatientSizeClass"
+      },
+      {
+        "type": "keyword",
+        "value": "GROUP"
+      },
+      {
+        "type": "keyword",
+        "value": "BY"
+      },
+      {
+        "type": "column",
+        "value": "patient_size;"
+      }
+    ]
+  },
+  {
+    "drillNumber": 1171,
+    "subcluster": "12.8 Recursive CTE Foundations (Sequences & Counting)",
+    "level": "Level 3 (Recursive CTE Sequence)",
+    "title": "Syntax #1171: Generate an 8-semester academic progression sequence (1 to 8) using a recursive CTE",
+    "table": "Students",
+    "scenario": "Generate an 8-semester academic progression sequence (1 to 8) using a recursive CTE.",
+    "businessObjective": "Generate an 8-semester academic progression sequence (1 to 8) using a recursive CTE.",
+    "schemaSnippet": "Students relational schema",
+    "targetQuery": "WITH RECURSIVE SemesterSeq AS (\n  SELECT 1 AS semester_num\n  UNION ALL\n  SELECT semester_num + 1 FROM SemesterSeq WHERE semester_num < 8\n)\nSELECT semester_num FROM SemesterSeq;",
+    "syntaxBlueprint": "WITH RECURSIVE NumberSeq AS (\n  SELECT 1 AS num\n  UNION ALL\n  SELECT num + 1 FROM NumberSeq WHERE num < 10\n)\nSELECT num FROM NumberSeq;",
+    "syntaxRule": "Recursive CTEs reference themselves to generate data iteratively. They consist of an Anchor member, a UNION ALL, and a Recursive member with a termination condition.",
+    "syntaxTrap": "Forgetting the termination condition (e.g. 'WHERE num < 10') causes an infinite recursion loop and triggers max recursion errors.",
+    "eli5Story": "Subqueries & CTEs on Students: Generate an 8-semester academic progression sequence (1 to 8) using a recursive CTE.",
+    "commonMistakes": "Forgetting to alias derived tables in FROM, writing multiple WITH keywords in multi-CTE pipelines, or suffering the NOT IN NULL trap.",
+    "learningOutcomes": "Mastered 12.8 Recursive CTE Foundations (Sequences & Counting) on Students.",
+    "challengeSlots": [
+      {
+        "type": "keyword",
+        "value": "WITH"
+      },
+      {
+        "type": "keyword",
+        "value": "RECURSIVE"
+      },
+      {
+        "type": "column",
+        "value": "SemesterSeq"
+      },
+      {
+        "type": "keyword",
+        "value": "AS"
+      },
+      {
+        "type": "column",
+        "value": "("
+      },
+      {
+        "type": "keyword",
+        "value": "SELECT"
+      },
+      {
+        "type": "column",
+        "value": "1"
+      },
+      {
+        "type": "keyword",
+        "value": "AS"
+      },
+      {
+        "type": "column",
+        "value": "semester_num"
+      },
+      {
+        "type": "keyword",
+        "value": "UNION"
+      },
+      {
+        "type": "keyword",
+        "value": "ALL"
+      },
+      {
+        "type": "keyword",
+        "value": "SELECT"
+      },
+      {
+        "type": "column",
+        "value": "semester_num"
+      },
+      {
+        "type": "column",
+        "value": "+"
+      },
+      {
+        "type": "column",
+        "value": "1"
+      },
+      {
+        "type": "keyword",
+        "value": "FROM"
+      },
+      {
+        "type": "column",
+        "value": "SemesterSeq"
+      },
+      {
+        "type": "keyword",
+        "value": "WHERE"
+      },
+      {
+        "type": "column",
+        "value": "semester_num"
+      },
+      {
+        "type": "column",
+        "value": "<"
+      },
+      {
+        "type": "column",
+        "value": "8"
+      },
+      {
+        "type": "column",
+        "value": ")"
+      },
+      {
+        "type": "keyword",
+        "value": "SELECT"
+      },
+      {
+        "type": "column",
+        "value": "semester_num"
+      },
+      {
+        "type": "keyword",
+        "value": "FROM"
+      },
+      {
+        "type": "column",
+        "value": "SemesterSeq;"
+      }
+    ]
+  },
+  {
+    "drillNumber": 1172,
+    "subcluster": "12.8 Recursive CTE Foundations (Sequences & Counting)",
+    "level": "Level 3 (Recursive CTE Sequence)",
+    "title": "Syntax #1172: Generate edition volume numbers (1 to 5) via recursive CTE",
+    "table": "Books",
+    "scenario": "Generate edition volume numbers (1 to 5) via recursive CTE.",
+    "businessObjective": "Generate edition volume numbers (1 to 5) via recursive CTE.",
+    "schemaSnippet": "Books relational schema",
+    "targetQuery": "WITH RECURSIVE EditionNumbers AS (\n  SELECT 1 AS edition_num\n  UNION ALL\n  SELECT edition_num + 1 FROM EditionNumbers WHERE edition_num < 5\n)\nSELECT edition_num FROM EditionNumbers;",
+    "syntaxBlueprint": "WITH RECURSIVE NumberSeq AS (\n  SELECT 1 AS num\n  UNION ALL\n  SELECT num + 1 FROM NumberSeq WHERE num < 10\n)\nSELECT num FROM NumberSeq;",
+    "syntaxRule": "Recursive CTEs reference themselves to generate data iteratively. They consist of an Anchor member, a UNION ALL, and a Recursive member with a termination condition.",
+    "syntaxTrap": "Forgetting the termination condition (e.g. 'WHERE num < 10') causes an infinite recursion loop and triggers max recursion errors.",
+    "eli5Story": "Subqueries & CTEs on Books: Generate edition volume numbers (1 to 5) via recursive CTE.",
+    "commonMistakes": "Forgetting to alias derived tables in FROM, writing multiple WITH keywords in multi-CTE pipelines, or suffering the NOT IN NULL trap.",
+    "learningOutcomes": "Mastered 12.8 Recursive CTE Foundations (Sequences & Counting) on Books.",
+    "challengeSlots": [
+      {
+        "type": "keyword",
+        "value": "WITH"
+      },
+      {
+        "type": "keyword",
+        "value": "RECURSIVE"
+      },
+      {
+        "type": "column",
+        "value": "EditionNumbers"
+      },
+      {
+        "type": "keyword",
+        "value": "AS"
+      },
+      {
+        "type": "column",
+        "value": "("
+      },
+      {
+        "type": "keyword",
+        "value": "SELECT"
+      },
+      {
+        "type": "column",
+        "value": "1"
+      },
+      {
+        "type": "keyword",
+        "value": "AS"
+      },
+      {
+        "type": "column",
+        "value": "edition_num"
+      },
+      {
+        "type": "keyword",
+        "value": "UNION"
+      },
+      {
+        "type": "keyword",
+        "value": "ALL"
+      },
+      {
+        "type": "keyword",
+        "value": "SELECT"
+      },
+      {
+        "type": "column",
+        "value": "edition_num"
+      },
+      {
+        "type": "column",
+        "value": "+"
+      },
+      {
+        "type": "column",
+        "value": "1"
+      },
+      {
+        "type": "keyword",
+        "value": "FROM"
+      },
+      {
+        "type": "column",
+        "value": "EditionNumbers"
+      },
+      {
+        "type": "keyword",
+        "value": "WHERE"
+      },
+      {
+        "type": "column",
+        "value": "edition_num"
+      },
+      {
+        "type": "column",
+        "value": "<"
+      },
+      {
+        "type": "column",
+        "value": "5"
+      },
+      {
+        "type": "column",
+        "value": ")"
+      },
+      {
+        "type": "keyword",
+        "value": "SELECT"
+      },
+      {
+        "type": "column",
+        "value": "edition_num"
+      },
+      {
+        "type": "keyword",
+        "value": "FROM"
+      },
+      {
+        "type": "column",
+        "value": "EditionNumbers;"
+      }
+    ]
+  },
+  {
+    "drillNumber": 1173,
+    "subcluster": "12.8 Recursive CTE Foundations (Sequences & Counting)",
+    "level": "Level 3 (Recursive CTE Sequence)",
+    "title": "Syntax #1173: Generate corporate salary pay grades 1 through 10 using a recursive CTE sequence",
+    "table": "Employees",
+    "scenario": "Generate corporate salary pay grades 1 through 10 using a recursive CTE sequence.",
+    "businessObjective": "Generate corporate salary pay grades 1 through 10 using a recursive CTE sequence.",
+    "schemaSnippet": "Employees relational schema",
+    "targetQuery": "WITH RECURSIVE PayLevels AS (\n  SELECT 1 AS pay_grade\n  UNION ALL\n  SELECT pay_grade + 1 FROM PayLevels WHERE pay_grade < 10\n)\nSELECT pay_grade FROM PayLevels;",
+    "syntaxBlueprint": "WITH RECURSIVE NumberSeq AS (\n  SELECT 1 AS num\n  UNION ALL\n  SELECT num + 1 FROM NumberSeq WHERE num < 10\n)\nSELECT num FROM NumberSeq;",
+    "syntaxRule": "Recursive CTEs reference themselves to generate data iteratively. They consist of an Anchor member, a UNION ALL, and a Recursive member with a termination condition.",
+    "syntaxTrap": "Forgetting the termination condition (e.g. 'WHERE num < 10') causes an infinite recursion loop and triggers max recursion errors.",
+    "eli5Story": "Subqueries & CTEs on Employees: Generate corporate salary pay grades 1 through 10 using a recursive CTE sequence.",
+    "commonMistakes": "Forgetting to alias derived tables in FROM, writing multiple WITH keywords in multi-CTE pipelines, or suffering the NOT IN NULL trap.",
+    "learningOutcomes": "Mastered 12.8 Recursive CTE Foundations (Sequences & Counting) on Employees.",
+    "challengeSlots": [
+      {
+        "type": "keyword",
+        "value": "WITH"
+      },
+      {
+        "type": "keyword",
+        "value": "RECURSIVE"
+      },
+      {
+        "type": "column",
+        "value": "PayLevels"
+      },
+      {
+        "type": "keyword",
+        "value": "AS"
+      },
+      {
+        "type": "column",
+        "value": "("
+      },
+      {
+        "type": "keyword",
+        "value": "SELECT"
+      },
+      {
+        "type": "column",
+        "value": "1"
+      },
+      {
+        "type": "keyword",
+        "value": "AS"
+      },
+      {
+        "type": "column",
+        "value": "pay_grade"
+      },
+      {
+        "type": "keyword",
+        "value": "UNION"
+      },
+      {
+        "type": "keyword",
+        "value": "ALL"
+      },
+      {
+        "type": "keyword",
+        "value": "SELECT"
+      },
+      {
+        "type": "column",
+        "value": "pay_grade"
+      },
+      {
+        "type": "column",
+        "value": "+"
+      },
+      {
+        "type": "column",
+        "value": "1"
+      },
+      {
+        "type": "keyword",
+        "value": "FROM"
+      },
+      {
+        "type": "column",
+        "value": "PayLevels"
+      },
+      {
+        "type": "keyword",
+        "value": "WHERE"
+      },
+      {
+        "type": "column",
+        "value": "pay_grade"
+      },
+      {
+        "type": "column",
+        "value": "<"
+      },
+      {
+        "type": "column",
+        "value": "10"
+      },
+      {
+        "type": "column",
+        "value": ")"
+      },
+      {
+        "type": "keyword",
+        "value": "SELECT"
+      },
+      {
+        "type": "column",
+        "value": "pay_grade"
+      },
+      {
+        "type": "keyword",
+        "value": "FROM"
+      },
+      {
+        "type": "column",
+        "value": "PayLevels;"
+      }
+    ]
+  },
+  {
+    "drillNumber": 1174,
+    "subcluster": "12.8 Recursive CTE Foundations (Sequences & Counting)",
+    "level": "Level 3 (Recursive CTE Sequence)",
+    "title": "Syntax #1174: Generate supermarket aisle numbers 1 through 12 using recursive SQL",
+    "table": "GroceryItems",
+    "scenario": "Generate supermarket aisle numbers 1 through 12 using recursive SQL.",
+    "businessObjective": "Generate supermarket aisle numbers 1 through 12 using recursive SQL.",
+    "schemaSnippet": "GroceryItems relational schema",
+    "targetQuery": "WITH RECURSIVE AisleGenerator AS (\n  SELECT 1 AS aisle_number\n  UNION ALL\n  SELECT aisle_number + 1 FROM AisleGenerator WHERE aisle_number < 12\n)\nSELECT aisle_number FROM AisleGenerator;",
+    "syntaxBlueprint": "WITH RECURSIVE NumberSeq AS (\n  SELECT 1 AS num\n  UNION ALL\n  SELECT num + 1 FROM NumberSeq WHERE num < 10\n)\nSELECT num FROM NumberSeq;",
+    "syntaxRule": "Recursive CTEs reference themselves to generate data iteratively. They consist of an Anchor member, a UNION ALL, and a Recursive member with a termination condition.",
+    "syntaxTrap": "Forgetting the termination condition (e.g. 'WHERE num < 10') causes an infinite recursion loop and triggers max recursion errors.",
+    "eli5Story": "Subqueries & CTEs on GroceryItems: Generate supermarket aisle numbers 1 through 12 using recursive SQL.",
+    "commonMistakes": "Forgetting to alias derived tables in FROM, writing multiple WITH keywords in multi-CTE pipelines, or suffering the NOT IN NULL trap.",
+    "learningOutcomes": "Mastered 12.8 Recursive CTE Foundations (Sequences & Counting) on GroceryItems.",
+    "challengeSlots": [
+      {
+        "type": "keyword",
+        "value": "WITH"
+      },
+      {
+        "type": "keyword",
+        "value": "RECURSIVE"
+      },
+      {
+        "type": "column",
+        "value": "AisleGenerator"
+      },
+      {
+        "type": "keyword",
+        "value": "AS"
+      },
+      {
+        "type": "column",
+        "value": "("
+      },
+      {
+        "type": "keyword",
+        "value": "SELECT"
+      },
+      {
+        "type": "column",
+        "value": "1"
+      },
+      {
+        "type": "keyword",
+        "value": "AS"
+      },
+      {
+        "type": "column",
+        "value": "aisle_number"
+      },
+      {
+        "type": "keyword",
+        "value": "UNION"
+      },
+      {
+        "type": "keyword",
+        "value": "ALL"
+      },
+      {
+        "type": "keyword",
+        "value": "SELECT"
+      },
+      {
+        "type": "column",
+        "value": "aisle_number"
+      },
+      {
+        "type": "column",
+        "value": "+"
+      },
+      {
+        "type": "column",
+        "value": "1"
+      },
+      {
+        "type": "keyword",
+        "value": "FROM"
+      },
+      {
+        "type": "column",
+        "value": "AisleGenerator"
+      },
+      {
+        "type": "keyword",
+        "value": "WHERE"
+      },
+      {
+        "type": "column",
+        "value": "aisle_number"
+      },
+      {
+        "type": "column",
+        "value": "<"
+      },
+      {
+        "type": "column",
+        "value": "12"
+      },
+      {
+        "type": "column",
+        "value": ")"
+      },
+      {
+        "type": "keyword",
+        "value": "SELECT"
+      },
+      {
+        "type": "column",
+        "value": "aisle_number"
+      },
+      {
+        "type": "keyword",
+        "value": "FROM"
+      },
+      {
+        "type": "column",
+        "value": "AisleGenerator;"
+      }
+    ]
+  },
+  {
+    "drillNumber": 1175,
+    "subcluster": "12.8 Recursive CTE Foundations (Sequences & Counting)",
+    "level": "Level 3 (Recursive CTE Sequence)",
+    "title": "Syntax #1175: Generate a sequence of calendar days 1 to 31 for calendar date spine generation",
+    "table": "Orders",
+    "scenario": "Generate a sequence of calendar days 1 to 31 for calendar date spine generation.",
+    "businessObjective": "Generate a sequence of calendar days 1 to 31 for calendar date spine generation.",
+    "schemaSnippet": "Orders relational schema",
+    "targetQuery": "WITH RECURSIVE DaysOfMonth AS (\n  SELECT 1 AS day_of_month\n  UNION ALL\n  SELECT day_of_month + 1 FROM DaysOfMonth WHERE day_of_month < 31\n)\nSELECT day_of_month FROM DaysOfMonth;",
+    "syntaxBlueprint": "WITH RECURSIVE NumberSeq AS (\n  SELECT 1 AS num\n  UNION ALL\n  SELECT num + 1 FROM NumberSeq WHERE num < 10\n)\nSELECT num FROM NumberSeq;",
+    "syntaxRule": "Recursive CTEs reference themselves to generate data iteratively. They consist of an Anchor member, a UNION ALL, and a Recursive member with a termination condition.",
+    "syntaxTrap": "Forgetting the termination condition (e.g. 'WHERE num < 10') causes an infinite recursion loop and triggers max recursion errors.",
+    "eli5Story": "Subqueries & CTEs on Orders: Generate a sequence of calendar days 1 to 31 for calendar date spine generation.",
+    "commonMistakes": "Forgetting to alias derived tables in FROM, writing multiple WITH keywords in multi-CTE pipelines, or suffering the NOT IN NULL trap.",
+    "learningOutcomes": "Mastered 12.8 Recursive CTE Foundations (Sequences & Counting) on Orders.",
+    "challengeSlots": [
+      {
+        "type": "keyword",
+        "value": "WITH"
+      },
+      {
+        "type": "keyword",
+        "value": "RECURSIVE"
+      },
+      {
+        "type": "column",
+        "value": "DaysOfMonth"
+      },
+      {
+        "type": "keyword",
+        "value": "AS"
+      },
+      {
+        "type": "column",
+        "value": "("
+      },
+      {
+        "type": "keyword",
+        "value": "SELECT"
+      },
+      {
+        "type": "column",
+        "value": "1"
+      },
+      {
+        "type": "keyword",
+        "value": "AS"
+      },
+      {
+        "type": "column",
+        "value": "day_of_month"
+      },
+      {
+        "type": "keyword",
+        "value": "UNION"
+      },
+      {
+        "type": "keyword",
+        "value": "ALL"
+      },
+      {
+        "type": "keyword",
+        "value": "SELECT"
+      },
+      {
+        "type": "column",
+        "value": "day_of_month"
+      },
+      {
+        "type": "column",
+        "value": "+"
+      },
+      {
+        "type": "column",
+        "value": "1"
+      },
+      {
+        "type": "keyword",
+        "value": "FROM"
+      },
+      {
+        "type": "column",
+        "value": "DaysOfMonth"
+      },
+      {
+        "type": "keyword",
+        "value": "WHERE"
+      },
+      {
+        "type": "column",
+        "value": "day_of_month"
+      },
+      {
+        "type": "column",
+        "value": "<"
+      },
+      {
+        "type": "column",
+        "value": "31"
+      },
+      {
+        "type": "column",
+        "value": ")"
+      },
+      {
+        "type": "keyword",
+        "value": "SELECT"
+      },
+      {
+        "type": "column",
+        "value": "day_of_month"
+      },
+      {
+        "type": "keyword",
+        "value": "FROM"
+      },
+      {
+        "type": "column",
+        "value": "DaysOfMonth;"
+      }
+    ]
+  },
+  {
+    "drillNumber": 1176,
+    "subcluster": "12.8 Recursive CTE Foundations (Sequences & Counting)",
+    "level": "Level 3 (Recursive CTE Sequence)",
+    "title": "Syntax #1176: Generate an album tracklist sequence from track 1 to 15",
+    "table": "MusicTracks",
+    "scenario": "Generate an album tracklist sequence from track 1 to 15.",
+    "businessObjective": "Generate an album tracklist sequence from track 1 to 15.",
+    "schemaSnippet": "MusicTracks relational schema",
+    "targetQuery": "WITH RECURSIVE TrackTracklist AS (\n  SELECT 1 AS track_number\n  UNION ALL\n  SELECT track_number + 1 FROM TrackTracklist WHERE track_number < 15\n)\nSELECT track_number FROM TrackTracklist;",
+    "syntaxBlueprint": "WITH RECURSIVE NumberSeq AS (\n  SELECT 1 AS num\n  UNION ALL\n  SELECT num + 1 FROM NumberSeq WHERE num < 10\n)\nSELECT num FROM NumberSeq;",
+    "syntaxRule": "Recursive CTEs reference themselves to generate data iteratively. They consist of an Anchor member, a UNION ALL, and a Recursive member with a termination condition.",
+    "syntaxTrap": "Forgetting the termination condition (e.g. 'WHERE num < 10') causes an infinite recursion loop and triggers max recursion errors.",
+    "eli5Story": "Subqueries & CTEs on MusicTracks: Generate an album tracklist sequence from track 1 to 15.",
+    "commonMistakes": "Forgetting to alias derived tables in FROM, writing multiple WITH keywords in multi-CTE pipelines, or suffering the NOT IN NULL trap.",
+    "learningOutcomes": "Mastered 12.8 Recursive CTE Foundations (Sequences & Counting) on MusicTracks.",
+    "challengeSlots": [
+      {
+        "type": "keyword",
+        "value": "WITH"
+      },
+      {
+        "type": "keyword",
+        "value": "RECURSIVE"
+      },
+      {
+        "type": "column",
+        "value": "TrackTracklist"
+      },
+      {
+        "type": "keyword",
+        "value": "AS"
+      },
+      {
+        "type": "column",
+        "value": "("
+      },
+      {
+        "type": "keyword",
+        "value": "SELECT"
+      },
+      {
+        "type": "column",
+        "value": "1"
+      },
+      {
+        "type": "keyword",
+        "value": "AS"
+      },
+      {
+        "type": "column",
+        "value": "track_number"
+      },
+      {
+        "type": "keyword",
+        "value": "UNION"
+      },
+      {
+        "type": "keyword",
+        "value": "ALL"
+      },
+      {
+        "type": "keyword",
+        "value": "SELECT"
+      },
+      {
+        "type": "column",
+        "value": "track_number"
+      },
+      {
+        "type": "column",
+        "value": "+"
+      },
+      {
+        "type": "column",
+        "value": "1"
+      },
+      {
+        "type": "keyword",
+        "value": "FROM"
+      },
+      {
+        "type": "column",
+        "value": "TrackTracklist"
+      },
+      {
+        "type": "keyword",
+        "value": "WHERE"
+      },
+      {
+        "type": "column",
+        "value": "track_number"
+      },
+      {
+        "type": "column",
+        "value": "<"
+      },
+      {
+        "type": "column",
+        "value": "15"
+      },
+      {
+        "type": "column",
+        "value": ")"
+      },
+      {
+        "type": "keyword",
+        "value": "SELECT"
+      },
+      {
+        "type": "column",
+        "value": "track_number"
+      },
+      {
+        "type": "keyword",
+        "value": "FROM"
+      },
+      {
+        "type": "column",
+        "value": "TrackTracklist;"
+      }
+    ]
+  },
+  {
+    "drillNumber": 1177,
+    "subcluster": "12.8 Recursive CTE Foundations (Sequences & Counting)",
+    "level": "Level 3 (Recursive CTE Sequence)",
+    "title": "Syntax #1177: Generate a 30-day fitness challenge calendar sequence using recursive CTE",
+    "table": "GymMembers",
+    "scenario": "Generate a 30-day fitness challenge calendar sequence using recursive CTE.",
+    "businessObjective": "Generate a 30-day fitness challenge calendar sequence using recursive CTE.",
+    "schemaSnippet": "GymMembers relational schema",
+    "targetQuery": "WITH RECURSIVE WorkoutDays AS (\n  SELECT 1 AS workout_day\n  UNION ALL\n  SELECT workout_day + 1 FROM WorkoutDays WHERE workout_day < 30\n)\nSELECT workout_day FROM WorkoutDays;",
+    "syntaxBlueprint": "WITH RECURSIVE NumberSeq AS (\n  SELECT 1 AS num\n  UNION ALL\n  SELECT num + 1 FROM NumberSeq WHERE num < 10\n)\nSELECT num FROM NumberSeq;",
+    "syntaxRule": "Recursive CTEs reference themselves to generate data iteratively. They consist of an Anchor member, a UNION ALL, and a Recursive member with a termination condition.",
+    "syntaxTrap": "Forgetting the termination condition (e.g. 'WHERE num < 10') causes an infinite recursion loop and triggers max recursion errors.",
+    "eli5Story": "Subqueries & CTEs on GymMembers: Generate a 30-day fitness challenge calendar sequence using recursive CTE.",
+    "commonMistakes": "Forgetting to alias derived tables in FROM, writing multiple WITH keywords in multi-CTE pipelines, or suffering the NOT IN NULL trap.",
+    "learningOutcomes": "Mastered 12.8 Recursive CTE Foundations (Sequences & Counting) on GymMembers.",
+    "challengeSlots": [
+      {
+        "type": "keyword",
+        "value": "WITH"
+      },
+      {
+        "type": "keyword",
+        "value": "RECURSIVE"
+      },
+      {
+        "type": "column",
+        "value": "WorkoutDays"
+      },
+      {
+        "type": "keyword",
+        "value": "AS"
+      },
+      {
+        "type": "column",
+        "value": "("
+      },
+      {
+        "type": "keyword",
+        "value": "SELECT"
+      },
+      {
+        "type": "column",
+        "value": "1"
+      },
+      {
+        "type": "keyword",
+        "value": "AS"
+      },
+      {
+        "type": "column",
+        "value": "workout_day"
+      },
+      {
+        "type": "keyword",
+        "value": "UNION"
+      },
+      {
+        "type": "keyword",
+        "value": "ALL"
+      },
+      {
+        "type": "keyword",
+        "value": "SELECT"
+      },
+      {
+        "type": "column",
+        "value": "workout_day"
+      },
+      {
+        "type": "column",
+        "value": "+"
+      },
+      {
+        "type": "column",
+        "value": "1"
+      },
+      {
+        "type": "keyword",
+        "value": "FROM"
+      },
+      {
+        "type": "column",
+        "value": "WorkoutDays"
+      },
+      {
+        "type": "keyword",
+        "value": "WHERE"
+      },
+      {
+        "type": "column",
+        "value": "workout_day"
+      },
+      {
+        "type": "column",
+        "value": "<"
+      },
+      {
+        "type": "column",
+        "value": "30"
+      },
+      {
+        "type": "column",
+        "value": ")"
+      },
+      {
+        "type": "keyword",
+        "value": "SELECT"
+      },
+      {
+        "type": "column",
+        "value": "workout_day"
+      },
+      {
+        "type": "keyword",
+        "value": "FROM"
+      },
+      {
+        "type": "column",
+        "value": "WorkoutDays;"
+      }
+    ]
+  },
+  {
+    "drillNumber": 1178,
+    "subcluster": "12.8 Recursive CTE Foundations (Sequences & Counting)",
+    "level": "Level 3 (Recursive CTE Sequence)",
+    "title": "Syntax #1178: Generate the 1-to-5 star rating scale using a recursive CTE sequence",
+    "table": "MovieReviews",
+    "scenario": "Generate the 1-to-5 star rating scale using a recursive CTE sequence.",
+    "businessObjective": "Generate the 1-to-5 star rating scale using a recursive CTE sequence.",
+    "schemaSnippet": "MovieReviews relational schema",
+    "targetQuery": "WITH RECURSIVE StarScale AS (\n  SELECT 1 AS rating_star\n  UNION ALL\n  SELECT rating_star + 1 FROM StarScale WHERE rating_star < 5\n)\nSELECT rating_star FROM StarScale;",
+    "syntaxBlueprint": "WITH RECURSIVE NumberSeq AS (\n  SELECT 1 AS num\n  UNION ALL\n  SELECT num + 1 FROM NumberSeq WHERE num < 10\n)\nSELECT num FROM NumberSeq;",
+    "syntaxRule": "Recursive CTEs reference themselves to generate data iteratively. They consist of an Anchor member, a UNION ALL, and a Recursive member with a termination condition.",
+    "syntaxTrap": "Forgetting the termination condition (e.g. 'WHERE num < 10') causes an infinite recursion loop and triggers max recursion errors.",
+    "eli5Story": "Subqueries & CTEs on MovieReviews: Generate the 1-to-5 star rating scale using a recursive CTE sequence.",
+    "commonMistakes": "Forgetting to alias derived tables in FROM, writing multiple WITH keywords in multi-CTE pipelines, or suffering the NOT IN NULL trap.",
+    "learningOutcomes": "Mastered 12.8 Recursive CTE Foundations (Sequences & Counting) on MovieReviews.",
+    "challengeSlots": [
+      {
+        "type": "keyword",
+        "value": "WITH"
+      },
+      {
+        "type": "keyword",
+        "value": "RECURSIVE"
+      },
+      {
+        "type": "column",
+        "value": "StarScale"
+      },
+      {
+        "type": "keyword",
+        "value": "AS"
+      },
+      {
+        "type": "column",
+        "value": "("
+      },
+      {
+        "type": "keyword",
+        "value": "SELECT"
+      },
+      {
+        "type": "column",
+        "value": "1"
+      },
+      {
+        "type": "keyword",
+        "value": "AS"
+      },
+      {
+        "type": "column",
+        "value": "rating_star"
+      },
+      {
+        "type": "keyword",
+        "value": "UNION"
+      },
+      {
+        "type": "keyword",
+        "value": "ALL"
+      },
+      {
+        "type": "keyword",
+        "value": "SELECT"
+      },
+      {
+        "type": "column",
+        "value": "rating_star"
+      },
+      {
+        "type": "column",
+        "value": "+"
+      },
+      {
+        "type": "column",
+        "value": "1"
+      },
+      {
+        "type": "keyword",
+        "value": "FROM"
+      },
+      {
+        "type": "column",
+        "value": "StarScale"
+      },
+      {
+        "type": "keyword",
+        "value": "WHERE"
+      },
+      {
+        "type": "column",
+        "value": "rating_star"
+      },
+      {
+        "type": "column",
+        "value": "<"
+      },
+      {
+        "type": "column",
+        "value": "5"
+      },
+      {
+        "type": "column",
+        "value": ")"
+      },
+      {
+        "type": "keyword",
+        "value": "SELECT"
+      },
+      {
+        "type": "column",
+        "value": "rating_star"
+      },
+      {
+        "type": "keyword",
+        "value": "FROM"
+      },
+      {
+        "type": "column",
+        "value": "StarScale;"
+      }
+    ]
+  },
+  {
+    "drillNumber": 1179,
+    "subcluster": "12.8 Recursive CTE Foundations (Sequences & Counting)",
+    "level": "Level 3 (Recursive CTE Sequence)",
+    "title": "Syntax #1179: Generate airport terminal gate sequence numbers 1 to 20 via recursion",
+    "table": "FlightSchedule",
+    "scenario": "Generate airport terminal gate sequence numbers 1 to 20 via recursion.",
+    "businessObjective": "Generate airport terminal gate sequence numbers 1 to 20 via recursion.",
+    "schemaSnippet": "FlightSchedule relational schema",
+    "targetQuery": "WITH RECURSIVE TerminalGates AS (\n  SELECT 1 AS gate_number\n  UNION ALL\n  SELECT gate_number + 1 FROM TerminalGates WHERE gate_number < 20\n)\nSELECT gate_number FROM TerminalGates;",
+    "syntaxBlueprint": "WITH RECURSIVE NumberSeq AS (\n  SELECT 1 AS num\n  UNION ALL\n  SELECT num + 1 FROM NumberSeq WHERE num < 10\n)\nSELECT num FROM NumberSeq;",
+    "syntaxRule": "Recursive CTEs reference themselves to generate data iteratively. They consist of an Anchor member, a UNION ALL, and a Recursive member with a termination condition.",
+    "syntaxTrap": "Forgetting the termination condition (e.g. 'WHERE num < 10') causes an infinite recursion loop and triggers max recursion errors.",
+    "eli5Story": "Subqueries & CTEs on FlightSchedule: Generate airport terminal gate sequence numbers 1 to 20 via recursion.",
+    "commonMistakes": "Forgetting to alias derived tables in FROM, writing multiple WITH keywords in multi-CTE pipelines, or suffering the NOT IN NULL trap.",
+    "learningOutcomes": "Mastered 12.8 Recursive CTE Foundations (Sequences & Counting) on FlightSchedule.",
+    "challengeSlots": [
+      {
+        "type": "keyword",
+        "value": "WITH"
+      },
+      {
+        "type": "keyword",
+        "value": "RECURSIVE"
+      },
+      {
+        "type": "column",
+        "value": "TerminalGates"
+      },
+      {
+        "type": "keyword",
+        "value": "AS"
+      },
+      {
+        "type": "column",
+        "value": "("
+      },
+      {
+        "type": "keyword",
+        "value": "SELECT"
+      },
+      {
+        "type": "column",
+        "value": "1"
+      },
+      {
+        "type": "keyword",
+        "value": "AS"
+      },
+      {
+        "type": "column",
+        "value": "gate_number"
+      },
+      {
+        "type": "keyword",
+        "value": "UNION"
+      },
+      {
+        "type": "keyword",
+        "value": "ALL"
+      },
+      {
+        "type": "keyword",
+        "value": "SELECT"
+      },
+      {
+        "type": "column",
+        "value": "gate_number"
+      },
+      {
+        "type": "column",
+        "value": "+"
+      },
+      {
+        "type": "column",
+        "value": "1"
+      },
+      {
+        "type": "keyword",
+        "value": "FROM"
+      },
+      {
+        "type": "column",
+        "value": "TerminalGates"
+      },
+      {
+        "type": "keyword",
+        "value": "WHERE"
+      },
+      {
+        "type": "column",
+        "value": "gate_number"
+      },
+      {
+        "type": "column",
+        "value": "<"
+      },
+      {
+        "type": "column",
+        "value": "20"
+      },
+      {
+        "type": "column",
+        "value": ")"
+      },
+      {
+        "type": "keyword",
+        "value": "SELECT"
+      },
+      {
+        "type": "column",
+        "value": "gate_number"
+      },
+      {
+        "type": "keyword",
+        "value": "FROM"
+      },
+      {
+        "type": "column",
+        "value": "TerminalGates;"
+      }
+    ]
+  },
+  {
+    "drillNumber": 1180,
+    "subcluster": "12.8 Recursive CTE Foundations (Sequences & Counting)",
+    "level": "Level 3 (Recursive CTE Sequence)",
+    "title": "Syntax #1180: Generate a 14-day post-surgery veterinary recovery timeline sequence",
+    "table": "PetClinic",
+    "scenario": "Generate a 14-day post-surgery veterinary recovery timeline sequence.",
+    "businessObjective": "Generate a 14-day post-surgery veterinary recovery timeline sequence.",
+    "schemaSnippet": "PetClinic relational schema",
+    "targetQuery": "WITH RECURSIVE RecoveryDays AS (\n  SELECT 1 AS post_op_day\n  UNION ALL\n  SELECT post_op_day + 1 FROM RecoveryDays WHERE post_op_day < 14\n)\nSELECT post_op_day FROM RecoveryDays;",
+    "syntaxBlueprint": "WITH RECURSIVE NumberSeq AS (\n  SELECT 1 AS num\n  UNION ALL\n  SELECT num + 1 FROM NumberSeq WHERE num < 10\n)\nSELECT num FROM NumberSeq;",
+    "syntaxRule": "Recursive CTEs reference themselves to generate data iteratively. They consist of an Anchor member, a UNION ALL, and a Recursive member with a termination condition.",
+    "syntaxTrap": "Forgetting the termination condition (e.g. 'WHERE num < 10') causes an infinite recursion loop and triggers max recursion errors.",
+    "eli5Story": "Subqueries & CTEs on PetClinic: Generate a 14-day post-surgery veterinary recovery timeline sequence.",
+    "commonMistakes": "Forgetting to alias derived tables in FROM, writing multiple WITH keywords in multi-CTE pipelines, or suffering the NOT IN NULL trap.",
+    "learningOutcomes": "Mastered 12.8 Recursive CTE Foundations (Sequences & Counting) on PetClinic.",
+    "challengeSlots": [
+      {
+        "type": "keyword",
+        "value": "WITH"
+      },
+      {
+        "type": "keyword",
+        "value": "RECURSIVE"
+      },
+      {
+        "type": "column",
+        "value": "RecoveryDays"
+      },
+      {
+        "type": "keyword",
+        "value": "AS"
+      },
+      {
+        "type": "column",
+        "value": "("
+      },
+      {
+        "type": "keyword",
+        "value": "SELECT"
+      },
+      {
+        "type": "column",
+        "value": "1"
+      },
+      {
+        "type": "keyword",
+        "value": "AS"
+      },
+      {
+        "type": "column",
+        "value": "post_op_day"
+      },
+      {
+        "type": "keyword",
+        "value": "UNION"
+      },
+      {
+        "type": "keyword",
+        "value": "ALL"
+      },
+      {
+        "type": "keyword",
+        "value": "SELECT"
+      },
+      {
+        "type": "column",
+        "value": "post_op_day"
+      },
+      {
+        "type": "column",
+        "value": "+"
+      },
+      {
+        "type": "column",
+        "value": "1"
+      },
+      {
+        "type": "keyword",
+        "value": "FROM"
+      },
+      {
+        "type": "column",
+        "value": "RecoveryDays"
+      },
+      {
+        "type": "keyword",
+        "value": "WHERE"
+      },
+      {
+        "type": "column",
+        "value": "post_op_day"
+      },
+      {
+        "type": "column",
+        "value": "<"
+      },
+      {
+        "type": "column",
+        "value": "14"
+      },
+      {
+        "type": "column",
+        "value": ")"
+      },
+      {
+        "type": "keyword",
+        "value": "SELECT"
+      },
+      {
+        "type": "column",
+        "value": "post_op_day"
+      },
+      {
+        "type": "keyword",
+        "value": "FROM"
+      },
+      {
+        "type": "column",
+        "value": "RecoveryDays;"
+      }
+    ]
+  },
+  {
+    "drillNumber": 1181,
+    "subcluster": "12.9 Recursive CTEs for Hierarchies (Tree Traversal)",
+    "level": "Level 3 (Recursive Hierarchy Tree)",
+    "title": "Syntax #1181: Traverse the corporate management hierarchy from CEO (level 1) downwards using a recursive CTE",
+    "table": "Employees",
+    "scenario": "Traverse the corporate management hierarchy from CEO (level 1) downwards using a recursive CTE.",
+    "businessObjective": "Traverse the corporate management hierarchy from CEO (level 1) downwards using a recursive CTE.",
+    "schemaSnippet": "Employees relational schema",
+    "targetQuery": "WITH RECURSIVE OrgHierarchy AS (\n  SELECT employee_id, first_name, manager_id, 1 AS org_level\n  FROM Employees\n  WHERE manager_id IS NULL\n  UNION ALL\n  SELECT e.employee_id, e.first_name, e.manager_id, o.org_level + 1\n  FROM Employees e\n  INNER JOIN OrgHierarchy o ON e.manager_id = o.employee_id\n)\nSELECT employee_id, first_name, org_level\nFROM OrgHierarchy\nORDER BY org_level ASC;",
+    "syntaxBlueprint": "WITH RECURSIVE OrgTree AS (\n  SELECT emp_id, manager_id, 1 AS depth\n  FROM Employees WHERE manager_id IS NULL\n  UNION ALL\n  SELECT e.emp_id, e.manager_id, t.depth + 1\n  FROM Employees e JOIN OrgTree t ON e.manager_id = t.emp_id\n)\nSELECT * FROM OrgTree;",
+    "syntaxRule": "Navigate organizational reporting hierarchies or category trees recursively, calculating reporting depth or lineage at each level.",
+    "syntaxTrap": "Ensure the anchor member finds true root nodes (e.g. manager_id IS NULL) and the recursive join matches parent-to-child IDs correctly.",
+    "eli5Story": "Subqueries & CTEs on Employees: Traverse the corporate management hierarchy from CEO (level 1) downwards using a recursive CTE.",
+    "commonMistakes": "Forgetting to alias derived tables in FROM, writing multiple WITH keywords in multi-CTE pipelines, or suffering the NOT IN NULL trap.",
+    "learningOutcomes": "Mastered 12.9 Recursive CTEs for Hierarchies (Tree Traversal) on Employees.",
+    "challengeSlots": [
+      {
+        "type": "keyword",
+        "value": "WITH"
+      },
+      {
+        "type": "keyword",
+        "value": "RECURSIVE"
+      },
+      {
+        "type": "column",
+        "value": "OrgHierarchy"
+      },
+      {
+        "type": "keyword",
+        "value": "AS"
+      },
+      {
+        "type": "column",
+        "value": "("
+      },
+      {
+        "type": "keyword",
+        "value": "SELECT"
+      },
+      {
+        "type": "column",
+        "value": "employee_id,"
+      },
+      {
+        "type": "column",
+        "value": "first_name,"
+      },
+      {
+        "type": "column",
+        "value": "manager_id,"
+      },
+      {
+        "type": "column",
+        "value": "1"
+      },
+      {
+        "type": "keyword",
+        "value": "AS"
+      },
+      {
+        "type": "column",
+        "value": "org_level"
+      },
+      {
+        "type": "keyword",
+        "value": "FROM"
+      },
+      {
+        "type": "table",
+        "value": "Employees"
+      },
+      {
+        "type": "keyword",
+        "value": "WHERE"
+      },
+      {
+        "type": "column",
+        "value": "manager_id"
+      },
+      {
+        "type": "keyword",
+        "value": "IS"
+      },
+      {
+        "type": "keyword",
+        "value": "NULL"
+      },
+      {
+        "type": "keyword",
+        "value": "UNION"
+      },
+      {
+        "type": "keyword",
+        "value": "ALL"
+      },
+      {
+        "type": "keyword",
+        "value": "SELECT"
+      },
+      {
+        "type": "column",
+        "value": "e.employee_id,"
+      },
+      {
+        "type": "column",
+        "value": "e.first_name,"
+      },
+      {
+        "type": "column",
+        "value": "e.manager_id,"
+      },
+      {
+        "type": "column",
+        "value": "o.org_level"
+      },
+      {
+        "type": "column",
+        "value": "+"
+      },
+      {
+        "type": "column",
+        "value": "1"
+      },
+      {
+        "type": "keyword",
+        "value": "FROM"
+      },
+      {
+        "type": "table",
+        "value": "Employees"
+      },
+      {
+        "type": "column",
+        "value": "e"
+      },
+      {
+        "type": "keyword",
+        "value": "INNER"
+      },
+      {
+        "type": "keyword",
+        "value": "JOIN"
+      },
+      {
+        "type": "column",
+        "value": "OrgHierarchy"
+      },
+      {
+        "type": "column",
+        "value": "o"
+      },
+      {
+        "type": "keyword",
+        "value": "ON"
+      },
+      {
+        "type": "column",
+        "value": "e.manager_id"
+      },
+      {
+        "type": "column",
+        "value": "="
+      },
+      {
+        "type": "column",
+        "value": "o.employee_id"
+      },
+      {
+        "type": "column",
+        "value": ")"
+      },
+      {
+        "type": "keyword",
+        "value": "SELECT"
+      },
+      {
+        "type": "column",
+        "value": "employee_id,"
+      },
+      {
+        "type": "column",
+        "value": "first_name,"
+      },
+      {
+        "type": "column",
+        "value": "org_level"
+      },
+      {
+        "type": "keyword",
+        "value": "FROM"
+      },
+      {
+        "type": "column",
+        "value": "OrgHierarchy"
+      },
+      {
+        "type": "keyword",
+        "value": "ORDER"
+      },
+      {
+        "type": "keyword",
+        "value": "BY"
+      },
+      {
+        "type": "column",
+        "value": "org_level"
+      },
+      {
+        "type": "keyword",
+        "value": "ASC;"
+      }
+    ]
+  },
+  {
+    "drillNumber": 1182,
+    "subcluster": "12.9 Recursive CTEs for Hierarchies (Tree Traversal)",
+    "level": "Level 3 (Recursive Hierarchy Tree)",
+    "title": "Syntax #1182: Traverse student peer mentorship lineage from founding mentor downwards",
+    "table": "Students",
+    "scenario": "Traverse student peer mentorship lineage from founding mentor downwards.",
+    "businessObjective": "Traverse student peer mentorship lineage from founding mentor downwards.",
+    "schemaSnippet": "Students relational schema",
+    "targetQuery": "WITH RECURSIVE MentorshipTree AS (\n  SELECT student_id, full_name, mentor_id, 1 AS mentor_tier\n  FROM Students\n  WHERE mentor_id IS NULL\n  UNION ALL\n  SELECT s.student_id, s.full_name, s.mentor_id, m.mentor_tier + 1\n  FROM Students s\n  INNER JOIN MentorshipTree m ON s.mentor_id = m.student_id\n)\nSELECT student_id, full_name, mentor_tier\nFROM MentorshipTree;",
+    "syntaxBlueprint": "WITH RECURSIVE OrgTree AS (\n  SELECT emp_id, manager_id, 1 AS depth\n  FROM Employees WHERE manager_id IS NULL\n  UNION ALL\n  SELECT e.emp_id, e.manager_id, t.depth + 1\n  FROM Employees e JOIN OrgTree t ON e.manager_id = t.emp_id\n)\nSELECT * FROM OrgTree;",
+    "syntaxRule": "Navigate organizational reporting hierarchies or category trees recursively, calculating reporting depth or lineage at each level.",
+    "syntaxTrap": "Ensure the anchor member finds true root nodes (e.g. manager_id IS NULL) and the recursive join matches parent-to-child IDs correctly.",
+    "eli5Story": "Subqueries & CTEs on Students: Traverse student peer mentorship lineage from founding mentor downwards.",
+    "commonMistakes": "Forgetting to alias derived tables in FROM, writing multiple WITH keywords in multi-CTE pipelines, or suffering the NOT IN NULL trap.",
+    "learningOutcomes": "Mastered 12.9 Recursive CTEs for Hierarchies (Tree Traversal) on Students.",
+    "challengeSlots": [
+      {
+        "type": "keyword",
+        "value": "WITH"
+      },
+      {
+        "type": "keyword",
+        "value": "RECURSIVE"
+      },
+      {
+        "type": "column",
+        "value": "MentorshipTree"
+      },
+      {
+        "type": "keyword",
+        "value": "AS"
+      },
+      {
+        "type": "column",
+        "value": "("
+      },
+      {
+        "type": "keyword",
+        "value": "SELECT"
+      },
+      {
+        "type": "column",
+        "value": "student_id,"
+      },
+      {
+        "type": "column",
+        "value": "full_name,"
+      },
+      {
+        "type": "column",
+        "value": "mentor_id,"
+      },
+      {
+        "type": "column",
+        "value": "1"
+      },
+      {
+        "type": "keyword",
+        "value": "AS"
+      },
+      {
+        "type": "column",
+        "value": "mentor_tier"
+      },
+      {
+        "type": "keyword",
+        "value": "FROM"
+      },
+      {
+        "type": "table",
+        "value": "Students"
+      },
+      {
+        "type": "keyword",
+        "value": "WHERE"
+      },
+      {
+        "type": "column",
+        "value": "mentor_id"
+      },
+      {
+        "type": "keyword",
+        "value": "IS"
+      },
+      {
+        "type": "keyword",
+        "value": "NULL"
+      },
+      {
+        "type": "keyword",
+        "value": "UNION"
+      },
+      {
+        "type": "keyword",
+        "value": "ALL"
+      },
+      {
+        "type": "keyword",
+        "value": "SELECT"
+      },
+      {
+        "type": "column",
+        "value": "s.student_id,"
+      },
+      {
+        "type": "column",
+        "value": "s.full_name,"
+      },
+      {
+        "type": "column",
+        "value": "s.mentor_id,"
+      },
+      {
+        "type": "column",
+        "value": "m.mentor_tier"
+      },
+      {
+        "type": "column",
+        "value": "+"
+      },
+      {
+        "type": "column",
+        "value": "1"
+      },
+      {
+        "type": "keyword",
+        "value": "FROM"
+      },
+      {
+        "type": "table",
+        "value": "Students"
+      },
+      {
+        "type": "column",
+        "value": "s"
+      },
+      {
+        "type": "keyword",
+        "value": "INNER"
+      },
+      {
+        "type": "keyword",
+        "value": "JOIN"
+      },
+      {
+        "type": "column",
+        "value": "MentorshipTree"
+      },
+      {
+        "type": "column",
+        "value": "m"
+      },
+      {
+        "type": "keyword",
+        "value": "ON"
+      },
+      {
+        "type": "column",
+        "value": "s.mentor_id"
+      },
+      {
+        "type": "column",
+        "value": "="
+      },
+      {
+        "type": "column",
+        "value": "m.student_id"
+      },
+      {
+        "type": "column",
+        "value": ")"
+      },
+      {
+        "type": "keyword",
+        "value": "SELECT"
+      },
+      {
+        "type": "column",
+        "value": "student_id,"
+      },
+      {
+        "type": "column",
+        "value": "full_name,"
+      },
+      {
+        "type": "column",
+        "value": "mentor_tier"
+      },
+      {
+        "type": "keyword",
+        "value": "FROM"
+      },
+      {
+        "type": "column",
+        "value": "MentorshipTree;"
+      }
+    ]
+  },
+  {
+    "drillNumber": 1183,
+    "subcluster": "12.9 Recursive CTEs for Hierarchies (Tree Traversal)",
+    "level": "Level 3 (Recursive Hierarchy Tree)",
+    "title": "Syntax #1183: Trace literary book series chronology from volume 1 to sequels via recursive CTE",
+    "table": "Books",
+    "scenario": "Trace literary book series chronology from volume 1 to sequels via recursive CTE.",
+    "businessObjective": "Trace literary book series chronology from volume 1 to sequels via recursive CTE.",
+    "schemaSnippet": "Books relational schema",
+    "targetQuery": "WITH RECURSIVE BookSeries AS (\n  SELECT book_id, title, prequel_book_id, 1 AS book_order\n  FROM Books\n  WHERE prequel_book_id IS NULL\n  UNION ALL\n  SELECT b.book_id, b.title, b.prequel_book_id, s.book_order + 1\n  FROM Books b\n  INNER JOIN BookSeries s ON b.prequel_book_id = s.book_id\n)\nSELECT title, book_order\nFROM BookSeries;",
+    "syntaxBlueprint": "WITH RECURSIVE OrgTree AS (\n  SELECT emp_id, manager_id, 1 AS depth\n  FROM Employees WHERE manager_id IS NULL\n  UNION ALL\n  SELECT e.emp_id, e.manager_id, t.depth + 1\n  FROM Employees e JOIN OrgTree t ON e.manager_id = t.emp_id\n)\nSELECT * FROM OrgTree;",
+    "syntaxRule": "Navigate organizational reporting hierarchies or category trees recursively, calculating reporting depth or lineage at each level.",
+    "syntaxTrap": "Ensure the anchor member finds true root nodes (e.g. manager_id IS NULL) and the recursive join matches parent-to-child IDs correctly.",
+    "eli5Story": "Subqueries & CTEs on Books: Trace literary book series chronology from volume 1 to sequels via recursive CTE.",
+    "commonMistakes": "Forgetting to alias derived tables in FROM, writing multiple WITH keywords in multi-CTE pipelines, or suffering the NOT IN NULL trap.",
+    "learningOutcomes": "Mastered 12.9 Recursive CTEs for Hierarchies (Tree Traversal) on Books.",
+    "challengeSlots": [
+      {
+        "type": "keyword",
+        "value": "WITH"
+      },
+      {
+        "type": "keyword",
+        "value": "RECURSIVE"
+      },
+      {
+        "type": "column",
+        "value": "BookSeries"
+      },
+      {
+        "type": "keyword",
+        "value": "AS"
+      },
+      {
+        "type": "column",
+        "value": "("
+      },
+      {
+        "type": "keyword",
+        "value": "SELECT"
+      },
+      {
+        "type": "column",
+        "value": "book_id,"
+      },
+      {
+        "type": "column",
+        "value": "title,"
+      },
+      {
+        "type": "column",
+        "value": "prequel_book_id,"
+      },
+      {
+        "type": "column",
+        "value": "1"
+      },
+      {
+        "type": "keyword",
+        "value": "AS"
+      },
+      {
+        "type": "column",
+        "value": "book_order"
+      },
+      {
+        "type": "keyword",
+        "value": "FROM"
+      },
+      {
+        "type": "table",
+        "value": "Books"
+      },
+      {
+        "type": "keyword",
+        "value": "WHERE"
+      },
+      {
+        "type": "column",
+        "value": "prequel_book_id"
+      },
+      {
+        "type": "keyword",
+        "value": "IS"
+      },
+      {
+        "type": "keyword",
+        "value": "NULL"
+      },
+      {
+        "type": "keyword",
+        "value": "UNION"
+      },
+      {
+        "type": "keyword",
+        "value": "ALL"
+      },
+      {
+        "type": "keyword",
+        "value": "SELECT"
+      },
+      {
+        "type": "column",
+        "value": "b.book_id,"
+      },
+      {
+        "type": "column",
+        "value": "b.title,"
+      },
+      {
+        "type": "column",
+        "value": "b.prequel_book_id,"
+      },
+      {
+        "type": "column",
+        "value": "s.book_order"
+      },
+      {
+        "type": "column",
+        "value": "+"
+      },
+      {
+        "type": "column",
+        "value": "1"
+      },
+      {
+        "type": "keyword",
+        "value": "FROM"
+      },
+      {
+        "type": "table",
+        "value": "Books"
+      },
+      {
+        "type": "column",
+        "value": "b"
+      },
+      {
+        "type": "keyword",
+        "value": "INNER"
+      },
+      {
+        "type": "keyword",
+        "value": "JOIN"
+      },
+      {
+        "type": "column",
+        "value": "BookSeries"
+      },
+      {
+        "type": "column",
+        "value": "s"
+      },
+      {
+        "type": "keyword",
+        "value": "ON"
+      },
+      {
+        "type": "column",
+        "value": "b.prequel_book_id"
+      },
+      {
+        "type": "column",
+        "value": "="
+      },
+      {
+        "type": "column",
+        "value": "s.book_id"
+      },
+      {
+        "type": "column",
+        "value": ")"
+      },
+      {
+        "type": "keyword",
+        "value": "SELECT"
+      },
+      {
+        "type": "column",
+        "value": "title,"
+      },
+      {
+        "type": "column",
+        "value": "book_order"
+      },
+      {
+        "type": "keyword",
+        "value": "FROM"
+      },
+      {
+        "type": "column",
+        "value": "BookSeries;"
+      }
+    ]
+  },
+  {
+    "drillNumber": 1184,
+    "subcluster": "12.9 Recursive CTEs for Hierarchies (Tree Traversal)",
+    "level": "Level 3 (Recursive Hierarchy Tree)",
+    "title": "Syntax #1184: Traverse supermarket category taxonomy from top-level department downwards",
+    "table": "GroceryItems",
+    "scenario": "Traverse supermarket category taxonomy from top-level department downwards.",
+    "businessObjective": "Traverse supermarket category taxonomy from top-level department downwards.",
+    "schemaSnippet": "GroceryItems relational schema",
+    "targetQuery": "WITH RECURSIVE CategoryTaxonomy AS (\n  SELECT category_id, category_name, parent_cat_id, 1 AS tree_depth\n  FROM Categories\n  WHERE parent_cat_id IS NULL\n  UNION ALL\n  SELECT c.category_id, c.category_name, c.parent_cat_id, t.tree_depth + 1\n  FROM Categories c\n  INNER JOIN CategoryTaxonomy t ON c.parent_cat_id = t.category_id\n)\nSELECT category_name, tree_depth\nFROM CategoryTaxonomy;",
+    "syntaxBlueprint": "WITH RECURSIVE OrgTree AS (\n  SELECT emp_id, manager_id, 1 AS depth\n  FROM Employees WHERE manager_id IS NULL\n  UNION ALL\n  SELECT e.emp_id, e.manager_id, t.depth + 1\n  FROM Employees e JOIN OrgTree t ON e.manager_id = t.emp_id\n)\nSELECT * FROM OrgTree;",
+    "syntaxRule": "Navigate organizational reporting hierarchies or category trees recursively, calculating reporting depth or lineage at each level.",
+    "syntaxTrap": "Ensure the anchor member finds true root nodes (e.g. manager_id IS NULL) and the recursive join matches parent-to-child IDs correctly.",
+    "eli5Story": "Subqueries & CTEs on GroceryItems: Traverse supermarket category taxonomy from top-level department downwards.",
+    "commonMistakes": "Forgetting to alias derived tables in FROM, writing multiple WITH keywords in multi-CTE pipelines, or suffering the NOT IN NULL trap.",
+    "learningOutcomes": "Mastered 12.9 Recursive CTEs for Hierarchies (Tree Traversal) on GroceryItems.",
+    "challengeSlots": [
+      {
+        "type": "keyword",
+        "value": "WITH"
+      },
+      {
+        "type": "keyword",
+        "value": "RECURSIVE"
+      },
+      {
+        "type": "column",
+        "value": "CategoryTaxonomy"
+      },
+      {
+        "type": "keyword",
+        "value": "AS"
+      },
+      {
+        "type": "column",
+        "value": "("
+      },
+      {
+        "type": "keyword",
+        "value": "SELECT"
+      },
+      {
+        "type": "column",
+        "value": "category_id,"
+      },
+      {
+        "type": "column",
+        "value": "category_name,"
+      },
+      {
+        "type": "column",
+        "value": "parent_cat_id,"
+      },
+      {
+        "type": "column",
+        "value": "1"
+      },
+      {
+        "type": "keyword",
+        "value": "AS"
+      },
+      {
+        "type": "column",
+        "value": "tree_depth"
+      },
+      {
+        "type": "keyword",
+        "value": "FROM"
+      },
+      {
+        "type": "column",
+        "value": "Categories"
+      },
+      {
+        "type": "keyword",
+        "value": "WHERE"
+      },
+      {
+        "type": "column",
+        "value": "parent_cat_id"
+      },
+      {
+        "type": "keyword",
+        "value": "IS"
+      },
+      {
+        "type": "keyword",
+        "value": "NULL"
+      },
+      {
+        "type": "keyword",
+        "value": "UNION"
+      },
+      {
+        "type": "keyword",
+        "value": "ALL"
+      },
+      {
+        "type": "keyword",
+        "value": "SELECT"
+      },
+      {
+        "type": "column",
+        "value": "c.category_id,"
+      },
+      {
+        "type": "column",
+        "value": "c.category_name,"
+      },
+      {
+        "type": "column",
+        "value": "c.parent_cat_id,"
+      },
+      {
+        "type": "column",
+        "value": "t.tree_depth"
+      },
+      {
+        "type": "column",
+        "value": "+"
+      },
+      {
+        "type": "column",
+        "value": "1"
+      },
+      {
+        "type": "keyword",
+        "value": "FROM"
+      },
+      {
+        "type": "column",
+        "value": "Categories"
+      },
+      {
+        "type": "column",
+        "value": "c"
+      },
+      {
+        "type": "keyword",
+        "value": "INNER"
+      },
+      {
+        "type": "keyword",
+        "value": "JOIN"
+      },
+      {
+        "type": "column",
+        "value": "CategoryTaxonomy"
+      },
+      {
+        "type": "column",
+        "value": "t"
+      },
+      {
+        "type": "keyword",
+        "value": "ON"
+      },
+      {
+        "type": "column",
+        "value": "c.parent_cat_id"
+      },
+      {
+        "type": "column",
+        "value": "="
+      },
+      {
+        "type": "column",
+        "value": "t.category_id"
+      },
+      {
+        "type": "column",
+        "value": ")"
+      },
+      {
+        "type": "keyword",
+        "value": "SELECT"
+      },
+      {
+        "type": "column",
+        "value": "category_name,"
+      },
+      {
+        "type": "column",
+        "value": "tree_depth"
+      },
+      {
+        "type": "keyword",
+        "value": "FROM"
+      },
+      {
+        "type": "column",
+        "value": "CategoryTaxonomy;"
+      }
+    ]
+  },
+  {
+    "drillNumber": 1185,
+    "subcluster": "12.9 Recursive CTEs for Hierarchies (Tree Traversal)",
+    "level": "Level 3 (Recursive Hierarchy Tree)",
+    "title": "Syntax #1185: Trace recurring subscription reorder chains from initial checkout via recursive CTE",
+    "table": "Orders",
+    "scenario": "Trace recurring subscription reorder chains from initial checkout via recursive CTE.",
+    "businessObjective": "Trace recurring subscription reorder chains from initial checkout via recursive CTE.",
+    "schemaSnippet": "Orders relational schema",
+    "targetQuery": "WITH RECURSIVE OrderChain AS (\n  SELECT order_id, parent_order_id, 1 AS reorder_cycle\n  FROM Orders\n  WHERE parent_order_id IS NULL\n  UNION ALL\n  SELECT o.order_id, o.parent_order_id, c.reorder_cycle + 1\n  FROM Orders o\n  INNER JOIN OrderChain c ON o.parent_order_id = c.order_id\n)\nSELECT order_id, reorder_cycle\nFROM OrderChain;",
+    "syntaxBlueprint": "WITH RECURSIVE OrgTree AS (\n  SELECT emp_id, manager_id, 1 AS depth\n  FROM Employees WHERE manager_id IS NULL\n  UNION ALL\n  SELECT e.emp_id, e.manager_id, t.depth + 1\n  FROM Employees e JOIN OrgTree t ON e.manager_id = t.emp_id\n)\nSELECT * FROM OrgTree;",
+    "syntaxRule": "Navigate organizational reporting hierarchies or category trees recursively, calculating reporting depth or lineage at each level.",
+    "syntaxTrap": "Ensure the anchor member finds true root nodes (e.g. manager_id IS NULL) and the recursive join matches parent-to-child IDs correctly.",
+    "eli5Story": "Subqueries & CTEs on Orders: Trace recurring subscription reorder chains from initial checkout via recursive CTE.",
+    "commonMistakes": "Forgetting to alias derived tables in FROM, writing multiple WITH keywords in multi-CTE pipelines, or suffering the NOT IN NULL trap.",
+    "learningOutcomes": "Mastered 12.9 Recursive CTEs for Hierarchies (Tree Traversal) on Orders.",
+    "challengeSlots": [
+      {
+        "type": "keyword",
+        "value": "WITH"
+      },
+      {
+        "type": "keyword",
+        "value": "RECURSIVE"
+      },
+      {
+        "type": "column",
+        "value": "OrderChain"
+      },
+      {
+        "type": "keyword",
+        "value": "AS"
+      },
+      {
+        "type": "column",
+        "value": "("
+      },
+      {
+        "type": "keyword",
+        "value": "SELECT"
+      },
+      {
+        "type": "column",
+        "value": "order_id,"
+      },
+      {
+        "type": "column",
+        "value": "parent_order_id,"
+      },
+      {
+        "type": "column",
+        "value": "1"
+      },
+      {
+        "type": "keyword",
+        "value": "AS"
+      },
+      {
+        "type": "column",
+        "value": "reorder_cycle"
+      },
+      {
+        "type": "keyword",
+        "value": "FROM"
+      },
+      {
+        "type": "table",
+        "value": "Orders"
+      },
+      {
+        "type": "keyword",
+        "value": "WHERE"
+      },
+      {
+        "type": "column",
+        "value": "parent_order_id"
+      },
+      {
+        "type": "keyword",
+        "value": "IS"
+      },
+      {
+        "type": "keyword",
+        "value": "NULL"
+      },
+      {
+        "type": "keyword",
+        "value": "UNION"
+      },
+      {
+        "type": "keyword",
+        "value": "ALL"
+      },
+      {
+        "type": "keyword",
+        "value": "SELECT"
+      },
+      {
+        "type": "column",
+        "value": "o.order_id,"
+      },
+      {
+        "type": "column",
+        "value": "o.parent_order_id,"
+      },
+      {
+        "type": "column",
+        "value": "c.reorder_cycle"
+      },
+      {
+        "type": "column",
+        "value": "+"
+      },
+      {
+        "type": "column",
+        "value": "1"
+      },
+      {
+        "type": "keyword",
+        "value": "FROM"
+      },
+      {
+        "type": "table",
+        "value": "Orders"
+      },
+      {
+        "type": "column",
+        "value": "o"
+      },
+      {
+        "type": "keyword",
+        "value": "INNER"
+      },
+      {
+        "type": "keyword",
+        "value": "JOIN"
+      },
+      {
+        "type": "column",
+        "value": "OrderChain"
+      },
+      {
+        "type": "column",
+        "value": "c"
+      },
+      {
+        "type": "keyword",
+        "value": "ON"
+      },
+      {
+        "type": "column",
+        "value": "o.parent_order_id"
+      },
+      {
+        "type": "column",
+        "value": "="
+      },
+      {
+        "type": "column",
+        "value": "c.order_id"
+      },
+      {
+        "type": "column",
+        "value": ")"
+      },
+      {
+        "type": "keyword",
+        "value": "SELECT"
+      },
+      {
+        "type": "column",
+        "value": "order_id,"
+      },
+      {
+        "type": "column",
+        "value": "reorder_cycle"
+      },
+      {
+        "type": "keyword",
+        "value": "FROM"
+      },
+      {
+        "type": "column",
+        "value": "OrderChain;"
+      }
+    ]
+  },
+  {
+    "drillNumber": 1186,
+    "subcluster": "12.9 Recursive CTEs for Hierarchies (Tree Traversal)",
+    "level": "Level 3 (Recursive Hierarchy Tree)",
+    "title": "Syntax #1186: Trace music track genealogy from original master recording through remix generations",
+    "table": "MusicTracks",
+    "scenario": "Trace music track genealogy from original master recording through remix generations.",
+    "businessObjective": "Trace music track genealogy from original master recording through remix generations.",
+    "schemaSnippet": "MusicTracks relational schema",
+    "targetQuery": "WITH RECURSIVE TrackRemixes AS (\n  SELECT track_id, track_title, original_track_id, 1 AS generation\n  FROM MusicTracks\n  WHERE original_track_id IS NULL\n  UNION ALL\n  SELECT t.track_id, t.track_title, t.original_track_id, r.generation + 1\n  FROM MusicTracks t\n  INNER JOIN TrackRemixes r ON t.original_track_id = r.track_id\n)\nSELECT track_title, generation\nFROM TrackRemixes;",
+    "syntaxBlueprint": "WITH RECURSIVE OrgTree AS (\n  SELECT emp_id, manager_id, 1 AS depth\n  FROM Employees WHERE manager_id IS NULL\n  UNION ALL\n  SELECT e.emp_id, e.manager_id, t.depth + 1\n  FROM Employees e JOIN OrgTree t ON e.manager_id = t.emp_id\n)\nSELECT * FROM OrgTree;",
+    "syntaxRule": "Navigate organizational reporting hierarchies or category trees recursively, calculating reporting depth or lineage at each level.",
+    "syntaxTrap": "Ensure the anchor member finds true root nodes (e.g. manager_id IS NULL) and the recursive join matches parent-to-child IDs correctly.",
+    "eli5Story": "Subqueries & CTEs on MusicTracks: Trace music track genealogy from original master recording through remix generations.",
+    "commonMistakes": "Forgetting to alias derived tables in FROM, writing multiple WITH keywords in multi-CTE pipelines, or suffering the NOT IN NULL trap.",
+    "learningOutcomes": "Mastered 12.9 Recursive CTEs for Hierarchies (Tree Traversal) on MusicTracks.",
+    "challengeSlots": [
+      {
+        "type": "keyword",
+        "value": "WITH"
+      },
+      {
+        "type": "keyword",
+        "value": "RECURSIVE"
+      },
+      {
+        "type": "column",
+        "value": "TrackRemixes"
+      },
+      {
+        "type": "keyword",
+        "value": "AS"
+      },
+      {
+        "type": "column",
+        "value": "("
+      },
+      {
+        "type": "keyword",
+        "value": "SELECT"
+      },
+      {
+        "type": "column",
+        "value": "track_id,"
+      },
+      {
+        "type": "column",
+        "value": "track_title,"
+      },
+      {
+        "type": "column",
+        "value": "original_track_id,"
+      },
+      {
+        "type": "column",
+        "value": "1"
+      },
+      {
+        "type": "keyword",
+        "value": "AS"
+      },
+      {
+        "type": "column",
+        "value": "generation"
+      },
+      {
+        "type": "keyword",
+        "value": "FROM"
+      },
+      {
+        "type": "table",
+        "value": "MusicTracks"
+      },
+      {
+        "type": "keyword",
+        "value": "WHERE"
+      },
+      {
+        "type": "column",
+        "value": "original_track_id"
+      },
+      {
+        "type": "keyword",
+        "value": "IS"
+      },
+      {
+        "type": "keyword",
+        "value": "NULL"
+      },
+      {
+        "type": "keyword",
+        "value": "UNION"
+      },
+      {
+        "type": "keyword",
+        "value": "ALL"
+      },
+      {
+        "type": "keyword",
+        "value": "SELECT"
+      },
+      {
+        "type": "column",
+        "value": "t.track_id,"
+      },
+      {
+        "type": "column",
+        "value": "t.track_title,"
+      },
+      {
+        "type": "column",
+        "value": "t.original_track_id,"
+      },
+      {
+        "type": "column",
+        "value": "r.generation"
+      },
+      {
+        "type": "column",
+        "value": "+"
+      },
+      {
+        "type": "column",
+        "value": "1"
+      },
+      {
+        "type": "keyword",
+        "value": "FROM"
+      },
+      {
+        "type": "table",
+        "value": "MusicTracks"
+      },
+      {
+        "type": "column",
+        "value": "t"
+      },
+      {
+        "type": "keyword",
+        "value": "INNER"
+      },
+      {
+        "type": "keyword",
+        "value": "JOIN"
+      },
+      {
+        "type": "column",
+        "value": "TrackRemixes"
+      },
+      {
+        "type": "column",
+        "value": "r"
+      },
+      {
+        "type": "keyword",
+        "value": "ON"
+      },
+      {
+        "type": "column",
+        "value": "t.original_track_id"
+      },
+      {
+        "type": "column",
+        "value": "="
+      },
+      {
+        "type": "column",
+        "value": "r.track_id"
+      },
+      {
+        "type": "column",
+        "value": ")"
+      },
+      {
+        "type": "keyword",
+        "value": "SELECT"
+      },
+      {
+        "type": "column",
+        "value": "track_title,"
+      },
+      {
+        "type": "column",
+        "value": "generation"
+      },
+      {
+        "type": "keyword",
+        "value": "FROM"
+      },
+      {
+        "type": "column",
+        "value": "TrackRemixes;"
+      }
+    ]
+  },
+  {
+    "drillNumber": 1187,
+    "subcluster": "12.9 Recursive CTEs for Hierarchies (Tree Traversal)",
+    "level": "Level 3 (Recursive Hierarchy Tree)",
+    "title": "Syntax #1187: Trace member referral network depth from original founding member",
+    "table": "GymMembers",
+    "scenario": "Trace member referral network depth from original founding member.",
+    "businessObjective": "Trace member referral network depth from original founding member.",
+    "schemaSnippet": "GymMembers relational schema",
+    "targetQuery": "WITH RECURSIVE ReferralTree AS (\n  SELECT member_id, member_name, referred_by_id, 1 AS referral_depth\n  FROM GymMembers\n  WHERE referred_by_id IS NULL\n  UNION ALL\n  SELECT m.member_id, m.member_name, m.referred_by_id, r.referral_depth + 1\n  FROM GymMembers m\n  INNER JOIN ReferralTree r ON m.referred_by_id = r.member_id\n)\nSELECT member_name, referral_depth\nFROM ReferralTree;",
+    "syntaxBlueprint": "WITH RECURSIVE OrgTree AS (\n  SELECT emp_id, manager_id, 1 AS depth\n  FROM Employees WHERE manager_id IS NULL\n  UNION ALL\n  SELECT e.emp_id, e.manager_id, t.depth + 1\n  FROM Employees e JOIN OrgTree t ON e.manager_id = t.emp_id\n)\nSELECT * FROM OrgTree;",
+    "syntaxRule": "Navigate organizational reporting hierarchies or category trees recursively, calculating reporting depth or lineage at each level.",
+    "syntaxTrap": "Ensure the anchor member finds true root nodes (e.g. manager_id IS NULL) and the recursive join matches parent-to-child IDs correctly.",
+    "eli5Story": "Subqueries & CTEs on GymMembers: Trace member referral network depth from original founding member.",
+    "commonMistakes": "Forgetting to alias derived tables in FROM, writing multiple WITH keywords in multi-CTE pipelines, or suffering the NOT IN NULL trap.",
+    "learningOutcomes": "Mastered 12.9 Recursive CTEs for Hierarchies (Tree Traversal) on GymMembers.",
+    "challengeSlots": [
+      {
+        "type": "keyword",
+        "value": "WITH"
+      },
+      {
+        "type": "keyword",
+        "value": "RECURSIVE"
+      },
+      {
+        "type": "column",
+        "value": "ReferralTree"
+      },
+      {
+        "type": "keyword",
+        "value": "AS"
+      },
+      {
+        "type": "column",
+        "value": "("
+      },
+      {
+        "type": "keyword",
+        "value": "SELECT"
+      },
+      {
+        "type": "column",
+        "value": "member_id,"
+      },
+      {
+        "type": "column",
+        "value": "member_name,"
+      },
+      {
+        "type": "column",
+        "value": "referred_by_id,"
+      },
+      {
+        "type": "column",
+        "value": "1"
+      },
+      {
+        "type": "keyword",
+        "value": "AS"
+      },
+      {
+        "type": "column",
+        "value": "referral_depth"
+      },
+      {
+        "type": "keyword",
+        "value": "FROM"
+      },
+      {
+        "type": "table",
+        "value": "GymMembers"
+      },
+      {
+        "type": "keyword",
+        "value": "WHERE"
+      },
+      {
+        "type": "column",
+        "value": "referred_by_id"
+      },
+      {
+        "type": "keyword",
+        "value": "IS"
+      },
+      {
+        "type": "keyword",
+        "value": "NULL"
+      },
+      {
+        "type": "keyword",
+        "value": "UNION"
+      },
+      {
+        "type": "keyword",
+        "value": "ALL"
+      },
+      {
+        "type": "keyword",
+        "value": "SELECT"
+      },
+      {
+        "type": "column",
+        "value": "m.member_id,"
+      },
+      {
+        "type": "column",
+        "value": "m.member_name,"
+      },
+      {
+        "type": "column",
+        "value": "m.referred_by_id,"
+      },
+      {
+        "type": "column",
+        "value": "r.referral_depth"
+      },
+      {
+        "type": "column",
+        "value": "+"
+      },
+      {
+        "type": "column",
+        "value": "1"
+      },
+      {
+        "type": "keyword",
+        "value": "FROM"
+      },
+      {
+        "type": "table",
+        "value": "GymMembers"
+      },
+      {
+        "type": "column",
+        "value": "m"
+      },
+      {
+        "type": "keyword",
+        "value": "INNER"
+      },
+      {
+        "type": "keyword",
+        "value": "JOIN"
+      },
+      {
+        "type": "column",
+        "value": "ReferralTree"
+      },
+      {
+        "type": "column",
+        "value": "r"
+      },
+      {
+        "type": "keyword",
+        "value": "ON"
+      },
+      {
+        "type": "column",
+        "value": "m.referred_by_id"
+      },
+      {
+        "type": "column",
+        "value": "="
+      },
+      {
+        "type": "column",
+        "value": "r.member_id"
+      },
+      {
+        "type": "column",
+        "value": ")"
+      },
+      {
+        "type": "keyword",
+        "value": "SELECT"
+      },
+      {
+        "type": "column",
+        "value": "member_name,"
+      },
+      {
+        "type": "column",
+        "value": "referral_depth"
+      },
+      {
+        "type": "keyword",
+        "value": "FROM"
+      },
+      {
+        "type": "column",
+        "value": "ReferralTree;"
+      }
+    ]
+  },
+  {
+    "drillNumber": 1188,
+    "subcluster": "12.9 Recursive CTEs for Hierarchies (Tree Traversal)",
+    "level": "Level 3 (Recursive Hierarchy Tree)",
+    "title": "Syntax #1188: Trace movie franchise release sequence from original classic through sequels",
+    "table": "MovieReviews",
+    "scenario": "Trace movie franchise release sequence from original classic through sequels.",
+    "businessObjective": "Trace movie franchise release sequence from original classic through sequels.",
+    "schemaSnippet": "MovieReviews relational schema",
+    "targetQuery": "WITH RECURSIVE FranchiseTree AS (\n  SELECT movie_id, movie_title, predecessor_id, 1 AS franchise_entry\n  FROM Movies\n  WHERE predecessor_id IS NULL\n  UNION ALL\n  SELECT m.movie_id, m.movie_title, m.predecessor_id, f.franchise_entry + 1\n  FROM Movies m\n  INNER JOIN FranchiseTree f ON m.predecessor_id = f.movie_id\n)\nSELECT movie_title, franchise_entry\nFROM FranchiseTree;",
+    "syntaxBlueprint": "WITH RECURSIVE OrgTree AS (\n  SELECT emp_id, manager_id, 1 AS depth\n  FROM Employees WHERE manager_id IS NULL\n  UNION ALL\n  SELECT e.emp_id, e.manager_id, t.depth + 1\n  FROM Employees e JOIN OrgTree t ON e.manager_id = t.emp_id\n)\nSELECT * FROM OrgTree;",
+    "syntaxRule": "Navigate organizational reporting hierarchies or category trees recursively, calculating reporting depth or lineage at each level.",
+    "syntaxTrap": "Ensure the anchor member finds true root nodes (e.g. manager_id IS NULL) and the recursive join matches parent-to-child IDs correctly.",
+    "eli5Story": "Subqueries & CTEs on MovieReviews: Trace movie franchise release sequence from original classic through sequels.",
+    "commonMistakes": "Forgetting to alias derived tables in FROM, writing multiple WITH keywords in multi-CTE pipelines, or suffering the NOT IN NULL trap.",
+    "learningOutcomes": "Mastered 12.9 Recursive CTEs for Hierarchies (Tree Traversal) on MovieReviews.",
+    "challengeSlots": [
+      {
+        "type": "keyword",
+        "value": "WITH"
+      },
+      {
+        "type": "keyword",
+        "value": "RECURSIVE"
+      },
+      {
+        "type": "column",
+        "value": "FranchiseTree"
+      },
+      {
+        "type": "keyword",
+        "value": "AS"
+      },
+      {
+        "type": "column",
+        "value": "("
+      },
+      {
+        "type": "keyword",
+        "value": "SELECT"
+      },
+      {
+        "type": "column",
+        "value": "movie_id,"
+      },
+      {
+        "type": "column",
+        "value": "movie_title,"
+      },
+      {
+        "type": "column",
+        "value": "predecessor_id,"
+      },
+      {
+        "type": "column",
+        "value": "1"
+      },
+      {
+        "type": "keyword",
+        "value": "AS"
+      },
+      {
+        "type": "column",
+        "value": "franchise_entry"
+      },
+      {
+        "type": "keyword",
+        "value": "FROM"
+      },
+      {
+        "type": "table",
+        "value": "Movies"
+      },
+      {
+        "type": "keyword",
+        "value": "WHERE"
+      },
+      {
+        "type": "column",
+        "value": "predecessor_id"
+      },
+      {
+        "type": "keyword",
+        "value": "IS"
+      },
+      {
+        "type": "keyword",
+        "value": "NULL"
+      },
+      {
+        "type": "keyword",
+        "value": "UNION"
+      },
+      {
+        "type": "keyword",
+        "value": "ALL"
+      },
+      {
+        "type": "keyword",
+        "value": "SELECT"
+      },
+      {
+        "type": "column",
+        "value": "m.movie_id,"
+      },
+      {
+        "type": "column",
+        "value": "m.movie_title,"
+      },
+      {
+        "type": "column",
+        "value": "m.predecessor_id,"
+      },
+      {
+        "type": "column",
+        "value": "f.franchise_entry"
+      },
+      {
+        "type": "column",
+        "value": "+"
+      },
+      {
+        "type": "column",
+        "value": "1"
+      },
+      {
+        "type": "keyword",
+        "value": "FROM"
+      },
+      {
+        "type": "table",
+        "value": "Movies"
+      },
+      {
+        "type": "column",
+        "value": "m"
+      },
+      {
+        "type": "keyword",
+        "value": "INNER"
+      },
+      {
+        "type": "keyword",
+        "value": "JOIN"
+      },
+      {
+        "type": "column",
+        "value": "FranchiseTree"
+      },
+      {
+        "type": "column",
+        "value": "f"
+      },
+      {
+        "type": "keyword",
+        "value": "ON"
+      },
+      {
+        "type": "column",
+        "value": "m.predecessor_id"
+      },
+      {
+        "type": "column",
+        "value": "="
+      },
+      {
+        "type": "column",
+        "value": "f.movie_id"
+      },
+      {
+        "type": "column",
+        "value": ")"
+      },
+      {
+        "type": "keyword",
+        "value": "SELECT"
+      },
+      {
+        "type": "column",
+        "value": "movie_title,"
+      },
+      {
+        "type": "column",
+        "value": "franchise_entry"
+      },
+      {
+        "type": "keyword",
+        "value": "FROM"
+      },
+      {
+        "type": "column",
+        "value": "FranchiseTree;"
+      }
+    ]
+  },
+  {
+    "drillNumber": 1189,
+    "subcluster": "12.9 Recursive CTEs for Hierarchies (Tree Traversal)",
+    "level": "Level 3 (Recursive Hierarchy Tree)",
+    "title": "Syntax #1189: Trace connecting flight itineraries leg by leg using a recursive CTE",
+    "table": "FlightSchedule",
+    "scenario": "Trace connecting flight itineraries leg by leg using a recursive CTE.",
+    "businessObjective": "Trace connecting flight itineraries leg by leg using a recursive CTE.",
+    "schemaSnippet": "FlightSchedule relational schema",
+    "targetQuery": "WITH RECURSIVE FlightItinerary AS (\n  SELECT flight_id, origin_airport, destination_airport, inbound_flight_id, 1 AS leg_num\n  FROM FlightSchedule\n  WHERE inbound_flight_id IS NULL\n  UNION ALL\n  SELECT f.flight_id, f.origin_airport, f.destination_airport, f.inbound_flight_id, i.leg_num + 1\n  FROM FlightSchedule f\n  INNER JOIN FlightItinerary i ON f.inbound_flight_id = i.flight_id\n)\nSELECT flight_id, origin_airport, destination_airport, leg_num\nFROM FlightItinerary;",
+    "syntaxBlueprint": "WITH RECURSIVE OrgTree AS (\n  SELECT emp_id, manager_id, 1 AS depth\n  FROM Employees WHERE manager_id IS NULL\n  UNION ALL\n  SELECT e.emp_id, e.manager_id, t.depth + 1\n  FROM Employees e JOIN OrgTree t ON e.manager_id = t.emp_id\n)\nSELECT * FROM OrgTree;",
+    "syntaxRule": "Navigate organizational reporting hierarchies or category trees recursively, calculating reporting depth or lineage at each level.",
+    "syntaxTrap": "Ensure the anchor member finds true root nodes (e.g. manager_id IS NULL) and the recursive join matches parent-to-child IDs correctly.",
+    "eli5Story": "Subqueries & CTEs on FlightSchedule: Trace connecting flight itineraries leg by leg using a recursive CTE.",
+    "commonMistakes": "Forgetting to alias derived tables in FROM, writing multiple WITH keywords in multi-CTE pipelines, or suffering the NOT IN NULL trap.",
+    "learningOutcomes": "Mastered 12.9 Recursive CTEs for Hierarchies (Tree Traversal) on FlightSchedule.",
+    "challengeSlots": [
+      {
+        "type": "keyword",
+        "value": "WITH"
+      },
+      {
+        "type": "keyword",
+        "value": "RECURSIVE"
+      },
+      {
+        "type": "column",
+        "value": "FlightItinerary"
+      },
+      {
+        "type": "keyword",
+        "value": "AS"
+      },
+      {
+        "type": "column",
+        "value": "("
+      },
+      {
+        "type": "keyword",
+        "value": "SELECT"
+      },
+      {
+        "type": "column",
+        "value": "flight_id,"
+      },
+      {
+        "type": "column",
+        "value": "origin_airport,"
+      },
+      {
+        "type": "column",
+        "value": "destination_airport,"
+      },
+      {
+        "type": "column",
+        "value": "inbound_flight_id,"
+      },
+      {
+        "type": "column",
+        "value": "1"
+      },
+      {
+        "type": "keyword",
+        "value": "AS"
+      },
+      {
+        "type": "column",
+        "value": "leg_num"
+      },
+      {
+        "type": "keyword",
+        "value": "FROM"
+      },
+      {
+        "type": "table",
+        "value": "FlightSchedule"
+      },
+      {
+        "type": "keyword",
+        "value": "WHERE"
+      },
+      {
+        "type": "column",
+        "value": "inbound_flight_id"
+      },
+      {
+        "type": "keyword",
+        "value": "IS"
+      },
+      {
+        "type": "keyword",
+        "value": "NULL"
+      },
+      {
+        "type": "keyword",
+        "value": "UNION"
+      },
+      {
+        "type": "keyword",
+        "value": "ALL"
+      },
+      {
+        "type": "keyword",
+        "value": "SELECT"
+      },
+      {
+        "type": "column",
+        "value": "f.flight_id,"
+      },
+      {
+        "type": "column",
+        "value": "f.origin_airport,"
+      },
+      {
+        "type": "column",
+        "value": "f.destination_airport,"
+      },
+      {
+        "type": "column",
+        "value": "f.inbound_flight_id,"
+      },
+      {
+        "type": "column",
+        "value": "i.leg_num"
+      },
+      {
+        "type": "column",
+        "value": "+"
+      },
+      {
+        "type": "column",
+        "value": "1"
+      },
+      {
+        "type": "keyword",
+        "value": "FROM"
+      },
+      {
+        "type": "table",
+        "value": "FlightSchedule"
+      },
+      {
+        "type": "column",
+        "value": "f"
+      },
+      {
+        "type": "keyword",
+        "value": "INNER"
+      },
+      {
+        "type": "keyword",
+        "value": "JOIN"
+      },
+      {
+        "type": "column",
+        "value": "FlightItinerary"
+      },
+      {
+        "type": "column",
+        "value": "i"
+      },
+      {
+        "type": "keyword",
+        "value": "ON"
+      },
+      {
+        "type": "column",
+        "value": "f.inbound_flight_id"
+      },
+      {
+        "type": "column",
+        "value": "="
+      },
+      {
+        "type": "column",
+        "value": "i.flight_id"
+      },
+      {
+        "type": "column",
+        "value": ")"
+      },
+      {
+        "type": "keyword",
+        "value": "SELECT"
+      },
+      {
+        "type": "column",
+        "value": "flight_id,"
+      },
+      {
+        "type": "column",
+        "value": "origin_airport,"
+      },
+      {
+        "type": "column",
+        "value": "destination_airport,"
+      },
+      {
+        "type": "column",
+        "value": "leg_num"
+      },
+      {
+        "type": "keyword",
+        "value": "FROM"
+      },
+      {
+        "type": "column",
+        "value": "FlightItinerary;"
+      }
+    ]
+  },
+  {
+    "drillNumber": 1190,
+    "subcluster": "12.9 Recursive CTEs for Hierarchies (Tree Traversal)",
+    "level": "Level 3 (Recursive Hierarchy Tree)",
+    "title": "Syntax #1190: Trace veterinary animal pedigree generations recursively",
+    "table": "PetClinic",
+    "scenario": "Trace veterinary animal pedigree generations recursively.",
+    "businessObjective": "Trace veterinary animal pedigree generations recursively.",
+    "schemaSnippet": "PetClinic relational schema",
+    "targetQuery": "WITH RECURSIVE PetPedigree AS (\n  SELECT pet_id, pet_name, mother_pet_id, 1 AS generation_level\n  FROM PetClinic\n  WHERE mother_pet_id IS NULL\n  UNION ALL\n  SELECT p.pet_id, p.pet_name, p.mother_pet_id, g.generation_level + 1\n  FROM PetClinic p\n  INNER JOIN PetPedigree g ON p.mother_pet_id = g.pet_id\n)\nSELECT pet_name, generation_level\nFROM PetPedigree;",
+    "syntaxBlueprint": "WITH RECURSIVE OrgTree AS (\n  SELECT emp_id, manager_id, 1 AS depth\n  FROM Employees WHERE manager_id IS NULL\n  UNION ALL\n  SELECT e.emp_id, e.manager_id, t.depth + 1\n  FROM Employees e JOIN OrgTree t ON e.manager_id = t.emp_id\n)\nSELECT * FROM OrgTree;",
+    "syntaxRule": "Navigate organizational reporting hierarchies or category trees recursively, calculating reporting depth or lineage at each level.",
+    "syntaxTrap": "Ensure the anchor member finds true root nodes (e.g. manager_id IS NULL) and the recursive join matches parent-to-child IDs correctly.",
+    "eli5Story": "Subqueries & CTEs on PetClinic: Trace veterinary animal pedigree generations recursively.",
+    "commonMistakes": "Forgetting to alias derived tables in FROM, writing multiple WITH keywords in multi-CTE pipelines, or suffering the NOT IN NULL trap.",
+    "learningOutcomes": "Mastered 12.9 Recursive CTEs for Hierarchies (Tree Traversal) on PetClinic.",
+    "challengeSlots": [
+      {
+        "type": "keyword",
+        "value": "WITH"
+      },
+      {
+        "type": "keyword",
+        "value": "RECURSIVE"
+      },
+      {
+        "type": "column",
+        "value": "PetPedigree"
+      },
+      {
+        "type": "keyword",
+        "value": "AS"
+      },
+      {
+        "type": "column",
+        "value": "("
+      },
+      {
+        "type": "keyword",
+        "value": "SELECT"
+      },
+      {
+        "type": "column",
+        "value": "pet_id,"
+      },
+      {
+        "type": "column",
+        "value": "pet_name,"
+      },
+      {
+        "type": "column",
+        "value": "mother_pet_id,"
+      },
+      {
+        "type": "column",
+        "value": "1"
+      },
+      {
+        "type": "keyword",
+        "value": "AS"
+      },
+      {
+        "type": "column",
+        "value": "generation_level"
+      },
+      {
+        "type": "keyword",
+        "value": "FROM"
+      },
+      {
+        "type": "table",
+        "value": "PetClinic"
+      },
+      {
+        "type": "keyword",
+        "value": "WHERE"
+      },
+      {
+        "type": "column",
+        "value": "mother_pet_id"
+      },
+      {
+        "type": "keyword",
+        "value": "IS"
+      },
+      {
+        "type": "keyword",
+        "value": "NULL"
+      },
+      {
+        "type": "keyword",
+        "value": "UNION"
+      },
+      {
+        "type": "keyword",
+        "value": "ALL"
+      },
+      {
+        "type": "keyword",
+        "value": "SELECT"
+      },
+      {
+        "type": "column",
+        "value": "p.pet_id,"
+      },
+      {
+        "type": "column",
+        "value": "p.pet_name,"
+      },
+      {
+        "type": "column",
+        "value": "p.mother_pet_id,"
+      },
+      {
+        "type": "column",
+        "value": "g.generation_level"
+      },
+      {
+        "type": "column",
+        "value": "+"
+      },
+      {
+        "type": "column",
+        "value": "1"
+      },
+      {
+        "type": "keyword",
+        "value": "FROM"
+      },
+      {
+        "type": "table",
+        "value": "PetClinic"
+      },
+      {
+        "type": "column",
+        "value": "p"
+      },
+      {
+        "type": "keyword",
+        "value": "INNER"
+      },
+      {
+        "type": "keyword",
+        "value": "JOIN"
+      },
+      {
+        "type": "column",
+        "value": "PetPedigree"
+      },
+      {
+        "type": "column",
+        "value": "g"
+      },
+      {
+        "type": "keyword",
+        "value": "ON"
+      },
+      {
+        "type": "column",
+        "value": "p.mother_pet_id"
+      },
+      {
+        "type": "column",
+        "value": "="
+      },
+      {
+        "type": "column",
+        "value": "g.pet_id"
+      },
+      {
+        "type": "column",
+        "value": ")"
+      },
+      {
+        "type": "keyword",
+        "value": "SELECT"
+      },
+      {
+        "type": "column",
+        "value": "pet_name,"
+      },
+      {
+        "type": "column",
+        "value": "generation_level"
+      },
+      {
+        "type": "keyword",
+        "value": "FROM"
+      },
+      {
+        "type": "column",
+        "value": "PetPedigree;"
+      }
+    ]
+  },
+  {
+    "drillNumber": 1191,
+    "subcluster": "12.10 End-to-End Enterprise CTE Analytics Pipelines",
+    "level": "Level 3 (CTE Analytics Master)",
+    "title": "Syntax #1191: Multi-stage CTE pipeline: Identify top academic majors with 2+ honor students",
+    "table": "Students",
+    "scenario": "Multi-stage CTE pipeline: Identify top academic majors with 2+ honor students.",
+    "businessObjective": "Multi-stage CTE pipeline: Identify top academic majors with 2+ honor students.",
+    "schemaSnippet": "Students relational schema",
+    "targetQuery": "WITH HonorStudents AS (\n  SELECT student_id, full_name, gpa, major\n  FROM Students\n  WHERE gpa >= 3.5\n),\nMajorMetrics AS (\n  SELECT major, COUNT(*) AS honor_count, AVG(gpa) AS avg_honor_gpa\n  FROM HonorStudents\n  GROUP BY major\n)\nSELECT major, honor_count, avg_honor_gpa\nFROM MajorMetrics\nWHERE honor_count >= 2\nORDER BY avg_honor_gpa DESC\nLIMIT 5;",
+    "syntaxBlueprint": "WITH Stage1 AS (\n  SELECT col1, col2, metric FROM TableA WHERE filter = 'val'\n),\nStage2 AS (\n  SELECT col1, COUNT(*) AS count_val, SUM(metric) AS sum_val\n  FROM Stage1 GROUP BY col1\n)\nSELECT col1, count_val, sum_val\nFROM Stage2\nWHERE sum_val > 500\nORDER BY sum_val DESC\nLIMIT 5;",
+    "syntaxRule": "Synthesize filtering, pre-aggregations, multi-CTE transformations, and final presentation sorting into professional enterprise analytics pipelines.",
+    "syntaxTrap": "Putting everything in one massive unreadable query. Break complex business logic into clean modular stages using CTEs.",
+    "eli5Story": "Subqueries & CTEs on Students: Multi-stage CTE pipeline: Identify top academic majors with 2+ honor students.",
+    "commonMistakes": "Forgetting to alias derived tables in FROM, writing multiple WITH keywords in multi-CTE pipelines, or suffering the NOT IN NULL trap.",
+    "learningOutcomes": "Mastered 12.10 End-to-End Enterprise CTE Analytics Pipelines on Students.",
+    "challengeSlots": [
+      {
+        "type": "keyword",
+        "value": "WITH"
+      },
+      {
+        "type": "table",
+        "value": "HonorStudents"
+      },
+      {
+        "type": "keyword",
+        "value": "AS"
+      },
+      {
+        "type": "column",
+        "value": "("
+      },
+      {
+        "type": "keyword",
+        "value": "SELECT"
+      },
+      {
+        "type": "column",
+        "value": "student_id,"
+      },
+      {
+        "type": "column",
+        "value": "full_name,"
+      },
+      {
+        "type": "column",
+        "value": "gpa,"
+      },
+      {
+        "type": "column",
+        "value": "major"
+      },
+      {
+        "type": "keyword",
+        "value": "FROM"
+      },
+      {
+        "type": "table",
+        "value": "Students"
+      },
+      {
+        "type": "keyword",
+        "value": "WHERE"
+      },
+      {
+        "type": "column",
+        "value": "gpa"
+      },
+      {
+        "type": "column",
+        "value": ">="
+      },
+      {
+        "type": "column",
+        "value": "3.5"
+      },
+      {
+        "type": "column",
+        "value": "),"
+      },
+      {
+        "type": "column",
+        "value": "MajorMetrics"
+      },
+      {
+        "type": "keyword",
+        "value": "AS"
+      },
+      {
+        "type": "column",
+        "value": "("
+      },
+      {
+        "type": "keyword",
+        "value": "SELECT"
+      },
+      {
+        "type": "column",
+        "value": "major,"
+      },
+      {
+        "type": "column",
+        "value": "COUNT(*)"
+      },
+      {
+        "type": "keyword",
+        "value": "AS"
+      },
+      {
+        "type": "column",
+        "value": "honor_count,"
+      },
+      {
+        "type": "column",
+        "value": "AVG(gpa)"
+      },
+      {
+        "type": "keyword",
+        "value": "AS"
+      },
+      {
+        "type": "column",
+        "value": "avg_honor_gpa"
+      },
+      {
+        "type": "keyword",
+        "value": "FROM"
+      },
+      {
+        "type": "table",
+        "value": "HonorStudents"
+      },
+      {
+        "type": "keyword",
+        "value": "GROUP"
+      },
+      {
+        "type": "keyword",
+        "value": "BY"
+      },
+      {
+        "type": "column",
+        "value": "major"
+      },
+      {
+        "type": "column",
+        "value": ")"
+      },
+      {
+        "type": "keyword",
+        "value": "SELECT"
+      },
+      {
+        "type": "column",
+        "value": "major,"
+      },
+      {
+        "type": "column",
+        "value": "honor_count,"
+      },
+      {
+        "type": "column",
+        "value": "avg_honor_gpa"
+      },
+      {
+        "type": "keyword",
+        "value": "FROM"
+      },
+      {
+        "type": "column",
+        "value": "MajorMetrics"
+      },
+      {
+        "type": "keyword",
+        "value": "WHERE"
+      },
+      {
+        "type": "column",
+        "value": "honor_count"
+      },
+      {
+        "type": "column",
+        "value": ">="
+      },
+      {
+        "type": "column",
+        "value": "2"
+      },
+      {
+        "type": "keyword",
+        "value": "ORDER"
+      },
+      {
+        "type": "keyword",
+        "value": "BY"
+      },
+      {
+        "type": "column",
+        "value": "avg_honor_gpa"
+      },
+      {
+        "type": "keyword",
+        "value": "DESC"
+      },
+      {
+        "type": "keyword",
+        "value": "LIMIT"
+      },
+      {
+        "type": "column",
+        "value": "5;"
+      }
+    ]
+  },
+  {
+    "drillNumber": 1192,
+    "subcluster": "12.10 End-to-End Enterprise CTE Analytics Pipelines",
+    "level": "Level 3 (CTE Analytics Master)",
+    "title": "Syntax #1192: Multi-stage CTE pipeline: Rank prolific authors with multiple recent releases",
+    "table": "Books",
+    "scenario": "Multi-stage CTE pipeline: Rank prolific authors with multiple recent releases.",
+    "businessObjective": "Multi-stage CTE pipeline: Rank prolific authors with multiple recent releases.",
+    "schemaSnippet": "Books relational schema",
+    "targetQuery": "WITH RecentReleases AS (\n  SELECT book_id, title, author_id, price\n  FROM Books\n  WHERE published_date >= '2022-01-01'\n),\nAuthorRevenues AS (\n  SELECT author_id, COUNT(*) AS recent_titles, AVG(price) AS avg_price\n  FROM RecentReleases\n  GROUP BY author_id\n)\nSELECT a.author_name, r.recent_titles, r.avg_price\nFROM AuthorRevenues r\nJOIN Authors a ON r.author_id = a.author_id\nWHERE r.recent_titles >= 2\nORDER BY r.avg_price DESC\nLIMIT 5;",
+    "syntaxBlueprint": "WITH Stage1 AS (\n  SELECT col1, col2, metric FROM TableA WHERE filter = 'val'\n),\nStage2 AS (\n  SELECT col1, COUNT(*) AS count_val, SUM(metric) AS sum_val\n  FROM Stage1 GROUP BY col1\n)\nSELECT col1, count_val, sum_val\nFROM Stage2\nWHERE sum_val > 500\nORDER BY sum_val DESC\nLIMIT 5;",
+    "syntaxRule": "Synthesize filtering, pre-aggregations, multi-CTE transformations, and final presentation sorting into professional enterprise analytics pipelines.",
+    "syntaxTrap": "Putting everything in one massive unreadable query. Break complex business logic into clean modular stages using CTEs.",
+    "eli5Story": "Subqueries & CTEs on Books: Multi-stage CTE pipeline: Rank prolific authors with multiple recent releases.",
+    "commonMistakes": "Forgetting to alias derived tables in FROM, writing multiple WITH keywords in multi-CTE pipelines, or suffering the NOT IN NULL trap.",
+    "learningOutcomes": "Mastered 12.10 End-to-End Enterprise CTE Analytics Pipelines on Books.",
+    "challengeSlots": [
+      {
+        "type": "keyword",
+        "value": "WITH"
+      },
+      {
+        "type": "column",
+        "value": "RecentReleases"
+      },
+      {
+        "type": "keyword",
+        "value": "AS"
+      },
+      {
+        "type": "column",
+        "value": "("
+      },
+      {
+        "type": "keyword",
+        "value": "SELECT"
+      },
+      {
+        "type": "column",
+        "value": "book_id,"
+      },
+      {
+        "type": "column",
+        "value": "title,"
+      },
+      {
+        "type": "column",
+        "value": "author_id,"
+      },
+      {
+        "type": "column",
+        "value": "price"
+      },
+      {
+        "type": "keyword",
+        "value": "FROM"
+      },
+      {
+        "type": "table",
+        "value": "Books"
+      },
+      {
+        "type": "keyword",
+        "value": "WHERE"
+      },
+      {
+        "type": "column",
+        "value": "published_date"
+      },
+      {
+        "type": "column",
+        "value": ">="
+      },
+      {
+        "type": "column",
+        "value": "'2022-01-01'"
+      },
+      {
+        "type": "column",
+        "value": "),"
+      },
+      {
+        "type": "column",
+        "value": "AuthorRevenues"
+      },
+      {
+        "type": "keyword",
+        "value": "AS"
+      },
+      {
+        "type": "column",
+        "value": "("
+      },
+      {
+        "type": "keyword",
+        "value": "SELECT"
+      },
+      {
+        "type": "column",
+        "value": "author_id,"
+      },
+      {
+        "type": "column",
+        "value": "COUNT(*)"
+      },
+      {
+        "type": "keyword",
+        "value": "AS"
+      },
+      {
+        "type": "column",
+        "value": "recent_titles,"
+      },
+      {
+        "type": "column",
+        "value": "AVG(price)"
+      },
+      {
+        "type": "keyword",
+        "value": "AS"
+      },
+      {
+        "type": "column",
+        "value": "avg_price"
+      },
+      {
+        "type": "keyword",
+        "value": "FROM"
+      },
+      {
+        "type": "column",
+        "value": "RecentReleases"
+      },
+      {
+        "type": "keyword",
+        "value": "GROUP"
+      },
+      {
+        "type": "keyword",
+        "value": "BY"
+      },
+      {
+        "type": "column",
+        "value": "author_id"
+      },
+      {
+        "type": "column",
+        "value": ")"
+      },
+      {
+        "type": "keyword",
+        "value": "SELECT"
+      },
+      {
+        "type": "column",
+        "value": "a.author_name,"
+      },
+      {
+        "type": "column",
+        "value": "r.recent_titles,"
+      },
+      {
+        "type": "column",
+        "value": "r.avg_price"
+      },
+      {
+        "type": "keyword",
+        "value": "FROM"
+      },
+      {
+        "type": "column",
+        "value": "AuthorRevenues"
+      },
+      {
+        "type": "column",
+        "value": "r"
+      },
+      {
+        "type": "keyword",
+        "value": "JOIN"
+      },
+      {
+        "type": "table",
+        "value": "Authors"
+      },
+      {
+        "type": "column",
+        "value": "a"
+      },
+      {
+        "type": "keyword",
+        "value": "ON"
+      },
+      {
+        "type": "column",
+        "value": "r.author_id"
+      },
+      {
+        "type": "column",
+        "value": "="
+      },
+      {
+        "type": "column",
+        "value": "a.author_id"
+      },
+      {
+        "type": "keyword",
+        "value": "WHERE"
+      },
+      {
+        "type": "column",
+        "value": "r.recent_titles"
+      },
+      {
+        "type": "column",
+        "value": ">="
+      },
+      {
+        "type": "column",
+        "value": "2"
+      },
+      {
+        "type": "keyword",
+        "value": "ORDER"
+      },
+      {
+        "type": "keyword",
+        "value": "BY"
+      },
+      {
+        "type": "column",
+        "value": "r.avg_price"
+      },
+      {
+        "type": "keyword",
+        "value": "DESC"
+      },
+      {
+        "type": "keyword",
+        "value": "LIMIT"
+      },
+      {
+        "type": "column",
+        "value": "5;"
+      }
+    ]
+  },
+  {
+    "drillNumber": 1193,
+    "subcluster": "12.10 End-to-End Enterprise CTE Analytics Pipelines",
+    "level": "Level 3 (CTE Analytics Master)",
+    "title": "Syntax #1193: Multi-stage CTE pipeline: Analyze departments with 3+ senior employees",
+    "table": "Employees",
+    "scenario": "Multi-stage CTE pipeline: Analyze departments with 3+ senior employees.",
+    "businessObjective": "Multi-stage CTE pipeline: Analyze departments with 3+ senior employees.",
+    "schemaSnippet": "Employees relational schema",
+    "targetQuery": "WITH ActiveStaff AS (\n  SELECT employee_id, first_name, department_id, salary\n  FROM Employees\n  WHERE salary >= 60000\n),\nDeptAggregates AS (\n  SELECT department_id, COUNT(*) AS senior_count, AVG(salary) AS avg_senior_sal\n  FROM ActiveStaff\n  GROUP BY department_id\n)\nSELECT d.department_name, da.senior_count, da.avg_senior_sal\nFROM DeptAggregates da\nJOIN Departments d ON da.department_id = d.department_id\nWHERE da.senior_count >= 3\nORDER BY da.avg_senior_sal DESC\nLIMIT 3;",
+    "syntaxBlueprint": "WITH Stage1 AS (\n  SELECT col1, col2, metric FROM TableA WHERE filter = 'val'\n),\nStage2 AS (\n  SELECT col1, COUNT(*) AS count_val, SUM(metric) AS sum_val\n  FROM Stage1 GROUP BY col1\n)\nSELECT col1, count_val, sum_val\nFROM Stage2\nWHERE sum_val > 500\nORDER BY sum_val DESC\nLIMIT 5;",
+    "syntaxRule": "Synthesize filtering, pre-aggregations, multi-CTE transformations, and final presentation sorting into professional enterprise analytics pipelines.",
+    "syntaxTrap": "Putting everything in one massive unreadable query. Break complex business logic into clean modular stages using CTEs.",
+    "eli5Story": "Subqueries & CTEs on Employees: Multi-stage CTE pipeline: Analyze departments with 3+ senior employees.",
+    "commonMistakes": "Forgetting to alias derived tables in FROM, writing multiple WITH keywords in multi-CTE pipelines, or suffering the NOT IN NULL trap.",
+    "learningOutcomes": "Mastered 12.10 End-to-End Enterprise CTE Analytics Pipelines on Employees.",
+    "challengeSlots": [
+      {
+        "type": "keyword",
+        "value": "WITH"
+      },
+      {
+        "type": "column",
+        "value": "ActiveStaff"
+      },
+      {
+        "type": "keyword",
+        "value": "AS"
+      },
+      {
+        "type": "column",
+        "value": "("
+      },
+      {
+        "type": "keyword",
+        "value": "SELECT"
+      },
+      {
+        "type": "column",
+        "value": "employee_id,"
+      },
+      {
+        "type": "column",
+        "value": "first_name,"
+      },
+      {
+        "type": "column",
+        "value": "department_id,"
+      },
+      {
+        "type": "column",
+        "value": "salary"
+      },
+      {
+        "type": "keyword",
+        "value": "FROM"
+      },
+      {
+        "type": "table",
+        "value": "Employees"
+      },
+      {
+        "type": "keyword",
+        "value": "WHERE"
+      },
+      {
+        "type": "column",
+        "value": "salary"
+      },
+      {
+        "type": "column",
+        "value": ">="
+      },
+      {
+        "type": "column",
+        "value": "60000"
+      },
+      {
+        "type": "column",
+        "value": "),"
+      },
+      {
+        "type": "column",
+        "value": "DeptAggregates"
+      },
+      {
+        "type": "keyword",
+        "value": "AS"
+      },
+      {
+        "type": "column",
+        "value": "("
+      },
+      {
+        "type": "keyword",
+        "value": "SELECT"
+      },
+      {
+        "type": "column",
+        "value": "department_id,"
+      },
+      {
+        "type": "column",
+        "value": "COUNT(*)"
+      },
+      {
+        "type": "keyword",
+        "value": "AS"
+      },
+      {
+        "type": "column",
+        "value": "senior_count,"
+      },
+      {
+        "type": "column",
+        "value": "AVG(salary)"
+      },
+      {
+        "type": "keyword",
+        "value": "AS"
+      },
+      {
+        "type": "column",
+        "value": "avg_senior_sal"
+      },
+      {
+        "type": "keyword",
+        "value": "FROM"
+      },
+      {
+        "type": "column",
+        "value": "ActiveStaff"
+      },
+      {
+        "type": "keyword",
+        "value": "GROUP"
+      },
+      {
+        "type": "keyword",
+        "value": "BY"
+      },
+      {
+        "type": "column",
+        "value": "department_id"
+      },
+      {
+        "type": "column",
+        "value": ")"
+      },
+      {
+        "type": "keyword",
+        "value": "SELECT"
+      },
+      {
+        "type": "column",
+        "value": "d.department_name,"
+      },
+      {
+        "type": "column",
+        "value": "da.senior_count,"
+      },
+      {
+        "type": "column",
+        "value": "da.avg_senior_sal"
+      },
+      {
+        "type": "keyword",
+        "value": "FROM"
+      },
+      {
+        "type": "column",
+        "value": "DeptAggregates"
+      },
+      {
+        "type": "column",
+        "value": "da"
+      },
+      {
+        "type": "keyword",
+        "value": "JOIN"
+      },
+      {
+        "type": "table",
+        "value": "Departments"
+      },
+      {
+        "type": "column",
+        "value": "d"
+      },
+      {
+        "type": "keyword",
+        "value": "ON"
+      },
+      {
+        "type": "column",
+        "value": "da.department_id"
+      },
+      {
+        "type": "column",
+        "value": "="
+      },
+      {
+        "type": "column",
+        "value": "d.department_id"
+      },
+      {
+        "type": "keyword",
+        "value": "WHERE"
+      },
+      {
+        "type": "column",
+        "value": "da.senior_count"
+      },
+      {
+        "type": "column",
+        "value": ">="
+      },
+      {
+        "type": "column",
+        "value": "3"
+      },
+      {
+        "type": "keyword",
+        "value": "ORDER"
+      },
+      {
+        "type": "keyword",
+        "value": "BY"
+      },
+      {
+        "type": "column",
+        "value": "da.avg_senior_sal"
+      },
+      {
+        "type": "keyword",
+        "value": "DESC"
+      },
+      {
+        "type": "keyword",
+        "value": "LIMIT"
+      },
+      {
+        "type": "column",
+        "value": "3;"
+      }
+    ]
+  },
+  {
+    "drillNumber": 1194,
+    "subcluster": "12.10 End-to-End Enterprise CTE Analytics Pipelines",
+    "level": "Level 3 (CTE Analytics Master)",
+    "title": "Syntax #1194: Multi-stage CTE pipeline: Identify suppliers with >$200 in expiring inventory",
+    "table": "GroceryItems",
+    "scenario": "Multi-stage CTE pipeline: Identify suppliers with >$200 in expiring inventory.",
+    "businessObjective": "Multi-stage CTE pipeline: Identify suppliers with >$200 in expiring inventory.",
+    "schemaSnippet": "GroceryItems relational schema",
+    "targetQuery": "WITH PerishableGoods AS (\n  SELECT item_id, item_name, supplier_id, stock_qty, unit_price\n  FROM GroceryItems\n  WHERE expiry_date <= CURRENT_DATE + INTERVAL 14 DAY\n),\nSupplierRisk AS (\n  SELECT supplier_id, COUNT(*) AS at_risk_items, SUM(stock_qty * unit_price) AS at_risk_value\n  FROM PerishableGoods\n  GROUP BY supplier_id\n)\nSELECT s.supplier_name, r.at_risk_items, r.at_risk_value\nFROM SupplierRisk r\nJOIN Suppliers s ON r.supplier_id = s.supplier_id\nWHERE r.at_risk_value > 200.00\nORDER BY r.at_risk_value DESC\nLIMIT 5;",
+    "syntaxBlueprint": "WITH Stage1 AS (\n  SELECT col1, col2, metric FROM TableA WHERE filter = 'val'\n),\nStage2 AS (\n  SELECT col1, COUNT(*) AS count_val, SUM(metric) AS sum_val\n  FROM Stage1 GROUP BY col1\n)\nSELECT col1, count_val, sum_val\nFROM Stage2\nWHERE sum_val > 500\nORDER BY sum_val DESC\nLIMIT 5;",
+    "syntaxRule": "Synthesize filtering, pre-aggregations, multi-CTE transformations, and final presentation sorting into professional enterprise analytics pipelines.",
+    "syntaxTrap": "Putting everything in one massive unreadable query. Break complex business logic into clean modular stages using CTEs.",
+    "eli5Story": "Subqueries & CTEs on GroceryItems: Multi-stage CTE pipeline: Identify suppliers with >$200 in expiring inventory.",
+    "commonMistakes": "Forgetting to alias derived tables in FROM, writing multiple WITH keywords in multi-CTE pipelines, or suffering the NOT IN NULL trap.",
+    "learningOutcomes": "Mastered 12.10 End-to-End Enterprise CTE Analytics Pipelines on GroceryItems.",
+    "challengeSlots": [
+      {
+        "type": "keyword",
+        "value": "WITH"
+      },
+      {
+        "type": "column",
+        "value": "PerishableGoods"
+      },
+      {
+        "type": "keyword",
+        "value": "AS"
+      },
+      {
+        "type": "column",
+        "value": "("
+      },
+      {
+        "type": "keyword",
+        "value": "SELECT"
+      },
+      {
+        "type": "column",
+        "value": "item_id,"
+      },
+      {
+        "type": "column",
+        "value": "item_name,"
+      },
+      {
+        "type": "column",
+        "value": "supplier_id,"
+      },
+      {
+        "type": "column",
+        "value": "stock_qty,"
+      },
+      {
+        "type": "column",
+        "value": "unit_price"
+      },
+      {
+        "type": "keyword",
+        "value": "FROM"
+      },
+      {
+        "type": "table",
+        "value": "GroceryItems"
+      },
+      {
+        "type": "keyword",
+        "value": "WHERE"
+      },
+      {
+        "type": "column",
+        "value": "expiry_date"
+      },
+      {
+        "type": "column",
+        "value": "<="
+      },
+      {
+        "type": "column",
+        "value": "CURRENT_DATE"
+      },
+      {
+        "type": "column",
+        "value": "+"
+      },
+      {
+        "type": "column",
+        "value": "INTERVAL"
+      },
+      {
+        "type": "column",
+        "value": "14"
+      },
+      {
+        "type": "column",
+        "value": "DAY"
+      },
+      {
+        "type": "column",
+        "value": "),"
+      },
+      {
+        "type": "column",
+        "value": "SupplierRisk"
+      },
+      {
+        "type": "keyword",
+        "value": "AS"
+      },
+      {
+        "type": "column",
+        "value": "("
+      },
+      {
+        "type": "keyword",
+        "value": "SELECT"
+      },
+      {
+        "type": "column",
+        "value": "supplier_id,"
+      },
+      {
+        "type": "column",
+        "value": "COUNT(*)"
+      },
+      {
+        "type": "keyword",
+        "value": "AS"
+      },
+      {
+        "type": "column",
+        "value": "at_risk_items,"
+      },
+      {
+        "type": "column",
+        "value": "SUM(stock_qty"
+      },
+      {
+        "type": "column",
+        "value": "*"
+      },
+      {
+        "type": "column",
+        "value": "unit_price)"
+      },
+      {
+        "type": "keyword",
+        "value": "AS"
+      },
+      {
+        "type": "column",
+        "value": "at_risk_value"
+      },
+      {
+        "type": "keyword",
+        "value": "FROM"
+      },
+      {
+        "type": "column",
+        "value": "PerishableGoods"
+      },
+      {
+        "type": "keyword",
+        "value": "GROUP"
+      },
+      {
+        "type": "keyword",
+        "value": "BY"
+      },
+      {
+        "type": "column",
+        "value": "supplier_id"
+      },
+      {
+        "type": "column",
+        "value": ")"
+      },
+      {
+        "type": "keyword",
+        "value": "SELECT"
+      },
+      {
+        "type": "column",
+        "value": "s.supplier_name,"
+      },
+      {
+        "type": "column",
+        "value": "r.at_risk_items,"
+      },
+      {
+        "type": "column",
+        "value": "r.at_risk_value"
+      },
+      {
+        "type": "keyword",
+        "value": "FROM"
+      },
+      {
+        "type": "column",
+        "value": "SupplierRisk"
+      },
+      {
+        "type": "column",
+        "value": "r"
+      },
+      {
+        "type": "keyword",
+        "value": "JOIN"
+      },
+      {
+        "type": "table",
+        "value": "Suppliers"
+      },
+      {
+        "type": "column",
+        "value": "s"
+      },
+      {
+        "type": "keyword",
+        "value": "ON"
+      },
+      {
+        "type": "column",
+        "value": "r.supplier_id"
+      },
+      {
+        "type": "column",
+        "value": "="
+      },
+      {
+        "type": "column",
+        "value": "s.supplier_id"
+      },
+      {
+        "type": "keyword",
+        "value": "WHERE"
+      },
+      {
+        "type": "column",
+        "value": "r.at_risk_value"
+      },
+      {
+        "type": "column",
+        "value": ">"
+      },
+      {
+        "type": "column",
+        "value": "200.00"
+      },
+      {
+        "type": "keyword",
+        "value": "ORDER"
+      },
+      {
+        "type": "keyword",
+        "value": "BY"
+      },
+      {
+        "type": "column",
+        "value": "r.at_risk_value"
+      },
+      {
+        "type": "keyword",
+        "value": "DESC"
+      },
+      {
+        "type": "keyword",
+        "value": "LIMIT"
+      },
+      {
+        "type": "column",
+        "value": "5;"
+      }
+    ]
+  },
+  {
+    "drillNumber": 1195,
+    "subcluster": "12.10 End-to-End Enterprise CTE Analytics Pipelines",
+    "level": "Level 3 (CTE Analytics Master)",
+    "title": "Syntax #1195: Multi-stage CTE pipeline: Calculate Customer Lifetime Value (LTV >= $1,000) on completed orders",
+    "table": "Orders",
+    "scenario": "Multi-stage CTE pipeline: Calculate Customer Lifetime Value (LTV >= $1,000) on completed orders.",
+    "businessObjective": "Multi-stage CTE pipeline: Calculate Customer Lifetime Value (LTV >= $1,000) on completed orders.",
+    "schemaSnippet": "Orders relational schema",
+    "targetQuery": "WITH CompletedOrders AS (\n  SELECT order_id, customer_id, total_amount, order_date\n  FROM Orders\n  WHERE status = 'Completed'\n),\nCustomerLTV AS (\n  SELECT customer_id, COUNT(*) AS order_count, SUM(total_amount) AS ltv\n  FROM CompletedOrders\n  GROUP BY customer_id\n)\nSELECT c.customer_name, c.city, l.order_count, l.ltv\nFROM CustomerLTV l\nJOIN Customers c ON l.customer_id = c.customer_id\nWHERE l.ltv >= 1000.00\nORDER BY l.ltv DESC\nLIMIT 5;",
+    "syntaxBlueprint": "WITH Stage1 AS (\n  SELECT col1, col2, metric FROM TableA WHERE filter = 'val'\n),\nStage2 AS (\n  SELECT col1, COUNT(*) AS count_val, SUM(metric) AS sum_val\n  FROM Stage1 GROUP BY col1\n)\nSELECT col1, count_val, sum_val\nFROM Stage2\nWHERE sum_val > 500\nORDER BY sum_val DESC\nLIMIT 5;",
+    "syntaxRule": "Synthesize filtering, pre-aggregations, multi-CTE transformations, and final presentation sorting into professional enterprise analytics pipelines.",
+    "syntaxTrap": "Putting everything in one massive unreadable query. Break complex business logic into clean modular stages using CTEs.",
+    "eli5Story": "Subqueries & CTEs on Orders: Multi-stage CTE pipeline: Calculate Customer Lifetime Value (LTV >= $1,000) on completed orders.",
+    "commonMistakes": "Forgetting to alias derived tables in FROM, writing multiple WITH keywords in multi-CTE pipelines, or suffering the NOT IN NULL trap.",
+    "learningOutcomes": "Mastered 12.10 End-to-End Enterprise CTE Analytics Pipelines on Orders.",
+    "challengeSlots": [
+      {
+        "type": "keyword",
+        "value": "WITH"
+      },
+      {
+        "type": "table",
+        "value": "CompletedOrders"
+      },
+      {
+        "type": "keyword",
+        "value": "AS"
+      },
+      {
+        "type": "column",
+        "value": "("
+      },
+      {
+        "type": "keyword",
+        "value": "SELECT"
+      },
+      {
+        "type": "column",
+        "value": "order_id,"
+      },
+      {
+        "type": "column",
+        "value": "customer_id,"
+      },
+      {
+        "type": "column",
+        "value": "total_amount,"
+      },
+      {
+        "type": "column",
+        "value": "order_date"
+      },
+      {
+        "type": "keyword",
+        "value": "FROM"
+      },
+      {
+        "type": "table",
+        "value": "Orders"
+      },
+      {
+        "type": "keyword",
+        "value": "WHERE"
+      },
+      {
+        "type": "column",
+        "value": "status"
+      },
+      {
+        "type": "column",
+        "value": "="
+      },
+      {
+        "type": "column",
+        "value": "'Completed'"
+      },
+      {
+        "type": "column",
+        "value": "),"
+      },
+      {
+        "type": "column",
+        "value": "CustomerLTV"
+      },
+      {
+        "type": "keyword",
+        "value": "AS"
+      },
+      {
+        "type": "column",
+        "value": "("
+      },
+      {
+        "type": "keyword",
+        "value": "SELECT"
+      },
+      {
+        "type": "column",
+        "value": "customer_id,"
+      },
+      {
+        "type": "column",
+        "value": "COUNT(*)"
+      },
+      {
+        "type": "keyword",
+        "value": "AS"
+      },
+      {
+        "type": "column",
+        "value": "order_count,"
+      },
+      {
+        "type": "column",
+        "value": "SUM(total_amount)"
+      },
+      {
+        "type": "keyword",
+        "value": "AS"
+      },
+      {
+        "type": "column",
+        "value": "ltv"
+      },
+      {
+        "type": "keyword",
+        "value": "FROM"
+      },
+      {
+        "type": "table",
+        "value": "CompletedOrders"
+      },
+      {
+        "type": "keyword",
+        "value": "GROUP"
+      },
+      {
+        "type": "keyword",
+        "value": "BY"
+      },
+      {
+        "type": "column",
+        "value": "customer_id"
+      },
+      {
+        "type": "column",
+        "value": ")"
+      },
+      {
+        "type": "keyword",
+        "value": "SELECT"
+      },
+      {
+        "type": "column",
+        "value": "c.customer_name,"
+      },
+      {
+        "type": "column",
+        "value": "c.city,"
+      },
+      {
+        "type": "column",
+        "value": "l.order_count,"
+      },
+      {
+        "type": "column",
+        "value": "l.ltv"
+      },
+      {
+        "type": "keyword",
+        "value": "FROM"
+      },
+      {
+        "type": "column",
+        "value": "CustomerLTV"
+      },
+      {
+        "type": "column",
+        "value": "l"
+      },
+      {
+        "type": "keyword",
+        "value": "JOIN"
+      },
+      {
+        "type": "table",
+        "value": "Customers"
+      },
+      {
+        "type": "column",
+        "value": "c"
+      },
+      {
+        "type": "keyword",
+        "value": "ON"
+      },
+      {
+        "type": "column",
+        "value": "l.customer_id"
+      },
+      {
+        "type": "column",
+        "value": "="
+      },
+      {
+        "type": "column",
+        "value": "c.customer_id"
+      },
+      {
+        "type": "keyword",
+        "value": "WHERE"
+      },
+      {
+        "type": "column",
+        "value": "l.ltv"
+      },
+      {
+        "type": "column",
+        "value": ">="
+      },
+      {
+        "type": "column",
+        "value": "1000.00"
+      },
+      {
+        "type": "keyword",
+        "value": "ORDER"
+      },
+      {
+        "type": "keyword",
+        "value": "BY"
+      },
+      {
+        "type": "column",
+        "value": "l.ltv"
+      },
+      {
+        "type": "keyword",
+        "value": "DESC"
+      },
+      {
+        "type": "keyword",
+        "value": "LIMIT"
+      },
+      {
+        "type": "column",
+        "value": "5;"
+      }
+    ]
+  },
+  {
+    "drillNumber": 1196,
+    "subcluster": "12.10 End-to-End Enterprise CTE Analytics Pipelines",
+    "level": "Level 3 (CTE Analytics Master)",
+    "title": "Syntax #1196: Multi-stage CTE pipeline: Find top albums with 5+ full-length tracks",
+    "table": "MusicTracks",
+    "scenario": "Multi-stage CTE pipeline: Find top albums with 5+ full-length tracks.",
+    "businessObjective": "Multi-stage CTE pipeline: Find top albums with 5+ full-length tracks.",
+    "schemaSnippet": "MusicTracks relational schema",
+    "targetQuery": "WITH CatalogTracks AS (\n  SELECT track_id, track_title, album_id, duration_seconds\n  FROM MusicTracks\n  WHERE duration_seconds >= 180\n),\nAlbumRuntimes AS (\n  SELECT album_id, COUNT(*) AS qualifying_tracks, SUM(duration_seconds) AS total_sec\n  FROM CatalogTracks\n  GROUP BY album_id\n)\nSELECT a.album_title, a.genre, r.qualifying_tracks, r.total_sec\nFROM AlbumRuntimes r\nJOIN Albums a ON r.album_id = a.album_id\nWHERE r.qualifying_tracks >= 5\nORDER BY r.total_sec DESC\nLIMIT 5;",
+    "syntaxBlueprint": "WITH Stage1 AS (\n  SELECT col1, col2, metric FROM TableA WHERE filter = 'val'\n),\nStage2 AS (\n  SELECT col1, COUNT(*) AS count_val, SUM(metric) AS sum_val\n  FROM Stage1 GROUP BY col1\n)\nSELECT col1, count_val, sum_val\nFROM Stage2\nWHERE sum_val > 500\nORDER BY sum_val DESC\nLIMIT 5;",
+    "syntaxRule": "Synthesize filtering, pre-aggregations, multi-CTE transformations, and final presentation sorting into professional enterprise analytics pipelines.",
+    "syntaxTrap": "Putting everything in one massive unreadable query. Break complex business logic into clean modular stages using CTEs.",
+    "eli5Story": "Subqueries & CTEs on MusicTracks: Multi-stage CTE pipeline: Find top albums with 5+ full-length tracks.",
+    "commonMistakes": "Forgetting to alias derived tables in FROM, writing multiple WITH keywords in multi-CTE pipelines, or suffering the NOT IN NULL trap.",
+    "learningOutcomes": "Mastered 12.10 End-to-End Enterprise CTE Analytics Pipelines on MusicTracks.",
+    "challengeSlots": [
+      {
+        "type": "keyword",
+        "value": "WITH"
+      },
+      {
+        "type": "column",
+        "value": "CatalogTracks"
+      },
+      {
+        "type": "keyword",
+        "value": "AS"
+      },
+      {
+        "type": "column",
+        "value": "("
+      },
+      {
+        "type": "keyword",
+        "value": "SELECT"
+      },
+      {
+        "type": "column",
+        "value": "track_id,"
+      },
+      {
+        "type": "column",
+        "value": "track_title,"
+      },
+      {
+        "type": "column",
+        "value": "album_id,"
+      },
+      {
+        "type": "column",
+        "value": "duration_seconds"
+      },
+      {
+        "type": "keyword",
+        "value": "FROM"
+      },
+      {
+        "type": "table",
+        "value": "MusicTracks"
+      },
+      {
+        "type": "keyword",
+        "value": "WHERE"
+      },
+      {
+        "type": "column",
+        "value": "duration_seconds"
+      },
+      {
+        "type": "column",
+        "value": ">="
+      },
+      {
+        "type": "column",
+        "value": "180"
+      },
+      {
+        "type": "column",
+        "value": "),"
+      },
+      {
+        "type": "column",
+        "value": "AlbumRuntimes"
+      },
+      {
+        "type": "keyword",
+        "value": "AS"
+      },
+      {
+        "type": "column",
+        "value": "("
+      },
+      {
+        "type": "keyword",
+        "value": "SELECT"
+      },
+      {
+        "type": "column",
+        "value": "album_id,"
+      },
+      {
+        "type": "column",
+        "value": "COUNT(*)"
+      },
+      {
+        "type": "keyword",
+        "value": "AS"
+      },
+      {
+        "type": "column",
+        "value": "qualifying_tracks,"
+      },
+      {
+        "type": "column",
+        "value": "SUM(duration_seconds)"
+      },
+      {
+        "type": "keyword",
+        "value": "AS"
+      },
+      {
+        "type": "column",
+        "value": "total_sec"
+      },
+      {
+        "type": "keyword",
+        "value": "FROM"
+      },
+      {
+        "type": "column",
+        "value": "CatalogTracks"
+      },
+      {
+        "type": "keyword",
+        "value": "GROUP"
+      },
+      {
+        "type": "keyword",
+        "value": "BY"
+      },
+      {
+        "type": "column",
+        "value": "album_id"
+      },
+      {
+        "type": "column",
+        "value": ")"
+      },
+      {
+        "type": "keyword",
+        "value": "SELECT"
+      },
+      {
+        "type": "column",
+        "value": "a.album_title,"
+      },
+      {
+        "type": "column",
+        "value": "a.genre,"
+      },
+      {
+        "type": "column",
+        "value": "r.qualifying_tracks,"
+      },
+      {
+        "type": "column",
+        "value": "r.total_sec"
+      },
+      {
+        "type": "keyword",
+        "value": "FROM"
+      },
+      {
+        "type": "column",
+        "value": "AlbumRuntimes"
+      },
+      {
+        "type": "column",
+        "value": "r"
+      },
+      {
+        "type": "keyword",
+        "value": "JOIN"
+      },
+      {
+        "type": "table",
+        "value": "Albums"
+      },
+      {
+        "type": "column",
+        "value": "a"
+      },
+      {
+        "type": "keyword",
+        "value": "ON"
+      },
+      {
+        "type": "column",
+        "value": "r.album_id"
+      },
+      {
+        "type": "column",
+        "value": "="
+      },
+      {
+        "type": "column",
+        "value": "a.album_id"
+      },
+      {
+        "type": "keyword",
+        "value": "WHERE"
+      },
+      {
+        "type": "column",
+        "value": "r.qualifying_tracks"
+      },
+      {
+        "type": "column",
+        "value": ">="
+      },
+      {
+        "type": "column",
+        "value": "5"
+      },
+      {
+        "type": "keyword",
+        "value": "ORDER"
+      },
+      {
+        "type": "keyword",
+        "value": "BY"
+      },
+      {
+        "type": "column",
+        "value": "r.total_sec"
+      },
+      {
+        "type": "keyword",
+        "value": "DESC"
+      },
+      {
+        "type": "keyword",
+        "value": "LIMIT"
+      },
+      {
+        "type": "column",
+        "value": "5;"
+      }
+    ]
+  },
+  {
+    "drillNumber": 1197,
+    "subcluster": "12.10 End-to-End Enterprise CTE Analytics Pipelines",
+    "level": "Level 3 (CTE Analytics Master)",
+    "title": "Syntax #1197: Multi-stage CTE pipeline: Identify top coaches by dedicated client volume",
+    "table": "GymMembers",
+    "scenario": "Multi-stage CTE pipeline: Identify top coaches by dedicated client volume.",
+    "businessObjective": "Multi-stage CTE pipeline: Identify top coaches by dedicated client volume.",
+    "schemaSnippet": "GymMembers relational schema",
+    "targetQuery": "WITH FrequentGymGoers AS (\n  SELECT member_id, member_name, trainer_id, attendance_days\n  FROM GymMembers\n  WHERE attendance_days >= 15\n),\nTrainerSuccess AS (\n  SELECT trainer_id, COUNT(*) AS dedicated_client_count\n  FROM FrequentGymGoers\n  GROUP BY trainer_id\n)\nSELECT tr.trainer_name, tr.specialty, ts.dedicated_client_count\nFROM TrainerSuccess ts\nJOIN Trainers tr ON ts.trainer_id = tr.trainer_id\nWHERE ts.dedicated_client_count >= 2\nORDER BY ts.dedicated_client_count DESC\nLIMIT 3;",
+    "syntaxBlueprint": "WITH Stage1 AS (\n  SELECT col1, col2, metric FROM TableA WHERE filter = 'val'\n),\nStage2 AS (\n  SELECT col1, COUNT(*) AS count_val, SUM(metric) AS sum_val\n  FROM Stage1 GROUP BY col1\n)\nSELECT col1, count_val, sum_val\nFROM Stage2\nWHERE sum_val > 500\nORDER BY sum_val DESC\nLIMIT 5;",
+    "syntaxRule": "Synthesize filtering, pre-aggregations, multi-CTE transformations, and final presentation sorting into professional enterprise analytics pipelines.",
+    "syntaxTrap": "Putting everything in one massive unreadable query. Break complex business logic into clean modular stages using CTEs.",
+    "eli5Story": "Subqueries & CTEs on GymMembers: Multi-stage CTE pipeline: Identify top coaches by dedicated client volume.",
+    "commonMistakes": "Forgetting to alias derived tables in FROM, writing multiple WITH keywords in multi-CTE pipelines, or suffering the NOT IN NULL trap.",
+    "learningOutcomes": "Mastered 12.10 End-to-End Enterprise CTE Analytics Pipelines on GymMembers.",
+    "challengeSlots": [
+      {
+        "type": "keyword",
+        "value": "WITH"
+      },
+      {
+        "type": "column",
+        "value": "FrequentGymGoers"
+      },
+      {
+        "type": "keyword",
+        "value": "AS"
+      },
+      {
+        "type": "column",
+        "value": "("
+      },
+      {
+        "type": "keyword",
+        "value": "SELECT"
+      },
+      {
+        "type": "column",
+        "value": "member_id,"
+      },
+      {
+        "type": "column",
+        "value": "member_name,"
+      },
+      {
+        "type": "column",
+        "value": "trainer_id,"
+      },
+      {
+        "type": "column",
+        "value": "attendance_days"
+      },
+      {
+        "type": "keyword",
+        "value": "FROM"
+      },
+      {
+        "type": "table",
+        "value": "GymMembers"
+      },
+      {
+        "type": "keyword",
+        "value": "WHERE"
+      },
+      {
+        "type": "column",
+        "value": "attendance_days"
+      },
+      {
+        "type": "column",
+        "value": ">="
+      },
+      {
+        "type": "column",
+        "value": "15"
+      },
+      {
+        "type": "column",
+        "value": "),"
+      },
+      {
+        "type": "column",
+        "value": "TrainerSuccess"
+      },
+      {
+        "type": "keyword",
+        "value": "AS"
+      },
+      {
+        "type": "column",
+        "value": "("
+      },
+      {
+        "type": "keyword",
+        "value": "SELECT"
+      },
+      {
+        "type": "column",
+        "value": "trainer_id,"
+      },
+      {
+        "type": "column",
+        "value": "COUNT(*)"
+      },
+      {
+        "type": "keyword",
+        "value": "AS"
+      },
+      {
+        "type": "column",
+        "value": "dedicated_client_count"
+      },
+      {
+        "type": "keyword",
+        "value": "FROM"
+      },
+      {
+        "type": "column",
+        "value": "FrequentGymGoers"
+      },
+      {
+        "type": "keyword",
+        "value": "GROUP"
+      },
+      {
+        "type": "keyword",
+        "value": "BY"
+      },
+      {
+        "type": "column",
+        "value": "trainer_id"
+      },
+      {
+        "type": "column",
+        "value": ")"
+      },
+      {
+        "type": "keyword",
+        "value": "SELECT"
+      },
+      {
+        "type": "column",
+        "value": "tr.trainer_name,"
+      },
+      {
+        "type": "column",
+        "value": "tr.specialty,"
+      },
+      {
+        "type": "column",
+        "value": "ts.dedicated_client_count"
+      },
+      {
+        "type": "keyword",
+        "value": "FROM"
+      },
+      {
+        "type": "column",
+        "value": "TrainerSuccess"
+      },
+      {
+        "type": "column",
+        "value": "ts"
+      },
+      {
+        "type": "keyword",
+        "value": "JOIN"
+      },
+      {
+        "type": "table",
+        "value": "Trainers"
+      },
+      {
+        "type": "column",
+        "value": "tr"
+      },
+      {
+        "type": "keyword",
+        "value": "ON"
+      },
+      {
+        "type": "column",
+        "value": "ts.trainer_id"
+      },
+      {
+        "type": "column",
+        "value": "="
+      },
+      {
+        "type": "column",
+        "value": "tr.trainer_id"
+      },
+      {
+        "type": "keyword",
+        "value": "WHERE"
+      },
+      {
+        "type": "column",
+        "value": "ts.dedicated_client_count"
+      },
+      {
+        "type": "column",
+        "value": ">="
+      },
+      {
+        "type": "column",
+        "value": "2"
+      },
+      {
+        "type": "keyword",
+        "value": "ORDER"
+      },
+      {
+        "type": "keyword",
+        "value": "BY"
+      },
+      {
+        "type": "column",
+        "value": "ts.dedicated_client_count"
+      },
+      {
+        "type": "keyword",
+        "value": "DESC"
+      },
+      {
+        "type": "keyword",
+        "value": "LIMIT"
+      },
+      {
+        "type": "column",
+        "value": "3;"
+      }
+    ]
+  },
+  {
+    "drillNumber": 1198,
+    "subcluster": "12.10 End-to-End Enterprise CTE Analytics Pipelines",
+    "level": "Level 3 (CTE Analytics Master)",
+    "title": "Syntax #1198: Multi-stage CTE pipeline: Rank films with 3+ positive reviews by average stars",
+    "table": "MovieReviews",
+    "scenario": "Multi-stage CTE pipeline: Rank films with 3+ positive reviews by average stars.",
+    "businessObjective": "Multi-stage CTE pipeline: Rank films with 3+ positive reviews by average stars.",
+    "schemaSnippet": "MovieReviews relational schema",
+    "targetQuery": "WITH AcclaimedReviews AS (\n  SELECT review_id, movie_id, star_rating\n  FROM MovieReviews\n  WHERE star_rating >= 4\n),\nMoviePerformance AS (\n  SELECT movie_id, COUNT(*) AS positive_reviews, AVG(star_rating) AS avg_stars\n  FROM AcclaimedReviews\n  GROUP BY movie_id\n)\nSELECT m.movie_title, m.director, p.positive_reviews, p.avg_stars\nFROM MoviePerformance p\nJOIN Movies m ON p.movie_id = m.movie_id\nWHERE p.positive_reviews >= 3\nORDER BY p.avg_stars DESC\nLIMIT 5;",
+    "syntaxBlueprint": "WITH Stage1 AS (\n  SELECT col1, col2, metric FROM TableA WHERE filter = 'val'\n),\nStage2 AS (\n  SELECT col1, COUNT(*) AS count_val, SUM(metric) AS sum_val\n  FROM Stage1 GROUP BY col1\n)\nSELECT col1, count_val, sum_val\nFROM Stage2\nWHERE sum_val > 500\nORDER BY sum_val DESC\nLIMIT 5;",
+    "syntaxRule": "Synthesize filtering, pre-aggregations, multi-CTE transformations, and final presentation sorting into professional enterprise analytics pipelines.",
+    "syntaxTrap": "Putting everything in one massive unreadable query. Break complex business logic into clean modular stages using CTEs.",
+    "eli5Story": "Subqueries & CTEs on MovieReviews: Multi-stage CTE pipeline: Rank films with 3+ positive reviews by average stars.",
+    "commonMistakes": "Forgetting to alias derived tables in FROM, writing multiple WITH keywords in multi-CTE pipelines, or suffering the NOT IN NULL trap.",
+    "learningOutcomes": "Mastered 12.10 End-to-End Enterprise CTE Analytics Pipelines on MovieReviews.",
+    "challengeSlots": [
+      {
+        "type": "keyword",
+        "value": "WITH"
+      },
+      {
+        "type": "column",
+        "value": "AcclaimedReviews"
+      },
+      {
+        "type": "keyword",
+        "value": "AS"
+      },
+      {
+        "type": "column",
+        "value": "("
+      },
+      {
+        "type": "keyword",
+        "value": "SELECT"
+      },
+      {
+        "type": "column",
+        "value": "review_id,"
+      },
+      {
+        "type": "column",
+        "value": "movie_id,"
+      },
+      {
+        "type": "column",
+        "value": "star_rating"
+      },
+      {
+        "type": "keyword",
+        "value": "FROM"
+      },
+      {
+        "type": "table",
+        "value": "MovieReviews"
+      },
+      {
+        "type": "keyword",
+        "value": "WHERE"
+      },
+      {
+        "type": "column",
+        "value": "star_rating"
+      },
+      {
+        "type": "column",
+        "value": ">="
+      },
+      {
+        "type": "column",
+        "value": "4"
+      },
+      {
+        "type": "column",
+        "value": "),"
+      },
+      {
+        "type": "column",
+        "value": "MoviePerformance"
+      },
+      {
+        "type": "keyword",
+        "value": "AS"
+      },
+      {
+        "type": "column",
+        "value": "("
+      },
+      {
+        "type": "keyword",
+        "value": "SELECT"
+      },
+      {
+        "type": "column",
+        "value": "movie_id,"
+      },
+      {
+        "type": "column",
+        "value": "COUNT(*)"
+      },
+      {
+        "type": "keyword",
+        "value": "AS"
+      },
+      {
+        "type": "column",
+        "value": "positive_reviews,"
+      },
+      {
+        "type": "column",
+        "value": "AVG(star_rating)"
+      },
+      {
+        "type": "keyword",
+        "value": "AS"
+      },
+      {
+        "type": "column",
+        "value": "avg_stars"
+      },
+      {
+        "type": "keyword",
+        "value": "FROM"
+      },
+      {
+        "type": "column",
+        "value": "AcclaimedReviews"
+      },
+      {
+        "type": "keyword",
+        "value": "GROUP"
+      },
+      {
+        "type": "keyword",
+        "value": "BY"
+      },
+      {
+        "type": "column",
+        "value": "movie_id"
+      },
+      {
+        "type": "column",
+        "value": ")"
+      },
+      {
+        "type": "keyword",
+        "value": "SELECT"
+      },
+      {
+        "type": "column",
+        "value": "m.movie_title,"
+      },
+      {
+        "type": "column",
+        "value": "m.director,"
+      },
+      {
+        "type": "column",
+        "value": "p.positive_reviews,"
+      },
+      {
+        "type": "column",
+        "value": "p.avg_stars"
+      },
+      {
+        "type": "keyword",
+        "value": "FROM"
+      },
+      {
+        "type": "column",
+        "value": "MoviePerformance"
+      },
+      {
+        "type": "column",
+        "value": "p"
+      },
+      {
+        "type": "keyword",
+        "value": "JOIN"
+      },
+      {
+        "type": "table",
+        "value": "Movies"
+      },
+      {
+        "type": "column",
+        "value": "m"
+      },
+      {
+        "type": "keyword",
+        "value": "ON"
+      },
+      {
+        "type": "column",
+        "value": "p.movie_id"
+      },
+      {
+        "type": "column",
+        "value": "="
+      },
+      {
+        "type": "column",
+        "value": "m.movie_id"
+      },
+      {
+        "type": "keyword",
+        "value": "WHERE"
+      },
+      {
+        "type": "column",
+        "value": "p.positive_reviews"
+      },
+      {
+        "type": "column",
+        "value": ">="
+      },
+      {
+        "type": "column",
+        "value": "3"
+      },
+      {
+        "type": "keyword",
+        "value": "ORDER"
+      },
+      {
+        "type": "keyword",
+        "value": "BY"
+      },
+      {
+        "type": "column",
+        "value": "p.avg_stars"
+      },
+      {
+        "type": "keyword",
+        "value": "DESC"
+      },
+      {
+        "type": "keyword",
+        "value": "LIMIT"
+      },
+      {
+        "type": "column",
+        "value": "5;"
+      }
+    ]
+  },
+  {
+    "drillNumber": 1199,
+    "subcluster": "12.10 End-to-End Enterprise CTE Analytics Pipelines",
+    "level": "Level 3 (CTE Analytics Master)",
+    "title": "Syntax #1199: Multi-stage CTE pipeline: Rank most reliable airlines operating 5+ on-time flights",
+    "table": "FlightSchedule",
+    "scenario": "Multi-stage CTE pipeline: Rank most reliable airlines operating 5+ on-time flights.",
+    "businessObjective": "Multi-stage CTE pipeline: Rank most reliable airlines operating 5+ on-time flights.",
+    "schemaSnippet": "FlightSchedule relational schema",
+    "targetQuery": "WITH OnTimeDepartures AS (\n  SELECT flight_id, airline_id, origin_airport, distance_miles\n  FROM FlightSchedule\n  WHERE status = 'On-Time'\n),\nAirlineReliability AS (\n  SELECT airline_id, COUNT(*) AS on_time_flights, AVG(distance_miles) AS avg_distance\n  FROM OnTimeDepartures\n  GROUP BY airline_id\n)\nSELECT al.airline_name, ar.on_time_flights, ar.avg_distance\nFROM AirlineReliability ar\nJOIN Airlines al ON ar.airline_id = al.airline_id\nWHERE ar.on_time_flights >= 5\nORDER BY ar.on_time_flights DESC\nLIMIT 5;",
+    "syntaxBlueprint": "WITH Stage1 AS (\n  SELECT col1, col2, metric FROM TableA WHERE filter = 'val'\n),\nStage2 AS (\n  SELECT col1, COUNT(*) AS count_val, SUM(metric) AS sum_val\n  FROM Stage1 GROUP BY col1\n)\nSELECT col1, count_val, sum_val\nFROM Stage2\nWHERE sum_val > 500\nORDER BY sum_val DESC\nLIMIT 5;",
+    "syntaxRule": "Synthesize filtering, pre-aggregations, multi-CTE transformations, and final presentation sorting into professional enterprise analytics pipelines.",
+    "syntaxTrap": "Putting everything in one massive unreadable query. Break complex business logic into clean modular stages using CTEs.",
+    "eli5Story": "Subqueries & CTEs on FlightSchedule: Multi-stage CTE pipeline: Rank most reliable airlines operating 5+ on-time flights.",
+    "commonMistakes": "Forgetting to alias derived tables in FROM, writing multiple WITH keywords in multi-CTE pipelines, or suffering the NOT IN NULL trap.",
+    "learningOutcomes": "Mastered 12.10 End-to-End Enterprise CTE Analytics Pipelines on FlightSchedule.",
+    "challengeSlots": [
+      {
+        "type": "keyword",
+        "value": "WITH"
+      },
+      {
+        "type": "column",
+        "value": "OnTimeDepartures"
+      },
+      {
+        "type": "keyword",
+        "value": "AS"
+      },
+      {
+        "type": "column",
+        "value": "("
+      },
+      {
+        "type": "keyword",
+        "value": "SELECT"
+      },
+      {
+        "type": "column",
+        "value": "flight_id,"
+      },
+      {
+        "type": "column",
+        "value": "airline_id,"
+      },
+      {
+        "type": "column",
+        "value": "origin_airport,"
+      },
+      {
+        "type": "column",
+        "value": "distance_miles"
+      },
+      {
+        "type": "keyword",
+        "value": "FROM"
+      },
+      {
+        "type": "table",
+        "value": "FlightSchedule"
+      },
+      {
+        "type": "keyword",
+        "value": "WHERE"
+      },
+      {
+        "type": "column",
+        "value": "status"
+      },
+      {
+        "type": "column",
+        "value": "="
+      },
+      {
+        "type": "column",
+        "value": "'On-Time'"
+      },
+      {
+        "type": "column",
+        "value": "),"
+      },
+      {
+        "type": "column",
+        "value": "AirlineReliability"
+      },
+      {
+        "type": "keyword",
+        "value": "AS"
+      },
+      {
+        "type": "column",
+        "value": "("
+      },
+      {
+        "type": "keyword",
+        "value": "SELECT"
+      },
+      {
+        "type": "column",
+        "value": "airline_id,"
+      },
+      {
+        "type": "column",
+        "value": "COUNT(*)"
+      },
+      {
+        "type": "keyword",
+        "value": "AS"
+      },
+      {
+        "type": "column",
+        "value": "on_time_flights,"
+      },
+      {
+        "type": "column",
+        "value": "AVG(distance_miles)"
+      },
+      {
+        "type": "keyword",
+        "value": "AS"
+      },
+      {
+        "type": "column",
+        "value": "avg_distance"
+      },
+      {
+        "type": "keyword",
+        "value": "FROM"
+      },
+      {
+        "type": "column",
+        "value": "OnTimeDepartures"
+      },
+      {
+        "type": "keyword",
+        "value": "GROUP"
+      },
+      {
+        "type": "keyword",
+        "value": "BY"
+      },
+      {
+        "type": "column",
+        "value": "airline_id"
+      },
+      {
+        "type": "column",
+        "value": ")"
+      },
+      {
+        "type": "keyword",
+        "value": "SELECT"
+      },
+      {
+        "type": "column",
+        "value": "al.airline_name,"
+      },
+      {
+        "type": "column",
+        "value": "ar.on_time_flights,"
+      },
+      {
+        "type": "column",
+        "value": "ar.avg_distance"
+      },
+      {
+        "type": "keyword",
+        "value": "FROM"
+      },
+      {
+        "type": "column",
+        "value": "AirlineReliability"
+      },
+      {
+        "type": "column",
+        "value": "ar"
+      },
+      {
+        "type": "keyword",
+        "value": "JOIN"
+      },
+      {
+        "type": "table",
+        "value": "Airlines"
+      },
+      {
+        "type": "column",
+        "value": "al"
+      },
+      {
+        "type": "keyword",
+        "value": "ON"
+      },
+      {
+        "type": "column",
+        "value": "ar.airline_id"
+      },
+      {
+        "type": "column",
+        "value": "="
+      },
+      {
+        "type": "column",
+        "value": "al.airline_id"
+      },
+      {
+        "type": "keyword",
+        "value": "WHERE"
+      },
+      {
+        "type": "column",
+        "value": "ar.on_time_flights"
+      },
+      {
+        "type": "column",
+        "value": ">="
+      },
+      {
+        "type": "column",
+        "value": "5"
+      },
+      {
+        "type": "keyword",
+        "value": "ORDER"
+      },
+      {
+        "type": "keyword",
+        "value": "BY"
+      },
+      {
+        "type": "column",
+        "value": "ar.on_time_flights"
+      },
+      {
+        "type": "keyword",
+        "value": "DESC"
+      },
+      {
+        "type": "keyword",
+        "value": "LIMIT"
+      },
+      {
+        "type": "column",
+        "value": "5;"
+      }
+    ]
+  },
+  {
+    "drillNumber": 1200,
+    "subcluster": "12.10 End-to-End Enterprise CTE Analytics Pipelines",
+    "level": "Level 3 (CTE Analytics Master)",
+    "title": "Syntax #1200: Multi-stage CTE pipeline: Identify households caring for multiple senior pets (8+ years)",
+    "table": "PetClinic",
+    "scenario": "Multi-stage CTE pipeline: Identify households caring for multiple senior pets (8+ years).",
+    "businessObjective": "Multi-stage CTE pipeline: Identify households caring for multiple senior pets (8+ years).",
+    "schemaSnippet": "PetClinic relational schema",
+    "targetQuery": "WITH SeniorPatients AS (\n  SELECT pet_id, pet_name, owner_id, species, weight_kg\n  FROM PetClinic\n  WHERE age_years >= 8\n),\nHouseholdCare AS (\n  SELECT owner_id, COUNT(*) AS senior_pet_count, AVG(weight_kg) AS avg_kg\n  FROM SeniorPatients\n  GROUP BY owner_id\n)\nSELECT o.owner_name, o.city, h.senior_pet_count, h.avg_kg\nFROM HouseholdCare h\nJOIN Owners o ON h.owner_id = o.owner_id\nWHERE h.senior_pet_count >= 2\nORDER BY h.senior_pet_count DESC\nLIMIT 5;",
+    "syntaxBlueprint": "WITH Stage1 AS (\n  SELECT col1, col2, metric FROM TableA WHERE filter = 'val'\n),\nStage2 AS (\n  SELECT col1, COUNT(*) AS count_val, SUM(metric) AS sum_val\n  FROM Stage1 GROUP BY col1\n)\nSELECT col1, count_val, sum_val\nFROM Stage2\nWHERE sum_val > 500\nORDER BY sum_val DESC\nLIMIT 5;",
+    "syntaxRule": "Synthesize filtering, pre-aggregations, multi-CTE transformations, and final presentation sorting into professional enterprise analytics pipelines.",
+    "syntaxTrap": "Putting everything in one massive unreadable query. Break complex business logic into clean modular stages using CTEs.",
+    "eli5Story": "Subqueries & CTEs on PetClinic: Multi-stage CTE pipeline: Identify households caring for multiple senior pets (8+ years).",
+    "commonMistakes": "Forgetting to alias derived tables in FROM, writing multiple WITH keywords in multi-CTE pipelines, or suffering the NOT IN NULL trap.",
+    "learningOutcomes": "Mastered 12.10 End-to-End Enterprise CTE Analytics Pipelines on PetClinic.",
+    "challengeSlots": [
+      {
+        "type": "keyword",
+        "value": "WITH"
+      },
+      {
+        "type": "column",
+        "value": "SeniorPatients"
+      },
+      {
+        "type": "keyword",
+        "value": "AS"
+      },
+      {
+        "type": "column",
+        "value": "("
+      },
+      {
+        "type": "keyword",
+        "value": "SELECT"
+      },
+      {
+        "type": "column",
+        "value": "pet_id,"
+      },
+      {
+        "type": "column",
+        "value": "pet_name,"
+      },
+      {
+        "type": "column",
+        "value": "owner_id,"
+      },
+      {
+        "type": "column",
+        "value": "species,"
+      },
+      {
+        "type": "column",
+        "value": "weight_kg"
+      },
+      {
+        "type": "keyword",
+        "value": "FROM"
+      },
+      {
+        "type": "table",
+        "value": "PetClinic"
+      },
+      {
+        "type": "keyword",
+        "value": "WHERE"
+      },
+      {
+        "type": "column",
+        "value": "age_years"
+      },
+      {
+        "type": "column",
+        "value": ">="
+      },
+      {
+        "type": "column",
+        "value": "8"
+      },
+      {
+        "type": "column",
+        "value": "),"
+      },
+      {
+        "type": "column",
+        "value": "HouseholdCare"
+      },
+      {
+        "type": "keyword",
+        "value": "AS"
+      },
+      {
+        "type": "column",
+        "value": "("
+      },
+      {
+        "type": "keyword",
+        "value": "SELECT"
+      },
+      {
+        "type": "column",
+        "value": "owner_id,"
+      },
+      {
+        "type": "column",
+        "value": "COUNT(*)"
+      },
+      {
+        "type": "keyword",
+        "value": "AS"
+      },
+      {
+        "type": "column",
+        "value": "senior_pet_count,"
+      },
+      {
+        "type": "column",
+        "value": "AVG(weight_kg)"
+      },
+      {
+        "type": "keyword",
+        "value": "AS"
+      },
+      {
+        "type": "column",
+        "value": "avg_kg"
+      },
+      {
+        "type": "keyword",
+        "value": "FROM"
+      },
+      {
+        "type": "column",
+        "value": "SeniorPatients"
+      },
+      {
+        "type": "keyword",
+        "value": "GROUP"
+      },
+      {
+        "type": "keyword",
+        "value": "BY"
+      },
+      {
+        "type": "column",
+        "value": "owner_id"
+      },
+      {
+        "type": "column",
+        "value": ")"
+      },
+      {
+        "type": "keyword",
+        "value": "SELECT"
+      },
+      {
+        "type": "column",
+        "value": "o.owner_name,"
+      },
+      {
+        "type": "column",
+        "value": "o.city,"
+      },
+      {
+        "type": "column",
+        "value": "h.senior_pet_count,"
+      },
+      {
+        "type": "column",
+        "value": "h.avg_kg"
+      },
+      {
+        "type": "keyword",
+        "value": "FROM"
+      },
+      {
+        "type": "column",
+        "value": "HouseholdCare"
+      },
+      {
+        "type": "column",
+        "value": "h"
+      },
+      {
+        "type": "keyword",
+        "value": "JOIN"
+      },
+      {
+        "type": "table",
+        "value": "Owners"
+      },
+      {
+        "type": "column",
+        "value": "o"
+      },
+      {
+        "type": "keyword",
+        "value": "ON"
+      },
+      {
+        "type": "column",
+        "value": "h.owner_id"
+      },
+      {
+        "type": "column",
+        "value": "="
+      },
+      {
+        "type": "column",
+        "value": "o.owner_id"
+      },
+      {
+        "type": "keyword",
+        "value": "WHERE"
+      },
+      {
+        "type": "column",
+        "value": "h.senior_pet_count"
+      },
+      {
+        "type": "column",
+        "value": ">="
+      },
+      {
+        "type": "column",
+        "value": "2"
+      },
+      {
+        "type": "keyword",
+        "value": "ORDER"
+      },
+      {
+        "type": "keyword",
+        "value": "BY"
+      },
+      {
+        "type": "column",
+        "value": "h.senior_pet_count"
+      },
+      {
+        "type": "keyword",
+        "value": "DESC"
+      },
+      {
+        "type": "keyword",
+        "value": "LIMIT"
+      },
+      {
+        "type": "column",
+        "value": "5;"
       }
     ]
   }

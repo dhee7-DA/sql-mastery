@@ -614,4 +614,47 @@
 - `visualizer/app.js`: Updated `renderSyntaxGym()` with `date_time` (#901–#1000) pillar filter.
 - `SESSION_STATE.md`: Updated platform snapshot to 1,000 drills across 10 pillars.
 
+- **Next Step**: Expand Syntax Gym with the 200-Drill Subquery & CTE Power-Duo (Topics 11 & 12) or advance to Day 13.
+
+---
+
+## 2026-09-17 — Entry 28: The 200-Drill Subqueries & CTEs Power-Duo in the SQL Syntax Gym (1,200 Progressive Micro-Drills)
+
+### 1. Architectural Scope
+- Added **200 progressive micro-drills** across 2 new advanced syntax pillars (Drills **#1001 to #1200**) to the standalone Syntax Gym:
+  - **Topic 11: Subqueries & Derived Tables** (100 drills, #1001–#1100)
+  - **Topic 12: Modular CTEs & Multi-Step Pipelines** (100 drills, #1101–#1200)
+- Expanded total gym capacity from **1,000 to 1,200 active-retrieval drills** across all 10 everyday relatable schemas (`Students`, `Books`, `Employees`, `GroceryItems`, `Orders`, `MusicTracks`, `GymMembers`, `MovieReviews`, `FlightSchedule`, `PetClinic`).
+
+### 2. The 20 Subquery & CTE Subclusters (#1001–#1200)
+#### Topic 11: Subqueries & Derived Tables (#1001–#1100)
+1. **11.1 Scalar Subqueries in WHERE** (#1001–#1010): Dynamic filtering against global benchmarks (`AVG`, `MAX`).
+2. **11.2 Scalar Subqueries in SELECT** (#1011–#1020): Attaching reference metrics to individual rows.
+3. **11.3 Set Membership with IN** (#1021–#1030): Dynamic list filtering from secondary tables.
+4. **11.4 Negative Membership with NOT IN & The NULL Trap** (#1031–#1040): Safe negative filtering guarding against silent null failures.
+5. **11.5 Correlated Subqueries** (#1041–#1050): Row-by-row contextual evaluation (`WHERE salary > (SELECT AVG... WHERE dept = e.dept)`).
+6. **11.6 Existence Checking with EXISTS** (#1051–#1060): High-performance boolean existence short-circuiting.
+7. **11.7 Safe Anti-Matching with NOT EXISTS** (#1061–#1070): Null-safe anti-join alternative for unassociated rows.
+8. **11.8 Quantified Subqueries with ALL** (#1071–#1080): Evaluating strictly greater than all returned candidates.
+9. **11.9 Quantified Subqueries with ANY / SOME** (#1081–#1090): Testing greater than at least one candidate.
+10. **11.10 Derived Tables in FROM with Mandatory Aliases** (#1091–#1100): In-line subquery tables with mandatory table aliases.
+
+#### Topic 12: Modular CTEs & Multi-Step Pipelines (#1101–#1200)
+1. **12.1 Single-CTE Foundations (WITH clause)** (#1101–#1110): Clean temporary result sets isolating pre-filtered cohorts.
+2. **12.2 CTE Column Alias Renaming (Explicit Signatures)** (#1111–#1120): Declaring explicit schema signatures in CTE headers.
+3. **12.3 Filtering against CTE Aggregated Metrics** (#1121–#1130): Filtering calculated aggregate metrics in outer WHERE without HAVING.
+4. **12.4 Chaining Multiple CTEs (cte1, cte2 Pipelines)** (#1131–#1140): Sequential multi-step transformations separated by commas.
+5. **12.5 Joining CTEs in the Main Query** (#1141–#1150): First-class relational joins between multiple CTEs.
+6. **12.6 CTEs with Internal Joins** (#1151–#1160): Encapsulating complex multi-table joins inside the CTE definition.
+7. **12.7 CTEs with CASE WHEN Categorization** (#1161–#1170): Assigning business categories inside CTEs for clean outer aggregation.
+8. **12.8 Recursive CTE Foundations (Sequences & Counting)** (#1171–#1180): Iterative data generation via Anchor + UNION ALL + Recursive Member.
+9. **12.9 Recursive CTEs for Hierarchies (Tree Traversal)** (#1181–#1190): Traversing organizational trees, series orders, and mentorship lineages.
+10. **12.10 End-to-End Enterprise CTE Analytics Pipelines** (#1191–#1200): Complete multi-stage production analytics queries.
+
+### 3. File Updates
+- `visualizer/syntax_gym_data.js`: Assembled all 1,200 drills into `SYNTAX_GYM_DRILLS` (#0001–#1200 contiguous).
+- `visualizer/index.html`: Nav tab `Syntax Gym (1,200)`, title `(1,200 Progressive Micro-Drills)`, badge `1,200 Drills`, solved badge `/1,200 Solved`, and filter buttons for Topics 11 and 12.
+- `visualizer/app.js`: Updated `renderSyntaxGym()` with `subqueries` (#1001–#1100) and `ctes` (#1101–#1200) pillar filters.
+- `SESSION_STATE.md`: Updated platform snapshot to 1,200 drills across 12 pillars.
+
 - **Next Step**: Advance to **Day 13: Real-World Business Analytics (Retention Cohort Heatmaps, Customer Churn Rates & LTV)** or begin scaffolding the **Interview Arena & Edge-Case Gauntlet**.

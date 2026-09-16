@@ -5331,6 +5331,10 @@ function renderSyntaxGym() {
     filtered = filtered.filter(d => d.drillNumber >= 801 && d.drillNumber <= 900);
   } else if (currentGymPillar === 'date_time') {
     filtered = filtered.filter(d => d.drillNumber >= 901 && d.drillNumber <= 1000);
+  } else if (currentGymPillar === 'subqueries') {
+    filtered = filtered.filter(d => d.drillNumber >= 1001 && d.drillNumber <= 1100);
+  } else if (currentGymPillar === 'ctes') {
+    filtered = filtered.filter(d => d.drillNumber >= 1101 && d.drillNumber <= 1200);
   }
 
   // 2. Table filter
