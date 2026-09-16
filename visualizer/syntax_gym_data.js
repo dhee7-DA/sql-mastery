@@ -1,7 +1,16 @@
 // =============================================================================
-// SECTION 0: THE SQL SYNTAX GYM (900 Progressive In-Depth Micro-Drills)
-// Topics 1–9: SELECT, WHERE, ORDER BY, Aggregations & GROUP BY, CASE WHEN, Strings & Patterns,
-//             Relational Joins Core, Advanced Joins & Structures, Multi-Table Chaining & Aggregations
+// SECTION 0: THE SQL SYNTAX GYM (1,000 Progressive In-Depth Micro-Drills)
+// Topics 1–10:
+//   1. SELECT & Projections (#001–#100)
+//   2. WHERE & Predicates (#101–#200)
+//   3. ORDER BY & LIMIT Slicing (#201–#300)
+//   4. Aggregations & GROUP BY (#301–#400)
+//   5. CASE WHEN & Conditional Logic (#401–#500)
+//   6. String Manipulation & Patterns (#501–#600)
+//   7. Relational Joins Core (#601–#700)
+//   8. Advanced Joins & Structural Patterns (#701–#800)
+//   9. Multi-Table Chaining & Joined Aggregations (#801–#900)
+//  10. Date, Time & Temporal Arithmetic (#901–#1000)
 // =============================================================================
 
 const SYNTAX_GYM_DRILLS = [
@@ -69758,6 +69767,7386 @@ const SYNTAX_GYM_DRILLS = [
       {
         "type": "column",
         "value": "5;"
+      }
+    ]
+  },
+  {
+    "drillNumber": 901,
+    "subcluster": "10.1 Current Date & Time Anchors (CURRENT_DATE, NOW)",
+    "level": "Level 1 (Current Anchors)",
+    "title": "Syntax #901: Display student enrollment dates alongside the current calendar date",
+    "table": "Students",
+    "scenario": "Display student enrollment dates alongside the current calendar date.",
+    "businessObjective": "Display student enrollment dates alongside the current calendar date.",
+    "schemaSnippet": "Students temporal schema",
+    "targetQuery": "SELECT full_name, enrolled_date, CURRENT_DATE AS today_date\nFROM Students;",
+    "syntaxBlueprint": "SELECT col, CURRENT_DATE, NOW()\nFROM table_name;",
+    "syntaxRule": "CURRENT_DATE returns today's calendar date ('YYYY-MM-DD'). NOW() returns the active timestamp ('YYYY-MM-DD HH:MM:SS'). Both serve as real-time anchors.",
+    "syntaxTrap": "CURRENT_DATE has no parentheses in standard SQL; writing CURRENT_DATE() is engine-specific (valid in MySQL, invalid in PostgreSQL).",
+    "eli5Story": "Date, Time & Temporal Arithmetic on Students: Display student enrollment dates alongside the current calendar date.",
+    "commonMistakes": "Passing parameters in wrong order in DATEDIFF, hardcoding static dates instead of relative rolling intervals, or forgetting to group by both YEAR and MONTH for time series.",
+    "learningOutcomes": "Mastered 10.1 Current Date & Time Anchors (CURRENT_DATE, NOW) on Students.",
+    "challengeSlots": [
+      {
+        "type": "keyword",
+        "value": "SELECT"
+      },
+      {
+        "type": "column",
+        "value": "full_name,"
+      },
+      {
+        "type": "column",
+        "value": "enrolled_date,"
+      },
+      {
+        "type": "keyword",
+        "value": "CURRENT_DATE"
+      },
+      {
+        "type": "keyword",
+        "value": "AS"
+      },
+      {
+        "type": "column",
+        "value": "today_date"
+      },
+      {
+        "type": "keyword",
+        "value": "FROM"
+      },
+      {
+        "type": "table",
+        "value": "Students;"
+      }
+    ]
+  },
+  {
+    "drillNumber": 902,
+    "subcluster": "10.1 Current Date & Time Anchors (CURRENT_DATE, NOW)",
+    "level": "Level 1 (Current Anchors)",
+    "title": "Syntax #902: Project book publication dates with today's audit date using CURRENT_DATE",
+    "table": "Books",
+    "scenario": "Project book publication dates with today's audit date using CURRENT_DATE.",
+    "businessObjective": "Project book publication dates with today's audit date using CURRENT_DATE.",
+    "schemaSnippet": "Books temporal schema",
+    "targetQuery": "SELECT title, published_date, CURRENT_DATE AS audit_date\nFROM Books;",
+    "syntaxBlueprint": "SELECT col, CURRENT_DATE, NOW()\nFROM table_name;",
+    "syntaxRule": "CURRENT_DATE returns today's calendar date ('YYYY-MM-DD'). NOW() returns the active timestamp ('YYYY-MM-DD HH:MM:SS'). Both serve as real-time anchors.",
+    "syntaxTrap": "CURRENT_DATE has no parentheses in standard SQL; writing CURRENT_DATE() is engine-specific (valid in MySQL, invalid in PostgreSQL).",
+    "eli5Story": "Date, Time & Temporal Arithmetic on Books: Project book publication dates with today's audit date using CURRENT_DATE.",
+    "commonMistakes": "Passing parameters in wrong order in DATEDIFF, hardcoding static dates instead of relative rolling intervals, or forgetting to group by both YEAR and MONTH for time series.",
+    "learningOutcomes": "Mastered 10.1 Current Date & Time Anchors (CURRENT_DATE, NOW) on Books.",
+    "challengeSlots": [
+      {
+        "type": "keyword",
+        "value": "SELECT"
+      },
+      {
+        "type": "column",
+        "value": "title,"
+      },
+      {
+        "type": "column",
+        "value": "published_date,"
+      },
+      {
+        "type": "keyword",
+        "value": "CURRENT_DATE"
+      },
+      {
+        "type": "keyword",
+        "value": "AS"
+      },
+      {
+        "type": "column",
+        "value": "audit_date"
+      },
+      {
+        "type": "keyword",
+        "value": "FROM"
+      },
+      {
+        "type": "table",
+        "value": "Books;"
+      }
+    ]
+  },
+  {
+    "drillNumber": 903,
+    "subcluster": "10.1 Current Date & Time Anchors (CURRENT_DATE, NOW)",
+    "level": "Level 1 (Current Anchors)",
+    "title": "Syntax #903: Fetch employee hire dates alongside the exact real-time evaluation timestamp using NOW()",
+    "table": "Employees",
+    "scenario": "Fetch employee hire dates alongside the exact real-time evaluation timestamp using NOW().",
+    "businessObjective": "Fetch employee hire dates alongside the exact real-time evaluation timestamp using NOW().",
+    "schemaSnippet": "Employees temporal schema",
+    "targetQuery": "SELECT first_name, hire_date, NOW() AS evaluation_timestamp\nFROM Employees;",
+    "syntaxBlueprint": "SELECT col, CURRENT_DATE, NOW()\nFROM table_name;",
+    "syntaxRule": "CURRENT_DATE returns today's calendar date ('YYYY-MM-DD'). NOW() returns the active timestamp ('YYYY-MM-DD HH:MM:SS'). Both serve as real-time anchors.",
+    "syntaxTrap": "CURRENT_DATE has no parentheses in standard SQL; writing CURRENT_DATE() is engine-specific (valid in MySQL, invalid in PostgreSQL).",
+    "eli5Story": "Date, Time & Temporal Arithmetic on Employees: Fetch employee hire dates alongside the exact real-time evaluation timestamp using NOW().",
+    "commonMistakes": "Passing parameters in wrong order in DATEDIFF, hardcoding static dates instead of relative rolling intervals, or forgetting to group by both YEAR and MONTH for time series.",
+    "learningOutcomes": "Mastered 10.1 Current Date & Time Anchors (CURRENT_DATE, NOW) on Employees.",
+    "challengeSlots": [
+      {
+        "type": "keyword",
+        "value": "SELECT"
+      },
+      {
+        "type": "column",
+        "value": "first_name,"
+      },
+      {
+        "type": "column",
+        "value": "hire_date,"
+      },
+      {
+        "type": "keyword",
+        "value": "NOW()"
+      },
+      {
+        "type": "keyword",
+        "value": "AS"
+      },
+      {
+        "type": "column",
+        "value": "evaluation_timestamp"
+      },
+      {
+        "type": "keyword",
+        "value": "FROM"
+      },
+      {
+        "type": "table",
+        "value": "Employees;"
+      }
+    ]
+  },
+  {
+    "drillNumber": 904,
+    "subcluster": "10.1 Current Date & Time Anchors (CURRENT_DATE, NOW)",
+    "level": "Level 1 (Current Anchors)",
+    "title": "Syntax #904: Compare grocery expiration dates against today's date",
+    "table": "GroceryItems",
+    "scenario": "Compare grocery expiration dates against today's date.",
+    "businessObjective": "Compare grocery expiration dates against today's date.",
+    "schemaSnippet": "GroceryItems temporal schema",
+    "targetQuery": "SELECT item_name, expiry_date, CURRENT_DATE AS check_date\nFROM GroceryItems;",
+    "syntaxBlueprint": "SELECT col, CURRENT_DATE, NOW()\nFROM table_name;",
+    "syntaxRule": "CURRENT_DATE returns today's calendar date ('YYYY-MM-DD'). NOW() returns the active timestamp ('YYYY-MM-DD HH:MM:SS'). Both serve as real-time anchors.",
+    "syntaxTrap": "CURRENT_DATE has no parentheses in standard SQL; writing CURRENT_DATE() is engine-specific (valid in MySQL, invalid in PostgreSQL).",
+    "eli5Story": "Date, Time & Temporal Arithmetic on GroceryItems: Compare grocery expiration dates against today's date.",
+    "commonMistakes": "Passing parameters in wrong order in DATEDIFF, hardcoding static dates instead of relative rolling intervals, or forgetting to group by both YEAR and MONTH for time series.",
+    "learningOutcomes": "Mastered 10.1 Current Date & Time Anchors (CURRENT_DATE, NOW) on GroceryItems.",
+    "challengeSlots": [
+      {
+        "type": "keyword",
+        "value": "SELECT"
+      },
+      {
+        "type": "column",
+        "value": "item_name,"
+      },
+      {
+        "type": "column",
+        "value": "expiry_date,"
+      },
+      {
+        "type": "keyword",
+        "value": "CURRENT_DATE"
+      },
+      {
+        "type": "keyword",
+        "value": "AS"
+      },
+      {
+        "type": "column",
+        "value": "check_date"
+      },
+      {
+        "type": "keyword",
+        "value": "FROM"
+      },
+      {
+        "type": "table",
+        "value": "GroceryItems;"
+      }
+    ]
+  },
+  {
+    "drillNumber": 905,
+    "subcluster": "10.1 Current Date & Time Anchors (CURRENT_DATE, NOW)",
+    "level": "Level 1 (Current Anchors)",
+    "title": "Syntax #905: Timestamp customer order records with the active server time using NOW()",
+    "table": "Orders",
+    "scenario": "Timestamp customer order records with the active server time using NOW().",
+    "businessObjective": "Timestamp customer order records with the active server time using NOW().",
+    "schemaSnippet": "Orders temporal schema",
+    "targetQuery": "SELECT order_id, order_date, NOW() AS processed_at\nFROM Orders;",
+    "syntaxBlueprint": "SELECT col, CURRENT_DATE, NOW()\nFROM table_name;",
+    "syntaxRule": "CURRENT_DATE returns today's calendar date ('YYYY-MM-DD'). NOW() returns the active timestamp ('YYYY-MM-DD HH:MM:SS'). Both serve as real-time anchors.",
+    "syntaxTrap": "CURRENT_DATE has no parentheses in standard SQL; writing CURRENT_DATE() is engine-specific (valid in MySQL, invalid in PostgreSQL).",
+    "eli5Story": "Date, Time & Temporal Arithmetic on Orders: Timestamp customer order records with the active server time using NOW().",
+    "commonMistakes": "Passing parameters in wrong order in DATEDIFF, hardcoding static dates instead of relative rolling intervals, or forgetting to group by both YEAR and MONTH for time series.",
+    "learningOutcomes": "Mastered 10.1 Current Date & Time Anchors (CURRENT_DATE, NOW) on Orders.",
+    "challengeSlots": [
+      {
+        "type": "keyword",
+        "value": "SELECT"
+      },
+      {
+        "type": "column",
+        "value": "order_id,"
+      },
+      {
+        "type": "column",
+        "value": "order_date,"
+      },
+      {
+        "type": "keyword",
+        "value": "NOW()"
+      },
+      {
+        "type": "keyword",
+        "value": "AS"
+      },
+      {
+        "type": "column",
+        "value": "processed_at"
+      },
+      {
+        "type": "keyword",
+        "value": "FROM"
+      },
+      {
+        "type": "table",
+        "value": "Orders;"
+      }
+    ]
+  },
+  {
+    "drillNumber": 906,
+    "subcluster": "10.1 Current Date & Time Anchors (CURRENT_DATE, NOW)",
+    "level": "Level 1 (Current Anchors)",
+    "title": "Syntax #906: Project track release dates anchored against today's date",
+    "table": "MusicTracks",
+    "scenario": "Project track release dates anchored against today's date.",
+    "businessObjective": "Project track release dates anchored against today's date.",
+    "schemaSnippet": "MusicTracks temporal schema",
+    "targetQuery": "SELECT track_title, release_date, CURRENT_DATE AS catalog_as_of\nFROM MusicTracks;",
+    "syntaxBlueprint": "SELECT col, CURRENT_DATE, NOW()\nFROM table_name;",
+    "syntaxRule": "CURRENT_DATE returns today's calendar date ('YYYY-MM-DD'). NOW() returns the active timestamp ('YYYY-MM-DD HH:MM:SS'). Both serve as real-time anchors.",
+    "syntaxTrap": "CURRENT_DATE has no parentheses in standard SQL; writing CURRENT_DATE() is engine-specific (valid in MySQL, invalid in PostgreSQL).",
+    "eli5Story": "Date, Time & Temporal Arithmetic on MusicTracks: Project track release dates anchored against today's date.",
+    "commonMistakes": "Passing parameters in wrong order in DATEDIFF, hardcoding static dates instead of relative rolling intervals, or forgetting to group by both YEAR and MONTH for time series.",
+    "learningOutcomes": "Mastered 10.1 Current Date & Time Anchors (CURRENT_DATE, NOW) on MusicTracks.",
+    "challengeSlots": [
+      {
+        "type": "keyword",
+        "value": "SELECT"
+      },
+      {
+        "type": "column",
+        "value": "track_title,"
+      },
+      {
+        "type": "column",
+        "value": "release_date,"
+      },
+      {
+        "type": "keyword",
+        "value": "CURRENT_DATE"
+      },
+      {
+        "type": "keyword",
+        "value": "AS"
+      },
+      {
+        "type": "column",
+        "value": "catalog_as_of"
+      },
+      {
+        "type": "keyword",
+        "value": "FROM"
+      },
+      {
+        "type": "table",
+        "value": "MusicTracks;"
+      }
+    ]
+  },
+  {
+    "drillNumber": 907,
+    "subcluster": "10.1 Current Date & Time Anchors (CURRENT_DATE, NOW)",
+    "level": "Level 1 (Current Anchors)",
+    "title": "Syntax #907: Anchor gym member registration dates against the current date",
+    "table": "GymMembers",
+    "scenario": "Anchor gym member registration dates against the current date.",
+    "businessObjective": "Anchor gym member registration dates against the current date.",
+    "schemaSnippet": "GymMembers temporal schema",
+    "targetQuery": "SELECT member_name, join_date, CURRENT_DATE AS active_membership_date\nFROM GymMembers;",
+    "syntaxBlueprint": "SELECT col, CURRENT_DATE, NOW()\nFROM table_name;",
+    "syntaxRule": "CURRENT_DATE returns today's calendar date ('YYYY-MM-DD'). NOW() returns the active timestamp ('YYYY-MM-DD HH:MM:SS'). Both serve as real-time anchors.",
+    "syntaxTrap": "CURRENT_DATE has no parentheses in standard SQL; writing CURRENT_DATE() is engine-specific (valid in MySQL, invalid in PostgreSQL).",
+    "eli5Story": "Date, Time & Temporal Arithmetic on GymMembers: Anchor gym member registration dates against the current date.",
+    "commonMistakes": "Passing parameters in wrong order in DATEDIFF, hardcoding static dates instead of relative rolling intervals, or forgetting to group by both YEAR and MONTH for time series.",
+    "learningOutcomes": "Mastered 10.1 Current Date & Time Anchors (CURRENT_DATE, NOW) on GymMembers.",
+    "challengeSlots": [
+      {
+        "type": "keyword",
+        "value": "SELECT"
+      },
+      {
+        "type": "column",
+        "value": "member_name,"
+      },
+      {
+        "type": "column",
+        "value": "join_date,"
+      },
+      {
+        "type": "keyword",
+        "value": "CURRENT_DATE"
+      },
+      {
+        "type": "keyword",
+        "value": "AS"
+      },
+      {
+        "type": "column",
+        "value": "active_membership_date"
+      },
+      {
+        "type": "keyword",
+        "value": "FROM"
+      },
+      {
+        "type": "table",
+        "value": "GymMembers;"
+      }
+    ]
+  },
+  {
+    "drillNumber": 908,
+    "subcluster": "10.1 Current Date & Time Anchors (CURRENT_DATE, NOW)",
+    "level": "Level 1 (Current Anchors)",
+    "title": "Syntax #908: Fetch movie review dates paired with current query execution time",
+    "table": "MovieReviews",
+    "scenario": "Fetch movie review dates paired with current query execution time.",
+    "businessObjective": "Fetch movie review dates paired with current query execution time.",
+    "schemaSnippet": "MovieReviews temporal schema",
+    "targetQuery": "SELECT movie_title, review_date, NOW() AS fetch_time\nFROM MovieReviews;",
+    "syntaxBlueprint": "SELECT col, CURRENT_DATE, NOW()\nFROM table_name;",
+    "syntaxRule": "CURRENT_DATE returns today's calendar date ('YYYY-MM-DD'). NOW() returns the active timestamp ('YYYY-MM-DD HH:MM:SS'). Both serve as real-time anchors.",
+    "syntaxTrap": "CURRENT_DATE has no parentheses in standard SQL; writing CURRENT_DATE() is engine-specific (valid in MySQL, invalid in PostgreSQL).",
+    "eli5Story": "Date, Time & Temporal Arithmetic on MovieReviews: Fetch movie review dates paired with current query execution time.",
+    "commonMistakes": "Passing parameters in wrong order in DATEDIFF, hardcoding static dates instead of relative rolling intervals, or forgetting to group by both YEAR and MONTH for time series.",
+    "learningOutcomes": "Mastered 10.1 Current Date & Time Anchors (CURRENT_DATE, NOW) on MovieReviews.",
+    "challengeSlots": [
+      {
+        "type": "keyword",
+        "value": "SELECT"
+      },
+      {
+        "type": "column",
+        "value": "movie_title,"
+      },
+      {
+        "type": "column",
+        "value": "review_date,"
+      },
+      {
+        "type": "keyword",
+        "value": "NOW()"
+      },
+      {
+        "type": "keyword",
+        "value": "AS"
+      },
+      {
+        "type": "column",
+        "value": "fetch_time"
+      },
+      {
+        "type": "keyword",
+        "value": "FROM"
+      },
+      {
+        "type": "table",
+        "value": "MovieReviews;"
+      }
+    ]
+  },
+  {
+    "drillNumber": 909,
+    "subcluster": "10.1 Current Date & Time Anchors (CURRENT_DATE, NOW)",
+    "level": "Level 1 (Current Anchors)",
+    "title": "Syntax #909: Display flight departure times against active radar system time",
+    "table": "FlightSchedule",
+    "scenario": "Display flight departure times against active radar system time.",
+    "businessObjective": "Display flight departure times against active radar system time.",
+    "schemaSnippet": "FlightSchedule temporal schema",
+    "targetQuery": "SELECT flight_id, departure_time, NOW() AS radar_timestamp\nFROM FlightSchedule;",
+    "syntaxBlueprint": "SELECT col, CURRENT_DATE, NOW()\nFROM table_name;",
+    "syntaxRule": "CURRENT_DATE returns today's calendar date ('YYYY-MM-DD'). NOW() returns the active timestamp ('YYYY-MM-DD HH:MM:SS'). Both serve as real-time anchors.",
+    "syntaxTrap": "CURRENT_DATE has no parentheses in standard SQL; writing CURRENT_DATE() is engine-specific (valid in MySQL, invalid in PostgreSQL).",
+    "eli5Story": "Date, Time & Temporal Arithmetic on FlightSchedule: Display flight departure times against active radar system time.",
+    "commonMistakes": "Passing parameters in wrong order in DATEDIFF, hardcoding static dates instead of relative rolling intervals, or forgetting to group by both YEAR and MONTH for time series.",
+    "learningOutcomes": "Mastered 10.1 Current Date & Time Anchors (CURRENT_DATE, NOW) on FlightSchedule.",
+    "challengeSlots": [
+      {
+        "type": "keyword",
+        "value": "SELECT"
+      },
+      {
+        "type": "column",
+        "value": "flight_id,"
+      },
+      {
+        "type": "column",
+        "value": "departure_time,"
+      },
+      {
+        "type": "keyword",
+        "value": "NOW()"
+      },
+      {
+        "type": "keyword",
+        "value": "AS"
+      },
+      {
+        "type": "column",
+        "value": "radar_timestamp"
+      },
+      {
+        "type": "keyword",
+        "value": "FROM"
+      },
+      {
+        "type": "table",
+        "value": "FlightSchedule;"
+      }
+    ]
+  },
+  {
+    "drillNumber": 910,
+    "subcluster": "10.1 Current Date & Time Anchors (CURRENT_DATE, NOW)",
+    "level": "Level 1 (Current Anchors)",
+    "title": "Syntax #910: Anchor veterinary patient appointment dates with today's calendar date",
+    "table": "PetClinic",
+    "scenario": "Anchor veterinary patient appointment dates with today's calendar date.",
+    "businessObjective": "Anchor veterinary patient appointment dates with today's calendar date.",
+    "schemaSnippet": "PetClinic temporal schema",
+    "targetQuery": "SELECT pet_name, visit_date, CURRENT_DATE AS clinic_today\nFROM PetClinic;",
+    "syntaxBlueprint": "SELECT col, CURRENT_DATE, NOW()\nFROM table_name;",
+    "syntaxRule": "CURRENT_DATE returns today's calendar date ('YYYY-MM-DD'). NOW() returns the active timestamp ('YYYY-MM-DD HH:MM:SS'). Both serve as real-time anchors.",
+    "syntaxTrap": "CURRENT_DATE has no parentheses in standard SQL; writing CURRENT_DATE() is engine-specific (valid in MySQL, invalid in PostgreSQL).",
+    "eli5Story": "Date, Time & Temporal Arithmetic on PetClinic: Anchor veterinary patient appointment dates with today's calendar date.",
+    "commonMistakes": "Passing parameters in wrong order in DATEDIFF, hardcoding static dates instead of relative rolling intervals, or forgetting to group by both YEAR and MONTH for time series.",
+    "learningOutcomes": "Mastered 10.1 Current Date & Time Anchors (CURRENT_DATE, NOW) on PetClinic.",
+    "challengeSlots": [
+      {
+        "type": "keyword",
+        "value": "SELECT"
+      },
+      {
+        "type": "column",
+        "value": "pet_name,"
+      },
+      {
+        "type": "column",
+        "value": "visit_date,"
+      },
+      {
+        "type": "keyword",
+        "value": "CURRENT_DATE"
+      },
+      {
+        "type": "keyword",
+        "value": "AS"
+      },
+      {
+        "type": "column",
+        "value": "clinic_today"
+      },
+      {
+        "type": "keyword",
+        "value": "FROM"
+      },
+      {
+        "type": "table",
+        "value": "PetClinic;"
+      }
+    ]
+  },
+  {
+    "drillNumber": 911,
+    "subcluster": "10.2 Date Component Extraction (YEAR, MONTH, DAY)",
+    "level": "Level 1 (Component Extraction)",
+    "title": "Syntax #911: Find all students who enrolled in the year 2024 using YEAR()",
+    "table": "Students",
+    "scenario": "Find all students who enrolled in the year 2024 using YEAR().",
+    "businessObjective": "Find all students who enrolled in the year 2024 using YEAR().",
+    "schemaSnippet": "Students temporal schema",
+    "targetQuery": "SELECT full_name, YEAR(enrolled_date) AS enroll_year\nFROM Students\nWHERE YEAR(enrolled_date) = 2024;",
+    "syntaxBlueprint": "SELECT col, YEAR(date_col), MONTH(date_col), DAY(date_col)\nFROM table_name;",
+    "syntaxRule": "Use YEAR(), MONTH(), and DAY() to extract discrete integer parts of a calendar date for seasonal, monthly, or annual filtering.",
+    "syntaxTrap": "MONTH() returns 1 to 12 as an integer, not the month name. For names, use MONTHNAME() or DATE_FORMAT().",
+    "eli5Story": "Date, Time & Temporal Arithmetic on Students: Find all students who enrolled in the year 2024 using YEAR().",
+    "commonMistakes": "Passing parameters in wrong order in DATEDIFF, hardcoding static dates instead of relative rolling intervals, or forgetting to group by both YEAR and MONTH for time series.",
+    "learningOutcomes": "Mastered 10.2 Date Component Extraction (YEAR, MONTH, DAY) on Students.",
+    "challengeSlots": [
+      {
+        "type": "keyword",
+        "value": "SELECT"
+      },
+      {
+        "type": "column",
+        "value": "full_name,"
+      },
+      {
+        "type": "column",
+        "value": "YEAR(enrolled_date)"
+      },
+      {
+        "type": "keyword",
+        "value": "AS"
+      },
+      {
+        "type": "column",
+        "value": "enroll_year"
+      },
+      {
+        "type": "keyword",
+        "value": "FROM"
+      },
+      {
+        "type": "table",
+        "value": "Students"
+      },
+      {
+        "type": "keyword",
+        "value": "WHERE"
+      },
+      {
+        "type": "column",
+        "value": "YEAR(enrolled_date)"
+      },
+      {
+        "type": "column",
+        "value": "="
+      },
+      {
+        "type": "column",
+        "value": "2024;"
+      }
+    ]
+  },
+  {
+    "drillNumber": 912,
+    "subcluster": "10.2 Date Component Extraction (YEAR, MONTH, DAY)",
+    "level": "Level 1 (Component Extraction)",
+    "title": "Syntax #912: Extract publication year and month for books published in 2020 or later",
+    "table": "Books",
+    "scenario": "Extract publication year and month for books published in 2020 or later.",
+    "businessObjective": "Extract publication year and month for books published in 2020 or later.",
+    "schemaSnippet": "Books temporal schema",
+    "targetQuery": "SELECT title, YEAR(published_date) AS pub_year, MONTH(published_date) AS pub_month\nFROM Books\nWHERE YEAR(published_date) >= 2020;",
+    "syntaxBlueprint": "SELECT col, YEAR(date_col), MONTH(date_col), DAY(date_col)\nFROM table_name;",
+    "syntaxRule": "Use YEAR(), MONTH(), and DAY() to extract discrete integer parts of a calendar date for seasonal, monthly, or annual filtering.",
+    "syntaxTrap": "MONTH() returns 1 to 12 as an integer, not the month name. For names, use MONTHNAME() or DATE_FORMAT().",
+    "eli5Story": "Date, Time & Temporal Arithmetic on Books: Extract publication year and month for books published in 2020 or later.",
+    "commonMistakes": "Passing parameters in wrong order in DATEDIFF, hardcoding static dates instead of relative rolling intervals, or forgetting to group by both YEAR and MONTH for time series.",
+    "learningOutcomes": "Mastered 10.2 Date Component Extraction (YEAR, MONTH, DAY) on Books.",
+    "challengeSlots": [
+      {
+        "type": "keyword",
+        "value": "SELECT"
+      },
+      {
+        "type": "column",
+        "value": "title,"
+      },
+      {
+        "type": "column",
+        "value": "YEAR(published_date)"
+      },
+      {
+        "type": "keyword",
+        "value": "AS"
+      },
+      {
+        "type": "column",
+        "value": "pub_year,"
+      },
+      {
+        "type": "column",
+        "value": "MONTH(published_date)"
+      },
+      {
+        "type": "keyword",
+        "value": "AS"
+      },
+      {
+        "type": "column",
+        "value": "pub_month"
+      },
+      {
+        "type": "keyword",
+        "value": "FROM"
+      },
+      {
+        "type": "table",
+        "value": "Books"
+      },
+      {
+        "type": "keyword",
+        "value": "WHERE"
+      },
+      {
+        "type": "column",
+        "value": "YEAR(published_date)"
+      },
+      {
+        "type": "column",
+        "value": ">="
+      },
+      {
+        "type": "column",
+        "value": "2020;"
+      }
+    ]
+  },
+  {
+    "drillNumber": 913,
+    "subcluster": "10.2 Date Component Extraction (YEAR, MONTH, DAY)",
+    "level": "Level 1 (Component Extraction)",
+    "title": "Syntax #913: Find employees hired in January (month 1) across any year",
+    "table": "Employees",
+    "scenario": "Find employees hired in January (month 1) across any year.",
+    "businessObjective": "Find employees hired in January (month 1) across any year.",
+    "schemaSnippet": "Employees temporal schema",
+    "targetQuery": "SELECT first_name, YEAR(hire_date) AS hire_year, MONTH(hire_date) AS hire_month\nFROM Employees\nWHERE MONTH(hire_date) = 1;",
+    "syntaxBlueprint": "SELECT col, YEAR(date_col), MONTH(date_col), DAY(date_col)\nFROM table_name;",
+    "syntaxRule": "Use YEAR(), MONTH(), and DAY() to extract discrete integer parts of a calendar date for seasonal, monthly, or annual filtering.",
+    "syntaxTrap": "MONTH() returns 1 to 12 as an integer, not the month name. For names, use MONTHNAME() or DATE_FORMAT().",
+    "eli5Story": "Date, Time & Temporal Arithmetic on Employees: Find employees hired in January (month 1) across any year.",
+    "commonMistakes": "Passing parameters in wrong order in DATEDIFF, hardcoding static dates instead of relative rolling intervals, or forgetting to group by both YEAR and MONTH for time series.",
+    "learningOutcomes": "Mastered 10.2 Date Component Extraction (YEAR, MONTH, DAY) on Employees.",
+    "challengeSlots": [
+      {
+        "type": "keyword",
+        "value": "SELECT"
+      },
+      {
+        "type": "column",
+        "value": "first_name,"
+      },
+      {
+        "type": "column",
+        "value": "YEAR(hire_date)"
+      },
+      {
+        "type": "keyword",
+        "value": "AS"
+      },
+      {
+        "type": "column",
+        "value": "hire_year,"
+      },
+      {
+        "type": "column",
+        "value": "MONTH(hire_date)"
+      },
+      {
+        "type": "keyword",
+        "value": "AS"
+      },
+      {
+        "type": "column",
+        "value": "hire_month"
+      },
+      {
+        "type": "keyword",
+        "value": "FROM"
+      },
+      {
+        "type": "table",
+        "value": "Employees"
+      },
+      {
+        "type": "keyword",
+        "value": "WHERE"
+      },
+      {
+        "type": "column",
+        "value": "MONTH(hire_date)"
+      },
+      {
+        "type": "column",
+        "value": "="
+      },
+      {
+        "type": "column",
+        "value": "1;"
+      }
+    ]
+  },
+  {
+    "drillNumber": 914,
+    "subcluster": "10.2 Date Component Extraction (YEAR, MONTH, DAY)",
+    "level": "Level 1 (Component Extraction)",
+    "title": "Syntax #914: Inspect expiration month and day for grocery items expiring in 2026",
+    "table": "GroceryItems",
+    "scenario": "Inspect expiration month and day for grocery items expiring in 2026.",
+    "businessObjective": "Inspect expiration month and day for grocery items expiring in 2026.",
+    "schemaSnippet": "GroceryItems temporal schema",
+    "targetQuery": "SELECT item_name, MONTH(expiry_date) AS exp_month, DAY(expiry_date) AS exp_day\nFROM GroceryItems\nWHERE YEAR(expiry_date) = 2026;",
+    "syntaxBlueprint": "SELECT col, YEAR(date_col), MONTH(date_col), DAY(date_col)\nFROM table_name;",
+    "syntaxRule": "Use YEAR(), MONTH(), and DAY() to extract discrete integer parts of a calendar date for seasonal, monthly, or annual filtering.",
+    "syntaxTrap": "MONTH() returns 1 to 12 as an integer, not the month name. For names, use MONTHNAME() or DATE_FORMAT().",
+    "eli5Story": "Date, Time & Temporal Arithmetic on GroceryItems: Inspect expiration month and day for grocery items expiring in 2026.",
+    "commonMistakes": "Passing parameters in wrong order in DATEDIFF, hardcoding static dates instead of relative rolling intervals, or forgetting to group by both YEAR and MONTH for time series.",
+    "learningOutcomes": "Mastered 10.2 Date Component Extraction (YEAR, MONTH, DAY) on GroceryItems.",
+    "challengeSlots": [
+      {
+        "type": "keyword",
+        "value": "SELECT"
+      },
+      {
+        "type": "column",
+        "value": "item_name,"
+      },
+      {
+        "type": "column",
+        "value": "MONTH(expiry_date)"
+      },
+      {
+        "type": "keyword",
+        "value": "AS"
+      },
+      {
+        "type": "column",
+        "value": "exp_month,"
+      },
+      {
+        "type": "column",
+        "value": "DAY(expiry_date)"
+      },
+      {
+        "type": "keyword",
+        "value": "AS"
+      },
+      {
+        "type": "column",
+        "value": "exp_day"
+      },
+      {
+        "type": "keyword",
+        "value": "FROM"
+      },
+      {
+        "type": "table",
+        "value": "GroceryItems"
+      },
+      {
+        "type": "keyword",
+        "value": "WHERE"
+      },
+      {
+        "type": "column",
+        "value": "YEAR(expiry_date)"
+      },
+      {
+        "type": "column",
+        "value": "="
+      },
+      {
+        "type": "column",
+        "value": "2026;"
+      }
+    ]
+  },
+  {
+    "drillNumber": 915,
+    "subcluster": "10.2 Date Component Extraction (YEAR, MONTH, DAY)",
+    "level": "Level 1 (Component Extraction)",
+    "title": "Syntax #915: Filter holiday orders placed specifically in December 2025",
+    "table": "Orders",
+    "scenario": "Filter holiday orders placed specifically in December 2025.",
+    "businessObjective": "Filter holiday orders placed specifically in December 2025.",
+    "schemaSnippet": "Orders temporal schema",
+    "targetQuery": "SELECT order_id, YEAR(order_date) AS ord_year, MONTH(order_date) AS ord_month\nFROM Orders\nWHERE YEAR(order_date) = 2025 AND MONTH(order_date) = 12;",
+    "syntaxBlueprint": "SELECT col, YEAR(date_col), MONTH(date_col), DAY(date_col)\nFROM table_name;",
+    "syntaxRule": "Use YEAR(), MONTH(), and DAY() to extract discrete integer parts of a calendar date for seasonal, monthly, or annual filtering.",
+    "syntaxTrap": "MONTH() returns 1 to 12 as an integer, not the month name. For names, use MONTHNAME() or DATE_FORMAT().",
+    "eli5Story": "Date, Time & Temporal Arithmetic on Orders: Filter holiday orders placed specifically in December 2025.",
+    "commonMistakes": "Passing parameters in wrong order in DATEDIFF, hardcoding static dates instead of relative rolling intervals, or forgetting to group by both YEAR and MONTH for time series.",
+    "learningOutcomes": "Mastered 10.2 Date Component Extraction (YEAR, MONTH, DAY) on Orders.",
+    "challengeSlots": [
+      {
+        "type": "keyword",
+        "value": "SELECT"
+      },
+      {
+        "type": "column",
+        "value": "order_id,"
+      },
+      {
+        "type": "column",
+        "value": "YEAR(order_date)"
+      },
+      {
+        "type": "keyword",
+        "value": "AS"
+      },
+      {
+        "type": "column",
+        "value": "ord_year,"
+      },
+      {
+        "type": "column",
+        "value": "MONTH(order_date)"
+      },
+      {
+        "type": "keyword",
+        "value": "AS"
+      },
+      {
+        "type": "column",
+        "value": "ord_month"
+      },
+      {
+        "type": "keyword",
+        "value": "FROM"
+      },
+      {
+        "type": "table",
+        "value": "Orders"
+      },
+      {
+        "type": "keyword",
+        "value": "WHERE"
+      },
+      {
+        "type": "column",
+        "value": "YEAR(order_date)"
+      },
+      {
+        "type": "column",
+        "value": "="
+      },
+      {
+        "type": "column",
+        "value": "2025"
+      },
+      {
+        "type": "keyword",
+        "value": "AND"
+      },
+      {
+        "type": "column",
+        "value": "MONTH(order_date)"
+      },
+      {
+        "type": "column",
+        "value": "="
+      },
+      {
+        "type": "column",
+        "value": "12;"
+      }
+    ]
+  },
+  {
+    "drillNumber": 916,
+    "subcluster": "10.2 Date Component Extraction (YEAR, MONTH, DAY)",
+    "level": "Level 1 (Component Extraction)",
+    "title": "Syntax #916: Identify retro music tracks released before the year 2000",
+    "table": "MusicTracks",
+    "scenario": "Identify retro music tracks released before the year 2000.",
+    "businessObjective": "Identify retro music tracks released before the year 2000.",
+    "schemaSnippet": "MusicTracks temporal schema",
+    "targetQuery": "SELECT track_title, YEAR(release_date) AS release_year\nFROM MusicTracks\nWHERE YEAR(release_date) < 2000;",
+    "syntaxBlueprint": "SELECT col, YEAR(date_col), MONTH(date_col), DAY(date_col)\nFROM table_name;",
+    "syntaxRule": "Use YEAR(), MONTH(), and DAY() to extract discrete integer parts of a calendar date for seasonal, monthly, or annual filtering.",
+    "syntaxTrap": "MONTH() returns 1 to 12 as an integer, not the month name. For names, use MONTHNAME() or DATE_FORMAT().",
+    "eli5Story": "Date, Time & Temporal Arithmetic on MusicTracks: Identify retro music tracks released before the year 2000.",
+    "commonMistakes": "Passing parameters in wrong order in DATEDIFF, hardcoding static dates instead of relative rolling intervals, or forgetting to group by both YEAR and MONTH for time series.",
+    "learningOutcomes": "Mastered 10.2 Date Component Extraction (YEAR, MONTH, DAY) on MusicTracks.",
+    "challengeSlots": [
+      {
+        "type": "keyword",
+        "value": "SELECT"
+      },
+      {
+        "type": "column",
+        "value": "track_title,"
+      },
+      {
+        "type": "column",
+        "value": "YEAR(release_date)"
+      },
+      {
+        "type": "keyword",
+        "value": "AS"
+      },
+      {
+        "type": "column",
+        "value": "release_year"
+      },
+      {
+        "type": "keyword",
+        "value": "FROM"
+      },
+      {
+        "type": "table",
+        "value": "MusicTracks"
+      },
+      {
+        "type": "keyword",
+        "value": "WHERE"
+      },
+      {
+        "type": "column",
+        "value": "YEAR(release_date)"
+      },
+      {
+        "type": "column",
+        "value": "<"
+      },
+      {
+        "type": "column",
+        "value": "2000;"
+      }
+    ]
+  },
+  {
+    "drillNumber": 917,
+    "subcluster": "10.2 Date Component Extraction (YEAR, MONTH, DAY)",
+    "level": "Level 1 (Component Extraction)",
+    "title": "Syntax #917: Extract registration year and day of month for gym members who joined in 2023",
+    "table": "GymMembers",
+    "scenario": "Extract registration year and day of month for gym members who joined in 2023.",
+    "businessObjective": "Extract registration year and day of month for gym members who joined in 2023.",
+    "schemaSnippet": "GymMembers temporal schema",
+    "targetQuery": "SELECT member_name, YEAR(join_date) AS join_year, DAY(join_date) AS join_day\nFROM GymMembers\nWHERE YEAR(join_date) = 2023;",
+    "syntaxBlueprint": "SELECT col, YEAR(date_col), MONTH(date_col), DAY(date_col)\nFROM table_name;",
+    "syntaxRule": "Use YEAR(), MONTH(), and DAY() to extract discrete integer parts of a calendar date for seasonal, monthly, or annual filtering.",
+    "syntaxTrap": "MONTH() returns 1 to 12 as an integer, not the month name. For names, use MONTHNAME() or DATE_FORMAT().",
+    "eli5Story": "Date, Time & Temporal Arithmetic on GymMembers: Extract registration year and day of month for gym members who joined in 2023.",
+    "commonMistakes": "Passing parameters in wrong order in DATEDIFF, hardcoding static dates instead of relative rolling intervals, or forgetting to group by both YEAR and MONTH for time series.",
+    "learningOutcomes": "Mastered 10.2 Date Component Extraction (YEAR, MONTH, DAY) on GymMembers.",
+    "challengeSlots": [
+      {
+        "type": "keyword",
+        "value": "SELECT"
+      },
+      {
+        "type": "column",
+        "value": "member_name,"
+      },
+      {
+        "type": "column",
+        "value": "YEAR(join_date)"
+      },
+      {
+        "type": "keyword",
+        "value": "AS"
+      },
+      {
+        "type": "column",
+        "value": "join_year,"
+      },
+      {
+        "type": "column",
+        "value": "DAY(join_date)"
+      },
+      {
+        "type": "keyword",
+        "value": "AS"
+      },
+      {
+        "type": "column",
+        "value": "join_day"
+      },
+      {
+        "type": "keyword",
+        "value": "FROM"
+      },
+      {
+        "type": "table",
+        "value": "GymMembers"
+      },
+      {
+        "type": "keyword",
+        "value": "WHERE"
+      },
+      {
+        "type": "column",
+        "value": "YEAR(join_date)"
+      },
+      {
+        "type": "column",
+        "value": "="
+      },
+      {
+        "type": "column",
+        "value": "2023;"
+      }
+    ]
+  },
+  {
+    "drillNumber": 918,
+    "subcluster": "10.2 Date Component Extraction (YEAR, MONTH, DAY)",
+    "level": "Level 1 (Component Extraction)",
+    "title": "Syntax #918: Retrieve movie reviews submitted during the summer month of July (month 7)",
+    "table": "MovieReviews",
+    "scenario": "Retrieve movie reviews submitted during the summer month of July (month 7).",
+    "businessObjective": "Retrieve movie reviews submitted during the summer month of July (month 7).",
+    "schemaSnippet": "MovieReviews temporal schema",
+    "targetQuery": "SELECT movie_title, YEAR(review_date) AS rev_year, MONTH(review_date) AS rev_month\nFROM MovieReviews\nWHERE MONTH(review_date) = 7;",
+    "syntaxBlueprint": "SELECT col, YEAR(date_col), MONTH(date_col), DAY(date_col)\nFROM table_name;",
+    "syntaxRule": "Use YEAR(), MONTH(), and DAY() to extract discrete integer parts of a calendar date for seasonal, monthly, or annual filtering.",
+    "syntaxTrap": "MONTH() returns 1 to 12 as an integer, not the month name. For names, use MONTHNAME() or DATE_FORMAT().",
+    "eli5Story": "Date, Time & Temporal Arithmetic on MovieReviews: Retrieve movie reviews submitted during the summer month of July (month 7).",
+    "commonMistakes": "Passing parameters in wrong order in DATEDIFF, hardcoding static dates instead of relative rolling intervals, or forgetting to group by both YEAR and MONTH for time series.",
+    "learningOutcomes": "Mastered 10.2 Date Component Extraction (YEAR, MONTH, DAY) on MovieReviews.",
+    "challengeSlots": [
+      {
+        "type": "keyword",
+        "value": "SELECT"
+      },
+      {
+        "type": "column",
+        "value": "movie_title,"
+      },
+      {
+        "type": "column",
+        "value": "YEAR(review_date)"
+      },
+      {
+        "type": "keyword",
+        "value": "AS"
+      },
+      {
+        "type": "column",
+        "value": "rev_year,"
+      },
+      {
+        "type": "column",
+        "value": "MONTH(review_date)"
+      },
+      {
+        "type": "keyword",
+        "value": "AS"
+      },
+      {
+        "type": "column",
+        "value": "rev_month"
+      },
+      {
+        "type": "keyword",
+        "value": "FROM"
+      },
+      {
+        "type": "table",
+        "value": "MovieReviews"
+      },
+      {
+        "type": "keyword",
+        "value": "WHERE"
+      },
+      {
+        "type": "column",
+        "value": "MONTH(review_date)"
+      },
+      {
+        "type": "column",
+        "value": "="
+      },
+      {
+        "type": "column",
+        "value": "7;"
+      }
+    ]
+  },
+  {
+    "drillNumber": 919,
+    "subcluster": "10.2 Date Component Extraction (YEAR, MONTH, DAY)",
+    "level": "Level 1 (Component Extraction)",
+    "title": "Syntax #919: Extract departure day and month for flights scheduled in June",
+    "table": "FlightSchedule",
+    "scenario": "Extract departure day and month for flights scheduled in June.",
+    "businessObjective": "Extract departure day and month for flights scheduled in June.",
+    "schemaSnippet": "FlightSchedule temporal schema",
+    "targetQuery": "SELECT flight_id, DAY(departure_time) AS departure_day, MONTH(departure_time) AS departure_month\nFROM FlightSchedule\nWHERE MONTH(departure_time) = 6;",
+    "syntaxBlueprint": "SELECT col, YEAR(date_col), MONTH(date_col), DAY(date_col)\nFROM table_name;",
+    "syntaxRule": "Use YEAR(), MONTH(), and DAY() to extract discrete integer parts of a calendar date for seasonal, monthly, or annual filtering.",
+    "syntaxTrap": "MONTH() returns 1 to 12 as an integer, not the month name. For names, use MONTHNAME() or DATE_FORMAT().",
+    "eli5Story": "Date, Time & Temporal Arithmetic on FlightSchedule: Extract departure day and month for flights scheduled in June.",
+    "commonMistakes": "Passing parameters in wrong order in DATEDIFF, hardcoding static dates instead of relative rolling intervals, or forgetting to group by both YEAR and MONTH for time series.",
+    "learningOutcomes": "Mastered 10.2 Date Component Extraction (YEAR, MONTH, DAY) on FlightSchedule.",
+    "challengeSlots": [
+      {
+        "type": "keyword",
+        "value": "SELECT"
+      },
+      {
+        "type": "column",
+        "value": "flight_id,"
+      },
+      {
+        "type": "column",
+        "value": "DAY(departure_time)"
+      },
+      {
+        "type": "keyword",
+        "value": "AS"
+      },
+      {
+        "type": "column",
+        "value": "departure_day,"
+      },
+      {
+        "type": "column",
+        "value": "MONTH(departure_time)"
+      },
+      {
+        "type": "keyword",
+        "value": "AS"
+      },
+      {
+        "type": "column",
+        "value": "departure_month"
+      },
+      {
+        "type": "keyword",
+        "value": "FROM"
+      },
+      {
+        "type": "table",
+        "value": "FlightSchedule"
+      },
+      {
+        "type": "keyword",
+        "value": "WHERE"
+      },
+      {
+        "type": "column",
+        "value": "MONTH(departure_time)"
+      },
+      {
+        "type": "column",
+        "value": "="
+      },
+      {
+        "type": "column",
+        "value": "6;"
+      }
+    ]
+  },
+  {
+    "drillNumber": 920,
+    "subcluster": "10.2 Date Component Extraction (YEAR, MONTH, DAY)",
+    "level": "Level 1 (Component Extraction)",
+    "title": "Syntax #920: Extract visit year and month for clinic patients seen in 2024",
+    "table": "PetClinic",
+    "scenario": "Extract visit year and month for clinic patients seen in 2024.",
+    "businessObjective": "Extract visit year and month for clinic patients seen in 2024.",
+    "schemaSnippet": "PetClinic temporal schema",
+    "targetQuery": "SELECT pet_name, YEAR(visit_date) AS visit_year, MONTH(visit_date) AS visit_month\nFROM PetClinic\nWHERE YEAR(visit_date) = 2024;",
+    "syntaxBlueprint": "SELECT col, YEAR(date_col), MONTH(date_col), DAY(date_col)\nFROM table_name;",
+    "syntaxRule": "Use YEAR(), MONTH(), and DAY() to extract discrete integer parts of a calendar date for seasonal, monthly, or annual filtering.",
+    "syntaxTrap": "MONTH() returns 1 to 12 as an integer, not the month name. For names, use MONTHNAME() or DATE_FORMAT().",
+    "eli5Story": "Date, Time & Temporal Arithmetic on PetClinic: Extract visit year and month for clinic patients seen in 2024.",
+    "commonMistakes": "Passing parameters in wrong order in DATEDIFF, hardcoding static dates instead of relative rolling intervals, or forgetting to group by both YEAR and MONTH for time series.",
+    "learningOutcomes": "Mastered 10.2 Date Component Extraction (YEAR, MONTH, DAY) on PetClinic.",
+    "challengeSlots": [
+      {
+        "type": "keyword",
+        "value": "SELECT"
+      },
+      {
+        "type": "column",
+        "value": "pet_name,"
+      },
+      {
+        "type": "column",
+        "value": "YEAR(visit_date)"
+      },
+      {
+        "type": "keyword",
+        "value": "AS"
+      },
+      {
+        "type": "column",
+        "value": "visit_year,"
+      },
+      {
+        "type": "column",
+        "value": "MONTH(visit_date)"
+      },
+      {
+        "type": "keyword",
+        "value": "AS"
+      },
+      {
+        "type": "column",
+        "value": "visit_month"
+      },
+      {
+        "type": "keyword",
+        "value": "FROM"
+      },
+      {
+        "type": "table",
+        "value": "PetClinic"
+      },
+      {
+        "type": "keyword",
+        "value": "WHERE"
+      },
+      {
+        "type": "column",
+        "value": "YEAR(visit_date)"
+      },
+      {
+        "type": "column",
+        "value": "="
+      },
+      {
+        "type": "column",
+        "value": "2024;"
+      }
+    ]
+  },
+  {
+    "drillNumber": 921,
+    "subcluster": "10.3 Quarters & Day of Week (QUARTER, DAYOFWEEK, DAYNAME)",
+    "level": "Level 1 (Calendar Metrics)",
+    "title": "Syntax #921: Identify students enrolled during Q1 (Quarter 1) of the academic calendar",
+    "table": "Students",
+    "scenario": "Identify students enrolled during Q1 (Quarter 1) of the academic calendar.",
+    "businessObjective": "Identify students enrolled during Q1 (Quarter 1) of the academic calendar.",
+    "schemaSnippet": "Students temporal schema",
+    "targetQuery": "SELECT full_name, QUARTER(enrolled_date) AS enroll_quarter\nFROM Students\nWHERE QUARTER(enrolled_date) = 1;",
+    "syntaxBlueprint": "SELECT col, QUARTER(date_col), DAYOFWEEK(date_col), DAYNAME(date_col)\nFROM table_name;",
+    "syntaxRule": "QUARTER() maps dates to financial quarters (1 to 4). DAYNAME() returns day names ('Monday', 'Friday'). DAYOFWEEK() returns 1 (Sunday) to 7 (Saturday).",
+    "syntaxTrap": "DAYOFWEEK starts on Sunday (1 = Sunday) in standard SQL/MySQL, unlike ISO week day standards.",
+    "eli5Story": "Date, Time & Temporal Arithmetic on Students: Identify students enrolled during Q1 (Quarter 1) of the academic calendar.",
+    "commonMistakes": "Passing parameters in wrong order in DATEDIFF, hardcoding static dates instead of relative rolling intervals, or forgetting to group by both YEAR and MONTH for time series.",
+    "learningOutcomes": "Mastered 10.3 Quarters & Day of Week (QUARTER, DAYOFWEEK, DAYNAME) on Students.",
+    "challengeSlots": [
+      {
+        "type": "keyword",
+        "value": "SELECT"
+      },
+      {
+        "type": "column",
+        "value": "full_name,"
+      },
+      {
+        "type": "column",
+        "value": "QUARTER(enrolled_date)"
+      },
+      {
+        "type": "keyword",
+        "value": "AS"
+      },
+      {
+        "type": "column",
+        "value": "enroll_quarter"
+      },
+      {
+        "type": "keyword",
+        "value": "FROM"
+      },
+      {
+        "type": "table",
+        "value": "Students"
+      },
+      {
+        "type": "keyword",
+        "value": "WHERE"
+      },
+      {
+        "type": "column",
+        "value": "QUARTER(enrolled_date)"
+      },
+      {
+        "type": "column",
+        "value": "="
+      },
+      {
+        "type": "column",
+        "value": "1;"
+      }
+    ]
+  },
+  {
+    "drillNumber": 922,
+    "subcluster": "10.3 Quarters & Day of Week (QUARTER, DAYOFWEEK, DAYNAME)",
+    "level": "Level 1 (Calendar Metrics)",
+    "title": "Syntax #922: Find holiday catalog books published in Q4",
+    "table": "Books",
+    "scenario": "Find holiday catalog books published in Q4.",
+    "businessObjective": "Find holiday catalog books published in Q4.",
+    "schemaSnippet": "Books temporal schema",
+    "targetQuery": "SELECT title, QUARTER(published_date) AS release_quarter\nFROM Books\nWHERE QUARTER(published_date) = 4;",
+    "syntaxBlueprint": "SELECT col, QUARTER(date_col), DAYOFWEEK(date_col), DAYNAME(date_col)\nFROM table_name;",
+    "syntaxRule": "QUARTER() maps dates to financial quarters (1 to 4). DAYNAME() returns day names ('Monday', 'Friday'). DAYOFWEEK() returns 1 (Sunday) to 7 (Saturday).",
+    "syntaxTrap": "DAYOFWEEK starts on Sunday (1 = Sunday) in standard SQL/MySQL, unlike ISO week day standards.",
+    "eli5Story": "Date, Time & Temporal Arithmetic on Books: Find holiday catalog books published in Q4.",
+    "commonMistakes": "Passing parameters in wrong order in DATEDIFF, hardcoding static dates instead of relative rolling intervals, or forgetting to group by both YEAR and MONTH for time series.",
+    "learningOutcomes": "Mastered 10.3 Quarters & Day of Week (QUARTER, DAYOFWEEK, DAYNAME) on Books.",
+    "challengeSlots": [
+      {
+        "type": "keyword",
+        "value": "SELECT"
+      },
+      {
+        "type": "column",
+        "value": "title,"
+      },
+      {
+        "type": "column",
+        "value": "QUARTER(published_date)"
+      },
+      {
+        "type": "keyword",
+        "value": "AS"
+      },
+      {
+        "type": "column",
+        "value": "release_quarter"
+      },
+      {
+        "type": "keyword",
+        "value": "FROM"
+      },
+      {
+        "type": "table",
+        "value": "Books"
+      },
+      {
+        "type": "keyword",
+        "value": "WHERE"
+      },
+      {
+        "type": "column",
+        "value": "QUARTER(published_date)"
+      },
+      {
+        "type": "column",
+        "value": "="
+      },
+      {
+        "type": "column",
+        "value": "4;"
+      }
+    ]
+  },
+  {
+    "drillNumber": 923,
+    "subcluster": "10.3 Quarters & Day of Week (QUARTER, DAYOFWEEK, DAYNAME)",
+    "level": "Level 1 (Calendar Metrics)",
+    "title": "Syntax #923: Identify employees whose first day of work was a Monday (DAYOFWEEK = 2)",
+    "table": "Employees",
+    "scenario": "Identify employees whose first day of work was a Monday (DAYOFWEEK = 2).",
+    "businessObjective": "Identify employees whose first day of work was a Monday (DAYOFWEEK = 2).",
+    "schemaSnippet": "Employees temporal schema",
+    "targetQuery": "SELECT first_name, DAYNAME(hire_date) AS hire_day_name\nFROM Employees\nWHERE DAYOFWEEK(hire_date) = 2;",
+    "syntaxBlueprint": "SELECT col, QUARTER(date_col), DAYOFWEEK(date_col), DAYNAME(date_col)\nFROM table_name;",
+    "syntaxRule": "QUARTER() maps dates to financial quarters (1 to 4). DAYNAME() returns day names ('Monday', 'Friday'). DAYOFWEEK() returns 1 (Sunday) to 7 (Saturday).",
+    "syntaxTrap": "DAYOFWEEK starts on Sunday (1 = Sunday) in standard SQL/MySQL, unlike ISO week day standards.",
+    "eli5Story": "Date, Time & Temporal Arithmetic on Employees: Identify employees whose first day of work was a Monday (DAYOFWEEK = 2).",
+    "commonMistakes": "Passing parameters in wrong order in DATEDIFF, hardcoding static dates instead of relative rolling intervals, or forgetting to group by both YEAR and MONTH for time series.",
+    "learningOutcomes": "Mastered 10.3 Quarters & Day of Week (QUARTER, DAYOFWEEK, DAYNAME) on Employees.",
+    "challengeSlots": [
+      {
+        "type": "keyword",
+        "value": "SELECT"
+      },
+      {
+        "type": "column",
+        "value": "first_name,"
+      },
+      {
+        "type": "column",
+        "value": "DAYNAME(hire_date)"
+      },
+      {
+        "type": "keyword",
+        "value": "AS"
+      },
+      {
+        "type": "column",
+        "value": "hire_day_name"
+      },
+      {
+        "type": "keyword",
+        "value": "FROM"
+      },
+      {
+        "type": "table",
+        "value": "Employees"
+      },
+      {
+        "type": "keyword",
+        "value": "WHERE"
+      },
+      {
+        "type": "column",
+        "value": "DAYOFWEEK(hire_date)"
+      },
+      {
+        "type": "column",
+        "value": "="
+      },
+      {
+        "type": "column",
+        "value": "2;"
+      }
+    ]
+  },
+  {
+    "drillNumber": 924,
+    "subcluster": "10.3 Quarters & Day of Week (QUARTER, DAYOFWEEK, DAYNAME)",
+    "level": "Level 1 (Calendar Metrics)",
+    "title": "Syntax #924: Find grocery items expiring on a Sunday using DAYNAME()",
+    "table": "GroceryItems",
+    "scenario": "Find grocery items expiring on a Sunday using DAYNAME().",
+    "businessObjective": "Find grocery items expiring on a Sunday using DAYNAME().",
+    "schemaSnippet": "GroceryItems temporal schema",
+    "targetQuery": "SELECT item_name, DAYNAME(expiry_date) AS expiry_day\nFROM GroceryItems\nWHERE DAYNAME(expiry_date) = 'Sunday';",
+    "syntaxBlueprint": "SELECT col, QUARTER(date_col), DAYOFWEEK(date_col), DAYNAME(date_col)\nFROM table_name;",
+    "syntaxRule": "QUARTER() maps dates to financial quarters (1 to 4). DAYNAME() returns day names ('Monday', 'Friday'). DAYOFWEEK() returns 1 (Sunday) to 7 (Saturday).",
+    "syntaxTrap": "DAYOFWEEK starts on Sunday (1 = Sunday) in standard SQL/MySQL, unlike ISO week day standards.",
+    "eli5Story": "Date, Time & Temporal Arithmetic on GroceryItems: Find grocery items expiring on a Sunday using DAYNAME().",
+    "commonMistakes": "Passing parameters in wrong order in DATEDIFF, hardcoding static dates instead of relative rolling intervals, or forgetting to group by both YEAR and MONTH for time series.",
+    "learningOutcomes": "Mastered 10.3 Quarters & Day of Week (QUARTER, DAYOFWEEK, DAYNAME) on GroceryItems.",
+    "challengeSlots": [
+      {
+        "type": "keyword",
+        "value": "SELECT"
+      },
+      {
+        "type": "column",
+        "value": "item_name,"
+      },
+      {
+        "type": "column",
+        "value": "DAYNAME(expiry_date)"
+      },
+      {
+        "type": "keyword",
+        "value": "AS"
+      },
+      {
+        "type": "column",
+        "value": "expiry_day"
+      },
+      {
+        "type": "keyword",
+        "value": "FROM"
+      },
+      {
+        "type": "table",
+        "value": "GroceryItems"
+      },
+      {
+        "type": "keyword",
+        "value": "WHERE"
+      },
+      {
+        "type": "column",
+        "value": "DAYNAME(expiry_date)"
+      },
+      {
+        "type": "column",
+        "value": "="
+      },
+      {
+        "type": "column",
+        "value": "'Sunday';"
+      }
+    ]
+  },
+  {
+    "drillNumber": 925,
+    "subcluster": "10.3 Quarters & Day of Week (QUARTER, DAYOFWEEK, DAYNAME)",
+    "level": "Level 1 (Calendar Metrics)",
+    "title": "Syntax #925: Filter weekend customer orders placed on Saturday or Sunday",
+    "table": "Orders",
+    "scenario": "Filter weekend customer orders placed on Saturday or Sunday.",
+    "businessObjective": "Filter weekend customer orders placed on Saturday or Sunday.",
+    "schemaSnippet": "Orders temporal schema",
+    "targetQuery": "SELECT order_id, DAYNAME(order_date) AS purchase_day, total_amount\nFROM Orders\nWHERE DAYNAME(order_date) IN ('Saturday', 'Sunday');",
+    "syntaxBlueprint": "SELECT col, QUARTER(date_col), DAYOFWEEK(date_col), DAYNAME(date_col)\nFROM table_name;",
+    "syntaxRule": "QUARTER() maps dates to financial quarters (1 to 4). DAYNAME() returns day names ('Monday', 'Friday'). DAYOFWEEK() returns 1 (Sunday) to 7 (Saturday).",
+    "syntaxTrap": "DAYOFWEEK starts on Sunday (1 = Sunday) in standard SQL/MySQL, unlike ISO week day standards.",
+    "eli5Story": "Date, Time & Temporal Arithmetic on Orders: Filter weekend customer orders placed on Saturday or Sunday.",
+    "commonMistakes": "Passing parameters in wrong order in DATEDIFF, hardcoding static dates instead of relative rolling intervals, or forgetting to group by both YEAR and MONTH for time series.",
+    "learningOutcomes": "Mastered 10.3 Quarters & Day of Week (QUARTER, DAYOFWEEK, DAYNAME) on Orders.",
+    "challengeSlots": [
+      {
+        "type": "keyword",
+        "value": "SELECT"
+      },
+      {
+        "type": "column",
+        "value": "order_id,"
+      },
+      {
+        "type": "column",
+        "value": "DAYNAME(order_date)"
+      },
+      {
+        "type": "keyword",
+        "value": "AS"
+      },
+      {
+        "type": "column",
+        "value": "purchase_day,"
+      },
+      {
+        "type": "column",
+        "value": "total_amount"
+      },
+      {
+        "type": "keyword",
+        "value": "FROM"
+      },
+      {
+        "type": "table",
+        "value": "Orders"
+      },
+      {
+        "type": "keyword",
+        "value": "WHERE"
+      },
+      {
+        "type": "column",
+        "value": "DAYNAME(order_date)"
+      },
+      {
+        "type": "column",
+        "value": "IN"
+      },
+      {
+        "type": "column",
+        "value": "('Saturday',"
+      },
+      {
+        "type": "column",
+        "value": "'Sunday');"
+      }
+    ]
+  },
+  {
+    "drillNumber": 926,
+    "subcluster": "10.3 Quarters & Day of Week (QUARTER, DAYOFWEEK, DAYNAME)",
+    "level": "Level 1 (Calendar Metrics)",
+    "title": "Syntax #926: Identify new music releases dropped on traditional New Music Friday",
+    "table": "MusicTracks",
+    "scenario": "Identify new music releases dropped on traditional New Music Friday.",
+    "businessObjective": "Identify new music releases dropped on traditional New Music Friday.",
+    "schemaSnippet": "MusicTracks temporal schema",
+    "targetQuery": "SELECT track_title, DAYNAME(release_date) AS release_day\nFROM MusicTracks\nWHERE DAYNAME(release_date) = 'Friday';",
+    "syntaxBlueprint": "SELECT col, QUARTER(date_col), DAYOFWEEK(date_col), DAYNAME(date_col)\nFROM table_name;",
+    "syntaxRule": "QUARTER() maps dates to financial quarters (1 to 4). DAYNAME() returns day names ('Monday', 'Friday'). DAYOFWEEK() returns 1 (Sunday) to 7 (Saturday).",
+    "syntaxTrap": "DAYOFWEEK starts on Sunday (1 = Sunday) in standard SQL/MySQL, unlike ISO week day standards.",
+    "eli5Story": "Date, Time & Temporal Arithmetic on MusicTracks: Identify new music releases dropped on traditional New Music Friday.",
+    "commonMistakes": "Passing parameters in wrong order in DATEDIFF, hardcoding static dates instead of relative rolling intervals, or forgetting to group by both YEAR and MONTH for time series.",
+    "learningOutcomes": "Mastered 10.3 Quarters & Day of Week (QUARTER, DAYOFWEEK, DAYNAME) on MusicTracks.",
+    "challengeSlots": [
+      {
+        "type": "keyword",
+        "value": "SELECT"
+      },
+      {
+        "type": "column",
+        "value": "track_title,"
+      },
+      {
+        "type": "column",
+        "value": "DAYNAME(release_date)"
+      },
+      {
+        "type": "keyword",
+        "value": "AS"
+      },
+      {
+        "type": "column",
+        "value": "release_day"
+      },
+      {
+        "type": "keyword",
+        "value": "FROM"
+      },
+      {
+        "type": "table",
+        "value": "MusicTracks"
+      },
+      {
+        "type": "keyword",
+        "value": "WHERE"
+      },
+      {
+        "type": "column",
+        "value": "DAYNAME(release_date)"
+      },
+      {
+        "type": "column",
+        "value": "="
+      },
+      {
+        "type": "column",
+        "value": "'Friday';"
+      }
+    ]
+  },
+  {
+    "drillNumber": 927,
+    "subcluster": "10.3 Quarters & Day of Week (QUARTER, DAYOFWEEK, DAYNAME)",
+    "level": "Level 1 (Calendar Metrics)",
+    "title": "Syntax #927: Find fitness enthusiasts who started their gym membership on a Monday",
+    "table": "GymMembers",
+    "scenario": "Find fitness enthusiasts who started their gym membership on a Monday.",
+    "businessObjective": "Find fitness enthusiasts who started their gym membership on a Monday.",
+    "schemaSnippet": "GymMembers temporal schema",
+    "targetQuery": "SELECT member_name, DAYNAME(join_date) AS signup_day\nFROM GymMembers\nWHERE DAYNAME(join_date) = 'Monday';",
+    "syntaxBlueprint": "SELECT col, QUARTER(date_col), DAYOFWEEK(date_col), DAYNAME(date_col)\nFROM table_name;",
+    "syntaxRule": "QUARTER() maps dates to financial quarters (1 to 4). DAYNAME() returns day names ('Monday', 'Friday'). DAYOFWEEK() returns 1 (Sunday) to 7 (Saturday).",
+    "syntaxTrap": "DAYOFWEEK starts on Sunday (1 = Sunday) in standard SQL/MySQL, unlike ISO week day standards.",
+    "eli5Story": "Date, Time & Temporal Arithmetic on GymMembers: Find fitness enthusiasts who started their gym membership on a Monday.",
+    "commonMistakes": "Passing parameters in wrong order in DATEDIFF, hardcoding static dates instead of relative rolling intervals, or forgetting to group by both YEAR and MONTH for time series.",
+    "learningOutcomes": "Mastered 10.3 Quarters & Day of Week (QUARTER, DAYOFWEEK, DAYNAME) on GymMembers.",
+    "challengeSlots": [
+      {
+        "type": "keyword",
+        "value": "SELECT"
+      },
+      {
+        "type": "column",
+        "value": "member_name,"
+      },
+      {
+        "type": "column",
+        "value": "DAYNAME(join_date)"
+      },
+      {
+        "type": "keyword",
+        "value": "AS"
+      },
+      {
+        "type": "column",
+        "value": "signup_day"
+      },
+      {
+        "type": "keyword",
+        "value": "FROM"
+      },
+      {
+        "type": "table",
+        "value": "GymMembers"
+      },
+      {
+        "type": "keyword",
+        "value": "WHERE"
+      },
+      {
+        "type": "column",
+        "value": "DAYNAME(join_date)"
+      },
+      {
+        "type": "column",
+        "value": "="
+      },
+      {
+        "type": "column",
+        "value": "'Monday';"
+      }
+    ]
+  },
+  {
+    "drillNumber": 928,
+    "subcluster": "10.3 Quarters & Day of Week (QUARTER, DAYOFWEEK, DAYNAME)",
+    "level": "Level 1 (Calendar Metrics)",
+    "title": "Syntax #928: Retrieve film reviews published during Q2 (April to June)",
+    "table": "MovieReviews",
+    "scenario": "Retrieve film reviews published during Q2 (April to June).",
+    "businessObjective": "Retrieve film reviews published during Q2 (April to June).",
+    "schemaSnippet": "MovieReviews temporal schema",
+    "targetQuery": "SELECT movie_title, QUARTER(review_date) AS review_quarter\nFROM MovieReviews\nWHERE QUARTER(review_date) = 2;",
+    "syntaxBlueprint": "SELECT col, QUARTER(date_col), DAYOFWEEK(date_col), DAYNAME(date_col)\nFROM table_name;",
+    "syntaxRule": "QUARTER() maps dates to financial quarters (1 to 4). DAYNAME() returns day names ('Monday', 'Friday'). DAYOFWEEK() returns 1 (Sunday) to 7 (Saturday).",
+    "syntaxTrap": "DAYOFWEEK starts on Sunday (1 = Sunday) in standard SQL/MySQL, unlike ISO week day standards.",
+    "eli5Story": "Date, Time & Temporal Arithmetic on MovieReviews: Retrieve film reviews published during Q2 (April to June).",
+    "commonMistakes": "Passing parameters in wrong order in DATEDIFF, hardcoding static dates instead of relative rolling intervals, or forgetting to group by both YEAR and MONTH for time series.",
+    "learningOutcomes": "Mastered 10.3 Quarters & Day of Week (QUARTER, DAYOFWEEK, DAYNAME) on MovieReviews.",
+    "challengeSlots": [
+      {
+        "type": "keyword",
+        "value": "SELECT"
+      },
+      {
+        "type": "column",
+        "value": "movie_title,"
+      },
+      {
+        "type": "column",
+        "value": "QUARTER(review_date)"
+      },
+      {
+        "type": "keyword",
+        "value": "AS"
+      },
+      {
+        "type": "column",
+        "value": "review_quarter"
+      },
+      {
+        "type": "keyword",
+        "value": "FROM"
+      },
+      {
+        "type": "table",
+        "value": "MovieReviews"
+      },
+      {
+        "type": "keyword",
+        "value": "WHERE"
+      },
+      {
+        "type": "column",
+        "value": "QUARTER(review_date)"
+      },
+      {
+        "type": "column",
+        "value": "="
+      },
+      {
+        "type": "column",
+        "value": "2;"
+      }
+    ]
+  },
+  {
+    "drillNumber": 929,
+    "subcluster": "10.3 Quarters & Day of Week (QUARTER, DAYOFWEEK, DAYNAME)",
+    "level": "Level 1 (Calendar Metrics)",
+    "title": "Syntax #929: Find all flights scheduled for high-traffic Friday departures",
+    "table": "FlightSchedule",
+    "scenario": "Find all flights scheduled for high-traffic Friday departures.",
+    "businessObjective": "Find all flights scheduled for high-traffic Friday departures.",
+    "schemaSnippet": "FlightSchedule temporal schema",
+    "targetQuery": "SELECT flight_id, DAYNAME(departure_time) AS flight_day\nFROM FlightSchedule\nWHERE DAYNAME(departure_time) = 'Friday';",
+    "syntaxBlueprint": "SELECT col, QUARTER(date_col), DAYOFWEEK(date_col), DAYNAME(date_col)\nFROM table_name;",
+    "syntaxRule": "QUARTER() maps dates to financial quarters (1 to 4). DAYNAME() returns day names ('Monday', 'Friday'). DAYOFWEEK() returns 1 (Sunday) to 7 (Saturday).",
+    "syntaxTrap": "DAYOFWEEK starts on Sunday (1 = Sunday) in standard SQL/MySQL, unlike ISO week day standards.",
+    "eli5Story": "Date, Time & Temporal Arithmetic on FlightSchedule: Find all flights scheduled for high-traffic Friday departures.",
+    "commonMistakes": "Passing parameters in wrong order in DATEDIFF, hardcoding static dates instead of relative rolling intervals, or forgetting to group by both YEAR and MONTH for time series.",
+    "learningOutcomes": "Mastered 10.3 Quarters & Day of Week (QUARTER, DAYOFWEEK, DAYNAME) on FlightSchedule.",
+    "challengeSlots": [
+      {
+        "type": "keyword",
+        "value": "SELECT"
+      },
+      {
+        "type": "column",
+        "value": "flight_id,"
+      },
+      {
+        "type": "column",
+        "value": "DAYNAME(departure_time)"
+      },
+      {
+        "type": "keyword",
+        "value": "AS"
+      },
+      {
+        "type": "column",
+        "value": "flight_day"
+      },
+      {
+        "type": "keyword",
+        "value": "FROM"
+      },
+      {
+        "type": "table",
+        "value": "FlightSchedule"
+      },
+      {
+        "type": "keyword",
+        "value": "WHERE"
+      },
+      {
+        "type": "column",
+        "value": "DAYNAME(departure_time)"
+      },
+      {
+        "type": "column",
+        "value": "="
+      },
+      {
+        "type": "column",
+        "value": "'Friday';"
+      }
+    ]
+  },
+  {
+    "drillNumber": 930,
+    "subcluster": "10.3 Quarters & Day of Week (QUARTER, DAYOFWEEK, DAYNAME)",
+    "level": "Level 1 (Calendar Metrics)",
+    "title": "Syntax #930: Identify veterinary patients booked for weekend Saturday appointments",
+    "table": "PetClinic",
+    "scenario": "Identify veterinary patients booked for weekend Saturday appointments.",
+    "businessObjective": "Identify veterinary patients booked for weekend Saturday appointments.",
+    "schemaSnippet": "PetClinic temporal schema",
+    "targetQuery": "SELECT pet_name, DAYNAME(visit_date) AS appointment_day\nFROM PetClinic\nWHERE DAYNAME(visit_date) = 'Saturday';",
+    "syntaxBlueprint": "SELECT col, QUARTER(date_col), DAYOFWEEK(date_col), DAYNAME(date_col)\nFROM table_name;",
+    "syntaxRule": "QUARTER() maps dates to financial quarters (1 to 4). DAYNAME() returns day names ('Monday', 'Friday'). DAYOFWEEK() returns 1 (Sunday) to 7 (Saturday).",
+    "syntaxTrap": "DAYOFWEEK starts on Sunday (1 = Sunday) in standard SQL/MySQL, unlike ISO week day standards.",
+    "eli5Story": "Date, Time & Temporal Arithmetic on PetClinic: Identify veterinary patients booked for weekend Saturday appointments.",
+    "commonMistakes": "Passing parameters in wrong order in DATEDIFF, hardcoding static dates instead of relative rolling intervals, or forgetting to group by both YEAR and MONTH for time series.",
+    "learningOutcomes": "Mastered 10.3 Quarters & Day of Week (QUARTER, DAYOFWEEK, DAYNAME) on PetClinic.",
+    "challengeSlots": [
+      {
+        "type": "keyword",
+        "value": "SELECT"
+      },
+      {
+        "type": "column",
+        "value": "pet_name,"
+      },
+      {
+        "type": "column",
+        "value": "DAYNAME(visit_date)"
+      },
+      {
+        "type": "keyword",
+        "value": "AS"
+      },
+      {
+        "type": "column",
+        "value": "appointment_day"
+      },
+      {
+        "type": "keyword",
+        "value": "FROM"
+      },
+      {
+        "type": "table",
+        "value": "PetClinic"
+      },
+      {
+        "type": "keyword",
+        "value": "WHERE"
+      },
+      {
+        "type": "column",
+        "value": "DAYNAME(visit_date)"
+      },
+      {
+        "type": "column",
+        "value": "="
+      },
+      {
+        "type": "column",
+        "value": "'Saturday';"
+      }
+    ]
+  },
+  {
+    "drillNumber": 931,
+    "subcluster": "10.4 Date Differences & Elapsed Spans (DATEDIFF)",
+    "level": "Level 2 (Date Spans)",
+    "title": "Syntax #931: Calculate the exact number of days each student has been enrolled relative to today",
+    "table": "Students",
+    "scenario": "Calculate the exact number of days each student has been enrolled relative to today.",
+    "businessObjective": "Calculate the exact number of days each student has been enrolled relative to today.",
+    "schemaSnippet": "Students temporal schema",
+    "targetQuery": "SELECT full_name, DATEDIFF(CURRENT_DATE, enrolled_date) AS days_enrolled\nFROM Students\nORDER BY days_enrolled DESC;",
+    "syntaxBlueprint": "SELECT col, DATEDIFF(end_date, start_date) AS days_elapsed\nFROM table_name;",
+    "syntaxRule": "DATEDIFF(date1, date2) computes (date1 - date2) in days. If date1 is after date2, the result is positive.",
+    "syntaxTrap": "Passing the start date first in DATEDIFF(start, end) produces negative day counts. Always write DATEDIFF(later_date, earlier_date).",
+    "eli5Story": "Date, Time & Temporal Arithmetic on Students: Calculate the exact number of days each student has been enrolled relative to today.",
+    "commonMistakes": "Passing parameters in wrong order in DATEDIFF, hardcoding static dates instead of relative rolling intervals, or forgetting to group by both YEAR and MONTH for time series.",
+    "learningOutcomes": "Mastered 10.4 Date Differences & Elapsed Spans (DATEDIFF) on Students.",
+    "challengeSlots": [
+      {
+        "type": "keyword",
+        "value": "SELECT"
+      },
+      {
+        "type": "column",
+        "value": "full_name,"
+      },
+      {
+        "type": "column",
+        "value": "DATEDIFF(CURRENT_DATE,"
+      },
+      {
+        "type": "column",
+        "value": "enrolled_date)"
+      },
+      {
+        "type": "keyword",
+        "value": "AS"
+      },
+      {
+        "type": "column",
+        "value": "days_enrolled"
+      },
+      {
+        "type": "keyword",
+        "value": "FROM"
+      },
+      {
+        "type": "table",
+        "value": "Students"
+      },
+      {
+        "type": "keyword",
+        "value": "ORDER"
+      },
+      {
+        "type": "keyword",
+        "value": "BY"
+      },
+      {
+        "type": "column",
+        "value": "days_enrolled"
+      },
+      {
+        "type": "keyword",
+        "value": "DESC;"
+      }
+    ]
+  },
+  {
+    "drillNumber": 932,
+    "subcluster": "10.4 Date Differences & Elapsed Spans (DATEDIFF)",
+    "level": "Level 2 (Date Spans)",
+    "title": "Syntax #932: Find books published over 365 days ago using DATEDIFF",
+    "table": "Books",
+    "scenario": "Find books published over 365 days ago using DATEDIFF.",
+    "businessObjective": "Find books published over 365 days ago using DATEDIFF.",
+    "schemaSnippet": "Books temporal schema",
+    "targetQuery": "SELECT title, DATEDIFF(CURRENT_DATE, published_date) AS days_since_publication\nFROM Books\nWHERE DATEDIFF(CURRENT_DATE, published_date) > 365;",
+    "syntaxBlueprint": "SELECT col, DATEDIFF(end_date, start_date) AS days_elapsed\nFROM table_name;",
+    "syntaxRule": "DATEDIFF(date1, date2) computes (date1 - date2) in days. If date1 is after date2, the result is positive.",
+    "syntaxTrap": "Passing the start date first in DATEDIFF(start, end) produces negative day counts. Always write DATEDIFF(later_date, earlier_date).",
+    "eli5Story": "Date, Time & Temporal Arithmetic on Books: Find books published over 365 days ago using DATEDIFF.",
+    "commonMistakes": "Passing parameters in wrong order in DATEDIFF, hardcoding static dates instead of relative rolling intervals, or forgetting to group by both YEAR and MONTH for time series.",
+    "learningOutcomes": "Mastered 10.4 Date Differences & Elapsed Spans (DATEDIFF) on Books.",
+    "challengeSlots": [
+      {
+        "type": "keyword",
+        "value": "SELECT"
+      },
+      {
+        "type": "column",
+        "value": "title,"
+      },
+      {
+        "type": "column",
+        "value": "DATEDIFF(CURRENT_DATE,"
+      },
+      {
+        "type": "column",
+        "value": "published_date)"
+      },
+      {
+        "type": "keyword",
+        "value": "AS"
+      },
+      {
+        "type": "column",
+        "value": "days_since_publication"
+      },
+      {
+        "type": "keyword",
+        "value": "FROM"
+      },
+      {
+        "type": "table",
+        "value": "Books"
+      },
+      {
+        "type": "keyword",
+        "value": "WHERE"
+      },
+      {
+        "type": "column",
+        "value": "DATEDIFF(CURRENT_DATE,"
+      },
+      {
+        "type": "column",
+        "value": "published_date)"
+      },
+      {
+        "type": "column",
+        "value": ">"
+      },
+      {
+        "type": "column",
+        "value": "365;"
+      }
+    ]
+  },
+  {
+    "drillNumber": 933,
+    "subcluster": "10.4 Date Differences & Elapsed Spans (DATEDIFF)",
+    "level": "Level 2 (Date Spans)",
+    "title": "Syntax #933: Identify 5-year veteran employees whose company tenure exceeds 1,825 days",
+    "table": "Employees",
+    "scenario": "Identify 5-year veteran employees whose company tenure exceeds 1,825 days.",
+    "businessObjective": "Identify 5-year veteran employees whose company tenure exceeds 1,825 days.",
+    "schemaSnippet": "Employees temporal schema",
+    "targetQuery": "SELECT first_name, DATEDIFF(CURRENT_DATE, hire_date) AS tenure_days\nFROM Employees\nWHERE DATEDIFF(CURRENT_DATE, hire_date) >= 1825;",
+    "syntaxBlueprint": "SELECT col, DATEDIFF(end_date, start_date) AS days_elapsed\nFROM table_name;",
+    "syntaxRule": "DATEDIFF(date1, date2) computes (date1 - date2) in days. If date1 is after date2, the result is positive.",
+    "syntaxTrap": "Passing the start date first in DATEDIFF(start, end) produces negative day counts. Always write DATEDIFF(later_date, earlier_date).",
+    "eli5Story": "Date, Time & Temporal Arithmetic on Employees: Identify 5-year veteran employees whose company tenure exceeds 1,825 days.",
+    "commonMistakes": "Passing parameters in wrong order in DATEDIFF, hardcoding static dates instead of relative rolling intervals, or forgetting to group by both YEAR and MONTH for time series.",
+    "learningOutcomes": "Mastered 10.4 Date Differences & Elapsed Spans (DATEDIFF) on Employees.",
+    "challengeSlots": [
+      {
+        "type": "keyword",
+        "value": "SELECT"
+      },
+      {
+        "type": "column",
+        "value": "first_name,"
+      },
+      {
+        "type": "column",
+        "value": "DATEDIFF(CURRENT_DATE,"
+      },
+      {
+        "type": "column",
+        "value": "hire_date)"
+      },
+      {
+        "type": "keyword",
+        "value": "AS"
+      },
+      {
+        "type": "column",
+        "value": "tenure_days"
+      },
+      {
+        "type": "keyword",
+        "value": "FROM"
+      },
+      {
+        "type": "table",
+        "value": "Employees"
+      },
+      {
+        "type": "keyword",
+        "value": "WHERE"
+      },
+      {
+        "type": "column",
+        "value": "DATEDIFF(CURRENT_DATE,"
+      },
+      {
+        "type": "column",
+        "value": "hire_date)"
+      },
+      {
+        "type": "column",
+        "value": ">="
+      },
+      {
+        "type": "column",
+        "value": "1825;"
+      }
+    ]
+  },
+  {
+    "drillNumber": 934,
+    "subcluster": "10.4 Date Differences & Elapsed Spans (DATEDIFF)",
+    "level": "Level 2 (Date Spans)",
+    "title": "Syntax #934: Identify perishable grocery stock expiring within the next 7 days",
+    "table": "GroceryItems",
+    "scenario": "Identify perishable grocery stock expiring within the next 7 days.",
+    "businessObjective": "Identify perishable grocery stock expiring within the next 7 days.",
+    "schemaSnippet": "GroceryItems temporal schema",
+    "targetQuery": "SELECT item_name, DATEDIFF(expiry_date, CURRENT_DATE) AS days_until_expiry\nFROM GroceryItems\nWHERE DATEDIFF(expiry_date, CURRENT_DATE) <= 7;",
+    "syntaxBlueprint": "SELECT col, DATEDIFF(end_date, start_date) AS days_elapsed\nFROM table_name;",
+    "syntaxRule": "DATEDIFF(date1, date2) computes (date1 - date2) in days. If date1 is after date2, the result is positive.",
+    "syntaxTrap": "Passing the start date first in DATEDIFF(start, end) produces negative day counts. Always write DATEDIFF(later_date, earlier_date).",
+    "eli5Story": "Date, Time & Temporal Arithmetic on GroceryItems: Identify perishable grocery stock expiring within the next 7 days.",
+    "commonMistakes": "Passing parameters in wrong order in DATEDIFF, hardcoding static dates instead of relative rolling intervals, or forgetting to group by both YEAR and MONTH for time series.",
+    "learningOutcomes": "Mastered 10.4 Date Differences & Elapsed Spans (DATEDIFF) on GroceryItems.",
+    "challengeSlots": [
+      {
+        "type": "keyword",
+        "value": "SELECT"
+      },
+      {
+        "type": "column",
+        "value": "item_name,"
+      },
+      {
+        "type": "column",
+        "value": "DATEDIFF(expiry_date,"
+      },
+      {
+        "type": "keyword",
+        "value": "CURRENT_DATE)"
+      },
+      {
+        "type": "keyword",
+        "value": "AS"
+      },
+      {
+        "type": "column",
+        "value": "days_until_expiry"
+      },
+      {
+        "type": "keyword",
+        "value": "FROM"
+      },
+      {
+        "type": "table",
+        "value": "GroceryItems"
+      },
+      {
+        "type": "keyword",
+        "value": "WHERE"
+      },
+      {
+        "type": "column",
+        "value": "DATEDIFF(expiry_date,"
+      },
+      {
+        "type": "keyword",
+        "value": "CURRENT_DATE)"
+      },
+      {
+        "type": "column",
+        "value": "<="
+      },
+      {
+        "type": "column",
+        "value": "7;"
+      }
+    ]
+  },
+  {
+    "drillNumber": 935,
+    "subcluster": "10.4 Date Differences & Elapsed Spans (DATEDIFF)",
+    "level": "Level 2 (Date Spans)",
+    "title": "Syntax #935: Calculate warehouse fulfillment speed in days between order date and shipped date",
+    "table": "Orders",
+    "scenario": "Calculate warehouse fulfillment speed in days between order date and shipped date.",
+    "businessObjective": "Calculate warehouse fulfillment speed in days between order date and shipped date.",
+    "schemaSnippet": "Orders temporal schema",
+    "targetQuery": "SELECT order_id, DATEDIFF(shipped_date, order_date) AS fulfillment_days\nFROM Orders\nORDER BY fulfillment_days DESC;",
+    "syntaxBlueprint": "SELECT col, DATEDIFF(end_date, start_date) AS days_elapsed\nFROM table_name;",
+    "syntaxRule": "DATEDIFF(date1, date2) computes (date1 - date2) in days. If date1 is after date2, the result is positive.",
+    "syntaxTrap": "Passing the start date first in DATEDIFF(start, end) produces negative day counts. Always write DATEDIFF(later_date, earlier_date).",
+    "eli5Story": "Date, Time & Temporal Arithmetic on Orders: Calculate warehouse fulfillment speed in days between order date and shipped date.",
+    "commonMistakes": "Passing parameters in wrong order in DATEDIFF, hardcoding static dates instead of relative rolling intervals, or forgetting to group by both YEAR and MONTH for time series.",
+    "learningOutcomes": "Mastered 10.4 Date Differences & Elapsed Spans (DATEDIFF) on Orders.",
+    "challengeSlots": [
+      {
+        "type": "keyword",
+        "value": "SELECT"
+      },
+      {
+        "type": "column",
+        "value": "order_id,"
+      },
+      {
+        "type": "column",
+        "value": "DATEDIFF(shipped_date,"
+      },
+      {
+        "type": "column",
+        "value": "order_date)"
+      },
+      {
+        "type": "keyword",
+        "value": "AS"
+      },
+      {
+        "type": "column",
+        "value": "fulfillment_days"
+      },
+      {
+        "type": "keyword",
+        "value": "FROM"
+      },
+      {
+        "type": "table",
+        "value": "Orders"
+      },
+      {
+        "type": "keyword",
+        "value": "ORDER"
+      },
+      {
+        "type": "keyword",
+        "value": "BY"
+      },
+      {
+        "type": "column",
+        "value": "fulfillment_days"
+      },
+      {
+        "type": "keyword",
+        "value": "DESC;"
+      }
+    ]
+  },
+  {
+    "drillNumber": 936,
+    "subcluster": "10.4 Date Differences & Elapsed Spans (DATEDIFF)",
+    "level": "Level 2 (Date Spans)",
+    "title": "Syntax #936: Calculate how many days each music track has been available on the market",
+    "table": "MusicTracks",
+    "scenario": "Calculate how many days each music track has been available on the market.",
+    "businessObjective": "Calculate how many days each music track has been available on the market.",
+    "schemaSnippet": "MusicTracks temporal schema",
+    "targetQuery": "SELECT track_title, DATEDIFF(CURRENT_DATE, release_date) AS days_on_market\nFROM MusicTracks\nORDER BY days_on_market ASC;",
+    "syntaxBlueprint": "SELECT col, DATEDIFF(end_date, start_date) AS days_elapsed\nFROM table_name;",
+    "syntaxRule": "DATEDIFF(date1, date2) computes (date1 - date2) in days. If date1 is after date2, the result is positive.",
+    "syntaxTrap": "Passing the start date first in DATEDIFF(start, end) produces negative day counts. Always write DATEDIFF(later_date, earlier_date).",
+    "eli5Story": "Date, Time & Temporal Arithmetic on MusicTracks: Calculate how many days each music track has been available on the market.",
+    "commonMistakes": "Passing parameters in wrong order in DATEDIFF, hardcoding static dates instead of relative rolling intervals, or forgetting to group by both YEAR and MONTH for time series.",
+    "learningOutcomes": "Mastered 10.4 Date Differences & Elapsed Spans (DATEDIFF) on MusicTracks.",
+    "challengeSlots": [
+      {
+        "type": "keyword",
+        "value": "SELECT"
+      },
+      {
+        "type": "column",
+        "value": "track_title,"
+      },
+      {
+        "type": "column",
+        "value": "DATEDIFF(CURRENT_DATE,"
+      },
+      {
+        "type": "column",
+        "value": "release_date)"
+      },
+      {
+        "type": "keyword",
+        "value": "AS"
+      },
+      {
+        "type": "column",
+        "value": "days_on_market"
+      },
+      {
+        "type": "keyword",
+        "value": "FROM"
+      },
+      {
+        "type": "table",
+        "value": "MusicTracks"
+      },
+      {
+        "type": "keyword",
+        "value": "ORDER"
+      },
+      {
+        "type": "keyword",
+        "value": "BY"
+      },
+      {
+        "type": "column",
+        "value": "days_on_market"
+      },
+      {
+        "type": "keyword",
+        "value": "ASC;"
+      }
+    ]
+  },
+  {
+    "drillNumber": 937,
+    "subcluster": "10.4 Date Differences & Elapsed Spans (DATEDIFF)",
+    "level": "Level 2 (Date Spans)",
+    "title": "Syntax #937: Find the 10 longest-standing gym members by days elapsed since joining",
+    "table": "GymMembers",
+    "scenario": "Find the 10 longest-standing gym members by days elapsed since joining.",
+    "businessObjective": "Find the 10 longest-standing gym members by days elapsed since joining.",
+    "schemaSnippet": "GymMembers temporal schema",
+    "targetQuery": "SELECT member_name, DATEDIFF(CURRENT_DATE, join_date) AS membership_longevity_days\nFROM GymMembers\nORDER BY membership_longevity_days DESC\nLIMIT 10;",
+    "syntaxBlueprint": "SELECT col, DATEDIFF(end_date, start_date) AS days_elapsed\nFROM table_name;",
+    "syntaxRule": "DATEDIFF(date1, date2) computes (date1 - date2) in days. If date1 is after date2, the result is positive.",
+    "syntaxTrap": "Passing the start date first in DATEDIFF(start, end) produces negative day counts. Always write DATEDIFF(later_date, earlier_date).",
+    "eli5Story": "Date, Time & Temporal Arithmetic on GymMembers: Find the 10 longest-standing gym members by days elapsed since joining.",
+    "commonMistakes": "Passing parameters in wrong order in DATEDIFF, hardcoding static dates instead of relative rolling intervals, or forgetting to group by both YEAR and MONTH for time series.",
+    "learningOutcomes": "Mastered 10.4 Date Differences & Elapsed Spans (DATEDIFF) on GymMembers.",
+    "challengeSlots": [
+      {
+        "type": "keyword",
+        "value": "SELECT"
+      },
+      {
+        "type": "column",
+        "value": "member_name,"
+      },
+      {
+        "type": "column",
+        "value": "DATEDIFF(CURRENT_DATE,"
+      },
+      {
+        "type": "column",
+        "value": "join_date)"
+      },
+      {
+        "type": "keyword",
+        "value": "AS"
+      },
+      {
+        "type": "column",
+        "value": "membership_longevity_days"
+      },
+      {
+        "type": "keyword",
+        "value": "FROM"
+      },
+      {
+        "type": "table",
+        "value": "GymMembers"
+      },
+      {
+        "type": "keyword",
+        "value": "ORDER"
+      },
+      {
+        "type": "keyword",
+        "value": "BY"
+      },
+      {
+        "type": "column",
+        "value": "membership_longevity_days"
+      },
+      {
+        "type": "keyword",
+        "value": "DESC"
+      },
+      {
+        "type": "keyword",
+        "value": "LIMIT"
+      },
+      {
+        "type": "column",
+        "value": "10;"
+      }
+    ]
+  },
+  {
+    "drillNumber": 938,
+    "subcluster": "10.4 Date Differences & Elapsed Spans (DATEDIFF)",
+    "level": "Level 2 (Date Spans)",
+    "title": "Syntax #938: Filter fresh reviews published in the last 30 days using DATEDIFF",
+    "table": "MovieReviews",
+    "scenario": "Filter fresh reviews published in the last 30 days using DATEDIFF.",
+    "businessObjective": "Filter fresh reviews published in the last 30 days using DATEDIFF.",
+    "schemaSnippet": "MovieReviews temporal schema",
+    "targetQuery": "SELECT movie_title, DATEDIFF(CURRENT_DATE, review_date) AS days_ago\nFROM MovieReviews\nWHERE DATEDIFF(CURRENT_DATE, review_date) <= 30;",
+    "syntaxBlueprint": "SELECT col, DATEDIFF(end_date, start_date) AS days_elapsed\nFROM table_name;",
+    "syntaxRule": "DATEDIFF(date1, date2) computes (date1 - date2) in days. If date1 is after date2, the result is positive.",
+    "syntaxTrap": "Passing the start date first in DATEDIFF(start, end) produces negative day counts. Always write DATEDIFF(later_date, earlier_date).",
+    "eli5Story": "Date, Time & Temporal Arithmetic on MovieReviews: Filter fresh reviews published in the last 30 days using DATEDIFF.",
+    "commonMistakes": "Passing parameters in wrong order in DATEDIFF, hardcoding static dates instead of relative rolling intervals, or forgetting to group by both YEAR and MONTH for time series.",
+    "learningOutcomes": "Mastered 10.4 Date Differences & Elapsed Spans (DATEDIFF) on MovieReviews.",
+    "challengeSlots": [
+      {
+        "type": "keyword",
+        "value": "SELECT"
+      },
+      {
+        "type": "column",
+        "value": "movie_title,"
+      },
+      {
+        "type": "column",
+        "value": "DATEDIFF(CURRENT_DATE,"
+      },
+      {
+        "type": "column",
+        "value": "review_date)"
+      },
+      {
+        "type": "keyword",
+        "value": "AS"
+      },
+      {
+        "type": "column",
+        "value": "days_ago"
+      },
+      {
+        "type": "keyword",
+        "value": "FROM"
+      },
+      {
+        "type": "table",
+        "value": "MovieReviews"
+      },
+      {
+        "type": "keyword",
+        "value": "WHERE"
+      },
+      {
+        "type": "column",
+        "value": "DATEDIFF(CURRENT_DATE,"
+      },
+      {
+        "type": "column",
+        "value": "review_date)"
+      },
+      {
+        "type": "column",
+        "value": "<="
+      },
+      {
+        "type": "column",
+        "value": "30;"
+      }
+    ]
+  },
+  {
+    "drillNumber": 939,
+    "subcluster": "10.4 Date Differences & Elapsed Spans (DATEDIFF)",
+    "level": "Level 2 (Date Spans)",
+    "title": "Syntax #939: Identify overnight long-haul flights where arrival day is after departure day",
+    "table": "FlightSchedule",
+    "scenario": "Identify overnight long-haul flights where arrival day is after departure day.",
+    "businessObjective": "Identify overnight long-haul flights where arrival day is after departure day.",
+    "schemaSnippet": "FlightSchedule temporal schema",
+    "targetQuery": "SELECT flight_id, DATEDIFF(arrival_time, departure_time) AS overnight_flight_days\nFROM FlightSchedule\nWHERE DATEDIFF(arrival_time, departure_time) >= 1;",
+    "syntaxBlueprint": "SELECT col, DATEDIFF(end_date, start_date) AS days_elapsed\nFROM table_name;",
+    "syntaxRule": "DATEDIFF(date1, date2) computes (date1 - date2) in days. If date1 is after date2, the result is positive.",
+    "syntaxTrap": "Passing the start date first in DATEDIFF(start, end) produces negative day counts. Always write DATEDIFF(later_date, earlier_date).",
+    "eli5Story": "Date, Time & Temporal Arithmetic on FlightSchedule: Identify overnight long-haul flights where arrival day is after departure day.",
+    "commonMistakes": "Passing parameters in wrong order in DATEDIFF, hardcoding static dates instead of relative rolling intervals, or forgetting to group by both YEAR and MONTH for time series.",
+    "learningOutcomes": "Mastered 10.4 Date Differences & Elapsed Spans (DATEDIFF) on FlightSchedule.",
+    "challengeSlots": [
+      {
+        "type": "keyword",
+        "value": "SELECT"
+      },
+      {
+        "type": "column",
+        "value": "flight_id,"
+      },
+      {
+        "type": "column",
+        "value": "DATEDIFF(arrival_time,"
+      },
+      {
+        "type": "column",
+        "value": "departure_time)"
+      },
+      {
+        "type": "keyword",
+        "value": "AS"
+      },
+      {
+        "type": "column",
+        "value": "overnight_flight_days"
+      },
+      {
+        "type": "keyword",
+        "value": "FROM"
+      },
+      {
+        "type": "table",
+        "value": "FlightSchedule"
+      },
+      {
+        "type": "keyword",
+        "value": "WHERE"
+      },
+      {
+        "type": "column",
+        "value": "DATEDIFF(arrival_time,"
+      },
+      {
+        "type": "column",
+        "value": "departure_time)"
+      },
+      {
+        "type": "column",
+        "value": ">="
+      },
+      {
+        "type": "column",
+        "value": "1;"
+      }
+    ]
+  },
+  {
+    "drillNumber": 940,
+    "subcluster": "10.4 Date Differences & Elapsed Spans (DATEDIFF)",
+    "level": "Level 2 (Date Spans)",
+    "title": "Syntax #940: Identify pets whose last clinic checkup was more than 180 days ago",
+    "table": "PetClinic",
+    "scenario": "Identify pets whose last clinic checkup was more than 180 days ago.",
+    "businessObjective": "Identify pets whose last clinic checkup was more than 180 days ago.",
+    "schemaSnippet": "PetClinic temporal schema",
+    "targetQuery": "SELECT pet_name, DATEDIFF(CURRENT_DATE, visit_date) AS days_since_last_checkup\nFROM PetClinic\nWHERE DATEDIFF(CURRENT_DATE, visit_date) > 180;",
+    "syntaxBlueprint": "SELECT col, DATEDIFF(end_date, start_date) AS days_elapsed\nFROM table_name;",
+    "syntaxRule": "DATEDIFF(date1, date2) computes (date1 - date2) in days. If date1 is after date2, the result is positive.",
+    "syntaxTrap": "Passing the start date first in DATEDIFF(start, end) produces negative day counts. Always write DATEDIFF(later_date, earlier_date).",
+    "eli5Story": "Date, Time & Temporal Arithmetic on PetClinic: Identify pets whose last clinic checkup was more than 180 days ago.",
+    "commonMistakes": "Passing parameters in wrong order in DATEDIFF, hardcoding static dates instead of relative rolling intervals, or forgetting to group by both YEAR and MONTH for time series.",
+    "learningOutcomes": "Mastered 10.4 Date Differences & Elapsed Spans (DATEDIFF) on PetClinic.",
+    "challengeSlots": [
+      {
+        "type": "keyword",
+        "value": "SELECT"
+      },
+      {
+        "type": "column",
+        "value": "pet_name,"
+      },
+      {
+        "type": "column",
+        "value": "DATEDIFF(CURRENT_DATE,"
+      },
+      {
+        "type": "column",
+        "value": "visit_date)"
+      },
+      {
+        "type": "keyword",
+        "value": "AS"
+      },
+      {
+        "type": "column",
+        "value": "days_since_last_checkup"
+      },
+      {
+        "type": "keyword",
+        "value": "FROM"
+      },
+      {
+        "type": "table",
+        "value": "PetClinic"
+      },
+      {
+        "type": "keyword",
+        "value": "WHERE"
+      },
+      {
+        "type": "column",
+        "value": "DATEDIFF(CURRENT_DATE,"
+      },
+      {
+        "type": "column",
+        "value": "visit_date)"
+      },
+      {
+        "type": "column",
+        "value": ">"
+      },
+      {
+        "type": "column",
+        "value": "180;"
+      }
+    ]
+  },
+  {
+    "drillNumber": 941,
+    "subcluster": "10.5 Forward Date Addition (DATE_ADD & INTERVAL)",
+    "level": "Level 2 (Date Addition)",
+    "title": "Syntax #941: Project expected graduation date by adding 4 years to enrollment date",
+    "table": "Students",
+    "scenario": "Project expected graduation date by adding 4 years to enrollment date.",
+    "businessObjective": "Project expected graduation date by adding 4 years to enrollment date.",
+    "schemaSnippet": "Students temporal schema",
+    "targetQuery": "SELECT full_name, enrolled_date, DATE_ADD(enrolled_date, INTERVAL 4 YEAR) AS expected_graduation_date\nFROM Students;",
+    "syntaxBlueprint": "SELECT col, DATE_ADD(date_col, INTERVAL n unit) AS future_date\nFROM table_name;",
+    "syntaxRule": "DATE_ADD(date, INTERVAL n UNIT) projects future dates by adding a specified duration (DAY, MONTH, YEAR). Alternatively, write 'date + INTERVAL n UNIT'.",
+    "syntaxTrap": "Specifying plural units like 'INTERVAL 5 DAYS' (standard SQL requires singular DAY, MONTH, YEAR).",
+    "eli5Story": "Date, Time & Temporal Arithmetic on Students: Project expected graduation date by adding 4 years to enrollment date.",
+    "commonMistakes": "Passing parameters in wrong order in DATEDIFF, hardcoding static dates instead of relative rolling intervals, or forgetting to group by both YEAR and MONTH for time series.",
+    "learningOutcomes": "Mastered 10.5 Forward Date Addition (DATE_ADD & INTERVAL) on Students.",
+    "challengeSlots": [
+      {
+        "type": "keyword",
+        "value": "SELECT"
+      },
+      {
+        "type": "column",
+        "value": "full_name,"
+      },
+      {
+        "type": "column",
+        "value": "enrolled_date,"
+      },
+      {
+        "type": "column",
+        "value": "DATE_ADD(enrolled_date,"
+      },
+      {
+        "type": "keyword",
+        "value": "INTERVAL"
+      },
+      {
+        "type": "column",
+        "value": "4"
+      },
+      {
+        "type": "keyword",
+        "value": "YEAR)"
+      },
+      {
+        "type": "keyword",
+        "value": "AS"
+      },
+      {
+        "type": "column",
+        "value": "expected_graduation_date"
+      },
+      {
+        "type": "keyword",
+        "value": "FROM"
+      },
+      {
+        "type": "table",
+        "value": "Students;"
+      }
+    ]
+  },
+  {
+    "drillNumber": 942,
+    "subcluster": "10.5 Forward Date Addition (DATE_ADD & INTERVAL)",
+    "level": "Level 2 (Date Addition)",
+    "title": "Syntax #942: Schedule paperback edition releases 1 year after the initial publication date",
+    "table": "Books",
+    "scenario": "Schedule paperback edition releases 1 year after the initial publication date.",
+    "businessObjective": "Schedule paperback edition releases 1 year after the initial publication date.",
+    "schemaSnippet": "Books temporal schema",
+    "targetQuery": "SELECT title, published_date, DATE_ADD(published_date, INTERVAL 1 YEAR) AS paperback_release_date\nFROM Books;",
+    "syntaxBlueprint": "SELECT col, DATE_ADD(date_col, INTERVAL n unit) AS future_date\nFROM table_name;",
+    "syntaxRule": "DATE_ADD(date, INTERVAL n UNIT) projects future dates by adding a specified duration (DAY, MONTH, YEAR). Alternatively, write 'date + INTERVAL n UNIT'.",
+    "syntaxTrap": "Specifying plural units like 'INTERVAL 5 DAYS' (standard SQL requires singular DAY, MONTH, YEAR).",
+    "eli5Story": "Date, Time & Temporal Arithmetic on Books: Schedule paperback edition releases 1 year after the initial publication date.",
+    "commonMistakes": "Passing parameters in wrong order in DATEDIFF, hardcoding static dates instead of relative rolling intervals, or forgetting to group by both YEAR and MONTH for time series.",
+    "learningOutcomes": "Mastered 10.5 Forward Date Addition (DATE_ADD & INTERVAL) on Books.",
+    "challengeSlots": [
+      {
+        "type": "keyword",
+        "value": "SELECT"
+      },
+      {
+        "type": "column",
+        "value": "title,"
+      },
+      {
+        "type": "column",
+        "value": "published_date,"
+      },
+      {
+        "type": "column",
+        "value": "DATE_ADD(published_date,"
+      },
+      {
+        "type": "keyword",
+        "value": "INTERVAL"
+      },
+      {
+        "type": "column",
+        "value": "1"
+      },
+      {
+        "type": "keyword",
+        "value": "YEAR)"
+      },
+      {
+        "type": "keyword",
+        "value": "AS"
+      },
+      {
+        "type": "column",
+        "value": "paperback_release_date"
+      },
+      {
+        "type": "keyword",
+        "value": "FROM"
+      },
+      {
+        "type": "table",
+        "value": "Books;"
+      }
+    ]
+  },
+  {
+    "drillNumber": 943,
+    "subcluster": "10.5 Forward Date Addition (DATE_ADD & INTERVAL)",
+    "level": "Level 2 (Date Addition)",
+    "title": "Syntax #943: Calculate the exact completion date of an employee's 90-day probationary period",
+    "table": "Employees",
+    "scenario": "Calculate the exact completion date of an employee's 90-day probationary period.",
+    "businessObjective": "Calculate the exact completion date of an employee's 90-day probationary period.",
+    "schemaSnippet": "Employees temporal schema",
+    "targetQuery": "SELECT first_name, hire_date, DATE_ADD(hire_date, INTERVAL 90 DAY) AS probation_end_date\nFROM Employees;",
+    "syntaxBlueprint": "SELECT col, DATE_ADD(date_col, INTERVAL n unit) AS future_date\nFROM table_name;",
+    "syntaxRule": "DATE_ADD(date, INTERVAL n UNIT) projects future dates by adding a specified duration (DAY, MONTH, YEAR). Alternatively, write 'date + INTERVAL n UNIT'.",
+    "syntaxTrap": "Specifying plural units like 'INTERVAL 5 DAYS' (standard SQL requires singular DAY, MONTH, YEAR).",
+    "eli5Story": "Date, Time & Temporal Arithmetic on Employees: Calculate the exact completion date of an employee's 90-day probationary period.",
+    "commonMistakes": "Passing parameters in wrong order in DATEDIFF, hardcoding static dates instead of relative rolling intervals, or forgetting to group by both YEAR and MONTH for time series.",
+    "learningOutcomes": "Mastered 10.5 Forward Date Addition (DATE_ADD & INTERVAL) on Employees.",
+    "challengeSlots": [
+      {
+        "type": "keyword",
+        "value": "SELECT"
+      },
+      {
+        "type": "column",
+        "value": "first_name,"
+      },
+      {
+        "type": "column",
+        "value": "hire_date,"
+      },
+      {
+        "type": "column",
+        "value": "DATE_ADD(hire_date,"
+      },
+      {
+        "type": "keyword",
+        "value": "INTERVAL"
+      },
+      {
+        "type": "column",
+        "value": "90"
+      },
+      {
+        "type": "keyword",
+        "value": "DAY)"
+      },
+      {
+        "type": "keyword",
+        "value": "AS"
+      },
+      {
+        "type": "column",
+        "value": "probation_end_date"
+      },
+      {
+        "type": "keyword",
+        "value": "FROM"
+      },
+      {
+        "type": "table",
+        "value": "Employees;"
+      }
+    ]
+  },
+  {
+    "drillNumber": 944,
+    "subcluster": "10.5 Forward Date Addition (DATE_ADD & INTERVAL)",
+    "level": "Level 2 (Date Addition)",
+    "title": "Syntax #944: Calculate 14-day sell-by shelf dates from the receiving date using DATE_ADD",
+    "table": "GroceryItems",
+    "scenario": "Calculate 14-day sell-by shelf dates from the receiving date using DATE_ADD.",
+    "businessObjective": "Calculate 14-day sell-by shelf dates from the receiving date using DATE_ADD.",
+    "schemaSnippet": "GroceryItems temporal schema",
+    "targetQuery": "SELECT item_name, received_date, DATE_ADD(received_date, INTERVAL 14 DAY) AS sell_by_date\nFROM GroceryItems;",
+    "syntaxBlueprint": "SELECT col, DATE_ADD(date_col, INTERVAL n unit) AS future_date\nFROM table_name;",
+    "syntaxRule": "DATE_ADD(date, INTERVAL n UNIT) projects future dates by adding a specified duration (DAY, MONTH, YEAR). Alternatively, write 'date + INTERVAL n UNIT'.",
+    "syntaxTrap": "Specifying plural units like 'INTERVAL 5 DAYS' (standard SQL requires singular DAY, MONTH, YEAR).",
+    "eli5Story": "Date, Time & Temporal Arithmetic on GroceryItems: Calculate 14-day sell-by shelf dates from the receiving date using DATE_ADD.",
+    "commonMistakes": "Passing parameters in wrong order in DATEDIFF, hardcoding static dates instead of relative rolling intervals, or forgetting to group by both YEAR and MONTH for time series.",
+    "learningOutcomes": "Mastered 10.5 Forward Date Addition (DATE_ADD & INTERVAL) on GroceryItems.",
+    "challengeSlots": [
+      {
+        "type": "keyword",
+        "value": "SELECT"
+      },
+      {
+        "type": "column",
+        "value": "item_name,"
+      },
+      {
+        "type": "column",
+        "value": "received_date,"
+      },
+      {
+        "type": "column",
+        "value": "DATE_ADD(received_date,"
+      },
+      {
+        "type": "keyword",
+        "value": "INTERVAL"
+      },
+      {
+        "type": "column",
+        "value": "14"
+      },
+      {
+        "type": "keyword",
+        "value": "DAY)"
+      },
+      {
+        "type": "keyword",
+        "value": "AS"
+      },
+      {
+        "type": "column",
+        "value": "sell_by_date"
+      },
+      {
+        "type": "keyword",
+        "value": "FROM"
+      },
+      {
+        "type": "table",
+        "value": "GroceryItems;"
+      }
+    ]
+  },
+  {
+    "drillNumber": 945,
+    "subcluster": "10.5 Forward Date Addition (DATE_ADD & INTERVAL)",
+    "level": "Level 2 (Date Addition)",
+    "title": "Syntax #945: Estimate 3-day delivery arrival dates from the original order date",
+    "table": "Orders",
+    "scenario": "Estimate 3-day delivery arrival dates from the original order date.",
+    "businessObjective": "Estimate 3-day delivery arrival dates from the original order date.",
+    "schemaSnippet": "Orders temporal schema",
+    "targetQuery": "SELECT order_id, order_date, DATE_ADD(order_date, INTERVAL 3 DAY) AS estimated_delivery_date\nFROM Orders;",
+    "syntaxBlueprint": "SELECT col, DATE_ADD(date_col, INTERVAL n unit) AS future_date\nFROM table_name;",
+    "syntaxRule": "DATE_ADD(date, INTERVAL n UNIT) projects future dates by adding a specified duration (DAY, MONTH, YEAR). Alternatively, write 'date + INTERVAL n UNIT'.",
+    "syntaxTrap": "Specifying plural units like 'INTERVAL 5 DAYS' (standard SQL requires singular DAY, MONTH, YEAR).",
+    "eli5Story": "Date, Time & Temporal Arithmetic on Orders: Estimate 3-day delivery arrival dates from the original order date.",
+    "commonMistakes": "Passing parameters in wrong order in DATEDIFF, hardcoding static dates instead of relative rolling intervals, or forgetting to group by both YEAR and MONTH for time series.",
+    "learningOutcomes": "Mastered 10.5 Forward Date Addition (DATE_ADD & INTERVAL) on Orders.",
+    "challengeSlots": [
+      {
+        "type": "keyword",
+        "value": "SELECT"
+      },
+      {
+        "type": "column",
+        "value": "order_id,"
+      },
+      {
+        "type": "column",
+        "value": "order_date,"
+      },
+      {
+        "type": "column",
+        "value": "DATE_ADD(order_date,"
+      },
+      {
+        "type": "keyword",
+        "value": "INTERVAL"
+      },
+      {
+        "type": "column",
+        "value": "3"
+      },
+      {
+        "type": "keyword",
+        "value": "DAY)"
+      },
+      {
+        "type": "keyword",
+        "value": "AS"
+      },
+      {
+        "type": "column",
+        "value": "estimated_delivery_date"
+      },
+      {
+        "type": "keyword",
+        "value": "FROM"
+      },
+      {
+        "type": "table",
+        "value": "Orders;"
+      }
+    ]
+  },
+  {
+    "drillNumber": 946,
+    "subcluster": "10.5 Forward Date Addition (DATE_ADD & INTERVAL)",
+    "level": "Level 2 (Date Addition)",
+    "title": "Syntax #946: Schedule deluxe edition drops 6 months after the initial release date",
+    "table": "MusicTracks",
+    "scenario": "Schedule deluxe edition drops 6 months after the initial release date.",
+    "businessObjective": "Schedule deluxe edition drops 6 months after the initial release date.",
+    "schemaSnippet": "MusicTracks temporal schema",
+    "targetQuery": "SELECT track_title, release_date, DATE_ADD(release_date, INTERVAL 6 MONTH) AS deluxe_edition_date\nFROM MusicTracks;",
+    "syntaxBlueprint": "SELECT col, DATE_ADD(date_col, INTERVAL n unit) AS future_date\nFROM table_name;",
+    "syntaxRule": "DATE_ADD(date, INTERVAL n UNIT) projects future dates by adding a specified duration (DAY, MONTH, YEAR). Alternatively, write 'date + INTERVAL n UNIT'.",
+    "syntaxTrap": "Specifying plural units like 'INTERVAL 5 DAYS' (standard SQL requires singular DAY, MONTH, YEAR).",
+    "eli5Story": "Date, Time & Temporal Arithmetic on MusicTracks: Schedule deluxe edition drops 6 months after the initial release date.",
+    "commonMistakes": "Passing parameters in wrong order in DATEDIFF, hardcoding static dates instead of relative rolling intervals, or forgetting to group by both YEAR and MONTH for time series.",
+    "learningOutcomes": "Mastered 10.5 Forward Date Addition (DATE_ADD & INTERVAL) on MusicTracks.",
+    "challengeSlots": [
+      {
+        "type": "keyword",
+        "value": "SELECT"
+      },
+      {
+        "type": "column",
+        "value": "track_title,"
+      },
+      {
+        "type": "column",
+        "value": "release_date,"
+      },
+      {
+        "type": "column",
+        "value": "DATE_ADD(release_date,"
+      },
+      {
+        "type": "keyword",
+        "value": "INTERVAL"
+      },
+      {
+        "type": "column",
+        "value": "6"
+      },
+      {
+        "type": "keyword",
+        "value": "MONTH)"
+      },
+      {
+        "type": "keyword",
+        "value": "AS"
+      },
+      {
+        "type": "column",
+        "value": "deluxe_edition_date"
+      },
+      {
+        "type": "keyword",
+        "value": "FROM"
+      },
+      {
+        "type": "table",
+        "value": "MusicTracks;"
+      }
+    ]
+  },
+  {
+    "drillNumber": 947,
+    "subcluster": "10.5 Forward Date Addition (DATE_ADD & INTERVAL)",
+    "level": "Level 2 (Date Addition)",
+    "title": "Syntax #947: Calculate annual membership renewal dates exactly 1 year after joining",
+    "table": "GymMembers",
+    "scenario": "Calculate annual membership renewal dates exactly 1 year after joining.",
+    "businessObjective": "Calculate annual membership renewal dates exactly 1 year after joining.",
+    "schemaSnippet": "GymMembers temporal schema",
+    "targetQuery": "SELECT member_name, join_date, DATE_ADD(join_date, INTERVAL 1 YEAR) AS annual_renewal_date\nFROM GymMembers;",
+    "syntaxBlueprint": "SELECT col, DATE_ADD(date_col, INTERVAL n unit) AS future_date\nFROM table_name;",
+    "syntaxRule": "DATE_ADD(date, INTERVAL n UNIT) projects future dates by adding a specified duration (DAY, MONTH, YEAR). Alternatively, write 'date + INTERVAL n UNIT'.",
+    "syntaxTrap": "Specifying plural units like 'INTERVAL 5 DAYS' (standard SQL requires singular DAY, MONTH, YEAR).",
+    "eli5Story": "Date, Time & Temporal Arithmetic on GymMembers: Calculate annual membership renewal dates exactly 1 year after joining.",
+    "commonMistakes": "Passing parameters in wrong order in DATEDIFF, hardcoding static dates instead of relative rolling intervals, or forgetting to group by both YEAR and MONTH for time series.",
+    "learningOutcomes": "Mastered 10.5 Forward Date Addition (DATE_ADD & INTERVAL) on GymMembers.",
+    "challengeSlots": [
+      {
+        "type": "keyword",
+        "value": "SELECT"
+      },
+      {
+        "type": "column",
+        "value": "member_name,"
+      },
+      {
+        "type": "column",
+        "value": "join_date,"
+      },
+      {
+        "type": "column",
+        "value": "DATE_ADD(join_date,"
+      },
+      {
+        "type": "keyword",
+        "value": "INTERVAL"
+      },
+      {
+        "type": "column",
+        "value": "1"
+      },
+      {
+        "type": "keyword",
+        "value": "YEAR)"
+      },
+      {
+        "type": "keyword",
+        "value": "AS"
+      },
+      {
+        "type": "column",
+        "value": "annual_renewal_date"
+      },
+      {
+        "type": "keyword",
+        "value": "FROM"
+      },
+      {
+        "type": "table",
+        "value": "GymMembers;"
+      }
+    ]
+  },
+  {
+    "drillNumber": 948,
+    "subcluster": "10.5 Forward Date Addition (DATE_ADD & INTERVAL)",
+    "level": "Level 2 (Date Addition)",
+    "title": "Syntax #948: Lock review edits 30 days after initial submission date",
+    "table": "MovieReviews",
+    "scenario": "Lock review edits 30 days after initial submission date.",
+    "businessObjective": "Lock review edits 30 days after initial submission date.",
+    "schemaSnippet": "MovieReviews temporal schema",
+    "targetQuery": "SELECT movie_title, review_date, DATE_ADD(review_date, INTERVAL 30 DAY) AS editorial_lock_date\nFROM MovieReviews;",
+    "syntaxBlueprint": "SELECT col, DATE_ADD(date_col, INTERVAL n unit) AS future_date\nFROM table_name;",
+    "syntaxRule": "DATE_ADD(date, INTERVAL n UNIT) projects future dates by adding a specified duration (DAY, MONTH, YEAR). Alternatively, write 'date + INTERVAL n UNIT'.",
+    "syntaxTrap": "Specifying plural units like 'INTERVAL 5 DAYS' (standard SQL requires singular DAY, MONTH, YEAR).",
+    "eli5Story": "Date, Time & Temporal Arithmetic on MovieReviews: Lock review edits 30 days after initial submission date.",
+    "commonMistakes": "Passing parameters in wrong order in DATEDIFF, hardcoding static dates instead of relative rolling intervals, or forgetting to group by both YEAR and MONTH for time series.",
+    "learningOutcomes": "Mastered 10.5 Forward Date Addition (DATE_ADD & INTERVAL) on MovieReviews.",
+    "challengeSlots": [
+      {
+        "type": "keyword",
+        "value": "SELECT"
+      },
+      {
+        "type": "column",
+        "value": "movie_title,"
+      },
+      {
+        "type": "column",
+        "value": "review_date,"
+      },
+      {
+        "type": "column",
+        "value": "DATE_ADD(review_date,"
+      },
+      {
+        "type": "keyword",
+        "value": "INTERVAL"
+      },
+      {
+        "type": "column",
+        "value": "30"
+      },
+      {
+        "type": "keyword",
+        "value": "DAY)"
+      },
+      {
+        "type": "keyword",
+        "value": "AS"
+      },
+      {
+        "type": "column",
+        "value": "editorial_lock_date"
+      },
+      {
+        "type": "keyword",
+        "value": "FROM"
+      },
+      {
+        "type": "table",
+        "value": "MovieReviews;"
+      }
+    ]
+  },
+  {
+    "drillNumber": 949,
+    "subcluster": "10.5 Forward Date Addition (DATE_ADD & INTERVAL)",
+    "level": "Level 2 (Date Addition)",
+    "title": "Syntax #949: Calculate landing time by adding a 2-hour flight interval to departure time",
+    "table": "FlightSchedule",
+    "scenario": "Calculate landing time by adding a 2-hour flight interval to departure time.",
+    "businessObjective": "Calculate landing time by adding a 2-hour flight interval to departure time.",
+    "schemaSnippet": "FlightSchedule temporal schema",
+    "targetQuery": "SELECT flight_id, departure_time, DATE_ADD(departure_time, INTERVAL 2 HOUR) AS expected_landing_time\nFROM FlightSchedule;",
+    "syntaxBlueprint": "SELECT col, DATE_ADD(date_col, INTERVAL n unit) AS future_date\nFROM table_name;",
+    "syntaxRule": "DATE_ADD(date, INTERVAL n UNIT) projects future dates by adding a specified duration (DAY, MONTH, YEAR). Alternatively, write 'date + INTERVAL n UNIT'.",
+    "syntaxTrap": "Specifying plural units like 'INTERVAL 5 DAYS' (standard SQL requires singular DAY, MONTH, YEAR).",
+    "eli5Story": "Date, Time & Temporal Arithmetic on FlightSchedule: Calculate landing time by adding a 2-hour flight interval to departure time.",
+    "commonMistakes": "Passing parameters in wrong order in DATEDIFF, hardcoding static dates instead of relative rolling intervals, or forgetting to group by both YEAR and MONTH for time series.",
+    "learningOutcomes": "Mastered 10.5 Forward Date Addition (DATE_ADD & INTERVAL) on FlightSchedule.",
+    "challengeSlots": [
+      {
+        "type": "keyword",
+        "value": "SELECT"
+      },
+      {
+        "type": "column",
+        "value": "flight_id,"
+      },
+      {
+        "type": "column",
+        "value": "departure_time,"
+      },
+      {
+        "type": "column",
+        "value": "DATE_ADD(departure_time,"
+      },
+      {
+        "type": "keyword",
+        "value": "INTERVAL"
+      },
+      {
+        "type": "column",
+        "value": "2"
+      },
+      {
+        "type": "keyword",
+        "value": "HOUR)"
+      },
+      {
+        "type": "keyword",
+        "value": "AS"
+      },
+      {
+        "type": "column",
+        "value": "expected_landing_time"
+      },
+      {
+        "type": "keyword",
+        "value": "FROM"
+      },
+      {
+        "type": "table",
+        "value": "FlightSchedule;"
+      }
+    ]
+  },
+  {
+    "drillNumber": 950,
+    "subcluster": "10.5 Forward Date Addition (DATE_ADD & INTERVAL)",
+    "level": "Level 2 (Date Addition)",
+    "title": "Syntax #950: Schedule upcoming vaccination boosters 6 months after the visit date",
+    "table": "PetClinic",
+    "scenario": "Schedule upcoming vaccination boosters 6 months after the visit date.",
+    "businessObjective": "Schedule upcoming vaccination boosters 6 months after the visit date.",
+    "schemaSnippet": "PetClinic temporal schema",
+    "targetQuery": "SELECT pet_name, visit_date, DATE_ADD(visit_date, INTERVAL 6 MONTH) AS next_annual_booster_date\nFROM PetClinic;",
+    "syntaxBlueprint": "SELECT col, DATE_ADD(date_col, INTERVAL n unit) AS future_date\nFROM table_name;",
+    "syntaxRule": "DATE_ADD(date, INTERVAL n UNIT) projects future dates by adding a specified duration (DAY, MONTH, YEAR). Alternatively, write 'date + INTERVAL n UNIT'.",
+    "syntaxTrap": "Specifying plural units like 'INTERVAL 5 DAYS' (standard SQL requires singular DAY, MONTH, YEAR).",
+    "eli5Story": "Date, Time & Temporal Arithmetic on PetClinic: Schedule upcoming vaccination boosters 6 months after the visit date.",
+    "commonMistakes": "Passing parameters in wrong order in DATEDIFF, hardcoding static dates instead of relative rolling intervals, or forgetting to group by both YEAR and MONTH for time series.",
+    "learningOutcomes": "Mastered 10.5 Forward Date Addition (DATE_ADD & INTERVAL) on PetClinic.",
+    "challengeSlots": [
+      {
+        "type": "keyword",
+        "value": "SELECT"
+      },
+      {
+        "type": "column",
+        "value": "pet_name,"
+      },
+      {
+        "type": "column",
+        "value": "visit_date,"
+      },
+      {
+        "type": "column",
+        "value": "DATE_ADD(visit_date,"
+      },
+      {
+        "type": "keyword",
+        "value": "INTERVAL"
+      },
+      {
+        "type": "column",
+        "value": "6"
+      },
+      {
+        "type": "keyword",
+        "value": "MONTH)"
+      },
+      {
+        "type": "keyword",
+        "value": "AS"
+      },
+      {
+        "type": "column",
+        "value": "next_annual_booster_date"
+      },
+      {
+        "type": "keyword",
+        "value": "FROM"
+      },
+      {
+        "type": "table",
+        "value": "PetClinic;"
+      }
+    ]
+  },
+  {
+    "drillNumber": 951,
+    "subcluster": "10.6 Backward Date Subtraction (DATE_SUB & Negative INTERVAL)",
+    "level": "Level 2 (Date Subtraction)",
+    "title": "Syntax #951: Determine when applications closed: calculate 30 days prior to enrollment date",
+    "table": "Students",
+    "scenario": "Determine when applications closed: calculate 30 days prior to enrollment date.",
+    "businessObjective": "Determine when applications closed: calculate 30 days prior to enrollment date.",
+    "schemaSnippet": "Students temporal schema",
+    "targetQuery": "SELECT full_name, enrolled_date, DATE_SUB(enrolled_date, INTERVAL 30 DAY) AS application_deadline\nFROM Students;",
+    "syntaxBlueprint": "SELECT col, DATE_SUB(date_col, INTERVAL n unit) AS past_date\nFROM table_name;",
+    "syntaxRule": "DATE_SUB(date, INTERVAL n UNIT) or 'date - INTERVAL n UNIT' walks backward in time to establish historical benchmarks.",
+    "syntaxTrap": "Confusing DATE_SUB with DATEDIFF: DATE_SUB returns a modified DATE, while DATEDIFF returns an integer COUNT of days.",
+    "eli5Story": "Date, Time & Temporal Arithmetic on Students: Determine when applications closed: calculate 30 days prior to enrollment date.",
+    "commonMistakes": "Passing parameters in wrong order in DATEDIFF, hardcoding static dates instead of relative rolling intervals, or forgetting to group by both YEAR and MONTH for time series.",
+    "learningOutcomes": "Mastered 10.6 Backward Date Subtraction (DATE_SUB & Negative INTERVAL) on Students.",
+    "challengeSlots": [
+      {
+        "type": "keyword",
+        "value": "SELECT"
+      },
+      {
+        "type": "column",
+        "value": "full_name,"
+      },
+      {
+        "type": "column",
+        "value": "enrolled_date,"
+      },
+      {
+        "type": "column",
+        "value": "DATE_SUB(enrolled_date,"
+      },
+      {
+        "type": "keyword",
+        "value": "INTERVAL"
+      },
+      {
+        "type": "column",
+        "value": "30"
+      },
+      {
+        "type": "keyword",
+        "value": "DAY)"
+      },
+      {
+        "type": "keyword",
+        "value": "AS"
+      },
+      {
+        "type": "column",
+        "value": "application_deadline"
+      },
+      {
+        "type": "keyword",
+        "value": "FROM"
+      },
+      {
+        "type": "table",
+        "value": "Students;"
+      }
+    ]
+  },
+  {
+    "drillNumber": 952,
+    "subcluster": "10.6 Backward Date Subtraction (DATE_SUB & Negative INTERVAL)",
+    "level": "Level 2 (Date Subtraction)",
+    "title": "Syntax #952: Calculate manuscript deadlines 6 months before book publication",
+    "table": "Books",
+    "scenario": "Calculate manuscript deadlines 6 months before book publication.",
+    "businessObjective": "Calculate manuscript deadlines 6 months before book publication.",
+    "schemaSnippet": "Books temporal schema",
+    "targetQuery": "SELECT title, published_date, DATE_SUB(published_date, INTERVAL 6 MONTH) AS manuscript_submission_date\nFROM Books;",
+    "syntaxBlueprint": "SELECT col, DATE_SUB(date_col, INTERVAL n unit) AS past_date\nFROM table_name;",
+    "syntaxRule": "DATE_SUB(date, INTERVAL n UNIT) or 'date - INTERVAL n UNIT' walks backward in time to establish historical benchmarks.",
+    "syntaxTrap": "Confusing DATE_SUB with DATEDIFF: DATE_SUB returns a modified DATE, while DATEDIFF returns an integer COUNT of days.",
+    "eli5Story": "Date, Time & Temporal Arithmetic on Books: Calculate manuscript deadlines 6 months before book publication.",
+    "commonMistakes": "Passing parameters in wrong order in DATEDIFF, hardcoding static dates instead of relative rolling intervals, or forgetting to group by both YEAR and MONTH for time series.",
+    "learningOutcomes": "Mastered 10.6 Backward Date Subtraction (DATE_SUB & Negative INTERVAL) on Books.",
+    "challengeSlots": [
+      {
+        "type": "keyword",
+        "value": "SELECT"
+      },
+      {
+        "type": "column",
+        "value": "title,"
+      },
+      {
+        "type": "column",
+        "value": "published_date,"
+      },
+      {
+        "type": "column",
+        "value": "DATE_SUB(published_date,"
+      },
+      {
+        "type": "keyword",
+        "value": "INTERVAL"
+      },
+      {
+        "type": "column",
+        "value": "6"
+      },
+      {
+        "type": "keyword",
+        "value": "MONTH)"
+      },
+      {
+        "type": "keyword",
+        "value": "AS"
+      },
+      {
+        "type": "column",
+        "value": "manuscript_submission_date"
+      },
+      {
+        "type": "keyword",
+        "value": "FROM"
+      },
+      {
+        "type": "table",
+        "value": "Books;"
+      }
+    ]
+  },
+  {
+    "drillNumber": 953,
+    "subcluster": "10.6 Backward Date Subtraction (DATE_SUB & Negative INTERVAL)",
+    "level": "Level 2 (Date Subtraction)",
+    "title": "Syntax #953: Trace hiring timeline: calculate offer letter dates 14 days before start date",
+    "table": "Employees",
+    "scenario": "Trace hiring timeline: calculate offer letter dates 14 days before start date.",
+    "businessObjective": "Trace hiring timeline: calculate offer letter dates 14 days before start date.",
+    "schemaSnippet": "Employees temporal schema",
+    "targetQuery": "SELECT first_name, hire_date, DATE_SUB(hire_date, INTERVAL 14 DAY) AS offer_letter_date\nFROM Employees;",
+    "syntaxBlueprint": "SELECT col, DATE_SUB(date_col, INTERVAL n unit) AS past_date\nFROM table_name;",
+    "syntaxRule": "DATE_SUB(date, INTERVAL n UNIT) or 'date - INTERVAL n UNIT' walks backward in time to establish historical benchmarks.",
+    "syntaxTrap": "Confusing DATE_SUB with DATEDIFF: DATE_SUB returns a modified DATE, while DATEDIFF returns an integer COUNT of days.",
+    "eli5Story": "Date, Time & Temporal Arithmetic on Employees: Trace hiring timeline: calculate offer letter dates 14 days before start date.",
+    "commonMistakes": "Passing parameters in wrong order in DATEDIFF, hardcoding static dates instead of relative rolling intervals, or forgetting to group by both YEAR and MONTH for time series.",
+    "learningOutcomes": "Mastered 10.6 Backward Date Subtraction (DATE_SUB & Negative INTERVAL) on Employees.",
+    "challengeSlots": [
+      {
+        "type": "keyword",
+        "value": "SELECT"
+      },
+      {
+        "type": "column",
+        "value": "first_name,"
+      },
+      {
+        "type": "column",
+        "value": "hire_date,"
+      },
+      {
+        "type": "column",
+        "value": "DATE_SUB(hire_date,"
+      },
+      {
+        "type": "keyword",
+        "value": "INTERVAL"
+      },
+      {
+        "type": "column",
+        "value": "14"
+      },
+      {
+        "type": "keyword",
+        "value": "DAY)"
+      },
+      {
+        "type": "keyword",
+        "value": "AS"
+      },
+      {
+        "type": "column",
+        "value": "offer_letter_date"
+      },
+      {
+        "type": "keyword",
+        "value": "FROM"
+      },
+      {
+        "type": "table",
+        "value": "Employees;"
+      }
+    ]
+  },
+  {
+    "drillNumber": 954,
+    "subcluster": "10.6 Backward Date Subtraction (DATE_SUB & Negative INTERVAL)",
+    "level": "Level 2 (Date Subtraction)",
+    "title": "Syntax #954: Mark down grocery prices 3 days before expiration date",
+    "table": "GroceryItems",
+    "scenario": "Mark down grocery prices 3 days before expiration date.",
+    "businessObjective": "Mark down grocery prices 3 days before expiration date.",
+    "schemaSnippet": "GroceryItems temporal schema",
+    "targetQuery": "SELECT item_name, expiry_date, DATE_SUB(expiry_date, INTERVAL 3 DAY) AS markdown_clearance_date\nFROM GroceryItems;",
+    "syntaxBlueprint": "SELECT col, DATE_SUB(date_col, INTERVAL n unit) AS past_date\nFROM table_name;",
+    "syntaxRule": "DATE_SUB(date, INTERVAL n UNIT) or 'date - INTERVAL n UNIT' walks backward in time to establish historical benchmarks.",
+    "syntaxTrap": "Confusing DATE_SUB with DATEDIFF: DATE_SUB returns a modified DATE, while DATEDIFF returns an integer COUNT of days.",
+    "eli5Story": "Date, Time & Temporal Arithmetic on GroceryItems: Mark down grocery prices 3 days before expiration date.",
+    "commonMistakes": "Passing parameters in wrong order in DATEDIFF, hardcoding static dates instead of relative rolling intervals, or forgetting to group by both YEAR and MONTH for time series.",
+    "learningOutcomes": "Mastered 10.6 Backward Date Subtraction (DATE_SUB & Negative INTERVAL) on GroceryItems.",
+    "challengeSlots": [
+      {
+        "type": "keyword",
+        "value": "SELECT"
+      },
+      {
+        "type": "column",
+        "value": "item_name,"
+      },
+      {
+        "type": "column",
+        "value": "expiry_date,"
+      },
+      {
+        "type": "column",
+        "value": "DATE_SUB(expiry_date,"
+      },
+      {
+        "type": "keyword",
+        "value": "INTERVAL"
+      },
+      {
+        "type": "column",
+        "value": "3"
+      },
+      {
+        "type": "keyword",
+        "value": "DAY)"
+      },
+      {
+        "type": "keyword",
+        "value": "AS"
+      },
+      {
+        "type": "column",
+        "value": "markdown_clearance_date"
+      },
+      {
+        "type": "keyword",
+        "value": "FROM"
+      },
+      {
+        "type": "table",
+        "value": "GroceryItems;"
+      }
+    ]
+  },
+  {
+    "drillNumber": 955,
+    "subcluster": "10.6 Backward Date Subtraction (DATE_SUB & Negative INTERVAL)",
+    "level": "Level 2 (Date Subtraction)",
+    "title": "Syntax #955: Trace checkout velocity: calculate shopping cart creation time 1 hour before order",
+    "table": "Orders",
+    "scenario": "Trace checkout velocity: calculate shopping cart creation time 1 hour before order.",
+    "businessObjective": "Trace checkout velocity: calculate shopping cart creation time 1 hour before order.",
+    "schemaSnippet": "Orders temporal schema",
+    "targetQuery": "SELECT order_id, order_date, DATE_SUB(order_date, INTERVAL 1 HOUR) AS cart_created_time\nFROM Orders;",
+    "syntaxBlueprint": "SELECT col, DATE_SUB(date_col, INTERVAL n unit) AS past_date\nFROM table_name;",
+    "syntaxRule": "DATE_SUB(date, INTERVAL n UNIT) or 'date - INTERVAL n UNIT' walks backward in time to establish historical benchmarks.",
+    "syntaxTrap": "Confusing DATE_SUB with DATEDIFF: DATE_SUB returns a modified DATE, while DATEDIFF returns an integer COUNT of days.",
+    "eli5Story": "Date, Time & Temporal Arithmetic on Orders: Trace checkout velocity: calculate shopping cart creation time 1 hour before order.",
+    "commonMistakes": "Passing parameters in wrong order in DATEDIFF, hardcoding static dates instead of relative rolling intervals, or forgetting to group by both YEAR and MONTH for time series.",
+    "learningOutcomes": "Mastered 10.6 Backward Date Subtraction (DATE_SUB & Negative INTERVAL) on Orders.",
+    "challengeSlots": [
+      {
+        "type": "keyword",
+        "value": "SELECT"
+      },
+      {
+        "type": "column",
+        "value": "order_id,"
+      },
+      {
+        "type": "column",
+        "value": "order_date,"
+      },
+      {
+        "type": "column",
+        "value": "DATE_SUB(order_date,"
+      },
+      {
+        "type": "keyword",
+        "value": "INTERVAL"
+      },
+      {
+        "type": "column",
+        "value": "1"
+      },
+      {
+        "type": "keyword",
+        "value": "HOUR)"
+      },
+      {
+        "type": "keyword",
+        "value": "AS"
+      },
+      {
+        "type": "column",
+        "value": "cart_created_time"
+      },
+      {
+        "type": "keyword",
+        "value": "FROM"
+      },
+      {
+        "type": "table",
+        "value": "Orders;"
+      }
+    ]
+  },
+  {
+    "drillNumber": 956,
+    "subcluster": "10.6 Backward Date Subtraction (DATE_SUB & Negative INTERVAL)",
+    "level": "Level 2 (Date Subtraction)",
+    "title": "Syntax #956: Launch teaser promotional campaigns 1 month before track release date",
+    "table": "MusicTracks",
+    "scenario": "Launch teaser promotional campaigns 1 month before track release date.",
+    "businessObjective": "Launch teaser promotional campaigns 1 month before track release date.",
+    "schemaSnippet": "MusicTracks temporal schema",
+    "targetQuery": "SELECT track_title, release_date, DATE_SUB(release_date, INTERVAL 1 MONTH) AS teaser_campaign_date\nFROM MusicTracks;",
+    "syntaxBlueprint": "SELECT col, DATE_SUB(date_col, INTERVAL n unit) AS past_date\nFROM table_name;",
+    "syntaxRule": "DATE_SUB(date, INTERVAL n UNIT) or 'date - INTERVAL n UNIT' walks backward in time to establish historical benchmarks.",
+    "syntaxTrap": "Confusing DATE_SUB with DATEDIFF: DATE_SUB returns a modified DATE, while DATEDIFF returns an integer COUNT of days.",
+    "eli5Story": "Date, Time & Temporal Arithmetic on MusicTracks: Launch teaser promotional campaigns 1 month before track release date.",
+    "commonMistakes": "Passing parameters in wrong order in DATEDIFF, hardcoding static dates instead of relative rolling intervals, or forgetting to group by both YEAR and MONTH for time series.",
+    "learningOutcomes": "Mastered 10.6 Backward Date Subtraction (DATE_SUB & Negative INTERVAL) on MusicTracks.",
+    "challengeSlots": [
+      {
+        "type": "keyword",
+        "value": "SELECT"
+      },
+      {
+        "type": "column",
+        "value": "track_title,"
+      },
+      {
+        "type": "column",
+        "value": "release_date,"
+      },
+      {
+        "type": "column",
+        "value": "DATE_SUB(release_date,"
+      },
+      {
+        "type": "keyword",
+        "value": "INTERVAL"
+      },
+      {
+        "type": "column",
+        "value": "1"
+      },
+      {
+        "type": "keyword",
+        "value": "MONTH)"
+      },
+      {
+        "type": "keyword",
+        "value": "AS"
+      },
+      {
+        "type": "column",
+        "value": "teaser_campaign_date"
+      },
+      {
+        "type": "keyword",
+        "value": "FROM"
+      },
+      {
+        "type": "table",
+        "value": "MusicTracks;"
+      }
+    ]
+  },
+  {
+    "drillNumber": 957,
+    "subcluster": "10.6 Backward Date Subtraction (DATE_SUB & Negative INTERVAL)",
+    "level": "Level 2 (Date Subtraction)",
+    "title": "Syntax #957: Audit trial passes activated 7 days prior to membership sign-up",
+    "table": "GymMembers",
+    "scenario": "Audit trial passes activated 7 days prior to membership sign-up.",
+    "businessObjective": "Audit trial passes activated 7 days prior to membership sign-up.",
+    "schemaSnippet": "GymMembers temporal schema",
+    "targetQuery": "SELECT member_name, join_date, DATE_SUB(join_date, INTERVAL 7 DAY) AS guest_pass_activated\nFROM GymMembers;",
+    "syntaxBlueprint": "SELECT col, DATE_SUB(date_col, INTERVAL n unit) AS past_date\nFROM table_name;",
+    "syntaxRule": "DATE_SUB(date, INTERVAL n UNIT) or 'date - INTERVAL n UNIT' walks backward in time to establish historical benchmarks.",
+    "syntaxTrap": "Confusing DATE_SUB with DATEDIFF: DATE_SUB returns a modified DATE, while DATEDIFF returns an integer COUNT of days.",
+    "eli5Story": "Date, Time & Temporal Arithmetic on GymMembers: Audit trial passes activated 7 days prior to membership sign-up.",
+    "commonMistakes": "Passing parameters in wrong order in DATEDIFF, hardcoding static dates instead of relative rolling intervals, or forgetting to group by both YEAR and MONTH for time series.",
+    "learningOutcomes": "Mastered 10.6 Backward Date Subtraction (DATE_SUB & Negative INTERVAL) on GymMembers.",
+    "challengeSlots": [
+      {
+        "type": "keyword",
+        "value": "SELECT"
+      },
+      {
+        "type": "column",
+        "value": "member_name,"
+      },
+      {
+        "type": "column",
+        "value": "join_date,"
+      },
+      {
+        "type": "column",
+        "value": "DATE_SUB(join_date,"
+      },
+      {
+        "type": "keyword",
+        "value": "INTERVAL"
+      },
+      {
+        "type": "column",
+        "value": "7"
+      },
+      {
+        "type": "keyword",
+        "value": "DAY)"
+      },
+      {
+        "type": "keyword",
+        "value": "AS"
+      },
+      {
+        "type": "column",
+        "value": "guest_pass_activated"
+      },
+      {
+        "type": "keyword",
+        "value": "FROM"
+      },
+      {
+        "type": "table",
+        "value": "GymMembers;"
+      }
+    ]
+  },
+  {
+    "drillNumber": 958,
+    "subcluster": "10.6 Backward Date Subtraction (DATE_SUB & Negative INTERVAL)",
+    "level": "Level 2 (Date Subtraction)",
+    "title": "Syntax #958: Calculate advance press screening dates 1 day before review publication",
+    "table": "MovieReviews",
+    "scenario": "Calculate advance press screening dates 1 day before review publication.",
+    "businessObjective": "Calculate advance press screening dates 1 day before review publication.",
+    "schemaSnippet": "MovieReviews temporal schema",
+    "targetQuery": "SELECT movie_title, review_date, DATE_SUB(review_date, INTERVAL 1 DAY) AS advance_screening_date\nFROM MovieReviews;",
+    "syntaxBlueprint": "SELECT col, DATE_SUB(date_col, INTERVAL n unit) AS past_date\nFROM table_name;",
+    "syntaxRule": "DATE_SUB(date, INTERVAL n UNIT) or 'date - INTERVAL n UNIT' walks backward in time to establish historical benchmarks.",
+    "syntaxTrap": "Confusing DATE_SUB with DATEDIFF: DATE_SUB returns a modified DATE, while DATEDIFF returns an integer COUNT of days.",
+    "eli5Story": "Date, Time & Temporal Arithmetic on MovieReviews: Calculate advance press screening dates 1 day before review publication.",
+    "commonMistakes": "Passing parameters in wrong order in DATEDIFF, hardcoding static dates instead of relative rolling intervals, or forgetting to group by both YEAR and MONTH for time series.",
+    "learningOutcomes": "Mastered 10.6 Backward Date Subtraction (DATE_SUB & Negative INTERVAL) on MovieReviews.",
+    "challengeSlots": [
+      {
+        "type": "keyword",
+        "value": "SELECT"
+      },
+      {
+        "type": "column",
+        "value": "movie_title,"
+      },
+      {
+        "type": "column",
+        "value": "review_date,"
+      },
+      {
+        "type": "column",
+        "value": "DATE_SUB(review_date,"
+      },
+      {
+        "type": "keyword",
+        "value": "INTERVAL"
+      },
+      {
+        "type": "column",
+        "value": "1"
+      },
+      {
+        "type": "keyword",
+        "value": "DAY)"
+      },
+      {
+        "type": "keyword",
+        "value": "AS"
+      },
+      {
+        "type": "column",
+        "value": "advance_screening_date"
+      },
+      {
+        "type": "keyword",
+        "value": "FROM"
+      },
+      {
+        "type": "table",
+        "value": "MovieReviews;"
+      }
+    ]
+  },
+  {
+    "drillNumber": 959,
+    "subcluster": "10.6 Backward Date Subtraction (DATE_SUB & Negative INTERVAL)",
+    "level": "Level 2 (Date Subtraction)",
+    "title": "Syntax #959: Calculate passenger boarding time 45 minutes prior to scheduled departure",
+    "table": "FlightSchedule",
+    "scenario": "Calculate passenger boarding time 45 minutes prior to scheduled departure.",
+    "businessObjective": "Calculate passenger boarding time 45 minutes prior to scheduled departure.",
+    "schemaSnippet": "FlightSchedule temporal schema",
+    "targetQuery": "SELECT flight_id, departure_time, DATE_SUB(departure_time, INTERVAL 45 MINUTE) AS boarding_commences\nFROM FlightSchedule;",
+    "syntaxBlueprint": "SELECT col, DATE_SUB(date_col, INTERVAL n unit) AS past_date\nFROM table_name;",
+    "syntaxRule": "DATE_SUB(date, INTERVAL n UNIT) or 'date - INTERVAL n UNIT' walks backward in time to establish historical benchmarks.",
+    "syntaxTrap": "Confusing DATE_SUB with DATEDIFF: DATE_SUB returns a modified DATE, while DATEDIFF returns an integer COUNT of days.",
+    "eli5Story": "Date, Time & Temporal Arithmetic on FlightSchedule: Calculate passenger boarding time 45 minutes prior to scheduled departure.",
+    "commonMistakes": "Passing parameters in wrong order in DATEDIFF, hardcoding static dates instead of relative rolling intervals, or forgetting to group by both YEAR and MONTH for time series.",
+    "learningOutcomes": "Mastered 10.6 Backward Date Subtraction (DATE_SUB & Negative INTERVAL) on FlightSchedule.",
+    "challengeSlots": [
+      {
+        "type": "keyword",
+        "value": "SELECT"
+      },
+      {
+        "type": "column",
+        "value": "flight_id,"
+      },
+      {
+        "type": "column",
+        "value": "departure_time,"
+      },
+      {
+        "type": "column",
+        "value": "DATE_SUB(departure_time,"
+      },
+      {
+        "type": "keyword",
+        "value": "INTERVAL"
+      },
+      {
+        "type": "column",
+        "value": "45"
+      },
+      {
+        "type": "keyword",
+        "value": "MINUTE)"
+      },
+      {
+        "type": "keyword",
+        "value": "AS"
+      },
+      {
+        "type": "column",
+        "value": "boarding_commences"
+      },
+      {
+        "type": "keyword",
+        "value": "FROM"
+      },
+      {
+        "type": "table",
+        "value": "FlightSchedule;"
+      }
+    ]
+  },
+  {
+    "drillNumber": 960,
+    "subcluster": "10.6 Backward Date Subtraction (DATE_SUB & Negative INTERVAL)",
+    "level": "Level 2 (Date Subtraction)",
+    "title": "Syntax #960: Trigger automated appointment reminder text messages 24 hours in advance",
+    "table": "PetClinic",
+    "scenario": "Trigger automated appointment reminder text messages 24 hours in advance.",
+    "businessObjective": "Trigger automated appointment reminder text messages 24 hours in advance.",
+    "schemaSnippet": "PetClinic temporal schema",
+    "targetQuery": "SELECT pet_name, visit_date, DATE_SUB(visit_date, INTERVAL 24 HOUR) AS reminder_sms_sent\nFROM PetClinic;",
+    "syntaxBlueprint": "SELECT col, DATE_SUB(date_col, INTERVAL n unit) AS past_date\nFROM table_name;",
+    "syntaxRule": "DATE_SUB(date, INTERVAL n UNIT) or 'date - INTERVAL n UNIT' walks backward in time to establish historical benchmarks.",
+    "syntaxTrap": "Confusing DATE_SUB with DATEDIFF: DATE_SUB returns a modified DATE, while DATEDIFF returns an integer COUNT of days.",
+    "eli5Story": "Date, Time & Temporal Arithmetic on PetClinic: Trigger automated appointment reminder text messages 24 hours in advance.",
+    "commonMistakes": "Passing parameters in wrong order in DATEDIFF, hardcoding static dates instead of relative rolling intervals, or forgetting to group by both YEAR and MONTH for time series.",
+    "learningOutcomes": "Mastered 10.6 Backward Date Subtraction (DATE_SUB & Negative INTERVAL) on PetClinic.",
+    "challengeSlots": [
+      {
+        "type": "keyword",
+        "value": "SELECT"
+      },
+      {
+        "type": "column",
+        "value": "pet_name,"
+      },
+      {
+        "type": "column",
+        "value": "visit_date,"
+      },
+      {
+        "type": "column",
+        "value": "DATE_SUB(visit_date,"
+      },
+      {
+        "type": "keyword",
+        "value": "INTERVAL"
+      },
+      {
+        "type": "column",
+        "value": "24"
+      },
+      {
+        "type": "keyword",
+        "value": "HOUR)"
+      },
+      {
+        "type": "keyword",
+        "value": "AS"
+      },
+      {
+        "type": "column",
+        "value": "reminder_sms_sent"
+      },
+      {
+        "type": "keyword",
+        "value": "FROM"
+      },
+      {
+        "type": "table",
+        "value": "PetClinic;"
+      }
+    ]
+  },
+  {
+    "drillNumber": 961,
+    "subcluster": "10.7 Rolling Time Window Filtering (CURRENT_DATE - INTERVAL)",
+    "level": "Level 2 (Rolling Windows)",
+    "title": "Syntax #961: Find new students who enrolled within the rolling last 90 days",
+    "table": "Students",
+    "scenario": "Find new students who enrolled within the rolling last 90 days.",
+    "businessObjective": "Find new students who enrolled within the rolling last 90 days.",
+    "schemaSnippet": "Students temporal schema",
+    "targetQuery": "SELECT full_name, enrolled_date\nFROM Students\nWHERE enrolled_date >= CURRENT_DATE - INTERVAL 90 DAY;",
+    "syntaxBlueprint": "SELECT col\nFROM table_name\nWHERE date_col >= CURRENT_DATE - INTERVAL 30 DAY;",
+    "syntaxRule": "Filter dynamic, rolling historical windows by comparing a date column against 'CURRENT_DATE - INTERVAL n UNIT'. This keeps queries evergreen without hardcoded dates.",
+    "syntaxTrap": "Hardcoding 'WHERE date_col >= '2024-01-01'' instead of relative rolling windows means reports become stale every week.",
+    "eli5Story": "Date, Time & Temporal Arithmetic on Students: Find new students who enrolled within the rolling last 90 days.",
+    "commonMistakes": "Passing parameters in wrong order in DATEDIFF, hardcoding static dates instead of relative rolling intervals, or forgetting to group by both YEAR and MONTH for time series.",
+    "learningOutcomes": "Mastered 10.7 Rolling Time Window Filtering (CURRENT_DATE - INTERVAL) on Students.",
+    "challengeSlots": [
+      {
+        "type": "keyword",
+        "value": "SELECT"
+      },
+      {
+        "type": "column",
+        "value": "full_name,"
+      },
+      {
+        "type": "column",
+        "value": "enrolled_date"
+      },
+      {
+        "type": "keyword",
+        "value": "FROM"
+      },
+      {
+        "type": "table",
+        "value": "Students"
+      },
+      {
+        "type": "keyword",
+        "value": "WHERE"
+      },
+      {
+        "type": "column",
+        "value": "enrolled_date"
+      },
+      {
+        "type": "column",
+        "value": ">="
+      },
+      {
+        "type": "keyword",
+        "value": "CURRENT_DATE"
+      },
+      {
+        "type": "column",
+        "value": "-"
+      },
+      {
+        "type": "keyword",
+        "value": "INTERVAL"
+      },
+      {
+        "type": "column",
+        "value": "90"
+      },
+      {
+        "type": "keyword",
+        "value": "DAY;"
+      }
+    ]
+  },
+  {
+    "drillNumber": 962,
+    "subcluster": "10.7 Rolling Time Window Filtering (CURRENT_DATE - INTERVAL)",
+    "level": "Level 2 (Rolling Windows)",
+    "title": "Syntax #962: Filter new releases published within the rolling past 1 year",
+    "table": "Books",
+    "scenario": "Filter new releases published within the rolling past 1 year.",
+    "businessObjective": "Filter new releases published within the rolling past 1 year.",
+    "schemaSnippet": "Books temporal schema",
+    "targetQuery": "SELECT title, published_date\nFROM Books\nWHERE published_date >= CURRENT_DATE - INTERVAL 1 YEAR;",
+    "syntaxBlueprint": "SELECT col\nFROM table_name\nWHERE date_col >= CURRENT_DATE - INTERVAL 30 DAY;",
+    "syntaxRule": "Filter dynamic, rolling historical windows by comparing a date column against 'CURRENT_DATE - INTERVAL n UNIT'. This keeps queries evergreen without hardcoded dates.",
+    "syntaxTrap": "Hardcoding 'WHERE date_col >= '2024-01-01'' instead of relative rolling windows means reports become stale every week.",
+    "eli5Story": "Date, Time & Temporal Arithmetic on Books: Filter new releases published within the rolling past 1 year.",
+    "commonMistakes": "Passing parameters in wrong order in DATEDIFF, hardcoding static dates instead of relative rolling intervals, or forgetting to group by both YEAR and MONTH for time series.",
+    "learningOutcomes": "Mastered 10.7 Rolling Time Window Filtering (CURRENT_DATE - INTERVAL) on Books.",
+    "challengeSlots": [
+      {
+        "type": "keyword",
+        "value": "SELECT"
+      },
+      {
+        "type": "column",
+        "value": "title,"
+      },
+      {
+        "type": "column",
+        "value": "published_date"
+      },
+      {
+        "type": "keyword",
+        "value": "FROM"
+      },
+      {
+        "type": "table",
+        "value": "Books"
+      },
+      {
+        "type": "keyword",
+        "value": "WHERE"
+      },
+      {
+        "type": "column",
+        "value": "published_date"
+      },
+      {
+        "type": "column",
+        "value": ">="
+      },
+      {
+        "type": "keyword",
+        "value": "CURRENT_DATE"
+      },
+      {
+        "type": "column",
+        "value": "-"
+      },
+      {
+        "type": "keyword",
+        "value": "INTERVAL"
+      },
+      {
+        "type": "column",
+        "value": "1"
+      },
+      {
+        "type": "keyword",
+        "value": "YEAR;"
+      }
+    ]
+  },
+  {
+    "drillNumber": 963,
+    "subcluster": "10.7 Rolling Time Window Filtering (CURRENT_DATE - INTERVAL)",
+    "level": "Level 2 (Rolling Windows)",
+    "title": "Syntax #963: Identify newly onboarded employees hired within the last 6 months",
+    "table": "Employees",
+    "scenario": "Identify newly onboarded employees hired within the last 6 months.",
+    "businessObjective": "Identify newly onboarded employees hired within the last 6 months.",
+    "schemaSnippet": "Employees temporal schema",
+    "targetQuery": "SELECT first_name, hire_date\nFROM Employees\nWHERE hire_date >= CURRENT_DATE - INTERVAL 6 MONTH;",
+    "syntaxBlueprint": "SELECT col\nFROM table_name\nWHERE date_col >= CURRENT_DATE - INTERVAL 30 DAY;",
+    "syntaxRule": "Filter dynamic, rolling historical windows by comparing a date column against 'CURRENT_DATE - INTERVAL n UNIT'. This keeps queries evergreen without hardcoded dates.",
+    "syntaxTrap": "Hardcoding 'WHERE date_col >= '2024-01-01'' instead of relative rolling windows means reports become stale every week.",
+    "eli5Story": "Date, Time & Temporal Arithmetic on Employees: Identify newly onboarded employees hired within the last 6 months.",
+    "commonMistakes": "Passing parameters in wrong order in DATEDIFF, hardcoding static dates instead of relative rolling intervals, or forgetting to group by both YEAR and MONTH for time series.",
+    "learningOutcomes": "Mastered 10.7 Rolling Time Window Filtering (CURRENT_DATE - INTERVAL) on Employees.",
+    "challengeSlots": [
+      {
+        "type": "keyword",
+        "value": "SELECT"
+      },
+      {
+        "type": "column",
+        "value": "first_name,"
+      },
+      {
+        "type": "column",
+        "value": "hire_date"
+      },
+      {
+        "type": "keyword",
+        "value": "FROM"
+      },
+      {
+        "type": "table",
+        "value": "Employees"
+      },
+      {
+        "type": "keyword",
+        "value": "WHERE"
+      },
+      {
+        "type": "column",
+        "value": "hire_date"
+      },
+      {
+        "type": "column",
+        "value": ">="
+      },
+      {
+        "type": "keyword",
+        "value": "CURRENT_DATE"
+      },
+      {
+        "type": "column",
+        "value": "-"
+      },
+      {
+        "type": "keyword",
+        "value": "INTERVAL"
+      },
+      {
+        "type": "column",
+        "value": "6"
+      },
+      {
+        "type": "keyword",
+        "value": "MONTH;"
+      }
+    ]
+  },
+  {
+    "drillNumber": 964,
+    "subcluster": "10.7 Rolling Time Window Filtering (CURRENT_DATE - INTERVAL)",
+    "level": "Level 2 (Rolling Windows)",
+    "title": "Syntax #964: Find all grocery inventory expiring within the next rolling 3 days",
+    "table": "GroceryItems",
+    "scenario": "Find all grocery inventory expiring within the next rolling 3 days.",
+    "businessObjective": "Find all grocery inventory expiring within the next rolling 3 days.",
+    "schemaSnippet": "GroceryItems temporal schema",
+    "targetQuery": "SELECT item_name, expiry_date\nFROM GroceryItems\nWHERE expiry_date <= CURRENT_DATE + INTERVAL 3 DAY;",
+    "syntaxBlueprint": "SELECT col\nFROM table_name\nWHERE date_col >= CURRENT_DATE - INTERVAL 30 DAY;",
+    "syntaxRule": "Filter dynamic, rolling historical windows by comparing a date column against 'CURRENT_DATE - INTERVAL n UNIT'. This keeps queries evergreen without hardcoded dates.",
+    "syntaxTrap": "Hardcoding 'WHERE date_col >= '2024-01-01'' instead of relative rolling windows means reports become stale every week.",
+    "eli5Story": "Date, Time & Temporal Arithmetic on GroceryItems: Find all grocery inventory expiring within the next rolling 3 days.",
+    "commonMistakes": "Passing parameters in wrong order in DATEDIFF, hardcoding static dates instead of relative rolling intervals, or forgetting to group by both YEAR and MONTH for time series.",
+    "learningOutcomes": "Mastered 10.7 Rolling Time Window Filtering (CURRENT_DATE - INTERVAL) on GroceryItems.",
+    "challengeSlots": [
+      {
+        "type": "keyword",
+        "value": "SELECT"
+      },
+      {
+        "type": "column",
+        "value": "item_name,"
+      },
+      {
+        "type": "column",
+        "value": "expiry_date"
+      },
+      {
+        "type": "keyword",
+        "value": "FROM"
+      },
+      {
+        "type": "table",
+        "value": "GroceryItems"
+      },
+      {
+        "type": "keyword",
+        "value": "WHERE"
+      },
+      {
+        "type": "column",
+        "value": "expiry_date"
+      },
+      {
+        "type": "column",
+        "value": "<="
+      },
+      {
+        "type": "keyword",
+        "value": "CURRENT_DATE"
+      },
+      {
+        "type": "column",
+        "value": "+"
+      },
+      {
+        "type": "keyword",
+        "value": "INTERVAL"
+      },
+      {
+        "type": "column",
+        "value": "3"
+      },
+      {
+        "type": "keyword",
+        "value": "DAY;"
+      }
+    ]
+  },
+  {
+    "drillNumber": 965,
+    "subcluster": "10.7 Rolling Time Window Filtering (CURRENT_DATE - INTERVAL)",
+    "level": "Level 2 (Rolling Windows)",
+    "title": "Syntax #965: Retrieve recent customer orders placed within the rolling past 7 days",
+    "table": "Orders",
+    "scenario": "Retrieve recent customer orders placed within the rolling past 7 days.",
+    "businessObjective": "Retrieve recent customer orders placed within the rolling past 7 days.",
+    "schemaSnippet": "Orders temporal schema",
+    "targetQuery": "SELECT order_id, customer_name, order_date, total_amount\nFROM Orders\nWHERE order_date >= CURRENT_DATE - INTERVAL 7 DAY;",
+    "syntaxBlueprint": "SELECT col\nFROM table_name\nWHERE date_col >= CURRENT_DATE - INTERVAL 30 DAY;",
+    "syntaxRule": "Filter dynamic, rolling historical windows by comparing a date column against 'CURRENT_DATE - INTERVAL n UNIT'. This keeps queries evergreen without hardcoded dates.",
+    "syntaxTrap": "Hardcoding 'WHERE date_col >= '2024-01-01'' instead of relative rolling windows means reports become stale every week.",
+    "eli5Story": "Date, Time & Temporal Arithmetic on Orders: Retrieve recent customer orders placed within the rolling past 7 days.",
+    "commonMistakes": "Passing parameters in wrong order in DATEDIFF, hardcoding static dates instead of relative rolling intervals, or forgetting to group by both YEAR and MONTH for time series.",
+    "learningOutcomes": "Mastered 10.7 Rolling Time Window Filtering (CURRENT_DATE - INTERVAL) on Orders.",
+    "challengeSlots": [
+      {
+        "type": "keyword",
+        "value": "SELECT"
+      },
+      {
+        "type": "column",
+        "value": "order_id,"
+      },
+      {
+        "type": "column",
+        "value": "customer_name,"
+      },
+      {
+        "type": "column",
+        "value": "order_date,"
+      },
+      {
+        "type": "column",
+        "value": "total_amount"
+      },
+      {
+        "type": "keyword",
+        "value": "FROM"
+      },
+      {
+        "type": "table",
+        "value": "Orders"
+      },
+      {
+        "type": "keyword",
+        "value": "WHERE"
+      },
+      {
+        "type": "column",
+        "value": "order_date"
+      },
+      {
+        "type": "column",
+        "value": ">="
+      },
+      {
+        "type": "keyword",
+        "value": "CURRENT_DATE"
+      },
+      {
+        "type": "column",
+        "value": "-"
+      },
+      {
+        "type": "keyword",
+        "value": "INTERVAL"
+      },
+      {
+        "type": "column",
+        "value": "7"
+      },
+      {
+        "type": "keyword",
+        "value": "DAY;"
+      }
+    ]
+  },
+  {
+    "drillNumber": 966,
+    "subcluster": "10.7 Rolling Time Window Filtering (CURRENT_DATE - INTERVAL)",
+    "level": "Level 2 (Rolling Windows)",
+    "title": "Syntax #966: Filter new music tracks released within the rolling past 30 days",
+    "table": "MusicTracks",
+    "scenario": "Filter new music tracks released within the rolling past 30 days.",
+    "businessObjective": "Filter new music tracks released within the rolling past 30 days.",
+    "schemaSnippet": "MusicTracks temporal schema",
+    "targetQuery": "SELECT track_title, release_date\nFROM MusicTracks\nWHERE release_date >= CURRENT_DATE - INTERVAL 30 DAY;",
+    "syntaxBlueprint": "SELECT col\nFROM table_name\nWHERE date_col >= CURRENT_DATE - INTERVAL 30 DAY;",
+    "syntaxRule": "Filter dynamic, rolling historical windows by comparing a date column against 'CURRENT_DATE - INTERVAL n UNIT'. This keeps queries evergreen without hardcoded dates.",
+    "syntaxTrap": "Hardcoding 'WHERE date_col >= '2024-01-01'' instead of relative rolling windows means reports become stale every week.",
+    "eli5Story": "Date, Time & Temporal Arithmetic on MusicTracks: Filter new music tracks released within the rolling past 30 days.",
+    "commonMistakes": "Passing parameters in wrong order in DATEDIFF, hardcoding static dates instead of relative rolling intervals, or forgetting to group by both YEAR and MONTH for time series.",
+    "learningOutcomes": "Mastered 10.7 Rolling Time Window Filtering (CURRENT_DATE - INTERVAL) on MusicTracks.",
+    "challengeSlots": [
+      {
+        "type": "keyword",
+        "value": "SELECT"
+      },
+      {
+        "type": "column",
+        "value": "track_title,"
+      },
+      {
+        "type": "column",
+        "value": "release_date"
+      },
+      {
+        "type": "keyword",
+        "value": "FROM"
+      },
+      {
+        "type": "table",
+        "value": "MusicTracks"
+      },
+      {
+        "type": "keyword",
+        "value": "WHERE"
+      },
+      {
+        "type": "column",
+        "value": "release_date"
+      },
+      {
+        "type": "column",
+        "value": ">="
+      },
+      {
+        "type": "keyword",
+        "value": "CURRENT_DATE"
+      },
+      {
+        "type": "column",
+        "value": "-"
+      },
+      {
+        "type": "keyword",
+        "value": "INTERVAL"
+      },
+      {
+        "type": "column",
+        "value": "30"
+      },
+      {
+        "type": "keyword",
+        "value": "DAY;"
+      }
+    ]
+  },
+  {
+    "drillNumber": 967,
+    "subcluster": "10.7 Rolling Time Window Filtering (CURRENT_DATE - INTERVAL)",
+    "level": "Level 2 (Rolling Windows)",
+    "title": "Syntax #967: List newly registered gym members who joined in the last 14 days",
+    "table": "GymMembers",
+    "scenario": "List newly registered gym members who joined in the last 14 days.",
+    "businessObjective": "List newly registered gym members who joined in the last 14 days.",
+    "schemaSnippet": "GymMembers temporal schema",
+    "targetQuery": "SELECT member_name, join_date\nFROM GymMembers\nWHERE join_date >= CURRENT_DATE - INTERVAL 14 DAY;",
+    "syntaxBlueprint": "SELECT col\nFROM table_name\nWHERE date_col >= CURRENT_DATE - INTERVAL 30 DAY;",
+    "syntaxRule": "Filter dynamic, rolling historical windows by comparing a date column against 'CURRENT_DATE - INTERVAL n UNIT'. This keeps queries evergreen without hardcoded dates.",
+    "syntaxTrap": "Hardcoding 'WHERE date_col >= '2024-01-01'' instead of relative rolling windows means reports become stale every week.",
+    "eli5Story": "Date, Time & Temporal Arithmetic on GymMembers: List newly registered gym members who joined in the last 14 days.",
+    "commonMistakes": "Passing parameters in wrong order in DATEDIFF, hardcoding static dates instead of relative rolling intervals, or forgetting to group by both YEAR and MONTH for time series.",
+    "learningOutcomes": "Mastered 10.7 Rolling Time Window Filtering (CURRENT_DATE - INTERVAL) on GymMembers.",
+    "challengeSlots": [
+      {
+        "type": "keyword",
+        "value": "SELECT"
+      },
+      {
+        "type": "column",
+        "value": "member_name,"
+      },
+      {
+        "type": "column",
+        "value": "join_date"
+      },
+      {
+        "type": "keyword",
+        "value": "FROM"
+      },
+      {
+        "type": "table",
+        "value": "GymMembers"
+      },
+      {
+        "type": "keyword",
+        "value": "WHERE"
+      },
+      {
+        "type": "column",
+        "value": "join_date"
+      },
+      {
+        "type": "column",
+        "value": ">="
+      },
+      {
+        "type": "keyword",
+        "value": "CURRENT_DATE"
+      },
+      {
+        "type": "column",
+        "value": "-"
+      },
+      {
+        "type": "keyword",
+        "value": "INTERVAL"
+      },
+      {
+        "type": "column",
+        "value": "14"
+      },
+      {
+        "type": "keyword",
+        "value": "DAY;"
+      }
+    ]
+  },
+  {
+    "drillNumber": 968,
+    "subcluster": "10.7 Rolling Time Window Filtering (CURRENT_DATE - INTERVAL)",
+    "level": "Level 2 (Rolling Windows)",
+    "title": "Syntax #968: Filter movie reviews published within the rolling past 60 days",
+    "table": "MovieReviews",
+    "scenario": "Filter movie reviews published within the rolling past 60 days.",
+    "businessObjective": "Filter movie reviews published within the rolling past 60 days.",
+    "schemaSnippet": "MovieReviews temporal schema",
+    "targetQuery": "SELECT movie_title, review_date, star_rating\nFROM MovieReviews\nWHERE review_date >= CURRENT_DATE - INTERVAL 60 DAY;",
+    "syntaxBlueprint": "SELECT col\nFROM table_name\nWHERE date_col >= CURRENT_DATE - INTERVAL 30 DAY;",
+    "syntaxRule": "Filter dynamic, rolling historical windows by comparing a date column against 'CURRENT_DATE - INTERVAL n UNIT'. This keeps queries evergreen without hardcoded dates.",
+    "syntaxTrap": "Hardcoding 'WHERE date_col >= '2024-01-01'' instead of relative rolling windows means reports become stale every week.",
+    "eli5Story": "Date, Time & Temporal Arithmetic on MovieReviews: Filter movie reviews published within the rolling past 60 days.",
+    "commonMistakes": "Passing parameters in wrong order in DATEDIFF, hardcoding static dates instead of relative rolling intervals, or forgetting to group by both YEAR and MONTH for time series.",
+    "learningOutcomes": "Mastered 10.7 Rolling Time Window Filtering (CURRENT_DATE - INTERVAL) on MovieReviews.",
+    "challengeSlots": [
+      {
+        "type": "keyword",
+        "value": "SELECT"
+      },
+      {
+        "type": "column",
+        "value": "movie_title,"
+      },
+      {
+        "type": "column",
+        "value": "review_date,"
+      },
+      {
+        "type": "column",
+        "value": "star_rating"
+      },
+      {
+        "type": "keyword",
+        "value": "FROM"
+      },
+      {
+        "type": "table",
+        "value": "MovieReviews"
+      },
+      {
+        "type": "keyword",
+        "value": "WHERE"
+      },
+      {
+        "type": "column",
+        "value": "review_date"
+      },
+      {
+        "type": "column",
+        "value": ">="
+      },
+      {
+        "type": "keyword",
+        "value": "CURRENT_DATE"
+      },
+      {
+        "type": "column",
+        "value": "-"
+      },
+      {
+        "type": "keyword",
+        "value": "INTERVAL"
+      },
+      {
+        "type": "column",
+        "value": "60"
+      },
+      {
+        "type": "keyword",
+        "value": "DAY;"
+      }
+    ]
+  },
+  {
+    "drillNumber": 969,
+    "subcluster": "10.7 Rolling Time Window Filtering (CURRENT_DATE - INTERVAL)",
+    "level": "Level 2 (Rolling Windows)",
+    "title": "Syntax #969: Find flights departing within the active 2-hour departure gate window",
+    "table": "FlightSchedule",
+    "scenario": "Find flights departing within the active 2-hour departure gate window.",
+    "businessObjective": "Find flights departing within the active 2-hour departure gate window.",
+    "schemaSnippet": "FlightSchedule temporal schema",
+    "targetQuery": "SELECT flight_id, departure_time\nFROM FlightSchedule\nWHERE departure_time >= NOW() - INTERVAL 2 HOUR;",
+    "syntaxBlueprint": "SELECT col\nFROM table_name\nWHERE date_col >= CURRENT_DATE - INTERVAL 30 DAY;",
+    "syntaxRule": "Filter dynamic, rolling historical windows by comparing a date column against 'CURRENT_DATE - INTERVAL n UNIT'. This keeps queries evergreen without hardcoded dates.",
+    "syntaxTrap": "Hardcoding 'WHERE date_col >= '2024-01-01'' instead of relative rolling windows means reports become stale every week.",
+    "eli5Story": "Date, Time & Temporal Arithmetic on FlightSchedule: Find flights departing within the active 2-hour departure gate window.",
+    "commonMistakes": "Passing parameters in wrong order in DATEDIFF, hardcoding static dates instead of relative rolling intervals, or forgetting to group by both YEAR and MONTH for time series.",
+    "learningOutcomes": "Mastered 10.7 Rolling Time Window Filtering (CURRENT_DATE - INTERVAL) on FlightSchedule.",
+    "challengeSlots": [
+      {
+        "type": "keyword",
+        "value": "SELECT"
+      },
+      {
+        "type": "column",
+        "value": "flight_id,"
+      },
+      {
+        "type": "column",
+        "value": "departure_time"
+      },
+      {
+        "type": "keyword",
+        "value": "FROM"
+      },
+      {
+        "type": "table",
+        "value": "FlightSchedule"
+      },
+      {
+        "type": "keyword",
+        "value": "WHERE"
+      },
+      {
+        "type": "column",
+        "value": "departure_time"
+      },
+      {
+        "type": "column",
+        "value": ">="
+      },
+      {
+        "type": "keyword",
+        "value": "NOW()"
+      },
+      {
+        "type": "column",
+        "value": "-"
+      },
+      {
+        "type": "keyword",
+        "value": "INTERVAL"
+      },
+      {
+        "type": "column",
+        "value": "2"
+      },
+      {
+        "type": "keyword",
+        "value": "HOUR;"
+      }
+    ]
+  },
+  {
+    "drillNumber": 970,
+    "subcluster": "10.7 Rolling Time Window Filtering (CURRENT_DATE - INTERVAL)",
+    "level": "Level 2 (Rolling Windows)",
+    "title": "Syntax #970: Retrieve clinic patients seen for checkups within the last 30 days",
+    "table": "PetClinic",
+    "scenario": "Retrieve clinic patients seen for checkups within the last 30 days.",
+    "businessObjective": "Retrieve clinic patients seen for checkups within the last 30 days.",
+    "schemaSnippet": "PetClinic temporal schema",
+    "targetQuery": "SELECT pet_name, visit_date\nFROM PetClinic\nWHERE visit_date >= CURRENT_DATE - INTERVAL 30 DAY;",
+    "syntaxBlueprint": "SELECT col\nFROM table_name\nWHERE date_col >= CURRENT_DATE - INTERVAL 30 DAY;",
+    "syntaxRule": "Filter dynamic, rolling historical windows by comparing a date column against 'CURRENT_DATE - INTERVAL n UNIT'. This keeps queries evergreen without hardcoded dates.",
+    "syntaxTrap": "Hardcoding 'WHERE date_col >= '2024-01-01'' instead of relative rolling windows means reports become stale every week.",
+    "eli5Story": "Date, Time & Temporal Arithmetic on PetClinic: Retrieve clinic patients seen for checkups within the last 30 days.",
+    "commonMistakes": "Passing parameters in wrong order in DATEDIFF, hardcoding static dates instead of relative rolling intervals, or forgetting to group by both YEAR and MONTH for time series.",
+    "learningOutcomes": "Mastered 10.7 Rolling Time Window Filtering (CURRENT_DATE - INTERVAL) on PetClinic.",
+    "challengeSlots": [
+      {
+        "type": "keyword",
+        "value": "SELECT"
+      },
+      {
+        "type": "column",
+        "value": "pet_name,"
+      },
+      {
+        "type": "column",
+        "value": "visit_date"
+      },
+      {
+        "type": "keyword",
+        "value": "FROM"
+      },
+      {
+        "type": "table",
+        "value": "PetClinic"
+      },
+      {
+        "type": "keyword",
+        "value": "WHERE"
+      },
+      {
+        "type": "column",
+        "value": "visit_date"
+      },
+      {
+        "type": "column",
+        "value": ">="
+      },
+      {
+        "type": "keyword",
+        "value": "CURRENT_DATE"
+      },
+      {
+        "type": "column",
+        "value": "-"
+      },
+      {
+        "type": "keyword",
+        "value": "INTERVAL"
+      },
+      {
+        "type": "column",
+        "value": "30"
+      },
+      {
+        "type": "keyword",
+        "value": "DAY;"
+      }
+    ]
+  },
+  {
+    "drillNumber": 971,
+    "subcluster": "10.8 Date Formatting & Cohort Month Strings (DATE_FORMAT)",
+    "level": "Level 2 (Date Formatting)",
+    "title": "Syntax #971: Format enrollment dates into monthly cohort tags ('YYYY-MM') via DATE_FORMAT",
+    "table": "Students",
+    "scenario": "Format enrollment dates into monthly cohort tags ('YYYY-MM') via DATE_FORMAT.",
+    "businessObjective": "Format enrollment dates into monthly cohort tags ('YYYY-MM') via DATE_FORMAT.",
+    "schemaSnippet": "Students temporal schema",
+    "targetQuery": "SELECT full_name, DATE_FORMAT(enrolled_date, '%Y-%m') AS cohort_month\nFROM Students;",
+    "syntaxBlueprint": "SELECT col, DATE_FORMAT(date_col, '%Y-%m') AS cohort_month\nFROM table_name;",
+    "syntaxRule": "DATE_FORMAT(date, format_string) transforms dates into human-readable strings or monthly cohort keys. '%Y-%m' is the industry standard for monthly cohort bucketing.",
+    "syntaxTrap": "'%y' (lowercase) produces a 2-digit year ('24'), while '%Y' (uppercase) produces the required 4-digit year ('2024').",
+    "eli5Story": "Date, Time & Temporal Arithmetic on Students: Format enrollment dates into monthly cohort tags ('YYYY-MM') via DATE_FORMAT.",
+    "commonMistakes": "Passing parameters in wrong order in DATEDIFF, hardcoding static dates instead of relative rolling intervals, or forgetting to group by both YEAR and MONTH for time series.",
+    "learningOutcomes": "Mastered 10.8 Date Formatting & Cohort Month Strings (DATE_FORMAT) on Students.",
+    "challengeSlots": [
+      {
+        "type": "keyword",
+        "value": "SELECT"
+      },
+      {
+        "type": "column",
+        "value": "full_name,"
+      },
+      {
+        "type": "column",
+        "value": "DATE_FORMAT(enrolled_date,"
+      },
+      {
+        "type": "column",
+        "value": "'%Y-%m')"
+      },
+      {
+        "type": "keyword",
+        "value": "AS"
+      },
+      {
+        "type": "column",
+        "value": "cohort_month"
+      },
+      {
+        "type": "keyword",
+        "value": "FROM"
+      },
+      {
+        "type": "table",
+        "value": "Students;"
+      }
+    ]
+  },
+  {
+    "drillNumber": 972,
+    "subcluster": "10.8 Date Formatting & Cohort Month Strings (DATE_FORMAT)",
+    "level": "Level 2 (Date Formatting)",
+    "title": "Syntax #972: Format publication dates into readable 'Month Year' strings (e.g. 'October 2023')",
+    "table": "Books",
+    "scenario": "Format publication dates into readable 'Month Year' strings (e.g. 'October 2023').",
+    "businessObjective": "Format publication dates into readable 'Month Year' strings (e.g. 'October 2023').",
+    "schemaSnippet": "Books temporal schema",
+    "targetQuery": "SELECT title, DATE_FORMAT(published_date, '%M %Y') AS readable_pub_date\nFROM Books;",
+    "syntaxBlueprint": "SELECT col, DATE_FORMAT(date_col, '%Y-%m') AS cohort_month\nFROM table_name;",
+    "syntaxRule": "DATE_FORMAT(date, format_string) transforms dates into human-readable strings or monthly cohort keys. '%Y-%m' is the industry standard for monthly cohort bucketing.",
+    "syntaxTrap": "'%y' (lowercase) produces a 2-digit year ('24'), while '%Y' (uppercase) produces the required 4-digit year ('2024').",
+    "eli5Story": "Date, Time & Temporal Arithmetic on Books: Format publication dates into readable 'Month Year' strings (e.g. 'October 2023').",
+    "commonMistakes": "Passing parameters in wrong order in DATEDIFF, hardcoding static dates instead of relative rolling intervals, or forgetting to group by both YEAR and MONTH for time series.",
+    "learningOutcomes": "Mastered 10.8 Date Formatting & Cohort Month Strings (DATE_FORMAT) on Books.",
+    "challengeSlots": [
+      {
+        "type": "keyword",
+        "value": "SELECT"
+      },
+      {
+        "type": "column",
+        "value": "title,"
+      },
+      {
+        "type": "column",
+        "value": "DATE_FORMAT(published_date,"
+      },
+      {
+        "type": "column",
+        "value": "'%M"
+      },
+      {
+        "type": "column",
+        "value": "%Y')"
+      },
+      {
+        "type": "keyword",
+        "value": "AS"
+      },
+      {
+        "type": "column",
+        "value": "readable_pub_date"
+      },
+      {
+        "type": "keyword",
+        "value": "FROM"
+      },
+      {
+        "type": "table",
+        "value": "Books;"
+      }
+    ]
+  },
+  {
+    "drillNumber": 973,
+    "subcluster": "10.8 Date Formatting & Cohort Month Strings (DATE_FORMAT)",
+    "level": "Level 2 (Date Formatting)",
+    "title": "Syntax #973: Assign employees to hiring cohort months ('YYYY-MM') using DATE_FORMAT",
+    "table": "Employees",
+    "scenario": "Assign employees to hiring cohort months ('YYYY-MM') using DATE_FORMAT.",
+    "businessObjective": "Assign employees to hiring cohort months ('YYYY-MM') using DATE_FORMAT.",
+    "schemaSnippet": "Employees temporal schema",
+    "targetQuery": "SELECT first_name, DATE_FORMAT(hire_date, '%Y-%m') AS hire_cohort\nFROM Employees;",
+    "syntaxBlueprint": "SELECT col, DATE_FORMAT(date_col, '%Y-%m') AS cohort_month\nFROM table_name;",
+    "syntaxRule": "DATE_FORMAT(date, format_string) transforms dates into human-readable strings or monthly cohort keys. '%Y-%m' is the industry standard for monthly cohort bucketing.",
+    "syntaxTrap": "'%y' (lowercase) produces a 2-digit year ('24'), while '%Y' (uppercase) produces the required 4-digit year ('2024').",
+    "eli5Story": "Date, Time & Temporal Arithmetic on Employees: Assign employees to hiring cohort months ('YYYY-MM') using DATE_FORMAT.",
+    "commonMistakes": "Passing parameters in wrong order in DATEDIFF, hardcoding static dates instead of relative rolling intervals, or forgetting to group by both YEAR and MONTH for time series.",
+    "learningOutcomes": "Mastered 10.8 Date Formatting & Cohort Month Strings (DATE_FORMAT) on Employees.",
+    "challengeSlots": [
+      {
+        "type": "keyword",
+        "value": "SELECT"
+      },
+      {
+        "type": "column",
+        "value": "first_name,"
+      },
+      {
+        "type": "column",
+        "value": "DATE_FORMAT(hire_date,"
+      },
+      {
+        "type": "column",
+        "value": "'%Y-%m')"
+      },
+      {
+        "type": "keyword",
+        "value": "AS"
+      },
+      {
+        "type": "column",
+        "value": "hire_cohort"
+      },
+      {
+        "type": "keyword",
+        "value": "FROM"
+      },
+      {
+        "type": "table",
+        "value": "Employees;"
+      }
+    ]
+  },
+  {
+    "drillNumber": 974,
+    "subcluster": "10.8 Date Formatting & Cohort Month Strings (DATE_FORMAT)",
+    "level": "Level 2 (Date Formatting)",
+    "title": "Syntax #974: Format expiration dates into European shelf-tag format 'DD/MM/YYYY'",
+    "table": "GroceryItems",
+    "scenario": "Format expiration dates into European shelf-tag format 'DD/MM/YYYY'.",
+    "businessObjective": "Format expiration dates into European shelf-tag format 'DD/MM/YYYY'.",
+    "schemaSnippet": "GroceryItems temporal schema",
+    "targetQuery": "SELECT item_name, DATE_FORMAT(expiry_date, '%d/%m/%Y') AS shelf_tag_date\nFROM GroceryItems;",
+    "syntaxBlueprint": "SELECT col, DATE_FORMAT(date_col, '%Y-%m') AS cohort_month\nFROM table_name;",
+    "syntaxRule": "DATE_FORMAT(date, format_string) transforms dates into human-readable strings or monthly cohort keys. '%Y-%m' is the industry standard for monthly cohort bucketing.",
+    "syntaxTrap": "'%y' (lowercase) produces a 2-digit year ('24'), while '%Y' (uppercase) produces the required 4-digit year ('2024').",
+    "eli5Story": "Date, Time & Temporal Arithmetic on GroceryItems: Format expiration dates into European shelf-tag format 'DD/MM/YYYY'.",
+    "commonMistakes": "Passing parameters in wrong order in DATEDIFF, hardcoding static dates instead of relative rolling intervals, or forgetting to group by both YEAR and MONTH for time series.",
+    "learningOutcomes": "Mastered 10.8 Date Formatting & Cohort Month Strings (DATE_FORMAT) on GroceryItems.",
+    "challengeSlots": [
+      {
+        "type": "keyword",
+        "value": "SELECT"
+      },
+      {
+        "type": "column",
+        "value": "item_name,"
+      },
+      {
+        "type": "column",
+        "value": "DATE_FORMAT(expiry_date,"
+      },
+      {
+        "type": "column",
+        "value": "'%d/%m/%Y')"
+      },
+      {
+        "type": "keyword",
+        "value": "AS"
+      },
+      {
+        "type": "column",
+        "value": "shelf_tag_date"
+      },
+      {
+        "type": "keyword",
+        "value": "FROM"
+      },
+      {
+        "type": "table",
+        "value": "GroceryItems;"
+      }
+    ]
+  },
+  {
+    "drillNumber": 975,
+    "subcluster": "10.8 Date Formatting & Cohort Month Strings (DATE_FORMAT)",
+    "level": "Level 2 (Date Formatting)",
+    "title": "Syntax #975: Format order dates into monthly financial reporting periods ('YYYY-MM')",
+    "table": "Orders",
+    "scenario": "Format order dates into monthly financial reporting periods ('YYYY-MM').",
+    "businessObjective": "Format order dates into monthly financial reporting periods ('YYYY-MM').",
+    "schemaSnippet": "Orders temporal schema",
+    "targetQuery": "SELECT order_id, DATE_FORMAT(order_date, '%Y-%m') AS order_month, total_amount\nFROM Orders;",
+    "syntaxBlueprint": "SELECT col, DATE_FORMAT(date_col, '%Y-%m') AS cohort_month\nFROM table_name;",
+    "syntaxRule": "DATE_FORMAT(date, format_string) transforms dates into human-readable strings or monthly cohort keys. '%Y-%m' is the industry standard for monthly cohort bucketing.",
+    "syntaxTrap": "'%y' (lowercase) produces a 2-digit year ('24'), while '%Y' (uppercase) produces the required 4-digit year ('2024').",
+    "eli5Story": "Date, Time & Temporal Arithmetic on Orders: Format order dates into monthly financial reporting periods ('YYYY-MM').",
+    "commonMistakes": "Passing parameters in wrong order in DATEDIFF, hardcoding static dates instead of relative rolling intervals, or forgetting to group by both YEAR and MONTH for time series.",
+    "learningOutcomes": "Mastered 10.8 Date Formatting & Cohort Month Strings (DATE_FORMAT) on Orders.",
+    "challengeSlots": [
+      {
+        "type": "keyword",
+        "value": "SELECT"
+      },
+      {
+        "type": "column",
+        "value": "order_id,"
+      },
+      {
+        "type": "column",
+        "value": "DATE_FORMAT(order_date,"
+      },
+      {
+        "type": "column",
+        "value": "'%Y-%m')"
+      },
+      {
+        "type": "keyword",
+        "value": "AS"
+      },
+      {
+        "type": "column",
+        "value": "order_month,"
+      },
+      {
+        "type": "column",
+        "value": "total_amount"
+      },
+      {
+        "type": "keyword",
+        "value": "FROM"
+      },
+      {
+        "type": "table",
+        "value": "Orders;"
+      }
+    ]
+  },
+  {
+    "drillNumber": 976,
+    "subcluster": "10.8 Date Formatting & Cohort Month Strings (DATE_FORMAT)",
+    "level": "Level 2 (Date Formatting)",
+    "title": "Syntax #976: Format release dates into album sleeve format 'Mon DD, YYYY'",
+    "table": "MusicTracks",
+    "scenario": "Format release dates into album sleeve format 'Mon DD, YYYY'.",
+    "businessObjective": "Format release dates into album sleeve format 'Mon DD, YYYY'.",
+    "schemaSnippet": "MusicTracks temporal schema",
+    "targetQuery": "SELECT track_title, DATE_FORMAT(release_date, '%b %d, %Y') AS display_release\nFROM MusicTracks;",
+    "syntaxBlueprint": "SELECT col, DATE_FORMAT(date_col, '%Y-%m') AS cohort_month\nFROM table_name;",
+    "syntaxRule": "DATE_FORMAT(date, format_string) transforms dates into human-readable strings or monthly cohort keys. '%Y-%m' is the industry standard for monthly cohort bucketing.",
+    "syntaxTrap": "'%y' (lowercase) produces a 2-digit year ('24'), while '%Y' (uppercase) produces the required 4-digit year ('2024').",
+    "eli5Story": "Date, Time & Temporal Arithmetic on MusicTracks: Format release dates into album sleeve format 'Mon DD, YYYY'.",
+    "commonMistakes": "Passing parameters in wrong order in DATEDIFF, hardcoding static dates instead of relative rolling intervals, or forgetting to group by both YEAR and MONTH for time series.",
+    "learningOutcomes": "Mastered 10.8 Date Formatting & Cohort Month Strings (DATE_FORMAT) on MusicTracks.",
+    "challengeSlots": [
+      {
+        "type": "keyword",
+        "value": "SELECT"
+      },
+      {
+        "type": "column",
+        "value": "track_title,"
+      },
+      {
+        "type": "column",
+        "value": "DATE_FORMAT(release_date,"
+      },
+      {
+        "type": "column",
+        "value": "'%b"
+      },
+      {
+        "type": "column",
+        "value": "%d,"
+      },
+      {
+        "type": "column",
+        "value": "%Y')"
+      },
+      {
+        "type": "keyword",
+        "value": "AS"
+      },
+      {
+        "type": "column",
+        "value": "display_release"
+      },
+      {
+        "type": "keyword",
+        "value": "FROM"
+      },
+      {
+        "type": "table",
+        "value": "MusicTracks;"
+      }
+    ]
+  },
+  {
+    "drillNumber": 977,
+    "subcluster": "10.8 Date Formatting & Cohort Month Strings (DATE_FORMAT)",
+    "level": "Level 2 (Date Formatting)",
+    "title": "Syntax #977: Bucket gym members into monthly registration cohorts",
+    "table": "GymMembers",
+    "scenario": "Bucket gym members into monthly registration cohorts.",
+    "businessObjective": "Bucket gym members into monthly registration cohorts.",
+    "schemaSnippet": "GymMembers temporal schema",
+    "targetQuery": "SELECT member_name, DATE_FORMAT(join_date, '%Y-%m') AS join_cohort\nFROM GymMembers;",
+    "syntaxBlueprint": "SELECT col, DATE_FORMAT(date_col, '%Y-%m') AS cohort_month\nFROM table_name;",
+    "syntaxRule": "DATE_FORMAT(date, format_string) transforms dates into human-readable strings or monthly cohort keys. '%Y-%m' is the industry standard for monthly cohort bucketing.",
+    "syntaxTrap": "'%y' (lowercase) produces a 2-digit year ('24'), while '%Y' (uppercase) produces the required 4-digit year ('2024').",
+    "eli5Story": "Date, Time & Temporal Arithmetic on GymMembers: Bucket gym members into monthly registration cohorts.",
+    "commonMistakes": "Passing parameters in wrong order in DATEDIFF, hardcoding static dates instead of relative rolling intervals, or forgetting to group by both YEAR and MONTH for time series.",
+    "learningOutcomes": "Mastered 10.8 Date Formatting & Cohort Month Strings (DATE_FORMAT) on GymMembers.",
+    "challengeSlots": [
+      {
+        "type": "keyword",
+        "value": "SELECT"
+      },
+      {
+        "type": "column",
+        "value": "member_name,"
+      },
+      {
+        "type": "column",
+        "value": "DATE_FORMAT(join_date,"
+      },
+      {
+        "type": "column",
+        "value": "'%Y-%m')"
+      },
+      {
+        "type": "keyword",
+        "value": "AS"
+      },
+      {
+        "type": "column",
+        "value": "join_cohort"
+      },
+      {
+        "type": "keyword",
+        "value": "FROM"
+      },
+      {
+        "type": "table",
+        "value": "GymMembers;"
+      }
+    ]
+  },
+  {
+    "drillNumber": 978,
+    "subcluster": "10.8 Date Formatting & Cohort Month Strings (DATE_FORMAT)",
+    "level": "Level 2 (Date Formatting)",
+    "title": "Syntax #978: Format review publication dates with full weekday and month names",
+    "table": "MovieReviews",
+    "scenario": "Format review publication dates with full weekday and month names.",
+    "businessObjective": "Format review publication dates with full weekday and month names.",
+    "schemaSnippet": "MovieReviews temporal schema",
+    "targetQuery": "SELECT movie_title, DATE_FORMAT(review_date, '%W, %M %e, %Y') AS full_review_date\nFROM MovieReviews;",
+    "syntaxBlueprint": "SELECT col, DATE_FORMAT(date_col, '%Y-%m') AS cohort_month\nFROM table_name;",
+    "syntaxRule": "DATE_FORMAT(date, format_string) transforms dates into human-readable strings or monthly cohort keys. '%Y-%m' is the industry standard for monthly cohort bucketing.",
+    "syntaxTrap": "'%y' (lowercase) produces a 2-digit year ('24'), while '%Y' (uppercase) produces the required 4-digit year ('2024').",
+    "eli5Story": "Date, Time & Temporal Arithmetic on MovieReviews: Format review publication dates with full weekday and month names.",
+    "commonMistakes": "Passing parameters in wrong order in DATEDIFF, hardcoding static dates instead of relative rolling intervals, or forgetting to group by both YEAR and MONTH for time series.",
+    "learningOutcomes": "Mastered 10.8 Date Formatting & Cohort Month Strings (DATE_FORMAT) on MovieReviews.",
+    "challengeSlots": [
+      {
+        "type": "keyword",
+        "value": "SELECT"
+      },
+      {
+        "type": "column",
+        "value": "movie_title,"
+      },
+      {
+        "type": "column",
+        "value": "DATE_FORMAT(review_date,"
+      },
+      {
+        "type": "column",
+        "value": "'%W,"
+      },
+      {
+        "type": "column",
+        "value": "%M"
+      },
+      {
+        "type": "column",
+        "value": "%e,"
+      },
+      {
+        "type": "column",
+        "value": "%Y')"
+      },
+      {
+        "type": "keyword",
+        "value": "AS"
+      },
+      {
+        "type": "column",
+        "value": "full_review_date"
+      },
+      {
+        "type": "keyword",
+        "value": "FROM"
+      },
+      {
+        "type": "table",
+        "value": "MovieReviews;"
+      }
+    ]
+  },
+  {
+    "drillNumber": 979,
+    "subcluster": "10.8 Date Formatting & Cohort Month Strings (DATE_FORMAT)",
+    "level": "Level 2 (Date Formatting)",
+    "title": "Syntax #979: Format flight departure timestamps into 24-hour boarding time strings 'HH:MM'",
+    "table": "FlightSchedule",
+    "scenario": "Format flight departure timestamps into 24-hour boarding time strings 'HH:MM'.",
+    "businessObjective": "Format flight departure timestamps into 24-hour boarding time strings 'HH:MM'.",
+    "schemaSnippet": "FlightSchedule temporal schema",
+    "targetQuery": "SELECT flight_id, DATE_FORMAT(departure_time, '%H:%i') AS boarding_time_str\nFROM FlightSchedule;",
+    "syntaxBlueprint": "SELECT col, DATE_FORMAT(date_col, '%Y-%m') AS cohort_month\nFROM table_name;",
+    "syntaxRule": "DATE_FORMAT(date, format_string) transforms dates into human-readable strings or monthly cohort keys. '%Y-%m' is the industry standard for monthly cohort bucketing.",
+    "syntaxTrap": "'%y' (lowercase) produces a 2-digit year ('24'), while '%Y' (uppercase) produces the required 4-digit year ('2024').",
+    "eli5Story": "Date, Time & Temporal Arithmetic on FlightSchedule: Format flight departure timestamps into 24-hour boarding time strings 'HH:MM'.",
+    "commonMistakes": "Passing parameters in wrong order in DATEDIFF, hardcoding static dates instead of relative rolling intervals, or forgetting to group by both YEAR and MONTH for time series.",
+    "learningOutcomes": "Mastered 10.8 Date Formatting & Cohort Month Strings (DATE_FORMAT) on FlightSchedule.",
+    "challengeSlots": [
+      {
+        "type": "keyword",
+        "value": "SELECT"
+      },
+      {
+        "type": "column",
+        "value": "flight_id,"
+      },
+      {
+        "type": "column",
+        "value": "DATE_FORMAT(departure_time,"
+      },
+      {
+        "type": "column",
+        "value": "'%H:%i')"
+      },
+      {
+        "type": "keyword",
+        "value": "AS"
+      },
+      {
+        "type": "column",
+        "value": "boarding_time_str"
+      },
+      {
+        "type": "keyword",
+        "value": "FROM"
+      },
+      {
+        "type": "table",
+        "value": "FlightSchedule;"
+      }
+    ]
+  },
+  {
+    "drillNumber": 980,
+    "subcluster": "10.8 Date Formatting & Cohort Month Strings (DATE_FORMAT)",
+    "level": "Level 2 (Date Formatting)",
+    "title": "Syntax #980: Bucket veterinary patient visits into monthly billing periods ('YYYY-MM')",
+    "table": "PetClinic",
+    "scenario": "Bucket veterinary patient visits into monthly billing periods ('YYYY-MM').",
+    "businessObjective": "Bucket veterinary patient visits into monthly billing periods ('YYYY-MM').",
+    "schemaSnippet": "PetClinic temporal schema",
+    "targetQuery": "SELECT pet_name, DATE_FORMAT(visit_date, '%Y-%m') AS billing_month\nFROM PetClinic;",
+    "syntaxBlueprint": "SELECT col, DATE_FORMAT(date_col, '%Y-%m') AS cohort_month\nFROM table_name;",
+    "syntaxRule": "DATE_FORMAT(date, format_string) transforms dates into human-readable strings or monthly cohort keys. '%Y-%m' is the industry standard for monthly cohort bucketing.",
+    "syntaxTrap": "'%y' (lowercase) produces a 2-digit year ('24'), while '%Y' (uppercase) produces the required 4-digit year ('2024').",
+    "eli5Story": "Date, Time & Temporal Arithmetic on PetClinic: Bucket veterinary patient visits into monthly billing periods ('YYYY-MM').",
+    "commonMistakes": "Passing parameters in wrong order in DATEDIFF, hardcoding static dates instead of relative rolling intervals, or forgetting to group by both YEAR and MONTH for time series.",
+    "learningOutcomes": "Mastered 10.8 Date Formatting & Cohort Month Strings (DATE_FORMAT) on PetClinic.",
+    "challengeSlots": [
+      {
+        "type": "keyword",
+        "value": "SELECT"
+      },
+      {
+        "type": "column",
+        "value": "pet_name,"
+      },
+      {
+        "type": "column",
+        "value": "DATE_FORMAT(visit_date,"
+      },
+      {
+        "type": "column",
+        "value": "'%Y-%m')"
+      },
+      {
+        "type": "keyword",
+        "value": "AS"
+      },
+      {
+        "type": "column",
+        "value": "billing_month"
+      },
+      {
+        "type": "keyword",
+        "value": "FROM"
+      },
+      {
+        "type": "table",
+        "value": "PetClinic;"
+      }
+    ]
+  },
+  {
+    "drillNumber": 981,
+    "subcluster": "10.9 Temporal Grouping & Aggregations (GROUP BY YEAR, MONTH)",
+    "level": "Level 2 (Temporal Aggregation)",
+    "title": "Syntax #981: Aggregate annual student enrollment volume grouped by year",
+    "table": "Students",
+    "scenario": "Aggregate annual student enrollment volume grouped by year.",
+    "businessObjective": "Aggregate annual student enrollment volume grouped by year.",
+    "schemaSnippet": "Students temporal schema",
+    "targetQuery": "SELECT YEAR(enrolled_date) AS enroll_year, COUNT(*) AS new_students_count\nFROM Students\nGROUP BY YEAR(enrolled_date)\nORDER BY enroll_year ASC;",
+    "syntaxBlueprint": "SELECT YEAR(date_col) AS yr, MONTH(date_col) AS mo, COUNT(*) AS count_metric\nFROM table_name\nGROUP BY YEAR(date_col), MONTH(date_col)\nORDER BY yr ASC, mo ASC;",
+    "syntaxRule": "Aggregate metrics across time by grouping by calendar components (YEAR, MONTH, QUARTER) and ordering chronologically.",
+    "syntaxTrap": "Grouping only by MONTH(date_col) merges January 2023 with January 2024! Always group by both YEAR and MONTH for time series.",
+    "eli5Story": "Date, Time & Temporal Arithmetic on Students: Aggregate annual student enrollment volume grouped by year.",
+    "commonMistakes": "Passing parameters in wrong order in DATEDIFF, hardcoding static dates instead of relative rolling intervals, or forgetting to group by both YEAR and MONTH for time series.",
+    "learningOutcomes": "Mastered 10.9 Temporal Grouping & Aggregations (GROUP BY YEAR, MONTH) on Students.",
+    "challengeSlots": [
+      {
+        "type": "keyword",
+        "value": "SELECT"
+      },
+      {
+        "type": "column",
+        "value": "YEAR(enrolled_date)"
+      },
+      {
+        "type": "keyword",
+        "value": "AS"
+      },
+      {
+        "type": "column",
+        "value": "enroll_year,"
+      },
+      {
+        "type": "column",
+        "value": "COUNT(*)"
+      },
+      {
+        "type": "keyword",
+        "value": "AS"
+      },
+      {
+        "type": "column",
+        "value": "new_students_count"
+      },
+      {
+        "type": "keyword",
+        "value": "FROM"
+      },
+      {
+        "type": "table",
+        "value": "Students"
+      },
+      {
+        "type": "keyword",
+        "value": "GROUP"
+      },
+      {
+        "type": "keyword",
+        "value": "BY"
+      },
+      {
+        "type": "column",
+        "value": "YEAR(enrolled_date)"
+      },
+      {
+        "type": "keyword",
+        "value": "ORDER"
+      },
+      {
+        "type": "keyword",
+        "value": "BY"
+      },
+      {
+        "type": "column",
+        "value": "enroll_year"
+      },
+      {
+        "type": "keyword",
+        "value": "ASC;"
+      }
+    ]
+  },
+  {
+    "drillNumber": 982,
+    "subcluster": "10.9 Temporal Grouping & Aggregations (GROUP BY YEAR, MONTH)",
+    "level": "Level 2 (Temporal Aggregation)",
+    "title": "Syntax #982: Calculate the annual volume of published books grouped by year",
+    "table": "Books",
+    "scenario": "Calculate the annual volume of published books grouped by year.",
+    "businessObjective": "Calculate the annual volume of published books grouped by year.",
+    "schemaSnippet": "Books temporal schema",
+    "targetQuery": "SELECT YEAR(published_date) AS pub_year, COUNT(*) AS books_published\nFROM Books\nGROUP BY YEAR(published_date)\nORDER BY pub_year DESC;",
+    "syntaxBlueprint": "SELECT YEAR(date_col) AS yr, MONTH(date_col) AS mo, COUNT(*) AS count_metric\nFROM table_name\nGROUP BY YEAR(date_col), MONTH(date_col)\nORDER BY yr ASC, mo ASC;",
+    "syntaxRule": "Aggregate metrics across time by grouping by calendar components (YEAR, MONTH, QUARTER) and ordering chronologically.",
+    "syntaxTrap": "Grouping only by MONTH(date_col) merges January 2023 with January 2024! Always group by both YEAR and MONTH for time series.",
+    "eli5Story": "Date, Time & Temporal Arithmetic on Books: Calculate the annual volume of published books grouped by year.",
+    "commonMistakes": "Passing parameters in wrong order in DATEDIFF, hardcoding static dates instead of relative rolling intervals, or forgetting to group by both YEAR and MONTH for time series.",
+    "learningOutcomes": "Mastered 10.9 Temporal Grouping & Aggregations (GROUP BY YEAR, MONTH) on Books.",
+    "challengeSlots": [
+      {
+        "type": "keyword",
+        "value": "SELECT"
+      },
+      {
+        "type": "column",
+        "value": "YEAR(published_date)"
+      },
+      {
+        "type": "keyword",
+        "value": "AS"
+      },
+      {
+        "type": "column",
+        "value": "pub_year,"
+      },
+      {
+        "type": "column",
+        "value": "COUNT(*)"
+      },
+      {
+        "type": "keyword",
+        "value": "AS"
+      },
+      {
+        "type": "column",
+        "value": "books_published"
+      },
+      {
+        "type": "keyword",
+        "value": "FROM"
+      },
+      {
+        "type": "table",
+        "value": "Books"
+      },
+      {
+        "type": "keyword",
+        "value": "GROUP"
+      },
+      {
+        "type": "keyword",
+        "value": "BY"
+      },
+      {
+        "type": "column",
+        "value": "YEAR(published_date)"
+      },
+      {
+        "type": "keyword",
+        "value": "ORDER"
+      },
+      {
+        "type": "keyword",
+        "value": "BY"
+      },
+      {
+        "type": "column",
+        "value": "pub_year"
+      },
+      {
+        "type": "keyword",
+        "value": "DESC;"
+      }
+    ]
+  },
+  {
+    "drillNumber": 983,
+    "subcluster": "10.9 Temporal Grouping & Aggregations (GROUP BY YEAR, MONTH)",
+    "level": "Level 2 (Temporal Aggregation)",
+    "title": "Syntax #983: Track annual hiring volume and average starting salary by hire year",
+    "table": "Employees",
+    "scenario": "Track annual hiring volume and average starting salary by hire year.",
+    "businessObjective": "Track annual hiring volume and average starting salary by hire year.",
+    "schemaSnippet": "Employees temporal schema",
+    "targetQuery": "SELECT YEAR(hire_date) AS hire_year, COUNT(*) AS headcount_hired, AVG(salary) AS avg_starting_salary\nFROM Employees\nGROUP BY YEAR(hire_date)\nORDER BY hire_year ASC;",
+    "syntaxBlueprint": "SELECT YEAR(date_col) AS yr, MONTH(date_col) AS mo, COUNT(*) AS count_metric\nFROM table_name\nGROUP BY YEAR(date_col), MONTH(date_col)\nORDER BY yr ASC, mo ASC;",
+    "syntaxRule": "Aggregate metrics across time by grouping by calendar components (YEAR, MONTH, QUARTER) and ordering chronologically.",
+    "syntaxTrap": "Grouping only by MONTH(date_col) merges January 2023 with January 2024! Always group by both YEAR and MONTH for time series.",
+    "eli5Story": "Date, Time & Temporal Arithmetic on Employees: Track annual hiring volume and average starting salary by hire year.",
+    "commonMistakes": "Passing parameters in wrong order in DATEDIFF, hardcoding static dates instead of relative rolling intervals, or forgetting to group by both YEAR and MONTH for time series.",
+    "learningOutcomes": "Mastered 10.9 Temporal Grouping & Aggregations (GROUP BY YEAR, MONTH) on Employees.",
+    "challengeSlots": [
+      {
+        "type": "keyword",
+        "value": "SELECT"
+      },
+      {
+        "type": "column",
+        "value": "YEAR(hire_date)"
+      },
+      {
+        "type": "keyword",
+        "value": "AS"
+      },
+      {
+        "type": "column",
+        "value": "hire_year,"
+      },
+      {
+        "type": "column",
+        "value": "COUNT(*)"
+      },
+      {
+        "type": "keyword",
+        "value": "AS"
+      },
+      {
+        "type": "column",
+        "value": "headcount_hired,"
+      },
+      {
+        "type": "column",
+        "value": "AVG(salary)"
+      },
+      {
+        "type": "keyword",
+        "value": "AS"
+      },
+      {
+        "type": "column",
+        "value": "avg_starting_salary"
+      },
+      {
+        "type": "keyword",
+        "value": "FROM"
+      },
+      {
+        "type": "table",
+        "value": "Employees"
+      },
+      {
+        "type": "keyword",
+        "value": "GROUP"
+      },
+      {
+        "type": "keyword",
+        "value": "BY"
+      },
+      {
+        "type": "column",
+        "value": "YEAR(hire_date)"
+      },
+      {
+        "type": "keyword",
+        "value": "ORDER"
+      },
+      {
+        "type": "keyword",
+        "value": "BY"
+      },
+      {
+        "type": "column",
+        "value": "hire_year"
+      },
+      {
+        "type": "keyword",
+        "value": "ASC;"
+      }
+    ]
+  },
+  {
+    "drillNumber": 984,
+    "subcluster": "10.9 Temporal Grouping & Aggregations (GROUP BY YEAR, MONTH)",
+    "level": "Level 2 (Temporal Aggregation)",
+    "title": "Syntax #984: Aggregate expiring grocery items by year and month to anticipate inventory shrinkage",
+    "table": "GroceryItems",
+    "scenario": "Aggregate expiring grocery items by year and month to anticipate inventory shrinkage.",
+    "businessObjective": "Aggregate expiring grocery items by year and month to anticipate inventory shrinkage.",
+    "schemaSnippet": "GroceryItems temporal schema",
+    "targetQuery": "SELECT YEAR(expiry_date) AS exp_year, MONTH(expiry_date) AS exp_month, COUNT(*) AS expiring_item_count\nFROM GroceryItems\nGROUP BY YEAR(expiry_date), MONTH(expiry_date)\nORDER BY exp_year ASC, exp_month ASC;",
+    "syntaxBlueprint": "SELECT YEAR(date_col) AS yr, MONTH(date_col) AS mo, COUNT(*) AS count_metric\nFROM table_name\nGROUP BY YEAR(date_col), MONTH(date_col)\nORDER BY yr ASC, mo ASC;",
+    "syntaxRule": "Aggregate metrics across time by grouping by calendar components (YEAR, MONTH, QUARTER) and ordering chronologically.",
+    "syntaxTrap": "Grouping only by MONTH(date_col) merges January 2023 with January 2024! Always group by both YEAR and MONTH for time series.",
+    "eli5Story": "Date, Time & Temporal Arithmetic on GroceryItems: Aggregate expiring grocery items by year and month to anticipate inventory shrinkage.",
+    "commonMistakes": "Passing parameters in wrong order in DATEDIFF, hardcoding static dates instead of relative rolling intervals, or forgetting to group by both YEAR and MONTH for time series.",
+    "learningOutcomes": "Mastered 10.9 Temporal Grouping & Aggregations (GROUP BY YEAR, MONTH) on GroceryItems.",
+    "challengeSlots": [
+      {
+        "type": "keyword",
+        "value": "SELECT"
+      },
+      {
+        "type": "column",
+        "value": "YEAR(expiry_date)"
+      },
+      {
+        "type": "keyword",
+        "value": "AS"
+      },
+      {
+        "type": "column",
+        "value": "exp_year,"
+      },
+      {
+        "type": "column",
+        "value": "MONTH(expiry_date)"
+      },
+      {
+        "type": "keyword",
+        "value": "AS"
+      },
+      {
+        "type": "column",
+        "value": "exp_month,"
+      },
+      {
+        "type": "column",
+        "value": "COUNT(*)"
+      },
+      {
+        "type": "keyword",
+        "value": "AS"
+      },
+      {
+        "type": "column",
+        "value": "expiring_item_count"
+      },
+      {
+        "type": "keyword",
+        "value": "FROM"
+      },
+      {
+        "type": "table",
+        "value": "GroceryItems"
+      },
+      {
+        "type": "keyword",
+        "value": "GROUP"
+      },
+      {
+        "type": "keyword",
+        "value": "BY"
+      },
+      {
+        "type": "column",
+        "value": "YEAR(expiry_date),"
+      },
+      {
+        "type": "column",
+        "value": "MONTH(expiry_date)"
+      },
+      {
+        "type": "keyword",
+        "value": "ORDER"
+      },
+      {
+        "type": "keyword",
+        "value": "BY"
+      },
+      {
+        "type": "column",
+        "value": "exp_year"
+      },
+      {
+        "type": "keyword",
+        "value": "ASC,"
+      },
+      {
+        "type": "column",
+        "value": "exp_month"
+      },
+      {
+        "type": "keyword",
+        "value": "ASC;"
+      }
+    ]
+  },
+  {
+    "drillNumber": 985,
+    "subcluster": "10.9 Temporal Grouping & Aggregations (GROUP BY YEAR, MONTH)",
+    "level": "Level 2 (Temporal Aggregation)",
+    "title": "Syntax #985: Compute monthly order counts and total revenue grouped by 'YYYY-MM'",
+    "table": "Orders",
+    "scenario": "Compute monthly order counts and total revenue grouped by 'YYYY-MM'.",
+    "businessObjective": "Compute monthly order counts and total revenue grouped by 'YYYY-MM'.",
+    "schemaSnippet": "Orders temporal schema",
+    "targetQuery": "SELECT DATE_FORMAT(order_date, '%Y-%m') AS order_month, COUNT(*) AS total_orders, SUM(total_amount) AS monthly_revenue\nFROM Orders\nGROUP BY DATE_FORMAT(order_date, '%Y-%m')\nORDER BY order_month ASC;",
+    "syntaxBlueprint": "SELECT YEAR(date_col) AS yr, MONTH(date_col) AS mo, COUNT(*) AS count_metric\nFROM table_name\nGROUP BY YEAR(date_col), MONTH(date_col)\nORDER BY yr ASC, mo ASC;",
+    "syntaxRule": "Aggregate metrics across time by grouping by calendar components (YEAR, MONTH, QUARTER) and ordering chronologically.",
+    "syntaxTrap": "Grouping only by MONTH(date_col) merges January 2023 with January 2024! Always group by both YEAR and MONTH for time series.",
+    "eli5Story": "Date, Time & Temporal Arithmetic on Orders: Compute monthly order counts and total revenue grouped by 'YYYY-MM'.",
+    "commonMistakes": "Passing parameters in wrong order in DATEDIFF, hardcoding static dates instead of relative rolling intervals, or forgetting to group by both YEAR and MONTH for time series.",
+    "learningOutcomes": "Mastered 10.9 Temporal Grouping & Aggregations (GROUP BY YEAR, MONTH) on Orders.",
+    "challengeSlots": [
+      {
+        "type": "keyword",
+        "value": "SELECT"
+      },
+      {
+        "type": "column",
+        "value": "DATE_FORMAT(order_date,"
+      },
+      {
+        "type": "column",
+        "value": "'%Y-%m')"
+      },
+      {
+        "type": "keyword",
+        "value": "AS"
+      },
+      {
+        "type": "column",
+        "value": "order_month,"
+      },
+      {
+        "type": "column",
+        "value": "COUNT(*)"
+      },
+      {
+        "type": "keyword",
+        "value": "AS"
+      },
+      {
+        "type": "column",
+        "value": "total_orders,"
+      },
+      {
+        "type": "column",
+        "value": "SUM(total_amount)"
+      },
+      {
+        "type": "keyword",
+        "value": "AS"
+      },
+      {
+        "type": "column",
+        "value": "monthly_revenue"
+      },
+      {
+        "type": "keyword",
+        "value": "FROM"
+      },
+      {
+        "type": "table",
+        "value": "Orders"
+      },
+      {
+        "type": "keyword",
+        "value": "GROUP"
+      },
+      {
+        "type": "keyword",
+        "value": "BY"
+      },
+      {
+        "type": "column",
+        "value": "DATE_FORMAT(order_date,"
+      },
+      {
+        "type": "column",
+        "value": "'%Y-%m')"
+      },
+      {
+        "type": "keyword",
+        "value": "ORDER"
+      },
+      {
+        "type": "keyword",
+        "value": "BY"
+      },
+      {
+        "type": "column",
+        "value": "order_month"
+      },
+      {
+        "type": "keyword",
+        "value": "ASC;"
+      }
+    ]
+  },
+  {
+    "drillNumber": 986,
+    "subcluster": "10.9 Temporal Grouping & Aggregations (GROUP BY YEAR, MONTH)",
+    "level": "Level 2 (Temporal Aggregation)",
+    "title": "Syntax #986: Count annual music release volume grouped by release year",
+    "table": "MusicTracks",
+    "scenario": "Count annual music release volume grouped by release year.",
+    "businessObjective": "Count annual music release volume grouped by release year.",
+    "schemaSnippet": "MusicTracks temporal schema",
+    "targetQuery": "SELECT YEAR(release_date) AS release_year, COUNT(*) AS tracks_released\nFROM MusicTracks\nGROUP BY YEAR(release_date)\nORDER BY release_year DESC;",
+    "syntaxBlueprint": "SELECT YEAR(date_col) AS yr, MONTH(date_col) AS mo, COUNT(*) AS count_metric\nFROM table_name\nGROUP BY YEAR(date_col), MONTH(date_col)\nORDER BY yr ASC, mo ASC;",
+    "syntaxRule": "Aggregate metrics across time by grouping by calendar components (YEAR, MONTH, QUARTER) and ordering chronologically.",
+    "syntaxTrap": "Grouping only by MONTH(date_col) merges January 2023 with January 2024! Always group by both YEAR and MONTH for time series.",
+    "eli5Story": "Date, Time & Temporal Arithmetic on MusicTracks: Count annual music release volume grouped by release year.",
+    "commonMistakes": "Passing parameters in wrong order in DATEDIFF, hardcoding static dates instead of relative rolling intervals, or forgetting to group by both YEAR and MONTH for time series.",
+    "learningOutcomes": "Mastered 10.9 Temporal Grouping & Aggregations (GROUP BY YEAR, MONTH) on MusicTracks.",
+    "challengeSlots": [
+      {
+        "type": "keyword",
+        "value": "SELECT"
+      },
+      {
+        "type": "column",
+        "value": "YEAR(release_date)"
+      },
+      {
+        "type": "keyword",
+        "value": "AS"
+      },
+      {
+        "type": "column",
+        "value": "release_year,"
+      },
+      {
+        "type": "column",
+        "value": "COUNT(*)"
+      },
+      {
+        "type": "keyword",
+        "value": "AS"
+      },
+      {
+        "type": "column",
+        "value": "tracks_released"
+      },
+      {
+        "type": "keyword",
+        "value": "FROM"
+      },
+      {
+        "type": "table",
+        "value": "MusicTracks"
+      },
+      {
+        "type": "keyword",
+        "value": "GROUP"
+      },
+      {
+        "type": "keyword",
+        "value": "BY"
+      },
+      {
+        "type": "column",
+        "value": "YEAR(release_date)"
+      },
+      {
+        "type": "keyword",
+        "value": "ORDER"
+      },
+      {
+        "type": "keyword",
+        "value": "BY"
+      },
+      {
+        "type": "column",
+        "value": "release_year"
+      },
+      {
+        "type": "keyword",
+        "value": "DESC;"
+      }
+    ]
+  },
+  {
+    "drillNumber": 987,
+    "subcluster": "10.9 Temporal Grouping & Aggregations (GROUP BY YEAR, MONTH)",
+    "level": "Level 2 (Temporal Aggregation)",
+    "title": "Syntax #987: Analyze month-over-month gym membership signups grouped by 'YYYY-MM'",
+    "table": "GymMembers",
+    "scenario": "Analyze month-over-month gym membership signups grouped by 'YYYY-MM'.",
+    "businessObjective": "Analyze month-over-month gym membership signups grouped by 'YYYY-MM'.",
+    "schemaSnippet": "GymMembers temporal schema",
+    "targetQuery": "SELECT DATE_FORMAT(join_date, '%Y-%m') AS signup_month, COUNT(*) AS new_member_signups\nFROM GymMembers\nGROUP BY DATE_FORMAT(join_date, '%Y-%m')\nORDER BY signup_month ASC;",
+    "syntaxBlueprint": "SELECT YEAR(date_col) AS yr, MONTH(date_col) AS mo, COUNT(*) AS count_metric\nFROM table_name\nGROUP BY YEAR(date_col), MONTH(date_col)\nORDER BY yr ASC, mo ASC;",
+    "syntaxRule": "Aggregate metrics across time by grouping by calendar components (YEAR, MONTH, QUARTER) and ordering chronologically.",
+    "syntaxTrap": "Grouping only by MONTH(date_col) merges January 2023 with January 2024! Always group by both YEAR and MONTH for time series.",
+    "eli5Story": "Date, Time & Temporal Arithmetic on GymMembers: Analyze month-over-month gym membership signups grouped by 'YYYY-MM'.",
+    "commonMistakes": "Passing parameters in wrong order in DATEDIFF, hardcoding static dates instead of relative rolling intervals, or forgetting to group by both YEAR and MONTH for time series.",
+    "learningOutcomes": "Mastered 10.9 Temporal Grouping & Aggregations (GROUP BY YEAR, MONTH) on GymMembers.",
+    "challengeSlots": [
+      {
+        "type": "keyword",
+        "value": "SELECT"
+      },
+      {
+        "type": "column",
+        "value": "DATE_FORMAT(join_date,"
+      },
+      {
+        "type": "column",
+        "value": "'%Y-%m')"
+      },
+      {
+        "type": "keyword",
+        "value": "AS"
+      },
+      {
+        "type": "column",
+        "value": "signup_month,"
+      },
+      {
+        "type": "column",
+        "value": "COUNT(*)"
+      },
+      {
+        "type": "keyword",
+        "value": "AS"
+      },
+      {
+        "type": "column",
+        "value": "new_member_signups"
+      },
+      {
+        "type": "keyword",
+        "value": "FROM"
+      },
+      {
+        "type": "table",
+        "value": "GymMembers"
+      },
+      {
+        "type": "keyword",
+        "value": "GROUP"
+      },
+      {
+        "type": "keyword",
+        "value": "BY"
+      },
+      {
+        "type": "column",
+        "value": "DATE_FORMAT(join_date,"
+      },
+      {
+        "type": "column",
+        "value": "'%Y-%m')"
+      },
+      {
+        "type": "keyword",
+        "value": "ORDER"
+      },
+      {
+        "type": "keyword",
+        "value": "BY"
+      },
+      {
+        "type": "column",
+        "value": "signup_month"
+      },
+      {
+        "type": "keyword",
+        "value": "ASC;"
+      }
+    ]
+  },
+  {
+    "drillNumber": 988,
+    "subcluster": "10.9 Temporal Grouping & Aggregations (GROUP BY YEAR, MONTH)",
+    "level": "Level 2 (Temporal Aggregation)",
+    "title": "Syntax #988: Calculate average film rating score grouped by review year",
+    "table": "MovieReviews",
+    "scenario": "Calculate average film rating score grouped by review year.",
+    "businessObjective": "Calculate average film rating score grouped by review year.",
+    "schemaSnippet": "MovieReviews temporal schema",
+    "targetQuery": "SELECT YEAR(review_date) AS rev_year, AVG(star_rating) AS annual_avg_rating\nFROM MovieReviews\nGROUP BY YEAR(review_date)\nORDER BY rev_year ASC;",
+    "syntaxBlueprint": "SELECT YEAR(date_col) AS yr, MONTH(date_col) AS mo, COUNT(*) AS count_metric\nFROM table_name\nGROUP BY YEAR(date_col), MONTH(date_col)\nORDER BY yr ASC, mo ASC;",
+    "syntaxRule": "Aggregate metrics across time by grouping by calendar components (YEAR, MONTH, QUARTER) and ordering chronologically.",
+    "syntaxTrap": "Grouping only by MONTH(date_col) merges January 2023 with January 2024! Always group by both YEAR and MONTH for time series.",
+    "eli5Story": "Date, Time & Temporal Arithmetic on MovieReviews: Calculate average film rating score grouped by review year.",
+    "commonMistakes": "Passing parameters in wrong order in DATEDIFF, hardcoding static dates instead of relative rolling intervals, or forgetting to group by both YEAR and MONTH for time series.",
+    "learningOutcomes": "Mastered 10.9 Temporal Grouping & Aggregations (GROUP BY YEAR, MONTH) on MovieReviews.",
+    "challengeSlots": [
+      {
+        "type": "keyword",
+        "value": "SELECT"
+      },
+      {
+        "type": "column",
+        "value": "YEAR(review_date)"
+      },
+      {
+        "type": "keyword",
+        "value": "AS"
+      },
+      {
+        "type": "column",
+        "value": "rev_year,"
+      },
+      {
+        "type": "column",
+        "value": "AVG(star_rating)"
+      },
+      {
+        "type": "keyword",
+        "value": "AS"
+      },
+      {
+        "type": "column",
+        "value": "annual_avg_rating"
+      },
+      {
+        "type": "keyword",
+        "value": "FROM"
+      },
+      {
+        "type": "table",
+        "value": "MovieReviews"
+      },
+      {
+        "type": "keyword",
+        "value": "GROUP"
+      },
+      {
+        "type": "keyword",
+        "value": "BY"
+      },
+      {
+        "type": "column",
+        "value": "YEAR(review_date)"
+      },
+      {
+        "type": "keyword",
+        "value": "ORDER"
+      },
+      {
+        "type": "keyword",
+        "value": "BY"
+      },
+      {
+        "type": "column",
+        "value": "rev_year"
+      },
+      {
+        "type": "keyword",
+        "value": "ASC;"
+      }
+    ]
+  },
+  {
+    "drillNumber": 989,
+    "subcluster": "10.9 Temporal Grouping & Aggregations (GROUP BY YEAR, MONTH)",
+    "level": "Level 2 (Temporal Aggregation)",
+    "title": "Syntax #989: Compute daily flight departure volume grouped by date",
+    "table": "FlightSchedule",
+    "scenario": "Compute daily flight departure volume grouped by date.",
+    "businessObjective": "Compute daily flight departure volume grouped by date.",
+    "schemaSnippet": "FlightSchedule temporal schema",
+    "targetQuery": "SELECT DATE(departure_time) AS flight_day, COUNT(*) AS daily_departures\nFROM FlightSchedule\nGROUP BY DATE(departure_time)\nORDER BY flight_day ASC;",
+    "syntaxBlueprint": "SELECT YEAR(date_col) AS yr, MONTH(date_col) AS mo, COUNT(*) AS count_metric\nFROM table_name\nGROUP BY YEAR(date_col), MONTH(date_col)\nORDER BY yr ASC, mo ASC;",
+    "syntaxRule": "Aggregate metrics across time by grouping by calendar components (YEAR, MONTH, QUARTER) and ordering chronologically.",
+    "syntaxTrap": "Grouping only by MONTH(date_col) merges January 2023 with January 2024! Always group by both YEAR and MONTH for time series.",
+    "eli5Story": "Date, Time & Temporal Arithmetic on FlightSchedule: Compute daily flight departure volume grouped by date.",
+    "commonMistakes": "Passing parameters in wrong order in DATEDIFF, hardcoding static dates instead of relative rolling intervals, or forgetting to group by both YEAR and MONTH for time series.",
+    "learningOutcomes": "Mastered 10.9 Temporal Grouping & Aggregations (GROUP BY YEAR, MONTH) on FlightSchedule.",
+    "challengeSlots": [
+      {
+        "type": "keyword",
+        "value": "SELECT"
+      },
+      {
+        "type": "column",
+        "value": "DATE(departure_time)"
+      },
+      {
+        "type": "keyword",
+        "value": "AS"
+      },
+      {
+        "type": "column",
+        "value": "flight_day,"
+      },
+      {
+        "type": "column",
+        "value": "COUNT(*)"
+      },
+      {
+        "type": "keyword",
+        "value": "AS"
+      },
+      {
+        "type": "column",
+        "value": "daily_departures"
+      },
+      {
+        "type": "keyword",
+        "value": "FROM"
+      },
+      {
+        "type": "table",
+        "value": "FlightSchedule"
+      },
+      {
+        "type": "keyword",
+        "value": "GROUP"
+      },
+      {
+        "type": "keyword",
+        "value": "BY"
+      },
+      {
+        "type": "column",
+        "value": "DATE(departure_time)"
+      },
+      {
+        "type": "keyword",
+        "value": "ORDER"
+      },
+      {
+        "type": "keyword",
+        "value": "BY"
+      },
+      {
+        "type": "column",
+        "value": "flight_day"
+      },
+      {
+        "type": "keyword",
+        "value": "ASC;"
+      }
+    ]
+  },
+  {
+    "drillNumber": 990,
+    "subcluster": "10.9 Temporal Grouping & Aggregations (GROUP BY YEAR, MONTH)",
+    "level": "Level 2 (Temporal Aggregation)",
+    "title": "Syntax #990: Tally monthly veterinary clinic visit volume grouped by month",
+    "table": "PetClinic",
+    "scenario": "Tally monthly veterinary clinic visit volume grouped by month.",
+    "businessObjective": "Tally monthly veterinary clinic visit volume grouped by month.",
+    "schemaSnippet": "PetClinic temporal schema",
+    "targetQuery": "SELECT DATE_FORMAT(visit_date, '%Y-%m') AS visit_month, COUNT(*) AS monthly_patient_visits\nFROM PetClinic\nGROUP BY DATE_FORMAT(visit_date, '%Y-%m')\nORDER BY visit_month ASC;",
+    "syntaxBlueprint": "SELECT YEAR(date_col) AS yr, MONTH(date_col) AS mo, COUNT(*) AS count_metric\nFROM table_name\nGROUP BY YEAR(date_col), MONTH(date_col)\nORDER BY yr ASC, mo ASC;",
+    "syntaxRule": "Aggregate metrics across time by grouping by calendar components (YEAR, MONTH, QUARTER) and ordering chronologically.",
+    "syntaxTrap": "Grouping only by MONTH(date_col) merges January 2023 with January 2024! Always group by both YEAR and MONTH for time series.",
+    "eli5Story": "Date, Time & Temporal Arithmetic on PetClinic: Tally monthly veterinary clinic visit volume grouped by month.",
+    "commonMistakes": "Passing parameters in wrong order in DATEDIFF, hardcoding static dates instead of relative rolling intervals, or forgetting to group by both YEAR and MONTH for time series.",
+    "learningOutcomes": "Mastered 10.9 Temporal Grouping & Aggregations (GROUP BY YEAR, MONTH) on PetClinic.",
+    "challengeSlots": [
+      {
+        "type": "keyword",
+        "value": "SELECT"
+      },
+      {
+        "type": "column",
+        "value": "DATE_FORMAT(visit_date,"
+      },
+      {
+        "type": "column",
+        "value": "'%Y-%m')"
+      },
+      {
+        "type": "keyword",
+        "value": "AS"
+      },
+      {
+        "type": "column",
+        "value": "visit_month,"
+      },
+      {
+        "type": "column",
+        "value": "COUNT(*)"
+      },
+      {
+        "type": "keyword",
+        "value": "AS"
+      },
+      {
+        "type": "column",
+        "value": "monthly_patient_visits"
+      },
+      {
+        "type": "keyword",
+        "value": "FROM"
+      },
+      {
+        "type": "table",
+        "value": "PetClinic"
+      },
+      {
+        "type": "keyword",
+        "value": "GROUP"
+      },
+      {
+        "type": "keyword",
+        "value": "BY"
+      },
+      {
+        "type": "column",
+        "value": "DATE_FORMAT(visit_date,"
+      },
+      {
+        "type": "column",
+        "value": "'%Y-%m')"
+      },
+      {
+        "type": "keyword",
+        "value": "ORDER"
+      },
+      {
+        "type": "keyword",
+        "value": "BY"
+      },
+      {
+        "type": "column",
+        "value": "visit_month"
+      },
+      {
+        "type": "keyword",
+        "value": "ASC;"
+      }
+    ]
+  },
+  {
+    "drillNumber": 991,
+    "subcluster": "10.10 Lifecycle Time-Series Analytics & Temporal Traps",
+    "level": "Level 3 (Time-Series Master)",
+    "title": "Syntax #991: Time-series pipeline: Regional student enrollment trends by city and year since 2020",
+    "table": "Students",
+    "scenario": "Time-series pipeline: Regional student enrollment trends by city and year since 2020.",
+    "businessObjective": "Time-series pipeline: Regional student enrollment trends by city and year since 2020.",
+    "schemaSnippet": "Students temporal schema",
+    "targetQuery": "SELECT city, YEAR(enrolled_date) AS enroll_year, COUNT(*) AS student_count\nFROM Students\nWHERE enrolled_date >= '2020-01-01'\nGROUP BY city, enroll_year\nHAVING COUNT(*) >= 2\nORDER BY enroll_year DESC, student_count DESC;",
+    "syntaxBlueprint": "SELECT col1, DATE_FORMAT(date_col, '%Y-%m') AS period, SUM(metric) AS total\nFROM table_name\nWHERE date_col >= CURRENT_DATE - INTERVAL 1 YEAR\nGROUP BY col1, period\nHAVING total > 1000\nORDER BY period DESC, total DESC;",
+    "syntaxRule": "Combine temporal filtering, cohort formatting, multi-column grouping, and HAVING thresholds into complete time-series reporting pipelines.",
+    "syntaxTrap": "Using string comparison ('2024-05-01' > '2024-04-30') works for ISO dates, but fails completely on non-standard date formats like '05/01/2024'.",
+    "eli5Story": "Date, Time & Temporal Arithmetic on Students: Time-series pipeline: Regional student enrollment trends by city and year since 2020.",
+    "commonMistakes": "Passing parameters in wrong order in DATEDIFF, hardcoding static dates instead of relative rolling intervals, or forgetting to group by both YEAR and MONTH for time series.",
+    "learningOutcomes": "Mastered 10.10 Lifecycle Time-Series Analytics & Temporal Traps on Students.",
+    "challengeSlots": [
+      {
+        "type": "keyword",
+        "value": "SELECT"
+      },
+      {
+        "type": "column",
+        "value": "city,"
+      },
+      {
+        "type": "column",
+        "value": "YEAR(enrolled_date)"
+      },
+      {
+        "type": "keyword",
+        "value": "AS"
+      },
+      {
+        "type": "column",
+        "value": "enroll_year,"
+      },
+      {
+        "type": "column",
+        "value": "COUNT(*)"
+      },
+      {
+        "type": "keyword",
+        "value": "AS"
+      },
+      {
+        "type": "column",
+        "value": "student_count"
+      },
+      {
+        "type": "keyword",
+        "value": "FROM"
+      },
+      {
+        "type": "table",
+        "value": "Students"
+      },
+      {
+        "type": "keyword",
+        "value": "WHERE"
+      },
+      {
+        "type": "column",
+        "value": "enrolled_date"
+      },
+      {
+        "type": "column",
+        "value": ">="
+      },
+      {
+        "type": "column",
+        "value": "'2020-01-01'"
+      },
+      {
+        "type": "keyword",
+        "value": "GROUP"
+      },
+      {
+        "type": "keyword",
+        "value": "BY"
+      },
+      {
+        "type": "column",
+        "value": "city,"
+      },
+      {
+        "type": "column",
+        "value": "enroll_year"
+      },
+      {
+        "type": "keyword",
+        "value": "HAVING"
+      },
+      {
+        "type": "column",
+        "value": "COUNT(*)"
+      },
+      {
+        "type": "column",
+        "value": ">="
+      },
+      {
+        "type": "column",
+        "value": "2"
+      },
+      {
+        "type": "keyword",
+        "value": "ORDER"
+      },
+      {
+        "type": "keyword",
+        "value": "BY"
+      },
+      {
+        "type": "column",
+        "value": "enroll_year"
+      },
+      {
+        "type": "keyword",
+        "value": "DESC,"
+      },
+      {
+        "type": "column",
+        "value": "student_count"
+      },
+      {
+        "type": "keyword",
+        "value": "DESC;"
+      }
+    ]
+  },
+  {
+    "drillNumber": 992,
+    "subcluster": "10.10 Lifecycle Time-Series Analytics & Temporal Traps",
+    "level": "Level 3 (Time-Series Master)",
+    "title": "Syntax #992: Time-series pipeline: Top author productivity by year over the past decade",
+    "table": "Books",
+    "scenario": "Time-series pipeline: Top author productivity by year over the past decade.",
+    "businessObjective": "Time-series pipeline: Top author productivity by year over the past decade.",
+    "schemaSnippet": "Books temporal schema",
+    "targetQuery": "SELECT author, YEAR(published_date) AS pub_year, COUNT(*) AS book_count\nFROM Books\nWHERE published_date >= '2015-01-01'\nGROUP BY author, pub_year\nORDER BY pub_year DESC, book_count DESC\nLIMIT 5;",
+    "syntaxBlueprint": "SELECT col1, DATE_FORMAT(date_col, '%Y-%m') AS period, SUM(metric) AS total\nFROM table_name\nWHERE date_col >= CURRENT_DATE - INTERVAL 1 YEAR\nGROUP BY col1, period\nHAVING total > 1000\nORDER BY period DESC, total DESC;",
+    "syntaxRule": "Combine temporal filtering, cohort formatting, multi-column grouping, and HAVING thresholds into complete time-series reporting pipelines.",
+    "syntaxTrap": "Using string comparison ('2024-05-01' > '2024-04-30') works for ISO dates, but fails completely on non-standard date formats like '05/01/2024'.",
+    "eli5Story": "Date, Time & Temporal Arithmetic on Books: Time-series pipeline: Top author productivity by year over the past decade.",
+    "commonMistakes": "Passing parameters in wrong order in DATEDIFF, hardcoding static dates instead of relative rolling intervals, or forgetting to group by both YEAR and MONTH for time series.",
+    "learningOutcomes": "Mastered 10.10 Lifecycle Time-Series Analytics & Temporal Traps on Books.",
+    "challengeSlots": [
+      {
+        "type": "keyword",
+        "value": "SELECT"
+      },
+      {
+        "type": "column",
+        "value": "author,"
+      },
+      {
+        "type": "column",
+        "value": "YEAR(published_date)"
+      },
+      {
+        "type": "keyword",
+        "value": "AS"
+      },
+      {
+        "type": "column",
+        "value": "pub_year,"
+      },
+      {
+        "type": "column",
+        "value": "COUNT(*)"
+      },
+      {
+        "type": "keyword",
+        "value": "AS"
+      },
+      {
+        "type": "column",
+        "value": "book_count"
+      },
+      {
+        "type": "keyword",
+        "value": "FROM"
+      },
+      {
+        "type": "table",
+        "value": "Books"
+      },
+      {
+        "type": "keyword",
+        "value": "WHERE"
+      },
+      {
+        "type": "column",
+        "value": "published_date"
+      },
+      {
+        "type": "column",
+        "value": ">="
+      },
+      {
+        "type": "column",
+        "value": "'2015-01-01'"
+      },
+      {
+        "type": "keyword",
+        "value": "GROUP"
+      },
+      {
+        "type": "keyword",
+        "value": "BY"
+      },
+      {
+        "type": "column",
+        "value": "author,"
+      },
+      {
+        "type": "column",
+        "value": "pub_year"
+      },
+      {
+        "type": "keyword",
+        "value": "ORDER"
+      },
+      {
+        "type": "keyword",
+        "value": "BY"
+      },
+      {
+        "type": "column",
+        "value": "pub_year"
+      },
+      {
+        "type": "keyword",
+        "value": "DESC,"
+      },
+      {
+        "type": "column",
+        "value": "book_count"
+      },
+      {
+        "type": "keyword",
+        "value": "DESC"
+      },
+      {
+        "type": "keyword",
+        "value": "LIMIT"
+      },
+      {
+        "type": "column",
+        "value": "5;"
+      }
+    ]
+  },
+  {
+    "drillNumber": 993,
+    "subcluster": "10.10 Lifecycle Time-Series Analytics & Temporal Traps",
+    "level": "Level 3 (Time-Series Master)",
+    "title": "Syntax #993: Time-series pipeline: 3-year rolling departmental hiring and salary trends",
+    "table": "Employees",
+    "scenario": "Time-series pipeline: 3-year rolling departmental hiring and salary trends.",
+    "businessObjective": "Time-series pipeline: 3-year rolling departmental hiring and salary trends.",
+    "schemaSnippet": "Employees temporal schema",
+    "targetQuery": "SELECT department, YEAR(hire_date) AS cohort_year, COUNT(*) AS hires, AVG(salary) AS avg_sal\nFROM Employees\nWHERE hire_date >= CURRENT_DATE - INTERVAL 3 YEAR\nGROUP BY department, cohort_year\nORDER BY cohort_year DESC, hires DESC;",
+    "syntaxBlueprint": "SELECT col1, DATE_FORMAT(date_col, '%Y-%m') AS period, SUM(metric) AS total\nFROM table_name\nWHERE date_col >= CURRENT_DATE - INTERVAL 1 YEAR\nGROUP BY col1, period\nHAVING total > 1000\nORDER BY period DESC, total DESC;",
+    "syntaxRule": "Combine temporal filtering, cohort formatting, multi-column grouping, and HAVING thresholds into complete time-series reporting pipelines.",
+    "syntaxTrap": "Using string comparison ('2024-05-01' > '2024-04-30') works for ISO dates, but fails completely on non-standard date formats like '05/01/2024'.",
+    "eli5Story": "Date, Time & Temporal Arithmetic on Employees: Time-series pipeline: 3-year rolling departmental hiring and salary trends.",
+    "commonMistakes": "Passing parameters in wrong order in DATEDIFF, hardcoding static dates instead of relative rolling intervals, or forgetting to group by both YEAR and MONTH for time series.",
+    "learningOutcomes": "Mastered 10.10 Lifecycle Time-Series Analytics & Temporal Traps on Employees.",
+    "challengeSlots": [
+      {
+        "type": "keyword",
+        "value": "SELECT"
+      },
+      {
+        "type": "column",
+        "value": "department,"
+      },
+      {
+        "type": "column",
+        "value": "YEAR(hire_date)"
+      },
+      {
+        "type": "keyword",
+        "value": "AS"
+      },
+      {
+        "type": "column",
+        "value": "cohort_year,"
+      },
+      {
+        "type": "column",
+        "value": "COUNT(*)"
+      },
+      {
+        "type": "keyword",
+        "value": "AS"
+      },
+      {
+        "type": "column",
+        "value": "hires,"
+      },
+      {
+        "type": "column",
+        "value": "AVG(salary)"
+      },
+      {
+        "type": "keyword",
+        "value": "AS"
+      },
+      {
+        "type": "column",
+        "value": "avg_sal"
+      },
+      {
+        "type": "keyword",
+        "value": "FROM"
+      },
+      {
+        "type": "table",
+        "value": "Employees"
+      },
+      {
+        "type": "keyword",
+        "value": "WHERE"
+      },
+      {
+        "type": "column",
+        "value": "hire_date"
+      },
+      {
+        "type": "column",
+        "value": ">="
+      },
+      {
+        "type": "keyword",
+        "value": "CURRENT_DATE"
+      },
+      {
+        "type": "column",
+        "value": "-"
+      },
+      {
+        "type": "keyword",
+        "value": "INTERVAL"
+      },
+      {
+        "type": "column",
+        "value": "3"
+      },
+      {
+        "type": "keyword",
+        "value": "YEAR"
+      },
+      {
+        "type": "keyword",
+        "value": "GROUP"
+      },
+      {
+        "type": "keyword",
+        "value": "BY"
+      },
+      {
+        "type": "column",
+        "value": "department,"
+      },
+      {
+        "type": "column",
+        "value": "cohort_year"
+      },
+      {
+        "type": "keyword",
+        "value": "ORDER"
+      },
+      {
+        "type": "keyword",
+        "value": "BY"
+      },
+      {
+        "type": "column",
+        "value": "cohort_year"
+      },
+      {
+        "type": "keyword",
+        "value": "DESC,"
+      },
+      {
+        "type": "column",
+        "value": "hires"
+      },
+      {
+        "type": "keyword",
+        "value": "DESC;"
+      }
+    ]
+  },
+  {
+    "drillNumber": 994,
+    "subcluster": "10.10 Lifecycle Time-Series Analytics & Temporal Traps",
+    "level": "Level 3 (Time-Series Master)",
+    "title": "Syntax #994: Time-series pipeline: 30-day inventory expiration forecast grouped by category and month",
+    "table": "GroceryItems",
+    "scenario": "Time-series pipeline: 30-day inventory expiration forecast grouped by category and month.",
+    "businessObjective": "Time-series pipeline: 30-day inventory expiration forecast grouped by category and month.",
+    "schemaSnippet": "GroceryItems temporal schema",
+    "targetQuery": "SELECT category, DATE_FORMAT(expiry_date, '%Y-%m') AS exp_month, COUNT(*) AS expiring_units\nFROM GroceryItems\nWHERE expiry_date BETWEEN CURRENT_DATE AND CURRENT_DATE + INTERVAL 30 DAY\nGROUP BY category, exp_month\nORDER BY expiring_units DESC;",
+    "syntaxBlueprint": "SELECT col1, DATE_FORMAT(date_col, '%Y-%m') AS period, SUM(metric) AS total\nFROM table_name\nWHERE date_col >= CURRENT_DATE - INTERVAL 1 YEAR\nGROUP BY col1, period\nHAVING total > 1000\nORDER BY period DESC, total DESC;",
+    "syntaxRule": "Combine temporal filtering, cohort formatting, multi-column grouping, and HAVING thresholds into complete time-series reporting pipelines.",
+    "syntaxTrap": "Using string comparison ('2024-05-01' > '2024-04-30') works for ISO dates, but fails completely on non-standard date formats like '05/01/2024'.",
+    "eli5Story": "Date, Time & Temporal Arithmetic on GroceryItems: Time-series pipeline: 30-day inventory expiration forecast grouped by category and month.",
+    "commonMistakes": "Passing parameters in wrong order in DATEDIFF, hardcoding static dates instead of relative rolling intervals, or forgetting to group by both YEAR and MONTH for time series.",
+    "learningOutcomes": "Mastered 10.10 Lifecycle Time-Series Analytics & Temporal Traps on GroceryItems.",
+    "challengeSlots": [
+      {
+        "type": "keyword",
+        "value": "SELECT"
+      },
+      {
+        "type": "column",
+        "value": "category,"
+      },
+      {
+        "type": "column",
+        "value": "DATE_FORMAT(expiry_date,"
+      },
+      {
+        "type": "column",
+        "value": "'%Y-%m')"
+      },
+      {
+        "type": "keyword",
+        "value": "AS"
+      },
+      {
+        "type": "column",
+        "value": "exp_month,"
+      },
+      {
+        "type": "column",
+        "value": "COUNT(*)"
+      },
+      {
+        "type": "keyword",
+        "value": "AS"
+      },
+      {
+        "type": "column",
+        "value": "expiring_units"
+      },
+      {
+        "type": "keyword",
+        "value": "FROM"
+      },
+      {
+        "type": "table",
+        "value": "GroceryItems"
+      },
+      {
+        "type": "keyword",
+        "value": "WHERE"
+      },
+      {
+        "type": "column",
+        "value": "expiry_date"
+      },
+      {
+        "type": "keyword",
+        "value": "BETWEEN"
+      },
+      {
+        "type": "keyword",
+        "value": "CURRENT_DATE"
+      },
+      {
+        "type": "keyword",
+        "value": "AND"
+      },
+      {
+        "type": "keyword",
+        "value": "CURRENT_DATE"
+      },
+      {
+        "type": "column",
+        "value": "+"
+      },
+      {
+        "type": "keyword",
+        "value": "INTERVAL"
+      },
+      {
+        "type": "column",
+        "value": "30"
+      },
+      {
+        "type": "keyword",
+        "value": "DAY"
+      },
+      {
+        "type": "keyword",
+        "value": "GROUP"
+      },
+      {
+        "type": "keyword",
+        "value": "BY"
+      },
+      {
+        "type": "column",
+        "value": "category,"
+      },
+      {
+        "type": "column",
+        "value": "exp_month"
+      },
+      {
+        "type": "keyword",
+        "value": "ORDER"
+      },
+      {
+        "type": "keyword",
+        "value": "BY"
+      },
+      {
+        "type": "column",
+        "value": "expiring_units"
+      },
+      {
+        "type": "keyword",
+        "value": "DESC;"
+      }
+    ]
+  },
+  {
+    "drillNumber": 995,
+    "subcluster": "10.10 Lifecycle Time-Series Analytics & Temporal Traps",
+    "level": "Level 3 (Time-Series Master)",
+    "title": "Syntax #995: Time-series pipeline: 6-month rolling city revenue exceeding $500",
+    "table": "Orders",
+    "scenario": "Time-series pipeline: 6-month rolling city revenue exceeding $500.",
+    "businessObjective": "Time-series pipeline: 6-month rolling city revenue exceeding $500.",
+    "schemaSnippet": "Orders temporal schema",
+    "targetQuery": "SELECT shipping_city, DATE_FORMAT(order_date, '%Y-%m') AS sales_month, SUM(total_amount) AS revenue\nFROM Orders\nWHERE order_date >= CURRENT_DATE - INTERVAL 6 MONTH\nGROUP BY shipping_city, sales_month\nHAVING SUM(total_amount) >= 500.00\nORDER BY sales_month DESC, revenue DESC;",
+    "syntaxBlueprint": "SELECT col1, DATE_FORMAT(date_col, '%Y-%m') AS period, SUM(metric) AS total\nFROM table_name\nWHERE date_col >= CURRENT_DATE - INTERVAL 1 YEAR\nGROUP BY col1, period\nHAVING total > 1000\nORDER BY period DESC, total DESC;",
+    "syntaxRule": "Combine temporal filtering, cohort formatting, multi-column grouping, and HAVING thresholds into complete time-series reporting pipelines.",
+    "syntaxTrap": "Using string comparison ('2024-05-01' > '2024-04-30') works for ISO dates, but fails completely on non-standard date formats like '05/01/2024'.",
+    "eli5Story": "Date, Time & Temporal Arithmetic on Orders: Time-series pipeline: 6-month rolling city revenue exceeding $500.",
+    "commonMistakes": "Passing parameters in wrong order in DATEDIFF, hardcoding static dates instead of relative rolling intervals, or forgetting to group by both YEAR and MONTH for time series.",
+    "learningOutcomes": "Mastered 10.10 Lifecycle Time-Series Analytics & Temporal Traps on Orders.",
+    "challengeSlots": [
+      {
+        "type": "keyword",
+        "value": "SELECT"
+      },
+      {
+        "type": "column",
+        "value": "shipping_city,"
+      },
+      {
+        "type": "column",
+        "value": "DATE_FORMAT(order_date,"
+      },
+      {
+        "type": "column",
+        "value": "'%Y-%m')"
+      },
+      {
+        "type": "keyword",
+        "value": "AS"
+      },
+      {
+        "type": "column",
+        "value": "sales_month,"
+      },
+      {
+        "type": "column",
+        "value": "SUM(total_amount)"
+      },
+      {
+        "type": "keyword",
+        "value": "AS"
+      },
+      {
+        "type": "column",
+        "value": "revenue"
+      },
+      {
+        "type": "keyword",
+        "value": "FROM"
+      },
+      {
+        "type": "table",
+        "value": "Orders"
+      },
+      {
+        "type": "keyword",
+        "value": "WHERE"
+      },
+      {
+        "type": "column",
+        "value": "order_date"
+      },
+      {
+        "type": "column",
+        "value": ">="
+      },
+      {
+        "type": "keyword",
+        "value": "CURRENT_DATE"
+      },
+      {
+        "type": "column",
+        "value": "-"
+      },
+      {
+        "type": "keyword",
+        "value": "INTERVAL"
+      },
+      {
+        "type": "column",
+        "value": "6"
+      },
+      {
+        "type": "keyword",
+        "value": "MONTH"
+      },
+      {
+        "type": "keyword",
+        "value": "GROUP"
+      },
+      {
+        "type": "keyword",
+        "value": "BY"
+      },
+      {
+        "type": "column",
+        "value": "shipping_city,"
+      },
+      {
+        "type": "column",
+        "value": "sales_month"
+      },
+      {
+        "type": "keyword",
+        "value": "HAVING"
+      },
+      {
+        "type": "column",
+        "value": "SUM(total_amount)"
+      },
+      {
+        "type": "column",
+        "value": ">="
+      },
+      {
+        "type": "column",
+        "value": "500.00"
+      },
+      {
+        "type": "keyword",
+        "value": "ORDER"
+      },
+      {
+        "type": "keyword",
+        "value": "BY"
+      },
+      {
+        "type": "column",
+        "value": "sales_month"
+      },
+      {
+        "type": "keyword",
+        "value": "DESC,"
+      },
+      {
+        "type": "column",
+        "value": "revenue"
+      },
+      {
+        "type": "keyword",
+        "value": "DESC;"
+      }
+    ]
+  },
+  {
+    "drillNumber": 996,
+    "subcluster": "10.10 Lifecycle Time-Series Analytics & Temporal Traps",
+    "level": "Level 3 (Time-Series Master)",
+    "title": "Syntax #996: Time-series pipeline: Genre popularity trends by release year since 2010",
+    "table": "MusicTracks",
+    "scenario": "Time-series pipeline: Genre popularity trends by release year since 2010.",
+    "businessObjective": "Time-series pipeline: Genre popularity trends by release year since 2010.",
+    "schemaSnippet": "MusicTracks temporal schema",
+    "targetQuery": "SELECT genre, YEAR(release_date) AS release_year, COUNT(*) AS total_songs\nFROM MusicTracks\nWHERE release_date >= '2010-01-01'\nGROUP BY genre, release_year\nHAVING COUNT(*) >= 2\nORDER BY release_year DESC, total_songs DESC;",
+    "syntaxBlueprint": "SELECT col1, DATE_FORMAT(date_col, '%Y-%m') AS period, SUM(metric) AS total\nFROM table_name\nWHERE date_col >= CURRENT_DATE - INTERVAL 1 YEAR\nGROUP BY col1, period\nHAVING total > 1000\nORDER BY period DESC, total DESC;",
+    "syntaxRule": "Combine temporal filtering, cohort formatting, multi-column grouping, and HAVING thresholds into complete time-series reporting pipelines.",
+    "syntaxTrap": "Using string comparison ('2024-05-01' > '2024-04-30') works for ISO dates, but fails completely on non-standard date formats like '05/01/2024'.",
+    "eli5Story": "Date, Time & Temporal Arithmetic on MusicTracks: Time-series pipeline: Genre popularity trends by release year since 2010.",
+    "commonMistakes": "Passing parameters in wrong order in DATEDIFF, hardcoding static dates instead of relative rolling intervals, or forgetting to group by both YEAR and MONTH for time series.",
+    "learningOutcomes": "Mastered 10.10 Lifecycle Time-Series Analytics & Temporal Traps on MusicTracks.",
+    "challengeSlots": [
+      {
+        "type": "keyword",
+        "value": "SELECT"
+      },
+      {
+        "type": "column",
+        "value": "genre,"
+      },
+      {
+        "type": "column",
+        "value": "YEAR(release_date)"
+      },
+      {
+        "type": "keyword",
+        "value": "AS"
+      },
+      {
+        "type": "column",
+        "value": "release_year,"
+      },
+      {
+        "type": "column",
+        "value": "COUNT(*)"
+      },
+      {
+        "type": "keyword",
+        "value": "AS"
+      },
+      {
+        "type": "column",
+        "value": "total_songs"
+      },
+      {
+        "type": "keyword",
+        "value": "FROM"
+      },
+      {
+        "type": "table",
+        "value": "MusicTracks"
+      },
+      {
+        "type": "keyword",
+        "value": "WHERE"
+      },
+      {
+        "type": "column",
+        "value": "release_date"
+      },
+      {
+        "type": "column",
+        "value": ">="
+      },
+      {
+        "type": "column",
+        "value": "'2010-01-01'"
+      },
+      {
+        "type": "keyword",
+        "value": "GROUP"
+      },
+      {
+        "type": "keyword",
+        "value": "BY"
+      },
+      {
+        "type": "column",
+        "value": "genre,"
+      },
+      {
+        "type": "column",
+        "value": "release_year"
+      },
+      {
+        "type": "keyword",
+        "value": "HAVING"
+      },
+      {
+        "type": "column",
+        "value": "COUNT(*)"
+      },
+      {
+        "type": "column",
+        "value": ">="
+      },
+      {
+        "type": "column",
+        "value": "2"
+      },
+      {
+        "type": "keyword",
+        "value": "ORDER"
+      },
+      {
+        "type": "keyword",
+        "value": "BY"
+      },
+      {
+        "type": "column",
+        "value": "release_year"
+      },
+      {
+        "type": "keyword",
+        "value": "DESC,"
+      },
+      {
+        "type": "column",
+        "value": "total_songs"
+      },
+      {
+        "type": "keyword",
+        "value": "DESC;"
+      }
+    ]
+  },
+  {
+    "drillNumber": 997,
+    "subcluster": "10.10 Lifecycle Time-Series Analytics & Temporal Traps",
+    "level": "Level 3 (Time-Series Master)",
+    "title": "Syntax #997: Time-series pipeline: 1-year rolling membership signups by plan and cohort month",
+    "table": "GymMembers",
+    "scenario": "Time-series pipeline: 1-year rolling membership signups by plan and cohort month.",
+    "businessObjective": "Time-series pipeline: 1-year rolling membership signups by plan and cohort month.",
+    "schemaSnippet": "GymMembers temporal schema",
+    "targetQuery": "SELECT membership_plan, DATE_FORMAT(join_date, '%Y-%m') AS signup_cohort, COUNT(*) AS member_count\nFROM GymMembers\nWHERE join_date >= CURRENT_DATE - INTERVAL 1 YEAR\nGROUP BY membership_plan, signup_cohort\nORDER BY signup_cohort DESC, member_count DESC;",
+    "syntaxBlueprint": "SELECT col1, DATE_FORMAT(date_col, '%Y-%m') AS period, SUM(metric) AS total\nFROM table_name\nWHERE date_col >= CURRENT_DATE - INTERVAL 1 YEAR\nGROUP BY col1, period\nHAVING total > 1000\nORDER BY period DESC, total DESC;",
+    "syntaxRule": "Combine temporal filtering, cohort formatting, multi-column grouping, and HAVING thresholds into complete time-series reporting pipelines.",
+    "syntaxTrap": "Using string comparison ('2024-05-01' > '2024-04-30') works for ISO dates, but fails completely on non-standard date formats like '05/01/2024'.",
+    "eli5Story": "Date, Time & Temporal Arithmetic on GymMembers: Time-series pipeline: 1-year rolling membership signups by plan and cohort month.",
+    "commonMistakes": "Passing parameters in wrong order in DATEDIFF, hardcoding static dates instead of relative rolling intervals, or forgetting to group by both YEAR and MONTH for time series.",
+    "learningOutcomes": "Mastered 10.10 Lifecycle Time-Series Analytics & Temporal Traps on GymMembers.",
+    "challengeSlots": [
+      {
+        "type": "keyword",
+        "value": "SELECT"
+      },
+      {
+        "type": "column",
+        "value": "membership_plan,"
+      },
+      {
+        "type": "column",
+        "value": "DATE_FORMAT(join_date,"
+      },
+      {
+        "type": "column",
+        "value": "'%Y-%m')"
+      },
+      {
+        "type": "keyword",
+        "value": "AS"
+      },
+      {
+        "type": "column",
+        "value": "signup_cohort,"
+      },
+      {
+        "type": "column",
+        "value": "COUNT(*)"
+      },
+      {
+        "type": "keyword",
+        "value": "AS"
+      },
+      {
+        "type": "column",
+        "value": "member_count"
+      },
+      {
+        "type": "keyword",
+        "value": "FROM"
+      },
+      {
+        "type": "table",
+        "value": "GymMembers"
+      },
+      {
+        "type": "keyword",
+        "value": "WHERE"
+      },
+      {
+        "type": "column",
+        "value": "join_date"
+      },
+      {
+        "type": "column",
+        "value": ">="
+      },
+      {
+        "type": "keyword",
+        "value": "CURRENT_DATE"
+      },
+      {
+        "type": "column",
+        "value": "-"
+      },
+      {
+        "type": "keyword",
+        "value": "INTERVAL"
+      },
+      {
+        "type": "column",
+        "value": "1"
+      },
+      {
+        "type": "keyword",
+        "value": "YEAR"
+      },
+      {
+        "type": "keyword",
+        "value": "GROUP"
+      },
+      {
+        "type": "keyword",
+        "value": "BY"
+      },
+      {
+        "type": "column",
+        "value": "membership_plan,"
+      },
+      {
+        "type": "column",
+        "value": "signup_cohort"
+      },
+      {
+        "type": "keyword",
+        "value": "ORDER"
+      },
+      {
+        "type": "keyword",
+        "value": "BY"
+      },
+      {
+        "type": "column",
+        "value": "signup_cohort"
+      },
+      {
+        "type": "keyword",
+        "value": "DESC,"
+      },
+      {
+        "type": "column",
+        "value": "member_count"
+      },
+      {
+        "type": "keyword",
+        "value": "DESC;"
+      }
+    ]
+  },
+  {
+    "drillNumber": 998,
+    "subcluster": "10.10 Lifecycle Time-Series Analytics & Temporal Traps",
+    "level": "Level 3 (Time-Series Master)",
+    "title": "Syntax #998: Time-series pipeline: 2-year rolling genre critical rating trends",
+    "table": "MovieReviews",
+    "scenario": "Time-series pipeline: 2-year rolling genre critical rating trends.",
+    "businessObjective": "Time-series pipeline: 2-year rolling genre critical rating trends.",
+    "schemaSnippet": "MovieReviews temporal schema",
+    "targetQuery": "SELECT genre, YEAR(review_date) AS rev_year, AVG(star_rating) AS avg_rating\nFROM MovieReviews\nWHERE review_date >= CURRENT_DATE - INTERVAL 2 YEAR\nGROUP BY genre, rev_year\nHAVING COUNT(*) >= 2\nORDER BY rev_year DESC, avg_rating DESC;",
+    "syntaxBlueprint": "SELECT col1, DATE_FORMAT(date_col, '%Y-%m') AS period, SUM(metric) AS total\nFROM table_name\nWHERE date_col >= CURRENT_DATE - INTERVAL 1 YEAR\nGROUP BY col1, period\nHAVING total > 1000\nORDER BY period DESC, total DESC;",
+    "syntaxRule": "Combine temporal filtering, cohort formatting, multi-column grouping, and HAVING thresholds into complete time-series reporting pipelines.",
+    "syntaxTrap": "Using string comparison ('2024-05-01' > '2024-04-30') works for ISO dates, but fails completely on non-standard date formats like '05/01/2024'.",
+    "eli5Story": "Date, Time & Temporal Arithmetic on MovieReviews: Time-series pipeline: 2-year rolling genre critical rating trends.",
+    "commonMistakes": "Passing parameters in wrong order in DATEDIFF, hardcoding static dates instead of relative rolling intervals, or forgetting to group by both YEAR and MONTH for time series.",
+    "learningOutcomes": "Mastered 10.10 Lifecycle Time-Series Analytics & Temporal Traps on MovieReviews.",
+    "challengeSlots": [
+      {
+        "type": "keyword",
+        "value": "SELECT"
+      },
+      {
+        "type": "column",
+        "value": "genre,"
+      },
+      {
+        "type": "column",
+        "value": "YEAR(review_date)"
+      },
+      {
+        "type": "keyword",
+        "value": "AS"
+      },
+      {
+        "type": "column",
+        "value": "rev_year,"
+      },
+      {
+        "type": "column",
+        "value": "AVG(star_rating)"
+      },
+      {
+        "type": "keyword",
+        "value": "AS"
+      },
+      {
+        "type": "column",
+        "value": "avg_rating"
+      },
+      {
+        "type": "keyword",
+        "value": "FROM"
+      },
+      {
+        "type": "table",
+        "value": "MovieReviews"
+      },
+      {
+        "type": "keyword",
+        "value": "WHERE"
+      },
+      {
+        "type": "column",
+        "value": "review_date"
+      },
+      {
+        "type": "column",
+        "value": ">="
+      },
+      {
+        "type": "keyword",
+        "value": "CURRENT_DATE"
+      },
+      {
+        "type": "column",
+        "value": "-"
+      },
+      {
+        "type": "keyword",
+        "value": "INTERVAL"
+      },
+      {
+        "type": "column",
+        "value": "2"
+      },
+      {
+        "type": "keyword",
+        "value": "YEAR"
+      },
+      {
+        "type": "keyword",
+        "value": "GROUP"
+      },
+      {
+        "type": "keyword",
+        "value": "BY"
+      },
+      {
+        "type": "column",
+        "value": "genre,"
+      },
+      {
+        "type": "column",
+        "value": "rev_year"
+      },
+      {
+        "type": "keyword",
+        "value": "HAVING"
+      },
+      {
+        "type": "column",
+        "value": "COUNT(*)"
+      },
+      {
+        "type": "column",
+        "value": ">="
+      },
+      {
+        "type": "column",
+        "value": "2"
+      },
+      {
+        "type": "keyword",
+        "value": "ORDER"
+      },
+      {
+        "type": "keyword",
+        "value": "BY"
+      },
+      {
+        "type": "column",
+        "value": "rev_year"
+      },
+      {
+        "type": "keyword",
+        "value": "DESC,"
+      },
+      {
+        "type": "column",
+        "value": "avg_rating"
+      },
+      {
+        "type": "keyword",
+        "value": "DESC;"
+      }
+    ]
+  },
+  {
+    "drillNumber": 999,
+    "subcluster": "10.10 Lifecycle Time-Series Analytics & Temporal Traps",
+    "level": "Level 3 (Time-Series Master)",
+    "title": "Syntax #999: Time-series pipeline: Top 5 busiest airport departure months in the past 90 days",
+    "table": "FlightSchedule",
+    "scenario": "Time-series pipeline: Top 5 busiest airport departure months in the past 90 days.",
+    "businessObjective": "Time-series pipeline: Top 5 busiest airport departure months in the past 90 days.",
+    "schemaSnippet": "FlightSchedule temporal schema",
+    "targetQuery": "SELECT origin_airport, DATE_FORMAT(departure_time, '%Y-%m') AS departure_month, COUNT(*) AS flight_count\nFROM FlightSchedule\nWHERE departure_time >= CURRENT_DATE - INTERVAL 90 DAY\nGROUP BY origin_airport, departure_month\nORDER BY flight_count DESC\nLIMIT 5;",
+    "syntaxBlueprint": "SELECT col1, DATE_FORMAT(date_col, '%Y-%m') AS period, SUM(metric) AS total\nFROM table_name\nWHERE date_col >= CURRENT_DATE - INTERVAL 1 YEAR\nGROUP BY col1, period\nHAVING total > 1000\nORDER BY period DESC, total DESC;",
+    "syntaxRule": "Combine temporal filtering, cohort formatting, multi-column grouping, and HAVING thresholds into complete time-series reporting pipelines.",
+    "syntaxTrap": "Using string comparison ('2024-05-01' > '2024-04-30') works for ISO dates, but fails completely on non-standard date formats like '05/01/2024'.",
+    "eli5Story": "Date, Time & Temporal Arithmetic on FlightSchedule: Time-series pipeline: Top 5 busiest airport departure months in the past 90 days.",
+    "commonMistakes": "Passing parameters in wrong order in DATEDIFF, hardcoding static dates instead of relative rolling intervals, or forgetting to group by both YEAR and MONTH for time series.",
+    "learningOutcomes": "Mastered 10.10 Lifecycle Time-Series Analytics & Temporal Traps on FlightSchedule.",
+    "challengeSlots": [
+      {
+        "type": "keyword",
+        "value": "SELECT"
+      },
+      {
+        "type": "column",
+        "value": "origin_airport,"
+      },
+      {
+        "type": "column",
+        "value": "DATE_FORMAT(departure_time,"
+      },
+      {
+        "type": "column",
+        "value": "'%Y-%m')"
+      },
+      {
+        "type": "keyword",
+        "value": "AS"
+      },
+      {
+        "type": "column",
+        "value": "departure_month,"
+      },
+      {
+        "type": "column",
+        "value": "COUNT(*)"
+      },
+      {
+        "type": "keyword",
+        "value": "AS"
+      },
+      {
+        "type": "column",
+        "value": "flight_count"
+      },
+      {
+        "type": "keyword",
+        "value": "FROM"
+      },
+      {
+        "type": "table",
+        "value": "FlightSchedule"
+      },
+      {
+        "type": "keyword",
+        "value": "WHERE"
+      },
+      {
+        "type": "column",
+        "value": "departure_time"
+      },
+      {
+        "type": "column",
+        "value": ">="
+      },
+      {
+        "type": "keyword",
+        "value": "CURRENT_DATE"
+      },
+      {
+        "type": "column",
+        "value": "-"
+      },
+      {
+        "type": "keyword",
+        "value": "INTERVAL"
+      },
+      {
+        "type": "column",
+        "value": "90"
+      },
+      {
+        "type": "keyword",
+        "value": "DAY"
+      },
+      {
+        "type": "keyword",
+        "value": "GROUP"
+      },
+      {
+        "type": "keyword",
+        "value": "BY"
+      },
+      {
+        "type": "column",
+        "value": "origin_airport,"
+      },
+      {
+        "type": "column",
+        "value": "departure_month"
+      },
+      {
+        "type": "keyword",
+        "value": "ORDER"
+      },
+      {
+        "type": "keyword",
+        "value": "BY"
+      },
+      {
+        "type": "column",
+        "value": "flight_count"
+      },
+      {
+        "type": "keyword",
+        "value": "DESC"
+      },
+      {
+        "type": "keyword",
+        "value": "LIMIT"
+      },
+      {
+        "type": "column",
+        "value": "5;"
+      }
+    ]
+  },
+  {
+    "drillNumber": 1000,
+    "subcluster": "10.10 Lifecycle Time-Series Analytics & Temporal Traps",
+    "level": "Level 3 (Time-Series Master)",
+    "title": "Syntax #1000: Time-series pipeline: 6-month rolling veterinary patient trends by species",
+    "table": "PetClinic",
+    "scenario": "Time-series pipeline: 6-month rolling veterinary patient trends by species.",
+    "businessObjective": "Time-series pipeline: 6-month rolling veterinary patient trends by species.",
+    "schemaSnippet": "PetClinic temporal schema",
+    "targetQuery": "SELECT species, DATE_FORMAT(visit_date, '%Y-%m') AS visit_period, COUNT(*) AS patient_count\nFROM PetClinic\nWHERE visit_date >= CURRENT_DATE - INTERVAL 6 MONTH\nGROUP BY species, visit_period\nORDER BY visit_period DESC, patient_count DESC;",
+    "syntaxBlueprint": "SELECT col1, DATE_FORMAT(date_col, '%Y-%m') AS period, SUM(metric) AS total\nFROM table_name\nWHERE date_col >= CURRENT_DATE - INTERVAL 1 YEAR\nGROUP BY col1, period\nHAVING total > 1000\nORDER BY period DESC, total DESC;",
+    "syntaxRule": "Combine temporal filtering, cohort formatting, multi-column grouping, and HAVING thresholds into complete time-series reporting pipelines.",
+    "syntaxTrap": "Using string comparison ('2024-05-01' > '2024-04-30') works for ISO dates, but fails completely on non-standard date formats like '05/01/2024'.",
+    "eli5Story": "Date, Time & Temporal Arithmetic on PetClinic: Time-series pipeline: 6-month rolling veterinary patient trends by species.",
+    "commonMistakes": "Passing parameters in wrong order in DATEDIFF, hardcoding static dates instead of relative rolling intervals, or forgetting to group by both YEAR and MONTH for time series.",
+    "learningOutcomes": "Mastered 10.10 Lifecycle Time-Series Analytics & Temporal Traps on PetClinic.",
+    "challengeSlots": [
+      {
+        "type": "keyword",
+        "value": "SELECT"
+      },
+      {
+        "type": "column",
+        "value": "species,"
+      },
+      {
+        "type": "column",
+        "value": "DATE_FORMAT(visit_date,"
+      },
+      {
+        "type": "column",
+        "value": "'%Y-%m')"
+      },
+      {
+        "type": "keyword",
+        "value": "AS"
+      },
+      {
+        "type": "column",
+        "value": "visit_period,"
+      },
+      {
+        "type": "column",
+        "value": "COUNT(*)"
+      },
+      {
+        "type": "keyword",
+        "value": "AS"
+      },
+      {
+        "type": "column",
+        "value": "patient_count"
+      },
+      {
+        "type": "keyword",
+        "value": "FROM"
+      },
+      {
+        "type": "table",
+        "value": "PetClinic"
+      },
+      {
+        "type": "keyword",
+        "value": "WHERE"
+      },
+      {
+        "type": "column",
+        "value": "visit_date"
+      },
+      {
+        "type": "column",
+        "value": ">="
+      },
+      {
+        "type": "keyword",
+        "value": "CURRENT_DATE"
+      },
+      {
+        "type": "column",
+        "value": "-"
+      },
+      {
+        "type": "keyword",
+        "value": "INTERVAL"
+      },
+      {
+        "type": "column",
+        "value": "6"
+      },
+      {
+        "type": "keyword",
+        "value": "MONTH"
+      },
+      {
+        "type": "keyword",
+        "value": "GROUP"
+      },
+      {
+        "type": "keyword",
+        "value": "BY"
+      },
+      {
+        "type": "column",
+        "value": "species,"
+      },
+      {
+        "type": "column",
+        "value": "visit_period"
+      },
+      {
+        "type": "keyword",
+        "value": "ORDER"
+      },
+      {
+        "type": "keyword",
+        "value": "BY"
+      },
+      {
+        "type": "column",
+        "value": "visit_period"
+      },
+      {
+        "type": "keyword",
+        "value": "DESC,"
+      },
+      {
+        "type": "column",
+        "value": "patient_count"
+      },
+      {
+        "type": "keyword",
+        "value": "DESC;"
       }
     ]
   }

@@ -586,4 +586,32 @@
 - `visualizer/app.js`: Updated `renderSyntaxGym()` with `join_core` (#601–#700), `join_adv` (#701–#800), and `join_agg` (#801–#900) filters.
 - `SESSION_STATE.md`: Updated platform snapshot to 900 drills across 9 pillars.
 
-- **Next Step**: Advance to **Day 13: Real-World Business Analytics (Retention Cohort Heatmaps, Customer Churn Rates & LTV)**.
+- **Next Step**: Advance to **Topic 10: Date, Time & Temporal Arithmetic** to reach the 1,000-Drill Milestone.
+
+---
+
+## 2026-09-17 — Entry 27: Topic 10 Date & Time Arithmetic + The 1,000-Drill Milestone in the SQL Syntax Gym
+
+### 1. Architectural Scope
+- Added **Topic 10: Date, Time & Temporal Arithmetic** (100 progressive micro-drills, Drills **#901 to #1000**) to the standalone Syntax Gym module.
+- Officially unlocked the **🏆 1,000-Drill Active-Retrieval Milestone** across 10 complete foundational pillars and 10 everyday relatable schemas (`Students`, `Books`, `Employees`, `GroceryItems`, `Orders`, `MusicTracks`, `GymMembers`, `MovieReviews`, `FlightSchedule`, `PetClinic`).
+
+### 2. Topic 10 Curriculum Subclusters (Drills #901–#1000)
+1. **10.1 Current Date & Time Anchors (CURRENT_DATE, NOW)** (#901–#910): System time synchronization and audit dates.
+2. **10.2 Date Component Extraction (YEAR, MONTH, DAY)** (#911–#920): Discrete calendar integer extraction and annual/monthly filtering.
+3. **10.3 Quarters & Day of Week (QUARTER, DAYOFWEEK, DAYNAME)** (#921–#930): Business quarter analysis and weekend/weekday behavioral queries.
+4. **10.4 Date Differences & Elapsed Spans (DATEDIFF)** (#931–#940): Computing customer tenure, fulfillment speed, shelf life, and days elapsed.
+5. **10.5 Forward Date Addition (DATE_ADD & INTERVAL)** (#941–#950): Expected delivery dates, graduation horizons, and annual renewals.
+6. **10.6 Backward Date Subtraction (DATE_SUB & INTERVAL)** (#951–#960): Application deadlines, discount triggers, and automated notification lead times.
+7. **10.7 Rolling Time Window Filtering (CURRENT_DATE - INTERVAL)** (#961–#970): Dynamic evergreen 7-day, 30-day, and 90-day reporting windows.
+8. **10.8 Date Formatting & Cohort Month Strings (DATE_FORMAT)** (#971–#980): Standardizing 'YYYY-MM' cohort keys and localized display strings.
+9. **10.9 Temporal Grouping & Aggregations (GROUP BY YEAR, MONTH)** (#981–#990): Monthly revenue, annual hire velocity, and seasonal aggregations.
+10. **10.10 Lifecycle Time-Series Analytics & Temporal Traps** (#991–#1000): Full multi-condition temporal pipelines, rolling intervals, and HAVING thresholds.
+
+### 3. File Updates
+- `visualizer/syntax_gym_data.js`: Assembled all 1,000 drills into `SYNTAX_GYM_DRILLS` (#001–#1000 contiguous).
+- `visualizer/index.html`: Nav tab `Syntax Gym (1,000)`, title `(1,000 Progressive Micro-Drills)`, badge `1,000 Drills`, solved badge `/1,000 Solved`, and added Topic 10 filter button (`⏱️ Topic 10: Date, Time & Temporal (100)`).
+- `visualizer/app.js`: Updated `renderSyntaxGym()` with `date_time` (#901–#1000) pillar filter.
+- `SESSION_STATE.md`: Updated platform snapshot to 1,000 drills across 10 pillars.
+
+- **Next Step**: Advance to **Day 13: Real-World Business Analytics (Retention Cohort Heatmaps, Customer Churn Rates & LTV)** or begin scaffolding the **Interview Arena & Edge-Case Gauntlet**.

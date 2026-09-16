@@ -5329,6 +5329,8 @@ function renderSyntaxGym() {
     filtered = filtered.filter(d => d.drillNumber >= 701 && d.drillNumber <= 800);
   } else if (currentGymPillar === 'join_agg') {
     filtered = filtered.filter(d => d.drillNumber >= 801 && d.drillNumber <= 900);
+  } else if (currentGymPillar === 'date_time') {
+    filtered = filtered.filter(d => d.drillNumber >= 901 && d.drillNumber <= 1000);
   }
 
   // 2. Table filter
