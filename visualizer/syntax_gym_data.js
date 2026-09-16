@@ -1,6 +1,7 @@
 // =============================================================================
-// SECTION 0: THE SQL SYNTAX GYM (600 Progressive In-Depth Micro-Drills)
-// Topics 1–6: SELECT, WHERE, ORDER BY, Aggregations & GROUP BY, CASE WHEN, Strings & Patterns
+// SECTION 0: THE SQL SYNTAX GYM (900 Progressive In-Depth Micro-Drills)
+// Topics 1–9: SELECT, WHERE, ORDER BY, Aggregations & GROUP BY, CASE WHEN, Strings & Patterns,
+//             Relational Joins Core, Advanced Joins & Structures, Multi-Table Chaining & Aggregations
 // =============================================================================
 
 const SYNTAX_GYM_DRILLS = [
@@ -39709,6 +39710,30054 @@ const SYNTAX_GYM_DRILLS = [
       {
         "type": "keyword",
         "value": "ASC;"
+      }
+    ]
+  },
+  {
+    "drillNumber": 601,
+    "subcluster": "7.1 Basic INNER JOIN with Key Equality",
+    "level": "Level 1 (Inner Join)",
+    "title": "Syntax #601: Match enrolled students with their registered courses using an INNER JOIN",
+    "table": "Students",
+    "scenario": "Match enrolled students with their registered courses using an INNER JOIN.",
+    "businessObjective": "Match enrolled students with their registered courses using an INNER JOIN.",
+    "schemaSnippet": "Students relational schema",
+    "targetQuery": "SELECT s.full_name, c.course_name\nFROM Students s\nINNER JOIN Courses c ON s.student_id = c.student_id;",
+    "syntaxBlueprint": "SELECT a.col, b.col\nFROM TableA a\nINNER JOIN TableB b ON a.key = b.key;",
+    "syntaxRule": "INNER JOIN returns only rows that have matching values in both tables based on the ON predicate.",
+    "syntaxTrap": "Forgetting the ON clause entirely, which results in an unintended Cartesian CROSS JOIN.",
+    "eli5Story": "Relational Joins on Students: Match enrolled students with their registered courses using an INNER JOIN.",
+    "commonMistakes": "Omitting the ON clause, forgetting table alias qualification on ambiguous columns, or accidentally converting LEFT JOIN to INNER JOIN via WHERE filters.",
+    "learningOutcomes": "Mastered 7.1 Basic INNER JOIN with Key Equality on Students.",
+    "challengeSlots": [
+      {
+        "type": "keyword",
+        "value": "SELECT"
+      },
+      {
+        "type": "column",
+        "value": "s.full_name,"
+      },
+      {
+        "type": "column",
+        "value": "c.course_name"
+      },
+      {
+        "type": "keyword",
+        "value": "FROM"
+      },
+      {
+        "type": "table",
+        "value": "Students"
+      },
+      {
+        "type": "column",
+        "value": "s"
+      },
+      {
+        "type": "keyword",
+        "value": "INNER"
+      },
+      {
+        "type": "keyword",
+        "value": "JOIN"
+      },
+      {
+        "type": "table",
+        "value": "Courses"
+      },
+      {
+        "type": "column",
+        "value": "c"
+      },
+      {
+        "type": "keyword",
+        "value": "ON"
+      },
+      {
+        "type": "column",
+        "value": "s.student_id"
+      },
+      {
+        "type": "column",
+        "value": "="
+      },
+      {
+        "type": "column",
+        "value": "c.student_id;"
+      }
+    ]
+  },
+  {
+    "drillNumber": 602,
+    "subcluster": "7.1 Basic INNER JOIN with Key Equality",
+    "level": "Level 1 (Inner Join)",
+    "title": "Syntax #602: Join books with authors on author_id to view titles and creator names",
+    "table": "Books",
+    "scenario": "Join books with authors on author_id to view titles and creator names.",
+    "businessObjective": "Join books with authors on author_id to view titles and creator names.",
+    "schemaSnippet": "Books relational schema",
+    "targetQuery": "SELECT b.title, a.author_name\nFROM Books b\nINNER JOIN Authors a ON b.author_id = a.author_id;",
+    "syntaxBlueprint": "SELECT a.col, b.col\nFROM TableA a\nINNER JOIN TableB b ON a.key = b.key;",
+    "syntaxRule": "INNER JOIN returns only rows that have matching values in both tables based on the ON predicate.",
+    "syntaxTrap": "Forgetting the ON clause entirely, which results in an unintended Cartesian CROSS JOIN.",
+    "eli5Story": "Relational Joins on Books: Join books with authors on author_id to view titles and creator names.",
+    "commonMistakes": "Omitting the ON clause, forgetting table alias qualification on ambiguous columns, or accidentally converting LEFT JOIN to INNER JOIN via WHERE filters.",
+    "learningOutcomes": "Mastered 7.1 Basic INNER JOIN with Key Equality on Books.",
+    "challengeSlots": [
+      {
+        "type": "keyword",
+        "value": "SELECT"
+      },
+      {
+        "type": "column",
+        "value": "b.title,"
+      },
+      {
+        "type": "column",
+        "value": "a.author_name"
+      },
+      {
+        "type": "keyword",
+        "value": "FROM"
+      },
+      {
+        "type": "table",
+        "value": "Books"
+      },
+      {
+        "type": "column",
+        "value": "b"
+      },
+      {
+        "type": "keyword",
+        "value": "INNER"
+      },
+      {
+        "type": "keyword",
+        "value": "JOIN"
+      },
+      {
+        "type": "table",
+        "value": "Authors"
+      },
+      {
+        "type": "column",
+        "value": "a"
+      },
+      {
+        "type": "keyword",
+        "value": "ON"
+      },
+      {
+        "type": "column",
+        "value": "b.author_id"
+      },
+      {
+        "type": "column",
+        "value": "="
+      },
+      {
+        "type": "column",
+        "value": "a.author_id;"
+      }
+    ]
+  },
+  {
+    "drillNumber": 603,
+    "subcluster": "7.1 Basic INNER JOIN with Key Equality",
+    "level": "Level 1 (Inner Join)",
+    "title": "Syntax #603: Match employees to their assigned department name via department_id",
+    "table": "Employees",
+    "scenario": "Match employees to their assigned department name via department_id.",
+    "businessObjective": "Match employees to their assigned department name via department_id.",
+    "schemaSnippet": "Employees relational schema",
+    "targetQuery": "SELECT e.first_name, d.department_name\nFROM Employees e\nINNER JOIN Departments d ON e.department_id = d.department_id;",
+    "syntaxBlueprint": "SELECT a.col, b.col\nFROM TableA a\nINNER JOIN TableB b ON a.key = b.key;",
+    "syntaxRule": "INNER JOIN returns only rows that have matching values in both tables based on the ON predicate.",
+    "syntaxTrap": "Forgetting the ON clause entirely, which results in an unintended Cartesian CROSS JOIN.",
+    "eli5Story": "Relational Joins on Employees: Match employees to their assigned department name via department_id.",
+    "commonMistakes": "Omitting the ON clause, forgetting table alias qualification on ambiguous columns, or accidentally converting LEFT JOIN to INNER JOIN via WHERE filters.",
+    "learningOutcomes": "Mastered 7.1 Basic INNER JOIN with Key Equality on Employees.",
+    "challengeSlots": [
+      {
+        "type": "keyword",
+        "value": "SELECT"
+      },
+      {
+        "type": "column",
+        "value": "e.first_name,"
+      },
+      {
+        "type": "column",
+        "value": "d.department_name"
+      },
+      {
+        "type": "keyword",
+        "value": "FROM"
+      },
+      {
+        "type": "table",
+        "value": "Employees"
+      },
+      {
+        "type": "column",
+        "value": "e"
+      },
+      {
+        "type": "keyword",
+        "value": "INNER"
+      },
+      {
+        "type": "keyword",
+        "value": "JOIN"
+      },
+      {
+        "type": "table",
+        "value": "Departments"
+      },
+      {
+        "type": "column",
+        "value": "d"
+      },
+      {
+        "type": "keyword",
+        "value": "ON"
+      },
+      {
+        "type": "column",
+        "value": "e.department_id"
+      },
+      {
+        "type": "column",
+        "value": "="
+      },
+      {
+        "type": "column",
+        "value": "d.department_id;"
+      }
+    ]
+  },
+  {
+    "drillNumber": 604,
+    "subcluster": "7.1 Basic INNER JOIN with Key Equality",
+    "level": "Level 1 (Inner Join)",
+    "title": "Syntax #604: Pair inventory grocery items with their official supplier company",
+    "table": "GroceryItems",
+    "scenario": "Pair inventory grocery items with their official supplier company.",
+    "businessObjective": "Pair inventory grocery items with their official supplier company.",
+    "schemaSnippet": "GroceryItems relational schema",
+    "targetQuery": "SELECT g.item_name, s.supplier_name\nFROM GroceryItems g\nINNER JOIN Suppliers s ON g.supplier_id = s.supplier_id;",
+    "syntaxBlueprint": "SELECT a.col, b.col\nFROM TableA a\nINNER JOIN TableB b ON a.key = b.key;",
+    "syntaxRule": "INNER JOIN returns only rows that have matching values in both tables based on the ON predicate.",
+    "syntaxTrap": "Forgetting the ON clause entirely, which results in an unintended Cartesian CROSS JOIN.",
+    "eli5Story": "Relational Joins on GroceryItems: Pair inventory grocery items with their official supplier company.",
+    "commonMistakes": "Omitting the ON clause, forgetting table alias qualification on ambiguous columns, or accidentally converting LEFT JOIN to INNER JOIN via WHERE filters.",
+    "learningOutcomes": "Mastered 7.1 Basic INNER JOIN with Key Equality on GroceryItems.",
+    "challengeSlots": [
+      {
+        "type": "keyword",
+        "value": "SELECT"
+      },
+      {
+        "type": "column",
+        "value": "g.item_name,"
+      },
+      {
+        "type": "column",
+        "value": "s.supplier_name"
+      },
+      {
+        "type": "keyword",
+        "value": "FROM"
+      },
+      {
+        "type": "table",
+        "value": "GroceryItems"
+      },
+      {
+        "type": "column",
+        "value": "g"
+      },
+      {
+        "type": "keyword",
+        "value": "INNER"
+      },
+      {
+        "type": "keyword",
+        "value": "JOIN"
+      },
+      {
+        "type": "table",
+        "value": "Suppliers"
+      },
+      {
+        "type": "column",
+        "value": "s"
+      },
+      {
+        "type": "keyword",
+        "value": "ON"
+      },
+      {
+        "type": "column",
+        "value": "g.supplier_id"
+      },
+      {
+        "type": "column",
+        "value": "="
+      },
+      {
+        "type": "column",
+        "value": "s.supplier_id;"
+      }
+    ]
+  },
+  {
+    "drillNumber": 605,
+    "subcluster": "7.1 Basic INNER JOIN with Key Equality",
+    "level": "Level 1 (Inner Join)",
+    "title": "Syntax #605: Match customer orders with registered buyer names on customer_id",
+    "table": "Orders",
+    "scenario": "Match customer orders with registered buyer names on customer_id.",
+    "businessObjective": "Match customer orders with registered buyer names on customer_id.",
+    "schemaSnippet": "Orders relational schema",
+    "targetQuery": "SELECT o.order_id, c.customer_name\nFROM Orders o\nINNER JOIN Customers c ON o.customer_id = c.customer_id;",
+    "syntaxBlueprint": "SELECT a.col, b.col\nFROM TableA a\nINNER JOIN TableB b ON a.key = b.key;",
+    "syntaxRule": "INNER JOIN returns only rows that have matching values in both tables based on the ON predicate.",
+    "syntaxTrap": "Forgetting the ON clause entirely, which results in an unintended Cartesian CROSS JOIN.",
+    "eli5Story": "Relational Joins on Orders: Match customer orders with registered buyer names on customer_id.",
+    "commonMistakes": "Omitting the ON clause, forgetting table alias qualification on ambiguous columns, or accidentally converting LEFT JOIN to INNER JOIN via WHERE filters.",
+    "learningOutcomes": "Mastered 7.1 Basic INNER JOIN with Key Equality on Orders.",
+    "challengeSlots": [
+      {
+        "type": "keyword",
+        "value": "SELECT"
+      },
+      {
+        "type": "column",
+        "value": "o.order_id,"
+      },
+      {
+        "type": "column",
+        "value": "c.customer_name"
+      },
+      {
+        "type": "keyword",
+        "value": "FROM"
+      },
+      {
+        "type": "table",
+        "value": "Orders"
+      },
+      {
+        "type": "column",
+        "value": "o"
+      },
+      {
+        "type": "keyword",
+        "value": "INNER"
+      },
+      {
+        "type": "keyword",
+        "value": "JOIN"
+      },
+      {
+        "type": "table",
+        "value": "Customers"
+      },
+      {
+        "type": "column",
+        "value": "c"
+      },
+      {
+        "type": "keyword",
+        "value": "ON"
+      },
+      {
+        "type": "column",
+        "value": "o.customer_id"
+      },
+      {
+        "type": "column",
+        "value": "="
+      },
+      {
+        "type": "column",
+        "value": "c.customer_id;"
+      }
+    ]
+  },
+  {
+    "drillNumber": 606,
+    "subcluster": "7.1 Basic INNER JOIN with Key Equality",
+    "level": "Level 1 (Inner Join)",
+    "title": "Syntax #606: Pair music tracks with their parent album title on album_id",
+    "table": "MusicTracks",
+    "scenario": "Pair music tracks with their parent album title on album_id.",
+    "businessObjective": "Pair music tracks with their parent album title on album_id.",
+    "schemaSnippet": "MusicTracks relational schema",
+    "targetQuery": "SELECT t.track_title, a.album_title\nFROM MusicTracks t\nINNER JOIN Albums a ON t.album_id = a.album_id;",
+    "syntaxBlueprint": "SELECT a.col, b.col\nFROM TableA a\nINNER JOIN TableB b ON a.key = b.key;",
+    "syntaxRule": "INNER JOIN returns only rows that have matching values in both tables based on the ON predicate.",
+    "syntaxTrap": "Forgetting the ON clause entirely, which results in an unintended Cartesian CROSS JOIN.",
+    "eli5Story": "Relational Joins on MusicTracks: Pair music tracks with their parent album title on album_id.",
+    "commonMistakes": "Omitting the ON clause, forgetting table alias qualification on ambiguous columns, or accidentally converting LEFT JOIN to INNER JOIN via WHERE filters.",
+    "learningOutcomes": "Mastered 7.1 Basic INNER JOIN with Key Equality on MusicTracks.",
+    "challengeSlots": [
+      {
+        "type": "keyword",
+        "value": "SELECT"
+      },
+      {
+        "type": "column",
+        "value": "t.track_title,"
+      },
+      {
+        "type": "column",
+        "value": "a.album_title"
+      },
+      {
+        "type": "keyword",
+        "value": "FROM"
+      },
+      {
+        "type": "table",
+        "value": "MusicTracks"
+      },
+      {
+        "type": "column",
+        "value": "t"
+      },
+      {
+        "type": "keyword",
+        "value": "INNER"
+      },
+      {
+        "type": "keyword",
+        "value": "JOIN"
+      },
+      {
+        "type": "table",
+        "value": "Albums"
+      },
+      {
+        "type": "column",
+        "value": "a"
+      },
+      {
+        "type": "keyword",
+        "value": "ON"
+      },
+      {
+        "type": "column",
+        "value": "t.album_id"
+      },
+      {
+        "type": "column",
+        "value": "="
+      },
+      {
+        "type": "column",
+        "value": "a.album_id;"
+      }
+    ]
+  },
+  {
+    "drillNumber": 607,
+    "subcluster": "7.1 Basic INNER JOIN with Key Equality",
+    "level": "Level 1 (Inner Join)",
+    "title": "Syntax #607: Match gym members with their assigned personal fitness trainer",
+    "table": "GymMembers",
+    "scenario": "Match gym members with their assigned personal fitness trainer.",
+    "businessObjective": "Match gym members with their assigned personal fitness trainer.",
+    "schemaSnippet": "GymMembers relational schema",
+    "targetQuery": "SELECT m.member_name, tr.trainer_name\nFROM GymMembers m\nINNER JOIN Trainers tr ON m.trainer_id = tr.trainer_id;",
+    "syntaxBlueprint": "SELECT a.col, b.col\nFROM TableA a\nINNER JOIN TableB b ON a.key = b.key;",
+    "syntaxRule": "INNER JOIN returns only rows that have matching values in both tables based on the ON predicate.",
+    "syntaxTrap": "Forgetting the ON clause entirely, which results in an unintended Cartesian CROSS JOIN.",
+    "eli5Story": "Relational Joins on GymMembers: Match gym members with their assigned personal fitness trainer.",
+    "commonMistakes": "Omitting the ON clause, forgetting table alias qualification on ambiguous columns, or accidentally converting LEFT JOIN to INNER JOIN via WHERE filters.",
+    "learningOutcomes": "Mastered 7.1 Basic INNER JOIN with Key Equality on GymMembers.",
+    "challengeSlots": [
+      {
+        "type": "keyword",
+        "value": "SELECT"
+      },
+      {
+        "type": "column",
+        "value": "m.member_name,"
+      },
+      {
+        "type": "column",
+        "value": "tr.trainer_name"
+      },
+      {
+        "type": "keyword",
+        "value": "FROM"
+      },
+      {
+        "type": "table",
+        "value": "GymMembers"
+      },
+      {
+        "type": "column",
+        "value": "m"
+      },
+      {
+        "type": "keyword",
+        "value": "INNER"
+      },
+      {
+        "type": "keyword",
+        "value": "JOIN"
+      },
+      {
+        "type": "table",
+        "value": "Trainers"
+      },
+      {
+        "type": "column",
+        "value": "tr"
+      },
+      {
+        "type": "keyword",
+        "value": "ON"
+      },
+      {
+        "type": "column",
+        "value": "m.trainer_id"
+      },
+      {
+        "type": "column",
+        "value": "="
+      },
+      {
+        "type": "column",
+        "value": "tr.trainer_id;"
+      }
+    ]
+  },
+  {
+    "drillNumber": 608,
+    "subcluster": "7.1 Basic INNER JOIN with Key Equality",
+    "level": "Level 1 (Inner Join)",
+    "title": "Syntax #608: Join review comments with movie titles using movie_id",
+    "table": "MovieReviews",
+    "scenario": "Join review comments with movie titles using movie_id.",
+    "businessObjective": "Join review comments with movie titles using movie_id.",
+    "schemaSnippet": "MovieReviews relational schema",
+    "targetQuery": "SELECT r.review_text, m.movie_title\nFROM MovieReviews r\nINNER JOIN Movies m ON r.movie_id = m.movie_id;",
+    "syntaxBlueprint": "SELECT a.col, b.col\nFROM TableA a\nINNER JOIN TableB b ON a.key = b.key;",
+    "syntaxRule": "INNER JOIN returns only rows that have matching values in both tables based on the ON predicate.",
+    "syntaxTrap": "Forgetting the ON clause entirely, which results in an unintended Cartesian CROSS JOIN.",
+    "eli5Story": "Relational Joins on MovieReviews: Join review comments with movie titles using movie_id.",
+    "commonMistakes": "Omitting the ON clause, forgetting table alias qualification on ambiguous columns, or accidentally converting LEFT JOIN to INNER JOIN via WHERE filters.",
+    "learningOutcomes": "Mastered 7.1 Basic INNER JOIN with Key Equality on MovieReviews.",
+    "challengeSlots": [
+      {
+        "type": "keyword",
+        "value": "SELECT"
+      },
+      {
+        "type": "column",
+        "value": "r.review_text,"
+      },
+      {
+        "type": "column",
+        "value": "m.movie_title"
+      },
+      {
+        "type": "keyword",
+        "value": "FROM"
+      },
+      {
+        "type": "table",
+        "value": "MovieReviews"
+      },
+      {
+        "type": "column",
+        "value": "r"
+      },
+      {
+        "type": "keyword",
+        "value": "INNER"
+      },
+      {
+        "type": "keyword",
+        "value": "JOIN"
+      },
+      {
+        "type": "table",
+        "value": "Movies"
+      },
+      {
+        "type": "column",
+        "value": "m"
+      },
+      {
+        "type": "keyword",
+        "value": "ON"
+      },
+      {
+        "type": "column",
+        "value": "r.movie_id"
+      },
+      {
+        "type": "column",
+        "value": "="
+      },
+      {
+        "type": "column",
+        "value": "m.movie_id;"
+      }
+    ]
+  },
+  {
+    "drillNumber": 609,
+    "subcluster": "7.1 Basic INNER JOIN with Key Equality",
+    "level": "Level 1 (Inner Join)",
+    "title": "Syntax #609: Match scheduled flight records with operating airline carrier names",
+    "table": "FlightSchedule",
+    "scenario": "Match scheduled flight records with operating airline carrier names.",
+    "businessObjective": "Match scheduled flight records with operating airline carrier names.",
+    "schemaSnippet": "FlightSchedule relational schema",
+    "targetQuery": "SELECT f.flight_id, al.airline_name\nFROM FlightSchedule f\nINNER JOIN Airlines al ON f.airline_id = al.airline_id;",
+    "syntaxBlueprint": "SELECT a.col, b.col\nFROM TableA a\nINNER JOIN TableB b ON a.key = b.key;",
+    "syntaxRule": "INNER JOIN returns only rows that have matching values in both tables based on the ON predicate.",
+    "syntaxTrap": "Forgetting the ON clause entirely, which results in an unintended Cartesian CROSS JOIN.",
+    "eli5Story": "Relational Joins on FlightSchedule: Match scheduled flight records with operating airline carrier names.",
+    "commonMistakes": "Omitting the ON clause, forgetting table alias qualification on ambiguous columns, or accidentally converting LEFT JOIN to INNER JOIN via WHERE filters.",
+    "learningOutcomes": "Mastered 7.1 Basic INNER JOIN with Key Equality on FlightSchedule.",
+    "challengeSlots": [
+      {
+        "type": "keyword",
+        "value": "SELECT"
+      },
+      {
+        "type": "column",
+        "value": "f.flight_id,"
+      },
+      {
+        "type": "column",
+        "value": "al.airline_name"
+      },
+      {
+        "type": "keyword",
+        "value": "FROM"
+      },
+      {
+        "type": "table",
+        "value": "FlightSchedule"
+      },
+      {
+        "type": "column",
+        "value": "f"
+      },
+      {
+        "type": "keyword",
+        "value": "INNER"
+      },
+      {
+        "type": "keyword",
+        "value": "JOIN"
+      },
+      {
+        "type": "table",
+        "value": "Airlines"
+      },
+      {
+        "type": "column",
+        "value": "al"
+      },
+      {
+        "type": "keyword",
+        "value": "ON"
+      },
+      {
+        "type": "column",
+        "value": "f.airline_id"
+      },
+      {
+        "type": "column",
+        "value": "="
+      },
+      {
+        "type": "column",
+        "value": "al.airline_id;"
+      }
+    ]
+  },
+  {
+    "drillNumber": 610,
+    "subcluster": "7.1 Basic INNER JOIN with Key Equality",
+    "level": "Level 1 (Inner Join)",
+    "title": "Syntax #610: Pair clinic veterinary patients with their registered pet owner names",
+    "table": "PetClinic",
+    "scenario": "Pair clinic veterinary patients with their registered pet owner names.",
+    "businessObjective": "Pair clinic veterinary patients with their registered pet owner names.",
+    "schemaSnippet": "PetClinic relational schema",
+    "targetQuery": "SELECT p.pet_name, o.owner_name\nFROM PetClinic p\nINNER JOIN Owners o ON p.owner_id = o.owner_id;",
+    "syntaxBlueprint": "SELECT a.col, b.col\nFROM TableA a\nINNER JOIN TableB b ON a.key = b.key;",
+    "syntaxRule": "INNER JOIN returns only rows that have matching values in both tables based on the ON predicate.",
+    "syntaxTrap": "Forgetting the ON clause entirely, which results in an unintended Cartesian CROSS JOIN.",
+    "eli5Story": "Relational Joins on PetClinic: Pair clinic veterinary patients with their registered pet owner names.",
+    "commonMistakes": "Omitting the ON clause, forgetting table alias qualification on ambiguous columns, or accidentally converting LEFT JOIN to INNER JOIN via WHERE filters.",
+    "learningOutcomes": "Mastered 7.1 Basic INNER JOIN with Key Equality on PetClinic.",
+    "challengeSlots": [
+      {
+        "type": "keyword",
+        "value": "SELECT"
+      },
+      {
+        "type": "column",
+        "value": "p.pet_name,"
+      },
+      {
+        "type": "column",
+        "value": "o.owner_name"
+      },
+      {
+        "type": "keyword",
+        "value": "FROM"
+      },
+      {
+        "type": "table",
+        "value": "PetClinic"
+      },
+      {
+        "type": "column",
+        "value": "p"
+      },
+      {
+        "type": "keyword",
+        "value": "INNER"
+      },
+      {
+        "type": "keyword",
+        "value": "JOIN"
+      },
+      {
+        "type": "table",
+        "value": "Owners"
+      },
+      {
+        "type": "column",
+        "value": "o"
+      },
+      {
+        "type": "keyword",
+        "value": "ON"
+      },
+      {
+        "type": "column",
+        "value": "p.owner_id"
+      },
+      {
+        "type": "column",
+        "value": "="
+      },
+      {
+        "type": "column",
+        "value": "o.owner_id;"
+      }
+    ]
+  },
+  {
+    "drillNumber": 611,
+    "subcluster": "7.2 Concise Table Aliasing Practice",
+    "level": "Level 1 (Table Aliases)",
+    "title": "Syntax #611: Practice clean multi-character aliasing ('stu' and 'crs') joining students and courses",
+    "table": "Students",
+    "scenario": "Practice clean multi-character aliasing ('stu' and 'crs') joining students and courses.",
+    "businessObjective": "Practice clean multi-character aliasing ('stu' and 'crs') joining students and courses.",
+    "schemaSnippet": "Students relational schema",
+    "targetQuery": "SELECT stu.student_id, stu.full_name, crs.course_name\nFROM Students stu\nJOIN Courses crs ON stu.student_id = crs.student_id;",
+    "syntaxBlueprint": "SELECT alias1.col, alias2.col\nFROM TableA alias1\nJOIN TableB alias2 ON alias1.id = alias2.a_id;",
+    "syntaxRule": "Assign short table aliases in the FROM and JOIN clauses to keep multi-table references compact and readable.",
+    "syntaxTrap": "Using an alias in the SELECT clause before defining it in FROM or JOIN will trigger an 'Unknown table alias' error.",
+    "eli5Story": "Relational Joins on Students: Practice clean multi-character aliasing ('stu' and 'crs') joining students and courses.",
+    "commonMistakes": "Omitting the ON clause, forgetting table alias qualification on ambiguous columns, or accidentally converting LEFT JOIN to INNER JOIN via WHERE filters.",
+    "learningOutcomes": "Mastered 7.2 Concise Table Aliasing Practice on Students.",
+    "challengeSlots": [
+      {
+        "type": "keyword",
+        "value": "SELECT"
+      },
+      {
+        "type": "column",
+        "value": "stu.student_id,"
+      },
+      {
+        "type": "column",
+        "value": "stu.full_name,"
+      },
+      {
+        "type": "column",
+        "value": "crs.course_name"
+      },
+      {
+        "type": "keyword",
+        "value": "FROM"
+      },
+      {
+        "type": "table",
+        "value": "Students"
+      },
+      {
+        "type": "column",
+        "value": "stu"
+      },
+      {
+        "type": "keyword",
+        "value": "JOIN"
+      },
+      {
+        "type": "table",
+        "value": "Courses"
+      },
+      {
+        "type": "column",
+        "value": "crs"
+      },
+      {
+        "type": "keyword",
+        "value": "ON"
+      },
+      {
+        "type": "column",
+        "value": "stu.student_id"
+      },
+      {
+        "type": "column",
+        "value": "="
+      },
+      {
+        "type": "column",
+        "value": "crs.student_id;"
+      }
+    ]
+  },
+  {
+    "drillNumber": 612,
+    "subcluster": "7.2 Concise Table Aliasing Practice",
+    "level": "Level 1 (Table Aliases)",
+    "title": "Syntax #612: Alias books as 'bk' and authors as 'aut' to retrieve ISBN, title, and country",
+    "table": "Books",
+    "scenario": "Alias books as 'bk' and authors as 'aut' to retrieve ISBN, title, and country.",
+    "businessObjective": "Alias books as 'bk' and authors as 'aut' to retrieve ISBN, title, and country.",
+    "schemaSnippet": "Books relational schema",
+    "targetQuery": "SELECT bk.isbn, bk.title, aut.country\nFROM Books bk\nJOIN Authors aut ON bk.author_id = aut.author_id;",
+    "syntaxBlueprint": "SELECT alias1.col, alias2.col\nFROM TableA alias1\nJOIN TableB alias2 ON alias1.id = alias2.a_id;",
+    "syntaxRule": "Assign short table aliases in the FROM and JOIN clauses to keep multi-table references compact and readable.",
+    "syntaxTrap": "Using an alias in the SELECT clause before defining it in FROM or JOIN will trigger an 'Unknown table alias' error.",
+    "eli5Story": "Relational Joins on Books: Alias books as 'bk' and authors as 'aut' to retrieve ISBN, title, and country.",
+    "commonMistakes": "Omitting the ON clause, forgetting table alias qualification on ambiguous columns, or accidentally converting LEFT JOIN to INNER JOIN via WHERE filters.",
+    "learningOutcomes": "Mastered 7.2 Concise Table Aliasing Practice on Books.",
+    "challengeSlots": [
+      {
+        "type": "keyword",
+        "value": "SELECT"
+      },
+      {
+        "type": "column",
+        "value": "bk.isbn,"
+      },
+      {
+        "type": "column",
+        "value": "bk.title,"
+      },
+      {
+        "type": "column",
+        "value": "aut.country"
+      },
+      {
+        "type": "keyword",
+        "value": "FROM"
+      },
+      {
+        "type": "table",
+        "value": "Books"
+      },
+      {
+        "type": "column",
+        "value": "bk"
+      },
+      {
+        "type": "keyword",
+        "value": "JOIN"
+      },
+      {
+        "type": "table",
+        "value": "Authors"
+      },
+      {
+        "type": "column",
+        "value": "aut"
+      },
+      {
+        "type": "keyword",
+        "value": "ON"
+      },
+      {
+        "type": "column",
+        "value": "bk.author_id"
+      },
+      {
+        "type": "column",
+        "value": "="
+      },
+      {
+        "type": "column",
+        "value": "aut.author_id;"
+      }
+    ]
+  },
+  {
+    "drillNumber": 613,
+    "subcluster": "7.2 Concise Table Aliasing Practice",
+    "level": "Level 1 (Table Aliases)",
+    "title": "Syntax #613: Use aliases 'emp' and 'dep' to project staff ID and department budget",
+    "table": "Employees",
+    "scenario": "Use aliases 'emp' and 'dep' to project staff ID and department budget.",
+    "businessObjective": "Use aliases 'emp' and 'dep' to project staff ID and department budget.",
+    "schemaSnippet": "Employees relational schema",
+    "targetQuery": "SELECT emp.emp_id, emp.first_name, dep.budget\nFROM Employees emp\nJOIN Departments dep ON emp.department_id = dep.department_id;",
+    "syntaxBlueprint": "SELECT alias1.col, alias2.col\nFROM TableA alias1\nJOIN TableB alias2 ON alias1.id = alias2.a_id;",
+    "syntaxRule": "Assign short table aliases in the FROM and JOIN clauses to keep multi-table references compact and readable.",
+    "syntaxTrap": "Using an alias in the SELECT clause before defining it in FROM or JOIN will trigger an 'Unknown table alias' error.",
+    "eli5Story": "Relational Joins on Employees: Use aliases 'emp' and 'dep' to project staff ID and department budget.",
+    "commonMistakes": "Omitting the ON clause, forgetting table alias qualification on ambiguous columns, or accidentally converting LEFT JOIN to INNER JOIN via WHERE filters.",
+    "learningOutcomes": "Mastered 7.2 Concise Table Aliasing Practice on Employees.",
+    "challengeSlots": [
+      {
+        "type": "keyword",
+        "value": "SELECT"
+      },
+      {
+        "type": "column",
+        "value": "emp.emp_id,"
+      },
+      {
+        "type": "column",
+        "value": "emp.first_name,"
+      },
+      {
+        "type": "column",
+        "value": "dep.budget"
+      },
+      {
+        "type": "keyword",
+        "value": "FROM"
+      },
+      {
+        "type": "table",
+        "value": "Employees"
+      },
+      {
+        "type": "column",
+        "value": "emp"
+      },
+      {
+        "type": "keyword",
+        "value": "JOIN"
+      },
+      {
+        "type": "table",
+        "value": "Departments"
+      },
+      {
+        "type": "column",
+        "value": "dep"
+      },
+      {
+        "type": "keyword",
+        "value": "ON"
+      },
+      {
+        "type": "column",
+        "value": "emp.department_id"
+      },
+      {
+        "type": "column",
+        "value": "="
+      },
+      {
+        "type": "column",
+        "value": "dep.department_id;"
+      }
+    ]
+  },
+  {
+    "drillNumber": 614,
+    "subcluster": "7.2 Concise Table Aliasing Practice",
+    "level": "Level 1 (Table Aliases)",
+    "title": "Syntax #614: Alias grocery items as 'itm' and suppliers as 'sup' to fetch supplier phone numbers",
+    "table": "GroceryItems",
+    "scenario": "Alias grocery items as 'itm' and suppliers as 'sup' to fetch supplier phone numbers.",
+    "businessObjective": "Alias grocery items as 'itm' and suppliers as 'sup' to fetch supplier phone numbers.",
+    "schemaSnippet": "GroceryItems relational schema",
+    "targetQuery": "SELECT itm.item_name, sup.contact_phone\nFROM GroceryItems itm\nJOIN Suppliers sup ON itm.supplier_id = sup.supplier_id;",
+    "syntaxBlueprint": "SELECT alias1.col, alias2.col\nFROM TableA alias1\nJOIN TableB alias2 ON alias1.id = alias2.a_id;",
+    "syntaxRule": "Assign short table aliases in the FROM and JOIN clauses to keep multi-table references compact and readable.",
+    "syntaxTrap": "Using an alias in the SELECT clause before defining it in FROM or JOIN will trigger an 'Unknown table alias' error.",
+    "eli5Story": "Relational Joins on GroceryItems: Alias grocery items as 'itm' and suppliers as 'sup' to fetch supplier phone numbers.",
+    "commonMistakes": "Omitting the ON clause, forgetting table alias qualification on ambiguous columns, or accidentally converting LEFT JOIN to INNER JOIN via WHERE filters.",
+    "learningOutcomes": "Mastered 7.2 Concise Table Aliasing Practice on GroceryItems.",
+    "challengeSlots": [
+      {
+        "type": "keyword",
+        "value": "SELECT"
+      },
+      {
+        "type": "column",
+        "value": "itm.item_name,"
+      },
+      {
+        "type": "column",
+        "value": "sup.contact_phone"
+      },
+      {
+        "type": "keyword",
+        "value": "FROM"
+      },
+      {
+        "type": "table",
+        "value": "GroceryItems"
+      },
+      {
+        "type": "column",
+        "value": "itm"
+      },
+      {
+        "type": "keyword",
+        "value": "JOIN"
+      },
+      {
+        "type": "table",
+        "value": "Suppliers"
+      },
+      {
+        "type": "column",
+        "value": "sup"
+      },
+      {
+        "type": "keyword",
+        "value": "ON"
+      },
+      {
+        "type": "column",
+        "value": "itm.supplier_id"
+      },
+      {
+        "type": "column",
+        "value": "="
+      },
+      {
+        "type": "column",
+        "value": "sup.supplier_id;"
+      }
+    ]
+  },
+  {
+    "drillNumber": 615,
+    "subcluster": "7.2 Concise Table Aliasing Practice",
+    "level": "Level 1 (Table Aliases)",
+    "title": "Syntax #615: Use descriptive aliases 'ord' and 'cust' to retrieve order date and customer email",
+    "table": "Orders",
+    "scenario": "Use descriptive aliases 'ord' and 'cust' to retrieve order date and customer email.",
+    "businessObjective": "Use descriptive aliases 'ord' and 'cust' to retrieve order date and customer email.",
+    "schemaSnippet": "Orders relational schema",
+    "targetQuery": "SELECT ord.order_id, ord.order_date, cust.email\nFROM Orders ord\nJOIN Customers cust ON ord.customer_id = cust.customer_id;",
+    "syntaxBlueprint": "SELECT alias1.col, alias2.col\nFROM TableA alias1\nJOIN TableB alias2 ON alias1.id = alias2.a_id;",
+    "syntaxRule": "Assign short table aliases in the FROM and JOIN clauses to keep multi-table references compact and readable.",
+    "syntaxTrap": "Using an alias in the SELECT clause before defining it in FROM or JOIN will trigger an 'Unknown table alias' error.",
+    "eli5Story": "Relational Joins on Orders: Use descriptive aliases 'ord' and 'cust' to retrieve order date and customer email.",
+    "commonMistakes": "Omitting the ON clause, forgetting table alias qualification on ambiguous columns, or accidentally converting LEFT JOIN to INNER JOIN via WHERE filters.",
+    "learningOutcomes": "Mastered 7.2 Concise Table Aliasing Practice on Orders.",
+    "challengeSlots": [
+      {
+        "type": "keyword",
+        "value": "SELECT"
+      },
+      {
+        "type": "column",
+        "value": "ord.order_id,"
+      },
+      {
+        "type": "column",
+        "value": "ord.order_date,"
+      },
+      {
+        "type": "column",
+        "value": "cust.email"
+      },
+      {
+        "type": "keyword",
+        "value": "FROM"
+      },
+      {
+        "type": "table",
+        "value": "Orders"
+      },
+      {
+        "type": "column",
+        "value": "ord"
+      },
+      {
+        "type": "keyword",
+        "value": "JOIN"
+      },
+      {
+        "type": "table",
+        "value": "Customers"
+      },
+      {
+        "type": "column",
+        "value": "cust"
+      },
+      {
+        "type": "keyword",
+        "value": "ON"
+      },
+      {
+        "type": "column",
+        "value": "ord.customer_id"
+      },
+      {
+        "type": "column",
+        "value": "="
+      },
+      {
+        "type": "column",
+        "value": "cust.customer_id;"
+      }
+    ]
+  },
+  {
+    "drillNumber": 616,
+    "subcluster": "7.2 Concise Table Aliasing Practice",
+    "level": "Level 1 (Table Aliases)",
+    "title": "Syntax #616: Alias tracks as 'trk' and albums as 'alb' to inspect release years",
+    "table": "MusicTracks",
+    "scenario": "Alias tracks as 'trk' and albums as 'alb' to inspect release years.",
+    "businessObjective": "Alias tracks as 'trk' and albums as 'alb' to inspect release years.",
+    "schemaSnippet": "MusicTracks relational schema",
+    "targetQuery": "SELECT trk.track_title, alb.release_year\nFROM MusicTracks trk\nJOIN Albums alb ON trk.album_id = alb.album_id;",
+    "syntaxBlueprint": "SELECT alias1.col, alias2.col\nFROM TableA alias1\nJOIN TableB alias2 ON alias1.id = alias2.a_id;",
+    "syntaxRule": "Assign short table aliases in the FROM and JOIN clauses to keep multi-table references compact and readable.",
+    "syntaxTrap": "Using an alias in the SELECT clause before defining it in FROM or JOIN will trigger an 'Unknown table alias' error.",
+    "eli5Story": "Relational Joins on MusicTracks: Alias tracks as 'trk' and albums as 'alb' to inspect release years.",
+    "commonMistakes": "Omitting the ON clause, forgetting table alias qualification on ambiguous columns, or accidentally converting LEFT JOIN to INNER JOIN via WHERE filters.",
+    "learningOutcomes": "Mastered 7.2 Concise Table Aliasing Practice on MusicTracks.",
+    "challengeSlots": [
+      {
+        "type": "keyword",
+        "value": "SELECT"
+      },
+      {
+        "type": "column",
+        "value": "trk.track_title,"
+      },
+      {
+        "type": "column",
+        "value": "alb.release_year"
+      },
+      {
+        "type": "keyword",
+        "value": "FROM"
+      },
+      {
+        "type": "table",
+        "value": "MusicTracks"
+      },
+      {
+        "type": "column",
+        "value": "trk"
+      },
+      {
+        "type": "keyword",
+        "value": "JOIN"
+      },
+      {
+        "type": "table",
+        "value": "Albums"
+      },
+      {
+        "type": "column",
+        "value": "alb"
+      },
+      {
+        "type": "keyword",
+        "value": "ON"
+      },
+      {
+        "type": "column",
+        "value": "trk.album_id"
+      },
+      {
+        "type": "column",
+        "value": "="
+      },
+      {
+        "type": "column",
+        "value": "alb.album_id;"
+      }
+    ]
+  },
+  {
+    "drillNumber": 617,
+    "subcluster": "7.2 Concise Table Aliasing Practice",
+    "level": "Level 1 (Table Aliases)",
+    "title": "Syntax #617: Alias members as 'mem' and trainers as 'trn' to review trainer certifications",
+    "table": "GymMembers",
+    "scenario": "Alias members as 'mem' and trainers as 'trn' to review trainer certifications.",
+    "businessObjective": "Alias members as 'mem' and trainers as 'trn' to review trainer certifications.",
+    "schemaSnippet": "GymMembers relational schema",
+    "targetQuery": "SELECT mem.member_name, trn.specialty\nFROM GymMembers mem\nJOIN Trainers trn ON mem.trainer_id = trn.trainer_id;",
+    "syntaxBlueprint": "SELECT alias1.col, alias2.col\nFROM TableA alias1\nJOIN TableB alias2 ON alias1.id = alias2.a_id;",
+    "syntaxRule": "Assign short table aliases in the FROM and JOIN clauses to keep multi-table references compact and readable.",
+    "syntaxTrap": "Using an alias in the SELECT clause before defining it in FROM or JOIN will trigger an 'Unknown table alias' error.",
+    "eli5Story": "Relational Joins on GymMembers: Alias members as 'mem' and trainers as 'trn' to review trainer certifications.",
+    "commonMistakes": "Omitting the ON clause, forgetting table alias qualification on ambiguous columns, or accidentally converting LEFT JOIN to INNER JOIN via WHERE filters.",
+    "learningOutcomes": "Mastered 7.2 Concise Table Aliasing Practice on GymMembers.",
+    "challengeSlots": [
+      {
+        "type": "keyword",
+        "value": "SELECT"
+      },
+      {
+        "type": "column",
+        "value": "mem.member_name,"
+      },
+      {
+        "type": "column",
+        "value": "trn.specialty"
+      },
+      {
+        "type": "keyword",
+        "value": "FROM"
+      },
+      {
+        "type": "table",
+        "value": "GymMembers"
+      },
+      {
+        "type": "column",
+        "value": "mem"
+      },
+      {
+        "type": "keyword",
+        "value": "JOIN"
+      },
+      {
+        "type": "table",
+        "value": "Trainers"
+      },
+      {
+        "type": "column",
+        "value": "trn"
+      },
+      {
+        "type": "keyword",
+        "value": "ON"
+      },
+      {
+        "type": "column",
+        "value": "mem.trainer_id"
+      },
+      {
+        "type": "column",
+        "value": "="
+      },
+      {
+        "type": "column",
+        "value": "trn.trainer_id;"
+      }
+    ]
+  },
+  {
+    "drillNumber": 618,
+    "subcluster": "7.2 Concise Table Aliasing Practice",
+    "level": "Level 1 (Table Aliases)",
+    "title": "Syntax #618: Alias reviews as 'rev' and movies as 'mov' to correlate star ratings with directors",
+    "table": "MovieReviews",
+    "scenario": "Alias reviews as 'rev' and movies as 'mov' to correlate star ratings with directors.",
+    "businessObjective": "Alias reviews as 'rev' and movies as 'mov' to correlate star ratings with directors.",
+    "schemaSnippet": "MovieReviews relational schema",
+    "targetQuery": "SELECT rev.star_rating, mov.director\nFROM MovieReviews rev\nJOIN Movies mov ON rev.movie_id = mov.movie_id;",
+    "syntaxBlueprint": "SELECT alias1.col, alias2.col\nFROM TableA alias1\nJOIN TableB alias2 ON alias1.id = alias2.a_id;",
+    "syntaxRule": "Assign short table aliases in the FROM and JOIN clauses to keep multi-table references compact and readable.",
+    "syntaxTrap": "Using an alias in the SELECT clause before defining it in FROM or JOIN will trigger an 'Unknown table alias' error.",
+    "eli5Story": "Relational Joins on MovieReviews: Alias reviews as 'rev' and movies as 'mov' to correlate star ratings with directors.",
+    "commonMistakes": "Omitting the ON clause, forgetting table alias qualification on ambiguous columns, or accidentally converting LEFT JOIN to INNER JOIN via WHERE filters.",
+    "learningOutcomes": "Mastered 7.2 Concise Table Aliasing Practice on MovieReviews.",
+    "challengeSlots": [
+      {
+        "type": "keyword",
+        "value": "SELECT"
+      },
+      {
+        "type": "column",
+        "value": "rev.star_rating,"
+      },
+      {
+        "type": "column",
+        "value": "mov.director"
+      },
+      {
+        "type": "keyword",
+        "value": "FROM"
+      },
+      {
+        "type": "table",
+        "value": "MovieReviews"
+      },
+      {
+        "type": "column",
+        "value": "rev"
+      },
+      {
+        "type": "keyword",
+        "value": "JOIN"
+      },
+      {
+        "type": "table",
+        "value": "Movies"
+      },
+      {
+        "type": "column",
+        "value": "mov"
+      },
+      {
+        "type": "keyword",
+        "value": "ON"
+      },
+      {
+        "type": "column",
+        "value": "rev.movie_id"
+      },
+      {
+        "type": "column",
+        "value": "="
+      },
+      {
+        "type": "column",
+        "value": "mov.movie_id;"
+      }
+    ]
+  },
+  {
+    "drillNumber": 619,
+    "subcluster": "7.2 Concise Table Aliasing Practice",
+    "level": "Level 1 (Table Aliases)",
+    "title": "Syntax #619: Alias flights as 'flt' and airlines as 'air' to retrieve radio callsigns",
+    "table": "FlightSchedule",
+    "scenario": "Alias flights as 'flt' and airlines as 'air' to retrieve radio callsigns.",
+    "businessObjective": "Alias flights as 'flt' and airlines as 'air' to retrieve radio callsigns.",
+    "schemaSnippet": "FlightSchedule relational schema",
+    "targetQuery": "SELECT flt.flight_id, air.callsign\nFROM FlightSchedule flt\nJOIN Airlines air ON flt.airline_id = air.airline_id;",
+    "syntaxBlueprint": "SELECT alias1.col, alias2.col\nFROM TableA alias1\nJOIN TableB alias2 ON alias1.id = alias2.a_id;",
+    "syntaxRule": "Assign short table aliases in the FROM and JOIN clauses to keep multi-table references compact and readable.",
+    "syntaxTrap": "Using an alias in the SELECT clause before defining it in FROM or JOIN will trigger an 'Unknown table alias' error.",
+    "eli5Story": "Relational Joins on FlightSchedule: Alias flights as 'flt' and airlines as 'air' to retrieve radio callsigns.",
+    "commonMistakes": "Omitting the ON clause, forgetting table alias qualification on ambiguous columns, or accidentally converting LEFT JOIN to INNER JOIN via WHERE filters.",
+    "learningOutcomes": "Mastered 7.2 Concise Table Aliasing Practice on FlightSchedule.",
+    "challengeSlots": [
+      {
+        "type": "keyword",
+        "value": "SELECT"
+      },
+      {
+        "type": "column",
+        "value": "flt.flight_id,"
+      },
+      {
+        "type": "column",
+        "value": "air.callsign"
+      },
+      {
+        "type": "keyword",
+        "value": "FROM"
+      },
+      {
+        "type": "table",
+        "value": "FlightSchedule"
+      },
+      {
+        "type": "column",
+        "value": "flt"
+      },
+      {
+        "type": "keyword",
+        "value": "JOIN"
+      },
+      {
+        "type": "table",
+        "value": "Airlines"
+      },
+      {
+        "type": "column",
+        "value": "air"
+      },
+      {
+        "type": "keyword",
+        "value": "ON"
+      },
+      {
+        "type": "column",
+        "value": "flt.airline_id"
+      },
+      {
+        "type": "column",
+        "value": "="
+      },
+      {
+        "type": "column",
+        "value": "air.airline_id;"
+      }
+    ]
+  },
+  {
+    "drillNumber": 620,
+    "subcluster": "7.2 Concise Table Aliasing Practice",
+    "level": "Level 1 (Table Aliases)",
+    "title": "Syntax #620: Use aliases 'pet' and 'own' to display pet names with emergency contact numbers",
+    "table": "PetClinic",
+    "scenario": "Use aliases 'pet' and 'own' to display pet names with emergency contact numbers.",
+    "businessObjective": "Use aliases 'pet' and 'own' to display pet names with emergency contact numbers.",
+    "schemaSnippet": "PetClinic relational schema",
+    "targetQuery": "SELECT pet.pet_name, own.emergency_phone\nFROM PetClinic pet\nJOIN Owners own ON pet.owner_id = own.owner_id;",
+    "syntaxBlueprint": "SELECT alias1.col, alias2.col\nFROM TableA alias1\nJOIN TableB alias2 ON alias1.id = alias2.a_id;",
+    "syntaxRule": "Assign short table aliases in the FROM and JOIN clauses to keep multi-table references compact and readable.",
+    "syntaxTrap": "Using an alias in the SELECT clause before defining it in FROM or JOIN will trigger an 'Unknown table alias' error.",
+    "eli5Story": "Relational Joins on PetClinic: Use aliases 'pet' and 'own' to display pet names with emergency contact numbers.",
+    "commonMistakes": "Omitting the ON clause, forgetting table alias qualification on ambiguous columns, or accidentally converting LEFT JOIN to INNER JOIN via WHERE filters.",
+    "learningOutcomes": "Mastered 7.2 Concise Table Aliasing Practice on PetClinic.",
+    "challengeSlots": [
+      {
+        "type": "keyword",
+        "value": "SELECT"
+      },
+      {
+        "type": "column",
+        "value": "pet.pet_name,"
+      },
+      {
+        "type": "column",
+        "value": "own.emergency_phone"
+      },
+      {
+        "type": "keyword",
+        "value": "FROM"
+      },
+      {
+        "type": "table",
+        "value": "PetClinic"
+      },
+      {
+        "type": "column",
+        "value": "pet"
+      },
+      {
+        "type": "keyword",
+        "value": "JOIN"
+      },
+      {
+        "type": "table",
+        "value": "Owners"
+      },
+      {
+        "type": "column",
+        "value": "own"
+      },
+      {
+        "type": "keyword",
+        "value": "ON"
+      },
+      {
+        "type": "column",
+        "value": "pet.owner_id"
+      },
+      {
+        "type": "column",
+        "value": "="
+      },
+      {
+        "type": "column",
+        "value": "own.owner_id;"
+      }
+    ]
+  },
+  {
+    "drillNumber": 621,
+    "subcluster": "7.3 Column Qualification & Disambiguation",
+    "level": "Level 1 (Column Ambiguity)",
+    "title": "Syntax #621: Disambiguate the shared 'created_at' timestamp by explicitly prefixing 'c.created_at'",
+    "table": "Students",
+    "scenario": "Disambiguate the shared 'created_at' timestamp by explicitly prefixing 'c.created_at'.",
+    "businessObjective": "Disambiguate the shared 'created_at' timestamp by explicitly prefixing 'c.created_at'.",
+    "schemaSnippet": "Students relational schema",
+    "targetQuery": "SELECT s.student_id, s.full_name, c.created_at\nFROM Students s\nJOIN Courses c ON s.student_id = c.student_id;",
+    "syntaxBlueprint": "SELECT a.common_id, a.col1, b.col2\nFROM TableA a\nJOIN TableB b ON a.common_id = b.common_id;",
+    "syntaxRule": "When two joined tables share identical column names (e.g. id, name, created_at), you MUST prefix the column with the table alias to prevent 'column ambiguously defined' errors.",
+    "syntaxTrap": "Selecting 'id' without a table prefix when both tables have an 'id' column.",
+    "eli5Story": "Relational Joins on Students: Disambiguate the shared 'created_at' timestamp by explicitly prefixing 'c.created_at'.",
+    "commonMistakes": "Omitting the ON clause, forgetting table alias qualification on ambiguous columns, or accidentally converting LEFT JOIN to INNER JOIN via WHERE filters.",
+    "learningOutcomes": "Mastered 7.3 Column Qualification & Disambiguation on Students.",
+    "challengeSlots": [
+      {
+        "type": "keyword",
+        "value": "SELECT"
+      },
+      {
+        "type": "column",
+        "value": "s.student_id,"
+      },
+      {
+        "type": "column",
+        "value": "s.full_name,"
+      },
+      {
+        "type": "column",
+        "value": "c.created_at"
+      },
+      {
+        "type": "keyword",
+        "value": "FROM"
+      },
+      {
+        "type": "table",
+        "value": "Students"
+      },
+      {
+        "type": "column",
+        "value": "s"
+      },
+      {
+        "type": "keyword",
+        "value": "JOIN"
+      },
+      {
+        "type": "table",
+        "value": "Courses"
+      },
+      {
+        "type": "column",
+        "value": "c"
+      },
+      {
+        "type": "keyword",
+        "value": "ON"
+      },
+      {
+        "type": "column",
+        "value": "s.student_id"
+      },
+      {
+        "type": "column",
+        "value": "="
+      },
+      {
+        "type": "column",
+        "value": "c.student_id;"
+      }
+    ]
+  },
+  {
+    "drillNumber": 622,
+    "subcluster": "7.3 Column Qualification & Disambiguation",
+    "level": "Level 1 (Column Ambiguity)",
+    "title": "Syntax #622: Explicitly qualify 'b.book_id' and 'a.author_id' to prevent ambiguous identifier conflicts",
+    "table": "Books",
+    "scenario": "Explicitly qualify 'b.book_id' and 'a.author_id' to prevent ambiguous identifier conflicts.",
+    "businessObjective": "Explicitly qualify 'b.book_id' and 'a.author_id' to prevent ambiguous identifier conflicts.",
+    "schemaSnippet": "Books relational schema",
+    "targetQuery": "SELECT b.book_id, b.title, a.author_id\nFROM Books b\nJOIN Authors a ON b.author_id = a.author_id;",
+    "syntaxBlueprint": "SELECT a.common_id, a.col1, b.col2\nFROM TableA a\nJOIN TableB b ON a.common_id = b.common_id;",
+    "syntaxRule": "When two joined tables share identical column names (e.g. id, name, created_at), you MUST prefix the column with the table alias to prevent 'column ambiguously defined' errors.",
+    "syntaxTrap": "Selecting 'id' without a table prefix when both tables have an 'id' column.",
+    "eli5Story": "Relational Joins on Books: Explicitly qualify 'b.book_id' and 'a.author_id' to prevent ambiguous identifier conflicts.",
+    "commonMistakes": "Omitting the ON clause, forgetting table alias qualification on ambiguous columns, or accidentally converting LEFT JOIN to INNER JOIN via WHERE filters.",
+    "learningOutcomes": "Mastered 7.3 Column Qualification & Disambiguation on Books.",
+    "challengeSlots": [
+      {
+        "type": "keyword",
+        "value": "SELECT"
+      },
+      {
+        "type": "column",
+        "value": "b.book_id,"
+      },
+      {
+        "type": "column",
+        "value": "b.title,"
+      },
+      {
+        "type": "column",
+        "value": "a.author_id"
+      },
+      {
+        "type": "keyword",
+        "value": "FROM"
+      },
+      {
+        "type": "table",
+        "value": "Books"
+      },
+      {
+        "type": "column",
+        "value": "b"
+      },
+      {
+        "type": "keyword",
+        "value": "JOIN"
+      },
+      {
+        "type": "table",
+        "value": "Authors"
+      },
+      {
+        "type": "column",
+        "value": "a"
+      },
+      {
+        "type": "keyword",
+        "value": "ON"
+      },
+      {
+        "type": "column",
+        "value": "b.author_id"
+      },
+      {
+        "type": "column",
+        "value": "="
+      },
+      {
+        "type": "column",
+        "value": "a.author_id;"
+      }
+    ]
+  },
+  {
+    "drillNumber": 623,
+    "subcluster": "7.3 Column Qualification & Disambiguation",
+    "level": "Level 1 (Column Ambiguity)",
+    "title": "Syntax #623: Disambiguate department_id by qualifying table origin on both sides",
+    "table": "Employees",
+    "scenario": "Disambiguate department_id by qualifying table origin on both sides.",
+    "businessObjective": "Disambiguate department_id by qualifying table origin on both sides.",
+    "schemaSnippet": "Employees relational schema",
+    "targetQuery": "SELECT e.employee_id, e.first_name, d.department_id, d.name AS dept_name\nFROM Employees e\nJOIN Departments d ON e.department_id = d.department_id;",
+    "syntaxBlueprint": "SELECT a.common_id, a.col1, b.col2\nFROM TableA a\nJOIN TableB b ON a.common_id = b.common_id;",
+    "syntaxRule": "When two joined tables share identical column names (e.g. id, name, created_at), you MUST prefix the column with the table alias to prevent 'column ambiguously defined' errors.",
+    "syntaxTrap": "Selecting 'id' without a table prefix when both tables have an 'id' column.",
+    "eli5Story": "Relational Joins on Employees: Disambiguate department_id by qualifying table origin on both sides.",
+    "commonMistakes": "Omitting the ON clause, forgetting table alias qualification on ambiguous columns, or accidentally converting LEFT JOIN to INNER JOIN via WHERE filters.",
+    "learningOutcomes": "Mastered 7.3 Column Qualification & Disambiguation on Employees.",
+    "challengeSlots": [
+      {
+        "type": "keyword",
+        "value": "SELECT"
+      },
+      {
+        "type": "column",
+        "value": "e.employee_id,"
+      },
+      {
+        "type": "column",
+        "value": "e.first_name,"
+      },
+      {
+        "type": "column",
+        "value": "d.department_id,"
+      },
+      {
+        "type": "column",
+        "value": "d.name"
+      },
+      {
+        "type": "keyword",
+        "value": "AS"
+      },
+      {
+        "type": "column",
+        "value": "dept_name"
+      },
+      {
+        "type": "keyword",
+        "value": "FROM"
+      },
+      {
+        "type": "table",
+        "value": "Employees"
+      },
+      {
+        "type": "column",
+        "value": "e"
+      },
+      {
+        "type": "keyword",
+        "value": "JOIN"
+      },
+      {
+        "type": "table",
+        "value": "Departments"
+      },
+      {
+        "type": "column",
+        "value": "d"
+      },
+      {
+        "type": "keyword",
+        "value": "ON"
+      },
+      {
+        "type": "column",
+        "value": "e.department_id"
+      },
+      {
+        "type": "column",
+        "value": "="
+      },
+      {
+        "type": "column",
+        "value": "d.department_id;"
+      }
+    ]
+  },
+  {
+    "drillNumber": 624,
+    "subcluster": "7.3 Column Qualification & Disambiguation",
+    "level": "Level 1 (Column Ambiguity)",
+    "title": "Syntax #624: Qualify primary and foreign keys with table prefixes to guarantee unambiguous queries",
+    "table": "GroceryItems",
+    "scenario": "Qualify primary and foreign keys with table prefixes to guarantee unambiguous queries.",
+    "businessObjective": "Qualify primary and foreign keys with table prefixes to guarantee unambiguous queries.",
+    "schemaSnippet": "GroceryItems relational schema",
+    "targetQuery": "SELECT g.item_id, g.item_name, s.supplier_id\nFROM GroceryItems g\nJOIN Suppliers s ON g.supplier_id = s.supplier_id;",
+    "syntaxBlueprint": "SELECT a.common_id, a.col1, b.col2\nFROM TableA a\nJOIN TableB b ON a.common_id = b.common_id;",
+    "syntaxRule": "When two joined tables share identical column names (e.g. id, name, created_at), you MUST prefix the column with the table alias to prevent 'column ambiguously defined' errors.",
+    "syntaxTrap": "Selecting 'id' without a table prefix when both tables have an 'id' column.",
+    "eli5Story": "Relational Joins on GroceryItems: Qualify primary and foreign keys with table prefixes to guarantee unambiguous queries.",
+    "commonMistakes": "Omitting the ON clause, forgetting table alias qualification on ambiguous columns, or accidentally converting LEFT JOIN to INNER JOIN via WHERE filters.",
+    "learningOutcomes": "Mastered 7.3 Column Qualification & Disambiguation on GroceryItems.",
+    "challengeSlots": [
+      {
+        "type": "keyword",
+        "value": "SELECT"
+      },
+      {
+        "type": "column",
+        "value": "g.item_id,"
+      },
+      {
+        "type": "column",
+        "value": "g.item_name,"
+      },
+      {
+        "type": "column",
+        "value": "s.supplier_id"
+      },
+      {
+        "type": "keyword",
+        "value": "FROM"
+      },
+      {
+        "type": "table",
+        "value": "GroceryItems"
+      },
+      {
+        "type": "column",
+        "value": "g"
+      },
+      {
+        "type": "keyword",
+        "value": "JOIN"
+      },
+      {
+        "type": "table",
+        "value": "Suppliers"
+      },
+      {
+        "type": "column",
+        "value": "s"
+      },
+      {
+        "type": "keyword",
+        "value": "ON"
+      },
+      {
+        "type": "column",
+        "value": "g.supplier_id"
+      },
+      {
+        "type": "column",
+        "value": "="
+      },
+      {
+        "type": "column",
+        "value": "s.supplier_id;"
+      }
+    ]
+  },
+  {
+    "drillNumber": 625,
+    "subcluster": "7.3 Column Qualification & Disambiguation",
+    "level": "Level 1 (Column Ambiguity)",
+    "title": "Syntax #625: Disambiguate status and location columns across orders and customers",
+    "table": "Orders",
+    "scenario": "Disambiguate status and location columns across orders and customers.",
+    "businessObjective": "Disambiguate status and location columns across orders and customers.",
+    "schemaSnippet": "Orders relational schema",
+    "targetQuery": "SELECT o.order_id, o.status, c.customer_id, c.city\nFROM Orders o\nJOIN Customers c ON o.customer_id = c.customer_id;",
+    "syntaxBlueprint": "SELECT a.common_id, a.col1, b.col2\nFROM TableA a\nJOIN TableB b ON a.common_id = b.common_id;",
+    "syntaxRule": "When two joined tables share identical column names (e.g. id, name, created_at), you MUST prefix the column with the table alias to prevent 'column ambiguously defined' errors.",
+    "syntaxTrap": "Selecting 'id' without a table prefix when both tables have an 'id' column.",
+    "eli5Story": "Relational Joins on Orders: Disambiguate status and location columns across orders and customers.",
+    "commonMistakes": "Omitting the ON clause, forgetting table alias qualification on ambiguous columns, or accidentally converting LEFT JOIN to INNER JOIN via WHERE filters.",
+    "learningOutcomes": "Mastered 7.3 Column Qualification & Disambiguation on Orders.",
+    "challengeSlots": [
+      {
+        "type": "keyword",
+        "value": "SELECT"
+      },
+      {
+        "type": "column",
+        "value": "o.order_id,"
+      },
+      {
+        "type": "column",
+        "value": "o.status,"
+      },
+      {
+        "type": "column",
+        "value": "c.customer_id,"
+      },
+      {
+        "type": "column",
+        "value": "c.city"
+      },
+      {
+        "type": "keyword",
+        "value": "FROM"
+      },
+      {
+        "type": "table",
+        "value": "Orders"
+      },
+      {
+        "type": "column",
+        "value": "o"
+      },
+      {
+        "type": "keyword",
+        "value": "JOIN"
+      },
+      {
+        "type": "table",
+        "value": "Customers"
+      },
+      {
+        "type": "column",
+        "value": "c"
+      },
+      {
+        "type": "keyword",
+        "value": "ON"
+      },
+      {
+        "type": "column",
+        "value": "o.customer_id"
+      },
+      {
+        "type": "column",
+        "value": "="
+      },
+      {
+        "type": "column",
+        "value": "c.customer_id;"
+      }
+    ]
+  },
+  {
+    "drillNumber": 626,
+    "subcluster": "7.3 Column Qualification & Disambiguation",
+    "level": "Level 1 (Column Ambiguity)",
+    "title": "Syntax #626: Qualify track and album identifiers explicitly with table abbreviations",
+    "table": "MusicTracks",
+    "scenario": "Qualify track and album identifiers explicitly with table abbreviations.",
+    "businessObjective": "Qualify track and album identifiers explicitly with table abbreviations.",
+    "schemaSnippet": "MusicTracks relational schema",
+    "targetQuery": "SELECT t.track_id, t.track_title, a.album_id, a.genre\nFROM MusicTracks t\nJOIN Albums a ON t.album_id = a.album_id;",
+    "syntaxBlueprint": "SELECT a.common_id, a.col1, b.col2\nFROM TableA a\nJOIN TableB b ON a.common_id = b.common_id;",
+    "syntaxRule": "When two joined tables share identical column names (e.g. id, name, created_at), you MUST prefix the column with the table alias to prevent 'column ambiguously defined' errors.",
+    "syntaxTrap": "Selecting 'id' without a table prefix when both tables have an 'id' column.",
+    "eli5Story": "Relational Joins on MusicTracks: Qualify track and album identifiers explicitly with table abbreviations.",
+    "commonMistakes": "Omitting the ON clause, forgetting table alias qualification on ambiguous columns, or accidentally converting LEFT JOIN to INNER JOIN via WHERE filters.",
+    "learningOutcomes": "Mastered 7.3 Column Qualification & Disambiguation on MusicTracks.",
+    "challengeSlots": [
+      {
+        "type": "keyword",
+        "value": "SELECT"
+      },
+      {
+        "type": "column",
+        "value": "t.track_id,"
+      },
+      {
+        "type": "column",
+        "value": "t.track_title,"
+      },
+      {
+        "type": "column",
+        "value": "a.album_id,"
+      },
+      {
+        "type": "column",
+        "value": "a.genre"
+      },
+      {
+        "type": "keyword",
+        "value": "FROM"
+      },
+      {
+        "type": "table",
+        "value": "MusicTracks"
+      },
+      {
+        "type": "column",
+        "value": "t"
+      },
+      {
+        "type": "keyword",
+        "value": "JOIN"
+      },
+      {
+        "type": "table",
+        "value": "Albums"
+      },
+      {
+        "type": "column",
+        "value": "a"
+      },
+      {
+        "type": "keyword",
+        "value": "ON"
+      },
+      {
+        "type": "column",
+        "value": "t.album_id"
+      },
+      {
+        "type": "column",
+        "value": "="
+      },
+      {
+        "type": "column",
+        "value": "a.album_id;"
+      }
+    ]
+  },
+  {
+    "drillNumber": 627,
+    "subcluster": "7.3 Column Qualification & Disambiguation",
+    "level": "Level 1 (Column Ambiguity)",
+    "title": "Syntax #627: Disambiguate member and trainer primary keys with 'm.' and 'tr.' prefixes",
+    "table": "GymMembers",
+    "scenario": "Disambiguate member and trainer primary keys with 'm.' and 'tr.' prefixes.",
+    "businessObjective": "Disambiguate member and trainer primary keys with 'm.' and 'tr.' prefixes.",
+    "schemaSnippet": "GymMembers relational schema",
+    "targetQuery": "SELECT m.member_id, m.member_name, tr.trainer_id\nFROM GymMembers m\nJOIN Trainers tr ON m.trainer_id = tr.trainer_id;",
+    "syntaxBlueprint": "SELECT a.common_id, a.col1, b.col2\nFROM TableA a\nJOIN TableB b ON a.common_id = b.common_id;",
+    "syntaxRule": "When two joined tables share identical column names (e.g. id, name, created_at), you MUST prefix the column with the table alias to prevent 'column ambiguously defined' errors.",
+    "syntaxTrap": "Selecting 'id' without a table prefix when both tables have an 'id' column.",
+    "eli5Story": "Relational Joins on GymMembers: Disambiguate member and trainer primary keys with 'm.' and 'tr.' prefixes.",
+    "commonMistakes": "Omitting the ON clause, forgetting table alias qualification on ambiguous columns, or accidentally converting LEFT JOIN to INNER JOIN via WHERE filters.",
+    "learningOutcomes": "Mastered 7.3 Column Qualification & Disambiguation on GymMembers.",
+    "challengeSlots": [
+      {
+        "type": "keyword",
+        "value": "SELECT"
+      },
+      {
+        "type": "column",
+        "value": "m.member_id,"
+      },
+      {
+        "type": "column",
+        "value": "m.member_name,"
+      },
+      {
+        "type": "column",
+        "value": "tr.trainer_id"
+      },
+      {
+        "type": "keyword",
+        "value": "FROM"
+      },
+      {
+        "type": "table",
+        "value": "GymMembers"
+      },
+      {
+        "type": "column",
+        "value": "m"
+      },
+      {
+        "type": "keyword",
+        "value": "JOIN"
+      },
+      {
+        "type": "table",
+        "value": "Trainers"
+      },
+      {
+        "type": "column",
+        "value": "tr"
+      },
+      {
+        "type": "keyword",
+        "value": "ON"
+      },
+      {
+        "type": "column",
+        "value": "m.trainer_id"
+      },
+      {
+        "type": "column",
+        "value": "="
+      },
+      {
+        "type": "column",
+        "value": "tr.trainer_id;"
+      }
+    ]
+  },
+  {
+    "drillNumber": 628,
+    "subcluster": "7.3 Column Qualification & Disambiguation",
+    "level": "Level 1 (Column Ambiguity)",
+    "title": "Syntax #628: Select explicit qualified identifiers from both MovieReviews and Movies",
+    "table": "MovieReviews",
+    "scenario": "Select explicit qualified identifiers from both MovieReviews and Movies.",
+    "businessObjective": "Select explicit qualified identifiers from both MovieReviews and Movies.",
+    "schemaSnippet": "MovieReviews relational schema",
+    "targetQuery": "SELECT r.review_id, r.star_rating, m.movie_id, m.release_year\nFROM MovieReviews r\nJOIN Movies m ON r.movie_id = m.movie_id;",
+    "syntaxBlueprint": "SELECT a.common_id, a.col1, b.col2\nFROM TableA a\nJOIN TableB b ON a.common_id = b.common_id;",
+    "syntaxRule": "When two joined tables share identical column names (e.g. id, name, created_at), you MUST prefix the column with the table alias to prevent 'column ambiguously defined' errors.",
+    "syntaxTrap": "Selecting 'id' without a table prefix when both tables have an 'id' column.",
+    "eli5Story": "Relational Joins on MovieReviews: Select explicit qualified identifiers from both MovieReviews and Movies.",
+    "commonMistakes": "Omitting the ON clause, forgetting table alias qualification on ambiguous columns, or accidentally converting LEFT JOIN to INNER JOIN via WHERE filters.",
+    "learningOutcomes": "Mastered 7.3 Column Qualification & Disambiguation on MovieReviews.",
+    "challengeSlots": [
+      {
+        "type": "keyword",
+        "value": "SELECT"
+      },
+      {
+        "type": "column",
+        "value": "r.review_id,"
+      },
+      {
+        "type": "column",
+        "value": "r.star_rating,"
+      },
+      {
+        "type": "column",
+        "value": "m.movie_id,"
+      },
+      {
+        "type": "column",
+        "value": "m.release_year"
+      },
+      {
+        "type": "keyword",
+        "value": "FROM"
+      },
+      {
+        "type": "table",
+        "value": "MovieReviews"
+      },
+      {
+        "type": "column",
+        "value": "r"
+      },
+      {
+        "type": "keyword",
+        "value": "JOIN"
+      },
+      {
+        "type": "table",
+        "value": "Movies"
+      },
+      {
+        "type": "column",
+        "value": "m"
+      },
+      {
+        "type": "keyword",
+        "value": "ON"
+      },
+      {
+        "type": "column",
+        "value": "r.movie_id"
+      },
+      {
+        "type": "column",
+        "value": "="
+      },
+      {
+        "type": "column",
+        "value": "m.movie_id;"
+      }
+    ]
+  },
+  {
+    "drillNumber": 629,
+    "subcluster": "7.3 Column Qualification & Disambiguation",
+    "level": "Level 1 (Column Ambiguity)",
+    "title": "Syntax #629: Qualify flight and airline identifiers to prevent query engine ambiguity",
+    "table": "FlightSchedule",
+    "scenario": "Qualify flight and airline identifiers to prevent query engine ambiguity.",
+    "businessObjective": "Qualify flight and airline identifiers to prevent query engine ambiguity.",
+    "schemaSnippet": "FlightSchedule relational schema",
+    "targetQuery": "SELECT f.flight_id, f.departure_time, al.airline_id\nFROM FlightSchedule f\nJOIN Airlines al ON f.airline_id = al.airline_id;",
+    "syntaxBlueprint": "SELECT a.common_id, a.col1, b.col2\nFROM TableA a\nJOIN TableB b ON a.common_id = b.common_id;",
+    "syntaxRule": "When two joined tables share identical column names (e.g. id, name, created_at), you MUST prefix the column with the table alias to prevent 'column ambiguously defined' errors.",
+    "syntaxTrap": "Selecting 'id' without a table prefix when both tables have an 'id' column.",
+    "eli5Story": "Relational Joins on FlightSchedule: Qualify flight and airline identifiers to prevent query engine ambiguity.",
+    "commonMistakes": "Omitting the ON clause, forgetting table alias qualification on ambiguous columns, or accidentally converting LEFT JOIN to INNER JOIN via WHERE filters.",
+    "learningOutcomes": "Mastered 7.3 Column Qualification & Disambiguation on FlightSchedule.",
+    "challengeSlots": [
+      {
+        "type": "keyword",
+        "value": "SELECT"
+      },
+      {
+        "type": "column",
+        "value": "f.flight_id,"
+      },
+      {
+        "type": "column",
+        "value": "f.departure_time,"
+      },
+      {
+        "type": "column",
+        "value": "al.airline_id"
+      },
+      {
+        "type": "keyword",
+        "value": "FROM"
+      },
+      {
+        "type": "table",
+        "value": "FlightSchedule"
+      },
+      {
+        "type": "column",
+        "value": "f"
+      },
+      {
+        "type": "keyword",
+        "value": "JOIN"
+      },
+      {
+        "type": "table",
+        "value": "Airlines"
+      },
+      {
+        "type": "column",
+        "value": "al"
+      },
+      {
+        "type": "keyword",
+        "value": "ON"
+      },
+      {
+        "type": "column",
+        "value": "f.airline_id"
+      },
+      {
+        "type": "column",
+        "value": "="
+      },
+      {
+        "type": "column",
+        "value": "al.airline_id;"
+      }
+    ]
+  },
+  {
+    "drillNumber": 630,
+    "subcluster": "7.3 Column Qualification & Disambiguation",
+    "level": "Level 1 (Column Ambiguity)",
+    "title": "Syntax #630: Disambiguate pet and owner identification numbers with qualified aliases",
+    "table": "PetClinic",
+    "scenario": "Disambiguate pet and owner identification numbers with qualified aliases.",
+    "businessObjective": "Disambiguate pet and owner identification numbers with qualified aliases.",
+    "schemaSnippet": "PetClinic relational schema",
+    "targetQuery": "SELECT p.pet_id, p.pet_name, o.owner_id, o.city\nFROM PetClinic p\nJOIN Owners o ON p.owner_id = o.owner_id;",
+    "syntaxBlueprint": "SELECT a.common_id, a.col1, b.col2\nFROM TableA a\nJOIN TableB b ON a.common_id = b.common_id;",
+    "syntaxRule": "When two joined tables share identical column names (e.g. id, name, created_at), you MUST prefix the column with the table alias to prevent 'column ambiguously defined' errors.",
+    "syntaxTrap": "Selecting 'id' without a table prefix when both tables have an 'id' column.",
+    "eli5Story": "Relational Joins on PetClinic: Disambiguate pet and owner identification numbers with qualified aliases.",
+    "commonMistakes": "Omitting the ON clause, forgetting table alias qualification on ambiguous columns, or accidentally converting LEFT JOIN to INNER JOIN via WHERE filters.",
+    "learningOutcomes": "Mastered 7.3 Column Qualification & Disambiguation on PetClinic.",
+    "challengeSlots": [
+      {
+        "type": "keyword",
+        "value": "SELECT"
+      },
+      {
+        "type": "column",
+        "value": "p.pet_id,"
+      },
+      {
+        "type": "column",
+        "value": "p.pet_name,"
+      },
+      {
+        "type": "column",
+        "value": "o.owner_id,"
+      },
+      {
+        "type": "column",
+        "value": "o.city"
+      },
+      {
+        "type": "keyword",
+        "value": "FROM"
+      },
+      {
+        "type": "table",
+        "value": "PetClinic"
+      },
+      {
+        "type": "column",
+        "value": "p"
+      },
+      {
+        "type": "keyword",
+        "value": "JOIN"
+      },
+      {
+        "type": "table",
+        "value": "Owners"
+      },
+      {
+        "type": "column",
+        "value": "o"
+      },
+      {
+        "type": "keyword",
+        "value": "ON"
+      },
+      {
+        "type": "column",
+        "value": "p.owner_id"
+      },
+      {
+        "type": "column",
+        "value": "="
+      },
+      {
+        "type": "column",
+        "value": "o.owner_id;"
+      }
+    ]
+  },
+  {
+    "drillNumber": 631,
+    "subcluster": "7.4 LEFT JOIN (Preserving Unmatched Left Rows)",
+    "level": "Level 2 (Left Outer Join)",
+    "title": "Syntax #631: Show all enrolled students, including those not yet registered for any courses (returns NULL for course_name)",
+    "table": "Students",
+    "scenario": "Show all enrolled students, including those not yet registered for any courses (returns NULL for course_name).",
+    "businessObjective": "Show all enrolled students, including those not yet registered for any courses (returns NULL for course_name).",
+    "schemaSnippet": "Students relational schema",
+    "targetQuery": "SELECT s.full_name, c.course_name\nFROM Students s\nLEFT JOIN Courses c ON s.student_id = c.student_id;",
+    "syntaxBlueprint": "SELECT a.col, b.col\nFROM TableA a\nLEFT JOIN TableB b ON a.id = b.a_id;",
+    "syntaxRule": "LEFT JOIN returns ALL records from the left table, and the matched records from the right table. If no match exists, NULLs are returned for right-table columns.",
+    "syntaxTrap": "Assuming LEFT JOIN filters out records with no match. It keeps all left rows intact.",
+    "eli5Story": "Relational Joins on Students: Show all enrolled students, including those not yet registered for any courses (returns NULL for course_name).",
+    "commonMistakes": "Omitting the ON clause, forgetting table alias qualification on ambiguous columns, or accidentally converting LEFT JOIN to INNER JOIN via WHERE filters.",
+    "learningOutcomes": "Mastered 7.4 LEFT JOIN (Preserving Unmatched Left Rows) on Students.",
+    "challengeSlots": [
+      {
+        "type": "keyword",
+        "value": "SELECT"
+      },
+      {
+        "type": "column",
+        "value": "s.full_name,"
+      },
+      {
+        "type": "column",
+        "value": "c.course_name"
+      },
+      {
+        "type": "keyword",
+        "value": "FROM"
+      },
+      {
+        "type": "table",
+        "value": "Students"
+      },
+      {
+        "type": "column",
+        "value": "s"
+      },
+      {
+        "type": "keyword",
+        "value": "LEFT"
+      },
+      {
+        "type": "keyword",
+        "value": "JOIN"
+      },
+      {
+        "type": "table",
+        "value": "Courses"
+      },
+      {
+        "type": "column",
+        "value": "c"
+      },
+      {
+        "type": "keyword",
+        "value": "ON"
+      },
+      {
+        "type": "column",
+        "value": "s.student_id"
+      },
+      {
+        "type": "column",
+        "value": "="
+      },
+      {
+        "type": "column",
+        "value": "c.student_id;"
+      }
+    ]
+  },
+  {
+    "drillNumber": 632,
+    "subcluster": "7.4 LEFT JOIN (Preserving Unmatched Left Rows)",
+    "level": "Level 2 (Left Outer Join)",
+    "title": "Syntax #632: List all catalog books, preserving anonymous or missing author records",
+    "table": "Books",
+    "scenario": "List all catalog books, preserving anonymous or missing author records.",
+    "businessObjective": "List all catalog books, preserving anonymous or missing author records.",
+    "schemaSnippet": "Books relational schema",
+    "targetQuery": "SELECT b.title, a.author_name\nFROM Books b\nLEFT JOIN Authors a ON b.author_id = a.author_id;",
+    "syntaxBlueprint": "SELECT a.col, b.col\nFROM TableA a\nLEFT JOIN TableB b ON a.id = b.a_id;",
+    "syntaxRule": "LEFT JOIN returns ALL records from the left table, and the matched records from the right table. If no match exists, NULLs are returned for right-table columns.",
+    "syntaxTrap": "Assuming LEFT JOIN filters out records with no match. It keeps all left rows intact.",
+    "eli5Story": "Relational Joins on Books: List all catalog books, preserving anonymous or missing author records.",
+    "commonMistakes": "Omitting the ON clause, forgetting table alias qualification on ambiguous columns, or accidentally converting LEFT JOIN to INNER JOIN via WHERE filters.",
+    "learningOutcomes": "Mastered 7.4 LEFT JOIN (Preserving Unmatched Left Rows) on Books.",
+    "challengeSlots": [
+      {
+        "type": "keyword",
+        "value": "SELECT"
+      },
+      {
+        "type": "column",
+        "value": "b.title,"
+      },
+      {
+        "type": "column",
+        "value": "a.author_name"
+      },
+      {
+        "type": "keyword",
+        "value": "FROM"
+      },
+      {
+        "type": "table",
+        "value": "Books"
+      },
+      {
+        "type": "column",
+        "value": "b"
+      },
+      {
+        "type": "keyword",
+        "value": "LEFT"
+      },
+      {
+        "type": "keyword",
+        "value": "JOIN"
+      },
+      {
+        "type": "table",
+        "value": "Authors"
+      },
+      {
+        "type": "column",
+        "value": "a"
+      },
+      {
+        "type": "keyword",
+        "value": "ON"
+      },
+      {
+        "type": "column",
+        "value": "b.author_id"
+      },
+      {
+        "type": "column",
+        "value": "="
+      },
+      {
+        "type": "column",
+        "value": "a.author_id;"
+      }
+    ]
+  },
+  {
+    "drillNumber": 633,
+    "subcluster": "7.4 LEFT JOIN (Preserving Unmatched Left Rows)",
+    "level": "Level 2 (Left Outer Join)",
+    "title": "Syntax #633: List all employees, including new hires without an assigned department",
+    "table": "Employees",
+    "scenario": "List all employees, including new hires without an assigned department.",
+    "businessObjective": "List all employees, including new hires without an assigned department.",
+    "schemaSnippet": "Employees relational schema",
+    "targetQuery": "SELECT e.first_name, d.department_name\nFROM Employees e\nLEFT JOIN Departments d ON e.department_id = d.department_id;",
+    "syntaxBlueprint": "SELECT a.col, b.col\nFROM TableA a\nLEFT JOIN TableB b ON a.id = b.a_id;",
+    "syntaxRule": "LEFT JOIN returns ALL records from the left table, and the matched records from the right table. If no match exists, NULLs are returned for right-table columns.",
+    "syntaxTrap": "Assuming LEFT JOIN filters out records with no match. It keeps all left rows intact.",
+    "eli5Story": "Relational Joins on Employees: List all employees, including new hires without an assigned department.",
+    "commonMistakes": "Omitting the ON clause, forgetting table alias qualification on ambiguous columns, or accidentally converting LEFT JOIN to INNER JOIN via WHERE filters.",
+    "learningOutcomes": "Mastered 7.4 LEFT JOIN (Preserving Unmatched Left Rows) on Employees.",
+    "challengeSlots": [
+      {
+        "type": "keyword",
+        "value": "SELECT"
+      },
+      {
+        "type": "column",
+        "value": "e.first_name,"
+      },
+      {
+        "type": "column",
+        "value": "d.department_name"
+      },
+      {
+        "type": "keyword",
+        "value": "FROM"
+      },
+      {
+        "type": "table",
+        "value": "Employees"
+      },
+      {
+        "type": "column",
+        "value": "e"
+      },
+      {
+        "type": "keyword",
+        "value": "LEFT"
+      },
+      {
+        "type": "keyword",
+        "value": "JOIN"
+      },
+      {
+        "type": "table",
+        "value": "Departments"
+      },
+      {
+        "type": "column",
+        "value": "d"
+      },
+      {
+        "type": "keyword",
+        "value": "ON"
+      },
+      {
+        "type": "column",
+        "value": "e.department_id"
+      },
+      {
+        "type": "column",
+        "value": "="
+      },
+      {
+        "type": "column",
+        "value": "d.department_id;"
+      }
+    ]
+  },
+  {
+    "drillNumber": 634,
+    "subcluster": "7.4 LEFT JOIN (Preserving Unmatched Left Rows)",
+    "level": "Level 2 (Left Outer Join)",
+    "title": "Syntax #634: Retrieve all grocery inventory items, showing NULL for unassigned suppliers",
+    "table": "GroceryItems",
+    "scenario": "Retrieve all grocery inventory items, showing NULL for unassigned suppliers.",
+    "businessObjective": "Retrieve all grocery inventory items, showing NULL for unassigned suppliers.",
+    "schemaSnippet": "GroceryItems relational schema",
+    "targetQuery": "SELECT g.item_name, s.supplier_name\nFROM GroceryItems g\nLEFT JOIN Suppliers s ON g.supplier_id = s.supplier_id;",
+    "syntaxBlueprint": "SELECT a.col, b.col\nFROM TableA a\nLEFT JOIN TableB b ON a.id = b.a_id;",
+    "syntaxRule": "LEFT JOIN returns ALL records from the left table, and the matched records from the right table. If no match exists, NULLs are returned for right-table columns.",
+    "syntaxTrap": "Assuming LEFT JOIN filters out records with no match. It keeps all left rows intact.",
+    "eli5Story": "Relational Joins on GroceryItems: Retrieve all grocery inventory items, showing NULL for unassigned suppliers.",
+    "commonMistakes": "Omitting the ON clause, forgetting table alias qualification on ambiguous columns, or accidentally converting LEFT JOIN to INNER JOIN via WHERE filters.",
+    "learningOutcomes": "Mastered 7.4 LEFT JOIN (Preserving Unmatched Left Rows) on GroceryItems.",
+    "challengeSlots": [
+      {
+        "type": "keyword",
+        "value": "SELECT"
+      },
+      {
+        "type": "column",
+        "value": "g.item_name,"
+      },
+      {
+        "type": "column",
+        "value": "s.supplier_name"
+      },
+      {
+        "type": "keyword",
+        "value": "FROM"
+      },
+      {
+        "type": "table",
+        "value": "GroceryItems"
+      },
+      {
+        "type": "column",
+        "value": "g"
+      },
+      {
+        "type": "keyword",
+        "value": "LEFT"
+      },
+      {
+        "type": "keyword",
+        "value": "JOIN"
+      },
+      {
+        "type": "table",
+        "value": "Suppliers"
+      },
+      {
+        "type": "column",
+        "value": "s"
+      },
+      {
+        "type": "keyword",
+        "value": "ON"
+      },
+      {
+        "type": "column",
+        "value": "g.supplier_id"
+      },
+      {
+        "type": "column",
+        "value": "="
+      },
+      {
+        "type": "column",
+        "value": "s.supplier_id;"
+      }
+    ]
+  },
+  {
+    "drillNumber": 635,
+    "subcluster": "7.4 LEFT JOIN (Preserving Unmatched Left Rows)",
+    "level": "Level 2 (Left Outer Join)",
+    "title": "Syntax #635: List all orders, preserving guest checkouts where customer_id has no registered account",
+    "table": "Orders",
+    "scenario": "List all orders, preserving guest checkouts where customer_id has no registered account.",
+    "businessObjective": "List all orders, preserving guest checkouts where customer_id has no registered account.",
+    "schemaSnippet": "Orders relational schema",
+    "targetQuery": "SELECT o.order_id, c.customer_name\nFROM Orders o\nLEFT JOIN Customers c ON o.customer_id = c.customer_id;",
+    "syntaxBlueprint": "SELECT a.col, b.col\nFROM TableA a\nLEFT JOIN TableB b ON a.id = b.a_id;",
+    "syntaxRule": "LEFT JOIN returns ALL records from the left table, and the matched records from the right table. If no match exists, NULLs are returned for right-table columns.",
+    "syntaxTrap": "Assuming LEFT JOIN filters out records with no match. It keeps all left rows intact.",
+    "eli5Story": "Relational Joins on Orders: List all orders, preserving guest checkouts where customer_id has no registered account.",
+    "commonMistakes": "Omitting the ON clause, forgetting table alias qualification on ambiguous columns, or accidentally converting LEFT JOIN to INNER JOIN via WHERE filters.",
+    "learningOutcomes": "Mastered 7.4 LEFT JOIN (Preserving Unmatched Left Rows) on Orders.",
+    "challengeSlots": [
+      {
+        "type": "keyword",
+        "value": "SELECT"
+      },
+      {
+        "type": "column",
+        "value": "o.order_id,"
+      },
+      {
+        "type": "column",
+        "value": "c.customer_name"
+      },
+      {
+        "type": "keyword",
+        "value": "FROM"
+      },
+      {
+        "type": "table",
+        "value": "Orders"
+      },
+      {
+        "type": "column",
+        "value": "o"
+      },
+      {
+        "type": "keyword",
+        "value": "LEFT"
+      },
+      {
+        "type": "keyword",
+        "value": "JOIN"
+      },
+      {
+        "type": "table",
+        "value": "Customers"
+      },
+      {
+        "type": "column",
+        "value": "c"
+      },
+      {
+        "type": "keyword",
+        "value": "ON"
+      },
+      {
+        "type": "column",
+        "value": "o.customer_id"
+      },
+      {
+        "type": "column",
+        "value": "="
+      },
+      {
+        "type": "column",
+        "value": "c.customer_id;"
+      }
+    ]
+  },
+  {
+    "drillNumber": 636,
+    "subcluster": "7.4 LEFT JOIN (Preserving Unmatched Left Rows)",
+    "level": "Level 2 (Left Outer Join)",
+    "title": "Syntax #636: List all music tracks, including standalone promotional singles without an album",
+    "table": "MusicTracks",
+    "scenario": "List all music tracks, including standalone promotional singles without an album.",
+    "businessObjective": "List all music tracks, including standalone promotional singles without an album.",
+    "schemaSnippet": "MusicTracks relational schema",
+    "targetQuery": "SELECT t.track_title, a.album_title\nFROM MusicTracks t\nLEFT JOIN Albums a ON t.album_id = a.album_id;",
+    "syntaxBlueprint": "SELECT a.col, b.col\nFROM TableA a\nLEFT JOIN TableB b ON a.id = b.a_id;",
+    "syntaxRule": "LEFT JOIN returns ALL records from the left table, and the matched records from the right table. If no match exists, NULLs are returned for right-table columns.",
+    "syntaxTrap": "Assuming LEFT JOIN filters out records with no match. It keeps all left rows intact.",
+    "eli5Story": "Relational Joins on MusicTracks: List all music tracks, including standalone promotional singles without an album.",
+    "commonMistakes": "Omitting the ON clause, forgetting table alias qualification on ambiguous columns, or accidentally converting LEFT JOIN to INNER JOIN via WHERE filters.",
+    "learningOutcomes": "Mastered 7.4 LEFT JOIN (Preserving Unmatched Left Rows) on MusicTracks.",
+    "challengeSlots": [
+      {
+        "type": "keyword",
+        "value": "SELECT"
+      },
+      {
+        "type": "column",
+        "value": "t.track_title,"
+      },
+      {
+        "type": "column",
+        "value": "a.album_title"
+      },
+      {
+        "type": "keyword",
+        "value": "FROM"
+      },
+      {
+        "type": "table",
+        "value": "MusicTracks"
+      },
+      {
+        "type": "column",
+        "value": "t"
+      },
+      {
+        "type": "keyword",
+        "value": "LEFT"
+      },
+      {
+        "type": "keyword",
+        "value": "JOIN"
+      },
+      {
+        "type": "table",
+        "value": "Albums"
+      },
+      {
+        "type": "column",
+        "value": "a"
+      },
+      {
+        "type": "keyword",
+        "value": "ON"
+      },
+      {
+        "type": "column",
+        "value": "t.album_id"
+      },
+      {
+        "type": "column",
+        "value": "="
+      },
+      {
+        "type": "column",
+        "value": "a.album_id;"
+      }
+    ]
+  },
+  {
+    "drillNumber": 637,
+    "subcluster": "7.4 LEFT JOIN (Preserving Unmatched Left Rows)",
+    "level": "Level 2 (Left Outer Join)",
+    "title": "Syntax #637: Display all gym members, displaying NULL for members who train independently",
+    "table": "GymMembers",
+    "scenario": "Display all gym members, displaying NULL for members who train independently.",
+    "businessObjective": "Display all gym members, displaying NULL for members who train independently.",
+    "schemaSnippet": "GymMembers relational schema",
+    "targetQuery": "SELECT m.member_name, tr.trainer_name\nFROM GymMembers m\nLEFT JOIN Trainers tr ON m.trainer_id = tr.trainer_id;",
+    "syntaxBlueprint": "SELECT a.col, b.col\nFROM TableA a\nLEFT JOIN TableB b ON a.id = b.a_id;",
+    "syntaxRule": "LEFT JOIN returns ALL records from the left table, and the matched records from the right table. If no match exists, NULLs are returned for right-table columns.",
+    "syntaxTrap": "Assuming LEFT JOIN filters out records with no match. It keeps all left rows intact.",
+    "eli5Story": "Relational Joins on GymMembers: Display all gym members, displaying NULL for members who train independently.",
+    "commonMistakes": "Omitting the ON clause, forgetting table alias qualification on ambiguous columns, or accidentally converting LEFT JOIN to INNER JOIN via WHERE filters.",
+    "learningOutcomes": "Mastered 7.4 LEFT JOIN (Preserving Unmatched Left Rows) on GymMembers.",
+    "challengeSlots": [
+      {
+        "type": "keyword",
+        "value": "SELECT"
+      },
+      {
+        "type": "column",
+        "value": "m.member_name,"
+      },
+      {
+        "type": "column",
+        "value": "tr.trainer_name"
+      },
+      {
+        "type": "keyword",
+        "value": "FROM"
+      },
+      {
+        "type": "table",
+        "value": "GymMembers"
+      },
+      {
+        "type": "column",
+        "value": "m"
+      },
+      {
+        "type": "keyword",
+        "value": "LEFT"
+      },
+      {
+        "type": "keyword",
+        "value": "JOIN"
+      },
+      {
+        "type": "table",
+        "value": "Trainers"
+      },
+      {
+        "type": "column",
+        "value": "tr"
+      },
+      {
+        "type": "keyword",
+        "value": "ON"
+      },
+      {
+        "type": "column",
+        "value": "m.trainer_id"
+      },
+      {
+        "type": "column",
+        "value": "="
+      },
+      {
+        "type": "column",
+        "value": "tr.trainer_id;"
+      }
+    ]
+  },
+  {
+    "drillNumber": 638,
+    "subcluster": "7.4 LEFT JOIN (Preserving Unmatched Left Rows)",
+    "level": "Level 2 (Left Outer Join)",
+    "title": "Syntax #638: Show all movies, including newly released films that have zero reviews yet",
+    "table": "MovieReviews",
+    "scenario": "Show all movies, including newly released films that have zero reviews yet.",
+    "businessObjective": "Show all movies, including newly released films that have zero reviews yet.",
+    "schemaSnippet": "MovieReviews relational schema",
+    "targetQuery": "SELECT m.movie_title, r.review_text\nFROM Movies m\nLEFT JOIN MovieReviews r ON m.movie_id = r.movie_id;",
+    "syntaxBlueprint": "SELECT a.col, b.col\nFROM TableA a\nLEFT JOIN TableB b ON a.id = b.a_id;",
+    "syntaxRule": "LEFT JOIN returns ALL records from the left table, and the matched records from the right table. If no match exists, NULLs are returned for right-table columns.",
+    "syntaxTrap": "Assuming LEFT JOIN filters out records with no match. It keeps all left rows intact.",
+    "eli5Story": "Relational Joins on MovieReviews: Show all movies, including newly released films that have zero reviews yet.",
+    "commonMistakes": "Omitting the ON clause, forgetting table alias qualification on ambiguous columns, or accidentally converting LEFT JOIN to INNER JOIN via WHERE filters.",
+    "learningOutcomes": "Mastered 7.4 LEFT JOIN (Preserving Unmatched Left Rows) on MovieReviews.",
+    "challengeSlots": [
+      {
+        "type": "keyword",
+        "value": "SELECT"
+      },
+      {
+        "type": "column",
+        "value": "m.movie_title,"
+      },
+      {
+        "type": "column",
+        "value": "r.review_text"
+      },
+      {
+        "type": "keyword",
+        "value": "FROM"
+      },
+      {
+        "type": "table",
+        "value": "Movies"
+      },
+      {
+        "type": "column",
+        "value": "m"
+      },
+      {
+        "type": "keyword",
+        "value": "LEFT"
+      },
+      {
+        "type": "keyword",
+        "value": "JOIN"
+      },
+      {
+        "type": "table",
+        "value": "MovieReviews"
+      },
+      {
+        "type": "column",
+        "value": "r"
+      },
+      {
+        "type": "keyword",
+        "value": "ON"
+      },
+      {
+        "type": "column",
+        "value": "m.movie_id"
+      },
+      {
+        "type": "column",
+        "value": "="
+      },
+      {
+        "type": "column",
+        "value": "r.movie_id;"
+      }
+    ]
+  },
+  {
+    "drillNumber": 639,
+    "subcluster": "7.4 LEFT JOIN (Preserving Unmatched Left Rows)",
+    "level": "Level 2 (Left Outer Join)",
+    "title": "Syntax #639: List all scheduled flight legs, including chartered flights without commercial airline codes",
+    "table": "FlightSchedule",
+    "scenario": "List all scheduled flight legs, including chartered flights without commercial airline codes.",
+    "businessObjective": "List all scheduled flight legs, including chartered flights without commercial airline codes.",
+    "schemaSnippet": "FlightSchedule relational schema",
+    "targetQuery": "SELECT f.flight_id, al.airline_name\nFROM FlightSchedule f\nLEFT JOIN Airlines al ON f.airline_id = al.airline_id;",
+    "syntaxBlueprint": "SELECT a.col, b.col\nFROM TableA a\nLEFT JOIN TableB b ON a.id = b.a_id;",
+    "syntaxRule": "LEFT JOIN returns ALL records from the left table, and the matched records from the right table. If no match exists, NULLs are returned for right-table columns.",
+    "syntaxTrap": "Assuming LEFT JOIN filters out records with no match. It keeps all left rows intact.",
+    "eli5Story": "Relational Joins on FlightSchedule: List all scheduled flight legs, including chartered flights without commercial airline codes.",
+    "commonMistakes": "Omitting the ON clause, forgetting table alias qualification on ambiguous columns, or accidentally converting LEFT JOIN to INNER JOIN via WHERE filters.",
+    "learningOutcomes": "Mastered 7.4 LEFT JOIN (Preserving Unmatched Left Rows) on FlightSchedule.",
+    "challengeSlots": [
+      {
+        "type": "keyword",
+        "value": "SELECT"
+      },
+      {
+        "type": "column",
+        "value": "f.flight_id,"
+      },
+      {
+        "type": "column",
+        "value": "al.airline_name"
+      },
+      {
+        "type": "keyword",
+        "value": "FROM"
+      },
+      {
+        "type": "table",
+        "value": "FlightSchedule"
+      },
+      {
+        "type": "column",
+        "value": "f"
+      },
+      {
+        "type": "keyword",
+        "value": "LEFT"
+      },
+      {
+        "type": "keyword",
+        "value": "JOIN"
+      },
+      {
+        "type": "table",
+        "value": "Airlines"
+      },
+      {
+        "type": "column",
+        "value": "al"
+      },
+      {
+        "type": "keyword",
+        "value": "ON"
+      },
+      {
+        "type": "column",
+        "value": "f.airline_id"
+      },
+      {
+        "type": "column",
+        "value": "="
+      },
+      {
+        "type": "column",
+        "value": "al.airline_id;"
+      }
+    ]
+  },
+  {
+    "drillNumber": 640,
+    "subcluster": "7.4 LEFT JOIN (Preserving Unmatched Left Rows)",
+    "level": "Level 2 (Left Outer Join)",
+    "title": "Syntax #640: Display all clinic animals, preserving rescue strays that do not have a registered owner",
+    "table": "PetClinic",
+    "scenario": "Display all clinic animals, preserving rescue strays that do not have a registered owner.",
+    "businessObjective": "Display all clinic animals, preserving rescue strays that do not have a registered owner.",
+    "schemaSnippet": "PetClinic relational schema",
+    "targetQuery": "SELECT p.pet_name, o.owner_name\nFROM PetClinic p\nLEFT JOIN Owners o ON p.owner_id = o.owner_id;",
+    "syntaxBlueprint": "SELECT a.col, b.col\nFROM TableA a\nLEFT JOIN TableB b ON a.id = b.a_id;",
+    "syntaxRule": "LEFT JOIN returns ALL records from the left table, and the matched records from the right table. If no match exists, NULLs are returned for right-table columns.",
+    "syntaxTrap": "Assuming LEFT JOIN filters out records with no match. It keeps all left rows intact.",
+    "eli5Story": "Relational Joins on PetClinic: Display all clinic animals, preserving rescue strays that do not have a registered owner.",
+    "commonMistakes": "Omitting the ON clause, forgetting table alias qualification on ambiguous columns, or accidentally converting LEFT JOIN to INNER JOIN via WHERE filters.",
+    "learningOutcomes": "Mastered 7.4 LEFT JOIN (Preserving Unmatched Left Rows) on PetClinic.",
+    "challengeSlots": [
+      {
+        "type": "keyword",
+        "value": "SELECT"
+      },
+      {
+        "type": "column",
+        "value": "p.pet_name,"
+      },
+      {
+        "type": "column",
+        "value": "o.owner_name"
+      },
+      {
+        "type": "keyword",
+        "value": "FROM"
+      },
+      {
+        "type": "table",
+        "value": "PetClinic"
+      },
+      {
+        "type": "column",
+        "value": "p"
+      },
+      {
+        "type": "keyword",
+        "value": "LEFT"
+      },
+      {
+        "type": "keyword",
+        "value": "JOIN"
+      },
+      {
+        "type": "table",
+        "value": "Owners"
+      },
+      {
+        "type": "column",
+        "value": "o"
+      },
+      {
+        "type": "keyword",
+        "value": "ON"
+      },
+      {
+        "type": "column",
+        "value": "p.owner_id"
+      },
+      {
+        "type": "column",
+        "value": "="
+      },
+      {
+        "type": "column",
+        "value": "o.owner_id;"
+      }
+    ]
+  },
+  {
+    "drillNumber": 641,
+    "subcluster": "7.5 RIGHT JOIN Mechanics & Directional Awareness",
+    "level": "Level 2 (Right Outer Join)",
+    "title": "Syntax #641: Retrieve all courses using RIGHT JOIN, ensuring courses with zero enrolled students are still displayed",
+    "table": "Students",
+    "scenario": "Retrieve all courses using RIGHT JOIN, ensuring courses with zero enrolled students are still displayed.",
+    "businessObjective": "Retrieve all courses using RIGHT JOIN, ensuring courses with zero enrolled students are still displayed.",
+    "schemaSnippet": "Students relational schema",
+    "targetQuery": "SELECT s.full_name, c.course_name\nFROM Students s\nRIGHT JOIN Courses c ON s.student_id = c.student_id;",
+    "syntaxBlueprint": "SELECT a.col, b.col\nFROM TableA a\nRIGHT JOIN TableB b ON a.id = b.a_id;",
+    "syntaxRule": "RIGHT JOIN returns ALL records from the right table, and matching records from the left table. Any unmatched left rows are filled with NULLs.",
+    "syntaxTrap": "RIGHT JOIN is conceptually identical to reversing the table order in a LEFT JOIN; industry standard prefers LEFT JOIN for mental readability.",
+    "eli5Story": "Relational Joins on Students: Retrieve all courses using RIGHT JOIN, ensuring courses with zero enrolled students are still displayed.",
+    "commonMistakes": "Omitting the ON clause, forgetting table alias qualification on ambiguous columns, or accidentally converting LEFT JOIN to INNER JOIN via WHERE filters.",
+    "learningOutcomes": "Mastered 7.5 RIGHT JOIN Mechanics & Directional Awareness on Students.",
+    "challengeSlots": [
+      {
+        "type": "keyword",
+        "value": "SELECT"
+      },
+      {
+        "type": "column",
+        "value": "s.full_name,"
+      },
+      {
+        "type": "column",
+        "value": "c.course_name"
+      },
+      {
+        "type": "keyword",
+        "value": "FROM"
+      },
+      {
+        "type": "table",
+        "value": "Students"
+      },
+      {
+        "type": "column",
+        "value": "s"
+      },
+      {
+        "type": "keyword",
+        "value": "RIGHT"
+      },
+      {
+        "type": "keyword",
+        "value": "JOIN"
+      },
+      {
+        "type": "table",
+        "value": "Courses"
+      },
+      {
+        "type": "column",
+        "value": "c"
+      },
+      {
+        "type": "keyword",
+        "value": "ON"
+      },
+      {
+        "type": "column",
+        "value": "s.student_id"
+      },
+      {
+        "type": "column",
+        "value": "="
+      },
+      {
+        "type": "column",
+        "value": "c.student_id;"
+      }
+    ]
+  },
+  {
+    "drillNumber": 642,
+    "subcluster": "7.5 RIGHT JOIN Mechanics & Directional Awareness",
+    "level": "Level 2 (Right Outer Join)",
+    "title": "Syntax #642: List all authors via RIGHT JOIN, including contracted writers who haven't published a book yet",
+    "table": "Books",
+    "scenario": "List all authors via RIGHT JOIN, including contracted writers who haven't published a book yet.",
+    "businessObjective": "List all authors via RIGHT JOIN, including contracted writers who haven't published a book yet.",
+    "schemaSnippet": "Books relational schema",
+    "targetQuery": "SELECT b.title, a.author_name\nFROM Books b\nRIGHT JOIN Authors a ON b.author_id = a.author_id;",
+    "syntaxBlueprint": "SELECT a.col, b.col\nFROM TableA a\nRIGHT JOIN TableB b ON a.id = b.a_id;",
+    "syntaxRule": "RIGHT JOIN returns ALL records from the right table, and matching records from the left table. Any unmatched left rows are filled with NULLs.",
+    "syntaxTrap": "RIGHT JOIN is conceptually identical to reversing the table order in a LEFT JOIN; industry standard prefers LEFT JOIN for mental readability.",
+    "eli5Story": "Relational Joins on Books: List all authors via RIGHT JOIN, including contracted writers who haven't published a book yet.",
+    "commonMistakes": "Omitting the ON clause, forgetting table alias qualification on ambiguous columns, or accidentally converting LEFT JOIN to INNER JOIN via WHERE filters.",
+    "learningOutcomes": "Mastered 7.5 RIGHT JOIN Mechanics & Directional Awareness on Books.",
+    "challengeSlots": [
+      {
+        "type": "keyword",
+        "value": "SELECT"
+      },
+      {
+        "type": "column",
+        "value": "b.title,"
+      },
+      {
+        "type": "column",
+        "value": "a.author_name"
+      },
+      {
+        "type": "keyword",
+        "value": "FROM"
+      },
+      {
+        "type": "table",
+        "value": "Books"
+      },
+      {
+        "type": "column",
+        "value": "b"
+      },
+      {
+        "type": "keyword",
+        "value": "RIGHT"
+      },
+      {
+        "type": "keyword",
+        "value": "JOIN"
+      },
+      {
+        "type": "table",
+        "value": "Authors"
+      },
+      {
+        "type": "column",
+        "value": "a"
+      },
+      {
+        "type": "keyword",
+        "value": "ON"
+      },
+      {
+        "type": "column",
+        "value": "b.author_id"
+      },
+      {
+        "type": "column",
+        "value": "="
+      },
+      {
+        "type": "column",
+        "value": "a.author_id;"
+      }
+    ]
+  },
+  {
+    "drillNumber": 643,
+    "subcluster": "7.5 RIGHT JOIN Mechanics & Directional Awareness",
+    "level": "Level 2 (Right Outer Join)",
+    "title": "Syntax #643: List all corporate departments via RIGHT JOIN, highlighting departments with zero assigned staff",
+    "table": "Employees",
+    "scenario": "List all corporate departments via RIGHT JOIN, highlighting departments with zero assigned staff.",
+    "businessObjective": "List all corporate departments via RIGHT JOIN, highlighting departments with zero assigned staff.",
+    "schemaSnippet": "Employees relational schema",
+    "targetQuery": "SELECT e.first_name, d.department_name\nFROM Employees e\nRIGHT JOIN Departments d ON e.department_id = d.department_id;",
+    "syntaxBlueprint": "SELECT a.col, b.col\nFROM TableA a\nRIGHT JOIN TableB b ON a.id = b.a_id;",
+    "syntaxRule": "RIGHT JOIN returns ALL records from the right table, and matching records from the left table. Any unmatched left rows are filled with NULLs.",
+    "syntaxTrap": "RIGHT JOIN is conceptually identical to reversing the table order in a LEFT JOIN; industry standard prefers LEFT JOIN for mental readability.",
+    "eli5Story": "Relational Joins on Employees: List all corporate departments via RIGHT JOIN, highlighting departments with zero assigned staff.",
+    "commonMistakes": "Omitting the ON clause, forgetting table alias qualification on ambiguous columns, or accidentally converting LEFT JOIN to INNER JOIN via WHERE filters.",
+    "learningOutcomes": "Mastered 7.5 RIGHT JOIN Mechanics & Directional Awareness on Employees.",
+    "challengeSlots": [
+      {
+        "type": "keyword",
+        "value": "SELECT"
+      },
+      {
+        "type": "column",
+        "value": "e.first_name,"
+      },
+      {
+        "type": "column",
+        "value": "d.department_name"
+      },
+      {
+        "type": "keyword",
+        "value": "FROM"
+      },
+      {
+        "type": "table",
+        "value": "Employees"
+      },
+      {
+        "type": "column",
+        "value": "e"
+      },
+      {
+        "type": "keyword",
+        "value": "RIGHT"
+      },
+      {
+        "type": "keyword",
+        "value": "JOIN"
+      },
+      {
+        "type": "table",
+        "value": "Departments"
+      },
+      {
+        "type": "column",
+        "value": "d"
+      },
+      {
+        "type": "keyword",
+        "value": "ON"
+      },
+      {
+        "type": "column",
+        "value": "e.department_id"
+      },
+      {
+        "type": "column",
+        "value": "="
+      },
+      {
+        "type": "column",
+        "value": "d.department_id;"
+      }
+    ]
+  },
+  {
+    "drillNumber": 644,
+    "subcluster": "7.5 RIGHT JOIN Mechanics & Directional Awareness",
+    "level": "Level 2 (Right Outer Join)",
+    "title": "Syntax #644: Show all suppliers using RIGHT JOIN, including newly contracted vendors with no stock items yet",
+    "table": "GroceryItems",
+    "scenario": "Show all suppliers using RIGHT JOIN, including newly contracted vendors with no stock items yet.",
+    "businessObjective": "Show all suppliers using RIGHT JOIN, including newly contracted vendors with no stock items yet.",
+    "schemaSnippet": "GroceryItems relational schema",
+    "targetQuery": "SELECT g.item_name, s.supplier_name\nFROM GroceryItems g\nRIGHT JOIN Suppliers s ON g.supplier_id = s.supplier_id;",
+    "syntaxBlueprint": "SELECT a.col, b.col\nFROM TableA a\nRIGHT JOIN TableB b ON a.id = b.a_id;",
+    "syntaxRule": "RIGHT JOIN returns ALL records from the right table, and matching records from the left table. Any unmatched left rows are filled with NULLs.",
+    "syntaxTrap": "RIGHT JOIN is conceptually identical to reversing the table order in a LEFT JOIN; industry standard prefers LEFT JOIN for mental readability.",
+    "eli5Story": "Relational Joins on GroceryItems: Show all suppliers using RIGHT JOIN, including newly contracted vendors with no stock items yet.",
+    "commonMistakes": "Omitting the ON clause, forgetting table alias qualification on ambiguous columns, or accidentally converting LEFT JOIN to INNER JOIN via WHERE filters.",
+    "learningOutcomes": "Mastered 7.5 RIGHT JOIN Mechanics & Directional Awareness on GroceryItems.",
+    "challengeSlots": [
+      {
+        "type": "keyword",
+        "value": "SELECT"
+      },
+      {
+        "type": "column",
+        "value": "g.item_name,"
+      },
+      {
+        "type": "column",
+        "value": "s.supplier_name"
+      },
+      {
+        "type": "keyword",
+        "value": "FROM"
+      },
+      {
+        "type": "table",
+        "value": "GroceryItems"
+      },
+      {
+        "type": "column",
+        "value": "g"
+      },
+      {
+        "type": "keyword",
+        "value": "RIGHT"
+      },
+      {
+        "type": "keyword",
+        "value": "JOIN"
+      },
+      {
+        "type": "table",
+        "value": "Suppliers"
+      },
+      {
+        "type": "column",
+        "value": "s"
+      },
+      {
+        "type": "keyword",
+        "value": "ON"
+      },
+      {
+        "type": "column",
+        "value": "g.supplier_id"
+      },
+      {
+        "type": "column",
+        "value": "="
+      },
+      {
+        "type": "column",
+        "value": "s.supplier_id;"
+      }
+    ]
+  },
+  {
+    "drillNumber": 645,
+    "subcluster": "7.5 RIGHT JOIN Mechanics & Directional Awareness",
+    "level": "Level 2 (Right Outer Join)",
+    "title": "Syntax #645: List all registered customers using RIGHT JOIN to view accounts with zero purchases",
+    "table": "Orders",
+    "scenario": "List all registered customers using RIGHT JOIN to view accounts with zero purchases.",
+    "businessObjective": "List all registered customers using RIGHT JOIN to view accounts with zero purchases.",
+    "schemaSnippet": "Orders relational schema",
+    "targetQuery": "SELECT o.order_id, c.customer_name\nFROM Orders o\nRIGHT JOIN Customers c ON o.customer_id = c.customer_id;",
+    "syntaxBlueprint": "SELECT a.col, b.col\nFROM TableA a\nRIGHT JOIN TableB b ON a.id = b.a_id;",
+    "syntaxRule": "RIGHT JOIN returns ALL records from the right table, and matching records from the left table. Any unmatched left rows are filled with NULLs.",
+    "syntaxTrap": "RIGHT JOIN is conceptually identical to reversing the table order in a LEFT JOIN; industry standard prefers LEFT JOIN for mental readability.",
+    "eli5Story": "Relational Joins on Orders: List all registered customers using RIGHT JOIN to view accounts with zero purchases.",
+    "commonMistakes": "Omitting the ON clause, forgetting table alias qualification on ambiguous columns, or accidentally converting LEFT JOIN to INNER JOIN via WHERE filters.",
+    "learningOutcomes": "Mastered 7.5 RIGHT JOIN Mechanics & Directional Awareness on Orders.",
+    "challengeSlots": [
+      {
+        "type": "keyword",
+        "value": "SELECT"
+      },
+      {
+        "type": "column",
+        "value": "o.order_id,"
+      },
+      {
+        "type": "column",
+        "value": "c.customer_name"
+      },
+      {
+        "type": "keyword",
+        "value": "FROM"
+      },
+      {
+        "type": "table",
+        "value": "Orders"
+      },
+      {
+        "type": "column",
+        "value": "o"
+      },
+      {
+        "type": "keyword",
+        "value": "RIGHT"
+      },
+      {
+        "type": "keyword",
+        "value": "JOIN"
+      },
+      {
+        "type": "table",
+        "value": "Customers"
+      },
+      {
+        "type": "column",
+        "value": "c"
+      },
+      {
+        "type": "keyword",
+        "value": "ON"
+      },
+      {
+        "type": "column",
+        "value": "o.customer_id"
+      },
+      {
+        "type": "column",
+        "value": "="
+      },
+      {
+        "type": "column",
+        "value": "c.customer_id;"
+      }
+    ]
+  },
+  {
+    "drillNumber": 646,
+    "subcluster": "7.5 RIGHT JOIN Mechanics & Directional Awareness",
+    "level": "Level 2 (Right Outer Join)",
+    "title": "Syntax #646: Display all studio albums using RIGHT JOIN, including unreleased albums with no tracklist",
+    "table": "MusicTracks",
+    "scenario": "Display all studio albums using RIGHT JOIN, including unreleased albums with no tracklist.",
+    "businessObjective": "Display all studio albums using RIGHT JOIN, including unreleased albums with no tracklist.",
+    "schemaSnippet": "MusicTracks relational schema",
+    "targetQuery": "SELECT t.track_title, a.album_title\nFROM MusicTracks t\nRIGHT JOIN Albums a ON t.album_id = a.album_id;",
+    "syntaxBlueprint": "SELECT a.col, b.col\nFROM TableA a\nRIGHT JOIN TableB b ON a.id = b.a_id;",
+    "syntaxRule": "RIGHT JOIN returns ALL records from the right table, and matching records from the left table. Any unmatched left rows are filled with NULLs.",
+    "syntaxTrap": "RIGHT JOIN is conceptually identical to reversing the table order in a LEFT JOIN; industry standard prefers LEFT JOIN for mental readability.",
+    "eli5Story": "Relational Joins on MusicTracks: Display all studio albums using RIGHT JOIN, including unreleased albums with no tracklist.",
+    "commonMistakes": "Omitting the ON clause, forgetting table alias qualification on ambiguous columns, or accidentally converting LEFT JOIN to INNER JOIN via WHERE filters.",
+    "learningOutcomes": "Mastered 7.5 RIGHT JOIN Mechanics & Directional Awareness on MusicTracks.",
+    "challengeSlots": [
+      {
+        "type": "keyword",
+        "value": "SELECT"
+      },
+      {
+        "type": "column",
+        "value": "t.track_title,"
+      },
+      {
+        "type": "column",
+        "value": "a.album_title"
+      },
+      {
+        "type": "keyword",
+        "value": "FROM"
+      },
+      {
+        "type": "table",
+        "value": "MusicTracks"
+      },
+      {
+        "type": "column",
+        "value": "t"
+      },
+      {
+        "type": "keyword",
+        "value": "RIGHT"
+      },
+      {
+        "type": "keyword",
+        "value": "JOIN"
+      },
+      {
+        "type": "table",
+        "value": "Albums"
+      },
+      {
+        "type": "column",
+        "value": "a"
+      },
+      {
+        "type": "keyword",
+        "value": "ON"
+      },
+      {
+        "type": "column",
+        "value": "t.album_id"
+      },
+      {
+        "type": "column",
+        "value": "="
+      },
+      {
+        "type": "column",
+        "value": "a.album_id;"
+      }
+    ]
+  },
+  {
+    "drillNumber": 647,
+    "subcluster": "7.5 RIGHT JOIN Mechanics & Directional Awareness",
+    "level": "Level 2 (Right Outer Join)",
+    "title": "Syntax #647: Show all gym trainers via RIGHT JOIN, identifying coaches who currently have no active clients",
+    "table": "GymMembers",
+    "scenario": "Show all gym trainers via RIGHT JOIN, identifying coaches who currently have no active clients.",
+    "businessObjective": "Show all gym trainers via RIGHT JOIN, identifying coaches who currently have no active clients.",
+    "schemaSnippet": "GymMembers relational schema",
+    "targetQuery": "SELECT m.member_name, tr.trainer_name\nFROM GymMembers m\nRIGHT JOIN Trainers tr ON m.trainer_id = tr.trainer_id;",
+    "syntaxBlueprint": "SELECT a.col, b.col\nFROM TableA a\nRIGHT JOIN TableB b ON a.id = b.a_id;",
+    "syntaxRule": "RIGHT JOIN returns ALL records from the right table, and matching records from the left table. Any unmatched left rows are filled with NULLs.",
+    "syntaxTrap": "RIGHT JOIN is conceptually identical to reversing the table order in a LEFT JOIN; industry standard prefers LEFT JOIN for mental readability.",
+    "eli5Story": "Relational Joins on GymMembers: Show all gym trainers via RIGHT JOIN, identifying coaches who currently have no active clients.",
+    "commonMistakes": "Omitting the ON clause, forgetting table alias qualification on ambiguous columns, or accidentally converting LEFT JOIN to INNER JOIN via WHERE filters.",
+    "learningOutcomes": "Mastered 7.5 RIGHT JOIN Mechanics & Directional Awareness on GymMembers.",
+    "challengeSlots": [
+      {
+        "type": "keyword",
+        "value": "SELECT"
+      },
+      {
+        "type": "column",
+        "value": "m.member_name,"
+      },
+      {
+        "type": "column",
+        "value": "tr.trainer_name"
+      },
+      {
+        "type": "keyword",
+        "value": "FROM"
+      },
+      {
+        "type": "table",
+        "value": "GymMembers"
+      },
+      {
+        "type": "column",
+        "value": "m"
+      },
+      {
+        "type": "keyword",
+        "value": "RIGHT"
+      },
+      {
+        "type": "keyword",
+        "value": "JOIN"
+      },
+      {
+        "type": "table",
+        "value": "Trainers"
+      },
+      {
+        "type": "column",
+        "value": "tr"
+      },
+      {
+        "type": "keyword",
+        "value": "ON"
+      },
+      {
+        "type": "column",
+        "value": "m.trainer_id"
+      },
+      {
+        "type": "column",
+        "value": "="
+      },
+      {
+        "type": "column",
+        "value": "tr.trainer_id;"
+      }
+    ]
+  },
+  {
+    "drillNumber": 648,
+    "subcluster": "7.5 RIGHT JOIN Mechanics & Directional Awareness",
+    "level": "Level 2 (Right Outer Join)",
+    "title": "Syntax #648: Preserve all movie titles using RIGHT JOIN to inspect unreviewed releases",
+    "table": "MovieReviews",
+    "scenario": "Preserve all movie titles using RIGHT JOIN to inspect unreviewed releases.",
+    "businessObjective": "Preserve all movie titles using RIGHT JOIN to inspect unreviewed releases.",
+    "schemaSnippet": "MovieReviews relational schema",
+    "targetQuery": "SELECT r.star_rating, m.movie_title\nFROM MovieReviews r\nRIGHT JOIN Movies m ON r.movie_id = m.movie_id;",
+    "syntaxBlueprint": "SELECT a.col, b.col\nFROM TableA a\nRIGHT JOIN TableB b ON a.id = b.a_id;",
+    "syntaxRule": "RIGHT JOIN returns ALL records from the right table, and matching records from the left table. Any unmatched left rows are filled with NULLs.",
+    "syntaxTrap": "RIGHT JOIN is conceptually identical to reversing the table order in a LEFT JOIN; industry standard prefers LEFT JOIN for mental readability.",
+    "eli5Story": "Relational Joins on MovieReviews: Preserve all movie titles using RIGHT JOIN to inspect unreviewed releases.",
+    "commonMistakes": "Omitting the ON clause, forgetting table alias qualification on ambiguous columns, or accidentally converting LEFT JOIN to INNER JOIN via WHERE filters.",
+    "learningOutcomes": "Mastered 7.5 RIGHT JOIN Mechanics & Directional Awareness on MovieReviews.",
+    "challengeSlots": [
+      {
+        "type": "keyword",
+        "value": "SELECT"
+      },
+      {
+        "type": "column",
+        "value": "r.star_rating,"
+      },
+      {
+        "type": "column",
+        "value": "m.movie_title"
+      },
+      {
+        "type": "keyword",
+        "value": "FROM"
+      },
+      {
+        "type": "table",
+        "value": "MovieReviews"
+      },
+      {
+        "type": "column",
+        "value": "r"
+      },
+      {
+        "type": "keyword",
+        "value": "RIGHT"
+      },
+      {
+        "type": "keyword",
+        "value": "JOIN"
+      },
+      {
+        "type": "table",
+        "value": "Movies"
+      },
+      {
+        "type": "column",
+        "value": "m"
+      },
+      {
+        "type": "keyword",
+        "value": "ON"
+      },
+      {
+        "type": "column",
+        "value": "r.movie_id"
+      },
+      {
+        "type": "column",
+        "value": "="
+      },
+      {
+        "type": "column",
+        "value": "m.movie_id;"
+      }
+    ]
+  },
+  {
+    "drillNumber": 649,
+    "subcluster": "7.5 RIGHT JOIN Mechanics & Directional Awareness",
+    "level": "Level 2 (Right Outer Join)",
+    "title": "Syntax #649: List all airline partners using RIGHT JOIN, including regional carriers with no flights today",
+    "table": "FlightSchedule",
+    "scenario": "List all airline partners using RIGHT JOIN, including regional carriers with no flights today.",
+    "businessObjective": "List all airline partners using RIGHT JOIN, including regional carriers with no flights today.",
+    "schemaSnippet": "FlightSchedule relational schema",
+    "targetQuery": "SELECT f.flight_id, al.airline_name\nFROM FlightSchedule f\nRIGHT JOIN Airlines al ON f.airline_id = al.airline_id;",
+    "syntaxBlueprint": "SELECT a.col, b.col\nFROM TableA a\nRIGHT JOIN TableB b ON a.id = b.a_id;",
+    "syntaxRule": "RIGHT JOIN returns ALL records from the right table, and matching records from the left table. Any unmatched left rows are filled with NULLs.",
+    "syntaxTrap": "RIGHT JOIN is conceptually identical to reversing the table order in a LEFT JOIN; industry standard prefers LEFT JOIN for mental readability.",
+    "eli5Story": "Relational Joins on FlightSchedule: List all airline partners using RIGHT JOIN, including regional carriers with no flights today.",
+    "commonMistakes": "Omitting the ON clause, forgetting table alias qualification on ambiguous columns, or accidentally converting LEFT JOIN to INNER JOIN via WHERE filters.",
+    "learningOutcomes": "Mastered 7.5 RIGHT JOIN Mechanics & Directional Awareness on FlightSchedule.",
+    "challengeSlots": [
+      {
+        "type": "keyword",
+        "value": "SELECT"
+      },
+      {
+        "type": "column",
+        "value": "f.flight_id,"
+      },
+      {
+        "type": "column",
+        "value": "al.airline_name"
+      },
+      {
+        "type": "keyword",
+        "value": "FROM"
+      },
+      {
+        "type": "table",
+        "value": "FlightSchedule"
+      },
+      {
+        "type": "column",
+        "value": "f"
+      },
+      {
+        "type": "keyword",
+        "value": "RIGHT"
+      },
+      {
+        "type": "keyword",
+        "value": "JOIN"
+      },
+      {
+        "type": "table",
+        "value": "Airlines"
+      },
+      {
+        "type": "column",
+        "value": "al"
+      },
+      {
+        "type": "keyword",
+        "value": "ON"
+      },
+      {
+        "type": "column",
+        "value": "f.airline_id"
+      },
+      {
+        "type": "column",
+        "value": "="
+      },
+      {
+        "type": "column",
+        "value": "al.airline_id;"
+      }
+    ]
+  },
+  {
+    "drillNumber": 650,
+    "subcluster": "7.5 RIGHT JOIN Mechanics & Directional Awareness",
+    "level": "Level 2 (Right Outer Join)",
+    "title": "Syntax #650: Display all registered pet owners using RIGHT JOIN, identifying clients whose pets are not in the clinic",
+    "table": "PetClinic",
+    "scenario": "Display all registered pet owners using RIGHT JOIN, identifying clients whose pets are not in the clinic.",
+    "businessObjective": "Display all registered pet owners using RIGHT JOIN, identifying clients whose pets are not in the clinic.",
+    "schemaSnippet": "PetClinic relational schema",
+    "targetQuery": "SELECT p.pet_name, o.owner_name\nFROM PetClinic p\nRIGHT JOIN Owners o ON p.owner_id = o.owner_id;",
+    "syntaxBlueprint": "SELECT a.col, b.col\nFROM TableA a\nRIGHT JOIN TableB b ON a.id = b.a_id;",
+    "syntaxRule": "RIGHT JOIN returns ALL records from the right table, and matching records from the left table. Any unmatched left rows are filled with NULLs.",
+    "syntaxTrap": "RIGHT JOIN is conceptually identical to reversing the table order in a LEFT JOIN; industry standard prefers LEFT JOIN for mental readability.",
+    "eli5Story": "Relational Joins on PetClinic: Display all registered pet owners using RIGHT JOIN, identifying clients whose pets are not in the clinic.",
+    "commonMistakes": "Omitting the ON clause, forgetting table alias qualification on ambiguous columns, or accidentally converting LEFT JOIN to INNER JOIN via WHERE filters.",
+    "learningOutcomes": "Mastered 7.5 RIGHT JOIN Mechanics & Directional Awareness on PetClinic.",
+    "challengeSlots": [
+      {
+        "type": "keyword",
+        "value": "SELECT"
+      },
+      {
+        "type": "column",
+        "value": "p.pet_name,"
+      },
+      {
+        "type": "column",
+        "value": "o.owner_name"
+      },
+      {
+        "type": "keyword",
+        "value": "FROM"
+      },
+      {
+        "type": "table",
+        "value": "PetClinic"
+      },
+      {
+        "type": "column",
+        "value": "p"
+      },
+      {
+        "type": "keyword",
+        "value": "RIGHT"
+      },
+      {
+        "type": "keyword",
+        "value": "JOIN"
+      },
+      {
+        "type": "table",
+        "value": "Owners"
+      },
+      {
+        "type": "column",
+        "value": "o"
+      },
+      {
+        "type": "keyword",
+        "value": "ON"
+      },
+      {
+        "type": "column",
+        "value": "p.owner_id"
+      },
+      {
+        "type": "column",
+        "value": "="
+      },
+      {
+        "type": "column",
+        "value": "o.owner_id;"
+      }
+    ]
+  },
+  {
+    "drillNumber": 651,
+    "subcluster": "7.6 Joining with Row-Level WHERE Filtering",
+    "level": "Level 2 (Joined WHERE Filters)",
+    "title": "Syntax #651: Find honor students (GPA >= 3.5) and their enrolled courses using an INNER JOIN with WHERE",
+    "table": "Students",
+    "scenario": "Find honor students (GPA >= 3.5) and their enrolled courses using an INNER JOIN with WHERE.",
+    "businessObjective": "Find honor students (GPA >= 3.5) and their enrolled courses using an INNER JOIN with WHERE.",
+    "schemaSnippet": "Students relational schema",
+    "targetQuery": "SELECT s.full_name, c.course_name\nFROM Students s\nINNER JOIN Courses c ON s.student_id = c.student_id\nWHERE s.gpa >= 3.5;",
+    "syntaxBlueprint": "SELECT a.col, b.col\nFROM TableA a\nJOIN TableB b ON a.id = b.a_id\nWHERE a.status = 'active' AND b.metric > 100;",
+    "syntaxRule": "The WHERE clause executes AFTER the JOIN matches rows, allowing you to filter the combined result set on columns from either table.",
+    "syntaxTrap": "Placing a WHERE filter on a LEFT JOIN's right table (e.g. WHERE b.status = 'active') inadvertently converts it to an INNER JOIN because NULLs are excluded.",
+    "eli5Story": "Relational Joins on Students: Find honor students (GPA >= 3.5) and their enrolled courses using an INNER JOIN with WHERE.",
+    "commonMistakes": "Omitting the ON clause, forgetting table alias qualification on ambiguous columns, or accidentally converting LEFT JOIN to INNER JOIN via WHERE filters.",
+    "learningOutcomes": "Mastered 7.6 Joining with Row-Level WHERE Filtering on Students.",
+    "challengeSlots": [
+      {
+        "type": "keyword",
+        "value": "SELECT"
+      },
+      {
+        "type": "column",
+        "value": "s.full_name,"
+      },
+      {
+        "type": "column",
+        "value": "c.course_name"
+      },
+      {
+        "type": "keyword",
+        "value": "FROM"
+      },
+      {
+        "type": "table",
+        "value": "Students"
+      },
+      {
+        "type": "column",
+        "value": "s"
+      },
+      {
+        "type": "keyword",
+        "value": "INNER"
+      },
+      {
+        "type": "keyword",
+        "value": "JOIN"
+      },
+      {
+        "type": "table",
+        "value": "Courses"
+      },
+      {
+        "type": "column",
+        "value": "c"
+      },
+      {
+        "type": "keyword",
+        "value": "ON"
+      },
+      {
+        "type": "column",
+        "value": "s.student_id"
+      },
+      {
+        "type": "column",
+        "value": "="
+      },
+      {
+        "type": "column",
+        "value": "c.student_id"
+      },
+      {
+        "type": "keyword",
+        "value": "WHERE"
+      },
+      {
+        "type": "column",
+        "value": "s.gpa"
+      },
+      {
+        "type": "column",
+        "value": ">="
+      },
+      {
+        "type": "column",
+        "value": "3.5;"
+      }
+    ]
+  },
+  {
+    "drillNumber": 652,
+    "subcluster": "7.6 Joining with Row-Level WHERE Filtering",
+    "level": "Level 2 (Joined WHERE Filters)",
+    "title": "Syntax #652: Filter books written exclusively by British authors using a joined WHERE filter",
+    "table": "Books",
+    "scenario": "Filter books written exclusively by British authors using a joined WHERE filter.",
+    "businessObjective": "Filter books written exclusively by British authors using a joined WHERE filter.",
+    "schemaSnippet": "Books relational schema",
+    "targetQuery": "SELECT b.title, a.author_name\nFROM Books b\nINNER JOIN Authors a ON b.author_id = a.author_id\nWHERE a.country = 'UK';",
+    "syntaxBlueprint": "SELECT a.col, b.col\nFROM TableA a\nJOIN TableB b ON a.id = b.a_id\nWHERE a.status = 'active' AND b.metric > 100;",
+    "syntaxRule": "The WHERE clause executes AFTER the JOIN matches rows, allowing you to filter the combined result set on columns from either table.",
+    "syntaxTrap": "Placing a WHERE filter on a LEFT JOIN's right table (e.g. WHERE b.status = 'active') inadvertently converts it to an INNER JOIN because NULLs are excluded.",
+    "eli5Story": "Relational Joins on Books: Filter books written exclusively by British authors using a joined WHERE filter.",
+    "commonMistakes": "Omitting the ON clause, forgetting table alias qualification on ambiguous columns, or accidentally converting LEFT JOIN to INNER JOIN via WHERE filters.",
+    "learningOutcomes": "Mastered 7.6 Joining with Row-Level WHERE Filtering on Books.",
+    "challengeSlots": [
+      {
+        "type": "keyword",
+        "value": "SELECT"
+      },
+      {
+        "type": "column",
+        "value": "b.title,"
+      },
+      {
+        "type": "column",
+        "value": "a.author_name"
+      },
+      {
+        "type": "keyword",
+        "value": "FROM"
+      },
+      {
+        "type": "table",
+        "value": "Books"
+      },
+      {
+        "type": "column",
+        "value": "b"
+      },
+      {
+        "type": "keyword",
+        "value": "INNER"
+      },
+      {
+        "type": "keyword",
+        "value": "JOIN"
+      },
+      {
+        "type": "table",
+        "value": "Authors"
+      },
+      {
+        "type": "column",
+        "value": "a"
+      },
+      {
+        "type": "keyword",
+        "value": "ON"
+      },
+      {
+        "type": "column",
+        "value": "b.author_id"
+      },
+      {
+        "type": "column",
+        "value": "="
+      },
+      {
+        "type": "column",
+        "value": "a.author_id"
+      },
+      {
+        "type": "keyword",
+        "value": "WHERE"
+      },
+      {
+        "type": "column",
+        "value": "a.country"
+      },
+      {
+        "type": "column",
+        "value": "="
+      },
+      {
+        "type": "column",
+        "value": "'UK';"
+      }
+    ]
+  },
+  {
+    "drillNumber": 653,
+    "subcluster": "7.6 Joining with Row-Level WHERE Filtering",
+    "level": "Level 2 (Joined WHERE Filters)",
+    "title": "Syntax #653: Identify high-earning staff members making over $75,000 and their departments",
+    "table": "Employees",
+    "scenario": "Identify high-earning staff members making over $75,000 and their departments.",
+    "businessObjective": "Identify high-earning staff members making over $75,000 and their departments.",
+    "schemaSnippet": "Employees relational schema",
+    "targetQuery": "SELECT e.first_name, d.department_name\nFROM Employees e\nINNER JOIN Departments d ON e.department_id = d.department_id\nWHERE e.salary > 75000;",
+    "syntaxBlueprint": "SELECT a.col, b.col\nFROM TableA a\nJOIN TableB b ON a.id = b.a_id\nWHERE a.status = 'active' AND b.metric > 100;",
+    "syntaxRule": "The WHERE clause executes AFTER the JOIN matches rows, allowing you to filter the combined result set on columns from either table.",
+    "syntaxTrap": "Placing a WHERE filter on a LEFT JOIN's right table (e.g. WHERE b.status = 'active') inadvertently converts it to an INNER JOIN because NULLs are excluded.",
+    "eli5Story": "Relational Joins on Employees: Identify high-earning staff members making over $75,000 and their departments.",
+    "commonMistakes": "Omitting the ON clause, forgetting table alias qualification on ambiguous columns, or accidentally converting LEFT JOIN to INNER JOIN via WHERE filters.",
+    "learningOutcomes": "Mastered 7.6 Joining with Row-Level WHERE Filtering on Employees.",
+    "challengeSlots": [
+      {
+        "type": "keyword",
+        "value": "SELECT"
+      },
+      {
+        "type": "column",
+        "value": "e.first_name,"
+      },
+      {
+        "type": "column",
+        "value": "d.department_name"
+      },
+      {
+        "type": "keyword",
+        "value": "FROM"
+      },
+      {
+        "type": "table",
+        "value": "Employees"
+      },
+      {
+        "type": "column",
+        "value": "e"
+      },
+      {
+        "type": "keyword",
+        "value": "INNER"
+      },
+      {
+        "type": "keyword",
+        "value": "JOIN"
+      },
+      {
+        "type": "table",
+        "value": "Departments"
+      },
+      {
+        "type": "column",
+        "value": "d"
+      },
+      {
+        "type": "keyword",
+        "value": "ON"
+      },
+      {
+        "type": "column",
+        "value": "e.department_id"
+      },
+      {
+        "type": "column",
+        "value": "="
+      },
+      {
+        "type": "column",
+        "value": "d.department_id"
+      },
+      {
+        "type": "keyword",
+        "value": "WHERE"
+      },
+      {
+        "type": "column",
+        "value": "e.salary"
+      },
+      {
+        "type": "column",
+        "value": ">"
+      },
+      {
+        "type": "column",
+        "value": "75000;"
+      }
+    ]
+  },
+  {
+    "drillNumber": 654,
+    "subcluster": "7.6 Joining with Row-Level WHERE Filtering",
+    "level": "Level 2 (Joined WHERE Filters)",
+    "title": "Syntax #654: Retrieve budget grocery items priced under $5.00 along with their suppliers",
+    "table": "GroceryItems",
+    "scenario": "Retrieve budget grocery items priced under $5.00 along with their suppliers.",
+    "businessObjective": "Retrieve budget grocery items priced under $5.00 along with their suppliers.",
+    "schemaSnippet": "GroceryItems relational schema",
+    "targetQuery": "SELECT g.item_name, s.supplier_name\nFROM GroceryItems g\nINNER JOIN Suppliers s ON g.supplier_id = s.supplier_id\nWHERE g.unit_price < 5.00;",
+    "syntaxBlueprint": "SELECT a.col, b.col\nFROM TableA a\nJOIN TableB b ON a.id = b.a_id\nWHERE a.status = 'active' AND b.metric > 100;",
+    "syntaxRule": "The WHERE clause executes AFTER the JOIN matches rows, allowing you to filter the combined result set on columns from either table.",
+    "syntaxTrap": "Placing a WHERE filter on a LEFT JOIN's right table (e.g. WHERE b.status = 'active') inadvertently converts it to an INNER JOIN because NULLs are excluded.",
+    "eli5Story": "Relational Joins on GroceryItems: Retrieve budget grocery items priced under $5.00 along with their suppliers.",
+    "commonMistakes": "Omitting the ON clause, forgetting table alias qualification on ambiguous columns, or accidentally converting LEFT JOIN to INNER JOIN via WHERE filters.",
+    "learningOutcomes": "Mastered 7.6 Joining with Row-Level WHERE Filtering on GroceryItems.",
+    "challengeSlots": [
+      {
+        "type": "keyword",
+        "value": "SELECT"
+      },
+      {
+        "type": "column",
+        "value": "g.item_name,"
+      },
+      {
+        "type": "column",
+        "value": "s.supplier_name"
+      },
+      {
+        "type": "keyword",
+        "value": "FROM"
+      },
+      {
+        "type": "table",
+        "value": "GroceryItems"
+      },
+      {
+        "type": "column",
+        "value": "g"
+      },
+      {
+        "type": "keyword",
+        "value": "INNER"
+      },
+      {
+        "type": "keyword",
+        "value": "JOIN"
+      },
+      {
+        "type": "table",
+        "value": "Suppliers"
+      },
+      {
+        "type": "column",
+        "value": "s"
+      },
+      {
+        "type": "keyword",
+        "value": "ON"
+      },
+      {
+        "type": "column",
+        "value": "g.supplier_id"
+      },
+      {
+        "type": "column",
+        "value": "="
+      },
+      {
+        "type": "column",
+        "value": "s.supplier_id"
+      },
+      {
+        "type": "keyword",
+        "value": "WHERE"
+      },
+      {
+        "type": "column",
+        "value": "g.unit_price"
+      },
+      {
+        "type": "column",
+        "value": "<"
+      },
+      {
+        "type": "column",
+        "value": "5.00;"
+      }
+    ]
+  },
+  {
+    "drillNumber": 655,
+    "subcluster": "7.6 Joining with Row-Level WHERE Filtering",
+    "level": "Level 2 (Joined WHERE Filters)",
+    "title": "Syntax #655: Filter joined customer orders destined specifically for Chicago",
+    "table": "Orders",
+    "scenario": "Filter joined customer orders destined specifically for Chicago.",
+    "businessObjective": "Filter joined customer orders destined specifically for Chicago.",
+    "schemaSnippet": "Orders relational schema",
+    "targetQuery": "SELECT o.order_id, c.customer_name, o.shipping_city\nFROM Orders o\nINNER JOIN Customers c ON o.customer_id = c.customer_id\nWHERE o.shipping_city = 'Chicago';",
+    "syntaxBlueprint": "SELECT a.col, b.col\nFROM TableA a\nJOIN TableB b ON a.id = b.a_id\nWHERE a.status = 'active' AND b.metric > 100;",
+    "syntaxRule": "The WHERE clause executes AFTER the JOIN matches rows, allowing you to filter the combined result set on columns from either table.",
+    "syntaxTrap": "Placing a WHERE filter on a LEFT JOIN's right table (e.g. WHERE b.status = 'active') inadvertently converts it to an INNER JOIN because NULLs are excluded.",
+    "eli5Story": "Relational Joins on Orders: Filter joined customer orders destined specifically for Chicago.",
+    "commonMistakes": "Omitting the ON clause, forgetting table alias qualification on ambiguous columns, or accidentally converting LEFT JOIN to INNER JOIN via WHERE filters.",
+    "learningOutcomes": "Mastered 7.6 Joining with Row-Level WHERE Filtering on Orders.",
+    "challengeSlots": [
+      {
+        "type": "keyword",
+        "value": "SELECT"
+      },
+      {
+        "type": "column",
+        "value": "o.order_id,"
+      },
+      {
+        "type": "column",
+        "value": "c.customer_name,"
+      },
+      {
+        "type": "column",
+        "value": "o.shipping_city"
+      },
+      {
+        "type": "keyword",
+        "value": "FROM"
+      },
+      {
+        "type": "table",
+        "value": "Orders"
+      },
+      {
+        "type": "column",
+        "value": "o"
+      },
+      {
+        "type": "keyword",
+        "value": "INNER"
+      },
+      {
+        "type": "keyword",
+        "value": "JOIN"
+      },
+      {
+        "type": "table",
+        "value": "Customers"
+      },
+      {
+        "type": "column",
+        "value": "c"
+      },
+      {
+        "type": "keyword",
+        "value": "ON"
+      },
+      {
+        "type": "column",
+        "value": "o.customer_id"
+      },
+      {
+        "type": "column",
+        "value": "="
+      },
+      {
+        "type": "column",
+        "value": "c.customer_id"
+      },
+      {
+        "type": "keyword",
+        "value": "WHERE"
+      },
+      {
+        "type": "column",
+        "value": "o.shipping_city"
+      },
+      {
+        "type": "column",
+        "value": "="
+      },
+      {
+        "type": "column",
+        "value": "'Chicago';"
+      }
+    ]
+  },
+  {
+    "drillNumber": 656,
+    "subcluster": "7.6 Joining with Row-Level WHERE Filtering",
+    "level": "Level 2 (Joined WHERE Filters)",
+    "title": "Syntax #656: Find music tracks belonging to modern albums released in 2020 or later",
+    "table": "MusicTracks",
+    "scenario": "Find music tracks belonging to modern albums released in 2020 or later.",
+    "businessObjective": "Find music tracks belonging to modern albums released in 2020 or later.",
+    "schemaSnippet": "MusicTracks relational schema",
+    "targetQuery": "SELECT t.track_title, a.album_title\nFROM MusicTracks t\nINNER JOIN Albums a ON t.album_id = a.album_id\nWHERE a.release_year >= 2020;",
+    "syntaxBlueprint": "SELECT a.col, b.col\nFROM TableA a\nJOIN TableB b ON a.id = b.a_id\nWHERE a.status = 'active' AND b.metric > 100;",
+    "syntaxRule": "The WHERE clause executes AFTER the JOIN matches rows, allowing you to filter the combined result set on columns from either table.",
+    "syntaxTrap": "Placing a WHERE filter on a LEFT JOIN's right table (e.g. WHERE b.status = 'active') inadvertently converts it to an INNER JOIN because NULLs are excluded.",
+    "eli5Story": "Relational Joins on MusicTracks: Find music tracks belonging to modern albums released in 2020 or later.",
+    "commonMistakes": "Omitting the ON clause, forgetting table alias qualification on ambiguous columns, or accidentally converting LEFT JOIN to INNER JOIN via WHERE filters.",
+    "learningOutcomes": "Mastered 7.6 Joining with Row-Level WHERE Filtering on MusicTracks.",
+    "challengeSlots": [
+      {
+        "type": "keyword",
+        "value": "SELECT"
+      },
+      {
+        "type": "column",
+        "value": "t.track_title,"
+      },
+      {
+        "type": "column",
+        "value": "a.album_title"
+      },
+      {
+        "type": "keyword",
+        "value": "FROM"
+      },
+      {
+        "type": "table",
+        "value": "MusicTracks"
+      },
+      {
+        "type": "column",
+        "value": "t"
+      },
+      {
+        "type": "keyword",
+        "value": "INNER"
+      },
+      {
+        "type": "keyword",
+        "value": "JOIN"
+      },
+      {
+        "type": "table",
+        "value": "Albums"
+      },
+      {
+        "type": "column",
+        "value": "a"
+      },
+      {
+        "type": "keyword",
+        "value": "ON"
+      },
+      {
+        "type": "column",
+        "value": "t.album_id"
+      },
+      {
+        "type": "column",
+        "value": "="
+      },
+      {
+        "type": "column",
+        "value": "a.album_id"
+      },
+      {
+        "type": "keyword",
+        "value": "WHERE"
+      },
+      {
+        "type": "column",
+        "value": "a.release_year"
+      },
+      {
+        "type": "column",
+        "value": ">="
+      },
+      {
+        "type": "column",
+        "value": "2020;"
+      }
+    ]
+  },
+  {
+    "drillNumber": 657,
+    "subcluster": "7.6 Joining with Row-Level WHERE Filtering",
+    "level": "Level 2 (Joined WHERE Filters)",
+    "title": "Syntax #657: Show VIP gym members and their dedicated personal trainers",
+    "table": "GymMembers",
+    "scenario": "Show VIP gym members and their dedicated personal trainers.",
+    "businessObjective": "Show VIP gym members and their dedicated personal trainers.",
+    "schemaSnippet": "GymMembers relational schema",
+    "targetQuery": "SELECT m.member_name, tr.trainer_name\nFROM GymMembers m\nINNER JOIN Trainers tr ON m.trainer_id = tr.trainer_id\nWHERE m.membership_plan = 'VIP';",
+    "syntaxBlueprint": "SELECT a.col, b.col\nFROM TableA a\nJOIN TableB b ON a.id = b.a_id\nWHERE a.status = 'active' AND b.metric > 100;",
+    "syntaxRule": "The WHERE clause executes AFTER the JOIN matches rows, allowing you to filter the combined result set on columns from either table.",
+    "syntaxTrap": "Placing a WHERE filter on a LEFT JOIN's right table (e.g. WHERE b.status = 'active') inadvertently converts it to an INNER JOIN because NULLs are excluded.",
+    "eli5Story": "Relational Joins on GymMembers: Show VIP gym members and their dedicated personal trainers.",
+    "commonMistakes": "Omitting the ON clause, forgetting table alias qualification on ambiguous columns, or accidentally converting LEFT JOIN to INNER JOIN via WHERE filters.",
+    "learningOutcomes": "Mastered 7.6 Joining with Row-Level WHERE Filtering on GymMembers.",
+    "challengeSlots": [
+      {
+        "type": "keyword",
+        "value": "SELECT"
+      },
+      {
+        "type": "column",
+        "value": "m.member_name,"
+      },
+      {
+        "type": "column",
+        "value": "tr.trainer_name"
+      },
+      {
+        "type": "keyword",
+        "value": "FROM"
+      },
+      {
+        "type": "table",
+        "value": "GymMembers"
+      },
+      {
+        "type": "column",
+        "value": "m"
+      },
+      {
+        "type": "keyword",
+        "value": "INNER"
+      },
+      {
+        "type": "keyword",
+        "value": "JOIN"
+      },
+      {
+        "type": "table",
+        "value": "Trainers"
+      },
+      {
+        "type": "column",
+        "value": "tr"
+      },
+      {
+        "type": "keyword",
+        "value": "ON"
+      },
+      {
+        "type": "column",
+        "value": "m.trainer_id"
+      },
+      {
+        "type": "column",
+        "value": "="
+      },
+      {
+        "type": "column",
+        "value": "tr.trainer_id"
+      },
+      {
+        "type": "keyword",
+        "value": "WHERE"
+      },
+      {
+        "type": "column",
+        "value": "m.membership_plan"
+      },
+      {
+        "type": "column",
+        "value": "="
+      },
+      {
+        "type": "column",
+        "value": "'VIP';"
+      }
+    ]
+  },
+  {
+    "drillNumber": 658,
+    "subcluster": "7.6 Joining with Row-Level WHERE Filtering",
+    "level": "Level 2 (Joined WHERE Filters)",
+    "title": "Syntax #658: Retrieve perfect 5-star movie reviews paired with film titles",
+    "table": "MovieReviews",
+    "scenario": "Retrieve perfect 5-star movie reviews paired with film titles.",
+    "businessObjective": "Retrieve perfect 5-star movie reviews paired with film titles.",
+    "schemaSnippet": "MovieReviews relational schema",
+    "targetQuery": "SELECT r.review_text, m.movie_title\nFROM MovieReviews r\nINNER JOIN Movies m ON r.movie_id = m.movie_id\nWHERE r.star_rating = 5;",
+    "syntaxBlueprint": "SELECT a.col, b.col\nFROM TableA a\nJOIN TableB b ON a.id = b.a_id\nWHERE a.status = 'active' AND b.metric > 100;",
+    "syntaxRule": "The WHERE clause executes AFTER the JOIN matches rows, allowing you to filter the combined result set on columns from either table.",
+    "syntaxTrap": "Placing a WHERE filter on a LEFT JOIN's right table (e.g. WHERE b.status = 'active') inadvertently converts it to an INNER JOIN because NULLs are excluded.",
+    "eli5Story": "Relational Joins on MovieReviews: Retrieve perfect 5-star movie reviews paired with film titles.",
+    "commonMistakes": "Omitting the ON clause, forgetting table alias qualification on ambiguous columns, or accidentally converting LEFT JOIN to INNER JOIN via WHERE filters.",
+    "learningOutcomes": "Mastered 7.6 Joining with Row-Level WHERE Filtering on MovieReviews.",
+    "challengeSlots": [
+      {
+        "type": "keyword",
+        "value": "SELECT"
+      },
+      {
+        "type": "column",
+        "value": "r.review_text,"
+      },
+      {
+        "type": "column",
+        "value": "m.movie_title"
+      },
+      {
+        "type": "keyword",
+        "value": "FROM"
+      },
+      {
+        "type": "table",
+        "value": "MovieReviews"
+      },
+      {
+        "type": "column",
+        "value": "r"
+      },
+      {
+        "type": "keyword",
+        "value": "INNER"
+      },
+      {
+        "type": "keyword",
+        "value": "JOIN"
+      },
+      {
+        "type": "table",
+        "value": "Movies"
+      },
+      {
+        "type": "column",
+        "value": "m"
+      },
+      {
+        "type": "keyword",
+        "value": "ON"
+      },
+      {
+        "type": "column",
+        "value": "r.movie_id"
+      },
+      {
+        "type": "column",
+        "value": "="
+      },
+      {
+        "type": "column",
+        "value": "m.movie_id"
+      },
+      {
+        "type": "keyword",
+        "value": "WHERE"
+      },
+      {
+        "type": "column",
+        "value": "r.star_rating"
+      },
+      {
+        "type": "column",
+        "value": "="
+      },
+      {
+        "type": "column",
+        "value": "5;"
+      }
+    ]
+  },
+  {
+    "drillNumber": 659,
+    "subcluster": "7.6 Joining with Row-Level WHERE Filtering",
+    "level": "Level 2 (Joined WHERE Filters)",
+    "title": "Syntax #659: Identify all currently delayed flights along with the operating airline carrier",
+    "table": "FlightSchedule",
+    "scenario": "Identify all currently delayed flights along with the operating airline carrier.",
+    "businessObjective": "Identify all currently delayed flights along with the operating airline carrier.",
+    "schemaSnippet": "FlightSchedule relational schema",
+    "targetQuery": "SELECT f.flight_id, al.airline_name\nFROM FlightSchedule f\nINNER JOIN Airlines al ON f.airline_id = al.airline_id\nWHERE f.status = 'Delayed';",
+    "syntaxBlueprint": "SELECT a.col, b.col\nFROM TableA a\nJOIN TableB b ON a.id = b.a_id\nWHERE a.status = 'active' AND b.metric > 100;",
+    "syntaxRule": "The WHERE clause executes AFTER the JOIN matches rows, allowing you to filter the combined result set on columns from either table.",
+    "syntaxTrap": "Placing a WHERE filter on a LEFT JOIN's right table (e.g. WHERE b.status = 'active') inadvertently converts it to an INNER JOIN because NULLs are excluded.",
+    "eli5Story": "Relational Joins on FlightSchedule: Identify all currently delayed flights along with the operating airline carrier.",
+    "commonMistakes": "Omitting the ON clause, forgetting table alias qualification on ambiguous columns, or accidentally converting LEFT JOIN to INNER JOIN via WHERE filters.",
+    "learningOutcomes": "Mastered 7.6 Joining with Row-Level WHERE Filtering on FlightSchedule.",
+    "challengeSlots": [
+      {
+        "type": "keyword",
+        "value": "SELECT"
+      },
+      {
+        "type": "column",
+        "value": "f.flight_id,"
+      },
+      {
+        "type": "column",
+        "value": "al.airline_name"
+      },
+      {
+        "type": "keyword",
+        "value": "FROM"
+      },
+      {
+        "type": "table",
+        "value": "FlightSchedule"
+      },
+      {
+        "type": "column",
+        "value": "f"
+      },
+      {
+        "type": "keyword",
+        "value": "INNER"
+      },
+      {
+        "type": "keyword",
+        "value": "JOIN"
+      },
+      {
+        "type": "table",
+        "value": "Airlines"
+      },
+      {
+        "type": "column",
+        "value": "al"
+      },
+      {
+        "type": "keyword",
+        "value": "ON"
+      },
+      {
+        "type": "column",
+        "value": "f.airline_id"
+      },
+      {
+        "type": "column",
+        "value": "="
+      },
+      {
+        "type": "column",
+        "value": "al.airline_id"
+      },
+      {
+        "type": "keyword",
+        "value": "WHERE"
+      },
+      {
+        "type": "column",
+        "value": "f.status"
+      },
+      {
+        "type": "column",
+        "value": "="
+      },
+      {
+        "type": "column",
+        "value": "'Delayed';"
+      }
+    ]
+  },
+  {
+    "drillNumber": 660,
+    "subcluster": "7.6 Joining with Row-Level WHERE Filtering",
+    "level": "Level 2 (Joined WHERE Filters)",
+    "title": "Syntax #660: Filter clinic records for canine patients and their registered owners",
+    "table": "PetClinic",
+    "scenario": "Filter clinic records for canine patients and their registered owners.",
+    "businessObjective": "Filter clinic records for canine patients and their registered owners.",
+    "schemaSnippet": "PetClinic relational schema",
+    "targetQuery": "SELECT p.pet_name, o.owner_name\nFROM PetClinic p\nINNER JOIN Owners o ON p.owner_id = o.owner_id\nWHERE p.species = 'Canine';",
+    "syntaxBlueprint": "SELECT a.col, b.col\nFROM TableA a\nJOIN TableB b ON a.id = b.a_id\nWHERE a.status = 'active' AND b.metric > 100;",
+    "syntaxRule": "The WHERE clause executes AFTER the JOIN matches rows, allowing you to filter the combined result set on columns from either table.",
+    "syntaxTrap": "Placing a WHERE filter on a LEFT JOIN's right table (e.g. WHERE b.status = 'active') inadvertently converts it to an INNER JOIN because NULLs are excluded.",
+    "eli5Story": "Relational Joins on PetClinic: Filter clinic records for canine patients and their registered owners.",
+    "commonMistakes": "Omitting the ON clause, forgetting table alias qualification on ambiguous columns, or accidentally converting LEFT JOIN to INNER JOIN via WHERE filters.",
+    "learningOutcomes": "Mastered 7.6 Joining with Row-Level WHERE Filtering on PetClinic.",
+    "challengeSlots": [
+      {
+        "type": "keyword",
+        "value": "SELECT"
+      },
+      {
+        "type": "column",
+        "value": "p.pet_name,"
+      },
+      {
+        "type": "column",
+        "value": "o.owner_name"
+      },
+      {
+        "type": "keyword",
+        "value": "FROM"
+      },
+      {
+        "type": "table",
+        "value": "PetClinic"
+      },
+      {
+        "type": "column",
+        "value": "p"
+      },
+      {
+        "type": "keyword",
+        "value": "INNER"
+      },
+      {
+        "type": "keyword",
+        "value": "JOIN"
+      },
+      {
+        "type": "table",
+        "value": "Owners"
+      },
+      {
+        "type": "column",
+        "value": "o"
+      },
+      {
+        "type": "keyword",
+        "value": "ON"
+      },
+      {
+        "type": "column",
+        "value": "p.owner_id"
+      },
+      {
+        "type": "column",
+        "value": "="
+      },
+      {
+        "type": "column",
+        "value": "o.owner_id"
+      },
+      {
+        "type": "keyword",
+        "value": "WHERE"
+      },
+      {
+        "type": "column",
+        "value": "p.species"
+      },
+      {
+        "type": "column",
+        "value": "="
+      },
+      {
+        "type": "column",
+        "value": "'Canine';"
+      }
+    ]
+  },
+  {
+    "drillNumber": 661,
+    "subcluster": "7.7 Sorting Joined Data Across Both Tables (ORDER BY)",
+    "level": "Level 2 (Joined Ordering)",
+    "title": "Syntax #661: Order enrolled students alphabetically by student name, then by course name",
+    "table": "Students",
+    "scenario": "Order enrolled students alphabetically by student name, then by course name.",
+    "businessObjective": "Order enrolled students alphabetically by student name, then by course name.",
+    "schemaSnippet": "Students relational schema",
+    "targetQuery": "SELECT s.full_name, c.course_name\nFROM Students s\nINNER JOIN Courses c ON s.student_id = c.student_id\nORDER BY s.full_name ASC, c.course_name ASC;",
+    "syntaxBlueprint": "SELECT a.col, b.col\nFROM TableA a\nJOIN TableB b ON a.id = b.a_id\nORDER BY a.name ASC, b.metric DESC;",
+    "syntaxRule": "In joined queries, ORDER BY can sort by columns from table A, table B, or any combination of both.",
+    "syntaxTrap": "Sorting by an unqualified column name that exists in both tables will throw an ambiguity error.",
+    "eli5Story": "Relational Joins on Students: Order enrolled students alphabetically by student name, then by course name.",
+    "commonMistakes": "Omitting the ON clause, forgetting table alias qualification on ambiguous columns, or accidentally converting LEFT JOIN to INNER JOIN via WHERE filters.",
+    "learningOutcomes": "Mastered 7.7 Sorting Joined Data Across Both Tables (ORDER BY) on Students.",
+    "challengeSlots": [
+      {
+        "type": "keyword",
+        "value": "SELECT"
+      },
+      {
+        "type": "column",
+        "value": "s.full_name,"
+      },
+      {
+        "type": "column",
+        "value": "c.course_name"
+      },
+      {
+        "type": "keyword",
+        "value": "FROM"
+      },
+      {
+        "type": "table",
+        "value": "Students"
+      },
+      {
+        "type": "column",
+        "value": "s"
+      },
+      {
+        "type": "keyword",
+        "value": "INNER"
+      },
+      {
+        "type": "keyword",
+        "value": "JOIN"
+      },
+      {
+        "type": "table",
+        "value": "Courses"
+      },
+      {
+        "type": "column",
+        "value": "c"
+      },
+      {
+        "type": "keyword",
+        "value": "ON"
+      },
+      {
+        "type": "column",
+        "value": "s.student_id"
+      },
+      {
+        "type": "column",
+        "value": "="
+      },
+      {
+        "type": "column",
+        "value": "c.student_id"
+      },
+      {
+        "type": "keyword",
+        "value": "ORDER"
+      },
+      {
+        "type": "keyword",
+        "value": "BY"
+      },
+      {
+        "type": "column",
+        "value": "s.full_name"
+      },
+      {
+        "type": "keyword",
+        "value": "ASC,"
+      },
+      {
+        "type": "column",
+        "value": "c.course_name"
+      },
+      {
+        "type": "keyword",
+        "value": "ASC;"
+      }
+    ]
+  },
+  {
+    "drillNumber": 662,
+    "subcluster": "7.7 Sorting Joined Data Across Both Tables (ORDER BY)",
+    "level": "Level 2 (Joined Ordering)",
+    "title": "Syntax #662: Sort library catalog primarily by author name, then by book title",
+    "table": "Books",
+    "scenario": "Sort library catalog primarily by author name, then by book title.",
+    "businessObjective": "Sort library catalog primarily by author name, then by book title.",
+    "schemaSnippet": "Books relational schema",
+    "targetQuery": "SELECT b.title, a.author_name\nFROM Books b\nINNER JOIN Authors a ON b.author_id = a.author_id\nORDER BY a.author_name ASC, b.title ASC;",
+    "syntaxBlueprint": "SELECT a.col, b.col\nFROM TableA a\nJOIN TableB b ON a.id = b.a_id\nORDER BY a.name ASC, b.metric DESC;",
+    "syntaxRule": "In joined queries, ORDER BY can sort by columns from table A, table B, or any combination of both.",
+    "syntaxTrap": "Sorting by an unqualified column name that exists in both tables will throw an ambiguity error.",
+    "eli5Story": "Relational Joins on Books: Sort library catalog primarily by author name, then by book title.",
+    "commonMistakes": "Omitting the ON clause, forgetting table alias qualification on ambiguous columns, or accidentally converting LEFT JOIN to INNER JOIN via WHERE filters.",
+    "learningOutcomes": "Mastered 7.7 Sorting Joined Data Across Both Tables (ORDER BY) on Books.",
+    "challengeSlots": [
+      {
+        "type": "keyword",
+        "value": "SELECT"
+      },
+      {
+        "type": "column",
+        "value": "b.title,"
+      },
+      {
+        "type": "column",
+        "value": "a.author_name"
+      },
+      {
+        "type": "keyword",
+        "value": "FROM"
+      },
+      {
+        "type": "table",
+        "value": "Books"
+      },
+      {
+        "type": "column",
+        "value": "b"
+      },
+      {
+        "type": "keyword",
+        "value": "INNER"
+      },
+      {
+        "type": "keyword",
+        "value": "JOIN"
+      },
+      {
+        "type": "table",
+        "value": "Authors"
+      },
+      {
+        "type": "column",
+        "value": "a"
+      },
+      {
+        "type": "keyword",
+        "value": "ON"
+      },
+      {
+        "type": "column",
+        "value": "b.author_id"
+      },
+      {
+        "type": "column",
+        "value": "="
+      },
+      {
+        "type": "column",
+        "value": "a.author_id"
+      },
+      {
+        "type": "keyword",
+        "value": "ORDER"
+      },
+      {
+        "type": "keyword",
+        "value": "BY"
+      },
+      {
+        "type": "column",
+        "value": "a.author_name"
+      },
+      {
+        "type": "keyword",
+        "value": "ASC,"
+      },
+      {
+        "type": "column",
+        "value": "b.title"
+      },
+      {
+        "type": "keyword",
+        "value": "ASC;"
+      }
+    ]
+  },
+  {
+    "drillNumber": 663,
+    "subcluster": "7.7 Sorting Joined Data Across Both Tables (ORDER BY)",
+    "level": "Level 2 (Joined Ordering)",
+    "title": "Syntax #663: List employees grouped by department name and sorted by highest salary first",
+    "table": "Employees",
+    "scenario": "List employees grouped by department name and sorted by highest salary first.",
+    "businessObjective": "List employees grouped by department name and sorted by highest salary first.",
+    "schemaSnippet": "Employees relational schema",
+    "targetQuery": "SELECT e.first_name, d.department_name, e.salary\nFROM Employees e\nINNER JOIN Departments d ON e.department_id = d.department_id\nORDER BY d.department_name ASC, e.salary DESC;",
+    "syntaxBlueprint": "SELECT a.col, b.col\nFROM TableA a\nJOIN TableB b ON a.id = b.a_id\nORDER BY a.name ASC, b.metric DESC;",
+    "syntaxRule": "In joined queries, ORDER BY can sort by columns from table A, table B, or any combination of both.",
+    "syntaxTrap": "Sorting by an unqualified column name that exists in both tables will throw an ambiguity error.",
+    "eli5Story": "Relational Joins on Employees: List employees grouped by department name and sorted by highest salary first.",
+    "commonMistakes": "Omitting the ON clause, forgetting table alias qualification on ambiguous columns, or accidentally converting LEFT JOIN to INNER JOIN via WHERE filters.",
+    "learningOutcomes": "Mastered 7.7 Sorting Joined Data Across Both Tables (ORDER BY) on Employees.",
+    "challengeSlots": [
+      {
+        "type": "keyword",
+        "value": "SELECT"
+      },
+      {
+        "type": "column",
+        "value": "e.first_name,"
+      },
+      {
+        "type": "column",
+        "value": "d.department_name,"
+      },
+      {
+        "type": "column",
+        "value": "e.salary"
+      },
+      {
+        "type": "keyword",
+        "value": "FROM"
+      },
+      {
+        "type": "table",
+        "value": "Employees"
+      },
+      {
+        "type": "column",
+        "value": "e"
+      },
+      {
+        "type": "keyword",
+        "value": "INNER"
+      },
+      {
+        "type": "keyword",
+        "value": "JOIN"
+      },
+      {
+        "type": "table",
+        "value": "Departments"
+      },
+      {
+        "type": "column",
+        "value": "d"
+      },
+      {
+        "type": "keyword",
+        "value": "ON"
+      },
+      {
+        "type": "column",
+        "value": "e.department_id"
+      },
+      {
+        "type": "column",
+        "value": "="
+      },
+      {
+        "type": "column",
+        "value": "d.department_id"
+      },
+      {
+        "type": "keyword",
+        "value": "ORDER"
+      },
+      {
+        "type": "keyword",
+        "value": "BY"
+      },
+      {
+        "type": "column",
+        "value": "d.department_name"
+      },
+      {
+        "type": "keyword",
+        "value": "ASC,"
+      },
+      {
+        "type": "column",
+        "value": "e.salary"
+      },
+      {
+        "type": "keyword",
+        "value": "DESC;"
+      }
+    ]
+  },
+  {
+    "drillNumber": 664,
+    "subcluster": "7.7 Sorting Joined Data Across Both Tables (ORDER BY)",
+    "level": "Level 2 (Joined Ordering)",
+    "title": "Syntax #664: Sort grocery inventory by supplier name, then by cheapest item first",
+    "table": "GroceryItems",
+    "scenario": "Sort grocery inventory by supplier name, then by cheapest item first.",
+    "businessObjective": "Sort grocery inventory by supplier name, then by cheapest item first.",
+    "schemaSnippet": "GroceryItems relational schema",
+    "targetQuery": "SELECT g.item_name, s.supplier_name, g.unit_price\nFROM GroceryItems g\nINNER JOIN Suppliers s ON g.supplier_id = s.supplier_id\nORDER BY s.supplier_name ASC, g.unit_price ASC;",
+    "syntaxBlueprint": "SELECT a.col, b.col\nFROM TableA a\nJOIN TableB b ON a.id = b.a_id\nORDER BY a.name ASC, b.metric DESC;",
+    "syntaxRule": "In joined queries, ORDER BY can sort by columns from table A, table B, or any combination of both.",
+    "syntaxTrap": "Sorting by an unqualified column name that exists in both tables will throw an ambiguity error.",
+    "eli5Story": "Relational Joins on GroceryItems: Sort grocery inventory by supplier name, then by cheapest item first.",
+    "commonMistakes": "Omitting the ON clause, forgetting table alias qualification on ambiguous columns, or accidentally converting LEFT JOIN to INNER JOIN via WHERE filters.",
+    "learningOutcomes": "Mastered 7.7 Sorting Joined Data Across Both Tables (ORDER BY) on GroceryItems.",
+    "challengeSlots": [
+      {
+        "type": "keyword",
+        "value": "SELECT"
+      },
+      {
+        "type": "column",
+        "value": "g.item_name,"
+      },
+      {
+        "type": "column",
+        "value": "s.supplier_name,"
+      },
+      {
+        "type": "column",
+        "value": "g.unit_price"
+      },
+      {
+        "type": "keyword",
+        "value": "FROM"
+      },
+      {
+        "type": "table",
+        "value": "GroceryItems"
+      },
+      {
+        "type": "column",
+        "value": "g"
+      },
+      {
+        "type": "keyword",
+        "value": "INNER"
+      },
+      {
+        "type": "keyword",
+        "value": "JOIN"
+      },
+      {
+        "type": "table",
+        "value": "Suppliers"
+      },
+      {
+        "type": "column",
+        "value": "s"
+      },
+      {
+        "type": "keyword",
+        "value": "ON"
+      },
+      {
+        "type": "column",
+        "value": "g.supplier_id"
+      },
+      {
+        "type": "column",
+        "value": "="
+      },
+      {
+        "type": "column",
+        "value": "s.supplier_id"
+      },
+      {
+        "type": "keyword",
+        "value": "ORDER"
+      },
+      {
+        "type": "keyword",
+        "value": "BY"
+      },
+      {
+        "type": "column",
+        "value": "s.supplier_name"
+      },
+      {
+        "type": "keyword",
+        "value": "ASC,"
+      },
+      {
+        "type": "column",
+        "value": "g.unit_price"
+      },
+      {
+        "type": "keyword",
+        "value": "ASC;"
+      }
+    ]
+  },
+  {
+    "drillNumber": 665,
+    "subcluster": "7.7 Sorting Joined Data Across Both Tables (ORDER BY)",
+    "level": "Level 2 (Joined Ordering)",
+    "title": "Syntax #665: Order customer orders alphabetically by customer name, then by newest order ID",
+    "table": "Orders",
+    "scenario": "Order customer orders alphabetically by customer name, then by newest order ID.",
+    "businessObjective": "Order customer orders alphabetically by customer name, then by newest order ID.",
+    "schemaSnippet": "Orders relational schema",
+    "targetQuery": "SELECT o.order_id, c.customer_name, o.order_id\nFROM Orders o\nINNER JOIN Customers c ON o.customer_id = c.customer_id\nORDER BY c.customer_name ASC, o.order_id DESC;",
+    "syntaxBlueprint": "SELECT a.col, b.col\nFROM TableA a\nJOIN TableB b ON a.id = b.a_id\nORDER BY a.name ASC, b.metric DESC;",
+    "syntaxRule": "In joined queries, ORDER BY can sort by columns from table A, table B, or any combination of both.",
+    "syntaxTrap": "Sorting by an unqualified column name that exists in both tables will throw an ambiguity error.",
+    "eli5Story": "Relational Joins on Orders: Order customer orders alphabetically by customer name, then by newest order ID.",
+    "commonMistakes": "Omitting the ON clause, forgetting table alias qualification on ambiguous columns, or accidentally converting LEFT JOIN to INNER JOIN via WHERE filters.",
+    "learningOutcomes": "Mastered 7.7 Sorting Joined Data Across Both Tables (ORDER BY) on Orders.",
+    "challengeSlots": [
+      {
+        "type": "keyword",
+        "value": "SELECT"
+      },
+      {
+        "type": "column",
+        "value": "o.order_id,"
+      },
+      {
+        "type": "column",
+        "value": "c.customer_name,"
+      },
+      {
+        "type": "column",
+        "value": "o.order_id"
+      },
+      {
+        "type": "keyword",
+        "value": "FROM"
+      },
+      {
+        "type": "table",
+        "value": "Orders"
+      },
+      {
+        "type": "column",
+        "value": "o"
+      },
+      {
+        "type": "keyword",
+        "value": "INNER"
+      },
+      {
+        "type": "keyword",
+        "value": "JOIN"
+      },
+      {
+        "type": "table",
+        "value": "Customers"
+      },
+      {
+        "type": "column",
+        "value": "c"
+      },
+      {
+        "type": "keyword",
+        "value": "ON"
+      },
+      {
+        "type": "column",
+        "value": "o.customer_id"
+      },
+      {
+        "type": "column",
+        "value": "="
+      },
+      {
+        "type": "column",
+        "value": "c.customer_id"
+      },
+      {
+        "type": "keyword",
+        "value": "ORDER"
+      },
+      {
+        "type": "keyword",
+        "value": "BY"
+      },
+      {
+        "type": "column",
+        "value": "c.customer_name"
+      },
+      {
+        "type": "keyword",
+        "value": "ASC,"
+      },
+      {
+        "type": "column",
+        "value": "o.order_id"
+      },
+      {
+        "type": "keyword",
+        "value": "DESC;"
+      }
+    ]
+  },
+  {
+    "drillNumber": 666,
+    "subcluster": "7.7 Sorting Joined Data Across Both Tables (ORDER BY)",
+    "level": "Level 2 (Joined Ordering)",
+    "title": "Syntax #666: Sort music tracks by album title, then by longest track duration",
+    "table": "MusicTracks",
+    "scenario": "Sort music tracks by album title, then by longest track duration.",
+    "businessObjective": "Sort music tracks by album title, then by longest track duration.",
+    "schemaSnippet": "MusicTracks relational schema",
+    "targetQuery": "SELECT t.track_title, a.album_title, t.duration_seconds\nFROM MusicTracks t\nINNER JOIN Albums a ON t.album_id = a.album_id\nORDER BY a.album_title ASC, t.duration_seconds DESC;",
+    "syntaxBlueprint": "SELECT a.col, b.col\nFROM TableA a\nJOIN TableB b ON a.id = b.a_id\nORDER BY a.name ASC, b.metric DESC;",
+    "syntaxRule": "In joined queries, ORDER BY can sort by columns from table A, table B, or any combination of both.",
+    "syntaxTrap": "Sorting by an unqualified column name that exists in both tables will throw an ambiguity error.",
+    "eli5Story": "Relational Joins on MusicTracks: Sort music tracks by album title, then by longest track duration.",
+    "commonMistakes": "Omitting the ON clause, forgetting table alias qualification on ambiguous columns, or accidentally converting LEFT JOIN to INNER JOIN via WHERE filters.",
+    "learningOutcomes": "Mastered 7.7 Sorting Joined Data Across Both Tables (ORDER BY) on MusicTracks.",
+    "challengeSlots": [
+      {
+        "type": "keyword",
+        "value": "SELECT"
+      },
+      {
+        "type": "column",
+        "value": "t.track_title,"
+      },
+      {
+        "type": "column",
+        "value": "a.album_title,"
+      },
+      {
+        "type": "column",
+        "value": "t.duration_seconds"
+      },
+      {
+        "type": "keyword",
+        "value": "FROM"
+      },
+      {
+        "type": "table",
+        "value": "MusicTracks"
+      },
+      {
+        "type": "column",
+        "value": "t"
+      },
+      {
+        "type": "keyword",
+        "value": "INNER"
+      },
+      {
+        "type": "keyword",
+        "value": "JOIN"
+      },
+      {
+        "type": "table",
+        "value": "Albums"
+      },
+      {
+        "type": "column",
+        "value": "a"
+      },
+      {
+        "type": "keyword",
+        "value": "ON"
+      },
+      {
+        "type": "column",
+        "value": "t.album_id"
+      },
+      {
+        "type": "column",
+        "value": "="
+      },
+      {
+        "type": "column",
+        "value": "a.album_id"
+      },
+      {
+        "type": "keyword",
+        "value": "ORDER"
+      },
+      {
+        "type": "keyword",
+        "value": "BY"
+      },
+      {
+        "type": "column",
+        "value": "a.album_title"
+      },
+      {
+        "type": "keyword",
+        "value": "ASC,"
+      },
+      {
+        "type": "column",
+        "value": "t.duration_seconds"
+      },
+      {
+        "type": "keyword",
+        "value": "DESC;"
+      }
+    ]
+  },
+  {
+    "drillNumber": 667,
+    "subcluster": "7.7 Sorting Joined Data Across Both Tables (ORDER BY)",
+    "level": "Level 2 (Joined Ordering)",
+    "title": "Syntax #667: Order members by trainer name, then by most veteran membership join date",
+    "table": "GymMembers",
+    "scenario": "Order members by trainer name, then by most veteran membership join date.",
+    "businessObjective": "Order members by trainer name, then by most veteran membership join date.",
+    "schemaSnippet": "GymMembers relational schema",
+    "targetQuery": "SELECT m.member_name, tr.trainer_name, m.join_date\nFROM GymMembers m\nINNER JOIN Trainers tr ON m.trainer_id = tr.trainer_id\nORDER BY tr.trainer_name ASC, m.join_date ASC;",
+    "syntaxBlueprint": "SELECT a.col, b.col\nFROM TableA a\nJOIN TableB b ON a.id = b.a_id\nORDER BY a.name ASC, b.metric DESC;",
+    "syntaxRule": "In joined queries, ORDER BY can sort by columns from table A, table B, or any combination of both.",
+    "syntaxTrap": "Sorting by an unqualified column name that exists in both tables will throw an ambiguity error.",
+    "eli5Story": "Relational Joins on GymMembers: Order members by trainer name, then by most veteran membership join date.",
+    "commonMistakes": "Omitting the ON clause, forgetting table alias qualification on ambiguous columns, or accidentally converting LEFT JOIN to INNER JOIN via WHERE filters.",
+    "learningOutcomes": "Mastered 7.7 Sorting Joined Data Across Both Tables (ORDER BY) on GymMembers.",
+    "challengeSlots": [
+      {
+        "type": "keyword",
+        "value": "SELECT"
+      },
+      {
+        "type": "column",
+        "value": "m.member_name,"
+      },
+      {
+        "type": "column",
+        "value": "tr.trainer_name,"
+      },
+      {
+        "type": "column",
+        "value": "m.join_date"
+      },
+      {
+        "type": "keyword",
+        "value": "FROM"
+      },
+      {
+        "type": "table",
+        "value": "GymMembers"
+      },
+      {
+        "type": "column",
+        "value": "m"
+      },
+      {
+        "type": "keyword",
+        "value": "INNER"
+      },
+      {
+        "type": "keyword",
+        "value": "JOIN"
+      },
+      {
+        "type": "table",
+        "value": "Trainers"
+      },
+      {
+        "type": "column",
+        "value": "tr"
+      },
+      {
+        "type": "keyword",
+        "value": "ON"
+      },
+      {
+        "type": "column",
+        "value": "m.trainer_id"
+      },
+      {
+        "type": "column",
+        "value": "="
+      },
+      {
+        "type": "column",
+        "value": "tr.trainer_id"
+      },
+      {
+        "type": "keyword",
+        "value": "ORDER"
+      },
+      {
+        "type": "keyword",
+        "value": "BY"
+      },
+      {
+        "type": "column",
+        "value": "tr.trainer_name"
+      },
+      {
+        "type": "keyword",
+        "value": "ASC,"
+      },
+      {
+        "type": "column",
+        "value": "m.join_date"
+      },
+      {
+        "type": "keyword",
+        "value": "ASC;"
+      }
+    ]
+  },
+  {
+    "drillNumber": 668,
+    "subcluster": "7.7 Sorting Joined Data Across Both Tables (ORDER BY)",
+    "level": "Level 2 (Joined Ordering)",
+    "title": "Syntax #668: Order reviews alphabetically by film title, then by highest star rating first",
+    "table": "MovieReviews",
+    "scenario": "Order reviews alphabetically by film title, then by highest star rating first.",
+    "businessObjective": "Order reviews alphabetically by film title, then by highest star rating first.",
+    "schemaSnippet": "MovieReviews relational schema",
+    "targetQuery": "SELECT m.movie_title, r.star_rating\nFROM MovieReviews r\nINNER JOIN Movies m ON r.movie_id = m.movie_id\nORDER BY m.movie_title ASC, r.star_rating DESC;",
+    "syntaxBlueprint": "SELECT a.col, b.col\nFROM TableA a\nJOIN TableB b ON a.id = b.a_id\nORDER BY a.name ASC, b.metric DESC;",
+    "syntaxRule": "In joined queries, ORDER BY can sort by columns from table A, table B, or any combination of both.",
+    "syntaxTrap": "Sorting by an unqualified column name that exists in both tables will throw an ambiguity error.",
+    "eli5Story": "Relational Joins on MovieReviews: Order reviews alphabetically by film title, then by highest star rating first.",
+    "commonMistakes": "Omitting the ON clause, forgetting table alias qualification on ambiguous columns, or accidentally converting LEFT JOIN to INNER JOIN via WHERE filters.",
+    "learningOutcomes": "Mastered 7.7 Sorting Joined Data Across Both Tables (ORDER BY) on MovieReviews.",
+    "challengeSlots": [
+      {
+        "type": "keyword",
+        "value": "SELECT"
+      },
+      {
+        "type": "column",
+        "value": "m.movie_title,"
+      },
+      {
+        "type": "column",
+        "value": "r.star_rating"
+      },
+      {
+        "type": "keyword",
+        "value": "FROM"
+      },
+      {
+        "type": "table",
+        "value": "MovieReviews"
+      },
+      {
+        "type": "column",
+        "value": "r"
+      },
+      {
+        "type": "keyword",
+        "value": "INNER"
+      },
+      {
+        "type": "keyword",
+        "value": "JOIN"
+      },
+      {
+        "type": "table",
+        "value": "Movies"
+      },
+      {
+        "type": "column",
+        "value": "m"
+      },
+      {
+        "type": "keyword",
+        "value": "ON"
+      },
+      {
+        "type": "column",
+        "value": "r.movie_id"
+      },
+      {
+        "type": "column",
+        "value": "="
+      },
+      {
+        "type": "column",
+        "value": "m.movie_id"
+      },
+      {
+        "type": "keyword",
+        "value": "ORDER"
+      },
+      {
+        "type": "keyword",
+        "value": "BY"
+      },
+      {
+        "type": "column",
+        "value": "m.movie_title"
+      },
+      {
+        "type": "keyword",
+        "value": "ASC,"
+      },
+      {
+        "type": "column",
+        "value": "r.star_rating"
+      },
+      {
+        "type": "keyword",
+        "value": "DESC;"
+      }
+    ]
+  },
+  {
+    "drillNumber": 669,
+    "subcluster": "7.7 Sorting Joined Data Across Both Tables (ORDER BY)",
+    "level": "Level 2 (Joined Ordering)",
+    "title": "Syntax #669: Sort flight schedule by airline name, then chronologically by departure time",
+    "table": "FlightSchedule",
+    "scenario": "Sort flight schedule by airline name, then chronologically by departure time.",
+    "businessObjective": "Sort flight schedule by airline name, then chronologically by departure time.",
+    "schemaSnippet": "FlightSchedule relational schema",
+    "targetQuery": "SELECT f.flight_id, al.airline_name, f.departure_time\nFROM FlightSchedule f\nINNER JOIN Airlines al ON f.airline_id = al.airline_id\nORDER BY al.airline_name ASC, f.departure_time ASC;",
+    "syntaxBlueprint": "SELECT a.col, b.col\nFROM TableA a\nJOIN TableB b ON a.id = b.a_id\nORDER BY a.name ASC, b.metric DESC;",
+    "syntaxRule": "In joined queries, ORDER BY can sort by columns from table A, table B, or any combination of both.",
+    "syntaxTrap": "Sorting by an unqualified column name that exists in both tables will throw an ambiguity error.",
+    "eli5Story": "Relational Joins on FlightSchedule: Sort flight schedule by airline name, then chronologically by departure time.",
+    "commonMistakes": "Omitting the ON clause, forgetting table alias qualification on ambiguous columns, or accidentally converting LEFT JOIN to INNER JOIN via WHERE filters.",
+    "learningOutcomes": "Mastered 7.7 Sorting Joined Data Across Both Tables (ORDER BY) on FlightSchedule.",
+    "challengeSlots": [
+      {
+        "type": "keyword",
+        "value": "SELECT"
+      },
+      {
+        "type": "column",
+        "value": "f.flight_id,"
+      },
+      {
+        "type": "column",
+        "value": "al.airline_name,"
+      },
+      {
+        "type": "column",
+        "value": "f.departure_time"
+      },
+      {
+        "type": "keyword",
+        "value": "FROM"
+      },
+      {
+        "type": "table",
+        "value": "FlightSchedule"
+      },
+      {
+        "type": "column",
+        "value": "f"
+      },
+      {
+        "type": "keyword",
+        "value": "INNER"
+      },
+      {
+        "type": "keyword",
+        "value": "JOIN"
+      },
+      {
+        "type": "table",
+        "value": "Airlines"
+      },
+      {
+        "type": "column",
+        "value": "al"
+      },
+      {
+        "type": "keyword",
+        "value": "ON"
+      },
+      {
+        "type": "column",
+        "value": "f.airline_id"
+      },
+      {
+        "type": "column",
+        "value": "="
+      },
+      {
+        "type": "column",
+        "value": "al.airline_id"
+      },
+      {
+        "type": "keyword",
+        "value": "ORDER"
+      },
+      {
+        "type": "keyword",
+        "value": "BY"
+      },
+      {
+        "type": "column",
+        "value": "al.airline_name"
+      },
+      {
+        "type": "keyword",
+        "value": "ASC,"
+      },
+      {
+        "type": "column",
+        "value": "f.departure_time"
+      },
+      {
+        "type": "keyword",
+        "value": "ASC;"
+      }
+    ]
+  },
+  {
+    "drillNumber": 670,
+    "subcluster": "7.7 Sorting Joined Data Across Both Tables (ORDER BY)",
+    "level": "Level 2 (Joined Ordering)",
+    "title": "Syntax #670: Sort veterinary patients by owner name, then by heaviest pet first",
+    "table": "PetClinic",
+    "scenario": "Sort veterinary patients by owner name, then by heaviest pet first.",
+    "businessObjective": "Sort veterinary patients by owner name, then by heaviest pet first.",
+    "schemaSnippet": "PetClinic relational schema",
+    "targetQuery": "SELECT p.pet_name, o.owner_name, p.weight_kg\nFROM PetClinic p\nINNER JOIN Owners o ON p.owner_id = o.owner_id\nORDER BY o.owner_name ASC, p.weight_kg DESC;",
+    "syntaxBlueprint": "SELECT a.col, b.col\nFROM TableA a\nJOIN TableB b ON a.id = b.a_id\nORDER BY a.name ASC, b.metric DESC;",
+    "syntaxRule": "In joined queries, ORDER BY can sort by columns from table A, table B, or any combination of both.",
+    "syntaxTrap": "Sorting by an unqualified column name that exists in both tables will throw an ambiguity error.",
+    "eli5Story": "Relational Joins on PetClinic: Sort veterinary patients by owner name, then by heaviest pet first.",
+    "commonMistakes": "Omitting the ON clause, forgetting table alias qualification on ambiguous columns, or accidentally converting LEFT JOIN to INNER JOIN via WHERE filters.",
+    "learningOutcomes": "Mastered 7.7 Sorting Joined Data Across Both Tables (ORDER BY) on PetClinic.",
+    "challengeSlots": [
+      {
+        "type": "keyword",
+        "value": "SELECT"
+      },
+      {
+        "type": "column",
+        "value": "p.pet_name,"
+      },
+      {
+        "type": "column",
+        "value": "o.owner_name,"
+      },
+      {
+        "type": "column",
+        "value": "p.weight_kg"
+      },
+      {
+        "type": "keyword",
+        "value": "FROM"
+      },
+      {
+        "type": "table",
+        "value": "PetClinic"
+      },
+      {
+        "type": "column",
+        "value": "p"
+      },
+      {
+        "type": "keyword",
+        "value": "INNER"
+      },
+      {
+        "type": "keyword",
+        "value": "JOIN"
+      },
+      {
+        "type": "table",
+        "value": "Owners"
+      },
+      {
+        "type": "column",
+        "value": "o"
+      },
+      {
+        "type": "keyword",
+        "value": "ON"
+      },
+      {
+        "type": "column",
+        "value": "p.owner_id"
+      },
+      {
+        "type": "column",
+        "value": "="
+      },
+      {
+        "type": "column",
+        "value": "o.owner_id"
+      },
+      {
+        "type": "keyword",
+        "value": "ORDER"
+      },
+      {
+        "type": "keyword",
+        "value": "BY"
+      },
+      {
+        "type": "column",
+        "value": "o.owner_name"
+      },
+      {
+        "type": "keyword",
+        "value": "ASC,"
+      },
+      {
+        "type": "column",
+        "value": "p.weight_kg"
+      },
+      {
+        "type": "keyword",
+        "value": "DESC;"
+      }
+    ]
+  },
+  {
+    "drillNumber": 671,
+    "subcluster": "7.8 Slicing Joined Results with LIMIT",
+    "level": "Level 2 (Joined Slicing)",
+    "title": "Syntax #671: Retrieve the first 5 joined student enrollment records",
+    "table": "Students",
+    "scenario": "Retrieve the first 5 joined student enrollment records.",
+    "businessObjective": "Retrieve the first 5 joined student enrollment records.",
+    "schemaSnippet": "Students relational schema",
+    "targetQuery": "SELECT s.full_name, c.course_name\nFROM Students s\nINNER JOIN Courses c ON s.student_id = c.student_id\nORDER BY s.student_id ASC\nLIMIT 5;",
+    "syntaxBlueprint": "SELECT a.col, b.col\nFROM TableA a\nJOIN TableB b ON a.id = b.a_id\nORDER BY b.ranking DESC\nLIMIT 5;",
+    "syntaxRule": "LIMIT restricts the final row count of the joined output after all ON matching, WHERE filtering, and ORDER BY sorting are applied.",
+    "syntaxTrap": "Using LIMIT without ORDER BY returns non-deterministic results.",
+    "eli5Story": "Relational Joins on Students: Retrieve the first 5 joined student enrollment records.",
+    "commonMistakes": "Omitting the ON clause, forgetting table alias qualification on ambiguous columns, or accidentally converting LEFT JOIN to INNER JOIN via WHERE filters.",
+    "learningOutcomes": "Mastered 7.8 Slicing Joined Results with LIMIT on Students.",
+    "challengeSlots": [
+      {
+        "type": "keyword",
+        "value": "SELECT"
+      },
+      {
+        "type": "column",
+        "value": "s.full_name,"
+      },
+      {
+        "type": "column",
+        "value": "c.course_name"
+      },
+      {
+        "type": "keyword",
+        "value": "FROM"
+      },
+      {
+        "type": "table",
+        "value": "Students"
+      },
+      {
+        "type": "column",
+        "value": "s"
+      },
+      {
+        "type": "keyword",
+        "value": "INNER"
+      },
+      {
+        "type": "keyword",
+        "value": "JOIN"
+      },
+      {
+        "type": "table",
+        "value": "Courses"
+      },
+      {
+        "type": "column",
+        "value": "c"
+      },
+      {
+        "type": "keyword",
+        "value": "ON"
+      },
+      {
+        "type": "column",
+        "value": "s.student_id"
+      },
+      {
+        "type": "column",
+        "value": "="
+      },
+      {
+        "type": "column",
+        "value": "c.student_id"
+      },
+      {
+        "type": "keyword",
+        "value": "ORDER"
+      },
+      {
+        "type": "keyword",
+        "value": "BY"
+      },
+      {
+        "type": "column",
+        "value": "s.student_id"
+      },
+      {
+        "type": "keyword",
+        "value": "ASC"
+      },
+      {
+        "type": "keyword",
+        "value": "LIMIT"
+      },
+      {
+        "type": "column",
+        "value": "5;"
+      }
+    ]
+  },
+  {
+    "drillNumber": 672,
+    "subcluster": "7.8 Slicing Joined Results with LIMIT",
+    "level": "Level 2 (Joined Slicing)",
+    "title": "Syntax #672: Find the 3 most recently published books along with their author names",
+    "table": "Books",
+    "scenario": "Find the 3 most recently published books along with their author names.",
+    "businessObjective": "Find the 3 most recently published books along with their author names.",
+    "schemaSnippet": "Books relational schema",
+    "targetQuery": "SELECT b.title, a.author_name\nFROM Books b\nINNER JOIN Authors a ON b.author_id = a.author_id\nORDER BY b.published_year DESC\nLIMIT 3;",
+    "syntaxBlueprint": "SELECT a.col, b.col\nFROM TableA a\nJOIN TableB b ON a.id = b.a_id\nORDER BY b.ranking DESC\nLIMIT 5;",
+    "syntaxRule": "LIMIT restricts the final row count of the joined output after all ON matching, WHERE filtering, and ORDER BY sorting are applied.",
+    "syntaxTrap": "Using LIMIT without ORDER BY returns non-deterministic results.",
+    "eli5Story": "Relational Joins on Books: Find the 3 most recently published books along with their author names.",
+    "commonMistakes": "Omitting the ON clause, forgetting table alias qualification on ambiguous columns, or accidentally converting LEFT JOIN to INNER JOIN via WHERE filters.",
+    "learningOutcomes": "Mastered 7.8 Slicing Joined Results with LIMIT on Books.",
+    "challengeSlots": [
+      {
+        "type": "keyword",
+        "value": "SELECT"
+      },
+      {
+        "type": "column",
+        "value": "b.title,"
+      },
+      {
+        "type": "column",
+        "value": "a.author_name"
+      },
+      {
+        "type": "keyword",
+        "value": "FROM"
+      },
+      {
+        "type": "table",
+        "value": "Books"
+      },
+      {
+        "type": "column",
+        "value": "b"
+      },
+      {
+        "type": "keyword",
+        "value": "INNER"
+      },
+      {
+        "type": "keyword",
+        "value": "JOIN"
+      },
+      {
+        "type": "table",
+        "value": "Authors"
+      },
+      {
+        "type": "column",
+        "value": "a"
+      },
+      {
+        "type": "keyword",
+        "value": "ON"
+      },
+      {
+        "type": "column",
+        "value": "b.author_id"
+      },
+      {
+        "type": "column",
+        "value": "="
+      },
+      {
+        "type": "column",
+        "value": "a.author_id"
+      },
+      {
+        "type": "keyword",
+        "value": "ORDER"
+      },
+      {
+        "type": "keyword",
+        "value": "BY"
+      },
+      {
+        "type": "column",
+        "value": "b.published_year"
+      },
+      {
+        "type": "keyword",
+        "value": "DESC"
+      },
+      {
+        "type": "keyword",
+        "value": "LIMIT"
+      },
+      {
+        "type": "column",
+        "value": "3;"
+      }
+    ]
+  },
+  {
+    "drillNumber": 673,
+    "subcluster": "7.8 Slicing Joined Results with LIMIT",
+    "level": "Level 2 (Joined Slicing)",
+    "title": "Syntax #673: Identify the top 5 highest-paid employees across all corporate departments",
+    "table": "Employees",
+    "scenario": "Identify the top 5 highest-paid employees across all corporate departments.",
+    "businessObjective": "Identify the top 5 highest-paid employees across all corporate departments.",
+    "schemaSnippet": "Employees relational schema",
+    "targetQuery": "SELECT e.first_name, d.department_name, e.salary\nFROM Employees e\nINNER JOIN Departments d ON e.department_id = d.department_id\nORDER BY e.salary DESC\nLIMIT 5;",
+    "syntaxBlueprint": "SELECT a.col, b.col\nFROM TableA a\nJOIN TableB b ON a.id = b.a_id\nORDER BY b.ranking DESC\nLIMIT 5;",
+    "syntaxRule": "LIMIT restricts the final row count of the joined output after all ON matching, WHERE filtering, and ORDER BY sorting are applied.",
+    "syntaxTrap": "Using LIMIT without ORDER BY returns non-deterministic results.",
+    "eli5Story": "Relational Joins on Employees: Identify the top 5 highest-paid employees across all corporate departments.",
+    "commonMistakes": "Omitting the ON clause, forgetting table alias qualification on ambiguous columns, or accidentally converting LEFT JOIN to INNER JOIN via WHERE filters.",
+    "learningOutcomes": "Mastered 7.8 Slicing Joined Results with LIMIT on Employees.",
+    "challengeSlots": [
+      {
+        "type": "keyword",
+        "value": "SELECT"
+      },
+      {
+        "type": "column",
+        "value": "e.first_name,"
+      },
+      {
+        "type": "column",
+        "value": "d.department_name,"
+      },
+      {
+        "type": "column",
+        "value": "e.salary"
+      },
+      {
+        "type": "keyword",
+        "value": "FROM"
+      },
+      {
+        "type": "table",
+        "value": "Employees"
+      },
+      {
+        "type": "column",
+        "value": "e"
+      },
+      {
+        "type": "keyword",
+        "value": "INNER"
+      },
+      {
+        "type": "keyword",
+        "value": "JOIN"
+      },
+      {
+        "type": "table",
+        "value": "Departments"
+      },
+      {
+        "type": "column",
+        "value": "d"
+      },
+      {
+        "type": "keyword",
+        "value": "ON"
+      },
+      {
+        "type": "column",
+        "value": "e.department_id"
+      },
+      {
+        "type": "column",
+        "value": "="
+      },
+      {
+        "type": "column",
+        "value": "d.department_id"
+      },
+      {
+        "type": "keyword",
+        "value": "ORDER"
+      },
+      {
+        "type": "keyword",
+        "value": "BY"
+      },
+      {
+        "type": "column",
+        "value": "e.salary"
+      },
+      {
+        "type": "keyword",
+        "value": "DESC"
+      },
+      {
+        "type": "keyword",
+        "value": "LIMIT"
+      },
+      {
+        "type": "column",
+        "value": "5;"
+      }
+    ]
+  },
+  {
+    "drillNumber": 674,
+    "subcluster": "7.8 Slicing Joined Results with LIMIT",
+    "level": "Level 2 (Joined Slicing)",
+    "title": "Syntax #674: Find the 10 most expensive inventory items and their supplying vendors",
+    "table": "GroceryItems",
+    "scenario": "Find the 10 most expensive inventory items and their supplying vendors.",
+    "businessObjective": "Find the 10 most expensive inventory items and their supplying vendors.",
+    "schemaSnippet": "GroceryItems relational schema",
+    "targetQuery": "SELECT g.item_name, s.supplier_name, g.unit_price\nFROM GroceryItems g\nINNER JOIN Suppliers s ON g.supplier_id = s.supplier_id\nORDER BY g.unit_price DESC\nLIMIT 10;",
+    "syntaxBlueprint": "SELECT a.col, b.col\nFROM TableA a\nJOIN TableB b ON a.id = b.a_id\nORDER BY b.ranking DESC\nLIMIT 5;",
+    "syntaxRule": "LIMIT restricts the final row count of the joined output after all ON matching, WHERE filtering, and ORDER BY sorting are applied.",
+    "syntaxTrap": "Using LIMIT without ORDER BY returns non-deterministic results.",
+    "eli5Story": "Relational Joins on GroceryItems: Find the 10 most expensive inventory items and their supplying vendors.",
+    "commonMistakes": "Omitting the ON clause, forgetting table alias qualification on ambiguous columns, or accidentally converting LEFT JOIN to INNER JOIN via WHERE filters.",
+    "learningOutcomes": "Mastered 7.8 Slicing Joined Results with LIMIT on GroceryItems.",
+    "challengeSlots": [
+      {
+        "type": "keyword",
+        "value": "SELECT"
+      },
+      {
+        "type": "column",
+        "value": "g.item_name,"
+      },
+      {
+        "type": "column",
+        "value": "s.supplier_name,"
+      },
+      {
+        "type": "column",
+        "value": "g.unit_price"
+      },
+      {
+        "type": "keyword",
+        "value": "FROM"
+      },
+      {
+        "type": "table",
+        "value": "GroceryItems"
+      },
+      {
+        "type": "column",
+        "value": "g"
+      },
+      {
+        "type": "keyword",
+        "value": "INNER"
+      },
+      {
+        "type": "keyword",
+        "value": "JOIN"
+      },
+      {
+        "type": "table",
+        "value": "Suppliers"
+      },
+      {
+        "type": "column",
+        "value": "s"
+      },
+      {
+        "type": "keyword",
+        "value": "ON"
+      },
+      {
+        "type": "column",
+        "value": "g.supplier_id"
+      },
+      {
+        "type": "column",
+        "value": "="
+      },
+      {
+        "type": "column",
+        "value": "s.supplier_id"
+      },
+      {
+        "type": "keyword",
+        "value": "ORDER"
+      },
+      {
+        "type": "keyword",
+        "value": "BY"
+      },
+      {
+        "type": "column",
+        "value": "g.unit_price"
+      },
+      {
+        "type": "keyword",
+        "value": "DESC"
+      },
+      {
+        "type": "keyword",
+        "value": "LIMIT"
+      },
+      {
+        "type": "column",
+        "value": "10;"
+      }
+    ]
+  },
+  {
+    "drillNumber": 675,
+    "subcluster": "7.8 Slicing Joined Results with LIMIT",
+    "level": "Level 2 (Joined Slicing)",
+    "title": "Syntax #675: Display the 5 most recent customer orders with buyer details",
+    "table": "Orders",
+    "scenario": "Display the 5 most recent customer orders with buyer details.",
+    "businessObjective": "Display the 5 most recent customer orders with buyer details.",
+    "schemaSnippet": "Orders relational schema",
+    "targetQuery": "SELECT o.order_id, c.customer_name\nFROM Orders o\nINNER JOIN Customers c ON o.customer_id = c.customer_id\nORDER BY o.order_id DESC\nLIMIT 5;",
+    "syntaxBlueprint": "SELECT a.col, b.col\nFROM TableA a\nJOIN TableB b ON a.id = b.a_id\nORDER BY b.ranking DESC\nLIMIT 5;",
+    "syntaxRule": "LIMIT restricts the final row count of the joined output after all ON matching, WHERE filtering, and ORDER BY sorting are applied.",
+    "syntaxTrap": "Using LIMIT without ORDER BY returns non-deterministic results.",
+    "eli5Story": "Relational Joins on Orders: Display the 5 most recent customer orders with buyer details.",
+    "commonMistakes": "Omitting the ON clause, forgetting table alias qualification on ambiguous columns, or accidentally converting LEFT JOIN to INNER JOIN via WHERE filters.",
+    "learningOutcomes": "Mastered 7.8 Slicing Joined Results with LIMIT on Orders.",
+    "challengeSlots": [
+      {
+        "type": "keyword",
+        "value": "SELECT"
+      },
+      {
+        "type": "column",
+        "value": "o.order_id,"
+      },
+      {
+        "type": "column",
+        "value": "c.customer_name"
+      },
+      {
+        "type": "keyword",
+        "value": "FROM"
+      },
+      {
+        "type": "table",
+        "value": "Orders"
+      },
+      {
+        "type": "column",
+        "value": "o"
+      },
+      {
+        "type": "keyword",
+        "value": "INNER"
+      },
+      {
+        "type": "keyword",
+        "value": "JOIN"
+      },
+      {
+        "type": "table",
+        "value": "Customers"
+      },
+      {
+        "type": "column",
+        "value": "c"
+      },
+      {
+        "type": "keyword",
+        "value": "ON"
+      },
+      {
+        "type": "column",
+        "value": "o.customer_id"
+      },
+      {
+        "type": "column",
+        "value": "="
+      },
+      {
+        "type": "column",
+        "value": "c.customer_id"
+      },
+      {
+        "type": "keyword",
+        "value": "ORDER"
+      },
+      {
+        "type": "keyword",
+        "value": "BY"
+      },
+      {
+        "type": "column",
+        "value": "o.order_id"
+      },
+      {
+        "type": "keyword",
+        "value": "DESC"
+      },
+      {
+        "type": "keyword",
+        "value": "LIMIT"
+      },
+      {
+        "type": "column",
+        "value": "5;"
+      }
+    ]
+  },
+  {
+    "drillNumber": 676,
+    "subcluster": "7.8 Slicing Joined Results with LIMIT",
+    "level": "Level 2 (Joined Slicing)",
+    "title": "Syntax #676: Find the 3 longest music tracks and their corresponding album titles",
+    "table": "MusicTracks",
+    "scenario": "Find the 3 longest music tracks and their corresponding album titles.",
+    "businessObjective": "Find the 3 longest music tracks and their corresponding album titles.",
+    "schemaSnippet": "MusicTracks relational schema",
+    "targetQuery": "SELECT t.track_title, a.album_title, t.duration_seconds\nFROM MusicTracks t\nINNER JOIN Albums a ON t.album_id = a.album_id\nORDER BY t.duration_seconds DESC\nLIMIT 3;",
+    "syntaxBlueprint": "SELECT a.col, b.col\nFROM TableA a\nJOIN TableB b ON a.id = b.a_id\nORDER BY b.ranking DESC\nLIMIT 5;",
+    "syntaxRule": "LIMIT restricts the final row count of the joined output after all ON matching, WHERE filtering, and ORDER BY sorting are applied.",
+    "syntaxTrap": "Using LIMIT without ORDER BY returns non-deterministic results.",
+    "eli5Story": "Relational Joins on MusicTracks: Find the 3 longest music tracks and their corresponding album titles.",
+    "commonMistakes": "Omitting the ON clause, forgetting table alias qualification on ambiguous columns, or accidentally converting LEFT JOIN to INNER JOIN via WHERE filters.",
+    "learningOutcomes": "Mastered 7.8 Slicing Joined Results with LIMIT on MusicTracks.",
+    "challengeSlots": [
+      {
+        "type": "keyword",
+        "value": "SELECT"
+      },
+      {
+        "type": "column",
+        "value": "t.track_title,"
+      },
+      {
+        "type": "column",
+        "value": "a.album_title,"
+      },
+      {
+        "type": "column",
+        "value": "t.duration_seconds"
+      },
+      {
+        "type": "keyword",
+        "value": "FROM"
+      },
+      {
+        "type": "table",
+        "value": "MusicTracks"
+      },
+      {
+        "type": "column",
+        "value": "t"
+      },
+      {
+        "type": "keyword",
+        "value": "INNER"
+      },
+      {
+        "type": "keyword",
+        "value": "JOIN"
+      },
+      {
+        "type": "table",
+        "value": "Albums"
+      },
+      {
+        "type": "column",
+        "value": "a"
+      },
+      {
+        "type": "keyword",
+        "value": "ON"
+      },
+      {
+        "type": "column",
+        "value": "t.album_id"
+      },
+      {
+        "type": "column",
+        "value": "="
+      },
+      {
+        "type": "column",
+        "value": "a.album_id"
+      },
+      {
+        "type": "keyword",
+        "value": "ORDER"
+      },
+      {
+        "type": "keyword",
+        "value": "BY"
+      },
+      {
+        "type": "column",
+        "value": "t.duration_seconds"
+      },
+      {
+        "type": "keyword",
+        "value": "DESC"
+      },
+      {
+        "type": "keyword",
+        "value": "LIMIT"
+      },
+      {
+        "type": "column",
+        "value": "3;"
+      }
+    ]
+  },
+  {
+    "drillNumber": 677,
+    "subcluster": "7.8 Slicing Joined Results with LIMIT",
+    "level": "Level 2 (Joined Slicing)",
+    "title": "Syntax #677: Retrieve the 5 newest gym members and their assigned fitness trainers",
+    "table": "GymMembers",
+    "scenario": "Retrieve the 5 newest gym members and their assigned fitness trainers.",
+    "businessObjective": "Retrieve the 5 newest gym members and their assigned fitness trainers.",
+    "schemaSnippet": "GymMembers relational schema",
+    "targetQuery": "SELECT m.member_name, tr.trainer_name, m.join_date\nFROM GymMembers m\nINNER JOIN Trainers tr ON m.trainer_id = tr.trainer_id\nORDER BY m.join_date DESC\nLIMIT 5;",
+    "syntaxBlueprint": "SELECT a.col, b.col\nFROM TableA a\nJOIN TableB b ON a.id = b.a_id\nORDER BY b.ranking DESC\nLIMIT 5;",
+    "syntaxRule": "LIMIT restricts the final row count of the joined output after all ON matching, WHERE filtering, and ORDER BY sorting are applied.",
+    "syntaxTrap": "Using LIMIT without ORDER BY returns non-deterministic results.",
+    "eli5Story": "Relational Joins on GymMembers: Retrieve the 5 newest gym members and their assigned fitness trainers.",
+    "commonMistakes": "Omitting the ON clause, forgetting table alias qualification on ambiguous columns, or accidentally converting LEFT JOIN to INNER JOIN via WHERE filters.",
+    "learningOutcomes": "Mastered 7.8 Slicing Joined Results with LIMIT on GymMembers.",
+    "challengeSlots": [
+      {
+        "type": "keyword",
+        "value": "SELECT"
+      },
+      {
+        "type": "column",
+        "value": "m.member_name,"
+      },
+      {
+        "type": "column",
+        "value": "tr.trainer_name,"
+      },
+      {
+        "type": "column",
+        "value": "m.join_date"
+      },
+      {
+        "type": "keyword",
+        "value": "FROM"
+      },
+      {
+        "type": "table",
+        "value": "GymMembers"
+      },
+      {
+        "type": "column",
+        "value": "m"
+      },
+      {
+        "type": "keyword",
+        "value": "INNER"
+      },
+      {
+        "type": "keyword",
+        "value": "JOIN"
+      },
+      {
+        "type": "table",
+        "value": "Trainers"
+      },
+      {
+        "type": "column",
+        "value": "tr"
+      },
+      {
+        "type": "keyword",
+        "value": "ON"
+      },
+      {
+        "type": "column",
+        "value": "m.trainer_id"
+      },
+      {
+        "type": "column",
+        "value": "="
+      },
+      {
+        "type": "column",
+        "value": "tr.trainer_id"
+      },
+      {
+        "type": "keyword",
+        "value": "ORDER"
+      },
+      {
+        "type": "keyword",
+        "value": "BY"
+      },
+      {
+        "type": "column",
+        "value": "m.join_date"
+      },
+      {
+        "type": "keyword",
+        "value": "DESC"
+      },
+      {
+        "type": "keyword",
+        "value": "LIMIT"
+      },
+      {
+        "type": "column",
+        "value": "5;"
+      }
+    ]
+  },
+  {
+    "drillNumber": 678,
+    "subcluster": "7.8 Slicing Joined Results with LIMIT",
+    "level": "Level 2 (Joined Slicing)",
+    "title": "Syntax #678: Find the top 5 highest-rated film reviews in the cinema database",
+    "table": "MovieReviews",
+    "scenario": "Find the top 5 highest-rated film reviews in the cinema database.",
+    "businessObjective": "Find the top 5 highest-rated film reviews in the cinema database.",
+    "schemaSnippet": "MovieReviews relational schema",
+    "targetQuery": "SELECT r.review_text, m.movie_title, r.star_rating\nFROM MovieReviews r\nINNER JOIN Movies m ON r.movie_id = m.movie_id\nORDER BY r.star_rating DESC\nLIMIT 5;",
+    "syntaxBlueprint": "SELECT a.col, b.col\nFROM TableA a\nJOIN TableB b ON a.id = b.a_id\nORDER BY b.ranking DESC\nLIMIT 5;",
+    "syntaxRule": "LIMIT restricts the final row count of the joined output after all ON matching, WHERE filtering, and ORDER BY sorting are applied.",
+    "syntaxTrap": "Using LIMIT without ORDER BY returns non-deterministic results.",
+    "eli5Story": "Relational Joins on MovieReviews: Find the top 5 highest-rated film reviews in the cinema database.",
+    "commonMistakes": "Omitting the ON clause, forgetting table alias qualification on ambiguous columns, or accidentally converting LEFT JOIN to INNER JOIN via WHERE filters.",
+    "learningOutcomes": "Mastered 7.8 Slicing Joined Results with LIMIT on MovieReviews.",
+    "challengeSlots": [
+      {
+        "type": "keyword",
+        "value": "SELECT"
+      },
+      {
+        "type": "column",
+        "value": "r.review_text,"
+      },
+      {
+        "type": "column",
+        "value": "m.movie_title,"
+      },
+      {
+        "type": "column",
+        "value": "r.star_rating"
+      },
+      {
+        "type": "keyword",
+        "value": "FROM"
+      },
+      {
+        "type": "table",
+        "value": "MovieReviews"
+      },
+      {
+        "type": "column",
+        "value": "r"
+      },
+      {
+        "type": "keyword",
+        "value": "INNER"
+      },
+      {
+        "type": "keyword",
+        "value": "JOIN"
+      },
+      {
+        "type": "table",
+        "value": "Movies"
+      },
+      {
+        "type": "column",
+        "value": "m"
+      },
+      {
+        "type": "keyword",
+        "value": "ON"
+      },
+      {
+        "type": "column",
+        "value": "r.movie_id"
+      },
+      {
+        "type": "column",
+        "value": "="
+      },
+      {
+        "type": "column",
+        "value": "m.movie_id"
+      },
+      {
+        "type": "keyword",
+        "value": "ORDER"
+      },
+      {
+        "type": "keyword",
+        "value": "BY"
+      },
+      {
+        "type": "column",
+        "value": "r.star_rating"
+      },
+      {
+        "type": "keyword",
+        "value": "DESC"
+      },
+      {
+        "type": "keyword",
+        "value": "LIMIT"
+      },
+      {
+        "type": "column",
+        "value": "5;"
+      }
+    ]
+  },
+  {
+    "drillNumber": 679,
+    "subcluster": "7.8 Slicing Joined Results with LIMIT",
+    "level": "Level 2 (Joined Slicing)",
+    "title": "Syntax #679: List the next 10 upcoming flight departures with carrier names",
+    "table": "FlightSchedule",
+    "scenario": "List the next 10 upcoming flight departures with carrier names.",
+    "businessObjective": "List the next 10 upcoming flight departures with carrier names.",
+    "schemaSnippet": "FlightSchedule relational schema",
+    "targetQuery": "SELECT f.flight_id, al.airline_name, f.departure_time\nFROM FlightSchedule f\nINNER JOIN Airlines al ON f.airline_id = al.airline_id\nORDER BY f.departure_time ASC\nLIMIT 10;",
+    "syntaxBlueprint": "SELECT a.col, b.col\nFROM TableA a\nJOIN TableB b ON a.id = b.a_id\nORDER BY b.ranking DESC\nLIMIT 5;",
+    "syntaxRule": "LIMIT restricts the final row count of the joined output after all ON matching, WHERE filtering, and ORDER BY sorting are applied.",
+    "syntaxTrap": "Using LIMIT without ORDER BY returns non-deterministic results.",
+    "eli5Story": "Relational Joins on FlightSchedule: List the next 10 upcoming flight departures with carrier names.",
+    "commonMistakes": "Omitting the ON clause, forgetting table alias qualification on ambiguous columns, or accidentally converting LEFT JOIN to INNER JOIN via WHERE filters.",
+    "learningOutcomes": "Mastered 7.8 Slicing Joined Results with LIMIT on FlightSchedule.",
+    "challengeSlots": [
+      {
+        "type": "keyword",
+        "value": "SELECT"
+      },
+      {
+        "type": "column",
+        "value": "f.flight_id,"
+      },
+      {
+        "type": "column",
+        "value": "al.airline_name,"
+      },
+      {
+        "type": "column",
+        "value": "f.departure_time"
+      },
+      {
+        "type": "keyword",
+        "value": "FROM"
+      },
+      {
+        "type": "table",
+        "value": "FlightSchedule"
+      },
+      {
+        "type": "column",
+        "value": "f"
+      },
+      {
+        "type": "keyword",
+        "value": "INNER"
+      },
+      {
+        "type": "keyword",
+        "value": "JOIN"
+      },
+      {
+        "type": "table",
+        "value": "Airlines"
+      },
+      {
+        "type": "column",
+        "value": "al"
+      },
+      {
+        "type": "keyword",
+        "value": "ON"
+      },
+      {
+        "type": "column",
+        "value": "f.airline_id"
+      },
+      {
+        "type": "column",
+        "value": "="
+      },
+      {
+        "type": "column",
+        "value": "al.airline_id"
+      },
+      {
+        "type": "keyword",
+        "value": "ORDER"
+      },
+      {
+        "type": "keyword",
+        "value": "BY"
+      },
+      {
+        "type": "column",
+        "value": "f.departure_time"
+      },
+      {
+        "type": "keyword",
+        "value": "ASC"
+      },
+      {
+        "type": "keyword",
+        "value": "LIMIT"
+      },
+      {
+        "type": "column",
+        "value": "10;"
+      }
+    ]
+  },
+  {
+    "drillNumber": 680,
+    "subcluster": "7.8 Slicing Joined Results with LIMIT",
+    "level": "Level 2 (Joined Slicing)",
+    "title": "Syntax #680: Find the 3 oldest pet patients registered in the veterinary clinic",
+    "table": "PetClinic",
+    "scenario": "Find the 3 oldest pet patients registered in the veterinary clinic.",
+    "businessObjective": "Find the 3 oldest pet patients registered in the veterinary clinic.",
+    "schemaSnippet": "PetClinic relational schema",
+    "targetQuery": "SELECT p.pet_name, o.owner_name, p.age_years\nFROM PetClinic p\nINNER JOIN Owners o ON p.owner_id = o.owner_id\nORDER BY p.age_years DESC\nLIMIT 3;",
+    "syntaxBlueprint": "SELECT a.col, b.col\nFROM TableA a\nJOIN TableB b ON a.id = b.a_id\nORDER BY b.ranking DESC\nLIMIT 5;",
+    "syntaxRule": "LIMIT restricts the final row count of the joined output after all ON matching, WHERE filtering, and ORDER BY sorting are applied.",
+    "syntaxTrap": "Using LIMIT without ORDER BY returns non-deterministic results.",
+    "eli5Story": "Relational Joins on PetClinic: Find the 3 oldest pet patients registered in the veterinary clinic.",
+    "commonMistakes": "Omitting the ON clause, forgetting table alias qualification on ambiguous columns, or accidentally converting LEFT JOIN to INNER JOIN via WHERE filters.",
+    "learningOutcomes": "Mastered 7.8 Slicing Joined Results with LIMIT on PetClinic.",
+    "challengeSlots": [
+      {
+        "type": "keyword",
+        "value": "SELECT"
+      },
+      {
+        "type": "column",
+        "value": "p.pet_name,"
+      },
+      {
+        "type": "column",
+        "value": "o.owner_name,"
+      },
+      {
+        "type": "column",
+        "value": "p.age_years"
+      },
+      {
+        "type": "keyword",
+        "value": "FROM"
+      },
+      {
+        "type": "table",
+        "value": "PetClinic"
+      },
+      {
+        "type": "column",
+        "value": "p"
+      },
+      {
+        "type": "keyword",
+        "value": "INNER"
+      },
+      {
+        "type": "keyword",
+        "value": "JOIN"
+      },
+      {
+        "type": "table",
+        "value": "Owners"
+      },
+      {
+        "type": "column",
+        "value": "o"
+      },
+      {
+        "type": "keyword",
+        "value": "ON"
+      },
+      {
+        "type": "column",
+        "value": "p.owner_id"
+      },
+      {
+        "type": "column",
+        "value": "="
+      },
+      {
+        "type": "column",
+        "value": "o.owner_id"
+      },
+      {
+        "type": "keyword",
+        "value": "ORDER"
+      },
+      {
+        "type": "keyword",
+        "value": "BY"
+      },
+      {
+        "type": "column",
+        "value": "p.age_years"
+      },
+      {
+        "type": "keyword",
+        "value": "DESC"
+      },
+      {
+        "type": "keyword",
+        "value": "LIMIT"
+      },
+      {
+        "type": "column",
+        "value": "3;"
+      }
+    ]
+  },
+  {
+    "drillNumber": 681,
+    "subcluster": "7.9 NULL Checks on Outer Joins",
+    "level": "Level 2 (Outer Join NULL Checking)",
+    "title": "Syntax #681: Verify students with confirmed active course registrations using IS NOT NULL",
+    "table": "Students",
+    "scenario": "Verify students with confirmed active course registrations using IS NOT NULL.",
+    "businessObjective": "Verify students with confirmed active course registrations using IS NOT NULL.",
+    "schemaSnippet": "Students relational schema",
+    "targetQuery": "SELECT s.full_name, c.course_name\nFROM Students s\nLEFT JOIN Courses c ON s.student_id = c.student_id\nWHERE c.course_name IS NOT NULL;",
+    "syntaxBlueprint": "SELECT a.col, b.col\nFROM TableA a\nLEFT JOIN TableB b ON a.id = b.a_id\nWHERE b.a_id IS NOT NULL;",
+    "syntaxRule": "Evaluating IS NULL or IS NOT NULL on joined columns allows you to test for presence or absence of related relational data.",
+    "syntaxTrap": "Using '= NULL' instead of 'IS NULL' will always evaluate to UNKNOWN and return zero rows.",
+    "eli5Story": "Relational Joins on Students: Verify students with confirmed active course registrations using IS NOT NULL.",
+    "commonMistakes": "Omitting the ON clause, forgetting table alias qualification on ambiguous columns, or accidentally converting LEFT JOIN to INNER JOIN via WHERE filters.",
+    "learningOutcomes": "Mastered 7.9 NULL Checks on Outer Joins on Students.",
+    "challengeSlots": [
+      {
+        "type": "keyword",
+        "value": "SELECT"
+      },
+      {
+        "type": "column",
+        "value": "s.full_name,"
+      },
+      {
+        "type": "column",
+        "value": "c.course_name"
+      },
+      {
+        "type": "keyword",
+        "value": "FROM"
+      },
+      {
+        "type": "table",
+        "value": "Students"
+      },
+      {
+        "type": "column",
+        "value": "s"
+      },
+      {
+        "type": "keyword",
+        "value": "LEFT"
+      },
+      {
+        "type": "keyword",
+        "value": "JOIN"
+      },
+      {
+        "type": "table",
+        "value": "Courses"
+      },
+      {
+        "type": "column",
+        "value": "c"
+      },
+      {
+        "type": "keyword",
+        "value": "ON"
+      },
+      {
+        "type": "column",
+        "value": "s.student_id"
+      },
+      {
+        "type": "column",
+        "value": "="
+      },
+      {
+        "type": "column",
+        "value": "c.student_id"
+      },
+      {
+        "type": "keyword",
+        "value": "WHERE"
+      },
+      {
+        "type": "column",
+        "value": "c.course_name"
+      },
+      {
+        "type": "keyword",
+        "value": "IS"
+      },
+      {
+        "type": "keyword",
+        "value": "NOT"
+      },
+      {
+        "type": "keyword",
+        "value": "NULL;"
+      }
+    ]
+  },
+  {
+    "drillNumber": 682,
+    "subcluster": "7.9 NULL Checks on Outer Joins",
+    "level": "Level 2 (Outer Join NULL Checking)",
+    "title": "Syntax #682: Filter catalog books that have a confirmed verified author record",
+    "table": "Books",
+    "scenario": "Filter catalog books that have a confirmed verified author record.",
+    "businessObjective": "Filter catalog books that have a confirmed verified author record.",
+    "schemaSnippet": "Books relational schema",
+    "targetQuery": "SELECT b.title, a.author_name\nFROM Books b\nLEFT JOIN Authors a ON b.author_id = a.author_id\nWHERE a.author_name IS NOT NULL;",
+    "syntaxBlueprint": "SELECT a.col, b.col\nFROM TableA a\nLEFT JOIN TableB b ON a.id = b.a_id\nWHERE b.a_id IS NOT NULL;",
+    "syntaxRule": "Evaluating IS NULL or IS NOT NULL on joined columns allows you to test for presence or absence of related relational data.",
+    "syntaxTrap": "Using '= NULL' instead of 'IS NULL' will always evaluate to UNKNOWN and return zero rows.",
+    "eli5Story": "Relational Joins on Books: Filter catalog books that have a confirmed verified author record.",
+    "commonMistakes": "Omitting the ON clause, forgetting table alias qualification on ambiguous columns, or accidentally converting LEFT JOIN to INNER JOIN via WHERE filters.",
+    "learningOutcomes": "Mastered 7.9 NULL Checks on Outer Joins on Books.",
+    "challengeSlots": [
+      {
+        "type": "keyword",
+        "value": "SELECT"
+      },
+      {
+        "type": "column",
+        "value": "b.title,"
+      },
+      {
+        "type": "column",
+        "value": "a.author_name"
+      },
+      {
+        "type": "keyword",
+        "value": "FROM"
+      },
+      {
+        "type": "table",
+        "value": "Books"
+      },
+      {
+        "type": "column",
+        "value": "b"
+      },
+      {
+        "type": "keyword",
+        "value": "LEFT"
+      },
+      {
+        "type": "keyword",
+        "value": "JOIN"
+      },
+      {
+        "type": "table",
+        "value": "Authors"
+      },
+      {
+        "type": "column",
+        "value": "a"
+      },
+      {
+        "type": "keyword",
+        "value": "ON"
+      },
+      {
+        "type": "column",
+        "value": "b.author_id"
+      },
+      {
+        "type": "column",
+        "value": "="
+      },
+      {
+        "type": "column",
+        "value": "a.author_id"
+      },
+      {
+        "type": "keyword",
+        "value": "WHERE"
+      },
+      {
+        "type": "column",
+        "value": "a.author_name"
+      },
+      {
+        "type": "keyword",
+        "value": "IS"
+      },
+      {
+        "type": "keyword",
+        "value": "NOT"
+      },
+      {
+        "type": "keyword",
+        "value": "NULL;"
+      }
+    ]
+  },
+  {
+    "drillNumber": 683,
+    "subcluster": "7.9 NULL Checks on Outer Joins",
+    "level": "Level 2 (Outer Join NULL Checking)",
+    "title": "Syntax #683: List employees who are successfully assigned to an active department",
+    "table": "Employees",
+    "scenario": "List employees who are successfully assigned to an active department.",
+    "businessObjective": "List employees who are successfully assigned to an active department.",
+    "schemaSnippet": "Employees relational schema",
+    "targetQuery": "SELECT e.first_name, d.department_name\nFROM Employees e\nLEFT JOIN Departments d ON e.department_id = d.department_id\nWHERE d.department_name IS NOT NULL;",
+    "syntaxBlueprint": "SELECT a.col, b.col\nFROM TableA a\nLEFT JOIN TableB b ON a.id = b.a_id\nWHERE b.a_id IS NOT NULL;",
+    "syntaxRule": "Evaluating IS NULL or IS NOT NULL on joined columns allows you to test for presence or absence of related relational data.",
+    "syntaxTrap": "Using '= NULL' instead of 'IS NULL' will always evaluate to UNKNOWN and return zero rows.",
+    "eli5Story": "Relational Joins on Employees: List employees who are successfully assigned to an active department.",
+    "commonMistakes": "Omitting the ON clause, forgetting table alias qualification on ambiguous columns, or accidentally converting LEFT JOIN to INNER JOIN via WHERE filters.",
+    "learningOutcomes": "Mastered 7.9 NULL Checks on Outer Joins on Employees.",
+    "challengeSlots": [
+      {
+        "type": "keyword",
+        "value": "SELECT"
+      },
+      {
+        "type": "column",
+        "value": "e.first_name,"
+      },
+      {
+        "type": "column",
+        "value": "d.department_name"
+      },
+      {
+        "type": "keyword",
+        "value": "FROM"
+      },
+      {
+        "type": "table",
+        "value": "Employees"
+      },
+      {
+        "type": "column",
+        "value": "e"
+      },
+      {
+        "type": "keyword",
+        "value": "LEFT"
+      },
+      {
+        "type": "keyword",
+        "value": "JOIN"
+      },
+      {
+        "type": "table",
+        "value": "Departments"
+      },
+      {
+        "type": "column",
+        "value": "d"
+      },
+      {
+        "type": "keyword",
+        "value": "ON"
+      },
+      {
+        "type": "column",
+        "value": "e.department_id"
+      },
+      {
+        "type": "column",
+        "value": "="
+      },
+      {
+        "type": "column",
+        "value": "d.department_id"
+      },
+      {
+        "type": "keyword",
+        "value": "WHERE"
+      },
+      {
+        "type": "column",
+        "value": "d.department_name"
+      },
+      {
+        "type": "keyword",
+        "value": "IS"
+      },
+      {
+        "type": "keyword",
+        "value": "NOT"
+      },
+      {
+        "type": "keyword",
+        "value": "NULL;"
+      }
+    ]
+  },
+  {
+    "drillNumber": 684,
+    "subcluster": "7.9 NULL Checks on Outer Joins",
+    "level": "Level 2 (Outer Join NULL Checking)",
+    "title": "Syntax #684: Retrieve grocery items that have a verified supplier contact registered",
+    "table": "GroceryItems",
+    "scenario": "Retrieve grocery items that have a verified supplier contact registered.",
+    "businessObjective": "Retrieve grocery items that have a verified supplier contact registered.",
+    "schemaSnippet": "GroceryItems relational schema",
+    "targetQuery": "SELECT g.item_name, s.supplier_name\nFROM GroceryItems g\nLEFT JOIN Suppliers s ON g.supplier_id = s.supplier_id\nWHERE s.supplier_name IS NOT NULL;",
+    "syntaxBlueprint": "SELECT a.col, b.col\nFROM TableA a\nLEFT JOIN TableB b ON a.id = b.a_id\nWHERE b.a_id IS NOT NULL;",
+    "syntaxRule": "Evaluating IS NULL or IS NOT NULL on joined columns allows you to test for presence or absence of related relational data.",
+    "syntaxTrap": "Using '= NULL' instead of 'IS NULL' will always evaluate to UNKNOWN and return zero rows.",
+    "eli5Story": "Relational Joins on GroceryItems: Retrieve grocery items that have a verified supplier contact registered.",
+    "commonMistakes": "Omitting the ON clause, forgetting table alias qualification on ambiguous columns, or accidentally converting LEFT JOIN to INNER JOIN via WHERE filters.",
+    "learningOutcomes": "Mastered 7.9 NULL Checks on Outer Joins on GroceryItems.",
+    "challengeSlots": [
+      {
+        "type": "keyword",
+        "value": "SELECT"
+      },
+      {
+        "type": "column",
+        "value": "g.item_name,"
+      },
+      {
+        "type": "column",
+        "value": "s.supplier_name"
+      },
+      {
+        "type": "keyword",
+        "value": "FROM"
+      },
+      {
+        "type": "table",
+        "value": "GroceryItems"
+      },
+      {
+        "type": "column",
+        "value": "g"
+      },
+      {
+        "type": "keyword",
+        "value": "LEFT"
+      },
+      {
+        "type": "keyword",
+        "value": "JOIN"
+      },
+      {
+        "type": "table",
+        "value": "Suppliers"
+      },
+      {
+        "type": "column",
+        "value": "s"
+      },
+      {
+        "type": "keyword",
+        "value": "ON"
+      },
+      {
+        "type": "column",
+        "value": "g.supplier_id"
+      },
+      {
+        "type": "column",
+        "value": "="
+      },
+      {
+        "type": "column",
+        "value": "s.supplier_id"
+      },
+      {
+        "type": "keyword",
+        "value": "WHERE"
+      },
+      {
+        "type": "column",
+        "value": "s.supplier_name"
+      },
+      {
+        "type": "keyword",
+        "value": "IS"
+      },
+      {
+        "type": "keyword",
+        "value": "NOT"
+      },
+      {
+        "type": "keyword",
+        "value": "NULL;"
+      }
+    ]
+  },
+  {
+    "drillNumber": 685,
+    "subcluster": "7.9 NULL Checks on Outer Joins",
+    "level": "Level 2 (Outer Join NULL Checking)",
+    "title": "Syntax #685: Find orders placed by registered verified customers (excluding guest checkouts)",
+    "table": "Orders",
+    "scenario": "Find orders placed by registered verified customers (excluding guest checkouts).",
+    "businessObjective": "Find orders placed by registered verified customers (excluding guest checkouts).",
+    "schemaSnippet": "Orders relational schema",
+    "targetQuery": "SELECT o.order_id, c.customer_name\nFROM Orders o\nLEFT JOIN Customers c ON o.customer_id = c.customer_id\nWHERE c.customer_name IS NOT NULL;",
+    "syntaxBlueprint": "SELECT a.col, b.col\nFROM TableA a\nLEFT JOIN TableB b ON a.id = b.a_id\nWHERE b.a_id IS NOT NULL;",
+    "syntaxRule": "Evaluating IS NULL or IS NOT NULL on joined columns allows you to test for presence or absence of related relational data.",
+    "syntaxTrap": "Using '= NULL' instead of 'IS NULL' will always evaluate to UNKNOWN and return zero rows.",
+    "eli5Story": "Relational Joins on Orders: Find orders placed by registered verified customers (excluding guest checkouts).",
+    "commonMistakes": "Omitting the ON clause, forgetting table alias qualification on ambiguous columns, or accidentally converting LEFT JOIN to INNER JOIN via WHERE filters.",
+    "learningOutcomes": "Mastered 7.9 NULL Checks on Outer Joins on Orders.",
+    "challengeSlots": [
+      {
+        "type": "keyword",
+        "value": "SELECT"
+      },
+      {
+        "type": "column",
+        "value": "o.order_id,"
+      },
+      {
+        "type": "column",
+        "value": "c.customer_name"
+      },
+      {
+        "type": "keyword",
+        "value": "FROM"
+      },
+      {
+        "type": "table",
+        "value": "Orders"
+      },
+      {
+        "type": "column",
+        "value": "o"
+      },
+      {
+        "type": "keyword",
+        "value": "LEFT"
+      },
+      {
+        "type": "keyword",
+        "value": "JOIN"
+      },
+      {
+        "type": "table",
+        "value": "Customers"
+      },
+      {
+        "type": "column",
+        "value": "c"
+      },
+      {
+        "type": "keyword",
+        "value": "ON"
+      },
+      {
+        "type": "column",
+        "value": "o.customer_id"
+      },
+      {
+        "type": "column",
+        "value": "="
+      },
+      {
+        "type": "column",
+        "value": "c.customer_id"
+      },
+      {
+        "type": "keyword",
+        "value": "WHERE"
+      },
+      {
+        "type": "column",
+        "value": "c.customer_name"
+      },
+      {
+        "type": "keyword",
+        "value": "IS"
+      },
+      {
+        "type": "keyword",
+        "value": "NOT"
+      },
+      {
+        "type": "keyword",
+        "value": "NULL;"
+      }
+    ]
+  },
+  {
+    "drillNumber": 686,
+    "subcluster": "7.9 NULL Checks on Outer Joins",
+    "level": "Level 2 (Outer Join NULL Checking)",
+    "title": "Syntax #686: Filter music tracks that belong to a known official album release",
+    "table": "MusicTracks",
+    "scenario": "Filter music tracks that belong to a known official album release.",
+    "businessObjective": "Filter music tracks that belong to a known official album release.",
+    "schemaSnippet": "MusicTracks relational schema",
+    "targetQuery": "SELECT t.track_title, a.album_title\nFROM MusicTracks t\nLEFT JOIN Albums a ON t.album_id = a.album_id\nWHERE a.album_title IS NOT NULL;",
+    "syntaxBlueprint": "SELECT a.col, b.col\nFROM TableA a\nLEFT JOIN TableB b ON a.id = b.a_id\nWHERE b.a_id IS NOT NULL;",
+    "syntaxRule": "Evaluating IS NULL or IS NOT NULL on joined columns allows you to test for presence or absence of related relational data.",
+    "syntaxTrap": "Using '= NULL' instead of 'IS NULL' will always evaluate to UNKNOWN and return zero rows.",
+    "eli5Story": "Relational Joins on MusicTracks: Filter music tracks that belong to a known official album release.",
+    "commonMistakes": "Omitting the ON clause, forgetting table alias qualification on ambiguous columns, or accidentally converting LEFT JOIN to INNER JOIN via WHERE filters.",
+    "learningOutcomes": "Mastered 7.9 NULL Checks on Outer Joins on MusicTracks.",
+    "challengeSlots": [
+      {
+        "type": "keyword",
+        "value": "SELECT"
+      },
+      {
+        "type": "column",
+        "value": "t.track_title,"
+      },
+      {
+        "type": "column",
+        "value": "a.album_title"
+      },
+      {
+        "type": "keyword",
+        "value": "FROM"
+      },
+      {
+        "type": "table",
+        "value": "MusicTracks"
+      },
+      {
+        "type": "column",
+        "value": "t"
+      },
+      {
+        "type": "keyword",
+        "value": "LEFT"
+      },
+      {
+        "type": "keyword",
+        "value": "JOIN"
+      },
+      {
+        "type": "table",
+        "value": "Albums"
+      },
+      {
+        "type": "column",
+        "value": "a"
+      },
+      {
+        "type": "keyword",
+        "value": "ON"
+      },
+      {
+        "type": "column",
+        "value": "t.album_id"
+      },
+      {
+        "type": "column",
+        "value": "="
+      },
+      {
+        "type": "column",
+        "value": "a.album_id"
+      },
+      {
+        "type": "keyword",
+        "value": "WHERE"
+      },
+      {
+        "type": "column",
+        "value": "a.album_title"
+      },
+      {
+        "type": "keyword",
+        "value": "IS"
+      },
+      {
+        "type": "keyword",
+        "value": "NOT"
+      },
+      {
+        "type": "keyword",
+        "value": "NULL;"
+      }
+    ]
+  },
+  {
+    "drillNumber": 687,
+    "subcluster": "7.9 NULL Checks on Outer Joins",
+    "level": "Level 2 (Outer Join NULL Checking)",
+    "title": "Syntax #687: Find gym members who are actively assigned to a personal fitness trainer",
+    "table": "GymMembers",
+    "scenario": "Find gym members who are actively assigned to a personal fitness trainer.",
+    "businessObjective": "Find gym members who are actively assigned to a personal fitness trainer.",
+    "schemaSnippet": "GymMembers relational schema",
+    "targetQuery": "SELECT m.member_name, tr.trainer_name\nFROM GymMembers m\nLEFT JOIN Trainers tr ON m.trainer_id = tr.trainer_id\nWHERE tr.trainer_name IS NOT NULL;",
+    "syntaxBlueprint": "SELECT a.col, b.col\nFROM TableA a\nLEFT JOIN TableB b ON a.id = b.a_id\nWHERE b.a_id IS NOT NULL;",
+    "syntaxRule": "Evaluating IS NULL or IS NOT NULL on joined columns allows you to test for presence or absence of related relational data.",
+    "syntaxTrap": "Using '= NULL' instead of 'IS NULL' will always evaluate to UNKNOWN and return zero rows.",
+    "eli5Story": "Relational Joins on GymMembers: Find gym members who are actively assigned to a personal fitness trainer.",
+    "commonMistakes": "Omitting the ON clause, forgetting table alias qualification on ambiguous columns, or accidentally converting LEFT JOIN to INNER JOIN via WHERE filters.",
+    "learningOutcomes": "Mastered 7.9 NULL Checks on Outer Joins on GymMembers.",
+    "challengeSlots": [
+      {
+        "type": "keyword",
+        "value": "SELECT"
+      },
+      {
+        "type": "column",
+        "value": "m.member_name,"
+      },
+      {
+        "type": "column",
+        "value": "tr.trainer_name"
+      },
+      {
+        "type": "keyword",
+        "value": "FROM"
+      },
+      {
+        "type": "table",
+        "value": "GymMembers"
+      },
+      {
+        "type": "column",
+        "value": "m"
+      },
+      {
+        "type": "keyword",
+        "value": "LEFT"
+      },
+      {
+        "type": "keyword",
+        "value": "JOIN"
+      },
+      {
+        "type": "table",
+        "value": "Trainers"
+      },
+      {
+        "type": "column",
+        "value": "tr"
+      },
+      {
+        "type": "keyword",
+        "value": "ON"
+      },
+      {
+        "type": "column",
+        "value": "m.trainer_id"
+      },
+      {
+        "type": "column",
+        "value": "="
+      },
+      {
+        "type": "column",
+        "value": "tr.trainer_id"
+      },
+      {
+        "type": "keyword",
+        "value": "WHERE"
+      },
+      {
+        "type": "column",
+        "value": "tr.trainer_name"
+      },
+      {
+        "type": "keyword",
+        "value": "IS"
+      },
+      {
+        "type": "keyword",
+        "value": "NOT"
+      },
+      {
+        "type": "keyword",
+        "value": "NULL;"
+      }
+    ]
+  },
+  {
+    "drillNumber": 688,
+    "subcluster": "7.9 NULL Checks on Outer Joins",
+    "level": "Level 2 (Outer Join NULL Checking)",
+    "title": "Syntax #688: List movies that have at least one written review in the archive",
+    "table": "MovieReviews",
+    "scenario": "List movies that have at least one written review in the archive.",
+    "businessObjective": "List movies that have at least one written review in the archive.",
+    "schemaSnippet": "MovieReviews relational schema",
+    "targetQuery": "SELECT m.movie_title, r.review_text\nFROM Movies m\nLEFT JOIN MovieReviews r ON m.movie_id = r.movie_id\nWHERE r.review_text IS NOT NULL;",
+    "syntaxBlueprint": "SELECT a.col, b.col\nFROM TableA a\nLEFT JOIN TableB b ON a.id = b.a_id\nWHERE b.a_id IS NOT NULL;",
+    "syntaxRule": "Evaluating IS NULL or IS NOT NULL on joined columns allows you to test for presence or absence of related relational data.",
+    "syntaxTrap": "Using '= NULL' instead of 'IS NULL' will always evaluate to UNKNOWN and return zero rows.",
+    "eli5Story": "Relational Joins on MovieReviews: List movies that have at least one written review in the archive.",
+    "commonMistakes": "Omitting the ON clause, forgetting table alias qualification on ambiguous columns, or accidentally converting LEFT JOIN to INNER JOIN via WHERE filters.",
+    "learningOutcomes": "Mastered 7.9 NULL Checks on Outer Joins on MovieReviews.",
+    "challengeSlots": [
+      {
+        "type": "keyword",
+        "value": "SELECT"
+      },
+      {
+        "type": "column",
+        "value": "m.movie_title,"
+      },
+      {
+        "type": "column",
+        "value": "r.review_text"
+      },
+      {
+        "type": "keyword",
+        "value": "FROM"
+      },
+      {
+        "type": "table",
+        "value": "Movies"
+      },
+      {
+        "type": "column",
+        "value": "m"
+      },
+      {
+        "type": "keyword",
+        "value": "LEFT"
+      },
+      {
+        "type": "keyword",
+        "value": "JOIN"
+      },
+      {
+        "type": "table",
+        "value": "MovieReviews"
+      },
+      {
+        "type": "column",
+        "value": "r"
+      },
+      {
+        "type": "keyword",
+        "value": "ON"
+      },
+      {
+        "type": "column",
+        "value": "m.movie_id"
+      },
+      {
+        "type": "column",
+        "value": "="
+      },
+      {
+        "type": "column",
+        "value": "r.movie_id"
+      },
+      {
+        "type": "keyword",
+        "value": "WHERE"
+      },
+      {
+        "type": "column",
+        "value": "r.review_text"
+      },
+      {
+        "type": "keyword",
+        "value": "IS"
+      },
+      {
+        "type": "keyword",
+        "value": "NOT"
+      },
+      {
+        "type": "keyword",
+        "value": "NULL;"
+      }
+    ]
+  },
+  {
+    "drillNumber": 689,
+    "subcluster": "7.9 NULL Checks on Outer Joins",
+    "level": "Level 2 (Outer Join NULL Checking)",
+    "title": "Syntax #689: Filter scheduled flights operating under a certified commercial airline",
+    "table": "FlightSchedule",
+    "scenario": "Filter scheduled flights operating under a certified commercial airline.",
+    "businessObjective": "Filter scheduled flights operating under a certified commercial airline.",
+    "schemaSnippet": "FlightSchedule relational schema",
+    "targetQuery": "SELECT f.flight_id, al.airline_name\nFROM FlightSchedule f\nLEFT JOIN Airlines al ON f.airline_id = al.airline_id\nWHERE al.airline_name IS NOT NULL;",
+    "syntaxBlueprint": "SELECT a.col, b.col\nFROM TableA a\nLEFT JOIN TableB b ON a.id = b.a_id\nWHERE b.a_id IS NOT NULL;",
+    "syntaxRule": "Evaluating IS NULL or IS NOT NULL on joined columns allows you to test for presence or absence of related relational data.",
+    "syntaxTrap": "Using '= NULL' instead of 'IS NULL' will always evaluate to UNKNOWN and return zero rows.",
+    "eli5Story": "Relational Joins on FlightSchedule: Filter scheduled flights operating under a certified commercial airline.",
+    "commonMistakes": "Omitting the ON clause, forgetting table alias qualification on ambiguous columns, or accidentally converting LEFT JOIN to INNER JOIN via WHERE filters.",
+    "learningOutcomes": "Mastered 7.9 NULL Checks on Outer Joins on FlightSchedule.",
+    "challengeSlots": [
+      {
+        "type": "keyword",
+        "value": "SELECT"
+      },
+      {
+        "type": "column",
+        "value": "f.flight_id,"
+      },
+      {
+        "type": "column",
+        "value": "al.airline_name"
+      },
+      {
+        "type": "keyword",
+        "value": "FROM"
+      },
+      {
+        "type": "table",
+        "value": "FlightSchedule"
+      },
+      {
+        "type": "column",
+        "value": "f"
+      },
+      {
+        "type": "keyword",
+        "value": "LEFT"
+      },
+      {
+        "type": "keyword",
+        "value": "JOIN"
+      },
+      {
+        "type": "table",
+        "value": "Airlines"
+      },
+      {
+        "type": "column",
+        "value": "al"
+      },
+      {
+        "type": "keyword",
+        "value": "ON"
+      },
+      {
+        "type": "column",
+        "value": "f.airline_id"
+      },
+      {
+        "type": "column",
+        "value": "="
+      },
+      {
+        "type": "column",
+        "value": "al.airline_id"
+      },
+      {
+        "type": "keyword",
+        "value": "WHERE"
+      },
+      {
+        "type": "column",
+        "value": "al.airline_name"
+      },
+      {
+        "type": "keyword",
+        "value": "IS"
+      },
+      {
+        "type": "keyword",
+        "value": "NOT"
+      },
+      {
+        "type": "keyword",
+        "value": "NULL;"
+      }
+    ]
+  },
+  {
+    "drillNumber": 690,
+    "subcluster": "7.9 NULL Checks on Outer Joins",
+    "level": "Level 2 (Outer Join NULL Checking)",
+    "title": "Syntax #690: Find clinic animal records that have a verified pet owner on file",
+    "table": "PetClinic",
+    "scenario": "Find clinic animal records that have a verified pet owner on file.",
+    "businessObjective": "Find clinic animal records that have a verified pet owner on file.",
+    "schemaSnippet": "PetClinic relational schema",
+    "targetQuery": "SELECT p.pet_name, o.owner_name\nFROM PetClinic p\nLEFT JOIN Owners o ON p.owner_id = o.owner_id\nWHERE o.owner_name IS NOT NULL;",
+    "syntaxBlueprint": "SELECT a.col, b.col\nFROM TableA a\nLEFT JOIN TableB b ON a.id = b.a_id\nWHERE b.a_id IS NOT NULL;",
+    "syntaxRule": "Evaluating IS NULL or IS NOT NULL on joined columns allows you to test for presence or absence of related relational data.",
+    "syntaxTrap": "Using '= NULL' instead of 'IS NULL' will always evaluate to UNKNOWN and return zero rows.",
+    "eli5Story": "Relational Joins on PetClinic: Find clinic animal records that have a verified pet owner on file.",
+    "commonMistakes": "Omitting the ON clause, forgetting table alias qualification on ambiguous columns, or accidentally converting LEFT JOIN to INNER JOIN via WHERE filters.",
+    "learningOutcomes": "Mastered 7.9 NULL Checks on Outer Joins on PetClinic.",
+    "challengeSlots": [
+      {
+        "type": "keyword",
+        "value": "SELECT"
+      },
+      {
+        "type": "column",
+        "value": "p.pet_name,"
+      },
+      {
+        "type": "column",
+        "value": "o.owner_name"
+      },
+      {
+        "type": "keyword",
+        "value": "FROM"
+      },
+      {
+        "type": "table",
+        "value": "PetClinic"
+      },
+      {
+        "type": "column",
+        "value": "p"
+      },
+      {
+        "type": "keyword",
+        "value": "LEFT"
+      },
+      {
+        "type": "keyword",
+        "value": "JOIN"
+      },
+      {
+        "type": "table",
+        "value": "Owners"
+      },
+      {
+        "type": "column",
+        "value": "o"
+      },
+      {
+        "type": "keyword",
+        "value": "ON"
+      },
+      {
+        "type": "column",
+        "value": "p.owner_id"
+      },
+      {
+        "type": "column",
+        "value": "="
+      },
+      {
+        "type": "column",
+        "value": "o.owner_id"
+      },
+      {
+        "type": "keyword",
+        "value": "WHERE"
+      },
+      {
+        "type": "column",
+        "value": "o.owner_name"
+      },
+      {
+        "type": "keyword",
+        "value": "IS"
+      },
+      {
+        "type": "keyword",
+        "value": "NOT"
+      },
+      {
+        "type": "keyword",
+        "value": "NULL;"
+      }
+    ]
+  },
+  {
+    "drillNumber": 691,
+    "subcluster": "7.10 Two-Table Lifecycle Production Queries",
+    "level": "Level 2 (Comprehensive 2-Table Queries)",
+    "title": "Syntax #691: Retrieve up to 10 students enrolled in courses with 3 or more credits",
+    "table": "Students",
+    "scenario": "Retrieve up to 10 students enrolled in courses with 3 or more credits.",
+    "businessObjective": "Retrieve up to 10 students enrolled in courses with 3 or more credits.",
+    "schemaSnippet": "Students relational schema",
+    "targetQuery": "SELECT s.full_name, c.course_name, c.credits\nFROM Students s\nINNER JOIN Courses c ON s.student_id = c.student_id\nWHERE c.credits >= 3\nORDER BY s.full_name ASC\nLIMIT 10;",
+    "syntaxBlueprint": "SELECT a.col1, b.col2\nFROM TableA a\nJOIN TableB b ON a.id = b.a_id\nWHERE a.filter = 'val'\nORDER BY b.val DESC\nLIMIT 5;",
+    "syntaxRule": "Combine projection, aliasing, join key equality, predicate filtering, ordering, and slicing into a full production query.",
+    "syntaxTrap": "Mismatched join keys (e.g. joining on name instead of ID) causing incorrect data pairing.",
+    "eli5Story": "Relational Joins on Students: Retrieve up to 10 students enrolled in courses with 3 or more credits.",
+    "commonMistakes": "Omitting the ON clause, forgetting table alias qualification on ambiguous columns, or accidentally converting LEFT JOIN to INNER JOIN via WHERE filters.",
+    "learningOutcomes": "Mastered 7.10 Two-Table Lifecycle Production Queries on Students.",
+    "challengeSlots": [
+      {
+        "type": "keyword",
+        "value": "SELECT"
+      },
+      {
+        "type": "column",
+        "value": "s.full_name,"
+      },
+      {
+        "type": "column",
+        "value": "c.course_name,"
+      },
+      {
+        "type": "column",
+        "value": "c.credits"
+      },
+      {
+        "type": "keyword",
+        "value": "FROM"
+      },
+      {
+        "type": "table",
+        "value": "Students"
+      },
+      {
+        "type": "column",
+        "value": "s"
+      },
+      {
+        "type": "keyword",
+        "value": "INNER"
+      },
+      {
+        "type": "keyword",
+        "value": "JOIN"
+      },
+      {
+        "type": "table",
+        "value": "Courses"
+      },
+      {
+        "type": "column",
+        "value": "c"
+      },
+      {
+        "type": "keyword",
+        "value": "ON"
+      },
+      {
+        "type": "column",
+        "value": "s.student_id"
+      },
+      {
+        "type": "column",
+        "value": "="
+      },
+      {
+        "type": "column",
+        "value": "c.student_id"
+      },
+      {
+        "type": "keyword",
+        "value": "WHERE"
+      },
+      {
+        "type": "column",
+        "value": "c.credits"
+      },
+      {
+        "type": "column",
+        "value": ">="
+      },
+      {
+        "type": "column",
+        "value": "3"
+      },
+      {
+        "type": "keyword",
+        "value": "ORDER"
+      },
+      {
+        "type": "keyword",
+        "value": "BY"
+      },
+      {
+        "type": "column",
+        "value": "s.full_name"
+      },
+      {
+        "type": "keyword",
+        "value": "ASC"
+      },
+      {
+        "type": "keyword",
+        "value": "LIMIT"
+      },
+      {
+        "type": "column",
+        "value": "10;"
+      }
+    ]
+  },
+  {
+    "drillNumber": 692,
+    "subcluster": "7.10 Two-Table Lifecycle Production Queries",
+    "level": "Level 2 (Comprehensive 2-Table Queries)",
+    "title": "Syntax #692: Find the 5 most affordable books under $20.00 with their author names",
+    "table": "Books",
+    "scenario": "Find the 5 most affordable books under $20.00 with their author names.",
+    "businessObjective": "Find the 5 most affordable books under $20.00 with their author names.",
+    "schemaSnippet": "Books relational schema",
+    "targetQuery": "SELECT b.title, a.author_name, b.price\nFROM Books b\nINNER JOIN Authors a ON b.author_id = a.author_id\nWHERE b.price < 20.00\nORDER BY b.price ASC\nLIMIT 5;",
+    "syntaxBlueprint": "SELECT a.col1, b.col2\nFROM TableA a\nJOIN TableB b ON a.id = b.a_id\nWHERE a.filter = 'val'\nORDER BY b.val DESC\nLIMIT 5;",
+    "syntaxRule": "Combine projection, aliasing, join key equality, predicate filtering, ordering, and slicing into a full production query.",
+    "syntaxTrap": "Mismatched join keys (e.g. joining on name instead of ID) causing incorrect data pairing.",
+    "eli5Story": "Relational Joins on Books: Find the 5 most affordable books under $20.00 with their author names.",
+    "commonMistakes": "Omitting the ON clause, forgetting table alias qualification on ambiguous columns, or accidentally converting LEFT JOIN to INNER JOIN via WHERE filters.",
+    "learningOutcomes": "Mastered 7.10 Two-Table Lifecycle Production Queries on Books.",
+    "challengeSlots": [
+      {
+        "type": "keyword",
+        "value": "SELECT"
+      },
+      {
+        "type": "column",
+        "value": "b.title,"
+      },
+      {
+        "type": "column",
+        "value": "a.author_name,"
+      },
+      {
+        "type": "column",
+        "value": "b.price"
+      },
+      {
+        "type": "keyword",
+        "value": "FROM"
+      },
+      {
+        "type": "table",
+        "value": "Books"
+      },
+      {
+        "type": "column",
+        "value": "b"
+      },
+      {
+        "type": "keyword",
+        "value": "INNER"
+      },
+      {
+        "type": "keyword",
+        "value": "JOIN"
+      },
+      {
+        "type": "table",
+        "value": "Authors"
+      },
+      {
+        "type": "column",
+        "value": "a"
+      },
+      {
+        "type": "keyword",
+        "value": "ON"
+      },
+      {
+        "type": "column",
+        "value": "b.author_id"
+      },
+      {
+        "type": "column",
+        "value": "="
+      },
+      {
+        "type": "column",
+        "value": "a.author_id"
+      },
+      {
+        "type": "keyword",
+        "value": "WHERE"
+      },
+      {
+        "type": "column",
+        "value": "b.price"
+      },
+      {
+        "type": "column",
+        "value": "<"
+      },
+      {
+        "type": "column",
+        "value": "20.00"
+      },
+      {
+        "type": "keyword",
+        "value": "ORDER"
+      },
+      {
+        "type": "keyword",
+        "value": "BY"
+      },
+      {
+        "type": "column",
+        "value": "b.price"
+      },
+      {
+        "type": "keyword",
+        "value": "ASC"
+      },
+      {
+        "type": "keyword",
+        "value": "LIMIT"
+      },
+      {
+        "type": "column",
+        "value": "5;"
+      }
+    ]
+  },
+  {
+    "drillNumber": 693,
+    "subcluster": "7.10 Two-Table Lifecycle Production Queries",
+    "level": "Level 2 (Comprehensive 2-Table Queries)",
+    "title": "Syntax #693: Find the top 3 highest earners in the Engineering department",
+    "table": "Employees",
+    "scenario": "Find the top 3 highest earners in the Engineering department.",
+    "businessObjective": "Find the top 3 highest earners in the Engineering department.",
+    "schemaSnippet": "Employees relational schema",
+    "targetQuery": "SELECT e.first_name, d.department_name, e.salary\nFROM Employees e\nINNER JOIN Departments d ON e.department_id = d.department_id\nWHERE d.department_name = 'Engineering'\nORDER BY e.salary DESC\nLIMIT 3;",
+    "syntaxBlueprint": "SELECT a.col1, b.col2\nFROM TableA a\nJOIN TableB b ON a.id = b.a_id\nWHERE a.filter = 'val'\nORDER BY b.val DESC\nLIMIT 5;",
+    "syntaxRule": "Combine projection, aliasing, join key equality, predicate filtering, ordering, and slicing into a full production query.",
+    "syntaxTrap": "Mismatched join keys (e.g. joining on name instead of ID) causing incorrect data pairing.",
+    "eli5Story": "Relational Joins on Employees: Find the top 3 highest earners in the Engineering department.",
+    "commonMistakes": "Omitting the ON clause, forgetting table alias qualification on ambiguous columns, or accidentally converting LEFT JOIN to INNER JOIN via WHERE filters.",
+    "learningOutcomes": "Mastered 7.10 Two-Table Lifecycle Production Queries on Employees.",
+    "challengeSlots": [
+      {
+        "type": "keyword",
+        "value": "SELECT"
+      },
+      {
+        "type": "column",
+        "value": "e.first_name,"
+      },
+      {
+        "type": "column",
+        "value": "d.department_name,"
+      },
+      {
+        "type": "column",
+        "value": "e.salary"
+      },
+      {
+        "type": "keyword",
+        "value": "FROM"
+      },
+      {
+        "type": "table",
+        "value": "Employees"
+      },
+      {
+        "type": "column",
+        "value": "e"
+      },
+      {
+        "type": "keyword",
+        "value": "INNER"
+      },
+      {
+        "type": "keyword",
+        "value": "JOIN"
+      },
+      {
+        "type": "table",
+        "value": "Departments"
+      },
+      {
+        "type": "column",
+        "value": "d"
+      },
+      {
+        "type": "keyword",
+        "value": "ON"
+      },
+      {
+        "type": "column",
+        "value": "e.department_id"
+      },
+      {
+        "type": "column",
+        "value": "="
+      },
+      {
+        "type": "column",
+        "value": "d.department_id"
+      },
+      {
+        "type": "keyword",
+        "value": "WHERE"
+      },
+      {
+        "type": "column",
+        "value": "d.department_name"
+      },
+      {
+        "type": "column",
+        "value": "="
+      },
+      {
+        "type": "column",
+        "value": "'Engineering'"
+      },
+      {
+        "type": "keyword",
+        "value": "ORDER"
+      },
+      {
+        "type": "keyword",
+        "value": "BY"
+      },
+      {
+        "type": "column",
+        "value": "e.salary"
+      },
+      {
+        "type": "keyword",
+        "value": "DESC"
+      },
+      {
+        "type": "keyword",
+        "value": "LIMIT"
+      },
+      {
+        "type": "column",
+        "value": "3;"
+      }
+    ]
+  },
+  {
+    "drillNumber": 694,
+    "subcluster": "7.10 Two-Table Lifecycle Production Queries",
+    "level": "Level 2 (Comprehensive 2-Table Queries)",
+    "title": "Syntax #694: Identify the 5 lowest-stock grocery items needing urgent replenishment",
+    "table": "GroceryItems",
+    "scenario": "Identify the 5 lowest-stock grocery items needing urgent replenishment.",
+    "businessObjective": "Identify the 5 lowest-stock grocery items needing urgent replenishment.",
+    "schemaSnippet": "GroceryItems relational schema",
+    "targetQuery": "SELECT g.item_name, s.supplier_name, g.stock_qty\nFROM GroceryItems g\nINNER JOIN Suppliers s ON g.supplier_id = s.supplier_id\nWHERE g.stock_qty < 15\nORDER BY g.stock_qty ASC\nLIMIT 5;",
+    "syntaxBlueprint": "SELECT a.col1, b.col2\nFROM TableA a\nJOIN TableB b ON a.id = b.a_id\nWHERE a.filter = 'val'\nORDER BY b.val DESC\nLIMIT 5;",
+    "syntaxRule": "Combine projection, aliasing, join key equality, predicate filtering, ordering, and slicing into a full production query.",
+    "syntaxTrap": "Mismatched join keys (e.g. joining on name instead of ID) causing incorrect data pairing.",
+    "eli5Story": "Relational Joins on GroceryItems: Identify the 5 lowest-stock grocery items needing urgent replenishment.",
+    "commonMistakes": "Omitting the ON clause, forgetting table alias qualification on ambiguous columns, or accidentally converting LEFT JOIN to INNER JOIN via WHERE filters.",
+    "learningOutcomes": "Mastered 7.10 Two-Table Lifecycle Production Queries on GroceryItems.",
+    "challengeSlots": [
+      {
+        "type": "keyword",
+        "value": "SELECT"
+      },
+      {
+        "type": "column",
+        "value": "g.item_name,"
+      },
+      {
+        "type": "column",
+        "value": "s.supplier_name,"
+      },
+      {
+        "type": "column",
+        "value": "g.stock_qty"
+      },
+      {
+        "type": "keyword",
+        "value": "FROM"
+      },
+      {
+        "type": "table",
+        "value": "GroceryItems"
+      },
+      {
+        "type": "column",
+        "value": "g"
+      },
+      {
+        "type": "keyword",
+        "value": "INNER"
+      },
+      {
+        "type": "keyword",
+        "value": "JOIN"
+      },
+      {
+        "type": "table",
+        "value": "Suppliers"
+      },
+      {
+        "type": "column",
+        "value": "s"
+      },
+      {
+        "type": "keyword",
+        "value": "ON"
+      },
+      {
+        "type": "column",
+        "value": "g.supplier_id"
+      },
+      {
+        "type": "column",
+        "value": "="
+      },
+      {
+        "type": "column",
+        "value": "s.supplier_id"
+      },
+      {
+        "type": "keyword",
+        "value": "WHERE"
+      },
+      {
+        "type": "column",
+        "value": "g.stock_qty"
+      },
+      {
+        "type": "column",
+        "value": "<"
+      },
+      {
+        "type": "column",
+        "value": "15"
+      },
+      {
+        "type": "keyword",
+        "value": "ORDER"
+      },
+      {
+        "type": "keyword",
+        "value": "BY"
+      },
+      {
+        "type": "column",
+        "value": "g.stock_qty"
+      },
+      {
+        "type": "keyword",
+        "value": "ASC"
+      },
+      {
+        "type": "keyword",
+        "value": "LIMIT"
+      },
+      {
+        "type": "column",
+        "value": "5;"
+      }
+    ]
+  },
+  {
+    "drillNumber": 695,
+    "subcluster": "7.10 Two-Table Lifecycle Production Queries",
+    "level": "Level 2 (Comprehensive 2-Table Queries)",
+    "title": "Syntax #695: Find the top 5 highest-value completed customer orders",
+    "table": "Orders",
+    "scenario": "Find the top 5 highest-value completed customer orders.",
+    "businessObjective": "Find the top 5 highest-value completed customer orders.",
+    "schemaSnippet": "Orders relational schema",
+    "targetQuery": "SELECT o.order_id, c.customer_name, o.total_amount\nFROM Orders o\nINNER JOIN Customers c ON o.customer_id = c.customer_id\nWHERE o.status = 'Completed'\nORDER BY o.total_amount DESC\nLIMIT 5;",
+    "syntaxBlueprint": "SELECT a.col1, b.col2\nFROM TableA a\nJOIN TableB b ON a.id = b.a_id\nWHERE a.filter = 'val'\nORDER BY b.val DESC\nLIMIT 5;",
+    "syntaxRule": "Combine projection, aliasing, join key equality, predicate filtering, ordering, and slicing into a full production query.",
+    "syntaxTrap": "Mismatched join keys (e.g. joining on name instead of ID) causing incorrect data pairing.",
+    "eli5Story": "Relational Joins on Orders: Find the top 5 highest-value completed customer orders.",
+    "commonMistakes": "Omitting the ON clause, forgetting table alias qualification on ambiguous columns, or accidentally converting LEFT JOIN to INNER JOIN via WHERE filters.",
+    "learningOutcomes": "Mastered 7.10 Two-Table Lifecycle Production Queries on Orders.",
+    "challengeSlots": [
+      {
+        "type": "keyword",
+        "value": "SELECT"
+      },
+      {
+        "type": "column",
+        "value": "o.order_id,"
+      },
+      {
+        "type": "column",
+        "value": "c.customer_name,"
+      },
+      {
+        "type": "column",
+        "value": "o.total_amount"
+      },
+      {
+        "type": "keyword",
+        "value": "FROM"
+      },
+      {
+        "type": "table",
+        "value": "Orders"
+      },
+      {
+        "type": "column",
+        "value": "o"
+      },
+      {
+        "type": "keyword",
+        "value": "INNER"
+      },
+      {
+        "type": "keyword",
+        "value": "JOIN"
+      },
+      {
+        "type": "table",
+        "value": "Customers"
+      },
+      {
+        "type": "column",
+        "value": "c"
+      },
+      {
+        "type": "keyword",
+        "value": "ON"
+      },
+      {
+        "type": "column",
+        "value": "o.customer_id"
+      },
+      {
+        "type": "column",
+        "value": "="
+      },
+      {
+        "type": "column",
+        "value": "c.customer_id"
+      },
+      {
+        "type": "keyword",
+        "value": "WHERE"
+      },
+      {
+        "type": "column",
+        "value": "o.status"
+      },
+      {
+        "type": "column",
+        "value": "="
+      },
+      {
+        "type": "column",
+        "value": "'Completed'"
+      },
+      {
+        "type": "keyword",
+        "value": "ORDER"
+      },
+      {
+        "type": "keyword",
+        "value": "BY"
+      },
+      {
+        "type": "column",
+        "value": "o.total_amount"
+      },
+      {
+        "type": "keyword",
+        "value": "DESC"
+      },
+      {
+        "type": "keyword",
+        "value": "LIMIT"
+      },
+      {
+        "type": "column",
+        "value": "5;"
+      }
+    ]
+  },
+  {
+    "drillNumber": 696,
+    "subcluster": "7.10 Two-Table Lifecycle Production Queries",
+    "level": "Level 2 (Comprehensive 2-Table Queries)",
+    "title": "Syntax #696: Retrieve the first 10 Rock music tracks and their album titles",
+    "table": "MusicTracks",
+    "scenario": "Retrieve the first 10 Rock music tracks and their album titles.",
+    "businessObjective": "Retrieve the first 10 Rock music tracks and their album titles.",
+    "schemaSnippet": "MusicTracks relational schema",
+    "targetQuery": "SELECT t.track_title, a.album_title, t.genre\nFROM MusicTracks t\nINNER JOIN Albums a ON t.album_id = a.album_id\nWHERE t.genre = 'Rock'\nORDER BY t.track_title ASC\nLIMIT 10;",
+    "syntaxBlueprint": "SELECT a.col1, b.col2\nFROM TableA a\nJOIN TableB b ON a.id = b.a_id\nWHERE a.filter = 'val'\nORDER BY b.val DESC\nLIMIT 5;",
+    "syntaxRule": "Combine projection, aliasing, join key equality, predicate filtering, ordering, and slicing into a full production query.",
+    "syntaxTrap": "Mismatched join keys (e.g. joining on name instead of ID) causing incorrect data pairing.",
+    "eli5Story": "Relational Joins on MusicTracks: Retrieve the first 10 Rock music tracks and their album titles.",
+    "commonMistakes": "Omitting the ON clause, forgetting table alias qualification on ambiguous columns, or accidentally converting LEFT JOIN to INNER JOIN via WHERE filters.",
+    "learningOutcomes": "Mastered 7.10 Two-Table Lifecycle Production Queries on MusicTracks.",
+    "challengeSlots": [
+      {
+        "type": "keyword",
+        "value": "SELECT"
+      },
+      {
+        "type": "column",
+        "value": "t.track_title,"
+      },
+      {
+        "type": "column",
+        "value": "a.album_title,"
+      },
+      {
+        "type": "column",
+        "value": "t.genre"
+      },
+      {
+        "type": "keyword",
+        "value": "FROM"
+      },
+      {
+        "type": "table",
+        "value": "MusicTracks"
+      },
+      {
+        "type": "column",
+        "value": "t"
+      },
+      {
+        "type": "keyword",
+        "value": "INNER"
+      },
+      {
+        "type": "keyword",
+        "value": "JOIN"
+      },
+      {
+        "type": "table",
+        "value": "Albums"
+      },
+      {
+        "type": "column",
+        "value": "a"
+      },
+      {
+        "type": "keyword",
+        "value": "ON"
+      },
+      {
+        "type": "column",
+        "value": "t.album_id"
+      },
+      {
+        "type": "column",
+        "value": "="
+      },
+      {
+        "type": "column",
+        "value": "a.album_id"
+      },
+      {
+        "type": "keyword",
+        "value": "WHERE"
+      },
+      {
+        "type": "column",
+        "value": "t.genre"
+      },
+      {
+        "type": "column",
+        "value": "="
+      },
+      {
+        "type": "column",
+        "value": "'Rock'"
+      },
+      {
+        "type": "keyword",
+        "value": "ORDER"
+      },
+      {
+        "type": "keyword",
+        "value": "BY"
+      },
+      {
+        "type": "column",
+        "value": "t.track_title"
+      },
+      {
+        "type": "keyword",
+        "value": "ASC"
+      },
+      {
+        "type": "keyword",
+        "value": "LIMIT"
+      },
+      {
+        "type": "column",
+        "value": "10;"
+      }
+    ]
+  },
+  {
+    "drillNumber": 697,
+    "subcluster": "7.10 Two-Table Lifecycle Production Queries",
+    "level": "Level 2 (Comprehensive 2-Table Queries)",
+    "title": "Syntax #697: List the first 5 Gold gym members and their dedicated personal trainers",
+    "table": "GymMembers",
+    "scenario": "List the first 5 Gold gym members and their dedicated personal trainers.",
+    "businessObjective": "List the first 5 Gold gym members and their dedicated personal trainers.",
+    "schemaSnippet": "GymMembers relational schema",
+    "targetQuery": "SELECT m.member_name, tr.trainer_name, m.membership_plan\nFROM GymMembers m\nINNER JOIN Trainers tr ON m.trainer_id = tr.trainer_id\nWHERE m.membership_plan = 'Gold'\nORDER BY m.member_name ASC\nLIMIT 5;",
+    "syntaxBlueprint": "SELECT a.col1, b.col2\nFROM TableA a\nJOIN TableB b ON a.id = b.a_id\nWHERE a.filter = 'val'\nORDER BY b.val DESC\nLIMIT 5;",
+    "syntaxRule": "Combine projection, aliasing, join key equality, predicate filtering, ordering, and slicing into a full production query.",
+    "syntaxTrap": "Mismatched join keys (e.g. joining on name instead of ID) causing incorrect data pairing.",
+    "eli5Story": "Relational Joins on GymMembers: List the first 5 Gold gym members and their dedicated personal trainers.",
+    "commonMistakes": "Omitting the ON clause, forgetting table alias qualification on ambiguous columns, or accidentally converting LEFT JOIN to INNER JOIN via WHERE filters.",
+    "learningOutcomes": "Mastered 7.10 Two-Table Lifecycle Production Queries on GymMembers.",
+    "challengeSlots": [
+      {
+        "type": "keyword",
+        "value": "SELECT"
+      },
+      {
+        "type": "column",
+        "value": "m.member_name,"
+      },
+      {
+        "type": "column",
+        "value": "tr.trainer_name,"
+      },
+      {
+        "type": "column",
+        "value": "m.membership_plan"
+      },
+      {
+        "type": "keyword",
+        "value": "FROM"
+      },
+      {
+        "type": "table",
+        "value": "GymMembers"
+      },
+      {
+        "type": "column",
+        "value": "m"
+      },
+      {
+        "type": "keyword",
+        "value": "INNER"
+      },
+      {
+        "type": "keyword",
+        "value": "JOIN"
+      },
+      {
+        "type": "table",
+        "value": "Trainers"
+      },
+      {
+        "type": "column",
+        "value": "tr"
+      },
+      {
+        "type": "keyword",
+        "value": "ON"
+      },
+      {
+        "type": "column",
+        "value": "m.trainer_id"
+      },
+      {
+        "type": "column",
+        "value": "="
+      },
+      {
+        "type": "column",
+        "value": "tr.trainer_id"
+      },
+      {
+        "type": "keyword",
+        "value": "WHERE"
+      },
+      {
+        "type": "column",
+        "value": "m.membership_plan"
+      },
+      {
+        "type": "column",
+        "value": "="
+      },
+      {
+        "type": "column",
+        "value": "'Gold'"
+      },
+      {
+        "type": "keyword",
+        "value": "ORDER"
+      },
+      {
+        "type": "keyword",
+        "value": "BY"
+      },
+      {
+        "type": "column",
+        "value": "m.member_name"
+      },
+      {
+        "type": "keyword",
+        "value": "ASC"
+      },
+      {
+        "type": "keyword",
+        "value": "LIMIT"
+      },
+      {
+        "type": "column",
+        "value": "5;"
+      }
+    ]
+  },
+  {
+    "drillNumber": 698,
+    "subcluster": "7.10 Two-Table Lifecycle Production Queries",
+    "level": "Level 2 (Comprehensive 2-Table Queries)",
+    "title": "Syntax #698: Retrieve 5 top-rated reviews with 4 or more stars",
+    "table": "MovieReviews",
+    "scenario": "Retrieve 5 top-rated reviews with 4 or more stars.",
+    "businessObjective": "Retrieve 5 top-rated reviews with 4 or more stars.",
+    "schemaSnippet": "MovieReviews relational schema",
+    "targetQuery": "SELECT r.review_text, m.movie_title, r.star_rating\nFROM MovieReviews r\nINNER JOIN Movies m ON r.movie_id = m.movie_id\nWHERE r.star_rating >= 4\nORDER BY r.star_rating DESC\nLIMIT 5;",
+    "syntaxBlueprint": "SELECT a.col1, b.col2\nFROM TableA a\nJOIN TableB b ON a.id = b.a_id\nWHERE a.filter = 'val'\nORDER BY b.val DESC\nLIMIT 5;",
+    "syntaxRule": "Combine projection, aliasing, join key equality, predicate filtering, ordering, and slicing into a full production query.",
+    "syntaxTrap": "Mismatched join keys (e.g. joining on name instead of ID) causing incorrect data pairing.",
+    "eli5Story": "Relational Joins on MovieReviews: Retrieve 5 top-rated reviews with 4 or more stars.",
+    "commonMistakes": "Omitting the ON clause, forgetting table alias qualification on ambiguous columns, or accidentally converting LEFT JOIN to INNER JOIN via WHERE filters.",
+    "learningOutcomes": "Mastered 7.10 Two-Table Lifecycle Production Queries on MovieReviews.",
+    "challengeSlots": [
+      {
+        "type": "keyword",
+        "value": "SELECT"
+      },
+      {
+        "type": "column",
+        "value": "r.review_text,"
+      },
+      {
+        "type": "column",
+        "value": "m.movie_title,"
+      },
+      {
+        "type": "column",
+        "value": "r.star_rating"
+      },
+      {
+        "type": "keyword",
+        "value": "FROM"
+      },
+      {
+        "type": "table",
+        "value": "MovieReviews"
+      },
+      {
+        "type": "column",
+        "value": "r"
+      },
+      {
+        "type": "keyword",
+        "value": "INNER"
+      },
+      {
+        "type": "keyword",
+        "value": "JOIN"
+      },
+      {
+        "type": "table",
+        "value": "Movies"
+      },
+      {
+        "type": "column",
+        "value": "m"
+      },
+      {
+        "type": "keyword",
+        "value": "ON"
+      },
+      {
+        "type": "column",
+        "value": "r.movie_id"
+      },
+      {
+        "type": "column",
+        "value": "="
+      },
+      {
+        "type": "column",
+        "value": "m.movie_id"
+      },
+      {
+        "type": "keyword",
+        "value": "WHERE"
+      },
+      {
+        "type": "column",
+        "value": "r.star_rating"
+      },
+      {
+        "type": "column",
+        "value": ">="
+      },
+      {
+        "type": "column",
+        "value": "4"
+      },
+      {
+        "type": "keyword",
+        "value": "ORDER"
+      },
+      {
+        "type": "keyword",
+        "value": "BY"
+      },
+      {
+        "type": "column",
+        "value": "r.star_rating"
+      },
+      {
+        "type": "keyword",
+        "value": "DESC"
+      },
+      {
+        "type": "keyword",
+        "value": "LIMIT"
+      },
+      {
+        "type": "column",
+        "value": "5;"
+      }
+    ]
+  },
+  {
+    "drillNumber": 699,
+    "subcluster": "7.10 Two-Table Lifecycle Production Queries",
+    "level": "Level 2 (Comprehensive 2-Table Queries)",
+    "title": "Syntax #699: Find the first 5 scheduled flight departures from airport 'JFK'",
+    "table": "FlightSchedule",
+    "scenario": "Find the first 5 scheduled flight departures from airport 'JFK'.",
+    "businessObjective": "Find the first 5 scheduled flight departures from airport 'JFK'.",
+    "schemaSnippet": "FlightSchedule relational schema",
+    "targetQuery": "SELECT f.flight_id, al.airline_name, f.origin_airport\nFROM FlightSchedule f\nINNER JOIN Airlines al ON f.airline_id = al.airline_id\nWHERE f.origin_airport = 'JFK'\nORDER BY f.flight_id ASC\nLIMIT 5;",
+    "syntaxBlueprint": "SELECT a.col1, b.col2\nFROM TableA a\nJOIN TableB b ON a.id = b.a_id\nWHERE a.filter = 'val'\nORDER BY b.val DESC\nLIMIT 5;",
+    "syntaxRule": "Combine projection, aliasing, join key equality, predicate filtering, ordering, and slicing into a full production query.",
+    "syntaxTrap": "Mismatched join keys (e.g. joining on name instead of ID) causing incorrect data pairing.",
+    "eli5Story": "Relational Joins on FlightSchedule: Find the first 5 scheduled flight departures from airport 'JFK'.",
+    "commonMistakes": "Omitting the ON clause, forgetting table alias qualification on ambiguous columns, or accidentally converting LEFT JOIN to INNER JOIN via WHERE filters.",
+    "learningOutcomes": "Mastered 7.10 Two-Table Lifecycle Production Queries on FlightSchedule.",
+    "challengeSlots": [
+      {
+        "type": "keyword",
+        "value": "SELECT"
+      },
+      {
+        "type": "column",
+        "value": "f.flight_id,"
+      },
+      {
+        "type": "column",
+        "value": "al.airline_name,"
+      },
+      {
+        "type": "column",
+        "value": "f.origin_airport"
+      },
+      {
+        "type": "keyword",
+        "value": "FROM"
+      },
+      {
+        "type": "table",
+        "value": "FlightSchedule"
+      },
+      {
+        "type": "column",
+        "value": "f"
+      },
+      {
+        "type": "keyword",
+        "value": "INNER"
+      },
+      {
+        "type": "keyword",
+        "value": "JOIN"
+      },
+      {
+        "type": "table",
+        "value": "Airlines"
+      },
+      {
+        "type": "column",
+        "value": "al"
+      },
+      {
+        "type": "keyword",
+        "value": "ON"
+      },
+      {
+        "type": "column",
+        "value": "f.airline_id"
+      },
+      {
+        "type": "column",
+        "value": "="
+      },
+      {
+        "type": "column",
+        "value": "al.airline_id"
+      },
+      {
+        "type": "keyword",
+        "value": "WHERE"
+      },
+      {
+        "type": "column",
+        "value": "f.origin_airport"
+      },
+      {
+        "type": "column",
+        "value": "="
+      },
+      {
+        "type": "column",
+        "value": "'JFK'"
+      },
+      {
+        "type": "keyword",
+        "value": "ORDER"
+      },
+      {
+        "type": "keyword",
+        "value": "BY"
+      },
+      {
+        "type": "column",
+        "value": "f.flight_id"
+      },
+      {
+        "type": "keyword",
+        "value": "ASC"
+      },
+      {
+        "type": "keyword",
+        "value": "LIMIT"
+      },
+      {
+        "type": "column",
+        "value": "5;"
+      }
+    ]
+  },
+  {
+    "drillNumber": 700,
+    "subcluster": "7.10 Two-Table Lifecycle Production Queries",
+    "level": "Level 2 (Comprehensive 2-Table Queries)",
+    "title": "Syntax #700: Retrieve the first 5 feline patient records along with their owner names",
+    "table": "PetClinic",
+    "scenario": "Retrieve the first 5 feline patient records along with their owner names.",
+    "businessObjective": "Retrieve the first 5 feline patient records along with their owner names.",
+    "schemaSnippet": "PetClinic relational schema",
+    "targetQuery": "SELECT p.pet_name, o.owner_name, p.species\nFROM PetClinic p\nINNER JOIN Owners o ON p.owner_id = o.owner_id\nWHERE p.species = 'Feline'\nORDER BY p.pet_name ASC\nLIMIT 5;",
+    "syntaxBlueprint": "SELECT a.col1, b.col2\nFROM TableA a\nJOIN TableB b ON a.id = b.a_id\nWHERE a.filter = 'val'\nORDER BY b.val DESC\nLIMIT 5;",
+    "syntaxRule": "Combine projection, aliasing, join key equality, predicate filtering, ordering, and slicing into a full production query.",
+    "syntaxTrap": "Mismatched join keys (e.g. joining on name instead of ID) causing incorrect data pairing.",
+    "eli5Story": "Relational Joins on PetClinic: Retrieve the first 5 feline patient records along with their owner names.",
+    "commonMistakes": "Omitting the ON clause, forgetting table alias qualification on ambiguous columns, or accidentally converting LEFT JOIN to INNER JOIN via WHERE filters.",
+    "learningOutcomes": "Mastered 7.10 Two-Table Lifecycle Production Queries on PetClinic.",
+    "challengeSlots": [
+      {
+        "type": "keyword",
+        "value": "SELECT"
+      },
+      {
+        "type": "column",
+        "value": "p.pet_name,"
+      },
+      {
+        "type": "column",
+        "value": "o.owner_name,"
+      },
+      {
+        "type": "column",
+        "value": "p.species"
+      },
+      {
+        "type": "keyword",
+        "value": "FROM"
+      },
+      {
+        "type": "table",
+        "value": "PetClinic"
+      },
+      {
+        "type": "column",
+        "value": "p"
+      },
+      {
+        "type": "keyword",
+        "value": "INNER"
+      },
+      {
+        "type": "keyword",
+        "value": "JOIN"
+      },
+      {
+        "type": "table",
+        "value": "Owners"
+      },
+      {
+        "type": "column",
+        "value": "o"
+      },
+      {
+        "type": "keyword",
+        "value": "ON"
+      },
+      {
+        "type": "column",
+        "value": "p.owner_id"
+      },
+      {
+        "type": "column",
+        "value": "="
+      },
+      {
+        "type": "column",
+        "value": "o.owner_id"
+      },
+      {
+        "type": "keyword",
+        "value": "WHERE"
+      },
+      {
+        "type": "column",
+        "value": "p.species"
+      },
+      {
+        "type": "column",
+        "value": "="
+      },
+      {
+        "type": "column",
+        "value": "'Feline'"
+      },
+      {
+        "type": "keyword",
+        "value": "ORDER"
+      },
+      {
+        "type": "keyword",
+        "value": "BY"
+      },
+      {
+        "type": "column",
+        "value": "p.pet_name"
+      },
+      {
+        "type": "keyword",
+        "value": "ASC"
+      },
+      {
+        "type": "keyword",
+        "value": "LIMIT"
+      },
+      {
+        "type": "column",
+        "value": "5;"
+      }
+    ]
+  },
+  {
+    "drillNumber": 701,
+    "subcluster": "8.1 CROSS JOIN (Cartesian Matrices)",
+    "level": "Level 2 (Cartesian Join)",
+    "title": "Syntax #701: Generate a complete curriculum matrix pairing every student with every available course",
+    "table": "Students",
+    "scenario": "Generate a complete curriculum matrix pairing every student with every available course.",
+    "businessObjective": "Generate a complete curriculum matrix pairing every student with every available course.",
+    "schemaSnippet": "Students relational schema",
+    "targetQuery": "SELECT s.full_name, c.course_name\nFROM Students s\nCROSS JOIN Courses c;",
+    "syntaxBlueprint": "SELECT a.col, b.col\nFROM TableA a\nCROSS JOIN TableB b;",
+    "syntaxRule": "CROSS JOIN pairs every single row in Table A with every row in Table B, generating N x M combinations without requiring an ON clause.",
+    "syntaxTrap": "Running CROSS JOIN on large tables can accidentally generate millions of rows and crash the database memory.",
+    "eli5Story": "Relational Joins on Students: Generate a complete curriculum matrix pairing every student with every available course.",
+    "commonMistakes": "Omitting the ON clause, forgetting table alias qualification on ambiguous columns, or accidentally converting LEFT JOIN to INNER JOIN via WHERE filters.",
+    "learningOutcomes": "Mastered 8.1 CROSS JOIN (Cartesian Matrices) on Students.",
+    "challengeSlots": [
+      {
+        "type": "keyword",
+        "value": "SELECT"
+      },
+      {
+        "type": "column",
+        "value": "s.full_name,"
+      },
+      {
+        "type": "column",
+        "value": "c.course_name"
+      },
+      {
+        "type": "keyword",
+        "value": "FROM"
+      },
+      {
+        "type": "table",
+        "value": "Students"
+      },
+      {
+        "type": "column",
+        "value": "s"
+      },
+      {
+        "type": "keyword",
+        "value": "CROSS"
+      },
+      {
+        "type": "keyword",
+        "value": "JOIN"
+      },
+      {
+        "type": "table",
+        "value": "Courses"
+      },
+      {
+        "type": "column",
+        "value": "c;"
+      }
+    ]
+  },
+  {
+    "drillNumber": 702,
+    "subcluster": "8.1 CROSS JOIN (Cartesian Matrices)",
+    "level": "Level 2 (Cartesian Join)",
+    "title": "Syntax #702: Create a matrix of all book titles paired with every author origin country",
+    "table": "Books",
+    "scenario": "Create a matrix of all book titles paired with every author origin country.",
+    "businessObjective": "Create a matrix of all book titles paired with every author origin country.",
+    "schemaSnippet": "Books relational schema",
+    "targetQuery": "SELECT b.title, a.country\nFROM Books b\nCROSS JOIN Authors a;",
+    "syntaxBlueprint": "SELECT a.col, b.col\nFROM TableA a\nCROSS JOIN TableB b;",
+    "syntaxRule": "CROSS JOIN pairs every single row in Table A with every row in Table B, generating N x M combinations without requiring an ON clause.",
+    "syntaxTrap": "Running CROSS JOIN on large tables can accidentally generate millions of rows and crash the database memory.",
+    "eli5Story": "Relational Joins on Books: Create a matrix of all book titles paired with every author origin country.",
+    "commonMistakes": "Omitting the ON clause, forgetting table alias qualification on ambiguous columns, or accidentally converting LEFT JOIN to INNER JOIN via WHERE filters.",
+    "learningOutcomes": "Mastered 8.1 CROSS JOIN (Cartesian Matrices) on Books.",
+    "challengeSlots": [
+      {
+        "type": "keyword",
+        "value": "SELECT"
+      },
+      {
+        "type": "column",
+        "value": "b.title,"
+      },
+      {
+        "type": "column",
+        "value": "a.country"
+      },
+      {
+        "type": "keyword",
+        "value": "FROM"
+      },
+      {
+        "type": "table",
+        "value": "Books"
+      },
+      {
+        "type": "column",
+        "value": "b"
+      },
+      {
+        "type": "keyword",
+        "value": "CROSS"
+      },
+      {
+        "type": "keyword",
+        "value": "JOIN"
+      },
+      {
+        "type": "table",
+        "value": "Authors"
+      },
+      {
+        "type": "column",
+        "value": "a;"
+      }
+    ]
+  },
+  {
+    "drillNumber": 703,
+    "subcluster": "8.1 CROSS JOIN (Cartesian Matrices)",
+    "level": "Level 2 (Cartesian Join)",
+    "title": "Syntax #703: Generate an exploratory matrix of every employee paired with every department",
+    "table": "Employees",
+    "scenario": "Generate an exploratory matrix of every employee paired with every department.",
+    "businessObjective": "Generate an exploratory matrix of every employee paired with every department.",
+    "schemaSnippet": "Employees relational schema",
+    "targetQuery": "SELECT e.first_name, d.department_name\nFROM Employees e\nCROSS JOIN Departments d;",
+    "syntaxBlueprint": "SELECT a.col, b.col\nFROM TableA a\nCROSS JOIN TableB b;",
+    "syntaxRule": "CROSS JOIN pairs every single row in Table A with every row in Table B, generating N x M combinations without requiring an ON clause.",
+    "syntaxTrap": "Running CROSS JOIN on large tables can accidentally generate millions of rows and crash the database memory.",
+    "eli5Story": "Relational Joins on Employees: Generate an exploratory matrix of every employee paired with every department.",
+    "commonMistakes": "Omitting the ON clause, forgetting table alias qualification on ambiguous columns, or accidentally converting LEFT JOIN to INNER JOIN via WHERE filters.",
+    "learningOutcomes": "Mastered 8.1 CROSS JOIN (Cartesian Matrices) on Employees.",
+    "challengeSlots": [
+      {
+        "type": "keyword",
+        "value": "SELECT"
+      },
+      {
+        "type": "column",
+        "value": "e.first_name,"
+      },
+      {
+        "type": "column",
+        "value": "d.department_name"
+      },
+      {
+        "type": "keyword",
+        "value": "FROM"
+      },
+      {
+        "type": "table",
+        "value": "Employees"
+      },
+      {
+        "type": "column",
+        "value": "e"
+      },
+      {
+        "type": "keyword",
+        "value": "CROSS"
+      },
+      {
+        "type": "keyword",
+        "value": "JOIN"
+      },
+      {
+        "type": "table",
+        "value": "Departments"
+      },
+      {
+        "type": "column",
+        "value": "d;"
+      }
+    ]
+  },
+  {
+    "drillNumber": 704,
+    "subcluster": "8.1 CROSS JOIN (Cartesian Matrices)",
+    "level": "Level 2 (Cartesian Join)",
+    "title": "Syntax #704: Map every inventory item against every potential supplier in the vendor directory",
+    "table": "GroceryItems",
+    "scenario": "Map every inventory item against every potential supplier in the vendor directory.",
+    "businessObjective": "Map every inventory item against every potential supplier in the vendor directory.",
+    "schemaSnippet": "GroceryItems relational schema",
+    "targetQuery": "SELECT g.item_name, s.supplier_name\nFROM GroceryItems g\nCROSS JOIN Suppliers s;",
+    "syntaxBlueprint": "SELECT a.col, b.col\nFROM TableA a\nCROSS JOIN TableB b;",
+    "syntaxRule": "CROSS JOIN pairs every single row in Table A with every row in Table B, generating N x M combinations without requiring an ON clause.",
+    "syntaxTrap": "Running CROSS JOIN on large tables can accidentally generate millions of rows and crash the database memory.",
+    "eli5Story": "Relational Joins on GroceryItems: Map every inventory item against every potential supplier in the vendor directory.",
+    "commonMistakes": "Omitting the ON clause, forgetting table alias qualification on ambiguous columns, or accidentally converting LEFT JOIN to INNER JOIN via WHERE filters.",
+    "learningOutcomes": "Mastered 8.1 CROSS JOIN (Cartesian Matrices) on GroceryItems.",
+    "challengeSlots": [
+      {
+        "type": "keyword",
+        "value": "SELECT"
+      },
+      {
+        "type": "column",
+        "value": "g.item_name,"
+      },
+      {
+        "type": "column",
+        "value": "s.supplier_name"
+      },
+      {
+        "type": "keyword",
+        "value": "FROM"
+      },
+      {
+        "type": "table",
+        "value": "GroceryItems"
+      },
+      {
+        "type": "column",
+        "value": "g"
+      },
+      {
+        "type": "keyword",
+        "value": "CROSS"
+      },
+      {
+        "type": "keyword",
+        "value": "JOIN"
+      },
+      {
+        "type": "table",
+        "value": "Suppliers"
+      },
+      {
+        "type": "column",
+        "value": "s;"
+      }
+    ]
+  },
+  {
+    "drillNumber": 705,
+    "subcluster": "8.1 CROSS JOIN (Cartesian Matrices)",
+    "level": "Level 2 (Cartesian Join)",
+    "title": "Syntax #705: Generate sample pairing combinations between orders and customer accounts",
+    "table": "Orders",
+    "scenario": "Generate sample pairing combinations between orders and customer accounts.",
+    "businessObjective": "Generate sample pairing combinations between orders and customer accounts.",
+    "schemaSnippet": "Orders relational schema",
+    "targetQuery": "SELECT o.order_id, c.customer_name\nFROM Orders o\nCROSS JOIN Customers c\nLIMIT 20;",
+    "syntaxBlueprint": "SELECT a.col, b.col\nFROM TableA a\nCROSS JOIN TableB b;",
+    "syntaxRule": "CROSS JOIN pairs every single row in Table A with every row in Table B, generating N x M combinations without requiring an ON clause.",
+    "syntaxTrap": "Running CROSS JOIN on large tables can accidentally generate millions of rows and crash the database memory.",
+    "eli5Story": "Relational Joins on Orders: Generate sample pairing combinations between orders and customer accounts.",
+    "commonMistakes": "Omitting the ON clause, forgetting table alias qualification on ambiguous columns, or accidentally converting LEFT JOIN to INNER JOIN via WHERE filters.",
+    "learningOutcomes": "Mastered 8.1 CROSS JOIN (Cartesian Matrices) on Orders.",
+    "challengeSlots": [
+      {
+        "type": "keyword",
+        "value": "SELECT"
+      },
+      {
+        "type": "column",
+        "value": "o.order_id,"
+      },
+      {
+        "type": "column",
+        "value": "c.customer_name"
+      },
+      {
+        "type": "keyword",
+        "value": "FROM"
+      },
+      {
+        "type": "table",
+        "value": "Orders"
+      },
+      {
+        "type": "column",
+        "value": "o"
+      },
+      {
+        "type": "keyword",
+        "value": "CROSS"
+      },
+      {
+        "type": "keyword",
+        "value": "JOIN"
+      },
+      {
+        "type": "table",
+        "value": "Customers"
+      },
+      {
+        "type": "column",
+        "value": "c"
+      },
+      {
+        "type": "keyword",
+        "value": "LIMIT"
+      },
+      {
+        "type": "column",
+        "value": "20;"
+      }
+    ]
+  },
+  {
+    "drillNumber": 706,
+    "subcluster": "8.1 CROSS JOIN (Cartesian Matrices)",
+    "level": "Level 2 (Cartesian Join)",
+    "title": "Syntax #706: Form a combinatorial grid of music tracks and album concepts",
+    "table": "MusicTracks",
+    "scenario": "Form a combinatorial grid of music tracks and album concepts.",
+    "businessObjective": "Form a combinatorial grid of music tracks and album concepts.",
+    "schemaSnippet": "MusicTracks relational schema",
+    "targetQuery": "SELECT t.track_title, a.album_title\nFROM MusicTracks t\nCROSS JOIN Albums a\nLIMIT 25;",
+    "syntaxBlueprint": "SELECT a.col, b.col\nFROM TableA a\nCROSS JOIN TableB b;",
+    "syntaxRule": "CROSS JOIN pairs every single row in Table A with every row in Table B, generating N x M combinations without requiring an ON clause.",
+    "syntaxTrap": "Running CROSS JOIN on large tables can accidentally generate millions of rows and crash the database memory.",
+    "eli5Story": "Relational Joins on MusicTracks: Form a combinatorial grid of music tracks and album concepts.",
+    "commonMistakes": "Omitting the ON clause, forgetting table alias qualification on ambiguous columns, or accidentally converting LEFT JOIN to INNER JOIN via WHERE filters.",
+    "learningOutcomes": "Mastered 8.1 CROSS JOIN (Cartesian Matrices) on MusicTracks.",
+    "challengeSlots": [
+      {
+        "type": "keyword",
+        "value": "SELECT"
+      },
+      {
+        "type": "column",
+        "value": "t.track_title,"
+      },
+      {
+        "type": "column",
+        "value": "a.album_title"
+      },
+      {
+        "type": "keyword",
+        "value": "FROM"
+      },
+      {
+        "type": "table",
+        "value": "MusicTracks"
+      },
+      {
+        "type": "column",
+        "value": "t"
+      },
+      {
+        "type": "keyword",
+        "value": "CROSS"
+      },
+      {
+        "type": "keyword",
+        "value": "JOIN"
+      },
+      {
+        "type": "table",
+        "value": "Albums"
+      },
+      {
+        "type": "column",
+        "value": "a"
+      },
+      {
+        "type": "keyword",
+        "value": "LIMIT"
+      },
+      {
+        "type": "column",
+        "value": "25;"
+      }
+    ]
+  },
+  {
+    "drillNumber": 707,
+    "subcluster": "8.1 CROSS JOIN (Cartesian Matrices)",
+    "level": "Level 2 (Cartesian Join)",
+    "title": "Syntax #707: Produce a roster pairing every member with every available gym trainer for workshop scheduling",
+    "table": "GymMembers",
+    "scenario": "Produce a roster pairing every member with every available gym trainer for workshop scheduling.",
+    "businessObjective": "Produce a roster pairing every member with every available gym trainer for workshop scheduling.",
+    "schemaSnippet": "GymMembers relational schema",
+    "targetQuery": "SELECT m.member_name, tr.trainer_name\nFROM GymMembers m\nCROSS JOIN Trainers tr;",
+    "syntaxBlueprint": "SELECT a.col, b.col\nFROM TableA a\nCROSS JOIN TableB b;",
+    "syntaxRule": "CROSS JOIN pairs every single row in Table A with every row in Table B, generating N x M combinations without requiring an ON clause.",
+    "syntaxTrap": "Running CROSS JOIN on large tables can accidentally generate millions of rows and crash the database memory.",
+    "eli5Story": "Relational Joins on GymMembers: Produce a roster pairing every member with every available gym trainer for workshop scheduling.",
+    "commonMistakes": "Omitting the ON clause, forgetting table alias qualification on ambiguous columns, or accidentally converting LEFT JOIN to INNER JOIN via WHERE filters.",
+    "learningOutcomes": "Mastered 8.1 CROSS JOIN (Cartesian Matrices) on GymMembers.",
+    "challengeSlots": [
+      {
+        "type": "keyword",
+        "value": "SELECT"
+      },
+      {
+        "type": "column",
+        "value": "m.member_name,"
+      },
+      {
+        "type": "column",
+        "value": "tr.trainer_name"
+      },
+      {
+        "type": "keyword",
+        "value": "FROM"
+      },
+      {
+        "type": "table",
+        "value": "GymMembers"
+      },
+      {
+        "type": "column",
+        "value": "m"
+      },
+      {
+        "type": "keyword",
+        "value": "CROSS"
+      },
+      {
+        "type": "keyword",
+        "value": "JOIN"
+      },
+      {
+        "type": "table",
+        "value": "Trainers"
+      },
+      {
+        "type": "column",
+        "value": "tr;"
+      }
+    ]
+  },
+  {
+    "drillNumber": 708,
+    "subcluster": "8.1 CROSS JOIN (Cartesian Matrices)",
+    "level": "Level 2 (Cartesian Join)",
+    "title": "Syntax #708: Generate potential film-to-critic assignment pairings via CROSS JOIN",
+    "table": "MovieReviews",
+    "scenario": "Generate potential film-to-critic assignment pairings via CROSS JOIN.",
+    "businessObjective": "Generate potential film-to-critic assignment pairings via CROSS JOIN.",
+    "schemaSnippet": "MovieReviews relational schema",
+    "targetQuery": "SELECT m.movie_title, r.reviewer_name\nFROM Movies m\nCROSS JOIN MovieReviews r\nLIMIT 20;",
+    "syntaxBlueprint": "SELECT a.col, b.col\nFROM TableA a\nCROSS JOIN TableB b;",
+    "syntaxRule": "CROSS JOIN pairs every single row in Table A with every row in Table B, generating N x M combinations without requiring an ON clause.",
+    "syntaxTrap": "Running CROSS JOIN on large tables can accidentally generate millions of rows and crash the database memory.",
+    "eli5Story": "Relational Joins on MovieReviews: Generate potential film-to-critic assignment pairings via CROSS JOIN.",
+    "commonMistakes": "Omitting the ON clause, forgetting table alias qualification on ambiguous columns, or accidentally converting LEFT JOIN to INNER JOIN via WHERE filters.",
+    "learningOutcomes": "Mastered 8.1 CROSS JOIN (Cartesian Matrices) on MovieReviews.",
+    "challengeSlots": [
+      {
+        "type": "keyword",
+        "value": "SELECT"
+      },
+      {
+        "type": "column",
+        "value": "m.movie_title,"
+      },
+      {
+        "type": "column",
+        "value": "r.reviewer_name"
+      },
+      {
+        "type": "keyword",
+        "value": "FROM"
+      },
+      {
+        "type": "table",
+        "value": "Movies"
+      },
+      {
+        "type": "column",
+        "value": "m"
+      },
+      {
+        "type": "keyword",
+        "value": "CROSS"
+      },
+      {
+        "type": "keyword",
+        "value": "JOIN"
+      },
+      {
+        "type": "table",
+        "value": "MovieReviews"
+      },
+      {
+        "type": "column",
+        "value": "r"
+      },
+      {
+        "type": "keyword",
+        "value": "LIMIT"
+      },
+      {
+        "type": "column",
+        "value": "20;"
+      }
+    ]
+  },
+  {
+    "drillNumber": 709,
+    "subcluster": "8.1 CROSS JOIN (Cartesian Matrices)",
+    "level": "Level 2 (Cartesian Join)",
+    "title": "Syntax #709: Map flight route numbers against all potential codeshare airline partners",
+    "table": "FlightSchedule",
+    "scenario": "Map flight route numbers against all potential codeshare airline partners.",
+    "businessObjective": "Map flight route numbers against all potential codeshare airline partners.",
+    "schemaSnippet": "FlightSchedule relational schema",
+    "targetQuery": "SELECT f.flight_id, al.airline_name\nFROM FlightSchedule f\nCROSS JOIN Airlines al\nLIMIT 20;",
+    "syntaxBlueprint": "SELECT a.col, b.col\nFROM TableA a\nCROSS JOIN TableB b;",
+    "syntaxRule": "CROSS JOIN pairs every single row in Table A with every row in Table B, generating N x M combinations without requiring an ON clause.",
+    "syntaxTrap": "Running CROSS JOIN on large tables can accidentally generate millions of rows and crash the database memory.",
+    "eli5Story": "Relational Joins on FlightSchedule: Map flight route numbers against all potential codeshare airline partners.",
+    "commonMistakes": "Omitting the ON clause, forgetting table alias qualification on ambiguous columns, or accidentally converting LEFT JOIN to INNER JOIN via WHERE filters.",
+    "learningOutcomes": "Mastered 8.1 CROSS JOIN (Cartesian Matrices) on FlightSchedule.",
+    "challengeSlots": [
+      {
+        "type": "keyword",
+        "value": "SELECT"
+      },
+      {
+        "type": "column",
+        "value": "f.flight_id,"
+      },
+      {
+        "type": "column",
+        "value": "al.airline_name"
+      },
+      {
+        "type": "keyword",
+        "value": "FROM"
+      },
+      {
+        "type": "table",
+        "value": "FlightSchedule"
+      },
+      {
+        "type": "column",
+        "value": "f"
+      },
+      {
+        "type": "keyword",
+        "value": "CROSS"
+      },
+      {
+        "type": "keyword",
+        "value": "JOIN"
+      },
+      {
+        "type": "table",
+        "value": "Airlines"
+      },
+      {
+        "type": "column",
+        "value": "al"
+      },
+      {
+        "type": "keyword",
+        "value": "LIMIT"
+      },
+      {
+        "type": "column",
+        "value": "20;"
+      }
+    ]
+  },
+  {
+    "drillNumber": 710,
+    "subcluster": "8.1 CROSS JOIN (Cartesian Matrices)",
+    "level": "Level 2 (Cartesian Join)",
+    "title": "Syntax #710: Generate a consultation matrix pairing every clinic pet with every staff veterinarian",
+    "table": "PetClinic",
+    "scenario": "Generate a consultation matrix pairing every clinic pet with every staff veterinarian.",
+    "businessObjective": "Generate a consultation matrix pairing every clinic pet with every staff veterinarian.",
+    "schemaSnippet": "PetClinic relational schema",
+    "targetQuery": "SELECT p.pet_name, v.vet_name\nFROM PetClinic p\nCROSS JOIN Vets v;",
+    "syntaxBlueprint": "SELECT a.col, b.col\nFROM TableA a\nCROSS JOIN TableB b;",
+    "syntaxRule": "CROSS JOIN pairs every single row in Table A with every row in Table B, generating N x M combinations without requiring an ON clause.",
+    "syntaxTrap": "Running CROSS JOIN on large tables can accidentally generate millions of rows and crash the database memory.",
+    "eli5Story": "Relational Joins on PetClinic: Generate a consultation matrix pairing every clinic pet with every staff veterinarian.",
+    "commonMistakes": "Omitting the ON clause, forgetting table alias qualification on ambiguous columns, or accidentally converting LEFT JOIN to INNER JOIN via WHERE filters.",
+    "learningOutcomes": "Mastered 8.1 CROSS JOIN (Cartesian Matrices) on PetClinic.",
+    "challengeSlots": [
+      {
+        "type": "keyword",
+        "value": "SELECT"
+      },
+      {
+        "type": "column",
+        "value": "p.pet_name,"
+      },
+      {
+        "type": "column",
+        "value": "v.vet_name"
+      },
+      {
+        "type": "keyword",
+        "value": "FROM"
+      },
+      {
+        "type": "table",
+        "value": "PetClinic"
+      },
+      {
+        "type": "column",
+        "value": "p"
+      },
+      {
+        "type": "keyword",
+        "value": "CROSS"
+      },
+      {
+        "type": "keyword",
+        "value": "JOIN"
+      },
+      {
+        "type": "column",
+        "value": "Vets"
+      },
+      {
+        "type": "column",
+        "value": "v;"
+      }
+    ]
+  },
+  {
+    "drillNumber": 711,
+    "subcluster": "8.2 SELF JOIN for Hierarchies (Manager-Employee)",
+    "level": "Level 3 (Hierarchical Self Join)",
+    "title": "Syntax #711: Pair each employee with their direct manager's name using a hierarchical SELF JOIN",
+    "table": "Employees",
+    "scenario": "Pair each employee with their direct manager's name using a hierarchical SELF JOIN.",
+    "businessObjective": "Pair each employee with their direct manager's name using a hierarchical SELF JOIN.",
+    "schemaSnippet": "Employees relational schema",
+    "targetQuery": "SELECT e.first_name AS employee_name, m.first_name AS manager_name\nFROM Employees e\nLEFT JOIN Employees m ON e.manager_id = m.employee_id;",
+    "syntaxBlueprint": "SELECT e.first_name AS employee, m.first_name AS manager\nFROM Employees e\nLEFT JOIN Employees m ON e.manager_id = m.employee_id;",
+    "syntaxRule": "A table can be joined to itself by using two distinct aliases to navigate parent-child or manager-employee hierarchical structures.",
+    "syntaxTrap": "Using an INNER JOIN for self-joins on hierarchies will silently discard the top-level CEO/Director because their manager_id is NULL.",
+    "eli5Story": "Relational Joins on Employees: Pair each employee with their direct manager's name using a hierarchical SELF JOIN.",
+    "commonMistakes": "Omitting the ON clause, forgetting table alias qualification on ambiguous columns, or accidentally converting LEFT JOIN to INNER JOIN via WHERE filters.",
+    "learningOutcomes": "Mastered 8.2 SELF JOIN for Hierarchies (Manager-Employee) on Employees.",
+    "challengeSlots": [
+      {
+        "type": "keyword",
+        "value": "SELECT"
+      },
+      {
+        "type": "column",
+        "value": "e.first_name"
+      },
+      {
+        "type": "keyword",
+        "value": "AS"
+      },
+      {
+        "type": "column",
+        "value": "employee_name,"
+      },
+      {
+        "type": "column",
+        "value": "m.first_name"
+      },
+      {
+        "type": "keyword",
+        "value": "AS"
+      },
+      {
+        "type": "column",
+        "value": "manager_name"
+      },
+      {
+        "type": "keyword",
+        "value": "FROM"
+      },
+      {
+        "type": "table",
+        "value": "Employees"
+      },
+      {
+        "type": "column",
+        "value": "e"
+      },
+      {
+        "type": "keyword",
+        "value": "LEFT"
+      },
+      {
+        "type": "keyword",
+        "value": "JOIN"
+      },
+      {
+        "type": "table",
+        "value": "Employees"
+      },
+      {
+        "type": "column",
+        "value": "m"
+      },
+      {
+        "type": "keyword",
+        "value": "ON"
+      },
+      {
+        "type": "column",
+        "value": "e.manager_id"
+      },
+      {
+        "type": "column",
+        "value": "="
+      },
+      {
+        "type": "column",
+        "value": "m.employee_id;"
+      }
+    ]
+  },
+  {
+    "drillNumber": 712,
+    "subcluster": "8.2 SELF JOIN for Hierarchies (Manager-Employee)",
+    "level": "Level 3 (Hierarchical Self Join)",
+    "title": "Syntax #712: Match students with their senior peer mentor using a SELF JOIN on mentor_id",
+    "table": "Students",
+    "scenario": "Match students with their senior peer mentor using a SELF JOIN on mentor_id.",
+    "businessObjective": "Match students with their senior peer mentor using a SELF JOIN on mentor_id.",
+    "schemaSnippet": "Students relational schema",
+    "targetQuery": "SELECT s.full_name AS student_name, m.full_name AS mentor_name\nFROM Students s\nLEFT JOIN Students m ON s.mentor_id = m.student_id;",
+    "syntaxBlueprint": "SELECT e.first_name AS employee, m.first_name AS manager\nFROM Employees e\nLEFT JOIN Employees m ON e.manager_id = m.employee_id;",
+    "syntaxRule": "A table can be joined to itself by using two distinct aliases to navigate parent-child or manager-employee hierarchical structures.",
+    "syntaxTrap": "Using an INNER JOIN for self-joins on hierarchies will silently discard the top-level CEO/Director because their manager_id is NULL.",
+    "eli5Story": "Relational Joins on Students: Match students with their senior peer mentor using a SELF JOIN on mentor_id.",
+    "commonMistakes": "Omitting the ON clause, forgetting table alias qualification on ambiguous columns, or accidentally converting LEFT JOIN to INNER JOIN via WHERE filters.",
+    "learningOutcomes": "Mastered 8.2 SELF JOIN for Hierarchies (Manager-Employee) on Students.",
+    "challengeSlots": [
+      {
+        "type": "keyword",
+        "value": "SELECT"
+      },
+      {
+        "type": "column",
+        "value": "s.full_name"
+      },
+      {
+        "type": "keyword",
+        "value": "AS"
+      },
+      {
+        "type": "column",
+        "value": "student_name,"
+      },
+      {
+        "type": "column",
+        "value": "m.full_name"
+      },
+      {
+        "type": "keyword",
+        "value": "AS"
+      },
+      {
+        "type": "column",
+        "value": "mentor_name"
+      },
+      {
+        "type": "keyword",
+        "value": "FROM"
+      },
+      {
+        "type": "table",
+        "value": "Students"
+      },
+      {
+        "type": "column",
+        "value": "s"
+      },
+      {
+        "type": "keyword",
+        "value": "LEFT"
+      },
+      {
+        "type": "keyword",
+        "value": "JOIN"
+      },
+      {
+        "type": "table",
+        "value": "Students"
+      },
+      {
+        "type": "column",
+        "value": "m"
+      },
+      {
+        "type": "keyword",
+        "value": "ON"
+      },
+      {
+        "type": "column",
+        "value": "s.mentor_id"
+      },
+      {
+        "type": "column",
+        "value": "="
+      },
+      {
+        "type": "column",
+        "value": "m.student_id;"
+      }
+    ]
+  },
+  {
+    "drillNumber": 713,
+    "subcluster": "8.2 SELF JOIN for Hierarchies (Manager-Employee)",
+    "level": "Level 3 (Hierarchical Self Join)",
+    "title": "Syntax #713: Match book sequels with their original prequel titles using a SELF JOIN",
+    "table": "Books",
+    "scenario": "Match book sequels with their original prequel titles using a SELF JOIN.",
+    "businessObjective": "Match book sequels with their original prequel titles using a SELF JOIN.",
+    "schemaSnippet": "Books relational schema",
+    "targetQuery": "SELECT b.title AS sequel_title, orig.title AS original_title\nFROM Books b\nLEFT JOIN Books orig ON b.prequel_book_id = orig.book_id;",
+    "syntaxBlueprint": "SELECT e.first_name AS employee, m.first_name AS manager\nFROM Employees e\nLEFT JOIN Employees m ON e.manager_id = m.employee_id;",
+    "syntaxRule": "A table can be joined to itself by using two distinct aliases to navigate parent-child or manager-employee hierarchical structures.",
+    "syntaxTrap": "Using an INNER JOIN for self-joins on hierarchies will silently discard the top-level CEO/Director because their manager_id is NULL.",
+    "eli5Story": "Relational Joins on Books: Match book sequels with their original prequel titles using a SELF JOIN.",
+    "commonMistakes": "Omitting the ON clause, forgetting table alias qualification on ambiguous columns, or accidentally converting LEFT JOIN to INNER JOIN via WHERE filters.",
+    "learningOutcomes": "Mastered 8.2 SELF JOIN for Hierarchies (Manager-Employee) on Books.",
+    "challengeSlots": [
+      {
+        "type": "keyword",
+        "value": "SELECT"
+      },
+      {
+        "type": "column",
+        "value": "b.title"
+      },
+      {
+        "type": "keyword",
+        "value": "AS"
+      },
+      {
+        "type": "column",
+        "value": "sequel_title,"
+      },
+      {
+        "type": "column",
+        "value": "orig.title"
+      },
+      {
+        "type": "keyword",
+        "value": "AS"
+      },
+      {
+        "type": "column",
+        "value": "original_title"
+      },
+      {
+        "type": "keyword",
+        "value": "FROM"
+      },
+      {
+        "type": "table",
+        "value": "Books"
+      },
+      {
+        "type": "column",
+        "value": "b"
+      },
+      {
+        "type": "keyword",
+        "value": "LEFT"
+      },
+      {
+        "type": "keyword",
+        "value": "JOIN"
+      },
+      {
+        "type": "table",
+        "value": "Books"
+      },
+      {
+        "type": "column",
+        "value": "orig"
+      },
+      {
+        "type": "keyword",
+        "value": "ON"
+      },
+      {
+        "type": "column",
+        "value": "b.prequel_book_id"
+      },
+      {
+        "type": "column",
+        "value": "="
+      },
+      {
+        "type": "column",
+        "value": "orig.book_id;"
+      }
+    ]
+  },
+  {
+    "drillNumber": 714,
+    "subcluster": "8.2 SELF JOIN for Hierarchies (Manager-Employee)",
+    "level": "Level 3 (Hierarchical Self Join)",
+    "title": "Syntax #714: Link grocery bundle packs to their individual base products using a SELF JOIN",
+    "table": "GroceryItems",
+    "scenario": "Link grocery bundle packs to their individual base products using a SELF JOIN.",
+    "businessObjective": "Link grocery bundle packs to their individual base products using a SELF JOIN.",
+    "schemaSnippet": "GroceryItems relational schema",
+    "targetQuery": "SELECT item.item_name AS bundle_item, base.item_name AS base_product\nFROM GroceryItems item\nLEFT JOIN GroceryItems base ON item.parent_item_id = base.item_id;",
+    "syntaxBlueprint": "SELECT e.first_name AS employee, m.first_name AS manager\nFROM Employees e\nLEFT JOIN Employees m ON e.manager_id = m.employee_id;",
+    "syntaxRule": "A table can be joined to itself by using two distinct aliases to navigate parent-child or manager-employee hierarchical structures.",
+    "syntaxTrap": "Using an INNER JOIN for self-joins on hierarchies will silently discard the top-level CEO/Director because their manager_id is NULL.",
+    "eli5Story": "Relational Joins on GroceryItems: Link grocery bundle packs to their individual base products using a SELF JOIN.",
+    "commonMistakes": "Omitting the ON clause, forgetting table alias qualification on ambiguous columns, or accidentally converting LEFT JOIN to INNER JOIN via WHERE filters.",
+    "learningOutcomes": "Mastered 8.2 SELF JOIN for Hierarchies (Manager-Employee) on GroceryItems.",
+    "challengeSlots": [
+      {
+        "type": "keyword",
+        "value": "SELECT"
+      },
+      {
+        "type": "column",
+        "value": "item.item_name"
+      },
+      {
+        "type": "keyword",
+        "value": "AS"
+      },
+      {
+        "type": "column",
+        "value": "bundle_item,"
+      },
+      {
+        "type": "column",
+        "value": "base.item_name"
+      },
+      {
+        "type": "keyword",
+        "value": "AS"
+      },
+      {
+        "type": "column",
+        "value": "base_product"
+      },
+      {
+        "type": "keyword",
+        "value": "FROM"
+      },
+      {
+        "type": "table",
+        "value": "GroceryItems"
+      },
+      {
+        "type": "column",
+        "value": "item"
+      },
+      {
+        "type": "keyword",
+        "value": "LEFT"
+      },
+      {
+        "type": "keyword",
+        "value": "JOIN"
+      },
+      {
+        "type": "table",
+        "value": "GroceryItems"
+      },
+      {
+        "type": "column",
+        "value": "base"
+      },
+      {
+        "type": "keyword",
+        "value": "ON"
+      },
+      {
+        "type": "column",
+        "value": "item.parent_item_id"
+      },
+      {
+        "type": "column",
+        "value": "="
+      },
+      {
+        "type": "column",
+        "value": "base.item_id;"
+      }
+    ]
+  },
+  {
+    "drillNumber": 715,
+    "subcluster": "8.2 SELF JOIN for Hierarchies (Manager-Employee)",
+    "level": "Level 3 (Hierarchical Self Join)",
+    "title": "Syntax #715: Connect recurring subscription orders back to the initial checkout order",
+    "table": "Orders",
+    "scenario": "Connect recurring subscription orders back to the initial checkout order.",
+    "businessObjective": "Connect recurring subscription orders back to the initial checkout order.",
+    "schemaSnippet": "Orders relational schema",
+    "targetQuery": "SELECT curr.order_id AS reorder_id, prev.order_id AS initial_order_id\nFROM Orders curr\nLEFT JOIN Orders prev ON curr.parent_order_id = prev.order_id;",
+    "syntaxBlueprint": "SELECT e.first_name AS employee, m.first_name AS manager\nFROM Employees e\nLEFT JOIN Employees m ON e.manager_id = m.employee_id;",
+    "syntaxRule": "A table can be joined to itself by using two distinct aliases to navigate parent-child or manager-employee hierarchical structures.",
+    "syntaxTrap": "Using an INNER JOIN for self-joins on hierarchies will silently discard the top-level CEO/Director because their manager_id is NULL.",
+    "eli5Story": "Relational Joins on Orders: Connect recurring subscription orders back to the initial checkout order.",
+    "commonMistakes": "Omitting the ON clause, forgetting table alias qualification on ambiguous columns, or accidentally converting LEFT JOIN to INNER JOIN via WHERE filters.",
+    "learningOutcomes": "Mastered 8.2 SELF JOIN for Hierarchies (Manager-Employee) on Orders.",
+    "challengeSlots": [
+      {
+        "type": "keyword",
+        "value": "SELECT"
+      },
+      {
+        "type": "column",
+        "value": "curr.order_id"
+      },
+      {
+        "type": "keyword",
+        "value": "AS"
+      },
+      {
+        "type": "column",
+        "value": "reorder_id,"
+      },
+      {
+        "type": "column",
+        "value": "prev.order_id"
+      },
+      {
+        "type": "keyword",
+        "value": "AS"
+      },
+      {
+        "type": "column",
+        "value": "initial_order_id"
+      },
+      {
+        "type": "keyword",
+        "value": "FROM"
+      },
+      {
+        "type": "table",
+        "value": "Orders"
+      },
+      {
+        "type": "column",
+        "value": "curr"
+      },
+      {
+        "type": "keyword",
+        "value": "LEFT"
+      },
+      {
+        "type": "keyword",
+        "value": "JOIN"
+      },
+      {
+        "type": "table",
+        "value": "Orders"
+      },
+      {
+        "type": "column",
+        "value": "prev"
+      },
+      {
+        "type": "keyword",
+        "value": "ON"
+      },
+      {
+        "type": "column",
+        "value": "curr.parent_order_id"
+      },
+      {
+        "type": "column",
+        "value": "="
+      },
+      {
+        "type": "column",
+        "value": "prev.order_id;"
+      }
+    ]
+  },
+  {
+    "drillNumber": 716,
+    "subcluster": "8.2 SELF JOIN for Hierarchies (Manager-Employee)",
+    "level": "Level 3 (Hierarchical Self Join)",
+    "title": "Syntax #716: Pair remix tracks with their original studio recordings using a SELF JOIN",
+    "table": "MusicTracks",
+    "scenario": "Pair remix tracks with their original studio recordings using a SELF JOIN.",
+    "businessObjective": "Pair remix tracks with their original studio recordings using a SELF JOIN.",
+    "schemaSnippet": "MusicTracks relational schema",
+    "targetQuery": "SELECT t.track_title AS remix_title, orig.track_title AS original_song\nFROM MusicTracks t\nLEFT JOIN MusicTracks orig ON t.original_track_id = orig.track_id;",
+    "syntaxBlueprint": "SELECT e.first_name AS employee, m.first_name AS manager\nFROM Employees e\nLEFT JOIN Employees m ON e.manager_id = m.employee_id;",
+    "syntaxRule": "A table can be joined to itself by using two distinct aliases to navigate parent-child or manager-employee hierarchical structures.",
+    "syntaxTrap": "Using an INNER JOIN for self-joins on hierarchies will silently discard the top-level CEO/Director because their manager_id is NULL.",
+    "eli5Story": "Relational Joins on MusicTracks: Pair remix tracks with their original studio recordings using a SELF JOIN.",
+    "commonMistakes": "Omitting the ON clause, forgetting table alias qualification on ambiguous columns, or accidentally converting LEFT JOIN to INNER JOIN via WHERE filters.",
+    "learningOutcomes": "Mastered 8.2 SELF JOIN for Hierarchies (Manager-Employee) on MusicTracks.",
+    "challengeSlots": [
+      {
+        "type": "keyword",
+        "value": "SELECT"
+      },
+      {
+        "type": "column",
+        "value": "t.track_title"
+      },
+      {
+        "type": "keyword",
+        "value": "AS"
+      },
+      {
+        "type": "column",
+        "value": "remix_title,"
+      },
+      {
+        "type": "column",
+        "value": "orig.track_title"
+      },
+      {
+        "type": "keyword",
+        "value": "AS"
+      },
+      {
+        "type": "column",
+        "value": "original_song"
+      },
+      {
+        "type": "keyword",
+        "value": "FROM"
+      },
+      {
+        "type": "table",
+        "value": "MusicTracks"
+      },
+      {
+        "type": "column",
+        "value": "t"
+      },
+      {
+        "type": "keyword",
+        "value": "LEFT"
+      },
+      {
+        "type": "keyword",
+        "value": "JOIN"
+      },
+      {
+        "type": "table",
+        "value": "MusicTracks"
+      },
+      {
+        "type": "column",
+        "value": "orig"
+      },
+      {
+        "type": "keyword",
+        "value": "ON"
+      },
+      {
+        "type": "column",
+        "value": "t.original_track_id"
+      },
+      {
+        "type": "column",
+        "value": "="
+      },
+      {
+        "type": "column",
+        "value": "orig.track_id;"
+      }
+    ]
+  },
+  {
+    "drillNumber": 717,
+    "subcluster": "8.2 SELF JOIN for Hierarchies (Manager-Employee)",
+    "level": "Level 3 (Hierarchical Self Join)",
+    "title": "Syntax #717: Trace referral bonuses by joining gym members with their referring friend",
+    "table": "GymMembers",
+    "scenario": "Trace referral bonuses by joining gym members with their referring friend.",
+    "businessObjective": "Trace referral bonuses by joining gym members with their referring friend.",
+    "schemaSnippet": "GymMembers relational schema",
+    "targetQuery": "SELECT m.member_name AS referred_member, ref.member_name AS referring_sponsor\nFROM GymMembers m\nLEFT JOIN GymMembers ref ON m.referred_by_id = ref.member_id;",
+    "syntaxBlueprint": "SELECT e.first_name AS employee, m.first_name AS manager\nFROM Employees e\nLEFT JOIN Employees m ON e.manager_id = m.employee_id;",
+    "syntaxRule": "A table can be joined to itself by using two distinct aliases to navigate parent-child or manager-employee hierarchical structures.",
+    "syntaxTrap": "Using an INNER JOIN for self-joins on hierarchies will silently discard the top-level CEO/Director because their manager_id is NULL.",
+    "eli5Story": "Relational Joins on GymMembers: Trace referral bonuses by joining gym members with their referring friend.",
+    "commonMistakes": "Omitting the ON clause, forgetting table alias qualification on ambiguous columns, or accidentally converting LEFT JOIN to INNER JOIN via WHERE filters.",
+    "learningOutcomes": "Mastered 8.2 SELF JOIN for Hierarchies (Manager-Employee) on GymMembers.",
+    "challengeSlots": [
+      {
+        "type": "keyword",
+        "value": "SELECT"
+      },
+      {
+        "type": "column",
+        "value": "m.member_name"
+      },
+      {
+        "type": "keyword",
+        "value": "AS"
+      },
+      {
+        "type": "column",
+        "value": "referred_member,"
+      },
+      {
+        "type": "column",
+        "value": "ref.member_name"
+      },
+      {
+        "type": "keyword",
+        "value": "AS"
+      },
+      {
+        "type": "column",
+        "value": "referring_sponsor"
+      },
+      {
+        "type": "keyword",
+        "value": "FROM"
+      },
+      {
+        "type": "table",
+        "value": "GymMembers"
+      },
+      {
+        "type": "column",
+        "value": "m"
+      },
+      {
+        "type": "keyword",
+        "value": "LEFT"
+      },
+      {
+        "type": "keyword",
+        "value": "JOIN"
+      },
+      {
+        "type": "table",
+        "value": "GymMembers"
+      },
+      {
+        "type": "column",
+        "value": "ref"
+      },
+      {
+        "type": "keyword",
+        "value": "ON"
+      },
+      {
+        "type": "column",
+        "value": "m.referred_by_id"
+      },
+      {
+        "type": "column",
+        "value": "="
+      },
+      {
+        "type": "column",
+        "value": "ref.member_id;"
+      }
+    ]
+  },
+  {
+    "drillNumber": 718,
+    "subcluster": "8.2 SELF JOIN for Hierarchies (Manager-Employee)",
+    "level": "Level 3 (Hierarchical Self Join)",
+    "title": "Syntax #718: Connect movie sequels to their franchise predecessors via SELF JOIN",
+    "table": "MovieReviews",
+    "scenario": "Connect movie sequels to their franchise predecessors via SELF JOIN.",
+    "businessObjective": "Connect movie sequels to their franchise predecessors via SELF JOIN.",
+    "schemaSnippet": "MovieReviews relational schema",
+    "targetQuery": "SELECT f.movie_title AS sequel_name, p.movie_title AS predecessor_name\nFROM Movies f\nLEFT JOIN Movies p ON f.predecessor_id = p.movie_id;",
+    "syntaxBlueprint": "SELECT e.first_name AS employee, m.first_name AS manager\nFROM Employees e\nLEFT JOIN Employees m ON e.manager_id = m.employee_id;",
+    "syntaxRule": "A table can be joined to itself by using two distinct aliases to navigate parent-child or manager-employee hierarchical structures.",
+    "syntaxTrap": "Using an INNER JOIN for self-joins on hierarchies will silently discard the top-level CEO/Director because their manager_id is NULL.",
+    "eli5Story": "Relational Joins on MovieReviews: Connect movie sequels to their franchise predecessors via SELF JOIN.",
+    "commonMistakes": "Omitting the ON clause, forgetting table alias qualification on ambiguous columns, or accidentally converting LEFT JOIN to INNER JOIN via WHERE filters.",
+    "learningOutcomes": "Mastered 8.2 SELF JOIN for Hierarchies (Manager-Employee) on MovieReviews.",
+    "challengeSlots": [
+      {
+        "type": "keyword",
+        "value": "SELECT"
+      },
+      {
+        "type": "column",
+        "value": "f.movie_title"
+      },
+      {
+        "type": "keyword",
+        "value": "AS"
+      },
+      {
+        "type": "column",
+        "value": "sequel_name,"
+      },
+      {
+        "type": "column",
+        "value": "p.movie_title"
+      },
+      {
+        "type": "keyword",
+        "value": "AS"
+      },
+      {
+        "type": "column",
+        "value": "predecessor_name"
+      },
+      {
+        "type": "keyword",
+        "value": "FROM"
+      },
+      {
+        "type": "table",
+        "value": "Movies"
+      },
+      {
+        "type": "column",
+        "value": "f"
+      },
+      {
+        "type": "keyword",
+        "value": "LEFT"
+      },
+      {
+        "type": "keyword",
+        "value": "JOIN"
+      },
+      {
+        "type": "table",
+        "value": "Movies"
+      },
+      {
+        "type": "column",
+        "value": "p"
+      },
+      {
+        "type": "keyword",
+        "value": "ON"
+      },
+      {
+        "type": "column",
+        "value": "f.predecessor_id"
+      },
+      {
+        "type": "column",
+        "value": "="
+      },
+      {
+        "type": "column",
+        "value": "p.movie_id;"
+      }
+    ]
+  },
+  {
+    "drillNumber": 719,
+    "subcluster": "8.2 SELF JOIN for Hierarchies (Manager-Employee)",
+    "level": "Level 3 (Hierarchical Self Join)",
+    "title": "Syntax #719: Trace connecting flight legs back to inbound arrival flights via SELF JOIN",
+    "table": "FlightSchedule",
+    "scenario": "Trace connecting flight legs back to inbound arrival flights via SELF JOIN.",
+    "businessObjective": "Trace connecting flight legs back to inbound arrival flights via SELF JOIN.",
+    "schemaSnippet": "FlightSchedule relational schema",
+    "targetQuery": "SELECT leg2.flight_id AS connecting_flight, leg1.flight_id AS inbound_flight\nFROM FlightSchedule leg2\nLEFT JOIN FlightSchedule leg1 ON leg2.inbound_flight_id = leg1.flight_id;",
+    "syntaxBlueprint": "SELECT e.first_name AS employee, m.first_name AS manager\nFROM Employees e\nLEFT JOIN Employees m ON e.manager_id = m.employee_id;",
+    "syntaxRule": "A table can be joined to itself by using two distinct aliases to navigate parent-child or manager-employee hierarchical structures.",
+    "syntaxTrap": "Using an INNER JOIN for self-joins on hierarchies will silently discard the top-level CEO/Director because their manager_id is NULL.",
+    "eli5Story": "Relational Joins on FlightSchedule: Trace connecting flight legs back to inbound arrival flights via SELF JOIN.",
+    "commonMistakes": "Omitting the ON clause, forgetting table alias qualification on ambiguous columns, or accidentally converting LEFT JOIN to INNER JOIN via WHERE filters.",
+    "learningOutcomes": "Mastered 8.2 SELF JOIN for Hierarchies (Manager-Employee) on FlightSchedule.",
+    "challengeSlots": [
+      {
+        "type": "keyword",
+        "value": "SELECT"
+      },
+      {
+        "type": "column",
+        "value": "leg2.flight_id"
+      },
+      {
+        "type": "keyword",
+        "value": "AS"
+      },
+      {
+        "type": "column",
+        "value": "connecting_flight,"
+      },
+      {
+        "type": "column",
+        "value": "leg1.flight_id"
+      },
+      {
+        "type": "keyword",
+        "value": "AS"
+      },
+      {
+        "type": "column",
+        "value": "inbound_flight"
+      },
+      {
+        "type": "keyword",
+        "value": "FROM"
+      },
+      {
+        "type": "table",
+        "value": "FlightSchedule"
+      },
+      {
+        "type": "column",
+        "value": "leg2"
+      },
+      {
+        "type": "keyword",
+        "value": "LEFT"
+      },
+      {
+        "type": "keyword",
+        "value": "JOIN"
+      },
+      {
+        "type": "table",
+        "value": "FlightSchedule"
+      },
+      {
+        "type": "column",
+        "value": "leg1"
+      },
+      {
+        "type": "keyword",
+        "value": "ON"
+      },
+      {
+        "type": "column",
+        "value": "leg2.inbound_flight_id"
+      },
+      {
+        "type": "column",
+        "value": "="
+      },
+      {
+        "type": "column",
+        "value": "leg1.flight_id;"
+      }
+    ]
+  },
+  {
+    "drillNumber": 720,
+    "subcluster": "8.2 SELF JOIN for Hierarchies (Manager-Employee)",
+    "level": "Level 3 (Hierarchical Self Join)",
+    "title": "Syntax #720: Trace animal pedigree by matching clinic offspring with registered mother pets",
+    "table": "PetClinic",
+    "scenario": "Trace animal pedigree by matching clinic offspring with registered mother pets.",
+    "businessObjective": "Trace animal pedigree by matching clinic offspring with registered mother pets.",
+    "schemaSnippet": "PetClinic relational schema",
+    "targetQuery": "SELECT puppy.pet_name AS offspring, mother.pet_name AS mother_name\nFROM PetClinic puppy\nLEFT JOIN PetClinic mother ON puppy.mother_pet_id = mother.pet_id;",
+    "syntaxBlueprint": "SELECT e.first_name AS employee, m.first_name AS manager\nFROM Employees e\nLEFT JOIN Employees m ON e.manager_id = m.employee_id;",
+    "syntaxRule": "A table can be joined to itself by using two distinct aliases to navigate parent-child or manager-employee hierarchical structures.",
+    "syntaxTrap": "Using an INNER JOIN for self-joins on hierarchies will silently discard the top-level CEO/Director because their manager_id is NULL.",
+    "eli5Story": "Relational Joins on PetClinic: Trace animal pedigree by matching clinic offspring with registered mother pets.",
+    "commonMistakes": "Omitting the ON clause, forgetting table alias qualification on ambiguous columns, or accidentally converting LEFT JOIN to INNER JOIN via WHERE filters.",
+    "learningOutcomes": "Mastered 8.2 SELF JOIN for Hierarchies (Manager-Employee) on PetClinic.",
+    "challengeSlots": [
+      {
+        "type": "keyword",
+        "value": "SELECT"
+      },
+      {
+        "type": "column",
+        "value": "puppy.pet_name"
+      },
+      {
+        "type": "keyword",
+        "value": "AS"
+      },
+      {
+        "type": "column",
+        "value": "offspring,"
+      },
+      {
+        "type": "column",
+        "value": "mother.pet_name"
+      },
+      {
+        "type": "keyword",
+        "value": "AS"
+      },
+      {
+        "type": "column",
+        "value": "mother_name"
+      },
+      {
+        "type": "keyword",
+        "value": "FROM"
+      },
+      {
+        "type": "table",
+        "value": "PetClinic"
+      },
+      {
+        "type": "column",
+        "value": "puppy"
+      },
+      {
+        "type": "keyword",
+        "value": "LEFT"
+      },
+      {
+        "type": "keyword",
+        "value": "JOIN"
+      },
+      {
+        "type": "table",
+        "value": "PetClinic"
+      },
+      {
+        "type": "column",
+        "value": "mother"
+      },
+      {
+        "type": "keyword",
+        "value": "ON"
+      },
+      {
+        "type": "column",
+        "value": "puppy.mother_pet_id"
+      },
+      {
+        "type": "column",
+        "value": "="
+      },
+      {
+        "type": "column",
+        "value": "mother.pet_id;"
+      }
+    ]
+  },
+  {
+    "drillNumber": 721,
+    "subcluster": "8.3 SELF JOIN for Peer Pairing & Comparison",
+    "level": "Level 3 (Peer Self Join)",
+    "title": "Syntax #721: Find unique pairs of students who share the exact same major using 's1.student_id < s2.student_id'",
+    "table": "Students",
+    "scenario": "Find unique pairs of students who share the exact same major using 's1.student_id < s2.student_id'.",
+    "businessObjective": "Find unique pairs of students who share the exact same major using 's1.student_id < s2.student_id'.",
+    "schemaSnippet": "Students relational schema",
+    "targetQuery": "SELECT s1.full_name AS student_1, s2.full_name AS student_2, s1.major\nFROM Students s1\nJOIN Students s2 ON s1.major = s2.major AND s1.student_id < s2.student_id;",
+    "syntaxBlueprint": "SELECT a.name, b.name, a.department\nFROM Employees a\nJOIN Employees b ON a.department = b.department AND a.id < b.id;",
+    "syntaxRule": "Join a table to itself on a shared attribute while enforcing 'a.id < b.id' to pair distinct peers without duplicate reverse pairs (A-B vs B-A) or self-matching (A-A).",
+    "syntaxTrap": "Using 'a.id != b.id' pairs rows twice (Alice-Bob and Bob-Alice). Use '<' to generate unique combinations.",
+    "eli5Story": "Relational Joins on Students: Find unique pairs of students who share the exact same major using 's1.student_id < s2.student_id'.",
+    "commonMistakes": "Omitting the ON clause, forgetting table alias qualification on ambiguous columns, or accidentally converting LEFT JOIN to INNER JOIN via WHERE filters.",
+    "learningOutcomes": "Mastered 8.3 SELF JOIN for Peer Pairing & Comparison on Students.",
+    "challengeSlots": [
+      {
+        "type": "keyword",
+        "value": "SELECT"
+      },
+      {
+        "type": "column",
+        "value": "s1.full_name"
+      },
+      {
+        "type": "keyword",
+        "value": "AS"
+      },
+      {
+        "type": "column",
+        "value": "student_1,"
+      },
+      {
+        "type": "column",
+        "value": "s2.full_name"
+      },
+      {
+        "type": "keyword",
+        "value": "AS"
+      },
+      {
+        "type": "column",
+        "value": "student_2,"
+      },
+      {
+        "type": "column",
+        "value": "s1.major"
+      },
+      {
+        "type": "keyword",
+        "value": "FROM"
+      },
+      {
+        "type": "table",
+        "value": "Students"
+      },
+      {
+        "type": "column",
+        "value": "s1"
+      },
+      {
+        "type": "keyword",
+        "value": "JOIN"
+      },
+      {
+        "type": "table",
+        "value": "Students"
+      },
+      {
+        "type": "column",
+        "value": "s2"
+      },
+      {
+        "type": "keyword",
+        "value": "ON"
+      },
+      {
+        "type": "column",
+        "value": "s1.major"
+      },
+      {
+        "type": "column",
+        "value": "="
+      },
+      {
+        "type": "column",
+        "value": "s2.major"
+      },
+      {
+        "type": "keyword",
+        "value": "AND"
+      },
+      {
+        "type": "column",
+        "value": "s1.student_id"
+      },
+      {
+        "type": "column",
+        "value": "<"
+      },
+      {
+        "type": "column",
+        "value": "s2.student_id;"
+      }
+    ]
+  },
+  {
+    "drillNumber": 722,
+    "subcluster": "8.3 SELF JOIN for Peer Pairing & Comparison",
+    "level": "Level 3 (Peer Self Join)",
+    "title": "Syntax #722: Pair books written by the same author to recommend companion reads",
+    "table": "Books",
+    "scenario": "Pair books written by the same author to recommend companion reads.",
+    "businessObjective": "Pair books written by the same author to recommend companion reads.",
+    "schemaSnippet": "Books relational schema",
+    "targetQuery": "SELECT b1.title AS book_1, b2.title AS book_2, b1.author_id\nFROM Books b1\nJOIN Books b2 ON b1.author_id = b2.author_id AND b1.book_id < b2.book_id;",
+    "syntaxBlueprint": "SELECT a.name, b.name, a.department\nFROM Employees a\nJOIN Employees b ON a.department = b.department AND a.id < b.id;",
+    "syntaxRule": "Join a table to itself on a shared attribute while enforcing 'a.id < b.id' to pair distinct peers without duplicate reverse pairs (A-B vs B-A) or self-matching (A-A).",
+    "syntaxTrap": "Using 'a.id != b.id' pairs rows twice (Alice-Bob and Bob-Alice). Use '<' to generate unique combinations.",
+    "eli5Story": "Relational Joins on Books: Pair books written by the same author to recommend companion reads.",
+    "commonMistakes": "Omitting the ON clause, forgetting table alias qualification on ambiguous columns, or accidentally converting LEFT JOIN to INNER JOIN via WHERE filters.",
+    "learningOutcomes": "Mastered 8.3 SELF JOIN for Peer Pairing & Comparison on Books.",
+    "challengeSlots": [
+      {
+        "type": "keyword",
+        "value": "SELECT"
+      },
+      {
+        "type": "column",
+        "value": "b1.title"
+      },
+      {
+        "type": "keyword",
+        "value": "AS"
+      },
+      {
+        "type": "column",
+        "value": "book_1,"
+      },
+      {
+        "type": "column",
+        "value": "b2.title"
+      },
+      {
+        "type": "keyword",
+        "value": "AS"
+      },
+      {
+        "type": "column",
+        "value": "book_2,"
+      },
+      {
+        "type": "column",
+        "value": "b1.author_id"
+      },
+      {
+        "type": "keyword",
+        "value": "FROM"
+      },
+      {
+        "type": "table",
+        "value": "Books"
+      },
+      {
+        "type": "column",
+        "value": "b1"
+      },
+      {
+        "type": "keyword",
+        "value": "JOIN"
+      },
+      {
+        "type": "table",
+        "value": "Books"
+      },
+      {
+        "type": "column",
+        "value": "b2"
+      },
+      {
+        "type": "keyword",
+        "value": "ON"
+      },
+      {
+        "type": "column",
+        "value": "b1.author_id"
+      },
+      {
+        "type": "column",
+        "value": "="
+      },
+      {
+        "type": "column",
+        "value": "b2.author_id"
+      },
+      {
+        "type": "keyword",
+        "value": "AND"
+      },
+      {
+        "type": "column",
+        "value": "b1.book_id"
+      },
+      {
+        "type": "column",
+        "value": "<"
+      },
+      {
+        "type": "column",
+        "value": "b2.book_id;"
+      }
+    ]
+  },
+  {
+    "drillNumber": 723,
+    "subcluster": "8.3 SELF JOIN for Peer Pairing & Comparison",
+    "level": "Level 3 (Peer Self Join)",
+    "title": "Syntax #723: Form unique peer buddy pairs of employees working in the same department",
+    "table": "Employees",
+    "scenario": "Form unique peer buddy pairs of employees working in the same department.",
+    "businessObjective": "Form unique peer buddy pairs of employees working in the same department.",
+    "schemaSnippet": "Employees relational schema",
+    "targetQuery": "SELECT e1.first_name AS staff_1, e2.first_name AS staff_2, e1.department_id\nFROM Employees e1\nJOIN Employees e2 ON e1.department_id = e2.department_id AND e1.employee_id < e2.employee_id;",
+    "syntaxBlueprint": "SELECT a.name, b.name, a.department\nFROM Employees a\nJOIN Employees b ON a.department = b.department AND a.id < b.id;",
+    "syntaxRule": "Join a table to itself on a shared attribute while enforcing 'a.id < b.id' to pair distinct peers without duplicate reverse pairs (A-B vs B-A) or self-matching (A-A).",
+    "syntaxTrap": "Using 'a.id != b.id' pairs rows twice (Alice-Bob and Bob-Alice). Use '<' to generate unique combinations.",
+    "eli5Story": "Relational Joins on Employees: Form unique peer buddy pairs of employees working in the same department.",
+    "commonMistakes": "Omitting the ON clause, forgetting table alias qualification on ambiguous columns, or accidentally converting LEFT JOIN to INNER JOIN via WHERE filters.",
+    "learningOutcomes": "Mastered 8.3 SELF JOIN for Peer Pairing & Comparison on Employees.",
+    "challengeSlots": [
+      {
+        "type": "keyword",
+        "value": "SELECT"
+      },
+      {
+        "type": "column",
+        "value": "e1.first_name"
+      },
+      {
+        "type": "keyword",
+        "value": "AS"
+      },
+      {
+        "type": "column",
+        "value": "staff_1,"
+      },
+      {
+        "type": "column",
+        "value": "e2.first_name"
+      },
+      {
+        "type": "keyword",
+        "value": "AS"
+      },
+      {
+        "type": "column",
+        "value": "staff_2,"
+      },
+      {
+        "type": "column",
+        "value": "e1.department_id"
+      },
+      {
+        "type": "keyword",
+        "value": "FROM"
+      },
+      {
+        "type": "table",
+        "value": "Employees"
+      },
+      {
+        "type": "column",
+        "value": "e1"
+      },
+      {
+        "type": "keyword",
+        "value": "JOIN"
+      },
+      {
+        "type": "table",
+        "value": "Employees"
+      },
+      {
+        "type": "column",
+        "value": "e2"
+      },
+      {
+        "type": "keyword",
+        "value": "ON"
+      },
+      {
+        "type": "column",
+        "value": "e1.department_id"
+      },
+      {
+        "type": "column",
+        "value": "="
+      },
+      {
+        "type": "column",
+        "value": "e2.department_id"
+      },
+      {
+        "type": "keyword",
+        "value": "AND"
+      },
+      {
+        "type": "column",
+        "value": "e1.employee_id"
+      },
+      {
+        "type": "column",
+        "value": "<"
+      },
+      {
+        "type": "column",
+        "value": "e2.employee_id;"
+      }
+    ]
+  },
+  {
+    "drillNumber": 724,
+    "subcluster": "8.3 SELF JOIN for Peer Pairing & Comparison",
+    "level": "Level 3 (Peer Self Join)",
+    "title": "Syntax #724: Pair grocery items belonging to the same category for comparative price audits",
+    "table": "GroceryItems",
+    "scenario": "Pair grocery items belonging to the same category for comparative price audits.",
+    "businessObjective": "Pair grocery items belonging to the same category for comparative price audits.",
+    "schemaSnippet": "GroceryItems relational schema",
+    "targetQuery": "SELECT g1.item_name AS item_1, g2.item_name AS item_2, g1.category\nFROM GroceryItems g1\nJOIN GroceryItems g2 ON g1.category = g2.category AND g1.item_id < g2.item_id;",
+    "syntaxBlueprint": "SELECT a.name, b.name, a.department\nFROM Employees a\nJOIN Employees b ON a.department = b.department AND a.id < b.id;",
+    "syntaxRule": "Join a table to itself on a shared attribute while enforcing 'a.id < b.id' to pair distinct peers without duplicate reverse pairs (A-B vs B-A) or self-matching (A-A).",
+    "syntaxTrap": "Using 'a.id != b.id' pairs rows twice (Alice-Bob and Bob-Alice). Use '<' to generate unique combinations.",
+    "eli5Story": "Relational Joins on GroceryItems: Pair grocery items belonging to the same category for comparative price audits.",
+    "commonMistakes": "Omitting the ON clause, forgetting table alias qualification on ambiguous columns, or accidentally converting LEFT JOIN to INNER JOIN via WHERE filters.",
+    "learningOutcomes": "Mastered 8.3 SELF JOIN for Peer Pairing & Comparison on GroceryItems.",
+    "challengeSlots": [
+      {
+        "type": "keyword",
+        "value": "SELECT"
+      },
+      {
+        "type": "column",
+        "value": "g1.item_name"
+      },
+      {
+        "type": "keyword",
+        "value": "AS"
+      },
+      {
+        "type": "column",
+        "value": "item_1,"
+      },
+      {
+        "type": "column",
+        "value": "g2.item_name"
+      },
+      {
+        "type": "keyword",
+        "value": "AS"
+      },
+      {
+        "type": "column",
+        "value": "item_2,"
+      },
+      {
+        "type": "column",
+        "value": "g1.category"
+      },
+      {
+        "type": "keyword",
+        "value": "FROM"
+      },
+      {
+        "type": "table",
+        "value": "GroceryItems"
+      },
+      {
+        "type": "column",
+        "value": "g1"
+      },
+      {
+        "type": "keyword",
+        "value": "JOIN"
+      },
+      {
+        "type": "table",
+        "value": "GroceryItems"
+      },
+      {
+        "type": "column",
+        "value": "g2"
+      },
+      {
+        "type": "keyword",
+        "value": "ON"
+      },
+      {
+        "type": "column",
+        "value": "g1.category"
+      },
+      {
+        "type": "column",
+        "value": "="
+      },
+      {
+        "type": "column",
+        "value": "g2.category"
+      },
+      {
+        "type": "keyword",
+        "value": "AND"
+      },
+      {
+        "type": "column",
+        "value": "g1.item_id"
+      },
+      {
+        "type": "column",
+        "value": "<"
+      },
+      {
+        "type": "column",
+        "value": "g2.item_id;"
+      }
+    ]
+  },
+  {
+    "drillNumber": 725,
+    "subcluster": "8.3 SELF JOIN for Peer Pairing & Comparison",
+    "level": "Level 3 (Peer Self Join)",
+    "title": "Syntax #725: Identify repeat buyers by pairing multiple orders placed by the same customer",
+    "table": "Orders",
+    "scenario": "Identify repeat buyers by pairing multiple orders placed by the same customer.",
+    "businessObjective": "Identify repeat buyers by pairing multiple orders placed by the same customer.",
+    "schemaSnippet": "Orders relational schema",
+    "targetQuery": "SELECT o1.order_id AS order_1, o2.order_id AS order_2, o1.customer_id\nFROM Orders o1\nJOIN Orders o2 ON o1.customer_id = o2.customer_id AND o1.order_id < o2.order_id;",
+    "syntaxBlueprint": "SELECT a.name, b.name, a.department\nFROM Employees a\nJOIN Employees b ON a.department = b.department AND a.id < b.id;",
+    "syntaxRule": "Join a table to itself on a shared attribute while enforcing 'a.id < b.id' to pair distinct peers without duplicate reverse pairs (A-B vs B-A) or self-matching (A-A).",
+    "syntaxTrap": "Using 'a.id != b.id' pairs rows twice (Alice-Bob and Bob-Alice). Use '<' to generate unique combinations.",
+    "eli5Story": "Relational Joins on Orders: Identify repeat buyers by pairing multiple orders placed by the same customer.",
+    "commonMistakes": "Omitting the ON clause, forgetting table alias qualification on ambiguous columns, or accidentally converting LEFT JOIN to INNER JOIN via WHERE filters.",
+    "learningOutcomes": "Mastered 8.3 SELF JOIN for Peer Pairing & Comparison on Orders.",
+    "challengeSlots": [
+      {
+        "type": "keyword",
+        "value": "SELECT"
+      },
+      {
+        "type": "column",
+        "value": "o1.order_id"
+      },
+      {
+        "type": "keyword",
+        "value": "AS"
+      },
+      {
+        "type": "column",
+        "value": "order_1,"
+      },
+      {
+        "type": "column",
+        "value": "o2.order_id"
+      },
+      {
+        "type": "keyword",
+        "value": "AS"
+      },
+      {
+        "type": "column",
+        "value": "order_2,"
+      },
+      {
+        "type": "column",
+        "value": "o1.customer_id"
+      },
+      {
+        "type": "keyword",
+        "value": "FROM"
+      },
+      {
+        "type": "table",
+        "value": "Orders"
+      },
+      {
+        "type": "column",
+        "value": "o1"
+      },
+      {
+        "type": "keyword",
+        "value": "JOIN"
+      },
+      {
+        "type": "table",
+        "value": "Orders"
+      },
+      {
+        "type": "column",
+        "value": "o2"
+      },
+      {
+        "type": "keyword",
+        "value": "ON"
+      },
+      {
+        "type": "column",
+        "value": "o1.customer_id"
+      },
+      {
+        "type": "column",
+        "value": "="
+      },
+      {
+        "type": "column",
+        "value": "o2.customer_id"
+      },
+      {
+        "type": "keyword",
+        "value": "AND"
+      },
+      {
+        "type": "column",
+        "value": "o1.order_id"
+      },
+      {
+        "type": "column",
+        "value": "<"
+      },
+      {
+        "type": "column",
+        "value": "o2.order_id;"
+      }
+    ]
+  },
+  {
+    "drillNumber": 726,
+    "subcluster": "8.3 SELF JOIN for Peer Pairing & Comparison",
+    "level": "Level 3 (Peer Self Join)",
+    "title": "Syntax #726: Pair songs appearing on the same music album",
+    "table": "MusicTracks",
+    "scenario": "Pair songs appearing on the same music album.",
+    "businessObjective": "Pair songs appearing on the same music album.",
+    "schemaSnippet": "MusicTracks relational schema",
+    "targetQuery": "SELECT t1.track_title AS track_1, t2.track_title AS track_2, t1.album_id\nFROM MusicTracks t1\nJOIN MusicTracks t2 ON t1.album_id = t2.album_id AND t1.track_id < t2.track_id;",
+    "syntaxBlueprint": "SELECT a.name, b.name, a.department\nFROM Employees a\nJOIN Employees b ON a.department = b.department AND a.id < b.id;",
+    "syntaxRule": "Join a table to itself on a shared attribute while enforcing 'a.id < b.id' to pair distinct peers without duplicate reverse pairs (A-B vs B-A) or self-matching (A-A).",
+    "syntaxTrap": "Using 'a.id != b.id' pairs rows twice (Alice-Bob and Bob-Alice). Use '<' to generate unique combinations.",
+    "eli5Story": "Relational Joins on MusicTracks: Pair songs appearing on the same music album.",
+    "commonMistakes": "Omitting the ON clause, forgetting table alias qualification on ambiguous columns, or accidentally converting LEFT JOIN to INNER JOIN via WHERE filters.",
+    "learningOutcomes": "Mastered 8.3 SELF JOIN for Peer Pairing & Comparison on MusicTracks.",
+    "challengeSlots": [
+      {
+        "type": "keyword",
+        "value": "SELECT"
+      },
+      {
+        "type": "column",
+        "value": "t1.track_title"
+      },
+      {
+        "type": "keyword",
+        "value": "AS"
+      },
+      {
+        "type": "column",
+        "value": "track_1,"
+      },
+      {
+        "type": "column",
+        "value": "t2.track_title"
+      },
+      {
+        "type": "keyword",
+        "value": "AS"
+      },
+      {
+        "type": "column",
+        "value": "track_2,"
+      },
+      {
+        "type": "column",
+        "value": "t1.album_id"
+      },
+      {
+        "type": "keyword",
+        "value": "FROM"
+      },
+      {
+        "type": "table",
+        "value": "MusicTracks"
+      },
+      {
+        "type": "column",
+        "value": "t1"
+      },
+      {
+        "type": "keyword",
+        "value": "JOIN"
+      },
+      {
+        "type": "table",
+        "value": "MusicTracks"
+      },
+      {
+        "type": "column",
+        "value": "t2"
+      },
+      {
+        "type": "keyword",
+        "value": "ON"
+      },
+      {
+        "type": "column",
+        "value": "t1.album_id"
+      },
+      {
+        "type": "column",
+        "value": "="
+      },
+      {
+        "type": "column",
+        "value": "t2.album_id"
+      },
+      {
+        "type": "keyword",
+        "value": "AND"
+      },
+      {
+        "type": "column",
+        "value": "t1.track_id"
+      },
+      {
+        "type": "column",
+        "value": "<"
+      },
+      {
+        "type": "column",
+        "value": "t2.track_id;"
+      }
+    ]
+  },
+  {
+    "drillNumber": 727,
+    "subcluster": "8.3 SELF JOIN for Peer Pairing & Comparison",
+    "level": "Level 3 (Peer Self Join)",
+    "title": "Syntax #727: Form peer accountability pairs of gym members on the same membership plan",
+    "table": "GymMembers",
+    "scenario": "Form peer accountability pairs of gym members on the same membership plan.",
+    "businessObjective": "Form peer accountability pairs of gym members on the same membership plan.",
+    "schemaSnippet": "GymMembers relational schema",
+    "targetQuery": "SELECT m1.member_name AS member_1, m2.member_name AS member_2, m1.membership_plan\nFROM GymMembers m1\nJOIN GymMembers m2 ON m1.membership_plan = m2.membership_plan AND m1.member_id < m2.member_id;",
+    "syntaxBlueprint": "SELECT a.name, b.name, a.department\nFROM Employees a\nJOIN Employees b ON a.department = b.department AND a.id < b.id;",
+    "syntaxRule": "Join a table to itself on a shared attribute while enforcing 'a.id < b.id' to pair distinct peers without duplicate reverse pairs (A-B vs B-A) or self-matching (A-A).",
+    "syntaxTrap": "Using 'a.id != b.id' pairs rows twice (Alice-Bob and Bob-Alice). Use '<' to generate unique combinations.",
+    "eli5Story": "Relational Joins on GymMembers: Form peer accountability pairs of gym members on the same membership plan.",
+    "commonMistakes": "Omitting the ON clause, forgetting table alias qualification on ambiguous columns, or accidentally converting LEFT JOIN to INNER JOIN via WHERE filters.",
+    "learningOutcomes": "Mastered 8.3 SELF JOIN for Peer Pairing & Comparison on GymMembers.",
+    "challengeSlots": [
+      {
+        "type": "keyword",
+        "value": "SELECT"
+      },
+      {
+        "type": "column",
+        "value": "m1.member_name"
+      },
+      {
+        "type": "keyword",
+        "value": "AS"
+      },
+      {
+        "type": "column",
+        "value": "member_1,"
+      },
+      {
+        "type": "column",
+        "value": "m2.member_name"
+      },
+      {
+        "type": "keyword",
+        "value": "AS"
+      },
+      {
+        "type": "column",
+        "value": "member_2,"
+      },
+      {
+        "type": "column",
+        "value": "m1.membership_plan"
+      },
+      {
+        "type": "keyword",
+        "value": "FROM"
+      },
+      {
+        "type": "table",
+        "value": "GymMembers"
+      },
+      {
+        "type": "column",
+        "value": "m1"
+      },
+      {
+        "type": "keyword",
+        "value": "JOIN"
+      },
+      {
+        "type": "table",
+        "value": "GymMembers"
+      },
+      {
+        "type": "column",
+        "value": "m2"
+      },
+      {
+        "type": "keyword",
+        "value": "ON"
+      },
+      {
+        "type": "column",
+        "value": "m1.membership_plan"
+      },
+      {
+        "type": "column",
+        "value": "="
+      },
+      {
+        "type": "column",
+        "value": "m2.membership_plan"
+      },
+      {
+        "type": "keyword",
+        "value": "AND"
+      },
+      {
+        "type": "column",
+        "value": "m1.member_id"
+      },
+      {
+        "type": "column",
+        "value": "<"
+      },
+      {
+        "type": "column",
+        "value": "m2.member_id;"
+      }
+    ]
+  },
+  {
+    "drillNumber": 728,
+    "subcluster": "8.3 SELF JOIN for Peer Pairing & Comparison",
+    "level": "Level 3 (Peer Self Join)",
+    "title": "Syntax #728: Pair distinct reviews submitted for the same movie",
+    "table": "MovieReviews",
+    "scenario": "Pair distinct reviews submitted for the same movie.",
+    "businessObjective": "Pair distinct reviews submitted for the same movie.",
+    "schemaSnippet": "MovieReviews relational schema",
+    "targetQuery": "SELECT r1.review_id AS rev_1, r2.review_id AS rev_2, r1.movie_id\nFROM MovieReviews r1\nJOIN MovieReviews r2 ON r1.movie_id = r2.movie_id AND r1.review_id < r2.review_id;",
+    "syntaxBlueprint": "SELECT a.name, b.name, a.department\nFROM Employees a\nJOIN Employees b ON a.department = b.department AND a.id < b.id;",
+    "syntaxRule": "Join a table to itself on a shared attribute while enforcing 'a.id < b.id' to pair distinct peers without duplicate reverse pairs (A-B vs B-A) or self-matching (A-A).",
+    "syntaxTrap": "Using 'a.id != b.id' pairs rows twice (Alice-Bob and Bob-Alice). Use '<' to generate unique combinations.",
+    "eli5Story": "Relational Joins on MovieReviews: Pair distinct reviews submitted for the same movie.",
+    "commonMistakes": "Omitting the ON clause, forgetting table alias qualification on ambiguous columns, or accidentally converting LEFT JOIN to INNER JOIN via WHERE filters.",
+    "learningOutcomes": "Mastered 8.3 SELF JOIN for Peer Pairing & Comparison on MovieReviews.",
+    "challengeSlots": [
+      {
+        "type": "keyword",
+        "value": "SELECT"
+      },
+      {
+        "type": "column",
+        "value": "r1.review_id"
+      },
+      {
+        "type": "keyword",
+        "value": "AS"
+      },
+      {
+        "type": "column",
+        "value": "rev_1,"
+      },
+      {
+        "type": "column",
+        "value": "r2.review_id"
+      },
+      {
+        "type": "keyword",
+        "value": "AS"
+      },
+      {
+        "type": "column",
+        "value": "rev_2,"
+      },
+      {
+        "type": "column",
+        "value": "r1.movie_id"
+      },
+      {
+        "type": "keyword",
+        "value": "FROM"
+      },
+      {
+        "type": "table",
+        "value": "MovieReviews"
+      },
+      {
+        "type": "column",
+        "value": "r1"
+      },
+      {
+        "type": "keyword",
+        "value": "JOIN"
+      },
+      {
+        "type": "table",
+        "value": "MovieReviews"
+      },
+      {
+        "type": "column",
+        "value": "r2"
+      },
+      {
+        "type": "keyword",
+        "value": "ON"
+      },
+      {
+        "type": "column",
+        "value": "r1.movie_id"
+      },
+      {
+        "type": "column",
+        "value": "="
+      },
+      {
+        "type": "column",
+        "value": "r2.movie_id"
+      },
+      {
+        "type": "keyword",
+        "value": "AND"
+      },
+      {
+        "type": "column",
+        "value": "r1.review_id"
+      },
+      {
+        "type": "column",
+        "value": "<"
+      },
+      {
+        "type": "column",
+        "value": "r2.review_id;"
+      }
+    ]
+  },
+  {
+    "drillNumber": 729,
+    "subcluster": "8.3 SELF JOIN for Peer Pairing & Comparison",
+    "level": "Level 3 (Peer Self Join)",
+    "title": "Syntax #729: Pair flights sharing the same origin departure airport",
+    "table": "FlightSchedule",
+    "scenario": "Pair flights sharing the same origin departure airport.",
+    "businessObjective": "Pair flights sharing the same origin departure airport.",
+    "schemaSnippet": "FlightSchedule relational schema",
+    "targetQuery": "SELECT f1.flight_id AS flight_1, f2.flight_id AS flight_2, f1.origin_airport\nFROM FlightSchedule f1\nJOIN FlightSchedule f2 ON f1.origin_airport = f2.origin_airport AND f1.flight_id < f2.flight_id;",
+    "syntaxBlueprint": "SELECT a.name, b.name, a.department\nFROM Employees a\nJOIN Employees b ON a.department = b.department AND a.id < b.id;",
+    "syntaxRule": "Join a table to itself on a shared attribute while enforcing 'a.id < b.id' to pair distinct peers without duplicate reverse pairs (A-B vs B-A) or self-matching (A-A).",
+    "syntaxTrap": "Using 'a.id != b.id' pairs rows twice (Alice-Bob and Bob-Alice). Use '<' to generate unique combinations.",
+    "eli5Story": "Relational Joins on FlightSchedule: Pair flights sharing the same origin departure airport.",
+    "commonMistakes": "Omitting the ON clause, forgetting table alias qualification on ambiguous columns, or accidentally converting LEFT JOIN to INNER JOIN via WHERE filters.",
+    "learningOutcomes": "Mastered 8.3 SELF JOIN for Peer Pairing & Comparison on FlightSchedule.",
+    "challengeSlots": [
+      {
+        "type": "keyword",
+        "value": "SELECT"
+      },
+      {
+        "type": "column",
+        "value": "f1.flight_id"
+      },
+      {
+        "type": "keyword",
+        "value": "AS"
+      },
+      {
+        "type": "column",
+        "value": "flight_1,"
+      },
+      {
+        "type": "column",
+        "value": "f2.flight_id"
+      },
+      {
+        "type": "keyword",
+        "value": "AS"
+      },
+      {
+        "type": "column",
+        "value": "flight_2,"
+      },
+      {
+        "type": "column",
+        "value": "f1.origin_airport"
+      },
+      {
+        "type": "keyword",
+        "value": "FROM"
+      },
+      {
+        "type": "table",
+        "value": "FlightSchedule"
+      },
+      {
+        "type": "column",
+        "value": "f1"
+      },
+      {
+        "type": "keyword",
+        "value": "JOIN"
+      },
+      {
+        "type": "table",
+        "value": "FlightSchedule"
+      },
+      {
+        "type": "column",
+        "value": "f2"
+      },
+      {
+        "type": "keyword",
+        "value": "ON"
+      },
+      {
+        "type": "column",
+        "value": "f1.origin_airport"
+      },
+      {
+        "type": "column",
+        "value": "="
+      },
+      {
+        "type": "column",
+        "value": "f2.origin_airport"
+      },
+      {
+        "type": "keyword",
+        "value": "AND"
+      },
+      {
+        "type": "column",
+        "value": "f1.flight_id"
+      },
+      {
+        "type": "column",
+        "value": "<"
+      },
+      {
+        "type": "column",
+        "value": "f2.flight_id;"
+      }
+    ]
+  },
+  {
+    "drillNumber": 730,
+    "subcluster": "8.3 SELF JOIN for Peer Pairing & Comparison",
+    "level": "Level 3 (Peer Self Join)",
+    "title": "Syntax #730: Identify multi-pet households by pairing pets belonging to the same owner",
+    "table": "PetClinic",
+    "scenario": "Identify multi-pet households by pairing pets belonging to the same owner.",
+    "businessObjective": "Identify multi-pet households by pairing pets belonging to the same owner.",
+    "schemaSnippet": "PetClinic relational schema",
+    "targetQuery": "SELECT p1.pet_name AS pet_1, p2.pet_name AS pet_2, p1.owner_id\nFROM PetClinic p1\nJOIN PetClinic p2 ON p1.owner_id = p2.owner_id AND p1.pet_id < p2.pet_id;",
+    "syntaxBlueprint": "SELECT a.name, b.name, a.department\nFROM Employees a\nJOIN Employees b ON a.department = b.department AND a.id < b.id;",
+    "syntaxRule": "Join a table to itself on a shared attribute while enforcing 'a.id < b.id' to pair distinct peers without duplicate reverse pairs (A-B vs B-A) or self-matching (A-A).",
+    "syntaxTrap": "Using 'a.id != b.id' pairs rows twice (Alice-Bob and Bob-Alice). Use '<' to generate unique combinations.",
+    "eli5Story": "Relational Joins on PetClinic: Identify multi-pet households by pairing pets belonging to the same owner.",
+    "commonMistakes": "Omitting the ON clause, forgetting table alias qualification on ambiguous columns, or accidentally converting LEFT JOIN to INNER JOIN via WHERE filters.",
+    "learningOutcomes": "Mastered 8.3 SELF JOIN for Peer Pairing & Comparison on PetClinic.",
+    "challengeSlots": [
+      {
+        "type": "keyword",
+        "value": "SELECT"
+      },
+      {
+        "type": "column",
+        "value": "p1.pet_name"
+      },
+      {
+        "type": "keyword",
+        "value": "AS"
+      },
+      {
+        "type": "column",
+        "value": "pet_1,"
+      },
+      {
+        "type": "column",
+        "value": "p2.pet_name"
+      },
+      {
+        "type": "keyword",
+        "value": "AS"
+      },
+      {
+        "type": "column",
+        "value": "pet_2,"
+      },
+      {
+        "type": "column",
+        "value": "p1.owner_id"
+      },
+      {
+        "type": "keyword",
+        "value": "FROM"
+      },
+      {
+        "type": "table",
+        "value": "PetClinic"
+      },
+      {
+        "type": "column",
+        "value": "p1"
+      },
+      {
+        "type": "keyword",
+        "value": "JOIN"
+      },
+      {
+        "type": "table",
+        "value": "PetClinic"
+      },
+      {
+        "type": "column",
+        "value": "p2"
+      },
+      {
+        "type": "keyword",
+        "value": "ON"
+      },
+      {
+        "type": "column",
+        "value": "p1.owner_id"
+      },
+      {
+        "type": "column",
+        "value": "="
+      },
+      {
+        "type": "column",
+        "value": "p2.owner_id"
+      },
+      {
+        "type": "keyword",
+        "value": "AND"
+      },
+      {
+        "type": "column",
+        "value": "p1.pet_id"
+      },
+      {
+        "type": "column",
+        "value": "<"
+      },
+      {
+        "type": "column",
+        "value": "p2.pet_id;"
+      }
+    ]
+  },
+  {
+    "drillNumber": 731,
+    "subcluster": "8.4 Anti-Join Pattern (Left Join with IS NULL)",
+    "level": "Level 2 (Anti-Join)",
+    "title": "Syntax #731: Find students who have not enrolled in any courses using an anti-join ('WHERE c.student_id IS NULL')",
+    "table": "Students",
+    "scenario": "Find students who have not enrolled in any courses using an anti-join ('WHERE c.student_id IS NULL').",
+    "businessObjective": "Find students who have not enrolled in any courses using an anti-join ('WHERE c.student_id IS NULL').",
+    "schemaSnippet": "Students relational schema",
+    "targetQuery": "SELECT s.full_name\nFROM Students s\nLEFT JOIN Courses c ON s.student_id = c.student_id\nWHERE c.student_id IS NULL;",
+    "syntaxBlueprint": "SELECT a.col\nFROM TableA a\nLEFT JOIN TableB b ON a.id = b.a_id\nWHERE b.a_id IS NULL;",
+    "syntaxRule": "The Anti-Join pattern retrieves rows from the left table that have ZERO matching records in the right table by checking 'WHERE right_key IS NULL'.",
+    "syntaxTrap": "Selecting a column from the right table that is naturally NULLable instead of the primary/foreign key used in the join.",
+    "eli5Story": "Relational Joins on Students: Find students who have not enrolled in any courses using an anti-join ('WHERE c.student_id IS NULL').",
+    "commonMistakes": "Omitting the ON clause, forgetting table alias qualification on ambiguous columns, or accidentally converting LEFT JOIN to INNER JOIN via WHERE filters.",
+    "learningOutcomes": "Mastered 8.4 Anti-Join Pattern (Left Join with IS NULL) on Students.",
+    "challengeSlots": [
+      {
+        "type": "keyword",
+        "value": "SELECT"
+      },
+      {
+        "type": "column",
+        "value": "s.full_name"
+      },
+      {
+        "type": "keyword",
+        "value": "FROM"
+      },
+      {
+        "type": "table",
+        "value": "Students"
+      },
+      {
+        "type": "column",
+        "value": "s"
+      },
+      {
+        "type": "keyword",
+        "value": "LEFT"
+      },
+      {
+        "type": "keyword",
+        "value": "JOIN"
+      },
+      {
+        "type": "table",
+        "value": "Courses"
+      },
+      {
+        "type": "column",
+        "value": "c"
+      },
+      {
+        "type": "keyword",
+        "value": "ON"
+      },
+      {
+        "type": "column",
+        "value": "s.student_id"
+      },
+      {
+        "type": "column",
+        "value": "="
+      },
+      {
+        "type": "column",
+        "value": "c.student_id"
+      },
+      {
+        "type": "keyword",
+        "value": "WHERE"
+      },
+      {
+        "type": "column",
+        "value": "c.student_id"
+      },
+      {
+        "type": "keyword",
+        "value": "IS"
+      },
+      {
+        "type": "keyword",
+        "value": "NULL;"
+      }
+    ]
+  },
+  {
+    "drillNumber": 732,
+    "subcluster": "8.4 Anti-Join Pattern (Left Join with IS NULL)",
+    "level": "Level 2 (Anti-Join)",
+    "title": "Syntax #732: Identify books that have never been borrowed from the library using an anti-join",
+    "table": "Books",
+    "scenario": "Identify books that have never been borrowed from the library using an anti-join.",
+    "businessObjective": "Identify books that have never been borrowed from the library using an anti-join.",
+    "schemaSnippet": "Books relational schema",
+    "targetQuery": "SELECT b.title\nFROM Books b\nLEFT JOIN BorrowRecords r ON b.book_id = r.book_id\nWHERE r.book_id IS NULL;",
+    "syntaxBlueprint": "SELECT a.col\nFROM TableA a\nLEFT JOIN TableB b ON a.id = b.a_id\nWHERE b.a_id IS NULL;",
+    "syntaxRule": "The Anti-Join pattern retrieves rows from the left table that have ZERO matching records in the right table by checking 'WHERE right_key IS NULL'.",
+    "syntaxTrap": "Selecting a column from the right table that is naturally NULLable instead of the primary/foreign key used in the join.",
+    "eli5Story": "Relational Joins on Books: Identify books that have never been borrowed from the library using an anti-join.",
+    "commonMistakes": "Omitting the ON clause, forgetting table alias qualification on ambiguous columns, or accidentally converting LEFT JOIN to INNER JOIN via WHERE filters.",
+    "learningOutcomes": "Mastered 8.4 Anti-Join Pattern (Left Join with IS NULL) on Books.",
+    "challengeSlots": [
+      {
+        "type": "keyword",
+        "value": "SELECT"
+      },
+      {
+        "type": "column",
+        "value": "b.title"
+      },
+      {
+        "type": "keyword",
+        "value": "FROM"
+      },
+      {
+        "type": "table",
+        "value": "Books"
+      },
+      {
+        "type": "column",
+        "value": "b"
+      },
+      {
+        "type": "keyword",
+        "value": "LEFT"
+      },
+      {
+        "type": "keyword",
+        "value": "JOIN"
+      },
+      {
+        "type": "column",
+        "value": "BorrowRecords"
+      },
+      {
+        "type": "column",
+        "value": "r"
+      },
+      {
+        "type": "keyword",
+        "value": "ON"
+      },
+      {
+        "type": "column",
+        "value": "b.book_id"
+      },
+      {
+        "type": "column",
+        "value": "="
+      },
+      {
+        "type": "column",
+        "value": "r.book_id"
+      },
+      {
+        "type": "keyword",
+        "value": "WHERE"
+      },
+      {
+        "type": "column",
+        "value": "r.book_id"
+      },
+      {
+        "type": "keyword",
+        "value": "IS"
+      },
+      {
+        "type": "keyword",
+        "value": "NULL;"
+      }
+    ]
+  },
+  {
+    "drillNumber": 733,
+    "subcluster": "8.4 Anti-Join Pattern (Left Join with IS NULL)",
+    "level": "Level 2 (Anti-Join)",
+    "title": "Syntax #733: Find unassigned employees who do not belong to any valid department",
+    "table": "Employees",
+    "scenario": "Find unassigned employees who do not belong to any valid department.",
+    "businessObjective": "Find unassigned employees who do not belong to any valid department.",
+    "schemaSnippet": "Employees relational schema",
+    "targetQuery": "SELECT e.first_name, e.last_name\nFROM Employees e\nLEFT JOIN Departments d ON e.department_id = d.department_id\nWHERE d.department_id IS NULL;",
+    "syntaxBlueprint": "SELECT a.col\nFROM TableA a\nLEFT JOIN TableB b ON a.id = b.a_id\nWHERE b.a_id IS NULL;",
+    "syntaxRule": "The Anti-Join pattern retrieves rows from the left table that have ZERO matching records in the right table by checking 'WHERE right_key IS NULL'.",
+    "syntaxTrap": "Selecting a column from the right table that is naturally NULLable instead of the primary/foreign key used in the join.",
+    "eli5Story": "Relational Joins on Employees: Find unassigned employees who do not belong to any valid department.",
+    "commonMistakes": "Omitting the ON clause, forgetting table alias qualification on ambiguous columns, or accidentally converting LEFT JOIN to INNER JOIN via WHERE filters.",
+    "learningOutcomes": "Mastered 8.4 Anti-Join Pattern (Left Join with IS NULL) on Employees.",
+    "challengeSlots": [
+      {
+        "type": "keyword",
+        "value": "SELECT"
+      },
+      {
+        "type": "column",
+        "value": "e.first_name,"
+      },
+      {
+        "type": "column",
+        "value": "e.last_name"
+      },
+      {
+        "type": "keyword",
+        "value": "FROM"
+      },
+      {
+        "type": "table",
+        "value": "Employees"
+      },
+      {
+        "type": "column",
+        "value": "e"
+      },
+      {
+        "type": "keyword",
+        "value": "LEFT"
+      },
+      {
+        "type": "keyword",
+        "value": "JOIN"
+      },
+      {
+        "type": "table",
+        "value": "Departments"
+      },
+      {
+        "type": "column",
+        "value": "d"
+      },
+      {
+        "type": "keyword",
+        "value": "ON"
+      },
+      {
+        "type": "column",
+        "value": "e.department_id"
+      },
+      {
+        "type": "column",
+        "value": "="
+      },
+      {
+        "type": "column",
+        "value": "d.department_id"
+      },
+      {
+        "type": "keyword",
+        "value": "WHERE"
+      },
+      {
+        "type": "column",
+        "value": "d.department_id"
+      },
+      {
+        "type": "keyword",
+        "value": "IS"
+      },
+      {
+        "type": "keyword",
+        "value": "NULL;"
+      }
+    ]
+  },
+  {
+    "drillNumber": 734,
+    "subcluster": "8.4 Anti-Join Pattern (Left Join with IS NULL)",
+    "level": "Level 2 (Anti-Join)",
+    "title": "Syntax #734: Detect orphan inventory items that do not have an active supplier on file",
+    "table": "GroceryItems",
+    "scenario": "Detect orphan inventory items that do not have an active supplier on file.",
+    "businessObjective": "Detect orphan inventory items that do not have an active supplier on file.",
+    "schemaSnippet": "GroceryItems relational schema",
+    "targetQuery": "SELECT g.item_name\nFROM GroceryItems g\nLEFT JOIN Suppliers s ON g.supplier_id = s.supplier_id\nWHERE s.supplier_id IS NULL;",
+    "syntaxBlueprint": "SELECT a.col\nFROM TableA a\nLEFT JOIN TableB b ON a.id = b.a_id\nWHERE b.a_id IS NULL;",
+    "syntaxRule": "The Anti-Join pattern retrieves rows from the left table that have ZERO matching records in the right table by checking 'WHERE right_key IS NULL'.",
+    "syntaxTrap": "Selecting a column from the right table that is naturally NULLable instead of the primary/foreign key used in the join.",
+    "eli5Story": "Relational Joins on GroceryItems: Detect orphan inventory items that do not have an active supplier on file.",
+    "commonMistakes": "Omitting the ON clause, forgetting table alias qualification on ambiguous columns, or accidentally converting LEFT JOIN to INNER JOIN via WHERE filters.",
+    "learningOutcomes": "Mastered 8.4 Anti-Join Pattern (Left Join with IS NULL) on GroceryItems.",
+    "challengeSlots": [
+      {
+        "type": "keyword",
+        "value": "SELECT"
+      },
+      {
+        "type": "column",
+        "value": "g.item_name"
+      },
+      {
+        "type": "keyword",
+        "value": "FROM"
+      },
+      {
+        "type": "table",
+        "value": "GroceryItems"
+      },
+      {
+        "type": "column",
+        "value": "g"
+      },
+      {
+        "type": "keyword",
+        "value": "LEFT"
+      },
+      {
+        "type": "keyword",
+        "value": "JOIN"
+      },
+      {
+        "type": "table",
+        "value": "Suppliers"
+      },
+      {
+        "type": "column",
+        "value": "s"
+      },
+      {
+        "type": "keyword",
+        "value": "ON"
+      },
+      {
+        "type": "column",
+        "value": "g.supplier_id"
+      },
+      {
+        "type": "column",
+        "value": "="
+      },
+      {
+        "type": "column",
+        "value": "s.supplier_id"
+      },
+      {
+        "type": "keyword",
+        "value": "WHERE"
+      },
+      {
+        "type": "column",
+        "value": "s.supplier_id"
+      },
+      {
+        "type": "keyword",
+        "value": "IS"
+      },
+      {
+        "type": "keyword",
+        "value": "NULL;"
+      }
+    ]
+  },
+  {
+    "drillNumber": 735,
+    "subcluster": "8.4 Anti-Join Pattern (Left Join with IS NULL)",
+    "level": "Level 2 (Anti-Join)",
+    "title": "Syntax #735: Find registered customers who have never placed an order using an anti-join",
+    "table": "Orders",
+    "scenario": "Find registered customers who have never placed an order using an anti-join.",
+    "businessObjective": "Find registered customers who have never placed an order using an anti-join.",
+    "schemaSnippet": "Orders relational schema",
+    "targetQuery": "SELECT c.customer_name\nFROM Customers c\nLEFT JOIN Orders o ON c.customer_id = o.customer_id\nWHERE o.customer_id IS NULL;",
+    "syntaxBlueprint": "SELECT a.col\nFROM TableA a\nLEFT JOIN TableB b ON a.id = b.a_id\nWHERE b.a_id IS NULL;",
+    "syntaxRule": "The Anti-Join pattern retrieves rows from the left table that have ZERO matching records in the right table by checking 'WHERE right_key IS NULL'.",
+    "syntaxTrap": "Selecting a column from the right table that is naturally NULLable instead of the primary/foreign key used in the join.",
+    "eli5Story": "Relational Joins on Orders: Find registered customers who have never placed an order using an anti-join.",
+    "commonMistakes": "Omitting the ON clause, forgetting table alias qualification on ambiguous columns, or accidentally converting LEFT JOIN to INNER JOIN via WHERE filters.",
+    "learningOutcomes": "Mastered 8.4 Anti-Join Pattern (Left Join with IS NULL) on Orders.",
+    "challengeSlots": [
+      {
+        "type": "keyword",
+        "value": "SELECT"
+      },
+      {
+        "type": "column",
+        "value": "c.customer_name"
+      },
+      {
+        "type": "keyword",
+        "value": "FROM"
+      },
+      {
+        "type": "table",
+        "value": "Customers"
+      },
+      {
+        "type": "column",
+        "value": "c"
+      },
+      {
+        "type": "keyword",
+        "value": "LEFT"
+      },
+      {
+        "type": "keyword",
+        "value": "JOIN"
+      },
+      {
+        "type": "table",
+        "value": "Orders"
+      },
+      {
+        "type": "column",
+        "value": "o"
+      },
+      {
+        "type": "keyword",
+        "value": "ON"
+      },
+      {
+        "type": "column",
+        "value": "c.customer_id"
+      },
+      {
+        "type": "column",
+        "value": "="
+      },
+      {
+        "type": "column",
+        "value": "o.customer_id"
+      },
+      {
+        "type": "keyword",
+        "value": "WHERE"
+      },
+      {
+        "type": "column",
+        "value": "o.customer_id"
+      },
+      {
+        "type": "keyword",
+        "value": "IS"
+      },
+      {
+        "type": "keyword",
+        "value": "NULL;"
+      }
+    ]
+  },
+  {
+    "drillNumber": 736,
+    "subcluster": "8.4 Anti-Join Pattern (Left Join with IS NULL)",
+    "level": "Level 2 (Anti-Join)",
+    "title": "Syntax #736: Identify neglected music tracks that have never been added to any playlist",
+    "table": "MusicTracks",
+    "scenario": "Identify neglected music tracks that have never been added to any playlist.",
+    "businessObjective": "Identify neglected music tracks that have never been added to any playlist.",
+    "schemaSnippet": "MusicTracks relational schema",
+    "targetQuery": "SELECT t.track_title\nFROM MusicTracks t\nLEFT JOIN Playlists p ON t.track_id = p.track_id\nWHERE p.track_id IS NULL;",
+    "syntaxBlueprint": "SELECT a.col\nFROM TableA a\nLEFT JOIN TableB b ON a.id = b.a_id\nWHERE b.a_id IS NULL;",
+    "syntaxRule": "The Anti-Join pattern retrieves rows from the left table that have ZERO matching records in the right table by checking 'WHERE right_key IS NULL'.",
+    "syntaxTrap": "Selecting a column from the right table that is naturally NULLable instead of the primary/foreign key used in the join.",
+    "eli5Story": "Relational Joins on MusicTracks: Identify neglected music tracks that have never been added to any playlist.",
+    "commonMistakes": "Omitting the ON clause, forgetting table alias qualification on ambiguous columns, or accidentally converting LEFT JOIN to INNER JOIN via WHERE filters.",
+    "learningOutcomes": "Mastered 8.4 Anti-Join Pattern (Left Join with IS NULL) on MusicTracks.",
+    "challengeSlots": [
+      {
+        "type": "keyword",
+        "value": "SELECT"
+      },
+      {
+        "type": "column",
+        "value": "t.track_title"
+      },
+      {
+        "type": "keyword",
+        "value": "FROM"
+      },
+      {
+        "type": "table",
+        "value": "MusicTracks"
+      },
+      {
+        "type": "column",
+        "value": "t"
+      },
+      {
+        "type": "keyword",
+        "value": "LEFT"
+      },
+      {
+        "type": "keyword",
+        "value": "JOIN"
+      },
+      {
+        "type": "column",
+        "value": "Playlists"
+      },
+      {
+        "type": "column",
+        "value": "p"
+      },
+      {
+        "type": "keyword",
+        "value": "ON"
+      },
+      {
+        "type": "column",
+        "value": "t.track_id"
+      },
+      {
+        "type": "column",
+        "value": "="
+      },
+      {
+        "type": "column",
+        "value": "p.track_id"
+      },
+      {
+        "type": "keyword",
+        "value": "WHERE"
+      },
+      {
+        "type": "column",
+        "value": "p.track_id"
+      },
+      {
+        "type": "keyword",
+        "value": "IS"
+      },
+      {
+        "type": "keyword",
+        "value": "NULL;"
+      }
+    ]
+  },
+  {
+    "drillNumber": 737,
+    "subcluster": "8.4 Anti-Join Pattern (Left Join with IS NULL)",
+    "level": "Level 2 (Anti-Join)",
+    "title": "Syntax #737: Find gym members who have registered but have zero logged workout visits",
+    "table": "GymMembers",
+    "scenario": "Find gym members who have registered but have zero logged workout visits.",
+    "businessObjective": "Find gym members who have registered but have zero logged workout visits.",
+    "schemaSnippet": "GymMembers relational schema",
+    "targetQuery": "SELECT m.member_name\nFROM GymMembers m\nLEFT JOIN Attendance a ON m.member_id = a.member_id\nWHERE a.member_id IS NULL;",
+    "syntaxBlueprint": "SELECT a.col\nFROM TableA a\nLEFT JOIN TableB b ON a.id = b.a_id\nWHERE b.a_id IS NULL;",
+    "syntaxRule": "The Anti-Join pattern retrieves rows from the left table that have ZERO matching records in the right table by checking 'WHERE right_key IS NULL'.",
+    "syntaxTrap": "Selecting a column from the right table that is naturally NULLable instead of the primary/foreign key used in the join.",
+    "eli5Story": "Relational Joins on GymMembers: Find gym members who have registered but have zero logged workout visits.",
+    "commonMistakes": "Omitting the ON clause, forgetting table alias qualification on ambiguous columns, or accidentally converting LEFT JOIN to INNER JOIN via WHERE filters.",
+    "learningOutcomes": "Mastered 8.4 Anti-Join Pattern (Left Join with IS NULL) on GymMembers.",
+    "challengeSlots": [
+      {
+        "type": "keyword",
+        "value": "SELECT"
+      },
+      {
+        "type": "column",
+        "value": "m.member_name"
+      },
+      {
+        "type": "keyword",
+        "value": "FROM"
+      },
+      {
+        "type": "table",
+        "value": "GymMembers"
+      },
+      {
+        "type": "column",
+        "value": "m"
+      },
+      {
+        "type": "keyword",
+        "value": "LEFT"
+      },
+      {
+        "type": "keyword",
+        "value": "JOIN"
+      },
+      {
+        "type": "column",
+        "value": "Attendance"
+      },
+      {
+        "type": "column",
+        "value": "a"
+      },
+      {
+        "type": "keyword",
+        "value": "ON"
+      },
+      {
+        "type": "column",
+        "value": "m.member_id"
+      },
+      {
+        "type": "column",
+        "value": "="
+      },
+      {
+        "type": "column",
+        "value": "a.member_id"
+      },
+      {
+        "type": "keyword",
+        "value": "WHERE"
+      },
+      {
+        "type": "column",
+        "value": "a.member_id"
+      },
+      {
+        "type": "keyword",
+        "value": "IS"
+      },
+      {
+        "type": "keyword",
+        "value": "NULL;"
+      }
+    ]
+  },
+  {
+    "drillNumber": 738,
+    "subcluster": "8.4 Anti-Join Pattern (Left Join with IS NULL)",
+    "level": "Level 2 (Anti-Join)",
+    "title": "Syntax #738: Identify films in the cinema database that have received zero reviews",
+    "table": "MovieReviews",
+    "scenario": "Identify films in the cinema database that have received zero reviews.",
+    "businessObjective": "Identify films in the cinema database that have received zero reviews.",
+    "schemaSnippet": "MovieReviews relational schema",
+    "targetQuery": "SELECT m.movie_title\nFROM Movies m\nLEFT JOIN MovieReviews r ON m.movie_id = r.movie_id\nWHERE r.movie_id IS NULL;",
+    "syntaxBlueprint": "SELECT a.col\nFROM TableA a\nLEFT JOIN TableB b ON a.id = b.a_id\nWHERE b.a_id IS NULL;",
+    "syntaxRule": "The Anti-Join pattern retrieves rows from the left table that have ZERO matching records in the right table by checking 'WHERE right_key IS NULL'.",
+    "syntaxTrap": "Selecting a column from the right table that is naturally NULLable instead of the primary/foreign key used in the join.",
+    "eli5Story": "Relational Joins on MovieReviews: Identify films in the cinema database that have received zero reviews.",
+    "commonMistakes": "Omitting the ON clause, forgetting table alias qualification on ambiguous columns, or accidentally converting LEFT JOIN to INNER JOIN via WHERE filters.",
+    "learningOutcomes": "Mastered 8.4 Anti-Join Pattern (Left Join with IS NULL) on MovieReviews.",
+    "challengeSlots": [
+      {
+        "type": "keyword",
+        "value": "SELECT"
+      },
+      {
+        "type": "column",
+        "value": "m.movie_title"
+      },
+      {
+        "type": "keyword",
+        "value": "FROM"
+      },
+      {
+        "type": "table",
+        "value": "Movies"
+      },
+      {
+        "type": "column",
+        "value": "m"
+      },
+      {
+        "type": "keyword",
+        "value": "LEFT"
+      },
+      {
+        "type": "keyword",
+        "value": "JOIN"
+      },
+      {
+        "type": "table",
+        "value": "MovieReviews"
+      },
+      {
+        "type": "column",
+        "value": "r"
+      },
+      {
+        "type": "keyword",
+        "value": "ON"
+      },
+      {
+        "type": "column",
+        "value": "m.movie_id"
+      },
+      {
+        "type": "column",
+        "value": "="
+      },
+      {
+        "type": "column",
+        "value": "r.movie_id"
+      },
+      {
+        "type": "keyword",
+        "value": "WHERE"
+      },
+      {
+        "type": "column",
+        "value": "r.movie_id"
+      },
+      {
+        "type": "keyword",
+        "value": "IS"
+      },
+      {
+        "type": "keyword",
+        "value": "NULL;"
+      }
+    ]
+  },
+  {
+    "drillNumber": 739,
+    "subcluster": "8.4 Anti-Join Pattern (Left Join with IS NULL)",
+    "level": "Level 2 (Anti-Join)",
+    "title": "Syntax #739: Find airlines in the registry that currently have no flights scheduled",
+    "table": "FlightSchedule",
+    "scenario": "Find airlines in the registry that currently have no flights scheduled.",
+    "businessObjective": "Find airlines in the registry that currently have no flights scheduled.",
+    "schemaSnippet": "FlightSchedule relational schema",
+    "targetQuery": "SELECT al.airline_name\nFROM Airlines al\nLEFT JOIN FlightSchedule f ON al.airline_id = f.airline_id\nWHERE f.airline_id IS NULL;",
+    "syntaxBlueprint": "SELECT a.col\nFROM TableA a\nLEFT JOIN TableB b ON a.id = b.a_id\nWHERE b.a_id IS NULL;",
+    "syntaxRule": "The Anti-Join pattern retrieves rows from the left table that have ZERO matching records in the right table by checking 'WHERE right_key IS NULL'.",
+    "syntaxTrap": "Selecting a column from the right table that is naturally NULLable instead of the primary/foreign key used in the join.",
+    "eli5Story": "Relational Joins on FlightSchedule: Find airlines in the registry that currently have no flights scheduled.",
+    "commonMistakes": "Omitting the ON clause, forgetting table alias qualification on ambiguous columns, or accidentally converting LEFT JOIN to INNER JOIN via WHERE filters.",
+    "learningOutcomes": "Mastered 8.4 Anti-Join Pattern (Left Join with IS NULL) on FlightSchedule.",
+    "challengeSlots": [
+      {
+        "type": "keyword",
+        "value": "SELECT"
+      },
+      {
+        "type": "column",
+        "value": "al.airline_name"
+      },
+      {
+        "type": "keyword",
+        "value": "FROM"
+      },
+      {
+        "type": "table",
+        "value": "Airlines"
+      },
+      {
+        "type": "column",
+        "value": "al"
+      },
+      {
+        "type": "keyword",
+        "value": "LEFT"
+      },
+      {
+        "type": "keyword",
+        "value": "JOIN"
+      },
+      {
+        "type": "table",
+        "value": "FlightSchedule"
+      },
+      {
+        "type": "column",
+        "value": "f"
+      },
+      {
+        "type": "keyword",
+        "value": "ON"
+      },
+      {
+        "type": "column",
+        "value": "al.airline_id"
+      },
+      {
+        "type": "column",
+        "value": "="
+      },
+      {
+        "type": "column",
+        "value": "f.airline_id"
+      },
+      {
+        "type": "keyword",
+        "value": "WHERE"
+      },
+      {
+        "type": "column",
+        "value": "f.airline_id"
+      },
+      {
+        "type": "keyword",
+        "value": "IS"
+      },
+      {
+        "type": "keyword",
+        "value": "NULL;"
+      }
+    ]
+  },
+  {
+    "drillNumber": 740,
+    "subcluster": "8.4 Anti-Join Pattern (Left Join with IS NULL)",
+    "level": "Level 2 (Anti-Join)",
+    "title": "Syntax #740: Find registered pet owners who have zero animals currently in the clinic system",
+    "table": "PetClinic",
+    "scenario": "Find registered pet owners who have zero animals currently in the clinic system.",
+    "businessObjective": "Find registered pet owners who have zero animals currently in the clinic system.",
+    "schemaSnippet": "PetClinic relational schema",
+    "targetQuery": "SELECT o.owner_name\nFROM Owners o\nLEFT JOIN PetClinic p ON o.owner_id = p.owner_id\nWHERE p.owner_id IS NULL;",
+    "syntaxBlueprint": "SELECT a.col\nFROM TableA a\nLEFT JOIN TableB b ON a.id = b.a_id\nWHERE b.a_id IS NULL;",
+    "syntaxRule": "The Anti-Join pattern retrieves rows from the left table that have ZERO matching records in the right table by checking 'WHERE right_key IS NULL'.",
+    "syntaxTrap": "Selecting a column from the right table that is naturally NULLable instead of the primary/foreign key used in the join.",
+    "eli5Story": "Relational Joins on PetClinic: Find registered pet owners who have zero animals currently in the clinic system.",
+    "commonMistakes": "Omitting the ON clause, forgetting table alias qualification on ambiguous columns, or accidentally converting LEFT JOIN to INNER JOIN via WHERE filters.",
+    "learningOutcomes": "Mastered 8.4 Anti-Join Pattern (Left Join with IS NULL) on PetClinic.",
+    "challengeSlots": [
+      {
+        "type": "keyword",
+        "value": "SELECT"
+      },
+      {
+        "type": "column",
+        "value": "o.owner_name"
+      },
+      {
+        "type": "keyword",
+        "value": "FROM"
+      },
+      {
+        "type": "table",
+        "value": "Owners"
+      },
+      {
+        "type": "column",
+        "value": "o"
+      },
+      {
+        "type": "keyword",
+        "value": "LEFT"
+      },
+      {
+        "type": "keyword",
+        "value": "JOIN"
+      },
+      {
+        "type": "table",
+        "value": "PetClinic"
+      },
+      {
+        "type": "column",
+        "value": "p"
+      },
+      {
+        "type": "keyword",
+        "value": "ON"
+      },
+      {
+        "type": "column",
+        "value": "o.owner_id"
+      },
+      {
+        "type": "column",
+        "value": "="
+      },
+      {
+        "type": "column",
+        "value": "p.owner_id"
+      },
+      {
+        "type": "keyword",
+        "value": "WHERE"
+      },
+      {
+        "type": "column",
+        "value": "p.owner_id"
+      },
+      {
+        "type": "keyword",
+        "value": "IS"
+      },
+      {
+        "type": "keyword",
+        "value": "NULL;"
+      }
+    ]
+  },
+  {
+    "drillNumber": 741,
+    "subcluster": "8.5 Non-Equi Joins with Inequality (<, >)",
+    "level": "Level 3 (Inequality Non-Equi Join)",
+    "title": "Syntax #741: Pair senior students with more recently enrolled junior students using '<'",
+    "table": "Students",
+    "scenario": "Pair senior students with more recently enrolled junior students using '<'.",
+    "businessObjective": "Pair senior students with more recently enrolled junior students using '<'.",
+    "schemaSnippet": "Students relational schema",
+    "targetQuery": "SELECT s1.full_name AS senior_student, s2.full_name AS junior_student\nFROM Students s1\nJOIN Students s2 ON s1.enrolled_year < s2.enrolled_year\nLIMIT 20;",
+    "syntaxBlueprint": "SELECT a.col, b.col\nFROM TableA a\nJOIN TableB b ON a.metric > b.metric;",
+    "syntaxRule": "Non-equi joins use comparison operators other than '=' (such as <, >, <=, >=) to compare relative magnitudes between tables.",
+    "syntaxTrap": "Non-equi joins without limiting bounds can produce massive result sets similar to cross joins.",
+    "eli5Story": "Relational Joins on Students: Pair senior students with more recently enrolled junior students using '<'.",
+    "commonMistakes": "Omitting the ON clause, forgetting table alias qualification on ambiguous columns, or accidentally converting LEFT JOIN to INNER JOIN via WHERE filters.",
+    "learningOutcomes": "Mastered 8.5 Non-Equi Joins with Inequality (<, >) on Students.",
+    "challengeSlots": [
+      {
+        "type": "keyword",
+        "value": "SELECT"
+      },
+      {
+        "type": "column",
+        "value": "s1.full_name"
+      },
+      {
+        "type": "keyword",
+        "value": "AS"
+      },
+      {
+        "type": "column",
+        "value": "senior_student,"
+      },
+      {
+        "type": "column",
+        "value": "s2.full_name"
+      },
+      {
+        "type": "keyword",
+        "value": "AS"
+      },
+      {
+        "type": "column",
+        "value": "junior_student"
+      },
+      {
+        "type": "keyword",
+        "value": "FROM"
+      },
+      {
+        "type": "table",
+        "value": "Students"
+      },
+      {
+        "type": "column",
+        "value": "s1"
+      },
+      {
+        "type": "keyword",
+        "value": "JOIN"
+      },
+      {
+        "type": "table",
+        "value": "Students"
+      },
+      {
+        "type": "column",
+        "value": "s2"
+      },
+      {
+        "type": "keyword",
+        "value": "ON"
+      },
+      {
+        "type": "column",
+        "value": "s1.enrolled_year"
+      },
+      {
+        "type": "column",
+        "value": "<"
+      },
+      {
+        "type": "column",
+        "value": "s2.enrolled_year"
+      },
+      {
+        "type": "keyword",
+        "value": "LIMIT"
+      },
+      {
+        "type": "column",
+        "value": "20;"
+      }
+    ]
+  },
+  {
+    "drillNumber": 742,
+    "subcluster": "8.5 Non-Equi Joins with Inequality (<, >)",
+    "level": "Level 3 (Inequality Non-Equi Join)",
+    "title": "Syntax #742: Pair books where book 1 was published after book 2",
+    "table": "Books",
+    "scenario": "Pair books where book 1 was published after book 2.",
+    "businessObjective": "Pair books where book 1 was published after book 2.",
+    "schemaSnippet": "Books relational schema",
+    "targetQuery": "SELECT b1.title AS newer_book, b2.title AS older_book\nFROM Books b1\nJOIN Books b2 ON b1.published_year > b2.published_year\nLIMIT 20;",
+    "syntaxBlueprint": "SELECT a.col, b.col\nFROM TableA a\nJOIN TableB b ON a.metric > b.metric;",
+    "syntaxRule": "Non-equi joins use comparison operators other than '=' (such as <, >, <=, >=) to compare relative magnitudes between tables.",
+    "syntaxTrap": "Non-equi joins without limiting bounds can produce massive result sets similar to cross joins.",
+    "eli5Story": "Relational Joins on Books: Pair books where book 1 was published after book 2.",
+    "commonMistakes": "Omitting the ON clause, forgetting table alias qualification on ambiguous columns, or accidentally converting LEFT JOIN to INNER JOIN via WHERE filters.",
+    "learningOutcomes": "Mastered 8.5 Non-Equi Joins with Inequality (<, >) on Books.",
+    "challengeSlots": [
+      {
+        "type": "keyword",
+        "value": "SELECT"
+      },
+      {
+        "type": "column",
+        "value": "b1.title"
+      },
+      {
+        "type": "keyword",
+        "value": "AS"
+      },
+      {
+        "type": "column",
+        "value": "newer_book,"
+      },
+      {
+        "type": "column",
+        "value": "b2.title"
+      },
+      {
+        "type": "keyword",
+        "value": "AS"
+      },
+      {
+        "type": "column",
+        "value": "older_book"
+      },
+      {
+        "type": "keyword",
+        "value": "FROM"
+      },
+      {
+        "type": "table",
+        "value": "Books"
+      },
+      {
+        "type": "column",
+        "value": "b1"
+      },
+      {
+        "type": "keyword",
+        "value": "JOIN"
+      },
+      {
+        "type": "table",
+        "value": "Books"
+      },
+      {
+        "type": "column",
+        "value": "b2"
+      },
+      {
+        "type": "keyword",
+        "value": "ON"
+      },
+      {
+        "type": "column",
+        "value": "b1.published_year"
+      },
+      {
+        "type": "column",
+        "value": ">"
+      },
+      {
+        "type": "column",
+        "value": "b2.published_year"
+      },
+      {
+        "type": "keyword",
+        "value": "LIMIT"
+      },
+      {
+        "type": "column",
+        "value": "20;"
+      }
+    ]
+  },
+  {
+    "drillNumber": 743,
+    "subcluster": "8.5 Non-Equi Joins with Inequality (<, >)",
+    "level": "Level 3 (Inequality Non-Equi Join)",
+    "title": "Syntax #743: Compare salaries within the same department: pair higher earners with lower earners",
+    "table": "Employees",
+    "scenario": "Compare salaries within the same department: pair higher earners with lower earners.",
+    "businessObjective": "Compare salaries within the same department: pair higher earners with lower earners.",
+    "schemaSnippet": "Employees relational schema",
+    "targetQuery": "SELECT e1.first_name AS higher_earner, e2.first_name AS lower_earner\nFROM Employees e1\nJOIN Employees e2 ON e1.salary > e2.salary AND e1.department_id = e2.department_id\nLIMIT 20;",
+    "syntaxBlueprint": "SELECT a.col, b.col\nFROM TableA a\nJOIN TableB b ON a.metric > b.metric;",
+    "syntaxRule": "Non-equi joins use comparison operators other than '=' (such as <, >, <=, >=) to compare relative magnitudes between tables.",
+    "syntaxTrap": "Non-equi joins without limiting bounds can produce massive result sets similar to cross joins.",
+    "eli5Story": "Relational Joins on Employees: Compare salaries within the same department: pair higher earners with lower earners.",
+    "commonMistakes": "Omitting the ON clause, forgetting table alias qualification on ambiguous columns, or accidentally converting LEFT JOIN to INNER JOIN via WHERE filters.",
+    "learningOutcomes": "Mastered 8.5 Non-Equi Joins with Inequality (<, >) on Employees.",
+    "challengeSlots": [
+      {
+        "type": "keyword",
+        "value": "SELECT"
+      },
+      {
+        "type": "column",
+        "value": "e1.first_name"
+      },
+      {
+        "type": "keyword",
+        "value": "AS"
+      },
+      {
+        "type": "column",
+        "value": "higher_earner,"
+      },
+      {
+        "type": "column",
+        "value": "e2.first_name"
+      },
+      {
+        "type": "keyword",
+        "value": "AS"
+      },
+      {
+        "type": "column",
+        "value": "lower_earner"
+      },
+      {
+        "type": "keyword",
+        "value": "FROM"
+      },
+      {
+        "type": "table",
+        "value": "Employees"
+      },
+      {
+        "type": "column",
+        "value": "e1"
+      },
+      {
+        "type": "keyword",
+        "value": "JOIN"
+      },
+      {
+        "type": "table",
+        "value": "Employees"
+      },
+      {
+        "type": "column",
+        "value": "e2"
+      },
+      {
+        "type": "keyword",
+        "value": "ON"
+      },
+      {
+        "type": "column",
+        "value": "e1.salary"
+      },
+      {
+        "type": "column",
+        "value": ">"
+      },
+      {
+        "type": "column",
+        "value": "e2.salary"
+      },
+      {
+        "type": "keyword",
+        "value": "AND"
+      },
+      {
+        "type": "column",
+        "value": "e1.department_id"
+      },
+      {
+        "type": "column",
+        "value": "="
+      },
+      {
+        "type": "column",
+        "value": "e2.department_id"
+      },
+      {
+        "type": "keyword",
+        "value": "LIMIT"
+      },
+      {
+        "type": "column",
+        "value": "20;"
+      }
+    ]
+  },
+  {
+    "drillNumber": 744,
+    "subcluster": "8.5 Non-Equi Joins with Inequality (<, >)",
+    "level": "Level 3 (Inequality Non-Equi Join)",
+    "title": "Syntax #744: Find pairs where item 1 is more than double the price of item 2",
+    "table": "GroceryItems",
+    "scenario": "Find pairs where item 1 is more than double the price of item 2.",
+    "businessObjective": "Find pairs where item 1 is more than double the price of item 2.",
+    "schemaSnippet": "GroceryItems relational schema",
+    "targetQuery": "SELECT g1.item_name AS premium_item, g2.item_name AS budget_item\nFROM GroceryItems g1\nJOIN GroceryItems g2 ON g1.unit_price > g2.unit_price * 2\nLIMIT 20;",
+    "syntaxBlueprint": "SELECT a.col, b.col\nFROM TableA a\nJOIN TableB b ON a.metric > b.metric;",
+    "syntaxRule": "Non-equi joins use comparison operators other than '=' (such as <, >, <=, >=) to compare relative magnitudes between tables.",
+    "syntaxTrap": "Non-equi joins without limiting bounds can produce massive result sets similar to cross joins.",
+    "eli5Story": "Relational Joins on GroceryItems: Find pairs where item 1 is more than double the price of item 2.",
+    "commonMistakes": "Omitting the ON clause, forgetting table alias qualification on ambiguous columns, or accidentally converting LEFT JOIN to INNER JOIN via WHERE filters.",
+    "learningOutcomes": "Mastered 8.5 Non-Equi Joins with Inequality (<, >) on GroceryItems.",
+    "challengeSlots": [
+      {
+        "type": "keyword",
+        "value": "SELECT"
+      },
+      {
+        "type": "column",
+        "value": "g1.item_name"
+      },
+      {
+        "type": "keyword",
+        "value": "AS"
+      },
+      {
+        "type": "column",
+        "value": "premium_item,"
+      },
+      {
+        "type": "column",
+        "value": "g2.item_name"
+      },
+      {
+        "type": "keyword",
+        "value": "AS"
+      },
+      {
+        "type": "column",
+        "value": "budget_item"
+      },
+      {
+        "type": "keyword",
+        "value": "FROM"
+      },
+      {
+        "type": "table",
+        "value": "GroceryItems"
+      },
+      {
+        "type": "column",
+        "value": "g1"
+      },
+      {
+        "type": "keyword",
+        "value": "JOIN"
+      },
+      {
+        "type": "table",
+        "value": "GroceryItems"
+      },
+      {
+        "type": "column",
+        "value": "g2"
+      },
+      {
+        "type": "keyword",
+        "value": "ON"
+      },
+      {
+        "type": "column",
+        "value": "g1.unit_price"
+      },
+      {
+        "type": "column",
+        "value": ">"
+      },
+      {
+        "type": "column",
+        "value": "g2.unit_price"
+      },
+      {
+        "type": "column",
+        "value": "*"
+      },
+      {
+        "type": "column",
+        "value": "2"
+      },
+      {
+        "type": "keyword",
+        "value": "LIMIT"
+      },
+      {
+        "type": "column",
+        "value": "20;"
+      }
+    ]
+  },
+  {
+    "drillNumber": 745,
+    "subcluster": "8.5 Non-Equi Joins with Inequality (<, >)",
+    "level": "Level 3 (Inequality Non-Equi Join)",
+    "title": "Syntax #745: Compare order amounts for the same customer: pair larger orders with smaller orders",
+    "table": "Orders",
+    "scenario": "Compare order amounts for the same customer: pair larger orders with smaller orders.",
+    "businessObjective": "Compare order amounts for the same customer: pair larger orders with smaller orders.",
+    "schemaSnippet": "Orders relational schema",
+    "targetQuery": "SELECT o1.order_id AS bigger_order, o2.order_id AS smaller_order\nFROM Orders o1\nJOIN Orders o2 ON o1.total_amount > o2.total_amount AND o1.customer_id = o2.customer_id\nLIMIT 20;",
+    "syntaxBlueprint": "SELECT a.col, b.col\nFROM TableA a\nJOIN TableB b ON a.metric > b.metric;",
+    "syntaxRule": "Non-equi joins use comparison operators other than '=' (such as <, >, <=, >=) to compare relative magnitudes between tables.",
+    "syntaxTrap": "Non-equi joins without limiting bounds can produce massive result sets similar to cross joins.",
+    "eli5Story": "Relational Joins on Orders: Compare order amounts for the same customer: pair larger orders with smaller orders.",
+    "commonMistakes": "Omitting the ON clause, forgetting table alias qualification on ambiguous columns, or accidentally converting LEFT JOIN to INNER JOIN via WHERE filters.",
+    "learningOutcomes": "Mastered 8.5 Non-Equi Joins with Inequality (<, >) on Orders.",
+    "challengeSlots": [
+      {
+        "type": "keyword",
+        "value": "SELECT"
+      },
+      {
+        "type": "column",
+        "value": "o1.order_id"
+      },
+      {
+        "type": "keyword",
+        "value": "AS"
+      },
+      {
+        "type": "column",
+        "value": "bigger_order,"
+      },
+      {
+        "type": "column",
+        "value": "o2.order_id"
+      },
+      {
+        "type": "keyword",
+        "value": "AS"
+      },
+      {
+        "type": "column",
+        "value": "smaller_order"
+      },
+      {
+        "type": "keyword",
+        "value": "FROM"
+      },
+      {
+        "type": "table",
+        "value": "Orders"
+      },
+      {
+        "type": "column",
+        "value": "o1"
+      },
+      {
+        "type": "keyword",
+        "value": "JOIN"
+      },
+      {
+        "type": "table",
+        "value": "Orders"
+      },
+      {
+        "type": "column",
+        "value": "o2"
+      },
+      {
+        "type": "keyword",
+        "value": "ON"
+      },
+      {
+        "type": "column",
+        "value": "o1.total_amount"
+      },
+      {
+        "type": "column",
+        "value": ">"
+      },
+      {
+        "type": "column",
+        "value": "o2.total_amount"
+      },
+      {
+        "type": "keyword",
+        "value": "AND"
+      },
+      {
+        "type": "column",
+        "value": "o1.customer_id"
+      },
+      {
+        "type": "column",
+        "value": "="
+      },
+      {
+        "type": "column",
+        "value": "o2.customer_id"
+      },
+      {
+        "type": "keyword",
+        "value": "LIMIT"
+      },
+      {
+        "type": "column",
+        "value": "20;"
+      }
+    ]
+  },
+  {
+    "drillNumber": 746,
+    "subcluster": "8.5 Non-Equi Joins with Inequality (<, >)",
+    "level": "Level 3 (Inequality Non-Equi Join)",
+    "title": "Syntax #746: Find song pairs where track 1 is at least 2 minutes longer than track 2",
+    "table": "MusicTracks",
+    "scenario": "Find song pairs where track 1 is at least 2 minutes longer than track 2.",
+    "businessObjective": "Find song pairs where track 1 is at least 2 minutes longer than track 2.",
+    "schemaSnippet": "MusicTracks relational schema",
+    "targetQuery": "SELECT t1.track_title AS longer_song, t2.track_title AS shorter_song\nFROM MusicTracks t1\nJOIN MusicTracks t2 ON t1.duration_seconds > t2.duration_seconds + 120\nLIMIT 20;",
+    "syntaxBlueprint": "SELECT a.col, b.col\nFROM TableA a\nJOIN TableB b ON a.metric > b.metric;",
+    "syntaxRule": "Non-equi joins use comparison operators other than '=' (such as <, >, <=, >=) to compare relative magnitudes between tables.",
+    "syntaxTrap": "Non-equi joins without limiting bounds can produce massive result sets similar to cross joins.",
+    "eli5Story": "Relational Joins on MusicTracks: Find song pairs where track 1 is at least 2 minutes longer than track 2.",
+    "commonMistakes": "Omitting the ON clause, forgetting table alias qualification on ambiguous columns, or accidentally converting LEFT JOIN to INNER JOIN via WHERE filters.",
+    "learningOutcomes": "Mastered 8.5 Non-Equi Joins with Inequality (<, >) on MusicTracks.",
+    "challengeSlots": [
+      {
+        "type": "keyword",
+        "value": "SELECT"
+      },
+      {
+        "type": "column",
+        "value": "t1.track_title"
+      },
+      {
+        "type": "keyword",
+        "value": "AS"
+      },
+      {
+        "type": "column",
+        "value": "longer_song,"
+      },
+      {
+        "type": "column",
+        "value": "t2.track_title"
+      },
+      {
+        "type": "keyword",
+        "value": "AS"
+      },
+      {
+        "type": "column",
+        "value": "shorter_song"
+      },
+      {
+        "type": "keyword",
+        "value": "FROM"
+      },
+      {
+        "type": "table",
+        "value": "MusicTracks"
+      },
+      {
+        "type": "column",
+        "value": "t1"
+      },
+      {
+        "type": "keyword",
+        "value": "JOIN"
+      },
+      {
+        "type": "table",
+        "value": "MusicTracks"
+      },
+      {
+        "type": "column",
+        "value": "t2"
+      },
+      {
+        "type": "keyword",
+        "value": "ON"
+      },
+      {
+        "type": "column",
+        "value": "t1.duration_seconds"
+      },
+      {
+        "type": "column",
+        "value": ">"
+      },
+      {
+        "type": "column",
+        "value": "t2.duration_seconds"
+      },
+      {
+        "type": "column",
+        "value": "+"
+      },
+      {
+        "type": "column",
+        "value": "120"
+      },
+      {
+        "type": "keyword",
+        "value": "LIMIT"
+      },
+      {
+        "type": "column",
+        "value": "20;"
+      }
+    ]
+  },
+  {
+    "drillNumber": 747,
+    "subcluster": "8.5 Non-Equi Joins with Inequality (<, >)",
+    "level": "Level 3 (Inequality Non-Equi Join)",
+    "title": "Syntax #747: Pair veteran gym members with newcomers who joined after them",
+    "table": "GymMembers",
+    "scenario": "Pair veteran gym members with newcomers who joined after them.",
+    "businessObjective": "Pair veteran gym members with newcomers who joined after them.",
+    "schemaSnippet": "GymMembers relational schema",
+    "targetQuery": "SELECT m1.member_name AS veteran, m2.member_name AS newcomer\nFROM GymMembers m1\nJOIN GymMembers m2 ON m1.join_date < m2.join_date\nLIMIT 20;",
+    "syntaxBlueprint": "SELECT a.col, b.col\nFROM TableA a\nJOIN TableB b ON a.metric > b.metric;",
+    "syntaxRule": "Non-equi joins use comparison operators other than '=' (such as <, >, <=, >=) to compare relative magnitudes between tables.",
+    "syntaxTrap": "Non-equi joins without limiting bounds can produce massive result sets similar to cross joins.",
+    "eli5Story": "Relational Joins on GymMembers: Pair veteran gym members with newcomers who joined after them.",
+    "commonMistakes": "Omitting the ON clause, forgetting table alias qualification on ambiguous columns, or accidentally converting LEFT JOIN to INNER JOIN via WHERE filters.",
+    "learningOutcomes": "Mastered 8.5 Non-Equi Joins with Inequality (<, >) on GymMembers.",
+    "challengeSlots": [
+      {
+        "type": "keyword",
+        "value": "SELECT"
+      },
+      {
+        "type": "column",
+        "value": "m1.member_name"
+      },
+      {
+        "type": "keyword",
+        "value": "AS"
+      },
+      {
+        "type": "column",
+        "value": "veteran,"
+      },
+      {
+        "type": "column",
+        "value": "m2.member_name"
+      },
+      {
+        "type": "keyword",
+        "value": "AS"
+      },
+      {
+        "type": "column",
+        "value": "newcomer"
+      },
+      {
+        "type": "keyword",
+        "value": "FROM"
+      },
+      {
+        "type": "table",
+        "value": "GymMembers"
+      },
+      {
+        "type": "column",
+        "value": "m1"
+      },
+      {
+        "type": "keyword",
+        "value": "JOIN"
+      },
+      {
+        "type": "table",
+        "value": "GymMembers"
+      },
+      {
+        "type": "column",
+        "value": "m2"
+      },
+      {
+        "type": "keyword",
+        "value": "ON"
+      },
+      {
+        "type": "column",
+        "value": "m1.join_date"
+      },
+      {
+        "type": "column",
+        "value": "<"
+      },
+      {
+        "type": "column",
+        "value": "m2.join_date"
+      },
+      {
+        "type": "keyword",
+        "value": "LIMIT"
+      },
+      {
+        "type": "column",
+        "value": "20;"
+      }
+    ]
+  },
+  {
+    "drillNumber": 748,
+    "subcluster": "8.5 Non-Equi Joins with Inequality (<, >)",
+    "level": "Level 3 (Inequality Non-Equi Join)",
+    "title": "Syntax #748: Compare reviews for the same movie where review 1 gave higher stars than review 2",
+    "table": "MovieReviews",
+    "scenario": "Compare reviews for the same movie where review 1 gave higher stars than review 2.",
+    "businessObjective": "Compare reviews for the same movie where review 1 gave higher stars than review 2.",
+    "schemaSnippet": "MovieReviews relational schema",
+    "targetQuery": "SELECT r1.review_id AS better_rev, r2.review_id AS worse_rev\nFROM MovieReviews r1\nJOIN MovieReviews r2 ON r1.star_rating > r2.star_rating AND r1.movie_id = r2.movie_id\nLIMIT 20;",
+    "syntaxBlueprint": "SELECT a.col, b.col\nFROM TableA a\nJOIN TableB b ON a.metric > b.metric;",
+    "syntaxRule": "Non-equi joins use comparison operators other than '=' (such as <, >, <=, >=) to compare relative magnitudes between tables.",
+    "syntaxTrap": "Non-equi joins without limiting bounds can produce massive result sets similar to cross joins.",
+    "eli5Story": "Relational Joins on MovieReviews: Compare reviews for the same movie where review 1 gave higher stars than review 2.",
+    "commonMistakes": "Omitting the ON clause, forgetting table alias qualification on ambiguous columns, or accidentally converting LEFT JOIN to INNER JOIN via WHERE filters.",
+    "learningOutcomes": "Mastered 8.5 Non-Equi Joins with Inequality (<, >) on MovieReviews.",
+    "challengeSlots": [
+      {
+        "type": "keyword",
+        "value": "SELECT"
+      },
+      {
+        "type": "column",
+        "value": "r1.review_id"
+      },
+      {
+        "type": "keyword",
+        "value": "AS"
+      },
+      {
+        "type": "column",
+        "value": "better_rev,"
+      },
+      {
+        "type": "column",
+        "value": "r2.review_id"
+      },
+      {
+        "type": "keyword",
+        "value": "AS"
+      },
+      {
+        "type": "column",
+        "value": "worse_rev"
+      },
+      {
+        "type": "keyword",
+        "value": "FROM"
+      },
+      {
+        "type": "table",
+        "value": "MovieReviews"
+      },
+      {
+        "type": "column",
+        "value": "r1"
+      },
+      {
+        "type": "keyword",
+        "value": "JOIN"
+      },
+      {
+        "type": "table",
+        "value": "MovieReviews"
+      },
+      {
+        "type": "column",
+        "value": "r2"
+      },
+      {
+        "type": "keyword",
+        "value": "ON"
+      },
+      {
+        "type": "column",
+        "value": "r1.star_rating"
+      },
+      {
+        "type": "column",
+        "value": ">"
+      },
+      {
+        "type": "column",
+        "value": "r2.star_rating"
+      },
+      {
+        "type": "keyword",
+        "value": "AND"
+      },
+      {
+        "type": "column",
+        "value": "r1.movie_id"
+      },
+      {
+        "type": "column",
+        "value": "="
+      },
+      {
+        "type": "column",
+        "value": "r2.movie_id"
+      },
+      {
+        "type": "keyword",
+        "value": "LIMIT"
+      },
+      {
+        "type": "column",
+        "value": "20;"
+      }
+    ]
+  },
+  {
+    "drillNumber": 749,
+    "subcluster": "8.5 Non-Equi Joins with Inequality (<, >)",
+    "level": "Level 3 (Inequality Non-Equi Join)",
+    "title": "Syntax #749: Sequence flights departing from the same airport where flight 1 departs before flight 2",
+    "table": "FlightSchedule",
+    "scenario": "Sequence flights departing from the same airport where flight 1 departs before flight 2.",
+    "businessObjective": "Sequence flights departing from the same airport where flight 1 departs before flight 2.",
+    "schemaSnippet": "FlightSchedule relational schema",
+    "targetQuery": "SELECT f1.flight_id AS morning_flight, f2.flight_id AS later_flight\nFROM FlightSchedule f1\nJOIN FlightSchedule f2 ON f1.departure_time < f2.departure_time AND f1.origin_airport = f2.origin_airport\nLIMIT 20;",
+    "syntaxBlueprint": "SELECT a.col, b.col\nFROM TableA a\nJOIN TableB b ON a.metric > b.metric;",
+    "syntaxRule": "Non-equi joins use comparison operators other than '=' (such as <, >, <=, >=) to compare relative magnitudes between tables.",
+    "syntaxTrap": "Non-equi joins without limiting bounds can produce massive result sets similar to cross joins.",
+    "eli5Story": "Relational Joins on FlightSchedule: Sequence flights departing from the same airport where flight 1 departs before flight 2.",
+    "commonMistakes": "Omitting the ON clause, forgetting table alias qualification on ambiguous columns, or accidentally converting LEFT JOIN to INNER JOIN via WHERE filters.",
+    "learningOutcomes": "Mastered 8.5 Non-Equi Joins with Inequality (<, >) on FlightSchedule.",
+    "challengeSlots": [
+      {
+        "type": "keyword",
+        "value": "SELECT"
+      },
+      {
+        "type": "column",
+        "value": "f1.flight_id"
+      },
+      {
+        "type": "keyword",
+        "value": "AS"
+      },
+      {
+        "type": "column",
+        "value": "morning_flight,"
+      },
+      {
+        "type": "column",
+        "value": "f2.flight_id"
+      },
+      {
+        "type": "keyword",
+        "value": "AS"
+      },
+      {
+        "type": "column",
+        "value": "later_flight"
+      },
+      {
+        "type": "keyword",
+        "value": "FROM"
+      },
+      {
+        "type": "table",
+        "value": "FlightSchedule"
+      },
+      {
+        "type": "column",
+        "value": "f1"
+      },
+      {
+        "type": "keyword",
+        "value": "JOIN"
+      },
+      {
+        "type": "table",
+        "value": "FlightSchedule"
+      },
+      {
+        "type": "column",
+        "value": "f2"
+      },
+      {
+        "type": "keyword",
+        "value": "ON"
+      },
+      {
+        "type": "column",
+        "value": "f1.departure_time"
+      },
+      {
+        "type": "column",
+        "value": "<"
+      },
+      {
+        "type": "column",
+        "value": "f2.departure_time"
+      },
+      {
+        "type": "keyword",
+        "value": "AND"
+      },
+      {
+        "type": "column",
+        "value": "f1.origin_airport"
+      },
+      {
+        "type": "column",
+        "value": "="
+      },
+      {
+        "type": "column",
+        "value": "f2.origin_airport"
+      },
+      {
+        "type": "keyword",
+        "value": "LIMIT"
+      },
+      {
+        "type": "column",
+        "value": "20;"
+      }
+    ]
+  },
+  {
+    "drillNumber": 750,
+    "subcluster": "8.5 Non-Equi Joins with Inequality (<, >)",
+    "level": "Level 3 (Inequality Non-Equi Join)",
+    "title": "Syntax #750: Pair clinic pets where pet 1 is over 3 times the weight of pet 2",
+    "table": "PetClinic",
+    "scenario": "Pair clinic pets where pet 1 is over 3 times the weight of pet 2.",
+    "businessObjective": "Pair clinic pets where pet 1 is over 3 times the weight of pet 2.",
+    "schemaSnippet": "PetClinic relational schema",
+    "targetQuery": "SELECT p1.pet_name AS larger_pet, p2.pet_name AS smaller_pet\nFROM PetClinic p1\nJOIN PetClinic p2 ON p1.weight_kg > p2.weight_kg * 3\nLIMIT 20;",
+    "syntaxBlueprint": "SELECT a.col, b.col\nFROM TableA a\nJOIN TableB b ON a.metric > b.metric;",
+    "syntaxRule": "Non-equi joins use comparison operators other than '=' (such as <, >, <=, >=) to compare relative magnitudes between tables.",
+    "syntaxTrap": "Non-equi joins without limiting bounds can produce massive result sets similar to cross joins.",
+    "eli5Story": "Relational Joins on PetClinic: Pair clinic pets where pet 1 is over 3 times the weight of pet 2.",
+    "commonMistakes": "Omitting the ON clause, forgetting table alias qualification on ambiguous columns, or accidentally converting LEFT JOIN to INNER JOIN via WHERE filters.",
+    "learningOutcomes": "Mastered 8.5 Non-Equi Joins with Inequality (<, >) on PetClinic.",
+    "challengeSlots": [
+      {
+        "type": "keyword",
+        "value": "SELECT"
+      },
+      {
+        "type": "column",
+        "value": "p1.pet_name"
+      },
+      {
+        "type": "keyword",
+        "value": "AS"
+      },
+      {
+        "type": "column",
+        "value": "larger_pet,"
+      },
+      {
+        "type": "column",
+        "value": "p2.pet_name"
+      },
+      {
+        "type": "keyword",
+        "value": "AS"
+      },
+      {
+        "type": "column",
+        "value": "smaller_pet"
+      },
+      {
+        "type": "keyword",
+        "value": "FROM"
+      },
+      {
+        "type": "table",
+        "value": "PetClinic"
+      },
+      {
+        "type": "column",
+        "value": "p1"
+      },
+      {
+        "type": "keyword",
+        "value": "JOIN"
+      },
+      {
+        "type": "table",
+        "value": "PetClinic"
+      },
+      {
+        "type": "column",
+        "value": "p2"
+      },
+      {
+        "type": "keyword",
+        "value": "ON"
+      },
+      {
+        "type": "column",
+        "value": "p1.weight_kg"
+      },
+      {
+        "type": "column",
+        "value": ">"
+      },
+      {
+        "type": "column",
+        "value": "p2.weight_kg"
+      },
+      {
+        "type": "column",
+        "value": "*"
+      },
+      {
+        "type": "column",
+        "value": "3"
+      },
+      {
+        "type": "keyword",
+        "value": "LIMIT"
+      },
+      {
+        "type": "column",
+        "value": "20;"
+      }
+    ]
+  },
+  {
+    "drillNumber": 751,
+    "subcluster": "8.6 Non-Equi Joins with BETWEEN (Tier & Bracket Mapping)",
+    "level": "Level 3 (Range Non-Equi Join)",
+    "title": "Syntax #751: Map student GPAs to academic honors tiers using a non-equi BETWEEN join",
+    "table": "Students",
+    "scenario": "Map student GPAs to academic honors tiers using a non-equi BETWEEN join.",
+    "businessObjective": "Map student GPAs to academic honors tiers using a non-equi BETWEEN join.",
+    "schemaSnippet": "Students relational schema",
+    "targetQuery": "SELECT s.full_name, s.gpa, g.grade_label\nFROM Students s\nJOIN GradeTiers g ON s.gpa BETWEEN g.min_gpa AND g.max_gpa;",
+    "syntaxBlueprint": "SELECT e.name, b.band_name\nFROM Employees e\nJOIN SalaryGrades b ON e.salary BETWEEN b.min_salary AND b.max_salary;",
+    "syntaxRule": "Join a factual entity to a lookup dimension using 'BETWEEN min_val AND max_val' to categorize continuous metrics into discrete tiers without hardcoded CASE statements.",
+    "syntaxTrap": "BETWEEN is inclusive. Ensure lookup table boundaries don't overlap (e.g. 0-50 and 50-100 will double-count 50).",
+    "eli5Story": "Relational Joins on Students: Map student GPAs to academic honors tiers using a non-equi BETWEEN join.",
+    "commonMistakes": "Omitting the ON clause, forgetting table alias qualification on ambiguous columns, or accidentally converting LEFT JOIN to INNER JOIN via WHERE filters.",
+    "learningOutcomes": "Mastered 8.6 Non-Equi Joins with BETWEEN (Tier & Bracket Mapping) on Students.",
+    "challengeSlots": [
+      {
+        "type": "keyword",
+        "value": "SELECT"
+      },
+      {
+        "type": "column",
+        "value": "s.full_name,"
+      },
+      {
+        "type": "column",
+        "value": "s.gpa,"
+      },
+      {
+        "type": "column",
+        "value": "g.grade_label"
+      },
+      {
+        "type": "keyword",
+        "value": "FROM"
+      },
+      {
+        "type": "table",
+        "value": "Students"
+      },
+      {
+        "type": "column",
+        "value": "s"
+      },
+      {
+        "type": "keyword",
+        "value": "JOIN"
+      },
+      {
+        "type": "column",
+        "value": "GradeTiers"
+      },
+      {
+        "type": "column",
+        "value": "g"
+      },
+      {
+        "type": "keyword",
+        "value": "ON"
+      },
+      {
+        "type": "column",
+        "value": "s.gpa"
+      },
+      {
+        "type": "keyword",
+        "value": "BETWEEN"
+      },
+      {
+        "type": "column",
+        "value": "g.min_gpa"
+      },
+      {
+        "type": "keyword",
+        "value": "AND"
+      },
+      {
+        "type": "column",
+        "value": "g.max_gpa;"
+      }
+    ]
+  },
+  {
+    "drillNumber": 752,
+    "subcluster": "8.6 Non-Equi Joins with BETWEEN (Tier & Bracket Mapping)",
+    "level": "Level 3 (Range Non-Equi Join)",
+    "title": "Syntax #752: Classify book prices into retail market brackets via BETWEEN join",
+    "table": "Books",
+    "scenario": "Classify book prices into retail market brackets via BETWEEN join.",
+    "businessObjective": "Classify book prices into retail market brackets via BETWEEN join.",
+    "schemaSnippet": "Books relational schema",
+    "targetQuery": "SELECT b.title, b.price, t.price_tier\nFROM Books b\nJOIN PriceBrackets t ON b.price BETWEEN t.min_price AND t.max_price;",
+    "syntaxBlueprint": "SELECT e.name, b.band_name\nFROM Employees e\nJOIN SalaryGrades b ON e.salary BETWEEN b.min_salary AND b.max_salary;",
+    "syntaxRule": "Join a factual entity to a lookup dimension using 'BETWEEN min_val AND max_val' to categorize continuous metrics into discrete tiers without hardcoded CASE statements.",
+    "syntaxTrap": "BETWEEN is inclusive. Ensure lookup table boundaries don't overlap (e.g. 0-50 and 50-100 will double-count 50).",
+    "eli5Story": "Relational Joins on Books: Classify book prices into retail market brackets via BETWEEN join.",
+    "commonMistakes": "Omitting the ON clause, forgetting table alias qualification on ambiguous columns, or accidentally converting LEFT JOIN to INNER JOIN via WHERE filters.",
+    "learningOutcomes": "Mastered 8.6 Non-Equi Joins with BETWEEN (Tier & Bracket Mapping) on Books.",
+    "challengeSlots": [
+      {
+        "type": "keyword",
+        "value": "SELECT"
+      },
+      {
+        "type": "column",
+        "value": "b.title,"
+      },
+      {
+        "type": "column",
+        "value": "b.price,"
+      },
+      {
+        "type": "column",
+        "value": "t.price_tier"
+      },
+      {
+        "type": "keyword",
+        "value": "FROM"
+      },
+      {
+        "type": "table",
+        "value": "Books"
+      },
+      {
+        "type": "column",
+        "value": "b"
+      },
+      {
+        "type": "keyword",
+        "value": "JOIN"
+      },
+      {
+        "type": "column",
+        "value": "PriceBrackets"
+      },
+      {
+        "type": "column",
+        "value": "t"
+      },
+      {
+        "type": "keyword",
+        "value": "ON"
+      },
+      {
+        "type": "column",
+        "value": "b.price"
+      },
+      {
+        "type": "keyword",
+        "value": "BETWEEN"
+      },
+      {
+        "type": "column",
+        "value": "t.min_price"
+      },
+      {
+        "type": "keyword",
+        "value": "AND"
+      },
+      {
+        "type": "column",
+        "value": "t.max_price;"
+      }
+    ]
+  },
+  {
+    "drillNumber": 753,
+    "subcluster": "8.6 Non-Equi Joins with BETWEEN (Tier & Bracket Mapping)",
+    "level": "Level 3 (Range Non-Equi Join)",
+    "title": "Syntax #753: Map employee salaries to corporate compensation grade levels using BETWEEN",
+    "table": "Employees",
+    "scenario": "Map employee salaries to corporate compensation grade levels using BETWEEN.",
+    "businessObjective": "Map employee salaries to corporate compensation grade levels using BETWEEN.",
+    "schemaSnippet": "Employees relational schema",
+    "targetQuery": "SELECT e.first_name, e.salary, g.grade_level\nFROM Employees e\nJOIN SalaryGrades g ON e.salary BETWEEN g.min_salary AND g.max_salary;",
+    "syntaxBlueprint": "SELECT e.name, b.band_name\nFROM Employees e\nJOIN SalaryGrades b ON e.salary BETWEEN b.min_salary AND b.max_salary;",
+    "syntaxRule": "Join a factual entity to a lookup dimension using 'BETWEEN min_val AND max_val' to categorize continuous metrics into discrete tiers without hardcoded CASE statements.",
+    "syntaxTrap": "BETWEEN is inclusive. Ensure lookup table boundaries don't overlap (e.g. 0-50 and 50-100 will double-count 50).",
+    "eli5Story": "Relational Joins on Employees: Map employee salaries to corporate compensation grade levels using BETWEEN.",
+    "commonMistakes": "Omitting the ON clause, forgetting table alias qualification on ambiguous columns, or accidentally converting LEFT JOIN to INNER JOIN via WHERE filters.",
+    "learningOutcomes": "Mastered 8.6 Non-Equi Joins with BETWEEN (Tier & Bracket Mapping) on Employees.",
+    "challengeSlots": [
+      {
+        "type": "keyword",
+        "value": "SELECT"
+      },
+      {
+        "type": "column",
+        "value": "e.first_name,"
+      },
+      {
+        "type": "column",
+        "value": "e.salary,"
+      },
+      {
+        "type": "column",
+        "value": "g.grade_level"
+      },
+      {
+        "type": "keyword",
+        "value": "FROM"
+      },
+      {
+        "type": "table",
+        "value": "Employees"
+      },
+      {
+        "type": "column",
+        "value": "e"
+      },
+      {
+        "type": "keyword",
+        "value": "JOIN"
+      },
+      {
+        "type": "table",
+        "value": "SalaryGrades"
+      },
+      {
+        "type": "column",
+        "value": "g"
+      },
+      {
+        "type": "keyword",
+        "value": "ON"
+      },
+      {
+        "type": "column",
+        "value": "e.salary"
+      },
+      {
+        "type": "keyword",
+        "value": "BETWEEN"
+      },
+      {
+        "type": "column",
+        "value": "g.min_salary"
+      },
+      {
+        "type": "keyword",
+        "value": "AND"
+      },
+      {
+        "type": "column",
+        "value": "g.max_salary;"
+      }
+    ]
+  },
+  {
+    "drillNumber": 754,
+    "subcluster": "8.6 Non-Equi Joins with BETWEEN (Tier & Bracket Mapping)",
+    "level": "Level 3 (Range Non-Equi Join)",
+    "title": "Syntax #754: Map inventory quantities to stock health tiers (Critical, Low, Healthy, Overstocked)",
+    "table": "GroceryItems",
+    "scenario": "Map inventory quantities to stock health tiers (Critical, Low, Healthy, Overstocked).",
+    "businessObjective": "Map inventory quantities to stock health tiers (Critical, Low, Healthy, Overstocked).",
+    "schemaSnippet": "GroceryItems relational schema",
+    "targetQuery": "SELECT g.item_name, g.stock_qty, t.status_tier\nFROM GroceryItems g\nJOIN InventoryTiers t ON g.stock_qty BETWEEN t.min_stock AND t.max_stock;",
+    "syntaxBlueprint": "SELECT e.name, b.band_name\nFROM Employees e\nJOIN SalaryGrades b ON e.salary BETWEEN b.min_salary AND b.max_salary;",
+    "syntaxRule": "Join a factual entity to a lookup dimension using 'BETWEEN min_val AND max_val' to categorize continuous metrics into discrete tiers without hardcoded CASE statements.",
+    "syntaxTrap": "BETWEEN is inclusive. Ensure lookup table boundaries don't overlap (e.g. 0-50 and 50-100 will double-count 50).",
+    "eli5Story": "Relational Joins on GroceryItems: Map inventory quantities to stock health tiers (Critical, Low, Healthy, Overstocked).",
+    "commonMistakes": "Omitting the ON clause, forgetting table alias qualification on ambiguous columns, or accidentally converting LEFT JOIN to INNER JOIN via WHERE filters.",
+    "learningOutcomes": "Mastered 8.6 Non-Equi Joins with BETWEEN (Tier & Bracket Mapping) on GroceryItems.",
+    "challengeSlots": [
+      {
+        "type": "keyword",
+        "value": "SELECT"
+      },
+      {
+        "type": "column",
+        "value": "g.item_name,"
+      },
+      {
+        "type": "column",
+        "value": "g.stock_qty,"
+      },
+      {
+        "type": "column",
+        "value": "t.status_tier"
+      },
+      {
+        "type": "keyword",
+        "value": "FROM"
+      },
+      {
+        "type": "table",
+        "value": "GroceryItems"
+      },
+      {
+        "type": "column",
+        "value": "g"
+      },
+      {
+        "type": "keyword",
+        "value": "JOIN"
+      },
+      {
+        "type": "column",
+        "value": "InventoryTiers"
+      },
+      {
+        "type": "column",
+        "value": "t"
+      },
+      {
+        "type": "keyword",
+        "value": "ON"
+      },
+      {
+        "type": "column",
+        "value": "g.stock_qty"
+      },
+      {
+        "type": "keyword",
+        "value": "BETWEEN"
+      },
+      {
+        "type": "column",
+        "value": "t.min_stock"
+      },
+      {
+        "type": "keyword",
+        "value": "AND"
+      },
+      {
+        "type": "column",
+        "value": "t.max_stock;"
+      }
+    ]
+  },
+  {
+    "drillNumber": 755,
+    "subcluster": "8.6 Non-Equi Joins with BETWEEN (Tier & Bracket Mapping)",
+    "level": "Level 3 (Range Non-Equi Join)",
+    "title": "Syntax #755: Assign customer order values to loyalty points reward tiers using BETWEEN",
+    "table": "Orders",
+    "scenario": "Assign customer order values to loyalty points reward tiers using BETWEEN.",
+    "businessObjective": "Assign customer order values to loyalty points reward tiers using BETWEEN.",
+    "schemaSnippet": "Orders relational schema",
+    "targetQuery": "SELECT o.order_id, o.total_amount, r.reward_tier\nFROM Orders o\nJOIN RewardBrackets r ON o.total_amount BETWEEN r.min_spend AND r.max_spend;",
+    "syntaxBlueprint": "SELECT e.name, b.band_name\nFROM Employees e\nJOIN SalaryGrades b ON e.salary BETWEEN b.min_salary AND b.max_salary;",
+    "syntaxRule": "Join a factual entity to a lookup dimension using 'BETWEEN min_val AND max_val' to categorize continuous metrics into discrete tiers without hardcoded CASE statements.",
+    "syntaxTrap": "BETWEEN is inclusive. Ensure lookup table boundaries don't overlap (e.g. 0-50 and 50-100 will double-count 50).",
+    "eli5Story": "Relational Joins on Orders: Assign customer order values to loyalty points reward tiers using BETWEEN.",
+    "commonMistakes": "Omitting the ON clause, forgetting table alias qualification on ambiguous columns, or accidentally converting LEFT JOIN to INNER JOIN via WHERE filters.",
+    "learningOutcomes": "Mastered 8.6 Non-Equi Joins with BETWEEN (Tier & Bracket Mapping) on Orders.",
+    "challengeSlots": [
+      {
+        "type": "keyword",
+        "value": "SELECT"
+      },
+      {
+        "type": "column",
+        "value": "o.order_id,"
+      },
+      {
+        "type": "column",
+        "value": "o.total_amount,"
+      },
+      {
+        "type": "column",
+        "value": "r.reward_tier"
+      },
+      {
+        "type": "keyword",
+        "value": "FROM"
+      },
+      {
+        "type": "table",
+        "value": "Orders"
+      },
+      {
+        "type": "column",
+        "value": "o"
+      },
+      {
+        "type": "keyword",
+        "value": "JOIN"
+      },
+      {
+        "type": "column",
+        "value": "RewardBrackets"
+      },
+      {
+        "type": "column",
+        "value": "r"
+      },
+      {
+        "type": "keyword",
+        "value": "ON"
+      },
+      {
+        "type": "column",
+        "value": "o.total_amount"
+      },
+      {
+        "type": "keyword",
+        "value": "BETWEEN"
+      },
+      {
+        "type": "column",
+        "value": "r.min_spend"
+      },
+      {
+        "type": "keyword",
+        "value": "AND"
+      },
+      {
+        "type": "column",
+        "value": "r.max_spend;"
+      }
+    ]
+  },
+  {
+    "drillNumber": 756,
+    "subcluster": "8.6 Non-Equi Joins with BETWEEN (Tier & Bracket Mapping)",
+    "level": "Level 3 (Range Non-Equi Join)",
+    "title": "Syntax #756: Categorize music track duration into radio programming categories (Short, Standard, Epic)",
+    "table": "MusicTracks",
+    "scenario": "Categorize music track duration into radio programming categories (Short, Standard, Epic).",
+    "businessObjective": "Categorize music track duration into radio programming categories (Short, Standard, Epic).",
+    "schemaSnippet": "MusicTracks relational schema",
+    "targetQuery": "SELECT t.track_title, t.duration_seconds, b.length_bracket\nFROM MusicTracks t\nJOIN TrackBrackets b ON t.duration_seconds BETWEEN b.min_sec AND b.max_sec;",
+    "syntaxBlueprint": "SELECT e.name, b.band_name\nFROM Employees e\nJOIN SalaryGrades b ON e.salary BETWEEN b.min_salary AND b.max_salary;",
+    "syntaxRule": "Join a factual entity to a lookup dimension using 'BETWEEN min_val AND max_val' to categorize continuous metrics into discrete tiers without hardcoded CASE statements.",
+    "syntaxTrap": "BETWEEN is inclusive. Ensure lookup table boundaries don't overlap (e.g. 0-50 and 50-100 will double-count 50).",
+    "eli5Story": "Relational Joins on MusicTracks: Categorize music track duration into radio programming categories (Short, Standard, Epic).",
+    "commonMistakes": "Omitting the ON clause, forgetting table alias qualification on ambiguous columns, or accidentally converting LEFT JOIN to INNER JOIN via WHERE filters.",
+    "learningOutcomes": "Mastered 8.6 Non-Equi Joins with BETWEEN (Tier & Bracket Mapping) on MusicTracks.",
+    "challengeSlots": [
+      {
+        "type": "keyword",
+        "value": "SELECT"
+      },
+      {
+        "type": "column",
+        "value": "t.track_title,"
+      },
+      {
+        "type": "column",
+        "value": "t.duration_seconds,"
+      },
+      {
+        "type": "column",
+        "value": "b.length_bracket"
+      },
+      {
+        "type": "keyword",
+        "value": "FROM"
+      },
+      {
+        "type": "table",
+        "value": "MusicTracks"
+      },
+      {
+        "type": "column",
+        "value": "t"
+      },
+      {
+        "type": "keyword",
+        "value": "JOIN"
+      },
+      {
+        "type": "column",
+        "value": "TrackBrackets"
+      },
+      {
+        "type": "column",
+        "value": "b"
+      },
+      {
+        "type": "keyword",
+        "value": "ON"
+      },
+      {
+        "type": "column",
+        "value": "t.duration_seconds"
+      },
+      {
+        "type": "keyword",
+        "value": "BETWEEN"
+      },
+      {
+        "type": "column",
+        "value": "b.min_sec"
+      },
+      {
+        "type": "keyword",
+        "value": "AND"
+      },
+      {
+        "type": "column",
+        "value": "b.max_sec;"
+      }
+    ]
+  },
+  {
+    "drillNumber": 757,
+    "subcluster": "8.6 Non-Equi Joins with BETWEEN (Tier & Bracket Mapping)",
+    "level": "Level 3 (Range Non-Equi Join)",
+    "title": "Syntax #757: Map member workout frequency to gym loyalty tiers via BETWEEN",
+    "table": "GymMembers",
+    "scenario": "Map member workout frequency to gym loyalty tiers via BETWEEN.",
+    "businessObjective": "Map member workout frequency to gym loyalty tiers via BETWEEN.",
+    "schemaSnippet": "GymMembers relational schema",
+    "targetQuery": "SELECT m.member_name, m.attendance_days, b.loyalty_tier\nFROM GymMembers m\nJOIN LoyaltyBrackets b ON m.attendance_days BETWEEN b.min_days AND b.max_days;",
+    "syntaxBlueprint": "SELECT e.name, b.band_name\nFROM Employees e\nJOIN SalaryGrades b ON e.salary BETWEEN b.min_salary AND b.max_salary;",
+    "syntaxRule": "Join a factual entity to a lookup dimension using 'BETWEEN min_val AND max_val' to categorize continuous metrics into discrete tiers without hardcoded CASE statements.",
+    "syntaxTrap": "BETWEEN is inclusive. Ensure lookup table boundaries don't overlap (e.g. 0-50 and 50-100 will double-count 50).",
+    "eli5Story": "Relational Joins on GymMembers: Map member workout frequency to gym loyalty tiers via BETWEEN.",
+    "commonMistakes": "Omitting the ON clause, forgetting table alias qualification on ambiguous columns, or accidentally converting LEFT JOIN to INNER JOIN via WHERE filters.",
+    "learningOutcomes": "Mastered 8.6 Non-Equi Joins with BETWEEN (Tier & Bracket Mapping) on GymMembers.",
+    "challengeSlots": [
+      {
+        "type": "keyword",
+        "value": "SELECT"
+      },
+      {
+        "type": "column",
+        "value": "m.member_name,"
+      },
+      {
+        "type": "column",
+        "value": "m.attendance_days,"
+      },
+      {
+        "type": "column",
+        "value": "b.loyalty_tier"
+      },
+      {
+        "type": "keyword",
+        "value": "FROM"
+      },
+      {
+        "type": "table",
+        "value": "GymMembers"
+      },
+      {
+        "type": "column",
+        "value": "m"
+      },
+      {
+        "type": "keyword",
+        "value": "JOIN"
+      },
+      {
+        "type": "column",
+        "value": "LoyaltyBrackets"
+      },
+      {
+        "type": "column",
+        "value": "b"
+      },
+      {
+        "type": "keyword",
+        "value": "ON"
+      },
+      {
+        "type": "column",
+        "value": "m.attendance_days"
+      },
+      {
+        "type": "keyword",
+        "value": "BETWEEN"
+      },
+      {
+        "type": "column",
+        "value": "b.min_days"
+      },
+      {
+        "type": "keyword",
+        "value": "AND"
+      },
+      {
+        "type": "column",
+        "value": "b.max_days;"
+      }
+    ]
+  },
+  {
+    "drillNumber": 758,
+    "subcluster": "8.6 Non-Equi Joins with BETWEEN (Tier & Bracket Mapping)",
+    "level": "Level 3 (Range Non-Equi Join)",
+    "title": "Syntax #758: Map film box office totals to commercial performance tiers",
+    "table": "MovieReviews",
+    "scenario": "Map film box office totals to commercial performance tiers.",
+    "businessObjective": "Map film box office totals to commercial performance tiers.",
+    "schemaSnippet": "MovieReviews relational schema",
+    "targetQuery": "SELECT m.movie_title, m.box_office, b.revenue_tier\nFROM Movies m\nJOIN BoxOfficeTiers b ON m.box_office BETWEEN b.min_gross AND b.max_gross;",
+    "syntaxBlueprint": "SELECT e.name, b.band_name\nFROM Employees e\nJOIN SalaryGrades b ON e.salary BETWEEN b.min_salary AND b.max_salary;",
+    "syntaxRule": "Join a factual entity to a lookup dimension using 'BETWEEN min_val AND max_val' to categorize continuous metrics into discrete tiers without hardcoded CASE statements.",
+    "syntaxTrap": "BETWEEN is inclusive. Ensure lookup table boundaries don't overlap (e.g. 0-50 and 50-100 will double-count 50).",
+    "eli5Story": "Relational Joins on MovieReviews: Map film box office totals to commercial performance tiers.",
+    "commonMistakes": "Omitting the ON clause, forgetting table alias qualification on ambiguous columns, or accidentally converting LEFT JOIN to INNER JOIN via WHERE filters.",
+    "learningOutcomes": "Mastered 8.6 Non-Equi Joins with BETWEEN (Tier & Bracket Mapping) on MovieReviews.",
+    "challengeSlots": [
+      {
+        "type": "keyword",
+        "value": "SELECT"
+      },
+      {
+        "type": "column",
+        "value": "m.movie_title,"
+      },
+      {
+        "type": "column",
+        "value": "m.box_office,"
+      },
+      {
+        "type": "column",
+        "value": "b.revenue_tier"
+      },
+      {
+        "type": "keyword",
+        "value": "FROM"
+      },
+      {
+        "type": "table",
+        "value": "Movies"
+      },
+      {
+        "type": "column",
+        "value": "m"
+      },
+      {
+        "type": "keyword",
+        "value": "JOIN"
+      },
+      {
+        "type": "column",
+        "value": "BoxOfficeTiers"
+      },
+      {
+        "type": "column",
+        "value": "b"
+      },
+      {
+        "type": "keyword",
+        "value": "ON"
+      },
+      {
+        "type": "column",
+        "value": "m.box_office"
+      },
+      {
+        "type": "keyword",
+        "value": "BETWEEN"
+      },
+      {
+        "type": "column",
+        "value": "b.min_gross"
+      },
+      {
+        "type": "keyword",
+        "value": "AND"
+      },
+      {
+        "type": "column",
+        "value": "b.max_gross;"
+      }
+    ]
+  },
+  {
+    "drillNumber": 759,
+    "subcluster": "8.6 Non-Equi Joins with BETWEEN (Tier & Bracket Mapping)",
+    "level": "Level 3 (Range Non-Equi Join)",
+    "title": "Syntax #759: Classify flight distances into aviation tiers (Short-haul, Medium-haul, Long-haul)",
+    "table": "FlightSchedule",
+    "scenario": "Classify flight distances into aviation tiers (Short-haul, Medium-haul, Long-haul).",
+    "businessObjective": "Classify flight distances into aviation tiers (Short-haul, Medium-haul, Long-haul).",
+    "schemaSnippet": "FlightSchedule relational schema",
+    "targetQuery": "SELECT f.flight_id, f.distance_miles, d.haul_type\nFROM FlightSchedule f\nJOIN DistanceTiers d ON f.distance_miles BETWEEN d.min_miles AND d.max_miles;",
+    "syntaxBlueprint": "SELECT e.name, b.band_name\nFROM Employees e\nJOIN SalaryGrades b ON e.salary BETWEEN b.min_salary AND b.max_salary;",
+    "syntaxRule": "Join a factual entity to a lookup dimension using 'BETWEEN min_val AND max_val' to categorize continuous metrics into discrete tiers without hardcoded CASE statements.",
+    "syntaxTrap": "BETWEEN is inclusive. Ensure lookup table boundaries don't overlap (e.g. 0-50 and 50-100 will double-count 50).",
+    "eli5Story": "Relational Joins on FlightSchedule: Classify flight distances into aviation tiers (Short-haul, Medium-haul, Long-haul).",
+    "commonMistakes": "Omitting the ON clause, forgetting table alias qualification on ambiguous columns, or accidentally converting LEFT JOIN to INNER JOIN via WHERE filters.",
+    "learningOutcomes": "Mastered 8.6 Non-Equi Joins with BETWEEN (Tier & Bracket Mapping) on FlightSchedule.",
+    "challengeSlots": [
+      {
+        "type": "keyword",
+        "value": "SELECT"
+      },
+      {
+        "type": "column",
+        "value": "f.flight_id,"
+      },
+      {
+        "type": "column",
+        "value": "f.distance_miles,"
+      },
+      {
+        "type": "column",
+        "value": "d.haul_type"
+      },
+      {
+        "type": "keyword",
+        "value": "FROM"
+      },
+      {
+        "type": "table",
+        "value": "FlightSchedule"
+      },
+      {
+        "type": "column",
+        "value": "f"
+      },
+      {
+        "type": "keyword",
+        "value": "JOIN"
+      },
+      {
+        "type": "column",
+        "value": "DistanceTiers"
+      },
+      {
+        "type": "column",
+        "value": "d"
+      },
+      {
+        "type": "keyword",
+        "value": "ON"
+      },
+      {
+        "type": "column",
+        "value": "f.distance_miles"
+      },
+      {
+        "type": "keyword",
+        "value": "BETWEEN"
+      },
+      {
+        "type": "column",
+        "value": "d.min_miles"
+      },
+      {
+        "type": "keyword",
+        "value": "AND"
+      },
+      {
+        "type": "column",
+        "value": "d.max_miles;"
+      }
+    ]
+  },
+  {
+    "drillNumber": 760,
+    "subcluster": "8.6 Non-Equi Joins with BETWEEN (Tier & Bracket Mapping)",
+    "level": "Level 3 (Range Non-Equi Join)",
+    "title": "Syntax #760: Classify veterinary patient weights into medical dosage size categories",
+    "table": "PetClinic",
+    "scenario": "Classify veterinary patient weights into medical dosage size categories.",
+    "businessObjective": "Classify veterinary patient weights into medical dosage size categories.",
+    "schemaSnippet": "PetClinic relational schema",
+    "targetQuery": "SELECT p.pet_name, p.weight_kg, b.size_category\nFROM PetClinic p\nJOIN SizeBrackets b ON p.weight_kg BETWEEN b.min_kg AND b.max_kg;",
+    "syntaxBlueprint": "SELECT e.name, b.band_name\nFROM Employees e\nJOIN SalaryGrades b ON e.salary BETWEEN b.min_salary AND b.max_salary;",
+    "syntaxRule": "Join a factual entity to a lookup dimension using 'BETWEEN min_val AND max_val' to categorize continuous metrics into discrete tiers without hardcoded CASE statements.",
+    "syntaxTrap": "BETWEEN is inclusive. Ensure lookup table boundaries don't overlap (e.g. 0-50 and 50-100 will double-count 50).",
+    "eli5Story": "Relational Joins on PetClinic: Classify veterinary patient weights into medical dosage size categories.",
+    "commonMistakes": "Omitting the ON clause, forgetting table alias qualification on ambiguous columns, or accidentally converting LEFT JOIN to INNER JOIN via WHERE filters.",
+    "learningOutcomes": "Mastered 8.6 Non-Equi Joins with BETWEEN (Tier & Bracket Mapping) on PetClinic.",
+    "challengeSlots": [
+      {
+        "type": "keyword",
+        "value": "SELECT"
+      },
+      {
+        "type": "column",
+        "value": "p.pet_name,"
+      },
+      {
+        "type": "column",
+        "value": "p.weight_kg,"
+      },
+      {
+        "type": "column",
+        "value": "b.size_category"
+      },
+      {
+        "type": "keyword",
+        "value": "FROM"
+      },
+      {
+        "type": "table",
+        "value": "PetClinic"
+      },
+      {
+        "type": "column",
+        "value": "p"
+      },
+      {
+        "type": "keyword",
+        "value": "JOIN"
+      },
+      {
+        "type": "column",
+        "value": "SizeBrackets"
+      },
+      {
+        "type": "column",
+        "value": "b"
+      },
+      {
+        "type": "keyword",
+        "value": "ON"
+      },
+      {
+        "type": "column",
+        "value": "p.weight_kg"
+      },
+      {
+        "type": "keyword",
+        "value": "BETWEEN"
+      },
+      {
+        "type": "column",
+        "value": "b.min_kg"
+      },
+      {
+        "type": "keyword",
+        "value": "AND"
+      },
+      {
+        "type": "column",
+        "value": "b.max_kg;"
+      }
+    ]
+  },
+  {
+    "drillNumber": 761,
+    "subcluster": "8.7 Compound Multi-Column Join Keys (ON a.k1 = b.k1 AND a.k2 = b.k2)",
+    "level": "Level 3 (Compound Join Keys)",
+    "title": "Syntax #761: Join students and enrollments matching both student_id AND academic_year",
+    "table": "Students",
+    "scenario": "Join students and enrollments matching both student_id AND academic_year.",
+    "businessObjective": "Join students and enrollments matching both student_id AND academic_year.",
+    "schemaSnippet": "Students relational schema",
+    "targetQuery": "SELECT s.full_name, e.grade\nFROM Students s\nJOIN Enrolments e ON s.student_id = e.student_id AND s.enrolled_year = e.academic_year;",
+    "syntaxBlueprint": "SELECT a.col, b.col\nFROM TableA a\nJOIN TableB b ON a.key1 = b.key1 AND a.key2 = b.key2;",
+    "syntaxRule": "When tables use composite primary or foreign keys, combine multiple key equality checks inside the ON clause using AND.",
+    "syntaxTrap": "Omitting one part of a composite key causes a partial Cartesian product, multiplying matching rows.",
+    "eli5Story": "Relational Joins on Students: Join students and enrollments matching both student_id AND academic_year.",
+    "commonMistakes": "Omitting the ON clause, forgetting table alias qualification on ambiguous columns, or accidentally converting LEFT JOIN to INNER JOIN via WHERE filters.",
+    "learningOutcomes": "Mastered 8.7 Compound Multi-Column Join Keys (ON a.k1 = b.k1 AND a.k2 = b.k2) on Students.",
+    "challengeSlots": [
+      {
+        "type": "keyword",
+        "value": "SELECT"
+      },
+      {
+        "type": "column",
+        "value": "s.full_name,"
+      },
+      {
+        "type": "column",
+        "value": "e.grade"
+      },
+      {
+        "type": "keyword",
+        "value": "FROM"
+      },
+      {
+        "type": "table",
+        "value": "Students"
+      },
+      {
+        "type": "column",
+        "value": "s"
+      },
+      {
+        "type": "keyword",
+        "value": "JOIN"
+      },
+      {
+        "type": "column",
+        "value": "Enrolments"
+      },
+      {
+        "type": "column",
+        "value": "e"
+      },
+      {
+        "type": "keyword",
+        "value": "ON"
+      },
+      {
+        "type": "column",
+        "value": "s.student_id"
+      },
+      {
+        "type": "column",
+        "value": "="
+      },
+      {
+        "type": "column",
+        "value": "e.student_id"
+      },
+      {
+        "type": "keyword",
+        "value": "AND"
+      },
+      {
+        "type": "column",
+        "value": "s.enrolled_year"
+      },
+      {
+        "type": "column",
+        "value": "="
+      },
+      {
+        "type": "column",
+        "value": "e.academic_year;"
+      }
+    ]
+  },
+  {
+    "drillNumber": 762,
+    "subcluster": "8.7 Compound Multi-Column Join Keys (ON a.k1 = b.k1 AND a.k2 = b.k2)",
+    "level": "Level 3 (Compound Join Keys)",
+    "title": "Syntax #762: Join books to library inventory matching both ISBN and edition number",
+    "table": "Books",
+    "scenario": "Join books to library inventory matching both ISBN and edition number.",
+    "businessObjective": "Join books to library inventory matching both ISBN and edition number.",
+    "schemaSnippet": "Books relational schema",
+    "targetQuery": "SELECT b.title, inv.shelf_location\nFROM Books b\nJOIN Inventory inv ON b.isbn = inv.isbn AND b.edition = inv.edition;",
+    "syntaxBlueprint": "SELECT a.col, b.col\nFROM TableA a\nJOIN TableB b ON a.key1 = b.key1 AND a.key2 = b.key2;",
+    "syntaxRule": "When tables use composite primary or foreign keys, combine multiple key equality checks inside the ON clause using AND.",
+    "syntaxTrap": "Omitting one part of a composite key causes a partial Cartesian product, multiplying matching rows.",
+    "eli5Story": "Relational Joins on Books: Join books to library inventory matching both ISBN and edition number.",
+    "commonMistakes": "Omitting the ON clause, forgetting table alias qualification on ambiguous columns, or accidentally converting LEFT JOIN to INNER JOIN via WHERE filters.",
+    "learningOutcomes": "Mastered 8.7 Compound Multi-Column Join Keys (ON a.k1 = b.k1 AND a.k2 = b.k2) on Books.",
+    "challengeSlots": [
+      {
+        "type": "keyword",
+        "value": "SELECT"
+      },
+      {
+        "type": "column",
+        "value": "b.title,"
+      },
+      {
+        "type": "column",
+        "value": "inv.shelf_location"
+      },
+      {
+        "type": "keyword",
+        "value": "FROM"
+      },
+      {
+        "type": "table",
+        "value": "Books"
+      },
+      {
+        "type": "column",
+        "value": "b"
+      },
+      {
+        "type": "keyword",
+        "value": "JOIN"
+      },
+      {
+        "type": "column",
+        "value": "Inventory"
+      },
+      {
+        "type": "column",
+        "value": "inv"
+      },
+      {
+        "type": "keyword",
+        "value": "ON"
+      },
+      {
+        "type": "column",
+        "value": "b.isbn"
+      },
+      {
+        "type": "column",
+        "value": "="
+      },
+      {
+        "type": "column",
+        "value": "inv.isbn"
+      },
+      {
+        "type": "keyword",
+        "value": "AND"
+      },
+      {
+        "type": "column",
+        "value": "b.edition"
+      },
+      {
+        "type": "column",
+        "value": "="
+      },
+      {
+        "type": "column",
+        "value": "inv.edition;"
+      }
+    ]
+  },
+  {
+    "drillNumber": 763,
+    "subcluster": "8.7 Compound Multi-Column Join Keys (ON a.k1 = b.k1 AND a.k2 = b.k2)",
+    "level": "Level 3 (Compound Join Keys)",
+    "title": "Syntax #763: Match employee project assignments on both employee_id AND department_id",
+    "table": "Employees",
+    "scenario": "Match employee project assignments on both employee_id AND department_id.",
+    "businessObjective": "Match employee project assignments on both employee_id AND department_id.",
+    "schemaSnippet": "Employees relational schema",
+    "targetQuery": "SELECT e.first_name, p.project_name\nFROM Employees e\nJOIN Assignments p ON e.employee_id = p.employee_id AND e.department_id = p.dept_id;",
+    "syntaxBlueprint": "SELECT a.col, b.col\nFROM TableA a\nJOIN TableB b ON a.key1 = b.key1 AND a.key2 = b.key2;",
+    "syntaxRule": "When tables use composite primary or foreign keys, combine multiple key equality checks inside the ON clause using AND.",
+    "syntaxTrap": "Omitting one part of a composite key causes a partial Cartesian product, multiplying matching rows.",
+    "eli5Story": "Relational Joins on Employees: Match employee project assignments on both employee_id AND department_id.",
+    "commonMistakes": "Omitting the ON clause, forgetting table alias qualification on ambiguous columns, or accidentally converting LEFT JOIN to INNER JOIN via WHERE filters.",
+    "learningOutcomes": "Mastered 8.7 Compound Multi-Column Join Keys (ON a.k1 = b.k1 AND a.k2 = b.k2) on Employees.",
+    "challengeSlots": [
+      {
+        "type": "keyword",
+        "value": "SELECT"
+      },
+      {
+        "type": "column",
+        "value": "e.first_name,"
+      },
+      {
+        "type": "column",
+        "value": "p.project_name"
+      },
+      {
+        "type": "keyword",
+        "value": "FROM"
+      },
+      {
+        "type": "table",
+        "value": "Employees"
+      },
+      {
+        "type": "column",
+        "value": "e"
+      },
+      {
+        "type": "keyword",
+        "value": "JOIN"
+      },
+      {
+        "type": "column",
+        "value": "Assignments"
+      },
+      {
+        "type": "column",
+        "value": "p"
+      },
+      {
+        "type": "keyword",
+        "value": "ON"
+      },
+      {
+        "type": "column",
+        "value": "e.employee_id"
+      },
+      {
+        "type": "column",
+        "value": "="
+      },
+      {
+        "type": "column",
+        "value": "p.employee_id"
+      },
+      {
+        "type": "keyword",
+        "value": "AND"
+      },
+      {
+        "type": "column",
+        "value": "e.department_id"
+      },
+      {
+        "type": "column",
+        "value": "="
+      },
+      {
+        "type": "column",
+        "value": "p.dept_id;"
+      }
+    ]
+  },
+  {
+    "drillNumber": 764,
+    "subcluster": "8.7 Compound Multi-Column Join Keys (ON a.k1 = b.k1 AND a.k2 = b.k2)",
+    "level": "Level 3 (Compound Join Keys)",
+    "title": "Syntax #764: Match grocery products to vendor catalogs using compound SKU and supplier_id keys",
+    "table": "GroceryItems",
+    "scenario": "Match grocery products to vendor catalogs using compound SKU and supplier_id keys.",
+    "businessObjective": "Match grocery products to vendor catalogs using compound SKU and supplier_id keys.",
+    "schemaSnippet": "GroceryItems relational schema",
+    "targetQuery": "SELECT g.item_name, s.lead_time_days\nFROM GroceryItems g\nJOIN VendorCatalog s ON g.sku = s.sku AND g.supplier_id = s.supplier_id;",
+    "syntaxBlueprint": "SELECT a.col, b.col\nFROM TableA a\nJOIN TableB b ON a.key1 = b.key1 AND a.key2 = b.key2;",
+    "syntaxRule": "When tables use composite primary or foreign keys, combine multiple key equality checks inside the ON clause using AND.",
+    "syntaxTrap": "Omitting one part of a composite key causes a partial Cartesian product, multiplying matching rows.",
+    "eli5Story": "Relational Joins on GroceryItems: Match grocery products to vendor catalogs using compound SKU and supplier_id keys.",
+    "commonMistakes": "Omitting the ON clause, forgetting table alias qualification on ambiguous columns, or accidentally converting LEFT JOIN to INNER JOIN via WHERE filters.",
+    "learningOutcomes": "Mastered 8.7 Compound Multi-Column Join Keys (ON a.k1 = b.k1 AND a.k2 = b.k2) on GroceryItems.",
+    "challengeSlots": [
+      {
+        "type": "keyword",
+        "value": "SELECT"
+      },
+      {
+        "type": "column",
+        "value": "g.item_name,"
+      },
+      {
+        "type": "column",
+        "value": "s.lead_time_days"
+      },
+      {
+        "type": "keyword",
+        "value": "FROM"
+      },
+      {
+        "type": "table",
+        "value": "GroceryItems"
+      },
+      {
+        "type": "column",
+        "value": "g"
+      },
+      {
+        "type": "keyword",
+        "value": "JOIN"
+      },
+      {
+        "type": "column",
+        "value": "VendorCatalog"
+      },
+      {
+        "type": "column",
+        "value": "s"
+      },
+      {
+        "type": "keyword",
+        "value": "ON"
+      },
+      {
+        "type": "column",
+        "value": "g.sku"
+      },
+      {
+        "type": "column",
+        "value": "="
+      },
+      {
+        "type": "column",
+        "value": "s.sku"
+      },
+      {
+        "type": "keyword",
+        "value": "AND"
+      },
+      {
+        "type": "column",
+        "value": "g.supplier_id"
+      },
+      {
+        "type": "column",
+        "value": "="
+      },
+      {
+        "type": "column",
+        "value": "s.supplier_id;"
+      }
+    ]
+  },
+  {
+    "drillNumber": 765,
+    "subcluster": "8.7 Compound Multi-Column Join Keys (ON a.k1 = b.k1 AND a.k2 = b.k2)",
+    "level": "Level 3 (Compound Join Keys)",
+    "title": "Syntax #765: Join orders to line items matching on both order_id AND store_id",
+    "table": "Orders",
+    "scenario": "Join orders to line items matching on both order_id AND store_id.",
+    "businessObjective": "Join orders to line items matching on both order_id AND store_id.",
+    "schemaSnippet": "Orders relational schema",
+    "targetQuery": "SELECT o.order_id, oi.item_name, oi.unit_price\nFROM Orders o\nJOIN OrderItems oi ON o.order_id = oi.order_id AND o.store_id = oi.store_id;",
+    "syntaxBlueprint": "SELECT a.col, b.col\nFROM TableA a\nJOIN TableB b ON a.key1 = b.key1 AND a.key2 = b.key2;",
+    "syntaxRule": "When tables use composite primary or foreign keys, combine multiple key equality checks inside the ON clause using AND.",
+    "syntaxTrap": "Omitting one part of a composite key causes a partial Cartesian product, multiplying matching rows.",
+    "eli5Story": "Relational Joins on Orders: Join orders to line items matching on both order_id AND store_id.",
+    "commonMistakes": "Omitting the ON clause, forgetting table alias qualification on ambiguous columns, or accidentally converting LEFT JOIN to INNER JOIN via WHERE filters.",
+    "learningOutcomes": "Mastered 8.7 Compound Multi-Column Join Keys (ON a.k1 = b.k1 AND a.k2 = b.k2) on Orders.",
+    "challengeSlots": [
+      {
+        "type": "keyword",
+        "value": "SELECT"
+      },
+      {
+        "type": "column",
+        "value": "o.order_id,"
+      },
+      {
+        "type": "column",
+        "value": "oi.item_name,"
+      },
+      {
+        "type": "column",
+        "value": "oi.unit_price"
+      },
+      {
+        "type": "keyword",
+        "value": "FROM"
+      },
+      {
+        "type": "table",
+        "value": "Orders"
+      },
+      {
+        "type": "column",
+        "value": "o"
+      },
+      {
+        "type": "keyword",
+        "value": "JOIN"
+      },
+      {
+        "type": "table",
+        "value": "OrderItems"
+      },
+      {
+        "type": "column",
+        "value": "oi"
+      },
+      {
+        "type": "keyword",
+        "value": "ON"
+      },
+      {
+        "type": "column",
+        "value": "o.order_id"
+      },
+      {
+        "type": "column",
+        "value": "="
+      },
+      {
+        "type": "column",
+        "value": "oi.order_id"
+      },
+      {
+        "type": "keyword",
+        "value": "AND"
+      },
+      {
+        "type": "column",
+        "value": "o.store_id"
+      },
+      {
+        "type": "column",
+        "value": "="
+      },
+      {
+        "type": "column",
+        "value": "oi.store_id;"
+      }
+    ]
+  },
+  {
+    "drillNumber": 766,
+    "subcluster": "8.7 Compound Multi-Column Join Keys (ON a.k1 = b.k1 AND a.k2 = b.k2)",
+    "level": "Level 3 (Compound Join Keys)",
+    "title": "Syntax #766: Match track releases matching both ISRC code AND album_id",
+    "table": "MusicTracks",
+    "scenario": "Match track releases matching both ISRC code AND album_id.",
+    "businessObjective": "Match track releases matching both ISRC code AND album_id.",
+    "schemaSnippet": "MusicTracks relational schema",
+    "targetQuery": "SELECT t.track_title, rel.release_territory\nFROM MusicTracks t\nJOIN TrackReleases rel ON t.isrc_code = rel.isrc_code AND t.album_id = rel.album_id;",
+    "syntaxBlueprint": "SELECT a.col, b.col\nFROM TableA a\nJOIN TableB b ON a.key1 = b.key1 AND a.key2 = b.key2;",
+    "syntaxRule": "When tables use composite primary or foreign keys, combine multiple key equality checks inside the ON clause using AND.",
+    "syntaxTrap": "Omitting one part of a composite key causes a partial Cartesian product, multiplying matching rows.",
+    "eli5Story": "Relational Joins on MusicTracks: Match track releases matching both ISRC code AND album_id.",
+    "commonMistakes": "Omitting the ON clause, forgetting table alias qualification on ambiguous columns, or accidentally converting LEFT JOIN to INNER JOIN via WHERE filters.",
+    "learningOutcomes": "Mastered 8.7 Compound Multi-Column Join Keys (ON a.k1 = b.k1 AND a.k2 = b.k2) on MusicTracks.",
+    "challengeSlots": [
+      {
+        "type": "keyword",
+        "value": "SELECT"
+      },
+      {
+        "type": "column",
+        "value": "t.track_title,"
+      },
+      {
+        "type": "column",
+        "value": "rel.release_territory"
+      },
+      {
+        "type": "keyword",
+        "value": "FROM"
+      },
+      {
+        "type": "table",
+        "value": "MusicTracks"
+      },
+      {
+        "type": "column",
+        "value": "t"
+      },
+      {
+        "type": "keyword",
+        "value": "JOIN"
+      },
+      {
+        "type": "column",
+        "value": "TrackReleases"
+      },
+      {
+        "type": "column",
+        "value": "rel"
+      },
+      {
+        "type": "keyword",
+        "value": "ON"
+      },
+      {
+        "type": "column",
+        "value": "t.isrc_code"
+      },
+      {
+        "type": "column",
+        "value": "="
+      },
+      {
+        "type": "column",
+        "value": "rel.isrc_code"
+      },
+      {
+        "type": "keyword",
+        "value": "AND"
+      },
+      {
+        "type": "column",
+        "value": "t.album_id"
+      },
+      {
+        "type": "column",
+        "value": "="
+      },
+      {
+        "type": "column",
+        "value": "rel.album_id;"
+      }
+    ]
+  },
+  {
+    "drillNumber": 767,
+    "subcluster": "8.7 Compound Multi-Column Join Keys (ON a.k1 = b.k1 AND a.k2 = b.k2)",
+    "level": "Level 3 (Compound Join Keys)",
+    "title": "Syntax #767: Match gym class bookings verifying both member_id AND branch_id",
+    "table": "GymMembers",
+    "scenario": "Match gym class bookings verifying both member_id AND branch_id.",
+    "businessObjective": "Match gym class bookings verifying both member_id AND branch_id.",
+    "schemaSnippet": "GymMembers relational schema",
+    "targetQuery": "SELECT m.member_name, b.booking_time\nFROM GymMembers m\nJOIN ClassBookings b ON m.member_id = b.member_id AND m.branch_id = b.branch_id;",
+    "syntaxBlueprint": "SELECT a.col, b.col\nFROM TableA a\nJOIN TableB b ON a.key1 = b.key1 AND a.key2 = b.key2;",
+    "syntaxRule": "When tables use composite primary or foreign keys, combine multiple key equality checks inside the ON clause using AND.",
+    "syntaxTrap": "Omitting one part of a composite key causes a partial Cartesian product, multiplying matching rows.",
+    "eli5Story": "Relational Joins on GymMembers: Match gym class bookings verifying both member_id AND branch_id.",
+    "commonMistakes": "Omitting the ON clause, forgetting table alias qualification on ambiguous columns, or accidentally converting LEFT JOIN to INNER JOIN via WHERE filters.",
+    "learningOutcomes": "Mastered 8.7 Compound Multi-Column Join Keys (ON a.k1 = b.k1 AND a.k2 = b.k2) on GymMembers.",
+    "challengeSlots": [
+      {
+        "type": "keyword",
+        "value": "SELECT"
+      },
+      {
+        "type": "column",
+        "value": "m.member_name,"
+      },
+      {
+        "type": "column",
+        "value": "b.booking_time"
+      },
+      {
+        "type": "keyword",
+        "value": "FROM"
+      },
+      {
+        "type": "table",
+        "value": "GymMembers"
+      },
+      {
+        "type": "column",
+        "value": "m"
+      },
+      {
+        "type": "keyword",
+        "value": "JOIN"
+      },
+      {
+        "type": "column",
+        "value": "ClassBookings"
+      },
+      {
+        "type": "column",
+        "value": "b"
+      },
+      {
+        "type": "keyword",
+        "value": "ON"
+      },
+      {
+        "type": "column",
+        "value": "m.member_id"
+      },
+      {
+        "type": "column",
+        "value": "="
+      },
+      {
+        "type": "column",
+        "value": "b.member_id"
+      },
+      {
+        "type": "keyword",
+        "value": "AND"
+      },
+      {
+        "type": "column",
+        "value": "m.branch_id"
+      },
+      {
+        "type": "column",
+        "value": "="
+      },
+      {
+        "type": "column",
+        "value": "b.branch_id;"
+      }
+    ]
+  },
+  {
+    "drillNumber": 768,
+    "subcluster": "8.7 Compound Multi-Column Join Keys (ON a.k1 = b.k1 AND a.k2 = b.k2)",
+    "level": "Level 3 (Compound Join Keys)",
+    "title": "Syntax #768: Match movie reviews to films on both movie_id AND region_code",
+    "table": "MovieReviews",
+    "scenario": "Match movie reviews to films on both movie_id AND region_code.",
+    "businessObjective": "Match movie reviews to films on both movie_id AND region_code.",
+    "schemaSnippet": "MovieReviews relational schema",
+    "targetQuery": "SELECT r.review_text, m.movie_title\nFROM MovieReviews r\nJOIN Movies m ON r.movie_id = m.movie_id AND r.region_code = m.region_code;",
+    "syntaxBlueprint": "SELECT a.col, b.col\nFROM TableA a\nJOIN TableB b ON a.key1 = b.key1 AND a.key2 = b.key2;",
+    "syntaxRule": "When tables use composite primary or foreign keys, combine multiple key equality checks inside the ON clause using AND.",
+    "syntaxTrap": "Omitting one part of a composite key causes a partial Cartesian product, multiplying matching rows.",
+    "eli5Story": "Relational Joins on MovieReviews: Match movie reviews to films on both movie_id AND region_code.",
+    "commonMistakes": "Omitting the ON clause, forgetting table alias qualification on ambiguous columns, or accidentally converting LEFT JOIN to INNER JOIN via WHERE filters.",
+    "learningOutcomes": "Mastered 8.7 Compound Multi-Column Join Keys (ON a.k1 = b.k1 AND a.k2 = b.k2) on MovieReviews.",
+    "challengeSlots": [
+      {
+        "type": "keyword",
+        "value": "SELECT"
+      },
+      {
+        "type": "column",
+        "value": "r.review_text,"
+      },
+      {
+        "type": "column",
+        "value": "m.movie_title"
+      },
+      {
+        "type": "keyword",
+        "value": "FROM"
+      },
+      {
+        "type": "table",
+        "value": "MovieReviews"
+      },
+      {
+        "type": "column",
+        "value": "r"
+      },
+      {
+        "type": "keyword",
+        "value": "JOIN"
+      },
+      {
+        "type": "table",
+        "value": "Movies"
+      },
+      {
+        "type": "column",
+        "value": "m"
+      },
+      {
+        "type": "keyword",
+        "value": "ON"
+      },
+      {
+        "type": "column",
+        "value": "r.movie_id"
+      },
+      {
+        "type": "column",
+        "value": "="
+      },
+      {
+        "type": "column",
+        "value": "m.movie_id"
+      },
+      {
+        "type": "keyword",
+        "value": "AND"
+      },
+      {
+        "type": "column",
+        "value": "r.region_code"
+      },
+      {
+        "type": "column",
+        "value": "="
+      },
+      {
+        "type": "column",
+        "value": "m.region_code;"
+      }
+    ]
+  },
+  {
+    "drillNumber": 769,
+    "subcluster": "8.7 Compound Multi-Column Join Keys (ON a.k1 = b.k1 AND a.k2 = b.k2)",
+    "level": "Level 3 (Compound Join Keys)",
+    "title": "Syntax #769: Match airport gate assignments matching both flight_id AND flight_date",
+    "table": "FlightSchedule",
+    "scenario": "Match airport gate assignments matching both flight_id AND flight_date.",
+    "businessObjective": "Match airport gate assignments matching both flight_id AND flight_date.",
+    "schemaSnippet": "FlightSchedule relational schema",
+    "targetQuery": "SELECT f.flight_id, g.gate_number\nFROM FlightSchedule f\nJOIN GateAssignments g ON f.flight_id = g.flight_id AND f.flight_date = g.flight_date;",
+    "syntaxBlueprint": "SELECT a.col, b.col\nFROM TableA a\nJOIN TableB b ON a.key1 = b.key1 AND a.key2 = b.key2;",
+    "syntaxRule": "When tables use composite primary or foreign keys, combine multiple key equality checks inside the ON clause using AND.",
+    "syntaxTrap": "Omitting one part of a composite key causes a partial Cartesian product, multiplying matching rows.",
+    "eli5Story": "Relational Joins on FlightSchedule: Match airport gate assignments matching both flight_id AND flight_date.",
+    "commonMistakes": "Omitting the ON clause, forgetting table alias qualification on ambiguous columns, or accidentally converting LEFT JOIN to INNER JOIN via WHERE filters.",
+    "learningOutcomes": "Mastered 8.7 Compound Multi-Column Join Keys (ON a.k1 = b.k1 AND a.k2 = b.k2) on FlightSchedule.",
+    "challengeSlots": [
+      {
+        "type": "keyword",
+        "value": "SELECT"
+      },
+      {
+        "type": "column",
+        "value": "f.flight_id,"
+      },
+      {
+        "type": "column",
+        "value": "g.gate_number"
+      },
+      {
+        "type": "keyword",
+        "value": "FROM"
+      },
+      {
+        "type": "table",
+        "value": "FlightSchedule"
+      },
+      {
+        "type": "column",
+        "value": "f"
+      },
+      {
+        "type": "keyword",
+        "value": "JOIN"
+      },
+      {
+        "type": "column",
+        "value": "GateAssignments"
+      },
+      {
+        "type": "column",
+        "value": "g"
+      },
+      {
+        "type": "keyword",
+        "value": "ON"
+      },
+      {
+        "type": "column",
+        "value": "f.flight_id"
+      },
+      {
+        "type": "column",
+        "value": "="
+      },
+      {
+        "type": "column",
+        "value": "g.flight_id"
+      },
+      {
+        "type": "keyword",
+        "value": "AND"
+      },
+      {
+        "type": "column",
+        "value": "f.flight_date"
+      },
+      {
+        "type": "column",
+        "value": "="
+      },
+      {
+        "type": "column",
+        "value": "g.flight_date;"
+      }
+    ]
+  },
+  {
+    "drillNumber": 770,
+    "subcluster": "8.7 Compound Multi-Column Join Keys (ON a.k1 = b.k1 AND a.k2 = b.k2)",
+    "level": "Level 3 (Compound Join Keys)",
+    "title": "Syntax #770: Match veterinary vaccine records verifying both pet_id AND target species",
+    "table": "PetClinic",
+    "scenario": "Match veterinary vaccine records verifying both pet_id AND target species.",
+    "businessObjective": "Match veterinary vaccine records verifying both pet_id AND target species.",
+    "schemaSnippet": "PetClinic relational schema",
+    "targetQuery": "SELECT p.pet_name, v.vaccine_name\nFROM PetClinic p\nJOIN Vaccinations v ON p.pet_id = v.pet_id AND p.species = v.species_target;",
+    "syntaxBlueprint": "SELECT a.col, b.col\nFROM TableA a\nJOIN TableB b ON a.key1 = b.key1 AND a.key2 = b.key2;",
+    "syntaxRule": "When tables use composite primary or foreign keys, combine multiple key equality checks inside the ON clause using AND.",
+    "syntaxTrap": "Omitting one part of a composite key causes a partial Cartesian product, multiplying matching rows.",
+    "eli5Story": "Relational Joins on PetClinic: Match veterinary vaccine records verifying both pet_id AND target species.",
+    "commonMistakes": "Omitting the ON clause, forgetting table alias qualification on ambiguous columns, or accidentally converting LEFT JOIN to INNER JOIN via WHERE filters.",
+    "learningOutcomes": "Mastered 8.7 Compound Multi-Column Join Keys (ON a.k1 = b.k1 AND a.k2 = b.k2) on PetClinic.",
+    "challengeSlots": [
+      {
+        "type": "keyword",
+        "value": "SELECT"
+      },
+      {
+        "type": "column",
+        "value": "p.pet_name,"
+      },
+      {
+        "type": "column",
+        "value": "v.vaccine_name"
+      },
+      {
+        "type": "keyword",
+        "value": "FROM"
+      },
+      {
+        "type": "table",
+        "value": "PetClinic"
+      },
+      {
+        "type": "column",
+        "value": "p"
+      },
+      {
+        "type": "keyword",
+        "value": "JOIN"
+      },
+      {
+        "type": "column",
+        "value": "Vaccinations"
+      },
+      {
+        "type": "column",
+        "value": "v"
+      },
+      {
+        "type": "keyword",
+        "value": "ON"
+      },
+      {
+        "type": "column",
+        "value": "p.pet_id"
+      },
+      {
+        "type": "column",
+        "value": "="
+      },
+      {
+        "type": "column",
+        "value": "v.pet_id"
+      },
+      {
+        "type": "keyword",
+        "value": "AND"
+      },
+      {
+        "type": "column",
+        "value": "p.species"
+      },
+      {
+        "type": "column",
+        "value": "="
+      },
+      {
+        "type": "column",
+        "value": "v.species_target;"
+      }
+    ]
+  },
+  {
+    "drillNumber": 771,
+    "subcluster": "8.8 Joins with String Matching & Pattern Predicates in ON",
+    "level": "Level 3 (Pattern Join)",
+    "title": "Syntax #771: Match student ID codes to college faculties using a LIKE prefix join in ON",
+    "table": "Students",
+    "scenario": "Match student ID codes to college faculties using a LIKE prefix join in ON.",
+    "businessObjective": "Match student ID codes to college faculties using a LIKE prefix join in ON.",
+    "schemaSnippet": "Students relational schema",
+    "targetQuery": "SELECT s.full_name, c.college_name\nFROM Students s\nJOIN Colleges c ON s.student_id LIKE CONCAT(c.college_code, '%');",
+    "syntaxBlueprint": "SELECT a.col, b.col\nFROM TableA a\nJOIN TableB b ON a.code LIKE CONCAT(b.prefix, '%');",
+    "syntaxRule": "The ON clause is not restricted to exact '=' equality—it can evaluate LIKE expressions to pair data by shared prefixes, suffixes, or codes.",
+    "syntaxTrap": "Pattern joins cannot utilize standard B-tree index lookups and require nested loop scans.",
+    "eli5Story": "Relational Joins on Students: Match student ID codes to college faculties using a LIKE prefix join in ON.",
+    "commonMistakes": "Omitting the ON clause, forgetting table alias qualification on ambiguous columns, or accidentally converting LEFT JOIN to INNER JOIN via WHERE filters.",
+    "learningOutcomes": "Mastered 8.8 Joins with String Matching & Pattern Predicates in ON on Students.",
+    "challengeSlots": [
+      {
+        "type": "keyword",
+        "value": "SELECT"
+      },
+      {
+        "type": "column",
+        "value": "s.full_name,"
+      },
+      {
+        "type": "column",
+        "value": "c.college_name"
+      },
+      {
+        "type": "keyword",
+        "value": "FROM"
+      },
+      {
+        "type": "table",
+        "value": "Students"
+      },
+      {
+        "type": "column",
+        "value": "s"
+      },
+      {
+        "type": "keyword",
+        "value": "JOIN"
+      },
+      {
+        "type": "column",
+        "value": "Colleges"
+      },
+      {
+        "type": "column",
+        "value": "c"
+      },
+      {
+        "type": "keyword",
+        "value": "ON"
+      },
+      {
+        "type": "column",
+        "value": "s.student_id"
+      },
+      {
+        "type": "column",
+        "value": "LIKE"
+      },
+      {
+        "type": "column",
+        "value": "CONCAT(c.college_code,"
+      },
+      {
+        "type": "column",
+        "value": "'%');"
+      }
+    ]
+  },
+  {
+    "drillNumber": 772,
+    "subcluster": "8.8 Joins with String Matching & Pattern Predicates in ON",
+    "level": "Level 3 (Pattern Join)",
+    "title": "Syntax #772: Match book ISBNs to publishing houses by publisher prefix pattern",
+    "table": "Books",
+    "scenario": "Match book ISBNs to publishing houses by publisher prefix pattern.",
+    "businessObjective": "Match book ISBNs to publishing houses by publisher prefix pattern.",
+    "schemaSnippet": "Books relational schema",
+    "targetQuery": "SELECT b.title, p.publisher_name\nFROM Books b\nJOIN Publishers p ON b.isbn LIKE CONCAT(p.isbn_prefix, '%');",
+    "syntaxBlueprint": "SELECT a.col, b.col\nFROM TableA a\nJOIN TableB b ON a.code LIKE CONCAT(b.prefix, '%');",
+    "syntaxRule": "The ON clause is not restricted to exact '=' equality—it can evaluate LIKE expressions to pair data by shared prefixes, suffixes, or codes.",
+    "syntaxTrap": "Pattern joins cannot utilize standard B-tree index lookups and require nested loop scans.",
+    "eli5Story": "Relational Joins on Books: Match book ISBNs to publishing houses by publisher prefix pattern.",
+    "commonMistakes": "Omitting the ON clause, forgetting table alias qualification on ambiguous columns, or accidentally converting LEFT JOIN to INNER JOIN via WHERE filters.",
+    "learningOutcomes": "Mastered 8.8 Joins with String Matching & Pattern Predicates in ON on Books.",
+    "challengeSlots": [
+      {
+        "type": "keyword",
+        "value": "SELECT"
+      },
+      {
+        "type": "column",
+        "value": "b.title,"
+      },
+      {
+        "type": "column",
+        "value": "p.publisher_name"
+      },
+      {
+        "type": "keyword",
+        "value": "FROM"
+      },
+      {
+        "type": "table",
+        "value": "Books"
+      },
+      {
+        "type": "column",
+        "value": "b"
+      },
+      {
+        "type": "keyword",
+        "value": "JOIN"
+      },
+      {
+        "type": "column",
+        "value": "Publishers"
+      },
+      {
+        "type": "column",
+        "value": "p"
+      },
+      {
+        "type": "keyword",
+        "value": "ON"
+      },
+      {
+        "type": "column",
+        "value": "b.isbn"
+      },
+      {
+        "type": "column",
+        "value": "LIKE"
+      },
+      {
+        "type": "column",
+        "value": "CONCAT(p.isbn_prefix,"
+      },
+      {
+        "type": "column",
+        "value": "'%');"
+      }
+    ]
+  },
+  {
+    "drillNumber": 773,
+    "subcluster": "8.8 Joins with String Matching & Pattern Predicates in ON",
+    "level": "Level 3 (Pattern Join)",
+    "title": "Syntax #773: Match employee badges to office branch locations by badge prefix in ON",
+    "table": "Employees",
+    "scenario": "Match employee badges to office branch locations by badge prefix in ON.",
+    "businessObjective": "Match employee badges to office branch locations by badge prefix in ON.",
+    "schemaSnippet": "Employees relational schema",
+    "targetQuery": "SELECT e.first_name, b.branch_city\nFROM Employees e\nJOIN OfficeBranches b ON e.badge_code LIKE CONCAT(b.branch_code, '%');",
+    "syntaxBlueprint": "SELECT a.col, b.col\nFROM TableA a\nJOIN TableB b ON a.code LIKE CONCAT(b.prefix, '%');",
+    "syntaxRule": "The ON clause is not restricted to exact '=' equality—it can evaluate LIKE expressions to pair data by shared prefixes, suffixes, or codes.",
+    "syntaxTrap": "Pattern joins cannot utilize standard B-tree index lookups and require nested loop scans.",
+    "eli5Story": "Relational Joins on Employees: Match employee badges to office branch locations by badge prefix in ON.",
+    "commonMistakes": "Omitting the ON clause, forgetting table alias qualification on ambiguous columns, or accidentally converting LEFT JOIN to INNER JOIN via WHERE filters.",
+    "learningOutcomes": "Mastered 8.8 Joins with String Matching & Pattern Predicates in ON on Employees.",
+    "challengeSlots": [
+      {
+        "type": "keyword",
+        "value": "SELECT"
+      },
+      {
+        "type": "column",
+        "value": "e.first_name,"
+      },
+      {
+        "type": "column",
+        "value": "b.branch_city"
+      },
+      {
+        "type": "keyword",
+        "value": "FROM"
+      },
+      {
+        "type": "table",
+        "value": "Employees"
+      },
+      {
+        "type": "column",
+        "value": "e"
+      },
+      {
+        "type": "keyword",
+        "value": "JOIN"
+      },
+      {
+        "type": "column",
+        "value": "OfficeBranches"
+      },
+      {
+        "type": "column",
+        "value": "b"
+      },
+      {
+        "type": "keyword",
+        "value": "ON"
+      },
+      {
+        "type": "column",
+        "value": "e.badge_code"
+      },
+      {
+        "type": "column",
+        "value": "LIKE"
+      },
+      {
+        "type": "column",
+        "value": "CONCAT(b.branch_code,"
+      },
+      {
+        "type": "column",
+        "value": "'%');"
+      }
+    ]
+  },
+  {
+    "drillNumber": 774,
+    "subcluster": "8.8 Joins with String Matching & Pattern Predicates in ON",
+    "level": "Level 3 (Pattern Join)",
+    "title": "Syntax #774: Pair inventory SKUs with store departments using prefix matching in ON",
+    "table": "GroceryItems",
+    "scenario": "Pair inventory SKUs with store departments using prefix matching in ON.",
+    "businessObjective": "Pair inventory SKUs with store departments using prefix matching in ON.",
+    "schemaSnippet": "GroceryItems relational schema",
+    "targetQuery": "SELECT g.item_name, cat.department\nFROM GroceryItems g\nJOIN CategoryLookup cat ON g.sku LIKE CONCAT(cat.sku_prefix, '%');",
+    "syntaxBlueprint": "SELECT a.col, b.col\nFROM TableA a\nJOIN TableB b ON a.code LIKE CONCAT(b.prefix, '%');",
+    "syntaxRule": "The ON clause is not restricted to exact '=' equality—it can evaluate LIKE expressions to pair data by shared prefixes, suffixes, or codes.",
+    "syntaxTrap": "Pattern joins cannot utilize standard B-tree index lookups and require nested loop scans.",
+    "eli5Story": "Relational Joins on GroceryItems: Pair inventory SKUs with store departments using prefix matching in ON.",
+    "commonMistakes": "Omitting the ON clause, forgetting table alias qualification on ambiguous columns, or accidentally converting LEFT JOIN to INNER JOIN via WHERE filters.",
+    "learningOutcomes": "Mastered 8.8 Joins with String Matching & Pattern Predicates in ON on GroceryItems.",
+    "challengeSlots": [
+      {
+        "type": "keyword",
+        "value": "SELECT"
+      },
+      {
+        "type": "column",
+        "value": "g.item_name,"
+      },
+      {
+        "type": "column",
+        "value": "cat.department"
+      },
+      {
+        "type": "keyword",
+        "value": "FROM"
+      },
+      {
+        "type": "table",
+        "value": "GroceryItems"
+      },
+      {
+        "type": "column",
+        "value": "g"
+      },
+      {
+        "type": "keyword",
+        "value": "JOIN"
+      },
+      {
+        "type": "column",
+        "value": "CategoryLookup"
+      },
+      {
+        "type": "column",
+        "value": "cat"
+      },
+      {
+        "type": "keyword",
+        "value": "ON"
+      },
+      {
+        "type": "column",
+        "value": "g.sku"
+      },
+      {
+        "type": "column",
+        "value": "LIKE"
+      },
+      {
+        "type": "column",
+        "value": "CONCAT(cat.sku_prefix,"
+      },
+      {
+        "type": "column",
+        "value": "'%');"
+      }
+    ]
+  },
+  {
+    "drillNumber": 775,
+    "subcluster": "8.8 Joins with String Matching & Pattern Predicates in ON",
+    "level": "Level 3 (Pattern Join)",
+    "title": "Syntax #775: Map order delivery zip codes to logistics regions via LIKE join",
+    "table": "Orders",
+    "scenario": "Map order delivery zip codes to logistics regions via LIKE join.",
+    "businessObjective": "Map order delivery zip codes to logistics regions via LIKE join.",
+    "schemaSnippet": "Orders relational schema",
+    "targetQuery": "SELECT o.order_id, r.region_name\nFROM Orders o\nJOIN PostalRegions r ON o.shipping_zip LIKE CONCAT(r.zip_prefix, '%');",
+    "syntaxBlueprint": "SELECT a.col, b.col\nFROM TableA a\nJOIN TableB b ON a.code LIKE CONCAT(b.prefix, '%');",
+    "syntaxRule": "The ON clause is not restricted to exact '=' equality—it can evaluate LIKE expressions to pair data by shared prefixes, suffixes, or codes.",
+    "syntaxTrap": "Pattern joins cannot utilize standard B-tree index lookups and require nested loop scans.",
+    "eli5Story": "Relational Joins on Orders: Map order delivery zip codes to logistics regions via LIKE join.",
+    "commonMistakes": "Omitting the ON clause, forgetting table alias qualification on ambiguous columns, or accidentally converting LEFT JOIN to INNER JOIN via WHERE filters.",
+    "learningOutcomes": "Mastered 8.8 Joins with String Matching & Pattern Predicates in ON on Orders.",
+    "challengeSlots": [
+      {
+        "type": "keyword",
+        "value": "SELECT"
+      },
+      {
+        "type": "column",
+        "value": "o.order_id,"
+      },
+      {
+        "type": "column",
+        "value": "r.region_name"
+      },
+      {
+        "type": "keyword",
+        "value": "FROM"
+      },
+      {
+        "type": "table",
+        "value": "Orders"
+      },
+      {
+        "type": "column",
+        "value": "o"
+      },
+      {
+        "type": "keyword",
+        "value": "JOIN"
+      },
+      {
+        "type": "column",
+        "value": "PostalRegions"
+      },
+      {
+        "type": "column",
+        "value": "r"
+      },
+      {
+        "type": "keyword",
+        "value": "ON"
+      },
+      {
+        "type": "column",
+        "value": "o.shipping_zip"
+      },
+      {
+        "type": "column",
+        "value": "LIKE"
+      },
+      {
+        "type": "column",
+        "value": "CONCAT(r.zip_prefix,"
+      },
+      {
+        "type": "column",
+        "value": "'%');"
+      }
+    ]
+  },
+  {
+    "drillNumber": 776,
+    "subcluster": "8.8 Joins with String Matching & Pattern Predicates in ON",
+    "level": "Level 3 (Pattern Join)",
+    "title": "Syntax #776: Pair track catalog numbers with record labels by prefix pattern",
+    "table": "MusicTracks",
+    "scenario": "Pair track catalog numbers with record labels by prefix pattern.",
+    "businessObjective": "Pair track catalog numbers with record labels by prefix pattern.",
+    "schemaSnippet": "MusicTracks relational schema",
+    "targetQuery": "SELECT t.track_title, lbl.label_name\nFROM MusicTracks t\nJOIN RecordLabels lbl ON t.catalog_number LIKE CONCAT(lbl.label_code, '%');",
+    "syntaxBlueprint": "SELECT a.col, b.col\nFROM TableA a\nJOIN TableB b ON a.code LIKE CONCAT(b.prefix, '%');",
+    "syntaxRule": "The ON clause is not restricted to exact '=' equality—it can evaluate LIKE expressions to pair data by shared prefixes, suffixes, or codes.",
+    "syntaxTrap": "Pattern joins cannot utilize standard B-tree index lookups and require nested loop scans.",
+    "eli5Story": "Relational Joins on MusicTracks: Pair track catalog numbers with record labels by prefix pattern.",
+    "commonMistakes": "Omitting the ON clause, forgetting table alias qualification on ambiguous columns, or accidentally converting LEFT JOIN to INNER JOIN via WHERE filters.",
+    "learningOutcomes": "Mastered 8.8 Joins with String Matching & Pattern Predicates in ON on MusicTracks.",
+    "challengeSlots": [
+      {
+        "type": "keyword",
+        "value": "SELECT"
+      },
+      {
+        "type": "column",
+        "value": "t.track_title,"
+      },
+      {
+        "type": "column",
+        "value": "lbl.label_name"
+      },
+      {
+        "type": "keyword",
+        "value": "FROM"
+      },
+      {
+        "type": "table",
+        "value": "MusicTracks"
+      },
+      {
+        "type": "column",
+        "value": "t"
+      },
+      {
+        "type": "keyword",
+        "value": "JOIN"
+      },
+      {
+        "type": "column",
+        "value": "RecordLabels"
+      },
+      {
+        "type": "column",
+        "value": "lbl"
+      },
+      {
+        "type": "keyword",
+        "value": "ON"
+      },
+      {
+        "type": "column",
+        "value": "t.catalog_number"
+      },
+      {
+        "type": "column",
+        "value": "LIKE"
+      },
+      {
+        "type": "column",
+        "value": "CONCAT(lbl.label_code,"
+      },
+      {
+        "type": "column",
+        "value": "'%');"
+      }
+    ]
+  },
+  {
+    "drillNumber": 777,
+    "subcluster": "8.8 Joins with String Matching & Pattern Predicates in ON",
+    "level": "Level 3 (Pattern Join)",
+    "title": "Syntax #777: Match gym membership IDs to plan tiers using a LIKE join in ON",
+    "table": "GymMembers",
+    "scenario": "Match gym membership IDs to plan tiers using a LIKE join in ON.",
+    "businessObjective": "Match gym membership IDs to plan tiers using a LIKE join in ON.",
+    "schemaSnippet": "GymMembers relational schema",
+    "targetQuery": "SELECT m.member_name, p.tier_name\nFROM GymMembers m\nJOIN PlanTiers p ON m.membership_id LIKE CONCAT(p.tier_code, '%');",
+    "syntaxBlueprint": "SELECT a.col, b.col\nFROM TableA a\nJOIN TableB b ON a.code LIKE CONCAT(b.prefix, '%');",
+    "syntaxRule": "The ON clause is not restricted to exact '=' equality—it can evaluate LIKE expressions to pair data by shared prefixes, suffixes, or codes.",
+    "syntaxTrap": "Pattern joins cannot utilize standard B-tree index lookups and require nested loop scans.",
+    "eli5Story": "Relational Joins on GymMembers: Match gym membership IDs to plan tiers using a LIKE join in ON.",
+    "commonMistakes": "Omitting the ON clause, forgetting table alias qualification on ambiguous columns, or accidentally converting LEFT JOIN to INNER JOIN via WHERE filters.",
+    "learningOutcomes": "Mastered 8.8 Joins with String Matching & Pattern Predicates in ON on GymMembers.",
+    "challengeSlots": [
+      {
+        "type": "keyword",
+        "value": "SELECT"
+      },
+      {
+        "type": "column",
+        "value": "m.member_name,"
+      },
+      {
+        "type": "column",
+        "value": "p.tier_name"
+      },
+      {
+        "type": "keyword",
+        "value": "FROM"
+      },
+      {
+        "type": "table",
+        "value": "GymMembers"
+      },
+      {
+        "type": "column",
+        "value": "m"
+      },
+      {
+        "type": "keyword",
+        "value": "JOIN"
+      },
+      {
+        "type": "column",
+        "value": "PlanTiers"
+      },
+      {
+        "type": "column",
+        "value": "p"
+      },
+      {
+        "type": "keyword",
+        "value": "ON"
+      },
+      {
+        "type": "column",
+        "value": "m.membership_id"
+      },
+      {
+        "type": "column",
+        "value": "LIKE"
+      },
+      {
+        "type": "column",
+        "value": "CONCAT(p.tier_code,"
+      },
+      {
+        "type": "column",
+        "value": "'%');"
+      }
+    ]
+  },
+  {
+    "drillNumber": 778,
+    "subcluster": "8.8 Joins with String Matching & Pattern Predicates in ON",
+    "level": "Level 3 (Pattern Join)",
+    "title": "Syntax #778: Match film ratings to parental advisory classifications via pattern join",
+    "table": "MovieReviews",
+    "scenario": "Match film ratings to parental advisory classifications via pattern join.",
+    "businessObjective": "Match film ratings to parental advisory classifications via pattern join.",
+    "schemaSnippet": "MovieReviews relational schema",
+    "targetQuery": "SELECT m.movie_title, c.classification\nFROM Movies m\nJOIN ContentCodes c ON m.mpaa_rating LIKE CONCAT(c.code, '%');",
+    "syntaxBlueprint": "SELECT a.col, b.col\nFROM TableA a\nJOIN TableB b ON a.code LIKE CONCAT(b.prefix, '%');",
+    "syntaxRule": "The ON clause is not restricted to exact '=' equality—it can evaluate LIKE expressions to pair data by shared prefixes, suffixes, or codes.",
+    "syntaxTrap": "Pattern joins cannot utilize standard B-tree index lookups and require nested loop scans.",
+    "eli5Story": "Relational Joins on MovieReviews: Match film ratings to parental advisory classifications via pattern join.",
+    "commonMistakes": "Omitting the ON clause, forgetting table alias qualification on ambiguous columns, or accidentally converting LEFT JOIN to INNER JOIN via WHERE filters.",
+    "learningOutcomes": "Mastered 8.8 Joins with String Matching & Pattern Predicates in ON on MovieReviews.",
+    "challengeSlots": [
+      {
+        "type": "keyword",
+        "value": "SELECT"
+      },
+      {
+        "type": "column",
+        "value": "m.movie_title,"
+      },
+      {
+        "type": "column",
+        "value": "c.classification"
+      },
+      {
+        "type": "keyword",
+        "value": "FROM"
+      },
+      {
+        "type": "table",
+        "value": "Movies"
+      },
+      {
+        "type": "column",
+        "value": "m"
+      },
+      {
+        "type": "keyword",
+        "value": "JOIN"
+      },
+      {
+        "type": "column",
+        "value": "ContentCodes"
+      },
+      {
+        "type": "column",
+        "value": "c"
+      },
+      {
+        "type": "keyword",
+        "value": "ON"
+      },
+      {
+        "type": "column",
+        "value": "m.mpaa_rating"
+      },
+      {
+        "type": "column",
+        "value": "LIKE"
+      },
+      {
+        "type": "column",
+        "value": "CONCAT(c.code,"
+      },
+      {
+        "type": "column",
+        "value": "'%');"
+      }
+    ]
+  },
+  {
+    "drillNumber": 779,
+    "subcluster": "8.8 Joins with String Matching & Pattern Predicates in ON",
+    "level": "Level 3 (Pattern Join)",
+    "title": "Syntax #779: Identify operating airlines by matching flight number prefix to carrier IATA code",
+    "table": "FlightSchedule",
+    "scenario": "Identify operating airlines by matching flight number prefix to carrier IATA code.",
+    "businessObjective": "Identify operating airlines by matching flight number prefix to carrier IATA code.",
+    "schemaSnippet": "FlightSchedule relational schema",
+    "targetQuery": "SELECT f.flight_id, a.airline_name\nFROM FlightSchedule f\nJOIN Airlines a ON f.flight_id LIKE CONCAT(a.iata_code, '%');",
+    "syntaxBlueprint": "SELECT a.col, b.col\nFROM TableA a\nJOIN TableB b ON a.code LIKE CONCAT(b.prefix, '%');",
+    "syntaxRule": "The ON clause is not restricted to exact '=' equality—it can evaluate LIKE expressions to pair data by shared prefixes, suffixes, or codes.",
+    "syntaxTrap": "Pattern joins cannot utilize standard B-tree index lookups and require nested loop scans.",
+    "eli5Story": "Relational Joins on FlightSchedule: Identify operating airlines by matching flight number prefix to carrier IATA code.",
+    "commonMistakes": "Omitting the ON clause, forgetting table alias qualification on ambiguous columns, or accidentally converting LEFT JOIN to INNER JOIN via WHERE filters.",
+    "learningOutcomes": "Mastered 8.8 Joins with String Matching & Pattern Predicates in ON on FlightSchedule.",
+    "challengeSlots": [
+      {
+        "type": "keyword",
+        "value": "SELECT"
+      },
+      {
+        "type": "column",
+        "value": "f.flight_id,"
+      },
+      {
+        "type": "column",
+        "value": "a.airline_name"
+      },
+      {
+        "type": "keyword",
+        "value": "FROM"
+      },
+      {
+        "type": "table",
+        "value": "FlightSchedule"
+      },
+      {
+        "type": "column",
+        "value": "f"
+      },
+      {
+        "type": "keyword",
+        "value": "JOIN"
+      },
+      {
+        "type": "table",
+        "value": "Airlines"
+      },
+      {
+        "type": "column",
+        "value": "a"
+      },
+      {
+        "type": "keyword",
+        "value": "ON"
+      },
+      {
+        "type": "column",
+        "value": "f.flight_id"
+      },
+      {
+        "type": "column",
+        "value": "LIKE"
+      },
+      {
+        "type": "column",
+        "value": "CONCAT(a.iata_code,"
+      },
+      {
+        "type": "column",
+        "value": "'%');"
+      }
+    ]
+  },
+  {
+    "drillNumber": 780,
+    "subcluster": "8.8 Joins with String Matching & Pattern Predicates in ON",
+    "level": "Level 3 (Pattern Join)",
+    "title": "Syntax #780: Classify clinic animals by matching breed names against breed group keywords",
+    "table": "PetClinic",
+    "scenario": "Classify clinic animals by matching breed names against breed group keywords.",
+    "businessObjective": "Classify clinic animals by matching breed names against breed group keywords.",
+    "schemaSnippet": "PetClinic relational schema",
+    "targetQuery": "SELECT p.pet_name, b.breed_group\nFROM PetClinic p\nJOIN BreedRegistry b ON p.breed LIKE CONCAT('%', b.group_keyword, '%');",
+    "syntaxBlueprint": "SELECT a.col, b.col\nFROM TableA a\nJOIN TableB b ON a.code LIKE CONCAT(b.prefix, '%');",
+    "syntaxRule": "The ON clause is not restricted to exact '=' equality—it can evaluate LIKE expressions to pair data by shared prefixes, suffixes, or codes.",
+    "syntaxTrap": "Pattern joins cannot utilize standard B-tree index lookups and require nested loop scans.",
+    "eli5Story": "Relational Joins on PetClinic: Classify clinic animals by matching breed names against breed group keywords.",
+    "commonMistakes": "Omitting the ON clause, forgetting table alias qualification on ambiguous columns, or accidentally converting LEFT JOIN to INNER JOIN via WHERE filters.",
+    "learningOutcomes": "Mastered 8.8 Joins with String Matching & Pattern Predicates in ON on PetClinic.",
+    "challengeSlots": [
+      {
+        "type": "keyword",
+        "value": "SELECT"
+      },
+      {
+        "type": "column",
+        "value": "p.pet_name,"
+      },
+      {
+        "type": "column",
+        "value": "b.breed_group"
+      },
+      {
+        "type": "keyword",
+        "value": "FROM"
+      },
+      {
+        "type": "table",
+        "value": "PetClinic"
+      },
+      {
+        "type": "column",
+        "value": "p"
+      },
+      {
+        "type": "keyword",
+        "value": "JOIN"
+      },
+      {
+        "type": "column",
+        "value": "BreedRegistry"
+      },
+      {
+        "type": "column",
+        "value": "b"
+      },
+      {
+        "type": "keyword",
+        "value": "ON"
+      },
+      {
+        "type": "column",
+        "value": "p.breed"
+      },
+      {
+        "type": "column",
+        "value": "LIKE"
+      },
+      {
+        "type": "column",
+        "value": "CONCAT('%',"
+      },
+      {
+        "type": "column",
+        "value": "b.group_keyword,"
+      },
+      {
+        "type": "column",
+        "value": "'%');"
+      }
+    ]
+  },
+  {
+    "drillNumber": 781,
+    "subcluster": "8.9 Emulating FULL OUTER JOIN (LEFT JOIN UNION RIGHT JOIN)",
+    "level": "Level 3 (Full Outer Join Emulation)",
+    "title": "Syntax #781: Emulate a FULL OUTER JOIN between students and courses to see unmatched students and empty courses",
+    "table": "Students",
+    "scenario": "Emulate a FULL OUTER JOIN between students and courses to see unmatched students and empty courses.",
+    "businessObjective": "Emulate a FULL OUTER JOIN between students and courses to see unmatched students and empty courses.",
+    "schemaSnippet": "Students relational schema",
+    "targetQuery": "SELECT s.full_name, c.course_name\nFROM Students s\nLEFT JOIN Courses c ON s.student_id = c.student_id\nUNION\nSELECT s.full_name, c.course_name\nFROM Students s\nRIGHT JOIN Courses c ON s.student_id = c.student_id;",
+    "syntaxBlueprint": "SELECT a.col, b.col FROM TableA a LEFT JOIN TableB b ON a.id = b.a_id\nUNION\nSELECT a.col, b.col FROM TableA a RIGHT JOIN TableB b ON a.id = b.a_id;",
+    "syntaxRule": "FULL OUTER JOIN returns all rows from both tables, filling NULLs where there is no match. In MySQL, simulate FULL OUTER JOIN by unioning a LEFT JOIN and a RIGHT JOIN.",
+    "syntaxTrap": "Using UNION ALL instead of UNION will duplicate the matched intersection rows.",
+    "eli5Story": "Relational Joins on Students: Emulate a FULL OUTER JOIN between students and courses to see unmatched students and empty courses.",
+    "commonMistakes": "Omitting the ON clause, forgetting table alias qualification on ambiguous columns, or accidentally converting LEFT JOIN to INNER JOIN via WHERE filters.",
+    "learningOutcomes": "Mastered 8.9 Emulating FULL OUTER JOIN (LEFT JOIN UNION RIGHT JOIN) on Students.",
+    "challengeSlots": [
+      {
+        "type": "keyword",
+        "value": "SELECT"
+      },
+      {
+        "type": "column",
+        "value": "s.full_name,"
+      },
+      {
+        "type": "column",
+        "value": "c.course_name"
+      },
+      {
+        "type": "keyword",
+        "value": "FROM"
+      },
+      {
+        "type": "table",
+        "value": "Students"
+      },
+      {
+        "type": "column",
+        "value": "s"
+      },
+      {
+        "type": "keyword",
+        "value": "LEFT"
+      },
+      {
+        "type": "keyword",
+        "value": "JOIN"
+      },
+      {
+        "type": "table",
+        "value": "Courses"
+      },
+      {
+        "type": "column",
+        "value": "c"
+      },
+      {
+        "type": "keyword",
+        "value": "ON"
+      },
+      {
+        "type": "column",
+        "value": "s.student_id"
+      },
+      {
+        "type": "column",
+        "value": "="
+      },
+      {
+        "type": "column",
+        "value": "c.student_id"
+      },
+      {
+        "type": "keyword",
+        "value": "UNION"
+      },
+      {
+        "type": "keyword",
+        "value": "SELECT"
+      },
+      {
+        "type": "column",
+        "value": "s.full_name,"
+      },
+      {
+        "type": "column",
+        "value": "c.course_name"
+      },
+      {
+        "type": "keyword",
+        "value": "FROM"
+      },
+      {
+        "type": "table",
+        "value": "Students"
+      },
+      {
+        "type": "column",
+        "value": "s"
+      },
+      {
+        "type": "keyword",
+        "value": "RIGHT"
+      },
+      {
+        "type": "keyword",
+        "value": "JOIN"
+      },
+      {
+        "type": "table",
+        "value": "Courses"
+      },
+      {
+        "type": "column",
+        "value": "c"
+      },
+      {
+        "type": "keyword",
+        "value": "ON"
+      },
+      {
+        "type": "column",
+        "value": "s.student_id"
+      },
+      {
+        "type": "column",
+        "value": "="
+      },
+      {
+        "type": "column",
+        "value": "c.student_id;"
+      }
+    ]
+  },
+  {
+    "drillNumber": 782,
+    "subcluster": "8.9 Emulating FULL OUTER JOIN (LEFT JOIN UNION RIGHT JOIN)",
+    "level": "Level 3 (Full Outer Join Emulation)",
+    "title": "Syntax #782: Emulate a FULL OUTER JOIN combining all books and all authors",
+    "table": "Books",
+    "scenario": "Emulate a FULL OUTER JOIN combining all books and all authors.",
+    "businessObjective": "Emulate a FULL OUTER JOIN combining all books and all authors.",
+    "schemaSnippet": "Books relational schema",
+    "targetQuery": "SELECT b.title, a.author_name\nFROM Books b\nLEFT JOIN Authors a ON b.author_id = a.author_id\nUNION\nSELECT b.title, a.author_name\nFROM Books b\nRIGHT JOIN Authors a ON b.author_id = a.author_id;",
+    "syntaxBlueprint": "SELECT a.col, b.col FROM TableA a LEFT JOIN TableB b ON a.id = b.a_id\nUNION\nSELECT a.col, b.col FROM TableA a RIGHT JOIN TableB b ON a.id = b.a_id;",
+    "syntaxRule": "FULL OUTER JOIN returns all rows from both tables, filling NULLs where there is no match. In MySQL, simulate FULL OUTER JOIN by unioning a LEFT JOIN and a RIGHT JOIN.",
+    "syntaxTrap": "Using UNION ALL instead of UNION will duplicate the matched intersection rows.",
+    "eli5Story": "Relational Joins on Books: Emulate a FULL OUTER JOIN combining all books and all authors.",
+    "commonMistakes": "Omitting the ON clause, forgetting table alias qualification on ambiguous columns, or accidentally converting LEFT JOIN to INNER JOIN via WHERE filters.",
+    "learningOutcomes": "Mastered 8.9 Emulating FULL OUTER JOIN (LEFT JOIN UNION RIGHT JOIN) on Books.",
+    "challengeSlots": [
+      {
+        "type": "keyword",
+        "value": "SELECT"
+      },
+      {
+        "type": "column",
+        "value": "b.title,"
+      },
+      {
+        "type": "column",
+        "value": "a.author_name"
+      },
+      {
+        "type": "keyword",
+        "value": "FROM"
+      },
+      {
+        "type": "table",
+        "value": "Books"
+      },
+      {
+        "type": "column",
+        "value": "b"
+      },
+      {
+        "type": "keyword",
+        "value": "LEFT"
+      },
+      {
+        "type": "keyword",
+        "value": "JOIN"
+      },
+      {
+        "type": "table",
+        "value": "Authors"
+      },
+      {
+        "type": "column",
+        "value": "a"
+      },
+      {
+        "type": "keyword",
+        "value": "ON"
+      },
+      {
+        "type": "column",
+        "value": "b.author_id"
+      },
+      {
+        "type": "column",
+        "value": "="
+      },
+      {
+        "type": "column",
+        "value": "a.author_id"
+      },
+      {
+        "type": "keyword",
+        "value": "UNION"
+      },
+      {
+        "type": "keyword",
+        "value": "SELECT"
+      },
+      {
+        "type": "column",
+        "value": "b.title,"
+      },
+      {
+        "type": "column",
+        "value": "a.author_name"
+      },
+      {
+        "type": "keyword",
+        "value": "FROM"
+      },
+      {
+        "type": "table",
+        "value": "Books"
+      },
+      {
+        "type": "column",
+        "value": "b"
+      },
+      {
+        "type": "keyword",
+        "value": "RIGHT"
+      },
+      {
+        "type": "keyword",
+        "value": "JOIN"
+      },
+      {
+        "type": "table",
+        "value": "Authors"
+      },
+      {
+        "type": "column",
+        "value": "a"
+      },
+      {
+        "type": "keyword",
+        "value": "ON"
+      },
+      {
+        "type": "column",
+        "value": "b.author_id"
+      },
+      {
+        "type": "column",
+        "value": "="
+      },
+      {
+        "type": "column",
+        "value": "a.author_id;"
+      }
+    ]
+  },
+  {
+    "drillNumber": 783,
+    "subcluster": "8.9 Emulating FULL OUTER JOIN (LEFT JOIN UNION RIGHT JOIN)",
+    "level": "Level 3 (Full Outer Join Emulation)",
+    "title": "Syntax #783: Emulate a FULL OUTER JOIN showing unassigned staff and vacant departments",
+    "table": "Employees",
+    "scenario": "Emulate a FULL OUTER JOIN showing unassigned staff and vacant departments.",
+    "businessObjective": "Emulate a FULL OUTER JOIN showing unassigned staff and vacant departments.",
+    "schemaSnippet": "Employees relational schema",
+    "targetQuery": "SELECT e.first_name, d.department_name\nFROM Employees e\nLEFT JOIN Departments d ON e.department_id = d.department_id\nUNION\nSELECT e.first_name, d.department_name\nFROM Employees e\nRIGHT JOIN Departments d ON e.department_id = d.department_id;",
+    "syntaxBlueprint": "SELECT a.col, b.col FROM TableA a LEFT JOIN TableB b ON a.id = b.a_id\nUNION\nSELECT a.col, b.col FROM TableA a RIGHT JOIN TableB b ON a.id = b.a_id;",
+    "syntaxRule": "FULL OUTER JOIN returns all rows from both tables, filling NULLs where there is no match. In MySQL, simulate FULL OUTER JOIN by unioning a LEFT JOIN and a RIGHT JOIN.",
+    "syntaxTrap": "Using UNION ALL instead of UNION will duplicate the matched intersection rows.",
+    "eli5Story": "Relational Joins on Employees: Emulate a FULL OUTER JOIN showing unassigned staff and vacant departments.",
+    "commonMistakes": "Omitting the ON clause, forgetting table alias qualification on ambiguous columns, or accidentally converting LEFT JOIN to INNER JOIN via WHERE filters.",
+    "learningOutcomes": "Mastered 8.9 Emulating FULL OUTER JOIN (LEFT JOIN UNION RIGHT JOIN) on Employees.",
+    "challengeSlots": [
+      {
+        "type": "keyword",
+        "value": "SELECT"
+      },
+      {
+        "type": "column",
+        "value": "e.first_name,"
+      },
+      {
+        "type": "column",
+        "value": "d.department_name"
+      },
+      {
+        "type": "keyword",
+        "value": "FROM"
+      },
+      {
+        "type": "table",
+        "value": "Employees"
+      },
+      {
+        "type": "column",
+        "value": "e"
+      },
+      {
+        "type": "keyword",
+        "value": "LEFT"
+      },
+      {
+        "type": "keyword",
+        "value": "JOIN"
+      },
+      {
+        "type": "table",
+        "value": "Departments"
+      },
+      {
+        "type": "column",
+        "value": "d"
+      },
+      {
+        "type": "keyword",
+        "value": "ON"
+      },
+      {
+        "type": "column",
+        "value": "e.department_id"
+      },
+      {
+        "type": "column",
+        "value": "="
+      },
+      {
+        "type": "column",
+        "value": "d.department_id"
+      },
+      {
+        "type": "keyword",
+        "value": "UNION"
+      },
+      {
+        "type": "keyword",
+        "value": "SELECT"
+      },
+      {
+        "type": "column",
+        "value": "e.first_name,"
+      },
+      {
+        "type": "column",
+        "value": "d.department_name"
+      },
+      {
+        "type": "keyword",
+        "value": "FROM"
+      },
+      {
+        "type": "table",
+        "value": "Employees"
+      },
+      {
+        "type": "column",
+        "value": "e"
+      },
+      {
+        "type": "keyword",
+        "value": "RIGHT"
+      },
+      {
+        "type": "keyword",
+        "value": "JOIN"
+      },
+      {
+        "type": "table",
+        "value": "Departments"
+      },
+      {
+        "type": "column",
+        "value": "d"
+      },
+      {
+        "type": "keyword",
+        "value": "ON"
+      },
+      {
+        "type": "column",
+        "value": "e.department_id"
+      },
+      {
+        "type": "column",
+        "value": "="
+      },
+      {
+        "type": "column",
+        "value": "d.department_id;"
+      }
+    ]
+  },
+  {
+    "drillNumber": 784,
+    "subcluster": "8.9 Emulating FULL OUTER JOIN (LEFT JOIN UNION RIGHT JOIN)",
+    "level": "Level 3 (Full Outer Join Emulation)",
+    "title": "Syntax #784: Emulate a FULL OUTER JOIN of grocery inventory and supplier partners",
+    "table": "GroceryItems",
+    "scenario": "Emulate a FULL OUTER JOIN of grocery inventory and supplier partners.",
+    "businessObjective": "Emulate a FULL OUTER JOIN of grocery inventory and supplier partners.",
+    "schemaSnippet": "GroceryItems relational schema",
+    "targetQuery": "SELECT g.item_name, s.supplier_name\nFROM GroceryItems g\nLEFT JOIN Suppliers s ON g.supplier_id = s.supplier_id\nUNION\nSELECT g.item_name, s.supplier_name\nFROM GroceryItems g\nRIGHT JOIN Suppliers s ON g.supplier_id = s.supplier_id;",
+    "syntaxBlueprint": "SELECT a.col, b.col FROM TableA a LEFT JOIN TableB b ON a.id = b.a_id\nUNION\nSELECT a.col, b.col FROM TableA a RIGHT JOIN TableB b ON a.id = b.a_id;",
+    "syntaxRule": "FULL OUTER JOIN returns all rows from both tables, filling NULLs where there is no match. In MySQL, simulate FULL OUTER JOIN by unioning a LEFT JOIN and a RIGHT JOIN.",
+    "syntaxTrap": "Using UNION ALL instead of UNION will duplicate the matched intersection rows.",
+    "eli5Story": "Relational Joins on GroceryItems: Emulate a FULL OUTER JOIN of grocery inventory and supplier partners.",
+    "commonMistakes": "Omitting the ON clause, forgetting table alias qualification on ambiguous columns, or accidentally converting LEFT JOIN to INNER JOIN via WHERE filters.",
+    "learningOutcomes": "Mastered 8.9 Emulating FULL OUTER JOIN (LEFT JOIN UNION RIGHT JOIN) on GroceryItems.",
+    "challengeSlots": [
+      {
+        "type": "keyword",
+        "value": "SELECT"
+      },
+      {
+        "type": "column",
+        "value": "g.item_name,"
+      },
+      {
+        "type": "column",
+        "value": "s.supplier_name"
+      },
+      {
+        "type": "keyword",
+        "value": "FROM"
+      },
+      {
+        "type": "table",
+        "value": "GroceryItems"
+      },
+      {
+        "type": "column",
+        "value": "g"
+      },
+      {
+        "type": "keyword",
+        "value": "LEFT"
+      },
+      {
+        "type": "keyword",
+        "value": "JOIN"
+      },
+      {
+        "type": "table",
+        "value": "Suppliers"
+      },
+      {
+        "type": "column",
+        "value": "s"
+      },
+      {
+        "type": "keyword",
+        "value": "ON"
+      },
+      {
+        "type": "column",
+        "value": "g.supplier_id"
+      },
+      {
+        "type": "column",
+        "value": "="
+      },
+      {
+        "type": "column",
+        "value": "s.supplier_id"
+      },
+      {
+        "type": "keyword",
+        "value": "UNION"
+      },
+      {
+        "type": "keyword",
+        "value": "SELECT"
+      },
+      {
+        "type": "column",
+        "value": "g.item_name,"
+      },
+      {
+        "type": "column",
+        "value": "s.supplier_name"
+      },
+      {
+        "type": "keyword",
+        "value": "FROM"
+      },
+      {
+        "type": "table",
+        "value": "GroceryItems"
+      },
+      {
+        "type": "column",
+        "value": "g"
+      },
+      {
+        "type": "keyword",
+        "value": "RIGHT"
+      },
+      {
+        "type": "keyword",
+        "value": "JOIN"
+      },
+      {
+        "type": "table",
+        "value": "Suppliers"
+      },
+      {
+        "type": "column",
+        "value": "s"
+      },
+      {
+        "type": "keyword",
+        "value": "ON"
+      },
+      {
+        "type": "column",
+        "value": "g.supplier_id"
+      },
+      {
+        "type": "column",
+        "value": "="
+      },
+      {
+        "type": "column",
+        "value": "s.supplier_id;"
+      }
+    ]
+  },
+  {
+    "drillNumber": 785,
+    "subcluster": "8.9 Emulating FULL OUTER JOIN (LEFT JOIN UNION RIGHT JOIN)",
+    "level": "Level 3 (Full Outer Join Emulation)",
+    "title": "Syntax #785: Emulate a FULL OUTER JOIN showing guest orders and inactive customer accounts",
+    "table": "Orders",
+    "scenario": "Emulate a FULL OUTER JOIN showing guest orders and inactive customer accounts.",
+    "businessObjective": "Emulate a FULL OUTER JOIN showing guest orders and inactive customer accounts.",
+    "schemaSnippet": "Orders relational schema",
+    "targetQuery": "SELECT o.order_id, c.customer_name\nFROM Orders o\nLEFT JOIN Customers c ON o.customer_id = c.customer_id\nUNION\nSELECT o.order_id, c.customer_name\nFROM Orders o\nRIGHT JOIN Customers c ON o.customer_id = c.customer_id;",
+    "syntaxBlueprint": "SELECT a.col, b.col FROM TableA a LEFT JOIN TableB b ON a.id = b.a_id\nUNION\nSELECT a.col, b.col FROM TableA a RIGHT JOIN TableB b ON a.id = b.a_id;",
+    "syntaxRule": "FULL OUTER JOIN returns all rows from both tables, filling NULLs where there is no match. In MySQL, simulate FULL OUTER JOIN by unioning a LEFT JOIN and a RIGHT JOIN.",
+    "syntaxTrap": "Using UNION ALL instead of UNION will duplicate the matched intersection rows.",
+    "eli5Story": "Relational Joins on Orders: Emulate a FULL OUTER JOIN showing guest orders and inactive customer accounts.",
+    "commonMistakes": "Omitting the ON clause, forgetting table alias qualification on ambiguous columns, or accidentally converting LEFT JOIN to INNER JOIN via WHERE filters.",
+    "learningOutcomes": "Mastered 8.9 Emulating FULL OUTER JOIN (LEFT JOIN UNION RIGHT JOIN) on Orders.",
+    "challengeSlots": [
+      {
+        "type": "keyword",
+        "value": "SELECT"
+      },
+      {
+        "type": "column",
+        "value": "o.order_id,"
+      },
+      {
+        "type": "column",
+        "value": "c.customer_name"
+      },
+      {
+        "type": "keyword",
+        "value": "FROM"
+      },
+      {
+        "type": "table",
+        "value": "Orders"
+      },
+      {
+        "type": "column",
+        "value": "o"
+      },
+      {
+        "type": "keyword",
+        "value": "LEFT"
+      },
+      {
+        "type": "keyword",
+        "value": "JOIN"
+      },
+      {
+        "type": "table",
+        "value": "Customers"
+      },
+      {
+        "type": "column",
+        "value": "c"
+      },
+      {
+        "type": "keyword",
+        "value": "ON"
+      },
+      {
+        "type": "column",
+        "value": "o.customer_id"
+      },
+      {
+        "type": "column",
+        "value": "="
+      },
+      {
+        "type": "column",
+        "value": "c.customer_id"
+      },
+      {
+        "type": "keyword",
+        "value": "UNION"
+      },
+      {
+        "type": "keyword",
+        "value": "SELECT"
+      },
+      {
+        "type": "column",
+        "value": "o.order_id,"
+      },
+      {
+        "type": "column",
+        "value": "c.customer_name"
+      },
+      {
+        "type": "keyword",
+        "value": "FROM"
+      },
+      {
+        "type": "table",
+        "value": "Orders"
+      },
+      {
+        "type": "column",
+        "value": "o"
+      },
+      {
+        "type": "keyword",
+        "value": "RIGHT"
+      },
+      {
+        "type": "keyword",
+        "value": "JOIN"
+      },
+      {
+        "type": "table",
+        "value": "Customers"
+      },
+      {
+        "type": "column",
+        "value": "c"
+      },
+      {
+        "type": "keyword",
+        "value": "ON"
+      },
+      {
+        "type": "column",
+        "value": "o.customer_id"
+      },
+      {
+        "type": "column",
+        "value": "="
+      },
+      {
+        "type": "column",
+        "value": "c.customer_id;"
+      }
+    ]
+  },
+  {
+    "drillNumber": 786,
+    "subcluster": "8.9 Emulating FULL OUTER JOIN (LEFT JOIN UNION RIGHT JOIN)",
+    "level": "Level 3 (Full Outer Join Emulation)",
+    "title": "Syntax #786: Emulate a FULL OUTER JOIN showing album-less tracks and trackless albums",
+    "table": "MusicTracks",
+    "scenario": "Emulate a FULL OUTER JOIN showing album-less tracks and trackless albums.",
+    "businessObjective": "Emulate a FULL OUTER JOIN showing album-less tracks and trackless albums.",
+    "schemaSnippet": "MusicTracks relational schema",
+    "targetQuery": "SELECT t.track_title, a.album_title\nFROM MusicTracks t\nLEFT JOIN Albums a ON t.album_id = a.album_id\nUNION\nSELECT t.track_title, a.album_title\nFROM MusicTracks t\nRIGHT JOIN Albums a ON t.album_id = a.album_id;",
+    "syntaxBlueprint": "SELECT a.col, b.col FROM TableA a LEFT JOIN TableB b ON a.id = b.a_id\nUNION\nSELECT a.col, b.col FROM TableA a RIGHT JOIN TableB b ON a.id = b.a_id;",
+    "syntaxRule": "FULL OUTER JOIN returns all rows from both tables, filling NULLs where there is no match. In MySQL, simulate FULL OUTER JOIN by unioning a LEFT JOIN and a RIGHT JOIN.",
+    "syntaxTrap": "Using UNION ALL instead of UNION will duplicate the matched intersection rows.",
+    "eli5Story": "Relational Joins on MusicTracks: Emulate a FULL OUTER JOIN showing album-less tracks and trackless albums.",
+    "commonMistakes": "Omitting the ON clause, forgetting table alias qualification on ambiguous columns, or accidentally converting LEFT JOIN to INNER JOIN via WHERE filters.",
+    "learningOutcomes": "Mastered 8.9 Emulating FULL OUTER JOIN (LEFT JOIN UNION RIGHT JOIN) on MusicTracks.",
+    "challengeSlots": [
+      {
+        "type": "keyword",
+        "value": "SELECT"
+      },
+      {
+        "type": "column",
+        "value": "t.track_title,"
+      },
+      {
+        "type": "column",
+        "value": "a.album_title"
+      },
+      {
+        "type": "keyword",
+        "value": "FROM"
+      },
+      {
+        "type": "table",
+        "value": "MusicTracks"
+      },
+      {
+        "type": "column",
+        "value": "t"
+      },
+      {
+        "type": "keyword",
+        "value": "LEFT"
+      },
+      {
+        "type": "keyword",
+        "value": "JOIN"
+      },
+      {
+        "type": "table",
+        "value": "Albums"
+      },
+      {
+        "type": "column",
+        "value": "a"
+      },
+      {
+        "type": "keyword",
+        "value": "ON"
+      },
+      {
+        "type": "column",
+        "value": "t.album_id"
+      },
+      {
+        "type": "column",
+        "value": "="
+      },
+      {
+        "type": "column",
+        "value": "a.album_id"
+      },
+      {
+        "type": "keyword",
+        "value": "UNION"
+      },
+      {
+        "type": "keyword",
+        "value": "SELECT"
+      },
+      {
+        "type": "column",
+        "value": "t.track_title,"
+      },
+      {
+        "type": "column",
+        "value": "a.album_title"
+      },
+      {
+        "type": "keyword",
+        "value": "FROM"
+      },
+      {
+        "type": "table",
+        "value": "MusicTracks"
+      },
+      {
+        "type": "column",
+        "value": "t"
+      },
+      {
+        "type": "keyword",
+        "value": "RIGHT"
+      },
+      {
+        "type": "keyword",
+        "value": "JOIN"
+      },
+      {
+        "type": "table",
+        "value": "Albums"
+      },
+      {
+        "type": "column",
+        "value": "a"
+      },
+      {
+        "type": "keyword",
+        "value": "ON"
+      },
+      {
+        "type": "column",
+        "value": "t.album_id"
+      },
+      {
+        "type": "column",
+        "value": "="
+      },
+      {
+        "type": "column",
+        "value": "a.album_id;"
+      }
+    ]
+  },
+  {
+    "drillNumber": 787,
+    "subcluster": "8.9 Emulating FULL OUTER JOIN (LEFT JOIN UNION RIGHT JOIN)",
+    "level": "Level 3 (Full Outer Join Emulation)",
+    "title": "Syntax #787: Emulate a FULL OUTER JOIN showing uncoached members and unbooked trainers",
+    "table": "GymMembers",
+    "scenario": "Emulate a FULL OUTER JOIN showing uncoached members and unbooked trainers.",
+    "businessObjective": "Emulate a FULL OUTER JOIN showing uncoached members and unbooked trainers.",
+    "schemaSnippet": "GymMembers relational schema",
+    "targetQuery": "SELECT m.member_name, tr.trainer_name\nFROM GymMembers m\nLEFT JOIN Trainers tr ON m.trainer_id = tr.trainer_id\nUNION\nSELECT m.member_name, tr.trainer_name\nFROM GymMembers m\nRIGHT JOIN Trainers tr ON m.trainer_id = tr.trainer_id;",
+    "syntaxBlueprint": "SELECT a.col, b.col FROM TableA a LEFT JOIN TableB b ON a.id = b.a_id\nUNION\nSELECT a.col, b.col FROM TableA a RIGHT JOIN TableB b ON a.id = b.a_id;",
+    "syntaxRule": "FULL OUTER JOIN returns all rows from both tables, filling NULLs where there is no match. In MySQL, simulate FULL OUTER JOIN by unioning a LEFT JOIN and a RIGHT JOIN.",
+    "syntaxTrap": "Using UNION ALL instead of UNION will duplicate the matched intersection rows.",
+    "eli5Story": "Relational Joins on GymMembers: Emulate a FULL OUTER JOIN showing uncoached members and unbooked trainers.",
+    "commonMistakes": "Omitting the ON clause, forgetting table alias qualification on ambiguous columns, or accidentally converting LEFT JOIN to INNER JOIN via WHERE filters.",
+    "learningOutcomes": "Mastered 8.9 Emulating FULL OUTER JOIN (LEFT JOIN UNION RIGHT JOIN) on GymMembers.",
+    "challengeSlots": [
+      {
+        "type": "keyword",
+        "value": "SELECT"
+      },
+      {
+        "type": "column",
+        "value": "m.member_name,"
+      },
+      {
+        "type": "column",
+        "value": "tr.trainer_name"
+      },
+      {
+        "type": "keyword",
+        "value": "FROM"
+      },
+      {
+        "type": "table",
+        "value": "GymMembers"
+      },
+      {
+        "type": "column",
+        "value": "m"
+      },
+      {
+        "type": "keyword",
+        "value": "LEFT"
+      },
+      {
+        "type": "keyword",
+        "value": "JOIN"
+      },
+      {
+        "type": "table",
+        "value": "Trainers"
+      },
+      {
+        "type": "column",
+        "value": "tr"
+      },
+      {
+        "type": "keyword",
+        "value": "ON"
+      },
+      {
+        "type": "column",
+        "value": "m.trainer_id"
+      },
+      {
+        "type": "column",
+        "value": "="
+      },
+      {
+        "type": "column",
+        "value": "tr.trainer_id"
+      },
+      {
+        "type": "keyword",
+        "value": "UNION"
+      },
+      {
+        "type": "keyword",
+        "value": "SELECT"
+      },
+      {
+        "type": "column",
+        "value": "m.member_name,"
+      },
+      {
+        "type": "column",
+        "value": "tr.trainer_name"
+      },
+      {
+        "type": "keyword",
+        "value": "FROM"
+      },
+      {
+        "type": "table",
+        "value": "GymMembers"
+      },
+      {
+        "type": "column",
+        "value": "m"
+      },
+      {
+        "type": "keyword",
+        "value": "RIGHT"
+      },
+      {
+        "type": "keyword",
+        "value": "JOIN"
+      },
+      {
+        "type": "table",
+        "value": "Trainers"
+      },
+      {
+        "type": "column",
+        "value": "tr"
+      },
+      {
+        "type": "keyword",
+        "value": "ON"
+      },
+      {
+        "type": "column",
+        "value": "m.trainer_id"
+      },
+      {
+        "type": "column",
+        "value": "="
+      },
+      {
+        "type": "column",
+        "value": "tr.trainer_id;"
+      }
+    ]
+  },
+  {
+    "drillNumber": 788,
+    "subcluster": "8.9 Emulating FULL OUTER JOIN (LEFT JOIN UNION RIGHT JOIN)",
+    "level": "Level 3 (Full Outer Join Emulation)",
+    "title": "Syntax #788: Emulate a FULL OUTER JOIN showing orphaned reviews and unreviewed movies",
+    "table": "MovieReviews",
+    "scenario": "Emulate a FULL OUTER JOIN showing orphaned reviews and unreviewed movies.",
+    "businessObjective": "Emulate a FULL OUTER JOIN showing orphaned reviews and unreviewed movies.",
+    "schemaSnippet": "MovieReviews relational schema",
+    "targetQuery": "SELECT r.star_rating, m.movie_title\nFROM MovieReviews r\nLEFT JOIN Movies m ON r.movie_id = m.movie_id\nUNION\nSELECT r.star_rating, m.movie_title\nFROM MovieReviews r\nRIGHT JOIN Movies m ON r.movie_id = m.movie_id;",
+    "syntaxBlueprint": "SELECT a.col, b.col FROM TableA a LEFT JOIN TableB b ON a.id = b.a_id\nUNION\nSELECT a.col, b.col FROM TableA a RIGHT JOIN TableB b ON a.id = b.a_id;",
+    "syntaxRule": "FULL OUTER JOIN returns all rows from both tables, filling NULLs where there is no match. In MySQL, simulate FULL OUTER JOIN by unioning a LEFT JOIN and a RIGHT JOIN.",
+    "syntaxTrap": "Using UNION ALL instead of UNION will duplicate the matched intersection rows.",
+    "eli5Story": "Relational Joins on MovieReviews: Emulate a FULL OUTER JOIN showing orphaned reviews and unreviewed movies.",
+    "commonMistakes": "Omitting the ON clause, forgetting table alias qualification on ambiguous columns, or accidentally converting LEFT JOIN to INNER JOIN via WHERE filters.",
+    "learningOutcomes": "Mastered 8.9 Emulating FULL OUTER JOIN (LEFT JOIN UNION RIGHT JOIN) on MovieReviews.",
+    "challengeSlots": [
+      {
+        "type": "keyword",
+        "value": "SELECT"
+      },
+      {
+        "type": "column",
+        "value": "r.star_rating,"
+      },
+      {
+        "type": "column",
+        "value": "m.movie_title"
+      },
+      {
+        "type": "keyword",
+        "value": "FROM"
+      },
+      {
+        "type": "table",
+        "value": "MovieReviews"
+      },
+      {
+        "type": "column",
+        "value": "r"
+      },
+      {
+        "type": "keyword",
+        "value": "LEFT"
+      },
+      {
+        "type": "keyword",
+        "value": "JOIN"
+      },
+      {
+        "type": "table",
+        "value": "Movies"
+      },
+      {
+        "type": "column",
+        "value": "m"
+      },
+      {
+        "type": "keyword",
+        "value": "ON"
+      },
+      {
+        "type": "column",
+        "value": "r.movie_id"
+      },
+      {
+        "type": "column",
+        "value": "="
+      },
+      {
+        "type": "column",
+        "value": "m.movie_id"
+      },
+      {
+        "type": "keyword",
+        "value": "UNION"
+      },
+      {
+        "type": "keyword",
+        "value": "SELECT"
+      },
+      {
+        "type": "column",
+        "value": "r.star_rating,"
+      },
+      {
+        "type": "column",
+        "value": "m.movie_title"
+      },
+      {
+        "type": "keyword",
+        "value": "FROM"
+      },
+      {
+        "type": "table",
+        "value": "MovieReviews"
+      },
+      {
+        "type": "column",
+        "value": "r"
+      },
+      {
+        "type": "keyword",
+        "value": "RIGHT"
+      },
+      {
+        "type": "keyword",
+        "value": "JOIN"
+      },
+      {
+        "type": "table",
+        "value": "Movies"
+      },
+      {
+        "type": "column",
+        "value": "m"
+      },
+      {
+        "type": "keyword",
+        "value": "ON"
+      },
+      {
+        "type": "column",
+        "value": "r.movie_id"
+      },
+      {
+        "type": "column",
+        "value": "="
+      },
+      {
+        "type": "column",
+        "value": "m.movie_id;"
+      }
+    ]
+  },
+  {
+    "drillNumber": 789,
+    "subcluster": "8.9 Emulating FULL OUTER JOIN (LEFT JOIN UNION RIGHT JOIN)",
+    "level": "Level 3 (Full Outer Join Emulation)",
+    "title": "Syntax #789: Emulate a FULL OUTER JOIN showing chartered flights and grounded airlines",
+    "table": "FlightSchedule",
+    "scenario": "Emulate a FULL OUTER JOIN showing chartered flights and grounded airlines.",
+    "businessObjective": "Emulate a FULL OUTER JOIN showing chartered flights and grounded airlines.",
+    "schemaSnippet": "FlightSchedule relational schema",
+    "targetQuery": "SELECT f.flight_id, al.airline_name\nFROM FlightSchedule f\nLEFT JOIN Airlines al ON f.airline_id = al.airline_id\nUNION\nSELECT f.flight_id, al.airline_name\nFROM FlightSchedule f\nRIGHT JOIN Airlines al ON f.airline_id = al.airline_id;",
+    "syntaxBlueprint": "SELECT a.col, b.col FROM TableA a LEFT JOIN TableB b ON a.id = b.a_id\nUNION\nSELECT a.col, b.col FROM TableA a RIGHT JOIN TableB b ON a.id = b.a_id;",
+    "syntaxRule": "FULL OUTER JOIN returns all rows from both tables, filling NULLs where there is no match. In MySQL, simulate FULL OUTER JOIN by unioning a LEFT JOIN and a RIGHT JOIN.",
+    "syntaxTrap": "Using UNION ALL instead of UNION will duplicate the matched intersection rows.",
+    "eli5Story": "Relational Joins on FlightSchedule: Emulate a FULL OUTER JOIN showing chartered flights and grounded airlines.",
+    "commonMistakes": "Omitting the ON clause, forgetting table alias qualification on ambiguous columns, or accidentally converting LEFT JOIN to INNER JOIN via WHERE filters.",
+    "learningOutcomes": "Mastered 8.9 Emulating FULL OUTER JOIN (LEFT JOIN UNION RIGHT JOIN) on FlightSchedule.",
+    "challengeSlots": [
+      {
+        "type": "keyword",
+        "value": "SELECT"
+      },
+      {
+        "type": "column",
+        "value": "f.flight_id,"
+      },
+      {
+        "type": "column",
+        "value": "al.airline_name"
+      },
+      {
+        "type": "keyword",
+        "value": "FROM"
+      },
+      {
+        "type": "table",
+        "value": "FlightSchedule"
+      },
+      {
+        "type": "column",
+        "value": "f"
+      },
+      {
+        "type": "keyword",
+        "value": "LEFT"
+      },
+      {
+        "type": "keyword",
+        "value": "JOIN"
+      },
+      {
+        "type": "table",
+        "value": "Airlines"
+      },
+      {
+        "type": "column",
+        "value": "al"
+      },
+      {
+        "type": "keyword",
+        "value": "ON"
+      },
+      {
+        "type": "column",
+        "value": "f.airline_id"
+      },
+      {
+        "type": "column",
+        "value": "="
+      },
+      {
+        "type": "column",
+        "value": "al.airline_id"
+      },
+      {
+        "type": "keyword",
+        "value": "UNION"
+      },
+      {
+        "type": "keyword",
+        "value": "SELECT"
+      },
+      {
+        "type": "column",
+        "value": "f.flight_id,"
+      },
+      {
+        "type": "column",
+        "value": "al.airline_name"
+      },
+      {
+        "type": "keyword",
+        "value": "FROM"
+      },
+      {
+        "type": "table",
+        "value": "FlightSchedule"
+      },
+      {
+        "type": "column",
+        "value": "f"
+      },
+      {
+        "type": "keyword",
+        "value": "RIGHT"
+      },
+      {
+        "type": "keyword",
+        "value": "JOIN"
+      },
+      {
+        "type": "table",
+        "value": "Airlines"
+      },
+      {
+        "type": "column",
+        "value": "al"
+      },
+      {
+        "type": "keyword",
+        "value": "ON"
+      },
+      {
+        "type": "column",
+        "value": "f.airline_id"
+      },
+      {
+        "type": "column",
+        "value": "="
+      },
+      {
+        "type": "column",
+        "value": "al.airline_id;"
+      }
+    ]
+  },
+  {
+    "drillNumber": 790,
+    "subcluster": "8.9 Emulating FULL OUTER JOIN (LEFT JOIN UNION RIGHT JOIN)",
+    "level": "Level 3 (Full Outer Join Emulation)",
+    "title": "Syntax #790: Emulate a FULL OUTER JOIN displaying shelter rescue animals and pet-less owners",
+    "table": "PetClinic",
+    "scenario": "Emulate a FULL OUTER JOIN displaying shelter rescue animals and pet-less owners.",
+    "businessObjective": "Emulate a FULL OUTER JOIN displaying shelter rescue animals and pet-less owners.",
+    "schemaSnippet": "PetClinic relational schema",
+    "targetQuery": "SELECT p.pet_name, o.owner_name\nFROM PetClinic p\nLEFT JOIN Owners o ON p.owner_id = o.owner_id\nUNION\nSELECT p.pet_name, o.owner_name\nFROM PetClinic p\nRIGHT JOIN Owners o ON p.owner_id = o.owner_id;",
+    "syntaxBlueprint": "SELECT a.col, b.col FROM TableA a LEFT JOIN TableB b ON a.id = b.a_id\nUNION\nSELECT a.col, b.col FROM TableA a RIGHT JOIN TableB b ON a.id = b.a_id;",
+    "syntaxRule": "FULL OUTER JOIN returns all rows from both tables, filling NULLs where there is no match. In MySQL, simulate FULL OUTER JOIN by unioning a LEFT JOIN and a RIGHT JOIN.",
+    "syntaxTrap": "Using UNION ALL instead of UNION will duplicate the matched intersection rows.",
+    "eli5Story": "Relational Joins on PetClinic: Emulate a FULL OUTER JOIN displaying shelter rescue animals and pet-less owners.",
+    "commonMistakes": "Omitting the ON clause, forgetting table alias qualification on ambiguous columns, or accidentally converting LEFT JOIN to INNER JOIN via WHERE filters.",
+    "learningOutcomes": "Mastered 8.9 Emulating FULL OUTER JOIN (LEFT JOIN UNION RIGHT JOIN) on PetClinic.",
+    "challengeSlots": [
+      {
+        "type": "keyword",
+        "value": "SELECT"
+      },
+      {
+        "type": "column",
+        "value": "p.pet_name,"
+      },
+      {
+        "type": "column",
+        "value": "o.owner_name"
+      },
+      {
+        "type": "keyword",
+        "value": "FROM"
+      },
+      {
+        "type": "table",
+        "value": "PetClinic"
+      },
+      {
+        "type": "column",
+        "value": "p"
+      },
+      {
+        "type": "keyword",
+        "value": "LEFT"
+      },
+      {
+        "type": "keyword",
+        "value": "JOIN"
+      },
+      {
+        "type": "table",
+        "value": "Owners"
+      },
+      {
+        "type": "column",
+        "value": "o"
+      },
+      {
+        "type": "keyword",
+        "value": "ON"
+      },
+      {
+        "type": "column",
+        "value": "p.owner_id"
+      },
+      {
+        "type": "column",
+        "value": "="
+      },
+      {
+        "type": "column",
+        "value": "o.owner_id"
+      },
+      {
+        "type": "keyword",
+        "value": "UNION"
+      },
+      {
+        "type": "keyword",
+        "value": "SELECT"
+      },
+      {
+        "type": "column",
+        "value": "p.pet_name,"
+      },
+      {
+        "type": "column",
+        "value": "o.owner_name"
+      },
+      {
+        "type": "keyword",
+        "value": "FROM"
+      },
+      {
+        "type": "table",
+        "value": "PetClinic"
+      },
+      {
+        "type": "column",
+        "value": "p"
+      },
+      {
+        "type": "keyword",
+        "value": "RIGHT"
+      },
+      {
+        "type": "keyword",
+        "value": "JOIN"
+      },
+      {
+        "type": "table",
+        "value": "Owners"
+      },
+      {
+        "type": "column",
+        "value": "o"
+      },
+      {
+        "type": "keyword",
+        "value": "ON"
+      },
+      {
+        "type": "column",
+        "value": "p.owner_id"
+      },
+      {
+        "type": "column",
+        "value": "="
+      },
+      {
+        "type": "column",
+        "value": "o.owner_id;"
+      }
+    ]
+  },
+  {
+    "drillNumber": 791,
+    "subcluster": "8.10 Structural Join Bug Hunts & Traps",
+    "level": "Level 3 (Join Debugging)",
+    "title": "Syntax #791: Fix the missing join key bug: ensure 'ON s.student_id = c.student_id' is explicitly specified",
+    "table": "Students",
+    "scenario": "Fix the missing join key bug: ensure 'ON s.student_id = c.student_id' is explicitly specified.",
+    "businessObjective": "Fix the missing join key bug: ensure 'ON s.student_id = c.student_id' is explicitly specified.",
+    "schemaSnippet": "Students relational schema",
+    "targetQuery": "SELECT s.full_name, c.course_name\nFROM Students s\nINNER JOIN Courses c ON s.student_id = c.student_id\nWHERE s.enrolled_year = 2024;",
+    "syntaxBlueprint": "SELECT a.col, b.col\nFROM TableA a\nJOIN TableB b ON a.correct_fk = b.correct_pk;",
+    "syntaxRule": "Always verify that the ON clause pairs the exact corresponding foreign key and primary key columns rather than unrelated or inverted attributes.",
+    "syntaxTrap": "Joining on names or text columns instead of primary keys, leading to false matches on duplicate names.",
+    "eli5Story": "Relational Joins on Students: Fix the missing join key bug: ensure 'ON s.student_id = c.student_id' is explicitly specified.",
+    "commonMistakes": "Omitting the ON clause, forgetting table alias qualification on ambiguous columns, or accidentally converting LEFT JOIN to INNER JOIN via WHERE filters.",
+    "learningOutcomes": "Mastered 8.10 Structural Join Bug Hunts & Traps on Students.",
+    "challengeSlots": [
+      {
+        "type": "keyword",
+        "value": "SELECT"
+      },
+      {
+        "type": "column",
+        "value": "s.full_name,"
+      },
+      {
+        "type": "column",
+        "value": "c.course_name"
+      },
+      {
+        "type": "keyword",
+        "value": "FROM"
+      },
+      {
+        "type": "table",
+        "value": "Students"
+      },
+      {
+        "type": "column",
+        "value": "s"
+      },
+      {
+        "type": "keyword",
+        "value": "INNER"
+      },
+      {
+        "type": "keyword",
+        "value": "JOIN"
+      },
+      {
+        "type": "table",
+        "value": "Courses"
+      },
+      {
+        "type": "column",
+        "value": "c"
+      },
+      {
+        "type": "keyword",
+        "value": "ON"
+      },
+      {
+        "type": "column",
+        "value": "s.student_id"
+      },
+      {
+        "type": "column",
+        "value": "="
+      },
+      {
+        "type": "column",
+        "value": "c.student_id"
+      },
+      {
+        "type": "keyword",
+        "value": "WHERE"
+      },
+      {
+        "type": "column",
+        "value": "s.enrolled_year"
+      },
+      {
+        "type": "column",
+        "value": "="
+      },
+      {
+        "type": "column",
+        "value": "2024;"
+      }
+    ]
+  },
+  {
+    "drillNumber": 792,
+    "subcluster": "8.10 Structural Join Bug Hunts & Traps",
+    "level": "Level 3 (Join Debugging)",
+    "title": "Syntax #792: Fix the outer join trap where a WHERE filter accidentally negates a LEFT JOIN",
+    "table": "Books",
+    "scenario": "Fix the outer join trap where a WHERE filter accidentally negates a LEFT JOIN.",
+    "businessObjective": "Fix the outer join trap where a WHERE filter accidentally negates a LEFT JOIN.",
+    "schemaSnippet": "Books relational schema",
+    "targetQuery": "SELECT b.title, a.author_name\nFROM Books b\nLEFT JOIN Authors a ON b.author_id = a.author_id\nWHERE a.author_name IS NOT NULL;",
+    "syntaxBlueprint": "SELECT a.col, b.col\nFROM TableA a\nJOIN TableB b ON a.correct_fk = b.correct_pk;",
+    "syntaxRule": "Always verify that the ON clause pairs the exact corresponding foreign key and primary key columns rather than unrelated or inverted attributes.",
+    "syntaxTrap": "Joining on names or text columns instead of primary keys, leading to false matches on duplicate names.",
+    "eli5Story": "Relational Joins on Books: Fix the outer join trap where a WHERE filter accidentally negates a LEFT JOIN.",
+    "commonMistakes": "Omitting the ON clause, forgetting table alias qualification on ambiguous columns, or accidentally converting LEFT JOIN to INNER JOIN via WHERE filters.",
+    "learningOutcomes": "Mastered 8.10 Structural Join Bug Hunts & Traps on Books.",
+    "challengeSlots": [
+      {
+        "type": "keyword",
+        "value": "SELECT"
+      },
+      {
+        "type": "column",
+        "value": "b.title,"
+      },
+      {
+        "type": "column",
+        "value": "a.author_name"
+      },
+      {
+        "type": "keyword",
+        "value": "FROM"
+      },
+      {
+        "type": "table",
+        "value": "Books"
+      },
+      {
+        "type": "column",
+        "value": "b"
+      },
+      {
+        "type": "keyword",
+        "value": "LEFT"
+      },
+      {
+        "type": "keyword",
+        "value": "JOIN"
+      },
+      {
+        "type": "table",
+        "value": "Authors"
+      },
+      {
+        "type": "column",
+        "value": "a"
+      },
+      {
+        "type": "keyword",
+        "value": "ON"
+      },
+      {
+        "type": "column",
+        "value": "b.author_id"
+      },
+      {
+        "type": "column",
+        "value": "="
+      },
+      {
+        "type": "column",
+        "value": "a.author_id"
+      },
+      {
+        "type": "keyword",
+        "value": "WHERE"
+      },
+      {
+        "type": "column",
+        "value": "a.author_name"
+      },
+      {
+        "type": "keyword",
+        "value": "IS"
+      },
+      {
+        "type": "keyword",
+        "value": "NOT"
+      },
+      {
+        "type": "keyword",
+        "value": "NULL;"
+      }
+    ]
+  },
+  {
+    "drillNumber": 793,
+    "subcluster": "8.10 Structural Join Bug Hunts & Traps",
+    "level": "Level 3 (Join Debugging)",
+    "title": "Syntax #793: Fix inverted join keys: ensure employee foreign key matches department primary key",
+    "table": "Employees",
+    "scenario": "Fix inverted join keys: ensure employee foreign key matches department primary key.",
+    "businessObjective": "Fix inverted join keys: ensure employee foreign key matches department primary key.",
+    "schemaSnippet": "Employees relational schema",
+    "targetQuery": "SELECT e.first_name, d.department_name\nFROM Employees e\nINNER JOIN Departments d ON e.department_id = d.department_id\nORDER BY e.salary DESC;",
+    "syntaxBlueprint": "SELECT a.col, b.col\nFROM TableA a\nJOIN TableB b ON a.correct_fk = b.correct_pk;",
+    "syntaxRule": "Always verify that the ON clause pairs the exact corresponding foreign key and primary key columns rather than unrelated or inverted attributes.",
+    "syntaxTrap": "Joining on names or text columns instead of primary keys, leading to false matches on duplicate names.",
+    "eli5Story": "Relational Joins on Employees: Fix inverted join keys: ensure employee foreign key matches department primary key.",
+    "commonMistakes": "Omitting the ON clause, forgetting table alias qualification on ambiguous columns, or accidentally converting LEFT JOIN to INNER JOIN via WHERE filters.",
+    "learningOutcomes": "Mastered 8.10 Structural Join Bug Hunts & Traps on Employees.",
+    "challengeSlots": [
+      {
+        "type": "keyword",
+        "value": "SELECT"
+      },
+      {
+        "type": "column",
+        "value": "e.first_name,"
+      },
+      {
+        "type": "column",
+        "value": "d.department_name"
+      },
+      {
+        "type": "keyword",
+        "value": "FROM"
+      },
+      {
+        "type": "table",
+        "value": "Employees"
+      },
+      {
+        "type": "column",
+        "value": "e"
+      },
+      {
+        "type": "keyword",
+        "value": "INNER"
+      },
+      {
+        "type": "keyword",
+        "value": "JOIN"
+      },
+      {
+        "type": "table",
+        "value": "Departments"
+      },
+      {
+        "type": "column",
+        "value": "d"
+      },
+      {
+        "type": "keyword",
+        "value": "ON"
+      },
+      {
+        "type": "column",
+        "value": "e.department_id"
+      },
+      {
+        "type": "column",
+        "value": "="
+      },
+      {
+        "type": "column",
+        "value": "d.department_id"
+      },
+      {
+        "type": "keyword",
+        "value": "ORDER"
+      },
+      {
+        "type": "keyword",
+        "value": "BY"
+      },
+      {
+        "type": "column",
+        "value": "e.salary"
+      },
+      {
+        "type": "keyword",
+        "value": "DESC;"
+      }
+    ]
+  },
+  {
+    "drillNumber": 794,
+    "subcluster": "8.10 Structural Join Bug Hunts & Traps",
+    "level": "Level 3 (Join Debugging)",
+    "title": "Syntax #794: Fix accidental cross join: replace comma-separated tables with explicit INNER JOIN ON",
+    "table": "GroceryItems",
+    "scenario": "Fix accidental cross join: replace comma-separated tables with explicit INNER JOIN ON.",
+    "businessObjective": "Fix accidental cross join: replace comma-separated tables with explicit INNER JOIN ON.",
+    "schemaSnippet": "GroceryItems relational schema",
+    "targetQuery": "SELECT g.item_name, s.supplier_name\nFROM GroceryItems g\nINNER JOIN Suppliers s ON g.supplier_id = s.supplier_id\nWHERE g.unit_price > 1.00;",
+    "syntaxBlueprint": "SELECT a.col, b.col\nFROM TableA a\nJOIN TableB b ON a.correct_fk = b.correct_pk;",
+    "syntaxRule": "Always verify that the ON clause pairs the exact corresponding foreign key and primary key columns rather than unrelated or inverted attributes.",
+    "syntaxTrap": "Joining on names or text columns instead of primary keys, leading to false matches on duplicate names.",
+    "eli5Story": "Relational Joins on GroceryItems: Fix accidental cross join: replace comma-separated tables with explicit INNER JOIN ON.",
+    "commonMistakes": "Omitting the ON clause, forgetting table alias qualification on ambiguous columns, or accidentally converting LEFT JOIN to INNER JOIN via WHERE filters.",
+    "learningOutcomes": "Mastered 8.10 Structural Join Bug Hunts & Traps on GroceryItems.",
+    "challengeSlots": [
+      {
+        "type": "keyword",
+        "value": "SELECT"
+      },
+      {
+        "type": "column",
+        "value": "g.item_name,"
+      },
+      {
+        "type": "column",
+        "value": "s.supplier_name"
+      },
+      {
+        "type": "keyword",
+        "value": "FROM"
+      },
+      {
+        "type": "table",
+        "value": "GroceryItems"
+      },
+      {
+        "type": "column",
+        "value": "g"
+      },
+      {
+        "type": "keyword",
+        "value": "INNER"
+      },
+      {
+        "type": "keyword",
+        "value": "JOIN"
+      },
+      {
+        "type": "table",
+        "value": "Suppliers"
+      },
+      {
+        "type": "column",
+        "value": "s"
+      },
+      {
+        "type": "keyword",
+        "value": "ON"
+      },
+      {
+        "type": "column",
+        "value": "g.supplier_id"
+      },
+      {
+        "type": "column",
+        "value": "="
+      },
+      {
+        "type": "column",
+        "value": "s.supplier_id"
+      },
+      {
+        "type": "keyword",
+        "value": "WHERE"
+      },
+      {
+        "type": "column",
+        "value": "g.unit_price"
+      },
+      {
+        "type": "column",
+        "value": ">"
+      },
+      {
+        "type": "column",
+        "value": "1.00;"
+      }
+    ]
+  },
+  {
+    "drillNumber": 795,
+    "subcluster": "8.10 Structural Join Bug Hunts & Traps",
+    "level": "Level 3 (Join Debugging)",
+    "title": "Syntax #795: Fix ambiguous column error by explicitly qualifying order_id and customer_name",
+    "table": "Orders",
+    "scenario": "Fix ambiguous column error by explicitly qualifying order_id and customer_name.",
+    "businessObjective": "Fix ambiguous column error by explicitly qualifying order_id and customer_name.",
+    "schemaSnippet": "Orders relational schema",
+    "targetQuery": "SELECT o.order_id, c.customer_name\nFROM Orders o\nLEFT JOIN Customers c ON o.customer_id = c.customer_id;",
+    "syntaxBlueprint": "SELECT a.col, b.col\nFROM TableA a\nJOIN TableB b ON a.correct_fk = b.correct_pk;",
+    "syntaxRule": "Always verify that the ON clause pairs the exact corresponding foreign key and primary key columns rather than unrelated or inverted attributes.",
+    "syntaxTrap": "Joining on names or text columns instead of primary keys, leading to false matches on duplicate names.",
+    "eli5Story": "Relational Joins on Orders: Fix ambiguous column error by explicitly qualifying order_id and customer_name.",
+    "commonMistakes": "Omitting the ON clause, forgetting table alias qualification on ambiguous columns, or accidentally converting LEFT JOIN to INNER JOIN via WHERE filters.",
+    "learningOutcomes": "Mastered 8.10 Structural Join Bug Hunts & Traps on Orders.",
+    "challengeSlots": [
+      {
+        "type": "keyword",
+        "value": "SELECT"
+      },
+      {
+        "type": "column",
+        "value": "o.order_id,"
+      },
+      {
+        "type": "column",
+        "value": "c.customer_name"
+      },
+      {
+        "type": "keyword",
+        "value": "FROM"
+      },
+      {
+        "type": "table",
+        "value": "Orders"
+      },
+      {
+        "type": "column",
+        "value": "o"
+      },
+      {
+        "type": "keyword",
+        "value": "LEFT"
+      },
+      {
+        "type": "keyword",
+        "value": "JOIN"
+      },
+      {
+        "type": "table",
+        "value": "Customers"
+      },
+      {
+        "type": "column",
+        "value": "c"
+      },
+      {
+        "type": "keyword",
+        "value": "ON"
+      },
+      {
+        "type": "column",
+        "value": "o.customer_id"
+      },
+      {
+        "type": "column",
+        "value": "="
+      },
+      {
+        "type": "column",
+        "value": "c.customer_id;"
+      }
+    ]
+  },
+  {
+    "drillNumber": 796,
+    "subcluster": "8.10 Structural Join Bug Hunts & Traps",
+    "level": "Level 3 (Join Debugging)",
+    "title": "Syntax #796: Fix accidental cartesian product by supplying the missing ON condition on album_id",
+    "table": "MusicTracks",
+    "scenario": "Fix accidental cartesian product by supplying the missing ON condition on album_id.",
+    "businessObjective": "Fix accidental cartesian product by supplying the missing ON condition on album_id.",
+    "schemaSnippet": "MusicTracks relational schema",
+    "targetQuery": "SELECT t.track_title, a.album_title\nFROM MusicTracks t\nINNER JOIN Albums a ON t.album_id = a.album_id\nORDER BY t.track_title ASC;",
+    "syntaxBlueprint": "SELECT a.col, b.col\nFROM TableA a\nJOIN TableB b ON a.correct_fk = b.correct_pk;",
+    "syntaxRule": "Always verify that the ON clause pairs the exact corresponding foreign key and primary key columns rather than unrelated or inverted attributes.",
+    "syntaxTrap": "Joining on names or text columns instead of primary keys, leading to false matches on duplicate names.",
+    "eli5Story": "Relational Joins on MusicTracks: Fix accidental cartesian product by supplying the missing ON condition on album_id.",
+    "commonMistakes": "Omitting the ON clause, forgetting table alias qualification on ambiguous columns, or accidentally converting LEFT JOIN to INNER JOIN via WHERE filters.",
+    "learningOutcomes": "Mastered 8.10 Structural Join Bug Hunts & Traps on MusicTracks.",
+    "challengeSlots": [
+      {
+        "type": "keyword",
+        "value": "SELECT"
+      },
+      {
+        "type": "column",
+        "value": "t.track_title,"
+      },
+      {
+        "type": "column",
+        "value": "a.album_title"
+      },
+      {
+        "type": "keyword",
+        "value": "FROM"
+      },
+      {
+        "type": "table",
+        "value": "MusicTracks"
+      },
+      {
+        "type": "column",
+        "value": "t"
+      },
+      {
+        "type": "keyword",
+        "value": "INNER"
+      },
+      {
+        "type": "keyword",
+        "value": "JOIN"
+      },
+      {
+        "type": "table",
+        "value": "Albums"
+      },
+      {
+        "type": "column",
+        "value": "a"
+      },
+      {
+        "type": "keyword",
+        "value": "ON"
+      },
+      {
+        "type": "column",
+        "value": "t.album_id"
+      },
+      {
+        "type": "column",
+        "value": "="
+      },
+      {
+        "type": "column",
+        "value": "a.album_id"
+      },
+      {
+        "type": "keyword",
+        "value": "ORDER"
+      },
+      {
+        "type": "keyword",
+        "value": "BY"
+      },
+      {
+        "type": "column",
+        "value": "t.track_title"
+      },
+      {
+        "type": "keyword",
+        "value": "ASC;"
+      }
+    ]
+  },
+  {
+    "drillNumber": 797,
+    "subcluster": "8.10 Structural Join Bug Hunts & Traps",
+    "level": "Level 3 (Join Debugging)",
+    "title": "Syntax #797: Fix predicate placement: preserve outer join while filtering left table attributes",
+    "table": "GymMembers",
+    "scenario": "Fix predicate placement: preserve outer join while filtering left table attributes.",
+    "businessObjective": "Fix predicate placement: preserve outer join while filtering left table attributes.",
+    "schemaSnippet": "GymMembers relational schema",
+    "targetQuery": "SELECT m.member_name, tr.trainer_name\nFROM GymMembers m\nLEFT JOIN Trainers tr ON m.trainer_id = tr.trainer_id\nWHERE m.membership_plan = 'Platinum';",
+    "syntaxBlueprint": "SELECT a.col, b.col\nFROM TableA a\nJOIN TableB b ON a.correct_fk = b.correct_pk;",
+    "syntaxRule": "Always verify that the ON clause pairs the exact corresponding foreign key and primary key columns rather than unrelated or inverted attributes.",
+    "syntaxTrap": "Joining on names or text columns instead of primary keys, leading to false matches on duplicate names.",
+    "eli5Story": "Relational Joins on GymMembers: Fix predicate placement: preserve outer join while filtering left table attributes.",
+    "commonMistakes": "Omitting the ON clause, forgetting table alias qualification on ambiguous columns, or accidentally converting LEFT JOIN to INNER JOIN via WHERE filters.",
+    "learningOutcomes": "Mastered 8.10 Structural Join Bug Hunts & Traps on GymMembers.",
+    "challengeSlots": [
+      {
+        "type": "keyword",
+        "value": "SELECT"
+      },
+      {
+        "type": "column",
+        "value": "m.member_name,"
+      },
+      {
+        "type": "column",
+        "value": "tr.trainer_name"
+      },
+      {
+        "type": "keyword",
+        "value": "FROM"
+      },
+      {
+        "type": "table",
+        "value": "GymMembers"
+      },
+      {
+        "type": "column",
+        "value": "m"
+      },
+      {
+        "type": "keyword",
+        "value": "LEFT"
+      },
+      {
+        "type": "keyword",
+        "value": "JOIN"
+      },
+      {
+        "type": "table",
+        "value": "Trainers"
+      },
+      {
+        "type": "column",
+        "value": "tr"
+      },
+      {
+        "type": "keyword",
+        "value": "ON"
+      },
+      {
+        "type": "column",
+        "value": "m.trainer_id"
+      },
+      {
+        "type": "column",
+        "value": "="
+      },
+      {
+        "type": "column",
+        "value": "tr.trainer_id"
+      },
+      {
+        "type": "keyword",
+        "value": "WHERE"
+      },
+      {
+        "type": "column",
+        "value": "m.membership_plan"
+      },
+      {
+        "type": "column",
+        "value": "="
+      },
+      {
+        "type": "column",
+        "value": "'Platinum';"
+      }
+    ]
+  },
+  {
+    "drillNumber": 798,
+    "subcluster": "8.10 Structural Join Bug Hunts & Traps",
+    "level": "Level 3 (Join Debugging)",
+    "title": "Syntax #798: Fix incorrect join key: connect on movie_id rather than movie title text",
+    "table": "MovieReviews",
+    "scenario": "Fix incorrect join key: connect on movie_id rather than movie title text.",
+    "businessObjective": "Fix incorrect join key: connect on movie_id rather than movie title text.",
+    "schemaSnippet": "MovieReviews relational schema",
+    "targetQuery": "SELECT r.review_text, m.movie_title\nFROM MovieReviews r\nINNER JOIN Movies m ON r.movie_id = m.movie_id\nWHERE m.release_year >= 2000;",
+    "syntaxBlueprint": "SELECT a.col, b.col\nFROM TableA a\nJOIN TableB b ON a.correct_fk = b.correct_pk;",
+    "syntaxRule": "Always verify that the ON clause pairs the exact corresponding foreign key and primary key columns rather than unrelated or inverted attributes.",
+    "syntaxTrap": "Joining on names or text columns instead of primary keys, leading to false matches on duplicate names.",
+    "eli5Story": "Relational Joins on MovieReviews: Fix incorrect join key: connect on movie_id rather than movie title text.",
+    "commonMistakes": "Omitting the ON clause, forgetting table alias qualification on ambiguous columns, or accidentally converting LEFT JOIN to INNER JOIN via WHERE filters.",
+    "learningOutcomes": "Mastered 8.10 Structural Join Bug Hunts & Traps on MovieReviews.",
+    "challengeSlots": [
+      {
+        "type": "keyword",
+        "value": "SELECT"
+      },
+      {
+        "type": "column",
+        "value": "r.review_text,"
+      },
+      {
+        "type": "column",
+        "value": "m.movie_title"
+      },
+      {
+        "type": "keyword",
+        "value": "FROM"
+      },
+      {
+        "type": "table",
+        "value": "MovieReviews"
+      },
+      {
+        "type": "column",
+        "value": "r"
+      },
+      {
+        "type": "keyword",
+        "value": "INNER"
+      },
+      {
+        "type": "keyword",
+        "value": "JOIN"
+      },
+      {
+        "type": "table",
+        "value": "Movies"
+      },
+      {
+        "type": "column",
+        "value": "m"
+      },
+      {
+        "type": "keyword",
+        "value": "ON"
+      },
+      {
+        "type": "column",
+        "value": "r.movie_id"
+      },
+      {
+        "type": "column",
+        "value": "="
+      },
+      {
+        "type": "column",
+        "value": "m.movie_id"
+      },
+      {
+        "type": "keyword",
+        "value": "WHERE"
+      },
+      {
+        "type": "column",
+        "value": "m.release_year"
+      },
+      {
+        "type": "column",
+        "value": ">="
+      },
+      {
+        "type": "column",
+        "value": "2000;"
+      }
+    ]
+  },
+  {
+    "drillNumber": 799,
+    "subcluster": "8.10 Structural Join Bug Hunts & Traps",
+    "level": "Level 3 (Join Debugging)",
+    "title": "Syntax #799: Fix duplicate row explosion by joining on unique airline_id instead of airline name",
+    "table": "FlightSchedule",
+    "scenario": "Fix duplicate row explosion by joining on unique airline_id instead of airline name.",
+    "businessObjective": "Fix duplicate row explosion by joining on unique airline_id instead of airline name.",
+    "schemaSnippet": "FlightSchedule relational schema",
+    "targetQuery": "SELECT f.flight_id, al.airline_name\nFROM FlightSchedule f\nINNER JOIN Airlines al ON f.airline_id = al.airline_id\nWHERE f.status != 'Cancelled';",
+    "syntaxBlueprint": "SELECT a.col, b.col\nFROM TableA a\nJOIN TableB b ON a.correct_fk = b.correct_pk;",
+    "syntaxRule": "Always verify that the ON clause pairs the exact corresponding foreign key and primary key columns rather than unrelated or inverted attributes.",
+    "syntaxTrap": "Joining on names or text columns instead of primary keys, leading to false matches on duplicate names.",
+    "eli5Story": "Relational Joins on FlightSchedule: Fix duplicate row explosion by joining on unique airline_id instead of airline name.",
+    "commonMistakes": "Omitting the ON clause, forgetting table alias qualification on ambiguous columns, or accidentally converting LEFT JOIN to INNER JOIN via WHERE filters.",
+    "learningOutcomes": "Mastered 8.10 Structural Join Bug Hunts & Traps on FlightSchedule.",
+    "challengeSlots": [
+      {
+        "type": "keyword",
+        "value": "SELECT"
+      },
+      {
+        "type": "column",
+        "value": "f.flight_id,"
+      },
+      {
+        "type": "column",
+        "value": "al.airline_name"
+      },
+      {
+        "type": "keyword",
+        "value": "FROM"
+      },
+      {
+        "type": "table",
+        "value": "FlightSchedule"
+      },
+      {
+        "type": "column",
+        "value": "f"
+      },
+      {
+        "type": "keyword",
+        "value": "INNER"
+      },
+      {
+        "type": "keyword",
+        "value": "JOIN"
+      },
+      {
+        "type": "table",
+        "value": "Airlines"
+      },
+      {
+        "type": "column",
+        "value": "al"
+      },
+      {
+        "type": "keyword",
+        "value": "ON"
+      },
+      {
+        "type": "column",
+        "value": "f.airline_id"
+      },
+      {
+        "type": "column",
+        "value": "="
+      },
+      {
+        "type": "column",
+        "value": "al.airline_id"
+      },
+      {
+        "type": "keyword",
+        "value": "WHERE"
+      },
+      {
+        "type": "column",
+        "value": "f.status"
+      },
+      {
+        "type": "column",
+        "value": "!="
+      },
+      {
+        "type": "column",
+        "value": "'Cancelled';"
+      }
+    ]
+  },
+  {
+    "drillNumber": 800,
+    "subcluster": "8.10 Structural Join Bug Hunts & Traps",
+    "level": "Level 3 (Join Debugging)",
+    "title": "Syntax #800: Fix outer join filtering: ensure left table filtering does not discard intended NULL matches",
+    "table": "PetClinic",
+    "scenario": "Fix outer join filtering: ensure left table filtering does not discard intended NULL matches.",
+    "businessObjective": "Fix outer join filtering: ensure left table filtering does not discard intended NULL matches.",
+    "schemaSnippet": "PetClinic relational schema",
+    "targetQuery": "SELECT p.pet_name, o.owner_name\nFROM PetClinic p\nLEFT JOIN Owners o ON p.owner_id = o.owner_id\nWHERE p.species = 'Canine';",
+    "syntaxBlueprint": "SELECT a.col, b.col\nFROM TableA a\nJOIN TableB b ON a.correct_fk = b.correct_pk;",
+    "syntaxRule": "Always verify that the ON clause pairs the exact corresponding foreign key and primary key columns rather than unrelated or inverted attributes.",
+    "syntaxTrap": "Joining on names or text columns instead of primary keys, leading to false matches on duplicate names.",
+    "eli5Story": "Relational Joins on PetClinic: Fix outer join filtering: ensure left table filtering does not discard intended NULL matches.",
+    "commonMistakes": "Omitting the ON clause, forgetting table alias qualification on ambiguous columns, or accidentally converting LEFT JOIN to INNER JOIN via WHERE filters.",
+    "learningOutcomes": "Mastered 8.10 Structural Join Bug Hunts & Traps on PetClinic.",
+    "challengeSlots": [
+      {
+        "type": "keyword",
+        "value": "SELECT"
+      },
+      {
+        "type": "column",
+        "value": "p.pet_name,"
+      },
+      {
+        "type": "column",
+        "value": "o.owner_name"
+      },
+      {
+        "type": "keyword",
+        "value": "FROM"
+      },
+      {
+        "type": "table",
+        "value": "PetClinic"
+      },
+      {
+        "type": "column",
+        "value": "p"
+      },
+      {
+        "type": "keyword",
+        "value": "LEFT"
+      },
+      {
+        "type": "keyword",
+        "value": "JOIN"
+      },
+      {
+        "type": "table",
+        "value": "Owners"
+      },
+      {
+        "type": "column",
+        "value": "o"
+      },
+      {
+        "type": "keyword",
+        "value": "ON"
+      },
+      {
+        "type": "column",
+        "value": "p.owner_id"
+      },
+      {
+        "type": "column",
+        "value": "="
+      },
+      {
+        "type": "column",
+        "value": "o.owner_id"
+      },
+      {
+        "type": "keyword",
+        "value": "WHERE"
+      },
+      {
+        "type": "column",
+        "value": "p.species"
+      },
+      {
+        "type": "column",
+        "value": "="
+      },
+      {
+        "type": "column",
+        "value": "'Canine';"
+      }
+    ]
+  },
+  {
+    "drillNumber": 801,
+    "subcluster": "9.1 Three-Table Linear Chains (A -> B -> C)",
+    "level": "Level 3 (3-Table Joins)",
+    "title": "Syntax #801: Execute a 3-table join: Students -> Courses -> Departments",
+    "table": "Students",
+    "scenario": "Execute a 3-table join: Students -> Courses -> Departments.",
+    "businessObjective": "Execute a 3-table join: Students -> Courses -> Departments.",
+    "schemaSnippet": "Students relational schema",
+    "targetQuery": "SELECT s.full_name, c.course_name, d.department_name\nFROM Students s\nINNER JOIN Courses c ON s.student_id = c.student_id\nINNER JOIN Departments d ON c.dept_id = d.department_id;",
+    "syntaxBlueprint": "SELECT a.col, b.col, c.col\nFROM TableA a\nJOIN TableB b ON a.id = b.a_id\nJOIN TableC c ON b.c_id = c.id;",
+    "syntaxRule": "Join sequentially along foreign key relationships: Table A connects to junction Table B, which connects to dimension Table C.",
+    "syntaxTrap": "Trying to join Table A directly to Table C when no direct foreign key exists between them.",
+    "eli5Story": "Relational Joins on Students: Execute a 3-table join: Students -> Courses -> Departments.",
+    "commonMistakes": "Omitting the ON clause, forgetting table alias qualification on ambiguous columns, or accidentally converting LEFT JOIN to INNER JOIN via WHERE filters.",
+    "learningOutcomes": "Mastered 9.1 Three-Table Linear Chains (A -> B -> C) on Students.",
+    "challengeSlots": [
+      {
+        "type": "keyword",
+        "value": "SELECT"
+      },
+      {
+        "type": "column",
+        "value": "s.full_name,"
+      },
+      {
+        "type": "column",
+        "value": "c.course_name,"
+      },
+      {
+        "type": "column",
+        "value": "d.department_name"
+      },
+      {
+        "type": "keyword",
+        "value": "FROM"
+      },
+      {
+        "type": "table",
+        "value": "Students"
+      },
+      {
+        "type": "column",
+        "value": "s"
+      },
+      {
+        "type": "keyword",
+        "value": "INNER"
+      },
+      {
+        "type": "keyword",
+        "value": "JOIN"
+      },
+      {
+        "type": "table",
+        "value": "Courses"
+      },
+      {
+        "type": "column",
+        "value": "c"
+      },
+      {
+        "type": "keyword",
+        "value": "ON"
+      },
+      {
+        "type": "column",
+        "value": "s.student_id"
+      },
+      {
+        "type": "column",
+        "value": "="
+      },
+      {
+        "type": "column",
+        "value": "c.student_id"
+      },
+      {
+        "type": "keyword",
+        "value": "INNER"
+      },
+      {
+        "type": "keyword",
+        "value": "JOIN"
+      },
+      {
+        "type": "table",
+        "value": "Departments"
+      },
+      {
+        "type": "column",
+        "value": "d"
+      },
+      {
+        "type": "keyword",
+        "value": "ON"
+      },
+      {
+        "type": "column",
+        "value": "c.dept_id"
+      },
+      {
+        "type": "column",
+        "value": "="
+      },
+      {
+        "type": "column",
+        "value": "d.department_id;"
+      }
+    ]
+  },
+  {
+    "drillNumber": 802,
+    "subcluster": "9.1 Three-Table Linear Chains (A -> B -> C)",
+    "level": "Level 3 (3-Table Joins)",
+    "title": "Syntax #802: Execute a 3-table join: Books -> Authors -> Publishers",
+    "table": "Books",
+    "scenario": "Execute a 3-table join: Books -> Authors -> Publishers.",
+    "businessObjective": "Execute a 3-table join: Books -> Authors -> Publishers.",
+    "schemaSnippet": "Books relational schema",
+    "targetQuery": "SELECT b.title, a.author_name, p.publisher_name\nFROM Books b\nINNER JOIN Authors a ON b.author_id = a.author_id\nINNER JOIN Publishers p ON b.publisher_id = p.publisher_id;",
+    "syntaxBlueprint": "SELECT a.col, b.col, c.col\nFROM TableA a\nJOIN TableB b ON a.id = b.a_id\nJOIN TableC c ON b.c_id = c.id;",
+    "syntaxRule": "Join sequentially along foreign key relationships: Table A connects to junction Table B, which connects to dimension Table C.",
+    "syntaxTrap": "Trying to join Table A directly to Table C when no direct foreign key exists between them.",
+    "eli5Story": "Relational Joins on Books: Execute a 3-table join: Books -> Authors -> Publishers.",
+    "commonMistakes": "Omitting the ON clause, forgetting table alias qualification on ambiguous columns, or accidentally converting LEFT JOIN to INNER JOIN via WHERE filters.",
+    "learningOutcomes": "Mastered 9.1 Three-Table Linear Chains (A -> B -> C) on Books.",
+    "challengeSlots": [
+      {
+        "type": "keyword",
+        "value": "SELECT"
+      },
+      {
+        "type": "column",
+        "value": "b.title,"
+      },
+      {
+        "type": "column",
+        "value": "a.author_name,"
+      },
+      {
+        "type": "column",
+        "value": "p.publisher_name"
+      },
+      {
+        "type": "keyword",
+        "value": "FROM"
+      },
+      {
+        "type": "table",
+        "value": "Books"
+      },
+      {
+        "type": "column",
+        "value": "b"
+      },
+      {
+        "type": "keyword",
+        "value": "INNER"
+      },
+      {
+        "type": "keyword",
+        "value": "JOIN"
+      },
+      {
+        "type": "table",
+        "value": "Authors"
+      },
+      {
+        "type": "column",
+        "value": "a"
+      },
+      {
+        "type": "keyword",
+        "value": "ON"
+      },
+      {
+        "type": "column",
+        "value": "b.author_id"
+      },
+      {
+        "type": "column",
+        "value": "="
+      },
+      {
+        "type": "column",
+        "value": "a.author_id"
+      },
+      {
+        "type": "keyword",
+        "value": "INNER"
+      },
+      {
+        "type": "keyword",
+        "value": "JOIN"
+      },
+      {
+        "type": "column",
+        "value": "Publishers"
+      },
+      {
+        "type": "column",
+        "value": "p"
+      },
+      {
+        "type": "keyword",
+        "value": "ON"
+      },
+      {
+        "type": "column",
+        "value": "b.publisher_id"
+      },
+      {
+        "type": "column",
+        "value": "="
+      },
+      {
+        "type": "column",
+        "value": "p.publisher_id;"
+      }
+    ]
+  },
+  {
+    "drillNumber": 803,
+    "subcluster": "9.1 Three-Table Linear Chains (A -> B -> C)",
+    "level": "Level 3 (3-Table Joins)",
+    "title": "Syntax #803: Execute a 3-table join: Employees -> Departments -> Locations",
+    "table": "Employees",
+    "scenario": "Execute a 3-table join: Employees -> Departments -> Locations.",
+    "businessObjective": "Execute a 3-table join: Employees -> Departments -> Locations.",
+    "schemaSnippet": "Employees relational schema",
+    "targetQuery": "SELECT e.first_name, d.department_name, l.location_city\nFROM Employees e\nINNER JOIN Departments d ON e.department_id = d.department_id\nINNER JOIN Locations l ON d.location_id = l.location_id;",
+    "syntaxBlueprint": "SELECT a.col, b.col, c.col\nFROM TableA a\nJOIN TableB b ON a.id = b.a_id\nJOIN TableC c ON b.c_id = c.id;",
+    "syntaxRule": "Join sequentially along foreign key relationships: Table A connects to junction Table B, which connects to dimension Table C.",
+    "syntaxTrap": "Trying to join Table A directly to Table C when no direct foreign key exists between them.",
+    "eli5Story": "Relational Joins on Employees: Execute a 3-table join: Employees -> Departments -> Locations.",
+    "commonMistakes": "Omitting the ON clause, forgetting table alias qualification on ambiguous columns, or accidentally converting LEFT JOIN to INNER JOIN via WHERE filters.",
+    "learningOutcomes": "Mastered 9.1 Three-Table Linear Chains (A -> B -> C) on Employees.",
+    "challengeSlots": [
+      {
+        "type": "keyword",
+        "value": "SELECT"
+      },
+      {
+        "type": "column",
+        "value": "e.first_name,"
+      },
+      {
+        "type": "column",
+        "value": "d.department_name,"
+      },
+      {
+        "type": "column",
+        "value": "l.location_city"
+      },
+      {
+        "type": "keyword",
+        "value": "FROM"
+      },
+      {
+        "type": "table",
+        "value": "Employees"
+      },
+      {
+        "type": "column",
+        "value": "e"
+      },
+      {
+        "type": "keyword",
+        "value": "INNER"
+      },
+      {
+        "type": "keyword",
+        "value": "JOIN"
+      },
+      {
+        "type": "table",
+        "value": "Departments"
+      },
+      {
+        "type": "column",
+        "value": "d"
+      },
+      {
+        "type": "keyword",
+        "value": "ON"
+      },
+      {
+        "type": "column",
+        "value": "e.department_id"
+      },
+      {
+        "type": "column",
+        "value": "="
+      },
+      {
+        "type": "column",
+        "value": "d.department_id"
+      },
+      {
+        "type": "keyword",
+        "value": "INNER"
+      },
+      {
+        "type": "keyword",
+        "value": "JOIN"
+      },
+      {
+        "type": "column",
+        "value": "Locations"
+      },
+      {
+        "type": "column",
+        "value": "l"
+      },
+      {
+        "type": "keyword",
+        "value": "ON"
+      },
+      {
+        "type": "column",
+        "value": "d.location_id"
+      },
+      {
+        "type": "column",
+        "value": "="
+      },
+      {
+        "type": "column",
+        "value": "l.location_id;"
+      }
+    ]
+  },
+  {
+    "drillNumber": 804,
+    "subcluster": "9.1 Three-Table Linear Chains (A -> B -> C)",
+    "level": "Level 3 (3-Table Joins)",
+    "title": "Syntax #804: Execute a 3-table join: GroceryItems -> Suppliers -> Countries",
+    "table": "GroceryItems",
+    "scenario": "Execute a 3-table join: GroceryItems -> Suppliers -> Countries.",
+    "businessObjective": "Execute a 3-table join: GroceryItems -> Suppliers -> Countries.",
+    "schemaSnippet": "GroceryItems relational schema",
+    "targetQuery": "SELECT g.item_name, s.supplier_name, c.country_name\nFROM GroceryItems g\nINNER JOIN Suppliers s ON g.supplier_id = s.supplier_id\nINNER JOIN Countries c ON s.country_id = c.country_id;",
+    "syntaxBlueprint": "SELECT a.col, b.col, c.col\nFROM TableA a\nJOIN TableB b ON a.id = b.a_id\nJOIN TableC c ON b.c_id = c.id;",
+    "syntaxRule": "Join sequentially along foreign key relationships: Table A connects to junction Table B, which connects to dimension Table C.",
+    "syntaxTrap": "Trying to join Table A directly to Table C when no direct foreign key exists between them.",
+    "eli5Story": "Relational Joins on GroceryItems: Execute a 3-table join: GroceryItems -> Suppliers -> Countries.",
+    "commonMistakes": "Omitting the ON clause, forgetting table alias qualification on ambiguous columns, or accidentally converting LEFT JOIN to INNER JOIN via WHERE filters.",
+    "learningOutcomes": "Mastered 9.1 Three-Table Linear Chains (A -> B -> C) on GroceryItems.",
+    "challengeSlots": [
+      {
+        "type": "keyword",
+        "value": "SELECT"
+      },
+      {
+        "type": "column",
+        "value": "g.item_name,"
+      },
+      {
+        "type": "column",
+        "value": "s.supplier_name,"
+      },
+      {
+        "type": "column",
+        "value": "c.country_name"
+      },
+      {
+        "type": "keyword",
+        "value": "FROM"
+      },
+      {
+        "type": "table",
+        "value": "GroceryItems"
+      },
+      {
+        "type": "column",
+        "value": "g"
+      },
+      {
+        "type": "keyword",
+        "value": "INNER"
+      },
+      {
+        "type": "keyword",
+        "value": "JOIN"
+      },
+      {
+        "type": "table",
+        "value": "Suppliers"
+      },
+      {
+        "type": "column",
+        "value": "s"
+      },
+      {
+        "type": "keyword",
+        "value": "ON"
+      },
+      {
+        "type": "column",
+        "value": "g.supplier_id"
+      },
+      {
+        "type": "column",
+        "value": "="
+      },
+      {
+        "type": "column",
+        "value": "s.supplier_id"
+      },
+      {
+        "type": "keyword",
+        "value": "INNER"
+      },
+      {
+        "type": "keyword",
+        "value": "JOIN"
+      },
+      {
+        "type": "column",
+        "value": "Countries"
+      },
+      {
+        "type": "column",
+        "value": "c"
+      },
+      {
+        "type": "keyword",
+        "value": "ON"
+      },
+      {
+        "type": "column",
+        "value": "s.country_id"
+      },
+      {
+        "type": "column",
+        "value": "="
+      },
+      {
+        "type": "column",
+        "value": "c.country_id;"
+      }
+    ]
+  },
+  {
+    "drillNumber": 805,
+    "subcluster": "9.1 Three-Table Linear Chains (A -> B -> C)",
+    "level": "Level 3 (3-Table Joins)",
+    "title": "Syntax #805: Execute a 3-table join: Orders -> Customers -> OrderItems",
+    "table": "Orders",
+    "scenario": "Execute a 3-table join: Orders -> Customers -> OrderItems.",
+    "businessObjective": "Execute a 3-table join: Orders -> Customers -> OrderItems.",
+    "schemaSnippet": "Orders relational schema",
+    "targetQuery": "SELECT o.order_id, c.customer_name, oi.item_name\nFROM Orders o\nINNER JOIN Customers c ON o.customer_id = c.customer_id\nINNER JOIN OrderItems oi ON o.order_id = oi.order_id;",
+    "syntaxBlueprint": "SELECT a.col, b.col, c.col\nFROM TableA a\nJOIN TableB b ON a.id = b.a_id\nJOIN TableC c ON b.c_id = c.id;",
+    "syntaxRule": "Join sequentially along foreign key relationships: Table A connects to junction Table B, which connects to dimension Table C.",
+    "syntaxTrap": "Trying to join Table A directly to Table C when no direct foreign key exists between them.",
+    "eli5Story": "Relational Joins on Orders: Execute a 3-table join: Orders -> Customers -> OrderItems.",
+    "commonMistakes": "Omitting the ON clause, forgetting table alias qualification on ambiguous columns, or accidentally converting LEFT JOIN to INNER JOIN via WHERE filters.",
+    "learningOutcomes": "Mastered 9.1 Three-Table Linear Chains (A -> B -> C) on Orders.",
+    "challengeSlots": [
+      {
+        "type": "keyword",
+        "value": "SELECT"
+      },
+      {
+        "type": "column",
+        "value": "o.order_id,"
+      },
+      {
+        "type": "column",
+        "value": "c.customer_name,"
+      },
+      {
+        "type": "column",
+        "value": "oi.item_name"
+      },
+      {
+        "type": "keyword",
+        "value": "FROM"
+      },
+      {
+        "type": "table",
+        "value": "Orders"
+      },
+      {
+        "type": "column",
+        "value": "o"
+      },
+      {
+        "type": "keyword",
+        "value": "INNER"
+      },
+      {
+        "type": "keyword",
+        "value": "JOIN"
+      },
+      {
+        "type": "table",
+        "value": "Customers"
+      },
+      {
+        "type": "column",
+        "value": "c"
+      },
+      {
+        "type": "keyword",
+        "value": "ON"
+      },
+      {
+        "type": "column",
+        "value": "o.customer_id"
+      },
+      {
+        "type": "column",
+        "value": "="
+      },
+      {
+        "type": "column",
+        "value": "c.customer_id"
+      },
+      {
+        "type": "keyword",
+        "value": "INNER"
+      },
+      {
+        "type": "keyword",
+        "value": "JOIN"
+      },
+      {
+        "type": "table",
+        "value": "OrderItems"
+      },
+      {
+        "type": "column",
+        "value": "oi"
+      },
+      {
+        "type": "keyword",
+        "value": "ON"
+      },
+      {
+        "type": "column",
+        "value": "o.order_id"
+      },
+      {
+        "type": "column",
+        "value": "="
+      },
+      {
+        "type": "column",
+        "value": "oi.order_id;"
+      }
+    ]
+  },
+  {
+    "drillNumber": 806,
+    "subcluster": "9.1 Three-Table Linear Chains (A -> B -> C)",
+    "level": "Level 3 (3-Table Joins)",
+    "title": "Syntax #806: Execute a 3-table join: MusicTracks -> Albums -> Artists",
+    "table": "MusicTracks",
+    "scenario": "Execute a 3-table join: MusicTracks -> Albums -> Artists.",
+    "businessObjective": "Execute a 3-table join: MusicTracks -> Albums -> Artists.",
+    "schemaSnippet": "MusicTracks relational schema",
+    "targetQuery": "SELECT t.track_title, a.album_title, ar.artist_name\nFROM MusicTracks t\nINNER JOIN Albums a ON t.album_id = a.album_id\nINNER JOIN Artists ar ON a.artist_id = ar.artist_id;",
+    "syntaxBlueprint": "SELECT a.col, b.col, c.col\nFROM TableA a\nJOIN TableB b ON a.id = b.a_id\nJOIN TableC c ON b.c_id = c.id;",
+    "syntaxRule": "Join sequentially along foreign key relationships: Table A connects to junction Table B, which connects to dimension Table C.",
+    "syntaxTrap": "Trying to join Table A directly to Table C when no direct foreign key exists between them.",
+    "eli5Story": "Relational Joins on MusicTracks: Execute a 3-table join: MusicTracks -> Albums -> Artists.",
+    "commonMistakes": "Omitting the ON clause, forgetting table alias qualification on ambiguous columns, or accidentally converting LEFT JOIN to INNER JOIN via WHERE filters.",
+    "learningOutcomes": "Mastered 9.1 Three-Table Linear Chains (A -> B -> C) on MusicTracks.",
+    "challengeSlots": [
+      {
+        "type": "keyword",
+        "value": "SELECT"
+      },
+      {
+        "type": "column",
+        "value": "t.track_title,"
+      },
+      {
+        "type": "column",
+        "value": "a.album_title,"
+      },
+      {
+        "type": "column",
+        "value": "ar.artist_name"
+      },
+      {
+        "type": "keyword",
+        "value": "FROM"
+      },
+      {
+        "type": "table",
+        "value": "MusicTracks"
+      },
+      {
+        "type": "column",
+        "value": "t"
+      },
+      {
+        "type": "keyword",
+        "value": "INNER"
+      },
+      {
+        "type": "keyword",
+        "value": "JOIN"
+      },
+      {
+        "type": "table",
+        "value": "Albums"
+      },
+      {
+        "type": "column",
+        "value": "a"
+      },
+      {
+        "type": "keyword",
+        "value": "ON"
+      },
+      {
+        "type": "column",
+        "value": "t.album_id"
+      },
+      {
+        "type": "column",
+        "value": "="
+      },
+      {
+        "type": "column",
+        "value": "a.album_id"
+      },
+      {
+        "type": "keyword",
+        "value": "INNER"
+      },
+      {
+        "type": "keyword",
+        "value": "JOIN"
+      },
+      {
+        "type": "column",
+        "value": "Artists"
+      },
+      {
+        "type": "column",
+        "value": "ar"
+      },
+      {
+        "type": "keyword",
+        "value": "ON"
+      },
+      {
+        "type": "column",
+        "value": "a.artist_id"
+      },
+      {
+        "type": "column",
+        "value": "="
+      },
+      {
+        "type": "column",
+        "value": "ar.artist_id;"
+      }
+    ]
+  },
+  {
+    "drillNumber": 807,
+    "subcluster": "9.1 Three-Table Linear Chains (A -> B -> C)",
+    "level": "Level 3 (3-Table Joins)",
+    "title": "Syntax #807: Execute a 3-table join: GymMembers -> ClassBookings -> Classes",
+    "table": "GymMembers",
+    "scenario": "Execute a 3-table join: GymMembers -> ClassBookings -> Classes.",
+    "businessObjective": "Execute a 3-table join: GymMembers -> ClassBookings -> Classes.",
+    "schemaSnippet": "GymMembers relational schema",
+    "targetQuery": "SELECT m.member_name, c.class_name, tr.trainer_name\nFROM GymMembers m\nINNER JOIN ClassBookings cb ON m.member_id = cb.member_id\nINNER JOIN Classes c ON cb.class_id = c.class_id;",
+    "syntaxBlueprint": "SELECT a.col, b.col, c.col\nFROM TableA a\nJOIN TableB b ON a.id = b.a_id\nJOIN TableC c ON b.c_id = c.id;",
+    "syntaxRule": "Join sequentially along foreign key relationships: Table A connects to junction Table B, which connects to dimension Table C.",
+    "syntaxTrap": "Trying to join Table A directly to Table C when no direct foreign key exists between them.",
+    "eli5Story": "Relational Joins on GymMembers: Execute a 3-table join: GymMembers -> ClassBookings -> Classes.",
+    "commonMistakes": "Omitting the ON clause, forgetting table alias qualification on ambiguous columns, or accidentally converting LEFT JOIN to INNER JOIN via WHERE filters.",
+    "learningOutcomes": "Mastered 9.1 Three-Table Linear Chains (A -> B -> C) on GymMembers.",
+    "challengeSlots": [
+      {
+        "type": "keyword",
+        "value": "SELECT"
+      },
+      {
+        "type": "column",
+        "value": "m.member_name,"
+      },
+      {
+        "type": "column",
+        "value": "c.class_name,"
+      },
+      {
+        "type": "column",
+        "value": "tr.trainer_name"
+      },
+      {
+        "type": "keyword",
+        "value": "FROM"
+      },
+      {
+        "type": "table",
+        "value": "GymMembers"
+      },
+      {
+        "type": "column",
+        "value": "m"
+      },
+      {
+        "type": "keyword",
+        "value": "INNER"
+      },
+      {
+        "type": "keyword",
+        "value": "JOIN"
+      },
+      {
+        "type": "column",
+        "value": "ClassBookings"
+      },
+      {
+        "type": "column",
+        "value": "cb"
+      },
+      {
+        "type": "keyword",
+        "value": "ON"
+      },
+      {
+        "type": "column",
+        "value": "m.member_id"
+      },
+      {
+        "type": "column",
+        "value": "="
+      },
+      {
+        "type": "column",
+        "value": "cb.member_id"
+      },
+      {
+        "type": "keyword",
+        "value": "INNER"
+      },
+      {
+        "type": "keyword",
+        "value": "JOIN"
+      },
+      {
+        "type": "table",
+        "value": "Classes"
+      },
+      {
+        "type": "column",
+        "value": "c"
+      },
+      {
+        "type": "keyword",
+        "value": "ON"
+      },
+      {
+        "type": "column",
+        "value": "cb.class_id"
+      },
+      {
+        "type": "column",
+        "value": "="
+      },
+      {
+        "type": "column",
+        "value": "c.class_id;"
+      }
+    ]
+  },
+  {
+    "drillNumber": 808,
+    "subcluster": "9.1 Three-Table Linear Chains (A -> B -> C)",
+    "level": "Level 3 (3-Table Joins)",
+    "title": "Syntax #808: Execute a 3-table join: MovieReviews -> Movies -> Directors",
+    "table": "MovieReviews",
+    "scenario": "Execute a 3-table join: MovieReviews -> Movies -> Directors.",
+    "businessObjective": "Execute a 3-table join: MovieReviews -> Movies -> Directors.",
+    "schemaSnippet": "MovieReviews relational schema",
+    "targetQuery": "SELECT r.review_text, m.movie_title, d.director_name\nFROM MovieReviews r\nINNER JOIN Movies m ON r.movie_id = m.movie_id\nINNER JOIN Directors d ON m.director_id = d.director_id;",
+    "syntaxBlueprint": "SELECT a.col, b.col, c.col\nFROM TableA a\nJOIN TableB b ON a.id = b.a_id\nJOIN TableC c ON b.c_id = c.id;",
+    "syntaxRule": "Join sequentially along foreign key relationships: Table A connects to junction Table B, which connects to dimension Table C.",
+    "syntaxTrap": "Trying to join Table A directly to Table C when no direct foreign key exists between them.",
+    "eli5Story": "Relational Joins on MovieReviews: Execute a 3-table join: MovieReviews -> Movies -> Directors.",
+    "commonMistakes": "Omitting the ON clause, forgetting table alias qualification on ambiguous columns, or accidentally converting LEFT JOIN to INNER JOIN via WHERE filters.",
+    "learningOutcomes": "Mastered 9.1 Three-Table Linear Chains (A -> B -> C) on MovieReviews.",
+    "challengeSlots": [
+      {
+        "type": "keyword",
+        "value": "SELECT"
+      },
+      {
+        "type": "column",
+        "value": "r.review_text,"
+      },
+      {
+        "type": "column",
+        "value": "m.movie_title,"
+      },
+      {
+        "type": "column",
+        "value": "d.director_name"
+      },
+      {
+        "type": "keyword",
+        "value": "FROM"
+      },
+      {
+        "type": "table",
+        "value": "MovieReviews"
+      },
+      {
+        "type": "column",
+        "value": "r"
+      },
+      {
+        "type": "keyword",
+        "value": "INNER"
+      },
+      {
+        "type": "keyword",
+        "value": "JOIN"
+      },
+      {
+        "type": "table",
+        "value": "Movies"
+      },
+      {
+        "type": "column",
+        "value": "m"
+      },
+      {
+        "type": "keyword",
+        "value": "ON"
+      },
+      {
+        "type": "column",
+        "value": "r.movie_id"
+      },
+      {
+        "type": "column",
+        "value": "="
+      },
+      {
+        "type": "column",
+        "value": "m.movie_id"
+      },
+      {
+        "type": "keyword",
+        "value": "INNER"
+      },
+      {
+        "type": "keyword",
+        "value": "JOIN"
+      },
+      {
+        "type": "column",
+        "value": "Directors"
+      },
+      {
+        "type": "column",
+        "value": "d"
+      },
+      {
+        "type": "keyword",
+        "value": "ON"
+      },
+      {
+        "type": "column",
+        "value": "m.director_id"
+      },
+      {
+        "type": "column",
+        "value": "="
+      },
+      {
+        "type": "column",
+        "value": "d.director_id;"
+      }
+    ]
+  },
+  {
+    "drillNumber": 809,
+    "subcluster": "9.1 Three-Table Linear Chains (A -> B -> C)",
+    "level": "Level 3 (3-Table Joins)",
+    "title": "Syntax #809: Execute a 3-table join: FlightSchedule -> Airlines -> Airports",
+    "table": "FlightSchedule",
+    "scenario": "Execute a 3-table join: FlightSchedule -> Airlines -> Airports.",
+    "businessObjective": "Execute a 3-table join: FlightSchedule -> Airlines -> Airports.",
+    "schemaSnippet": "FlightSchedule relational schema",
+    "targetQuery": "SELECT f.flight_id, al.airline_name, ap.airport_name\nFROM FlightSchedule f\nINNER JOIN Airlines al ON f.airline_id = al.airline_id\nINNER JOIN Airports ap ON f.origin_airport = ap.airport_code;",
+    "syntaxBlueprint": "SELECT a.col, b.col, c.col\nFROM TableA a\nJOIN TableB b ON a.id = b.a_id\nJOIN TableC c ON b.c_id = c.id;",
+    "syntaxRule": "Join sequentially along foreign key relationships: Table A connects to junction Table B, which connects to dimension Table C.",
+    "syntaxTrap": "Trying to join Table A directly to Table C when no direct foreign key exists between them.",
+    "eli5Story": "Relational Joins on FlightSchedule: Execute a 3-table join: FlightSchedule -> Airlines -> Airports.",
+    "commonMistakes": "Omitting the ON clause, forgetting table alias qualification on ambiguous columns, or accidentally converting LEFT JOIN to INNER JOIN via WHERE filters.",
+    "learningOutcomes": "Mastered 9.1 Three-Table Linear Chains (A -> B -> C) on FlightSchedule.",
+    "challengeSlots": [
+      {
+        "type": "keyword",
+        "value": "SELECT"
+      },
+      {
+        "type": "column",
+        "value": "f.flight_id,"
+      },
+      {
+        "type": "column",
+        "value": "al.airline_name,"
+      },
+      {
+        "type": "column",
+        "value": "ap.airport_name"
+      },
+      {
+        "type": "keyword",
+        "value": "FROM"
+      },
+      {
+        "type": "table",
+        "value": "FlightSchedule"
+      },
+      {
+        "type": "column",
+        "value": "f"
+      },
+      {
+        "type": "keyword",
+        "value": "INNER"
+      },
+      {
+        "type": "keyword",
+        "value": "JOIN"
+      },
+      {
+        "type": "table",
+        "value": "Airlines"
+      },
+      {
+        "type": "column",
+        "value": "al"
+      },
+      {
+        "type": "keyword",
+        "value": "ON"
+      },
+      {
+        "type": "column",
+        "value": "f.airline_id"
+      },
+      {
+        "type": "column",
+        "value": "="
+      },
+      {
+        "type": "column",
+        "value": "al.airline_id"
+      },
+      {
+        "type": "keyword",
+        "value": "INNER"
+      },
+      {
+        "type": "keyword",
+        "value": "JOIN"
+      },
+      {
+        "type": "column",
+        "value": "Airports"
+      },
+      {
+        "type": "column",
+        "value": "ap"
+      },
+      {
+        "type": "keyword",
+        "value": "ON"
+      },
+      {
+        "type": "column",
+        "value": "f.origin_airport"
+      },
+      {
+        "type": "column",
+        "value": "="
+      },
+      {
+        "type": "column",
+        "value": "ap.airport_code;"
+      }
+    ]
+  },
+  {
+    "drillNumber": 810,
+    "subcluster": "9.1 Three-Table Linear Chains (A -> B -> C)",
+    "level": "Level 3 (3-Table Joins)",
+    "title": "Syntax #810: Execute a 3-table join: PetClinic -> Owners -> Vets",
+    "table": "PetClinic",
+    "scenario": "Execute a 3-table join: PetClinic -> Owners -> Vets.",
+    "businessObjective": "Execute a 3-table join: PetClinic -> Owners -> Vets.",
+    "schemaSnippet": "PetClinic relational schema",
+    "targetQuery": "SELECT p.pet_name, o.owner_name, v.vet_name\nFROM PetClinic p\nINNER JOIN Owners o ON p.owner_id = o.owner_id\nINNER JOIN Vets v ON p.vet_id = v.vet_id;",
+    "syntaxBlueprint": "SELECT a.col, b.col, c.col\nFROM TableA a\nJOIN TableB b ON a.id = b.a_id\nJOIN TableC c ON b.c_id = c.id;",
+    "syntaxRule": "Join sequentially along foreign key relationships: Table A connects to junction Table B, which connects to dimension Table C.",
+    "syntaxTrap": "Trying to join Table A directly to Table C when no direct foreign key exists between them.",
+    "eli5Story": "Relational Joins on PetClinic: Execute a 3-table join: PetClinic -> Owners -> Vets.",
+    "commonMistakes": "Omitting the ON clause, forgetting table alias qualification on ambiguous columns, or accidentally converting LEFT JOIN to INNER JOIN via WHERE filters.",
+    "learningOutcomes": "Mastered 9.1 Three-Table Linear Chains (A -> B -> C) on PetClinic.",
+    "challengeSlots": [
+      {
+        "type": "keyword",
+        "value": "SELECT"
+      },
+      {
+        "type": "column",
+        "value": "p.pet_name,"
+      },
+      {
+        "type": "column",
+        "value": "o.owner_name,"
+      },
+      {
+        "type": "column",
+        "value": "v.vet_name"
+      },
+      {
+        "type": "keyword",
+        "value": "FROM"
+      },
+      {
+        "type": "table",
+        "value": "PetClinic"
+      },
+      {
+        "type": "column",
+        "value": "p"
+      },
+      {
+        "type": "keyword",
+        "value": "INNER"
+      },
+      {
+        "type": "keyword",
+        "value": "JOIN"
+      },
+      {
+        "type": "table",
+        "value": "Owners"
+      },
+      {
+        "type": "column",
+        "value": "o"
+      },
+      {
+        "type": "keyword",
+        "value": "ON"
+      },
+      {
+        "type": "column",
+        "value": "p.owner_id"
+      },
+      {
+        "type": "column",
+        "value": "="
+      },
+      {
+        "type": "column",
+        "value": "o.owner_id"
+      },
+      {
+        "type": "keyword",
+        "value": "INNER"
+      },
+      {
+        "type": "keyword",
+        "value": "JOIN"
+      },
+      {
+        "type": "column",
+        "value": "Vets"
+      },
+      {
+        "type": "column",
+        "value": "v"
+      },
+      {
+        "type": "keyword",
+        "value": "ON"
+      },
+      {
+        "type": "column",
+        "value": "p.vet_id"
+      },
+      {
+        "type": "column",
+        "value": "="
+      },
+      {
+        "type": "column",
+        "value": "v.vet_id;"
+      }
+    ]
+  },
+  {
+    "drillNumber": 811,
+    "subcluster": "9.2 Mixed Joins (Chaining INNER JOIN and LEFT JOIN)",
+    "level": "Level 3 (Mixed Outer/Inner Joins)",
+    "title": "Syntax #811: Strictly match enrolled courses (INNER), then optionally attach letter grades (LEFT)",
+    "table": "Students",
+    "scenario": "Strictly match enrolled courses (INNER), then optionally attach letter grades (LEFT).",
+    "businessObjective": "Strictly match enrolled courses (INNER), then optionally attach letter grades (LEFT).",
+    "schemaSnippet": "Students relational schema",
+    "targetQuery": "SELECT s.full_name, c.course_name, g.grade_letter\nFROM Students s\nINNER JOIN Courses c ON s.student_id = c.student_id\nLEFT JOIN Grades g ON c.course_id = g.course_id;",
+    "syntaxBlueprint": "SELECT a.col, b.col, c.col\nFROM TableA a\nINNER JOIN TableB b ON a.id = b.a_id\nLEFT JOIN TableC c ON b.id = c.b_id;",
+    "syntaxRule": "You can combine INNER and LEFT joins in a single query to strictly match core relationships while optionally bringing in peripheral data.",
+    "syntaxTrap": "Placing an INNER JOIN after a LEFT JOIN on the optional table will filter out the NULL rows, defeating the purpose of the LEFT JOIN.",
+    "eli5Story": "Relational Joins on Students: Strictly match enrolled courses (INNER), then optionally attach letter grades (LEFT).",
+    "commonMistakes": "Omitting the ON clause, forgetting table alias qualification on ambiguous columns, or accidentally converting LEFT JOIN to INNER JOIN via WHERE filters.",
+    "learningOutcomes": "Mastered 9.2 Mixed Joins (Chaining INNER JOIN and LEFT JOIN) on Students.",
+    "challengeSlots": [
+      {
+        "type": "keyword",
+        "value": "SELECT"
+      },
+      {
+        "type": "column",
+        "value": "s.full_name,"
+      },
+      {
+        "type": "column",
+        "value": "c.course_name,"
+      },
+      {
+        "type": "column",
+        "value": "g.grade_letter"
+      },
+      {
+        "type": "keyword",
+        "value": "FROM"
+      },
+      {
+        "type": "table",
+        "value": "Students"
+      },
+      {
+        "type": "column",
+        "value": "s"
+      },
+      {
+        "type": "keyword",
+        "value": "INNER"
+      },
+      {
+        "type": "keyword",
+        "value": "JOIN"
+      },
+      {
+        "type": "table",
+        "value": "Courses"
+      },
+      {
+        "type": "column",
+        "value": "c"
+      },
+      {
+        "type": "keyword",
+        "value": "ON"
+      },
+      {
+        "type": "column",
+        "value": "s.student_id"
+      },
+      {
+        "type": "column",
+        "value": "="
+      },
+      {
+        "type": "column",
+        "value": "c.student_id"
+      },
+      {
+        "type": "keyword",
+        "value": "LEFT"
+      },
+      {
+        "type": "keyword",
+        "value": "JOIN"
+      },
+      {
+        "type": "table",
+        "value": "Grades"
+      },
+      {
+        "type": "column",
+        "value": "g"
+      },
+      {
+        "type": "keyword",
+        "value": "ON"
+      },
+      {
+        "type": "column",
+        "value": "c.course_id"
+      },
+      {
+        "type": "column",
+        "value": "="
+      },
+      {
+        "type": "column",
+        "value": "g.course_id;"
+      }
+    ]
+  },
+  {
+    "drillNumber": 812,
+    "subcluster": "9.2 Mixed Joins (Chaining INNER JOIN and LEFT JOIN)",
+    "level": "Level 3 (Mixed Outer/Inner Joins)",
+    "title": "Syntax #812: Require an author (INNER), but keep books that have no rating yet (LEFT)",
+    "table": "Books",
+    "scenario": "Require an author (INNER), but keep books that have no rating yet (LEFT).",
+    "businessObjective": "Require an author (INNER), but keep books that have no rating yet (LEFT).",
+    "schemaSnippet": "Books relational schema",
+    "targetQuery": "SELECT b.title, a.author_name, r.rating_score\nFROM Books b\nINNER JOIN Authors a ON b.author_id = a.author_id\nLEFT JOIN BookRatings r ON b.book_id = r.book_id;",
+    "syntaxBlueprint": "SELECT a.col, b.col, c.col\nFROM TableA a\nINNER JOIN TableB b ON a.id = b.a_id\nLEFT JOIN TableC c ON b.id = c.b_id;",
+    "syntaxRule": "You can combine INNER and LEFT joins in a single query to strictly match core relationships while optionally bringing in peripheral data.",
+    "syntaxTrap": "Placing an INNER JOIN after a LEFT JOIN on the optional table will filter out the NULL rows, defeating the purpose of the LEFT JOIN.",
+    "eli5Story": "Relational Joins on Books: Require an author (INNER), but keep books that have no rating yet (LEFT).",
+    "commonMistakes": "Omitting the ON clause, forgetting table alias qualification on ambiguous columns, or accidentally converting LEFT JOIN to INNER JOIN via WHERE filters.",
+    "learningOutcomes": "Mastered 9.2 Mixed Joins (Chaining INNER JOIN and LEFT JOIN) on Books.",
+    "challengeSlots": [
+      {
+        "type": "keyword",
+        "value": "SELECT"
+      },
+      {
+        "type": "column",
+        "value": "b.title,"
+      },
+      {
+        "type": "column",
+        "value": "a.author_name,"
+      },
+      {
+        "type": "column",
+        "value": "r.rating_score"
+      },
+      {
+        "type": "keyword",
+        "value": "FROM"
+      },
+      {
+        "type": "table",
+        "value": "Books"
+      },
+      {
+        "type": "column",
+        "value": "b"
+      },
+      {
+        "type": "keyword",
+        "value": "INNER"
+      },
+      {
+        "type": "keyword",
+        "value": "JOIN"
+      },
+      {
+        "type": "table",
+        "value": "Authors"
+      },
+      {
+        "type": "column",
+        "value": "a"
+      },
+      {
+        "type": "keyword",
+        "value": "ON"
+      },
+      {
+        "type": "column",
+        "value": "b.author_id"
+      },
+      {
+        "type": "column",
+        "value": "="
+      },
+      {
+        "type": "column",
+        "value": "a.author_id"
+      },
+      {
+        "type": "keyword",
+        "value": "LEFT"
+      },
+      {
+        "type": "keyword",
+        "value": "JOIN"
+      },
+      {
+        "type": "column",
+        "value": "BookRatings"
+      },
+      {
+        "type": "column",
+        "value": "r"
+      },
+      {
+        "type": "keyword",
+        "value": "ON"
+      },
+      {
+        "type": "column",
+        "value": "b.book_id"
+      },
+      {
+        "type": "column",
+        "value": "="
+      },
+      {
+        "type": "column",
+        "value": "r.book_id;"
+      }
+    ]
+  },
+  {
+    "drillNumber": 813,
+    "subcluster": "9.2 Mixed Joins (Chaining INNER JOIN and LEFT JOIN)",
+    "level": "Level 3 (Mixed Outer/Inner Joins)",
+    "title": "Syntax #813: Require a department assignment (INNER), while preserving staff without a bonus (LEFT)",
+    "table": "Employees",
+    "scenario": "Require a department assignment (INNER), while preserving staff without a bonus (LEFT).",
+    "businessObjective": "Require a department assignment (INNER), while preserving staff without a bonus (LEFT).",
+    "schemaSnippet": "Employees relational schema",
+    "targetQuery": "SELECT e.first_name, d.department_name, b.bonus_amount\nFROM Employees e\nINNER JOIN Departments d ON e.department_id = d.department_id\nLEFT JOIN AnnualBonuses b ON e.employee_id = b.employee_id;",
+    "syntaxBlueprint": "SELECT a.col, b.col, c.col\nFROM TableA a\nINNER JOIN TableB b ON a.id = b.a_id\nLEFT JOIN TableC c ON b.id = c.b_id;",
+    "syntaxRule": "You can combine INNER and LEFT joins in a single query to strictly match core relationships while optionally bringing in peripheral data.",
+    "syntaxTrap": "Placing an INNER JOIN after a LEFT JOIN on the optional table will filter out the NULL rows, defeating the purpose of the LEFT JOIN.",
+    "eli5Story": "Relational Joins on Employees: Require a department assignment (INNER), while preserving staff without a bonus (LEFT).",
+    "commonMistakes": "Omitting the ON clause, forgetting table alias qualification on ambiguous columns, or accidentally converting LEFT JOIN to INNER JOIN via WHERE filters.",
+    "learningOutcomes": "Mastered 9.2 Mixed Joins (Chaining INNER JOIN and LEFT JOIN) on Employees.",
+    "challengeSlots": [
+      {
+        "type": "keyword",
+        "value": "SELECT"
+      },
+      {
+        "type": "column",
+        "value": "e.first_name,"
+      },
+      {
+        "type": "column",
+        "value": "d.department_name,"
+      },
+      {
+        "type": "column",
+        "value": "b.bonus_amount"
+      },
+      {
+        "type": "keyword",
+        "value": "FROM"
+      },
+      {
+        "type": "table",
+        "value": "Employees"
+      },
+      {
+        "type": "column",
+        "value": "e"
+      },
+      {
+        "type": "keyword",
+        "value": "INNER"
+      },
+      {
+        "type": "keyword",
+        "value": "JOIN"
+      },
+      {
+        "type": "table",
+        "value": "Departments"
+      },
+      {
+        "type": "column",
+        "value": "d"
+      },
+      {
+        "type": "keyword",
+        "value": "ON"
+      },
+      {
+        "type": "column",
+        "value": "e.department_id"
+      },
+      {
+        "type": "column",
+        "value": "="
+      },
+      {
+        "type": "column",
+        "value": "d.department_id"
+      },
+      {
+        "type": "keyword",
+        "value": "LEFT"
+      },
+      {
+        "type": "keyword",
+        "value": "JOIN"
+      },
+      {
+        "type": "column",
+        "value": "AnnualBonuses"
+      },
+      {
+        "type": "column",
+        "value": "b"
+      },
+      {
+        "type": "keyword",
+        "value": "ON"
+      },
+      {
+        "type": "column",
+        "value": "e.employee_id"
+      },
+      {
+        "type": "column",
+        "value": "="
+      },
+      {
+        "type": "column",
+        "value": "b.employee_id;"
+      }
+    ]
+  },
+  {
+    "drillNumber": 814,
+    "subcluster": "9.2 Mixed Joins (Chaining INNER JOIN and LEFT JOIN)",
+    "level": "Level 3 (Mixed Outer/Inner Joins)",
+    "title": "Syntax #814: Require a supplier (INNER), while allowing items without discounts (LEFT)",
+    "table": "GroceryItems",
+    "scenario": "Require a supplier (INNER), while allowing items without discounts (LEFT).",
+    "businessObjective": "Require a supplier (INNER), while allowing items without discounts (LEFT).",
+    "schemaSnippet": "GroceryItems relational schema",
+    "targetQuery": "SELECT g.item_name, s.supplier_name, d.discount_pct\nFROM GroceryItems g\nINNER JOIN Suppliers s ON g.supplier_id = s.supplier_id\nLEFT JOIN SeasonalDiscounts d ON g.item_id = d.item_id;",
+    "syntaxBlueprint": "SELECT a.col, b.col, c.col\nFROM TableA a\nINNER JOIN TableB b ON a.id = b.a_id\nLEFT JOIN TableC c ON b.id = c.b_id;",
+    "syntaxRule": "You can combine INNER and LEFT joins in a single query to strictly match core relationships while optionally bringing in peripheral data.",
+    "syntaxTrap": "Placing an INNER JOIN after a LEFT JOIN on the optional table will filter out the NULL rows, defeating the purpose of the LEFT JOIN.",
+    "eli5Story": "Relational Joins on GroceryItems: Require a supplier (INNER), while allowing items without discounts (LEFT).",
+    "commonMistakes": "Omitting the ON clause, forgetting table alias qualification on ambiguous columns, or accidentally converting LEFT JOIN to INNER JOIN via WHERE filters.",
+    "learningOutcomes": "Mastered 9.2 Mixed Joins (Chaining INNER JOIN and LEFT JOIN) on GroceryItems.",
+    "challengeSlots": [
+      {
+        "type": "keyword",
+        "value": "SELECT"
+      },
+      {
+        "type": "column",
+        "value": "g.item_name,"
+      },
+      {
+        "type": "column",
+        "value": "s.supplier_name,"
+      },
+      {
+        "type": "column",
+        "value": "d.discount_pct"
+      },
+      {
+        "type": "keyword",
+        "value": "FROM"
+      },
+      {
+        "type": "table",
+        "value": "GroceryItems"
+      },
+      {
+        "type": "column",
+        "value": "g"
+      },
+      {
+        "type": "keyword",
+        "value": "INNER"
+      },
+      {
+        "type": "keyword",
+        "value": "JOIN"
+      },
+      {
+        "type": "table",
+        "value": "Suppliers"
+      },
+      {
+        "type": "column",
+        "value": "s"
+      },
+      {
+        "type": "keyword",
+        "value": "ON"
+      },
+      {
+        "type": "column",
+        "value": "g.supplier_id"
+      },
+      {
+        "type": "column",
+        "value": "="
+      },
+      {
+        "type": "column",
+        "value": "s.supplier_id"
+      },
+      {
+        "type": "keyword",
+        "value": "LEFT"
+      },
+      {
+        "type": "keyword",
+        "value": "JOIN"
+      },
+      {
+        "type": "column",
+        "value": "SeasonalDiscounts"
+      },
+      {
+        "type": "column",
+        "value": "d"
+      },
+      {
+        "type": "keyword",
+        "value": "ON"
+      },
+      {
+        "type": "column",
+        "value": "g.item_id"
+      },
+      {
+        "type": "column",
+        "value": "="
+      },
+      {
+        "type": "column",
+        "value": "d.item_id;"
+      }
+    ]
+  },
+  {
+    "drillNumber": 815,
+    "subcluster": "9.2 Mixed Joins (Chaining INNER JOIN and LEFT JOIN)",
+    "level": "Level 3 (Mixed Outer/Inner Joins)",
+    "title": "Syntax #815: Require a customer account (INNER), while keeping orders with no promo code (LEFT)",
+    "table": "Orders",
+    "scenario": "Require a customer account (INNER), while keeping orders with no promo code (LEFT).",
+    "businessObjective": "Require a customer account (INNER), while keeping orders with no promo code (LEFT).",
+    "schemaSnippet": "Orders relational schema",
+    "targetQuery": "SELECT o.order_id, c.customer_name, p.promo_code\nFROM Orders o\nINNER JOIN Customers c ON o.customer_id = c.customer_id\nLEFT JOIN OrderPromotions p ON o.order_id = p.order_id;",
+    "syntaxBlueprint": "SELECT a.col, b.col, c.col\nFROM TableA a\nINNER JOIN TableB b ON a.id = b.a_id\nLEFT JOIN TableC c ON b.id = c.b_id;",
+    "syntaxRule": "You can combine INNER and LEFT joins in a single query to strictly match core relationships while optionally bringing in peripheral data.",
+    "syntaxTrap": "Placing an INNER JOIN after a LEFT JOIN on the optional table will filter out the NULL rows, defeating the purpose of the LEFT JOIN.",
+    "eli5Story": "Relational Joins on Orders: Require a customer account (INNER), while keeping orders with no promo code (LEFT).",
+    "commonMistakes": "Omitting the ON clause, forgetting table alias qualification on ambiguous columns, or accidentally converting LEFT JOIN to INNER JOIN via WHERE filters.",
+    "learningOutcomes": "Mastered 9.2 Mixed Joins (Chaining INNER JOIN and LEFT JOIN) on Orders.",
+    "challengeSlots": [
+      {
+        "type": "keyword",
+        "value": "SELECT"
+      },
+      {
+        "type": "column",
+        "value": "o.order_id,"
+      },
+      {
+        "type": "column",
+        "value": "c.customer_name,"
+      },
+      {
+        "type": "column",
+        "value": "p.promo_code"
+      },
+      {
+        "type": "keyword",
+        "value": "FROM"
+      },
+      {
+        "type": "table",
+        "value": "Orders"
+      },
+      {
+        "type": "column",
+        "value": "o"
+      },
+      {
+        "type": "keyword",
+        "value": "INNER"
+      },
+      {
+        "type": "keyword",
+        "value": "JOIN"
+      },
+      {
+        "type": "table",
+        "value": "Customers"
+      },
+      {
+        "type": "column",
+        "value": "c"
+      },
+      {
+        "type": "keyword",
+        "value": "ON"
+      },
+      {
+        "type": "column",
+        "value": "o.customer_id"
+      },
+      {
+        "type": "column",
+        "value": "="
+      },
+      {
+        "type": "column",
+        "value": "c.customer_id"
+      },
+      {
+        "type": "keyword",
+        "value": "LEFT"
+      },
+      {
+        "type": "keyword",
+        "value": "JOIN"
+      },
+      {
+        "type": "column",
+        "value": "OrderPromotions"
+      },
+      {
+        "type": "column",
+        "value": "p"
+      },
+      {
+        "type": "keyword",
+        "value": "ON"
+      },
+      {
+        "type": "column",
+        "value": "o.order_id"
+      },
+      {
+        "type": "column",
+        "value": "="
+      },
+      {
+        "type": "column",
+        "value": "p.order_id;"
+      }
+    ]
+  },
+  {
+    "drillNumber": 816,
+    "subcluster": "9.2 Mixed Joins (Chaining INNER JOIN and LEFT JOIN)",
+    "level": "Level 3 (Mixed Outer/Inner Joins)",
+    "title": "Syntax #816: Require an album (INNER), while keeping tracks without music awards (LEFT)",
+    "table": "MusicTracks",
+    "scenario": "Require an album (INNER), while keeping tracks without music awards (LEFT).",
+    "businessObjective": "Require an album (INNER), while keeping tracks without music awards (LEFT).",
+    "schemaSnippet": "MusicTracks relational schema",
+    "targetQuery": "SELECT t.track_title, a.album_title, aw.award_name\nFROM MusicTracks t\nINNER JOIN Albums a ON t.album_id = a.album_id\nLEFT JOIN TrackAwards aw ON t.track_id = aw.track_id;",
+    "syntaxBlueprint": "SELECT a.col, b.col, c.col\nFROM TableA a\nINNER JOIN TableB b ON a.id = b.a_id\nLEFT JOIN TableC c ON b.id = c.b_id;",
+    "syntaxRule": "You can combine INNER and LEFT joins in a single query to strictly match core relationships while optionally bringing in peripheral data.",
+    "syntaxTrap": "Placing an INNER JOIN after a LEFT JOIN on the optional table will filter out the NULL rows, defeating the purpose of the LEFT JOIN.",
+    "eli5Story": "Relational Joins on MusicTracks: Require an album (INNER), while keeping tracks without music awards (LEFT).",
+    "commonMistakes": "Omitting the ON clause, forgetting table alias qualification on ambiguous columns, or accidentally converting LEFT JOIN to INNER JOIN via WHERE filters.",
+    "learningOutcomes": "Mastered 9.2 Mixed Joins (Chaining INNER JOIN and LEFT JOIN) on MusicTracks.",
+    "challengeSlots": [
+      {
+        "type": "keyword",
+        "value": "SELECT"
+      },
+      {
+        "type": "column",
+        "value": "t.track_title,"
+      },
+      {
+        "type": "column",
+        "value": "a.album_title,"
+      },
+      {
+        "type": "column",
+        "value": "aw.award_name"
+      },
+      {
+        "type": "keyword",
+        "value": "FROM"
+      },
+      {
+        "type": "table",
+        "value": "MusicTracks"
+      },
+      {
+        "type": "column",
+        "value": "t"
+      },
+      {
+        "type": "keyword",
+        "value": "INNER"
+      },
+      {
+        "type": "keyword",
+        "value": "JOIN"
+      },
+      {
+        "type": "table",
+        "value": "Albums"
+      },
+      {
+        "type": "column",
+        "value": "a"
+      },
+      {
+        "type": "keyword",
+        "value": "ON"
+      },
+      {
+        "type": "column",
+        "value": "t.album_id"
+      },
+      {
+        "type": "column",
+        "value": "="
+      },
+      {
+        "type": "column",
+        "value": "a.album_id"
+      },
+      {
+        "type": "keyword",
+        "value": "LEFT"
+      },
+      {
+        "type": "keyword",
+        "value": "JOIN"
+      },
+      {
+        "type": "column",
+        "value": "TrackAwards"
+      },
+      {
+        "type": "column",
+        "value": "aw"
+      },
+      {
+        "type": "keyword",
+        "value": "ON"
+      },
+      {
+        "type": "column",
+        "value": "t.track_id"
+      },
+      {
+        "type": "column",
+        "value": "="
+      },
+      {
+        "type": "column",
+        "value": "aw.track_id;"
+      }
+    ]
+  },
+  {
+    "drillNumber": 817,
+    "subcluster": "9.2 Mixed Joins (Chaining INNER JOIN and LEFT JOIN)",
+    "level": "Level 3 (Mixed Outer/Inner Joins)",
+    "title": "Syntax #817: Require a trainer (INNER), while preserving members with no locker rental (LEFT)",
+    "table": "GymMembers",
+    "scenario": "Require a trainer (INNER), while preserving members with no locker rental (LEFT).",
+    "businessObjective": "Require a trainer (INNER), while preserving members with no locker rental (LEFT).",
+    "schemaSnippet": "GymMembers relational schema",
+    "targetQuery": "SELECT m.member_name, tr.trainer_name, l.locker_number\nFROM GymMembers m\nINNER JOIN Trainers tr ON m.trainer_id = tr.trainer_id\nLEFT JOIN LockerRentals l ON m.member_id = l.member_id;",
+    "syntaxBlueprint": "SELECT a.col, b.col, c.col\nFROM TableA a\nINNER JOIN TableB b ON a.id = b.a_id\nLEFT JOIN TableC c ON b.id = c.b_id;",
+    "syntaxRule": "You can combine INNER and LEFT joins in a single query to strictly match core relationships while optionally bringing in peripheral data.",
+    "syntaxTrap": "Placing an INNER JOIN after a LEFT JOIN on the optional table will filter out the NULL rows, defeating the purpose of the LEFT JOIN.",
+    "eli5Story": "Relational Joins on GymMembers: Require a trainer (INNER), while preserving members with no locker rental (LEFT).",
+    "commonMistakes": "Omitting the ON clause, forgetting table alias qualification on ambiguous columns, or accidentally converting LEFT JOIN to INNER JOIN via WHERE filters.",
+    "learningOutcomes": "Mastered 9.2 Mixed Joins (Chaining INNER JOIN and LEFT JOIN) on GymMembers.",
+    "challengeSlots": [
+      {
+        "type": "keyword",
+        "value": "SELECT"
+      },
+      {
+        "type": "column",
+        "value": "m.member_name,"
+      },
+      {
+        "type": "column",
+        "value": "tr.trainer_name,"
+      },
+      {
+        "type": "column",
+        "value": "l.locker_number"
+      },
+      {
+        "type": "keyword",
+        "value": "FROM"
+      },
+      {
+        "type": "table",
+        "value": "GymMembers"
+      },
+      {
+        "type": "column",
+        "value": "m"
+      },
+      {
+        "type": "keyword",
+        "value": "INNER"
+      },
+      {
+        "type": "keyword",
+        "value": "JOIN"
+      },
+      {
+        "type": "table",
+        "value": "Trainers"
+      },
+      {
+        "type": "column",
+        "value": "tr"
+      },
+      {
+        "type": "keyword",
+        "value": "ON"
+      },
+      {
+        "type": "column",
+        "value": "m.trainer_id"
+      },
+      {
+        "type": "column",
+        "value": "="
+      },
+      {
+        "type": "column",
+        "value": "tr.trainer_id"
+      },
+      {
+        "type": "keyword",
+        "value": "LEFT"
+      },
+      {
+        "type": "keyword",
+        "value": "JOIN"
+      },
+      {
+        "type": "column",
+        "value": "LockerRentals"
+      },
+      {
+        "type": "column",
+        "value": "l"
+      },
+      {
+        "type": "keyword",
+        "value": "ON"
+      },
+      {
+        "type": "column",
+        "value": "m.member_id"
+      },
+      {
+        "type": "column",
+        "value": "="
+      },
+      {
+        "type": "column",
+        "value": "l.member_id;"
+      }
+    ]
+  },
+  {
+    "drillNumber": 818,
+    "subcluster": "9.2 Mixed Joins (Chaining INNER JOIN and LEFT JOIN)",
+    "level": "Level 3 (Mixed Outer/Inner Joins)",
+    "title": "Syntax #818: Require a movie match (INNER), while allowing films with no Oscar nominations (LEFT)",
+    "table": "MovieReviews",
+    "scenario": "Require a movie match (INNER), while allowing films with no Oscar nominations (LEFT).",
+    "businessObjective": "Require a movie match (INNER), while allowing films with no Oscar nominations (LEFT).",
+    "schemaSnippet": "MovieReviews relational schema",
+    "targetQuery": "SELECT r.review_text, m.movie_title, osc.category\nFROM MovieReviews r\nINNER JOIN Movies m ON r.movie_id = m.movie_id\nLEFT JOIN OscarNominations osc ON m.movie_id = osc.movie_id;",
+    "syntaxBlueprint": "SELECT a.col, b.col, c.col\nFROM TableA a\nINNER JOIN TableB b ON a.id = b.a_id\nLEFT JOIN TableC c ON b.id = c.b_id;",
+    "syntaxRule": "You can combine INNER and LEFT joins in a single query to strictly match core relationships while optionally bringing in peripheral data.",
+    "syntaxTrap": "Placing an INNER JOIN after a LEFT JOIN on the optional table will filter out the NULL rows, defeating the purpose of the LEFT JOIN.",
+    "eli5Story": "Relational Joins on MovieReviews: Require a movie match (INNER), while allowing films with no Oscar nominations (LEFT).",
+    "commonMistakes": "Omitting the ON clause, forgetting table alias qualification on ambiguous columns, or accidentally converting LEFT JOIN to INNER JOIN via WHERE filters.",
+    "learningOutcomes": "Mastered 9.2 Mixed Joins (Chaining INNER JOIN and LEFT JOIN) on MovieReviews.",
+    "challengeSlots": [
+      {
+        "type": "keyword",
+        "value": "SELECT"
+      },
+      {
+        "type": "column",
+        "value": "r.review_text,"
+      },
+      {
+        "type": "column",
+        "value": "m.movie_title,"
+      },
+      {
+        "type": "column",
+        "value": "osc.category"
+      },
+      {
+        "type": "keyword",
+        "value": "FROM"
+      },
+      {
+        "type": "table",
+        "value": "MovieReviews"
+      },
+      {
+        "type": "column",
+        "value": "r"
+      },
+      {
+        "type": "keyword",
+        "value": "INNER"
+      },
+      {
+        "type": "keyword",
+        "value": "JOIN"
+      },
+      {
+        "type": "table",
+        "value": "Movies"
+      },
+      {
+        "type": "column",
+        "value": "m"
+      },
+      {
+        "type": "keyword",
+        "value": "ON"
+      },
+      {
+        "type": "column",
+        "value": "r.movie_id"
+      },
+      {
+        "type": "column",
+        "value": "="
+      },
+      {
+        "type": "column",
+        "value": "m.movie_id"
+      },
+      {
+        "type": "keyword",
+        "value": "LEFT"
+      },
+      {
+        "type": "keyword",
+        "value": "JOIN"
+      },
+      {
+        "type": "column",
+        "value": "OscarNominations"
+      },
+      {
+        "type": "column",
+        "value": "osc"
+      },
+      {
+        "type": "keyword",
+        "value": "ON"
+      },
+      {
+        "type": "column",
+        "value": "m.movie_id"
+      },
+      {
+        "type": "column",
+        "value": "="
+      },
+      {
+        "type": "column",
+        "value": "osc.movie_id;"
+      }
+    ]
+  },
+  {
+    "drillNumber": 819,
+    "subcluster": "9.2 Mixed Joins (Chaining INNER JOIN and LEFT JOIN)",
+    "level": "Level 3 (Mixed Outer/Inner Joins)",
+    "title": "Syntax #819: Require an airline carrier (INNER), while preserving flights without meal service (LEFT)",
+    "table": "FlightSchedule",
+    "scenario": "Require an airline carrier (INNER), while preserving flights without meal service (LEFT).",
+    "businessObjective": "Require an airline carrier (INNER), while preserving flights without meal service (LEFT).",
+    "schemaSnippet": "FlightSchedule relational schema",
+    "targetQuery": "SELECT f.flight_id, al.airline_name, m.meal_type\nFROM FlightSchedule f\nINNER JOIN Airlines al ON f.airline_id = al.airline_id\nLEFT JOIN InflightMeals m ON f.flight_id = m.flight_id;",
+    "syntaxBlueprint": "SELECT a.col, b.col, c.col\nFROM TableA a\nINNER JOIN TableB b ON a.id = b.a_id\nLEFT JOIN TableC c ON b.id = c.b_id;",
+    "syntaxRule": "You can combine INNER and LEFT joins in a single query to strictly match core relationships while optionally bringing in peripheral data.",
+    "syntaxTrap": "Placing an INNER JOIN after a LEFT JOIN on the optional table will filter out the NULL rows, defeating the purpose of the LEFT JOIN.",
+    "eli5Story": "Relational Joins on FlightSchedule: Require an airline carrier (INNER), while preserving flights without meal service (LEFT).",
+    "commonMistakes": "Omitting the ON clause, forgetting table alias qualification on ambiguous columns, or accidentally converting LEFT JOIN to INNER JOIN via WHERE filters.",
+    "learningOutcomes": "Mastered 9.2 Mixed Joins (Chaining INNER JOIN and LEFT JOIN) on FlightSchedule.",
+    "challengeSlots": [
+      {
+        "type": "keyword",
+        "value": "SELECT"
+      },
+      {
+        "type": "column",
+        "value": "f.flight_id,"
+      },
+      {
+        "type": "column",
+        "value": "al.airline_name,"
+      },
+      {
+        "type": "column",
+        "value": "m.meal_type"
+      },
+      {
+        "type": "keyword",
+        "value": "FROM"
+      },
+      {
+        "type": "table",
+        "value": "FlightSchedule"
+      },
+      {
+        "type": "column",
+        "value": "f"
+      },
+      {
+        "type": "keyword",
+        "value": "INNER"
+      },
+      {
+        "type": "keyword",
+        "value": "JOIN"
+      },
+      {
+        "type": "table",
+        "value": "Airlines"
+      },
+      {
+        "type": "column",
+        "value": "al"
+      },
+      {
+        "type": "keyword",
+        "value": "ON"
+      },
+      {
+        "type": "column",
+        "value": "f.airline_id"
+      },
+      {
+        "type": "column",
+        "value": "="
+      },
+      {
+        "type": "column",
+        "value": "al.airline_id"
+      },
+      {
+        "type": "keyword",
+        "value": "LEFT"
+      },
+      {
+        "type": "keyword",
+        "value": "JOIN"
+      },
+      {
+        "type": "column",
+        "value": "InflightMeals"
+      },
+      {
+        "type": "column",
+        "value": "m"
+      },
+      {
+        "type": "keyword",
+        "value": "ON"
+      },
+      {
+        "type": "column",
+        "value": "f.flight_id"
+      },
+      {
+        "type": "column",
+        "value": "="
+      },
+      {
+        "type": "column",
+        "value": "m.flight_id;"
+      }
+    ]
+  },
+  {
+    "drillNumber": 820,
+    "subcluster": "9.2 Mixed Joins (Chaining INNER JOIN and LEFT JOIN)",
+    "level": "Level 3 (Mixed Outer/Inner Joins)",
+    "title": "Syntax #820: Require a pet owner (INNER), while keeping patients without insurance (LEFT)",
+    "table": "PetClinic",
+    "scenario": "Require a pet owner (INNER), while keeping patients without insurance (LEFT).",
+    "businessObjective": "Require a pet owner (INNER), while keeping patients without insurance (LEFT).",
+    "schemaSnippet": "PetClinic relational schema",
+    "targetQuery": "SELECT p.pet_name, o.owner_name, ins.policy_number\nFROM PetClinic p\nINNER JOIN Owners o ON p.owner_id = o.owner_id\nLEFT JOIN PetInsurance ins ON p.pet_id = ins.pet_id;",
+    "syntaxBlueprint": "SELECT a.col, b.col, c.col\nFROM TableA a\nINNER JOIN TableB b ON a.id = b.a_id\nLEFT JOIN TableC c ON b.id = c.b_id;",
+    "syntaxRule": "You can combine INNER and LEFT joins in a single query to strictly match core relationships while optionally bringing in peripheral data.",
+    "syntaxTrap": "Placing an INNER JOIN after a LEFT JOIN on the optional table will filter out the NULL rows, defeating the purpose of the LEFT JOIN.",
+    "eli5Story": "Relational Joins on PetClinic: Require a pet owner (INNER), while keeping patients without insurance (LEFT).",
+    "commonMistakes": "Omitting the ON clause, forgetting table alias qualification on ambiguous columns, or accidentally converting LEFT JOIN to INNER JOIN via WHERE filters.",
+    "learningOutcomes": "Mastered 9.2 Mixed Joins (Chaining INNER JOIN and LEFT JOIN) on PetClinic.",
+    "challengeSlots": [
+      {
+        "type": "keyword",
+        "value": "SELECT"
+      },
+      {
+        "type": "column",
+        "value": "p.pet_name,"
+      },
+      {
+        "type": "column",
+        "value": "o.owner_name,"
+      },
+      {
+        "type": "column",
+        "value": "ins.policy_number"
+      },
+      {
+        "type": "keyword",
+        "value": "FROM"
+      },
+      {
+        "type": "table",
+        "value": "PetClinic"
+      },
+      {
+        "type": "column",
+        "value": "p"
+      },
+      {
+        "type": "keyword",
+        "value": "INNER"
+      },
+      {
+        "type": "keyword",
+        "value": "JOIN"
+      },
+      {
+        "type": "table",
+        "value": "Owners"
+      },
+      {
+        "type": "column",
+        "value": "o"
+      },
+      {
+        "type": "keyword",
+        "value": "ON"
+      },
+      {
+        "type": "column",
+        "value": "p.owner_id"
+      },
+      {
+        "type": "column",
+        "value": "="
+      },
+      {
+        "type": "column",
+        "value": "o.owner_id"
+      },
+      {
+        "type": "keyword",
+        "value": "LEFT"
+      },
+      {
+        "type": "keyword",
+        "value": "JOIN"
+      },
+      {
+        "type": "column",
+        "value": "PetInsurance"
+      },
+      {
+        "type": "column",
+        "value": "ins"
+      },
+      {
+        "type": "keyword",
+        "value": "ON"
+      },
+      {
+        "type": "column",
+        "value": "p.pet_id"
+      },
+      {
+        "type": "column",
+        "value": "="
+      },
+      {
+        "type": "column",
+        "value": "ins.pet_id;"
+      }
+    ]
+  },
+  {
+    "drillNumber": 821,
+    "subcluster": "9.3 Star-Schema Joining (1 Central Fact to 2 Dimensions)",
+    "level": "Level 3 (Star Schema Pattern)",
+    "title": "Syntax #821: Star join: Order fact table connected to Customers dimension AND Products dimension",
+    "table": "Orders",
+    "scenario": "Star join: Order fact table connected to Customers dimension AND Products dimension.",
+    "businessObjective": "Star join: Order fact table connected to Customers dimension AND Products dimension.",
+    "schemaSnippet": "Orders relational schema",
+    "targetQuery": "SELECT o.order_id, c.customer_name, p.product_name\nFROM Orders o\nINNER JOIN Customers c ON o.customer_id = c.customer_id\nINNER JOIN Products p ON o.product_id = p.product_id;",
+    "syntaxBlueprint": "SELECT f.fact_metric, d1.name, d2.title\nFROM FactTable f\nJOIN DimTable1 d1 ON f.dim1_id = d1.id\nJOIN DimTable2 d2 ON f.dim2_id = d2.id;",
+    "syntaxRule": "Join a central transaction/event table simultaneously to two independent dimension lookup tables.",
+    "syntaxTrap": "Joining dimension 1 to dimension 2 instead of joining both to the central fact table.",
+    "eli5Story": "Relational Joins on Orders: Star join: Order fact table connected to Customers dimension AND Products dimension.",
+    "commonMistakes": "Omitting the ON clause, forgetting table alias qualification on ambiguous columns, or accidentally converting LEFT JOIN to INNER JOIN via WHERE filters.",
+    "learningOutcomes": "Mastered 9.3 Star-Schema Joining (1 Central Fact to 2 Dimensions) on Orders.",
+    "challengeSlots": [
+      {
+        "type": "keyword",
+        "value": "SELECT"
+      },
+      {
+        "type": "column",
+        "value": "o.order_id,"
+      },
+      {
+        "type": "column",
+        "value": "c.customer_name,"
+      },
+      {
+        "type": "column",
+        "value": "p.product_name"
+      },
+      {
+        "type": "keyword",
+        "value": "FROM"
+      },
+      {
+        "type": "table",
+        "value": "Orders"
+      },
+      {
+        "type": "column",
+        "value": "o"
+      },
+      {
+        "type": "keyword",
+        "value": "INNER"
+      },
+      {
+        "type": "keyword",
+        "value": "JOIN"
+      },
+      {
+        "type": "table",
+        "value": "Customers"
+      },
+      {
+        "type": "column",
+        "value": "c"
+      },
+      {
+        "type": "keyword",
+        "value": "ON"
+      },
+      {
+        "type": "column",
+        "value": "o.customer_id"
+      },
+      {
+        "type": "column",
+        "value": "="
+      },
+      {
+        "type": "column",
+        "value": "c.customer_id"
+      },
+      {
+        "type": "keyword",
+        "value": "INNER"
+      },
+      {
+        "type": "keyword",
+        "value": "JOIN"
+      },
+      {
+        "type": "column",
+        "value": "Products"
+      },
+      {
+        "type": "column",
+        "value": "p"
+      },
+      {
+        "type": "keyword",
+        "value": "ON"
+      },
+      {
+        "type": "column",
+        "value": "o.product_id"
+      },
+      {
+        "type": "column",
+        "value": "="
+      },
+      {
+        "type": "column",
+        "value": "p.product_id;"
+      }
+    ]
+  },
+  {
+    "drillNumber": 822,
+    "subcluster": "9.3 Star-Schema Joining (1 Central Fact to 2 Dimensions)",
+    "level": "Level 3 (Star Schema Pattern)",
+    "title": "Syntax #822: Star join: Enrollment fact table connected to Students AND Courses",
+    "table": "Students",
+    "scenario": "Star join: Enrollment fact table connected to Students AND Courses.",
+    "businessObjective": "Star join: Enrollment fact table connected to Students AND Courses.",
+    "schemaSnippet": "Students relational schema",
+    "targetQuery": "SELECT e.enrolment_id, s.full_name, c.course_name\nFROM Enrolments e\nINNER JOIN Students s ON e.student_id = s.student_id\nINNER JOIN Courses c ON e.course_id = c.course_id;",
+    "syntaxBlueprint": "SELECT f.fact_metric, d1.name, d2.title\nFROM FactTable f\nJOIN DimTable1 d1 ON f.dim1_id = d1.id\nJOIN DimTable2 d2 ON f.dim2_id = d2.id;",
+    "syntaxRule": "Join a central transaction/event table simultaneously to two independent dimension lookup tables.",
+    "syntaxTrap": "Joining dimension 1 to dimension 2 instead of joining both to the central fact table.",
+    "eli5Story": "Relational Joins on Students: Star join: Enrollment fact table connected to Students AND Courses.",
+    "commonMistakes": "Omitting the ON clause, forgetting table alias qualification on ambiguous columns, or accidentally converting LEFT JOIN to INNER JOIN via WHERE filters.",
+    "learningOutcomes": "Mastered 9.3 Star-Schema Joining (1 Central Fact to 2 Dimensions) on Students.",
+    "challengeSlots": [
+      {
+        "type": "keyword",
+        "value": "SELECT"
+      },
+      {
+        "type": "column",
+        "value": "e.enrolment_id,"
+      },
+      {
+        "type": "column",
+        "value": "s.full_name,"
+      },
+      {
+        "type": "column",
+        "value": "c.course_name"
+      },
+      {
+        "type": "keyword",
+        "value": "FROM"
+      },
+      {
+        "type": "column",
+        "value": "Enrolments"
+      },
+      {
+        "type": "column",
+        "value": "e"
+      },
+      {
+        "type": "keyword",
+        "value": "INNER"
+      },
+      {
+        "type": "keyword",
+        "value": "JOIN"
+      },
+      {
+        "type": "table",
+        "value": "Students"
+      },
+      {
+        "type": "column",
+        "value": "s"
+      },
+      {
+        "type": "keyword",
+        "value": "ON"
+      },
+      {
+        "type": "column",
+        "value": "e.student_id"
+      },
+      {
+        "type": "column",
+        "value": "="
+      },
+      {
+        "type": "column",
+        "value": "s.student_id"
+      },
+      {
+        "type": "keyword",
+        "value": "INNER"
+      },
+      {
+        "type": "keyword",
+        "value": "JOIN"
+      },
+      {
+        "type": "table",
+        "value": "Courses"
+      },
+      {
+        "type": "column",
+        "value": "c"
+      },
+      {
+        "type": "keyword",
+        "value": "ON"
+      },
+      {
+        "type": "column",
+        "value": "e.course_id"
+      },
+      {
+        "type": "column",
+        "value": "="
+      },
+      {
+        "type": "column",
+        "value": "c.course_id;"
+      }
+    ]
+  },
+  {
+    "drillNumber": 823,
+    "subcluster": "9.3 Star-Schema Joining (1 Central Fact to 2 Dimensions)",
+    "level": "Level 3 (Star Schema Pattern)",
+    "title": "Syntax #823: Star join: Books central table connected to Authors AND Publishers",
+    "table": "Books",
+    "scenario": "Star join: Books central table connected to Authors AND Publishers.",
+    "businessObjective": "Star join: Books central table connected to Authors AND Publishers.",
+    "schemaSnippet": "Books relational schema",
+    "targetQuery": "SELECT b.book_id, a.author_name, pub.publisher_name\nFROM Books b\nINNER JOIN Authors a ON b.author_id = a.author_id\nINNER JOIN Publishers pub ON b.publisher_id = pub.publisher_id;",
+    "syntaxBlueprint": "SELECT f.fact_metric, d1.name, d2.title\nFROM FactTable f\nJOIN DimTable1 d1 ON f.dim1_id = d1.id\nJOIN DimTable2 d2 ON f.dim2_id = d2.id;",
+    "syntaxRule": "Join a central transaction/event table simultaneously to two independent dimension lookup tables.",
+    "syntaxTrap": "Joining dimension 1 to dimension 2 instead of joining both to the central fact table.",
+    "eli5Story": "Relational Joins on Books: Star join: Books central table connected to Authors AND Publishers.",
+    "commonMistakes": "Omitting the ON clause, forgetting table alias qualification on ambiguous columns, or accidentally converting LEFT JOIN to INNER JOIN via WHERE filters.",
+    "learningOutcomes": "Mastered 9.3 Star-Schema Joining (1 Central Fact to 2 Dimensions) on Books.",
+    "challengeSlots": [
+      {
+        "type": "keyword",
+        "value": "SELECT"
+      },
+      {
+        "type": "column",
+        "value": "b.book_id,"
+      },
+      {
+        "type": "column",
+        "value": "a.author_name,"
+      },
+      {
+        "type": "column",
+        "value": "pub.publisher_name"
+      },
+      {
+        "type": "keyword",
+        "value": "FROM"
+      },
+      {
+        "type": "table",
+        "value": "Books"
+      },
+      {
+        "type": "column",
+        "value": "b"
+      },
+      {
+        "type": "keyword",
+        "value": "INNER"
+      },
+      {
+        "type": "keyword",
+        "value": "JOIN"
+      },
+      {
+        "type": "table",
+        "value": "Authors"
+      },
+      {
+        "type": "column",
+        "value": "a"
+      },
+      {
+        "type": "keyword",
+        "value": "ON"
+      },
+      {
+        "type": "column",
+        "value": "b.author_id"
+      },
+      {
+        "type": "column",
+        "value": "="
+      },
+      {
+        "type": "column",
+        "value": "a.author_id"
+      },
+      {
+        "type": "keyword",
+        "value": "INNER"
+      },
+      {
+        "type": "keyword",
+        "value": "JOIN"
+      },
+      {
+        "type": "column",
+        "value": "Publishers"
+      },
+      {
+        "type": "column",
+        "value": "pub"
+      },
+      {
+        "type": "keyword",
+        "value": "ON"
+      },
+      {
+        "type": "column",
+        "value": "b.publisher_id"
+      },
+      {
+        "type": "column",
+        "value": "="
+      },
+      {
+        "type": "column",
+        "value": "pub.publisher_id;"
+      }
+    ]
+  },
+  {
+    "drillNumber": 824,
+    "subcluster": "9.3 Star-Schema Joining (1 Central Fact to 2 Dimensions)",
+    "level": "Level 3 (Star Schema Pattern)",
+    "title": "Syntax #824: Star join: Employees connected to Departments dimension AND JobRoles dimension",
+    "table": "Employees",
+    "scenario": "Star join: Employees connected to Departments dimension AND JobRoles dimension.",
+    "businessObjective": "Star join: Employees connected to Departments dimension AND JobRoles dimension.",
+    "schemaSnippet": "Employees relational schema",
+    "targetQuery": "SELECT e.employee_id, d.department_name, r.role_title\nFROM Employees e\nINNER JOIN Departments d ON e.department_id = d.department_id\nINNER JOIN JobRoles r ON e.role_id = r.role_id;",
+    "syntaxBlueprint": "SELECT f.fact_metric, d1.name, d2.title\nFROM FactTable f\nJOIN DimTable1 d1 ON f.dim1_id = d1.id\nJOIN DimTable2 d2 ON f.dim2_id = d2.id;",
+    "syntaxRule": "Join a central transaction/event table simultaneously to two independent dimension lookup tables.",
+    "syntaxTrap": "Joining dimension 1 to dimension 2 instead of joining both to the central fact table.",
+    "eli5Story": "Relational Joins on Employees: Star join: Employees connected to Departments dimension AND JobRoles dimension.",
+    "commonMistakes": "Omitting the ON clause, forgetting table alias qualification on ambiguous columns, or accidentally converting LEFT JOIN to INNER JOIN via WHERE filters.",
+    "learningOutcomes": "Mastered 9.3 Star-Schema Joining (1 Central Fact to 2 Dimensions) on Employees.",
+    "challengeSlots": [
+      {
+        "type": "keyword",
+        "value": "SELECT"
+      },
+      {
+        "type": "column",
+        "value": "e.employee_id,"
+      },
+      {
+        "type": "column",
+        "value": "d.department_name,"
+      },
+      {
+        "type": "column",
+        "value": "r.role_title"
+      },
+      {
+        "type": "keyword",
+        "value": "FROM"
+      },
+      {
+        "type": "table",
+        "value": "Employees"
+      },
+      {
+        "type": "column",
+        "value": "e"
+      },
+      {
+        "type": "keyword",
+        "value": "INNER"
+      },
+      {
+        "type": "keyword",
+        "value": "JOIN"
+      },
+      {
+        "type": "table",
+        "value": "Departments"
+      },
+      {
+        "type": "column",
+        "value": "d"
+      },
+      {
+        "type": "keyword",
+        "value": "ON"
+      },
+      {
+        "type": "column",
+        "value": "e.department_id"
+      },
+      {
+        "type": "column",
+        "value": "="
+      },
+      {
+        "type": "column",
+        "value": "d.department_id"
+      },
+      {
+        "type": "keyword",
+        "value": "INNER"
+      },
+      {
+        "type": "keyword",
+        "value": "JOIN"
+      },
+      {
+        "type": "column",
+        "value": "JobRoles"
+      },
+      {
+        "type": "column",
+        "value": "r"
+      },
+      {
+        "type": "keyword",
+        "value": "ON"
+      },
+      {
+        "type": "column",
+        "value": "e.role_id"
+      },
+      {
+        "type": "column",
+        "value": "="
+      },
+      {
+        "type": "column",
+        "value": "r.role_id;"
+      }
+    ]
+  },
+  {
+    "drillNumber": 825,
+    "subcluster": "9.3 Star-Schema Joining (1 Central Fact to 2 Dimensions)",
+    "level": "Level 3 (Star Schema Pattern)",
+    "title": "Syntax #825: Star join: Grocery inventory connected to Suppliers AND Aisles",
+    "table": "GroceryItems",
+    "scenario": "Star join: Grocery inventory connected to Suppliers AND Aisles.",
+    "businessObjective": "Star join: Grocery inventory connected to Suppliers AND Aisles.",
+    "schemaSnippet": "GroceryItems relational schema",
+    "targetQuery": "SELECT g.item_name, s.supplier_name, a.aisle_number\nFROM GroceryItems g\nINNER JOIN Suppliers s ON g.supplier_id = s.supplier_id\nINNER JOIN Aisles a ON g.aisle_id = a.aisle_id;",
+    "syntaxBlueprint": "SELECT f.fact_metric, d1.name, d2.title\nFROM FactTable f\nJOIN DimTable1 d1 ON f.dim1_id = d1.id\nJOIN DimTable2 d2 ON f.dim2_id = d2.id;",
+    "syntaxRule": "Join a central transaction/event table simultaneously to two independent dimension lookup tables.",
+    "syntaxTrap": "Joining dimension 1 to dimension 2 instead of joining both to the central fact table.",
+    "eli5Story": "Relational Joins on GroceryItems: Star join: Grocery inventory connected to Suppliers AND Aisles.",
+    "commonMistakes": "Omitting the ON clause, forgetting table alias qualification on ambiguous columns, or accidentally converting LEFT JOIN to INNER JOIN via WHERE filters.",
+    "learningOutcomes": "Mastered 9.3 Star-Schema Joining (1 Central Fact to 2 Dimensions) on GroceryItems.",
+    "challengeSlots": [
+      {
+        "type": "keyword",
+        "value": "SELECT"
+      },
+      {
+        "type": "column",
+        "value": "g.item_name,"
+      },
+      {
+        "type": "column",
+        "value": "s.supplier_name,"
+      },
+      {
+        "type": "column",
+        "value": "a.aisle_number"
+      },
+      {
+        "type": "keyword",
+        "value": "FROM"
+      },
+      {
+        "type": "table",
+        "value": "GroceryItems"
+      },
+      {
+        "type": "column",
+        "value": "g"
+      },
+      {
+        "type": "keyword",
+        "value": "INNER"
+      },
+      {
+        "type": "keyword",
+        "value": "JOIN"
+      },
+      {
+        "type": "table",
+        "value": "Suppliers"
+      },
+      {
+        "type": "column",
+        "value": "s"
+      },
+      {
+        "type": "keyword",
+        "value": "ON"
+      },
+      {
+        "type": "column",
+        "value": "g.supplier_id"
+      },
+      {
+        "type": "column",
+        "value": "="
+      },
+      {
+        "type": "column",
+        "value": "s.supplier_id"
+      },
+      {
+        "type": "keyword",
+        "value": "INNER"
+      },
+      {
+        "type": "keyword",
+        "value": "JOIN"
+      },
+      {
+        "type": "column",
+        "value": "Aisles"
+      },
+      {
+        "type": "column",
+        "value": "a"
+      },
+      {
+        "type": "keyword",
+        "value": "ON"
+      },
+      {
+        "type": "column",
+        "value": "g.aisle_id"
+      },
+      {
+        "type": "column",
+        "value": "="
+      },
+      {
+        "type": "column",
+        "value": "a.aisle_id;"
+      }
+    ]
+  },
+  {
+    "drillNumber": 826,
+    "subcluster": "9.3 Star-Schema Joining (1 Central Fact to 2 Dimensions)",
+    "level": "Level 3 (Star Schema Pattern)",
+    "title": "Syntax #826: Star join: Tracks connected to Artists dimension AND Albums dimension",
+    "table": "MusicTracks",
+    "scenario": "Star join: Tracks connected to Artists dimension AND Albums dimension.",
+    "businessObjective": "Star join: Tracks connected to Artists dimension AND Albums dimension.",
+    "schemaSnippet": "MusicTracks relational schema",
+    "targetQuery": "SELECT t.track_title, ar.artist_name, alb.album_title\nFROM MusicTracks t\nINNER JOIN Artists ar ON t.artist_id = ar.artist_id\nINNER JOIN Albums alb ON t.album_id = alb.album_id;",
+    "syntaxBlueprint": "SELECT f.fact_metric, d1.name, d2.title\nFROM FactTable f\nJOIN DimTable1 d1 ON f.dim1_id = d1.id\nJOIN DimTable2 d2 ON f.dim2_id = d2.id;",
+    "syntaxRule": "Join a central transaction/event table simultaneously to two independent dimension lookup tables.",
+    "syntaxTrap": "Joining dimension 1 to dimension 2 instead of joining both to the central fact table.",
+    "eli5Story": "Relational Joins on MusicTracks: Star join: Tracks connected to Artists dimension AND Albums dimension.",
+    "commonMistakes": "Omitting the ON clause, forgetting table alias qualification on ambiguous columns, or accidentally converting LEFT JOIN to INNER JOIN via WHERE filters.",
+    "learningOutcomes": "Mastered 9.3 Star-Schema Joining (1 Central Fact to 2 Dimensions) on MusicTracks.",
+    "challengeSlots": [
+      {
+        "type": "keyword",
+        "value": "SELECT"
+      },
+      {
+        "type": "column",
+        "value": "t.track_title,"
+      },
+      {
+        "type": "column",
+        "value": "ar.artist_name,"
+      },
+      {
+        "type": "column",
+        "value": "alb.album_title"
+      },
+      {
+        "type": "keyword",
+        "value": "FROM"
+      },
+      {
+        "type": "table",
+        "value": "MusicTracks"
+      },
+      {
+        "type": "column",
+        "value": "t"
+      },
+      {
+        "type": "keyword",
+        "value": "INNER"
+      },
+      {
+        "type": "keyword",
+        "value": "JOIN"
+      },
+      {
+        "type": "column",
+        "value": "Artists"
+      },
+      {
+        "type": "column",
+        "value": "ar"
+      },
+      {
+        "type": "keyword",
+        "value": "ON"
+      },
+      {
+        "type": "column",
+        "value": "t.artist_id"
+      },
+      {
+        "type": "column",
+        "value": "="
+      },
+      {
+        "type": "column",
+        "value": "ar.artist_id"
+      },
+      {
+        "type": "keyword",
+        "value": "INNER"
+      },
+      {
+        "type": "keyword",
+        "value": "JOIN"
+      },
+      {
+        "type": "table",
+        "value": "Albums"
+      },
+      {
+        "type": "column",
+        "value": "alb"
+      },
+      {
+        "type": "keyword",
+        "value": "ON"
+      },
+      {
+        "type": "column",
+        "value": "t.album_id"
+      },
+      {
+        "type": "column",
+        "value": "="
+      },
+      {
+        "type": "column",
+        "value": "alb.album_id;"
+      }
+    ]
+  },
+  {
+    "drillNumber": 827,
+    "subcluster": "9.3 Star-Schema Joining (1 Central Fact to 2 Dimensions)",
+    "level": "Level 3 (Star Schema Pattern)",
+    "title": "Syntax #827: Star join: Booking events connected to GymMembers AND FitnessClasses",
+    "table": "GymMembers",
+    "scenario": "Star join: Booking events connected to GymMembers AND FitnessClasses.",
+    "businessObjective": "Star join: Booking events connected to GymMembers AND FitnessClasses.",
+    "schemaSnippet": "GymMembers relational schema",
+    "targetQuery": "SELECT b.booking_id, m.member_name, c.class_name\nFROM ClassBookings b\nINNER JOIN GymMembers m ON b.member_id = m.member_id\nINNER JOIN Classes c ON b.class_id = c.class_id;",
+    "syntaxBlueprint": "SELECT f.fact_metric, d1.name, d2.title\nFROM FactTable f\nJOIN DimTable1 d1 ON f.dim1_id = d1.id\nJOIN DimTable2 d2 ON f.dim2_id = d2.id;",
+    "syntaxRule": "Join a central transaction/event table simultaneously to two independent dimension lookup tables.",
+    "syntaxTrap": "Joining dimension 1 to dimension 2 instead of joining both to the central fact table.",
+    "eli5Story": "Relational Joins on GymMembers: Star join: Booking events connected to GymMembers AND FitnessClasses.",
+    "commonMistakes": "Omitting the ON clause, forgetting table alias qualification on ambiguous columns, or accidentally converting LEFT JOIN to INNER JOIN via WHERE filters.",
+    "learningOutcomes": "Mastered 9.3 Star-Schema Joining (1 Central Fact to 2 Dimensions) on GymMembers.",
+    "challengeSlots": [
+      {
+        "type": "keyword",
+        "value": "SELECT"
+      },
+      {
+        "type": "column",
+        "value": "b.booking_id,"
+      },
+      {
+        "type": "column",
+        "value": "m.member_name,"
+      },
+      {
+        "type": "column",
+        "value": "c.class_name"
+      },
+      {
+        "type": "keyword",
+        "value": "FROM"
+      },
+      {
+        "type": "column",
+        "value": "ClassBookings"
+      },
+      {
+        "type": "column",
+        "value": "b"
+      },
+      {
+        "type": "keyword",
+        "value": "INNER"
+      },
+      {
+        "type": "keyword",
+        "value": "JOIN"
+      },
+      {
+        "type": "table",
+        "value": "GymMembers"
+      },
+      {
+        "type": "column",
+        "value": "m"
+      },
+      {
+        "type": "keyword",
+        "value": "ON"
+      },
+      {
+        "type": "column",
+        "value": "b.member_id"
+      },
+      {
+        "type": "column",
+        "value": "="
+      },
+      {
+        "type": "column",
+        "value": "m.member_id"
+      },
+      {
+        "type": "keyword",
+        "value": "INNER"
+      },
+      {
+        "type": "keyword",
+        "value": "JOIN"
+      },
+      {
+        "type": "table",
+        "value": "Classes"
+      },
+      {
+        "type": "column",
+        "value": "c"
+      },
+      {
+        "type": "keyword",
+        "value": "ON"
+      },
+      {
+        "type": "column",
+        "value": "b.class_id"
+      },
+      {
+        "type": "column",
+        "value": "="
+      },
+      {
+        "type": "column",
+        "value": "c.class_id;"
+      }
+    ]
+  },
+  {
+    "drillNumber": 828,
+    "subcluster": "9.3 Star-Schema Joining (1 Central Fact to 2 Dimensions)",
+    "level": "Level 3 (Star Schema Pattern)",
+    "title": "Syntax #828: Star join: Reviews connected to Movies AND Critics",
+    "table": "MovieReviews",
+    "scenario": "Star join: Reviews connected to Movies AND Critics.",
+    "businessObjective": "Star join: Reviews connected to Movies AND Critics.",
+    "schemaSnippet": "MovieReviews relational schema",
+    "targetQuery": "SELECT r.review_id, m.movie_title, cr.critic_name\nFROM MovieReviews r\nINNER JOIN Movies m ON r.movie_id = m.movie_id\nINNER JOIN Critics cr ON r.critic_id = cr.critic_id;",
+    "syntaxBlueprint": "SELECT f.fact_metric, d1.name, d2.title\nFROM FactTable f\nJOIN DimTable1 d1 ON f.dim1_id = d1.id\nJOIN DimTable2 d2 ON f.dim2_id = d2.id;",
+    "syntaxRule": "Join a central transaction/event table simultaneously to two independent dimension lookup tables.",
+    "syntaxTrap": "Joining dimension 1 to dimension 2 instead of joining both to the central fact table.",
+    "eli5Story": "Relational Joins on MovieReviews: Star join: Reviews connected to Movies AND Critics.",
+    "commonMistakes": "Omitting the ON clause, forgetting table alias qualification on ambiguous columns, or accidentally converting LEFT JOIN to INNER JOIN via WHERE filters.",
+    "learningOutcomes": "Mastered 9.3 Star-Schema Joining (1 Central Fact to 2 Dimensions) on MovieReviews.",
+    "challengeSlots": [
+      {
+        "type": "keyword",
+        "value": "SELECT"
+      },
+      {
+        "type": "column",
+        "value": "r.review_id,"
+      },
+      {
+        "type": "column",
+        "value": "m.movie_title,"
+      },
+      {
+        "type": "column",
+        "value": "cr.critic_name"
+      },
+      {
+        "type": "keyword",
+        "value": "FROM"
+      },
+      {
+        "type": "table",
+        "value": "MovieReviews"
+      },
+      {
+        "type": "column",
+        "value": "r"
+      },
+      {
+        "type": "keyword",
+        "value": "INNER"
+      },
+      {
+        "type": "keyword",
+        "value": "JOIN"
+      },
+      {
+        "type": "table",
+        "value": "Movies"
+      },
+      {
+        "type": "column",
+        "value": "m"
+      },
+      {
+        "type": "keyword",
+        "value": "ON"
+      },
+      {
+        "type": "column",
+        "value": "r.movie_id"
+      },
+      {
+        "type": "column",
+        "value": "="
+      },
+      {
+        "type": "column",
+        "value": "m.movie_id"
+      },
+      {
+        "type": "keyword",
+        "value": "INNER"
+      },
+      {
+        "type": "keyword",
+        "value": "JOIN"
+      },
+      {
+        "type": "column",
+        "value": "Critics"
+      },
+      {
+        "type": "column",
+        "value": "cr"
+      },
+      {
+        "type": "keyword",
+        "value": "ON"
+      },
+      {
+        "type": "column",
+        "value": "r.critic_id"
+      },
+      {
+        "type": "column",
+        "value": "="
+      },
+      {
+        "type": "column",
+        "value": "cr.critic_id;"
+      }
+    ]
+  },
+  {
+    "drillNumber": 829,
+    "subcluster": "9.3 Star-Schema Joining (1 Central Fact to 2 Dimensions)",
+    "level": "Level 3 (Star Schema Pattern)",
+    "title": "Syntax #829: Star join: Flight events connected to Airlines AND Origin Airports",
+    "table": "FlightSchedule",
+    "scenario": "Star join: Flight events connected to Airlines AND Origin Airports.",
+    "businessObjective": "Star join: Flight events connected to Airlines AND Origin Airports.",
+    "schemaSnippet": "FlightSchedule relational schema",
+    "targetQuery": "SELECT f.flight_id, al.airline_name, ap.city_name\nFROM FlightSchedule f\nINNER JOIN Airlines al ON f.airline_id = al.airline_id\nINNER JOIN Airports ap ON f.origin_airport = ap.airport_code;",
+    "syntaxBlueprint": "SELECT f.fact_metric, d1.name, d2.title\nFROM FactTable f\nJOIN DimTable1 d1 ON f.dim1_id = d1.id\nJOIN DimTable2 d2 ON f.dim2_id = d2.id;",
+    "syntaxRule": "Join a central transaction/event table simultaneously to two independent dimension lookup tables.",
+    "syntaxTrap": "Joining dimension 1 to dimension 2 instead of joining both to the central fact table.",
+    "eli5Story": "Relational Joins on FlightSchedule: Star join: Flight events connected to Airlines AND Origin Airports.",
+    "commonMistakes": "Omitting the ON clause, forgetting table alias qualification on ambiguous columns, or accidentally converting LEFT JOIN to INNER JOIN via WHERE filters.",
+    "learningOutcomes": "Mastered 9.3 Star-Schema Joining (1 Central Fact to 2 Dimensions) on FlightSchedule.",
+    "challengeSlots": [
+      {
+        "type": "keyword",
+        "value": "SELECT"
+      },
+      {
+        "type": "column",
+        "value": "f.flight_id,"
+      },
+      {
+        "type": "column",
+        "value": "al.airline_name,"
+      },
+      {
+        "type": "column",
+        "value": "ap.city_name"
+      },
+      {
+        "type": "keyword",
+        "value": "FROM"
+      },
+      {
+        "type": "table",
+        "value": "FlightSchedule"
+      },
+      {
+        "type": "column",
+        "value": "f"
+      },
+      {
+        "type": "keyword",
+        "value": "INNER"
+      },
+      {
+        "type": "keyword",
+        "value": "JOIN"
+      },
+      {
+        "type": "table",
+        "value": "Airlines"
+      },
+      {
+        "type": "column",
+        "value": "al"
+      },
+      {
+        "type": "keyword",
+        "value": "ON"
+      },
+      {
+        "type": "column",
+        "value": "f.airline_id"
+      },
+      {
+        "type": "column",
+        "value": "="
+      },
+      {
+        "type": "column",
+        "value": "al.airline_id"
+      },
+      {
+        "type": "keyword",
+        "value": "INNER"
+      },
+      {
+        "type": "keyword",
+        "value": "JOIN"
+      },
+      {
+        "type": "column",
+        "value": "Airports"
+      },
+      {
+        "type": "column",
+        "value": "ap"
+      },
+      {
+        "type": "keyword",
+        "value": "ON"
+      },
+      {
+        "type": "column",
+        "value": "f.origin_airport"
+      },
+      {
+        "type": "column",
+        "value": "="
+      },
+      {
+        "type": "column",
+        "value": "ap.airport_code;"
+      }
+    ]
+  },
+  {
+    "drillNumber": 830,
+    "subcluster": "9.3 Star-Schema Joining (1 Central Fact to 2 Dimensions)",
+    "level": "Level 3 (Star Schema Pattern)",
+    "title": "Syntax #830: Star join: Appointments connected to Pets AND Veterinarians",
+    "table": "PetClinic",
+    "scenario": "Star join: Appointments connected to Pets AND Veterinarians.",
+    "businessObjective": "Star join: Appointments connected to Pets AND Veterinarians.",
+    "schemaSnippet": "PetClinic relational schema",
+    "targetQuery": "SELECT a.appointment_id, p.pet_name, v.vet_name\nFROM Appointments a\nINNER JOIN PetClinic p ON a.pet_id = p.pet_id\nINNER JOIN Vets v ON a.vet_id = v.vet_id;",
+    "syntaxBlueprint": "SELECT f.fact_metric, d1.name, d2.title\nFROM FactTable f\nJOIN DimTable1 d1 ON f.dim1_id = d1.id\nJOIN DimTable2 d2 ON f.dim2_id = d2.id;",
+    "syntaxRule": "Join a central transaction/event table simultaneously to two independent dimension lookup tables.",
+    "syntaxTrap": "Joining dimension 1 to dimension 2 instead of joining both to the central fact table.",
+    "eli5Story": "Relational Joins on PetClinic: Star join: Appointments connected to Pets AND Veterinarians.",
+    "commonMistakes": "Omitting the ON clause, forgetting table alias qualification on ambiguous columns, or accidentally converting LEFT JOIN to INNER JOIN via WHERE filters.",
+    "learningOutcomes": "Mastered 9.3 Star-Schema Joining (1 Central Fact to 2 Dimensions) on PetClinic.",
+    "challengeSlots": [
+      {
+        "type": "keyword",
+        "value": "SELECT"
+      },
+      {
+        "type": "column",
+        "value": "a.appointment_id,"
+      },
+      {
+        "type": "column",
+        "value": "p.pet_name,"
+      },
+      {
+        "type": "column",
+        "value": "v.vet_name"
+      },
+      {
+        "type": "keyword",
+        "value": "FROM"
+      },
+      {
+        "type": "column",
+        "value": "Appointments"
+      },
+      {
+        "type": "column",
+        "value": "a"
+      },
+      {
+        "type": "keyword",
+        "value": "INNER"
+      },
+      {
+        "type": "keyword",
+        "value": "JOIN"
+      },
+      {
+        "type": "table",
+        "value": "PetClinic"
+      },
+      {
+        "type": "column",
+        "value": "p"
+      },
+      {
+        "type": "keyword",
+        "value": "ON"
+      },
+      {
+        "type": "column",
+        "value": "a.pet_id"
+      },
+      {
+        "type": "column",
+        "value": "="
+      },
+      {
+        "type": "column",
+        "value": "p.pet_id"
+      },
+      {
+        "type": "keyword",
+        "value": "INNER"
+      },
+      {
+        "type": "keyword",
+        "value": "JOIN"
+      },
+      {
+        "type": "column",
+        "value": "Vets"
+      },
+      {
+        "type": "column",
+        "value": "v"
+      },
+      {
+        "type": "keyword",
+        "value": "ON"
+      },
+      {
+        "type": "column",
+        "value": "a.vet_id"
+      },
+      {
+        "type": "column",
+        "value": "="
+      },
+      {
+        "type": "column",
+        "value": "v.vet_id;"
+      }
+    ]
+  },
+  {
+    "drillNumber": 831,
+    "subcluster": "9.4 Aggregations over Joins (COUNT per Parent Entity)",
+    "level": "Level 3 (Joined Grouping & Counting)",
+    "title": "Syntax #831: Count the number of enrolled courses per student, showing 0 for students with no courses",
+    "table": "Students",
+    "scenario": "Count the number of enrolled courses per student, showing 0 for students with no courses.",
+    "businessObjective": "Count the number of enrolled courses per student, showing 0 for students with no courses.",
+    "schemaSnippet": "Students relational schema",
+    "targetQuery": "SELECT s.student_id, s.full_name, COUNT(c.course_id) AS enrolled_course_count\nFROM Students s\nLEFT JOIN Courses c ON s.student_id = c.student_id\nGROUP BY s.student_id, s.full_name;",
+    "syntaxBlueprint": "SELECT a.name, COUNT(b.id) AS total_count\nFROM TableA a\nLEFT JOIN TableB b ON a.id = b.a_id\nGROUP BY a.id, a.name;",
+    "syntaxRule": "When counting child records with a LEFT JOIN, always use 'COUNT(b.id)' rather than 'COUNT(*)' so parent records with 0 children count as 0 instead of 1.",
+    "syntaxTrap": "Using COUNT(*) with a LEFT JOIN turns 0 children into 1 because the outer join produces a single row containing NULLs.",
+    "eli5Story": "Relational Joins on Students: Count the number of enrolled courses per student, showing 0 for students with no courses.",
+    "commonMistakes": "Omitting the ON clause, forgetting table alias qualification on ambiguous columns, or accidentally converting LEFT JOIN to INNER JOIN via WHERE filters.",
+    "learningOutcomes": "Mastered 9.4 Aggregations over Joins (COUNT per Parent Entity) on Students.",
+    "challengeSlots": [
+      {
+        "type": "keyword",
+        "value": "SELECT"
+      },
+      {
+        "type": "column",
+        "value": "s.student_id,"
+      },
+      {
+        "type": "column",
+        "value": "s.full_name,"
+      },
+      {
+        "type": "column",
+        "value": "COUNT(c.course_id)"
+      },
+      {
+        "type": "keyword",
+        "value": "AS"
+      },
+      {
+        "type": "column",
+        "value": "enrolled_course_count"
+      },
+      {
+        "type": "keyword",
+        "value": "FROM"
+      },
+      {
+        "type": "table",
+        "value": "Students"
+      },
+      {
+        "type": "column",
+        "value": "s"
+      },
+      {
+        "type": "keyword",
+        "value": "LEFT"
+      },
+      {
+        "type": "keyword",
+        "value": "JOIN"
+      },
+      {
+        "type": "table",
+        "value": "Courses"
+      },
+      {
+        "type": "column",
+        "value": "c"
+      },
+      {
+        "type": "keyword",
+        "value": "ON"
+      },
+      {
+        "type": "column",
+        "value": "s.student_id"
+      },
+      {
+        "type": "column",
+        "value": "="
+      },
+      {
+        "type": "column",
+        "value": "c.student_id"
+      },
+      {
+        "type": "keyword",
+        "value": "GROUP"
+      },
+      {
+        "type": "keyword",
+        "value": "BY"
+      },
+      {
+        "type": "column",
+        "value": "s.student_id,"
+      },
+      {
+        "type": "column",
+        "value": "s.full_name;"
+      }
+    ]
+  },
+  {
+    "drillNumber": 832,
+    "subcluster": "9.4 Aggregations over Joins (COUNT per Parent Entity)",
+    "level": "Level 3 (Joined Grouping & Counting)",
+    "title": "Syntax #832: Count the total number of books written by each author using COUNT(b.book_id)",
+    "table": "Books",
+    "scenario": "Count the total number of books written by each author using COUNT(b.book_id).",
+    "businessObjective": "Count the total number of books written by each author using COUNT(b.book_id).",
+    "schemaSnippet": "Books relational schema",
+    "targetQuery": "SELECT a.author_name, COUNT(b.book_id) AS published_book_count\nFROM Authors a\nLEFT JOIN Books b ON a.author_id = b.author_id\nGROUP BY a.author_id, a.author_name;",
+    "syntaxBlueprint": "SELECT a.name, COUNT(b.id) AS total_count\nFROM TableA a\nLEFT JOIN TableB b ON a.id = b.a_id\nGROUP BY a.id, a.name;",
+    "syntaxRule": "When counting child records with a LEFT JOIN, always use 'COUNT(b.id)' rather than 'COUNT(*)' so parent records with 0 children count as 0 instead of 1.",
+    "syntaxTrap": "Using COUNT(*) with a LEFT JOIN turns 0 children into 1 because the outer join produces a single row containing NULLs.",
+    "eli5Story": "Relational Joins on Books: Count the total number of books written by each author using COUNT(b.book_id).",
+    "commonMistakes": "Omitting the ON clause, forgetting table alias qualification on ambiguous columns, or accidentally converting LEFT JOIN to INNER JOIN via WHERE filters.",
+    "learningOutcomes": "Mastered 9.4 Aggregations over Joins (COUNT per Parent Entity) on Books.",
+    "challengeSlots": [
+      {
+        "type": "keyword",
+        "value": "SELECT"
+      },
+      {
+        "type": "column",
+        "value": "a.author_name,"
+      },
+      {
+        "type": "column",
+        "value": "COUNT(b.book_id)"
+      },
+      {
+        "type": "keyword",
+        "value": "AS"
+      },
+      {
+        "type": "column",
+        "value": "published_book_count"
+      },
+      {
+        "type": "keyword",
+        "value": "FROM"
+      },
+      {
+        "type": "table",
+        "value": "Authors"
+      },
+      {
+        "type": "column",
+        "value": "a"
+      },
+      {
+        "type": "keyword",
+        "value": "LEFT"
+      },
+      {
+        "type": "keyword",
+        "value": "JOIN"
+      },
+      {
+        "type": "table",
+        "value": "Books"
+      },
+      {
+        "type": "column",
+        "value": "b"
+      },
+      {
+        "type": "keyword",
+        "value": "ON"
+      },
+      {
+        "type": "column",
+        "value": "a.author_id"
+      },
+      {
+        "type": "column",
+        "value": "="
+      },
+      {
+        "type": "column",
+        "value": "b.author_id"
+      },
+      {
+        "type": "keyword",
+        "value": "GROUP"
+      },
+      {
+        "type": "keyword",
+        "value": "BY"
+      },
+      {
+        "type": "column",
+        "value": "a.author_id,"
+      },
+      {
+        "type": "column",
+        "value": "a.author_name;"
+      }
+    ]
+  },
+  {
+    "drillNumber": 833,
+    "subcluster": "9.4 Aggregations over Joins (COUNT per Parent Entity)",
+    "level": "Level 3 (Joined Grouping & Counting)",
+    "title": "Syntax #833: Calculate the exact staff headcount for each corporate department",
+    "table": "Employees",
+    "scenario": "Calculate the exact staff headcount for each corporate department.",
+    "businessObjective": "Calculate the exact staff headcount for each corporate department.",
+    "schemaSnippet": "Employees relational schema",
+    "targetQuery": "SELECT d.department_name, COUNT(e.employee_id) AS staff_headcount\nFROM Departments d\nLEFT JOIN Employees e ON d.department_id = e.department_id\nGROUP BY d.department_id, d.department_name;",
+    "syntaxBlueprint": "SELECT a.name, COUNT(b.id) AS total_count\nFROM TableA a\nLEFT JOIN TableB b ON a.id = b.a_id\nGROUP BY a.id, a.name;",
+    "syntaxRule": "When counting child records with a LEFT JOIN, always use 'COUNT(b.id)' rather than 'COUNT(*)' so parent records with 0 children count as 0 instead of 1.",
+    "syntaxTrap": "Using COUNT(*) with a LEFT JOIN turns 0 children into 1 because the outer join produces a single row containing NULLs.",
+    "eli5Story": "Relational Joins on Employees: Calculate the exact staff headcount for each corporate department.",
+    "commonMistakes": "Omitting the ON clause, forgetting table alias qualification on ambiguous columns, or accidentally converting LEFT JOIN to INNER JOIN via WHERE filters.",
+    "learningOutcomes": "Mastered 9.4 Aggregations over Joins (COUNT per Parent Entity) on Employees.",
+    "challengeSlots": [
+      {
+        "type": "keyword",
+        "value": "SELECT"
+      },
+      {
+        "type": "column",
+        "value": "d.department_name,"
+      },
+      {
+        "type": "column",
+        "value": "COUNT(e.employee_id)"
+      },
+      {
+        "type": "keyword",
+        "value": "AS"
+      },
+      {
+        "type": "column",
+        "value": "staff_headcount"
+      },
+      {
+        "type": "keyword",
+        "value": "FROM"
+      },
+      {
+        "type": "table",
+        "value": "Departments"
+      },
+      {
+        "type": "column",
+        "value": "d"
+      },
+      {
+        "type": "keyword",
+        "value": "LEFT"
+      },
+      {
+        "type": "keyword",
+        "value": "JOIN"
+      },
+      {
+        "type": "table",
+        "value": "Employees"
+      },
+      {
+        "type": "column",
+        "value": "e"
+      },
+      {
+        "type": "keyword",
+        "value": "ON"
+      },
+      {
+        "type": "column",
+        "value": "d.department_id"
+      },
+      {
+        "type": "column",
+        "value": "="
+      },
+      {
+        "type": "column",
+        "value": "e.department_id"
+      },
+      {
+        "type": "keyword",
+        "value": "GROUP"
+      },
+      {
+        "type": "keyword",
+        "value": "BY"
+      },
+      {
+        "type": "column",
+        "value": "d.department_id,"
+      },
+      {
+        "type": "column",
+        "value": "d.department_name;"
+      }
+    ]
+  },
+  {
+    "drillNumber": 834,
+    "subcluster": "9.4 Aggregations over Joins (COUNT per Parent Entity)",
+    "level": "Level 3 (Joined Grouping & Counting)",
+    "title": "Syntax #834: Count the total number of catalog products supplied by each vendor",
+    "table": "GroceryItems",
+    "scenario": "Count the total number of catalog products supplied by each vendor.",
+    "businessObjective": "Count the total number of catalog products supplied by each vendor.",
+    "schemaSnippet": "GroceryItems relational schema",
+    "targetQuery": "SELECT s.supplier_name, COUNT(g.item_id) AS total_supplied_items\nFROM Suppliers s\nLEFT JOIN GroceryItems g ON s.supplier_id = g.supplier_id\nGROUP BY s.supplier_id, s.supplier_name;",
+    "syntaxBlueprint": "SELECT a.name, COUNT(b.id) AS total_count\nFROM TableA a\nLEFT JOIN TableB b ON a.id = b.a_id\nGROUP BY a.id, a.name;",
+    "syntaxRule": "When counting child records with a LEFT JOIN, always use 'COUNT(b.id)' rather than 'COUNT(*)' so parent records with 0 children count as 0 instead of 1.",
+    "syntaxTrap": "Using COUNT(*) with a LEFT JOIN turns 0 children into 1 because the outer join produces a single row containing NULLs.",
+    "eli5Story": "Relational Joins on GroceryItems: Count the total number of catalog products supplied by each vendor.",
+    "commonMistakes": "Omitting the ON clause, forgetting table alias qualification on ambiguous columns, or accidentally converting LEFT JOIN to INNER JOIN via WHERE filters.",
+    "learningOutcomes": "Mastered 9.4 Aggregations over Joins (COUNT per Parent Entity) on GroceryItems.",
+    "challengeSlots": [
+      {
+        "type": "keyword",
+        "value": "SELECT"
+      },
+      {
+        "type": "column",
+        "value": "s.supplier_name,"
+      },
+      {
+        "type": "column",
+        "value": "COUNT(g.item_id)"
+      },
+      {
+        "type": "keyword",
+        "value": "AS"
+      },
+      {
+        "type": "column",
+        "value": "total_supplied_items"
+      },
+      {
+        "type": "keyword",
+        "value": "FROM"
+      },
+      {
+        "type": "table",
+        "value": "Suppliers"
+      },
+      {
+        "type": "column",
+        "value": "s"
+      },
+      {
+        "type": "keyword",
+        "value": "LEFT"
+      },
+      {
+        "type": "keyword",
+        "value": "JOIN"
+      },
+      {
+        "type": "table",
+        "value": "GroceryItems"
+      },
+      {
+        "type": "column",
+        "value": "g"
+      },
+      {
+        "type": "keyword",
+        "value": "ON"
+      },
+      {
+        "type": "column",
+        "value": "s.supplier_id"
+      },
+      {
+        "type": "column",
+        "value": "="
+      },
+      {
+        "type": "column",
+        "value": "g.supplier_id"
+      },
+      {
+        "type": "keyword",
+        "value": "GROUP"
+      },
+      {
+        "type": "keyword",
+        "value": "BY"
+      },
+      {
+        "type": "column",
+        "value": "s.supplier_id,"
+      },
+      {
+        "type": "column",
+        "value": "s.supplier_name;"
+      }
+    ]
+  },
+  {
+    "drillNumber": 835,
+    "subcluster": "9.4 Aggregations over Joins (COUNT per Parent Entity)",
+    "level": "Level 3 (Joined Grouping & Counting)",
+    "title": "Syntax #835: Count the lifetime order tally for every customer account",
+    "table": "Orders",
+    "scenario": "Count the lifetime order tally for every customer account.",
+    "businessObjective": "Count the lifetime order tally for every customer account.",
+    "schemaSnippet": "Orders relational schema",
+    "targetQuery": "SELECT c.customer_name, COUNT(o.order_id) AS lifetime_orders\nFROM Customers c\nLEFT JOIN Orders o ON c.customer_id = o.customer_id\nGROUP BY c.customer_id, c.customer_name;",
+    "syntaxBlueprint": "SELECT a.name, COUNT(b.id) AS total_count\nFROM TableA a\nLEFT JOIN TableB b ON a.id = b.a_id\nGROUP BY a.id, a.name;",
+    "syntaxRule": "When counting child records with a LEFT JOIN, always use 'COUNT(b.id)' rather than 'COUNT(*)' so parent records with 0 children count as 0 instead of 1.",
+    "syntaxTrap": "Using COUNT(*) with a LEFT JOIN turns 0 children into 1 because the outer join produces a single row containing NULLs.",
+    "eli5Story": "Relational Joins on Orders: Count the lifetime order tally for every customer account.",
+    "commonMistakes": "Omitting the ON clause, forgetting table alias qualification on ambiguous columns, or accidentally converting LEFT JOIN to INNER JOIN via WHERE filters.",
+    "learningOutcomes": "Mastered 9.4 Aggregations over Joins (COUNT per Parent Entity) on Orders.",
+    "challengeSlots": [
+      {
+        "type": "keyword",
+        "value": "SELECT"
+      },
+      {
+        "type": "column",
+        "value": "c.customer_name,"
+      },
+      {
+        "type": "column",
+        "value": "COUNT(o.order_id)"
+      },
+      {
+        "type": "keyword",
+        "value": "AS"
+      },
+      {
+        "type": "column",
+        "value": "lifetime_orders"
+      },
+      {
+        "type": "keyword",
+        "value": "FROM"
+      },
+      {
+        "type": "table",
+        "value": "Customers"
+      },
+      {
+        "type": "column",
+        "value": "c"
+      },
+      {
+        "type": "keyword",
+        "value": "LEFT"
+      },
+      {
+        "type": "keyword",
+        "value": "JOIN"
+      },
+      {
+        "type": "table",
+        "value": "Orders"
+      },
+      {
+        "type": "column",
+        "value": "o"
+      },
+      {
+        "type": "keyword",
+        "value": "ON"
+      },
+      {
+        "type": "column",
+        "value": "c.customer_id"
+      },
+      {
+        "type": "column",
+        "value": "="
+      },
+      {
+        "type": "column",
+        "value": "o.customer_id"
+      },
+      {
+        "type": "keyword",
+        "value": "GROUP"
+      },
+      {
+        "type": "keyword",
+        "value": "BY"
+      },
+      {
+        "type": "column",
+        "value": "c.customer_id,"
+      },
+      {
+        "type": "column",
+        "value": "c.customer_name;"
+      }
+    ]
+  },
+  {
+    "drillNumber": 836,
+    "subcluster": "9.4 Aggregations over Joins (COUNT per Parent Entity)",
+    "level": "Level 3 (Joined Grouping & Counting)",
+    "title": "Syntax #836: Calculate the track count for each studio music album",
+    "table": "MusicTracks",
+    "scenario": "Calculate the track count for each studio music album.",
+    "businessObjective": "Calculate the track count for each studio music album.",
+    "schemaSnippet": "MusicTracks relational schema",
+    "targetQuery": "SELECT a.album_title, COUNT(t.track_id) AS track_count\nFROM Albums a\nLEFT JOIN MusicTracks t ON a.album_id = t.album_id\nGROUP BY a.album_id, a.album_title;",
+    "syntaxBlueprint": "SELECT a.name, COUNT(b.id) AS total_count\nFROM TableA a\nLEFT JOIN TableB b ON a.id = b.a_id\nGROUP BY a.id, a.name;",
+    "syntaxRule": "When counting child records with a LEFT JOIN, always use 'COUNT(b.id)' rather than 'COUNT(*)' so parent records with 0 children count as 0 instead of 1.",
+    "syntaxTrap": "Using COUNT(*) with a LEFT JOIN turns 0 children into 1 because the outer join produces a single row containing NULLs.",
+    "eli5Story": "Relational Joins on MusicTracks: Calculate the track count for each studio music album.",
+    "commonMistakes": "Omitting the ON clause, forgetting table alias qualification on ambiguous columns, or accidentally converting LEFT JOIN to INNER JOIN via WHERE filters.",
+    "learningOutcomes": "Mastered 9.4 Aggregations over Joins (COUNT per Parent Entity) on MusicTracks.",
+    "challengeSlots": [
+      {
+        "type": "keyword",
+        "value": "SELECT"
+      },
+      {
+        "type": "column",
+        "value": "a.album_title,"
+      },
+      {
+        "type": "column",
+        "value": "COUNT(t.track_id)"
+      },
+      {
+        "type": "keyword",
+        "value": "AS"
+      },
+      {
+        "type": "column",
+        "value": "track_count"
+      },
+      {
+        "type": "keyword",
+        "value": "FROM"
+      },
+      {
+        "type": "table",
+        "value": "Albums"
+      },
+      {
+        "type": "column",
+        "value": "a"
+      },
+      {
+        "type": "keyword",
+        "value": "LEFT"
+      },
+      {
+        "type": "keyword",
+        "value": "JOIN"
+      },
+      {
+        "type": "table",
+        "value": "MusicTracks"
+      },
+      {
+        "type": "column",
+        "value": "t"
+      },
+      {
+        "type": "keyword",
+        "value": "ON"
+      },
+      {
+        "type": "column",
+        "value": "a.album_id"
+      },
+      {
+        "type": "column",
+        "value": "="
+      },
+      {
+        "type": "column",
+        "value": "t.album_id"
+      },
+      {
+        "type": "keyword",
+        "value": "GROUP"
+      },
+      {
+        "type": "keyword",
+        "value": "BY"
+      },
+      {
+        "type": "column",
+        "value": "a.album_id,"
+      },
+      {
+        "type": "column",
+        "value": "a.album_title;"
+      }
+    ]
+  },
+  {
+    "drillNumber": 837,
+    "subcluster": "9.4 Aggregations over Joins (COUNT per Parent Entity)",
+    "level": "Level 3 (Joined Grouping & Counting)",
+    "title": "Syntax #837: Count the total number of gym members coached by each trainer",
+    "table": "GymMembers",
+    "scenario": "Count the total number of gym members coached by each trainer.",
+    "businessObjective": "Count the total number of gym members coached by each trainer.",
+    "schemaSnippet": "GymMembers relational schema",
+    "targetQuery": "SELECT tr.trainer_name, COUNT(m.member_id) AS assigned_client_count\nFROM Trainers tr\nLEFT JOIN GymMembers m ON tr.trainer_id = m.trainer_id\nGROUP BY tr.trainer_id, tr.trainer_name;",
+    "syntaxBlueprint": "SELECT a.name, COUNT(b.id) AS total_count\nFROM TableA a\nLEFT JOIN TableB b ON a.id = b.a_id\nGROUP BY a.id, a.name;",
+    "syntaxRule": "When counting child records with a LEFT JOIN, always use 'COUNT(b.id)' rather than 'COUNT(*)' so parent records with 0 children count as 0 instead of 1.",
+    "syntaxTrap": "Using COUNT(*) with a LEFT JOIN turns 0 children into 1 because the outer join produces a single row containing NULLs.",
+    "eli5Story": "Relational Joins on GymMembers: Count the total number of gym members coached by each trainer.",
+    "commonMistakes": "Omitting the ON clause, forgetting table alias qualification on ambiguous columns, or accidentally converting LEFT JOIN to INNER JOIN via WHERE filters.",
+    "learningOutcomes": "Mastered 9.4 Aggregations over Joins (COUNT per Parent Entity) on GymMembers.",
+    "challengeSlots": [
+      {
+        "type": "keyword",
+        "value": "SELECT"
+      },
+      {
+        "type": "column",
+        "value": "tr.trainer_name,"
+      },
+      {
+        "type": "column",
+        "value": "COUNT(m.member_id)"
+      },
+      {
+        "type": "keyword",
+        "value": "AS"
+      },
+      {
+        "type": "column",
+        "value": "assigned_client_count"
+      },
+      {
+        "type": "keyword",
+        "value": "FROM"
+      },
+      {
+        "type": "table",
+        "value": "Trainers"
+      },
+      {
+        "type": "column",
+        "value": "tr"
+      },
+      {
+        "type": "keyword",
+        "value": "LEFT"
+      },
+      {
+        "type": "keyword",
+        "value": "JOIN"
+      },
+      {
+        "type": "table",
+        "value": "GymMembers"
+      },
+      {
+        "type": "column",
+        "value": "m"
+      },
+      {
+        "type": "keyword",
+        "value": "ON"
+      },
+      {
+        "type": "column",
+        "value": "tr.trainer_id"
+      },
+      {
+        "type": "column",
+        "value": "="
+      },
+      {
+        "type": "column",
+        "value": "m.trainer_id"
+      },
+      {
+        "type": "keyword",
+        "value": "GROUP"
+      },
+      {
+        "type": "keyword",
+        "value": "BY"
+      },
+      {
+        "type": "column",
+        "value": "tr.trainer_id,"
+      },
+      {
+        "type": "column",
+        "value": "tr.trainer_name;"
+      }
+    ]
+  },
+  {
+    "drillNumber": 838,
+    "subcluster": "9.4 Aggregations over Joins (COUNT per Parent Entity)",
+    "level": "Level 3 (Joined Grouping & Counting)",
+    "title": "Syntax #838: Count the total number of written reviews submitted for each movie",
+    "table": "MovieReviews",
+    "scenario": "Count the total number of written reviews submitted for each movie.",
+    "businessObjective": "Count the total number of written reviews submitted for each movie.",
+    "schemaSnippet": "MovieReviews relational schema",
+    "targetQuery": "SELECT m.movie_title, COUNT(r.review_id) AS total_reviews\nFROM Movies m\nLEFT JOIN MovieReviews r ON m.movie_id = r.movie_id\nGROUP BY m.movie_id, m.movie_title;",
+    "syntaxBlueprint": "SELECT a.name, COUNT(b.id) AS total_count\nFROM TableA a\nLEFT JOIN TableB b ON a.id = b.a_id\nGROUP BY a.id, a.name;",
+    "syntaxRule": "When counting child records with a LEFT JOIN, always use 'COUNT(b.id)' rather than 'COUNT(*)' so parent records with 0 children count as 0 instead of 1.",
+    "syntaxTrap": "Using COUNT(*) with a LEFT JOIN turns 0 children into 1 because the outer join produces a single row containing NULLs.",
+    "eli5Story": "Relational Joins on MovieReviews: Count the total number of written reviews submitted for each movie.",
+    "commonMistakes": "Omitting the ON clause, forgetting table alias qualification on ambiguous columns, or accidentally converting LEFT JOIN to INNER JOIN via WHERE filters.",
+    "learningOutcomes": "Mastered 9.4 Aggregations over Joins (COUNT per Parent Entity) on MovieReviews.",
+    "challengeSlots": [
+      {
+        "type": "keyword",
+        "value": "SELECT"
+      },
+      {
+        "type": "column",
+        "value": "m.movie_title,"
+      },
+      {
+        "type": "column",
+        "value": "COUNT(r.review_id)"
+      },
+      {
+        "type": "keyword",
+        "value": "AS"
+      },
+      {
+        "type": "column",
+        "value": "total_reviews"
+      },
+      {
+        "type": "keyword",
+        "value": "FROM"
+      },
+      {
+        "type": "table",
+        "value": "Movies"
+      },
+      {
+        "type": "column",
+        "value": "m"
+      },
+      {
+        "type": "keyword",
+        "value": "LEFT"
+      },
+      {
+        "type": "keyword",
+        "value": "JOIN"
+      },
+      {
+        "type": "table",
+        "value": "MovieReviews"
+      },
+      {
+        "type": "column",
+        "value": "r"
+      },
+      {
+        "type": "keyword",
+        "value": "ON"
+      },
+      {
+        "type": "column",
+        "value": "m.movie_id"
+      },
+      {
+        "type": "column",
+        "value": "="
+      },
+      {
+        "type": "column",
+        "value": "r.movie_id"
+      },
+      {
+        "type": "keyword",
+        "value": "GROUP"
+      },
+      {
+        "type": "keyword",
+        "value": "BY"
+      },
+      {
+        "type": "column",
+        "value": "m.movie_id,"
+      },
+      {
+        "type": "column",
+        "value": "m.movie_title;"
+      }
+    ]
+  },
+  {
+    "drillNumber": 839,
+    "subcluster": "9.4 Aggregations over Joins (COUNT per Parent Entity)",
+    "level": "Level 3 (Joined Grouping & Counting)",
+    "title": "Syntax #839: Count total active flights operated by each airline",
+    "table": "FlightSchedule",
+    "scenario": "Count total active flights operated by each airline.",
+    "businessObjective": "Count total active flights operated by each airline.",
+    "schemaSnippet": "FlightSchedule relational schema",
+    "targetQuery": "SELECT al.airline_name, COUNT(f.flight_id) AS scheduled_flight_count\nFROM Airlines al\nLEFT JOIN FlightSchedule f ON al.airline_id = f.airline_id\nGROUP BY al.airline_id, al.airline_name;",
+    "syntaxBlueprint": "SELECT a.name, COUNT(b.id) AS total_count\nFROM TableA a\nLEFT JOIN TableB b ON a.id = b.a_id\nGROUP BY a.id, a.name;",
+    "syntaxRule": "When counting child records with a LEFT JOIN, always use 'COUNT(b.id)' rather than 'COUNT(*)' so parent records with 0 children count as 0 instead of 1.",
+    "syntaxTrap": "Using COUNT(*) with a LEFT JOIN turns 0 children into 1 because the outer join produces a single row containing NULLs.",
+    "eli5Story": "Relational Joins on FlightSchedule: Count total active flights operated by each airline.",
+    "commonMistakes": "Omitting the ON clause, forgetting table alias qualification on ambiguous columns, or accidentally converting LEFT JOIN to INNER JOIN via WHERE filters.",
+    "learningOutcomes": "Mastered 9.4 Aggregations over Joins (COUNT per Parent Entity) on FlightSchedule.",
+    "challengeSlots": [
+      {
+        "type": "keyword",
+        "value": "SELECT"
+      },
+      {
+        "type": "column",
+        "value": "al.airline_name,"
+      },
+      {
+        "type": "column",
+        "value": "COUNT(f.flight_id)"
+      },
+      {
+        "type": "keyword",
+        "value": "AS"
+      },
+      {
+        "type": "column",
+        "value": "scheduled_flight_count"
+      },
+      {
+        "type": "keyword",
+        "value": "FROM"
+      },
+      {
+        "type": "table",
+        "value": "Airlines"
+      },
+      {
+        "type": "column",
+        "value": "al"
+      },
+      {
+        "type": "keyword",
+        "value": "LEFT"
+      },
+      {
+        "type": "keyword",
+        "value": "JOIN"
+      },
+      {
+        "type": "table",
+        "value": "FlightSchedule"
+      },
+      {
+        "type": "column",
+        "value": "f"
+      },
+      {
+        "type": "keyword",
+        "value": "ON"
+      },
+      {
+        "type": "column",
+        "value": "al.airline_id"
+      },
+      {
+        "type": "column",
+        "value": "="
+      },
+      {
+        "type": "column",
+        "value": "f.airline_id"
+      },
+      {
+        "type": "keyword",
+        "value": "GROUP"
+      },
+      {
+        "type": "keyword",
+        "value": "BY"
+      },
+      {
+        "type": "column",
+        "value": "al.airline_id,"
+      },
+      {
+        "type": "column",
+        "value": "al.airline_name;"
+      }
+    ]
+  },
+  {
+    "drillNumber": 840,
+    "subcluster": "9.4 Aggregations over Joins (COUNT per Parent Entity)",
+    "level": "Level 3 (Joined Grouping & Counting)",
+    "title": "Syntax #840: Count the number of pets registered to each client owner",
+    "table": "PetClinic",
+    "scenario": "Count the number of pets registered to each client owner.",
+    "businessObjective": "Count the number of pets registered to each client owner.",
+    "schemaSnippet": "PetClinic relational schema",
+    "targetQuery": "SELECT o.owner_name, COUNT(p.pet_id) AS registered_pet_count\nFROM Owners o\nLEFT JOIN PetClinic p ON o.owner_id = p.owner_id\nGROUP BY o.owner_id, o.owner_name;",
+    "syntaxBlueprint": "SELECT a.name, COUNT(b.id) AS total_count\nFROM TableA a\nLEFT JOIN TableB b ON a.id = b.a_id\nGROUP BY a.id, a.name;",
+    "syntaxRule": "When counting child records with a LEFT JOIN, always use 'COUNT(b.id)' rather than 'COUNT(*)' so parent records with 0 children count as 0 instead of 1.",
+    "syntaxTrap": "Using COUNT(*) with a LEFT JOIN turns 0 children into 1 because the outer join produces a single row containing NULLs.",
+    "eli5Story": "Relational Joins on PetClinic: Count the number of pets registered to each client owner.",
+    "commonMistakes": "Omitting the ON clause, forgetting table alias qualification on ambiguous columns, or accidentally converting LEFT JOIN to INNER JOIN via WHERE filters.",
+    "learningOutcomes": "Mastered 9.4 Aggregations over Joins (COUNT per Parent Entity) on PetClinic.",
+    "challengeSlots": [
+      {
+        "type": "keyword",
+        "value": "SELECT"
+      },
+      {
+        "type": "column",
+        "value": "o.owner_name,"
+      },
+      {
+        "type": "column",
+        "value": "COUNT(p.pet_id)"
+      },
+      {
+        "type": "keyword",
+        "value": "AS"
+      },
+      {
+        "type": "column",
+        "value": "registered_pet_count"
+      },
+      {
+        "type": "keyword",
+        "value": "FROM"
+      },
+      {
+        "type": "table",
+        "value": "Owners"
+      },
+      {
+        "type": "column",
+        "value": "o"
+      },
+      {
+        "type": "keyword",
+        "value": "LEFT"
+      },
+      {
+        "type": "keyword",
+        "value": "JOIN"
+      },
+      {
+        "type": "table",
+        "value": "PetClinic"
+      },
+      {
+        "type": "column",
+        "value": "p"
+      },
+      {
+        "type": "keyword",
+        "value": "ON"
+      },
+      {
+        "type": "column",
+        "value": "o.owner_id"
+      },
+      {
+        "type": "column",
+        "value": "="
+      },
+      {
+        "type": "column",
+        "value": "p.owner_id"
+      },
+      {
+        "type": "keyword",
+        "value": "GROUP"
+      },
+      {
+        "type": "keyword",
+        "value": "BY"
+      },
+      {
+        "type": "column",
+        "value": "o.owner_id,"
+      },
+      {
+        "type": "column",
+        "value": "o.owner_name;"
+      }
+    ]
+  },
+  {
+    "drillNumber": 841,
+    "subcluster": "9.5 Aggregations over Joins (SUM & AVG Financials/Metrics)",
+    "level": "Level 3 (Joined SUM & AVG)",
+    "title": "Syntax #841: Calculate total payroll expenditure and average salary per department",
+    "table": "Employees",
+    "scenario": "Calculate total payroll expenditure and average salary per department.",
+    "businessObjective": "Calculate total payroll expenditure and average salary per department.",
+    "schemaSnippet": "Employees relational schema",
+    "targetQuery": "SELECT d.department_name, SUM(e.salary) AS total_payroll, AVG(e.salary) AS avg_salary\nFROM Departments d\nINNER JOIN Employees e ON d.department_id = e.department_id\nGROUP BY d.department_id, d.department_name;",
+    "syntaxBlueprint": "SELECT a.name, SUM(b.amount) AS total_revenue, AVG(b.amount) AS avg_revenue\nFROM TableA a\nJOIN TableB b ON a.id = b.a_id\nGROUP BY a.id, a.name;",
+    "syntaxRule": "Calculate aggregate financial totals (SUM) and averages (AVG) across child rows grouped by parent entity.",
+    "syntaxTrap": "Forgetting to include all non-aggregated columns in the GROUP BY clause.",
+    "eli5Story": "Relational Joins on Employees: Calculate total payroll expenditure and average salary per department.",
+    "commonMistakes": "Omitting the ON clause, forgetting table alias qualification on ambiguous columns, or accidentally converting LEFT JOIN to INNER JOIN via WHERE filters.",
+    "learningOutcomes": "Mastered 9.5 Aggregations over Joins (SUM & AVG Financials/Metrics) on Employees.",
+    "challengeSlots": [
+      {
+        "type": "keyword",
+        "value": "SELECT"
+      },
+      {
+        "type": "column",
+        "value": "d.department_name,"
+      },
+      {
+        "type": "column",
+        "value": "SUM(e.salary)"
+      },
+      {
+        "type": "keyword",
+        "value": "AS"
+      },
+      {
+        "type": "column",
+        "value": "total_payroll,"
+      },
+      {
+        "type": "column",
+        "value": "AVG(e.salary)"
+      },
+      {
+        "type": "keyword",
+        "value": "AS"
+      },
+      {
+        "type": "column",
+        "value": "avg_salary"
+      },
+      {
+        "type": "keyword",
+        "value": "FROM"
+      },
+      {
+        "type": "table",
+        "value": "Departments"
+      },
+      {
+        "type": "column",
+        "value": "d"
+      },
+      {
+        "type": "keyword",
+        "value": "INNER"
+      },
+      {
+        "type": "keyword",
+        "value": "JOIN"
+      },
+      {
+        "type": "table",
+        "value": "Employees"
+      },
+      {
+        "type": "column",
+        "value": "e"
+      },
+      {
+        "type": "keyword",
+        "value": "ON"
+      },
+      {
+        "type": "column",
+        "value": "d.department_id"
+      },
+      {
+        "type": "column",
+        "value": "="
+      },
+      {
+        "type": "column",
+        "value": "e.department_id"
+      },
+      {
+        "type": "keyword",
+        "value": "GROUP"
+      },
+      {
+        "type": "keyword",
+        "value": "BY"
+      },
+      {
+        "type": "column",
+        "value": "d.department_id,"
+      },
+      {
+        "type": "column",
+        "value": "d.department_name;"
+      }
+    ]
+  },
+  {
+    "drillNumber": 842,
+    "subcluster": "9.5 Aggregations over Joins (SUM & AVG Financials/Metrics)",
+    "level": "Level 3 (Joined SUM & AVG)",
+    "title": "Syntax #842: Calculate total customer lifetime spend and average order value (AOV)",
+    "table": "Orders",
+    "scenario": "Calculate total customer lifetime spend and average order value (AOV).",
+    "businessObjective": "Calculate total customer lifetime spend and average order value (AOV).",
+    "schemaSnippet": "Orders relational schema",
+    "targetQuery": "SELECT c.customer_name, SUM(o.total_amount) AS total_spend, AVG(o.total_amount) AS average_order_value\nFROM Customers c\nINNER JOIN Orders o ON c.customer_id = o.customer_id\nGROUP BY c.customer_id, c.customer_name;",
+    "syntaxBlueprint": "SELECT a.name, SUM(b.amount) AS total_revenue, AVG(b.amount) AS avg_revenue\nFROM TableA a\nJOIN TableB b ON a.id = b.a_id\nGROUP BY a.id, a.name;",
+    "syntaxRule": "Calculate aggregate financial totals (SUM) and averages (AVG) across child rows grouped by parent entity.",
+    "syntaxTrap": "Forgetting to include all non-aggregated columns in the GROUP BY clause.",
+    "eli5Story": "Relational Joins on Orders: Calculate total customer lifetime spend and average order value (AOV).",
+    "commonMistakes": "Omitting the ON clause, forgetting table alias qualification on ambiguous columns, or accidentally converting LEFT JOIN to INNER JOIN via WHERE filters.",
+    "learningOutcomes": "Mastered 9.5 Aggregations over Joins (SUM & AVG Financials/Metrics) on Orders.",
+    "challengeSlots": [
+      {
+        "type": "keyword",
+        "value": "SELECT"
+      },
+      {
+        "type": "column",
+        "value": "c.customer_name,"
+      },
+      {
+        "type": "column",
+        "value": "SUM(o.total_amount)"
+      },
+      {
+        "type": "keyword",
+        "value": "AS"
+      },
+      {
+        "type": "column",
+        "value": "total_spend,"
+      },
+      {
+        "type": "column",
+        "value": "AVG(o.total_amount)"
+      },
+      {
+        "type": "keyword",
+        "value": "AS"
+      },
+      {
+        "type": "column",
+        "value": "average_order_value"
+      },
+      {
+        "type": "keyword",
+        "value": "FROM"
+      },
+      {
+        "type": "table",
+        "value": "Customers"
+      },
+      {
+        "type": "column",
+        "value": "c"
+      },
+      {
+        "type": "keyword",
+        "value": "INNER"
+      },
+      {
+        "type": "keyword",
+        "value": "JOIN"
+      },
+      {
+        "type": "table",
+        "value": "Orders"
+      },
+      {
+        "type": "column",
+        "value": "o"
+      },
+      {
+        "type": "keyword",
+        "value": "ON"
+      },
+      {
+        "type": "column",
+        "value": "c.customer_id"
+      },
+      {
+        "type": "column",
+        "value": "="
+      },
+      {
+        "type": "column",
+        "value": "o.customer_id"
+      },
+      {
+        "type": "keyword",
+        "value": "GROUP"
+      },
+      {
+        "type": "keyword",
+        "value": "BY"
+      },
+      {
+        "type": "column",
+        "value": "c.customer_id,"
+      },
+      {
+        "type": "column",
+        "value": "c.customer_name;"
+      }
+    ]
+  },
+  {
+    "drillNumber": 843,
+    "subcluster": "9.5 Aggregations over Joins (SUM & AVG Financials/Metrics)",
+    "level": "Level 3 (Joined SUM & AVG)",
+    "title": "Syntax #843: Calculate average and total credits taken per enrolled student",
+    "table": "Students",
+    "scenario": "Calculate average and total credits taken per enrolled student.",
+    "businessObjective": "Calculate average and total credits taken per enrolled student.",
+    "schemaSnippet": "Students relational schema",
+    "targetQuery": "SELECT s.full_name, AVG(c.credits) AS avg_course_credits, SUM(c.credits) AS total_credits\nFROM Students s\nINNER JOIN Courses c ON s.student_id = c.student_id\nGROUP BY s.student_id, s.full_name;",
+    "syntaxBlueprint": "SELECT a.name, SUM(b.amount) AS total_revenue, AVG(b.amount) AS avg_revenue\nFROM TableA a\nJOIN TableB b ON a.id = b.a_id\nGROUP BY a.id, a.name;",
+    "syntaxRule": "Calculate aggregate financial totals (SUM) and averages (AVG) across child rows grouped by parent entity.",
+    "syntaxTrap": "Forgetting to include all non-aggregated columns in the GROUP BY clause.",
+    "eli5Story": "Relational Joins on Students: Calculate average and total credits taken per enrolled student.",
+    "commonMistakes": "Omitting the ON clause, forgetting table alias qualification on ambiguous columns, or accidentally converting LEFT JOIN to INNER JOIN via WHERE filters.",
+    "learningOutcomes": "Mastered 9.5 Aggregations over Joins (SUM & AVG Financials/Metrics) on Students.",
+    "challengeSlots": [
+      {
+        "type": "keyword",
+        "value": "SELECT"
+      },
+      {
+        "type": "column",
+        "value": "s.full_name,"
+      },
+      {
+        "type": "column",
+        "value": "AVG(c.credits)"
+      },
+      {
+        "type": "keyword",
+        "value": "AS"
+      },
+      {
+        "type": "column",
+        "value": "avg_course_credits,"
+      },
+      {
+        "type": "column",
+        "value": "SUM(c.credits)"
+      },
+      {
+        "type": "keyword",
+        "value": "AS"
+      },
+      {
+        "type": "column",
+        "value": "total_credits"
+      },
+      {
+        "type": "keyword",
+        "value": "FROM"
+      },
+      {
+        "type": "table",
+        "value": "Students"
+      },
+      {
+        "type": "column",
+        "value": "s"
+      },
+      {
+        "type": "keyword",
+        "value": "INNER"
+      },
+      {
+        "type": "keyword",
+        "value": "JOIN"
+      },
+      {
+        "type": "table",
+        "value": "Courses"
+      },
+      {
+        "type": "column",
+        "value": "c"
+      },
+      {
+        "type": "keyword",
+        "value": "ON"
+      },
+      {
+        "type": "column",
+        "value": "s.student_id"
+      },
+      {
+        "type": "column",
+        "value": "="
+      },
+      {
+        "type": "column",
+        "value": "c.student_id"
+      },
+      {
+        "type": "keyword",
+        "value": "GROUP"
+      },
+      {
+        "type": "keyword",
+        "value": "BY"
+      },
+      {
+        "type": "column",
+        "value": "s.student_id,"
+      },
+      {
+        "type": "column",
+        "value": "s.full_name;"
+      }
+    ]
+  },
+  {
+    "drillNumber": 844,
+    "subcluster": "9.5 Aggregations over Joins (SUM & AVG Financials/Metrics)",
+    "level": "Level 3 (Joined SUM & AVG)",
+    "title": "Syntax #844: Calculate the average book price and total catalog value per author",
+    "table": "Books",
+    "scenario": "Calculate the average book price and total catalog value per author.",
+    "businessObjective": "Calculate the average book price and total catalog value per author.",
+    "schemaSnippet": "Books relational schema",
+    "targetQuery": "SELECT a.author_name, AVG(b.price) AS avg_book_price, SUM(b.price) AS total_catalog_value\nFROM Authors a\nINNER JOIN Books b ON a.author_id = b.author_id\nGROUP BY a.author_id, a.author_name;",
+    "syntaxBlueprint": "SELECT a.name, SUM(b.amount) AS total_revenue, AVG(b.amount) AS avg_revenue\nFROM TableA a\nJOIN TableB b ON a.id = b.a_id\nGROUP BY a.id, a.name;",
+    "syntaxRule": "Calculate aggregate financial totals (SUM) and averages (AVG) across child rows grouped by parent entity.",
+    "syntaxTrap": "Forgetting to include all non-aggregated columns in the GROUP BY clause.",
+    "eli5Story": "Relational Joins on Books: Calculate the average book price and total catalog value per author.",
+    "commonMistakes": "Omitting the ON clause, forgetting table alias qualification on ambiguous columns, or accidentally converting LEFT JOIN to INNER JOIN via WHERE filters.",
+    "learningOutcomes": "Mastered 9.5 Aggregations over Joins (SUM & AVG Financials/Metrics) on Books.",
+    "challengeSlots": [
+      {
+        "type": "keyword",
+        "value": "SELECT"
+      },
+      {
+        "type": "column",
+        "value": "a.author_name,"
+      },
+      {
+        "type": "column",
+        "value": "AVG(b.price)"
+      },
+      {
+        "type": "keyword",
+        "value": "AS"
+      },
+      {
+        "type": "column",
+        "value": "avg_book_price,"
+      },
+      {
+        "type": "column",
+        "value": "SUM(b.price)"
+      },
+      {
+        "type": "keyword",
+        "value": "AS"
+      },
+      {
+        "type": "column",
+        "value": "total_catalog_value"
+      },
+      {
+        "type": "keyword",
+        "value": "FROM"
+      },
+      {
+        "type": "table",
+        "value": "Authors"
+      },
+      {
+        "type": "column",
+        "value": "a"
+      },
+      {
+        "type": "keyword",
+        "value": "INNER"
+      },
+      {
+        "type": "keyword",
+        "value": "JOIN"
+      },
+      {
+        "type": "table",
+        "value": "Books"
+      },
+      {
+        "type": "column",
+        "value": "b"
+      },
+      {
+        "type": "keyword",
+        "value": "ON"
+      },
+      {
+        "type": "column",
+        "value": "a.author_id"
+      },
+      {
+        "type": "column",
+        "value": "="
+      },
+      {
+        "type": "column",
+        "value": "b.author_id"
+      },
+      {
+        "type": "keyword",
+        "value": "GROUP"
+      },
+      {
+        "type": "keyword",
+        "value": "BY"
+      },
+      {
+        "type": "column",
+        "value": "a.author_id,"
+      },
+      {
+        "type": "column",
+        "value": "a.author_name;"
+      }
+    ]
+  },
+  {
+    "drillNumber": 845,
+    "subcluster": "9.5 Aggregations over Joins (SUM & AVG Financials/Metrics)",
+    "level": "Level 3 (Joined SUM & AVG)",
+    "title": "Syntax #845: Calculate total inventory valuation (stock_qty * unit_price) supplied by each vendor",
+    "table": "GroceryItems",
+    "scenario": "Calculate total inventory valuation (stock_qty * unit_price) supplied by each vendor.",
+    "businessObjective": "Calculate total inventory valuation (stock_qty * unit_price) supplied by each vendor.",
+    "schemaSnippet": "GroceryItems relational schema",
+    "targetQuery": "SELECT s.supplier_name, SUM(g.stock_qty * g.unit_price) AS inventory_valuation\nFROM Suppliers s\nINNER JOIN GroceryItems g ON s.supplier_id = g.supplier_id\nGROUP BY s.supplier_id, s.supplier_name;",
+    "syntaxBlueprint": "SELECT a.name, SUM(b.amount) AS total_revenue, AVG(b.amount) AS avg_revenue\nFROM TableA a\nJOIN TableB b ON a.id = b.a_id\nGROUP BY a.id, a.name;",
+    "syntaxRule": "Calculate aggregate financial totals (SUM) and averages (AVG) across child rows grouped by parent entity.",
+    "syntaxTrap": "Forgetting to include all non-aggregated columns in the GROUP BY clause.",
+    "eli5Story": "Relational Joins on GroceryItems: Calculate total inventory valuation (stock_qty * unit_price) supplied by each vendor.",
+    "commonMistakes": "Omitting the ON clause, forgetting table alias qualification on ambiguous columns, or accidentally converting LEFT JOIN to INNER JOIN via WHERE filters.",
+    "learningOutcomes": "Mastered 9.5 Aggregations over Joins (SUM & AVG Financials/Metrics) on GroceryItems.",
+    "challengeSlots": [
+      {
+        "type": "keyword",
+        "value": "SELECT"
+      },
+      {
+        "type": "column",
+        "value": "s.supplier_name,"
+      },
+      {
+        "type": "column",
+        "value": "SUM(g.stock_qty"
+      },
+      {
+        "type": "column",
+        "value": "*"
+      },
+      {
+        "type": "column",
+        "value": "g.unit_price)"
+      },
+      {
+        "type": "keyword",
+        "value": "AS"
+      },
+      {
+        "type": "column",
+        "value": "inventory_valuation"
+      },
+      {
+        "type": "keyword",
+        "value": "FROM"
+      },
+      {
+        "type": "table",
+        "value": "Suppliers"
+      },
+      {
+        "type": "column",
+        "value": "s"
+      },
+      {
+        "type": "keyword",
+        "value": "INNER"
+      },
+      {
+        "type": "keyword",
+        "value": "JOIN"
+      },
+      {
+        "type": "table",
+        "value": "GroceryItems"
+      },
+      {
+        "type": "column",
+        "value": "g"
+      },
+      {
+        "type": "keyword",
+        "value": "ON"
+      },
+      {
+        "type": "column",
+        "value": "s.supplier_id"
+      },
+      {
+        "type": "column",
+        "value": "="
+      },
+      {
+        "type": "column",
+        "value": "g.supplier_id"
+      },
+      {
+        "type": "keyword",
+        "value": "GROUP"
+      },
+      {
+        "type": "keyword",
+        "value": "BY"
+      },
+      {
+        "type": "column",
+        "value": "s.supplier_id,"
+      },
+      {
+        "type": "column",
+        "value": "s.supplier_name;"
+      }
+    ]
+  },
+  {
+    "drillNumber": 846,
+    "subcluster": "9.5 Aggregations over Joins (SUM & AVG Financials/Metrics)",
+    "level": "Level 3 (Joined SUM & AVG)",
+    "title": "Syntax #846: Calculate total runtime duration in seconds for each music album",
+    "table": "MusicTracks",
+    "scenario": "Calculate total runtime duration in seconds for each music album.",
+    "businessObjective": "Calculate total runtime duration in seconds for each music album.",
+    "schemaSnippet": "MusicTracks relational schema",
+    "targetQuery": "SELECT a.album_title, SUM(t.duration_seconds) AS total_album_duration\nFROM Albums a\nINNER JOIN MusicTracks t ON a.album_id = t.album_id\nGROUP BY a.album_id, a.album_title;",
+    "syntaxBlueprint": "SELECT a.name, SUM(b.amount) AS total_revenue, AVG(b.amount) AS avg_revenue\nFROM TableA a\nJOIN TableB b ON a.id = b.a_id\nGROUP BY a.id, a.name;",
+    "syntaxRule": "Calculate aggregate financial totals (SUM) and averages (AVG) across child rows grouped by parent entity.",
+    "syntaxTrap": "Forgetting to include all non-aggregated columns in the GROUP BY clause.",
+    "eli5Story": "Relational Joins on MusicTracks: Calculate total runtime duration in seconds for each music album.",
+    "commonMistakes": "Omitting the ON clause, forgetting table alias qualification on ambiguous columns, or accidentally converting LEFT JOIN to INNER JOIN via WHERE filters.",
+    "learningOutcomes": "Mastered 9.5 Aggregations over Joins (SUM & AVG Financials/Metrics) on MusicTracks.",
+    "challengeSlots": [
+      {
+        "type": "keyword",
+        "value": "SELECT"
+      },
+      {
+        "type": "column",
+        "value": "a.album_title,"
+      },
+      {
+        "type": "column",
+        "value": "SUM(t.duration_seconds)"
+      },
+      {
+        "type": "keyword",
+        "value": "AS"
+      },
+      {
+        "type": "column",
+        "value": "total_album_duration"
+      },
+      {
+        "type": "keyword",
+        "value": "FROM"
+      },
+      {
+        "type": "table",
+        "value": "Albums"
+      },
+      {
+        "type": "column",
+        "value": "a"
+      },
+      {
+        "type": "keyword",
+        "value": "INNER"
+      },
+      {
+        "type": "keyword",
+        "value": "JOIN"
+      },
+      {
+        "type": "table",
+        "value": "MusicTracks"
+      },
+      {
+        "type": "column",
+        "value": "t"
+      },
+      {
+        "type": "keyword",
+        "value": "ON"
+      },
+      {
+        "type": "column",
+        "value": "a.album_id"
+      },
+      {
+        "type": "column",
+        "value": "="
+      },
+      {
+        "type": "column",
+        "value": "t.album_id"
+      },
+      {
+        "type": "keyword",
+        "value": "GROUP"
+      },
+      {
+        "type": "keyword",
+        "value": "BY"
+      },
+      {
+        "type": "column",
+        "value": "a.album_id,"
+      },
+      {
+        "type": "column",
+        "value": "a.album_title;"
+      }
+    ]
+  },
+  {
+    "drillNumber": 847,
+    "subcluster": "9.5 Aggregations over Joins (SUM & AVG Financials/Metrics)",
+    "level": "Level 3 (Joined SUM & AVG)",
+    "title": "Syntax #847: Calculate monthly membership revenue generated per personal trainer",
+    "table": "GymMembers",
+    "scenario": "Calculate monthly membership revenue generated per personal trainer.",
+    "businessObjective": "Calculate monthly membership revenue generated per personal trainer.",
+    "schemaSnippet": "GymMembers relational schema",
+    "targetQuery": "SELECT tr.trainer_name, SUM(m.monthly_fee) AS monthly_revenue_generated\nFROM Trainers tr\nINNER JOIN GymMembers m ON tr.trainer_id = m.trainer_id\nGROUP BY tr.trainer_id, tr.trainer_name;",
+    "syntaxBlueprint": "SELECT a.name, SUM(b.amount) AS total_revenue, AVG(b.amount) AS avg_revenue\nFROM TableA a\nJOIN TableB b ON a.id = b.a_id\nGROUP BY a.id, a.name;",
+    "syntaxRule": "Calculate aggregate financial totals (SUM) and averages (AVG) across child rows grouped by parent entity.",
+    "syntaxTrap": "Forgetting to include all non-aggregated columns in the GROUP BY clause.",
+    "eli5Story": "Relational Joins on GymMembers: Calculate monthly membership revenue generated per personal trainer.",
+    "commonMistakes": "Omitting the ON clause, forgetting table alias qualification on ambiguous columns, or accidentally converting LEFT JOIN to INNER JOIN via WHERE filters.",
+    "learningOutcomes": "Mastered 9.5 Aggregations over Joins (SUM & AVG Financials/Metrics) on GymMembers.",
+    "challengeSlots": [
+      {
+        "type": "keyword",
+        "value": "SELECT"
+      },
+      {
+        "type": "column",
+        "value": "tr.trainer_name,"
+      },
+      {
+        "type": "column",
+        "value": "SUM(m.monthly_fee)"
+      },
+      {
+        "type": "keyword",
+        "value": "AS"
+      },
+      {
+        "type": "column",
+        "value": "monthly_revenue_generated"
+      },
+      {
+        "type": "keyword",
+        "value": "FROM"
+      },
+      {
+        "type": "table",
+        "value": "Trainers"
+      },
+      {
+        "type": "column",
+        "value": "tr"
+      },
+      {
+        "type": "keyword",
+        "value": "INNER"
+      },
+      {
+        "type": "keyword",
+        "value": "JOIN"
+      },
+      {
+        "type": "table",
+        "value": "GymMembers"
+      },
+      {
+        "type": "column",
+        "value": "m"
+      },
+      {
+        "type": "keyword",
+        "value": "ON"
+      },
+      {
+        "type": "column",
+        "value": "tr.trainer_id"
+      },
+      {
+        "type": "column",
+        "value": "="
+      },
+      {
+        "type": "column",
+        "value": "m.trainer_id"
+      },
+      {
+        "type": "keyword",
+        "value": "GROUP"
+      },
+      {
+        "type": "keyword",
+        "value": "BY"
+      },
+      {
+        "type": "column",
+        "value": "tr.trainer_id,"
+      },
+      {
+        "type": "column",
+        "value": "tr.trainer_name;"
+      }
+    ]
+  },
+  {
+    "drillNumber": 848,
+    "subcluster": "9.5 Aggregations over Joins (SUM & AVG Financials/Metrics)",
+    "level": "Level 3 (Joined SUM & AVG)",
+    "title": "Syntax #848: Compute the average star rating score for each film",
+    "table": "MovieReviews",
+    "scenario": "Compute the average star rating score for each film.",
+    "businessObjective": "Compute the average star rating score for each film.",
+    "schemaSnippet": "MovieReviews relational schema",
+    "targetQuery": "SELECT m.movie_title, AVG(r.star_rating) AS average_star_score\nFROM Movies m\nINNER JOIN MovieReviews r ON m.movie_id = r.movie_id\nGROUP BY m.movie_id, m.movie_title;",
+    "syntaxBlueprint": "SELECT a.name, SUM(b.amount) AS total_revenue, AVG(b.amount) AS avg_revenue\nFROM TableA a\nJOIN TableB b ON a.id = b.a_id\nGROUP BY a.id, a.name;",
+    "syntaxRule": "Calculate aggregate financial totals (SUM) and averages (AVG) across child rows grouped by parent entity.",
+    "syntaxTrap": "Forgetting to include all non-aggregated columns in the GROUP BY clause.",
+    "eli5Story": "Relational Joins on MovieReviews: Compute the average star rating score for each film.",
+    "commonMistakes": "Omitting the ON clause, forgetting table alias qualification on ambiguous columns, or accidentally converting LEFT JOIN to INNER JOIN via WHERE filters.",
+    "learningOutcomes": "Mastered 9.5 Aggregations over Joins (SUM & AVG Financials/Metrics) on MovieReviews.",
+    "challengeSlots": [
+      {
+        "type": "keyword",
+        "value": "SELECT"
+      },
+      {
+        "type": "column",
+        "value": "m.movie_title,"
+      },
+      {
+        "type": "column",
+        "value": "AVG(r.star_rating)"
+      },
+      {
+        "type": "keyword",
+        "value": "AS"
+      },
+      {
+        "type": "column",
+        "value": "average_star_score"
+      },
+      {
+        "type": "keyword",
+        "value": "FROM"
+      },
+      {
+        "type": "table",
+        "value": "Movies"
+      },
+      {
+        "type": "column",
+        "value": "m"
+      },
+      {
+        "type": "keyword",
+        "value": "INNER"
+      },
+      {
+        "type": "keyword",
+        "value": "JOIN"
+      },
+      {
+        "type": "table",
+        "value": "MovieReviews"
+      },
+      {
+        "type": "column",
+        "value": "r"
+      },
+      {
+        "type": "keyword",
+        "value": "ON"
+      },
+      {
+        "type": "column",
+        "value": "m.movie_id"
+      },
+      {
+        "type": "column",
+        "value": "="
+      },
+      {
+        "type": "column",
+        "value": "r.movie_id"
+      },
+      {
+        "type": "keyword",
+        "value": "GROUP"
+      },
+      {
+        "type": "keyword",
+        "value": "BY"
+      },
+      {
+        "type": "column",
+        "value": "m.movie_id,"
+      },
+      {
+        "type": "column",
+        "value": "m.movie_title;"
+      }
+    ]
+  },
+  {
+    "drillNumber": 849,
+    "subcluster": "9.5 Aggregations over Joins (SUM & AVG Financials/Metrics)",
+    "level": "Level 3 (Joined SUM & AVG)",
+    "title": "Syntax #849: Calculate average route distance in miles for each airline",
+    "table": "FlightSchedule",
+    "scenario": "Calculate average route distance in miles for each airline.",
+    "businessObjective": "Calculate average route distance in miles for each airline.",
+    "schemaSnippet": "FlightSchedule relational schema",
+    "targetQuery": "SELECT al.airline_name, AVG(f.distance_miles) AS avg_flight_distance\nFROM Airlines al\nINNER JOIN FlightSchedule f ON al.airline_id = f.airline_id\nGROUP BY al.airline_id, al.airline_name;",
+    "syntaxBlueprint": "SELECT a.name, SUM(b.amount) AS total_revenue, AVG(b.amount) AS avg_revenue\nFROM TableA a\nJOIN TableB b ON a.id = b.a_id\nGROUP BY a.id, a.name;",
+    "syntaxRule": "Calculate aggregate financial totals (SUM) and averages (AVG) across child rows grouped by parent entity.",
+    "syntaxTrap": "Forgetting to include all non-aggregated columns in the GROUP BY clause.",
+    "eli5Story": "Relational Joins on FlightSchedule: Calculate average route distance in miles for each airline.",
+    "commonMistakes": "Omitting the ON clause, forgetting table alias qualification on ambiguous columns, or accidentally converting LEFT JOIN to INNER JOIN via WHERE filters.",
+    "learningOutcomes": "Mastered 9.5 Aggregations over Joins (SUM & AVG Financials/Metrics) on FlightSchedule.",
+    "challengeSlots": [
+      {
+        "type": "keyword",
+        "value": "SELECT"
+      },
+      {
+        "type": "column",
+        "value": "al.airline_name,"
+      },
+      {
+        "type": "column",
+        "value": "AVG(f.distance_miles)"
+      },
+      {
+        "type": "keyword",
+        "value": "AS"
+      },
+      {
+        "type": "column",
+        "value": "avg_flight_distance"
+      },
+      {
+        "type": "keyword",
+        "value": "FROM"
+      },
+      {
+        "type": "table",
+        "value": "Airlines"
+      },
+      {
+        "type": "column",
+        "value": "al"
+      },
+      {
+        "type": "keyword",
+        "value": "INNER"
+      },
+      {
+        "type": "keyword",
+        "value": "JOIN"
+      },
+      {
+        "type": "table",
+        "value": "FlightSchedule"
+      },
+      {
+        "type": "column",
+        "value": "f"
+      },
+      {
+        "type": "keyword",
+        "value": "ON"
+      },
+      {
+        "type": "column",
+        "value": "al.airline_id"
+      },
+      {
+        "type": "column",
+        "value": "="
+      },
+      {
+        "type": "column",
+        "value": "f.airline_id"
+      },
+      {
+        "type": "keyword",
+        "value": "GROUP"
+      },
+      {
+        "type": "keyword",
+        "value": "BY"
+      },
+      {
+        "type": "column",
+        "value": "al.airline_id,"
+      },
+      {
+        "type": "column",
+        "value": "al.airline_name;"
+      }
+    ]
+  },
+  {
+    "drillNumber": 850,
+    "subcluster": "9.5 Aggregations over Joins (SUM & AVG Financials/Metrics)",
+    "level": "Level 3 (Joined SUM & AVG)",
+    "title": "Syntax #850: Calculate the average weight of registered pets per household owner",
+    "table": "PetClinic",
+    "scenario": "Calculate the average weight of registered pets per household owner.",
+    "businessObjective": "Calculate the average weight of registered pets per household owner.",
+    "schemaSnippet": "PetClinic relational schema",
+    "targetQuery": "SELECT o.owner_name, AVG(p.weight_kg) AS avg_pet_weight\nFROM Owners o\nINNER JOIN PetClinic p ON o.owner_id = p.owner_id\nGROUP BY o.owner_id, o.owner_name;",
+    "syntaxBlueprint": "SELECT a.name, SUM(b.amount) AS total_revenue, AVG(b.amount) AS avg_revenue\nFROM TableA a\nJOIN TableB b ON a.id = b.a_id\nGROUP BY a.id, a.name;",
+    "syntaxRule": "Calculate aggregate financial totals (SUM) and averages (AVG) across child rows grouped by parent entity.",
+    "syntaxTrap": "Forgetting to include all non-aggregated columns in the GROUP BY clause.",
+    "eli5Story": "Relational Joins on PetClinic: Calculate the average weight of registered pets per household owner.",
+    "commonMistakes": "Omitting the ON clause, forgetting table alias qualification on ambiguous columns, or accidentally converting LEFT JOIN to INNER JOIN via WHERE filters.",
+    "learningOutcomes": "Mastered 9.5 Aggregations over Joins (SUM & AVG Financials/Metrics) on PetClinic.",
+    "challengeSlots": [
+      {
+        "type": "keyword",
+        "value": "SELECT"
+      },
+      {
+        "type": "column",
+        "value": "o.owner_name,"
+      },
+      {
+        "type": "column",
+        "value": "AVG(p.weight_kg)"
+      },
+      {
+        "type": "keyword",
+        "value": "AS"
+      },
+      {
+        "type": "column",
+        "value": "avg_pet_weight"
+      },
+      {
+        "type": "keyword",
+        "value": "FROM"
+      },
+      {
+        "type": "table",
+        "value": "Owners"
+      },
+      {
+        "type": "column",
+        "value": "o"
+      },
+      {
+        "type": "keyword",
+        "value": "INNER"
+      },
+      {
+        "type": "keyword",
+        "value": "JOIN"
+      },
+      {
+        "type": "table",
+        "value": "PetClinic"
+      },
+      {
+        "type": "column",
+        "value": "p"
+      },
+      {
+        "type": "keyword",
+        "value": "ON"
+      },
+      {
+        "type": "column",
+        "value": "o.owner_id"
+      },
+      {
+        "type": "column",
+        "value": "="
+      },
+      {
+        "type": "column",
+        "value": "p.owner_id"
+      },
+      {
+        "type": "keyword",
+        "value": "GROUP"
+      },
+      {
+        "type": "keyword",
+        "value": "BY"
+      },
+      {
+        "type": "column",
+        "value": "o.owner_id,"
+      },
+      {
+        "type": "column",
+        "value": "o.owner_name;"
+      }
+    ]
+  },
+  {
+    "drillNumber": 851,
+    "subcluster": "9.6 The Fan-Out Duplication Trap (COUNT(DISTINCT))",
+    "level": "Level 3 (Join Fan-Out Trap)",
+    "title": "Syntax #851: Prevent fan-out duplication: count unique courses AND unique clubs per student",
+    "table": "Students",
+    "scenario": "Prevent fan-out duplication: count unique courses AND unique clubs per student.",
+    "businessObjective": "Prevent fan-out duplication: count unique courses AND unique clubs per student.",
+    "schemaSnippet": "Students relational schema",
+    "targetQuery": "SELECT s.full_name, COUNT(DISTINCT c.course_id) AS unique_courses, COUNT(DISTINCT cl.club_id) AS unique_clubs\nFROM Students s\nLEFT JOIN Courses c ON s.student_id = c.student_id\nLEFT JOIN StudentClubs cl ON s.student_id = cl.student_id\nGROUP BY s.student_id, s.full_name;",
+    "syntaxBlueprint": "SELECT a.name, COUNT(DISTINCT b.id) AS unique_b, COUNT(DISTINCT c.id) AS unique_c\nFROM TableA a\nLEFT JOIN TableB b ON a.id = b.a_id\nLEFT JOIN TableC c ON a.id = c.a_id\nGROUP BY a.id, a.name;",
+    "syntaxRule": "When joining a parent table to multiple 1-to-many child tables, row multiplication causes standard COUNT() to explode. Use COUNT(DISTINCT col) to compute accurate counts.",
+    "syntaxTrap": "Running multiple 1-to-many joins and using standard SUM() or COUNT() without DISTINCT multiplies numbers by the Cartesian cross of the children.",
+    "eli5Story": "Relational Joins on Students: Prevent fan-out duplication: count unique courses AND unique clubs per student.",
+    "commonMistakes": "Omitting the ON clause, forgetting table alias qualification on ambiguous columns, or accidentally converting LEFT JOIN to INNER JOIN via WHERE filters.",
+    "learningOutcomes": "Mastered 9.6 The Fan-Out Duplication Trap (COUNT(DISTINCT)) on Students.",
+    "challengeSlots": [
+      {
+        "type": "keyword",
+        "value": "SELECT"
+      },
+      {
+        "type": "column",
+        "value": "s.full_name,"
+      },
+      {
+        "type": "column",
+        "value": "COUNT(DISTINCT"
+      },
+      {
+        "type": "column",
+        "value": "c.course_id)"
+      },
+      {
+        "type": "keyword",
+        "value": "AS"
+      },
+      {
+        "type": "column",
+        "value": "unique_courses,"
+      },
+      {
+        "type": "column",
+        "value": "COUNT(DISTINCT"
+      },
+      {
+        "type": "column",
+        "value": "cl.club_id)"
+      },
+      {
+        "type": "keyword",
+        "value": "AS"
+      },
+      {
+        "type": "column",
+        "value": "unique_clubs"
+      },
+      {
+        "type": "keyword",
+        "value": "FROM"
+      },
+      {
+        "type": "table",
+        "value": "Students"
+      },
+      {
+        "type": "column",
+        "value": "s"
+      },
+      {
+        "type": "keyword",
+        "value": "LEFT"
+      },
+      {
+        "type": "keyword",
+        "value": "JOIN"
+      },
+      {
+        "type": "table",
+        "value": "Courses"
+      },
+      {
+        "type": "column",
+        "value": "c"
+      },
+      {
+        "type": "keyword",
+        "value": "ON"
+      },
+      {
+        "type": "column",
+        "value": "s.student_id"
+      },
+      {
+        "type": "column",
+        "value": "="
+      },
+      {
+        "type": "column",
+        "value": "c.student_id"
+      },
+      {
+        "type": "keyword",
+        "value": "LEFT"
+      },
+      {
+        "type": "keyword",
+        "value": "JOIN"
+      },
+      {
+        "type": "column",
+        "value": "StudentClubs"
+      },
+      {
+        "type": "column",
+        "value": "cl"
+      },
+      {
+        "type": "keyword",
+        "value": "ON"
+      },
+      {
+        "type": "column",
+        "value": "s.student_id"
+      },
+      {
+        "type": "column",
+        "value": "="
+      },
+      {
+        "type": "column",
+        "value": "cl.student_id"
+      },
+      {
+        "type": "keyword",
+        "value": "GROUP"
+      },
+      {
+        "type": "keyword",
+        "value": "BY"
+      },
+      {
+        "type": "column",
+        "value": "s.student_id,"
+      },
+      {
+        "type": "column",
+        "value": "s.full_name;"
+      }
+    ]
+  },
+  {
+    "drillNumber": 852,
+    "subcluster": "9.6 The Fan-Out Duplication Trap (COUNT(DISTINCT))",
+    "level": "Level 3 (Join Fan-Out Trap)",
+    "title": "Syntax #852: Count distinct books AND distinct awards per author without Cartesian explosion",
+    "table": "Books",
+    "scenario": "Count distinct books AND distinct awards per author without Cartesian explosion.",
+    "businessObjective": "Count distinct books AND distinct awards per author without Cartesian explosion.",
+    "schemaSnippet": "Books relational schema",
+    "targetQuery": "SELECT a.author_name, COUNT(DISTINCT b.book_id) AS distinct_books, COUNT(DISTINCT aw.award_id) AS distinct_awards\nFROM Authors a\nLEFT JOIN Books b ON a.author_id = b.author_id\nLEFT JOIN AuthorAwards aw ON a.author_id = aw.author_id\nGROUP BY a.author_id, a.author_name;",
+    "syntaxBlueprint": "SELECT a.name, COUNT(DISTINCT b.id) AS unique_b, COUNT(DISTINCT c.id) AS unique_c\nFROM TableA a\nLEFT JOIN TableB b ON a.id = b.a_id\nLEFT JOIN TableC c ON a.id = c.a_id\nGROUP BY a.id, a.name;",
+    "syntaxRule": "When joining a parent table to multiple 1-to-many child tables, row multiplication causes standard COUNT() to explode. Use COUNT(DISTINCT col) to compute accurate counts.",
+    "syntaxTrap": "Running multiple 1-to-many joins and using standard SUM() or COUNT() without DISTINCT multiplies numbers by the Cartesian cross of the children.",
+    "eli5Story": "Relational Joins on Books: Count distinct books AND distinct awards per author without Cartesian explosion.",
+    "commonMistakes": "Omitting the ON clause, forgetting table alias qualification on ambiguous columns, or accidentally converting LEFT JOIN to INNER JOIN via WHERE filters.",
+    "learningOutcomes": "Mastered 9.6 The Fan-Out Duplication Trap (COUNT(DISTINCT)) on Books.",
+    "challengeSlots": [
+      {
+        "type": "keyword",
+        "value": "SELECT"
+      },
+      {
+        "type": "column",
+        "value": "a.author_name,"
+      },
+      {
+        "type": "column",
+        "value": "COUNT(DISTINCT"
+      },
+      {
+        "type": "column",
+        "value": "b.book_id)"
+      },
+      {
+        "type": "keyword",
+        "value": "AS"
+      },
+      {
+        "type": "column",
+        "value": "distinct_books,"
+      },
+      {
+        "type": "column",
+        "value": "COUNT(DISTINCT"
+      },
+      {
+        "type": "column",
+        "value": "aw.award_id)"
+      },
+      {
+        "type": "keyword",
+        "value": "AS"
+      },
+      {
+        "type": "column",
+        "value": "distinct_awards"
+      },
+      {
+        "type": "keyword",
+        "value": "FROM"
+      },
+      {
+        "type": "table",
+        "value": "Authors"
+      },
+      {
+        "type": "column",
+        "value": "a"
+      },
+      {
+        "type": "keyword",
+        "value": "LEFT"
+      },
+      {
+        "type": "keyword",
+        "value": "JOIN"
+      },
+      {
+        "type": "table",
+        "value": "Books"
+      },
+      {
+        "type": "column",
+        "value": "b"
+      },
+      {
+        "type": "keyword",
+        "value": "ON"
+      },
+      {
+        "type": "column",
+        "value": "a.author_id"
+      },
+      {
+        "type": "column",
+        "value": "="
+      },
+      {
+        "type": "column",
+        "value": "b.author_id"
+      },
+      {
+        "type": "keyword",
+        "value": "LEFT"
+      },
+      {
+        "type": "keyword",
+        "value": "JOIN"
+      },
+      {
+        "type": "column",
+        "value": "AuthorAwards"
+      },
+      {
+        "type": "column",
+        "value": "aw"
+      },
+      {
+        "type": "keyword",
+        "value": "ON"
+      },
+      {
+        "type": "column",
+        "value": "a.author_id"
+      },
+      {
+        "type": "column",
+        "value": "="
+      },
+      {
+        "type": "column",
+        "value": "aw.author_id"
+      },
+      {
+        "type": "keyword",
+        "value": "GROUP"
+      },
+      {
+        "type": "keyword",
+        "value": "BY"
+      },
+      {
+        "type": "column",
+        "value": "a.author_id,"
+      },
+      {
+        "type": "column",
+        "value": "a.author_name;"
+      }
+    ]
+  },
+  {
+    "drillNumber": 853,
+    "subcluster": "9.6 The Fan-Out Duplication Trap (COUNT(DISTINCT))",
+    "level": "Level 3 (Join Fan-Out Trap)",
+    "title": "Syntax #853: Calculate distinct staff count AND distinct project count per department",
+    "table": "Employees",
+    "scenario": "Calculate distinct staff count AND distinct project count per department.",
+    "businessObjective": "Calculate distinct staff count AND distinct project count per department.",
+    "schemaSnippet": "Employees relational schema",
+    "targetQuery": "SELECT d.department_name, COUNT(DISTINCT e.employee_id) AS distinct_staff, COUNT(DISTINCT p.project_id) AS distinct_projects\nFROM Departments d\nLEFT JOIN Employees e ON d.department_id = e.department_id\nLEFT JOIN DepartmentProjects p ON d.department_id = p.department_id\nGROUP BY d.department_id, d.department_name;",
+    "syntaxBlueprint": "SELECT a.name, COUNT(DISTINCT b.id) AS unique_b, COUNT(DISTINCT c.id) AS unique_c\nFROM TableA a\nLEFT JOIN TableB b ON a.id = b.a_id\nLEFT JOIN TableC c ON a.id = c.a_id\nGROUP BY a.id, a.name;",
+    "syntaxRule": "When joining a parent table to multiple 1-to-many child tables, row multiplication causes standard COUNT() to explode. Use COUNT(DISTINCT col) to compute accurate counts.",
+    "syntaxTrap": "Running multiple 1-to-many joins and using standard SUM() or COUNT() without DISTINCT multiplies numbers by the Cartesian cross of the children.",
+    "eli5Story": "Relational Joins on Employees: Calculate distinct staff count AND distinct project count per department.",
+    "commonMistakes": "Omitting the ON clause, forgetting table alias qualification on ambiguous columns, or accidentally converting LEFT JOIN to INNER JOIN via WHERE filters.",
+    "learningOutcomes": "Mastered 9.6 The Fan-Out Duplication Trap (COUNT(DISTINCT)) on Employees.",
+    "challengeSlots": [
+      {
+        "type": "keyword",
+        "value": "SELECT"
+      },
+      {
+        "type": "column",
+        "value": "d.department_name,"
+      },
+      {
+        "type": "column",
+        "value": "COUNT(DISTINCT"
+      },
+      {
+        "type": "column",
+        "value": "e.employee_id)"
+      },
+      {
+        "type": "keyword",
+        "value": "AS"
+      },
+      {
+        "type": "column",
+        "value": "distinct_staff,"
+      },
+      {
+        "type": "column",
+        "value": "COUNT(DISTINCT"
+      },
+      {
+        "type": "column",
+        "value": "p.project_id)"
+      },
+      {
+        "type": "keyword",
+        "value": "AS"
+      },
+      {
+        "type": "column",
+        "value": "distinct_projects"
+      },
+      {
+        "type": "keyword",
+        "value": "FROM"
+      },
+      {
+        "type": "table",
+        "value": "Departments"
+      },
+      {
+        "type": "column",
+        "value": "d"
+      },
+      {
+        "type": "keyword",
+        "value": "LEFT"
+      },
+      {
+        "type": "keyword",
+        "value": "JOIN"
+      },
+      {
+        "type": "table",
+        "value": "Employees"
+      },
+      {
+        "type": "column",
+        "value": "e"
+      },
+      {
+        "type": "keyword",
+        "value": "ON"
+      },
+      {
+        "type": "column",
+        "value": "d.department_id"
+      },
+      {
+        "type": "column",
+        "value": "="
+      },
+      {
+        "type": "column",
+        "value": "e.department_id"
+      },
+      {
+        "type": "keyword",
+        "value": "LEFT"
+      },
+      {
+        "type": "keyword",
+        "value": "JOIN"
+      },
+      {
+        "type": "column",
+        "value": "DepartmentProjects"
+      },
+      {
+        "type": "column",
+        "value": "p"
+      },
+      {
+        "type": "keyword",
+        "value": "ON"
+      },
+      {
+        "type": "column",
+        "value": "d.department_id"
+      },
+      {
+        "type": "column",
+        "value": "="
+      },
+      {
+        "type": "column",
+        "value": "p.department_id"
+      },
+      {
+        "type": "keyword",
+        "value": "GROUP"
+      },
+      {
+        "type": "keyword",
+        "value": "BY"
+      },
+      {
+        "type": "column",
+        "value": "d.department_id,"
+      },
+      {
+        "type": "column",
+        "value": "d.department_name;"
+      }
+    ]
+  },
+  {
+    "drillNumber": 854,
+    "subcluster": "9.6 The Fan-Out Duplication Trap (COUNT(DISTINCT))",
+    "level": "Level 3 (Join Fan-Out Trap)",
+    "title": "Syntax #854: Count distinct items supplied and distinct purchase shipments without row inflation",
+    "table": "GroceryItems",
+    "scenario": "Count distinct items supplied and distinct purchase shipments without row inflation.",
+    "businessObjective": "Count distinct items supplied and distinct purchase shipments without row inflation.",
+    "schemaSnippet": "GroceryItems relational schema",
+    "targetQuery": "SELECT s.supplier_name, COUNT(DISTINCT g.item_id) AS distinct_items, COUNT(DISTINCT o.order_id) AS distinct_shipments\nFROM Suppliers s\nLEFT JOIN GroceryItems g ON s.supplier_id = g.supplier_id\nLEFT JOIN SupplierShipments o ON s.supplier_id = o.supplier_id\nGROUP BY s.supplier_id, s.supplier_name;",
+    "syntaxBlueprint": "SELECT a.name, COUNT(DISTINCT b.id) AS unique_b, COUNT(DISTINCT c.id) AS unique_c\nFROM TableA a\nLEFT JOIN TableB b ON a.id = b.a_id\nLEFT JOIN TableC c ON a.id = c.a_id\nGROUP BY a.id, a.name;",
+    "syntaxRule": "When joining a parent table to multiple 1-to-many child tables, row multiplication causes standard COUNT() to explode. Use COUNT(DISTINCT col) to compute accurate counts.",
+    "syntaxTrap": "Running multiple 1-to-many joins and using standard SUM() or COUNT() without DISTINCT multiplies numbers by the Cartesian cross of the children.",
+    "eli5Story": "Relational Joins on GroceryItems: Count distinct items supplied and distinct purchase shipments without row inflation.",
+    "commonMistakes": "Omitting the ON clause, forgetting table alias qualification on ambiguous columns, or accidentally converting LEFT JOIN to INNER JOIN via WHERE filters.",
+    "learningOutcomes": "Mastered 9.6 The Fan-Out Duplication Trap (COUNT(DISTINCT)) on GroceryItems.",
+    "challengeSlots": [
+      {
+        "type": "keyword",
+        "value": "SELECT"
+      },
+      {
+        "type": "column",
+        "value": "s.supplier_name,"
+      },
+      {
+        "type": "column",
+        "value": "COUNT(DISTINCT"
+      },
+      {
+        "type": "column",
+        "value": "g.item_id)"
+      },
+      {
+        "type": "keyword",
+        "value": "AS"
+      },
+      {
+        "type": "column",
+        "value": "distinct_items,"
+      },
+      {
+        "type": "column",
+        "value": "COUNT(DISTINCT"
+      },
+      {
+        "type": "column",
+        "value": "o.order_id)"
+      },
+      {
+        "type": "keyword",
+        "value": "AS"
+      },
+      {
+        "type": "column",
+        "value": "distinct_shipments"
+      },
+      {
+        "type": "keyword",
+        "value": "FROM"
+      },
+      {
+        "type": "table",
+        "value": "Suppliers"
+      },
+      {
+        "type": "column",
+        "value": "s"
+      },
+      {
+        "type": "keyword",
+        "value": "LEFT"
+      },
+      {
+        "type": "keyword",
+        "value": "JOIN"
+      },
+      {
+        "type": "table",
+        "value": "GroceryItems"
+      },
+      {
+        "type": "column",
+        "value": "g"
+      },
+      {
+        "type": "keyword",
+        "value": "ON"
+      },
+      {
+        "type": "column",
+        "value": "s.supplier_id"
+      },
+      {
+        "type": "column",
+        "value": "="
+      },
+      {
+        "type": "column",
+        "value": "g.supplier_id"
+      },
+      {
+        "type": "keyword",
+        "value": "LEFT"
+      },
+      {
+        "type": "keyword",
+        "value": "JOIN"
+      },
+      {
+        "type": "column",
+        "value": "SupplierShipments"
+      },
+      {
+        "type": "column",
+        "value": "o"
+      },
+      {
+        "type": "keyword",
+        "value": "ON"
+      },
+      {
+        "type": "column",
+        "value": "s.supplier_id"
+      },
+      {
+        "type": "column",
+        "value": "="
+      },
+      {
+        "type": "column",
+        "value": "o.supplier_id"
+      },
+      {
+        "type": "keyword",
+        "value": "GROUP"
+      },
+      {
+        "type": "keyword",
+        "value": "BY"
+      },
+      {
+        "type": "column",
+        "value": "s.supplier_id,"
+      },
+      {
+        "type": "column",
+        "value": "s.supplier_name;"
+      }
+    ]
+  },
+  {
+    "drillNumber": 855,
+    "subcluster": "9.6 The Fan-Out Duplication Trap (COUNT(DISTINCT))",
+    "level": "Level 3 (Join Fan-Out Trap)",
+    "title": "Syntax #855: Accurately tally distinct orders AND distinct customer reviews per customer",
+    "table": "Orders",
+    "scenario": "Accurately tally distinct orders AND distinct customer reviews per customer.",
+    "businessObjective": "Accurately tally distinct orders AND distinct customer reviews per customer.",
+    "schemaSnippet": "Orders relational schema",
+    "targetQuery": "SELECT c.customer_name, COUNT(DISTINCT o.order_id) AS total_orders, COUNT(DISTINCT rev.review_id) AS total_reviews\nFROM Customers c\nLEFT JOIN Orders o ON c.customer_id = o.customer_id\nLEFT JOIN CustomerReviews rev ON c.customer_id = rev.customer_id\nGROUP BY c.customer_id, c.customer_name;",
+    "syntaxBlueprint": "SELECT a.name, COUNT(DISTINCT b.id) AS unique_b, COUNT(DISTINCT c.id) AS unique_c\nFROM TableA a\nLEFT JOIN TableB b ON a.id = b.a_id\nLEFT JOIN TableC c ON a.id = c.a_id\nGROUP BY a.id, a.name;",
+    "syntaxRule": "When joining a parent table to multiple 1-to-many child tables, row multiplication causes standard COUNT() to explode. Use COUNT(DISTINCT col) to compute accurate counts.",
+    "syntaxTrap": "Running multiple 1-to-many joins and using standard SUM() or COUNT() without DISTINCT multiplies numbers by the Cartesian cross of the children.",
+    "eli5Story": "Relational Joins on Orders: Accurately tally distinct orders AND distinct customer reviews per customer.",
+    "commonMistakes": "Omitting the ON clause, forgetting table alias qualification on ambiguous columns, or accidentally converting LEFT JOIN to INNER JOIN via WHERE filters.",
+    "learningOutcomes": "Mastered 9.6 The Fan-Out Duplication Trap (COUNT(DISTINCT)) on Orders.",
+    "challengeSlots": [
+      {
+        "type": "keyword",
+        "value": "SELECT"
+      },
+      {
+        "type": "column",
+        "value": "c.customer_name,"
+      },
+      {
+        "type": "column",
+        "value": "COUNT(DISTINCT"
+      },
+      {
+        "type": "column",
+        "value": "o.order_id)"
+      },
+      {
+        "type": "keyword",
+        "value": "AS"
+      },
+      {
+        "type": "column",
+        "value": "total_orders,"
+      },
+      {
+        "type": "column",
+        "value": "COUNT(DISTINCT"
+      },
+      {
+        "type": "column",
+        "value": "rev.review_id)"
+      },
+      {
+        "type": "keyword",
+        "value": "AS"
+      },
+      {
+        "type": "column",
+        "value": "total_reviews"
+      },
+      {
+        "type": "keyword",
+        "value": "FROM"
+      },
+      {
+        "type": "table",
+        "value": "Customers"
+      },
+      {
+        "type": "column",
+        "value": "c"
+      },
+      {
+        "type": "keyword",
+        "value": "LEFT"
+      },
+      {
+        "type": "keyword",
+        "value": "JOIN"
+      },
+      {
+        "type": "table",
+        "value": "Orders"
+      },
+      {
+        "type": "column",
+        "value": "o"
+      },
+      {
+        "type": "keyword",
+        "value": "ON"
+      },
+      {
+        "type": "column",
+        "value": "c.customer_id"
+      },
+      {
+        "type": "column",
+        "value": "="
+      },
+      {
+        "type": "column",
+        "value": "o.customer_id"
+      },
+      {
+        "type": "keyword",
+        "value": "LEFT"
+      },
+      {
+        "type": "keyword",
+        "value": "JOIN"
+      },
+      {
+        "type": "column",
+        "value": "CustomerReviews"
+      },
+      {
+        "type": "column",
+        "value": "rev"
+      },
+      {
+        "type": "keyword",
+        "value": "ON"
+      },
+      {
+        "type": "column",
+        "value": "c.customer_id"
+      },
+      {
+        "type": "column",
+        "value": "="
+      },
+      {
+        "type": "column",
+        "value": "rev.customer_id"
+      },
+      {
+        "type": "keyword",
+        "value": "GROUP"
+      },
+      {
+        "type": "keyword",
+        "value": "BY"
+      },
+      {
+        "type": "column",
+        "value": "c.customer_id,"
+      },
+      {
+        "type": "column",
+        "value": "c.customer_name;"
+      }
+    ]
+  },
+  {
+    "drillNumber": 856,
+    "subcluster": "9.6 The Fan-Out Duplication Trap (COUNT(DISTINCT))",
+    "level": "Level 3 (Join Fan-Out Trap)",
+    "title": "Syntax #856: Safely compute album count AND track count per artist using COUNT(DISTINCT)",
+    "table": "MusicTracks",
+    "scenario": "Safely compute album count AND track count per artist using COUNT(DISTINCT).",
+    "businessObjective": "Safely compute album count AND track count per artist using COUNT(DISTINCT).",
+    "schemaSnippet": "MusicTracks relational schema",
+    "targetQuery": "SELECT ar.artist_name, COUNT(DISTINCT a.album_id) AS album_count, COUNT(DISTINCT t.track_id) AS track_count\nFROM Artists ar\nLEFT JOIN Albums a ON ar.artist_id = a.artist_id\nLEFT JOIN MusicTracks t ON ar.artist_id = t.artist_id\nGROUP BY ar.artist_id, ar.artist_name;",
+    "syntaxBlueprint": "SELECT a.name, COUNT(DISTINCT b.id) AS unique_b, COUNT(DISTINCT c.id) AS unique_c\nFROM TableA a\nLEFT JOIN TableB b ON a.id = b.a_id\nLEFT JOIN TableC c ON a.id = c.a_id\nGROUP BY a.id, a.name;",
+    "syntaxRule": "When joining a parent table to multiple 1-to-many child tables, row multiplication causes standard COUNT() to explode. Use COUNT(DISTINCT col) to compute accurate counts.",
+    "syntaxTrap": "Running multiple 1-to-many joins and using standard SUM() or COUNT() without DISTINCT multiplies numbers by the Cartesian cross of the children.",
+    "eli5Story": "Relational Joins on MusicTracks: Safely compute album count AND track count per artist using COUNT(DISTINCT).",
+    "commonMistakes": "Omitting the ON clause, forgetting table alias qualification on ambiguous columns, or accidentally converting LEFT JOIN to INNER JOIN via WHERE filters.",
+    "learningOutcomes": "Mastered 9.6 The Fan-Out Duplication Trap (COUNT(DISTINCT)) on MusicTracks.",
+    "challengeSlots": [
+      {
+        "type": "keyword",
+        "value": "SELECT"
+      },
+      {
+        "type": "column",
+        "value": "ar.artist_name,"
+      },
+      {
+        "type": "column",
+        "value": "COUNT(DISTINCT"
+      },
+      {
+        "type": "column",
+        "value": "a.album_id)"
+      },
+      {
+        "type": "keyword",
+        "value": "AS"
+      },
+      {
+        "type": "column",
+        "value": "album_count,"
+      },
+      {
+        "type": "column",
+        "value": "COUNT(DISTINCT"
+      },
+      {
+        "type": "column",
+        "value": "t.track_id)"
+      },
+      {
+        "type": "keyword",
+        "value": "AS"
+      },
+      {
+        "type": "column",
+        "value": "track_count"
+      },
+      {
+        "type": "keyword",
+        "value": "FROM"
+      },
+      {
+        "type": "column",
+        "value": "Artists"
+      },
+      {
+        "type": "column",
+        "value": "ar"
+      },
+      {
+        "type": "keyword",
+        "value": "LEFT"
+      },
+      {
+        "type": "keyword",
+        "value": "JOIN"
+      },
+      {
+        "type": "table",
+        "value": "Albums"
+      },
+      {
+        "type": "column",
+        "value": "a"
+      },
+      {
+        "type": "keyword",
+        "value": "ON"
+      },
+      {
+        "type": "column",
+        "value": "ar.artist_id"
+      },
+      {
+        "type": "column",
+        "value": "="
+      },
+      {
+        "type": "column",
+        "value": "a.artist_id"
+      },
+      {
+        "type": "keyword",
+        "value": "LEFT"
+      },
+      {
+        "type": "keyword",
+        "value": "JOIN"
+      },
+      {
+        "type": "table",
+        "value": "MusicTracks"
+      },
+      {
+        "type": "column",
+        "value": "t"
+      },
+      {
+        "type": "keyword",
+        "value": "ON"
+      },
+      {
+        "type": "column",
+        "value": "ar.artist_id"
+      },
+      {
+        "type": "column",
+        "value": "="
+      },
+      {
+        "type": "column",
+        "value": "t.artist_id"
+      },
+      {
+        "type": "keyword",
+        "value": "GROUP"
+      },
+      {
+        "type": "keyword",
+        "value": "BY"
+      },
+      {
+        "type": "column",
+        "value": "ar.artist_id,"
+      },
+      {
+        "type": "column",
+        "value": "ar.artist_name;"
+      }
+    ]
+  },
+  {
+    "drillNumber": 857,
+    "subcluster": "9.6 The Fan-Out Duplication Trap (COUNT(DISTINCT))",
+    "level": "Level 3 (Join Fan-Out Trap)",
+    "title": "Syntax #857: Count distinct classes booked and distinct trainers consulted per member",
+    "table": "GymMembers",
+    "scenario": "Count distinct classes booked and distinct trainers consulted per member.",
+    "businessObjective": "Count distinct classes booked and distinct trainers consulted per member.",
+    "schemaSnippet": "GymMembers relational schema",
+    "targetQuery": "SELECT m.member_name, COUNT(DISTINCT cb.class_id) AS classes_booked, COUNT(DISTINCT tr.trainer_id) AS trainers_consulted\nFROM GymMembers m\nLEFT JOIN ClassBookings cb ON m.member_id = cb.member_id\nLEFT JOIN TrainerSessions tr ON m.member_id = tr.member_id\nGROUP BY m.member_id, m.member_name;",
+    "syntaxBlueprint": "SELECT a.name, COUNT(DISTINCT b.id) AS unique_b, COUNT(DISTINCT c.id) AS unique_c\nFROM TableA a\nLEFT JOIN TableB b ON a.id = b.a_id\nLEFT JOIN TableC c ON a.id = c.a_id\nGROUP BY a.id, a.name;",
+    "syntaxRule": "When joining a parent table to multiple 1-to-many child tables, row multiplication causes standard COUNT() to explode. Use COUNT(DISTINCT col) to compute accurate counts.",
+    "syntaxTrap": "Running multiple 1-to-many joins and using standard SUM() or COUNT() without DISTINCT multiplies numbers by the Cartesian cross of the children.",
+    "eli5Story": "Relational Joins on GymMembers: Count distinct classes booked and distinct trainers consulted per member.",
+    "commonMistakes": "Omitting the ON clause, forgetting table alias qualification on ambiguous columns, or accidentally converting LEFT JOIN to INNER JOIN via WHERE filters.",
+    "learningOutcomes": "Mastered 9.6 The Fan-Out Duplication Trap (COUNT(DISTINCT)) on GymMembers.",
+    "challengeSlots": [
+      {
+        "type": "keyword",
+        "value": "SELECT"
+      },
+      {
+        "type": "column",
+        "value": "m.member_name,"
+      },
+      {
+        "type": "column",
+        "value": "COUNT(DISTINCT"
+      },
+      {
+        "type": "column",
+        "value": "cb.class_id)"
+      },
+      {
+        "type": "keyword",
+        "value": "AS"
+      },
+      {
+        "type": "column",
+        "value": "classes_booked,"
+      },
+      {
+        "type": "column",
+        "value": "COUNT(DISTINCT"
+      },
+      {
+        "type": "column",
+        "value": "tr.trainer_id)"
+      },
+      {
+        "type": "keyword",
+        "value": "AS"
+      },
+      {
+        "type": "column",
+        "value": "trainers_consulted"
+      },
+      {
+        "type": "keyword",
+        "value": "FROM"
+      },
+      {
+        "type": "table",
+        "value": "GymMembers"
+      },
+      {
+        "type": "column",
+        "value": "m"
+      },
+      {
+        "type": "keyword",
+        "value": "LEFT"
+      },
+      {
+        "type": "keyword",
+        "value": "JOIN"
+      },
+      {
+        "type": "column",
+        "value": "ClassBookings"
+      },
+      {
+        "type": "column",
+        "value": "cb"
+      },
+      {
+        "type": "keyword",
+        "value": "ON"
+      },
+      {
+        "type": "column",
+        "value": "m.member_id"
+      },
+      {
+        "type": "column",
+        "value": "="
+      },
+      {
+        "type": "column",
+        "value": "cb.member_id"
+      },
+      {
+        "type": "keyword",
+        "value": "LEFT"
+      },
+      {
+        "type": "keyword",
+        "value": "JOIN"
+      },
+      {
+        "type": "column",
+        "value": "TrainerSessions"
+      },
+      {
+        "type": "column",
+        "value": "tr"
+      },
+      {
+        "type": "keyword",
+        "value": "ON"
+      },
+      {
+        "type": "column",
+        "value": "m.member_id"
+      },
+      {
+        "type": "column",
+        "value": "="
+      },
+      {
+        "type": "column",
+        "value": "tr.member_id"
+      },
+      {
+        "type": "keyword",
+        "value": "GROUP"
+      },
+      {
+        "type": "keyword",
+        "value": "BY"
+      },
+      {
+        "type": "column",
+        "value": "m.member_id,"
+      },
+      {
+        "type": "column",
+        "value": "m.member_name;"
+      }
+    ]
+  },
+  {
+    "drillNumber": 858,
+    "subcluster": "9.6 The Fan-Out Duplication Trap (COUNT(DISTINCT))",
+    "level": "Level 3 (Join Fan-Out Trap)",
+    "title": "Syntax #858: Safely count reviews AND cast members per film without fan-out inflation",
+    "table": "MovieReviews",
+    "scenario": "Safely count reviews AND cast members per film without fan-out inflation.",
+    "businessObjective": "Safely count reviews AND cast members per film without fan-out inflation.",
+    "schemaSnippet": "MovieReviews relational schema",
+    "targetQuery": "SELECT m.movie_title, COUNT(DISTINCT r.review_id) AS review_count, COUNT(DISTINCT a.actor_id) AS cast_count\nFROM Movies m\nLEFT JOIN MovieReviews r ON m.movie_id = r.movie_id\nLEFT JOIN MovieCast a ON m.movie_id = a.movie_id\nGROUP BY m.movie_id, m.movie_title;",
+    "syntaxBlueprint": "SELECT a.name, COUNT(DISTINCT b.id) AS unique_b, COUNT(DISTINCT c.id) AS unique_c\nFROM TableA a\nLEFT JOIN TableB b ON a.id = b.a_id\nLEFT JOIN TableC c ON a.id = c.a_id\nGROUP BY a.id, a.name;",
+    "syntaxRule": "When joining a parent table to multiple 1-to-many child tables, row multiplication causes standard COUNT() to explode. Use COUNT(DISTINCT col) to compute accurate counts.",
+    "syntaxTrap": "Running multiple 1-to-many joins and using standard SUM() or COUNT() without DISTINCT multiplies numbers by the Cartesian cross of the children.",
+    "eli5Story": "Relational Joins on MovieReviews: Safely count reviews AND cast members per film without fan-out inflation.",
+    "commonMistakes": "Omitting the ON clause, forgetting table alias qualification on ambiguous columns, or accidentally converting LEFT JOIN to INNER JOIN via WHERE filters.",
+    "learningOutcomes": "Mastered 9.6 The Fan-Out Duplication Trap (COUNT(DISTINCT)) on MovieReviews.",
+    "challengeSlots": [
+      {
+        "type": "keyword",
+        "value": "SELECT"
+      },
+      {
+        "type": "column",
+        "value": "m.movie_title,"
+      },
+      {
+        "type": "column",
+        "value": "COUNT(DISTINCT"
+      },
+      {
+        "type": "column",
+        "value": "r.review_id)"
+      },
+      {
+        "type": "keyword",
+        "value": "AS"
+      },
+      {
+        "type": "column",
+        "value": "review_count,"
+      },
+      {
+        "type": "column",
+        "value": "COUNT(DISTINCT"
+      },
+      {
+        "type": "column",
+        "value": "a.actor_id)"
+      },
+      {
+        "type": "keyword",
+        "value": "AS"
+      },
+      {
+        "type": "column",
+        "value": "cast_count"
+      },
+      {
+        "type": "keyword",
+        "value": "FROM"
+      },
+      {
+        "type": "table",
+        "value": "Movies"
+      },
+      {
+        "type": "column",
+        "value": "m"
+      },
+      {
+        "type": "keyword",
+        "value": "LEFT"
+      },
+      {
+        "type": "keyword",
+        "value": "JOIN"
+      },
+      {
+        "type": "table",
+        "value": "MovieReviews"
+      },
+      {
+        "type": "column",
+        "value": "r"
+      },
+      {
+        "type": "keyword",
+        "value": "ON"
+      },
+      {
+        "type": "column",
+        "value": "m.movie_id"
+      },
+      {
+        "type": "column",
+        "value": "="
+      },
+      {
+        "type": "column",
+        "value": "r.movie_id"
+      },
+      {
+        "type": "keyword",
+        "value": "LEFT"
+      },
+      {
+        "type": "keyword",
+        "value": "JOIN"
+      },
+      {
+        "type": "column",
+        "value": "MovieCast"
+      },
+      {
+        "type": "column",
+        "value": "a"
+      },
+      {
+        "type": "keyword",
+        "value": "ON"
+      },
+      {
+        "type": "column",
+        "value": "m.movie_id"
+      },
+      {
+        "type": "column",
+        "value": "="
+      },
+      {
+        "type": "column",
+        "value": "a.movie_id"
+      },
+      {
+        "type": "keyword",
+        "value": "GROUP"
+      },
+      {
+        "type": "keyword",
+        "value": "BY"
+      },
+      {
+        "type": "column",
+        "value": "m.movie_id,"
+      },
+      {
+        "type": "column",
+        "value": "m.movie_title;"
+      }
+    ]
+  },
+  {
+    "drillNumber": 859,
+    "subcluster": "9.6 The Fan-Out Duplication Trap (COUNT(DISTINCT))",
+    "level": "Level 3 (Join Fan-Out Trap)",
+    "title": "Syntax #859: Count distinct flights AND distinct destination airports per airline",
+    "table": "FlightSchedule",
+    "scenario": "Count distinct flights AND distinct destination airports per airline.",
+    "businessObjective": "Count distinct flights AND distinct destination airports per airline.",
+    "schemaSnippet": "FlightSchedule relational schema",
+    "targetQuery": "SELECT al.airline_name, COUNT(DISTINCT f.flight_id) AS distinct_flights, COUNT(DISTINCT ap.airport_code) AS distinct_destinations\nFROM Airlines al\nLEFT JOIN FlightSchedule f ON al.airline_id = f.airline_id\nLEFT JOIN AirlineDestinations ap ON al.airline_id = ap.airline_id\nGROUP BY al.airline_id, al.airline_name;",
+    "syntaxBlueprint": "SELECT a.name, COUNT(DISTINCT b.id) AS unique_b, COUNT(DISTINCT c.id) AS unique_c\nFROM TableA a\nLEFT JOIN TableB b ON a.id = b.a_id\nLEFT JOIN TableC c ON a.id = c.a_id\nGROUP BY a.id, a.name;",
+    "syntaxRule": "When joining a parent table to multiple 1-to-many child tables, row multiplication causes standard COUNT() to explode. Use COUNT(DISTINCT col) to compute accurate counts.",
+    "syntaxTrap": "Running multiple 1-to-many joins and using standard SUM() or COUNT() without DISTINCT multiplies numbers by the Cartesian cross of the children.",
+    "eli5Story": "Relational Joins on FlightSchedule: Count distinct flights AND distinct destination airports per airline.",
+    "commonMistakes": "Omitting the ON clause, forgetting table alias qualification on ambiguous columns, or accidentally converting LEFT JOIN to INNER JOIN via WHERE filters.",
+    "learningOutcomes": "Mastered 9.6 The Fan-Out Duplication Trap (COUNT(DISTINCT)) on FlightSchedule.",
+    "challengeSlots": [
+      {
+        "type": "keyword",
+        "value": "SELECT"
+      },
+      {
+        "type": "column",
+        "value": "al.airline_name,"
+      },
+      {
+        "type": "column",
+        "value": "COUNT(DISTINCT"
+      },
+      {
+        "type": "column",
+        "value": "f.flight_id)"
+      },
+      {
+        "type": "keyword",
+        "value": "AS"
+      },
+      {
+        "type": "column",
+        "value": "distinct_flights,"
+      },
+      {
+        "type": "column",
+        "value": "COUNT(DISTINCT"
+      },
+      {
+        "type": "column",
+        "value": "ap.airport_code)"
+      },
+      {
+        "type": "keyword",
+        "value": "AS"
+      },
+      {
+        "type": "column",
+        "value": "distinct_destinations"
+      },
+      {
+        "type": "keyword",
+        "value": "FROM"
+      },
+      {
+        "type": "table",
+        "value": "Airlines"
+      },
+      {
+        "type": "column",
+        "value": "al"
+      },
+      {
+        "type": "keyword",
+        "value": "LEFT"
+      },
+      {
+        "type": "keyword",
+        "value": "JOIN"
+      },
+      {
+        "type": "table",
+        "value": "FlightSchedule"
+      },
+      {
+        "type": "column",
+        "value": "f"
+      },
+      {
+        "type": "keyword",
+        "value": "ON"
+      },
+      {
+        "type": "column",
+        "value": "al.airline_id"
+      },
+      {
+        "type": "column",
+        "value": "="
+      },
+      {
+        "type": "column",
+        "value": "f.airline_id"
+      },
+      {
+        "type": "keyword",
+        "value": "LEFT"
+      },
+      {
+        "type": "keyword",
+        "value": "JOIN"
+      },
+      {
+        "type": "column",
+        "value": "AirlineDestinations"
+      },
+      {
+        "type": "column",
+        "value": "ap"
+      },
+      {
+        "type": "keyword",
+        "value": "ON"
+      },
+      {
+        "type": "column",
+        "value": "al.airline_id"
+      },
+      {
+        "type": "column",
+        "value": "="
+      },
+      {
+        "type": "column",
+        "value": "ap.airline_id"
+      },
+      {
+        "type": "keyword",
+        "value": "GROUP"
+      },
+      {
+        "type": "keyword",
+        "value": "BY"
+      },
+      {
+        "type": "column",
+        "value": "al.airline_id,"
+      },
+      {
+        "type": "column",
+        "value": "al.airline_name;"
+      }
+    ]
+  },
+  {
+    "drillNumber": 860,
+    "subcluster": "9.6 The Fan-Out Duplication Trap (COUNT(DISTINCT))",
+    "level": "Level 3 (Join Fan-Out Trap)",
+    "title": "Syntax #860: Accurately count distinct pets AND distinct clinic visits per owner",
+    "table": "PetClinic",
+    "scenario": "Accurately count distinct pets AND distinct clinic visits per owner.",
+    "businessObjective": "Accurately count distinct pets AND distinct clinic visits per owner.",
+    "schemaSnippet": "PetClinic relational schema",
+    "targetQuery": "SELECT o.owner_name, COUNT(DISTINCT p.pet_id) AS pet_count, COUNT(DISTINCT a.appointment_id) AS visit_count\nFROM Owners o\nLEFT JOIN PetClinic p ON o.owner_id = p.owner_id\nLEFT JOIN Appointments a ON o.owner_id = a.owner_id\nGROUP BY o.owner_id, o.owner_name;",
+    "syntaxBlueprint": "SELECT a.name, COUNT(DISTINCT b.id) AS unique_b, COUNT(DISTINCT c.id) AS unique_c\nFROM TableA a\nLEFT JOIN TableB b ON a.id = b.a_id\nLEFT JOIN TableC c ON a.id = c.a_id\nGROUP BY a.id, a.name;",
+    "syntaxRule": "When joining a parent table to multiple 1-to-many child tables, row multiplication causes standard COUNT() to explode. Use COUNT(DISTINCT col) to compute accurate counts.",
+    "syntaxTrap": "Running multiple 1-to-many joins and using standard SUM() or COUNT() without DISTINCT multiplies numbers by the Cartesian cross of the children.",
+    "eli5Story": "Relational Joins on PetClinic: Accurately count distinct pets AND distinct clinic visits per owner.",
+    "commonMistakes": "Omitting the ON clause, forgetting table alias qualification on ambiguous columns, or accidentally converting LEFT JOIN to INNER JOIN via WHERE filters.",
+    "learningOutcomes": "Mastered 9.6 The Fan-Out Duplication Trap (COUNT(DISTINCT)) on PetClinic.",
+    "challengeSlots": [
+      {
+        "type": "keyword",
+        "value": "SELECT"
+      },
+      {
+        "type": "column",
+        "value": "o.owner_name,"
+      },
+      {
+        "type": "column",
+        "value": "COUNT(DISTINCT"
+      },
+      {
+        "type": "column",
+        "value": "p.pet_id)"
+      },
+      {
+        "type": "keyword",
+        "value": "AS"
+      },
+      {
+        "type": "column",
+        "value": "pet_count,"
+      },
+      {
+        "type": "column",
+        "value": "COUNT(DISTINCT"
+      },
+      {
+        "type": "column",
+        "value": "a.appointment_id)"
+      },
+      {
+        "type": "keyword",
+        "value": "AS"
+      },
+      {
+        "type": "column",
+        "value": "visit_count"
+      },
+      {
+        "type": "keyword",
+        "value": "FROM"
+      },
+      {
+        "type": "table",
+        "value": "Owners"
+      },
+      {
+        "type": "column",
+        "value": "o"
+      },
+      {
+        "type": "keyword",
+        "value": "LEFT"
+      },
+      {
+        "type": "keyword",
+        "value": "JOIN"
+      },
+      {
+        "type": "table",
+        "value": "PetClinic"
+      },
+      {
+        "type": "column",
+        "value": "p"
+      },
+      {
+        "type": "keyword",
+        "value": "ON"
+      },
+      {
+        "type": "column",
+        "value": "o.owner_id"
+      },
+      {
+        "type": "column",
+        "value": "="
+      },
+      {
+        "type": "column",
+        "value": "p.owner_id"
+      },
+      {
+        "type": "keyword",
+        "value": "LEFT"
+      },
+      {
+        "type": "keyword",
+        "value": "JOIN"
+      },
+      {
+        "type": "column",
+        "value": "Appointments"
+      },
+      {
+        "type": "column",
+        "value": "a"
+      },
+      {
+        "type": "keyword",
+        "value": "ON"
+      },
+      {
+        "type": "column",
+        "value": "o.owner_id"
+      },
+      {
+        "type": "column",
+        "value": "="
+      },
+      {
+        "type": "column",
+        "value": "a.owner_id"
+      },
+      {
+        "type": "keyword",
+        "value": "GROUP"
+      },
+      {
+        "type": "keyword",
+        "value": "BY"
+      },
+      {
+        "type": "column",
+        "value": "o.owner_id,"
+      },
+      {
+        "type": "column",
+        "value": "o.owner_name;"
+      }
+    ]
+  },
+  {
+    "drillNumber": 861,
+    "subcluster": "9.7 ON vs WHERE Predicate Placement on Outer Joins",
+    "level": "Level 3 (ON vs WHERE Trap)",
+    "title": "Syntax #861: Filter course enrollment to 'Fall 2024' inside the ON clause to keep all students",
+    "table": "Students",
+    "scenario": "Filter course enrollment to 'Fall 2024' inside the ON clause to keep all students.",
+    "businessObjective": "Filter course enrollment to 'Fall 2024' inside the ON clause to keep all students.",
+    "schemaSnippet": "Students relational schema",
+    "targetQuery": "SELECT s.full_name, c.course_name\nFROM Students s\nLEFT JOIN Courses c ON s.student_id = c.student_id AND c.semester = 'Fall 2024';",
+    "syntaxBlueprint": "SELECT a.col, b.col\nFROM TableA a\nLEFT JOIN TableB b ON a.id = b.a_id AND b.status = 'active';",
+    "syntaxRule": "Filtering an outer join table in the ON clause filters which right rows are attached while preserving ALL left rows. Filtering in the WHERE clause discards non-matching left rows.",
+    "syntaxTrap": "Putting a filter in WHERE instead of ON on a LEFT JOIN silently converts it into an INNER JOIN.",
+    "eli5Story": "Relational Joins on Students: Filter course enrollment to 'Fall 2024' inside the ON clause to keep all students.",
+    "commonMistakes": "Omitting the ON clause, forgetting table alias qualification on ambiguous columns, or accidentally converting LEFT JOIN to INNER JOIN via WHERE filters.",
+    "learningOutcomes": "Mastered 9.7 ON vs WHERE Predicate Placement on Outer Joins on Students.",
+    "challengeSlots": [
+      {
+        "type": "keyword",
+        "value": "SELECT"
+      },
+      {
+        "type": "column",
+        "value": "s.full_name,"
+      },
+      {
+        "type": "column",
+        "value": "c.course_name"
+      },
+      {
+        "type": "keyword",
+        "value": "FROM"
+      },
+      {
+        "type": "table",
+        "value": "Students"
+      },
+      {
+        "type": "column",
+        "value": "s"
+      },
+      {
+        "type": "keyword",
+        "value": "LEFT"
+      },
+      {
+        "type": "keyword",
+        "value": "JOIN"
+      },
+      {
+        "type": "table",
+        "value": "Courses"
+      },
+      {
+        "type": "column",
+        "value": "c"
+      },
+      {
+        "type": "keyword",
+        "value": "ON"
+      },
+      {
+        "type": "column",
+        "value": "s.student_id"
+      },
+      {
+        "type": "column",
+        "value": "="
+      },
+      {
+        "type": "column",
+        "value": "c.student_id"
+      },
+      {
+        "type": "keyword",
+        "value": "AND"
+      },
+      {
+        "type": "column",
+        "value": "c.semester"
+      },
+      {
+        "type": "column",
+        "value": "="
+      },
+      {
+        "type": "column",
+        "value": "'Fall"
+      },
+      {
+        "type": "column",
+        "value": "2024';"
+      }
+    ]
+  },
+  {
+    "drillNumber": 862,
+    "subcluster": "9.7 ON vs WHERE Predicate Placement on Outer Joins",
+    "level": "Level 3 (ON vs WHERE Trap)",
+    "title": "Syntax #862: Attach only verified reviews in the ON clause while preserving all books in the catalog",
+    "table": "Books",
+    "scenario": "Attach only verified reviews in the ON clause while preserving all books in the catalog.",
+    "businessObjective": "Attach only verified reviews in the ON clause while preserving all books in the catalog.",
+    "schemaSnippet": "Books relational schema",
+    "targetQuery": "SELECT b.title, r.review_score\nFROM Books b\nLEFT JOIN BookReviews r ON b.book_id = r.book_id AND r.verified_buyer = 1;",
+    "syntaxBlueprint": "SELECT a.col, b.col\nFROM TableA a\nLEFT JOIN TableB b ON a.id = b.a_id AND b.status = 'active';",
+    "syntaxRule": "Filtering an outer join table in the ON clause filters which right rows are attached while preserving ALL left rows. Filtering in the WHERE clause discards non-matching left rows.",
+    "syntaxTrap": "Putting a filter in WHERE instead of ON on a LEFT JOIN silently converts it into an INNER JOIN.",
+    "eli5Story": "Relational Joins on Books: Attach only verified reviews in the ON clause while preserving all books in the catalog.",
+    "commonMistakes": "Omitting the ON clause, forgetting table alias qualification on ambiguous columns, or accidentally converting LEFT JOIN to INNER JOIN via WHERE filters.",
+    "learningOutcomes": "Mastered 9.7 ON vs WHERE Predicate Placement on Outer Joins on Books.",
+    "challengeSlots": [
+      {
+        "type": "keyword",
+        "value": "SELECT"
+      },
+      {
+        "type": "column",
+        "value": "b.title,"
+      },
+      {
+        "type": "column",
+        "value": "r.review_score"
+      },
+      {
+        "type": "keyword",
+        "value": "FROM"
+      },
+      {
+        "type": "table",
+        "value": "Books"
+      },
+      {
+        "type": "column",
+        "value": "b"
+      },
+      {
+        "type": "keyword",
+        "value": "LEFT"
+      },
+      {
+        "type": "keyword",
+        "value": "JOIN"
+      },
+      {
+        "type": "column",
+        "value": "BookReviews"
+      },
+      {
+        "type": "column",
+        "value": "r"
+      },
+      {
+        "type": "keyword",
+        "value": "ON"
+      },
+      {
+        "type": "column",
+        "value": "b.book_id"
+      },
+      {
+        "type": "column",
+        "value": "="
+      },
+      {
+        "type": "column",
+        "value": "r.book_id"
+      },
+      {
+        "type": "keyword",
+        "value": "AND"
+      },
+      {
+        "type": "column",
+        "value": "r.verified_buyer"
+      },
+      {
+        "type": "column",
+        "value": "="
+      },
+      {
+        "type": "column",
+        "value": "1;"
+      }
+    ]
+  },
+  {
+    "drillNumber": 863,
+    "subcluster": "9.7 ON vs WHERE Predicate Placement on Outer Joins",
+    "level": "Level 3 (ON vs WHERE Trap)",
+    "title": "Syntax #863: Attach only active projects in the ON clause, ensuring staff on bench are not eliminated",
+    "table": "Employees",
+    "scenario": "Attach only active projects in the ON clause, ensuring staff on bench are not eliminated.",
+    "businessObjective": "Attach only active projects in the ON clause, ensuring staff on bench are not eliminated.",
+    "schemaSnippet": "Employees relational schema",
+    "targetQuery": "SELECT e.first_name, p.project_name\nFROM Employees e\nLEFT JOIN Projects p ON e.project_id = p.project_id AND p.status = 'Active';",
+    "syntaxBlueprint": "SELECT a.col, b.col\nFROM TableA a\nLEFT JOIN TableB b ON a.id = b.a_id AND b.status = 'active';",
+    "syntaxRule": "Filtering an outer join table in the ON clause filters which right rows are attached while preserving ALL left rows. Filtering in the WHERE clause discards non-matching left rows.",
+    "syntaxTrap": "Putting a filter in WHERE instead of ON on a LEFT JOIN silently converts it into an INNER JOIN.",
+    "eli5Story": "Relational Joins on Employees: Attach only active projects in the ON clause, ensuring staff on bench are not eliminated.",
+    "commonMistakes": "Omitting the ON clause, forgetting table alias qualification on ambiguous columns, or accidentally converting LEFT JOIN to INNER JOIN via WHERE filters.",
+    "learningOutcomes": "Mastered 9.7 ON vs WHERE Predicate Placement on Outer Joins on Employees.",
+    "challengeSlots": [
+      {
+        "type": "keyword",
+        "value": "SELECT"
+      },
+      {
+        "type": "column",
+        "value": "e.first_name,"
+      },
+      {
+        "type": "column",
+        "value": "p.project_name"
+      },
+      {
+        "type": "keyword",
+        "value": "FROM"
+      },
+      {
+        "type": "table",
+        "value": "Employees"
+      },
+      {
+        "type": "column",
+        "value": "e"
+      },
+      {
+        "type": "keyword",
+        "value": "LEFT"
+      },
+      {
+        "type": "keyword",
+        "value": "JOIN"
+      },
+      {
+        "type": "column",
+        "value": "Projects"
+      },
+      {
+        "type": "column",
+        "value": "p"
+      },
+      {
+        "type": "keyword",
+        "value": "ON"
+      },
+      {
+        "type": "column",
+        "value": "e.project_id"
+      },
+      {
+        "type": "column",
+        "value": "="
+      },
+      {
+        "type": "column",
+        "value": "p.project_id"
+      },
+      {
+        "type": "keyword",
+        "value": "AND"
+      },
+      {
+        "type": "column",
+        "value": "p.status"
+      },
+      {
+        "type": "column",
+        "value": "="
+      },
+      {
+        "type": "column",
+        "value": "'Active';"
+      }
+    ]
+  },
+  {
+    "drillNumber": 864,
+    "subcluster": "9.7 ON vs WHERE Predicate Placement on Outer Joins",
+    "level": "Level 3 (ON vs WHERE Trap)",
+    "title": "Syntax #864: Attach active discounts inside the ON clause to preserve non-discounted grocery items",
+    "table": "GroceryItems",
+    "scenario": "Attach active discounts inside the ON clause to preserve non-discounted grocery items.",
+    "businessObjective": "Attach active discounts inside the ON clause to preserve non-discounted grocery items.",
+    "schemaSnippet": "GroceryItems relational schema",
+    "targetQuery": "SELECT g.item_name, d.discount_pct\nFROM GroceryItems g\nLEFT JOIN Discounts d ON g.item_id = d.item_id AND d.is_active = 1;",
+    "syntaxBlueprint": "SELECT a.col, b.col\nFROM TableA a\nLEFT JOIN TableB b ON a.id = b.a_id AND b.status = 'active';",
+    "syntaxRule": "Filtering an outer join table in the ON clause filters which right rows are attached while preserving ALL left rows. Filtering in the WHERE clause discards non-matching left rows.",
+    "syntaxTrap": "Putting a filter in WHERE instead of ON on a LEFT JOIN silently converts it into an INNER JOIN.",
+    "eli5Story": "Relational Joins on GroceryItems: Attach active discounts inside the ON clause to preserve non-discounted grocery items.",
+    "commonMistakes": "Omitting the ON clause, forgetting table alias qualification on ambiguous columns, or accidentally converting LEFT JOIN to INNER JOIN via WHERE filters.",
+    "learningOutcomes": "Mastered 9.7 ON vs WHERE Predicate Placement on Outer Joins on GroceryItems.",
+    "challengeSlots": [
+      {
+        "type": "keyword",
+        "value": "SELECT"
+      },
+      {
+        "type": "column",
+        "value": "g.item_name,"
+      },
+      {
+        "type": "column",
+        "value": "d.discount_pct"
+      },
+      {
+        "type": "keyword",
+        "value": "FROM"
+      },
+      {
+        "type": "table",
+        "value": "GroceryItems"
+      },
+      {
+        "type": "column",
+        "value": "g"
+      },
+      {
+        "type": "keyword",
+        "value": "LEFT"
+      },
+      {
+        "type": "keyword",
+        "value": "JOIN"
+      },
+      {
+        "type": "column",
+        "value": "Discounts"
+      },
+      {
+        "type": "column",
+        "value": "d"
+      },
+      {
+        "type": "keyword",
+        "value": "ON"
+      },
+      {
+        "type": "column",
+        "value": "g.item_id"
+      },
+      {
+        "type": "column",
+        "value": "="
+      },
+      {
+        "type": "column",
+        "value": "d.item_id"
+      },
+      {
+        "type": "keyword",
+        "value": "AND"
+      },
+      {
+        "type": "column",
+        "value": "d.is_active"
+      },
+      {
+        "type": "column",
+        "value": "="
+      },
+      {
+        "type": "column",
+        "value": "1;"
+      }
+    ]
+  },
+  {
+    "drillNumber": 865,
+    "subcluster": "9.7 ON vs WHERE Predicate Placement on Outer Joins",
+    "level": "Level 3 (ON vs WHERE Trap)",
+    "title": "Syntax #865: Attach shipped orders in the ON clause so customers with no shipped orders still appear",
+    "table": "Orders",
+    "scenario": "Attach shipped orders in the ON clause so customers with no shipped orders still appear.",
+    "businessObjective": "Attach shipped orders in the ON clause so customers with no shipped orders still appear.",
+    "schemaSnippet": "Orders relational schema",
+    "targetQuery": "SELECT c.customer_name, o.order_id\nFROM Customers c\nLEFT JOIN Orders o ON c.customer_id = o.customer_id AND o.status = 'Shipped';",
+    "syntaxBlueprint": "SELECT a.col, b.col\nFROM TableA a\nLEFT JOIN TableB b ON a.id = b.a_id AND b.status = 'active';",
+    "syntaxRule": "Filtering an outer join table in the ON clause filters which right rows are attached while preserving ALL left rows. Filtering in the WHERE clause discards non-matching left rows.",
+    "syntaxTrap": "Putting a filter in WHERE instead of ON on a LEFT JOIN silently converts it into an INNER JOIN.",
+    "eli5Story": "Relational Joins on Orders: Attach shipped orders in the ON clause so customers with no shipped orders still appear.",
+    "commonMistakes": "Omitting the ON clause, forgetting table alias qualification on ambiguous columns, or accidentally converting LEFT JOIN to INNER JOIN via WHERE filters.",
+    "learningOutcomes": "Mastered 9.7 ON vs WHERE Predicate Placement on Outer Joins on Orders.",
+    "challengeSlots": [
+      {
+        "type": "keyword",
+        "value": "SELECT"
+      },
+      {
+        "type": "column",
+        "value": "c.customer_name,"
+      },
+      {
+        "type": "column",
+        "value": "o.order_id"
+      },
+      {
+        "type": "keyword",
+        "value": "FROM"
+      },
+      {
+        "type": "table",
+        "value": "Customers"
+      },
+      {
+        "type": "column",
+        "value": "c"
+      },
+      {
+        "type": "keyword",
+        "value": "LEFT"
+      },
+      {
+        "type": "keyword",
+        "value": "JOIN"
+      },
+      {
+        "type": "table",
+        "value": "Orders"
+      },
+      {
+        "type": "column",
+        "value": "o"
+      },
+      {
+        "type": "keyword",
+        "value": "ON"
+      },
+      {
+        "type": "column",
+        "value": "c.customer_id"
+      },
+      {
+        "type": "column",
+        "value": "="
+      },
+      {
+        "type": "column",
+        "value": "o.customer_id"
+      },
+      {
+        "type": "keyword",
+        "value": "AND"
+      },
+      {
+        "type": "column",
+        "value": "o.status"
+      },
+      {
+        "type": "column",
+        "value": "="
+      },
+      {
+        "type": "column",
+        "value": "'Shipped';"
+      }
+    ]
+  },
+  {
+    "drillNumber": 866,
+    "subcluster": "9.7 ON vs WHERE Predicate Placement on Outer Joins",
+    "level": "Level 3 (ON vs WHERE Trap)",
+    "title": "Syntax #866: Attach clean tracks in the ON clause while displaying all albums",
+    "table": "MusicTracks",
+    "scenario": "Attach clean tracks in the ON clause while displaying all albums.",
+    "businessObjective": "Attach clean tracks in the ON clause while displaying all albums.",
+    "schemaSnippet": "MusicTracks relational schema",
+    "targetQuery": "SELECT a.album_title, t.track_title\nFROM Albums a\nLEFT JOIN MusicTracks t ON a.album_id = t.album_id AND t.is_explicit = 0;",
+    "syntaxBlueprint": "SELECT a.col, b.col\nFROM TableA a\nLEFT JOIN TableB b ON a.id = b.a_id AND b.status = 'active';",
+    "syntaxRule": "Filtering an outer join table in the ON clause filters which right rows are attached while preserving ALL left rows. Filtering in the WHERE clause discards non-matching left rows.",
+    "syntaxTrap": "Putting a filter in WHERE instead of ON on a LEFT JOIN silently converts it into an INNER JOIN.",
+    "eli5Story": "Relational Joins on MusicTracks: Attach clean tracks in the ON clause while displaying all albums.",
+    "commonMistakes": "Omitting the ON clause, forgetting table alias qualification on ambiguous columns, or accidentally converting LEFT JOIN to INNER JOIN via WHERE filters.",
+    "learningOutcomes": "Mastered 9.7 ON vs WHERE Predicate Placement on Outer Joins on MusicTracks.",
+    "challengeSlots": [
+      {
+        "type": "keyword",
+        "value": "SELECT"
+      },
+      {
+        "type": "column",
+        "value": "a.album_title,"
+      },
+      {
+        "type": "column",
+        "value": "t.track_title"
+      },
+      {
+        "type": "keyword",
+        "value": "FROM"
+      },
+      {
+        "type": "table",
+        "value": "Albums"
+      },
+      {
+        "type": "column",
+        "value": "a"
+      },
+      {
+        "type": "keyword",
+        "value": "LEFT"
+      },
+      {
+        "type": "keyword",
+        "value": "JOIN"
+      },
+      {
+        "type": "table",
+        "value": "MusicTracks"
+      },
+      {
+        "type": "column",
+        "value": "t"
+      },
+      {
+        "type": "keyword",
+        "value": "ON"
+      },
+      {
+        "type": "column",
+        "value": "a.album_id"
+      },
+      {
+        "type": "column",
+        "value": "="
+      },
+      {
+        "type": "column",
+        "value": "t.album_id"
+      },
+      {
+        "type": "keyword",
+        "value": "AND"
+      },
+      {
+        "type": "column",
+        "value": "t.is_explicit"
+      },
+      {
+        "type": "column",
+        "value": "="
+      },
+      {
+        "type": "column",
+        "value": "0;"
+      }
+    ]
+  },
+  {
+    "drillNumber": 867,
+    "subcluster": "9.7 ON vs WHERE Predicate Placement on Outer Joins",
+    "level": "Level 3 (ON vs WHERE Trap)",
+    "title": "Syntax #867: Attach confirmed class bookings in the ON clause to keep all registered gym members",
+    "table": "GymMembers",
+    "scenario": "Attach confirmed class bookings in the ON clause to keep all registered gym members.",
+    "businessObjective": "Attach confirmed class bookings in the ON clause to keep all registered gym members.",
+    "schemaSnippet": "GymMembers relational schema",
+    "targetQuery": "SELECT m.member_name, c.class_name\nFROM GymMembers m\nLEFT JOIN ClassBookings c ON m.member_id = c.member_id AND c.booking_status = 'Confirmed';",
+    "syntaxBlueprint": "SELECT a.col, b.col\nFROM TableA a\nLEFT JOIN TableB b ON a.id = b.a_id AND b.status = 'active';",
+    "syntaxRule": "Filtering an outer join table in the ON clause filters which right rows are attached while preserving ALL left rows. Filtering in the WHERE clause discards non-matching left rows.",
+    "syntaxTrap": "Putting a filter in WHERE instead of ON on a LEFT JOIN silently converts it into an INNER JOIN.",
+    "eli5Story": "Relational Joins on GymMembers: Attach confirmed class bookings in the ON clause to keep all registered gym members.",
+    "commonMistakes": "Omitting the ON clause, forgetting table alias qualification on ambiguous columns, or accidentally converting LEFT JOIN to INNER JOIN via WHERE filters.",
+    "learningOutcomes": "Mastered 9.7 ON vs WHERE Predicate Placement on Outer Joins on GymMembers.",
+    "challengeSlots": [
+      {
+        "type": "keyword",
+        "value": "SELECT"
+      },
+      {
+        "type": "column",
+        "value": "m.member_name,"
+      },
+      {
+        "type": "column",
+        "value": "c.class_name"
+      },
+      {
+        "type": "keyword",
+        "value": "FROM"
+      },
+      {
+        "type": "table",
+        "value": "GymMembers"
+      },
+      {
+        "type": "column",
+        "value": "m"
+      },
+      {
+        "type": "keyword",
+        "value": "LEFT"
+      },
+      {
+        "type": "keyword",
+        "value": "JOIN"
+      },
+      {
+        "type": "column",
+        "value": "ClassBookings"
+      },
+      {
+        "type": "column",
+        "value": "c"
+      },
+      {
+        "type": "keyword",
+        "value": "ON"
+      },
+      {
+        "type": "column",
+        "value": "m.member_id"
+      },
+      {
+        "type": "column",
+        "value": "="
+      },
+      {
+        "type": "column",
+        "value": "c.member_id"
+      },
+      {
+        "type": "keyword",
+        "value": "AND"
+      },
+      {
+        "type": "column",
+        "value": "c.booking_status"
+      },
+      {
+        "type": "column",
+        "value": "="
+      },
+      {
+        "type": "column",
+        "value": "'Confirmed';"
+      }
+    ]
+  },
+  {
+    "drillNumber": 868,
+    "subcluster": "9.7 ON vs WHERE Predicate Placement on Outer Joins",
+    "level": "Level 3 (ON vs WHERE Trap)",
+    "title": "Syntax #868: Attach 5-star reviews in the ON clause while preserving all catalog films",
+    "table": "MovieReviews",
+    "scenario": "Attach 5-star reviews in the ON clause while preserving all catalog films.",
+    "businessObjective": "Attach 5-star reviews in the ON clause while preserving all catalog films.",
+    "schemaSnippet": "MovieReviews relational schema",
+    "targetQuery": "SELECT m.movie_title, r.review_text\nFROM Movies m\nLEFT JOIN MovieReviews r ON m.movie_id = r.movie_id AND r.star_rating = 5;",
+    "syntaxBlueprint": "SELECT a.col, b.col\nFROM TableA a\nLEFT JOIN TableB b ON a.id = b.a_id AND b.status = 'active';",
+    "syntaxRule": "Filtering an outer join table in the ON clause filters which right rows are attached while preserving ALL left rows. Filtering in the WHERE clause discards non-matching left rows.",
+    "syntaxTrap": "Putting a filter in WHERE instead of ON on a LEFT JOIN silently converts it into an INNER JOIN.",
+    "eli5Story": "Relational Joins on MovieReviews: Attach 5-star reviews in the ON clause while preserving all catalog films.",
+    "commonMistakes": "Omitting the ON clause, forgetting table alias qualification on ambiguous columns, or accidentally converting LEFT JOIN to INNER JOIN via WHERE filters.",
+    "learningOutcomes": "Mastered 9.7 ON vs WHERE Predicate Placement on Outer Joins on MovieReviews.",
+    "challengeSlots": [
+      {
+        "type": "keyword",
+        "value": "SELECT"
+      },
+      {
+        "type": "column",
+        "value": "m.movie_title,"
+      },
+      {
+        "type": "column",
+        "value": "r.review_text"
+      },
+      {
+        "type": "keyword",
+        "value": "FROM"
+      },
+      {
+        "type": "table",
+        "value": "Movies"
+      },
+      {
+        "type": "column",
+        "value": "m"
+      },
+      {
+        "type": "keyword",
+        "value": "LEFT"
+      },
+      {
+        "type": "keyword",
+        "value": "JOIN"
+      },
+      {
+        "type": "table",
+        "value": "MovieReviews"
+      },
+      {
+        "type": "column",
+        "value": "r"
+      },
+      {
+        "type": "keyword",
+        "value": "ON"
+      },
+      {
+        "type": "column",
+        "value": "m.movie_id"
+      },
+      {
+        "type": "column",
+        "value": "="
+      },
+      {
+        "type": "column",
+        "value": "r.movie_id"
+      },
+      {
+        "type": "keyword",
+        "value": "AND"
+      },
+      {
+        "type": "column",
+        "value": "r.star_rating"
+      },
+      {
+        "type": "column",
+        "value": "="
+      },
+      {
+        "type": "column",
+        "value": "5;"
+      }
+    ]
+  },
+  {
+    "drillNumber": 869,
+    "subcluster": "9.7 ON vs WHERE Predicate Placement on Outer Joins",
+    "level": "Level 3 (ON vs WHERE Trap)",
+    "title": "Syntax #869: Attach on-time flights in the ON clause while listing all commercial airlines",
+    "table": "FlightSchedule",
+    "scenario": "Attach on-time flights in the ON clause while listing all commercial airlines.",
+    "businessObjective": "Attach on-time flights in the ON clause while listing all commercial airlines.",
+    "schemaSnippet": "FlightSchedule relational schema",
+    "targetQuery": "SELECT al.airline_name, f.flight_id\nFROM Airlines al\nLEFT JOIN FlightSchedule f ON al.airline_id = f.airline_id AND f.status = 'On-Time';",
+    "syntaxBlueprint": "SELECT a.col, b.col\nFROM TableA a\nLEFT JOIN TableB b ON a.id = b.a_id AND b.status = 'active';",
+    "syntaxRule": "Filtering an outer join table in the ON clause filters which right rows are attached while preserving ALL left rows. Filtering in the WHERE clause discards non-matching left rows.",
+    "syntaxTrap": "Putting a filter in WHERE instead of ON on a LEFT JOIN silently converts it into an INNER JOIN.",
+    "eli5Story": "Relational Joins on FlightSchedule: Attach on-time flights in the ON clause while listing all commercial airlines.",
+    "commonMistakes": "Omitting the ON clause, forgetting table alias qualification on ambiguous columns, or accidentally converting LEFT JOIN to INNER JOIN via WHERE filters.",
+    "learningOutcomes": "Mastered 9.7 ON vs WHERE Predicate Placement on Outer Joins on FlightSchedule.",
+    "challengeSlots": [
+      {
+        "type": "keyword",
+        "value": "SELECT"
+      },
+      {
+        "type": "column",
+        "value": "al.airline_name,"
+      },
+      {
+        "type": "column",
+        "value": "f.flight_id"
+      },
+      {
+        "type": "keyword",
+        "value": "FROM"
+      },
+      {
+        "type": "table",
+        "value": "Airlines"
+      },
+      {
+        "type": "column",
+        "value": "al"
+      },
+      {
+        "type": "keyword",
+        "value": "LEFT"
+      },
+      {
+        "type": "keyword",
+        "value": "JOIN"
+      },
+      {
+        "type": "table",
+        "value": "FlightSchedule"
+      },
+      {
+        "type": "column",
+        "value": "f"
+      },
+      {
+        "type": "keyword",
+        "value": "ON"
+      },
+      {
+        "type": "column",
+        "value": "al.airline_id"
+      },
+      {
+        "type": "column",
+        "value": "="
+      },
+      {
+        "type": "column",
+        "value": "f.airline_id"
+      },
+      {
+        "type": "keyword",
+        "value": "AND"
+      },
+      {
+        "type": "column",
+        "value": "f.status"
+      },
+      {
+        "type": "column",
+        "value": "="
+      },
+      {
+        "type": "column",
+        "value": "'On-Time';"
+      }
+    ]
+  },
+  {
+    "drillNumber": 870,
+    "subcluster": "9.7 ON vs WHERE Predicate Placement on Outer Joins",
+    "level": "Level 3 (ON vs WHERE Trap)",
+    "title": "Syntax #870: Attach surgery visits in the ON clause while listing every clinic pet",
+    "table": "PetClinic",
+    "scenario": "Attach surgery visits in the ON clause while listing every clinic pet.",
+    "businessObjective": "Attach surgery visits in the ON clause while listing every clinic pet.",
+    "schemaSnippet": "PetClinic relational schema",
+    "targetQuery": "SELECT p.pet_name, v.visit_date\nFROM PetClinic p\nLEFT JOIN ClinicVisits v ON p.pet_id = v.pet_id AND v.visit_type = 'Surgery';",
+    "syntaxBlueprint": "SELECT a.col, b.col\nFROM TableA a\nLEFT JOIN TableB b ON a.id = b.a_id AND b.status = 'active';",
+    "syntaxRule": "Filtering an outer join table in the ON clause filters which right rows are attached while preserving ALL left rows. Filtering in the WHERE clause discards non-matching left rows.",
+    "syntaxTrap": "Putting a filter in WHERE instead of ON on a LEFT JOIN silently converts it into an INNER JOIN.",
+    "eli5Story": "Relational Joins on PetClinic: Attach surgery visits in the ON clause while listing every clinic pet.",
+    "commonMistakes": "Omitting the ON clause, forgetting table alias qualification on ambiguous columns, or accidentally converting LEFT JOIN to INNER JOIN via WHERE filters.",
+    "learningOutcomes": "Mastered 9.7 ON vs WHERE Predicate Placement on Outer Joins on PetClinic.",
+    "challengeSlots": [
+      {
+        "type": "keyword",
+        "value": "SELECT"
+      },
+      {
+        "type": "column",
+        "value": "p.pet_name,"
+      },
+      {
+        "type": "column",
+        "value": "v.visit_date"
+      },
+      {
+        "type": "keyword",
+        "value": "FROM"
+      },
+      {
+        "type": "table",
+        "value": "PetClinic"
+      },
+      {
+        "type": "column",
+        "value": "p"
+      },
+      {
+        "type": "keyword",
+        "value": "LEFT"
+      },
+      {
+        "type": "keyword",
+        "value": "JOIN"
+      },
+      {
+        "type": "column",
+        "value": "ClinicVisits"
+      },
+      {
+        "type": "column",
+        "value": "v"
+      },
+      {
+        "type": "keyword",
+        "value": "ON"
+      },
+      {
+        "type": "column",
+        "value": "p.pet_id"
+      },
+      {
+        "type": "column",
+        "value": "="
+      },
+      {
+        "type": "column",
+        "value": "v.pet_id"
+      },
+      {
+        "type": "keyword",
+        "value": "AND"
+      },
+      {
+        "type": "column",
+        "value": "v.visit_type"
+      },
+      {
+        "type": "column",
+        "value": "="
+      },
+      {
+        "type": "column",
+        "value": "'Surgery';"
+      }
+    ]
+  },
+  {
+    "drillNumber": 871,
+    "subcluster": "9.8 HAVING Filters on Joined Groups",
+    "level": "Level 3 (Joined HAVING)",
+    "title": "Syntax #871: Find ambitious students enrolled in 3 or more courses using HAVING",
+    "table": "Students",
+    "scenario": "Find ambitious students enrolled in 3 or more courses using HAVING.",
+    "businessObjective": "Find ambitious students enrolled in 3 or more courses using HAVING.",
+    "schemaSnippet": "Students relational schema",
+    "targetQuery": "SELECT s.full_name, COUNT(c.course_id) AS total_courses\nFROM Students s\nINNER JOIN Courses c ON s.student_id = c.student_id\nGROUP BY s.student_id, s.full_name\nHAVING COUNT(c.course_id) >= 3;",
+    "syntaxBlueprint": "SELECT a.name, COUNT(b.id) AS total_items\nFROM TableA a\nJOIN TableB b ON a.id = b.a_id\nGROUP BY a.id, a.name\nHAVING COUNT(b.id) >= 5;",
+    "syntaxRule": "Use HAVING to filter aggregated metrics computed across joined child tables after GROUP BY has processed.",
+    "syntaxTrap": "Trying to filter an aggregate metric (like COUNT(b.id) >= 5) inside the WHERE clause instead of HAVING.",
+    "eli5Story": "Relational Joins on Students: Find ambitious students enrolled in 3 or more courses using HAVING.",
+    "commonMistakes": "Omitting the ON clause, forgetting table alias qualification on ambiguous columns, or accidentally converting LEFT JOIN to INNER JOIN via WHERE filters.",
+    "learningOutcomes": "Mastered 9.8 HAVING Filters on Joined Groups on Students.",
+    "challengeSlots": [
+      {
+        "type": "keyword",
+        "value": "SELECT"
+      },
+      {
+        "type": "column",
+        "value": "s.full_name,"
+      },
+      {
+        "type": "column",
+        "value": "COUNT(c.course_id)"
+      },
+      {
+        "type": "keyword",
+        "value": "AS"
+      },
+      {
+        "type": "column",
+        "value": "total_courses"
+      },
+      {
+        "type": "keyword",
+        "value": "FROM"
+      },
+      {
+        "type": "table",
+        "value": "Students"
+      },
+      {
+        "type": "column",
+        "value": "s"
+      },
+      {
+        "type": "keyword",
+        "value": "INNER"
+      },
+      {
+        "type": "keyword",
+        "value": "JOIN"
+      },
+      {
+        "type": "table",
+        "value": "Courses"
+      },
+      {
+        "type": "column",
+        "value": "c"
+      },
+      {
+        "type": "keyword",
+        "value": "ON"
+      },
+      {
+        "type": "column",
+        "value": "s.student_id"
+      },
+      {
+        "type": "column",
+        "value": "="
+      },
+      {
+        "type": "column",
+        "value": "c.student_id"
+      },
+      {
+        "type": "keyword",
+        "value": "GROUP"
+      },
+      {
+        "type": "keyword",
+        "value": "BY"
+      },
+      {
+        "type": "column",
+        "value": "s.student_id,"
+      },
+      {
+        "type": "column",
+        "value": "s.full_name"
+      },
+      {
+        "type": "keyword",
+        "value": "HAVING"
+      },
+      {
+        "type": "column",
+        "value": "COUNT(c.course_id)"
+      },
+      {
+        "type": "column",
+        "value": ">="
+      },
+      {
+        "type": "column",
+        "value": "3;"
+      }
+    ]
+  },
+  {
+    "drillNumber": 872,
+    "subcluster": "9.8 HAVING Filters on Joined Groups",
+    "level": "Level 3 (Joined HAVING)",
+    "title": "Syntax #872: Filter prolific authors who have published 5 or more books",
+    "table": "Books",
+    "scenario": "Filter prolific authors who have published 5 or more books.",
+    "businessObjective": "Filter prolific authors who have published 5 or more books.",
+    "schemaSnippet": "Books relational schema",
+    "targetQuery": "SELECT a.author_name, COUNT(b.book_id) AS book_count\nFROM Authors a\nINNER JOIN Books b ON a.author_id = b.author_id\nGROUP BY a.author_id, a.author_name\nHAVING COUNT(b.book_id) >= 5;",
+    "syntaxBlueprint": "SELECT a.name, COUNT(b.id) AS total_items\nFROM TableA a\nJOIN TableB b ON a.id = b.a_id\nGROUP BY a.id, a.name\nHAVING COUNT(b.id) >= 5;",
+    "syntaxRule": "Use HAVING to filter aggregated metrics computed across joined child tables after GROUP BY has processed.",
+    "syntaxTrap": "Trying to filter an aggregate metric (like COUNT(b.id) >= 5) inside the WHERE clause instead of HAVING.",
+    "eli5Story": "Relational Joins on Books: Filter prolific authors who have published 5 or more books.",
+    "commonMistakes": "Omitting the ON clause, forgetting table alias qualification on ambiguous columns, or accidentally converting LEFT JOIN to INNER JOIN via WHERE filters.",
+    "learningOutcomes": "Mastered 9.8 HAVING Filters on Joined Groups on Books.",
+    "challengeSlots": [
+      {
+        "type": "keyword",
+        "value": "SELECT"
+      },
+      {
+        "type": "column",
+        "value": "a.author_name,"
+      },
+      {
+        "type": "column",
+        "value": "COUNT(b.book_id)"
+      },
+      {
+        "type": "keyword",
+        "value": "AS"
+      },
+      {
+        "type": "column",
+        "value": "book_count"
+      },
+      {
+        "type": "keyword",
+        "value": "FROM"
+      },
+      {
+        "type": "table",
+        "value": "Authors"
+      },
+      {
+        "type": "column",
+        "value": "a"
+      },
+      {
+        "type": "keyword",
+        "value": "INNER"
+      },
+      {
+        "type": "keyword",
+        "value": "JOIN"
+      },
+      {
+        "type": "table",
+        "value": "Books"
+      },
+      {
+        "type": "column",
+        "value": "b"
+      },
+      {
+        "type": "keyword",
+        "value": "ON"
+      },
+      {
+        "type": "column",
+        "value": "a.author_id"
+      },
+      {
+        "type": "column",
+        "value": "="
+      },
+      {
+        "type": "column",
+        "value": "b.author_id"
+      },
+      {
+        "type": "keyword",
+        "value": "GROUP"
+      },
+      {
+        "type": "keyword",
+        "value": "BY"
+      },
+      {
+        "type": "column",
+        "value": "a.author_id,"
+      },
+      {
+        "type": "column",
+        "value": "a.author_name"
+      },
+      {
+        "type": "keyword",
+        "value": "HAVING"
+      },
+      {
+        "type": "column",
+        "value": "COUNT(b.book_id)"
+      },
+      {
+        "type": "column",
+        "value": ">="
+      },
+      {
+        "type": "column",
+        "value": "5;"
+      }
+    ]
+  },
+  {
+    "drillNumber": 873,
+    "subcluster": "9.8 HAVING Filters on Joined Groups",
+    "level": "Level 3 (Joined HAVING)",
+    "title": "Syntax #873: Find large departments that employ more than 10 staff members",
+    "table": "Employees",
+    "scenario": "Find large departments that employ more than 10 staff members.",
+    "businessObjective": "Find large departments that employ more than 10 staff members.",
+    "schemaSnippet": "Employees relational schema",
+    "targetQuery": "SELECT d.department_name, COUNT(e.employee_id) AS staff_count\nFROM Departments d\nINNER JOIN Employees e ON d.department_id = e.department_id\nGROUP BY d.department_id, d.department_name\nHAVING COUNT(e.employee_id) > 10;",
+    "syntaxBlueprint": "SELECT a.name, COUNT(b.id) AS total_items\nFROM TableA a\nJOIN TableB b ON a.id = b.a_id\nGROUP BY a.id, a.name\nHAVING COUNT(b.id) >= 5;",
+    "syntaxRule": "Use HAVING to filter aggregated metrics computed across joined child tables after GROUP BY has processed.",
+    "syntaxTrap": "Trying to filter an aggregate metric (like COUNT(b.id) >= 5) inside the WHERE clause instead of HAVING.",
+    "eli5Story": "Relational Joins on Employees: Find large departments that employ more than 10 staff members.",
+    "commonMistakes": "Omitting the ON clause, forgetting table alias qualification on ambiguous columns, or accidentally converting LEFT JOIN to INNER JOIN via WHERE filters.",
+    "learningOutcomes": "Mastered 9.8 HAVING Filters on Joined Groups on Employees.",
+    "challengeSlots": [
+      {
+        "type": "keyword",
+        "value": "SELECT"
+      },
+      {
+        "type": "column",
+        "value": "d.department_name,"
+      },
+      {
+        "type": "column",
+        "value": "COUNT(e.employee_id)"
+      },
+      {
+        "type": "keyword",
+        "value": "AS"
+      },
+      {
+        "type": "column",
+        "value": "staff_count"
+      },
+      {
+        "type": "keyword",
+        "value": "FROM"
+      },
+      {
+        "type": "table",
+        "value": "Departments"
+      },
+      {
+        "type": "column",
+        "value": "d"
+      },
+      {
+        "type": "keyword",
+        "value": "INNER"
+      },
+      {
+        "type": "keyword",
+        "value": "JOIN"
+      },
+      {
+        "type": "table",
+        "value": "Employees"
+      },
+      {
+        "type": "column",
+        "value": "e"
+      },
+      {
+        "type": "keyword",
+        "value": "ON"
+      },
+      {
+        "type": "column",
+        "value": "d.department_id"
+      },
+      {
+        "type": "column",
+        "value": "="
+      },
+      {
+        "type": "column",
+        "value": "e.department_id"
+      },
+      {
+        "type": "keyword",
+        "value": "GROUP"
+      },
+      {
+        "type": "keyword",
+        "value": "BY"
+      },
+      {
+        "type": "column",
+        "value": "d.department_id,"
+      },
+      {
+        "type": "column",
+        "value": "d.department_name"
+      },
+      {
+        "type": "keyword",
+        "value": "HAVING"
+      },
+      {
+        "type": "column",
+        "value": "COUNT(e.employee_id)"
+      },
+      {
+        "type": "column",
+        "value": ">"
+      },
+      {
+        "type": "column",
+        "value": "10;"
+      }
+    ]
+  },
+  {
+    "drillNumber": 874,
+    "subcluster": "9.8 HAVING Filters on Joined Groups",
+    "level": "Level 3 (Joined HAVING)",
+    "title": "Syntax #874: Identify major vendors supplying 8 or more inventory products",
+    "table": "GroceryItems",
+    "scenario": "Identify major vendors supplying 8 or more inventory products.",
+    "businessObjective": "Identify major vendors supplying 8 or more inventory products.",
+    "schemaSnippet": "GroceryItems relational schema",
+    "targetQuery": "SELECT s.supplier_name, COUNT(g.item_id) AS item_count\nFROM Suppliers s\nINNER JOIN GroceryItems g ON s.supplier_id = g.supplier_id\nGROUP BY s.supplier_id, s.supplier_name\nHAVING COUNT(g.item_id) >= 8;",
+    "syntaxBlueprint": "SELECT a.name, COUNT(b.id) AS total_items\nFROM TableA a\nJOIN TableB b ON a.id = b.a_id\nGROUP BY a.id, a.name\nHAVING COUNT(b.id) >= 5;",
+    "syntaxRule": "Use HAVING to filter aggregated metrics computed across joined child tables after GROUP BY has processed.",
+    "syntaxTrap": "Trying to filter an aggregate metric (like COUNT(b.id) >= 5) inside the WHERE clause instead of HAVING.",
+    "eli5Story": "Relational Joins on GroceryItems: Identify major vendors supplying 8 or more inventory products.",
+    "commonMistakes": "Omitting the ON clause, forgetting table alias qualification on ambiguous columns, or accidentally converting LEFT JOIN to INNER JOIN via WHERE filters.",
+    "learningOutcomes": "Mastered 9.8 HAVING Filters on Joined Groups on GroceryItems.",
+    "challengeSlots": [
+      {
+        "type": "keyword",
+        "value": "SELECT"
+      },
+      {
+        "type": "column",
+        "value": "s.supplier_name,"
+      },
+      {
+        "type": "column",
+        "value": "COUNT(g.item_id)"
+      },
+      {
+        "type": "keyword",
+        "value": "AS"
+      },
+      {
+        "type": "column",
+        "value": "item_count"
+      },
+      {
+        "type": "keyword",
+        "value": "FROM"
+      },
+      {
+        "type": "table",
+        "value": "Suppliers"
+      },
+      {
+        "type": "column",
+        "value": "s"
+      },
+      {
+        "type": "keyword",
+        "value": "INNER"
+      },
+      {
+        "type": "keyword",
+        "value": "JOIN"
+      },
+      {
+        "type": "table",
+        "value": "GroceryItems"
+      },
+      {
+        "type": "column",
+        "value": "g"
+      },
+      {
+        "type": "keyword",
+        "value": "ON"
+      },
+      {
+        "type": "column",
+        "value": "s.supplier_id"
+      },
+      {
+        "type": "column",
+        "value": "="
+      },
+      {
+        "type": "column",
+        "value": "g.supplier_id"
+      },
+      {
+        "type": "keyword",
+        "value": "GROUP"
+      },
+      {
+        "type": "keyword",
+        "value": "BY"
+      },
+      {
+        "type": "column",
+        "value": "s.supplier_id,"
+      },
+      {
+        "type": "column",
+        "value": "s.supplier_name"
+      },
+      {
+        "type": "keyword",
+        "value": "HAVING"
+      },
+      {
+        "type": "column",
+        "value": "COUNT(g.item_id)"
+      },
+      {
+        "type": "column",
+        "value": ">="
+      },
+      {
+        "type": "column",
+        "value": "8;"
+      }
+    ]
+  },
+  {
+    "drillNumber": 875,
+    "subcluster": "9.8 HAVING Filters on Joined Groups",
+    "level": "Level 3 (Joined HAVING)",
+    "title": "Syntax #875: Find VIP customers with a cumulative lifetime spend of $1,000 or more",
+    "table": "Orders",
+    "scenario": "Find VIP customers with a cumulative lifetime spend of $1,000 or more.",
+    "businessObjective": "Find VIP customers with a cumulative lifetime spend of $1,000 or more.",
+    "schemaSnippet": "Orders relational schema",
+    "targetQuery": "SELECT c.customer_name, SUM(o.total_amount) AS lifetime_spend\nFROM Customers c\nINNER JOIN Orders o ON c.customer_id = o.customer_id\nGROUP BY c.customer_id, c.customer_name\nHAVING SUM(o.total_amount) >= 1000.00;",
+    "syntaxBlueprint": "SELECT a.name, COUNT(b.id) AS total_items\nFROM TableA a\nJOIN TableB b ON a.id = b.a_id\nGROUP BY a.id, a.name\nHAVING COUNT(b.id) >= 5;",
+    "syntaxRule": "Use HAVING to filter aggregated metrics computed across joined child tables after GROUP BY has processed.",
+    "syntaxTrap": "Trying to filter an aggregate metric (like COUNT(b.id) >= 5) inside the WHERE clause instead of HAVING.",
+    "eli5Story": "Relational Joins on Orders: Find VIP customers with a cumulative lifetime spend of $1,000 or more.",
+    "commonMistakes": "Omitting the ON clause, forgetting table alias qualification on ambiguous columns, or accidentally converting LEFT JOIN to INNER JOIN via WHERE filters.",
+    "learningOutcomes": "Mastered 9.8 HAVING Filters on Joined Groups on Orders.",
+    "challengeSlots": [
+      {
+        "type": "keyword",
+        "value": "SELECT"
+      },
+      {
+        "type": "column",
+        "value": "c.customer_name,"
+      },
+      {
+        "type": "column",
+        "value": "SUM(o.total_amount)"
+      },
+      {
+        "type": "keyword",
+        "value": "AS"
+      },
+      {
+        "type": "column",
+        "value": "lifetime_spend"
+      },
+      {
+        "type": "keyword",
+        "value": "FROM"
+      },
+      {
+        "type": "table",
+        "value": "Customers"
+      },
+      {
+        "type": "column",
+        "value": "c"
+      },
+      {
+        "type": "keyword",
+        "value": "INNER"
+      },
+      {
+        "type": "keyword",
+        "value": "JOIN"
+      },
+      {
+        "type": "table",
+        "value": "Orders"
+      },
+      {
+        "type": "column",
+        "value": "o"
+      },
+      {
+        "type": "keyword",
+        "value": "ON"
+      },
+      {
+        "type": "column",
+        "value": "c.customer_id"
+      },
+      {
+        "type": "column",
+        "value": "="
+      },
+      {
+        "type": "column",
+        "value": "o.customer_id"
+      },
+      {
+        "type": "keyword",
+        "value": "GROUP"
+      },
+      {
+        "type": "keyword",
+        "value": "BY"
+      },
+      {
+        "type": "column",
+        "value": "c.customer_id,"
+      },
+      {
+        "type": "column",
+        "value": "c.customer_name"
+      },
+      {
+        "type": "keyword",
+        "value": "HAVING"
+      },
+      {
+        "type": "column",
+        "value": "SUM(o.total_amount)"
+      },
+      {
+        "type": "column",
+        "value": ">="
+      },
+      {
+        "type": "column",
+        "value": "1000.00;"
+      }
+    ]
+  },
+  {
+    "drillNumber": 876,
+    "subcluster": "9.8 HAVING Filters on Joined Groups",
+    "level": "Level 3 (Joined HAVING)",
+    "title": "Syntax #876: Find full-length music albums containing 12 or more songs",
+    "table": "MusicTracks",
+    "scenario": "Find full-length music albums containing 12 or more songs.",
+    "businessObjective": "Find full-length music albums containing 12 or more songs.",
+    "schemaSnippet": "MusicTracks relational schema",
+    "targetQuery": "SELECT a.album_title, COUNT(t.track_id) AS track_count\nFROM Albums a\nINNER JOIN MusicTracks t ON a.album_id = t.album_id\nGROUP BY a.album_id, a.album_title\nHAVING COUNT(t.track_id) >= 12;",
+    "syntaxBlueprint": "SELECT a.name, COUNT(b.id) AS total_items\nFROM TableA a\nJOIN TableB b ON a.id = b.a_id\nGROUP BY a.id, a.name\nHAVING COUNT(b.id) >= 5;",
+    "syntaxRule": "Use HAVING to filter aggregated metrics computed across joined child tables after GROUP BY has processed.",
+    "syntaxTrap": "Trying to filter an aggregate metric (like COUNT(b.id) >= 5) inside the WHERE clause instead of HAVING.",
+    "eli5Story": "Relational Joins on MusicTracks: Find full-length music albums containing 12 or more songs.",
+    "commonMistakes": "Omitting the ON clause, forgetting table alias qualification on ambiguous columns, or accidentally converting LEFT JOIN to INNER JOIN via WHERE filters.",
+    "learningOutcomes": "Mastered 9.8 HAVING Filters on Joined Groups on MusicTracks.",
+    "challengeSlots": [
+      {
+        "type": "keyword",
+        "value": "SELECT"
+      },
+      {
+        "type": "column",
+        "value": "a.album_title,"
+      },
+      {
+        "type": "column",
+        "value": "COUNT(t.track_id)"
+      },
+      {
+        "type": "keyword",
+        "value": "AS"
+      },
+      {
+        "type": "column",
+        "value": "track_count"
+      },
+      {
+        "type": "keyword",
+        "value": "FROM"
+      },
+      {
+        "type": "table",
+        "value": "Albums"
+      },
+      {
+        "type": "column",
+        "value": "a"
+      },
+      {
+        "type": "keyword",
+        "value": "INNER"
+      },
+      {
+        "type": "keyword",
+        "value": "JOIN"
+      },
+      {
+        "type": "table",
+        "value": "MusicTracks"
+      },
+      {
+        "type": "column",
+        "value": "t"
+      },
+      {
+        "type": "keyword",
+        "value": "ON"
+      },
+      {
+        "type": "column",
+        "value": "a.album_id"
+      },
+      {
+        "type": "column",
+        "value": "="
+      },
+      {
+        "type": "column",
+        "value": "t.album_id"
+      },
+      {
+        "type": "keyword",
+        "value": "GROUP"
+      },
+      {
+        "type": "keyword",
+        "value": "BY"
+      },
+      {
+        "type": "column",
+        "value": "a.album_id,"
+      },
+      {
+        "type": "column",
+        "value": "a.album_title"
+      },
+      {
+        "type": "keyword",
+        "value": "HAVING"
+      },
+      {
+        "type": "column",
+        "value": "COUNT(t.track_id)"
+      },
+      {
+        "type": "column",
+        "value": ">="
+      },
+      {
+        "type": "column",
+        "value": "12;"
+      }
+    ]
+  },
+  {
+    "drillNumber": 877,
+    "subcluster": "9.8 HAVING Filters on Joined Groups",
+    "level": "Level 3 (Joined HAVING)",
+    "title": "Syntax #877: Find popular gym trainers who coach 5 or more active clients",
+    "table": "GymMembers",
+    "scenario": "Find popular gym trainers who coach 5 or more active clients.",
+    "businessObjective": "Find popular gym trainers who coach 5 or more active clients.",
+    "schemaSnippet": "GymMembers relational schema",
+    "targetQuery": "SELECT tr.trainer_name, COUNT(m.member_id) AS client_count\nFROM Trainers tr\nINNER JOIN GymMembers m ON tr.trainer_id = m.trainer_id\nGROUP BY tr.trainer_id, tr.trainer_name\nHAVING COUNT(m.member_id) >= 5;",
+    "syntaxBlueprint": "SELECT a.name, COUNT(b.id) AS total_items\nFROM TableA a\nJOIN TableB b ON a.id = b.a_id\nGROUP BY a.id, a.name\nHAVING COUNT(b.id) >= 5;",
+    "syntaxRule": "Use HAVING to filter aggregated metrics computed across joined child tables after GROUP BY has processed.",
+    "syntaxTrap": "Trying to filter an aggregate metric (like COUNT(b.id) >= 5) inside the WHERE clause instead of HAVING.",
+    "eli5Story": "Relational Joins on GymMembers: Find popular gym trainers who coach 5 or more active clients.",
+    "commonMistakes": "Omitting the ON clause, forgetting table alias qualification on ambiguous columns, or accidentally converting LEFT JOIN to INNER JOIN via WHERE filters.",
+    "learningOutcomes": "Mastered 9.8 HAVING Filters on Joined Groups on GymMembers.",
+    "challengeSlots": [
+      {
+        "type": "keyword",
+        "value": "SELECT"
+      },
+      {
+        "type": "column",
+        "value": "tr.trainer_name,"
+      },
+      {
+        "type": "column",
+        "value": "COUNT(m.member_id)"
+      },
+      {
+        "type": "keyword",
+        "value": "AS"
+      },
+      {
+        "type": "column",
+        "value": "client_count"
+      },
+      {
+        "type": "keyword",
+        "value": "FROM"
+      },
+      {
+        "type": "table",
+        "value": "Trainers"
+      },
+      {
+        "type": "column",
+        "value": "tr"
+      },
+      {
+        "type": "keyword",
+        "value": "INNER"
+      },
+      {
+        "type": "keyword",
+        "value": "JOIN"
+      },
+      {
+        "type": "table",
+        "value": "GymMembers"
+      },
+      {
+        "type": "column",
+        "value": "m"
+      },
+      {
+        "type": "keyword",
+        "value": "ON"
+      },
+      {
+        "type": "column",
+        "value": "tr.trainer_id"
+      },
+      {
+        "type": "column",
+        "value": "="
+      },
+      {
+        "type": "column",
+        "value": "m.trainer_id"
+      },
+      {
+        "type": "keyword",
+        "value": "GROUP"
+      },
+      {
+        "type": "keyword",
+        "value": "BY"
+      },
+      {
+        "type": "column",
+        "value": "tr.trainer_id,"
+      },
+      {
+        "type": "column",
+        "value": "tr.trainer_name"
+      },
+      {
+        "type": "keyword",
+        "value": "HAVING"
+      },
+      {
+        "type": "column",
+        "value": "COUNT(m.member_id)"
+      },
+      {
+        "type": "column",
+        "value": ">="
+      },
+      {
+        "type": "column",
+        "value": "5;"
+      }
+    ]
+  },
+  {
+    "drillNumber": 878,
+    "subcluster": "9.8 HAVING Filters on Joined Groups",
+    "level": "Level 3 (Joined HAVING)",
+    "title": "Syntax #878: Filter universally acclaimed movies with an average rating of 4.5 or higher",
+    "table": "MovieReviews",
+    "scenario": "Filter universally acclaimed movies with an average rating of 4.5 or higher.",
+    "businessObjective": "Filter universally acclaimed movies with an average rating of 4.5 or higher.",
+    "schemaSnippet": "MovieReviews relational schema",
+    "targetQuery": "SELECT m.movie_title, AVG(r.star_rating) AS avg_score\nFROM Movies m\nINNER JOIN MovieReviews r ON m.movie_id = r.movie_id\nGROUP BY m.movie_id, m.movie_title\nHAVING AVG(r.star_rating) >= 4.5;",
+    "syntaxBlueprint": "SELECT a.name, COUNT(b.id) AS total_items\nFROM TableA a\nJOIN TableB b ON a.id = b.a_id\nGROUP BY a.id, a.name\nHAVING COUNT(b.id) >= 5;",
+    "syntaxRule": "Use HAVING to filter aggregated metrics computed across joined child tables after GROUP BY has processed.",
+    "syntaxTrap": "Trying to filter an aggregate metric (like COUNT(b.id) >= 5) inside the WHERE clause instead of HAVING.",
+    "eli5Story": "Relational Joins on MovieReviews: Filter universally acclaimed movies with an average rating of 4.5 or higher.",
+    "commonMistakes": "Omitting the ON clause, forgetting table alias qualification on ambiguous columns, or accidentally converting LEFT JOIN to INNER JOIN via WHERE filters.",
+    "learningOutcomes": "Mastered 9.8 HAVING Filters on Joined Groups on MovieReviews.",
+    "challengeSlots": [
+      {
+        "type": "keyword",
+        "value": "SELECT"
+      },
+      {
+        "type": "column",
+        "value": "m.movie_title,"
+      },
+      {
+        "type": "column",
+        "value": "AVG(r.star_rating)"
+      },
+      {
+        "type": "keyword",
+        "value": "AS"
+      },
+      {
+        "type": "column",
+        "value": "avg_score"
+      },
+      {
+        "type": "keyword",
+        "value": "FROM"
+      },
+      {
+        "type": "table",
+        "value": "Movies"
+      },
+      {
+        "type": "column",
+        "value": "m"
+      },
+      {
+        "type": "keyword",
+        "value": "INNER"
+      },
+      {
+        "type": "keyword",
+        "value": "JOIN"
+      },
+      {
+        "type": "table",
+        "value": "MovieReviews"
+      },
+      {
+        "type": "column",
+        "value": "r"
+      },
+      {
+        "type": "keyword",
+        "value": "ON"
+      },
+      {
+        "type": "column",
+        "value": "m.movie_id"
+      },
+      {
+        "type": "column",
+        "value": "="
+      },
+      {
+        "type": "column",
+        "value": "r.movie_id"
+      },
+      {
+        "type": "keyword",
+        "value": "GROUP"
+      },
+      {
+        "type": "keyword",
+        "value": "BY"
+      },
+      {
+        "type": "column",
+        "value": "m.movie_id,"
+      },
+      {
+        "type": "column",
+        "value": "m.movie_title"
+      },
+      {
+        "type": "keyword",
+        "value": "HAVING"
+      },
+      {
+        "type": "column",
+        "value": "AVG(r.star_rating)"
+      },
+      {
+        "type": "column",
+        "value": ">="
+      },
+      {
+        "type": "column",
+        "value": "4.5;"
+      }
+    ]
+  },
+  {
+    "drillNumber": 879,
+    "subcluster": "9.8 HAVING Filters on Joined Groups",
+    "level": "Level 3 (Joined HAVING)",
+    "title": "Syntax #879: Find high-volume airlines operating 15 or more scheduled flights",
+    "table": "FlightSchedule",
+    "scenario": "Find high-volume airlines operating 15 or more scheduled flights.",
+    "businessObjective": "Find high-volume airlines operating 15 or more scheduled flights.",
+    "schemaSnippet": "FlightSchedule relational schema",
+    "targetQuery": "SELECT al.airline_name, COUNT(f.flight_id) AS flight_volume\nFROM Airlines al\nINNER JOIN FlightSchedule f ON al.airline_id = f.airline_id\nGROUP BY al.airline_id, al.airline_name\nHAVING COUNT(f.flight_id) >= 15;",
+    "syntaxBlueprint": "SELECT a.name, COUNT(b.id) AS total_items\nFROM TableA a\nJOIN TableB b ON a.id = b.a_id\nGROUP BY a.id, a.name\nHAVING COUNT(b.id) >= 5;",
+    "syntaxRule": "Use HAVING to filter aggregated metrics computed across joined child tables after GROUP BY has processed.",
+    "syntaxTrap": "Trying to filter an aggregate metric (like COUNT(b.id) >= 5) inside the WHERE clause instead of HAVING.",
+    "eli5Story": "Relational Joins on FlightSchedule: Find high-volume airlines operating 15 or more scheduled flights.",
+    "commonMistakes": "Omitting the ON clause, forgetting table alias qualification on ambiguous columns, or accidentally converting LEFT JOIN to INNER JOIN via WHERE filters.",
+    "learningOutcomes": "Mastered 9.8 HAVING Filters on Joined Groups on FlightSchedule.",
+    "challengeSlots": [
+      {
+        "type": "keyword",
+        "value": "SELECT"
+      },
+      {
+        "type": "column",
+        "value": "al.airline_name,"
+      },
+      {
+        "type": "column",
+        "value": "COUNT(f.flight_id)"
+      },
+      {
+        "type": "keyword",
+        "value": "AS"
+      },
+      {
+        "type": "column",
+        "value": "flight_volume"
+      },
+      {
+        "type": "keyword",
+        "value": "FROM"
+      },
+      {
+        "type": "table",
+        "value": "Airlines"
+      },
+      {
+        "type": "column",
+        "value": "al"
+      },
+      {
+        "type": "keyword",
+        "value": "INNER"
+      },
+      {
+        "type": "keyword",
+        "value": "JOIN"
+      },
+      {
+        "type": "table",
+        "value": "FlightSchedule"
+      },
+      {
+        "type": "column",
+        "value": "f"
+      },
+      {
+        "type": "keyword",
+        "value": "ON"
+      },
+      {
+        "type": "column",
+        "value": "al.airline_id"
+      },
+      {
+        "type": "column",
+        "value": "="
+      },
+      {
+        "type": "column",
+        "value": "f.airline_id"
+      },
+      {
+        "type": "keyword",
+        "value": "GROUP"
+      },
+      {
+        "type": "keyword",
+        "value": "BY"
+      },
+      {
+        "type": "column",
+        "value": "al.airline_id,"
+      },
+      {
+        "type": "column",
+        "value": "al.airline_name"
+      },
+      {
+        "type": "keyword",
+        "value": "HAVING"
+      },
+      {
+        "type": "column",
+        "value": "COUNT(f.flight_id)"
+      },
+      {
+        "type": "column",
+        "value": ">="
+      },
+      {
+        "type": "column",
+        "value": "15;"
+      }
+    ]
+  },
+  {
+    "drillNumber": 880,
+    "subcluster": "9.8 HAVING Filters on Joined Groups",
+    "level": "Level 3 (Joined HAVING)",
+    "title": "Syntax #880: Identify animal lover households owning 3 or more registered pets",
+    "table": "PetClinic",
+    "scenario": "Identify animal lover households owning 3 or more registered pets.",
+    "businessObjective": "Identify animal lover households owning 3 or more registered pets.",
+    "schemaSnippet": "PetClinic relational schema",
+    "targetQuery": "SELECT o.owner_name, COUNT(p.pet_id) AS pet_count\nFROM Owners o\nINNER JOIN PetClinic p ON o.owner_id = p.owner_id\nGROUP BY o.owner_id, o.owner_name\nHAVING COUNT(p.pet_id) >= 3;",
+    "syntaxBlueprint": "SELECT a.name, COUNT(b.id) AS total_items\nFROM TableA a\nJOIN TableB b ON a.id = b.a_id\nGROUP BY a.id, a.name\nHAVING COUNT(b.id) >= 5;",
+    "syntaxRule": "Use HAVING to filter aggregated metrics computed across joined child tables after GROUP BY has processed.",
+    "syntaxTrap": "Trying to filter an aggregate metric (like COUNT(b.id) >= 5) inside the WHERE clause instead of HAVING.",
+    "eli5Story": "Relational Joins on PetClinic: Identify animal lover households owning 3 or more registered pets.",
+    "commonMistakes": "Omitting the ON clause, forgetting table alias qualification on ambiguous columns, or accidentally converting LEFT JOIN to INNER JOIN via WHERE filters.",
+    "learningOutcomes": "Mastered 9.8 HAVING Filters on Joined Groups on PetClinic.",
+    "challengeSlots": [
+      {
+        "type": "keyword",
+        "value": "SELECT"
+      },
+      {
+        "type": "column",
+        "value": "o.owner_name,"
+      },
+      {
+        "type": "column",
+        "value": "COUNT(p.pet_id)"
+      },
+      {
+        "type": "keyword",
+        "value": "AS"
+      },
+      {
+        "type": "column",
+        "value": "pet_count"
+      },
+      {
+        "type": "keyword",
+        "value": "FROM"
+      },
+      {
+        "type": "table",
+        "value": "Owners"
+      },
+      {
+        "type": "column",
+        "value": "o"
+      },
+      {
+        "type": "keyword",
+        "value": "INNER"
+      },
+      {
+        "type": "keyword",
+        "value": "JOIN"
+      },
+      {
+        "type": "table",
+        "value": "PetClinic"
+      },
+      {
+        "type": "column",
+        "value": "p"
+      },
+      {
+        "type": "keyword",
+        "value": "ON"
+      },
+      {
+        "type": "column",
+        "value": "o.owner_id"
+      },
+      {
+        "type": "column",
+        "value": "="
+      },
+      {
+        "type": "column",
+        "value": "p.owner_id"
+      },
+      {
+        "type": "keyword",
+        "value": "GROUP"
+      },
+      {
+        "type": "keyword",
+        "value": "BY"
+      },
+      {
+        "type": "column",
+        "value": "o.owner_id,"
+      },
+      {
+        "type": "column",
+        "value": "o.owner_name"
+      },
+      {
+        "type": "keyword",
+        "value": "HAVING"
+      },
+      {
+        "type": "column",
+        "value": "COUNT(p.pet_id)"
+      },
+      {
+        "type": "column",
+        "value": ">="
+      },
+      {
+        "type": "column",
+        "value": "3;"
+      }
+    ]
+  },
+  {
+    "drillNumber": 881,
+    "subcluster": "9.9 Conditional Aggregation over Joins (SUM & COUNT with CASE)",
+    "level": "Level 3 (Joined Conditional Aggregates)",
+    "title": "Syntax #881: Count how many intensive courses (credits >= 4) each student is taking via conditional aggregation",
+    "table": "Students",
+    "scenario": "Count how many intensive courses (credits >= 4) each student is taking via conditional aggregation.",
+    "businessObjective": "Count how many intensive courses (credits >= 4) each student is taking via conditional aggregation.",
+    "schemaSnippet": "Students relational schema",
+    "targetQuery": "SELECT s.full_name, SUM(CASE WHEN c.credits >= 4 THEN 1 ELSE 0 END) AS intensive_courses\nFROM Students s\nINNER JOIN Courses c ON s.student_id = c.student_id\nGROUP BY s.student_id, s.full_name;",
+    "syntaxBlueprint": "SELECT a.name, SUM(CASE WHEN b.status = 'active' THEN 1 ELSE 0 END) AS active_b\nFROM TableA a\nJOIN TableB b ON a.id = b.a_id\nGROUP BY a.id, a.name;",
+    "syntaxRule": "Embed CASE WHEN statements inside aggregate functions to compute multi-category counts or financial sums in a single pass across joined tables.",
+    "syntaxTrap": "Using COUNT(CASE WHEN condition THEN 0 END) — COUNT counts 0 as a valid non-null value! Use SUM() or omit the ELSE branch.",
+    "eli5Story": "Relational Joins on Students: Count how many intensive courses (credits >= 4) each student is taking via conditional aggregation.",
+    "commonMistakes": "Omitting the ON clause, forgetting table alias qualification on ambiguous columns, or accidentally converting LEFT JOIN to INNER JOIN via WHERE filters.",
+    "learningOutcomes": "Mastered 9.9 Conditional Aggregation over Joins (SUM & COUNT with CASE) on Students.",
+    "challengeSlots": [
+      {
+        "type": "keyword",
+        "value": "SELECT"
+      },
+      {
+        "type": "column",
+        "value": "s.full_name,"
+      },
+      {
+        "type": "column",
+        "value": "SUM(CASE"
+      },
+      {
+        "type": "keyword",
+        "value": "WHEN"
+      },
+      {
+        "type": "column",
+        "value": "c.credits"
+      },
+      {
+        "type": "column",
+        "value": ">="
+      },
+      {
+        "type": "column",
+        "value": "4"
+      },
+      {
+        "type": "keyword",
+        "value": "THEN"
+      },
+      {
+        "type": "column",
+        "value": "1"
+      },
+      {
+        "type": "keyword",
+        "value": "ELSE"
+      },
+      {
+        "type": "column",
+        "value": "0"
+      },
+      {
+        "type": "keyword",
+        "value": "END)"
+      },
+      {
+        "type": "keyword",
+        "value": "AS"
+      },
+      {
+        "type": "column",
+        "value": "intensive_courses"
+      },
+      {
+        "type": "keyword",
+        "value": "FROM"
+      },
+      {
+        "type": "table",
+        "value": "Students"
+      },
+      {
+        "type": "column",
+        "value": "s"
+      },
+      {
+        "type": "keyword",
+        "value": "INNER"
+      },
+      {
+        "type": "keyword",
+        "value": "JOIN"
+      },
+      {
+        "type": "table",
+        "value": "Courses"
+      },
+      {
+        "type": "column",
+        "value": "c"
+      },
+      {
+        "type": "keyword",
+        "value": "ON"
+      },
+      {
+        "type": "column",
+        "value": "s.student_id"
+      },
+      {
+        "type": "column",
+        "value": "="
+      },
+      {
+        "type": "column",
+        "value": "c.student_id"
+      },
+      {
+        "type": "keyword",
+        "value": "GROUP"
+      },
+      {
+        "type": "keyword",
+        "value": "BY"
+      },
+      {
+        "type": "column",
+        "value": "s.student_id,"
+      },
+      {
+        "type": "column",
+        "value": "s.full_name;"
+      }
+    ]
+  },
+  {
+    "drillNumber": 882,
+    "subcluster": "9.9 Conditional Aggregation over Joins (SUM & COUNT with CASE)",
+    "level": "Level 3 (Joined Conditional Aggregates)",
+    "title": "Syntax #882: Count premium books ($20+) published by each author using SUM(CASE...)",
+    "table": "Books",
+    "scenario": "Count premium books ($20+) published by each author using SUM(CASE...).",
+    "businessObjective": "Count premium books ($20+) published by each author using SUM(CASE...).",
+    "schemaSnippet": "Books relational schema",
+    "targetQuery": "SELECT a.author_name, SUM(CASE WHEN b.price >= 20.00 THEN 1 ELSE 0 END) AS premium_books\nFROM Authors a\nINNER JOIN Books b ON a.author_id = b.author_id\nGROUP BY a.author_id, a.author_name;",
+    "syntaxBlueprint": "SELECT a.name, SUM(CASE WHEN b.status = 'active' THEN 1 ELSE 0 END) AS active_b\nFROM TableA a\nJOIN TableB b ON a.id = b.a_id\nGROUP BY a.id, a.name;",
+    "syntaxRule": "Embed CASE WHEN statements inside aggregate functions to compute multi-category counts or financial sums in a single pass across joined tables.",
+    "syntaxTrap": "Using COUNT(CASE WHEN condition THEN 0 END) — COUNT counts 0 as a valid non-null value! Use SUM() or omit the ELSE branch.",
+    "eli5Story": "Relational Joins on Books: Count premium books ($20+) published by each author using SUM(CASE...).",
+    "commonMistakes": "Omitting the ON clause, forgetting table alias qualification on ambiguous columns, or accidentally converting LEFT JOIN to INNER JOIN via WHERE filters.",
+    "learningOutcomes": "Mastered 9.9 Conditional Aggregation over Joins (SUM & COUNT with CASE) on Books.",
+    "challengeSlots": [
+      {
+        "type": "keyword",
+        "value": "SELECT"
+      },
+      {
+        "type": "column",
+        "value": "a.author_name,"
+      },
+      {
+        "type": "column",
+        "value": "SUM(CASE"
+      },
+      {
+        "type": "keyword",
+        "value": "WHEN"
+      },
+      {
+        "type": "column",
+        "value": "b.price"
+      },
+      {
+        "type": "column",
+        "value": ">="
+      },
+      {
+        "type": "column",
+        "value": "20.00"
+      },
+      {
+        "type": "keyword",
+        "value": "THEN"
+      },
+      {
+        "type": "column",
+        "value": "1"
+      },
+      {
+        "type": "keyword",
+        "value": "ELSE"
+      },
+      {
+        "type": "column",
+        "value": "0"
+      },
+      {
+        "type": "keyword",
+        "value": "END)"
+      },
+      {
+        "type": "keyword",
+        "value": "AS"
+      },
+      {
+        "type": "column",
+        "value": "premium_books"
+      },
+      {
+        "type": "keyword",
+        "value": "FROM"
+      },
+      {
+        "type": "table",
+        "value": "Authors"
+      },
+      {
+        "type": "column",
+        "value": "a"
+      },
+      {
+        "type": "keyword",
+        "value": "INNER"
+      },
+      {
+        "type": "keyword",
+        "value": "JOIN"
+      },
+      {
+        "type": "table",
+        "value": "Books"
+      },
+      {
+        "type": "column",
+        "value": "b"
+      },
+      {
+        "type": "keyword",
+        "value": "ON"
+      },
+      {
+        "type": "column",
+        "value": "a.author_id"
+      },
+      {
+        "type": "column",
+        "value": "="
+      },
+      {
+        "type": "column",
+        "value": "b.author_id"
+      },
+      {
+        "type": "keyword",
+        "value": "GROUP"
+      },
+      {
+        "type": "keyword",
+        "value": "BY"
+      },
+      {
+        "type": "column",
+        "value": "a.author_id,"
+      },
+      {
+        "type": "column",
+        "value": "a.author_name;"
+      }
+    ]
+  },
+  {
+    "drillNumber": 883,
+    "subcluster": "9.9 Conditional Aggregation over Joins (SUM & COUNT with CASE)",
+    "level": "Level 3 (Joined Conditional Aggregates)",
+    "title": "Syntax #883: Count how many senior employees ($80k+) work in each department",
+    "table": "Employees",
+    "scenario": "Count how many senior employees ($80k+) work in each department.",
+    "businessObjective": "Count how many senior employees ($80k+) work in each department.",
+    "schemaSnippet": "Employees relational schema",
+    "targetQuery": "SELECT d.department_name, SUM(CASE WHEN e.salary >= 80000 THEN 1 ELSE 0 END) AS senior_staff_count\nFROM Departments d\nINNER JOIN Employees e ON d.department_id = e.department_id\nGROUP BY d.department_id, d.department_name;",
+    "syntaxBlueprint": "SELECT a.name, SUM(CASE WHEN b.status = 'active' THEN 1 ELSE 0 END) AS active_b\nFROM TableA a\nJOIN TableB b ON a.id = b.a_id\nGROUP BY a.id, a.name;",
+    "syntaxRule": "Embed CASE WHEN statements inside aggregate functions to compute multi-category counts or financial sums in a single pass across joined tables.",
+    "syntaxTrap": "Using COUNT(CASE WHEN condition THEN 0 END) — COUNT counts 0 as a valid non-null value! Use SUM() or omit the ELSE branch.",
+    "eli5Story": "Relational Joins on Employees: Count how many senior employees ($80k+) work in each department.",
+    "commonMistakes": "Omitting the ON clause, forgetting table alias qualification on ambiguous columns, or accidentally converting LEFT JOIN to INNER JOIN via WHERE filters.",
+    "learningOutcomes": "Mastered 9.9 Conditional Aggregation over Joins (SUM & COUNT with CASE) on Employees.",
+    "challengeSlots": [
+      {
+        "type": "keyword",
+        "value": "SELECT"
+      },
+      {
+        "type": "column",
+        "value": "d.department_name,"
+      },
+      {
+        "type": "column",
+        "value": "SUM(CASE"
+      },
+      {
+        "type": "keyword",
+        "value": "WHEN"
+      },
+      {
+        "type": "column",
+        "value": "e.salary"
+      },
+      {
+        "type": "column",
+        "value": ">="
+      },
+      {
+        "type": "column",
+        "value": "80000"
+      },
+      {
+        "type": "keyword",
+        "value": "THEN"
+      },
+      {
+        "type": "column",
+        "value": "1"
+      },
+      {
+        "type": "keyword",
+        "value": "ELSE"
+      },
+      {
+        "type": "column",
+        "value": "0"
+      },
+      {
+        "type": "keyword",
+        "value": "END)"
+      },
+      {
+        "type": "keyword",
+        "value": "AS"
+      },
+      {
+        "type": "column",
+        "value": "senior_staff_count"
+      },
+      {
+        "type": "keyword",
+        "value": "FROM"
+      },
+      {
+        "type": "table",
+        "value": "Departments"
+      },
+      {
+        "type": "column",
+        "value": "d"
+      },
+      {
+        "type": "keyword",
+        "value": "INNER"
+      },
+      {
+        "type": "keyword",
+        "value": "JOIN"
+      },
+      {
+        "type": "table",
+        "value": "Employees"
+      },
+      {
+        "type": "column",
+        "value": "e"
+      },
+      {
+        "type": "keyword",
+        "value": "ON"
+      },
+      {
+        "type": "column",
+        "value": "d.department_id"
+      },
+      {
+        "type": "column",
+        "value": "="
+      },
+      {
+        "type": "column",
+        "value": "e.department_id"
+      },
+      {
+        "type": "keyword",
+        "value": "GROUP"
+      },
+      {
+        "type": "keyword",
+        "value": "BY"
+      },
+      {
+        "type": "column",
+        "value": "d.department_id,"
+      },
+      {
+        "type": "column",
+        "value": "d.department_name;"
+      }
+    ]
+  },
+  {
+    "drillNumber": 884,
+    "subcluster": "9.9 Conditional Aggregation over Joins (SUM & COUNT with CASE)",
+    "level": "Level 3 (Joined Conditional Aggregates)",
+    "title": "Syntax #884: Tally low-stock inventory alerts (<10 units) per supplier",
+    "table": "GroceryItems",
+    "scenario": "Tally low-stock inventory alerts (<10 units) per supplier.",
+    "businessObjective": "Tally low-stock inventory alerts (<10 units) per supplier.",
+    "schemaSnippet": "GroceryItems relational schema",
+    "targetQuery": "SELECT s.supplier_name, SUM(CASE WHEN g.stock_qty < 10 THEN 1 ELSE 0 END) AS low_stock_alerts\nFROM Suppliers s\nINNER JOIN GroceryItems g ON s.supplier_id = g.supplier_id\nGROUP BY s.supplier_id, s.supplier_name;",
+    "syntaxBlueprint": "SELECT a.name, SUM(CASE WHEN b.status = 'active' THEN 1 ELSE 0 END) AS active_b\nFROM TableA a\nJOIN TableB b ON a.id = b.a_id\nGROUP BY a.id, a.name;",
+    "syntaxRule": "Embed CASE WHEN statements inside aggregate functions to compute multi-category counts or financial sums in a single pass across joined tables.",
+    "syntaxTrap": "Using COUNT(CASE WHEN condition THEN 0 END) — COUNT counts 0 as a valid non-null value! Use SUM() or omit the ELSE branch.",
+    "eli5Story": "Relational Joins on GroceryItems: Tally low-stock inventory alerts (<10 units) per supplier.",
+    "commonMistakes": "Omitting the ON clause, forgetting table alias qualification on ambiguous columns, or accidentally converting LEFT JOIN to INNER JOIN via WHERE filters.",
+    "learningOutcomes": "Mastered 9.9 Conditional Aggregation over Joins (SUM & COUNT with CASE) on GroceryItems.",
+    "challengeSlots": [
+      {
+        "type": "keyword",
+        "value": "SELECT"
+      },
+      {
+        "type": "column",
+        "value": "s.supplier_name,"
+      },
+      {
+        "type": "column",
+        "value": "SUM(CASE"
+      },
+      {
+        "type": "keyword",
+        "value": "WHEN"
+      },
+      {
+        "type": "column",
+        "value": "g.stock_qty"
+      },
+      {
+        "type": "column",
+        "value": "<"
+      },
+      {
+        "type": "column",
+        "value": "10"
+      },
+      {
+        "type": "keyword",
+        "value": "THEN"
+      },
+      {
+        "type": "column",
+        "value": "1"
+      },
+      {
+        "type": "keyword",
+        "value": "ELSE"
+      },
+      {
+        "type": "column",
+        "value": "0"
+      },
+      {
+        "type": "keyword",
+        "value": "END)"
+      },
+      {
+        "type": "keyword",
+        "value": "AS"
+      },
+      {
+        "type": "column",
+        "value": "low_stock_alerts"
+      },
+      {
+        "type": "keyword",
+        "value": "FROM"
+      },
+      {
+        "type": "table",
+        "value": "Suppliers"
+      },
+      {
+        "type": "column",
+        "value": "s"
+      },
+      {
+        "type": "keyword",
+        "value": "INNER"
+      },
+      {
+        "type": "keyword",
+        "value": "JOIN"
+      },
+      {
+        "type": "table",
+        "value": "GroceryItems"
+      },
+      {
+        "type": "column",
+        "value": "g"
+      },
+      {
+        "type": "keyword",
+        "value": "ON"
+      },
+      {
+        "type": "column",
+        "value": "s.supplier_id"
+      },
+      {
+        "type": "column",
+        "value": "="
+      },
+      {
+        "type": "column",
+        "value": "g.supplier_id"
+      },
+      {
+        "type": "keyword",
+        "value": "GROUP"
+      },
+      {
+        "type": "keyword",
+        "value": "BY"
+      },
+      {
+        "type": "column",
+        "value": "s.supplier_id,"
+      },
+      {
+        "type": "column",
+        "value": "s.supplier_name;"
+      }
+    ]
+  },
+  {
+    "drillNumber": 885,
+    "subcluster": "9.9 Conditional Aggregation over Joins (SUM & COUNT with CASE)",
+    "level": "Level 3 (Joined Conditional Aggregates)",
+    "title": "Syntax #885: Calculate verified completed revenue per customer, ignoring cancelled orders",
+    "table": "Orders",
+    "scenario": "Calculate verified completed revenue per customer, ignoring cancelled orders.",
+    "businessObjective": "Calculate verified completed revenue per customer, ignoring cancelled orders.",
+    "schemaSnippet": "Orders relational schema",
+    "targetQuery": "SELECT c.customer_name, SUM(CASE WHEN o.status = 'Completed' THEN o.total_amount ELSE 0 END) AS completed_spend\nFROM Customers c\nINNER JOIN Orders o ON c.customer_id = o.customer_id\nGROUP BY c.customer_id, c.customer_name;",
+    "syntaxBlueprint": "SELECT a.name, SUM(CASE WHEN b.status = 'active' THEN 1 ELSE 0 END) AS active_b\nFROM TableA a\nJOIN TableB b ON a.id = b.a_id\nGROUP BY a.id, a.name;",
+    "syntaxRule": "Embed CASE WHEN statements inside aggregate functions to compute multi-category counts or financial sums in a single pass across joined tables.",
+    "syntaxTrap": "Using COUNT(CASE WHEN condition THEN 0 END) — COUNT counts 0 as a valid non-null value! Use SUM() or omit the ELSE branch.",
+    "eli5Story": "Relational Joins on Orders: Calculate verified completed revenue per customer, ignoring cancelled orders.",
+    "commonMistakes": "Omitting the ON clause, forgetting table alias qualification on ambiguous columns, or accidentally converting LEFT JOIN to INNER JOIN via WHERE filters.",
+    "learningOutcomes": "Mastered 9.9 Conditional Aggregation over Joins (SUM & COUNT with CASE) on Orders.",
+    "challengeSlots": [
+      {
+        "type": "keyword",
+        "value": "SELECT"
+      },
+      {
+        "type": "column",
+        "value": "c.customer_name,"
+      },
+      {
+        "type": "column",
+        "value": "SUM(CASE"
+      },
+      {
+        "type": "keyword",
+        "value": "WHEN"
+      },
+      {
+        "type": "column",
+        "value": "o.status"
+      },
+      {
+        "type": "column",
+        "value": "="
+      },
+      {
+        "type": "column",
+        "value": "'Completed'"
+      },
+      {
+        "type": "keyword",
+        "value": "THEN"
+      },
+      {
+        "type": "column",
+        "value": "o.total_amount"
+      },
+      {
+        "type": "keyword",
+        "value": "ELSE"
+      },
+      {
+        "type": "column",
+        "value": "0"
+      },
+      {
+        "type": "keyword",
+        "value": "END)"
+      },
+      {
+        "type": "keyword",
+        "value": "AS"
+      },
+      {
+        "type": "column",
+        "value": "completed_spend"
+      },
+      {
+        "type": "keyword",
+        "value": "FROM"
+      },
+      {
+        "type": "table",
+        "value": "Customers"
+      },
+      {
+        "type": "column",
+        "value": "c"
+      },
+      {
+        "type": "keyword",
+        "value": "INNER"
+      },
+      {
+        "type": "keyword",
+        "value": "JOIN"
+      },
+      {
+        "type": "table",
+        "value": "Orders"
+      },
+      {
+        "type": "column",
+        "value": "o"
+      },
+      {
+        "type": "keyword",
+        "value": "ON"
+      },
+      {
+        "type": "column",
+        "value": "c.customer_id"
+      },
+      {
+        "type": "column",
+        "value": "="
+      },
+      {
+        "type": "column",
+        "value": "o.customer_id"
+      },
+      {
+        "type": "keyword",
+        "value": "GROUP"
+      },
+      {
+        "type": "keyword",
+        "value": "BY"
+      },
+      {
+        "type": "column",
+        "value": "c.customer_id,"
+      },
+      {
+        "type": "column",
+        "value": "c.customer_name;"
+      }
+    ]
+  },
+  {
+    "drillNumber": 886,
+    "subcluster": "9.9 Conditional Aggregation over Joins (SUM & COUNT with CASE)",
+    "level": "Level 3 (Joined Conditional Aggregates)",
+    "title": "Syntax #886: Tally explicit tracks per album using conditional SUM(CASE...)",
+    "table": "MusicTracks",
+    "scenario": "Tally explicit tracks per album using conditional SUM(CASE...).",
+    "businessObjective": "Tally explicit tracks per album using conditional SUM(CASE...).",
+    "schemaSnippet": "MusicTracks relational schema",
+    "targetQuery": "SELECT a.album_title, SUM(CASE WHEN t.is_explicit = 1 THEN 1 ELSE 0 END) AS explicit_track_count\nFROM Albums a\nINNER JOIN MusicTracks t ON a.album_id = t.album_id\nGROUP BY a.album_id, a.album_title;",
+    "syntaxBlueprint": "SELECT a.name, SUM(CASE WHEN b.status = 'active' THEN 1 ELSE 0 END) AS active_b\nFROM TableA a\nJOIN TableB b ON a.id = b.a_id\nGROUP BY a.id, a.name;",
+    "syntaxRule": "Embed CASE WHEN statements inside aggregate functions to compute multi-category counts or financial sums in a single pass across joined tables.",
+    "syntaxTrap": "Using COUNT(CASE WHEN condition THEN 0 END) — COUNT counts 0 as a valid non-null value! Use SUM() or omit the ELSE branch.",
+    "eli5Story": "Relational Joins on MusicTracks: Tally explicit tracks per album using conditional SUM(CASE...).",
+    "commonMistakes": "Omitting the ON clause, forgetting table alias qualification on ambiguous columns, or accidentally converting LEFT JOIN to INNER JOIN via WHERE filters.",
+    "learningOutcomes": "Mastered 9.9 Conditional Aggregation over Joins (SUM & COUNT with CASE) on MusicTracks.",
+    "challengeSlots": [
+      {
+        "type": "keyword",
+        "value": "SELECT"
+      },
+      {
+        "type": "column",
+        "value": "a.album_title,"
+      },
+      {
+        "type": "column",
+        "value": "SUM(CASE"
+      },
+      {
+        "type": "keyword",
+        "value": "WHEN"
+      },
+      {
+        "type": "column",
+        "value": "t.is_explicit"
+      },
+      {
+        "type": "column",
+        "value": "="
+      },
+      {
+        "type": "column",
+        "value": "1"
+      },
+      {
+        "type": "keyword",
+        "value": "THEN"
+      },
+      {
+        "type": "column",
+        "value": "1"
+      },
+      {
+        "type": "keyword",
+        "value": "ELSE"
+      },
+      {
+        "type": "column",
+        "value": "0"
+      },
+      {
+        "type": "keyword",
+        "value": "END)"
+      },
+      {
+        "type": "keyword",
+        "value": "AS"
+      },
+      {
+        "type": "column",
+        "value": "explicit_track_count"
+      },
+      {
+        "type": "keyword",
+        "value": "FROM"
+      },
+      {
+        "type": "table",
+        "value": "Albums"
+      },
+      {
+        "type": "column",
+        "value": "a"
+      },
+      {
+        "type": "keyword",
+        "value": "INNER"
+      },
+      {
+        "type": "keyword",
+        "value": "JOIN"
+      },
+      {
+        "type": "table",
+        "value": "MusicTracks"
+      },
+      {
+        "type": "column",
+        "value": "t"
+      },
+      {
+        "type": "keyword",
+        "value": "ON"
+      },
+      {
+        "type": "column",
+        "value": "a.album_id"
+      },
+      {
+        "type": "column",
+        "value": "="
+      },
+      {
+        "type": "column",
+        "value": "t.album_id"
+      },
+      {
+        "type": "keyword",
+        "value": "GROUP"
+      },
+      {
+        "type": "keyword",
+        "value": "BY"
+      },
+      {
+        "type": "column",
+        "value": "a.album_id,"
+      },
+      {
+        "type": "column",
+        "value": "a.album_title;"
+      }
+    ]
+  },
+  {
+    "drillNumber": 887,
+    "subcluster": "9.9 Conditional Aggregation over Joins (SUM & COUNT with CASE)",
+    "level": "Level 3 (Joined Conditional Aggregates)",
+    "title": "Syntax #887: Count VIP clients assigned to each personal fitness trainer",
+    "table": "GymMembers",
+    "scenario": "Count VIP clients assigned to each personal fitness trainer.",
+    "businessObjective": "Count VIP clients assigned to each personal fitness trainer.",
+    "schemaSnippet": "GymMembers relational schema",
+    "targetQuery": "SELECT tr.trainer_name, SUM(CASE WHEN m.membership_plan = 'VIP' THEN 1 ELSE 0 END) AS vip_clients\nFROM Trainers tr\nINNER JOIN GymMembers m ON tr.trainer_id = m.trainer_id\nGROUP BY tr.trainer_id, tr.trainer_name;",
+    "syntaxBlueprint": "SELECT a.name, SUM(CASE WHEN b.status = 'active' THEN 1 ELSE 0 END) AS active_b\nFROM TableA a\nJOIN TableB b ON a.id = b.a_id\nGROUP BY a.id, a.name;",
+    "syntaxRule": "Embed CASE WHEN statements inside aggregate functions to compute multi-category counts or financial sums in a single pass across joined tables.",
+    "syntaxTrap": "Using COUNT(CASE WHEN condition THEN 0 END) — COUNT counts 0 as a valid non-null value! Use SUM() or omit the ELSE branch.",
+    "eli5Story": "Relational Joins on GymMembers: Count VIP clients assigned to each personal fitness trainer.",
+    "commonMistakes": "Omitting the ON clause, forgetting table alias qualification on ambiguous columns, or accidentally converting LEFT JOIN to INNER JOIN via WHERE filters.",
+    "learningOutcomes": "Mastered 9.9 Conditional Aggregation over Joins (SUM & COUNT with CASE) on GymMembers.",
+    "challengeSlots": [
+      {
+        "type": "keyword",
+        "value": "SELECT"
+      },
+      {
+        "type": "column",
+        "value": "tr.trainer_name,"
+      },
+      {
+        "type": "column",
+        "value": "SUM(CASE"
+      },
+      {
+        "type": "keyword",
+        "value": "WHEN"
+      },
+      {
+        "type": "column",
+        "value": "m.membership_plan"
+      },
+      {
+        "type": "column",
+        "value": "="
+      },
+      {
+        "type": "column",
+        "value": "'VIP'"
+      },
+      {
+        "type": "keyword",
+        "value": "THEN"
+      },
+      {
+        "type": "column",
+        "value": "1"
+      },
+      {
+        "type": "keyword",
+        "value": "ELSE"
+      },
+      {
+        "type": "column",
+        "value": "0"
+      },
+      {
+        "type": "keyword",
+        "value": "END)"
+      },
+      {
+        "type": "keyword",
+        "value": "AS"
+      },
+      {
+        "type": "column",
+        "value": "vip_clients"
+      },
+      {
+        "type": "keyword",
+        "value": "FROM"
+      },
+      {
+        "type": "table",
+        "value": "Trainers"
+      },
+      {
+        "type": "column",
+        "value": "tr"
+      },
+      {
+        "type": "keyword",
+        "value": "INNER"
+      },
+      {
+        "type": "keyword",
+        "value": "JOIN"
+      },
+      {
+        "type": "table",
+        "value": "GymMembers"
+      },
+      {
+        "type": "column",
+        "value": "m"
+      },
+      {
+        "type": "keyword",
+        "value": "ON"
+      },
+      {
+        "type": "column",
+        "value": "tr.trainer_id"
+      },
+      {
+        "type": "column",
+        "value": "="
+      },
+      {
+        "type": "column",
+        "value": "m.trainer_id"
+      },
+      {
+        "type": "keyword",
+        "value": "GROUP"
+      },
+      {
+        "type": "keyword",
+        "value": "BY"
+      },
+      {
+        "type": "column",
+        "value": "tr.trainer_id,"
+      },
+      {
+        "type": "column",
+        "value": "tr.trainer_name;"
+      }
+    ]
+  },
+  {
+    "drillNumber": 888,
+    "subcluster": "9.9 Conditional Aggregation over Joins (SUM & COUNT with CASE)",
+    "level": "Level 3 (Joined Conditional Aggregates)",
+    "title": "Syntax #888: Count how many 5-star reviews each film received",
+    "table": "MovieReviews",
+    "scenario": "Count how many 5-star reviews each film received.",
+    "businessObjective": "Count how many 5-star reviews each film received.",
+    "schemaSnippet": "MovieReviews relational schema",
+    "targetQuery": "SELECT m.movie_title, SUM(CASE WHEN r.star_rating = 5 THEN 1 ELSE 0 END) AS perfect_score_count\nFROM Movies m\nINNER JOIN MovieReviews r ON m.movie_id = r.movie_id\nGROUP BY m.movie_id, m.movie_title;",
+    "syntaxBlueprint": "SELECT a.name, SUM(CASE WHEN b.status = 'active' THEN 1 ELSE 0 END) AS active_b\nFROM TableA a\nJOIN TableB b ON a.id = b.a_id\nGROUP BY a.id, a.name;",
+    "syntaxRule": "Embed CASE WHEN statements inside aggregate functions to compute multi-category counts or financial sums in a single pass across joined tables.",
+    "syntaxTrap": "Using COUNT(CASE WHEN condition THEN 0 END) — COUNT counts 0 as a valid non-null value! Use SUM() or omit the ELSE branch.",
+    "eli5Story": "Relational Joins on MovieReviews: Count how many 5-star reviews each film received.",
+    "commonMistakes": "Omitting the ON clause, forgetting table alias qualification on ambiguous columns, or accidentally converting LEFT JOIN to INNER JOIN via WHERE filters.",
+    "learningOutcomes": "Mastered 9.9 Conditional Aggregation over Joins (SUM & COUNT with CASE) on MovieReviews.",
+    "challengeSlots": [
+      {
+        "type": "keyword",
+        "value": "SELECT"
+      },
+      {
+        "type": "column",
+        "value": "m.movie_title,"
+      },
+      {
+        "type": "column",
+        "value": "SUM(CASE"
+      },
+      {
+        "type": "keyword",
+        "value": "WHEN"
+      },
+      {
+        "type": "column",
+        "value": "r.star_rating"
+      },
+      {
+        "type": "column",
+        "value": "="
+      },
+      {
+        "type": "column",
+        "value": "5"
+      },
+      {
+        "type": "keyword",
+        "value": "THEN"
+      },
+      {
+        "type": "column",
+        "value": "1"
+      },
+      {
+        "type": "keyword",
+        "value": "ELSE"
+      },
+      {
+        "type": "column",
+        "value": "0"
+      },
+      {
+        "type": "keyword",
+        "value": "END)"
+      },
+      {
+        "type": "keyword",
+        "value": "AS"
+      },
+      {
+        "type": "column",
+        "value": "perfect_score_count"
+      },
+      {
+        "type": "keyword",
+        "value": "FROM"
+      },
+      {
+        "type": "table",
+        "value": "Movies"
+      },
+      {
+        "type": "column",
+        "value": "m"
+      },
+      {
+        "type": "keyword",
+        "value": "INNER"
+      },
+      {
+        "type": "keyword",
+        "value": "JOIN"
+      },
+      {
+        "type": "table",
+        "value": "MovieReviews"
+      },
+      {
+        "type": "column",
+        "value": "r"
+      },
+      {
+        "type": "keyword",
+        "value": "ON"
+      },
+      {
+        "type": "column",
+        "value": "m.movie_id"
+      },
+      {
+        "type": "column",
+        "value": "="
+      },
+      {
+        "type": "column",
+        "value": "r.movie_id"
+      },
+      {
+        "type": "keyword",
+        "value": "GROUP"
+      },
+      {
+        "type": "keyword",
+        "value": "BY"
+      },
+      {
+        "type": "column",
+        "value": "m.movie_id,"
+      },
+      {
+        "type": "column",
+        "value": "m.movie_title;"
+      }
+    ]
+  },
+  {
+    "drillNumber": 889,
+    "subcluster": "9.9 Conditional Aggregation over Joins (SUM & COUNT with CASE)",
+    "level": "Level 3 (Joined Conditional Aggregates)",
+    "title": "Syntax #889: Count delayed flights per airline using conditional aggregation",
+    "table": "FlightSchedule",
+    "scenario": "Count delayed flights per airline using conditional aggregation.",
+    "businessObjective": "Count delayed flights per airline using conditional aggregation.",
+    "schemaSnippet": "FlightSchedule relational schema",
+    "targetQuery": "SELECT al.airline_name, SUM(CASE WHEN f.status = 'Delayed' THEN 1 ELSE 0 END) AS delayed_flight_count\nFROM Airlines al\nINNER JOIN FlightSchedule f ON al.airline_id = f.airline_id\nGROUP BY al.airline_id, al.airline_name;",
+    "syntaxBlueprint": "SELECT a.name, SUM(CASE WHEN b.status = 'active' THEN 1 ELSE 0 END) AS active_b\nFROM TableA a\nJOIN TableB b ON a.id = b.a_id\nGROUP BY a.id, a.name;",
+    "syntaxRule": "Embed CASE WHEN statements inside aggregate functions to compute multi-category counts or financial sums in a single pass across joined tables.",
+    "syntaxTrap": "Using COUNT(CASE WHEN condition THEN 0 END) — COUNT counts 0 as a valid non-null value! Use SUM() or omit the ELSE branch.",
+    "eli5Story": "Relational Joins on FlightSchedule: Count delayed flights per airline using conditional aggregation.",
+    "commonMistakes": "Omitting the ON clause, forgetting table alias qualification on ambiguous columns, or accidentally converting LEFT JOIN to INNER JOIN via WHERE filters.",
+    "learningOutcomes": "Mastered 9.9 Conditional Aggregation over Joins (SUM & COUNT with CASE) on FlightSchedule.",
+    "challengeSlots": [
+      {
+        "type": "keyword",
+        "value": "SELECT"
+      },
+      {
+        "type": "column",
+        "value": "al.airline_name,"
+      },
+      {
+        "type": "column",
+        "value": "SUM(CASE"
+      },
+      {
+        "type": "keyword",
+        "value": "WHEN"
+      },
+      {
+        "type": "column",
+        "value": "f.status"
+      },
+      {
+        "type": "column",
+        "value": "="
+      },
+      {
+        "type": "column",
+        "value": "'Delayed'"
+      },
+      {
+        "type": "keyword",
+        "value": "THEN"
+      },
+      {
+        "type": "column",
+        "value": "1"
+      },
+      {
+        "type": "keyword",
+        "value": "ELSE"
+      },
+      {
+        "type": "column",
+        "value": "0"
+      },
+      {
+        "type": "keyword",
+        "value": "END)"
+      },
+      {
+        "type": "keyword",
+        "value": "AS"
+      },
+      {
+        "type": "column",
+        "value": "delayed_flight_count"
+      },
+      {
+        "type": "keyword",
+        "value": "FROM"
+      },
+      {
+        "type": "table",
+        "value": "Airlines"
+      },
+      {
+        "type": "column",
+        "value": "al"
+      },
+      {
+        "type": "keyword",
+        "value": "INNER"
+      },
+      {
+        "type": "keyword",
+        "value": "JOIN"
+      },
+      {
+        "type": "table",
+        "value": "FlightSchedule"
+      },
+      {
+        "type": "column",
+        "value": "f"
+      },
+      {
+        "type": "keyword",
+        "value": "ON"
+      },
+      {
+        "type": "column",
+        "value": "al.airline_id"
+      },
+      {
+        "type": "column",
+        "value": "="
+      },
+      {
+        "type": "column",
+        "value": "f.airline_id"
+      },
+      {
+        "type": "keyword",
+        "value": "GROUP"
+      },
+      {
+        "type": "keyword",
+        "value": "BY"
+      },
+      {
+        "type": "column",
+        "value": "al.airline_id,"
+      },
+      {
+        "type": "column",
+        "value": "al.airline_name;"
+      }
+    ]
+  },
+  {
+    "drillNumber": 890,
+    "subcluster": "9.9 Conditional Aggregation over Joins (SUM & COUNT with CASE)",
+    "level": "Level 3 (Joined Conditional Aggregates)",
+    "title": "Syntax #890: Count dog patients per household owner via SUM(CASE WHEN species = 'Canine')",
+    "table": "PetClinic",
+    "scenario": "Count dog patients per household owner via SUM(CASE WHEN species = 'Canine').",
+    "businessObjective": "Count dog patients per household owner via SUM(CASE WHEN species = 'Canine').",
+    "schemaSnippet": "PetClinic relational schema",
+    "targetQuery": "SELECT o.owner_name, SUM(CASE WHEN p.species = 'Canine' THEN 1 ELSE 0 END) AS dog_count\nFROM Owners o\nINNER JOIN PetClinic p ON o.owner_id = p.owner_id\nGROUP BY o.owner_id, o.owner_name;",
+    "syntaxBlueprint": "SELECT a.name, SUM(CASE WHEN b.status = 'active' THEN 1 ELSE 0 END) AS active_b\nFROM TableA a\nJOIN TableB b ON a.id = b.a_id\nGROUP BY a.id, a.name;",
+    "syntaxRule": "Embed CASE WHEN statements inside aggregate functions to compute multi-category counts or financial sums in a single pass across joined tables.",
+    "syntaxTrap": "Using COUNT(CASE WHEN condition THEN 0 END) — COUNT counts 0 as a valid non-null value! Use SUM() or omit the ELSE branch.",
+    "eli5Story": "Relational Joins on PetClinic: Count dog patients per household owner via SUM(CASE WHEN species = 'Canine').",
+    "commonMistakes": "Omitting the ON clause, forgetting table alias qualification on ambiguous columns, or accidentally converting LEFT JOIN to INNER JOIN via WHERE filters.",
+    "learningOutcomes": "Mastered 9.9 Conditional Aggregation over Joins (SUM & COUNT with CASE) on PetClinic.",
+    "challengeSlots": [
+      {
+        "type": "keyword",
+        "value": "SELECT"
+      },
+      {
+        "type": "column",
+        "value": "o.owner_name,"
+      },
+      {
+        "type": "column",
+        "value": "SUM(CASE"
+      },
+      {
+        "type": "keyword",
+        "value": "WHEN"
+      },
+      {
+        "type": "column",
+        "value": "p.species"
+      },
+      {
+        "type": "column",
+        "value": "="
+      },
+      {
+        "type": "column",
+        "value": "'Canine'"
+      },
+      {
+        "type": "keyword",
+        "value": "THEN"
+      },
+      {
+        "type": "column",
+        "value": "1"
+      },
+      {
+        "type": "keyword",
+        "value": "ELSE"
+      },
+      {
+        "type": "column",
+        "value": "0"
+      },
+      {
+        "type": "keyword",
+        "value": "END)"
+      },
+      {
+        "type": "keyword",
+        "value": "AS"
+      },
+      {
+        "type": "column",
+        "value": "dog_count"
+      },
+      {
+        "type": "keyword",
+        "value": "FROM"
+      },
+      {
+        "type": "table",
+        "value": "Owners"
+      },
+      {
+        "type": "column",
+        "value": "o"
+      },
+      {
+        "type": "keyword",
+        "value": "INNER"
+      },
+      {
+        "type": "keyword",
+        "value": "JOIN"
+      },
+      {
+        "type": "table",
+        "value": "PetClinic"
+      },
+      {
+        "type": "column",
+        "value": "p"
+      },
+      {
+        "type": "keyword",
+        "value": "ON"
+      },
+      {
+        "type": "column",
+        "value": "o.owner_id"
+      },
+      {
+        "type": "column",
+        "value": "="
+      },
+      {
+        "type": "column",
+        "value": "p.owner_id"
+      },
+      {
+        "type": "keyword",
+        "value": "GROUP"
+      },
+      {
+        "type": "keyword",
+        "value": "BY"
+      },
+      {
+        "type": "column",
+        "value": "o.owner_id,"
+      },
+      {
+        "type": "column",
+        "value": "o.owner_name;"
+      }
+    ]
+  },
+  {
+    "drillNumber": 891,
+    "subcluster": "9.10 End-to-End Multi-Table Analytics Pipelines",
+    "level": "Level 3 (Analytics Master Pipeline)",
+    "title": "Syntax #891: Pipeline: Top 5 honor students taking 6+ credits sorted by total credits",
+    "table": "Students",
+    "scenario": "Pipeline: Top 5 honor students taking 6+ credits sorted by total credits.",
+    "businessObjective": "Pipeline: Top 5 honor students taking 6+ credits sorted by total credits.",
+    "schemaSnippet": "Students relational schema",
+    "targetQuery": "SELECT s.full_name, COUNT(c.course_id) AS courses_taken, SUM(c.credits) AS total_credits\nFROM Students s\nINNER JOIN Courses c ON s.student_id = c.student_id\nWHERE s.gpa >= 3.0\nGROUP BY s.student_id, s.full_name\nHAVING SUM(c.credits) >= 6\nORDER BY total_credits DESC\nLIMIT 5;",
+    "syntaxBlueprint": "SELECT a.name, COUNT(b.id) AS total_b, SUM(c.revenue) AS total_rev\nFROM TableA a\nJOIN TableB b ON a.id = b.a_id\nJOIN TableC c ON b.c_id = c.id\nWHERE a.status = 'active'\nGROUP BY a.id, a.name\nHAVING total_rev > 500\nORDER BY total_rev DESC\nLIMIT 5;",
+    "syntaxRule": "Synthesize table aliasing, multiple join types, predicate filtering, multi-table aggregations, HAVING thresholds, and sorted LIMIT slicing.",
+    "syntaxTrap": "Order of clauses: FROM -> JOIN -> WHERE -> GROUP BY -> HAVING -> ORDER BY -> LIMIT.",
+    "eli5Story": "Relational Joins on Students: Pipeline: Top 5 honor students taking 6+ credits sorted by total credits.",
+    "commonMistakes": "Omitting the ON clause, forgetting table alias qualification on ambiguous columns, or accidentally converting LEFT JOIN to INNER JOIN via WHERE filters.",
+    "learningOutcomes": "Mastered 9.10 End-to-End Multi-Table Analytics Pipelines on Students.",
+    "challengeSlots": [
+      {
+        "type": "keyword",
+        "value": "SELECT"
+      },
+      {
+        "type": "column",
+        "value": "s.full_name,"
+      },
+      {
+        "type": "column",
+        "value": "COUNT(c.course_id)"
+      },
+      {
+        "type": "keyword",
+        "value": "AS"
+      },
+      {
+        "type": "column",
+        "value": "courses_taken,"
+      },
+      {
+        "type": "column",
+        "value": "SUM(c.credits)"
+      },
+      {
+        "type": "keyword",
+        "value": "AS"
+      },
+      {
+        "type": "column",
+        "value": "total_credits"
+      },
+      {
+        "type": "keyword",
+        "value": "FROM"
+      },
+      {
+        "type": "table",
+        "value": "Students"
+      },
+      {
+        "type": "column",
+        "value": "s"
+      },
+      {
+        "type": "keyword",
+        "value": "INNER"
+      },
+      {
+        "type": "keyword",
+        "value": "JOIN"
+      },
+      {
+        "type": "table",
+        "value": "Courses"
+      },
+      {
+        "type": "column",
+        "value": "c"
+      },
+      {
+        "type": "keyword",
+        "value": "ON"
+      },
+      {
+        "type": "column",
+        "value": "s.student_id"
+      },
+      {
+        "type": "column",
+        "value": "="
+      },
+      {
+        "type": "column",
+        "value": "c.student_id"
+      },
+      {
+        "type": "keyword",
+        "value": "WHERE"
+      },
+      {
+        "type": "column",
+        "value": "s.gpa"
+      },
+      {
+        "type": "column",
+        "value": ">="
+      },
+      {
+        "type": "column",
+        "value": "3.0"
+      },
+      {
+        "type": "keyword",
+        "value": "GROUP"
+      },
+      {
+        "type": "keyword",
+        "value": "BY"
+      },
+      {
+        "type": "column",
+        "value": "s.student_id,"
+      },
+      {
+        "type": "column",
+        "value": "s.full_name"
+      },
+      {
+        "type": "keyword",
+        "value": "HAVING"
+      },
+      {
+        "type": "column",
+        "value": "SUM(c.credits)"
+      },
+      {
+        "type": "column",
+        "value": ">="
+      },
+      {
+        "type": "column",
+        "value": "6"
+      },
+      {
+        "type": "keyword",
+        "value": "ORDER"
+      },
+      {
+        "type": "keyword",
+        "value": "BY"
+      },
+      {
+        "type": "column",
+        "value": "total_credits"
+      },
+      {
+        "type": "keyword",
+        "value": "DESC"
+      },
+      {
+        "type": "keyword",
+        "value": "LIMIT"
+      },
+      {
+        "type": "column",
+        "value": "5;"
+      }
+    ]
+  },
+  {
+    "drillNumber": 892,
+    "subcluster": "9.10 End-to-End Multi-Table Analytics Pipelines",
+    "level": "Level 3 (Analytics Master Pipeline)",
+    "title": "Syntax #892: Pipeline: Top 5 US authors with 2+ books sorted by highest average price",
+    "table": "Books",
+    "scenario": "Pipeline: Top 5 US authors with 2+ books sorted by highest average price.",
+    "businessObjective": "Pipeline: Top 5 US authors with 2+ books sorted by highest average price.",
+    "schemaSnippet": "Books relational schema",
+    "targetQuery": "SELECT a.author_name, COUNT(b.book_id) AS catalog_size, AVG(b.price) AS avg_price\nFROM Authors a\nINNER JOIN Books b ON a.author_id = b.author_id\nWHERE a.country = 'USA'\nGROUP BY a.author_id, a.author_name\nHAVING COUNT(b.book_id) >= 2\nORDER BY avg_price DESC\nLIMIT 5;",
+    "syntaxBlueprint": "SELECT a.name, COUNT(b.id) AS total_b, SUM(c.revenue) AS total_rev\nFROM TableA a\nJOIN TableB b ON a.id = b.a_id\nJOIN TableC c ON b.c_id = c.id\nWHERE a.status = 'active'\nGROUP BY a.id, a.name\nHAVING total_rev > 500\nORDER BY total_rev DESC\nLIMIT 5;",
+    "syntaxRule": "Synthesize table aliasing, multiple join types, predicate filtering, multi-table aggregations, HAVING thresholds, and sorted LIMIT slicing.",
+    "syntaxTrap": "Order of clauses: FROM -> JOIN -> WHERE -> GROUP BY -> HAVING -> ORDER BY -> LIMIT.",
+    "eli5Story": "Relational Joins on Books: Pipeline: Top 5 US authors with 2+ books sorted by highest average price.",
+    "commonMistakes": "Omitting the ON clause, forgetting table alias qualification on ambiguous columns, or accidentally converting LEFT JOIN to INNER JOIN via WHERE filters.",
+    "learningOutcomes": "Mastered 9.10 End-to-End Multi-Table Analytics Pipelines on Books.",
+    "challengeSlots": [
+      {
+        "type": "keyword",
+        "value": "SELECT"
+      },
+      {
+        "type": "column",
+        "value": "a.author_name,"
+      },
+      {
+        "type": "column",
+        "value": "COUNT(b.book_id)"
+      },
+      {
+        "type": "keyword",
+        "value": "AS"
+      },
+      {
+        "type": "column",
+        "value": "catalog_size,"
+      },
+      {
+        "type": "column",
+        "value": "AVG(b.price)"
+      },
+      {
+        "type": "keyword",
+        "value": "AS"
+      },
+      {
+        "type": "column",
+        "value": "avg_price"
+      },
+      {
+        "type": "keyword",
+        "value": "FROM"
+      },
+      {
+        "type": "table",
+        "value": "Authors"
+      },
+      {
+        "type": "column",
+        "value": "a"
+      },
+      {
+        "type": "keyword",
+        "value": "INNER"
+      },
+      {
+        "type": "keyword",
+        "value": "JOIN"
+      },
+      {
+        "type": "table",
+        "value": "Books"
+      },
+      {
+        "type": "column",
+        "value": "b"
+      },
+      {
+        "type": "keyword",
+        "value": "ON"
+      },
+      {
+        "type": "column",
+        "value": "a.author_id"
+      },
+      {
+        "type": "column",
+        "value": "="
+      },
+      {
+        "type": "column",
+        "value": "b.author_id"
+      },
+      {
+        "type": "keyword",
+        "value": "WHERE"
+      },
+      {
+        "type": "column",
+        "value": "a.country"
+      },
+      {
+        "type": "column",
+        "value": "="
+      },
+      {
+        "type": "column",
+        "value": "'USA'"
+      },
+      {
+        "type": "keyword",
+        "value": "GROUP"
+      },
+      {
+        "type": "keyword",
+        "value": "BY"
+      },
+      {
+        "type": "column",
+        "value": "a.author_id,"
+      },
+      {
+        "type": "column",
+        "value": "a.author_name"
+      },
+      {
+        "type": "keyword",
+        "value": "HAVING"
+      },
+      {
+        "type": "column",
+        "value": "COUNT(b.book_id)"
+      },
+      {
+        "type": "column",
+        "value": ">="
+      },
+      {
+        "type": "column",
+        "value": "2"
+      },
+      {
+        "type": "keyword",
+        "value": "ORDER"
+      },
+      {
+        "type": "keyword",
+        "value": "BY"
+      },
+      {
+        "type": "column",
+        "value": "avg_price"
+      },
+      {
+        "type": "keyword",
+        "value": "DESC"
+      },
+      {
+        "type": "keyword",
+        "value": "LIMIT"
+      },
+      {
+        "type": "column",
+        "value": "5;"
+      }
+    ]
+  },
+  {
+    "drillNumber": 893,
+    "subcluster": "9.10 End-to-End Multi-Table Analytics Pipelines",
+    "level": "Level 3 (Analytics Master Pipeline)",
+    "title": "Syntax #893: Pipeline: Top 3 highest-paying departments with at least 3 qualifying employees",
+    "table": "Employees",
+    "scenario": "Pipeline: Top 3 highest-paying departments with at least 3 qualifying employees.",
+    "businessObjective": "Pipeline: Top 3 highest-paying departments with at least 3 qualifying employees.",
+    "schemaSnippet": "Employees relational schema",
+    "targetQuery": "SELECT d.department_name, COUNT(e.employee_id) AS headcount, AVG(e.salary) AS avg_salary\nFROM Departments d\nINNER JOIN Employees e ON d.department_id = e.department_id\nWHERE e.salary >= 50000\nGROUP BY d.department_id, d.department_name\nHAVING COUNT(e.employee_id) >= 3\nORDER BY avg_salary DESC\nLIMIT 3;",
+    "syntaxBlueprint": "SELECT a.name, COUNT(b.id) AS total_b, SUM(c.revenue) AS total_rev\nFROM TableA a\nJOIN TableB b ON a.id = b.a_id\nJOIN TableC c ON b.c_id = c.id\nWHERE a.status = 'active'\nGROUP BY a.id, a.name\nHAVING total_rev > 500\nORDER BY total_rev DESC\nLIMIT 5;",
+    "syntaxRule": "Synthesize table aliasing, multiple join types, predicate filtering, multi-table aggregations, HAVING thresholds, and sorted LIMIT slicing.",
+    "syntaxTrap": "Order of clauses: FROM -> JOIN -> WHERE -> GROUP BY -> HAVING -> ORDER BY -> LIMIT.",
+    "eli5Story": "Relational Joins on Employees: Pipeline: Top 3 highest-paying departments with at least 3 qualifying employees.",
+    "commonMistakes": "Omitting the ON clause, forgetting table alias qualification on ambiguous columns, or accidentally converting LEFT JOIN to INNER JOIN via WHERE filters.",
+    "learningOutcomes": "Mastered 9.10 End-to-End Multi-Table Analytics Pipelines on Employees.",
+    "challengeSlots": [
+      {
+        "type": "keyword",
+        "value": "SELECT"
+      },
+      {
+        "type": "column",
+        "value": "d.department_name,"
+      },
+      {
+        "type": "column",
+        "value": "COUNT(e.employee_id)"
+      },
+      {
+        "type": "keyword",
+        "value": "AS"
+      },
+      {
+        "type": "column",
+        "value": "headcount,"
+      },
+      {
+        "type": "column",
+        "value": "AVG(e.salary)"
+      },
+      {
+        "type": "keyword",
+        "value": "AS"
+      },
+      {
+        "type": "column",
+        "value": "avg_salary"
+      },
+      {
+        "type": "keyword",
+        "value": "FROM"
+      },
+      {
+        "type": "table",
+        "value": "Departments"
+      },
+      {
+        "type": "column",
+        "value": "d"
+      },
+      {
+        "type": "keyword",
+        "value": "INNER"
+      },
+      {
+        "type": "keyword",
+        "value": "JOIN"
+      },
+      {
+        "type": "table",
+        "value": "Employees"
+      },
+      {
+        "type": "column",
+        "value": "e"
+      },
+      {
+        "type": "keyword",
+        "value": "ON"
+      },
+      {
+        "type": "column",
+        "value": "d.department_id"
+      },
+      {
+        "type": "column",
+        "value": "="
+      },
+      {
+        "type": "column",
+        "value": "e.department_id"
+      },
+      {
+        "type": "keyword",
+        "value": "WHERE"
+      },
+      {
+        "type": "column",
+        "value": "e.salary"
+      },
+      {
+        "type": "column",
+        "value": ">="
+      },
+      {
+        "type": "column",
+        "value": "50000"
+      },
+      {
+        "type": "keyword",
+        "value": "GROUP"
+      },
+      {
+        "type": "keyword",
+        "value": "BY"
+      },
+      {
+        "type": "column",
+        "value": "d.department_id,"
+      },
+      {
+        "type": "column",
+        "value": "d.department_name"
+      },
+      {
+        "type": "keyword",
+        "value": "HAVING"
+      },
+      {
+        "type": "column",
+        "value": "COUNT(e.employee_id)"
+      },
+      {
+        "type": "column",
+        "value": ">="
+      },
+      {
+        "type": "column",
+        "value": "3"
+      },
+      {
+        "type": "keyword",
+        "value": "ORDER"
+      },
+      {
+        "type": "keyword",
+        "value": "BY"
+      },
+      {
+        "type": "column",
+        "value": "avg_salary"
+      },
+      {
+        "type": "keyword",
+        "value": "DESC"
+      },
+      {
+        "type": "keyword",
+        "value": "LIMIT"
+      },
+      {
+        "type": "column",
+        "value": "3;"
+      }
+    ]
+  },
+  {
+    "drillNumber": 894,
+    "subcluster": "9.10 End-to-End Multi-Table Analytics Pipelines",
+    "level": "Level 3 (Analytics Master Pipeline)",
+    "title": "Syntax #894: Pipeline: Top 5 grocery suppliers with inventory value over $500",
+    "table": "GroceryItems",
+    "scenario": "Pipeline: Top 5 grocery suppliers with inventory value over $500.",
+    "businessObjective": "Pipeline: Top 5 grocery suppliers with inventory value over $500.",
+    "schemaSnippet": "GroceryItems relational schema",
+    "targetQuery": "SELECT s.supplier_name, COUNT(g.item_id) AS total_items, SUM(g.stock_qty * g.unit_price) AS total_value\nFROM Suppliers s\nINNER JOIN GroceryItems g ON s.supplier_id = g.supplier_id\nWHERE g.unit_price > 2.00\nGROUP BY s.supplier_id, s.supplier_name\nHAVING SUM(g.stock_qty * g.unit_price) > 500.00\nORDER BY total_value DESC\nLIMIT 5;",
+    "syntaxBlueprint": "SELECT a.name, COUNT(b.id) AS total_b, SUM(c.revenue) AS total_rev\nFROM TableA a\nJOIN TableB b ON a.id = b.a_id\nJOIN TableC c ON b.c_id = c.id\nWHERE a.status = 'active'\nGROUP BY a.id, a.name\nHAVING total_rev > 500\nORDER BY total_rev DESC\nLIMIT 5;",
+    "syntaxRule": "Synthesize table aliasing, multiple join types, predicate filtering, multi-table aggregations, HAVING thresholds, and sorted LIMIT slicing.",
+    "syntaxTrap": "Order of clauses: FROM -> JOIN -> WHERE -> GROUP BY -> HAVING -> ORDER BY -> LIMIT.",
+    "eli5Story": "Relational Joins on GroceryItems: Pipeline: Top 5 grocery suppliers with inventory value over $500.",
+    "commonMistakes": "Omitting the ON clause, forgetting table alias qualification on ambiguous columns, or accidentally converting LEFT JOIN to INNER JOIN via WHERE filters.",
+    "learningOutcomes": "Mastered 9.10 End-to-End Multi-Table Analytics Pipelines on GroceryItems.",
+    "challengeSlots": [
+      {
+        "type": "keyword",
+        "value": "SELECT"
+      },
+      {
+        "type": "column",
+        "value": "s.supplier_name,"
+      },
+      {
+        "type": "column",
+        "value": "COUNT(g.item_id)"
+      },
+      {
+        "type": "keyword",
+        "value": "AS"
+      },
+      {
+        "type": "column",
+        "value": "total_items,"
+      },
+      {
+        "type": "column",
+        "value": "SUM(g.stock_qty"
+      },
+      {
+        "type": "column",
+        "value": "*"
+      },
+      {
+        "type": "column",
+        "value": "g.unit_price)"
+      },
+      {
+        "type": "keyword",
+        "value": "AS"
+      },
+      {
+        "type": "column",
+        "value": "total_value"
+      },
+      {
+        "type": "keyword",
+        "value": "FROM"
+      },
+      {
+        "type": "table",
+        "value": "Suppliers"
+      },
+      {
+        "type": "column",
+        "value": "s"
+      },
+      {
+        "type": "keyword",
+        "value": "INNER"
+      },
+      {
+        "type": "keyword",
+        "value": "JOIN"
+      },
+      {
+        "type": "table",
+        "value": "GroceryItems"
+      },
+      {
+        "type": "column",
+        "value": "g"
+      },
+      {
+        "type": "keyword",
+        "value": "ON"
+      },
+      {
+        "type": "column",
+        "value": "s.supplier_id"
+      },
+      {
+        "type": "column",
+        "value": "="
+      },
+      {
+        "type": "column",
+        "value": "g.supplier_id"
+      },
+      {
+        "type": "keyword",
+        "value": "WHERE"
+      },
+      {
+        "type": "column",
+        "value": "g.unit_price"
+      },
+      {
+        "type": "column",
+        "value": ">"
+      },
+      {
+        "type": "column",
+        "value": "2.00"
+      },
+      {
+        "type": "keyword",
+        "value": "GROUP"
+      },
+      {
+        "type": "keyword",
+        "value": "BY"
+      },
+      {
+        "type": "column",
+        "value": "s.supplier_id,"
+      },
+      {
+        "type": "column",
+        "value": "s.supplier_name"
+      },
+      {
+        "type": "keyword",
+        "value": "HAVING"
+      },
+      {
+        "type": "column",
+        "value": "SUM(g.stock_qty"
+      },
+      {
+        "type": "column",
+        "value": "*"
+      },
+      {
+        "type": "column",
+        "value": "g.unit_price)"
+      },
+      {
+        "type": "column",
+        "value": ">"
+      },
+      {
+        "type": "column",
+        "value": "500.00"
+      },
+      {
+        "type": "keyword",
+        "value": "ORDER"
+      },
+      {
+        "type": "keyword",
+        "value": "BY"
+      },
+      {
+        "type": "column",
+        "value": "total_value"
+      },
+      {
+        "type": "keyword",
+        "value": "DESC"
+      },
+      {
+        "type": "keyword",
+        "value": "LIMIT"
+      },
+      {
+        "type": "column",
+        "value": "5;"
+      }
+    ]
+  },
+  {
+    "drillNumber": 895,
+    "subcluster": "9.10 End-to-End Multi-Table Analytics Pipelines",
+    "level": "Level 3 (Analytics Master Pipeline)",
+    "title": "Syntax #895: Pipeline: Top 5 VIP buyers with $500+ in completed purchases",
+    "table": "Orders",
+    "scenario": "Pipeline: Top 5 VIP buyers with $500+ in completed purchases.",
+    "businessObjective": "Pipeline: Top 5 VIP buyers with $500+ in completed purchases.",
+    "schemaSnippet": "Orders relational schema",
+    "targetQuery": "SELECT c.customer_name, COUNT(o.order_id) AS order_count, SUM(o.total_amount) AS total_spent\nFROM Customers c\nINNER JOIN Orders o ON c.customer_id = o.customer_id\nWHERE o.status = 'Completed'\nGROUP BY c.customer_id, c.customer_name\nHAVING SUM(o.total_amount) >= 500.00\nORDER BY total_spent DESC\nLIMIT 5;",
+    "syntaxBlueprint": "SELECT a.name, COUNT(b.id) AS total_b, SUM(c.revenue) AS total_rev\nFROM TableA a\nJOIN TableB b ON a.id = b.a_id\nJOIN TableC c ON b.c_id = c.id\nWHERE a.status = 'active'\nGROUP BY a.id, a.name\nHAVING total_rev > 500\nORDER BY total_rev DESC\nLIMIT 5;",
+    "syntaxRule": "Synthesize table aliasing, multiple join types, predicate filtering, multi-table aggregations, HAVING thresholds, and sorted LIMIT slicing.",
+    "syntaxTrap": "Order of clauses: FROM -> JOIN -> WHERE -> GROUP BY -> HAVING -> ORDER BY -> LIMIT.",
+    "eli5Story": "Relational Joins on Orders: Pipeline: Top 5 VIP buyers with $500+ in completed purchases.",
+    "commonMistakes": "Omitting the ON clause, forgetting table alias qualification on ambiguous columns, or accidentally converting LEFT JOIN to INNER JOIN via WHERE filters.",
+    "learningOutcomes": "Mastered 9.10 End-to-End Multi-Table Analytics Pipelines on Orders.",
+    "challengeSlots": [
+      {
+        "type": "keyword",
+        "value": "SELECT"
+      },
+      {
+        "type": "column",
+        "value": "c.customer_name,"
+      },
+      {
+        "type": "column",
+        "value": "COUNT(o.order_id)"
+      },
+      {
+        "type": "keyword",
+        "value": "AS"
+      },
+      {
+        "type": "column",
+        "value": "order_count,"
+      },
+      {
+        "type": "column",
+        "value": "SUM(o.total_amount)"
+      },
+      {
+        "type": "keyword",
+        "value": "AS"
+      },
+      {
+        "type": "column",
+        "value": "total_spent"
+      },
+      {
+        "type": "keyword",
+        "value": "FROM"
+      },
+      {
+        "type": "table",
+        "value": "Customers"
+      },
+      {
+        "type": "column",
+        "value": "c"
+      },
+      {
+        "type": "keyword",
+        "value": "INNER"
+      },
+      {
+        "type": "keyword",
+        "value": "JOIN"
+      },
+      {
+        "type": "table",
+        "value": "Orders"
+      },
+      {
+        "type": "column",
+        "value": "o"
+      },
+      {
+        "type": "keyword",
+        "value": "ON"
+      },
+      {
+        "type": "column",
+        "value": "c.customer_id"
+      },
+      {
+        "type": "column",
+        "value": "="
+      },
+      {
+        "type": "column",
+        "value": "o.customer_id"
+      },
+      {
+        "type": "keyword",
+        "value": "WHERE"
+      },
+      {
+        "type": "column",
+        "value": "o.status"
+      },
+      {
+        "type": "column",
+        "value": "="
+      },
+      {
+        "type": "column",
+        "value": "'Completed'"
+      },
+      {
+        "type": "keyword",
+        "value": "GROUP"
+      },
+      {
+        "type": "keyword",
+        "value": "BY"
+      },
+      {
+        "type": "column",
+        "value": "c.customer_id,"
+      },
+      {
+        "type": "column",
+        "value": "c.customer_name"
+      },
+      {
+        "type": "keyword",
+        "value": "HAVING"
+      },
+      {
+        "type": "column",
+        "value": "SUM(o.total_amount)"
+      },
+      {
+        "type": "column",
+        "value": ">="
+      },
+      {
+        "type": "column",
+        "value": "500.00"
+      },
+      {
+        "type": "keyword",
+        "value": "ORDER"
+      },
+      {
+        "type": "keyword",
+        "value": "BY"
+      },
+      {
+        "type": "column",
+        "value": "total_spent"
+      },
+      {
+        "type": "keyword",
+        "value": "DESC"
+      },
+      {
+        "type": "keyword",
+        "value": "LIMIT"
+      },
+      {
+        "type": "column",
+        "value": "5;"
+      }
+    ]
+  },
+  {
+    "drillNumber": 896,
+    "subcluster": "9.10 End-to-End Multi-Table Analytics Pipelines",
+    "level": "Level 3 (Analytics Master Pipeline)",
+    "title": "Syntax #896: Pipeline: Top 5 modern albums with 5+ tracks ordered by total duration",
+    "table": "MusicTracks",
+    "scenario": "Pipeline: Top 5 modern albums with 5+ tracks ordered by total duration.",
+    "businessObjective": "Pipeline: Top 5 modern albums with 5+ tracks ordered by total duration.",
+    "schemaSnippet": "MusicTracks relational schema",
+    "targetQuery": "SELECT a.album_title, COUNT(t.track_id) AS song_count, SUM(t.duration_seconds) AS total_runtime\nFROM Albums a\nINNER JOIN MusicTracks t ON a.album_id = t.album_id\nWHERE a.release_year >= 2000\nGROUP BY a.album_id, a.album_title\nHAVING COUNT(t.track_id) >= 5\nORDER BY total_runtime DESC\nLIMIT 5;",
+    "syntaxBlueprint": "SELECT a.name, COUNT(b.id) AS total_b, SUM(c.revenue) AS total_rev\nFROM TableA a\nJOIN TableB b ON a.id = b.a_id\nJOIN TableC c ON b.c_id = c.id\nWHERE a.status = 'active'\nGROUP BY a.id, a.name\nHAVING total_rev > 500\nORDER BY total_rev DESC\nLIMIT 5;",
+    "syntaxRule": "Synthesize table aliasing, multiple join types, predicate filtering, multi-table aggregations, HAVING thresholds, and sorted LIMIT slicing.",
+    "syntaxTrap": "Order of clauses: FROM -> JOIN -> WHERE -> GROUP BY -> HAVING -> ORDER BY -> LIMIT.",
+    "eli5Story": "Relational Joins on MusicTracks: Pipeline: Top 5 modern albums with 5+ tracks ordered by total duration.",
+    "commonMistakes": "Omitting the ON clause, forgetting table alias qualification on ambiguous columns, or accidentally converting LEFT JOIN to INNER JOIN via WHERE filters.",
+    "learningOutcomes": "Mastered 9.10 End-to-End Multi-Table Analytics Pipelines on MusicTracks.",
+    "challengeSlots": [
+      {
+        "type": "keyword",
+        "value": "SELECT"
+      },
+      {
+        "type": "column",
+        "value": "a.album_title,"
+      },
+      {
+        "type": "column",
+        "value": "COUNT(t.track_id)"
+      },
+      {
+        "type": "keyword",
+        "value": "AS"
+      },
+      {
+        "type": "column",
+        "value": "song_count,"
+      },
+      {
+        "type": "column",
+        "value": "SUM(t.duration_seconds)"
+      },
+      {
+        "type": "keyword",
+        "value": "AS"
+      },
+      {
+        "type": "column",
+        "value": "total_runtime"
+      },
+      {
+        "type": "keyword",
+        "value": "FROM"
+      },
+      {
+        "type": "table",
+        "value": "Albums"
+      },
+      {
+        "type": "column",
+        "value": "a"
+      },
+      {
+        "type": "keyword",
+        "value": "INNER"
+      },
+      {
+        "type": "keyword",
+        "value": "JOIN"
+      },
+      {
+        "type": "table",
+        "value": "MusicTracks"
+      },
+      {
+        "type": "column",
+        "value": "t"
+      },
+      {
+        "type": "keyword",
+        "value": "ON"
+      },
+      {
+        "type": "column",
+        "value": "a.album_id"
+      },
+      {
+        "type": "column",
+        "value": "="
+      },
+      {
+        "type": "column",
+        "value": "t.album_id"
+      },
+      {
+        "type": "keyword",
+        "value": "WHERE"
+      },
+      {
+        "type": "column",
+        "value": "a.release_year"
+      },
+      {
+        "type": "column",
+        "value": ">="
+      },
+      {
+        "type": "column",
+        "value": "2000"
+      },
+      {
+        "type": "keyword",
+        "value": "GROUP"
+      },
+      {
+        "type": "keyword",
+        "value": "BY"
+      },
+      {
+        "type": "column",
+        "value": "a.album_id,"
+      },
+      {
+        "type": "column",
+        "value": "a.album_title"
+      },
+      {
+        "type": "keyword",
+        "value": "HAVING"
+      },
+      {
+        "type": "column",
+        "value": "COUNT(t.track_id)"
+      },
+      {
+        "type": "column",
+        "value": ">="
+      },
+      {
+        "type": "column",
+        "value": "5"
+      },
+      {
+        "type": "keyword",
+        "value": "ORDER"
+      },
+      {
+        "type": "keyword",
+        "value": "BY"
+      },
+      {
+        "type": "column",
+        "value": "total_runtime"
+      },
+      {
+        "type": "keyword",
+        "value": "DESC"
+      },
+      {
+        "type": "keyword",
+        "value": "LIMIT"
+      },
+      {
+        "type": "column",
+        "value": "5;"
+      }
+    ]
+  },
+  {
+    "drillNumber": 897,
+    "subcluster": "9.10 End-to-End Multi-Table Analytics Pipelines",
+    "level": "Level 3 (Analytics Master Pipeline)",
+    "title": "Syntax #897: Pipeline: Top 3 gym coaches generating highest revenue from premium members",
+    "table": "GymMembers",
+    "scenario": "Pipeline: Top 3 gym coaches generating highest revenue from premium members.",
+    "businessObjective": "Pipeline: Top 3 gym coaches generating highest revenue from premium members.",
+    "schemaSnippet": "GymMembers relational schema",
+    "targetQuery": "SELECT tr.trainer_name, COUNT(m.member_id) AS active_members, SUM(m.monthly_fee) AS total_monthly_revenue\nFROM Trainers tr\nINNER JOIN GymMembers m ON tr.trainer_id = m.trainer_id\nWHERE m.membership_plan IN ('Gold', 'VIP')\nGROUP BY tr.trainer_id, tr.trainer_name\nHAVING COUNT(m.member_id) >= 2\nORDER BY total_monthly_revenue DESC\nLIMIT 3;",
+    "syntaxBlueprint": "SELECT a.name, COUNT(b.id) AS total_b, SUM(c.revenue) AS total_rev\nFROM TableA a\nJOIN TableB b ON a.id = b.a_id\nJOIN TableC c ON b.c_id = c.id\nWHERE a.status = 'active'\nGROUP BY a.id, a.name\nHAVING total_rev > 500\nORDER BY total_rev DESC\nLIMIT 5;",
+    "syntaxRule": "Synthesize table aliasing, multiple join types, predicate filtering, multi-table aggregations, HAVING thresholds, and sorted LIMIT slicing.",
+    "syntaxTrap": "Order of clauses: FROM -> JOIN -> WHERE -> GROUP BY -> HAVING -> ORDER BY -> LIMIT.",
+    "eli5Story": "Relational Joins on GymMembers: Pipeline: Top 3 gym coaches generating highest revenue from premium members.",
+    "commonMistakes": "Omitting the ON clause, forgetting table alias qualification on ambiguous columns, or accidentally converting LEFT JOIN to INNER JOIN via WHERE filters.",
+    "learningOutcomes": "Mastered 9.10 End-to-End Multi-Table Analytics Pipelines on GymMembers.",
+    "challengeSlots": [
+      {
+        "type": "keyword",
+        "value": "SELECT"
+      },
+      {
+        "type": "column",
+        "value": "tr.trainer_name,"
+      },
+      {
+        "type": "column",
+        "value": "COUNT(m.member_id)"
+      },
+      {
+        "type": "keyword",
+        "value": "AS"
+      },
+      {
+        "type": "column",
+        "value": "active_members,"
+      },
+      {
+        "type": "column",
+        "value": "SUM(m.monthly_fee)"
+      },
+      {
+        "type": "keyword",
+        "value": "AS"
+      },
+      {
+        "type": "column",
+        "value": "total_monthly_revenue"
+      },
+      {
+        "type": "keyword",
+        "value": "FROM"
+      },
+      {
+        "type": "table",
+        "value": "Trainers"
+      },
+      {
+        "type": "column",
+        "value": "tr"
+      },
+      {
+        "type": "keyword",
+        "value": "INNER"
+      },
+      {
+        "type": "keyword",
+        "value": "JOIN"
+      },
+      {
+        "type": "table",
+        "value": "GymMembers"
+      },
+      {
+        "type": "column",
+        "value": "m"
+      },
+      {
+        "type": "keyword",
+        "value": "ON"
+      },
+      {
+        "type": "column",
+        "value": "tr.trainer_id"
+      },
+      {
+        "type": "column",
+        "value": "="
+      },
+      {
+        "type": "column",
+        "value": "m.trainer_id"
+      },
+      {
+        "type": "keyword",
+        "value": "WHERE"
+      },
+      {
+        "type": "column",
+        "value": "m.membership_plan"
+      },
+      {
+        "type": "column",
+        "value": "IN"
+      },
+      {
+        "type": "column",
+        "value": "('Gold',"
+      },
+      {
+        "type": "column",
+        "value": "'VIP')"
+      },
+      {
+        "type": "keyword",
+        "value": "GROUP"
+      },
+      {
+        "type": "keyword",
+        "value": "BY"
+      },
+      {
+        "type": "column",
+        "value": "tr.trainer_id,"
+      },
+      {
+        "type": "column",
+        "value": "tr.trainer_name"
+      },
+      {
+        "type": "keyword",
+        "value": "HAVING"
+      },
+      {
+        "type": "column",
+        "value": "COUNT(m.member_id)"
+      },
+      {
+        "type": "column",
+        "value": ">="
+      },
+      {
+        "type": "column",
+        "value": "2"
+      },
+      {
+        "type": "keyword",
+        "value": "ORDER"
+      },
+      {
+        "type": "keyword",
+        "value": "BY"
+      },
+      {
+        "type": "column",
+        "value": "total_monthly_revenue"
+      },
+      {
+        "type": "keyword",
+        "value": "DESC"
+      },
+      {
+        "type": "keyword",
+        "value": "LIMIT"
+      },
+      {
+        "type": "column",
+        "value": "3;"
+      }
+    ]
+  },
+  {
+    "drillNumber": 898,
+    "subcluster": "9.10 End-to-End Multi-Table Analytics Pipelines",
+    "level": "Level 3 (Analytics Master Pipeline)",
+    "title": "Syntax #898: Pipeline: Top 5 modern films with 3+ reviews ordered by average rating",
+    "table": "MovieReviews",
+    "scenario": "Pipeline: Top 5 modern films with 3+ reviews ordered by average rating.",
+    "businessObjective": "Pipeline: Top 5 modern films with 3+ reviews ordered by average rating.",
+    "schemaSnippet": "MovieReviews relational schema",
+    "targetQuery": "SELECT m.movie_title, COUNT(r.review_id) AS review_count, AVG(r.star_rating) AS average_score\nFROM Movies m\nINNER JOIN MovieReviews r ON m.movie_id = r.movie_id\nWHERE m.release_year >= 2010\nGROUP BY m.movie_id, m.movie_title\nHAVING COUNT(r.review_id) >= 3\nORDER BY average_score DESC\nLIMIT 5;",
+    "syntaxBlueprint": "SELECT a.name, COUNT(b.id) AS total_b, SUM(c.revenue) AS total_rev\nFROM TableA a\nJOIN TableB b ON a.id = b.a_id\nJOIN TableC c ON b.c_id = c.id\nWHERE a.status = 'active'\nGROUP BY a.id, a.name\nHAVING total_rev > 500\nORDER BY total_rev DESC\nLIMIT 5;",
+    "syntaxRule": "Synthesize table aliasing, multiple join types, predicate filtering, multi-table aggregations, HAVING thresholds, and sorted LIMIT slicing.",
+    "syntaxTrap": "Order of clauses: FROM -> JOIN -> WHERE -> GROUP BY -> HAVING -> ORDER BY -> LIMIT.",
+    "eli5Story": "Relational Joins on MovieReviews: Pipeline: Top 5 modern films with 3+ reviews ordered by average rating.",
+    "commonMistakes": "Omitting the ON clause, forgetting table alias qualification on ambiguous columns, or accidentally converting LEFT JOIN to INNER JOIN via WHERE filters.",
+    "learningOutcomes": "Mastered 9.10 End-to-End Multi-Table Analytics Pipelines on MovieReviews.",
+    "challengeSlots": [
+      {
+        "type": "keyword",
+        "value": "SELECT"
+      },
+      {
+        "type": "column",
+        "value": "m.movie_title,"
+      },
+      {
+        "type": "column",
+        "value": "COUNT(r.review_id)"
+      },
+      {
+        "type": "keyword",
+        "value": "AS"
+      },
+      {
+        "type": "column",
+        "value": "review_count,"
+      },
+      {
+        "type": "column",
+        "value": "AVG(r.star_rating)"
+      },
+      {
+        "type": "keyword",
+        "value": "AS"
+      },
+      {
+        "type": "column",
+        "value": "average_score"
+      },
+      {
+        "type": "keyword",
+        "value": "FROM"
+      },
+      {
+        "type": "table",
+        "value": "Movies"
+      },
+      {
+        "type": "column",
+        "value": "m"
+      },
+      {
+        "type": "keyword",
+        "value": "INNER"
+      },
+      {
+        "type": "keyword",
+        "value": "JOIN"
+      },
+      {
+        "type": "table",
+        "value": "MovieReviews"
+      },
+      {
+        "type": "column",
+        "value": "r"
+      },
+      {
+        "type": "keyword",
+        "value": "ON"
+      },
+      {
+        "type": "column",
+        "value": "m.movie_id"
+      },
+      {
+        "type": "column",
+        "value": "="
+      },
+      {
+        "type": "column",
+        "value": "r.movie_id"
+      },
+      {
+        "type": "keyword",
+        "value": "WHERE"
+      },
+      {
+        "type": "column",
+        "value": "m.release_year"
+      },
+      {
+        "type": "column",
+        "value": ">="
+      },
+      {
+        "type": "column",
+        "value": "2010"
+      },
+      {
+        "type": "keyword",
+        "value": "GROUP"
+      },
+      {
+        "type": "keyword",
+        "value": "BY"
+      },
+      {
+        "type": "column",
+        "value": "m.movie_id,"
+      },
+      {
+        "type": "column",
+        "value": "m.movie_title"
+      },
+      {
+        "type": "keyword",
+        "value": "HAVING"
+      },
+      {
+        "type": "column",
+        "value": "COUNT(r.review_id)"
+      },
+      {
+        "type": "column",
+        "value": ">="
+      },
+      {
+        "type": "column",
+        "value": "3"
+      },
+      {
+        "type": "keyword",
+        "value": "ORDER"
+      },
+      {
+        "type": "keyword",
+        "value": "BY"
+      },
+      {
+        "type": "column",
+        "value": "average_score"
+      },
+      {
+        "type": "keyword",
+        "value": "DESC"
+      },
+      {
+        "type": "keyword",
+        "value": "LIMIT"
+      },
+      {
+        "type": "column",
+        "value": "5;"
+      }
+    ]
+  },
+  {
+    "drillNumber": 899,
+    "subcluster": "9.10 End-to-End Multi-Table Analytics Pipelines",
+    "level": "Level 3 (Analytics Master Pipeline)",
+    "title": "Syntax #899: Pipeline: Top 5 airlines with 5+ active routes ordered by longest average flight distance",
+    "table": "FlightSchedule",
+    "scenario": "Pipeline: Top 5 airlines with 5+ active routes ordered by longest average flight distance.",
+    "businessObjective": "Pipeline: Top 5 airlines with 5+ active routes ordered by longest average flight distance.",
+    "schemaSnippet": "FlightSchedule relational schema",
+    "targetQuery": "SELECT al.airline_name, COUNT(f.flight_id) AS route_count, AVG(f.distance_miles) AS avg_distance\nFROM Airlines al\nINNER JOIN FlightSchedule f ON al.airline_id = f.airline_id\nWHERE f.status != 'Cancelled'\nGROUP BY al.airline_id, al.airline_name\nHAVING COUNT(f.flight_id) >= 5\nORDER BY avg_distance DESC\nLIMIT 5;",
+    "syntaxBlueprint": "SELECT a.name, COUNT(b.id) AS total_b, SUM(c.revenue) AS total_rev\nFROM TableA a\nJOIN TableB b ON a.id = b.a_id\nJOIN TableC c ON b.c_id = c.id\nWHERE a.status = 'active'\nGROUP BY a.id, a.name\nHAVING total_rev > 500\nORDER BY total_rev DESC\nLIMIT 5;",
+    "syntaxRule": "Synthesize table aliasing, multiple join types, predicate filtering, multi-table aggregations, HAVING thresholds, and sorted LIMIT slicing.",
+    "syntaxTrap": "Order of clauses: FROM -> JOIN -> WHERE -> GROUP BY -> HAVING -> ORDER BY -> LIMIT.",
+    "eli5Story": "Relational Joins on FlightSchedule: Pipeline: Top 5 airlines with 5+ active routes ordered by longest average flight distance.",
+    "commonMistakes": "Omitting the ON clause, forgetting table alias qualification on ambiguous columns, or accidentally converting LEFT JOIN to INNER JOIN via WHERE filters.",
+    "learningOutcomes": "Mastered 9.10 End-to-End Multi-Table Analytics Pipelines on FlightSchedule.",
+    "challengeSlots": [
+      {
+        "type": "keyword",
+        "value": "SELECT"
+      },
+      {
+        "type": "column",
+        "value": "al.airline_name,"
+      },
+      {
+        "type": "column",
+        "value": "COUNT(f.flight_id)"
+      },
+      {
+        "type": "keyword",
+        "value": "AS"
+      },
+      {
+        "type": "column",
+        "value": "route_count,"
+      },
+      {
+        "type": "column",
+        "value": "AVG(f.distance_miles)"
+      },
+      {
+        "type": "keyword",
+        "value": "AS"
+      },
+      {
+        "type": "column",
+        "value": "avg_distance"
+      },
+      {
+        "type": "keyword",
+        "value": "FROM"
+      },
+      {
+        "type": "table",
+        "value": "Airlines"
+      },
+      {
+        "type": "column",
+        "value": "al"
+      },
+      {
+        "type": "keyword",
+        "value": "INNER"
+      },
+      {
+        "type": "keyword",
+        "value": "JOIN"
+      },
+      {
+        "type": "table",
+        "value": "FlightSchedule"
+      },
+      {
+        "type": "column",
+        "value": "f"
+      },
+      {
+        "type": "keyword",
+        "value": "ON"
+      },
+      {
+        "type": "column",
+        "value": "al.airline_id"
+      },
+      {
+        "type": "column",
+        "value": "="
+      },
+      {
+        "type": "column",
+        "value": "f.airline_id"
+      },
+      {
+        "type": "keyword",
+        "value": "WHERE"
+      },
+      {
+        "type": "column",
+        "value": "f.status"
+      },
+      {
+        "type": "column",
+        "value": "!="
+      },
+      {
+        "type": "column",
+        "value": "'Cancelled'"
+      },
+      {
+        "type": "keyword",
+        "value": "GROUP"
+      },
+      {
+        "type": "keyword",
+        "value": "BY"
+      },
+      {
+        "type": "column",
+        "value": "al.airline_id,"
+      },
+      {
+        "type": "column",
+        "value": "al.airline_name"
+      },
+      {
+        "type": "keyword",
+        "value": "HAVING"
+      },
+      {
+        "type": "column",
+        "value": "COUNT(f.flight_id)"
+      },
+      {
+        "type": "column",
+        "value": ">="
+      },
+      {
+        "type": "column",
+        "value": "5"
+      },
+      {
+        "type": "keyword",
+        "value": "ORDER"
+      },
+      {
+        "type": "keyword",
+        "value": "BY"
+      },
+      {
+        "type": "column",
+        "value": "avg_distance"
+      },
+      {
+        "type": "keyword",
+        "value": "DESC"
+      },
+      {
+        "type": "keyword",
+        "value": "LIMIT"
+      },
+      {
+        "type": "column",
+        "value": "5;"
+      }
+    ]
+  },
+  {
+    "drillNumber": 900,
+    "subcluster": "9.10 End-to-End Multi-Table Analytics Pipelines",
+    "level": "Level 3 (Analytics Master Pipeline)",
+    "title": "Syntax #900: Pipeline: Top 5 households with 2+ adult pets ordered by heaviest average pet",
+    "table": "PetClinic",
+    "scenario": "Pipeline: Top 5 households with 2+ adult pets ordered by heaviest average pet.",
+    "businessObjective": "Pipeline: Top 5 households with 2+ adult pets ordered by heaviest average pet.",
+    "schemaSnippet": "PetClinic relational schema",
+    "targetQuery": "SELECT o.owner_name, COUNT(p.pet_id) AS pet_count, AVG(p.weight_kg) AS avg_weight\nFROM Owners o\nINNER JOIN PetClinic p ON o.owner_id = p.owner_id\nWHERE p.age_years >= 1\nGROUP BY o.owner_id, o.owner_name\nHAVING COUNT(p.pet_id) >= 2\nORDER BY avg_weight DESC\nLIMIT 5;",
+    "syntaxBlueprint": "SELECT a.name, COUNT(b.id) AS total_b, SUM(c.revenue) AS total_rev\nFROM TableA a\nJOIN TableB b ON a.id = b.a_id\nJOIN TableC c ON b.c_id = c.id\nWHERE a.status = 'active'\nGROUP BY a.id, a.name\nHAVING total_rev > 500\nORDER BY total_rev DESC\nLIMIT 5;",
+    "syntaxRule": "Synthesize table aliasing, multiple join types, predicate filtering, multi-table aggregations, HAVING thresholds, and sorted LIMIT slicing.",
+    "syntaxTrap": "Order of clauses: FROM -> JOIN -> WHERE -> GROUP BY -> HAVING -> ORDER BY -> LIMIT.",
+    "eli5Story": "Relational Joins on PetClinic: Pipeline: Top 5 households with 2+ adult pets ordered by heaviest average pet.",
+    "commonMistakes": "Omitting the ON clause, forgetting table alias qualification on ambiguous columns, or accidentally converting LEFT JOIN to INNER JOIN via WHERE filters.",
+    "learningOutcomes": "Mastered 9.10 End-to-End Multi-Table Analytics Pipelines on PetClinic.",
+    "challengeSlots": [
+      {
+        "type": "keyword",
+        "value": "SELECT"
+      },
+      {
+        "type": "column",
+        "value": "o.owner_name,"
+      },
+      {
+        "type": "column",
+        "value": "COUNT(p.pet_id)"
+      },
+      {
+        "type": "keyword",
+        "value": "AS"
+      },
+      {
+        "type": "column",
+        "value": "pet_count,"
+      },
+      {
+        "type": "column",
+        "value": "AVG(p.weight_kg)"
+      },
+      {
+        "type": "keyword",
+        "value": "AS"
+      },
+      {
+        "type": "column",
+        "value": "avg_weight"
+      },
+      {
+        "type": "keyword",
+        "value": "FROM"
+      },
+      {
+        "type": "table",
+        "value": "Owners"
+      },
+      {
+        "type": "column",
+        "value": "o"
+      },
+      {
+        "type": "keyword",
+        "value": "INNER"
+      },
+      {
+        "type": "keyword",
+        "value": "JOIN"
+      },
+      {
+        "type": "table",
+        "value": "PetClinic"
+      },
+      {
+        "type": "column",
+        "value": "p"
+      },
+      {
+        "type": "keyword",
+        "value": "ON"
+      },
+      {
+        "type": "column",
+        "value": "o.owner_id"
+      },
+      {
+        "type": "column",
+        "value": "="
+      },
+      {
+        "type": "column",
+        "value": "p.owner_id"
+      },
+      {
+        "type": "keyword",
+        "value": "WHERE"
+      },
+      {
+        "type": "column",
+        "value": "p.age_years"
+      },
+      {
+        "type": "column",
+        "value": ">="
+      },
+      {
+        "type": "column",
+        "value": "1"
+      },
+      {
+        "type": "keyword",
+        "value": "GROUP"
+      },
+      {
+        "type": "keyword",
+        "value": "BY"
+      },
+      {
+        "type": "column",
+        "value": "o.owner_id,"
+      },
+      {
+        "type": "column",
+        "value": "o.owner_name"
+      },
+      {
+        "type": "keyword",
+        "value": "HAVING"
+      },
+      {
+        "type": "column",
+        "value": "COUNT(p.pet_id)"
+      },
+      {
+        "type": "column",
+        "value": ">="
+      },
+      {
+        "type": "column",
+        "value": "2"
+      },
+      {
+        "type": "keyword",
+        "value": "ORDER"
+      },
+      {
+        "type": "keyword",
+        "value": "BY"
+      },
+      {
+        "type": "column",
+        "value": "avg_weight"
+      },
+      {
+        "type": "keyword",
+        "value": "DESC"
+      },
+      {
+        "type": "keyword",
+        "value": "LIMIT"
+      },
+      {
+        "type": "column",
+        "value": "5;"
       }
     ]
   }

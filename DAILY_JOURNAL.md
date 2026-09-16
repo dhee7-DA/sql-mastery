@@ -530,10 +530,60 @@
 - `visualizer/index.html`: Nav tab `Syntax Gym (600)`, badge `600 Drills`, and Topic 6 filter button (`🔤 Topic 6: String Manipulation & Patterns (100)`).
 - `visualizer/app.js`: Updated `renderSyntaxGym()` pillar filter for `string` (#501–#600) and `getCaseStudyById` fallback bounds.
 
+- **Next Step**: Expand Syntax Gym with the 300-Drill Relational Join Trilogy (Topics 7, 8, 9) or advance to Day 13.
+
+---
+
+## 2026-09-16 — Entry 26: The 300-Drill Relational Join Trilogy in the SQL Syntax Gym (900 Progressive Micro-Drills)
+
+### 1. Architectural Scope
+- Deployed the complete **300-Drill Relational Join Trilogy** across 3 foundational topics (Drills **#601 to #900**) in the standalone Syntax Gym:
+  - **Topic 7: Relational Joins Core** (100 drills, #601–#700)
+  - **Topic 8: Advanced Joins & Structural Patterns** (100 drills, #701–#800)
+  - **Topic 9: Multi-Table Chaining & Joined Aggregations** (100 drills, #801–#900)
+- Expanded the Syntax Gym capacity from **600 to 900 active-retrieval drills** across all 10 everyday relatable schemas (`Students`, `Books`, `Employees`, `GroceryItems`, `Orders`, `MusicTracks`, `GymMembers`, `MovieReviews`, `FlightSchedule`, `PetClinic`) paired with secondary dimension and child tables (`Courses`, `Authors`, `Departments`, `Suppliers`, `Customers`, `Albums`, `Trainers`, `Movies`, `Airlines`, `Owners`).
+
+### 2. The 30 Join Subclusters (#601–#900)
+#### Topic 7: Relational Joins Core (#601–#700)
+1. **7.1 Basic INNER JOIN with Key Equality** (#601–#610): Standard 1-to-many primary-foreign key matching.
+2. **7.2 Concise Table Aliasing Practice** (#611–#620): Multi-character and clean single-letter alias referencing (`s`, `c`, `b`, `a`).
+3. **7.3 Column Qualification & Disambiguation** (#621–#630): Prefixing shared column names (`id`, `created_at`) to eliminate ambiguity.
+4. **7.4 LEFT JOIN (Preserving Unmatched Left Rows)** (#631–#640): Preserving parents with and without children (returns NULLs).
+5. **7.5 RIGHT JOIN Mechanics & Directional Awareness** (#641–#650): Right-side preservation and directional awareness.
+6. **7.6 Joining with Row-Level WHERE Filtering** (#651–#660): Post-join predicate evaluation on combined attributes.
+7. **7.7 Sorting Joined Data Across Both Tables (ORDER BY)** (#661–#670): Multi-table sorting hierarchies.
+8. **7.8 Slicing Joined Results with LIMIT** (#671–#680): Deterministic Top-N retrieval on joined result sets.
+9. **7.9 NULL Checks on Outer Joins** (#681–#690): Verifying active vs missing relations via `IS NULL` and `IS NOT NULL`.
+10. **7.10 Two-Table Lifecycle Production Queries** (#691–#700): Complete 2-table retrieval pipelines.
+
+#### Topic 8: Advanced Joins & Structural Patterns (#701–#800)
+1. **8.1 CROSS JOIN (Cartesian Matrices)** (#701–#710): All-to-all combinations ($N \times M$ rows) without key equality.
+2. **8.2 SELF JOIN for Hierarchies** (#711–#720): Manager-employee, sequel-prequel, and mentor-student trees.
+3. **8.3 SELF JOIN for Peer Pairing & Comparison** (#721–#730): Pairing peers with `a.id < b.id` to prevent duplicates and self-matching.
+4. **8.4 Anti-Join Pattern (Left Join with IS NULL)** (#731–#740): Pinpointing orphaned records (unborrowed books, inactive members).
+5. **8.5 Non-Equi Joins with Inequality (<, >)** (#741–#750): Relative magnitude matching across continuous attributes.
+6. **8.6 Non-Equi Joins with BETWEEN** (#751–#760): Dynamic tier and bracket classification without hardcoded CASE statements.
+7. **8.7 Compound Multi-Column Join Keys** (#761–#770): Joining composite keys with `ON a.k1 = b.k1 AND a.k2 = b.k2`.
+8. **8.8 Joins with Pattern Predicates in ON** (#771–#780): Prefix matching with `LIKE CONCAT(...)` directly inside the join clause.
+9. **8.9 Emulating FULL OUTER JOIN** (#781–#790): Unioning `LEFT JOIN` and `RIGHT JOIN` to capture bidirectional orphans.
+10. **8.10 Structural Join Bug Hunts & Traps** (#791–#800): Debugging accidental Cartesian products and inverted keys.
+
+#### Topic 9: Multi-Table Chaining & Joined Aggregations (#801–#900)
+1. **9.1 Three-Table Linear Chains (A -> B -> C)** (#801–#810): Relational traversal across junction tables.
+2. **9.2 Mixed Joins (Chaining INNER and LEFT)** (#811–#820): Mandatory core relationships with optional peripheral attachments.
+3. **9.3 Star-Schema Joining (1 Central Fact to 2 Dimensions)** (#821–#830): Central events connected to multiple dimension lookups.
+4. **9.4 Aggregations over Joins (COUNT per Parent Entity)** (#831–#840): Child counting using `COUNT(b.id)` to preserve 0 counts.
+5. **9.5 Aggregations over Joins (SUM & AVG Financials)** (#841–#850): Department payrolls, customer LTV, and catalog valuations.
+6. **9.6 The Fan-Out Duplication Trap (COUNT(DISTINCT))** (#851–#860): Preventing inflated metrics across multiple 1-to-many joins.
+7. **9.7 ON vs WHERE Predicate Placement on Outer Joins** (#861–#870): Outer-join filtering physics and avoiding silent INNER conversions.
+8. **9.8 HAVING Filters on Joined Groups** (#871–#880): Group-level post-aggregation thresholds.
+9. **9.9 Conditional Aggregation over Joins (SUM with CASE)** (#881–#890): Multi-metric single-pass extraction across joined tables.
+10. **9.10 End-to-End Multi-Table Analytics Pipelines** (#891–#900): Complete enterprise reporting pipelines.
+
+### 3. File Updates
+- `visualizer/syntax_gym_data.js`: Assembled 900 drills into `SYNTAX_GYM_DRILLS`.
+- `visualizer/index.html`: Nav tab `Syntax Gym (900)`, title `(900 Progressive Micro-Drills)`, badge `900 Drills`, solved badge `/900 Solved`, and filter buttons for Topics 7, 8, 9.
+- `visualizer/app.js`: Updated `renderSyntaxGym()` with `join_core` (#601–#700), `join_adv` (#701–#800), and `join_agg` (#801–#900) filters.
+- `SESSION_STATE.md`: Updated platform snapshot to 900 drills across 9 pillars.
+
 - **Next Step**: Advance to **Day 13: Real-World Business Analytics (Retention Cohort Heatmaps, Customer Churn Rates & LTV)**.
-
-
-
-
-
-
