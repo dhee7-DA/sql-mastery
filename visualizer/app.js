@@ -4170,6 +4170,9 @@ function renderCaseCardHtml(cs) {
 
       <!-- Physical Execution Order Step-Timeline -->
       ${window.GYM_TIMELINE_ENGINE ? window.GYM_TIMELINE_ENGINE.renderTimelineHtml(cs.id, cs.targetQuery) : ''}
+
+      <!-- EXPLAIN Plan & Query Cost Optimizer Drawer -->
+      ${window.GYM_EXPLAIN_OPTIMIZER ? window.GYM_EXPLAIN_OPTIMIZER.renderExplainDrawerHtml(cs.id, cs.targetQuery, cs.table) : ''}
     `;
   } else {
     // Challenge / Token Puzzle Mode
@@ -4211,6 +4214,9 @@ function renderCaseCardHtml(cs) {
 
       <!-- Physical Execution Order Step-Timeline -->
       ${window.GYM_TIMELINE_ENGINE ? window.GYM_TIMELINE_ENGINE.renderTimelineHtml(cs.id, cs.targetQuery) : ''}
+
+      <!-- EXPLAIN Plan & Query Cost Optimizer Drawer -->
+      ${window.GYM_EXPLAIN_OPTIMIZER ? window.GYM_EXPLAIN_OPTIMIZER.renderExplainDrawerHtml(cs.id, cs.targetQuery, cs.table) : ''}
 
       <!-- Jumbled Token Bank Dock -->
       <div class="token-bank-dock" id="dock_${cs.id}">
@@ -4310,6 +4316,9 @@ function renderCaseCardHtml(cs) {
           ` : ''}
         </div>
         <div class="case-actions-group">
+          <button class="btn-case-action" style="background: rgba(56, 189, 248, 0.12); color: #38bdf8; border-color: rgba(56, 189, 248, 0.4);" onclick="window.GYM_EXPLAIN_OPTIMIZER && window.GYM_EXPLAIN_OPTIMIZER.toggleExplain('${cs.id}')" title="Inspect MySQL 8.0 EXPLAIN plan and B+Tree index cost simulation">
+            ⚡ EXPLAIN
+          </button>
           <button class="btn-case-action btn-case-dossier" onclick="openCaseDossier('${cs.id}')" title="View Executive Dossier">
             📖 Dossier
           </button>
@@ -5630,6 +5639,9 @@ function renderGymDrillCardHtml(cs, isBlitz = false) {
       <!-- Physical Execution Order Step-Timeline -->
       ${window.GYM_TIMELINE_ENGINE ? window.GYM_TIMELINE_ENGINE.renderTimelineHtml(cs.id, cs.targetQuery) : ''}
 
+      <!-- EXPLAIN Plan & Query Cost Optimizer Drawer -->
+      ${window.GYM_EXPLAIN_OPTIMIZER ? window.GYM_EXPLAIN_OPTIMIZER.renderExplainDrawerHtml(cs.id, cs.targetQuery, cs.table) : ''}
+
       <!-- Jumbled Keyword Bank Dock -->
       ${challenge ? `
         <div class="token-bank-dock" id="dock_${cs.id}">
@@ -5738,6 +5750,9 @@ function renderGymDrillCardHtml(cs, isBlitz = false) {
           </button>
           <button class="btn-case-action" onclick="switchToStudioWithQuery(decodeURIComponent('${encodeURIComponent(cs.targetQuery)}'), '${cs.table}')" title="Test in Query Studio">
             ⚡ Studio &rarr;
+          </button>
+          <button class="btn-case-action" style="background: rgba(56, 189, 248, 0.12); color: #38bdf8; border-color: rgba(56, 189, 248, 0.4);" onclick="window.GYM_EXPLAIN_OPTIMIZER && window.GYM_EXPLAIN_OPTIMIZER.toggleExplain('${cs.id}')" title="Inspect MySQL 8.0 EXPLAIN plan and B+Tree index cost simulation">
+            ⚡ EXPLAIN
           </button>
           <button class="btn-case-action" onclick="openCaseDossier('${cs.id}')" title="View Full Dossier">
             📖 Dossier

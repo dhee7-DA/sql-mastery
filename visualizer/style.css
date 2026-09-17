@@ -4572,6 +4572,209 @@ body {
   padding: 8px 12px;
 }
 
+/* =============================================================================
+   EXPLAIN & QUERY COST OPTIMIZER (FEATURE #1)
+   ============================================================================= */
+
+.gym-explain-drawer {
+  background: #090d16;
+  border: 2px solid #000000;
+  border-radius: 9px;
+  padding: 12px 14px;
+  margin: 10px 0 12px 0;
+  box-shadow: 3px 3px 0px #000000;
+  animation: feedbackSlide 0.2s ease;
+  font-family: var(--font-mono);
+}
+
+.explain-drawer-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 12px;
+  flex-wrap: wrap;
+  gap: 8px;
+  border-bottom: 1px solid #1e293b;
+  padding-bottom: 8px;
+}
+
+.explain-title-group {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+}
+
+.explain-icon {
+  font-size: 16px;
+}
+
+.explain-title {
+  font-size: 12px;
+  font-weight: 800;
+  color: #38bdf8;
+  text-transform: uppercase;
+  letter-spacing: 0.03em;
+}
+
+.explain-subtitle {
+  font-size: 10.5px;
+  color: #94a3b8;
+  margin-top: 2px;
+}
+
+.cost-reduction-badge {
+  background: #10b981;
+  color: #000000;
+  font-weight: 900;
+  font-size: 11px;
+  padding: 3px 8px;
+  border-radius: 4px;
+  border: 1px solid #000000;
+  box-shadow: 1.5px 1.5px 0px #000000;
+}
+
+.explain-grid-compare {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 10px;
+  margin-bottom: 12px;
+}
+
+@media (max-width: 640px) {
+  .explain-grid-compare {
+    grid-template-columns: 1fr;
+  }
+}
+
+.explain-plan-card {
+  background: #040711;
+  border: 1.5px solid #1e293b;
+  border-radius: 6px;
+  padding: 10px 12px;
+  display: flex;
+  flex-direction: column;
+  gap: 6px;
+}
+
+.plan-unindexed {
+  border-left: 3.5px solid #ef4444;
+}
+
+.plan-indexed {
+  border-left: 3.5px solid #10b981;
+}
+
+.plan-card-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 4px;
+}
+
+.plan-status-pill {
+  font-size: 10.5px;
+  font-weight: 800;
+  text-transform: uppercase;
+  letter-spacing: 0.03em;
+}
+
+.status-unindexed {
+  color: #f87171;
+}
+
+.status-indexed {
+  color: #34d399;
+}
+
+.plan-access-pill {
+  font-size: 10px;
+  font-weight: 900;
+  padding: 1px 6px;
+  border-radius: 3px;
+  color: #fff;
+  border: 1px solid #000;
+}
+
+.plan-metric-row {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  font-size: 11px;
+}
+
+.metric-lbl {
+  color: #64748b;
+}
+
+.metric-val {
+  color: #cbd5e1;
+  font-weight: 600;
+}
+
+.text-red {
+  color: #ef4444 !important;
+}
+
+.text-green {
+  color: #10b981 !important;
+}
+
+.extra-pill {
+  font-size: 9.5px;
+  background: rgba(239, 68, 68, 0.15);
+  color: #fca5a5;
+  padding: 1px 5px;
+  border-radius: 3px;
+}
+
+.extra-pill-good {
+  font-size: 9.5px;
+  background: rgba(16, 185, 129, 0.15);
+  color: #6ee7b7;
+  padding: 1px 5px;
+  border-radius: 3px;
+}
+
+.explain-ddl-box {
+  background: #040711;
+  border: 1px solid #1e293b;
+  border-radius: 6px;
+  padding: 8px 12px;
+  margin-bottom: 10px;
+}
+
+.explain-ddl-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  font-size: 11px;
+  color: #38bdf8;
+  margin-bottom: 4px;
+}
+
+.btn-copy-ddl {
+  font-size: 10px;
+  color: #fbbf24;
+  font-weight: 700;
+}
+
+.explain-ddl-code {
+  font-family: var(--font-mono);
+  font-size: 11px;
+  color: #f8fafc;
+  overflow-x: auto;
+}
+
+.explain-physics-banner {
+  display: flex;
+  align-items: flex-start;
+  gap: 8px;
+  background: rgba(56, 189, 248, 0.08);
+  border: 1px solid rgba(56, 189, 248, 0.25);
+  border-radius: 6px;
+  padding: 8px 10px;
+}
+
 /* Collapsible Official Solution Shield */
 .case-solution-shield {
   background: #fef9c3;
