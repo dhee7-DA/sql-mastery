@@ -3534,6 +3534,49 @@ body {
   to { opacity: 1; transform: translateY(0); }
 }
 
+/* Progressive 3-Tier Hint Ladder Banner */
+.case-hint-banner {
+  padding: 10px 14px;
+  border-radius: 9px;
+  margin-top: 6px;
+  border: 2px solid #000000;
+  box-shadow: 3px 3px 0px #000000;
+  animation: feedbackSlide 0.18s ease;
+  font-weight: 600;
+}
+
+.case-hint-banner.hint-tier-1 {
+  background: #0f172a;
+  border-left: 5px solid #38bdf8;
+  color: #f1f5f9;
+}
+
+.case-hint-banner.hint-tier-2 {
+  background: #1c1917;
+  border-left: 5px solid #facc15;
+  color: #fef08a;
+}
+
+.case-hint-banner.hint-tier-3 {
+  background: #064e3b;
+  border-left: 5px solid #34d399;
+  color: #d1fae5;
+}
+
+.btn-progressive-hint {
+  background: #fef08a !important;
+  color: #000000 !important;
+  font-weight: 800 !important;
+  border: 2px solid #000000 !important;
+  box-shadow: 2px 2px 0px #000000 !important;
+}
+
+.btn-progressive-hint:hover {
+  background: #fde047 !important;
+  transform: translate(-1px, -1px) !important;
+  box-shadow: 3px 3px 0px #000000 !important;
+}
+
 /* Collapsible Official Solution Shield */
 .case-solution-shield {
   background: #fef9c3;

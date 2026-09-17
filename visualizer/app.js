@@ -4138,6 +4138,9 @@ function renderCaseCardHtml(cs) {
       <!-- Real-time Verification Feedback -->
       <div class="case-feedback-banner" id="feedback_${cs.id}" style="display: none;"></div>
 
+      <!-- Progressive 3-Tier Hint Banner -->
+      <div class="case-hint-banner" id="hint_banner_${cs.id}" style="display: none;"></div>
+
       <!-- Collapsible Official Solution Shield -->
       <div class="case-solution-shield" id="solution_${cs.id}" style="display: none;">
         <div class="solution-shield-header">
@@ -4195,6 +4198,9 @@ function renderCaseCardHtml(cs) {
             <button class="btn-case-action btn-verify-puzzle" onclick="handleVerifyCase('${cs.id}')">
               <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><polyline points="20 6 9 17 4 12"></polyline></svg>
               Verify
+            </button>
+            <button class="btn-case-action btn-progressive-hint" id="btn_hint_${cs.id}" onclick="handleProgressiveHint('${cs.id}')">
+              💡 Hint (1/3)
             </button>
             <button class="btn-case-action btn-reveal-shield" onclick="toggleCaseSolution('${cs.id}')">
               👁️ Reveal Answer
@@ -4706,10 +4712,19 @@ function renderCaseStudies(
     } catch (e) {}
   };
 
+  const HINT_STATE = {};
+
   window.handleResetCase = function(caseId) {
     if (!window.CASE_BLANKS_ENGINE) return;
     window.CASE_BLANKS_ENGINE.clearCaseState(caseId);
     if (window.soundFX) window.soundFX.playClick();
+
+    delete HINT_STATE[caseId];
+    const hintBanner = document.getElementById(`hint_banner_${caseId}`);
+    if (hintBanner) hintBanner.style.display = 'none';
+
+    const btnHint = document.getElementById(`btn_hint_${caseId}`);
+    if (btnHint) btnHint.innerHTML = `💡 Hint (1/3)`;
 
     const cs = getCaseStudyById(caseId);
     if (!cs) return;
@@ -4728,7 +4743,10 @@ function renderCaseStudies(
     challenge.tokenBank.forEach(tok => {
       const chipEl = document.getElementById(`chip_${tok.id}`);
       if (chipEl) {
-        chipEl.classList.remove('placed');
+        chipEl.classList.remove('placed', 'eliminated');
+        chipEl.style.opacity = '';
+        chipEl.style.textDecoration = '';
+        chipEl.style.pointerEvents = '';
         chipEl.setAttribute('draggable', 'true');
       }
     });
@@ -4743,6 +4761,100 @@ function renderCaseStudies(
     const isHidden = solEl.style.display === 'none';
     solEl.style.display = isHidden ? 'block' : 'none';
     if (window.soundFX) window.soundFX.playPop();
+  };
+
+  window.handleProgressiveHint = function(caseId) {
+    const cs = getCaseStudyById(caseId);
+    if (!cs) return;
+
+    if (!HINT_STATE[caseId]) HINT_STATE[caseId] = 0;
+    HINT_STATE[caseId] = (HINT_STATE[caseId] % 3) + 1;
+    const tier = HINT_STATE[caseId];
+
+    const hintBanner = document.getElementById(`hint_banner_${caseId}`);
+    const btn = document.getElementById(`btn_hint_${caseId}`);
+    const solEl = document.getElementById(`solution_${caseId}`);
+
+    if (tier === 1) {
+      // Tier 1: Conceptual Nudge
+      const nudge = cs.syntaxRule 
+        ? cs.syntaxRule 
+        : (cs.businessObjective || "Examine SQL clause execution order to deduce the missing keyword.");
+      
+      if (hintBanner) {
+        hintBanner.style.display = 'block';
+        hintBanner.className = 'case-hint-banner hint-tier-1';
+        hintBanner.innerHTML = `
+          <div style="display: flex; align-items: flex-start; gap: 8px;">
+            <span style="font-size: 15px;">💡</span>
+            <div>
+              <div style="font-weight: 800; font-size: 11px; text-transform: uppercase; letter-spacing: 0.05em; color: #38bdf8; margin-bottom: 2px;">Hint 1/3: Conceptual Nudge</div>
+              <div style="font-size: 11.5px; line-height: 1.45; color: #e2e8f0;">${escapeHtml(nudge)}</div>
+            </div>
+          </div>
+        `;
+      }
+      if (btn) btn.innerHTML = `💡 Hint (2/3: 50/50)`;
+      if (window.soundFX) window.soundFX.playPop();
+
+    } else if (tier === 2) {
+      // Tier 2: 50/50 Distractor Eliminator
+      let eliminatedCount = 0;
+      if (window.CASE_BLANKS_ENGINE) {
+        const challenge = window.CASE_BLANKS_ENGINE.createChallenge(cs);
+        if (challenge && challenge.tokenBank) {
+          const correctTokens = new Set(Object.values(challenge.slots).map(s => s.correct.toUpperCase()));
+          const chips = document.querySelectorAll(`#chips_grid_${caseId} .token-chip`);
+          chips.forEach(ch => {
+            const txt = (ch.getAttribute('data-token-text') || '').trim().toUpperCase();
+            if (!correctTokens.has(txt) && eliminatedCount < 2 && !ch.classList.contains('placed') && !ch.classList.contains('eliminated')) {
+              ch.classList.add('eliminated');
+              ch.style.opacity = '0.22';
+              ch.style.textDecoration = 'line-through';
+              ch.style.pointerEvents = 'none';
+              eliminatedCount++;
+            }
+          });
+        }
+      }
+
+      if (hintBanner) {
+        hintBanner.style.display = 'block';
+        hintBanner.className = 'case-hint-banner hint-tier-2';
+        hintBanner.innerHTML = `
+          <div style="display: flex; align-items: flex-start; gap: 8px;">
+            <span style="font-size: 15px;">🎯</span>
+            <div>
+              <div style="font-weight: 800; font-size: 11px; text-transform: uppercase; letter-spacing: 0.05em; color: #facc15; margin-bottom: 2px;">Hint 2/3: 50/50 Eliminator</div>
+              <div style="font-size: 11.5px; line-height: 1.45; color: #fef08a;">
+                ${eliminatedCount > 0 ? `Struck out ${eliminatedCount} incorrect distractor chip(s) from your keyword bank!` : 'Focused candidate keywords in bank.'}
+              </div>
+            </div>
+          </div>
+        `;
+      }
+      if (btn) btn.innerHTML = `👁️ Hint (3/3: Solution)`;
+      if (window.soundFX) window.soundFX.playSuccess();
+
+    } else if (tier === 3) {
+      // Tier 3: Full Solution Reveal
+      if (solEl) solEl.style.display = 'block';
+      if (hintBanner) {
+        hintBanner.style.display = 'block';
+        hintBanner.className = 'case-hint-banner hint-tier-3';
+        hintBanner.innerHTML = `
+          <div style="display: flex; align-items: flex-start; gap: 8px;">
+            <span style="font-size: 15px;">📖</span>
+            <div>
+              <div style="font-weight: 800; font-size: 11px; text-transform: uppercase; letter-spacing: 0.05em; color: #34d399; margin-bottom: 2px;">Hint 3/3: Full Solution Revealed</div>
+              <div style="font-size: 11.5px; line-height: 1.45; color: #d1fae5;">Review the official syntax solution in the yellow shield below.</div>
+            </div>
+          </div>
+        `;
+      }
+      if (btn) btn.innerHTML = `Hide Solution`;
+      if (window.soundFX) window.soundFX.playPop();
+    }
   };
 
   window.handleVerifyCase = function(caseId) {
@@ -5404,6 +5516,9 @@ function renderGymDrillCardHtml(cs) {
       <!-- Real-time Verification Feedback -->
       <div class="case-feedback-banner" id="feedback_${cs.id}" style="display: none;"></div>
 
+      <!-- Progressive 3-Tier Hint Banner -->
+      <div class="case-hint-banner" id="hint_banner_${cs.id}" style="display: none;"></div>
+
       <!-- Collapsible Official Solution Shield -->
       <div class="case-solution-shield" id="solution_${cs.id}" style="display: none;">
         <div class="solution-shield-header" style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 6px;">
@@ -5446,6 +5561,9 @@ function renderGymDrillCardHtml(cs) {
             <button class="btn-case-action btn-verify-puzzle" onclick="handleVerifyCase('${cs.id}')">
               <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><polyline points="20 6 9 17 4 12"></polyline></svg>
               Verify
+            </button>
+            <button class="btn-case-action btn-progressive-hint" id="btn_hint_${cs.id}" onclick="handleProgressiveHint('${cs.id}')">
+              💡 Hint (1/3)
             </button>
             <button class="btn-case-action btn-reveal-shield" onclick="toggleCaseSolution('${cs.id}')">
               👁️ Reveal Answer
