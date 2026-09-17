@@ -3053,6 +3053,97 @@ body {
   opacity: 0.6;
 }
 
+/* =============================================================================
+   LIVE RELATIONAL IMPACT STYLES (ENHANCEMENT #4)
+   ============================================================================= */
+
+.case-table-live-pill {
+  font-size: 10px;
+  font-weight: 800;
+  font-family: var(--font-mono);
+  color: #38bdf8;
+  background: rgba(56, 189, 248, 0.12);
+  border: 1.5px solid rgba(56, 189, 248, 0.4);
+  padding: 2px 7px;
+  border-radius: 5px;
+  transition: all 0.2s ease;
+  white-space: nowrap;
+}
+
+.case-table-live-pill.active {
+  background: rgba(34, 197, 94, 0.18) !important;
+  color: #4ade80 !important;
+  border-color: #22c55e !important;
+  box-shadow: 0 0 8px rgba(34, 197, 94, 0.25);
+}
+
+.case-table-action-btn {
+  background: #0284c7;
+  color: #ffffff;
+  font-weight: 800;
+  font-size: 10px;
+  text-transform: uppercase;
+  padding: 2px 8px;
+  border-radius: 5px;
+  border: 1.5px solid #000000;
+  box-shadow: 1.5px 1.5px 0 #000000;
+  cursor: pointer;
+  font-family: var(--font-mono);
+  transition: all 0.12s ease;
+}
+
+.case-table-action-btn:hover {
+  background: #0369a1;
+  transform: translate(-1px, -1px);
+  box-shadow: 2.5px 2.5px 0 #000000;
+}
+
+.relational-row-matched {
+  background: rgba(34, 197, 94, 0.14) !important;
+  transition: all 0.2s ease;
+}
+
+.relational-row-matched td {
+  color: #f0fdf4 !important;
+  font-weight: 600;
+}
+
+.relational-row-dropped {
+  opacity: 0.32 !important;
+  background: rgba(239, 68, 68, 0.05) !important;
+  text-decoration: line-through;
+  transition: all 0.2s ease;
+}
+
+.relational-status-badge {
+  display: inline-block;
+  font-size: 9px;
+  font-weight: 900;
+  padding: 1px 5px;
+  border-radius: 4px;
+  font-family: var(--font-mono);
+  letter-spacing: 0.04em;
+  text-decoration: none !important;
+}
+
+.relational-status-badge.status-pass {
+  background: #052e16;
+  color: #4ade80;
+  border: 1px solid #22c55e;
+}
+
+.relational-status-badge.status-drop {
+  background: #450a0a;
+  color: #f87171;
+  border: 1px solid #ef4444;
+}
+
+.relational-status-badge.status-base {
+  background: #1e293b;
+  color: #94a3b8;
+  border: 1px solid #334155;
+}
+
 /* Light Theme Overrides */
 [data-theme="paper-white"] .case-table-preview-card,
 [data-theme="warm-cream"] .case-table-preview-card {

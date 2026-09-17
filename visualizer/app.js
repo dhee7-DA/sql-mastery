@@ -3989,16 +3989,23 @@ function renderCaseInlineTablePreview(cs) {
       <div class="case-table-preview-header">
         <div class="case-table-title-group">
           <span class="case-table-badge">🗄️ <strong>${escapeHtml(tableName)}</strong></span>
-          <span class="case-table-count-pill">${columns.length} cols &bull; ${rows.length} rows sample</span>
+          <span class="case-table-count-pill">${columns.length} cols &bull; ${rows.length} rows</span>
+          <span class="case-table-live-pill" id="live_pill_${cs.id}">⚡ Relational Impact: Ready</span>
         </div>
-        <button class="case-table-expand-btn" onclick="toggleCaseTableRows(${cs.id})" id="btnTableRows_${cs.id}" title="Toggle full sample rows">
-          3/${rows.length} rows
-        </button>
+        <div style="display: flex; align-items: center; gap: 6px;">
+          <button class="case-table-action-btn" onclick="updateLiveRelationalImpact('${cs.id}')" title="Evaluate live predicate filtering on table rows">
+            ⚡ Test Filter
+          </button>
+          <button class="case-table-expand-btn" onclick="toggleCaseTableRows('${cs.id}')" id="btnTableRows_${cs.id}" title="Toggle full sample rows">
+            3/${rows.length} rows
+          </button>
+        </div>
       </div>
       <div class="case-table-scroll-wrap" id="caseTableScroll_${cs.id}">
         <table class="case-inline-table">
           <thead>
             <tr>
+              <th class="relational-th-status" style="width: 70px;">FILTER</th>
               ${columns.map(c => `<th>${escapeHtml(c)}</th>`).join('')}
             </tr>
           </thead>
@@ -4011,31 +4018,58 @@ function renderCaseInlineTablePreview(cs) {
   `;
 }
 
-function renderCaseTableRowsHtml(columns, rows) {
-  return rows.map(r => `
-    <tr>
-      ${columns.map(c => {
-        const val = r[c];
-        let cls = 'val-str';
-        let formatted = escapeHtml(String(val));
-        if (val === null || val === undefined) {
-          cls = 'val-null';
-          formatted = 'NULL';
-        } else if (typeof val === 'boolean') {
-          cls = 'val-bool';
-          formatted = val ? 'TRUE' : 'FALSE';
-        } else if (typeof val === 'number') {
-          cls = 'val-num';
-          formatted = String(val);
-        }
-        return `<td><span class="${cls}">${formatted}</span></td>`;
-      }).join('')}
-    </tr>
-  `).join('');
+function renderCaseTableRowsHtml(columns, rows, evalResults = null) {
+  return rows.map((r, idx) => {
+    const evalItem = evalResults && evalResults[idx] ? evalResults[idx] : null;
+    const isPassed = evalItem ? evalItem.passed : null;
+    const rowClass = evalItem 
+      ? (isPassed ? 'relational-row-matched' : 'relational-row-dropped')
+      : '';
+    const tooltip = evalItem ? `title="${escapeHtml(evalItem.reason)}"` : '';
+
+    let statusCell = '';
+    if (evalItem) {
+      statusCell = `
+        <td class="relational-status-col">
+          <span class="relational-status-badge ${isPassed ? 'status-pass' : 'status-drop'}">
+            ${isPassed ? '✓ MATCH' : '✕ DROP'}
+          </span>
+        </td>
+      `;
+    } else {
+      statusCell = `
+        <td class="relational-status-col">
+          <span class="relational-status-badge status-base">BASE</span>
+        </td>
+      `;
+    }
+
+    return `
+      <tr class="${rowClass}" ${tooltip}>
+        ${statusCell}
+        ${columns.map(c => {
+          const val = r[c];
+          let cls = 'val-str';
+          let formatted = escapeHtml(String(val));
+          if (val === null || val === undefined) {
+            cls = 'val-null';
+            formatted = 'NULL';
+          } else if (typeof val === 'boolean') {
+            cls = 'val-bool';
+            formatted = val ? 'TRUE' : 'FALSE';
+          } else if (typeof val === 'number') {
+            cls = 'val-num';
+            formatted = String(val);
+          }
+          return `<td><span class="${cls}">${formatted}</span></td>`;
+        }).join('')}
+      </tr>
+    `;
+  }).join('');
 }
 
 window.toggleCaseTableRows = function(caseId) {
-  const cs = (typeof getCaseStudyById === 'function' ? getCaseStudyById(caseId) : null) || (window.ALL_1490_CASE_STUDIES || window.ALL_500_CASE_STUDIES || []).find(c => c.id === caseId);
+  const cs = (typeof getCaseStudyById === 'function' ? getCaseStudyById(caseId) : null) || (window.ALL_1490_CASE_STUDIES || window.ALL_500_CASE_STUDIES || []).find(c => c.id === caseId || c.id === `gym_${caseId}`);
   if (!cs) return;
   const tbody = document.getElementById(`caseTableBody_${caseId}`);
   const btn = document.getElementById(`btnTableRows_${caseId}`);
@@ -4053,6 +4087,57 @@ window.toggleCaseTableRows = function(caseId) {
     tbody.innerHTML = renderCaseTableRowsHtml(columns, rows);
     tbody.setAttribute('data-expanded', 'true');
     btn.textContent = `All ${rows.length} rows`;
+  }
+};
+
+window.updateLiveRelationalImpact = function(caseId) {
+  const cs = (typeof getCaseStudyById === 'function' ? getCaseStudyById(caseId) : null);
+  if (!cs || !window.CASE_SIMULATOR_ENGINE) return;
+
+  const sim = window.CASE_SIMULATOR_ENGINE.runSimulation(cs);
+  if (!sim || !sim.evalResults || sim.evalResults.length === 0) return;
+
+  const tbody = document.getElementById(`caseTableBody_${caseId}`);
+  const livePill = document.getElementById(`live_pill_${caseId}`);
+  if (!tbody) return;
+
+  const evalResults = sim.evalResults;
+  const columns = Object.keys(evalResults[0].row);
+  const isExpanded = tbody.getAttribute('data-expanded') === 'true';
+  const displayed = isExpanded ? evalResults : evalResults.slice(0, 3);
+
+  tbody.innerHTML = renderCaseTableRowsHtml(columns, displayed.map(d => d.row), evalResults);
+
+  const matchedCount = evalResults.filter(r => r.passed).length;
+  const totalCount = evalResults.length;
+  const pct = Math.round((matchedCount / totalCount) * 100);
+
+  if (livePill) {
+    livePill.classList.add('active');
+    livePill.innerHTML = `⚡ Filter Impact: <strong>${matchedCount}/${totalCount} rows (${pct}%)</strong>`;
+  }
+  if (window.soundFX) window.soundFX.playPop();
+};
+
+window.resetRelationalImpact = function(caseId) {
+  const cs = (typeof getCaseStudyById === 'function' ? getCaseStudyById(caseId) : null);
+  if (!cs || !window.CASE_SIMULATOR_ENGINE) return;
+
+  const tbody = document.getElementById(`caseTableBody_${caseId}`);
+  const livePill = document.getElementById(`live_pill_${caseId}`);
+  if (!tbody) return;
+
+  const rows = window.CASE_SIMULATOR_ENGINE.generateSampleRows(cs);
+  if (!rows || rows.length === 0) return;
+  const columns = Object.keys(rows[0]);
+  const isExpanded = tbody.getAttribute('data-expanded') === 'true';
+  const displayed = isExpanded ? rows : rows.slice(0, 3);
+
+  tbody.innerHTML = renderCaseTableRowsHtml(columns, displayed, null);
+
+  if (livePill) {
+    livePill.classList.remove('active');
+    livePill.innerHTML = `⚡ Relational Impact: Ready`;
   }
 };
 
@@ -4617,6 +4702,11 @@ function renderCaseStudies(
       chipEl.setAttribute('draggable', 'false');
     }
 
+    // Live Relational Impact preview update
+    if (typeof window.updateLiveRelationalImpact === 'function') {
+      window.updateLiveRelationalImpact(caseId);
+    }
+
     // Auto-verify when all slots filled
     const filledCount = Object.values(state.slots).filter(Boolean).length;
     if (filledCount === slotKeys.length) {
@@ -4764,6 +4854,10 @@ function renderCaseStudies(
 
     const fb = document.getElementById(`feedback_${caseId}`);
     if (fb) fb.style.display = 'none';
+
+    if (typeof window.resetRelationalImpact === 'function') {
+      window.resetRelationalImpact(caseId);
+    }
   };
 
   window.toggleCaseSolution = function(caseId) {
