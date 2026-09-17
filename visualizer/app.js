@@ -5003,6 +5003,10 @@ function renderCaseStudies(
       if (window.GYM_BLITZ_ENGINE && window.GYM_BLITZ_ENGINE.isActive()) {
         window.GYM_BLITZ_ENGINE.onDrillSuccess(caseId, cs, fb);
       }
+
+      if (window.GYM_MASTERY_RADAR && typeof window.GYM_MASTERY_RADAR.recordSuccess === 'function') {
+        window.GYM_MASTERY_RADAR.recordSuccess(caseId);
+      }
     } else {
       Object.entries(result.results || {}).forEach(([sId, info]) => {
         const slotEl = document.getElementById(`target_${caseId}_${sId}`);
@@ -5025,6 +5029,13 @@ function renderCaseStudies(
 
       if (window.GYM_BLITZ_ENGINE && window.GYM_BLITZ_ENGINE.isActive()) {
         window.GYM_BLITZ_ENGINE.onDrillFailure(caseId, cs, result, fb);
+      }
+
+      if (window.GYM_MASTERY_RADAR && typeof window.GYM_MASTERY_RADAR.recordMistake === 'function') {
+        const wrongInfo = Object.values(result.results || {}).find(r => !r.isCorrect);
+        const chosen = wrongInfo ? wrongInfo.chosen : '';
+        const correct = wrongInfo ? wrongInfo.correct : '';
+        window.GYM_MASTERY_RADAR.recordMistake(caseId, chosen, correct, cs.title, cs.syntaxTrap);
       }
     }
   };
