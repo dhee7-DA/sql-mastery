@@ -1840,6 +1840,17 @@ let currentGymTable = 'all'; // 'all' or specific table name
 let currentGymSearch = '';
 let currentGymDisplayLimit = 30;
 
+Object.defineProperty(window, 'currentGymPillar', {
+  get() { return currentGymPillar; },
+  set(v) { currentGymPillar = v; },
+  configurable: true
+});
+Object.defineProperty(window, 'currentGymTable', {
+  get() { return currentGymTable; },
+  set(v) { currentGymTable = v; },
+  configurable: true
+});
+
 function switchMainView(targetId) {
   if (window.soundFX) window.soundFX.playWhoosh();
   document.querySelectorAll('.nav-tab').forEach(t => t.classList.remove('active'));
@@ -4894,6 +4905,10 @@ function renderCaseStudies(
           window.CASE_BLANKS_ENGINE.isSolved(`gym_${d.drillNumber || idx + 1}`) || window.CASE_BLANKS_ENGINE.isSolved(1491 + idx)
         ).length;
       }
+
+      if (window.GYM_BLITZ_ENGINE && window.GYM_BLITZ_ENGINE.isActive()) {
+        window.GYM_BLITZ_ENGINE.onDrillSuccess(caseId, cs, fb);
+      }
     } else {
       Object.entries(result.results || {}).forEach(([sId, info]) => {
         const slotEl = document.getElementById(`target_${caseId}_${sId}`);
@@ -4912,6 +4927,10 @@ function renderCaseStudies(
         fb.className = 'case-feedback-banner feedback-error';
         fb.innerHTML = result.explanation;
         fb.style.display = 'block';
+      }
+
+      if (window.GYM_BLITZ_ENGINE && window.GYM_BLITZ_ENGINE.isActive()) {
+        window.GYM_BLITZ_ENGINE.onDrillFailure(caseId, cs, result, fb);
       }
     }
   };
@@ -5383,7 +5402,7 @@ window.selectGymTable = function(tableName) {
   renderSyntaxGym();
 };
 
-function renderGymDrillCardHtml(cs) {
+function renderGymDrillCardHtml(cs, isBlitz = false) {
   const isSolved = window.CASE_BLANKS_ENGINE && window.CASE_BLANKS_ENGINE.isSolved(cs.id);
   const challenge = window.CASE_BLANKS_ENGINE ? window.CASE_BLANKS_ENGINE.createChallenge(cs) : null;
   const activeState = window.CASE_BLANKS_ENGINE ? window.CASE_BLANKS_ENGINE.getCaseState(cs.id) : { slots: {}, usedTokens: new Set() };
@@ -5435,13 +5454,14 @@ function renderGymDrillCardHtml(cs) {
   }
 
   return `
-    <div class="case-card ${isSolved ? 'case-solved' : ''}" id="case_card_${cs.id}">
+    <div class="case-card ${isSolved ? 'case-solved' : ''} ${isBlitz ? 'blitz-active-card' : ''}" id="case_card_${cs.id}">
       <!-- Header -->
       <div class="case-card-header">
         <div>
           <div style="display: flex; align-items: center; gap: 6px; margin-bottom: 6px; flex-wrap: wrap;">
             <span class="status-pill case-id-pill" style="background: #fbbf24; color: #000; border: 2px solid #000; box-shadow: 2px 2px 0px #000;">⚡ Drill #${String(drillNum).padStart(4, '0')}</span>
             <span class="case-industry-pill" style="border-color: #000; background: ${topicAccent}33; color: var(--text-primary); font-weight: 800;">${topicBadgeName}</span>
+            ${isBlitz ? '<span class="status-pill" style="background: #ea580c; color: #fff; font-weight: 900; border: 1.5px solid #000;">⚡ BLITZ SPRINT</span>' : ''}
             ${cs.subcluster ? `<span class="case-section-pill" style="background: #e0e7ff; color: #1e1b4b; border-color: #000;">${escapeHtml(cs.subcluster.split(' ')[0])}</span>` : ''}
             ${isSolved ? '<span style="font-size: 11px;" title="Solved!">🏆</span>' : ''}
           </div>
@@ -5490,11 +5510,11 @@ function renderGymDrillCardHtml(cs) {
       ${challenge ? `
         <div class="token-bank-dock" id="dock_${cs.id}">
           <div class="token-bank-header">
-            <span>🏷️ <strong>Keyword Bank:</strong> Click or drag into blanks</span>
+            <span>🏷️ <strong>Keyword Bank:</strong> ${isBlitz ? 'Press keys [1]-[9] or click chips' : 'Click or drag into blanks'}</span>
             <button class="token-bank-reset-btn" onclick="handleResetCase('${cs.id}')">↺ Reset Slots</button>
           </div>
           <div class="token-chips-grid" id="chips_grid_${cs.id}">
-            ${challenge.tokenBank.map(tok => {
+            ${challenge.tokenBank.map((tok, chipIdx) => {
               const isPlaced = activeState.usedTokens && activeState.usedTokens.has(tok.id);
               return `
                 <button class="token-chip ${isPlaced ? 'placed' : ''}" 
@@ -5505,11 +5525,23 @@ function renderGymDrillCardHtml(cs) {
                         data-token-text="${escapeHtml(tok.text)}"
                         onclick="handleTokenClick('${cs.id}', '${tok.id}', '${escapeHtml(tok.text)}')"
                         ondragstart="handleTokenDragStart(event, '${cs.id}', '${tok.id}', '${escapeHtml(tok.text)}')">
+                  ${isBlitz ? `<span class="chip-hotkey-badge">${chipIdx + 1}</span>` : ''}
                   ${escapeHtml(tok.text)}
                 </button>
               `;
             }).join('')}
           </div>
+          ${isBlitz ? `
+            <div class="blitz-keyboard-bar">
+              <span><kbd class="blitz-kbd">1</kbd>–<kbd class="blitz-kbd">9</kbd> Slot Chip</span>
+              <span>•</span>
+              <span><kbd class="blitz-kbd">⌫</kbd> Undo Chip</span>
+              <span>•</span>
+              <span><kbd class="blitz-kbd">↵ Enter</kbd> Verify</span>
+              <span>•</span>
+              <span><kbd class="blitz-kbd">Space</kbd> Next Drill</span>
+            </div>
+          ` : ''}
         </div>
       ` : ''}
 
