@@ -4167,6 +4167,9 @@ function renderCaseCardHtml(cs) {
           <code>${highlightedSolution}</code>
         </div>
       </div>
+
+      <!-- Physical Execution Order Step-Timeline -->
+      ${window.GYM_TIMELINE_ENGINE ? window.GYM_TIMELINE_ENGINE.renderTimelineHtml(cs.id, cs.targetQuery) : ''}
     `;
   } else {
     // Challenge / Token Puzzle Mode
@@ -4205,6 +4208,9 @@ function renderCaseCardHtml(cs) {
           ${renderedMasked}
         </div>
       </div>
+
+      <!-- Physical Execution Order Step-Timeline -->
+      ${window.GYM_TIMELINE_ENGINE ? window.GYM_TIMELINE_ENGINE.renderTimelineHtml(cs.id, cs.targetQuery) : ''}
 
       <!-- Jumbled Token Bank Dock -->
       <div class="token-bank-dock" id="dock_${cs.id}">
@@ -4702,6 +4708,11 @@ function renderCaseStudies(
       chipEl.setAttribute('draggable', 'false');
     }
 
+    // Execution physics timeline pulse
+    if (window.GYM_TIMELINE_ENGINE) {
+      window.GYM_TIMELINE_ENGINE.pulseStage(caseId, tokenText);
+    }
+
     // Live Relational Impact preview update
     if (typeof window.updateLiveRelationalImpact === 'function') {
       window.updateLiveRelationalImpact(caseId);
@@ -4797,6 +4808,11 @@ function renderCaseStudies(
       if (chipEl) {
         chipEl.classList.add('placed');
         chipEl.setAttribute('draggable', 'false');
+      }
+
+      // Execution physics timeline pulse
+      if (window.GYM_TIMELINE_ENGINE) {
+        window.GYM_TIMELINE_ENGINE.pulseStage(caseId, data.tokenText);
       }
 
       const cs = getCaseStudyById(caseId);
@@ -5610,6 +5626,9 @@ function renderGymDrillCardHtml(cs, isBlitz = false) {
           ${renderedMasked}
         </div>
       </div>
+
+      <!-- Physical Execution Order Step-Timeline -->
+      ${window.GYM_TIMELINE_ENGINE ? window.GYM_TIMELINE_ENGINE.renderTimelineHtml(cs.id, cs.targetQuery) : ''}
 
       <!-- Jumbled Keyword Bank Dock -->
       ${challenge ? `

@@ -4438,6 +4438,140 @@ body {
   animation: feedbackSlide 0.2s ease;
 }
 
+/* =============================================================================
+   PHYSICAL EXECUTION ORDER TIMELINE (OPTION #2)
+   ============================================================================= */
+
+.gym-timeline-card {
+  background: rgba(12, 16, 26, 0.9);
+  border: 2px solid #000000;
+  border-radius: 9px;
+  padding: 8px 12px;
+  margin: 10px 0 12px 0;
+  box-shadow: 2.5px 2.5px 0px #000000;
+  font-family: var(--font-mono);
+}
+
+.gym-timeline-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 8px;
+  flex-wrap: wrap;
+  gap: 6px;
+}
+
+.gym-timeline-title-group {
+  display: flex;
+  align-items: center;
+  gap: 6px;
+}
+
+.gym-timeline-title {
+  font-size: 11px;
+  font-weight: 800;
+  color: #38bdf8;
+  text-transform: uppercase;
+  letter-spacing: 0.04em;
+}
+
+.gym-timeline-hint {
+  font-size: 10px;
+  color: #94a3b8;
+  font-style: italic;
+}
+
+.gym-timeline-track {
+  display: flex;
+  align-items: center;
+  gap: 5px;
+  overflow-x: auto;
+  padding: 2px 2px 6px 2px;
+  scrollbar-width: thin;
+}
+
+.timeline-stage-node {
+  display: flex;
+  align-items: center;
+  gap: 6px;
+  padding: 4px 8px;
+  border-radius: 6px;
+  border: 1.5px solid #000000;
+  box-shadow: 1.5px 1.5px 0px #000000;
+  cursor: pointer;
+  transition: all 0.15s ease;
+  white-space: nowrap;
+  user-select: none;
+}
+
+.timeline-stage-node.stage-active {
+  background: #090d16;
+  border-color: #38bdf8;
+}
+
+.timeline-stage-node.stage-active:hover {
+  transform: translate(-1px, -1px);
+  box-shadow: 2.5px 2.5px 0px #000000;
+}
+
+.timeline-stage-node.stage-bypassed {
+  background: #0b0f19;
+  opacity: 0.35;
+  border-color: #334155;
+  border-style: dashed;
+}
+
+.timeline-stage-node.stage-pulsing {
+  box-shadow: 0 0 14px #22c55e !important;
+  border-color: #22c55e !important;
+  transform: scale(1.08);
+}
+
+.stage-num-badge {
+  font-size: 9.5px;
+  font-weight: 900;
+  width: 16px;
+  height: 16px;
+  border-radius: 4px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-family: var(--font-mono);
+}
+
+.stage-label-text {
+  font-size: 10.5px;
+  font-weight: 800;
+  letter-spacing: 0.02em;
+}
+
+.timeline-arrow {
+  font-size: 9px;
+  user-select: none;
+}
+
+.timeline-arrow.arrow-active {
+  color: #38bdf8;
+}
+
+.timeline-arrow.arrow-dim {
+  color: #334155;
+  opacity: 0.5;
+}
+
+.gym-stage-callout-drawer {
+  margin-top: 8px;
+  animation: feedbackSlide 0.18s ease;
+}
+
+.stage-callout-box {
+  background: #090d16;
+  border: 1.5px solid #1e293b;
+  border-left: 4px solid #38bdf8;
+  border-radius: 6px;
+  padding: 8px 12px;
+}
+
 /* Collapsible Official Solution Shield */
 .case-solution-shield {
   background: #fef9c3;
