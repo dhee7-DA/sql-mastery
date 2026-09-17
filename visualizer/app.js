@@ -5705,6 +5705,9 @@ function renderGymDrillCardHtml(cs, isBlitz = false) {
             <button class="btn-case-action btn-reveal-shield" onclick="toggleCaseSolution('${cs.id}')">
               👁️ Reveal Answer
             </button>
+            <button class="btn-case-action btn-autopsy-mode" id="btn_autopsy_${cs.id}" onclick="toggleSyntaxAutopsy('${cs.id}')" title="Inspect a deliberate syntax trap in this query and select the surgical fix">
+              🔬 Autopsy
+            </button>
           ` : ''}
           ${(cs.syntaxBlueprint || cs.syntaxRule) ? `
             <button class="btn-case-action" onclick="toggleGymIntel('${cs.id}')">
@@ -5722,6 +5725,8 @@ function renderGymDrillCardHtml(cs, isBlitz = false) {
           </button>
         </div>
       </div>
+      <!-- Collapsible Syntax Autopsy Drawer -->
+      <div class="gym-autopsy-drawer" id="autopsy_drawer_${cs.id}" style="display: none; margin-top: 8px;"></div>
       <div class="live-sim-drawer" id="sim_drawer_${cs.id}" style="display: none; margin-top: 10px;"></div>
     </div>
   `;
