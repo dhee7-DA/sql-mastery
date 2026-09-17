@@ -5271,6 +5271,198 @@ window.selectGymTable = function(tableName) {
   renderSyntaxGym();
 };
 
+function renderGymDrillCardHtml(cs) {
+  const isSolved = window.CASE_BLANKS_ENGINE && window.CASE_BLANKS_ENGINE.isSolved(cs.id);
+  const challenge = window.CASE_BLANKS_ENGINE ? window.CASE_BLANKS_ENGINE.createChallenge(cs) : null;
+  const activeState = window.CASE_BLANKS_ENGINE ? window.CASE_BLANKS_ENGINE.getCaseState(cs.id) : { slots: {}, usedTokens: new Set() };
+
+  // Determine topic accent color and label based on drillNumber
+  const drillNum = cs.drillNumber || 1;
+  let topicAccent = '#38bdf8';
+  let topicBadgeName = 'Topic 1: SELECT';
+  if (drillNum >= 101 && drillNum <= 200) { topicAccent = '#f59e0b'; topicBadgeName = 'Topic 2: WHERE'; }
+  else if (drillNum >= 201 && drillNum <= 300) { topicAccent = '#a855f7'; topicBadgeName = 'Topic 3: ORDER BY'; }
+  else if (drillNum >= 301 && drillNum <= 400) { topicAccent = '#ec4899'; topicBadgeName = 'Topic 4: GROUP BY'; }
+  else if (drillNum >= 401 && drillNum <= 500) { topicAccent = '#10b981'; topicBadgeName = 'Topic 5: CASE WHEN'; }
+  else if (drillNum >= 501 && drillNum <= 600) { topicAccent = '#06b6d4'; topicBadgeName = 'Topic 6: Strings'; }
+  else if (drillNum >= 601 && drillNum <= 700) { topicAccent = '#6366f1'; topicBadgeName = 'Topic 7: Joins Core'; }
+  else if (drillNum >= 701 && drillNum <= 800) { topicAccent = '#e11d48'; topicBadgeName = 'Topic 8: Adv Joins'; }
+  else if (drillNum >= 801 && drillNum <= 900) { topicAccent = '#d97706'; topicBadgeName = 'Topic 9: Join Chains'; }
+  else if (drillNum >= 901 && drillNum <= 1000) { topicAccent = '#8b5cf6'; topicBadgeName = 'Topic 10: Date/Time'; }
+  else if (drillNum >= 1001 && drillNum <= 1100) { topicAccent = '#14b8a6'; topicBadgeName = 'Topic 11: Subqueries'; }
+  else if (drillNum >= 1101 && drillNum <= 1200) { topicAccent = '#f97316'; topicBadgeName = 'Topic 12: CTEs'; }
+  else if (drillNum >= 1201 && drillNum <= 1300) { topicAccent = '#0ea5e9'; topicBadgeName = 'Topic 13: Ranking'; }
+  else if (drillNum >= 1301 && drillNum <= 1400) { topicAccent = '#10b981'; topicBadgeName = 'Topic 14: Offsets'; }
+  else if (drillNum >= 1401 && drillNum <= 1500) { topicAccent = '#8b5cf6'; topicBadgeName = 'Topic 15: Frames'; }
+  else if (drillNum >= 1501 && drillNum <= 1600) { topicAccent = '#f43f5e'; topicBadgeName = 'Topic 16: Set Ops'; }
+  else if (drillNum >= 1601 && drillNum <= 1700) { topicAccent = '#eab308'; topicBadgeName = 'Topic 17: DDL/DML'; }
+
+  const highlightedSolution = window.CASE_DOSSIER_ENGINE ? window.CASE_DOSSIER_ENGINE.highlightSQL(cs.targetQuery) : escapeHtml(cs.targetQuery);
+
+  // Render masked query with slots
+  let renderedMasked = escapeHtml(challenge ? challenge.maskedQuery : cs.targetQuery);
+  if (challenge) {
+    for (const [slotId, slotInfo] of Object.entries(challenge.slots)) {
+      const placedVal = activeState.slots[slotId] || '';
+      const isFilled = Boolean(placedVal);
+      const slotSpan = `
+        <span class="gym-slot-target ${isFilled ? 'filled' : ''}" 
+              id="target_${cs.id}_${slotId}"
+              data-case-id="${cs.id}" 
+              data-slot-id="${slotId}" 
+              onclick="handleSlotEject('${cs.id}', '${slotId}')"
+              ondragover="handleSlotDragOver(event)"
+              ondragleave="handleSlotDragLeave(event)"
+              ondrop="handleSlotDrop(event, '${cs.id}', '${slotId}')"
+              title="${isFilled ? 'Click to eject' : 'Click a chip below to place'}">
+          ${isFilled ? `${escapeHtml(placedVal)} <span style="font-size: 10px; margin-left: 4px; opacity: 0.7;">✕</span>` : `[ ${slotId.toUpperCase()} ]`}
+        </span>
+      `;
+      renderedMasked = renderedMasked.replace(`[[${slotId}]]`, slotSpan);
+    }
+  }
+
+  return `
+    <div class="gym-card ${isSolved ? 'gym-solved' : ''}" id="case_card_${cs.id}" style="--topic-accent: ${topicAccent};">
+      <!-- Header -->
+      <div class="gym-card-header">
+        <div>
+          <div class="gym-header-meta">
+            <span class="gym-drill-pill">⚡ Drill #${String(drillNum).padStart(4, '0')}</span>
+            <span class="gym-topic-pill" style="border-color: ${topicAccent}44; color: ${topicAccent};">${topicBadgeName}</span>
+            ${cs.subcluster ? `<span class="gym-subcluster-pill">${escapeHtml(cs.subcluster.split(' ')[0])}</span>` : ''}
+          </div>
+          <h3 class="gym-drill-title">${escapeHtml(cs.title)}</h3>
+        </div>
+        <div style="display: flex; align-items: center; gap: 6px;">
+          <span class="gym-table-pill">🗄️ ${cs.table}</span>
+          ${isSolved ? '<span class="status-pill" style="background: rgba(16, 185, 129, 0.15); color: #34d399; border-color: rgba(16, 185, 129, 0.3); font-size: 10.5px;">✓ Solved</span>' : ''}
+        </div>
+      </div>
+
+      <!-- Objective Strip -->
+      <div class="gym-objective-box" style="border-left-color: ${topicAccent};">
+        <p class="gym-scenario-text">${escapeHtml(cs.scenario)}</p>
+        <div class="gym-objective-text"><strong>Objective:</strong> ${escapeHtml(cs.businessObjective)}</div>
+      </div>
+
+      <!-- Sleek IDE Terminal Canvas -->
+      <div class="gym-terminal-box">
+        <div class="gym-terminal-header">
+          <div class="terminal-dots">
+            <span class="terminal-dot dot-red"></span>
+            <span class="terminal-dot dot-yellow"></span>
+            <span class="terminal-dot dot-green"></span>
+          </div>
+          <span class="gym-terminal-title">MySQL 8.0 • Slot Puzzle Canvas</span>
+          <button class="micro-text-btn" style="font-size: 10px;" onclick="navigator.clipboard.writeText(decodeURIComponent('${encodeURIComponent(cs.targetQuery)}')); if(window.soundFX) window.soundFX.playPop(); this.textContent='Copied!'; setTimeout(()=>this.textContent='Copy', 1500);">Copy</button>
+        </div>
+        <div class="gym-terminal-code" id="canvas_code_${cs.id}">
+          ${renderedMasked}
+        </div>
+      </div>
+
+      <!-- Token Bank Dock -->
+      ${challenge ? `
+        <div class="gym-token-dock" id="dock_${cs.id}">
+          <div class="gym-token-header">
+            <span>🏷️ <strong>Keyword Bank:</strong> Click chip into slot</span>
+            <button class="micro-text-btn" style="font-size: 10.5px; color: #94a3b8;" onclick="handleResetCase('${cs.id}')">↺ Reset</button>
+          </div>
+          <div class="gym-token-chips-grid" id="chips_grid_${cs.id}">
+            ${challenge.tokenBank.map(tok => {
+              const isPlaced = activeState.usedTokens && activeState.usedTokens.has(tok.id);
+              return `
+                <button class="gym-token-chip ${isPlaced ? 'placed' : ''}" 
+                        id="chip_${tok.id}"
+                        draggable="${!isPlaced}"
+                        data-case-id="${cs.id}"
+                        data-token-id="${tok.id}"
+                        data-token-text="${escapeHtml(tok.text)}"
+                        onclick="handleTokenClick('${cs.id}', '${tok.id}', '${escapeHtml(tok.text)}')"
+                        ondragstart="handleTokenDragStart(event, '${cs.id}', '${tok.id}', '${escapeHtml(tok.text)}')">
+                  ${escapeHtml(tok.text)}
+                </button>
+              `;
+            }).join('')}
+          </div>
+        </div>
+      ` : ''}
+
+      <!-- Verification Feedback Banner -->
+      <div class="case-feedback-banner" id="feedback_${cs.id}" style="display: none;"></div>
+
+      <!-- Collapsible Solution Shield -->
+      <div class="case-solution-shield" id="solution_${cs.id}" style="display: none;">
+        <div class="solution-shield-header">
+          <span>💡 Official Syntax Solution:</span>
+          <button class="btn-case-action" style="padding: 2px 8px; font-size: 10px;" onclick="toggleCaseSolution('${cs.id}')">Hide</button>
+        </div>
+        <div class="gym-terminal-code" style="padding: 10px 14px; background: #050811; border-radius: 6px;">
+          <code>${highlightedSolution}</code>
+        </div>
+      </div>
+
+      <!-- Collapsible Intel Drawer (Blueprint & Gotchas) -->
+      ${(cs.syntaxBlueprint || cs.syntaxRule || cs.syntaxTrap) ? `
+        <div class="gym-intel-drawer" id="intel_drawer_${cs.id}" style="display: none;">
+          ${cs.syntaxBlueprint ? `
+            <div class="gym-intel-item">
+              <span class="gym-intel-label" style="color: ${topicAccent};">📐 Syntax Blueprint</span>
+              <pre class="gym-intel-blueprint">${escapeHtml(cs.syntaxBlueprint)}</pre>
+            </div>
+          ` : ''}
+          ${cs.syntaxRule ? `
+            <div class="gym-intel-item">
+              <span class="gym-intel-label" style="color: #94a3b8;">📖 Core Rule</span>
+              <div style="font-size: 11.5px; color: #e2e8f0; line-height: 1.4;">${escapeHtml(cs.syntaxRule)}</div>
+            </div>
+          ` : ''}
+          ${cs.syntaxTrap ? `
+            <div class="gym-intel-item">
+              <span class="gym-intel-label" style="color: #ef4444;">⚠️ Trap to Avoid</span>
+              <div class="gym-intel-trap">${escapeHtml(cs.syntaxTrap)}</div>
+            </div>
+          ` : ''}
+        </div>
+      ` : ''}
+
+      <!-- Actions Bar -->
+      <div class="gym-actions-bar">
+        <div class="gym-actions-left">
+          <button class="btn-gym-verify" onclick="handleVerifyCase('${cs.id}')">
+            <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3"><polyline points="20 6 9 17 4 12"></polyline></svg>
+            Verify
+          </button>
+          <button class="btn-gym-ghost" onclick="toggleCaseSolution('${cs.id}')">
+            👁️ Reveal
+          </button>
+          ${(cs.syntaxBlueprint || cs.syntaxRule) ? `
+            <button class="btn-gym-ghost btn-gym-intel" onclick="toggleGymIntel('${cs.id}')">
+              💡 Blueprint &amp; Traps
+            </button>
+          ` : ''}
+        </div>
+        <div class="gym-actions-right">
+          <button class="btn-gym-ghost" onclick="switchToStudioWithQuery(decodeURIComponent('${encodeURIComponent(cs.targetQuery)}'), '${cs.table}')" title="Test in Query Studio">
+            ⚡ Studio &rarr;
+          </button>
+        </div>
+      </div>
+    </div>
+  `;
+}
+
+function toggleGymIntel(caseId) {
+  const drawer = document.getElementById(`intel_drawer_${caseId}`);
+  if (!drawer) return;
+  const isHidden = drawer.style.display === 'none';
+  drawer.style.display = isHidden ? 'flex' : 'none';
+  if (window.soundFX) window.soundFX.playPop();
+}
+window.renderGymDrillCardHtml = renderGymDrillCardHtml;
+window.toggleGymIntel = toggleGymIntel;
+
 function renderSyntaxGym() {
   const container = document.getElementById('syntaxGymGrid');
   const countBadge = document.getElementById('gymCountBadge');
@@ -5300,6 +5492,8 @@ function renderSyntaxGym() {
         syntaxBlueprint: d.syntaxBlueprint,
         syntaxRule: d.syntaxRule,
         syntaxTrap: d.syntaxTrap,
+        subcluster: d.subcluster,
+        topicName: d.topicName,
         eli5Story: d.eli5Story || `[SYNTAX BLUEPRINT]:\n${d.syntaxBlueprint}\n\n[RULE]: ${d.syntaxRule}\n\n[TRAP TO AVOID]: ${d.syntaxTrap}`,
         commonMistakes: d.commonMistakes,
         learningOutcomes: d.learningOutcomes,
@@ -5310,7 +5504,7 @@ function renderSyntaxGym() {
 
   let filtered = allDrills.slice();
 
-  // 1. Pillar filter ('select' = 1-100, 'where' = 101-200, 'order' = 201-300, 'aggregate' = 301-400, 'casewhen' = 401-500, 'string' = 501-600, 'join_core' = 601-700, 'join_adv' = 701-800, 'join_agg' = 801-900, 'all' = 900)
+  // 1. Pillar filter
   if (currentGymPillar === 'select') {
     filtered = filtered.filter(d => d.drillNumber >= 1 && d.drillNumber <= 100);
   } else if (currentGymPillar === 'where') {
@@ -5389,7 +5583,7 @@ function renderSyntaxGym() {
 
   let html = '';
   visibleDrills.forEach(drill => {
-    html += renderCaseCardHtml(drill);
+    html += renderGymDrillCardHtml(drill);
   });
 
   if (totalMatching > currentGymDisplayLimit) {
