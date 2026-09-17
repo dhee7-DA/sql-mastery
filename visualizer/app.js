@@ -5306,7 +5306,7 @@ function renderGymDrillCardHtml(cs) {
       const placedVal = activeState.slots[slotId] || '';
       const isFilled = Boolean(placedVal);
       const slotSpan = `
-        <span class="gym-slot-target ${isFilled ? 'filled' : ''}" 
+        <span class="query-slot-target ${isFilled ? 'filled' : ''}" 
               id="target_${cs.id}_${slotId}"
               data-case-id="${cs.id}" 
               data-slot-id="${slotId}" 
@@ -5314,8 +5314,8 @@ function renderGymDrillCardHtml(cs) {
               ondragover="handleSlotDragOver(event)"
               ondragleave="handleSlotDragLeave(event)"
               ondrop="handleSlotDrop(event, '${cs.id}', '${slotId}')"
-              title="${isFilled ? 'Click to eject' : 'Click a chip below to place'}">
-          ${isFilled ? `${escapeHtml(placedVal)} <span style="font-size: 10px; margin-left: 4px; opacity: 0.7;">✕</span>` : `[ ${slotId.toUpperCase()} ]`}
+              title="${isFilled ? 'Click to remove token' : 'Click a token below or drag here'}">
+          ${isFilled ? `${escapeHtml(placedVal)} <span class="slot-eject-icon">✕</span>` : `[ ${slotId.toUpperCase()} ]`}
         </span>
       `;
       renderedMasked = renderedMasked.replace(`[[${slotId}]]`, slotSpan);
@@ -5323,57 +5323,69 @@ function renderGymDrillCardHtml(cs) {
   }
 
   return `
-    <div class="gym-card ${isSolved ? 'gym-solved' : ''}" id="case_card_${cs.id}" style="--topic-accent: ${topicAccent};">
+    <div class="case-card ${isSolved ? 'case-solved' : ''}" id="case_card_${cs.id}">
       <!-- Header -->
-      <div class="gym-card-header">
+      <div class="case-card-header">
         <div>
-          <div class="gym-header-meta">
-            <span class="gym-drill-pill">⚡ Drill #${String(drillNum).padStart(4, '0')}</span>
-            <span class="gym-topic-pill" style="border-color: ${topicAccent}44; color: ${topicAccent};">${topicBadgeName}</span>
-            ${cs.subcluster ? `<span class="gym-subcluster-pill">${escapeHtml(cs.subcluster.split(' ')[0])}</span>` : ''}
+          <div style="display: flex; align-items: center; gap: 6px; margin-bottom: 6px; flex-wrap: wrap;">
+            <span class="status-pill case-id-pill" style="background: #fbbf24; color: #000; border: 2px solid #000; box-shadow: 2px 2px 0px #000;">⚡ Drill #${String(drillNum).padStart(4, '0')}</span>
+            <span class="case-industry-pill" style="border-color: #000; background: ${topicAccent}33; color: var(--text-primary); font-weight: 800;">${topicBadgeName}</span>
+            ${cs.subcluster ? `<span class="case-section-pill" style="background: #e0e7ff; color: #1e1b4b; border-color: #000;">${escapeHtml(cs.subcluster.split(' ')[0])}</span>` : ''}
+            ${isSolved ? '<span style="font-size: 11px;" title="Solved!">🏆</span>' : ''}
           </div>
-          <h3 class="gym-drill-title">${escapeHtml(cs.title)}</h3>
+          <h3 class="case-title" onclick="openCaseDossier('${cs.id}')" title="Click to open full case study dossier">${escapeHtml(cs.title)}</h3>
         </div>
         <div style="display: flex; align-items: center; gap: 6px;">
-          <span class="gym-table-pill">🗄️ ${cs.table}</span>
-          ${isSolved ? '<span class="status-pill" style="background: rgba(16, 185, 129, 0.15); color: #34d399; border-color: rgba(16, 185, 129, 0.3); font-size: 10.5px;">✓ Solved</span>' : ''}
+          <span class="case-id-pill" style="background: #38bdf8; color: #000;">🗄️ ${cs.table}</span>
+          ${isSolved ? '<span class="status-pill terminal-solved-pill">✓ Solved</span>' : ''}
         </div>
       </div>
 
-      <!-- Objective Strip -->
-      <div class="gym-objective-box" style="border-left-color: ${topicAccent};">
-        <p class="gym-scenario-text">${escapeHtml(cs.scenario)}</p>
-        <div class="gym-objective-text"><strong>Objective:</strong> ${escapeHtml(cs.businessObjective)}</div>
+      <!-- Scenario Brief -->
+      <p class="case-scenario-text">${escapeHtml(cs.scenario)}</p>
+
+      <!-- Modern Sleek Objective Strip -->
+      <div class="case-objective-strip">
+        <span class="case-objective-icon">🎯</span>
+        <div class="case-objective-content">
+          <div class="case-objective-body"><strong class="case-objective-label">Objective:</strong> ${escapeHtml(cs.businessObjective)}</div>
+        </div>
       </div>
 
-      <!-- Sleek IDE Terminal Canvas -->
-      <div class="gym-terminal-box">
-        <div class="gym-terminal-header">
+      <!-- Live Interactive Table Sample Preview -->
+      ${renderCaseInlineTablePreview(cs)}
+
+      <!-- Interactive Canvas • Fill the Missing Clauses -->
+      <div class="case-terminal-box">
+        <div class="case-terminal-header">
           <div class="terminal-dots">
             <span class="terminal-dot dot-red"></span>
             <span class="terminal-dot dot-yellow"></span>
             <span class="terminal-dot dot-green"></span>
           </div>
-          <span class="gym-terminal-title">MySQL 8.0 • Slot Puzzle Canvas</span>
-          <button class="micro-text-btn" style="font-size: 10px;" onclick="navigator.clipboard.writeText(decodeURIComponent('${encodeURIComponent(cs.targetQuery)}')); if(window.soundFX) window.soundFX.playPop(); this.textContent='Copied!'; setTimeout(()=>this.textContent='Copy', 1500);">Copy</button>
+          <span class="terminal-title">MySQL 8.0 • Slot Puzzle Canvas</span>
+          <div style="display: flex; align-items: center; gap: 8px;">
+            ${isSolved ? '<span class="status-pill terminal-solved-pill">✓ Solved (+15 XP)</span>' : '<span class="terminal-hint-pill">Click chips into blanks</span>'}
+            <button class="micro-text-btn" style="font-size: 10px;" onclick="navigator.clipboard.writeText(decodeURIComponent('${encodeURIComponent(cs.targetQuery)}')); if(window.soundFX) window.soundFX.playPop(); this.textContent='Copied!'; setTimeout(()=>this.textContent='Copy', 1500);">Copy</button>
+          </div>
         </div>
-        <div class="gym-terminal-code" id="canvas_code_${cs.id}">
+        <div class="case-terminal-code" id="canvas_code_${cs.id}">
           ${renderedMasked}
         </div>
       </div>
 
-      <!-- Token Bank Dock -->
+      <!-- Jumbled Keyword Bank Dock -->
       ${challenge ? `
-        <div class="gym-token-dock" id="dock_${cs.id}">
-          <div class="gym-token-header">
-            <span>🏷️ <strong>Keyword Bank:</strong> Click chip into slot</span>
-            <button class="micro-text-btn" style="font-size: 10.5px; color: #94a3b8;" onclick="handleResetCase('${cs.id}')">↺ Reset</button>
+        <div class="token-bank-dock" id="dock_${cs.id}">
+          <div class="token-bank-header">
+            <span>🏷️ <strong>Keyword Bank:</strong> Click or drag into blanks</span>
+            <button class="token-bank-reset-btn" onclick="handleResetCase('${cs.id}')">↺ Reset Slots</button>
           </div>
-          <div class="gym-token-chips-grid" id="chips_grid_${cs.id}">
+          <div class="token-chips-grid" id="chips_grid_${cs.id}">
             ${challenge.tokenBank.map(tok => {
               const isPlaced = activeState.usedTokens && activeState.usedTokens.has(tok.id);
               return `
-                <button class="gym-token-chip ${isPlaced ? 'placed' : ''}" 
+                <button class="token-chip ${isPlaced ? 'placed' : ''}" 
                         id="chip_${tok.id}"
                         draggable="${!isPlaced}"
                         data-case-id="${cs.id}"
@@ -5389,66 +5401,73 @@ function renderGymDrillCardHtml(cs) {
         </div>
       ` : ''}
 
-      <!-- Verification Feedback Banner -->
+      <!-- Real-time Verification Feedback -->
       <div class="case-feedback-banner" id="feedback_${cs.id}" style="display: none;"></div>
 
-      <!-- Collapsible Solution Shield -->
+      <!-- Collapsible Official Solution Shield -->
       <div class="case-solution-shield" id="solution_${cs.id}" style="display: none;">
-        <div class="solution-shield-header">
-          <span>💡 Official Syntax Solution:</span>
+        <div class="solution-shield-header" style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 6px;">
+          <span style="font-size: 11px; font-weight: 700; color: #10b981;">💡 Official Syntax-Highlighted Solution:</span>
           <button class="btn-case-action" style="padding: 2px 8px; font-size: 10px;" onclick="toggleCaseSolution('${cs.id}')">Hide</button>
         </div>
-        <div class="gym-terminal-code" style="padding: 10px 14px; background: #050811; border-radius: 6px;">
+        <div class="case-terminal-code" style="padding: 12px 14px; background: #0b0f17; border-radius: 8px;">
           <code>${highlightedSolution}</code>
         </div>
       </div>
 
       <!-- Collapsible Intel Drawer (Blueprint & Gotchas) -->
       ${(cs.syntaxBlueprint || cs.syntaxRule || cs.syntaxTrap) ? `
-        <div class="gym-intel-drawer" id="intel_drawer_${cs.id}" style="display: none;">
+        <div class="gym-intel-drawer" id="intel_drawer_${cs.id}" style="display: none; flex-direction: column; gap: 8px; background: #0b0f17; border: 2px solid #000; border-radius: 10px; padding: 12px 14px; margin-top: 4px;">
           ${cs.syntaxBlueprint ? `
-            <div class="gym-intel-item">
-              <span class="gym-intel-label" style="color: ${topicAccent};">📐 Syntax Blueprint</span>
-              <pre class="gym-intel-blueprint">${escapeHtml(cs.syntaxBlueprint)}</pre>
+            <div>
+              <div style="font-size: 11px; font-weight: 800; color: #38bdf8; text-transform: uppercase; margin-bottom: 4px;">📐 Syntax Blueprint</div>
+              <pre style="margin: 0; background: #040711; color: #38bdf8; padding: 8px 10px; border-radius: 6px; font-size: 11.5px; border: 1px solid #1e293b; font-family: var(--font-mono); white-space: pre-wrap;">${escapeHtml(cs.syntaxBlueprint)}</pre>
             </div>
           ` : ''}
           ${cs.syntaxRule ? `
-            <div class="gym-intel-item">
-              <span class="gym-intel-label" style="color: #94a3b8;">📖 Core Rule</span>
+            <div>
+              <div style="font-size: 11px; font-weight: 800; color: #94a3b8; text-transform: uppercase; margin-bottom: 2px;">📖 Core Rule</div>
               <div style="font-size: 11.5px; color: #e2e8f0; line-height: 1.4;">${escapeHtml(cs.syntaxRule)}</div>
             </div>
           ` : ''}
           ${cs.syntaxTrap ? `
-            <div class="gym-intel-item">
-              <span class="gym-intel-label" style="color: #ef4444;">⚠️ Trap to Avoid</span>
-              <div class="gym-intel-trap">${escapeHtml(cs.syntaxTrap)}</div>
+            <div>
+              <div style="font-size: 11px; font-weight: 800; color: #ef4444; text-transform: uppercase; margin-bottom: 2px;">⚠️ Trap to Avoid</div>
+              <div style="font-size: 11.5px; color: #fca5a5; line-height: 1.4; background: rgba(239, 68, 68, 0.1); padding: 6px 10px; border-radius: 6px; border-left: 3px solid #ef4444;">${escapeHtml(cs.syntaxTrap)}</div>
             </div>
           ` : ''}
         </div>
       ` : ''}
 
       <!-- Actions Bar -->
-      <div class="gym-actions-bar">
-        <div class="gym-actions-left">
-          <button class="btn-gym-verify" onclick="handleVerifyCase('${cs.id}')">
-            <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3"><polyline points="20 6 9 17 4 12"></polyline></svg>
-            Verify
-          </button>
-          <button class="btn-gym-ghost" onclick="toggleCaseSolution('${cs.id}')">
-            👁️ Reveal
-          </button>
+      <div class="case-actions-bar">
+        <div class="case-actions-group">
+          ${challenge ? `
+            <button class="btn-case-action btn-verify-puzzle" onclick="handleVerifyCase('${cs.id}')">
+              <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><polyline points="20 6 9 17 4 12"></polyline></svg>
+              Verify
+            </button>
+            <button class="btn-case-action btn-reveal-shield" onclick="toggleCaseSolution('${cs.id}')">
+              👁️ Reveal Answer
+            </button>
+          ` : ''}
           ${(cs.syntaxBlueprint || cs.syntaxRule) ? `
-            <button class="btn-gym-ghost btn-gym-intel" onclick="toggleGymIntel('${cs.id}')">
+            <button class="btn-case-action" onclick="toggleGymIntel('${cs.id}')">
               💡 Blueprint &amp; Traps
             </button>
           ` : ''}
-        </div>
-        <div class="gym-actions-right">
-          <button class="btn-gym-ghost" onclick="switchToStudioWithQuery(decodeURIComponent('${encodeURIComponent(cs.targetQuery)}'), '${cs.table}')" title="Test in Query Studio">
+          <button class="btn-case-action" onclick="toggleCaseSim('${cs.id}')">
+            📊 In-Card Sim
+          </button>
+          <button class="btn-case-action" onclick="switchToStudioWithQuery(decodeURIComponent('${encodeURIComponent(cs.targetQuery)}'), '${cs.table}')" title="Test in Query Studio">
             ⚡ Studio &rarr;
+          </button>
+          <button class="btn-case-action" onclick="openCaseDossier('${cs.id}')" title="View Full Dossier">
+            📖 Dossier
           </button>
         </div>
       </div>
+      <div class="live-sim-drawer" id="sim_drawer_${cs.id}" style="display: none; margin-top: 10px;"></div>
     </div>
   `;
 }

@@ -380,8 +380,8 @@ const SYNTAX_GYM_DRILLS = [
     "scenario": "Select the first name, last name, and GPA for all students.",
     "businessObjective": "Select the first name, last name, and GPA for all students.",
     "schemaSnippet": "Students schema",
-    "targetQuery": "SELECT undefined\nFROM Students;",
-    "syntaxBlueprint": "SELECT column_1, column_2\nFROM Students;",
+    "targetQuery": "SELECT first_name, last_name, gpa\nFROM Students;",
+    "syntaxBlueprint": "SELECT first_name, last_name, gpa\nFROM Students;",
     "syntaxRule": "Keywords are SELECT, FROM, AS, DISTINCT. Keep commas between columns only.",
     "syntaxTrap": "Do not add trailing commas before FROM or quote column identifiers.",
     "eli5Story": "Simple everyday task on Students: Select the first name, last name, and GPA for all students.",
@@ -394,7 +394,7 @@ const SYNTAX_GYM_DRILLS = [
       },
       {
         "type": "column",
-        "value": "undefined"
+        "value": "first_name, last_name, gpa"
       },
       {
         "type": "keyword",
@@ -415,8 +415,8 @@ const SYNTAX_GYM_DRILLS = [
     "scenario": "Display book title, author, and price for a book fair catalog.",
     "businessObjective": "Display book title, author, and price for a book fair catalog.",
     "schemaSnippet": "Books schema",
-    "targetQuery": "SELECT undefined\nFROM Books;",
-    "syntaxBlueprint": "SELECT column_1, column_2\nFROM Books;",
+    "targetQuery": "SELECT title, author, price\nFROM Books;",
+    "syntaxBlueprint": "SELECT title, author, price\nFROM Books;",
     "syntaxRule": "Keywords are SELECT, FROM, AS, DISTINCT. Keep commas between columns only.",
     "syntaxTrap": "Do not add trailing commas before FROM or quote column identifiers.",
     "eli5Story": "Simple everyday task on Books: Display book title, author, and price for a book fair catalog.",
@@ -429,7 +429,7 @@ const SYNTAX_GYM_DRILLS = [
       },
       {
         "type": "column",
-        "value": "undefined"
+        "value": "title, author, price"
       },
       {
         "type": "keyword",
@@ -450,8 +450,8 @@ const SYNTAX_GYM_DRILLS = [
     "scenario": "Extract first name, department, and salary for the monthly compensation review.",
     "businessObjective": "Extract first name, department, and salary for the monthly compensation review.",
     "schemaSnippet": "Employees schema",
-    "targetQuery": "SELECT undefined\nFROM Employees;",
-    "syntaxBlueprint": "SELECT column_1, column_2\nFROM Employees;",
+    "targetQuery": "SELECT first_name, department, salary\nFROM Employees;",
+    "syntaxBlueprint": "SELECT first_name, department, salary\nFROM Employees;",
     "syntaxRule": "Keywords are SELECT, FROM, AS, DISTINCT. Keep commas between columns only.",
     "syntaxTrap": "Do not add trailing commas before FROM or quote column identifiers.",
     "eli5Story": "Simple everyday task on Employees: Extract first name, department, and salary for the monthly compensation review.",
@@ -464,7 +464,7 @@ const SYNTAX_GYM_DRILLS = [
       },
       {
         "type": "column",
-        "value": "undefined"
+        "value": "first_name, department, salary"
       },
       {
         "type": "keyword",
@@ -485,8 +485,8 @@ const SYNTAX_GYM_DRILLS = [
     "scenario": "List grocery item name, its category, and unit price for shelf price tags.",
     "businessObjective": "List grocery item name, its category, and unit price for shelf price tags.",
     "schemaSnippet": "GroceryItems schema",
-    "targetQuery": "SELECT undefined\nFROM GroceryItems;",
-    "syntaxBlueprint": "SELECT column_1, column_2\nFROM GroceryItems;",
+    "targetQuery": "SELECT item_name, category, unit_price\nFROM GroceryItems;",
+    "syntaxBlueprint": "SELECT item_name, category, unit_price\nFROM GroceryItems;",
     "syntaxRule": "Keywords are SELECT, FROM, AS, DISTINCT. Keep commas between columns only.",
     "syntaxTrap": "Do not add trailing commas before FROM or quote column identifiers.",
     "eli5Story": "Simple everyday task on GroceryItems: List grocery item name, its category, and unit price for shelf price tags.",
@@ -499,7 +499,7 @@ const SYNTAX_GYM_DRILLS = [
       },
       {
         "type": "column",
-        "value": "undefined"
+        "value": "item_name, category, unit_price"
       },
       {
         "type": "keyword",
@@ -520,8 +520,8 @@ const SYNTAX_GYM_DRILLS = [
     "scenario": "View customer name, purchased product, and ordered quantity on packing slips.",
     "businessObjective": "View customer name, purchased product, and ordered quantity on packing slips.",
     "schemaSnippet": "Orders schema",
-    "targetQuery": "SELECT undefined\nFROM Orders;",
-    "syntaxBlueprint": "SELECT column_1, column_2\nFROM Orders;",
+    "targetQuery": "SELECT customer_name, product_name, quantity\nFROM Orders;",
+    "syntaxBlueprint": "SELECT customer_name, product_name, quantity\nFROM Orders;",
     "syntaxRule": "Keywords are SELECT, FROM, AS, DISTINCT. Keep commas between columns only.",
     "syntaxTrap": "Do not add trailing commas before FROM or quote column identifiers.",
     "eli5Story": "Simple everyday task on Orders: View customer name, purchased product, and ordered quantity on packing slips.",
@@ -534,7 +534,7 @@ const SYNTAX_GYM_DRILLS = [
       },
       {
         "type": "column",
-        "value": "undefined"
+        "value": "customer_name, product_name, quantity"
       },
       {
         "type": "keyword",
@@ -555,8 +555,8 @@ const SYNTAX_GYM_DRILLS = [
     "scenario": "Show track title, artist name, and duration in seconds for the media player.",
     "businessObjective": "Show track title, artist name, and duration in seconds for the media player.",
     "schemaSnippet": "MusicTracks schema",
-    "targetQuery": "SELECT undefined\nFROM MusicTracks;",
-    "syntaxBlueprint": "SELECT column_1, column_2\nFROM MusicTracks;",
+    "targetQuery": "SELECT title, artist, duration_seconds\nFROM MusicTracks;",
+    "syntaxBlueprint": "SELECT title, artist, duration_seconds\nFROM MusicTracks;",
     "syntaxRule": "Keywords are SELECT, FROM, AS, DISTINCT. Keep commas between columns only.",
     "syntaxTrap": "Do not add trailing commas before FROM or quote column identifiers.",
     "eli5Story": "Simple everyday task on MusicTracks: Show track title, artist name, and duration in seconds for the media player.",
@@ -569,7 +569,7 @@ const SYNTAX_GYM_DRILLS = [
       },
       {
         "type": "column",
-        "value": "undefined"
+        "value": "title, artist, duration_seconds"
       },
       {
         "type": "keyword",
@@ -590,8 +590,8 @@ const SYNTAX_GYM_DRILLS = [
     "scenario": "Fetch gym member name, plan type, and monthly fee for billing.",
     "businessObjective": "Fetch gym member name, plan type, and monthly fee for billing.",
     "schemaSnippet": "GymMembers schema",
-    "targetQuery": "SELECT undefined\nFROM GymMembers;",
-    "syntaxBlueprint": "SELECT column_1, column_2\nFROM GymMembers;",
+    "targetQuery": "SELECT member_name, membership_plan, monthly_fee\nFROM GymMembers;",
+    "syntaxBlueprint": "SELECT member_name, membership_plan, monthly_fee\nFROM GymMembers;",
     "syntaxRule": "Keywords are SELECT, FROM, AS, DISTINCT. Keep commas between columns only.",
     "syntaxTrap": "Do not add trailing commas before FROM or quote column identifiers.",
     "eli5Story": "Simple everyday task on GymMembers: Fetch gym member name, plan type, and monthly fee for billing.",
@@ -604,7 +604,7 @@ const SYNTAX_GYM_DRILLS = [
       },
       {
         "type": "column",
-        "value": "undefined"
+        "value": "member_name, membership_plan, monthly_fee"
       },
       {
         "type": "keyword",
@@ -625,8 +625,8 @@ const SYNTAX_GYM_DRILLS = [
     "scenario": "Output movie title, director, and star rating for a film review website.",
     "businessObjective": "Output movie title, director, and star rating for a film review website.",
     "schemaSnippet": "MovieReviews schema",
-    "targetQuery": "SELECT undefined\nFROM MovieReviews;",
-    "syntaxBlueprint": "SELECT column_1, column_2\nFROM MovieReviews;",
+    "targetQuery": "SELECT movie_title, director, star_rating\nFROM MovieReviews;",
+    "syntaxBlueprint": "SELECT movie_title, director, star_rating\nFROM MovieReviews;",
     "syntaxRule": "Keywords are SELECT, FROM, AS, DISTINCT. Keep commas between columns only.",
     "syntaxTrap": "Do not add trailing commas before FROM or quote column identifiers.",
     "eli5Story": "Simple everyday task on MovieReviews: Output movie title, director, and star rating for a film review website.",
@@ -639,7 +639,7 @@ const SYNTAX_GYM_DRILLS = [
       },
       {
         "type": "column",
-        "value": "undefined"
+        "value": "movie_title, director, star_rating"
       },
       {
         "type": "keyword",
@@ -660,8 +660,8 @@ const SYNTAX_GYM_DRILLS = [
     "scenario": "Display flight ID, airline, origin airport, and destination airport for the flight gate monitor.",
     "businessObjective": "Display flight ID, airline, origin airport, and destination airport for the flight gate monitor.",
     "schemaSnippet": "FlightSchedule schema",
-    "targetQuery": "SELECT undefined\nFROM FlightSchedule;",
-    "syntaxBlueprint": "SELECT column_1, column_2\nFROM FlightSchedule;",
+    "targetQuery": "SELECT flight_id, airline, origin_airport, destination_airport\nFROM FlightSchedule;",
+    "syntaxBlueprint": "SELECT flight_id, airline, origin_airport, destination_airport\nFROM FlightSchedule;",
     "syntaxRule": "Keywords are SELECT, FROM, AS, DISTINCT. Keep commas between columns only.",
     "syntaxTrap": "Do not add trailing commas before FROM or quote column identifiers.",
     "eli5Story": "Simple everyday task on FlightSchedule: Display flight ID, airline, origin airport, and destination airport for the flight gate monitor.",
@@ -674,7 +674,7 @@ const SYNTAX_GYM_DRILLS = [
       },
       {
         "type": "column",
-        "value": "undefined"
+        "value": "flight_id, airline, origin_airport, destination_airport"
       },
       {
         "type": "keyword",
@@ -695,8 +695,8 @@ const SYNTAX_GYM_DRILLS = [
     "scenario": "Retrieve pet name, species, age in years, and weight in kg for veterinary patient intake.",
     "businessObjective": "Retrieve pet name, species, age in years, and weight in kg for veterinary patient intake.",
     "schemaSnippet": "PetClinic schema",
-    "targetQuery": "SELECT undefined\nFROM PetClinic;",
-    "syntaxBlueprint": "SELECT column_1, column_2\nFROM PetClinic;",
+    "targetQuery": "SELECT pet_name, species, age_years, weight_kg\nFROM PetClinic;",
+    "syntaxBlueprint": "SELECT pet_name, species, age_years, weight_kg\nFROM PetClinic;",
     "syntaxRule": "Keywords are SELECT, FROM, AS, DISTINCT. Keep commas between columns only.",
     "syntaxTrap": "Do not add trailing commas before FROM or quote column identifiers.",
     "eli5Story": "Simple everyday task on PetClinic: Retrieve pet name, species, age in years, and weight in kg for veterinary patient intake.",
@@ -709,7 +709,7 @@ const SYNTAX_GYM_DRILLS = [
       },
       {
         "type": "column",
-        "value": "undefined"
+        "value": "pet_name, species, age_years, weight_kg"
       },
       {
         "type": "keyword",
@@ -22833,7 +22833,7 @@ const SYNTAX_GYM_DRILLS = [
     "businessObjective": "Full lifecycle query: filter by salary > 50000, group by department, keep groups with >= 2 staff, and order descending.",
     "schemaSnippet": "Employees schema",
     "targetQuery": "SELECT department, COUNT(*) AS staff_count\nFROM Employees\nWHERE salary > 50000\nGROUP BY department\nHAVING COUNT(*) >= 2\nORDER BY staff_count DESC;",
-    "syntaxBlueprint": "SELECT undefined\nFROM Employees;",
+    "syntaxBlueprint": "SELECT column_name, AGG(expr)\nFROM Employees\nWHERE condition\nGROUP BY column_name\nHAVING condition;",
     "syntaxRule": "Aggregate functions compute summary metrics. In GROUP BY queries, every column in SELECT must either be aggregated or listed in GROUP BY. Filter rows with WHERE; filter aggregate groups with HAVING.",
     "syntaxTrap": "Writing an aggregate function like 'WHERE COUNT(*) > 1' in the WHERE clause (illegal; use HAVING instead), or omitting a non-aggregated column from the GROUP BY clause.",
     "eli5Story": "Grouping and aggregating data on Employees: Full lifecycle query: filter by salary > 50000, group by department, keep groups with >= 2 staff, and order descending.",
@@ -22940,7 +22940,7 @@ const SYNTAX_GYM_DRILLS = [
     "businessObjective": "Filter recent students (>= 2023), group by major, filter high-GPA majors (>= 3.5), and sort top 3.",
     "schemaSnippet": "Students schema",
     "targetQuery": "SELECT major, ROUND(AVG(gpa), 2) AS avg_gpa\nFROM Students\nWHERE enrolled_year >= 2023\nGROUP BY major\nHAVING AVG(gpa) >= 3.5\nORDER BY avg_gpa DESC\nLIMIT 3;",
-    "syntaxBlueprint": "SELECT undefined\nFROM Students;",
+    "syntaxBlueprint": "SELECT column_name, AGG(expr)\nFROM Students\nWHERE condition\nGROUP BY column_name\nHAVING condition;",
     "syntaxRule": "Aggregate functions compute summary metrics. In GROUP BY queries, every column in SELECT must either be aggregated or listed in GROUP BY. Filter rows with WHERE; filter aggregate groups with HAVING.",
     "syntaxTrap": "Writing an aggregate function like 'WHERE COUNT(*) > 1' in the WHERE clause (illegal; use HAVING instead), or omitting a non-aggregated column from the GROUP BY clause.",
     "eli5Story": "Grouping and aggregating data on Students: Filter recent students (>= 2023), group by major, filter high-GPA majors (>= 3.5), and sort top 3.",
@@ -23059,7 +23059,7 @@ const SYNTAX_GYM_DRILLS = [
     "businessObjective": "Fix the WHERE vs HAVING trap: replace 'WHERE COUNT(*) >= 2' with 'HAVING COUNT(*) >= 2' (aggregates cannot be in WHERE).",
     "schemaSnippet": "Books schema",
     "targetQuery": "SELECT genre, COUNT(*) AS title_count\nFROM Books\nGROUP BY genre\nHAVING COUNT(*) >= 2\nORDER BY title_count DESC;",
-    "syntaxBlueprint": "SELECT undefined\nFROM Books;",
+    "syntaxBlueprint": "SELECT column_name, AGG(expr)\nFROM Books\nWHERE condition\nGROUP BY column_name\nHAVING condition;",
     "syntaxRule": "Aggregate functions compute summary metrics. In GROUP BY queries, every column in SELECT must either be aggregated or listed in GROUP BY. Filter rows with WHERE; filter aggregate groups with HAVING.",
     "syntaxTrap": "Writing an aggregate function like 'WHERE COUNT(*) > 1' in the WHERE clause (illegal; use HAVING instead), or omitting a non-aggregated column from the GROUP BY clause.",
     "eli5Story": "Grouping and aggregating data on Books: Fix the WHERE vs HAVING trap: replace 'WHERE COUNT(*) >= 2' with 'HAVING COUNT(*) >= 2' (aggregates cannot be in WHERE).",
@@ -23150,7 +23150,7 @@ const SYNTAX_GYM_DRILLS = [
     "businessObjective": "Properly combine row filtering in WHERE (stock_units > 10) with group filtering in HAVING (avg_price > 3.00).",
     "schemaSnippet": "GroceryItems schema",
     "targetQuery": "SELECT category, ROUND(AVG(unit_price), 2) AS avg_price\nFROM GroceryItems\nWHERE stock_units > 10\nGROUP BY category\nHAVING AVG(unit_price) > 3.00\nORDER BY avg_price ASC;",
-    "syntaxBlueprint": "SELECT undefined\nFROM GroceryItems;",
+    "syntaxBlueprint": "SELECT column_name, AGG(expr)\nFROM GroceryItems\nWHERE condition\nGROUP BY column_name\nHAVING condition;",
     "syntaxRule": "Aggregate functions compute summary metrics. In GROUP BY queries, every column in SELECT must either be aggregated or listed in GROUP BY. Filter rows with WHERE; filter aggregate groups with HAVING.",
     "syntaxTrap": "Writing an aggregate function like 'WHERE COUNT(*) > 1' in the WHERE clause (illegal; use HAVING instead), or omitting a non-aggregated column from the GROUP BY clause.",
     "eli5Story": "Grouping and aggregating data on GroceryItems: Properly combine row filtering in WHERE (stock_units > 10) with group filtering in HAVING (avg_price > 3.00).",
@@ -23261,7 +23261,7 @@ const SYNTAX_GYM_DRILLS = [
     "businessObjective": "Full lifecycle sales pipeline: filter delivered orders, group by city, filter revenue > 500, order by top revenue.",
     "schemaSnippet": "Orders schema",
     "targetQuery": "SELECT shipping_city, SUM(quantity * unit_price) AS total_revenue\nFROM Orders\nWHERE order_status = 'Delivered'\nGROUP BY shipping_city\nHAVING SUM(quantity * unit_price) > 500\nORDER BY total_revenue DESC;",
-    "syntaxBlueprint": "SELECT undefined\nFROM Orders;",
+    "syntaxBlueprint": "SELECT column_name, AGG(expr)\nFROM Orders\nWHERE condition\nGROUP BY column_name\nHAVING condition;",
     "syntaxRule": "Aggregate functions compute summary metrics. In GROUP BY queries, every column in SELECT must either be aggregated or listed in GROUP BY. Filter rows with WHERE; filter aggregate groups with HAVING.",
     "syntaxTrap": "Writing an aggregate function like 'WHERE COUNT(*) > 1' in the WHERE clause (illegal; use HAVING instead), or omitting a non-aggregated column from the GROUP BY clause.",
     "eli5Story": "Grouping and aggregating data on Orders: Full lifecycle sales pipeline: filter delivered orders, group by city, filter revenue > 500, order by top revenue.",
@@ -23384,7 +23384,7 @@ const SYNTAX_GYM_DRILLS = [
     "businessObjective": "Fix the missing GROUP BY error: 'SELECT genre, COUNT(*) FROM MusicTracks ORDER BY 2 DESC;' (must GROUP BY genre).",
     "schemaSnippet": "MusicTracks schema",
     "targetQuery": "SELECT genre, COUNT(*) AS track_count\nFROM MusicTracks\nGROUP BY genre\nORDER BY track_count DESC\nLIMIT 5;",
-    "syntaxBlueprint": "SELECT undefined\nFROM MusicTracks;",
+    "syntaxBlueprint": "SELECT column_name, AGG(expr)\nFROM MusicTracks\nWHERE condition\nGROUP BY column_name\nHAVING condition;",
     "syntaxRule": "Aggregate functions compute summary metrics. In GROUP BY queries, every column in SELECT must either be aggregated or listed in GROUP BY. Filter rows with WHERE; filter aggregate groups with HAVING.",
     "syntaxTrap": "Writing an aggregate function like 'WHERE COUNT(*) > 1' in the WHERE clause (illegal; use HAVING instead), or omitting a non-aggregated column from the GROUP BY clause.",
     "eli5Story": "Grouping and aggregating data on MusicTracks: Fix the missing GROUP BY error: 'SELECT genre, COUNT(*) FROM MusicTracks ORDER BY 2 DESC;' (must GROUP BY genre).",
@@ -23467,7 +23467,7 @@ const SYNTAX_GYM_DRILLS = [
     "businessObjective": "Filter active gym members, group by plan, enforce active_count >= 2 with HAVING, and order descending.",
     "schemaSnippet": "GymMembers schema",
     "targetQuery": "SELECT membership_plan, COUNT(*) AS active_count\nFROM GymMembers\nWHERE is_active = 1\nGROUP BY membership_plan\nHAVING COUNT(*) >= 2\nORDER BY active_count DESC;",
-    "syntaxBlueprint": "SELECT undefined\nFROM GymMembers;",
+    "syntaxBlueprint": "SELECT column_name, AGG(expr)\nFROM GymMembers\nWHERE condition\nGROUP BY column_name\nHAVING condition;",
     "syntaxRule": "Aggregate functions compute summary metrics. In GROUP BY queries, every column in SELECT must either be aggregated or listed in GROUP BY. Filter rows with WHERE; filter aggregate groups with HAVING.",
     "syntaxTrap": "Writing an aggregate function like 'WHERE COUNT(*) > 1' in the WHERE clause (illegal; use HAVING instead), or omitting a non-aggregated column from the GROUP BY clause.",
     "eli5Story": "Grouping and aggregating data on GymMembers: Filter active gym members, group by plan, enforce active_count >= 2 with HAVING, and order descending.",
@@ -23574,7 +23574,7 @@ const SYNTAX_GYM_DRILLS = [
     "businessObjective": "Filter reviews >= 3.0 stars, group by release year, filter years with >= 2 reviews, and sort chronologically.",
     "schemaSnippet": "MovieReviews schema",
     "targetQuery": "SELECT release_year, ROUND(AVG(star_rating), 2) AS avg_rating\nFROM MovieReviews\nWHERE star_rating >= 3.0\nGROUP BY release_year\nHAVING COUNT(*) >= 2\nORDER BY release_year ASC;",
-    "syntaxBlueprint": "SELECT undefined\nFROM MovieReviews;",
+    "syntaxBlueprint": "SELECT column_name, AGG(expr)\nFROM MovieReviews\nWHERE condition\nGROUP BY column_name\nHAVING condition;",
     "syntaxRule": "Aggregate functions compute summary metrics. In GROUP BY queries, every column in SELECT must either be aggregated or listed in GROUP BY. Filter rows with WHERE; filter aggregate groups with HAVING.",
     "syntaxTrap": "Writing an aggregate function like 'WHERE COUNT(*) > 1' in the WHERE clause (illegal; use HAVING instead), or omitting a non-aggregated column from the GROUP BY clause.",
     "eli5Story": "Grouping and aggregating data on MovieReviews: Filter reviews >= 3.0 stars, group by release year, filter years with >= 2 reviews, and sort chronologically.",
@@ -23685,7 +23685,7 @@ const SYNTAX_GYM_DRILLS = [
     "businessObjective": "Analyze popular destinations: filter on-time flights, group by destination, filter count >= 2, return top 3.",
     "schemaSnippet": "FlightSchedule schema",
     "targetQuery": "SELECT destination_airport, COUNT(*) AS flight_count\nFROM FlightSchedule\nWHERE status = 'On Time'\nGROUP BY destination_airport\nHAVING COUNT(*) >= 2\nORDER BY flight_count DESC\nLIMIT 3;",
-    "syntaxBlueprint": "SELECT undefined\nFROM FlightSchedule;",
+    "syntaxBlueprint": "SELECT column_name, AGG(expr)\nFROM FlightSchedule\nWHERE condition\nGROUP BY column_name\nHAVING condition;",
     "syntaxRule": "Aggregate functions compute summary metrics. In GROUP BY queries, every column in SELECT must either be aggregated or listed in GROUP BY. Filter rows with WHERE; filter aggregate groups with HAVING.",
     "syntaxTrap": "Writing an aggregate function like 'WHERE COUNT(*) > 1' in the WHERE clause (illegal; use HAVING instead), or omitting a non-aggregated column from the GROUP BY clause.",
     "eli5Story": "Grouping and aggregating data on FlightSchedule: Analyze popular destinations: filter on-time flights, group by destination, filter count >= 2, return top 3.",
@@ -23804,7 +23804,7 @@ const SYNTAX_GYM_DRILLS = [
     "businessObjective": "Fix clause order trap: ensure WHERE comes before GROUP BY and HAVING comes after GROUP BY.",
     "schemaSnippet": "PetClinic schema",
     "targetQuery": "SELECT species, ROUND(AVG(weight_kg), 1) AS avg_weight\nFROM PetClinic\nWHERE age_years >= 1\nGROUP BY species\nHAVING AVG(weight_kg) > 5.0\nORDER BY avg_weight DESC;",
-    "syntaxBlueprint": "SELECT undefined\nFROM PetClinic;",
+    "syntaxBlueprint": "SELECT column_name, AGG(expr)\nFROM PetClinic\nWHERE condition\nGROUP BY column_name\nHAVING condition;",
     "syntaxRule": "Aggregate functions compute summary metrics. In GROUP BY queries, every column in SELECT must either be aggregated or listed in GROUP BY. Filter rows with WHERE; filter aggregate groups with HAVING.",
     "syntaxTrap": "Writing an aggregate function like 'WHERE COUNT(*) > 1' in the WHERE clause (illegal; use HAVING instead), or omitting a non-aggregated column from the GROUP BY clause.",
     "eli5Story": "Grouping and aggregating data on PetClinic: Fix clause order trap: ensure WHERE comes before GROUP BY and HAVING comes after GROUP BY.",
