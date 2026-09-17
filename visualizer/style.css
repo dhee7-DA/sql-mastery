@@ -3516,8 +3516,17 @@ body {
   color: #000000;
 }
 .case-feedback-banner.feedback-error {
-  background: #f43f5e;
-  color: #ffffff;
+  background: #881337;
+  color: #f8fafc;
+  border: 2.5px solid #000000;
+}
+
+.diagnostic-mistake-card {
+  transition: background 0.12s ease;
+}
+
+.diagnostic-mistake-card:hover {
+  background: rgba(0, 0, 0, 0.48) !important;
 }
 
 @keyframes feedbackSlide {
