@@ -4176,6 +4176,9 @@ function renderCaseCardHtml(cs) {
 
       <!-- FAANG Mock Interview Follow-Up Drawer -->
       ${window.GYM_FAANG_INTERVIEWER ? window.GYM_FAANG_INTERVIEWER.renderFaangDrawerHtml(cs.id, cs.targetQuery, cs.table, cs) : ''}
+
+      <!-- Relational Data-Flow DAG Drawer -->
+      ${window.GYM_DATAFLOW_GRAPH ? window.GYM_DATAFLOW_GRAPH.renderDataFlowDrawerHtml(cs.id, cs.targetQuery, cs.table) : ''}
     `;
   } else {
     // Challenge / Token Puzzle Mode
@@ -4223,6 +4226,9 @@ function renderCaseCardHtml(cs) {
 
       <!-- FAANG Mock Interview Follow-Up Drawer -->
       ${window.GYM_FAANG_INTERVIEWER ? window.GYM_FAANG_INTERVIEWER.renderFaangDrawerHtml(cs.id, cs.targetQuery, cs.table, cs) : ''}
+
+      <!-- Relational Data-Flow DAG Drawer -->
+      ${window.GYM_DATAFLOW_GRAPH ? window.GYM_DATAFLOW_GRAPH.renderDataFlowDrawerHtml(cs.id, cs.targetQuery, cs.table) : ''}
 
       <!-- Jumbled Token Bank Dock -->
       <div class="token-bank-dock" id="dock_${cs.id}">
@@ -4327,6 +4333,9 @@ function renderCaseCardHtml(cs) {
           </button>
           <button class="btn-case-action" id="btn_faang_${cs.id}" style="background: rgba(168, 85, 247, 0.12); color: #c084fc; border-color: rgba(168, 85, 247, 0.4);" onclick="window.GYM_FAANG_INTERVIEWER && window.GYM_FAANG_INTERVIEWER.toggleInterview('${cs.id}')" title="Simulate FAANG Staff Engineering Follow-Up Technical Screen">
             🎙️ FAANG Screen
+          </button>
+          <button class="btn-case-action" style="background: rgba(6, 182, 212, 0.12); color: #22d3ee; border-color: rgba(6, 182, 212, 0.4);" onclick="window.GYM_DATAFLOW_GRAPH && window.GYM_DATAFLOW_GRAPH.toggleDataFlow('${cs.id}')" title="Inspect Relational Algebra Data-Flow DAG and volume compression pipeline">
+            📊 Data-Flow DAG
           </button>
           <button class="btn-case-action btn-case-dossier" onclick="openCaseDossier('${cs.id}')" title="View Executive Dossier">
             📖 Dossier
@@ -5658,6 +5667,9 @@ function renderGymDrillCardHtml(cs, isBlitz = false) {
       <!-- FAANG Mock Interview Follow-Up Drawer -->
       ${window.GYM_FAANG_INTERVIEWER ? window.GYM_FAANG_INTERVIEWER.renderFaangDrawerHtml(cs.id, cs.targetQuery, cs.table, cs) : ''}
 
+      <!-- Relational Data-Flow DAG Drawer -->
+      ${window.GYM_DATAFLOW_GRAPH ? window.GYM_DATAFLOW_GRAPH.renderDataFlowDrawerHtml(cs.id, cs.targetQuery, cs.table) : ''}
+
       <!-- Jumbled Keyword Bank Dock -->
       ${challenge ? `
         <div class="token-bank-dock" id="dock_${cs.id}">
@@ -5772,6 +5784,9 @@ function renderGymDrillCardHtml(cs, isBlitz = false) {
           </button>
           <button class="btn-case-action" id="btn_faang_${cs.id}" style="background: rgba(168, 85, 247, 0.12); color: #c084fc; border-color: rgba(168, 85, 247, 0.4);" onclick="window.GYM_FAANG_INTERVIEWER && window.GYM_FAANG_INTERVIEWER.toggleInterview('${cs.id}')" title="Simulate FAANG Staff Engineering Follow-Up Technical Screen">
             🎙️ FAANG Screen
+          </button>
+          <button class="btn-case-action" style="background: rgba(6, 182, 212, 0.12); color: #22d3ee; border-color: rgba(6, 182, 212, 0.4);" onclick="window.GYM_DATAFLOW_GRAPH && window.GYM_DATAFLOW_GRAPH.toggleDataFlow('${cs.id}')" title="Inspect Relational Algebra Data-Flow DAG and volume compression pipeline">
+            📊 Data-Flow DAG
           </button>
           <button class="btn-case-action" onclick="openCaseDossier('${cs.id}')" title="View Full Dossier">
             📖 Dossier
