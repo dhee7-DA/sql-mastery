@@ -4291,6 +4291,7 @@ function renderCaseCardHtml(cs) {
             <span class="case-diff-filter-btn ${diffClass} active">${diffEmoji} ${cs.difficulty}</span>
             <span class="case-industry-pill">${cs.industry}</span>
             ${isSolved ? '<span style="font-size: 11px;" title="Solved!">🏆</span>' : ''}
+            ${window.GYM_SPACED_REPETITION ? window.GYM_SPACED_REPETITION.renderCardBadgeHtml(cs.id) : ''}
           </div>
           <h3 class="case-title" onclick="openCaseDossier('${cs.id}')" title="Click to open full case study dossier">${cs.title}</h3>
         </div>
@@ -4345,6 +4346,9 @@ function renderCaseCardHtml(cs) {
           </button>
           <button class="btn-case-action" style="background: rgba(234, 179, 8, 0.12); color: #facc15; border-color: rgba(234, 179, 8, 0.4);" onclick="window.GYM_TYPING_DOJO && window.GYM_TYPING_DOJO.toggleDojo('${cs.id}')" title="Practice query with real-time WPM, Accuracy, and mechanical keystroke feedback">
             ⌨️ Typer Dojo
+          </button>
+          <button class="btn-case-action" style="background: rgba(99, 102, 241, 0.12); color: #818cf8; border-color: rgba(99, 102, 241, 0.4);" onclick="window.GYM_SPACED_REPETITION && window.GYM_SPACED_REPETITION.openDailyWorkoutModal()" title="SuperMemo-2 Spaced Repetition Flashcard Vault">
+            🗂️ Flashcard
           </button>
           <button class="btn-case-action btn-case-dossier" onclick="openCaseDossier('${cs.id}')" title="View Executive Dossier">
             📖 Dossier
@@ -5625,6 +5629,7 @@ function renderGymDrillCardHtml(cs, isBlitz = false) {
             ${isBlitz ? '<span class="status-pill" style="background: #ea580c; color: #fff; font-weight: 900; border: 1.5px solid #000;">⚡ BLITZ SPRINT</span>' : ''}
             ${cs.subcluster ? `<span class="case-section-pill" style="background: #e0e7ff; color: #1e1b4b; border-color: #000;">${escapeHtml(cs.subcluster.split(' ')[0])}</span>` : ''}
             ${isSolved ? '<span style="font-size: 11px;" title="Solved!">🏆</span>' : ''}
+            ${window.GYM_SPACED_REPETITION ? window.GYM_SPACED_REPETITION.renderCardBadgeHtml(cs.id) : ''}
           </div>
           <h3 class="case-title" onclick="openCaseDossier('${cs.id}')" title="Click to open full case study dossier">${escapeHtml(cs.title)}</h3>
         </div>
@@ -5802,6 +5807,9 @@ function renderGymDrillCardHtml(cs, isBlitz = false) {
           </button>
           <button class="btn-case-action" style="background: rgba(234, 179, 8, 0.12); color: #facc15; border-color: rgba(234, 179, 8, 0.4);" onclick="window.GYM_TYPING_DOJO && window.GYM_TYPING_DOJO.toggleDojo('${cs.id}')" title="Practice query with real-time WPM, Accuracy, and mechanical keystroke feedback">
             ⌨️ Typer Dojo
+          </button>
+          <button class="btn-case-action" style="background: rgba(99, 102, 241, 0.12); color: #818cf8; border-color: rgba(99, 102, 241, 0.4);" onclick="window.GYM_SPACED_REPETITION && window.GYM_SPACED_REPETITION.openDailyWorkoutModal()" title="SuperMemo-2 Spaced Repetition Flashcard Vault">
+            🗂️ Flashcard
           </button>
           <button class="btn-case-action" onclick="openCaseDossier('${cs.id}')" title="View Full Dossier">
             📖 Dossier
