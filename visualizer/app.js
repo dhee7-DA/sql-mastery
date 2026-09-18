@@ -4173,6 +4173,9 @@ function renderCaseCardHtml(cs) {
 
       <!-- EXPLAIN Plan & Query Cost Optimizer Drawer -->
       ${window.GYM_EXPLAIN_OPTIMIZER ? window.GYM_EXPLAIN_OPTIMIZER.renderExplainDrawerHtml(cs.id, cs.targetQuery, cs.table) : ''}
+
+      <!-- FAANG Mock Interview Follow-Up Drawer -->
+      ${window.GYM_FAANG_INTERVIEWER ? window.GYM_FAANG_INTERVIEWER.renderFaangDrawerHtml(cs.id, cs.targetQuery, cs.table, cs) : ''}
     `;
   } else {
     // Challenge / Token Puzzle Mode
@@ -4217,6 +4220,9 @@ function renderCaseCardHtml(cs) {
 
       <!-- EXPLAIN Plan & Query Cost Optimizer Drawer -->
       ${window.GYM_EXPLAIN_OPTIMIZER ? window.GYM_EXPLAIN_OPTIMIZER.renderExplainDrawerHtml(cs.id, cs.targetQuery, cs.table) : ''}
+
+      <!-- FAANG Mock Interview Follow-Up Drawer -->
+      ${window.GYM_FAANG_INTERVIEWER ? window.GYM_FAANG_INTERVIEWER.renderFaangDrawerHtml(cs.id, cs.targetQuery, cs.table, cs) : ''}
 
       <!-- Jumbled Token Bank Dock -->
       <div class="token-bank-dock" id="dock_${cs.id}">
@@ -4318,6 +4324,9 @@ function renderCaseCardHtml(cs) {
         <div class="case-actions-group">
           <button class="btn-case-action" style="background: rgba(56, 189, 248, 0.12); color: #38bdf8; border-color: rgba(56, 189, 248, 0.4);" onclick="window.GYM_EXPLAIN_OPTIMIZER && window.GYM_EXPLAIN_OPTIMIZER.toggleExplain('${cs.id}')" title="Inspect MySQL 8.0 EXPLAIN plan and B+Tree index cost simulation">
             ⚡ EXPLAIN
+          </button>
+          <button class="btn-case-action" id="btn_faang_${cs.id}" style="background: rgba(168, 85, 247, 0.12); color: #c084fc; border-color: rgba(168, 85, 247, 0.4);" onclick="window.GYM_FAANG_INTERVIEWER && window.GYM_FAANG_INTERVIEWER.toggleInterview('${cs.id}')" title="Simulate FAANG Staff Engineering Follow-Up Technical Screen">
+            🎙️ FAANG Screen
           </button>
           <button class="btn-case-action btn-case-dossier" onclick="openCaseDossier('${cs.id}')" title="View Executive Dossier">
             📖 Dossier
@@ -5032,6 +5041,10 @@ function renderCaseStudies(
       if (window.GYM_MASTERY_RADAR && typeof window.GYM_MASTERY_RADAR.recordSuccess === 'function') {
         window.GYM_MASTERY_RADAR.recordSuccess(caseId);
       }
+
+      if (window.GYM_FAANG_INTERVIEWER && typeof window.GYM_FAANG_INTERVIEWER.onDrillSolved === 'function') {
+        window.GYM_FAANG_INTERVIEWER.onDrillSolved(caseId);
+      }
     } else {
       Object.entries(result.results || {}).forEach(([sId, info]) => {
         const slotEl = document.getElementById(`target_${caseId}_${sId}`);
@@ -5642,6 +5655,9 @@ function renderGymDrillCardHtml(cs, isBlitz = false) {
       <!-- EXPLAIN Plan & Query Cost Optimizer Drawer -->
       ${window.GYM_EXPLAIN_OPTIMIZER ? window.GYM_EXPLAIN_OPTIMIZER.renderExplainDrawerHtml(cs.id, cs.targetQuery, cs.table) : ''}
 
+      <!-- FAANG Mock Interview Follow-Up Drawer -->
+      ${window.GYM_FAANG_INTERVIEWER ? window.GYM_FAANG_INTERVIEWER.renderFaangDrawerHtml(cs.id, cs.targetQuery, cs.table, cs) : ''}
+
       <!-- Jumbled Keyword Bank Dock -->
       ${challenge ? `
         <div class="token-bank-dock" id="dock_${cs.id}">
@@ -5753,6 +5769,9 @@ function renderGymDrillCardHtml(cs, isBlitz = false) {
           </button>
           <button class="btn-case-action" style="background: rgba(56, 189, 248, 0.12); color: #38bdf8; border-color: rgba(56, 189, 248, 0.4);" onclick="window.GYM_EXPLAIN_OPTIMIZER && window.GYM_EXPLAIN_OPTIMIZER.toggleExplain('${cs.id}')" title="Inspect MySQL 8.0 EXPLAIN plan and B+Tree index cost simulation">
             ⚡ EXPLAIN
+          </button>
+          <button class="btn-case-action" id="btn_faang_${cs.id}" style="background: rgba(168, 85, 247, 0.12); color: #c084fc; border-color: rgba(168, 85, 247, 0.4);" onclick="window.GYM_FAANG_INTERVIEWER && window.GYM_FAANG_INTERVIEWER.toggleInterview('${cs.id}')" title="Simulate FAANG Staff Engineering Follow-Up Technical Screen">
+            🎙️ FAANG Screen
           </button>
           <button class="btn-case-action" onclick="openCaseDossier('${cs.id}')" title="View Full Dossier">
             📖 Dossier

@@ -4775,6 +4775,349 @@ body {
   padding: 8px 10px;
 }
 
+/* =============================================================================
+   FAANG MOCK INTERVIEW SCREEN & ARCHITECTURAL TRADE-OFF (FEATURE #2)
+   ============================================================================= */
+.gym-faang-drawer {
+  background: linear-gradient(135deg, #0d0b1f 0%, #150d2e 100%);
+  border: 2px solid #a855f7;
+  border-radius: 10px;
+  padding: 16px 18px;
+  margin-top: 10px;
+  margin-bottom: 10px;
+  box-shadow: 0 8px 32px rgba(168, 85, 247, 0.15), 3px 3px 0px #000000;
+  display: flex;
+  flex-direction: column;
+  gap: 14px;
+  animation: faangFadeIn 0.25s ease-out;
+}
+
+@keyframes faangFadeIn {
+  from { opacity: 0; transform: translateY(-6px); }
+  to { opacity: 1; transform: translateY(0); }
+}
+
+.faang-drawer-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding-bottom: 12px;
+  border-bottom: 1px solid rgba(168, 85, 247, 0.3);
+}
+
+.faang-interviewer-profile {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+}
+
+.faang-avatar-badge {
+  width: 36px;
+  height: 36px;
+  border-radius: 50%;
+  background: rgba(168, 85, 247, 0.2);
+  border: 2px solid #c084fc;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 18px;
+  box-shadow: 0 0 12px rgba(192, 132, 252, 0.4);
+}
+
+.faang-company-pill {
+  font-family: var(--font-mono);
+  font-size: 10px;
+  font-weight: 800;
+  text-transform: uppercase;
+  color: #c084fc;
+  letter-spacing: 0.06em;
+}
+
+.faang-challenge-title {
+  font-size: 13px;
+  font-weight: 800;
+  color: #f8fafc;
+  letter-spacing: -0.01em;
+}
+
+.faang-status-badge {
+  font-family: var(--font-mono);
+  font-size: 11px;
+  font-weight: 800;
+  color: #a855f7;
+  background: rgba(168, 85, 247, 0.15);
+  border: 1px solid rgba(168, 85, 247, 0.4);
+  padding: 4px 10px;
+  border-radius: 6px;
+  letter-spacing: 0.04em;
+}
+
+.faang-dialogue-card {
+  background: rgba(26, 16, 51, 0.7);
+  border-left: 4px solid #a855f7;
+  border-radius: 6px;
+  padding: 12px 14px;
+  display: flex;
+  gap: 12px;
+  align-items: flex-start;
+}
+
+.faang-dialogue-avatar {
+  font-size: 20px;
+  line-height: 1;
+  padding-top: 2px;
+}
+
+.faang-dialogue-content {
+  display: flex;
+  flex-direction: column;
+  gap: 4px;
+}
+
+.faang-dialogue-name {
+  font-size: 11px;
+  font-weight: 800;
+  color: #d8b4fe;
+  text-transform: uppercase;
+  letter-spacing: 0.04em;
+}
+
+.faang-dialogue-text {
+  font-size: 12.5px;
+  color: #e2e8f0;
+  line-height: 1.5;
+  font-style: italic;
+}
+
+.faang-options-container {
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+}
+
+.faang-options-heading {
+  display: flex;
+  justify-content: space-between;
+  align-items: baseline;
+  font-size: 11.5px;
+  font-weight: 800;
+  color: #cbd5e1;
+}
+
+.faang-options-grid {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 10px;
+}
+
+@media (max-width: 860px) {
+  .faang-options-grid {
+    grid-template-columns: 1fr;
+  }
+}
+
+.faang-option-card {
+  background: #090614;
+  border: 1.5px solid #2e1d52;
+  border-radius: 8px;
+  padding: 12px 14px;
+  cursor: pointer;
+  display: flex;
+  flex-direction: column;
+  gap: 6px;
+  transition: all 0.2s cubic-bezier(0.16, 1, 0.3, 1);
+  position: relative;
+}
+
+.faang-option-card:hover {
+  transform: translateY(-2px);
+  border-color: #a855f7;
+  background: #140b2b;
+  box-shadow: 0 4px 16px rgba(168, 85, 247, 0.25);
+}
+
+.faang-option-card.selected {
+  border-color: #c084fc;
+  background: #1e1040;
+  box-shadow: 0 0 0 2px #a855f7, 0 6px 20px rgba(168, 85, 247, 0.35);
+}
+
+.option-header-row {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}
+
+.option-key-badge {
+  font-family: var(--font-mono);
+  font-size: 11px;
+  font-weight: 900;
+  color: #f8fafc;
+  background: #3b0764;
+  border: 1px solid #9333ea;
+  width: 24px;
+  height: 24px;
+  border-radius: 4px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.option-badge-type {
+  font-size: 9.5px;
+  font-weight: 800;
+  text-transform: uppercase;
+  padding: 2px 6px;
+  border-radius: 4px;
+  background: rgba(255, 255, 255, 0.08);
+  color: #cbd5e1;
+}
+
+.option-title {
+  font-size: 12px;
+  font-weight: 800;
+  color: #f1f5f9;
+  line-height: 1.35;
+}
+
+.option-desc {
+  font-size: 11px;
+  color: #94a3b8;
+  line-height: 1.45;
+}
+
+.faang-critique-panel {
+  animation: faangFadeIn 0.25s ease-out;
+}
+
+.critique-result-card {
+  border-radius: 8px;
+  padding: 14px 16px;
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+  border: 2px solid;
+}
+
+.critique-result-card.verdict-accepted {
+  background: rgba(16, 185, 129, 0.08);
+  border-color: #10b981;
+  box-shadow: 0 4px 20px rgba(16, 185, 129, 0.15);
+}
+
+.critique-result-card.verdict-warning {
+  background: rgba(245, 158, 11, 0.08);
+  border-color: #f59e0b;
+  box-shadow: 0 4px 20px rgba(245, 158, 11, 0.15);
+}
+
+.critique-result-card.verdict-rejected {
+  background: rgba(244, 63, 94, 0.08);
+  border-color: #f43f5e;
+  box-shadow: 0 4px 20px rgba(244, 63, 94, 0.15);
+}
+
+.critique-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}
+
+.critique-verdict {
+  font-family: var(--font-mono);
+  font-size: 12px;
+  font-weight: 900;
+  letter-spacing: 0.05em;
+  color: #f8fafc;
+}
+
+.critique-score-tag {
+  font-family: var(--font-mono);
+  font-size: 11px;
+  font-weight: 800;
+  padding: 3px 8px;
+  border-radius: 4px;
+  background: rgba(0, 0, 0, 0.3);
+  border: 1px solid rgba(255, 255, 255, 0.15);
+  color: #fbbf24;
+}
+
+.critique-body {
+  font-size: 12px;
+  color: #e2e8f0;
+  line-height: 1.5;
+}
+
+.critique-code-box {
+  background: #04020a;
+  border: 1px solid #3b186b;
+  border-radius: 6px;
+  padding: 10px 12px;
+  display: flex;
+  flex-direction: column;
+  gap: 6px;
+}
+
+.critique-code-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  font-size: 11px;
+  font-weight: 800;
+  color: #c084fc;
+}
+
+.btn-copy-blueprint {
+  background: transparent;
+  border: 1px solid rgba(192, 132, 252, 0.4);
+  color: #c084fc;
+  font-size: 10px;
+  padding: 2px 7px;
+  border-radius: 4px;
+  cursor: pointer;
+  font-family: var(--font-mono);
+  font-weight: 700;
+}
+
+.btn-copy-blueprint:hover {
+  background: rgba(192, 132, 252, 0.15);
+  border-color: #c084fc;
+}
+
+.critique-code-box pre {
+  margin: 0;
+  overflow-x: auto;
+}
+
+.critique-code-box code {
+  font-family: var(--font-mono);
+  font-size: 11.5px;
+  color: #38bdf8;
+  line-height: 1.45;
+}
+
+/* Pulsing unlock indicator on drill card button */
+.btn-faang-unlocked {
+  border-color: #a855f7 !important;
+  box-shadow: 0 0 12px rgba(168, 85, 247, 0.6) !important;
+  animation: faangPulse 1.8s infinite alternate !important;
+}
+
+@keyframes faangPulse {
+  0% { box-shadow: 0 0 4px rgba(168, 85, 247, 0.3); }
+  100% { box-shadow: 0 0 16px rgba(168, 85, 247, 0.8); }
+}
+
+.unlocked-pulse {
+  background: #7e22ce;
+  color: #ffffff;
+  font-size: 8.5px;
+  padding: 1px 4px;
+  border-radius: 3px;
+  margin-left: 4px;
+  font-weight: 900;
+}
+
 /* Collapsible Official Solution Shield */
 .case-solution-shield {
   background: #fef9c3;
