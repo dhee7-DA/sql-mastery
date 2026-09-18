@@ -4199,7 +4199,7 @@ function renderCaseCardHtml(cs) {
               ondragleave="handleSlotDragLeave(event)"
               ondrop="handleSlotDrop(event, '${cs.id}', '${slotId}')"
               title="${isFilled ? 'Click to remove token' : 'Click a token below or drag here'}">
-          ${isFilled ? `${escapeHtml(placedVal)} <span class="slot-eject-icon">✕</span>` : `[ ${slotId.toUpperCase()} ]`}
+          ${isFilled ? `<span class="slot-val">${escapeHtml(placedVal)}</span><span class="slot-eject-icon">✕</span>` : `<span class="slot-placeholder">${slotId}</span>`}
         </span>
       `;
       renderedMasked = renderedMasked.replace(`[[${slotId}]]`, slotSpan);
@@ -4738,7 +4738,7 @@ function renderCaseStudies(
     if (slotEl) {
       slotEl.classList.add('filled');
       slotEl.classList.remove('slot-correct', 'slot-wrong');
-      slotEl.innerHTML = `${escapeHtml(tokenText)} <span class="slot-eject-icon">✕</span>`;
+      slotEl.innerHTML = `<span class="slot-val">${escapeHtml(tokenText)}</span><span class="slot-eject-icon">✕</span>`;
     }
 
     // Update DOM chip
@@ -4793,7 +4793,7 @@ function renderCaseStudies(
     const slotEl = document.getElementById(`target_${caseId}_${slotId}`);
     if (slotEl) {
       slotEl.classList.remove('filled', 'slot-correct', 'slot-wrong');
-      slotEl.innerHTML = `[ ${slotId.toUpperCase()} ]`;
+      slotEl.innerHTML = `<span class="slot-placeholder">${slotId}</span>`;
     }
 
     const fb = document.getElementById(`feedback_${caseId}`);
@@ -4841,7 +4841,7 @@ function renderCaseStudies(
       if (target) {
         target.classList.add('filled');
         target.classList.remove('slot-correct', 'slot-wrong');
-        target.innerHTML = `${escapeHtml(data.tokenText)} <span class="slot-eject-icon">✕</span>`;
+        target.innerHTML = `<span class="slot-val">${escapeHtml(data.tokenText)}</span><span class="slot-eject-icon">✕</span>`;
       }
 
       const chipEl = document.getElementById(`chip_${data.tokenId}`);
@@ -4893,7 +4893,7 @@ function renderCaseStudies(
       const slotEl = document.getElementById(`target_${caseId}_${slotId}`);
       if (slotEl) {
         slotEl.classList.remove('filled', 'slot-correct', 'slot-wrong');
-        slotEl.innerHTML = `[ ${slotId.toUpperCase()} ]`;
+        slotEl.innerHTML = `<span class="slot-placeholder">${slotId}</span>`;
       }
     }
 
@@ -5611,7 +5611,7 @@ function renderGymDrillCardHtml(cs, isBlitz = false) {
               ondragleave="handleSlotDragLeave(event)"
               ondrop="handleSlotDrop(event, '${cs.id}', '${slotId}')"
               title="${isFilled ? 'Click to remove token' : 'Click a token below or drag here'}">
-          ${isFilled ? `${escapeHtml(placedVal)} <span class="slot-eject-icon">✕</span>` : `[ ${slotId.toUpperCase()} ]`}
+          ${isFilled ? `<span class="slot-val">${escapeHtml(placedVal)}</span><span class="slot-eject-icon">✕</span>` : `<span class="slot-placeholder">${slotId}</span>`}
         </span>
       `;
       renderedMasked = renderedMasked.replace(`[[${slotId}]]`, slotSpan);
@@ -7847,7 +7847,7 @@ function openCaseDrawer(caseId) {
               ondragleave="handleSlotDragLeave(event)"
               ondrop="handleSlotDrop(event, ${cs.id}, '${slotId}')"
               title="${isFilled ? 'Click to remove token' : 'Click a token below or drag here'}">
-          ${isFilled ? `${escapeHtml(placedVal)} <span class="slot-eject-icon">✕</span>` : `[ ${slotId.toUpperCase()} ]`}
+          ${isFilled ? `<span class="slot-val">${escapeHtml(placedVal)}</span><span class="slot-eject-icon">✕</span>` : `<span class="slot-placeholder">${slotId}</span>`}
         </span>
       `;
       renderedMasked = renderedMasked.replace(`[[${slotId}]]`, slotSpan);
