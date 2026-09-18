@@ -5438,6 +5438,297 @@ body {
   background: rgba(255, 255, 255, 0.02);
 }
 
+/* =============================================================================
+   SPEED TYPER DOJO ENGINE (FEATURE #4)
+   ============================================================================= */
+.gym-dojo-drawer {
+  background: linear-gradient(135deg, #120e03 0%, #1c1505 100%);
+  border: 2px solid #eab308;
+  border-radius: 10px;
+  padding: 16px 18px;
+  margin-top: 10px;
+  margin-bottom: 10px;
+  box-shadow: 0 8px 32px rgba(234, 179, 8, 0.15), 3px 3px 0px #000000;
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+  animation: dojoFadeIn 0.25s ease-out;
+}
+
+@keyframes dojoFadeIn {
+  from { opacity: 0; transform: translateY(-6px); }
+  to { opacity: 1; transform: translateY(0); }
+}
+
+.dojo-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding-bottom: 10px;
+  border-bottom: 1px solid rgba(234, 179, 8, 0.25);
+}
+
+.dojo-title-group {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+}
+
+.dojo-icon {
+  font-size: 22px;
+  line-height: 1;
+}
+
+.dojo-title {
+  font-size: 13px;
+  font-weight: 800;
+  color: #fef08a;
+  letter-spacing: -0.01em;
+}
+
+.dojo-sub {
+  font-size: 11px;
+  color: #a1a1aa;
+}
+
+.dojo-stats-strip {
+  display: flex;
+  gap: 6px;
+}
+
+.dojo-stat-pill {
+  background: #090702;
+  border: 1px solid #3d3009;
+  border-radius: 6px;
+  padding: 4px 8px;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  min-width: 54px;
+}
+
+.stat-lbl {
+  font-size: 8.5px;
+  font-weight: 800;
+  color: #71717a;
+  text-transform: uppercase;
+  letter-spacing: 0.05em;
+}
+
+.stat-val {
+  font-family: var(--font-mono);
+  font-size: 12.5px;
+  font-weight: 900;
+  color: #f4f4f5;
+}
+
+.text-cyan { color: #22d3ee !important; }
+.text-green { color: #34d399 !important; }
+.text-amber { color: #fbbf24 !important; }
+
+.dojo-arena {
+  background: #080601;
+  border: 1.5px solid #42340a;
+  border-radius: 8px;
+  padding: 16px 18px;
+  cursor: text;
+  outline: none;
+  min-height: 90px;
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+  gap: 12px;
+  transition: border-color 0.2s, box-shadow 0.2s;
+  box-shadow: inset 0 2px 8px rgba(0, 0, 0, 0.6);
+}
+
+.dojo-arena:focus {
+  border-color: #eab308;
+  box-shadow: 0 0 0 2px rgba(234, 179, 8, 0.4), inset 0 2px 8px rgba(0, 0, 0, 0.8);
+}
+
+.dojo-text-display {
+  font-family: var(--font-mono);
+  font-size: 13.5px;
+  line-height: 1.7;
+  letter-spacing: 0.04em;
+  user-select: none;
+  white-space: pre-wrap;
+  word-break: break-all;
+}
+
+.dojo-char {
+  border-radius: 2px;
+  transition: background 0.05s, color 0.05s;
+}
+
+.dojo-char.pending {
+  color: #52525b;
+}
+
+.dojo-char.current {
+  color: #000000 !important;
+  background: #facc15 !important;
+  box-shadow: 0 0 8px rgba(250, 204, 21, 0.8);
+  animation: dojoBlink 1s infinite alternate;
+}
+
+@keyframes dojoBlink {
+  0% { opacity: 0.7; }
+  100% { opacity: 1; }
+}
+
+.dojo-char.correct {
+  color: #34d399;
+}
+
+.dojo-char.incorrect {
+  color: #f87171;
+  background: rgba(239, 68, 68, 0.3);
+  text-decoration: underline;
+}
+
+.dojo-arena-hint {
+  font-size: 10px;
+  color: #71717a;
+  display: flex;
+  align-items: center;
+  gap: 4px;
+}
+
+.dojo-arena-hint kbd {
+  background: #18181b;
+  border: 1px solid #27272a;
+  border-radius: 3px;
+  padding: 1px 4px;
+  font-family: var(--font-mono);
+  color: #d4d4d8;
+}
+
+.dojo-scorecard-panel {
+  animation: dojoFadeIn 0.25s ease-out;
+}
+
+.scorecard-content {
+  background: #0d0a02;
+  border: 2px solid #eab308;
+  border-radius: 8px;
+  padding: 16px 18px;
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+  box-shadow: 0 4px 24px rgba(234, 179, 8, 0.25);
+}
+
+.scorecard-header {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+}
+
+.scorecard-title {
+  font-size: 13px;
+  font-weight: 800;
+  color: #fef08a;
+}
+
+.scorecard-tier-pill {
+  font-family: var(--font-mono);
+  font-size: 10px;
+  font-weight: 800;
+  color: #fbbf24;
+  letter-spacing: 0.05em;
+}
+
+.scorecard-xp-badge {
+  font-family: var(--font-mono);
+  font-size: 11px;
+  font-weight: 800;
+  background: rgba(234, 179, 8, 0.2);
+  border: 1px solid #eab308;
+  color: #fde047;
+  padding: 2px 8px;
+  border-radius: 4px;
+}
+
+.scorecard-stats-grid {
+  display: grid;
+  grid-template-columns: repeat(4, 1fr);
+  gap: 8px;
+}
+
+@media (max-width: 640px) {
+  .scorecard-stats-grid {
+    grid-template-columns: 1fr 1fr;
+  }
+}
+
+.sc-stat-box {
+  background: #050401;
+  border: 1px solid #2e2407;
+  border-radius: 6px;
+  padding: 8px 10px;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 2px;
+}
+
+.sc-stat-num {
+  font-family: var(--font-mono);
+  font-size: 16px;
+  font-weight: 900;
+  color: #f4f4f5;
+}
+
+.sc-stat-label {
+  font-size: 9px;
+  color: #a1a1aa;
+  font-weight: 700;
+  text-transform: uppercase;
+}
+
+.scorecard-actions {
+  display: flex;
+  gap: 8px;
+  justify-content: flex-end;
+  margin-top: 4px;
+}
+
+.btn-dojo-action {
+  background: #181404;
+  border: 1px solid #eab308;
+  color: #fef08a;
+  font-size: 11px;
+  font-weight: 800;
+  padding: 6px 12px;
+  border-radius: 6px;
+  cursor: pointer;
+  transition: all 0.15s ease;
+}
+
+.btn-dojo-action:hover {
+  background: #eab308;
+  color: #000000;
+  transform: translateY(-1px);
+}
+
+.btn-retry {
+  background: #eab308;
+  color: #000000;
+}
+
+.btn-close-dojo {
+  background: transparent;
+  border-color: #52525b;
+  color: #a1a1aa;
+}
+
+.btn-close-dojo:hover {
+  background: #27272a;
+  color: #f4f4f5;
+}
+
 /* Collapsible Official Solution Shield */
 .case-solution-shield {
   background: #fef9c3;

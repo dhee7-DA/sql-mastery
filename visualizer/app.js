@@ -4179,6 +4179,9 @@ function renderCaseCardHtml(cs) {
 
       <!-- Relational Data-Flow DAG Drawer -->
       ${window.GYM_DATAFLOW_GRAPH ? window.GYM_DATAFLOW_GRAPH.renderDataFlowDrawerHtml(cs.id, cs.targetQuery, cs.table) : ''}
+
+      <!-- Speed Typer Dojo Drawer -->
+      ${window.GYM_TYPING_DOJO ? window.GYM_TYPING_DOJO.renderDojoDrawerHtml(cs.id, cs.targetQuery, cs.table) : ''}
     `;
   } else {
     // Challenge / Token Puzzle Mode
@@ -4229,6 +4232,9 @@ function renderCaseCardHtml(cs) {
 
       <!-- Relational Data-Flow DAG Drawer -->
       ${window.GYM_DATAFLOW_GRAPH ? window.GYM_DATAFLOW_GRAPH.renderDataFlowDrawerHtml(cs.id, cs.targetQuery, cs.table) : ''}
+
+      <!-- Speed Typer Dojo Drawer -->
+      ${window.GYM_TYPING_DOJO ? window.GYM_TYPING_DOJO.renderDojoDrawerHtml(cs.id, cs.targetQuery, cs.table) : ''}
 
       <!-- Jumbled Token Bank Dock -->
       <div class="token-bank-dock" id="dock_${cs.id}">
@@ -4336,6 +4342,9 @@ function renderCaseCardHtml(cs) {
           </button>
           <button class="btn-case-action" style="background: rgba(6, 182, 212, 0.12); color: #22d3ee; border-color: rgba(6, 182, 212, 0.4);" onclick="window.GYM_DATAFLOW_GRAPH && window.GYM_DATAFLOW_GRAPH.toggleDataFlow('${cs.id}')" title="Inspect Relational Algebra Data-Flow DAG and volume compression pipeline">
             📊 Data-Flow DAG
+          </button>
+          <button class="btn-case-action" style="background: rgba(234, 179, 8, 0.12); color: #facc15; border-color: rgba(234, 179, 8, 0.4);" onclick="window.GYM_TYPING_DOJO && window.GYM_TYPING_DOJO.toggleDojo('${cs.id}')" title="Practice query with real-time WPM, Accuracy, and mechanical keystroke feedback">
+            ⌨️ Typer Dojo
           </button>
           <button class="btn-case-action btn-case-dossier" onclick="openCaseDossier('${cs.id}')" title="View Executive Dossier">
             📖 Dossier
@@ -5670,6 +5679,9 @@ function renderGymDrillCardHtml(cs, isBlitz = false) {
       <!-- Relational Data-Flow DAG Drawer -->
       ${window.GYM_DATAFLOW_GRAPH ? window.GYM_DATAFLOW_GRAPH.renderDataFlowDrawerHtml(cs.id, cs.targetQuery, cs.table) : ''}
 
+      <!-- Speed Typer Dojo Drawer -->
+      ${window.GYM_TYPING_DOJO ? window.GYM_TYPING_DOJO.renderDojoDrawerHtml(cs.id, cs.targetQuery, cs.table) : ''}
+
       <!-- Jumbled Keyword Bank Dock -->
       ${challenge ? `
         <div class="token-bank-dock" id="dock_${cs.id}">
@@ -5787,6 +5799,9 @@ function renderGymDrillCardHtml(cs, isBlitz = false) {
           </button>
           <button class="btn-case-action" style="background: rgba(6, 182, 212, 0.12); color: #22d3ee; border-color: rgba(6, 182, 212, 0.4);" onclick="window.GYM_DATAFLOW_GRAPH && window.GYM_DATAFLOW_GRAPH.toggleDataFlow('${cs.id}')" title="Inspect Relational Algebra Data-Flow DAG and volume compression pipeline">
             📊 Data-Flow DAG
+          </button>
+          <button class="btn-case-action" style="background: rgba(234, 179, 8, 0.12); color: #facc15; border-color: rgba(234, 179, 8, 0.4);" onclick="window.GYM_TYPING_DOJO && window.GYM_TYPING_DOJO.toggleDojo('${cs.id}')" title="Practice query with real-time WPM, Accuracy, and mechanical keystroke feedback">
+            ⌨️ Typer Dojo
           </button>
           <button class="btn-case-action" onclick="openCaseDossier('${cs.id}')" title="View Full Dossier">
             📖 Dossier
