@@ -78,8 +78,8 @@
    True Neutral Darks + High Contrast Lights
    ========================================================================== */
 
-/* 1. Zinc Pitch (Linear / Vercel Default) */
-[data-theme="zinc-pitch"], :root {
+/* 1. Cursor Dark Minimalist (Default) */
+[data-theme="cursor-dark"], [data-theme="zinc-pitch"], :root {
   --bg-canvas: #09090b;
   --bg-surface: #0f1013;
   --bg-surface-elevated: #15161b;
@@ -92,7 +92,7 @@
   --border-default: #27272e;
   --border-muted: #1e1e24;
   --border-hover: #3f3f4c;
-  --border-focus: #5b5b6e;
+  --border-focus: #38bdf8;
 
   --text-primary: #f4f4f5;
   --text-secondary: #a1a1aa;
@@ -102,6 +102,139 @@
   --status-info: #38bdf8;
   --status-warning: #fbbf24;
   --status-fail: #f43f5e;
+}
+
+/* 2. Pomegranate + Powder Blue (High-Contrast Editorial Noir) */
+[data-theme="pomegranate-powder"] {
+  --bg-canvas: #0c080a;
+  --bg-surface: #130c10;
+  --bg-surface-elevated: #191016;
+  --bg-card: #160e13;
+  --bg-card-subtle: #1c1219;
+  --bg-hover: #261622;
+  --bg-active: #321c2c;
+
+  --border-subtle: rgba(244, 63, 94, 0.1);
+  --border-default: #311c27;
+  --border-muted: #21131a;
+  --border-hover: #4e293c;
+  --border-focus: #7dd3fc;
+
+  --text-primary: #fdf2f4;
+  --text-secondary: #bda8b2;
+  --text-muted: #806b75;
+
+  --status-success: #34d399;
+  --status-info: #7dd3fc;
+  --status-warning: #fbbf24;
+  --status-fail: #f43f5e;
+}
+
+/* 3. Smoky Jade + Oxblood (Brooding Artisan Terminal) */
+[data-theme="smoky-jade-oxblood"] {
+  --bg-canvas: #070c09;
+  --bg-surface: #0c1410;
+  --bg-surface-elevated: #111c16;
+  --bg-card: #0f1813;
+  --bg-card-subtle: #14211a;
+  --bg-hover: #1b2e24;
+  --bg-active: #243c2f;
+
+  --border-subtle: rgba(52, 211, 153, 0.08);
+  --border-default: #1e3327;
+  --border-muted: #14221a;
+  --border-hover: #2e4e3c;
+  --border-focus: #34d399;
+
+  --text-primary: #f0fdf4;
+  --text-secondary: #9cb5a5;
+  --text-muted: #6b8273;
+
+  --status-success: #34d399;
+  --status-info: #38bdf8;
+  --status-warning: #f59e0b;
+  --status-fail: #e11d48;
+}
+
+/* 4. Petrol Teal + Persimmon (High-Tech Industrial Workstation) */
+[data-theme="petrol-persimmon"] {
+  --bg-canvas: #060d10;
+  --bg-surface: #0b151b;
+  --bg-surface-elevated: #0f1d25;
+  --bg-card: #0d1920;
+  --bg-card-subtle: #12222c;
+  --bg-hover: #172d3a;
+  --bg-active: #1f3b4c;
+
+  --border-subtle: rgba(45, 212, 191, 0.1);
+  --border-default: #1a3340;
+  --border-muted: #11222c;
+  --border-hover: #274b5e;
+  --border-focus: #2dd4bf;
+
+  --text-primary: #f0fdfa;
+  --text-secondary: #90a8b4;
+  --text-muted: #607986;
+
+  --status-success: #22c55e;
+  --status-info: #2dd4bf;
+  --status-warning: #f97316;
+  --status-fail: #f43f5e;
+}
+
+/* Theme-Specific Code Token & Primary Action Accents */
+[data-theme="pomegranate-powder"] .token-chip {
+  background: rgba(125, 211, 252, 0.07);
+  border-color: rgba(125, 211, 252, 0.28);
+  color: #bae6fd;
+}
+[data-theme="pomegranate-powder"] .token-chip:hover {
+  background: rgba(125, 211, 252, 0.16);
+  border-color: rgba(125, 211, 252, 0.55);
+  color: #f0f9ff;
+  box-shadow: 0 0 12px rgba(125, 211, 252, 0.25);
+}
+[data-theme="pomegranate-powder"] .action-btn-primary,
+[data-theme="pomegranate-powder"] #btnRunQuery {
+  background: linear-gradient(180deg, #f43f5e 0%, #e11d48 100%) !important;
+  border-color: rgba(244, 63, 94, 0.5) !important;
+  box-shadow: 0 2px 10px rgba(244, 63, 94, 0.3) !important;
+}
+
+[data-theme="smoky-jade-oxblood"] .token-chip {
+  background: rgba(52, 211, 153, 0.07);
+  border-color: rgba(52, 211, 153, 0.28);
+  color: #6ee7b7;
+}
+[data-theme="smoky-jade-oxblood"] .token-chip:hover {
+  background: rgba(52, 211, 153, 0.16);
+  border-color: rgba(52, 211, 153, 0.55);
+  color: #a7f3d0;
+  box-shadow: 0 0 12px rgba(52, 211, 153, 0.25);
+}
+[data-theme="smoky-jade-oxblood"] .action-btn-primary,
+[data-theme="smoky-jade-oxblood"] #btnRunQuery {
+  background: linear-gradient(180deg, #10b981 0%, #059669 100%) !important;
+  border-color: rgba(52, 211, 153, 0.45) !important;
+  box-shadow: 0 2px 10px rgba(16, 185, 129, 0.3) !important;
+}
+
+[data-theme="petrol-persimmon"] .token-chip {
+  background: rgba(45, 212, 191, 0.07);
+  border-color: rgba(45, 212, 191, 0.28);
+  color: #2dd4bf;
+}
+[data-theme="petrol-persimmon"] .token-chip:hover {
+  background: rgba(45, 212, 191, 0.16);
+  border-color: rgba(45, 212, 191, 0.55);
+  color: #5eead4;
+  box-shadow: 0 0 12px rgba(45, 212, 191, 0.25);
+}
+[data-theme="petrol-persimmon"] .action-btn-primary,
+[data-theme="petrol-persimmon"] #btnRunQuery {
+  background: linear-gradient(180deg, #f97316 0%, #ea580c 100%) !important;
+  border-color: rgba(249, 115, 22, 0.5) !important;
+  box-shadow: 0 2px 10px rgba(249, 115, 22, 0.3) !important;
 }
 
 /* 2. Tokyo Midnight (Crisp Obsidian Navy Accent) */
