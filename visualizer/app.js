@@ -5745,7 +5745,7 @@ function renderGymDrillCardHtml(cs, isBlitz = false) {
 
       <!-- Collapsible Intel Drawer (Blueprint & Gotchas) -->
       ${(cs.syntaxBlueprint || cs.syntaxRule || cs.syntaxTrap) ? `
-        <div class="gym-intel-drawer" id="intel_drawer_${cs.id}" style="display: none; flex-direction: column; gap: 8px; background: #0b0f17; border: 2px solid #000; border-radius: 10px; padding: 12px 14px; margin-top: 4px;">
+        <div class="gym-intel-drawer" id="intel_drawer_${cs.id}" style="display: none; flex-direction: column; gap: 8px; background: #0b0f17; border: 1px solid var(--border-default); border-radius: 10px; padding: 12px 14px; margin-top: 4px; box-shadow: 0 2px 8px rgba(0,0,0,0.25);">
           ${cs.syntaxBlueprint ? `
             <div>
               <div style="font-size: 11px; font-weight: 800; color: #38bdf8; text-transform: uppercase; margin-bottom: 4px;">📐 Syntax Blueprint</div>
@@ -7125,7 +7125,7 @@ function renderPathwayMasterclass() {
   const studyItem = window.STUDY_LIBRARY ? window.STUDY_LIBRARY.find(s => s.id === currentMod.studySectionId) : null;
   if (!studyItem) {
     container.innerHTML = `
-      <div class="card" style="border: 3px solid #000; box-shadow: 5px 5px 0px #000; border-radius: 16px; padding: 24px; background: var(--bg-card);">
+      <div class="card" style="border: 1px solid var(--border-default); box-shadow: 0 4px 16px rgba(0,0,0,0.3); border-radius: 16px; padding: 24px; background: var(--bg-card);">
         <p style="font-weight: 700; color: var(--text-secondary);">Masterclass content loading for ${currentMod.title}...</p>
       </div>
     `;
@@ -7136,18 +7136,18 @@ function renderPathwayMasterclass() {
   let joinsLabBanner = '';
   if (currentMod.id === 'mod_joins') {
     joinsLabBanner = `
-      <div style="background: #fdf4ff; border: 3px solid #000; box-shadow: 4px 4px 0px #000; border-radius: 14px; padding: 18px 20px; margin-bottom: 22px; display: flex; align-items: center; justify-content: space-between; flex-wrap: wrap; gap: 14px;">
+      <div style="background: rgba(168, 85, 247, 0.06); border: 1px solid rgba(168, 85, 247, 0.3); border-radius: 12px; padding: 18px 20px; margin-bottom: 22px; display: flex; align-items: center; justify-content: space-between; flex-wrap: wrap; gap: 14px; box-shadow: 0 4px 16px rgba(0,0,0,0.25);">
         <div style="max-width: 650px;">
           <div style="display: flex; align-items: center; gap: 8px; margin-bottom: 6px;">
-            <span style="background: #c084fc; color: #000; font-size: 10.5px; font-weight: 900; padding: 3px 8px; border: 2px solid #000; border-radius: 6px; box-shadow: 2px 2px 0px #000; text-transform: uppercase;">HANDS-ON SIMULATION</span>
-            <span style="background: #fef08a; color: #000; font-size: 10.5px; font-weight: 900; padding: 3px 8px; border: 2px solid #000; border-radius: 6px; box-shadow: 2px 2px 0px #000;">8-STEP DUAL-TABLE LAB</span>
+            <span style="background: rgba(192, 132, 252, 0.15); color: #c084fc; font-size: 10.5px; font-weight: 800; padding: 3px 8px; border: 1px solid rgba(192, 132, 252, 0.3); border-radius: 6px; text-transform: uppercase; font-family: var(--font-mono);">HANDS-ON SIMULATION</span>
+            <span style="background: rgba(251, 191, 36, 0.12); color: #fbbf24; font-size: 10.5px; font-weight: 800; padding: 3px 8px; border: 1px solid rgba(251, 191, 36, 0.25); border-radius: 6px; font-family: var(--font-mono);">8-STEP DUAL-TABLE LAB</span>
           </div>
-          <h3 style="font-size: 16px; font-weight: 900; color: #000; margin: 0 0 4px 0;">Interactive Relational Joins Visualizer &amp; Linker</h3>
-          <p style="font-size: 12.5px; color: #374151; margin: 0; line-height: 1.45; font-weight: 600;">
+          <h3 style="font-size: 16px; font-weight: 800; color: #f1f5f9; margin: 0 0 4px 0;">Interactive Relational Joins Visualizer &amp; Linker</h3>
+          <p style="font-size: 12.5px; color: var(--text-secondary); margin: 0; line-height: 1.5; font-weight: 500;">
             Step through physical dual-table joins (INNER, LEFT, ANTI, FULL OUTER) row-by-row with live pointer evaluation and corporate schema projections.
           </p>
         </div>
-        <button class="action-btn action-btn-primary" onclick="switchNavTab('viewGuidedLab'); if (window.switchGuidedTrack) window.switchGuidedTrack('track04');" style="background: #a855f7; color: #ffffff; font-weight: 900; border: 2.5px solid #000; box-shadow: 3px 3px 0px #000; border-radius: 8px; padding: 9px 18px; font-size: 13px; cursor: pointer; text-decoration: none;">
+        <button class="action-btn action-btn-primary" onclick="switchNavTab('viewGuidedLab'); if (window.switchGuidedTrack) window.switchGuidedTrack('track04');" style="background: #a855f7; color: #ffffff; font-weight: 700; border: 1px solid rgba(255,255,255,0.2); box-shadow: 0 2px 10px rgba(168, 85, 247, 0.35); border-radius: 8px; padding: 9px 18px; font-size: 13px; cursor: pointer; text-decoration: none;">
           🚀 Open Interactive Joins Lab &rarr;
         </button>
       </div>
@@ -7158,9 +7158,9 @@ function renderPathwayMasterclass() {
   if (studyItem.sections && studyItem.sections.length > 0) {
     studyItem.sections.forEach((sec, idx) => {
       let formattedContent = sec.content
-        .replace(/```sql([\s\S]*?)```/g, '<div class="study-code-snippet" style="background: #080c14; color: #f8fafc; border: 2px solid #000; border-radius: 8px; padding: 12px 14px; margin: 12px 0; font-family: var(--font-mono); font-size: 12px; line-height: 1.5; overflow-x: auto; box-shadow: 2px 2px 0px #000;">$1</div>')
-        .replace(/`([^`]+)`/g, '<code style="background: #fef08a; color: #000000; padding: 2px 6px; border: 1.5px solid #000; border-radius: 4px; font-weight: 800; font-size: 0.9em; box-shadow: 1px 1px 0px #000;">$1</code>')
-        .replace(/\*\*([^*]+)\*\*/g, '<strong style="color: #ffffff; font-weight: 800;">$1</strong>')
+        .replace(/```sql([\s\S]*?)```/g, '<div class="study-code-snippet" style="background: #080c14; color: #f8fafc; border: 1px solid var(--border-default); border-radius: 8px; padding: 12px 14px; margin: 12px 0; font-family: var(--font-mono); font-size: 12px; line-height: 1.5; overflow-x: auto; box-shadow: 0 2px 8px rgba(0,0,0,0.3);">$1</div>')
+        .replace(/`([^`]+)`/g, '<code style="background: rgba(255, 255, 255, 0.06); color: #38bdf8; padding: 2px 6px; border: 1px solid rgba(255, 255, 255, 0.12); border-radius: 4px; font-weight: 600; font-size: 0.9em;">$1</code>')
+        .replace(/\*\*([^*]+)\*\*/g, '<strong style="color: #ffffff; font-weight: 700;">$1</strong>')
         .replace(/\n\n/g, '</p><p style="margin-top: 10px;">')
         .replace(/\n- /g, '<br>&bull; ')
         .replace(/\n\d+\. /g, (m) => `<br><strong>${m.trim()}</strong> `);
@@ -7169,12 +7169,12 @@ function renderPathwayMasterclass() {
       const pillColor = sectionPills[idx % sectionPills.length];
 
       sectionsHtml += `
-        <div class="study-section-block" style="margin-bottom: 18px; background: #121218; border: 2.5px solid #000; border-radius: 12px; padding: 18px 20px; box-shadow: 3px 3px 0px #000;">
-          <h3 class="study-section-heading" style="font-size: 15.5px; font-weight: 900; color: #ffffff; margin: 0 0 12px 0; display: flex; align-items: center; gap: 8px;">
-            <span style="background: ${pillColor}; color: #000; font-size: 11px; font-weight: 900; padding: 2px 8px; border: 2px solid #000; border-radius: 5px; box-shadow: 1.5px 1.5px 0px #000;">PART ${idx + 1}</span>
+        <div class="study-section-block" style="margin-bottom: 18px; background: rgba(255, 255, 255, 0.02); border: 1px solid var(--border-default); border-radius: 12px; padding: 18px 20px; box-shadow: 0 2px 8px rgba(0,0,0,0.25);">
+          <h3 class="study-section-heading" style="font-size: 15.5px; font-weight: 800; color: #ffffff; margin: 0 0 12px 0; display: flex; align-items: center; gap: 8px;">
+            <span style="background: rgba(56, 189, 248, 0.12); color: ${pillColor}; font-size: 10.5px; font-weight: 800; padding: 2px 8px; border: 1px solid ${pillColor}40; border-radius: 5px; font-family: var(--font-mono);">PART ${idx + 1}</span>
             ${sec.heading}
           </h3>
-          <div class="study-section-content" style="font-size: 13px; color: #d4d4d8; line-height: 1.65;">
+          <div class="study-section-content" style="font-size: 13px; color: #cbd5e1; line-height: 1.65;">
             <p style="margin: 0;">${formattedContent}</p>
           </div>
         </div>
@@ -7186,30 +7186,30 @@ function renderPathwayMasterclass() {
   let gotchasHtml = '';
   if (studyItem.interviewGotchas && studyItem.interviewGotchas.length > 0) {
     let gotchaCards = studyItem.interviewGotchas.map(g => `
-      <div style="margin-top: 10px; padding: 12px 14px; background: #ffffff; border: 2.5px solid #000; border-radius: 9px; box-shadow: 3px 3px 0px #000;">
-        <div style="font-weight: 900; color: #b91c1c; font-size: 13px; margin-bottom: 4px; display: flex; align-items: center; gap: 6px;">
+      <div style="margin-top: 10px; padding: 12px 14px; background: rgba(0, 0, 0, 0.35); border: 1px solid rgba(244, 63, 94, 0.2); border-radius: 9px; box-shadow: 0 2px 8px rgba(0,0,0,0.2);">
+        <div style="font-weight: 800; color: #fb7185; font-size: 13px; margin-bottom: 4px; display: flex; align-items: center; gap: 6px;">
           <span>⚠️</span> <span>${g.title}</span>
         </div>
-        <div style="color: #1e293b; font-size: 12.5px; line-height: 1.5; font-weight: 600;">
+        <div style="color: #cbd5e1; font-size: 12.5px; line-height: 1.5; font-weight: 500;">
           ${g.trap}
         </div>
       </div>
     `).join('');
 
     gotchasHtml = `
-      <div style="margin-top: 22px; padding: 18px; background: #fff1f2; border: 3px solid #000; border-radius: 14px; box-shadow: 4px 4px 0px #000;">
+      <div style="margin-top: 22px; padding: 18px; background: rgba(244, 63, 94, 0.05); border: 1px solid rgba(244, 63, 94, 0.25); border-left: 3px solid #f43f5e; border-radius: 12px; box-shadow: 0 4px 16px rgba(0,0,0,0.25);">
         <div style="display: flex; align-items: center; justify-content: space-between; flex-wrap: wrap; gap: 8px; margin-bottom: 6px;">
           <div style="display: flex; align-items: center; gap: 8px;">
-            <span style="background: #f43f5e; color: #ffffff; font-size: 11px; font-weight: 900; padding: 3px 8px; border: 2px solid #000; border-radius: 6px; box-shadow: 2px 2px 0px #000; text-transform: uppercase;">
+            <span style="background: rgba(244, 63, 94, 0.15); color: #fb7185; font-size: 11px; font-weight: 800; padding: 3px 8px; border: 1px solid rgba(244, 63, 94, 0.3); border-radius: 6px; text-transform: uppercase; font-family: var(--font-mono);">
               CRITICAL TRAPS VAULT
             </span>
-            <strong style="color: #000000; font-size: 14.5px; font-weight: 900;">Directly Tested in MCQs &amp; Case Studies</strong>
+            <strong style="color: #f1f5f9; font-size: 14px; font-weight: 800;">Directly Tested in MCQs &amp; Case Studies</strong>
           </div>
-          <span style="font-size: 11px; font-family: var(--font-mono); color: #881337; font-weight: 800;">
+          <span style="font-size: 11px; font-family: var(--font-mono); color: #fda4af; font-weight: 700;">
             ${studyItem.interviewGotchas.length} INTERVIEW GOTCHAS
           </span>
         </div>
-        <p style="font-size: 12.5px; color: #475569; margin: 0 0 10px 0; font-weight: 600;">
+        <p style="font-size: 12.5px; color: var(--text-secondary); margin: 0 0 10px 0; font-weight: 500;">
           Master these exact high-stakes edge cases before starting the 1,200 Technical MCQs and 1,040 Real-World Case Studies.
         </p>
         ${gotchaCards}
@@ -7218,26 +7218,26 @@ function renderPathwayMasterclass() {
   }
 
   let svgHtml = studyItem.svgDiagram ? `
-    <div style="margin: 20px 0; background: #000000; border: 3px solid #000000; border-radius: 14px; padding: 10px; overflow-x: auto; box-shadow: 4px 4px 0px #000000;">
+    <div style="margin: 20px 0; background: #080c14; border: 1px solid var(--border-default); border-radius: 12px; padding: 10px; overflow-x: auto; box-shadow: 0 4px 16px rgba(0, 0, 0, 0.35);">
       ${studyItem.svgDiagram}
     </div>
   ` : '';
 
   container.innerHTML = `
-    <div class="card" style="border: 3px solid #000000 !important; border-radius: 18px !important; box-shadow: 5px 5px 0px #000000 !important; background: var(--bg-card); margin-bottom: 24px; padding: 24px;">
+    <div class="card" style="border: 1px solid var(--border-default) !important; border-radius: 16px !important; box-shadow: 0 4px 20px rgba(0, 0, 0, 0.35) !important; background: var(--bg-card); margin-bottom: 24px; padding: 24px;">
       <div class="card-header" style="display: flex; align-items: center; justify-content: space-between; flex-wrap: wrap; gap: 12px; margin-bottom: 12px;">
         <div>
           <div style="display: flex; align-items: center; gap: 8px; margin-bottom: 6px;">
-            <span style="background: #fef08a; color: #000; font-size: 11px; font-weight: 900; padding: 3px 8px; border: 2px solid #000; border-radius: 6px; box-shadow: 2px 2px 0px #000; text-transform: uppercase;">
+            <span style="background: rgba(56, 189, 248, 0.12); color: #38bdf8; font-size: 11px; font-weight: 800; padding: 3px 8px; border: 1px solid rgba(56, 189, 248, 0.3); border-radius: 6px; text-transform: uppercase; font-family: var(--font-mono);">
               STAGE 1: VISUAL MASTERCLASS
             </span>
-            <span style="background: #e0e7ff; color: #3730a3; font-size: 11px; font-weight: 800; padding: 3px 8px; border: 2px solid #000; border-radius: 6px; box-shadow: 2px 2px 0px #000;">
+            <span style="background: rgba(255, 255, 255, 0.05); color: var(--text-secondary); font-size: 11px; font-weight: 700; padding: 3px 8px; border: 1px solid var(--border-default); border-radius: 6px; font-family: var(--font-mono);">
               ${studyItem.readTime || '12 min read'}
             </span>
           </div>
-          <h2 style="font-size: 20px; color: #ffffff; font-weight: 900; margin: 0; letter-spacing: -0.3px;">${studyItem.title}</h2>
+          <h2 style="font-size: 20px; color: #ffffff; font-weight: 800; margin: 0; letter-spacing: -0.3px;">${studyItem.title}</h2>
         </div>
-        <button class="action-btn action-btn-primary" onclick="selectPathwayStage(2)" style="background: #22c55e !important; color: #000000 !important; font-weight: 900; border: 2.5px solid #000 !important; box-shadow: 3px 3px 0px #000 !important; border-radius: 8px; padding: 8px 18px; font-size: 13px; cursor: pointer;">
+        <button class="action-btn action-btn-primary" onclick="selectPathwayStage(2)" style="background: #10b981 !important; color: #ffffff !important; font-weight: 700; border: 1px solid rgba(255, 255, 255, 0.2) !important; box-shadow: 0 2px 10px rgba(16, 185, 129, 0.35) !important; border-radius: 8px; padding: 8px 18px; font-size: 13px; cursor: pointer;">
           Stage 2: Traps &amp; Secrets &rarr;
         </button>
       </div>
@@ -7408,7 +7408,7 @@ function renderPathwayTrapsAndSecrets() {
           <div class="interview-spoken-text">"${escapeHtml(item.spokenAnswer)}"</div>
         </div>
         ${item.sqlSnippet ? `
-          <div class="tip-code-block" style="margin-top: 6px; border-color: #8b5cf6; box-shadow: 3px 3px 0px rgba(139, 92, 246, 0.35);">
+          <div class="tip-code-block" style="margin-top: 6px; border-color: rgba(139, 92, 246, 0.4); box-shadow: 0 2px 8px rgba(139, 92, 246, 0.2);">
             <div class="trap-box-header" style="background: rgba(139, 92, 246, 0.15); color: #c4b5fd; border-bottom: 1px solid rgba(139, 92, 246, 0.35);">
               <span>💡 SQL Query Pattern</span>
               <div class="trap-terminal-dots">
@@ -7467,7 +7467,7 @@ function renderPathwayTrapsAndSecrets() {
 
       <!-- Footer CTA to proceed to MCQs -->
       <div style="display: flex; justify-content: flex-end; padding-top: 10px;">
-        <button class="action-btn action-btn-primary" onclick="selectPathwayStage(3)" style="padding: 10px 20px; font-size: 13px; font-weight: 800; border: 2px solid #000; box-shadow: 2px 2px 0px #000;">
+        <button class="action-btn action-btn-primary" onclick="selectPathwayStage(3)" style="padding: 10px 20px; font-size: 13px; font-weight: 700; border: 1px solid rgba(255, 255, 255, 0.2); box-shadow: 0 2px 10px rgba(56, 189, 248, 0.35);">
           Mastered Traps! Test Knowledge in Stage 3: MCQs &rarr;
         </button>
       </div>
