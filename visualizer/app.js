@@ -4286,9 +4286,9 @@ function renderCaseCardHtml(cs) {
         <div>
           <div style="display: flex; align-items: center; gap: 6px; margin-bottom: 6px; flex-wrap: wrap;">
             ${(cs.isGymDrill || cs.drillNumber)
-              ? `<span class="status-pill case-id-pill" style="background: rgba(245, 158, 11, 0.15); color: #fbbf24; border-color: rgba(245, 158, 11, 0.3);">⚡ Drill #${String(cs.drillNumber || cs.id).padStart(3, '0')}</span>`
-              : `<span class="status-pill case-id-pill">#${String(cs.id).padStart(3, '0')}</span>`}
-            <span class="case-diff-filter-btn ${diffClass} active">${diffEmoji} ${cs.difficulty}</span>
+              ? `<span class="case-id-pill drill-id-pill">⚡ Drill #${String(cs.drillNumber || cs.id).padStart(3, '0')}</span>`
+              : `<span class="case-id-pill">#${String(cs.id).padStart(3, '0')}</span>`}
+            <span class="case-diff-badge ${diffClass}"><span class="diff-dot"></span>${cs.difficulty}</span>
             <span class="case-industry-pill">${cs.industry}</span>
             ${isSolved ? '<span style="font-size: 11px;" title="Solved!">🏆</span>' : ''}
             ${window.GYM_SPACED_REPETITION ? window.GYM_SPACED_REPETITION.renderCardBadgeHtml(cs.id) : ''}
@@ -4320,44 +4320,44 @@ function renderCaseCardHtml(cs) {
       ${queryBlockHtml}
 
       <div class="case-actions-bar">
-        <div class="case-actions-group">
-          ${currentCaseMode === 'challenge' && challenge ? `
-            <button class="btn-case-action btn-verify-puzzle" onclick="handleVerifyCase('${cs.id}')">
+        ${currentCaseMode === 'challenge' && challenge ? `
+          <div class="case-primary-actions">
+            <button class="btn-verify-puzzle" onclick="handleVerifyCase('${cs.id}')">
               <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><polyline points="20 6 9 17 4 12"></polyline></svg>
               Verify
             </button>
-            <button class="btn-case-action btn-progressive-hint" id="btn_hint_${cs.id}" onclick="handleProgressiveHint('${cs.id}')">
+            <button class="btn-hint-puzzle" id="btn_hint_${cs.id}" onclick="handleProgressiveHint('${cs.id}')">
               💡 Hint (1/3)
             </button>
-            <button class="btn-case-action btn-reveal-shield" onclick="toggleCaseSolution('${cs.id}')">
-              👁️ Reveal Answer
+            <button class="btn-solution-puzzle" onclick="toggleCaseSolution('${cs.id}')">
+              👁️ Solution
             </button>
-          ` : ''}
-        </div>
-        <div class="case-actions-group">
-          <button class="btn-case-action" style="background: rgba(56, 189, 248, 0.12); color: #38bdf8; border-color: rgba(56, 189, 248, 0.4);" onclick="window.GYM_EXPLAIN_OPTIMIZER && window.GYM_EXPLAIN_OPTIMIZER.toggleExplain('${cs.id}')" title="Inspect MySQL 8.0 EXPLAIN plan and B+Tree index cost simulation">
-            ⚡ EXPLAIN
+          </div>
+        ` : ''}
+        <div class="case-devtools-bar">
+          <button class="btn-case-tool" onclick="window.GYM_EXPLAIN_OPTIMIZER && window.GYM_EXPLAIN_OPTIMIZER.toggleExplain('${cs.id}')" title="Inspect MySQL 8.0 EXPLAIN plan and B+Tree index cost simulation">
+            <span class="tool-icon">⚡</span> EXPLAIN
           </button>
-          <button class="btn-case-action" id="btn_faang_${cs.id}" style="background: rgba(168, 85, 247, 0.12); color: #c084fc; border-color: rgba(168, 85, 247, 0.4);" onclick="window.GYM_FAANG_INTERVIEWER && window.GYM_FAANG_INTERVIEWER.toggleInterview('${cs.id}')" title="Simulate FAANG Staff Engineering Follow-Up Technical Screen">
-            🎙️ FAANG Screen
+          <button class="btn-case-tool" id="btn_faang_${cs.id}" onclick="window.GYM_FAANG_INTERVIEWER && window.GYM_FAANG_INTERVIEWER.toggleInterview('${cs.id}')" title="Simulate FAANG Staff Engineering Follow-Up Technical Screen">
+            <span class="tool-icon">🎙️</span> FAANG Screen
           </button>
-          <button class="btn-case-action" style="background: rgba(6, 182, 212, 0.12); color: #22d3ee; border-color: rgba(6, 182, 212, 0.4);" onclick="window.GYM_DATAFLOW_GRAPH && window.GYM_DATAFLOW_GRAPH.toggleDataFlow('${cs.id}')" title="Inspect Relational Algebra Data-Flow DAG and volume compression pipeline">
-            📊 Data-Flow DAG
+          <button class="btn-case-tool" onclick="window.GYM_DATAFLOW_GRAPH && window.GYM_DATAFLOW_GRAPH.toggleDataFlow('${cs.id}')" title="Inspect Relational Algebra Data-Flow DAG and volume compression pipeline">
+            <span class="tool-icon">📊</span> Data-Flow DAG
           </button>
-          <button class="btn-case-action" style="background: rgba(234, 179, 8, 0.12); color: #facc15; border-color: rgba(234, 179, 8, 0.4);" onclick="window.GYM_TYPING_DOJO && window.GYM_TYPING_DOJO.toggleDojo('${cs.id}')" title="Practice query with real-time WPM, Accuracy, and mechanical keystroke feedback">
-            ⌨️ Typer Dojo
+          <button class="btn-case-tool" onclick="window.GYM_TYPING_DOJO && window.GYM_TYPING_DOJO.toggleDojo('${cs.id}')" title="Practice query with real-time WPM, Accuracy, and mechanical keystroke feedback">
+            <span class="tool-icon">⌨️</span> Typer Dojo
           </button>
-          <button class="btn-case-action" style="background: rgba(99, 102, 241, 0.12); color: #818cf8; border-color: rgba(99, 102, 241, 0.4);" onclick="window.GYM_SPACED_REPETITION && window.GYM_SPACED_REPETITION.openDailyWorkoutModal()" title="SuperMemo-2 Spaced Repetition Flashcard Vault">
-            🗂️ Flashcard
+          <button class="btn-case-tool" onclick="window.GYM_SPACED_REPETITION && window.GYM_SPACED_REPETITION.openDailyWorkoutModal()" title="SuperMemo-2 Spaced Repetition Flashcard Vault">
+            <span class="tool-icon">🗂️</span> Flashcard
           </button>
-          <button class="btn-case-action btn-case-dossier" onclick="openCaseDossier('${cs.id}')" title="View Executive Dossier">
-            📖 Dossier
+          <button class="btn-case-tool" onclick="openCaseDossier('${cs.id}')" title="View Executive Dossier">
+            <span class="tool-icon">📖</span> Dossier
           </button>
-          <button class="btn-case-action btn-case-sim" onclick="toggleCaseSim('${cs.id}')" title="Simulate 5-Row Table">
-            📊 Simulator
+          <button class="btn-case-tool" onclick="toggleCaseSim('${cs.id}')" title="Simulate 5-Row Table">
+            <span class="tool-icon">📊</span> Simulator
           </button>
-          <button class="btn-case-action btn-case-studio" onclick="switchToStudioWithQuery(decodeURIComponent('${encodeURIComponent(cs.targetQuery)}'), '${cs.table}')" title="Test in Studio">
-            ⚡ Studio
+          <button class="btn-case-tool btn-tool-studio" onclick="switchToStudioWithQuery(decodeURIComponent('${encodeURIComponent(cs.targetQuery)}'), '${cs.table}')" title="Test in Studio">
+            <span class="tool-icon">⚡</span> Studio
           </button>
         </div>
       </div>
@@ -5624,17 +5624,17 @@ function renderGymDrillCardHtml(cs, isBlitz = false) {
       <div class="case-card-header">
         <div>
           <div style="display: flex; align-items: center; gap: 6px; margin-bottom: 6px; flex-wrap: wrap;">
-            <span class="status-pill case-id-pill" style="background: #fbbf24; color: #000; border: 2px solid #000; box-shadow: 2px 2px 0px #000;">⚡ Drill #${String(drillNum).padStart(4, '0')}</span>
-            <span class="case-industry-pill" style="border-color: #000; background: ${topicAccent}33; color: var(--text-primary); font-weight: 800;">${topicBadgeName}</span>
-            ${isBlitz ? '<span class="status-pill" style="background: #ea580c; color: #fff; font-weight: 900; border: 1.5px solid #000;">⚡ BLITZ SPRINT</span>' : ''}
-            ${cs.subcluster ? `<span class="case-section-pill" style="background: #e0e7ff; color: #1e1b4b; border-color: #000;">${escapeHtml(cs.subcluster.split(' ')[0])}</span>` : ''}
+            <span class="case-id-pill drill-id-pill">⚡ Drill #${String(drillNum).padStart(4, '0')}</span>
+            <span class="case-industry-pill">${topicBadgeName}</span>
+            ${isBlitz ? '<span class="case-badge-blitz">⚡ BLITZ SPRINT</span>' : ''}
+            ${cs.subcluster ? `<span class="case-section-pill">${escapeHtml(cs.subcluster.split(' ')[0])}</span>` : ''}
             ${isSolved ? '<span style="font-size: 11px;" title="Solved!">🏆</span>' : ''}
             ${window.GYM_SPACED_REPETITION ? window.GYM_SPACED_REPETITION.renderCardBadgeHtml(cs.id) : ''}
           </div>
           <h3 class="case-title" onclick="openCaseDossier('${cs.id}')" title="Click to open full case study dossier">${escapeHtml(cs.title)}</h3>
         </div>
         <div style="display: flex; align-items: center; gap: 6px;">
-          <span class="case-id-pill" style="background: #38bdf8; color: #000;">🗄️ ${cs.table}</span>
+          <span class="case-table-tag">🗄️ ${cs.table}</span>
           ${isSolved ? '<span class="status-pill terminal-solved-pill">✓ Solved</span>' : ''}
         </div>
       </div>
@@ -5769,50 +5769,52 @@ function renderGymDrillCardHtml(cs, isBlitz = false) {
 
       <!-- Actions Bar -->
       <div class="case-actions-bar">
-        <div class="case-actions-group">
-          ${challenge ? `
-            <button class="btn-case-action btn-verify-puzzle" onclick="handleVerifyCase('${cs.id}')">
+        ${challenge ? `
+          <div class="case-primary-actions">
+            <button class="btn-verify-puzzle" onclick="handleVerifyCase('${cs.id}')">
               <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><polyline points="20 6 9 17 4 12"></polyline></svg>
               Verify
             </button>
-            <button class="btn-case-action btn-progressive-hint" id="btn_hint_${cs.id}" onclick="handleProgressiveHint('${cs.id}')">
+            <button class="btn-hint-puzzle" id="btn_hint_${cs.id}" onclick="handleProgressiveHint('${cs.id}')">
               💡 Hint (1/3)
             </button>
-            <button class="btn-case-action btn-reveal-shield" onclick="toggleCaseSolution('${cs.id}')">
-              👁️ Reveal Answer
+            <button class="btn-solution-puzzle" onclick="toggleCaseSolution('${cs.id}')">
+              👁️ Solution
             </button>
-            <button class="btn-case-action btn-autopsy-mode" id="btn_autopsy_${cs.id}" onclick="toggleSyntaxAutopsy('${cs.id}')" title="Inspect a deliberate syntax trap in this query and select the surgical fix">
+            <button class="btn-autopsy-mode" id="btn_autopsy_${cs.id}" onclick="toggleSyntaxAutopsy('${cs.id}')" title="Inspect a deliberate syntax trap in this query and select the surgical fix">
               🔬 Autopsy
             </button>
-          ` : ''}
+          </div>
+        ` : ''}
+        <div class="case-devtools-bar">
           ${(cs.syntaxBlueprint || cs.syntaxRule) ? `
-            <button class="btn-case-action" onclick="toggleGymIntel('${cs.id}')">
-              💡 Blueprint &amp; Traps
+            <button class="btn-case-tool" onclick="toggleGymIntel('${cs.id}')">
+              <span class="tool-icon">💡</span> Blueprint
             </button>
           ` : ''}
-          <button class="btn-case-action" onclick="toggleCaseSim('${cs.id}')">
-            📊 In-Card Sim
+          <button class="btn-case-tool" onclick="toggleCaseSim('${cs.id}')">
+            <span class="tool-icon">📊</span> In-Card Sim
           </button>
-          <button class="btn-case-action" onclick="switchToStudioWithQuery(decodeURIComponent('${encodeURIComponent(cs.targetQuery)}'), '${cs.table}')" title="Test in Query Studio">
-            ⚡ Studio &rarr;
+          <button class="btn-case-tool" onclick="window.GYM_EXPLAIN_OPTIMIZER && window.GYM_EXPLAIN_OPTIMIZER.toggleExplain('${cs.id}')" title="Inspect MySQL 8.0 EXPLAIN plan and B+Tree index cost simulation">
+            <span class="tool-icon">⚡</span> EXPLAIN
           </button>
-          <button class="btn-case-action" style="background: rgba(56, 189, 248, 0.12); color: #38bdf8; border-color: rgba(56, 189, 248, 0.4);" onclick="window.GYM_EXPLAIN_OPTIMIZER && window.GYM_EXPLAIN_OPTIMIZER.toggleExplain('${cs.id}')" title="Inspect MySQL 8.0 EXPLAIN plan and B+Tree index cost simulation">
-            ⚡ EXPLAIN
+          <button class="btn-case-tool" id="btn_faang_${cs.id}" onclick="window.GYM_FAANG_INTERVIEWER && window.GYM_FAANG_INTERVIEWER.toggleInterview('${cs.id}')" title="Simulate FAANG Staff Engineering Follow-Up Technical Screen">
+            <span class="tool-icon">🎙️</span> FAANG Screen
           </button>
-          <button class="btn-case-action" id="btn_faang_${cs.id}" style="background: rgba(168, 85, 247, 0.12); color: #c084fc; border-color: rgba(168, 85, 247, 0.4);" onclick="window.GYM_FAANG_INTERVIEWER && window.GYM_FAANG_INTERVIEWER.toggleInterview('${cs.id}')" title="Simulate FAANG Staff Engineering Follow-Up Technical Screen">
-            🎙️ FAANG Screen
+          <button class="btn-case-tool" onclick="window.GYM_DATAFLOW_GRAPH && window.GYM_DATAFLOW_GRAPH.toggleDataFlow('${cs.id}')" title="Inspect Relational Algebra Data-Flow DAG and volume compression pipeline">
+            <span class="tool-icon">📊</span> Data-Flow DAG
           </button>
-          <button class="btn-case-action" style="background: rgba(6, 182, 212, 0.12); color: #22d3ee; border-color: rgba(6, 182, 212, 0.4);" onclick="window.GYM_DATAFLOW_GRAPH && window.GYM_DATAFLOW_GRAPH.toggleDataFlow('${cs.id}')" title="Inspect Relational Algebra Data-Flow DAG and volume compression pipeline">
-            📊 Data-Flow DAG
+          <button class="btn-case-tool" onclick="window.GYM_TYPING_DOJO && window.GYM_TYPING_DOJO.toggleDojo('${cs.id}')" title="Practice query with real-time WPM, Accuracy, and mechanical keystroke feedback">
+            <span class="tool-icon">⌨️</span> Typer Dojo
           </button>
-          <button class="btn-case-action" style="background: rgba(234, 179, 8, 0.12); color: #facc15; border-color: rgba(234, 179, 8, 0.4);" onclick="window.GYM_TYPING_DOJO && window.GYM_TYPING_DOJO.toggleDojo('${cs.id}')" title="Practice query with real-time WPM, Accuracy, and mechanical keystroke feedback">
-            ⌨️ Typer Dojo
+          <button class="btn-case-tool" onclick="window.GYM_SPACED_REPETITION && window.GYM_SPACED_REPETITION.openDailyWorkoutModal()" title="SuperMemo-2 Spaced Repetition Flashcard Vault">
+            <span class="tool-icon">🗂️</span> Flashcard
           </button>
-          <button class="btn-case-action" style="background: rgba(99, 102, 241, 0.12); color: #818cf8; border-color: rgba(99, 102, 241, 0.4);" onclick="window.GYM_SPACED_REPETITION && window.GYM_SPACED_REPETITION.openDailyWorkoutModal()" title="SuperMemo-2 Spaced Repetition Flashcard Vault">
-            🗂️ Flashcard
+          <button class="btn-case-tool" onclick="openCaseDossier('${cs.id}')" title="View Full Dossier">
+            <span class="tool-icon">📖</span> Dossier
           </button>
-          <button class="btn-case-action" onclick="openCaseDossier('${cs.id}')" title="View Full Dossier">
-            📖 Dossier
+          <button class="btn-case-tool btn-tool-studio" onclick="switchToStudioWithQuery(decodeURIComponent('${encodeURIComponent(cs.targetQuery)}'), '${cs.table}')" title="Test in Query Studio">
+            <span class="tool-icon">⚡</span> Studio &rarr;
           </button>
         </div>
       </div>
@@ -7918,7 +7920,7 @@ function openCaseDrawer(caseId) {
     <!-- Top Metadata -->
     <div style="display: flex; align-items: center; justify-content: space-between; flex-wrap: wrap; gap: 8px;">
       <div style="display: flex; align-items: center; gap: 8px;">
-        <span class="case-diff-filter-btn case-diff-${cs.difficulty.toLowerCase()} active">${cs.difficulty}</span>
+        <span class="case-diff-badge diff-${cs.difficulty.toLowerCase()}"><span class="diff-dot"></span>${cs.difficulty}</span>
         <span class="case-industry-pill">${cs.industry}</span>
         <span class="case-section-pill">${cs.section ? cs.section.split(':')[0] : 'Section'}</span>
       </div>
