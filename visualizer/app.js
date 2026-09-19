@@ -2181,32 +2181,37 @@ function initCurriculumSystem() {
   // Quick Jump Aggregations Hub Menu
   window.toggleAggregationsHubMenu = function(e) {
     if (e) {
-      e.preventDefault();
-      e.stopPropagation();
+      if (typeof e.preventDefault === 'function') e.preventDefault();
+      if (typeof e.stopPropagation === 'function') e.stopPropagation();
     }
     const menu = document.getElementById('quickJumpAggregationsMenu');
-    if (menu) {
-      const isOpen = menu.classList.contains('open');
-      if (isOpen) {
-        menu.classList.remove('open');
-      } else {
-        menu.classList.add('open');
-        if (window.soundFX) window.soundFX.playPop();
-      }
+    if (!menu) return;
+    const willOpen = !menu.classList.contains('open');
+    if (willOpen) {
+      menu.classList.add('open');
+      if (window.soundFX) window.soundFX.playPop();
+    } else {
+      menu.classList.remove('open');
     }
   };
 
   const qjBtn = document.getElementById('quickJumpAggregationsBtn');
   const qjMenu = document.getElementById('quickJumpAggregationsMenu');
   if (qjBtn && qjMenu) {
-    qjBtn.addEventListener('click', (e) => {
+    qjBtn.onclick = function(e) {
       window.toggleAggregationsHubMenu(e);
-    });
+    };
+
     document.addEventListener('click', (e) => {
-      if (!qjMenu.contains(e.target) && e.target !== qjBtn && !qjBtn.contains(e.target)) {
-        qjMenu.classList.remove('open');
+      if (qjMenu.classList.contains('open')) {
+        const clickedInsideMenu = qjMenu.contains(e.target);
+        const clickedBtn = qjBtn === e.target || qjBtn.contains(e.target);
+        if (!clickedInsideMenu && !clickedBtn) {
+          qjMenu.classList.remove('open');
+        }
       }
     });
+
     document.addEventListener('keydown', (e) => {
       if (e.key === 'Escape' && qjMenu.classList.contains('open')) {
         qjMenu.classList.remove('open');

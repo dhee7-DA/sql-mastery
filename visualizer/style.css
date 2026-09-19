@@ -2172,6 +2172,7 @@ body {
 
 /* Top App Navigation Bar - Modern Sleek Capsule Bar */
 .app-nav-bar {
+  position: relative;
   min-height: 44px;
   background: rgba(8, 8, 12, 0.9);
   backdrop-filter: blur(16px);
@@ -2184,7 +2185,7 @@ body {
   flex-shrink: 0;
   gap: 12px;
   overflow: visible !important;
-  z-index: 100;
+  z-index: 1000;
 }
 
 .app-nav-bar::-webkit-scrollbar {
@@ -2201,7 +2202,8 @@ body {
   padding: 3px;
   overflow-x: auto;
   scrollbar-width: none;
-  flex-shrink: 0;
+  flex-shrink: 1;
+  min-width: 0;
   backdrop-filter: blur(8px);
 }
 
@@ -2243,6 +2245,7 @@ body {
   font-size: 11px;
   font-family: var(--font-mono);
   color: var(--text-muted);
+  white-space: nowrap;
 }
 
 .module-indicator strong {
@@ -2254,6 +2257,8 @@ body {
   align-items: center;
   gap: 12px;
   flex-shrink: 0;
+  margin-left: auto;
+  position: relative;
 }
 
 /* Quick Jump Dropdown Menu */
@@ -2296,12 +2301,12 @@ body {
   width: 320px;
   background: var(--bg-surface-elevated, #0d1017);
   border: 1px solid var(--border-hover, #2d3748);
-  border-radius: 10px;
-  box-shadow: 0 16px 36px rgba(0, 0, 0, 0.85), 0 0 0 1px rgba(255, 255, 255, 0.08);
-  z-index: 99999;
+  border-radius: 12px;
+  box-shadow: 0 20px 45px rgba(0, 0, 0, 0.9), 0 0 0 1px rgba(255, 255, 255, 0.1);
+  z-index: 999999 !important;
   padding: 8px;
   flex-direction: column;
-  gap: 4px;
+  gap: 5px;
 }
 
 .quick-jump-menu.open {
