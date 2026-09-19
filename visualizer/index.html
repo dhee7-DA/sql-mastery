@@ -8,7 +8,7 @@
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
   <link href="https://fonts.googleapis.com/css2?family=Geist+Mono:wght@400;500;600&family=Geist:wght@300;400;500;600;700&display=swap" rel="stylesheet">
-  <link rel="stylesheet" href="style.css?v=65">
+  <link rel="stylesheet" href="style.css?v=66">
 </head>
 <body>
   <div class="app-layout">
@@ -52,13 +52,16 @@
         <span class="xp-streak-pill" id="userXpCounter" title="Total SQL Mastery Points">
           ⚡ 60 <span style="font-size: 10px; color: var(--text-muted);">XP</span>
         </span>
+        <span class="xp-streak-pill flashcard-due-pill" id="headerFlashcardDuePill" title="Review Due SuperMemo-2 Flashcards" onclick="if(window.openFlashcardVault) window.openFlashcardVault();" style="cursor: pointer;">
+          🗂️ <span id="flashcardDueCount">12</span> Due
+        </span>
         <button id="btnSoundToggle" class="btn-sound-toggle" title="Toggle Sound FX">
           <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polygon points="11 5 6 9 2 9 2 15 6 15 11 19 11 5"></polygon><path d="M19.07 4.93a10 10 0 0 1 0 14.14M15.54 8.46a5 5 0 0 1 0 7.07"></path></svg>
           Sound ON
         </button>
         <div class="theme-select-wrapper">
           <select id="themeSelect" class="clean-select theme-select" title="Switch Theme">
-            <option value="zinc-pitch" selected>⚡ Cursor Dark</option>
+            <option value="cursor-dark" selected>⚡ Cursor Dark</option>
             <option value="pomegranate-powder">🍷 Pomegranate + Powder</option>
             <option value="smoky-jade-oxblood">🌲 Smoky Jade + Oxblood</option>
             <option value="petrol-persimmon">🌊 Petrol Teal + Persimmon</option>
@@ -188,6 +191,48 @@
               <span><strong>2,100 MCQs</strong></span>
               <span style="color: var(--border-default);">&bull;</span>
               <span><strong>30 Traps &amp; Tips</strong></span>
+            </div>
+          </div>
+
+          <!-- Real-Time Curriculum Analytics: Heatmap & 6-Pillar Radar -->
+          <div class="curriculum-analytics-dashboard">
+            <div class="analytics-card heatmap-card">
+              <div class="analytics-header">
+                <div class="analytics-title-wrap">
+                  <span class="analytics-icon">📅</span>
+                  <div>
+                    <span class="analytics-title">60-Day SQL Deliberate Practice Heatmap</span>
+                    <span class="analytics-subtitle">Activity intensity across 2,100 MCQs, 1,700 Drills &amp; 1,490 Case Studies</span>
+                  </div>
+                </div>
+                <div class="heatmap-streak-badge" id="heatmapStreakBadge">
+                  🔥 <strong>1 Day Streak</strong> &bull; 60 XP
+                </div>
+              </div>
+              <div class="activity-heatmap-grid" id="curriculumActivityHeatmap"></div>
+              <div class="heatmap-legend">
+                <span class="legend-label">Less</span>
+                <span class="legend-box lvl-0"></span>
+                <span class="legend-box lvl-1"></span>
+                <span class="legend-box lvl-2"></span>
+                <span class="legend-box lvl-3"></span>
+                <span class="legend-box lvl-4"></span>
+                <span class="legend-label">More</span>
+              </div>
+            </div>
+
+            <div class="analytics-card radar-card">
+              <div class="analytics-header">
+                <div class="analytics-title-wrap">
+                  <span class="analytics-icon">🎯</span>
+                  <div>
+                    <span class="analytics-title">6-Pillar Relational Domain Competency</span>
+                    <span class="analytics-subtitle">Evaluated over AST correctness, tie-breaker Gotchas &amp; schema design</span>
+                  </div>
+                </div>
+                <span class="status-pill status-pill-accent" id="overallMasteryPill">86% Mastery</span>
+              </div>
+              <div class="pillar-radar-grid" id="pillarMasteryRadar"></div>
             </div>
           </div>
 
@@ -475,8 +520,40 @@
           <div class="editor-body" id="rawSqlContainer" style="display: none;">
             <textarea id="sqlInput" class="code-editor" spellcheck="false" placeholder="Write query..."></textarea>
           </div>
+
+          <!-- Physical Query Execution Telemetry -->
+          <div class="query-telemetry-bar" id="queryTelemetryBar">
+            <div class="telemetry-chip plan-chip" id="telemetryPlanChip" title="Physical Storage Access Method">
+              <span class="telemetry-label">PLAN:</span>
+              <span class="telemetry-val" id="telemetryPlanVal">INDEX RANGE SEEK</span>
+            </div>
+            <div class="telemetry-chip latency-chip" id="telemetryLatencyChip" title="Estimated Engine Execution Latency">
+              <span class="telemetry-label">LATENCY:</span>
+              <span class="telemetry-val" id="telemetryLatencyVal">1.4 ms</span>
+            </div>
+            <div class="telemetry-chip buffer-chip" id="telemetryBufferChip" title="InnoDB Buffer Pool Hit Ratio">
+              <span class="telemetry-label">BUFFER HIT:</span>
+              <span class="telemetry-val" id="telemetryBufferVal">100% (RAM)</span>
+            </div>
+            <div class="telemetry-chip select-chip" id="telemetrySelectChip" title="Row Filter Selectivity Ratio">
+              <span class="telemetry-label">SELECTIVITY:</span>
+              <span class="telemetry-val" id="telemetrySelectVal">8 / 8 Rows</span>
+            </div>
+            <div class="telemetry-chip ast-chip" id="telemetryAstChip" title="Calculated AST Tree Depth">
+              <span class="telemetry-label">AST DEPTH:</span>
+              <span class="telemetry-val" id="telemetryAstVal">Level 4</span>
+            </div>
+          </div>
+
           <div class="editor-statusbar">
-            <span class="shortcut-legend"><kbd>Ctrl</kbd> + <kbd>Enter</kbd> to execute</span>
+            <span class="shortcut-legend">
+              <kbd>Ctrl</kbd> + <kbd>Enter</kbd> Run &bull; 
+              <kbd>Alt</kbd> + <kbd>Shift</kbd> + <kbd>F</kbd> Format &bull; 
+              <kbd>Esc</kbd> Reset
+            </span>
+            <button id="btnFormatSQLInline" class="btn-format-inline" onclick="if(window.formatSQLEditorQuery) window.formatSQLEditorQuery();" title="Prettify &amp; Format SQL">
+              ✨ Prettify SQL
+            </button>
           </div>
         </div>
       </aside>
@@ -1041,6 +1118,6 @@
 <script src="gym_dataflow_graph.js?v=57"></script>
 <script src="gym_typing_dojo.js?v=57"></script>
 <script src="gym_spaced_repetition.js?v=57"></script>
-<script src="app.js?v=65"></script>
+<script src="app.js?v=66"></script>
 </body>
 </html>

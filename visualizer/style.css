@@ -12728,6 +12728,319 @@ body {
   line-height: 1.4;
 }
 
+/* =============================================================================
+   HEADER THEME SWITCHER & FLASHCARD REVIEW PILL
+   ============================================================================= */
+.theme-select-wrapper {
+  position: relative;
+  display: inline-flex;
+  align-items: center;
+}
+
+.theme-select {
+  appearance: none;
+  -webkit-appearance: none;
+  background: var(--bg-surface-elevated) !important;
+  color: var(--text-primary) !important;
+  border: 1px solid var(--border-default) !important;
+  border-radius: 20px !important;
+  padding: 5px 28px 5px 12px !important;
+  font-size: 11.5px !important;
+  font-weight: 600 !important;
+  cursor: pointer !important;
+  transition: all 0.2s ease !important;
+  outline: none !important;
+  background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='10' height='6' viewBox='0 0 10 6'%3E%3Cpath fill='none' stroke='%2394a3b8' stroke-width='1.5' stroke-linecap='round' stroke-linejoin='round' d='M1 1l4 4 4-4'/%3E%3C/svg%3E") !important;
+  background-repeat: no-repeat !important;
+  background-position: right 10px center !important;
+  box-shadow: 0 2px 6px rgba(0, 0, 0, 0.25) !important;
+}
+
+.theme-select:hover {
+  border-color: var(--border-hover) !important;
+  background-color: var(--bg-hover) !important;
+}
+
+.theme-select:focus {
+  border-color: var(--border-focus) !important;
+  box-shadow: 0 0 0 2px rgba(56, 189, 248, 0.25) !important;
+}
+
+.flashcard-due-pill {
+  background: rgba(251, 191, 36, 0.08) !important;
+  border: 1px solid rgba(251, 191, 36, 0.3) !important;
+  color: #fbbf24 !important;
+  transition: all 0.2s ease !important;
+}
+
+.flashcard-due-pill:hover {
+  background: rgba(251, 191, 36, 0.16) !important;
+  border-color: rgba(251, 191, 36, 0.6) !important;
+  transform: translateY(-1px);
+  box-shadow: 0 2px 10px rgba(251, 191, 36, 0.25);
+}
+
+/* =============================================================================
+   PHYSICAL QUERY EXECUTION TELEMETRY BAR
+   ============================================================================= */
+.query-telemetry-bar {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(110px, 1fr));
+  gap: 8px;
+  background: rgba(8, 12, 20, 0.85);
+  border: 1px solid var(--border-muted);
+  border-radius: 8px;
+  padding: 8px 12px;
+  margin: 10px 14px 4px 14px;
+  backdrop-filter: blur(8px);
+}
+
+.telemetry-chip {
+  display: flex;
+  flex-direction: column;
+  gap: 2px;
+  background: rgba(255, 255, 255, 0.02);
+  border: 1px solid rgba(255, 255, 255, 0.05);
+  border-radius: 5px;
+  padding: 4px 8px;
+  font-family: var(--font-mono);
+}
+
+.telemetry-label {
+  font-size: 8.5px;
+  font-weight: 700;
+  letter-spacing: 0.06em;
+  color: var(--text-muted);
+  text-transform: uppercase;
+}
+
+.telemetry-val {
+  font-size: 11px;
+  font-weight: 800;
+  color: #f1f5f9;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+
+.plan-chip .telemetry-val { color: #34d399; }
+.latency-chip .telemetry-val { color: #38bdf8; }
+.buffer-chip .telemetry-val { color: #a78bfa; }
+.select-chip .telemetry-val { color: #fbbf24; }
+.ast-chip .telemetry-val { color: #f472b6; }
+
+.btn-format-inline {
+  background: rgba(255, 255, 255, 0.04);
+  color: var(--text-secondary);
+  border: 1px solid var(--border-default);
+  border-radius: 5px;
+  padding: 3px 8px;
+  font-size: 10.5px;
+  font-weight: 600;
+  cursor: pointer;
+  transition: all 0.18s ease;
+}
+
+.btn-format-inline:hover {
+  background: rgba(56, 189, 248, 0.1);
+  border-color: rgba(56, 189, 248, 0.4);
+  color: #38bdf8;
+}
+
+/* =============================================================================
+   CURRICULUM ANALYTICS DASHBOARD (HEATMAP & MASTERY RADAR)
+   ============================================================================= */
+.curriculum-analytics-dashboard {
+  display: grid;
+  grid-template-columns: 1.15fr 0.85fr;
+  gap: 16px;
+  margin-bottom: 22px;
+}
+
+@media (max-width: 960px) {
+  .curriculum-analytics-dashboard {
+    grid-template-columns: 1fr;
+  }
+}
+
+.analytics-card {
+  background: var(--bg-card);
+  border: 1px solid var(--border-default);
+  border-radius: 14px;
+  padding: 18px 20px;
+  box-shadow: 0 4px 18px rgba(0, 0, 0, 0.3);
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+}
+
+.analytics-header {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  flex-wrap: wrap;
+  gap: 10px;
+  margin-bottom: 14px;
+}
+
+.analytics-title-wrap {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+}
+
+.analytics-icon {
+  font-size: 20px;
+  line-height: 1;
+}
+
+.analytics-title {
+  font-size: 14px;
+  font-weight: 800;
+  color: var(--text-primary);
+  display: block;
+}
+
+.analytics-subtitle {
+  font-size: 11px;
+  color: var(--text-secondary);
+  display: block;
+  margin-top: 1px;
+}
+
+.heatmap-streak-badge {
+  font-size: 11px;
+  font-family: var(--font-mono);
+  background: rgba(251, 191, 36, 0.08);
+  border: 1px solid rgba(251, 191, 36, 0.25);
+  color: #fbbf24;
+  padding: 4px 10px;
+  border-radius: 6px;
+}
+
+/* 60-Day Grid Layout */
+.activity-heatmap-grid {
+  display: grid;
+  grid-template-columns: repeat(15, 1fr);
+  grid-auto-rows: 15px;
+  gap: 6px;
+  margin-bottom: 12px;
+  padding: 4px 0;
+}
+
+.heatmap-cell {
+  width: 100%;
+  height: 15px;
+  border-radius: 3px;
+  background: rgba(255, 255, 255, 0.03);
+  border: 1px solid rgba(255, 255, 255, 0.05);
+  cursor: pointer;
+  transition: transform 0.15s ease, box-shadow 0.15s ease;
+  position: relative;
+}
+
+.heatmap-cell:hover {
+  transform: scale(1.25);
+  z-index: 10;
+  border-color: #ffffff;
+}
+
+/* Default Theme Levels (Cyan / Cursor Dark) */
+.heatmap-cell.lvl-0 { background: rgba(255, 255, 255, 0.03); border-color: rgba(255, 255, 255, 0.05); }
+.heatmap-cell.lvl-1 { background: rgba(56, 189, 248, 0.25); border-color: rgba(56, 189, 248, 0.4); }
+.heatmap-cell.lvl-2 { background: rgba(56, 189, 248, 0.50); border-color: rgba(56, 189, 248, 0.6); }
+.heatmap-cell.lvl-3 { background: rgba(56, 189, 248, 0.75); border-color: rgba(56, 189, 248, 0.85); box-shadow: 0 0 6px rgba(56, 189, 248, 0.3); }
+.heatmap-cell.lvl-4 { background: #38bdf8; border-color: #7dd3fc; box-shadow: 0 0 10px rgba(56, 189, 248, 0.5); }
+
+/* Pomegranate Theme Levels */
+[data-theme="pomegranate-powder"] .heatmap-cell.lvl-1 { background: rgba(244, 63, 94, 0.25); border-color: rgba(244, 63, 94, 0.4); }
+[data-theme="pomegranate-powder"] .heatmap-cell.lvl-2 { background: rgba(244, 63, 94, 0.50); border-color: rgba(244, 63, 94, 0.6); }
+[data-theme="pomegranate-powder"] .heatmap-cell.lvl-3 { background: rgba(244, 63, 94, 0.75); border-color: rgba(244, 63, 94, 0.85); box-shadow: 0 0 6px rgba(244, 63, 94, 0.3); }
+[data-theme="pomegranate-powder"] .heatmap-cell.lvl-4 { background: #f43f5e; border-color: #fda4af; box-shadow: 0 0 10px rgba(244, 63, 94, 0.5); }
+
+/* Smoky Jade Theme Levels */
+[data-theme="smoky-jade-oxblood"] .heatmap-cell.lvl-1 { background: rgba(52, 211, 153, 0.25); border-color: rgba(52, 211, 153, 0.4); }
+[data-theme="smoky-jade-oxblood"] .heatmap-cell.lvl-2 { background: rgba(52, 211, 153, 0.50); border-color: rgba(52, 211, 153, 0.6); }
+[data-theme="smoky-jade-oxblood"] .heatmap-cell.lvl-3 { background: rgba(52, 211, 153, 0.75); border-color: rgba(52, 211, 153, 0.85); box-shadow: 0 0 6px rgba(52, 211, 153, 0.3); }
+[data-theme="smoky-jade-oxblood"] .heatmap-cell.lvl-4 { background: #34d399; border-color: #6ee7b7; box-shadow: 0 0 10px rgba(52, 211, 153, 0.5); }
+
+/* Petrol Persimmon Theme Levels */
+[data-theme="petrol-persimmon"] .heatmap-cell.lvl-1 { background: rgba(249, 115, 22, 0.25); border-color: rgba(249, 115, 22, 0.4); }
+[data-theme="petrol-persimmon"] .heatmap-cell.lvl-2 { background: rgba(249, 115, 22, 0.50); border-color: rgba(249, 115, 22, 0.6); }
+[data-theme="petrol-persimmon"] .heatmap-cell.lvl-3 { background: rgba(249, 115, 22, 0.75); border-color: rgba(249, 115, 22, 0.85); box-shadow: 0 0 6px rgba(249, 115, 22, 0.3); }
+[data-theme="petrol-persimmon"] .heatmap-cell.lvl-4 { background: #f97316; border-color: #fdba74; box-shadow: 0 0 10px rgba(249, 115, 22, 0.5); }
+
+.heatmap-legend {
+  display: flex;
+  align-items: center;
+  justify-content: flex-end;
+  gap: 5px;
+  font-size: 10px;
+  color: var(--text-muted);
+}
+
+.legend-box {
+  width: 11px;
+  height: 11px;
+  border-radius: 2px;
+}
+
+/* Pillar Radar Meters */
+.pillar-radar-grid {
+  display: flex;
+  flex-direction: column;
+  gap: 9px;
+}
+
+.pillar-meter-row {
+  display: flex;
+  flex-direction: column;
+  gap: 4px;
+}
+
+.pillar-meta-top {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  font-size: 11px;
+}
+
+.pillar-name-wrap {
+  display: flex;
+  align-items: center;
+  gap: 6px;
+  font-weight: 700;
+  color: #f1f5f9;
+}
+
+.pillar-pct-tag {
+  font-family: var(--font-mono);
+  font-size: 10.5px;
+  font-weight: 800;
+  color: var(--text-secondary);
+}
+
+.pillar-track {
+  height: 6px;
+  background: rgba(255, 255, 255, 0.05);
+  border-radius: 3px;
+  overflow: hidden;
+}
+
+.pillar-fill {
+  height: 100%;
+  border-radius: 3px;
+  transition: width 0.6s cubic-bezier(0.16, 1, 0.3, 1);
+}
+
+.pillar-fill.color-p1 { background: linear-gradient(90deg, #0284c7, #38bdf8); }
+.pillar-fill.color-p2 { background: linear-gradient(90deg, #059669, #34d399); }
+.pillar-fill.color-p3 { background: linear-gradient(90deg, #d97706, #fbbf24); }
+.pillar-fill.color-p4 { background: linear-gradient(90deg, #9333ea, #c084fc); }
+.pillar-fill.color-p5 { background: linear-gradient(90deg, #e11d48, #fb7185); }
+.pillar-fill.color-p6 { background: linear-gradient(90deg, #0d9488, #2dd4bf); }
+
+
 
 
 

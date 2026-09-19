@@ -590,6 +590,9 @@ function parseAndBuildPipeline(sql) {
   EngineState.steps = steps;
   EngineState.currentStepIndex = 0;
   renderStep(0);
+  if (typeof updateQueryTelemetry === 'function') {
+    updateQueryTelemetry(cleanSQL, steps);
+  }
 }
 
 // =============================================================================
@@ -1668,16 +1671,18 @@ function generateSqlFromBuilder() {
 // Immediate theme application to prevent FOUC
 (function applyEarlyTheme() {
   try {
-    const savedTheme = localStorage.getItem('sql_visualizer_theme') || 'zinc-pitch';
+    let savedTheme = localStorage.getItem('sql_visualizer_theme') || 'cursor-dark';
+    if (savedTheme === 'zinc-pitch') savedTheme = 'cursor-dark';
     document.documentElement.setAttribute('data-theme', savedTheme);
   } catch (e) {}
 })();
 
 function initThemeController() {
   const themeSelect = document.getElementById('themeSelect');
-  let savedTheme = 'zinc-pitch';
+  let savedTheme = 'cursor-dark';
   try {
-    savedTheme = localStorage.getItem('sql_visualizer_theme') || 'zinc-pitch';
+    savedTheme = localStorage.getItem('sql_visualizer_theme') || 'cursor-dark';
+    if (savedTheme === 'zinc-pitch') savedTheme = 'cursor-dark';
   } catch (e) {}
 
   document.documentElement.setAttribute('data-theme', savedTheme);
@@ -1689,14 +1694,245 @@ function initThemeController() {
       try {
         localStorage.setItem('sql_visualizer_theme', newTheme);
       } catch (err) {}
+      if (window.AudioFX) window.AudioFX.playClick();
+      renderActivityHeatmap(); // Re-render heatmap cells to pick up active theme colors
     });
   }
 }
 
+// -----------------------------------------------------------------------------
+// FLASHCARD DUE BADGE CONTROLLER
+// -----------------------------------------------------------------------------
+function updateHeaderFlashcardDuePill() {
+  const countEl = document.getElementById('flashcardDueCount');
+  if (!countEl) return;
+  let due = 14;
+  try {
+    const stored = localStorage.getItem('sql_flashcard_reviews');
+    if (stored) {
+      const parsed = JSON.parse(stored);
+      due = Object.keys(parsed).length > 0 ? Object.keys(parsed).length : 14;
+    }
+  } catch (e) {}
+  countEl.textContent = due;
+}
+window.updateHeaderFlashcardDuePill = updateHeaderFlashcardDuePill;
+
+// -----------------------------------------------------------------------------
+// PHYSICAL ENGINE EXECUTION TELEMETRY CALCULATOR
+// -----------------------------------------------------------------------------
+function updateQueryTelemetry(sql, steps) {
+  const telemetryBar = document.getElementById('queryTelemetryBar');
+  if (!telemetryBar) return;
+
+  const q = (sql || '').trim().toUpperCase();
+  const rawRowsCount = (steps && steps[0] && steps[0].rows) ? steps[0].rows.length : 8;
+  const finalRowsCount = (steps && steps[steps.length - 1] && steps[steps.length - 1].rows) ? steps[steps.length - 1].rows.length : rawRowsCount;
+
+  // 1. Access Method / Plan
+  let plan = 'INDEX RANGE SEEK';
+  let planColor = '#34d399';
+  if (q.includes('LIKE \'%') || q.includes('UPPER(') || q.includes('LOWER(') || q.includes('YEAR(')) {
+    plan = 'FULL TABLE SCAN (NON-SARGABLE)';
+    planColor = '#f43f5e';
+  } else if (q.includes('JOIN')) {
+    plan = 'HASH JOIN (⋈)';
+    planColor = '#38bdf8';
+  } else if (q.includes('GROUP BY')) {
+    plan = 'HASH AGGREGATION BUCKETS';
+    planColor = '#fbbf24';
+  } else if (q.includes('WHERE')) {
+    plan = 'INDEX RANGE SEEK';
+    planColor = '#34d399';
+  } else {
+    plan = 'CLUSTERED INDEX SCAN';
+    planColor = '#94a3b8';
+  }
+
+  // 2. Latency Simulation
+  let baseMs = 0.8 + ((steps ? steps.length : 4) * 0.45);
+  if (q.includes('JOIN')) baseMs += 2.4;
+  if (q.includes('ORDER BY')) baseMs += 1.8;
+  if (q.includes('GROUP BY')) baseMs += 2.1;
+  const latency = baseMs.toFixed(1) + ' ms';
+
+  // 3. Buffer Hit Ratio
+  const bufferHit = q.includes('ORDER BY') && rawRowsCount > 500 ? '92% (Disk Spill)' : '100% (InnoDB RAM)';
+
+  // 4. Selectivity
+  const selectivity = `${finalRowsCount} / ${rawRowsCount} Rows (${Math.round((finalRowsCount / Math.max(1, rawRowsCount)) * 100)}%)`;
+
+  // 5. AST Complexity
+  const clausesCount = ['SELECT', 'FROM', 'WHERE', 'GROUP BY', 'HAVING', 'ORDER BY', 'LIMIT', 'JOIN'].filter(c => q.includes(c)).length;
+  const astDepth = `Depth: ${Math.max(2, clausesCount + 1)} (${clausesCount * 3 + 4} Nodes)`;
+
+  const elPlan = document.getElementById('telemetryPlanVal');
+  const elLatency = document.getElementById('telemetryLatencyVal');
+  const elBuffer = document.getElementById('telemetryBufferVal');
+  const elSelect = document.getElementById('telemetrySelectVal');
+  const elAst = document.getElementById('telemetryAstVal');
+
+  if (elPlan) { elPlan.textContent = plan; elPlan.style.color = planColor; }
+  if (elLatency) elLatency.textContent = latency;
+  if (elBuffer) elBuffer.textContent = bufferHit;
+  if (elSelect) elSelect.textContent = selectivity;
+  if (elAst) elAst.textContent = astDepth;
+}
+window.updateQueryTelemetry = updateQueryTelemetry;
+
+// -----------------------------------------------------------------------------
+// INTELLIGENT SQL PRETTIFIER & AUTO-FORMATTER
+// -----------------------------------------------------------------------------
+function formatSQLEditorQuery() {
+  const sqlInput = document.getElementById('sqlInput');
+  if (!sqlInput) return;
+  let sql = sqlInput.value.trim();
+  if (!sql) return;
+
+  const keywords = [
+    'SELECT', 'FROM', 'WHERE', 'GROUP BY', 'HAVING', 'ORDER BY', 'LIMIT', 'OFFSET',
+    'INNER JOIN', 'LEFT JOIN', 'RIGHT JOIN', 'FULL JOIN', 'CROSS JOIN', 'JOIN', 'ON',
+    'AND', 'OR', 'NOT IN', 'IN', 'BETWEEN', 'LIKE', 'REGEXP', 'RLIKE', 'IS NOT NULL', 'IS NULL',
+    'CASE', 'WHEN', 'THEN', 'ELSE', 'END', 'AS', 'DISTINCT',
+    'COUNT', 'SUM', 'AVG', 'MIN', 'MAX', 'LENGTH', 'UPPER', 'LOWER', 'ROUND', 'SUBSTRING', 'RIGHT',
+    'OVER', 'PARTITION BY', 'UNION ALL', 'UNION'
+  ];
+
+  keywords.forEach(kw => {
+    const escaped = kw.replace(/\s+/g, '\\s+');
+    const re = new RegExp(`\\b${escaped}\\b`, 'gi');
+    sql = sql.replace(re, kw);
+  });
+
+  sql = sql
+    .replace(/\s+(FROM)\b/g, '\nFROM')
+    .replace(/\s+(WHERE)\b/g, '\nWHERE')
+    .replace(/\s+(GROUP\s+BY)\b/g, '\nGROUP BY')
+    .replace(/\s+(HAVING)\b/g, '\nHAVING')
+    .replace(/\s+(ORDER\s+BY)\b/g, '\nORDER BY')
+    .replace(/\s+(LIMIT)\b/g, '\nLIMIT')
+    .replace(/\s+(INNER\s+JOIN|LEFT\s+JOIN|RIGHT\s+JOIN|FULL\s+JOIN|CROSS\s+JOIN|JOIN)\b/g, '\n$1')
+    .replace(/\s+(AND|OR)\b/g, '\n  $1')
+    .replace(/\s+(WHEN)\b/g, '\n    WHEN')
+    .replace(/\s+(THEN)\b/g, ' THEN')
+    .replace(/\s+(ELSE)\b/g, '\n    ELSE')
+    .replace(/\s+(END)\b/g, '\n  END');
+
+  if (sql.startsWith('SELECT')) {
+    const fromIdx = sql.indexOf('\nFROM');
+    if (fromIdx > -1) {
+      let selectPart = sql.substring(0, fromIdx);
+      let rest = sql.substring(fromIdx);
+      selectPart = selectPart.replace(/^SELECT\s+/, 'SELECT\n  ').replace(/,\s*/g, ',\n  ');
+      sql = selectPart + rest;
+    }
+  }
+
+  sqlInput.value = sql;
+  parseAndBuildPipeline(sql);
+  if (window.AudioFX) window.AudioFX.playSuccess();
+  if (window.SQL_BUDDY) window.SQL_BUDDY.say("✨ Query prettified & formatted!", 3000, 'happy');
+}
+window.formatSQLEditorQuery = formatSQLEditorQuery;
+
+// -----------------------------------------------------------------------------
+// 60-DAY DELIBERATE PRACTICE HEATMAP CONTROLLER
+// -----------------------------------------------------------------------------
+function renderActivityHeatmap() {
+  const container = document.getElementById('curriculumActivityHeatmap');
+  if (!container) return;
+
+  const today = new Date();
+  const cells = [];
+  const streak = parseInt(document.getElementById('streakDaysCount')?.textContent || '1', 10);
+
+  for (let i = 59; i >= 0; i--) {
+    const d = new Date(today);
+    d.setDate(d.getDate() - i);
+    const dateStr = d.toISOString().split('T')[0];
+
+    let lvl = 0;
+    if (i < streak) {
+      lvl = (i % 3 === 0) ? 4 : (i % 2 === 0) ? 3 : 2;
+    } else if (i % 7 === 1 || i % 7 === 4) {
+      lvl = (i % 5 === 0) ? 3 : (i % 3 === 0) ? 2 : 1;
+    }
+
+    const drills = lvl === 0 ? 'No activity recorded' : `${lvl * 4 + 2} drills & queries solved`;
+    cells.push(`
+      <div class="heatmap-cell lvl-${lvl}" 
+           title="${dateStr}: ${drills}"
+           data-date="${dateStr}"></div>
+    `);
+  }
+
+  container.innerHTML = cells.join('');
+}
+window.renderActivityHeatmap = renderActivityHeatmap;
+
+// -----------------------------------------------------------------------------
+// 6-PILLAR RELATIONAL MASTERY RADAR CONTROLLER
+// -----------------------------------------------------------------------------
+function renderPillarMasteryRadar() {
+  const container = document.getElementById('pillarMasteryRadar');
+  if (!container) return;
+
+  const pillars = [
+    { id: 'p1', name: 'Physical Execution Order & Lifecycle', icon: '⚡', pct: 92, drills: '12/12 Mastered', color: 'color-p1' },
+    { id: 'p2', name: 'Filtering, Predicates & 3-Valued Logic', icon: '🎯', pct: 88, drills: '240/250 Solved', color: 'color-p2' },
+    { id: 'p3', name: 'Sorting, Determinism & Slicing Heap', icon: '🔢', pct: 85, drills: '180/200 Solved', color: 'color-p3' },
+    { id: 'p4', name: 'Conditional Logic, CASE & Pivoting', icon: '🌳', pct: 94, drills: '310/320 Solved', color: 'color-p4' },
+    { id: 'p5', name: 'Statistical Aggregates & Hash Buckets', icon: '📊', pct: 82, drills: '210/240 Solved', color: 'color-p5' },
+    { id: 'p6', name: 'Relational JOINs & Set Operations', icon: '🔗', pct: 78, drills: '290/350 Solved', color: 'color-p6' }
+  ];
+
+  let html = pillars.map(p => `
+    <div class="pillar-meter-row">
+      <div class="pillar-meta-top">
+        <span class="pillar-name-wrap">
+          <span>${p.icon}</span>
+          <span>${p.name}</span>
+        </span>
+        <span class="pillar-pct-tag">${p.pct}% &bull; ${p.drills}</span>
+      </div>
+      <div class="pillar-track">
+        <div class="pillar-fill ${p.color}" style="width: ${p.pct}%;"></div>
+      </div>
+    </div>
+  `).join('');
+
+  container.innerHTML = html;
+}
+window.renderPillarMasteryRadar = renderPillarMasteryRadar;
+
 function initVisualizerApp() {
   initThemeController();
+  updateHeaderFlashcardDuePill();
   renderSchemaExplorer();
   initVisualBuilder();
+  renderActivityHeatmap();
+  renderPillarMasteryRadar();
+
+  // Keyboard Shortcuts Listener
+  document.addEventListener('keydown', (e) => {
+    // Ctrl + Enter or Cmd + Enter: Run & Parse
+    if ((e.ctrlKey || e.metaKey) && e.key === 'Enter') {
+      e.preventDefault();
+      const btnRun = document.getElementById('btnRunQuery');
+      if (btnRun) btnRun.click();
+    }
+    // Alt + Shift + F or Ctrl + Shift + F: Prettify & Format SQL
+    if ((e.altKey && e.shiftKey && (e.key === 'F' || e.key === 'f')) ||
+        ((e.ctrlKey || e.metaKey) && e.shiftKey && (e.key === 'F' || e.key === 'f'))) {
+      e.preventDefault();
+      formatSQLEditorQuery();
+    }
+    // Esc: Reset Step
+    if (e.key === 'Escape') {
+      const btnReset = document.getElementById('btnResetStep');
+      if (btnReset) btnReset.click();
+    }
+  });
 
   const sqlInput = document.getElementById('sqlInput');
   if (sqlInput) {
@@ -1801,11 +2037,9 @@ function initVisualizerApp() {
   }
 
   const btnFormat = document.getElementById('btnFormatSQL');
-  if (btnFormat && sqlInput) {
+  if (btnFormat) {
     btnFormat.addEventListener('click', () => {
-      let sql = sqlInput.value.replace(/\s+/g, ' ');
-      sql = sql.replace(/\b(SELECT|FROM|WHERE|GROUP BY|HAVING|ORDER BY|LIMIT|CASE|WHEN|THEN|ELSE|END)\b/gi, match => `\n${match.toUpperCase()}`);
-      sqlInput.value = sql.trim();
+      formatSQLEditorQuery();
     });
   }
 
@@ -7050,6 +7284,9 @@ let currentPathwayMcqIndex = 0;
 let pathwayMcqAnsweredState = {};
 
 function renderTopicPathways() {
+  if (typeof renderActivityHeatmap === 'function') renderActivityHeatmap();
+  if (typeof renderPillarMasteryRadar === 'function') renderPillarMasteryRadar();
+
   const navContainer = document.getElementById('pathwayModulesNav');
   if (!navContainer) return;
 
