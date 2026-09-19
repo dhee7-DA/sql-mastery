@@ -1943,7 +1943,30 @@ function initVisualizerApp() {
   const btnRun = document.getElementById('btnRunQuery');
   if (btnRun) {
     btnRun.addEventListener('click', () => {
-      if (sqlInput) parseAndBuildPipeline(sqlInput.value);
+      // 1. Switch to viewStudio so query, pipeline steps and results are immediately visible!
+      switchMainView('viewStudio');
+      if (window.soundFX) window.soundFX.playPop();
+
+      // 2. Resolve SQL query to run (from sqlInput or live builder preview)
+      const sqlInput = document.getElementById('sqlInput');
+      const livePreview = document.getElementById('liveSqlPreview');
+      let queryToRun = '';
+      if (sqlInput && sqlInput.value && sqlInput.value.trim()) {
+        queryToRun = sqlInput.value;
+      } else if (livePreview && livePreview.textContent && livePreview.textContent.trim()) {
+        queryToRun = livePreview.textContent;
+      } else {
+        queryToRun = PRESETS.preset_case_triangle;
+      }
+
+      if (sqlInput) sqlInput.value = queryToRun;
+      parseAndBuildPipeline(queryToRun);
+
+      // 3. Smooth visual confirmation scroll
+      const pipelineCard = document.querySelector('.pipeline-card');
+      if (pipelineCard) {
+        pipelineCard.scrollIntoView({ behavior: 'smooth', block: 'nearest' });
+      }
     });
   }
 
@@ -1951,9 +1974,12 @@ function initVisualizerApp() {
   if (presetSel) {
     presetSel.addEventListener('change', (e) => {
       const val = e.target.value;
-      if (PRESETS[val] && sqlInput) {
-        sqlInput.value = PRESETS[val];
-        parseAndBuildPipeline(sqlInput.value);
+      if (PRESETS[val]) {
+        const sqlInput = document.getElementById('sqlInput');
+        if (sqlInput) sqlInput.value = PRESETS[val];
+        switchMainView('viewStudio');
+        parseAndBuildPipeline(PRESETS[val]);
+        if (window.soundFX) window.soundFX.playPop();
       }
     });
   }
@@ -2153,16 +2179,36 @@ function initCurriculumSystem() {
   });
 
   // Quick Jump Aggregations Hub Menu
+  window.toggleAggregationsHubMenu = function(e) {
+    if (e) {
+      e.preventDefault();
+      e.stopPropagation();
+    }
+    const menu = document.getElementById('quickJumpAggregationsMenu');
+    if (menu) {
+      const isOpen = menu.classList.contains('open');
+      if (isOpen) {
+        menu.classList.remove('open');
+      } else {
+        menu.classList.add('open');
+        if (window.soundFX) window.soundFX.playPop();
+      }
+    }
+  };
+
   const qjBtn = document.getElementById('quickJumpAggregationsBtn');
   const qjMenu = document.getElementById('quickJumpAggregationsMenu');
   if (qjBtn && qjMenu) {
     qjBtn.addEventListener('click', (e) => {
-      e.stopPropagation();
-      qjMenu.classList.toggle('open');
-      if (window.soundFX) window.soundFX.playPop();
+      window.toggleAggregationsHubMenu(e);
     });
     document.addEventListener('click', (e) => {
-      if (!qjMenu.contains(e.target) && e.target !== qjBtn) {
+      if (!qjMenu.contains(e.target) && e.target !== qjBtn && !qjBtn.contains(e.target)) {
+        qjMenu.classList.remove('open');
+      }
+    });
+    document.addEventListener('keydown', (e) => {
+      if (e.key === 'Escape' && qjMenu.classList.contains('open')) {
         qjMenu.classList.remove('open');
       }
     });
