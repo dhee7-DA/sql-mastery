@@ -1678,18 +1678,25 @@ function generateSqlFromBuilder() {
 // Immediate theme application to prevent FOUC
 (function applyEarlyTheme() {
   try {
-    let savedTheme = localStorage.getItem('sql_visualizer_theme') || 'cursor-dark';
-    if (savedTheme === 'zinc-pitch') savedTheme = 'cursor-dark';
+    let savedTheme = localStorage.getItem('sql_visualizer_theme');
+    if (!savedTheme || savedTheme === 'zinc-pitch' || savedTheme === 'cursor-dark') {
+      savedTheme = 'active-builders';
+    }
     document.documentElement.setAttribute('data-theme', savedTheme);
   } catch (e) {}
 })();
 
 function initThemeController() {
   const themeSelect = document.getElementById('themeSelect');
-  let savedTheme = 'cursor-dark';
+  let savedTheme = 'active-builders';
   try {
-    savedTheme = localStorage.getItem('sql_visualizer_theme') || 'cursor-dark';
-    if (savedTheme === 'zinc-pitch') savedTheme = 'cursor-dark';
+    const stored = localStorage.getItem('sql_visualizer_theme');
+    if (stored && stored !== 'zinc-pitch' && stored !== 'cursor-dark') {
+      savedTheme = stored;
+    } else {
+      savedTheme = 'active-builders';
+      localStorage.setItem('sql_visualizer_theme', 'active-builders');
+    }
   } catch (e) {}
 
   document.documentElement.setAttribute('data-theme', savedTheme);
