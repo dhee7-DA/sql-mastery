@@ -2565,7 +2565,7 @@ function renderDeconstructedProblem(problemId = 'triangle') {
       </div>
 
       <!-- Raw Problem Prompt -->
-      <div style="background: #09090b; border: 1px solid var(--border-default); border-radius: var(--radius-sm); padding: 12px 16px;">
+      <div style="background: var(--bg-surface-elevated); border: 1px solid var(--border-default); border-radius: var(--radius-sm); padding: 12px 16px;">
         <span style="font-size: 10px; font-family: var(--font-mono); color: var(--text-muted); display: block; margin-bottom: 4px;">OFFICIAL PROBLEM PROMPT:</span>
         <p style="font-size: 12px; line-height: 1.55; color: var(--text-secondary); margin: 0; white-space: pre-line;">${problem.rawPrompt}</p>
       </div>
@@ -3082,7 +3082,7 @@ function renderGuidedStep(stepNum) {
         </button>
       </div>
 
-      <button class="card-nav-btn" style="background: var(--text-primary); color: #09090b; font-weight: 600;" onclick="${nextStep ? `renderGuidedStep(${nextStep})` : `switchToMcqsWithKeyword('ALL')`}">
+      <button class="card-nav-btn action-btn-primary" style="background: var(--accent); color: #ffffff; border: 1px solid var(--accent); font-weight: 600;" onclick="${nextStep ? `renderGuidedStep(${nextStep})` : `switchToMcqsWithKeyword('ALL')`}">
         ${nextStep ? `Next: Step 0${nextStep} (${activeSteps[nextStep - 1].keyword}) &rarr;` : `Complete Lab &rarr;`}
       </button>
     </div>
@@ -3811,7 +3811,7 @@ function renderStudyLibrary(targetId = null) {
   });
 
   let svgHtml = activeItem.svgDiagram ? `
-    <div style="margin: 16px 0; background: #07070a; border: 1px solid var(--border-muted); border-radius: var(--radius-sm); padding: 10px; overflow-x: auto;">
+    <div style="margin: 16px 0; background: var(--bg-surface-elevated); border: 1px solid var(--border-muted); border-radius: var(--radius-sm); padding: 10px; overflow-x: auto;">
       ${activeItem.svgDiagram}
     </div>
   ` : '';
@@ -5539,7 +5539,7 @@ function openCaseDossier(caseId) {
       <div class="dossier-section-title" style="color: #818cf8;">
         <span>🚨 REAL-WORLD BUSINESS SCENARIO &amp; EVERYDAY ANALOGY</span>
       </div>
-      <h2 style="font-size: 18px; color: #fff; margin: 0 0 8px 0;">${escapeHtml(cs.title)}</h2>
+      <h2 style="font-size: 18px; color: var(--text-primary); margin: 0 0 8px 0;">${escapeHtml(cs.title)}</h2>
       <div class="eli5-story-box" style="margin-bottom: 12px;">
         ${dossier.eli5Story}
       </div>
@@ -6471,7 +6471,7 @@ function renderErdInspector(companyData, tableName) {
 
     schemaRowsHtml += `
       <tr>
-        <td style="font-weight: 700; color: #fff;">${escapeHtml(col.name)}</td>
+        <td style="font-weight: 700; color: var(--text-primary);">${escapeHtml(col.name)}</td>
         <td style="color: #dfcaa9;">${escapeHtml(col.type)}</td>
         <td>${keyBadge}</td>
         <td style="color: var(--text-secondary); font-size: 11px;">${escapeHtml(col.desc || '')}</td>
@@ -6756,7 +6756,7 @@ function renderFillBlankQuest(container, quest) {
     </div>
 
     <!-- Task Goal -->
-    <div style="background: #111114; border: 1px solid var(--border-default); border-radius: var(--radius-sm); padding: 12px 16px;">
+    <div style="background: var(--bg-surface-elevated); border: 1px solid var(--border-default); border-radius: var(--radius-sm); padding: 12px 16px;">
       <span style="font-size: 10px; font-family: var(--font-mono); color: var(--text-muted); display: block; margin-bottom: 2px;">TASK INSTRUCTION:</span>
       <span style="font-size: 13px; font-weight: 600; color: var(--text-primary);">${quest.task}</span>
     </div>
@@ -6804,7 +6804,7 @@ function renderFillBlankQuest(container, quest) {
         </button>
 
         ${fillBlankPassed ? `
-          <button class="card-nav-btn" style="background: #9ec5ad; color: #09090b; font-weight: 700;" onclick="setQuestIndex(${currentQuestIndex + 1})">
+          <button class="card-nav-btn action-btn-primary" style="background: var(--accent); color: #ffffff; border: 1px solid var(--accent); font-weight: 700;" onclick="setQuestIndex(${currentQuestIndex + 1})">
             Next Level (${currentQuestIndex + 2 < 10 ? '0' + (currentQuestIndex + 2) : currentQuestIndex + 2}) &rarr;
           </button>
         ` : ''}
@@ -6906,7 +6906,7 @@ function renderSliderQuest(container, quest) {
     </div>
 
     <div style="display: flex; justify-content: flex-end; margin-top: 10px;">
-      <button class="card-nav-btn" style="background: var(--text-primary); color: #09090b; font-weight: 600;" onclick="setQuestIndex(1)">
+      <button class="card-nav-btn action-btn-primary" style="background: var(--accent); color: #ffffff; border: 1px solid var(--accent); font-weight: 600;" onclick="setQuestIndex(1)">
         Next: Quest 02 (Word Bank Assembly) &rarr;
       </button>
     </div>
@@ -6969,7 +6969,7 @@ function renderWordBankQuest(container, quest) {
     </div>
 
     <!-- Objective Prompt -->
-    <div style="background: #111114; border: 1px solid var(--border-default); border-radius: var(--radius-sm); padding: 12px 16px;">
+    <div style="background: var(--bg-surface-elevated); border: 1px solid var(--border-default); border-radius: var(--radius-sm); padding: 12px 16px;">
       <span style="font-size: 10px; font-family: var(--font-mono); color: var(--text-muted); display: block; margin-bottom: 2px;">GOAL:</span>
       <span style="font-size: 13px; font-weight: 600; color: var(--text-primary);">${quest.targetSentence}</span>
     </div>
@@ -7010,7 +7010,7 @@ function renderWordBankQuest(container, quest) {
 
     <div style="display: flex; justify-content: space-between; align-items: center; margin-top: 10px;">
       <button class="card-nav-btn" onclick="userWordBankTray = []; renderActiveQuest(1);">&orarr; Clear Tray</button>
-      <button class="card-nav-btn" ${!isComplete ? 'disabled' : ''} style="background: ${isComplete ? '#9ec5ad' : '#27272a'}; color: #09090b; font-weight: 600;" onclick="setQuestIndex(2)">
+      <button class="card-nav-btn ${isComplete ? 'action-btn-primary' : ''}" ${!isComplete ? 'disabled' : ''} style="background: ${isComplete ? 'var(--accent)' : 'var(--bg-surface-elevated)'}; color: ${isComplete ? '#ffffff' : 'var(--text-muted)'}; border: 1px solid ${isComplete ? 'var(--accent)' : 'var(--border-default)'}; font-weight: 600;" onclick="setQuestIndex(2)">
         Next: Quest 03 (Spot the Bug) &rarr;
       </button>
     </div>
@@ -7039,7 +7039,7 @@ function renderSpotBugQuest(container, quest) {
     </div>
 
     <!-- Candidate Row Showcase -->
-    <div style="background: #111114; border: 1px solid var(--border-default); border-radius: var(--radius-sm); padding: 12px 16px; display: flex; justify-content: space-between; align-items: center;">
+    <div style="background: var(--bg-surface-elevated); border: 1px solid var(--border-default); border-radius: var(--radius-sm); padding: 12px 16px; display: flex; justify-content: space-between; align-items: center;">
       <div>
         <span style="font-size: 10px; font-family: var(--font-mono); color: var(--text-muted);">TEST INPUT ROW:</span>
         <div style="font-size: 14px; font-weight: 700; font-family: var(--font-mono); color: #d69d8f;">A = 20, B = 20, C = 40</div>
@@ -7088,7 +7088,7 @@ function renderSpotBugQuest(container, quest) {
         ${bugIsFixed ? 'Revert to Buggy Order' : '🔄 Swap Branches into Correct Order'}
       </button>
 
-      <button class="card-nav-btn" ${!bugIsFixed ? 'disabled' : ''} style="background: ${bugIsFixed ? '#9ec5ad' : '#27272a'}; color: #09090b; font-weight: 600;" onclick="setQuestIndex(3)">
+      <button class="card-nav-btn ${bugIsFixed ? 'action-btn-primary' : ''}" ${!bugIsFixed ? 'disabled' : ''} style="background: ${bugIsFixed ? 'var(--accent)' : 'var(--bg-surface-elevated)'}; color: ${bugIsFixed ? '#ffffff' : 'var(--text-muted)'}; border: 1px solid ${bugIsFixed ? 'var(--accent)' : 'var(--border-default)'}; font-weight: 600;" onclick="setQuestIndex(3)">
         Next: Boss Level 04 (HackerRank) &rarr;
       </button>
     </div>
@@ -7129,7 +7129,7 @@ function renderBossQuest(container, quest) {
         Simulate in Studio
       </button>
 
-      <a href="${quest.hackerRankUrl}" target="_blank" class="btn-solve-in-studio" style="text-decoration: none; padding: 9px 20px; font-size: 13px; font-weight: 700; background: #9ec5ad; color: #09090b;">
+      <a href="${quest.hackerRankUrl}" target="_blank" class="btn-solve-in-studio action-btn-primary" style="text-decoration: none; padding: 9px 20px; font-size: 13px; font-weight: 700; background: var(--accent); color: #ffffff; border: 1px solid var(--accent);">
         🚀 Solve on HackerRank (+20 Pts) &rarr;
       </a>
     </div>
@@ -7462,7 +7462,7 @@ function renderPathwayMasterclass() {
       let formattedContent = sec.content
         .replace(/```sql([\s\S]*?)```/g, '<div class="study-code-snippet" style="background: #080c14; color: #f8fafc; border: 1px solid var(--border-default); border-radius: 8px; padding: 12px 14px; margin: 12px 0; font-family: var(--font-mono); font-size: 12px; line-height: 1.5; overflow-x: auto; box-shadow: 0 2px 8px rgba(0,0,0,0.3);">$1</div>')
         .replace(/`([^`]+)`/g, '<code style="background: rgba(255, 255, 255, 0.06); color: #38bdf8; padding: 2px 6px; border: 1px solid rgba(255, 255, 255, 0.12); border-radius: 4px; font-weight: 600; font-size: 0.9em;">$1</code>')
-        .replace(/\*\*([^*]+)\*\*/g, '<strong style="color: #ffffff; font-weight: 700;">$1</strong>')
+        .replace(/\*\*([^*]+)\*\*/g, '<strong style="color: var(--text-primary); font-weight: 700;">$1</strong>')
         .replace(/\n\n/g, '</p><p style="margin-top: 10px;">')
         .replace(/\n- /g, '<br>&bull; ')
         .replace(/\n\d+\. /g, (m) => `<br><strong>${m.trim()}</strong> `);
@@ -7471,12 +7471,12 @@ function renderPathwayMasterclass() {
       const pillColor = sectionPills[idx % sectionPills.length];
 
       sectionsHtml += `
-        <div class="study-section-block" style="margin-bottom: 18px; background: rgba(255, 255, 255, 0.02); border: 1px solid var(--border-default); border-radius: 12px; padding: 18px 20px; box-shadow: 0 2px 8px rgba(0,0,0,0.25);">
-          <h3 class="study-section-heading" style="font-size: 15.5px; font-weight: 800; color: #ffffff; margin: 0 0 12px 0; display: flex; align-items: center; gap: 8px;">
+        <div class="study-section-block" style="margin-bottom: 18px; background: rgba(255, 255, 255, 0.02); border: 1px solid var(--border-default); border-radius: 12px; padding: 18px 20px; box-shadow: 0 2px 8px rgba(0,0,0,0.06);">
+          <h3 class="study-section-heading" style="font-size: 15.5px; font-weight: 800; color: var(--text-primary); margin: 0 0 12px 0; display: flex; align-items: center; gap: 8px;">
             <span style="background: rgba(56, 189, 248, 0.12); color: ${pillColor}; font-size: 10.5px; font-weight: 800; padding: 2px 8px; border: 1px solid ${pillColor}40; border-radius: 5px; font-family: var(--font-mono);">PART ${idx + 1}</span>
             ${sec.heading}
           </h3>
-          <div class="study-section-content" style="font-size: 13px; color: #cbd5e1; line-height: 1.65;">
+          <div class="study-section-content" style="font-size: 13px; color: var(--text-secondary); line-height: 1.65;">
             <p style="margin: 0;">${formattedContent}</p>
           </div>
         </div>
@@ -7488,24 +7488,24 @@ function renderPathwayMasterclass() {
   let gotchasHtml = '';
   if (studyItem.interviewGotchas && studyItem.interviewGotchas.length > 0) {
     let gotchaCards = studyItem.interviewGotchas.map(g => `
-      <div style="margin-top: 10px; padding: 12px 14px; background: rgba(0, 0, 0, 0.35); border: 1px solid rgba(244, 63, 94, 0.2); border-radius: 9px; box-shadow: 0 2px 8px rgba(0,0,0,0.2);">
+      <div style="margin-top: 10px; padding: 12px 14px; background: var(--bg-surface-elevated); border: 1px solid rgba(244, 63, 94, 0.2); border-radius: 9px; box-shadow: 0 2px 8px rgba(0,0,0,0.06);">
         <div style="font-weight: 800; color: #fb7185; font-size: 13px; margin-bottom: 4px; display: flex; align-items: center; gap: 6px;">
           <span>⚠️</span> <span>${g.title}</span>
         </div>
-        <div style="color: #cbd5e1; font-size: 12.5px; line-height: 1.5; font-weight: 500;">
+        <div style="color: var(--text-secondary); font-size: 12.5px; line-height: 1.5; font-weight: 500;">
           ${g.trap}
         </div>
       </div>
     `).join('');
 
     gotchasHtml = `
-      <div style="margin-top: 22px; padding: 18px; background: rgba(244, 63, 94, 0.05); border: 1px solid rgba(244, 63, 94, 0.25); border-left: 3px solid #f43f5e; border-radius: 12px; box-shadow: 0 4px 16px rgba(0,0,0,0.25);">
+      <div style="margin-top: 22px; padding: 18px; background: rgba(244, 63, 94, 0.05); border: 1px solid rgba(244, 63, 94, 0.25); border-left: 3px solid #f43f5e; border-radius: 12px; box-shadow: 0 4px 16px rgba(0,0,0,0.06);">
         <div style="display: flex; align-items: center; justify-content: space-between; flex-wrap: wrap; gap: 8px; margin-bottom: 6px;">
           <div style="display: flex; align-items: center; gap: 8px;">
             <span style="background: rgba(244, 63, 94, 0.15); color: #fb7185; font-size: 11px; font-weight: 800; padding: 3px 8px; border: 1px solid rgba(244, 63, 94, 0.3); border-radius: 6px; text-transform: uppercase; font-family: var(--font-mono);">
               CRITICAL TRAPS VAULT
             </span>
-            <strong style="color: #f1f5f9; font-size: 14px; font-weight: 800;">Directly Tested in MCQs &amp; Case Studies</strong>
+            <strong style="color: var(--text-primary); font-size: 14px; font-weight: 800;">Directly Tested in MCQs &amp; Case Studies</strong>
           </div>
           <span style="font-size: 11px; font-family: var(--font-mono); color: #fda4af; font-weight: 700;">
             ${studyItem.interviewGotchas.length} INTERVIEW GOTCHAS
@@ -7520,13 +7520,13 @@ function renderPathwayMasterclass() {
   }
 
   let svgHtml = studyItem.svgDiagram ? `
-    <div style="margin: 20px 0; background: #080c14; border: 1px solid var(--border-default); border-radius: 12px; padding: 10px; overflow-x: auto; box-shadow: 0 4px 16px rgba(0, 0, 0, 0.35);">
+    <div style="margin: 20px 0; background: var(--bg-surface-elevated); border: 1px solid var(--border-default); border-radius: 12px; padding: 10px; overflow-x: auto; box-shadow: 0 4px 16px rgba(0, 0, 0, 0.06);">
       ${studyItem.svgDiagram}
     </div>
   ` : '';
 
   container.innerHTML = `
-    <div class="card" style="border: 1px solid var(--border-default) !important; border-radius: 16px !important; box-shadow: 0 4px 20px rgba(0, 0, 0, 0.35) !important; background: var(--bg-card); margin-bottom: 24px; padding: 24px;">
+    <div class="card" style="border: 1px solid var(--border-default) !important; border-radius: 16px !important; box-shadow: 0 4px 20px rgba(0, 0, 0, 0.06) !important; background: var(--bg-card); margin-bottom: 24px; padding: 24px;">
       <div class="card-header" style="display: flex; align-items: center; justify-content: space-between; flex-wrap: wrap; gap: 12px; margin-bottom: 12px;">
         <div>
           <div style="display: flex; align-items: center; gap: 8px; margin-bottom: 6px;">
@@ -7537,7 +7537,7 @@ function renderPathwayMasterclass() {
               ${studyItem.readTime || '12 min read'}
             </span>
           </div>
-          <h2 style="font-size: 20px; color: #ffffff; font-weight: 800; margin: 0; letter-spacing: -0.3px;">${studyItem.title}</h2>
+          <h2 style="font-size: 20px; color: var(--text-primary); font-weight: 800; margin: 0; letter-spacing: -0.3px;">${studyItem.title}</h2>
         </div>
         <button class="action-btn action-btn-primary" onclick="selectPathwayStage(2)" style="background: #10b981 !important; color: #ffffff !important; font-weight: 700; border: 1px solid rgba(255, 255, 255, 0.2) !important; box-shadow: 0 2px 10px rgba(16, 185, 129, 0.35) !important; border-radius: 8px; padding: 8px 18px; font-size: 13px; cursor: pointer;">
           Stage 2: Traps &amp; Secrets &rarr;
@@ -8026,7 +8026,7 @@ function renderPathwayCaseStudies() {
     <div>
       <div class="pathway-cases-toolbar">
         <div style="display: flex; align-items: center; gap: 12px; flex-wrap: wrap;">
-          <span style="font-size: 13px; font-weight: 700; color: #fff;">
+          <span style="font-size: 13px; font-weight: 700; color: var(--text-primary);">
             ${currentMod.title}: <strong>${allSectionCases.length} Cases</strong>
           </span>
           <div class="case-diff-pills-row" style="display: flex; gap: 6px;">
