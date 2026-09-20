@@ -1090,6 +1090,10 @@ const SQL_BUDDY = (() => {
       };
     }
 
+    // Start 60fps Living Mascot Animation Loop
+    if (animFrameId) cancelAnimationFrame(animFrameId);
+    animFrameId = requestAnimationFrame(update);
+
     // Initial Greeting
     setTimeout(() => {
       say("👋 Hey! I'm Bloub, your living SQL companion! Customize my shapes & settings in the header (🎨)!", 6000, "happy");
