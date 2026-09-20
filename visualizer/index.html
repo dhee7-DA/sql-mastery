@@ -27,6 +27,24 @@
           <span class="brand-name">SQL Engine Visualizer</span>
           <span class="brand-badge">MySQL 8.0</span>
         </div>
+
+        <div class="header-divider"></div>
+
+        <!-- Sleek Mini Habit & Learning Progress Counters -->
+        <div class="header-stats-strip">
+          <span class="header-stat-chip" id="userStreakCounter" title="Daily SQL Mastery Streak">
+            <span class="stat-icon">🔥</span>
+            <span class="stat-val" id="streakDaysCount">1</span><span class="stat-unit">d</span>
+          </span>
+          <span class="header-stat-chip" id="userXpCounter" title="Total SQL Mastery Points">
+            <span class="stat-icon">⚡</span>
+            <span class="stat-val" id="xpPointsVal">60</span><span class="stat-unit">XP</span>
+          </span>
+          <span class="header-stat-chip flashcard-chip" id="headerFlashcardDuePill" title="Review Due SuperMemo-2 Flashcards" onclick="if(window.openFlashcardVault) window.openFlashcardVault();">
+            <span class="stat-icon">🗂️</span>
+            <span class="stat-val" id="flashcardDueCount">12</span><span class="stat-unit">Due</span>
+          </span>
+        </div>
       </div>
 
       <div class="header-center">
@@ -46,19 +64,17 @@
         </div>
       </div>
 
-      <div class="header-right" style="display: flex; align-items: center; gap: 10px;">
-        <span class="xp-streak-pill" id="userStreakCounter" title="Daily SQL Mastery Streak">
-          🔥 <span id="streakDaysCount">1</span>d Streak
-        </span>
-        <span class="xp-streak-pill" id="userXpCounter" title="Total SQL Mastery Points">
-          ⚡ 60 <span style="font-size: 10px; color: var(--text-muted);">XP</span>
-        </span>
-        <span class="xp-streak-pill flashcard-due-pill" id="headerFlashcardDuePill" title="Review Due SuperMemo-2 Flashcards" onclick="if(window.openFlashcardVault) window.openFlashcardVault();" style="cursor: pointer;">
-          🗂️ <span id="flashcardDueCount">12</span> Due
-        </span>
-        <button id="btnSoundToggle" class="btn-sound-toggle" title="Toggle Sound FX">
-          <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polygon points="11 5 6 9 2 9 2 15 6 15 11 19 11 5"></polygon><path d="M19.07 4.93a10 10 0 0 1 0 14.14M15.54 8.46a5 5 0 0 1 0 7.07"></path></svg>
-          Sound ON
+      <div class="header-right">
+        <button id="btnSoundToggle" class="header-icon-btn btn-sound-toggle" title="Toggle Sound FX" aria-label="Toggle Sound FX">
+          <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polygon points="11 5 6 9 2 9 2 15 6 15 11 19 11 5"></polygon><path d="M19.07 4.93a10 10 0 0 1 0 14.14M15.54 8.46a5 5 0 0 1 0 7.07"></path></svg>
+        </button>
+        <button id="btnCompanionTrigger" class="header-icon-btn btn-mascot-toggle" title="Customize Mascot &amp; Companion Settings" aria-label="Customize Mascot &amp; Companion" onclick="if(window.SQL_BUDDY){window.SQL_BUDDY.toggleCustomizer();}else if(typeof SQL_BUDDY!=='undefined'){SQL_BUDDY.toggleCustomizer();}">
+          <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+            <circle cx="12" cy="12" r="9"></circle>
+            <circle cx="9" cy="10" r="1" fill="currentColor"></circle>
+            <circle cx="15" cy="10" r="1" fill="currentColor"></circle>
+            <path d="M9 14.5c1 .8 2 1 3 1s2-.2 3-1"></path>
+          </svg>
         </button>
         <div class="theme-select-wrapper">
           <select id="themeSelect" class="clean-select theme-select" title="Switch Theme">
@@ -77,11 +93,8 @@
             <option value="matcha-latte">🍵 Matcha Latte</option>
           </select>
         </div>
-        <button id="btnCompanionTrigger" class="btn-mascot-toggle" title="Customize Mascot & Companion Settings" onclick="if(window.SQL_BUDDY){window.SQL_BUDDY.toggleCustomizer();}else if(typeof SQL_BUDDY!=='undefined'){SQL_BUDDY.toggleCustomizer();}">
-          <span>🎨</span> Mascot
-        </button>
-        <button id="btnRunQuery" class="action-btn action-btn-primary">
-          <svg width="14" height="14" viewBox="0 0 24 24" fill="currentColor">
+        <button id="btnRunQuery" class="action-btn action-btn-primary header-cta-btn">
+          <svg width="13" height="13" viewBox="0 0 24 24" fill="currentColor">
             <polygon points="5 3 19 12 5 21 5 3"></polygon>
           </svg>
           Run &amp; Parse
@@ -96,12 +109,16 @@
         <!-- 1. LEARN GROUP -->
         <div class="nav-group-dropdown" id="navGroupLearn">
           <button class="nav-group-trigger active" id="btnGroupLearn" onclick="toggleNavGroupDropdown('navGroupLearn', event)">
-            <span class="nav-group-icon">
-              <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M2 3h6a4 4 0 0 1 4 4v14a3 3 0 0 0-3-3H2z"></path><path d="M22 3h-6a4 4 0 0 1-4 4v14a3 3 0 0 1 3-3h7z"></path></svg>
+            <span class="nav-group-lead">
+              <span class="nav-group-icon">
+                <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M2 3h6a4 4 0 0 1 4 4v14a3 3 0 0 0-3-3H2z"></path><path d="M22 3h-6a4 4 0 0 1-4 4v14a3 3 0 0 1 3-3h7z"></path></svg>
+              </span>
+              <span class="nav-group-title">Learn</span>
             </span>
-            <span class="nav-group-title">Learn</span>
-            <span class="nav-current-pill" id="currentLearnPill">Guided Lab</span>
-            <svg class="nav-chevron" width="10" height="10" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><polyline points="6 9 12 15 18 9"></polyline></svg>
+            <span class="nav-group-tail">
+              <span class="nav-current-pill" id="currentLearnPill">Guided Lab</span>
+              <svg class="nav-chevron" width="10" height="10" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><polyline points="6 9 12 15 18 9"></polyline></svg>
+            </span>
           </button>
           <div class="nav-dropdown-menu">
             <div class="nav-dropdown-header">Interactive Core</div>
@@ -141,12 +158,16 @@
         <!-- 2. PRACTICE GROUP -->
         <div class="nav-group-dropdown" id="navGroupPractice">
           <button class="nav-group-trigger" id="btnGroupPractice" onclick="toggleNavGroupDropdown('navGroupPractice', event)">
-            <span class="nav-group-icon">
-              <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M18 6h4v12h-4zM2 6h4v12H2zM6 10h12v4H6z"/></svg>
+            <span class="nav-group-lead">
+              <span class="nav-group-icon">
+                <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M18 6h4v12h-4zM2 6h4v12H2zM6 10h12v4H6z"/></svg>
+              </span>
+              <span class="nav-group-title">Practice</span>
             </span>
-            <span class="nav-group-title">Practice</span>
-            <span class="nav-current-pill" id="currentPracticePill">2,100 MCQs</span>
-            <svg class="nav-chevron" width="10" height="10" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><polyline points="6 9 12 15 18 9"></polyline></svg>
+            <span class="nav-group-tail">
+              <span class="nav-current-pill" id="currentPracticePill">2,100 MCQs</span>
+              <svg class="nav-chevron" width="10" height="10" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><polyline points="6 9 12 15 18 9"></polyline></svg>
+            </span>
           </button>
           <div class="nav-dropdown-menu">
             <div class="nav-dropdown-header">Drill &amp; Test Vaults</div>
@@ -196,12 +217,16 @@
         <!-- 3. REFERENCE GROUP -->
         <div class="nav-group-dropdown" id="navGroupReference">
           <button class="nav-group-trigger" id="btnGroupReference" onclick="toggleNavGroupDropdown('navGroupReference', event)">
-            <span class="nav-group-icon">
-              <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M4 19.5A2.5 2.5 0 0 1 6.5 17H20"></path><path d="M6.5 2H20v20H6.5A2.5 2.5 0 0 1 4 19.5v-15A2.5 2.5 0 0 1 6.5 2z"></path></svg>
+            <span class="nav-group-lead">
+              <span class="nav-group-icon">
+                <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M4 19.5A2.5 2.5 0 0 1 6.5 17H20"></path><path d="M6.5 2H20v20H6.5A2.5 2.5 0 0 1 4 19.5v-15A2.5 2.5 0 0 1 6.5 2z"></path></svg>
+              </span>
+              <span class="nav-group-title">Reference</span>
             </span>
-            <span class="nav-group-title">Reference</span>
-            <span class="nav-current-pill" id="currentReferencePill">Study Docs</span>
-            <svg class="nav-chevron" width="10" height="10" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><polyline points="6 9 12 15 18 9"></polyline></svg>
+            <span class="nav-group-tail">
+              <span class="nav-current-pill" id="currentReferencePill">Study Docs</span>
+              <svg class="nav-chevron" width="10" height="10" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><polyline points="6 9 12 15 18 9"></polyline></svg>
+            </span>
           </button>
           <div class="nav-dropdown-menu">
             <div class="nav-dropdown-header">Documentation &amp; Data Model</div>
@@ -240,11 +265,15 @@
 
         <!-- 4. STUDIO (Direct Link) -->
         <button class="nav-group-trigger nav-direct-link nav-tab" id="btnNavStudio" data-view="viewStudio" onclick="selectNavView('viewStudio', 'Studio', null)">
-          <span class="nav-group-icon">
-            <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="16 18 22 12 16 6"></polyline><polyline points="8 6 2 12 8 18"></polyline></svg>
+          <span class="nav-group-lead">
+            <span class="nav-group-icon">
+              <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="16 18 22 12 16 6"></polyline><polyline points="8 6 2 12 8 18"></polyline></svg>
+            </span>
+            <span class="nav-group-title">Studio</span>
           </span>
-          <span class="nav-group-title">Studio</span>
-          <span class="nav-live-badge">LIVE</span>
+          <span class="nav-group-tail">
+            <span class="nav-live-badge">LIVE</span>
+          </span>
         </button>
       </div>
       <div class="nav-meta">
