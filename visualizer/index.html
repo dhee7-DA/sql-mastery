@@ -90,62 +90,161 @@
     </header>
 
     <!-- Top Navigation Bar for Learning Platform -->
+    <!-- Top Navigation Bar for Learning Platform: Simplified 4-Group Architecture -->
     <nav class="app-nav-bar">
-      <div class="nav-tabs-list">
-        <button class="nav-tab" data-view="viewPathways" onclick="switchMainView('viewPathways')">
-          <span class="nav-idx">01</span>
-          <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="10"></circle><polygon points="12 8 8 12 12 16 12 8"></polygon></svg>
-          Topic Pathways
-        </button>
-        <button class="nav-tab active" data-view="viewGuidedLab" onclick="switchMainView('viewGuidedLab')">
-          <span class="nav-idx">02</span>
-          <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polygon points="5 3 19 12 5 21 5 3"></polygon></svg>
-          Guided Lab
-        </button>
-        <button class="nav-tab" data-view="viewQuests" onclick="switchMainView('viewQuests')">
-          <span class="nav-idx">03</span>
-          <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polygon points="13 2 3 14 12 14 11 22 21 10 12 10 13 2"></polygon></svg>
-          Quests
-        </button>
-        <button class="nav-tab" data-view="viewExplainer" onclick="switchMainView('viewExplainer')">
-          <span class="nav-idx">04</span>
-          <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M4 19.5A2.5 2.5 0 0 1 6.5 17H20"></path><path d="M6.5 2H20v20H6.5A2.5 2.5 0 0 1 4 19.5v-15A2.5 2.5 0 0 1 6.5 2z"></path></svg>
-          Study Docs
-        </button>
-        <button class="nav-tab" data-view="viewDeconstructor" onclick="switchMainView('viewDeconstructor')">
-          <span class="nav-idx">05</span>
-          <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="11" cy="11" r="8"></circle><line x1="21" y1="21" x2="16.65" y2="16.65"></line></svg>
-          Deconstructor
-        </button>
-        <button class="nav-tab" data-view="viewMcqs" onclick="switchMainView('viewMcqs')">
-          <span class="nav-idx">06</span>
-          <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M9 11l3 3L22 4"></path><path d="M21 12v7a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h11"></path></svg>
-          MCQs (2,100)
-        </button>
-        <button class="nav-tab" data-view="viewSyntaxGym" onclick="switchMainView('viewSyntaxGym')">
-          <span class="nav-idx">07</span>
-          <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M18 6h4v12h-4zM2 6h4v12H2zM6 10h12v4H6z"/></svg>
-          Syntax Gym (1,700)
-        </button>
-        <button class="nav-tab" data-view="viewCases" onclick="switchMainView('viewCases')">
-          <span class="nav-idx">08</span>
-          <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="2" y="7" width="20" height="14" rx="2" ry="2"></rect><path d="M16 21V5a2 2 0 0 0-2-2h-4a2 2 0 0 0-2 2v16"></path></svg>
-          Case Studies (1,490)
-        </button>
-        <button class="nav-tab" data-view="viewEnterpriseERD" onclick="switchMainView('viewEnterpriseERD')">
-          <span class="nav-idx">09</span>
-          <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="3" y="3" width="7" height="7"></rect><rect x="14" y="3" width="7" height="7"></rect><rect x="14" y="14" width="7" height="7"></rect><rect x="3" y="14" width="7" height="7"></rect><line x1="10" y1="6.5" x2="14" y2="6.5"></line><line x1="6.5" y1="10" x2="6.5" y2="14"></line></svg>
-          ERD Map
-        </button>
-        <button class="nav-tab" data-view="viewProblems" onclick="switchMainView('viewProblems')">
-          <span class="nav-idx">10</span>
-          <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polygon points="12 2 15.09 8.26 22 9.27 17 14.14 18.18 21.02 12 17.77 5.82 21.02 7 14.14 2 9.27 8.91 8.26 12 2"></polygon></svg>
-          Problem Bank
-        </button>
-        <button class="nav-tab" data-view="viewStudio" onclick="switchMainView('viewStudio')">
-          <span class="nav-idx">11</span>
-          <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="16 18 22 12 16 6"></polyline><polyline points="8 6 2 12 8 18"></polyline></svg>
-          Studio
+      <div class="nav-groups-container">
+        <!-- 1. LEARN GROUP -->
+        <div class="nav-group-dropdown" id="navGroupLearn">
+          <button class="nav-group-trigger active" id="btnGroupLearn" onclick="toggleNavGroupDropdown('navGroupLearn', event)">
+            <span class="nav-group-icon">
+              <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M2 3h6a4 4 0 0 1 4 4v14a3 3 0 0 0-3-3H2z"></path><path d="M22 3h-6a4 4 0 0 1-4 4v14a3 3 0 0 1 3-3h7z"></path></svg>
+            </span>
+            <span class="nav-group-title">Learn</span>
+            <span class="nav-current-pill" id="currentLearnPill">Guided Lab</span>
+            <svg class="nav-chevron" width="10" height="10" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><polyline points="6 9 12 15 18 9"></polyline></svg>
+          </button>
+          <div class="nav-dropdown-menu">
+            <div class="nav-dropdown-header">Interactive Core</div>
+            <button class="nav-dropdown-item active nav-tab" data-view="viewGuidedLab" onclick="selectNavView('viewGuidedLab', 'Guided Lab', 'navGroupLearn')">
+              <span class="nav-item-icon">🔬</span>
+              <div class="nav-item-text">
+                <div class="nav-item-title-row">
+                  <span class="nav-item-title">Guided Lab</span>
+                  <span class="nav-item-tag">Visualizer</span>
+                </div>
+                <span class="nav-item-desc">Step-by-step physical query lifecycle &amp; memory buffer</span>
+              </div>
+            </button>
+            <button class="nav-dropdown-item nav-tab" data-view="viewPathways" onclick="selectNavView('viewPathways', 'Pathways', 'navGroupLearn')">
+              <span class="nav-item-icon">🗺️</span>
+              <div class="nav-item-text">
+                <div class="nav-item-title-row">
+                  <span class="nav-item-title">Topic Pathways</span>
+                  <span class="nav-item-tag">Curriculum</span>
+                </div>
+                <span class="nav-item-desc">4-stage mastery roadmap: Masterclass to Pro</span>
+              </div>
+            </button>
+            <button class="nav-dropdown-item nav-tab" data-view="viewQuests" onclick="selectNavView('viewQuests', 'Quests', 'navGroupLearn')">
+              <span class="nav-item-icon">🎮</span>
+              <div class="nav-item-text">
+                <div class="nav-item-title-row">
+                  <span class="nav-item-title">Interactive Quests</span>
+                  <span class="nav-item-tag">Puzzles</span>
+                </div>
+                <span class="nav-item-desc">Token assembly trays, blanks &amp; logic bug fixer</span>
+              </div>
+            </button>
+          </div>
+        </div>
+
+        <!-- 2. PRACTICE GROUP -->
+        <div class="nav-group-dropdown" id="navGroupPractice">
+          <button class="nav-group-trigger" id="btnGroupPractice" onclick="toggleNavGroupDropdown('navGroupPractice', event)">
+            <span class="nav-group-icon">
+              <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M18 6h4v12h-4zM2 6h4v12H2zM6 10h12v4H6z"/></svg>
+            </span>
+            <span class="nav-group-title">Practice</span>
+            <span class="nav-current-pill" id="currentPracticePill">2,100 MCQs</span>
+            <svg class="nav-chevron" width="10" height="10" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><polyline points="6 9 12 15 18 9"></polyline></svg>
+          </button>
+          <div class="nav-dropdown-menu">
+            <div class="nav-dropdown-header">Drill &amp; Test Vaults</div>
+            <button class="nav-dropdown-item nav-tab" data-view="viewMcqs" onclick="selectNavView('viewMcqs', 'MCQs (2.1k)', 'navGroupPractice')">
+              <span class="nav-item-icon">🧠</span>
+              <div class="nav-item-text">
+                <div class="nav-item-title-row">
+                  <span class="nav-item-title">MCQs Vault</span>
+                  <span class="nav-item-tag accent">2,100</span>
+                </div>
+                <span class="nav-item-desc">High-frequency interview traps &amp; edge cases</span>
+              </div>
+            </button>
+            <button class="nav-dropdown-item nav-tab" data-view="viewSyntaxGym" onclick="selectNavView('viewSyntaxGym', 'Syntax Gym', 'navGroupPractice')">
+              <span class="nav-item-icon">⚡</span>
+              <div class="nav-item-text">
+                <div class="nav-item-title-row">
+                  <span class="nav-item-title">Syntax Gym</span>
+                  <span class="nav-item-tag accent">1,700</span>
+                </div>
+                <span class="nav-item-desc">Speed &amp; muscle memory drills across 10 schemas</span>
+              </div>
+            </button>
+            <button class="nav-dropdown-item nav-tab" data-view="viewCases" onclick="selectNavView('viewCases', 'Case Studies', 'navGroupPractice')">
+              <span class="nav-item-icon">💼</span>
+              <div class="nav-item-text">
+                <div class="nav-item-title-row">
+                  <span class="nav-item-title">Case Studies</span>
+                  <span class="nav-item-tag accent">1,490</span>
+                </div>
+                <span class="nav-item-desc">Real-world production business incident dossiers</span>
+              </div>
+            </button>
+            <button class="nav-dropdown-item nav-tab" data-view="viewProblems" onclick="selectNavView('viewProblems', 'Problem Bank', 'navGroupPractice')">
+              <span class="nav-item-icon">🏆</span>
+              <div class="nav-item-text">
+                <div class="nav-item-title-row">
+                  <span class="nav-item-title">Problem Bank</span>
+                  <span class="nav-item-tag">Challenges</span>
+                </div>
+                <span class="nav-item-desc">Graded SQL interview challenges by difficulty</span>
+              </div>
+            </button>
+          </div>
+        </div>
+
+        <!-- 3. REFERENCE GROUP -->
+        <div class="nav-group-dropdown" id="navGroupReference">
+          <button class="nav-group-trigger" id="btnGroupReference" onclick="toggleNavGroupDropdown('navGroupReference', event)">
+            <span class="nav-group-icon">
+              <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M4 19.5A2.5 2.5 0 0 1 6.5 17H20"></path><path d="M6.5 2H20v20H6.5A2.5 2.5 0 0 1 4 19.5v-15A2.5 2.5 0 0 1 6.5 2z"></path></svg>
+            </span>
+            <span class="nav-group-title">Reference</span>
+            <span class="nav-current-pill" id="currentReferencePill">Study Docs</span>
+            <svg class="nav-chevron" width="10" height="10" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><polyline points="6 9 12 15 18 9"></polyline></svg>
+          </button>
+          <div class="nav-dropdown-menu">
+            <div class="nav-dropdown-header">Documentation &amp; Data Model</div>
+            <button class="nav-dropdown-item nav-tab" data-view="viewExplainer" onclick="selectNavView('viewExplainer', 'Study Docs', 'navGroupReference')">
+              <span class="nav-item-icon">📚</span>
+              <div class="nav-item-text">
+                <div class="nav-item-title-row">
+                  <span class="nav-item-title">Study Docs</span>
+                  <span class="nav-item-tag">Deep-Dives</span>
+                </div>
+                <span class="nav-item-desc">Under-the-hood engine theory, gotchas &amp; AST diffs</span>
+              </div>
+            </button>
+            <button class="nav-dropdown-item nav-tab" data-view="viewDeconstructor" onclick="selectNavView('viewDeconstructor', 'Deconstructor', 'navGroupReference')">
+              <span class="nav-item-icon">🔍</span>
+              <div class="nav-item-text">
+                <div class="nav-item-title-row">
+                  <span class="nav-item-title">Deconstructor</span>
+                  <span class="nav-item-tag">Mental Models</span>
+                </div>
+                <span class="nav-item-desc">Break down ambiguous business questions step-by-step</span>
+              </div>
+            </button>
+            <button class="nav-dropdown-item nav-tab" data-view="viewEnterpriseERD" onclick="selectNavView('viewEnterpriseERD', 'ERD Map', 'navGroupReference')">
+              <span class="nav-item-icon">🗺️</span>
+              <div class="nav-item-text">
+                <div class="nav-item-title-row">
+                  <span class="nav-item-title">Enterprise ERD</span>
+                  <span class="nav-item-tag">Topology</span>
+                </div>
+                <span class="nav-item-desc">Relational entity diagrams &amp; foreign key relationships</span>
+              </div>
+            </button>
+          </div>
+        </div>
+
+        <!-- 4. STUDIO (Direct Link) -->
+        <button class="nav-group-trigger nav-direct-link nav-tab" id="btnNavStudio" data-view="viewStudio" onclick="selectNavView('viewStudio', 'Studio', null)">
+          <span class="nav-group-icon">
+            <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="16 18 22 12 16 6"></polyline><polyline points="8 6 2 12 8 18"></polyline></svg>
+          </span>
+          <span class="nav-group-title">Studio</span>
+          <span class="nav-live-badge">LIVE</span>
         </button>
       </div>
       <div class="nav-meta">

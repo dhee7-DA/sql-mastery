@@ -2125,13 +2125,47 @@ Object.defineProperty(window, 'currentGymTable', {
   configurable: true
 });
 
+const NAV_GROUPS_MAP = {
+  viewGuidedLab: { triggerId: 'btnGroupLearn', pillId: 'currentLearnPill', label: 'Guided Lab' },
+  viewPathways: { triggerId: 'btnGroupLearn', pillId: 'currentLearnPill', label: 'Pathways' },
+  viewQuests: { triggerId: 'btnGroupLearn', pillId: 'currentLearnPill', label: 'Quests' },
+
+  viewMcqs: { triggerId: 'btnGroupPractice', pillId: 'currentPracticePill', label: '2,100 MCQs' },
+  viewSyntaxGym: { triggerId: 'btnGroupPractice', pillId: 'currentPracticePill', label: 'Syntax Gym' },
+  viewCases: { triggerId: 'btnGroupPractice', pillId: 'currentPracticePill', label: 'Case Studies' },
+  viewProblems: { triggerId: 'btnGroupPractice', pillId: 'currentPracticePill', label: 'Problem Bank' },
+
+  viewExplainer: { triggerId: 'btnGroupReference', pillId: 'currentReferencePill', label: 'Study Docs' },
+  viewDeconstructor: { triggerId: 'btnGroupReference', pillId: 'currentReferencePill', label: 'Deconstructor' },
+  viewEnterpriseERD: { triggerId: 'btnGroupReference', pillId: 'currentReferencePill', label: 'ERD Map' },
+
+  viewStudio: { triggerId: 'btnNavStudio', pillId: null, label: 'Studio' }
+};
+
 function switchMainView(targetId) {
   if (window.soundFX) window.soundFX.playWhoosh();
   document.querySelectorAll('.nav-tab').forEach(t => t.classList.remove('active'));
   document.querySelectorAll('.view-panel').forEach(p => p.classList.remove('active'));
 
+  // Update grouped navigation states
+  document.querySelectorAll('.nav-group-trigger').forEach(b => b.classList.remove('active'));
+  document.querySelectorAll('.nav-dropdown-item').forEach(b => b.classList.remove('active'));
+
+  const groupInfo = NAV_GROUPS_MAP[targetId];
+  if (groupInfo) {
+    const trigger = document.getElementById(groupInfo.triggerId);
+    if (trigger) trigger.classList.add('active');
+    if (groupInfo.pillId) {
+      const pill = document.getElementById(groupInfo.pillId);
+      if (pill) pill.textContent = groupInfo.label;
+    }
+  }
+
   const tab = document.querySelector(`.nav-tab[data-view="${targetId}"]`);
   if (tab) tab.classList.add('active');
+
+  const activeDropdownItem = document.querySelector(`.nav-dropdown-item[data-view="${targetId}"]`);
+  if (activeDropdownItem) activeDropdownItem.classList.add('active');
 
   const targetView = document.getElementById(targetId);
   if (targetView) {
@@ -2170,6 +2204,40 @@ function switchMainView(targetId) {
 }
 
 window.switchMainView = switchMainView;
+
+window.toggleNavGroupDropdown = function(groupId, event) {
+  if (event) {
+    event.stopPropagation();
+  }
+  const targetGroup = document.getElementById(groupId);
+  const isOpen = targetGroup ? targetGroup.classList.contains('open') : false;
+
+  // Close all other group dropdowns
+  document.querySelectorAll('.nav-group-dropdown').forEach(g => g.classList.remove('open'));
+  const quickJumpMenu = document.getElementById('quickJumpAggregationsMenu');
+  if (quickJumpMenu) quickJumpMenu.classList.remove('open');
+
+  if (targetGroup && !isOpen) {
+    targetGroup.classList.add('open');
+  }
+};
+
+window.selectNavView = function(viewId, label, groupId) {
+  document.querySelectorAll('.nav-group-dropdown').forEach(g => g.classList.remove('open'));
+  switchMainView(viewId);
+};
+
+// Global click-outside listener to dismiss popovers
+document.addEventListener('click', (e) => {
+  if (!e.target.closest('.nav-group-dropdown')) {
+    document.querySelectorAll('.nav-group-dropdown').forEach(g => g.classList.remove('open'));
+  }
+});
+document.addEventListener('keydown', (e) => {
+  if (e.key === 'Escape') {
+    document.querySelectorAll('.nav-group-dropdown').forEach(g => g.classList.remove('open'));
+  }
+});
 
 function initCurriculumSystem() {
   // Top Navigation Tabs Click
@@ -4054,14 +4122,7 @@ window.jumpToAggregationsSection = function(destination) {
 };
 
 function switchNavTab(targetViewId) {
-  if (window.soundFX) window.soundFX.playWhoosh();
-  document.querySelectorAll('.nav-tab').forEach(t => t.classList.remove('active'));
-  document.querySelectorAll('.view-panel').forEach(p => p.classList.remove('active'));
-
-  const tab = document.querySelector(`.nav-tab[data-view="${targetViewId}"]`);
-  const view = document.getElementById(targetViewId);
-  if (tab) tab.classList.add('active');
-  if (view) view.classList.add('active');
+  switchMainView(targetViewId);
 }
 
 function switchToExplainerWithKeyword(keywordId) {
