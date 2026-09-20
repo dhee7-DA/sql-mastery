@@ -1,6 +1,6 @@
 ---
 name: bloub-avatar-engine
-description: Design, implement, and customize living SVG morphing mascots (Bloub / Grok bot architecture) with 3D spherical gaze projection, Pixar/Kawaii depth catchlights, soft 3D blushing cheeks, autonomous Web Audio sound synthesis, dressing room accessories, and context-aware IDE reactions.
+description: Design, implement, and customize living SVG morphing mascots (Bloub / Grok bot architecture) with 3D spherical gaze projection, Pixar/Kawaii depth catchlights, soft 3D blushing cheeks, autonomous Web Audio sound synthesis, slime drag physics, and context-aware IDE reactions.
 ---
 
 # Bloub Living Avatar & Mascot Engine
@@ -11,17 +11,17 @@ A complete guide and technical reference for implementing, customizing, and scal
 
 ## 1. Core Architecture Principles
 
-1. **Pure Vector Geometry**:
+1. **Pure Vector Geometry & Clean Silhouette**:
    - Zero background boxes, zero shadow circles, and zero glowing halos.
+   - Zero floating buttons or icons on top of the mascot's head.
    - Transparent SVG canvas (`viewBox="-158 -158 316 316"`).
 2. **Fixed Body Anchor (Zero Drift)**:
    - Body center stays firmly anchored at `(cx = 0, cy = 0)` with resting scale `(sx = 1, sy = 1)`.
    - Motion is strictly decoupled: eyes track the cursor across 3D spherical space while the body remains rooted.
-3. **Decoupled Eyelids, Gaze & Accessories**:
+3. **Decoupled Eyelids & Gaze**:
    - Gaze yaw/pitch/roll interpolate independently from eyelid blinking and squashing.
-   - Accessories (Glasses, Hats, Crown, Headphones) track 3D perspective dynamically.
 4. **Autonomous Tactility**:
-   - Jelly squash-and-stretch physics (`targetScaleY = 0.72`) on poke, click, or tab switches.
+   - Jelly squash-and-stretch physics (`targetScaleY = 0.72`) on poke or click.
    - Slime drag and snap-back elastic bounce physics on pointer interactions.
    - Built-in zero-dependency Web Audio synthesizer for bloop pops and chimes with mute toggle.
 
@@ -140,30 +140,14 @@ function us(gaze, t, split = 16.8) {
 
 ---
 
-## 4. The Dressing Room & Accessories
-
-1. **Smart Specs (👓)**:
-   - Tracks the midpoint and tilt angle between the two 3D projected eye coordinates:
-     `angle = Math.atan2(eye1.y - eye0.y, eye1.x - eye0.x) * 180 / Math.PI`.
-   - Dual rounded rectangular wireframe frames with specular reflection diagonals and a central bridge.
-2. **SQL Crown (👑)**:
-   - Sits on the top boundary of the active shape using `sTop = Fs(currentRadii, -Math.PI / 2)`.
-   - 3 peaks with jeweled ruby, sapphire, and emerald tips.
-3. **Master's Cap (🎓)**:
-   - Indigo mortarboard with central golden button and a swaying tassel that reacts to head yaw.
-4. **Dev Headset (🎧)**:
-   - Thick wrap headband spanning from behind the head to cushioned left and right earcups.
-
----
-
-## 5. Slime Drag Physics & Confetti Particles
+## 4. Slime Drag Physics & Confetti Particles
 
 - **Slime Drag**: Pointer-down dragging applies proportional strain to `targetScaleY` and `scaleX`. On pointer-up release, a negative momentum impulse (`velocityY = -0.38`) triggers an organic decaying oscillation wobble.
 - **Confetti Engine**: Spawns 24 lightweight floating particles (circles, squares, and keyword badges `SELECT`, `JOIN`, `★`) with initial velocity and gravity on query success and quiz completions.
 
 ---
 
-## 6. Autonomous Web Audio Synth (`SOUNDS`)
+## 5. Autonomous Web Audio Synth (`SOUNDS`)
 
 Zero-dependency audio engine utilizing native `AudioContext` with mute toggle:
 
@@ -229,7 +213,7 @@ const SOUNDS = (() => {
 
 ---
 
-## 7. Public API Methods
+## 6. Public API Methods
 
 | Method | Parameters | Description |
 |---|---|---|
@@ -238,11 +222,10 @@ const SOUNDS = (() => {
 | `SQL_BUDDY.celebrate()` | `()` | Trigger confetti burst, victory chime, and smile |
 | `SQL_BUDDY.setShape(shapeId)` | `('galet'\|'squircle'\|...)` | Morph to one of 8 authentic shapes |
 | `SQL_BUDDY.setColor(colorId)` | `('encre'\|'creme'\|...)` | Smoothly lerp body RGB and eye fill |
-| `SQL_BUDDY.setAccessory(accId)`| `('none'\|'glasses'\|'cap'\|'crown'\|'headphones')` | Equip accessory |
-| `SQL_BUDDY.cycleAccessory()` | `()` | Quick cycle through accessories |
 | `SQL_BUDDY.toggleSound()` | `()` | Toggle mute state for audio effects |
 | `SQL_BUDDY.toggleThemeSync()` | `()` | Toggle auto theme palette matching |
 | `SQL_BUDDY.toggleIdleSnooze()`| `()` | Toggle 75s auto-sleep timer |
+| `SQL_BUDDY.toggleMinimize()` | `()` | Toggle sleep mode |
 | `SQL_BUDDY.onCorrectAnswer(topic)`| `(string)` | Celebrate quiz or gym challenge pass |
 | `SQL_BUDDY.onQueryRunSuccess(rows)`| `(number)` | Execution plan success celebration |
 | `SQL_BUDDY.onQueryRunError(err)` | `(string)` | Diagnostic expression on syntax error |

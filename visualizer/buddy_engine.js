@@ -1,15 +1,16 @@
 // =============================================================================
-// BLOUB COMPANION ENGINE: PREMIUM FLUID MORPHING MASCOT
+// BLOUB COMPANION ENGINE: PURE FLUID MORPHING MASCOT
 // - Pure Vector Geometry: Zero background boxes, zero shadow circles, zero halos
-// - 3D Spherical Gaze Projection: Eyes, Cheeks & Accessories rotate in true 3D
+// - 100% Clean Silhouette: Zero floating buttons on top of head
+// - 3D Spherical Gaze Projection: Eyes & Cheeks rotate in true 3D spherical space
 // - Pixar/Kawaii Depth: Specular eye catchlights & soft organic blushing cheeks
-// - Authentic 8 Shapes & 12 Colors (bloub.vercel.app Architecture)
-// - The Dressing Room: 4 Dynamic Vector Accessories (👓 Glasses, 🎓 Cap, 👑 Crown, 🎧 Headset)
+// - Authentic 8 Shapes & 12 Colors from bloub.vercel.app
 // - Tactile Slime Physics: Drag & snap-back jelly elasticity
 // - Interactive Particles: 🎊 Micro-confetti bursts on query success & quiz pass
 // - Organic Idle Snooze: Gentle Zzz sleep on inactivity & surprised wake-up bounce
 // - Autonomous Web Audio Synth: Bloop pops, morph sweeps, victory chimes & mute toggle
 // - Visualizer Theme Sync: Auto-adapts skin color to active IDE theme
+// - Dedicated Mascot Settings Panel: Docked cleanly beside the avatar
 // =============================================================================
 
 const SQL_BUDDY = (() => {
@@ -95,18 +96,7 @@ const SQL_BUDDY = (() => {
   };
 
   // ---------------------------------------------------------------------------
-  // 3. THE DRESSING ROOM (Accessories)
-  // ---------------------------------------------------------------------------
-  const ACCESSORIES = {
-    none:       { id: "none",       name: "Minimal",      icon: "✨" },
-    glasses:    { id: "glasses",    name: "Smart Specs",  icon: "👓" },
-    cap:        { id: "cap",        name: "Master Cap",   icon: "🎓" },
-    crown:      { id: "crown",      name: "SQL Crown",    icon: "👑" },
-    headphones: { id: "headphones", name: "Dev Headset",  icon: "🎧" }
-  };
-
-  // ---------------------------------------------------------------------------
-  // 4. CURATED SQL PRO-TIPS
+  // 3. CURATED SQL PRO-TIPS
   // ---------------------------------------------------------------------------
   const PRO_TIPS = [
     "Psst! Never compare NULL using '='. Always use 'IS NULL' or 'IS NOT NULL'!",
@@ -122,7 +112,7 @@ const SQL_BUDDY = (() => {
   ];
 
   // ---------------------------------------------------------------------------
-  // 5. AUTONOMOUS WEB AUDIO SYNTHESIZER (With Mute Support)
+  // 4. AUTONOMOUS WEB AUDIO SYNTHESIZER (With Mute Support)
   // ---------------------------------------------------------------------------
   const SOUNDS = (() => {
     let ctx = null;
@@ -142,7 +132,7 @@ const SQL_BUDDY = (() => {
     function toggleMute() {
       isMuted = !isMuted;
       localStorage.setItem("sql_mascot_sound_muted", isMuted.toString());
-      updateAudioControlsUI();
+      updateSettingsUI();
       if (!isMuted) playBloop(1.2);
       return !isMuted;
     }
@@ -241,7 +231,7 @@ const SQL_BUDDY = (() => {
   })();
 
   // ---------------------------------------------------------------------------
-  // 6. MATHEMATICAL HARMONICS & 3D GEOMETRY
+  // 5. MATHEMATICAL HARMONICS & 3D GEOMETRY
   // ---------------------------------------------------------------------------
   function Lo(e, t, n = 0) {
     const r = (e / t) * Y;
@@ -349,16 +339,13 @@ const SQL_BUDDY = (() => {
   }
 
   // ---------------------------------------------------------------------------
-  // 7. ENGINE STATE & PERSISTENCE
+  // 6. ENGINE STATE & PERSISTENCE
   // ---------------------------------------------------------------------------
   let activeShapeId = localStorage.getItem("sql_mascot_shape") || "galet";
   if (!SHAPES[activeShapeId]) activeShapeId = "galet";
 
   let activeColorId = localStorage.getItem("sql_mascot_color") || "encre";
   if (!COLORS[activeColorId]) activeColorId = "encre";
-
-  let activeAccessoryId = localStorage.getItem("sql_mascot_accessory") || "none";
-  if (!ACCESSORIES[activeAccessoryId]) activeAccessoryId = "none";
 
   let isIdleSnoozeEnabled = localStorage.getItem("sql_mascot_idle_snooze") !== "disabled";
   let isThemeSyncEnabled = localStorage.getItem("sql_mascot_theme_sync") === "true";
@@ -413,14 +400,14 @@ const SQL_BUDDY = (() => {
   let isHovered = false;
 
   // ---------------------------------------------------------------------------
-  // 8. REAL-TIME CURSOR & INTERACTION LISTENERS
+  // 7. REAL-TIME CURSOR & INTERACTION LISTENERS
   // ---------------------------------------------------------------------------
   function registerUserActivity() {
     lastUserActivity = performance.now();
     if (isAutoSleeping) {
       isAutoSleeping = false;
       setExpression("idle");
-      targetScaleY = 1.25; // Surprised startle wake bounce!
+      targetScaleY = 1.25; // Surprised wake bounce!
       SOUNDS.playBloop(1.4);
       say("⚡ I'm awake! Ready for more SQL queries!", 4000, "happy");
     }
@@ -471,7 +458,7 @@ const SQL_BUDDY = (() => {
     if (!unit) return;
 
     unit.addEventListener("pointerdown", e => {
-      if (e.target.closest(".buddy-controls-bar") || e.target.closest(".bloub-customizer-card")) return;
+      if (e.target.closest(".bloub-customizer-card")) return;
       isDragging = true;
       dragStartX = e.clientX;
       dragStartY = e.clientY;
@@ -519,7 +506,7 @@ const SQL_BUDDY = (() => {
 
       sqlInput.addEventListener("input", () => {
         if (isMinimized) return;
-        targetScaleY = 0.94; // Micro-nod as clauses are typed
+        targetScaleY = 0.94; // Micro-nod
       });
     }
 
@@ -560,109 +547,7 @@ const SQL_BUDDY = (() => {
   }
 
   // ---------------------------------------------------------------------------
-  // 9. RENDER ACCESSORIES IN 3D
-  // ---------------------------------------------------------------------------
-  function renderAccessories(eye0Pos, eye1Pos, sTop, baseScale, activeColor) {
-    const accFrontEl = document.getElementById("bloubAccFront");
-    const accBehindEl = document.getElementById("bloubAccBehind");
-    if (!accFrontEl || !accBehindEl) return;
-
-    if (activeAccessoryId === "none") {
-      accFrontEl.innerHTML = "";
-      accBehindEl.innerHTML = "";
-      return;
-    }
-
-    if (activeAccessoryId === "glasses") {
-      accBehindEl.innerHTML = "";
-      const eyeDist = Math.hypot(eye1Pos.x - eye0Pos.x, eye1Pos.y - eye0Pos.y);
-      const midX = (eye0Pos.x + eye1Pos.x) / 2;
-      const midY = (eye0Pos.y + eye1Pos.y) / 2 - 6;
-      const angle = Math.atan2(eye1Pos.y - eye0Pos.y, eye1Pos.x - eye0Pos.x) * 180 / Math.PI;
-
-      const frameColor = activeColor.isDark ? "#f8fafc" : "#0f172a";
-      const lensFill = "rgba(255, 255, 255, 0.08)";
-      const dX = eyeDist / 2;
-
-      accFrontEl.innerHTML = `
-        <g transform="translate(${Q(midX)}, ${Q(midY)}) rotate(${Q(angle)})">
-          <!-- Left Lens & Frame -->
-          <rect x="${Q(-dX - 14)}" y="-17" width="28" height="34" rx="10" ry="10" fill="${lensFill}" stroke="${frameColor}" stroke-width="2.6" />
-          <!-- Right Lens & Frame -->
-          <rect x="${Q(dX - 14)}" y="-17" width="28" height="34" rx="10" ry="10" fill="${lensFill}" stroke="${frameColor}" stroke-width="2.6" />
-          <!-- Central Bridge -->
-          <path d="M ${Q(-dX + 14)} -4 Q 0 -9 ${Q(dX - 14)} -4" fill="none" stroke="${frameColor}" stroke-width="2.6" stroke-linecap="round" />
-          <!-- Temples -->
-          <path d="M ${Q(-dX - 14)} -4 L ${Q(-dX - 32)} -2" fill="none" stroke="${frameColor}" stroke-width="2.2" stroke-linecap="round" />
-          <path d="M ${Q(dX + 14)} -4 L ${Q(dX + 32)} -2" fill="none" stroke="${frameColor}" stroke-width="2.2" stroke-linecap="round" />
-          <!-- Specular Lens Glints -->
-          <line x1="${Q(-dX - 10)}" y1="-10" x2="${Q(-dX - 2)}" y2="-2" stroke="rgba(255,255,255,0.7)" stroke-width="1.8" stroke-linecap="round" />
-          <line x1="${Q(dX - 10)}" y1="-10" x2="${Q(dX - 2)}" y2="-2" stroke="rgba(255,255,255,0.7)" stroke-width="1.8" stroke-linecap="round" />
-        </g>
-      `;
-      return;
-    }
-
-    if (activeAccessoryId === "crown") {
-      accBehindEl.innerHTML = "";
-      const crownY = -baseScale * sTop - 6;
-      const tilt = currentGaze.yaw * 0.25;
-      accFrontEl.innerHTML = `
-        <g transform="translate(0, ${Q(crownY)}) rotate(${Q(tilt)})">
-          <!-- Golden Crown Base & Peaks -->
-          <path d="M -34 0 L -40 -34 L -14 -16 L 0 -44 L 14 -16 L 40 -34 L 34 0 Q 0 6 -34 0 Z" 
-                fill="url(#bloubGoldGrad)" stroke="#b45309" stroke-width="1.6" filter="drop-shadow(0 2px 4px rgba(0,0,0,0.5))" />
-          <!-- Jewels on 3 Peak Tips -->
-          <circle cx="-40" cy="-34" r="3.5" fill="#ef4444" stroke="#991b1b" stroke-width="1" />
-          <circle cx="0" cy="-44" r="4.5" fill="#38bdf8" stroke="#0284c7" stroke-width="1" />
-          <circle cx="40" cy="-34" r="3.5" fill="#10b981" stroke="#047857" stroke-width="1" />
-          <!-- Band Gems -->
-          <circle cx="-16" cy="-2" r="2.5" fill="#ec4899" />
-          <circle cx="0" cy="-1" r="2.8" fill="#fbbf24" />
-          <circle cx="16" cy="-2" r="2.5" fill="#a855f7" />
-        </g>
-      `;
-      return;
-    }
-
-    if (activeAccessoryId === "cap") {
-      accBehindEl.innerHTML = "";
-      const capY = -baseScale * sTop - 8;
-      const tilt = currentGaze.yaw * 0.2;
-      accFrontEl.innerHTML = `
-        <g transform="translate(0, ${Q(capY)}) rotate(${Q(tilt)})">
-          <!-- Skullcap base -->
-          <path d="M -26 0 Q 0 16 26 0 L 22 14 Q 0 26 -22 14 Z" fill="#0f172a" stroke="#1e293b" stroke-width="1.5" />
-          <!-- Mortarboard Diamond -->
-          <polygon points="0,-24 50,-10 0,4 -50,-10" fill="#1e1b4b" stroke="#6366f1" stroke-width="1.8" />
-          <!-- Center Button -->
-          <circle cx="0" cy="-10" r="4" fill="#f59e0b" />
-          <!-- Swaying Golden Tassel -->
-          <path d="M 0 -10 Q 24 -8 38 12 L 38 28" fill="none" stroke="#fbbf24" stroke-width="2.2" stroke-linecap="round" />
-          <polygon points="35,28 41,28 43,40 33,40" fill="#f59e0b" />
-        </g>
-      `;
-      return;
-    }
-
-    if (activeAccessoryId === "headphones") {
-      accBehindEl.innerHTML = `
-        <path d="M -76 -10 C -76 -112, 76 -112, 76 -10" fill="none" stroke="#1e293b" stroke-width="8" stroke-linecap="round" />
-        <path d="M -72 -14 C -72 -106, 72 -106, 72 -14" fill="none" stroke="#38bdf8" stroke-width="2" stroke-linecap="round" opacity="0.85" />
-      `;
-      accFrontEl.innerHTML = `
-        <!-- Left Earcup -->
-        <rect x="-88" y="-30" width="16" height="42" rx="8" fill="#0f172a" stroke="#38bdf8" stroke-width="2" />
-        <circle cx="-80" cy="-9" r="4.5" fill="#38bdf8" opacity="0.8" />
-        <!-- Right Earcup -->
-        <rect x="72" y="-30" width="16" height="42" rx="8" fill="#0f172a" stroke="#38bdf8" stroke-width="2" />
-        <circle cx="80" cy="-9" r="4.5" fill="#38bdf8" opacity="0.8" />
-      `;
-    }
-  }
-
-  // ---------------------------------------------------------------------------
-  // 10. REAL-TIME 60 FPS ANIMATION LOOP
+  // 8. REAL-TIME 60 FPS ANIMATION LOOP
   // ---------------------------------------------------------------------------
   function update() {
     const now = performance.now();
@@ -830,7 +715,6 @@ const SQL_BUDDY = (() => {
       // 11. 3D Spherical Eye Projection (16.8° split)
       const split = 16.8;
       const eyes3D = us(currentGaze, baseScale, split);
-      const computedEyePositions = [];
 
       for (let n = 0; n < 2; n++) {
         const eye3D = eyes3D[n];
@@ -850,7 +734,6 @@ const SQL_BUDDY = (() => {
         const s = Fs(currentRadii, Math.atan2(eye3D.y, eye3D.x) - rot);
         const posX = eye3D.x * s;
         const posY = eye3D.y * s;
-        computedEyePositions.push({ x: posX, y: posY + cy });
 
         const tilt = (n === 0 ? tilt0 : tilt1) * Math.PI / 180;
         const cosT = Math.cos(tilt);
@@ -886,19 +769,13 @@ const SQL_BUDDY = (() => {
 
         eyeEl.setAttribute("fill", activeColor.isDark ? "url(#bloubEyeGradWhite)" : activeColor.eyeColor);
       }
-
-      // 12. Render Active Accessories
-      if (computedEyePositions.length === 2) {
-        const sTop = Fs(currentRadii, -Math.PI / 2);
-        renderAccessories(computedEyePositions[0], computedEyePositions[1], sTop, baseScale, activeColor);
-      }
     }
 
     animFrameId = requestAnimationFrame(update);
   }
 
   // ---------------------------------------------------------------------------
-  // 11. CONFETTI PARTICLE BURST SYSTEM
+  // 9. CONFETTI PARTICLE BURST SYSTEM
   // ---------------------------------------------------------------------------
   function triggerConfetti() {
     const container = document.getElementById("sqlBuddyContainer");
@@ -958,7 +835,7 @@ const SQL_BUDDY = (() => {
   }
 
   // ---------------------------------------------------------------------------
-  // 12. THEME SYNC ENGINE
+  // 10. THEME SYNC ENGINE
   // ---------------------------------------------------------------------------
   function syncThemeColor() {
     if (!isThemeSyncEnabled) return;
@@ -980,22 +857,28 @@ const SQL_BUDDY = (() => {
     localStorage.setItem("sql_mascot_theme_sync", isThemeSyncEnabled.toString());
     if (isThemeSyncEnabled) {
       syncThemeColor();
-      say("🎨 Theme Sync enabled! I'll auto-match the IDE theme palette!", 3500, "happy");
+      say("🎨 Theme Sync active! I'll auto-match the visualizer palette!", 3500, "happy");
     } else {
-      say("🔒 Manual color mode active.", 2500, "idle");
+      say("🔒 Manual skin mode active.", 2500, "idle");
     }
-    updateCustomizerActiveElements();
+    updateSettingsUI();
   }
 
   function toggleIdleSnooze() {
     isIdleSnoozeEnabled = !isIdleSnoozeEnabled;
     localStorage.setItem("sql_mascot_idle_snooze", isIdleSnoozeEnabled ? "enabled" : "disabled");
     say(isIdleSnoozeEnabled ? "💤 Auto-Snooze enabled (75s idle)." : "👁️ Always-awake mode active.", 3000, "idle");
-    updateCustomizerActiveElements();
+    updateSettingsUI();
+  }
+
+  function toggleSound() {
+    const unmuted = SOUNDS.toggleMute();
+    say(unmuted ? "🔊 Audio sound FX enabled!" : "🔇 Audio muted.", 2500, "idle");
+    updateSettingsUI();
   }
 
   // ---------------------------------------------------------------------------
-  // 13. PUBLIC CONTROLS & DRESSING ROOM API
+  // 11. CONTROLS & SELECTION API
   // ---------------------------------------------------------------------------
   function setShape(shapeId) {
     if (!SHAPES[shapeId]) return;
@@ -1003,7 +886,7 @@ const SQL_BUDDY = (() => {
     localStorage.setItem("sql_mascot_shape", shapeId);
     targetRadii = [...SHAPES[shapeId].radii];
     targetScaleY = 0.76;
-    updateCustomizerActiveElements();
+    updateSettingsUI();
     SOUNDS.playMorph();
   }
 
@@ -1012,32 +895,8 @@ const SQL_BUDDY = (() => {
     activeColorId = colorId;
     localStorage.setItem("sql_mascot_color", colorId);
     targetRGB = hexToRgb(COLORS[colorId].hex);
-    updateCustomizerActiveElements();
+    updateSettingsUI();
     SOUNDS.playBloop(0.9);
-  }
-
-  function setAccessory(accId) {
-    if (!ACCESSORIES[accId]) return;
-    activeAccessoryId = accId;
-    localStorage.setItem("sql_mascot_accessory", accId);
-    updateCustomizerActiveElements();
-    updateAudioControlsUI();
-    targetScaleY = 0.82; // bounce
-    SOUNDS.playBloop(1.25);
-  }
-
-  function cycleAccessory() {
-    const keys = Object.keys(ACCESSORIES);
-    const idx = keys.indexOf(activeAccessoryId);
-    const nextId = keys[(idx + 1) % keys.length];
-    setAccessory(nextId);
-    say(`✨ Wardrobe equipped: ${ACCESSORIES[nextId].name}!`, 3000, "happy");
-  }
-
-  function toggleSound() {
-    const unmuted = SOUNDS.toggleMute();
-    say(unmuted ? "🔊 Audio sound FX enabled!" : "🔇 Audio muted.", 2500, "idle");
-    updateAudioControlsUI();
   }
 
   function setExpression(state) {
@@ -1065,26 +924,12 @@ const SQL_BUDDY = (() => {
     }
   }
 
-  function updateAudioControlsUI() {
-    const audioBtnIcon = document.getElementById("buddyAudioIcon");
-    if (audioBtnIcon) {
-      audioBtnIcon.innerText = SOUNDS.isAudioEnabled() ? "🔊" : "🔇";
-    }
-    const accIcon = document.getElementById("buddyAccIcon");
-    if (accIcon) {
-      accIcon.innerText = ACCESSORIES[activeAccessoryId]?.icon || "👑";
-    }
-  }
-
-  function updateCustomizerActiveElements() {
+  function updateSettingsUI() {
     document.querySelectorAll(".bloub-shape-btn").forEach(btn => {
       btn.classList.toggle("active", btn.dataset.shape === activeShapeId);
     });
     document.querySelectorAll(".bloub-color-swatch").forEach(swatch => {
       swatch.classList.toggle("active", swatch.dataset.color === activeColorId);
-    });
-    document.querySelectorAll(".bloub-acc-btn").forEach(btn => {
-      btn.classList.toggle("active", btn.dataset.acc === activeAccessoryId);
     });
 
     const sndPill = document.getElementById("bloubSoundPill");
@@ -1104,24 +949,19 @@ const SQL_BUDDY = (() => {
       themePill.innerText = isThemeSyncEnabled ? "🎨 Theme Sync: ON" : "🔒 Manual";
       themePill.classList.toggle("active", isThemeSyncEnabled);
     }
+
+    const sleepPill = document.getElementById("bloubSleepPill");
+    if (sleepPill) {
+      sleepPill.innerText = isMinimized ? "💤 Sleeping" : "👁️ Active";
+      sleepPill.classList.toggle("active", isMinimized);
+    }
   }
 
   // ---------------------------------------------------------------------------
-  // 14. HTML BUILDER (5 DEDICATED SECTIONS)
+  // 12. HTML BUILDER (CLEAN DEDICATED SECTIONS)
   // ---------------------------------------------------------------------------
   function buildCustomizerHTML() {
-    // 1. Wardrobe Grid
-    const accButtons = Object.values(ACCESSORIES).map(a => `
-      <button class="bloub-acc-btn ${a.id === activeAccessoryId ? "active" : ""}" 
-              data-acc="${a.id}" 
-              title="${a.name}" 
-              onclick="event.stopPropagation(); SQL_BUDDY.setAccessory('${a.id}')">
-        <span class="bloub-acc-icon">${a.icon}</span>
-        <span class="bloub-acc-label">${a.name.split(" ")[0]}</span>
-      </button>
-    `).join("");
-
-    // 2. Shape Buttons
+    // 1. Shape Buttons
     const shapeButtons = Object.values(SHAPES).map(s => `
       <button class="bloub-shape-btn ${s.id === activeShapeId ? "active" : ""}" 
               data-shape="${s.id}" 
@@ -1132,7 +972,7 @@ const SQL_BUDDY = (() => {
       </button>
     `).join("");
 
-    // 3. Color Swatches
+    // 2. Color Swatches
     const colorSwatches = Object.values(COLORS).map(c => `
       <button class="bloub-color-swatch ${c.id === activeColorId ? "active" : ""}" 
               data-color="${c.id}" 
@@ -1148,23 +988,14 @@ const SQL_BUDDY = (() => {
         <div class="bloub-customizer-header">
           <div class="bloub-customizer-title-wrap">
             <span class="bloub-dna-icon">✨</span>
-            <span class="bloub-customizer-title">COMPANION DNA & WARDROBE</span>
+            <span class="bloub-customizer-title">MASCOT & COMPANION SETTINGS</span>
           </div>
           <button class="bloub-customizer-close" onclick="event.stopPropagation(); SQL_BUDDY.toggleCustomizer()">&times;</button>
         </div>
 
-        <!-- SECTION 1: WARDROBE & ACCESSORIES -->
+        <!-- SECTION 1: CONTROLS & BEHAVIOR -->
         <div class="bloub-section-header">
-          <div class="bloub-section-title"><span>👑</span> SECTION 1: WARDROBE</div>
-          <span class="bloub-section-badge">5 ITEMS</span>
-        </div>
-        <div class="bloub-acc-grid">
-          ${accButtons}
-        </div>
-
-        <!-- SECTION 2: SETTINGS & BEHAVIOR -->
-        <div class="bloub-section-header">
-          <div class="bloub-section-title"><span>⚙️</span> SECTION 2: BEHAVIOR</div>
+          <div class="bloub-section-title"><span>⚙️</span> SECTION 1: CONTROLS & BEHAVIOR</div>
           <span class="bloub-section-badge">AUTONOMOUS</span>
         </div>
         <div class="bloub-settings-list">
@@ -1186,29 +1017,35 @@ const SQL_BUDDY = (() => {
               ${isThemeSyncEnabled ? "🎨 Theme Sync: ON" : "🔒 Manual"}
             </button>
           </div>
+          <div class="bloub-setting-item">
+            <div class="bloub-setting-info"><span>😴</span> Sleep Mode</div>
+            <button id="bloubSleepPill" class="bloub-toggle-pill ${isMinimized ? "active" : ""}" onclick="event.stopPropagation(); SQL_BUDDY.toggleMinimize();">
+              ${isMinimized ? "💤 Sleeping" : "👁️ Active"}
+            </button>
+          </div>
         </div>
 
-        <!-- SECTION 3: MORPH SHAPE -->
+        <!-- SECTION 2: MORPH SHAPE -->
         <div class="bloub-section-header">
-          <div class="bloub-section-title"><span>🪨</span> SECTION 3: MORPH SHAPE</div>
+          <div class="bloub-section-title"><span>🪨</span> SECTION 2: MORPH SHAPE</div>
           <span class="bloub-section-badge">${Object.keys(SHAPES).length} SHAPES</span>
         </div>
         <div class="bloub-shapes-grid">
           ${shapeButtons}
         </div>
 
-        <!-- SECTION 4: COLOR PALETTE -->
+        <!-- SECTION 3: COLOR PALETTE -->
         <div class="bloub-section-header">
-          <div class="bloub-section-title"><span>🎨</span> SECTION 4: COLOR PALETTE</div>
+          <div class="bloub-section-title"><span>🎨</span> SECTION 3: COLOR PALETTE</div>
           <span class="bloub-section-badge">${Object.keys(COLORS).length} SKINS</span>
         </div>
         <div class="bloub-colors-grid">
           ${colorSwatches}
         </div>
 
-        <!-- SECTION 5: EXPRESSIONS & PARTICLES -->
+        <!-- SECTION 4: EXPRESSIONS & CELEBRATION -->
         <div class="bloub-section-header">
-          <div class="bloub-section-title"><span>😄</span> SECTION 5: EXPRESSIONS</div>
+          <div class="bloub-section-title"><span>😄</span> SECTION 4: EXPRESSIONS</div>
           <span class="bloub-section-badge">INTERACTION</span>
         </div>
         <div class="bloub-expr-row">
@@ -1227,7 +1064,7 @@ const SQL_BUDDY = (() => {
   }
 
   // ---------------------------------------------------------------------------
-  // 15. INITIALIZATION & MOUNT
+  // 13. INITIALIZATION & MOUNT
   // ---------------------------------------------------------------------------
   function init() {
     let container = document.getElementById("sqlBuddyContainer");
@@ -1251,35 +1088,14 @@ const SQL_BUDDY = (() => {
           </div>
           <button class="buddy-close-speech" onclick="SQL_BUDDY.hideSpeech()">&times;</button>
         </div>
-        <div id="buddySpeechText" class="buddy-speech-text">Ready to master SQL? Click me for tips or 🎨 to morph!</div>
+        <div id="buddySpeechText" class="buddy-speech-text">Ready to master SQL? Click me for tips or 🎨 in the header to customize!</div>
       </div>
 
-      <!-- Floating Controls Dock (4 Quick Tools) -->
-      <div class="buddy-controls-bar">
-        <button class="buddy-bar-btn" id="btnBuddyDna" title="Companion DNA & Wardrobe (🎨)" onclick="event.stopPropagation(); SQL_BUDDY.toggleCustomizer();">
-          <span>🎨</span>
-        </button>
-        <button class="buddy-bar-btn" id="btnBuddyAcc" title="Quick Wardrobe Cycle (👑)" onclick="event.stopPropagation(); SQL_BUDDY.cycleAccessory();">
-          <span id="buddyAccIcon">${ACCESSORIES[activeAccessoryId]?.icon || "👑"}</span>
-        </button>
-        <button class="buddy-bar-btn" id="btnBuddyAudio" title="Toggle Sound FX (🔊)" onclick="event.stopPropagation(); SQL_BUDDY.toggleSound();">
-          <span id="buddyAudioIcon">${SOUNDS.isAudioEnabled() ? "🔊" : "🔇"}</span>
-        </button>
-        <button class="buddy-bar-btn" id="btnBuddySleep" title="Toggle Sleep Mode (💤)" onclick="event.stopPropagation(); SQL_BUDDY.toggleMinimize();">
-          <span id="buddyToggleIcon">💤</span>
-        </button>
-      </div>
-
-      <!-- Interactive Mascot Unit (Drag & Poke) -->
+      <!-- Clean Living Avatar Unit (Zero floating buttons on head!) -->
       <div class="buddy-interactive-unit" onclick="SQL_BUDDY.poke()">
         <div class="buddy-svg-wrapper">
           <svg class="bloub-svg" viewBox="-158 -158 316 316" width="140" height="140" xmlns="http://www.w3.org/2000/svg">
             <defs>
-              <linearGradient id="bloubGoldGrad" x1="0" y1="0" x2="0" y2="1">
-                <stop offset="0%" stop-color="#fef08a" />
-                <stop offset="50%" stop-color="#f59e0b" />
-                <stop offset="100%" stop-color="#b45309" />
-              </linearGradient>
               <radialGradient id="bloubCheekGrad0" cx="50%" cy="50%" r="50%">
                 <stop offset="0%" stop-color="#ff6584" stop-opacity="0.85" />
                 <stop offset="60%" stop-color="#ff6584" stop-opacity="0.45" />
@@ -1296,9 +1112,6 @@ const SQL_BUDDY = (() => {
                 <stop offset="100%" stop-color="#cbd5e1" />
               </linearGradient>
             </defs>
-
-            <!-- Behind Accessories (Headphones band) -->
-            <g id="bloubAccBehind"></g>
 
             <!-- Body Spline (Firmly rooted at 0, 0) -->
             <path id="bloubBodyPath" d="" fill="#0a0a0c" />
@@ -1320,9 +1133,6 @@ const SQL_BUDDY = (() => {
               <ellipse id="bloubEyeGlint1" cx="4" cy="-14" rx="3.5" ry="5.5" fill="#ffffff" opacity="0.95" />
               <circle id="bloubEyeGlintSmall1" cx="-3" cy="8" r="1.8" fill="#ffffff" opacity="0.65" />
             </g>
-
-            <!-- Front Accessories (Glasses, Cap, Crown, Earcups) -->
-            <g id="bloubAccFront"></g>
           </svg>
         </div>
       </div>
@@ -1348,7 +1158,7 @@ const SQL_BUDDY = (() => {
 
     // Initial Greeting
     setTimeout(() => {
-      say("👋 Hey! I'm Bloub, your living SQL companion! Check out my new Dressing Room & accessories (🎨)!", 6000, "happy");
+      say("👋 Hey! I'm Bloub, your living SQL companion! Customize my shapes & settings in the header (🎨)!", 6000, "happy");
     }, 1200);
 
     // If theme sync active, sync now
@@ -1356,7 +1166,7 @@ const SQL_BUDDY = (() => {
   }
 
   // ---------------------------------------------------------------------------
-  // 16. SPEECH & EVENT ACTIONS
+  // 14. SPEECH & EVENT ACTIONS
   // ---------------------------------------------------------------------------
   function say(message, duration = 5000, expression = "happy") {
     if (isMinimized && expression !== "sleep") return;
@@ -1443,10 +1253,8 @@ const SQL_BUDDY = (() => {
   function toggleMinimize() {
     isMinimized = !isMinimized;
     const container = document.getElementById("sqlBuddyContainer");
-    const icon = document.getElementById("buddyToggleIcon");
     if (container) {
       container.classList.toggle("minimized", isMinimized);
-      if (icon) icon.innerText = isMinimized ? "👁️" : "💤";
       if (isMinimized) {
         hideSpeech();
         setExpression("sleep");
@@ -1455,6 +1263,7 @@ const SQL_BUDDY = (() => {
         setExpression("idle");
       }
     }
+    updateSettingsUI();
   }
 
   return {
@@ -1465,8 +1274,6 @@ const SQL_BUDDY = (() => {
     triggerConfetti,
     setShape,
     setColor,
-    setAccessory,
-    cycleAccessory,
     toggleSound,
     toggleIdleSnooze,
     toggleThemeSync,
@@ -1479,8 +1286,7 @@ const SQL_BUDDY = (() => {
     onQueryRunSuccess,
     onQueryRunError,
     SHAPES,
-    COLORS,
-    ACCESSORIES
+    COLORS
   };
 })();
 
