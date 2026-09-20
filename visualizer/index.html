@@ -8,7 +8,7 @@
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
   <link href="https://fonts.googleapis.com/css2?family=Geist+Mono:wght@400;500;600;700&family=Geist:wght@300;400;500;600;700;800&family=JetBrains+Mono:wght@400;500;600;700&display=swap" rel="stylesheet">
-  <link rel="stylesheet" href="style.css?v=82">
+  <link rel="stylesheet" href="style.css?v=84">
 </head>
 <body>
   <div class="app-layout">
@@ -74,7 +74,7 @@
             <option value="matcha-latte">🍵 Matcha Latte</option>
           </select>
         </div>
-        <button id="btnCompanionTrigger" class="btn-mascot-toggle" title="Customize Mascot & Companion Settings" onclick="if(window.SQL_BUDDY) window.SQL_BUDDY.toggleCustomizer();">
+        <button id="btnCompanionTrigger" class="btn-mascot-toggle" title="Customize Mascot & Companion Settings" onclick="if(window.SQL_BUDDY){window.SQL_BUDDY.toggleCustomizer();}else if(typeof SQL_BUDDY!=='undefined'){SQL_BUDDY.toggleCustomizer();}">
           <span>🎨</span> Mascot
         </button>
         <button id="btnRunQuery" class="action-btn action-btn-primary">
@@ -1114,7 +1114,7 @@
 <script src="traps_interview_secrets.js?v=57"></script>
 <script src="audio_fx.js"></script>
 <script src="study_library_data.js?v=65"></script>
-<script src="buddy_engine.js?v=82"></script>
+<script src="buddy_engine.js?v=84"></script>
 <script src="gym_blitz_engine.js?v=57"></script>
 <script src="gym_mastery_radar.js?v=57"></script>
 <script src="gym_autopsy_engine.js?v=57"></script>

@@ -855,8 +855,15 @@ const SQL_BUDDY = (() => {
     }
   }
 
-  function toggleCustomizer() {
-    isCustomizerOpen = !isCustomizerOpen;
+  function toggleCustomizer(forceOpen) {
+    if (typeof forceOpen === "boolean") {
+      isCustomizerOpen = forceOpen;
+    } else {
+      isCustomizerOpen = !isCustomizerOpen;
+    }
+    if (isCustomizerOpen && isMinimized) {
+      toggleMinimize();
+    }
     const panel = document.getElementById("bloubCustomizerPanel");
     if (panel) {
       panel.style.display = isCustomizerOpen ? "block" : "none";
@@ -864,6 +871,7 @@ const SQL_BUDDY = (() => {
         panel.classList.remove("fade-in");
         void panel.offsetWidth;
         panel.classList.add("fade-in");
+        updateSettingsUI();
         SOUNDS.playBloop(1.2);
       }
     }
@@ -1070,8 +1078,17 @@ const SQL_BUDDY = (() => {
       });
     }
 
-    if (animFrameId) cancelAnimationFrame(animFrameId);
-    animFrameId = requestAnimationFrame(update);
+    // Direct listener for header Mascot settings button
+    const btnTrigger = document.getElementById("btnCompanionTrigger");
+    if (btnTrigger) {
+      btnTrigger.onclick = function (e) {
+        if (e) {
+          e.preventDefault();
+          e.stopPropagation();
+        }
+        toggleCustomizer();
+      };
+    }
 
     // Initial Greeting
     setTimeout(() => {
@@ -1206,6 +1223,9 @@ const SQL_BUDDY = (() => {
     COLORS
   };
 })();
+
+// Export to global window object
+window.SQL_BUDDY = SQL_BUDDY;
 
 // Auto-mount
 if (document.readyState === "loading") {
