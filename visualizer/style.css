@@ -3,12 +3,83 @@
 /* ==========================================================================
    SQL ENGINE VISUALIZER - ACTIVE BUILDERS MINIMALIST DESIGN SYSTEM
    Design Reference: activebuilders.dev
-   Palette: Carbon Canvas (#0c0c0e), Terracotta Flame (#ea733c), Auger Mono
+   Signature Paper Light: Canvas (#fafafa), Surface (#ffffff), Ink (#18181b),
+   Burnt Terracotta Accent (#c2410c), Adobe Typekit Auger Mono
    ========================================================================== */
 
 :root,
 [data-theme="active-builders"] {
-  /* Active Builders Strict Blueprint Palette */
+  /* Active Builders Exact Paper Light Palette */
+  --bg-canvas: #fafafa;
+  --bg-surface: #ffffff;
+  --bg-surface-elevated: #f4f4f5;
+  --bg-card: #ffffff;
+  --bg-card-subtle: #f4f4f5;
+  --bg-hover: #f4f4f5;
+  --bg-active: #e4e4e7;
+
+  --border-subtle: #e4e4e7;
+  --border-default: #d4d4d8;
+  --border-muted: #e4e4e7;
+  --border-hover: #a1a1aa;
+  --border-focus: #c2410c;
+
+  --text-primary: #18181b;
+  --text-secondary: #3f3f46;
+  --text-muted: #5f5f66;
+
+  /* Signature Active Builders Burnt Terracotta Flame Accent */
+  --accent: #c2410c;
+  --accent-hover: #ea580c;
+  --accent-soft: #fde8d1;
+  --accent-border: #fed7aa;
+
+  /* Functional Semantic Colors */
+  --status-success: #16a34a;
+  --status-success-bg: rgba(22, 163, 74, 0.1);
+  --status-success-border: rgba(22, 163, 74, 0.3);
+
+  --status-fail: #dc2626;
+  --status-fail-bg: rgba(220, 38, 38, 0.1);
+  --status-fail-border: rgba(220, 38, 38, 0.3);
+
+  --status-warning: #d97706;
+  --status-warning-bg: rgba(217, 119, 6, 0.1);
+  --status-warning-border: rgba(217, 119, 6, 0.3);
+
+  --status-info: #c2410c;
+  --status-info-bg: rgba(194, 65, 12, 0.1);
+  --status-info-border: rgba(194, 65, 12, 0.3);
+
+  --status-neutral: #e4e4e7;
+
+  /* Specular Highlights & Hairline Shadows */
+  --shadow-specular: inset 0 1px 0 0 rgba(255, 255, 255, 0.8);
+  --shadow-specular-bright: inset 0 1px 0 0 #ffffff;
+  --shadow-card: 0 1px 3px 0 rgba(0, 0, 0, 0.05), 0 1px 2px -1px rgba(0, 0, 0, 0.05);
+  --shadow-card-hover: 0 8px 24px -4px rgba(0, 0, 0, 0.08);
+
+  /* Typography: Auger Mono (Typekit) with fallback to Geist Mono / JetBrains Mono */
+  --font-mono: 'auger-mono', ui-monospace, SFMono-Regular, Menlo, Monaco, Consolas, monospace;
+  --font-sans: 'auger-mono', -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif;
+
+  /* Strict 6px Blueprint Geometry */
+  --radius-xs: 4px;
+  --radius-sm: 6px;
+  --radius-md: 6px;
+  --radius-lg: 6px;
+  --radius-xl: 8px;
+
+  /* Spring Curves */
+  --ease-spring: cubic-bezier(0.16, 1, 0.3, 1);
+  --ease-bounce: cubic-bezier(0.22, 1, 0.36, 1);
+  --transition-fast: 0.15s var(--ease-spring);
+  --transition-fluid: all 0.2s var(--ease-spring);
+  color-scheme: light;
+}
+
+/* Active Builders Dark Mode */
+[data-theme="active-builders-dark"] {
   --bg-canvas: #0c0c0e;
   --bg-surface: #111114;
   --bg-surface-elevated: #16161a;
@@ -27,53 +98,16 @@
   --text-secondary: #c7c7cb;
   --text-muted: #868690;
 
-  /* Signature Active Builders Terracotta Flame Accent */
   --accent: #ea733c;
   --accent-hover: #ff854c;
   --accent-soft: rgba(234, 115, 60, 0.12);
   --accent-border: rgba(234, 115, 60, 0.35);
 
-  /* Functional Semantic Colors */
   --status-success: #4ade80;
-  --status-success-bg: rgba(74, 222, 128, 0.1);
-  --status-success-border: rgba(74, 222, 128, 0.3);
-
   --status-fail: #f87171;
-  --status-fail-bg: rgba(248, 113, 113, 0.1);
-  --status-fail-border: rgba(248, 113, 113, 0.3);
-
   --status-warning: #f59e0b;
-  --status-warning-bg: rgba(245, 158, 11, 0.1);
-  --status-warning-border: rgba(245, 158, 11, 0.3);
-
   --status-info: #ea733c;
-  --status-info-bg: rgba(234, 115, 60, 0.1);
-  --status-info-border: rgba(234, 115, 60, 0.3);
-
-  --status-neutral: #3f3f46;
-
-  /* Specular Highlights & Hairline Shadows */
-  --shadow-specular: inset 0 1px 0 0 rgba(255, 255, 255, 0.05);
-  --shadow-specular-bright: inset 0 1px 0 0 rgba(255, 255, 255, 0.1);
-  --shadow-card: 0 1px 3px 0 rgba(0, 0, 0, 0.5), 0 1px 2px -1px rgba(0, 0, 0, 0.4);
-  --shadow-card-hover: 0 8px 24px -4px rgba(0, 0, 0, 0.7);
-
-  /* Typography: Auger Mono (Typekit) with fallback to Geist Mono / JetBrains Mono */
-  --font-mono: 'auger-mono', ui-monospace, 'Geist Mono', 'JetBrains Mono', Menlo, Monaco, Consolas, monospace;
-  --font-sans: 'auger-mono', 'Geist', -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
-
-  /* Strict 6px Blueprint Geometry */
-  --radius-xs: 4px;
-  --radius-sm: 6px;
-  --radius-md: 6px;
-  --radius-lg: 6px;
-  --radius-xl: 8px;
-
-  /* Spring Curves */
-  --ease-spring: cubic-bezier(0.16, 1, 0.3, 1);
-  --ease-bounce: cubic-bezier(0.22, 1, 0.36, 1);
-  --transition-fast: 0.15s var(--ease-spring);
-  --transition-fluid: all 0.2s var(--ease-spring);
+  color-scheme: dark;
 }
 
 /* ==========================================================================
@@ -186,23 +220,59 @@
 }
 
 /* Theme-Specific Code Token & Primary Action Accents */
+/* Active Builders Paper Light */
 [data-theme="active-builders"] .token-chip,
 :root .token-chip {
-  background: rgba(234, 115, 60, 0.08);
-  border-color: rgba(234, 115, 60, 0.3);
-  color: #ea733c;
+  background: #fde8d1;
+  border-color: #fed7aa;
+  color: #c2410c;
+  font-weight: 600;
 }
 [data-theme="active-builders"] .token-chip:hover,
 :root .token-chip:hover {
-  background: rgba(234, 115, 60, 0.18);
-  border-color: #ea733c;
-  color: #ff854c;
-  box-shadow: 0 0 12px rgba(234, 115, 60, 0.25);
+  background: #ffedd5;
+  border-color: #c2410c;
+  color: #9a3412;
+  box-shadow: 0 0 10px rgba(194, 65, 12, 0.15);
 }
 [data-theme="active-builders"] .action-btn-primary,
 [data-theme="active-builders"] #btnRunQuery,
 :root .action-btn-primary,
 :root #btnRunQuery {
+  background: #18181b !important;
+  color: #fafafa !important;
+  border: 1px solid #18181b !important;
+  border-radius: 6px !important;
+  font-family: var(--font-mono) !important;
+  font-weight: 600 !important;
+  letter-spacing: -0.01em !important;
+  box-shadow: 0 1px 3px rgba(0, 0, 0, 0.1) !important;
+}
+[data-theme="active-builders"] .action-btn-primary:hover,
+[data-theme="active-builders"] #btnRunQuery:hover,
+:root .action-btn-primary:hover,
+:root #btnRunQuery:hover {
+  background: #c2410c !important;
+  border-color: #c2410c !important;
+  color: #ffffff !important;
+  box-shadow: 0 4px 14px rgba(194, 65, 12, 0.35) !important;
+  transform: translateY(-1px);
+}
+
+/* Active Builders Dark */
+[data-theme="active-builders-dark"] .token-chip {
+  background: rgba(234, 115, 60, 0.08);
+  border-color: rgba(234, 115, 60, 0.3);
+  color: #ea733c;
+}
+[data-theme="active-builders-dark"] .token-chip:hover {
+  background: rgba(234, 115, 60, 0.18);
+  border-color: #ea733c;
+  color: #ff854c;
+  box-shadow: 0 0 12px rgba(234, 115, 60, 0.25);
+}
+[data-theme="active-builders-dark"] .action-btn-primary,
+[data-theme="active-builders-dark"] #btnRunQuery {
   background: #ea733c !important;
   color: #ffffff !important;
   border: 1px solid #ea733c !important;
@@ -212,10 +282,8 @@
   letter-spacing: -0.01em !important;
   box-shadow: 0 2px 10px rgba(234, 115, 60, 0.3) !important;
 }
-[data-theme="active-builders"] .action-btn-primary:hover,
-[data-theme="active-builders"] #btnRunQuery:hover,
-:root .action-btn-primary:hover,
-:root #btnRunQuery:hover {
+[data-theme="active-builders-dark"] .action-btn-primary:hover,
+[data-theme="active-builders-dark"] #btnRunQuery:hover {
   background: #ff854c !important;
   border-color: #ff854c !important;
   box-shadow: 0 4px 18px rgba(234, 115, 60, 0.45) !important;
@@ -896,6 +964,267 @@
   box-shadow: 0 2px 8px rgba(0, 0, 0, 0.04) !important;
   color: #991b1b !important;
   font-weight: 600 !important;
+}
+
+/* ==========================================================================
+   ACTIVE BUILDERS LIGHT THEME (activebuilders.dev) COMPONENT OVERRIDES
+   Exact Paper White (#fafafa), Zinc Ink (#18181b), Terracotta (#c2410c)
+   ========================================================================== */
+
+[data-theme="active-builders"] .app-header,
+:root .app-header {
+  background: #ffffff !important;
+  border-bottom: 1px solid #d4d4d8 !important;
+}
+
+[data-theme="active-builders"] .app-nav-bar,
+:root .app-nav-bar {
+  background: #fafafa !important;
+  border-bottom: 1px solid #d4d4d8 !important;
+}
+
+[data-theme="active-builders"] .nav-tabs-list,
+:root .nav-tabs-list {
+  background: #f4f4f5 !important;
+  border: 1px solid #d4d4d8 !important;
+  border-radius: 6px !important;
+}
+
+[data-theme="active-builders"] .nav-tab,
+:root .nav-tab {
+  color: #5f5f66 !important;
+  font-family: var(--font-mono) !important;
+  font-size: 11px !important;
+  border-radius: 4px !important;
+  border: 1px solid transparent !important;
+}
+
+[data-theme="active-builders"] .nav-tab .nav-idx,
+:root .nav-tab .nav-idx {
+  color: #71717a !important;
+  font-family: var(--font-mono) !important;
+  font-size: 9.5px !important;
+}
+
+[data-theme="active-builders"] .nav-tab:hover,
+:root .nav-tab:hover {
+  background: #ffffff !important;
+  color: #18181b !important;
+  border-color: #d4d4d8 !important;
+}
+
+[data-theme="active-builders"] .nav-tab:hover .nav-idx,
+:root .nav-tab:hover .nav-idx {
+  color: #c2410c !important;
+}
+
+[data-theme="active-builders"] .nav-tab.active,
+:root .nav-tab.active {
+  background: #ffffff !important;
+  color: #18181b !important;
+  border: 1px solid #d4d4d8 !important;
+  box-shadow: 0 1px 3px rgba(0, 0, 0, 0.05) !important;
+  font-weight: 600 !important;
+}
+
+[data-theme="active-builders"] .nav-tab.active .nav-idx,
+:root .nav-tab.active .nav-idx {
+  color: #c2410c !important;
+  font-weight: 700 !important;
+}
+
+[data-theme="active-builders"] .brand-icon,
+:root .brand-icon {
+  background: #fde8d1 !important;
+  border: 1px solid #fed7aa !important;
+  color: #c2410c !important;
+}
+
+[data-theme="active-builders"] .brand-name,
+:root .brand-name {
+  color: #18181b !important;
+  font-family: var(--font-mono) !important;
+}
+
+[data-theme="active-builders"] .brand-badge,
+:root .brand-badge {
+  background: #f4f4f5 !important;
+  border: 1px solid #d4d4d8 !important;
+  color: #5f5f66 !important;
+}
+
+[data-theme="active-builders"] .preset-wrapper,
+:root .preset-wrapper {
+  background: #f4f4f5 !important;
+  border: 1px solid #d4d4d8 !important;
+}
+
+[data-theme="active-builders"] .clean-select,
+:root .clean-select {
+  color: #18181b !important;
+}
+
+[data-theme="active-builders"] .clean-select option,
+:root .clean-select option {
+  background: #ffffff !important;
+  color: #18181b !important;
+}
+
+[data-theme="active-builders"] .theme-select,
+:root .theme-select,
+[data-theme="active-builders"] .btn-sound-toggle,
+:root .btn-sound-toggle,
+[data-theme="active-builders"] .btn-mascot-toggle,
+:root .btn-mascot-toggle,
+[data-theme="active-builders"] .xp-streak-pill,
+:root .xp-streak-pill {
+  background: #f4f4f5 !important;
+  border: 1px solid #d4d4d8 !important;
+  color: #18181b !important;
+  box-shadow: none !important;
+}
+
+[data-theme="active-builders"] .btn-sound-toggle:hover,
+:root .btn-sound-toggle:hover,
+[data-theme="active-builders"] .btn-mascot-toggle:hover,
+:root .btn-mascot-toggle:hover,
+[data-theme="active-builders"] .theme-select:hover,
+:root .theme-select:hover {
+  background: #e4e4e7 !important;
+  border-color: #a1a1aa !important;
+}
+
+[data-theme="active-builders"] .track-switcher-bar,
+:root .track-switcher-bar {
+  background: #ffffff !important;
+  border: 1px solid #d4d4d8 !important;
+  box-shadow: 0 1px 3px rgba(0, 0, 0, 0.04) !important;
+}
+
+[data-theme="active-builders"] .track-btn,
+:root .track-btn {
+  background: #f4f4f5 !important;
+  border: 1px solid #d4d4d8 !important;
+  color: #5f5f66 !important;
+}
+
+[data-theme="active-builders"] .track-btn:hover,
+:root .track-btn:hover {
+  background: #ffffff !important;
+  color: #18181b !important;
+  border-color: #a1a1aa !important;
+}
+
+[data-theme="active-builders"] .track-btn.active,
+:root .track-btn.active {
+  background: #ffffff !important;
+  color: #18181b !important;
+  border-color: #c2410c !important;
+  font-weight: 600 !important;
+  box-shadow: 0 1px 3px rgba(0, 0, 0, 0.05) !important;
+}
+
+[data-theme="active-builders"] .guided-stepper-bar,
+:root .guided-stepper-bar {
+  background: #ffffff !important;
+  border: 1px solid #d4d4d8 !important;
+  box-shadow: 0 1px 3px rgba(0, 0, 0, 0.04) !important;
+}
+
+[data-theme="active-builders"] .guided-step-btn,
+:root .guided-step-btn {
+  color: #5f5f66 !important;
+}
+
+[data-theme="active-builders"] .guided-step-btn:hover,
+:root .guided-step-btn:hover {
+  color: #18181b !important;
+  background: #f4f4f5 !important;
+}
+
+[data-theme="active-builders"] .guided-step-btn.active,
+:root .guided-step-btn.active {
+  background: #f4f4f5 !important;
+  border: 1px solid #d4d4d8 !important;
+  color: #18181b !important;
+  font-weight: 600 !important;
+}
+
+[data-theme="active-builders"] .guided-step-card,
+:root .guided-step-card {
+  background: #ffffff !important;
+  border: 1px solid #d4d4d8 !important;
+  box-shadow: 0 1px 4px rgba(0, 0, 0, 0.05) !important;
+}
+
+[data-theme="active-builders"] .guided-step-title,
+:root .guided-step-title,
+[data-theme="active-builders"] .guided-concept-heading,
+:root .guided-concept-heading {
+  color: #18181b !important;
+}
+
+[data-theme="active-builders"] .guided-concept-text,
+:root .guided-concept-text,
+[data-theme="active-builders"] .guided-points-list,
+:root .guided-points-list {
+  color: #3f3f46 !important;
+}
+
+[data-theme="active-builders"] .card,
+:root .card {
+  background: #ffffff !important;
+  border: 1px solid #d4d4d8 !important;
+  box-shadow: 0 1px 3px rgba(0, 0, 0, 0.04) !important;
+}
+
+[data-theme="active-builders"] .card-header,
+:root .card-header {
+  background: #ffffff !important;
+  border-bottom: 1px solid #e4e4e7 !important;
+}
+
+[data-theme="active-builders"] .section-title,
+:root .section-title {
+  color: #18181b !important;
+}
+
+[data-theme="active-builders"] .editor-body,
+:root .editor-body {
+  background: #ffffff !important;
+}
+
+[data-theme="active-builders"] .code-editor,
+:root .code-editor {
+  color: #18181b !important;
+  background: #ffffff !important;
+}
+
+[data-theme="active-builders"] .editor-statusbar,
+:root .editor-statusbar {
+  background: #f4f4f5 !important;
+  border-top: 1px solid #e4e4e7 !important;
+  color: #5f5f66 !important;
+}
+
+[data-theme="active-builders"] .app-footer,
+:root .app-footer {
+  background: #ffffff !important;
+  border-top: 1px solid #d4d4d8 !important;
+  color: #5f5f66 !important;
+}
+
+[data-theme="active-builders"] .status-pill,
+:root .status-pill {
+  background: #f4f4f5 !important;
+  border: 1px solid #d4d4d8 !important;
+  color: #18181b !important;
+}
+
+[data-theme="active-builders"] ::selection,
+:root ::selection {
+  background: #18181b !important;
+  color: #fafafa !important;
 }
 
 /* Theme Switcher Header Component */
@@ -6943,9 +7272,9 @@ body {
   display: flex;
   align-items: center;
   justify-content: space-between;
-  background: #111114;
+  background: var(--bg-surface);
   border: 1px solid var(--border-default);
-  border-radius: var(--radius-md);
+  border-radius: var(--radius-sm);
   padding: 6px 10px;
   gap: 6px;
 }
@@ -6973,8 +7302,8 @@ body {
 }
 
 .guided-step-btn.active {
-  background: #27272a;
-  border-color: #52525b;
+  background: var(--bg-surface-elevated);
+  border-color: var(--border-focus);
   color: var(--text-primary);
   font-weight: 600;
 }
@@ -7390,9 +7719,9 @@ body {
   align-items: center;
   justify-content: space-between;
   padding: 8px 12px;
-  background: #111114;
+  background: var(--bg-surface);
   border: 1px solid var(--border-default);
-  border-radius: var(--radius-md);
+  border-radius: var(--radius-sm);
   margin-bottom: 12px;
 }
 
@@ -7402,11 +7731,11 @@ body {
 }
 
 .track-btn {
-  background: #18181c;
+  background: var(--bg-card);
   border: 1px solid var(--border-default);
   border-radius: var(--radius-sm);
   color: var(--text-secondary);
-  font-family: var(--font-sans);
+  font-family: var(--font-mono);
   font-size: 11px;
   font-weight: 500;
   padding: 5px 12px;
