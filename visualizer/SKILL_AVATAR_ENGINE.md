@@ -18,15 +18,12 @@ The avatar engine (`buddy_engine.js`) implements a living vector character roote
 3. **3D Spherical Gaze Tracking**:
    - Cursor screen coordinates are normalized against the window center.
    - Rotations are computed in 3D (`yaw: ±36°`, `pitch: ±24°`, `roll: ±6°`) and mapped onto the curved surface of whatever active shape is chosen.
-4. **Kawaii & Pixar Eye Proportions**:
-   - Eye capsules: `26px × 56px` with vertical elevation offset `-6px`.
-   - Angular eye split: `16.8°` for optimal cute separation.
-   - Dual-point specular catchlights (upper-right glint + lower-left micro-sparkle) that squash realistically with eyelids.
+4. **Authentic Minimalist Eye Proportions**:
+   - Clean vertical pill capsules: `20px × 44px` without artificial offsets.
+   - Natural angular eye split: `16.8°` projected in true 3D spherical space.
+   - 100% vector pure: Zero cartoon sparkles, zero Pixar catchlights, and zero blushing cheeks.
+   - Contrast fill: `#ffffff` on dark skins, `#0a0a0c` on light skins (e.g. Cream).
    - Smiling eye arches `^ ^` (`Ws` Bézier path) when celebrating or hovered.
-5. **3D Blushing Cheeks**:
-   - Positioned in 3D spherical space at `27.5°`, rotating around the head with foreshortening.
-   - Rendered using radial gradients (`#bloubCheekGrad0` / `#bloubCheekGrad1`).
-   - Opacity smoothly fades in (`blushOpacity -> 0.65 – 0.80`) on hover, success, and praise.
 6. **Autonomous Web Audio Pop Synth**:
    - Integrated zero-dependency Web Audio synthesizer with mute toggle (`🔊 / 🔇`).
    - Tactile bubble pops (`460Hz -> 880Hz`), morph sweeps, victory chimes (C5->E5->G5->C6), and diagnostic caution tones.

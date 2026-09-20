@@ -1,6 +1,6 @@
 ---
 name: bloub-avatar-engine
-description: Design, implement, and customize living SVG morphing mascots (Bloub / Grok bot architecture) with 3D spherical gaze projection, Pixar/Kawaii depth catchlights, soft 3D blushing cheeks, autonomous Web Audio sound synthesis, slime drag physics, and context-aware IDE reactions.
+description: Design, implement, and customize living SVG morphing mascots (Bloub / Grok bot architecture) with 3D spherical gaze projection, authentic minimalist capsule eye geometry, autonomous Web Audio sound synthesis, slime drag physics, and context-aware IDE reactions.
 ---
 
 # Bloub Living Avatar & Mascot Engine
@@ -13,7 +13,7 @@ A complete guide and technical reference for implementing, customizing, and scal
 
 1. **Pure Vector Geometry & Clean Silhouette**:
    - Zero background boxes, zero shadow circles, and zero glowing halos.
-   - Zero floating buttons or icons on top of the mascot's head.
+   - Zero floating buttons or icons on top of the mascot's head, zero external accessories.
    - Transparent SVG canvas (`viewBox="-158 -158 316 316"`).
 2. **Fixed Body Anchor (Zero Drift)**:
    - Body center stays firmly anchored at `(cx = 0, cy = 0)` with resting scale `(sx = 1, sy = 1)`.
@@ -81,7 +81,7 @@ function Ms(points, tension = 1 / 6) {
 ```
 
 ### 3D Spherical Gaze Projection
-Maps cursor coordinates to 3D rotation angles (`yaw`, `pitch`, `roll`) and projects eye & cheek positions onto the curved surface of the avatar's body:
+Maps cursor coordinates to 3D rotation angles (`yaw`, `pitch`, `roll`) and projects eye positions onto the curved surface of the avatar's body:
 
 ```javascript
 function ls(e, t, n) {
@@ -119,13 +119,16 @@ function us(gaze, t, split = 16.8) {
 
 ## 3. Eye Anatomy & Proportions
 
-1. **Grok / Freddy Capsule Ratio**:
-   - Width: `26px`, Height: `56px` (at `baseScale = 100`).
-   - Angular split: `16.8°` (balanced cute separation).
-   - Vertical elevation: `-6px` offset above equator for an alert, intelligent look.
-2. **Capsule Pill Path (`Vs`)**:
+1. **Authentic Bloub Pill Capsule Proportions**:
+   - Width: `20px`, Height: `44px` (at `baseScale = 100`).
+   - Angular split: `16.8°` (natural spherical eye separation).
+   - Equator-centered: natural vertical alignment at `posY + cy`.
+2. **Pure Minimalist Vectors**:
+   - 100% solid vector fill (`#ffffff` on dark themes, `#0a0a0c` on light themes).
+   - Zero cartoon sparkles, zero Pixar catchlights, and zero blushing cheeks.
+3. **Capsule Pill Path (`Vs`)**:
    - `M -rw, -rh+r A r,r ... L rw-r, -rh ...` centered perfectly at `(0, 0)`.
-3. **Kawaii Happy Arch (`Ws`)**:
+4. **Happy Arch (`Ws`)**:
    - Transforms into an upward smiling crescent `^ ^` on celebrations, quiz passes, and hover:
    ```javascript
    function Ws(w, h) {
@@ -133,10 +136,6 @@ function us(gaze, t, split = 16.8) {
      return `M${-rw} 8 Q0 -12 ${rw} 8 Q0 -4 ${-rw} 8Z`;
    }
    ```
-4. **Specular Eye Catchlights**:
-   - Primary glint: `rx: 3.5, ry: 5.5` at `(4, -14)`.
-   - Secondary sparkle: `r: 1.8` at `(-3, 8)`.
-   - Embedded within each `<g id="bloubEyeGroup">` so highlights foreshorten and squash together with blinking and matrix perspective.
 
 ---
 

@@ -1,9 +1,9 @@
 // =============================================================================
 // BLOUB COMPANION ENGINE: PURE FLUID MORPHING MASCOT
 // - Pure Vector Geometry: Zero background boxes, zero shadow circles, zero halos
-// - 100% Clean Silhouette: Zero floating buttons on top of head
-// - 3D Spherical Gaze Projection: Eyes & Cheeks rotate in true 3D spherical space
-// - Pixar/Kawaii Depth: Specular eye catchlights & soft organic blushing cheeks
+// - 100% Clean Silhouette: Zero floating buttons on top of head, zero accessories
+// - Authentic 3D Spherical Gaze Projection: Sleek pill capsule eyes track cursor in 3D
+// - Original Authentic Silhouette: Clean minimalist vector design from bloub.vercel.app
 // - Authentic 8 Shapes & 12 Colors from bloub.vercel.app
 // - Tactile Slime Physics: Drag & snap-back jelly elasticity
 // - Interactive Particles: 🎊 Micro-confetti bursts on query success & quiz pass
@@ -382,9 +382,6 @@ const SQL_BUDDY = (() => {
   let blinkProgress = 0;
   let isBlinking = false;
 
-  // Cheeks Blush
-  let currentBlushOpacity = 0;
-
   // Dragging & Idle Snooze
   let isDragging = false;
   let dragStartX = 0;
@@ -617,12 +614,6 @@ const SQL_BUDDY = (() => {
     const eyeGroup1 = document.getElementById("bloubEyeGroup1");
     const eye0El = document.getElementById("bloubEye0");
     const eye1El = document.getElementById("bloubEye1");
-    const glint0 = document.getElementById("bloubEyeGlint0");
-    const glint1 = document.getElementById("bloubEyeGlint1");
-    const glintSm0 = document.getElementById("bloubEyeGlintSmall0");
-    const glintSm1 = document.getElementById("bloubEyeGlintSmall1");
-    const cheek0El = document.getElementById("bloubCheek0");
-    const cheek1El = document.getElementById("bloubCheek1");
 
     if (bodyEl && eyeGroup0 && eyeGroup1 && eye0El && eye1El) {
       const activeColor = COLORS[activeColorId] || COLORS.encre;
@@ -631,42 +622,9 @@ const SQL_BUDDY = (() => {
       bodyEl.setAttribute("d", bodyD);
       bodyEl.setAttribute("fill", currentHex);
 
-      // 9. Cheek Blushes: Smooth interpolation & 3D placement
-      let targetBlush = 0;
-      if (isHovered && currentState === "idle") targetBlush = 0.65;
-      else if (currentState === "happy" || currentState === "wide") targetBlush = 0.8;
-      else if (currentState === "thinking") targetBlush = 0.28;
-      else if (currentState === "wink") targetBlush = 0.55;
-
-      currentBlushOpacity += (targetBlush - currentBlushOpacity) * 0.12;
-
-      if (cheek0El && cheek1El) {
-        if (currentBlushOpacity <= 0.01) {
-          cheek0El.setAttribute("opacity", "0");
-          cheek1El.setAttribute("opacity", "0");
-        } else {
-          const cheekSplit = 27.5;
-          const cheeks3D = us(currentGaze, baseScale, cheekSplit);
-          for (let n = 0; n < 2; n++) {
-            const cheek3D = cheeks3D[n];
-            const cheekEl = n === 0 ? cheek0El : cheek1El;
-            if (cheek3D.depth <= 0.05) {
-              cheekEl.setAttribute("opacity", "0");
-              continue;
-            }
-            const s = Fs(currentRadii, Math.atan2(cheek3D.y + 19, cheek3D.x) - rot);
-            const posX = cheek3D.x * s;
-            const posY = (cheek3D.y + 19) * s;
-            const alpha = clamp((cheek3D.depth / 0.15) * currentBlushOpacity, 0, 0.85);
-            cheekEl.setAttribute("transform", `translate(${Q(posX)}, ${Q(posY + cy)}) rotate(${n === 0 ? -6 : 6})`);
-            cheekEl.setAttribute("opacity", Q(alpha));
-          }
-        }
-      }
-
-      // 10. Grok / Freddy Proportion Eyes: 26px wide x 56px tall
-      let baseW = 26;
-      let baseH = 56;
+      // 9. Authentic Original Proportion Eyes: 20px wide x 44px tall
+      let baseW = 20;
+      let baseH = 44;
       let open0 = 1;
       let open1 = 1;
       let tilt0 = 0;
@@ -678,41 +636,41 @@ const SQL_BUDDY = (() => {
       if (currentState === "happy") {
         isHappyArch0 = true;
         isHappyArch1 = true;
-        baseW = 28;
-        baseH = 48;
-        tilt0 = -4;
-        tilt1 = 4;
+        baseW = 22;
+        baseH = 38;
+        tilt0 = -3;
+        tilt1 = 3;
       } else if (isHovered && currentState === "idle") {
-        tilt0 = -8;
-        tilt1 = 8;
-        baseW = 28;
+        tilt0 = -6;
+        tilt1 = 6;
+        baseW = 21;
       } else if (currentState === "sleep" || isMinimized) {
-        open0 = 0.06;
-        open1 = 0.06;
-        baseH = 44;
+        open0 = 0.08;
+        open1 = 0.08;
+        baseH = 40;
       } else if (currentState === "wink") {
         open0 = 1;
         isHappyArch1 = true;
-        baseW = 27;
+        baseW = 21;
       } else if (currentState === "wide") {
-        baseW = 29;
-        baseH = 62;
-        tilt0 = -4;
-        tilt1 = 4;
-      } else if (currentState === "thinking") {
         baseW = 22;
-        baseH = 46;
-        tilt0 = -8;
-        tilt1 = -8;
-      } else if (currentState === "alert") {
-        baseW = 24;
+        baseH = 50;
+        tilt0 = -3;
+        tilt1 = 3;
+      } else if (currentState === "thinking") {
+        baseW = 18;
         baseH = 38;
+        tilt0 = -6;
+        tilt1 = -6;
+      } else if (currentState === "alert") {
+        baseW = 19;
+        baseH = 34;
       }
 
       open0 *= lid;
       open1 *= lid;
 
-      // 11. 3D Spherical Eye Projection (16.8° split)
+      // 10. 3D Spherical Eye Projection (16.8° split)
       const split = 16.8;
       const eyes3D = us(currentGaze, baseScale, split);
 
@@ -720,8 +678,6 @@ const SQL_BUDDY = (() => {
         const eye3D = eyes3D[n];
         const eyeGroup = n === 0 ? eyeGroup0 : eyeGroup1;
         const eyeEl = n === 0 ? eye0El : eye1El;
-        const glintEl = n === 0 ? glint0 : glint1;
-        const glintSmEl = n === 0 ? glintSm0 : glintSm1;
         const isArch = n === 0 ? isHappyArch0 : isHappyArch1;
 
         if (!eyeGroup || !eyeEl) continue;
@@ -747,27 +703,16 @@ const SQL_BUDDY = (() => {
         const openVal = gs(n === 0 ? open0 : open1);
         const alpha = clamp(eye3D.depth / 0.12, 0, 1);
 
-        eyeGroup.setAttribute("transform", `matrix(${Q(d_m)},${Q(f_m * openVal)},${Q(p_m)},${Q(m_m * openVal)},${Q(posX)},${Q(posY + cy - 6)})`);
+        eyeGroup.setAttribute("transform", `matrix(${Q(d_m)},${Q(f_m * openVal)},${Q(p_m)},${Q(m_m * openVal)},${Q(posX)},${Q(posY + cy)})`);
         eyeGroup.setAttribute("opacity", Q(alpha));
 
         if (isArch) {
           eyeEl.setAttribute("d", Ws(baseW, baseH));
-          if (glintEl) glintEl.setAttribute("opacity", "0");
-          if (glintSmEl) glintSmEl.setAttribute("opacity", "0");
         } else {
           eyeEl.setAttribute("d", Vs(baseW, baseH));
-          const showGlint = openVal > 0.45 && currentState !== "sleep" && !isMinimized;
-          if (glintEl) {
-            glintEl.setAttribute("opacity", showGlint ? (activeColor.isDark ? "0.92" : "0.95") : "0");
-            glintEl.setAttribute("fill", "#ffffff");
-          }
-          if (glintSmEl) {
-            glintSmEl.setAttribute("opacity", showGlint ? "0.65" : "0");
-            glintSmEl.setAttribute("fill", "#ffffff");
-          }
         }
 
-        eyeEl.setAttribute("fill", activeColor.isDark ? "url(#bloubEyeGradWhite)" : activeColor.eyeColor);
+        eyeEl.setAttribute("fill", activeColor.eyeColor || "#ffffff");
       }
     }
 
@@ -1091,47 +1036,19 @@ const SQL_BUDDY = (() => {
         <div id="buddySpeechText" class="buddy-speech-text">Ready to master SQL? Click me for tips or 🎨 in the header to customize!</div>
       </div>
 
-      <!-- Clean Living Avatar Unit (Zero floating buttons on head!) -->
+      <!-- Clean Living Avatar Unit (Authentic Original Bloub Silhouette) -->
       <div class="buddy-interactive-unit" onclick="SQL_BUDDY.poke()">
         <div class="buddy-svg-wrapper">
           <svg class="bloub-svg" viewBox="-158 -158 316 316" width="140" height="140" xmlns="http://www.w3.org/2000/svg">
-            <defs>
-              <radialGradient id="bloubCheekGrad0" cx="50%" cy="50%" r="50%">
-                <stop offset="0%" stop-color="#ff6584" stop-opacity="0.85" />
-                <stop offset="60%" stop-color="#ff6584" stop-opacity="0.45" />
-                <stop offset="100%" stop-color="#ff6584" stop-opacity="0" />
-              </radialGradient>
-              <radialGradient id="bloubCheekGrad1" cx="50%" cy="50%" r="50%">
-                <stop offset="0%" stop-color="#ff6584" stop-opacity="0.85" />
-                <stop offset="60%" stop-color="#ff6584" stop-opacity="0.45" />
-                <stop offset="100%" stop-color="#ff6584" stop-opacity="0" />
-              </radialGradient>
-              <linearGradient id="bloubEyeGradWhite" x1="0" y1="0" x2="0" y2="1">
-                <stop offset="0%" stop-color="#ffffff" />
-                <stop offset="65%" stop-color="#f8fafc" />
-                <stop offset="100%" stop-color="#cbd5e1" />
-              </linearGradient>
-            </defs>
-
             <!-- Body Spline (Firmly rooted at 0, 0) -->
             <path id="bloubBodyPath" d="" fill="#0a0a0c" />
 
-            <!-- 3D Spherical Cheeks -->
-            <g id="bloubCheeks">
-              <ellipse id="bloubCheek0" cx="0" cy="0" rx="14" ry="8" fill="url(#bloubCheekGrad0)" opacity="0" />
-              <ellipse id="bloubCheek1" cx="0" cy="0" rx="14" ry="8" fill="url(#bloubCheekGrad1)" opacity="0" />
-            </g>
-
-            <!-- 3D Spherical Eyes with Pixar Catchlights -->
+            <!-- Authentic Minimalist 3D Spherical Pill Eyes -->
             <g id="bloubEyeGroup0">
               <path id="bloubEye0" d="" fill="#ffffff" />
-              <ellipse id="bloubEyeGlint0" cx="4" cy="-14" rx="3.5" ry="5.5" fill="#ffffff" opacity="0.95" />
-              <circle id="bloubEyeGlintSmall0" cx="-3" cy="8" r="1.8" fill="#ffffff" opacity="0.65" />
             </g>
             <g id="bloubEyeGroup1">
               <path id="bloubEye1" d="" fill="#ffffff" />
-              <ellipse id="bloubEyeGlint1" cx="4" cy="-14" rx="3.5" ry="5.5" fill="#ffffff" opacity="0.95" />
-              <circle id="bloubEyeGlintSmall1" cx="-3" cy="8" r="1.8" fill="#ffffff" opacity="0.65" />
             </g>
           </svg>
         </div>
