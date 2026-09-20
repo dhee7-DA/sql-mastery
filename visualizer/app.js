@@ -593,6 +593,13 @@ function parseAndBuildPipeline(sql) {
   if (typeof updateQueryTelemetry === 'function') {
     updateQueryTelemetry(cleanSQL, steps);
   }
+
+  // Mascot context reaction
+  const lastStep = steps[steps.length - 1];
+  const rowCount = lastStep && lastStep.rows ? lastStep.rows.length : 0;
+  if (window.SQL_BUDDY && typeof window.SQL_BUDDY.onQueryRunSuccess === 'function') {
+    window.SQL_BUDDY.onQueryRunSuccess(rowCount);
+  }
 }
 
 // =============================================================================

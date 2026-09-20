@@ -1,5 +1,6 @@
 import http.server
 import socketserver
+import socket
 import os
 import sys
 
@@ -18,14 +19,28 @@ class CustomHandler(http.server.SimpleHTTPRequestHandler):
             return
         return super().do_GET()
 
-if __name__ == '__main__':
-    # Allow address reuse
-    socketserver.TCPServer.allow_reuse_address = True
-    with socketserver.TCPServer(("", PORT), CustomHandler) as httpd:
-        print(f"Server running at http://localhost:{PORT}/")
-        print(f"Direct visualizer URL: http://localhost:{PORT}/visualizer/index.html")
-        sys.stdout.flush()
+class DualStackServer(http.server.ThreadingHTTPServer):
+    address_family = socket.AF_INET6
+
+    def server_bind(self):
         try:
-            httpd.serve_forever()
-        except KeyboardInterrupt:
-            print("\nShutting down server.")
+            self.socket.setsockopt(socket.IPPROTO_IPV6, socket.IPV6_V6ONLY, 0)
+        except (AttributeError, OSError):
+            pass
+        super().server_bind()
+
+if __name__ == '__main__':
+    DualStackServer.allow_reuse_address = True
+    try:
+        httpd = DualStackServer(("::", PORT), CustomHandler)
+    except Exception:
+        # Fallback to IPv4 standard server if IPv6 unavailable
+        httpd = http.server.ThreadingHTTPServer(("", PORT), CustomHandler)
+        
+    print(f"Server running at http://localhost:{PORT}/")
+    print(f"Direct visualizer URL: http://localhost:{PORT}/visualizer/index.html")
+    sys.stdout.flush()
+    try:
+        httpd.serve_forever()
+    except KeyboardInterrupt:
+        print("\nShutting down server.")
