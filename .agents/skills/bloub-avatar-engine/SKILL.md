@@ -1,6 +1,6 @@
 ---
 name: bloub-avatar-engine
-description: Design, implement, and customize living SVG morphing mascots (Bloub / Grok bot architecture) with 3D spherical gaze projection, Pixar/Kawaii depth catchlights, soft 3D blushing cheeks, autonomous Web Audio sound synthesis, and context-aware IDE reactions.
+description: Design, implement, and customize living SVG morphing mascots (Bloub / Grok bot architecture) with 3D spherical gaze projection, Pixar/Kawaii depth catchlights, soft 3D blushing cheeks, autonomous Web Audio sound synthesis, dressing room accessories, and context-aware IDE reactions.
 ---
 
 # Bloub Living Avatar & Mascot Engine
@@ -17,11 +17,13 @@ A complete guide and technical reference for implementing, customizing, and scal
 2. **Fixed Body Anchor (Zero Drift)**:
    - Body center stays firmly anchored at `(cx = 0, cy = 0)` with resting scale `(sx = 1, sy = 1)`.
    - Motion is strictly decoupled: eyes track the cursor across 3D spherical space while the body remains rooted.
-3. **Decoupled Eyelids & Gaze**:
+3. **Decoupled Eyelids, Gaze & Accessories**:
    - Gaze yaw/pitch/roll interpolate independently from eyelid blinking and squashing.
+   - Accessories (Glasses, Hats, Crown, Headphones) track 3D perspective dynamically.
 4. **Autonomous Tactility**:
    - Jelly squash-and-stretch physics (`targetScaleY = 0.72`) on poke, click, or tab switches.
-   - Built-in zero-dependency Web Audio synthesizer for bloop pops and chimes.
+   - Slime drag and snap-back elastic bounce physics on pointer interactions.
+   - Built-in zero-dependency Web Audio synthesizer for bloop pops and chimes with mute toggle.
 
 ---
 
@@ -138,33 +140,40 @@ function us(gaze, t, split = 16.8) {
 
 ---
 
-## 4. 3D Spherical Cheek Blushes
+## 4. The Dressing Room & Accessories
 
-- Positioned via `us(currentGaze, baseScale, 27.5)` with vertical offset `+19px`.
-- Rendered with radial gradients:
-  ```xml
-  <radialGradient id="bloubCheekGrad" cx="50%" cy="50%" r="50%">
-    <stop offset="0%" stop-color="#ff6584" stop-opacity="0.85" />
-    <stop offset="60%" stop-color="#ff6584" stop-opacity="0.45" />
-    <stop offset="100%" stop-color="#ff6584" stop-opacity="0" />
-  </radialGradient>
-  ```
-- Smooth opacity lerping:
-  - Idle: `0.0`
-  - Hover: `0.65`
-  - Happy / Success: `0.80`
-  - Thinking: `0.28`
+1. **Smart Specs (👓)**:
+   - Tracks the midpoint and tilt angle between the two 3D projected eye coordinates:
+     `angle = Math.atan2(eye1.y - eye0.y, eye1.x - eye0.x) * 180 / Math.PI`.
+   - Dual rounded rectangular wireframe frames with specular reflection diagonals and a central bridge.
+2. **SQL Crown (👑)**:
+   - Sits on the top boundary of the active shape using `sTop = Fs(currentRadii, -Math.PI / 2)`.
+   - 3 peaks with jeweled ruby, sapphire, and emerald tips.
+3. **Master's Cap (🎓)**:
+   - Indigo mortarboard with central golden button and a swaying tassel that reacts to head yaw.
+4. **Dev Headset (🎧)**:
+   - Thick wrap headband spanning from behind the head to cushioned left and right earcups.
 
 ---
 
-## 5. Autonomous Web Audio Synth (`SOUNDS`)
+## 5. Slime Drag Physics & Confetti Particles
 
-Zero-dependency audio engine utilizing native `AudioContext`:
+- **Slime Drag**: Pointer-down dragging applies proportional strain to `targetScaleY` and `scaleX`. On pointer-up release, a negative momentum impulse (`velocityY = -0.38`) triggers an organic decaying oscillation wobble.
+- **Confetti Engine**: Spawns 24 lightweight floating particles (circles, squares, and keyword badges `SELECT`, `JOIN`, `★`) with initial velocity and gravity on query success and quiz completions.
+
+---
+
+## 6. Autonomous Web Audio Synth (`SOUNDS`)
+
+Zero-dependency audio engine utilizing native `AudioContext` with mute toggle:
 
 ```javascript
 const SOUNDS = (() => {
   let ctx = null;
+  let isMuted = localStorage.getItem("sql_mascot_sound_muted") === "true";
+
   function getContext() {
+    if (isMuted) return null;
     if (!ctx && (window.AudioContext || window.webkitAudioContext)) {
       ctx = new (window.AudioContext || window.webkitAudioContext)();
     }
@@ -172,7 +181,12 @@ const SOUNDS = (() => {
     return ctx;
   }
 
-  // Tactile bubble pop
+  function toggleMute() {
+    isMuted = !isMuted;
+    localStorage.setItem("sql_mascot_sound_muted", isMuted.toString());
+    return !isMuted;
+  }
+
   function playBloop(pitch = 1.0) {
     const ac = getContext();
     if (!ac) return;
@@ -190,7 +204,6 @@ const SOUNDS = (() => {
     osc.stop(now + 0.09);
   }
 
-  // Joyful celebration chime (C5 -> E5 -> G5 -> C6)
   function playSuccess() {
     const ac = getContext();
     if (!ac) return;
@@ -210,29 +223,9 @@ const SOUNDS = (() => {
     });
   }
 
-  return { playBloop, playSuccess };
+  return { playBloop, playSuccess, toggleMute };
 })();
 ```
-
----
-
-## 6. Context-Aware IDE Reactions
-
-1. **Code Editor Focus (`#sqlInput`)**:
-   - Head tilts upward-left (`yaw: -26°, pitch: 20°`) to read the query.
-   - Expression switches to `"thinking"`.
-   - Micro-nods (`scaleY = 0.94`) trigger on each `input` keystroke.
-2. **Run Query Button (`#btnRunQuery`)**:
-   - On hover, perks up into `"alert"` stance with focused gaze.
-3. **Execution Success**:
-   - Jumps with joy (`targetScaleY = 1.28`).
-   - Plays victory chime (`playSuccess()`).
-   - Blushes bright pink (`0.80`).
-   - Eyes curve into smiling arcs (`^ ^`).
-   - Speech bubble praises query execution metrics.
-4. **Execution Error**:
-   - Alert stance with diagnostic caution sound.
-   - Offers actionable hint to fix aliases/clauses.
 
 ---
 
@@ -242,11 +235,14 @@ const SOUNDS = (() => {
 |---|---|---|
 | `SQL_BUDDY.say(msg, duration, expr)` | `(string, number, string)` | Show speech bubble with expression |
 | `SQL_BUDDY.poke()` | `()` | Trigger jelly bounce, bloop pop, and random tip |
+| `SQL_BUDDY.celebrate()` | `()` | Trigger confetti burst, victory chime, and smile |
 | `SQL_BUDDY.setShape(shapeId)` | `('galet'\|'squircle'\|...)` | Morph to one of 8 authentic shapes |
 | `SQL_BUDDY.setColor(colorId)` | `('encre'\|'creme'\|...)` | Smoothly lerp body RGB and eye fill |
-| `SQL_BUDDY.setExpression(state)`| `('idle'\|'happy'\|'alert')`| Set emotional state and eye geometry |
+| `SQL_BUDDY.setAccessory(accId)`| `('none'\|'glasses'\|'cap'\|'crown'\|'headphones')` | Equip accessory |
+| `SQL_BUDDY.cycleAccessory()` | `()` | Quick cycle through accessories |
+| `SQL_BUDDY.toggleSound()` | `()` | Toggle mute state for audio effects |
+| `SQL_BUDDY.toggleThemeSync()` | `()` | Toggle auto theme palette matching |
+| `SQL_BUDDY.toggleIdleSnooze()`| `()` | Toggle 75s auto-sleep timer |
 | `SQL_BUDDY.onCorrectAnswer(topic)`| `(string)` | Celebrate quiz or gym challenge pass |
-| `SQL_BUDDY.onIncorrectAnswer(hint)`| `(string)` | Friendly supportive guidance |
 | `SQL_BUDDY.onQueryRunSuccess(rows)`| `(number)` | Execution plan success celebration |
 | `SQL_BUDDY.onQueryRunError(err)` | `(string)` | Diagnostic expression on syntax error |
-| `SQL_BUDDY.toggleMinimize()` | `()` | Toggle sleep mode (droopy eyes + slide down)|

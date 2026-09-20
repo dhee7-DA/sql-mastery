@@ -12412,18 +12412,30 @@ body {
 .bloub-customizer-card {
   pointer-events: auto;
   position: absolute;
-  bottom: 140px;
+  bottom: 155px;
   right: 0;
-  width: 290px;
-  background: rgba(10, 10, 14, 0.95);
+  width: 320px;
+  max-height: 490px;
+  overflow-y: auto;
+  scrollbar-width: thin;
+  scrollbar-color: rgba(56, 189, 248, 0.3) transparent;
+  background: rgba(10, 10, 14, 0.96);
   border: 1px solid rgba(255, 255, 255, 0.14);
-  border-radius: 16px;
+  border-radius: 18px;
   padding: 14px 16px;
-  box-shadow: 0 16px 40px rgba(0, 0, 0, 0.75), 0 0 0 1px rgba(255, 255, 255, 0.05);
-  backdrop-filter: blur(20px);
+  box-shadow: 0 20px 50px rgba(0, 0, 0, 0.85), 0 0 0 1px rgba(255, 255, 255, 0.06);
+  backdrop-filter: blur(24px);
   font-family: 'Geist Mono', 'JetBrains Mono', monospace, system-ui;
   z-index: 10000;
   animation: bloubCardPop 0.25s cubic-bezier(0.16, 1, 0.3, 1);
+}
+
+.bloub-customizer-card::-webkit-scrollbar {
+  width: 5px;
+}
+.bloub-customizer-card::-webkit-scrollbar-thumb {
+  background: rgba(56, 189, 248, 0.3);
+  border-radius: 4px;
 }
 
 @keyframes bloubCardPop {
@@ -12441,7 +12453,7 @@ body {
   display: flex;
   justify-content: space-between;
   align-items: center;
-  margin-bottom: 12px;
+  margin-bottom: 10px;
   padding-bottom: 8px;
   border-bottom: 1px solid rgba(255, 255, 255, 0.08);
 }
@@ -12481,14 +12493,135 @@ body {
   background: rgba(239, 68, 68, 0.12);
 }
 
+/* Dedicated Section Headers */
+.bloub-section-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-top: 14px;
+  margin-bottom: 7px;
+  padding-bottom: 3px;
+  border-bottom: 1px solid rgba(255, 255, 255, 0.05);
+}
+
 .bloub-section-title {
   font-size: 9.5px;
   font-weight: 700;
   letter-spacing: 0.8px;
   color: #94a3b8;
-  margin-bottom: 8px;
-  margin-top: 10px;
   text-transform: uppercase;
+  display: flex;
+  align-items: center;
+  gap: 5px;
+}
+
+.bloub-section-badge {
+  font-size: 8.5px;
+  font-weight: 700;
+  padding: 1px 5px;
+  border-radius: 10px;
+  background: rgba(56, 189, 248, 0.12);
+  color: #38bdf8;
+  border: 1px solid rgba(56, 189, 248, 0.25);
+}
+
+/* Wardrobe / Accessories Grid */
+.bloub-acc-grid {
+  display: grid;
+  grid-template-columns: repeat(5, 1fr);
+  gap: 5px;
+  margin-bottom: 6px;
+}
+
+.bloub-acc-btn {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  gap: 2px;
+  padding: 6px 2px;
+  background: rgba(255, 255, 255, 0.04);
+  border: 1px solid rgba(255, 255, 255, 0.08);
+  border-radius: 8px;
+  cursor: pointer;
+  transition: all 0.15s cubic-bezier(0.16, 1, 0.3, 1);
+  color: #cbd5e1;
+}
+
+.bloub-acc-btn:hover {
+  background: rgba(255, 255, 255, 0.1);
+  border-color: rgba(245, 158, 11, 0.4);
+  transform: translateY(-2px);
+}
+
+.bloub-acc-btn.active {
+  background: rgba(245, 158, 11, 0.18);
+  border-color: #f59e0b;
+  color: #fbbf24;
+  box-shadow: 0 0 10px rgba(245, 158, 11, 0.3);
+}
+
+.bloub-acc-icon {
+  font-size: 14px;
+  line-height: 1;
+}
+
+.bloub-acc-label {
+  font-size: 8px;
+  font-weight: 700;
+  letter-spacing: 0.2px;
+  text-align: center;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  max-width: 100%;
+}
+
+/* Settings & Behavior Toggles */
+.bloub-settings-list {
+  display: flex;
+  flex-direction: column;
+  gap: 6px;
+  margin-bottom: 6px;
+}
+
+.bloub-setting-item {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 5px 8px;
+  background: rgba(255, 255, 255, 0.03);
+  border: 1px solid rgba(255, 255, 255, 0.06);
+  border-radius: 8px;
+}
+
+.bloub-setting-info {
+  display: flex;
+  align-items: center;
+  gap: 6px;
+  font-size: 10px;
+  color: #cbd5e1;
+  font-weight: 600;
+}
+
+.bloub-toggle-pill {
+  padding: 3px 8px;
+  font-size: 9px;
+  font-weight: 700;
+  border-radius: 6px;
+  cursor: pointer;
+  border: 1px solid rgba(255, 255, 255, 0.12);
+  background: rgba(255, 255, 255, 0.06);
+  color: #94a3b8;
+  transition: all 0.15s ease;
+  font-family: inherit;
+}
+
+.bloub-toggle-pill.active {
+  background: rgba(16, 185, 129, 0.2);
+  border-color: #10b981;
+  color: #34d399;
+  box-shadow: 0 0 8px rgba(16, 185, 129, 0.25);
 }
 
 /* 8 Shapes Grid */
@@ -12632,6 +12765,65 @@ body {
   background: rgba(56, 189, 248, 0.15);
   border-color: #38bdf8;
   color: #38bdf8;
+}
+
+.bloub-celebrate-btn {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 6px;
+  width: 100%;
+  margin-top: 8px;
+  padding: 7px 10px;
+  background: linear-gradient(135deg, rgba(236, 72, 153, 0.2), rgba(56, 189, 248, 0.2));
+  border: 1px solid rgba(236, 72, 153, 0.4);
+  border-radius: 8px;
+  color: #fdf2f8;
+  font-size: 10px;
+  font-weight: 800;
+  text-transform: uppercase;
+  letter-spacing: 0.5px;
+  cursor: pointer;
+  transition: all 0.2s ease;
+  font-family: inherit;
+}
+
+.bloub-celebrate-btn:hover {
+  background: linear-gradient(135deg, rgba(236, 72, 153, 0.35), rgba(56, 189, 248, 0.35));
+  border-color: #ec4899;
+  transform: translateY(-2px);
+  box-shadow: 0 0 14px rgba(236, 72, 153, 0.4);
+}
+
+.bloub-celebrate-btn:active {
+  transform: scale(0.97);
+}
+
+/* Floating Confetti Particles */
+.bloub-confetti-particle {
+  position: absolute;
+  pointer-events: none;
+  z-index: 10005;
+  user-select: none;
+  will-change: transform, opacity;
+}
+
+/* Floating Snooze Bubbles (Z z z) */
+.bloub-snooze-bubble {
+  position: absolute;
+  color: #a5b4fc;
+  font-weight: 800;
+  font-family: 'Geist Mono', monospace;
+  pointer-events: none;
+  animation: bloubSnoozeFloat 2.4s infinite ease-out;
+  opacity: 0;
+  z-index: 5;
+}
+
+@keyframes bloubSnoozeFloat {
+  0% { transform: translate(0, 0) scale(0.6); opacity: 0; }
+  35% { opacity: 0.85; }
+  100% { transform: translate(28px, -55px) scale(1.25); opacity: 0; }
 }
 
 /* Sleek Dark-Glass Speech Bubble */
