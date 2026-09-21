@@ -3,13 +3,13 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>SQL Engine Visualizer</title>
-  <meta name="description" content="Minimalist, professional SQL query execution simulator and physical engine lifecycle visualizer.">
+  <title>SQL Foundry &bull; Enterprise SQL Learning &amp; Execution Platform</title>
+  <meta name="description" content="Minimalist, professional SQL query execution simulator, active-retrieval syntax gym, and physical engine lifecycle platform.">
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
   <link href="https://fonts.googleapis.com/css2?family=Geist+Mono:wght@400;500;600;700&family=Geist:wght@300;400;500;600;700;800&family=JetBrains+Mono:wght@400;500;600;700&display=swap" rel="stylesheet">
   <link rel="stylesheet" href="https://use.typekit.net/vqa3wut.css">
-  <link rel="stylesheet" href="style.css?v=88">
+  <link rel="stylesheet" href="style.css?v=89">
 </head>
 <body>
   <div class="app-layout">
@@ -24,7 +24,7 @@
           </svg>
         </div>
         <div class="brand-meta">
-          <span class="brand-name">SQL Engine Visualizer</span>
+          <span class="brand-name">SQL Foundry</span>
           <span class="brand-badge">MySQL 8.0</span>
         </div>
 
@@ -47,22 +47,7 @@
         </div>
       </div>
 
-      <div class="header-center">
-        <div class="preset-wrapper">
-          <span class="preset-caption">Preset</span>
-          <select id="presetSelect" class="clean-select">
-            <option value="preset_case_triangle" selected>CASE WHEN &mdash; Type of Triangle</option>
-            <option value="preset_case_credit">CASE WHEN &mdash; Credit Risk Buckets</option>
-            <option value="preset_station5_tiebreak">ORDER BY &mdash; LENGTH() &amp; Tie-Breaker</option>
-            <option value="preset_students_right">ORDER BY &mdash; RIGHT(Name, 3) Suffix</option>
-            <option value="preset_employees_salaries">WHERE &mdash; AND / OR Compound Filter</option>
-            <option value="preset_regex_vowels">REGEXP &mdash; Starts &amp; Ends with Vowel</option>
-            <option value="preset_distinct_cities">DISTINCT &mdash; Unique Market Tuples</option>
-            <option value="preset_top_earners">AGGREGATE &mdash; Top Earners (Months * Salary)</option>
-            <option value="preset_dept_payroll">GROUP BY &mdash; Department Total &amp; Avg Payroll</option>
-          </select>
-        </div>
-      </div>
+      <div class="header-center"></div>
 
       <div class="header-right">
         <button id="btnSoundToggle" class="header-icon-btn btn-sound-toggle" title="Toggle Sound FX" aria-label="Toggle Sound FX">
@@ -281,42 +266,6 @@
         </button>
       </div>
       <div class="nav-meta">
-        <div class="quick-jump-dropdown-wrap">
-          <button id="quickJumpAggregationsBtn" class="quick-jump-aggregations-btn" title="Quick Jump to Aggregations Hub">
-            <span class="fire-icon">🔥</span> Aggregations Hub <svg width="10" height="10" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><polyline points="6 9 12 15 18 9"></polyline></svg>
-          </button>
-          <div class="quick-jump-menu" id="quickJumpAggregationsMenu">
-            <div class="quick-jump-header">🔥 AGGREGATIONS &amp; GROUP BY HUB</div>
-            <button class="quick-jump-item" onclick="jumpToAggregationsSection('cases')">
-              <span class="qj-icon">📊</span>
-              <div class="qj-content">
-                <span class="qj-title">100 Aggregation Case Studies</span>
-                <span class="qj-desc">Section 6 corporate scenarios (Cases 501–600)</span>
-              </div>
-            </button>
-            <button class="quick-jump-item" onclick="jumpToAggregationsSection('docs')">
-              <span class="qj-icon">📚</span>
-              <div class="qj-content">
-                <span class="qj-title">Aggregations Study Docs &amp; Gotchas</span>
-                <span class="qj-desc">Section 04 theory, AST diffs &amp; sandbox</span>
-              </div>
-            </button>
-            <button class="quick-jump-item" onclick="jumpToAggregationsSection('lab')">
-              <span class="qj-icon">🧪</span>
-              <div class="qj-content">
-                <span class="qj-title">Interactive Aggregations Track</span>
-                <span class="qj-desc">Physical GROUP BY execution step-by-step</span>
-              </div>
-            </button>
-            <button class="quick-jump-item" onclick="jumpToAggregationsSection('studio')">
-              <span class="qj-icon">💻</span>
-              <div class="qj-content">
-                <span class="qj-title">Studio Preset: Dept Payroll</span>
-                <span class="qj-desc">Run GROUP BY &amp; HAVING in live engine</span>
-              </div>
-            </button>
-          </div>
-        </div>
         <span class="module-indicator">Schema: <strong>Employees (8 rows)</strong></span>
       </div>
     </nav>
@@ -540,6 +489,20 @@
             <div class="studio-mode-toggle">
               <button id="btnModeBuilder" class="mode-toggle-btn active">Visual Builder</button>
               <button id="btnModeRaw" class="mode-toggle-btn">Raw SQL</button>
+            </div>
+            <div class="preset-wrapper studio-preset-wrapper">
+              <span class="preset-caption">Preset</span>
+              <select id="presetSelect" class="clean-select" title="Load Query Preset">
+                <option value="preset_case_triangle" selected>CASE WHEN &mdash; Type of Triangle</option>
+                <option value="preset_case_credit">CASE WHEN &mdash; Credit Risk Buckets</option>
+                <option value="preset_station5_tiebreak">ORDER BY &mdash; LENGTH() &amp; Tie-Breaker</option>
+                <option value="preset_students_right">ORDER BY &mdash; RIGHT(Name, 3) Suffix</option>
+                <option value="preset_employees_salaries">WHERE &mdash; AND / OR Compound Filter</option>
+                <option value="preset_regex_vowels">REGEXP &mdash; Starts &amp; Ends with Vowel</option>
+                <option value="preset_distinct_cities">DISTINCT &mdash; Unique Market Tuples</option>
+                <option value="preset_top_earners">AGGREGATE &mdash; Top Earners (Months * Salary)</option>
+                <option value="preset_dept_payroll">GROUP BY &mdash; Department Total &amp; Avg Payroll</option>
+              </select>
             </div>
             <div class="editor-actions" id="rawEditorActions" style="display: none;">
               <button id="btnFormatSQL" class="text-action-btn">Format</button>
