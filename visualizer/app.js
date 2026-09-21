@@ -2138,6 +2138,7 @@ const NAV_GROUPS_MAP = {
   viewExplainer: { triggerId: 'btnGroupReference', pillId: 'currentReferencePill', label: 'Study Docs' },
   viewDeconstructor: { triggerId: 'btnGroupReference', pillId: 'currentReferencePill', label: 'Deconstructor' },
   viewEnterpriseERD: { triggerId: 'btnGroupReference', pillId: 'currentReferencePill', label: 'ERD Map' },
+  viewVennMatrix: { triggerId: 'btnGroupReference', pillId: 'currentReferencePill', label: 'Venn Matrix' },
 
   viewStudio: { triggerId: 'btnNavStudio', pillId: null, label: 'Studio' }
 };
@@ -2200,6 +2201,10 @@ function switchMainView(targetId) {
     if (window.SQL_BUDDY) window.SQL_BUDDY.say("💼 1,490 Enterprise Case Studies! Pick an industry vertical and let's solve real data challenges!", 4500, 'happy');
   }
   if (targetId === 'viewEnterpriseERD') initEnterpriseERD();
+  if (targetId === 'viewVennMatrix') {
+    if (window.VennMatrixEngine) window.VennMatrixEngine.init();
+    if (window.SQL_BUDDY) window.SQL_BUDDY.say("⭕ Venn & Euler Matrix: Explore live row set physics across Joins, Anti-Joins, and Set Operations!", 4500, 'happy');
+  }
   if (targetId === 'viewProblems') renderProblemBank();
 }
 

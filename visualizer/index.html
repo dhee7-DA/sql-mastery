@@ -249,6 +249,16 @@
                 <span class="nav-item-desc">Relational entity diagrams &amp; foreign key relationships</span>
               </div>
             </button>
+            <button class="nav-dropdown-item nav-tab" data-view="viewVennMatrix" onclick="selectNavView('viewVennMatrix', 'Venn Matrix', 'navGroupReference')">
+              <span class="nav-item-icon">⭕</span>
+              <div class="nav-item-text">
+                <div class="nav-item-title-row">
+                  <span class="nav-item-title">Venn &amp; Euler Matrix</span>
+                  <span class="nav-item-tag accent">Topology</span>
+                </div>
+                <span class="nav-item-desc">Interactive live-row set physics for Joins &amp; Set Ops</span>
+              </div>
+            </button>
           </div>
         </div>
 
@@ -1023,6 +1033,11 @@
     </div>
   </div>
 
+  <!-- VIEW: Relational Set & Join Topology Venn Matrix -->
+  <div class="view-panel" id="viewVennMatrix">
+    <!-- Dynamically rendered by VennMatrixEngine -->
+  </div>
+
   <!-- VIEW 5: Graded Problem Bank -->
   <div class="view-panel" id="viewProblems">
     <div class="curriculum-container">
@@ -1233,6 +1248,7 @@
 <script src="gym_dataflow_graph.js?v=57"></script>
 <script src="gym_typing_dojo.js?v=57"></script>
 <script src="gym_spaced_repetition.js?v=57"></script>
-<script src="app.js?v=88"></script>
+<script src="venn_matrix_engine.js?v=89"></script>
+<script src="app.js?v=89"></script>
 </body>
 </html>

@@ -14916,6 +14916,741 @@ body {
 .pillar-fill.color-p5 { background: linear-gradient(90deg, #e11d48, #fb7185); }
 .pillar-fill.color-p6 { background: linear-gradient(90deg, #0d9488, #2dd4bf); }
 
+/* =============================================================================
+   RELATIONAL SET & JOIN TOPOLOGY VENN MATRIX
+   ============================================================================= */
+.venn-matrix-wrapper {
+  max-width: 1280px;
+  margin: 0 auto;
+  padding: 24px 24px 80px 24px;
+  display: flex;
+  flex-direction: column;
+  gap: 20px;
+}
+
+.venn-matrix-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: flex-start;
+  flex-wrap: wrap;
+  gap: 16px;
+}
+
+.venn-header-left {
+  display: flex;
+  flex-direction: column;
+  gap: 6px;
+}
+
+.venn-title-row {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  flex-wrap: wrap;
+}
+
+.venn-icon {
+  font-size: 22px;
+}
+
+.venn-title {
+  font-size: 20px;
+  font-weight: 700;
+  color: var(--text-primary);
+  letter-spacing: -0.015em;
+  margin: 0;
+}
+
+.venn-status-pill {
+  font-size: 11px;
+  font-family: var(--font-mono);
+  font-weight: 600;
+  padding: 3px 8px;
+  border-radius: var(--radius-sm);
+  background: var(--accent-soft);
+  color: var(--accent);
+  border: 1px solid var(--accent-border);
+}
+
+.venn-subtitle {
+  font-size: 13px;
+  color: var(--text-secondary);
+  max-width: 650px;
+  line-height: 1.5;
+}
+
+.venn-mode-toggle {
+  display: flex;
+  background: var(--bg-card-subtle);
+  border: 1px solid var(--border-default);
+  border-radius: var(--radius-sm);
+  padding: 3px;
+  gap: 4px;
+}
+
+.venn-mode-btn {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  padding: 6px 14px;
+  font-family: var(--font-mono);
+  font-size: 11.5px;
+  font-weight: 600;
+  background: transparent;
+  border: 1px solid transparent;
+  color: var(--text-muted);
+  border-radius: 4px;
+  cursor: pointer;
+  transition: var(--transition-fast);
+}
+
+.venn-mode-btn:hover {
+  color: var(--text-primary);
+}
+
+.venn-mode-btn.active {
+  background: var(--bg-surface);
+  color: var(--text-primary);
+  border-color: var(--border-default);
+  box-shadow: 0 1px 3px rgba(0, 0, 0, 0.08);
+}
+
+[data-theme="active-builders"] .venn-mode-btn.active {
+  background: #ffffff;
+  color: #c2410c;
+  border-color: #c2410c;
+  box-shadow: 0 1px 4px rgba(194, 65, 12, 0.15);
+}
+
+[data-theme="active-builders-dark"] .venn-mode-btn.active {
+  background: #181822;
+  color: #ea733c;
+  border-color: #ea733c;
+  box-shadow: 0 1px 4px rgba(234, 115, 60, 0.2);
+}
+
+/* Operation Selector Dock */
+.venn-ops-dock {
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+}
+
+.venn-ops-label {
+  font-family: var(--font-mono);
+  font-size: 11px;
+  text-transform: uppercase;
+  letter-spacing: 0.05em;
+  color: var(--text-muted);
+  font-weight: 600;
+}
+
+.venn-ops-pills {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 8px;
+}
+
+.venn-op-pill {
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+  padding: 8px 14px;
+  background: var(--bg-card);
+  border: 1px solid var(--border-default);
+  border-radius: var(--radius-sm);
+  color: var(--text-secondary);
+  font-family: var(--font-mono);
+  font-size: 12px;
+  font-weight: 600;
+  cursor: pointer;
+  transition: var(--transition-fast);
+}
+
+.venn-op-pill:hover {
+  background: var(--bg-hover);
+  border-color: var(--border-hover);
+  color: var(--text-primary);
+  transform: translateY(-1px);
+}
+
+.venn-op-pill.active {
+  background: var(--bg-surface);
+  border-color: var(--accent);
+  color: var(--text-primary);
+  box-shadow: 0 0 0 1px var(--accent), 0 2px 8px rgba(0, 0, 0, 0.1);
+}
+
+.venn-op-pill .op-symbol {
+  font-weight: 700;
+  color: var(--accent);
+}
+
+.venn-op-pill .op-tag {
+  font-size: 10px;
+  padding: 2px 6px;
+  border-radius: 4px;
+  background: var(--bg-card-subtle);
+  color: var(--text-muted);
+  border: 1px solid var(--border-muted);
+}
+
+/* Stage Grid */
+.venn-stage-grid {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 20px;
+}
+
+@media (max-width: 980px) {
+  .venn-stage-grid {
+    grid-template-columns: 1fr;
+  }
+}
+
+/* SVG Canvas Card */
+.venn-canvas-card {
+  background: var(--bg-card);
+  border: 1px solid var(--border-default);
+  border-radius: var(--radius-md);
+  padding: 20px;
+  display: flex;
+  flex-direction: column;
+  gap: 16px;
+}
+
+.venn-canvas-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}
+
+.venn-canvas-title {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  font-size: 16px;
+  font-weight: 700;
+  color: var(--text-primary);
+}
+
+.op-symbol-badge {
+  font-family: var(--font-mono);
+  font-size: 12px;
+  color: var(--accent);
+  background: var(--accent-soft);
+  border: 1px solid var(--accent-border);
+  padding: 2px 8px;
+  border-radius: 4px;
+}
+
+.venn-canvas-hint {
+  font-size: 11px;
+  color: var(--text-muted);
+  font-family: var(--font-mono);
+}
+
+.venn-svg-container {
+  width: 100%;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  background: var(--bg-canvas);
+  border: 1px solid var(--border-subtle);
+  border-radius: var(--radius-sm);
+  padding: 10px;
+}
+
+.venn-interactive-svg {
+  width: 100%;
+  max-width: 580px;
+  height: auto;
+}
+
+/* SVG Elements */
+.venn-circle-base {
+  fill: var(--bg-surface-elevated);
+  transition: all 0.3s cubic-bezier(0.16, 1, 0.3, 1);
+}
+
+.venn-circle-base.zone-active {
+  fill: var(--accent-soft);
+}
+
+.venn-circle-base.zone-dim {
+  fill: var(--bg-canvas);
+  opacity: 0.35;
+}
+
+.venn-lens-overlap {
+  fill: var(--bg-card-subtle);
+  transition: all 0.3s cubic-bezier(0.16, 1, 0.3, 1);
+}
+
+.venn-lens-overlap.zone-active {
+  fill: var(--accent);
+  opacity: 0.28;
+}
+
+.venn-lens-overlap.zone-dim {
+  fill: var(--bg-canvas);
+  opacity: 0.2;
+}
+
+.venn-circle-stroke {
+  fill: none;
+  stroke: var(--border-default);
+  stroke-width: 2px;
+  transition: all 0.3s ease;
+}
+
+.venn-circle-stroke.stroke-active {
+  stroke: var(--accent);
+  stroke-width: 2.5px;
+}
+
+.venn-label-title {
+  fill: var(--text-secondary);
+  font-family: var(--font-mono);
+  font-size: 13px;
+  font-weight: 600;
+  text-anchor: middle;
+}
+
+/* Floating Row Chips in SVG */
+.venn-chip-group {
+  cursor: pointer;
+  transition: all 0.2s cubic-bezier(0.16, 1, 0.3, 1);
+}
+
+.venn-chip-group:hover {
+  transform: translateY(-2px);
+}
+
+.venn-row-chip {
+  fill: var(--bg-surface);
+  stroke: var(--border-default);
+  stroke-width: 1px;
+  transition: all 0.2s ease;
+  filter: drop-shadow(0 2px 4px rgba(0, 0, 0, 0.15));
+}
+
+.venn-chip-group:hover .venn-row-chip {
+  stroke: var(--accent);
+  fill: var(--bg-hover);
+}
+
+.venn-chip-group.chip-dim {
+  opacity: 0.35;
+}
+
+.chip-text {
+  fill: var(--text-primary);
+  font-family: var(--font-mono);
+  font-size: 11px;
+  font-weight: 600;
+  text-anchor: middle;
+  pointer-events: none;
+}
+
+.chip-orphan {
+  stroke: #ef4444 !important;
+  stroke-dasharray: 3 3;
+}
+
+/* Legend */
+.venn-legend {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  gap: 16px;
+  flex-wrap: wrap;
+}
+
+.legend-chip {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  font-family: var(--font-mono);
+  font-size: 11px;
+  color: var(--text-muted);
+}
+
+.legend-chip .indicator {
+  width: 10px;
+  height: 10px;
+  border-radius: 2px;
+  background: var(--border-default);
+}
+
+.legend-chip.active {
+  color: var(--text-primary);
+  font-weight: 600;
+}
+
+.legend-chip.active .indicator {
+  background: var(--accent);
+  box-shadow: 0 0 8px var(--accent);
+}
+
+/* Right Panel: Operation Intel */
+.venn-intel-card {
+  background: var(--bg-card);
+  border: 1px solid var(--border-default);
+  border-radius: var(--radius-md);
+  padding: 20px;
+  display: flex;
+  flex-direction: column;
+  gap: 16px;
+}
+
+.intel-tagline {
+  font-size: 14px;
+  font-weight: 700;
+  color: var(--accent);
+  letter-spacing: -0.01em;
+}
+
+.venn-explanation {
+  font-size: 13px;
+  color: var(--text-secondary);
+  line-height: 1.6;
+}
+
+.venn-sql-box {
+  background: var(--bg-surface-elevated);
+  border: 1px solid var(--border-default);
+  border-radius: var(--radius-sm);
+  padding: 12px 14px;
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+}
+
+.venn-sql-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}
+
+.sql-label {
+  font-family: var(--font-mono);
+  font-size: 10px;
+  font-weight: 700;
+  text-transform: uppercase;
+  letter-spacing: 0.06em;
+  color: var(--text-muted);
+}
+
+.sql-actions {
+  display: flex;
+  gap: 8px;
+}
+
+.venn-btn-copy,
+.venn-btn-studio {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  padding: 5px 10px;
+  font-family: var(--font-mono);
+  font-size: 11px;
+  font-weight: 600;
+  border-radius: var(--radius-xs);
+  cursor: pointer;
+  transition: var(--transition-fast);
+}
+
+.venn-btn-copy {
+  background: var(--bg-card);
+  border: 1px solid var(--border-default);
+  color: var(--text-primary);
+}
+
+.venn-btn-copy:hover {
+  border-color: var(--border-hover);
+  background: var(--bg-hover);
+}
+
+.venn-btn-copy.copied {
+  background: #16a34a !important;
+  color: #ffffff !important;
+  border-color: #16a34a !important;
+}
+
+.venn-btn-studio {
+  background: var(--accent);
+  border: 1px solid var(--accent);
+  color: #ffffff;
+}
+
+.venn-btn-studio:hover {
+  background: var(--accent-hover);
+  border-color: var(--accent-hover);
+  transform: translateY(-1px);
+}
+
+.venn-code-block {
+  margin: 0;
+  padding: 10px;
+  background: var(--bg-canvas);
+  border: 1px solid var(--border-subtle);
+  border-radius: var(--radius-xs);
+  font-family: var(--font-mono);
+  font-size: 12px;
+  color: var(--text-primary);
+  line-height: 1.5;
+  overflow-x: auto;
+}
+
+.venn-gotcha-strip {
+  background: rgba(234, 115, 60, 0.08);
+  border: 1px solid rgba(234, 115, 60, 0.3);
+  border-radius: var(--radius-sm);
+  padding: 12px 14px;
+  display: flex;
+  flex-direction: column;
+  gap: 4px;
+}
+
+.gotcha-badge {
+  font-family: var(--font-mono);
+  font-size: 11px;
+  font-weight: 700;
+  color: var(--accent);
+}
+
+.gotcha-text {
+  font-size: 12.5px;
+  color: var(--text-secondary);
+  line-height: 1.5;
+}
+
+/* Bottom Tables Matrix */
+.venn-tables-matrix {
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+  margin-top: 10px;
+}
+
+.venn-tables-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}
+
+.matrix-title {
+  font-size: 14px;
+  font-weight: 700;
+  color: var(--text-primary);
+  font-family: var(--font-mono);
+}
+
+.matrix-tally {
+  font-size: 12px;
+  color: var(--text-muted);
+  font-family: var(--font-mono);
+}
+
+.matrix-tally strong {
+  color: var(--accent);
+}
+
+.venn-tables-grid {
+  display: grid;
+  grid-template-columns: 1fr 1fr 1.5fr;
+  gap: 16px;
+}
+
+@media (max-width: 1024px) {
+  .venn-tables-grid {
+    grid-template-columns: 1fr;
+  }
+}
+
+.source-table-card,
+.result-table-card {
+  background: var(--bg-card);
+  border: 1px solid var(--border-default);
+  border-radius: var(--radius-md);
+  display: flex;
+  flex-direction: column;
+  overflow: hidden;
+}
+
+.source-card-header,
+.result-card-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 10px 14px;
+  background: var(--bg-surface-elevated);
+  border-bottom: 1px solid var(--border-default);
+}
+
+.table-name-pill {
+  font-family: var(--font-mono);
+  font-size: 11px;
+  font-weight: 700;
+  padding: 2px 8px;
+  border-radius: 4px;
+}
+
+.table-name-pill.table-a {
+  background: rgba(56, 189, 248, 0.15);
+  color: #0284c7;
+  border: 1px solid rgba(56, 189, 248, 0.35);
+}
+
+.table-name-pill.table-b {
+  background: rgba(34, 197, 94, 0.15);
+  color: #16a34a;
+  border: 1px solid rgba(34, 197, 94, 0.35);
+}
+
+.table-name-pill.table-result {
+  background: var(--accent-soft);
+  color: var(--accent);
+  border: 1px solid var(--accent-border);
+}
+
+.row-count,
+.result-count {
+  font-family: var(--font-mono);
+  font-size: 10.5px;
+  color: var(--text-muted);
+}
+
+.table-scroll-wrapper {
+  overflow-x: auto;
+  max-height: 280px;
+  overflow-y: auto;
+}
+
+.venn-data-table {
+  width: 100%;
+  border-collapse: collapse;
+  font-family: var(--font-mono);
+  font-size: 11.5px;
+}
+
+.venn-data-table th {
+  position: sticky;
+  top: 0;
+  background: var(--bg-surface-elevated);
+  color: var(--text-muted);
+  font-weight: 600;
+  text-align: left;
+  padding: 8px 12px;
+  border-bottom: 1px solid var(--border-default);
+  z-index: 2;
+}
+
+.venn-data-table td {
+  padding: 8px 12px;
+  border-bottom: 1px solid var(--border-subtle);
+  color: var(--text-primary);
+  white-space: nowrap;
+  transition: background 0.15s ease;
+}
+
+.venn-inspect-row:hover td {
+  background: var(--bg-hover);
+}
+
+.venn-inspect-row.highlighted td {
+  background: var(--accent-soft) !important;
+  color: var(--accent) !important;
+  font-weight: 700 !important;
+}
+
+.null-val {
+  color: #f59e0b;
+  font-weight: 700;
+  background: rgba(245, 158, 11, 0.12);
+  padding: 2px 6px;
+  border-radius: 4px;
+}
+
+/* Status Badges */
+.status-badge {
+  font-size: 9.5px;
+  font-weight: 700;
+  padding: 2px 6px;
+  border-radius: 4px;
+  display: inline-block;
+}
+
+.badge-matched {
+  background: rgba(34, 197, 94, 0.15);
+  color: #16a34a;
+  border: 1px solid rgba(34, 197, 94, 0.3);
+}
+
+.badge-null_padded {
+  background: rgba(245, 158, 11, 0.15);
+  color: #d97706;
+  border: 1px solid rgba(245, 158, 11, 0.3);
+}
+
+.badge-exclusive {
+  background: rgba(239, 68, 68, 0.15);
+  color: #dc2626;
+  border: 1px solid rgba(239, 68, 68, 0.3);
+}
+
+.badge-cartesian {
+  background: rgba(168, 85, 247, 0.15);
+  color: #9333ea;
+  border: 1px solid rgba(168, 85, 247, 0.3);
+}
+
+/* Active Builders Theme Adaptations */
+[data-theme="active-builders"] .venn-canvas-card,
+[data-theme="active-builders"] .venn-intel-card,
+[data-theme="active-builders"] .source-table-card,
+[data-theme="active-builders"] .result-table-card {
+  background: #ffffff !important;
+  border: 1px solid #d4d4d8 !important;
+  box-shadow: 0 1px 4px rgba(0, 0, 0, 0.05) !important;
+}
+
+[data-theme="active-builders"] .venn-svg-container,
+[data-theme="active-builders"] .venn-code-block {
+  background: #fafafa !important;
+  border: 1px solid #e4e4e7 !important;
+}
+
+[data-theme="active-builders"] .source-card-header,
+[data-theme="active-builders"] .result-card-header,
+[data-theme="active-builders"] .venn-sql-box,
+[data-theme="active-builders"] .venn-data-table th {
+  background: #f4f4f5 !important;
+}
+
+[data-theme="active-builders-dark"] .venn-canvas-card,
+[data-theme="active-builders-dark"] .venn-intel-card,
+[data-theme="active-builders-dark"] .source-table-card,
+[data-theme="active-builders-dark"] .result-table-card {
+  background: #141418 !important;
+  border: 1px solid #262630 !important;
+  box-shadow: 0 4px 16px rgba(0, 0, 0, 0.25) !important;
+}
+
+[data-theme="active-builders-dark"] .venn-svg-container,
+[data-theme="active-builders-dark"] .venn-code-block {
+  background: #0c0c0e !important;
+  border: 1px solid #202026 !important;
+}
+
+[data-theme="active-builders-dark"] .source-card-header,
+[data-theme="active-builders-dark"] .result-card-header,
+[data-theme="active-builders-dark"] .venn-sql-box,
+[data-theme="active-builders-dark"] .venn-data-table th {
+  background: #181822 !important;
+}
+
 
 
 
