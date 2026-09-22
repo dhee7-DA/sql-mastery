@@ -1,7 +1,7 @@
 // =============================================================================
 // SQL FOUNDRY — JOINS MASTERY PLATFORM (PURE JOINS EDITION)
 // 300 Progressive Pure-Join Problems (100 Easy / 100 Medium / 100 Hard)
-// Live Query Editor, Query Anatomy with Pointer Arrows & Callouts,
+// Live Query Editor with Interactive Keyword Callout Ribbons & Pointer Bubbles,
 // Neon Laser Tracers, Mini Venn HUD, Step Scrubber & Diff Inspector
 // =============================================================================
 
@@ -385,8 +385,7 @@
     isAutoPlaying: false,
     autoPlayTimer: null,
     hoveredKey: null, // { side: 'left'|'right', id: number|string }
-    hoveredCalloutIndex: null, // index of currently hovered query callout
-    showQueryCallouts: true, // boolean: toggle interactive query anatomy with arrows & callouts
+    activeCalloutToken: 'join', // active token key for callout popup
     diffView: false, // boolean: table vs diff inspector
     solvedProblemIds: new Set(),
     userFeedback: null
@@ -402,99 +401,6 @@
       }
     }
   } catch (e) {}
-
-  // --- QUERY CLAUSE ANALYZER (FOR QUERY CALLOUTS & ARROWS) ---
-  function extractQueryClauses(sql) {
-    const rawLines = (sql || '').split('\n').map(l => l.trim()).filter(Boolean);
-    const clauses = [];
-
-    rawLines.forEach((line, idx) => {
-      const upper = line.toUpperCase();
-      if (upper.startsWith('SELECT')) {
-        clauses.push({
-          type: 'select',
-          badge: 'PROJECTION',
-          color: '#06b6d4',
-          lineText: line,
-          title: 'Attribute Projection',
-          explanation: 'Selects target columns from both tables, projecting merged tuples into the output schema.'
-        });
-      } else if (upper.startsWith('FROM')) {
-        clauses.push({
-          type: 'from',
-          badge: 'DRIVER TABLE',
-          color: '#10b981',
-          lineText: line,
-          title: 'Base Left Entity (A)',
-          explanation: 'The primary relational stream. In physical hash joins, larger tables stream as probes against hash buckets.'
-        });
-      } else if (upper.includes('JOIN')) {
-        let joinBadge = 'JOIN STRATEGY';
-        let joinTitle = 'Relational Join Operator';
-        let joinExp = 'Combines records across tables based on relational algebra.';
-        let color = '#a855f7';
-
-        if (upper.includes('INNER JOIN')) {
-          joinTitle = 'Strict Key Intersection (⋈)';
-          joinExp = 'Only tuples with matching keys in BOTH tables survive. Unassigned staff and empty departments are discarded.';
-          color = '#10b981';
-        } else if (upper.includes('LEFT') && upper.includes('IS NULL')) {
-          joinBadge = 'ANTI-JOIN';
-          joinTitle = 'Left Anti-Join Exclusion (A − B)';
-          joinExp = 'Isolates orphan records in Table A that have no matching foreign key in Table B.';
-          color = '#f59e0b';
-        } else if (upper.includes('LEFT')) {
-          joinTitle = 'Left Outer Preservation (⟕)';
-          joinExp = 'Every row in Table A is guaranteed to survive. Missing Table B attributes are padded with NULL.';
-          color = '#3b82f6';
-        } else if (upper.includes('RIGHT')) {
-          joinTitle = 'Right Outer Preservation (⟖)';
-          joinExp = 'Every row in Table B survives. Unmatched Table A records are padded with NULL.';
-          color = '#8b5cf6';
-        } else if (upper.includes('FULL')) {
-          joinTitle = 'Full Bilateral Union (⟗)';
-          joinExp = 'Preserves all unmatched rows from both Table A AND Table B with bidirectional NULL padding.';
-          color = '#eab308';
-        } else if (upper.includes('CROSS')) {
-          joinTitle = 'Cartesian Product (×)';
-          joinExp = 'Unconditional combinatorial multiplication pairing every row in A with every row in B (N × M).';
-          color = '#ec4899';
-        }
-
-        clauses.push({
-          type: 'join',
-          badge: joinBadge,
-          color: color,
-          lineText: line,
-          title: joinTitle,
-          explanation: joinExp
-        });
-      } else if (upper.startsWith('ON') || upper.includes(' ON ') || upper.startsWith('AND ') || upper.includes('BETWEEN')) {
-        clauses.push({
-          type: 'on',
-          badge: 'JOIN PREDICATE',
-          color: '#f59e0b',
-          lineText: line,
-          title: 'Physical Key Predicate',
-          explanation: 'Evaluates physical equality between foreign key and primary key attributes before row emission.'
-        });
-      } else if (upper.startsWith('WHERE')) {
-        const isFilterTrap = upper.includes('D.') && !upper.includes('IS NULL');
-        clauses.push({
-          type: 'where',
-          badge: isFilterTrap ? '⚠️ FILTER TRAP' : 'POST-FILTER',
-          color: isFilterTrap ? '#ef4444' : '#06b6d4',
-          lineText: line,
-          title: isFilterTrap ? 'Silent Join Conversion Trap!' : 'Post-Join Restriction',
-          explanation: isFilterTrap
-            ? 'WHERE condition on Table B evaluates to UNKNOWN for NULL-padded staff, silently converting LEFT JOIN into INNER JOIN!'
-            : 'Filters the merged tuple stream after join evaluation.'
-        });
-      }
-    });
-
-    return clauses;
-  }
 
   // --- LIVE SQL PARSER & EVALUATOR ---
   function parseAndEvaluateSQL(sql, schemaKey) {
@@ -735,6 +641,101 @@
     };
   }
 
+  // --- QUERY KEYWORD TOKENS & PROBLEM-SPECIFIC CALLOUTS ---
+  function getQueryTokens(sql, problem) {
+    const cleanSQL = (sql || '').trim();
+    const upperSQL = cleanSQL.toUpperCase();
+    const tokens = [];
+
+    // 1. SELECT Token
+    tokens.push({
+      key: 'select',
+      badge: 'SELECT',
+      label: 'Output Projection',
+      icon: '📋',
+      color: '#06b6d4',
+      title: 'SELECT (Columns Projection)',
+      explanation: 'Picks the exact attributes returned in the result: employee details merged with matching department attributes.'
+    });
+
+    // 2. FROM Token
+    tokens.push({
+      key: 'from',
+      badge: 'FROM',
+      label: 'Driving Table (A)',
+      icon: '🏢',
+      color: '#10b981',
+      title: 'FROM Employees e (Driving Stream)',
+      explanation: 'Starts with Table A (5 employees). The alias "e" lets you write short references like e.name instead of Employees.name.'
+    });
+
+    // 3. JOIN Token
+    let joinLabel = 'INNER JOIN (Strict Match)';
+    let joinExp = 'Strict key intersection (⋈): Only employees with matching dept_id in Departments survive. Alice, Bob, Charlie, and Diana match. Evan Vance (unassigned) and Research (empty) are dropped.';
+    let joinColor = '#10b981';
+
+    if (upperSQL.includes('LEFT JOIN') && upperSQL.includes('IS NULL')) {
+      joinLabel = 'LEFT ANTI-JOIN (Exclusion)';
+      joinExp = 'Isolates orphan staff in Table A who have NO department on record (Evan Vance).';
+      joinColor = '#f59e0b';
+    } else if (upperSQL.includes('LEFT JOIN')) {
+      joinLabel = 'LEFT JOIN (Preserve All Staff)';
+      joinExp = 'Left outer preservation (⟕): All 5 employees survive in the output. For Evan Vance, missing department columns are filled with NULL.';
+      joinColor = '#3b82f6';
+    } else if (upperSQL.includes('RIGHT JOIN')) {
+      joinLabel = 'RIGHT JOIN (Preserve Departments)';
+      joinExp = 'Right outer preservation (⟖): Guarantees all 4 departments survive. Research department appears with NULL employee attributes.';
+      joinColor = '#a855f7';
+    } else if (upperSQL.includes('FULL')) {
+      joinLabel = 'FULL OUTER JOIN (360° Audit)';
+      joinExp = 'Full bilateral union (⟗): Preserves unassigned staff (Evan Vance) AND empty departments (Research) with NULL padding.';
+      joinColor = '#eab308';
+    } else if (upperSQL.includes('CROSS')) {
+      joinLabel = 'CROSS JOIN (Cartesian Product)';
+      joinExp = 'Unconditional combinatorial pairing: generates all 5 × 4 = 20 employee-department combinations.';
+      joinColor = '#ec4899';
+    }
+
+    tokens.push({
+      key: 'join',
+      badge: 'JOIN',
+      label: joinLabel,
+      icon: '🔗',
+      color: joinColor,
+      title: joinLabel,
+      explanation: joinExp
+    });
+
+    // 4. ON Token
+    tokens.push({
+      key: 'on',
+      badge: 'ON',
+      label: 'ON (Key Condition)',
+      icon: '🔑',
+      color: '#f59e0b',
+      title: 'ON e.dept_id = d.dept_id (Relational Bridge)',
+      explanation: 'The join predicate that tests for matching keys. Connects foreign key e.dept_id with primary key d.dept_id.'
+    });
+
+    // 5. WHERE Token (if query contains WHERE)
+    if (upperSQL.includes('WHERE')) {
+      const isFilterTrap = upperSQL.includes('LEFT JOIN') && upperSQL.includes('WHERE D.') && !upperSQL.includes('IS NULL');
+      tokens.push({
+        key: 'where',
+        badge: isFilterTrap ? '⚠️ TRAP' : 'WHERE',
+        label: isFilterTrap ? 'Filter Trap Detected!' : 'WHERE Post-Filter',
+        icon: isFilterTrap ? '⚠️' : '🎯',
+        color: isFilterTrap ? '#ef4444' : '#06b6d4',
+        title: isFilterTrap ? 'Silent Join Conversion Warning!' : 'WHERE Clause Filter',
+        explanation: isFilterTrap
+          ? 'Placing a WHERE filter on Table B in a LEFT JOIN silently drops NULL-padded rows (Evan Vance), converting it into an INNER JOIN! Move condition to ON.'
+          : 'Applies post-join filtering on rows emitted from the relational join.'
+      });
+    }
+
+    return tokens;
+  }
+
   // --- JOINS MASTERY ENGINE OBJECT ---
   const JoinsMasteryEngine = {
     init: function () {
@@ -754,6 +755,7 @@
       state.userSQL = p.starterSQL;
       state.replayStep = 0;
       state.userFeedback = null;
+      state.activeCalloutToken = 'join';
       this.stopAutoPlay();
       this.render();
       if (window.AudioFX) window.AudioFX.playClick();
@@ -768,6 +770,7 @@
       state.userSQL = p.starterSQL;
       state.replayStep = 0;
       state.userFeedback = null;
+      state.activeCalloutToken = 'join';
       this.stopAutoPlay();
       this.render();
       if (window.AudioFX) window.AudioFX.playClick();
@@ -797,15 +800,10 @@
       if (window.AudioFX) window.AudioFX.playClick();
     },
 
-    toggleQueryCallouts: function () {
-      state.showQueryCallouts = !state.showQueryCallouts;
-      this.render();
-      if (window.AudioFX) window.AudioFX.playClick();
-    },
-
-    setHoverCallout: function (idx) {
-      state.hoveredCalloutIndex = idx;
+    setCalloutToken: function (tokenKey) {
+      state.activeCalloutToken = tokenKey;
       this.renderCalloutsOnly();
+      if (window.AudioFX) window.AudioFX.playClick();
     },
 
     onSQLEdit: function (val) {
@@ -822,6 +820,7 @@
       state.userSQL = p.starterSQL;
       state.replayStep = 0;
       state.userFeedback = null;
+      state.activeCalloutToken = 'join';
       this.stopAutoPlay();
       this.render();
       if (window.AudioFX) window.AudioFX.playPop();
@@ -1031,7 +1030,7 @@
             </div>
           </div>
 
-          <!-- Live Interactive SQL Query Editor Box with Visual Blueprint & Pointer Arrows -->
+          <!-- Live Interactive SQL Query Editor Box with Interactive Keyword Callouts -->
           <div class="arena-editor-card">
             <div class="editor-top-bar">
               <div class="editor-left-label">
@@ -1042,11 +1041,6 @@
               </div>
 
               <div class="editor-actions-dock">
-                <!-- Visual Callouts Toggle Button -->
-                <button class="btn-toggle-callouts ${state.showQueryCallouts ? 'active' : ''}" onclick="window.JoinsMasteryEngine.toggleQueryCallouts()">
-                  🏹 Query Anatomy &amp; Callouts (${state.showQueryCallouts ? 'ON' : 'OFF'})
-                </button>
-
                 <!-- Dialect Toggle -->
                 <div class="editor-dialect-group">
                   <button class="dialect-pill ${state.selectedDialect === 'mysql' ? 'active' : ''}" onclick="window.JoinsMasteryEngine.setDialect('mysql')">MySQL</button>
@@ -1062,20 +1056,17 @@
               </div>
             </div>
 
-            <!-- Query Arena Layout: Code on Left, SVG Arrows in Middle, Callouts on Right -->
-            <div class="query-arena-split-layout ${state.showQueryCallouts ? 'with-callouts' : 'code-only'}">
-              <div class="query-editor-column">
-                <textarea id="joinsQueryTextarea"
-                          class="joins-live-textarea"
-                          spellcheck="false"
-                          oninput="window.JoinsMasteryEngine.onSQLEdit(this.value)">${state.userSQL}</textarea>
-              </div>
+            <!-- Interactive Keywords Ribbon with Attached Pointer Callouts -->
+            <div id="queryTokensRibbon" class="query-tokens-ribbon">
+              ${this.renderTokenRibbonHTML(state.userSQL, p)}
+            </div>
 
-              ${state.showQueryCallouts ? `
-                <div id="queryCalloutsContainer" class="query-callouts-column">
-                  ${this.renderQueryCalloutsHTML(state.userSQL)}
-                </div>
-              ` : ''}
+            <!-- Full-Width Clean Textarea for live typing -->
+            <div class="query-textarea-wrap">
+              <textarea id="joinsQueryTextarea"
+                        class="joins-live-textarea"
+                        spellcheck="false"
+                        oninput="window.JoinsMasteryEngine.onSQLEdit(this.value)">${state.userSQL}</textarea>
             </div>
           </div>
 
@@ -1104,101 +1095,61 @@
 
     // Render Callouts Only (for live typing debounce without losing textarea focus)
     renderCalloutsOnly: function () {
-      const container = document.getElementById('queryCalloutsContainer');
-      if (!container || !state.showQueryCallouts) return;
-      container.innerHTML = this.renderQueryCalloutsHTML(state.userSQL);
+      const container = document.getElementById('queryTokensRibbon');
+      if (!container) return;
+      const p = PROBLEMS[state.currentProblemIndex];
+      container.innerHTML = this.renderTokenRibbonHTML(state.userSQL, p);
     },
 
-    // Render Query Callouts & Pointer Arrows HTML
-    renderQueryCalloutsHTML: function (sql) {
-      const clauses = extractQueryClauses(sql);
-      if (clauses.length === 0) return '<div class="callout-empty-state">Type a query to see dynamic clause callouts.</div>';
-
-      const count = clauses.length;
-      const height = Math.max(160, count * 54);
+    // Render Keyword Token Ribbon & Attached Speech Bubble Callout
+    renderTokenRibbonHTML: function (sql, problem) {
+      const tokens = getQueryTokens(sql, problem);
+      const activeToken = tokens.find(t => t.key === state.activeCalloutToken) || tokens[0] || null;
 
       return `
-        <div class="query-callouts-dock">
-          <!-- SVG Connector Canvas with Curved Pointer Arrows -->
-          <div class="callout-arrows-col">
-            <svg class="callout-arrows-svg" viewBox="0 0 54 ${height}" preserveAspectRatio="none">
-              <defs>
-                <marker id="calloutMarkerCyan" markerWidth="6" markerHeight="6" refX="5" refY="3" orient="auto">
-                  <path d="M 0 0 L 6 3 L 0 6 Z" fill="#06b6d4" />
-                </marker>
-                <marker id="calloutMarkerGreen" markerWidth="6" markerHeight="6" refX="5" refY="3" orient="auto">
-                  <path d="M 0 0 L 6 3 L 0 6 Z" fill="#10b981" />
-                </marker>
-                <marker id="calloutMarkerPurple" markerWidth="6" markerHeight="6" refX="5" refY="3" orient="auto">
-                  <path d="M 0 0 L 6 3 L 0 6 Z" fill="#a855f7" />
-                </marker>
-                <marker id="calloutMarkerBlue" markerWidth="6" markerHeight="6" refX="5" refY="3" orient="auto">
-                  <path d="M 0 0 L 6 3 L 0 6 Z" fill="#3b82f6" />
-                </marker>
-                <marker id="calloutMarkerAmber" markerWidth="6" markerHeight="6" refX="5" refY="3" orient="auto">
-                  <path d="M 0 0 L 6 3 L 0 6 Z" fill="#f59e0b" />
-                </marker>
-                <marker id="calloutMarkerRed" markerWidth="6" markerHeight="6" refX="5" refY="3" orient="auto">
-                  <path d="M 0 0 L 6 3 L 0 6 Z" fill="#ef4444" />
-                </marker>
-                <filter id="calloutArrowGlow" x="-20%" y="-20%" width="140%" height="140%">
-                  <feGaussianBlur stdDeviation="2" result="blur" />
-                  <feMerge>
-                    <feMergeNode in="blur" />
-                    <feMergeNode in="SourceGraphic" />
-                  </feMerge>
-                </filter>
-              </defs>
-
-              ${clauses.map((c, idx) => {
-                const y1 = 20 + (idx / Math.max(1, count - 1)) * (height - 40);
-                const y2 = 26 + idx * 52;
-                const isHovered = state.hoveredCalloutIndex === idx;
-
-                let markerId = 'calloutMarkerCyan';
-                if (c.color === '#10b981') markerId = 'calloutMarkerGreen';
-                else if (c.color === '#a855f7' || c.color === '#8b5cf6') markerId = 'calloutMarkerPurple';
-                else if (c.color === '#3b82f6') markerId = 'calloutMarkerBlue';
-                else if (c.color === '#f59e0b') markerId = 'calloutMarkerAmber';
-                else if (c.color === '#ef4444') markerId = 'calloutMarkerRed';
-
-                return `
-                  <g class="callout-arrow-item ${isHovered ? 'hovered' : ''}">
-                    <path d="M 4,${y1} C 20,${y1} 32,${y2} 48,${y2}"
-                          stroke="${c.color}"
-                          stroke-width="${isHovered ? '3.5' : '2'}"
-                          fill="none"
-                          marker-end="url(#${markerId})"
-                          opacity="${isHovered ? '1' : '0.8'}"
-                          filter="url(#calloutArrowGlow)" />
-                    <!-- Dot anchor at code origin -->
-                    <circle cx="4" cy="${y1}" r="${isHovered ? '4' : '2.5'}" fill="${c.color}" />
-                  </g>
-                `;
-              }).join('')}
-            </svg>
+        <div class="keyword-ribbon-bar">
+          <div class="ribbon-prompt-label">
+            <span>💡 Click or hover any SQL keyword below for a dedicated callout explanation:</span>
           </div>
 
-          <!-- Callout Cards List -->
-          <div class="callout-cards-col">
-            ${clauses.map((c, idx) => {
-              const isHovered = state.hoveredCalloutIndex === idx;
+          <!-- Interactive Keyword Chips Row -->
+          <div class="keyword-chips-row">
+            ${tokens.map(t => {
+              const isActive = activeToken && activeToken.key === t.key;
               return `
-                <div class="query-callout-card ${isHovered ? 'hover-active' : ''}"
-                     style="--callout-accent: ${c.color};"
-                     onmouseenter="window.JoinsMasteryEngine.setHoverCallout(${idx})"
-                     onmouseleave="window.JoinsMasteryEngine.setHoverCallout(null)">
-                  <div class="callout-card-top">
-                    <span class="callout-badge" style="background: ${c.color}22; color: ${c.color}; border: 1px solid ${c.color}66;">
-                      ${c.badge}
-                    </span>
-                    <span class="callout-title-text">${c.title}</span>
-                  </div>
-                  <p class="callout-exp-text">${c.explanation}</p>
-                </div>
+                <button class="keyword-chip-btn ${isActive ? 'active' : ''}"
+                        style="--chip-color: ${t.color};"
+                        onclick="window.JoinsMasteryEngine.setCalloutToken('${t.key}')"
+                        onmouseenter="window.JoinsMasteryEngine.setCalloutToken('${t.key}')">
+                  <span class="chip-icon">${t.icon}</span>
+                  <span class="chip-badge">${t.badge}</span>
+                  <span class="chip-text">${t.label}</span>
+                </button>
               `;
             }).join('')}
           </div>
+
+          <!-- Speech-Bubble Callout Popup with Attached Pointer Arrow -->
+          ${activeToken ? `
+            <div class="token-callout-bubble" style="--bubble-accent: ${activeToken.color};">
+              <!-- Upward Pointer Arrow -->
+              <div class="bubble-pointer-arrow"></div>
+
+              <div class="bubble-header-row">
+                <div class="bubble-title-group">
+                  <span class="bubble-icon">${activeToken.icon}</span>
+                  <span class="bubble-title">${activeToken.title}</span>
+                </div>
+                <span class="bubble-tag" style="color: ${activeToken.color}; background: ${activeToken.color}18;">
+                  ${activeToken.badge}
+                </span>
+              </div>
+
+              <p class="bubble-body-text">
+                ${activeToken.explanation}
+              </p>
+            </div>
+          ` : ''}
         </div>
       `;
     },
