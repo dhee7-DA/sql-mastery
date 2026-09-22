@@ -1,7 +1,8 @@
 // =============================================================================
 // SQL FOUNDRY — JOINS MASTERY PLATFORM (PURE JOINS EDITION)
 // 300 Progressive Pure-Join Problems (100 Easy / 100 Medium / 100 Hard)
-// Live Query Editor, Neon Laser Tracers, Mini Venn HUD, Step Scrubber & Diff Inspector
+// Live Query Editor, Query Anatomy with Pointer Arrows & Callouts,
+// Neon Laser Tracers, Mini Venn HUD, Step Scrubber & Diff Inspector
 // =============================================================================
 
 (function () {
@@ -384,6 +385,8 @@
     isAutoPlaying: false,
     autoPlayTimer: null,
     hoveredKey: null, // { side: 'left'|'right', id: number|string }
+    hoveredCalloutIndex: null, // index of currently hovered query callout
+    showQueryCallouts: true, // boolean: toggle interactive query anatomy with arrows & callouts
     diffView: false, // boolean: table vs diff inspector
     solvedProblemIds: new Set(),
     userFeedback: null
@@ -399,6 +402,99 @@
       }
     }
   } catch (e) {}
+
+  // --- QUERY CLAUSE ANALYZER (FOR QUERY CALLOUTS & ARROWS) ---
+  function extractQueryClauses(sql) {
+    const rawLines = (sql || '').split('\n').map(l => l.trim()).filter(Boolean);
+    const clauses = [];
+
+    rawLines.forEach((line, idx) => {
+      const upper = line.toUpperCase();
+      if (upper.startsWith('SELECT')) {
+        clauses.push({
+          type: 'select',
+          badge: 'PROJECTION',
+          color: '#06b6d4',
+          lineText: line,
+          title: 'Attribute Projection',
+          explanation: 'Selects target columns from both tables, projecting merged tuples into the output schema.'
+        });
+      } else if (upper.startsWith('FROM')) {
+        clauses.push({
+          type: 'from',
+          badge: 'DRIVER TABLE',
+          color: '#10b981',
+          lineText: line,
+          title: 'Base Left Entity (A)',
+          explanation: 'The primary relational stream. In physical hash joins, larger tables stream as probes against hash buckets.'
+        });
+      } else if (upper.includes('JOIN')) {
+        let joinBadge = 'JOIN STRATEGY';
+        let joinTitle = 'Relational Join Operator';
+        let joinExp = 'Combines records across tables based on relational algebra.';
+        let color = '#a855f7';
+
+        if (upper.includes('INNER JOIN')) {
+          joinTitle = 'Strict Key Intersection (⋈)';
+          joinExp = 'Only tuples with matching keys in BOTH tables survive. Unassigned staff and empty departments are discarded.';
+          color = '#10b981';
+        } else if (upper.includes('LEFT') && upper.includes('IS NULL')) {
+          joinBadge = 'ANTI-JOIN';
+          joinTitle = 'Left Anti-Join Exclusion (A − B)';
+          joinExp = 'Isolates orphan records in Table A that have no matching foreign key in Table B.';
+          color = '#f59e0b';
+        } else if (upper.includes('LEFT')) {
+          joinTitle = 'Left Outer Preservation (⟕)';
+          joinExp = 'Every row in Table A is guaranteed to survive. Missing Table B attributes are padded with NULL.';
+          color = '#3b82f6';
+        } else if (upper.includes('RIGHT')) {
+          joinTitle = 'Right Outer Preservation (⟖)';
+          joinExp = 'Every row in Table B survives. Unmatched Table A records are padded with NULL.';
+          color = '#8b5cf6';
+        } else if (upper.includes('FULL')) {
+          joinTitle = 'Full Bilateral Union (⟗)';
+          joinExp = 'Preserves all unmatched rows from both Table A AND Table B with bidirectional NULL padding.';
+          color = '#eab308';
+        } else if (upper.includes('CROSS')) {
+          joinTitle = 'Cartesian Product (×)';
+          joinExp = 'Unconditional combinatorial multiplication pairing every row in A with every row in B (N × M).';
+          color = '#ec4899';
+        }
+
+        clauses.push({
+          type: 'join',
+          badge: joinBadge,
+          color: color,
+          lineText: line,
+          title: joinTitle,
+          explanation: joinExp
+        });
+      } else if (upper.startsWith('ON') || upper.includes(' ON ') || upper.startsWith('AND ') || upper.includes('BETWEEN')) {
+        clauses.push({
+          type: 'on',
+          badge: 'JOIN PREDICATE',
+          color: '#f59e0b',
+          lineText: line,
+          title: 'Physical Key Predicate',
+          explanation: 'Evaluates physical equality between foreign key and primary key attributes before row emission.'
+        });
+      } else if (upper.startsWith('WHERE')) {
+        const isFilterTrap = upper.includes('D.') && !upper.includes('IS NULL');
+        clauses.push({
+          type: 'where',
+          badge: isFilterTrap ? '⚠️ FILTER TRAP' : 'POST-FILTER',
+          color: isFilterTrap ? '#ef4444' : '#06b6d4',
+          lineText: line,
+          title: isFilterTrap ? 'Silent Join Conversion Trap!' : 'Post-Join Restriction',
+          explanation: isFilterTrap
+            ? 'WHERE condition on Table B evaluates to UNKNOWN for NULL-padded staff, silently converting LEFT JOIN into INNER JOIN!'
+            : 'Filters the merged tuple stream after join evaluation.'
+        });
+      }
+    });
+
+    return clauses;
+  }
 
   // --- LIVE SQL PARSER & EVALUATOR ---
   function parseAndEvaluateSQL(sql, schemaKey) {
@@ -701,11 +797,23 @@
       if (window.AudioFX) window.AudioFX.playClick();
     },
 
+    toggleQueryCallouts: function () {
+      state.showQueryCallouts = !state.showQueryCallouts;
+      this.render();
+      if (window.AudioFX) window.AudioFX.playClick();
+    },
+
+    setHoverCallout: function (idx) {
+      state.hoveredCalloutIndex = idx;
+      this.renderCalloutsOnly();
+    },
+
     onSQLEdit: function (val) {
       state.userSQL = val;
       clearTimeout(this._debounceTimer);
       this._debounceTimer = setTimeout(() => {
         this.renderStageOnly();
+        this.renderCalloutsOnly();
       }, 80);
     },
 
@@ -923,7 +1031,7 @@
             </div>
           </div>
 
-          <!-- Live Interactive SQL Query Editor Box -->
+          <!-- Live Interactive SQL Query Editor Box with Visual Blueprint & Pointer Arrows -->
           <div class="arena-editor-card">
             <div class="editor-top-bar">
               <div class="editor-left-label">
@@ -934,6 +1042,11 @@
               </div>
 
               <div class="editor-actions-dock">
+                <!-- Visual Callouts Toggle Button -->
+                <button class="btn-toggle-callouts ${state.showQueryCallouts ? 'active' : ''}" onclick="window.JoinsMasteryEngine.toggleQueryCallouts()">
+                  🏹 Query Anatomy &amp; Callouts (${state.showQueryCallouts ? 'ON' : 'OFF'})
+                </button>
+
                 <!-- Dialect Toggle -->
                 <div class="editor-dialect-group">
                   <button class="dialect-pill ${state.selectedDialect === 'mysql' ? 'active' : ''}" onclick="window.JoinsMasteryEngine.setDialect('mysql')">MySQL</button>
@@ -949,10 +1062,21 @@
               </div>
             </div>
 
-            <!-- Textarea for live typing -->
-            <textarea class="joins-live-textarea"
-                      spellcheck="false"
-                      oninput="window.JoinsMasteryEngine.onSQLEdit(this.value)">${state.userSQL}</textarea>
+            <!-- Query Arena Layout: Code on Left, SVG Arrows in Middle, Callouts on Right -->
+            <div class="query-arena-split-layout ${state.showQueryCallouts ? 'with-callouts' : 'code-only'}">
+              <div class="query-editor-column">
+                <textarea id="joinsQueryTextarea"
+                          class="joins-live-textarea"
+                          spellcheck="false"
+                          oninput="window.JoinsMasteryEngine.onSQLEdit(this.value)">${state.userSQL}</textarea>
+              </div>
+
+              ${state.showQueryCallouts ? `
+                <div id="queryCalloutsContainer" class="query-callouts-column">
+                  ${this.renderQueryCalloutsHTML(state.userSQL)}
+                </div>
+              ` : ''}
+            </div>
           </div>
 
           <!-- Dynamic User Validation Feedback Banner with Confetti / Celebration -->
@@ -973,6 +1097,107 @@
           <!-- STAGE: Split Cockpit with Arrow Tracer (Left) & Result Table + 6-Layer Explainer (Right) -->
           <div id="joinsStageContainer" class="arena-stage-grid">
             ${this.renderStageHTML(p)}
+          </div>
+        </div>
+      `;
+    },
+
+    // Render Callouts Only (for live typing debounce without losing textarea focus)
+    renderCalloutsOnly: function () {
+      const container = document.getElementById('queryCalloutsContainer');
+      if (!container || !state.showQueryCallouts) return;
+      container.innerHTML = this.renderQueryCalloutsHTML(state.userSQL);
+    },
+
+    // Render Query Callouts & Pointer Arrows HTML
+    renderQueryCalloutsHTML: function (sql) {
+      const clauses = extractQueryClauses(sql);
+      if (clauses.length === 0) return '<div class="callout-empty-state">Type a query to see dynamic clause callouts.</div>';
+
+      const count = clauses.length;
+      const height = Math.max(160, count * 54);
+
+      return `
+        <div class="query-callouts-dock">
+          <!-- SVG Connector Canvas with Curved Pointer Arrows -->
+          <div class="callout-arrows-col">
+            <svg class="callout-arrows-svg" viewBox="0 0 54 ${height}" preserveAspectRatio="none">
+              <defs>
+                <marker id="calloutMarkerCyan" markerWidth="6" markerHeight="6" refX="5" refY="3" orient="auto">
+                  <path d="M 0 0 L 6 3 L 0 6 Z" fill="#06b6d4" />
+                </marker>
+                <marker id="calloutMarkerGreen" markerWidth="6" markerHeight="6" refX="5" refY="3" orient="auto">
+                  <path d="M 0 0 L 6 3 L 0 6 Z" fill="#10b981" />
+                </marker>
+                <marker id="calloutMarkerPurple" markerWidth="6" markerHeight="6" refX="5" refY="3" orient="auto">
+                  <path d="M 0 0 L 6 3 L 0 6 Z" fill="#a855f7" />
+                </marker>
+                <marker id="calloutMarkerBlue" markerWidth="6" markerHeight="6" refX="5" refY="3" orient="auto">
+                  <path d="M 0 0 L 6 3 L 0 6 Z" fill="#3b82f6" />
+                </marker>
+                <marker id="calloutMarkerAmber" markerWidth="6" markerHeight="6" refX="5" refY="3" orient="auto">
+                  <path d="M 0 0 L 6 3 L 0 6 Z" fill="#f59e0b" />
+                </marker>
+                <marker id="calloutMarkerRed" markerWidth="6" markerHeight="6" refX="5" refY="3" orient="auto">
+                  <path d="M 0 0 L 6 3 L 0 6 Z" fill="#ef4444" />
+                </marker>
+                <filter id="calloutArrowGlow" x="-20%" y="-20%" width="140%" height="140%">
+                  <feGaussianBlur stdDeviation="2" result="blur" />
+                  <feMerge>
+                    <feMergeNode in="blur" />
+                    <feMergeNode in="SourceGraphic" />
+                  </feMerge>
+                </filter>
+              </defs>
+
+              ${clauses.map((c, idx) => {
+                const y1 = 20 + (idx / Math.max(1, count - 1)) * (height - 40);
+                const y2 = 26 + idx * 52;
+                const isHovered = state.hoveredCalloutIndex === idx;
+
+                let markerId = 'calloutMarkerCyan';
+                if (c.color === '#10b981') markerId = 'calloutMarkerGreen';
+                else if (c.color === '#a855f7' || c.color === '#8b5cf6') markerId = 'calloutMarkerPurple';
+                else if (c.color === '#3b82f6') markerId = 'calloutMarkerBlue';
+                else if (c.color === '#f59e0b') markerId = 'calloutMarkerAmber';
+                else if (c.color === '#ef4444') markerId = 'calloutMarkerRed';
+
+                return `
+                  <g class="callout-arrow-item ${isHovered ? 'hovered' : ''}">
+                    <path d="M 4,${y1} C 20,${y1} 32,${y2} 48,${y2}"
+                          stroke="${c.color}"
+                          stroke-width="${isHovered ? '3.5' : '2'}"
+                          fill="none"
+                          marker-end="url(#${markerId})"
+                          opacity="${isHovered ? '1' : '0.8'}"
+                          filter="url(#calloutArrowGlow)" />
+                    <!-- Dot anchor at code origin -->
+                    <circle cx="4" cy="${y1}" r="${isHovered ? '4' : '2.5'}" fill="${c.color}" />
+                  </g>
+                `;
+              }).join('')}
+            </svg>
+          </div>
+
+          <!-- Callout Cards List -->
+          <div class="callout-cards-col">
+            ${clauses.map((c, idx) => {
+              const isHovered = state.hoveredCalloutIndex === idx;
+              return `
+                <div class="query-callout-card ${isHovered ? 'hover-active' : ''}"
+                     style="--callout-accent: ${c.color};"
+                     onmouseenter="window.JoinsMasteryEngine.setHoverCallout(${idx})"
+                     onmouseleave="window.JoinsMasteryEngine.setHoverCallout(null)">
+                  <div class="callout-card-top">
+                    <span class="callout-badge" style="background: ${c.color}22; color: ${c.color}; border: 1px solid ${c.color}66;">
+                      ${c.badge}
+                    </span>
+                    <span class="callout-title-text">${c.title}</span>
+                  </div>
+                  <p class="callout-exp-text">${c.explanation}</p>
+                </div>
+              `;
+            }).join('')}
           </div>
         </div>
       `;
