@@ -384,6 +384,8 @@
     replayStep: 0,
     isAutoPlaying: false,
     autoPlayTimer: null,
+    editorMode: 'blueprint', // 'blueprint' (interactive hoverable query) | 'code' (raw textarea editor)
+    hoveredQueryToken: null, // active hoverable query token key
     hoveredKey: null, // { side: 'left'|'right', id: number|string }
     activeCalloutToken: 'join', // active token key for callout popup
     diffView: false, // boolean: table vs diff inspector
@@ -641,99 +643,246 @@
     };
   }
 
-  // --- QUERY KEYWORD TOKENS & PROBLEM-SPECIFIC CALLOUTS ---
-  function getQueryTokens(sql, problem) {
-    const cleanSQL = (sql || '').trim();
-    const upperSQL = cleanSQL.toUpperCase();
-    const tokens = [];
+  function escapeHTML(str) {
+    if (!str) return '';
+    return String(str)
+      .replace(/&/g, '&amp;')
+      .replace(/</g, '&lt;')
+      .replace(/>/g, '&gt;');
+  }
 
-    // 1. SELECT Token
-    tokens.push({
-      key: 'select',
-      badge: 'SELECT',
-      label: 'Output Columns',
-      icon: '📋',
+  function tokenizeSQLQuery(sql) {
+    const clean = (sql || '').trim().replace(/;$/, '');
+    
+    // Default values
+    let columns = 'e.name, d.dept_name, d.location';
+    let tableA = 'Employees e';
+    let joinKw = 'INNER JOIN';
+    let tableB = 'Departments d';
+    let onKw = 'ON';
+    let condition = 'e.dept_id = d.dept_id';
+    let whereFilter = '';
+
+    const regex = /^\s*SELECT\s+([\s\S]+?)\s+FROM\s+([\s\S]+?)\s+(INNER\s+JOIN|LEFT\s+OUTER\s+JOIN|LEFT\s+ANTI-JOIN|LEFT\s+JOIN|RIGHT\s+OUTER\s+JOIN|RIGHT\s+JOIN|FULL\s+OUTER\s+JOIN|FULL\s+JOIN|CROSS\s+JOIN|JOIN)\s+([\s\S]+?)(?:\s+ON\s+([\s\S]+?))?(?:\s+WHERE\s+([\s\S]+?))?$/i;
+    const m = clean.match(regex);
+    if (m) {
+      columns = m[1].trim();
+      tableA = m[2].trim();
+      joinKw = m[3].trim().toUpperCase();
+      tableB = m[4].trim();
+      onKw = m[5] ? 'ON' : '';
+      condition = m[5] ? m[5].trim() : '';
+      whereFilter = m[6] ? m[6].trim() : '';
+    } else {
+      if (clean.includes('SELECT') && clean.includes('FROM')) {
+        const fromIdx = clean.toUpperCase().indexOf('FROM');
+        columns = clean.slice(clean.toUpperCase().indexOf('SELECT') + 6, fromIdx).trim();
+        const afterFrom = clean.slice(fromIdx + 4).trim();
+        const joinMatch = afterFrom.match(/(INNER JOIN|LEFT JOIN|RIGHT JOIN|FULL OUTER JOIN|CROSS JOIN|JOIN)/i);
+        if (joinMatch) {
+          tableA = afterFrom.slice(0, joinMatch.index).trim();
+          const afterJoin = afterFrom.slice(joinMatch.index + joinMatch[0].length).trim();
+          joinKw = joinMatch[0].toUpperCase();
+          const onIdx = afterJoin.toUpperCase().indexOf('ON');
+          if (onIdx !== -1) {
+            tableB = afterJoin.slice(0, onIdx).trim();
+            const afterOn = afterJoin.slice(onIdx + 2).trim();
+            const whereIdx = afterOn.toUpperCase().indexOf('WHERE');
+            if (whereIdx !== -1) {
+              condition = afterOn.slice(0, whereIdx).trim();
+              whereFilter = afterOn.slice(whereIdx + 5).trim();
+            } else {
+              condition = afterOn.trim();
+            }
+          } else {
+            tableB = afterJoin.trim();
+            onKw = '';
+            condition = '';
+          }
+        }
+      }
+    }
+
+    return { columns, tableA, joinKw, tableB, onKw, condition, whereFilter };
+  }
+
+  function getTokenDescription(tokenKey, sql) {
+    const upperSQL = (sql || '').toUpperCase();
+    
+    if (tokenKey === 'select') {
+      return {
+        badge: 'SELECT',
+        color: '#06b6d4',
+        systemHint: '✨ Highlights Output Columns in Result Table',
+        desc: 'Chooses which attributes survive and display in your final result table.'
+      };
+    }
+    if (tokenKey === 'columns') {
+      return {
+        badge: 'Output Columns',
+        color: '#06b6d4',
+        systemHint: '✨ Projected into the Generated Result Table',
+        desc: 'Pulling employee name (e.name) alongside department name (d.dept_name) and office location (d.location).'
+      };
+    }
+    if (tokenKey === 'from') {
+      return {
+        badge: 'FROM',
+        color: '#10b981',
+        systemHint: '✨ Highlights Table A (Employees) below',
+        desc: 'Sets the starting base table for the query. Every join starts with this primary relation.'
+      };
+    }
+    if (tokenKey === 'table_a') {
+      return {
+        badge: 'Table A: Employees e',
+        color: '#10b981',
+        systemHint: '✨ Highlights Table A (Employees) below',
+        desc: 'Our staff directory (5 employees). "e" is the table alias for quick column referencing.'
+      };
+    }
+    if (tokenKey === 'join') {
+      let typeName = 'INNER JOIN';
+      let exp = 'Strict Match: Combines rows only when dept_id exists in BOTH tables. Alice, Bob, Charlie, and Diana match. Evan Vance (unassigned) and Research (empty) are dropped.';
+      let color = '#10b981';
+
+      if (upperSQL.includes('LEFT JOIN') && upperSQL.includes('IS NULL')) {
+        typeName = 'LEFT ANTI-JOIN';
+        exp = 'Left Exclusive: Keeps only employees with NO matching department (Evan Vance).';
+        color = '#f59e0b';
+      } else if (upperSQL.includes('LEFT JOIN')) {
+        typeName = 'LEFT JOIN';
+        exp = 'Preserves All Staff: Guarantees all 5 employees survive. Unassigned staff (Evan Vance) get NULL for department details.';
+        color = '#3b82f6';
+      } else if (upperSQL.includes('RIGHT JOIN')) {
+        typeName = 'RIGHT JOIN';
+        exp = 'Preserves All Departments: Guarantees all 4 departments survive. Empty departments (Research) get NULL for employee details.';
+        color = '#a855f7';
+      } else if (upperSQL.includes('FULL')) {
+        typeName = 'FULL OUTER JOIN';
+        exp = 'Full Union: Keeps matching pairs, unassigned staff (Evan Vance), AND empty departments (Research).';
+        color = '#eab308';
+      } else if (upperSQL.includes('CROSS')) {
+        typeName = 'CROSS JOIN';
+        exp = 'Cartesian Product: Multiplies 5 employees × 4 departments = 20 total combinations.';
+        color = '#ec4899';
+      }
+
+      return {
+        badge: `${typeName}`,
+        color: color,
+        systemHint: '✨ Highlights Venn Diagram Topology & Match Logic',
+        desc: exp
+      };
+    }
+    if (tokenKey === 'table_b') {
+      return {
+        badge: 'Table B: Departments d',
+        color: '#a855f7',
+        systemHint: '✨ Highlights Table B (Departments) below',
+        desc: 'The target lookup table (4 departments). "d" is the alias for quick column referencing.'
+      };
+    }
+    if (tokenKey === 'on') {
+      return {
+        badge: 'ON',
+        color: '#f59e0b',
+        systemHint: '✨ Highlights connecting laser arrows between tables',
+        desc: 'The relational rule that evaluates which row in Table A matches which row in Table B.'
+      };
+    }
+    if (tokenKey === 'condition') {
+      return {
+        badge: 'Join Condition: e.dept_id = d.dept_id',
+        color: '#f59e0b',
+        systemHint: '✨ Highlights connecting laser arrows between tables',
+        desc: 'Links employee to department whenever their dept_id numbers are equal. If equal, the rows merge together.'
+      };
+    }
+    if (tokenKey === 'where') {
+      const isTrap = upperSQL.includes('LEFT JOIN') && upperSQL.includes('WHERE D.') && !upperSQL.includes('IS NULL');
+      return {
+        badge: isTrap ? '⚠️ FILTER TRAP' : 'WHERE Filter',
+        color: isTrap ? '#ef4444' : '#06b6d4',
+        systemHint: isTrap ? '⚠️ Warning: Silently turns LEFT JOIN into INNER JOIN' : '✨ Filters emitted rows',
+        desc: isTrap
+          ? 'Filtering Table B in WHERE drops NULL rows, accidentally converting your LEFT JOIN into an INNER JOIN! Move condition into the ON clause.'
+          : 'Applies post-join filtering on rows emitted from the relational join.'
+      };
+    }
+
+    return {
+      badge: 'SQL Token',
       color: '#06b6d4',
-      title: 'SELECT: What columns appear in your result',
-      explanation: 'Specifies the final columns to display. Here, we pull employee name (e.name) together with department name (d.dept_name) and office location (d.location).'
-    });
+      systemHint: 'Relational query element',
+      desc: 'Part of the active relational join query.'
+    };
+  }
 
-    // 2. FROM Token
-    tokens.push({
-      key: 'from',
-      badge: 'FROM',
-      label: 'Table A (Base)',
-      icon: '🏢',
-      color: '#10b981',
-      title: 'FROM Employees e: Our starting base table',
-      explanation: 'Starts with the Employees table (5 rows) as Table A. The alias "e" is a short nickname so we can write e.name instead of the full table name.'
-    });
+  function renderInteractiveQueryBlueprintHTML(sql, problem) {
+    const tokens = tokenizeSQLQuery(sql);
 
-    // 3. JOIN Token
-    let joinLabel = 'INNER JOIN (Match Both)';
-    let joinExp = 'Keeps ONLY rows where dept_id exists in BOTH tables. Alice, Bob, Charlie, and Diana match their department. Evan Vance (no department) and Research (no employees) are excluded.';
-    let joinColor = '#10b981';
+    return `
+      <div class="interactive-sql-blueprint-card">
+        <div class="blueprint-code-editor-row" onclick="if(event.target === this) window.JoinsMasteryEngine.setEditorMode('code')">
+          <div class="blueprint-line">
+            <span class="blueprint-line-num">1</span>
+            <span class="sql-blueprint-token kw-select" data-token="select"
+                  onmouseenter="window.JoinsMasteryEngine.setHoverQueryToken('select')"
+                  onmouseleave="window.JoinsMasteryEngine.clearHoverQueryToken()">SELECT</span>
+            <span class="sql-blueprint-token col-item" data-token="columns"
+                  onmouseenter="window.JoinsMasteryEngine.setHoverQueryToken('columns')"
+                  onmouseleave="window.JoinsMasteryEngine.clearHoverQueryToken()">${escapeHTML(tokens.columns)}</span>
+          </div>
+          <div class="blueprint-line">
+            <span class="blueprint-line-num">2</span>
+            <span class="sql-blueprint-token kw-from" data-token="from"
+                  onmouseenter="window.JoinsMasteryEngine.setHoverQueryToken('from')"
+                  onmouseleave="window.JoinsMasteryEngine.clearHoverQueryToken()">FROM</span>
+            <span class="sql-blueprint-token tbl-a" data-token="table_a"
+                  onmouseenter="window.JoinsMasteryEngine.setHoverQueryToken('table_a')"
+                  onmouseleave="window.JoinsMasteryEngine.clearHoverQueryToken()">${escapeHTML(tokens.tableA)}</span>
+          </div>
+          <div class="blueprint-line">
+            <span class="blueprint-line-num">3</span>
+            <span class="sql-blueprint-token kw-join" data-token="join"
+                  onmouseenter="window.JoinsMasteryEngine.setHoverQueryToken('join')"
+                  onmouseleave="window.JoinsMasteryEngine.clearHoverQueryToken()">${escapeHTML(tokens.joinKw)}</span>
+            <span class="sql-blueprint-token tbl-b" data-token="table_b"
+                  onmouseenter="window.JoinsMasteryEngine.setHoverQueryToken('table_b')"
+                  onmouseleave="window.JoinsMasteryEngine.clearHoverQueryToken()">${escapeHTML(tokens.tableB)}</span>
+            ${tokens.onKw ? `
+              <span class="sql-blueprint-token kw-on" data-token="on"
+                    onmouseenter="window.JoinsMasteryEngine.setHoverQueryToken('on')"
+                    onmouseleave="window.JoinsMasteryEngine.clearHoverQueryToken()">ON</span>
+              <span class="sql-blueprint-token cond-item" data-token="condition"
+                    onmouseenter="window.JoinsMasteryEngine.setHoverQueryToken('condition')"
+                    onmouseleave="window.JoinsMasteryEngine.clearHoverQueryToken()">${escapeHTML(tokens.condition)};</span>
+            ` : ';'}
+          </div>
+          ${tokens.whereFilter ? `
+            <div class="blueprint-line">
+              <span class="blueprint-line-num">4</span>
+              <span class="sql-blueprint-token kw-where" data-token="where"
+                    onmouseenter="window.JoinsMasteryEngine.setHoverQueryToken('where')"
+                    onmouseleave="window.JoinsMasteryEngine.clearHoverQueryToken()">WHERE</span>
+              <span class="sql-blueprint-token filter-item" data-token="where"
+                    onmouseenter="window.JoinsMasteryEngine.setHoverQueryToken('where')"
+                    onmouseleave="window.JoinsMasteryEngine.clearHoverQueryToken()">${escapeHTML(tokens.whereFilter)};</span>
+            </div>
+          ` : ''}
+        </div>
 
-    if (upperSQL.includes('LEFT JOIN') && upperSQL.includes('IS NULL')) {
-      joinLabel = 'LEFT ANTI-JOIN (Unmatched Left)';
-      joinExp = 'Finds employees who have NO matching department. Keeps only Evan Vance (dept_id is NULL) and drops all employees who have a department.';
-      joinColor = '#f59e0b';
-    } else if (upperSQL.includes('LEFT JOIN')) {
-      joinLabel = 'LEFT JOIN (Keep All Employees)';
-      joinExp = 'Keeps ALL 5 employees from Table A. Alice, Bob, Charlie, and Diana get department details, while Evan Vance gets NULL for missing department columns.';
-      joinColor = '#3b82f6';
-    } else if (upperSQL.includes('RIGHT JOIN')) {
-      joinLabel = 'RIGHT JOIN (Keep All Departments)';
-      joinExp = 'Keeps ALL 4 departments from Table B. Engineering, Sales, and Marketing get matching staff, while Research department gets NULL for missing staff.';
-      joinColor = '#a855f7';
-    } else if (upperSQL.includes('FULL')) {
-      joinLabel = 'FULL OUTER JOIN (Keep Everything)';
-      joinExp = 'Combines both tables completely. Keeps matching pairs, unassigned employees (Evan Vance with NULL dept), AND empty departments (Research with NULL staff).';
-      joinColor = '#eab308';
-    } else if (upperSQL.includes('CROSS')) {
-      joinLabel = 'CROSS JOIN (Every Combination)';
-      joinExp = 'Generates every possible combination of staff and departments (5 employees × 4 departments = 20 total rows).';
-      joinColor = '#ec4899';
-    }
-
-    tokens.push({
-      key: 'join',
-      badge: 'JOIN',
-      label: joinLabel,
-      icon: '🔗',
-      color: joinColor,
-      title: `${joinLabel}: How tables combine`,
-      explanation: joinExp
-    });
-
-    // 4. ON Token
-    tokens.push({
-      key: 'on',
-      badge: 'ON',
-      label: 'ON: Matching Rule',
-      icon: '🔑',
-      color: '#f59e0b',
-      title: 'ON e.dept_id = d.dept_id: The matching condition',
-      explanation: 'The connection rule: an employee row is linked to a department row whenever their dept_id numbers are equal.'
-    });
-
-    // 5. WHERE Token (if query contains WHERE)
-    if (upperSQL.includes('WHERE')) {
-      const isFilterTrap = upperSQL.includes('LEFT JOIN') && upperSQL.includes('WHERE D.') && !upperSQL.includes('IS NULL');
-      tokens.push({
-        key: 'where',
-        badge: isFilterTrap ? '⚠️ TRAP' : 'WHERE',
-        label: isFilterTrap ? 'Filter Trap!' : 'WHERE Filter',
-        icon: isFilterTrap ? '⚠️' : '🎯',
-        color: isFilterTrap ? '#ef4444' : '#06b6d4',
-        title: isFilterTrap ? '⚠️ Watch Out: WHERE filter drops NULL rows!' : 'WHERE: Filters results after the join',
-        explanation: isFilterTrap
-          ? 'Filtering Table B in the WHERE clause removes rows where Table B is NULL, turning your LEFT JOIN back into an INNER JOIN. Move this condition into the ON clause!'
-          : 'Applies an extra filter on rows after the join is completed.'
-      });
-    }
-
-    return tokens;
+        <!-- Attached Interactive Tooltip Strip with Real-Time Bidirectional Feedback -->
+        <div id="blueprintTooltipStrip" class="blueprint-tooltip-strip">
+          <div class="tooltip-badge-row">
+            <span class="tooltip-token-badge default">💡 HOVER ANY QUERY KEYWORD OR TABLE</span>
+            <span class="tooltip-system-hint">Bidirectional system links active</span>
+          </div>
+          <div class="tooltip-desc-text">Hover any keyword or table in the query above, or hover the diagram below to see real-time physical links.</div>
+        </div>
+      </div>
+    `;
   }
 
   // --- JOINS MASTERY ENGINE OBJECT ---
@@ -1030,17 +1179,29 @@
             </div>
           </div>
 
-          <!-- Live Interactive SQL Query Editor Box with Interactive Keyword Callouts -->
+          <!-- Live Interactive SQL Query Editor Box with In-Place Hoverable Tokens & System Links -->
           <div class="arena-editor-card">
             <div class="editor-top-bar">
               <div class="editor-left-label">
                 <span class="editor-terminal-dot red"></span>
                 <span class="editor-terminal-dot yellow"></span>
                 <span class="editor-terminal-dot green"></span>
-                <span class="editor-title-tag">LIVE SQL QUERY EDITOR</span>
+                <span class="editor-title-tag">LIVE SQL QUERY BLUEPRINT</span>
               </div>
 
               <div class="editor-actions-dock">
+                <!-- Mode Switcher: Interactive Blueprint vs Raw SQL Editor -->
+                <div class="editor-view-mode-group">
+                  <button class="mode-pill ${state.editorMode === 'blueprint' ? 'active' : ''}"
+                          onclick="window.JoinsMasteryEngine.setEditorMode('blueprint')">
+                    <span class="mode-icon">⚡</span> Interactive Query
+                  </button>
+                  <button class="mode-pill ${state.editorMode === 'code' ? 'active' : ''}"
+                          onclick="window.JoinsMasteryEngine.setEditorMode('code')">
+                    <span class="mode-icon">✍️</span> Edit Raw SQL
+                  </button>
+                </div>
+
                 <!-- Dialect Toggle -->
                 <div class="editor-dialect-group">
                   <button class="dialect-pill ${state.selectedDialect === 'mysql' ? 'active' : ''}" onclick="window.JoinsMasteryEngine.setDialect('mysql')">MySQL</button>
@@ -1049,24 +1210,24 @@
                   <button class="dialect-pill ${state.selectedDialect === 'sqlserver' ? 'active' : ''}" onclick="window.JoinsMasteryEngine.setDialect('sqlserver')">T-SQL</button>
                 </div>
 
-                <button class="btn-editor-reset" onclick="window.JoinsMasteryEngine.resetStarterSQL()">↺ Reset Starter</button>
+                <button class="btn-editor-reset" onclick="window.JoinsMasteryEngine.resetStarterSQL()">↺ Reset</button>
                 <button class="btn-editor-run" onclick="window.JoinsMasteryEngine.checkQuery()">
                   <span class="run-icon">▶</span> Run &amp; Validate (+${p.xp} XP)
                 </button>
               </div>
             </div>
 
-            <!-- Interactive Keywords Ribbon with Attached Pointer Callouts -->
-            <div id="queryTokensRibbon" class="query-tokens-ribbon">
-              ${this.renderTokenRibbonHTML(state.userSQL, p)}
-            </div>
-
-            <!-- Full-Width Clean Textarea for live typing -->
-            <div class="query-textarea-wrap">
-              <textarea id="joinsQueryTextarea"
-                        class="joins-live-textarea"
-                        spellcheck="false"
-                        oninput="window.JoinsMasteryEngine.onSQLEdit(this.value)">${state.userSQL}</textarea>
+            <!-- In-Place Interactive Blueprint OR Code Textarea -->
+            <div id="joinsEditorContent" class="joins-editor-content-wrap">
+              ${state.editorMode === 'blueprint' ? renderInteractiveQueryBlueprintHTML(state.userSQL, p) : `
+                <div class="query-textarea-wrap">
+                  <textarea id="joinsQueryTextarea"
+                            class="joins-live-textarea"
+                            spellcheck="false"
+                            oninput="window.JoinsMasteryEngine.onSQLEdit(this.value)">${state.userSQL}</textarea>
+                  <div class="editor-sub-hint">💡 Tip: Edit SQL freely above, then click <strong>"⚡ Interactive Query"</strong> to test hoverable keyword links.</div>
+                </div>
+              `}
             </div>
           </div>
 
@@ -1093,76 +1254,70 @@
       `;
     },
 
-    // Render Callouts Only (for live typing debounce without losing textarea focus)
-    renderCalloutsOnly: function () {
-      const container = document.getElementById('queryTokensRibbon');
-      if (!container) return;
-      const p = PROBLEMS[state.currentProblemIndex];
-      container.innerHTML = this.renderTokenRibbonHTML(state.userSQL, p);
+    setEditorMode: function (mode) {
+      state.editorMode = mode;
+      this.render();
+      if (window.AudioFX) window.AudioFX.playClick();
     },
 
-    // Render Keyword Token Ribbon & Attached Speech Bubble Callout
-    renderTokenRibbonHTML: function (sql, problem) {
-      const tokens = getQueryTokens(sql, problem);
-      const activeToken = tokens.find(t => t.key === state.activeCalloutToken) || tokens[0] || null;
+    setHoverQueryToken: function (tokenKey) {
+      state.hoveredQueryToken = tokenKey;
+      this.updateTokenSpotlights(tokenKey);
+    },
 
-      // Approximate horizontal centers for each keyword chip
-      const chipOffsets = {
-        select: 50,
-        from: 195,
-        join: 390,
-        on: 610,
-        where: 770
-      };
-      const tokenIdx = tokens.findIndex(t => t.key === (activeToken ? activeToken.key : ''));
-      const arrowOffset = (activeToken && chipOffsets[activeToken.key]) ? chipOffsets[activeToken.key] : (40 + Math.max(0, tokenIdx) * 160);
+    clearHoverQueryToken: function () {
+      state.hoveredQueryToken = null;
+      this.updateTokenSpotlights(null);
+    },
 
-      return `
-        <div class="keyword-ribbon-bar">
-          <div class="ribbon-prompt-label">
-            <span>💡 Click or hover any SQL keyword below for a dedicated callout explanation:</span>
-          </div>
+    updateTokenSpotlights: function (tokenKey) {
+      // Update query token active classes
+      document.querySelectorAll('.sql-blueprint-token').forEach(el => {
+        const k = el.getAttribute('data-token');
+        if (tokenKey && (k === tokenKey || (tokenKey === 'table_a' && k === 'from') || (tokenKey === 'condition' && k === 'on'))) {
+          el.classList.add('token-active-spotlight');
+        } else {
+          el.classList.remove('token-active-spotlight');
+        }
+      });
 
-          <!-- Interactive Keyword Chips Row -->
-          <div class="keyword-chips-row">
-            ${tokens.map(t => {
-              const isActive = activeToken && activeToken.key === t.key;
-              return `
-                <button class="keyword-chip-btn ${isActive ? 'active' : ''}"
-                        style="--chip-color: ${t.color};"
-                        onclick="window.JoinsMasteryEngine.setCalloutToken('${t.key}')"
-                        onmouseenter="window.JoinsMasteryEngine.setCalloutToken('${t.key}')">
-                  <span class="chip-icon">${t.icon}</span>
-                  <span class="chip-badge">${t.badge}</span>
-                  <span class="chip-text">${t.label}</span>
-                </button>
-              `;
-            }).join('')}
-          </div>
-
-          <!-- Speech-Bubble Callout Popup with Attached Pointer Arrow -->
-          ${activeToken ? `
-            <div class="token-callout-bubble" style="--bubble-accent: ${activeToken.color}; --arrow-offset: ${arrowOffset}px;">
-              <!-- Upward Pointer Arrow -->
-              <div class="bubble-pointer-arrow"></div>
-
-              <div class="bubble-header-row">
-                <div class="bubble-title-group">
-                  <span class="bubble-icon">${activeToken.icon}</span>
-                  <span class="bubble-title">${activeToken.title}</span>
-                </div>
-                <span class="bubble-tag" style="color: ${activeToken.color}; background: ${activeToken.color}18;">
-                  ${activeToken.badge}
-                </span>
-              </div>
-
-              <p class="bubble-body-text">
-                ${activeToken.explanation}
-              </p>
+      // Update tooltip content
+      const tipEl = document.getElementById('blueprintTooltipStrip');
+      if (tipEl) {
+        if (!tokenKey) {
+          tipEl.innerHTML = `
+            <div class="tooltip-badge-row">
+              <span class="tooltip-token-badge default">💡 HOVER ANY QUERY KEYWORD OR TABLE</span>
+              <span class="tooltip-system-hint">Bidirectional system links active</span>
             </div>
-          ` : ''}
-        </div>
-      `;
+            <div class="tooltip-desc-text">Hover any keyword or table in the query above, or hover the diagram below to see real-time physical links.</div>
+          `;
+          tipEl.style.removeProperty('--token-color');
+        } else {
+          const meta = getTokenDescription(tokenKey, state.userSQL);
+          tipEl.style.setProperty('--token-color', meta.color);
+          tipEl.innerHTML = `
+            <div class="tooltip-badge-row">
+              <span class="tooltip-token-badge" style="background: ${meta.color}22; color: ${meta.color}; border: 1px solid ${meta.color};">${meta.badge}</span>
+              <span class="tooltip-system-hint" style="color: ${meta.color};">${meta.systemHint}</span>
+            </div>
+            <div class="tooltip-desc-text">${meta.desc}</div>
+          `;
+        }
+      }
+
+      // Update System Spotlights
+      const tblLeft = document.getElementById('tracer_table_left');
+      const tblRight = document.getElementById('tracer_table_right');
+      const vennHud = document.getElementById('mini_venn_hud');
+      const arrowCol = document.getElementById('tracer_arrow_canvas');
+      const resBox = document.getElementById('live_result_box');
+
+      if (tblLeft) tblLeft.classList.toggle('system-token-spotlight', tokenKey === 'table_a' || tokenKey === 'from');
+      if (tblRight) tblRight.classList.toggle('system-token-spotlight', tokenKey === 'table_b');
+      if (vennHud) vennHud.classList.toggle('system-token-spotlight', tokenKey === 'join');
+      if (arrowCol) arrowCol.classList.toggle('system-token-spotlight', tokenKey === 'on' || tokenKey === 'condition');
+      if (resBox) resBox.classList.toggle('system-token-spotlight', tokenKey === 'select' || tokenKey === 'columns');
     },
 
     // Render Stage Only (for live typing debounce without losing textarea focus)
@@ -1224,12 +1379,14 @@
           </div>
 
           <!-- MINI VENN DIAGRAM HUD WIDGET -->
-          <div class="mini-venn-hud-container">
+          <div class="mini-venn-hud-container" id="mini_venn_hud"
+               onmouseenter="window.JoinsMasteryEngine.setHoverQueryToken('join')"
+               onmouseleave="window.JoinsMasteryEngine.clearHoverQueryToken()">
             <div class="mini-venn-svg-wrapper">
-              <svg class="mini-venn-svg" viewBox="0 0 240 100" xmlns="http://www.w3.org/2000/svg">
+              <svg class="mini-venn-svg" viewBox="0 0 160 70" xmlns="http://www.w3.org/2000/svg">
                 <defs>
                   <filter id="vennGlow" x="-20%" y="-20%" width="140%" height="140%">
-                    <feGaussianBlur stdDeviation="3.5" result="blur" />
+                    <feGaussianBlur stdDeviation="3" result="blur" />
                     <feMerge>
                       <feMergeNode in="blur" />
                       <feMergeNode in="SourceGraphic" />
@@ -1238,30 +1395,33 @@
                 </defs>
 
                 <!-- Left Circle Base -->
-                <circle cx="90" cy="50" r="38" class="venn-circle-base base-left" />
+                <circle cx="55" cy="35" r="26" class="venn-circle-base base-left" />
                 <!-- Right Circle Base -->
-                <circle cx="150" cy="50" r="38" class="venn-circle-base base-right" />
+                <circle cx="105" cy="35" r="26" class="venn-circle-base base-right" />
 
                 <!-- Left Crescent (Left Only) -->
-                <path d="M 120,25.2 A 38,38 0 1,0 120,74.8 A 38,38 0 0,0 120,25.2 Z"
+                <path d="M 80,14.5 A 26,26 0 1,0 80,55.5 A 26,26 0 0,0 80,14.5 Z"
                       class="venn-region left-crescent ${['left', 'full_outer', 'left_antijoin'].includes(parsed.joinType) ? 'active' : ''}" />
 
                 <!-- Right Crescent (Right Only) -->
-                <path d="M 120,25.2 A 38,38 0 0,1 120,74.8 A 38,38 0 1,1 120,25.2 Z"
+                <path d="M 80,14.5 A 26,26 0 0,1 80,55.5 A 26,26 0 1,1 80,55.5 Z"
                       class="venn-region right-crescent ${['right', 'full_outer', 'right_antijoin'].includes(parsed.joinType) ? 'active' : ''}" />
 
                 <!-- Overlap Lens (Intersection A ∩ B) -->
-                <path d="M 120,25.2 A 38,38 0 0,1 120,74.8 A 38,38 0 0,1 120,25.2 Z"
+                <path d="M 80,14.5 A 26,26 0 0,1 80,55.5 A 26,26 0 0,1 80,14.5 Z"
                       class="venn-region overlap-lens ${['inner', 'left', 'right', 'full_outer'].includes(parsed.joinType) ? 'active' : ''}" />
 
-                <!-- Labels & Counts -->
-                <text x="68" y="53" class="venn-label text-left">A (1)</text>
-                <text x="120" y="53" class="venn-label text-center">A ∩ B (4)</text>
-                <text x="172" y="53" class="venn-label text-right">B (1)</text>
+                <!-- Clear Labels -->
+                <text x="42" y="39" class="venn-label text-left">A (1)</text>
+                <text x="80" y="39" class="venn-label text-center">A ∩ B (4)</text>
+                <text x="118" y="39" class="venn-label text-right">B (1)</text>
               </svg>
             </div>
             <div class="mini-venn-hud-info">
-              <span class="hud-info-tag">ACTIVE TOPOLOGY:</span>
+              <div class="hud-top-line">
+                <span class="hud-info-tag">ACTIVE TOPOLOGY:</span>
+                <span class="topo-badge ${parsed.joinType}">${parsed.joinType.toUpperCase().replace('_', ' ')}</span>
+              </div>
               <span class="hud-info-status">
                 ${parsed.joinType === 'inner' ? 'Intersection Only (A ∩ B) • Unmatched Rows Dropped' :
                   parsed.joinType === 'left' ? 'Left Outer (A ∪ (A ∩ B)) • Unmatched Staff Preserved' :
@@ -1276,7 +1436,9 @@
           <!-- Dual Source Tables with SVG Neon Laser Arrow Overlay -->
           <div class="relational-tracer-container">
             <!-- Left Source Table -->
-            <div class="source-mini-table table-left">
+            <div class="source-mini-table table-left" id="tracer_table_left"
+                 onmouseenter="window.JoinsMasteryEngine.setHoverQueryToken('table_a')"
+                 onmouseleave="window.JoinsMasteryEngine.clearHoverQueryToken()">
               <div class="mini-table-header">${currentSchema.tableA.name}</div>
               <div class="mini-table-body">
                 ${currentSchema.tableA.rows.map((r, rIdx) => {
@@ -1297,7 +1459,9 @@
             </div>
 
             <!-- Center SVG Neon Laser Canvas -->
-            <div class="tracer-arrow-canvas-col">
+            <div class="tracer-arrow-canvas-col" id="tracer_arrow_canvas"
+                 onmouseenter="window.JoinsMasteryEngine.setHoverQueryToken('condition')"
+                 onmouseleave="window.JoinsMasteryEngine.clearHoverQueryToken()">
               <svg class="tracer-arrow-svg" viewBox="0 0 160 220" xmlns="http://www.w3.org/2000/svg">
                 <defs>
                   <filter id="laserGlowEmerald" x="-30%" y="-30%" width="160%" height="160%">
@@ -1372,7 +1536,9 @@
             </div>
 
             <!-- Right Source Table -->
-            <div class="source-mini-table table-right">
+            <div class="source-mini-table table-right" id="tracer_table_right"
+                 onmouseenter="window.JoinsMasteryEngine.setHoverQueryToken('table_b')"
+                 onmouseleave="window.JoinsMasteryEngine.clearHoverQueryToken()">
               <div class="mini-table-header">${currentSchema.tableB.name}</div>
               <div class="mini-table-body">
                 ${currentSchema.tableB.rows.map(r => {
@@ -1401,7 +1567,9 @@
         <!-- Right Column: Live Recalculated Output & 6-Layer Explainer Engine -->
         <div class="arena-right-card">
           <!-- Live Result Table & Diff Inspector Toggle -->
-          <div class="live-result-box">
+          <div class="live-result-box" id="live_result_box"
+               onmouseenter="window.JoinsMasteryEngine.setHoverQueryToken('select')"
+               onmouseleave="window.JoinsMasteryEngine.clearHoverQueryToken()">
             <div class="result-header-row">
               <div class="result-tab-switch">
                 <button class="btn-diff-toggle ${!state.diffView ? 'active' : ''}" onclick="window.JoinsMasteryEngine.toggleDiffView(false)">

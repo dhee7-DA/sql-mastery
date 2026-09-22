@@ -17822,15 +17822,17 @@ body {
 }
 
 .tracer-arrow-canvas-col {
-  width: 160px;
+  width: 140px;
   display: flex;
   align-items: center;
   justify-content: center;
+  cursor: pointer;
+  transition: all 0.2s ease;
 }
 
 .tracer-arrow-svg {
   width: 100%;
-  height: 220px;
+  height: 185px;
   overflow: visible;
 }
 
@@ -18175,17 +18177,19 @@ body {
   display: flex;
   align-items: center;
   justify-content: space-between;
-  padding: 8px 14px;
+  padding: 6px 12px;
   background: var(--bg-surface);
   border: 1px solid var(--border-subtle);
   border-radius: var(--radius-sm);
-  margin-bottom: 12px;
+  margin-bottom: 8px;
   gap: 12px;
+  cursor: pointer;
+  transition: all 0.25s cubic-bezier(0.4, 0, 0.2, 1);
 }
 
 .mini-venn-svg-wrapper {
-  width: 140px;
-  height: 58px;
+  width: 130px;
+  height: 52px;
   flex-shrink: 0;
 }
 
@@ -18249,11 +18253,48 @@ body {
 
 .venn-label {
   font-family: var(--font-mono);
-  font-size: 8px;
+  font-size: 8.5px;
   font-weight: 800;
   text-anchor: middle;
-  fill: var(--text-muted);
+  fill: var(--text-primary);
   pointer-events: none;
+}
+
+.hud-top-line {
+  display: flex;
+  align-items: center;
+  gap: 6px;
+  margin-bottom: 2px;
+}
+
+.topo-badge {
+  font-family: var(--font-mono);
+  font-size: 9px;
+  font-weight: 800;
+  padding: 1px 6px;
+  border-radius: 3px;
+  background: rgba(16, 185, 129, 0.15);
+  color: #10b981;
+}
+
+.topo-badge.left {
+  background: rgba(59, 130, 246, 0.15);
+  color: #3b82f6;
+}
+
+.topo-badge.right {
+  background: rgba(168, 85, 247, 0.15);
+  color: #a855f7;
+}
+
+.topo-badge.full_outer {
+  background: rgba(234, 179, 8, 0.15);
+  color: #eab308;
+}
+
+.topo-badge.left_antijoin {
+  background: rgba(245, 158, 11, 0.15);
+  color: #f59e0b;
 }
 
 .mini-venn-hud-info {
@@ -18526,150 +18567,256 @@ body {
 }
 
 /* ==========================================================================
-   INTERACTIVE SQL KEYWORD CALLOUT RIBBON & POINTER BUBBLE
+   INTERACTIVE SQL QUERY BLUEPRINT & BIDIRECTIONAL HOVER SYSTEM
    ========================================================================== */
-.query-tokens-ribbon {
-  width: 100%;
-  margin-bottom: 8px;
-}
-
-.keyword-ribbon-bar {
+.editor-view-mode-group {
   display: flex;
-  flex-direction: column;
-  gap: 8px;
   background: var(--bg-surface);
-  border: 1px solid var(--border-subtle);
-  border-radius: var(--radius-sm);
-  padding: 10px 14px;
+  border: 1px solid var(--border-default);
+  border-radius: 4px;
+  padding: 2px;
+  gap: 2px;
 }
 
-.ribbon-prompt-label {
+.mode-pill {
+  display: inline-flex;
+  align-items: center;
+  gap: 4px;
+  background: transparent;
+  border: none;
+  padding: 3px 8px;
   font-family: var(--font-mono);
   font-size: 10.5px;
   font-weight: 700;
   color: var(--text-muted);
-  display: flex;
-  align-items: center;
-  gap: 6px;
+  cursor: pointer;
+  border-radius: 3px;
+  transition: all 0.15s ease;
 }
 
-.keyword-chips-row {
-  display: flex;
-  flex-wrap: wrap;
-  gap: 8px;
-  align-items: center;
+.mode-pill:hover {
+  color: var(--text-primary);
 }
 
-.keyword-chip-btn {
-  display: inline-flex;
-  align-items: center;
-  gap: 6px;
+.mode-pill.active {
   background: var(--bg-surface-elevated);
+  color: var(--accent);
+  box-shadow: 0 1px 4px rgba(0, 0, 0, 0.1);
+}
+
+.joins-editor-content-wrap {
+  width: 100%;
+}
+
+/* Interactive Code Blueprint Card */
+.interactive-sql-blueprint-card {
+  display: flex;
+  flex-direction: column;
+  background: var(--bg-surface);
   border: 1px solid var(--border-default);
-  border-radius: 4px;
-  padding: 4px 10px;
+  border-radius: var(--radius-sm);
+  overflow: hidden;
+  box-shadow: inset 0 1px 3px rgba(0, 0, 0, 0.05);
+}
+
+.blueprint-code-editor-row {
+  padding: 12px 16px;
   font-family: var(--font-mono);
+  font-size: 13.5px;
+  line-height: 1.85;
+  color: var(--text-primary);
+  display: flex;
+  flex-direction: column;
+  gap: 4px;
+  cursor: text;
+}
+
+.blueprint-line {
+  display: flex;
+  align-items: center;
+  flex-wrap: wrap;
+  gap: 6px;
+}
+
+.blueprint-line-num {
+  width: 22px;
   font-size: 11px;
   font-weight: 700;
-  color: var(--text-secondary);
+  color: var(--text-muted);
+  user-select: none;
+}
+
+/* Hoverable SQL Tokens directly in the code */
+.sql-blueprint-token {
+  display: inline-flex;
+  align-items: center;
+  padding: 2px 7px;
+  border-radius: 4px;
   cursor: pointer;
-  transition: all 0.2s cubic-bezier(0.4, 0, 0.2, 1);
+  transition: all 0.18s cubic-bezier(0.4, 0, 0.2, 1);
+  font-weight: 700;
+  border: 1px solid transparent;
+  user-select: text;
 }
 
-.keyword-chip-btn:hover {
-  color: var(--text-primary);
-  border-color: var(--chip-color, var(--accent));
-  transform: translateY(-1px);
-}
-
-.keyword-chip-btn.active {
-  border-color: var(--chip-color, var(--accent)) !important;
-  color: var(--text-primary) !important;
+.sql-blueprint-token.kw-select {
+  color: #06b6d4;
   background: rgba(6, 182, 212, 0.08);
-  box-shadow: 0 0 10px rgba(6, 182, 212, 0.25);
+}
+.sql-blueprint-token.col-item {
+  color: #38bdf8;
+  font-weight: 600;
+}
+.sql-blueprint-token.kw-from {
+  color: #10b981;
+  background: rgba(16, 185, 129, 0.08);
+}
+.sql-blueprint-token.tbl-a {
+  color: #34d399;
+  font-weight: 600;
+}
+.sql-blueprint-token.kw-join {
+  color: #10b981;
+  background: rgba(16, 185, 129, 0.12);
+}
+.sql-blueprint-token.tbl-b {
+  color: #c084fc;
+  font-weight: 600;
+}
+.sql-blueprint-token.kw-on {
+  color: #f59e0b;
+  background: rgba(245, 158, 11, 0.08);
+}
+.sql-blueprint-token.cond-item {
+  color: #fbbf24;
+  font-weight: 600;
+}
+.sql-blueprint-token.kw-where {
+  color: #ef4444;
+  background: rgba(239, 68, 68, 0.08);
+}
+.sql-blueprint-token.filter-item {
+  color: #f87171;
+  font-weight: 600;
+}
+
+/* Hovered Token Glowing State */
+.sql-blueprint-token:hover,
+.sql-blueprint-token.token-active-spotlight {
   transform: translateY(-1px);
+  border-color: currentColor;
+  box-shadow: 0 0 12px currentColor;
+}
+.sql-blueprint-token.kw-select:hover,
+.sql-blueprint-token.kw-select.token-active-spotlight,
+.sql-blueprint-token.col-item:hover,
+.sql-blueprint-token.col-item.token-active-spotlight {
+  background: rgba(6, 182, 212, 0.22);
+}
+.sql-blueprint-token.kw-from:hover,
+.sql-blueprint-token.kw-from.token-active-spotlight,
+.sql-blueprint-token.tbl-a:hover,
+.sql-blueprint-token.tbl-a.token-active-spotlight {
+  background: rgba(16, 185, 129, 0.22);
+}
+.sql-blueprint-token.kw-join:hover,
+.sql-blueprint-token.kw-join.token-active-spotlight {
+  background: rgba(16, 185, 129, 0.25);
+}
+.sql-blueprint-token.tbl-b:hover,
+.sql-blueprint-token.tbl-b.token-active-spotlight {
+  background: rgba(168, 85, 247, 0.22);
+}
+.sql-blueprint-token.kw-on:hover,
+.sql-blueprint-token.kw-on.token-active-spotlight,
+.sql-blueprint-token.cond-item:hover,
+.sql-blueprint-token.cond-item.token-active-spotlight {
+  background: rgba(245, 158, 11, 0.22);
+}
+.sql-blueprint-token.kw-where:hover,
+.sql-blueprint-token.kw-where.token-active-spotlight,
+.sql-blueprint-token.filter-item:hover,
+.sql-blueprint-token.filter-item.token-active-spotlight {
+  background: rgba(239, 68, 68, 0.22);
 }
 
-.chip-icon {
-  font-size: 12px;
-}
-
-.chip-badge {
-  font-size: 9.5px;
-  font-weight: 800;
-  padding: 1px 5px;
-  border-radius: 3px;
-  background: rgba(0, 0, 0, 0.08);
-  color: var(--chip-color, var(--accent));
-}
-
-.chip-text {
-  color: var(--text-primary);
-}
-
-/* Speech-Bubble Callout Popup with Attached Pointer Arrow */
-.token-callout-bubble {
-  position: relative;
+/* Attached Blueprint Tooltip Strip */
+.blueprint-tooltip-strip {
+  display: flex;
+  flex-direction: column;
+  gap: 4px;
+  padding: 8px 14px;
   background: var(--bg-surface-elevated);
-  border: 1px solid var(--bubble-accent, var(--accent));
-  border-radius: var(--radius-sm);
-  padding: 10px 14px;
-  box-shadow: 0 4px 16px rgba(0, 0, 0, 0.1);
-  margin-top: 4px;
+  border-top: 1px solid var(--border-subtle);
+  border-left: 3px solid var(--token-color, var(--accent));
   transition: all 0.2s ease;
 }
 
-.bubble-pointer-arrow {
-  position: absolute;
-  top: -6px;
-  left: var(--arrow-offset, 28px);
-  width: 10px;
-  height: 10px;
-  background: var(--bg-surface-elevated);
-  border-left: 1px solid var(--bubble-accent, var(--accent));
-  border-top: 1px solid var(--bubble-accent, var(--accent));
-  transform: rotate(45deg);
-  transition: left 0.25s cubic-bezier(0.4, 0, 0.2, 1);
-}
-
-.bubble-header-row {
+.tooltip-badge-row {
   display: flex;
+  align-items: center;
   justify-content: space-between;
-  align-items: center;
-  margin-bottom: 4px;
+  gap: 8px;
 }
 
-.bubble-title-group {
-  display: flex;
-  align-items: center;
-  gap: 6px;
-}
-
-.bubble-icon {
-  font-size: 13px;
-}
-
-.bubble-title {
+.tooltip-token-badge {
   font-family: var(--font-mono);
-  font-size: 12px;
+  font-size: 10px;
   font-weight: 800;
-  color: var(--text-primary);
-}
-
-.bubble-tag {
-  font-family: var(--font-mono);
-  font-size: 9.5px;
-  font-weight: 800;
-  padding: 2px 6px;
+  padding: 2px 8px;
   border-radius: 3px;
   text-transform: uppercase;
 }
 
-.bubble-body-text {
+.tooltip-token-badge.default {
+  background: rgba(0, 0, 0, 0.06);
+  color: var(--text-muted);
+}
+
+.tooltip-system-hint {
+  font-family: var(--font-mono);
+  font-size: 10.5px;
+  font-weight: 700;
+  display: flex;
+  align-items: center;
+  gap: 4px;
+}
+
+.tooltip-desc-text {
   font-size: 12px;
   color: var(--text-secondary);
-  line-height: 1.45;
-  margin: 0;
+  line-height: 1.4;
+}
+
+/* System Spotlight Highlights when query tokens are hovered */
+.system-token-spotlight {
+  transition: all 0.2s cubic-bezier(0.4, 0, 0.2, 1) !important;
+}
+
+#tracer_table_left.system-token-spotlight {
+  border-color: #10b981 !important;
+  box-shadow: 0 0 20px rgba(16, 185, 129, 0.45) !important;
+  transform: scale(1.01);
+}
+
+#tracer_table_right.system-token-spotlight {
+  border-color: #a855f7 !important;
+  box-shadow: 0 0 20px rgba(168, 85, 247, 0.45) !important;
+  transform: scale(1.01);
+}
+
+#mini_venn_hud.system-token-spotlight {
+  border-color: #10b981 !important;
+  box-shadow: 0 0 20px rgba(16, 185, 129, 0.45) !important;
+}
+
+#tracer_arrow_canvas.system-token-spotlight {
+  filter: drop-shadow(0 0 10px rgba(245, 158, 11, 0.8)) !important;
+}
+
+#live_result_box.system-token-spotlight {
+  border-color: #06b6d4 !important;
+  box-shadow: 0 0 20px rgba(6, 182, 212, 0.45) !important;
 }
 
 .query-textarea-wrap {
@@ -18681,23 +18828,37 @@ body {
   min-height: 110px;
 }
 
-[data-theme="active-builders-dark"] .keyword-ribbon-bar {
-  background: #0a0a0e !important;
-  border-color: #1a1a24 !important;
+.editor-sub-hint {
+  font-family: var(--font-mono);
+  font-size: 10.5px;
+  color: var(--text-muted);
+  padding: 6px 4px 0 4px;
 }
 
-[data-theme="active-builders-dark"] .token-callout-bubble {
-  background: #111118 !important;
-  box-shadow: 0 4px 20px rgba(0, 0, 0, 0.4) !important;
+/* Dark theme overrides */
+[data-theme="active-builders-dark"] .interactive-sql-blueprint-card {
+  background: #0d0d12 !important;
+  border-color: #22222c !important;
 }
 
-[data-theme="active-builders-dark"] .bubble-pointer-arrow {
-  background: #111118 !important;
-}
-
-[data-theme="active-builders-dark"] .keyword-chip-btn {
+[data-theme="active-builders-dark"] .blueprint-tooltip-strip {
   background: #121218 !important;
+  border-top-color: #1e1e28 !important;
+}
+
+[data-theme="active-builders-dark"] .tooltip-token-badge.default {
+  background: rgba(255, 255, 255, 0.08) !important;
+  color: #888894 !important;
+}
+
+[data-theme="active-builders-dark"] .editor-view-mode-group {
+  background: #0e0e14 !important;
   border-color: #242430 !important;
+}
+
+[data-theme="active-builders-dark"] .mode-pill.active {
+  background: #181824 !important;
+  color: #38bdf8 !important;
 }
 
 
