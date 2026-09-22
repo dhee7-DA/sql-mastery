@@ -16814,6 +16814,423 @@ body {
   border-color: #202026 !important;
 }
 
+/* ==========================================================================
+   ADVANCED COCKPIT, WHAT-IF SIMULATOR, MULTI-DIALECT & QUICK DRILLS
+   ========================================================================== */
+
+/* Cockpit View Toolbar */
+.venn-cockpit-toolbar {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  flex-wrap: wrap;
+  gap: 12px;
+  background: var(--bg-surface);
+  border: 1px solid var(--border-default);
+  border-radius: var(--radius-sm);
+  padding: 8px 14px;
+  margin-bottom: 12px;
+}
+
+.layout-toggle-group {
+  display: flex;
+  gap: 6px;
+}
+
+.btn-layout-pill {
+  display: flex;
+  align-items: center;
+  gap: 6px;
+  background: var(--bg-card);
+  border: 1px solid var(--border-default);
+  border-radius: var(--radius-sm);
+  padding: 5px 12px;
+  font-family: var(--font-sans);
+  font-size: 12px;
+  font-weight: 600;
+  color: var(--text-secondary);
+  cursor: pointer;
+  transition: all 0.15s ease;
+}
+
+.btn-layout-pill:hover {
+  background: var(--bg-hover);
+  color: var(--text-primary);
+}
+
+.btn-layout-pill.active {
+  background: var(--accent-soft);
+  border-color: var(--accent);
+  color: var(--accent);
+  box-shadow: 0 0 0 1px var(--accent);
+}
+
+.cockpit-right-actions {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+}
+
+.btn-reset-whatif {
+  background: rgba(239, 68, 68, 0.12);
+  color: #dc2626;
+  border: 1px solid rgba(239, 68, 68, 0.35);
+  font-family: var(--font-mono);
+  font-size: 11px;
+  font-weight: 700;
+  padding: 4px 10px;
+  border-radius: 4px;
+  cursor: pointer;
+  transition: all 0.15s ease;
+}
+
+.btn-reset-whatif:hover {
+  background: rgba(239, 68, 68, 0.22);
+  transform: translateY(-1px);
+}
+
+.whatif-hint-pill {
+  font-family: var(--font-mono);
+  font-size: 11px;
+  color: var(--text-muted);
+}
+
+/* Split Cockpit Grid (Zero Vertical Scrolling) */
+.venn-stage-grid.cockpit-split {
+  display: grid;
+  grid-template-columns: 1.15fr 1fr;
+  gap: 16px;
+  align-items: start;
+}
+
+@media (max-width: 1100px) {
+  .venn-stage-grid.cockpit-split {
+    grid-template-columns: 1fr;
+  }
+}
+
+.cockpit-result-box {
+  background: var(--bg-card);
+  border: 1px solid var(--border-default);
+  border-radius: var(--radius-sm);
+  overflow: hidden;
+  margin-bottom: 12px;
+}
+
+.cockpit-result-box .result-card-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 8px 12px;
+  background: var(--bg-surface-elevated);
+  border-bottom: 1px solid var(--border-default);
+}
+
+.result-title-group {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+}
+
+.result-tagline-mini {
+  font-size: 11.5px;
+  color: var(--text-muted);
+  font-style: italic;
+}
+
+.cockpit-table-scroll {
+  max-height: 190px;
+  overflow-y: auto;
+  overflow-x: auto;
+}
+
+/* Multi-Dialect SQL Box */
+.sql-left-dock {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  flex-wrap: wrap;
+}
+
+.dialect-pills {
+  display: flex;
+  gap: 4px;
+}
+
+.dialect-btn {
+  font-family: var(--font-mono);
+  font-size: 10px;
+  font-weight: 700;
+  background: var(--bg-surface);
+  border: 1px solid var(--border-subtle);
+  color: var(--text-secondary);
+  padding: 2px 7px;
+  border-radius: 3px;
+  cursor: pointer;
+  transition: all 0.15s ease;
+}
+
+.dialect-btn:hover {
+  border-color: var(--accent-border);
+  color: var(--text-primary);
+}
+
+.dialect-btn.active {
+  background: var(--accent);
+  color: #ffffff;
+  border-color: var(--accent);
+}
+
+/* In-Visualizer Contextual Quick Drill */
+.venn-quick-drill-card {
+  margin-top: 12px;
+  background: var(--bg-surface-elevated);
+  border: 1px solid var(--border-default);
+  border-radius: var(--radius-sm);
+  padding: 10px 14px;
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+}
+
+.quick-drill-header {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+}
+
+.drill-badge {
+  font-family: var(--font-mono);
+  font-size: 10px;
+  font-weight: 800;
+  background: rgba(234, 115, 60, 0.15);
+  color: var(--accent);
+  border: 1px solid var(--accent-border);
+  padding: 1px 6px;
+  border-radius: 4px;
+}
+
+.drill-title {
+  font-size: 12.5px;
+  font-weight: 700;
+  color: var(--text-primary);
+}
+
+.drill-options-row {
+  display: flex;
+  gap: 8px;
+  flex-wrap: wrap;
+}
+
+.drill-option-btn {
+  display: flex;
+  align-items: center;
+  gap: 6px;
+  background: var(--bg-card);
+  border: 1px solid var(--border-default);
+  border-radius: 4px;
+  padding: 5px 10px;
+  font-size: 11.5px;
+  color: var(--text-primary);
+  cursor: pointer;
+  transition: all 0.15s ease;
+  text-align: left;
+}
+
+.drill-option-btn:hover {
+  background: var(--bg-hover);
+  border-color: var(--accent-border);
+}
+
+.drill-option-btn.drill-correct {
+  background: rgba(34, 197, 94, 0.12) !important;
+  border-color: #22c55e !important;
+  color: #16a34a !important;
+  font-weight: 700;
+}
+
+.drill-option-btn.drill-incorrect {
+  background: rgba(239, 68, 68, 0.12) !important;
+  border-color: #ef4444 !important;
+  color: #dc2626 !important;
+}
+
+.drill-feedback-pill {
+  font-size: 11.5px;
+  line-height: 1.4;
+  padding: 6px 10px;
+  border-radius: 4px;
+  border: 1px solid;
+}
+
+.drill-feedback-pill.correct {
+  background: rgba(34, 197, 94, 0.08);
+  border-color: rgba(34, 197, 94, 0.3);
+  color: #16a34a;
+}
+
+.drill-feedback-pill.incorrect {
+  background: rgba(239, 68, 68, 0.08);
+  border-color: rgba(239, 68, 68, 0.3);
+  color: #dc2626;
+}
+
+/* What-If Popover Modal */
+.whatif-popover-backdrop {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100vw;
+  height: 100vh;
+  background: rgba(0, 0, 0, 0.55);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  z-index: 99999;
+  backdrop-filter: blur(4px);
+  animation: fadeIn 0.18s ease-out;
+}
+
+.whatif-popover-card {
+  background: var(--bg-card);
+  border: 1px solid var(--border-default);
+  border-radius: var(--radius-md);
+  box-shadow: 0 16px 40px rgba(0, 0, 0, 0.35);
+  width: 90%;
+  max-width: 460px;
+  overflow: hidden;
+  animation: slideUp 0.2s ease-out;
+}
+
+.whatif-popover-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 12px 16px;
+  background: var(--bg-surface-elevated);
+  border-bottom: 1px solid var(--border-default);
+}
+
+.whatif-title {
+  font-size: 14px;
+  font-weight: 800;
+  color: var(--text-primary);
+}
+
+.whatif-close-btn {
+  background: transparent;
+  border: none;
+  font-size: 16px;
+  color: var(--text-muted);
+  cursor: pointer;
+  padding: 2px 6px;
+  border-radius: 4px;
+}
+
+.whatif-close-btn:hover {
+  color: var(--text-primary);
+  background: var(--bg-hover);
+}
+
+.whatif-popover-body {
+  padding: 16px;
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+}
+
+.whatif-intro {
+  font-size: 13px;
+  color: var(--text-secondary);
+  line-height: 1.5;
+  margin: 0;
+}
+
+.whatif-buttons-grid {
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+}
+
+.whatif-dept-btn {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  background: var(--bg-surface);
+  border: 1px solid var(--border-default);
+  border-radius: var(--radius-sm);
+  padding: 10px 14px;
+  font-size: 13px;
+  color: var(--text-primary);
+  font-weight: 600;
+  cursor: pointer;
+  transition: all 0.15s ease;
+  text-align: left;
+}
+
+.whatif-dept-btn:hover {
+  background: var(--bg-hover);
+  border-color: var(--accent-border);
+  transform: translateX(3px);
+}
+
+.whatif-dept-btn.current {
+  background: var(--accent-soft);
+  border-color: var(--accent);
+  color: var(--accent);
+  box-shadow: 0 0 0 1px var(--accent);
+}
+
+.whatif-dept-btn .dept-badge {
+  font-family: var(--font-mono);
+  font-size: 11px;
+  font-weight: 800;
+  padding: 2px 6px;
+  border-radius: 4px;
+  background: var(--bg-surface-elevated);
+  border: 1px solid var(--border-subtle);
+  min-width: 44px;
+  text-align: center;
+}
+
+/* Interactive Chip Enhancements */
+.chip-interactive {
+  cursor: pointer;
+  transition: all 0.2s ease;
+}
+
+.chip-interactive:hover {
+  filter: drop-shadow(0 0 8px rgba(234, 115, 60, 0.65)) !important;
+  stroke: #ea733c !important;
+  stroke-width: 1.5px !important;
+}
+
+.chip-whatif-trigger {
+  cursor: pointer;
+}
+
+/* Theme overrides for new cockpit elements */
+[data-theme="active-builders"] .venn-cockpit-toolbar,
+[data-theme="active-builders"] .cockpit-result-box,
+[data-theme="active-builders"] .whatif-popover-card {
+  background: #ffffff !important;
+  border-color: #d4d4d8 !important;
+}
+
+[data-theme="active-builders-dark"] .venn-cockpit-toolbar,
+[data-theme="active-builders-dark"] .cockpit-result-box,
+[data-theme="active-builders-dark"] .whatif-popover-card {
+  background: #141418 !important;
+  border-color: #262630 !important;
+}
+
+[data-theme="active-builders-dark"] .venn-quick-drill-card,
+[data-theme="active-builders-dark"] .whatif-dept-btn {
+  background: #0c0c0e !important;
+  border-color: #202026 !important;
+}
+
+
 
 
 

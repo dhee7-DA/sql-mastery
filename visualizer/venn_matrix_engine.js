@@ -1,6 +1,6 @@
 // =============================================================================
 // SQL FOUNDRY — INTERACTIVE VENN & EULER DIAGRAM MATRIX
-// Dynamic Live-Row Relational Set Physics, Challenges, Schema & Concept Hub
+// Advanced Live-Row Relational Physics, 3-Table Euler, Split Cockpit & Dialects
 // =============================================================================
 
 (function () {
@@ -9,6 +9,7 @@
   // --- DATASETS ---
   const DATASETS = {
     joins: {
+      title: '2-Table Relational Joins',
       leftTable: {
         name: 'Employees',
         alias: 'e',
@@ -41,10 +42,24 @@
           symbol: 'A ∩ B',
           tag: 'Intersection',
           activeZones: ['overlap'],
-          sql: `SELECT e.emp_id, e.name, d.dept_name, d.location\nFROM Employees AS e\nINNER JOIN Departments AS d\n  ON e.dept_id = d.dept_id;`,
+          sqlByDialect: {
+            mysql: `SELECT e.emp_id, e.name, d.dept_name, d.location\nFROM Employees AS e\nINNER JOIN Departments AS d\n  ON e.dept_id = d.dept_id;`,
+            postgres: `SELECT e.emp_id, e.name, d.dept_name, d.location\nFROM Employees AS e\nINNER JOIN Departments AS d\n  ON e.dept_id = d.dept_id;`,
+            oracle: `SELECT e.emp_id, e.name, d.dept_name, d.location\nFROM Employees e\nINNER JOIN Departments d\n  ON e.dept_id = d.dept_id;`,
+            sqlserver: `SELECT e.emp_id, e.name, d.dept_name, d.location\nFROM Employees AS e\nINNER JOIN Departments AS d\n  ON e.dept_id = d.dept_id;`
+          },
           tagline: 'Matches only where keys exist on BOTH sides',
           explanation: 'Only rows with a valid relational match across both tables survive. Unmatched rows (Evan with NULL dept, and Research with 0 employees) are silently dropped.',
           gotcha: 'NULL never matches NULL in SQL! If dept_id is NULL on both tables, INNER JOIN drops them because NULL = NULL yields UNKNOWN, not TRUE.',
+          quickDrill: {
+            question: 'Why is Evan Vance (#5) dropped from this result set?',
+            options: [
+              { id: 'A', text: 'His salary is below the department threshold', isCorrect: false },
+              { id: 'B', text: 'His dept_id is NULL, so e.dept_id = d.dept_id evaluates to UNKNOWN', isCorrect: true },
+              { id: 'C', text: 'Departments table has no primary key index', isCorrect: false }
+            ],
+            explanation: 'In 3-valued SQL logic, NULL = 10 (or NULL = NULL) is UNKNOWN, not TRUE. INNER JOIN only retains rows where the predicate is strictly TRUE.'
+          },
           outputGenerator: (eRows, dRows) => {
             const out = [];
             eRows.forEach(e => {
@@ -71,10 +86,24 @@
           symbol: 'A + (A ∩ B)',
           tag: 'Preserve Left',
           activeZones: ['left', 'overlap'],
-          sql: `SELECT e.emp_id, e.name, d.dept_name, d.location\nFROM Employees AS e\nLEFT JOIN Departments AS d\n  ON e.dept_id = d.dept_id;`,
+          sqlByDialect: {
+            mysql: `SELECT e.emp_id, e.name, d.dept_name, d.location\nFROM Employees AS e\nLEFT JOIN Departments AS d\n  ON e.dept_id = d.dept_id;`,
+            postgres: `SELECT e.emp_id, e.name, d.dept_name, d.location\nFROM Employees AS e\nLEFT JOIN Departments AS d\n  ON e.dept_id = d.dept_id;`,
+            oracle: `-- Modern ANSI SQL:\nSELECT e.emp_id, e.name, d.dept_name, d.location\nFROM Employees e\nLEFT JOIN Departments d\n  ON e.dept_id = d.dept_id;\n\n-- Legacy Oracle (+):\nSELECT e.emp_id, e.name, d.dept_name, d.location\nFROM Employees e, Departments d\nWHERE e.dept_id = d.dept_id(+);`,
+            sqlserver: `SELECT e.emp_id, e.name, d.dept_name, d.location\nFROM Employees AS e\nLEFT OUTER JOIN Departments AS d\n  ON e.dept_id = d.dept_id;`
+          },
           tagline: 'Preserves EVERY row from Left; pads missing Right with NULL',
           explanation: 'All 5 employees are guaranteed in output. Alice, Bob, Charlie, and Diana receive department metadata. Evan has no department, so his department columns are safely padded with NULL.',
           gotcha: 'Filtering Table B in WHERE turns a LEFT JOIN into an INNER JOIN! If you write WHERE d.location = \'San Francisco\', Evan is dropped because NULL = \'SF\' is FALSE. Put filters in the ON clause instead!',
+          quickDrill: {
+            question: 'What happens if you add "WHERE d.location = \'Austin\'" to this query?',
+            options: [
+              { id: 'A', text: 'Evan Vance remains in the output with NULLs', isCorrect: false },
+              { id: 'B', text: 'The query silently converts into an INNER JOIN, dropping Evan', isCorrect: true },
+              { id: 'C', text: 'A syntax error occurs because WHERE cannot follow LEFT JOIN', isCorrect: false }
+            ],
+            explanation: 'Because Evan has d.location = NULL, the WHERE clause evaluates NULL = \'Austin\' to FALSE/UNKNOWN, silently eliminating him!'
+          },
           outputGenerator: (eRows, dRows) => {
             const out = [];
             eRows.forEach(e => {
@@ -108,10 +137,24 @@
           symbol: '(A ∩ B) + B',
           tag: 'Preserve Right',
           activeZones: ['overlap', 'right'],
-          sql: `SELECT e.emp_id, e.name, d.dept_name, d.location\nFROM Employees AS e\nRIGHT JOIN Departments AS d\n  ON e.dept_id = d.dept_id;`,
+          sqlByDialect: {
+            mysql: `SELECT e.emp_id, e.name, d.dept_name, d.location\nFROM Employees AS e\nRIGHT JOIN Departments AS d\n  ON e.dept_id = d.dept_id;`,
+            postgres: `SELECT e.emp_id, e.name, d.dept_name, d.location\nFROM Employees AS e\nRIGHT JOIN Departments AS d\n  ON e.dept_id = d.dept_id;`,
+            oracle: `SELECT e.emp_id, e.name, d.dept_name, d.location\nFROM Employees e\nRIGHT JOIN Departments d\n  ON e.dept_id = d.dept_id;`,
+            sqlserver: `SELECT e.emp_id, e.name, d.dept_name, d.location\nFROM Employees AS e\nRIGHT OUTER JOIN Departments AS d\n  ON e.dept_id = d.dept_id;`
+          },
           tagline: 'Preserves EVERY row from Right; pads missing Left with NULL',
           explanation: 'All 4 departments are guaranteed in output. Engineering, Marketing, and Sales receive employee records. Research has 0 employees, so its employee columns are padded with NULL.',
           gotcha: 'RIGHT JOINs are rarely used in corporate SQL style guides because humans read left-to-right. Best practice: swap table order and write as LEFT JOIN for cleaner maintainability.',
+          quickDrill: {
+            question: 'Why does Research (#40) show NULL for emp_id and name?',
+            options: [
+              { id: 'A', text: 'Research was dropped by the optimizer', isCorrect: false },
+              { id: 'B', text: 'Zero employees have dept_id = 40, so missing Table A columns are padded with NULL', isCorrect: true },
+              { id: 'C', text: 'RIGHT JOIN deletes unreferenced records', isCorrect: false }
+            ],
+            explanation: 'RIGHT JOIN guarantees all rows of Table B survive. Missing matches from Table A are filled with relational NULLs.'
+          },
           outputGenerator: (eRows, dRows) => {
             const out = [];
             dRows.forEach(d => {
@@ -147,10 +190,24 @@
           symbol: 'A ∪ B',
           tag: 'Preserve Both',
           activeZones: ['left', 'overlap', 'right'],
-          sql: `-- Standard ANSI SQL\nSELECT e.emp_id, e.name, d.dept_name, d.location\nFROM Employees AS e\nFULL OUTER JOIN Departments AS d\n  ON e.dept_id = d.dept_id;\n\n-- MySQL 8.0 Emulation (via UNION):\nSELECT e.emp_id, e.name, d.dept_name, d.location FROM Employees e LEFT JOIN Departments d ON e.dept_id = d.dept_id\nUNION\nSELECT e.emp_id, e.name, d.dept_name, d.location FROM Employees e RIGHT JOIN Departments d ON e.dept_id = d.dept_id;`,
+          sqlByDialect: {
+            mysql: `-- MySQL lacks native FULL OUTER JOIN syntax.\n-- Emulated via LEFT JOIN + UNION + RIGHT JOIN:\nSELECT e.emp_id, e.name, d.dept_name, d.location\nFROM Employees e LEFT JOIN Departments d ON e.dept_id = d.dept_id\nUNION\nSELECT e.emp_id, e.name, d.dept_name, d.location\nFROM Employees e RIGHT JOIN Departments d ON e.dept_id = d.dept_id;`,
+            postgres: `SELECT e.emp_id, e.name, d.dept_name, d.location\nFROM Employees AS e\nFULL OUTER JOIN Departments AS d\n  ON e.dept_id = d.dept_id;`,
+            oracle: `SELECT e.emp_id, e.name, d.dept_name, d.location\nFROM Employees e\nFULL OUTER JOIN Departments d\n  ON e.dept_id = d.dept_id;`,
+            sqlserver: `SELECT e.emp_id, e.name, d.dept_name, d.location\nFROM Employees AS e\nFULL OUTER JOIN Departments AS d\n  ON e.dept_id = d.dept_id;`
+          },
           tagline: 'Preserves every row from BOTH sides with NULL-padding',
           explanation: 'Combines the output of LEFT JOIN and RIGHT JOIN. Alice, Bob, Charlie, Diana match normally. Evan appears with NULL dept info. Research appears with NULL employee info. Total 6 rows.',
           gotcha: 'MySQL natively lacks FULL OUTER JOIN syntax! In MySQL, you emulate it by taking a LEFT JOIN, a RIGHT JOIN, and combining them with UNION (which deduplicates the intersection).',
+          quickDrill: {
+            question: 'How do you execute a FULL OUTER JOIN in MySQL 8.0?',
+            options: [
+              { id: 'A', text: 'Write FULL JOIN directly', isCorrect: false },
+              { id: 'B', text: 'Combine a LEFT JOIN and a RIGHT JOIN using UNION', isCorrect: true },
+              { id: 'C', text: 'MySQL does not support any outer joins', isCorrect: false }
+            ],
+            explanation: 'MySQL throws a syntax error on FULL OUTER JOIN. Enterprise MySQL code combines LEFT JOIN and RIGHT JOIN via UNION.'
+          },
           outputGenerator: (eRows, dRows) => {
             const out = [];
             eRows.forEach(e => {
@@ -197,10 +254,24 @@
           symbol: 'A \\ B',
           tag: 'Orphans Only',
           activeZones: ['left'],
-          sql: `SELECT e.emp_id, e.name, e.salary\nFROM Employees AS e\nLEFT JOIN Departments AS d\n  ON e.dept_id = d.dept_id\nWHERE d.dept_id IS NULL;`,
+          sqlByDialect: {
+            mysql: `SELECT e.emp_id, e.name, e.salary\nFROM Employees AS e\nLEFT JOIN Departments AS d\n  ON e.dept_id = d.dept_id\nWHERE d.dept_id IS NULL;`,
+            postgres: `SELECT e.emp_id, e.name, e.salary\nFROM Employees AS e\nLEFT JOIN Departments AS d\n  ON e.dept_id = d.dept_id\nWHERE d.dept_id IS NULL;\n\n-- Alternative via NOT EXISTS:\nSELECT e.emp_id, e.name, e.salary FROM Employees e\nWHERE NOT EXISTS (SELECT 1 FROM Departments d WHERE d.dept_id = e.dept_id);`,
+            oracle: `SELECT e.emp_id, e.name, e.salary\nFROM Employees e\nLEFT JOIN Departments d\n  ON e.dept_id = d.dept_id\nWHERE d.dept_id IS NULL;`,
+            sqlserver: `SELECT e.emp_id, e.name, e.salary\nFROM Employees AS e\nLEFT JOIN Departments AS d\n  ON e.dept_id = d.dept_id\nWHERE d.dept_id IS NULL;`
+          },
           tagline: 'Isolates rows in Left table that have NO match in Right',
           explanation: 'The ultimate data-quality filter. Discards all employees with active departments. Only catches Evan Vance (#5), who has no matching department key.',
           gotcha: 'Always filter the PRIMARY KEY of Table B with IS NULL in the WHERE clause. Filtering a nullable column could trigger false positives if that column naturally contains NULLs.',
+          quickDrill: {
+            question: 'Why must you filter the PRIMARY KEY of Table B with IS NULL?',
+            options: [
+              { id: 'A', text: 'Because primary keys can never naturally be NULL in Table B', isCorrect: true },
+              { id: 'B', text: 'Because foreign keys cannot be indexed', isCorrect: false },
+              { id: 'C', text: 'Because the database crashes otherwise', isCorrect: false }
+            ],
+            explanation: 'Filtering a nullable column (e.g. location IS NULL) might match existing valid departments with missing location data. Primary keys are guaranteed NOT NULL.'
+          },
           outputGenerator: (eRows, dRows) => {
             const out = [];
             eRows.forEach(e => {
@@ -225,10 +296,24 @@
           symbol: 'B \\ A',
           tag: 'Unused Right',
           activeZones: ['right'],
-          sql: `SELECT d.dept_id, d.dept_name, d.location\nFROM Employees AS e\nRIGHT JOIN Departments AS d\n  ON e.dept_id = d.dept_id\nWHERE e.emp_id IS NULL;`,
+          sqlByDialect: {
+            mysql: `SELECT d.dept_id, d.dept_name, d.location\nFROM Employees AS e\nRIGHT JOIN Departments AS d\n  ON e.dept_id = d.dept_id\nWHERE e.emp_id IS NULL;`,
+            postgres: `SELECT d.dept_id, d.dept_name, d.location\nFROM Employees AS e\nRIGHT JOIN Departments AS d\n  ON e.dept_id = d.dept_id\nWHERE e.emp_id IS NULL;`,
+            oracle: `SELECT d.dept_id, d.dept_name, d.location\nFROM Employees e\nRIGHT JOIN Departments d\n  ON e.dept_id = d.dept_id\nWHERE e.emp_id IS NULL;`,
+            sqlserver: `SELECT d.dept_id, d.dept_name, d.location\nFROM Employees AS e\nRIGHT JOIN Departments AS d\n  ON e.dept_id = d.dept_id\nWHERE e.emp_id IS NULL;`
+          },
           tagline: 'Isolates rows in Right table that have ZERO references from Left',
           explanation: 'Finds orphan departments with 0 assigned staff. Research (#40, Boston) has 0 employees and is caught exclusively.',
           gotcha: 'Useful for auditing unused lookups, dormant categories, or empty tenant partitions in enterprise databases before dropping old tables.',
+          quickDrill: {
+            question: 'What business purpose does a RIGHT ANTI-JOIN solve?',
+            options: [
+              { id: 'A', text: 'Identifies unreferenced parent entities (e.g. empty departments, inactive categories)', isCorrect: true },
+              { id: 'B', text: 'Calculates total payroll expenditure', isCorrect: false },
+              { id: 'C', text: 'Merges employee names with department codes', isCorrect: false }
+            ],
+            explanation: 'It isolates parent lookup rows that have zero child foreign-key references, perfect for database deprecation and cleanup audits.'
+          },
           outputGenerator: (eRows, dRows) => {
             const out = [];
             dRows.forEach(d => {
@@ -253,10 +338,24 @@
           symbol: 'A × B',
           tag: 'Cartesian Product',
           activeZones: ['left', 'overlap', 'right'],
-          sql: `SELECT e.name, d.dept_name\nFROM Employees AS e\nCROSS JOIN Departments AS d;`,
+          sqlByDialect: {
+            mysql: `SELECT e.name, d.dept_name\nFROM Employees AS e\nCROSS JOIN Departments AS d;`,
+            postgres: `SELECT e.name, d.dept_name\nFROM Employees AS e\nCROSS JOIN Departments AS d;`,
+            oracle: `SELECT e.name, d.dept_name\nFROM Employees e\nCROSS JOIN Departments d;`,
+            sqlserver: `SELECT e.name, d.dept_name\nFROM Employees AS e\nCROSS JOIN Departments AS d;`
+          },
           tagline: 'Pairs EVERY row from Left with EVERY row from Right',
           explanation: 'Creates a full Cartesian product. 5 employees × 4 departments = 20 total output rows. No ON condition exists.',
           gotcha: 'Dangerous in production! Joining two tables with 10,000 rows each produces 100,000,000 rows, exhausting server memory and crashing database instances.',
+          quickDrill: {
+            question: 'If Table A has 1,000 rows and Table B has 5,000 rows, how many rows does CROSS JOIN yield?',
+            options: [
+              { id: 'A', text: '6,000 rows', isCorrect: false },
+              { id: 'B', text: '5,000,000 rows (Cartesian product)', isCorrect: true },
+              { id: 'C', text: '4,000 rows', isCorrect: false }
+            ],
+            explanation: 'CROSS JOIN multiplies row counts: |A| × |B| = 1,000 × 5,000 = 5,000,000 rows.'
+          },
           outputGenerator: (eRows, dRows) => {
             const out = [];
             eRows.forEach(e => {
@@ -276,7 +375,195 @@
         }
       ]
     },
+
+    // --- 3-TABLE EULER DATASET (NEW FEATURE #3) ---
+    euler3: {
+      title: '3-Table Euler Joins (Chained Relational Pipeline)',
+      tableA: {
+        name: 'Employees (A)',
+        alias: 'e',
+        columns: ['emp_id', 'name', 'dept_id'],
+        rows: [
+          { emp_id: 1, name: 'Alice Chen', dept_id: 10 },
+          { emp_id: 2, name: 'Bob Smith', dept_id: 20 },
+          { emp_id: 3, name: 'Charlie Kim', dept_id: 10 },
+          { emp_id: 4, name: 'Diana Ross', dept_id: 30 },
+          { emp_id: 5, name: 'Evan Vance', dept_id: null }
+        ]
+      },
+      tableB: {
+        name: 'Departments (B)',
+        alias: 'd',
+        columns: ['dept_id', 'dept_name'],
+        rows: [
+          { dept_id: 10, dept_name: 'Engineering' },
+          { dept_id: 20, dept_name: 'Marketing' },
+          { dept_id: 30, dept_name: 'Sales' },
+          { dept_id: 40, dept_name: 'Research' }
+        ]
+      },
+      tableC: {
+        name: 'Projects (C)',
+        alias: 'p',
+        columns: ['proj_id', 'proj_name', 'dept_id'],
+        rows: [
+          { proj_id: 101, proj_name: 'Cloud Migration', dept_id: 10 },
+          { proj_id: 102, proj_name: 'Brand Refresh', dept_id: 20 },
+          { proj_id: 103, proj_name: 'Enterprise CRM', dept_id: 30 },
+          { proj_id: 104, proj_name: 'AI Quantum Stealth', dept_id: 50 } // Orphan project (dept 50 does not exist!)
+        ]
+      },
+      operations: [
+        {
+          id: 'euler_3way_inner',
+          name: '3-WAY INNER JOIN',
+          symbol: 'A ∩ B ∩ C',
+          tag: 'Central Triple Overlap',
+          activeZones: ['center_abc'],
+          sqlByDialect: {
+            mysql: `SELECT e.name, d.dept_name, p.proj_name\nFROM Employees AS e\nINNER JOIN Departments AS d ON e.dept_id = d.dept_id\nINNER JOIN Projects AS p ON d.dept_id = p.dept_id;`,
+            postgres: `SELECT e.name, d.dept_name, p.proj_name\nFROM Employees AS e\nINNER JOIN Departments AS d ON e.dept_id = d.dept_id\nINNER JOIN Projects AS p ON d.dept_id = p.dept_id;`,
+            oracle: `SELECT e.name, d.dept_name, p.proj_name\nFROM Employees e\nINNER JOIN Departments d ON e.dept_id = d.dept_id\nINNER JOIN Projects p ON d.dept_id = p.dept_id;`,
+            sqlserver: `SELECT e.name, d.dept_name, p.proj_name\nFROM Employees AS e\nINNER JOIN Departments AS d ON e.dept_id = d.dept_id\nINNER JOIN Projects AS p ON d.dept_id = p.dept_id;`
+          },
+          tagline: 'Matches only where keys exist in ALL 3 TABLES simultaneously',
+          explanation: 'Finds employees who belong to a department that currently owns an active project. Evan (#5, no dept), Research (#40, no staff or projects), and AI Quantum Lab (#104, unassigned dept 50) are all excluded.',
+          gotcha: 'Multi-table INNER joins are associative: the optimizer can join A to B first, or B to C first, picking the order that produces the smallest intermediate hash table.',
+          quickDrill: {
+            question: 'Why is Project #104 (AI Quantum Stealth) missing from the 3-WAY INNER JOIN?',
+            options: [
+              { id: 'A', text: 'Its dept_id = 50 does not exist in Departments or Employees', isCorrect: true },
+              { id: 'B', text: 'Projects cannot be joined with Employees', isCorrect: false },
+              { id: 'C', text: 'Its budget exceeded the query timeout', isCorrect: false }
+            ],
+            explanation: 'Project #104 references dept_id 50, which has no matching department record, so the ON condition fails.'
+          },
+          outputGenerator: (eRows, dRows, pRows) => {
+            const out = [];
+            eRows.forEach(e => {
+              if (e.dept_id !== null) {
+                const dMatch = dRows.find(d => d.dept_id === e.dept_id);
+                if (dMatch) {
+                  const pMatches = pRows.filter(p => p.dept_id === dMatch.dept_id);
+                  pMatches.forEach(p => {
+                    out.push({
+                      status: 'matched',
+                      emp_name: e.name,
+                      dept_name: dMatch.dept_name,
+                      proj_name: p.proj_name
+                    });
+                  });
+                }
+              }
+            });
+            return out;
+          }
+        },
+        {
+          id: 'euler_chained_left',
+          name: 'CHAINED LEFT JOIN',
+          symbol: 'A → B → C',
+          tag: 'Preserve All Personnel',
+          activeZones: ['left_a', 'overlap_ab', 'center_abc'],
+          sqlByDialect: {
+            mysql: `SELECT e.name, d.dept_name, p.proj_name\nFROM Employees AS e\nLEFT JOIN Departments AS d ON e.dept_id = d.dept_id\nLEFT JOIN Projects AS p ON d.dept_id = p.dept_id;`,
+            postgres: `SELECT e.name, d.dept_name, p.proj_name\nFROM Employees AS e\nLEFT JOIN Departments AS d ON e.dept_id = d.dept_id\nLEFT JOIN Projects AS p ON d.dept_id = p.dept_id;`,
+            oracle: `SELECT e.name, d.dept_name, p.proj_name\nFROM Employees e\nLEFT JOIN Departments d ON e.dept_id = d.dept_id\nLEFT JOIN Projects p ON d.dept_id = p.dept_id;`,
+            sqlserver: `SELECT e.name, d.dept_name, p.proj_name\nFROM Employees AS e\nLEFT JOIN Departments AS d ON e.dept_id = d.dept_id\nLEFT JOIN Projects AS p ON d.dept_id = p.dept_id;`
+          },
+          tagline: 'Guarantees EVERY employee, pulling in departments and projects when available',
+          explanation: 'Alice, Bob, Charlie, and Diana show full department and project details. Evan Vance (#5) has no department, so department and project attributes both populate with NULL.',
+          gotcha: 'If the second join were an INNER JOIN (A LEFT JOIN B INNER JOIN C), Evan Vance would be dropped! To preserve Table A through multiple joins, all downstream joins must also be LEFT JOINs.',
+          quickDrill: {
+            question: 'What happens if you write "A LEFT JOIN B INNER JOIN C"?',
+            options: [
+              { id: 'A', text: 'All employees are still preserved', isCorrect: false },
+              { id: 'B', text: 'The second INNER JOIN drops rows where B was padded with NULL, losing employees like Evan', isCorrect: true },
+              { id: 'C', text: 'The SQL engine throws a chaining violation error', isCorrect: false }
+            ],
+            explanation: 'An downstream INNER JOIN requires a match on Table C. Because Evan has NULL for Table B keys, he fails the Table C join and is discarded.'
+          },
+          outputGenerator: (eRows, dRows, pRows) => {
+            const out = [];
+            eRows.forEach(e => {
+              const dMatch = e.dept_id !== null ? dRows.find(d => d.dept_id === e.dept_id) : null;
+              if (dMatch) {
+                const pMatches = pRows.filter(p => p.dept_id === dMatch.dept_id);
+                if (pMatches.length > 0) {
+                  pMatches.forEach(p => {
+                    out.push({
+                      status: 'matched',
+                      emp_name: e.name,
+                      dept_name: dMatch.dept_name,
+                      proj_name: p.proj_name
+                    });
+                  });
+                } else {
+                  out.push({
+                    status: 'null_padded',
+                    emp_name: e.name,
+                    dept_name: dMatch.dept_name,
+                    proj_name: null
+                  });
+                }
+              } else {
+                out.push({
+                  status: 'null_padded',
+                  emp_name: e.name,
+                  dept_name: null,
+                  proj_name: null
+                });
+              }
+            });
+            return out;
+          }
+        },
+        {
+          id: 'euler_project_orphans',
+          name: 'PROJECT ORPHANS ANTI-JOIN',
+          symbol: 'C \\ (A ∪ B)',
+          tag: 'Unassigned Projects',
+          activeZones: ['bottom_c'],
+          sqlByDialect: {
+            mysql: `SELECT p.proj_id, p.proj_name, p.dept_id\nFROM Projects AS p\nLEFT JOIN Departments AS d ON p.dept_id = d.dept_id\nWHERE d.dept_id IS NULL;`,
+            postgres: `SELECT p.proj_id, p.proj_name, p.dept_id\nFROM Projects AS p\nLEFT JOIN Departments AS d ON p.dept_id = d.dept_id\nWHERE d.dept_id IS NULL;`,
+            oracle: `SELECT p.proj_id, p.proj_name, p.dept_id\nFROM Projects p\nLEFT JOIN Departments d ON p.dept_id = d.dept_id\nWHERE d.dept_id IS NULL;`,
+            sqlserver: `SELECT p.proj_id, p.proj_name, p.dept_id\nFROM Projects AS p\nLEFT JOIN Departments AS d ON p.dept_id = d.dept_id\nWHERE d.dept_id IS NULL;`
+          },
+          tagline: 'Isolates projects that reference non-existent departments',
+          explanation: 'Detects broken foreign keys in Projects. Isolates Project #104 (AI Quantum Stealth), which references non-existent department #50.',
+          gotcha: 'Foreign key integrity checks are essential when databases allow orphaned records or lack database-level FOREIGN KEY REFERENCES constraints.',
+          quickDrill: {
+            question: 'Why does Project #104 exist without a valid department?',
+            options: [
+              { id: 'A', text: 'Database lacks or disabled foreign key constraints, allowing orphan keys', isCorrect: true },
+              { id: 'B', text: 'Projects are always joined with FULL OUTER JOIN', isCorrect: false },
+              { id: 'C', text: 'Project #104 is an index artifact', isCorrect: false }
+            ],
+            explanation: 'In distributed data warehouses or legacy schemas without enforced FK constraints, orphan keys frequently occur.'
+          },
+          outputGenerator: (eRows, dRows, pRows) => {
+            const out = [];
+            pRows.forEach(p => {
+              const dMatch = dRows.find(d => d.dept_id === p.dept_id);
+              if (!dMatch) {
+                out.push({
+                  status: 'exclusive',
+                  proj_id: p.proj_id,
+                  proj_name: p.proj_name,
+                  dept_id: p.dept_id,
+                  status_note: 'Orphan (No Department)'
+                });
+              }
+            });
+            return out;
+          }
+        }
+      ]
+    },
+
     setOps: {
+      title: 'Set Operations (Mathematical Sets)',
       leftTable: {
         name: 'Customers_Online',
         alias: 'online',
@@ -308,10 +595,24 @@
           symbol: 'A ∪ B (Distinct)',
           tag: 'Deduplicated Union',
           activeZones: ['left', 'overlap', 'right'],
-          sql: `SELECT cust_id, name, tier FROM Customers_Online\nUNION\nSELECT cust_id, name, tier FROM Customers_Retail\nORDER BY cust_id;`,
+          sqlByDialect: {
+            mysql: `SELECT cust_id, name, tier FROM Customers_Online\nUNION\nSELECT cust_id, name, tier FROM Customers_Retail\nORDER BY cust_id;`,
+            postgres: `SELECT cust_id, name, tier FROM Customers_Online\nUNION\nSELECT cust_id, name, tier FROM Customers_Retail\nORDER BY cust_id;`,
+            oracle: `SELECT cust_id, name, tier FROM Customers_Online\nUNION\nSELECT cust_id, name, tier FROM Customers_Retail\nORDER BY cust_id;`,
+            sqlserver: `SELECT cust_id, name, tier FROM Customers_Online\nUNION\nSELECT cust_id, name, tier FROM Customers_Retail\nORDER BY cust_id;`
+          },
           tagline: 'Merges both sets and REMOVES duplicate records',
           explanation: 'Combines Online and Retail customer lists. Bob (#102) and David (#103) exist in both channels, so UNION eliminates their duplicates. 8 unique customers returned.',
           gotcha: 'UNION performs an expensive sorting and hash-deduplication pass in memory. If you know sets are disjoint, or do not care about duplicates, use UNION ALL for faster execution.',
+          quickDrill: {
+            question: 'What computational complexity penalty does UNION have compared to UNION ALL?',
+            options: [
+              { id: 'A', text: 'O(N log N) sorting / hash deduplication vs O(N) direct streaming', isCorrect: true },
+              { id: 'B', text: 'No difference in performance', isCorrect: false },
+              { id: 'C', text: 'UNION is always faster than UNION ALL', isCorrect: false }
+            ],
+            explanation: 'UNION must compare and deduplicate all records, requiring a sort pass or hash table.'
+          },
           outputGenerator: (lRows, rRows) => {
             const map = new Map();
             lRows.forEach(r => map.set(r.cust_id, { status: 'source_a', ...r }));
@@ -331,10 +632,24 @@
           symbol: 'A + B (Raw)',
           tag: 'Preserve Duplicates',
           activeZones: ['left', 'overlap', 'right'],
-          sql: `SELECT cust_id, name, tier FROM Customers_Online\nUNION ALL\nSELECT cust_id, name, tier FROM Customers_Retail\nORDER BY cust_id;`,
+          sqlByDialect: {
+            mysql: `SELECT cust_id, name, tier FROM Customers_Online\nUNION ALL\nSELECT cust_id, name, tier FROM Customers_Retail\nORDER BY cust_id;`,
+            postgres: `SELECT cust_id, name, tier FROM Customers_Online\nUNION ALL\nSELECT cust_id, name, tier FROM Customers_Retail\nORDER BY cust_id;`,
+            oracle: `SELECT cust_id, name, tier FROM Customers_Online\nUNION ALL\nSELECT cust_id, name, tier FROM Customers_Retail\nORDER BY cust_id;`,
+            sqlserver: `SELECT cust_id, name, tier FROM Customers_Online\nUNION ALL\nSELECT cust_id, name, tier FROM Customers_Retail\nORDER BY cust_id;`
+          },
           tagline: 'Stacks both sets directly without deduplication',
           explanation: 'All 5 online records and all 5 retail records are appended together. Bob (#102) and David (#103) appear twice. Total: 10 rows.',
           gotcha: 'UNION ALL is significantly faster than UNION because the database skips the expensive sort-and-distinct pipeline pass. Always default to UNION ALL unless deduplication is required.',
+          quickDrill: {
+            question: 'When should you choose UNION ALL over UNION?',
+            options: [
+              { id: 'A', text: 'When you know sets are disjoint or duplicate entries are acceptable', isCorrect: true },
+              { id: 'B', text: 'When you need to drop duplicate IDs', isCorrect: false },
+              { id: 'C', text: 'Only when joining tables with different column counts', isCorrect: false }
+            ],
+            explanation: 'UNION ALL streams directly without sorting, making it orders of magnitude faster on large data volumes.'
+          },
           outputGenerator: (lRows, rRows) => {
             const out = [];
             lRows.forEach(r => out.push({ status: 'source_a', ...r }));
@@ -348,10 +663,24 @@
           symbol: 'A ∩ B',
           tag: 'Common In Both',
           activeZones: ['overlap'],
-          sql: `-- ANSI SQL / PostgreSQL / SQL Server / Oracle:\nSELECT cust_id, name, tier FROM Customers_Online\nINTERSECT\nSELECT cust_id, name, tier FROM Customers_Retail;\n\n-- MySQL 8.0 Emulation (via INNER JOIN):\nSELECT o.cust_id, o.name, o.tier\nFROM Customers_Online o\nINNER JOIN Customers_Retail r ON o.cust_id = r.cust_id;`,
+          sqlByDialect: {
+            mysql: `-- MySQL 8.0 Emulation (via INNER JOIN):\nSELECT o.cust_id, o.name, o.tier\nFROM Customers_Online o\nINNER JOIN Customers_Retail r ON o.cust_id = r.cust_id;`,
+            postgres: `SELECT cust_id, name, tier FROM Customers_Online\nINTERSECT\nSELECT cust_id, name, tier FROM Customers_Retail;`,
+            oracle: `SELECT cust_id, name, tier FROM Customers_Online\nINTERSECT\nSELECT cust_id, name, tier FROM Customers_Retail;`,
+            sqlserver: `SELECT cust_id, name, tier FROM Customers_Online\nINTERSECT\nSELECT cust_id, name, tier FROM Customers_Retail;`
+          },
           tagline: 'Returns only records present in BOTH datasets',
           explanation: 'Finds omnichannel shoppers who buy both Online and Retail. Only Bob (#102) and David (#103) exist in both tables. Exactly 2 rows returned.',
           gotcha: 'INTERSECT compares ALL selected columns, not just primary keys! If Bob is \'Silver\' in Online but has been updated to \'Gold\' in Retail, standard INTERSECT considers them different and drops them!',
+          quickDrill: {
+            question: 'If Bob is "Silver" Online but "Gold" in Retail, does "SELECT * FROM Online INTERSECT SELECT * FROM Retail" match him?',
+            options: [
+              { id: 'A', text: 'Yes, because cust_id matches', isCorrect: false },
+              { id: 'B', text: 'No, because INTERSECT compares entire row values across all columns', isCorrect: true },
+              { id: 'C', text: 'It creates a duplicate row', isCorrect: false }
+            ],
+            explanation: 'Set operations compare all projected columns simultaneously. Different column values mean the row is not an exact match.'
+          },
           outputGenerator: (lRows, rRows) => {
             const out = [];
             lRows.forEach(l => {
@@ -369,10 +698,24 @@
           symbol: 'A \\ B',
           tag: 'Left Exclusive',
           activeZones: ['left'],
-          sql: `-- ANSI SQL / PostgreSQL / SQL Server (EXCEPT):\nSELECT cust_id, name, tier FROM Customers_Online\nEXCEPT\nSELECT cust_id, name, tier FROM Customers_Retail;\n\n-- Oracle uses MINUS keyword instead of EXCEPT\n\n-- MySQL 8.0 Emulation (via LEFT JOIN):\nSELECT o.cust_id, o.name, o.tier\nFROM Customers_Online o\nLEFT JOIN Customers_Retail r ON o.cust_id = r.cust_id\nWHERE r.cust_id IS NULL;`,
+          sqlByDialect: {
+            mysql: `-- MySQL 8.0 Emulation (via LEFT JOIN):\nSELECT o.cust_id, o.name, o.tier\nFROM Customers_Online o\nLEFT JOIN Customers_Retail r ON o.cust_id = r.cust_id\nWHERE r.cust_id IS NULL;`,
+            postgres: `SELECT cust_id, name, tier FROM Customers_Online\nEXCEPT\nSELECT cust_id, name, tier FROM Customers_Retail;`,
+            oracle: `-- Oracle uses MINUS keyword:\nSELECT cust_id, name, tier FROM Customers_Online\nMINUS\nSELECT cust_id, name, tier FROM Customers_Retail;`,
+            sqlserver: `SELECT cust_id, name, tier FROM Customers_Online\nEXCEPT\nSELECT cust_id, name, tier FROM Customers_Retail;`
+          },
           tagline: 'Returns records in the first set that do NOT exist in the second',
           explanation: 'Finds pure Online-only customers. Alice (#101), Fiona (#104), and Grace (#105) have never shopped retail. Bob and David are removed because they exist in retail.',
           gotcha: 'Order of tables matters! A EXCEPT B produces Online-only shoppers (3 rows). B EXCEPT A produces Retail-only shoppers (Charlie, Hannah, Ian - 3 rows).',
+          quickDrill: {
+            question: 'What keyword does Oracle SQL use instead of EXCEPT?',
+            options: [
+              { id: 'A', text: 'MINUS', isCorrect: true },
+              { id: 'B', text: 'DIFFERENCE', isCorrect: false },
+              { id: 'C', text: 'EXCLUDE', isCorrect: false }
+            ],
+            explanation: 'Oracle Database historically implemented the MINUS operator rather than the standard ANSI EXCEPT keyword.'
+          },
           outputGenerator: (lRows, rRows) => {
             const out = [];
             lRows.forEach(l => {
@@ -383,71 +726,6 @@
             });
             return out;
           }
-        }
-      ]
-    }
-  };
-
-  // --- SCHEMA METADATA ---
-  const SCHEMA_INFO = {
-    joins: {
-      title: 'Relational Schema: Employees & Departments',
-      relationship: 'Employees.dept_id (Foreign Key, Many) ───► Departments.dept_id (Primary Key, One)',
-      tables: [
-        {
-          name: 'Employees',
-          alias: 'e',
-          type: 'Referencing Child Entity (Many)',
-          description: 'Stores individual personnel records. Each employee can belong to at most one department.',
-          orphanNotice: 'Row #5 (Evan Vance) has dept_id = NULL. He is an orphan record with no assigned department.',
-          columns: [
-            { name: 'emp_id', type: 'INT', key: 'PK', desc: 'Primary key; unique employee ID' },
-            { name: 'name', type: 'VARCHAR(50)', key: '', desc: 'Full legal employee name' },
-            { name: 'dept_id', type: 'INT', key: 'FK', desc: 'Foreign key to Departments.dept_id (NULLABLE)' },
-            { name: 'salary', type: 'VARCHAR(20)', key: '', desc: 'Annual base compensation' }
-          ]
-        },
-        {
-          name: 'Departments',
-          alias: 'd',
-          type: 'Referenced Parent Entity (One)',
-          description: 'Stores corporate division units and geographic locations.',
-          orphanNotice: 'Row #40 (Research) has 0 employees referencing it. It is an unreferenced parent division.',
-          columns: [
-            { name: 'dept_id', type: 'INT', key: 'PK', desc: 'Primary key; unique department code' },
-            { name: 'dept_name', type: 'VARCHAR(50)', key: '', desc: 'Division title (Engineering, Sales, etc.)' },
-            { name: 'location', type: 'VARCHAR(50)', key: '', desc: 'Office campus headquarters city' }
-          ]
-        }
-      ]
-    },
-    setOps: {
-      title: 'Set Schema: Customers_Online & Customers_Retail',
-      relationship: 'Homogeneous schemas compared vertically via Mathematical Set Operations',
-      tables: [
-        {
-          name: 'Customers_Online',
-          alias: 'online',
-          type: 'E-Commerce Channel Entity',
-          description: 'Users who placed digital orders via the web application or mobile app.',
-          orphanNotice: 'Alice (#101), Fiona (#104), and Grace (#105) shop exclusively online.',
-          columns: [
-            { name: 'cust_id', type: 'INT', key: 'PK', desc: 'Primary key; unique customer number' },
-            { name: 'name', type: 'VARCHAR(50)', key: '', desc: 'Registered customer full name' },
-            { name: 'tier', type: 'VARCHAR(20)', key: '', desc: 'Loyalty status (Gold, Silver, Platinum, Bronze)' }
-          ]
-        },
-        {
-          name: 'Customers_Retail',
-          alias: 'retail',
-          type: 'Physical Store Channel Entity',
-          description: 'Shoppers who checked out at physical flagship retail stores.',
-          orphanNotice: 'Charlie (#106), Hannah (#107), and Ian (#108) shop exclusively in brick-and-mortar stores.',
-          columns: [
-            { name: 'cust_id', type: 'INT', key: 'PK', desc: 'Primary key; unique customer number' },
-            { name: 'name', type: 'VARCHAR(50)', key: '', desc: 'Registered customer full name' },
-            { name: 'tier', type: 'VARCHAR(20)', key: '', desc: 'Loyalty status tier' }
-          ]
         }
       ]
     }
@@ -837,64 +1115,21 @@
     }
   ];
 
-  // --- CONCEPT MASTERY FLASHCARDS ---
-  const CONCEPTS = [
-    {
-      id: 'c_on_where',
-      title: 'The "ON vs WHERE" Filter Trap in Outer Joins',
-      tag: 'Critical Join Trap',
-      icon: '⚠️',
-      summary: 'Placing right-table filters in the WHERE clause silently transforms a LEFT JOIN into an INNER JOIN.',
-      problem: 'When you write `LEFT JOIN Departments d ON e.dept_id = d.dept_id WHERE d.location = \'San Francisco\'`, the database first computes the LEFT JOIN (padding Evan with NULL). Then the WHERE clause evaluates `d.location = \'San Francisco\'`. For Evan, `NULL = \'San Francisco\'` evaluates to FALSE/UNKNOWN, so Evan is silently dropped!',
-      solution: 'Move filters on the preserved/optional table into the `ON` clause: `LEFT JOIN Departments d ON e.dept_id = d.dept_id AND d.location = \'San Francisco\'`. This guarantees all employees are preserved.',
-      codeBad: `-- ❌ BUG: Silently acts as INNER JOIN\nSELECT e.name, d.location\nFROM Employees e\nLEFT JOIN Departments d ON e.dept_id = d.dept_id\nWHERE d.location = 'San Francisco';`,
-      codeGood: `-- ✅ CORRECT: Preserves all employees\nSELECT e.name, d.location\nFROM Employees e\nLEFT JOIN Departments d ON e.dept_id = d.dept_id\n  AND d.location = 'San Francisco';`
-    },
-    {
-      id: 'c_null_paradox',
-      title: 'The 3-Valued Logic NULL Paradox',
-      tag: 'Relational Theory',
-      icon: '⚡',
-      summary: 'NULL is not a value; it is a state of unknown data. Therefore, `NULL = NULL` is UNKNOWN, never TRUE.',
-      problem: 'If two tables both contain a row where `dept_id` is NULL, an `INNER JOIN ... ON e.dept_id = d.dept_id` will NEVER match them! In SQL\'s 3-valued logic, `NULL = NULL` yields `UNKNOWN`, which fails the join predicate.',
-      solution: 'If you ever need to match rows where keys may be NULL on both sides, use NULL-safe equality operators: `<=>` in MySQL, or `IS NOT DISTINCT FROM` in PostgreSQL and modern ANSI SQL.',
-      codeBad: `-- ❌ Will never match two NULL keys\nSELECT *\nFROM TableA a\nINNER JOIN TableB b ON a.nullable_key = b.nullable_key;`,
-      codeGood: `-- ✅ Matches values AND matches NULL to NULL\n-- PostgreSQL / ANSI:\nSELECT * FROM TableA a INNER JOIN TableB b ON a.nullable_key IS NOT DISTINCT FROM b.nullable_key;\n-- MySQL:\nSELECT * FROM TableA a INNER JOIN TableB b ON a.nullable_key <=> b.nullable_key;`
-    },
-    {
-      id: 'c_antijoin_battle',
-      title: 'Anti-Join Battle: NOT EXISTS vs LEFT JOIN / IS NULL vs NOT IN',
-      tag: 'Performance & Safety',
-      icon: '🛡️',
-      summary: 'Why NOT IN is dangerous when NULLs exist, and why NOT EXISTS is the industry gold standard.',
-      problem: 'If you write `WHERE emp_id NOT IN (SELECT emp_id FROM ...)`, and that subquery returns even a SINGLE row containing `NULL`, the entire NOT IN expression evaluates to `UNKNOWN` for every row, returning 0 total records!',
-      solution: 'Always use `NOT EXISTS` or `LEFT JOIN ... WHERE right.pk IS NULL`. Modern query optimizers (Postgres, MySQL 8, Oracle) rewrite them into Hash Anti-Joins for maximum execution performance.',
-      codeBad: `-- ⚠️ DANGEROUS: If subquery returns a NULL, 0 rows returned!\nSELECT * FROM Employees\nWHERE dept_id NOT IN (SELECT dept_id FROM Departments);`,
-      codeGood: `-- ✅ SAFE & FAST: Handled by Hash Anti-Join engine\nSELECT * FROM Employees e\nWHERE NOT EXISTS (\n  SELECT 1 FROM Departments d WHERE d.dept_id = e.dept_id\n);`
-    },
-    {
-      id: 'c_union_perf',
-      title: 'UNION vs UNION ALL: Memory & Sorting Architecture',
-      tag: 'Query Optimization',
-      icon: '🚀',
-      summary: 'UNION enforces mathematical set purity via expensive sorting; UNION ALL is a high-speed stream append.',
-      problem: '`UNION` forces the database engine to allocate temporary memory buffers or spill to disk to sort and hash all rows to eliminate duplicates ($O(N \\log N)$ complexity). On multi-gigabyte datasets, this can cause out-of-memory errors.',
-      solution: 'Default to `UNION ALL` ($O(N)$ direct stream concatenation). Only use `UNION` when business requirements explicitly mandate unique row deduplication.',
-      codeBad: `-- ❌ Unnecessary sort & hash overhead\nSELECT transaction_id, amount FROM Sales_2025\nUNION\nSELECT transaction_id, amount FROM Sales_2026;`,
-      codeGood: `-- ✅ Blazing fast stream append (disjoint by year!)\nSELECT transaction_id, amount FROM Sales_2025\nUNION ALL\nSELECT transaction_id, amount FROM Sales_2026;`
-    }
-  ];
-
   // --- STATE ---
   const state = {
-    mode: 'joins', // 'joins' | 'setOps'
+    mode: 'joins', // 'joins' | 'euler3' | 'setOps'
+    cockpitLayout: 'split', // 'split' | 'diagram' | 'matrix'
     selectedOpIndex: 0,
+    selectedDialect: 'mysql', // 'mysql' | 'postgres' | 'oracle' | 'sqlserver'
     activeSubtab: 'visualizer', // 'visualizer' | 'challenges' | 'schema' | 'concepts'
     hoveredChipId: null,
     currentChallengeIdx: 0,
     solvedChallenges: new Set(),
     selectedChallengeOption: null,
-    challengeAnswerFeedback: null
+    challengeAnswerFeedback: null,
+    customRowOverrides: new Map(), // emp_id -> { dept_id }
+    activeWhatIfEmpId: null, // emp_id currently open in what-if popover
+    quickDrillAnswers: {} // opId -> { selectedId, isCorrect }
   };
 
   // Load solved challenges from localStorage
@@ -925,18 +1160,34 @@
       if (window.AudioFX) window.AudioFX.playClick();
     },
 
+    setLayout: function (layout) {
+      if (state.cockpitLayout === layout) return;
+      state.cockpitLayout = layout;
+      this.render();
+      if (window.AudioFX) window.AudioFX.playClick();
+    },
+
     setMode: function (mode) {
       if (state.mode === mode) return;
       state.mode = mode;
       state.selectedOpIndex = 0;
       state.hoveredChipId = null;
+      state.activeWhatIfEmpId = null;
       this.render();
       if (window.AudioFX) window.AudioFX.playPop();
+    },
+
+    setDialect: function (dialect) {
+      if (state.selectedDialect === dialect) return;
+      state.selectedDialect = dialect;
+      this.render();
+      if (window.AudioFX) window.AudioFX.playClick();
     },
 
     selectOp: function (index) {
       state.selectedOpIndex = index;
       state.hoveredChipId = null;
+      state.activeWhatIfEmpId = null;
       if (state.activeSubtab !== 'visualizer') {
         state.activeSubtab = 'visualizer';
       }
@@ -948,34 +1199,103 @@
     clickVennZone: function (zone) {
       if (state.mode === 'joins') {
         if (zone === 'left') {
-          // Left crescent -> Left Anti-Join
           const idx = DATASETS.joins.operations.findIndex(o => o.id === 'left_antijoin');
           if (idx !== -1) this.selectOp(idx);
         } else if (zone === 'overlap') {
-          // Center lens -> Inner Join
           const idx = DATASETS.joins.operations.findIndex(o => o.id === 'inner_join');
           if (idx !== -1) this.selectOp(idx);
         } else if (zone === 'right') {
-          // Right crescent -> Right Anti-Join
           const idx = DATASETS.joins.operations.findIndex(o => o.id === 'right_antijoin');
+          if (idx !== -1) this.selectOp(idx);
+        }
+      } else if (state.mode === 'euler3') {
+        if (zone === 'center_abc') {
+          const idx = DATASETS.euler3.operations.findIndex(o => o.id === 'euler_3way_inner');
+          if (idx !== -1) this.selectOp(idx);
+        } else if (zone === 'bottom_c') {
+          const idx = DATASETS.euler3.operations.findIndex(o => o.id === 'euler_project_orphans');
+          if (idx !== -1) this.selectOp(idx);
+        } else {
+          const idx = DATASETS.euler3.operations.findIndex(o => o.id === 'euler_chained_left');
           if (idx !== -1) this.selectOp(idx);
         }
       } else {
         if (zone === 'left') {
-          // Left crescent -> EXCEPT
           const idx = DATASETS.setOps.operations.findIndex(o => o.id === 'except');
           if (idx !== -1) this.selectOp(idx);
         } else if (zone === 'overlap') {
-          // Center lens -> INTERSECT
           const idx = DATASETS.setOps.operations.findIndex(o => o.id === 'intersect');
           if (idx !== -1) this.selectOp(idx);
         } else if (zone === 'right') {
-          // Right crescent -> UNION
           const idx = DATASETS.setOps.operations.findIndex(o => o.id === 'union');
           if (idx !== -1) this.selectOp(idx);
         }
       }
       if (window.AudioFX) window.AudioFX.playPop();
+    },
+
+    // --- FEATURE #2: WHAT-IF KEY SIMULATOR METHODS ---
+    openWhatIf: function (empId, e) {
+      if (e) e.stopPropagation();
+      state.activeWhatIfEmpId = empId;
+      this.render();
+      if (window.AudioFX) window.AudioFX.playPop();
+    },
+
+    closeWhatIf: function () {
+      state.activeWhatIfEmpId = null;
+      this.render();
+    },
+
+    mutateRowKey: function (empId, newDeptId) {
+      state.customRowOverrides.set(empId, newDeptId);
+      state.activeWhatIfEmpId = null;
+      this.render();
+      if (window.AudioFX) window.AudioFX.playSuccess();
+    },
+
+    resetDataOverrides: function () {
+      state.customRowOverrides.clear();
+      state.activeWhatIfEmpId = null;
+      this.render();
+      if (window.AudioFX) window.AudioFX.playPop();
+    },
+
+    // Helper: gets effective employee rows reflecting What-If mutations
+    getEffectiveEmployees: function () {
+      const baseRows = DATASETS.joins.leftTable.rows;
+      return baseRows.map(r => {
+        if (state.customRowOverrides.has(r.emp_id)) {
+          return { ...r, dept_id: state.customRowOverrides.get(r.emp_id) };
+        }
+        return { ...r };
+      });
+    },
+
+    // --- FEATURE #5: QUICK DRILL METHODS ---
+    answerQuickDrill: function (opId, selectedId) {
+      const currentOp = DATASETS[state.mode].operations[state.selectedOpIndex];
+      if (!currentOp || !currentOp.quickDrill) return;
+
+      const opt = currentOp.quickDrill.options.find(o => o.id === selectedId);
+      if (!opt) return;
+
+      state.quickDrillAnswers[opId] = {
+        selectedId: selectedId,
+        isCorrect: opt.isCorrect
+      };
+
+      if (opt.isCorrect) {
+        if (window.soundFX && typeof window.soundFX.addXP === 'function') {
+          window.soundFX.addXP(10, 'Quick Drill Mastered!');
+        } else if (window.AudioFX) {
+          window.AudioFX.playSuccess();
+        }
+      } else {
+        if (window.AudioFX) window.AudioFX.playError();
+      }
+
+      this.render();
     },
 
     highlightChip: function (chipId) {
@@ -1006,8 +1326,11 @@
 
     copySQL: function () {
       const currentOp = DATASETS[state.mode].operations[state.selectedOpIndex];
-      if (navigator.clipboard && currentOp) {
-        navigator.clipboard.writeText(currentOp.sql).then(() => {
+      if (!currentOp) return;
+      const sql = currentOp.sqlByDialect[state.selectedDialect] || currentOp.sqlByDialect.mysql;
+
+      if (navigator.clipboard && sql) {
+        navigator.clipboard.writeText(sql).then(() => {
           const btn = document.getElementById('btnCopyVennSQL');
           if (btn) {
             const originalText = btn.innerHTML;
@@ -1026,10 +1349,11 @@
     runInStudio: function () {
       const currentOp = DATASETS[state.mode].operations[state.selectedOpIndex];
       if (!currentOp) return;
+      const sql = currentOp.sqlByDialect[state.selectedDialect] || currentOp.sqlByDialect.mysql;
 
       const sqlInput = document.getElementById('sqlInput');
       if (sqlInput) {
-        sqlInput.value = currentOp.sql.trim();
+        sqlInput.value = sql.trim();
       }
 
       if (typeof window.switchMainView === 'function') {
@@ -1037,7 +1361,7 @@
       }
 
       if (typeof window.parseAndBuildPipeline === 'function') {
-        window.parseAndBuildPipeline(currentOp.sql);
+        window.parseAndBuildPipeline(sql);
       }
 
       if (window.AudioFX) window.AudioFX.playLaunch();
@@ -1076,7 +1400,6 @@
             );
           } catch (e) {}
 
-          // Award XP via soundFX if available
           if (window.soundFX && typeof window.soundFX.addXP === 'function') {
             window.soundFX.addXP(challenge.xpReward, `Venn Challenge #${challenge.number} Mastered!`);
           } else if (window.AudioFX) {
@@ -1122,36 +1445,52 @@
       if (!container) return;
 
       const currentDataset = DATASETS[state.mode];
-      const currentOp = currentDataset.operations[state.selectedOpIndex];
+      const currentOp = currentDataset.operations[state.selectedOpIndex] || currentDataset.operations[0];
       const activeZones = currentOp ? (currentOp.activeZones || []) : [];
 
-      const outputRows = currentOp ? currentOp.outputGenerator(
-        currentDataset.leftTable.rows,
-        currentDataset.rightTable.rows
-      ) : [];
+      // Calculate output rows reflecting any What-If mutations
+      let outputRows = [];
+      if (state.mode === 'joins') {
+        const effectiveEmployees = this.getEffectiveEmployees();
+        outputRows = currentOp.outputGenerator(effectiveEmployees, currentDataset.rightTable.rows);
+      } else if (state.mode === 'euler3') {
+        outputRows = currentOp.outputGenerator(
+          currentDataset.tableA.rows,
+          currentDataset.tableB.rows,
+          currentDataset.tableC.rows
+        );
+      } else {
+        outputRows = currentOp.outputGenerator(
+          currentDataset.leftTable.rows,
+          currentDataset.rightTable.rows
+        );
+      }
 
       const solvedCount = state.solvedChallenges.size;
       const totalChallenges = CHALLENGES.length;
 
       container.innerHTML = `
-        <div class="venn-matrix-wrapper">
+        <div class="venn-matrix-wrapper layout-${state.cockpitLayout}">
           <!-- Top Header Strip -->
           <div class="venn-matrix-header">
             <div class="venn-header-left">
               <div class="venn-title-row">
                 <span class="venn-icon">⭕</span>
                 <h1 class="venn-title">Relational Set &amp; Join Topology Matrix</h1>
-                <span class="venn-status-pill">Interactive Row Physics &amp; Practice</span>
+                <span class="venn-status-pill">Interactive Cockpit &amp; Live Physics</span>
               </div>
               <p class="venn-subtitle">
-                Master physical intersections, outer preserves, anti-join exclusions, schema keys, and real business challenges in one unified hub.
+                Master physical intersections, 3-table Euler chains, what-if key mutations, multi-dialect SQL, and FAANG challenges in one unified cockpit.
               </p>
             </div>
 
-            <!-- Mode Switcher: Joins vs Set Operations -->
+            <!-- Mode Switcher: 2-Table Joins vs 3-Table Euler vs Set Operations -->
             <div class="venn-mode-toggle">
               <button class="venn-mode-btn ${state.mode === 'joins' ? 'active' : ''}" onclick="window.VennMatrixEngine.setMode('joins')">
-                <span class="mode-icon">🔗</span> Multi-Table Joins
+                <span class="mode-icon">🔗</span> 2-Table Joins
+              </button>
+              <button class="venn-mode-btn ${state.mode === 'euler3' ? 'active' : ''}" onclick="window.VennMatrixEngine.setMode('euler3')">
+                <span class="mode-icon">🌐</span> 3-Table Euler Joins
               </button>
               <button class="venn-mode-btn ${state.mode === 'setOps' ? 'active' : ''}" onclick="window.VennMatrixEngine.setMode('setOps')">
                 <span class="mode-icon">⋃</span> Set Operations
@@ -1191,8 +1530,36 @@
 
     // --- TAB 1: VISUALIZER & ROW PHYSICS ---
     renderVisualizerTab: function (currentDataset, currentOp, activeZones, outputRows) {
+      const activeSQL = currentOp.sqlByDialect[state.selectedDialect] || currentOp.sqlByDialect.mysql;
+      const drillAnswer = state.quickDrillAnswers[currentOp.id];
+
       return `
-        <!-- Compact Schema Key Indicator Strip -->
+        <!-- FEATURE #1: Cockpit Layout Switcher & What-If Reset Bar -->
+        <div class="venn-cockpit-toolbar">
+          <div class="layout-toggle-group">
+            <button class="btn-layout-pill ${state.cockpitLayout === 'split' ? 'active' : ''}" onclick="window.VennMatrixEngine.setLayout('split')">
+              <span class="layout-icon">⚡</span> Split Cockpit (Zero-Scroll)
+            </button>
+            <button class="btn-layout-pill ${state.cockpitLayout === 'diagram' ? 'active' : ''}" onclick="window.VennMatrixEngine.setLayout('diagram')">
+              <span class="layout-icon">📐</span> Focus Diagram
+            </button>
+            <button class="btn-layout-pill ${state.cockpitLayout === 'matrix' ? 'active' : ''}" onclick="window.VennMatrixEngine.setLayout('matrix')">
+              <span class="layout-icon">📊</span> 3-Table Matrix
+            </button>
+          </div>
+
+          <div class="cockpit-right-actions">
+            ${state.customRowOverrides.size > 0 ? `
+              <button class="btn-reset-whatif" onclick="window.VennMatrixEngine.resetDataOverrides()">
+                ↺ Reset What-If Data (${state.customRowOverrides.size} altered)
+              </button>
+            ` : `
+              <span class="whatif-hint-pill">🧪 Tip: Click any row chip inside the circle to simulate key changes live!</span>
+            `}
+          </div>
+        </div>
+
+        <!-- Compact Relational Key Strip -->
         <div class="venn-schema-key-strip">
           <div class="schema-key-info">
             <span class="key-pill-label">RELATIONAL BINDING:</span>
@@ -1200,6 +1567,12 @@
               <span class="key-pill fk">Employees.dept_id [FK]</span>
               <span class="key-arrow">───►</span>
               <span class="key-pill pk">Departments.dept_id [PK]</span>
+            ` : state.mode === 'euler3' ? `
+              <span class="key-pill fk">Employees.dept_id</span>
+              <span class="key-arrow">──►</span>
+              <span class="key-pill pk">Departments.dept_id</span>
+              <span class="key-arrow">◄──</span>
+              <span class="key-pill fk">Projects.dept_id</span>
             ` : `
               <span class="key-pill set">Customers_Online (5 Rows)</span>
               <span class="key-arrow">⋃</span>
@@ -1209,10 +1582,14 @@
           <div class="schema-orphan-links">
             ${state.mode === 'joins' ? `
               <button class="orphan-action-pill left" onclick="window.VennMatrixEngine.clickVennZone('left')" title="Click to isolate Left Orphan">
-                ⚠️ Orphan Employee: Evan (#5, dept_id IS NULL)
+                ⚠️ Left Orphan: Evan (#5, dept_id IS NULL)
               </button>
               <button class="orphan-action-pill right" onclick="window.VennMatrixEngine.clickVennZone('right')" title="Click to isolate Right Orphan">
-                ⚠️ Orphan Dept: Research (#40, 0 staff)
+                ⚠️ Right Orphan: Research (#40, 0 staff)
+              </button>
+            ` : state.mode === 'euler3' ? `
+              <button class="orphan-action-pill right" onclick="window.VennMatrixEngine.clickVennZone('bottom_c')">
+                ⚠️ Orphan Project: AI Quantum (#104, dept 50)
               </button>
             ` : `
               <span class="orphan-action-pill info">
@@ -1236,139 +1613,104 @@
           </div>
         </div>
 
-        <!-- Main Interactive Stage: SVG Canvas & Details Grid -->
-        <div class="venn-stage-grid">
-          <!-- Left Panel: Interactive Dynamic SVG Venn Diagram with Clickable Zones -->
+        <!-- MAIN INTERACTIVE STAGE -->
+        <div class="venn-stage-grid cockpit-${state.cockpitLayout}">
+          <!-- Left Column: SVG Diagram + Quick Drill -->
           <div class="venn-canvas-card">
             <div class="venn-canvas-header">
               <div class="venn-canvas-title">
                 <span>${currentOp.name}</span>
                 <span class="op-symbol-badge">${currentOp.symbol}</span>
               </div>
-              <span class="venn-canvas-hint">💡 Click any circle region directly to switch operations!</span>
+              <span class="venn-canvas-hint">💡 Click any zone to toggle join! Click row chips to mutate keys.</span>
             </div>
 
+            <!-- SVG Container with Live Row Physics -->
             <div class="venn-svg-container">
               ${this.renderVennSvg(activeZones, currentDataset)}
+              ${this.renderWhatIfPopover()}
             </div>
 
-            <!-- Legend with Direct Click Shortcuts -->
+            <!-- Legend with Direct Zone Shortcuts -->
             <div class="venn-legend">
-              <button class="legend-chip left ${activeZones.includes('left') ? 'active' : ''}" onclick="window.VennMatrixEngine.clickVennZone('left')">
-                <span class="indicator"></span> Table A: ${currentDataset.leftTable.name} (Click A \\ B)
-              </button>
-              <button class="legend-chip overlap ${activeZones.includes('overlap') ? 'active' : ''}" onclick="window.VennMatrixEngine.clickVennZone('overlap')">
-                <span class="indicator"></span> Overlap A ∩ B (Click Inner/Intersect)
-              </button>
-              <button class="legend-chip right ${activeZones.includes('right') ? 'active' : ''}" onclick="window.VennMatrixEngine.clickVennZone('right')">
-                <span class="indicator"></span> Table B: ${currentDataset.rightTable.name} (Click B \\ A)
-              </button>
+              ${state.mode === 'joins' ? `
+                <button class="legend-chip left ${activeZones.includes('left') ? 'active' : ''}" onclick="window.VennMatrixEngine.clickVennZone('left')">
+                  <span class="indicator"></span> Table A: Employees (Click A \\ B)
+                </button>
+                <button class="legend-chip overlap ${activeZones.includes('overlap') ? 'active' : ''}" onclick="window.VennMatrixEngine.clickVennZone('overlap')">
+                  <span class="indicator"></span> Overlap A ∩ B (Click Inner)
+                </button>
+                <button class="legend-chip right ${activeZones.includes('right') ? 'active' : ''}" onclick="window.VennMatrixEngine.clickVennZone('right')">
+                  <span class="indicator"></span> Table B: Departments (Click B \\ A)
+                </button>
+              ` : state.mode === 'euler3' ? `
+                <button class="legend-chip left" onclick="window.VennMatrixEngine.clickVennZone('center_abc')">
+                  <span class="indicator"></span> A ∩ B ∩ C (Triple Overlap)
+                </button>
+                <button class="legend-chip overlap" onclick="window.VennMatrixEngine.clickVennZone('chained')">
+                  <span class="indicator"></span> A → B → C (Chained Pipeline)
+                </button>
+                <button class="legend-chip right" onclick="window.VennMatrixEngine.clickVennZone('bottom_c')">
+                  <span class="indicator"></span> C \\ (A ∪ B) (Project Orphans)
+                </button>
+              ` : `
+                <button class="legend-chip left" onclick="window.VennMatrixEngine.clickVennZone('left')">
+                  <span class="indicator"></span> Online Only (Click EXCEPT)
+                </button>
+                <button class="legend-chip overlap" onclick="window.VennMatrixEngine.clickVennZone('overlap')">
+                  <span class="indicator"></span> Omnichannel (Click INTERSECT)
+                </button>
+                <button class="legend-chip right" onclick="window.VennMatrixEngine.clickVennZone('right')">
+                  <span class="indicator"></span> Retail Only (Click UNION)
+                </button>
+              `}
             </div>
-          </div>
 
-          <!-- Right Panel: Operation Intelligence & SQL Generator -->
-          <div class="venn-intel-card">
-            <div class="venn-intel-header">
-              <div class="intel-tagline">${currentOp.tagline}</div>
-            </div>
-
-            <div class="venn-concept-box">
-              <p class="venn-explanation">${currentOp.explanation}</p>
-            </div>
-
-            <!-- SQL Code Generator Card -->
-            <div class="venn-sql-box">
-              <div class="venn-sql-header">
-                <span class="sql-label">PRODUCTION ANSI SQL CODE</span>
-                <div class="sql-actions">
-                  <button id="btnCopyVennSQL" class="venn-btn-copy" onclick="window.VennMatrixEngine.copySQL()">
-                    <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="9" y="9" width="13" height="13" rx="2" ry="2"></rect><path d="M5 15H4a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h9a2 2 0 0 1 2 2v1"></path></svg>
-                    Copy SQL
-                  </button>
-                  <button class="venn-btn-studio" onclick="window.VennMatrixEngine.runInStudio()">
-                    <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polygon points="5 3 19 12 5 21 5 3"></polygon></svg>
-                    Run in Studio
-                  </button>
+            <!-- FEATURE #5: In-Visualizer Contextual Quick Drill -->
+            ${currentOp.quickDrill ? `
+              <div class="venn-quick-drill-card">
+                <div class="quick-drill-header">
+                  <span class="drill-badge">🎯 Quick Check</span>
+                  <span class="drill-title">${currentOp.quickDrill.question}</span>
                 </div>
+                <div class="drill-options-row">
+                  ${currentOp.quickDrill.options.map(opt => {
+                    const isAnswered = !!drillAnswer;
+                    const isSelected = isAnswered && drillAnswer.selectedId === opt.id;
+                    let optClass = '';
+                    if (isAnswered) {
+                      if (isSelected) optClass = opt.isCorrect ? 'drill-correct' : 'drill-incorrect';
+                      else if (opt.isCorrect) optClass = 'drill-correct';
+                    }
+                    return `
+                      <button class="drill-option-btn ${optClass}" onclick="window.VennMatrixEngine.answerQuickDrill('${currentOp.id}', '${opt.id}')">
+                        <span class="opt-letter">${opt.id}</span>
+                        <span class="opt-text">${opt.text}</span>
+                      </button>
+                    `;
+                  }).join('')}
+                </div>
+                ${drillAnswer ? `
+                  <div class="drill-feedback-pill ${drillAnswer.isCorrect ? 'correct' : 'incorrect'}">
+                    ${drillAnswer.isCorrect ? '✓ Correct! +10 XP awarded.' : '❌ Incorrect.'} ${currentOp.quickDrill.explanation}
+                  </div>
+                ` : ''}
               </div>
-              <pre class="venn-code-block"><code>${this.escapeHtml(currentOp.sql)}</code></pre>
-            </div>
-
-            <!-- Gotcha Alert Strip -->
-            <div class="venn-gotcha-strip">
-              <div class="gotcha-badge">⚠️ Relational Trap &amp; Internals:</div>
-              <div class="gotcha-text">${currentOp.gotcha}</div>
-            </div>
+            ` : ''}
           </div>
-        </div>
 
-        <!-- Bottom Stage: Side-by-Side Source Tables & Output Diff Matrix -->
-        <div class="venn-tables-matrix">
-          <div class="venn-tables-header">
-            <span class="matrix-title">Physical Transformation Inspection (Input &rarr; Output)</span>
-            <span class="matrix-tally">Output: <strong>${outputRows.length}</strong> Rows Generated</span>
-          </div>
-
-          <div class="venn-tables-grid">
-            <!-- Source Table A -->
-            <div class="source-table-card">
-              <div class="source-card-header">
-                <span class="table-name-pill table-a">Left (A): ${currentDataset.leftTable.name}</span>
-                <span class="row-count">${currentDataset.leftTable.rows.length} rows</span>
-              </div>
-              <div class="table-scroll-wrapper">
-                <table class="venn-data-table">
-                  <thead>
-                    <tr>
-                      ${currentDataset.leftTable.columns.map(c => `<th>${c}</th>`).join('')}
-                    </tr>
-                  </thead>
-                  <tbody>
-                    ${currentDataset.leftTable.rows.map(row => `
-                      <tr class="venn-inspect-row" data-row-key="${row.emp_id || row.cust_id}">
-                        ${currentDataset.leftTable.columns.map(col => `
-                          <td>${row[col] === null ? '<span class="null-val">NULL</span>' : row[col]}</td>
-                        `).join('')}
-                      </tr>
-                    `).join('')}
-                  </tbody>
-                </table>
-              </div>
-            </div>
-
-            <!-- Source Table B -->
-            <div class="source-table-card">
-              <div class="source-card-header">
-                <span class="table-name-pill table-b">Right (B): ${currentDataset.rightTable.name}</span>
-                <span class="row-count">${currentDataset.rightTable.rows.length} rows</span>
-              </div>
-              <div class="table-scroll-wrapper">
-                <table class="venn-data-table">
-                  <thead>
-                    <tr>
-                      ${currentDataset.rightTable.columns.map(c => `<th>${c}</th>`).join('')}
-                    </tr>
-                  </thead>
-                  <tbody>
-                    ${currentDataset.rightTable.rows.map(row => `
-                      <tr class="venn-inspect-row" data-row-key="${row.dept_id || row.cust_id}">
-                        ${currentDataset.rightTable.columns.map(col => `
-                          <td>${row[col] === null ? '<span class="null-val">NULL</span>' : row[col]}</td>
-                        `).join('')}
-                      </tr>
-                    `).join('')}
-                  </tbody>
-                </table>
-              </div>
-            </div>
-
-            <!-- Result Output Table -->
-            <div class="result-table-card">
+          <!-- Right Column: Live Generated Result Table & SQL Generator (Split Cockpit) -->
+          <div class="venn-intel-card">
+            <!-- If Split Cockpit, show the Generated Output Table right here at the top! -->
+            <div class="cockpit-result-box">
               <div class="result-card-header">
-                <span class="table-name-pill table-result">Generated Result (${currentOp.name})</span>
-                <span class="result-count">${outputRows.length} Rows Produced</span>
+                <div class="result-title-group">
+                  <span class="table-name-pill table-result">Live Transformation Result (${currentOp.name})</span>
+                  <span class="result-count"><strong>${outputRows.length}</strong> Rows Produced</span>
+                </div>
+                <div class="result-tagline-mini">${currentOp.tagline}</div>
               </div>
-              <div class="table-scroll-wrapper">
+              <div class="table-scroll-wrapper cockpit-table-scroll">
                 <table class="venn-data-table result-table">
                   <thead>
                     <tr>
@@ -1389,314 +1731,196 @@
                 </table>
               </div>
             </div>
-          </div>
-        </div>
-      `;
-    },
 
-    // --- TAB 2: PRACTICE CHALLENGES ---
-    renderChallengesTab: function () {
-      const currentChallenge = CHALLENGES[state.currentChallengeIdx];
-      const solvedCount = state.solvedChallenges.size;
-      const totalCount = CHALLENGES.length;
-      const progressPercent = Math.round((solvedCount / totalCount) * 100);
-      const isCurrentSolved = state.solvedChallenges.has(currentChallenge.id);
-
-      return `
-        <div class="venn-challenges-container">
-          <!-- Challenge Header & Stats -->
-          <div class="challenge-overview-card">
-            <div class="challenge-overview-left">
-              <h2 class="challenge-main-heading">🎯 Real-World Relational &amp; Set Challenges</h2>
-              <p class="challenge-main-subtext">
-                Solve enterprise SQL scenarios from FAANG interviews and production systems. Identify the right join or set operation, verify with row-level physics, and earn XP.
-              </p>
-            </div>
-            <div class="challenge-progress-box">
-              <div class="progress-stats-row">
-                <span class="progress-stat-label">SOLVED:</span>
-                <span class="progress-stat-value">${solvedCount} / ${totalCount}</span>
-                <span class="progress-xp-badge">+${solvedCount * 20} XP Earned</span>
-              </div>
-              <div class="challenge-progress-bar">
-                <div class="challenge-progress-fill" style="width: ${progressPercent}%;"></div>
-              </div>
-              <div class="challenge-reset-row">
-                <button class="btn-reset-challenges" onclick="window.VennMatrixEngine.resetChallengeProgress()">Reset Progress</button>
-              </div>
-            </div>
-          </div>
-
-          <!-- Challenge Carousel Strip -->
-          <div class="challenge-carousel-strip">
-            ${CHALLENGES.map((ch, idx) => {
-              const isSolved = state.solvedChallenges.has(ch.id);
-              const isActive = idx === state.currentChallengeIdx;
-              return `
-                <button class="challenge-strip-btn ${isActive ? 'active' : ''} ${isSolved ? 'solved' : ''}" onclick="window.VennMatrixEngine.jumpToChallenge(${idx})">
-                  <span class="ch-num">${isSolved ? '✓' : '#' + ch.number}</span>
-                  <span class="ch-strip-title">${ch.title}</span>
-                  <span class="ch-strip-diff ${ch.difficulty.toLowerCase()}">${ch.difficulty}</span>
-                </button>
-              `;
-            }).join('')}
-          </div>
-
-          <!-- Active Challenge Card -->
-          <div class="challenge-active-card">
-            <div class="challenge-card-header">
-              <div class="challenge-meta-tags">
-                <span class="tag-company">${currentChallenge.company}</span>
-                <span class="tag-category">${currentChallenge.mode === 'joins' ? 'Multi-Table Join' : 'Set Operation'}</span>
-                <span class="tag-difficulty ${currentChallenge.difficulty.toLowerCase()}">${currentChallenge.difficulty}</span>
-              </div>
-              <div class="challenge-xp-chip">+${currentChallenge.xpReward} XP</div>
-            </div>
-
-            <div class="challenge-body">
-              <h3 class="challenge-scenario-title">Scenario #${currentChallenge.number}: ${currentChallenge.title}</h3>
-              <div class="challenge-scenario-box">
-                <p class="scenario-text">${currentChallenge.scenario}</p>
-              </div>
-
-              <div class="challenge-prompt-text">${currentChallenge.prompt}</div>
-
-              <!-- Options Grid -->
-              <div class="challenge-options-grid">
-                ${currentChallenge.options.map((opt) => {
-                  const isSelected = state.selectedChallengeOption === opt.id;
-                  let optClass = '';
-                  if (state.challengeAnswerFeedback && isSelected) {
-                    optClass = opt.isCorrect ? 'correct' : 'incorrect';
-                  } else if (isCurrentSolved && opt.isCorrect) {
-                    optClass = 'correct';
-                  }
-
-                  return `
-                    <button class="challenge-option-btn ${optClass}" onclick="window.VennMatrixEngine.submitChallengeAnswer('${opt.id}')">
-                      <span class="opt-letter">${opt.id}</span>
-                      <span class="opt-text">${opt.text}</span>
-                    </button>
-                  `;
-                }).join('')}
-              </div>
-
-              <!-- Feedback & Actions Area -->
-              ${state.challengeAnswerFeedback ? `
-                <div class="challenge-feedback-banner ${state.challengeAnswerFeedback.isCorrect ? 'feedback-success' : 'feedback-error'}">
-                  <div class="feedback-header">
-                    <span class="feedback-icon">${state.challengeAnswerFeedback.isCorrect ? '🎉' : '❌'}</span>
-                    <span class="feedback-title">${state.challengeAnswerFeedback.isCorrect ? 'Mastered! Correct Selection' : 'Incorrect Query Logic'}</span>
-                  </div>
-                  <p class="feedback-explanation">${state.challengeAnswerFeedback.explanation}</p>
-                  
-                  <div class="feedback-actions">
-                    <button class="btn-inspect-diagram" onclick="window.VennMatrixEngine.inspectChallengeInVisualizer('${currentChallenge.mode}', '${currentChallenge.targetOpId}')">
-                      🔬 View in Visualizer &amp; Row Physics &rarr;
-                    </button>
-                    ${state.currentChallengeIdx < CHALLENGES.length - 1 ? `
-                      <button class="btn-next-challenge" onclick="window.VennMatrixEngine.jumpToChallenge(${state.currentChallengeIdx + 1})">
-                        Next Challenge &rarr;
-                      </button>
-                    ` : ''}
+            <!-- FEATURE #4: Multi-Dialect SQL Box -->
+            <div class="venn-sql-box">
+              <div class="venn-sql-header">
+                <div class="sql-left-dock">
+                  <span class="sql-label">PRODUCTION SQL CODE</span>
+                  <!-- Dialect Switcher Pills -->
+                  <div class="dialect-pills">
+                    <button class="dialect-btn ${state.selectedDialect === 'mysql' ? 'active' : ''}" onclick="window.VennMatrixEngine.setDialect('mysql')">MySQL 8</button>
+                    <button class="dialect-btn ${state.selectedDialect === 'postgres' ? 'active' : ''}" onclick="window.VennMatrixEngine.setDialect('postgres')">Postgres</button>
+                    <button class="dialect-btn ${state.selectedDialect === 'oracle' ? 'active' : ''}" onclick="window.VennMatrixEngine.setDialect('oracle')">Oracle</button>
+                    <button class="dialect-btn ${state.selectedDialect === 'sqlserver' ? 'active' : ''}" onclick="window.VennMatrixEngine.setDialect('sqlserver')">T-SQL</button>
                   </div>
                 </div>
-              ` : ''}
+
+                <div class="sql-actions">
+                  <button id="btnCopyVennSQL" class="venn-btn-copy" onclick="window.VennMatrixEngine.copySQL()">
+                    <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="9" y="9" width="13" height="13" rx="2" ry="2"></rect><path d="M5 15H4a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h9a2 2 0 0 1 2 2v1"></path></svg>
+                    Copy
+                  </button>
+                  <button class="venn-btn-studio" onclick="window.VennMatrixEngine.runInStudio()">
+                    <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polygon points="5 3 19 12 5 21 5 3"></polygon></svg>
+                    Run in Studio
+                  </button>
+                </div>
+              </div>
+              <pre class="venn-code-block"><code>${this.escapeHtml(activeSQL)}</code></pre>
+            </div>
+
+            <!-- Gotcha Alert Strip -->
+            <div class="venn-gotcha-strip">
+              <div class="gotcha-badge">⚠️ Relational Trap &amp; Optimizer Internals (${state.selectedDialect.toUpperCase()}):</div>
+              <div class="gotcha-text">${currentOp.gotcha}</div>
             </div>
           </div>
         </div>
-      `;
-    },
 
-    // --- TAB 3: SCHEMA & ENTITY MODELS ---
-    renderSchemaTab: function () {
-      const currentSchema = SCHEMA_INFO[state.mode];
-
-      return `
-        <div class="venn-schema-container">
-          <div class="schema-header-card">
-            <h2 class="schema-main-title">${currentSchema.title}</h2>
-            <div class="schema-relationship-banner">
-              <span class="banner-icon">🔗</span>
-              <span class="banner-text">${currentSchema.relationship}</span>
+        <!-- Full 3-Table Data Diff Matrix (Visible in 'matrix' or 'diagram' modes) -->
+        ${state.cockpitLayout !== 'split' ? `
+          <div class="venn-tables-matrix">
+            <div class="venn-tables-header">
+              <span class="matrix-title">Physical Transformation Inspection (Input &rarr; Output)</span>
+              <span class="matrix-tally">Output: <strong>${outputRows.length}</strong> Rows</span>
             </div>
-            <p class="schema-subtext">
-              Examine the exact database structure, data types, primary &amp; foreign key constraints, and orphan anomaly conditions that govern join and set behavior.
-            </p>
-          </div>
 
-          <!-- Entity Tables Side-by-Side Grid -->
-          <div class="schema-tables-grid">
-            ${currentSchema.tables.map(tbl => `
-              <div class="schema-entity-card">
-                <div class="entity-card-header">
-                  <div class="entity-title-row">
-                    <span class="entity-name">${tbl.name}</span>
-                    <span class="entity-alias">Alias: <code>${tbl.alias}</code></span>
-                  </div>
-                  <span class="entity-type-badge">${tbl.type}</span>
+            <div class="venn-tables-grid">
+              <!-- Source Table A -->
+              <div class="source-table-card">
+                <div class="source-card-header">
+                  <span class="table-name-pill table-a">Left (A): ${currentDataset.leftTable ? currentDataset.leftTable.name : currentDataset.tableA.name}</span>
                 </div>
-
-                <div class="entity-card-body">
-                  <p class="entity-desc">${tbl.description}</p>
-
-                  <div class="entity-columns-table-wrapper">
-                    <table class="schema-columns-table">
-                      <thead>
-                        <tr>
-                          <th>Key</th>
-                          <th>Column Name</th>
-                          <th>Data Type</th>
-                          <th>Semantic Role &amp; Constraints</th>
+                <div class="table-scroll-wrapper">
+                  <table class="venn-data-table">
+                    <thead>
+                      <tr>${(currentDataset.leftTable ? currentDataset.leftTable.columns : currentDataset.tableA.columns).map(c => `<th>${c}</th>`).join('')}</tr>
+                    </thead>
+                    <tbody>
+                      ${(state.mode === 'joins' ? this.getEffectiveEmployees() : (currentDataset.leftTable ? currentDataset.leftTable.rows : currentDataset.tableA.rows)).map(row => `
+                        <tr class="venn-inspect-row" data-row-key="${row.emp_id || row.cust_id}">
+                          ${(currentDataset.leftTable ? currentDataset.leftTable.columns : currentDataset.tableA.columns).map(col => `
+                            <td>${row[col] === null ? '<span class="null-val">NULL</span>' : row[col]}</td>
+                          `).join('')}
                         </tr>
-                      </thead>
-                      <tbody>
-                        ${tbl.columns.map(col => `
-                          <tr>
-                            <td>
-                              ${col.key === 'PK' ? '<span class="key-badge pk">PK</span>' : ''}
-                              ${col.key === 'FK' ? '<span class="key-badge fk">FK</span>' : ''}
-                            </td>
-                            <td><code>${col.name}</code></td>
-                            <td><span class="col-type">${col.type}</span></td>
-                            <td class="col-desc">${col.desc}</td>
-                          </tr>
-                        `).join('')}
-                      </tbody>
-                    </table>
-                  </div>
-
-                  <!-- Orphan / Anomaly Warning Notice -->
-                  <div class="entity-anomaly-box">
-                    <div class="anomaly-label">⚠️ Relational Set Anomaly:</div>
-                    <div class="anomaly-text">${tbl.orphanNotice}</div>
-                  </div>
+                      `).join('')}
+                    </tbody>
+                  </table>
                 </div>
               </div>
-            `).join('')}
-          </div>
 
-          <!-- Relational Connector Diagram Card -->
-          <div class="schema-connector-card">
-            <div class="connector-header">
-              <span class="connector-title">Cardinality &amp; Physical Key Binding Map</span>
-            </div>
-            <div class="connector-content">
-              ${state.mode === 'joins' ? `
-                <div class="connector-diagram-box">
-                  <div class="entity-node left">
-                    <span class="node-title">Employees (Child)</span>
-                    <div class="node-row matched">Alice Chen &rarr; dept_id: 10</div>
-                    <div class="node-row matched">Bob Smith &rarr; dept_id: 20</div>
-                    <div class="node-row matched">Charlie Kim &rarr; dept_id: 10</div>
-                    <div class="node-row matched">Diana Ross &rarr; dept_id: 30</div>
-                    <div class="node-row orphan">⚡ Evan Vance &rarr; dept_id: NULL (Orphan Child)</div>
-                  </div>
-                  <div class="connector-arrows">
-                    <div class="arrow-line">────── [FK 🔗 PK] ──────►</div>
-                    <span class="cardinality-text">Many-to-One (N:1)</span>
-                  </div>
-                  <div class="entity-node right">
-                    <span class="node-title">Departments (Parent)</span>
-                    <div class="node-row matched">dept_id: 10 &larr; Engineering</div>
-                    <div class="node-row matched">dept_id: 20 &larr; Marketing</div>
-                    <div class="node-row matched">dept_id: 30 &larr; Sales</div>
-                    <div class="node-row orphan">⚡ dept_id: 40 &larr; Research (0 Employees - Orphan Parent)</div>
-                  </div>
+              <!-- Source Table B -->
+              <div class="source-table-card">
+                <div class="source-card-header">
+                  <span class="table-name-pill table-b">Right (B): ${currentDataset.rightTable ? currentDataset.rightTable.name : currentDataset.tableB.name}</span>
                 </div>
-              ` : `
-                <div class="connector-diagram-box">
-                  <div class="entity-node left">
-                    <span class="node-title">Customers_Online (5 Rows)</span>
-                    <div class="node-row exclusive">#101 Alice (Gold) - Online Only</div>
-                    <div class="node-row matched">#102 Bob (Silver) - Omnichannel Shared</div>
-                    <div class="node-row matched">#103 David (Platinum) - Omnichannel Shared</div>
-                    <div class="node-row exclusive">#104 Fiona (Bronze) - Online Only</div>
-                    <div class="node-row exclusive">#105 Grace (Gold) - Online Only</div>
-                  </div>
-                  <div class="connector-arrows">
-                    <div class="arrow-line">◄───── [Set Operations] ─────►</div>
-                    <span class="cardinality-text">Set Intersection &amp; Diff</span>
-                  </div>
-                  <div class="entity-node right">
-                    <span class="node-title">Customers_Retail (5 Rows)</span>
-                    <div class="node-row matched">#102 Bob (Silver) - Omnichannel Shared</div>
-                    <div class="node-row matched">#103 David (Platinum) - Omnichannel Shared</div>
-                    <div class="node-row exclusive">#106 Charlie (Bronze) - Retail Only</div>
-                    <div class="node-row exclusive">#107 Hannah (Silver) - Retail Only</div>
-                    <div class="node-row exclusive">#108 Ian (Gold) - Retail Only</div>
-                  </div>
+                <div class="table-scroll-wrapper">
+                  <table class="venn-data-table">
+                    <thead>
+                      <tr>${(currentDataset.rightTable ? currentDataset.rightTable.columns : currentDataset.tableB.columns).map(c => `<th>${c}</th>`).join('')}</tr>
+                    </thead>
+                    <tbody>
+                      ${(currentDataset.rightTable ? currentDataset.rightTable.rows : currentDataset.tableB.rows).map(row => `
+                        <tr class="venn-inspect-row" data-row-key="${row.dept_id || row.cust_id}">
+                          ${(currentDataset.rightTable ? currentDataset.rightTable.columns : currentDataset.tableB.columns).map(col => `
+                            <td>${row[col] === null ? '<span class="null-val">NULL</span>' : row[col]}</td>
+                          `).join('')}
+                        </tr>
+                      `).join('')}
+                    </tbody>
+                  </table>
                 </div>
-              `}
+              </div>
+
+              <!-- Generated Result Table -->
+              <div class="result-table-card">
+                <div class="result-card-header">
+                  <span class="table-name-pill table-result">Generated Result (${currentOp.name})</span>
+                  <span class="result-count">${outputRows.length} Rows</span>
+                </div>
+                <div class="table-scroll-wrapper">
+                  <table class="venn-data-table result-table">
+                    <thead>
+                      <tr>
+                        <th>Status</th>
+                        ${this.getResultColumns(outputRows).map(c => `<th>${c}</th>`).join('')}
+                      </tr>
+                    </thead>
+                    <tbody>
+                      ${outputRows.map(r => `
+                        <tr class="venn-output-row status-${r.status}">
+                          <td><span class="status-badge badge-${r.status}">${this.formatStatus(r.status)}</span></td>
+                          ${this.getResultColumns(outputRows).map(col => `
+                            <td>${r[col] === null ? '<span class="null-val">NULL</span>' : (r[col] || '---')}</td>
+                          `).join('')}
+                        </tr>
+                      `).join('')}
+                    </tbody>
+                  </table>
+                </div>
+              </div>
             </div>
           </div>
-        </div>
+        ` : ''}
       `;
     },
 
-    // --- TAB 4: CONCEPT MASTERY GUIDE ---
-    renderConceptsTab: function () {
+    // --- FEATURE #2: WHAT-IF POPOVER RENDERER ---
+    renderWhatIfPopover: function () {
+      if (!state.activeWhatIfEmpId) return '';
+      const empId = state.activeWhatIfEmpId;
+      const effectiveEmployees = this.getEffectiveEmployees();
+      const emp = effectiveEmployees.find(e => e.emp_id === empId);
+      if (!emp) return '';
+
       return `
-        <div class="venn-concepts-container">
-          <div class="concepts-header-card">
-            <h2 class="concepts-main-title">🧠 Relational Theory &amp; Join Performance Guide</h2>
-            <p class="concepts-subtext">
-              Crucial production SQL design principles, optimizer execution models, and interview traps to elevate your database engineering skills.
-            </p>
-          </div>
-
-          <div class="concepts-grid">
-            ${CONCEPTS.map(c => `
-              <div class="concept-card">
-                <div class="concept-card-header">
-                  <div class="concept-card-title-row">
-                    <span class="concept-icon">${c.icon}</span>
-                    <h3 class="concept-title">${c.title}</h3>
-                  </div>
-                  <span class="concept-tag">${c.tag}</span>
-                </div>
-
-                <div class="concept-card-body">
-                  <div class="concept-summary-box">
-                    <p class="summary-text">${c.summary}</p>
-                  </div>
-
-                  <div class="concept-section">
-                    <h4 class="section-subtitle">The Engineering Trap:</h4>
-                    <p class="section-body">${c.problem}</p>
-                  </div>
-
-                  <div class="concept-section">
-                    <h4 class="section-subtitle">The Production Solution:</h4>
-                    <p class="section-body">${c.solution}</p>
-                  </div>
-
-                  <!-- Code Comparison -->
-                  <div class="concept-code-comparison">
-                    <div class="code-col bad">
-                      <span class="code-label error">Antipattern / Bug</span>
-                      <pre class="concept-code"><code>${this.escapeHtml(c.codeBad)}</code></pre>
-                    </div>
-                    <div class="code-col good">
-                      <span class="code-label success">Production Pattern</span>
-                      <pre class="concept-code"><code>${this.escapeHtml(c.codeGood)}</code></pre>
-                    </div>
-                  </div>
-                </div>
+        <div class="whatif-popover-backdrop" onclick="window.VennMatrixEngine.closeWhatIf()">
+          <div class="whatif-popover-card" onclick="event.stopPropagation()">
+            <div class="whatif-popover-header">
+              <span class="whatif-title">🧪 What-If Simulator: ${emp.name}</span>
+              <button class="whatif-close-btn" onclick="window.VennMatrixEngine.closeWhatIf()">✕</button>
+            </div>
+            <div class="whatif-popover-body">
+              <p class="whatif-intro">
+                Reassign <strong>${emp.name}</strong>'s foreign key (<code>dept_id</code>) and watch the row physically animate across relational zones in real-time!
+              </p>
+              <div class="whatif-buttons-grid">
+                <button class="whatif-dept-btn ${emp.dept_id === null ? 'current' : ''}" onclick="window.VennMatrixEngine.mutateRowKey(${empId}, null)">
+                  <span class="dept-badge">NULL</span> Orphan (No Dept)
+                </button>
+                <button class="whatif-dept-btn ${emp.dept_id === 10 ? 'current' : ''}" onclick="window.VennMatrixEngine.mutateRowKey(${empId}, 10)">
+                  <span class="dept-badge">#10</span> Engineering (SF)
+                </button>
+                <button class="whatif-dept-btn ${emp.dept_id === 20 ? 'current' : ''}" onclick="window.VennMatrixEngine.mutateRowKey(${empId}, 20)">
+                  <span class="dept-badge">#20</span> Marketing (NY)
+                </button>
+                <button class="whatif-dept-btn ${emp.dept_id === 30 ? 'current' : ''}" onclick="window.VennMatrixEngine.mutateRowKey(${empId}, 30)">
+                  <span class="dept-badge">#30</span> Sales (Austin)
+                </button>
+                <button class="whatif-dept-btn ${emp.dept_id === 40 ? 'current' : ''}" onclick="window.VennMatrixEngine.mutateRowKey(${empId}, 40)">
+                  <span class="dept-badge">#40</span> Research (Boston)
+                </button>
               </div>
-            `).join('')}
+            </div>
           </div>
         </div>
       `;
     },
 
-    // --- SVG VENN GENERATOR WITH DIRECT CLICKABLE ZONES ---
+    // --- SVG VENN GENERATOR (2-TABLE & 3-TABLE EULER) ---
     renderVennSvg: function (activeZones, dataset) {
-      const isLeftActive = activeZones.includes('left');
-      const isOverlapActive = activeZones.includes('overlap');
-      const isRightActive = activeZones.includes('right');
+      const isLeftActive = activeZones.includes('left') || activeZones.includes('left_a');
+      const isOverlapActive = activeZones.includes('overlap') || activeZones.includes('center_abc') || activeZones.includes('overlap_ab');
+      const isRightActive = activeZones.includes('right') || activeZones.includes('right_b');
 
       if (state.mode === 'joins') {
+        const effectiveEmployees = this.getEffectiveEmployees();
+        const evan = effectiveEmployees.find(e => e.emp_id === 5);
+        const evanDept = evan ? evan.dept_id : null;
+
+        // Determine Evan's physical coordinate based on What-If key
+        let evanX = 110, evanY = 165;
+        let evanInOverlap = false;
+        if (evanDept !== null) {
+          evanInOverlap = true;
+          if (evanDept === 40) {
+            evanX = 415; evanY = 205; // moves to research
+          } else {
+            evanX = 270; evanY = 262; // moves into overlap lens
+          }
+        }
+
         return `
           <svg viewBox="0 0 640 380" class="venn-interactive-svg" xmlns="http://www.w3.org/2000/svg">
             <defs>
@@ -1728,7 +1952,7 @@
               <title>Right Crescent: Click to isolate Right Anti-Join (B \\ A)</title>
             </path>
 
-            <!-- Circle Outline Borders for high-contrast crispness -->
+            <!-- Circle Outline Borders -->
             <circle cx="230" cy="190" r="140" class="venn-circle-stroke ${isLeftActive ? 'stroke-active' : ''}" pointer-events="none" />
             <circle cx="410" cy="190" r="140" class="venn-circle-stroke ${isRightActive ? 'stroke-active' : ''}" pointer-events="none" />
 
@@ -1736,42 +1960,48 @@
             <text x="140" y="65" class="venn-label-title" pointer-events="none">Table A: Employees</text>
             <text x="500" y="65" class="venn-label-title" pointer-events="none">Table B: Departments</text>
 
-            <!-- Floating Interactive Row Chips -->
-            <!-- Zone A (Left Only): Evan Vance (Orphan dept_id = null) -->
-            <g class="venn-chip-group ${isLeftActive ? 'chip-active' : 'chip-dim'}"
+            <!-- Floating Interactive Row Chips (Click to trigger What-If Simulator) -->
+            <!-- Evan Vance Chip with Physics Animation -->
+            <g class="venn-chip-group ${(evanInOverlap ? isOverlapActive : isLeftActive) ? 'chip-active' : 'chip-dim'} chip-whatif-trigger"
+               style="transform: translate(${evanX - 110}px, ${evanY - 165}px); transition: transform 0.45s cubic-bezier(0.34, 1.56, 0.64, 1);"
+               onclick="window.VennMatrixEngine.openWhatIf(5, event)"
                onmouseenter="window.VennMatrixEngine.highlightChip(5)"
                onmouseleave="window.VennMatrixEngine.clearHighlight()">
-              <rect x="110" y="165" width="115" height="32" rx="6" class="venn-row-chip chip-orphan" />
-              <text x="167" y="186" class="chip-text">#5 Evan (NULL)</text>
+              <rect x="110" y="165" width="125" height="32" rx="6" class="venn-row-chip chip-orphan chip-interactive" />
+              <text x="172" y="186" class="chip-text">#5 Evan (${evanDept === null ? 'NULL' : evanDept}) 🧪</text>
             </g>
 
-            <!-- Zone Overlap (A ∩ B): Alice, Bob, Charlie, Diana -->
-            <g class="venn-chip-group ${isOverlapActive ? 'chip-active' : 'chip-dim'}"
+            <!-- Overlap Chips: Alice, Bob, Charlie, Diana -->
+            <g class="venn-chip-group ${isOverlapActive ? 'chip-active' : 'chip-dim'} chip-whatif-trigger"
+               onclick="window.VennMatrixEngine.openWhatIf(1, event)"
                onmouseenter="window.VennMatrixEngine.highlightChip(1)"
                onmouseleave="window.VennMatrixEngine.clearHighlight()">
-              <rect x="270" y="115" width="100" height="28" rx="6" class="venn-row-chip" />
-              <text x="320" y="133" class="chip-text">#1 Alice (10)</text>
+              <rect x="270" y="115" width="105" height="28" rx="6" class="venn-row-chip chip-interactive" />
+              <text x="322" y="133" class="chip-text">#1 Alice (10)</text>
             </g>
 
-            <g class="venn-chip-group ${isOverlapActive ? 'chip-active' : 'chip-dim'}"
+            <g class="venn-chip-group ${isOverlapActive ? 'chip-active' : 'chip-dim'} chip-whatif-trigger"
+               onclick="window.VennMatrixEngine.openWhatIf(2, event)"
                onmouseenter="window.VennMatrixEngine.highlightChip(2)"
                onmouseleave="window.VennMatrixEngine.clearHighlight()">
-              <rect x="270" y="152" width="100" height="28" rx="6" class="venn-row-chip" />
-              <text x="320" y="170" class="chip-text">#2 Bob (20)</text>
+              <rect x="270" y="152" width="105" height="28" rx="6" class="venn-row-chip chip-interactive" />
+              <text x="322" y="170" class="chip-text">#2 Bob (20)</text>
             </g>
 
-            <g class="venn-chip-group ${isOverlapActive ? 'chip-active' : 'chip-dim'}"
+            <g class="venn-chip-group ${isOverlapActive ? 'chip-active' : 'chip-dim'} chip-whatif-trigger"
+               onclick="window.VennMatrixEngine.openWhatIf(3, event)"
                onmouseenter="window.VennMatrixEngine.highlightChip(3)"
                onmouseleave="window.VennMatrixEngine.clearHighlight()">
-              <rect x="270" y="189" width="100" height="28" rx="6" class="venn-row-chip" />
-              <text x="320" y="207" class="chip-text">#3 Charlie (10)</text>
+              <rect x="270" y="189" width="105" height="28" rx="6" class="venn-row-chip chip-interactive" />
+              <text x="322" y="207" class="chip-text">#3 Charlie (10)</text>
             </g>
 
-            <g class="venn-chip-group ${isOverlapActive ? 'chip-active' : 'chip-dim'}"
+            <g class="venn-chip-group ${isOverlapActive ? 'chip-active' : 'chip-dim'} chip-whatif-trigger"
+               onclick="window.VennMatrixEngine.openWhatIf(4, event)"
                onmouseenter="window.VennMatrixEngine.highlightChip(4)"
                onmouseleave="window.VennMatrixEngine.clearHighlight()">
-              <rect x="270" y="226" width="100" height="28" rx="6" class="venn-row-chip" />
-              <text x="320" y="244" class="chip-text">#4 Diana (30)</text>
+              <rect x="270" y="226" width="105" height="28" rx="6" class="venn-row-chip chip-interactive" />
+              <text x="322" y="244" class="chip-text">#4 Diana (30)</text>
             </g>
 
             <!-- Zone B (Right Only): Research (Orphan dept_id = 40, 0 employees) -->
@@ -1783,94 +2013,379 @@
             </g>
           </svg>
         `;
+      } else if (state.mode === 'euler3') {
+        // --- FEATURE #3: 3-TABLE EULER DIAGRAM SVG ---
+        const isTripleActive = activeZones.includes('center_abc');
+        const isChainActive = activeZones.includes('overlap_ab') || activeZones.includes('center_abc');
+        const isOrphanActive = activeZones.includes('bottom_c');
+
+        return `
+          <svg viewBox="0 0 640 400" class="venn-interactive-svg" xmlns="http://www.w3.org/2000/svg">
+            <defs>
+              <clipPath id="clipEulerA"><circle cx="240" cy="160" r="120" /></clipPath>
+              <clipPath id="clipEulerB"><circle cx="400" cy="160" r="120" /></clipPath>
+              <clipPath id="clipEulerC"><circle cx="320" cy="270" r="120" /></clipPath>
+            </defs>
+
+            <!-- 3 Circles Base -->
+            <!-- Circle A: Employees (Top Left) -->
+            <circle cx="240" cy="160" r="120" class="venn-circle-base ${isChainActive ? 'zone-active' : 'zone-dim'}" />
+            <!-- Circle B: Departments (Top Right) -->
+            <circle cx="400" cy="160" r="120" class="venn-circle-base ${isChainActive ? 'zone-active' : 'zone-dim'}" />
+            <!-- Circle C: Projects (Bottom Center) -->
+            <circle cx="320" cy="270" r="120" class="venn-circle-base ${isOrphanActive ? 'zone-active' : 'zone-dim'}" />
+
+            <!-- Central Triple Intersection (A ∩ B ∩ C) -->
+            <circle cx="320" cy="270" r="120" clip-path="url(#clipEulerA)" class="venn-lens-overlap ${isTripleActive ? 'zone-active' : 'zone-dim'}"
+                    onclick="window.VennMatrixEngine.clickVennZone('center_abc')">
+              <title>Click to isolate 3-WAY INNER JOIN (A ∩ B ∩ C)</title>
+            </circle>
+
+            <!-- Circle Outlines -->
+            <circle cx="240" cy="160" r="120" class="venn-circle-stroke ${isChainActive ? 'stroke-active' : ''}" pointer-events="none" />
+            <circle cx="400" cy="160" r="120" class="venn-circle-stroke ${isChainActive ? 'stroke-active' : ''}" pointer-events="none" />
+            <circle cx="320" cy="270" r="120" class="venn-circle-stroke ${isOrphanActive ? 'stroke-active' : ''}" pointer-events="none" />
+
+            <!-- Titles -->
+            <text x="160" y="55" class="venn-label-title" pointer-events="none">Employees (A)</text>
+            <text x="480" y="55" class="venn-label-title" pointer-events="none">Departments (B)</text>
+            <text x="320" y="380" class="venn-label-title" text-anchor="middle" pointer-events="none">Projects (C)</text>
+
+            <!-- Row Chips for 3-Table Euler -->
+            <!-- Evan Vance (A only) -->
+            <g class="venn-chip-group ${isChainActive ? 'chip-active' : 'chip-dim'}">
+              <rect x="140" y="145" width="95" height="26" rx="5" class="venn-row-chip chip-orphan" />
+              <text x="187" y="162" class="chip-text">Evan (Orphan)</text>
+            </g>
+
+            <!-- Central Overlap Chips (Alice & Charlie in Eng, Bob in Mkt, Diana in Sales) -->
+            <g class="venn-chip-group ${isTripleActive ? 'chip-active' : 'chip-dim'}"
+               onclick="window.VennMatrixEngine.clickVennZone('center_abc')">
+              <rect x="270" y="180" width="100" height="24" rx="4" class="venn-row-chip" />
+              <text x="320" y="196" class="chip-text">Alice &amp; Charlie</text>
+            </g>
+            <g class="venn-chip-group ${isTripleActive ? 'chip-active' : 'chip-dim'}"
+               onclick="window.VennMatrixEngine.clickVennZone('center_abc')">
+              <rect x="270" y="210" width="100" height="24" rx="4" class="venn-row-chip" />
+              <text x="320" y="226" class="chip-text">Bob (Mkt)</text>
+            </g>
+
+            <!-- Research (B only) -->
+            <g class="venn-chip-group ${isChainActive ? 'chip-active' : 'chip-dim'}">
+              <rect x="420" y="145" width="95" height="26" rx="5" class="venn-row-chip chip-orphan" />
+              <text x="467" y="162" class="chip-text">Research (0)</text>
+            </g>
+
+            <!-- AI Quantum Lab (C only - Orphan Project) -->
+            <g class="venn-chip-group ${isOrphanActive ? 'chip-active' : 'chip-dim'}"
+               onclick="window.VennMatrixEngine.clickVennZone('bottom_c')">
+              <rect x="260" y="315" width="120" height="28" rx="6" class="venn-row-chip chip-orphan chip-interactive" />
+              <text x="320" y="333" class="chip-text">#104 Quantum (50)</text>
+            </g>
+          </svg>
+        `;
       } else {
         // Set Operations Mode
         return `
           <svg viewBox="0 0 640 380" class="venn-interactive-svg" xmlns="http://www.w3.org/2000/svg">
-            <!-- Left Crescent (Exclusive Left A \\ B) -->
             <path d="M 320,82.8 A 140,140 0 1,0 320,297.2 A 140,140 0 0,0 320,82.8 Z"
                   class="venn-zone-path zone-left ${isLeftActive ? 'zone-active' : 'zone-dim'}"
                   onclick="window.VennMatrixEngine.clickVennZone('left')">
               <title>Left Crescent: Click to isolate EXCEPT (A \\ B)</title>
             </path>
 
-            <!-- Center Lens (Intersection A ∩ B) -->
             <path d="M 320,82.8 A 140,140 0 0,1 320,297.2 A 140,140 0 0,1 320,82.8 Z"
                   class="venn-zone-path zone-overlap ${isOverlapActive ? 'zone-active' : 'zone-dim'}"
                   onclick="window.VennMatrixEngine.clickVennZone('overlap')">
               <title>Center Lens: Click to isolate INTERSECT (A ∩ B)</title>
             </path>
 
-            <!-- Right Crescent (Exclusive Right B \\ A) -->
             <path d="M 320,82.8 A 140,140 0 0,0 320,297.2 A 140,140 0 1,1 320,82.8 Z"
                   class="venn-zone-path zone-right ${isRightActive ? 'zone-active' : 'zone-dim'}"
                   onclick="window.VennMatrixEngine.clickVennZone('right')">
               <title>Right Crescent: Click to isolate UNION</title>
             </path>
 
-            <!-- Outlines -->
             <circle cx="230" cy="190" r="140" class="venn-circle-stroke ${isLeftActive ? 'stroke-active' : ''}" pointer-events="none" />
             <circle cx="410" cy="190" r="140" class="venn-circle-stroke ${isRightActive ? 'stroke-active' : ''}" pointer-events="none" />
 
             <text x="140" y="65" class="venn-label-title" pointer-events="none">Online Customers</text>
             <text x="500" y="65" class="venn-label-title" pointer-events="none">Retail Customers</text>
 
-            <!-- Left Only Chips: Alice, Fiona, Grace -->
-            <g class="venn-chip-group ${isLeftActive ? 'chip-active' : 'chip-dim'}"
-               onmouseenter="window.VennMatrixEngine.highlightChip(101)"
-               onmouseleave="window.VennMatrixEngine.clearHighlight()">
+            <!-- Left Only Chips -->
+            <g class="venn-chip-group ${isLeftActive ? 'chip-active' : 'chip-dim'}">
               <rect x="110" y="130" width="110" height="26" rx="5" class="venn-row-chip" />
               <text x="165" y="147" class="chip-text">#101 Alice (Gold)</text>
             </g>
-            <g class="venn-chip-group ${isLeftActive ? 'chip-active' : 'chip-dim'}"
-               onmouseenter="window.VennMatrixEngine.highlightChip(104)"
-               onmouseleave="window.VennMatrixEngine.clearHighlight()">
+            <g class="venn-chip-group ${isLeftActive ? 'chip-active' : 'chip-dim'}">
               <rect x="110" y="165" width="110" height="26" rx="5" class="venn-row-chip" />
               <text x="165" y="182" class="chip-text">#104 Fiona (Brz)</text>
             </g>
-            <g class="venn-chip-group ${isLeftActive ? 'chip-active' : 'chip-dim'}"
-               onmouseenter="window.VennMatrixEngine.highlightChip(105)"
-               onmouseleave="window.VennMatrixEngine.clearHighlight()">
+            <g class="venn-chip-group ${isLeftActive ? 'chip-active' : 'chip-dim'}">
               <rect x="110" y="200" width="110" height="26" rx="5" class="venn-row-chip" />
               <text x="165" y="217" class="chip-text">#105 Grace (Gold)</text>
             </g>
 
-            <!-- Overlap Chips: Bob, David -->
-            <g class="venn-chip-group ${isOverlapActive ? 'chip-active' : 'chip-dim'}"
-               onmouseenter="window.VennMatrixEngine.highlightChip(102)"
-               onmouseleave="window.VennMatrixEngine.clearHighlight()">
+            <!-- Overlap Chips -->
+            <g class="venn-chip-group ${isOverlapActive ? 'chip-active' : 'chip-dim'}">
               <rect x="270" y="150" width="100" height="28" rx="6" class="venn-row-chip" />
               <text x="320" y="168" class="chip-text">#102 Bob (Slv)</text>
             </g>
-            <g class="venn-chip-group ${isOverlapActive ? 'chip-active' : 'chip-dim'}"
-               onmouseenter="window.VennMatrixEngine.highlightChip(103)"
-               onmouseleave="window.VennMatrixEngine.clearHighlight()">
+            <g class="venn-chip-group ${isOverlapActive ? 'chip-active' : 'chip-dim'}">
               <rect x="270" y="190" width="100" height="28" rx="6" class="venn-row-chip" />
               <text x="320" y="208" class="chip-text">#103 David (Plt)</text>
             </g>
 
-            <!-- Right Only Chips: Charlie, Hannah, Ian -->
-            <g class="venn-chip-group ${isRightActive ? 'chip-active' : 'chip-dim'}"
-               onmouseenter="window.VennMatrixEngine.highlightChip(106)"
-               onmouseleave="window.VennMatrixEngine.clearHighlight()">
+            <!-- Right Only Chips -->
+            <g class="venn-chip-group ${isRightActive ? 'chip-active' : 'chip-dim'}">
               <rect x="420" y="130" width="110" height="26" rx="5" class="venn-row-chip" />
               <text x="475" y="147" class="chip-text">#106 Charlie</text>
             </g>
-            <g class="venn-chip-group ${isRightActive ? 'chip-active' : 'chip-dim'}"
-               onmouseenter="window.VennMatrixEngine.highlightChip(107)"
-               onmouseleave="window.VennMatrixEngine.clearHighlight()">
+            <g class="venn-chip-group ${isRightActive ? 'chip-active' : 'chip-dim'}">
               <rect x="420" y="165" width="110" height="26" rx="5" class="venn-row-chip" />
               <text x="475" y="182" class="chip-text">#107 Hannah</text>
             </g>
-            <g class="venn-chip-group ${isRightActive ? 'chip-active' : 'chip-dim'}"
-               onmouseenter="window.VennMatrixEngine.highlightChip(108)"
-               onmouseleave="window.VennMatrixEngine.clearHighlight()">
+            <g class="venn-chip-group ${isRightActive ? 'chip-active' : 'chip-dim'}">
               <rect x="420" y="200" width="110" height="26" rx="5" class="venn-row-chip" />
               <text x="475" y="217" class="chip-text">#108 Ian</text>
             </g>
           </svg>
         `;
       }
+    },
+
+    // --- TAB 2: PRACTICE CHALLENGES ---
+    renderChallengesTab: function () {
+      const currentChallenge = CHALLENGES[state.currentChallengeIdx];
+      const solvedCount = state.solvedChallenges.size;
+      const totalCount = CHALLENGES.length;
+      const progressPercent = Math.round((solvedCount / totalCount) * 100);
+      const isCurrentSolved = state.solvedChallenges.has(currentChallenge.id);
+
+      return `
+        <div class="venn-challenges-container">
+          <div class="challenge-overview-card">
+            <div class="challenge-overview-left">
+              <h2 class="challenge-main-heading">🎯 Real-World Relational &amp; Set Challenges</h2>
+              <p class="challenge-main-subtext">
+                Solve enterprise SQL scenarios from FAANG interviews and production systems. Identify the right join or set operation, verify with row-level physics, and earn XP.
+              </p>
+            </div>
+            <div class="challenge-progress-box">
+              <div class="progress-stats-row">
+                <span class="progress-stat-label">SOLVED:</span>
+                <span class="progress-stat-value">${solvedCount} / ${totalCount}</span>
+                <span class="progress-xp-badge">+${solvedCount * 20} XP Earned</span>
+              </div>
+              <div class="challenge-progress-bar">
+                <div class="challenge-progress-fill" style="width: ${progressPercent}%;"></div>
+              </div>
+              <div class="challenge-reset-row">
+                <button class="btn-reset-challenges" onclick="window.VennMatrixEngine.resetChallengeProgress()">Reset Progress</button>
+              </div>
+            </div>
+          </div>
+
+          <div class="challenge-carousel-strip">
+            ${CHALLENGES.map((ch, idx) => {
+              const isSolved = state.solvedChallenges.has(ch.id);
+              const isActive = idx === state.currentChallengeIdx;
+              return `
+                <button class="challenge-strip-btn ${isActive ? 'active' : ''} ${isSolved ? 'solved' : ''}" onclick="window.VennMatrixEngine.jumpToChallenge(${idx})">
+                  <span class="ch-num">${isSolved ? '✓' : '#' + ch.number}</span>
+                  <span class="ch-strip-title">${ch.title}</span>
+                  <span class="ch-strip-diff ${ch.difficulty.toLowerCase()}">${ch.difficulty}</span>
+                </button>
+              `;
+            }).join('')}
+          </div>
+
+          <div class="challenge-active-card">
+            <div class="challenge-card-header">
+              <div class="challenge-meta-tags">
+                <span class="tag-company">${currentChallenge.company}</span>
+                <span class="tag-category">${currentChallenge.mode === 'joins' ? 'Multi-Table Join' : 'Set Operation'}</span>
+                <span class="tag-difficulty ${currentChallenge.difficulty.toLowerCase()}">${currentChallenge.difficulty}</span>
+              </div>
+              <div class="challenge-xp-chip">+${currentChallenge.xpReward} XP</div>
+            </div>
+
+            <div class="challenge-body">
+              <h3 class="challenge-scenario-title">Scenario #${currentChallenge.number}: ${currentChallenge.title}</h3>
+              <div class="challenge-scenario-box">
+                <p class="scenario-text">${currentChallenge.scenario}</p>
+              </div>
+
+              <div class="challenge-prompt-text">${currentChallenge.prompt}</div>
+
+              <div class="challenge-options-grid">
+                ${currentChallenge.options.map((opt) => {
+                  const isSelected = state.selectedChallengeOption === opt.id;
+                  let optClass = '';
+                  if (state.challengeAnswerFeedback && isSelected) {
+                    optClass = opt.isCorrect ? 'correct' : 'incorrect';
+                  } else if (isCurrentSolved && opt.isCorrect) {
+                    optClass = 'correct';
+                  }
+
+                  return `
+                    <button class="challenge-option-btn ${optClass}" onclick="window.VennMatrixEngine.submitChallengeAnswer('${opt.id}')">
+                      <span class="opt-letter">${opt.id}</span>
+                      <span class="opt-text">${opt.text}</span>
+                    </button>
+                  `;
+                }).join('')}
+              </div>
+
+              ${state.challengeAnswerFeedback ? `
+                <div class="challenge-feedback-banner ${state.challengeAnswerFeedback.isCorrect ? 'feedback-success' : 'feedback-error'}">
+                  <div class="feedback-header">
+                    <span class="feedback-icon">${state.challengeAnswerFeedback.isCorrect ? '🎉' : '❌'}</span>
+                    <span class="feedback-title">${state.challengeAnswerFeedback.isCorrect ? 'Mastered! Correct Selection' : 'Incorrect Query Logic'}</span>
+                  </div>
+                  <p class="feedback-explanation">${state.challengeAnswerFeedback.explanation}</p>
+                  
+                  <div class="feedback-actions">
+                    <button class="btn-inspect-diagram" onclick="window.VennMatrixEngine.inspectChallengeInVisualizer('${currentChallenge.mode}', '${currentChallenge.targetOpId}')">
+                      🔬 View in Visualizer &amp; Row Physics &rarr;
+                    </button>
+                    ${state.currentChallengeIdx < CHALLENGES.length - 1 ? `
+                      <button class="btn-next-challenge" onclick="window.VennMatrixEngine.jumpToChallenge(${state.currentChallengeIdx + 1})">
+                        Next Challenge &rarr;
+                      </button>
+                    ` : ''}
+                  </div>
+                </div>
+              ` : ''}
+            </div>
+          </div>
+        </div>
+      `;
+    },
+
+    // --- TAB 3: SCHEMA & ENTITY MODELS ---
+    renderSchemaTab: function () {
+      return `
+        <div class="venn-schema-container">
+          <div class="schema-header-card">
+            <h2 class="schema-main-title">Physical Schema Architecture &amp; Foreign Key Bindings</h2>
+            <div class="schema-relationship-banner">
+              <span class="banner-icon">🔗</span>
+              <span class="banner-text">Employees.dept_id [FK] ───► Departments.dept_id [PK] ◄─── Projects.dept_id [FK]</span>
+            </div>
+            <p class="schema-subtext">
+              Examine database structure, column types, primary &amp; foreign key constraints, and orphan anomaly conditions that govern join and set behavior.
+            </p>
+          </div>
+
+          <div class="schema-tables-grid">
+            <div class="schema-entity-card">
+              <div class="entity-card-header">
+                <div class="entity-title-row">
+                  <span class="entity-name">Employees</span>
+                  <span class="entity-alias">Alias: <code>e</code></span>
+                </div>
+                <span class="entity-type-badge">Referencing Child Entity (Many)</span>
+              </div>
+              <div class="entity-card-body">
+                <p class="entity-desc">Stores individual personnel records. Evan Vance (#5) has dept_id = NULL.</p>
+                <div class="entity-columns-table-wrapper">
+                  <table class="schema-columns-table">
+                    <thead><tr><th>Key</th><th>Column</th><th>Type</th><th>Description</th></tr></thead>
+                    <tbody>
+                      <tr><td><span class="key-badge pk">PK</span></td><td><code>emp_id</code></td><td>INT</td><td>Unique employee record identifier</td></tr>
+                      <tr><td></td><td><code>name</code></td><td>VARCHAR(50)</td><td>Full legal employee name</td></tr>
+                      <tr><td><span class="key-badge fk">FK</span></td><td><code>dept_id</code></td><td>INT (NULL)</td><td>Foreign key to Departments.dept_id</td></tr>
+                      <tr><td></td><td><code>salary</code></td><td>VARCHAR(20)</td><td>Annual base salary</td></tr>
+                    </tbody>
+                  </table>
+                </div>
+              </div>
+            </div>
+
+            <div class="schema-entity-card">
+              <div class="entity-card-header">
+                <div class="entity-title-row">
+                  <span class="entity-name">Departments</span>
+                  <span class="entity-alias">Alias: <code>d</code></span>
+                </div>
+                <span class="entity-type-badge">Referenced Parent Entity (One)</span>
+              </div>
+              <div class="entity-card-body">
+                <p class="entity-desc">Stores organizational business divisions. Research (#40) has 0 employees.</p>
+                <div class="entity-columns-table-wrapper">
+                  <table class="schema-columns-table">
+                    <thead><tr><th>Key</th><th>Column</th><th>Type</th><th>Description</th></tr></thead>
+                    <tbody>
+                      <tr><td><span class="key-badge pk">PK</span></td><td><code>dept_id</code></td><td>INT</td><td>Primary key; unique department code</td></tr>
+                      <tr><td></td><td><code>dept_name</code></td><td>VARCHAR(50)</td><td>Division title</td></tr>
+                      <tr><td></td><td><code>location</code></td><td>VARCHAR(50)</td><td>Office campus city</td></tr>
+                    </tbody>
+                  </table>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      `;
+    },
+
+    // --- TAB 4: CONCEPT MASTERY GUIDE ---
+    renderConceptsTab: function () {
+      return `
+        <div class="venn-concepts-container">
+          <div class="concepts-header-card">
+            <h2 class="concepts-main-title">🧠 Relational Theory &amp; Join Performance Guide</h2>
+            <p class="concepts-subtext">
+              Crucial production SQL design principles, optimizer execution models, and interview traps to elevate your database engineering skills.
+            </p>
+          </div>
+
+          <div class="concepts-grid">
+            <div class="concept-card">
+              <div class="concept-card-header">
+                <div class="concept-card-title-row">
+                  <span class="concept-icon">⚠️</span>
+                  <h3 class="concept-title">The "ON vs WHERE" Filter Trap in Outer Joins</h3>
+                </div>
+                <span class="concept-tag">Critical Join Trap</span>
+              </div>
+              <div class="concept-card-body">
+                <div class="concept-summary-box">
+                  <p class="summary-text">Placing right-table filters in WHERE silently converts a LEFT JOIN into an INNER JOIN.</p>
+                </div>
+                <div class="concept-section">
+                  <h4 class="section-subtitle">The Engineering Trap:</h4>
+                  <p class="section-body">When you write WHERE d.location = 'San Francisco', Evan Vance (whose department fields are NULL) fails the filter because NULL = 'SF' evaluates to UNKNOWN/FALSE. Evan is silently dropped!</p>
+                </div>
+                <div class="concept-section">
+                  <h4 class="section-subtitle">Production Solution:</h4>
+                  <p class="section-body">Place the condition inside the ON clause: <code>LEFT JOIN Departments d ON e.dept_id = d.dept_id AND d.location = 'San Francisco'</code>.</p>
+                </div>
+              </div>
+            </div>
+
+            <div class="concept-card">
+              <div class="concept-card-header">
+                <div class="concept-card-title-row">
+                  <span class="concept-icon">⚡</span>
+                  <h3 class="concept-title">The 3-Valued Logic NULL Paradox</h3>
+                </div>
+                <span class="concept-tag">Relational Theory</span>
+              </div>
+              <div class="concept-card-body">
+                <div class="concept-summary-box">
+                  <p class="summary-text">NULL is not a value; it is an unknown state. Therefore NULL = NULL is UNKNOWN, never TRUE.</p>
+                </div>
+                <div class="concept-section">
+                  <h4 class="section-subtitle">The Engineering Trap:</h4>
+                  <p class="section-body">Two rows with NULL keys never match in an INNER JOIN. To match NULLs, use NULL-safe equality: <code>&lt;=&gt;</code> in MySQL or <code>IS NOT DISTINCT FROM</code> in PostgreSQL/ANSI.</p>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      `;
     },
 
     getResultColumns: function (rows) {
