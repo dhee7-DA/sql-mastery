@@ -18177,19 +18177,19 @@ body {
   display: flex;
   align-items: center;
   justify-content: space-between;
-  padding: 6px 12px;
+  padding: 8px 14px;
   background: var(--bg-surface);
   border: 1px solid var(--border-subtle);
   border-radius: var(--radius-sm);
   margin-bottom: 8px;
-  gap: 12px;
+  gap: 16px;
   cursor: pointer;
-  transition: all 0.25s cubic-bezier(0.4, 0, 0.2, 1);
+  transition: border-color 0.2s ease, box-shadow 0.2s ease;
 }
 
 .mini-venn-svg-wrapper {
-  width: 130px;
-  height: 52px;
+  width: 195px;
+  height: 84px;
   flex-shrink: 0;
 }
 
@@ -18201,63 +18201,100 @@ body {
 
 .venn-circle-base {
   fill: none;
-  stroke: var(--border-default);
+  stroke: var(--border-default, #cbd5e1);
   stroke-width: 1.2;
-  stroke-dasharray: 2, 2;
-  opacity: 0.5;
+  stroke-dasharray: 3, 3;
+  opacity: 0.6;
+}
+
+.venn-circle-title {
+  font-family: var(--font-mono);
+  font-size: 8.5px;
+  font-weight: 700;
+  fill: var(--text-muted, #64748b);
+  letter-spacing: 0.02em;
+  text-anchor: middle;
 }
 
 .venn-region {
-  transition: all 0.35s cubic-bezier(0.4, 0, 0.2, 1);
+  transition: fill 0.25s ease, stroke 0.25s ease, stroke-width 0.25s ease;
   cursor: pointer;
 }
 
+/* Left Crescent (Left Only) */
 .venn-region.left-crescent {
-  fill: rgba(6, 182, 212, 0.05);
-  stroke: rgba(6, 182, 212, 0.25);
-  stroke-width: 1.5;
+  fill: rgba(37, 99, 235, 0.04);
+  stroke: rgba(37, 99, 235, 0.2);
+  stroke-width: 1.2;
 }
 
 .venn-region.left-crescent.active {
-  fill: rgba(6, 182, 212, 0.3);
-  stroke: #06b6d4;
-  stroke-width: 2.2;
-  filter: drop-shadow(0 0 6px rgba(6, 182, 212, 0.6));
+  fill: rgba(37, 99, 235, 0.18);
+  stroke: #2563eb;
+  stroke-width: 2;
 }
 
+/* Overlap Lens (Intersection) */
 .venn-region.overlap-lens {
   fill: rgba(16, 185, 129, 0.05);
-  stroke: rgba(16, 185, 129, 0.25);
-  stroke-width: 1.5;
+  stroke: rgba(16, 185, 129, 0.2);
+  stroke-width: 1.2;
 }
 
 .venn-region.overlap-lens.active {
-  fill: rgba(16, 185, 129, 0.38);
+  fill: rgba(16, 185, 129, 0.22);
   stroke: #10b981;
-  stroke-width: 2.5;
-  filter: drop-shadow(0 0 8px rgba(16, 185, 129, 0.7));
+  stroke-width: 2.2;
 }
 
+/* Right Crescent (Right Only) */
 .venn-region.right-crescent {
-  fill: rgba(168, 85, 247, 0.05);
-  stroke: rgba(168, 85, 247, 0.25);
-  stroke-width: 1.5;
+  fill: rgba(147, 51, 234, 0.04);
+  stroke: rgba(147, 51, 234, 0.2);
+  stroke-width: 1.2;
 }
 
 .venn-region.right-crescent.active {
-  fill: rgba(168, 85, 247, 0.3);
-  stroke: #a855f7;
-  stroke-width: 2.2;
-  filter: drop-shadow(0 0 6px rgba(168, 85, 247, 0.6));
+  fill: rgba(147, 51, 234, 0.18);
+  stroke: #9333ea;
+  stroke-width: 2;
 }
 
-.venn-label {
+/* Crisp Text Inside Venn Regions */
+.venn-label-tag {
   font-family: var(--font-mono);
-  font-size: 8.5px;
+  font-size: 8px;
+  font-weight: 700;
+  text-anchor: middle;
+  fill: var(--text-muted, #64748b);
+  pointer-events: none;
+  letter-spacing: 0.02em;
+}
+
+.venn-label-val {
+  font-family: var(--font-mono);
+  font-size: 10px;
   font-weight: 800;
   text-anchor: middle;
-  fill: var(--text-primary);
+  fill: var(--text-primary, #0f172a);
   pointer-events: none;
+}
+
+.venn-label-tag.center-tag,
+.venn-label-val.center-val {
+  fill: #047857;
+}
+
+[data-theme="dark"] .venn-label-val,
+body.theme-dark .venn-label-val {
+  fill: #f1f5f9;
+}
+
+[data-theme="dark"] .venn-label-tag.center-tag,
+[data-theme="dark"] .venn-label-val.center-val,
+body.theme-dark .venn-label-tag.center-tag,
+body.theme-dark .venn-label-val.center-val {
+  fill: #34d399;
 }
 
 .hud-top-line {
@@ -18273,28 +18310,28 @@ body {
   font-weight: 800;
   padding: 1px 6px;
   border-radius: 3px;
-  background: rgba(16, 185, 129, 0.15);
-  color: #10b981;
+  background: rgba(16, 185, 129, 0.12);
+  color: #059669;
 }
 
 .topo-badge.left {
-  background: rgba(59, 130, 246, 0.15);
-  color: #3b82f6;
+  background: rgba(59, 130, 246, 0.12);
+  color: #2563eb;
 }
 
 .topo-badge.right {
-  background: rgba(168, 85, 247, 0.15);
-  color: #a855f7;
+  background: rgba(168, 85, 247, 0.12);
+  color: #7c3aed;
 }
 
 .topo-badge.full_outer {
-  background: rgba(234, 179, 8, 0.15);
-  color: #eab308;
+  background: rgba(234, 179, 8, 0.12);
+  color: #b45309;
 }
 
 .topo-badge.left_antijoin {
-  background: rgba(245, 158, 11, 0.15);
-  color: #f59e0b;
+  background: rgba(245, 158, 11, 0.12);
+  color: #d97706;
 }
 
 .mini-venn-hud-info {
@@ -18320,40 +18357,35 @@ body {
 }
 
 /* ==========================================================================
-   NEON LASER TRACERS, PARTICLES & ROW SPOTLIGHTS
+   MINIMALIST RELATIONAL CONNECTOR LINES & ROW SPOTLIGHTS
    ========================================================================== */
-.laser-arrow-group {
+.connector-arrow-group {
   transition: opacity 0.2s ease;
 }
 
-.laser-arrow-group.highlighted-laser path {
-  stroke-width: 4.5px !important;
+.connector-arrow-group path {
+  transition: stroke-width 0.2s ease, opacity 0.2s ease, stroke 0.2s ease;
+}
+
+.connector-arrow-group.highlighted-connector path {
   opacity: 1 !important;
 }
 
 .tracer-row {
   cursor: pointer;
-  transition: all 0.2s ease;
+  transition: all 0.15s ease;
   position: relative;
 }
 
 .tracer-row.hover-highlight {
-  background: rgba(6, 182, 212, 0.16) !important;
-  border-color: #06b6d4 !important;
-  box-shadow: 0 0 10px rgba(6, 182, 212, 0.35);
+  background: rgba(16, 185, 129, 0.08) !important;
+  border-color: #10b981 !important;
   transform: translateX(2px);
 }
 
 .tracer-row.step-spotlight {
-  background: rgba(16, 185, 129, 0.2) !important;
+  background: rgba(16, 185, 129, 0.12) !important;
   border-color: #10b981 !important;
-  box-shadow: 0 0 14px rgba(16, 185, 129, 0.5);
-  animation: pulseSpotlight 1.2s infinite alternate ease-in-out;
-}
-
-@keyframes pulseSpotlight {
-  0% { transform: scale(1); box-shadow: 0 0 8px rgba(16, 185, 129, 0.3); }
-  100% { transform: scale(1.02); box-shadow: 0 0 16px rgba(16, 185, 129, 0.6); }
 }
 
 /* Predicate Inspector Strip */
@@ -18616,128 +18648,163 @@ body {
   border: 1px solid var(--border-default);
   border-radius: var(--radius-sm);
   overflow: hidden;
-  box-shadow: inset 0 1px 3px rgba(0, 0, 0, 0.05);
+  box-shadow: 0 1px 3px rgba(0, 0, 0, 0.05);
 }
 
 .blueprint-code-editor-row {
-  padding: 12px 16px;
+  padding: 12px 18px;
   font-family: var(--font-mono);
   font-size: 13.5px;
-  line-height: 1.85;
-  color: var(--text-primary);
+  line-height: 1.9;
   display: flex;
   flex-direction: column;
-  gap: 4px;
+  gap: 2px;
   cursor: text;
+  background: var(--bg-surface);
 }
 
 .blueprint-line {
   display: flex;
-  align-items: center;
+  align-items: baseline;
   flex-wrap: wrap;
-  gap: 6px;
+  row-gap: 2px;
 }
 
 .blueprint-line-num {
-  width: 22px;
+  display: inline-block;
+  width: 28px;
   font-size: 11px;
-  font-weight: 700;
-  color: var(--text-muted);
+  font-weight: 600;
+  color: var(--text-muted, #94a3b8);
   user-select: none;
+  flex-shrink: 0;
 }
 
-/* Hoverable SQL Tokens directly in the code */
-.sql-blueprint-token {
+.blueprint-line-content {
   display: inline-flex;
-  align-items: center;
-  padding: 2px 7px;
-  border-radius: 4px;
+  align-items: baseline;
+  flex-wrap: wrap;
+  row-gap: 2px;
+  flex: 1;
+  color: var(--text-primary);
+}
+
+/* ==========================================================================
+   AUTHENTIC IDE SYNTAX COLORS (NO GRADIENT SLOP / NO BACKGROUND PILLS)
+   ========================================================================== */
+.sql-blueprint-token {
+  display: inline;
+  padding: 0 2px;
+  border-radius: 2px;
   cursor: pointer;
-  transition: all 0.18s cubic-bezier(0.4, 0, 0.2, 1);
-  font-weight: 700;
-  border: 1px solid transparent;
+  background: transparent !important;
+  border: none !important;
+  border-bottom: 2px solid transparent !important;
+  transition: border-color 0.15s ease, background-color 0.15s ease, color 0.15s ease;
   user-select: text;
+  text-decoration: none;
 }
 
-.sql-blueprint-token.kw-select {
-  color: #06b6d4;
-  background: rgba(6, 182, 212, 0.08);
+/* Light Mode - Solid, Authoritative Syntax */
+.sql-blueprint-token.kw-select,
+.sql-blueprint-token.kw-from,
+.sql-blueprint-token.kw-join,
+.sql-blueprint-token.kw-on,
+.sql-blueprint-token.kw-where,
+.sql-blueprint-token.kw-keyword {
+  color: #1d4ed8; /* Deep Royal Blue */
+  font-weight: 700;
 }
-.sql-blueprint-token.col-item {
-  color: #38bdf8;
-  font-weight: 600;
-}
-.sql-blueprint-token.kw-from {
-  color: #10b981;
-  background: rgba(16, 185, 129, 0.08);
-}
-.sql-blueprint-token.tbl-a {
-  color: #34d399;
-  font-weight: 600;
-}
-.sql-blueprint-token.kw-join {
-  color: #10b981;
-  background: rgba(16, 185, 129, 0.12);
-}
+
+.sql-blueprint-token.tbl-a,
 .sql-blueprint-token.tbl-b {
-  color: #c084fc;
-  font-weight: 600;
-}
-.sql-blueprint-token.kw-on {
-  color: #f59e0b;
-  background: rgba(245, 158, 11, 0.08);
-}
-.sql-blueprint-token.cond-item {
-  color: #fbbf24;
-  font-weight: 600;
-}
-.sql-blueprint-token.kw-where {
-  color: #ef4444;
-  background: rgba(239, 68, 68, 0.08);
-}
-.sql-blueprint-token.filter-item {
-  color: #f87171;
+  color: #0f766e; /* Deep Pine Teal */
   font-weight: 600;
 }
 
-/* Hovered Token Glowing State */
+.sql-blueprint-token.col-item {
+  color: #0f172a; /* Slate 900 */
+  font-weight: 500;
+}
+
+.sql-blueprint-token.cond-item {
+  color: #b45309; /* Warm Dark Amber */
+  font-weight: 600;
+}
+
+.sql-blueprint-token.filter-item {
+  color: #b45309;
+  font-weight: 600;
+}
+
+.sql-punct,
+.op-symbol {
+  color: #64748b; /* Slate 500 */
+  font-weight: 500;
+}
+
+.sql-comment {
+  color: #94a3b8;
+  font-style: italic;
+}
+
+/* Dark Mode Overrides */
+[data-theme="dark"] .sql-blueprint-token.kw-select,
+[data-theme="dark"] .sql-blueprint-token.kw-from,
+[data-theme="dark"] .sql-blueprint-token.kw-join,
+[data-theme="dark"] .sql-blueprint-token.kw-on,
+[data-theme="dark"] .sql-blueprint-token.kw-where,
+[data-theme="dark"] .sql-blueprint-token.kw-keyword,
+body.theme-dark .sql-blueprint-token.kw-select,
+body.theme-dark .sql-blueprint-token.kw-from,
+body.theme-dark .sql-blueprint-token.kw-join,
+body.theme-dark .sql-blueprint-token.kw-on,
+body.theme-dark .sql-blueprint-token.kw-where,
+body.theme-dark .sql-blueprint-token.kw-keyword {
+  color: #60a5fa; /* Sky Blue */
+}
+
+[data-theme="dark"] .sql-blueprint-token.tbl-a,
+[data-theme="dark"] .sql-blueprint-token.tbl-b,
+body.theme-dark .sql-blueprint-token.tbl-a,
+body.theme-dark .sql-blueprint-token.tbl-b {
+  color: #34d399; /* Emerald */
+}
+
+[data-theme="dark"] .sql-blueprint-token.col-item,
+body.theme-dark .sql-blueprint-token.col-item {
+  color: #f1f5f9; /* Slate 100 */
+}
+
+[data-theme="dark"] .sql-blueprint-token.cond-item,
+[data-theme="dark"] .sql-blueprint-token.filter-item,
+body.theme-dark .sql-blueprint-token.cond-item,
+body.theme-dark .sql-blueprint-token.filter-item {
+  color: #fbbf24; /* Warm Gold */
+}
+
+[data-theme="dark"] .sql-punct,
+[data-theme="dark"] .op-symbol,
+body.theme-dark .sql-punct,
+body.theme-dark .op-symbol {
+  color: #94a3b8;
+}
+
+/* Crisp, Non-Glow Hover / Active State */
 .sql-blueprint-token:hover,
 .sql-blueprint-token.token-active-spotlight {
-  transform: translateY(-1px);
-  border-color: currentColor;
-  box-shadow: 0 0 12px currentColor;
+  border-bottom: 2px solid currentColor !important;
+  background-color: rgba(29, 78, 216, 0.07) !important;
+  box-shadow: none !important;
+  transform: none !important;
 }
-.sql-blueprint-token.kw-select:hover,
-.sql-blueprint-token.kw-select.token-active-spotlight,
-.sql-blueprint-token.col-item:hover,
-.sql-blueprint-token.col-item.token-active-spotlight {
-  background: rgba(6, 182, 212, 0.22);
-}
-.sql-blueprint-token.kw-from:hover,
-.sql-blueprint-token.kw-from.token-active-spotlight,
-.sql-blueprint-token.tbl-a:hover,
-.sql-blueprint-token.tbl-a.token-active-spotlight {
-  background: rgba(16, 185, 129, 0.22);
-}
-.sql-blueprint-token.kw-join:hover,
-.sql-blueprint-token.kw-join.token-active-spotlight {
-  background: rgba(16, 185, 129, 0.25);
-}
-.sql-blueprint-token.tbl-b:hover,
-.sql-blueprint-token.tbl-b.token-active-spotlight {
-  background: rgba(168, 85, 247, 0.22);
-}
-.sql-blueprint-token.kw-on:hover,
-.sql-blueprint-token.kw-on.token-active-spotlight,
-.sql-blueprint-token.cond-item:hover,
-.sql-blueprint-token.cond-item.token-active-spotlight {
-  background: rgba(245, 158, 11, 0.22);
-}
-.sql-blueprint-token.kw-where:hover,
-.sql-blueprint-token.kw-where.token-active-spotlight,
-.sql-blueprint-token.filter-item:hover,
-.sql-blueprint-token.filter-item.token-active-spotlight {
-  background: rgba(239, 68, 68, 0.22);
+
+[data-theme="dark"] .sql-blueprint-token:hover,
+[data-theme="dark"] .sql-blueprint-token.token-active-spotlight,
+body.theme-dark .sql-blueprint-token:hover,
+body.theme-dark .sql-blueprint-token.token-active-spotlight {
+  background-color: rgba(255, 255, 255, 0.08) !important;
+  box-shadow: none !important;
 }
 
 /* Attached Blueprint Tooltip Strip */
@@ -18769,7 +18836,7 @@ body {
 }
 
 .tooltip-token-badge.default {
-  background: rgba(0, 0, 0, 0.06);
+  background: rgba(0, 0, 0, 0.05);
   color: var(--text-muted);
 }
 
@@ -18794,29 +18861,27 @@ body {
 }
 
 #tracer_table_left.system-token-spotlight {
-  border-color: #10b981 !important;
-  box-shadow: 0 0 20px rgba(16, 185, 129, 0.45) !important;
-  transform: scale(1.01);
+  border-color: #059669 !important;
+  box-shadow: 0 2px 10px rgba(5, 150, 105, 0.18) !important;
 }
 
 #tracer_table_right.system-token-spotlight {
-  border-color: #a855f7 !important;
-  box-shadow: 0 0 20px rgba(168, 85, 247, 0.45) !important;
-  transform: scale(1.01);
+  border-color: #0284c7 !important;
+  box-shadow: 0 2px 10px rgba(2, 132, 199, 0.18) !important;
 }
 
 #mini_venn_hud.system-token-spotlight {
-  border-color: #10b981 !important;
-  box-shadow: 0 0 20px rgba(16, 185, 129, 0.45) !important;
+  border-color: #1d4ed8 !important;
+  box-shadow: 0 2px 10px rgba(29, 78, 216, 0.18) !important;
 }
 
 #tracer_arrow_canvas.system-token-spotlight {
-  filter: drop-shadow(0 0 10px rgba(245, 158, 11, 0.8)) !important;
+  opacity: 1 !important;
 }
 
 #live_result_box.system-token-spotlight {
-  border-color: #06b6d4 !important;
-  box-shadow: 0 0 20px rgba(6, 182, 212, 0.45) !important;
+  border-color: #1d4ed8 !important;
+  box-shadow: 0 2px 10px rgba(29, 78, 216, 0.18) !important;
 }
 
 .query-textarea-wrap {

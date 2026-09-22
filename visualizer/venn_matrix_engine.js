@@ -651,59 +651,115 @@
       .replace(/>/g, '&gt;');
   }
 
-  function tokenizeSQLQuery(sql) {
-    const clean = (sql || '').trim().replace(/;$/, '');
-    
-    // Default values
-    let columns = 'e.name, d.dept_name, d.location';
-    let tableA = 'Employees e';
-    let joinKw = 'INNER JOIN';
-    let tableB = 'Departments d';
-    let onKw = 'ON';
-    let condition = 'e.dept_id = d.dept_id';
-    let whereFilter = '';
+  // --- UNIVERSAL LINE-BY-LINE SQL SCANNER & TOKENIZER ---
+  function tokenizeSQLLineByLine(sql) {
+    const rawLines = (sql || '').replace(/\r\n/g, '\n').replace(/\r/g, '\n').split('\n');
+    let currentClause = 'NONE'; // 'SELECT' | 'FROM' | 'JOIN' | 'ON' | 'WHERE' | 'OTHER'
 
-    const regex = /^\s*SELECT\s+([\s\S]+?)\s+FROM\s+([\s\S]+?)\s+(INNER\s+JOIN|LEFT\s+OUTER\s+JOIN|LEFT\s+ANTI-JOIN|LEFT\s+JOIN|RIGHT\s+OUTER\s+JOIN|RIGHT\s+JOIN|FULL\s+OUTER\s+JOIN|FULL\s+JOIN|CROSS\s+JOIN|JOIN)\s+([\s\S]+?)(?:\s+ON\s+([\s\S]+?))?(?:\s+WHERE\s+([\s\S]+?))?$/i;
-    const m = clean.match(regex);
-    if (m) {
-      columns = m[1].trim();
-      tableA = m[2].trim();
-      joinKw = m[3].trim().toUpperCase();
-      tableB = m[4].trim();
-      onKw = m[5] ? 'ON' : '';
-      condition = m[5] ? m[5].trim() : '';
-      whereFilter = m[6] ? m[6].trim() : '';
-    } else {
-      if (clean.includes('SELECT') && clean.includes('FROM')) {
-        const fromIdx = clean.toUpperCase().indexOf('FROM');
-        columns = clean.slice(clean.toUpperCase().indexOf('SELECT') + 6, fromIdx).trim();
-        const afterFrom = clean.slice(fromIdx + 4).trim();
-        const joinMatch = afterFrom.match(/(INNER JOIN|LEFT JOIN|RIGHT JOIN|FULL OUTER JOIN|CROSS JOIN|JOIN)/i);
-        if (joinMatch) {
-          tableA = afterFrom.slice(0, joinMatch.index).trim();
-          const afterJoin = afterFrom.slice(joinMatch.index + joinMatch[0].length).trim();
-          joinKw = joinMatch[0].toUpperCase();
-          const onIdx = afterJoin.toUpperCase().indexOf('ON');
-          if (onIdx !== -1) {
-            tableB = afterJoin.slice(0, onIdx).trim();
-            const afterOn = afterJoin.slice(onIdx + 2).trim();
-            const whereIdx = afterOn.toUpperCase().indexOf('WHERE');
-            if (whereIdx !== -1) {
-              condition = afterOn.slice(0, whereIdx).trim();
-              whereFilter = afterOn.slice(whereIdx + 5).trim();
-            } else {
-              condition = afterOn.trim();
-            }
-          } else {
-            tableB = afterJoin.trim();
-            onKw = '';
-            condition = '';
-          }
-        }
+    return rawLines.map((lineText, lineIdx) => {
+      if (!lineText.trim()) {
+        return { lineNum: lineIdx + 1, tokens: [] };
       }
-    }
 
-    return { columns, tableA, joinKw, tableB, onKw, condition, whereFilter };
+      // Regex to break line into comments, strings, multi-word join phrases, keywords, identifiers, symbols, and whitespace
+      const tokenRegex = /('(?:''|[^'])*'|"(?:""|[^"])*"|--.*$|\/\*[\s\S]*?\*\/|INNER\s+JOIN|LEFT\s+OUTER\s+JOIN|LEFT\s+ANTI-JOIN|LEFT\s+JOIN|RIGHT\s+OUTER\s+JOIN|RIGHT\s+JOIN|FULL\s+OUTER\s+JOIN|FULL\s+JOIN|CROSS\s+JOIN|GROUP\s+BY|ORDER\s+BY|IS\s+NOT\s+NULL|IS\s+NULL|[a-zA-Z_][a-zA-Z0-9_\.]*|!=|<>|<=|>=|[=><,;()*\+\-\/]|[\s]+)/gi;
+
+      const matches = lineText.match(tokenRegex) || [lineText];
+      const tokens = [];
+
+      matches.forEach(rawToken => {
+        const trimmed = rawToken.trim();
+        const upper = trimmed.toUpperCase();
+
+        if (!trimmed) {
+          tokens.push({ text: rawToken, isWhitespace: true });
+          return;
+        }
+
+        // Comments
+        if (rawToken.startsWith('--') || rawToken.startsWith('/*')) {
+          tokens.push({ text: rawToken, type: 'sql-comment', dataToken: null });
+          return;
+        }
+
+        // Major Clause Starters
+        if (upper === 'SELECT' || upper === 'DISTINCT') {
+          currentClause = 'SELECT';
+          tokens.push({ text: rawToken, type: 'kw-select', dataToken: 'select' });
+          return;
+        }
+        if (upper === 'FROM') {
+          currentClause = 'FROM';
+          tokens.push({ text: rawToken, type: 'kw-from', dataToken: 'from' });
+          return;
+        }
+        if (/^(INNER|LEFT|RIGHT|FULL|CROSS)\s+JOIN$/i.test(upper) || upper === 'JOIN' || /^(LEFT|RIGHT|FULL)\s+OUTER\s+JOIN$/i.test(upper) || upper === 'LEFT ANTI-JOIN') {
+          currentClause = 'JOIN';
+          tokens.push({ text: rawToken, type: 'kw-join', dataToken: 'join' });
+          return;
+        }
+        if (upper === 'ON') {
+          currentClause = 'ON';
+          tokens.push({ text: rawToken, type: 'kw-on', dataToken: 'on' });
+          return;
+        }
+        if (upper === 'WHERE') {
+          currentClause = 'WHERE';
+          tokens.push({ text: rawToken, type: 'kw-where', dataToken: 'where' });
+          return;
+        }
+        if (upper === 'GROUP BY' || upper === 'ORDER BY' || upper === 'HAVING' || upper === 'LIMIT') {
+          currentClause = 'OTHER';
+          tokens.push({ text: rawToken, type: 'kw-keyword', dataToken: 'keyword' });
+          return;
+        }
+
+        // Conjunctions / secondary keywords
+        if (upper === 'AND' || upper === 'OR' || upper === 'NOT' || upper === 'IS NULL' || upper === 'IS NOT NULL') {
+          if (currentClause === 'ON') {
+            tokens.push({ text: rawToken, type: 'kw-on', dataToken: 'on' });
+          } else if (currentClause === 'WHERE') {
+            tokens.push({ text: rawToken, type: 'kw-where', dataToken: 'where' });
+          } else {
+            tokens.push({ text: rawToken, type: 'kw-keyword', dataToken: 'keyword' });
+          }
+          return;
+        }
+
+        // Standard SQL Keywords
+        if (['AS', 'BETWEEN', 'IN', 'LIKE', 'EXISTS', 'CASE', 'WHEN', 'THEN', 'ELSE', 'END', 'ASC', 'DESC', 'COUNT', 'SUM', 'AVG', 'MIN', 'MAX', 'OVER', 'PARTITION'].includes(upper)) {
+          tokens.push({ text: rawToken, type: 'kw-keyword', dataToken: 'keyword' });
+          return;
+        }
+
+        // Punctuation and Comparison Operators
+        if (/^[=><!]+$/.test(trimmed)) {
+          tokens.push({ text: rawToken, type: 'op-symbol', dataToken: currentClause === 'ON' ? 'condition' : (currentClause === 'WHERE' ? 'where' : null) });
+          return;
+        }
+        if (/^[,;()]$/.test(trimmed)) {
+          tokens.push({ text: rawToken, type: 'punct-symbol', dataToken: null });
+          return;
+        }
+
+        // Identifiers and expressions categorized by clause context
+        if (currentClause === 'SELECT') {
+          tokens.push({ text: rawToken, type: 'col-item', dataToken: 'columns' });
+        } else if (currentClause === 'FROM') {
+          tokens.push({ text: rawToken, type: 'tbl-a', dataToken: 'table_a' });
+        } else if (currentClause === 'JOIN') {
+          tokens.push({ text: rawToken, type: 'tbl-b', dataToken: 'table_b' });
+        } else if (currentClause === 'ON') {
+          tokens.push({ text: rawToken, type: 'cond-item', dataToken: 'condition' });
+        } else if (currentClause === 'WHERE') {
+          tokens.push({ text: rawToken, type: 'filter-item', dataToken: 'where' });
+        } else {
+          tokens.push({ text: rawToken, type: 'identifier', dataToken: null });
+        }
+      });
+
+      return { lineNum: lineIdx + 1, tokens };
+    });
   }
 
   function getTokenDescription(tokenKey, sql) {
@@ -711,61 +767,61 @@
     
     if (tokenKey === 'select') {
       return {
-        badge: 'SELECT',
-        color: '#06b6d4',
-        systemHint: '✨ Highlights Output Columns in Result Table',
-        desc: 'Chooses which attributes survive and display in your final result table.'
+        badge: 'SELECT (Projection)',
+        color: '#1d4ed8',
+        systemHint: '✨ Projects output columns into result table',
+        desc: 'Specifies which attributes survive and display in your final result table.'
       };
     }
     if (tokenKey === 'columns') {
       return {
         badge: 'Output Columns',
-        color: '#06b6d4',
+        color: '#1d4ed8',
         systemHint: '✨ Projected into the Generated Result Table',
-        desc: 'Pulling employee name (e.name) alongside department name (d.dept_name) and office location (d.location).'
+        desc: 'Attributes retrieved from joined source tables for the final output projection.'
       };
     }
     if (tokenKey === 'from') {
       return {
-        badge: 'FROM',
-        color: '#10b981',
-        systemHint: '✨ Highlights Table A (Employees) below',
-        desc: 'Sets the starting base table for the query. Every join starts with this primary relation.'
+        badge: 'FROM (Table A)',
+        color: '#0f766e',
+        systemHint: '✨ Highlights Primary Source Table A below',
+        desc: 'Sets the starting base relation for the query. Every join starts with this primary dataset.'
       };
     }
     if (tokenKey === 'table_a') {
       return {
-        badge: 'Table A: Employees e',
-        color: '#10b981',
-        systemHint: '✨ Highlights Table A (Employees) below',
-        desc: 'Our staff directory (5 employees). "e" is the table alias for quick column referencing.'
+        badge: 'Table A',
+        color: '#0f766e',
+        systemHint: '✨ Highlights Primary Source Table A below',
+        desc: 'The left-hand driving dataset. Table aliases provide concise column references.'
       };
     }
     if (tokenKey === 'join') {
       let typeName = 'INNER JOIN';
-      let exp = 'Strict Match: Combines rows only when dept_id exists in BOTH tables. Alice, Bob, Charlie, and Diana match. Evan Vance (unassigned) and Research (empty) are dropped.';
-      let color = '#10b981';
+      let exp = 'Strict Match: Combines rows only when keys match in BOTH tables. Unmatched rows are dropped.';
+      let color = '#059669';
 
       if (upperSQL.includes('LEFT JOIN') && upperSQL.includes('IS NULL')) {
         typeName = 'LEFT ANTI-JOIN';
-        exp = 'Left Exclusive: Keeps only employees with NO matching department (Evan Vance).';
-        color = '#f59e0b';
+        exp = 'Left Exclusive: Keeps only rows in Table A with NO matching row in Table B.';
+        color = '#d97706';
       } else if (upperSQL.includes('LEFT JOIN')) {
         typeName = 'LEFT JOIN';
-        exp = 'Preserves All Staff: Guarantees all 5 employees survive. Unassigned staff (Evan Vance) get NULL for department details.';
-        color = '#3b82f6';
+        exp = 'Preserves All Left Rows: Guarantees all Table A rows survive. Unmatched rows receive NULLs for Table B.';
+        color = '#2563eb';
       } else if (upperSQL.includes('RIGHT JOIN')) {
         typeName = 'RIGHT JOIN';
-        exp = 'Preserves All Departments: Guarantees all 4 departments survive. Empty departments (Research) get NULL for employee details.';
-        color = '#a855f7';
+        exp = 'Preserves All Right Rows: Guarantees all Table B rows survive. Unmatched rows receive NULLs for Table A.';
+        color = '#7c3aed';
       } else if (upperSQL.includes('FULL')) {
         typeName = 'FULL OUTER JOIN';
-        exp = 'Full Union: Keeps matching pairs, unassigned staff (Evan Vance), AND empty departments (Research).';
-        color = '#eab308';
+        exp = 'Full Bilateral Union: Keeps matching pairs plus unmatched rows from both Table A and Table B.';
+        color = '#b45309';
       } else if (upperSQL.includes('CROSS')) {
         typeName = 'CROSS JOIN';
-        exp = 'Cartesian Product: Multiplies 5 employees × 4 departments = 20 total combinations.';
-        color = '#ec4899';
+        exp = 'Cartesian Product: Multiplies every row of Table A with every row of Table B.';
+        color = '#be185d';
       }
 
       return {
@@ -777,33 +833,33 @@
     }
     if (tokenKey === 'table_b') {
       return {
-        badge: 'Table B: Departments d',
-        color: '#a855f7',
-        systemHint: '✨ Highlights Table B (Departments) below',
-        desc: 'The target lookup table (4 departments). "d" is the alias for quick column referencing.'
+        badge: 'Table B',
+        color: '#0f766e',
+        systemHint: '✨ Highlights Secondary Table B below',
+        desc: 'The target lookup relation being merged into the query.'
       };
     }
     if (tokenKey === 'on') {
       return {
-        badge: 'ON',
-        color: '#f59e0b',
-        systemHint: '✨ Highlights connecting laser arrows between tables',
-        desc: 'The relational rule that evaluates which row in Table A matches which row in Table B.'
+        badge: 'ON (Match Predicate)',
+        color: '#b45309',
+        systemHint: '✨ Highlights relational connector lines between tables',
+        desc: 'The equality rule determining which row in Table A links to which row in Table B.'
       };
     }
     if (tokenKey === 'condition') {
       return {
-        badge: 'Join Condition: e.dept_id = d.dept_id',
-        color: '#f59e0b',
-        systemHint: '✨ Highlights connecting laser arrows between tables',
-        desc: 'Links employee to department whenever their dept_id numbers are equal. If equal, the rows merge together.'
+        badge: 'Join Condition',
+        color: '#b45309',
+        systemHint: '✨ Highlights relational connector lines between tables',
+        desc: 'Key comparison rule. When keys evaluate to TRUE, rows merge into the output dataset.'
       };
     }
     if (tokenKey === 'where') {
       const isTrap = upperSQL.includes('LEFT JOIN') && upperSQL.includes('WHERE D.') && !upperSQL.includes('IS NULL');
       return {
         badge: isTrap ? '⚠️ FILTER TRAP' : 'WHERE Filter',
-        color: isTrap ? '#ef4444' : '#06b6d4',
+        color: isTrap ? '#dc2626' : '#b45309',
         systemHint: isTrap ? '⚠️ Warning: Silently turns LEFT JOIN into INNER JOIN' : '✨ Filters emitted rows',
         desc: isTrap
           ? 'Filtering Table B in WHERE drops NULL rows, accidentally converting your LEFT JOIN into an INNER JOIN! Move condition into the ON clause.'
@@ -812,65 +868,56 @@
     }
 
     return {
-      badge: 'SQL Token',
-      color: '#06b6d4',
-      systemHint: 'Relational query element',
-      desc: 'Part of the active relational join query.'
+      badge: 'SQL Element',
+      color: '#1d4ed8',
+      systemHint: 'Relational query component',
+      desc: 'Active relational join query keyword or expression.'
     };
   }
 
   function renderInteractiveQueryBlueprintHTML(sql, problem) {
-    const tokens = tokenizeSQLQuery(sql);
+    const lineData = tokenizeSQLLineByLine(sql || '');
+
+    const linesHTML = lineData.map(line => {
+      if (line.tokens.length === 0) {
+        return `
+          <div class="blueprint-line">
+            <span class="blueprint-line-num">${line.lineNum}</span>
+            <span class="blueprint-line-content">&nbsp;</span>
+          </div>
+        `;
+      }
+
+      const content = line.tokens.map(t => {
+        if (t.isWhitespace) {
+          return t.text; // preserve exact user indentation and spaces
+        }
+        if (t.type === 'punct-symbol' || (t.type === 'op-symbol' && !t.dataToken)) {
+          return `<span class="sql-punct">${escapeHTML(t.text)}</span>`;
+        }
+        if (t.type === 'sql-comment') {
+          return `<span class="sql-comment">${escapeHTML(t.text)}</span>`;
+        }
+        if (t.dataToken) {
+          return `<span class="sql-blueprint-token ${t.type}" data-token="${t.dataToken}"
+                        onmouseenter="window.JoinsMasteryEngine.setHoverQueryToken('${t.dataToken}')"
+                        onmouseleave="window.JoinsMasteryEngine.clearHoverQueryToken()">${escapeHTML(t.text)}</span>`;
+        }
+        return `<span class="sql-token ${t.type}">${escapeHTML(t.text)}</span>`;
+      }).join('');
+
+      return `
+        <div class="blueprint-line">
+          <span class="blueprint-line-num">${line.lineNum}</span>
+          <span class="blueprint-line-content">${content}</span>
+        </div>
+      `;
+    }).join('');
 
     return `
       <div class="interactive-sql-blueprint-card">
         <div class="blueprint-code-editor-row" onclick="if(event.target === this) window.JoinsMasteryEngine.setEditorMode('code')">
-          <div class="blueprint-line">
-            <span class="blueprint-line-num">1</span>
-            <span class="sql-blueprint-token kw-select" data-token="select"
-                  onmouseenter="window.JoinsMasteryEngine.setHoverQueryToken('select')"
-                  onmouseleave="window.JoinsMasteryEngine.clearHoverQueryToken()">SELECT</span>
-            <span class="sql-blueprint-token col-item" data-token="columns"
-                  onmouseenter="window.JoinsMasteryEngine.setHoverQueryToken('columns')"
-                  onmouseleave="window.JoinsMasteryEngine.clearHoverQueryToken()">${escapeHTML(tokens.columns)}</span>
-          </div>
-          <div class="blueprint-line">
-            <span class="blueprint-line-num">2</span>
-            <span class="sql-blueprint-token kw-from" data-token="from"
-                  onmouseenter="window.JoinsMasteryEngine.setHoverQueryToken('from')"
-                  onmouseleave="window.JoinsMasteryEngine.clearHoverQueryToken()">FROM</span>
-            <span class="sql-blueprint-token tbl-a" data-token="table_a"
-                  onmouseenter="window.JoinsMasteryEngine.setHoverQueryToken('table_a')"
-                  onmouseleave="window.JoinsMasteryEngine.clearHoverQueryToken()">${escapeHTML(tokens.tableA)}</span>
-          </div>
-          <div class="blueprint-line">
-            <span class="blueprint-line-num">3</span>
-            <span class="sql-blueprint-token kw-join" data-token="join"
-                  onmouseenter="window.JoinsMasteryEngine.setHoverQueryToken('join')"
-                  onmouseleave="window.JoinsMasteryEngine.clearHoverQueryToken()">${escapeHTML(tokens.joinKw)}</span>
-            <span class="sql-blueprint-token tbl-b" data-token="table_b"
-                  onmouseenter="window.JoinsMasteryEngine.setHoverQueryToken('table_b')"
-                  onmouseleave="window.JoinsMasteryEngine.clearHoverQueryToken()">${escapeHTML(tokens.tableB)}</span>
-            ${tokens.onKw ? `
-              <span class="sql-blueprint-token kw-on" data-token="on"
-                    onmouseenter="window.JoinsMasteryEngine.setHoverQueryToken('on')"
-                    onmouseleave="window.JoinsMasteryEngine.clearHoverQueryToken()">ON</span>
-              <span class="sql-blueprint-token cond-item" data-token="condition"
-                    onmouseenter="window.JoinsMasteryEngine.setHoverQueryToken('condition')"
-                    onmouseleave="window.JoinsMasteryEngine.clearHoverQueryToken()">${escapeHTML(tokens.condition)};</span>
-            ` : ';'}
-          </div>
-          ${tokens.whereFilter ? `
-            <div class="blueprint-line">
-              <span class="blueprint-line-num">4</span>
-              <span class="sql-blueprint-token kw-where" data-token="where"
-                    onmouseenter="window.JoinsMasteryEngine.setHoverQueryToken('where')"
-                    onmouseleave="window.JoinsMasteryEngine.clearHoverQueryToken()">WHERE</span>
-              <span class="sql-blueprint-token filter-item" data-token="where"
-                    onmouseenter="window.JoinsMasteryEngine.setHoverQueryToken('where')"
-                    onmouseleave="window.JoinsMasteryEngine.clearHoverQueryToken()">${escapeHTML(tokens.whereFilter)};</span>
-            </div>
-          ` : ''}
+          ${linesHTML}
         </div>
 
         <!-- Attached Interactive Tooltip Strip with Real-Time Bidirectional Feedback -->
@@ -1366,6 +1413,32 @@
         }
       }
 
+      // Calculate dynamic Venn region population counts
+      let aOnlyCount = 0;
+      let matchedCount = 0;
+      let bOnlyCount = 0;
+
+      if (problem.schema === 'standard') {
+        const eRows = currentSchema.tableA.rows;
+        const dRows = currentSchema.tableB.rows;
+        eRows.forEach(e => {
+          if (e.dept_id !== null && dRows.some(d => d.dept_id === e.dept_id)) {
+            matchedCount++;
+          } else {
+            aOnlyCount++;
+          }
+        });
+        dRows.forEach(d => {
+          if (!eRows.some(e => e.dept_id === d.dept_id)) {
+            bOnlyCount++;
+          }
+        });
+      } else {
+        matchedCount = parsed.outputRows.filter(r => r.status === 'matched').length || 4;
+        aOnlyCount = parsed.outputRows.filter(r => r.status === 'null_padded' || r.status === 'exclusive').length || 1;
+        bOnlyCount = 1;
+      }
+
       return `
         <!-- Left Column: Source Tables with Visual Arrow Tracer & Mini Venn HUD -->
         <div class="arena-left-card">
@@ -1383,38 +1456,37 @@
                onmouseenter="window.JoinsMasteryEngine.setHoverQueryToken('join')"
                onmouseleave="window.JoinsMasteryEngine.clearHoverQueryToken()">
             <div class="mini-venn-svg-wrapper">
-              <svg class="mini-venn-svg" viewBox="0 0 160 70" xmlns="http://www.w3.org/2000/svg">
-                <defs>
-                  <filter id="vennGlow" x="-20%" y="-20%" width="140%" height="140%">
-                    <feGaussianBlur stdDeviation="3" result="blur" />
-                    <feMerge>
-                      <feMergeNode in="blur" />
-                      <feMergeNode in="SourceGraphic" />
-                    </feMerge>
-                  </filter>
-                </defs>
+              <svg class="mini-venn-svg" viewBox="0 0 220 95" xmlns="http://www.w3.org/2000/svg">
+                <!-- Table Titles at Top -->
+                <text x="82" y="11" class="venn-circle-title">${currentSchema.tableA.name} (A)</text>
+                <text x="138" y="11" class="venn-circle-title">${currentSchema.tableB.name} (B)</text>
 
                 <!-- Left Circle Base -->
-                <circle cx="55" cy="35" r="26" class="venn-circle-base base-left" />
+                <circle cx="82" cy="50" r="38" class="venn-circle-base base-left" />
                 <!-- Right Circle Base -->
-                <circle cx="105" cy="35" r="26" class="venn-circle-base base-right" />
+                <circle cx="138" cy="50" r="38" class="venn-circle-base base-right" />
 
-                <!-- Left Crescent (Left Only) -->
-                <path d="M 80,14.5 A 26,26 0 1,0 80,55.5 A 26,26 0 0,0 80,14.5 Z"
+                <!-- Left Crescent (Left Only: A - B) -->
+                <path d="M 110,24.3 A 38,38 0 1,0 110,75.7 A 38,38 0 0,0 110,24.3 Z"
                       class="venn-region left-crescent ${['left', 'full_outer', 'left_antijoin'].includes(parsed.joinType) ? 'active' : ''}" />
 
-                <!-- Right Crescent (Right Only) -->
-                <path d="M 80,14.5 A 26,26 0 0,1 80,55.5 A 26,26 0 1,1 80,55.5 Z"
+                <!-- Right Crescent (Right Only: B - A) -->
+                <path d="M 110,24.3 A 38,38 0 1,1 110,75.7 A 38,38 0 0,1 110,24.3 Z"
                       class="venn-region right-crescent ${['right', 'full_outer', 'right_antijoin'].includes(parsed.joinType) ? 'active' : ''}" />
 
-                <!-- Overlap Lens (Intersection A ∩ B) -->
-                <path d="M 80,14.5 A 26,26 0 0,1 80,55.5 A 26,26 0 0,1 80,14.5 Z"
+                <!-- Overlap Lens (Intersection: A ∩ B) -->
+                <path d="M 110,24.3 A 38,38 0 0,1 110,75.7 A 38,38 0 0,1 110,24.3 Z"
                       class="venn-region overlap-lens ${['inner', 'left', 'right', 'full_outer'].includes(parsed.joinType) ? 'active' : ''}" />
 
-                <!-- Clear Labels -->
-                <text x="42" y="39" class="venn-label text-left">A (1)</text>
-                <text x="80" y="39" class="venn-label text-center">A ∩ B (4)</text>
-                <text x="118" y="39" class="venn-label text-right">B (1)</text>
+                <!-- Clear, Well-Spaced Region Labels & Numbers -->
+                <text x="66" y="47" class="venn-label-tag">A only</text>
+                <text x="66" y="59" class="venn-label-val">${aOnlyCount}</text>
+
+                <text x="110" y="47" class="venn-label-tag center-tag">A ∩ B</text>
+                <text x="110" y="59" class="venn-label-val center-val">${matchedCount}</text>
+
+                <text x="154" y="47" class="venn-label-tag">B only</text>
+                <text x="154" y="59" class="venn-label-val">${bOnlyCount}</text>
               </svg>
             </div>
             <div class="mini-venn-hud-info">
@@ -1433,7 +1505,7 @@
             </div>
           </div>
 
-          <!-- Dual Source Tables with SVG Neon Laser Arrow Overlay -->
+          <!-- Dual Source Tables with Minimalist Relational Arrow Connectors -->
           <div class="relational-tracer-container">
             <!-- Left Source Table -->
             <div class="source-mini-table table-left" id="tracer_table_left"
@@ -1458,77 +1530,46 @@
               </div>
             </div>
 
-            <!-- Center SVG Neon Laser Canvas -->
+            <!-- Center Minimalist Relational Arrow Canvas -->
             <div class="tracer-arrow-canvas-col" id="tracer_arrow_canvas"
                  onmouseenter="window.JoinsMasteryEngine.setHoverQueryToken('condition')"
                  onmouseleave="window.JoinsMasteryEngine.clearHoverQueryToken()">
               <svg class="tracer-arrow-svg" viewBox="0 0 160 220" xmlns="http://www.w3.org/2000/svg">
                 <defs>
-                  <filter id="laserGlowEmerald" x="-30%" y="-30%" width="160%" height="160%">
-                    <feGaussianBlur stdDeviation="3" result="glow" />
-                    <feMerge>
-                      <feMergeNode in="glow" />
-                      <feMergeNode in="SourceGraphic" />
-                    </feMerge>
-                  </filter>
-                  <filter id="laserGlowAmber" x="-30%" y="-30%" width="160%" height="160%">
-                    <feGaussianBlur stdDeviation="2.5" result="glow" />
-                    <feMerge>
-                      <feMergeNode in="glow" />
-                      <feMergeNode in="SourceGraphic" />
-                    </feMerge>
-                  </filter>
-                  <marker id="arrowGreen" markerWidth="8" markerHeight="8" refX="6" refY="4" orient="auto">
-                    <path d="M 0 0 L 8 4 L 0 8 Z" fill="#10b981" />
+                  <marker id="arrowMatch" markerWidth="6" markerHeight="6" refX="5" refY="3" orient="auto">
+                    <path d="M 0 0.8 L 5 3 L 0 5.2 Z" fill="#10b981" />
                   </marker>
-                  <marker id="arrowAmber" markerWidth="8" markerHeight="8" refX="6" refY="4" orient="auto">
-                    <path d="M 0 0 L 8 4 L 0 8 Z" fill="#f59e0b" />
-                  </marker>
-                  <marker id="arrowRed" markerWidth="8" markerHeight="8" refX="6" refY="4" orient="auto">
-                    <path d="M 0 0 L 8 4 L 0 8 Z" fill="#ef4444" />
+                  <marker id="arrowAmber" markerWidth="6" markerHeight="6" refX="5" refY="3" orient="auto">
+                    <path d="M 0 0.8 L 5 3 L 0 5.2 Z" fill="#d97706" />
                   </marker>
                 </defs>
 
-                <!-- Render Dynamic Bezier Neon Laser Arrows -->
+                <!-- Render Clean Relational Connection Lines -->
                 ${parsed.arrowLinks.map((link, idx) => {
                   const y1 = 28 + (idx % 5) * 38;
                   const y2 = link.targetId ? (28 + ((idx * 2) % 4) * 42) : y1;
                   const isMatch = link.status === 'match';
                   const isNullPad = link.status === 'null_pad';
                   const isDropped = link.status === 'dropped';
-                  const strokeColor = isMatch ? '#10b981' : (isNullPad ? '#f59e0b' : '#ef4444');
-                  const marker = isMatch ? 'url(#arrowGreen)' : (isNullPad ? 'url(#arrowAmber)' : 'none');
-                  const pathData = isDropped ? `M 10,${y1} C 45,${y1} 60,${y1} 75,${y1}` : `M 10,${y1} C 70,${y1} 90,${y2} 150,${y2}`;
+                  const strokeColor = isMatch ? '#10b981' : (isNullPad ? '#d97706' : '#94a3b8');
+                  const marker = isMatch ? 'url(#arrowMatch)' : (isNullPad ? 'url(#arrowAmber)' : 'none');
+                  const pathData = isDropped
+                    ? `M 10,${y1} L 55,${y1}`
+                    : `M 10,${y1} C 65,${y1} 85,${y2} 145,${y2}`;
 
                   const isLinkHovered = hover && ((link.sourceId && link.sourceId.includes(hover.id)) || (link.targetId && link.targetId.includes(hover.id)));
                   const isLinkStepped = state.replayStep === (idx + 1);
 
                   return `
-                    <g class="laser-arrow-group ${isLinkHovered || isLinkStepped ? 'highlighted-laser' : ''}">
-                      <!-- Background Laser Aura -->
-                      <path d="${pathData}"
-                            stroke="${strokeColor}"
-                            stroke-width="${isLinkHovered || isLinkStepped ? '7' : '4'}"
-                            opacity="${isLinkHovered || isLinkStepped ? '0.6' : '0.2'}"
-                            fill="none"
-                            filter="url(#${isMatch ? 'laserGlowEmerald' : 'laserGlowAmber'})" />
-
-                      <!-- Core Laser Path -->
-                      <path id="laser_path_${idx}"
+                    <g class="connector-arrow-group ${isLinkHovered || isLinkStepped ? 'highlighted-connector' : ''}">
+                      <path id="connector_path_${idx}"
                             d="${pathData}"
                             stroke="${strokeColor}"
-                            stroke-width="${isLinkHovered || isLinkStepped ? '3.5' : (isMatch ? '2.5' : '1.5')}"
-                            stroke-dasharray="${isNullPad ? '4,4' : (isDropped ? '2,2' : 'none')}"
+                            stroke-width="${isLinkHovered || isLinkStepped ? '2.4' : (isMatch ? '1.6' : '1.2')}"
+                            stroke-dasharray="${isNullPad ? '4,4' : (isDropped ? '3,3' : 'none')}"
                             fill="none"
                             marker-end="${marker}"
-                            opacity="0.95" />
-
-                      <!-- Animated Moving Laser Particle along matched paths -->
-                      ${isMatch ? `
-                        <circle r="3" fill="#6ee7b7" filter="url(#laserGlowEmerald)">
-                          <animateMotion dur="${isLinkHovered ? '1.2s' : '2.4s'}" repeatCount="indefinite" path="${pathData}" />
-                        </circle>
-                      ` : ''}
+                            opacity="${isLinkHovered || isLinkStepped ? '1.0' : (isMatch ? '0.75' : '0.45')}" />
                     </g>
                   `;
                 }).join('')}
