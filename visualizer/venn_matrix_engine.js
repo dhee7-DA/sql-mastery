@@ -374,21 +374,23 @@
 
   const PROBLEMS = buildProblemsCatalog();
 
-  // --- ENGINE STATE ---
   const state = {
     activeTier: 'easy',
     currentProblemIndex: 0,
     userSQL: PROBLEMS[0].starterSQL,
     selectedDialect: 'mysql',
     activeExplainerTab: 'autopsy',
+    activeOptimizerAlgo: 'hash', // 'hash' | 'nested' | 'merge'
     replayStep: 0,
     isAutoPlaying: false,
     autoPlayTimer: null,
     editorMode: 'blueprint', // 'blueprint' (interactive hoverable query) | 'code' (raw textarea editor)
     hoveredQueryToken: null, // active hoverable query token key
     hoveredKey: null, // { side: 'left'|'right', id: number|string }
+    pinnedRow: null, // { side: 'left'|'right', id: number|string }
     activeCalloutToken: 'join', // active token key for callout popup
     diffView: false, // boolean: table vs diff inspector
+    showShortcutsModal: false, // boolean: keyboard modal
     solvedProblemIds: new Set(),
     userFeedback: null
   };
@@ -1247,6 +1249,236 @@
     return synthesizeDynamicDescription(tokenKey, sql, p);
   }
 
+  // --- TOPOLOGY QUICK-DIFF HELPERS ---
+  function generateTopologySQL(targetJoinType, currentSQL, problem) {
+    const p = problem || (typeof PROBLEMS !== 'undefined' ? PROBLEMS[state.currentProblemIndex] : null);
+    const clean = (currentSQL || (p ? p.starterSQL : '')).trim();
+
+    // Standard Employees & Departments schema replacement
+    const baseSelect = 'SELECT e.emp_id, e.name, d.dept_name, d.location\nFROM Employees e\n';
+    if (targetJoinType === 'inner') {
+      return baseSelect + 'INNER JOIN Departments d ON e.dept_id = d.dept_id;';
+    } else if (targetJoinType === 'left') {
+      return baseSelect + 'LEFT JOIN Departments d ON e.dept_id = d.dept_id;';
+    } else if (targetJoinType === 'right') {
+      return baseSelect + 'RIGHT JOIN Departments d ON e.dept_id = d.dept_id;';
+    } else if (targetJoinType === 'full_outer') {
+      return baseSelect + 'FULL OUTER JOIN Departments d ON e.dept_id = d.dept_id;';
+    } else if (targetJoinType === 'left_antijoin') {
+      return baseSelect + 'LEFT JOIN Departments d ON e.dept_id = d.dept_id\nWHERE d.dept_id IS NULL;';
+    }
+    return clean;
+  }
+
+  function getTopologySimulationCounts(problem) {
+    const p = problem || (typeof PROBLEMS !== 'undefined' ? PROBLEMS[state.currentProblemIndex] : null);
+    const schema = (p && p.schema) ? p.schema : 'standard';
+    return {
+      inner: parseAndEvaluateSQL(generateTopologySQL('inner', state.userSQL, p), schema).outputRows.length,
+      left: parseAndEvaluateSQL(generateTopologySQL('left', state.userSQL, p), schema).outputRows.length,
+      right: parseAndEvaluateSQL(generateTopologySQL('right', state.userSQL, p), schema).outputRows.length,
+      full_outer: parseAndEvaluateSQL(generateTopologySQL('full_outer', state.userSQL, p), schema).outputRows.length,
+      left_antijoin: parseAndEvaluateSQL(generateTopologySQL('left_antijoin', state.userSQL, p), schema).outputRows.length
+    };
+  }
+
+  // --- TUPLE DOSSIER HELPER ---
+  function renderTupleDossierHTML(activeTarget, problem, currentSchema, parsed) {
+    if (!activeTarget) {
+      return `
+        <div class="predicate-inspector-strip">
+          <div class="dossier-top-badge-row">
+            <span class="dossier-target-pill"><span class="framer-emoji-icon float">💡</span> Interactive Tuple Inspector</span>
+            <span class="dossier-fate-tag" style="color:var(--text-muted)">CLICK OR HOVER ANY RECORD</span>
+          </div>
+          <div class="dossier-content-text">
+            Click or hover any record in <strong>${currentSchema.tableA.name}</strong> or <strong>${currentSchema.tableB.name}</strong> to isolate its exact vector path and inspect its relational fate under ANSI Three-Valued Logic (3VL).
+          </div>
+        </div>
+      `;
+    }
+
+    const { side, id } = activeTarget;
+    if (side === 'left') {
+      const emp = currentSchema.tableA.rows.find(r => (r.emp_id || r.proj_id) === id);
+      if (!emp) return '';
+
+      let fateTag = '';
+      let fateClass = '';
+      let text = '';
+
+      if (emp.emp_id === 5 && emp.dept_id === null) {
+        fateTag = (parsed.joinType === 'left' || parsed.joinType === 'full_outer' || parsed.joinType === 'left_antijoin') ? '★ PRESERVED (NULL-PADDED)' : '⊘ DISCARDED (3VL)';
+        fateClass = (parsed.joinType === 'left' || parsed.joinType === 'full_outer' || parsed.joinType === 'left_antijoin') ? 'null_padded' : 'dropped';
+        text = `<strong>Evan Vance (#5)</strong> has <code>dept_id = NULL</code>. In ANSI SQL Three-Valued Logic, <code>NULL = 10/20/30/40</code> evaluates to <strong>UNKNOWN</strong>. Under ${parsed.joinType.toUpperCase().replace('_', ' ')}, UNKNOWN evaluates to ${parsed.joinType === 'inner' ? '<span style=\"color:#dc2626\">FALSE (row dropped from output ⊘)</span>' : '<span style=\"color:#2563eb\">Outer Preservation (emitted with NULL department attributes ✨)</span>'}.`;
+      } else if (emp.dept_id !== undefined) {
+        const match = currentSchema.tableB.rows.find(d => d.dept_id === emp.dept_id);
+        if (match) {
+          fateTag = parsed.joinType === 'left_antijoin' ? '⊘ FILTERED OUT' : '✓ MATCHED & EMITTED';
+          fateClass = parsed.joinType === 'left_antijoin' ? 'dropped' : 'matched';
+          text = `<strong>${emp.name} (#${emp.emp_id})</strong> has <code>dept_id = ${emp.dept_id}</code>, matching <strong>${match.dept_name}</strong>. Predicate <code>e.dept_id = d.dept_id</code> evaluates strictly to <strong>TRUE</strong> ✨. ${parsed.joinType === 'left_antijoin' ? 'Anti-join filter drops this row because department is not NULL.' : 'Row merges and emits into the final output table.'}`;
+        }
+      } else if (emp.manager_id !== undefined) {
+        const mgr = currentSchema.tableB.rows.find(m => m.emp_id === emp.manager_id);
+        fateTag = mgr ? '✓ REPORTS TO MGR' : (emp.manager_id === null ? '★ TOP EXEC (NULL MGR)' : '⊘ ORPHAN MGR');
+        fateClass = mgr ? 'matched' : (emp.manager_id === null ? 'null_padded' : 'exclusive');
+        text = mgr ? `<strong>${emp.name}</strong> reports to <strong>${mgr.name} (#${mgr.emp_id})</strong>. Self-join on <code>e.manager_id = m.emp_id</code> is TRUE ✨.` : `<strong>${emp.name}</strong> has manager_id ${emp.manager_id === null ? 'NULL (C-level leadership)' : '99 (unregistered manager)'}.`;
+      } else {
+        fateTag = '⚡ RANGE EVALUATED';
+        fateClass = 'matched';
+        text = `<strong>${emp.name}</strong> with salary <strong>$${(emp.salary_num || 0).toLocaleString()}</strong> evaluated against continuous salary band thresholds.`;
+      }
+
+      return `
+        <div class="predicate-inspector-strip">
+          <div class="dossier-top-badge-row">
+            <span class="dossier-target-pill"><span class="framer-emoji-icon float">🎯</span> Tuple #${emp.emp_id || emp.proj_id}: ${emp.name || emp.proj_name}</span>
+            <span class="dossier-fate-tag ${fateClass}">${fateTag}</span>
+          </div>
+          <div class="dossier-content-text">${text}</div>
+        </div>
+      `;
+    } else {
+      const dept = currentSchema.tableB.rows.find(r => (r.dept_id || r.band_code || r.emp_id) === id);
+      if (!dept) return '';
+
+      const staff = currentSchema.tableA.rows.filter(e => e.dept_id === dept.dept_id);
+      let fateTag = staff.length > 0 ? `✓ ${staff.length} STAFF ASSIGNED` : (parsed.joinType === 'right' || parsed.joinType === 'full_outer' || parsed.joinType === 'right_antijoin' ? '★ PRESERVED (0 STAFF)' : '⊘ DROPPED (0 STAFF)');
+      let fateClass = staff.length > 0 ? 'matched' : (parsed.joinType === 'right' || parsed.joinType === 'full_outer' || parsed.joinType === 'right_antijoin' ? 'null_padded' : 'dropped');
+      let text = staff.length > 0
+        ? `<strong>${dept.dept_name || dept.name} (dept_id: ${dept.dept_id})</strong> matches staff: ${staff.map(s => s.name).join(', ')}. Emits ${staff.length} paired row(s) ✨.`
+        : `<strong>${dept.dept_name || dept.name} (dept_id: ${dept.dept_id})</strong> has 0 staff assigned. ${parsed.joinType === 'right' || parsed.joinType === 'full_outer' ? 'Preserved by outer join with NULL employee attributes 🏢.' : 'Dropped by INNER / LEFT JOIN because no employee has dept_id = 40 ⊘.'}`;
+
+      return `
+        <div class="predicate-inspector-strip">
+          <div class="dossier-top-badge-row">
+            <span class="dossier-target-pill"><span class="framer-emoji-icon float">🏢</span> Division #${dept.dept_id || dept.band_code || dept.emp_id}: ${dept.dept_name || dept.name || dept.band_name}</span>
+            <span class="dossier-fate-tag ${fateClass}">${fateTag}</span>
+          </div>
+          <div class="dossier-content-text">${text}</div>
+        </div>
+      `;
+    }
+  }
+
+  // --- PHYSICAL OPTIMIZER ENGINE SIMULATOR HELPER ---
+  function renderOptimizerCockpitHTML(problem, parsed) {
+    const algo = state.activeOptimizerAlgo || 'hash';
+
+    let algoTitle = 'In-Memory Hash Join';
+    let timeCost = 'O(N + M)';
+    let ramCost = 'O(M) — Fits smaller table in RAM';
+    let card1Title = 'Build Phase (Table B)';
+    let card1Val = 'Departments (4 rows) hashed into RAM hash buckets';
+    let card2Title = 'Probe Phase (Table A)';
+    let card2Val = 'Employees (5 rows) stream and probe buckets in O(1) per row';
+    let decision = 'Database optimizers (PostgreSQL, MySQL 8.0, Oracle) pick Hash Join by default for unsorted equijoins when the smaller relation fits into the work_mem allocation.';
+
+    if (algo === 'nested') {
+      algoTitle = 'Index Nested Loop Join';
+      timeCost = 'O(N · log M)';
+      ramCost = 'O(1) — Constant memory';
+      card1Title = 'Outer Driving Loop';
+      card1Val = 'Sequential scan through Employees (N rows)';
+      card2Title = 'Inner B-Tree Probe';
+      card2Val = 'Direct B-Tree index lookup on Departments.dept_id';
+      decision = 'Optimizers choose Nested Loop when the outer dataset has high selectivity (few rows) and the inner join key has a clustered primary key or secondary index.';
+    } else if (algo === 'merge') {
+      algoTitle = 'Sort-Merge Join';
+      timeCost = 'O(N log N + M log M)';
+      ramCost = 'O(1) if indexed, O(M) if temp-table sort';
+      card1Title = 'Presort Tables';
+      card1Val = 'Sort Employees & Departments by dept_id';
+      card2Title = 'Dual Cursor Scan';
+      card2Val = 'Two synchronized advancing cursors emit matches in linear scan';
+      decision = 'Chosen when both tables are pre-sorted by clustered indexes, when joining massive datasets that exceed RAM work_mem, or for non-equi inequality joins.';
+    }
+
+    return `
+      <div class="optimizer-cockpit-box">
+        <div class="optimizer-algo-switcher">
+          <span style="font-size:10.5px;font-weight:800;color:var(--text-muted);font-family:var(--font-mono);margin-right:6px;">ALGORITHM:</span>
+          <button class="btn-optimizer-algo ${algo === 'hash' ? 'active' : ''}" onclick="window.JoinsMasteryEngine.setOptimizerAlgo('hash')">
+            <span class="framer-emoji-icon">⚡</span> Hash Join
+          </button>
+          <button class="btn-optimizer-algo ${algo === 'nested' ? 'active' : ''}" onclick="window.JoinsMasteryEngine.setOptimizerAlgo('nested')">
+            <span class="framer-emoji-icon">🔍</span> Nested Loop
+          </button>
+          <button class="btn-optimizer-algo ${algo === 'merge' ? 'active' : ''}" onclick="window.JoinsMasteryEngine.setOptimizerAlgo('merge')">
+            <span class="framer-emoji-icon">🔀</span> Sort-Merge
+          </button>
+        </div>
+
+        <div class="optimizer-flow-diagram">
+          <div class="optimizer-stage-card">
+            <div class="stage-card-title">${card1Title}</div>
+            <div class="stage-card-val">${card1Val}</div>
+          </div>
+          <div class="stage-flow-arrow">➔</div>
+          <div class="optimizer-stage-card">
+            <div class="stage-card-title">${card2Title}</div>
+            <div class="stage-card-val">${card2Val}</div>
+          </div>
+        </div>
+
+        <div class="optimizer-metrics-strip">
+          <span>Engine Time: <strong class="metric-cost-pill">${timeCost}</strong></span>
+          <span>RAM Overhead: <strong style="color:var(--text-primary)">${ramCost}</strong></span>
+        </div>
+
+        <div class="optimizer-decision-rule">
+          <strong>Optimizer Decision Heuristic:</strong> ${decision}
+        </div>
+      </div>
+    `;
+  }
+
+  // --- SHORTCUTS MODAL HELPER ---
+  function renderShortcutsModalHTML() {
+    return `
+      <div class="shortcuts-modal-backdrop" onclick="window.JoinsMasteryEngine.toggleShortcutsModal(false)">
+        <div class="shortcuts-modal-card" onclick="event.stopPropagation()">
+          <div class="shortcuts-modal-header">
+            <div class="shortcuts-modal-title">
+              <span class="framer-emoji-icon float">⌨️</span> Speed-Dojo Keyboard Shortcuts
+            </div>
+            <button class="btn-close-modal" onclick="window.JoinsMasteryEngine.toggleShortcutsModal(false)">&times;</button>
+          </div>
+          <div class="shortcuts-grid">
+            <div class="shortcut-item-row">
+              <span class="shortcut-desc-text">Next Problem</span>
+              <span class="shortcut-key-badge">] or N</span>
+            </div>
+            <div class="shortcut-item-row">
+              <span class="shortcut-desc-text">Previous Problem</span>
+              <span class="shortcut-key-badge">[ or P</span>
+            </div>
+            <div class="shortcut-item-row">
+              <span class="shortcut-desc-text">Play / Pause Animated Probe Stepper</span>
+              <span class="shortcut-key-badge">Space</span>
+            </div>
+            <div class="shortcut-item-row">
+              <span class="shortcut-desc-text">Jump to Tuple Probe Step</span>
+              <span class="shortcut-key-badge">0 – 6</span>
+            </div>
+            <div class="shortcut-item-row">
+              <span class="shortcut-desc-text">Toggle Blueprint / Raw SQL Editor</span>
+              <span class="shortcut-key-badge">E</span>
+            </div>
+            <div class="shortcut-item-row">
+              <span class="shortcut-desc-text">Toggle Generated Table / Goal Diff Inspector</span>
+              <span class="shortcut-key-badge">D</span>
+            </div>
+            <div class="shortcut-item-row">
+              <span class="shortcut-desc-text">Toggle Keyboard Shortcuts Cheat Sheet</span>
+              <span class="shortcut-key-badge">?</span>
+            </div>
+          </div>
+        </div>
+      </div>
+    `;
+  }
+
   function renderInteractiveQueryBlueprintHTML(sql, problem) {
     const lineData = tokenizeSQLLineByLine(sql || '');
 
@@ -1527,13 +1759,16 @@
       const totalCount = PROBLEMS.length;
       const isSolved = state.solvedProblemIds.has(p.id);
 
+      const topoCounts = getTopologySimulationCounts(p);
+      const parsedCurrent = parseAndEvaluateSQL(state.userSQL, p.schema);
+
       container.innerHTML = `
         <div class="joins-arena-wrapper">
           <!-- Top Global Arena Header -->
           <div class="arena-header-bar">
             <div class="arena-title-col">
               <div class="arena-title-row">
-                <span class="arena-icon">🔗</span>
+                <span class="arena-icon framer-emoji-icon float">🔗</span>
                 <h1 class="arena-title">Joins Mastery • 300 Problem Arena</h1>
                 <span class="arena-badge pure">100% Pure Joins Edition</span>
               </div>
@@ -1570,7 +1805,7 @@
                 <span class="prob-number-pill ${p.tier}">#${p.number}</span>
                 <span class="prob-tier-pill ${p.tier}">${p.tier.toUpperCase()}</span>
                 <span class="prob-company-pill">${p.company}</span>
-                ${isSolved ? '<span class="prob-solved-pill">✓ Solved</span>' : ''}
+                ${isSolved ? '<span class="prob-solved-pill"><span class="framer-emoji-icon">✓</span> Solved</span>' : ''}
               </div>
 
               <!-- Problem Navigation Controls -->
@@ -1584,6 +1819,7 @@
                   `).join('')}
                 </select>
                 <button class="btn-prob-nav" onclick="window.JoinsMasteryEngine.nextProblem()" ${state.currentProblemIndex === PROBLEMS.length - 1 ? 'disabled' : ''}>Next &rarr;</button>
+                <button class="btn-prob-nav" onclick="window.JoinsMasteryEngine.toggleShortcutsModal(true)" title="Keyboard Shortcuts (?)">⌨️ Keys</button>
               </div>
             </div>
 
@@ -1592,7 +1828,7 @@
               <h2 class="problem-title-text">${p.title}</h2>
               <p class="problem-scenario-text">${p.scenario}</p>
               <div class="problem-goal-box">
-                <span class="goal-label">🎯 REQUIRED GOAL:</span>
+                <span class="goal-label"><span class="framer-emoji-icon float">🎯</span> REQUIRED GOAL:</span>
                 <span class="goal-text">${p.goal}</span>
               </div>
             </div>
@@ -1600,6 +1836,34 @@
 
           <!-- Live Interactive SQL Query Editor Box with In-Place Hoverable Tokens & System Links -->
           <div class="arena-editor-card">
+            <!-- 1-Click Topology Quick-Diff Switcher Dock -->
+            <div class="topology-switcher-dock">
+              <div class="topo-switcher-left">
+                <span class="topo-switcher-label">
+                  <span class="framer-emoji-icon float">🔀</span> What-If Topology Diff:
+                </span>
+                <div class="topo-pills-bar">
+                  ${[
+                    { key: 'inner', label: 'INNER' },
+                    { key: 'left', label: 'LEFT' },
+                    { key: 'right', label: 'RIGHT' },
+                    { key: 'full_outer', label: 'FULL' },
+                    { key: 'left_antijoin', label: 'ANTI-JOIN' }
+                  ].map(item => `
+                    <button class="btn-topo-pill ${parsedCurrent.joinType === item.key ? 'active' : ''}"
+                            onclick="window.JoinsMasteryEngine.switchTopology('${item.key}')">
+                      ${item.label} <span class="topo-pill-count">${topoCounts[item.key]} rows</span>
+                    </button>
+                  `).join('')}
+                </div>
+              </div>
+              <div class="topo-switcher-right">
+                <button class="btn-topo-reset" onclick="window.JoinsMasteryEngine.resetStarterSQL()" title="Revert to problem canonical solution">
+                  <span class="reset-icon">↺</span> Reset Solution
+                </button>
+              </div>
+            </div>
+
             <div class="editor-top-bar">
               <div class="editor-left-label">
                 <span class="editor-terminal-dot red"></span>
@@ -1613,11 +1877,11 @@
                 <div class="editor-view-mode-group">
                   <button class="mode-pill ${state.editorMode === 'blueprint' ? 'active' : ''}"
                           onclick="window.JoinsMasteryEngine.setEditorMode('blueprint')">
-                    <span class="mode-icon">⚡</span> Interactive Query
+                    <span class="mode-icon framer-emoji-icon">⚡</span> Interactive Query
                   </button>
                   <button class="mode-pill ${state.editorMode === 'code' ? 'active' : ''}"
                           onclick="window.JoinsMasteryEngine.setEditorMode('code')">
-                    <span class="mode-icon">✍️</span> Edit Raw SQL
+                    <span class="mode-icon framer-emoji-icon">✍️</span> Edit Raw SQL
                   </button>
                 </div>
 
@@ -1631,7 +1895,7 @@
 
                 <button class="btn-editor-reset" onclick="window.JoinsMasteryEngine.resetStarterSQL()">↺ Reset</button>
                 <button class="btn-editor-run" onclick="window.JoinsMasteryEngine.checkQuery()">
-                  <span class="run-icon">▶</span> Run &amp; Validate (+${p.xp} XP)
+                  <span class="run-icon framer-emoji-icon">▶</span> Run &amp; Validate (+${p.xp} XP)
                 </button>
               </div>
             </div>
@@ -1654,7 +1918,7 @@
           ${state.userFeedback ? `
             <div class="arena-feedback-strip ${state.userFeedback.isSuccess ? 'success celebrate-pulse' : 'error'}">
               <div class="feedback-left-wrap">
-                <span class="feedback-icon">${state.userFeedback.isSuccess ? '🎉' : '⚠️'}</span>
+                <span class="feedback-icon framer-emoji-icon float">${state.userFeedback.isSuccess ? '🎉' : '⚠️'}</span>
                 <span class="feedback-text">${state.userFeedback.message}</span>
               </div>
               ${state.userFeedback.isSuccess && state.currentProblemIndex < PROBLEMS.length - 1 ? `
@@ -1670,6 +1934,7 @@
             ${this.renderStageHTML(p)}
           </div>
         </div>
+        ${state.showShortcutsModal ? renderShortcutsModalHTML() : ''}
       `;
     },
 
@@ -1822,54 +2087,56 @@
         bOnlyCount = 1;
       }
 
+      const activeTarget = state.pinnedRow || state.hoveredKey;
+
       return `
         <!-- Left Column: Source Tables with Visual Arrow Tracer & Mini Venn HUD -->
         <div class="arena-left-card">
           <div class="card-title-header">
             <div class="header-title-group">
-              <span class="header-main-title">🏹 Relational Arrow Tracer &amp; Topology</span>
-              <span class="header-sub-tag">Live Physical Key Links</span>
+              <span class="header-main-title"><span class="framer-emoji-icon">🏹</span> Relational Arrow Tracer &amp; Topology</span>
+              <span class="header-sub-tag">Click any row to pin &amp; trace its ANSI 3VL vector path</span>
             </div>
             <!-- Live Region Pill -->
             <span class="topo-pill ${parsed.joinType}">${parsed.joinType.toUpperCase()}</span>
           </div>
 
-          <!-- MINI VENN DIAGRAM HUD WIDGET -->
+          <!-- ENLARGED CRISP MINI VENN DIAGRAM HUD WIDGET -->
           <div class="mini-venn-hud-container" id="mini_venn_hud"
                onmouseenter="window.JoinsMasteryEngine.setHoverQueryToken('join')"
                onmouseleave="window.JoinsMasteryEngine.clearHoverQueryToken()">
             <div class="mini-venn-svg-wrapper">
-              <svg class="mini-venn-svg" viewBox="0 0 220 95" xmlns="http://www.w3.org/2000/svg">
+              <svg class="mini-venn-svg" viewBox="0 0 260 115" xmlns="http://www.w3.org/2000/svg">
                 <!-- Table Titles at Top -->
-                <text x="82" y="11" class="venn-circle-title">${currentSchema.tableA.name} (A)</text>
-                <text x="138" y="11" class="venn-circle-title">${currentSchema.tableB.name} (B)</text>
+                <text x="95" y="14" class="venn-circle-title">${currentSchema.tableA.name} (A)</text>
+                <text x="165" y="14" class="venn-circle-title">${currentSchema.tableB.name} (B)</text>
 
                 <!-- Left Circle Base -->
-                <circle cx="82" cy="50" r="38" class="venn-circle-base base-left" />
+                <circle cx="95" cy="62" r="44" class="venn-circle-base base-left" />
                 <!-- Right Circle Base -->
-                <circle cx="138" cy="50" r="38" class="venn-circle-base base-right" />
+                <circle cx="165" cy="62" r="44" class="venn-circle-base base-right" />
 
                 <!-- Left Crescent (Left Only: A - B) -->
-                <path d="M 110,24.3 A 38,38 0 1,0 110,75.7 A 38,38 0 0,0 110,24.3 Z"
+                <path d="M 130,35.3 A 44,44 0 1,0 130,88.7 A 44,44 0 0,0 130,35.3 Z"
                       class="venn-region left-crescent ${['left', 'full_outer', 'left_antijoin'].includes(parsed.joinType) ? 'active' : ''}" />
 
                 <!-- Right Crescent (Right Only: B - A) -->
-                <path d="M 110,24.3 A 38,38 0 1,1 110,75.7 A 38,38 0 0,1 110,24.3 Z"
+                <path d="M 130,35.3 A 44,44 0 1,1 130,88.7 A 44,44 0 0,1 130,35.3 Z"
                       class="venn-region right-crescent ${['right', 'full_outer', 'right_antijoin'].includes(parsed.joinType) ? 'active' : ''}" />
 
                 <!-- Overlap Lens (Intersection: A ∩ B) -->
-                <path d="M 110,24.3 A 38,38 0 0,1 110,75.7 A 38,38 0 0,1 110,24.3 Z"
+                <path d="M 130,35.3 A 44,44 0 0,1 130,88.7 A 44,44 0 0,1 130,35.3 Z"
                       class="venn-region overlap-lens ${['inner', 'left', 'right', 'full_outer'].includes(parsed.joinType) ? 'active' : ''}" />
 
                 <!-- Clear, Well-Spaced Region Labels & Numbers -->
-                <text x="66" y="47" class="venn-label-tag">A only</text>
-                <text x="66" y="59" class="venn-label-val">${aOnlyCount}</text>
+                <text x="76" y="58" class="venn-label-tag">A only</text>
+                <text x="76" y="74" class="venn-label-val">${aOnlyCount}</text>
 
-                <text x="110" y="47" class="venn-label-tag center-tag">A ∩ B</text>
-                <text x="110" y="59" class="venn-label-val center-val">${matchedCount}</text>
+                <text x="130" y="58" class="venn-label-tag center-tag">A ∩ B</text>
+                <text x="130" y="74" class="venn-label-val center-val">${matchedCount}</text>
 
-                <text x="154" y="47" class="venn-label-tag">B only</text>
-                <text x="154" y="59" class="venn-label-val">${bOnlyCount}</text>
+                <text x="184" y="58" class="venn-label-tag">B only</text>
+                <text x="184" y="74" class="venn-label-val">${bOnlyCount}</text>
               </svg>
             </div>
             <div class="mini-venn-hud-info">
@@ -1897,11 +2164,15 @@
               <div class="mini-table-header">${currentSchema.tableA.name}</div>
               <div class="mini-table-body">
                 ${currentSchema.tableA.rows.map((r, rIdx) => {
+                  const isPinned = state.pinnedRow && state.pinnedRow.side === 'left' && (r.emp_id || r.proj_id) === state.pinnedRow.id;
                   const isHovered = hover && hover.side === 'left' && (r.emp_id || r.proj_id) === hover.id;
+                  const isDimmed = activeTarget && !(activeTarget.side === 'left' && (r.emp_id || r.proj_id) === activeTarget.id);
                   const isStepping = state.replayStep === (rIdx + 1);
+
                   return `
-                    <div class="tracer-row row-left ${isHovered ? 'hover-highlight' : ''} ${isStepping ? 'step-spotlight' : ''}"
+                    <div class="tracer-row row-left ${isPinned ? 'pinned-active' : ''} ${isHovered ? 'hover-highlight' : ''} ${isStepping ? 'step-spotlight probe-beacon-active' : ''} ${isDimmed ? 'dimmed-tracer-row' : ''}"
                          id="row_left_${r.emp_id || r.proj_id}"
+                         onclick="window.JoinsMasteryEngine.togglePinRow('left', ${r.emp_id || r.proj_id})"
                          onmouseenter="window.JoinsMasteryEngine.setHoverKey('left', ${r.emp_id || r.proj_id})"
                          onmouseleave="window.JoinsMasteryEngine.clearHoverKey()">
                       <span class="row-cell-key">#${r.emp_id || r.proj_id}</span>
@@ -1913,11 +2184,11 @@
               </div>
             </div>
 
-            <!-- Center Minimalist Relational Arrow Canvas -->
+            <!-- Center Minimalist Relational Arrow Canvas (Enlarged) -->
             <div class="tracer-arrow-canvas-col" id="tracer_arrow_canvas"
                  onmouseenter="window.JoinsMasteryEngine.setHoverQueryToken('condition')"
                  onmouseleave="window.JoinsMasteryEngine.clearHoverQueryToken()">
-              <svg class="tracer-arrow-svg" viewBox="0 0 160 220" xmlns="http://www.w3.org/2000/svg">
+              <svg class="tracer-arrow-svg" viewBox="0 0 200 240" xmlns="http://www.w3.org/2000/svg">
                 <defs>
                   <marker id="arrowMatch" markerWidth="6" markerHeight="6" refX="5" refY="3" orient="auto">
                     <path d="M 0 0.8 L 5 3 L 0 5.2 Z" fill="#10b981" />
@@ -1929,30 +2200,31 @@
 
                 <!-- Render Clean Relational Connection Lines -->
                 ${parsed.arrowLinks.map((link, idx) => {
-                  const y1 = 28 + (idx % 5) * 38;
-                  const y2 = link.targetId ? (28 + ((idx * 2) % 4) * 42) : y1;
+                  const y1 = 26 + (idx % 5) * 44;
+                  const y2 = link.targetId ? (26 + ((idx * 2) % 4) * 50) : y1;
                   const isMatch = link.status === 'match';
                   const isNullPad = link.status === 'null_pad';
                   const isDropped = link.status === 'dropped';
                   const strokeColor = isMatch ? '#10b981' : (isNullPad ? '#d97706' : '#94a3b8');
                   const marker = isMatch ? 'url(#arrowMatch)' : (isNullPad ? 'url(#arrowAmber)' : 'none');
                   const pathData = isDropped
-                    ? `M 10,${y1} L 55,${y1}`
-                    : `M 10,${y1} C 65,${y1} 85,${y2} 145,${y2}`;
+                    ? `M 10,${y1} L 70,${y1}`
+                    : `M 10,${y1} C 85,${y1} 115,${y2} 190,${y2}`;
 
-                  const isLinkHovered = hover && ((link.sourceId && link.sourceId.includes(hover.id)) || (link.targetId && link.targetId.includes(hover.id)));
+                  const isLinkActive = activeTarget && ((link.sourceId && link.sourceId.includes(activeTarget.id)) || (link.targetId && link.targetId.includes(activeTarget.id)));
+                  const isLinkDimmed = activeTarget && !isLinkActive;
                   const isLinkStepped = state.replayStep === (idx + 1);
 
                   return `
-                    <g class="connector-arrow-group ${isLinkHovered || isLinkStepped ? 'highlighted-connector' : ''}">
+                    <g class="connector-arrow-group ${isLinkActive || isLinkStepped ? 'highlighted-connector' : ''} ${isLinkStepped ? 'probe-active-arrow' : ''} ${isLinkDimmed ? 'dimmed-connector' : ''}">
                       <path id="connector_path_${idx}"
                             d="${pathData}"
                             stroke="${strokeColor}"
-                            stroke-width="${isLinkHovered || isLinkStepped ? '2.4' : (isMatch ? '1.6' : '1.2')}"
+                            stroke-width="${isLinkActive || isLinkStepped ? '2.8' : (isMatch ? '1.8' : '1.2')}"
                             stroke-dasharray="${isNullPad ? '4,4' : (isDropped ? '3,3' : 'none')}"
                             fill="none"
                             marker-end="${marker}"
-                            opacity="${isLinkHovered || isLinkStepped ? '1.0' : (isMatch ? '0.75' : '0.45')}" />
+                            opacity="${isLinkActive || isLinkStepped ? '1.0' : (isLinkDimmed ? '0.12' : (isMatch ? '0.75' : '0.45'))}" />
                     </g>
                   `;
                 }).join('')}
@@ -1966,10 +2238,14 @@
               <div class="mini-table-header">${currentSchema.tableB.name}</div>
               <div class="mini-table-body">
                 ${currentSchema.tableB.rows.map(r => {
-                  const isHovered = hover && hover.side === 'right' && (r.dept_id || r.band_code) === hover.id;
+                  const isPinned = state.pinnedRow && state.pinnedRow.side === 'right' && (r.dept_id || r.band_code || r.emp_id) === state.pinnedRow.id;
+                  const isHovered = hover && hover.side === 'right' && (r.dept_id || r.band_code || r.emp_id) === hover.id;
+                  const isDimmed = activeTarget && !(activeTarget.side === 'right' && (r.dept_id || r.band_code || r.emp_id) === activeTarget.id);
+
                   return `
-                    <div class="tracer-row row-right ${isHovered ? 'hover-highlight' : ''}"
+                    <div class="tracer-row row-right ${isPinned ? 'pinned-active' : ''} ${isHovered ? 'hover-highlight' : ''} ${isDimmed ? 'dimmed-tracer-row' : ''}"
                          id="row_right_${r.dept_id || r.emp_id || r.band_code}"
+                         onclick="window.JoinsMasteryEngine.togglePinRow('right', ${r.dept_id || r.band_code || r.emp_id})"
                          onmouseenter="window.JoinsMasteryEngine.setHoverKey('right', ${r.dept_id || r.band_code || r.emp_id})"
                          onmouseleave="window.JoinsMasteryEngine.clearHoverKey()">
                       <span class="row-cell-key">#${r.dept_id || r.emp_id || r.band_code}</span>
@@ -1982,10 +2258,8 @@
             </div>
           </div>
 
-          <!-- Live Interactive Predicate Inspector Banner -->
-          <div class="predicate-inspector-strip">
-            <span class="predicate-text">${activePredicateMsg || '💡 Hover any row in Employees or Departments to inspect live key equality evaluation.'}</span>
-          </div>
+          <!-- Live Interactive Tuple Life-Cycle Dossier -->
+          ${renderTupleDossierHTML(activeTarget, problem, currentSchema, parsed)}
         </div>
 
         <!-- Right Column: Live Recalculated Output & 6-Layer Explainer Engine -->
@@ -2009,24 +2283,24 @@
             ${state.diffView ? this.renderDiffInspector(problem, parsed, goalEval) : this.renderResultTable(parsed)}
           </div>
 
-          <!-- THE 6-LAYER SMART EXPLAINER ENGINE -->
-          <div class="smart-explainer-card">
-            <div class="explainer-nav-strip">
+          <!-- 6-Layer Relational Explainer Tabs -->
+          <div class="arena-explainer-card">
+            <div class="explainer-tabs-nav">
               <button class="explainer-tab-btn ${state.activeExplainerTab === 'autopsy' ? 'active' : ''}" onclick="window.JoinsMasteryEngine.setExplainerTab('autopsy')">
-                🔍 Query Autopsy
+                <span class="tab-icon framer-emoji-icon">🔬</span> SQL Autopsy
               </button>
               <button class="explainer-tab-btn ${state.activeExplainerTab === 'stepper' ? 'active' : ''}" onclick="window.JoinsMasteryEngine.setExplainerTab('stepper')">
-                🎬 Step Replay
+                <span class="tab-icon framer-emoji-icon">⏱️</span> Step Execution
               </button>
               <button class="explainer-tab-btn ${state.activeExplainerTab === 'english' ? 'active' : ''}" onclick="window.JoinsMasteryEngine.setExplainerTab('english')">
-                🗣️ Plain English
+                <span class="tab-icon framer-emoji-icon">💬</span> Plain English
               </button>
               <button class="explainer-tab-btn ${state.activeExplainerTab === 'internals' ? 'active' : ''}" onclick="window.JoinsMasteryEngine.setExplainerTab('internals')">
-                ⚡ Engine Internals
+                <span class="tab-icon framer-emoji-icon">⚡</span> Engine Internals
               </button>
             </div>
 
-            <div class="explainer-content-body">
+            <div class="explainer-tab-body">
               ${this.renderExplainerContent(problem, parsed)}
             </div>
           </div>
@@ -2156,19 +2430,20 @@
         `;
       } else if (state.activeExplainerTab === 'stepper') {
         const steps = [
-          'Step 1: Database engine initializes Hash Table on Departments (Build Phase: 4 hash buckets allocated in memory).',
-          'Step 2: Probing Row #1 Alice (dept_id: 10) ➔ Hash match found in Engineering ➔ Row emitted to result buffer.',
-          'Step 3: Probing Row #2 Bob (dept_id: 20) ➔ Hash match found in Marketing ➔ Row emitted to result buffer.',
-          'Step 4: Probing Row #3 Charlie (dept_id: 10) ➔ Hash match found in Engineering ➔ Row emitted to result buffer.',
-          'Step 5: Probing Row #4 Diana (dept_id: 30) ➔ Hash match found in Sales ➔ Row emitted to result buffer.',
-          'Step 6: Probing Row #5 Evan (dept_id: NULL) ➔ No hash match. If LEFT JOIN, emit with NULLs; if INNER JOIN, discard.'
+          '✨ Step 1 (Overview): Dual source relations loaded. Employees (5 rows) and Departments (4 rows) ready for probe.',
+          '🔍 Step 2: Probing Alice Chen (#1, dept 10) ➔ Hash match found in Engineering (10) ➔ Predicate TRUE ➔ Emitted to output buffer ✨.',
+          '🔍 Step 3: Probing Bob Smith (#2, dept 20) ➔ Hash match found in Marketing (20) ➔ Predicate TRUE ➔ Emitted to output buffer ✨.',
+          '🔍 Step 4: Probing Charlie Kim (#3, dept 10) ➔ Hash match found in Engineering (10) ➔ Predicate TRUE ➔ Emitted to output buffer ✨.',
+          '🔍 Step 5: Probing Diana Ross (#4, dept 30) ➔ Hash match found in Sales (30) ➔ Predicate TRUE ➔ Emitted to output buffer ✨.',
+          '🤔 Step 6: Probing Evan Vance (#5, dept NULL) ➔ 3VL UNKNOWN. No matching division in Departments ➔ ' + (parsed.joinType === 'left' || parsed.joinType === 'full_outer' ? 'Preserved with NULL department attributes ✨.' : 'Silently dropped from output ⊘.'),
+          '🏢 Step 7: Scanning unreferenced divisions ➔ Research (#40, 0 staff) ➔ ' + (parsed.joinType === 'right' || parsed.joinType === 'full_outer' ? 'Preserved with NULL employee attributes 🏢.' : 'Dropped by INNER / LEFT JOIN ⊘.')
         ];
 
         return `
           <div class="explainer-stepper-box">
             <div class="stepper-controls-row">
               <div class="stepper-left-meta">
-                <span class="stepper-step-indicator">Row Probe Execution: Step ${state.replayStep + 1} of 6</span>
+                <span class="stepper-step-indicator">Row Probe Execution: Step ${state.replayStep + 1} of 7</span>
               </div>
               <div class="stepper-btns">
                 <button class="btn-step-action" onclick="window.JoinsMasteryEngine.prevStepReplay()">⏮ Prev</button>
@@ -2182,12 +2457,12 @@
 
             <!-- Execution Slider Track -->
             <div class="stepper-scrubber-track">
-              <input type="range" min="0" max="5" value="${state.replayStep}" class="stepper-slider-input"
+              <input type="range" min="0" max="6" value="${state.replayStep}" class="stepper-slider-input"
                      oninput="window.JoinsMasteryEngine.stepScrub(Number(this.value))" />
             </div>
 
             <div class="stepper-active-desc">
-              ${steps[state.replayStep]}
+              ${steps[state.replayStep] || steps[0]}
             </div>
           </div>
         `;
@@ -2201,14 +2476,7 @@
           </div>
         `;
       } else {
-        return `
-          <div class="explainer-internals-box">
-            <div class="internals-header">Optimizer Physical Execution Plan:</div>
-            <p class="internals-text">
-              Modern relational engines (MySQL 8.0, PostgreSQL, Oracle) execute this query as an in-memory <strong>Hash Join</strong>. The smaller table (Departments, 4 rows) is loaded into a RAM hash bucket ($O(M)$ build phase), then the larger table (Employees) streams through and probes the hash table ($O(N)$ probe phase). Total computational cost is linear: <strong>O(N + M)</strong>.
-            </p>
-          </div>
-        `;
+        return renderOptimizerCockpitHTML(problem, parsed);
       }
     },
 
@@ -2222,9 +2490,118 @@
       }
     },
 
+    // --- 1-CLICK TOPOLOGY SWITCHER ---
+    switchTopology: function (joinType) {
+      const p = PROBLEMS[state.currentProblemIndex];
+      state.userSQL = generateTopologySQL(joinType, state.userSQL, p);
+      if (window.AudioFX) window.AudioFX.playClick();
+      this.render();
+    },
+
+    // --- TUPLE PIN ROW TOGGLE ---
+    togglePinRow: function (side, id) {
+      if (state.pinnedRow && state.pinnedRow.side === side && state.pinnedRow.id === id) {
+        state.pinnedRow = null;
+      } else {
+        state.pinnedRow = { side, id };
+        if (window.AudioFX) window.AudioFX.playClick();
+      }
+      this.renderStageOnly();
+    },
+
+    // --- OPTIMIZER ALGO SWITCHER ---
+    setOptimizerAlgo: function (algo) {
+      state.activeOptimizerAlgo = algo;
+      if (window.AudioFX) window.AudioFX.playClick();
+      this.renderStageOnly();
+    },
+
+    // --- KEYBOARD SHORTCUTS MODAL ---
+    toggleShortcutsModal: function (force) {
+      state.showShortcutsModal = force !== undefined ? force : !state.showShortcutsModal;
+      this.render();
+    },
+
+    // --- STEPPER CONTROLS ---
+    stepScrub: function (val) {
+      state.replayStep = Math.max(0, Math.min(6, val));
+      this.renderStageOnly();
+    },
+
+    stepReplay: function () {
+      state.replayStep = (state.replayStep + 1) % 7;
+      if (window.AudioFX) window.AudioFX.playClick();
+      this.renderStageOnly();
+    },
+
+    prevStepReplay: function () {
+      state.replayStep = (state.replayStep - 1 + 7) % 7;
+      if (window.AudioFX) window.AudioFX.playClick();
+      this.renderStageOnly();
+    },
+
+    resetReplay: function () {
+      state.replayStep = 0;
+      if (state.isAutoPlaying) this.toggleAutoPlay();
+      if (window.AudioFX) window.AudioFX.playClick();
+      this.renderStageOnly();
+    },
+
+    toggleAutoPlay: function () {
+      state.isAutoPlaying = !state.isAutoPlaying;
+      if (state.isAutoPlaying) {
+        state.autoPlayTimer = setInterval(() => {
+          this.stepReplay();
+        }, 1300);
+      } else {
+        if (state.autoPlayTimer) clearInterval(state.autoPlayTimer);
+        state.autoPlayTimer = null;
+      }
+      this.renderStageOnly();
+    },
+
     getTokenDescription: getTokenDescription,
     PROBLEMS: PROBLEMS
   };
+
+  // --- GLOBAL KEYBOARD SHORTCUTS LISTENER ---
+  if (typeof window !== 'undefined') {
+    window.addEventListener('keydown', function (e) {
+      const tag = (e.target && e.target.tagName) ? e.target.tagName.toUpperCase() : '';
+      if (tag === 'TEXTAREA' || tag === 'INPUT' || tag === 'SELECT' || e.target.isContentEditable) {
+        return;
+      }
+
+      const key = e.key.toLowerCase();
+      if (key === '[' || key === 'p') {
+        e.preventDefault();
+        window.JoinsMasteryEngine.prevProblem();
+      } else if (key === ']' || key === 'n') {
+        e.preventDefault();
+        window.JoinsMasteryEngine.nextProblem();
+      } else if (e.code === 'Space') {
+        e.preventDefault();
+        window.JoinsMasteryEngine.toggleAutoPlay();
+      } else if (key >= '0' && key <= '6') {
+        e.preventDefault();
+        window.JoinsMasteryEngine.stepScrub(Number(key));
+      } else if (key === 'e') {
+        e.preventDefault();
+        window.JoinsMasteryEngine.setEditorMode(state.editorMode === 'blueprint' ? 'code' : 'blueprint');
+      } else if (key === 'd') {
+        e.preventDefault();
+        window.JoinsMasteryEngine.toggleDiffView(!state.diffView);
+      } else if (key === '?' || (e.shiftKey && e.key === '?')) {
+        e.preventDefault();
+        window.JoinsMasteryEngine.toggleShortcutsModal();
+      } else if (key === 'escape') {
+        if (state.showShortcutsModal) {
+          e.preventDefault();
+          window.JoinsMasteryEngine.toggleShortcutsModal(false);
+        }
+      }
+    });
+  }
 
   // Expose globally
   window.JoinsMasteryEngine = JoinsMasteryEngine;
