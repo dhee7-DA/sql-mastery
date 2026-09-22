@@ -651,48 +651,48 @@
     tokens.push({
       key: 'select',
       badge: 'SELECT',
-      label: 'Output Projection',
+      label: 'Output Columns',
       icon: '📋',
       color: '#06b6d4',
-      title: 'SELECT (Columns Projection)',
-      explanation: 'Picks the exact attributes returned in the result: employee details merged with matching department attributes.'
+      title: 'SELECT: What columns appear in your result',
+      explanation: 'Specifies the final columns to display. Here, we pull employee name (e.name) together with department name (d.dept_name) and office location (d.location).'
     });
 
     // 2. FROM Token
     tokens.push({
       key: 'from',
       badge: 'FROM',
-      label: 'Driving Table (A)',
+      label: 'Table A (Base)',
       icon: '🏢',
       color: '#10b981',
-      title: 'FROM Employees e (Driving Stream)',
-      explanation: 'Starts with Table A (5 employees). The alias "e" lets you write short references like e.name instead of Employees.name.'
+      title: 'FROM Employees e: Our starting base table',
+      explanation: 'Starts with the Employees table (5 rows) as Table A. The alias "e" is a short nickname so we can write e.name instead of the full table name.'
     });
 
     // 3. JOIN Token
-    let joinLabel = 'INNER JOIN (Strict Match)';
-    let joinExp = 'Strict key intersection (⋈): Only employees with matching dept_id in Departments survive. Alice, Bob, Charlie, and Diana match. Evan Vance (unassigned) and Research (empty) are dropped.';
+    let joinLabel = 'INNER JOIN (Match Both)';
+    let joinExp = 'Keeps ONLY rows where dept_id exists in BOTH tables. Alice, Bob, Charlie, and Diana match their department. Evan Vance (no department) and Research (no employees) are excluded.';
     let joinColor = '#10b981';
 
     if (upperSQL.includes('LEFT JOIN') && upperSQL.includes('IS NULL')) {
-      joinLabel = 'LEFT ANTI-JOIN (Exclusion)';
-      joinExp = 'Isolates orphan staff in Table A who have NO department on record (Evan Vance).';
+      joinLabel = 'LEFT ANTI-JOIN (Unmatched Left)';
+      joinExp = 'Finds employees who have NO matching department. Keeps only Evan Vance (dept_id is NULL) and drops all employees who have a department.';
       joinColor = '#f59e0b';
     } else if (upperSQL.includes('LEFT JOIN')) {
-      joinLabel = 'LEFT JOIN (Preserve All Staff)';
-      joinExp = 'Left outer preservation (⟕): All 5 employees survive in the output. For Evan Vance, missing department columns are filled with NULL.';
+      joinLabel = 'LEFT JOIN (Keep All Employees)';
+      joinExp = 'Keeps ALL 5 employees from Table A. Alice, Bob, Charlie, and Diana get department details, while Evan Vance gets NULL for missing department columns.';
       joinColor = '#3b82f6';
     } else if (upperSQL.includes('RIGHT JOIN')) {
-      joinLabel = 'RIGHT JOIN (Preserve Departments)';
-      joinExp = 'Right outer preservation (⟖): Guarantees all 4 departments survive. Research department appears with NULL employee attributes.';
+      joinLabel = 'RIGHT JOIN (Keep All Departments)';
+      joinExp = 'Keeps ALL 4 departments from Table B. Engineering, Sales, and Marketing get matching staff, while Research department gets NULL for missing staff.';
       joinColor = '#a855f7';
     } else if (upperSQL.includes('FULL')) {
-      joinLabel = 'FULL OUTER JOIN (360° Audit)';
-      joinExp = 'Full bilateral union (⟗): Preserves unassigned staff (Evan Vance) AND empty departments (Research) with NULL padding.';
+      joinLabel = 'FULL OUTER JOIN (Keep Everything)';
+      joinExp = 'Combines both tables completely. Keeps matching pairs, unassigned employees (Evan Vance with NULL dept), AND empty departments (Research with NULL staff).';
       joinColor = '#eab308';
     } else if (upperSQL.includes('CROSS')) {
-      joinLabel = 'CROSS JOIN (Cartesian Product)';
-      joinExp = 'Unconditional combinatorial pairing: generates all 5 × 4 = 20 employee-department combinations.';
+      joinLabel = 'CROSS JOIN (Every Combination)';
+      joinExp = 'Generates every possible combination of staff and departments (5 employees × 4 departments = 20 total rows).';
       joinColor = '#ec4899';
     }
 
@@ -702,7 +702,7 @@
       label: joinLabel,
       icon: '🔗',
       color: joinColor,
-      title: joinLabel,
+      title: `${joinLabel}: How tables combine`,
       explanation: joinExp
     });
 
@@ -710,11 +710,11 @@
     tokens.push({
       key: 'on',
       badge: 'ON',
-      label: 'ON (Key Condition)',
+      label: 'ON: Matching Rule',
       icon: '🔑',
       color: '#f59e0b',
-      title: 'ON e.dept_id = d.dept_id (Relational Bridge)',
-      explanation: 'The join predicate that tests for matching keys. Connects foreign key e.dept_id with primary key d.dept_id.'
+      title: 'ON e.dept_id = d.dept_id: The matching condition',
+      explanation: 'The connection rule: an employee row is linked to a department row whenever their dept_id numbers are equal.'
     });
 
     // 5. WHERE Token (if query contains WHERE)
@@ -723,13 +723,13 @@
       tokens.push({
         key: 'where',
         badge: isFilterTrap ? '⚠️ TRAP' : 'WHERE',
-        label: isFilterTrap ? 'Filter Trap Detected!' : 'WHERE Post-Filter',
+        label: isFilterTrap ? 'Filter Trap!' : 'WHERE Filter',
         icon: isFilterTrap ? '⚠️' : '🎯',
         color: isFilterTrap ? '#ef4444' : '#06b6d4',
-        title: isFilterTrap ? 'Silent Join Conversion Warning!' : 'WHERE Clause Filter',
+        title: isFilterTrap ? '⚠️ Watch Out: WHERE filter drops NULL rows!' : 'WHERE: Filters results after the join',
         explanation: isFilterTrap
-          ? 'Placing a WHERE filter on Table B in a LEFT JOIN silently drops NULL-padded rows (Evan Vance), converting it into an INNER JOIN! Move condition to ON.'
-          : 'Applies post-join filtering on rows emitted from the relational join.'
+          ? 'Filtering Table B in the WHERE clause removes rows where Table B is NULL, turning your LEFT JOIN back into an INNER JOIN. Move this condition into the ON clause!'
+          : 'Applies an extra filter on rows after the join is completed.'
       });
     }
 
@@ -1106,6 +1106,17 @@
       const tokens = getQueryTokens(sql, problem);
       const activeToken = tokens.find(t => t.key === state.activeCalloutToken) || tokens[0] || null;
 
+      // Approximate horizontal centers for each keyword chip
+      const chipOffsets = {
+        select: 50,
+        from: 195,
+        join: 390,
+        on: 610,
+        where: 770
+      };
+      const tokenIdx = tokens.findIndex(t => t.key === (activeToken ? activeToken.key : ''));
+      const arrowOffset = (activeToken && chipOffsets[activeToken.key]) ? chipOffsets[activeToken.key] : (40 + Math.max(0, tokenIdx) * 160);
+
       return `
         <div class="keyword-ribbon-bar">
           <div class="ribbon-prompt-label">
@@ -1131,7 +1142,7 @@
 
           <!-- Speech-Bubble Callout Popup with Attached Pointer Arrow -->
           ${activeToken ? `
-            <div class="token-callout-bubble" style="--bubble-accent: ${activeToken.color};">
+            <div class="token-callout-bubble" style="--bubble-accent: ${activeToken.color}; --arrow-offset: ${arrowOffset}px;">
               <!-- Upward Pointer Arrow -->
               <div class="bubble-pointer-arrow"></div>
 

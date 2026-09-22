@@ -18622,13 +18622,14 @@ body {
 .bubble-pointer-arrow {
   position: absolute;
   top: -6px;
-  left: 28px;
+  left: var(--arrow-offset, 28px);
   width: 10px;
   height: 10px;
   background: var(--bg-surface-elevated);
   border-left: 1px solid var(--bubble-accent, var(--accent));
   border-top: 1px solid var(--bubble-accent, var(--accent));
   transform: rotate(45deg);
+  transition: left 0.25s cubic-bezier(0.4, 0, 0.2, 1);
 }
 
 .bubble-header-row {
