@@ -661,8 +661,8 @@
         return { lineNum: lineIdx + 1, tokens: [] };
       }
 
-      // Regex to break line into comments, strings, multi-word join phrases, keywords, identifiers, symbols, and whitespace
-      const tokenRegex = /('(?:''|[^'])*'|"(?:""|[^"])*"|--.*$|\/\*[\s\S]*?\*\/|INNER\s+JOIN|LEFT\s+OUTER\s+JOIN|LEFT\s+ANTI-JOIN|LEFT\s+JOIN|RIGHT\s+OUTER\s+JOIN|RIGHT\s+JOIN|FULL\s+OUTER\s+JOIN|FULL\s+JOIN|CROSS\s+JOIN|GROUP\s+BY|ORDER\s+BY|IS\s+NOT\s+NULL|IS\s+NULL|[a-zA-Z_][a-zA-Z0-9_\.]*|!=|<>|<=|>=|[=><,;()*\+\-\/]|[\s]+)/gi;
+      // Regex to break line into comments, strings, multi-word join phrases, keywords, identifiers, numbers, symbols, and whitespace
+      const tokenRegex = /('(?:''|[^'])*'|"(?:""|[^"])*"|--.*$|\/\*[\s\S]*?\*\/|INNER\s+JOIN|LEFT\s+OUTER\s+JOIN|LEFT\s+ANTI-JOIN|LEFT\s+JOIN|RIGHT\s+OUTER\s+JOIN|RIGHT\s+JOIN|FULL\s+OUTER\s+JOIN|FULL\s+JOIN|CROSS\s+JOIN|GROUP\s+BY|ORDER\s+BY|IS\s+NOT\s+NULL|IS\s+NULL|[a-zA-Z_][a-zA-Z0-9_\.]*|\d+(?:\.\d+)?|!=|<>|<=|>=|[=><,;()*\+\-\/]|[\s]+|[^\s]+)/gi;
 
       const matches = lineText.match(tokenRegex) || [lineText];
       const tokens = [];
@@ -679,6 +679,18 @@
         // Comments
         if (rawToken.startsWith('--') || rawToken.startsWith('/*')) {
           tokens.push({ text: rawToken, type: 'sql-comment', dataToken: null });
+          return;
+        }
+
+        // String Literals
+        if ((rawToken.startsWith("'") && rawToken.endsWith("'")) || (rawToken.startsWith('"') && rawToken.endsWith('"'))) {
+          tokens.push({ text: rawToken, type: 'sql-string', dataToken: currentClause === 'ON' ? 'condition' : (currentClause === 'WHERE' ? 'where' : null) });
+          return;
+        }
+
+        // Numbers
+        if (/^\d+(?:\.\d+)?$/.test(trimmed)) {
+          tokens.push({ text: rawToken, type: 'sql-number', dataToken: currentClause === 'ON' ? 'condition' : (currentClause === 'WHERE' ? 'where' : null) });
           return;
         }
 
