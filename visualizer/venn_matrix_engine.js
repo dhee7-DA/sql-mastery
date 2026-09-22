@@ -774,97 +774,414 @@
     });
   }
 
-  function getTokenDescription(tokenKey, sql) {
+  // --- PROBLEM-SPECIFIC & SCENARIO-AWARE QUERY EXPLANATION ENGINE ---
+  function getPatternExplanations(expected, p, sql) {
+    const company = p ? p.company : 'Enterprise SQL';
+    const title = p ? p.title : 'Relational Join';
+
+    const patterns = {
+      // 1. INNER JOIN (Stripe Operations)
+      inner: {
+        select: {
+          badge: 'SELECT • Output Projection',
+          color: '#1d4ed8',
+          systemHint: '✨ Output attributes surviving inner match',
+          desc: 'Specifies which attributes survive from both source tables for active personnel.',
+          scenarioImpact: 'Pairs employee name with confirmed department name and physical office location.'
+        },
+        columns: {
+          badge: 'Output Columns',
+          color: '#1d4ed8',
+          systemHint: '✨ Projected attributes for ' + company,
+          desc: 'Retrieves personnel details alongside department name and facility location.',
+          scenarioImpact: 'Produces the clean active roster for ' + title + '.'
+        },
+        from: {
+          badge: 'FROM (Table A: Employees)',
+          color: '#0f766e',
+          systemHint: '✨ Primary driving relation (5 rows)',
+          desc: 'Starts evaluation with the 5 corporate personnel records (Alice, Bob, Charlie, Diana, Evan).',
+          scenarioImpact: 'Every employee record is tested sequentially against the department lookup table.'
+        },
+        table_a: {
+          badge: 'Employees e (Table A)',
+          color: '#0f766e',
+          systemHint: '✨ Left dataset (4 valid, 1 NULL dept)',
+          desc: 'Alice (#1), Bob (#2), Charlie (#3), Diana (#4) have valid dept_ids. Evan Vance (#5) has dept_id = NULL.',
+          scenarioImpact: 'In an INNER JOIN, Evan Vance is excluded because NULL cannot match any primary key.'
+        },
+        join: {
+          badge: 'INNER JOIN • Strict Pairing',
+          color: '#059669',
+          systemHint: '✨ Strict Key Intersection (A ∩ B)',
+          desc: 'Strict bilateral match: keeps a row ONLY if dept_id exists in BOTH tables. Unmatched rows on either side are dropped.',
+          scenarioImpact: 'Drops unassigned Evan Vance (NULL dept) and empty Research department (0 staff).'
+        },
+        table_b: {
+          badge: 'Departments d (Table B)',
+          color: '#0f766e',
+          systemHint: '✨ 4 corporate divisions',
+          desc: 'Lookup table containing Engineering (10), Marketing (20), Sales (30), and Research (40).',
+          scenarioImpact: 'Research has 0 employees, so it is quietly discarded by the inner join.'
+        },
+        on: {
+          badge: 'ON (Foreign Key Bridge)',
+          color: '#b45309',
+          systemHint: '✨ Relational link: e.dept_id = d.dept_id',
+          desc: 'The foreign-to-primary key bridge connecting staff records to their assigned department.',
+          scenarioImpact: 'Evaluates TRUE for 4 staff members. Emits Alice, Bob, Charlie, and Diana.'
+        },
+        condition: {
+          badge: 'Join Predicate',
+          color: '#b45309',
+          systemHint: '✨ e.dept_id = d.dept_id',
+          desc: 'When employee dept_id equals department dept_id, row attributes merge into the output.',
+          scenarioImpact: 'Pairs Alice & Charlie with Engineering, Bob with Marketing, Diana with Sales.'
+        },
+        where: {
+          badge: 'WHERE Clause',
+          color: '#b45309',
+          systemHint: '✨ Post-join filtering',
+          desc: 'Optional post-join filter. No WHERE clause is needed because INNER JOIN already drops unmatched rows.',
+          scenarioImpact: 'Challenge goal satisfied purely through relational inner match.'
+        }
+      },
+
+      // 2. LEFT JOIN (Google Workspace HR)
+      left: {
+        join: {
+          badge: 'LEFT JOIN • Outer Roster Preservation',
+          color: '#2563eb',
+          systemHint: '✨ 100% Table A Preservation (Evan Vance)',
+          desc: 'Left Outer Join guarantee: all 5 employees survive regardless of whether they have a matching department.',
+          scenarioImpact: 'Evan Vance has dept_id = NULL. LEFT JOIN preserves him and pads department columns with NULL.'
+        },
+        table_a: {
+          badge: 'Employees e (Preserved Roster)',
+          color: '#0f766e',
+          systemHint: '✨ All 5 staff guaranteed',
+          desc: 'HR policy requires every employee to appear in the directory, even if currently unassigned.',
+          scenarioImpact: 'Guarantees zero employee headcount omission in ' + company + '.'
+        },
+        condition: {
+          badge: 'Outer Match Predicate',
+          color: '#b45309',
+          systemHint: '✨ e.dept_id = d.dept_id',
+          desc: 'Evaluates key matches for Table B attributes. If no match exists, Table B values are filled with NULLs.',
+          scenarioImpact: 'Evan Vance generates a row with NULL dept_name and location.'
+        }
+      },
+
+      // 3. LEFT ANTI-JOIN (Amazon Payroll Audit)
+      left_antijoin: {
+        join: {
+          badge: 'LEFT JOIN • Pre-Audit Outer Setup',
+          color: '#2563eb',
+          systemHint: '✨ Pairs all staff before filtering',
+          desc: 'Preserves all employees and generates NULL department values for unassigned personnel.',
+          scenarioImpact: 'Creates the NULL department keys necessary for the subsequent anti-join filter.'
+        },
+        where: {
+          badge: 'WHERE d.dept_id IS NULL • Anti-Join Filter',
+          color: '#d97706',
+          systemHint: '✨ Discards matched rows, isolates orphans',
+          desc: 'The Anti-Join pattern: filters out all successful matches, isolating ONLY personnel with no department.',
+          scenarioImpact: 'Isolates Evan Vance as an unassigned new hire requiring urgent HR placement.'
+        }
+      },
+
+      // 4. RIGHT JOIN (Deloitte Entity Management)
+      right: {
+        join: {
+          badge: 'RIGHT JOIN • Department Preservation',
+          color: '#7c3aed',
+          systemHint: '✨ 100% Table B Preservation (Research)',
+          desc: 'Right Outer Join guarantee: all 4 departments survive, even if they currently have zero assigned staff.',
+          scenarioImpact: 'Research (dept 40) is preserved in output with NULL employee attributes.'
+        },
+        table_b: {
+          badge: 'Departments d (Preserved Relation)',
+          color: '#0f766e',
+          systemHint: '✨ All corporate divisions survive',
+          desc: 'Deloitte entity governance requires listing every registered office division.',
+          scenarioImpact: 'Ensures empty divisions are not silently deleted from corporate reports.'
+        }
+      },
+
+      // 5. CROSS JOIN (FedEx Logistics Dispatch)
+      cross: {
+        join: {
+          badge: 'CROSS JOIN • Cartesian Matrix',
+          color: '#be185d',
+          systemHint: '✨ Unconditional Cartesian Product (20 Rows)',
+          desc: 'Cartesian Product: Multiplies every row of Table A with every row of Table B without conditions.',
+          scenarioImpact: '5 employees × 4 departments = 20 total shift combinations for dispatch.'
+        },
+        on: {
+          badge: 'NO ON CLAUSE (Unconditional)',
+          color: '#64748b',
+          systemHint: '✨ Cartesian joins do not use ON',
+          desc: 'Every employee is paired with every department unconditionally.',
+          scenarioImpact: 'Generates the complete hypothetical shift rotation matrix.'
+        }
+      },
+
+      // 6. PREDICATE PLACEMENT TRAP (Meta Integrity)
+      left_predicate_on: {
+        on: {
+          badge: 'ON Predicate Placement • Trap Solution',
+          color: '#059669',
+          systemHint: '✨ Evaluated BEFORE left row preservation',
+          desc: 'Placing AND d.location = \'San Francisco\' in the ON clause filters department matches BEFORE preserving left rows.',
+          scenarioImpact: 'Alice & Charlie match SF Engineering. Evan Vance survives with NULLs. Challenge solved!'
+        },
+        where: {
+          badge: '⚠️ WHERE PREDICATE TRAP WARNING',
+          color: '#dc2626',
+          systemHint: '⚠️ Never put Table B outer filter in WHERE',
+          desc: 'In a LEFT JOIN, WHERE d.location = \'San Francisco\' filters out NULL rows, accidentally turning the query into an INNER JOIN and dropping Evan Vance!',
+          scenarioImpact: 'Moving the filter into the ON clause is the proper solution.'
+        }
+      },
+
+      // 7. SELF-JOIN HIERARCHY (Apple Org Strategy)
+      self_inner: {
+        table_a: {
+          badge: 'Employees e (Direct Reports)',
+          color: '#0f766e',
+          systemHint: '✨ Subordinates carrying manager pointers',
+          desc: 'Table A alias \'e\' represents subordinate staff members who report to a line manager.',
+          scenarioImpact: 'Each subordinate carries a manager_id indicating who they report to.'
+        },
+        table_b: {
+          badge: 'Employees m (Line Managers)',
+          color: '#0f766e',
+          systemHint: '✨ Self-Join: Re-referencing Employees',
+          desc: 'Self-join technique: references the Employees table a second time with alias \'m\' to lookup manager details.',
+          scenarioImpact: 'Allows resolving manager names from the same company roster.'
+        },
+        on: {
+          badge: 'e.manager_id = m.emp_id',
+          color: '#b45309',
+          systemHint: '✨ Hierarchical foreign-to-primary link',
+          desc: 'Matches subordinate\'s manager pointer to the manager\'s primary employee ID.',
+          scenarioImpact: 'Pairs Bob & Charlie to Alice Chen (Mgr #1), and Diana to Bob Smith (Mgr #2).'
+        }
+      },
+
+      // 8. SELF-JOIN TOP EXECUTIVES (Microsoft People Ops)
+      self_left: {
+        join: {
+          badge: 'LEFT JOIN (Self-Hierarchy)',
+          color: '#2563eb',
+          systemHint: '✨ Preserves top executives with no manager',
+          desc: 'Left outer self-join ensures employees with no manager still appear in output.',
+          scenarioImpact: 'Alice Chen is VP (manager_id = NULL). LEFT JOIN keeps her with manager = NULL.'
+        }
+      },
+
+      // 9. DETECT ORPHAN MANAGERS (Uber DB Architecture)
+      self_orphan: {
+        where: {
+          badge: 'WHERE e.manager_id IS NOT NULL AND m.emp_id IS NULL',
+          color: '#d97706',
+          systemHint: '✨ Catches broken manager references',
+          desc: 'Isolates employees whose manager_id points to an ID that does not exist in the database.',
+          scenarioImpact: 'Detects Evan Vance whose manager_id = 99 has no matching manager in the database.'
+        }
+      },
+
+      // 10. RIGHT ANTI-JOIN (Salesforce Territory Governance)
+      right_antijoin: {
+        where: {
+          badge: 'WHERE e.emp_id IS NULL • Right Anti-Join',
+          color: '#7c3aed',
+          systemHint: '✨ Discards matched divisions, isolates empty ones',
+          desc: 'Right Anti-Join: keeps only departments that have zero assigned staff members.',
+          scenarioImpact: 'Identifies Research (dept 40) as an unstaffed division.'
+        }
+      },
+
+      // 11. NON-EQUI RANGE JOIN (Goldman Sachs Compensation)
+      nonequi_range: {
+        on: {
+          badge: 'ON e.salary_num BETWEEN b.min_sal AND b.max_sal',
+          color: '#b45309',
+          systemHint: '✨ Continuous Numerical Range Join',
+          desc: 'Matches employees into compensation tiers using boundary inequality instead of equality (=).',
+          scenarioImpact: 'Classifies salary into L1, L2, L3 bands without needing a shared ID column.'
+        },
+        table_b: {
+          badge: 'Salary_Bands b (Compensation Tiers)',
+          color: '#0f766e',
+          systemHint: '✨ Continuous bracket boundaries',
+          desc: 'Contains band_code, band_name, min_sal, and max_sal boundaries.',
+          scenarioImpact: 'Employees match based on numerical threshold membership.'
+        }
+      },
+
+      // 12. THREE-WAY MULTI-HOP (Palantir Foundry)
+      chained_left: {
+        join: {
+          badge: 'Chained LEFT JOINs • Pipeline Safety',
+          color: '#2563eb',
+          systemHint: '✨ Employees ➔ Departments ➔ Projects',
+          desc: 'Uses consecutive LEFT JOINs across 3 tables in a sequential relational pipeline.',
+          scenarioImpact: 'Prevents downstream inner join collapse: ensures staff without active projects still survive.'
+        }
+      },
+
+      // 13. DISCONNECTED PROJECT ARTIFACTS (Snowflake Metadata)
+      orphan_project: {
+        table_a: {
+          badge: 'Projects p (Catalog Artifacts)',
+          color: '#0f766e',
+          systemHint: '✨ Primary node audit dataset',
+          desc: 'Starts from projects table to audit orphaned nodes in the relational graph.',
+          scenarioImpact: 'Audits Project #104 (dept 50) which lacks a corresponding department.'
+        },
+        where: {
+          badge: 'WHERE d.dept_id IS NULL • Orphan Node Filter',
+          color: '#d97706',
+          systemHint: '✨ Isolates missing department foreign keys',
+          desc: 'Filters out projects with valid departments, keeping only disconnected orphan projects.',
+          scenarioImpact: 'Identifies AI Quantum Stealth (Project #104) as an orphaned graph node.'
+        }
+      },
+
+      // 14. INEQUALITY SELF-JOIN (LinkedIn Graph Insights)
+      inequality_self: {
+        on: {
+          badge: 'ON a.dept_id = b.dept_id AND a.emp_id < b.emp_id',
+          color: '#059669',
+          systemHint: '✨ Strict duplicate-free peer pairing',
+          desc: 'The strict inequality operator (<) prevents reverse duplicates (Alice, Bob vs Bob, Alice) and self-pairs (Alice, Alice).',
+          scenarioImpact: 'Produces unique coworker pairs like (Alice, Charlie) within the same department.'
+        }
+      },
+
+      // 15. FULL OUTER JOIN (Citadel Clearing Reconciliation)
+      full_outer: {
+        join: {
+          badge: 'FULL OUTER JOIN • 360° Bilateral Reconciliation',
+          color: '#b45309',
+          systemHint: '✨ Complete Two-Way Outer Join (A ∪ B)',
+          desc: 'Bilateral audit: keeps matching pairs PLUS unmatched records on BOTH sides.',
+          scenarioImpact: 'Preserves unassigned staff (Evan Vance) AND unassigned departments (Research) simultaneously.'
+        }
+      }
+    };
+
+    return patterns[expected] || null;
+  }
+
+  function synthesizeDynamicDescription(tokenKey, sql, problem) {
     const upperSQL = (sql || '').toUpperCase();
-    
+    const p = problem || (typeof PROBLEMS !== 'undefined' ? PROBLEMS[state.currentProblemIndex] : null);
+    const schema = p ? SCHEMAS[p.schema] || SCHEMAS.standard : SCHEMAS.standard;
+
     if (tokenKey === 'select') {
       return {
         badge: 'SELECT (Projection)',
         color: '#1d4ed8',
-        systemHint: '✨ Projects output columns into result table',
-        desc: 'Specifies which attributes survive and display in your final result table.'
+        systemHint: '✨ Output column projection',
+        desc: 'Specifies which attributes survive and display in your final result table.',
+        scenarioImpact: p ? `Targeting required attributes for ${p.title}.` : ''
       };
     }
     if (tokenKey === 'columns') {
       return {
         badge: 'Output Columns',
         color: '#1d4ed8',
-        systemHint: '✨ Projected into the Generated Result Table',
-        desc: 'Attributes retrieved from joined source tables for the final output projection.'
+        systemHint: '✨ Projected attributes',
+        desc: 'Attributes retrieved from joined source tables for the final output projection.',
+        scenarioImpact: p ? `Projecting columns for ${p.company}.` : ''
       };
     }
     if (tokenKey === 'from') {
       return {
-        badge: 'FROM (Table A)',
+        badge: `FROM (${schema.tableA.name})`,
         color: '#0f766e',
-        systemHint: '✨ Highlights Primary Source Table A below',
-        desc: 'Sets the starting base relation for the query. Every join starts with this primary dataset.'
+        systemHint: '✨ Base driving dataset (Table A)',
+        desc: `Sets ${schema.tableA.name} as the primary starting relation for relational evaluation.`,
+        scenarioImpact: `Begins query execution from ${schema.tableA.name}.`
       };
     }
     if (tokenKey === 'table_a') {
       return {
-        badge: 'Table A',
+        badge: `Table A: ${schema.tableA.name}`,
         color: '#0f766e',
-        systemHint: '✨ Highlights Primary Source Table A below',
-        desc: 'The left-hand driving dataset. Table aliases provide concise column references.'
+        systemHint: '✨ Primary driving relation',
+        desc: `Left-hand driving relation. Contains ${schema.tableA.rows.length} records.`,
+        scenarioImpact: `Primary source entity in active query.`
       };
     }
     if (tokenKey === 'join') {
       let typeName = 'INNER JOIN';
-      let exp = 'Strict Match: Combines rows only when keys match in BOTH tables. Unmatched rows are dropped.';
       let color = '#059669';
+      let exp = 'Strict Match: Combines rows only when keys match in BOTH tables. Unmatched rows are dropped.';
+      let impact = 'Only pairs with matching keys survive.';
 
       if (upperSQL.includes('LEFT JOIN') && upperSQL.includes('IS NULL')) {
         typeName = 'LEFT ANTI-JOIN';
-        exp = 'Left Exclusive: Keeps only rows in Table A with NO matching row in Table B.';
         color = '#d97706';
+        exp = 'Left Exclusive: Keeps only rows in Table A with NO matching row in Table B.';
+        impact = 'Isolates orphan records with no matching foreign key.';
       } else if (upperSQL.includes('LEFT JOIN')) {
         typeName = 'LEFT JOIN';
-        exp = 'Preserves All Left Rows: Guarantees all Table A rows survive. Unmatched rows receive NULLs for Table B.';
         color = '#2563eb';
+        exp = 'Preserves All Left Rows: Guarantees 100% of Table A records survive, padding missing Table B values with NULL.';
+        impact = 'Prevents dropping unmatched records from Table A.';
       } else if (upperSQL.includes('RIGHT JOIN')) {
         typeName = 'RIGHT JOIN';
-        exp = 'Preserves All Right Rows: Guarantees all Table B rows survive. Unmatched rows receive NULLs for Table A.';
         color = '#7c3aed';
+        exp = 'Preserves All Right Rows: Guarantees 100% of Table B records survive, padding missing Table A values with NULL.';
+        impact = 'Prevents dropping unmatched records from Table B.';
       } else if (upperSQL.includes('FULL')) {
         typeName = 'FULL OUTER JOIN';
-        exp = 'Full Bilateral Union: Keeps matching pairs plus unmatched rows from both Table A and Table B.';
         color = '#b45309';
+        exp = 'Bilateral Union: Keeps matching pairs plus unmatched rows from both Table A and Table B.';
+        impact = 'Complete 360° two-way reconciliation.';
       } else if (upperSQL.includes('CROSS')) {
         typeName = 'CROSS JOIN';
-        exp = 'Cartesian Product: Multiplies every row of Table A with every row of Table B.';
         color = '#be185d';
+        exp = 'Cartesian Product: Multiplies every row of Table A with every row of Table B without conditions.';
+        impact = 'Produces complete combinatorial matrix.';
       }
 
       return {
-        badge: `${typeName}`,
+        badge: typeName,
         color: color,
-        systemHint: '✨ Highlights Venn Diagram Topology & Match Logic',
-        desc: exp
+        systemHint: '✨ Relational topology & match logic',
+        desc: exp,
+        scenarioImpact: impact
       };
     }
     if (tokenKey === 'table_b') {
       return {
-        badge: 'Table B',
+        badge: `Table B: ${schema.tableB.name}`,
         color: '#0f766e',
-        systemHint: '✨ Highlights Secondary Table B below',
-        desc: 'The target lookup relation being merged into the query.'
+        systemHint: '✨ Target lookup relation',
+        desc: `Secondary relation being joined. Contains ${schema.tableB.rows.length} records.`,
+        scenarioImpact: `Lookup dataset merged into the query.`
       };
     }
     if (tokenKey === 'on') {
       return {
         badge: 'ON (Match Predicate)',
         color: '#b45309',
-        systemHint: '✨ Highlights relational connector lines between tables',
-        desc: 'The equality rule determining which row in Table A links to which row in Table B.'
+        systemHint: '✨ Key comparison rule',
+        desc: 'The relational rule that evaluates which row in Table A links to which row in Table B.',
+        scenarioImpact: 'Controls physical arrow links and row matching.'
       };
     }
     if (tokenKey === 'condition') {
       return {
         badge: 'Join Condition',
         color: '#b45309',
-        systemHint: '✨ Highlights relational connector lines between tables',
-        desc: 'Key comparison rule. When keys evaluate to TRUE, rows merge into the output dataset.'
+        systemHint: '✨ Predicate logic',
+        desc: 'Key comparison rule. When keys evaluate to TRUE, rows merge into the output dataset.',
+        scenarioImpact: 'Relational criteria for emitting combined rows.'
       };
     }
     if (tokenKey === 'where') {
@@ -875,7 +1192,8 @@
         systemHint: isTrap ? '⚠️ Warning: Silently turns LEFT JOIN into INNER JOIN' : '✨ Filters emitted rows',
         desc: isTrap
           ? 'Filtering Table B in WHERE drops NULL rows, accidentally converting your LEFT JOIN into an INNER JOIN! Move condition into the ON clause.'
-          : 'Applies post-join filtering on rows emitted from the relational join.'
+          : 'Applies post-join filtering on rows emitted from the relational join.',
+        scenarioImpact: isTrap ? 'Filter trap detected! Move condition to ON clause.' : 'Filters final result set.'
       };
     }
 
@@ -883,8 +1201,50 @@
       badge: 'SQL Element',
       color: '#1d4ed8',
       systemHint: 'Relational query component',
-      desc: 'Active relational join query keyword or expression.'
+      desc: 'Active relational join query keyword or expression.',
+      scenarioImpact: p ? p.scenario : ''
     };
+  }
+
+  function getTokenDescription(tokenKey, sql, problem) {
+    const p = problem !== undefined ? problem : (typeof PROBLEMS !== 'undefined' ? PROBLEMS[state.currentProblemIndex] : null);
+    const cleanSQL = (sql || '').trim();
+    const upperSQL = cleanSQL.toUpperCase();
+
+    // Determine current SQL's join semantics
+    let detectedJoin = null;
+    if (upperSQL.includes('LEFT ANTI') || (upperSQL.includes('LEFT JOIN') && upperSQL.includes('IS NULL'))) {
+      detectedJoin = 'left_antijoin';
+    } else if (upperSQL.includes('RIGHT ANTI') || (upperSQL.includes('RIGHT JOIN') && upperSQL.includes('IS NULL'))) {
+      detectedJoin = 'right_antijoin';
+    } else if (upperSQL.includes('FULL OUTER JOIN') || upperSQL.includes('FULL JOIN')) {
+      detectedJoin = 'full_outer';
+    } else if (upperSQL.includes('CROSS JOIN')) {
+      detectedJoin = 'cross';
+    } else if (upperSQL.includes('LEFT JOIN') && upperSQL.includes('AND D.LOCATION')) {
+      detectedJoin = 'left_predicate_on';
+    } else if (upperSQL.includes('LEFT JOIN') || upperSQL.includes('LEFT OUTER JOIN')) {
+      detectedJoin = 'left';
+    } else if (upperSQL.includes('RIGHT JOIN') || upperSQL.includes('RIGHT OUTER JOIN')) {
+      detectedJoin = 'right';
+    } else if (upperSQL.includes('BETWEEN') || upperSQL.includes('>=') || upperSQL.includes('<=')) {
+      detectedJoin = 'nonequi_range';
+    } else if (upperSQL.includes('A.EMP_ID < B.EMP_ID') || upperSQL.includes('E1.EMP_ID < E2.EMP_ID')) {
+      detectedJoin = 'inequality_self';
+    } else if (upperSQL.includes('INNER JOIN') || upperSQL.includes('JOIN')) {
+      detectedJoin = 'inner';
+    }
+
+    // 1. If problem is active and query matches the problem's expected pattern, use bespoke story profile
+    if (p && (!detectedJoin || detectedJoin === p.expectedJoin)) {
+      const profile = getPatternExplanations(p.expectedJoin, p, sql);
+      if (profile && profile[tokenKey]) {
+        return profile[tokenKey];
+      }
+    }
+
+    // 2. Otherwise (custom query, edited query, or token not in profile), synthesize dynamically
+    return synthesizeDynamicDescription(tokenKey, sql, p);
   }
 
   function renderInteractiveQueryBlueprintHTML(sql, problem) {
@@ -1353,14 +1713,25 @@
           `;
           tipEl.style.removeProperty('--token-color');
         } else {
-          const meta = getTokenDescription(tokenKey, state.userSQL);
+          const p = PROBLEMS[state.currentProblemIndex];
+          const meta = getTokenDescription(tokenKey, state.userSQL, p);
           tipEl.style.setProperty('--token-color', meta.color);
           tipEl.innerHTML = `
             <div class="tooltip-badge-row">
-              <span class="tooltip-token-badge" style="background: ${meta.color}22; color: ${meta.color}; border: 1px solid ${meta.color};">${meta.badge}</span>
+              <div class="tooltip-badge-left">
+                <span class="tooltip-token-badge" style="background: ${meta.color}15; color: ${meta.color}; border: 1px solid ${meta.color};">${meta.badge}</span>
+                ${p && p.company ? `<span class="tooltip-company-pill">${p.company}</span>` : ''}
+              </div>
               <span class="tooltip-system-hint" style="color: ${meta.color};">${meta.systemHint}</span>
             </div>
             <div class="tooltip-desc-text">${meta.desc}</div>
+            ${meta.scenarioImpact ? `
+              <div class="tooltip-scenario-impact">
+                <span class="impact-icon">🎯</span>
+                <span class="impact-label">Challenge Focus:</span>
+                <span class="impact-text">${meta.scenarioImpact}</span>
+              </div>
+            ` : ''}
           `;
         }
       }
@@ -1849,7 +2220,10 @@
         case 'cartesian': return '× PRODUCT';
         default: return (status || '').toUpperCase();
       }
-    }
+    },
+
+    getTokenDescription: getTokenDescription,
+    PROBLEMS: PROBLEMS
   };
 
   // Expose globally
