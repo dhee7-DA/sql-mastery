@@ -2139,6 +2139,7 @@ const NAV_GROUPS_MAP = {
   viewDeconstructor: { triggerId: 'btnGroupReference', pillId: 'currentReferencePill', label: 'Deconstructor' },
   viewEnterpriseERD: { triggerId: 'btnGroupReference', pillId: 'currentReferencePill', label: 'ERD Map' },
   viewVennMatrix: { triggerId: 'btnGroupReference', pillId: 'currentReferencePill', label: 'Venn Matrix' },
+  viewWindowMatrix: { triggerId: 'btnGroupLearn', pillId: 'currentLearnPill', label: 'Window Cockpit' },
 
   viewStudio: { triggerId: 'btnNavStudio', pillId: null, label: 'Studio' }
 };
@@ -2204,6 +2205,10 @@ function switchMainView(targetId) {
   if (targetId === 'viewVennMatrix') {
     if (window.VennMatrixEngine) window.VennMatrixEngine.init();
     if (window.SQL_BUDDY) window.SQL_BUDDY.say("⭕ Venn & Euler Matrix: Explore live row set physics across Joins, Anti-Joins, and Set Operations!", 4500, 'happy');
+  }
+  if (targetId === 'viewWindowMatrix') {
+    if (window.WindowFunctionsEngine) window.WindowFunctionsEngine.init();
+    if (window.SQL_BUDDY) window.SQL_BUDDY.say("🪟 Window Functions Cockpit: Master Partitioning, Ranking Matrix, Sliding Frames & Offsets!", 4500, 'happy');
   }
   if (targetId === 'viewProblems') renderProblemBank();
 }
