@@ -6832,13 +6832,10 @@ function bindQuestKeyboardShortcuts() {
       const quest = questsList[currentQuestIndex];
       if (quest && quest.slots) {
         const slotKeys = Object.keys(quest.slots);
-        const targetSlot = slotKeys.find(k => !userSlotSelections[k]) || slotKeys[0];
+        const targetSlot = slotKeys.find(k => !userSlotSelections[k]) || slotKeys[slotKeys.length - 1];
         const optIdx = parseInt(e.key, 10) - 1;
-        const optVal = quest.slots[targetSlot]?.options[optIdx];
-        if (optVal) {
-          e.preventDefault();
-          selectSlotChoice(targetSlot, optVal);
-        }
+        e.preventDefault();
+        selectSlotChoiceByIndex(targetSlot, optIdx);
       }
     } else if (e.key === 'Enter') {
       e.preventDefault();
@@ -7153,9 +7150,9 @@ function renderFillBlankQuest(container, quest) {
       if (fillBlankChecked) {
         stateClass = (currentVal === quest.slots[item.slotId].correct) ? 'correct' : 'incorrect';
       }
-      codeHtml += `<span class="blank-slot ${stateClass}">${currentVal || item.placeholder}</span>`;
+      codeHtml += `<span class="blank-slot ${stateClass}" onclick="clearSlotSelection('${item.slotId}')" title="${currentVal ? 'Click to clear' : ''}">${escapeHtml(currentVal || item.placeholder)}</span>`;
     } else {
-      codeHtml += item.text;
+      codeHtml += escapeHtml(item.text);
     }
   });
 
@@ -7166,9 +7163,9 @@ function renderFillBlankQuest(container, quest) {
       <div class="slot-choice-row">
         <span class="choice-label">BLANK #${idx + 1}:</span>
         ${slotInfo.options.map((opt, optIdx) => `
-          <button class="choice-pill ${userSlotSelections[slotKey] === opt ? 'selected' : ''}" onclick="selectSlotChoice('${slotKey}', '${opt}')">
+          <button class="choice-pill ${userSlotSelections[slotKey] === opt ? 'selected' : ''}" onclick="selectSlotChoiceByIndex('${slotKey}', ${optIdx})">
             <span class="choice-key-tag">${optIdx + 1}</span>
-            <span>${opt}</span>
+            <span>${escapeHtml(opt)}</span>
           </button>
         `).join('')}
       </div>
@@ -7267,6 +7264,27 @@ function renderFillBlankQuest(container, quest) {
     </div>
   `;
 }
+
+function selectSlotChoiceByIndex(slotId, optIdx) {
+  const questsList = getActiveQuestsList();
+  const quest = questsList[currentQuestIndex];
+  if (!quest || !quest.slots || !quest.slots[slotId]) return;
+  const optVal = quest.slots[slotId].options[optIdx];
+  if (optVal !== undefined) {
+    selectSlotChoice(slotId, optVal);
+  }
+}
+window.selectSlotChoiceByIndex = selectSlotChoiceByIndex;
+
+function clearSlotSelection(slotId) {
+  delete userSlotSelections[slotId];
+  fillBlankChecked = false;
+  if (window.AudioFX) {
+    window.AudioFX.playClick();
+  }
+  renderActiveQuest(currentQuestIndex);
+}
+window.clearSlotSelection = clearSlotSelection;
 
 function selectSlotChoice(slotId, optVal) {
   userSlotSelections[slotId] = optVal;
