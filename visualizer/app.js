@@ -1850,37 +1850,12 @@ function formatSQLEditorQuery() {
 window.formatSQLEditorQuery = formatSQLEditorQuery;
 
 // -----------------------------------------------------------------------------
-// 60-DAY DELIBERATE PRACTICE HEATMAP CONTROLLER
+// 112-DAY DELIBERATE PRACTICE HEATMAP & STREAK ENGINE CONTROLLER
 // -----------------------------------------------------------------------------
 function renderActivityHeatmap() {
-  const container = document.getElementById('curriculumActivityHeatmap');
-  if (!container) return;
-
-  const today = new Date();
-  const cells = [];
-  const streak = parseInt(document.getElementById('streakDaysCount')?.textContent || '1', 10);
-
-  for (let i = 59; i >= 0; i--) {
-    const d = new Date(today);
-    d.setDate(d.getDate() - i);
-    const dateStr = d.toISOString().split('T')[0];
-
-    let lvl = 0;
-    if (i < streak) {
-      lvl = (i % 3 === 0) ? 4 : (i % 2 === 0) ? 3 : 2;
-    } else if (i % 7 === 1 || i % 7 === 4) {
-      lvl = (i % 5 === 0) ? 3 : (i % 3 === 0) ? 2 : 1;
-    }
-
-    const drills = lvl === 0 ? 'No activity recorded' : `${lvl * 4 + 2} drills & queries solved`;
-    cells.push(`
-      <div class="heatmap-cell lvl-${lvl}" 
-           title="${dateStr}: ${drills}"
-           data-date="${dateStr}"></div>
-    `);
+  if (window.ActivityHeatmapEngine) {
+    window.ActivityHeatmapEngine.render();
   }
-
-  container.innerHTML = cells.join('');
 }
 window.renderActivityHeatmap = renderActivityHeatmap;
 
@@ -1924,7 +1899,8 @@ function initVisualizerApp() {
   updateHeaderFlashcardDuePill();
   renderSchemaExplorer();
   initVisualBuilder();
-  renderActivityHeatmap();
+  if (window.ActivityHeatmapEngine) window.ActivityHeatmapEngine.init();
+  else renderActivityHeatmap();
   renderPillarMasteryRadar();
 
   // Keyboard Shortcuts Listener
@@ -1975,6 +1951,9 @@ function initVisualizerApp() {
 
       if (sqlInput) sqlInput.value = queryToRun;
       parseAndBuildPipeline(queryToRun);
+      if (window.ActivityHeatmapEngine) {
+        window.ActivityHeatmapEngine.logActivity('studio', 1, 10, 'Query Studio Run');
+      }
 
       // 3. Smooth visual confirmation scroll
       const pipelineCard = document.querySelector('.pipeline-card');
@@ -4299,6 +4278,9 @@ function handleMcqAnswer(qid, selectedIdx) {
     QuizState.score++;
     if (window.soundFX) window.soundFX.playSuccess();
     if (window.SQL_BUDDY) window.SQL_BUDDY.onCorrectAnswer(mcq.topic || mcq.keyword);
+    if (window.ActivityHeatmapEngine) {
+      window.ActivityHeatmapEngine.logActivity('mcq', 1, 15, mcq.topic || mcq.keyword);
+    }
     document.getElementById('quizScoreCount').textContent = QuizState.score;
     optionBtns[selectedIdx].classList.add('opt-correct');
     verdict.innerHTML = `<span style="color: #4ade80; font-weight: 700;">&check; Correct Reasoning! 🌸</span>`;
@@ -5424,6 +5406,11 @@ function renderCaseStudies(
         gymSolvedSpan.textContent = window.SYNTAX_GYM_DRILLS.filter((d, idx) => 
           window.CASE_BLANKS_ENGINE.isSolved(`gym_${d.drillNumber || idx + 1}`) || window.CASE_BLANKS_ENGINE.isSolved(1491 + idx)
         ).length;
+      }
+
+      if (window.ActivityHeatmapEngine) {
+        const isGym = String(caseId).startsWith('gym_') || (Number(caseId) >= 1491);
+        window.ActivityHeatmapEngine.logActivity(isGym ? 'drill' : 'case', 1, isGym ? 20 : 30, cs.title || cs.subcluster || cs.topic);
       }
 
       if (window.GYM_BLITZ_ENGINE && window.GYM_BLITZ_ENGINE.isActive()) {
