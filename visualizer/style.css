@@ -4220,23 +4220,21 @@ body {
 }
 
 .mcq-card {
-  background: linear-gradient(180deg, rgba(25, 25, 32, 0.7), rgba(16, 16, 22, 0.9));
-  border: 1px solid rgba(255, 255, 255, 0.08) !important;
-  border-radius: 14px !important;
-  box-shadow: 0 4px 24px rgba(0, 0, 0, 0.35) !important;
-  padding: 22px 24px;
+  background: var(--bg-card);
+  border: 1px solid var(--border-default) !important;
+  border-radius: 12px !important;
+  box-shadow: none !important;
+  padding: 20px 22px;
   display: flex;
   flex-direction: column;
-  gap: 16px;
-  transition: all 0.15s cubic-bezier(0.16, 1, 0.3, 1);
+  gap: 14px;
+  transition: border-color 0.15s ease;
   position: relative;
-  backdrop-filter: blur(12px);
 }
 
 .mcq-card:hover {
-  transform: translateY(-2px) !important;
-  border-color: rgba(255, 255, 255, 0.16) !important;
-  box-shadow: 0 8px 32px rgba(0, 0, 0, 0.45) !important;
+  border-color: rgba(255, 255, 255, 0.18) !important;
+  box-shadow: none !important;
 }
 
 .mcq-meta-row {
@@ -4252,9 +4250,9 @@ body {
   font-weight: 700;
   padding: 3px 10px;
   border-radius: 6px;
-  background: rgba(56, 189, 248, 0.12);
+  background: rgba(56, 189, 248, 0.1);
   color: #38bdf8;
-  border: 1px solid rgba(56, 189, 248, 0.28);
+  border: 1px solid rgba(56, 189, 248, 0.25);
   box-shadow: none;
   text-transform: uppercase;
   letter-spacing: 0.03em;
@@ -4266,9 +4264,9 @@ body {
   font-weight: 600;
   padding: 3px 10px;
   border-radius: 6px;
-  background: rgba(244, 114, 182, 0.12);
+  background: rgba(244, 114, 182, 0.1);
   color: #f472b6;
-  border: 1px solid rgba(244, 114, 182, 0.28);
+  border: 1px solid rgba(244, 114, 182, 0.25);
   box-shadow: none;
   display: inline-flex;
   align-items: center;
@@ -4291,52 +4289,49 @@ body {
 
 .mcq-option-btn {
   background: rgba(255, 255, 255, 0.03);
-  border: 1px solid rgba(255, 255, 255, 0.08);
+  border: 1px solid var(--border-default);
   color: var(--text-primary);
   font-family: var(--font-sans);
   font-size: 13px;
-  font-weight: 600;
-  padding: 12px 16px;
-  min-height: 44px;
+  font-weight: 500;
+  padding: 11px 16px;
+  min-height: 42px;
   border-radius: 8px;
   text-align: left;
   cursor: pointer;
-  transition: all 0.15s cubic-bezier(0.16, 1, 0.3, 1);
+  transition: all 0.15s ease;
   line-height: 1.45;
   position: relative;
   display: flex;
   align-items: center;
-  box-shadow: 0 1px 3px rgba(0, 0, 0, 0.2);
-  backdrop-filter: blur(8px);
+  box-shadow: none;
 }
 
 .mcq-option-btn:hover:not(:disabled) {
-  background: rgba(255, 255, 255, 0.07) !important;
+  background: var(--bg-hover) !important;
   color: #ffffff !important;
-  border-color: rgba(255, 255, 255, 0.18);
+  border-color: rgba(255, 255, 255, 0.2);
   transform: translateY(-1px);
-  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.3);
 }
 
 .mcq-option-btn:active:not(:disabled) {
   transform: translateY(0.5px);
-  box-shadow: 0 1px 2px rgba(0, 0, 0, 0.2);
 }
 
 .mcq-option-btn.opt-correct {
-  background: rgba(16, 185, 129, 0.15) !important;
+  background: rgba(16, 185, 129, 0.12) !important;
   border: 1px solid rgba(16, 185, 129, 0.45) !important;
   color: #34d399 !important;
   font-weight: 700 !important;
-  box-shadow: 0 0 16px rgba(16, 185, 129, 0.2) !important;
+  box-shadow: none !important;
 }
 
 .mcq-option-btn.opt-wrong {
-  background: rgba(244, 63, 94, 0.15) !important;
+  background: rgba(244, 63, 94, 0.12) !important;
   border: 1px solid rgba(244, 63, 94, 0.45) !important;
   color: #fda4af !important;
   font-weight: 700 !important;
-  box-shadow: 0 0 16px rgba(244, 63, 94, 0.2) !important;
+  box-shadow: none !important;
 }
 
 .mcq-load-more-btn {
@@ -4345,31 +4340,28 @@ body {
   justify-content: center;
   gap: 10px;
   margin: 20px auto;
-  padding: 11px 24px;
+  padding: 10px 22px;
   font-family: var(--font-sans);
   font-size: 13px;
-  font-weight: 700;
+  font-weight: 600;
   border-radius: 8px;
-  background: linear-gradient(180deg, rgba(236, 72, 153, 0.25), rgba(219, 39, 119, 0.2));
-  border: 1px solid rgba(236, 72, 153, 0.4);
-  color: #f472b6;
+  background: var(--bg-surface);
+  border: 1px solid var(--border-default);
+  color: var(--text-primary);
   cursor: pointer;
-  transition: all 0.15s cubic-bezier(0.16, 1, 0.3, 1);
-  box-shadow: 0 2px 10px rgba(236, 72, 153, 0.15);
-  backdrop-filter: blur(8px);
+  transition: all 0.15s ease;
+  box-shadow: none;
 }
 
 .mcq-load-more-btn:hover {
-  background: linear-gradient(180deg, rgba(236, 72, 153, 0.35), rgba(219, 39, 119, 0.3));
-  border-color: rgba(236, 72, 153, 0.6);
+  background: var(--bg-hover);
+  border-color: rgba(255, 255, 255, 0.25);
   color: #ffffff;
   transform: translateY(-1px);
-  box-shadow: 0 4px 16px rgba(236, 72, 153, 0.25);
 }
 
 .mcq-load-more-btn:active {
   transform: translateY(0.5px);
-  box-shadow: 0 1px 4px rgba(0, 0, 0, 0.2);
 }
 
 .mcq-explanation-card {

@@ -1138,46 +1138,96 @@ const SQL_BUDDY = (() => {
     if (bubble) bubble.style.display = "none";
   }
 
+  let questStreak = 0;
+
+  const POKE_QUIPS = [
+    "Squish! 🫧 Hey, that tickles my relational B-tree indexes!",
+    "Boing! 🎾 Warning: Poking the Gremlin may cause unexpected table locks!",
+    "Ayo! 🐙 Keep your cursor on the query terminal, human!",
+    "Bloop! 💧 I'm 90% jelly, 10% pure ANSI SQL compliance!",
+    "Ouch! ⚡ Don't poke me or I'll DROP your temporary tables!",
+    "Giggle! 🪼 That's a primary key violation on my personal space!",
+    "Squishy squish! 🍮 Chief Query Gremlin reporting for duty!",
+    "Hehehe! 🚀 Feed me valid SQL syntax and I'll jump even higher!",
+    "Whoa! 🌪️ My coordinates just drifted by 14 float points!",
+    "Bzzzt! 🐝 Gremlin status: fully operational and caffeinated!"
+  ];
+
   function poke() {
     if (isDragging) return;
-    targetScaleY = 0.72;
+    targetScaleY = 0.64;
+    scaleX = 1.36;
+    velocityY = -0.18;
 
-    const randomTip = PRO_TIPS[Math.floor(Math.random() * PRO_TIPS.length)];
+    const quip = POKE_QUIPS[Math.floor(Math.random() * POKE_QUIPS.length)];
     const expressions = ["wide", "wink", "happy"];
     const chosenExp = expressions[Math.floor(Math.random() * expressions.length)];
 
-    SOUNDS.playBloop(1.1);
-    say(randomTip, 7000, chosenExp);
+    SOUNDS.playBloop(0.8 + Math.random() * 0.8);
+    say(quip, 5000, chosenExp);
   }
 
   function celebrate() {
-    targetScaleY = 1.35;
+    targetScaleY = 1.45;
+    velocityY = -0.4;
     SOUNDS.playSuccess();
     triggerConfetti();
     say("🎉 Woohoo! Let's celebrate relational data mastery!", 4500, "happy");
   }
 
   function onCorrectQuestAnswer(questTitle) {
-    const woohooPraises = [
-      "HAPPY WOOHOO! 🎉 Nailed it! Look at that relational beauty! You're a SQL wizard!",
-      "WOOHOO! 🚀 Zero syntax errors! The query optimizer is weeping tears of pure joy!",
-      "HAPPY WOOHOO! ⚡ That's how it's done! Pure algorithmic brilliance!",
-      "WOOHOO! 🌟 Flawless projection logic! 100% certified database sorcery!",
-      "HAPPY WOOHOO! 🏆 Boom! Level conquered! Keep that streak rolling!"
-    ];
-    const praise = woohooPraises[Math.floor(Math.random() * woohooPraises.length)];
-    targetScaleY = 1.48; // High joyful bounce!
-    velocityY = -0.46;
+    questStreak++;
+    let praise = "";
+    let isSuperCombo = false;
+
+    if (questStreak === 3) {
+      praise = "⚡ COMBO x3! You're on fire! Sir Bloops is vibrating with pure relational energy! 🔥";
+      targetScaleY = 1.6;
+      velocityY = -0.55;
+    } else if (questStreak === 5) {
+      praise = "🔥 5-IN-A-ROW! UNSTOPPABLE STREAK! 💥 Sir Bloops is doing backflips in the query cache!";
+      targetScaleY = 1.75;
+      velocityY = -0.65;
+      isSuperCombo = true;
+    } else if (questStreak === 10) {
+      praise = "👑 10-QUEST STREAK OF THE GODS! 🏆 YOU ARE AN ABSOLUTE SQL DEITY! Sir Bloops is weeping tears of joy!";
+      targetScaleY = 1.95;
+      velocityY = -0.78;
+      isSuperCombo = true;
+    } else {
+      const woohooPraises = [
+        "HAPPY WOOHOO! 🎉 Nailed it! Look at that relational beauty! You're a SQL wizard!",
+        "WOOHOO! 🚀 Zero syntax errors! The query optimizer is weeping tears of pure joy!",
+        "HAPPY WOOHOO! ⚡ That's how it's done! Pure algorithmic brilliance!",
+        "WOOHOO! 🌟 Flawless projection logic! 100% certified database sorcery!",
+        "HAPPY WOOHOO! 🏆 Boom! Level conquered! Keep that streak rolling!"
+      ];
+      praise = woohooPraises[Math.floor(Math.random() * woohooPraises.length)];
+      targetScaleY = 1.48; // High joyful bounce!
+      velocityY = -0.46;
+    }
+
     setExpression("happy");
     SOUNDS.playSuccess();
     triggerConfetti();
+
+    if (isSuperCombo) {
+      setTimeout(triggerConfetti, 350);
+      setTimeout(() => SOUNDS.playBloop(1.5), 300);
+    }
+
     say(praise, 5500, "happy");
 
     const moodTag = document.getElementById("companionMoodTag");
-    if (moodTag) moodTag.textContent = "Mood: HAPPY WOOHOO! 🎉";
+    if (moodTag) {
+      moodTag.textContent = questStreak >= 3 
+        ? `Mood: MEGA WOOHOO! 🔥 (Streak: ${questStreak})` 
+        : `Mood: HAPPY WOOHOO! 🎉 (Streak: ${questStreak})`;
+    }
   }
 
   function onIncorrectQuestAnswer() {
+    questStreak = 0; // Reset combo streak
     const oopsLines = [
       "Oof! My jelly hurts! 😭 Not quite right! Check the red blanks and try another keyword!",
       "Awww nope! 🙈 Even the best query engines stumble! Swap those tokens and try again!",
@@ -1193,7 +1243,7 @@ const SQL_BUDDY = (() => {
     say(line, 6000, "alert");
 
     const moodTag = document.getElementById("companionMoodTag");
-    if (moodTag) moodTag.textContent = "Mood: Ouch! 🤕";
+    if (moodTag) moodTag.textContent = "Mood: Ouch! 🤕 (Streak reset)";
   }
 
   function onCorrectAnswer(contextName) {

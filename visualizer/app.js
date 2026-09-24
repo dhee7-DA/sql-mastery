@@ -6700,14 +6700,17 @@ function getActiveQuestsList() {
   if (currentQuestSection === 'section2' && window.QUESTS_SECTION_2 && window.QUESTS_SECTION_2.length > 0) {
     return window.QUESTS_SECTION_2;
   }
+  if (currentQuestSection === 'section3' && window.QUESTS_SECTION_3 && window.QUESTS_SECTION_3.length > 0) {
+    return window.QUESTS_SECTION_3;
+  }
   return window.QUESTS_DATA || [];
 }
 
 function switchQuestSection(sectionKey) {
-  if (sectionKey === 'section3' || sectionKey === 'section4') {
+  if (sectionKey === 'section4') {
     if (window.AudioFX) window.AudioFX.playClick();
     if (window.SQL_BUDDY) {
-      window.SQL_BUDDY.say("🔒 This section is locked! Master Section 01 & Section 02 first!", 3500, 'pensive');
+      window.SQL_BUDDY.say("🔒 Section 04: Aggregations is unlocking next! Master Section 01, 02 & 03 first!", 3500, 'pensive');
     }
     return;
   }
@@ -6715,7 +6718,7 @@ function switchQuestSection(sectionKey) {
   currentQuestSection = sectionKey;
   currentQuestIndex = 0;
   questChunkStart = 0;
-  questChunkEnd = (sectionKey === 'section1' || sectionKey === 'section2') ? 20 : 30;
+  questChunkEnd = (sectionKey === 'section1' || sectionKey === 'section2' || sectionKey === 'section3') ? 20 : 30;
 
   // Update tabs
   document.querySelectorAll('.quest-section-tab').forEach(tab => {
@@ -6725,7 +6728,7 @@ function switchQuestSection(sectionKey) {
   // Show/hide chunk nav
   const chunkNav = document.getElementById('questChunkNav');
   if (chunkNav) {
-    chunkNav.style.display = (sectionKey === 'section1' || sectionKey === 'section2') ? 'flex' : 'none';
+    chunkNav.style.display = (sectionKey === 'section1' || sectionKey === 'section2' || sectionKey === 'section3') ? 'flex' : 'none';
   }
 
   // Clear level select options so it refreshes with the new list
@@ -6741,6 +6744,7 @@ function switchQuestSection(sectionKey) {
   if (footerTrack) {
     if (sectionKey === 'section1') footerTrack.textContent = 'Section 01: Foundations & Projections (100)';
     else if (sectionKey === 'section2') footerTrack.textContent = 'Section 02: WHERE & Filtering (100)';
+    else if (sectionKey === 'section3') footerTrack.textContent = 'Section 03: ORDER BY & Slicing (100)';
     else if (sectionKey === 'featured') footerTrack.textContent = 'Bonus: Boss Gauntlet (30)';
   }
 
@@ -6753,6 +6757,8 @@ function switchQuestSection(sectionKey) {
       window.SQL_BUDDY.say("🚀 Section 01: Foundations & Projections loaded (100 Levels)! Let's conquer Level 01!", 3500, 'happy');
     } else if (sectionKey === 'section2') {
       window.SQL_BUDDY.say("🎯 Section 02: WHERE Predicates & Filtering loaded (100 Levels)! Prepare to filter with pinpoint precision!", 3500, 'celebrate');
+    } else if (sectionKey === 'section3') {
+      window.SQL_BUDDY.say("⚡ Section 03: ORDER BY & LIMIT Slicing loaded (100 Levels)! Prepare to sort and slice with deterministic precision!", 3500, 'celebrate');
     } else {
       window.SQL_BUDDY.say("🏆 Boss Gauntlet Activated! 30 Advanced Challenges across all SQL pillars!", 3500, 'celebrate');
     }
