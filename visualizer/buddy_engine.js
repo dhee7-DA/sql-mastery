@@ -1036,8 +1036,8 @@ const SQL_BUDDY = (() => {
         <div class="buddy-bubble-header">
           <div class="buddy-header-left">
             <span class="buddy-avatar-dot"></span>
-            <span class="buddy-name">Bloub</span>
-            <span class="buddy-badge">Living Companion</span>
+            <span class="buddy-name">Sir Bloops-a-Lot</span>
+            <span class="buddy-badge">Chief Query Gremlin</span>
           </div>
           <button class="buddy-close-speech" onclick="SQL_BUDDY.hideSpeech()">&times;</button>
         </div>
@@ -1096,7 +1096,7 @@ const SQL_BUDDY = (() => {
 
     // Initial Greeting
     setTimeout(() => {
-      say("👋 Hey! I'm Bloub, your living SQL companion! Customize my shapes & settings in the header (🎨)!", 6000, "happy");
+      say("👋 Ahoy! I'm Sir Bloops-a-Lot, your living SQL companion! Let's conquer Section 01 together!", 6000, "happy");
     }, 1200);
 
     // If theme sync active, sync now
@@ -1109,6 +1109,10 @@ const SQL_BUDDY = (() => {
   function say(message, duration = 5000, expression = "happy") {
     if (isMinimized && expression !== "sleep") return;
     setExpression(expression);
+
+    // Sync with sidebar companion station if present
+    const sidebarSpeech = document.getElementById("companionSpeechContent");
+    if (sidebarSpeech) sidebarSpeech.textContent = message;
 
     const bubble = document.getElementById("buddySpeechBubble");
     const textEl = document.getElementById("buddySpeechText");
@@ -1151,6 +1155,45 @@ const SQL_BUDDY = (() => {
     SOUNDS.playSuccess();
     triggerConfetti();
     say("🎉 Woohoo! Let's celebrate relational data mastery!", 4500, "happy");
+  }
+
+  function onCorrectQuestAnswer(questTitle) {
+    const woohooPraises = [
+      "HAPPY WOOHOO! 🎉 Nailed it! Look at that relational beauty! You're a SQL wizard!",
+      "WOOHOO! 🚀 Zero syntax errors! The query optimizer is weeping tears of pure joy!",
+      "HAPPY WOOHOO! ⚡ That's how it's done! Pure algorithmic brilliance!",
+      "WOOHOO! 🌟 Flawless projection logic! 100% certified database sorcery!",
+      "HAPPY WOOHOO! 🏆 Boom! Level conquered! Keep that streak rolling!"
+    ];
+    const praise = woohooPraises[Math.floor(Math.random() * woohooPraises.length)];
+    targetScaleY = 1.48; // High joyful bounce!
+    velocityY = -0.46;
+    setExpression("happy");
+    SOUNDS.playSuccess();
+    triggerConfetti();
+    say(praise, 5500, "happy");
+
+    const moodTag = document.getElementById("companionMoodTag");
+    if (moodTag) moodTag.textContent = "Mood: HAPPY WOOHOO! 🎉";
+  }
+
+  function onIncorrectQuestAnswer() {
+    const oopsLines = [
+      "Oof! My jelly hurts! 😭 Not quite right! Check the red blanks and try another keyword!",
+      "Awww nope! 🙈 Even the best query engines stumble! Swap those tokens and try again!",
+      "Yikes! Syntax police just pulled us over! 🚨 Take another look at the blank options!",
+      "Ouch! 💔 Almost had it! Remember the keyword execution order and give it another shot!",
+      "Uh oh! 🌧️ My slime senses a logic mismatch! Try checking the schema hint!"
+    ];
+    const line = oopsLines[Math.floor(Math.random() * oopsLines.length)];
+    targetScaleY = 0.62; // Sad droop squish
+    scaleX = 1.38;
+    setExpression("alert");
+    SOUNDS.playAlert();
+    say(line, 6000, "alert");
+
+    const moodTag = document.getElementById("companionMoodTag");
+    if (moodTag) moodTag.textContent = "Mood: Ouch! 🤕";
   }
 
   function onCorrectAnswer(contextName) {
@@ -1221,6 +1264,8 @@ const SQL_BUDDY = (() => {
     toggleMinimize,
     onCorrectAnswer,
     onIncorrectAnswer,
+    onCorrectQuestAnswer,
+    onIncorrectQuestAnswer,
     onQueryRunSuccess,
     onQueryRunError,
     SHAPES,

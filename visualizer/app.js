@@ -2161,7 +2161,8 @@ function switchMainView(targetId) {
   }
   if (targetId === 'viewQuests') {
     renderActiveQuest(currentQuestIndex);
-    if (window.SQL_BUDDY) window.SQL_BUDDY.say("🎮 Quest Mode! Drag and assemble the AST query tokens to solve the puzzle!", 4500, 'happy');
+    renderQuestStepperTrack();
+    if (window.SQL_BUDDY) window.SQL_BUDDY.say("🎮 Section 01: Foundations & Projections! I'm Sir Bloops-a-Lot, your co-pilot! Fill in the blanks with 1–4!", 5000, 'happy');
   }
   if (targetId === 'viewDeconstructor') renderDeconstructedProblem(activeDeconstructorId);
   if (targetId === 'viewExplainer') {
@@ -6780,12 +6781,13 @@ function setQuestChunkRange(start, end) {
   questChunkStart = start;
   questChunkEnd = end;
 
-  document.querySelectorAll('.chunk-jump-btn').forEach(btn => {
+  document.querySelectorAll('.chunk-jump-btn, .chunk-tab-btn').forEach(btn => {
     btn.classList.remove('active');
+    const onclickStr = btn.getAttribute('onclick') || '';
+    if (onclickStr.includes(`(${start},`)) {
+      btn.classList.add('active');
+    }
   });
-  if (window.event && window.event.target && window.event.target.classList.contains('chunk-jump-btn')) {
-    window.event.target.classList.add('active');
-  }
 
   // If active quest is outside this slice, jump to the first quest of this slice
   if (currentQuestIndex < start || currentQuestIndex >= end) {
@@ -7015,7 +7017,65 @@ function renderQuestStepperTrack() {
     `;
   });
   track.innerHTML = html;
+  const trackDrawer = document.getElementById('questStepperTrackDrawer');
+  if (trackDrawer) trackDrawer.innerHTML = html;
 }
+
+function updateQuestSidebars(quest, idx, total) {
+  // 1. Left Sidebar: Progress count
+  const progCountEl = document.getElementById('sidebarProgressCount');
+  if (progCountEl) {
+    const numStr = (idx + 1 < 10) ? '0' + (idx + 1) : '' + (idx + 1);
+    progCountEl.textContent = `Lvl ${numStr} / ${total}`;
+  }
+
+  // 2. Left Sidebar: Tier Ladder active states
+  const levelNum = idx + 1;
+  const tiers = [
+    { id: 'ladderTier1', active: levelNum <= 15 },
+    { id: 'ladderTier2', active: levelNum > 15 && levelNum <= 40 },
+    { id: 'ladderTier3', active: levelNum > 40 && levelNum <= 70 },
+    { id: 'ladderTier4', active: levelNum > 70 }
+  ];
+  tiers.forEach(t => {
+    const el = document.getElementById(t.id);
+    if (el) {
+      if (t.active) el.classList.add('active');
+      else el.classList.remove('active');
+    }
+  });
+
+  // 3. Right Sidebar: Active Table Schema card
+  const tableBadge = document.getElementById('questActiveTableBadge');
+  const colsList = document.getElementById('questActiveColumnsList');
+  const currentTable = quest.table || 'Students';
+  if (tableBadge) tableBadge.textContent = currentTable;
+
+  if (colsList) {
+    const preview = EVERYDAY_TABLE_PREVIEWS[currentTable] || EVERYDAY_TABLE_PREVIEWS.Students;
+    if (preview && preview.columns) {
+      colsList.innerHTML = preview.columns.map(col => {
+        let type = 'VARCHAR';
+        if (col.endsWith('_id') || col.endsWith('_qty') || col === 'age' || col.endsWith('_year') || col.includes('seconds')) {
+          type = 'INT';
+        } else if (col.includes('price') || col.includes('salary') || col === 'gpa' || col.includes('weight') || col.includes('total') || col.includes('stars')) {
+          type = 'DECIMAL';
+        } else if (col.includes('date')) {
+          type = 'DATE';
+        } else if (col.startsWith('is_')) {
+          type = 'BOOLEAN';
+        }
+        return `
+          <div class="sidebar-col-item">
+            <span class="col-name">${col}</span>
+            <span class="col-type-tag ${type.toLowerCase()}">${type}</span>
+          </div>
+        `;
+      }).join('');
+    }
+  }
+}
+window.updateQuestSidebars = updateQuestSidebars;
 
 function setQuestIndex(idx) {
   currentQuestIndex = idx;
@@ -7034,6 +7094,8 @@ function renderActiveQuest(idx) {
   if (!container || !questsList || questsList.length === 0) return;
 
   const quest = questsList[idx] || questsList[0];
+
+  updateQuestSidebars(quest, idx, questsList.length);
 
   if (quest.type === 'fill_blank') {
     renderFillBlankQuest(container, quest);
@@ -7206,9 +7268,15 @@ function checkFillBlankAnswer() {
     if (window.ActivityHeatmapEngine && typeof window.ActivityHeatmapEngine.logActivity === 'function') {
       window.ActivityHeatmapEngine.logActivity('drill', 1, 25, 'Foundations & Projections (Quests)');
     }
+    if (window.SQL_BUDDY && typeof window.SQL_BUDDY.onCorrectQuestAnswer === 'function') {
+      window.SQL_BUDDY.onCorrectQuestAnswer(quest.title);
+    }
   } else {
     if (window.AudioFX) {
       window.AudioFX.playError();
+    }
+    if (window.SQL_BUDDY && typeof window.SQL_BUDDY.onIncorrectQuestAnswer === 'function') {
+      window.SQL_BUDDY.onIncorrectQuestAnswer();
     }
   }
 
