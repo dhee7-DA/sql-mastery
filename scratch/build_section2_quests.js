@@ -609,6 +609,7 @@ const section2Quests = drills.map((d, idx) => {
     slots: slots,
     syntaxRule: d.syntaxRule || 'WHERE filters rows before aggregation. Null checks require IS NULL.',
     syntaxTrap: d.syntaxTrap || 'Never write col = NULL or omit parentheses in mixed AND/OR logic.',
+    explanation: `${d.syntaxRule || 'WHERE filters rows before aggregation with exact predicate matching.'} 💡 Trap to avoid: ${d.syntaxTrap || 'Never write col = NULL or omit parentheses in mixed AND/OR logic.'}`,
     eli5Story: d.eli5Story || `Filtering ${tblName} with exact row-level precision.`,
     commonMistakes: d.commonMistakes || 'Unquoted strings, missing parentheses around OR, or using = instead of LIKE.',
     learningOutcomes: d.learningOutcomes || `Mastered ${d.subcluster} on ${tblName}.`

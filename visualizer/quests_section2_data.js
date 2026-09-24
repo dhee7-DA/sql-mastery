@@ -55,33 +55,34 @@ window.QUESTS_SECTION_2 = [
       "slot1": {
         "correct": "WHERE",
         "options": [
+          "HAVING",
           "WHEN",
-          "WHERE",
           "FILTER",
-          "HAVING"
+          "WHERE"
         ]
       },
       "slot2": {
         "correct": "city",
         "options": [
-          "full_name",
+          "city",
+          "student_id",
           "first_name",
-          "last_name",
-          "city"
+          "enrolled_year"
         ]
       },
       "slot3": {
         "correct": "= 'Seattle';",
         "options": [
-          "NULL",
+          "!= 'Seattle';",
           "= 'Seattle';",
           "LIKE 'Seattle';",
-          "!= 'Seattle';"
+          "NULL"
         ]
       }
     },
     "syntaxRule": "Strings use single quotes, numbers do not. AND precedes OR unless parentheses are used. NULL requires IS NULL.",
     "syntaxTrap": "Never write col = NULL or omit parentheses in mixed AND/OR statements.",
+    "explanation": "Strings use single quotes, numbers do not. AND precedes OR unless parentheses are used. NULL requires IS NULL. 💡 Trap to avoid: Never write col = NULL or omit parentheses in mixed AND/OR statements.",
     "eli5Story": "Filter check on Students: Find all students who live in the city of Seattle.",
     "commonMistakes": "Unquoted strings, missing parentheses around OR, or using = instead of LIKE.",
     "learningOutcomes": "Mastered 2.1 Exact Equality & Inequality on Students."
@@ -137,33 +138,34 @@ window.QUESTS_SECTION_2 = [
       "slot1": {
         "correct": "WHERE",
         "options": [
+          "WHERE",
           "FILTER",
           "HAVING",
-          "WHEN",
-          "WHERE"
+          "WHEN"
         ]
       },
       "slot2": {
         "correct": "genre",
         "options": [
           "is_hardcover",
-          "title",
-          "book_id",
-          "genre"
+          "stock_qty",
+          "genre",
+          "price"
         ]
       },
       "slot3": {
         "correct": "= 'Sci-Fi';",
         "options": [
+          "LIKE 'Sci-Fi';",
           "NULL",
           "!= 'Sci-Fi';",
-          "= 'Sci-Fi';",
-          "LIKE 'Sci-Fi';"
+          "= 'Sci-Fi';"
         ]
       }
     },
     "syntaxRule": "Strings use single quotes, numbers do not. AND precedes OR unless parentheses are used. NULL requires IS NULL.",
     "syntaxTrap": "Never write col = NULL or omit parentheses in mixed AND/OR statements.",
+    "explanation": "Strings use single quotes, numbers do not. AND precedes OR unless parentheses are used. NULL requires IS NULL. 💡 Trap to avoid: Never write col = NULL or omit parentheses in mixed AND/OR statements.",
     "eli5Story": "Filter check on Books: Select all books that belong to the 'Sci-Fi' genre.",
     "commonMistakes": "Unquoted strings, missing parentheses around OR, or using = instead of LIKE.",
     "learningOutcomes": "Mastered 2.1 Exact Equality & Inequality on Books."
@@ -219,33 +221,34 @@ window.QUESTS_SECTION_2 = [
       "slot1": {
         "correct": "WHERE",
         "options": [
-          "WHEN",
-          "WHERE",
+          "HAVING",
           "FILTER",
-          "HAVING"
+          "WHERE",
+          "WHEN"
         ]
       },
       "slot2": {
         "correct": "department",
         "options": [
-          "last_name",
-          "bonus",
           "salary",
-          "department"
+          "last_name",
+          "department",
+          "first_name"
         ]
       },
       "slot3": {
         "correct": "= 'Engineering';",
         "options": [
-          "LIKE 'Engineering';",
-          "NULL",
           "!= 'Engineering';",
-          "= 'Engineering';"
+          "= 'Engineering';",
+          "NULL",
+          "LIKE 'Engineering';"
         ]
       }
     },
     "syntaxRule": "Strings use single quotes, numbers do not. AND precedes OR unless parentheses are used. NULL requires IS NULL.",
     "syntaxTrap": "Never write col = NULL or omit parentheses in mixed AND/OR statements.",
+    "explanation": "Strings use single quotes, numbers do not. AND precedes OR unless parentheses are used. NULL requires IS NULL. 💡 Trap to avoid: Never write col = NULL or omit parentheses in mixed AND/OR statements.",
     "eli5Story": "Filter check on Employees: Retrieve all employees in the Engineering department.",
     "commonMistakes": "Unquoted strings, missing parentheses around OR, or using = instead of LIKE.",
     "learningOutcomes": "Mastered 2.1 Exact Equality & Inequality on Employees."
@@ -301,19 +304,19 @@ window.QUESTS_SECTION_2 = [
       "slot1": {
         "correct": "WHERE",
         "options": [
-          "WHERE",
+          "FILTER",
           "WHEN",
           "HAVING",
-          "FILTER"
+          "WHERE"
         ]
       },
       "slot2": {
         "correct": "is_organic",
         "options": [
+          "stock_qty",
+          "category",
           "item_name",
-          "unit_price",
-          "is_organic",
-          "calories"
+          "is_organic"
         ]
       },
       "slot3": {
@@ -321,13 +324,14 @@ window.QUESTS_SECTION_2 = [
         "options": [
           "= TRUE;",
           "!= TRUE;",
-          "NULL",
-          "LIKE TRUE;"
+          "LIKE TRUE;",
+          "NULL"
         ]
       }
     },
     "syntaxRule": "Strings use single quotes, numbers do not. AND precedes OR unless parentheses are used. NULL requires IS NULL.",
     "syntaxTrap": "Never write col = NULL or omit parentheses in mixed AND/OR statements.",
+    "explanation": "Strings use single quotes, numbers do not. AND precedes OR unless parentheses are used. NULL requires IS NULL. 💡 Trap to avoid: Never write col = NULL or omit parentheses in mixed AND/OR statements.",
     "eli5Story": "Filter check on GroceryItems: Find all grocery items where is_organic is TRUE.",
     "commonMistakes": "Unquoted strings, missing parentheses around OR, or using = instead of LIKE.",
     "learningOutcomes": "Mastered 2.1 Exact Equality & Inequality on GroceryItems."
@@ -383,33 +387,34 @@ window.QUESTS_SECTION_2 = [
       "slot1": {
         "correct": "WHERE",
         "options": [
-          "WHERE",
           "WHEN",
-          "FILTER",
-          "HAVING"
+          "HAVING",
+          "WHERE",
+          "FILTER"
         ]
       },
       "slot2": {
         "correct": "order_status",
         "options": [
-          "product_name",
+          "order_status",
           "customer_name",
-          "unit_price",
-          "order_status"
+          "quantity",
+          "product_name"
         ]
       },
       "slot3": {
         "correct": "= 'Shipped';",
         "options": [
+          "!= 'Shipped';",
           "LIKE 'Shipped';",
           "= 'Shipped';",
-          "NULL",
-          "!= 'Shipped';"
+          "NULL"
         ]
       }
     },
     "syntaxRule": "Strings use single quotes, numbers do not. AND precedes OR unless parentheses are used. NULL requires IS NULL.",
     "syntaxTrap": "Never write col = NULL or omit parentheses in mixed AND/OR statements.",
+    "explanation": "Strings use single quotes, numbers do not. AND precedes OR unless parentheses are used. NULL requires IS NULL. 💡 Trap to avoid: Never write col = NULL or omit parentheses in mixed AND/OR statements.",
     "eli5Story": "Filter check on Orders: Display all orders where order_status is 'Shipped'.",
     "commonMistakes": "Unquoted strings, missing parentheses around OR, or using = instead of LIKE.",
     "learningOutcomes": "Mastered 2.1 Exact Equality & Inequality on Orders."
@@ -465,33 +470,34 @@ window.QUESTS_SECTION_2 = [
       "slot1": {
         "correct": "WHERE",
         "options": [
-          "WHEN",
           "FILTER",
           "WHERE",
+          "WHEN",
           "HAVING"
         ]
       },
       "slot2": {
         "correct": "artist_name",
         "options": [
+          "release_year",
+          "title",
           "artist_name",
-          "genre",
-          "track_title",
-          "track_id"
+          "duration_seconds"
         ]
       },
       "slot3": {
         "correct": "= 'Luna Waves';",
         "options": [
+          "NULL",
           "= 'Luna Waves';",
           "LIKE 'Luna Waves';",
-          "!= 'Luna Waves';",
-          "NULL"
+          "!= 'Luna Waves';"
         ]
       }
     },
     "syntaxRule": "Strings use single quotes, numbers do not. AND precedes OR unless parentheses are used. NULL requires IS NULL.",
     "syntaxTrap": "Never write col = NULL or omit parentheses in mixed AND/OR statements.",
+    "explanation": "Strings use single quotes, numbers do not. AND precedes OR unless parentheses are used. NULL requires IS NULL. 💡 Trap to avoid: Never write col = NULL or omit parentheses in mixed AND/OR statements.",
     "eli5Story": "Filter check on MusicTracks: Find all tracks performed by the artist 'Luna Waves'.",
     "commonMistakes": "Unquoted strings, missing parentheses around OR, or using = instead of LIKE.",
     "learningOutcomes": "Mastered 2.1 Exact Equality & Inequality on MusicTracks."
@@ -549,31 +555,32 @@ window.QUESTS_SECTION_2 = [
         "options": [
           "WHERE",
           "FILTER",
-          "HAVING",
-          "WHEN"
+          "WHEN",
+          "HAVING"
         ]
       },
       "slot2": {
         "correct": "membership_plan",
         "options": [
-          "membership_plan",
+          "joined_date",
           "member_id",
-          "monthly_fee",
-          "joined_date"
+          "membership_plan",
+          "monthly_fee"
         ]
       },
       "slot3": {
         "correct": "= 'Gold';",
         "options": [
-          "!= 'Gold';",
-          "NULL",
+          "= 'Gold';",
           "LIKE 'Gold';",
-          "= 'Gold';"
+          "NULL",
+          "!= 'Gold';"
         ]
       }
     },
     "syntaxRule": "Strings use single quotes, numbers do not. AND precedes OR unless parentheses are used. NULL requires IS NULL.",
     "syntaxTrap": "Never write col = NULL or omit parentheses in mixed AND/OR statements.",
+    "explanation": "Strings use single quotes, numbers do not. AND precedes OR unless parentheses are used. NULL requires IS NULL. 💡 Trap to avoid: Never write col = NULL or omit parentheses in mixed AND/OR statements.",
     "eli5Story": "Filter check on GymMembers: List all members enrolled in the 'Gold' plan.",
     "commonMistakes": "Unquoted strings, missing parentheses around OR, or using = instead of LIKE.",
     "learningOutcomes": "Mastered 2.1 Exact Equality & Inequality on GymMembers."
@@ -629,8 +636,8 @@ window.QUESTS_SECTION_2 = [
       "slot1": {
         "correct": "WHERE",
         "options": [
-          "WHEN",
           "FILTER",
+          "WHEN",
           "WHERE",
           "HAVING"
         ]
@@ -640,22 +647,23 @@ window.QUESTS_SECTION_2 = [
         "options": [
           "genre",
           "director",
-          "movie_title",
-          "review_id"
+          "review_count",
+          "release_year"
         ]
       },
       "slot3": {
         "correct": "= 'Christopher Nolan';",
         "options": [
-          "LIKE 'Christopher Nolan';",
-          "NULL",
+          "!= 'Christopher Nolan';",
           "= 'Christopher Nolan';",
-          "!= 'Christopher Nolan';"
+          "LIKE 'Christopher Nolan';",
+          "NULL"
         ]
       }
     },
     "syntaxRule": "Strings use single quotes, numbers do not. AND precedes OR unless parentheses are used. NULL requires IS NULL.",
     "syntaxTrap": "Never write col = NULL or omit parentheses in mixed AND/OR statements.",
+    "explanation": "Strings use single quotes, numbers do not. AND precedes OR unless parentheses are used. NULL requires IS NULL. 💡 Trap to avoid: Never write col = NULL or omit parentheses in mixed AND/OR statements.",
     "eli5Story": "Filter check on MovieReviews: Find all films directed by 'Christopher Nolan'.",
     "commonMistakes": "Unquoted strings, missing parentheses around OR, or using = instead of LIKE.",
     "learningOutcomes": "Mastered 2.1 Exact Equality & Inequality on MovieReviews."
@@ -711,33 +719,34 @@ window.QUESTS_SECTION_2 = [
       "slot1": {
         "correct": "WHERE",
         "options": [
-          "WHERE",
           "FILTER",
-          "WHEN",
-          "HAVING"
+          "HAVING",
+          "WHERE",
+          "WHEN"
         ]
       },
       "slot2": {
         "correct": "dest_airport",
         "options": [
-          "flight_id",
           "dest_airport",
-          "airline",
+          "destination_airport",
+          "delay_minutes",
           "departure_time"
         ]
       },
       "slot3": {
         "correct": "= 'LAX';",
         "options": [
-          "NULL",
           "LIKE 'LAX';",
           "!= 'LAX';",
-          "= 'LAX';"
+          "= 'LAX';",
+          "NULL"
         ]
       }
     },
     "syntaxRule": "Strings use single quotes, numbers do not. AND precedes OR unless parentheses are used. NULL requires IS NULL.",
     "syntaxTrap": "Never write col = NULL or omit parentheses in mixed AND/OR statements.",
+    "explanation": "Strings use single quotes, numbers do not. AND precedes OR unless parentheses are used. NULL requires IS NULL. 💡 Trap to avoid: Never write col = NULL or omit parentheses in mixed AND/OR statements.",
     "eli5Story": "Filter check on FlightSchedule: Find all flights with destination airport equal to 'LAX'.",
     "commonMistakes": "Unquoted strings, missing parentheses around OR, or using = instead of LIKE.",
     "learningOutcomes": "Mastered 2.1 Exact Equality & Inequality on FlightSchedule."
@@ -793,33 +802,34 @@ window.QUESTS_SECTION_2 = [
       "slot1": {
         "correct": "WHERE",
         "options": [
-          "WHERE",
-          "WHEN",
+          "HAVING",
           "FILTER",
-          "HAVING"
+          "WHERE",
+          "WHEN"
         ]
       },
       "slot2": {
         "correct": "species",
         "options": [
-          "pet_id",
-          "pet_name",
-          "breed",
-          "species"
+          "is_vaccinated",
+          "species",
+          "weight_kg",
+          "pet_id"
         ]
       },
       "slot3": {
         "correct": "!= 'Dog';",
         "options": [
+          "= 'Dog';",
           "LIKE 'Dog';",
           "!= 'Dog';",
-          "NULL",
-          "= 'Dog';"
+          "NULL"
         ]
       }
     },
     "syntaxRule": "Strings use single quotes, numbers do not. AND precedes OR unless parentheses are used. NULL requires IS NULL.",
     "syntaxTrap": "Never write col = NULL or omit parentheses in mixed AND/OR statements.",
+    "explanation": "Strings use single quotes, numbers do not. AND precedes OR unless parentheses are used. NULL requires IS NULL. 💡 Trap to avoid: Never write col = NULL or omit parentheses in mixed AND/OR statements.",
     "eli5Story": "Filter check on PetClinic: Find all pets whose species is NOT 'Dog' using != operator.",
     "commonMistakes": "Unquoted strings, missing parentheses around OR, or using = instead of LIKE.",
     "learningOutcomes": "Mastered 2.1 Exact Equality & Inequality on PetClinic."
@@ -875,33 +885,34 @@ window.QUESTS_SECTION_2 = [
       "slot1": {
         "correct": "WHERE",
         "options": [
+          "HAVING",
           "FILTER",
           "WHERE",
-          "HAVING",
           "WHEN"
         ]
       },
       "slot2": {
         "correct": "gpa",
         "options": [
+          "major",
+          "last_name",
           "enrolled_year",
-          "city",
-          "age",
           "gpa"
         ]
       },
       "slot3": {
         "correct": ">= 3.50;",
         "options": [
-          "LIKE 3.50;",
           "!= 3.50;",
+          ">= 3.50;",
           "= 3.50;",
-          ">= 3.50;"
+          "LIKE 3.50;"
         ]
       }
     },
     "syntaxRule": "Strings use single quotes, numbers do not. AND precedes OR unless parentheses are used. NULL requires IS NULL.",
     "syntaxTrap": "Never write col = NULL or omit parentheses in mixed AND/OR statements.",
+    "explanation": "Strings use single quotes, numbers do not. AND precedes OR unless parentheses are used. NULL requires IS NULL. 💡 Trap to avoid: Never write col = NULL or omit parentheses in mixed AND/OR statements.",
     "eli5Story": "Filter check on Students: Select students with a GPA greater than or equal to 3.50 (Honors list).",
     "commonMistakes": "Unquoted strings, missing parentheses around OR, or using = instead of LIKE.",
     "learningOutcomes": "Mastered 2.2 Numeric Comparisons on Students."
@@ -957,33 +968,34 @@ window.QUESTS_SECTION_2 = [
       "slot1": {
         "correct": "WHERE",
         "options": [
-          "WHEN",
+          "WHERE",
           "FILTER",
-          "HAVING",
-          "WHERE"
+          "WHEN",
+          "HAVING"
         ]
       },
       "slot2": {
         "correct": "price",
         "options": [
-          "book_id",
+          "stock_qty",
+          "author",
           "price",
-          "genre",
-          "author"
+          "is_hardcover"
         ]
       },
       "slot3": {
         "correct": "< 20.00;",
         "options": [
-          "!= 20.00;",
-          "< 20.00;",
           "= 20.00;",
-          "LIKE 20.00;"
+          "LIKE 20.00;",
+          "< 20.00;",
+          "!= 20.00;"
         ]
       }
     },
     "syntaxRule": "Strings use single quotes, numbers do not. AND precedes OR unless parentheses are used. NULL requires IS NULL.",
     "syntaxTrap": "Never write col = NULL or omit parentheses in mixed AND/OR statements.",
+    "explanation": "Strings use single quotes, numbers do not. AND precedes OR unless parentheses are used. NULL requires IS NULL. 💡 Trap to avoid: Never write col = NULL or omit parentheses in mixed AND/OR statements.",
     "eli5Story": "Filter check on Books: Find all budget books with a price strictly under $20.00.",
     "commonMistakes": "Unquoted strings, missing parentheses around OR, or using = instead of LIKE.",
     "learningOutcomes": "Mastered 2.2 Numeric Comparisons on Books."
@@ -1039,33 +1051,34 @@ window.QUESTS_SECTION_2 = [
       "slot1": {
         "correct": "WHERE",
         "options": [
-          "FILTER",
-          "WHEN",
           "HAVING",
-          "WHERE"
+          "WHERE",
+          "FILTER",
+          "WHEN"
         ]
       },
       "slot2": {
         "correct": "salary",
         "options": [
           "salary",
-          "hire_date",
-          "emp_id",
-          "first_name"
+          "bonus",
+          "first_name",
+          "hire_date"
         ]
       },
       "slot3": {
         "correct": "> 80000.00;",
         "options": [
-          "> 80000.00;",
-          "LIKE 80000.00;",
+          "= 80000.00;",
           "!= 80000.00;",
-          "= 80000.00;"
+          "LIKE 80000.00;",
+          "> 80000.00;"
         ]
       }
     },
     "syntaxRule": "Strings use single quotes, numbers do not. AND precedes OR unless parentheses are used. NULL requires IS NULL.",
     "syntaxTrap": "Never write col = NULL or omit parentheses in mixed AND/OR statements.",
+    "explanation": "Strings use single quotes, numbers do not. AND precedes OR unless parentheses are used. NULL requires IS NULL. 💡 Trap to avoid: Never write col = NULL or omit parentheses in mixed AND/OR statements.",
     "eli5Story": "Filter check on Employees: Retrieve employees earning a salary greater than $80,000.",
     "commonMistakes": "Unquoted strings, missing parentheses around OR, or using = instead of LIKE.",
     "learningOutcomes": "Mastered 2.2 Numeric Comparisons on Employees."
@@ -1121,8 +1134,8 @@ window.QUESTS_SECTION_2 = [
       "slot1": {
         "correct": "WHERE",
         "options": [
-          "HAVING",
           "FILTER",
+          "HAVING",
           "WHEN",
           "WHERE"
         ]
@@ -1130,24 +1143,25 @@ window.QUESTS_SECTION_2 = [
       "slot2": {
         "correct": "calories",
         "options": [
+          "unit_price",
+          "item_id",
           "calories",
-          "is_organic",
-          "item_name",
-          "category"
+          "stock_qty"
         ]
       },
       "slot3": {
         "correct": "<= 100;",
         "options": [
-          "!= 100;",
-          "LIKE 100;",
           "<= 100;",
-          "= 100;"
+          "= 100;",
+          "!= 100;",
+          "LIKE 100;"
         ]
       }
     },
     "syntaxRule": "Strings use single quotes, numbers do not. AND precedes OR unless parentheses are used. NULL requires IS NULL.",
     "syntaxTrap": "Never write col = NULL or omit parentheses in mixed AND/OR statements.",
+    "explanation": "Strings use single quotes, numbers do not. AND precedes OR unless parentheses are used. NULL requires IS NULL. 💡 Trap to avoid: Never write col = NULL or omit parentheses in mixed AND/OR statements.",
     "eli5Story": "Filter check on GroceryItems: Find all low-calorie grocery items with 100 or fewer calories.",
     "commonMistakes": "Unquoted strings, missing parentheses around OR, or using = instead of LIKE.",
     "learningOutcomes": "Mastered 2.2 Numeric Comparisons on GroceryItems."
@@ -1203,33 +1217,34 @@ window.QUESTS_SECTION_2 = [
       "slot1": {
         "correct": "WHERE",
         "options": [
-          "WHERE",
-          "HAVING",
+          "FILTER",
           "WHEN",
-          "FILTER"
+          "WHERE",
+          "HAVING"
         ]
       },
       "slot2": {
         "correct": "quantity",
         "options": [
+          "unit_price",
+          "shipping_city",
           "quantity",
-          "product_name",
-          "order_status",
           "order_id"
         ]
       },
       "slot3": {
         "correct": ">= 3;",
         "options": [
-          ">= 3;",
           "LIKE 3;",
           "!= 3;",
-          "= 3;"
+          "= 3;",
+          ">= 3;"
         ]
       }
     },
     "syntaxRule": "Strings use single quotes, numbers do not. AND precedes OR unless parentheses are used. NULL requires IS NULL.",
     "syntaxTrap": "Never write col = NULL or omit parentheses in mixed AND/OR statements.",
+    "explanation": "Strings use single quotes, numbers do not. AND precedes OR unless parentheses are used. NULL requires IS NULL. 💡 Trap to avoid: Never write col = NULL or omit parentheses in mixed AND/OR statements.",
     "eli5Story": "Filter check on Orders: Find bulk orders where quantity is 3 or more.",
     "commonMistakes": "Unquoted strings, missing parentheses around OR, or using = instead of LIKE.",
     "learningOutcomes": "Mastered 2.2 Numeric Comparisons on Orders."
@@ -1285,33 +1300,34 @@ window.QUESTS_SECTION_2 = [
       "slot1": {
         "correct": "WHERE",
         "options": [
-          "WHEN",
-          "FILTER",
+          "WHERE",
           "HAVING",
-          "WHERE"
+          "FILTER",
+          "WHEN"
         ]
       },
       "slot2": {
         "correct": "play_count",
         "options": [
+          "track_id",
           "play_count",
-          "duration_seconds",
-          "artist",
-          "track_id"
+          "title",
+          "duration_seconds"
         ]
       },
       "slot3": {
         "correct": "> 100000;",
         "options": [
+          "!= 100000;",
           "= 100000;",
           "> 100000;",
-          "LIKE 100000;",
-          "!= 100000;"
+          "LIKE 100000;"
         ]
       }
     },
     "syntaxRule": "Strings use single quotes, numbers do not. AND precedes OR unless parentheses are used. NULL requires IS NULL.",
     "syntaxTrap": "Never write col = NULL or omit parentheses in mixed AND/OR statements.",
+    "explanation": "Strings use single quotes, numbers do not. AND precedes OR unless parentheses are used. NULL requires IS NULL. 💡 Trap to avoid: Never write col = NULL or omit parentheses in mixed AND/OR statements.",
     "eli5Story": "Filter check on MusicTracks: Select viral tracks with over 100,000 plays.",
     "commonMistakes": "Unquoted strings, missing parentheses around OR, or using = instead of LIKE.",
     "learningOutcomes": "Mastered 2.2 Numeric Comparisons on MusicTracks."
@@ -1367,33 +1383,34 @@ window.QUESTS_SECTION_2 = [
       "slot1": {
         "correct": "WHERE",
         "options": [
-          "WHEN",
-          "WHERE",
           "FILTER",
-          "HAVING"
+          "HAVING",
+          "WHERE",
+          "WHEN"
         ]
       },
       "slot2": {
         "correct": "visits_this_month",
         "options": [
-          "visits_this_month",
+          "joined_date",
           "member_name",
-          "has_trainer",
-          "member_id"
+          "visits_this_month",
+          "membership_plan"
         ]
       },
       "slot3": {
         "correct": "> 10;",
         "options": [
           "!= 10;",
-          "> 10;",
           "= 10;",
+          "> 10;",
           "LIKE 10;"
         ]
       }
     },
     "syntaxRule": "Strings use single quotes, numbers do not. AND precedes OR unless parentheses are used. NULL requires IS NULL.",
     "syntaxTrap": "Never write col = NULL or omit parentheses in mixed AND/OR statements.",
+    "explanation": "Strings use single quotes, numbers do not. AND precedes OR unless parentheses are used. NULL requires IS NULL. 💡 Trap to avoid: Never write col = NULL or omit parentheses in mixed AND/OR statements.",
     "eli5Story": "Filter check on GymMembers: Find active gym members who visited more than 10 times this month.",
     "commonMistakes": "Unquoted strings, missing parentheses around OR, or using = instead of LIKE.",
     "learningOutcomes": "Mastered 2.2 Numeric Comparisons on GymMembers."
@@ -1449,33 +1466,34 @@ window.QUESTS_SECTION_2 = [
       "slot1": {
         "correct": "WHERE",
         "options": [
-          "HAVING",
-          "WHEN",
+          "WHERE",
           "FILTER",
-          "WHERE"
+          "WHEN",
+          "HAVING"
         ]
       },
       "slot2": {
         "correct": "star_rating",
         "options": [
-          "genre",
-          "movie_title",
+          "review_count",
+          "release_year",
           "star_rating",
-          "review_count"
+          "genre"
         ]
       },
       "slot3": {
         "correct": ">= 4.5;",
         "options": [
           "!= 4.5;",
-          "LIKE 4.5;",
           ">= 4.5;",
-          "= 4.5;"
+          "= 4.5;",
+          "LIKE 4.5;"
         ]
       }
     },
     "syntaxRule": "Strings use single quotes, numbers do not. AND precedes OR unless parentheses are used. NULL requires IS NULL.",
     "syntaxTrap": "Never write col = NULL or omit parentheses in mixed AND/OR statements.",
+    "explanation": "Strings use single quotes, numbers do not. AND precedes OR unless parentheses are used. NULL requires IS NULL. 💡 Trap to avoid: Never write col = NULL or omit parentheses in mixed AND/OR statements.",
     "eli5Story": "Filter check on MovieReviews: Select critically acclaimed movies with a star rating of 4.5 or higher.",
     "commonMistakes": "Unquoted strings, missing parentheses around OR, or using = instead of LIKE.",
     "learningOutcomes": "Mastered 2.2 Numeric Comparisons on MovieReviews."
@@ -1531,33 +1549,34 @@ window.QUESTS_SECTION_2 = [
       "slot1": {
         "correct": "WHERE",
         "options": [
+          "HAVING",
           "WHERE",
           "WHEN",
-          "FILTER",
-          "HAVING"
+          "FILTER"
         ]
       },
       "slot2": {
         "correct": "delay_minutes",
         "options": [
-          "airline",
-          "flight_id",
+          "delay_minutes",
+          "origin_airport",
           "dest_airport",
-          "delay_minutes"
+          "flight_id"
         ]
       },
       "slot3": {
         "correct": "> 30;",
         "options": [
+          "= 30;",
           "LIKE 30;",
           "> 30;",
-          "!= 30;",
-          "= 30;"
+          "!= 30;"
         ]
       }
     },
     "syntaxRule": "Strings use single quotes, numbers do not. AND precedes OR unless parentheses are used. NULL requires IS NULL.",
     "syntaxTrap": "Never write col = NULL or omit parentheses in mixed AND/OR statements.",
+    "explanation": "Strings use single quotes, numbers do not. AND precedes OR unless parentheses are used. NULL requires IS NULL. 💡 Trap to avoid: Never write col = NULL or omit parentheses in mixed AND/OR statements.",
     "eli5Story": "Filter check on FlightSchedule: List all significantly delayed flights with more than 30 minutes of delay.",
     "commonMistakes": "Unquoted strings, missing parentheses around OR, or using = instead of LIKE.",
     "learningOutcomes": "Mastered 2.2 Numeric Comparisons on FlightSchedule."
@@ -1613,33 +1632,34 @@ window.QUESTS_SECTION_2 = [
       "slot1": {
         "correct": "WHERE",
         "options": [
-          "FILTER",
-          "WHEN",
           "WHERE",
-          "HAVING"
+          "HAVING",
+          "WHEN",
+          "FILTER"
         ]
       },
       "slot2": {
         "correct": "weight_kg",
         "options": [
-          "species",
-          "age_years",
           "weight_kg",
-          "is_vaccinated"
+          "is_vaccinated",
+          "species",
+          "pet_name"
         ]
       },
       "slot3": {
         "correct": "> 20.0;",
         "options": [
-          "= 20.0;",
-          "!= 20.0;",
           "LIKE 20.0;",
+          "!= 20.0;",
+          "= 20.0;",
           "> 20.0;"
         ]
       }
     },
     "syntaxRule": "Strings use single quotes, numbers do not. AND precedes OR unless parentheses are used. NULL requires IS NULL.",
     "syntaxTrap": "Never write col = NULL or omit parentheses in mixed AND/OR statements.",
+    "explanation": "Strings use single quotes, numbers do not. AND precedes OR unless parentheses are used. NULL requires IS NULL. 💡 Trap to avoid: Never write col = NULL or omit parentheses in mixed AND/OR statements.",
     "eli5Story": "Filter check on PetClinic: Find large animal patients weighing over 20 kilograms.",
     "commonMistakes": "Unquoted strings, missing parentheses around OR, or using = instead of LIKE.",
     "learningOutcomes": "Mastered 2.2 Numeric Comparisons on PetClinic."
@@ -1709,26 +1729,26 @@ window.QUESTS_SECTION_2 = [
       "slot1": {
         "correct": "WHERE",
         "options": [
-          "ON",
           "WHERE",
-          "WHEN",
-          "HAVING"
+          "ON",
+          "HAVING",
+          "WHEN"
         ]
       },
       "slot2": {
         "correct": "age",
         "options": [
+          "gpa",
           "last_name",
           "age",
-          "full_name",
-          "city"
+          "enrolled_year"
         ]
       },
       "slot3": {
         "correct": "BETWEEN",
         "options": [
-          "WITHIN",
           "IN",
+          "WITHIN",
           "BETWEEN",
           "RANGE"
         ]
@@ -1736,15 +1756,16 @@ window.QUESTS_SECTION_2 = [
       "slot4": {
         "correct": "AND",
         "options": [
-          "THROUGH",
           "AND",
+          "TO",
           "OR",
-          "TO"
+          "THROUGH"
         ]
       }
     },
     "syntaxRule": "Strings use single quotes, numbers do not. AND precedes OR unless parentheses are used. NULL requires IS NULL.",
     "syntaxTrap": "Never write col = NULL or omit parentheses in mixed AND/OR statements.",
+    "explanation": "Strings use single quotes, numbers do not. AND precedes OR unless parentheses are used. NULL requires IS NULL. 💡 Trap to avoid: Never write col = NULL or omit parentheses in mixed AND/OR statements.",
     "eli5Story": "Filter check on Students: Select students whose age is between 18 and 22 inclusive.",
     "commonMistakes": "Unquoted strings, missing parentheses around OR, or using = instead of LIKE.",
     "learningOutcomes": "Mastered 2.3 Range Bounds (BETWEEN) on Students."
@@ -1814,42 +1835,43 @@ window.QUESTS_SECTION_2 = [
       "slot1": {
         "correct": "WHERE",
         "options": [
-          "ON",
-          "WHEN",
           "HAVING",
-          "WHERE"
+          "WHEN",
+          "WHERE",
+          "ON"
         ]
       },
       "slot2": {
         "correct": "price",
         "options": [
-          "genre",
-          "is_hardcover",
+          "published_year",
+          "price",
           "stock_qty",
-          "price"
+          "author"
         ]
       },
       "slot3": {
         "correct": "BETWEEN",
         "options": [
-          "RANGE",
           "IN",
-          "WITHIN",
-          "BETWEEN"
+          "BETWEEN",
+          "RANGE",
+          "WITHIN"
         ]
       },
       "slot4": {
         "correct": "AND",
         "options": [
           "OR",
-          "THROUGH",
           "AND",
-          "TO"
+          "TO",
+          "THROUGH"
         ]
       }
     },
     "syntaxRule": "Strings use single quotes, numbers do not. AND precedes OR unless parentheses are used. NULL requires IS NULL.",
     "syntaxTrap": "Never write col = NULL or omit parentheses in mixed AND/OR statements.",
+    "explanation": "Strings use single quotes, numbers do not. AND precedes OR unless parentheses are used. NULL requires IS NULL. 💡 Trap to avoid: Never write col = NULL or omit parentheses in mixed AND/OR statements.",
     "eli5Story": "Filter check on Books: Find books with prices between $15.00 and $30.00 inclusive.",
     "commonMistakes": "Unquoted strings, missing parentheses around OR, or using = instead of LIKE.",
     "learningOutcomes": "Mastered 2.3 Range Bounds (BETWEEN) on Books."
@@ -1928,33 +1950,34 @@ window.QUESTS_SECTION_2 = [
       "slot2": {
         "correct": "salary",
         "options": [
-          "last_name",
-          "hire_date",
           "salary",
-          "department"
+          "department",
+          "first_name",
+          "bonus"
         ]
       },
       "slot3": {
         "correct": "BETWEEN",
         "options": [
-          "BETWEEN",
-          "WITHIN",
           "IN",
-          "RANGE"
+          "RANGE",
+          "WITHIN",
+          "BETWEEN"
         ]
       },
       "slot4": {
         "correct": "AND",
         "options": [
-          "THROUGH",
-          "TO",
           "OR",
-          "AND"
+          "THROUGH",
+          "AND",
+          "TO"
         ]
       }
     },
     "syntaxRule": "Strings use single quotes, numbers do not. AND precedes OR unless parentheses are used. NULL requires IS NULL.",
     "syntaxTrap": "Never write col = NULL or omit parentheses in mixed AND/OR statements.",
+    "explanation": "Strings use single quotes, numbers do not. AND precedes OR unless parentheses are used. NULL requires IS NULL. 💡 Trap to avoid: Never write col = NULL or omit parentheses in mixed AND/OR statements.",
     "eli5Story": "Filter check on Employees: Retrieve employees in the mid-career salary band between $60,000 and $90,000.",
     "commonMistakes": "Unquoted strings, missing parentheses around OR, or using = instead of LIKE.",
     "learningOutcomes": "Mastered 2.3 Range Bounds (BETWEEN) on Employees."
@@ -2024,42 +2047,43 @@ window.QUESTS_SECTION_2 = [
       "slot1": {
         "correct": "WHERE",
         "options": [
-          "HAVING",
-          "WHEN",
           "ON",
-          "WHERE"
+          "WHERE",
+          "WHEN",
+          "HAVING"
         ]
       },
       "slot2": {
         "correct": "unit_price",
         "options": [
-          "stock_qty",
-          "category",
+          "is_organic",
+          "calories",
           "unit_price",
-          "item_name"
+          "stock_qty"
         ]
       },
       "slot3": {
         "correct": "BETWEEN",
         "options": [
-          "RANGE",
-          "WITHIN",
+          "IN",
           "BETWEEN",
-          "IN"
+          "WITHIN",
+          "RANGE"
         ]
       },
       "slot4": {
         "correct": "AND",
         "options": [
-          "OR",
           "TO",
           "THROUGH",
-          "AND"
+          "AND",
+          "OR"
         ]
       }
     },
     "syntaxRule": "Strings use single quotes, numbers do not. AND precedes OR unless parentheses are used. NULL requires IS NULL.",
     "syntaxTrap": "Never write col = NULL or omit parentheses in mixed AND/OR statements.",
+    "explanation": "Strings use single quotes, numbers do not. AND precedes OR unless parentheses are used. NULL requires IS NULL. 💡 Trap to avoid: Never write col = NULL or omit parentheses in mixed AND/OR statements.",
     "eli5Story": "Filter check on GroceryItems: Find grocery items priced between $2.00 and $5.00.",
     "commonMistakes": "Unquoted strings, missing parentheses around OR, or using = instead of LIKE.",
     "learningOutcomes": "Mastered 2.3 Range Bounds (BETWEEN) on GroceryItems."
@@ -2129,17 +2153,17 @@ window.QUESTS_SECTION_2 = [
       "slot1": {
         "correct": "WHERE",
         "options": [
-          "ON",
-          "WHERE",
           "WHEN",
+          "WHERE",
+          "ON",
           "HAVING"
         ]
       },
       "slot2": {
         "correct": "unit_price",
         "options": [
-          "order_status",
           "unit_price",
+          "shipping_city",
           "customer_name",
           "product_name"
         ]
@@ -2148,23 +2172,24 @@ window.QUESTS_SECTION_2 = [
         "correct": "BETWEEN",
         "options": [
           "IN",
-          "RANGE",
           "BETWEEN",
-          "WITHIN"
+          "WITHIN",
+          "RANGE"
         ]
       },
       "slot4": {
         "correct": "AND",
         "options": [
-          "AND",
           "THROUGH",
           "OR",
+          "AND",
           "TO"
         ]
       }
     },
     "syntaxRule": "Strings use single quotes, numbers do not. AND precedes OR unless parentheses are used. NULL requires IS NULL.",
     "syntaxTrap": "Never write col = NULL or omit parentheses in mixed AND/OR statements.",
+    "explanation": "Strings use single quotes, numbers do not. AND precedes OR unless parentheses are used. NULL requires IS NULL. 💡 Trap to avoid: Never write col = NULL or omit parentheses in mixed AND/OR statements.",
     "eli5Story": "Filter check on Orders: Find orders where the unit price is between $25.00 and $100.00.",
     "commonMistakes": "Unquoted strings, missing parentheses around OR, or using = instead of LIKE.",
     "learningOutcomes": "Mastered 2.3 Range Bounds (BETWEEN) on Orders."
@@ -2234,42 +2259,43 @@ window.QUESTS_SECTION_2 = [
       "slot1": {
         "correct": "WHERE",
         "options": [
-          "WHEN",
-          "WHERE",
+          "HAVING",
           "ON",
-          "HAVING"
+          "WHEN",
+          "WHERE"
         ]
       },
       "slot2": {
         "correct": "duration_seconds",
         "options": [
-          "track_title",
-          "artist",
-          "play_count",
-          "duration_seconds"
+          "release_year",
+          "duration_seconds",
+          "genre",
+          "artist"
         ]
       },
       "slot3": {
         "correct": "BETWEEN",
         "options": [
-          "IN",
-          "RANGE",
           "WITHIN",
+          "RANGE",
+          "IN",
           "BETWEEN"
         ]
       },
       "slot4": {
         "correct": "AND",
         "options": [
-          "OR",
           "AND",
-          "THROUGH",
-          "TO"
+          "TO",
+          "OR",
+          "THROUGH"
         ]
       }
     },
     "syntaxRule": "Strings use single quotes, numbers do not. AND precedes OR unless parentheses are used. NULL requires IS NULL.",
     "syntaxTrap": "Never write col = NULL or omit parentheses in mixed AND/OR statements.",
+    "explanation": "Strings use single quotes, numbers do not. AND precedes OR unless parentheses are used. NULL requires IS NULL. 💡 Trap to avoid: Never write col = NULL or omit parentheses in mixed AND/OR statements.",
     "eli5Story": "Filter check on MusicTracks: Find tracks between 3 and 4 minutes long (180 to 240 seconds).",
     "commonMistakes": "Unquoted strings, missing parentheses around OR, or using = instead of LIKE.",
     "learningOutcomes": "Mastered 2.3 Range Bounds (BETWEEN) on MusicTracks."
@@ -2339,42 +2365,43 @@ window.QUESTS_SECTION_2 = [
       "slot1": {
         "correct": "WHERE",
         "options": [
+          "WHEN",
           "WHERE",
-          "HAVING",
           "ON",
-          "WHEN"
+          "HAVING"
         ]
       },
       "slot2": {
         "correct": "monthly_fee",
         "options": [
-          "member_name",
-          "member_id",
           "membership_plan",
-          "monthly_fee"
+          "monthly_fee",
+          "visits_this_month",
+          "member_name"
         ]
       },
       "slot3": {
         "correct": "BETWEEN",
         "options": [
-          "WITHIN",
-          "BETWEEN",
           "RANGE",
+          "BETWEEN",
+          "WITHIN",
           "IN"
         ]
       },
       "slot4": {
         "correct": "AND",
         "options": [
+          "THROUGH",
           "OR",
           "TO",
-          "AND",
-          "THROUGH"
+          "AND"
         ]
       }
     },
     "syntaxRule": "Strings use single quotes, numbers do not. AND precedes OR unless parentheses are used. NULL requires IS NULL.",
     "syntaxTrap": "Never write col = NULL or omit parentheses in mixed AND/OR statements.",
+    "explanation": "Strings use single quotes, numbers do not. AND precedes OR unless parentheses are used. NULL requires IS NULL. 💡 Trap to avoid: Never write col = NULL or omit parentheses in mixed AND/OR statements.",
     "eli5Story": "Filter check on GymMembers: List gym members with monthly dues between $25.00 and $75.00.",
     "commonMistakes": "Unquoted strings, missing parentheses around OR, or using = instead of LIKE.",
     "learningOutcomes": "Mastered 2.3 Range Bounds (BETWEEN) on GymMembers."
@@ -2444,42 +2471,43 @@ window.QUESTS_SECTION_2 = [
       "slot1": {
         "correct": "WHERE",
         "options": [
-          "ON",
-          "WHERE",
+          "HAVING",
           "WHEN",
-          "HAVING"
+          "ON",
+          "WHERE"
         ]
       },
       "slot2": {
         "correct": "release_year",
         "options": [
-          "review_count",
-          "star_rating",
           "release_year",
-          "genre"
+          "director",
+          "review_count",
+          "review_id"
         ]
       },
       "slot3": {
         "correct": "BETWEEN",
         "options": [
           "BETWEEN",
-          "RANGE",
           "IN",
-          "WITHIN"
+          "WITHIN",
+          "RANGE"
         ]
       },
       "slot4": {
         "correct": "AND",
         "options": [
+          "THROUGH",
           "AND",
           "TO",
-          "OR",
-          "THROUGH"
+          "OR"
         ]
       }
     },
     "syntaxRule": "Strings use single quotes, numbers do not. AND precedes OR unless parentheses are used. NULL requires IS NULL.",
     "syntaxTrap": "Never write col = NULL or omit parentheses in mixed AND/OR statements.",
+    "explanation": "Strings use single quotes, numbers do not. AND precedes OR unless parentheses are used. NULL requires IS NULL. 💡 Trap to avoid: Never write col = NULL or omit parentheses in mixed AND/OR statements.",
     "eli5Story": "Filter check on MovieReviews: Find films released in the four-year span between 2020 and 2023 inclusive.",
     "commonMistakes": "Unquoted strings, missing parentheses around OR, or using = instead of LIKE.",
     "learningOutcomes": "Mastered 2.3 Range Bounds (BETWEEN) on MovieReviews."
@@ -2549,42 +2577,43 @@ window.QUESTS_SECTION_2 = [
       "slot1": {
         "correct": "WHERE",
         "options": [
+          "HAVING",
           "ON",
           "WHEN",
-          "HAVING",
           "WHERE"
         ]
       },
       "slot2": {
         "correct": "ticket_price",
         "options": [
-          "airline",
+          "flight_id",
+          "ticket_price",
           "dest_airport",
-          "delay_minutes",
-          "ticket_price"
+          "destination_airport"
         ]
       },
       "slot3": {
         "correct": "BETWEEN",
         "options": [
+          "BETWEEN",
           "RANGE",
-          "IN",
           "WITHIN",
-          "BETWEEN"
+          "IN"
         ]
       },
       "slot4": {
         "correct": "AND",
         "options": [
           "OR",
-          "AND",
           "THROUGH",
+          "AND",
           "TO"
         ]
       }
     },
     "syntaxRule": "Strings use single quotes, numbers do not. AND precedes OR unless parentheses are used. NULL requires IS NULL.",
     "syntaxTrap": "Never write col = NULL or omit parentheses in mixed AND/OR statements.",
+    "explanation": "Strings use single quotes, numbers do not. AND precedes OR unless parentheses are used. NULL requires IS NULL. 💡 Trap to avoid: Never write col = NULL or omit parentheses in mixed AND/OR statements.",
     "eli5Story": "Filter check on FlightSchedule: Find flights with economy ticket prices between $200 and $400.",
     "commonMistakes": "Unquoted strings, missing parentheses around OR, or using = instead of LIKE.",
     "learningOutcomes": "Mastered 2.3 Range Bounds (BETWEEN) on FlightSchedule."
@@ -2654,26 +2683,26 @@ window.QUESTS_SECTION_2 = [
       "slot1": {
         "correct": "WHERE",
         "options": [
-          "WHEN",
           "HAVING",
           "WHERE",
-          "ON"
+          "ON",
+          "WHEN"
         ]
       },
       "slot2": {
         "correct": "age_years NOT",
         "options": [
-          "pet_id",
-          "species",
-          "age_years NOT",
-          "breed"
+          "weight_kg",
+          "is_vaccinated",
+          "pet_name",
+          "age_years NOT"
         ]
       },
       "slot3": {
         "correct": "BETWEEN",
         "options": [
-          "RANGE",
           "WITHIN",
+          "RANGE",
           "IN",
           "BETWEEN"
         ]
@@ -2683,13 +2712,14 @@ window.QUESTS_SECTION_2 = [
         "options": [
           "OR",
           "TO",
-          "THROUGH",
-          "AND"
+          "AND",
+          "THROUGH"
         ]
       }
     },
     "syntaxRule": "Strings use single quotes, numbers do not. AND precedes OR unless parentheses are used. NULL requires IS NULL.",
     "syntaxTrap": "Never write col = NULL or omit parentheses in mixed AND/OR statements.",
+    "explanation": "Strings use single quotes, numbers do not. AND precedes OR unless parentheses are used. NULL requires IS NULL. 💡 Trap to avoid: Never write col = NULL or omit parentheses in mixed AND/OR statements.",
     "eli5Story": "Filter check on PetClinic: Find very young or senior pets whose age is NOT between 3 and 8 years.",
     "commonMistakes": "Unquoted strings, missing parentheses around OR, or using = instead of LIKE.",
     "learningOutcomes": "Mastered 2.3 Range Bounds (BETWEEN) on PetClinic."
@@ -2756,8 +2786,8 @@ window.QUESTS_SECTION_2 = [
         "correct": "WHERE",
         "options": [
           "CASE",
-          "WHERE",
           "FILTER",
+          "WHERE",
           "HAVING"
         ]
       },
@@ -2765,18 +2795,18 @@ window.QUESTS_SECTION_2 = [
         "correct": "city",
         "options": [
           "city",
-          "major",
-          "enrolled_year",
-          "age"
+          "last_name",
+          "age",
+          "enrolled_year"
         ]
       },
       "slot3": {
         "correct": "IN",
         "options": [
+          "NOT IN",
           "CONTAINS",
           "= ANY",
-          "IN",
-          "NOT IN"
+          "IN"
         ]
       },
       "slot4": {
@@ -2791,6 +2821,7 @@ window.QUESTS_SECTION_2 = [
     },
     "syntaxRule": "Strings use single quotes, numbers do not. AND precedes OR unless parentheses are used. NULL requires IS NULL.",
     "syntaxTrap": "Never write col = NULL or omit parentheses in mixed AND/OR statements.",
+    "explanation": "Strings use single quotes, numbers do not. AND precedes OR unless parentheses are used. NULL requires IS NULL. 💡 Trap to avoid: Never write col = NULL or omit parentheses in mixed AND/OR statements.",
     "eli5Story": "Filter check on Students: Select students who live in Seattle, Chicago, or Austin.",
     "commonMistakes": "Unquoted strings, missing parentheses around OR, or using = instead of LIKE.",
     "learningOutcomes": "Mastered 2.4 List Membership (IN & NOT IN) on Students."
@@ -2856,16 +2887,16 @@ window.QUESTS_SECTION_2 = [
       "slot1": {
         "correct": "WHERE",
         "options": [
+          "WHERE",
           "CASE",
-          "HAVING",
           "FILTER",
-          "WHERE"
+          "HAVING"
         ]
       },
       "slot2": {
         "correct": "genre",
         "options": [
-          "stock_qty",
+          "price",
           "author",
           "title",
           "genre"
@@ -2874,24 +2905,25 @@ window.QUESTS_SECTION_2 = [
       "slot3": {
         "correct": "IN",
         "options": [
-          "CONTAINS",
-          "= ANY",
           "IN",
+          "= ANY",
+          "CONTAINS",
           "NOT IN"
         ]
       },
       "slot4": {
         "correct": "('Mystery', 'Sci-Fi', 'Thriller');",
         "options": [
-          "('Mystery' OR 'Sci-Fi' OR 'Thriller');",
           "['Mystery', 'Sci-Fi', 'Thriller'']",
-          "('Mystery', 'Sci-Fi', 'Thriller');",
-          "'Mystery', 'Sci-Fi', 'Thriller')"
+          "'Mystery', 'Sci-Fi', 'Thriller')",
+          "('Mystery' OR 'Sci-Fi' OR 'Thriller');",
+          "('Mystery', 'Sci-Fi', 'Thriller');"
         ]
       }
     },
     "syntaxRule": "Strings use single quotes, numbers do not. AND precedes OR unless parentheses are used. NULL requires IS NULL.",
     "syntaxTrap": "Never write col = NULL or omit parentheses in mixed AND/OR statements.",
+    "explanation": "Strings use single quotes, numbers do not. AND precedes OR unless parentheses are used. NULL requires IS NULL. 💡 Trap to avoid: Never write col = NULL or omit parentheses in mixed AND/OR statements.",
     "eli5Story": "Filter check on Books: Find books belonging to Mystery, Sci-Fi, or Thriller genres.",
     "commonMistakes": "Unquoted strings, missing parentheses around OR, or using = instead of LIKE.",
     "learningOutcomes": "Mastered 2.4 List Membership (IN & NOT IN) on Books."
@@ -2957,42 +2989,43 @@ window.QUESTS_SECTION_2 = [
       "slot1": {
         "correct": "WHERE",
         "options": [
-          "WHERE",
           "FILTER",
-          "HAVING",
-          "CASE"
+          "WHERE",
+          "CASE",
+          "HAVING"
         ]
       },
       "slot2": {
         "correct": "department",
         "options": [
-          "bonus",
-          "department",
           "salary",
-          "hire_date"
+          "department",
+          "hire_date",
+          "bonus"
         ]
       },
       "slot3": {
         "correct": "IN",
         "options": [
+          "NOT IN",
           "IN",
           "CONTAINS",
-          "= ANY",
-          "NOT IN"
+          "= ANY"
         ]
       },
       "slot4": {
         "correct": "('Engineering', 'Design');",
         "options": [
-          "'Engineering', 'Design')",
-          "('Engineering', 'Design');",
+          "('Engineering' OR 'Design');",
           "['Engineering', 'Design'']",
-          "('Engineering' OR 'Design');"
+          "('Engineering', 'Design');",
+          "'Engineering', 'Design')"
         ]
       }
     },
     "syntaxRule": "Strings use single quotes, numbers do not. AND precedes OR unless parentheses are used. NULL requires IS NULL.",
     "syntaxTrap": "Never write col = NULL or omit parentheses in mixed AND/OR statements.",
+    "explanation": "Strings use single quotes, numbers do not. AND precedes OR unless parentheses are used. NULL requires IS NULL. 💡 Trap to avoid: Never write col = NULL or omit parentheses in mixed AND/OR statements.",
     "eli5Story": "Filter check on Employees: Retrieve employees working in either Engineering or Design.",
     "commonMistakes": "Unquoted strings, missing parentheses around OR, or using = instead of LIKE.",
     "learningOutcomes": "Mastered 2.4 List Membership (IN & NOT IN) on Employees."
@@ -3058,42 +3091,43 @@ window.QUESTS_SECTION_2 = [
       "slot1": {
         "correct": "WHERE",
         "options": [
-          "WHERE",
-          "HAVING",
           "FILTER",
-          "CASE"
+          "CASE",
+          "HAVING",
+          "WHERE"
         ]
       },
       "slot2": {
         "correct": "category",
         "options": [
+          "calories",
+          "is_organic",
           "category",
-          "unit_price",
-          "item_name",
-          "calories"
+          "unit_price"
         ]
       },
       "slot3": {
         "correct": "IN",
         "options": [
-          "CONTAINS",
-          "NOT IN",
           "= ANY",
-          "IN"
+          "NOT IN",
+          "IN",
+          "CONTAINS"
         ]
       },
       "slot4": {
         "correct": "('Produce', 'Bakery');",
         "options": [
-          "('Produce', 'Bakery');",
           "('Produce' OR 'Bakery');",
-          "'Produce', 'Bakery')",
-          "['Produce', 'Bakery'']"
+          "('Produce', 'Bakery');",
+          "['Produce', 'Bakery'']",
+          "'Produce', 'Bakery')"
         ]
       }
     },
     "syntaxRule": "Strings use single quotes, numbers do not. AND precedes OR unless parentheses are used. NULL requires IS NULL.",
     "syntaxTrap": "Never write col = NULL or omit parentheses in mixed AND/OR statements.",
+    "explanation": "Strings use single quotes, numbers do not. AND precedes OR unless parentheses are used. NULL requires IS NULL. 💡 Trap to avoid: Never write col = NULL or omit parentheses in mixed AND/OR statements.",
     "eli5Story": "Filter check on GroceryItems: List grocery items in either the Produce or Bakery category.",
     "commonMistakes": "Unquoted strings, missing parentheses around OR, or using = instead of LIKE.",
     "learningOutcomes": "Mastered 2.4 List Membership (IN & NOT IN) on GroceryItems."
@@ -3159,19 +3193,19 @@ window.QUESTS_SECTION_2 = [
       "slot1": {
         "correct": "WHERE",
         "options": [
-          "CASE",
-          "FILTER",
+          "WHERE",
           "HAVING",
-          "WHERE"
+          "CASE",
+          "FILTER"
         ]
       },
       "slot2": {
         "correct": "order_status",
         "options": [
-          "order_status",
           "discount_pct",
-          "unit_price",
-          "product_name"
+          "shipping_city",
+          "order_status",
+          "quantity"
         ]
       },
       "slot3": {
@@ -3179,22 +3213,23 @@ window.QUESTS_SECTION_2 = [
         "options": [
           "IN",
           "NOT IN",
-          "CONTAINS",
-          "= ANY"
+          "= ANY",
+          "CONTAINS"
         ]
       },
       "slot4": {
         "correct": "('Shipped', 'Delivered');",
         "options": [
-          "['Shipped', 'Delivered'']",
           "('Shipped' OR 'Delivered');",
-          "('Shipped', 'Delivered');",
-          "'Shipped', 'Delivered')"
+          "['Shipped', 'Delivered'']",
+          "'Shipped', 'Delivered')",
+          "('Shipped', 'Delivered');"
         ]
       }
     },
     "syntaxRule": "Strings use single quotes, numbers do not. AND precedes OR unless parentheses are used. NULL requires IS NULL.",
     "syntaxTrap": "Never write col = NULL or omit parentheses in mixed AND/OR statements.",
+    "explanation": "Strings use single quotes, numbers do not. AND precedes OR unless parentheses are used. NULL requires IS NULL. 💡 Trap to avoid: Never write col = NULL or omit parentheses in mixed AND/OR statements.",
     "eli5Story": "Filter check on Orders: Find all fulfilled orders with status Shipped or Delivered.",
     "commonMistakes": "Unquoted strings, missing parentheses around OR, or using = instead of LIKE.",
     "learningOutcomes": "Mastered 2.4 List Membership (IN & NOT IN) on Orders."
@@ -3261,41 +3296,42 @@ window.QUESTS_SECTION_2 = [
         "correct": "WHERE",
         "options": [
           "WHERE",
-          "CASE",
+          "FILTER",
           "HAVING",
-          "FILTER"
+          "CASE"
         ]
       },
       "slot2": {
         "correct": "genre",
         "options": [
           "genre",
+          "duration_seconds",
           "play_count",
-          "artist",
-          "track_id"
+          "track_title"
         ]
       },
       "slot3": {
         "correct": "IN",
         "options": [
+          "= ANY",
           "CONTAINS",
-          "NOT IN",
           "IN",
-          "= ANY"
+          "NOT IN"
         ]
       },
       "slot4": {
         "correct": "('Rock', 'Synthwave');",
         "options": [
-          "'Rock', 'Synthwave')",
-          "('Rock' OR 'Synthwave');",
+          "('Rock', 'Synthwave');",
           "['Rock', 'Synthwave'']",
-          "('Rock', 'Synthwave');"
+          "'Rock', 'Synthwave')",
+          "('Rock' OR 'Synthwave');"
         ]
       }
     },
     "syntaxRule": "Strings use single quotes, numbers do not. AND precedes OR unless parentheses are used. NULL requires IS NULL.",
     "syntaxTrap": "Never write col = NULL or omit parentheses in mixed AND/OR statements.",
+    "explanation": "Strings use single quotes, numbers do not. AND precedes OR unless parentheses are used. NULL requires IS NULL. 💡 Trap to avoid: Never write col = NULL or omit parentheses in mixed AND/OR statements.",
     "eli5Story": "Filter check on MusicTracks: Filter music tracks to only Rock or Synthwave.",
     "commonMistakes": "Unquoted strings, missing parentheses around OR, or using = instead of LIKE.",
     "learningOutcomes": "Mastered 2.4 List Membership (IN & NOT IN) on MusicTracks."
@@ -3361,42 +3397,43 @@ window.QUESTS_SECTION_2 = [
       "slot1": {
         "correct": "WHERE",
         "options": [
-          "HAVING",
-          "FILTER",
+          "CASE",
           "WHERE",
-          "CASE"
+          "HAVING",
+          "FILTER"
         ]
       },
       "slot2": {
         "correct": "membership_plan",
         "options": [
           "member_id",
-          "membership_plan",
           "has_trainer",
-          "monthly_fee"
+          "membership_plan",
+          "joined_date"
         ]
       },
       "slot3": {
         "correct": "IN",
         "options": [
-          "IN",
           "CONTAINS",
           "= ANY",
+          "IN",
           "NOT IN"
         ]
       },
       "slot4": {
         "correct": "('Gold', 'Platinum');",
         "options": [
-          "('Gold' OR 'Platinum');",
-          "('Gold', 'Platinum');",
           "['Gold', 'Platinum'']",
-          "'Gold', 'Platinum')"
+          "'Gold', 'Platinum')",
+          "('Gold', 'Platinum');",
+          "('Gold' OR 'Platinum');"
         ]
       }
     },
     "syntaxRule": "Strings use single quotes, numbers do not. AND precedes OR unless parentheses are used. NULL requires IS NULL.",
     "syntaxTrap": "Never write col = NULL or omit parentheses in mixed AND/OR statements.",
+    "explanation": "Strings use single quotes, numbers do not. AND precedes OR unless parentheses are used. NULL requires IS NULL. 💡 Trap to avoid: Never write col = NULL or omit parentheses in mixed AND/OR statements.",
     "eli5Story": "Filter check on GymMembers: List premium members with either Gold or Platinum plans.",
     "commonMistakes": "Unquoted strings, missing parentheses around OR, or using = instead of LIKE.",
     "learningOutcomes": "Mastered 2.4 List Membership (IN & NOT IN) on GymMembers."
@@ -3462,42 +3499,43 @@ window.QUESTS_SECTION_2 = [
       "slot1": {
         "correct": "WHERE",
         "options": [
-          "HAVING",
-          "WHERE",
           "CASE",
-          "FILTER"
+          "HAVING",
+          "FILTER",
+          "WHERE"
         ]
       },
       "slot2": {
         "correct": "genre NOT",
         "options": [
           "release_year",
-          "review_id",
+          "genre NOT",
           "star_rating",
-          "genre NOT"
+          "director"
         ]
       },
       "slot3": {
         "correct": "IN",
         "options": [
-          "NOT IN",
-          "CONTAINS",
+          "= ANY",
           "IN",
-          "= ANY"
+          "CONTAINS",
+          "NOT IN"
         ]
       },
       "slot4": {
         "correct": "('Horror', 'Action');",
         "options": [
+          "('Horror', 'Action');",
           "'Horror', 'Action')",
           "('Horror' OR 'Action');",
-          "('Horror', 'Action');",
           "['Horror', 'Action'']"
         ]
       }
     },
     "syntaxRule": "Strings use single quotes, numbers do not. AND precedes OR unless parentheses are used. NULL requires IS NULL.",
     "syntaxTrap": "Never write col = NULL or omit parentheses in mixed AND/OR statements.",
+    "explanation": "Strings use single quotes, numbers do not. AND precedes OR unless parentheses are used. NULL requires IS NULL. 💡 Trap to avoid: Never write col = NULL or omit parentheses in mixed AND/OR statements.",
     "eli5Story": "Filter check on MovieReviews: Select movies whose genre is neither Horror nor Action.",
     "commonMistakes": "Unquoted strings, missing parentheses around OR, or using = instead of LIKE.",
     "learningOutcomes": "Mastered 2.4 List Membership (IN & NOT IN) on MovieReviews."
@@ -3563,42 +3601,43 @@ window.QUESTS_SECTION_2 = [
       "slot1": {
         "correct": "WHERE",
         "options": [
-          "HAVING",
-          "CASE",
           "FILTER",
+          "CASE",
+          "HAVING",
           "WHERE"
         ]
       },
       "slot2": {
         "correct": "origin_airport",
         "options": [
+          "dest_airport",
           "origin_airport",
-          "ticket_price",
           "destination_airport",
-          "flight_id"
+          "ticket_price"
         ]
       },
       "slot3": {
         "correct": "IN",
         "options": [
-          "NOT IN",
-          "IN",
           "CONTAINS",
+          "IN",
+          "NOT IN",
           "= ANY"
         ]
       },
       "slot4": {
         "correct": "('ORD', 'SFO', 'JFK');",
         "options": [
+          "('ORD' OR 'SFO' OR 'JFK');",
           "'ORD', 'SFO', 'JFK')",
           "('ORD', 'SFO', 'JFK');",
-          "('ORD' OR 'SFO' OR 'JFK');",
           "['ORD', 'SFO', 'JFK'']"
         ]
       }
     },
     "syntaxRule": "Strings use single quotes, numbers do not. AND precedes OR unless parentheses are used. NULL requires IS NULL.",
     "syntaxTrap": "Never write col = NULL or omit parentheses in mixed AND/OR statements.",
+    "explanation": "Strings use single quotes, numbers do not. AND precedes OR unless parentheses are used. NULL requires IS NULL. 💡 Trap to avoid: Never write col = NULL or omit parentheses in mixed AND/OR statements.",
     "eli5Story": "Filter check on FlightSchedule: Find flights departing from major hubs ORD, SFO, or JFK.",
     "commonMistakes": "Unquoted strings, missing parentheses around OR, or using = instead of LIKE.",
     "learningOutcomes": "Mastered 2.4 List Membership (IN & NOT IN) on FlightSchedule."
@@ -3664,35 +3703,35 @@ window.QUESTS_SECTION_2 = [
       "slot1": {
         "correct": "WHERE",
         "options": [
-          "CASE",
-          "FILTER",
           "HAVING",
-          "WHERE"
+          "WHERE",
+          "CASE",
+          "FILTER"
         ]
       },
       "slot2": {
         "correct": "species",
         "options": [
-          "weight_kg",
-          "breed",
           "species",
-          "pet_id"
+          "pet_name",
+          "breed",
+          "age_years"
         ]
       },
       "slot3": {
         "correct": "IN",
         "options": [
+          "IN",
           "= ANY",
           "CONTAINS",
-          "NOT IN",
-          "IN"
+          "NOT IN"
         ]
       },
       "slot4": {
         "correct": "('Dog', 'Cat');",
         "options": [
-          "('Dog' OR 'Cat');",
           "['Dog', 'Cat'']",
+          "('Dog' OR 'Cat');",
           "('Dog', 'Cat');",
           "'Dog', 'Cat')"
         ]
@@ -3700,6 +3739,7 @@ window.QUESTS_SECTION_2 = [
     },
     "syntaxRule": "Strings use single quotes, numbers do not. AND precedes OR unless parentheses are used. NULL requires IS NULL.",
     "syntaxTrap": "Never write col = NULL or omit parentheses in mixed AND/OR statements.",
+    "explanation": "Strings use single quotes, numbers do not. AND precedes OR unless parentheses are used. NULL requires IS NULL. 💡 Trap to avoid: Never write col = NULL or omit parentheses in mixed AND/OR statements.",
     "eli5Story": "Filter check on PetClinic: Filter patient records to standard household pets: Dog or Cat.",
     "commonMistakes": "Unquoted strings, missing parentheses around OR, or using = instead of LIKE.",
     "learningOutcomes": "Mastered 2.4 List Membership (IN & NOT IN) on PetClinic."
@@ -3765,42 +3805,43 @@ window.QUESTS_SECTION_2 = [
       "slot1": {
         "correct": "WHERE",
         "options": [
-          "FILTER",
+          "HAVING",
           "WHERE",
           "ON",
-          "HAVING"
+          "FILTER"
         ]
       },
       "slot2": {
         "correct": "full_name",
         "options": [
-          "age",
+          "enrolled_year",
           "student_id",
-          "full_name",
-          "last_name"
+          "age",
+          "full_name"
         ]
       },
       "slot3": {
         "correct": "LIKE",
         "options": [
-          "CONTAINS",
-          "LIKE",
           "=",
+          "LIKE",
+          "CONTAINS",
           "MATCHES"
         ]
       },
       "slot4": {
         "correct": "'A%';",
         "options": [
-          "100",
           "'A%';",
           "NULL",
+          "100",
           "'Sample'"
         ]
       }
     },
     "syntaxRule": "Strings use single quotes, numbers do not. AND precedes OR unless parentheses are used. NULL requires IS NULL.",
     "syntaxTrap": "Never write col = NULL or omit parentheses in mixed AND/OR statements.",
+    "explanation": "Strings use single quotes, numbers do not. AND precedes OR unless parentheses are used. NULL requires IS NULL. 💡 Trap to avoid: Never write col = NULL or omit parentheses in mixed AND/OR statements.",
     "eli5Story": "Filter check on Students: Find all students whose first name starts with the capital letter 'A'.",
     "commonMistakes": "Unquoted strings, missing parentheses around OR, or using = instead of LIKE.",
     "learningOutcomes": "Mastered 2.5 Pattern Matching (LIKE) on Students."
@@ -3866,8 +3907,8 @@ window.QUESTS_SECTION_2 = [
       "slot1": {
         "correct": "WHERE",
         "options": [
-          "WHERE",
           "FILTER",
+          "WHERE",
           "HAVING",
           "ON"
         ]
@@ -3875,33 +3916,34 @@ window.QUESTS_SECTION_2 = [
       "slot2": {
         "correct": "author",
         "options": [
-          "genre",
-          "title",
-          "book_id",
+          "stock_qty",
+          "published_year",
+          "is_hardcover",
           "author"
         ]
       },
       "slot3": {
         "correct": "LIKE",
         "options": [
-          "LIKE",
+          "CONTAINS",
           "MATCHES",
           "=",
-          "CONTAINS"
+          "LIKE"
         ]
       },
       "slot4": {
         "correct": "'%King%';",
         "options": [
-          "'%King%';",
           "NULL",
-          "'Sample'",
-          "100"
+          "100",
+          "'%King%';",
+          "'Sample'"
         ]
       }
     },
     "syntaxRule": "Strings use single quotes, numbers do not. AND precedes OR unless parentheses are used. NULL requires IS NULL.",
     "syntaxTrap": "Never write col = NULL or omit parentheses in mixed AND/OR statements.",
+    "explanation": "Strings use single quotes, numbers do not. AND precedes OR unless parentheses are used. NULL requires IS NULL. 💡 Trap to avoid: Never write col = NULL or omit parentheses in mixed AND/OR statements.",
     "eli5Story": "Filter check on Books: Find all books written by an author with 'King' anywhere in their name.",
     "commonMistakes": "Unquoted strings, missing parentheses around OR, or using = instead of LIKE.",
     "learningOutcomes": "Mastered 2.5 Pattern Matching (LIKE) on Books."
@@ -3967,42 +4009,43 @@ window.QUESTS_SECTION_2 = [
       "slot1": {
         "correct": "WHERE",
         "options": [
-          "ON",
-          "WHERE",
           "HAVING",
-          "FILTER"
+          "FILTER",
+          "ON",
+          "WHERE"
         ]
       },
       "slot2": {
         "correct": "last_name",
         "options": [
-          "department",
           "last_name",
-          "bonus",
-          "emp_id"
+          "salary",
+          "department",
+          "first_name"
         ]
       },
       "slot3": {
         "correct": "LIKE",
         "options": [
           "=",
-          "LIKE",
+          "MATCHES",
           "CONTAINS",
-          "MATCHES"
+          "LIKE"
         ]
       },
       "slot4": {
         "correct": "'%son';",
         "options": [
           "100",
-          "'%son';",
           "NULL",
+          "'%son';",
           "'Sample'"
         ]
       }
     },
     "syntaxRule": "Strings use single quotes, numbers do not. AND precedes OR unless parentheses are used. NULL requires IS NULL.",
     "syntaxTrap": "Never write col = NULL or omit parentheses in mixed AND/OR statements.",
+    "explanation": "Strings use single quotes, numbers do not. AND precedes OR unless parentheses are used. NULL requires IS NULL. 💡 Trap to avoid: Never write col = NULL or omit parentheses in mixed AND/OR statements.",
     "eli5Story": "Filter check on Employees: Select all employees whose family name ends with 'son' (e.g. Johnson, Wilson).",
     "commonMistakes": "Unquoted strings, missing parentheses around OR, or using = instead of LIKE.",
     "learningOutcomes": "Mastered 2.5 Pattern Matching (LIKE) on Employees."
@@ -4068,42 +4111,43 @@ window.QUESTS_SECTION_2 = [
       "slot1": {
         "correct": "WHERE",
         "options": [
+          "HAVING",
           "WHERE",
           "ON",
-          "FILTER",
-          "HAVING"
+          "FILTER"
         ]
       },
       "slot2": {
         "correct": "item_name",
         "options": [
-          "stock_qty",
-          "item_name",
           "is_organic",
-          "item_id"
+          "stock_qty",
+          "category",
+          "item_name"
         ]
       },
       "slot3": {
         "correct": "LIKE",
         "options": [
-          "LIKE",
           "CONTAINS",
-          "=",
-          "MATCHES"
+          "MATCHES",
+          "LIKE",
+          "="
         ]
       },
       "slot4": {
         "correct": "'%Organic%';",
         "options": [
-          "'Sample'",
           "NULL",
-          "'%Organic%';",
-          "100"
+          "'Sample'",
+          "100",
+          "'%Organic%';"
         ]
       }
     },
     "syntaxRule": "Strings use single quotes, numbers do not. AND precedes OR unless parentheses are used. NULL requires IS NULL.",
     "syntaxTrap": "Never write col = NULL or omit parentheses in mixed AND/OR statements.",
+    "explanation": "Strings use single quotes, numbers do not. AND precedes OR unless parentheses are used. NULL requires IS NULL. 💡 Trap to avoid: Never write col = NULL or omit parentheses in mixed AND/OR statements.",
     "eli5Story": "Filter check on GroceryItems: Find all grocery items with 'Organic' anywhere in the item name.",
     "commonMistakes": "Unquoted strings, missing parentheses around OR, or using = instead of LIKE.",
     "learningOutcomes": "Mastered 2.5 Pattern Matching (LIKE) on GroceryItems."
@@ -4169,42 +4213,43 @@ window.QUESTS_SECTION_2 = [
       "slot1": {
         "correct": "WHERE",
         "options": [
-          "FILTER",
-          "ON",
+          "HAVING",
           "WHERE",
-          "HAVING"
+          "FILTER",
+          "ON"
         ]
       },
       "slot2": {
         "correct": "customer_name",
         "options": [
-          "order_status",
           "customer_name",
-          "order_id",
+          "quantity",
+          "product_name",
           "discount_pct"
         ]
       },
       "slot3": {
         "correct": "LIKE",
         "options": [
+          "CONTAINS",
           "LIKE",
           "=",
-          "CONTAINS",
           "MATCHES"
         ]
       },
       "slot4": {
         "correct": "'Z%';",
         "options": [
-          "'Z%';",
           "NULL",
           "'Sample'",
-          "100"
+          "100",
+          "'Z%';"
         ]
       }
     },
     "syntaxRule": "Strings use single quotes, numbers do not. AND precedes OR unless parentheses are used. NULL requires IS NULL.",
     "syntaxTrap": "Never write col = NULL or omit parentheses in mixed AND/OR statements.",
+    "explanation": "Strings use single quotes, numbers do not. AND precedes OR unless parentheses are used. NULL requires IS NULL. 💡 Trap to avoid: Never write col = NULL or omit parentheses in mixed AND/OR statements.",
     "eli5Story": "Filter check on Orders: Find orders placed by customers whose name begins with 'Z'.",
     "commonMistakes": "Unquoted strings, missing parentheses around OR, or using = instead of LIKE.",
     "learningOutcomes": "Mastered 2.5 Pattern Matching (LIKE) on Orders."
@@ -4270,42 +4315,43 @@ window.QUESTS_SECTION_2 = [
       "slot1": {
         "correct": "track_title",
         "options": [
-          "*",
           "track_title",
-          "NULL",
-          "DISTINCT track_title"
+          "*",
+          "DISTINCT track_title",
+          "NULL"
         ]
       },
       "slot2": {
         "correct": "FROM",
         "options": [
-          "INTO",
-          "TABLE",
+          "FROM",
           "JOIN",
-          "FROM"
+          "INTO",
+          "TABLE"
         ]
       },
       "slot3": {
         "correct": "WHERE",
         "options": [
-          "FILTER",
+          "HAVING",
           "WHERE",
           "WHEN",
-          "HAVING"
+          "FILTER"
         ]
       },
       "slot4": {
         "correct": "track_title LIKE '%Rain%';",
         "options": [
-          "NULL",
-          "0",
           "track_title LIKE '%Rain%'; AND 1=1",
-          "track_title LIKE '%Rain%';"
+          "NULL",
+          "track_title LIKE '%Rain%';",
+          "0"
         ]
       }
     },
     "syntaxRule": "Strings use single quotes, numbers do not. AND precedes OR unless parentheses are used. NULL requires IS NULL.",
     "syntaxTrap": "Never write col = NULL or omit parentheses in mixed AND/OR statements.",
+    "explanation": "Strings use single quotes, numbers do not. AND precedes OR unless parentheses are used. NULL requires IS NULL. 💡 Trap to avoid: Never write col = NULL or omit parentheses in mixed AND/OR statements.",
     "eli5Story": "Filter check on MusicTracks: Find all tracks that have 'Rain' in the title.",
     "commonMistakes": "Unquoted strings, missing parentheses around OR, or using = instead of LIKE.",
     "learningOutcomes": "Mastered 2.5 Pattern Matching (LIKE) on MusicTracks."
@@ -4371,42 +4417,43 @@ window.QUESTS_SECTION_2 = [
       "slot1": {
         "correct": "member_name",
         "options": [
-          "*",
-          "NULL",
+          "DISTINCT member_name",
           "member_name",
-          "DISTINCT member_name"
+          "NULL",
+          "*"
         ]
       },
       "slot2": {
         "correct": "FROM",
         "options": [
-          "INTO",
           "TABLE",
           "JOIN",
+          "INTO",
           "FROM"
         ]
       },
       "slot3": {
         "correct": "WHERE",
         "options": [
-          "WHEN",
-          "FILTER",
+          "WHERE",
           "HAVING",
-          "WHERE"
+          "FILTER",
+          "WHEN"
         ]
       },
       "slot4": {
         "correct": "member_name LIKE '_a%';",
         "options": [
           "NULL",
+          "member_name LIKE '_a%';",
           "0",
-          "member_name LIKE '_a%'; AND 1=1",
-          "member_name LIKE '_a%';"
+          "member_name LIKE '_a%'; AND 1=1"
         ]
       }
     },
     "syntaxRule": "Strings use single quotes, numbers do not. AND precedes OR unless parentheses are used. NULL requires IS NULL.",
     "syntaxTrap": "Never write col = NULL or omit parentheses in mixed AND/OR statements.",
+    "explanation": "Strings use single quotes, numbers do not. AND precedes OR unless parentheses are used. NULL requires IS NULL. 💡 Trap to avoid: Never write col = NULL or omit parentheses in mixed AND/OR statements.",
     "eli5Story": "Filter check on GymMembers: Find members whose name has 'a' as the second character (e.g. Sam, Dan).",
     "commonMistakes": "Unquoted strings, missing parentheses around OR, or using = instead of LIKE.",
     "learningOutcomes": "Mastered 2.5 Pattern Matching (LIKE) on GymMembers."
@@ -4472,8 +4519,8 @@ window.QUESTS_SECTION_2 = [
       "slot1": {
         "correct": "movie_title",
         "options": [
-          "DISTINCT movie_title",
           "NULL",
+          "DISTINCT movie_title",
           "*",
           "movie_title"
         ]
@@ -4481,26 +4528,26 @@ window.QUESTS_SECTION_2 = [
       "slot2": {
         "correct": "FROM",
         "options": [
-          "INTO",
-          "FROM",
+          "TABLE",
           "JOIN",
-          "TABLE"
+          "FROM",
+          "INTO"
         ]
       },
       "slot3": {
         "correct": "WHERE",
         "options": [
-          "HAVING",
-          "WHERE",
           "WHEN",
-          "FILTER"
+          "HAVING",
+          "FILTER",
+          "WHERE"
         ]
       },
       "slot4": {
         "correct": "movie_title LIKE '%The %';",
         "options": [
-          "NULL",
           "movie_title LIKE '%The %'; AND 1=1",
+          "NULL",
           "0",
           "movie_title LIKE '%The %';"
         ]
@@ -4508,6 +4555,7 @@ window.QUESTS_SECTION_2 = [
     },
     "syntaxRule": "Strings use single quotes, numbers do not. AND precedes OR unless parentheses are used. NULL requires IS NULL.",
     "syntaxTrap": "Never write col = NULL or omit parentheses in mixed AND/OR statements.",
+    "explanation": "Strings use single quotes, numbers do not. AND precedes OR unless parentheses are used. NULL requires IS NULL. 💡 Trap to avoid: Never write col = NULL or omit parentheses in mixed AND/OR statements.",
     "eli5Story": "Filter check on MovieReviews: Find movies that contain the word 'The ' in their title.",
     "commonMistakes": "Unquoted strings, missing parentheses around OR, or using = instead of LIKE.",
     "learningOutcomes": "Mastered 2.5 Pattern Matching (LIKE) on MovieReviews."
@@ -4574,18 +4622,18 @@ window.QUESTS_SECTION_2 = [
         "correct": "flight_id",
         "options": [
           "flight_id",
-          "*",
+          "NULL",
           "DISTINCT flight_id",
-          "NULL"
+          "*"
         ]
       },
       "slot2": {
         "correct": "FROM",
         "options": [
-          "FROM",
           "TABLE",
-          "JOIN",
-          "INTO"
+          "FROM",
+          "INTO",
+          "JOIN"
         ]
       },
       "slot3": {
@@ -4593,22 +4641,23 @@ window.QUESTS_SECTION_2 = [
         "options": [
           "FILTER",
           "WHEN",
-          "HAVING",
-          "WHERE"
+          "WHERE",
+          "HAVING"
         ]
       },
       "slot4": {
         "correct": "flight_id LIKE 'AA-%';",
         "options": [
-          "NULL",
-          "flight_id LIKE 'AA-%';",
+          "0",
           "flight_id LIKE 'AA-%'; AND 1=1",
-          "0"
+          "NULL",
+          "flight_id LIKE 'AA-%';"
         ]
       }
     },
     "syntaxRule": "Strings use single quotes, numbers do not. AND precedes OR unless parentheses are used. NULL requires IS NULL.",
     "syntaxTrap": "Never write col = NULL or omit parentheses in mixed AND/OR statements.",
+    "explanation": "Strings use single quotes, numbers do not. AND precedes OR unless parentheses are used. NULL requires IS NULL. 💡 Trap to avoid: Never write col = NULL or omit parentheses in mixed AND/OR statements.",
     "eli5Story": "Filter check on FlightSchedule: Find all American Airlines flights starting with flight code 'AA-'.",
     "commonMistakes": "Unquoted strings, missing parentheses around OR, or using = instead of LIKE.",
     "learningOutcomes": "Mastered 2.5 Pattern Matching (LIKE) on FlightSchedule."
@@ -4674,42 +4723,43 @@ window.QUESTS_SECTION_2 = [
       "slot1": {
         "correct": "pet_name, breed",
         "options": [
-          "DISTINCT pet_name, breed",
+          "*",
           "pet_name, breed",
-          "pet_name AND breed",
-          "*"
+          "DISTINCT pet_name, breed",
+          "pet_name AND breed"
         ]
       },
       "slot2": {
         "correct": "FROM",
         "options": [
-          "FROM",
           "JOIN",
           "INTO",
-          "TABLE"
+          "TABLE",
+          "FROM"
         ]
       },
       "slot3": {
         "correct": "WHERE",
         "options": [
-          "WHERE",
+          "WHEN",
           "HAVING",
-          "FILTER",
-          "WHEN"
+          "WHERE",
+          "FILTER"
         ]
       },
       "slot4": {
         "correct": "breed LIKE '%Retriever%';",
         "options": [
-          "NULL",
-          "breed LIKE '%Retriever%'; AND 1=1",
           "0",
-          "breed LIKE '%Retriever%';"
+          "breed LIKE '%Retriever%'; AND 1=1",
+          "breed LIKE '%Retriever%';",
+          "NULL"
         ]
       }
     },
     "syntaxRule": "Strings use single quotes, numbers do not. AND precedes OR unless parentheses are used. NULL requires IS NULL.",
     "syntaxTrap": "Never write col = NULL or omit parentheses in mixed AND/OR statements.",
+    "explanation": "Strings use single quotes, numbers do not. AND precedes OR unless parentheses are used. NULL requires IS NULL. 💡 Trap to avoid: Never write col = NULL or omit parentheses in mixed AND/OR statements.",
     "eli5Story": "Filter check on PetClinic: Find all dogs whose breed includes 'Retriever' (Golden, Labrador, etc.).",
     "commonMistakes": "Unquoted strings, missing parentheses around OR, or using = instead of LIKE.",
     "learningOutcomes": "Mastered 2.5 Pattern Matching (LIKE) on PetClinic."
@@ -4775,42 +4825,43 @@ window.QUESTS_SECTION_2 = [
       "slot1": {
         "correct": "WHERE",
         "options": [
-          "WHERE",
-          "FILTER",
           "ON",
-          "HAVING"
+          "HAVING",
+          "FILTER",
+          "WHERE"
         ]
       },
       "slot2": {
         "correct": "title",
         "options": [
-          "author",
-          "price",
           "title",
-          "published_year"
+          "price",
+          "book_id",
+          "author"
         ]
       },
       "slot3": {
         "correct": "NOT LIKE",
         "options": [
-          "UNLIKE",
           "NOT LIKE",
-          "NOT MATCH",
-          "!="
+          "!=",
+          "UNLIKE",
+          "NOT MATCH"
         ]
       },
       "slot4": {
         "correct": "'%The%';",
         "options": [
-          "'%The%';",
-          "100",
           "'Sample'",
-          "NULL"
+          "NULL",
+          "'%The%';",
+          "100"
         ]
       }
     },
     "syntaxRule": "Strings use single quotes, numbers do not. AND precedes OR unless parentheses are used. NULL requires IS NULL.",
     "syntaxTrap": "Never write col = NULL or omit parentheses in mixed AND/OR statements.",
+    "explanation": "Strings use single quotes, numbers do not. AND precedes OR unless parentheses are used. NULL requires IS NULL. 💡 Trap to avoid: Never write col = NULL or omit parentheses in mixed AND/OR statements.",
     "eli5Story": "Filter check on Books: Find books whose title does NOT contain the word 'The'.",
     "commonMistakes": "Unquoted strings, missing parentheses around OR, or using = instead of LIKE.",
     "learningOutcomes": "Mastered 2.6 Inverse & Strict Wildcards on Books."
@@ -4876,42 +4927,43 @@ window.QUESTS_SECTION_2 = [
       "slot1": {
         "correct": "WHERE",
         "options": [
-          "WHERE",
-          "ON",
           "HAVING",
+          "ON",
+          "WHERE",
           "FILTER"
         ]
       },
       "slot2": {
         "correct": "city",
         "options": [
+          "age",
           "gpa",
-          "city",
-          "last_name",
-          "full_name"
+          "enrolled_year",
+          "city"
         ]
       },
       "slot3": {
         "correct": "NOT LIKE",
         "options": [
           "NOT LIKE",
-          "UNLIKE",
           "NOT MATCH",
+          "UNLIKE",
           "!="
         ]
       },
       "slot4": {
         "correct": "'S%';",
         "options": [
-          "'Sample'",
-          "NULL",
           "100",
-          "'S%';"
+          "'S%';",
+          "'Sample'",
+          "NULL"
         ]
       }
     },
     "syntaxRule": "Strings use single quotes, numbers do not. AND precedes OR unless parentheses are used. NULL requires IS NULL.",
     "syntaxTrap": "Never write col = NULL or omit parentheses in mixed AND/OR statements.",
+    "explanation": "Strings use single quotes, numbers do not. AND precedes OR unless parentheses are used. NULL requires IS NULL. 💡 Trap to avoid: Never write col = NULL or omit parentheses in mixed AND/OR statements.",
     "eli5Story": "Filter check on Students: Select students who live in cities that do NOT start with 'S'.",
     "commonMistakes": "Unquoted strings, missing parentheses around OR, or using = instead of LIKE.",
     "learningOutcomes": "Mastered 2.6 Inverse & Strict Wildcards on Students."
@@ -4977,42 +5029,43 @@ window.QUESTS_SECTION_2 = [
       "slot1": {
         "correct": "WHERE",
         "options": [
-          "WHERE",
           "FILTER",
-          "HAVING",
-          "ON"
+          "WHERE",
+          "ON",
+          "HAVING"
         ]
       },
       "slot2": {
         "correct": "department",
         "options": [
           "department",
-          "salary",
-          "hire_date",
-          "last_name"
+          "first_name",
+          "bonus",
+          "emp_id"
         ]
       },
       "slot3": {
         "correct": "NOT LIKE",
         "options": [
           "UNLIKE",
+          "!=",
           "NOT LIKE",
-          "NOT MATCH",
-          "!="
+          "NOT MATCH"
         ]
       },
       "slot4": {
         "correct": "'%ing';",
         "options": [
-          "NULL",
           "'Sample'",
+          "100",
           "'%ing';",
-          "100"
+          "NULL"
         ]
       }
     },
     "syntaxRule": "Strings use single quotes, numbers do not. AND precedes OR unless parentheses are used. NULL requires IS NULL.",
     "syntaxTrap": "Never write col = NULL or omit parentheses in mixed AND/OR statements.",
+    "explanation": "Strings use single quotes, numbers do not. AND precedes OR unless parentheses are used. NULL requires IS NULL. 💡 Trap to avoid: Never write col = NULL or omit parentheses in mixed AND/OR statements.",
     "eli5Story": "Filter check on Employees: Find employees whose department name does not end with 'ing'.",
     "commonMistakes": "Unquoted strings, missing parentheses around OR, or using = instead of LIKE.",
     "learningOutcomes": "Mastered 2.6 Inverse & Strict Wildcards on Employees."
@@ -5078,42 +5131,43 @@ window.QUESTS_SECTION_2 = [
       "slot1": {
         "correct": "WHERE",
         "options": [
-          "HAVING",
           "ON",
-          "FILTER",
-          "WHERE"
+          "WHERE",
+          "HAVING",
+          "FILTER"
         ]
       },
       "slot2": {
         "correct": "item_name",
         "options": [
-          "unit_price",
-          "item_name",
           "stock_qty",
-          "calories"
+          "unit_price",
+          "category",
+          "item_name"
         ]
       },
       "slot3": {
         "correct": "NOT LIKE",
         "options": [
-          "!=",
+          "UNLIKE",
           "NOT LIKE",
-          "NOT MATCH",
-          "UNLIKE"
+          "!=",
+          "NOT MATCH"
         ]
       },
       "slot4": {
         "correct": "'%Milk%';",
         "options": [
-          "NULL",
           "100",
-          "'Sample'",
-          "'%Milk%';"
+          "NULL",
+          "'%Milk%';",
+          "'Sample'"
         ]
       }
     },
     "syntaxRule": "Strings use single quotes, numbers do not. AND precedes OR unless parentheses are used. NULL requires IS NULL.",
     "syntaxTrap": "Never write col = NULL or omit parentheses in mixed AND/OR statements.",
+    "explanation": "Strings use single quotes, numbers do not. AND precedes OR unless parentheses are used. NULL requires IS NULL. 💡 Trap to avoid: Never write col = NULL or omit parentheses in mixed AND/OR statements.",
     "eli5Story": "Filter check on GroceryItems: Find grocery items that do not contain the word 'Milk'.",
     "commonMistakes": "Unquoted strings, missing parentheses around OR, or using = instead of LIKE.",
     "learningOutcomes": "Mastered 2.6 Inverse & Strict Wildcards on GroceryItems."
@@ -5181,24 +5235,24 @@ window.QUESTS_SECTION_2 = [
         "options": [
           "HAVING",
           "WHERE",
-          "ON",
-          "FILTER"
+          "FILTER",
+          "ON"
         ]
       },
       "slot2": {
         "correct": "order_status",
         "options": [
           "quantity",
-          "order_id",
-          "customer_name",
-          "order_status"
+          "unit_price",
+          "order_status",
+          "shipping_city"
         ]
       },
       "slot3": {
         "correct": "NOT LIKE",
         "options": [
-          "!=",
           "UNLIKE",
+          "!=",
           "NOT MATCH",
           "NOT LIKE"
         ]
@@ -5206,15 +5260,16 @@ window.QUESTS_SECTION_2 = [
       "slot4": {
         "correct": "'%Cancel%';",
         "options": [
-          "'Sample'",
           "'%Cancel%';",
-          "100",
-          "NULL"
+          "'Sample'",
+          "NULL",
+          "100"
         ]
       }
     },
     "syntaxRule": "Strings use single quotes, numbers do not. AND precedes OR unless parentheses are used. NULL requires IS NULL.",
     "syntaxTrap": "Never write col = NULL or omit parentheses in mixed AND/OR statements.",
+    "explanation": "Strings use single quotes, numbers do not. AND precedes OR unless parentheses are used. NULL requires IS NULL. 💡 Trap to avoid: Never write col = NULL or omit parentheses in mixed AND/OR statements.",
     "eli5Story": "Filter check on Orders: Find all active orders that are not cancelled.",
     "commonMistakes": "Unquoted strings, missing parentheses around OR, or using = instead of LIKE.",
     "learningOutcomes": "Mastered 2.6 Inverse & Strict Wildcards on Orders."
@@ -5280,42 +5335,43 @@ window.QUESTS_SECTION_2 = [
       "slot1": {
         "correct": "WHERE",
         "options": [
-          "WHERE",
           "FILTER",
           "HAVING",
+          "WHERE",
           "ON"
         ]
       },
       "slot2": {
         "correct": "track_title",
         "options": [
-          "genre",
-          "track_title",
+          "track_id",
           "artist",
-          "play_count"
+          "track_title",
+          "release_year"
         ]
       },
       "slot3": {
         "correct": "NOT LIKE",
         "options": [
           "UNLIKE",
-          "NOT MATCH",
           "NOT LIKE",
-          "!="
+          "!=",
+          "NOT MATCH"
         ]
       },
       "slot4": {
         "correct": "'%Love%';",
         "options": [
-          "'%Love%';",
           "NULL",
           "100",
+          "'%Love%';",
           "'Sample'"
         ]
       }
     },
     "syntaxRule": "Strings use single quotes, numbers do not. AND precedes OR unless parentheses are used. NULL requires IS NULL.",
     "syntaxTrap": "Never write col = NULL or omit parentheses in mixed AND/OR statements.",
+    "explanation": "Strings use single quotes, numbers do not. AND precedes OR unless parentheses are used. NULL requires IS NULL. 💡 Trap to avoid: Never write col = NULL or omit parentheses in mixed AND/OR statements.",
     "eli5Story": "Filter check on MusicTracks: Find music tracks that do not have 'Love' in the title.",
     "commonMistakes": "Unquoted strings, missing parentheses around OR, or using = instead of LIKE.",
     "learningOutcomes": "Mastered 2.6 Inverse & Strict Wildcards on MusicTracks."
@@ -5381,27 +5437,27 @@ window.QUESTS_SECTION_2 = [
       "slot1": {
         "correct": "WHERE",
         "options": [
-          "ON",
+          "FILTER",
           "WHERE",
-          "HAVING",
-          "FILTER"
+          "ON",
+          "HAVING"
         ]
       },
       "slot2": {
         "correct": "member_name",
         "options": [
-          "member_name",
-          "member_id",
+          "joined_date",
           "has_trainer",
-          "monthly_fee"
+          "member_id",
+          "member_name"
         ]
       },
       "slot3": {
         "correct": "NOT LIKE",
         "options": [
-          "!=",
-          "NOT MATCH",
           "UNLIKE",
+          "NOT MATCH",
+          "!=",
           "NOT LIKE"
         ]
       },
@@ -5417,6 +5473,7 @@ window.QUESTS_SECTION_2 = [
     },
     "syntaxRule": "Strings use single quotes, numbers do not. AND precedes OR unless parentheses are used. NULL requires IS NULL.",
     "syntaxTrap": "Never write col = NULL or omit parentheses in mixed AND/OR statements.",
+    "explanation": "Strings use single quotes, numbers do not. AND precedes OR unless parentheses are used. NULL requires IS NULL. 💡 Trap to avoid: Never write col = NULL or omit parentheses in mixed AND/OR statements.",
     "eli5Story": "Filter check on GymMembers: List gym members whose names do not start with the letter 'J'.",
     "commonMistakes": "Unquoted strings, missing parentheses around OR, or using = instead of LIKE.",
     "learningOutcomes": "Mastered 2.6 Inverse & Strict Wildcards on GymMembers."
@@ -5482,42 +5539,43 @@ window.QUESTS_SECTION_2 = [
       "slot1": {
         "correct": "movie_title",
         "options": [
-          "*",
+          "movie_title",
           "NULL",
           "DISTINCT movie_title",
-          "movie_title"
+          "*"
         ]
       },
       "slot2": {
         "correct": "FROM",
         "options": [
-          "TABLE",
           "INTO",
-          "FROM",
-          "JOIN"
+          "JOIN",
+          "TABLE",
+          "FROM"
         ]
       },
       "slot3": {
         "correct": "WHERE",
         "options": [
           "FILTER",
-          "WHEN",
           "HAVING",
+          "WHEN",
           "WHERE"
         ]
       },
       "slot4": {
         "correct": "movie_title LIKE '___';",
         "options": [
-          "0",
           "movie_title LIKE '___';",
-          "NULL",
-          "movie_title LIKE '___'; AND 1=1"
+          "0",
+          "movie_title LIKE '___'; AND 1=1",
+          "NULL"
         ]
       }
     },
     "syntaxRule": "Strings use single quotes, numbers do not. AND precedes OR unless parentheses are used. NULL requires IS NULL.",
     "syntaxTrap": "Never write col = NULL or omit parentheses in mixed AND/OR statements.",
+    "explanation": "Strings use single quotes, numbers do not. AND precedes OR unless parentheses are used. NULL requires IS NULL. 💡 Trap to avoid: Never write col = NULL or omit parentheses in mixed AND/OR statements.",
     "eli5Story": "Filter check on MovieReviews: Find movies whose title consists of exactly 3 characters.",
     "commonMistakes": "Unquoted strings, missing parentheses around OR, or using = instead of LIKE.",
     "learningOutcomes": "Mastered 2.6 Inverse & Strict Wildcards on MovieReviews."
@@ -5583,28 +5641,28 @@ window.QUESTS_SECTION_2 = [
       "slot1": {
         "correct": "WHERE",
         "options": [
+          "FILTER",
           "WHERE",
           "ON",
-          "HAVING",
-          "FILTER"
+          "HAVING"
         ]
       },
       "slot2": {
         "correct": "flight_id",
         "options": [
           "flight_id",
-          "origin_airport",
+          "destination_airport",
           "airline",
-          "dest_airport"
+          "origin_airport"
         ]
       },
       "slot3": {
         "correct": "NOT LIKE",
         "options": [
-          "UNLIKE",
           "NOT LIKE",
+          "!=",
           "NOT MATCH",
-          "!="
+          "UNLIKE"
         ]
       },
       "slot4": {
@@ -5612,13 +5670,14 @@ window.QUESTS_SECTION_2 = [
         "options": [
           "NULL",
           "100",
-          "'DL-%';",
-          "'Sample'"
+          "'Sample'",
+          "'DL-%';"
         ]
       }
     },
     "syntaxRule": "Strings use single quotes, numbers do not. AND precedes OR unless parentheses are used. NULL requires IS NULL.",
     "syntaxTrap": "Never write col = NULL or omit parentheses in mixed AND/OR statements.",
+    "explanation": "Strings use single quotes, numbers do not. AND precedes OR unless parentheses are used. NULL requires IS NULL. 💡 Trap to avoid: Never write col = NULL or omit parentheses in mixed AND/OR statements.",
     "eli5Story": "Filter check on FlightSchedule: Find non-Delta flights that do not start with 'DL-'.",
     "commonMistakes": "Unquoted strings, missing parentheses around OR, or using = instead of LIKE.",
     "learningOutcomes": "Mastered 2.6 Inverse & Strict Wildcards on FlightSchedule."
@@ -5684,42 +5743,43 @@ window.QUESTS_SECTION_2 = [
       "slot1": {
         "correct": "pet_name",
         "options": [
+          "pet_name",
           "NULL",
           "*",
-          "DISTINCT pet_name",
-          "pet_name"
+          "DISTINCT pet_name"
         ]
       },
       "slot2": {
         "correct": "FROM",
         "options": [
-          "FROM",
-          "JOIN",
           "INTO",
-          "TABLE"
+          "JOIN",
+          "TABLE",
+          "FROM"
         ]
       },
       "slot3": {
         "correct": "WHERE",
         "options": [
-          "FILTER",
           "WHERE",
+          "HAVING",
           "WHEN",
-          "HAVING"
+          "FILTER"
         ]
       },
       "slot4": {
         "correct": "pet_name LIKE '____';",
         "options": [
-          "NULL",
           "0",
-          "pet_name LIKE '____'; AND 1=1",
-          "pet_name LIKE '____';"
+          "NULL",
+          "pet_name LIKE '____';",
+          "pet_name LIKE '____'; AND 1=1"
         ]
       }
     },
     "syntaxRule": "Strings use single quotes, numbers do not. AND precedes OR unless parentheses are used. NULL requires IS NULL.",
     "syntaxTrap": "Never write col = NULL or omit parentheses in mixed AND/OR statements.",
+    "explanation": "Strings use single quotes, numbers do not. AND precedes OR unless parentheses are used. NULL requires IS NULL. 💡 Trap to avoid: Never write col = NULL or omit parentheses in mixed AND/OR statements.",
     "eli5Story": "Filter check on PetClinic: Find pets with names that are exactly 4 letters long (e.g. Milo, Luna).",
     "commonMistakes": "Unquoted strings, missing parentheses around OR, or using = instead of LIKE.",
     "learningOutcomes": "Mastered 2.6 Inverse & Strict Wildcards on PetClinic."
@@ -5785,42 +5845,43 @@ window.QUESTS_SECTION_2 = [
       "slot1": {
         "correct": "city",
         "options": [
-          "city",
           "gpa",
           "age",
-          "full_name"
+          "city",
+          "enrolled_year"
         ]
       },
       "slot2": {
         "correct": "AND",
         "options": [
-          "THEN",
           "AND",
           "OR",
+          "THEN",
           "PLUS"
         ]
       },
       "slot3": {
         "correct": "gpa",
         "options": [
-          "first_name",
-          "gpa",
           "enrolled_year",
-          "student_id"
+          "gpa",
+          "last_name",
+          "city"
         ]
       },
       "slot4": {
         "correct": "> 3.50;",
         "options": [
+          "!= 3.50;",
           "> 3.50;",
-          "= 3.50;",
           "LIKE 3.50;",
-          "!= 3.50;"
+          "= 3.50;"
         ]
       }
     },
     "syntaxRule": "Strings use single quotes, numbers do not. AND precedes OR unless parentheses are used. NULL requires IS NULL.",
     "syntaxTrap": "Never write col = NULL or omit parentheses in mixed AND/OR statements.",
+    "explanation": "Strings use single quotes, numbers do not. AND precedes OR unless parentheses are used. NULL requires IS NULL. 💡 Trap to avoid: Never write col = NULL or omit parentheses in mixed AND/OR statements.",
     "eli5Story": "Filter check on Students: Find students who live in Seattle AND maintain a GPA higher than 3.50.",
     "commonMistakes": "Unquoted strings, missing parentheses around OR, or using = instead of LIKE.",
     "learningOutcomes": "Mastered 2.7 Compound AND Logic on Students."
@@ -5886,42 +5947,43 @@ window.QUESTS_SECTION_2 = [
       "slot1": {
         "correct": "genre",
         "options": [
-          "author",
+          "is_hardcover",
+          "published_year",
           "title",
-          "genre",
-          "published_year"
+          "genre"
         ]
       },
       "slot2": {
         "correct": "AND",
         "options": [
-          "OR",
+          "THEN",
           "AND",
-          "PLUS",
-          "THEN"
+          "OR",
+          "PLUS"
         ]
       },
       "slot3": {
         "correct": "price",
         "options": [
-          "book_id",
-          "title",
-          "price",
-          "stock_qty"
+          "is_hardcover",
+          "stock_qty",
+          "genre",
+          "price"
         ]
       },
       "slot4": {
         "correct": "< 25.00;",
         "options": [
+          "!= 25.00;",
           "LIKE 25.00;",
           "= 25.00;",
-          "< 25.00;",
-          "!= 25.00;"
+          "< 25.00;"
         ]
       }
     },
     "syntaxRule": "Strings use single quotes, numbers do not. AND precedes OR unless parentheses are used. NULL requires IS NULL.",
     "syntaxTrap": "Never write col = NULL or omit parentheses in mixed AND/OR statements.",
+    "explanation": "Strings use single quotes, numbers do not. AND precedes OR unless parentheses are used. NULL requires IS NULL. 💡 Trap to avoid: Never write col = NULL or omit parentheses in mixed AND/OR statements.",
     "eli5Story": "Filter check on Books: Find Sci-Fi books that are priced under $25.00.",
     "commonMistakes": "Unquoted strings, missing parentheses around OR, or using = instead of LIKE.",
     "learningOutcomes": "Mastered 2.7 Compound AND Logic on Books."
@@ -5987,42 +6049,43 @@ window.QUESTS_SECTION_2 = [
       "slot1": {
         "correct": "department",
         "options": [
-          "last_name",
           "salary",
-          "department",
-          "hire_date"
+          "emp_id",
+          "first_name",
+          "department"
         ]
       },
       "slot2": {
         "correct": "AND",
         "options": [
-          "PLUS",
-          "AND",
           "OR",
-          "THEN"
+          "THEN",
+          "AND",
+          "PLUS"
         ]
       },
       "slot3": {
         "correct": "salary",
         "options": [
-          "salary",
-          "hire_date",
           "last_name",
-          "bonus"
+          "first_name",
+          "salary",
+          "emp_id"
         ]
       },
       "slot4": {
         "correct": ">= 90000.00;",
         "options": [
-          "= 90000.00;",
           ">= 90000.00;",
-          "LIKE 90000.00;",
-          "!= 90000.00;"
+          "!= 90000.00;",
+          "= 90000.00;",
+          "LIKE 90000.00;"
         ]
       }
     },
     "syntaxRule": "Strings use single quotes, numbers do not. AND precedes OR unless parentheses are used. NULL requires IS NULL.",
     "syntaxTrap": "Never write col = NULL or omit parentheses in mixed AND/OR statements.",
+    "explanation": "Strings use single quotes, numbers do not. AND precedes OR unless parentheses are used. NULL requires IS NULL. 💡 Trap to avoid: Never write col = NULL or omit parentheses in mixed AND/OR statements.",
     "eli5Story": "Filter check on Employees: Find Engineering employees earning $90,000 or more.",
     "commonMistakes": "Unquoted strings, missing parentheses around OR, or using = instead of LIKE.",
     "learningOutcomes": "Mastered 2.7 Compound AND Logic on Employees."
@@ -6088,42 +6151,43 @@ window.QUESTS_SECTION_2 = [
       "slot1": {
         "correct": "is_organic",
         "options": [
-          "is_organic",
-          "unit_price",
-          "stock_qty",
-          "item_name"
+          "calories",
+          "item_id",
+          "item_name",
+          "is_organic"
         ]
       },
       "slot2": {
         "correct": "AND",
         "options": [
-          "AND",
-          "PLUS",
           "OR",
-          "THEN"
+          "AND",
+          "THEN",
+          "PLUS"
         ]
       },
       "slot3": {
         "correct": "unit_price",
         "options": [
-          "is_organic",
           "category",
-          "unit_price",
-          "calories"
+          "item_name",
+          "stock_qty",
+          "unit_price"
         ]
       },
       "slot4": {
         "correct": "< 4.00;",
         "options": [
-          "!= 4.00;",
-          "< 4.00;",
+          "LIKE 4.00;",
           "= 4.00;",
-          "LIKE 4.00;"
+          "!= 4.00;",
+          "< 4.00;"
         ]
       }
     },
     "syntaxRule": "Strings use single quotes, numbers do not. AND precedes OR unless parentheses are used. NULL requires IS NULL.",
     "syntaxTrap": "Never write col = NULL or omit parentheses in mixed AND/OR statements.",
+    "explanation": "Strings use single quotes, numbers do not. AND precedes OR unless parentheses are used. NULL requires IS NULL. 💡 Trap to avoid: Never write col = NULL or omit parentheses in mixed AND/OR statements.",
     "eli5Story": "Filter check on GroceryItems: Find organic grocery items that cost less than $4.00.",
     "commonMistakes": "Unquoted strings, missing parentheses around OR, or using = instead of LIKE.",
     "learningOutcomes": "Mastered 2.7 Compound AND Logic on GroceryItems."
@@ -6189,42 +6253,43 @@ window.QUESTS_SECTION_2 = [
       "slot1": {
         "correct": "quantity",
         "options": [
-          "product_name",
+          "shipping_city",
           "unit_price",
-          "customer_name",
-          "quantity"
+          "quantity",
+          "order_status"
         ]
       },
       "slot2": {
         "correct": "AND",
         "options": [
+          "OR",
           "PLUS",
-          "AND",
           "THEN",
-          "OR"
+          "AND"
         ]
       },
       "slot3": {
         "correct": "discount_pct",
         "options": [
-          "quantity",
-          "discount_pct",
-          "shipping_city",
-          "order_status"
+          "order_id",
+          "unit_price",
+          "order_status",
+          "discount_pct"
         ]
       },
       "slot4": {
         "correct": "> 0.05;",
         "options": [
-          "> 0.05;",
-          "!= 0.05;",
           "= 0.05;",
-          "LIKE 0.05;"
+          "!= 0.05;",
+          "LIKE 0.05;",
+          "> 0.05;"
         ]
       }
     },
     "syntaxRule": "Strings use single quotes, numbers do not. AND precedes OR unless parentheses are used. NULL requires IS NULL.",
     "syntaxTrap": "Never write col = NULL or omit parentheses in mixed AND/OR statements.",
+    "explanation": "Strings use single quotes, numbers do not. AND precedes OR unless parentheses are used. NULL requires IS NULL. 💡 Trap to avoid: Never write col = NULL or omit parentheses in mixed AND/OR statements.",
     "eli5Story": "Filter check on Orders: Find orders with at least 2 items and a discount greater than 5%.",
     "commonMistakes": "Unquoted strings, missing parentheses around OR, or using = instead of LIKE.",
     "learningOutcomes": "Mastered 2.7 Compound AND Logic on Orders."
@@ -6291,41 +6356,42 @@ window.QUESTS_SECTION_2 = [
         "correct": "genre",
         "options": [
           "title",
+          "play_count",
           "genre",
-          "track_id",
-          "artist"
+          "track_id"
         ]
       },
       "slot2": {
         "correct": "AND",
         "options": [
           "AND",
+          "PLUS",
           "OR",
-          "THEN",
-          "PLUS"
+          "THEN"
         ]
       },
       "slot3": {
         "correct": "release_year",
         "options": [
+          "artist",
           "release_year",
-          "title",
-          "genre",
-          "track_title"
+          "duration_seconds",
+          "title"
         ]
       },
       "slot4": {
         "correct": "= 2024;",
         "options": [
-          "!= 2024;",
+          "= 2024;",
           "LIKE 2024;",
-          "NULL",
-          "= 2024;"
+          "!= 2024;",
+          "NULL"
         ]
       }
     },
     "syntaxRule": "Strings use single quotes, numbers do not. AND precedes OR unless parentheses are used. NULL requires IS NULL.",
     "syntaxTrap": "Never write col = NULL or omit parentheses in mixed AND/OR statements.",
+    "explanation": "Strings use single quotes, numbers do not. AND precedes OR unless parentheses are used. NULL requires IS NULL. 💡 Trap to avoid: Never write col = NULL or omit parentheses in mixed AND/OR statements.",
     "eli5Story": "Filter check on MusicTracks: Find Synthwave tracks released specifically in the year 2024.",
     "commonMistakes": "Unquoted strings, missing parentheses around OR, or using = instead of LIKE.",
     "learningOutcomes": "Mastered 2.7 Compound AND Logic on MusicTracks."
@@ -6391,42 +6457,43 @@ window.QUESTS_SECTION_2 = [
       "slot1": {
         "correct": "membership_plan",
         "options": [
+          "joined_date",
           "visits_this_month",
           "membership_plan",
-          "member_name",
-          "member_id"
+          "member_name"
         ]
       },
       "slot2": {
         "correct": "AND",
         "options": [
-          "AND",
-          "THEN",
+          "PLUS",
           "OR",
-          "PLUS"
+          "AND",
+          "THEN"
         ]
       },
       "slot3": {
         "correct": "visits_this_month",
         "options": [
-          "visits_this_month",
           "joined_date",
           "has_trainer",
-          "member_name"
+          "member_id",
+          "visits_this_month"
         ]
       },
       "slot4": {
         "correct": ">= 15;",
         "options": [
-          "= 15;",
-          "LIKE 15;",
           ">= 15;",
-          "!= 15;"
+          "!= 15;",
+          "= 15;",
+          "LIKE 15;"
         ]
       }
     },
     "syntaxRule": "Strings use single quotes, numbers do not. AND precedes OR unless parentheses are used. NULL requires IS NULL.",
     "syntaxTrap": "Never write col = NULL or omit parentheses in mixed AND/OR statements.",
+    "explanation": "Strings use single quotes, numbers do not. AND precedes OR unless parentheses are used. NULL requires IS NULL. 💡 Trap to avoid: Never write col = NULL or omit parentheses in mixed AND/OR statements.",
     "eli5Story": "Filter check on GymMembers: Find Gold members who have visited at least 15 times this month.",
     "commonMistakes": "Unquoted strings, missing parentheses around OR, or using = instead of LIKE.",
     "learningOutcomes": "Mastered 2.7 Compound AND Logic on GymMembers."
@@ -6492,42 +6559,43 @@ window.QUESTS_SECTION_2 = [
       "slot1": {
         "correct": "genre",
         "options": [
-          "review_count",
-          "director",
-          "genre",
-          "movie_title"
+          "movie_title",
+          "review_id",
+          "release_year",
+          "genre"
         ]
       },
       "slot2": {
         "correct": "AND",
         "options": [
-          "AND",
-          "OR",
           "THEN",
-          "PLUS"
+          "AND",
+          "PLUS",
+          "OR"
         ]
       },
       "slot3": {
         "correct": "star_rating",
         "options": [
-          "star_rating",
+          "director",
           "release_year",
           "review_id",
-          "director"
+          "star_rating"
         ]
       },
       "slot4": {
         "correct": ">= 4.5;",
         "options": [
+          "!= 4.5;",
           "LIKE 4.5;",
           "= 4.5;",
-          ">= 4.5;",
-          "!= 4.5;"
+          ">= 4.5;"
         ]
       }
     },
     "syntaxRule": "Strings use single quotes, numbers do not. AND precedes OR unless parentheses are used. NULL requires IS NULL.",
     "syntaxTrap": "Never write col = NULL or omit parentheses in mixed AND/OR statements.",
+    "explanation": "Strings use single quotes, numbers do not. AND precedes OR unless parentheses are used. NULL requires IS NULL. 💡 Trap to avoid: Never write col = NULL or omit parentheses in mixed AND/OR statements.",
     "eli5Story": "Filter check on MovieReviews: Find top-tier Sci-Fi movies with a star rating of 4.5 or higher.",
     "commonMistakes": "Unquoted strings, missing parentheses around OR, or using = instead of LIKE.",
     "learningOutcomes": "Mastered 2.7 Compound AND Logic on MovieReviews."
@@ -6593,42 +6661,43 @@ window.QUESTS_SECTION_2 = [
       "slot1": {
         "correct": "airline",
         "options": [
-          "ticket_price",
-          "flight_id",
-          "departure_time",
-          "airline"
+          "airline",
+          "delay_minutes",
+          "dest_airport",
+          "destination_airport"
         ]
       },
       "slot2": {
         "correct": "AND",
         "options": [
           "PLUS",
-          "AND",
+          "THEN",
           "OR",
-          "THEN"
+          "AND"
         ]
       },
       "slot3": {
         "correct": "delay_minutes",
         "options": [
+          "departure_time",
           "destination_airport",
-          "airline",
-          "flight_id",
-          "delay_minutes"
+          "delay_minutes",
+          "airline"
         ]
       },
       "slot4": {
         "correct": "= 0;",
         "options": [
-          "NULL",
-          "= 0;",
           "!= 0;",
-          "LIKE 0;"
+          "= 0;",
+          "LIKE 0;",
+          "NULL"
         ]
       }
     },
     "syntaxRule": "Strings use single quotes, numbers do not. AND precedes OR unless parentheses are used. NULL requires IS NULL.",
     "syntaxTrap": "Never write col = NULL or omit parentheses in mixed AND/OR statements.",
+    "explanation": "Strings use single quotes, numbers do not. AND precedes OR unless parentheses are used. NULL requires IS NULL. 💡 Trap to avoid: Never write col = NULL or omit parentheses in mixed AND/OR statements.",
     "eli5Story": "Filter check on FlightSchedule: Find on-time United Airlines flights with 0 minutes delay.",
     "commonMistakes": "Unquoted strings, missing parentheses around OR, or using = instead of LIKE.",
     "learningOutcomes": "Mastered 2.7 Compound AND Logic on FlightSchedule."
@@ -6694,42 +6763,43 @@ window.QUESTS_SECTION_2 = [
       "slot1": {
         "correct": "species",
         "options": [
-          "breed",
-          "pet_name",
           "species",
-          "is_vaccinated"
+          "age_years",
+          "pet_name",
+          "pet_id"
         ]
       },
       "slot2": {
         "correct": "AND",
         "options": [
-          "OR",
-          "PLUS",
+          "AND",
           "THEN",
-          "AND"
+          "PLUS",
+          "OR"
         ]
       },
       "slot3": {
         "correct": "is_vaccinated",
         "options": [
-          "pet_name",
-          "breed",
           "is_vaccinated",
-          "species"
+          "pet_id",
+          "pet_name",
+          "breed"
         ]
       },
       "slot4": {
         "correct": "= TRUE;",
         "options": [
           "= TRUE;",
-          "NULL",
+          "LIKE TRUE;",
           "!= TRUE;",
-          "LIKE TRUE;"
+          "NULL"
         ]
       }
     },
     "syntaxRule": "Strings use single quotes, numbers do not. AND precedes OR unless parentheses are used. NULL requires IS NULL.",
     "syntaxTrap": "Never write col = NULL or omit parentheses in mixed AND/OR statements.",
+    "explanation": "Strings use single quotes, numbers do not. AND precedes OR unless parentheses are used. NULL requires IS NULL. 💡 Trap to avoid: Never write col = NULL or omit parentheses in mixed AND/OR statements.",
     "eli5Story": "Filter check on PetClinic: Find dogs that are confirmed vaccinated.",
     "commonMistakes": "Unquoted strings, missing parentheses around OR, or using = instead of LIKE.",
     "learningOutcomes": "Mastered 2.7 Compound AND Logic on PetClinic."
@@ -6795,35 +6865,35 @@ window.QUESTS_SECTION_2 = [
       "slot1": {
         "correct": "city",
         "options": [
-          "student_id",
-          "enrolled_year",
+          "city",
           "full_name",
-          "city"
+          "age",
+          "enrolled_year"
         ]
       },
       "slot2": {
         "correct": "OR",
         "options": [
-          "AND",
-          "OR",
           "ELSE",
+          "OR",
+          "AND",
           "XOR"
         ]
       },
       "slot3": {
         "correct": "city",
         "options": [
-          "full_name",
-          "gpa",
           "city",
+          "enrolled_year",
+          "last_name",
           "major"
         ]
       },
       "slot4": {
         "correct": "= 'Austin';",
         "options": [
-          "!= 'Austin';",
           "IS NOT NULL;",
+          "!= 'Austin';",
           "NULL",
           "= 'Austin';"
         ]
@@ -6831,6 +6901,7 @@ window.QUESTS_SECTION_2 = [
     },
     "syntaxRule": "Strings use single quotes, numbers do not. AND precedes OR unless parentheses are used. NULL requires IS NULL.",
     "syntaxTrap": "Never write col = NULL or omit parentheses in mixed AND/OR statements.",
+    "explanation": "Strings use single quotes, numbers do not. AND precedes OR unless parentheses are used. NULL requires IS NULL. 💡 Trap to avoid: Never write col = NULL or omit parentheses in mixed AND/OR statements.",
     "eli5Story": "Filter check on Students: Find students who live in either Chicago OR Austin.",
     "commonMistakes": "Unquoted strings, missing parentheses around OR, or using = instead of LIKE.",
     "learningOutcomes": "Mastered 2.8 Compound OR & Precedence on Students."
@@ -6896,42 +6967,43 @@ window.QUESTS_SECTION_2 = [
       "slot1": {
         "correct": "(genre",
         "options": [
-          "is_hardcover",
-          "stock_qty",
-          "genre",
-          "(genre"
+          "title",
+          "(genre",
+          "book_id",
+          "published_year"
         ]
       },
       "slot2": {
         "correct": "AND",
         "options": [
-          "AND",
           "THEN",
           "OR",
-          "PLUS"
+          "PLUS",
+          "AND"
         ]
       },
       "slot3": {
         "correct": "price",
         "options": [
-          "is_hardcover",
-          "stock_qty",
-          "price",
-          "published_year"
+          "genre",
+          "title",
+          "author",
+          "price"
         ]
       },
       "slot4": {
         "correct": "< 20.00;",
         "options": [
-          "< 20.00;",
           "= 20.00;",
+          "LIKE 20.00;",
           "!= 20.00;",
-          "LIKE 20.00;"
+          "< 20.00;"
         ]
       }
     },
     "syntaxRule": "Strings use single quotes, numbers do not. AND precedes OR unless parentheses are used. NULL requires IS NULL.",
     "syntaxTrap": "Never write col = NULL or omit parentheses in mixed AND/OR statements.",
+    "explanation": "Strings use single quotes, numbers do not. AND precedes OR unless parentheses are used. NULL requires IS NULL. 💡 Trap to avoid: Never write col = NULL or omit parentheses in mixed AND/OR statements.",
     "eli5Story": "Filter check on Books: Find Sci-Fi OR Mystery books that are priced under $20 (parentheses mandatory!).",
     "commonMistakes": "Unquoted strings, missing parentheses around OR, or using = instead of LIKE.",
     "learningOutcomes": "Mastered 2.8 Compound OR & Precedence on Books."
@@ -6997,42 +7069,43 @@ window.QUESTS_SECTION_2 = [
       "slot1": {
         "correct": "(department",
         "options": [
-          "bonus",
+          "salary",
           "(department",
-          "department",
-          "hire_date"
+          "first_name",
+          "department"
         ]
       },
       "slot2": {
         "correct": "AND",
         "options": [
-          "THEN",
           "OR",
           "AND",
-          "PLUS"
+          "PLUS",
+          "THEN"
         ]
       },
       "slot3": {
         "correct": "salary",
         "options": [
-          "emp_id",
-          "hire_date",
+          "first_name",
           "salary",
-          "bonus"
+          "last_name",
+          "department"
         ]
       },
       "slot4": {
         "correct": "> 70000.00;",
         "options": [
-          "LIKE 70000.00;",
           "= 70000.00;",
-          "> 70000.00;",
-          "!= 70000.00;"
+          "!= 70000.00;",
+          "LIKE 70000.00;",
+          "> 70000.00;"
         ]
       }
     },
     "syntaxRule": "Strings use single quotes, numbers do not. AND precedes OR unless parentheses are used. NULL requires IS NULL.",
     "syntaxTrap": "Never write col = NULL or omit parentheses in mixed AND/OR statements.",
+    "explanation": "Strings use single quotes, numbers do not. AND precedes OR unless parentheses are used. NULL requires IS NULL. 💡 Trap to avoid: Never write col = NULL or omit parentheses in mixed AND/OR statements.",
     "eli5Story": "Filter check on Employees: Find Engineering OR Marketing employees who earn over $70,000.",
     "commonMistakes": "Unquoted strings, missing parentheses around OR, or using = instead of LIKE.",
     "learningOutcomes": "Mastered 2.8 Compound OR & Precedence on Employees."
@@ -7098,42 +7171,43 @@ window.QUESTS_SECTION_2 = [
       "slot1": {
         "correct": "(category",
         "options": [
-          "category",
-          "calories",
           "unit_price",
+          "category",
+          "is_organic",
           "(category"
         ]
       },
       "slot2": {
         "correct": "AND",
         "options": [
-          "AND",
-          "THEN",
           "PLUS",
-          "OR"
+          "OR",
+          "AND",
+          "THEN"
         ]
       },
       "slot3": {
         "correct": "unit_price",
         "options": [
-          "unit_price",
           "item_id",
-          "stock_qty",
-          "item_name"
+          "unit_price",
+          "item_name",
+          "is_organic"
         ]
       },
       "slot4": {
         "correct": "<= 5.00;",
         "options": [
+          "<= 5.00;",
           "= 5.00;",
           "LIKE 5.00;",
-          "<= 5.00;",
           "!= 5.00;"
         ]
       }
     },
     "syntaxRule": "Strings use single quotes, numbers do not. AND precedes OR unless parentheses are used. NULL requires IS NULL.",
     "syntaxTrap": "Never write col = NULL or omit parentheses in mixed AND/OR statements.",
+    "explanation": "Strings use single quotes, numbers do not. AND precedes OR unless parentheses are used. NULL requires IS NULL. 💡 Trap to avoid: Never write col = NULL or omit parentheses in mixed AND/OR statements.",
     "eli5Story": "Filter check on GroceryItems: Find Produce OR Bakery items that cost $5.00 or less.",
     "commonMistakes": "Unquoted strings, missing parentheses around OR, or using = instead of LIKE.",
     "learningOutcomes": "Mastered 2.8 Compound OR & Precedence on GroceryItems."
@@ -7199,42 +7273,43 @@ window.QUESTS_SECTION_2 = [
       "slot1": {
         "correct": "(order_status",
         "options": [
-          "discount_pct",
-          "order_status",
           "(order_status",
-          "order_id"
+          "order_id",
+          "customer_name",
+          "product_name"
         ]
       },
       "slot2": {
         "correct": "AND",
         "options": [
+          "PLUS",
           "OR",
-          "AND",
           "THEN",
-          "PLUS"
+          "AND"
         ]
       },
       "slot3": {
         "correct": "shipping_city",
         "options": [
+          "order_id",
           "shipping_city",
-          "discount_pct",
-          "customer_name",
-          "order_status"
+          "unit_price",
+          "quantity"
         ]
       },
       "slot4": {
         "correct": "= 'Denver';",
         "options": [
-          "!= 'Denver';",
-          "= 'Denver';",
           "NULL",
-          "LIKE 'Denver';"
+          "!= 'Denver';",
+          "LIKE 'Denver';",
+          "= 'Denver';"
         ]
       }
     },
     "syntaxRule": "Strings use single quotes, numbers do not. AND precedes OR unless parentheses are used. NULL requires IS NULL.",
     "syntaxTrap": "Never write col = NULL or omit parentheses in mixed AND/OR statements.",
+    "explanation": "Strings use single quotes, numbers do not. AND precedes OR unless parentheses are used. NULL requires IS NULL. 💡 Trap to avoid: Never write col = NULL or omit parentheses in mixed AND/OR statements.",
     "eli5Story": "Filter check on Orders: Find unfulfilled orders destined for Denver.",
     "commonMistakes": "Unquoted strings, missing parentheses around OR, or using = instead of LIKE.",
     "learningOutcomes": "Mastered 2.8 Compound OR & Precedence on Orders."
@@ -7311,18 +7386,18 @@ window.QUESTS_SECTION_2 = [
         "correct": "WHERE",
         "options": [
           "FILTER",
+          "WHERE",
           "HAVING",
-          "CASE",
-          "WHERE"
+          "CASE"
         ]
       },
       "slot2": {
         "correct": "OR",
         "options": [
-          "NOR",
           "AND",
-          "XOR",
-          "OR"
+          "NOR",
+          "OR",
+          "XOR"
         ]
       },
       "slot3": {
@@ -7330,31 +7405,32 @@ window.QUESTS_SECTION_2 = [
         "options": [
           "genre = 'Synthwave'",
           "genre = Synthwave",
-          "genre != 'Synthwave'",
-          "genre = 'Rock'"
+          "genre = 'Rock'",
+          "genre != 'Synthwave'"
         ]
       },
       "slot4": {
         "correct": "AND",
         "options": [
-          "OR",
-          "THEN",
           "PLUS",
-          "AND"
+          "THEN",
+          "AND",
+          "OR"
         ]
       },
       "slot5": {
         "correct": "play_count > 50000;",
         "options": [
-          "play_count > 50000;",
           "status = 'ACTIVE';",
-          "NULL",
-          "play_count < 50000;"
+          "play_count > 50000;",
+          "play_count < 50000;",
+          "NULL"
         ]
       }
     },
     "syntaxRule": "Strings use single quotes, numbers do not. AND precedes OR unless parentheses are used. NULL requires IS NULL.",
     "syntaxTrap": "Never write col = NULL or omit parentheses in mixed AND/OR statements.",
+    "explanation": "Strings use single quotes, numbers do not. AND precedes OR unless parentheses are used. NULL requires IS NULL. 💡 Trap to avoid: Never write col = NULL or omit parentheses in mixed AND/OR statements.",
     "eli5Story": "Filter check on MusicTracks: Find Rock or Synthwave tracks with over 50,000 plays.",
     "commonMistakes": "Unquoted strings, missing parentheses around OR, or using = instead of LIKE.",
     "learningOutcomes": "Mastered 2.8 Compound OR & Precedence on MusicTracks."
@@ -7432,49 +7508,50 @@ window.QUESTS_SECTION_2 = [
         "options": [
           "FILTER",
           "WHERE",
-          "HAVING",
-          "CASE"
+          "CASE",
+          "HAVING"
         ]
       },
       "slot2": {
         "correct": "OR",
         "options": [
-          "NOR",
-          "OR",
           "AND",
-          "XOR"
+          "XOR",
+          "NOR",
+          "OR"
         ]
       },
       "slot3": {
         "correct": "membership_plan = 'Platinum'",
         "options": [
           "membership_plan = 'Gold'",
-          "membership_plan != 'Platinum'",
+          "membership_plan = 'Platinum'",
           "membership_plan = Platinum",
-          "membership_plan = 'Platinum'"
+          "membership_plan != 'Platinum'"
         ]
       },
       "slot4": {
         "correct": "AND",
         "options": [
           "OR",
-          "PLUS",
           "THEN",
-          "AND"
+          "AND",
+          "PLUS"
         ]
       },
       "slot5": {
         "correct": "has_trainer = TRUE;",
         "options": [
-          "NULL",
           "has_trainer != TRUE;",
-          "has_trainer = TRUE;",
-          "status = 'ACTIVE';"
+          "NULL",
+          "status = 'ACTIVE';",
+          "has_trainer = TRUE;"
         ]
       }
     },
     "syntaxRule": "Strings use single quotes, numbers do not. AND precedes OR unless parentheses are used. NULL requires IS NULL.",
     "syntaxTrap": "Never write col = NULL or omit parentheses in mixed AND/OR statements.",
+    "explanation": "Strings use single quotes, numbers do not. AND precedes OR unless parentheses are used. NULL requires IS NULL. 💡 Trap to avoid: Never write col = NULL or omit parentheses in mixed AND/OR statements.",
     "eli5Story": "Filter check on GymMembers: Find premium members (Gold or Platinum) who have a dedicated trainer.",
     "commonMistakes": "Unquoted strings, missing parentheses around OR, or using = instead of LIKE.",
     "learningOutcomes": "Mastered 2.8 Compound OR & Precedence on GymMembers."
@@ -7550,35 +7627,35 @@ window.QUESTS_SECTION_2 = [
       "slot1": {
         "correct": "WHERE",
         "options": [
-          "HAVING",
-          "CASE",
+          "WHERE",
           "FILTER",
-          "WHERE"
+          "CASE",
+          "HAVING"
         ]
       },
       "slot2": {
         "correct": "OR",
         "options": [
-          "OR",
-          "AND",
           "NOR",
-          "XOR"
+          "AND",
+          "XOR",
+          "OR"
         ]
       },
       "slot3": {
         "correct": "director = 'Sofia Coppola'",
         "options": [
-          "director != 'Sofia Coppola'",
           "director = Sofia Coppola",
-          "director = 'Sofia Coppola'",
-          "director = 'Greta Gerwig'"
+          "director = 'Greta Gerwig'",
+          "director != 'Sofia Coppola'",
+          "director = 'Sofia Coppola'"
         ]
       },
       "slot4": {
         "correct": "AND",
         "options": [
-          "AND",
           "PLUS",
+          "AND",
           "OR",
           "THEN"
         ]
@@ -7586,15 +7663,16 @@ window.QUESTS_SECTION_2 = [
       "slot5": {
         "correct": "star_rating >= 4.0;",
         "options": [
-          "star_rating <= 4.0;",
           "star_rating >= 4.0;",
-          "star_rating >!= 4.0;",
-          "status = 'ACTIVE';"
+          "star_rating <= 4.0;",
+          "status = 'ACTIVE';",
+          "star_rating >!= 4.0;"
         ]
       }
     },
     "syntaxRule": "Strings use single quotes, numbers do not. AND precedes OR unless parentheses are used. NULL requires IS NULL.",
     "syntaxTrap": "Never write col = NULL or omit parentheses in mixed AND/OR statements.",
+    "explanation": "Strings use single quotes, numbers do not. AND precedes OR unless parentheses are used. NULL requires IS NULL. 💡 Trap to avoid: Never write col = NULL or omit parentheses in mixed AND/OR statements.",
     "eli5Story": "Filter check on MovieReviews: Find top films by either Gerwig or Coppola with 4.0+ stars.",
     "commonMistakes": "Unquoted strings, missing parentheses around OR, or using = instead of LIKE.",
     "learningOutcomes": "Mastered 2.8 Compound OR & Precedence on MovieReviews."
@@ -7670,51 +7748,52 @@ window.QUESTS_SECTION_2 = [
       "slot1": {
         "correct": "WHERE",
         "options": [
-          "CASE",
           "HAVING",
           "FILTER",
+          "CASE",
           "WHERE"
         ]
       },
       "slot2": {
         "correct": "OR",
         "options": [
-          "NOR",
+          "AND",
           "OR",
-          "XOR",
-          "AND"
+          "NOR",
+          "XOR"
         ]
       },
       "slot3": {
         "correct": "origin_airport = 'MDW'",
         "options": [
           "origin_airport = MDW",
-          "origin_airport = 'ORD'",
           "origin_airport = 'MDW'",
-          "origin_airport != 'MDW'"
+          "origin_airport != 'MDW'",
+          "origin_airport = 'ORD'"
         ]
       },
       "slot4": {
         "correct": "AND",
         "options": [
           "OR",
-          "PLUS",
           "THEN",
-          "AND"
+          "AND",
+          "PLUS"
         ]
       },
       "slot5": {
         "correct": "dest_airport = 'LAX';",
         "options": [
-          "NULL",
           "dest_airport = 'LAX';",
-          "status = 'ACTIVE';",
-          "dest_airport != 'LAX';"
+          "NULL",
+          "dest_airport != 'LAX';",
+          "status = 'ACTIVE';"
         ]
       }
     },
     "syntaxRule": "Strings use single quotes, numbers do not. AND precedes OR unless parentheses are used. NULL requires IS NULL.",
     "syntaxTrap": "Never write col = NULL or omit parentheses in mixed AND/OR statements.",
+    "explanation": "Strings use single quotes, numbers do not. AND precedes OR unless parentheses are used. NULL requires IS NULL. 💡 Trap to avoid: Never write col = NULL or omit parentheses in mixed AND/OR statements.",
     "eli5Story": "Filter check on FlightSchedule: Find Chicago flights (ORD or MDW) flying to Los Angeles (LAX).",
     "commonMistakes": "Unquoted strings, missing parentheses around OR, or using = instead of LIKE.",
     "learningOutcomes": "Mastered 2.8 Compound OR & Precedence on FlightSchedule."
@@ -7790,51 +7869,52 @@ window.QUESTS_SECTION_2 = [
       "slot1": {
         "correct": "WHERE",
         "options": [
-          "CASE",
-          "HAVING",
+          "WHERE",
           "FILTER",
-          "WHERE"
+          "CASE",
+          "HAVING"
         ]
       },
       "slot2": {
         "correct": "OR",
         "options": [
-          "AND",
           "NOR",
-          "XOR",
-          "OR"
+          "AND",
+          "OR",
+          "XOR"
         ]
       },
       "slot3": {
         "correct": "species = 'Cat'",
         "options": [
+          "species = 'Cat'",
           "species != 'Cat'",
           "species = 'Dog'",
-          "species = 'Cat'",
           "species = Cat"
         ]
       },
       "slot4": {
         "correct": "AND",
         "options": [
+          "THEN",
           "AND",
-          "OR",
           "PLUS",
-          "THEN"
+          "OR"
         ]
       },
       "slot5": {
         "correct": "age_years < 2;",
         "options": [
-          "status = 'ACTIVE';",
+          "NULL",
           "0",
-          "age_years < 2;",
-          "NULL"
+          "status = 'ACTIVE';",
+          "age_years < 2;"
         ]
       }
     },
     "syntaxRule": "Strings use single quotes, numbers do not. AND precedes OR unless parentheses are used. NULL requires IS NULL.",
     "syntaxTrap": "Never write col = NULL or omit parentheses in mixed AND/OR statements.",
+    "explanation": "Strings use single quotes, numbers do not. AND precedes OR unless parentheses are used. NULL requires IS NULL. 💡 Trap to avoid: Never write col = NULL or omit parentheses in mixed AND/OR statements.",
     "eli5Story": "Filter check on PetClinic: Find young puppies or kittens under 2 years of age.",
     "commonMistakes": "Unquoted strings, missing parentheses around OR, or using = instead of LIKE.",
     "learningOutcomes": "Mastered 2.8 Compound OR & Precedence on PetClinic."
@@ -7900,18 +7980,18 @@ window.QUESTS_SECTION_2 = [
       "slot1": {
         "correct": "FROM",
         "options": [
-          "TABLE",
           "FROM",
           "SOURCE",
-          "INTO"
+          "INTO",
+          "TABLE"
         ]
       },
       "slot2": {
         "correct": "WHERE",
         "options": [
-          "WHERE",
           "WHEN",
           "ON",
+          "WHERE",
           "HAVING"
         ]
       },
@@ -7919,16 +7999,16 @@ window.QUESTS_SECTION_2 = [
         "correct": "bonus",
         "options": [
           "bonus",
-          "hire_date",
+          "salary",
           "first_name",
-          "salary"
+          "last_name"
         ]
       },
       "slot4": {
         "correct": "IS NULL;",
         "options": [
-          "IS NOT NULL;",
           "IS NULL;",
+          "IS NOT NULL;",
           "= NULL;",
           "!= NULL;"
         ]
@@ -7936,6 +8016,7 @@ window.QUESTS_SECTION_2 = [
     },
     "syntaxRule": "Strings use single quotes, numbers do not. AND precedes OR unless parentheses are used. NULL requires IS NULL.",
     "syntaxTrap": "Never write col = NULL or omit parentheses in mixed AND/OR statements.",
+    "explanation": "Strings use single quotes, numbers do not. AND precedes OR unless parentheses are used. NULL requires IS NULL. 💡 Trap to avoid: Never write col = NULL or omit parentheses in mixed AND/OR statements.",
     "eli5Story": "Filter check on Employees: Find all employees who did not receive an annual bonus (bonus IS NULL).",
     "commonMistakes": "Unquoted strings, missing parentheses around OR, or using = instead of LIKE.",
     "learningOutcomes": "Mastered 2.9 3VL & NULL Handling on Employees."
@@ -8001,27 +8082,27 @@ window.QUESTS_SECTION_2 = [
       "slot1": {
         "correct": "FROM",
         "options": [
-          "TABLE",
-          "SOURCE",
           "FROM",
-          "INTO"
+          "INTO",
+          "TABLE",
+          "SOURCE"
         ]
       },
       "slot2": {
         "correct": "WHERE",
         "options": [
-          "WHERE",
-          "ON",
           "HAVING",
-          "WHEN"
+          "WHEN",
+          "ON",
+          "WHERE"
         ]
       },
       "slot3": {
         "correct": "bonus",
         "options": [
-          "bonus",
-          "last_name",
           "salary",
+          "department",
+          "bonus",
           "hire_date"
         ]
       },
@@ -8029,14 +8110,15 @@ window.QUESTS_SECTION_2 = [
         "correct": "IS NOT NULL;",
         "options": [
           "IS NOT NULL;",
-          "= NULL;",
+          "!= NULL;",
           "IS NULL;",
-          "!= NULL;"
+          "= NULL;"
         ]
       }
     },
     "syntaxRule": "Strings use single quotes, numbers do not. AND precedes OR unless parentheses are used. NULL requires IS NULL.",
     "syntaxTrap": "Never write col = NULL or omit parentheses in mixed AND/OR statements.",
+    "explanation": "Strings use single quotes, numbers do not. AND precedes OR unless parentheses are used. NULL requires IS NULL. 💡 Trap to avoid: Never write col = NULL or omit parentheses in mixed AND/OR statements.",
     "eli5Story": "Filter check on Employees: Find all employees who have a recorded bonus.",
     "commonMistakes": "Unquoted strings, missing parentheses around OR, or using = instead of LIKE.",
     "learningOutcomes": "Mastered 2.9 3VL & NULL Handling on Employees."
@@ -8113,17 +8195,17 @@ window.QUESTS_SECTION_2 = [
         "correct": "WHERE",
         "options": [
           "FILTER",
+          "CASE",
           "HAVING",
-          "WHERE",
-          "CASE"
+          "WHERE"
         ]
       },
       "slot2": {
         "correct": "stock_qty",
         "options": [
-          "is_hardcover",
-          "genre",
           "stock_qty",
+          "book_id",
+          "published_year",
           "price"
         ]
       },
@@ -8131,32 +8213,33 @@ window.QUESTS_SECTION_2 = [
         "correct": "IS NOT NULL",
         "options": [
           "= NULL",
-          "IS NULL",
+          "!= NULL",
           "IS NOT NULL",
-          "!= NULL"
+          "IS NULL"
         ]
       },
       "slot4": {
         "correct": "AND",
         "options": [
-          "AND",
           "OR",
           "ELSE",
+          "AND",
           "THEN"
         ]
       },
       "slot5": {
         "correct": "stock_qty > 0;",
         "options": [
-          "= 0;",
           "IS NULL;",
           "> 100;",
-          "stock_qty > 0;"
+          "stock_qty > 0;",
+          "= 0;"
         ]
       }
     },
     "syntaxRule": "Strings use single quotes, numbers do not. AND precedes OR unless parentheses are used. NULL requires IS NULL.",
     "syntaxTrap": "Never write col = NULL or omit parentheses in mixed AND/OR statements.",
+    "explanation": "Strings use single quotes, numbers do not. AND precedes OR unless parentheses are used. NULL requires IS NULL. 💡 Trap to avoid: Never write col = NULL or omit parentheses in mixed AND/OR statements.",
     "eli5Story": "Filter check on Books: Find in-stock books where inventory quantity is verified not null and positive.",
     "commonMistakes": "Unquoted strings, missing parentheses around OR, or using = instead of LIKE.",
     "learningOutcomes": "Mastered 2.9 3VL & NULL Handling on Books."
@@ -8224,40 +8307,41 @@ window.QUESTS_SECTION_2 = [
         "options": [
           "FROM",
           "TABLE",
-          "INTO",
-          "SOURCE"
+          "SOURCE",
+          "INTO"
         ]
       },
       "slot2": {
         "correct": "WHERE",
         "options": [
           "HAVING",
-          "WHEN",
           "WHERE",
-          "ON"
+          "ON",
+          "WHEN"
         ]
       },
       "slot3": {
         "correct": "gpa",
         "options": [
           "city",
+          "age",
           "gpa",
-          "student_id",
-          "age"
+          "last_name"
         ]
       },
       "slot4": {
         "correct": "IS NOT NULL;",
         "options": [
           "!= NULL;",
-          "IS NOT NULL;",
           "IS NULL;",
+          "IS NOT NULL;",
           "= NULL;"
         ]
       }
     },
     "syntaxRule": "Strings use single quotes, numbers do not. AND precedes OR unless parentheses are used. NULL requires IS NULL.",
     "syntaxTrap": "Never write col = NULL or omit parentheses in mixed AND/OR statements.",
+    "explanation": "Strings use single quotes, numbers do not. AND precedes OR unless parentheses are used. NULL requires IS NULL. 💡 Trap to avoid: Never write col = NULL or omit parentheses in mixed AND/OR statements.",
     "eli5Story": "Filter check on Students: Find students who have completed their coursework and have a recorded GPA.",
     "commonMistakes": "Unquoted strings, missing parentheses around OR, or using = instead of LIKE.",
     "learningOutcomes": "Mastered 2.9 3VL & NULL Handling on Students."
@@ -8333,28 +8417,28 @@ window.QUESTS_SECTION_2 = [
       "slot1": {
         "correct": "WHERE",
         "options": [
-          "CASE",
-          "WHERE",
+          "HAVING",
           "FILTER",
-          "HAVING"
+          "CASE",
+          "WHERE"
         ]
       },
       "slot2": {
         "correct": "discount_pct",
         "options": [
-          "order_status",
-          "quantity",
-          "order_id",
-          "discount_pct"
+          "discount_pct",
+          "product_name",
+          "shipping_city",
+          "order_id"
         ]
       },
       "slot3": {
         "correct": "IS NULL",
         "options": [
-          "!= NULL",
+          "IS NOT NULL",
           "= NULL",
-          "IS NULL",
-          "IS NOT NULL"
+          "!= NULL",
+          "IS NULL"
         ]
       },
       "slot4": {
@@ -8362,22 +8446,23 @@ window.QUESTS_SECTION_2 = [
         "options": [
           "THEN",
           "AND",
-          "ELSE",
-          "OR"
+          "OR",
+          "ELSE"
         ]
       },
       "slot5": {
         "correct": "discount_pct = 0.00;",
         "options": [
-          "> 100;",
-          "IS NULL;",
+          "discount_pct = 0.00;",
           "= 0;",
-          "discount_pct = 0.00;"
+          "IS NULL;",
+          "> 100;"
         ]
       }
     },
     "syntaxRule": "Strings use single quotes, numbers do not. AND precedes OR unless parentheses are used. NULL requires IS NULL.",
     "syntaxTrap": "Never write col = NULL or omit parentheses in mixed AND/OR statements.",
+    "explanation": "Strings use single quotes, numbers do not. AND precedes OR unless parentheses are used. NULL requires IS NULL. 💡 Trap to avoid: Never write col = NULL or omit parentheses in mixed AND/OR statements.",
     "eli5Story": "Filter check on Orders: Find orders that received no discount.",
     "commonMistakes": "Unquoted strings, missing parentheses around OR, or using = instead of LIKE.",
     "learningOutcomes": "Mastered 2.9 3VL & NULL Handling on Orders."
@@ -8443,35 +8528,35 @@ window.QUESTS_SECTION_2 = [
       "slot1": {
         "correct": "FROM",
         "options": [
+          "SOURCE",
           "TABLE",
           "INTO",
-          "SOURCE",
           "FROM"
         ]
       },
       "slot2": {
         "correct": "WHERE",
         "options": [
-          "HAVING",
           "WHERE",
           "WHEN",
+          "HAVING",
           "ON"
         ]
       },
       "slot3": {
         "correct": "breed",
         "options": [
-          "pet_name",
           "breed",
+          "pet_id",
           "is_vaccinated",
-          "weight_kg"
+          "pet_name"
         ]
       },
       "slot4": {
         "correct": "IS NOT NULL;",
         "options": [
-          "IS NULL;",
           "IS NOT NULL;",
+          "IS NULL;",
           "!= NULL;",
           "= NULL;"
         ]
@@ -8479,6 +8564,7 @@ window.QUESTS_SECTION_2 = [
     },
     "syntaxRule": "Strings use single quotes, numbers do not. AND precedes OR unless parentheses are used. NULL requires IS NULL.",
     "syntaxTrap": "Never write col = NULL or omit parentheses in mixed AND/OR statements.",
+    "explanation": "Strings use single quotes, numbers do not. AND precedes OR unless parentheses are used. NULL requires IS NULL. 💡 Trap to avoid: Never write col = NULL or omit parentheses in mixed AND/OR statements.",
     "eli5Story": "Filter check on PetClinic: Find pet records where the specific breed is documented.",
     "commonMistakes": "Unquoted strings, missing parentheses around OR, or using = instead of LIKE.",
     "learningOutcomes": "Mastered 2.9 3VL & NULL Handling on PetClinic."
@@ -8555,50 +8641,51 @@ window.QUESTS_SECTION_2 = [
         "correct": "WHERE",
         "options": [
           "WHERE",
-          "FILTER",
           "HAVING",
-          "CASE"
+          "CASE",
+          "FILTER"
         ]
       },
       "slot2": {
         "correct": "delay_minutes",
         "options": [
+          "delay_minutes",
           "dest_airport",
           "destination_airport",
-          "ticket_price",
-          "delay_minutes"
+          "flight_id"
         ]
       },
       "slot3": {
         "correct": "IS NOT NULL",
         "options": [
-          "= NULL",
-          "!= NULL",
           "IS NOT NULL",
-          "IS NULL"
+          "!= NULL",
+          "IS NULL",
+          "= NULL"
         ]
       },
       "slot4": {
         "correct": "AND",
         "options": [
-          "THEN",
           "OR",
-          "AND",
-          "ELSE"
+          "ELSE",
+          "THEN",
+          "AND"
         ]
       },
       "slot5": {
         "correct": "delay_minutes = 0;",
         "options": [
-          "= 0;",
-          "> 100;",
           "delay_minutes = 0;",
-          "IS NULL;"
+          "> 100;",
+          "IS NULL;",
+          "= 0;"
         ]
       }
     },
     "syntaxRule": "Strings use single quotes, numbers do not. AND precedes OR unless parentheses are used. NULL requires IS NULL.",
     "syntaxTrap": "Never write col = NULL or omit parentheses in mixed AND/OR statements.",
+    "explanation": "Strings use single quotes, numbers do not. AND precedes OR unless parentheses are used. NULL requires IS NULL. 💡 Trap to avoid: Never write col = NULL or omit parentheses in mixed AND/OR statements.",
     "eli5Story": "Filter check on FlightSchedule: Find flights confirmed on-time.",
     "commonMistakes": "Unquoted strings, missing parentheses around OR, or using = instead of LIKE.",
     "learningOutcomes": "Mastered 2.9 3VL & NULL Handling on FlightSchedule."
@@ -8674,51 +8761,52 @@ window.QUESTS_SECTION_2 = [
       "slot1": {
         "correct": "WHERE",
         "options": [
-          "FILTER",
-          "CASE",
           "WHERE",
-          "HAVING"
+          "HAVING",
+          "CASE",
+          "FILTER"
         ]
       },
       "slot2": {
         "correct": "visits_this_month",
         "options": [
-          "membership_plan",
           "visits_this_month",
-          "member_name",
-          "joined_date"
+          "joined_date",
+          "has_trainer",
+          "member_id"
         ]
       },
       "slot3": {
         "correct": "IS NOT NULL",
         "options": [
           "IS NOT NULL",
-          "= NULL",
+          "!= NULL",
           "IS NULL",
-          "!= NULL"
+          "= NULL"
         ]
       },
       "slot4": {
         "correct": "AND",
         "options": [
-          "AND",
-          "THEN",
           "ELSE",
-          "OR"
+          "OR",
+          "AND",
+          "THEN"
         ]
       },
       "slot5": {
         "correct": "visits_this_month = 0;",
         "options": [
           "IS NULL;",
-          "= 0;",
           "> 100;",
+          "= 0;",
           "visits_this_month = 0;"
         ]
       }
     },
     "syntaxRule": "Strings use single quotes, numbers do not. AND precedes OR unless parentheses are used. NULL requires IS NULL.",
     "syntaxTrap": "Never write col = NULL or omit parentheses in mixed AND/OR statements.",
+    "explanation": "Strings use single quotes, numbers do not. AND precedes OR unless parentheses are used. NULL requires IS NULL. 💡 Trap to avoid: Never write col = NULL or omit parentheses in mixed AND/OR statements.",
     "eli5Story": "Filter check on GymMembers: Find inactive members with zero visits logged.",
     "commonMistakes": "Unquoted strings, missing parentheses around OR, or using = instead of LIKE.",
     "learningOutcomes": "Mastered 2.9 3VL & NULL Handling on GymMembers."
@@ -8794,51 +8882,52 @@ window.QUESTS_SECTION_2 = [
       "slot1": {
         "correct": "WHERE",
         "options": [
-          "HAVING",
-          "CASE",
+          "FILTER",
           "WHERE",
-          "FILTER"
+          "CASE",
+          "HAVING"
         ]
       },
       "slot2": {
         "correct": "unit_price",
         "options": [
           "item_id",
-          "calories",
           "unit_price",
-          "stock_qty"
+          "is_organic",
+          "item_name"
         ]
       },
       "slot3": {
         "correct": "IS NOT NULL",
         "options": [
           "IS NULL",
-          "!= NULL",
           "= NULL",
-          "IS NOT NULL"
+          "IS NOT NULL",
+          "!= NULL"
         ]
       },
       "slot4": {
         "correct": "AND",
         "options": [
           "THEN",
-          "AND",
           "ELSE",
-          "OR"
+          "OR",
+          "AND"
         ]
       },
       "slot5": {
         "correct": "unit_price > 0.00;",
         "options": [
+          "= 0;",
           "> 100;",
           "unit_price > 0.00;",
-          "= 0;",
           "IS NULL;"
         ]
       }
     },
     "syntaxRule": "Strings use single quotes, numbers do not. AND precedes OR unless parentheses are used. NULL requires IS NULL.",
     "syntaxTrap": "Never write col = NULL or omit parentheses in mixed AND/OR statements.",
+    "explanation": "Strings use single quotes, numbers do not. AND precedes OR unless parentheses are used. NULL requires IS NULL. 💡 Trap to avoid: Never write col = NULL or omit parentheses in mixed AND/OR statements.",
     "eli5Story": "Filter check on GroceryItems: Verify items with valid non-null prices.",
     "commonMistakes": "Unquoted strings, missing parentheses around OR, or using = instead of LIKE.",
     "learningOutcomes": "Mastered 2.9 3VL & NULL Handling on GroceryItems."
@@ -8914,37 +9003,37 @@ window.QUESTS_SECTION_2 = [
       "slot1": {
         "correct": "WHERE",
         "options": [
-          "HAVING",
           "FILTER",
+          "WHERE",
           "CASE",
-          "WHERE"
+          "HAVING"
         ]
       },
       "slot2": {
         "correct": "play_count",
         "options": [
-          "track_title",
-          "play_count",
+          "release_year",
           "artist",
-          "title"
+          "play_count",
+          "track_id"
         ]
       },
       "slot3": {
         "correct": "IS NOT NULL",
         "options": [
+          "!= NULL",
           "IS NOT NULL",
-          "IS NULL",
           "= NULL",
-          "!= NULL"
+          "IS NULL"
         ]
       },
       "slot4": {
         "correct": "AND",
         "options": [
+          "THEN",
           "AND",
-          "ELSE",
           "OR",
-          "THEN"
+          "ELSE"
         ]
       },
       "slot5": {
@@ -8959,6 +9048,7 @@ window.QUESTS_SECTION_2 = [
     },
     "syntaxRule": "Strings use single quotes, numbers do not. AND precedes OR unless parentheses are used. NULL requires IS NULL.",
     "syntaxTrap": "Never write col = NULL or omit parentheses in mixed AND/OR statements.",
+    "explanation": "Strings use single quotes, numbers do not. AND precedes OR unless parentheses are used. NULL requires IS NULL. 💡 Trap to avoid: Never write col = NULL or omit parentheses in mixed AND/OR statements.",
     "eli5Story": "Filter check on MusicTracks: Select tracks with verified play metrics.",
     "commonMistakes": "Unquoted strings, missing parentheses around OR, or using = instead of LIKE.",
     "learningOutcomes": "Mastered 2.9 3VL & NULL Handling on MusicTracks."
@@ -9024,42 +9114,43 @@ window.QUESTS_SECTION_2 = [
       "slot1": {
         "correct": "FROM",
         "options": [
+          "INTO",
           "FROM",
-          "SOURCE",
           "TABLE",
-          "INTO"
+          "SOURCE"
         ]
       },
       "slot2": {
         "correct": "WHERE",
         "options": [
-          "HAVING",
-          "WHERE",
+          "WHEN",
           "ON",
-          "WHEN"
+          "WHERE",
+          "HAVING"
         ]
       },
       "slot3": {
         "correct": "bonus",
         "options": [
-          "department",
-          "last_name",
+          "salary",
           "emp_id",
+          "last_name",
           "bonus"
         ]
       },
       "slot4": {
         "correct": "IS NULL;",
         "options": [
-          "!= NULL;",
           "IS NOT NULL;",
-          "IS NULL;",
-          "= NULL;"
+          "= NULL;",
+          "!= NULL;",
+          "IS NULL;"
         ]
       }
     },
     "syntaxRule": "Strings use single quotes, numbers do not. AND precedes OR unless parentheses are used. NULL requires IS NULL.",
     "syntaxTrap": "Never write col = NULL or omit parentheses in mixed AND/OR statements.",
+    "explanation": "Strings use single quotes, numbers do not. AND precedes OR unless parentheses are used. NULL requires IS NULL. 💡 Trap to avoid: Never write col = NULL or omit parentheses in mixed AND/OR statements.",
     "eli5Story": "Filter check on Employees: Fix the illegal NULL comparison: 'WHERE bonus = NULL;' (evaluates to UNKNOWN and returns 0 rows).",
     "commonMistakes": "Unquoted strings, missing parentheses around OR, or using = instead of LIKE.",
     "learningOutcomes": "Mastered 2.10 Multi-Condition Bug Hunts on Employees."
@@ -9135,26 +9226,26 @@ window.QUESTS_SECTION_2 = [
       "slot1": {
         "correct": "WHERE",
         "options": [
-          "FILTER",
+          "WHERE",
           "CASE",
           "HAVING",
-          "WHERE"
+          "FILTER"
         ]
       },
       "slot2": {
         "correct": "OR",
         "options": [
-          "NOR",
+          "AND",
           "OR",
           "XOR",
-          "AND"
+          "NOR"
         ]
       },
       "slot3": {
         "correct": "city = 'Seattle'",
         "options": [
-          "city = Seattle",
           "city = 'Seattle'",
+          "city = Seattle",
           "city != 'Seattle'",
           "city = 'Chicago'"
         ]
@@ -9162,24 +9253,25 @@ window.QUESTS_SECTION_2 = [
       "slot4": {
         "correct": "AND",
         "options": [
-          "AND",
-          "OR",
           "THEN",
+          "OR",
+          "AND",
           "PLUS"
         ]
       },
       "slot5": {
         "correct": "gpa > 3.50;",
         "options": [
-          "NULL",
-          "status = 'ACTIVE';",
+          "gpa > 3.50;",
           "gpa < 3.50;",
-          "gpa > 3.50;"
+          "status = 'ACTIVE';",
+          "NULL"
         ]
       }
     },
     "syntaxRule": "Strings use single quotes, numbers do not. AND precedes OR unless parentheses are used. NULL requires IS NULL.",
     "syntaxTrap": "Never write col = NULL or omit parentheses in mixed AND/OR statements.",
+    "explanation": "Strings use single quotes, numbers do not. AND precedes OR unless parentheses are used. NULL requires IS NULL. 💡 Trap to avoid: Never write col = NULL or omit parentheses in mixed AND/OR statements.",
     "eli5Story": "Filter check on Students: Fix operator precedence bug by adding parentheses around OR conditions.",
     "commonMistakes": "Unquoted strings, missing parentheses around OR, or using = instead of LIKE.",
     "learningOutcomes": "Mastered 2.10 Multi-Condition Bug Hunts on Students."
@@ -9245,27 +9337,27 @@ window.QUESTS_SECTION_2 = [
       "slot1": {
         "correct": "FROM",
         "options": [
-          "FROM",
+          "TABLE",
           "INTO",
-          "SOURCE",
-          "TABLE"
+          "FROM",
+          "SOURCE"
         ]
       },
       "slot2": {
         "correct": "Books",
         "options": [
+          "Books",
           "GroceryItems",
-          "GymMembers",
           "PetClinic",
-          "Books"
+          "FlightSchedule"
         ]
       },
       "slot3": {
         "correct": "WHERE",
         "options": [
           "WHEN",
-          "HAVING",
           "WHERE",
+          "HAVING",
           "FILTER"
         ]
       },
@@ -9273,14 +9365,15 @@ window.QUESTS_SECTION_2 = [
         "correct": "price BETWEEN 10.00 AND 25.00;",
         "options": [
           "price BETWEEN 10.00 AND 25.00;",
+          "price BETWEEN 10.00 OR 25.00;",
           "NULL",
-          "0",
-          "price BETWEEN 10.00 OR 25.00;"
+          "0"
         ]
       }
     },
     "syntaxRule": "Strings use single quotes, numbers do not. AND precedes OR unless parentheses are used. NULL requires IS NULL.",
     "syntaxTrap": "Never write col = NULL or omit parentheses in mixed AND/OR statements.",
+    "explanation": "Strings use single quotes, numbers do not. AND precedes OR unless parentheses are used. NULL requires IS NULL. 💡 Trap to avoid: Never write col = NULL or omit parentheses in mixed AND/OR statements.",
     "eli5Story": "Filter check on Books: Fix incorrect range syntax: 'WHERE price BETWEEN 10.00, 25.00;' (BETWEEN uses AND, not comma).",
     "commonMistakes": "Unquoted strings, missing parentheses around OR, or using = instead of LIKE.",
     "learningOutcomes": "Mastered 2.10 Multi-Condition Bug Hunts on Books."
@@ -9347,9 +9440,9 @@ window.QUESTS_SECTION_2 = [
         "correct": "FROM",
         "options": [
           "FROM",
+          "INTO",
           "SOURCE",
-          "TABLE",
-          "INTO"
+          "TABLE"
         ]
       },
       "slot2": {
@@ -9357,31 +9450,32 @@ window.QUESTS_SECTION_2 = [
         "options": [
           "WHERE",
           "HAVING",
-          "WHEN",
-          "FILTER"
+          "FILTER",
+          "WHEN"
         ]
       },
       "slot3": {
         "correct": "(ategory IN ('Produce', 'Bakery')",
         "options": [
+          "(1=1)",
           "(ategory IN ('Produce', 'Bakery')",
           "(id > 0)",
-          "(true)",
-          "(1=1)"
+          "(true)"
         ]
       },
       "slot4": {
         "correct": "category IN ('Produce', 'Bakery');",
         "options": [
           "category IN ('Produce', 'Bakery');",
-          "WHERE 1=1;",
+          "HAVING count(*) > 0;",
           "ORDER BY id;",
-          "HAVING count(*) > 0;"
+          "WHERE 1=1;"
         ]
       }
     },
     "syntaxRule": "Strings use single quotes, numbers do not. AND precedes OR unless parentheses are used. NULL requires IS NULL.",
     "syntaxTrap": "Never write col = NULL or omit parentheses in mixed AND/OR statements.",
+    "explanation": "Strings use single quotes, numbers do not. AND precedes OR unless parentheses are used. NULL requires IS NULL. 💡 Trap to avoid: Never write col = NULL or omit parentheses in mixed AND/OR statements.",
     "eli5Story": "Filter check on GroceryItems: Fix syntax error: 'WHERE category IN Produce, Bakery;' (values in IN must be wrapped in parentheses).",
     "commonMistakes": "Unquoted strings, missing parentheses around OR, or using = instead of LIKE.",
     "learningOutcomes": "Mastered 2.10 Multi-Condition Bug Hunts on GroceryItems."
@@ -9447,42 +9541,43 @@ window.QUESTS_SECTION_2 = [
       "slot1": {
         "correct": "FROM",
         "options": [
-          "TABLE",
-          "INTO",
+          "SOURCE",
           "FROM",
-          "SOURCE"
+          "TABLE",
+          "INTO"
         ]
       },
       "slot2": {
         "correct": "Orders",
         "options": [
-          "Books",
-          "MovieReviews",
-          "PetClinic",
+          "Employees",
+          "GymMembers",
+          "FlightSchedule",
           "Orders"
         ]
       },
       "slot3": {
         "correct": "WHERE",
         "options": [
-          "HAVING",
           "FILTER",
-          "WHERE",
-          "WHEN"
+          "HAVING",
+          "WHEN",
+          "WHERE"
         ]
       },
       "slot4": {
         "correct": "shipping_city = 'Denver';",
         "options": [
-          "NULL",
+          "shipping_city = 'Denver';",
           "shipping_city != 'Denver';",
           "shipping_city = \"Denver\";",
-          "shipping_city = 'Denver';"
+          "NULL"
         ]
       }
     },
     "syntaxRule": "Strings use single quotes, numbers do not. AND precedes OR unless parentheses are used. NULL requires IS NULL.",
     "syntaxTrap": "Never write col = NULL or omit parentheses in mixed AND/OR statements.",
+    "explanation": "Strings use single quotes, numbers do not. AND precedes OR unless parentheses are used. NULL requires IS NULL. 💡 Trap to avoid: Never write col = NULL or omit parentheses in mixed AND/OR statements.",
     "eli5Story": "Filter check on Orders: Fix unquoted string identifier: \"WHERE shipping_city = Denver;\" (looks for column named Denver instead of text).",
     "commonMistakes": "Unquoted strings, missing parentheses around OR, or using = instead of LIKE.",
     "learningOutcomes": "Mastered 2.10 Multi-Condition Bug Hunts on Orders."
@@ -9548,42 +9643,43 @@ window.QUESTS_SECTION_2 = [
       "slot1": {
         "correct": "FROM",
         "options": [
-          "INTO",
-          "TABLE",
           "SOURCE",
-          "FROM"
+          "FROM",
+          "INTO",
+          "TABLE"
         ]
       },
       "slot2": {
         "correct": "MusicTracks",
         "options": [
-          "MusicTracks",
-          "MovieReviews",
           "Students",
-          "GymMembers"
+          "GroceryItems",
+          "MusicTracks",
+          "PetClinic"
         ]
       },
       "slot3": {
         "correct": "WHERE",
         "options": [
-          "WHEN",
           "HAVING",
           "FILTER",
-          "WHERE"
+          "WHERE",
+          "WHEN"
         ]
       },
       "slot4": {
         "correct": "genre LIKE 'Rock%';",
         "options": [
           "genre LIKE 'Rock%';",
-          "0",
           "genre LIKE \"Rock%\";",
+          "0",
           "NULL"
         ]
       }
     },
     "syntaxRule": "Strings use single quotes, numbers do not. AND precedes OR unless parentheses are used. NULL requires IS NULL.",
     "syntaxTrap": "Never write col = NULL or omit parentheses in mixed AND/OR statements.",
+    "explanation": "Strings use single quotes, numbers do not. AND precedes OR unless parentheses are used. NULL requires IS NULL. 💡 Trap to avoid: Never write col = NULL or omit parentheses in mixed AND/OR statements.",
     "eli5Story": "Filter check on MusicTracks: Fix assignment syntax: 'WHERE genre = Rock%' (pattern matching requires LIKE, not =).",
     "commonMistakes": "Unquoted strings, missing parentheses around OR, or using = instead of LIKE.",
     "learningOutcomes": "Mastered 2.10 Multi-Condition Bug Hunts on MusicTracks."
@@ -9649,42 +9745,43 @@ window.QUESTS_SECTION_2 = [
       "slot1": {
         "correct": "FROM",
         "options": [
-          "INTO",
           "FROM",
           "TABLE",
+          "INTO",
           "SOURCE"
         ]
       },
       "slot2": {
         "correct": "GymMembers",
         "options": [
-          "PetClinic",
-          "GroceryItems",
+          "GymMembers",
           "Students",
-          "GymMembers"
+          "PetClinic",
+          "FlightSchedule"
         ]
       },
       "slot3": {
         "correct": "WHERE",
         "options": [
-          "WHEN",
-          "HAVING",
           "FILTER",
-          "WHERE"
+          "WHERE",
+          "HAVING",
+          "WHEN"
         ]
       },
       "slot4": {
         "correct": "monthly_fee >= 30.00 AND monthly_fee <= 70.00;",
         "options": [
-          "monthly_fee >!= 30.00 AND monthly_fee <!= 70.00;",
           "monthly_fee >= 30.00 OR monthly_fee <= 70.00;",
-          "monthly_fee >= 30.00 AND monthly_fee <= 70.00;",
-          "NULL"
+          "NULL",
+          "monthly_fee >!= 30.00 AND monthly_fee <!= 70.00;",
+          "monthly_fee >= 30.00 AND monthly_fee <= 70.00;"
         ]
       }
     },
     "syntaxRule": "Strings use single quotes, numbers do not. AND precedes OR unless parentheses are used. NULL requires IS NULL.",
     "syntaxTrap": "Never write col = NULL or omit parentheses in mixed AND/OR statements.",
+    "explanation": "Strings use single quotes, numbers do not. AND precedes OR unless parentheses are used. NULL requires IS NULL. 💡 Trap to avoid: Never write col = NULL or omit parentheses in mixed AND/OR statements.",
     "eli5Story": "Filter check on GymMembers: Fix missing second column comparison: 'WHERE monthly_fee >= 30.00 AND <= 70.00;'.",
     "commonMistakes": "Unquoted strings, missing parentheses around OR, or using = instead of LIKE.",
     "learningOutcomes": "Mastered 2.10 Multi-Condition Bug Hunts on GymMembers."
@@ -9750,10 +9847,10 @@ window.QUESTS_SECTION_2 = [
       "slot1": {
         "correct": "FROM",
         "options": [
-          "SOURCE",
           "INTO",
-          "TABLE",
-          "FROM"
+          "FROM",
+          "SOURCE",
+          "TABLE"
         ]
       },
       "slot2": {
@@ -9761,31 +9858,32 @@ window.QUESTS_SECTION_2 = [
         "options": [
           "GroceryItems",
           "MovieReviews",
-          "Students",
-          "GymMembers"
+          "Books",
+          "Students"
         ]
       },
       "slot3": {
         "correct": "WHERE",
         "options": [
-          "WHERE",
-          "HAVING",
           "WHEN",
-          "FILTER"
+          "FILTER",
+          "WHERE",
+          "HAVING"
         ]
       },
       "slot4": {
         "correct": "star_rating > 4.0;",
         "options": [
-          "0",
           "NULL",
           "star_rating > 4.0;",
-          "'Default'"
+          "'Default'",
+          "0"
         ]
       }
     },
     "syntaxRule": "Strings use single quotes, numbers do not. AND precedes OR unless parentheses are used. NULL requires IS NULL.",
     "syntaxTrap": "Never write col = NULL or omit parentheses in mixed AND/OR statements.",
+    "explanation": "Strings use single quotes, numbers do not. AND precedes OR unless parentheses are used. NULL requires IS NULL. 💡 Trap to avoid: Never write col = NULL or omit parentheses in mixed AND/OR statements.",
     "eli5Story": "Filter check on MovieReviews: Fix quoted numeric literal: \"WHERE star_rating > '4.0';\" (numeric comparisons should avoid string quotes).",
     "commonMistakes": "Unquoted strings, missing parentheses around OR, or using = instead of LIKE.",
     "learningOutcomes": "Mastered 2.10 Multi-Condition Bug Hunts on MovieReviews."
@@ -9851,42 +9949,43 @@ window.QUESTS_SECTION_2 = [
       "slot1": {
         "correct": "FROM",
         "options": [
-          "FROM",
           "SOURCE",
-          "INTO",
-          "TABLE"
+          "FROM",
+          "TABLE",
+          "INTO"
         ]
       },
       "slot2": {
         "correct": "FlightSchedule",
         "options": [
-          "Students",
-          "MovieReviews",
-          "FlightSchedule",
-          "Employees"
+          "MusicTracks",
+          "Books",
+          "Orders",
+          "FlightSchedule"
         ]
       },
       "slot3": {
         "correct": "WHERE",
         "options": [
+          "FILTER",
           "HAVING",
           "WHEN",
-          "WHERE",
-          "FILTER"
+          "WHERE"
         ]
       },
       "slot4": {
         "correct": "delay_minutes != 0;",
         "options": [
-          "0",
           "delay_minutes != 0;",
-          "delay_minutes !!= 0;",
-          "NULL"
+          "NULL",
+          "0",
+          "delay_minutes !!= 0;"
         ]
       }
     },
     "syntaxRule": "Strings use single quotes, numbers do not. AND precedes OR unless parentheses are used. NULL requires IS NULL.",
     "syntaxTrap": "Never write col = NULL or omit parentheses in mixed AND/OR statements.",
+    "explanation": "Strings use single quotes, numbers do not. AND precedes OR unless parentheses are used. NULL requires IS NULL. 💡 Trap to avoid: Never write col = NULL or omit parentheses in mixed AND/OR statements.",
     "eli5Story": "Filter check on FlightSchedule: Fix exclamation mark placement: 'WHERE delay_minutes =! 0;' (must be != or <>).",
     "commonMistakes": "Unquoted strings, missing parentheses around OR, or using = instead of LIKE.",
     "learningOutcomes": "Mastered 2.10 Multi-Condition Bug Hunts on FlightSchedule."
@@ -9952,19 +10051,19 @@ window.QUESTS_SECTION_2 = [
       "slot1": {
         "correct": "FROM",
         "options": [
-          "INTO",
           "FROM",
           "SOURCE",
+          "INTO",
           "TABLE"
         ]
       },
       "slot2": {
         "correct": "PetClinic",
         "options": [
-          "Books",
-          "GroceryItems",
+          "PetClinic",
           "MovieReviews",
-          "PetClinic"
+          "GymMembers",
+          "Orders"
         ]
       },
       "slot3": {
@@ -9979,15 +10078,16 @@ window.QUESTS_SECTION_2 = [
       "slot4": {
         "correct": "species = 'Cat' OR species = 'Dog';",
         "options": [
+          "species = 'Cat' OR species = 'Dog';",
           "species = \"Cat\" OR species = \"Dog\";",
           "NULL",
-          "species = 'Cat' OR species = 'Dog';",
           "species != 'Cat' OR species != 'Dog';"
         ]
       }
     },
     "syntaxRule": "Strings use single quotes, numbers do not. AND precedes OR unless parentheses are used. NULL requires IS NULL.",
     "syntaxTrap": "Never write col = NULL or omit parentheses in mixed AND/OR statements.",
+    "explanation": "Strings use single quotes, numbers do not. AND precedes OR unless parentheses are used. NULL requires IS NULL. 💡 Trap to avoid: Never write col = NULL or omit parentheses in mixed AND/OR statements.",
     "eli5Story": "Filter check on PetClinic: Fix shorthand OR trap: \"WHERE species = 'Cat' OR 'Dog';\" (each side of OR requires a full boolean test).",
     "commonMistakes": "Unquoted strings, missing parentheses around OR, or using = instead of LIKE.",
     "learningOutcomes": "Mastered 2.10 Multi-Condition Bug Hunts on PetClinic."

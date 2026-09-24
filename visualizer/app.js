@@ -7233,7 +7233,9 @@ function renderFillBlankQuest(container, quest) {
         <span style="color: #9ec5ad; font-size: 18px;">&check;</span>
         <div>
           <div style="font-size: 13px; font-weight: 700; color: #9ec5ad; margin-bottom: 2px;">🎉 Brilliant! Correct Answer!</div>
-          <div style="font-size: 11.5px; color: var(--text-secondary);">${quest.explanation}</div>
+          <div style="font-size: 11.5px; line-height: 1.5; color: var(--text-secondary);">
+            ${escapeHtml(quest.explanation || (quest.syntaxRule ? `${quest.syntaxRule} 💡 Trap: ${quest.syntaxTrap || ''}` : '') || quest.learningOutcomes || quest.subtitle || 'Query syntax executed and validated with 100% compliance!')}
+          </div>
         </div>
       </div>
     ` : `
