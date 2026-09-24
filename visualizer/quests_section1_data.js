@@ -1,6 +1,6 @@
 // =============================================================================
-// SECTION 01: FOUNDATIONS & PROJECTIONS (100 INTERACTIVE DUOLINGO-STYLE QUESTS)
-// Generated from Section 0 Syntax Gym Drills #001 through #100
+// SECTION 01: FOUNDATIONS & PROJECTIONS (100 INTERACTIVE MULTI-BLANK QUESTS)
+// Progressive 2-to-5 Blank Challenge Engine with Tiered Difficulty
 // =============================================================================
 
 window.QUESTS_SECTION_1 = [
@@ -12,6 +12,9 @@ window.QUESTS_SECTION_1 = [
     "type": "fill_blank",
     "category": "Section 01: Foundations & Projections",
     "subcluster": "1.1 Basic Projections",
+    "tier": "Apprentice",
+    "tierColor": "#38bdf8",
+    "difficulty": "Easy",
     "task": "Pull every column using the universal asterisk wildcard.",
     "table": "Students",
     "schemaSnippet": "Students(student_id INT, first_name VARCHAR, last_name VARCHAR, age INT, major VARCHAR, gpa DECIMAL, city VARCHAR, enrolled_year INT)",
@@ -19,22 +22,28 @@ window.QUESTS_SECTION_1 = [
     "template": [
       {
         "text": "",
-        "isBlank": false
-      },
-      {
-        "text": "",
         "isBlank": true,
         "slotId": "slot1",
         "placeholder": "[ ___ ]"
       },
       {
-        "text": " *\n",
+        "text": " ",
         "isBlank": false
       },
       {
         "text": "",
         "isBlank": true,
         "slotId": "slot2",
+        "placeholder": "[ ___ ]"
+      },
+      {
+        "text": "\n",
+        "isBlank": false
+      },
+      {
+        "text": "",
+        "isBlank": true,
+        "slotId": "slot3",
         "placeholder": "[ ___ ]"
       },
       {
@@ -46,23 +55,32 @@ window.QUESTS_SECTION_1 = [
       "slot1": {
         "correct": "SELECT",
         "options": [
-          "CHOOSE",
           "EXTRACT",
-          "SELECT",
-          "GET"
+          "CHOOSE",
+          "GET",
+          "SELECT"
         ]
       },
       "slot2": {
+        "correct": "*",
+        "options": [
+          "*",
+          "ALL",
+          "EVERY",
+          "%"
+        ]
+      },
+      "slot3": {
         "correct": "FROM",
         "options": [
+          "FROM",
           "SOURCE",
           "INTO",
-          "TABLE",
-          "FROM"
+          "TABLE"
         ]
       }
     },
-    "explanation": "The asterisk (*) represents all columns. Always follow SELECT * with FROM and your table name. 💡 Pro-Tip / Trap: Writing 'SELECT ALL FROM Students;' (ALL is an aggregate modifier, not a column wildcard).",
+    "explanation": "The asterisk (*) represents all columns. Always follow SELECT * with FROM and your table name. 💡 Trap to avoid: Writing 'SELECT ALL FROM Students;' (ALL is an aggregate modifier, not a column wildcard).",
     "commonMistakes": "Putting a semicolon after SELECT or forgetting the FROM keyword."
   },
   {
@@ -73,6 +91,9 @@ window.QUESTS_SECTION_1 = [
     "type": "fill_blank",
     "category": "Section 01: Foundations & Projections",
     "subcluster": "1.1 Basic Projections",
+    "tier": "Apprentice",
+    "tierColor": "#38bdf8",
+    "difficulty": "Easy",
     "task": "Select every column from the Books catalog.",
     "table": "Books",
     "schemaSnippet": "Books(book_id INT, title VARCHAR, author VARCHAR, genre VARCHAR, price DECIMAL, stock_qty INT, published_year INT, is_hardcover BOOLEAN)",
@@ -80,22 +101,28 @@ window.QUESTS_SECTION_1 = [
     "template": [
       {
         "text": "",
-        "isBlank": false
-      },
-      {
-        "text": "",
         "isBlank": true,
         "slotId": "slot1",
         "placeholder": "[ ___ ]"
       },
       {
-        "text": " *\n",
+        "text": " ",
         "isBlank": false
       },
       {
         "text": "",
         "isBlank": true,
         "slotId": "slot2",
+        "placeholder": "[ ___ ]"
+      },
+      {
+        "text": "\n",
+        "isBlank": false
+      },
+      {
+        "text": "",
+        "isBlank": true,
+        "slotId": "slot3",
         "placeholder": "[ ___ ]"
       },
       {
@@ -107,13 +134,22 @@ window.QUESTS_SECTION_1 = [
       "slot1": {
         "correct": "SELECT",
         "options": [
-          "GET",
           "EXTRACT",
-          "CHOOSE",
-          "SELECT"
+          "SELECT",
+          "GET",
+          "CHOOSE"
         ]
       },
       "slot2": {
+        "correct": "*",
+        "options": [
+          "ALL",
+          "*",
+          "EVERY",
+          "%"
+        ]
+      },
+      "slot3": {
         "correct": "FROM",
         "options": [
           "INTO",
@@ -123,7 +159,7 @@ window.QUESTS_SECTION_1 = [
         ]
       }
     },
-    "explanation": "A query must end with a semicolon in standard SQL clients. 💡 Pro-Tip / Trap: Typing the table name before SELECT.",
+    "explanation": "A query must end with a semicolon in standard SQL clients. 💡 Trap to avoid: Typing the table name before SELECT.",
     "commonMistakes": "Omitting the semicolon at the end of the query."
   },
   {
@@ -134,13 +170,16 @@ window.QUESTS_SECTION_1 = [
     "type": "fill_blank",
     "category": "Section 01: Foundations & Projections",
     "subcluster": "1.1 Basic Projections",
+    "tier": "Apprentice",
+    "tierColor": "#38bdf8",
+    "difficulty": "Easy",
     "task": "Extract a single specific column to minimize memory overhead.",
     "table": "Students",
     "schemaSnippet": "Students(student_id INT, first_name VARCHAR, last_name VARCHAR, age INT, major VARCHAR, gpa DECIMAL, city VARCHAR, enrolled_year INT)",
     "targetQuery": "SELECT first_name\nFROM Students;",
     "template": [
       {
-        "text": "",
+        "text": "SELECT ",
         "isBlank": false
       },
       {
@@ -150,7 +189,7 @@ window.QUESTS_SECTION_1 = [
         "placeholder": "[ ___ ]"
       },
       {
-        "text": " first_name\n",
+        "text": "\n",
         "isBlank": false
       },
       {
@@ -160,31 +199,46 @@ window.QUESTS_SECTION_1 = [
         "placeholder": "[ ___ ]"
       },
       {
-        "text": " Students;",
+        "text": " ",
         "isBlank": false
+      },
+      {
+        "text": "",
+        "isBlank": true,
+        "slotId": "slot3",
+        "placeholder": "[ ___ ]"
       }
     ],
     "slots": {
       "slot1": {
-        "correct": "SELECT",
+        "correct": "first_name",
         "options": [
-          "GET",
-          "CHOOSE",
-          "SELECT",
-          "EXTRACT"
+          "last_name",
+          "first_name",
+          "student_id",
+          "enrolled_year"
         ]
       },
       "slot2": {
         "correct": "FROM",
         "options": [
-          "FROM",
+          "INTO",
           "SOURCE",
           "TABLE",
-          "INTO"
+          "FROM"
+        ]
+      },
+      "slot3": {
+        "correct": "Students;",
+        "options": [
+          "MusicTracks;",
+          "FlightSchedule;",
+          "Students;",
+          "Employees;"
         ]
       }
     },
-    "explanation": "When selecting a single column, no commas are used anywhere in the query. 💡 Pro-Tip / Trap: Writing 'SELECT first_name, FROM Students;' (trailing comma before FROM).",
+    "explanation": "When selecting a single column, no commas are used anywhere in the query. 💡 Trap to avoid: Writing 'SELECT first_name, FROM Students;' (trailing comma before FROM).",
     "commonMistakes": "Accidentally adding a comma after the single column name."
   },
   {
@@ -195,13 +249,16 @@ window.QUESTS_SECTION_1 = [
     "type": "fill_blank",
     "category": "Section 01: Foundations & Projections",
     "subcluster": "1.1 Basic Projections",
+    "tier": "Apprentice",
+    "tierColor": "#38bdf8",
+    "difficulty": "Easy",
     "task": "Select the title column from the Books table.",
     "table": "Books",
     "schemaSnippet": "Books(book_id INT, title VARCHAR, author VARCHAR, genre VARCHAR, price DECIMAL, stock_qty INT, published_year INT, is_hardcover BOOLEAN)",
     "targetQuery": "SELECT title\nFROM Books;",
     "template": [
       {
-        "text": "",
+        "text": "SELECT ",
         "isBlank": false
       },
       {
@@ -211,7 +268,7 @@ window.QUESTS_SECTION_1 = [
         "placeholder": "[ ___ ]"
       },
       {
-        "text": " title\n",
+        "text": "\n",
         "isBlank": false
       },
       {
@@ -221,31 +278,46 @@ window.QUESTS_SECTION_1 = [
         "placeholder": "[ ___ ]"
       },
       {
-        "text": " Books;",
+        "text": " ",
         "isBlank": false
+      },
+      {
+        "text": "",
+        "isBlank": true,
+        "slotId": "slot3",
+        "placeholder": "[ ___ ]"
       }
     ],
     "slots": {
       "slot1": {
-        "correct": "SELECT",
+        "correct": "title",
         "options": [
-          "EXTRACT",
-          "SELECT",
-          "GET",
-          "CHOOSE"
+          "stock_qty",
+          "price",
+          "published_year",
+          "title"
         ]
       },
       "slot2": {
         "correct": "FROM",
         "options": [
-          "SOURCE",
-          "INTO",
           "FROM",
-          "TABLE"
+          "SOURCE",
+          "TABLE",
+          "INTO"
+        ]
+      },
+      "slot3": {
+        "correct": "Books;",
+        "options": [
+          "MovieReviews;",
+          "Students;",
+          "Books;",
+          "GroceryItems;"
         ]
       }
     },
-    "explanation": "Column names are case-insensitive in ANSI SQL, but snake_case is standard practice. 💡 Pro-Tip / Trap: Wrapping the column name in single quotes ('title' will output the literal word 'title' for every row!).",
+    "explanation": "Column names are case-insensitive in ANSI SQL, but snake_case is standard practice. 💡 Trap to avoid: Wrapping the column name in single quotes ('title' will output the literal word 'title' for every row!).",
     "commonMistakes": "Putting single quotes around column identifiers."
   },
   {
@@ -256,13 +328,16 @@ window.QUESTS_SECTION_1 = [
     "type": "fill_blank",
     "category": "Section 01: Foundations & Projections",
     "subcluster": "1.1 Basic Projections",
+    "tier": "Apprentice",
+    "tierColor": "#38bdf8",
+    "difficulty": "Easy",
     "task": "Select the track_title column from MusicTracks.",
     "table": "MusicTracks",
     "schemaSnippet": "MusicTracks(track_id INT, track_title VARCHAR, artist_name VARCHAR, genre VARCHAR, duration_seconds INT, play_count INT, release_year INT)",
     "targetQuery": "SELECT track_title\nFROM MusicTracks;",
     "template": [
       {
-        "text": "",
+        "text": "SELECT ",
         "isBlank": false
       },
       {
@@ -272,7 +347,7 @@ window.QUESTS_SECTION_1 = [
         "placeholder": "[ ___ ]"
       },
       {
-        "text": " track_title\n",
+        "text": "\n",
         "isBlank": false
       },
       {
@@ -282,31 +357,46 @@ window.QUESTS_SECTION_1 = [
         "placeholder": "[ ___ ]"
       },
       {
-        "text": " MusicTracks;",
+        "text": " ",
         "isBlank": false
+      },
+      {
+        "text": "",
+        "isBlank": true,
+        "slotId": "slot3",
+        "placeholder": "[ ___ ]"
       }
     ],
     "slots": {
       "slot1": {
-        "correct": "SELECT",
+        "correct": "track_title",
         "options": [
-          "CHOOSE",
-          "SELECT",
-          "GET",
-          "EXTRACT"
+          "genre",
+          "artist",
+          "track_title",
+          "track_id"
         ]
       },
       "slot2": {
         "correct": "FROM",
         "options": [
+          "FROM",
           "INTO",
           "SOURCE",
-          "TABLE",
-          "FROM"
+          "TABLE"
+        ]
+      },
+      "slot3": {
+        "correct": "MusicTracks;",
+        "options": [
+          "MusicTracks;",
+          "PetClinic;",
+          "Books;",
+          "Orders;"
         ]
       }
     },
-    "explanation": "Ensure exact column spelling matches the database schema definition. 💡 Pro-Tip / Trap: Misspelling 'track_title' as 'track_name' or 'song'.",
+    "explanation": "Ensure exact column spelling matches the database schema definition. 💡 Trap to avoid: Misspelling 'track_title' as 'track_name' or 'song'.",
     "commonMistakes": "Guessing column names instead of referencing the schema."
   },
   {
@@ -317,6 +407,9 @@ window.QUESTS_SECTION_1 = [
     "type": "fill_blank",
     "category": "Section 01: Foundations & Projections",
     "subcluster": "1.1 Basic Projections",
+    "tier": "Apprentice",
+    "tierColor": "#38bdf8",
+    "difficulty": "Easy",
     "task": "Retrieve all columns from GroceryItems.",
     "table": "GroceryItems",
     "schemaSnippet": "GroceryItems(item_id INT, item_name VARCHAR, category VARCHAR, unit_price DECIMAL, is_organic BOOLEAN, calories INT, stock_units INT)",
@@ -324,22 +417,28 @@ window.QUESTS_SECTION_1 = [
     "template": [
       {
         "text": "",
-        "isBlank": false
-      },
-      {
-        "text": "",
         "isBlank": true,
         "slotId": "slot1",
         "placeholder": "[ ___ ]"
       },
       {
-        "text": " *\n",
+        "text": " ",
         "isBlank": false
       },
       {
         "text": "",
         "isBlank": true,
         "slotId": "slot2",
+        "placeholder": "[ ___ ]"
+      },
+      {
+        "text": "\n",
+        "isBlank": false
+      },
+      {
+        "text": "",
+        "isBlank": true,
+        "slotId": "slot3",
         "placeholder": "[ ___ ]"
       },
       {
@@ -352,22 +451,31 @@ window.QUESTS_SECTION_1 = [
         "correct": "SELECT",
         "options": [
           "EXTRACT",
-          "GET",
+          "CHOOSE",
           "SELECT",
-          "CHOOSE"
+          "GET"
         ]
       },
       "slot2": {
+        "correct": "*",
+        "options": [
+          "%",
+          "*",
+          "EVERY",
+          "ALL"
+        ]
+      },
+      "slot3": {
         "correct": "FROM",
         "options": [
           "INTO",
-          "TABLE",
           "FROM",
+          "TABLE",
           "SOURCE"
         ]
       }
     },
-    "explanation": "Asterisk selects columns in their physical storage order. 💡 Pro-Tip / Trap: Writing 'SELECT GroceryItems.*' when only one table is involved (redundant prefix).",
+    "explanation": "Asterisk selects columns in their physical storage order. 💡 Trap to avoid: Writing 'SELECT GroceryItems.*' when only one table is involved (redundant prefix).",
     "commonMistakes": "Overcomplicating the query with table qualifiers when scanning a single table."
   },
   {
@@ -378,13 +486,16 @@ window.QUESTS_SECTION_1 = [
     "type": "fill_blank",
     "category": "Section 01: Foundations & Projections",
     "subcluster": "1.1 Basic Projections",
+    "tier": "Apprentice",
+    "tierColor": "#38bdf8",
+    "difficulty": "Easy",
     "task": "Select last_name from Employees.",
     "table": "Employees",
     "schemaSnippet": "Employees(emp_id INT, first_name VARCHAR, last_name VARCHAR, department VARCHAR, salary DECIMAL, bonus DECIMAL, hire_date DATE)",
     "targetQuery": "SELECT last_name\nFROM Employees;",
     "template": [
       {
-        "text": "",
+        "text": "SELECT ",
         "isBlank": false
       },
       {
@@ -394,7 +505,7 @@ window.QUESTS_SECTION_1 = [
         "placeholder": "[ ___ ]"
       },
       {
-        "text": " last_name\n",
+        "text": "\n",
         "isBlank": false
       },
       {
@@ -404,31 +515,46 @@ window.QUESTS_SECTION_1 = [
         "placeholder": "[ ___ ]"
       },
       {
-        "text": " Employees;",
+        "text": " ",
         "isBlank": false
+      },
+      {
+        "text": "",
+        "isBlank": true,
+        "slotId": "slot3",
+        "placeholder": "[ ___ ]"
       }
     ],
     "slots": {
       "slot1": {
-        "correct": "SELECT",
+        "correct": "last_name",
         "options": [
-          "EXTRACT",
-          "GET",
-          "CHOOSE",
-          "SELECT"
+          "first_name",
+          "salary",
+          "last_name",
+          "department"
         ]
       },
       "slot2": {
         "correct": "FROM",
         "options": [
-          "TABLE",
           "INTO",
           "SOURCE",
-          "FROM"
+          "FROM",
+          "TABLE"
+        ]
+      },
+      "slot3": {
+        "correct": "Employees;",
+        "options": [
+          "MusicTracks;",
+          "Orders;",
+          "Employees;",
+          "GroceryItems;"
         ]
       }
     },
-    "explanation": "Specifying only the needed column saves network bandwidth and buffer cache. 💡 Pro-Tip / Trap: Using 'SELECT last_name;' without a FROM clause.",
+    "explanation": "Specifying only the needed column saves network bandwidth and buffer cache. 💡 Trap to avoid: Using 'SELECT last_name;' without a FROM clause.",
     "commonMistakes": "Forgetting the FROM clause."
   },
   {
@@ -439,13 +565,16 @@ window.QUESTS_SECTION_1 = [
     "type": "fill_blank",
     "category": "Section 01: Foundations & Projections",
     "subcluster": "1.1 Basic Projections",
+    "tier": "Apprentice",
+    "tierColor": "#38bdf8",
+    "difficulty": "Easy",
     "task": "Select pet_name from PetClinic.",
     "table": "PetClinic",
     "schemaSnippet": "PetClinic(pet_id INT, pet_name VARCHAR, species VARCHAR, breed VARCHAR, age_years INT, weight_kg DECIMAL, is_vaccinated BOOLEAN, owner_city VARCHAR)",
     "targetQuery": "SELECT pet_name\nFROM PetClinic;",
     "template": [
       {
-        "text": "",
+        "text": "SELECT ",
         "isBlank": false
       },
       {
@@ -455,7 +584,7 @@ window.QUESTS_SECTION_1 = [
         "placeholder": "[ ___ ]"
       },
       {
-        "text": " pet_name\n",
+        "text": "\n",
         "isBlank": false
       },
       {
@@ -465,31 +594,46 @@ window.QUESTS_SECTION_1 = [
         "placeholder": "[ ___ ]"
       },
       {
-        "text": " PetClinic;",
+        "text": " ",
         "isBlank": false
+      },
+      {
+        "text": "",
+        "isBlank": true,
+        "slotId": "slot3",
+        "placeholder": "[ ___ ]"
       }
     ],
     "slots": {
       "slot1": {
-        "correct": "SELECT",
+        "correct": "pet_name",
         "options": [
-          "GET",
-          "EXTRACT",
-          "SELECT",
-          "CHOOSE"
+          "weight_kg",
+          "species",
+          "age_years",
+          "pet_name"
         ]
       },
       "slot2": {
         "correct": "FROM",
         "options": [
-          "FROM",
-          "TABLE",
+          "SOURCE",
           "INTO",
-          "SOURCE"
+          "FROM",
+          "TABLE"
+        ]
+      },
+      "slot3": {
+        "correct": "PetClinic;",
+        "options": [
+          "Orders;",
+          "Students;",
+          "PetClinic;",
+          "Employees;"
         ]
       }
     },
-    "explanation": "Target table follows immediately after the FROM keyword. 💡 Pro-Tip / Trap: Writing 'FROM PetClinic SELECT pet_name' (lexical syntax requires SELECT first).",
+    "explanation": "Target table follows immediately after the FROM keyword. 💡 Trap to avoid: Writing 'FROM PetClinic SELECT pet_name' (lexical syntax requires SELECT first).",
     "commonMistakes": "Inverting SELECT and FROM order."
   },
   {
@@ -500,13 +644,16 @@ window.QUESTS_SECTION_1 = [
     "type": "fill_blank",
     "category": "Section 01: Foundations & Projections",
     "subcluster": "1.1 Basic Projections",
+    "tier": "Apprentice",
+    "tierColor": "#38bdf8",
+    "difficulty": "Easy",
     "task": "Select movie_title from MovieReviews.",
     "table": "MovieReviews",
     "schemaSnippet": "MovieReviews(review_id INT, movie_title VARCHAR, director VARCHAR, genre VARCHAR, star_rating DECIMAL, release_year INT, review_length_words INT)",
     "targetQuery": "SELECT movie_title\nFROM MovieReviews;",
     "template": [
       {
-        "text": "",
+        "text": "SELECT ",
         "isBlank": false
       },
       {
@@ -516,7 +663,7 @@ window.QUESTS_SECTION_1 = [
         "placeholder": "[ ___ ]"
       },
       {
-        "text": " movie_title\n",
+        "text": "\n",
         "isBlank": false
       },
       {
@@ -526,31 +673,46 @@ window.QUESTS_SECTION_1 = [
         "placeholder": "[ ___ ]"
       },
       {
-        "text": " MovieReviews;",
+        "text": " ",
         "isBlank": false
+      },
+      {
+        "text": "",
+        "isBlank": true,
+        "slotId": "slot3",
+        "placeholder": "[ ___ ]"
       }
     ],
     "slots": {
       "slot1": {
-        "correct": "SELECT",
+        "correct": "movie_title",
         "options": [
-          "SELECT",
-          "CHOOSE",
-          "GET",
-          "EXTRACT"
+          "review_id",
+          "star_rating",
+          "movie_title",
+          "director"
         ]
       },
       "slot2": {
         "correct": "FROM",
         "options": [
-          "SOURCE",
           "TABLE",
-          "INTO",
-          "FROM"
+          "SOURCE",
+          "FROM",
+          "INTO"
+        ]
+      },
+      "slot3": {
+        "correct": "MovieReviews;",
+        "options": [
+          "Employees;",
+          "Orders;",
+          "MovieReviews;",
+          "Students;"
         ]
       }
     },
-    "explanation": "Keywords are traditionally uppercase and column names lowercase for readability. 💡 Pro-Tip / Trap: Writing 'SELECT movie title' without the underscore (space causes syntax parse failure).",
+    "explanation": "Keywords are traditionally uppercase and column names lowercase for readability. 💡 Trap to avoid: Writing 'SELECT movie title' without the underscore (space causes syntax parse failure).",
     "commonMistakes": "Omitting the underscore in multi-word column names."
   },
   {
@@ -561,13 +723,16 @@ window.QUESTS_SECTION_1 = [
     "type": "fill_blank",
     "category": "Section 01: Foundations & Projections",
     "subcluster": "1.1 Basic Projections",
+    "tier": "Apprentice",
+    "tierColor": "#38bdf8",
+    "difficulty": "Easy",
     "task": "Select flight_id from FlightSchedule.",
     "table": "FlightSchedule",
     "schemaSnippet": "FlightSchedule(flight_id VARCHAR, airline VARCHAR, origin_airport VARCHAR, dest_airport VARCHAR, departure_time VARCHAR, delay_minutes INT, ticket_price DECIMAL, is_international BOOLEAN)",
     "targetQuery": "SELECT flight_id\nFROM FlightSchedule;",
     "template": [
       {
-        "text": "",
+        "text": "SELECT ",
         "isBlank": false
       },
       {
@@ -577,7 +742,7 @@ window.QUESTS_SECTION_1 = [
         "placeholder": "[ ___ ]"
       },
       {
-        "text": " flight_id\n",
+        "text": "\n",
         "isBlank": false
       },
       {
@@ -587,48 +752,66 @@ window.QUESTS_SECTION_1 = [
         "placeholder": "[ ___ ]"
       },
       {
-        "text": " FlightSchedule;",
+        "text": " ",
         "isBlank": false
+      },
+      {
+        "text": "",
+        "isBlank": true,
+        "slotId": "slot3",
+        "placeholder": "[ ___ ]"
       }
     ],
     "slots": {
       "slot1": {
-        "correct": "SELECT",
+        "correct": "flight_id",
         "options": [
-          "CHOOSE",
-          "SELECT",
-          "GET",
-          "EXTRACT"
+          "flight_id",
+          "destination_airport",
+          "origin_airport",
+          "departure_time"
         ]
       },
       "slot2": {
         "correct": "FROM",
         "options": [
           "INTO",
-          "SOURCE",
+          "FROM",
           "TABLE",
-          "FROM"
+          "SOURCE"
+        ]
+      },
+      "slot3": {
+        "correct": "FlightSchedule;",
+        "options": [
+          "FlightSchedule;",
+          "GymMembers;",
+          "Books;",
+          "Students;"
         ]
       }
     },
-    "explanation": "Identifiers can contain numbers and underscores but cannot start with a number. 💡 Pro-Tip / Trap: Writing 'SELECT flight-id' with a hyphen (hyphen means subtraction!).",
+    "explanation": "Identifiers can contain numbers and underscores but cannot start with a number. 💡 Trap to avoid: Writing 'SELECT flight-id' with a hyphen (hyphen means subtraction!).",
     "commonMistakes": "Using a hyphen instead of an underscore."
   },
   {
     "id": 11,
     "levelDisplay": "Level 11",
-    "title": "Level 11: Select the first name, last name, and GPA for all students",
+    "title": "Level 11: Select the first name, last name, and GPA for all st...",
     "subtitle": "Select the first name, last name, and GPA for all students.",
     "type": "fill_blank",
     "category": "Section 01: Foundations & Projections",
     "subcluster": "1.2 Multi-Column & Commas",
+    "tier": "Apprentice",
+    "tierColor": "#38bdf8",
+    "difficulty": "Easy",
     "task": "Select the first name, last name, and GPA for all students.",
     "table": "Students",
     "schemaSnippet": "Students schema",
     "targetQuery": "SELECT first_name, last_name, gpa\nFROM Students;",
     "template": [
       {
-        "text": "",
+        "text": "SELECT ",
         "isBlank": false
       },
       {
@@ -638,7 +821,7 @@ window.QUESTS_SECTION_1 = [
         "placeholder": "[ ___ ]"
       },
       {
-        "text": " first_name, last_name, gpa\n",
+        "text": "\n",
         "isBlank": false
       },
       {
@@ -648,48 +831,66 @@ window.QUESTS_SECTION_1 = [
         "placeholder": "[ ___ ]"
       },
       {
-        "text": " Students;",
+        "text": " ",
         "isBlank": false
+      },
+      {
+        "text": "",
+        "isBlank": true,
+        "slotId": "slot3",
+        "placeholder": "[ ___ ]"
       }
     ],
     "slots": {
       "slot1": {
-        "correct": "SELECT",
+        "correct": "first_name, last_name, gpa",
         "options": [
-          "SELECT",
-          "CHOOSE",
-          "GET",
-          "EXTRACT"
+          "first_name + last_name + gpa",
+          "first_name, last_name, gpa",
+          "first_name AND last_name AND gpa",
+          "(first_name, last_name, gpa)"
         ]
       },
       "slot2": {
         "correct": "FROM",
         "options": [
-          "TABLE",
-          "SOURCE",
+          "FROM",
           "INTO",
-          "FROM"
+          "TABLE",
+          "SOURCE"
+        ]
+      },
+      "slot3": {
+        "correct": "Students;",
+        "options": [
+          "Students;",
+          "GroceryItems;",
+          "Employees;",
+          "MusicTracks;"
         ]
       }
     },
-    "explanation": "Keywords are SELECT, FROM, AS, DISTINCT. Keep commas between columns only. 💡 Pro-Tip / Trap: Do not add trailing commas before FROM or quote column identifiers.",
+    "explanation": "Keywords are SELECT, FROM, AS, DISTINCT. Keep commas between columns only. 💡 Trap to avoid: Do not add trailing commas before FROM or quote column identifiers.",
     "commonMistakes": "Punctuation errors, trailing commas, or quotes around column names."
   },
   {
     "id": 12,
     "levelDisplay": "Level 12",
-    "title": "Level 12: Display book title, author, and price for a book fair cat...",
+    "title": "Level 12: Display book title, author, and price for a book fai...",
     "subtitle": "Display book title, author, and price for a book fair catalog.",
     "type": "fill_blank",
     "category": "Section 01: Foundations & Projections",
     "subcluster": "1.2 Multi-Column & Commas",
+    "tier": "Apprentice",
+    "tierColor": "#38bdf8",
+    "difficulty": "Easy",
     "task": "Display book title, author, and price for a book fair catalog.",
     "table": "Books",
     "schemaSnippet": "Books schema",
     "targetQuery": "SELECT title, author, price\nFROM Books;",
     "template": [
       {
-        "text": "",
+        "text": "SELECT ",
         "isBlank": false
       },
       {
@@ -699,7 +900,7 @@ window.QUESTS_SECTION_1 = [
         "placeholder": "[ ___ ]"
       },
       {
-        "text": " title, author, price\n",
+        "text": "\n",
         "isBlank": false
       },
       {
@@ -709,48 +910,66 @@ window.QUESTS_SECTION_1 = [
         "placeholder": "[ ___ ]"
       },
       {
-        "text": " Books;",
+        "text": " ",
         "isBlank": false
+      },
+      {
+        "text": "",
+        "isBlank": true,
+        "slotId": "slot3",
+        "placeholder": "[ ___ ]"
       }
     ],
     "slots": {
       "slot1": {
-        "correct": "SELECT",
+        "correct": "title, author, price",
         "options": [
-          "CHOOSE",
-          "EXTRACT",
-          "GET",
-          "SELECT"
+          "title AND author AND price",
+          "title + author + price",
+          "title, author, price",
+          "(title, author, price)"
         ]
       },
       "slot2": {
         "correct": "FROM",
         "options": [
-          "FROM",
-          "TABLE",
           "SOURCE",
-          "INTO"
+          "INTO",
+          "TABLE",
+          "FROM"
+        ]
+      },
+      "slot3": {
+        "correct": "Books;",
+        "options": [
+          "Books;",
+          "MovieReviews;",
+          "GymMembers;",
+          "GroceryItems;"
         ]
       }
     },
-    "explanation": "Keywords are SELECT, FROM, AS, DISTINCT. Keep commas between columns only. 💡 Pro-Tip / Trap: Do not add trailing commas before FROM or quote column identifiers.",
+    "explanation": "Keywords are SELECT, FROM, AS, DISTINCT. Keep commas between columns only. 💡 Trap to avoid: Do not add trailing commas before FROM or quote column identifiers.",
     "commonMistakes": "Punctuation errors, trailing commas, or quotes around column names."
   },
   {
     "id": 13,
     "levelDisplay": "Level 13",
-    "title": "Level 13: Extract first name, department, and salary for the monthl...",
+    "title": "Level 13: Extract first name, department, and salary for the m...",
     "subtitle": "Extract first name, department, and salary for the monthly compensation review.",
     "type": "fill_blank",
     "category": "Section 01: Foundations & Projections",
     "subcluster": "1.2 Multi-Column & Commas",
+    "tier": "Apprentice",
+    "tierColor": "#38bdf8",
+    "difficulty": "Easy",
     "task": "Extract first name, department, and salary for the monthly compensation review.",
     "table": "Employees",
     "schemaSnippet": "Employees schema",
     "targetQuery": "SELECT first_name, department, salary\nFROM Employees;",
     "template": [
       {
-        "text": "",
+        "text": "SELECT ",
         "isBlank": false
       },
       {
@@ -760,7 +979,7 @@ window.QUESTS_SECTION_1 = [
         "placeholder": "[ ___ ]"
       },
       {
-        "text": " first_name, department, salary\n",
+        "text": "\n",
         "isBlank": false
       },
       {
@@ -770,18 +989,24 @@ window.QUESTS_SECTION_1 = [
         "placeholder": "[ ___ ]"
       },
       {
-        "text": " Employees;",
+        "text": " ",
         "isBlank": false
+      },
+      {
+        "text": "",
+        "isBlank": true,
+        "slotId": "slot3",
+        "placeholder": "[ ___ ]"
       }
     ],
     "slots": {
       "slot1": {
-        "correct": "SELECT",
+        "correct": "first_name, department, salary",
         "options": [
-          "GET",
-          "SELECT",
-          "EXTRACT",
-          "CHOOSE"
+          "(first_name, department, salary)",
+          "first_name AND department AND salary",
+          "first_name + department + salary",
+          "first_name, department, salary"
         ]
       },
       "slot2": {
@@ -789,29 +1014,41 @@ window.QUESTS_SECTION_1 = [
         "options": [
           "FROM",
           "SOURCE",
-          "TABLE",
-          "INTO"
+          "INTO",
+          "TABLE"
+        ]
+      },
+      "slot3": {
+        "correct": "Employees;",
+        "options": [
+          "MusicTracks;",
+          "Students;",
+          "GroceryItems;",
+          "Employees;"
         ]
       }
     },
-    "explanation": "Keywords are SELECT, FROM, AS, DISTINCT. Keep commas between columns only. 💡 Pro-Tip / Trap: Do not add trailing commas before FROM or quote column identifiers.",
+    "explanation": "Keywords are SELECT, FROM, AS, DISTINCT. Keep commas between columns only. 💡 Trap to avoid: Do not add trailing commas before FROM or quote column identifiers.",
     "commonMistakes": "Punctuation errors, trailing commas, or quotes around column names."
   },
   {
     "id": 14,
     "levelDisplay": "Level 14",
-    "title": "Level 14: List grocery item name, its category, and unit price for ...",
+    "title": "Level 14: List grocery item name, its category, and unit price...",
     "subtitle": "List grocery item name, its category, and unit price for shelf price tags.",
     "type": "fill_blank",
     "category": "Section 01: Foundations & Projections",
     "subcluster": "1.2 Multi-Column & Commas",
+    "tier": "Apprentice",
+    "tierColor": "#38bdf8",
+    "difficulty": "Easy",
     "task": "List grocery item name, its category, and unit price for shelf price tags.",
     "table": "GroceryItems",
     "schemaSnippet": "GroceryItems schema",
     "targetQuery": "SELECT item_name, category, unit_price\nFROM GroceryItems;",
     "template": [
       {
-        "text": "",
+        "text": "SELECT ",
         "isBlank": false
       },
       {
@@ -821,7 +1058,7 @@ window.QUESTS_SECTION_1 = [
         "placeholder": "[ ___ ]"
       },
       {
-        "text": " item_name, category, unit_price\n",
+        "text": "\n",
         "isBlank": false
       },
       {
@@ -831,18 +1068,103 @@ window.QUESTS_SECTION_1 = [
         "placeholder": "[ ___ ]"
       },
       {
-        "text": " GroceryItems;",
+        "text": " ",
         "isBlank": false
+      },
+      {
+        "text": "",
+        "isBlank": true,
+        "slotId": "slot3",
+        "placeholder": "[ ___ ]"
       }
     ],
     "slots": {
       "slot1": {
-        "correct": "SELECT",
+        "correct": "item_name, category, unit_price",
         "options": [
-          "EXTRACT",
-          "CHOOSE",
-          "GET",
-          "SELECT"
+          "item_name + category + unit_price",
+          "item_name, category, unit_price",
+          "item_name AND category AND unit_price",
+          "(item_name, category, unit_price)"
+        ]
+      },
+      "slot2": {
+        "correct": "FROM",
+        "options": [
+          "SOURCE",
+          "TABLE",
+          "INTO",
+          "FROM"
+        ]
+      },
+      "slot3": {
+        "correct": "GroceryItems;",
+        "options": [
+          "MusicTracks;",
+          "GroceryItems;",
+          "GymMembers;",
+          "MovieReviews;"
+        ]
+      }
+    },
+    "explanation": "Keywords are SELECT, FROM, AS, DISTINCT. Keep commas between columns only. 💡 Trap to avoid: Do not add trailing commas before FROM or quote column identifiers.",
+    "commonMistakes": "Punctuation errors, trailing commas, or quotes around column names."
+  },
+  {
+    "id": 15,
+    "levelDisplay": "Level 15",
+    "title": "Level 15: View customer name, purchased product, and ordered q...",
+    "subtitle": "View customer name, purchased product, and ordered quantity on packing slips.",
+    "type": "fill_blank",
+    "category": "Section 01: Foundations & Projections",
+    "subcluster": "1.2 Multi-Column & Commas",
+    "tier": "Apprentice",
+    "tierColor": "#38bdf8",
+    "difficulty": "Easy",
+    "task": "View customer name, purchased product, and ordered quantity on packing slips.",
+    "table": "Orders",
+    "schemaSnippet": "Orders schema",
+    "targetQuery": "SELECT customer_name, product_name, quantity\nFROM Orders;",
+    "template": [
+      {
+        "text": "SELECT ",
+        "isBlank": false
+      },
+      {
+        "text": "",
+        "isBlank": true,
+        "slotId": "slot1",
+        "placeholder": "[ ___ ]"
+      },
+      {
+        "text": "\n",
+        "isBlank": false
+      },
+      {
+        "text": "",
+        "isBlank": true,
+        "slotId": "slot2",
+        "placeholder": "[ ___ ]"
+      },
+      {
+        "text": " ",
+        "isBlank": false
+      },
+      {
+        "text": "",
+        "isBlank": true,
+        "slotId": "slot3",
+        "placeholder": "[ ___ ]"
+      }
+    ],
+    "slots": {
+      "slot1": {
+        "correct": "customer_name, product_name, quantity",
+        "options": [
+          "customer_name + product_name + quantity",
+          "(customer_name, product_name, quantity)",
+          "customer_name, product_name, quantity",
+          "customer_name AND product_name AND quantity"
         ]
       },
       "slot2": {
@@ -853,87 +1175,38 @@ window.QUESTS_SECTION_1 = [
           "SOURCE",
           "FROM"
         ]
-      }
-    },
-    "explanation": "Keywords are SELECT, FROM, AS, DISTINCT. Keep commas between columns only. 💡 Pro-Tip / Trap: Do not add trailing commas before FROM or quote column identifiers.",
-    "commonMistakes": "Punctuation errors, trailing commas, or quotes around column names."
-  },
-  {
-    "id": 15,
-    "levelDisplay": "Level 15",
-    "title": "Level 15: View customer name, purchased product, and ordered quanti...",
-    "subtitle": "View customer name, purchased product, and ordered quantity on packing slips.",
-    "type": "fill_blank",
-    "category": "Section 01: Foundations & Projections",
-    "subcluster": "1.2 Multi-Column & Commas",
-    "task": "View customer name, purchased product, and ordered quantity on packing slips.",
-    "table": "Orders",
-    "schemaSnippet": "Orders schema",
-    "targetQuery": "SELECT customer_name, product_name, quantity\nFROM Orders;",
-    "template": [
-      {
-        "text": "",
-        "isBlank": false
       },
-      {
-        "text": "",
-        "isBlank": true,
-        "slotId": "slot1",
-        "placeholder": "[ ___ ]"
-      },
-      {
-        "text": " customer_name, product_name, quantity\n",
-        "isBlank": false
-      },
-      {
-        "text": "",
-        "isBlank": true,
-        "slotId": "slot2",
-        "placeholder": "[ ___ ]"
-      },
-      {
-        "text": " Orders;",
-        "isBlank": false
-      }
-    ],
-    "slots": {
-      "slot1": {
-        "correct": "SELECT",
+      "slot3": {
+        "correct": "Orders;",
         "options": [
-          "CHOOSE",
-          "EXTRACT",
-          "SELECT",
-          "GET"
-        ]
-      },
-      "slot2": {
-        "correct": "FROM",
-        "options": [
-          "TABLE",
-          "FROM",
-          "INTO",
-          "SOURCE"
+          "PetClinic;",
+          "GymMembers;",
+          "Orders;",
+          "Employees;"
         ]
       }
     },
-    "explanation": "Keywords are SELECT, FROM, AS, DISTINCT. Keep commas between columns only. 💡 Pro-Tip / Trap: Do not add trailing commas before FROM or quote column identifiers.",
+    "explanation": "Keywords are SELECT, FROM, AS, DISTINCT. Keep commas between columns only. 💡 Trap to avoid: Do not add trailing commas before FROM or quote column identifiers.",
     "commonMistakes": "Punctuation errors, trailing commas, or quotes around column names."
   },
   {
     "id": 16,
     "levelDisplay": "Level 16",
-    "title": "Level 16: Show track title, artist name, and duration in seconds fo...",
+    "title": "Level 16: Show track title, artist name, and duration in secon...",
     "subtitle": "Show track title, artist name, and duration in seconds for the media player.",
     "type": "fill_blank",
     "category": "Section 01: Foundations & Projections",
     "subcluster": "1.2 Multi-Column & Commas",
+    "tier": "Practitioner",
+    "tierColor": "#10b981",
+    "difficulty": "Medium",
     "task": "Show track title, artist name, and duration in seconds for the media player.",
     "table": "MusicTracks",
     "schemaSnippet": "MusicTracks schema",
     "targetQuery": "SELECT title, artist, duration_seconds\nFROM MusicTracks;",
     "template": [
       {
-        "text": "",
+        "text": "SELECT ",
         "isBlank": false
       },
       {
@@ -943,13 +1216,23 @@ window.QUESTS_SECTION_1 = [
         "placeholder": "[ ___ ]"
       },
       {
-        "text": " title, artist, duration_seconds\n",
+        "text": ", ",
         "isBlank": false
       },
       {
         "text": "",
         "isBlank": true,
         "slotId": "slot2",
+        "placeholder": "[ ___ ]"
+      },
+      {
+        "text": ",  duration_seconds\n",
+        "isBlank": false
+      },
+      {
+        "text": "",
+        "isBlank": true,
+        "slotId": "slot3",
         "placeholder": "[ ___ ]"
       },
       {
@@ -959,42 +1242,54 @@ window.QUESTS_SECTION_1 = [
     ],
     "slots": {
       "slot1": {
-        "correct": "SELECT",
+        "correct": "title",
         "options": [
-          "CHOOSE",
-          "GET",
-          "EXTRACT",
-          "SELECT"
+          "title",
+          "genre",
+          "artist",
+          "track_id"
         ]
       },
       "slot2": {
+        "correct": "artist",
+        "options": [
+          "duration_seconds",
+          "artist",
+          "title",
+          "track_id"
+        ]
+      },
+      "slot3": {
         "correct": "FROM",
         "options": [
           "INTO",
-          "FROM",
+          "TABLE",
           "SOURCE",
-          "TABLE"
+          "FROM"
         ]
       }
     },
-    "explanation": "Keywords are SELECT, FROM, AS, DISTINCT. Keep commas between columns only. 💡 Pro-Tip / Trap: Do not add trailing commas before FROM or quote column identifiers.",
+    "explanation": "Keywords are SELECT, FROM, AS, DISTINCT. Keep commas between columns only. 💡 Trap to avoid: Do not add trailing commas before FROM or quote column identifiers.",
     "commonMistakes": "Punctuation errors, trailing commas, or quotes around column names."
   },
   {
     "id": 17,
     "levelDisplay": "Level 17",
-    "title": "Level 17: Fetch gym member name, plan type, and monthly fee for bil...",
+    "title": "Level 17: Fetch gym member name, plan type, and monthly fee fo...",
     "subtitle": "Fetch gym member name, plan type, and monthly fee for billing.",
     "type": "fill_blank",
     "category": "Section 01: Foundations & Projections",
     "subcluster": "1.2 Multi-Column & Commas",
+    "tier": "Practitioner",
+    "tierColor": "#10b981",
+    "difficulty": "Medium",
     "task": "Fetch gym member name, plan type, and monthly fee for billing.",
     "table": "GymMembers",
     "schemaSnippet": "GymMembers schema",
     "targetQuery": "SELECT member_name, membership_plan, monthly_fee\nFROM GymMembers;",
     "template": [
       {
-        "text": "",
+        "text": "SELECT ",
         "isBlank": false
       },
       {
@@ -1004,13 +1299,23 @@ window.QUESTS_SECTION_1 = [
         "placeholder": "[ ___ ]"
       },
       {
-        "text": " member_name, membership_plan, monthly_fee\n",
+        "text": ", ",
         "isBlank": false
       },
       {
         "text": "",
         "isBlank": true,
         "slotId": "slot2",
+        "placeholder": "[ ___ ]"
+      },
+      {
+        "text": ",  monthly_fee\n",
+        "isBlank": false
+      },
+      {
+        "text": "",
+        "isBlank": true,
+        "slotId": "slot3",
         "placeholder": "[ ___ ]"
       },
       {
@@ -1020,42 +1325,54 @@ window.QUESTS_SECTION_1 = [
     ],
     "slots": {
       "slot1": {
-        "correct": "SELECT",
+        "correct": "member_name",
         "options": [
-          "CHOOSE",
-          "GET",
-          "EXTRACT",
-          "SELECT"
+          "membership_plan",
+          "member_name",
+          "joined_date",
+          "monthly_fee"
         ]
       },
       "slot2": {
+        "correct": "membership_plan",
+        "options": [
+          "member_id",
+          "membership_plan",
+          "monthly_fee",
+          "joined_date"
+        ]
+      },
+      "slot3": {
         "correct": "FROM",
         "options": [
+          "SOURCE",
           "INTO",
-          "TABLE",
           "FROM",
-          "SOURCE"
+          "TABLE"
         ]
       }
     },
-    "explanation": "Keywords are SELECT, FROM, AS, DISTINCT. Keep commas between columns only. 💡 Pro-Tip / Trap: Do not add trailing commas before FROM or quote column identifiers.",
+    "explanation": "Keywords are SELECT, FROM, AS, DISTINCT. Keep commas between columns only. 💡 Trap to avoid: Do not add trailing commas before FROM or quote column identifiers.",
     "commonMistakes": "Punctuation errors, trailing commas, or quotes around column names."
   },
   {
     "id": 18,
     "levelDisplay": "Level 18",
-    "title": "Level 18: Output movie title, director, and star rating for a film ...",
+    "title": "Level 18: Output movie title, director, and star rating for a ...",
     "subtitle": "Output movie title, director, and star rating for a film review website.",
     "type": "fill_blank",
     "category": "Section 01: Foundations & Projections",
     "subcluster": "1.2 Multi-Column & Commas",
+    "tier": "Practitioner",
+    "tierColor": "#10b981",
+    "difficulty": "Medium",
     "task": "Output movie title, director, and star rating for a film review website.",
     "table": "MovieReviews",
     "schemaSnippet": "MovieReviews schema",
     "targetQuery": "SELECT movie_title, director, star_rating\nFROM MovieReviews;",
     "template": [
       {
-        "text": "",
+        "text": "SELECT ",
         "isBlank": false
       },
       {
@@ -1065,13 +1382,23 @@ window.QUESTS_SECTION_1 = [
         "placeholder": "[ ___ ]"
       },
       {
-        "text": " movie_title, director, star_rating\n",
+        "text": ", ",
         "isBlank": false
       },
       {
         "text": "",
         "isBlank": true,
         "slotId": "slot2",
+        "placeholder": "[ ___ ]"
+      },
+      {
+        "text": ",  star_rating\n",
+        "isBlank": false
+      },
+      {
+        "text": "",
+        "isBlank": true,
+        "slotId": "slot3",
         "placeholder": "[ ___ ]"
       },
       {
@@ -1081,42 +1408,54 @@ window.QUESTS_SECTION_1 = [
     ],
     "slots": {
       "slot1": {
-        "correct": "SELECT",
+        "correct": "movie_title",
         "options": [
-          "CHOOSE",
-          "GET",
-          "SELECT",
-          "EXTRACT"
+          "review_id",
+          "director",
+          "movie_title",
+          "review_count"
         ]
       },
       "slot2": {
+        "correct": "director",
+        "options": [
+          "review_count",
+          "star_rating",
+          "movie_title",
+          "director"
+        ]
+      },
+      "slot3": {
         "correct": "FROM",
         "options": [
-          "INTO",
-          "SOURCE",
           "FROM",
-          "TABLE"
+          "TABLE",
+          "SOURCE",
+          "INTO"
         ]
       }
     },
-    "explanation": "Keywords are SELECT, FROM, AS, DISTINCT. Keep commas between columns only. 💡 Pro-Tip / Trap: Do not add trailing commas before FROM or quote column identifiers.",
+    "explanation": "Keywords are SELECT, FROM, AS, DISTINCT. Keep commas between columns only. 💡 Trap to avoid: Do not add trailing commas before FROM or quote column identifiers.",
     "commonMistakes": "Punctuation errors, trailing commas, or quotes around column names."
   },
   {
     "id": 19,
     "levelDisplay": "Level 19",
-    "title": "Level 19: Display flight ID, airline, origin airport, and destinati...",
+    "title": "Level 19: Display flight ID, airline, origin airport, and dest...",
     "subtitle": "Display flight ID, airline, origin airport, and destination airport for the flight gate monitor.",
     "type": "fill_blank",
     "category": "Section 01: Foundations & Projections",
     "subcluster": "1.2 Multi-Column & Commas",
+    "tier": "Practitioner",
+    "tierColor": "#10b981",
+    "difficulty": "Medium",
     "task": "Display flight ID, airline, origin airport, and destination airport for the flight gate monitor.",
     "table": "FlightSchedule",
     "schemaSnippet": "FlightSchedule schema",
     "targetQuery": "SELECT flight_id, airline, origin_airport, destination_airport\nFROM FlightSchedule;",
     "template": [
       {
-        "text": "",
+        "text": "SELECT ",
         "isBlank": false
       },
       {
@@ -1126,13 +1465,23 @@ window.QUESTS_SECTION_1 = [
         "placeholder": "[ ___ ]"
       },
       {
-        "text": " flight_id, airline, origin_airport, destination_airport\n",
+        "text": ", ",
         "isBlank": false
       },
       {
         "text": "",
         "isBlank": true,
         "slotId": "slot2",
+        "placeholder": "[ ___ ]"
+      },
+      {
+        "text": ",  origin_airport, destination_airport\n",
+        "isBlank": false
+      },
+      {
+        "text": "",
+        "isBlank": true,
+        "slotId": "slot3",
         "placeholder": "[ ___ ]"
       },
       {
@@ -1142,42 +1491,54 @@ window.QUESTS_SECTION_1 = [
     ],
     "slots": {
       "slot1": {
-        "correct": "SELECT",
+        "correct": "flight_id",
         "options": [
-          "CHOOSE",
-          "SELECT",
-          "EXTRACT",
-          "GET"
+          "flight_id",
+          "origin_airport",
+          "destination_airport",
+          "airline"
         ]
       },
       "slot2": {
+        "correct": "airline",
+        "options": [
+          "airline",
+          "destination_airport",
+          "departure_time",
+          "flight_id"
+        ]
+      },
+      "slot3": {
         "correct": "FROM",
         "options": [
           "INTO",
+          "SOURCE",
           "FROM",
-          "TABLE",
-          "SOURCE"
+          "TABLE"
         ]
       }
     },
-    "explanation": "Keywords are SELECT, FROM, AS, DISTINCT. Keep commas between columns only. 💡 Pro-Tip / Trap: Do not add trailing commas before FROM or quote column identifiers.",
+    "explanation": "Keywords are SELECT, FROM, AS, DISTINCT. Keep commas between columns only. 💡 Trap to avoid: Do not add trailing commas before FROM or quote column identifiers.",
     "commonMistakes": "Punctuation errors, trailing commas, or quotes around column names."
   },
   {
     "id": 20,
     "levelDisplay": "Level 20",
-    "title": "Level 20: Retrieve pet name, species, age in years, and weight in k...",
+    "title": "Level 20: Retrieve pet name, species, age in years, and weight...",
     "subtitle": "Retrieve pet name, species, age in years, and weight in kg for veterinary patient intake.",
     "type": "fill_blank",
     "category": "Section 01: Foundations & Projections",
     "subcluster": "1.2 Multi-Column & Commas",
+    "tier": "Practitioner",
+    "tierColor": "#10b981",
+    "difficulty": "Medium",
     "task": "Retrieve pet name, species, age in years, and weight in kg for veterinary patient intake.",
     "table": "PetClinic",
     "schemaSnippet": "PetClinic schema",
     "targetQuery": "SELECT pet_name, species, age_years, weight_kg\nFROM PetClinic;",
     "template": [
       {
-        "text": "",
+        "text": "SELECT ",
         "isBlank": false
       },
       {
@@ -1187,13 +1548,23 @@ window.QUESTS_SECTION_1 = [
         "placeholder": "[ ___ ]"
       },
       {
-        "text": " pet_name, species, age_years, weight_kg\n",
+        "text": ", ",
         "isBlank": false
       },
       {
         "text": "",
         "isBlank": true,
         "slotId": "slot2",
+        "placeholder": "[ ___ ]"
+      },
+      {
+        "text": ",  age_years, weight_kg\n",
+        "isBlank": false
+      },
+      {
+        "text": "",
+        "isBlank": true,
+        "slotId": "slot3",
         "placeholder": "[ ___ ]"
       },
       {
@@ -1203,42 +1574,54 @@ window.QUESTS_SECTION_1 = [
     ],
     "slots": {
       "slot1": {
-        "correct": "SELECT",
+        "correct": "pet_name",
         "options": [
-          "GET",
-          "CHOOSE",
-          "EXTRACT",
-          "SELECT"
+          "pet_id",
+          "pet_name",
+          "weight_kg",
+          "species"
         ]
       },
       "slot2": {
+        "correct": "species",
+        "options": [
+          "pet_name",
+          "pet_id",
+          "species",
+          "weight_kg"
+        ]
+      },
+      "slot3": {
         "correct": "FROM",
         "options": [
-          "INTO",
-          "TABLE",
           "SOURCE",
-          "FROM"
+          "INTO",
+          "FROM",
+          "TABLE"
         ]
       }
     },
-    "explanation": "Keywords are SELECT, FROM, AS, DISTINCT. Keep commas between columns only. 💡 Pro-Tip / Trap: Do not add trailing commas before FROM or quote column identifiers.",
+    "explanation": "Keywords are SELECT, FROM, AS, DISTINCT. Keep commas between columns only. 💡 Trap to avoid: Do not add trailing commas before FROM or quote column identifiers.",
     "commonMistakes": "Punctuation errors, trailing commas, or quotes around column names."
   },
   {
     "id": 21,
     "levelDisplay": "Level 21",
-    "title": "Level 21: Rename full_name to student_name and gpa to academic_gpa",
+    "title": "Level 21: Rename full_name to student_name and gpa to academic...",
     "subtitle": "Rename full_name to student_name and gpa to academic_gpa.",
     "type": "fill_blank",
     "category": "Section 01: Foundations & Projections",
     "subcluster": "1.3 Column Aliases (AS)",
+    "tier": "Practitioner",
+    "tierColor": "#10b981",
+    "difficulty": "Medium",
     "task": "Rename full_name to student_name and gpa to academic_gpa.",
     "table": "Students",
     "schemaSnippet": "Students schema",
     "targetQuery": "SELECT full_name AS student_name, gpa AS academic_gpa\nFROM Students;",
     "template": [
       {
-        "text": "SELECT full_name ",
+        "text": "SELECT ",
         "isBlank": false
       },
       {
@@ -1248,13 +1631,33 @@ window.QUESTS_SECTION_1 = [
         "placeholder": "[ ___ ]"
       },
       {
-        "text": " student_name, gpa AS academic_gpa\n",
+        "text": " ",
         "isBlank": false
       },
       {
         "text": "",
         "isBlank": true,
         "slotId": "slot2",
+        "placeholder": "[ ___ ]"
+      },
+      {
+        "text": " ",
+        "isBlank": false
+      },
+      {
+        "text": "",
+        "isBlank": true,
+        "slotId": "slot3",
+        "placeholder": "[ ___ ]"
+      },
+      {
+        "text": ", gpa AS academic_gpa\n",
+        "isBlank": false
+      },
+      {
+        "text": "",
+        "isBlank": true,
+        "slotId": "slot4",
         "placeholder": "[ ___ ]"
       },
       {
@@ -1264,42 +1667,63 @@ window.QUESTS_SECTION_1 = [
     ],
     "slots": {
       "slot1": {
-        "correct": "AS",
+        "correct": "full_name",
         "options": [
-          "ALIAS",
-          "NAME",
-          "AS",
-          "LABEL"
+          "student_id",
+          "major",
+          "gpa",
+          "full_name"
         ]
       },
       "slot2": {
+        "correct": "AS",
+        "options": [
+          "ALIAS",
+          "LABEL",
+          "NAME",
+          "AS"
+        ]
+      },
+      "slot3": {
+        "correct": "student_name",
+        "options": [
+          "STUDENT_NAME",
+          "col_student_name",
+          "student_name_val",
+          "student_name"
+        ]
+      },
+      "slot4": {
         "correct": "FROM",
         "options": [
+          "SOURCE",
           "INTO",
           "FROM",
-          "SOURCE",
           "TABLE"
         ]
       }
     },
-    "explanation": "Keywords are SELECT, FROM, AS, DISTINCT. Keep commas between columns only. 💡 Pro-Tip / Trap: Do not add trailing commas before FROM or quote column identifiers.",
+    "explanation": "Keywords are SELECT, FROM, AS, DISTINCT. Keep commas between columns only. 💡 Trap to avoid: Do not add trailing commas before FROM or quote column identifiers.",
     "commonMistakes": "Punctuation errors, trailing commas, or quotes around column names."
   },
   {
     "id": 22,
     "levelDisplay": "Level 22",
-    "title": "Level 22: Rename title to book_title and price to retail_price_usd",
+    "title": "Level 22: Rename title to book_title and price to retail_price...",
     "subtitle": "Rename title to book_title and price to retail_price_usd.",
     "type": "fill_blank",
     "category": "Section 01: Foundations & Projections",
     "subcluster": "1.3 Column Aliases (AS)",
+    "tier": "Practitioner",
+    "tierColor": "#10b981",
+    "difficulty": "Medium",
     "task": "Rename title to book_title and price to retail_price_usd.",
     "table": "Books",
     "schemaSnippet": "Books schema",
     "targetQuery": "SELECT title AS book_title, price AS retail_price_usd\nFROM Books;",
     "template": [
       {
-        "text": "SELECT title ",
+        "text": "SELECT ",
         "isBlank": false
       },
       {
@@ -1309,13 +1733,33 @@ window.QUESTS_SECTION_1 = [
         "placeholder": "[ ___ ]"
       },
       {
-        "text": " book_title, price AS retail_price_usd\n",
+        "text": " ",
         "isBlank": false
       },
       {
         "text": "",
         "isBlank": true,
         "slotId": "slot2",
+        "placeholder": "[ ___ ]"
+      },
+      {
+        "text": " ",
+        "isBlank": false
+      },
+      {
+        "text": "",
+        "isBlank": true,
+        "slotId": "slot3",
+        "placeholder": "[ ___ ]"
+      },
+      {
+        "text": ", price AS retail_price_usd\n",
+        "isBlank": false
+      },
+      {
+        "text": "",
+        "isBlank": true,
+        "slotId": "slot4",
         "placeholder": "[ ___ ]"
       },
       {
@@ -1325,42 +1769,63 @@ window.QUESTS_SECTION_1 = [
     ],
     "slots": {
       "slot1": {
-        "correct": "AS",
+        "correct": "title",
         "options": [
-          "AS",
-          "LABEL",
-          "NAME",
-          "ALIAS"
+          "stock_qty",
+          "title",
+          "genre",
+          "published_year"
         ]
       },
       "slot2": {
+        "correct": "AS",
+        "options": [
+          "AS",
+          "ALIAS",
+          "NAME",
+          "LABEL"
+        ]
+      },
+      "slot3": {
+        "correct": "book_title",
+        "options": [
+          "col_book_title",
+          "BOOK_TITLE",
+          "book_title_val",
+          "book_title"
+        ]
+      },
+      "slot4": {
         "correct": "FROM",
         "options": [
-          "TABLE",
           "FROM",
+          "TABLE",
           "INTO",
           "SOURCE"
         ]
       }
     },
-    "explanation": "Keywords are SELECT, FROM, AS, DISTINCT. Keep commas between columns only. 💡 Pro-Tip / Trap: Do not add trailing commas before FROM or quote column identifiers.",
+    "explanation": "Keywords are SELECT, FROM, AS, DISTINCT. Keep commas between columns only. 💡 Trap to avoid: Do not add trailing commas before FROM or quote column identifiers.",
     "commonMistakes": "Punctuation errors, trailing commas, or quotes around column names."
   },
   {
     "id": 23,
     "levelDisplay": "Level 23",
-    "title": "Level 23: Alias first_name as employee and salary as base_compensation",
+    "title": "Level 23: Alias first_name as employee and salary as base_comp...",
     "subtitle": "Alias first_name as employee and salary as base_compensation.",
     "type": "fill_blank",
     "category": "Section 01: Foundations & Projections",
     "subcluster": "1.3 Column Aliases (AS)",
+    "tier": "Practitioner",
+    "tierColor": "#10b981",
+    "difficulty": "Medium",
     "task": "Alias first_name as employee and salary as base_compensation.",
     "table": "Employees",
     "schemaSnippet": "Employees schema",
     "targetQuery": "SELECT first_name AS employee, salary AS base_compensation\nFROM Employees;",
     "template": [
       {
-        "text": "SELECT first_name ",
+        "text": "SELECT ",
         "isBlank": false
       },
       {
@@ -1370,13 +1835,33 @@ window.QUESTS_SECTION_1 = [
         "placeholder": "[ ___ ]"
       },
       {
-        "text": " employee, salary AS base_compensation\n",
+        "text": " ",
         "isBlank": false
       },
       {
         "text": "",
         "isBlank": true,
         "slotId": "slot2",
+        "placeholder": "[ ___ ]"
+      },
+      {
+        "text": " ",
+        "isBlank": false
+      },
+      {
+        "text": "",
+        "isBlank": true,
+        "slotId": "slot3",
+        "placeholder": "[ ___ ]"
+      },
+      {
+        "text": ", salary AS base_compensation\n",
+        "isBlank": false
+      },
+      {
+        "text": "",
+        "isBlank": true,
+        "slotId": "slot4",
         "placeholder": "[ ___ ]"
       },
       {
@@ -1386,42 +1871,63 @@ window.QUESTS_SECTION_1 = [
     ],
     "slots": {
       "slot1": {
-        "correct": "AS",
+        "correct": "first_name",
         "options": [
-          "AS",
-          "LABEL",
-          "ALIAS",
-          "NAME"
+          "department",
+          "salary",
+          "hire_date",
+          "first_name"
         ]
       },
       "slot2": {
+        "correct": "AS",
+        "options": [
+          "NAME",
+          "LABEL",
+          "ALIAS",
+          "AS"
+        ]
+      },
+      "slot3": {
+        "correct": "employee",
+        "options": [
+          "employee_val",
+          "EMPLOYEE",
+          "employee",
+          "col_employee"
+        ]
+      },
+      "slot4": {
         "correct": "FROM",
         "options": [
           "TABLE",
           "INTO",
-          "SOURCE",
-          "FROM"
+          "FROM",
+          "SOURCE"
         ]
       }
     },
-    "explanation": "Keywords are SELECT, FROM, AS, DISTINCT. Keep commas between columns only. 💡 Pro-Tip / Trap: Do not add trailing commas before FROM or quote column identifiers.",
+    "explanation": "Keywords are SELECT, FROM, AS, DISTINCT. Keep commas between columns only. 💡 Trap to avoid: Do not add trailing commas before FROM or quote column identifiers.",
     "commonMistakes": "Punctuation errors, trailing commas, or quotes around column names."
   },
   {
     "id": 24,
     "levelDisplay": "Level 24",
-    "title": "Level 24: Alias item_name to product and unit_price to cost_per_unit",
+    "title": "Level 24: Alias item_name to product and unit_price to cost_pe...",
     "subtitle": "Alias item_name to product and unit_price to cost_per_unit.",
     "type": "fill_blank",
     "category": "Section 01: Foundations & Projections",
     "subcluster": "1.3 Column Aliases (AS)",
+    "tier": "Practitioner",
+    "tierColor": "#10b981",
+    "difficulty": "Medium",
     "task": "Alias item_name to product and unit_price to cost_per_unit.",
     "table": "GroceryItems",
     "schemaSnippet": "GroceryItems schema",
     "targetQuery": "SELECT item_name AS product, unit_price AS cost_per_unit\nFROM GroceryItems;",
     "template": [
       {
-        "text": "SELECT item_name ",
+        "text": "SELECT ",
         "isBlank": false
       },
       {
@@ -1431,13 +1937,33 @@ window.QUESTS_SECTION_1 = [
         "placeholder": "[ ___ ]"
       },
       {
-        "text": " product, unit_price AS cost_per_unit\n",
+        "text": " ",
         "isBlank": false
       },
       {
         "text": "",
         "isBlank": true,
         "slotId": "slot2",
+        "placeholder": "[ ___ ]"
+      },
+      {
+        "text": " ",
+        "isBlank": false
+      },
+      {
+        "text": "",
+        "isBlank": true,
+        "slotId": "slot3",
+        "placeholder": "[ ___ ]"
+      },
+      {
+        "text": ", unit_price AS cost_per_unit\n",
+        "isBlank": false
+      },
+      {
+        "text": "",
+        "isBlank": true,
+        "slotId": "slot4",
         "placeholder": "[ ___ ]"
       },
       {
@@ -1447,42 +1973,63 @@ window.QUESTS_SECTION_1 = [
     ],
     "slots": {
       "slot1": {
-        "correct": "AS",
+        "correct": "item_name",
         "options": [
-          "LABEL",
-          "NAME",
-          "ALIAS",
-          "AS"
+          "item_name",
+          "category",
+          "item_id",
+          "stock_qty"
         ]
       },
       "slot2": {
+        "correct": "AS",
+        "options": [
+          "AS",
+          "NAME",
+          "LABEL",
+          "ALIAS"
+        ]
+      },
+      "slot3": {
+        "correct": "product",
+        "options": [
+          "PRODUCT",
+          "product_val",
+          "col_product",
+          "product"
+        ]
+      },
+      "slot4": {
         "correct": "FROM",
         "options": [
+          "INTO",
           "SOURCE",
           "FROM",
-          "INTO",
           "TABLE"
         ]
       }
     },
-    "explanation": "Keywords are SELECT, FROM, AS, DISTINCT. Keep commas between columns only. 💡 Pro-Tip / Trap: Do not add trailing commas before FROM or quote column identifiers.",
+    "explanation": "Keywords are SELECT, FROM, AS, DISTINCT. Keep commas between columns only. 💡 Trap to avoid: Do not add trailing commas before FROM or quote column identifiers.",
     "commonMistakes": "Punctuation errors, trailing commas, or quotes around column names."
   },
   {
     "id": 25,
     "levelDisplay": "Level 25",
-    "title": "Level 25: Rename customer_name to buyer and quantity to units_ordered",
+    "title": "Level 25: Rename customer_name to buyer and quantity to units_...",
     "subtitle": "Rename customer_name to buyer and quantity to units_ordered.",
     "type": "fill_blank",
     "category": "Section 01: Foundations & Projections",
     "subcluster": "1.3 Column Aliases (AS)",
+    "tier": "Practitioner",
+    "tierColor": "#10b981",
+    "difficulty": "Medium",
     "task": "Rename customer_name to buyer and quantity to units_ordered.",
     "table": "Orders",
     "schemaSnippet": "Orders schema",
     "targetQuery": "SELECT customer_name AS buyer, quantity AS units_ordered\nFROM Orders;",
     "template": [
       {
-        "text": "SELECT customer_name ",
+        "text": "SELECT ",
         "isBlank": false
       },
       {
@@ -1492,7 +2039,7 @@ window.QUESTS_SECTION_1 = [
         "placeholder": "[ ___ ]"
       },
       {
-        "text": " buyer, quantity AS units_ordered\n",
+        "text": " ",
         "isBlank": false
       },
       {
@@ -1502,31 +2049,69 @@ window.QUESTS_SECTION_1 = [
         "placeholder": "[ ___ ]"
       },
       {
+        "text": " ",
+        "isBlank": false
+      },
+      {
+        "text": "",
+        "isBlank": true,
+        "slotId": "slot3",
+        "placeholder": "[ ___ ]"
+      },
+      {
+        "text": ", quantity AS units_ordered\n",
+        "isBlank": false
+      },
+      {
+        "text": "",
+        "isBlank": true,
+        "slotId": "slot4",
+        "placeholder": "[ ___ ]"
+      },
+      {
         "text": " Orders;",
         "isBlank": false
       }
     ],
     "slots": {
       "slot1": {
+        "correct": "customer_name",
+        "options": [
+          "product_name",
+          "order_id",
+          "quantity",
+          "customer_name"
+        ]
+      },
+      "slot2": {
         "correct": "AS",
         "options": [
           "LABEL",
           "AS",
-          "ALIAS",
-          "NAME"
+          "NAME",
+          "ALIAS"
         ]
       },
-      "slot2": {
+      "slot3": {
+        "correct": "buyer",
+        "options": [
+          "buyer_val",
+          "col_buyer",
+          "BUYER",
+          "buyer"
+        ]
+      },
+      "slot4": {
         "correct": "FROM",
         "options": [
           "FROM",
+          "SOURCE",
           "INTO",
-          "TABLE",
-          "SOURCE"
+          "TABLE"
         ]
       }
     },
-    "explanation": "Keywords are SELECT, FROM, AS, DISTINCT. Keep commas between columns only. 💡 Pro-Tip / Trap: Do not add trailing commas before FROM or quote column identifiers.",
+    "explanation": "Keywords are SELECT, FROM, AS, DISTINCT. Keep commas between columns only. 💡 Trap to avoid: Do not add trailing commas before FROM or quote column identifiers.",
     "commonMistakes": "Punctuation errors, trailing commas, or quotes around column names."
   },
   {
@@ -1537,13 +2122,16 @@ window.QUESTS_SECTION_1 = [
     "type": "fill_blank",
     "category": "Section 01: Foundations & Projections",
     "subcluster": "1.3 Column Aliases (AS)",
+    "tier": "Practitioner",
+    "tierColor": "#10b981",
+    "difficulty": "Medium",
     "task": "Alias track_title as song and artist_name as musician.",
     "table": "MusicTracks",
     "schemaSnippet": "MusicTracks schema",
     "targetQuery": "SELECT track_title AS song, artist_name AS musician\nFROM MusicTracks;",
     "template": [
       {
-        "text": "SELECT track_title ",
+        "text": "SELECT ",
         "isBlank": false
       },
       {
@@ -1553,7 +2141,7 @@ window.QUESTS_SECTION_1 = [
         "placeholder": "[ ___ ]"
       },
       {
-        "text": " song, artist_name AS musician\n",
+        "text": " ",
         "isBlank": false
       },
       {
@@ -1563,31 +2151,69 @@ window.QUESTS_SECTION_1 = [
         "placeholder": "[ ___ ]"
       },
       {
+        "text": " ",
+        "isBlank": false
+      },
+      {
+        "text": "",
+        "isBlank": true,
+        "slotId": "slot3",
+        "placeholder": "[ ___ ]"
+      },
+      {
+        "text": ", artist_name AS musician\n",
+        "isBlank": false
+      },
+      {
+        "text": "",
+        "isBlank": true,
+        "slotId": "slot4",
+        "placeholder": "[ ___ ]"
+      },
+      {
         "text": " MusicTracks;",
         "isBlank": false
       }
     ],
     "slots": {
       "slot1": {
-        "correct": "AS",
+        "correct": "track_title",
         "options": [
-          "NAME",
-          "LABEL",
-          "ALIAS",
-          "AS"
+          "genre",
+          "track_title",
+          "track_id",
+          "title"
         ]
       },
       "slot2": {
+        "correct": "AS",
+        "options": [
+          "ALIAS",
+          "AS",
+          "LABEL",
+          "NAME"
+        ]
+      },
+      "slot3": {
+        "correct": "song",
+        "options": [
+          "song_val",
+          "col_song",
+          "song",
+          "SONG"
+        ]
+      },
+      "slot4": {
         "correct": "FROM",
         "options": [
+          "TABLE",
           "SOURCE",
-          "INTO",
           "FROM",
-          "TABLE"
+          "INTO"
         ]
       }
     },
-    "explanation": "Keywords are SELECT, FROM, AS, DISTINCT. Keep commas between columns only. 💡 Pro-Tip / Trap: Do not add trailing commas before FROM or quote column identifiers.",
+    "explanation": "Keywords are SELECT, FROM, AS, DISTINCT. Keep commas between columns only. 💡 Trap to avoid: Do not add trailing commas before FROM or quote column identifiers.",
     "commonMistakes": "Punctuation errors, trailing commas, or quotes around column names."
   },
   {
@@ -1598,13 +2224,16 @@ window.QUESTS_SECTION_1 = [
     "type": "fill_blank",
     "category": "Section 01: Foundations & Projections",
     "subcluster": "1.3 Column Aliases (AS)",
+    "tier": "Practitioner",
+    "tierColor": "#10b981",
+    "difficulty": "Medium",
     "task": "Rename member_name to client and monthly_fee to rate.",
     "table": "GymMembers",
     "schemaSnippet": "GymMembers schema",
     "targetQuery": "SELECT member_name AS client, monthly_fee AS rate\nFROM GymMembers;",
     "template": [
       {
-        "text": "SELECT member_name ",
+        "text": "SELECT ",
         "isBlank": false
       },
       {
@@ -1614,7 +2243,7 @@ window.QUESTS_SECTION_1 = [
         "placeholder": "[ ___ ]"
       },
       {
-        "text": " client, monthly_fee AS rate\n",
+        "text": " ",
         "isBlank": false
       },
       {
@@ -1624,31 +2253,69 @@ window.QUESTS_SECTION_1 = [
         "placeholder": "[ ___ ]"
       },
       {
+        "text": " ",
+        "isBlank": false
+      },
+      {
+        "text": "",
+        "isBlank": true,
+        "slotId": "slot3",
+        "placeholder": "[ ___ ]"
+      },
+      {
+        "text": ", monthly_fee AS rate\n",
+        "isBlank": false
+      },
+      {
+        "text": "",
+        "isBlank": true,
+        "slotId": "slot4",
+        "placeholder": "[ ___ ]"
+      },
+      {
         "text": " GymMembers;",
         "isBlank": false
       }
     ],
     "slots": {
       "slot1": {
-        "correct": "AS",
+        "correct": "member_name",
         "options": [
-          "NAME",
-          "ALIAS",
-          "LABEL",
-          "AS"
+          "member_id",
+          "monthly_fee",
+          "joined_date",
+          "member_name"
         ]
       },
       "slot2": {
+        "correct": "AS",
+        "options": [
+          "ALIAS",
+          "LABEL",
+          "AS",
+          "NAME"
+        ]
+      },
+      "slot3": {
+        "correct": "client",
+        "options": [
+          "CLIENT",
+          "client",
+          "col_client",
+          "client_val"
+        ]
+      },
+      "slot4": {
         "correct": "FROM",
         "options": [
+          "SOURCE",
           "FROM",
           "TABLE",
-          "SOURCE",
           "INTO"
         ]
       }
     },
-    "explanation": "Keywords are SELECT, FROM, AS, DISTINCT. Keep commas between columns only. 💡 Pro-Tip / Trap: Do not add trailing commas before FROM or quote column identifiers.",
+    "explanation": "Keywords are SELECT, FROM, AS, DISTINCT. Keep commas between columns only. 💡 Trap to avoid: Do not add trailing commas before FROM or quote column identifiers.",
     "commonMistakes": "Punctuation errors, trailing commas, or quotes around column names."
   },
   {
@@ -1659,13 +2326,16 @@ window.QUESTS_SECTION_1 = [
     "type": "fill_blank",
     "category": "Section 01: Foundations & Projections",
     "subcluster": "1.3 Column Aliases (AS)",
+    "tier": "Practitioner",
+    "tierColor": "#10b981",
+    "difficulty": "Medium",
     "task": "Alias movie_title to film and star_rating to score.",
     "table": "MovieReviews",
     "schemaSnippet": "MovieReviews schema",
     "targetQuery": "SELECT movie_title AS film, star_rating AS score\nFROM MovieReviews;",
     "template": [
       {
-        "text": "SELECT movie_title ",
+        "text": "SELECT ",
         "isBlank": false
       },
       {
@@ -1675,7 +2345,7 @@ window.QUESTS_SECTION_1 = [
         "placeholder": "[ ___ ]"
       },
       {
-        "text": " film, star_rating AS score\n",
+        "text": " ",
         "isBlank": false
       },
       {
@@ -1685,48 +2355,89 @@ window.QUESTS_SECTION_1 = [
         "placeholder": "[ ___ ]"
       },
       {
+        "text": " ",
+        "isBlank": false
+      },
+      {
+        "text": "",
+        "isBlank": true,
+        "slotId": "slot3",
+        "placeholder": "[ ___ ]"
+      },
+      {
+        "text": ", star_rating AS score\n",
+        "isBlank": false
+      },
+      {
+        "text": "",
+        "isBlank": true,
+        "slotId": "slot4",
+        "placeholder": "[ ___ ]"
+      },
+      {
         "text": " MovieReviews;",
         "isBlank": false
       }
     ],
     "slots": {
       "slot1": {
-        "correct": "AS",
+        "correct": "movie_title",
         "options": [
-          "ALIAS",
-          "NAME",
-          "AS",
-          "LABEL"
+          "star_rating",
+          "director",
+          "review_count",
+          "movie_title"
         ]
       },
       "slot2": {
+        "correct": "AS",
+        "options": [
+          "ALIAS",
+          "LABEL",
+          "AS",
+          "NAME"
+        ]
+      },
+      "slot3": {
+        "correct": "film",
+        "options": [
+          "FILM",
+          "film",
+          "film_val",
+          "col_film"
+        ]
+      },
+      "slot4": {
         "correct": "FROM",
         "options": [
           "FROM",
+          "SOURCE",
           "INTO",
-          "TABLE",
-          "SOURCE"
+          "TABLE"
         ]
       }
     },
-    "explanation": "Keywords are SELECT, FROM, AS, DISTINCT. Keep commas between columns only. 💡 Pro-Tip / Trap: Do not add trailing commas before FROM or quote column identifiers.",
+    "explanation": "Keywords are SELECT, FROM, AS, DISTINCT. Keep commas between columns only. 💡 Trap to avoid: Do not add trailing commas before FROM or quote column identifiers.",
     "commonMistakes": "Punctuation errors, trailing commas, or quotes around column names."
   },
   {
     "id": 29,
     "levelDisplay": "Level 29",
-    "title": "Level 29: Rename flight_id to flight_code and ticket_price to fare_usd",
+    "title": "Level 29: Rename flight_id to flight_code and ticket_price to ...",
     "subtitle": "Rename flight_id to flight_code and ticket_price to fare_usd.",
     "type": "fill_blank",
     "category": "Section 01: Foundations & Projections",
     "subcluster": "1.3 Column Aliases (AS)",
+    "tier": "Practitioner",
+    "tierColor": "#10b981",
+    "difficulty": "Medium",
     "task": "Rename flight_id to flight_code and ticket_price to fare_usd.",
     "table": "FlightSchedule",
     "schemaSnippet": "FlightSchedule schema",
     "targetQuery": "SELECT flight_id AS flight_code, ticket_price AS fare_usd\nFROM FlightSchedule;",
     "template": [
       {
-        "text": "SELECT flight_id ",
+        "text": "SELECT ",
         "isBlank": false
       },
       {
@@ -1736,7 +2447,7 @@ window.QUESTS_SECTION_1 = [
         "placeholder": "[ ___ ]"
       },
       {
-        "text": " flight_code, ticket_price AS fare_usd\n",
+        "text": " ",
         "isBlank": false
       },
       {
@@ -1746,48 +2457,89 @@ window.QUESTS_SECTION_1 = [
         "placeholder": "[ ___ ]"
       },
       {
+        "text": " ",
+        "isBlank": false
+      },
+      {
+        "text": "",
+        "isBlank": true,
+        "slotId": "slot3",
+        "placeholder": "[ ___ ]"
+      },
+      {
+        "text": ", ticket_price AS fare_usd\n",
+        "isBlank": false
+      },
+      {
+        "text": "",
+        "isBlank": true,
+        "slotId": "slot4",
+        "placeholder": "[ ___ ]"
+      },
+      {
         "text": " FlightSchedule;",
         "isBlank": false
       }
     ],
     "slots": {
       "slot1": {
-        "correct": "AS",
+        "correct": "flight_id",
         "options": [
-          "NAME",
-          "ALIAS",
-          "AS",
-          "LABEL"
+          "flight_id",
+          "airline",
+          "origin_airport",
+          "departure_time"
         ]
       },
       "slot2": {
+        "correct": "AS",
+        "options": [
+          "AS",
+          "NAME",
+          "LABEL",
+          "ALIAS"
+        ]
+      },
+      "slot3": {
+        "correct": "flight_code",
+        "options": [
+          "col_flight_code",
+          "flight_code",
+          "flight_code_val",
+          "FLIGHT_CODE"
+        ]
+      },
+      "slot4": {
         "correct": "FROM",
         "options": [
-          "INTO",
           "FROM",
+          "INTO",
           "TABLE",
           "SOURCE"
         ]
       }
     },
-    "explanation": "Keywords are SELECT, FROM, AS, DISTINCT. Keep commas between columns only. 💡 Pro-Tip / Trap: Do not add trailing commas before FROM or quote column identifiers.",
+    "explanation": "Keywords are SELECT, FROM, AS, DISTINCT. Keep commas between columns only. 💡 Trap to avoid: Do not add trailing commas before FROM or quote column identifiers.",
     "commonMistakes": "Punctuation errors, trailing commas, or quotes around column names."
   },
   {
     "id": 30,
     "levelDisplay": "Level 30",
-    "title": "Level 30: Alias pet_name to patient_name and age_years to patient_age",
+    "title": "Level 30: Alias pet_name to patient_name and age_years to pati...",
     "subtitle": "Alias pet_name to patient_name and age_years to patient_age.",
     "type": "fill_blank",
     "category": "Section 01: Foundations & Projections",
     "subcluster": "1.3 Column Aliases (AS)",
+    "tier": "Practitioner",
+    "tierColor": "#10b981",
+    "difficulty": "Medium",
     "task": "Alias pet_name to patient_name and age_years to patient_age.",
     "table": "PetClinic",
     "schemaSnippet": "PetClinic schema",
     "targetQuery": "SELECT pet_name AS patient_name, age_years AS patient_age\nFROM PetClinic;",
     "template": [
       {
-        "text": "SELECT pet_name ",
+        "text": "SELECT ",
         "isBlank": false
       },
       {
@@ -1797,7 +2549,7 @@ window.QUESTS_SECTION_1 = [
         "placeholder": "[ ___ ]"
       },
       {
-        "text": " patient_name, age_years AS patient_age\n",
+        "text": " ",
         "isBlank": false
       },
       {
@@ -1807,48 +2559,89 @@ window.QUESTS_SECTION_1 = [
         "placeholder": "[ ___ ]"
       },
       {
+        "text": " ",
+        "isBlank": false
+      },
+      {
+        "text": "",
+        "isBlank": true,
+        "slotId": "slot3",
+        "placeholder": "[ ___ ]"
+      },
+      {
+        "text": ", age_years AS patient_age\n",
+        "isBlank": false
+      },
+      {
+        "text": "",
+        "isBlank": true,
+        "slotId": "slot4",
+        "placeholder": "[ ___ ]"
+      },
+      {
         "text": " PetClinic;",
         "isBlank": false
       }
     ],
     "slots": {
       "slot1": {
-        "correct": "AS",
+        "correct": "pet_name",
         "options": [
-          "ALIAS",
-          "LABEL",
-          "NAME",
-          "AS"
+          "pet_id",
+          "age_years",
+          "weight_kg",
+          "pet_name"
         ]
       },
       "slot2": {
+        "correct": "AS",
+        "options": [
+          "LABEL",
+          "ALIAS",
+          "AS",
+          "NAME"
+        ]
+      },
+      "slot3": {
+        "correct": "patient_name",
+        "options": [
+          "PATIENT_NAME",
+          "patient_name",
+          "col_patient_name",
+          "patient_name_val"
+        ]
+      },
+      "slot4": {
         "correct": "FROM",
         "options": [
-          "SOURCE",
-          "INTO",
           "FROM",
-          "TABLE"
+          "TABLE",
+          "INTO",
+          "SOURCE"
         ]
       }
     },
-    "explanation": "Keywords are SELECT, FROM, AS, DISTINCT. Keep commas between columns only. 💡 Pro-Tip / Trap: Do not add trailing commas before FROM or quote column identifiers.",
+    "explanation": "Keywords are SELECT, FROM, AS, DISTINCT. Keep commas between columns only. 💡 Trap to avoid: Do not add trailing commas before FROM or quote column identifiers.",
     "commonMistakes": "Punctuation errors, trailing commas, or quotes around column names."
   },
   {
     "id": 31,
     "levelDisplay": "Level 31",
-    "title": "Level 31: Select full_name alongside a static text label 'Active' a...",
+    "title": "Level 31: Select full_name alongside a static text label 'Acti...",
     "subtitle": "Select full_name alongside a static text label 'Active' as enrollment_status.",
     "type": "fill_blank",
     "category": "Section 01: Foundations & Projections",
     "subcluster": "1.4 Constant Literals",
+    "tier": "Practitioner",
+    "tierColor": "#10b981",
+    "difficulty": "Medium",
     "task": "Select full_name alongside a static text label 'Active' as enrollment_status.",
     "table": "Students",
     "schemaSnippet": "Students schema",
     "targetQuery": "SELECT full_name, 'Active' AS enrollment_status\nFROM Students;",
     "template": [
       {
-        "text": "SELECT full_name, 'Active' ",
+        "text": "SELECT ",
         "isBlank": false
       },
       {
@@ -1858,7 +2651,7 @@ window.QUESTS_SECTION_1 = [
         "placeholder": "[ ___ ]"
       },
       {
-        "text": " enrollment_status\n",
+        "text": " ",
         "isBlank": false
       },
       {
@@ -1868,48 +2661,66 @@ window.QUESTS_SECTION_1 = [
         "placeholder": "[ ___ ]"
       },
       {
-        "text": " Students;",
+        "text": " enrollment_status\nFROM ",
         "isBlank": false
+      },
+      {
+        "text": "",
+        "isBlank": true,
+        "slotId": "slot3",
+        "placeholder": "[ ___ ]"
       }
     ],
     "slots": {
       "slot1": {
-        "correct": "AS",
+        "correct": "full_name, 'Active'",
         "options": [
-          "NAME",
-          "AS",
-          "LABEL",
-          "ALIAS"
+          "full_name, 'Active'",
+          "full_name, Active",
+          "full_name, \"Active\"",
+          "'Inactive'"
         ]
       },
       "slot2": {
-        "correct": "FROM",
+        "correct": "AS",
         "options": [
-          "INTO",
-          "FROM",
-          "TABLE",
-          "SOURCE"
+          "ALIAS",
+          "NAME",
+          "AS",
+          "LABEL"
+        ]
+      },
+      "slot3": {
+        "correct": "Students;",
+        "options": [
+          "GymMembers;",
+          "Orders;",
+          "Students;",
+          "Books;"
         ]
       }
     },
-    "explanation": "Keywords are SELECT, FROM, AS, DISTINCT. Keep commas between columns only. 💡 Pro-Tip / Trap: Do not add trailing commas before FROM or quote column identifiers.",
+    "explanation": "Keywords are SELECT, FROM, AS, DISTINCT. Keep commas between columns only. 💡 Trap to avoid: Do not add trailing commas before FROM or quote column identifiers.",
     "commonMistakes": "Punctuation errors, trailing commas, or quotes around column names."
   },
   {
     "id": 32,
     "levelDisplay": "Level 32",
-    "title": "Level 32: Select book title and a fixed location string 'Central Li...",
+    "title": "Level 32: Select book title and a fixed location string 'Centr...",
     "subtitle": "Select book title and a fixed location string 'Central Library' as branch_location.",
     "type": "fill_blank",
     "category": "Section 01: Foundations & Projections",
     "subcluster": "1.4 Constant Literals",
+    "tier": "Practitioner",
+    "tierColor": "#10b981",
+    "difficulty": "Medium",
     "task": "Select book title and a fixed location string 'Central Library' as branch_location.",
     "table": "Books",
     "schemaSnippet": "Books schema",
     "targetQuery": "SELECT title, 'Central Library' AS branch_location\nFROM Books;",
     "template": [
       {
-        "text": "SELECT title, 'Central Library' ",
+        "text": "SELECT ",
         "isBlank": false
       },
       {
@@ -1919,7 +2730,7 @@ window.QUESTS_SECTION_1 = [
         "placeholder": "[ ___ ]"
       },
       {
-        "text": " branch_location\n",
+        "text": " ",
         "isBlank": false
       },
       {
@@ -1929,48 +2740,66 @@ window.QUESTS_SECTION_1 = [
         "placeholder": "[ ___ ]"
       },
       {
-        "text": " Books;",
+        "text": " branch_location\nFROM ",
         "isBlank": false
+      },
+      {
+        "text": "",
+        "isBlank": true,
+        "slotId": "slot3",
+        "placeholder": "[ ___ ]"
       }
     ],
     "slots": {
       "slot1": {
+        "correct": "title, 'Central Library'",
+        "options": [
+          "'Inactive'",
+          "title, \"Central Library\"",
+          "title, Central Library",
+          "title, 'Central Library'"
+        ]
+      },
+      "slot2": {
         "correct": "AS",
         "options": [
           "NAME",
           "LABEL",
-          "AS",
-          "ALIAS"
+          "ALIAS",
+          "AS"
         ]
       },
-      "slot2": {
-        "correct": "FROM",
+      "slot3": {
+        "correct": "Books;",
         "options": [
-          "TABLE",
-          "FROM",
-          "INTO",
-          "SOURCE"
+          "Books;",
+          "MovieReviews;",
+          "PetClinic;",
+          "FlightSchedule;"
         ]
       }
     },
-    "explanation": "Keywords are SELECT, FROM, AS, DISTINCT. Keep commas between columns only. 💡 Pro-Tip / Trap: Do not add trailing commas before FROM or quote column identifiers.",
+    "explanation": "Keywords are SELECT, FROM, AS, DISTINCT. Keep commas between columns only. 💡 Trap to avoid: Do not add trailing commas before FROM or quote column identifiers.",
     "commonMistakes": "Punctuation errors, trailing commas, or quotes around column names."
   },
   {
     "id": 33,
     "levelDisplay": "Level 33",
-    "title": "Level 33: Select employee first_name alongside a fixed numerical ye...",
+    "title": "Level 33: Select employee first_name alongside a fixed numeric...",
     "subtitle": "Select employee first_name alongside a fixed numerical year 2026 as review_year.",
     "type": "fill_blank",
     "category": "Section 01: Foundations & Projections",
     "subcluster": "1.4 Constant Literals",
+    "tier": "Practitioner",
+    "tierColor": "#10b981",
+    "difficulty": "Medium",
     "task": "Select employee first_name alongside a fixed numerical year 2026 as review_year.",
     "table": "Employees",
     "schemaSnippet": "Employees schema",
     "targetQuery": "SELECT first_name, 2026 AS review_year\nFROM Employees;",
     "template": [
       {
-        "text": "SELECT first_name, 2026 ",
+        "text": "SELECT ",
         "isBlank": false
       },
       {
@@ -1980,7 +2809,7 @@ window.QUESTS_SECTION_1 = [
         "placeholder": "[ ___ ]"
       },
       {
-        "text": " review_year\n",
+        "text": " ",
         "isBlank": false
       },
       {
@@ -1990,48 +2819,66 @@ window.QUESTS_SECTION_1 = [
         "placeholder": "[ ___ ]"
       },
       {
-        "text": " Employees;",
+        "text": " review_year\nFROM ",
         "isBlank": false
+      },
+      {
+        "text": "",
+        "isBlank": true,
+        "slotId": "slot3",
+        "placeholder": "[ ___ ]"
       }
     ],
     "slots": {
       "slot1": {
-        "correct": "AS",
+        "correct": "first_name, 2026",
         "options": [
-          "LABEL",
-          "AS",
-          "NAME",
-          "ALIAS"
+          "department",
+          "emp_id",
+          "first_name, 2026",
+          "first_name"
         ]
       },
       "slot2": {
-        "correct": "FROM",
+        "correct": "AS",
         "options": [
-          "INTO",
-          "FROM",
-          "TABLE",
-          "SOURCE"
+          "LABEL",
+          "NAME",
+          "ALIAS",
+          "AS"
+        ]
+      },
+      "slot3": {
+        "correct": "Employees;",
+        "options": [
+          "Books;",
+          "Employees;",
+          "PetClinic;",
+          "FlightSchedule;"
         ]
       }
     },
-    "explanation": "Keywords are SELECT, FROM, AS, DISTINCT. Keep commas between columns only. 💡 Pro-Tip / Trap: Do not add trailing commas before FROM or quote column identifiers.",
+    "explanation": "Keywords are SELECT, FROM, AS, DISTINCT. Keep commas between columns only. 💡 Trap to avoid: Do not add trailing commas before FROM or quote column identifiers.",
     "commonMistakes": "Punctuation errors, trailing commas, or quotes around column names."
   },
   {
     "id": 34,
     "levelDisplay": "Level 34",
-    "title": "Level 34: Display item_name with a constant string 'In Stock' as av...",
+    "title": "Level 34: Display item_name with a constant string 'In Stock' ...",
     "subtitle": "Display item_name with a constant string 'In Stock' as availability.",
     "type": "fill_blank",
     "category": "Section 01: Foundations & Projections",
     "subcluster": "1.4 Constant Literals",
+    "tier": "Practitioner",
+    "tierColor": "#10b981",
+    "difficulty": "Medium",
     "task": "Display item_name with a constant string 'In Stock' as availability.",
     "table": "GroceryItems",
     "schemaSnippet": "GroceryItems schema",
     "targetQuery": "SELECT item_name, 'In Stock' AS availability\nFROM GroceryItems;",
     "template": [
       {
-        "text": "SELECT item_name, 'In Stock' ",
+        "text": "SELECT ",
         "isBlank": false
       },
       {
@@ -2041,7 +2888,7 @@ window.QUESTS_SECTION_1 = [
         "placeholder": "[ ___ ]"
       },
       {
-        "text": " availability\n",
+        "text": " ",
         "isBlank": false
       },
       {
@@ -2051,48 +2898,66 @@ window.QUESTS_SECTION_1 = [
         "placeholder": "[ ___ ]"
       },
       {
-        "text": " GroceryItems;",
+        "text": " availability\nFROM ",
         "isBlank": false
+      },
+      {
+        "text": "",
+        "isBlank": true,
+        "slotId": "slot3",
+        "placeholder": "[ ___ ]"
       }
     ],
     "slots": {
       "slot1": {
-        "correct": "AS",
+        "correct": "item_name, 'In Stock'",
         "options": [
-          "LABEL",
-          "AS",
-          "NAME",
-          "ALIAS"
+          "item_name, 'In Stock'",
+          "item_name, \"In Stock\"",
+          "'Inactive'",
+          "item_name, In Stock"
         ]
       },
       "slot2": {
-        "correct": "FROM",
+        "correct": "AS",
         "options": [
-          "INTO",
-          "SOURCE",
-          "FROM",
-          "TABLE"
+          "AS",
+          "NAME",
+          "LABEL",
+          "ALIAS"
+        ]
+      },
+      "slot3": {
+        "correct": "GroceryItems;",
+        "options": [
+          "GroceryItems;",
+          "GymMembers;",
+          "MovieReviews;",
+          "Orders;"
         ]
       }
     },
-    "explanation": "Keywords are SELECT, FROM, AS, DISTINCT. Keep commas between columns only. 💡 Pro-Tip / Trap: Do not add trailing commas before FROM or quote column identifiers.",
+    "explanation": "Keywords are SELECT, FROM, AS, DISTINCT. Keep commas between columns only. 💡 Trap to avoid: Do not add trailing commas before FROM or quote column identifiers.",
     "commonMistakes": "Punctuation errors, trailing commas, or quotes around column names."
   },
   {
     "id": 35,
     "levelDisplay": "Level 35",
-    "title": "Level 35: Select order_id with a boolean literal TRUE as is_verified",
+    "title": "Level 35: Select order_id with a boolean literal TRUE as is_ve...",
     "subtitle": "Select order_id with a boolean literal TRUE as is_verified.",
     "type": "fill_blank",
     "category": "Section 01: Foundations & Projections",
     "subcluster": "1.4 Constant Literals",
+    "tier": "Practitioner",
+    "tierColor": "#10b981",
+    "difficulty": "Medium",
     "task": "Select order_id with a boolean literal TRUE as is_verified.",
     "table": "Orders",
     "schemaSnippet": "Orders schema",
     "targetQuery": "SELECT order_id, TRUE AS is_verified\nFROM Orders;",
     "template": [
       {
-        "text": "SELECT order_id, TRUE ",
+        "text": "SELECT ",
         "isBlank": false
       },
       {
@@ -2102,7 +2967,7 @@ window.QUESTS_SECTION_1 = [
         "placeholder": "[ ___ ]"
       },
       {
-        "text": " is_verified\n",
+        "text": " ",
         "isBlank": false
       },
       {
@@ -2112,48 +2977,66 @@ window.QUESTS_SECTION_1 = [
         "placeholder": "[ ___ ]"
       },
       {
-        "text": " Orders;",
+        "text": " is_verified\nFROM ",
         "isBlank": false
+      },
+      {
+        "text": "",
+        "isBlank": true,
+        "slotId": "slot3",
+        "placeholder": "[ ___ ]"
       }
     ],
     "slots": {
       "slot1": {
-        "correct": "AS",
+        "correct": "order_id, TRUE",
         "options": [
-          "LABEL",
-          "NAME",
-          "ALIAS",
-          "AS"
+          "order_id, TRUE",
+          "customer_name",
+          "order_id",
+          "quantity"
         ]
       },
       "slot2": {
-        "correct": "FROM",
+        "correct": "AS",
         "options": [
-          "TABLE",
-          "FROM",
-          "SOURCE",
-          "INTO"
+          "AS",
+          "LABEL",
+          "ALIAS",
+          "NAME"
+        ]
+      },
+      "slot3": {
+        "correct": "Orders;",
+        "options": [
+          "Students;",
+          "Orders;",
+          "Employees;",
+          "PetClinic;"
         ]
       }
     },
-    "explanation": "Keywords are SELECT, FROM, AS, DISTINCT. Keep commas between columns only. 💡 Pro-Tip / Trap: Do not add trailing commas before FROM or quote column identifiers.",
+    "explanation": "Keywords are SELECT, FROM, AS, DISTINCT. Keep commas between columns only. 💡 Trap to avoid: Do not add trailing commas before FROM or quote column identifiers.",
     "commonMistakes": "Punctuation errors, trailing commas, or quotes around column names."
   },
   {
     "id": 36,
     "levelDisplay": "Level 36",
-    "title": "Level 36: Select track_title with constant text 'HQ Audio' as forma...",
+    "title": "Level 36: Select track_title with constant text 'HQ Audio' as ...",
     "subtitle": "Select track_title with constant text 'HQ Audio' as format_type.",
     "type": "fill_blank",
     "category": "Section 01: Foundations & Projections",
     "subcluster": "1.4 Constant Literals",
+    "tier": "Practitioner",
+    "tierColor": "#10b981",
+    "difficulty": "Medium",
     "task": "Select track_title with constant text 'HQ Audio' as format_type.",
     "table": "MusicTracks",
     "schemaSnippet": "MusicTracks schema",
     "targetQuery": "SELECT track_title, 'HQ Audio' AS format_type\nFROM MusicTracks;",
     "template": [
       {
-        "text": "SELECT track_title, 'HQ Audio' ",
+        "text": "SELECT ",
         "isBlank": false
       },
       {
@@ -2163,7 +3046,7 @@ window.QUESTS_SECTION_1 = [
         "placeholder": "[ ___ ]"
       },
       {
-        "text": " format_type\n",
+        "text": " ",
         "isBlank": false
       },
       {
@@ -2173,48 +3056,66 @@ window.QUESTS_SECTION_1 = [
         "placeholder": "[ ___ ]"
       },
       {
-        "text": " MusicTracks;",
+        "text": " format_type\nFROM ",
         "isBlank": false
+      },
+      {
+        "text": "",
+        "isBlank": true,
+        "slotId": "slot3",
+        "placeholder": "[ ___ ]"
       }
     ],
     "slots": {
       "slot1": {
-        "correct": "AS",
+        "correct": "track_title, 'HQ Audio'",
         "options": [
-          "LABEL",
-          "ALIAS",
-          "AS",
-          "NAME"
+          "'Inactive'",
+          "track_title, 'HQ Audio'",
+          "track_title, HQ Audio",
+          "track_title, \"HQ Audio\""
         ]
       },
       "slot2": {
-        "correct": "FROM",
+        "correct": "AS",
         "options": [
-          "INTO",
-          "SOURCE",
-          "TABLE",
-          "FROM"
+          "NAME",
+          "AS",
+          "LABEL",
+          "ALIAS"
+        ]
+      },
+      "slot3": {
+        "correct": "MusicTracks;",
+        "options": [
+          "GroceryItems;",
+          "MusicTracks;",
+          "MovieReviews;",
+          "Employees;"
         ]
       }
     },
-    "explanation": "Keywords are SELECT, FROM, AS, DISTINCT. Keep commas between columns only. 💡 Pro-Tip / Trap: Do not add trailing commas before FROM or quote column identifiers.",
+    "explanation": "Keywords are SELECT, FROM, AS, DISTINCT. Keep commas between columns only. 💡 Trap to avoid: Do not add trailing commas before FROM or quote column identifiers.",
     "commonMistakes": "Punctuation errors, trailing commas, or quotes around column names."
   },
   {
     "id": 37,
     "levelDisplay": "Level 37",
-    "title": "Level 37: Display member_name with a constant integer 30 as grace_p...",
+    "title": "Level 37: Display member_name with a constant integer 30 as gr...",
     "subtitle": "Display member_name with a constant integer 30 as grace_period_days.",
     "type": "fill_blank",
     "category": "Section 01: Foundations & Projections",
     "subcluster": "1.4 Constant Literals",
+    "tier": "Practitioner",
+    "tierColor": "#10b981",
+    "difficulty": "Medium",
     "task": "Display member_name with a constant integer 30 as grace_period_days.",
     "table": "GymMembers",
     "schemaSnippet": "GymMembers schema",
     "targetQuery": "SELECT member_name, 30 AS grace_period_days\nFROM GymMembers;",
     "template": [
       {
-        "text": "SELECT member_name, 30 ",
+        "text": "SELECT ",
         "isBlank": false
       },
       {
@@ -2224,7 +3125,7 @@ window.QUESTS_SECTION_1 = [
         "placeholder": "[ ___ ]"
       },
       {
-        "text": " grace_period_days\n",
+        "text": " ",
         "isBlank": false
       },
       {
@@ -2234,12 +3135,264 @@ window.QUESTS_SECTION_1 = [
         "placeholder": "[ ___ ]"
       },
       {
-        "text": " GymMembers;",
+        "text": " grace_period_days\nFROM ",
         "isBlank": false
+      },
+      {
+        "text": "",
+        "isBlank": true,
+        "slotId": "slot3",
+        "placeholder": "[ ___ ]"
       }
     ],
     "slots": {
       "slot1": {
+        "correct": "member_name, 30",
+        "options": [
+          "joined_date",
+          "member_name, 30",
+          "member_name",
+          "membership_plan"
+        ]
+      },
+      "slot2": {
+        "correct": "AS",
+        "options": [
+          "NAME",
+          "AS",
+          "ALIAS",
+          "LABEL"
+        ]
+      },
+      "slot3": {
+        "correct": "GymMembers;",
+        "options": [
+          "Orders;",
+          "Students;",
+          "GymMembers;",
+          "GroceryItems;"
+        ]
+      }
+    },
+    "explanation": "Keywords are SELECT, FROM, AS, DISTINCT. Keep commas between columns only. 💡 Trap to avoid: Do not add trailing commas before FROM or quote column identifiers.",
+    "commonMistakes": "Punctuation errors, trailing commas, or quotes around column names."
+  },
+  {
+    "id": 38,
+    "levelDisplay": "Level 38",
+    "title": "Level 38: Select movie_title with a decimal constant 5.0 as ma...",
+    "subtitle": "Select movie_title with a decimal constant 5.0 as max_possible_rating.",
+    "type": "fill_blank",
+    "category": "Section 01: Foundations & Projections",
+    "subcluster": "1.4 Constant Literals",
+    "tier": "Practitioner",
+    "tierColor": "#10b981",
+    "difficulty": "Medium",
+    "task": "Select movie_title with a decimal constant 5.0 as max_possible_rating.",
+    "table": "MovieReviews",
+    "schemaSnippet": "MovieReviews schema",
+    "targetQuery": "SELECT movie_title, 5.0 AS max_possible_rating\nFROM MovieReviews;",
+    "template": [
+      {
+        "text": "SELECT ",
+        "isBlank": false
+      },
+      {
+        "text": "",
+        "isBlank": true,
+        "slotId": "slot1",
+        "placeholder": "[ ___ ]"
+      },
+      {
+        "text": " ",
+        "isBlank": false
+      },
+      {
+        "text": "",
+        "isBlank": true,
+        "slotId": "slot2",
+        "placeholder": "[ ___ ]"
+      },
+      {
+        "text": " max_possible_rating\nFROM ",
+        "isBlank": false
+      },
+      {
+        "text": "",
+        "isBlank": true,
+        "slotId": "slot3",
+        "placeholder": "[ ___ ]"
+      }
+    ],
+    "slots": {
+      "slot1": {
+        "correct": "movie_title, 5.0",
+        "options": [
+          "review_id",
+          "star_rating",
+          "review_count",
+          "movie_title, 5.0"
+        ]
+      },
+      "slot2": {
+        "correct": "AS",
+        "options": [
+          "NAME",
+          "ALIAS",
+          "LABEL",
+          "AS"
+        ]
+      },
+      "slot3": {
+        "correct": "MovieReviews;",
+        "options": [
+          "Books;",
+          "MovieReviews;",
+          "Employees;",
+          "GymMembers;"
+        ]
+      }
+    },
+    "explanation": "Keywords are SELECT, FROM, AS, DISTINCT. Keep commas between columns only. 💡 Trap to avoid: Do not add trailing commas before FROM or quote column identifiers.",
+    "commonMistakes": "Punctuation errors, trailing commas, or quotes around column names."
+  },
+  {
+    "id": 39,
+    "levelDisplay": "Level 39",
+    "title": "Level 39: Select flight_id with a static string 'Terminal 2' a...",
+    "subtitle": "Select flight_id with a static string 'Terminal 2' as assigned_terminal.",
+    "type": "fill_blank",
+    "category": "Section 01: Foundations & Projections",
+    "subcluster": "1.4 Constant Literals",
+    "tier": "Practitioner",
+    "tierColor": "#10b981",
+    "difficulty": "Medium",
+    "task": "Select flight_id with a static string 'Terminal 2' as assigned_terminal.",
+    "table": "FlightSchedule",
+    "schemaSnippet": "FlightSchedule schema",
+    "targetQuery": "SELECT flight_id, 'Terminal 2' AS assigned_terminal\nFROM FlightSchedule;",
+    "template": [
+      {
+        "text": "SELECT ",
+        "isBlank": false
+      },
+      {
+        "text": "",
+        "isBlank": true,
+        "slotId": "slot1",
+        "placeholder": "[ ___ ]"
+      },
+      {
+        "text": " ",
+        "isBlank": false
+      },
+      {
+        "text": "",
+        "isBlank": true,
+        "slotId": "slot2",
+        "placeholder": "[ ___ ]"
+      },
+      {
+        "text": " assigned_terminal\nFROM ",
+        "isBlank": false
+      },
+      {
+        "text": "",
+        "isBlank": true,
+        "slotId": "slot3",
+        "placeholder": "[ ___ ]"
+      }
+    ],
+    "slots": {
+      "slot1": {
+        "correct": "flight_id, 'Terminal 2'",
+        "options": [
+          "flight_id, Terminal 2",
+          "flight_id, \"Terminal 2\"",
+          "'Inactive'",
+          "flight_id, 'Terminal 2'"
+        ]
+      },
+      "slot2": {
+        "correct": "AS",
+        "options": [
+          "NAME",
+          "LABEL",
+          "AS",
+          "ALIAS"
+        ]
+      },
+      "slot3": {
+        "correct": "FlightSchedule;",
+        "options": [
+          "FlightSchedule;",
+          "MovieReviews;",
+          "Employees;",
+          "GroceryItems;"
+        ]
+      }
+    },
+    "explanation": "Keywords are SELECT, FROM, AS, DISTINCT. Keep commas between columns only. 💡 Trap to avoid: Do not add trailing commas before FROM or quote column identifiers.",
+    "commonMistakes": "Punctuation errors, trailing commas, or quotes around column names."
+  },
+  {
+    "id": 40,
+    "levelDisplay": "Level 40",
+    "title": "Level 40: Display pet_name with fixed text 'Downtown Vet' as c...",
+    "subtitle": "Display pet_name with fixed text 'Downtown Vet' as clinic_name.",
+    "type": "fill_blank",
+    "category": "Section 01: Foundations & Projections",
+    "subcluster": "1.4 Constant Literals",
+    "tier": "Practitioner",
+    "tierColor": "#10b981",
+    "difficulty": "Medium",
+    "task": "Display pet_name with fixed text 'Downtown Vet' as clinic_name.",
+    "table": "PetClinic",
+    "schemaSnippet": "PetClinic schema",
+    "targetQuery": "SELECT pet_name, 'Downtown Vet' AS clinic_name\nFROM PetClinic;",
+    "template": [
+      {
+        "text": "SELECT ",
+        "isBlank": false
+      },
+      {
+        "text": "",
+        "isBlank": true,
+        "slotId": "slot1",
+        "placeholder": "[ ___ ]"
+      },
+      {
+        "text": " ",
+        "isBlank": false
+      },
+      {
+        "text": "",
+        "isBlank": true,
+        "slotId": "slot2",
+        "placeholder": "[ ___ ]"
+      },
+      {
+        "text": " clinic_name\nFROM ",
+        "isBlank": false
+      },
+      {
+        "text": "",
+        "isBlank": true,
+        "slotId": "slot3",
+        "placeholder": "[ ___ ]"
+      }
+    ],
+    "slots": {
+      "slot1": {
+        "correct": "pet_name, 'Downtown Vet'",
+        "options": [
+          "pet_name, 'Downtown Vet'",
+          "pet_name, \"Downtown Vet\"",
+          "'Inactive'",
+          "pet_name, Downtown Vet"
+        ]
+      },
+      "slot2": {
         "correct": "AS",
         "options": [
           "LABEL",
@@ -2248,217 +3401,37 @@ window.QUESTS_SECTION_1 = [
           "AS"
         ]
       },
-      "slot2": {
-        "correct": "FROM",
+      "slot3": {
+        "correct": "PetClinic;",
         "options": [
-          "INTO",
-          "TABLE",
-          "FROM",
-          "SOURCE"
+          "GroceryItems;",
+          "Orders;",
+          "PetClinic;",
+          "FlightSchedule;"
         ]
       }
     },
-    "explanation": "Keywords are SELECT, FROM, AS, DISTINCT. Keep commas between columns only. 💡 Pro-Tip / Trap: Do not add trailing commas before FROM or quote column identifiers.",
-    "commonMistakes": "Punctuation errors, trailing commas, or quotes around column names."
-  },
-  {
-    "id": 38,
-    "levelDisplay": "Level 38",
-    "title": "Level 38: Select movie_title with a decimal constant 5.0 as max_pos...",
-    "subtitle": "Select movie_title with a decimal constant 5.0 as max_possible_rating.",
-    "type": "fill_blank",
-    "category": "Section 01: Foundations & Projections",
-    "subcluster": "1.4 Constant Literals",
-    "task": "Select movie_title with a decimal constant 5.0 as max_possible_rating.",
-    "table": "MovieReviews",
-    "schemaSnippet": "MovieReviews schema",
-    "targetQuery": "SELECT movie_title, 5.0 AS max_possible_rating\nFROM MovieReviews;",
-    "template": [
-      {
-        "text": "SELECT movie_title, 5.0 ",
-        "isBlank": false
-      },
-      {
-        "text": "",
-        "isBlank": true,
-        "slotId": "slot1",
-        "placeholder": "[ ___ ]"
-      },
-      {
-        "text": " max_possible_rating\n",
-        "isBlank": false
-      },
-      {
-        "text": "",
-        "isBlank": true,
-        "slotId": "slot2",
-        "placeholder": "[ ___ ]"
-      },
-      {
-        "text": " MovieReviews;",
-        "isBlank": false
-      }
-    ],
-    "slots": {
-      "slot1": {
-        "correct": "AS",
-        "options": [
-          "LABEL",
-          "NAME",
-          "AS",
-          "ALIAS"
-        ]
-      },
-      "slot2": {
-        "correct": "FROM",
-        "options": [
-          "FROM",
-          "INTO",
-          "SOURCE",
-          "TABLE"
-        ]
-      }
-    },
-    "explanation": "Keywords are SELECT, FROM, AS, DISTINCT. Keep commas between columns only. 💡 Pro-Tip / Trap: Do not add trailing commas before FROM or quote column identifiers.",
-    "commonMistakes": "Punctuation errors, trailing commas, or quotes around column names."
-  },
-  {
-    "id": 39,
-    "levelDisplay": "Level 39",
-    "title": "Level 39: Select flight_id with a static string 'Terminal 2' as ass...",
-    "subtitle": "Select flight_id with a static string 'Terminal 2' as assigned_terminal.",
-    "type": "fill_blank",
-    "category": "Section 01: Foundations & Projections",
-    "subcluster": "1.4 Constant Literals",
-    "task": "Select flight_id with a static string 'Terminal 2' as assigned_terminal.",
-    "table": "FlightSchedule",
-    "schemaSnippet": "FlightSchedule schema",
-    "targetQuery": "SELECT flight_id, 'Terminal 2' AS assigned_terminal\nFROM FlightSchedule;",
-    "template": [
-      {
-        "text": "SELECT flight_id, 'Terminal 2' ",
-        "isBlank": false
-      },
-      {
-        "text": "",
-        "isBlank": true,
-        "slotId": "slot1",
-        "placeholder": "[ ___ ]"
-      },
-      {
-        "text": " assigned_terminal\n",
-        "isBlank": false
-      },
-      {
-        "text": "",
-        "isBlank": true,
-        "slotId": "slot2",
-        "placeholder": "[ ___ ]"
-      },
-      {
-        "text": " FlightSchedule;",
-        "isBlank": false
-      }
-    ],
-    "slots": {
-      "slot1": {
-        "correct": "AS",
-        "options": [
-          "ALIAS",
-          "NAME",
-          "AS",
-          "LABEL"
-        ]
-      },
-      "slot2": {
-        "correct": "FROM",
-        "options": [
-          "SOURCE",
-          "TABLE",
-          "INTO",
-          "FROM"
-        ]
-      }
-    },
-    "explanation": "Keywords are SELECT, FROM, AS, DISTINCT. Keep commas between columns only. 💡 Pro-Tip / Trap: Do not add trailing commas before FROM or quote column identifiers.",
-    "commonMistakes": "Punctuation errors, trailing commas, or quotes around column names."
-  },
-  {
-    "id": 40,
-    "levelDisplay": "Level 40",
-    "title": "Level 40: Display pet_name with fixed text 'Downtown Vet' as clinic...",
-    "subtitle": "Display pet_name with fixed text 'Downtown Vet' as clinic_name.",
-    "type": "fill_blank",
-    "category": "Section 01: Foundations & Projections",
-    "subcluster": "1.4 Constant Literals",
-    "task": "Display pet_name with fixed text 'Downtown Vet' as clinic_name.",
-    "table": "PetClinic",
-    "schemaSnippet": "PetClinic schema",
-    "targetQuery": "SELECT pet_name, 'Downtown Vet' AS clinic_name\nFROM PetClinic;",
-    "template": [
-      {
-        "text": "SELECT pet_name, 'Downtown Vet' ",
-        "isBlank": false
-      },
-      {
-        "text": "",
-        "isBlank": true,
-        "slotId": "slot1",
-        "placeholder": "[ ___ ]"
-      },
-      {
-        "text": " clinic_name\n",
-        "isBlank": false
-      },
-      {
-        "text": "",
-        "isBlank": true,
-        "slotId": "slot2",
-        "placeholder": "[ ___ ]"
-      },
-      {
-        "text": " PetClinic;",
-        "isBlank": false
-      }
-    ],
-    "slots": {
-      "slot1": {
-        "correct": "AS",
-        "options": [
-          "AS",
-          "LABEL",
-          "ALIAS",
-          "NAME"
-        ]
-      },
-      "slot2": {
-        "correct": "FROM",
-        "options": [
-          "INTO",
-          "SOURCE",
-          "TABLE",
-          "FROM"
-        ]
-      }
-    },
-    "explanation": "Keywords are SELECT, FROM, AS, DISTINCT. Keep commas between columns only. 💡 Pro-Tip / Trap: Do not add trailing commas before FROM or quote column identifiers.",
+    "explanation": "Keywords are SELECT, FROM, AS, DISTINCT. Keep commas between columns only. 💡 Trap to avoid: Do not add trailing commas before FROM or quote column identifiers.",
     "commonMistakes": "Punctuation errors, trailing commas, or quotes around column names."
   },
   {
     "id": 41,
     "levelDisplay": "Level 41",
-    "title": "Level 41: Calculate the total inventory value by multiplying price ...",
+    "title": "Level 41: Calculate the total inventory value by multiplying p...",
     "subtitle": "Calculate the total inventory value by multiplying price by stock_qty.",
     "type": "fill_blank",
     "category": "Section 01: Foundations & Projections",
     "subcluster": "1.5 Arithmetic Operators",
+    "tier": "Specialist",
+    "tierColor": "#f59e0b",
+    "difficulty": "Medium",
     "task": "Calculate the total inventory value by multiplying price by stock_qty.",
     "table": "Books",
     "schemaSnippet": "Books schema",
     "targetQuery": "SELECT title, price, (price * stock_qty) AS total_inventory_value\nFROM Books;",
     "template": [
       {
-        "text": "SELECT title, price, (price * stock_qty) ",
+        "text": "SELECT title, price, ",
         "isBlank": false
       },
       {
@@ -2468,7 +3441,7 @@ window.QUESTS_SECTION_1 = [
         "placeholder": "[ ___ ]"
       },
       {
-        "text": " total_inventory_value\n",
+        "text": " ",
         "isBlank": false
       },
       {
@@ -2478,48 +3451,85 @@ window.QUESTS_SECTION_1 = [
         "placeholder": "[ ___ ]"
       },
       {
-        "text": " Books;",
+        "text": " ",
         "isBlank": false
+      },
+      {
+        "text": "",
+        "isBlank": true,
+        "slotId": "slot3",
+        "placeholder": "[ ___ ]"
+      },
+      {
+        "text": "\nFROM ",
+        "isBlank": false
+      },
+      {
+        "text": "",
+        "isBlank": true,
+        "slotId": "slot4",
+        "placeholder": "[ ___ ]"
       }
     ],
     "slots": {
       "slot1": {
-        "correct": "AS",
+        "correct": "(price * stock_qty)",
         "options": [
-          "LABEL",
-          "ALIAS",
-          "AS",
-          "NAME"
+          "(price - stock_qty)",
+          "(price / stock_qty)",
+          "(price * stock_qty)",
+          "(price + stock_qty)"
         ]
       },
       "slot2": {
-        "correct": "FROM",
+        "correct": "AS",
         "options": [
-          "TABLE",
-          "INTO",
-          "FROM",
-          "SOURCE"
+          "NAME",
+          "LABEL",
+          "ALIAS",
+          "AS"
+        ]
+      },
+      "slot3": {
+        "correct": "total_inventory_value",
+        "options": [
+          "calc_total_inventory_value",
+          "TOTAL_INVENTORY_VALUE",
+          "total_inventory_value_val",
+          "total_inventory_value"
+        ]
+      },
+      "slot4": {
+        "correct": "Books;",
+        "options": [
+          "Employees;",
+          "Books;",
+          "FlightSchedule;",
+          "MusicTracks;"
         ]
       }
     },
-    "explanation": "Keywords are SELECT, FROM, AS, DISTINCT. Keep commas between columns only. 💡 Pro-Tip / Trap: Do not add trailing commas before FROM or quote column identifiers.",
+    "explanation": "Keywords are SELECT, FROM, AS, DISTINCT. Keep commas between columns only. 💡 Trap to avoid: Do not add trailing commas before FROM or quote column identifiers.",
     "commonMistakes": "Punctuation errors, trailing commas, or quotes around column names."
   },
   {
     "id": 42,
     "levelDisplay": "Level 42",
-    "title": "Level 42: Compute order subtotal by multiplying unit_price by quantity",
+    "title": "Level 42: Compute order subtotal by multiplying unit_price by ...",
     "subtitle": "Compute order subtotal by multiplying unit_price by quantity.",
     "type": "fill_blank",
     "category": "Section 01: Foundations & Projections",
     "subcluster": "1.5 Arithmetic Operators",
+    "tier": "Specialist",
+    "tierColor": "#f59e0b",
+    "difficulty": "Medium",
     "task": "Compute order subtotal by multiplying unit_price by quantity.",
     "table": "Orders",
     "schemaSnippet": "Orders schema",
     "targetQuery": "SELECT order_id, (unit_price * quantity) AS subtotal\nFROM Orders;",
     "template": [
       {
-        "text": "SELECT order_id, (unit_price * quantity) ",
+        "text": "SELECT order_id, ",
         "isBlank": false
       },
       {
@@ -2529,7 +3539,7 @@ window.QUESTS_SECTION_1 = [
         "placeholder": "[ ___ ]"
       },
       {
-        "text": " subtotal\n",
+        "text": " ",
         "isBlank": false
       },
       {
@@ -2539,48 +3549,85 @@ window.QUESTS_SECTION_1 = [
         "placeholder": "[ ___ ]"
       },
       {
-        "text": " Orders;",
+        "text": " ",
         "isBlank": false
+      },
+      {
+        "text": "",
+        "isBlank": true,
+        "slotId": "slot3",
+        "placeholder": "[ ___ ]"
+      },
+      {
+        "text": "\nFROM ",
+        "isBlank": false
+      },
+      {
+        "text": "",
+        "isBlank": true,
+        "slotId": "slot4",
+        "placeholder": "[ ___ ]"
       }
     ],
     "slots": {
       "slot1": {
-        "correct": "AS",
+        "correct": "(unit_price * quantity)",
         "options": [
-          "AS",
-          "LABEL",
-          "ALIAS",
-          "NAME"
+          "(unit_price / quantity)",
+          "(unit_price - quantity)",
+          "(unit_price * quantity)",
+          "(unit_price + quantity)"
         ]
       },
       "slot2": {
-        "correct": "FROM",
+        "correct": "AS",
         "options": [
-          "FROM",
-          "INTO",
-          "TABLE",
-          "SOURCE"
+          "ALIAS",
+          "NAME",
+          "LABEL",
+          "AS"
+        ]
+      },
+      "slot3": {
+        "correct": "subtotal",
+        "options": [
+          "subtotal_val",
+          "calc_subtotal",
+          "subtotal",
+          "SUBTOTAL"
+        ]
+      },
+      "slot4": {
+        "correct": "Orders;",
+        "options": [
+          "MovieReviews;",
+          "FlightSchedule;",
+          "Orders;",
+          "PetClinic;"
         ]
       }
     },
-    "explanation": "Keywords are SELECT, FROM, AS, DISTINCT. Keep commas between columns only. 💡 Pro-Tip / Trap: Do not add trailing commas before FROM or quote column identifiers.",
+    "explanation": "Keywords are SELECT, FROM, AS, DISTINCT. Keep commas between columns only. 💡 Trap to avoid: Do not add trailing commas before FROM or quote column identifiers.",
     "commonMistakes": "Punctuation errors, trailing commas, or quotes around column names."
   },
   {
     "id": 43,
     "levelDisplay": "Level 43",
-    "title": "Level 43: Calculate a 10% raise amount and the resulting projected ...",
+    "title": "Level 43: Calculate a 10% raise amount and the resulting proje...",
     "subtitle": "Calculate a 10% raise amount and the resulting projected salary.",
     "type": "fill_blank",
     "category": "Section 01: Foundations & Projections",
     "subcluster": "1.5 Arithmetic Operators",
+    "tier": "Specialist",
+    "tierColor": "#f59e0b",
+    "difficulty": "Medium",
     "task": "Calculate a 10% raise amount and the resulting projected salary.",
     "table": "Employees",
     "schemaSnippet": "Employees schema",
     "targetQuery": "SELECT first_name, salary, (salary * 0.10) AS raise_amount, (salary * 1.10) AS projected_salary\nFROM Employees;",
     "template": [
       {
-        "text": "SELECT first_name, salary, (salary * 0.10) ",
+        "text": "SELECT first_name, salary, ",
         "isBlank": false
       },
       {
@@ -2590,7 +3637,7 @@ window.QUESTS_SECTION_1 = [
         "placeholder": "[ ___ ]"
       },
       {
-        "text": " raise_amount, (salary * 1.10) AS projected_salary\n",
+        "text": " ",
         "isBlank": false
       },
       {
@@ -2600,12 +3647,233 @@ window.QUESTS_SECTION_1 = [
         "placeholder": "[ ___ ]"
       },
       {
-        "text": " Employees;",
+        "text": " ",
         "isBlank": false
+      },
+      {
+        "text": "",
+        "isBlank": true,
+        "slotId": "slot3",
+        "placeholder": "[ ___ ]"
+      },
+      {
+        "text": "\nFROM ",
+        "isBlank": false
+      },
+      {
+        "text": "",
+        "isBlank": true,
+        "slotId": "slot4",
+        "placeholder": "[ ___ ]"
       }
     ],
     "slots": {
       "slot1": {
+        "correct": "(salary * 0.10)",
+        "options": [
+          "(salary + 0.10)",
+          "(salary - 0.10)",
+          "(salary / 0.10)",
+          "(salary * 0.10)"
+        ]
+      },
+      "slot2": {
+        "correct": "AS",
+        "options": [
+          "AS",
+          "ALIAS",
+          "LABEL",
+          "NAME"
+        ]
+      },
+      "slot3": {
+        "correct": "raise_amount, (salary * 1.10) AS projected_salary",
+        "options": [
+          "raise_amount, (salary * 1.10) AS projected_salary_val",
+          "calc_raise_amount, (salary * 1.10) AS projected_salary",
+          "raise_amount, (salary * 1.10) AS projected_salary",
+          "RAISE_AMOUNT, (SALARY * 1.10) AS PROJECTED_SALARY"
+        ]
+      },
+      "slot4": {
+        "correct": "Employees;",
+        "options": [
+          "Orders;",
+          "Books;",
+          "Employees;",
+          "GroceryItems;"
+        ]
+      }
+    },
+    "explanation": "Keywords are SELECT, FROM, AS, DISTINCT. Keep commas between columns only. 💡 Trap to avoid: Do not add trailing commas before FROM or quote column identifiers.",
+    "commonMistakes": "Punctuation errors, trailing commas, or quotes around column names."
+  },
+  {
+    "id": 44,
+    "levelDisplay": "Level 44",
+    "title": "Level 44: Convert a 4.0 GPA to an approximate 100-point scale ...",
+    "subtitle": "Convert a 4.0 GPA to an approximate 100-point scale by multiplying by 25.0.",
+    "type": "fill_blank",
+    "category": "Section 01: Foundations & Projections",
+    "subcluster": "1.5 Arithmetic Operators",
+    "tier": "Specialist",
+    "tierColor": "#f59e0b",
+    "difficulty": "Medium",
+    "task": "Convert a 4.0 GPA to an approximate 100-point scale by multiplying by 25.0.",
+    "table": "Students",
+    "schemaSnippet": "Students schema",
+    "targetQuery": "SELECT full_name, gpa, (gpa * 25.0) AS gpa_percentage\nFROM Students;",
+    "template": [
+      {
+        "text": "SELECT full_name, gpa, ",
+        "isBlank": false
+      },
+      {
+        "text": "",
+        "isBlank": true,
+        "slotId": "slot1",
+        "placeholder": "[ ___ ]"
+      },
+      {
+        "text": " ",
+        "isBlank": false
+      },
+      {
+        "text": "",
+        "isBlank": true,
+        "slotId": "slot2",
+        "placeholder": "[ ___ ]"
+      },
+      {
+        "text": " ",
+        "isBlank": false
+      },
+      {
+        "text": "",
+        "isBlank": true,
+        "slotId": "slot3",
+        "placeholder": "[ ___ ]"
+      },
+      {
+        "text": "\nFROM ",
+        "isBlank": false
+      },
+      {
+        "text": "",
+        "isBlank": true,
+        "slotId": "slot4",
+        "placeholder": "[ ___ ]"
+      }
+    ],
+    "slots": {
+      "slot1": {
+        "correct": "(gpa * 25.0)",
+        "options": [
+          "(gpa / 25.0)",
+          "(gpa + 25.0)",
+          "(gpa * 25.0)",
+          "(gpa - 25.0)"
+        ]
+      },
+      "slot2": {
+        "correct": "AS",
+        "options": [
+          "ALIAS",
+          "LABEL",
+          "NAME",
+          "AS"
+        ]
+      },
+      "slot3": {
+        "correct": "gpa_percentage",
+        "options": [
+          "gpa_percentage",
+          "GPA_PERCENTAGE",
+          "calc_gpa_percentage",
+          "gpa_percentage_val"
+        ]
+      },
+      "slot4": {
+        "correct": "Students;",
+        "options": [
+          "Orders;",
+          "MovieReviews;",
+          "Students;",
+          "PetClinic;"
+        ]
+      }
+    },
+    "explanation": "Keywords are SELECT, FROM, AS, DISTINCT. Keep commas between columns only. 💡 Trap to avoid: Do not add trailing commas before FROM or quote column identifiers.",
+    "commonMistakes": "Punctuation errors, trailing commas, or quotes around column names."
+  },
+  {
+    "id": 45,
+    "levelDisplay": "Level 45",
+    "title": "Level 45: Calculate the item price including an 8% sales tax (...",
+    "subtitle": "Calculate the item price including an 8% sales tax (unit_price * 1.08).",
+    "type": "fill_blank",
+    "category": "Section 01: Foundations & Projections",
+    "subcluster": "1.5 Arithmetic Operators",
+    "tier": "Specialist",
+    "tierColor": "#f59e0b",
+    "difficulty": "Medium",
+    "task": "Calculate the item price including an 8% sales tax (unit_price * 1.08).",
+    "table": "GroceryItems",
+    "schemaSnippet": "GroceryItems schema",
+    "targetQuery": "SELECT item_name, unit_price, (unit_price * 1.08) AS price_with_tax\nFROM GroceryItems;",
+    "template": [
+      {
+        "text": "SELECT item_name, unit_price, ",
+        "isBlank": false
+      },
+      {
+        "text": "",
+        "isBlank": true,
+        "slotId": "slot1",
+        "placeholder": "[ ___ ]"
+      },
+      {
+        "text": " ",
+        "isBlank": false
+      },
+      {
+        "text": "",
+        "isBlank": true,
+        "slotId": "slot2",
+        "placeholder": "[ ___ ]"
+      },
+      {
+        "text": " ",
+        "isBlank": false
+      },
+      {
+        "text": "",
+        "isBlank": true,
+        "slotId": "slot3",
+        "placeholder": "[ ___ ]"
+      },
+      {
+        "text": "\nFROM ",
+        "isBlank": false
+      },
+      {
+        "text": "",
+        "isBlank": true,
+        "slotId": "slot4",
+        "placeholder": "[ ___ ]"
+      }
+    ],
+    "slots": {
+      "slot1": {
+        "correct": "(unit_price * 1.08)",
+        "options": [
+          "(unit_price * 1.08)",
+          "(unit_price - 1.08)",
+          "(unit_price / 1.08)",
+          "(unit_price + 1.08)"
+        ]
+      },
+      "slot2": {
         "correct": "AS",
         "options": [
           "ALIAS",
@@ -2614,156 +3882,46 @@ window.QUESTS_SECTION_1 = [
           "NAME"
         ]
       },
-      "slot2": {
-        "correct": "FROM",
+      "slot3": {
+        "correct": "price_with_tax",
         "options": [
-          "TABLE",
-          "SOURCE",
-          "FROM",
-          "INTO"
+          "price_with_tax_val",
+          "calc_price_with_tax",
+          "price_with_tax",
+          "PRICE_WITH_TAX"
+        ]
+      },
+      "slot4": {
+        "correct": "GroceryItems;",
+        "options": [
+          "FlightSchedule;",
+          "GymMembers;",
+          "MusicTracks;",
+          "GroceryItems;"
         ]
       }
     },
-    "explanation": "Keywords are SELECT, FROM, AS, DISTINCT. Keep commas between columns only. 💡 Pro-Tip / Trap: Do not add trailing commas before FROM or quote column identifiers.",
-    "commonMistakes": "Punctuation errors, trailing commas, or quotes around column names."
-  },
-  {
-    "id": 44,
-    "levelDisplay": "Level 44",
-    "title": "Level 44: Convert a 4.0 GPA to an approximate 100-point scale by mu...",
-    "subtitle": "Convert a 4.0 GPA to an approximate 100-point scale by multiplying by 25.0.",
-    "type": "fill_blank",
-    "category": "Section 01: Foundations & Projections",
-    "subcluster": "1.5 Arithmetic Operators",
-    "task": "Convert a 4.0 GPA to an approximate 100-point scale by multiplying by 25.0.",
-    "table": "Students",
-    "schemaSnippet": "Students schema",
-    "targetQuery": "SELECT full_name, gpa, (gpa * 25.0) AS gpa_percentage\nFROM Students;",
-    "template": [
-      {
-        "text": "SELECT full_name, gpa, (gpa * 25.0) ",
-        "isBlank": false
-      },
-      {
-        "text": "",
-        "isBlank": true,
-        "slotId": "slot1",
-        "placeholder": "[ ___ ]"
-      },
-      {
-        "text": " gpa_percentage\n",
-        "isBlank": false
-      },
-      {
-        "text": "",
-        "isBlank": true,
-        "slotId": "slot2",
-        "placeholder": "[ ___ ]"
-      },
-      {
-        "text": " Students;",
-        "isBlank": false
-      }
-    ],
-    "slots": {
-      "slot1": {
-        "correct": "AS",
-        "options": [
-          "NAME",
-          "AS",
-          "ALIAS",
-          "LABEL"
-        ]
-      },
-      "slot2": {
-        "correct": "FROM",
-        "options": [
-          "TABLE",
-          "SOURCE",
-          "INTO",
-          "FROM"
-        ]
-      }
-    },
-    "explanation": "Keywords are SELECT, FROM, AS, DISTINCT. Keep commas between columns only. 💡 Pro-Tip / Trap: Do not add trailing commas before FROM or quote column identifiers.",
-    "commonMistakes": "Punctuation errors, trailing commas, or quotes around column names."
-  },
-  {
-    "id": 45,
-    "levelDisplay": "Level 45",
-    "title": "Level 45: Calculate the item price including an 8% sales tax (unit_...",
-    "subtitle": "Calculate the item price including an 8% sales tax (unit_price * 1.08).",
-    "type": "fill_blank",
-    "category": "Section 01: Foundations & Projections",
-    "subcluster": "1.5 Arithmetic Operators",
-    "task": "Calculate the item price including an 8% sales tax (unit_price * 1.08).",
-    "table": "GroceryItems",
-    "schemaSnippet": "GroceryItems schema",
-    "targetQuery": "SELECT item_name, unit_price, (unit_price * 1.08) AS price_with_tax\nFROM GroceryItems;",
-    "template": [
-      {
-        "text": "SELECT item_name, unit_price, (unit_price * 1.08) ",
-        "isBlank": false
-      },
-      {
-        "text": "",
-        "isBlank": true,
-        "slotId": "slot1",
-        "placeholder": "[ ___ ]"
-      },
-      {
-        "text": " price_with_tax\n",
-        "isBlank": false
-      },
-      {
-        "text": "",
-        "isBlank": true,
-        "slotId": "slot2",
-        "placeholder": "[ ___ ]"
-      },
-      {
-        "text": " GroceryItems;",
-        "isBlank": false
-      }
-    ],
-    "slots": {
-      "slot1": {
-        "correct": "AS",
-        "options": [
-          "NAME",
-          "ALIAS",
-          "AS",
-          "LABEL"
-        ]
-      },
-      "slot2": {
-        "correct": "FROM",
-        "options": [
-          "SOURCE",
-          "INTO",
-          "FROM",
-          "TABLE"
-        ]
-      }
-    },
-    "explanation": "Keywords are SELECT, FROM, AS, DISTINCT. Keep commas between columns only. 💡 Pro-Tip / Trap: Do not add trailing commas before FROM or quote column identifiers.",
+    "explanation": "Keywords are SELECT, FROM, AS, DISTINCT. Keep commas between columns only. 💡 Trap to avoid: Do not add trailing commas before FROM or quote column identifiers.",
     "commonMistakes": "Punctuation errors, trailing commas, or quotes around column names."
   },
   {
     "id": 46,
     "levelDisplay": "Level 46",
-    "title": "Level 46: Convert duration in seconds into fractional minutes by di...",
+    "title": "Level 46: Convert duration in seconds into fractional minutes ...",
     "subtitle": "Convert duration in seconds into fractional minutes by dividing by 60.0.",
     "type": "fill_blank",
     "category": "Section 01: Foundations & Projections",
     "subcluster": "1.5 Arithmetic Operators",
+    "tier": "Specialist",
+    "tierColor": "#f59e0b",
+    "difficulty": "Medium",
     "task": "Convert duration in seconds into fractional minutes by dividing by 60.0.",
     "table": "MusicTracks",
     "schemaSnippet": "MusicTracks schema",
     "targetQuery": "SELECT track_title, duration_seconds, (duration_seconds / 60.0) AS duration_minutes\nFROM MusicTracks;",
     "template": [
       {
-        "text": "SELECT track_title, duration_seconds, (duration_seconds / 60.0) ",
+        "text": "SELECT track_title, duration_seconds, ",
         "isBlank": false
       },
       {
@@ -2773,7 +3931,7 @@ window.QUESTS_SECTION_1 = [
         "placeholder": "[ ___ ]"
       },
       {
-        "text": " duration_minutes\n",
+        "text": " ",
         "isBlank": false
       },
       {
@@ -2783,48 +3941,85 @@ window.QUESTS_SECTION_1 = [
         "placeholder": "[ ___ ]"
       },
       {
-        "text": " MusicTracks;",
+        "text": " ",
         "isBlank": false
+      },
+      {
+        "text": "",
+        "isBlank": true,
+        "slotId": "slot3",
+        "placeholder": "[ ___ ]"
+      },
+      {
+        "text": "\nFROM ",
+        "isBlank": false
+      },
+      {
+        "text": "",
+        "isBlank": true,
+        "slotId": "slot4",
+        "placeholder": "[ ___ ]"
       }
     ],
     "slots": {
       "slot1": {
-        "correct": "AS",
+        "correct": "(duration_seconds / 60.0)",
         "options": [
-          "LABEL",
-          "AS",
-          "NAME",
-          "ALIAS"
+          "(duration_seconds + 60.0)",
+          "(duration_seconds - 60.0)",
+          "(duration_seconds / 60.0)",
+          "(duration_seconds * 60.0)"
         ]
       },
       "slot2": {
-        "correct": "FROM",
+        "correct": "AS",
         "options": [
-          "INTO",
-          "SOURCE",
-          "TABLE",
-          "FROM"
+          "LABEL",
+          "NAME",
+          "ALIAS",
+          "AS"
+        ]
+      },
+      "slot3": {
+        "correct": "duration_minutes",
+        "options": [
+          "duration_minutes",
+          "DURATION_MINUTES",
+          "duration_minutes_val",
+          "calc_duration_minutes"
+        ]
+      },
+      "slot4": {
+        "correct": "MusicTracks;",
+        "options": [
+          "PetClinic;",
+          "MovieReviews;",
+          "Students;",
+          "MusicTracks;"
         ]
       }
     },
-    "explanation": "Keywords are SELECT, FROM, AS, DISTINCT. Keep commas between columns only. 💡 Pro-Tip / Trap: Do not add trailing commas before FROM or quote column identifiers.",
+    "explanation": "Keywords are SELECT, FROM, AS, DISTINCT. Keep commas between columns only. 💡 Trap to avoid: Do not add trailing commas before FROM or quote column identifiers.",
     "commonMistakes": "Punctuation errors, trailing commas, or quotes around column names."
   },
   {
     "id": 47,
     "levelDisplay": "Level 47",
-    "title": "Level 47: Compute the total annual membership cost by multiplying m...",
+    "title": "Level 47: Compute the total annual membership cost by multiply...",
     "subtitle": "Compute the total annual membership cost by multiplying monthly_fee by 12.",
     "type": "fill_blank",
     "category": "Section 01: Foundations & Projections",
     "subcluster": "1.5 Arithmetic Operators",
+    "tier": "Specialist",
+    "tierColor": "#f59e0b",
+    "difficulty": "Medium",
     "task": "Compute the total annual membership cost by multiplying monthly_fee by 12.",
     "table": "GymMembers",
     "schemaSnippet": "GymMembers schema",
     "targetQuery": "SELECT member_name, monthly_fee, (monthly_fee * 12) AS annual_cost\nFROM GymMembers;",
     "template": [
       {
-        "text": "SELECT member_name, monthly_fee, (monthly_fee * 12) ",
+        "text": "SELECT member_name, monthly_fee, ",
         "isBlank": false
       },
       {
@@ -2834,7 +4029,7 @@ window.QUESTS_SECTION_1 = [
         "placeholder": "[ ___ ]"
       },
       {
-        "text": " annual_cost\n",
+        "text": " ",
         "isBlank": false
       },
       {
@@ -2844,31 +4039,65 @@ window.QUESTS_SECTION_1 = [
         "placeholder": "[ ___ ]"
       },
       {
-        "text": " GymMembers;",
+        "text": " ",
         "isBlank": false
+      },
+      {
+        "text": "",
+        "isBlank": true,
+        "slotId": "slot3",
+        "placeholder": "[ ___ ]"
+      },
+      {
+        "text": "\nFROM ",
+        "isBlank": false
+      },
+      {
+        "text": "",
+        "isBlank": true,
+        "slotId": "slot4",
+        "placeholder": "[ ___ ]"
       }
     ],
     "slots": {
       "slot1": {
-        "correct": "AS",
+        "correct": "(monthly_fee * 12)",
         "options": [
-          "AS",
-          "LABEL",
-          "NAME",
-          "ALIAS"
+          "(monthly_fee / 12)",
+          "(monthly_fee - 12)",
+          "(monthly_fee * 12)",
+          "(monthly_fee + 12)"
         ]
       },
       "slot2": {
-        "correct": "FROM",
+        "correct": "AS",
         "options": [
-          "INTO",
-          "TABLE",
-          "FROM",
-          "SOURCE"
+          "AS",
+          "ALIAS",
+          "NAME",
+          "LABEL"
+        ]
+      },
+      "slot3": {
+        "correct": "annual_cost",
+        "options": [
+          "calc_annual_cost",
+          "annual_cost_val",
+          "ANNUAL_COST",
+          "annual_cost"
+        ]
+      },
+      "slot4": {
+        "correct": "GymMembers;",
+        "options": [
+          "GymMembers;",
+          "Orders;",
+          "MovieReviews;",
+          "Employees;"
         ]
       }
     },
-    "explanation": "Keywords are SELECT, FROM, AS, DISTINCT. Keep commas between columns only. 💡 Pro-Tip / Trap: Do not add trailing commas before FROM or quote column identifiers.",
+    "explanation": "Keywords are SELECT, FROM, AS, DISTINCT. Keep commas between columns only. 💡 Trap to avoid: Do not add trailing commas before FROM or quote column identifiers.",
     "commonMistakes": "Punctuation errors, trailing commas, or quotes around column names."
   },
   {
@@ -2879,13 +4108,16 @@ window.QUESTS_SECTION_1 = [
     "type": "fill_blank",
     "category": "Section 01: Foundations & Projections",
     "subcluster": "1.5 Arithmetic Operators",
+    "tier": "Specialist",
+    "tierColor": "#f59e0b",
+    "difficulty": "Medium",
     "task": "Add a $35 standard checked bag fee to ticket_price.",
     "table": "FlightSchedule",
     "schemaSnippet": "FlightSchedule schema",
     "targetQuery": "SELECT flight_id, ticket_price, (ticket_price + 35.00) AS price_with_baggage\nFROM FlightSchedule;",
     "template": [
       {
-        "text": "SELECT flight_id, ticket_price, (ticket_price + 35.00) ",
+        "text": "SELECT flight_id, ticket_price, ",
         "isBlank": false
       },
       {
@@ -2895,7 +4127,7 @@ window.QUESTS_SECTION_1 = [
         "placeholder": "[ ___ ]"
       },
       {
-        "text": " price_with_baggage\n",
+        "text": " ",
         "isBlank": false
       },
       {
@@ -2905,48 +4137,85 @@ window.QUESTS_SECTION_1 = [
         "placeholder": "[ ___ ]"
       },
       {
-        "text": " FlightSchedule;",
+        "text": " ",
         "isBlank": false
+      },
+      {
+        "text": "",
+        "isBlank": true,
+        "slotId": "slot3",
+        "placeholder": "[ ___ ]"
+      },
+      {
+        "text": "\nFROM ",
+        "isBlank": false
+      },
+      {
+        "text": "",
+        "isBlank": true,
+        "slotId": "slot4",
+        "placeholder": "[ ___ ]"
       }
     ],
     "slots": {
       "slot1": {
-        "correct": "AS",
+        "correct": "(ticket_price + 35.00)",
         "options": [
-          "LABEL",
-          "AS",
-          "NAME",
-          "ALIAS"
+          "(ticket_price / 35.00)",
+          "(ticket_price + 35.00)",
+          "(ticket_price * 35.00)",
+          "(ticket_price - 35.00)"
         ]
       },
       "slot2": {
-        "correct": "FROM",
+        "correct": "AS",
         "options": [
-          "TABLE",
-          "INTO",
-          "FROM",
-          "SOURCE"
+          "ALIAS",
+          "NAME",
+          "LABEL",
+          "AS"
+        ]
+      },
+      "slot3": {
+        "correct": "price_with_baggage",
+        "options": [
+          "PRICE_WITH_BAGGAGE",
+          "calc_price_with_baggage",
+          "price_with_baggage",
+          "price_with_baggage_val"
+        ]
+      },
+      "slot4": {
+        "correct": "FlightSchedule;",
+        "options": [
+          "PetClinic;",
+          "GroceryItems;",
+          "MovieReviews;",
+          "FlightSchedule;"
         ]
       }
     },
-    "explanation": "Keywords are SELECT, FROM, AS, DISTINCT. Keep commas between columns only. 💡 Pro-Tip / Trap: Do not add trailing commas before FROM or quote column identifiers.",
+    "explanation": "Keywords are SELECT, FROM, AS, DISTINCT. Keep commas between columns only. 💡 Trap to avoid: Do not add trailing commas before FROM or quote column identifiers.",
     "commonMistakes": "Punctuation errors, trailing commas, or quotes around column names."
   },
   {
     "id": 49,
     "levelDisplay": "Level 49",
-    "title": "Level 49: Convert pet weight from kilograms to pounds by multiplyin...",
+    "title": "Level 49: Convert pet weight from kilograms to pounds by multi...",
     "subtitle": "Convert pet weight from kilograms to pounds by multiplying by 2.20462.",
     "type": "fill_blank",
     "category": "Section 01: Foundations & Projections",
     "subcluster": "1.5 Arithmetic Operators",
+    "tier": "Specialist",
+    "tierColor": "#f59e0b",
+    "difficulty": "Medium",
     "task": "Convert pet weight from kilograms to pounds by multiplying by 2.20462.",
     "table": "PetClinic",
     "schemaSnippet": "PetClinic schema",
     "targetQuery": "SELECT pet_name, weight_kg, (weight_kg * 2.20462) AS weight_lbs\nFROM PetClinic;",
     "template": [
       {
-        "text": "SELECT pet_name, weight_kg, (weight_kg * 2.20462) ",
+        "text": "SELECT pet_name, weight_kg, ",
         "isBlank": false
       },
       {
@@ -2956,7 +4225,7 @@ window.QUESTS_SECTION_1 = [
         "placeholder": "[ ___ ]"
       },
       {
-        "text": " weight_lbs\n",
+        "text": " ",
         "isBlank": false
       },
       {
@@ -2966,48 +4235,85 @@ window.QUESTS_SECTION_1 = [
         "placeholder": "[ ___ ]"
       },
       {
-        "text": " PetClinic;",
+        "text": " ",
         "isBlank": false
+      },
+      {
+        "text": "",
+        "isBlank": true,
+        "slotId": "slot3",
+        "placeholder": "[ ___ ]"
+      },
+      {
+        "text": "\nFROM ",
+        "isBlank": false
+      },
+      {
+        "text": "",
+        "isBlank": true,
+        "slotId": "slot4",
+        "placeholder": "[ ___ ]"
       }
     ],
     "slots": {
       "slot1": {
+        "correct": "(weight_kg * 2.20462)",
+        "options": [
+          "(weight_kg + 2.20462)",
+          "(weight_kg * 2.20462)",
+          "(weight_kg / 2.20462)",
+          "(weight_kg - 2.20462)"
+        ]
+      },
+      "slot2": {
         "correct": "AS",
         "options": [
-          "LABEL",
           "NAME",
+          "LABEL",
           "ALIAS",
           "AS"
         ]
       },
-      "slot2": {
-        "correct": "FROM",
+      "slot3": {
+        "correct": "weight_lbs",
         "options": [
-          "FROM",
-          "INTO",
-          "SOURCE",
-          "TABLE"
+          "weight_lbs_val",
+          "calc_weight_lbs",
+          "WEIGHT_LBS",
+          "weight_lbs"
+        ]
+      },
+      "slot4": {
+        "correct": "PetClinic;",
+        "options": [
+          "GroceryItems;",
+          "Orders;",
+          "FlightSchedule;",
+          "PetClinic;"
         ]
       }
     },
-    "explanation": "Keywords are SELECT, FROM, AS, DISTINCT. Keep commas between columns only. 💡 Pro-Tip / Trap: Do not add trailing commas before FROM or quote column identifiers.",
+    "explanation": "Keywords are SELECT, FROM, AS, DISTINCT. Keep commas between columns only. 💡 Trap to avoid: Do not add trailing commas before FROM or quote column identifiers.",
     "commonMistakes": "Punctuation errors, trailing commas, or quotes around column names."
   },
   {
     "id": 50,
     "levelDisplay": "Level 50",
-    "title": "Level 50: Calculate the final discounted total: subtotal times (1 -...",
+    "title": "Level 50: Calculate the final discounted total: subtotal times...",
     "subtitle": "Calculate the final discounted total: subtotal times (1 - discount_pct).",
     "type": "fill_blank",
     "category": "Section 01: Foundations & Projections",
     "subcluster": "1.5 Arithmetic Operators",
+    "tier": "Specialist",
+    "tierColor": "#f59e0b",
+    "difficulty": "Medium",
     "task": "Calculate the final discounted total: subtotal times (1 - discount_pct).",
     "table": "Orders",
     "schemaSnippet": "Orders schema",
     "targetQuery": "SELECT order_id, unit_price, quantity, ((unit_price * quantity) * (1 - discount_pct)) AS final_charged_amount\nFROM Orders;",
     "template": [
       {
-        "text": "SELECT order_id, unit_price, quantity, ((unit_price * quantity) * (1 - discount_pct)) ",
+        "text": "SELECT order_id, unit_price, quantity, ",
         "isBlank": false
       },
       {
@@ -3017,7 +4323,7 @@ window.QUESTS_SECTION_1 = [
         "placeholder": "[ ___ ]"
       },
       {
-        "text": " final_charged_amount\n",
+        "text": " ",
         "isBlank": false
       },
       {
@@ -3027,41 +4333,78 @@ window.QUESTS_SECTION_1 = [
         "placeholder": "[ ___ ]"
       },
       {
-        "text": " Orders;",
+        "text": " ",
         "isBlank": false
+      },
+      {
+        "text": "",
+        "isBlank": true,
+        "slotId": "slot3",
+        "placeholder": "[ ___ ]"
+      },
+      {
+        "text": "\nFROM ",
+        "isBlank": false
+      },
+      {
+        "text": "",
+        "isBlank": true,
+        "slotId": "slot4",
+        "placeholder": "[ ___ ]"
       }
     ],
     "slots": {
       "slot1": {
-        "correct": "AS",
+        "correct": "((unit_price * quantity) * (1 - discount_pct))",
         "options": [
-          "AS",
-          "LABEL",
-          "ALIAS",
-          "NAME"
+          "((unit_price - quantity) - (1 - discount_pct))",
+          "((unit_price * quantity) * (1 - discount_pct))",
+          "((unit_price / quantity) / (1 - discount_pct))",
+          "((unit_price + quantity) + (1 - discount_pct))"
         ]
       },
       "slot2": {
-        "correct": "FROM",
+        "correct": "AS",
         "options": [
-          "FROM",
-          "TABLE",
-          "INTO",
-          "SOURCE"
+          "AS",
+          "ALIAS",
+          "LABEL",
+          "NAME"
+        ]
+      },
+      "slot3": {
+        "correct": "final_charged_amount",
+        "options": [
+          "final_charged_amount_val",
+          "final_charged_amount",
+          "calc_final_charged_amount",
+          "FINAL_CHARGED_AMOUNT"
+        ]
+      },
+      "slot4": {
+        "correct": "Orders;",
+        "options": [
+          "FlightSchedule;",
+          "GroceryItems;",
+          "Students;",
+          "Orders;"
         ]
       }
     },
-    "explanation": "Keywords are SELECT, FROM, AS, DISTINCT. Keep commas between columns only. 💡 Pro-Tip / Trap: Do not add trailing commas before FROM or quote column identifiers.",
+    "explanation": "Keywords are SELECT, FROM, AS, DISTINCT. Keep commas between columns only. 💡 Trap to avoid: Do not add trailing commas before FROM or quote column identifiers.",
     "commonMistakes": "Punctuation errors, trailing commas, or quotes around column names."
   },
   {
     "id": 51,
     "levelDisplay": "Level 51",
-    "title": "Level 51: Round calculated price with 8.25% sales tax to 2 decimal ...",
+    "title": "Level 51: Round calculated price with 8.25% sales tax to 2 dec...",
     "subtitle": "Round calculated price with 8.25% sales tax to 2 decimal places using ROUND().",
     "type": "fill_blank",
     "category": "Section 01: Foundations & Projections",
     "subcluster": "1.6 Math & Rounding Functions",
+    "tier": "Specialist",
+    "tierColor": "#f59e0b",
+    "difficulty": "Medium",
     "task": "Round calculated price with 8.25% sales tax to 2 decimal places using ROUND().",
     "table": "GroceryItems",
     "schemaSnippet": "GroceryItems schema",
@@ -3078,7 +4421,7 @@ window.QUESTS_SECTION_1 = [
         "placeholder": "[ ___ ]"
       },
       {
-        "text": "(unit_price * 1.0825, 2) ",
+        "text": " ",
         "isBlank": false
       },
       {
@@ -3088,31 +4431,69 @@ window.QUESTS_SECTION_1 = [
         "placeholder": "[ ___ ]"
       },
       {
-        "text": " rounded_tax_price\nFROM GroceryItems;",
+        "text": " ",
+        "isBlank": false
+      },
+      {
+        "text": "",
+        "isBlank": true,
+        "slotId": "slot3",
+        "placeholder": "[ ___ ]"
+      },
+      {
+        "text": "\n",
+        "isBlank": false
+      },
+      {
+        "text": "",
+        "isBlank": true,
+        "slotId": "slot4",
+        "placeholder": "[ ___ ]"
+      },
+      {
+        "text": " GroceryItems;",
         "isBlank": false
       }
     ],
     "slots": {
       "slot1": {
-        "correct": "ROUND",
+        "correct": "ROUND(unit_price * 1.0825, 2)",
         "options": [
-          "FIXED",
-          "APPROX",
-          "TRUNC",
-          "ROUND"
+          "ROUND(unit_price - 1.0825, 2)",
+          "ROUND(unit_price * 1.0825, 2)",
+          "ROUND(unit_price + 1.0825, 2)",
+          "ROUND(unit_price / 1.0825, 2)"
         ]
       },
       "slot2": {
         "correct": "AS",
         "options": [
+          "AS",
           "LABEL",
           "NAME",
-          "AS",
           "ALIAS"
+        ]
+      },
+      "slot3": {
+        "correct": "rounded_tax_price",
+        "options": [
+          "rounded_tax_price",
+          "computed_rounded_tax_price",
+          "ROUNDED_TAX_PRICE",
+          "rounded_tax_price_num"
+        ]
+      },
+      "slot4": {
+        "correct": "FROM",
+        "options": [
+          "SOURCE",
+          "TABLE",
+          "FROM",
+          "INTO"
         ]
       }
     },
-    "explanation": "Keywords are SELECT, FROM, AS, DISTINCT. Keep commas between columns only. 💡 Pro-Tip / Trap: Do not add trailing commas before FROM or quote column identifiers.",
+    "explanation": "Keywords are SELECT, FROM, AS, DISTINCT. Keep commas between columns only. 💡 Trap to avoid: Do not add trailing commas before FROM or quote column identifiers.",
     "commonMistakes": "Punctuation errors, trailing commas, or quotes around column names."
   },
   {
@@ -3123,6 +4504,9 @@ window.QUESTS_SECTION_1 = [
     "type": "fill_blank",
     "category": "Section 01: Foundations & Projections",
     "subcluster": "1.6 Math & Rounding Functions",
+    "tier": "Specialist",
+    "tierColor": "#f59e0b",
+    "difficulty": "Medium",
     "task": "Round GPA to 1 decimal place using ROUND(gpa, 1).",
     "table": "Students",
     "schemaSnippet": "Students schema",
@@ -3139,7 +4523,7 @@ window.QUESTS_SECTION_1 = [
         "placeholder": "[ ___ ]"
       },
       {
-        "text": "(gpa, 1) ",
+        "text": " ",
         "isBlank": false
       },
       {
@@ -3149,48 +4533,89 @@ window.QUESTS_SECTION_1 = [
         "placeholder": "[ ___ ]"
       },
       {
-        "text": " rounded_gpa\nFROM Students;",
+        "text": " ",
+        "isBlank": false
+      },
+      {
+        "text": "",
+        "isBlank": true,
+        "slotId": "slot3",
+        "placeholder": "[ ___ ]"
+      },
+      {
+        "text": "\n",
+        "isBlank": false
+      },
+      {
+        "text": "",
+        "isBlank": true,
+        "slotId": "slot4",
+        "placeholder": "[ ___ ]"
+      },
+      {
+        "text": " Students;",
         "isBlank": false
       }
     ],
     "slots": {
       "slot1": {
-        "correct": "ROUND",
+        "correct": "ROUND(gpa, 1)",
         "options": [
-          "APPROX",
-          "TRUNC",
-          "ROUND",
-          "FIXED"
+          "round_fn(gpa, 1)",
+          "CALC_ROUND(gpa, 1)",
+          "ROUND(gpa, 1)",
+          "GET_ROUND(gpa, 1)"
         ]
       },
       "slot2": {
         "correct": "AS",
         "options": [
-          "AS",
-          "LABEL",
           "ALIAS",
+          "LABEL",
+          "AS",
           "NAME"
+        ]
+      },
+      "slot3": {
+        "correct": "rounded_gpa",
+        "options": [
+          "rounded_gpa_num",
+          "ROUNDED_GPA",
+          "rounded_gpa",
+          "computed_rounded_gpa"
+        ]
+      },
+      "slot4": {
+        "correct": "FROM",
+        "options": [
+          "SOURCE",
+          "TABLE",
+          "FROM",
+          "INTO"
         ]
       }
     },
-    "explanation": "Keywords are SELECT, FROM, AS, DISTINCT. Keep commas between columns only. 💡 Pro-Tip / Trap: Do not add trailing commas before FROM or quote column identifiers.",
+    "explanation": "Keywords are SELECT, FROM, AS, DISTINCT. Keep commas between columns only. 💡 Trap to avoid: Do not add trailing commas before FROM or quote column identifiers.",
     "commonMistakes": "Punctuation errors, trailing commas, or quotes around column names."
   },
   {
     "id": 53,
     "levelDisplay": "Level 53",
-    "title": "Level 53: Extract whole minutes of track duration using FLOOR(durat...",
+    "title": "Level 53: Extract whole minutes of track duration using FLOOR(...",
     "subtitle": "Extract whole minutes of track duration using FLOOR(duration_seconds / 60).",
     "type": "fill_blank",
     "category": "Section 01: Foundations & Projections",
     "subcluster": "1.6 Math & Rounding Functions",
+    "tier": "Specialist",
+    "tierColor": "#f59e0b",
+    "difficulty": "Medium",
     "task": "Extract whole minutes of track duration using FLOOR(duration_seconds / 60).",
     "table": "MusicTracks",
     "schemaSnippet": "MusicTracks schema",
     "targetQuery": "SELECT track_title, FLOOR(duration_seconds / 60) AS whole_minutes\nFROM MusicTracks;",
     "template": [
       {
-        "text": "SELECT track_title, FLOOR(duration_seconds / 60) ",
+        "text": "SELECT track_title, ",
         "isBlank": false
       },
       {
@@ -3200,13 +4625,33 @@ window.QUESTS_SECTION_1 = [
         "placeholder": "[ ___ ]"
       },
       {
-        "text": " whole_minutes\n",
+        "text": " ",
         "isBlank": false
       },
       {
         "text": "",
         "isBlank": true,
         "slotId": "slot2",
+        "placeholder": "[ ___ ]"
+      },
+      {
+        "text": " ",
+        "isBlank": false
+      },
+      {
+        "text": "",
+        "isBlank": true,
+        "slotId": "slot3",
+        "placeholder": "[ ___ ]"
+      },
+      {
+        "text": "\n",
+        "isBlank": false
+      },
+      {
+        "text": "",
+        "isBlank": true,
+        "slotId": "slot4",
         "placeholder": "[ ___ ]"
       },
       {
@@ -3216,42 +4661,63 @@ window.QUESTS_SECTION_1 = [
     ],
     "slots": {
       "slot1": {
-        "correct": "AS",
+        "correct": "FLOOR(duration_seconds / 60)",
         "options": [
-          "ALIAS",
-          "AS",
-          "NAME",
-          "LABEL"
+          "FLOOR(duration_seconds * 60)",
+          "FLOOR(duration_seconds + 60)",
+          "FLOOR(duration_seconds / 60)",
+          "FLOOR(duration_seconds - 60)"
         ]
       },
       "slot2": {
+        "correct": "AS",
+        "options": [
+          "LABEL",
+          "AS",
+          "ALIAS",
+          "NAME"
+        ]
+      },
+      "slot3": {
+        "correct": "whole_minutes",
+        "options": [
+          "whole_minutes",
+          "whole_minutes_num",
+          "WHOLE_MINUTES",
+          "computed_whole_minutes"
+        ]
+      },
+      "slot4": {
         "correct": "FROM",
         "options": [
-          "SOURCE",
+          "FROM",
           "TABLE",
-          "INTO",
-          "FROM"
+          "SOURCE",
+          "INTO"
         ]
       }
     },
-    "explanation": "Keywords are SELECT, FROM, AS, DISTINCT. Keep commas between columns only. 💡 Pro-Tip / Trap: Do not add trailing commas before FROM or quote column identifiers.",
+    "explanation": "Keywords are SELECT, FROM, AS, DISTINCT. Keep commas between columns only. 💡 Trap to avoid: Do not add trailing commas before FROM or quote column identifiers.",
     "commonMistakes": "Punctuation errors, trailing commas, or quotes around column names."
   },
   {
     "id": 54,
     "levelDisplay": "Level 54",
-    "title": "Level 54: Round monthly fee up to the nearest whole integer using C...",
+    "title": "Level 54: Round monthly fee up to the nearest whole integer us...",
     "subtitle": "Round monthly fee up to the nearest whole integer using CEIL().",
     "type": "fill_blank",
     "category": "Section 01: Foundations & Projections",
     "subcluster": "1.6 Math & Rounding Functions",
+    "tier": "Specialist",
+    "tierColor": "#f59e0b",
+    "difficulty": "Medium",
     "task": "Round monthly fee up to the nearest whole integer using CEIL().",
     "table": "GymMembers",
     "schemaSnippet": "GymMembers schema",
     "targetQuery": "SELECT member_name, CEIL(monthly_fee) AS rounded_up_fee\nFROM GymMembers;",
     "template": [
       {
-        "text": "SELECT member_name, CEIL(monthly_fee) ",
+        "text": "SELECT member_name, ",
         "isBlank": false
       },
       {
@@ -3261,7 +4727,7 @@ window.QUESTS_SECTION_1 = [
         "placeholder": "[ ___ ]"
       },
       {
-        "text": " rounded_up_fee\n",
+        "text": " ",
         "isBlank": false
       },
       {
@@ -3271,41 +4737,82 @@ window.QUESTS_SECTION_1 = [
         "placeholder": "[ ___ ]"
       },
       {
+        "text": " ",
+        "isBlank": false
+      },
+      {
+        "text": "",
+        "isBlank": true,
+        "slotId": "slot3",
+        "placeholder": "[ ___ ]"
+      },
+      {
+        "text": "\n",
+        "isBlank": false
+      },
+      {
+        "text": "",
+        "isBlank": true,
+        "slotId": "slot4",
+        "placeholder": "[ ___ ]"
+      },
+      {
         "text": " GymMembers;",
         "isBlank": false
       }
     ],
     "slots": {
       "slot1": {
-        "correct": "AS",
+        "correct": "CEIL(monthly_fee)",
         "options": [
-          "NAME",
-          "LABEL",
-          "AS",
-          "ALIAS"
+          "CALC_CEIL(monthly_fee)",
+          "ceil_fn(monthly_fee)",
+          "CEIL(monthly_fee)",
+          "GET_CEIL(monthly_fee)"
         ]
       },
       "slot2": {
+        "correct": "AS",
+        "options": [
+          "LABEL",
+          "NAME",
+          "ALIAS",
+          "AS"
+        ]
+      },
+      "slot3": {
+        "correct": "rounded_up_fee",
+        "options": [
+          "computed_rounded_up_fee",
+          "ROUNDED_UP_FEE",
+          "rounded_up_fee",
+          "rounded_up_fee_num"
+        ]
+      },
+      "slot4": {
         "correct": "FROM",
         "options": [
+          "TABLE",
           "INTO",
-          "FROM",
           "SOURCE",
-          "TABLE"
+          "FROM"
         ]
       }
     },
-    "explanation": "Keywords are SELECT, FROM, AS, DISTINCT. Keep commas between columns only. 💡 Pro-Tip / Trap: Do not add trailing commas before FROM or quote column identifiers.",
+    "explanation": "Keywords are SELECT, FROM, AS, DISTINCT. Keep commas between columns only. 💡 Trap to avoid: Do not add trailing commas before FROM or quote column identifiers.",
     "commonMistakes": "Punctuation errors, trailing commas, or quotes around column names."
   },
   {
     "id": 55,
     "levelDisplay": "Level 55",
-    "title": "Level 55: Calculate and round exact discount savings to 2 decimal p...",
+    "title": "Level 55: Calculate and round exact discount savings to 2 deci...",
     "subtitle": "Calculate and round exact discount savings to 2 decimal places.",
     "type": "fill_blank",
     "category": "Section 01: Foundations & Projections",
     "subcluster": "1.6 Math & Rounding Functions",
+    "tier": "Specialist",
+    "tierColor": "#f59e0b",
+    "difficulty": "Medium",
     "task": "Calculate and round exact discount savings to 2 decimal places.",
     "table": "Orders",
     "schemaSnippet": "Orders schema",
@@ -3322,7 +4829,7 @@ window.QUESTS_SECTION_1 = [
         "placeholder": "[ ___ ]"
       },
       {
-        "text": "((unit_price * quantity) * discount_pct, 2) ",
+        "text": " ",
         "isBlank": false
       },
       {
@@ -3332,18 +4839,38 @@ window.QUESTS_SECTION_1 = [
         "placeholder": "[ ___ ]"
       },
       {
-        "text": " discount_savings\nFROM Orders;",
+        "text": " ",
+        "isBlank": false
+      },
+      {
+        "text": "",
+        "isBlank": true,
+        "slotId": "slot3",
+        "placeholder": "[ ___ ]"
+      },
+      {
+        "text": "\n",
+        "isBlank": false
+      },
+      {
+        "text": "",
+        "isBlank": true,
+        "slotId": "slot4",
+        "placeholder": "[ ___ ]"
+      },
+      {
+        "text": " Orders;",
         "isBlank": false
       }
     ],
     "slots": {
       "slot1": {
-        "correct": "ROUND",
+        "correct": "ROUND((unit_price * quantity) * discount_pct, 2)",
         "options": [
-          "FIXED",
-          "TRUNC",
-          "ROUND",
-          "APPROX"
+          "ROUND((unit_price / quantity) / discount_pct, 2)",
+          "ROUND((unit_price + quantity) + discount_pct, 2)",
+          "ROUND((unit_price - quantity) - discount_pct, 2)",
+          "ROUND((unit_price * quantity) * discount_pct, 2)"
         ]
       },
       "slot2": {
@@ -3351,12 +4878,30 @@ window.QUESTS_SECTION_1 = [
         "options": [
           "LABEL",
           "NAME",
-          "AS",
-          "ALIAS"
+          "ALIAS",
+          "AS"
+        ]
+      },
+      "slot3": {
+        "correct": "discount_savings",
+        "options": [
+          "DISCOUNT_SAVINGS",
+          "discount_savings_num",
+          "discount_savings",
+          "computed_discount_savings"
+        ]
+      },
+      "slot4": {
+        "correct": "FROM",
+        "options": [
+          "TABLE",
+          "SOURCE",
+          "INTO",
+          "FROM"
         ]
       }
     },
-    "explanation": "Keywords are SELECT, FROM, AS, DISTINCT. Keep commas between columns only. 💡 Pro-Tip / Trap: Do not add trailing commas before FROM or quote column identifiers.",
+    "explanation": "Keywords are SELECT, FROM, AS, DISTINCT. Keep commas between columns only. 💡 Trap to avoid: Do not add trailing commas before FROM or quote column identifiers.",
     "commonMistakes": "Punctuation errors, trailing commas, or quotes around column names."
   },
   {
@@ -3367,6 +4912,9 @@ window.QUESTS_SECTION_1 = [
     "type": "fill_blank",
     "category": "Section 01: Foundations & Projections",
     "subcluster": "1.6 Math & Rounding Functions",
+    "tier": "Specialist",
+    "tierColor": "#f59e0b",
+    "difficulty": "Medium",
     "task": "Calculate and round base fare before 15% airport fees.",
     "table": "FlightSchedule",
     "schemaSnippet": "FlightSchedule schema",
@@ -3383,7 +4931,7 @@ window.QUESTS_SECTION_1 = [
         "placeholder": "[ ___ ]"
       },
       {
-        "text": "(ticket_price / 1.15, 2) ",
+        "text": " ",
         "isBlank": false
       },
       {
@@ -3393,31 +4941,69 @@ window.QUESTS_SECTION_1 = [
         "placeholder": "[ ___ ]"
       },
       {
-        "text": " base_fare_before_tax\nFROM FlightSchedule;",
+        "text": " ",
+        "isBlank": false
+      },
+      {
+        "text": "",
+        "isBlank": true,
+        "slotId": "slot3",
+        "placeholder": "[ ___ ]"
+      },
+      {
+        "text": "\n",
+        "isBlank": false
+      },
+      {
+        "text": "",
+        "isBlank": true,
+        "slotId": "slot4",
+        "placeholder": "[ ___ ]"
+      },
+      {
+        "text": " FlightSchedule;",
         "isBlank": false
       }
     ],
     "slots": {
       "slot1": {
-        "correct": "ROUND",
+        "correct": "ROUND(ticket_price / 1.15, 2)",
         "options": [
-          "FIXED",
-          "APPROX",
-          "TRUNC",
-          "ROUND"
+          "ROUND(ticket_price / 1.15, 2)",
+          "ROUND(ticket_price * 1.15, 2)",
+          "ROUND(ticket_price - 1.15, 2)",
+          "ROUND(ticket_price + 1.15, 2)"
         ]
       },
       "slot2": {
         "correct": "AS",
         "options": [
+          "LABEL",
           "AS",
           "ALIAS",
-          "NAME",
-          "LABEL"
+          "NAME"
+        ]
+      },
+      "slot3": {
+        "correct": "base_fare_before_tax",
+        "options": [
+          "computed_base_fare_before_tax",
+          "base_fare_before_tax",
+          "BASE_FARE_BEFORE_TAX",
+          "base_fare_before_tax_num"
+        ]
+      },
+      "slot4": {
+        "correct": "FROM",
+        "options": [
+          "INTO",
+          "SOURCE",
+          "TABLE",
+          "FROM"
         ]
       }
     },
-    "explanation": "Keywords are SELECT, FROM, AS, DISTINCT. Keep commas between columns only. 💡 Pro-Tip / Trap: Do not add trailing commas before FROM or quote column identifiers.",
+    "explanation": "Keywords are SELECT, FROM, AS, DISTINCT. Keep commas between columns only. 💡 Trap to avoid: Do not add trailing commas before FROM or quote column identifiers.",
     "commonMistakes": "Punctuation errors, trailing commas, or quotes around column names."
   },
   {
@@ -3428,6 +5014,9 @@ window.QUESTS_SECTION_1 = [
     "type": "fill_blank",
     "category": "Section 01: Foundations & Projections",
     "subcluster": "1.6 Math & Rounding Functions",
+    "tier": "Specialist",
+    "tierColor": "#f59e0b",
+    "difficulty": "Medium",
     "task": "Convert weight to pounds and round to 1 decimal place.",
     "table": "PetClinic",
     "schemaSnippet": "PetClinic schema",
@@ -3444,7 +5033,7 @@ window.QUESTS_SECTION_1 = [
         "placeholder": "[ ___ ]"
       },
       {
-        "text": "(weight_kg * 2.20462, 1) ",
+        "text": " ",
         "isBlank": false
       },
       {
@@ -3454,48 +5043,89 @@ window.QUESTS_SECTION_1 = [
         "placeholder": "[ ___ ]"
       },
       {
-        "text": " rounded_lbs\nFROM PetClinic;",
+        "text": " ",
+        "isBlank": false
+      },
+      {
+        "text": "",
+        "isBlank": true,
+        "slotId": "slot3",
+        "placeholder": "[ ___ ]"
+      },
+      {
+        "text": "\n",
+        "isBlank": false
+      },
+      {
+        "text": "",
+        "isBlank": true,
+        "slotId": "slot4",
+        "placeholder": "[ ___ ]"
+      },
+      {
+        "text": " PetClinic;",
         "isBlank": false
       }
     ],
     "slots": {
       "slot1": {
-        "correct": "ROUND",
+        "correct": "ROUND(weight_kg * 2.20462, 1)",
         "options": [
-          "ROUND",
-          "FIXED",
-          "APPROX",
-          "TRUNC"
+          "ROUND(weight_kg / 2.20462, 1)",
+          "ROUND(weight_kg * 2.20462, 1)",
+          "ROUND(weight_kg - 2.20462, 1)",
+          "ROUND(weight_kg + 2.20462, 1)"
         ]
       },
       "slot2": {
         "correct": "AS",
         "options": [
-          "AS",
           "ALIAS",
           "LABEL",
+          "AS",
           "NAME"
+        ]
+      },
+      "slot3": {
+        "correct": "rounded_lbs",
+        "options": [
+          "ROUNDED_LBS",
+          "computed_rounded_lbs",
+          "rounded_lbs_num",
+          "rounded_lbs"
+        ]
+      },
+      "slot4": {
+        "correct": "FROM",
+        "options": [
+          "SOURCE",
+          "INTO",
+          "TABLE",
+          "FROM"
         ]
       }
     },
-    "explanation": "Keywords are SELECT, FROM, AS, DISTINCT. Keep commas between columns only. 💡 Pro-Tip / Trap: Do not add trailing commas before FROM or quote column identifiers.",
+    "explanation": "Keywords are SELECT, FROM, AS, DISTINCT. Keep commas between columns only. 💡 Trap to avoid: Do not add trailing commas before FROM or quote column identifiers.",
     "commonMistakes": "Punctuation errors, trailing commas, or quotes around column names."
   },
   {
     "id": 58,
     "levelDisplay": "Level 58",
-    "title": "Level 58: Calculate the absolute deviation from target inventory le...",
+    "title": "Level 58: Calculate the absolute deviation from target invento...",
     "subtitle": "Calculate the absolute deviation from target inventory level (10) using ABS().",
     "type": "fill_blank",
     "category": "Section 01: Foundations & Projections",
     "subcluster": "1.6 Math & Rounding Functions",
+    "tier": "Specialist",
+    "tierColor": "#f59e0b",
+    "difficulty": "Medium",
     "task": "Calculate the absolute deviation from target inventory level (10) using ABS().",
     "table": "Books",
     "schemaSnippet": "Books schema",
     "targetQuery": "SELECT title, ABS(stock_qty - 10) AS distance_from_target_stock\nFROM Books;",
     "template": [
       {
-        "text": "SELECT title, ABS(stock_qty - 10) ",
+        "text": "SELECT title, ",
         "isBlank": false
       },
       {
@@ -3505,7 +5135,7 @@ window.QUESTS_SECTION_1 = [
         "placeholder": "[ ___ ]"
       },
       {
-        "text": " distance_from_target_stock\n",
+        "text": " ",
         "isBlank": false
       },
       {
@@ -3515,41 +5145,78 @@ window.QUESTS_SECTION_1 = [
         "placeholder": "[ ___ ]"
       },
       {
-        "text": " Books;",
+        "text": " ",
         "isBlank": false
+      },
+      {
+        "text": "",
+        "isBlank": true,
+        "slotId": "slot3",
+        "placeholder": "[ ___ ]"
+      },
+      {
+        "text": "\nFROM ",
+        "isBlank": false
+      },
+      {
+        "text": "",
+        "isBlank": true,
+        "slotId": "slot4",
+        "placeholder": "[ ___ ]"
       }
     ],
     "slots": {
       "slot1": {
+        "correct": "ABS(stock_qty - 10)",
+        "options": [
+          "ABS(stock_qty - 10)",
+          "ABS(stock_qty * 10)",
+          "ABS(stock_qty + 10)",
+          "ABS(stock_qty / 10)"
+        ]
+      },
+      "slot2": {
         "correct": "AS",
         "options": [
           "NAME",
           "ALIAS",
-          "AS",
-          "LABEL"
+          "LABEL",
+          "AS"
         ]
       },
-      "slot2": {
-        "correct": "FROM",
+      "slot3": {
+        "correct": "distance_from_target_stock",
         "options": [
-          "TABLE",
-          "INTO",
-          "FROM",
-          "SOURCE"
+          "distance_from_target_stock_val",
+          "calc_distance_from_target_stock",
+          "distance_from_target_stock",
+          "DISTANCE_FROM_TARGET_STOCK"
+        ]
+      },
+      "slot4": {
+        "correct": "Books;",
+        "options": [
+          "Orders;",
+          "GymMembers;",
+          "Books;",
+          "Students;"
         ]
       }
     },
-    "explanation": "Keywords are SELECT, FROM, AS, DISTINCT. Keep commas between columns only. 💡 Pro-Tip / Trap: Do not add trailing commas before FROM or quote column identifiers.",
+    "explanation": "Keywords are SELECT, FROM, AS, DISTINCT. Keep commas between columns only. 💡 Trap to avoid: Do not add trailing commas before FROM or quote column identifiers.",
     "commonMistakes": "Punctuation errors, trailing commas, or quotes around column names."
   },
   {
     "id": 59,
     "levelDisplay": "Level 59",
-    "title": "Level 59: Calculate biweekly paycheck by dividing annual salary by ...",
+    "title": "Level 59: Calculate biweekly paycheck by dividing annual salar...",
     "subtitle": "Calculate biweekly paycheck by dividing annual salary by 26 pay periods and rounding to 2 decimals.",
     "type": "fill_blank",
     "category": "Section 01: Foundations & Projections",
     "subcluster": "1.6 Math & Rounding Functions",
+    "tier": "Specialist",
+    "tierColor": "#f59e0b",
+    "difficulty": "Medium",
     "task": "Calculate biweekly paycheck by dividing annual salary by 26 pay periods and rounding to 2 decimals.",
     "table": "Employees",
     "schemaSnippet": "Employees schema",
@@ -3566,7 +5233,7 @@ window.QUESTS_SECTION_1 = [
         "placeholder": "[ ___ ]"
       },
       {
-        "text": "(salary / 26.0, 2) ",
+        "text": " ",
         "isBlank": false
       },
       {
@@ -3576,41 +5243,82 @@ window.QUESTS_SECTION_1 = [
         "placeholder": "[ ___ ]"
       },
       {
-        "text": " biweekly_paycheck\nFROM Employees;",
+        "text": " ",
+        "isBlank": false
+      },
+      {
+        "text": "",
+        "isBlank": true,
+        "slotId": "slot3",
+        "placeholder": "[ ___ ]"
+      },
+      {
+        "text": "\n",
+        "isBlank": false
+      },
+      {
+        "text": "",
+        "isBlank": true,
+        "slotId": "slot4",
+        "placeholder": "[ ___ ]"
+      },
+      {
+        "text": " Employees;",
         "isBlank": false
       }
     ],
     "slots": {
       "slot1": {
-        "correct": "ROUND",
+        "correct": "ROUND(salary / 26.0, 2)",
         "options": [
-          "APPROX",
-          "FIXED",
-          "ROUND",
-          "TRUNC"
+          "ROUND(salary + 26.0, 2)",
+          "ROUND(salary - 26.0, 2)",
+          "ROUND(salary * 26.0, 2)",
+          "ROUND(salary / 26.0, 2)"
         ]
       },
       "slot2": {
         "correct": "AS",
         "options": [
-          "AS",
           "ALIAS",
+          "AS",
           "NAME",
           "LABEL"
         ]
+      },
+      "slot3": {
+        "correct": "biweekly_paycheck",
+        "options": [
+          "BIWEEKLY_PAYCHECK",
+          "computed_biweekly_paycheck",
+          "biweekly_paycheck_num",
+          "biweekly_paycheck"
+        ]
+      },
+      "slot4": {
+        "correct": "FROM",
+        "options": [
+          "FROM",
+          "SOURCE",
+          "TABLE",
+          "INTO"
+        ]
       }
     },
-    "explanation": "Keywords are SELECT, FROM, AS, DISTINCT. Keep commas between columns only. 💡 Pro-Tip / Trap: Do not add trailing commas before FROM or quote column identifiers.",
+    "explanation": "Keywords are SELECT, FROM, AS, DISTINCT. Keep commas between columns only. 💡 Trap to avoid: Do not add trailing commas before FROM or quote column identifiers.",
     "commonMistakes": "Punctuation errors, trailing commas, or quotes around column names."
   },
   {
     "id": 60,
     "levelDisplay": "Level 60",
-    "title": "Level 60: Round star ratings to the nearest whole star using ROUND(...",
+    "title": "Level 60: Round star ratings to the nearest whole star using R...",
     "subtitle": "Round star ratings to the nearest whole star using ROUND(star_rating, 0).",
     "type": "fill_blank",
     "category": "Section 01: Foundations & Projections",
     "subcluster": "1.6 Math & Rounding Functions",
+    "tier": "Specialist",
+    "tierColor": "#f59e0b",
+    "difficulty": "Medium",
     "task": "Round star ratings to the nearest whole star using ROUND(star_rating, 0).",
     "table": "MovieReviews",
     "schemaSnippet": "MovieReviews schema",
@@ -3627,7 +5335,7 @@ window.QUESTS_SECTION_1 = [
         "placeholder": "[ ___ ]"
       },
       {
-        "text": "(star_rating, 0) ",
+        "text": " ",
         "isBlank": false
       },
       {
@@ -3637,41 +5345,82 @@ window.QUESTS_SECTION_1 = [
         "placeholder": "[ ___ ]"
       },
       {
-        "text": " rounded_star_rating\nFROM MovieReviews;",
+        "text": " ",
+        "isBlank": false
+      },
+      {
+        "text": "",
+        "isBlank": true,
+        "slotId": "slot3",
+        "placeholder": "[ ___ ]"
+      },
+      {
+        "text": "\n",
+        "isBlank": false
+      },
+      {
+        "text": "",
+        "isBlank": true,
+        "slotId": "slot4",
+        "placeholder": "[ ___ ]"
+      },
+      {
+        "text": " MovieReviews;",
         "isBlank": false
       }
     ],
     "slots": {
       "slot1": {
-        "correct": "ROUND",
+        "correct": "ROUND(star_rating, 0)",
         "options": [
-          "ROUND",
-          "TRUNC",
-          "APPROX",
-          "FIXED"
+          "CALC_ROUND(star_rating, 0)",
+          "ROUND(star_rating, 0)",
+          "GET_ROUND(star_rating, 0)",
+          "round_fn(star_rating, 0)"
         ]
       },
       "slot2": {
         "correct": "AS",
         "options": [
-          "AS",
+          "NAME",
           "ALIAS",
-          "LABEL",
-          "NAME"
+          "AS",
+          "LABEL"
+        ]
+      },
+      "slot3": {
+        "correct": "rounded_star_rating",
+        "options": [
+          "ROUNDED_STAR_RATING",
+          "rounded_star_rating_num",
+          "rounded_star_rating",
+          "computed_rounded_star_rating"
+        ]
+      },
+      "slot4": {
+        "correct": "FROM",
+        "options": [
+          "TABLE",
+          "INTO",
+          "FROM",
+          "SOURCE"
         ]
       }
     },
-    "explanation": "Keywords are SELECT, FROM, AS, DISTINCT. Keep commas between columns only. 💡 Pro-Tip / Trap: Do not add trailing commas before FROM or quote column identifiers.",
+    "explanation": "Keywords are SELECT, FROM, AS, DISTINCT. Keep commas between columns only. 💡 Trap to avoid: Do not add trailing commas before FROM or quote column identifiers.",
     "commonMistakes": "Punctuation errors, trailing commas, or quotes around column names."
   },
   {
     "id": 61,
     "levelDisplay": "Level 61",
-    "title": "Level 61: Glue first_name and last_name together with a space using...",
+    "title": "Level 61: Glue first_name and last_name together with a space ...",
     "subtitle": "Glue first_name and last_name together with a space using CONCAT().",
     "type": "fill_blank",
     "category": "Section 01: Foundations & Projections",
     "subcluster": "1.7 String Functions",
+    "tier": "Specialist",
+    "tierColor": "#f59e0b",
+    "difficulty": "Medium",
     "task": "Glue first_name and last_name together with a space using CONCAT().",
     "table": "Students",
     "schemaSnippet": "Students schema",
@@ -3688,7 +5437,7 @@ window.QUESTS_SECTION_1 = [
         "placeholder": "[ ___ ]"
       },
       {
-        "text": "(first_name, ' ', last_name) ",
+        "text": " ",
         "isBlank": false
       },
       {
@@ -3698,31 +5447,65 @@ window.QUESTS_SECTION_1 = [
         "placeholder": "[ ___ ]"
       },
       {
-        "text": " full_student_name\nFROM Students;",
+        "text": " ",
         "isBlank": false
+      },
+      {
+        "text": "",
+        "isBlank": true,
+        "slotId": "slot3",
+        "placeholder": "[ ___ ]"
+      },
+      {
+        "text": "\nFROM ",
+        "isBlank": false
+      },
+      {
+        "text": "",
+        "isBlank": true,
+        "slotId": "slot4",
+        "placeholder": "[ ___ ]"
       }
     ],
     "slots": {
       "slot1": {
-        "correct": "CONCAT",
+        "correct": "CONCAT(first_name, ' ', last_name)",
         "options": [
-          "GLUE",
-          "CONCAT",
-          "COMBINE",
-          "JOIN_STR"
+          "concat_fn(first_name, ' ', last_name)",
+          "GET_CONCAT(first_name, ' ', last_name)",
+          "CALC_CONCAT(first_name, ' ', last_name)",
+          "CONCAT(first_name, ' ', last_name)"
         ]
       },
       "slot2": {
         "correct": "AS",
         "options": [
-          "AS",
-          "NAME",
+          "LABEL",
           "ALIAS",
-          "LABEL"
+          "AS",
+          "NAME"
+        ]
+      },
+      "slot3": {
+        "correct": "full_student_name",
+        "options": [
+          "str_full_student_name",
+          "FULL_STUDENT_NAME",
+          "full_student_name",
+          "full_student_name_val"
+        ]
+      },
+      "slot4": {
+        "correct": "Students;",
+        "options": [
+          "Students;",
+          "Orders;",
+          "Books;",
+          "Employees;"
         ]
       }
     },
-    "explanation": "Keywords are SELECT, FROM, AS, DISTINCT. Keep commas between columns only. 💡 Pro-Tip / Trap: Do not add trailing commas before FROM or quote column identifiers.",
+    "explanation": "Keywords are SELECT, FROM, AS, DISTINCT. Keep commas between columns only. 💡 Trap to avoid: Do not add trailing commas before FROM or quote column identifiers.",
     "commonMistakes": "Punctuation errors, trailing commas, or quotes around column names."
   },
   {
@@ -3733,13 +5516,16 @@ window.QUESTS_SECTION_1 = [
     "type": "fill_blank",
     "category": "Section 01: Foundations & Projections",
     "subcluster": "1.7 String Functions",
+    "tier": "Specialist",
+    "tierColor": "#f59e0b",
+    "difficulty": "Medium",
     "task": "Transform title to uppercase and genre to lowercase.",
     "table": "Books",
     "schemaSnippet": "Books schema",
     "targetQuery": "SELECT UPPER(title) AS uppercase_title, LOWER(genre) AS lowercase_genre\nFROM Books;",
     "template": [
       {
-        "text": "SELECT UPPER(title) ",
+        "text": "SELECT ",
         "isBlank": false
       },
       {
@@ -3749,7 +5535,7 @@ window.QUESTS_SECTION_1 = [
         "placeholder": "[ ___ ]"
       },
       {
-        "text": " uppercase_title, LOWER(genre) AS lowercase_genre\n",
+        "text": " ",
         "isBlank": false
       },
       {
@@ -3759,41 +5545,78 @@ window.QUESTS_SECTION_1 = [
         "placeholder": "[ ___ ]"
       },
       {
-        "text": " Books;",
+        "text": " ",
         "isBlank": false
+      },
+      {
+        "text": "",
+        "isBlank": true,
+        "slotId": "slot3",
+        "placeholder": "[ ___ ]"
+      },
+      {
+        "text": "\nFROM ",
+        "isBlank": false
+      },
+      {
+        "text": "",
+        "isBlank": true,
+        "slotId": "slot4",
+        "placeholder": "[ ___ ]"
       }
     ],
     "slots": {
       "slot1": {
-        "correct": "AS",
+        "correct": "UPPER(title)",
         "options": [
-          "LABEL",
-          "NAME",
-          "AS",
-          "ALIAS"
+          "UPPER(title)",
+          "GET_UPPER(title)",
+          "CALC_UPPER(title)",
+          "upper_fn(title)"
         ]
       },
       "slot2": {
-        "correct": "FROM",
+        "correct": "AS",
         "options": [
-          "FROM",
-          "TABLE",
-          "INTO",
-          "SOURCE"
+          "NAME",
+          "ALIAS",
+          "AS",
+          "LABEL"
+        ]
+      },
+      "slot3": {
+        "correct": "uppercase_title, LOWER(genre) AS lowercase_genre",
+        "options": [
+          "uppercase_title, LOWER(genre) AS lowercase_genre_val",
+          "uppercase_title, LOWER(genre) AS lowercase_genre",
+          "calc_uppercase_title, LOWER(genre) AS lowercase_genre",
+          "UPPERCASE_TITLE, LOWER(GENRE) AS LOWERCASE_GENRE"
+        ]
+      },
+      "slot4": {
+        "correct": "Books;",
+        "options": [
+          "GroceryItems;",
+          "MovieReviews;",
+          "Books;",
+          "GymMembers;"
         ]
       }
     },
-    "explanation": "Keywords are SELECT, FROM, AS, DISTINCT. Keep commas between columns only. 💡 Pro-Tip / Trap: Do not add trailing commas before FROM or quote column identifiers.",
+    "explanation": "Keywords are SELECT, FROM, AS, DISTINCT. Keep commas between columns only. 💡 Trap to avoid: Do not add trailing commas before FROM or quote column identifiers.",
     "commonMistakes": "Punctuation errors, trailing commas, or quotes around column names."
   },
   {
     "id": 63,
     "levelDisplay": "Level 63",
-    "title": "Level 63: Format employee name as 'LastName, FirstName' using CONCAT()",
+    "title": "Level 63: Format employee name as 'LastName, FirstName' using ...",
     "subtitle": "Format employee name as 'LastName, FirstName' using CONCAT().",
     "type": "fill_blank",
     "category": "Section 01: Foundations & Projections",
     "subcluster": "1.7 String Functions",
+    "tier": "Specialist",
+    "tierColor": "#f59e0b",
+    "difficulty": "Medium",
     "task": "Format employee name as 'LastName, FirstName' using CONCAT().",
     "table": "Employees",
     "schemaSnippet": "Employees schema",
@@ -3810,7 +5633,7 @@ window.QUESTS_SECTION_1 = [
         "placeholder": "[ ___ ]"
       },
       {
-        "text": "(last_name, ', ', first_name) ",
+        "text": " ",
         "isBlank": false
       },
       {
@@ -3820,48 +5643,85 @@ window.QUESTS_SECTION_1 = [
         "placeholder": "[ ___ ]"
       },
       {
-        "text": " formal_directory_name\nFROM Employees;",
+        "text": " ",
         "isBlank": false
+      },
+      {
+        "text": "",
+        "isBlank": true,
+        "slotId": "slot3",
+        "placeholder": "[ ___ ]"
+      },
+      {
+        "text": "\nFROM ",
+        "isBlank": false
+      },
+      {
+        "text": "",
+        "isBlank": true,
+        "slotId": "slot4",
+        "placeholder": "[ ___ ]"
       }
     ],
     "slots": {
       "slot1": {
-        "correct": "CONCAT",
+        "correct": "CONCAT(last_name, ', ', first_name)",
         "options": [
-          "JOIN_STR",
-          "CONCAT",
-          "GLUE",
-          "COMBINE"
+          "GET_CONCAT(last_name, ', ', first_name)",
+          "CONCAT(last_name, ', ', first_name)",
+          "CALC_CONCAT(last_name, ', ', first_name)",
+          "concat_fn(last_name, ', ', first_name)"
         ]
       },
       "slot2": {
         "correct": "AS",
         "options": [
+          "LABEL",
           "AS",
           "NAME",
-          "LABEL",
           "ALIAS"
+        ]
+      },
+      "slot3": {
+        "correct": "formal_directory_name",
+        "options": [
+          "formal_directory_name",
+          "FORMAL_DIRECTORY_NAME",
+          "str_formal_directory_name",
+          "formal_directory_name_val"
+        ]
+      },
+      "slot4": {
+        "correct": "Employees;",
+        "options": [
+          "Employees;",
+          "GymMembers;",
+          "Books;",
+          "PetClinic;"
         ]
       }
     },
-    "explanation": "Keywords are SELECT, FROM, AS, DISTINCT. Keep commas between columns only. 💡 Pro-Tip / Trap: Do not add trailing commas before FROM or quote column identifiers.",
+    "explanation": "Keywords are SELECT, FROM, AS, DISTINCT. Keep commas between columns only. 💡 Trap to avoid: Do not add trailing commas before FROM or quote column identifiers.",
     "commonMistakes": "Punctuation errors, trailing commas, or quotes around column names."
   },
   {
     "id": 64,
     "levelDisplay": "Level 64",
-    "title": "Level 64: Count the number of characters in track_title using LENGTH()",
+    "title": "Level 64: Count the number of characters in track_title using ...",
     "subtitle": "Count the number of characters in track_title using LENGTH().",
     "type": "fill_blank",
     "category": "Section 01: Foundations & Projections",
     "subcluster": "1.7 String Functions",
+    "tier": "Specialist",
+    "tierColor": "#f59e0b",
+    "difficulty": "Medium",
     "task": "Count the number of characters in track_title using LENGTH().",
     "table": "MusicTracks",
     "schemaSnippet": "MusicTracks schema",
     "targetQuery": "SELECT track_title, LENGTH(track_title) AS title_char_count\nFROM MusicTracks;",
     "template": [
       {
-        "text": "SELECT track_title, LENGTH(track_title) ",
+        "text": "SELECT track_title, ",
         "isBlank": false
       },
       {
@@ -3871,7 +5731,7 @@ window.QUESTS_SECTION_1 = [
         "placeholder": "[ ___ ]"
       },
       {
-        "text": " title_char_count\n",
+        "text": " ",
         "isBlank": false
       },
       {
@@ -3881,48 +5741,85 @@ window.QUESTS_SECTION_1 = [
         "placeholder": "[ ___ ]"
       },
       {
-        "text": " MusicTracks;",
+        "text": " ",
         "isBlank": false
+      },
+      {
+        "text": "",
+        "isBlank": true,
+        "slotId": "slot3",
+        "placeholder": "[ ___ ]"
+      },
+      {
+        "text": "\nFROM ",
+        "isBlank": false
+      },
+      {
+        "text": "",
+        "isBlank": true,
+        "slotId": "slot4",
+        "placeholder": "[ ___ ]"
       }
     ],
     "slots": {
       "slot1": {
-        "correct": "AS",
+        "correct": "LENGTH(track_title)",
         "options": [
-          "AS",
-          "LABEL",
-          "ALIAS",
-          "NAME"
+          "CALC_LENGTH(track_title)",
+          "length_fn(track_title)",
+          "LENGTH(track_title)",
+          "GET_LENGTH(track_title)"
         ]
       },
       "slot2": {
-        "correct": "FROM",
+        "correct": "AS",
         "options": [
-          "INTO",
-          "FROM",
-          "SOURCE",
-          "TABLE"
+          "LABEL",
+          "NAME",
+          "ALIAS",
+          "AS"
+        ]
+      },
+      "slot3": {
+        "correct": "title_char_count",
+        "options": [
+          "calc_title_char_count",
+          "title_char_count",
+          "title_char_count_val",
+          "TITLE_CHAR_COUNT"
+        ]
+      },
+      "slot4": {
+        "correct": "MusicTracks;",
+        "options": [
+          "Students;",
+          "Employees;",
+          "Orders;",
+          "MusicTracks;"
         ]
       }
     },
-    "explanation": "Keywords are SELECT, FROM, AS, DISTINCT. Keep commas between columns only. 💡 Pro-Tip / Trap: Do not add trailing commas before FROM or quote column identifiers.",
+    "explanation": "Keywords are SELECT, FROM, AS, DISTINCT. Keep commas between columns only. 💡 Trap to avoid: Do not add trailing commas before FROM or quote column identifiers.",
     "commonMistakes": "Punctuation errors, trailing commas, or quotes around column names."
   },
   {
     "id": 65,
     "levelDisplay": "Level 65",
-    "title": "Level 65: Convert item_name to all capital letters for shelf printing",
+    "title": "Level 65: Convert item_name to all capital letters for shelf p...",
     "subtitle": "Convert item_name to all capital letters for shelf printing.",
     "type": "fill_blank",
     "category": "Section 01: Foundations & Projections",
     "subcluster": "1.7 String Functions",
+    "tier": "Specialist",
+    "tierColor": "#f59e0b",
+    "difficulty": "Medium",
     "task": "Convert item_name to all capital letters for shelf printing.",
     "table": "GroceryItems",
     "schemaSnippet": "GroceryItems schema",
     "targetQuery": "SELECT UPPER(item_name) AS label_name\nFROM GroceryItems;",
     "template": [
       {
-        "text": "SELECT UPPER(item_name) ",
+        "text": "SELECT ",
         "isBlank": false
       },
       {
@@ -3932,7 +5829,7 @@ window.QUESTS_SECTION_1 = [
         "placeholder": "[ ___ ]"
       },
       {
-        "text": " label_name\n",
+        "text": " ",
         "isBlank": false
       },
       {
@@ -3942,12 +5839,135 @@ window.QUESTS_SECTION_1 = [
         "placeholder": "[ ___ ]"
       },
       {
-        "text": " GroceryItems;",
+        "text": " ",
         "isBlank": false
+      },
+      {
+        "text": "",
+        "isBlank": true,
+        "slotId": "slot3",
+        "placeholder": "[ ___ ]"
+      },
+      {
+        "text": "\nFROM ",
+        "isBlank": false
+      },
+      {
+        "text": "",
+        "isBlank": true,
+        "slotId": "slot4",
+        "placeholder": "[ ___ ]"
       }
     ],
     "slots": {
       "slot1": {
+        "correct": "UPPER(item_name)",
+        "options": [
+          "upper_fn(item_name)",
+          "UPPER(item_name)",
+          "CALC_UPPER(item_name)",
+          "GET_UPPER(item_name)"
+        ]
+      },
+      "slot2": {
+        "correct": "AS",
+        "options": [
+          "AS",
+          "ALIAS",
+          "LABEL",
+          "NAME"
+        ]
+      },
+      "slot3": {
+        "correct": "label_name",
+        "options": [
+          "label_name",
+          "LABEL_NAME",
+          "calc_label_name",
+          "label_name_val"
+        ]
+      },
+      "slot4": {
+        "correct": "GroceryItems;",
+        "options": [
+          "Employees;",
+          "FlightSchedule;",
+          "MovieReviews;",
+          "GroceryItems;"
+        ]
+      }
+    },
+    "explanation": "Keywords are SELECT, FROM, AS, DISTINCT. Keep commas between columns only. 💡 Trap to avoid: Do not add trailing commas before FROM or quote column identifiers.",
+    "commonMistakes": "Punctuation errors, trailing commas, or quotes around column names."
+  },
+  {
+    "id": 66,
+    "levelDisplay": "Level 66",
+    "title": "Level 66: Combine origin and destination into a route string l...",
+    "subtitle": "Combine origin and destination into a route string like 'ORD -> LAX'.",
+    "type": "fill_blank",
+    "category": "Section 01: Foundations & Projections",
+    "subcluster": "1.7 String Functions",
+    "tier": "Specialist",
+    "tierColor": "#f59e0b",
+    "difficulty": "Medium",
+    "task": "Combine origin and destination into a route string like 'ORD -> LAX'.",
+    "table": "FlightSchedule",
+    "schemaSnippet": "FlightSchedule schema",
+    "targetQuery": "SELECT flight_id, CONCAT(origin_airport, ' -> ', dest_airport) AS route\nFROM FlightSchedule;",
+    "template": [
+      {
+        "text": "SELECT ",
+        "isBlank": false
+      },
+      {
+        "text": "",
+        "isBlank": true,
+        "slotId": "slot1",
+        "placeholder": "[ ___ ]"
+      },
+      {
+        "text": " ",
+        "isBlank": false
+      },
+      {
+        "text": "",
+        "isBlank": true,
+        "slotId": "slot2",
+        "placeholder": "[ ___ ]"
+      },
+      {
+        "text": " ",
+        "isBlank": false
+      },
+      {
+        "text": "",
+        "isBlank": true,
+        "slotId": "slot3",
+        "placeholder": "[ ___ ]"
+      },
+      {
+        "text": "\nFROM ",
+        "isBlank": false
+      },
+      {
+        "text": "",
+        "isBlank": true,
+        "slotId": "slot4",
+        "placeholder": "[ ___ ]"
+      }
+    ],
+    "slots": {
+      "slot1": {
+        "correct": "CONCAT(origin_airport, ' -> ', dest_airport)",
+        "options": [
+          "CONCAT(origin_airport, ' -> ', dest_airport)",
+          "CONCAT(origin_airport, ' /> ', dest_airport)",
+          "CONCAT(origin_airport, ' +> ', dest_airport)",
+          "CONCAT(origin_airport, ' *> ', dest_airport)"
+        ]
+      },
+      "slot2": {
         "correct": "AS",
         "options": [
           "ALIAS",
@@ -3956,95 +5976,46 @@ window.QUESTS_SECTION_1 = [
           "AS"
         ]
       },
-      "slot2": {
-        "correct": "FROM",
+      "slot3": {
+        "correct": "route",
         "options": [
-          "SOURCE",
-          "FROM",
-          "TABLE",
-          "INTO"
+          "route",
+          "ROUTE",
+          "route_val",
+          "str_route"
+        ]
+      },
+      "slot4": {
+        "correct": "FlightSchedule;",
+        "options": [
+          "MusicTracks;",
+          "GroceryItems;",
+          "Orders;",
+          "FlightSchedule;"
         ]
       }
     },
-    "explanation": "Keywords are SELECT, FROM, AS, DISTINCT. Keep commas between columns only. 💡 Pro-Tip / Trap: Do not add trailing commas before FROM or quote column identifiers.",
-    "commonMistakes": "Punctuation errors, trailing commas, or quotes around column names."
-  },
-  {
-    "id": 66,
-    "levelDisplay": "Level 66",
-    "title": "Level 66: Combine origin and destination into a route string like '...",
-    "subtitle": "Combine origin and destination into a route string like 'ORD -> LAX'.",
-    "type": "fill_blank",
-    "category": "Section 01: Foundations & Projections",
-    "subcluster": "1.7 String Functions",
-    "task": "Combine origin and destination into a route string like 'ORD -> LAX'.",
-    "table": "FlightSchedule",
-    "schemaSnippet": "FlightSchedule schema",
-    "targetQuery": "SELECT flight_id, CONCAT(origin_airport, ' -> ', dest_airport) AS route\nFROM FlightSchedule;",
-    "template": [
-      {
-        "text": "SELECT flight_id, ",
-        "isBlank": false
-      },
-      {
-        "text": "",
-        "isBlank": true,
-        "slotId": "slot1",
-        "placeholder": "[ ___ ]"
-      },
-      {
-        "text": "(origin_airport, ' -> ', dest_airport) ",
-        "isBlank": false
-      },
-      {
-        "text": "",
-        "isBlank": true,
-        "slotId": "slot2",
-        "placeholder": "[ ___ ]"
-      },
-      {
-        "text": " route\nFROM FlightSchedule;",
-        "isBlank": false
-      }
-    ],
-    "slots": {
-      "slot1": {
-        "correct": "CONCAT",
-        "options": [
-          "GLUE",
-          "CONCAT",
-          "JOIN_STR",
-          "COMBINE"
-        ]
-      },
-      "slot2": {
-        "correct": "AS",
-        "options": [
-          "ALIAS",
-          "LABEL",
-          "AS",
-          "NAME"
-        ]
-      }
-    },
-    "explanation": "Keywords are SELECT, FROM, AS, DISTINCT. Keep commas between columns only. 💡 Pro-Tip / Trap: Do not add trailing commas before FROM or quote column identifiers.",
+    "explanation": "Keywords are SELECT, FROM, AS, DISTINCT. Keep commas between columns only. 💡 Trap to avoid: Do not add trailing commas before FROM or quote column identifiers.",
     "commonMistakes": "Punctuation errors, trailing commas, or quotes around column names."
   },
   {
     "id": 67,
     "levelDisplay": "Level 67",
-    "title": "Level 67: Extract the first 3 letters of species using LEFT(species...",
+    "title": "Level 67: Extract the first 3 letters of species using LEFT(sp...",
     "subtitle": "Extract the first 3 letters of species using LEFT(species, 3).",
     "type": "fill_blank",
     "category": "Section 01: Foundations & Projections",
     "subcluster": "1.7 String Functions",
+    "tier": "Specialist",
+    "tierColor": "#f59e0b",
+    "difficulty": "Medium",
     "task": "Extract the first 3 letters of species using LEFT(species, 3).",
     "table": "PetClinic",
     "schemaSnippet": "PetClinic schema",
     "targetQuery": "SELECT pet_name, LEFT(species, 3) AS species_short_code\nFROM PetClinic;",
     "template": [
       {
-        "text": "SELECT pet_name, LEFT(species, 3) ",
+        "text": "SELECT pet_name, LEFT(species, ",
         "isBlank": false
       },
       {
@@ -4054,7 +6025,7 @@ window.QUESTS_SECTION_1 = [
         "placeholder": "[ ___ ]"
       },
       {
-        "text": " species_short_code\n",
+        "text": " ",
         "isBlank": false
       },
       {
@@ -4064,48 +6035,85 @@ window.QUESTS_SECTION_1 = [
         "placeholder": "[ ___ ]"
       },
       {
-        "text": " PetClinic;",
+        "text": " ",
         "isBlank": false
+      },
+      {
+        "text": "",
+        "isBlank": true,
+        "slotId": "slot3",
+        "placeholder": "[ ___ ]"
+      },
+      {
+        "text": "\nFROM ",
+        "isBlank": false
+      },
+      {
+        "text": "",
+        "isBlank": true,
+        "slotId": "slot4",
+        "placeholder": "[ ___ ]"
       }
     ],
     "slots": {
       "slot1": {
-        "correct": "AS",
+        "correct": "3)",
         "options": [
-          "AS",
-          "ALIAS",
-          "NAME",
-          "LABEL"
+          "3)",
+          "pet_name + 10",
+          "pet_id * 1.05",
+          "(3))"
         ]
       },
       "slot2": {
-        "correct": "FROM",
+        "correct": "AS",
         "options": [
-          "SOURCE",
-          "TABLE",
-          "FROM",
-          "INTO"
+          "AS",
+          "LABEL",
+          "ALIAS",
+          "NAME"
+        ]
+      },
+      "slot3": {
+        "correct": "species_short_code",
+        "options": [
+          "SPECIES_SHORT_CODE",
+          "species_short_code_val",
+          "species_short_code",
+          "calc_species_short_code"
+        ]
+      },
+      "slot4": {
+        "correct": "PetClinic;",
+        "options": [
+          "MovieReviews;",
+          "FlightSchedule;",
+          "GymMembers;",
+          "PetClinic;"
         ]
       }
     },
-    "explanation": "Keywords are SELECT, FROM, AS, DISTINCT. Keep commas between columns only. 💡 Pro-Tip / Trap: Do not add trailing commas before FROM or quote column identifiers.",
+    "explanation": "Keywords are SELECT, FROM, AS, DISTINCT. Keep commas between columns only. 💡 Trap to avoid: Do not add trailing commas before FROM or quote column identifiers.",
     "commonMistakes": "Punctuation errors, trailing commas, or quotes around column names."
   },
   {
     "id": 68,
     "levelDisplay": "Level 68",
-    "title": "Level 68: Extract the last 4 characters of movie_title using RIGHT()",
+    "title": "Level 68: Extract the last 4 characters of movie_title using R...",
     "subtitle": "Extract the last 4 characters of movie_title using RIGHT().",
     "type": "fill_blank",
     "category": "Section 01: Foundations & Projections",
     "subcluster": "1.7 String Functions",
+    "tier": "Specialist",
+    "tierColor": "#f59e0b",
+    "difficulty": "Medium",
     "task": "Extract the last 4 characters of movie_title using RIGHT().",
     "table": "MovieReviews",
     "schemaSnippet": "MovieReviews schema",
     "targetQuery": "SELECT movie_title, RIGHT(movie_title, 4) AS title_suffix\nFROM MovieReviews;",
     "template": [
       {
-        "text": "SELECT movie_title, RIGHT(movie_title, 4) ",
+        "text": "SELECT movie_title, RIGHT(movie_title, ",
         "isBlank": false
       },
       {
@@ -4115,7 +6123,7 @@ window.QUESTS_SECTION_1 = [
         "placeholder": "[ ___ ]"
       },
       {
-        "text": " title_suffix\n",
+        "text": " ",
         "isBlank": false
       },
       {
@@ -4125,73 +6133,37 @@ window.QUESTS_SECTION_1 = [
         "placeholder": "[ ___ ]"
       },
       {
-        "text": " MovieReviews;",
+        "text": " ",
         "isBlank": false
+      },
+      {
+        "text": "",
+        "isBlank": true,
+        "slotId": "slot3",
+        "placeholder": "[ ___ ]"
+      },
+      {
+        "text": "\nFROM ",
+        "isBlank": false
+      },
+      {
+        "text": "",
+        "isBlank": true,
+        "slotId": "slot4",
+        "placeholder": "[ ___ ]"
       }
     ],
     "slots": {
       "slot1": {
-        "correct": "AS",
+        "correct": "4)",
         "options": [
-          "ALIAS",
-          "AS",
-          "NAME",
-          "LABEL"
+          "(4))",
+          "movie_title + 10",
+          "4)",
+          "review_id * 1.05"
         ]
       },
       "slot2": {
-        "correct": "FROM",
-        "options": [
-          "FROM",
-          "SOURCE",
-          "INTO",
-          "TABLE"
-        ]
-      }
-    },
-    "explanation": "Keywords are SELECT, FROM, AS, DISTINCT. Keep commas between columns only. 💡 Pro-Tip / Trap: Do not add trailing commas before FROM or quote column identifiers.",
-    "commonMistakes": "Punctuation errors, trailing commas, or quotes around column names."
-  },
-  {
-    "id": 69,
-    "levelDisplay": "Level 69",
-    "title": "Level 69: Convert membership plan to uppercase for keycard printing",
-    "subtitle": "Convert membership plan to uppercase for keycard printing.",
-    "type": "fill_blank",
-    "category": "Section 01: Foundations & Projections",
-    "subcluster": "1.7 String Functions",
-    "task": "Convert membership plan to uppercase for keycard printing.",
-    "table": "GymMembers",
-    "schemaSnippet": "GymMembers schema",
-    "targetQuery": "SELECT UPPER(membership_plan) AS plan_badge\nFROM GymMembers;",
-    "template": [
-      {
-        "text": "SELECT UPPER(membership_plan) ",
-        "isBlank": false
-      },
-      {
-        "text": "",
-        "isBlank": true,
-        "slotId": "slot1",
-        "placeholder": "[ ___ ]"
-      },
-      {
-        "text": " plan_badge\n",
-        "isBlank": false
-      },
-      {
-        "text": "",
-        "isBlank": true,
-        "slotId": "slot2",
-        "placeholder": "[ ___ ]"
-      },
-      {
-        "text": " GymMembers;",
-        "isBlank": false
-      }
-    ],
-    "slots": {
-      "slot1": {
         "correct": "AS",
         "options": [
           "AS",
@@ -4200,27 +6172,137 @@ window.QUESTS_SECTION_1 = [
           "ALIAS"
         ]
       },
-      "slot2": {
-        "correct": "FROM",
+      "slot3": {
+        "correct": "title_suffix",
         "options": [
-          "TABLE",
-          "SOURCE",
-          "FROM",
-          "INTO"
+          "title_suffix",
+          "title_suffix_val",
+          "TITLE_SUFFIX",
+          "calc_title_suffix"
+        ]
+      },
+      "slot4": {
+        "correct": "MovieReviews;",
+        "options": [
+          "GymMembers;",
+          "MovieReviews;",
+          "MusicTracks;",
+          "Orders;"
         ]
       }
     },
-    "explanation": "Keywords are SELECT, FROM, AS, DISTINCT. Keep commas between columns only. 💡 Pro-Tip / Trap: Do not add trailing commas before FROM or quote column identifiers.",
+    "explanation": "Keywords are SELECT, FROM, AS, DISTINCT. Keep commas between columns only. 💡 Trap to avoid: Do not add trailing commas before FROM or quote column identifiers.",
+    "commonMistakes": "Punctuation errors, trailing commas, or quotes around column names."
+  },
+  {
+    "id": 69,
+    "levelDisplay": "Level 69",
+    "title": "Level 69: Convert membership plan to uppercase for keycard pri...",
+    "subtitle": "Convert membership plan to uppercase for keycard printing.",
+    "type": "fill_blank",
+    "category": "Section 01: Foundations & Projections",
+    "subcluster": "1.7 String Functions",
+    "tier": "Specialist",
+    "tierColor": "#f59e0b",
+    "difficulty": "Medium",
+    "task": "Convert membership plan to uppercase for keycard printing.",
+    "table": "GymMembers",
+    "schemaSnippet": "GymMembers schema",
+    "targetQuery": "SELECT UPPER(membership_plan) AS plan_badge\nFROM GymMembers;",
+    "template": [
+      {
+        "text": "SELECT ",
+        "isBlank": false
+      },
+      {
+        "text": "",
+        "isBlank": true,
+        "slotId": "slot1",
+        "placeholder": "[ ___ ]"
+      },
+      {
+        "text": " ",
+        "isBlank": false
+      },
+      {
+        "text": "",
+        "isBlank": true,
+        "slotId": "slot2",
+        "placeholder": "[ ___ ]"
+      },
+      {
+        "text": " ",
+        "isBlank": false
+      },
+      {
+        "text": "",
+        "isBlank": true,
+        "slotId": "slot3",
+        "placeholder": "[ ___ ]"
+      },
+      {
+        "text": "\nFROM ",
+        "isBlank": false
+      },
+      {
+        "text": "",
+        "isBlank": true,
+        "slotId": "slot4",
+        "placeholder": "[ ___ ]"
+      }
+    ],
+    "slots": {
+      "slot1": {
+        "correct": "UPPER(membership_plan)",
+        "options": [
+          "upper_fn(membership_plan)",
+          "CALC_UPPER(membership_plan)",
+          "GET_UPPER(membership_plan)",
+          "UPPER(membership_plan)"
+        ]
+      },
+      "slot2": {
+        "correct": "AS",
+        "options": [
+          "AS",
+          "ALIAS",
+          "NAME",
+          "LABEL"
+        ]
+      },
+      "slot3": {
+        "correct": "plan_badge",
+        "options": [
+          "plan_badge",
+          "calc_plan_badge",
+          "plan_badge_val",
+          "PLAN_BADGE"
+        ]
+      },
+      "slot4": {
+        "correct": "GymMembers;",
+        "options": [
+          "Books;",
+          "MusicTracks;",
+          "GymMembers;",
+          "FlightSchedule;"
+        ]
+      }
+    },
+    "explanation": "Keywords are SELECT, FROM, AS, DISTINCT. Keep commas between columns only. 💡 Trap to avoid: Do not add trailing commas before FROM or quote column identifiers.",
     "commonMistakes": "Punctuation errors, trailing commas, or quotes around column names."
   },
   {
     "id": 70,
     "levelDisplay": "Level 70",
-    "title": "Level 70: Format an order label like 'Zoe Hart (Order #5001)' using...",
+    "title": "Level 70: Format an order label like 'Zoe Hart (Order #5001)' ...",
     "subtitle": "Format an order label like 'Zoe Hart (Order #5001)' using CONCAT().",
     "type": "fill_blank",
     "category": "Section 01: Foundations & Projections",
     "subcluster": "1.7 String Functions",
+    "tier": "Specialist",
+    "tierColor": "#f59e0b",
+    "difficulty": "Medium",
     "task": "Format an order label like 'Zoe Hart (Order #5001)' using CONCAT().",
     "table": "Orders",
     "schemaSnippet": "Orders schema",
@@ -4237,7 +6319,7 @@ window.QUESTS_SECTION_1 = [
         "placeholder": "[ ___ ]"
       },
       {
-        "text": "(customer_name, ' (Order #', order_id, ')') ",
+        "text": " ",
         "isBlank": false
       },
       {
@@ -4247,18 +6329,34 @@ window.QUESTS_SECTION_1 = [
         "placeholder": "[ ___ ]"
       },
       {
-        "text": " order_summary\nFROM Orders;",
+        "text": " ",
         "isBlank": false
+      },
+      {
+        "text": "",
+        "isBlank": true,
+        "slotId": "slot3",
+        "placeholder": "[ ___ ]"
+      },
+      {
+        "text": "\nFROM ",
+        "isBlank": false
+      },
+      {
+        "text": "",
+        "isBlank": true,
+        "slotId": "slot4",
+        "placeholder": "[ ___ ]"
       }
     ],
     "slots": {
       "slot1": {
-        "correct": "CONCAT",
+        "correct": "CONCAT(customer_name, ' (Order #', order_id, ')')",
         "options": [
-          "GLUE",
-          "CONCAT",
-          "COMBINE",
-          "JOIN_STR"
+          "GET_CONCAT(customer_name, ' (Order #', order_id, ')')",
+          "CALC_CONCAT(customer_name, ' (Order #', order_id, ')')",
+          "CONCAT(customer_name, ' (Order #', order_id, ')')",
+          "concat_fn(customer_name, ' (Order #', order_id, ')')"
         ]
       },
       "slot2": {
@@ -4269,9 +6367,27 @@ window.QUESTS_SECTION_1 = [
           "NAME",
           "ALIAS"
         ]
+      },
+      "slot3": {
+        "correct": "order_summary",
+        "options": [
+          "str_order_summary",
+          "order_summary_val",
+          "ORDER_SUMMARY",
+          "order_summary"
+        ]
+      },
+      "slot4": {
+        "correct": "Orders;",
+        "options": [
+          "GroceryItems;",
+          "PetClinic;",
+          "Books;",
+          "Orders;"
+        ]
       }
     },
-    "explanation": "Keywords are SELECT, FROM, AS, DISTINCT. Keep commas between columns only. 💡 Pro-Tip / Trap: Do not add trailing commas before FROM or quote column identifiers.",
+    "explanation": "Keywords are SELECT, FROM, AS, DISTINCT. Keep commas between columns only. 💡 Trap to avoid: Do not add trailing commas before FROM or quote column identifiers.",
     "commonMistakes": "Punctuation errors, trailing commas, or quotes around column names."
   },
   {
@@ -4282,6 +6398,9 @@ window.QUESTS_SECTION_1 = [
     "type": "fill_blank",
     "category": "Section 01: Foundations & Projections",
     "subcluster": "1.8 Date Projections",
+    "tier": "Master (FAANG-Ready)",
+    "tierColor": "#ec4899",
+    "difficulty": "Hard",
     "task": "Extract the four-digit year from hire_date using YEAR().",
     "table": "Employees",
     "schemaSnippet": "Employees schema",
@@ -4298,7 +6417,7 @@ window.QUESTS_SECTION_1 = [
         "placeholder": "[ ___ ]"
       },
       {
-        "text": "(hire_date) ",
+        "text": " ",
         "isBlank": false
       },
       {
@@ -4308,41 +6427,78 @@ window.QUESTS_SECTION_1 = [
         "placeholder": "[ ___ ]"
       },
       {
-        "text": " hire_year\nFROM Employees;",
+        "text": " ",
         "isBlank": false
+      },
+      {
+        "text": "",
+        "isBlank": true,
+        "slotId": "slot3",
+        "placeholder": "[ ___ ]"
+      },
+      {
+        "text": "\nFROM ",
+        "isBlank": false
+      },
+      {
+        "text": "",
+        "isBlank": true,
+        "slotId": "slot4",
+        "placeholder": "[ ___ ]"
       }
     ],
     "slots": {
       "slot1": {
-        "correct": "YEAR",
+        "correct": "YEAR(hire_date)",
         "options": [
-          "YEAR",
-          "GET_YEAR",
-          "EXTRACT_YE",
-          "DATE_YEAR"
+          "GET_YEAR(hire_date)",
+          "EXTRACT_YE(hire_date)",
+          "YEAR(hire_date)",
+          "DATE_YEAR(hire_date)"
         ]
       },
       "slot2": {
         "correct": "AS",
         "options": [
-          "ALIAS",
-          "LABEL",
           "AS",
+          "LABEL",
+          "ALIAS",
           "NAME"
+        ]
+      },
+      "slot3": {
+        "correct": "hire_year",
+        "options": [
+          "extracted_hire_year",
+          "hire_year_num",
+          "hire_year",
+          "HIRE_YEAR"
+        ]
+      },
+      "slot4": {
+        "correct": "Employees;",
+        "options": [
+          "MovieReviews;",
+          "Employees;",
+          "GroceryItems;",
+          "PetClinic;"
         ]
       }
     },
-    "explanation": "Keywords are SELECT, FROM, AS, DISTINCT. Keep commas between columns only. 💡 Pro-Tip / Trap: Do not add trailing commas before FROM or quote column identifiers.",
+    "explanation": "Keywords are SELECT, FROM, AS, DISTINCT. Keep commas between columns only. 💡 Trap to avoid: Do not add trailing commas before FROM or quote column identifiers.",
     "commonMistakes": "Punctuation errors, trailing commas, or quotes around column names."
   },
   {
     "id": 72,
     "levelDisplay": "Level 72",
-    "title": "Level 72: Extract the numerical month from hire_date using MONTH()",
+    "title": "Level 72: Extract the numerical month from hire_date using MON...",
     "subtitle": "Extract the numerical month from hire_date using MONTH().",
     "type": "fill_blank",
     "category": "Section 01: Foundations & Projections",
     "subcluster": "1.8 Date Projections",
+    "tier": "Master (FAANG-Ready)",
+    "tierColor": "#ec4899",
+    "difficulty": "Hard",
     "task": "Extract the numerical month from hire_date using MONTH().",
     "table": "Employees",
     "schemaSnippet": "Employees schema",
@@ -4359,7 +6515,7 @@ window.QUESTS_SECTION_1 = [
         "placeholder": "[ ___ ]"
       },
       {
-        "text": "(hire_date) ",
+        "text": " ",
         "isBlank": false
       },
       {
@@ -4369,50 +6525,83 @@ window.QUESTS_SECTION_1 = [
         "placeholder": "[ ___ ]"
       },
       {
-        "text": " hire_month\nFROM Employees;",
+        "text": " ",
         "isBlank": false
+      },
+      {
+        "text": "",
+        "isBlank": true,
+        "slotId": "slot3",
+        "placeholder": "[ ___ ]"
+      },
+      {
+        "text": "\nFROM ",
+        "isBlank": false
+      },
+      {
+        "text": "",
+        "isBlank": true,
+        "slotId": "slot4",
+        "placeholder": "[ ___ ]"
       }
     ],
     "slots": {
       "slot1": {
-        "correct": "MONTH",
+        "correct": "MONTH(hire_date)",
         "options": [
-          "GET_MONTH",
-          "MONTH",
-          "DATE_MONTH",
-          "EXTRACT_MO"
+          "EXTRACT_MO(hire_date)",
+          "GET_MONTH(hire_date)",
+          "MONTH(hire_date)",
+          "DATE_MONTH(hire_date)"
         ]
       },
       "slot2": {
         "correct": "AS",
         "options": [
-          "AS",
           "ALIAS",
+          "AS",
           "LABEL",
           "NAME"
         ]
+      },
+      "slot3": {
+        "correct": "hire_month",
+        "options": [
+          "hire_month",
+          "extracted_hire_month",
+          "hire_month_num",
+          "HIRE_MONTH"
+        ]
+      },
+      "slot4": {
+        "correct": "Employees;",
+        "options": [
+          "Employees;",
+          "GroceryItems;",
+          "Students;",
+          "Books;"
+        ]
       }
     },
-    "explanation": "Keywords are SELECT, FROM, AS, DISTINCT. Keep commas between columns only. 💡 Pro-Tip / Trap: Do not add trailing commas before FROM or quote column identifiers.",
+    "explanation": "Keywords are SELECT, FROM, AS, DISTINCT. Keep commas between columns only. 💡 Trap to avoid: Do not add trailing commas before FROM or quote column identifiers.",
     "commonMistakes": "Punctuation errors, trailing commas, or quotes around column names."
   },
   {
     "id": 73,
     "levelDisplay": "Level 73",
-    "title": "Level 73: Calculate how many years a student has been in school rel...",
+    "title": "Level 73: Calculate how many years a student has been in schoo...",
     "subtitle": "Calculate how many years a student has been in school relative to 2026.",
     "type": "fill_blank",
     "category": "Section 01: Foundations & Projections",
     "subcluster": "1.8 Date Projections",
+    "tier": "Master (FAANG-Ready)",
+    "tierColor": "#ec4899",
+    "difficulty": "Hard",
     "task": "Calculate how many years a student has been in school relative to 2026.",
     "table": "Students",
     "schemaSnippet": "Students schema",
     "targetQuery": "SELECT full_name, enrolled_year, (2026 - enrolled_year) AS years_in_school\nFROM Students;",
     "template": [
-      {
-        "text": "SELECT full_name, enrolled_year, (2026 - enrolled_year) ",
-        "isBlank": false
-      },
       {
         "text": "",
         "isBlank": true,
@@ -4420,7 +6609,7 @@ window.QUESTS_SECTION_1 = [
         "placeholder": "[ ___ ]"
       },
       {
-        "text": " years_in_school\n",
+        "text": " ",
         "isBlank": false
       },
       {
@@ -4430,31 +6619,65 @@ window.QUESTS_SECTION_1 = [
         "placeholder": "[ ___ ]"
       },
       {
-        "text": " Students;",
+        "text": "\n",
         "isBlank": false
+      },
+      {
+        "text": "",
+        "isBlank": true,
+        "slotId": "slot3",
+        "placeholder": "[ ___ ]"
+      },
+      {
+        "text": " ",
+        "isBlank": false
+      },
+      {
+        "text": "",
+        "isBlank": true,
+        "slotId": "slot4",
+        "placeholder": "[ ___ ]"
       }
     ],
     "slots": {
       "slot1": {
-        "correct": "AS",
+        "correct": "SELECT",
         "options": [
-          "ALIAS",
-          "NAME",
-          "LABEL",
-          "AS"
+          "GET",
+          "CHOOSE",
+          "EXTRACT",
+          "SELECT"
         ]
       },
       "slot2": {
+        "correct": "full_name, enrolled_year, (2026 - enrolled_year) AS years_in_school",
+        "options": [
+          "full_name, enrolled_year, (2026 - enrolled_year) AS years_in_school;",
+          "full_name, enrolled_year, (2026 - enrolled_year) AS years_in_school",
+          "full_name AND enrolled_year AND (2026 - enrolled_year) AS years_in_school",
+          "full_name, enrolled_year, (2026 - enrolled_year) AS years_in_school,"
+        ]
+      },
+      "slot3": {
         "correct": "FROM",
         "options": [
+          "SOURCE",
           "FROM",
           "TABLE",
-          "INTO",
-          "SOURCE"
+          "INTO"
+        ]
+      },
+      "slot4": {
+        "correct": "Students;",
+        "options": [
+          "PetClinic;",
+          "Students;",
+          "FlightSchedule;",
+          "Orders;"
         ]
       }
     },
-    "explanation": "Keywords are SELECT, FROM, AS, DISTINCT. Keep commas between columns only. 💡 Pro-Tip / Trap: Do not add trailing commas before FROM or quote column identifiers.",
+    "explanation": "Keywords are SELECT, FROM, AS, DISTINCT. Keep commas between columns only. 💡 Trap to avoid: Do not add trailing commas before FROM or quote column identifiers.",
     "commonMistakes": "Punctuation errors, trailing commas, or quotes around column names."
   },
   {
@@ -4465,6 +6688,9 @@ window.QUESTS_SECTION_1 = [
     "type": "fill_blank",
     "category": "Section 01: Foundations & Projections",
     "subcluster": "1.8 Date Projections",
+    "tier": "Master (FAANG-Ready)",
+    "tierColor": "#ec4899",
+    "difficulty": "Hard",
     "task": "Extract the membership start year from join_date.",
     "table": "GymMembers",
     "schemaSnippet": "GymMembers schema",
@@ -4481,7 +6707,7 @@ window.QUESTS_SECTION_1 = [
         "placeholder": "[ ___ ]"
       },
       {
-        "text": "(join_date) ",
+        "text": " ",
         "isBlank": false
       },
       {
@@ -4491,31 +6717,65 @@ window.QUESTS_SECTION_1 = [
         "placeholder": "[ ___ ]"
       },
       {
-        "text": " joined_year\nFROM GymMembers;",
+        "text": " ",
         "isBlank": false
+      },
+      {
+        "text": "",
+        "isBlank": true,
+        "slotId": "slot3",
+        "placeholder": "[ ___ ]"
+      },
+      {
+        "text": "\nFROM ",
+        "isBlank": false
+      },
+      {
+        "text": "",
+        "isBlank": true,
+        "slotId": "slot4",
+        "placeholder": "[ ___ ]"
       }
     ],
     "slots": {
       "slot1": {
-        "correct": "YEAR",
+        "correct": "YEAR(join_date)",
         "options": [
-          "DATE_YEAR",
-          "YEAR",
-          "GET_YEAR",
-          "EXTRACT_YE"
+          "DATE_YEAR(join_date)",
+          "EXTRACT_YE(join_date)",
+          "GET_YEAR(join_date)",
+          "YEAR(join_date)"
         ]
       },
       "slot2": {
         "correct": "AS",
         "options": [
           "LABEL",
-          "ALIAS",
           "AS",
+          "ALIAS",
           "NAME"
+        ]
+      },
+      "slot3": {
+        "correct": "joined_year",
+        "options": [
+          "JOINED_YEAR",
+          "joined_year_num",
+          "joined_year",
+          "extracted_joined_year"
+        ]
+      },
+      "slot4": {
+        "correct": "GymMembers;",
+        "options": [
+          "Books;",
+          "GroceryItems;",
+          "Orders;",
+          "GymMembers;"
         ]
       }
     },
-    "explanation": "Keywords are SELECT, FROM, AS, DISTINCT. Keep commas between columns only. 💡 Pro-Tip / Trap: Do not add trailing commas before FROM or quote column identifiers.",
+    "explanation": "Keywords are SELECT, FROM, AS, DISTINCT. Keep commas between columns only. 💡 Trap to avoid: Do not add trailing commas before FROM or quote column identifiers.",
     "commonMistakes": "Punctuation errors, trailing commas, or quotes around column names."
   },
   {
@@ -4526,15 +6786,14 @@ window.QUESTS_SECTION_1 = [
     "type": "fill_blank",
     "category": "Section 01: Foundations & Projections",
     "subcluster": "1.8 Date Projections",
+    "tier": "Master (FAANG-Ready)",
+    "tierColor": "#ec4899",
+    "difficulty": "Hard",
     "task": "Calculate the age of a book in years relative to 2026.",
     "table": "Books",
     "schemaSnippet": "Books schema",
     "targetQuery": "SELECT title, published_year, (2026 - published_year) AS book_age_years\nFROM Books;",
     "template": [
-      {
-        "text": "SELECT title, published_year, (2026 - published_year) ",
-        "isBlank": false
-      },
       {
         "text": "",
         "isBlank": true,
@@ -4542,7 +6801,7 @@ window.QUESTS_SECTION_1 = [
         "placeholder": "[ ___ ]"
       },
       {
-        "text": " book_age_years\n",
+        "text": " ",
         "isBlank": false
       },
       {
@@ -4552,21 +6811,46 @@ window.QUESTS_SECTION_1 = [
         "placeholder": "[ ___ ]"
       },
       {
-        "text": " Books;",
+        "text": "\n",
         "isBlank": false
+      },
+      {
+        "text": "",
+        "isBlank": true,
+        "slotId": "slot3",
+        "placeholder": "[ ___ ]"
+      },
+      {
+        "text": " ",
+        "isBlank": false
+      },
+      {
+        "text": "",
+        "isBlank": true,
+        "slotId": "slot4",
+        "placeholder": "[ ___ ]"
       }
     ],
     "slots": {
       "slot1": {
-        "correct": "AS",
+        "correct": "SELECT",
         "options": [
-          "ALIAS",
-          "NAME",
-          "LABEL",
-          "AS"
+          "EXTRACT",
+          "CHOOSE",
+          "SELECT",
+          "GET"
         ]
       },
       "slot2": {
+        "correct": "title, published_year, (2026 - published_year) AS book_age_years",
+        "options": [
+          "title, published_year, (2026 - published_year) AS book_age_years,",
+          "title AND published_year AND (2026 - published_year) AS book_age_years",
+          "title, published_year, (2026 - published_year) AS book_age_years",
+          "title, published_year, (2026 - published_year) AS book_age_years;"
+        ]
+      },
+      "slot3": {
         "correct": "FROM",
         "options": [
           "FROM",
@@ -4574,9 +6858,18 @@ window.QUESTS_SECTION_1 = [
           "SOURCE",
           "INTO"
         ]
+      },
+      "slot4": {
+        "correct": "Books;",
+        "options": [
+          "GymMembers;",
+          "Books;",
+          "FlightSchedule;",
+          "PetClinic;"
+        ]
       }
     },
-    "explanation": "Keywords are SELECT, FROM, AS, DISTINCT. Keep commas between columns only. 💡 Pro-Tip / Trap: Do not add trailing commas before FROM or quote column identifiers.",
+    "explanation": "Keywords are SELECT, FROM, AS, DISTINCT. Keep commas between columns only. 💡 Trap to avoid: Do not add trailing commas before FROM or quote column identifiers.",
     "commonMistakes": "Punctuation errors, trailing commas, or quotes around column names."
   },
   {
@@ -4587,23 +6880,22 @@ window.QUESTS_SECTION_1 = [
     "type": "fill_blank",
     "category": "Section 01: Foundations & Projections",
     "subcluster": "1.8 Date Projections",
+    "tier": "Master (FAANG-Ready)",
+    "tierColor": "#ec4899",
+    "difficulty": "Hard",
     "task": "Compute how many years ago a movie was released.",
     "table": "MovieReviews",
     "schemaSnippet": "MovieReviews schema",
     "targetQuery": "SELECT movie_title, release_year, (2026 - release_year) AS film_age\nFROM MovieReviews;",
     "template": [
       {
-        "text": "SELECT movie_title, release_year, (2026 - release_year) ",
-        "isBlank": false
-      },
-      {
         "text": "",
         "isBlank": true,
         "slotId": "slot1",
         "placeholder": "[ ___ ]"
       },
       {
-        "text": " film_age\n",
+        "text": " ",
         "isBlank": false
       },
       {
@@ -4613,58 +6905,91 @@ window.QUESTS_SECTION_1 = [
         "placeholder": "[ ___ ]"
       },
       {
-        "text": " MovieReviews;",
+        "text": "\n",
         "isBlank": false
+      },
+      {
+        "text": "",
+        "isBlank": true,
+        "slotId": "slot3",
+        "placeholder": "[ ___ ]"
+      },
+      {
+        "text": " ",
+        "isBlank": false
+      },
+      {
+        "text": "",
+        "isBlank": true,
+        "slotId": "slot4",
+        "placeholder": "[ ___ ]"
       }
     ],
     "slots": {
       "slot1": {
-        "correct": "AS",
+        "correct": "SELECT",
         "options": [
-          "NAME",
-          "AS",
-          "LABEL",
-          "ALIAS"
+          "EXTRACT",
+          "SELECT",
+          "GET",
+          "CHOOSE"
         ]
       },
       "slot2": {
+        "correct": "movie_title, release_year, (2026 - release_year) AS film_age",
+        "options": [
+          "movie_title, release_year, (2026 - release_year) AS film_age;",
+          "movie_title, release_year, (2026 - release_year) AS film_age,",
+          "movie_title AND release_year AND (2026 - release_year) AS film_age",
+          "movie_title, release_year, (2026 - release_year) AS film_age"
+        ]
+      },
+      "slot3": {
         "correct": "FROM",
         "options": [
           "FROM",
-          "SOURCE",
+          "TABLE",
           "INTO",
-          "TABLE"
+          "SOURCE"
+        ]
+      },
+      "slot4": {
+        "correct": "MovieReviews;",
+        "options": [
+          "Books;",
+          "GroceryItems;",
+          "GymMembers;",
+          "MovieReviews;"
         ]
       }
     },
-    "explanation": "Keywords are SELECT, FROM, AS, DISTINCT. Keep commas between columns only. 💡 Pro-Tip / Trap: Do not add trailing commas before FROM or quote column identifiers.",
+    "explanation": "Keywords are SELECT, FROM, AS, DISTINCT. Keep commas between columns only. 💡 Trap to avoid: Do not add trailing commas before FROM or quote column identifiers.",
     "commonMistakes": "Punctuation errors, trailing commas, or quotes around column names."
   },
   {
     "id": 77,
     "levelDisplay": "Level 77",
-    "title": "Level 77: Project the system's current calendar date using CURRENT_...",
+    "title": "Level 77: Project the system's current calendar date using CUR...",
     "subtitle": "Project the system's current calendar date using CURRENT_DATE.",
     "type": "fill_blank",
     "category": "Section 01: Foundations & Projections",
     "subcluster": "1.8 Date Projections",
+    "tier": "Master (FAANG-Ready)",
+    "tierColor": "#ec4899",
+    "difficulty": "Hard",
     "task": "Project the system's current calendar date using CURRENT_DATE.",
     "table": "Employees",
     "schemaSnippet": "Employees schema",
     "targetQuery": "SELECT first_name, CURRENT_DATE AS report_generated_on\nFROM Employees;",
     "template": [
       {
-        "text": "SELECT first_name, CURRENT_DATE ",
-        "isBlank": false
-      },
-      {
         "text": "",
         "isBlank": true,
         "slotId": "slot1",
         "placeholder": "[ ___ ]"
       },
       {
-        "text": " report_generated_on\n",
+        "text": " ",
         "isBlank": false
       },
       {
@@ -4674,31 +6999,65 @@ window.QUESTS_SECTION_1 = [
         "placeholder": "[ ___ ]"
       },
       {
-        "text": " Employees;",
+        "text": "\n",
         "isBlank": false
+      },
+      {
+        "text": "",
+        "isBlank": true,
+        "slotId": "slot3",
+        "placeholder": "[ ___ ]"
+      },
+      {
+        "text": " ",
+        "isBlank": false
+      },
+      {
+        "text": "",
+        "isBlank": true,
+        "slotId": "slot4",
+        "placeholder": "[ ___ ]"
       }
     ],
     "slots": {
       "slot1": {
-        "correct": "AS",
+        "correct": "SELECT",
         "options": [
-          "ALIAS",
-          "AS",
-          "LABEL",
-          "NAME"
+          "CHOOSE",
+          "GET",
+          "EXTRACT",
+          "SELECT"
         ]
       },
       "slot2": {
+        "correct": "first_name, CURRENT_DATE AS report_generated_on",
+        "options": [
+          "first_name AND CURRENT_DATE AS report_generated_on",
+          "first_name, CURRENT_DATE AS report_generated_on;",
+          "first_name, CURRENT_DATE AS report_generated_on",
+          "first_name, CURRENT_DATE AS report_generated_on,"
+        ]
+      },
+      "slot3": {
         "correct": "FROM",
         "options": [
-          "FROM",
+          "TABLE",
           "SOURCE",
           "INTO",
-          "TABLE"
+          "FROM"
+        ]
+      },
+      "slot4": {
+        "correct": "Employees;",
+        "options": [
+          "Books;",
+          "GymMembers;",
+          "Employees;",
+          "FlightSchedule;"
         ]
       }
     },
-    "explanation": "Keywords are SELECT, FROM, AS, DISTINCT. Keep commas between columns only. 💡 Pro-Tip / Trap: Do not add trailing commas before FROM or quote column identifiers.",
+    "explanation": "Keywords are SELECT, FROM, AS, DISTINCT. Keep commas between columns only. 💡 Trap to avoid: Do not add trailing commas before FROM or quote column identifiers.",
     "commonMistakes": "Punctuation errors, trailing commas, or quotes around column names."
   },
   {
@@ -4709,6 +7068,9 @@ window.QUESTS_SECTION_1 = [
     "type": "fill_blank",
     "category": "Section 01: Foundations & Projections",
     "subcluster": "1.8 Date Projections",
+    "tier": "Master (FAANG-Ready)",
+    "tierColor": "#ec4899",
+    "difficulty": "Hard",
     "task": "Extract the membership anniversary month from join_date.",
     "table": "GymMembers",
     "schemaSnippet": "GymMembers schema",
@@ -4725,7 +7087,7 @@ window.QUESTS_SECTION_1 = [
         "placeholder": "[ ___ ]"
       },
       {
-        "text": "(join_date) ",
+        "text": " ",
         "isBlank": false
       },
       {
@@ -4735,41 +7097,78 @@ window.QUESTS_SECTION_1 = [
         "placeholder": "[ ___ ]"
       },
       {
-        "text": " anniversary_month\nFROM GymMembers;",
+        "text": " ",
         "isBlank": false
+      },
+      {
+        "text": "",
+        "isBlank": true,
+        "slotId": "slot3",
+        "placeholder": "[ ___ ]"
+      },
+      {
+        "text": "\nFROM ",
+        "isBlank": false
+      },
+      {
+        "text": "",
+        "isBlank": true,
+        "slotId": "slot4",
+        "placeholder": "[ ___ ]"
       }
     ],
     "slots": {
       "slot1": {
-        "correct": "MONTH",
+        "correct": "MONTH(join_date)",
         "options": [
-          "DATE_MONTH",
-          "MONTH",
-          "GET_MONTH",
-          "EXTRACT_MO"
+          "DATE_MONTH(join_date)",
+          "EXTRACT_MO(join_date)",
+          "MONTH(join_date)",
+          "GET_MONTH(join_date)"
         ]
       },
       "slot2": {
         "correct": "AS",
         "options": [
+          "AS",
           "LABEL",
           "ALIAS",
-          "AS",
           "NAME"
+        ]
+      },
+      "slot3": {
+        "correct": "anniversary_month",
+        "options": [
+          "ANNIVERSARY_MONTH",
+          "extracted_anniversary_month",
+          "anniversary_month_num",
+          "anniversary_month"
+        ]
+      },
+      "slot4": {
+        "correct": "GymMembers;",
+        "options": [
+          "GroceryItems;",
+          "PetClinic;",
+          "GymMembers;",
+          "Orders;"
         ]
       }
     },
-    "explanation": "Keywords are SELECT, FROM, AS, DISTINCT. Keep commas between columns only. 💡 Pro-Tip / Trap: Do not add trailing commas before FROM or quote column identifiers.",
+    "explanation": "Keywords are SELECT, FROM, AS, DISTINCT. Keep commas between columns only. 💡 Trap to avoid: Do not add trailing commas before FROM or quote column identifiers.",
     "commonMistakes": "Punctuation errors, trailing commas, or quotes around column names."
   },
   {
     "id": 79,
     "levelDisplay": "Level 79",
-    "title": "Level 79: Extract the specific day of the month (1-31) when the emp...",
+    "title": "Level 79: Extract the specific day of the month (1-31) when th...",
     "subtitle": "Extract the specific day of the month (1-31) when the employee was hired.",
     "type": "fill_blank",
     "category": "Section 01: Foundations & Projections",
     "subcluster": "1.8 Date Projections",
+    "tier": "Master (FAANG-Ready)",
+    "tierColor": "#ec4899",
+    "difficulty": "Hard",
     "task": "Extract the specific day of the month (1-31) when the employee was hired.",
     "table": "Employees",
     "schemaSnippet": "Employees schema",
@@ -4786,7 +7185,7 @@ window.QUESTS_SECTION_1 = [
         "placeholder": "[ ___ ]"
       },
       {
-        "text": "(hire_date) ",
+        "text": " ",
         "isBlank": false
       },
       {
@@ -4796,79 +7195,34 @@ window.QUESTS_SECTION_1 = [
         "placeholder": "[ ___ ]"
       },
       {
-        "text": " hire_day_of_month\nFROM Employees;",
-        "isBlank": false
-      }
-    ],
-    "slots": {
-      "slot1": {
-        "correct": "DAY",
-        "options": [
-          "GET_DAY",
-          "EXTRACT_DA",
-          "DAY",
-          "DATE_DAY"
-        ]
-      },
-      "slot2": {
-        "correct": "AS",
-        "options": [
-          "ALIAS",
-          "NAME",
-          "AS",
-          "LABEL"
-        ]
-      }
-    },
-    "explanation": "Keywords are SELECT, FROM, AS, DISTINCT. Keep commas between columns only. 💡 Pro-Tip / Trap: Do not add trailing commas before FROM or quote column identifiers.",
-    "commonMistakes": "Punctuation errors, trailing commas, or quotes around column names."
-  },
-  {
-    "id": 80,
-    "levelDisplay": "Level 80",
-    "title": "Level 80: Project expected graduation year by adding 4 to enrolled_...",
-    "subtitle": "Project expected graduation year by adding 4 to enrolled_year.",
-    "type": "fill_blank",
-    "category": "Section 01: Foundations & Projections",
-    "subcluster": "1.8 Date Projections",
-    "task": "Project expected graduation year by adding 4 to enrolled_year.",
-    "table": "Students",
-    "schemaSnippet": "Students schema",
-    "targetQuery": "SELECT full_name, enrolled_year, CONCAT('Class of ', (enrolled_year + 4)) AS expected_graduation\nFROM Students;",
-    "template": [
-      {
-        "text": "SELECT full_name, enrolled_year, ",
+        "text": " ",
         "isBlank": false
       },
       {
         "text": "",
         "isBlank": true,
-        "slotId": "slot1",
+        "slotId": "slot3",
         "placeholder": "[ ___ ]"
       },
       {
-        "text": "('Class of ', (enrolled_year + 4)) ",
+        "text": "\nFROM ",
         "isBlank": false
       },
       {
         "text": "",
         "isBlank": true,
-        "slotId": "slot2",
+        "slotId": "slot4",
         "placeholder": "[ ___ ]"
-      },
-      {
-        "text": " expected_graduation\nFROM Students;",
-        "isBlank": false
       }
     ],
     "slots": {
       "slot1": {
-        "correct": "CONCAT",
+        "correct": "DAY(hire_date)",
         "options": [
-          "CONCAT",
-          "JOIN_STR",
-          "GLUE",
-          "COMBINE"
+          "EXTRACT_DA(hire_date)",
+          "GET_DAY(hire_date)",
+          "DATE_DAY(hire_date)",
+          "DAY(hire_date)"
         ]
       },
       "slot2": {
@@ -4879,36 +7233,147 @@ window.QUESTS_SECTION_1 = [
           "AS",
           "NAME"
         ]
+      },
+      "slot3": {
+        "correct": "hire_day_of_month",
+        "options": [
+          "HIRE_DAY_OF_MONTH",
+          "extracted_hire_day_of_month",
+          "hire_day_of_month",
+          "hire_day_of_month_num"
+        ]
+      },
+      "slot4": {
+        "correct": "Employees;",
+        "options": [
+          "Orders;",
+          "FlightSchedule;",
+          "GymMembers;",
+          "Employees;"
+        ]
       }
     },
-    "explanation": "Keywords are SELECT, FROM, AS, DISTINCT. Keep commas between columns only. 💡 Pro-Tip / Trap: Do not add trailing commas before FROM or quote column identifiers.",
+    "explanation": "Keywords are SELECT, FROM, AS, DISTINCT. Keep commas between columns only. 💡 Trap to avoid: Do not add trailing commas before FROM or quote column identifiers.",
+    "commonMistakes": "Punctuation errors, trailing commas, or quotes around column names."
+  },
+  {
+    "id": 80,
+    "levelDisplay": "Level 80",
+    "title": "Level 80: Project expected graduation year by adding 4 to enro...",
+    "subtitle": "Project expected graduation year by adding 4 to enrolled_year.",
+    "type": "fill_blank",
+    "category": "Section 01: Foundations & Projections",
+    "subcluster": "1.8 Date Projections",
+    "tier": "Master (FAANG-Ready)",
+    "tierColor": "#ec4899",
+    "difficulty": "Hard",
+    "task": "Project expected graduation year by adding 4 to enrolled_year.",
+    "table": "Students",
+    "schemaSnippet": "Students schema",
+    "targetQuery": "SELECT full_name, enrolled_year, CONCAT('Class of ', (enrolled_year + 4)) AS expected_graduation\nFROM Students;",
+    "template": [
+      {
+        "text": "",
+        "isBlank": true,
+        "slotId": "slot1",
+        "placeholder": "[ ___ ]"
+      },
+      {
+        "text": " ",
+        "isBlank": false
+      },
+      {
+        "text": "",
+        "isBlank": true,
+        "slotId": "slot2",
+        "placeholder": "[ ___ ]"
+      },
+      {
+        "text": "\n",
+        "isBlank": false
+      },
+      {
+        "text": "",
+        "isBlank": true,
+        "slotId": "slot3",
+        "placeholder": "[ ___ ]"
+      },
+      {
+        "text": " ",
+        "isBlank": false
+      },
+      {
+        "text": "",
+        "isBlank": true,
+        "slotId": "slot4",
+        "placeholder": "[ ___ ]"
+      }
+    ],
+    "slots": {
+      "slot1": {
+        "correct": "SELECT",
+        "options": [
+          "EXTRACT",
+          "GET",
+          "SELECT",
+          "CHOOSE"
+        ]
+      },
+      "slot2": {
+        "correct": "full_name, enrolled_year, CONCAT('Class of ', (enrolled_year + 4)) AS expected_graduation",
+        "options": [
+          "full_name, enrolled_year, CONCAT('Class of ', (enrolled_year + 4)) AS expected_graduation;",
+          "full_name, enrolled_year, CONCAT('Class of ', (enrolled_year + 4)) AS expected_graduation",
+          "full_name, enrolled_year, CONCAT('Class of ', (enrolled_year + 4)) AS expected_graduation,",
+          "full_name AND enrolled_year AND CONCAT('Class of ' AND (enrolled_year + 4)) AS expected_graduation"
+        ]
+      },
+      "slot3": {
+        "correct": "FROM",
+        "options": [
+          "INTO",
+          "FROM",
+          "TABLE",
+          "SOURCE"
+        ]
+      },
+      "slot4": {
+        "correct": "Students;",
+        "options": [
+          "Students;",
+          "MusicTracks;",
+          "FlightSchedule;",
+          "GymMembers;"
+        ]
+      }
+    },
+    "explanation": "Keywords are SELECT, FROM, AS, DISTINCT. Keep commas between columns only. 💡 Trap to avoid: Do not add trailing commas before FROM or quote column identifiers.",
     "commonMistakes": "Punctuation errors, trailing commas, or quotes around column names."
   },
   {
     "id": 81,
     "levelDisplay": "Level 81",
-    "title": "Level 81: Find all unique home cities where enrolled students live ...",
+    "title": "Level 81: Find all unique home cities where enrolled students ...",
     "subtitle": "Find all unique home cities where enrolled students live without duplicates.",
     "type": "fill_blank",
     "category": "Section 01: Foundations & Projections",
     "subcluster": "1.9 DISTINCT Deduplication",
+    "tier": "Master (FAANG-Ready)",
+    "tierColor": "#ec4899",
+    "difficulty": "Hard",
     "task": "Find all unique home cities where enrolled students live without duplicates.",
     "table": "Students",
     "schemaSnippet": "Students schema",
     "targetQuery": "SELECT DISTINCT city\nFROM Students;",
     "template": [
       {
-        "text": "SELECT ",
-        "isBlank": false
-      },
-      {
         "text": "",
         "isBlank": true,
         "slotId": "slot1",
         "placeholder": "[ ___ ]"
       },
       {
-        "text": " city\n",
+        "text": " ",
         "isBlank": false
       },
       {
@@ -4918,58 +7383,110 @@ window.QUESTS_SECTION_1 = [
         "placeholder": "[ ___ ]"
       },
       {
-        "text": " Students;",
+        "text": " ",
         "isBlank": false
+      },
+      {
+        "text": "",
+        "isBlank": true,
+        "slotId": "slot3",
+        "placeholder": "[ ___ ]"
+      },
+      {
+        "text": "\n",
+        "isBlank": false
+      },
+      {
+        "text": "",
+        "isBlank": true,
+        "slotId": "slot4",
+        "placeholder": "[ ___ ]"
+      },
+      {
+        "text": " ",
+        "isBlank": false
+      },
+      {
+        "text": "",
+        "isBlank": true,
+        "slotId": "slot5",
+        "placeholder": "[ ___ ]"
       }
     ],
     "slots": {
       "slot1": {
-        "correct": "DISTINCT",
+        "correct": "SELECT",
         "options": [
-          "DISTINCT",
-          "SOLO",
-          "DIFFERENT",
-          "UNIQUE"
+          "GET",
+          "SELECT",
+          "CHOOSE",
+          "EXTRACT"
         ]
       },
       "slot2": {
+        "correct": "DISTINCT",
+        "options": [
+          "DISTINCT",
+          "UNIQUE",
+          "SOLO",
+          "DIFFERENT"
+        ]
+      },
+      "slot3": {
+        "correct": "city",
+        "options": [
+          "gpa",
+          "major",
+          "last_name",
+          "city"
+        ]
+      },
+      "slot4": {
         "correct": "FROM",
         "options": [
-          "FROM",
           "INTO",
-          "SOURCE",
-          "TABLE"
+          "FROM",
+          "TABLE",
+          "SOURCE"
+        ]
+      },
+      "slot5": {
+        "correct": "Students;",
+        "options": [
+          "FlightSchedule;",
+          "GroceryItems;",
+          "PetClinic;",
+          "Students;"
         ]
       }
     },
-    "explanation": "Keywords are SELECT, FROM, AS, DISTINCT. Keep commas between columns only. 💡 Pro-Tip / Trap: Do not add trailing commas before FROM or quote column identifiers.",
+    "explanation": "Keywords are SELECT, FROM, AS, DISTINCT. Keep commas between columns only. 💡 Trap to avoid: Do not add trailing commas before FROM or quote column identifiers.",
     "commonMistakes": "Punctuation errors, trailing commas, or quotes around column names."
   },
   {
     "id": 82,
     "levelDisplay": "Level 82",
-    "title": "Level 82: List all distinct literary genres available in the bookst...",
+    "title": "Level 82: List all distinct literary genres available in the b...",
     "subtitle": "List all distinct literary genres available in the bookstore catalog.",
     "type": "fill_blank",
     "category": "Section 01: Foundations & Projections",
     "subcluster": "1.9 DISTINCT Deduplication",
+    "tier": "Master (FAANG-Ready)",
+    "tierColor": "#ec4899",
+    "difficulty": "Hard",
     "task": "List all distinct literary genres available in the bookstore catalog.",
     "table": "Books",
     "schemaSnippet": "Books schema",
     "targetQuery": "SELECT DISTINCT genre\nFROM Books;",
     "template": [
       {
-        "text": "SELECT ",
-        "isBlank": false
-      },
-      {
         "text": "",
         "isBlank": true,
         "slotId": "slot1",
         "placeholder": "[ ___ ]"
       },
       {
-        "text": " genre\n",
+        "text": " ",
         "isBlank": false
       },
       {
@@ -4979,58 +7496,110 @@ window.QUESTS_SECTION_1 = [
         "placeholder": "[ ___ ]"
       },
       {
-        "text": " Books;",
+        "text": " ",
         "isBlank": false
+      },
+      {
+        "text": "",
+        "isBlank": true,
+        "slotId": "slot3",
+        "placeholder": "[ ___ ]"
+      },
+      {
+        "text": "\n",
+        "isBlank": false
+      },
+      {
+        "text": "",
+        "isBlank": true,
+        "slotId": "slot4",
+        "placeholder": "[ ___ ]"
+      },
+      {
+        "text": " ",
+        "isBlank": false
+      },
+      {
+        "text": "",
+        "isBlank": true,
+        "slotId": "slot5",
+        "placeholder": "[ ___ ]"
       }
     ],
     "slots": {
       "slot1": {
-        "correct": "DISTINCT",
+        "correct": "SELECT",
         "options": [
-          "DIFFERENT",
-          "SOLO",
-          "DISTINCT",
-          "UNIQUE"
+          "EXTRACT",
+          "CHOOSE",
+          "GET",
+          "SELECT"
         ]
       },
       "slot2": {
+        "correct": "DISTINCT",
+        "options": [
+          "UNIQUE",
+          "DISTINCT",
+          "SOLO",
+          "DIFFERENT"
+        ]
+      },
+      "slot3": {
+        "correct": "genre",
+        "options": [
+          "author",
+          "is_hardcover",
+          "genre",
+          "book_id"
+        ]
+      },
+      "slot4": {
         "correct": "FROM",
         "options": [
           "SOURCE",
+          "FROM",
           "TABLE",
-          "INTO",
-          "FROM"
+          "INTO"
+        ]
+      },
+      "slot5": {
+        "correct": "Books;",
+        "options": [
+          "PetClinic;",
+          "MusicTracks;",
+          "GymMembers;",
+          "Books;"
         ]
       }
     },
-    "explanation": "Keywords are SELECT, FROM, AS, DISTINCT. Keep commas between columns only. 💡 Pro-Tip / Trap: Do not add trailing commas before FROM or quote column identifiers.",
+    "explanation": "Keywords are SELECT, FROM, AS, DISTINCT. Keep commas between columns only. 💡 Trap to avoid: Do not add trailing commas before FROM or quote column identifiers.",
     "commonMistakes": "Punctuation errors, trailing commas, or quotes around column names."
   },
   {
     "id": 83,
     "levelDisplay": "Level 83",
-    "title": "Level 83: Retrieve the list of distinct company departments without...",
+    "title": "Level 83: Retrieve the list of distinct company departments wi...",
     "subtitle": "Retrieve the list of distinct company departments without duplicate rows.",
     "type": "fill_blank",
     "category": "Section 01: Foundations & Projections",
     "subcluster": "1.9 DISTINCT Deduplication",
+    "tier": "Master (FAANG-Ready)",
+    "tierColor": "#ec4899",
+    "difficulty": "Hard",
     "task": "Retrieve the list of distinct company departments without duplicate rows.",
     "table": "Employees",
     "schemaSnippet": "Employees schema",
     "targetQuery": "SELECT DISTINCT department\nFROM Employees;",
     "template": [
       {
-        "text": "SELECT ",
-        "isBlank": false
-      },
-      {
         "text": "",
         "isBlank": true,
         "slotId": "slot1",
         "placeholder": "[ ___ ]"
       },
       {
-        "text": " department\n",
+        "text": " ",
         "isBlank": false
       },
       {
@@ -5040,31 +7609,84 @@ window.QUESTS_SECTION_1 = [
         "placeholder": "[ ___ ]"
       },
       {
-        "text": " Employees;",
+        "text": " ",
         "isBlank": false
+      },
+      {
+        "text": "",
+        "isBlank": true,
+        "slotId": "slot3",
+        "placeholder": "[ ___ ]"
+      },
+      {
+        "text": "\n",
+        "isBlank": false
+      },
+      {
+        "text": "",
+        "isBlank": true,
+        "slotId": "slot4",
+        "placeholder": "[ ___ ]"
+      },
+      {
+        "text": " ",
+        "isBlank": false
+      },
+      {
+        "text": "",
+        "isBlank": true,
+        "slotId": "slot5",
+        "placeholder": "[ ___ ]"
       }
     ],
     "slots": {
       "slot1": {
-        "correct": "DISTINCT",
+        "correct": "SELECT",
         "options": [
-          "SOLO",
-          "DISTINCT",
-          "DIFFERENT",
-          "UNIQUE"
+          "SELECT",
+          "CHOOSE",
+          "EXTRACT",
+          "GET"
         ]
       },
       "slot2": {
+        "correct": "DISTINCT",
+        "options": [
+          "UNIQUE",
+          "SOLO",
+          "DISTINCT",
+          "DIFFERENT"
+        ]
+      },
+      "slot3": {
+        "correct": "department",
+        "options": [
+          "first_name",
+          "last_name",
+          "emp_id",
+          "department"
+        ]
+      },
+      "slot4": {
         "correct": "FROM",
         "options": [
-          "FROM",
           "TABLE",
+          "FROM",
           "SOURCE",
           "INTO"
         ]
+      },
+      "slot5": {
+        "correct": "Employees;",
+        "options": [
+          "Employees;",
+          "PetClinic;",
+          "Orders;",
+          "Students;"
+        ]
       }
     },
-    "explanation": "Keywords are SELECT, FROM, AS, DISTINCT. Keep commas between columns only. 💡 Pro-Tip / Trap: Do not add trailing commas before FROM or quote column identifiers.",
+    "explanation": "Keywords are SELECT, FROM, AS, DISTINCT. Keep commas between columns only. 💡 Trap to avoid: Do not add trailing commas before FROM or quote column identifiers.",
     "commonMistakes": "Punctuation errors, trailing commas, or quotes around column names."
   },
   {
@@ -5075,23 +7697,22 @@ window.QUESTS_SECTION_1 = [
     "type": "fill_blank",
     "category": "Section 01: Foundations & Projections",
     "subcluster": "1.9 DISTINCT Deduplication",
+    "tier": "Master (FAANG-Ready)",
+    "tierColor": "#ec4899",
+    "difficulty": "Hard",
     "task": "Display all unique grocery product categories.",
     "table": "GroceryItems",
     "schemaSnippet": "GroceryItems schema",
     "targetQuery": "SELECT DISTINCT category\nFROM GroceryItems;",
     "template": [
       {
-        "text": "SELECT ",
-        "isBlank": false
-      },
-      {
         "text": "",
         "isBlank": true,
         "slotId": "slot1",
         "placeholder": "[ ___ ]"
       },
       {
-        "text": " category\n",
+        "text": " ",
         "isBlank": false
       },
       {
@@ -5101,58 +7722,110 @@ window.QUESTS_SECTION_1 = [
         "placeholder": "[ ___ ]"
       },
       {
-        "text": " GroceryItems;",
+        "text": " ",
         "isBlank": false
+      },
+      {
+        "text": "",
+        "isBlank": true,
+        "slotId": "slot3",
+        "placeholder": "[ ___ ]"
+      },
+      {
+        "text": "\n",
+        "isBlank": false
+      },
+      {
+        "text": "",
+        "isBlank": true,
+        "slotId": "slot4",
+        "placeholder": "[ ___ ]"
+      },
+      {
+        "text": " ",
+        "isBlank": false
+      },
+      {
+        "text": "",
+        "isBlank": true,
+        "slotId": "slot5",
+        "placeholder": "[ ___ ]"
       }
     ],
     "slots": {
       "slot1": {
-        "correct": "DISTINCT",
+        "correct": "SELECT",
         "options": [
-          "DISTINCT",
-          "DIFFERENT",
-          "SOLO",
-          "UNIQUE"
+          "EXTRACT",
+          "SELECT",
+          "CHOOSE",
+          "GET"
         ]
       },
       "slot2": {
+        "correct": "DISTINCT",
+        "options": [
+          "DIFFERENT",
+          "DISTINCT",
+          "UNIQUE",
+          "SOLO"
+        ]
+      },
+      "slot3": {
+        "correct": "category",
+        "options": [
+          "category",
+          "unit_price",
+          "stock_qty",
+          "item_name"
+        ]
+      },
+      "slot4": {
         "correct": "FROM",
         "options": [
-          "SOURCE",
           "TABLE",
           "INTO",
-          "FROM"
+          "FROM",
+          "SOURCE"
+        ]
+      },
+      "slot5": {
+        "correct": "GroceryItems;",
+        "options": [
+          "MusicTracks;",
+          "GymMembers;",
+          "FlightSchedule;",
+          "GroceryItems;"
         ]
       }
     },
-    "explanation": "Keywords are SELECT, FROM, AS, DISTINCT. Keep commas between columns only. 💡 Pro-Tip / Trap: Do not add trailing commas before FROM or quote column identifiers.",
+    "explanation": "Keywords are SELECT, FROM, AS, DISTINCT. Keep commas between columns only. 💡 Trap to avoid: Do not add trailing commas before FROM or quote column identifiers.",
     "commonMistakes": "Punctuation errors, trailing commas, or quotes around column names."
   },
   {
     "id": 85,
     "levelDisplay": "Level 85",
-    "title": "Level 85: List all unique musical genres featured in the streaming ...",
+    "title": "Level 85: List all unique musical genres featured in the strea...",
     "subtitle": "List all unique musical genres featured in the streaming library.",
     "type": "fill_blank",
     "category": "Section 01: Foundations & Projections",
     "subcluster": "1.9 DISTINCT Deduplication",
+    "tier": "Master (FAANG-Ready)",
+    "tierColor": "#ec4899",
+    "difficulty": "Hard",
     "task": "List all unique musical genres featured in the streaming library.",
     "table": "MusicTracks",
     "schemaSnippet": "MusicTracks schema",
     "targetQuery": "SELECT DISTINCT genre\nFROM MusicTracks;",
     "template": [
       {
-        "text": "SELECT ",
-        "isBlank": false
-      },
-      {
         "text": "",
         "isBlank": true,
         "slotId": "slot1",
         "placeholder": "[ ___ ]"
       },
       {
-        "text": " genre\n",
+        "text": " ",
         "isBlank": false
       },
       {
@@ -5162,31 +7835,84 @@ window.QUESTS_SECTION_1 = [
         "placeholder": "[ ___ ]"
       },
       {
-        "text": " MusicTracks;",
+        "text": " ",
         "isBlank": false
+      },
+      {
+        "text": "",
+        "isBlank": true,
+        "slotId": "slot3",
+        "placeholder": "[ ___ ]"
+      },
+      {
+        "text": "\n",
+        "isBlank": false
+      },
+      {
+        "text": "",
+        "isBlank": true,
+        "slotId": "slot4",
+        "placeholder": "[ ___ ]"
+      },
+      {
+        "text": " ",
+        "isBlank": false
+      },
+      {
+        "text": "",
+        "isBlank": true,
+        "slotId": "slot5",
+        "placeholder": "[ ___ ]"
       }
     ],
     "slots": {
       "slot1": {
-        "correct": "DISTINCT",
+        "correct": "SELECT",
         "options": [
-          "DISTINCT",
-          "DIFFERENT",
-          "SOLO",
-          "UNIQUE"
+          "SELECT",
+          "CHOOSE",
+          "EXTRACT",
+          "GET"
         ]
       },
       "slot2": {
+        "correct": "DISTINCT",
+        "options": [
+          "UNIQUE",
+          "DIFFERENT",
+          "SOLO",
+          "DISTINCT"
+        ]
+      },
+      "slot3": {
+        "correct": "genre",
+        "options": [
+          "title",
+          "genre",
+          "track_id",
+          "artist"
+        ]
+      },
+      "slot4": {
         "correct": "FROM",
         "options": [
-          "TABLE",
           "INTO",
-          "SOURCE",
-          "FROM"
+          "FROM",
+          "TABLE",
+          "SOURCE"
+        ]
+      },
+      "slot5": {
+        "correct": "MusicTracks;",
+        "options": [
+          "MusicTracks;",
+          "GroceryItems;",
+          "Orders;",
+          "MovieReviews;"
         ]
       }
     },
-    "explanation": "Keywords are SELECT, FROM, AS, DISTINCT. Keep commas between columns only. 💡 Pro-Tip / Trap: Do not add trailing commas before FROM or quote column identifiers.",
+    "explanation": "Keywords are SELECT, FROM, AS, DISTINCT. Keep commas between columns only. 💡 Trap to avoid: Do not add trailing commas before FROM or quote column identifiers.",
     "commonMistakes": "Punctuation errors, trailing commas, or quotes around column names."
   },
   {
@@ -5197,15 +7923,14 @@ window.QUESTS_SECTION_1 = [
     "type": "fill_blank",
     "category": "Section 01: Foundations & Projections",
     "subcluster": "1.9 DISTINCT Deduplication",
+    "tier": "Master (FAANG-Ready)",
+    "tierColor": "#ec4899",
+    "difficulty": "Hard",
     "task": "Extract all distinct membership plan tiers.",
     "table": "GymMembers",
     "schemaSnippet": "GymMembers schema",
     "targetQuery": "SELECT DISTINCT membership_plan\nFROM GymMembers;",
     "template": [
-      {
-        "text": "SELECT ",
-        "isBlank": false
-      },
       {
         "text": "",
         "isBlank": true,
@@ -5213,7 +7938,7 @@ window.QUESTS_SECTION_1 = [
         "placeholder": "[ ___ ]"
       },
       {
-        "text": " membership_plan\n",
+        "text": " ",
         "isBlank": false
       },
       {
@@ -5223,12 +7948,160 @@ window.QUESTS_SECTION_1 = [
         "placeholder": "[ ___ ]"
       },
       {
-        "text": " GymMembers;",
+        "text": " ",
         "isBlank": false
+      },
+      {
+        "text": "",
+        "isBlank": true,
+        "slotId": "slot3",
+        "placeholder": "[ ___ ]"
+      },
+      {
+        "text": "\n",
+        "isBlank": false
+      },
+      {
+        "text": "",
+        "isBlank": true,
+        "slotId": "slot4",
+        "placeholder": "[ ___ ]"
+      },
+      {
+        "text": " ",
+        "isBlank": false
+      },
+      {
+        "text": "",
+        "isBlank": true,
+        "slotId": "slot5",
+        "placeholder": "[ ___ ]"
       }
     ],
     "slots": {
       "slot1": {
+        "correct": "SELECT",
+        "options": [
+          "EXTRACT",
+          "CHOOSE",
+          "SELECT",
+          "GET"
+        ]
+      },
+      "slot2": {
+        "correct": "DISTINCT",
+        "options": [
+          "DISTINCT",
+          "UNIQUE",
+          "SOLO",
+          "DIFFERENT"
+        ]
+      },
+      "slot3": {
+        "correct": "membership_plan",
+        "options": [
+          "member_id",
+          "monthly_fee",
+          "member_name",
+          "membership_plan"
+        ]
+      },
+      "slot4": {
+        "correct": "FROM",
+        "options": [
+          "INTO",
+          "SOURCE",
+          "TABLE",
+          "FROM"
+        ]
+      },
+      "slot5": {
+        "correct": "GymMembers;",
+        "options": [
+          "FlightSchedule;",
+          "Students;",
+          "GymMembers;",
+          "Orders;"
+        ]
+      }
+    },
+    "explanation": "Keywords are SELECT, FROM, AS, DISTINCT. Keep commas between columns only. 💡 Trap to avoid: Do not add trailing commas before FROM or quote column identifiers.",
+    "commonMistakes": "Punctuation errors, trailing commas, or quotes around column names."
+  },
+  {
+    "id": 87,
+    "levelDisplay": "Level 87",
+    "title": "Level 87: Find all unique movie directors who have reviews rec...",
+    "subtitle": "Find all unique movie directors who have reviews recorded.",
+    "type": "fill_blank",
+    "category": "Section 01: Foundations & Projections",
+    "subcluster": "1.9 DISTINCT Deduplication",
+    "tier": "Master (FAANG-Ready)",
+    "tierColor": "#ec4899",
+    "difficulty": "Hard",
+    "task": "Find all unique movie directors who have reviews recorded.",
+    "table": "MovieReviews",
+    "schemaSnippet": "MovieReviews schema",
+    "targetQuery": "SELECT DISTINCT director\nFROM MovieReviews;",
+    "template": [
+      {
+        "text": "",
+        "isBlank": true,
+        "slotId": "slot1",
+        "placeholder": "[ ___ ]"
+      },
+      {
+        "text": " ",
+        "isBlank": false
+      },
+      {
+        "text": "",
+        "isBlank": true,
+        "slotId": "slot2",
+        "placeholder": "[ ___ ]"
+      },
+      {
+        "text": " ",
+        "isBlank": false
+      },
+      {
+        "text": "",
+        "isBlank": true,
+        "slotId": "slot3",
+        "placeholder": "[ ___ ]"
+      },
+      {
+        "text": "\n",
+        "isBlank": false
+      },
+      {
+        "text": "",
+        "isBlank": true,
+        "slotId": "slot4",
+        "placeholder": "[ ___ ]"
+      },
+      {
+        "text": " ",
+        "isBlank": false
+      },
+      {
+        "text": "",
+        "isBlank": true,
+        "slotId": "slot5",
+        "placeholder": "[ ___ ]"
+      }
+    ],
+    "slots": {
+      "slot1": {
+        "correct": "SELECT",
+        "options": [
+          "EXTRACT",
+          "SELECT",
+          "CHOOSE",
+          "GET"
+        ]
+      },
+      "slot2": {
         "correct": "DISTINCT",
         "options": [
           "DISTINCT",
@@ -5237,78 +8110,35 @@ window.QUESTS_SECTION_1 = [
           "SOLO"
         ]
       },
-      "slot2": {
+      "slot3": {
+        "correct": "director",
+        "options": [
+          "review_id",
+          "director",
+          "review_count",
+          "movie_title"
+        ]
+      },
+      "slot4": {
         "correct": "FROM",
         "options": [
           "INTO",
-          "SOURCE",
+          "FROM",
           "TABLE",
-          "FROM"
+          "SOURCE"
+        ]
+      },
+      "slot5": {
+        "correct": "MovieReviews;",
+        "options": [
+          "MusicTracks;",
+          "MovieReviews;",
+          "GymMembers;",
+          "PetClinic;"
         ]
       }
     },
-    "explanation": "Keywords are SELECT, FROM, AS, DISTINCT. Keep commas between columns only. 💡 Pro-Tip / Trap: Do not add trailing commas before FROM or quote column identifiers.",
-    "commonMistakes": "Punctuation errors, trailing commas, or quotes around column names."
-  },
-  {
-    "id": 87,
-    "levelDisplay": "Level 87",
-    "title": "Level 87: Find all unique movie directors who have reviews recorded",
-    "subtitle": "Find all unique movie directors who have reviews recorded.",
-    "type": "fill_blank",
-    "category": "Section 01: Foundations & Projections",
-    "subcluster": "1.9 DISTINCT Deduplication",
-    "task": "Find all unique movie directors who have reviews recorded.",
-    "table": "MovieReviews",
-    "schemaSnippet": "MovieReviews schema",
-    "targetQuery": "SELECT DISTINCT director\nFROM MovieReviews;",
-    "template": [
-      {
-        "text": "SELECT ",
-        "isBlank": false
-      },
-      {
-        "text": "",
-        "isBlank": true,
-        "slotId": "slot1",
-        "placeholder": "[ ___ ]"
-      },
-      {
-        "text": " director\n",
-        "isBlank": false
-      },
-      {
-        "text": "",
-        "isBlank": true,
-        "slotId": "slot2",
-        "placeholder": "[ ___ ]"
-      },
-      {
-        "text": " MovieReviews;",
-        "isBlank": false
-      }
-    ],
-    "slots": {
-      "slot1": {
-        "correct": "DISTINCT",
-        "options": [
-          "SOLO",
-          "UNIQUE",
-          "DIFFERENT",
-          "DISTINCT"
-        ]
-      },
-      "slot2": {
-        "correct": "FROM",
-        "options": [
-          "SOURCE",
-          "TABLE",
-          "INTO",
-          "FROM"
-        ]
-      }
-    },
-    "explanation": "Keywords are SELECT, FROM, AS, DISTINCT. Keep commas between columns only. 💡 Pro-Tip / Trap: Do not add trailing commas before FROM or quote column identifiers.",
+    "explanation": "Keywords are SELECT, FROM, AS, DISTINCT. Keep commas between columns only. 💡 Trap to avoid: Do not add trailing commas before FROM or quote column identifiers.",
     "commonMistakes": "Punctuation errors, trailing commas, or quotes around column names."
   },
   {
@@ -5319,15 +8149,14 @@ window.QUESTS_SECTION_1 = [
     "type": "fill_blank",
     "category": "Section 01: Foundations & Projections",
     "subcluster": "1.9 DISTINCT Deduplication",
+    "tier": "Master (FAANG-Ready)",
+    "tierColor": "#ec4899",
+    "difficulty": "Hard",
     "task": "List all unique origin departure airports.",
     "table": "FlightSchedule",
     "schemaSnippet": "FlightSchedule schema",
     "targetQuery": "SELECT DISTINCT origin_airport\nFROM FlightSchedule;",
     "template": [
-      {
-        "text": "SELECT ",
-        "isBlank": false
-      },
       {
         "text": "",
         "isBlank": true,
@@ -5335,7 +8164,7 @@ window.QUESTS_SECTION_1 = [
         "placeholder": "[ ___ ]"
       },
       {
-        "text": " origin_airport\n",
+        "text": " ",
         "isBlank": false
       },
       {
@@ -5345,31 +8174,84 @@ window.QUESTS_SECTION_1 = [
         "placeholder": "[ ___ ]"
       },
       {
-        "text": " FlightSchedule;",
+        "text": " ",
         "isBlank": false
+      },
+      {
+        "text": "",
+        "isBlank": true,
+        "slotId": "slot3",
+        "placeholder": "[ ___ ]"
+      },
+      {
+        "text": "\n",
+        "isBlank": false
+      },
+      {
+        "text": "",
+        "isBlank": true,
+        "slotId": "slot4",
+        "placeholder": "[ ___ ]"
+      },
+      {
+        "text": " ",
+        "isBlank": false
+      },
+      {
+        "text": "",
+        "isBlank": true,
+        "slotId": "slot5",
+        "placeholder": "[ ___ ]"
       }
     ],
     "slots": {
       "slot1": {
-        "correct": "DISTINCT",
+        "correct": "SELECT",
         "options": [
-          "UNIQUE",
-          "DIFFERENT",
-          "DISTINCT",
-          "SOLO"
+          "SELECT",
+          "CHOOSE",
+          "EXTRACT",
+          "GET"
         ]
       },
       "slot2": {
+        "correct": "DISTINCT",
+        "options": [
+          "SOLO",
+          "DISTINCT",
+          "DIFFERENT",
+          "UNIQUE"
+        ]
+      },
+      "slot3": {
+        "correct": "origin_airport",
+        "options": [
+          "airline",
+          "origin_airport",
+          "destination_airport",
+          "flight_id"
+        ]
+      },
+      "slot4": {
         "correct": "FROM",
         "options": [
-          "TABLE",
           "SOURCE",
           "FROM",
+          "TABLE",
           "INTO"
+        ]
+      },
+      "slot5": {
+        "correct": "FlightSchedule;",
+        "options": [
+          "PetClinic;",
+          "Orders;",
+          "Students;",
+          "FlightSchedule;"
         ]
       }
     },
-    "explanation": "Keywords are SELECT, FROM, AS, DISTINCT. Keep commas between columns only. 💡 Pro-Tip / Trap: Do not add trailing commas before FROM or quote column identifiers.",
+    "explanation": "Keywords are SELECT, FROM, AS, DISTINCT. Keep commas between columns only. 💡 Trap to avoid: Do not add trailing commas before FROM or quote column identifiers.",
     "commonMistakes": "Punctuation errors, trailing commas, or quotes around column names."
   },
   {
@@ -5380,23 +8262,22 @@ window.QUESTS_SECTION_1 = [
     "type": "fill_blank",
     "category": "Section 01: Foundations & Projections",
     "subcluster": "1.9 DISTINCT Deduplication",
+    "tier": "Master (FAANG-Ready)",
+    "tierColor": "#ec4899",
+    "difficulty": "Hard",
     "task": "Find all distinct animal species treated at the clinic.",
     "table": "PetClinic",
     "schemaSnippet": "PetClinic schema",
     "targetQuery": "SELECT DISTINCT species\nFROM PetClinic;",
     "template": [
       {
-        "text": "SELECT ",
-        "isBlank": false
-      },
-      {
         "text": "",
         "isBlank": true,
         "slotId": "slot1",
         "placeholder": "[ ___ ]"
       },
       {
-        "text": " species\n",
+        "text": " ",
         "isBlank": false
       },
       {
@@ -5406,58 +8287,110 @@ window.QUESTS_SECTION_1 = [
         "placeholder": "[ ___ ]"
       },
       {
-        "text": " PetClinic;",
+        "text": " ",
         "isBlank": false
+      },
+      {
+        "text": "",
+        "isBlank": true,
+        "slotId": "slot3",
+        "placeholder": "[ ___ ]"
+      },
+      {
+        "text": "\n",
+        "isBlank": false
+      },
+      {
+        "text": "",
+        "isBlank": true,
+        "slotId": "slot4",
+        "placeholder": "[ ___ ]"
+      },
+      {
+        "text": " ",
+        "isBlank": false
+      },
+      {
+        "text": "",
+        "isBlank": true,
+        "slotId": "slot5",
+        "placeholder": "[ ___ ]"
       }
     ],
     "slots": {
       "slot1": {
-        "correct": "DISTINCT",
+        "correct": "SELECT",
         "options": [
-          "SOLO",
-          "DISTINCT",
-          "UNIQUE",
-          "DIFFERENT"
+          "EXTRACT",
+          "GET",
+          "CHOOSE",
+          "SELECT"
         ]
       },
       "slot2": {
+        "correct": "DISTINCT",
+        "options": [
+          "DISTINCT",
+          "SOLO",
+          "DIFFERENT",
+          "UNIQUE"
+        ]
+      },
+      "slot3": {
+        "correct": "species",
+        "options": [
+          "pet_id",
+          "age_years",
+          "pet_name",
+          "species"
+        ]
+      },
+      "slot4": {
         "correct": "FROM",
         "options": [
           "INTO",
-          "SOURCE",
           "TABLE",
-          "FROM"
+          "FROM",
+          "SOURCE"
+        ]
+      },
+      "slot5": {
+        "correct": "PetClinic;",
+        "options": [
+          "MovieReviews;",
+          "Students;",
+          "FlightSchedule;",
+          "PetClinic;"
         ]
       }
     },
-    "explanation": "Keywords are SELECT, FROM, AS, DISTINCT. Keep commas between columns only. 💡 Pro-Tip / Trap: Do not add trailing commas before FROM or quote column identifiers.",
+    "explanation": "Keywords are SELECT, FROM, AS, DISTINCT. Keep commas between columns only. 💡 Trap to avoid: Do not add trailing commas before FROM or quote column identifiers.",
     "commonMistakes": "Punctuation errors, trailing commas, or quotes around column names."
   },
   {
     "id": 90,
     "levelDisplay": "Level 90",
-    "title": "Level 90: Find distinct combinations of customer name and shipping ...",
+    "title": "Level 90: Find distinct combinations of customer name and ship...",
     "subtitle": "Find distinct combinations of customer name and shipping city (multi-column DISTINCT).",
     "type": "fill_blank",
     "category": "Section 01: Foundations & Projections",
     "subcluster": "1.9 DISTINCT Deduplication",
+    "tier": "Master (FAANG-Ready)",
+    "tierColor": "#ec4899",
+    "difficulty": "Hard",
     "task": "Find distinct combinations of customer name and shipping city (multi-column DISTINCT).",
     "table": "Orders",
     "schemaSnippet": "Orders schema",
     "targetQuery": "SELECT DISTINCT customer_name, shipping_city\nFROM Orders;",
     "template": [
       {
-        "text": "SELECT ",
-        "isBlank": false
-      },
-      {
         "text": "",
         "isBlank": true,
         "slotId": "slot1",
         "placeholder": "[ ___ ]"
       },
       {
-        "text": " customer_name, shipping_city\n",
+        "text": " ",
         "isBlank": false
       },
       {
@@ -5467,41 +8400,97 @@ window.QUESTS_SECTION_1 = [
         "placeholder": "[ ___ ]"
       },
       {
-        "text": " Orders;",
+        "text": " ",
         "isBlank": false
+      },
+      {
+        "text": "",
+        "isBlank": true,
+        "slotId": "slot3",
+        "placeholder": "[ ___ ]"
+      },
+      {
+        "text": "\n",
+        "isBlank": false
+      },
+      {
+        "text": "",
+        "isBlank": true,
+        "slotId": "slot4",
+        "placeholder": "[ ___ ]"
+      },
+      {
+        "text": " ",
+        "isBlank": false
+      },
+      {
+        "text": "",
+        "isBlank": true,
+        "slotId": "slot5",
+        "placeholder": "[ ___ ]"
       }
     ],
     "slots": {
       "slot1": {
+        "correct": "SELECT",
+        "options": [
+          "SELECT",
+          "GET",
+          "EXTRACT",
+          "CHOOSE"
+        ]
+      },
+      "slot2": {
         "correct": "DISTINCT",
         "options": [
-          "DISTINCT",
           "SOLO",
+          "DISTINCT",
           "UNIQUE",
           "DIFFERENT"
         ]
       },
-      "slot2": {
+      "slot3": {
+        "correct": "customer_name, shipping_city",
+        "options": [
+          "product_name",
+          "customer_name, shipping_city",
+          "order_id",
+          "discount_pct"
+        ]
+      },
+      "slot4": {
         "correct": "FROM",
         "options": [
-          "SOURCE",
+          "TABLE",
           "FROM",
-          "INTO",
-          "TABLE"
+          "SOURCE",
+          "INTO"
+        ]
+      },
+      "slot5": {
+        "correct": "Orders;",
+        "options": [
+          "Students;",
+          "GymMembers;",
+          "Orders;",
+          "PetClinic;"
         ]
       }
     },
-    "explanation": "Keywords are SELECT, FROM, AS, DISTINCT. Keep commas between columns only. 💡 Pro-Tip / Trap: Do not add trailing commas before FROM or quote column identifiers.",
+    "explanation": "Keywords are SELECT, FROM, AS, DISTINCT. Keep commas between columns only. 💡 Trap to avoid: Do not add trailing commas before FROM or quote column identifiers.",
     "commonMistakes": "Punctuation errors, trailing commas, or quotes around column names."
   },
   {
     "id": 91,
     "levelDisplay": "Level 91",
-    "title": "Level 91: Fix the trailing comma bug: 'SELECT full_name, city, FROM...",
+    "title": "Level 91: Fix the trailing comma bug: 'SELECT full_name, city,...",
     "subtitle": "Fix the trailing comma bug: 'SELECT full_name, city, FROM Students;'",
     "type": "fill_blank",
     "category": "Section 01: Foundations & Projections",
     "subcluster": "1.10 Bug Hunts & Edge Cases",
+    "tier": "Master (FAANG-Ready)",
+    "tierColor": "#ec4899",
+    "difficulty": "Hard",
     "task": "Fix the trailing comma bug: 'SELECT full_name, city, FROM Students;'",
     "table": "Students",
     "schemaSnippet": "Students schema",
@@ -5509,16 +8498,12 @@ window.QUESTS_SECTION_1 = [
     "template": [
       {
         "text": "",
-        "isBlank": false
-      },
-      {
-        "text": "",
         "isBlank": true,
         "slotId": "slot1",
         "placeholder": "[ ___ ]"
       },
       {
-        "text": " full_name, city\n",
+        "text": " ",
         "isBlank": false
       },
       {
@@ -5528,435 +8513,24 @@ window.QUESTS_SECTION_1 = [
         "placeholder": "[ ___ ]"
       },
       {
-        "text": " Students;",
-        "isBlank": false
-      }
-    ],
-    "slots": {
-      "slot1": {
-        "correct": "SELECT",
-        "options": [
-          "EXTRACT",
-          "SELECT",
-          "GET",
-          "CHOOSE"
-        ]
-      },
-      "slot2": {
-        "correct": "FROM",
-        "options": [
-          "SOURCE",
-          "FROM",
-          "TABLE",
-          "INTO"
-        ]
-      }
-    },
-    "explanation": "Keywords are SELECT, FROM, AS, DISTINCT. Keep commas between columns only. 💡 Pro-Tip / Trap: Do not add trailing commas before FROM or quote column identifiers.",
-    "commonMistakes": "Punctuation errors, trailing commas, or quotes around column names."
-  },
-  {
-    "id": 92,
-    "levelDisplay": "Level 92",
-    "title": "Level 92: Fix the unquoted column alias containing spaces: 'SELECT ...",
-    "subtitle": "Fix the unquoted column alias containing spaces: 'SELECT title, price AS Retail Price FROM Books;'",
-    "type": "fill_blank",
-    "category": "Section 01: Foundations & Projections",
-    "subcluster": "1.10 Bug Hunts & Edge Cases",
-    "task": "Fix the unquoted column alias containing spaces: 'SELECT title, price AS Retail Price FROM Books;'",
-    "table": "Books",
-    "schemaSnippet": "Books schema",
-    "targetQuery": "SELECT title, price\nFROM Books;",
-    "template": [
-      {
-        "text": "",
+        "text": "\n",
         "isBlank": false
       },
       {
         "text": "",
         "isBlank": true,
-        "slotId": "slot1",
+        "slotId": "slot3",
         "placeholder": "[ ___ ]"
       },
       {
-        "text": " title, price\n",
+        "text": " ",
         "isBlank": false
       },
       {
         "text": "",
         "isBlank": true,
-        "slotId": "slot2",
+        "slotId": "slot4",
         "placeholder": "[ ___ ]"
-      },
-      {
-        "text": " Books;",
-        "isBlank": false
-      }
-    ],
-    "slots": {
-      "slot1": {
-        "correct": "SELECT",
-        "options": [
-          "SELECT",
-          "EXTRACT",
-          "CHOOSE",
-          "GET"
-        ]
-      },
-      "slot2": {
-        "correct": "FROM",
-        "options": [
-          "TABLE",
-          "INTO",
-          "SOURCE",
-          "FROM"
-        ]
-      }
-    },
-    "explanation": "Keywords are SELECT, FROM, AS, DISTINCT. Keep commas between columns only. 💡 Pro-Tip / Trap: Do not add trailing commas before FROM or quote column identifiers.",
-    "commonMistakes": "Punctuation errors, trailing commas, or quotes around column names."
-  },
-  {
-    "id": 93,
-    "levelDisplay": "Level 93",
-    "title": "Level 93: Fix the misplaced DISTINCT keyword: 'SELECT first_name, D...",
-    "subtitle": "Fix the misplaced DISTINCT keyword: 'SELECT first_name, DISTINCT department FROM Employees;'",
-    "type": "fill_blank",
-    "category": "Section 01: Foundations & Projections",
-    "subcluster": "1.10 Bug Hunts & Edge Cases",
-    "task": "Fix the misplaced DISTINCT keyword: 'SELECT first_name, DISTINCT department FROM Employees;'",
-    "table": "Employees",
-    "schemaSnippet": "Employees schema",
-    "targetQuery": "SELECT first_name, salary\nFROM Employees;",
-    "template": [
-      {
-        "text": "",
-        "isBlank": false
-      },
-      {
-        "text": "",
-        "isBlank": true,
-        "slotId": "slot1",
-        "placeholder": "[ ___ ]"
-      },
-      {
-        "text": " first_name, salary\n",
-        "isBlank": false
-      },
-      {
-        "text": "",
-        "isBlank": true,
-        "slotId": "slot2",
-        "placeholder": "[ ___ ]"
-      },
-      {
-        "text": " Employees;",
-        "isBlank": false
-      }
-    ],
-    "slots": {
-      "slot1": {
-        "correct": "SELECT",
-        "options": [
-          "EXTRACT",
-          "SELECT",
-          "CHOOSE",
-          "GET"
-        ]
-      },
-      "slot2": {
-        "correct": "FROM",
-        "options": [
-          "TABLE",
-          "SOURCE",
-          "INTO",
-          "FROM"
-        ]
-      }
-    },
-    "explanation": "Keywords are SELECT, FROM, AS, DISTINCT. Keep commas between columns only. 💡 Pro-Tip / Trap: Do not add trailing commas before FROM or quote column identifiers.",
-    "commonMistakes": "Punctuation errors, trailing commas, or quotes around column names."
-  },
-  {
-    "id": 94,
-    "levelDisplay": "Level 94",
-    "title": "Level 94: Fix the single-quoted column name: \"SELECT 'item_name' FR...",
-    "subtitle": "Fix the single-quoted column name: \"SELECT 'item_name' FROM GroceryItems;\" (outputs literal string instead of column).",
-    "type": "fill_blank",
-    "category": "Section 01: Foundations & Projections",
-    "subcluster": "1.10 Bug Hunts & Edge Cases",
-    "task": "Fix the single-quoted column name: \"SELECT 'item_name' FROM GroceryItems;\" (outputs literal string instead of column).",
-    "table": "GroceryItems",
-    "schemaSnippet": "GroceryItems schema",
-    "targetQuery": "SELECT item_name, unit_price\nFROM GroceryItems;",
-    "template": [
-      {
-        "text": "",
-        "isBlank": false
-      },
-      {
-        "text": "",
-        "isBlank": true,
-        "slotId": "slot1",
-        "placeholder": "[ ___ ]"
-      },
-      {
-        "text": " item_name, unit_price\n",
-        "isBlank": false
-      },
-      {
-        "text": "",
-        "isBlank": true,
-        "slotId": "slot2",
-        "placeholder": "[ ___ ]"
-      },
-      {
-        "text": " GroceryItems;",
-        "isBlank": false
-      }
-    ],
-    "slots": {
-      "slot1": {
-        "correct": "SELECT",
-        "options": [
-          "EXTRACT",
-          "GET",
-          "SELECT",
-          "CHOOSE"
-        ]
-      },
-      "slot2": {
-        "correct": "FROM",
-        "options": [
-          "SOURCE",
-          "INTO",
-          "FROM",
-          "TABLE"
-        ]
-      }
-    },
-    "explanation": "Keywords are SELECT, FROM, AS, DISTINCT. Keep commas between columns only. 💡 Pro-Tip / Trap: Do not add trailing commas before FROM or quote column identifiers.",
-    "commonMistakes": "Punctuation errors, trailing commas, or quotes around column names."
-  },
-  {
-    "id": 95,
-    "levelDisplay": "Level 95",
-    "title": "Level 95: Fix missing comma between calculated expression and next ...",
-    "subtitle": "Fix missing comma between calculated expression and next column.",
-    "type": "fill_blank",
-    "category": "Section 01: Foundations & Projections",
-    "subcluster": "1.10 Bug Hunts & Edge Cases",
-    "task": "Fix missing comma between calculated expression and next column.",
-    "table": "Orders",
-    "schemaSnippet": "Orders schema",
-    "targetQuery": "SELECT order_id, quantity * unit_price AS subtotal\nFROM Orders;",
-    "template": [
-      {
-        "text": "SELECT order_id, quantity * unit_price ",
-        "isBlank": false
-      },
-      {
-        "text": "",
-        "isBlank": true,
-        "slotId": "slot1",
-        "placeholder": "[ ___ ]"
-      },
-      {
-        "text": " subtotal\n",
-        "isBlank": false
-      },
-      {
-        "text": "",
-        "isBlank": true,
-        "slotId": "slot2",
-        "placeholder": "[ ___ ]"
-      },
-      {
-        "text": " Orders;",
-        "isBlank": false
-      }
-    ],
-    "slots": {
-      "slot1": {
-        "correct": "AS",
-        "options": [
-          "NAME",
-          "ALIAS",
-          "AS",
-          "LABEL"
-        ]
-      },
-      "slot2": {
-        "correct": "FROM",
-        "options": [
-          "INTO",
-          "SOURCE",
-          "FROM",
-          "TABLE"
-        ]
-      }
-    },
-    "explanation": "Keywords are SELECT, FROM, AS, DISTINCT. Keep commas between columns only. 💡 Pro-Tip / Trap: Do not add trailing commas before FROM or quote column identifiers.",
-    "commonMistakes": "Punctuation errors, trailing commas, or quotes around column names."
-  },
-  {
-    "id": 96,
-    "levelDisplay": "Level 96",
-    "title": "Level 96: Fix misspelled column identifier: 'SELECT song_title FROM...",
-    "subtitle": "Fix misspelled column identifier: 'SELECT song_title FROM MusicTracks;'",
-    "type": "fill_blank",
-    "category": "Section 01: Foundations & Projections",
-    "subcluster": "1.10 Bug Hunts & Edge Cases",
-    "task": "Fix misspelled column identifier: 'SELECT song_title FROM MusicTracks;'",
-    "table": "MusicTracks",
-    "schemaSnippet": "MusicTracks schema",
-    "targetQuery": "SELECT track_title, artist_name\nFROM MusicTracks;",
-    "template": [
-      {
-        "text": "",
-        "isBlank": false
-      },
-      {
-        "text": "",
-        "isBlank": true,
-        "slotId": "slot1",
-        "placeholder": "[ ___ ]"
-      },
-      {
-        "text": " track_title, artist_name\n",
-        "isBlank": false
-      },
-      {
-        "text": "",
-        "isBlank": true,
-        "slotId": "slot2",
-        "placeholder": "[ ___ ]"
-      },
-      {
-        "text": " MusicTracks;",
-        "isBlank": false
-      }
-    ],
-    "slots": {
-      "slot1": {
-        "correct": "SELECT",
-        "options": [
-          "CHOOSE",
-          "SELECT",
-          "EXTRACT",
-          "GET"
-        ]
-      },
-      "slot2": {
-        "correct": "FROM",
-        "options": [
-          "TABLE",
-          "FROM",
-          "SOURCE",
-          "INTO"
-        ]
-      }
-    },
-    "explanation": "Keywords are SELECT, FROM, AS, DISTINCT. Keep commas between columns only. 💡 Pro-Tip / Trap: Do not add trailing commas before FROM or quote column identifiers.",
-    "commonMistakes": "Punctuation errors, trailing commas, or quotes around column names."
-  },
-  {
-    "id": 97,
-    "levelDisplay": "Level 97",
-    "title": "Level 97: Fix table name typo: 'SELECT member_name FROM GymMember;'...",
-    "subtitle": "Fix table name typo: 'SELECT member_name FROM GymMember;' (singular vs plural).",
-    "type": "fill_blank",
-    "category": "Section 01: Foundations & Projections",
-    "subcluster": "1.10 Bug Hunts & Edge Cases",
-    "task": "Fix table name typo: 'SELECT member_name FROM GymMember;' (singular vs plural).",
-    "table": "GymMembers",
-    "schemaSnippet": "GymMembers schema",
-    "targetQuery": "SELECT member_name, monthly_fee\nFROM GymMembers;",
-    "template": [
-      {
-        "text": "",
-        "isBlank": false
-      },
-      {
-        "text": "",
-        "isBlank": true,
-        "slotId": "slot1",
-        "placeholder": "[ ___ ]"
-      },
-      {
-        "text": " member_name, monthly_fee\n",
-        "isBlank": false
-      },
-      {
-        "text": "",
-        "isBlank": true,
-        "slotId": "slot2",
-        "placeholder": "[ ___ ]"
-      },
-      {
-        "text": " GymMembers;",
-        "isBlank": false
-      }
-    ],
-    "slots": {
-      "slot1": {
-        "correct": "SELECT",
-        "options": [
-          "CHOOSE",
-          "SELECT",
-          "EXTRACT",
-          "GET"
-        ]
-      },
-      "slot2": {
-        "correct": "FROM",
-        "options": [
-          "SOURCE",
-          "FROM",
-          "TABLE",
-          "INTO"
-        ]
-      }
-    },
-    "explanation": "Keywords are SELECT, FROM, AS, DISTINCT. Keep commas between columns only. 💡 Pro-Tip / Trap: Do not add trailing commas before FROM or quote column identifiers.",
-    "commonMistakes": "Punctuation errors, trailing commas, or quotes around column names."
-  },
-  {
-    "id": 98,
-    "levelDisplay": "Level 98",
-    "title": "Level 98: Fix hyphen used in column alias: 'SELECT movie_title AS m...",
-    "subtitle": "Fix hyphen used in column alias: 'SELECT movie_title AS movie-name FROM MovieReviews;'",
-    "type": "fill_blank",
-    "category": "Section 01: Foundations & Projections",
-    "subcluster": "1.10 Bug Hunts & Edge Cases",
-    "task": "Fix hyphen used in column alias: 'SELECT movie_title AS movie-name FROM MovieReviews;'",
-    "table": "MovieReviews",
-    "schemaSnippet": "MovieReviews schema",
-    "targetQuery": "SELECT movie_title, star_rating\nFROM MovieReviews;",
-    "template": [
-      {
-        "text": "",
-        "isBlank": false
-      },
-      {
-        "text": "",
-        "isBlank": true,
-        "slotId": "slot1",
-        "placeholder": "[ ___ ]"
-      },
-      {
-        "text": " movie_title, star_rating\n",
-        "isBlank": false
-      },
-      {
-        "text": "",
-        "isBlank": true,
-        "slotId": "slot2",
-        "placeholder": "[ ___ ]"
-      },
-      {
-        "text": " MovieReviews;",
-        "isBlank": false
       }
     ],
     "slots": {
@@ -5970,35 +8544,52 @@ window.QUESTS_SECTION_1 = [
         ]
       },
       "slot2": {
+        "correct": "full_name, city",
+        "options": [
+          "full_name AND city",
+          "full_name, city",
+          "full_name, city,",
+          "full_name, city;"
+        ]
+      },
+      "slot3": {
         "correct": "FROM",
         "options": [
-          "SOURCE",
           "TABLE",
-          "INTO",
-          "FROM"
+          "SOURCE",
+          "FROM",
+          "INTO"
+        ]
+      },
+      "slot4": {
+        "correct": "Students;",
+        "options": [
+          "Students;",
+          "MovieReviews;",
+          "Employees;",
+          "GroceryItems;"
         ]
       }
     },
-    "explanation": "Keywords are SELECT, FROM, AS, DISTINCT. Keep commas between columns only. 💡 Pro-Tip / Trap: Do not add trailing commas before FROM or quote column identifiers.",
+    "explanation": "Keywords are SELECT, FROM, AS, DISTINCT. Keep commas between columns only. 💡 Trap to avoid: Do not add trailing commas before FROM or quote column identifiers.",
     "commonMistakes": "Punctuation errors, trailing commas, or quotes around column names."
   },
   {
-    "id": 99,
-    "levelDisplay": "Level 99",
-    "title": "Level 99: Fix missing FROM keyword: 'SELECT flight_id, origin_airpo...",
-    "subtitle": "Fix missing FROM keyword: 'SELECT flight_id, origin_airport FlightSchedule;'",
+    "id": 92,
+    "levelDisplay": "Level 92",
+    "title": "Level 92: Fix the unquoted column alias containing spaces: 'SE...",
+    "subtitle": "Fix the unquoted column alias containing spaces: 'SELECT title, price AS Retail Price FROM Books;'",
     "type": "fill_blank",
     "category": "Section 01: Foundations & Projections",
     "subcluster": "1.10 Bug Hunts & Edge Cases",
-    "task": "Fix missing FROM keyword: 'SELECT flight_id, origin_airport FlightSchedule;'",
-    "table": "FlightSchedule",
-    "schemaSnippet": "FlightSchedule schema",
-    "targetQuery": "SELECT flight_id, origin_airport, dest_airport\nFROM FlightSchedule;",
+    "tier": "Master (FAANG-Ready)",
+    "tierColor": "#ec4899",
+    "difficulty": "Hard",
+    "task": "Fix the unquoted column alias containing spaces: 'SELECT title, price AS Retail Price FROM Books;'",
+    "table": "Books",
+    "schemaSnippet": "Books schema",
+    "targetQuery": "SELECT title, price\nFROM Books;",
     "template": [
-      {
-        "text": "",
-        "isBlank": false
-      },
       {
         "text": "",
         "isBlank": true,
@@ -6006,7 +8597,7 @@ window.QUESTS_SECTION_1 = [
         "placeholder": "[ ___ ]"
       },
       {
-        "text": " flight_id, origin_airport, dest_airport\n",
+        "text": " ",
         "isBlank": false
       },
       {
@@ -6016,8 +8607,682 @@ window.QUESTS_SECTION_1 = [
         "placeholder": "[ ___ ]"
       },
       {
-        "text": " FlightSchedule;",
+        "text": "\n",
         "isBlank": false
+      },
+      {
+        "text": "",
+        "isBlank": true,
+        "slotId": "slot3",
+        "placeholder": "[ ___ ]"
+      },
+      {
+        "text": " ",
+        "isBlank": false
+      },
+      {
+        "text": "",
+        "isBlank": true,
+        "slotId": "slot4",
+        "placeholder": "[ ___ ]"
+      }
+    ],
+    "slots": {
+      "slot1": {
+        "correct": "SELECT",
+        "options": [
+          "EXTRACT",
+          "CHOOSE",
+          "GET",
+          "SELECT"
+        ]
+      },
+      "slot2": {
+        "correct": "title, price",
+        "options": [
+          "title AND price",
+          "title, price",
+          "title, price;",
+          "title, price,"
+        ]
+      },
+      "slot3": {
+        "correct": "FROM",
+        "options": [
+          "SOURCE",
+          "FROM",
+          "TABLE",
+          "INTO"
+        ]
+      },
+      "slot4": {
+        "correct": "Books;",
+        "options": [
+          "Books;",
+          "Orders;",
+          "MovieReviews;",
+          "FlightSchedule;"
+        ]
+      }
+    },
+    "explanation": "Keywords are SELECT, FROM, AS, DISTINCT. Keep commas between columns only. 💡 Trap to avoid: Do not add trailing commas before FROM or quote column identifiers.",
+    "commonMistakes": "Punctuation errors, trailing commas, or quotes around column names."
+  },
+  {
+    "id": 93,
+    "levelDisplay": "Level 93",
+    "title": "Level 93: Fix the misplaced DISTINCT keyword: 'SELECT first_na...",
+    "subtitle": "Fix the misplaced DISTINCT keyword: 'SELECT first_name, DISTINCT department FROM Employees;'",
+    "type": "fill_blank",
+    "category": "Section 01: Foundations & Projections",
+    "subcluster": "1.10 Bug Hunts & Edge Cases",
+    "tier": "Master (FAANG-Ready)",
+    "tierColor": "#ec4899",
+    "difficulty": "Hard",
+    "task": "Fix the misplaced DISTINCT keyword: 'SELECT first_name, DISTINCT department FROM Employees;'",
+    "table": "Employees",
+    "schemaSnippet": "Employees schema",
+    "targetQuery": "SELECT first_name, salary\nFROM Employees;",
+    "template": [
+      {
+        "text": "",
+        "isBlank": true,
+        "slotId": "slot1",
+        "placeholder": "[ ___ ]"
+      },
+      {
+        "text": " ",
+        "isBlank": false
+      },
+      {
+        "text": "",
+        "isBlank": true,
+        "slotId": "slot2",
+        "placeholder": "[ ___ ]"
+      },
+      {
+        "text": "\n",
+        "isBlank": false
+      },
+      {
+        "text": "",
+        "isBlank": true,
+        "slotId": "slot3",
+        "placeholder": "[ ___ ]"
+      },
+      {
+        "text": " ",
+        "isBlank": false
+      },
+      {
+        "text": "",
+        "isBlank": true,
+        "slotId": "slot4",
+        "placeholder": "[ ___ ]"
+      }
+    ],
+    "slots": {
+      "slot1": {
+        "correct": "SELECT",
+        "options": [
+          "CHOOSE",
+          "EXTRACT",
+          "SELECT",
+          "GET"
+        ]
+      },
+      "slot2": {
+        "correct": "first_name, salary",
+        "options": [
+          "first_name AND salary",
+          "first_name, salary;",
+          "first_name, salary,",
+          "first_name, salary"
+        ]
+      },
+      "slot3": {
+        "correct": "FROM",
+        "options": [
+          "TABLE",
+          "FROM",
+          "SOURCE",
+          "INTO"
+        ]
+      },
+      "slot4": {
+        "correct": "Employees;",
+        "options": [
+          "Employees;",
+          "Books;",
+          "Orders;",
+          "MusicTracks;"
+        ]
+      }
+    },
+    "explanation": "Keywords are SELECT, FROM, AS, DISTINCT. Keep commas between columns only. 💡 Trap to avoid: Do not add trailing commas before FROM or quote column identifiers.",
+    "commonMistakes": "Punctuation errors, trailing commas, or quotes around column names."
+  },
+  {
+    "id": 94,
+    "levelDisplay": "Level 94",
+    "title": "Level 94: Fix the single-quoted column name: \"SELECT 'item_nam...",
+    "subtitle": "Fix the single-quoted column name: \"SELECT 'item_name' FROM GroceryItems;\" (outputs literal string instead of column).",
+    "type": "fill_blank",
+    "category": "Section 01: Foundations & Projections",
+    "subcluster": "1.10 Bug Hunts & Edge Cases",
+    "tier": "Master (FAANG-Ready)",
+    "tierColor": "#ec4899",
+    "difficulty": "Hard",
+    "task": "Fix the single-quoted column name: \"SELECT 'item_name' FROM GroceryItems;\" (outputs literal string instead of column).",
+    "table": "GroceryItems",
+    "schemaSnippet": "GroceryItems schema",
+    "targetQuery": "SELECT item_name, unit_price\nFROM GroceryItems;",
+    "template": [
+      {
+        "text": "",
+        "isBlank": true,
+        "slotId": "slot1",
+        "placeholder": "[ ___ ]"
+      },
+      {
+        "text": " ",
+        "isBlank": false
+      },
+      {
+        "text": "",
+        "isBlank": true,
+        "slotId": "slot2",
+        "placeholder": "[ ___ ]"
+      },
+      {
+        "text": "\n",
+        "isBlank": false
+      },
+      {
+        "text": "",
+        "isBlank": true,
+        "slotId": "slot3",
+        "placeholder": "[ ___ ]"
+      },
+      {
+        "text": " ",
+        "isBlank": false
+      },
+      {
+        "text": "",
+        "isBlank": true,
+        "slotId": "slot4",
+        "placeholder": "[ ___ ]"
+      }
+    ],
+    "slots": {
+      "slot1": {
+        "correct": "SELECT",
+        "options": [
+          "EXTRACT",
+          "CHOOSE",
+          "SELECT",
+          "GET"
+        ]
+      },
+      "slot2": {
+        "correct": "item_name, unit_price",
+        "options": [
+          "item_name, unit_price",
+          "item_name, unit_price;",
+          "item_name AND unit_price",
+          "item_name, unit_price,"
+        ]
+      },
+      "slot3": {
+        "correct": "FROM",
+        "options": [
+          "FROM",
+          "INTO",
+          "TABLE",
+          "SOURCE"
+        ]
+      },
+      "slot4": {
+        "correct": "GroceryItems;",
+        "options": [
+          "MovieReviews;",
+          "GroceryItems;",
+          "Students;",
+          "Orders;"
+        ]
+      }
+    },
+    "explanation": "Keywords are SELECT, FROM, AS, DISTINCT. Keep commas between columns only. 💡 Trap to avoid: Do not add trailing commas before FROM or quote column identifiers.",
+    "commonMistakes": "Punctuation errors, trailing commas, or quotes around column names."
+  },
+  {
+    "id": 95,
+    "levelDisplay": "Level 95",
+    "title": "Level 95: Fix missing comma between calculated expression and ...",
+    "subtitle": "Fix missing comma between calculated expression and next column.",
+    "type": "fill_blank",
+    "category": "Section 01: Foundations & Projections",
+    "subcluster": "1.10 Bug Hunts & Edge Cases",
+    "tier": "Master (FAANG-Ready)",
+    "tierColor": "#ec4899",
+    "difficulty": "Hard",
+    "task": "Fix missing comma between calculated expression and next column.",
+    "table": "Orders",
+    "schemaSnippet": "Orders schema",
+    "targetQuery": "SELECT order_id, quantity * unit_price AS subtotal\nFROM Orders;",
+    "template": [
+      {
+        "text": "",
+        "isBlank": true,
+        "slotId": "slot1",
+        "placeholder": "[ ___ ]"
+      },
+      {
+        "text": " ",
+        "isBlank": false
+      },
+      {
+        "text": "",
+        "isBlank": true,
+        "slotId": "slot2",
+        "placeholder": "[ ___ ]"
+      },
+      {
+        "text": "\n",
+        "isBlank": false
+      },
+      {
+        "text": "",
+        "isBlank": true,
+        "slotId": "slot3",
+        "placeholder": "[ ___ ]"
+      },
+      {
+        "text": " ",
+        "isBlank": false
+      },
+      {
+        "text": "",
+        "isBlank": true,
+        "slotId": "slot4",
+        "placeholder": "[ ___ ]"
+      }
+    ],
+    "slots": {
+      "slot1": {
+        "correct": "SELECT",
+        "options": [
+          "CHOOSE",
+          "EXTRACT",
+          "SELECT",
+          "GET"
+        ]
+      },
+      "slot2": {
+        "correct": "order_id, quantity * unit_price AS subtotal",
+        "options": [
+          "order_id, quantity * unit_price AS subtotal,",
+          "order_id, quantity * unit_price AS subtotal",
+          "order_id AND quantity * unit_price AS subtotal",
+          "order_id, quantity * unit_price AS subtotal;"
+        ]
+      },
+      "slot3": {
+        "correct": "FROM",
+        "options": [
+          "FROM",
+          "INTO",
+          "SOURCE",
+          "TABLE"
+        ]
+      },
+      "slot4": {
+        "correct": "Orders;",
+        "options": [
+          "GroceryItems;",
+          "Orders;",
+          "GymMembers;",
+          "PetClinic;"
+        ]
+      }
+    },
+    "explanation": "Keywords are SELECT, FROM, AS, DISTINCT. Keep commas between columns only. 💡 Trap to avoid: Do not add trailing commas before FROM or quote column identifiers.",
+    "commonMistakes": "Punctuation errors, trailing commas, or quotes around column names."
+  },
+  {
+    "id": 96,
+    "levelDisplay": "Level 96",
+    "title": "Level 96: Fix misspelled column identifier: 'SELECT song_title...",
+    "subtitle": "Fix misspelled column identifier: 'SELECT song_title FROM MusicTracks;'",
+    "type": "fill_blank",
+    "category": "Section 01: Foundations & Projections",
+    "subcluster": "1.10 Bug Hunts & Edge Cases",
+    "tier": "Master (FAANG-Ready)",
+    "tierColor": "#ec4899",
+    "difficulty": "Hard",
+    "task": "Fix misspelled column identifier: 'SELECT song_title FROM MusicTracks;'",
+    "table": "MusicTracks",
+    "schemaSnippet": "MusicTracks schema",
+    "targetQuery": "SELECT track_title, artist_name\nFROM MusicTracks;",
+    "template": [
+      {
+        "text": "",
+        "isBlank": true,
+        "slotId": "slot1",
+        "placeholder": "[ ___ ]"
+      },
+      {
+        "text": " ",
+        "isBlank": false
+      },
+      {
+        "text": "",
+        "isBlank": true,
+        "slotId": "slot2",
+        "placeholder": "[ ___ ]"
+      },
+      {
+        "text": "\n",
+        "isBlank": false
+      },
+      {
+        "text": "",
+        "isBlank": true,
+        "slotId": "slot3",
+        "placeholder": "[ ___ ]"
+      },
+      {
+        "text": " ",
+        "isBlank": false
+      },
+      {
+        "text": "",
+        "isBlank": true,
+        "slotId": "slot4",
+        "placeholder": "[ ___ ]"
+      }
+    ],
+    "slots": {
+      "slot1": {
+        "correct": "SELECT",
+        "options": [
+          "CHOOSE",
+          "SELECT",
+          "GET",
+          "EXTRACT"
+        ]
+      },
+      "slot2": {
+        "correct": "track_title, artist_name",
+        "options": [
+          "track_title, artist_name",
+          "track_title AND artist_name",
+          "track_title, artist_name;",
+          "track_title, artist_name,"
+        ]
+      },
+      "slot3": {
+        "correct": "FROM",
+        "options": [
+          "TABLE",
+          "SOURCE",
+          "FROM",
+          "INTO"
+        ]
+      },
+      "slot4": {
+        "correct": "MusicTracks;",
+        "options": [
+          "GroceryItems;",
+          "Books;",
+          "MovieReviews;",
+          "MusicTracks;"
+        ]
+      }
+    },
+    "explanation": "Keywords are SELECT, FROM, AS, DISTINCT. Keep commas between columns only. 💡 Trap to avoid: Do not add trailing commas before FROM or quote column identifiers.",
+    "commonMistakes": "Punctuation errors, trailing commas, or quotes around column names."
+  },
+  {
+    "id": 97,
+    "levelDisplay": "Level 97",
+    "title": "Level 97: Fix table name typo: 'SELECT member_name FROM GymMem...",
+    "subtitle": "Fix table name typo: 'SELECT member_name FROM GymMember;' (singular vs plural).",
+    "type": "fill_blank",
+    "category": "Section 01: Foundations & Projections",
+    "subcluster": "1.10 Bug Hunts & Edge Cases",
+    "tier": "Master (FAANG-Ready)",
+    "tierColor": "#ec4899",
+    "difficulty": "Hard",
+    "task": "Fix table name typo: 'SELECT member_name FROM GymMember;' (singular vs plural).",
+    "table": "GymMembers",
+    "schemaSnippet": "GymMembers schema",
+    "targetQuery": "SELECT member_name, monthly_fee\nFROM GymMembers;",
+    "template": [
+      {
+        "text": "",
+        "isBlank": true,
+        "slotId": "slot1",
+        "placeholder": "[ ___ ]"
+      },
+      {
+        "text": " ",
+        "isBlank": false
+      },
+      {
+        "text": "",
+        "isBlank": true,
+        "slotId": "slot2",
+        "placeholder": "[ ___ ]"
+      },
+      {
+        "text": "\n",
+        "isBlank": false
+      },
+      {
+        "text": "",
+        "isBlank": true,
+        "slotId": "slot3",
+        "placeholder": "[ ___ ]"
+      },
+      {
+        "text": " ",
+        "isBlank": false
+      },
+      {
+        "text": "",
+        "isBlank": true,
+        "slotId": "slot4",
+        "placeholder": "[ ___ ]"
+      }
+    ],
+    "slots": {
+      "slot1": {
+        "correct": "SELECT",
+        "options": [
+          "SELECT",
+          "GET",
+          "EXTRACT",
+          "CHOOSE"
+        ]
+      },
+      "slot2": {
+        "correct": "member_name, monthly_fee",
+        "options": [
+          "member_name AND monthly_fee",
+          "member_name, monthly_fee;",
+          "member_name, monthly_fee",
+          "member_name, monthly_fee,"
+        ]
+      },
+      "slot3": {
+        "correct": "FROM",
+        "options": [
+          "TABLE",
+          "SOURCE",
+          "INTO",
+          "FROM"
+        ]
+      },
+      "slot4": {
+        "correct": "GymMembers;",
+        "options": [
+          "Employees;",
+          "Students;",
+          "GymMembers;",
+          "GroceryItems;"
+        ]
+      }
+    },
+    "explanation": "Keywords are SELECT, FROM, AS, DISTINCT. Keep commas between columns only. 💡 Trap to avoid: Do not add trailing commas before FROM or quote column identifiers.",
+    "commonMistakes": "Punctuation errors, trailing commas, or quotes around column names."
+  },
+  {
+    "id": 98,
+    "levelDisplay": "Level 98",
+    "title": "Level 98: Fix hyphen used in column alias: 'SELECT movie_title...",
+    "subtitle": "Fix hyphen used in column alias: 'SELECT movie_title AS movie-name FROM MovieReviews;'",
+    "type": "fill_blank",
+    "category": "Section 01: Foundations & Projections",
+    "subcluster": "1.10 Bug Hunts & Edge Cases",
+    "tier": "Master (FAANG-Ready)",
+    "tierColor": "#ec4899",
+    "difficulty": "Hard",
+    "task": "Fix hyphen used in column alias: 'SELECT movie_title AS movie-name FROM MovieReviews;'",
+    "table": "MovieReviews",
+    "schemaSnippet": "MovieReviews schema",
+    "targetQuery": "SELECT movie_title, star_rating\nFROM MovieReviews;",
+    "template": [
+      {
+        "text": "",
+        "isBlank": true,
+        "slotId": "slot1",
+        "placeholder": "[ ___ ]"
+      },
+      {
+        "text": " ",
+        "isBlank": false
+      },
+      {
+        "text": "",
+        "isBlank": true,
+        "slotId": "slot2",
+        "placeholder": "[ ___ ]"
+      },
+      {
+        "text": "\n",
+        "isBlank": false
+      },
+      {
+        "text": "",
+        "isBlank": true,
+        "slotId": "slot3",
+        "placeholder": "[ ___ ]"
+      },
+      {
+        "text": " ",
+        "isBlank": false
+      },
+      {
+        "text": "",
+        "isBlank": true,
+        "slotId": "slot4",
+        "placeholder": "[ ___ ]"
+      }
+    ],
+    "slots": {
+      "slot1": {
+        "correct": "SELECT",
+        "options": [
+          "EXTRACT",
+          "GET",
+          "CHOOSE",
+          "SELECT"
+        ]
+      },
+      "slot2": {
+        "correct": "movie_title, star_rating",
+        "options": [
+          "movie_title AND star_rating",
+          "movie_title, star_rating,",
+          "movie_title, star_rating;",
+          "movie_title, star_rating"
+        ]
+      },
+      "slot3": {
+        "correct": "FROM",
+        "options": [
+          "TABLE",
+          "SOURCE",
+          "FROM",
+          "INTO"
+        ]
+      },
+      "slot4": {
+        "correct": "MovieReviews;",
+        "options": [
+          "MovieReviews;",
+          "Orders;",
+          "FlightSchedule;",
+          "Employees;"
+        ]
+      }
+    },
+    "explanation": "Keywords are SELECT, FROM, AS, DISTINCT. Keep commas between columns only. 💡 Trap to avoid: Do not add trailing commas before FROM or quote column identifiers.",
+    "commonMistakes": "Punctuation errors, trailing commas, or quotes around column names."
+  },
+  {
+    "id": 99,
+    "levelDisplay": "Level 99",
+    "title": "Level 99: Fix missing FROM keyword: 'SELECT flight_id, origin_...",
+    "subtitle": "Fix missing FROM keyword: 'SELECT flight_id, origin_airport FlightSchedule;'",
+    "type": "fill_blank",
+    "category": "Section 01: Foundations & Projections",
+    "subcluster": "1.10 Bug Hunts & Edge Cases",
+    "tier": "Master (FAANG-Ready)",
+    "tierColor": "#ec4899",
+    "difficulty": "Hard",
+    "task": "Fix missing FROM keyword: 'SELECT flight_id, origin_airport FlightSchedule;'",
+    "table": "FlightSchedule",
+    "schemaSnippet": "FlightSchedule schema",
+    "targetQuery": "SELECT flight_id, origin_airport, dest_airport\nFROM FlightSchedule;",
+    "template": [
+      {
+        "text": "",
+        "isBlank": true,
+        "slotId": "slot1",
+        "placeholder": "[ ___ ]"
+      },
+      {
+        "text": " ",
+        "isBlank": false
+      },
+      {
+        "text": "",
+        "isBlank": true,
+        "slotId": "slot2",
+        "placeholder": "[ ___ ]"
+      },
+      {
+        "text": "\n",
+        "isBlank": false
+      },
+      {
+        "text": "",
+        "isBlank": true,
+        "slotId": "slot3",
+        "placeholder": "[ ___ ]"
+      },
+      {
+        "text": " ",
+        "isBlank": false
+      },
+      {
+        "text": "",
+        "isBlank": true,
+        "slotId": "slot4",
+        "placeholder": "[ ___ ]"
       }
     ],
     "slots": {
@@ -6026,31 +9291,52 @@ window.QUESTS_SECTION_1 = [
         "options": [
           "GET",
           "EXTRACT",
-          "CHOOSE",
-          "SELECT"
+          "SELECT",
+          "CHOOSE"
         ]
       },
       "slot2": {
+        "correct": "flight_id, origin_airport, dest_airport",
+        "options": [
+          "flight_id, origin_airport, dest_airport;",
+          "flight_id, origin_airport, dest_airport",
+          "flight_id AND origin_airport AND dest_airport",
+          "flight_id, origin_airport, dest_airport,"
+        ]
+      },
+      "slot3": {
         "correct": "FROM",
         "options": [
-          "SOURCE",
           "INTO",
-          "TABLE",
-          "FROM"
+          "FROM",
+          "SOURCE",
+          "TABLE"
+        ]
+      },
+      "slot4": {
+        "correct": "FlightSchedule;",
+        "options": [
+          "FlightSchedule;",
+          "GymMembers;",
+          "MusicTracks;",
+          "Books;"
         ]
       }
     },
-    "explanation": "Keywords are SELECT, FROM, AS, DISTINCT. Keep commas between columns only. 💡 Pro-Tip / Trap: Do not add trailing commas before FROM or quote column identifiers.",
+    "explanation": "Keywords are SELECT, FROM, AS, DISTINCT. Keep commas between columns only. 💡 Trap to avoid: Do not add trailing commas before FROM or quote column identifiers.",
     "commonMistakes": "Punctuation errors, trailing commas, or quotes around column names."
   },
   {
     "id": 100,
     "levelDisplay": "Level 100",
-    "title": "Level 100: Fix premature semicolon: 'SELECT pet_name; FROM PetClinic;'",
+    "title": "Level 100: Fix premature semicolon: 'SELECT pet_name; FROM PetC...",
     "subtitle": "Fix premature semicolon: 'SELECT pet_name; FROM PetClinic;'",
     "type": "fill_blank",
     "category": "Section 01: Foundations & Projections",
     "subcluster": "1.10 Bug Hunts & Edge Cases",
+    "tier": "Master (FAANG-Ready)",
+    "tierColor": "#ec4899",
+    "difficulty": "Hard",
     "task": "Fix premature semicolon: 'SELECT pet_name; FROM PetClinic;'",
     "table": "PetClinic",
     "schemaSnippet": "PetClinic schema",
@@ -6058,16 +9344,12 @@ window.QUESTS_SECTION_1 = [
     "template": [
       {
         "text": "",
-        "isBlank": false
-      },
-      {
-        "text": "",
         "isBlank": true,
         "slotId": "slot1",
         "placeholder": "[ ___ ]"
       },
       {
-        "text": " pet_name, age_years\n",
+        "text": " ",
         "isBlank": false
       },
       {
@@ -6077,31 +9359,65 @@ window.QUESTS_SECTION_1 = [
         "placeholder": "[ ___ ]"
       },
       {
-        "text": " PetClinic;",
+        "text": "\n",
         "isBlank": false
+      },
+      {
+        "text": "",
+        "isBlank": true,
+        "slotId": "slot3",
+        "placeholder": "[ ___ ]"
+      },
+      {
+        "text": " ",
+        "isBlank": false
+      },
+      {
+        "text": "",
+        "isBlank": true,
+        "slotId": "slot4",
+        "placeholder": "[ ___ ]"
       }
     ],
     "slots": {
       "slot1": {
         "correct": "SELECT",
         "options": [
-          "SELECT",
-          "EXTRACT",
+          "GET",
           "CHOOSE",
-          "GET"
+          "EXTRACT",
+          "SELECT"
         ]
       },
       "slot2": {
+        "correct": "pet_name, age_years",
+        "options": [
+          "pet_name, age_years;",
+          "pet_name, age_years",
+          "pet_name, age_years,",
+          "pet_name AND age_years"
+        ]
+      },
+      "slot3": {
         "correct": "FROM",
         "options": [
-          "TABLE",
           "SOURCE",
-          "INTO",
-          "FROM"
+          "TABLE",
+          "FROM",
+          "INTO"
+        ]
+      },
+      "slot4": {
+        "correct": "PetClinic;",
+        "options": [
+          "GroceryItems;",
+          "PetClinic;",
+          "Students;",
+          "MusicTracks;"
         ]
       }
     },
-    "explanation": "Keywords are SELECT, FROM, AS, DISTINCT. Keep commas between columns only. 💡 Pro-Tip / Trap: Do not add trailing commas before FROM or quote column identifiers.",
+    "explanation": "Keywords are SELECT, FROM, AS, DISTINCT. Keep commas between columns only. 💡 Trap to avoid: Do not add trailing commas before FROM or quote column identifiers.",
     "commonMistakes": "Punctuation errors, trailing commas, or quotes around column names."
   }
 ];

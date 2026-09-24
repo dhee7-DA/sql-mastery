@@ -7091,6 +7091,9 @@ function renderFillBlankQuest(container, quest) {
     <div class="quest-card-header">
       <div>
         <div style="display: flex; align-items: center; gap: 8px; margin-bottom: 6px; flex-wrap: wrap;">
+          <span class="status-pill" style="font-size: 10px; font-weight: 800; color: ${quest.tierColor || '#38bdf8'}; background: rgba(255,255,255,0.06); border: 1px solid ${quest.tierColor || '#38bdf8'}44;">
+            ${quest.tier || 'Apprentice'} &bull; ${Object.keys(quest.slots || {}).length} Blanks
+          </span>
           <span class="status-pill" style="font-size: 10px; font-weight: 700; color: #10b981; background: rgba(16, 185, 129, 0.12);">${quest.subcluster || quest.category}</span>
           ${quest.table ? `
             <span class="status-pill" style="font-size: 10px; font-family: var(--font-mono); color: #38bdf8; background: rgba(56, 189, 248, 0.1);">Table: ${quest.table}</span>
@@ -7102,7 +7105,7 @@ function renderFillBlankQuest(container, quest) {
         <h3 class="quest-card-title">${quest.title}</h3>
         <p class="quest-card-subtitle">${quest.subtitle}</p>
       </div>
-      <span class="status-pill" style="font-size: 11px;">Category: ${quest.category}</span>
+      <span class="status-pill" style="font-size: 11px; font-weight: 600; color: ${quest.tierColor || '#38bdf8'}; border-color: ${quest.tierColor || '#38bdf8'}55;">Difficulty: ${quest.difficulty || 'Normal'}</span>
     </div>
 
     <!-- Collapsible Table Sample Data Preview -->
@@ -7174,6 +7177,45 @@ function renderFillBlankQuest(container, quest) {
     </div>
   `;
 }
+
+function selectSlotChoice(slotId, optVal) {
+  userSlotSelections[slotId] = optVal;
+  fillBlankChecked = false;
+  if (window.AudioFX) {
+    window.AudioFX.playClick();
+  }
+  renderActiveQuest(currentQuestIndex);
+}
+window.selectSlotChoice = selectSlotChoice;
+
+function checkFillBlankAnswer() {
+  const questsList = getActiveQuestsList();
+  const quest = questsList[currentQuestIndex];
+  if (!quest || !quest.slots) return;
+
+  const slotKeys = Object.keys(quest.slots);
+  const allCorrect = slotKeys.every(k => userSlotSelections[k] === quest.slots[k].correct);
+
+  fillBlankChecked = true;
+  fillBlankPassed = allCorrect;
+
+  if (allCorrect) {
+    if (window.AudioFX) {
+      window.AudioFX.playSuccess();
+    }
+    if (window.ActivityHeatmapEngine && typeof window.ActivityHeatmapEngine.logActivity === 'function') {
+      window.ActivityHeatmapEngine.logActivity('drill', 1, 25, 'Foundations & Projections (Quests)');
+    }
+  } else {
+    if (window.AudioFX) {
+      window.AudioFX.playError();
+    }
+  }
+
+  renderQuestStepperTrack();
+  renderActiveQuest(currentQuestIndex);
+}
+window.checkFillBlankAnswer = checkFillBlankAnswer;
 
 // --- QUEST 1: Live Threshold Slider Scaffolder ---
 function renderSliderQuest(container, quest) {
