@@ -1133,20 +1133,43 @@
         </button>
       </div>
 
-      <!-- Quick Level Pagination Jump Bar -->
-      <div class="quest-chunk-nav" id="questChunkNav">
-        <span class="chunk-nav-label">QUICK JUMP:</span>
-        <button class="chunk-jump-btn active" onclick="setQuestChunkRange(0, 20)">Lvl 01–20</button>
-        <button class="chunk-jump-btn" onclick="setQuestChunkRange(20, 40)">Lvl 21–40</button>
-        <button class="chunk-jump-btn" onclick="setQuestChunkRange(40, 60)">Lvl 41–60</button>
-        <button class="chunk-jump-btn" onclick="setQuestChunkRange(60, 80)">Lvl 61–80</button>
-        <button class="chunk-jump-btn" onclick="setQuestChunkRange(80, 100)">Lvl 81–100</button>
-        <button class="chunk-jump-btn" onclick="setQuestChunkRange(0, 100)">View All 100</button>
+      <!-- Sleek Compact Quest HUD Control Bar -->
+      <div class="quest-level-control-hud">
+        <div class="hud-left-group">
+          <button class="quest-drawer-toggle-btn" id="btnToggleQuestDrawer" onclick="toggleQuestLevelDrawer()">
+            <span class="drawer-icon">🗺️</span>
+            <span class="drawer-label" id="questDrawerLabel">Browse 100 Levels</span>
+            <span class="drawer-caret" id="questDrawerCaret">▾</span>
+          </button>
+          <span class="hud-level-pill" id="hudCurrentLevelPill">Level 01 of 100</span>
+        </div>
+
+        <div class="hud-stepper-actions">
+          <button class="hud-nav-step-btn" id="btnQuestPrev" onclick="navigateQuestStep(-1)" title="Previous Level (Press [)">
+            &larr; Prev
+          </button>
+          <button class="hud-nav-step-btn" id="btnQuestNext" onclick="navigateQuestStep(1)" title="Next Level (Press ])">
+            Next &rarr;
+          </button>
+        </div>
       </div>
 
-      <!-- Quest Stepper Track -->
-      <div class="quest-stepper-track" id="questStepperTrack">
-        <!-- Dynamically populated quest pills -->
+      <!-- Collapsible Level Drawer (Tucked away, opens on click) -->
+      <div class="quest-level-drawer" id="questLevelDrawer" style="display: none;">
+        <div class="drawer-chunk-pills">
+          <span class="chunk-nav-label">CHUNK:</span>
+          <button class="chunk-jump-btn active" onclick="setQuestChunkRange(0, 20)">Lvl 01–20</button>
+          <button class="chunk-jump-btn" onclick="setQuestChunkRange(20, 40)">Lvl 21–40</button>
+          <button class="chunk-jump-btn" onclick="setQuestChunkRange(40, 60)">Lvl 41–60</button>
+          <button class="chunk-jump-btn" onclick="setQuestChunkRange(60, 80)">Lvl 61–80</button>
+          <button class="chunk-jump-btn" onclick="setQuestChunkRange(80, 100)">Lvl 81–100</button>
+          <button class="chunk-jump-btn" onclick="setQuestChunkRange(0, 100)">View All 100</button>
+        </div>
+
+        <!-- The Responsive Grid of Level Chips -->
+        <div class="quest-drawer-grid" id="questStepperTrack">
+          <!-- Dynamically populated level chips -->
+        </div>
       </div>
 
       <!-- Active Quest Card Container -->

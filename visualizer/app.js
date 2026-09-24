@@ -6746,6 +6746,36 @@ function switchQuestSection(sectionKey) {
 }
 window.switchQuestSection = switchQuestSection;
 
+function toggleQuestLevelDrawer() {
+  const drawer = document.getElementById('questLevelDrawer');
+  const btn = document.getElementById('btnToggleQuestDrawer');
+  if (!drawer) return;
+  const isHidden = (drawer.style.display === 'none' || !drawer.style.display);
+  if (isHidden) {
+    drawer.style.display = 'block';
+    if (btn) btn.classList.add('open');
+    setTimeout(() => {
+      const activeChip = drawer.querySelector('.quest-grid-chip.active');
+      if (activeChip) activeChip.scrollIntoView({ behavior: 'smooth', block: 'nearest' });
+    }, 50);
+  } else {
+    drawer.style.display = 'none';
+    if (btn) btn.classList.remove('open');
+  }
+  if (window.AudioFX) window.AudioFX.playClick();
+}
+window.toggleQuestLevelDrawer = toggleQuestLevelDrawer;
+
+function navigateQuestStep(dir) {
+  const questsList = getActiveQuestsList();
+  const nextIdx = currentQuestIndex + dir;
+  if (nextIdx >= 0 && nextIdx < questsList.length) {
+    setQuestIndex(nextIdx);
+    if (window.AudioFX) window.AudioFX.playClick();
+  }
+}
+window.navigateQuestStep = navigateQuestStep;
+
 function setQuestChunkRange(start, end) {
   questChunkStart = start;
   questChunkEnd = end;
@@ -6767,22 +6797,188 @@ function setQuestChunkRange(start, end) {
 window.setQuestChunkRange = setQuestChunkRange;
 
 function initQuestsSystem() {
+  bindQuestKeyboardShortcuts();
   renderQuestStepperTrack();
   renderActiveQuest(0);
 }
+
+function bindQuestKeyboardShortcuts() {
+  if (window._questKeysBound) return;
+  window._questKeysBound = true;
+
+  window.addEventListener('keydown', (e) => {
+    const view = document.getElementById('viewQuests');
+    if (!view || !view.classList.contains('active')) return;
+    if (['INPUT', 'TEXTAREA'].includes(document.activeElement?.tagName)) return;
+
+    if (e.key === '[' || e.key === '{') {
+      e.preventDefault();
+      navigateQuestStep(-1);
+    } else if (e.key === ']' || e.key === '}') {
+      e.preventDefault();
+      navigateQuestStep(1);
+    } else if (e.key === 'm' || e.key === 'M') {
+      e.preventDefault();
+      toggleQuestLevelDrawer();
+    } else if (['1', '2', '3', '4'].includes(e.key)) {
+      const questsList = getActiveQuestsList();
+      const quest = questsList[currentQuestIndex];
+      if (quest && quest.slots) {
+        const slotKeys = Object.keys(quest.slots);
+        const targetSlot = slotKeys.find(k => !userSlotSelections[k]) || slotKeys[0];
+        const optIdx = parseInt(e.key, 10) - 1;
+        const optVal = quest.slots[targetSlot]?.options[optIdx];
+        if (optVal) {
+          e.preventDefault();
+          selectSlotChoice(targetSlot, optVal);
+        }
+      }
+    } else if (e.key === 'Enter') {
+      e.preventDefault();
+      if (!fillBlankChecked) {
+        checkFillBlankAnswer();
+      } else if (fillBlankPassed) {
+        navigateQuestStep(1);
+      }
+    }
+  });
+}
+
+const EVERYDAY_TABLE_PREVIEWS = {
+  Students: {
+    columns: ['student_id', 'first_name', 'last_name', 'age', 'major', 'gpa', 'city'],
+    rows: [
+      [1, 'Alice', 'Walker', 20, 'Computer Science', 3.85, 'New York'],
+      [2, 'Bob', 'Smith', 22, 'Mathematics', 3.42, 'Chicago'],
+      [3, 'Charlie', 'Davis', 21, 'Physics', 3.91, 'Austin']
+    ]
+  },
+  Books: {
+    columns: ['book_id', 'title', 'author', 'genre', 'price', 'stock_qty'],
+    rows: [
+      [101, 'The Great Gatsby', 'F. Scott Fitzgerald', 'Classic', 12.99, 45],
+      [102, '1984', 'George Orwell', 'Dystopian', 14.50, 32],
+      [103, 'Clean Code', 'Robert C. Martin', 'Technology', 38.00, 18]
+    ]
+  },
+  Employees: {
+    columns: ['emp_id', 'first_name', 'last_name', 'department', 'salary', 'hire_date'],
+    rows: [
+      [1, 'Sarah', 'Connor', 'Engineering', 95000, '2021-03-15'],
+      [2, 'John', 'Doe', 'Sales', 72000, '2020-08-01'],
+      [3, 'Elena', 'Rostova', 'Finance', 88000, '2019-11-20']
+    ]
+  },
+  GroceryItems: {
+    columns: ['item_id', 'item_name', 'category', 'unit_price', 'stock_qty'],
+    rows: [
+      [1, 'Organic Honey', 'Pantry', 8.50, 60],
+      [2, 'Almond Milk', 'Dairy-Free', 3.99, 120],
+      [3, 'Avocado Bag', 'Produce', 5.49, 40]
+    ]
+  },
+  Orders: {
+    columns: ['order_id', 'customer_name', 'product_name', 'quantity', 'unit_price', 'discount_pct'],
+    rows: [
+      [501, 'Liam Vance', 'Wireless Headphones', 2, 120.00, 0.10],
+      [502, 'Sophia Loren', 'Ergonomic Mouse', 1, 29.99, 0.00],
+      [503, 'David Kim', 'Mechanical Keyboard', 1, 89.00, 0.15]
+    ]
+  },
+  MusicTracks: {
+    columns: ['track_id', 'title', 'artist', 'genre', 'duration_sec'],
+    rows: [
+      [1, 'Midnight Resonance', 'Neon Waves', 'Synthwave', 214],
+      [2, 'Solar Flare', 'Cosmic Echo', 'Ambient', 312],
+      [3, 'Algorithm Beats', 'CodeFlow', 'Electronic', 185]
+    ]
+  },
+  GymMembers: {
+    columns: ['member_id', 'member_name', 'plan', 'monthly_fee', 'joined_date'],
+    rows: [
+      [1, 'Marcus Brody', 'Platinum VIP', 79.99, '2023-01-10'],
+      [2, 'Jessica Alba', 'Standard Basic', 29.99, '2023-05-18'],
+      [3, 'Kenji Sato', 'Weekend Pass', 19.99, '2023-08-02']
+    ]
+  },
+  MovieReviews: {
+    columns: ['review_id', 'movie_title', 'director', 'star_rating', 'review_count'],
+    rows: [
+      [1, 'Inception', 'Christopher Nolan', 4.8, 1250],
+      [2, 'Parasite', 'Bong Joon-ho', 4.9, 980],
+      [3, 'Interstellar', 'Christopher Nolan', 4.7, 1420]
+    ]
+  },
+  FlightSchedule: {
+    columns: ['flight_id', 'airline', 'origin', 'destination', 'departure_time'],
+    rows: [
+      ['AA-102', 'American Airlines', 'JFK', 'LAX', '08:30:00'],
+      ['UA-440', 'United Airlines', 'ORD', 'SFO', '11:15:00'],
+      ['DL-982', 'Delta Airlines', 'ATL', 'SEA', '14:45:00']
+    ]
+  },
+  PetClinic: {
+    columns: ['pet_id', 'pet_name', 'species', 'age_years', 'weight_kg'],
+    rows: [
+      [1, 'Milo', 'Cat', 3, 4.2],
+      [2, 'Barnaby', 'Golden Retriever', 5, 28.5],
+      [3, 'Luna', 'French Bulldog', 2, 11.0]
+    ]
+  }
+};
+
+function toggleQuestTablePreview(tableName) {
+  const container = document.getElementById('questTablePreviewContainer');
+  if (!container) return;
+  if (container.innerHTML && container.dataset.activeTable === tableName) {
+    container.innerHTML = '';
+    container.dataset.activeTable = '';
+    return;
+  }
+  const preview = EVERYDAY_TABLE_PREVIEWS[tableName] || EVERYDAY_TABLE_PREVIEWS.Students;
+  container.dataset.activeTable = tableName;
+  container.innerHTML = `
+    <div class="quest-table-preview-box">
+      <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 6px;">
+        <span style="font-weight: 700; color: #38bdf8; font-size: 11px;">📋 Sample Data Preview: <code>${tableName || 'Table'}</code> (Top 3 Disk Records)</span>
+        <button onclick="document.getElementById('questTablePreviewContainer').innerHTML='';" class="card-nav-btn" style="padding: 1px 6px; font-size: 10px;">&times; Close</button>
+      </div>
+      <table class="quest-preview-table">
+        <thead>
+          <tr>${preview.columns.map(c => `<th>${c}</th>`).join('')}</tr>
+        </thead>
+        <tbody>
+          ${preview.rows.map(r => `<tr>${r.map(v => `<td>${v}</td>`).join('')}</tr>`).join('')}
+        </tbody>
+      </table>
+    </div>
+  `;
+}
+window.toggleQuestTablePreview = toggleQuestTablePreview;
 
 function renderQuestStepperTrack() {
   const track = document.getElementById('questStepperTrack');
   const progressText = document.getElementById('questProgressText');
   const progressBarFill = document.getElementById('questProgressBarFill');
   const levelSelect = document.getElementById('questDirectLevelSelect');
+  const hudPill = document.getElementById('hudCurrentLevelPill');
+  const drawerLabel = document.getElementById('questDrawerLabel');
+  const btnPrev = document.getElementById('btnQuestPrev');
+  const btnNext = document.getElementById('btnQuestNext');
 
   const questsList = getActiveQuestsList();
-  if (!track || !questsList || questsList.length === 0) return;
+  if (!questsList || questsList.length === 0) return;
 
   const total = questsList.length;
+  const currentNumStr = (currentQuestIndex + 1 < 10) ? '0' + (currentQuestIndex + 1) : '' + (currentQuestIndex + 1);
+
+  if (hudPill) hudPill.textContent = `Level ${currentNumStr} of ${total}`;
+  if (drawerLabel) drawerLabel.textContent = `Browse ${total} Levels`;
   if (progressText) progressText.textContent = `Level ${currentQuestIndex + 1} of ${total}`;
   if (progressBarFill) progressBarFill.style.width = `${((currentQuestIndex + 1) / total) * 100}%`;
+
+  if (btnPrev) btnPrev.disabled = (currentQuestIndex <= 0);
+  if (btnNext) btnNext.disabled = (currentQuestIndex >= total - 1);
 
   if (levelSelect && levelSelect.options.length !== total) {
     levelSelect.innerHTML = questsList.map((q, idx) => {
@@ -6798,6 +6994,8 @@ function renderQuestStepperTrack() {
     levelSelect.value = currentQuestIndex;
   }
 
+  if (!track) return;
+
   // Slice quests for stepper track if chunking
   const start = Math.max(0, questChunkStart);
   const end = Math.min(total, questChunkEnd || total);
@@ -6808,22 +7006,15 @@ function renderQuestStepperTrack() {
     const realIdx = (currentQuestSection === 'section1') ? start + relIdx : relIdx;
     const isActive = realIdx === currentQuestIndex;
     const isDone = realIdx < currentQuestIndex;
-    const label = q.levelDisplay || `Level ${realIdx + 1 < 10 ? '0' + (realIdx + 1) : realIdx + 1}`;
+    const numStr = (realIdx + 1 < 10) ? '0' + (realIdx + 1) : '' + (realIdx + 1);
     html += `
-      <button class="quest-step-pill ${isActive ? 'active' : ''} ${isDone ? 'completed' : ''}" style="min-width: 80px;" onclick="setQuestIndex(${realIdx})">
-        <span>${isDone ? '&check;' : realIdx + 1}</span>
-        <span>${label}</span>
+      <button class="quest-grid-chip ${isActive ? 'active' : ''} ${isDone ? 'completed' : ''}" onclick="setQuestIndex(${realIdx})" title="${q.title}">
+        <span class="chip-status-mark">${isDone ? '✓' : (isActive ? '⚡' : '#' + numStr)}</span>
+        <span>Lvl ${numStr}</span>
       </button>
     `;
   });
   track.innerHTML = html;
-
-  setTimeout(() => {
-    const activePill = track.querySelector('.quest-step-pill.active');
-    if (activePill) {
-      activePill.scrollIntoView({ behavior: 'smooth', block: 'nearest', inline: 'center' });
-    }
-  }, 50);
 }
 
 function setQuestIndex(idx) {
@@ -6884,8 +7075,11 @@ function renderFillBlankQuest(container, quest) {
     choicesHtml += `
       <div class="slot-choice-row">
         <span class="choice-label">BLANK #${idx + 1}:</span>
-        ${slotInfo.options.map(opt => `
-          <button class="choice-pill ${userSlotSelections[slotKey] === opt ? 'selected' : ''}" onclick="selectSlotChoice('${slotKey}', '${opt}')">${opt}</button>
+        ${slotInfo.options.map((opt, optIdx) => `
+          <button class="choice-pill ${userSlotSelections[slotKey] === opt ? 'selected' : ''}" onclick="selectSlotChoice('${slotKey}', '${opt}')">
+            <span class="choice-key-tag">${optIdx + 1}</span>
+            <span>${opt}</span>
+          </button>
         `).join('')}
       </div>
     `;
@@ -6898,13 +7092,21 @@ function renderFillBlankQuest(container, quest) {
       <div>
         <div style="display: flex; align-items: center; gap: 8px; margin-bottom: 6px; flex-wrap: wrap;">
           <span class="status-pill" style="font-size: 10px; font-weight: 700; color: #10b981; background: rgba(16, 185, 129, 0.12);">${quest.subcluster || quest.category}</span>
-          ${quest.table ? `<span class="status-pill" style="font-size: 10px; font-family: var(--font-mono); color: #38bdf8; background: rgba(56, 189, 248, 0.1);">Table: ${quest.table}</span>` : ''}
+          ${quest.table ? `
+            <span class="status-pill" style="font-size: 10px; font-family: var(--font-mono); color: #38bdf8; background: rgba(56, 189, 248, 0.1);">Table: ${quest.table}</span>
+            <button class="card-nav-btn" style="padding: 2px 8px; font-size: 10.5px;" onclick="toggleQuestTablePreview('${quest.table}')" title="Preview sample table rows">
+              🔍 Inspect Sample Rows
+            </button>
+          ` : ''}
         </div>
         <h3 class="quest-card-title">${quest.title}</h3>
         <p class="quest-card-subtitle">${quest.subtitle}</p>
       </div>
       <span class="status-pill" style="font-size: 11px;">Category: ${quest.category}</span>
     </div>
+
+    <!-- Collapsible Table Sample Data Preview -->
+    <div id="questTablePreviewContainer"></div>
 
     ${quest.schemaSnippet ? `
       <div style="font-size: 11px; font-family: var(--font-mono); color: var(--text-muted); background: rgba(0,0,0,0.25); border: 1px dashed var(--border-default); border-radius: var(--radius-sm); padding: 8px 12px; margin-top: -6px;">
@@ -6926,7 +7128,10 @@ function renderFillBlankQuest(container, quest) {
 
     <!-- Choice Bank -->
     <div>
-      <span style="font-size: 10px; font-family: var(--font-mono); color: var(--text-muted); display: block; margin-bottom: 6px;">SELECT YOUR OPTIONS:</span>
+      <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 6px;">
+        <span style="font-size: 10px; font-family: var(--font-mono); color: var(--text-muted);">SELECT YOUR OPTIONS:</span>
+        <span style="font-size: 10px; font-family: var(--font-mono); color: var(--text-muted);">⌨️ Press 1, 2, 3, 4</span>
+      </div>
       <div class="slot-choice-bank">
         ${choicesHtml}
       </div>
@@ -6957,67 +7162,17 @@ function renderFillBlankQuest(container, quest) {
       
       <div style="display: flex; gap: 10px;">
         <button class="btn-solve-in-studio" ${!allSlotsFilled ? 'disabled' : ''} style="padding: 7px 18px; font-weight: 600;" onclick="checkFillBlankAnswer()">
-          Check Answer &check;
+          Check Answer &check; <span style="font-size: 10px; opacity: 0.8;">[Enter]</span>
         </button>
 
         ${fillBlankPassed ? `
-          <button class="card-nav-btn action-btn-primary" style="background: var(--accent); color: #ffffff; border: 1px solid var(--accent); font-weight: 700;" onclick="setQuestIndex(${currentQuestIndex + 1})">
-            Next Level (${currentQuestIndex + 2 < 10 ? '0' + (currentQuestIndex + 2) : currentQuestIndex + 2}) &rarr;
+          <button class="card-nav-btn action-btn-primary" style="background: var(--accent); color: #ffffff; border: 1px solid var(--accent); font-weight: 700;" onclick="navigateQuestStep(1)">
+            Next Level (${currentQuestIndex + 2 < 10 ? '0' + (currentQuestIndex + 2) : currentQuestIndex + 2}) &rarr; <span style="font-size: 10px; opacity: 0.8;">[Enter]</span>
           </button>
         ` : ''}
       </div>
     </div>
   `;
-}
-
-function selectSlotChoice(slotId, value) {
-  if (window.AudioFX) window.AudioFX.playClick();
-  else if (window.soundFX) window.soundFX.playPop();
-  userSlotSelections[slotId] = value;
-  fillBlankChecked = false;
-  renderActiveQuest(currentQuestIndex);
-}
-
-function checkFillBlankAnswer() {
-  const questsList = getActiveQuestsList();
-  const quest = questsList[currentQuestIndex];
-  if (!quest || quest.type !== 'fill_blank') return;
-
-  let allCorrect = true;
-  Object.keys(quest.slots || {}).forEach(slotKey => {
-    if (userSlotSelections[slotKey] !== quest.slots[slotKey].correct) {
-      allCorrect = false;
-    }
-  });
-
-  fillBlankChecked = true;
-  fillBlankPassed = allCorrect;
-
-  if (allCorrect) {
-    if (window.AudioFX) {
-      window.AudioFX.playSuccess();
-    } else if (window.soundFX) {
-      window.soundFX.playSuccess();
-      window.soundFX.addXP(20, `${quest.title.split(':')[0]} Solved!`);
-    }
-
-    // Automatically log practice into the 112-Day Deliberate Practice Heatmap!
-    if (window.ActivityHeatmapEngine) {
-      window.ActivityHeatmapEngine.logActivity('drill', 1, 20, quest.category || quest.title);
-    }
-
-    if (window.SQL_BUDDY) {
-      window.SQL_BUDDY.say(`🎉 Level ${currentQuestIndex + 1} Cleared! +20 XP!`, 3000, 'celebrate');
-    }
-  } else {
-    if (window.AudioFX) window.AudioFX.playError();
-    else if (window.soundFX) window.soundFX.playError();
-    if (window.SQL_BUDDY) {
-      window.SQL_BUDDY.say("Almost! Review the red blanks and try another choice!", 3000, 'pensive');
-    }
-  }
-
-  renderActiveQuest(currentQuestIndex);
 }
 
 // --- QUEST 1: Live Threshold Slider Scaffolder ---
