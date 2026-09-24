@@ -6736,6 +6736,14 @@ function switchQuestSection(sectionKey) {
   fillBlankChecked = false;
   fillBlankPassed = false;
 
+  // Update footer active track pill
+  const footerTrack = document.getElementById('footerActiveTrack');
+  if (footerTrack) {
+    if (sectionKey === 'section1') footerTrack.textContent = 'Section 01: Foundations & Projections (100)';
+    else if (sectionKey === 'section2') footerTrack.textContent = 'Section 02: WHERE & Filtering (100)';
+    else if (sectionKey === 'featured') footerTrack.textContent = 'Bonus: Boss Gauntlet (30)';
+  }
+
   renderQuestStepperTrack();
   renderActiveQuest(0);
 
@@ -7229,21 +7237,21 @@ function renderFillBlankQuest(container, quest) {
 
     <!-- Result Feedback Banner -->
     ${fillBlankChecked ? (fillBlankPassed ? `
-      <div style="background: rgba(158, 197, 173, 0.1); border: 1px solid #9ec5ad; border-radius: var(--radius-sm); padding: 12px 16px; display: flex; align-items: center; gap: 10px;">
-        <span style="color: #9ec5ad; font-size: 18px;">&check;</span>
+      <div style="background: rgba(16, 185, 129, 0.08); border: 1px solid rgba(16, 185, 129, 0.35); border-radius: 8px; padding: 12px 16px; display: flex; align-items: flex-start; gap: 12px;">
+        <span style="color: #10b981; font-size: 16px; font-weight: 700; background: rgba(16, 185, 129, 0.15); border-radius: 50%; width: 24px; height: 24px; display: flex; align-items: center; justify-content: center; flex-shrink: 0;">&check;</span>
         <div>
-          <div style="font-size: 13px; font-weight: 700; color: #9ec5ad; margin-bottom: 2px;">🎉 Brilliant! Correct Answer!</div>
-          <div style="font-size: 11.5px; line-height: 1.5; color: var(--text-secondary);">
+          <div style="font-size: 13px; font-weight: 700; color: #10b981; margin-bottom: 3px;">🎉 Brilliant! Correct Answer!</div>
+          <div style="font-size: 12px; line-height: 1.55; color: var(--text-secondary);">
             ${escapeHtml(quest.explanation || (quest.syntaxRule ? `${quest.syntaxRule} 💡 Trap: ${quest.syntaxTrap || ''}` : '') || quest.learningOutcomes || quest.subtitle || 'Query syntax executed and validated with 100% compliance!')}
           </div>
         </div>
       </div>
     ` : `
-      <div style="background: rgba(214, 157, 143, 0.1); border: 1px solid #d69d8f; border-radius: var(--radius-sm); padding: 12px 16px; display: flex; align-items: center; gap: 10px;">
-        <span style="color: #d69d8f; font-size: 18px;">&cross;</span>
+      <div style="background: rgba(239, 68, 68, 0.08); border: 1px solid rgba(239, 68, 68, 0.35); border-radius: 8px; padding: 12px 16px; display: flex; align-items: flex-start; gap: 12px;">
+        <span style="color: #ef4444; font-size: 15px; font-weight: 700; background: rgba(239, 68, 68, 0.15); border-radius: 50%; width: 24px; height: 24px; display: flex; align-items: center; justify-content: center; flex-shrink: 0;">&cross;</span>
         <div>
-          <div style="font-size: 13px; font-weight: 700; color: #d69d8f; margin-bottom: 2px;">Not quite right yet!</div>
-          <div style="font-size: 11.5px; color: var(--text-secondary);">Check the highlighted red blanks and try choosing a different keyword.</div>
+          <div style="font-size: 13px; font-weight: 700; color: #ef4444; margin-bottom: 3px;">Not quite right yet!</div>
+          <div style="font-size: 12px; line-height: 1.5; color: var(--text-secondary);">Check the highlighted red blanks and try choosing a different keyword.</div>
         </div>
       </div>
     `) : ''}
@@ -7258,7 +7266,7 @@ function renderFillBlankQuest(container, quest) {
         </button>
 
         ${fillBlankPassed ? `
-          <button class="card-nav-btn action-btn-primary" style="background: var(--accent); color: #ffffff; border: 1px solid var(--accent); font-weight: 700;" onclick="navigateQuestStep(1)">
+          <button class="card-nav-btn action-btn-primary" style="background: #10b981; color: #ffffff; border: 1px solid #059669; font-weight: 700; border-radius: 6px; padding: 7px 18px; cursor: pointer;" onclick="navigateQuestStep(1)">
             Next Level (${currentQuestIndex + 2 < 10 ? '0' + (currentQuestIndex + 2) : currentQuestIndex + 2}) &rarr; <span style="font-size: 10px; opacity: 0.8;">[Enter]</span>
           </button>
         ` : ''}
