@@ -6677,16 +6677,94 @@ function renderProblemBank(filter = 'all') {
 }
 
 // =============================================================================
+// =============================================================================
 // DUOLINGO-STYLE INTERACTIVE QUESTS CONTROLLER
 // =============================================================================
 
+let currentQuestSection = 'section1';
 let currentQuestIndex = 0;
+let questChunkStart = 0;
+let questChunkEnd = 20;
 let questSliderValue = 80000;
 let userWordBankTray = [];
 let userSlotSelections = {};
 let fillBlankChecked = false;
 let fillBlankPassed = false;
 let bugIsFixed = false;
+
+function getActiveQuestsList() {
+  if (currentQuestSection === 'section1' && window.QUESTS_SECTION_1 && window.QUESTS_SECTION_1.length > 0) {
+    return window.QUESTS_SECTION_1;
+  }
+  return window.QUESTS_DATA || [];
+}
+
+function switchQuestSection(sectionKey) {
+  if (sectionKey === 'section2' || sectionKey === 'section3' || sectionKey === 'section4') {
+    if (window.AudioFX) window.AudioFX.playClick();
+    if (window.SQL_BUDDY) {
+      window.SQL_BUDDY.say("🔒 This section is locked! Master Section 01: Foundations & Projections first!", 3500, 'pensive');
+    }
+    return;
+  }
+
+  currentQuestSection = sectionKey;
+  currentQuestIndex = 0;
+  questChunkStart = 0;
+  questChunkEnd = (sectionKey === 'section1') ? 20 : 30;
+
+  // Update tabs
+  document.querySelectorAll('.quest-section-tab').forEach(tab => {
+    tab.classList.toggle('active', tab.getAttribute('data-section') === sectionKey);
+  });
+
+  // Show/hide chunk nav
+  const chunkNav = document.getElementById('questChunkNav');
+  if (chunkNav) {
+    chunkNav.style.display = (sectionKey === 'section1') ? 'flex' : 'none';
+  }
+
+  // Clear level select options so it refreshes with the new list
+  const levelSelect = document.getElementById('questDirectLevelSelect');
+  if (levelSelect) levelSelect.innerHTML = '';
+
+  userSlotSelections = {};
+  fillBlankChecked = false;
+  fillBlankPassed = false;
+
+  renderQuestStepperTrack();
+  renderActiveQuest(0);
+
+  if (window.AudioFX) window.AudioFX.playClick();
+  if (window.SQL_BUDDY) {
+    if (sectionKey === 'section1') {
+      window.SQL_BUDDY.say("🚀 Section 01: Foundations & Projections loaded (100 Levels)! Let's conquer Level 01!", 3500, 'happy');
+    } else {
+      window.SQL_BUDDY.say("🏆 Boss Gauntlet Activated! 30 Advanced Challenges across all SQL pillars!", 3500, 'celebrate');
+    }
+  }
+}
+window.switchQuestSection = switchQuestSection;
+
+function setQuestChunkRange(start, end) {
+  questChunkStart = start;
+  questChunkEnd = end;
+
+  document.querySelectorAll('.chunk-jump-btn').forEach(btn => {
+    btn.classList.remove('active');
+  });
+  if (window.event && window.event.target && window.event.target.classList.contains('chunk-jump-btn')) {
+    window.event.target.classList.add('active');
+  }
+
+  // If active quest is outside this slice, jump to the first quest of this slice
+  if (currentQuestIndex < start || currentQuestIndex >= end) {
+    setQuestIndex(start);
+  } else {
+    renderQuestStepperTrack();
+  }
+}
+window.setQuestChunkRange = setQuestChunkRange;
 
 function initQuestsSystem() {
   renderQuestStepperTrack();
@@ -6699,16 +6777,19 @@ function renderQuestStepperTrack() {
   const progressBarFill = document.getElementById('questProgressBarFill');
   const levelSelect = document.getElementById('questDirectLevelSelect');
 
-  if (!track || !window.QUESTS_DATA) return;
+  const questsList = getActiveQuestsList();
+  if (!track || !questsList || questsList.length === 0) return;
 
-  const total = window.QUESTS_DATA.length;
+  const total = questsList.length;
   if (progressText) progressText.textContent = `Level ${currentQuestIndex + 1} of ${total}`;
   if (progressBarFill) progressBarFill.style.width = `${((currentQuestIndex + 1) / total) * 100}%`;
 
-  if (levelSelect && levelSelect.options.length === 0) {
-    levelSelect.innerHTML = window.QUESTS_DATA.map((q, idx) => 
-      `<option value="${idx}">Lvl ${idx + 1 < 10 ? '0' + (idx + 1) : idx + 1}: ${q.title.split(':')[1] || q.title}</option>`
-    ).join('');
+  if (levelSelect && levelSelect.options.length !== total) {
+    levelSelect.innerHTML = questsList.map((q, idx) => {
+      const titleClean = q.title.includes(':') ? q.title.split(':')[1].trim() : q.title;
+      const numStr = idx + 1 < 10 ? '0' + (idx + 1) : '' + (idx + 1);
+      return `<option value="${idx}">Lvl ${numStr}: ${titleClean}</option>`;
+    }).join('');
     levelSelect.addEventListener('change', (e) => {
       setQuestIndex(parseInt(e.target.value, 10));
     });
@@ -6717,14 +6798,21 @@ function renderQuestStepperTrack() {
     levelSelect.value = currentQuestIndex;
   }
 
+  // Slice quests for stepper track if chunking
+  const start = Math.max(0, questChunkStart);
+  const end = Math.min(total, questChunkEnd || total);
+  const visibleQuests = (currentQuestSection === 'section1') ? questsList.slice(start, end) : questsList;
+
   let html = '';
-  window.QUESTS_DATA.forEach((q, idx) => {
-    const isActive = idx === currentQuestIndex;
-    const isDone = idx < currentQuestIndex;
+  visibleQuests.forEach((q, relIdx) => {
+    const realIdx = (currentQuestSection === 'section1') ? start + relIdx : relIdx;
+    const isActive = realIdx === currentQuestIndex;
+    const isDone = realIdx < currentQuestIndex;
+    const label = q.levelDisplay || `Level ${realIdx + 1 < 10 ? '0' + (realIdx + 1) : realIdx + 1}`;
     html += `
-      <button class="quest-step-pill ${isActive ? 'active' : ''} ${isDone ? 'completed' : ''}" style="min-width: 80px;" onclick="setQuestIndex(${idx})">
-        <span>${isDone ? '&check;' : idx + 1}</span>
-        <span>${q.title.split(':')[0]}</span>
+      <button class="quest-step-pill ${isActive ? 'active' : ''} ${isDone ? 'completed' : ''}" style="min-width: 80px;" onclick="setQuestIndex(${realIdx})">
+        <span>${isDone ? '&check;' : realIdx + 1}</span>
+        <span>${label}</span>
       </button>
     `;
   });
@@ -6751,9 +6839,10 @@ function setQuestIndex(idx) {
 
 function renderActiveQuest(idx) {
   const container = document.getElementById('questActiveCard');
-  if (!container || !window.QUESTS_DATA) return;
+  const questsList = getActiveQuestsList();
+  if (!container || !questsList || questsList.length === 0) return;
 
-  const quest = window.QUESTS_DATA[idx] || window.QUESTS_DATA[0];
+  const quest = questsList[idx] || questsList[0];
 
   if (quest.type === 'fill_blank') {
     renderFillBlankQuest(container, quest);
@@ -6770,7 +6859,7 @@ function renderActiveQuest(idx) {
 
 // --- FILL IN THE BLANK QUEST RENDERER ---
 function renderFillBlankQuest(container, quest) {
-  const totalSlots = Object.keys(quest.slots).length;
+  const totalSlots = Object.keys(quest.slots || {}).length;
   const filledCount = Object.keys(userSlotSelections).length;
 
   let codeHtml = '';
@@ -6790,7 +6879,7 @@ function renderFillBlankQuest(container, quest) {
   });
 
   let choicesHtml = '';
-  Object.keys(quest.slots).forEach((slotKey, idx) => {
+  Object.keys(quest.slots || {}).forEach((slotKey, idx) => {
     const slotInfo = quest.slots[slotKey];
     choicesHtml += `
       <div class="slot-choice-row">
@@ -6807,11 +6896,21 @@ function renderFillBlankQuest(container, quest) {
   container.innerHTML = `
     <div class="quest-card-header">
       <div>
+        <div style="display: flex; align-items: center; gap: 8px; margin-bottom: 6px; flex-wrap: wrap;">
+          <span class="status-pill" style="font-size: 10px; font-weight: 700; color: #10b981; background: rgba(16, 185, 129, 0.12);">${quest.subcluster || quest.category}</span>
+          ${quest.table ? `<span class="status-pill" style="font-size: 10px; font-family: var(--font-mono); color: #38bdf8; background: rgba(56, 189, 248, 0.1);">Table: ${quest.table}</span>` : ''}
+        </div>
         <h3 class="quest-card-title">${quest.title}</h3>
         <p class="quest-card-subtitle">${quest.subtitle}</p>
       </div>
       <span class="status-pill" style="font-size: 11px;">Category: ${quest.category}</span>
     </div>
+
+    ${quest.schemaSnippet ? `
+      <div style="font-size: 11px; font-family: var(--font-mono); color: var(--text-muted); background: rgba(0,0,0,0.25); border: 1px dashed var(--border-default); border-radius: var(--radius-sm); padding: 8px 12px; margin-top: -6px;">
+        <span style="color: var(--text-secondary); font-weight: 600;">SCHEMA:</span> ${quest.schemaSnippet}
+      </div>
+    ` : ''}
 
     <!-- Task Goal -->
     <div style="background: var(--bg-surface-elevated); border: 1px solid var(--border-default); border-radius: var(--radius-sm); padding: 12px 16px;">
@@ -6872,18 +6971,20 @@ function renderFillBlankQuest(container, quest) {
 }
 
 function selectSlotChoice(slotId, value) {
-  if (window.soundFX) window.soundFX.playPop();
+  if (window.AudioFX) window.AudioFX.playClick();
+  else if (window.soundFX) window.soundFX.playPop();
   userSlotSelections[slotId] = value;
   fillBlankChecked = false;
   renderActiveQuest(currentQuestIndex);
 }
 
 function checkFillBlankAnswer() {
-  const quest = window.QUESTS_DATA[currentQuestIndex];
+  const questsList = getActiveQuestsList();
+  const quest = questsList[currentQuestIndex];
   if (!quest || quest.type !== 'fill_blank') return;
 
   let allCorrect = true;
-  Object.keys(quest.slots).forEach(slotKey => {
+  Object.keys(quest.slots || {}).forEach(slotKey => {
     if (userSlotSelections[slotKey] !== quest.slots[slotKey].correct) {
       allCorrect = false;
     }
@@ -6893,12 +6994,27 @@ function checkFillBlankAnswer() {
   fillBlankPassed = allCorrect;
 
   if (allCorrect) {
-    if (window.soundFX) {
+    if (window.AudioFX) {
+      window.AudioFX.playSuccess();
+    } else if (window.soundFX) {
       window.soundFX.playSuccess();
       window.soundFX.addXP(20, `${quest.title.split(':')[0]} Solved!`);
     }
+
+    // Automatically log practice into the 112-Day Deliberate Practice Heatmap!
+    if (window.ActivityHeatmapEngine) {
+      window.ActivityHeatmapEngine.logActivity('drill', 1, 20, quest.category || quest.title);
+    }
+
+    if (window.SQL_BUDDY) {
+      window.SQL_BUDDY.say(`🎉 Level ${currentQuestIndex + 1} Cleared! +20 XP!`, 3000, 'celebrate');
+    }
   } else {
-    if (window.soundFX) window.soundFX.playError();
+    if (window.AudioFX) window.AudioFX.playError();
+    else if (window.soundFX) window.soundFX.playError();
+    if (window.SQL_BUDDY) {
+      window.SQL_BUDDY.say("Almost! Review the red blanks and try another choice!", 3000, 'pensive');
+    }
   }
 
   renderActiveQuest(currentQuestIndex);

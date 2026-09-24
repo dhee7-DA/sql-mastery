@@ -1094,6 +1094,56 @@
         </div>
       </div>
 
+      <!-- Quest Section Navigator Bar -->
+      <div class="quest-section-bar" id="questSectionBar">
+        <button class="quest-section-tab active" data-section="section1" onclick="switchQuestSection('section1')">
+          <div class="section-tab-header-row">
+            <span class="section-tab-badge">Section 01</span>
+            <span class="section-tab-status">Active</span>
+          </div>
+          <span class="section-tab-title">Foundations &amp; Projections (100)</span>
+        </button>
+        <button class="quest-section-tab locked" data-section="section2" onclick="switchQuestSection('section2')" title="Section 02: WHERE Predicates &amp; Filtering (100) — Next Track">
+          <div class="section-tab-header-row">
+            <span class="section-tab-badge">Section 02</span>
+            <span class="section-tab-status">🔒 Next Track</span>
+          </div>
+          <span class="section-tab-title">WHERE &amp; Filtering (100)</span>
+        </button>
+        <button class="quest-section-tab locked" data-section="section3" onclick="switchQuestSection('section3')" title="Section 03: ORDER BY &amp; LIMIT Slicing (100)">
+          <div class="section-tab-header-row">
+            <span class="section-tab-badge">Section 03</span>
+            <span class="section-tab-status">🔒 Locked</span>
+          </div>
+          <span class="section-tab-title">ORDER BY &amp; Slicing (100)</span>
+        </button>
+        <button class="quest-section-tab locked" data-section="section4" onclick="switchQuestSection('section4')" title="Section 04: Aggregations &amp; GROUP BY (100)">
+          <div class="section-tab-header-row">
+            <span class="section-tab-badge">Section 04</span>
+            <span class="section-tab-status">🔒 Locked</span>
+          </div>
+          <span class="section-tab-title">Aggregations &amp; GROUP BY (100)</span>
+        </button>
+        <button class="quest-section-tab" data-section="featured" onclick="switchQuestSection('featured')" title="Original 30 Featured Boss Quests">
+          <div class="section-tab-header-row">
+            <span class="section-tab-badge" style="color: #f59e0b; background: rgba(245, 158, 11, 0.15);">Bonus</span>
+            <span class="section-tab-status" style="color: #f59e0b;">🏆 Boss Mode</span>
+          </div>
+          <span class="section-tab-title">Boss Gauntlet (30)</span>
+        </button>
+      </div>
+
+      <!-- Quick Level Pagination Jump Bar -->
+      <div class="quest-chunk-nav" id="questChunkNav">
+        <span class="chunk-nav-label">QUICK JUMP:</span>
+        <button class="chunk-jump-btn active" onclick="setQuestChunkRange(0, 20)">Lvl 01–20</button>
+        <button class="chunk-jump-btn" onclick="setQuestChunkRange(20, 40)">Lvl 21–40</button>
+        <button class="chunk-jump-btn" onclick="setQuestChunkRange(40, 60)">Lvl 41–60</button>
+        <button class="chunk-jump-btn" onclick="setQuestChunkRange(60, 80)">Lvl 61–80</button>
+        <button class="chunk-jump-btn" onclick="setQuestChunkRange(80, 100)">Lvl 81–100</button>
+        <button class="chunk-jump-btn" onclick="setQuestChunkRange(0, 100)">View All 100</button>
+      </div>
+
       <!-- Quest Stepper Track -->
       <div class="quest-stepper-track" id="questStepperTrack">
         <!-- Dynamically populated quest pills -->
@@ -1238,6 +1288,7 @@
 <script src="aggregations_lab_data.js"></script>
 <script src="joins_lab_data.js"></script>
 <script src="operators_sandbox.js"></script>
+<script src="quests_section1_data.js"></script>
 <script src="quests_engine.js"></script>
 <script src="deconstructor_data.js"></script>
 <script src="theory_interview_prep.js"></script>
