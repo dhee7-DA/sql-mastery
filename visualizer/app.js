@@ -6697,14 +6697,17 @@ function getActiveQuestsList() {
   if (currentQuestSection === 'section1' && window.QUESTS_SECTION_1 && window.QUESTS_SECTION_1.length > 0) {
     return window.QUESTS_SECTION_1;
   }
+  if (currentQuestSection === 'section2' && window.QUESTS_SECTION_2 && window.QUESTS_SECTION_2.length > 0) {
+    return window.QUESTS_SECTION_2;
+  }
   return window.QUESTS_DATA || [];
 }
 
 function switchQuestSection(sectionKey) {
-  if (sectionKey === 'section2' || sectionKey === 'section3' || sectionKey === 'section4') {
+  if (sectionKey === 'section3' || sectionKey === 'section4') {
     if (window.AudioFX) window.AudioFX.playClick();
     if (window.SQL_BUDDY) {
-      window.SQL_BUDDY.say("🔒 This section is locked! Master Section 01: Foundations & Projections first!", 3500, 'pensive');
+      window.SQL_BUDDY.say("🔒 This section is locked! Master Section 01 & Section 02 first!", 3500, 'pensive');
     }
     return;
   }
@@ -6712,7 +6715,7 @@ function switchQuestSection(sectionKey) {
   currentQuestSection = sectionKey;
   currentQuestIndex = 0;
   questChunkStart = 0;
-  questChunkEnd = (sectionKey === 'section1') ? 20 : 30;
+  questChunkEnd = (sectionKey === 'section1' || sectionKey === 'section2') ? 20 : 30;
 
   // Update tabs
   document.querySelectorAll('.quest-section-tab').forEach(tab => {
@@ -6722,7 +6725,7 @@ function switchQuestSection(sectionKey) {
   // Show/hide chunk nav
   const chunkNav = document.getElementById('questChunkNav');
   if (chunkNav) {
-    chunkNav.style.display = (sectionKey === 'section1') ? 'flex' : 'none';
+    chunkNav.style.display = (sectionKey === 'section1' || sectionKey === 'section2') ? 'flex' : 'none';
   }
 
   // Clear level select options so it refreshes with the new list
@@ -6740,6 +6743,8 @@ function switchQuestSection(sectionKey) {
   if (window.SQL_BUDDY) {
     if (sectionKey === 'section1') {
       window.SQL_BUDDY.say("🚀 Section 01: Foundations & Projections loaded (100 Levels)! Let's conquer Level 01!", 3500, 'happy');
+    } else if (sectionKey === 'section2') {
+      window.SQL_BUDDY.say("🎯 Section 02: WHERE Predicates & Filtering loaded (100 Levels)! Prepare to filter with pinpoint precision!", 3500, 'celebrate');
     } else {
       window.SQL_BUDDY.say("🏆 Boss Gauntlet Activated! 30 Advanced Challenges across all SQL pillars!", 3500, 'celebrate');
     }
@@ -7029,13 +7034,19 @@ function updateQuestSidebars(quest, idx, total) {
     progCountEl.textContent = `Lvl ${numStr} / ${total}`;
   }
 
-  // 2. Left Sidebar: Tier Ladder active states
+  // 2. Left Sidebar: Tier Ladder active states & labels
+  const tierName = (quest.tier || '').toLowerCase();
   const levelNum = idx + 1;
+  const isTier1 = tierName.includes('apprentice') || (currentQuestSection === 'section1' ? levelNum <= 15 : levelNum <= 20);
+  const isTier2 = tierName.includes('practitioner') || (currentQuestSection === 'section1' ? (levelNum > 15 && levelNum <= 40) : (levelNum > 20 && levelNum <= 45));
+  const isTier3 = tierName.includes('specialist') || (currentQuestSection === 'section1' ? (levelNum > 40 && levelNum <= 70) : (levelNum > 45 && levelNum <= 75));
+  const isTier4 = tierName.includes('master') || (currentQuestSection === 'section1' ? levelNum > 70 : levelNum > 75);
+
   const tiers = [
-    { id: 'ladderTier1', active: levelNum <= 15 },
-    { id: 'ladderTier2', active: levelNum > 15 && levelNum <= 40 },
-    { id: 'ladderTier3', active: levelNum > 40 && levelNum <= 70 },
-    { id: 'ladderTier4', active: levelNum > 70 }
+    { id: 'ladderTier1', active: isTier1 },
+    { id: 'ladderTier2', active: isTier2 },
+    { id: 'ladderTier3', active: isTier3 },
+    { id: 'ladderTier4', active: isTier4 }
   ];
   tiers.forEach(t => {
     const el = document.getElementById(t.id);
@@ -7044,6 +7055,23 @@ function updateQuestSidebars(quest, idx, total) {
       else el.classList.remove('active');
     }
   });
+
+  // Dynamic Tier sublabels based on section
+  const sub1 = document.querySelector('#ladderTier1 .ladder-tier-sub');
+  const sub2 = document.querySelector('#ladderTier2 .ladder-tier-sub');
+  const sub3 = document.querySelector('#ladderTier3 .ladder-tier-sub');
+  const sub4 = document.querySelector('#ladderTier4 .ladder-tier-sub');
+  if (currentQuestSection === 'section2') {
+    if (sub1) sub1.textContent = 'Lvl 01–20 • 3 Blanks';
+    if (sub2) sub2.textContent = 'Lvl 21–45 • 3–4 Blanks';
+    if (sub3) sub3.textContent = 'Lvl 46–75 • 4 Blanks';
+    if (sub4) sub4.textContent = 'Lvl 76–100 • 4–5 Blanks';
+  } else {
+    if (sub1) sub1.textContent = 'Lvl 01–15 • 3 Blanks';
+    if (sub2) sub2.textContent = 'Lvl 16–40 • 3–4 Blanks';
+    if (sub3) sub3.textContent = 'Lvl 41–70 • 4 Blanks';
+    if (sub4) sub4.textContent = 'Lvl 71–100 • 4–5 Blanks';
+  }
 
   // 3. Right Sidebar: Active Table Schema card
   const tableBadge = document.getElementById('questActiveTableBadge');
