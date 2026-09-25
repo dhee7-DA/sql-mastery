@@ -22476,6 +22476,115 @@ button:active .framer-emoji-icon {
   line-height: 1.35;
 }
 
+/* Dual-Coding Relational JOIN & Venn Visualizer */
+.join-dual-coding-grid {
+  display: grid;
+  grid-template-columns: 290px 1fr;
+  gap: 14px;
+  align-items: stretch;
+  margin-top: 8px;
+}
+
+@media (max-width: 960px) {
+  .join-dual-coding-grid {
+    grid-template-columns: 1fr;
+  }
+}
+
+.join-venn-card {
+  background: rgba(0, 0, 0, 0.45);
+  border: 1px solid rgba(255, 255, 255, 0.08);
+  border-radius: 8px;
+  padding: 10px;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  min-height: 160px;
+}
+
+.join-venn-svg {
+  width: 100%;
+  max-width: 270px;
+  height: auto;
+  filter: drop-shadow(0 2px 8px rgba(0, 0, 0, 0.45));
+}
+
+.join-live-table-card {
+  background: rgba(0, 0, 0, 0.35);
+  border: 1px solid rgba(255, 255, 255, 0.08);
+  border-radius: 8px;
+  padding: 8px 10px;
+  overflow-x: auto;
+}
+
+.null-pill {
+  display: inline-block;
+  background: rgba(239, 68, 68, 0.12);
+  color: #fca5a5;
+  border: 1px dashed rgba(239, 68, 68, 0.4);
+  border-radius: 4px;
+  padding: 1px 6px;
+  font-family: var(--font-mono);
+  font-size: 10px;
+  font-weight: 700;
+  font-style: italic;
+}
+
+.match-key-pill {
+  display: inline-block;
+  background: rgba(56, 189, 248, 0.12);
+  color: #38bdf8;
+  border: 1px solid rgba(56, 189, 248, 0.3);
+  border-radius: 4px;
+  padding: 1px 5px;
+  font-family: var(--font-mono);
+  font-size: 10px;
+  font-weight: 700;
+}
+
+.row-status-pill.drop {
+  background: rgba(239, 68, 68, 0.15);
+  color: #f87171;
+}
+
+.row-status-pill.null-pad {
+  background: rgba(236, 72, 153, 0.15);
+  color: #f472b6;
+}
+
+.row-status-pill.cartesian {
+  background: rgba(245, 158, 11, 0.15);
+  color: #fbbf24;
+}
+
+.join-mini-matrix {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 4px;
+  width: 100%;
+  max-width: 250px;
+  margin: 6px auto;
+}
+
+.join-matrix-tile {
+  background: rgba(245, 158, 11, 0.12);
+  border: 1px solid rgba(245, 158, 11, 0.3);
+  border-radius: 4px;
+  padding: 6px 2px;
+  text-align: center;
+  font-family: var(--font-mono);
+  font-size: 9.5px;
+  color: #fde68a;
+  transition: all 0.2s;
+}
+
+.join-matrix-tile:hover {
+  background: rgba(245, 158, 11, 0.25);
+  border-color: #f59e0b;
+}
+
+
 
 
 

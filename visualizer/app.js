@@ -7593,7 +7593,478 @@ function getScaffoldingBannerHtml(quest, idx) {
   return '';
 }
 
+// =============================================================================
+// DUAL-CODING RELATIONAL JOIN & VENN VISUALIZER ENGINE
+// =============================================================================
+function renderJoinDualCodingHtml(quest, userSelections) {
+  const tableA = quest.table || 'Accounts';
+  const tableB = quest.joinTable || 'Transactions';
+  const allSelStr = Object.values(userSelections || {}).join(' ').toUpperCase();
+
+  // Detect effective join type from active user blank selections or quest discipline
+  let joinType = quest.disciplineKey || 'inner_join';
+  if (allSelStr.includes('FULL') || allSelStr.includes('OUTER')) {
+    joinType = 'full_outer_join';
+  } else if (allSelStr.includes('CROSS')) {
+    joinType = 'cross_join';
+  } else if (allSelStr.includes('RIGHT')) {
+    joinType = 'right_join';
+  } else if (allSelStr.includes('LEFT')) {
+    joinType = 'left_join';
+  } else if (allSelStr.includes('INNER')) {
+    joinType = 'inner_join';
+  }
+
+  const joinConfigs = {
+    inner_join: {
+      name: 'INNER JOIN',
+      symbol: '⋈',
+      color: '#38bdf8',
+      leftActive: false,
+      midActive: true,
+      rightActive: false,
+      summary: 'Strict Intersection: Returns only rows with matching keys in BOTH tables. Unmatched keys are dropped on both sides.',
+      badgeText: '⋈ Match Intersection Active'
+    },
+    left_join: {
+      name: 'LEFT JOIN',
+      symbol: '⟕',
+      color: '#10b981',
+      leftActive: true,
+      midActive: true,
+      rightActive: false,
+      summary: 'Left Preservation: Preserves all records from Table A (Left). Unmatched Table B columns are padded with <NULL>.',
+      badgeText: '⟕ 100% Left Preserved • Right Padded <NULL>'
+    },
+    right_join: {
+      name: 'RIGHT JOIN',
+      symbol: '⟖',
+      color: '#6366f1',
+      leftActive: false,
+      midActive: true,
+      rightActive: true,
+      summary: 'Right Preservation: Preserves all records from Table B (Right). Unmatched Table A columns are padded with <NULL>.',
+      badgeText: '⟖ 100% Right Preserved • Left Padded <NULL>'
+    },
+    full_outer_join: {
+      name: 'FULL OUTER JOIN',
+      symbol: '⟗',
+      color: '#ec4899',
+      leftActive: true,
+      midActive: true,
+      rightActive: true,
+      summary: 'Dual-Sided Union: Preserves all records from both tables. Missing sides are padded with <NULL>.',
+      badgeText: '⟗ Full Outer Union • Both Sides Retained'
+    },
+    cross_join: {
+      name: 'CROSS JOIN',
+      symbol: '✕',
+      color: '#f59e0b',
+      summary: 'Cartesian Matrix: Multiplies every row from Table A with every row from Table B (M × N = 3 × 3 = 9 combinations).',
+      badgeText: '✕ Cartesian Product Active (M × N = 9)'
+    },
+    self_join: {
+      name: 'SELF JOIN',
+      symbol: '⟲',
+      color: '#a855f7',
+      summary: 'Hierarchical Self-Pairing: Compares rows within the same physical table using distinct aliases (a vs b).',
+      badgeText: '⟲ Recursive / Hierarchy Pairings'
+    },
+    non_equi_join: {
+      name: 'NON-EQUI JOIN',
+      symbol: '≶',
+      color: '#14b8a6',
+      summary: 'Range & Inequality Band: Matches rows where the key falls within upper and lower thresholds (<, >, BETWEEN).',
+      badgeText: '≶ Range Inequality Band Matching'
+    }
+  };
+
+  const cfg = joinConfigs[joinType] || joinConfigs.inner_join;
+
+  // 1. Build Diagram Graphic (SVG Venn, Cartesian Matrix, Self-Loop, or Interval Axis)
+  let diagramHtml = '';
+  if (['inner_join', 'left_join', 'right_join', 'full_outer_join'].includes(joinType)) {
+    const leftFill = cfg.leftActive ? `${cfg.color}55` : 'rgba(255, 255, 255, 0.03)';
+    const leftStroke = cfg.leftActive ? cfg.color : 'rgba(255, 255, 255, 0.2)';
+    const leftWidth = cfg.leftActive ? '2.5' : '1.2';
+
+    const midFill = cfg.midActive ? `${cfg.color}77` : 'rgba(255, 255, 255, 0.03)';
+    const midStroke = cfg.midActive ? cfg.color : 'rgba(255, 255, 255, 0.2)';
+    const midWidth = cfg.midActive ? '2.5' : '1.2';
+
+    const rightFill = cfg.rightActive ? `${cfg.color}55` : 'rgba(255, 255, 255, 0.03)';
+    const rightStroke = cfg.rightActive ? cfg.color : 'rgba(255, 255, 255, 0.2)';
+    const rightWidth = cfg.rightActive ? '2.5' : '1.2';
+
+    diagramHtml = `
+      <svg class="join-venn-svg" viewBox="0 0 320 180" xmlns="http://www.w3.org/2000/svg">
+        <defs>
+          <filter id="vennGlow" x="-20%" y="-20%" width="140%" height="140%">
+            <feGaussianBlur stdDeviation="3" result="blur" />
+            <feComposite in="SourceGraphic" in2="blur" operator="over" />
+          </filter>
+        </defs>
+
+        <!-- Left Crescent (Table A only) -->
+        <path d="M 160,38.8 A 65 65 0 1 0 160,141.2 A 65 65 0 0 0 160,38.8 Z"
+              fill="${leftFill}" stroke="${leftStroke}" stroke-width="${leftWidth}"
+              filter="${cfg.leftActive ? 'url(#vennGlow)' : 'none'}" />
+
+        <!-- Intersection Lens (A AND B) -->
+        <path d="M 160,38.8 A 65 65 0 0 0 160,141.2 A 65 65 0 0 0 160,38.8 Z"
+              fill="${midFill}" stroke="${midStroke}" stroke-width="${midWidth}"
+              filter="${cfg.midActive ? 'url(#vennGlow)' : 'none'}" />
+
+        <!-- Right Crescent (Table B only) -->
+        <path d="M 160,141.2 A 65 65 0 1 0 160,38.8 A 65 65 0 0 0 160,141.2 Z"
+              fill="${rightFill}" stroke="${rightStroke}" stroke-width="${rightWidth}"
+              filter="${cfg.rightActive ? 'url(#vennGlow)' : 'none'}" />
+
+        <!-- Labels -->
+        <text x="105" y="93" fill="${cfg.leftActive ? '#ffffff' : 'rgba(255,255,255,0.6)'}" font-size="11" font-weight="700" font-family="monospace" text-anchor="middle">
+          ${escapeHtml(tableA)}
+        </text>
+        <text x="105" y="108" fill="rgba(255,255,255,0.4)" font-size="9" font-family="monospace" text-anchor="middle">
+          (Left A)
+        </text>
+
+        <text x="160" y="88" fill="${cfg.midActive ? '#ffffff' : 'rgba(255,255,255,0.6)'}" font-size="12" font-weight="800" font-family="monospace" text-anchor="middle">
+          A ∩ B
+        </text>
+        <text x="160" y="102" fill="${cfg.midActive ? '#38bdf8' : 'rgba(255,255,255,0.4)'}" font-size="8.5" font-family="monospace" text-anchor="middle">
+          KEY MATCH
+        </text>
+
+        <text x="215" y="93" fill="${cfg.rightActive ? '#ffffff' : 'rgba(255,255,255,0.6)'}" font-size="11" font-weight="700" font-family="monospace" text-anchor="middle">
+          ${escapeHtml(tableB)}
+        </text>
+        <text x="215" y="108" fill="rgba(255,255,255,0.4)" font-size="9" font-family="monospace" text-anchor="middle">
+          (Right B)
+        </text>
+      </svg>
+    `;
+  } else if (joinType === 'cross_join') {
+    diagramHtml = `
+      <div style="text-align: center; width: 100%;">
+        <div style="font-size: 10px; font-family: var(--font-mono); color: #f59e0b; font-weight: 700; margin-bottom: 4px;">
+          CARTESIAN PRODUCT MATRIX (3 × 3)
+        </div>
+        <div class="join-mini-matrix">
+          <div class="join-matrix-tile">A1 × B1</div>
+          <div class="join-matrix-tile">A1 × B2</div>
+          <div class="join-matrix-tile">A1 × B3</div>
+          <div class="join-matrix-tile">A2 × B1</div>
+          <div class="join-matrix-tile">A2 × B2</div>
+          <div class="join-matrix-tile">A2 × B3</div>
+          <div class="join-matrix-tile">A3 × B1</div>
+          <div class="join-matrix-tile">A3 × B2</div>
+          <div class="join-matrix-tile">A3 × B3</div>
+        </div>
+        <div style="font-size: 9.5px; color: var(--text-muted); margin-top: 4px;">9 Pairwise Combinations (No Predicate)</div>
+      </div>
+    `;
+  } else if (joinType === 'self_join') {
+    diagramHtml = `
+      <div style="display: flex; flex-direction: column; align-items: center; justify-content: center; height: 100%; width: 100%; padding: 10px 0;">
+        <div style="display: flex; align-items: center; gap: 16px;">
+          <div style="background: rgba(168, 85, 247, 0.15); border: 1px solid #a855f7; border-radius: 6px; padding: 8px 12px; text-align: center;">
+            <div style="font-size: 11px; font-weight: 800; color: #c084fc; font-family: monospace;">${escapeHtml(tableA)} a</div>
+            <div style="font-size: 9px; color: var(--text-muted);">Child Row</div>
+          </div>
+          <div style="display: flex; flex-direction: column; align-items: center;">
+            <span style="color: #c084fc; font-size: 16px; font-weight: 800;">⟲</span>
+            <span style="font-size: 9px; font-family: monospace; color: var(--text-muted);">a.ref = b.id</span>
+          </div>
+          <div style="background: rgba(168, 85, 247, 0.15); border: 1px solid #a855f7; border-radius: 6px; padding: 8px 12px; text-align: center;">
+            <div style="font-size: 11px; font-weight: 800; color: #c084fc; font-family: monospace;">${escapeHtml(tableA)} b</div>
+            <div style="font-size: 9px; color: var(--text-muted);">Parent Node</div>
+          </div>
+        </div>
+        <div style="font-size: 9.5px; color: var(--text-muted); margin-top: 10px;">Self-Referential Unary Join</div>
+      </div>
+    `;
+  } else {
+    // Non-equi join range axis
+    diagramHtml = `
+      <div style="width: 100%; padding: 6px 10px;">
+        <div style="font-size: 10px; font-family: var(--font-mono); color: #14b8a6; font-weight: 700; margin-bottom: 8px; text-align: center;">
+          INEQUALITY RANGE BAND MATCHING
+        </div>
+        <div style="display: flex; flex-direction: column; gap: 8px;">
+          <div style="display: flex; justify-content: space-between; font-size: 9.5px; font-family: monospace; color: var(--text-muted);">
+            <span>$0</span>
+            <span>$50k</span>
+            <span>$100k</span>
+            <span>$250k+</span>
+          </div>
+          <div style="height: 12px; background: rgba(255,255,255,0.06); border-radius: 6px; position: relative; overflow: hidden;">
+            <div style="position: absolute; left: 25%; width: 40%; height: 100%; background: rgba(20, 184, 166, 0.35); border-left: 2px solid #14b8a6; border-right: 2px solid #14b8a6;"></div>
+            <div style="position: absolute; left: 45%; top: 1px; width: 10px; height: 10px; background: #38bdf8; border-radius: 50%;" title="Value = $85,000"></div>
+          </div>
+          <div style="font-size: 9.5px; font-family: monospace; color: #a7f3d0; text-align: center;">
+            Value $85,000 matches Band: [$50k &ndash; $100k] (Tier 2 Fee)
+          </div>
+        </div>
+      </div>
+    `;
+  }
+
+  // 2. Build Live Transformation Rows
+  let tableRowsHtml = '';
+  if (joinType === 'inner_join') {
+    tableRowsHtml = `
+      <tr class="row-match">
+        <td><span class="match-key-pill">ID 101</span></td>
+        <td>Retail Core (USD)</td>
+        <td><span class="match-key-pill">ID 101</span></td>
+        <td>Txn #9001 ($1,450.00)</td>
+        <td style="text-align: right;"><span class="row-status-pill keep">✓ Matched</span></td>
+      </tr>
+      <tr class="row-match">
+        <td><span class="match-key-pill">ID 102</span></td>
+        <td>Global Wealth (EUR)</td>
+        <td><span class="match-key-pill">ID 102</span></td>
+        <td>Txn #9002 ($42,800.00)</td>
+        <td style="text-align: right;"><span class="row-status-pill keep">✓ Matched</span></td>
+      </tr>
+      <tr class="row-filtered-out">
+        <td><span style="opacity: 0.6;">ID 103</span></td>
+        <td>Dormant Offshore</td>
+        <td colspan="2" style="color: var(--text-muted); font-style: italic;">(No matching transaction)</td>
+        <td style="text-align: right;"><span class="row-status-pill drop">✕ Dropped (Unmatched)</span></td>
+      </tr>
+      <tr class="row-filtered-out">
+        <td colspan="2" style="color: var(--text-muted); font-style: italic;">(No matching account)</td>
+        <td><span style="opacity: 0.6;">ID 999</span></td>
+        <td>Txn #9003 ($350.00)</td>
+        <td style="text-align: right;"><span class="row-status-pill drop">✕ Dropped (Unmatched)</span></td>
+      </tr>
+    `;
+  } else if (joinType === 'left_join') {
+    tableRowsHtml = `
+      <tr class="row-match">
+        <td><span class="match-key-pill">ID 101</span></td>
+        <td>Retail Core (USD)</td>
+        <td><span class="match-key-pill">ID 101</span></td>
+        <td>Txn #9001 ($1,450.00)</td>
+        <td style="text-align: right;"><span class="row-status-pill keep">✓ Matched</span></td>
+      </tr>
+      <tr class="row-match">
+        <td><span class="match-key-pill">ID 102</span></td>
+        <td>Global Wealth (EUR)</td>
+        <td><span class="match-key-pill">ID 102</span></td>
+        <td>Txn #9002 ($42,800.00)</td>
+        <td style="text-align: right;"><span class="row-status-pill keep">✓ Matched</span></td>
+      </tr>
+      <tr class="row-match" style="background: rgba(16, 185, 129, 0.08);">
+        <td><span class="match-key-pill" style="border-color: #10b981; color: #10b981;">ID 103</span></td>
+        <td>Dormant Offshore</td>
+        <td><span class="null-pill">&lt;NULL&gt;</span></td>
+        <td><span class="null-pill">&lt;NULL&gt;</span></td>
+        <td style="text-align: right;"><span class="row-status-pill keep" style="background: rgba(16, 185, 129, 0.2); color: #34d399;">★ Preserved Left</span></td>
+      </tr>
+      <tr class="row-filtered-out">
+        <td colspan="2" style="color: var(--text-muted); font-style: italic;">(No matching account)</td>
+        <td><span style="opacity: 0.6;">ID 999</span></td>
+        <td>Txn #9003 ($350.00)</td>
+        <td style="text-align: right;"><span class="row-status-pill drop">✕ Dropped (Right Orphan)</span></td>
+      </tr>
+    `;
+  } else if (joinType === 'right_join') {
+    tableRowsHtml = `
+      <tr class="row-match">
+        <td><span class="match-key-pill">ID 101</span></td>
+        <td>Retail Core (USD)</td>
+        <td><span class="match-key-pill">ID 101</span></td>
+        <td>Txn #9001 ($1,450.00)</td>
+        <td style="text-align: right;"><span class="row-status-pill keep">✓ Matched</span></td>
+      </tr>
+      <tr class="row-match">
+        <td><span class="match-key-pill">ID 102</span></td>
+        <td>Global Wealth (EUR)</td>
+        <td><span class="match-key-pill">ID 102</span></td>
+        <td>Txn #9002 ($42,800.00)</td>
+        <td style="text-align: right;"><span class="row-status-pill keep">✓ Matched</span></td>
+      </tr>
+      <tr class="row-match" style="background: rgba(99, 102, 241, 0.08);">
+        <td><span class="null-pill">&lt;NULL&gt;</span></td>
+        <td><span class="null-pill">&lt;NULL&gt;</span></td>
+        <td><span class="match-key-pill" style="border-color: #6366f1; color: #818cf8;">ID 999</span></td>
+        <td>Txn #9003 ($350.00)</td>
+        <td style="text-align: right;"><span class="row-status-pill keep" style="background: rgba(99, 102, 241, 0.2); color: #818cf8;">★ Preserved Right</span></td>
+      </tr>
+      <tr class="row-filtered-out">
+        <td><span style="opacity: 0.6;">ID 103</span></td>
+        <td>Dormant Offshore</td>
+        <td colspan="2" style="color: var(--text-muted); font-style: italic;">(No matching transaction)</td>
+        <td style="text-align: right;"><span class="row-status-pill drop">✕ Dropped (Left Unmatched)</span></td>
+      </tr>
+    `;
+  } else if (joinType === 'full_outer_join') {
+    tableRowsHtml = `
+      <tr class="row-match">
+        <td><span class="match-key-pill">ID 101</span></td>
+        <td>Retail Core (USD)</td>
+        <td><span class="match-key-pill">ID 101</span></td>
+        <td>Txn #9001 ($1,450.00)</td>
+        <td style="text-align: right;"><span class="row-status-pill keep">✓ Matched</span></td>
+      </tr>
+      <tr class="row-match">
+        <td><span class="match-key-pill">ID 102</span></td>
+        <td>Global Wealth (EUR)</td>
+        <td><span class="match-key-pill">ID 102</span></td>
+        <td>Txn #9002 ($42,800.00)</td>
+        <td style="text-align: right;"><span class="row-status-pill keep">✓ Matched</span></td>
+      </tr>
+      <tr class="row-match" style="background: rgba(236, 72, 153, 0.08);">
+        <td><span class="match-key-pill" style="border-color: #ec4899; color: #f472b6;">ID 103</span></td>
+        <td>Dormant Offshore</td>
+        <td><span class="null-pill">&lt;NULL&gt;</span></td>
+        <td><span class="null-pill">&lt;NULL&gt;</span></td>
+        <td style="text-align: right;"><span class="row-status-pill null-pad">★ Left Break</span></td>
+      </tr>
+      <tr class="row-match" style="background: rgba(236, 72, 153, 0.08);">
+        <td><span class="null-pill">&lt;NULL&gt;</span></td>
+        <td><span class="null-pill">&lt;NULL&gt;</span></td>
+        <td><span class="match-key-pill" style="border-color: #ec4899; color: #f472b6;">ID 999</span></td>
+        <td>Txn #9003 ($350.00)</td>
+        <td style="text-align: right;"><span class="row-status-pill null-pad">★ Right Break</span></td>
+      </tr>
+    `;
+  } else if (joinType === 'cross_join') {
+    tableRowsHtml = `
+      <tr class="row-match">
+        <td><span class="match-key-pill">USD</span></td>
+        <td>United States Dollar</td>
+        <td><span class="match-key-pill">EUR</span></td>
+        <td>Euro Currency Pair</td>
+        <td style="text-align: right;"><span class="row-status-pill cartesian">#1 Pair</span></td>
+      </tr>
+      <tr class="row-match">
+        <td><span class="match-key-pill">USD</span></td>
+        <td>United States Dollar</td>
+        <td><span class="match-key-pill">GBP</span></td>
+        <td>British Pound Pair</td>
+        <td style="text-align: right;"><span class="row-status-pill cartesian">#2 Pair</span></td>
+      </tr>
+      <tr class="row-match">
+        <td><span class="match-key-pill">USD</span></td>
+        <td>United States Dollar</td>
+        <td><span class="match-key-pill">JPY</span></td>
+        <td>Japanese Yen Pair</td>
+        <td style="text-align: right;"><span class="row-status-pill cartesian">#3 Pair</span></td>
+      </tr>
+      <tr class="row-match">
+        <td colspan="4" style="text-align: center; color: var(--text-muted); font-size: 10px;">... 6 additional Cartesian pairs generated (Total 9) ...</td>
+        <td style="text-align: right;"><span class="row-status-pill cartesian">M × N Total</span></td>
+      </tr>
+    `;
+  } else if (joinType === 'self_join') {
+    tableRowsHtml = `
+      <tr class="row-match">
+        <td><span class="match-key-pill">Emp #1</span></td>
+        <td>Alice Walker (Dev)</td>
+        <td><span class="match-key-pill">Emp #3</span></td>
+        <td>Sarah Connor (VP Eng)</td>
+        <td style="text-align: right;"><span class="row-status-pill keep" style="background: rgba(168, 85, 247, 0.2); color: #c084fc;">✓ Direct Report</span></td>
+      </tr>
+      <tr class="row-match">
+        <td><span class="match-key-pill">Emp #2</span></td>
+        <td>Bob Smith (Analyst)</td>
+        <td><span class="match-key-pill">Emp #3</span></td>
+        <td>Sarah Connor (VP Eng)</td>
+        <td style="text-align: right;"><span class="row-status-pill keep" style="background: rgba(168, 85, 247, 0.2); color: #c084fc;">✓ Direct Report</span></td>
+      </tr>
+      <tr class="row-match">
+        <td><span class="match-key-pill">Emp #3</span></td>
+        <td>Sarah Connor (VP Eng)</td>
+        <td><span class="null-pill">&lt;NULL&gt;</span></td>
+        <td><span class="null-pill">&lt;NULL&gt;</span> (CEO / Root)</td>
+        <td style="text-align: right;"><span class="row-status-pill keep" style="background: rgba(168, 85, 247, 0.2); color: #c084fc;">★ Root Node</span></td>
+      </tr>
+    `;
+  } else {
+    tableRowsHtml = `
+      <tr class="row-match">
+        <td><span class="match-key-pill">Trade #1</span></td>
+        <td>Notional: $45,000</td>
+        <td><span class="match-key-pill">Tier 1</span></td>
+        <td>$0 &ndash; $50k (Fee: 0.15%)</td>
+        <td style="text-align: right;"><span class="row-status-pill keep" style="background: rgba(20, 184, 166, 0.2); color: #2dd4bf;">✓ In Band</span></td>
+      </tr>
+      <tr class="row-match">
+        <td><span class="match-key-pill">Trade #2</span></td>
+        <td>Notional: $85,000</td>
+        <td><span class="match-key-pill">Tier 2</span></td>
+        <td>$50k &ndash; $100k (Fee: 0.10%)</td>
+        <td style="text-align: right;"><span class="row-status-pill keep" style="background: rgba(20, 184, 166, 0.2); color: #2dd4bf;">✓ In Band</span></td>
+      </tr>
+      <tr class="row-match">
+        <td><span class="match-key-pill">Trade #3</span></td>
+        <td>Notional: $240,000</td>
+        <td><span class="match-key-pill">Tier 3</span></td>
+        <td>$100k+ (Fee: 0.05%)</td>
+        <td style="text-align: right;"><span class="row-status-pill keep" style="background: rgba(20, 184, 166, 0.2); color: #2dd4bf;">✓ In Band</span></td>
+      </tr>
+    `;
+  }
+
+  return `
+    <div class="live-preview-header">
+      <div class="live-preview-title">
+        <span class="join-symbol-badge" style="color: ${cfg.color}; border-color: ${cfg.color}66; width: 18px; height: 18px; font-size: 11px;">${cfg.symbol}</span>
+        <span>DUAL-CODING RELATIONAL JOIN &amp; VENN ENGINE:</span>
+        <span style="color: ${cfg.color}; font-weight: 800;">${cfg.name}</span>
+      </div>
+      <span class="live-preview-subtitle">${cfg.badgeText}</span>
+    </div>
+
+    <div style="font-size: 11px; color: var(--text-secondary); margin-bottom: 8px; line-height: 1.45;">
+      ${cfg.summary}
+    </div>
+
+    <div class="join-dual-coding-grid">
+      <!-- Left Column: Venn Diagram / Matrix Visualization -->
+      <div class="join-venn-card">
+        ${diagramHtml}
+      </div>
+
+      <!-- Right Column: Live Table Record Alignment -->
+      <div class="join-live-table-card">
+        <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 6px; padding-bottom: 4px; border-bottom: 1px solid rgba(255,255,255,0.06);">
+          <span style="font-size: 10px; font-family: var(--font-mono); color: var(--text-muted); font-weight: 700;">
+            RELATIONAL ROW PROJECTION (PREVIEW)
+          </span>
+          <span style="font-size: 9.5px; font-family: var(--font-mono); color: ${cfg.color};">
+            ${escapeHtml(tableA)} (A) ⇄ ${escapeHtml(tableB)} (B)
+          </span>
+        </div>
+        <table class="live-preview-table">
+          <thead>
+            <tr>
+              <th style="width: 75px;">A.KEY</th>
+              <th>LEFT ATTR</th>
+              <th style="width: 75px;">B.KEY</th>
+              <th>RIGHT ATTR</th>
+              <th style="width: 120px; text-align: right;">STATUS</th>
+            </tr>
+          </thead>
+          <tbody>
+            ${tableRowsHtml}
+          </tbody>
+        </table>
+      </div>
+    </div>
+  `;
+}
+window.renderJoinDualCodingHtml = renderJoinDualCodingHtml;
+
 function renderLiveTransformationHtml(quest, userSelections) {
+  // 1. Dual Coding for Section 05 & Relational JOINs
+  if (currentQuestSection === 'section5' || quest.disciplineKey || (quest.joinTable && quest.targetQuery && quest.targetQuery.toUpperCase().includes('JOIN'))) {
+    return renderJoinDualCodingHtml(quest, userSelections);
+  }
+
   const tblName = quest.table || 'Students';
   const previewData = EVERYDAY_TABLE_PREVIEWS[tblName] || EVERYDAY_TABLE_PREVIEWS.Students;
   if (!previewData || !previewData.rows) return '';
