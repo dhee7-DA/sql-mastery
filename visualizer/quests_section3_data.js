@@ -1,6 +1,6 @@
 // =============================================================================
 // SECTION 03: ORDER BY & LIMIT SLICING (100 INTERACTIVE MULTI-BLANK QUESTS)
-// Progressive 3-to-5 Blank Challenge Engine with Tiered Difficulty
+// Progressive Cumulative 3-to-5 Blank Challenge Engine Interleaving Foundations & Slicing
 // =============================================================================
 
 window.QUESTS_SECTION_3 = [
@@ -55,28 +55,28 @@ window.QUESTS_SECTION_3 = [
       "slot1": {
         "correct": "Students",
         "options": [
-          "MovieReviews",
-          "MusicTracks",
+          "GroceryItems",
           "Students",
-          "Books"
+          "GymMembers",
+          "MusicTracks"
         ]
       },
       "slot2": {
         "correct": "ORDER BY",
         "options": [
           "ORDER BY",
+          "ARRANGE BY",
           "SORT BY",
-          "GROUP BY",
-          "ARRANGE BY"
+          "GROUP BY"
         ]
       },
       "slot3": {
         "correct": "gpa ASC;",
         "options": [
           "gpa NULLS;",
-          "gpa;",
           "gpa ASC;",
-          "gpa DESC;"
+          "gpa DESC;",
+          "gpa;"
         ]
       }
     },
@@ -104,7 +104,7 @@ window.QUESTS_SECTION_3 = [
     "targetQuery": "SELECT title, price\nFROM Books\nORDER BY price ASC;",
     "template": [
       {
-        "text": "SELECT title, price\nFROM ",
+        "text": "SELECT ",
         "isBlank": false
       },
       {
@@ -114,7 +114,7 @@ window.QUESTS_SECTION_3 = [
         "placeholder": "[ ___ ]"
       },
       {
-        "text": "\n",
+        "text": ", price\nFROM Books\nORDER BY ",
         "isBlank": false
       },
       {
@@ -136,30 +136,30 @@ window.QUESTS_SECTION_3 = [
     ],
     "slots": {
       "slot1": {
-        "correct": "Books",
+        "correct": "title",
         "options": [
-          "MovieReviews",
-          "FlightSchedule",
-          "Students",
-          "Books"
+          "published_year",
+          "price",
+          "title",
+          "author"
         ]
       },
       "slot2": {
-        "correct": "ORDER BY",
+        "correct": "price",
         "options": [
-          "ARRANGE BY",
-          "SORT BY",
-          "GROUP BY",
-          "ORDER BY"
+          "is_hardcover",
+          "price",
+          "title",
+          "author"
         ]
       },
       "slot3": {
-        "correct": "price ASC;",
+        "correct": "ASC;",
         "options": [
-          "price;",
-          "price NULLS;",
-          "price ASC;",
-          "price DESC;"
+          "ASC;",
+          "AUTO;",
+          "DESC;",
+          "NULLS FIRST;"
         ]
       }
     },
@@ -221,26 +221,26 @@ window.QUESTS_SECTION_3 = [
       "slot1": {
         "correct": "Employees",
         "options": [
-          "MovieReviews",
           "Employees",
-          "MusicTracks",
-          "Students"
+          "GymMembers",
+          "Students",
+          "PetClinic"
         ]
       },
       "slot2": {
         "correct": "ORDER BY",
         "options": [
-          "GROUP BY",
+          "SORT BY",
           "ORDER BY",
           "ARRANGE BY",
-          "SORT BY"
+          "GROUP BY"
         ]
       },
       "slot3": {
         "correct": "hire_date ASC;",
         "options": [
-          "hire_date ASC;",
           "hire_date DESC;",
+          "hire_date ASC;",
           "hire_date NULLS;",
           "hire_date;"
         ]
@@ -270,7 +270,7 @@ window.QUESTS_SECTION_3 = [
     "targetQuery": "SELECT item_name, unit_price\nFROM GroceryItems\nORDER BY unit_price ASC;",
     "template": [
       {
-        "text": "SELECT item_name, unit_price\nFROM ",
+        "text": "SELECT ",
         "isBlank": false
       },
       {
@@ -280,7 +280,7 @@ window.QUESTS_SECTION_3 = [
         "placeholder": "[ ___ ]"
       },
       {
-        "text": "\n",
+        "text": ", unit_price\nFROM GroceryItems\nORDER BY ",
         "isBlank": false
       },
       {
@@ -302,30 +302,30 @@ window.QUESTS_SECTION_3 = [
     ],
     "slots": {
       "slot1": {
-        "correct": "GroceryItems",
+        "correct": "item_name",
         "options": [
-          "GroceryItems",
-          "GymMembers",
-          "MovieReviews",
-          "Orders"
+          "item_id",
+          "unit_price",
+          "calories",
+          "item_name"
         ]
       },
       "slot2": {
-        "correct": "ORDER BY",
+        "correct": "unit_price",
         "options": [
-          "GROUP BY",
-          "ORDER BY",
-          "SORT BY",
-          "ARRANGE BY"
+          "is_organic",
+          "unit_price",
+          "item_id",
+          "category"
         ]
       },
       "slot3": {
-        "correct": "unit_price ASC;",
+        "correct": "ASC;",
         "options": [
-          "unit_price ASC;",
-          "unit_price DESC;",
-          "unit_price NULLS;",
-          "unit_price;"
+          "DESC;",
+          "ASC;",
+          "NULLS FIRST;",
+          "AUTO;"
         ]
       }
     },
@@ -388,27 +388,27 @@ window.QUESTS_SECTION_3 = [
         "correct": "Orders",
         "options": [
           "PetClinic",
-          "MovieReviews",
-          "Orders",
-          "Students"
+          "GroceryItems",
+          "Students",
+          "Orders"
         ]
       },
       "slot2": {
         "correct": "ORDER BY",
         "options": [
-          "ARRANGE BY",
-          "SORT BY",
+          "ORDER BY",
           "GROUP BY",
-          "ORDER BY"
+          "ARRANGE BY",
+          "SORT BY"
         ]
       },
       "slot3": {
         "correct": "quantity ASC;",
         "options": [
           "quantity ASC;",
+          "quantity;",
           "quantity DESC;",
-          "quantity NULLS;",
-          "quantity;"
+          "quantity NULLS;"
         ]
       }
     },
@@ -436,7 +436,7 @@ window.QUESTS_SECTION_3 = [
     "targetQuery": "SELECT track_title, duration_seconds\nFROM MusicTracks\nORDER BY duration_seconds ASC;",
     "template": [
       {
-        "text": "SELECT track_title, duration_seconds\nFROM ",
+        "text": "SELECT ",
         "isBlank": false
       },
       {
@@ -446,7 +446,7 @@ window.QUESTS_SECTION_3 = [
         "placeholder": "[ ___ ]"
       },
       {
-        "text": "\n",
+        "text": ", duration_seconds\nFROM MusicTracks\nORDER BY ",
         "isBlank": false
       },
       {
@@ -468,30 +468,30 @@ window.QUESTS_SECTION_3 = [
     ],
     "slots": {
       "slot1": {
-        "correct": "MusicTracks",
+        "correct": "track_title",
         "options": [
-          "Orders",
-          "MusicTracks",
-          "Employees",
-          "Students"
+          "artist",
+          "track_id",
+          "track_title",
+          "play_count"
         ]
       },
       "slot2": {
-        "correct": "ORDER BY",
+        "correct": "duration_seconds",
         "options": [
-          "ARRANGE BY",
-          "GROUP BY",
-          "SORT BY",
-          "ORDER BY"
+          "play_count",
+          "track_title",
+          "duration_seconds",
+          "genre"
         ]
       },
       "slot3": {
-        "correct": "duration_seconds ASC;",
+        "correct": "ASC;",
         "options": [
-          "duration_seconds DESC;",
-          "duration_seconds;",
-          "duration_seconds ASC;",
-          "duration_seconds NULLS;"
+          "AUTO;",
+          "DESC;",
+          "ASC;",
+          "NULLS FIRST;"
         ]
       }
     },
@@ -553,19 +553,19 @@ window.QUESTS_SECTION_3 = [
       "slot1": {
         "correct": "GymMembers",
         "options": [
-          "Employees",
+          "PetClinic",
           "GymMembers",
-          "MusicTracks",
-          "Books"
+          "GroceryItems",
+          "FlightSchedule"
         ]
       },
       "slot2": {
         "correct": "ORDER BY",
         "options": [
-          "SORT BY",
           "ORDER BY",
           "ARRANGE BY",
-          "GROUP BY"
+          "GROUP BY",
+          "SORT BY"
         ]
       },
       "slot3": {
@@ -573,8 +573,8 @@ window.QUESTS_SECTION_3 = [
         "options": [
           "join_date NULLS;",
           "join_date ASC;",
-          "join_date DESC;",
-          "join_date;"
+          "join_date;",
+          "join_date DESC;"
         ]
       }
     },
@@ -602,7 +602,7 @@ window.QUESTS_SECTION_3 = [
     "targetQuery": "SELECT movie_title, release_year\nFROM MovieReviews\nORDER BY release_year ASC;",
     "template": [
       {
-        "text": "SELECT movie_title, release_year\nFROM ",
+        "text": "SELECT ",
         "isBlank": false
       },
       {
@@ -612,7 +612,7 @@ window.QUESTS_SECTION_3 = [
         "placeholder": "[ ___ ]"
       },
       {
-        "text": "\n",
+        "text": ", release_year\nFROM MovieReviews\nORDER BY ",
         "isBlank": false
       },
       {
@@ -634,30 +634,30 @@ window.QUESTS_SECTION_3 = [
     ],
     "slots": {
       "slot1": {
-        "correct": "MovieReviews",
+        "correct": "movie_title",
         "options": [
-          "Books",
-          "MovieReviews",
-          "Employees",
-          "GroceryItems"
+          "review_id",
+          "star_rating",
+          "release_year",
+          "movie_title"
         ]
       },
       "slot2": {
-        "correct": "ORDER BY",
+        "correct": "release_year",
         "options": [
-          "ORDER BY",
-          "SORT BY",
-          "ARRANGE BY",
-          "GROUP BY"
+          "director",
+          "genre",
+          "release_year",
+          "review_count"
         ]
       },
       "slot3": {
-        "correct": "release_year ASC;",
+        "correct": "ASC;",
         "options": [
-          "release_year;",
-          "release_year NULLS;",
-          "release_year DESC;",
-          "release_year ASC;"
+          "AUTO;",
+          "NULLS FIRST;",
+          "ASC;",
+          "DESC;"
         ]
       }
     },
@@ -719,26 +719,26 @@ window.QUESTS_SECTION_3 = [
       "slot1": {
         "correct": "FlightSchedule",
         "options": [
-          "Students",
-          "MusicTracks",
           "FlightSchedule",
+          "MusicTracks",
+          "MovieReviews",
           "PetClinic"
         ]
       },
       "slot2": {
         "correct": "ORDER BY",
         "options": [
-          "SORT BY",
           "ARRANGE BY",
-          "GROUP BY",
-          "ORDER BY"
+          "ORDER BY",
+          "SORT BY",
+          "GROUP BY"
         ]
       },
       "slot3": {
         "correct": "departure_time ASC;",
         "options": [
-          "departure_time;",
           "departure_time NULLS;",
+          "departure_time;",
           "departure_time ASC;",
           "departure_time DESC;"
         ]
@@ -768,7 +768,7 @@ window.QUESTS_SECTION_3 = [
     "targetQuery": "SELECT pet_name, age_years\nFROM PetClinic\nORDER BY age_years ASC;",
     "template": [
       {
-        "text": "SELECT pet_name, age_years\nFROM ",
+        "text": "SELECT ",
         "isBlank": false
       },
       {
@@ -778,7 +778,7 @@ window.QUESTS_SECTION_3 = [
         "placeholder": "[ ___ ]"
       },
       {
-        "text": "\n",
+        "text": ", age_years\nFROM PetClinic\nORDER BY ",
         "isBlank": false
       },
       {
@@ -800,30 +800,30 @@ window.QUESTS_SECTION_3 = [
     ],
     "slots": {
       "slot1": {
-        "correct": "PetClinic",
+        "correct": "pet_name",
         "options": [
-          "MusicTracks",
-          "GroceryItems",
-          "Orders",
-          "PetClinic"
+          "breed",
+          "species",
+          "pet_id",
+          "pet_name"
         ]
       },
       "slot2": {
-        "correct": "ORDER BY",
+        "correct": "age_years",
         "options": [
-          "ORDER BY",
-          "SORT BY",
-          "GROUP BY",
-          "ARRANGE BY"
+          "pet_name",
+          "is_vaccinated",
+          "age_years",
+          "species"
         ]
       },
       "slot3": {
-        "correct": "age_years ASC;",
+        "correct": "ASC;",
         "options": [
-          "age_years DESC;",
-          "age_years;",
-          "age_years ASC;",
-          "age_years NULLS;"
+          "NULLS FIRST;",
+          "AUTO;",
+          "DESC;",
+          "ASC;"
         ]
       }
     },
@@ -885,28 +885,28 @@ window.QUESTS_SECTION_3 = [
       "slot1": {
         "correct": "Students",
         "options": [
-          "Books",
-          "Employees",
           "FlightSchedule",
+          "Orders",
+          "MusicTracks",
           "Students"
         ]
       },
       "slot2": {
         "correct": "ORDER BY",
         "options": [
-          "SORT BY",
+          "ARRANGE BY",
           "GROUP BY",
-          "ORDER BY",
-          "ARRANGE BY"
+          "SORT BY",
+          "ORDER BY"
         ]
       },
       "slot3": {
         "correct": "gpa DESC;",
         "options": [
-          "gpa NULLS;",
-          "gpa DESC;",
           "gpa ASC;",
-          "gpa;"
+          "gpa NULLS;",
+          "gpa;",
+          "gpa DESC;"
         ]
       }
     },
@@ -934,7 +934,7 @@ window.QUESTS_SECTION_3 = [
     "targetQuery": "SELECT title, price\nFROM Books\nORDER BY price DESC;",
     "template": [
       {
-        "text": "SELECT title, price\nFROM ",
+        "text": "SELECT ",
         "isBlank": false
       },
       {
@@ -944,7 +944,7 @@ window.QUESTS_SECTION_3 = [
         "placeholder": "[ ___ ]"
       },
       {
-        "text": "\n",
+        "text": ", price\nFROM Books\nORDER BY ",
         "isBlank": false
       },
       {
@@ -966,30 +966,30 @@ window.QUESTS_SECTION_3 = [
     ],
     "slots": {
       "slot1": {
-        "correct": "Books",
+        "correct": "title",
         "options": [
-          "FlightSchedule",
-          "Books",
-          "GroceryItems",
-          "Orders"
+          "title",
+          "genre",
+          "author",
+          "stock_qty"
         ]
       },
       "slot2": {
-        "correct": "ORDER BY",
+        "correct": "price",
         "options": [
-          "ORDER BY",
-          "GROUP BY",
-          "ARRANGE BY",
-          "SORT BY"
+          "genre",
+          "title",
+          "book_id",
+          "price"
         ]
       },
       "slot3": {
-        "correct": "price DESC;",
+        "correct": "DESC;",
         "options": [
-          "price DESC;",
-          "price ASC;",
-          "price;",
-          "price NULLS;"
+          "ASC;",
+          "DESC;",
+          "NULLS FIRST;",
+          "AUTO;"
         ]
       }
     },
@@ -1051,28 +1051,28 @@ window.QUESTS_SECTION_3 = [
       "slot1": {
         "correct": "Employees",
         "options": [
-          "MusicTracks",
+          "PetClinic",
+          "GroceryItems",
           "Orders",
-          "Employees",
-          "FlightSchedule"
+          "Employees"
         ]
       },
       "slot2": {
         "correct": "ORDER BY",
         "options": [
           "ARRANGE BY",
-          "SORT BY",
           "GROUP BY",
+          "SORT BY",
           "ORDER BY"
         ]
       },
       "slot3": {
         "correct": "salary DESC;",
         "options": [
-          "salary DESC;",
-          "salary ASC;",
           "salary;",
-          "salary NULLS;"
+          "salary NULLS;",
+          "salary DESC;",
+          "salary ASC;"
         ]
       }
     },
@@ -1100,7 +1100,7 @@ window.QUESTS_SECTION_3 = [
     "targetQuery": "SELECT item_name, stock_units\nFROM GroceryItems\nORDER BY stock_units DESC;",
     "template": [
       {
-        "text": "SELECT item_name, stock_units\nFROM ",
+        "text": "SELECT ",
         "isBlank": false
       },
       {
@@ -1110,7 +1110,7 @@ window.QUESTS_SECTION_3 = [
         "placeholder": "[ ___ ]"
       },
       {
-        "text": "\n",
+        "text": ", stock_units\nFROM GroceryItems\nORDER BY ",
         "isBlank": false
       },
       {
@@ -1132,30 +1132,30 @@ window.QUESTS_SECTION_3 = [
     ],
     "slots": {
       "slot1": {
-        "correct": "GroceryItems",
+        "correct": "item_name",
         "options": [
-          "GroceryItems",
-          "PetClinic",
-          "MovieReviews",
-          "Orders"
+          "unit_price",
+          "item_name",
+          "category",
+          "is_organic"
         ]
       },
       "slot2": {
-        "correct": "ORDER BY",
+        "correct": "stock_units",
         "options": [
-          "ARRANGE BY",
-          "ORDER BY",
-          "GROUP BY",
-          "SORT BY"
+          "category",
+          "unit_price",
+          "stock_units",
+          "item_id"
         ]
       },
       "slot3": {
-        "correct": "stock_units DESC;",
+        "correct": "DESC;",
         "options": [
-          "stock_units;",
-          "stock_units DESC;",
-          "stock_units ASC;",
-          "stock_units NULLS;"
+          "NULLS FIRST;",
+          "ASC;",
+          "AUTO;",
+          "DESC;"
         ]
       }
     },
@@ -1217,18 +1217,18 @@ window.QUESTS_SECTION_3 = [
       "slot1": {
         "correct": "Orders",
         "options": [
-          "Orders",
+          "Employees",
           "MovieReviews",
           "Students",
-          "Books"
+          "Orders"
         ]
       },
       "slot2": {
         "correct": "ORDER BY",
         "options": [
+          "ARRANGE BY",
           "SORT BY",
           "GROUP BY",
-          "ARRANGE BY",
           "ORDER BY"
         ]
       },
@@ -1236,8 +1236,8 @@ window.QUESTS_SECTION_3 = [
         "correct": "unit_price DESC;",
         "options": [
           "unit_price;",
-          "unit_price ASC;",
           "unit_price NULLS;",
+          "unit_price ASC;",
           "unit_price DESC;"
         ]
       }
@@ -1266,7 +1266,7 @@ window.QUESTS_SECTION_3 = [
     "targetQuery": "SELECT track_title, play_count\nFROM MusicTracks\nORDER BY play_count DESC;",
     "template": [
       {
-        "text": "SELECT track_title, play_count\nFROM ",
+        "text": "SELECT ",
         "isBlank": false
       },
       {
@@ -1276,7 +1276,7 @@ window.QUESTS_SECTION_3 = [
         "placeholder": "[ ___ ]"
       },
       {
-        "text": "\n",
+        "text": ", play_count\nFROM MusicTracks\nORDER BY ",
         "isBlank": false
       },
       {
@@ -1298,30 +1298,30 @@ window.QUESTS_SECTION_3 = [
     ],
     "slots": {
       "slot1": {
-        "correct": "MusicTracks",
+        "correct": "track_title",
         "options": [
-          "Orders",
-          "FlightSchedule",
-          "MusicTracks",
-          "GymMembers"
+          "track_id",
+          "track_title",
+          "artist",
+          "genre"
         ]
       },
       "slot2": {
-        "correct": "ORDER BY",
+        "correct": "play_count",
         "options": [
-          "ARRANGE BY",
-          "SORT BY",
-          "GROUP BY",
-          "ORDER BY"
+          "play_count",
+          "title",
+          "artist_name",
+          "genre"
         ]
       },
       "slot3": {
-        "correct": "play_count DESC;",
+        "correct": "DESC;",
         "options": [
-          "play_count NULLS;",
-          "play_count DESC;",
-          "play_count ASC;",
-          "play_count;"
+          "NULLS FIRST;",
+          "ASC;",
+          "DESC;",
+          "AUTO;"
         ]
       }
     },
@@ -1383,19 +1383,19 @@ window.QUESTS_SECTION_3 = [
       "slot1": {
         "correct": "GymMembers",
         "options": [
-          "Students",
-          "FlightSchedule",
-          "MusicTracks",
-          "GymMembers"
+          "MovieReviews",
+          "GymMembers",
+          "Books",
+          "GroceryItems"
         ]
       },
       "slot2": {
         "correct": "ORDER BY",
         "options": [
-          "SORT BY",
+          "ORDER BY",
           "GROUP BY",
-          "ARRANGE BY",
-          "ORDER BY"
+          "SORT BY",
+          "ARRANGE BY"
         ]
       },
       "slot3": {
@@ -1403,8 +1403,8 @@ window.QUESTS_SECTION_3 = [
         "options": [
           "visits_this_month;",
           "visits_this_month ASC;",
-          "visits_this_month DESC;",
-          "visits_this_month NULLS;"
+          "visits_this_month NULLS;",
+          "visits_this_month DESC;"
         ]
       }
     },
@@ -1432,7 +1432,7 @@ window.QUESTS_SECTION_3 = [
     "targetQuery": "SELECT movie_title, star_rating\nFROM MovieReviews\nORDER BY star_rating DESC;",
     "template": [
       {
-        "text": "SELECT movie_title, star_rating\nFROM ",
+        "text": "SELECT ",
         "isBlank": false
       },
       {
@@ -1442,7 +1442,7 @@ window.QUESTS_SECTION_3 = [
         "placeholder": "[ ___ ]"
       },
       {
-        "text": "\n",
+        "text": ", star_rating\nFROM MovieReviews\nORDER BY ",
         "isBlank": false
       },
       {
@@ -1464,30 +1464,30 @@ window.QUESTS_SECTION_3 = [
     ],
     "slots": {
       "slot1": {
-        "correct": "MovieReviews",
+        "correct": "movie_title",
         "options": [
-          "Orders",
-          "MusicTracks",
-          "MovieReviews",
-          "Books"
+          "director",
+          "movie_title",
+          "star_rating",
+          "review_id"
         ]
       },
       "slot2": {
-        "correct": "ORDER BY",
+        "correct": "star_rating",
         "options": [
-          "ARRANGE BY",
-          "GROUP BY",
-          "SORT BY",
-          "ORDER BY"
+          "genre",
+          "star_rating",
+          "review_count",
+          "release_year"
         ]
       },
       "slot3": {
-        "correct": "star_rating DESC;",
+        "correct": "DESC;",
         "options": [
-          "star_rating;",
-          "star_rating ASC;",
-          "star_rating NULLS;",
-          "star_rating DESC;"
+          "NULLS FIRST;",
+          "AUTO;",
+          "ASC;",
+          "DESC;"
         ]
       }
     },
@@ -1549,28 +1549,28 @@ window.QUESTS_SECTION_3 = [
       "slot1": {
         "correct": "FlightSchedule",
         "options": [
-          "PetClinic",
+          "GroceryItems",
           "Books",
           "FlightSchedule",
-          "MovieReviews"
+          "GymMembers"
         ]
       },
       "slot2": {
         "correct": "ORDER BY",
         "options": [
-          "ARRANGE BY",
-          "ORDER BY",
           "SORT BY",
-          "GROUP BY"
+          "ARRANGE BY",
+          "GROUP BY",
+          "ORDER BY"
         ]
       },
       "slot3": {
         "correct": "ticket_price DESC;",
         "options": [
-          "ticket_price ASC;",
-          "ticket_price NULLS;",
           "ticket_price DESC;",
-          "ticket_price;"
+          "ticket_price;",
+          "ticket_price ASC;",
+          "ticket_price NULLS;"
         ]
       }
     },
@@ -1598,7 +1598,7 @@ window.QUESTS_SECTION_3 = [
     "targetQuery": "SELECT pet_name, weight_kg\nFROM PetClinic\nORDER BY weight_kg DESC;",
     "template": [
       {
-        "text": "SELECT pet_name, weight_kg\nFROM ",
+        "text": "SELECT ",
         "isBlank": false
       },
       {
@@ -1608,7 +1608,7 @@ window.QUESTS_SECTION_3 = [
         "placeholder": "[ ___ ]"
       },
       {
-        "text": "\n",
+        "text": ", weight_kg\nFROM PetClinic\nORDER BY ",
         "isBlank": false
       },
       {
@@ -1630,30 +1630,30 @@ window.QUESTS_SECTION_3 = [
     ],
     "slots": {
       "slot1": {
-        "correct": "PetClinic",
+        "correct": "pet_name",
         "options": [
-          "Orders",
-          "PetClinic",
-          "MusicTracks",
-          "Students"
+          "weight_kg",
+          "species",
+          "pet_id",
+          "pet_name"
         ]
       },
       "slot2": {
-        "correct": "ORDER BY",
+        "correct": "weight_kg",
         "options": [
-          "GROUP BY",
-          "ORDER BY",
-          "ARRANGE BY",
-          "SORT BY"
+          "pet_id",
+          "pet_name",
+          "species",
+          "weight_kg"
         ]
       },
       "slot3": {
-        "correct": "weight_kg DESC;",
+        "correct": "DESC;",
         "options": [
-          "weight_kg DESC;",
-          "weight_kg;",
-          "weight_kg ASC;",
-          "weight_kg NULLS;"
+          "ASC;",
+          "DESC;",
+          "NULLS FIRST;",
+          "AUTO;"
         ]
       }
     },
@@ -1681,7 +1681,7 @@ window.QUESTS_SECTION_3 = [
     "targetQuery": "SELECT city, full_name, gpa\nFROM Students\nORDER BY city ASC, gpa DESC;",
     "template": [
       {
-        "text": "SELECT city, full_name, gpa\n",
+        "text": "SELECT ",
         "isBlank": false
       },
       {
@@ -1691,7 +1691,7 @@ window.QUESTS_SECTION_3 = [
         "placeholder": "[ ___ ]"
       },
       {
-        "text": " Students\n",
+        "text": ", full_name, gpa\nFROM Students\n",
         "isBlank": false
       },
       {
@@ -1713,29 +1713,29 @@ window.QUESTS_SECTION_3 = [
     ],
     "slots": {
       "slot1": {
-        "correct": "FROM",
+        "correct": "city",
         "options": [
-          "TABLE",
-          "SOURCE",
-          "INTO",
-          "FROM"
+          "city",
+          "major",
+          "student_id",
+          "full_name"
         ]
       },
       "slot2": {
         "correct": "ORDER BY",
         "options": [
-          "ARRANGE BY",
-          "SORT BY",
           "ORDER BY",
-          "INDEX BY"
+          "ARRANGE BY",
+          "INDEX BY",
+          "SORT BY"
         ]
       },
       "slot3": {
         "correct": "city ASC, gpa DESC;",
         "options": [
-          "city ASC AND gpa DESC;",
           "city ASC, gpa DESC;",
           "city DESC, gpa DESC;",
+          "city ASC AND gpa DESC;",
           "city ASC, gpa ASC;"
         ]
       }
@@ -1808,37 +1808,37 @@ window.QUESTS_SECTION_3 = [
       "slot1": {
         "correct": "Books",
         "options": [
-          "MusicTracks",
-          "Employees",
-          "Orders",
-          "Books"
+          "PetClinic",
+          "Books",
+          "GymMembers",
+          "GroceryItems"
         ]
       },
       "slot2": {
         "correct": "ORDER BY",
         "options": [
-          "ORDER BY",
           "RANK BY",
-          "SORT BY",
-          "GROUP BY"
+          "ORDER BY",
+          "GROUP BY",
+          "SORT BY"
         ]
       },
       "slot3": {
         "correct": "genre ASC",
         "options": [
           "genre ASC_1",
-          "genre ASC",
           "genre DESC",
+          "genre ASC",
           "1"
         ]
       },
       "slot4": {
         "correct": "price ASC;",
         "options": [
-          "price ASC FIRST;",
-          "price ASC;",
           "price ASC;_1",
-          "price DESC;"
+          "price DESC;",
+          "price ASC;",
+          "price ASC FIRST;"
         ]
       }
     },
@@ -1866,7 +1866,7 @@ window.QUESTS_SECTION_3 = [
     "targetQuery": "SELECT department, salary, first_name\nFROM Employees\nORDER BY department ASC, salary DESC;",
     "template": [
       {
-        "text": "SELECT department, salary, first_name\n",
+        "text": "SELECT ",
         "isBlank": false
       },
       {
@@ -1876,7 +1876,7 @@ window.QUESTS_SECTION_3 = [
         "placeholder": "[ ___ ]"
       },
       {
-        "text": " Employees\n",
+        "text": ", salary, first_name\nFROM Employees\n",
         "isBlank": false
       },
       {
@@ -1898,29 +1898,29 @@ window.QUESTS_SECTION_3 = [
     ],
     "slots": {
       "slot1": {
-        "correct": "FROM",
+        "correct": "department",
         "options": [
-          "TABLE",
-          "INTO",
-          "SOURCE",
-          "FROM"
+          "hire_date",
+          "emp_id",
+          "department",
+          "salary"
         ]
       },
       "slot2": {
         "correct": "ORDER BY",
         "options": [
           "ARRANGE BY",
+          "SORT BY",
           "INDEX BY",
-          "ORDER BY",
-          "SORT BY"
+          "ORDER BY"
         ]
       },
       "slot3": {
         "correct": "department ASC, salary DESC;",
         "options": [
-          "department ASC AND salary DESC;",
           "department ASC, salary DESC;",
           "department ASC, salary ASC;",
+          "department ASC AND salary DESC;",
           "department DESC, salary DESC;"
         ]
       }
@@ -1993,37 +1993,37 @@ window.QUESTS_SECTION_3 = [
       "slot1": {
         "correct": "GroceryItems",
         "options": [
-          "FlightSchedule",
           "GroceryItems",
-          "GymMembers",
-          "Books"
+          "FlightSchedule",
+          "PetClinic",
+          "Students"
         ]
       },
       "slot2": {
         "correct": "ORDER BY",
         "options": [
-          "RANK BY",
-          "ORDER BY",
+          "GROUP BY",
           "SORT BY",
-          "GROUP BY"
+          "ORDER BY",
+          "RANK BY"
         ]
       },
       "slot3": {
         "correct": "category ASC",
         "options": [
-          "category DESC",
           "category ASC_1",
           "1",
+          "category DESC",
           "category ASC"
         ]
       },
       "slot4": {
         "correct": "unit_price ASC;",
         "options": [
-          "unit_price ASC FIRST;",
-          "unit_price ASC;_1",
+          "unit_price ASC;",
           "unit_price DESC;",
-          "unit_price ASC;"
+          "unit_price ASC;_1",
+          "unit_price ASC FIRST;"
         ]
       }
     },
@@ -2051,7 +2051,7 @@ window.QUESTS_SECTION_3 = [
     "targetQuery": "SELECT shipping_city, order_status, order_id\nFROM Orders\nORDER BY shipping_city ASC, order_status ASC;",
     "template": [
       {
-        "text": "SELECT shipping_city, order_status, order_id\n",
+        "text": "SELECT ",
         "isBlank": false
       },
       {
@@ -2061,7 +2061,7 @@ window.QUESTS_SECTION_3 = [
         "placeholder": "[ ___ ]"
       },
       {
-        "text": " Orders\n",
+        "text": ", order_status, order_id\nFROM Orders\n",
         "isBlank": false
       },
       {
@@ -2083,28 +2083,28 @@ window.QUESTS_SECTION_3 = [
     ],
     "slots": {
       "slot1": {
-        "correct": "FROM",
+        "correct": "shipping_city",
         "options": [
-          "FROM",
-          "TABLE",
-          "INTO",
-          "SOURCE"
+          "unit_price",
+          "discount_pct",
+          "order_status",
+          "shipping_city"
         ]
       },
       "slot2": {
         "correct": "ORDER BY",
         "options": [
           "ARRANGE BY",
-          "INDEX BY",
           "SORT BY",
-          "ORDER BY"
+          "ORDER BY",
+          "INDEX BY"
         ]
       },
       "slot3": {
         "correct": "shipping_city ASC, order_status ASC;",
         "options": [
-          "shipping_city ASC, order_status ASC;_1",
           "shipping_city ASC AND order_status ASC;",
+          "shipping_city ASC, order_status ASC;_1",
           "shipping_city DESC, order_status DESC;",
           "shipping_city ASC, order_status ASC;"
         ]
@@ -2178,37 +2178,37 @@ window.QUESTS_SECTION_3 = [
       "slot1": {
         "correct": "MusicTracks",
         "options": [
+          "GroceryItems",
           "Books",
-          "FlightSchedule",
-          "PetClinic",
-          "MusicTracks"
+          "MusicTracks",
+          "PetClinic"
         ]
       },
       "slot2": {
         "correct": "ORDER BY",
         "options": [
           "RANK BY",
-          "GROUP BY",
           "ORDER BY",
-          "SORT BY"
+          "SORT BY",
+          "GROUP BY"
         ]
       },
       "slot3": {
         "correct": "genre ASC",
         "options": [
+          "genre ASC_1",
           "genre ASC",
           "1",
-          "genre ASC_1",
           "genre DESC"
         ]
       },
       "slot4": {
         "correct": "play_count DESC;",
         "options": [
-          "play_count DESC;",
           "play_count DESC FIRST;",
-          "play_count DESC;_1",
-          "play_count ASC;"
+          "play_count ASC;",
+          "play_count DESC;",
+          "play_count DESC;_1"
         ]
       }
     },
@@ -2236,7 +2236,7 @@ window.QUESTS_SECTION_3 = [
     "targetQuery": "SELECT membership_plan, visits_this_month, member_name\nFROM GymMembers\nORDER BY membership_plan ASC, visits_this_month DESC;",
     "template": [
       {
-        "text": "SELECT membership_plan, visits_this_month, member_name\n",
+        "text": "SELECT ",
         "isBlank": false
       },
       {
@@ -2246,7 +2246,7 @@ window.QUESTS_SECTION_3 = [
         "placeholder": "[ ___ ]"
       },
       {
-        "text": " GymMembers\n",
+        "text": ", visits_this_month, member_name\nFROM GymMembers\n",
         "isBlank": false
       },
       {
@@ -2268,29 +2268,29 @@ window.QUESTS_SECTION_3 = [
     ],
     "slots": {
       "slot1": {
-        "correct": "FROM",
+        "correct": "membership_plan",
         "options": [
-          "SOURCE",
-          "INTO",
-          "FROM",
-          "TABLE"
+          "member_name",
+          "membership_plan",
+          "joined_date",
+          "visits_this_month"
         ]
       },
       "slot2": {
         "correct": "ORDER BY",
         "options": [
-          "ARRANGE BY",
-          "INDEX BY",
           "SORT BY",
-          "ORDER BY"
+          "ARRANGE BY",
+          "ORDER BY",
+          "INDEX BY"
         ]
       },
       "slot3": {
         "correct": "membership_plan ASC, visits_this_month DESC;",
         "options": [
-          "membership_plan ASC AND visits_this_month DESC;",
-          "membership_plan DESC, visits_this_month DESC;",
           "membership_plan ASC, visits_this_month ASC;",
+          "membership_plan DESC, visits_this_month DESC;",
+          "membership_plan ASC AND visits_this_month DESC;",
           "membership_plan ASC, visits_this_month DESC;"
         ]
       }
@@ -2363,10 +2363,10 @@ window.QUESTS_SECTION_3 = [
       "slot1": {
         "correct": "MovieReviews",
         "options": [
-          "PetClinic",
-          "GymMembers",
-          "MovieReviews",
-          "Employees"
+          "GroceryItems",
+          "FlightSchedule",
+          "Books",
+          "MovieReviews"
         ]
       },
       "slot2": {
@@ -2374,26 +2374,26 @@ window.QUESTS_SECTION_3 = [
         "options": [
           "SORT BY",
           "ORDER BY",
-          "RANK BY",
-          "GROUP BY"
+          "GROUP BY",
+          "RANK BY"
         ]
       },
       "slot3": {
         "correct": "genre ASC",
         "options": [
-          "1",
-          "genre ASC",
           "genre DESC",
-          "genre ASC_1"
+          "1",
+          "genre ASC_1",
+          "genre ASC"
         ]
       },
       "slot4": {
         "correct": "star_rating DESC;",
         "options": [
-          "star_rating DESC;",
+          "star_rating DESC;_1",
           "star_rating DESC FIRST;",
-          "star_rating ASC;",
-          "star_rating DESC;_1"
+          "star_rating DESC;",
+          "star_rating ASC;"
         ]
       }
     },
@@ -2421,7 +2421,7 @@ window.QUESTS_SECTION_3 = [
     "targetQuery": "SELECT origin_airport, departure_time, flight_id\nFROM FlightSchedule\nORDER BY origin_airport ASC, departure_time ASC;",
     "template": [
       {
-        "text": "SELECT origin_airport, departure_time, flight_id\n",
+        "text": "SELECT ",
         "isBlank": false
       },
       {
@@ -2431,7 +2431,7 @@ window.QUESTS_SECTION_3 = [
         "placeholder": "[ ___ ]"
       },
       {
-        "text": " FlightSchedule\n",
+        "text": ", departure_time, flight_id\nFROM FlightSchedule\n",
         "isBlank": false
       },
       {
@@ -2453,19 +2453,19 @@ window.QUESTS_SECTION_3 = [
     ],
     "slots": {
       "slot1": {
-        "correct": "FROM",
+        "correct": "origin_airport",
         "options": [
-          "SOURCE",
-          "TABLE",
-          "INTO",
-          "FROM"
+          "flight_id",
+          "dest_airport",
+          "departure_time",
+          "origin_airport"
         ]
       },
       "slot2": {
         "correct": "ORDER BY",
         "options": [
-          "ORDER BY",
           "INDEX BY",
+          "ORDER BY",
           "ARRANGE BY",
           "SORT BY"
         ]
@@ -2473,10 +2473,10 @@ window.QUESTS_SECTION_3 = [
       "slot3": {
         "correct": "origin_airport ASC, departure_time ASC;",
         "options": [
-          "origin_airport DESC, departure_time DESC;",
           "origin_airport ASC AND departure_time ASC;",
-          "origin_airport ASC, departure_time ASC;",
-          "origin_airport ASC, departure_time ASC;_1"
+          "origin_airport ASC, departure_time ASC;_1",
+          "origin_airport DESC, departure_time DESC;",
+          "origin_airport ASC, departure_time ASC;"
         ]
       }
     },
@@ -2548,37 +2548,37 @@ window.QUESTS_SECTION_3 = [
       "slot1": {
         "correct": "PetClinic",
         "options": [
-          "MovieReviews",
-          "FlightSchedule",
           "PetClinic",
-          "Students"
+          "MusicTracks",
+          "Students",
+          "MovieReviews"
         ]
       },
       "slot2": {
         "correct": "ORDER BY",
         "options": [
-          "ORDER BY",
           "GROUP BY",
+          "SORT BY",
           "RANK BY",
-          "SORT BY"
+          "ORDER BY"
         ]
       },
       "slot3": {
         "correct": "species ASC",
         "options": [
           "species ASC",
-          "species ASC_1",
           "species DESC",
-          "1"
+          "1",
+          "species ASC_1"
         ]
       },
       "slot4": {
         "correct": "weight_kg DESC;",
         "options": [
-          "weight_kg ASC;",
+          "weight_kg DESC FIRST;",
           "weight_kg DESC;_1",
           "weight_kg DESC;",
-          "weight_kg DESC FIRST;"
+          "weight_kg ASC;"
         ]
       }
     },
@@ -2606,7 +2606,7 @@ window.QUESTS_SECTION_3 = [
     "targetQuery": "SELECT city, student_id, full_name\nFROM Students\nORDER BY city ASC, student_id ASC;",
     "template": [
       {
-        "text": "SELECT city, student_id, full_name\n",
+        "text": "SELECT ",
         "isBlank": false
       },
       {
@@ -2616,7 +2616,7 @@ window.QUESTS_SECTION_3 = [
         "placeholder": "[ ___ ]"
       },
       {
-        "text": " Students\n",
+        "text": ", student_id, full_name\nFROM Students\n",
         "isBlank": false
       },
       {
@@ -2638,30 +2638,30 @@ window.QUESTS_SECTION_3 = [
     ],
     "slots": {
       "slot1": {
-        "correct": "FROM",
+        "correct": "city",
         "options": [
-          "SOURCE",
-          "TABLE",
-          "INTO",
-          "FROM"
+          "major",
+          "city",
+          "full_name",
+          "last_name"
         ]
       },
       "slot2": {
         "correct": "ORDER BY",
         "options": [
           "ARRANGE BY",
-          "INDEX BY",
           "SORT BY",
-          "ORDER BY"
+          "ORDER BY",
+          "INDEX BY"
         ]
       },
       "slot3": {
         "correct": "city ASC, student_id ASC;",
         "options": [
-          "city ASC AND student_id ASC;",
-          "city ASC, student_id ASC;_1",
           "city ASC, student_id ASC;",
-          "city DESC, student_id DESC;"
+          "city DESC, student_id DESC;",
+          "city ASC AND student_id ASC;",
+          "city ASC, student_id ASC;_1"
         ]
       }
     },
@@ -2733,37 +2733,37 @@ window.QUESTS_SECTION_3 = [
       "slot1": {
         "correct": "Books",
         "options": [
+          "Employees",
           "Books",
-          "PetClinic",
-          "GroceryItems",
-          "GymMembers"
+          "FlightSchedule",
+          "Orders"
         ]
       },
       "slot2": {
         "correct": "ORDER BY",
         "options": [
-          "ORDER BY",
           "GROUP BY",
           "SORT BY",
-          "RANK BY"
+          "RANK BY",
+          "ORDER BY"
         ]
       },
       "slot3": {
         "correct": "genre ASC",
         "options": [
+          "genre ASC_1",
           "genre DESC",
-          "1",
           "genre ASC",
-          "genre ASC_1"
+          "1"
         ]
       },
       "slot4": {
         "correct": "book_id ASC;",
         "options": [
-          "book_id ASC FIRST;",
           "book_id ASC;_1",
           "book_id ASC;",
-          "book_id DESC;"
+          "book_id DESC;",
+          "book_id ASC FIRST;"
         ]
       }
     },
@@ -2791,7 +2791,7 @@ window.QUESTS_SECTION_3 = [
     "targetQuery": "SELECT department, emp_id, first_name\nFROM Employees\nORDER BY department ASC, emp_id ASC;",
     "template": [
       {
-        "text": "SELECT department, emp_id, first_name\n",
+        "text": "SELECT ",
         "isBlank": false
       },
       {
@@ -2801,7 +2801,7 @@ window.QUESTS_SECTION_3 = [
         "placeholder": "[ ___ ]"
       },
       {
-        "text": " Employees\n",
+        "text": ", emp_id, first_name\nFROM Employees\n",
         "isBlank": false
       },
       {
@@ -2823,30 +2823,30 @@ window.QUESTS_SECTION_3 = [
     ],
     "slots": {
       "slot1": {
-        "correct": "FROM",
+        "correct": "department",
         "options": [
-          "INTO",
-          "SOURCE",
-          "TABLE",
-          "FROM"
+          "bonus",
+          "department",
+          "hire_date",
+          "emp_id"
         ]
       },
       "slot2": {
         "correct": "ORDER BY",
         "options": [
-          "INDEX BY",
-          "ARRANGE BY",
           "SORT BY",
+          "ARRANGE BY",
+          "INDEX BY",
           "ORDER BY"
         ]
       },
       "slot3": {
         "correct": "department ASC, emp_id ASC;",
         "options": [
-          "department ASC, emp_id ASC;",
           "department DESC, emp_id DESC;",
+          "department ASC, emp_id ASC;_1",
           "department ASC AND emp_id ASC;",
-          "department ASC, emp_id ASC;_1"
+          "department ASC, emp_id ASC;"
         ]
       }
     },
@@ -2918,37 +2918,37 @@ window.QUESTS_SECTION_3 = [
       "slot1": {
         "correct": "GroceryItems",
         "options": [
-          "GroceryItems",
           "MovieReviews",
-          "Books",
-          "Employees"
+          "Students",
+          "GroceryItems",
+          "MusicTracks"
         ]
       },
       "slot2": {
         "correct": "ORDER BY",
         "options": [
           "RANK BY",
-          "SORT BY",
+          "GROUP BY",
           "ORDER BY",
-          "GROUP BY"
+          "SORT BY"
         ]
       },
       "slot3": {
         "correct": "category ASC",
         "options": [
-          "category ASC",
-          "1",
+          "category ASC_1",
           "category DESC",
-          "category ASC_1"
+          "category ASC",
+          "1"
         ]
       },
       "slot4": {
         "correct": "item_id ASC;",
         "options": [
-          "item_id ASC;_1",
           "item_id ASC;",
-          "item_id ASC FIRST;",
-          "item_id DESC;"
+          "item_id ASC;_1",
+          "item_id DESC;",
+          "item_id ASC FIRST;"
         ]
       }
     },
@@ -2976,7 +2976,7 @@ window.QUESTS_SECTION_3 = [
     "targetQuery": "SELECT order_status, order_id, customer_name\nFROM Orders\nORDER BY order_status ASC, order_id ASC;",
     "template": [
       {
-        "text": "SELECT order_status, order_id, customer_name\n",
+        "text": "SELECT ",
         "isBlank": false
       },
       {
@@ -2986,7 +2986,7 @@ window.QUESTS_SECTION_3 = [
         "placeholder": "[ ___ ]"
       },
       {
-        "text": " Orders\n",
+        "text": ", order_id, customer_name\nFROM Orders\n",
         "isBlank": false
       },
       {
@@ -3008,30 +3008,30 @@ window.QUESTS_SECTION_3 = [
     ],
     "slots": {
       "slot1": {
-        "correct": "FROM",
+        "correct": "order_status",
         "options": [
-          "SOURCE",
-          "TABLE",
-          "FROM",
-          "INTO"
+          "shipping_city",
+          "order_status",
+          "customer_name",
+          "unit_price"
         ]
       },
       "slot2": {
         "correct": "ORDER BY",
         "options": [
-          "INDEX BY",
-          "ARRANGE BY",
           "SORT BY",
-          "ORDER BY"
+          "ORDER BY",
+          "INDEX BY",
+          "ARRANGE BY"
         ]
       },
       "slot3": {
         "correct": "order_status ASC, order_id ASC;",
         "options": [
-          "order_status ASC, order_id ASC;",
-          "order_status ASC, order_id ASC;_1",
           "order_status ASC AND order_id ASC;",
-          "order_status DESC, order_id DESC;"
+          "order_status DESC, order_id DESC;",
+          "order_status ASC, order_id ASC;",
+          "order_status ASC, order_id ASC;_1"
         ]
       }
     },
@@ -3104,25 +3104,25 @@ window.QUESTS_SECTION_3 = [
         "correct": "MusicTracks",
         "options": [
           "Orders",
-          "GroceryItems",
           "MusicTracks",
-          "MovieReviews"
+          "Students",
+          "GymMembers"
         ]
       },
       "slot2": {
         "correct": "ORDER BY",
         "options": [
-          "GROUP BY",
-          "RANK BY",
           "SORT BY",
-          "ORDER BY"
+          "GROUP BY",
+          "ORDER BY",
+          "RANK BY"
         ]
       },
       "slot3": {
         "correct": "artist_name ASC",
         "options": [
-          "artist_name ASC",
           "1",
+          "artist_name ASC",
           "artist_name ASC_1",
           "artist_name DESC"
         ]
@@ -3131,9 +3131,9 @@ window.QUESTS_SECTION_3 = [
         "correct": "track_id ASC;",
         "options": [
           "track_id ASC FIRST;",
+          "track_id DESC;",
           "track_id ASC;",
-          "track_id ASC;_1",
-          "track_id DESC;"
+          "track_id ASC;_1"
         ]
       }
     },
@@ -3161,7 +3161,7 @@ window.QUESTS_SECTION_3 = [
     "targetQuery": "SELECT membership_plan, member_id, member_name\nFROM GymMembers\nORDER BY membership_plan ASC, member_id ASC;",
     "template": [
       {
-        "text": "SELECT membership_plan, member_id, member_name\n",
+        "text": "SELECT ",
         "isBlank": false
       },
       {
@@ -3171,7 +3171,7 @@ window.QUESTS_SECTION_3 = [
         "placeholder": "[ ___ ]"
       },
       {
-        "text": " GymMembers\n",
+        "text": ", member_id, member_name\nFROM GymMembers\n",
         "isBlank": false
       },
       {
@@ -3193,30 +3193,30 @@ window.QUESTS_SECTION_3 = [
     ],
     "slots": {
       "slot1": {
-        "correct": "FROM",
+        "correct": "membership_plan",
         "options": [
-          "TABLE",
-          "SOURCE",
-          "INTO",
-          "FROM"
+          "membership_plan",
+          "joined_date",
+          "member_id",
+          "member_name"
         ]
       },
       "slot2": {
         "correct": "ORDER BY",
         "options": [
           "ORDER BY",
-          "ARRANGE BY",
           "INDEX BY",
+          "ARRANGE BY",
           "SORT BY"
         ]
       },
       "slot3": {
         "correct": "membership_plan ASC, member_id ASC;",
         "options": [
-          "membership_plan DESC, member_id DESC;",
           "membership_plan ASC AND member_id ASC;",
           "membership_plan ASC, member_id ASC;_1",
-          "membership_plan ASC, member_id ASC;"
+          "membership_plan ASC, member_id ASC;",
+          "membership_plan DESC, member_id DESC;"
         ]
       }
     },
@@ -3288,27 +3288,27 @@ window.QUESTS_SECTION_3 = [
       "slot1": {
         "correct": "MovieReviews",
         "options": [
-          "MovieReviews",
-          "Books",
+          "MusicTracks",
           "Students",
-          "Employees"
+          "FlightSchedule",
+          "MovieReviews"
         ]
       },
       "slot2": {
         "correct": "ORDER BY",
         "options": [
-          "GROUP BY",
           "ORDER BY",
-          "RANK BY",
-          "SORT BY"
+          "GROUP BY",
+          "SORT BY",
+          "RANK BY"
         ]
       },
       "slot3": {
         "correct": "director ASC",
         "options": [
-          "director DESC",
           "director ASC",
           "director ASC_1",
+          "director DESC",
           "1"
         ]
       },
@@ -3316,9 +3316,9 @@ window.QUESTS_SECTION_3 = [
         "correct": "review_id ASC;",
         "options": [
           "review_id ASC;_1",
-          "review_id ASC FIRST;",
           "review_id ASC;",
-          "review_id DESC;"
+          "review_id DESC;",
+          "review_id ASC FIRST;"
         ]
       }
     },
@@ -3346,7 +3346,7 @@ window.QUESTS_SECTION_3 = [
     "targetQuery": "SELECT airline, flight_id\nFROM FlightSchedule\nORDER BY airline ASC, flight_id ASC;",
     "template": [
       {
-        "text": "SELECT airline, flight_id\n",
+        "text": "SELECT ",
         "isBlank": false
       },
       {
@@ -3356,7 +3356,7 @@ window.QUESTS_SECTION_3 = [
         "placeholder": "[ ___ ]"
       },
       {
-        "text": " FlightSchedule\n",
+        "text": ", flight_id\nFROM FlightSchedule\n",
         "isBlank": false
       },
       {
@@ -3378,28 +3378,28 @@ window.QUESTS_SECTION_3 = [
     ],
     "slots": {
       "slot1": {
-        "correct": "FROM",
+        "correct": "airline",
         "options": [
-          "INTO",
-          "TABLE",
-          "FROM",
-          "SOURCE"
+          "departure_time",
+          "flight_id",
+          "airline",
+          "ticket_price"
         ]
       },
       "slot2": {
         "correct": "ORDER BY",
         "options": [
-          "INDEX BY",
-          "ARRANGE BY",
           "SORT BY",
+          "ARRANGE BY",
+          "INDEX BY",
           "ORDER BY"
         ]
       },
       "slot3": {
         "correct": "airline ASC, flight_id ASC;",
         "options": [
-          "airline DESC, flight_id DESC;",
           "airline ASC, flight_id ASC;",
+          "airline DESC, flight_id DESC;",
           "airline ASC AND flight_id ASC;",
           "airline ASC, flight_id ASC;_1"
         ]
@@ -3473,36 +3473,36 @@ window.QUESTS_SECTION_3 = [
       "slot1": {
         "correct": "PetClinic",
         "options": [
-          "Employees",
-          "Books",
           "PetClinic",
-          "GymMembers"
+          "MovieReviews",
+          "Employees",
+          "GroceryItems"
         ]
       },
       "slot2": {
         "correct": "ORDER BY",
         "options": [
-          "RANK BY",
-          "GROUP BY",
           "ORDER BY",
-          "SORT BY"
+          "GROUP BY",
+          "SORT BY",
+          "RANK BY"
         ]
       },
       "slot3": {
         "correct": "owner_city ASC",
         "options": [
+          "owner_city ASC_1",
           "1",
           "owner_city DESC",
-          "owner_city ASC",
-          "owner_city ASC_1"
+          "owner_city ASC"
         ]
       },
       "slot4": {
         "correct": "pet_id ASC;",
         "options": [
           "pet_id ASC;_1",
-          "pet_id ASC;",
           "pet_id ASC FIRST;",
+          "pet_id ASC;",
           "pet_id DESC;"
         ]
       }
@@ -3531,7 +3531,7 @@ window.QUESTS_SECTION_3 = [
     "targetQuery": "SELECT title, price, stock_qty, (price * stock_qty) AS inventory_val\nFROM Books\nORDER BY inventory_val DESC;",
     "template": [
       {
-        "text": "SELECT title, price, stock_qty, (price * stock_qty) AS inventory_val\n",
+        "text": "SELECT ",
         "isBlank": false
       },
       {
@@ -3541,7 +3541,7 @@ window.QUESTS_SECTION_3 = [
         "placeholder": "[ ___ ]"
       },
       {
-        "text": " Books\n",
+        "text": ", price, stock_qty, (price * stock_qty) AS inventory_val\nFROM Books\n",
         "isBlank": false
       },
       {
@@ -3563,29 +3563,29 @@ window.QUESTS_SECTION_3 = [
     ],
     "slots": {
       "slot1": {
-        "correct": "FROM",
+        "correct": "title",
         "options": [
-          "FROM",
-          "SOURCE",
-          "INTO",
-          "TABLE"
+          "title",
+          "published_year",
+          "book_id",
+          "genre"
         ]
       },
       "slot2": {
         "correct": "ORDER BY",
         "options": [
-          "INDEX BY",
           "SORT BY",
-          "ORDER BY",
-          "ARRANGE BY"
+          "ARRANGE BY",
+          "INDEX BY",
+          "ORDER BY"
         ]
       },
       "slot3": {
         "correct": "inventory_val DESC;",
         "options": [
+          "inventory_val DESC;_1",
           "inventory_val ASC;",
           "inventory_val DESC;_2",
-          "inventory_val DESC;_1",
           "inventory_val DESC;"
         ]
       }
@@ -3658,37 +3658,37 @@ window.QUESTS_SECTION_3 = [
       "slot1": {
         "correct": "Orders",
         "options": [
+          "FlightSchedule",
           "Orders",
-          "Books",
-          "PetClinic",
-          "GymMembers"
+          "Students",
+          "Books"
         ]
       },
       "slot2": {
         "correct": "ORDER BY",
         "options": [
+          "SORT BY",
           "GROUP BY",
-          "ORDER BY",
           "RANK BY",
-          "SORT BY"
+          "ORDER BY"
         ]
       },
       "slot3": {
         "correct": "subtotal DESC",
         "options": [
           "subtotal ASC",
-          "1",
           "subtotal DESC_1",
-          "subtotal DESC"
+          "subtotal DESC",
+          "1"
         ]
       },
       "slot4": {
         "correct": "2 ASC;",
         "options": [
-          "2 ASC FIRST;",
           "2 ASC;",
           "2 ASC;_1",
-          "2 DESC;"
+          "2 DESC;",
+          "2 ASC FIRST;"
         ]
       }
     },
@@ -3716,7 +3716,7 @@ window.QUESTS_SECTION_3 = [
     "targetQuery": "SELECT first_name, salary, bonus, (salary + COALESCE(bonus, 0)) AS total_comp\nFROM Employees\nORDER BY total_comp DESC;",
     "template": [
       {
-        "text": "SELECT first_name, salary, bonus, (salary + COALESCE(bonus, 0)) AS total_comp\n",
+        "text": "SELECT ",
         "isBlank": false
       },
       {
@@ -3726,7 +3726,7 @@ window.QUESTS_SECTION_3 = [
         "placeholder": "[ ___ ]"
       },
       {
-        "text": " Employees\n",
+        "text": ", salary, bonus, (salary + COALESCE(bonus, 0)) AS total_comp\nFROM Employees\n",
         "isBlank": false
       },
       {
@@ -3748,30 +3748,30 @@ window.QUESTS_SECTION_3 = [
     ],
     "slots": {
       "slot1": {
-        "correct": "FROM",
+        "correct": "first_name",
         "options": [
-          "INTO",
-          "SOURCE",
-          "FROM",
-          "TABLE"
+          "first_name",
+          "hire_date",
+          "bonus",
+          "department"
         ]
       },
       "slot2": {
         "correct": "ORDER BY",
         "options": [
+          "ARRANGE BY",
           "ORDER BY",
-          "SORT BY",
           "INDEX BY",
-          "ARRANGE BY"
+          "SORT BY"
         ]
       },
       "slot3": {
         "correct": "total_comp DESC;",
         "options": [
-          "total_comp ASC;",
           "total_comp DESC;_1",
           "total_comp DESC;_2",
-          "total_comp DESC;"
+          "total_comp DESC;",
+          "total_comp ASC;"
         ]
       }
     },
@@ -3843,35 +3843,35 @@ window.QUESTS_SECTION_3 = [
       "slot1": {
         "correct": "GroceryItems",
         "options": [
-          "MovieReviews",
-          "Employees",
-          "GroceryItems",
-          "GymMembers"
+          "Students",
+          "Books",
+          "FlightSchedule",
+          "GroceryItems"
         ]
       },
       "slot2": {
         "correct": "ORDER BY",
         "options": [
+          "SORT BY",
           "GROUP BY",
           "RANK BY",
-          "SORT BY",
           "ORDER BY"
         ]
       },
       "slot3": {
         "correct": "tax_price ASC",
         "options": [
-          "tax_price ASC_1",
-          "tax_price DESC",
           "1",
-          "tax_price ASC"
+          "tax_price ASC_1",
+          "tax_price ASC",
+          "tax_price DESC"
         ]
       },
       "slot4": {
         "correct": "2 ASC;",
         "options": [
-          "2 ASC;_1",
           "2 ASC;",
+          "2 ASC;_1",
           "2 ASC FIRST;",
           "2 DESC;"
         ]
@@ -3901,7 +3901,7 @@ window.QUESTS_SECTION_3 = [
     "targetQuery": "SELECT full_name, gpa, (gpa * 25.0) AS pct_score\nFROM Students\nORDER BY pct_score DESC;",
     "template": [
       {
-        "text": "SELECT full_name, gpa, (gpa * 25.0) AS pct_score\n",
+        "text": "SELECT ",
         "isBlank": false
       },
       {
@@ -3911,7 +3911,7 @@ window.QUESTS_SECTION_3 = [
         "placeholder": "[ ___ ]"
       },
       {
-        "text": " Students\n",
+        "text": ", gpa, (gpa * 25.0) AS pct_score\nFROM Students\n",
         "isBlank": false
       },
       {
@@ -3933,30 +3933,30 @@ window.QUESTS_SECTION_3 = [
     ],
     "slots": {
       "slot1": {
-        "correct": "FROM",
+        "correct": "full_name",
         "options": [
-          "INTO",
-          "TABLE",
-          "SOURCE",
-          "FROM"
+          "major",
+          "enrolled_year",
+          "full_name",
+          "city"
         ]
       },
       "slot2": {
         "correct": "ORDER BY",
         "options": [
           "INDEX BY",
-          "ORDER BY",
           "ARRANGE BY",
-          "SORT BY"
+          "SORT BY",
+          "ORDER BY"
         ]
       },
       "slot3": {
         "correct": "pct_score DESC;",
         "options": [
-          "pct_score ASC;",
-          "pct_score DESC;",
           "pct_score DESC;_1",
-          "pct_score DESC;_2"
+          "pct_score DESC;_2",
+          "pct_score DESC;",
+          "pct_score ASC;"
         ]
       }
     },
@@ -3984,7 +3984,7 @@ window.QUESTS_SECTION_3 = [
     "targetQuery": "SELECT track_title, duration_seconds, (duration_seconds / 60.0) AS mins\nFROM MusicTracks\nORDER BY mins DESC;",
     "template": [
       {
-        "text": "SELECT track_title, duration_seconds, (duration_seconds / 60.0) AS mins\n",
+        "text": "SELECT ",
         "isBlank": false
       },
       {
@@ -3994,7 +3994,7 @@ window.QUESTS_SECTION_3 = [
         "placeholder": "[ ___ ]"
       },
       {
-        "text": " ",
+        "text": ", duration_seconds, (duration_seconds / 60.0) AS mins\nFROM ",
         "isBlank": false
       },
       {
@@ -4026,21 +4026,21 @@ window.QUESTS_SECTION_3 = [
     ],
     "slots": {
       "slot1": {
-        "correct": "FROM",
+        "correct": "track_title",
         "options": [
-          "SOURCE",
-          "INTO",
-          "FROM",
-          "TABLE"
+          "artist",
+          "track_title",
+          "track_id",
+          "genre"
         ]
       },
       "slot2": {
         "correct": "MusicTracks",
         "options": [
-          "Employees",
+          "FlightSchedule",
           "MusicTracks",
-          "Students",
-          "PetClinic"
+          "PetClinic",
+          "Books"
         ]
       },
       "slot3": {
@@ -4055,10 +4055,10 @@ window.QUESTS_SECTION_3 = [
       "slot4": {
         "correct": "DESC;",
         "options": [
-          "DESC;",
+          "ASC;",
           "DESC;_1",
           "AUTO;",
-          "ASC;"
+          "DESC;"
         ]
       }
     },
@@ -4086,7 +4086,7 @@ window.QUESTS_SECTION_3 = [
     "targetQuery": "SELECT member_name, monthly_fee, (monthly_fee * 12) AS annual_dues\nFROM GymMembers\nORDER BY annual_dues ASC;",
     "template": [
       {
-        "text": "SELECT member_name, monthly_fee, (monthly_fee * 12) AS annual_dues\n",
+        "text": "SELECT ",
         "isBlank": false
       },
       {
@@ -4096,7 +4096,7 @@ window.QUESTS_SECTION_3 = [
         "placeholder": "[ ___ ]"
       },
       {
-        "text": " ",
+        "text": ", monthly_fee, (monthly_fee * 12) AS annual_dues\nFROM ",
         "isBlank": false
       },
       {
@@ -4128,39 +4128,39 @@ window.QUESTS_SECTION_3 = [
     ],
     "slots": {
       "slot1": {
-        "correct": "FROM",
+        "correct": "member_name",
         "options": [
-          "TABLE",
-          "SOURCE",
-          "FROM",
-          "INTO"
+          "monthly_fee",
+          "visits_this_month",
+          "member_name",
+          "member_id"
         ]
       },
       "slot2": {
         "correct": "GymMembers",
         "options": [
-          "Students",
+          "MusicTracks",
+          "GroceryItems",
           "GymMembers",
-          "Employees",
-          "Books"
+          "MovieReviews"
         ]
       },
       "slot3": {
         "correct": "annual_dues",
         "options": [
-          "2",
-          "annual_dues",
+          "LENGTH(annual_dues)",
           "1",
-          "LENGTH(annual_dues)"
+          "annual_dues",
+          "2"
         ]
       },
       "slot4": {
         "correct": "ASC;",
         "options": [
-          "AUTO;",
-          "ASC;_1",
           "ASC;",
-          "DESC;"
+          "ASC;_1",
+          "DESC;",
+          "AUTO;"
         ]
       }
     },
@@ -4188,7 +4188,7 @@ window.QUESTS_SECTION_3 = [
     "targetQuery": "SELECT flight_id, ticket_price, (ticket_price + 35.00) AS total_fare\nFROM FlightSchedule\nORDER BY total_fare ASC;",
     "template": [
       {
-        "text": "SELECT flight_id, ticket_price, (ticket_price + 35.00) AS total_fare\n",
+        "text": "SELECT ",
         "isBlank": false
       },
       {
@@ -4198,7 +4198,7 @@ window.QUESTS_SECTION_3 = [
         "placeholder": "[ ___ ]"
       },
       {
-        "text": " ",
+        "text": ", ticket_price, (ticket_price + 35.00) AS total_fare\nFROM ",
         "isBlank": false
       },
       {
@@ -4230,21 +4230,21 @@ window.QUESTS_SECTION_3 = [
     ],
     "slots": {
       "slot1": {
-        "correct": "FROM",
+        "correct": "flight_id",
         "options": [
-          "SOURCE",
-          "INTO",
-          "TABLE",
-          "FROM"
+          "departure_time",
+          "dest_airport",
+          "flight_id",
+          "airline"
         ]
       },
       "slot2": {
         "correct": "FlightSchedule",
         "options": [
-          "Students",
-          "Orders",
           "MusicTracks",
-          "FlightSchedule"
+          "Students",
+          "FlightSchedule",
+          "PetClinic"
         ]
       },
       "slot3": {
@@ -4252,17 +4252,17 @@ window.QUESTS_SECTION_3 = [
         "options": [
           "total_fare",
           "1",
-          "LENGTH(total_fare)",
-          "2"
+          "2",
+          "LENGTH(total_fare)"
         ]
       },
       "slot4": {
         "correct": "ASC;",
         "options": [
-          "AUTO;",
           "ASC;",
+          "DESC;",
           "ASC;_1",
-          "DESC;"
+          "AUTO;"
         ]
       }
     },
@@ -4290,7 +4290,7 @@ window.QUESTS_SECTION_3 = [
     "targetQuery": "SELECT pet_name, weight_kg, (weight_kg * 2.20462) AS lbs\nFROM PetClinic\nORDER BY lbs DESC;",
     "template": [
       {
-        "text": "SELECT pet_name, weight_kg, (weight_kg * 2.20462) AS lbs\n",
+        "text": "SELECT ",
         "isBlank": false
       },
       {
@@ -4300,7 +4300,7 @@ window.QUESTS_SECTION_3 = [
         "placeholder": "[ ___ ]"
       },
       {
-        "text": " ",
+        "text": ", weight_kg, (weight_kg * 2.20462) AS lbs\nFROM ",
         "isBlank": false
       },
       {
@@ -4332,39 +4332,39 @@ window.QUESTS_SECTION_3 = [
     ],
     "slots": {
       "slot1": {
-        "correct": "FROM",
+        "correct": "pet_name",
         "options": [
-          "SOURCE",
-          "INTO",
-          "FROM",
-          "TABLE"
+          "is_vaccinated",
+          "species",
+          "pet_name",
+          "weight_kg"
         ]
       },
       "slot2": {
         "correct": "PetClinic",
         "options": [
-          "Employees",
-          "FlightSchedule",
+          "MovieReviews",
+          "PetClinic",
           "Students",
-          "PetClinic"
+          "Employees"
         ]
       },
       "slot3": {
         "correct": "lbs",
         "options": [
-          "lbs",
-          "LENGTH(lbs)",
           "2",
+          "LENGTH(lbs)",
+          "lbs",
           "1"
         ]
       },
       "slot4": {
         "correct": "DESC;",
         "options": [
+          "DESC;_1",
           "AUTO;",
           "ASC;",
-          "DESC;",
-          "DESC;_1"
+          "DESC;"
         ]
       }
     },
@@ -4392,7 +4392,7 @@ window.QUESTS_SECTION_3 = [
     "targetQuery": "SELECT movie_title, release_year, (2026 - release_year) AS age\nFROM MovieReviews\nORDER BY age ASC;",
     "template": [
       {
-        "text": "SELECT movie_title, release_year, (2026 - release_year) AS age\n",
+        "text": "SELECT ",
         "isBlank": false
       },
       {
@@ -4402,7 +4402,7 @@ window.QUESTS_SECTION_3 = [
         "placeholder": "[ ___ ]"
       },
       {
-        "text": " ",
+        "text": ", release_year, (2026 - release_year) AS age\nFROM ",
         "isBlank": false
       },
       {
@@ -4434,39 +4434,39 @@ window.QUESTS_SECTION_3 = [
     ],
     "slots": {
       "slot1": {
-        "correct": "FROM",
+        "correct": "movie_title",
         "options": [
-          "TABLE",
-          "SOURCE",
-          "INTO",
-          "FROM"
+          "review_count",
+          "movie_title",
+          "release_year",
+          "star_rating"
         ]
       },
       "slot2": {
         "correct": "MovieReviews",
         "options": [
-          "PetClinic",
-          "Orders",
           "GymMembers",
+          "Employees",
+          "MusicTracks",
           "MovieReviews"
         ]
       },
       "slot3": {
         "correct": "age",
         "options": [
-          "LENGTH(age)",
           "2",
-          "age",
-          "1"
+          "1",
+          "LENGTH(age)",
+          "age"
         ]
       },
       "slot4": {
         "correct": "ASC;",
         "options": [
           "ASC;",
-          "AUTO;",
+          "DESC;",
           "ASC;_1",
-          "DESC;"
+          "AUTO;"
         ]
       }
     },
@@ -4494,7 +4494,7 @@ window.QUESTS_SECTION_3 = [
     "targetQuery": "SELECT full_name\nFROM Students\nORDER BY LENGTH(full_name) DESC;",
     "template": [
       {
-        "text": "SELECT full_name\n",
+        "text": "SELECT ",
         "isBlank": false
       },
       {
@@ -4504,7 +4504,7 @@ window.QUESTS_SECTION_3 = [
         "placeholder": "[ ___ ]"
       },
       {
-        "text": " ",
+        "text": "\nFROM ",
         "isBlank": false
       },
       {
@@ -4536,39 +4536,39 @@ window.QUESTS_SECTION_3 = [
     ],
     "slots": {
       "slot1": {
-        "correct": "FROM",
+        "correct": "full_name",
         "options": [
-          "SOURCE",
-          "INTO",
-          "TABLE",
-          "FROM"
+          "enrolled_year",
+          "major",
+          "first_name",
+          "full_name"
         ]
       },
       "slot2": {
         "correct": "Students",
         "options": [
+          "GroceryItems",
           "GymMembers",
-          "Students",
-          "PetClinic",
-          "Books"
+          "Employees",
+          "Students"
         ]
       },
       "slot3": {
         "correct": "LENGTH(full_name)",
         "options": [
+          "LENGTH(LENGTH(full_name))",
           "1",
-          "2",
           "LENGTH(full_name)",
-          "LENGTH(LENGTH(full_name))"
+          "2"
         ]
       },
       "slot4": {
         "correct": "DESC;",
         "options": [
-          "ASC;",
-          "DESC;",
           "DESC;_1",
-          "AUTO;"
+          "AUTO;",
+          "DESC;",
+          "ASC;"
         ]
       }
     },
@@ -4596,7 +4596,7 @@ window.QUESTS_SECTION_3 = [
     "targetQuery": "SELECT title\nFROM Books\nORDER BY LENGTH(title) ASC;",
     "template": [
       {
-        "text": "SELECT title\n",
+        "text": "SELECT ",
         "isBlank": false
       },
       {
@@ -4606,7 +4606,7 @@ window.QUESTS_SECTION_3 = [
         "placeholder": "[ ___ ]"
       },
       {
-        "text": " ",
+        "text": "\nFROM ",
         "isBlank": false
       },
       {
@@ -4638,37 +4638,37 @@ window.QUESTS_SECTION_3 = [
     ],
     "slots": {
       "slot1": {
-        "correct": "FROM",
+        "correct": "title",
         "options": [
-          "SOURCE",
-          "INTO",
-          "TABLE",
-          "FROM"
+          "title",
+          "author",
+          "published_year",
+          "genre"
         ]
       },
       "slot2": {
         "correct": "Books",
         "options": [
-          "GroceryItems",
           "Students",
-          "Books",
-          "PetClinic"
+          "GymMembers",
+          "MusicTracks",
+          "Books"
         ]
       },
       "slot3": {
         "correct": "LENGTH(title)",
         "options": [
+          "1",
           "2",
           "LENGTH(LENGTH(title))",
-          "LENGTH(title)",
-          "1"
+          "LENGTH(title)"
         ]
       },
       "slot4": {
         "correct": "ASC;",
         "options": [
-          "DESC;",
           "ASC;_1",
+          "DESC;",
           "ASC;",
           "AUTO;"
         ]
@@ -4698,7 +4698,7 @@ window.QUESTS_SECTION_3 = [
     "targetQuery": "SELECT first_name, hire_date\nFROM Employees\nORDER BY YEAR(hire_date) DESC, MONTH(hire_date) DESC;",
     "template": [
       {
-        "text": "SELECT first_name, hire_date\n",
+        "text": "SELECT ",
         "isBlank": false
       },
       {
@@ -4708,7 +4708,7 @@ window.QUESTS_SECTION_3 = [
         "placeholder": "[ ___ ]"
       },
       {
-        "text": " ",
+        "text": ", hire_date\nFROM ",
         "isBlank": false
       },
       {
@@ -4740,39 +4740,39 @@ window.QUESTS_SECTION_3 = [
     ],
     "slots": {
       "slot1": {
-        "correct": "FROM",
+        "correct": "first_name",
         "options": [
-          "TABLE",
-          "FROM",
-          "SOURCE",
-          "INTO"
+          "salary",
+          "last_name",
+          "bonus",
+          "first_name"
         ]
       },
       "slot2": {
         "correct": "Employees",
         "options": [
-          "MovieReviews",
+          "GymMembers",
           "Students",
-          "Books",
-          "Employees"
+          "Employees",
+          "PetClinic"
         ]
       },
       "slot3": {
         "correct": "YEAR(hire_date)",
         "options": [
-          "LENGTH(YEAR(hire_date))",
-          "1",
+          "2",
           "YEAR(hire_date)",
-          "2"
+          "LENGTH(YEAR(hire_date))",
+          "1"
         ]
       },
       "slot4": {
         "correct": "DESC, MONTH(hire_date) DESC;",
         "options": [
           "AUTO;",
-          "ASC;",
+          "DESC, MONTH(hire_date) DESC;",
           "DESC;",
-          "DESC, MONTH(hire_date) DESC;"
+          "ASC;"
         ]
       }
     },
@@ -4800,7 +4800,7 @@ window.QUESTS_SECTION_3 = [
     "targetQuery": "SELECT item_name, unit_price\nFROM GroceryItems\nORDER BY ROUND(unit_price) DESC;",
     "template": [
       {
-        "text": "SELECT item_name, unit_price\n",
+        "text": "SELECT ",
         "isBlank": false
       },
       {
@@ -4810,7 +4810,7 @@ window.QUESTS_SECTION_3 = [
         "placeholder": "[ ___ ]"
       },
       {
-        "text": " ",
+        "text": ", unit_price\nFROM ",
         "isBlank": false
       },
       {
@@ -4842,39 +4842,39 @@ window.QUESTS_SECTION_3 = [
     ],
     "slots": {
       "slot1": {
-        "correct": "FROM",
+        "correct": "item_name",
         "options": [
-          "TABLE",
-          "SOURCE",
-          "INTO",
-          "FROM"
+          "item_id",
+          "item_name",
+          "stock_qty",
+          "unit_price"
         ]
       },
       "slot2": {
         "correct": "GroceryItems",
         "options": [
           "Employees",
-          "GroceryItems",
+          "PetClinic",
           "MovieReviews",
-          "Books"
+          "GroceryItems"
         ]
       },
       "slot3": {
         "correct": "ROUND(unit_price)",
         "options": [
-          "2",
-          "1",
+          "LENGTH(ROUND(unit_price))",
           "ROUND(unit_price)",
-          "LENGTH(ROUND(unit_price))"
+          "1",
+          "2"
         ]
       },
       "slot4": {
         "correct": "DESC;",
         "options": [
+          "DESC;",
           "ASC;",
-          "DESC;_1",
           "AUTO;",
-          "DESC;"
+          "DESC;_1"
         ]
       }
     },
@@ -4902,7 +4902,7 @@ window.QUESTS_SECTION_3 = [
     "targetQuery": "SELECT customer_name\nFROM Orders\nORDER BY LOWER(customer_name) ASC;",
     "template": [
       {
-        "text": "SELECT customer_name\n",
+        "text": "SELECT ",
         "isBlank": false
       },
       {
@@ -4912,7 +4912,7 @@ window.QUESTS_SECTION_3 = [
         "placeholder": "[ ___ ]"
       },
       {
-        "text": " ",
+        "text": "\nFROM ",
         "isBlank": false
       },
       {
@@ -4944,39 +4944,39 @@ window.QUESTS_SECTION_3 = [
     ],
     "slots": {
       "slot1": {
-        "correct": "FROM",
+        "correct": "customer_name",
         "options": [
-          "FROM",
-          "INTO",
-          "SOURCE",
-          "TABLE"
+          "unit_price",
+          "order_status",
+          "discount_pct",
+          "customer_name"
         ]
       },
       "slot2": {
         "correct": "Orders",
         "options": [
-          "Employees",
-          "MusicTracks",
-          "MovieReviews",
+          "GroceryItems",
+          "Books",
+          "PetClinic",
           "Orders"
         ]
       },
       "slot3": {
         "correct": "LOWER(customer_name)",
         "options": [
-          "LENGTH(LOWER(customer_name))",
-          "LOWER(customer_name)",
+          "2",
           "1",
-          "2"
+          "LENGTH(LOWER(customer_name))",
+          "LOWER(customer_name)"
         ]
       },
       "slot4": {
         "correct": "ASC;",
         "options": [
-          "ASC;_1",
-          "ASC;",
           "DESC;",
-          "AUTO;"
+          "ASC;",
+          "AUTO;",
+          "ASC;_1"
         ]
       }
     },
@@ -5004,7 +5004,7 @@ window.QUESTS_SECTION_3 = [
     "targetQuery": "SELECT track_title\nFROM MusicTracks\nORDER BY LENGTH(track_title) DESC;",
     "template": [
       {
-        "text": "SELECT track_title\n",
+        "text": "SELECT ",
         "isBlank": false
       },
       {
@@ -5014,7 +5014,7 @@ window.QUESTS_SECTION_3 = [
         "placeholder": "[ ___ ]"
       },
       {
-        "text": " ",
+        "text": "\nFROM ",
         "isBlank": false
       },
       {
@@ -5046,38 +5046,38 @@ window.QUESTS_SECTION_3 = [
     ],
     "slots": {
       "slot1": {
-        "correct": "FROM",
+        "correct": "track_title",
         "options": [
-          "TABLE",
-          "INTO",
-          "FROM",
-          "SOURCE"
+          "release_year",
+          "artist",
+          "track_id",
+          "track_title"
         ]
       },
       "slot2": {
         "correct": "MusicTracks",
         "options": [
-          "GymMembers",
           "MusicTracks",
-          "Students",
-          "Orders"
+          "GymMembers",
+          "GroceryItems",
+          "PetClinic"
         ]
       },
       "slot3": {
         "correct": "LENGTH(track_title)",
         "options": [
           "1",
-          "LENGTH(track_title)",
           "2",
-          "LENGTH(LENGTH(track_title))"
+          "LENGTH(LENGTH(track_title))",
+          "LENGTH(track_title)"
         ]
       },
       "slot4": {
         "correct": "DESC;",
         "options": [
-          "AUTO;",
           "DESC;_1",
           "DESC;",
+          "AUTO;",
           "ASC;"
         ]
       }
@@ -5106,7 +5106,7 @@ window.QUESTS_SECTION_3 = [
     "targetQuery": "SELECT member_name, join_date\nFROM GymMembers\nORDER BY YEAR(join_date) ASC;",
     "template": [
       {
-        "text": "SELECT member_name, join_date\n",
+        "text": "SELECT ",
         "isBlank": false
       },
       {
@@ -5116,7 +5116,7 @@ window.QUESTS_SECTION_3 = [
         "placeholder": "[ ___ ]"
       },
       {
-        "text": " ",
+        "text": ", join_date\nFROM ",
         "isBlank": false
       },
       {
@@ -5148,39 +5148,39 @@ window.QUESTS_SECTION_3 = [
     ],
     "slots": {
       "slot1": {
-        "correct": "FROM",
+        "correct": "member_name",
         "options": [
-          "TABLE",
-          "SOURCE",
-          "FROM",
-          "INTO"
+          "monthly_fee",
+          "member_id",
+          "visits_this_month",
+          "member_name"
         ]
       },
       "slot2": {
         "correct": "GymMembers",
         "options": [
-          "MusicTracks",
-          "Books",
           "GymMembers",
-          "Students"
+          "Employees",
+          "MusicTracks",
+          "PetClinic"
         ]
       },
       "slot3": {
         "correct": "YEAR(join_date)",
         "options": [
-          "YEAR(join_date)",
           "LENGTH(YEAR(join_date))",
+          "2",
           "1",
-          "2"
+          "YEAR(join_date)"
         ]
       },
       "slot4": {
         "correct": "ASC;",
         "options": [
           "DESC;",
-          "AUTO;",
+          "ASC;_1",
           "ASC;",
-          "ASC;_1"
+          "AUTO;"
         ]
       }
     },
@@ -5208,7 +5208,7 @@ window.QUESTS_SECTION_3 = [
     "targetQuery": "SELECT movie_title, star_rating\nFROM MovieReviews\nORDER BY ROUND(star_rating) DESC;",
     "template": [
       {
-        "text": "SELECT movie_title, star_rating\n",
+        "text": "SELECT ",
         "isBlank": false
       },
       {
@@ -5218,7 +5218,7 @@ window.QUESTS_SECTION_3 = [
         "placeholder": "[ ___ ]"
       },
       {
-        "text": " ",
+        "text": ", star_rating\nFROM ",
         "isBlank": false
       },
       {
@@ -5250,28 +5250,28 @@ window.QUESTS_SECTION_3 = [
     ],
     "slots": {
       "slot1": {
-        "correct": "FROM",
+        "correct": "movie_title",
         "options": [
-          "FROM",
-          "INTO",
-          "SOURCE",
-          "TABLE"
+          "release_year",
+          "director",
+          "movie_title",
+          "review_count"
         ]
       },
       "slot2": {
         "correct": "MovieReviews",
         "options": [
-          "MusicTracks",
+          "Orders",
+          "GroceryItems",
           "MovieReviews",
-          "Books",
           "Employees"
         ]
       },
       "slot3": {
         "correct": "ROUND(star_rating)",
         "options": [
-          "1",
           "2",
+          "1",
           "ROUND(star_rating)",
           "LENGTH(ROUND(star_rating))"
         ]
@@ -5279,10 +5279,10 @@ window.QUESTS_SECTION_3 = [
       "slot4": {
         "correct": "DESC;",
         "options": [
-          "ASC;",
           "DESC;_1",
-          "AUTO;",
-          "DESC;"
+          "DESC;",
+          "ASC;",
+          "AUTO;"
         ]
       }
     },
@@ -5310,7 +5310,7 @@ window.QUESTS_SECTION_3 = [
     "targetQuery": "SELECT flight_id, origin_airport\nFROM FlightSchedule\nORDER BY UPPER(origin_airport) ASC;",
     "template": [
       {
-        "text": "SELECT flight_id, origin_airport\n",
+        "text": "SELECT ",
         "isBlank": false
       },
       {
@@ -5320,7 +5320,7 @@ window.QUESTS_SECTION_3 = [
         "placeholder": "[ ___ ]"
       },
       {
-        "text": " ",
+        "text": ", origin_airport\nFROM ",
         "isBlank": false
       },
       {
@@ -5352,39 +5352,39 @@ window.QUESTS_SECTION_3 = [
     ],
     "slots": {
       "slot1": {
-        "correct": "FROM",
+        "correct": "flight_id",
         "options": [
-          "TABLE",
-          "SOURCE",
-          "INTO",
-          "FROM"
+          "destination_airport",
+          "origin_airport",
+          "flight_id",
+          "departure_time"
         ]
       },
       "slot2": {
         "correct": "FlightSchedule",
         "options": [
+          "GymMembers",
           "FlightSchedule",
-          "MovieReviews",
-          "Orders",
-          "Employees"
+          "Books",
+          "MusicTracks"
         ]
       },
       "slot3": {
         "correct": "UPPER(origin_airport)",
         "options": [
-          "UPPER(origin_airport)",
           "LENGTH(UPPER(origin_airport))",
           "2",
-          "1"
+          "1",
+          "UPPER(origin_airport)"
         ]
       },
       "slot4": {
         "correct": "ASC;",
         "options": [
+          "DESC;",
           "AUTO;",
-          "ASC;_1",
           "ASC;",
-          "DESC;"
+          "ASC;_1"
         ]
       }
     },
@@ -5412,7 +5412,7 @@ window.QUESTS_SECTION_3 = [
     "targetQuery": "SELECT pet_name\nFROM PetClinic\nORDER BY LENGTH(pet_name) ASC;",
     "template": [
       {
-        "text": "SELECT pet_name\n",
+        "text": "SELECT ",
         "isBlank": false
       },
       {
@@ -5422,7 +5422,7 @@ window.QUESTS_SECTION_3 = [
         "placeholder": "[ ___ ]"
       },
       {
-        "text": " ",
+        "text": "\nFROM ",
         "isBlank": false
       },
       {
@@ -5454,39 +5454,39 @@ window.QUESTS_SECTION_3 = [
     ],
     "slots": {
       "slot1": {
-        "correct": "FROM",
+        "correct": "pet_name",
         "options": [
-          "FROM",
-          "SOURCE",
-          "TABLE",
-          "INTO"
+          "pet_name",
+          "breed",
+          "is_vaccinated",
+          "weight_kg"
         ]
       },
       "slot2": {
         "correct": "PetClinic",
         "options": [
-          "Employees",
-          "FlightSchedule",
-          "MovieReviews",
+          "MusicTracks",
+          "GymMembers",
+          "Students",
           "PetClinic"
         ]
       },
       "slot3": {
         "correct": "LENGTH(pet_name)",
         "options": [
+          "LENGTH(pet_name)",
           "2",
           "LENGTH(LENGTH(pet_name))",
-          "1",
-          "LENGTH(pet_name)"
+          "1"
         ]
       },
       "slot4": {
         "correct": "ASC;",
         "options": [
-          "AUTO;",
+          "ASC;_1",
           "ASC;",
           "DESC;",
-          "ASC;_1"
+          "AUTO;"
         ]
       }
     },
@@ -5514,7 +5514,7 @@ window.QUESTS_SECTION_3 = [
     "targetQuery": "SELECT city, full_name\nFROM Students\nORDER BY 1 ASC, 2 ASC;",
     "template": [
       {
-        "text": "SELECT city, full_name\n",
+        "text": "SELECT ",
         "isBlank": false
       },
       {
@@ -5524,7 +5524,7 @@ window.QUESTS_SECTION_3 = [
         "placeholder": "[ ___ ]"
       },
       {
-        "text": " ",
+        "text": ", full_name\nFROM ",
         "isBlank": false
       },
       {
@@ -5556,39 +5556,39 @@ window.QUESTS_SECTION_3 = [
     ],
     "slots": {
       "slot1": {
-        "correct": "FROM",
+        "correct": "city",
         "options": [
-          "FROM",
-          "INTO",
-          "SOURCE",
-          "TABLE"
+          "major",
+          "last_name",
+          "full_name",
+          "city"
         ]
       },
       "slot2": {
         "correct": "Students",
         "options": [
-          "Students",
-          "MusicTracks",
+          "GroceryItems",
           "FlightSchedule",
-          "Orders"
+          "GymMembers",
+          "Students"
         ]
       },
       "slot3": {
         "correct": "1",
         "options": [
           "1",
-          "1_1",
           "2",
-          "LENGTH(1)"
+          "LENGTH(1)",
+          "1_1"
         ]
       },
       "slot4": {
         "correct": "ASC, 2 ASC;",
         "options": [
-          "ASC;",
-          "AUTO;",
+          "ASC, 2 ASC;",
           "DESC;",
-          "ASC, 2 ASC;"
+          "ASC;",
+          "AUTO;"
         ]
       }
     },
@@ -5616,7 +5616,7 @@ window.QUESTS_SECTION_3 = [
     "targetQuery": "SELECT genre, price\nFROM Books\nORDER BY 1 ASC, 2 DESC;",
     "template": [
       {
-        "text": "SELECT genre, price\n",
+        "text": "SELECT ",
         "isBlank": false
       },
       {
@@ -5626,7 +5626,7 @@ window.QUESTS_SECTION_3 = [
         "placeholder": "[ ___ ]"
       },
       {
-        "text": " ",
+        "text": ", price\nFROM ",
         "isBlank": false
       },
       {
@@ -5658,39 +5658,39 @@ window.QUESTS_SECTION_3 = [
     ],
     "slots": {
       "slot1": {
-        "correct": "FROM",
+        "correct": "genre",
         "options": [
-          "TABLE",
-          "SOURCE",
-          "FROM",
-          "INTO"
+          "genre",
+          "stock_qty",
+          "author",
+          "published_year"
         ]
       },
       "slot2": {
         "correct": "Books",
         "options": [
-          "Students",
-          "Orders",
+          "Books",
           "MovieReviews",
-          "Books"
+          "Employees",
+          "Students"
         ]
       },
       "slot3": {
         "correct": "1",
         "options": [
-          "LENGTH(1)",
           "1_1",
-          "2",
-          "1"
+          "LENGTH(1)",
+          "1",
+          "2"
         ]
       },
       "slot4": {
         "correct": "ASC, 2 DESC;",
         "options": [
-          "ASC;",
-          "AUTO;",
           "ASC, 2 DESC;",
-          "DESC;"
+          "ASC;",
+          "DESC;",
+          "AUTO;"
         ]
       }
     },
@@ -5718,7 +5718,7 @@ window.QUESTS_SECTION_3 = [
     "targetQuery": "SELECT department, salary\nFROM Employees\nORDER BY 1 ASC, 2 DESC;",
     "template": [
       {
-        "text": "SELECT department, salary\n",
+        "text": "SELECT ",
         "isBlank": false
       },
       {
@@ -5728,7 +5728,7 @@ window.QUESTS_SECTION_3 = [
         "placeholder": "[ ___ ]"
       },
       {
-        "text": " ",
+        "text": ", salary\nFROM ",
         "isBlank": false
       },
       {
@@ -5760,39 +5760,39 @@ window.QUESTS_SECTION_3 = [
     ],
     "slots": {
       "slot1": {
-        "correct": "FROM",
+        "correct": "department",
         "options": [
-          "SOURCE",
-          "INTO",
-          "TABLE",
-          "FROM"
+          "department",
+          "bonus",
+          "last_name",
+          "emp_id"
         ]
       },
       "slot2": {
         "correct": "Employees",
         "options": [
-          "PetClinic",
           "FlightSchedule",
-          "MusicTracks",
-          "Employees"
+          "Books",
+          "Employees",
+          "GymMembers"
         ]
       },
       "slot3": {
         "correct": "1",
         "options": [
+          "1",
           "LENGTH(1)",
           "2",
-          "1_1",
-          "1"
+          "1_1"
         ]
       },
       "slot4": {
         "correct": "ASC, 2 DESC;",
         "options": [
+          "ASC, 2 DESC;",
           "AUTO;",
-          "ASC;",
           "DESC;",
-          "ASC, 2 DESC;"
+          "ASC;"
         ]
       }
     },
@@ -5820,7 +5820,7 @@ window.QUESTS_SECTION_3 = [
     "targetQuery": "SELECT category, item_name\nFROM GroceryItems\nORDER BY 1 ASC, 2 ASC;",
     "template": [
       {
-        "text": "SELECT category, item_name\n",
+        "text": "SELECT ",
         "isBlank": false
       },
       {
@@ -5830,7 +5830,7 @@ window.QUESTS_SECTION_3 = [
         "placeholder": "[ ___ ]"
       },
       {
-        "text": " ",
+        "text": ", item_name\nFROM ",
         "isBlank": false
       },
       {
@@ -5862,39 +5862,39 @@ window.QUESTS_SECTION_3 = [
     ],
     "slots": {
       "slot1": {
-        "correct": "FROM",
+        "correct": "category",
         "options": [
-          "FROM",
-          "INTO",
-          "SOURCE",
-          "TABLE"
+          "category",
+          "stock_qty",
+          "is_organic",
+          "calories"
         ]
       },
       "slot2": {
         "correct": "GroceryItems",
         "options": [
-          "Students",
-          "FlightSchedule",
           "GroceryItems",
-          "Employees"
+          "Employees",
+          "FlightSchedule",
+          "PetClinic"
         ]
       },
       "slot3": {
         "correct": "1",
         "options": [
-          "2",
-          "LENGTH(1)",
+          "1",
           "1_1",
-          "1"
+          "2",
+          "LENGTH(1)"
         ]
       },
       "slot4": {
         "correct": "ASC, 2 ASC;",
         "options": [
+          "DESC;",
           "ASC;",
-          "ASC, 2 ASC;",
           "AUTO;",
-          "DESC;"
+          "ASC, 2 ASC;"
         ]
       }
     },
@@ -5922,7 +5922,7 @@ window.QUESTS_SECTION_3 = [
     "targetQuery": "SELECT shipping_city, unit_price\nFROM Orders\nORDER BY 1 ASC, 2 DESC;",
     "template": [
       {
-        "text": "SELECT shipping_city, unit_price\n",
+        "text": "SELECT ",
         "isBlank": false
       },
       {
@@ -5932,7 +5932,7 @@ window.QUESTS_SECTION_3 = [
         "placeholder": "[ ___ ]"
       },
       {
-        "text": " ",
+        "text": ", unit_price\nFROM ",
         "isBlank": false
       },
       {
@@ -5964,39 +5964,39 @@ window.QUESTS_SECTION_3 = [
     ],
     "slots": {
       "slot1": {
-        "correct": "FROM",
+        "correct": "shipping_city",
         "options": [
-          "TABLE",
-          "FROM",
-          "INTO",
-          "SOURCE"
+          "unit_price",
+          "order_status",
+          "shipping_city",
+          "customer_name"
         ]
       },
       "slot2": {
         "correct": "Orders",
         "options": [
           "PetClinic",
-          "MusicTracks",
           "MovieReviews",
-          "Orders"
+          "Orders",
+          "GroceryItems"
         ]
       },
       "slot3": {
         "correct": "1",
         "options": [
-          "1",
-          "1_1",
+          "LENGTH(1)",
           "2",
-          "LENGTH(1)"
+          "1",
+          "1_1"
         ]
       },
       "slot4": {
         "correct": "ASC, 2 DESC;",
         "options": [
-          "ASC, 2 DESC;",
-          "ASC;",
+          "DESC;",
           "AUTO;",
-          "DESC;"
+          "ASC;",
+          "ASC, 2 DESC;"
         ]
       }
     },
@@ -6024,7 +6024,7 @@ window.QUESTS_SECTION_3 = [
     "targetQuery": "SELECT genre, play_count\nFROM MusicTracks\nORDER BY 1 ASC, 2 DESC;",
     "template": [
       {
-        "text": "SELECT genre, play_count\n",
+        "text": "SELECT ",
         "isBlank": false
       },
       {
@@ -6034,7 +6034,7 @@ window.QUESTS_SECTION_3 = [
         "placeholder": "[ ___ ]"
       },
       {
-        "text": " ",
+        "text": ", play_count\nFROM ",
         "isBlank": false
       },
       {
@@ -6066,39 +6066,39 @@ window.QUESTS_SECTION_3 = [
     ],
     "slots": {
       "slot1": {
-        "correct": "FROM",
+        "correct": "genre",
         "options": [
-          "SOURCE",
-          "FROM",
-          "INTO",
-          "TABLE"
+          "genre",
+          "track_title",
+          "artist_name",
+          "duration_seconds"
         ]
       },
       "slot2": {
         "correct": "MusicTracks",
         "options": [
-          "FlightSchedule",
+          "GroceryItems",
+          "MovieReviews",
           "MusicTracks",
-          "GymMembers",
-          "MovieReviews"
+          "Students"
         ]
       },
       "slot3": {
         "correct": "1",
         "options": [
           "1_1",
-          "1",
           "LENGTH(1)",
-          "2"
+          "2",
+          "1"
         ]
       },
       "slot4": {
         "correct": "ASC, 2 DESC;",
         "options": [
-          "AUTO;",
-          "ASC, 2 DESC;",
           "DESC;",
-          "ASC;"
+          "ASC;",
+          "ASC, 2 DESC;",
+          "AUTO;"
         ]
       }
     },
@@ -6126,7 +6126,7 @@ window.QUESTS_SECTION_3 = [
     "targetQuery": "SELECT membership_plan, monthly_fee\nFROM GymMembers\nORDER BY 1 ASC, 2 ASC;",
     "template": [
       {
-        "text": "SELECT membership_plan, monthly_fee\n",
+        "text": "SELECT ",
         "isBlank": false
       },
       {
@@ -6136,7 +6136,7 @@ window.QUESTS_SECTION_3 = [
         "placeholder": "[ ___ ]"
       },
       {
-        "text": " ",
+        "text": ", monthly_fee\nFROM ",
         "isBlank": false
       },
       {
@@ -6168,28 +6168,28 @@ window.QUESTS_SECTION_3 = [
     ],
     "slots": {
       "slot1": {
-        "correct": "FROM",
+        "correct": "membership_plan",
         "options": [
-          "INTO",
-          "FROM",
-          "SOURCE",
-          "TABLE"
+          "membership_plan",
+          "visits_this_month",
+          "has_trainer",
+          "member_name"
         ]
       },
       "slot2": {
         "correct": "GymMembers",
         "options": [
-          "FlightSchedule",
-          "MovieReviews",
           "GymMembers",
-          "Books"
+          "GroceryItems",
+          "Employees",
+          "Orders"
         ]
       },
       "slot3": {
         "correct": "1",
         "options": [
-          "1",
           "2",
+          "1",
           "LENGTH(1)",
           "1_1"
         ]
@@ -6197,10 +6197,10 @@ window.QUESTS_SECTION_3 = [
       "slot4": {
         "correct": "ASC, 2 ASC;",
         "options": [
+          "ASC;",
           "AUTO;",
           "DESC;",
-          "ASC, 2 ASC;",
-          "ASC;"
+          "ASC, 2 ASC;"
         ]
       }
     },
@@ -6228,7 +6228,7 @@ window.QUESTS_SECTION_3 = [
     "targetQuery": "SELECT genre, star_rating\nFROM MovieReviews\nORDER BY 1 ASC, 2 DESC;",
     "template": [
       {
-        "text": "SELECT genre, star_rating\n",
+        "text": "SELECT ",
         "isBlank": false
       },
       {
@@ -6238,7 +6238,7 @@ window.QUESTS_SECTION_3 = [
         "placeholder": "[ ___ ]"
       },
       {
-        "text": " ",
+        "text": ", star_rating\nFROM ",
         "isBlank": false
       },
       {
@@ -6270,39 +6270,39 @@ window.QUESTS_SECTION_3 = [
     ],
     "slots": {
       "slot1": {
-        "correct": "FROM",
+        "correct": "genre",
         "options": [
-          "INTO",
-          "TABLE",
-          "FROM",
-          "SOURCE"
+          "star_rating",
+          "genre",
+          "review_id",
+          "release_year"
         ]
       },
       "slot2": {
         "correct": "MovieReviews",
         "options": [
-          "Employees",
-          "GymMembers",
-          "GroceryItems",
-          "MovieReviews"
+          "MovieReviews",
+          "Students",
+          "Orders",
+          "Books"
         ]
       },
       "slot3": {
         "correct": "1",
         "options": [
           "2",
+          "1_1",
           "LENGTH(1)",
-          "1",
-          "1_1"
+          "1"
         ]
       },
       "slot4": {
         "correct": "ASC, 2 DESC;",
         "options": [
-          "DESC;",
           "AUTO;",
-          "ASC;",
-          "ASC, 2 DESC;"
+          "DESC;",
+          "ASC, 2 DESC;",
+          "ASC;"
         ]
       }
     },
@@ -6330,7 +6330,7 @@ window.QUESTS_SECTION_3 = [
     "targetQuery": "SELECT origin_airport, dest_airport\nFROM FlightSchedule\nORDER BY 1 ASC, 2 ASC;",
     "template": [
       {
-        "text": "SELECT origin_airport, dest_airport\n",
+        "text": "SELECT ",
         "isBlank": false
       },
       {
@@ -6340,7 +6340,7 @@ window.QUESTS_SECTION_3 = [
         "placeholder": "[ ___ ]"
       },
       {
-        "text": " ",
+        "text": ", dest_airport\nFROM ",
         "isBlank": false
       },
       {
@@ -6372,39 +6372,39 @@ window.QUESTS_SECTION_3 = [
     ],
     "slots": {
       "slot1": {
-        "correct": "FROM",
+        "correct": "origin_airport",
         "options": [
-          "TABLE",
-          "SOURCE",
-          "INTO",
-          "FROM"
+          "airline",
+          "origin_airport",
+          "ticket_price",
+          "departure_time"
         ]
       },
       "slot2": {
         "correct": "FlightSchedule",
         "options": [
-          "MovieReviews",
-          "Orders",
+          "Employees",
           "FlightSchedule",
-          "Books"
+          "Students",
+          "GymMembers"
         ]
       },
       "slot3": {
         "correct": "1",
         "options": [
-          "LENGTH(1)",
-          "1_1",
+          "1",
           "2",
-          "1"
+          "LENGTH(1)",
+          "1_1"
         ]
       },
       "slot4": {
         "correct": "ASC, 2 ASC;",
         "options": [
-          "ASC, 2 ASC;",
-          "ASC;",
+          "AUTO;",
           "DESC;",
-          "AUTO;"
+          "ASC, 2 ASC;",
+          "ASC;"
         ]
       }
     },
@@ -6432,7 +6432,7 @@ window.QUESTS_SECTION_3 = [
     "targetQuery": "SELECT species, weight_kg\nFROM PetClinic\nORDER BY 1 ASC, 2 DESC;",
     "template": [
       {
-        "text": "SELECT species, weight_kg\n",
+        "text": "SELECT ",
         "isBlank": false
       },
       {
@@ -6442,7 +6442,7 @@ window.QUESTS_SECTION_3 = [
         "placeholder": "[ ___ ]"
       },
       {
-        "text": " ",
+        "text": ", weight_kg\nFROM ",
         "isBlank": false
       },
       {
@@ -6474,21 +6474,21 @@ window.QUESTS_SECTION_3 = [
     ],
     "slots": {
       "slot1": {
-        "correct": "FROM",
+        "correct": "species",
         "options": [
-          "TABLE",
-          "SOURCE",
-          "FROM",
-          "INTO"
+          "species",
+          "pet_id",
+          "age_years",
+          "weight_kg"
         ]
       },
       "slot2": {
         "correct": "PetClinic",
         "options": [
+          "PetClinic",
+          "MusicTracks",
           "Books",
-          "GroceryItems",
-          "Orders",
-          "PetClinic"
+          "MovieReviews"
         ]
       },
       "slot3": {
@@ -6496,17 +6496,17 @@ window.QUESTS_SECTION_3 = [
         "options": [
           "1",
           "LENGTH(1)",
-          "1_1",
-          "2"
+          "2",
+          "1_1"
         ]
       },
       "slot4": {
         "correct": "ASC, 2 DESC;",
         "options": [
+          "AUTO;",
           "ASC, 2 DESC;",
-          "DESC;",
           "ASC;",
-          "AUTO;"
+          "DESC;"
         ]
       }
     },
@@ -6534,7 +6534,7 @@ window.QUESTS_SECTION_3 = [
     "targetQuery": "SELECT full_name, gpa\nFROM Students\nORDER BY gpa DESC\nLIMIT 1;",
     "template": [
       {
-        "text": "SELECT full_name, gpa\nFROM Students\n",
+        "text": "SELECT full_name, gpa\nFROM ",
         "isBlank": false
       },
       {
@@ -6544,7 +6544,7 @@ window.QUESTS_SECTION_3 = [
         "placeholder": "[ ___ ]"
       },
       {
-        "text": " ",
+        "text": "\n",
         "isBlank": false
       },
       {
@@ -6554,7 +6554,7 @@ window.QUESTS_SECTION_3 = [
         "placeholder": "[ ___ ]"
       },
       {
-        "text": "\n",
+        "text": " gpa DESC\n",
         "isBlank": false
       },
       {
@@ -6576,39 +6576,39 @@ window.QUESTS_SECTION_3 = [
     ],
     "slots": {
       "slot1": {
-        "correct": "ORDER BY",
+        "correct": "Students",
         "options": [
-          "LIMIT BY",
-          "FILTER BY",
-          "ORDER BY",
-          "SORT BY"
+          "MovieReviews",
+          "GroceryItems",
+          "Students",
+          "FlightSchedule"
         ]
       },
       "slot2": {
-        "correct": "gpa DESC",
+        "correct": "ORDER BY",
         "options": [
-          "gpa DESC_1",
-          "1",
-          "gpa DESC",
-          "gpa ASC"
+          "FILTER BY",
+          "SORT BY",
+          "ORDER BY",
+          "LIMIT BY"
         ]
       },
       "slot3": {
         "correct": "LIMIT",
         "options": [
+          "FETCH",
           "LIMIT",
           "MAX",
-          "FETCH",
           "TOP"
         ]
       },
       "slot4": {
         "correct": "1;",
         "options": [
+          "1;_1",
           "1;",
           "100;",
-          "6;",
-          "1;_1"
+          "6;"
         ]
       }
     },
@@ -6636,7 +6636,7 @@ window.QUESTS_SECTION_3 = [
     "targetQuery": "SELECT title, price\nFROM Books\nORDER BY price DESC\nLIMIT 3;",
     "template": [
       {
-        "text": "SELECT title, price\nFROM Books\n",
+        "text": "SELECT title, price\nFROM ",
         "isBlank": false
       },
       {
@@ -6646,7 +6646,7 @@ window.QUESTS_SECTION_3 = [
         "placeholder": "[ ___ ]"
       },
       {
-        "text": " ",
+        "text": "\n",
         "isBlank": false
       },
       {
@@ -6656,7 +6656,7 @@ window.QUESTS_SECTION_3 = [
         "placeholder": "[ ___ ]"
       },
       {
-        "text": "\n",
+        "text": " price DESC\n",
         "isBlank": false
       },
       {
@@ -6678,38 +6678,38 @@ window.QUESTS_SECTION_3 = [
     ],
     "slots": {
       "slot1": {
-        "correct": "ORDER BY",
+        "correct": "Books",
         "options": [
-          "LIMIT BY",
-          "ORDER BY",
-          "FILTER BY",
-          "SORT BY"
+          "GroceryItems",
+          "Students",
+          "Employees",
+          "Books"
         ]
       },
       "slot2": {
-        "correct": "price DESC",
+        "correct": "ORDER BY",
         "options": [
-          "price DESC",
-          "price DESC_1",
-          "1",
-          "price ASC"
+          "ORDER BY",
+          "SORT BY",
+          "FILTER BY",
+          "LIMIT BY"
         ]
       },
       "slot3": {
         "correct": "LIMIT",
         "options": [
+          "MAX",
           "FETCH",
           "TOP",
-          "LIMIT",
-          "MAX"
+          "LIMIT"
         ]
       },
       "slot4": {
         "correct": "3;",
         "options": [
-          "1;",
-          "3;",
           "100;",
+          "3;",
+          "1;",
           "8;"
         ]
       }
@@ -6738,7 +6738,7 @@ window.QUESTS_SECTION_3 = [
     "targetQuery": "SELECT first_name, salary\nFROM Employees\nORDER BY salary DESC\nLIMIT 5;",
     "template": [
       {
-        "text": "SELECT first_name, salary\nFROM Employees\n",
+        "text": "SELECT first_name, salary\nFROM ",
         "isBlank": false
       },
       {
@@ -6748,7 +6748,7 @@ window.QUESTS_SECTION_3 = [
         "placeholder": "[ ___ ]"
       },
       {
-        "text": " ",
+        "text": "\n",
         "isBlank": false
       },
       {
@@ -6758,7 +6758,7 @@ window.QUESTS_SECTION_3 = [
         "placeholder": "[ ___ ]"
       },
       {
-        "text": "\n",
+        "text": " salary DESC\n",
         "isBlank": false
       },
       {
@@ -6780,6 +6780,15 @@ window.QUESTS_SECTION_3 = [
     ],
     "slots": {
       "slot1": {
+        "correct": "Employees",
+        "options": [
+          "Employees",
+          "FlightSchedule",
+          "Students",
+          "GymMembers"
+        ]
+      },
+      "slot2": {
         "correct": "ORDER BY",
         "options": [
           "FILTER BY",
@@ -6788,31 +6797,22 @@ window.QUESTS_SECTION_3 = [
           "ORDER BY"
         ]
       },
-      "slot2": {
-        "correct": "salary DESC",
-        "options": [
-          "salary DESC_1",
-          "salary ASC",
-          "1",
-          "salary DESC"
-        ]
-      },
       "slot3": {
         "correct": "LIMIT",
         "options": [
-          "FETCH",
           "LIMIT",
-          "TOP",
-          "MAX"
+          "FETCH",
+          "MAX",
+          "TOP"
         ]
       },
       "slot4": {
         "correct": "5;",
         "options": [
           "1;",
-          "10;",
+          "5;",
           "100;",
-          "5;"
+          "10;"
         ]
       }
     },
@@ -6840,7 +6840,7 @@ window.QUESTS_SECTION_3 = [
     "targetQuery": "SELECT item_name, unit_price\nFROM GroceryItems\nORDER BY unit_price ASC\nLIMIT 3;",
     "template": [
       {
-        "text": "SELECT item_name, unit_price\nFROM GroceryItems\n",
+        "text": "SELECT item_name, unit_price\nFROM ",
         "isBlank": false
       },
       {
@@ -6850,7 +6850,7 @@ window.QUESTS_SECTION_3 = [
         "placeholder": "[ ___ ]"
       },
       {
-        "text": " ",
+        "text": "\n",
         "isBlank": false
       },
       {
@@ -6860,7 +6860,7 @@ window.QUESTS_SECTION_3 = [
         "placeholder": "[ ___ ]"
       },
       {
-        "text": "\n",
+        "text": " unit_price ASC\n",
         "isBlank": false
       },
       {
@@ -6882,39 +6882,39 @@ window.QUESTS_SECTION_3 = [
     ],
     "slots": {
       "slot1": {
-        "correct": "ORDER BY",
+        "correct": "GroceryItems",
         "options": [
-          "ORDER BY",
-          "SORT BY",
-          "FILTER BY",
-          "LIMIT BY"
+          "GroceryItems",
+          "Books",
+          "Students",
+          "MovieReviews"
         ]
       },
       "slot2": {
-        "correct": "unit_price ASC",
+        "correct": "ORDER BY",
         "options": [
-          "1",
-          "unit_price ASC_1",
-          "unit_price DESC",
-          "unit_price ASC"
+          "SORT BY",
+          "ORDER BY",
+          "LIMIT BY",
+          "FILTER BY"
         ]
       },
       "slot3": {
         "correct": "LIMIT",
         "options": [
-          "TOP",
+          "LIMIT",
           "FETCH",
           "MAX",
-          "LIMIT"
+          "TOP"
         ]
       },
       "slot4": {
         "correct": "3;",
         "options": [
           "3;",
-          "8;",
           "100;",
-          "1;"
+          "1;",
+          "8;"
         ]
       }
     },
@@ -6942,7 +6942,7 @@ window.QUESTS_SECTION_3 = [
     "targetQuery": "SELECT order_id, quantity\nFROM Orders\nORDER BY quantity DESC\nLIMIT 5;",
     "template": [
       {
-        "text": "SELECT order_id, quantity\nFROM Orders\n",
+        "text": "SELECT order_id, quantity\nFROM ",
         "isBlank": false
       },
       {
@@ -6952,7 +6952,7 @@ window.QUESTS_SECTION_3 = [
         "placeholder": "[ ___ ]"
       },
       {
-        "text": " ",
+        "text": "\n",
         "isBlank": false
       },
       {
@@ -6962,7 +6962,7 @@ window.QUESTS_SECTION_3 = [
         "placeholder": "[ ___ ]"
       },
       {
-        "text": "\n",
+        "text": " quantity DESC\n",
         "isBlank": false
       },
       {
@@ -6984,37 +6984,37 @@ window.QUESTS_SECTION_3 = [
     ],
     "slots": {
       "slot1": {
-        "correct": "ORDER BY",
+        "correct": "Orders",
         "options": [
-          "FILTER BY",
-          "SORT BY",
-          "LIMIT BY",
-          "ORDER BY"
+          "Books",
+          "GroceryItems",
+          "FlightSchedule",
+          "Orders"
         ]
       },
       "slot2": {
-        "correct": "quantity DESC",
+        "correct": "ORDER BY",
         "options": [
-          "quantity DESC",
-          "quantity DESC_1",
-          "1",
-          "quantity ASC"
+          "FILTER BY",
+          "ORDER BY",
+          "SORT BY",
+          "LIMIT BY"
         ]
       },
       "slot3": {
         "correct": "LIMIT",
         "options": [
-          "MAX",
-          "FETCH",
           "LIMIT",
+          "FETCH",
+          "MAX",
           "TOP"
         ]
       },
       "slot4": {
         "correct": "5;",
         "options": [
-          "10;",
           "100;",
+          "10;",
           "5;",
           "1;"
         ]
@@ -7044,7 +7044,7 @@ window.QUESTS_SECTION_3 = [
     "targetQuery": "SELECT track_title, play_count\nFROM MusicTracks\nORDER BY play_count DESC\nLIMIT 10;",
     "template": [
       {
-        "text": "SELECT track_title, play_count\nFROM ",
+        "text": "SELECT ",
         "isBlank": false
       },
       {
@@ -7054,7 +7054,7 @@ window.QUESTS_SECTION_3 = [
         "placeholder": "[ ___ ]"
       },
       {
-        "text": "\n",
+        "text": ", play_count\nFROM ",
         "isBlank": false
       },
       {
@@ -7064,7 +7064,7 @@ window.QUESTS_SECTION_3 = [
         "placeholder": "[ ___ ]"
       },
       {
-        "text": " ",
+        "text": "\n",
         "isBlank": false
       },
       {
@@ -7074,7 +7074,7 @@ window.QUESTS_SECTION_3 = [
         "placeholder": "[ ___ ]"
       },
       {
-        "text": "\n",
+        "text": " ",
         "isBlank": false
       },
       {
@@ -7082,42 +7082,61 @@ window.QUESTS_SECTION_3 = [
         "isBlank": true,
         "slotId": "slot4",
         "placeholder": "[ ___ ]"
+      },
+      {
+        "text": "\n",
+        "isBlank": false
+      },
+      {
+        "text": "",
+        "isBlank": true,
+        "slotId": "slot5",
+        "placeholder": "[ ___ ]"
       }
     ],
     "slots": {
       "slot1": {
-        "correct": "MusicTracks",
+        "correct": "track_title",
         "options": [
-          "MusicTracks",
-          "GroceryItems",
-          "GymMembers",
-          "PetClinic"
+          "track_title",
+          "track_id",
+          "artist",
+          "genre"
         ]
       },
       "slot2": {
-        "correct": "ORDER BY",
+        "correct": "MusicTracks",
         "options": [
-          "ORDER BY",
-          "RANK BY",
-          "SORT BY",
-          "GROUP BY"
+          "MusicTracks",
+          "Employees",
+          "GroceryItems",
+          "Students"
         ]
       },
       "slot3": {
-        "correct": "play_count DESC",
+        "correct": "ORDER BY",
         "options": [
-          "play_count DESC",
-          "play_count DESC_1",
-          "1 ASC",
-          "play_count ASC"
+          "SORT BY",
+          "RANK BY",
+          "GROUP BY",
+          "ORDER BY"
         ]
       },
       "slot4": {
+        "correct": "play_count DESC",
+        "options": [
+          "play_count ASC",
+          "play_count DESC_1",
+          "play_count DESC",
+          "1 ASC"
+        ]
+      },
+      "slot5": {
         "correct": "LIMIT 10;",
         "options": [
-          "LIMIT 1;",
           "LIMIT 10;",
           "TOP 10;",
+          "LIMIT 1;",
           "FETCH 10;"
         ]
       }
@@ -7146,7 +7165,7 @@ window.QUESTS_SECTION_3 = [
     "targetQuery": "SELECT member_name, visits_this_month\nFROM GymMembers\nORDER BY visits_this_month DESC\nLIMIT 3;",
     "template": [
       {
-        "text": "SELECT member_name, visits_this_month\nFROM ",
+        "text": "SELECT ",
         "isBlank": false
       },
       {
@@ -7156,7 +7175,7 @@ window.QUESTS_SECTION_3 = [
         "placeholder": "[ ___ ]"
       },
       {
-        "text": "\n",
+        "text": ", visits_this_month\nFROM ",
         "isBlank": false
       },
       {
@@ -7166,7 +7185,7 @@ window.QUESTS_SECTION_3 = [
         "placeholder": "[ ___ ]"
       },
       {
-        "text": " ",
+        "text": "\n",
         "isBlank": false
       },
       {
@@ -7176,7 +7195,7 @@ window.QUESTS_SECTION_3 = [
         "placeholder": "[ ___ ]"
       },
       {
-        "text": "\n",
+        "text": " ",
         "isBlank": false
       },
       {
@@ -7184,43 +7203,62 @@ window.QUESTS_SECTION_3 = [
         "isBlank": true,
         "slotId": "slot4",
         "placeholder": "[ ___ ]"
+      },
+      {
+        "text": "\n",
+        "isBlank": false
+      },
+      {
+        "text": "",
+        "isBlank": true,
+        "slotId": "slot5",
+        "placeholder": "[ ___ ]"
       }
     ],
     "slots": {
       "slot1": {
-        "correct": "GymMembers",
+        "correct": "member_name",
         "options": [
-          "GymMembers",
-          "Students",
-          "FlightSchedule",
-          "Orders"
+          "joined_date",
+          "monthly_fee",
+          "member_id",
+          "member_name"
         ]
       },
       "slot2": {
+        "correct": "GymMembers",
+        "options": [
+          "MusicTracks",
+          "Students",
+          "GymMembers",
+          "Books"
+        ]
+      },
+      "slot3": {
         "correct": "ORDER BY",
         "options": [
-          "ORDER BY",
           "SORT BY",
+          "ORDER BY",
           "GROUP BY",
           "RANK BY"
         ]
       },
-      "slot3": {
+      "slot4": {
         "correct": "visits_this_month DESC",
         "options": [
-          "visits_this_month DESC_1",
-          "visits_this_month DESC",
+          "visits_this_month ASC",
           "1 ASC",
-          "visits_this_month ASC"
+          "visits_this_month DESC_1",
+          "visits_this_month DESC"
         ]
       },
-      "slot4": {
+      "slot5": {
         "correct": "LIMIT 3;",
         "options": [
-          "TOP 3;",
           "FETCH 3;",
           "LIMIT 3;",
-          "LIMIT 1;"
+          "LIMIT 1;",
+          "TOP 3;"
         ]
       }
     },
@@ -7248,7 +7286,7 @@ window.QUESTS_SECTION_3 = [
     "targetQuery": "SELECT movie_title, star_rating\nFROM MovieReviews\nORDER BY star_rating DESC\nLIMIT 5;",
     "template": [
       {
-        "text": "SELECT movie_title, star_rating\nFROM ",
+        "text": "SELECT ",
         "isBlank": false
       },
       {
@@ -7258,7 +7296,7 @@ window.QUESTS_SECTION_3 = [
         "placeholder": "[ ___ ]"
       },
       {
-        "text": "\n",
+        "text": ", star_rating\nFROM ",
         "isBlank": false
       },
       {
@@ -7268,7 +7306,7 @@ window.QUESTS_SECTION_3 = [
         "placeholder": "[ ___ ]"
       },
       {
-        "text": " ",
+        "text": "\n",
         "isBlank": false
       },
       {
@@ -7278,7 +7316,7 @@ window.QUESTS_SECTION_3 = [
         "placeholder": "[ ___ ]"
       },
       {
-        "text": "\n",
+        "text": " ",
         "isBlank": false
       },
       {
@@ -7286,43 +7324,62 @@ window.QUESTS_SECTION_3 = [
         "isBlank": true,
         "slotId": "slot4",
         "placeholder": "[ ___ ]"
+      },
+      {
+        "text": "\n",
+        "isBlank": false
+      },
+      {
+        "text": "",
+        "isBlank": true,
+        "slotId": "slot5",
+        "placeholder": "[ ___ ]"
       }
     ],
     "slots": {
       "slot1": {
-        "correct": "MovieReviews",
+        "correct": "movie_title",
         "options": [
-          "MovieReviews",
-          "Books",
-          "PetClinic",
-          "Students"
+          "director",
+          "review_id",
+          "star_rating",
+          "movie_title"
         ]
       },
       "slot2": {
-        "correct": "ORDER BY",
+        "correct": "MovieReviews",
         "options": [
-          "GROUP BY",
-          "ORDER BY",
-          "RANK BY",
-          "SORT BY"
+          "FlightSchedule",
+          "Orders",
+          "MovieReviews",
+          "GroceryItems"
         ]
       },
       "slot3": {
-        "correct": "star_rating DESC",
+        "correct": "ORDER BY",
         "options": [
-          "star_rating ASC",
-          "star_rating DESC_1",
-          "star_rating DESC",
-          "1 ASC"
+          "ORDER BY",
+          "SORT BY",
+          "GROUP BY",
+          "RANK BY"
         ]
       },
       "slot4": {
+        "correct": "star_rating DESC",
+        "options": [
+          "star_rating DESC",
+          "star_rating DESC_1",
+          "star_rating ASC",
+          "1 ASC"
+        ]
+      },
+      "slot5": {
         "correct": "LIMIT 5;",
         "options": [
-          "FETCH 5;",
-          "LIMIT 1;",
           "TOP 5;",
-          "LIMIT 5;"
+          "LIMIT 5;",
+          "FETCH 5;",
+          "LIMIT 1;"
         ]
       }
     },
@@ -7350,7 +7407,7 @@ window.QUESTS_SECTION_3 = [
     "targetQuery": "SELECT flight_id, delay_minutes\nFROM FlightSchedule\nORDER BY delay_minutes DESC\nLIMIT 3;",
     "template": [
       {
-        "text": "SELECT flight_id, delay_minutes\nFROM ",
+        "text": "SELECT ",
         "isBlank": false
       },
       {
@@ -7360,7 +7417,7 @@ window.QUESTS_SECTION_3 = [
         "placeholder": "[ ___ ]"
       },
       {
-        "text": "\n",
+        "text": ", delay_minutes\nFROM ",
         "isBlank": false
       },
       {
@@ -7370,7 +7427,7 @@ window.QUESTS_SECTION_3 = [
         "placeholder": "[ ___ ]"
       },
       {
-        "text": " ",
+        "text": "\n",
         "isBlank": false
       },
       {
@@ -7380,7 +7437,7 @@ window.QUESTS_SECTION_3 = [
         "placeholder": "[ ___ ]"
       },
       {
-        "text": "\n",
+        "text": " ",
         "isBlank": false
       },
       {
@@ -7388,43 +7445,62 @@ window.QUESTS_SECTION_3 = [
         "isBlank": true,
         "slotId": "slot4",
         "placeholder": "[ ___ ]"
+      },
+      {
+        "text": "\n",
+        "isBlank": false
+      },
+      {
+        "text": "",
+        "isBlank": true,
+        "slotId": "slot5",
+        "placeholder": "[ ___ ]"
       }
     ],
     "slots": {
       "slot1": {
-        "correct": "FlightSchedule",
+        "correct": "flight_id",
         "options": [
-          "Employees",
-          "FlightSchedule",
-          "Students",
-          "PetClinic"
+          "destination_airport",
+          "dest_airport",
+          "flight_id",
+          "ticket_price"
         ]
       },
       "slot2": {
-        "correct": "ORDER BY",
+        "correct": "FlightSchedule",
         "options": [
-          "RANK BY",
-          "GROUP BY",
-          "ORDER BY",
-          "SORT BY"
+          "Orders",
+          "MovieReviews",
+          "PetClinic",
+          "FlightSchedule"
         ]
       },
       "slot3": {
-        "correct": "delay_minutes DESC",
+        "correct": "ORDER BY",
         "options": [
-          "delay_minutes DESC_1",
-          "1 ASC",
-          "delay_minutes DESC",
-          "delay_minutes ASC"
+          "SORT BY",
+          "ORDER BY",
+          "RANK BY",
+          "GROUP BY"
         ]
       },
       "slot4": {
+        "correct": "delay_minutes DESC",
+        "options": [
+          "delay_minutes DESC_1",
+          "delay_minutes ASC",
+          "delay_minutes DESC",
+          "1 ASC"
+        ]
+      },
+      "slot5": {
         "correct": "LIMIT 3;",
         "options": [
-          "FETCH 3;",
           "LIMIT 1;",
+          "LIMIT 3;",
           "TOP 3;",
-          "LIMIT 3;"
+          "FETCH 3;"
         ]
       }
     },
@@ -7452,7 +7528,7 @@ window.QUESTS_SECTION_3 = [
     "targetQuery": "SELECT pet_name, weight_kg\nFROM PetClinic\nORDER BY weight_kg DESC\nLIMIT 1;",
     "template": [
       {
-        "text": "SELECT pet_name, weight_kg\nFROM ",
+        "text": "SELECT ",
         "isBlank": false
       },
       {
@@ -7462,7 +7538,7 @@ window.QUESTS_SECTION_3 = [
         "placeholder": "[ ___ ]"
       },
       {
-        "text": "\n",
+        "text": ", weight_kg\nFROM ",
         "isBlank": false
       },
       {
@@ -7472,7 +7548,7 @@ window.QUESTS_SECTION_3 = [
         "placeholder": "[ ___ ]"
       },
       {
-        "text": " ",
+        "text": "\n",
         "isBlank": false
       },
       {
@@ -7482,7 +7558,7 @@ window.QUESTS_SECTION_3 = [
         "placeholder": "[ ___ ]"
       },
       {
-        "text": "\n",
+        "text": " ",
         "isBlank": false
       },
       {
@@ -7490,42 +7566,61 @@ window.QUESTS_SECTION_3 = [
         "isBlank": true,
         "slotId": "slot4",
         "placeholder": "[ ___ ]"
+      },
+      {
+        "text": "\n",
+        "isBlank": false
+      },
+      {
+        "text": "",
+        "isBlank": true,
+        "slotId": "slot5",
+        "placeholder": "[ ___ ]"
       }
     ],
     "slots": {
       "slot1": {
+        "correct": "pet_name",
+        "options": [
+          "species",
+          "pet_id",
+          "pet_name",
+          "breed"
+        ]
+      },
+      "slot2": {
         "correct": "PetClinic",
         "options": [
           "PetClinic",
           "FlightSchedule",
-          "MusicTracks",
+          "Employees",
           "Students"
         ]
       },
-      "slot2": {
+      "slot3": {
         "correct": "ORDER BY",
         "options": [
           "RANK BY",
-          "SORT BY",
           "ORDER BY",
-          "GROUP BY"
-        ]
-      },
-      "slot3": {
-        "correct": "weight_kg DESC",
-        "options": [
-          "1 ASC",
-          "weight_kg DESC_1",
-          "weight_kg ASC",
-          "weight_kg DESC"
+          "GROUP BY",
+          "SORT BY"
         ]
       },
       "slot4": {
+        "correct": "weight_kg DESC",
+        "options": [
+          "weight_kg ASC",
+          "weight_kg DESC_1",
+          "1 ASC",
+          "weight_kg DESC"
+        ]
+      },
+      "slot5": {
         "correct": "LIMIT 1;",
         "options": [
-          "LIMIT 1;",
-          "FETCH 1;",
           "LIMIT 1;_1",
+          "FETCH 1;",
+          "LIMIT 1;",
           "TOP 1;"
         ]
       }
@@ -7554,7 +7649,7 @@ window.QUESTS_SECTION_3 = [
     "targetQuery": "SELECT student_id, full_name\nFROM Students\nORDER BY student_id ASC\nLIMIT 5 OFFSET 0;",
     "template": [
       {
-        "text": "SELECT student_id, full_name\nFROM Students\n",
+        "text": "SELECT ",
         "isBlank": false
       },
       {
@@ -7564,7 +7659,7 @@ window.QUESTS_SECTION_3 = [
         "placeholder": "[ ___ ]"
       },
       {
-        "text": " ",
+        "text": ", full_name\nFROM ",
         "isBlank": false
       },
       {
@@ -7584,7 +7679,7 @@ window.QUESTS_SECTION_3 = [
         "placeholder": "[ ___ ]"
       },
       {
-        "text": " ",
+        "text": " student_id ASC\n",
         "isBlank": false
       },
       {
@@ -7606,48 +7701,48 @@ window.QUESTS_SECTION_3 = [
     ],
     "slots": {
       "slot1": {
-        "correct": "ORDER BY",
+        "correct": "student_id",
         "options": [
-          "ORDER BY",
-          "GROUP BY",
-          "PAGINATE BY",
-          "SORT BY"
+          "city",
+          "full_name",
+          "student_id",
+          "last_name"
         ]
       },
       "slot2": {
-        "correct": "student_id ASC",
+        "correct": "Students",
         "options": [
-          "student_id DESC",
-          "1, 2",
-          "student_id ASC",
-          "id"
+          "Employees",
+          "Students",
+          "Books",
+          "FlightSchedule"
         ]
       },
       "slot3": {
-        "correct": "LIMIT",
+        "correct": "ORDER BY",
         "options": [
-          "ROWS",
-          "TOP",
-          "FIRST",
-          "LIMIT"
+          "ORDER BY",
+          "PAGINATE BY",
+          "SORT BY",
+          "GROUP BY"
         ]
       },
       "slot4": {
-        "correct": "5",
+        "correct": "LIMIT 5",
         "options": [
-          "5_1",
-          "50",
-          "20",
-          "5"
+          "TOP 5",
+          "ROWS 5",
+          "LIMIT 5",
+          "LIMIT 5_1"
         ]
       },
       "slot5": {
         "correct": "OFFSET 0;",
         "options": [
-          "OFFSET 10;",
-          "PAGE 1;",
           "OFFSET 0;",
-          "SKIP 0;"
+          "SKIP 0;",
+          "PAGE 1;",
+          "OFFSET 10;"
         ]
       }
     },
@@ -7675,7 +7770,7 @@ window.QUESTS_SECTION_3 = [
     "targetQuery": "SELECT student_id, full_name\nFROM Students\nORDER BY student_id ASC\nLIMIT 5 OFFSET 5;",
     "template": [
       {
-        "text": "SELECT student_id, full_name\nFROM Students\n",
+        "text": "SELECT ",
         "isBlank": false
       },
       {
@@ -7685,7 +7780,7 @@ window.QUESTS_SECTION_3 = [
         "placeholder": "[ ___ ]"
       },
       {
-        "text": " ",
+        "text": ", full_name\nFROM ",
         "isBlank": false
       },
       {
@@ -7705,7 +7800,7 @@ window.QUESTS_SECTION_3 = [
         "placeholder": "[ ___ ]"
       },
       {
-        "text": " ",
+        "text": " student_id ASC\n",
         "isBlank": false
       },
       {
@@ -7727,48 +7822,48 @@ window.QUESTS_SECTION_3 = [
     ],
     "slots": {
       "slot1": {
-        "correct": "ORDER BY",
+        "correct": "student_id",
         "options": [
-          "ORDER BY",
-          "GROUP BY",
-          "SORT BY",
-          "PAGINATE BY"
+          "enrolled_year",
+          "age",
+          "student_id",
+          "major"
         ]
       },
       "slot2": {
-        "correct": "student_id ASC",
+        "correct": "Students",
         "options": [
-          "student_id ASC",
-          "1, 2",
-          "id",
-          "student_id DESC"
+          "Students",
+          "Books",
+          "Orders",
+          "MovieReviews"
         ]
       },
       "slot3": {
-        "correct": "LIMIT",
+        "correct": "ORDER BY",
         "options": [
-          "LIMIT",
-          "FIRST",
-          "ROWS",
-          "TOP"
+          "PAGINATE BY",
+          "SORT BY",
+          "ORDER BY",
+          "GROUP BY"
         ]
       },
       "slot4": {
-        "correct": "5",
+        "correct": "LIMIT 5",
         "options": [
-          "50",
-          "20",
-          "5",
-          "5_1"
+          "ROWS 5",
+          "LIMIT 5_1",
+          "TOP 5",
+          "LIMIT 5"
         ]
       },
       "slot5": {
         "correct": "OFFSET 5;",
         "options": [
-          "OFFSET 15;",
           "OFFSET 5;",
-          "SKIP 5;",
-          "PAGE 1;"
+          "OFFSET 15;",
+          "PAGE 1;",
+          "SKIP 5;"
         ]
       }
     },
@@ -7796,7 +7891,7 @@ window.QUESTS_SECTION_3 = [
     "targetQuery": "SELECT book_id, title\nFROM Books\nORDER BY book_id ASC\nLIMIT 5 OFFSET 0;",
     "template": [
       {
-        "text": "SELECT book_id, title\nFROM Books\n",
+        "text": "SELECT ",
         "isBlank": false
       },
       {
@@ -7806,7 +7901,7 @@ window.QUESTS_SECTION_3 = [
         "placeholder": "[ ___ ]"
       },
       {
-        "text": " ",
+        "text": ", title\nFROM ",
         "isBlank": false
       },
       {
@@ -7826,7 +7921,7 @@ window.QUESTS_SECTION_3 = [
         "placeholder": "[ ___ ]"
       },
       {
-        "text": " ",
+        "text": " book_id ASC\n",
         "isBlank": false
       },
       {
@@ -7848,39 +7943,39 @@ window.QUESTS_SECTION_3 = [
     ],
     "slots": {
       "slot1": {
-        "correct": "ORDER BY",
+        "correct": "book_id",
         "options": [
-          "GROUP BY",
-          "SORT BY",
-          "PAGINATE BY",
-          "ORDER BY"
+          "genre",
+          "published_year",
+          "price",
+          "book_id"
         ]
       },
       "slot2": {
-        "correct": "book_id ASC",
+        "correct": "Books",
         "options": [
-          "book_id ASC",
-          "id",
-          "book_id DESC",
-          "1, 2"
+          "MusicTracks",
+          "GymMembers",
+          "MovieReviews",
+          "Books"
         ]
       },
       "slot3": {
-        "correct": "LIMIT",
+        "correct": "ORDER BY",
         "options": [
-          "LIMIT",
-          "TOP",
-          "ROWS",
-          "FIRST"
+          "ORDER BY",
+          "SORT BY",
+          "GROUP BY",
+          "PAGINATE BY"
         ]
       },
       "slot4": {
-        "correct": "5",
+        "correct": "LIMIT 5",
         "options": [
-          "20",
-          "5",
-          "50",
-          "5_1"
+          "ROWS 5",
+          "TOP 5",
+          "LIMIT 5",
+          "LIMIT 5_1"
         ]
       },
       "slot5": {
@@ -7917,7 +8012,7 @@ window.QUESTS_SECTION_3 = [
     "targetQuery": "SELECT book_id, title\nFROM Books\nORDER BY book_id ASC\nLIMIT 5 OFFSET 5;",
     "template": [
       {
-        "text": "SELECT book_id, title\nFROM Books\n",
+        "text": "SELECT ",
         "isBlank": false
       },
       {
@@ -7927,7 +8022,7 @@ window.QUESTS_SECTION_3 = [
         "placeholder": "[ ___ ]"
       },
       {
-        "text": " ",
+        "text": ", title\nFROM ",
         "isBlank": false
       },
       {
@@ -7947,7 +8042,7 @@ window.QUESTS_SECTION_3 = [
         "placeholder": "[ ___ ]"
       },
       {
-        "text": " ",
+        "text": " book_id ASC\n",
         "isBlank": false
       },
       {
@@ -7969,48 +8064,48 @@ window.QUESTS_SECTION_3 = [
     ],
     "slots": {
       "slot1": {
-        "correct": "ORDER BY",
+        "correct": "book_id",
         "options": [
-          "ORDER BY",
-          "SORT BY",
-          "PAGINATE BY",
-          "GROUP BY"
+          "book_id",
+          "stock_qty",
+          "price",
+          "published_year"
         ]
       },
       "slot2": {
-        "correct": "book_id ASC",
+        "correct": "Books",
         "options": [
-          "id",
-          "book_id DESC",
-          "book_id ASC",
-          "1, 2"
+          "Students",
+          "FlightSchedule",
+          "GroceryItems",
+          "Books"
         ]
       },
       "slot3": {
-        "correct": "LIMIT",
+        "correct": "ORDER BY",
         "options": [
-          "LIMIT",
-          "ROWS",
-          "TOP",
-          "FIRST"
+          "PAGINATE BY",
+          "GROUP BY",
+          "ORDER BY",
+          "SORT BY"
         ]
       },
       "slot4": {
-        "correct": "5",
+        "correct": "LIMIT 5",
         "options": [
-          "5_1",
-          "5",
-          "50",
-          "20"
+          "LIMIT 5",
+          "LIMIT 5_1",
+          "TOP 5",
+          "ROWS 5"
         ]
       },
       "slot5": {
         "correct": "OFFSET 5;",
         "options": [
-          "SKIP 5;",
-          "PAGE 1;",
           "OFFSET 15;",
-          "OFFSET 5;"
+          "OFFSET 5;",
+          "SKIP 5;",
+          "PAGE 1;"
         ]
       }
     },
@@ -8038,7 +8133,7 @@ window.QUESTS_SECTION_3 = [
     "targetQuery": "SELECT emp_id, first_name\nFROM Employees\nORDER BY emp_id ASC\nLIMIT 4 OFFSET 4;",
     "template": [
       {
-        "text": "SELECT emp_id, first_name\nFROM Employees\n",
+        "text": "SELECT ",
         "isBlank": false
       },
       {
@@ -8048,7 +8143,7 @@ window.QUESTS_SECTION_3 = [
         "placeholder": "[ ___ ]"
       },
       {
-        "text": " ",
+        "text": ", first_name\nFROM ",
         "isBlank": false
       },
       {
@@ -8068,7 +8163,7 @@ window.QUESTS_SECTION_3 = [
         "placeholder": "[ ___ ]"
       },
       {
-        "text": " ",
+        "text": " emp_id ASC\n",
         "isBlank": false
       },
       {
@@ -8090,48 +8185,48 @@ window.QUESTS_SECTION_3 = [
     ],
     "slots": {
       "slot1": {
-        "correct": "ORDER BY",
+        "correct": "emp_id",
         "options": [
-          "PAGINATE BY",
-          "GROUP BY",
-          "ORDER BY",
-          "SORT BY"
+          "first_name",
+          "last_name",
+          "salary",
+          "emp_id"
         ]
       },
       "slot2": {
-        "correct": "emp_id ASC",
+        "correct": "Employees",
         "options": [
-          "emp_id ASC",
-          "id",
-          "1, 2",
-          "emp_id DESC"
+          "FlightSchedule",
+          "GymMembers",
+          "Employees",
+          "MusicTracks"
         ]
       },
       "slot3": {
-        "correct": "LIMIT",
+        "correct": "ORDER BY",
         "options": [
-          "TOP",
-          "LIMIT",
-          "ROWS",
-          "FIRST"
+          "ORDER BY",
+          "GROUP BY",
+          "SORT BY",
+          "PAGINATE BY"
         ]
       },
       "slot4": {
-        "correct": "4",
+        "correct": "LIMIT 4",
         "options": [
-          "50",
-          "5",
-          "20",
-          "4"
+          "ROWS 4",
+          "LIMIT 5",
+          "TOP 4",
+          "LIMIT 4"
         ]
       },
       "slot5": {
         "correct": "OFFSET 4;",
         "options": [
-          "SKIP 4;",
-          "PAGE 1;",
+          "OFFSET 4;",
           "OFFSET 14;",
-          "OFFSET 4;"
+          "SKIP 4;",
+          "PAGE 1;"
         ]
       }
     },
@@ -8159,7 +8254,7 @@ window.QUESTS_SECTION_3 = [
     "targetQuery": "SELECT item_id, item_name\nFROM GroceryItems\nORDER BY item_id ASC\nLIMIT 5 OFFSET 10;",
     "template": [
       {
-        "text": "SELECT item_id, item_name\nFROM GroceryItems\n",
+        "text": "SELECT ",
         "isBlank": false
       },
       {
@@ -8169,7 +8264,7 @@ window.QUESTS_SECTION_3 = [
         "placeholder": "[ ___ ]"
       },
       {
-        "text": " ",
+        "text": ", item_name\nFROM ",
         "isBlank": false
       },
       {
@@ -8189,7 +8284,7 @@ window.QUESTS_SECTION_3 = [
         "placeholder": "[ ___ ]"
       },
       {
-        "text": " ",
+        "text": " item_id ASC\n",
         "isBlank": false
       },
       {
@@ -8211,47 +8306,47 @@ window.QUESTS_SECTION_3 = [
     ],
     "slots": {
       "slot1": {
-        "correct": "ORDER BY",
+        "correct": "item_id",
         "options": [
-          "PAGINATE BY",
-          "SORT BY",
-          "GROUP BY",
-          "ORDER BY"
+          "is_organic",
+          "item_name",
+          "category",
+          "item_id"
         ]
       },
       "slot2": {
-        "correct": "item_id ASC",
+        "correct": "GroceryItems",
         "options": [
-          "item_id ASC",
-          "item_id DESC",
-          "1, 2",
-          "id"
+          "Books",
+          "GroceryItems",
+          "PetClinic",
+          "Orders"
         ]
       },
       "slot3": {
-        "correct": "LIMIT",
+        "correct": "ORDER BY",
         "options": [
-          "LIMIT",
-          "TOP",
-          "ROWS",
-          "FIRST"
+          "ORDER BY",
+          "PAGINATE BY",
+          "SORT BY",
+          "GROUP BY"
         ]
       },
       "slot4": {
-        "correct": "5",
+        "correct": "LIMIT 5",
         "options": [
-          "50",
-          "5",
-          "20",
-          "5_1"
+          "ROWS 5",
+          "LIMIT 5_1",
+          "TOP 5",
+          "LIMIT 5"
         ]
       },
       "slot5": {
         "correct": "OFFSET 10;",
         "options": [
           "SKIP 10;",
-          "OFFSET 20;",
           "OFFSET 10;",
+          "OFFSET 20;",
           "PAGE 1;"
         ]
       }
@@ -8280,7 +8375,7 @@ window.QUESTS_SECTION_3 = [
     "targetQuery": "SELECT track_id, track_title\nFROM MusicTracks\nORDER BY track_id ASC\nLIMIT 5 OFFSET 5;",
     "template": [
       {
-        "text": "SELECT track_id, track_title\nFROM MusicTracks\n",
+        "text": "SELECT ",
         "isBlank": false
       },
       {
@@ -8290,7 +8385,7 @@ window.QUESTS_SECTION_3 = [
         "placeholder": "[ ___ ]"
       },
       {
-        "text": " ",
+        "text": ", track_title\nFROM ",
         "isBlank": false
       },
       {
@@ -8310,7 +8405,7 @@ window.QUESTS_SECTION_3 = [
         "placeholder": "[ ___ ]"
       },
       {
-        "text": " ",
+        "text": " track_id ASC\n",
         "isBlank": false
       },
       {
@@ -8332,47 +8427,47 @@ window.QUESTS_SECTION_3 = [
     ],
     "slots": {
       "slot1": {
-        "correct": "ORDER BY",
+        "correct": "track_id",
         "options": [
-          "ORDER BY",
-          "PAGINATE BY",
-          "GROUP BY",
-          "SORT BY"
+          "title",
+          "release_year",
+          "track_id",
+          "track_title"
         ]
       },
       "slot2": {
-        "correct": "track_id ASC",
+        "correct": "MusicTracks",
         "options": [
-          "id",
-          "1, 2",
-          "track_id ASC",
-          "track_id DESC"
+          "FlightSchedule",
+          "Orders",
+          "Students",
+          "MusicTracks"
         ]
       },
       "slot3": {
-        "correct": "LIMIT",
+        "correct": "ORDER BY",
         "options": [
-          "FIRST",
-          "ROWS",
-          "TOP",
-          "LIMIT"
+          "ORDER BY",
+          "GROUP BY",
+          "PAGINATE BY",
+          "SORT BY"
         ]
       },
       "slot4": {
-        "correct": "5",
+        "correct": "LIMIT 5",
         "options": [
-          "5_1",
-          "20",
-          "50",
-          "5"
+          "ROWS 5",
+          "LIMIT 5",
+          "LIMIT 5_1",
+          "TOP 5"
         ]
       },
       "slot5": {
         "correct": "OFFSET 5;",
         "options": [
           "OFFSET 15;",
-          "OFFSET 5;",
           "SKIP 5;",
+          "OFFSET 5;",
           "PAGE 1;"
         ]
       }
@@ -8401,7 +8496,7 @@ window.QUESTS_SECTION_3 = [
     "targetQuery": "SELECT order_id, customer_name\nFROM Orders\nORDER BY order_id ASC\nLIMIT 3 OFFSET 6;",
     "template": [
       {
-        "text": "SELECT order_id, customer_name\nFROM Orders\n",
+        "text": "SELECT ",
         "isBlank": false
       },
       {
@@ -8411,7 +8506,7 @@ window.QUESTS_SECTION_3 = [
         "placeholder": "[ ___ ]"
       },
       {
-        "text": " ",
+        "text": ", customer_name\nFROM ",
         "isBlank": false
       },
       {
@@ -8431,7 +8526,7 @@ window.QUESTS_SECTION_3 = [
         "placeholder": "[ ___ ]"
       },
       {
-        "text": " ",
+        "text": " order_id ASC\n",
         "isBlank": false
       },
       {
@@ -8453,48 +8548,48 @@ window.QUESTS_SECTION_3 = [
     ],
     "slots": {
       "slot1": {
-        "correct": "ORDER BY",
+        "correct": "order_id",
         "options": [
-          "GROUP BY",
-          "ORDER BY",
-          "SORT BY",
-          "PAGINATE BY"
+          "order_id",
+          "product_name",
+          "unit_price",
+          "quantity"
         ]
       },
       "slot2": {
-        "correct": "order_id ASC",
+        "correct": "Orders",
         "options": [
-          "id",
-          "order_id ASC",
-          "order_id DESC",
-          "1, 2"
+          "Orders",
+          "MusicTracks",
+          "FlightSchedule",
+          "GymMembers"
         ]
       },
       "slot3": {
-        "correct": "LIMIT",
+        "correct": "ORDER BY",
         "options": [
-          "ROWS",
-          "FIRST",
-          "TOP",
-          "LIMIT"
+          "ORDER BY",
+          "PAGINATE BY",
+          "GROUP BY",
+          "SORT BY"
         ]
       },
       "slot4": {
-        "correct": "3",
+        "correct": "LIMIT 3",
         "options": [
-          "5",
-          "3",
-          "50",
-          "20"
+          "ROWS 3",
+          "LIMIT 3",
+          "LIMIT 5",
+          "TOP 3"
         ]
       },
       "slot5": {
         "correct": "OFFSET 6;",
         "options": [
-          "OFFSET 6;",
-          "OFFSET 16;",
+          "PAGE 1;",
           "SKIP 6;",
-          "PAGE 1;"
+          "OFFSET 6;",
+          "OFFSET 16;"
         ]
       }
     },
@@ -8522,7 +8617,7 @@ window.QUESTS_SECTION_3 = [
     "targetQuery": "SELECT member_id, member_name\nFROM GymMembers\nORDER BY member_id ASC\nLIMIT 4 OFFSET 0;",
     "template": [
       {
-        "text": "SELECT member_id, member_name\nFROM GymMembers\n",
+        "text": "SELECT ",
         "isBlank": false
       },
       {
@@ -8532,7 +8627,7 @@ window.QUESTS_SECTION_3 = [
         "placeholder": "[ ___ ]"
       },
       {
-        "text": " ",
+        "text": ", member_name\nFROM ",
         "isBlank": false
       },
       {
@@ -8552,7 +8647,7 @@ window.QUESTS_SECTION_3 = [
         "placeholder": "[ ___ ]"
       },
       {
-        "text": " ",
+        "text": " member_id ASC\n",
         "isBlank": false
       },
       {
@@ -8574,46 +8669,46 @@ window.QUESTS_SECTION_3 = [
     ],
     "slots": {
       "slot1": {
-        "correct": "ORDER BY",
+        "correct": "member_id",
         "options": [
-          "GROUP BY",
-          "PAGINATE BY",
-          "SORT BY",
-          "ORDER BY"
+          "joined_date",
+          "visits_this_month",
+          "monthly_fee",
+          "member_id"
         ]
       },
       "slot2": {
-        "correct": "member_id ASC",
+        "correct": "GymMembers",
         "options": [
-          "member_id DESC",
-          "1, 2",
-          "id",
-          "member_id ASC"
+          "GymMembers",
+          "Students",
+          "FlightSchedule",
+          "GroceryItems"
         ]
       },
       "slot3": {
-        "correct": "LIMIT",
+        "correct": "ORDER BY",
         "options": [
-          "FIRST",
-          "ROWS",
-          "TOP",
-          "LIMIT"
+          "SORT BY",
+          "PAGINATE BY",
+          "GROUP BY",
+          "ORDER BY"
         ]
       },
       "slot4": {
-        "correct": "4",
+        "correct": "LIMIT 4",
         "options": [
-          "20",
-          "5",
-          "50",
-          "4"
+          "LIMIT 5",
+          "LIMIT 4",
+          "TOP 4",
+          "ROWS 4"
         ]
       },
       "slot5": {
         "correct": "OFFSET 0;",
         "options": [
-          "OFFSET 0;",
           "PAGE 1;",
+          "OFFSET 0;",
           "SKIP 0;",
           "OFFSET 10;"
         ]
@@ -8643,7 +8738,7 @@ window.QUESTS_SECTION_3 = [
     "targetQuery": "SELECT pet_id, pet_name\nFROM PetClinic\nORDER BY pet_id ASC\nLIMIT 5 OFFSET 5;",
     "template": [
       {
-        "text": "SELECT pet_id, pet_name\nFROM PetClinic\n",
+        "text": "SELECT ",
         "isBlank": false
       },
       {
@@ -8653,7 +8748,7 @@ window.QUESTS_SECTION_3 = [
         "placeholder": "[ ___ ]"
       },
       {
-        "text": " ",
+        "text": ", pet_name\nFROM ",
         "isBlank": false
       },
       {
@@ -8673,7 +8768,7 @@ window.QUESTS_SECTION_3 = [
         "placeholder": "[ ___ ]"
       },
       {
-        "text": " ",
+        "text": " pet_id ASC\n",
         "isBlank": false
       },
       {
@@ -8695,48 +8790,48 @@ window.QUESTS_SECTION_3 = [
     ],
     "slots": {
       "slot1": {
-        "correct": "ORDER BY",
+        "correct": "pet_id",
         "options": [
-          "ORDER BY",
-          "GROUP BY",
-          "SORT BY",
-          "PAGINATE BY"
+          "is_vaccinated",
+          "age_years",
+          "pet_id",
+          "pet_name"
         ]
       },
       "slot2": {
-        "correct": "pet_id ASC",
+        "correct": "PetClinic",
         "options": [
-          "1, 2",
-          "pet_id DESC",
-          "id",
-          "pet_id ASC"
+          "MovieReviews",
+          "Books",
+          "PetClinic",
+          "Students"
         ]
       },
       "slot3": {
-        "correct": "LIMIT",
+        "correct": "ORDER BY",
         "options": [
-          "FIRST",
-          "TOP",
-          "ROWS",
-          "LIMIT"
+          "ORDER BY",
+          "PAGINATE BY",
+          "GROUP BY",
+          "SORT BY"
         ]
       },
       "slot4": {
-        "correct": "5",
+        "correct": "LIMIT 5",
         "options": [
-          "5",
-          "20",
-          "50",
-          "5_1"
+          "LIMIT 5_1",
+          "TOP 5",
+          "LIMIT 5",
+          "ROWS 5"
         ]
       },
       "slot5": {
         "correct": "OFFSET 5;",
         "options": [
           "SKIP 5;",
-          "OFFSET 15;",
           "OFFSET 5;",
-          "PAGE 1;"
+          "PAGE 1;",
+          "OFFSET 15;"
         ]
       }
     },
@@ -8764,7 +8859,7 @@ window.QUESTS_SECTION_3 = [
     "targetQuery": "SELECT title, price\nFROM Books\nORDER BY price DESC\nLIMIT 5;",
     "template": [
       {
-        "text": "SELECT title, price\nFROM ",
+        "text": "SELECT ",
         "isBlank": false
       },
       {
@@ -8774,7 +8869,7 @@ window.QUESTS_SECTION_3 = [
         "placeholder": "[ ___ ]"
       },
       {
-        "text": "\n",
+        "text": ", price\nFROM ",
         "isBlank": false
       },
       {
@@ -8784,7 +8879,7 @@ window.QUESTS_SECTION_3 = [
         "placeholder": "[ ___ ]"
       },
       {
-        "text": " ",
+        "text": "\n",
         "isBlank": false
       },
       {
@@ -8794,7 +8889,7 @@ window.QUESTS_SECTION_3 = [
         "placeholder": "[ ___ ]"
       },
       {
-        "text": "\n",
+        "text": " ",
         "isBlank": false
       },
       {
@@ -8802,43 +8897,62 @@ window.QUESTS_SECTION_3 = [
         "isBlank": true,
         "slotId": "slot4",
         "placeholder": "[ ___ ]"
+      },
+      {
+        "text": "\n",
+        "isBlank": false
+      },
+      {
+        "text": "",
+        "isBlank": true,
+        "slotId": "slot5",
+        "placeholder": "[ ___ ]"
       }
     ],
     "slots": {
       "slot1": {
-        "correct": "Books",
+        "correct": "title",
         "options": [
-          "GymMembers",
-          "Employees",
-          "Books",
-          "Students"
+          "title",
+          "published_year",
+          "genre",
+          "is_hardcover"
         ]
       },
       "slot2": {
-        "correct": "ORDER BY",
+        "correct": "Books",
         "options": [
-          "SORT BY",
-          "RANK BY",
-          "ORDER BY",
-          "GROUP BY"
+          "PetClinic",
+          "Orders",
+          "Books",
+          "MovieReviews"
         ]
       },
       "slot3": {
+        "correct": "ORDER BY",
+        "options": [
+          "ORDER BY",
+          "GROUP BY",
+          "SORT BY",
+          "RANK BY"
+        ]
+      },
+      "slot4": {
         "correct": "price DESC",
         "options": [
           "price DESC",
           "1 ASC",
-          "price DESC_1",
-          "price ASC"
+          "price ASC",
+          "price DESC_1"
         ]
       },
-      "slot4": {
+      "slot5": {
         "correct": "LIMIT 5;",
         "options": [
+          "LIMIT 5;",
           "LIMIT 1;",
           "TOP 5;",
-          "FETCH 5;",
-          "LIMIT 5;"
+          "FETCH 5;"
         ]
       }
     },
@@ -8866,7 +8980,7 @@ window.QUESTS_SECTION_3 = [
     "targetQuery": "SELECT full_name, gpa\nFROM Students\nORDER BY gpa DESC;",
     "template": [
       {
-        "text": "SELECT full_name, gpa\nFROM ",
+        "text": "SELECT ",
         "isBlank": false
       },
       {
@@ -8876,7 +8990,7 @@ window.QUESTS_SECTION_3 = [
         "placeholder": "[ ___ ]"
       },
       {
-        "text": "\n",
+        "text": ", gpa\nFROM ",
         "isBlank": false
       },
       {
@@ -8886,7 +9000,7 @@ window.QUESTS_SECTION_3 = [
         "placeholder": "[ ___ ]"
       },
       {
-        "text": " ",
+        "text": "\n",
         "isBlank": false
       },
       {
@@ -8896,7 +9010,7 @@ window.QUESTS_SECTION_3 = [
         "placeholder": "[ ___ ]"
       },
       {
-        "text": "\n",
+        "text": " ",
         "isBlank": false
       },
       {
@@ -8904,43 +9018,62 @@ window.QUESTS_SECTION_3 = [
         "isBlank": true,
         "slotId": "slot4",
         "placeholder": "[ ___ ]"
+      },
+      {
+        "text": "\n",
+        "isBlank": false
+      },
+      {
+        "text": "",
+        "isBlank": true,
+        "slotId": "slot5",
+        "placeholder": "[ ___ ]"
       }
     ],
     "slots": {
       "slot1": {
-        "correct": "Students",
+        "correct": "full_name",
         "options": [
-          "Orders",
-          "Students",
-          "GroceryItems",
-          "GymMembers"
+          "enrolled_year",
+          "major",
+          "gpa",
+          "full_name"
         ]
       },
       "slot2": {
+        "correct": "Students",
+        "options": [
+          "Books",
+          "Students",
+          "Orders",
+          "PetClinic"
+        ]
+      },
+      "slot3": {
         "correct": "ORDER BY",
         "options": [
-          "ORDER BY",
           "GROUP BY",
+          "ORDER BY",
           "SORT BY",
           "RANK BY"
         ]
       },
-      "slot3": {
+      "slot4": {
         "correct": "gpa DESC",
         "options": [
+          "gpa DESC",
           "gpa DESC_1",
           "1 ASC",
-          "gpa DESC",
           "gpa ASC"
         ]
       },
-      "slot4": {
+      "slot5": {
         "correct": "LIMIT 10;",
         "options": [
+          "LIMIT 1;",
           "TOP 10;",
-          "FETCH 10;",
           "LIMIT 10;",
-          "LIMIT 1;"
+          "FETCH 10;"
         ]
       }
     },
@@ -8968,7 +9101,7 @@ window.QUESTS_SECTION_3 = [
     "targetQuery": "SELECT first_name, salary\nFROM Employees\nORDER BY salary DESC\nLIMIT 1;",
     "template": [
       {
-        "text": "SELECT first_name, salary\nFROM ",
+        "text": "SELECT ",
         "isBlank": false
       },
       {
@@ -8978,7 +9111,7 @@ window.QUESTS_SECTION_3 = [
         "placeholder": "[ ___ ]"
       },
       {
-        "text": "\n",
+        "text": ", salary\nFROM ",
         "isBlank": false
       },
       {
@@ -8988,7 +9121,7 @@ window.QUESTS_SECTION_3 = [
         "placeholder": "[ ___ ]"
       },
       {
-        "text": " ",
+        "text": "\n",
         "isBlank": false
       },
       {
@@ -8998,7 +9131,7 @@ window.QUESTS_SECTION_3 = [
         "placeholder": "[ ___ ]"
       },
       {
-        "text": "\n",
+        "text": " ",
         "isBlank": false
       },
       {
@@ -9006,43 +9139,62 @@ window.QUESTS_SECTION_3 = [
         "isBlank": true,
         "slotId": "slot4",
         "placeholder": "[ ___ ]"
+      },
+      {
+        "text": "\n",
+        "isBlank": false
+      },
+      {
+        "text": "",
+        "isBlank": true,
+        "slotId": "slot5",
+        "placeholder": "[ ___ ]"
       }
     ],
     "slots": {
       "slot1": {
-        "correct": "Employees",
+        "correct": "first_name",
         "options": [
-          "MusicTracks",
-          "Students",
-          "GymMembers",
-          "Employees"
+          "emp_id",
+          "bonus",
+          "first_name",
+          "hire_date"
         ]
       },
       "slot2": {
-        "correct": "ORDER BY",
+        "correct": "Employees",
         "options": [
-          "SORT BY",
-          "ORDER BY",
-          "GROUP BY",
-          "RANK BY"
+          "MusicTracks",
+          "Orders",
+          "Employees",
+          "GroceryItems"
         ]
       },
       "slot3": {
-        "correct": "salary DESC",
+        "correct": "ORDER BY",
         "options": [
-          "salary ASC",
-          "1 ASC",
-          "salary DESC",
-          "salary DESC_1"
+          "RANK BY",
+          "SORT BY",
+          "GROUP BY",
+          "ORDER BY"
         ]
       },
       "slot4": {
+        "correct": "salary DESC",
+        "options": [
+          "salary ASC",
+          "salary DESC_1",
+          "1 ASC",
+          "salary DESC"
+        ]
+      },
+      "slot5": {
         "correct": "LIMIT 1;",
         "options": [
-          "FETCH 1;",
-          "LIMIT 1;_1",
           "TOP 1;",
-          "LIMIT 1;"
+          "LIMIT 1;_1",
+          "LIMIT 1;",
+          "FETCH 1;"
         ]
       }
     },
@@ -9070,7 +9222,7 @@ window.QUESTS_SECTION_3 = [
     "targetQuery": "SELECT item_name, unit_price\nFROM GroceryItems\nORDER BY unit_price ASC;",
     "template": [
       {
-        "text": "SELECT item_name, unit_price\nFROM ",
+        "text": "SELECT ",
         "isBlank": false
       },
       {
@@ -9080,7 +9232,7 @@ window.QUESTS_SECTION_3 = [
         "placeholder": "[ ___ ]"
       },
       {
-        "text": "\n",
+        "text": ", unit_price\nFROM ",
         "isBlank": false
       },
       {
@@ -9090,7 +9242,7 @@ window.QUESTS_SECTION_3 = [
         "placeholder": "[ ___ ]"
       },
       {
-        "text": " ",
+        "text": "\n",
         "isBlank": false
       },
       {
@@ -9100,7 +9252,7 @@ window.QUESTS_SECTION_3 = [
         "placeholder": "[ ___ ]"
       },
       {
-        "text": "\n",
+        "text": " ",
         "isBlank": false
       },
       {
@@ -9108,43 +9260,62 @@ window.QUESTS_SECTION_3 = [
         "isBlank": true,
         "slotId": "slot4",
         "placeholder": "[ ___ ]"
+      },
+      {
+        "text": "\n",
+        "isBlank": false
+      },
+      {
+        "text": "",
+        "isBlank": true,
+        "slotId": "slot5",
+        "placeholder": "[ ___ ]"
       }
     ],
     "slots": {
       "slot1": {
-        "correct": "GroceryItems",
+        "correct": "item_name",
         "options": [
-          "GymMembers",
-          "Books",
-          "GroceryItems",
-          "MusicTracks"
+          "is_organic",
+          "item_name",
+          "category",
+          "stock_qty"
         ]
       },
       "slot2": {
-        "correct": "ORDER BY",
+        "correct": "GroceryItems",
         "options": [
-          "GROUP BY",
-          "RANK BY",
-          "SORT BY",
-          "ORDER BY"
+          "MovieReviews",
+          "Employees",
+          "GroceryItems",
+          "FlightSchedule"
         ]
       },
       "slot3": {
-        "correct": "unit_price ASC",
+        "correct": "ORDER BY",
         "options": [
-          "unit_price ASC_1",
-          "unit_price DESC",
-          "unit_price ASC",
-          "1 ASC"
+          "RANK BY",
+          "ORDER BY",
+          "SORT BY",
+          "GROUP BY"
         ]
       },
       "slot4": {
+        "correct": "unit_price ASC",
+        "options": [
+          "unit_price DESC",
+          "unit_price ASC",
+          "unit_price ASC_1",
+          "1 ASC"
+        ]
+      },
+      "slot5": {
         "correct": "LIMIT 10;",
         "options": [
-          "LIMIT 1;",
           "FETCH 10;",
           "TOP 10;",
-          "LIMIT 10;"
+          "LIMIT 10;",
+          "LIMIT 1;"
         ]
       }
     },
@@ -9172,7 +9343,7 @@ window.QUESTS_SECTION_3 = [
     "targetQuery": "SELECT order_id, quantity * unit_price AS total\nFROM Orders\nORDER BY total DESC;",
     "template": [
       {
-        "text": "SELECT order_id, quantity * unit_price AS total\nFROM ",
+        "text": "SELECT ",
         "isBlank": false
       },
       {
@@ -9182,7 +9353,7 @@ window.QUESTS_SECTION_3 = [
         "placeholder": "[ ___ ]"
       },
       {
-        "text": "\n",
+        "text": ", quantity * unit_price AS total\nFROM ",
         "isBlank": false
       },
       {
@@ -9192,7 +9363,7 @@ window.QUESTS_SECTION_3 = [
         "placeholder": "[ ___ ]"
       },
       {
-        "text": " ",
+        "text": "\n",
         "isBlank": false
       },
       {
@@ -9202,7 +9373,7 @@ window.QUESTS_SECTION_3 = [
         "placeholder": "[ ___ ]"
       },
       {
-        "text": "\n",
+        "text": " ",
         "isBlank": false
       },
       {
@@ -9210,43 +9381,62 @@ window.QUESTS_SECTION_3 = [
         "isBlank": true,
         "slotId": "slot4",
         "placeholder": "[ ___ ]"
+      },
+      {
+        "text": "\n",
+        "isBlank": false
+      },
+      {
+        "text": "",
+        "isBlank": true,
+        "slotId": "slot5",
+        "placeholder": "[ ___ ]"
       }
     ],
     "slots": {
       "slot1": {
-        "correct": "Orders",
+        "correct": "order_id",
         "options": [
-          "Orders",
-          "GroceryItems",
-          "Students",
-          "GymMembers"
+          "order_status",
+          "quantity",
+          "order_id",
+          "customer_name"
         ]
       },
       "slot2": {
-        "correct": "ORDER BY",
+        "correct": "Orders",
         "options": [
-          "GROUP BY",
-          "RANK BY",
-          "ORDER BY",
-          "SORT BY"
+          "PetClinic",
+          "Employees",
+          "MovieReviews",
+          "Orders"
         ]
       },
       "slot3": {
-        "correct": "total DESC",
+        "correct": "ORDER BY",
         "options": [
-          "1 ASC",
-          "total DESC_1",
-          "total ASC",
-          "total DESC"
+          "ORDER BY",
+          "SORT BY",
+          "GROUP BY",
+          "RANK BY"
         ]
       },
       "slot4": {
+        "correct": "total DESC",
+        "options": [
+          "total DESC",
+          "total DESC_1",
+          "1 ASC",
+          "total ASC"
+        ]
+      },
+      "slot5": {
         "correct": "LIMIT 10;",
         "options": [
-          "TOP 10;",
           "FETCH 10;",
-          "LIMIT 10;",
-          "LIMIT 1;"
+          "LIMIT 1;",
+          "TOP 10;",
+          "LIMIT 10;"
         ]
       }
     },
@@ -9274,7 +9464,7 @@ window.QUESTS_SECTION_3 = [
     "targetQuery": "SELECT track_title, duration_seconds\nFROM MusicTracks\nORDER BY duration_seconds ASC\nLIMIT 10 OFFSET 0;",
     "template": [
       {
-        "text": "SELECT track_title, duration_seconds\nFROM MusicTracks\n",
+        "text": "SELECT ",
         "isBlank": false
       },
       {
@@ -9284,7 +9474,7 @@ window.QUESTS_SECTION_3 = [
         "placeholder": "[ ___ ]"
       },
       {
-        "text": " ",
+        "text": ", duration_seconds\nFROM ",
         "isBlank": false
       },
       {
@@ -9304,7 +9494,7 @@ window.QUESTS_SECTION_3 = [
         "placeholder": "[ ___ ]"
       },
       {
-        "text": " ",
+        "text": " duration_seconds ASC\n",
         "isBlank": false
       },
       {
@@ -9326,48 +9516,48 @@ window.QUESTS_SECTION_3 = [
     ],
     "slots": {
       "slot1": {
-        "correct": "ORDER BY",
+        "correct": "track_title",
         "options": [
-          "SORT BY",
-          "ORDER BY",
-          "PAGINATE BY",
-          "GROUP BY"
+          "play_count",
+          "artist_name",
+          "track_title",
+          "title"
         ]
       },
       "slot2": {
-        "correct": "duration_seconds ASC",
+        "correct": "MusicTracks",
         "options": [
-          "duration_seconds ASC",
-          "id",
-          "1, 2",
-          "duration_seconds DESC"
+          "MusicTracks",
+          "Students",
+          "FlightSchedule",
+          "Books"
         ]
       },
       "slot3": {
-        "correct": "LIMIT",
+        "correct": "ORDER BY",
         "options": [
-          "LIMIT",
-          "ROWS",
-          "FIRST",
-          "TOP"
+          "GROUP BY",
+          "SORT BY",
+          "ORDER BY",
+          "PAGINATE BY"
         ]
       },
       "slot4": {
-        "correct": "10",
+        "correct": "LIMIT 10",
         "options": [
-          "10",
-          "5",
-          "50",
-          "20"
+          "LIMIT 5",
+          "ROWS 10",
+          "TOP 10",
+          "LIMIT 10"
         ]
       },
       "slot5": {
         "correct": "OFFSET 0;",
         "options": [
           "OFFSET 0;",
+          "SKIP 0;",
           "OFFSET 10;",
-          "PAGE 1;",
-          "SKIP 0;"
+          "PAGE 1;"
         ]
       }
     },
@@ -9395,7 +9585,7 @@ window.QUESTS_SECTION_3 = [
     "targetQuery": "SELECT member_name, membership_plan, visits_this_month\nFROM GymMembers\nORDER BY membership_plan ASC, visits_this_month DESC;",
     "template": [
       {
-        "text": "SELECT member_name, membership_plan, visits_this_month\nFROM ",
+        "text": "SELECT ",
         "isBlank": false
       },
       {
@@ -9405,7 +9595,7 @@ window.QUESTS_SECTION_3 = [
         "placeholder": "[ ___ ]"
       },
       {
-        "text": "\n",
+        "text": ", membership_plan, visits_this_month\nFROM ",
         "isBlank": false
       },
       {
@@ -9415,7 +9605,7 @@ window.QUESTS_SECTION_3 = [
         "placeholder": "[ ___ ]"
       },
       {
-        "text": " ",
+        "text": "\n",
         "isBlank": false
       },
       {
@@ -9425,7 +9615,7 @@ window.QUESTS_SECTION_3 = [
         "placeholder": "[ ___ ]"
       },
       {
-        "text": "\n",
+        "text": " ",
         "isBlank": false
       },
       {
@@ -9433,42 +9623,61 @@ window.QUESTS_SECTION_3 = [
         "isBlank": true,
         "slotId": "slot4",
         "placeholder": "[ ___ ]"
+      },
+      {
+        "text": "\n",
+        "isBlank": false
+      },
+      {
+        "text": "",
+        "isBlank": true,
+        "slotId": "slot5",
+        "placeholder": "[ ___ ]"
       }
     ],
     "slots": {
       "slot1": {
+        "correct": "member_name",
+        "options": [
+          "has_trainer",
+          "joined_date",
+          "visits_this_month",
+          "member_name"
+        ]
+      },
+      "slot2": {
         "correct": "GymMembers",
         "options": [
+          "GroceryItems",
           "MusicTracks",
-          "FlightSchedule",
           "Orders",
           "GymMembers"
         ]
       },
-      "slot2": {
+      "slot3": {
         "correct": "ORDER BY",
         "options": [
-          "GROUP BY",
           "SORT BY",
-          "ORDER BY",
-          "RANK BY"
-        ]
-      },
-      "slot3": {
-        "correct": "membership_plan ASC, visits_this_month DESC",
-        "options": [
-          "membership_plan DESC, visits_this_month DESC",
-          "membership_plan ASC, visits_this_month DESC",
-          "1 ASC",
-          "membership_plan ASC, visits_this_month ASC"
+          "GROUP BY",
+          "RANK BY",
+          "ORDER BY"
         ]
       },
       "slot4": {
+        "correct": "membership_plan ASC, visits_this_month DESC",
+        "options": [
+          "membership_plan ASC, visits_this_month ASC",
+          "membership_plan DESC, visits_this_month DESC",
+          "1 ASC",
+          "membership_plan ASC, visits_this_month DESC"
+        ]
+      },
+      "slot5": {
         "correct": "LIMIT 10;",
         "options": [
-          "LIMIT 1;",
           "LIMIT 10;",
           "FETCH 10;",
+          "LIMIT 1;",
           "TOP 10;"
         ]
       }
@@ -9497,7 +9706,7 @@ window.QUESTS_SECTION_3 = [
     "targetQuery": "SELECT movie_title, star_rating\nFROM MovieReviews\nORDER BY star_rating DESC\nLIMIT 3;",
     "template": [
       {
-        "text": "SELECT movie_title, star_rating\nFROM ",
+        "text": "SELECT ",
         "isBlank": false
       },
       {
@@ -9507,7 +9716,7 @@ window.QUESTS_SECTION_3 = [
         "placeholder": "[ ___ ]"
       },
       {
-        "text": "\n",
+        "text": ", star_rating\nFROM ",
         "isBlank": false
       },
       {
@@ -9517,7 +9726,7 @@ window.QUESTS_SECTION_3 = [
         "placeholder": "[ ___ ]"
       },
       {
-        "text": " ",
+        "text": "\n",
         "isBlank": false
       },
       {
@@ -9527,7 +9736,7 @@ window.QUESTS_SECTION_3 = [
         "placeholder": "[ ___ ]"
       },
       {
-        "text": "\n",
+        "text": " ",
         "isBlank": false
       },
       {
@@ -9535,43 +9744,62 @@ window.QUESTS_SECTION_3 = [
         "isBlank": true,
         "slotId": "slot4",
         "placeholder": "[ ___ ]"
+      },
+      {
+        "text": "\n",
+        "isBlank": false
+      },
+      {
+        "text": "",
+        "isBlank": true,
+        "slotId": "slot5",
+        "placeholder": "[ ___ ]"
       }
     ],
     "slots": {
       "slot1": {
-        "correct": "MovieReviews",
+        "correct": "movie_title",
         "options": [
-          "FlightSchedule",
-          "Employees",
-          "MusicTracks",
-          "MovieReviews"
+          "review_count",
+          "director",
+          "review_id",
+          "movie_title"
         ]
       },
       "slot2": {
-        "correct": "ORDER BY",
+        "correct": "MovieReviews",
         "options": [
-          "SORT BY",
-          "RANK BY",
-          "GROUP BY",
-          "ORDER BY"
+          "PetClinic",
+          "MusicTracks",
+          "Orders",
+          "MovieReviews"
         ]
       },
       "slot3": {
-        "correct": "star_rating DESC",
+        "correct": "ORDER BY",
         "options": [
-          "star_rating ASC",
-          "1 ASC",
-          "star_rating DESC",
-          "star_rating DESC_1"
+          "RANK BY",
+          "ORDER BY",
+          "GROUP BY",
+          "SORT BY"
         ]
       },
       "slot4": {
+        "correct": "star_rating DESC",
+        "options": [
+          "star_rating DESC_1",
+          "1 ASC",
+          "star_rating DESC",
+          "star_rating ASC"
+        ]
+      },
+      "slot5": {
         "correct": "LIMIT 3;",
         "options": [
-          "TOP 3;",
-          "LIMIT 1;",
           "LIMIT 3;",
-          "FETCH 3;"
+          "LIMIT 1;",
+          "FETCH 3;",
+          "TOP 3;"
         ]
       }
     },
@@ -9599,7 +9827,7 @@ window.QUESTS_SECTION_3 = [
     "targetQuery": "SELECT flight_id, departure_time\nFROM FlightSchedule\nORDER BY departure_time ASC;",
     "template": [
       {
-        "text": "SELECT flight_id, departure_time\nFROM ",
+        "text": "SELECT ",
         "isBlank": false
       },
       {
@@ -9609,7 +9837,7 @@ window.QUESTS_SECTION_3 = [
         "placeholder": "[ ___ ]"
       },
       {
-        "text": "\n",
+        "text": ", departure_time\nFROM ",
         "isBlank": false
       },
       {
@@ -9619,7 +9847,7 @@ window.QUESTS_SECTION_3 = [
         "placeholder": "[ ___ ]"
       },
       {
-        "text": " ",
+        "text": "\n",
         "isBlank": false
       },
       {
@@ -9629,7 +9857,7 @@ window.QUESTS_SECTION_3 = [
         "placeholder": "[ ___ ]"
       },
       {
-        "text": "\n",
+        "text": " ",
         "isBlank": false
       },
       {
@@ -9637,43 +9865,62 @@ window.QUESTS_SECTION_3 = [
         "isBlank": true,
         "slotId": "slot4",
         "placeholder": "[ ___ ]"
+      },
+      {
+        "text": "\n",
+        "isBlank": false
+      },
+      {
+        "text": "",
+        "isBlank": true,
+        "slotId": "slot5",
+        "placeholder": "[ ___ ]"
       }
     ],
     "slots": {
       "slot1": {
-        "correct": "FlightSchedule",
+        "correct": "flight_id",
         "options": [
-          "FlightSchedule",
-          "MovieReviews",
-          "GroceryItems",
-          "Orders"
+          "departure_time",
+          "flight_id",
+          "ticket_price",
+          "airline"
         ]
       },
       "slot2": {
-        "correct": "ORDER BY",
+        "correct": "FlightSchedule",
         "options": [
-          "GROUP BY",
-          "SORT BY",
-          "ORDER BY",
-          "RANK BY"
+          "MovieReviews",
+          "Orders",
+          "FlightSchedule",
+          "Employees"
         ]
       },
       "slot3": {
-        "correct": "departure_time ASC",
+        "correct": "ORDER BY",
         "options": [
-          "departure_time ASC_1",
-          "departure_time ASC",
-          "departure_time DESC",
-          "1 ASC"
+          "GROUP BY",
+          "ORDER BY",
+          "RANK BY",
+          "SORT BY"
         ]
       },
       "slot4": {
+        "correct": "departure_time ASC",
+        "options": [
+          "departure_time DESC",
+          "departure_time ASC_1",
+          "1 ASC",
+          "departure_time ASC"
+        ]
+      },
+      "slot5": {
         "correct": "LIMIT 10;",
         "options": [
-          "FETCH 10;",
           "TOP 10;",
+          "LIMIT 10;",
           "LIMIT 1;",
-          "LIMIT 10;"
+          "FETCH 10;"
         ]
       }
     },
@@ -9701,7 +9948,7 @@ window.QUESTS_SECTION_3 = [
     "targetQuery": "SELECT pet_name, weight_kg\nFROM PetClinic\nORDER BY weight_kg DESC\nLIMIT 5 OFFSET 10;",
     "template": [
       {
-        "text": "SELECT pet_name, weight_kg\nFROM PetClinic\n",
+        "text": "SELECT ",
         "isBlank": false
       },
       {
@@ -9711,7 +9958,7 @@ window.QUESTS_SECTION_3 = [
         "placeholder": "[ ___ ]"
       },
       {
-        "text": " ",
+        "text": ", weight_kg\nFROM ",
         "isBlank": false
       },
       {
@@ -9731,7 +9978,7 @@ window.QUESTS_SECTION_3 = [
         "placeholder": "[ ___ ]"
       },
       {
-        "text": " ",
+        "text": " weight_kg DESC\n",
         "isBlank": false
       },
       {
@@ -9753,6 +10000,24 @@ window.QUESTS_SECTION_3 = [
     ],
     "slots": {
       "slot1": {
+        "correct": "pet_name",
+        "options": [
+          "is_vaccinated",
+          "pet_name",
+          "weight_kg",
+          "pet_id"
+        ]
+      },
+      "slot2": {
+        "correct": "PetClinic",
+        "options": [
+          "GroceryItems",
+          "GymMembers",
+          "PetClinic",
+          "Orders"
+        ]
+      },
+      "slot3": {
         "correct": "ORDER BY",
         "options": [
           "PAGINATE BY",
@@ -9761,40 +10026,22 @@ window.QUESTS_SECTION_3 = [
           "SORT BY"
         ]
       },
-      "slot2": {
-        "correct": "weight_kg DESC",
-        "options": [
-          "1, 2",
-          "weight_kg DESC",
-          "weight_kg DESC_1",
-          "id"
-        ]
-      },
-      "slot3": {
-        "correct": "LIMIT",
-        "options": [
-          "ROWS",
-          "LIMIT",
-          "TOP",
-          "FIRST"
-        ]
-      },
       "slot4": {
-        "correct": "5",
+        "correct": "LIMIT 5",
         "options": [
-          "5_1",
-          "5",
-          "20",
-          "50"
+          "ROWS 5",
+          "LIMIT 5_1",
+          "TOP 5",
+          "LIMIT 5"
         ]
       },
       "slot5": {
         "correct": "OFFSET 10;",
         "options": [
+          "SKIP 10;",
           "PAGE 1;",
-          "OFFSET 10;",
           "OFFSET 20;",
-          "SKIP 10;"
+          "OFFSET 10;"
         ]
       }
     },

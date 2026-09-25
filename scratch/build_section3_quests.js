@@ -74,7 +74,8 @@ function getColumnDistractors(table, correctCol) {
 }
 
 function getTableDistractors(correctTable) {
-  const pool = ALL_TABLES.filter(t => t.toLowerCase() !== correctTable.toLowerCase());
+  const cleanTable = correctTable.replace(/;$/, '');
+  const pool = ALL_TABLES.filter(t => t.toLowerCase() !== cleanTable.toLowerCase());
   const sh = shuffle(pool);
   return shuffle([correctTable, ...sh.slice(0, 3)]);
 }
@@ -86,7 +87,6 @@ function ensureFourUniqueOptions(correct, existingOptions) {
       unique.push(opt);
     }
   }
-  // Fillers if needed
   let counter = 1;
   while (unique.length < 4) {
     const filler = `${correct}_${counter++}`;
@@ -131,6 +131,12 @@ const section3Quests = drills.map((d, index) => {
   const tblName = SCHEMAS[fromTable] ? fromTable : 'Students';
   const schemaInfo = SCHEMAS[tblName] || SCHEMAS.Students;
 
+  // Split projected columns
+  const colList = selectCols.split(',').map(s => s.trim());
+  const firstProjCol = colList[0];
+  const restProjCols = colList.slice(1).join(', ');
+  const selectRestStr = restProjCols ? `, ${restProjCols}` : '';
+
   // Extract ORDER BY clause, LIMIT, OFFSET, etc.
   const orderMatch = q.match(/ORDER\s+BY\s+([\s\S]+?)(?:\s+LIMIT|\s*;|$)/i);
   const limitMatch = q.match(/LIMIT\s+(\d+)/i);
@@ -141,53 +147,70 @@ const section3Quests = drills.map((d, index) => {
 
   // ---------------------------------------------------------------------------
   // TIER 1: Levels 01–20 (Strictly 3 Blanks) - Apprentice
-  // Focus: Single column ASC / DESC sorting
+  // Progressive Mixing: Foundations (table or projected col) + ORDER BY + sortCol dir;
   // ---------------------------------------------------------------------------
   if (levelNum <= 20) {
     const isDesc = /DESC/i.test(q);
     const dir = isDesc ? 'DESC' : 'ASC';
     const altDir = isDesc ? 'ASC' : 'DESC';
 
-    // Extract sort column
     let sortCol = 'id';
     if (orderMatch) {
       const parts = orderMatch[1].trim().split(/\s+/);
       sortCol = parts[0].replace(/;$/, '');
     }
 
-    // 3 Blanks: FROM table, ORDER BY, sortCol + dir
-    template = [
-      { text: `SELECT ${selectCols}\nFROM `, isBlank: false },
-      { text: '', isBlank: true, slotId: 'slot1', placeholder: '[ ___ ]' },
-      { text: '\n', isBlank: false },
-      { text: '', isBlank: true, slotId: 'slot2', placeholder: '[ ___ ]' },
-      { text: ' ', isBlank: false },
-      { text: '', isBlank: true, slotId: 'slot3', placeholder: '[ ___ ]' }
-    ];
+    if (levelNum % 2 !== 0) {
+      // Odd: FROM [table] (Foundations) + [ORDER BY] + [sortCol dir;] (Slicing)
+      template = [
+        { text: `SELECT ${selectCols}\nFROM `, isBlank: false },
+        { text: '', isBlank: true, slotId: 'slot1', placeholder: '[ ___ ]' },
+        { text: '\n', isBlank: false },
+        { text: '', isBlank: true, slotId: 'slot2', placeholder: '[ ___ ]' },
+        { text: ' ', isBlank: false },
+        { text: '', isBlank: true, slotId: 'slot3', placeholder: '[ ___ ]' }
+      ];
 
-    slots = {
-      slot1: { correct: fromTable, options: getTableDistractors(fromTable) },
-      slot2: { correct: 'ORDER BY', options: shuffle(['ORDER BY', 'SORT BY', 'GROUP BY', 'ARRANGE BY']) },
-      slot3: { correct: `${sortCol} ${dir};`, options: shuffle([
-        `${sortCol} ${dir};`,
-        `${sortCol} ${altDir};`,
-        `${sortCol};`,
-        `${sortCol} NULLS;`
-      ]) }
-    };
+      slots = {
+        slot1: { correct: fromTable, options: getTableDistractors(fromTable) },
+        slot2: { correct: 'ORDER BY', options: shuffle(['ORDER BY', 'SORT BY', 'GROUP BY', 'ARRANGE BY']) },
+        slot3: { correct: `${sortCol} ${dir};`, options: shuffle([
+          `${sortCol} ${dir};`,
+          `${sortCol} ${altDir};`,
+          `${sortCol};`,
+          `${sortCol} NULLS;`
+        ]) }
+      };
+    } else {
+      // Even: SELECT [firstProjCol] (Foundations) + FROM ${fromTable}\nORDER BY + [sortCol] [dir;]
+      template = [
+        { text: `SELECT `, isBlank: false },
+        { text: '', isBlank: true, slotId: 'slot1', placeholder: '[ ___ ]' },
+        { text: `${selectRestStr}\nFROM ${fromTable}\nORDER BY `, isBlank: false },
+        { text: '', isBlank: true, slotId: 'slot2', placeholder: '[ ___ ]' },
+        { text: ' ', isBlank: false },
+        { text: '', isBlank: true, slotId: 'slot3', placeholder: '[ ___ ]' }
+      ];
+
+      slots = {
+        slot1: { correct: firstProjCol, options: getColumnDistractors(tblName, firstProjCol) },
+        slot2: { correct: sortCol, options: getColumnDistractors(tblName, sortCol) },
+        slot3: { correct: `${dir};`, options: shuffle([`${dir};`, `${altDir};`, 'NULLS FIRST;', 'AUTO;']) }
+      };
+    }
   }
   // ---------------------------------------------------------------------------
   // TIER 2: Levels 21–45 (3 to 4 Blanks) - Practitioner
-  // Focus: Multi-column sorting, aliases, expressions
+  // Progressive Mixing: Foundations (FROM table) + [ORDER BY] + multi-column criteria
   // ---------------------------------------------------------------------------
   else if (levelNum <= 45) {
-    if (levelNum % 2 === 0) {
-      // 4 Blanks: SELECT cols, FROM table, ORDER BY, multi-column criteria
-      const rawOrder = orderMatch ? orderMatch[1].trim().replace(/;$/, '') : 'salary DESC, emp_id ASC';
-      const orderParts = rawOrder.split(',').map(s => s.trim());
-      const firstSort = orderParts[0] || '1 ASC';
-      const secondSort = (orderParts[1] || '2 ASC') + ';';
+    const rawOrder = orderMatch ? orderMatch[1].trim().replace(/;$/, '') : 'salary DESC, emp_id ASC';
+    const orderParts = rawOrder.split(',').map(s => s.trim());
+    const firstSort = orderParts[0] || '1 ASC';
+    const secondSort = (orderParts[1] || '2 ASC') + ';';
 
+    if (levelNum % 2 === 0) {
+      // 4 Blanks: FROM [table] (Foundations) + [ORDER BY] + [firstSort] + [secondSort]
       template = [
         { text: `SELECT ${selectCols}\nFROM `, isBlank: false },
         { text: '', isBlank: true, slotId: 'slot1', placeholder: '[ ___ ]' },
@@ -211,19 +234,19 @@ const section3Quests = drills.map((d, index) => {
         ]) }
       };
     } else {
-      // 3 Blanks: FROM, ORDER BY, full order clause with semi
-      const fullOrder = (orderMatch ? orderMatch[1].trim().replace(/;$/, '') : 'salary DESC') + ';';
+      // 3 Blanks: SELECT [firstProjCol] (Foundations) + FROM ${fromTable}\n + [ORDER BY] + [fullOrder]
+      const fullOrder = rawOrder + ';';
       template = [
-        { text: `SELECT ${selectCols}\n`, isBlank: false },
+        { text: `SELECT `, isBlank: false },
         { text: '', isBlank: true, slotId: 'slot1', placeholder: '[ ___ ]' },
-        { text: ` ${fromTable}\n`, isBlank: false },
+        { text: `${selectRestStr}\nFROM ${fromTable}\n`, isBlank: false },
         { text: '', isBlank: true, slotId: 'slot2', placeholder: '[ ___ ]' },
         { text: ' ', isBlank: false },
         { text: '', isBlank: true, slotId: 'slot3', placeholder: '[ ___ ]' }
       ];
 
       slots = {
-        slot1: { correct: 'FROM', options: shuffle(['FROM', 'INTO', 'TABLE', 'SOURCE']) },
+        slot1: { correct: firstProjCol, options: getColumnDistractors(tblName, firstProjCol) },
         slot2: { correct: 'ORDER BY', options: shuffle(['ORDER BY', 'SORT BY', 'ARRANGE BY', 'INDEX BY']) },
         slot3: { correct: fullOrder, options: shuffle([
           fullOrder,
@@ -236,28 +259,28 @@ const section3Quests = drills.map((d, index) => {
   }
   // ---------------------------------------------------------------------------
   // TIER 3: Levels 46–75 (Strictly 4 Blanks) - Specialist
-  // Focus: Functions in ORDER BY, Positional 1, 2, and LIMIT N
+  // Progressive Mixing: Foundations (FROM table) + [ORDER BY] + sortField + [LIMIT N]
   // ---------------------------------------------------------------------------
   else if (levelNum <= 75) {
     const rawOrder = orderMatch ? orderMatch[1].trim().replace(/;$/, '') : '1 ASC';
     const limitVal = limitMatch ? limitMatch[1] : '5';
 
     if (q.includes('LIMIT')) {
-      // 4 Blanks with LIMIT
+      // 4 Blanks: FROM [table] (Foundations) + [ORDER BY] + rawOrder + [LIMIT] + [limitVal;]
       template = [
-        { text: `SELECT ${selectCols}\nFROM ${fromTable}\n`, isBlank: false },
+        { text: `SELECT ${selectCols}\nFROM `, isBlank: false },
         { text: '', isBlank: true, slotId: 'slot1', placeholder: '[ ___ ]' },
-        { text: ' ', isBlank: false },
-        { text: '', isBlank: true, slotId: 'slot2', placeholder: '[ ___ ]' },
         { text: '\n', isBlank: false },
+        { text: '', isBlank: true, slotId: 'slot2', placeholder: '[ ___ ]' },
+        { text: ` ${rawOrder}\n`, isBlank: false },
         { text: '', isBlank: true, slotId: 'slot3', placeholder: '[ ___ ]' },
         { text: ' ', isBlank: false },
         { text: '', isBlank: true, slotId: 'slot4', placeholder: '[ ___ ]' }
       ];
 
       slots = {
-        slot1: { correct: 'ORDER BY', options: shuffle(['ORDER BY', 'SORT BY', 'LIMIT BY', 'FILTER BY']) },
-        slot2: { correct: rawOrder, options: shuffle([rawOrder, rawOrder.replace(/ASC/g, 'DESC'), rawOrder.replace(/DESC/g, 'ASC'), '1']) },
+        slot1: { correct: fromTable, options: getTableDistractors(fromTable) },
+        slot2: { correct: 'ORDER BY', options: shuffle(['ORDER BY', 'SORT BY', 'LIMIT BY', 'FILTER BY']) },
         slot3: { correct: 'LIMIT', options: shuffle(['LIMIT', 'TOP', 'FETCH', 'MAX']) },
         slot4: { correct: `${limitVal};`, options: shuffle([`${limitVal};`, `${parseInt(limitVal, 10) + 5};`, `1;`, `100;`]) }
       };
@@ -268,9 +291,9 @@ const section3Quests = drills.map((d, index) => {
       const sortDir = (orderTokens.slice(1).join(' ') || 'ASC') + ';';
 
       template = [
-        { text: `SELECT ${selectCols}\n`, isBlank: false },
+        { text: `SELECT `, isBlank: false },
         { text: '', isBlank: true, slotId: 'slot1', placeholder: '[ ___ ]' },
-        { text: ' ', isBlank: false },
+        { text: `${selectRestStr}\nFROM `, isBlank: false },
         { text: '', isBlank: true, slotId: 'slot2', placeholder: '[ ___ ]' },
         { text: '\nORDER BY ', isBlank: false },
         { text: '', isBlank: true, slotId: 'slot3', placeholder: '[ ___ ]' },
@@ -279,7 +302,7 @@ const section3Quests = drills.map((d, index) => {
       ];
 
       slots = {
-        slot1: { correct: 'FROM', options: shuffle(['FROM', 'TABLE', 'INTO', 'SOURCE']) },
+        slot1: { correct: firstProjCol, options: getColumnDistractors(tblName, firstProjCol) },
         slot2: { correct: fromTable, options: getTableDistractors(fromTable) },
         slot3: { correct: sortField, options: shuffle([sortField, '1', '2', 'LENGTH(' + sortField + ')']) },
         slot4: { correct: sortDir, options: shuffle([sortDir, 'ASC;', 'DESC;', 'AUTO;']) }
@@ -287,8 +310,8 @@ const section3Quests = drills.map((d, index) => {
     }
   }
   // ---------------------------------------------------------------------------
-  // TIER 4: Levels 76–100 (4 to 5 Blanks) - Master (FAANG-Ready)
-  // Focus: LIMIT & OFFSET Pagination, deterministic ties, bug hunt synthesis
+  // TIER 4: Levels 76–100 (5 Blanks) - Master (FAANG-Ready)
+  // Progressive Mixing: Foundations (col & table) + ORDER BY + LIMIT + OFFSET
   // ---------------------------------------------------------------------------
   else {
     const rawOrder = orderMatch ? orderMatch[1].trim().replace(/;$/, '') : 'student_id ASC';
@@ -296,25 +319,25 @@ const section3Quests = drills.map((d, index) => {
     const offsetVal = offsetMatch ? offsetMatch[1] : '0';
 
     if (q.includes('OFFSET')) {
-      // 5 Blanks: ORDER BY, sort clause, LIMIT, limitVal, OFFSET offsetVal;
+      // 5 Blanks: SELECT [firstProjCol] + FROM [table] + [ORDER BY] + rawOrder\n + [LIMIT limitVal] + [OFFSET offsetVal;]
       template = [
-        { text: `SELECT ${selectCols}\nFROM ${fromTable}\n`, isBlank: false },
+        { text: `SELECT `, isBlank: false },
         { text: '', isBlank: true, slotId: 'slot1', placeholder: '[ ___ ]' },
-        { text: ' ', isBlank: false },
+        { text: `${selectRestStr}\nFROM `, isBlank: false },
         { text: '', isBlank: true, slotId: 'slot2', placeholder: '[ ___ ]' },
         { text: '\n', isBlank: false },
         { text: '', isBlank: true, slotId: 'slot3', placeholder: '[ ___ ]' },
-        { text: ' ', isBlank: false },
+        { text: ` ${rawOrder}\n`, isBlank: false },
         { text: '', isBlank: true, slotId: 'slot4', placeholder: '[ ___ ]' },
         { text: ' ', isBlank: false },
         { text: '', isBlank: true, slotId: 'slot5', placeholder: '[ ___ ]' }
       ];
 
       slots = {
-        slot1: { correct: 'ORDER BY', options: shuffle(['ORDER BY', 'SORT BY', 'PAGINATE BY', 'GROUP BY']) },
-        slot2: { correct: rawOrder, options: shuffle([rawOrder, rawOrder.replace(/ASC/g, 'DESC'), '1, 2', 'id']) },
-        slot3: { correct: 'LIMIT', options: shuffle(['LIMIT', 'TOP', 'ROWS', 'FIRST']) },
-        slot4: { correct: limitVal, options: shuffle([limitVal, '5', '20', '50']) },
+        slot1: { correct: firstProjCol, options: getColumnDistractors(tblName, firstProjCol) },
+        slot2: { correct: fromTable, options: getTableDistractors(fromTable) },
+        slot3: { correct: 'ORDER BY', options: shuffle(['ORDER BY', 'SORT BY', 'PAGINATE BY', 'GROUP BY']) },
+        slot4: { correct: `LIMIT ${limitVal}`, options: shuffle([`LIMIT ${limitVal}`, `LIMIT 5`, `TOP ${limitVal}`, `ROWS ${limitVal}`]) },
         slot5: { correct: `OFFSET ${offsetVal};`, options: shuffle([
           `OFFSET ${offsetVal};`,
           `OFFSET ${parseInt(offsetVal, 10) + 10};`,
@@ -323,23 +346,26 @@ const section3Quests = drills.map((d, index) => {
         ]) }
       };
     } else {
-      // 4 Blanks advanced synthesis
+      // 5 Blanks advanced synthesis
       template = [
-        { text: `SELECT ${selectCols}\nFROM `, isBlank: false },
+        { text: `SELECT `, isBlank: false },
         { text: '', isBlank: true, slotId: 'slot1', placeholder: '[ ___ ]' },
-        { text: '\n', isBlank: false },
+        { text: `${selectRestStr}\nFROM `, isBlank: false },
         { text: '', isBlank: true, slotId: 'slot2', placeholder: '[ ___ ]' },
-        { text: ' ', isBlank: false },
-        { text: '', isBlank: true, slotId: 'slot3', placeholder: '[ ___ ]' },
         { text: '\n', isBlank: false },
-        { text: '', isBlank: true, slotId: 'slot4', placeholder: '[ ___ ]' }
+        { text: '', isBlank: true, slotId: 'slot3', placeholder: '[ ___ ]' },
+        { text: ' ', isBlank: false },
+        { text: '', isBlank: true, slotId: 'slot4', placeholder: '[ ___ ]' },
+        { text: '\n', isBlank: false },
+        { text: '', isBlank: true, slotId: 'slot5', placeholder: '[ ___ ]' }
       ];
 
       slots = {
-        slot1: { correct: fromTable, options: getTableDistractors(fromTable) },
-        slot2: { correct: 'ORDER BY', options: shuffle(['ORDER BY', 'SORT BY', 'RANK BY', 'GROUP BY']) },
-        slot3: { correct: rawOrder, options: shuffle([rawOrder, rawOrder.replace(/ASC/g, 'DESC'), rawOrder.replace(/DESC/g, 'ASC'), '1 ASC']) },
-        slot4: { correct: `LIMIT ${limitVal};`, options: shuffle([`LIMIT ${limitVal};`, `LIMIT 1;`, `TOP ${limitVal};`, `FETCH ${limitVal};`]) }
+        slot1: { correct: firstProjCol, options: getColumnDistractors(tblName, firstProjCol) },
+        slot2: { correct: fromTable, options: getTableDistractors(fromTable) },
+        slot3: { correct: 'ORDER BY', options: shuffle(['ORDER BY', 'SORT BY', 'RANK BY', 'GROUP BY']) },
+        slot4: { correct: rawOrder, options: shuffle([rawOrder, rawOrder.replace(/ASC/g, 'DESC'), rawOrder.replace(/DESC/g, 'ASC'), '1 ASC']) },
+        slot5: { correct: `LIMIT ${limitVal};`, options: shuffle([`LIMIT ${limitVal};`, `LIMIT 1;`, `TOP ${limitVal};`, `FETCH ${limitVal};`]) }
       };
     }
   }
@@ -381,11 +407,11 @@ const section3Quests = drills.map((d, index) => {
 
 const output = `// =============================================================================
 // SECTION 03: ORDER BY & LIMIT SLICING (100 INTERACTIVE MULTI-BLANK QUESTS)
-// Progressive 3-to-5 Blank Challenge Engine with Tiered Difficulty
+// Progressive Cumulative 3-to-5 Blank Challenge Engine Interleaving Foundations & Slicing
 // =============================================================================
 
 window.QUESTS_SECTION_3 = ${JSON.stringify(section3Quests, null, 2)};
 `;
 
 fs.writeFileSync('visualizer/quests_section3_data.js', output, 'utf8');
-console.log('✅ Generated visualizer/quests_section3_data.js with', section3Quests.length, 'quests!');
+console.log('✅ Generated visualizer/quests_section3_data.js with', section3Quests.length, 'progressive interleaved quests!');

@@ -1,6 +1,6 @@
 // =============================================================================
 // SECTION 02: WHERE PREDICATES & FILTERING (100 INTERACTIVE MULTI-BLANK QUESTS)
-// Progressive 3-to-5 Blank Challenge Engine with Tiered Difficulty
+// Progressive Cumulative 3-to-5 Blank Challenge Engine Interleaving Foundations & Filtering
 // =============================================================================
 
 window.QUESTS_SECTION_2 = [
@@ -21,7 +21,7 @@ window.QUESTS_SECTION_2 = [
     "targetQuery": "SELECT full_name, city\nFROM Students\nWHERE city = 'Seattle';",
     "template": [
       {
-        "text": "SELECT full_name, city\nFROM Students\n",
+        "text": "SELECT full_name, city\nFROM ",
         "isBlank": false
       },
       {
@@ -31,7 +31,7 @@ window.QUESTS_SECTION_2 = [
         "placeholder": "[ ___ ]"
       },
       {
-        "text": " ",
+        "text": "\n",
         "isBlank": false
       },
       {
@@ -53,30 +53,30 @@ window.QUESTS_SECTION_2 = [
     ],
     "slots": {
       "slot1": {
-        "correct": "WHERE",
+        "correct": "Students",
         "options": [
-          "HAVING",
-          "WHEN",
-          "FILTER",
-          "WHERE"
+          "FlightSchedule",
+          "PetClinic",
+          "Students",
+          "Orders"
         ]
       },
       "slot2": {
-        "correct": "city",
+        "correct": "WHERE",
         "options": [
-          "city",
-          "student_id",
-          "first_name",
-          "enrolled_year"
+          "FILTER",
+          "WHEN",
+          "HAVING",
+          "WHERE"
         ]
       },
       "slot3": {
-        "correct": "= 'Seattle';",
+        "correct": "city = 'Seattle';",
         "options": [
-          "!= 'Seattle';",
-          "= 'Seattle';",
-          "LIKE 'Seattle';",
-          "NULL"
+          "NULL",
+          "city = 'Seattle';",
+          "city LIKE 'Seattle';",
+          "city != 'Seattle';"
         ]
       }
     },
@@ -104,7 +104,7 @@ window.QUESTS_SECTION_2 = [
     "targetQuery": "SELECT title, author, genre\nFROM Books\nWHERE genre = 'Sci-Fi';",
     "template": [
       {
-        "text": "SELECT title, author, genre\nFROM Books\n",
+        "text": "SELECT ",
         "isBlank": false
       },
       {
@@ -114,7 +114,7 @@ window.QUESTS_SECTION_2 = [
         "placeholder": "[ ___ ]"
       },
       {
-        "text": " ",
+        "text": ", author, genre\nFROM Books\nWHERE ",
         "isBlank": false
       },
       {
@@ -136,29 +136,29 @@ window.QUESTS_SECTION_2 = [
     ],
     "slots": {
       "slot1": {
-        "correct": "WHERE",
+        "correct": "title",
         "options": [
-          "WHERE",
-          "FILTER",
-          "HAVING",
-          "WHEN"
+          "title",
+          "genre",
+          "stock_qty",
+          "author"
         ]
       },
       "slot2": {
         "correct": "genre",
         "options": [
+          "book_id",
           "is_hardcover",
-          "stock_qty",
-          "genre",
-          "price"
+          "price",
+          "genre"
         ]
       },
       "slot3": {
         "correct": "= 'Sci-Fi';",
         "options": [
+          "!= 'Sci-Fi';",
           "LIKE 'Sci-Fi';",
           "NULL",
-          "!= 'Sci-Fi';",
           "= 'Sci-Fi';"
         ]
       }
@@ -187,7 +187,7 @@ window.QUESTS_SECTION_2 = [
     "targetQuery": "SELECT first_name, department, salary\nFROM Employees\nWHERE department = 'Engineering';",
     "template": [
       {
-        "text": "SELECT first_name, department, salary\nFROM Employees\n",
+        "text": "SELECT first_name, department, salary\nFROM ",
         "isBlank": false
       },
       {
@@ -197,7 +197,7 @@ window.QUESTS_SECTION_2 = [
         "placeholder": "[ ___ ]"
       },
       {
-        "text": " ",
+        "text": "\n",
         "isBlank": false
       },
       {
@@ -219,30 +219,30 @@ window.QUESTS_SECTION_2 = [
     ],
     "slots": {
       "slot1": {
-        "correct": "WHERE",
+        "correct": "Employees",
         "options": [
-          "HAVING",
-          "FILTER",
-          "WHERE",
-          "WHEN"
+          "FlightSchedule",
+          "GroceryItems",
+          "Employees",
+          "MusicTracks"
         ]
       },
       "slot2": {
-        "correct": "department",
+        "correct": "WHERE",
         "options": [
-          "salary",
-          "last_name",
-          "department",
-          "first_name"
+          "HAVING",
+          "WHEN",
+          "WHERE",
+          "FILTER"
         ]
       },
       "slot3": {
-        "correct": "= 'Engineering';",
+        "correct": "department = 'Engineering';",
         "options": [
-          "!= 'Engineering';",
-          "= 'Engineering';",
+          "department = 'Engineering';",
+          "department != 'Engineering';",
           "NULL",
-          "LIKE 'Engineering';"
+          "department LIKE 'Engineering';"
         ]
       }
     },
@@ -270,7 +270,7 @@ window.QUESTS_SECTION_2 = [
     "targetQuery": "SELECT item_name, unit_price\nFROM GroceryItems\nWHERE is_organic = TRUE;",
     "template": [
       {
-        "text": "SELECT item_name, unit_price\nFROM GroceryItems\n",
+        "text": "SELECT ",
         "isBlank": false
       },
       {
@@ -280,7 +280,7 @@ window.QUESTS_SECTION_2 = [
         "placeholder": "[ ___ ]"
       },
       {
-        "text": " ",
+        "text": ", unit_price\nFROM GroceryItems\nWHERE ",
         "isBlank": false
       },
       {
@@ -302,30 +302,30 @@ window.QUESTS_SECTION_2 = [
     ],
     "slots": {
       "slot1": {
-        "correct": "WHERE",
+        "correct": "item_name",
         "options": [
-          "FILTER",
-          "WHEN",
-          "HAVING",
-          "WHERE"
+          "stock_qty",
+          "item_name",
+          "item_id",
+          "unit_price"
         ]
       },
       "slot2": {
         "correct": "is_organic",
         "options": [
-          "stock_qty",
-          "category",
-          "item_name",
-          "is_organic"
+          "calories",
+          "is_organic",
+          "item_id",
+          "stock_qty"
         ]
       },
       "slot3": {
         "correct": "= TRUE;",
         "options": [
           "= TRUE;",
-          "!= TRUE;",
+          "NULL",
           "LIKE TRUE;",
-          "NULL"
+          "!= TRUE;"
         ]
       }
     },
@@ -353,7 +353,7 @@ window.QUESTS_SECTION_2 = [
     "targetQuery": "SELECT order_id, customer_name, order_status\nFROM Orders\nWHERE order_status = 'Shipped';",
     "template": [
       {
-        "text": "SELECT order_id, customer_name, order_status\nFROM Orders\n",
+        "text": "SELECT order_id, customer_name, order_status\nFROM ",
         "isBlank": false
       },
       {
@@ -363,7 +363,7 @@ window.QUESTS_SECTION_2 = [
         "placeholder": "[ ___ ]"
       },
       {
-        "text": " ",
+        "text": "\n",
         "isBlank": false
       },
       {
@@ -385,30 +385,30 @@ window.QUESTS_SECTION_2 = [
     ],
     "slots": {
       "slot1": {
-        "correct": "WHERE",
+        "correct": "Orders",
         "options": [
-          "WHEN",
-          "HAVING",
-          "WHERE",
-          "FILTER"
+          "Orders",
+          "GroceryItems",
+          "FlightSchedule",
+          "Employees"
         ]
       },
       "slot2": {
-        "correct": "order_status",
+        "correct": "WHERE",
         "options": [
-          "order_status",
-          "customer_name",
-          "quantity",
-          "product_name"
+          "FILTER",
+          "WHERE",
+          "HAVING",
+          "WHEN"
         ]
       },
       "slot3": {
-        "correct": "= 'Shipped';",
+        "correct": "order_status = 'Shipped';",
         "options": [
-          "!= 'Shipped';",
-          "LIKE 'Shipped';",
-          "= 'Shipped';",
-          "NULL"
+          "order_status LIKE 'Shipped';",
+          "order_status = 'Shipped';",
+          "NULL",
+          "order_status != 'Shipped';"
         ]
       }
     },
@@ -432,11 +432,11 @@ window.QUESTS_SECTION_2 = [
     "difficulty": "Easy",
     "task": "Find all tracks performed by the artist 'Luna Waves'.",
     "table": "MusicTracks",
-    "schemaSnippet": "MusicTracks(track_id INT, title VARCHAR, track_title VARCHAR, artist VARCHAR, genre VARCHAR, duration_seconds INT, play_count INT, release_year INT)",
+    "schemaSnippet": "MusicTracks(track_id INT, title VARCHAR, track_title VARCHAR, artist VARCHAR, artist_name VARCHAR, genre VARCHAR, duration_seconds INT, play_count INT, release_year INT)",
     "targetQuery": "SELECT track_title, artist_name\nFROM MusicTracks\nWHERE artist_name = 'Luna Waves';",
     "template": [
       {
-        "text": "SELECT track_title, artist_name\nFROM MusicTracks\n",
+        "text": "SELECT ",
         "isBlank": false
       },
       {
@@ -446,7 +446,7 @@ window.QUESTS_SECTION_2 = [
         "placeholder": "[ ___ ]"
       },
       {
-        "text": " ",
+        "text": ", artist_name\nFROM MusicTracks\nWHERE ",
         "isBlank": false
       },
       {
@@ -468,30 +468,30 @@ window.QUESTS_SECTION_2 = [
     ],
     "slots": {
       "slot1": {
-        "correct": "WHERE",
+        "correct": "track_title",
         "options": [
-          "FILTER",
-          "WHERE",
-          "WHEN",
-          "HAVING"
+          "artist",
+          "track_id",
+          "track_title",
+          "release_year"
         ]
       },
       "slot2": {
         "correct": "artist_name",
         "options": [
-          "release_year",
-          "title",
+          "track_id",
+          "track_title",
           "artist_name",
-          "duration_seconds"
+          "play_count"
         ]
       },
       "slot3": {
         "correct": "= 'Luna Waves';",
         "options": [
-          "NULL",
           "= 'Luna Waves';",
-          "LIKE 'Luna Waves';",
-          "!= 'Luna Waves';"
+          "NULL",
+          "!= 'Luna Waves';",
+          "LIKE 'Luna Waves';"
         ]
       }
     },
@@ -519,7 +519,7 @@ window.QUESTS_SECTION_2 = [
     "targetQuery": "SELECT member_name, membership_plan\nFROM GymMembers\nWHERE membership_plan = 'Gold';",
     "template": [
       {
-        "text": "SELECT member_name, membership_plan\nFROM GymMembers\n",
+        "text": "SELECT member_name, membership_plan\nFROM ",
         "isBlank": false
       },
       {
@@ -529,7 +529,7 @@ window.QUESTS_SECTION_2 = [
         "placeholder": "[ ___ ]"
       },
       {
-        "text": " ",
+        "text": "\n",
         "isBlank": false
       },
       {
@@ -551,30 +551,30 @@ window.QUESTS_SECTION_2 = [
     ],
     "slots": {
       "slot1": {
-        "correct": "WHERE",
+        "correct": "GymMembers",
         "options": [
-          "WHERE",
-          "FILTER",
-          "WHEN",
-          "HAVING"
+          "FlightSchedule",
+          "Books",
+          "MovieReviews",
+          "GymMembers"
         ]
       },
       "slot2": {
-        "correct": "membership_plan",
+        "correct": "WHERE",
         "options": [
-          "joined_date",
-          "member_id",
-          "membership_plan",
-          "monthly_fee"
+          "WHEN",
+          "FILTER",
+          "WHERE",
+          "HAVING"
         ]
       },
       "slot3": {
-        "correct": "= 'Gold';",
+        "correct": "membership_plan = 'Gold';",
         "options": [
-          "= 'Gold';",
-          "LIKE 'Gold';",
           "NULL",
-          "!= 'Gold';"
+          "membership_plan LIKE 'Gold';",
+          "membership_plan = 'Gold';",
+          "membership_plan != 'Gold';"
         ]
       }
     },
@@ -602,7 +602,7 @@ window.QUESTS_SECTION_2 = [
     "targetQuery": "SELECT movie_title, director\nFROM MovieReviews\nWHERE director = 'Christopher Nolan';",
     "template": [
       {
-        "text": "SELECT movie_title, director\nFROM MovieReviews\n",
+        "text": "SELECT ",
         "isBlank": false
       },
       {
@@ -612,7 +612,7 @@ window.QUESTS_SECTION_2 = [
         "placeholder": "[ ___ ]"
       },
       {
-        "text": " ",
+        "text": ", director\nFROM MovieReviews\nWHERE ",
         "isBlank": false
       },
       {
@@ -634,29 +634,29 @@ window.QUESTS_SECTION_2 = [
     ],
     "slots": {
       "slot1": {
-        "correct": "WHERE",
+        "correct": "movie_title",
         "options": [
-          "FILTER",
-          "WHEN",
-          "WHERE",
-          "HAVING"
+          "star_rating",
+          "review_count",
+          "director",
+          "movie_title"
         ]
       },
       "slot2": {
         "correct": "director",
         "options": [
-          "genre",
           "director",
           "review_count",
-          "release_year"
+          "review_id",
+          "genre"
         ]
       },
       "slot3": {
         "correct": "= 'Christopher Nolan';",
         "options": [
-          "!= 'Christopher Nolan';",
           "= 'Christopher Nolan';",
           "LIKE 'Christopher Nolan';",
+          "!= 'Christopher Nolan';",
           "NULL"
         ]
       }
@@ -685,7 +685,7 @@ window.QUESTS_SECTION_2 = [
     "targetQuery": "SELECT flight_id, dest_airport\nFROM FlightSchedule\nWHERE dest_airport = 'LAX';",
     "template": [
       {
-        "text": "SELECT flight_id, dest_airport\nFROM FlightSchedule\n",
+        "text": "SELECT flight_id, dest_airport\nFROM ",
         "isBlank": false
       },
       {
@@ -695,7 +695,7 @@ window.QUESTS_SECTION_2 = [
         "placeholder": "[ ___ ]"
       },
       {
-        "text": " ",
+        "text": "\n",
         "isBlank": false
       },
       {
@@ -717,30 +717,30 @@ window.QUESTS_SECTION_2 = [
     ],
     "slots": {
       "slot1": {
-        "correct": "WHERE",
+        "correct": "FlightSchedule",
         "options": [
-          "FILTER",
-          "HAVING",
-          "WHERE",
-          "WHEN"
+          "MusicTracks",
+          "Orders",
+          "MovieReviews",
+          "FlightSchedule"
         ]
       },
       "slot2": {
-        "correct": "dest_airport",
+        "correct": "WHERE",
         "options": [
-          "dest_airport",
-          "destination_airport",
-          "delay_minutes",
-          "departure_time"
+          "WHERE",
+          "HAVING",
+          "WHEN",
+          "FILTER"
         ]
       },
       "slot3": {
-        "correct": "= 'LAX';",
+        "correct": "dest_airport = 'LAX';",
         "options": [
-          "LIKE 'LAX';",
-          "!= 'LAX';",
-          "= 'LAX';",
-          "NULL"
+          "NULL",
+          "dest_airport LIKE 'LAX';",
+          "dest_airport = 'LAX';",
+          "dest_airport != 'LAX';"
         ]
       }
     },
@@ -768,7 +768,7 @@ window.QUESTS_SECTION_2 = [
     "targetQuery": "SELECT pet_name, species\nFROM PetClinic\nWHERE species != 'Dog';",
     "template": [
       {
-        "text": "SELECT pet_name, species\nFROM PetClinic\n",
+        "text": "SELECT ",
         "isBlank": false
       },
       {
@@ -778,7 +778,7 @@ window.QUESTS_SECTION_2 = [
         "placeholder": "[ ___ ]"
       },
       {
-        "text": " ",
+        "text": ", species\nFROM PetClinic\nWHERE ",
         "isBlank": false
       },
       {
@@ -800,30 +800,30 @@ window.QUESTS_SECTION_2 = [
     ],
     "slots": {
       "slot1": {
-        "correct": "WHERE",
+        "correct": "pet_name",
         "options": [
-          "HAVING",
-          "FILTER",
-          "WHERE",
-          "WHEN"
+          "species",
+          "is_vaccinated",
+          "pet_name",
+          "pet_id"
         ]
       },
       "slot2": {
         "correct": "species",
         "options": [
-          "is_vaccinated",
           "species",
-          "weight_kg",
-          "pet_id"
+          "pet_name",
+          "age_years",
+          "is_vaccinated"
         ]
       },
       "slot3": {
         "correct": "!= 'Dog';",
         "options": [
-          "= 'Dog';",
-          "LIKE 'Dog';",
+          "NULL",
           "!= 'Dog';",
-          "NULL"
+          "LIKE 'Dog';",
+          "= 'Dog';"
         ]
       }
     },
@@ -851,7 +851,7 @@ window.QUESTS_SECTION_2 = [
     "targetQuery": "SELECT full_name, gpa\nFROM Students\nWHERE gpa >= 3.50;",
     "template": [
       {
-        "text": "SELECT full_name, gpa\nFROM Students\n",
+        "text": "SELECT full_name, gpa\nFROM ",
         "isBlank": false
       },
       {
@@ -861,7 +861,7 @@ window.QUESTS_SECTION_2 = [
         "placeholder": "[ ___ ]"
       },
       {
-        "text": " ",
+        "text": "\n",
         "isBlank": false
       },
       {
@@ -883,30 +883,30 @@ window.QUESTS_SECTION_2 = [
     ],
     "slots": {
       "slot1": {
-        "correct": "WHERE",
+        "correct": "Students",
         "options": [
-          "HAVING",
-          "FILTER",
-          "WHERE",
-          "WHEN"
+          "GymMembers",
+          "FlightSchedule",
+          "Employees",
+          "Students"
         ]
       },
       "slot2": {
-        "correct": "gpa",
+        "correct": "WHERE",
         "options": [
-          "major",
-          "last_name",
-          "enrolled_year",
-          "gpa"
+          "WHERE",
+          "WHEN",
+          "FILTER",
+          "HAVING"
         ]
       },
       "slot3": {
-        "correct": ">= 3.50;",
+        "correct": "gpa >= 3.50;",
         "options": [
-          "!= 3.50;",
-          ">= 3.50;",
-          "= 3.50;",
-          "LIKE 3.50;"
+          "gpa >= 3.50;",
+          "gpa != 3.50;",
+          "gpa LIKE 3.50;",
+          "gpa = 3.50;"
         ]
       }
     },
@@ -934,7 +934,7 @@ window.QUESTS_SECTION_2 = [
     "targetQuery": "SELECT title, price\nFROM Books\nWHERE price < 20.00;",
     "template": [
       {
-        "text": "SELECT title, price\nFROM Books\n",
+        "text": "SELECT ",
         "isBlank": false
       },
       {
@@ -944,7 +944,7 @@ window.QUESTS_SECTION_2 = [
         "placeholder": "[ ___ ]"
       },
       {
-        "text": " ",
+        "text": ", price\nFROM Books\nWHERE ",
         "isBlank": false
       },
       {
@@ -966,30 +966,30 @@ window.QUESTS_SECTION_2 = [
     ],
     "slots": {
       "slot1": {
-        "correct": "WHERE",
+        "correct": "title",
         "options": [
-          "WHERE",
-          "FILTER",
-          "WHEN",
-          "HAVING"
+          "published_year",
+          "author",
+          "title",
+          "stock_qty"
         ]
       },
       "slot2": {
         "correct": "price",
         "options": [
           "stock_qty",
-          "author",
           "price",
-          "is_hardcover"
+          "author",
+          "published_year"
         ]
       },
       "slot3": {
         "correct": "< 20.00;",
         "options": [
-          "= 20.00;",
+          "!= 20.00;",
           "LIKE 20.00;",
           "< 20.00;",
-          "!= 20.00;"
+          "= 20.00;"
         ]
       }
     },
@@ -1017,7 +1017,7 @@ window.QUESTS_SECTION_2 = [
     "targetQuery": "SELECT first_name, salary\nFROM Employees\nWHERE salary > 80000.00;",
     "template": [
       {
-        "text": "SELECT first_name, salary\nFROM Employees\n",
+        "text": "SELECT first_name, salary\nFROM ",
         "isBlank": false
       },
       {
@@ -1027,7 +1027,7 @@ window.QUESTS_SECTION_2 = [
         "placeholder": "[ ___ ]"
       },
       {
-        "text": " ",
+        "text": "\n",
         "isBlank": false
       },
       {
@@ -1049,30 +1049,30 @@ window.QUESTS_SECTION_2 = [
     ],
     "slots": {
       "slot1": {
+        "correct": "Employees",
+        "options": [
+          "GroceryItems",
+          "Students",
+          "MusicTracks",
+          "Employees"
+        ]
+      },
+      "slot2": {
         "correct": "WHERE",
         "options": [
-          "HAVING",
           "WHERE",
+          "HAVING",
           "FILTER",
           "WHEN"
         ]
       },
-      "slot2": {
-        "correct": "salary",
-        "options": [
-          "salary",
-          "bonus",
-          "first_name",
-          "hire_date"
-        ]
-      },
       "slot3": {
-        "correct": "> 80000.00;",
+        "correct": "salary > 80000.00;",
         "options": [
-          "= 80000.00;",
-          "!= 80000.00;",
-          "LIKE 80000.00;",
-          "> 80000.00;"
+          "salary != 80000.00;",
+          "salary LIKE 80000.00;",
+          "salary > 80000.00;",
+          "salary = 80000.00;"
         ]
       }
     },
@@ -1100,7 +1100,7 @@ window.QUESTS_SECTION_2 = [
     "targetQuery": "SELECT item_name, calories\nFROM GroceryItems\nWHERE calories <= 100;",
     "template": [
       {
-        "text": "SELECT item_name, calories\nFROM GroceryItems\n",
+        "text": "SELECT ",
         "isBlank": false
       },
       {
@@ -1110,7 +1110,7 @@ window.QUESTS_SECTION_2 = [
         "placeholder": "[ ___ ]"
       },
       {
-        "text": " ",
+        "text": ", calories\nFROM GroceryItems\nWHERE ",
         "isBlank": false
       },
       {
@@ -1132,30 +1132,30 @@ window.QUESTS_SECTION_2 = [
     ],
     "slots": {
       "slot1": {
-        "correct": "WHERE",
+        "correct": "item_name",
         "options": [
-          "FILTER",
-          "HAVING",
-          "WHEN",
-          "WHERE"
+          "item_name",
+          "category",
+          "stock_qty",
+          "is_organic"
         ]
       },
       "slot2": {
         "correct": "calories",
         "options": [
+          "item_name",
           "unit_price",
-          "item_id",
           "calories",
-          "stock_qty"
+          "item_id"
         ]
       },
       "slot3": {
         "correct": "<= 100;",
         "options": [
-          "<= 100;",
           "= 100;",
           "!= 100;",
-          "LIKE 100;"
+          "LIKE 100;",
+          "<= 100;"
         ]
       }
     },
@@ -1183,7 +1183,7 @@ window.QUESTS_SECTION_2 = [
     "targetQuery": "SELECT order_id, quantity\nFROM Orders\nWHERE quantity >= 3;",
     "template": [
       {
-        "text": "SELECT order_id, quantity\nFROM Orders\n",
+        "text": "SELECT order_id, quantity\nFROM ",
         "isBlank": false
       },
       {
@@ -1193,7 +1193,7 @@ window.QUESTS_SECTION_2 = [
         "placeholder": "[ ___ ]"
       },
       {
-        "text": " ",
+        "text": "\n",
         "isBlank": false
       },
       {
@@ -1215,30 +1215,30 @@ window.QUESTS_SECTION_2 = [
     ],
     "slots": {
       "slot1": {
-        "correct": "WHERE",
+        "correct": "Orders",
         "options": [
-          "FILTER",
-          "WHEN",
-          "WHERE",
-          "HAVING"
+          "GymMembers",
+          "MovieReviews",
+          "Students",
+          "Orders"
         ]
       },
       "slot2": {
-        "correct": "quantity",
+        "correct": "WHERE",
         "options": [
-          "unit_price",
-          "shipping_city",
-          "quantity",
-          "order_id"
+          "FILTER",
+          "HAVING",
+          "WHERE",
+          "WHEN"
         ]
       },
       "slot3": {
-        "correct": ">= 3;",
+        "correct": "quantity >= 3;",
         "options": [
-          "LIKE 3;",
-          "!= 3;",
-          "= 3;",
-          ">= 3;"
+          "quantity LIKE 3;",
+          "quantity = 3;",
+          "quantity >= 3;",
+          "quantity != 3;"
         ]
       }
     },
@@ -1262,11 +1262,11 @@ window.QUESTS_SECTION_2 = [
     "difficulty": "Easy",
     "task": "Select viral tracks with over 100,000 plays.",
     "table": "MusicTracks",
-    "schemaSnippet": "MusicTracks(track_id INT, title VARCHAR, track_title VARCHAR, artist VARCHAR, genre VARCHAR, duration_seconds INT, play_count INT, release_year INT)",
+    "schemaSnippet": "MusicTracks(track_id INT, title VARCHAR, track_title VARCHAR, artist VARCHAR, artist_name VARCHAR, genre VARCHAR, duration_seconds INT, play_count INT, release_year INT)",
     "targetQuery": "SELECT track_title, play_count\nFROM MusicTracks\nWHERE play_count > 100000;",
     "template": [
       {
-        "text": "SELECT track_title, play_count\nFROM MusicTracks\n",
+        "text": "SELECT ",
         "isBlank": false
       },
       {
@@ -1276,7 +1276,7 @@ window.QUESTS_SECTION_2 = [
         "placeholder": "[ ___ ]"
       },
       {
-        "text": " ",
+        "text": ", play_count\nFROM MusicTracks\nWHERE ",
         "isBlank": false
       },
       {
@@ -1298,30 +1298,30 @@ window.QUESTS_SECTION_2 = [
     ],
     "slots": {
       "slot1": {
-        "correct": "WHERE",
+        "correct": "track_title",
         "options": [
-          "WHERE",
-          "HAVING",
-          "FILTER",
-          "WHEN"
+          "genre",
+          "play_count",
+          "track_title",
+          "track_id"
         ]
       },
       "slot2": {
         "correct": "play_count",
         "options": [
+          "release_year",
+          "track_title",
           "track_id",
-          "play_count",
-          "title",
-          "duration_seconds"
+          "play_count"
         ]
       },
       "slot3": {
         "correct": "> 100000;",
         "options": [
           "!= 100000;",
-          "= 100000;",
+          "LIKE 100000;",
           "> 100000;",
-          "LIKE 100000;"
+          "= 100000;"
         ]
       }
     },
@@ -1349,7 +1349,7 @@ window.QUESTS_SECTION_2 = [
     "targetQuery": "SELECT member_name, visits_this_month\nFROM GymMembers\nWHERE visits_this_month > 10;",
     "template": [
       {
-        "text": "SELECT member_name, visits_this_month\nFROM GymMembers\n",
+        "text": "SELECT member_name, visits_this_month\nFROM ",
         "isBlank": false
       },
       {
@@ -1359,7 +1359,7 @@ window.QUESTS_SECTION_2 = [
         "placeholder": "[ ___ ]"
       },
       {
-        "text": " ",
+        "text": "\n",
         "isBlank": false
       },
       {
@@ -1381,30 +1381,30 @@ window.QUESTS_SECTION_2 = [
     ],
     "slots": {
       "slot1": {
-        "correct": "WHERE",
+        "correct": "GymMembers",
         "options": [
-          "FILTER",
-          "HAVING",
-          "WHERE",
-          "WHEN"
+          "Books",
+          "GymMembers",
+          "FlightSchedule",
+          "Orders"
         ]
       },
       "slot2": {
-        "correct": "visits_this_month",
+        "correct": "WHERE",
         "options": [
-          "joined_date",
-          "member_name",
-          "visits_this_month",
-          "membership_plan"
+          "FILTER",
+          "WHERE",
+          "HAVING",
+          "WHEN"
         ]
       },
       "slot3": {
-        "correct": "> 10;",
+        "correct": "visits_this_month > 10;",
         "options": [
-          "!= 10;",
-          "= 10;",
-          "> 10;",
-          "LIKE 10;"
+          "visits_this_month > 10;",
+          "visits_this_month != 10;",
+          "visits_this_month = 10;",
+          "visits_this_month LIKE 10;"
         ]
       }
     },
@@ -1432,7 +1432,7 @@ window.QUESTS_SECTION_2 = [
     "targetQuery": "SELECT movie_title, star_rating\nFROM MovieReviews\nWHERE star_rating >= 4.5;",
     "template": [
       {
-        "text": "SELECT movie_title, star_rating\nFROM MovieReviews\n",
+        "text": "SELECT ",
         "isBlank": false
       },
       {
@@ -1442,7 +1442,7 @@ window.QUESTS_SECTION_2 = [
         "placeholder": "[ ___ ]"
       },
       {
-        "text": " ",
+        "text": ", star_rating\nFROM MovieReviews\nWHERE ",
         "isBlank": false
       },
       {
@@ -1464,29 +1464,29 @@ window.QUESTS_SECTION_2 = [
     ],
     "slots": {
       "slot1": {
-        "correct": "WHERE",
+        "correct": "movie_title",
         "options": [
-          "WHERE",
-          "FILTER",
-          "WHEN",
-          "HAVING"
+          "genre",
+          "release_year",
+          "director",
+          "movie_title"
         ]
       },
       "slot2": {
         "correct": "star_rating",
         "options": [
+          "review_id",
+          "movie_title",
           "review_count",
-          "release_year",
-          "star_rating",
-          "genre"
+          "star_rating"
         ]
       },
       "slot3": {
         "correct": ">= 4.5;",
         "options": [
-          "!= 4.5;",
           ">= 4.5;",
           "= 4.5;",
+          "!= 4.5;",
           "LIKE 4.5;"
         ]
       }
@@ -1515,7 +1515,7 @@ window.QUESTS_SECTION_2 = [
     "targetQuery": "SELECT flight_id, delay_minutes\nFROM FlightSchedule\nWHERE delay_minutes > 30;",
     "template": [
       {
-        "text": "SELECT flight_id, delay_minutes\nFROM FlightSchedule\n",
+        "text": "SELECT flight_id, delay_minutes\nFROM ",
         "isBlank": false
       },
       {
@@ -1525,7 +1525,7 @@ window.QUESTS_SECTION_2 = [
         "placeholder": "[ ___ ]"
       },
       {
-        "text": " ",
+        "text": "\n",
         "isBlank": false
       },
       {
@@ -1547,30 +1547,30 @@ window.QUESTS_SECTION_2 = [
     ],
     "slots": {
       "slot1": {
-        "correct": "WHERE",
+        "correct": "FlightSchedule",
         "options": [
-          "HAVING",
-          "WHERE",
-          "WHEN",
-          "FILTER"
+          "FlightSchedule",
+          "GroceryItems",
+          "Students",
+          "MusicTracks"
         ]
       },
       "slot2": {
-        "correct": "delay_minutes",
+        "correct": "WHERE",
         "options": [
-          "delay_minutes",
-          "origin_airport",
-          "dest_airport",
-          "flight_id"
+          "WHERE",
+          "WHEN",
+          "FILTER",
+          "HAVING"
         ]
       },
       "slot3": {
-        "correct": "> 30;",
+        "correct": "delay_minutes > 30;",
         "options": [
-          "= 30;",
-          "LIKE 30;",
-          "> 30;",
-          "!= 30;"
+          "delay_minutes = 30;",
+          "delay_minutes != 30;",
+          "delay_minutes > 30;",
+          "delay_minutes LIKE 30;"
         ]
       }
     },
@@ -1598,7 +1598,7 @@ window.QUESTS_SECTION_2 = [
     "targetQuery": "SELECT pet_name, weight_kg\nFROM PetClinic\nWHERE weight_kg > 20.0;",
     "template": [
       {
-        "text": "SELECT pet_name, weight_kg\nFROM PetClinic\n",
+        "text": "SELECT ",
         "isBlank": false
       },
       {
@@ -1608,7 +1608,7 @@ window.QUESTS_SECTION_2 = [
         "placeholder": "[ ___ ]"
       },
       {
-        "text": " ",
+        "text": ", weight_kg\nFROM PetClinic\nWHERE ",
         "isBlank": false
       },
       {
@@ -1630,30 +1630,30 @@ window.QUESTS_SECTION_2 = [
     ],
     "slots": {
       "slot1": {
-        "correct": "WHERE",
+        "correct": "pet_name",
         "options": [
-          "WHERE",
-          "HAVING",
-          "WHEN",
-          "FILTER"
+          "breed",
+          "pet_name",
+          "is_vaccinated",
+          "pet_id"
         ]
       },
       "slot2": {
         "correct": "weight_kg",
         "options": [
+          "pet_name",
+          "age_years",
           "weight_kg",
-          "is_vaccinated",
-          "species",
-          "pet_name"
+          "is_vaccinated"
         ]
       },
       "slot3": {
         "correct": "> 20.0;",
         "options": [
-          "LIKE 20.0;",
           "!= 20.0;",
-          "= 20.0;",
-          "> 20.0;"
+          "LIKE 20.0;",
+          "> 20.0;",
+          "= 20.0;"
         ]
       }
     },
@@ -1681,7 +1681,7 @@ window.QUESTS_SECTION_2 = [
     "targetQuery": "SELECT full_name, age\nFROM Students\nWHERE age BETWEEN 18 AND 22;",
     "template": [
       {
-        "text": "SELECT full_name, age\nFROM Students\n",
+        "text": "SELECT full_name, age\nFROM ",
         "isBlank": false
       },
       {
@@ -1691,7 +1691,7 @@ window.QUESTS_SECTION_2 = [
         "placeholder": "[ ___ ]"
       },
       {
-        "text": " ",
+        "text": "\n",
         "isBlank": false
       },
       {
@@ -1711,7 +1711,7 @@ window.QUESTS_SECTION_2 = [
         "placeholder": "[ ___ ]"
       },
       {
-        "text": " 18 ",
+        "text": " ",
         "isBlank": false
       },
       {
@@ -1719,47 +1719,43 @@ window.QUESTS_SECTION_2 = [
         "isBlank": true,
         "slotId": "slot4",
         "placeholder": "[ ___ ]"
-      },
-      {
-        "text": " 22;",
-        "isBlank": false
       }
     ],
     "slots": {
       "slot1": {
-        "correct": "WHERE",
+        "correct": "Students",
         "options": [
-          "WHERE",
-          "ON",
-          "HAVING",
-          "WHEN"
+          "Orders",
+          "GroceryItems",
+          "Students",
+          "GymMembers"
         ]
       },
       "slot2": {
-        "correct": "age",
+        "correct": "WHERE",
         "options": [
-          "gpa",
-          "last_name",
-          "age",
-          "enrolled_year"
+          "WHEN",
+          "FILTER",
+          "HAVING",
+          "WHERE"
         ]
       },
       "slot3": {
-        "correct": "BETWEEN",
+        "correct": "age",
         "options": [
-          "IN",
-          "WITHIN",
-          "BETWEEN",
-          "RANGE"
+          "major",
+          "age",
+          "student_id",
+          "city"
         ]
       },
       "slot4": {
-        "correct": "AND",
+        "correct": "BETWEEN 18 AND 22;",
         "options": [
-          "AND",
-          "TO",
-          "OR",
-          "THROUGH"
+          "BETWEEN 18 AND 22;",
+          "= 18;",
+          ">= 18;",
+          "IN (18, 22);"
         ]
       }
     },
@@ -1787,7 +1783,7 @@ window.QUESTS_SECTION_2 = [
     "targetQuery": "SELECT title, price\nFROM Books\nWHERE price BETWEEN 15.00 AND 30.00;",
     "template": [
       {
-        "text": "SELECT title, price\nFROM Books\n",
+        "text": "SELECT title, price\nFROM ",
         "isBlank": false
       },
       {
@@ -1797,7 +1793,7 @@ window.QUESTS_SECTION_2 = [
         "placeholder": "[ ___ ]"
       },
       {
-        "text": " ",
+        "text": "\n",
         "isBlank": false
       },
       {
@@ -1817,7 +1813,7 @@ window.QUESTS_SECTION_2 = [
         "placeholder": "[ ___ ]"
       },
       {
-        "text": " 15.00 ",
+        "text": " ",
         "isBlank": false
       },
       {
@@ -1825,47 +1821,43 @@ window.QUESTS_SECTION_2 = [
         "isBlank": true,
         "slotId": "slot4",
         "placeholder": "[ ___ ]"
-      },
-      {
-        "text": " 30.00;",
-        "isBlank": false
       }
     ],
     "slots": {
       "slot1": {
-        "correct": "WHERE",
+        "correct": "Books",
         "options": [
-          "HAVING",
-          "WHEN",
-          "WHERE",
-          "ON"
+          "Students",
+          "PetClinic",
+          "GroceryItems",
+          "Books"
         ]
       },
       "slot2": {
-        "correct": "price",
+        "correct": "WHERE",
         "options": [
-          "published_year",
-          "price",
-          "stock_qty",
-          "author"
+          "FILTER",
+          "HAVING",
+          "WHERE",
+          "WHEN"
         ]
       },
       "slot3": {
-        "correct": "BETWEEN",
+        "correct": "price",
         "options": [
-          "IN",
-          "BETWEEN",
-          "RANGE",
-          "WITHIN"
+          "author",
+          "published_year",
+          "genre",
+          "price"
         ]
       },
       "slot4": {
-        "correct": "AND",
+        "correct": "BETWEEN 15.00 AND 30.00;",
         "options": [
-          "OR",
-          "AND",
-          "TO",
-          "THROUGH"
+          "BETWEEN 15.00 AND 30.00;",
+          "= 15.00;",
+          "IN (15.00, 30.00);",
+          ">= 15.00;"
         ]
       }
     },
@@ -1893,7 +1885,7 @@ window.QUESTS_SECTION_2 = [
     "targetQuery": "SELECT first_name, salary\nFROM Employees\nWHERE salary BETWEEN 60000.00 AND 90000.00;",
     "template": [
       {
-        "text": "SELECT first_name, salary\nFROM Employees\n",
+        "text": "SELECT first_name, salary\nFROM ",
         "isBlank": false
       },
       {
@@ -1903,7 +1895,7 @@ window.QUESTS_SECTION_2 = [
         "placeholder": "[ ___ ]"
       },
       {
-        "text": " ",
+        "text": "\n",
         "isBlank": false
       },
       {
@@ -1923,7 +1915,7 @@ window.QUESTS_SECTION_2 = [
         "placeholder": "[ ___ ]"
       },
       {
-        "text": " 60000.00 ",
+        "text": " ",
         "isBlank": false
       },
       {
@@ -1931,47 +1923,43 @@ window.QUESTS_SECTION_2 = [
         "isBlank": true,
         "slotId": "slot4",
         "placeholder": "[ ___ ]"
-      },
-      {
-        "text": " 90000.00;",
-        "isBlank": false
       }
     ],
     "slots": {
       "slot1": {
-        "correct": "WHERE",
+        "correct": "Employees",
         "options": [
-          "ON",
-          "HAVING",
-          "WHERE",
-          "WHEN"
+          "Orders",
+          "MusicTracks",
+          "Employees",
+          "Students"
         ]
       },
       "slot2": {
-        "correct": "salary",
+        "correct": "WHERE",
         "options": [
-          "salary",
-          "department",
-          "first_name",
-          "bonus"
+          "WHEN",
+          "FILTER",
+          "WHERE",
+          "HAVING"
         ]
       },
       "slot3": {
-        "correct": "BETWEEN",
+        "correct": "salary",
         "options": [
-          "IN",
-          "RANGE",
-          "WITHIN",
-          "BETWEEN"
+          "salary",
+          "emp_id",
+          "hire_date",
+          "department"
         ]
       },
       "slot4": {
-        "correct": "AND",
+        "correct": "BETWEEN 60000.00 AND 90000.00;",
         "options": [
-          "OR",
-          "THROUGH",
-          "AND",
-          "TO"
+          "= 60000.00;",
+          ">= 60000.00;",
+          "IN (60000.00, 90000.00);",
+          "BETWEEN 60000.00 AND 90000.00;"
         ]
       }
     },
@@ -1999,7 +1987,7 @@ window.QUESTS_SECTION_2 = [
     "targetQuery": "SELECT item_name, unit_price\nFROM GroceryItems\nWHERE unit_price BETWEEN 2.00 AND 5.00;",
     "template": [
       {
-        "text": "SELECT item_name, unit_price\nFROM GroceryItems\n",
+        "text": "SELECT item_name, unit_price\nFROM ",
         "isBlank": false
       },
       {
@@ -2009,7 +1997,7 @@ window.QUESTS_SECTION_2 = [
         "placeholder": "[ ___ ]"
       },
       {
-        "text": " ",
+        "text": "\n",
         "isBlank": false
       },
       {
@@ -2029,7 +2017,7 @@ window.QUESTS_SECTION_2 = [
         "placeholder": "[ ___ ]"
       },
       {
-        "text": " 2.00 ",
+        "text": " ",
         "isBlank": false
       },
       {
@@ -2037,47 +2025,43 @@ window.QUESTS_SECTION_2 = [
         "isBlank": true,
         "slotId": "slot4",
         "placeholder": "[ ___ ]"
-      },
-      {
-        "text": " 5.00;",
-        "isBlank": false
       }
     ],
     "slots": {
       "slot1": {
-        "correct": "WHERE",
+        "correct": "GroceryItems",
         "options": [
-          "ON",
-          "WHERE",
-          "WHEN",
-          "HAVING"
+          "MovieReviews",
+          "MusicTracks",
+          "PetClinic",
+          "GroceryItems"
         ]
       },
       "slot2": {
-        "correct": "unit_price",
+        "correct": "WHERE",
         "options": [
-          "is_organic",
-          "calories",
-          "unit_price",
-          "stock_qty"
+          "HAVING",
+          "WHEN",
+          "FILTER",
+          "WHERE"
         ]
       },
       "slot3": {
-        "correct": "BETWEEN",
+        "correct": "unit_price",
         "options": [
-          "IN",
-          "BETWEEN",
-          "WITHIN",
-          "RANGE"
+          "calories",
+          "stock_qty",
+          "category",
+          "unit_price"
         ]
       },
       "slot4": {
-        "correct": "AND",
+        "correct": "BETWEEN 2.00 AND 5.00;",
         "options": [
-          "TO",
-          "THROUGH",
-          "AND",
-          "OR"
+          "BETWEEN 2.00 AND 5.00;",
+          "IN (2.00, 5.00);",
+          "= 2.00;",
+          ">= 2.00;"
         ]
       }
     },
@@ -2105,7 +2089,7 @@ window.QUESTS_SECTION_2 = [
     "targetQuery": "SELECT order_id, unit_price\nFROM Orders\nWHERE unit_price BETWEEN 25.00 AND 100.00;",
     "template": [
       {
-        "text": "SELECT order_id, unit_price\nFROM Orders\n",
+        "text": "SELECT order_id, unit_price\nFROM ",
         "isBlank": false
       },
       {
@@ -2115,7 +2099,7 @@ window.QUESTS_SECTION_2 = [
         "placeholder": "[ ___ ]"
       },
       {
-        "text": " ",
+        "text": "\n",
         "isBlank": false
       },
       {
@@ -2135,7 +2119,7 @@ window.QUESTS_SECTION_2 = [
         "placeholder": "[ ___ ]"
       },
       {
-        "text": " 25.00 ",
+        "text": " ",
         "isBlank": false
       },
       {
@@ -2143,47 +2127,43 @@ window.QUESTS_SECTION_2 = [
         "isBlank": true,
         "slotId": "slot4",
         "placeholder": "[ ___ ]"
-      },
-      {
-        "text": " 100.00;",
-        "isBlank": false
       }
     ],
     "slots": {
       "slot1": {
-        "correct": "WHERE",
+        "correct": "Orders",
         "options": [
-          "WHEN",
-          "WHERE",
-          "ON",
-          "HAVING"
+          "Students",
+          "Orders",
+          "PetClinic",
+          "MusicTracks"
         ]
       },
       "slot2": {
-        "correct": "unit_price",
+        "correct": "WHERE",
         "options": [
-          "unit_price",
-          "shipping_city",
-          "customer_name",
-          "product_name"
+          "WHERE",
+          "WHEN",
+          "HAVING",
+          "FILTER"
         ]
       },
       "slot3": {
-        "correct": "BETWEEN",
+        "correct": "unit_price",
         "options": [
-          "IN",
-          "BETWEEN",
-          "WITHIN",
-          "RANGE"
+          "order_status",
+          "order_id",
+          "unit_price",
+          "product_name"
         ]
       },
       "slot4": {
-        "correct": "AND",
+        "correct": "BETWEEN 25.00 AND 100.00;",
         "options": [
-          "THROUGH",
-          "OR",
-          "AND",
-          "TO"
+          "BETWEEN 25.00 AND 100.00;",
+          ">= 25.00;",
+          "= 25.00;",
+          "IN (25.00, 100.00);"
         ]
       }
     },
@@ -2207,11 +2187,11 @@ window.QUESTS_SECTION_2 = [
     "difficulty": "Medium",
     "task": "Find tracks between 3 and 4 minutes long (180 to 240 seconds).",
     "table": "MusicTracks",
-    "schemaSnippet": "MusicTracks(track_id INT, title VARCHAR, track_title VARCHAR, artist VARCHAR, genre VARCHAR, duration_seconds INT, play_count INT, release_year INT)",
+    "schemaSnippet": "MusicTracks(track_id INT, title VARCHAR, track_title VARCHAR, artist VARCHAR, artist_name VARCHAR, genre VARCHAR, duration_seconds INT, play_count INT, release_year INT)",
     "targetQuery": "SELECT track_title, duration_seconds\nFROM MusicTracks\nWHERE duration_seconds BETWEEN 180 AND 240;",
     "template": [
       {
-        "text": "SELECT track_title, duration_seconds\nFROM MusicTracks\n",
+        "text": "SELECT track_title, duration_seconds\nFROM ",
         "isBlank": false
       },
       {
@@ -2221,7 +2201,7 @@ window.QUESTS_SECTION_2 = [
         "placeholder": "[ ___ ]"
       },
       {
-        "text": " ",
+        "text": "\n",
         "isBlank": false
       },
       {
@@ -2241,7 +2221,7 @@ window.QUESTS_SECTION_2 = [
         "placeholder": "[ ___ ]"
       },
       {
-        "text": " 180 ",
+        "text": " ",
         "isBlank": false
       },
       {
@@ -2249,47 +2229,43 @@ window.QUESTS_SECTION_2 = [
         "isBlank": true,
         "slotId": "slot4",
         "placeholder": "[ ___ ]"
-      },
-      {
-        "text": " 240;",
-        "isBlank": false
       }
     ],
     "slots": {
       "slot1": {
-        "correct": "WHERE",
+        "correct": "MusicTracks",
         "options": [
-          "HAVING",
-          "ON",
-          "WHEN",
-          "WHERE"
+          "MusicTracks",
+          "GymMembers",
+          "MovieReviews",
+          "Orders"
         ]
       },
       "slot2": {
-        "correct": "duration_seconds",
+        "correct": "WHERE",
         "options": [
-          "release_year",
-          "duration_seconds",
-          "genre",
-          "artist"
+          "FILTER",
+          "WHERE",
+          "WHEN",
+          "HAVING"
         ]
       },
       "slot3": {
-        "correct": "BETWEEN",
+        "correct": "duration_seconds",
         "options": [
-          "WITHIN",
-          "RANGE",
-          "IN",
-          "BETWEEN"
+          "track_title",
+          "title",
+          "track_id",
+          "duration_seconds"
         ]
       },
       "slot4": {
-        "correct": "AND",
+        "correct": "BETWEEN 180 AND 240;",
         "options": [
-          "AND",
-          "TO",
-          "OR",
-          "THROUGH"
+          "BETWEEN 180 AND 240;",
+          "IN (180, 240);",
+          "= 180;",
+          ">= 180;"
         ]
       }
     },
@@ -2317,7 +2293,7 @@ window.QUESTS_SECTION_2 = [
     "targetQuery": "SELECT member_name, monthly_fee\nFROM GymMembers\nWHERE monthly_fee BETWEEN 25.00 AND 75.00;",
     "template": [
       {
-        "text": "SELECT member_name, monthly_fee\nFROM GymMembers\n",
+        "text": "SELECT member_name, monthly_fee\nFROM ",
         "isBlank": false
       },
       {
@@ -2327,7 +2303,7 @@ window.QUESTS_SECTION_2 = [
         "placeholder": "[ ___ ]"
       },
       {
-        "text": " ",
+        "text": "\n",
         "isBlank": false
       },
       {
@@ -2347,7 +2323,7 @@ window.QUESTS_SECTION_2 = [
         "placeholder": "[ ___ ]"
       },
       {
-        "text": " 25.00 ",
+        "text": " ",
         "isBlank": false
       },
       {
@@ -2355,47 +2331,43 @@ window.QUESTS_SECTION_2 = [
         "isBlank": true,
         "slotId": "slot4",
         "placeholder": "[ ___ ]"
-      },
-      {
-        "text": " 75.00;",
-        "isBlank": false
       }
     ],
     "slots": {
       "slot1": {
-        "correct": "WHERE",
+        "correct": "GymMembers",
         "options": [
-          "WHEN",
-          "WHERE",
-          "ON",
-          "HAVING"
+          "Employees",
+          "GymMembers",
+          "PetClinic",
+          "Students"
         ]
       },
       "slot2": {
-        "correct": "monthly_fee",
+        "correct": "WHERE",
         "options": [
-          "membership_plan",
-          "monthly_fee",
-          "visits_this_month",
-          "member_name"
+          "WHEN",
+          "FILTER",
+          "WHERE",
+          "HAVING"
         ]
       },
       "slot3": {
-        "correct": "BETWEEN",
+        "correct": "monthly_fee",
         "options": [
-          "RANGE",
-          "BETWEEN",
-          "WITHIN",
-          "IN"
+          "visits_this_month",
+          "joined_date",
+          "member_name",
+          "monthly_fee"
         ]
       },
       "slot4": {
-        "correct": "AND",
+        "correct": "BETWEEN 25.00 AND 75.00;",
         "options": [
-          "THROUGH",
-          "OR",
-          "TO",
-          "AND"
+          "IN (25.00, 75.00);",
+          ">= 25.00;",
+          "= 25.00;",
+          "BETWEEN 25.00 AND 75.00;"
         ]
       }
     },
@@ -2423,7 +2395,7 @@ window.QUESTS_SECTION_2 = [
     "targetQuery": "SELECT movie_title, release_year\nFROM MovieReviews\nWHERE release_year BETWEEN 2020 AND 2023;",
     "template": [
       {
-        "text": "SELECT movie_title, release_year\nFROM MovieReviews\n",
+        "text": "SELECT movie_title, release_year\nFROM ",
         "isBlank": false
       },
       {
@@ -2433,7 +2405,7 @@ window.QUESTS_SECTION_2 = [
         "placeholder": "[ ___ ]"
       },
       {
-        "text": " ",
+        "text": "\n",
         "isBlank": false
       },
       {
@@ -2453,7 +2425,7 @@ window.QUESTS_SECTION_2 = [
         "placeholder": "[ ___ ]"
       },
       {
-        "text": " 2020 ",
+        "text": " ",
         "isBlank": false
       },
       {
@@ -2461,47 +2433,43 @@ window.QUESTS_SECTION_2 = [
         "isBlank": true,
         "slotId": "slot4",
         "placeholder": "[ ___ ]"
-      },
-      {
-        "text": " 2023;",
-        "isBlank": false
       }
     ],
     "slots": {
       "slot1": {
-        "correct": "WHERE",
+        "correct": "MovieReviews",
         "options": [
-          "HAVING",
-          "WHEN",
-          "ON",
-          "WHERE"
+          "Orders",
+          "MovieReviews",
+          "Books",
+          "PetClinic"
         ]
       },
       "slot2": {
-        "correct": "release_year",
+        "correct": "WHERE",
         "options": [
-          "release_year",
-          "director",
-          "review_count",
-          "review_id"
+          "HAVING",
+          "FILTER",
+          "WHEN",
+          "WHERE"
         ]
       },
       "slot3": {
-        "correct": "BETWEEN",
+        "correct": "release_year",
         "options": [
-          "BETWEEN",
-          "IN",
-          "WITHIN",
-          "RANGE"
+          "genre",
+          "movie_title",
+          "review_count",
+          "release_year"
         ]
       },
       "slot4": {
-        "correct": "AND",
+        "correct": "BETWEEN 2020 AND 2023;",
         "options": [
-          "THROUGH",
-          "AND",
-          "TO",
-          "OR"
+          "IN (2020, 2023);",
+          "= 2020;",
+          ">= 2020;",
+          "BETWEEN 2020 AND 2023;"
         ]
       }
     },
@@ -2529,7 +2497,7 @@ window.QUESTS_SECTION_2 = [
     "targetQuery": "SELECT flight_id, ticket_price\nFROM FlightSchedule\nWHERE ticket_price BETWEEN 200.00 AND 400.00;",
     "template": [
       {
-        "text": "SELECT flight_id, ticket_price\nFROM FlightSchedule\n",
+        "text": "SELECT flight_id, ticket_price\nFROM ",
         "isBlank": false
       },
       {
@@ -2539,7 +2507,7 @@ window.QUESTS_SECTION_2 = [
         "placeholder": "[ ___ ]"
       },
       {
-        "text": " ",
+        "text": "\n",
         "isBlank": false
       },
       {
@@ -2559,7 +2527,7 @@ window.QUESTS_SECTION_2 = [
         "placeholder": "[ ___ ]"
       },
       {
-        "text": " 200.00 ",
+        "text": " ",
         "isBlank": false
       },
       {
@@ -2567,47 +2535,43 @@ window.QUESTS_SECTION_2 = [
         "isBlank": true,
         "slotId": "slot4",
         "placeholder": "[ ___ ]"
-      },
-      {
-        "text": " 400.00;",
-        "isBlank": false
       }
     ],
     "slots": {
       "slot1": {
-        "correct": "WHERE",
+        "correct": "FlightSchedule",
         "options": [
-          "HAVING",
-          "ON",
-          "WHEN",
-          "WHERE"
+          "Orders",
+          "GroceryItems",
+          "FlightSchedule",
+          "Books"
         ]
       },
       "slot2": {
-        "correct": "ticket_price",
+        "correct": "WHERE",
         "options": [
-          "flight_id",
-          "ticket_price",
-          "dest_airport",
-          "destination_airport"
+          "FILTER",
+          "WHERE",
+          "WHEN",
+          "HAVING"
         ]
       },
       "slot3": {
-        "correct": "BETWEEN",
+        "correct": "ticket_price",
         "options": [
-          "BETWEEN",
-          "RANGE",
-          "WITHIN",
-          "IN"
+          "flight_id",
+          "departure_time",
+          "ticket_price",
+          "airline"
         ]
       },
       "slot4": {
-        "correct": "AND",
+        "correct": "BETWEEN 200.00 AND 400.00;",
         "options": [
-          "OR",
-          "THROUGH",
-          "AND",
-          "TO"
+          "= 200.00;",
+          "BETWEEN 200.00 AND 400.00;",
+          "IN (200.00, 400.00);",
+          ">= 200.00;"
         ]
       }
     },
@@ -2635,7 +2599,7 @@ window.QUESTS_SECTION_2 = [
     "targetQuery": "SELECT pet_name, age_years\nFROM PetClinic\nWHERE age_years NOT BETWEEN 3 AND 8;",
     "template": [
       {
-        "text": "SELECT pet_name, age_years\nFROM PetClinic\n",
+        "text": "SELECT pet_name, age_years\nFROM ",
         "isBlank": false
       },
       {
@@ -2645,7 +2609,7 @@ window.QUESTS_SECTION_2 = [
         "placeholder": "[ ___ ]"
       },
       {
-        "text": " ",
+        "text": "\n",
         "isBlank": false
       },
       {
@@ -2665,7 +2629,7 @@ window.QUESTS_SECTION_2 = [
         "placeholder": "[ ___ ]"
       },
       {
-        "text": " 3 ",
+        "text": " ",
         "isBlank": false
       },
       {
@@ -2673,47 +2637,43 @@ window.QUESTS_SECTION_2 = [
         "isBlank": true,
         "slotId": "slot4",
         "placeholder": "[ ___ ]"
-      },
-      {
-        "text": " 8;",
-        "isBlank": false
       }
     ],
     "slots": {
       "slot1": {
-        "correct": "WHERE",
+        "correct": "PetClinic",
         "options": [
-          "HAVING",
-          "WHERE",
-          "ON",
-          "WHEN"
+          "PetClinic",
+          "GymMembers",
+          "MusicTracks",
+          "Students"
         ]
       },
       "slot2": {
+        "correct": "WHERE",
+        "options": [
+          "WHEN",
+          "WHERE",
+          "HAVING",
+          "FILTER"
+        ]
+      },
+      "slot3": {
         "correct": "age_years NOT",
         "options": [
           "weight_kg",
           "is_vaccinated",
-          "pet_name",
-          "age_years NOT"
-        ]
-      },
-      "slot3": {
-        "correct": "BETWEEN",
-        "options": [
-          "WITHIN",
-          "RANGE",
-          "IN",
-          "BETWEEN"
+          "age_years NOT",
+          "breed"
         ]
       },
       "slot4": {
-        "correct": "AND",
+        "correct": "BETWEEN 3 AND 8;",
         "options": [
-          "OR",
-          "TO",
-          "AND",
-          "THROUGH"
+          "IN (3, 8);",
+          "= 3;",
+          ">= 3;",
+          "BETWEEN 3 AND 8;"
         ]
       }
     },
@@ -2741,7 +2701,7 @@ window.QUESTS_SECTION_2 = [
     "targetQuery": "SELECT full_name, city\nFROM Students\nWHERE city IN ('Seattle', 'Chicago', 'Austin');",
     "template": [
       {
-        "text": "SELECT full_name, city\nFROM Students\n",
+        "text": "SELECT full_name, city\nFROM ",
         "isBlank": false
       },
       {
@@ -2751,7 +2711,7 @@ window.QUESTS_SECTION_2 = [
         "placeholder": "[ ___ ]"
       },
       {
-        "text": " ",
+        "text": "\n",
         "isBlank": false
       },
       {
@@ -2783,39 +2743,39 @@ window.QUESTS_SECTION_2 = [
     ],
     "slots": {
       "slot1": {
-        "correct": "WHERE",
+        "correct": "Students",
         "options": [
-          "CASE",
-          "FILTER",
-          "WHERE",
-          "HAVING"
+          "GymMembers",
+          "Books",
+          "Students",
+          "GroceryItems"
         ]
       },
       "slot2": {
-        "correct": "city",
+        "correct": "WHERE",
         "options": [
-          "city",
-          "last_name",
-          "age",
-          "enrolled_year"
+          "FILTER",
+          "WHERE",
+          "WHEN",
+          "HAVING"
         ]
       },
       "slot3": {
-        "correct": "IN",
+        "correct": "city",
         "options": [
-          "NOT IN",
-          "CONTAINS",
-          "= ANY",
-          "IN"
+          "student_id",
+          "gpa",
+          "first_name",
+          "city"
         ]
       },
       "slot4": {
-        "correct": "('Seattle', 'Chicago', 'Austin');",
+        "correct": "IN ('Seattle', 'Chicago', 'Austin');",
         "options": [
-          "'Seattle', 'Chicago', 'Austin')",
-          "('Seattle', 'Chicago', 'Austin');",
-          "['Seattle', 'Chicago', 'Austin'']",
-          "('Seattle' OR 'Chicago' OR 'Austin');"
+          "IN ('Seattle', 'Chicago', 'Austin');",
+          "= ('Seattle', 'Chicago', 'Austin');",
+          "LIKE ('Seattle', 'Chicago', 'Austin');",
+          "NOT IN ('Seattle', 'Chicago', 'Austin');"
         ]
       }
     },
@@ -2843,7 +2803,7 @@ window.QUESTS_SECTION_2 = [
     "targetQuery": "SELECT title, genre\nFROM Books\nWHERE genre IN ('Mystery', 'Sci-Fi', 'Thriller');",
     "template": [
       {
-        "text": "SELECT title, genre\nFROM Books\n",
+        "text": "SELECT title, genre\nFROM ",
         "isBlank": false
       },
       {
@@ -2853,7 +2813,7 @@ window.QUESTS_SECTION_2 = [
         "placeholder": "[ ___ ]"
       },
       {
-        "text": " ",
+        "text": "\n",
         "isBlank": false
       },
       {
@@ -2885,39 +2845,39 @@ window.QUESTS_SECTION_2 = [
     ],
     "slots": {
       "slot1": {
-        "correct": "WHERE",
+        "correct": "Books",
         "options": [
-          "WHERE",
-          "CASE",
-          "FILTER",
-          "HAVING"
+          "FlightSchedule",
+          "Orders",
+          "GymMembers",
+          "Books"
         ]
       },
       "slot2": {
-        "correct": "genre",
+        "correct": "WHERE",
         "options": [
-          "price",
-          "author",
-          "title",
-          "genre"
+          "HAVING",
+          "WHERE",
+          "WHEN",
+          "FILTER"
         ]
       },
       "slot3": {
-        "correct": "IN",
+        "correct": "genre",
         "options": [
-          "IN",
-          "= ANY",
-          "CONTAINS",
-          "NOT IN"
+          "stock_qty",
+          "genre",
+          "price",
+          "is_hardcover"
         ]
       },
       "slot4": {
-        "correct": "('Mystery', 'Sci-Fi', 'Thriller');",
+        "correct": "IN ('Mystery', 'Sci-Fi', 'Thriller');",
         "options": [
-          "['Mystery', 'Sci-Fi', 'Thriller'']",
-          "'Mystery', 'Sci-Fi', 'Thriller')",
-          "('Mystery' OR 'Sci-Fi' OR 'Thriller');",
-          "('Mystery', 'Sci-Fi', 'Thriller');"
+          "= ('Mystery', 'Sci-Fi', 'Thriller');",
+          "LIKE ('Mystery', 'Sci-Fi', 'Thriller');",
+          "IN ('Mystery', 'Sci-Fi', 'Thriller');",
+          "NOT IN ('Mystery', 'Sci-Fi', 'Thriller');"
         ]
       }
     },
@@ -2945,7 +2905,7 @@ window.QUESTS_SECTION_2 = [
     "targetQuery": "SELECT first_name, department\nFROM Employees\nWHERE department IN ('Engineering', 'Design');",
     "template": [
       {
-        "text": "SELECT first_name, department\nFROM Employees\n",
+        "text": "SELECT first_name, department\nFROM ",
         "isBlank": false
       },
       {
@@ -2955,7 +2915,7 @@ window.QUESTS_SECTION_2 = [
         "placeholder": "[ ___ ]"
       },
       {
-        "text": " ",
+        "text": "\n",
         "isBlank": false
       },
       {
@@ -2987,39 +2947,39 @@ window.QUESTS_SECTION_2 = [
     ],
     "slots": {
       "slot1": {
-        "correct": "WHERE",
+        "correct": "Employees",
         "options": [
-          "FILTER",
-          "WHERE",
-          "CASE",
-          "HAVING"
+          "GroceryItems",
+          "MovieReviews",
+          "Employees",
+          "GymMembers"
         ]
       },
       "slot2": {
-        "correct": "department",
+        "correct": "WHERE",
         "options": [
-          "salary",
-          "department",
-          "hire_date",
-          "bonus"
+          "WHERE",
+          "WHEN",
+          "FILTER",
+          "HAVING"
         ]
       },
       "slot3": {
-        "correct": "IN",
+        "correct": "department",
         "options": [
-          "NOT IN",
-          "IN",
-          "CONTAINS",
-          "= ANY"
+          "department",
+          "hire_date",
+          "emp_id",
+          "salary"
         ]
       },
       "slot4": {
-        "correct": "('Engineering', 'Design');",
+        "correct": "IN ('Engineering', 'Design');",
         "options": [
-          "('Engineering' OR 'Design');",
-          "['Engineering', 'Design'']",
-          "('Engineering', 'Design');",
-          "'Engineering', 'Design')"
+          "NOT IN ('Engineering', 'Design');",
+          "LIKE ('Engineering', 'Design');",
+          "IN ('Engineering', 'Design');",
+          "= ('Engineering', 'Design');"
         ]
       }
     },
@@ -3047,7 +3007,7 @@ window.QUESTS_SECTION_2 = [
     "targetQuery": "SELECT item_name, category\nFROM GroceryItems\nWHERE category IN ('Produce', 'Bakery');",
     "template": [
       {
-        "text": "SELECT item_name, category\nFROM GroceryItems\n",
+        "text": "SELECT item_name, category\nFROM ",
         "isBlank": false
       },
       {
@@ -3057,7 +3017,7 @@ window.QUESTS_SECTION_2 = [
         "placeholder": "[ ___ ]"
       },
       {
-        "text": " ",
+        "text": "\n",
         "isBlank": false
       },
       {
@@ -3089,39 +3049,39 @@ window.QUESTS_SECTION_2 = [
     ],
     "slots": {
       "slot1": {
-        "correct": "WHERE",
+        "correct": "GroceryItems",
         "options": [
-          "FILTER",
-          "CASE",
-          "HAVING",
-          "WHERE"
+          "GroceryItems",
+          "Orders",
+          "Employees",
+          "FlightSchedule"
         ]
       },
       "slot2": {
-        "correct": "category",
+        "correct": "WHERE",
         "options": [
-          "calories",
-          "is_organic",
-          "category",
-          "unit_price"
+          "HAVING",
+          "FILTER",
+          "WHERE",
+          "WHEN"
         ]
       },
       "slot3": {
-        "correct": "IN",
+        "correct": "category",
         "options": [
-          "= ANY",
-          "NOT IN",
-          "IN",
-          "CONTAINS"
+          "item_id",
+          "category",
+          "calories",
+          "item_name"
         ]
       },
       "slot4": {
-        "correct": "('Produce', 'Bakery');",
+        "correct": "IN ('Produce', 'Bakery');",
         "options": [
-          "('Produce' OR 'Bakery');",
-          "('Produce', 'Bakery');",
-          "['Produce', 'Bakery'']",
-          "'Produce', 'Bakery')"
+          "IN ('Produce', 'Bakery');",
+          "= ('Produce', 'Bakery');",
+          "NOT IN ('Produce', 'Bakery');",
+          "LIKE ('Produce', 'Bakery');"
         ]
       }
     },
@@ -3149,7 +3109,7 @@ window.QUESTS_SECTION_2 = [
     "targetQuery": "SELECT order_id, order_status\nFROM Orders\nWHERE order_status IN ('Shipped', 'Delivered');",
     "template": [
       {
-        "text": "SELECT order_id, order_status\nFROM Orders\n",
+        "text": "SELECT order_id, order_status\nFROM ",
         "isBlank": false
       },
       {
@@ -3159,7 +3119,7 @@ window.QUESTS_SECTION_2 = [
         "placeholder": "[ ___ ]"
       },
       {
-        "text": " ",
+        "text": "\n",
         "isBlank": false
       },
       {
@@ -3191,39 +3151,39 @@ window.QUESTS_SECTION_2 = [
     ],
     "slots": {
       "slot1": {
-        "correct": "WHERE",
+        "correct": "Orders",
         "options": [
-          "WHERE",
-          "HAVING",
-          "CASE",
-          "FILTER"
+          "GymMembers",
+          "GroceryItems",
+          "MusicTracks",
+          "Orders"
         ]
       },
       "slot2": {
-        "correct": "order_status",
+        "correct": "WHERE",
         "options": [
-          "discount_pct",
-          "shipping_city",
-          "order_status",
-          "quantity"
+          "HAVING",
+          "WHERE",
+          "WHEN",
+          "FILTER"
         ]
       },
       "slot3": {
-        "correct": "IN",
+        "correct": "order_status",
         "options": [
-          "IN",
-          "NOT IN",
-          "= ANY",
-          "CONTAINS"
+          "product_name",
+          "quantity",
+          "order_status",
+          "shipping_city"
         ]
       },
       "slot4": {
-        "correct": "('Shipped', 'Delivered');",
+        "correct": "IN ('Shipped', 'Delivered');",
         "options": [
-          "('Shipped' OR 'Delivered');",
-          "['Shipped', 'Delivered'']",
-          "'Shipped', 'Delivered')",
-          "('Shipped', 'Delivered');"
+          "= ('Shipped', 'Delivered');",
+          "NOT IN ('Shipped', 'Delivered');",
+          "IN ('Shipped', 'Delivered');",
+          "LIKE ('Shipped', 'Delivered');"
         ]
       }
     },
@@ -3247,11 +3207,11 @@ window.QUESTS_SECTION_2 = [
     "difficulty": "Medium",
     "task": "Filter music tracks to only Rock or Synthwave.",
     "table": "MusicTracks",
-    "schemaSnippet": "MusicTracks(track_id INT, title VARCHAR, track_title VARCHAR, artist VARCHAR, genre VARCHAR, duration_seconds INT, play_count INT, release_year INT)",
+    "schemaSnippet": "MusicTracks(track_id INT, title VARCHAR, track_title VARCHAR, artist VARCHAR, artist_name VARCHAR, genre VARCHAR, duration_seconds INT, play_count INT, release_year INT)",
     "targetQuery": "SELECT track_title, genre\nFROM MusicTracks\nWHERE genre IN ('Rock', 'Synthwave');",
     "template": [
       {
-        "text": "SELECT track_title, genre\nFROM MusicTracks\n",
+        "text": "SELECT track_title, genre\nFROM ",
         "isBlank": false
       },
       {
@@ -3261,7 +3221,7 @@ window.QUESTS_SECTION_2 = [
         "placeholder": "[ ___ ]"
       },
       {
-        "text": " ",
+        "text": "\n",
         "isBlank": false
       },
       {
@@ -3293,39 +3253,39 @@ window.QUESTS_SECTION_2 = [
     ],
     "slots": {
       "slot1": {
-        "correct": "WHERE",
+        "correct": "MusicTracks",
         "options": [
-          "WHERE",
-          "FILTER",
-          "HAVING",
-          "CASE"
+          "MusicTracks",
+          "GroceryItems",
+          "Orders",
+          "Students"
         ]
       },
       "slot2": {
-        "correct": "genre",
+        "correct": "WHERE",
         "options": [
-          "genre",
-          "duration_seconds",
-          "play_count",
-          "track_title"
+          "HAVING",
+          "WHERE",
+          "WHEN",
+          "FILTER"
         ]
       },
       "slot3": {
-        "correct": "IN",
+        "correct": "genre",
         "options": [
-          "= ANY",
-          "CONTAINS",
-          "IN",
-          "NOT IN"
+          "title",
+          "genre",
+          "artist_name",
+          "artist"
         ]
       },
       "slot4": {
-        "correct": "('Rock', 'Synthwave');",
+        "correct": "IN ('Rock', 'Synthwave');",
         "options": [
-          "('Rock', 'Synthwave');",
-          "['Rock', 'Synthwave'']",
-          "'Rock', 'Synthwave')",
-          "('Rock' OR 'Synthwave');"
+          "LIKE ('Rock', 'Synthwave');",
+          "NOT IN ('Rock', 'Synthwave');",
+          "IN ('Rock', 'Synthwave');",
+          "= ('Rock', 'Synthwave');"
         ]
       }
     },
@@ -3353,7 +3313,7 @@ window.QUESTS_SECTION_2 = [
     "targetQuery": "SELECT member_name, membership_plan\nFROM GymMembers\nWHERE membership_plan IN ('Gold', 'Platinum');",
     "template": [
       {
-        "text": "SELECT member_name, membership_plan\nFROM GymMembers\n",
+        "text": "SELECT member_name, membership_plan\nFROM ",
         "isBlank": false
       },
       {
@@ -3363,7 +3323,7 @@ window.QUESTS_SECTION_2 = [
         "placeholder": "[ ___ ]"
       },
       {
-        "text": " ",
+        "text": "\n",
         "isBlank": false
       },
       {
@@ -3395,39 +3355,39 @@ window.QUESTS_SECTION_2 = [
     ],
     "slots": {
       "slot1": {
-        "correct": "WHERE",
+        "correct": "GymMembers",
         "options": [
-          "CASE",
-          "WHERE",
-          "HAVING",
-          "FILTER"
+          "GymMembers",
+          "Books",
+          "FlightSchedule",
+          "MusicTracks"
         ]
       },
       "slot2": {
-        "correct": "membership_plan",
+        "correct": "WHERE",
         "options": [
-          "member_id",
-          "has_trainer",
-          "membership_plan",
-          "joined_date"
+          "WHEN",
+          "HAVING",
+          "FILTER",
+          "WHERE"
         ]
       },
       "slot3": {
-        "correct": "IN",
+        "correct": "membership_plan",
         "options": [
-          "CONTAINS",
-          "= ANY",
-          "IN",
-          "NOT IN"
+          "joined_date",
+          "member_name",
+          "membership_plan",
+          "has_trainer"
         ]
       },
       "slot4": {
-        "correct": "('Gold', 'Platinum');",
+        "correct": "IN ('Gold', 'Platinum');",
         "options": [
-          "['Gold', 'Platinum'']",
-          "'Gold', 'Platinum')",
-          "('Gold', 'Platinum');",
-          "('Gold' OR 'Platinum');"
+          "LIKE ('Gold', 'Platinum');",
+          "IN ('Gold', 'Platinum');",
+          "NOT IN ('Gold', 'Platinum');",
+          "= ('Gold', 'Platinum');"
         ]
       }
     },
@@ -3455,7 +3415,7 @@ window.QUESTS_SECTION_2 = [
     "targetQuery": "SELECT movie_title, genre\nFROM MovieReviews\nWHERE genre NOT IN ('Horror', 'Action');",
     "template": [
       {
-        "text": "SELECT movie_title, genre\nFROM MovieReviews\n",
+        "text": "SELECT movie_title, genre\nFROM ",
         "isBlank": false
       },
       {
@@ -3465,7 +3425,7 @@ window.QUESTS_SECTION_2 = [
         "placeholder": "[ ___ ]"
       },
       {
-        "text": " ",
+        "text": "\n",
         "isBlank": false
       },
       {
@@ -3497,39 +3457,39 @@ window.QUESTS_SECTION_2 = [
     ],
     "slots": {
       "slot1": {
-        "correct": "WHERE",
+        "correct": "MovieReviews",
         "options": [
-          "CASE",
-          "HAVING",
-          "FILTER",
-          "WHERE"
+          "GroceryItems",
+          "MusicTracks",
+          "MovieReviews",
+          "Orders"
         ]
       },
       "slot2": {
-        "correct": "genre NOT",
+        "correct": "WHERE",
         "options": [
-          "release_year",
-          "genre NOT",
-          "star_rating",
-          "director"
+          "WHEN",
+          "WHERE",
+          "FILTER",
+          "HAVING"
         ]
       },
       "slot3": {
-        "correct": "IN",
+        "correct": "genre NOT",
         "options": [
-          "= ANY",
-          "IN",
-          "CONTAINS",
-          "NOT IN"
+          "movie_title",
+          "star_rating",
+          "genre NOT",
+          "director"
         ]
       },
       "slot4": {
-        "correct": "('Horror', 'Action');",
+        "correct": "IN ('Horror', 'Action');",
         "options": [
-          "('Horror', 'Action');",
-          "'Horror', 'Action')",
-          "('Horror' OR 'Action');",
-          "['Horror', 'Action'']"
+          "LIKE ('Horror', 'Action');",
+          "IN ('Horror', 'Action');",
+          "NOT IN ('Horror', 'Action');",
+          "= ('Horror', 'Action');"
         ]
       }
     },
@@ -3557,7 +3517,7 @@ window.QUESTS_SECTION_2 = [
     "targetQuery": "SELECT flight_id, origin_airport\nFROM FlightSchedule\nWHERE origin_airport IN ('ORD', 'SFO', 'JFK');",
     "template": [
       {
-        "text": "SELECT flight_id, origin_airport\nFROM FlightSchedule\n",
+        "text": "SELECT flight_id, origin_airport\nFROM ",
         "isBlank": false
       },
       {
@@ -3567,7 +3527,7 @@ window.QUESTS_SECTION_2 = [
         "placeholder": "[ ___ ]"
       },
       {
-        "text": " ",
+        "text": "\n",
         "isBlank": false
       },
       {
@@ -3599,39 +3559,39 @@ window.QUESTS_SECTION_2 = [
     ],
     "slots": {
       "slot1": {
-        "correct": "WHERE",
+        "correct": "FlightSchedule",
         "options": [
-          "FILTER",
-          "CASE",
-          "HAVING",
-          "WHERE"
+          "MusicTracks",
+          "PetClinic",
+          "GymMembers",
+          "FlightSchedule"
         ]
       },
       "slot2": {
-        "correct": "origin_airport",
+        "correct": "WHERE",
         "options": [
-          "dest_airport",
-          "origin_airport",
-          "destination_airport",
-          "ticket_price"
+          "WHERE",
+          "FILTER",
+          "HAVING",
+          "WHEN"
         ]
       },
       "slot3": {
-        "correct": "IN",
+        "correct": "origin_airport",
         "options": [
-          "CONTAINS",
-          "IN",
-          "NOT IN",
-          "= ANY"
+          "airline",
+          "destination_airport",
+          "flight_id",
+          "origin_airport"
         ]
       },
       "slot4": {
-        "correct": "('ORD', 'SFO', 'JFK');",
+        "correct": "IN ('ORD', 'SFO', 'JFK');",
         "options": [
-          "('ORD' OR 'SFO' OR 'JFK');",
-          "'ORD', 'SFO', 'JFK')",
-          "('ORD', 'SFO', 'JFK');",
-          "['ORD', 'SFO', 'JFK'']"
+          "= ('ORD', 'SFO', 'JFK');",
+          "LIKE ('ORD', 'SFO', 'JFK');",
+          "IN ('ORD', 'SFO', 'JFK');",
+          "NOT IN ('ORD', 'SFO', 'JFK');"
         ]
       }
     },
@@ -3659,7 +3619,7 @@ window.QUESTS_SECTION_2 = [
     "targetQuery": "SELECT pet_name, species\nFROM PetClinic\nWHERE species IN ('Dog', 'Cat');",
     "template": [
       {
-        "text": "SELECT pet_name, species\nFROM PetClinic\n",
+        "text": "SELECT pet_name, species\nFROM ",
         "isBlank": false
       },
       {
@@ -3669,7 +3629,7 @@ window.QUESTS_SECTION_2 = [
         "placeholder": "[ ___ ]"
       },
       {
-        "text": " ",
+        "text": "\n",
         "isBlank": false
       },
       {
@@ -3701,39 +3661,39 @@ window.QUESTS_SECTION_2 = [
     ],
     "slots": {
       "slot1": {
-        "correct": "WHERE",
+        "correct": "PetClinic",
         "options": [
-          "HAVING",
-          "WHERE",
-          "CASE",
-          "FILTER"
+          "MovieReviews",
+          "MusicTracks",
+          "PetClinic",
+          "Employees"
         ]
       },
       "slot2": {
-        "correct": "species",
+        "correct": "WHERE",
         "options": [
-          "species",
-          "pet_name",
-          "breed",
-          "age_years"
+          "WHEN",
+          "WHERE",
+          "HAVING",
+          "FILTER"
         ]
       },
       "slot3": {
-        "correct": "IN",
+        "correct": "species",
         "options": [
-          "IN",
-          "= ANY",
-          "CONTAINS",
-          "NOT IN"
+          "pet_name",
+          "species",
+          "breed",
+          "is_vaccinated"
         ]
       },
       "slot4": {
-        "correct": "('Dog', 'Cat');",
+        "correct": "IN ('Dog', 'Cat');",
         "options": [
-          "['Dog', 'Cat'']",
-          "('Dog' OR 'Cat');",
-          "('Dog', 'Cat');",
-          "'Dog', 'Cat')"
+          "NOT IN ('Dog', 'Cat');",
+          "= ('Dog', 'Cat');",
+          "LIKE ('Dog', 'Cat');",
+          "IN ('Dog', 'Cat');"
         ]
       }
     },
@@ -3761,7 +3721,7 @@ window.QUESTS_SECTION_2 = [
     "targetQuery": "SELECT full_name\nFROM Students\nWHERE full_name LIKE 'A%';",
     "template": [
       {
-        "text": "SELECT full_name\nFROM Students\n",
+        "text": "SELECT full_name\nFROM ",
         "isBlank": false
       },
       {
@@ -3771,7 +3731,7 @@ window.QUESTS_SECTION_2 = [
         "placeholder": "[ ___ ]"
       },
       {
-        "text": " ",
+        "text": "\n",
         "isBlank": false
       },
       {
@@ -3791,7 +3751,7 @@ window.QUESTS_SECTION_2 = [
         "placeholder": "[ ___ ]"
       },
       {
-        "text": " ",
+        "text": " LIKE ",
         "isBlank": false
       },
       {
@@ -3803,39 +3763,39 @@ window.QUESTS_SECTION_2 = [
     ],
     "slots": {
       "slot1": {
-        "correct": "WHERE",
+        "correct": "Students",
         "options": [
-          "HAVING",
-          "WHERE",
-          "ON",
-          "FILTER"
+          "FlightSchedule",
+          "Students",
+          "Books",
+          "Orders"
         ]
       },
       "slot2": {
-        "correct": "full_name",
+        "correct": "WHERE",
         "options": [
-          "enrolled_year",
-          "student_id",
-          "age",
-          "full_name"
+          "WHEN",
+          "HAVING",
+          "FILTER",
+          "WHERE"
         ]
       },
       "slot3": {
-        "correct": "LIKE",
+        "correct": "full_name",
         "options": [
-          "=",
-          "LIKE",
-          "CONTAINS",
-          "MATCHES"
+          "last_name",
+          "full_name",
+          "enrolled_year",
+          "age"
         ]
       },
       "slot4": {
         "correct": "'A%';",
         "options": [
-          "'A%';",
-          "NULL",
-          "100",
-          "'Sample'"
+          "'Pre-A%'",
+          "'A%s'",
+          "'Non-A%'",
+          "'A%';"
         ]
       }
     },
@@ -3863,7 +3823,7 @@ window.QUESTS_SECTION_2 = [
     "targetQuery": "SELECT title, author\nFROM Books\nWHERE author LIKE '%King%';",
     "template": [
       {
-        "text": "SELECT title, author\nFROM Books\n",
+        "text": "SELECT title, author\nFROM ",
         "isBlank": false
       },
       {
@@ -3873,7 +3833,7 @@ window.QUESTS_SECTION_2 = [
         "placeholder": "[ ___ ]"
       },
       {
-        "text": " ",
+        "text": "\n",
         "isBlank": false
       },
       {
@@ -3893,7 +3853,7 @@ window.QUESTS_SECTION_2 = [
         "placeholder": "[ ___ ]"
       },
       {
-        "text": " ",
+        "text": " LIKE ",
         "isBlank": false
       },
       {
@@ -3905,39 +3865,39 @@ window.QUESTS_SECTION_2 = [
     ],
     "slots": {
       "slot1": {
+        "correct": "Books",
+        "options": [
+          "MusicTracks",
+          "GroceryItems",
+          "Books",
+          "FlightSchedule"
+        ]
+      },
+      "slot2": {
         "correct": "WHERE",
         "options": [
           "FILTER",
           "WHERE",
-          "HAVING",
-          "ON"
-        ]
-      },
-      "slot2": {
-        "correct": "author",
-        "options": [
-          "stock_qty",
-          "published_year",
-          "is_hardcover",
-          "author"
+          "WHEN",
+          "HAVING"
         ]
       },
       "slot3": {
-        "correct": "LIKE",
+        "correct": "author",
         "options": [
-          "CONTAINS",
-          "MATCHES",
-          "=",
-          "LIKE"
+          "author",
+          "stock_qty",
+          "genre",
+          "book_id"
         ]
       },
       "slot4": {
         "correct": "'%King%';",
         "options": [
-          "NULL",
-          "100",
+          "'Pre-%King%'",
           "'%King%';",
-          "'Sample'"
+          "'%King%s'",
+          "'%King%'"
         ]
       }
     },
@@ -3965,7 +3925,7 @@ window.QUESTS_SECTION_2 = [
     "targetQuery": "SELECT first_name, last_name\nFROM Employees\nWHERE last_name LIKE '%son';",
     "template": [
       {
-        "text": "SELECT first_name, last_name\nFROM Employees\n",
+        "text": "SELECT first_name, last_name\nFROM ",
         "isBlank": false
       },
       {
@@ -3975,7 +3935,7 @@ window.QUESTS_SECTION_2 = [
         "placeholder": "[ ___ ]"
       },
       {
-        "text": " ",
+        "text": "\n",
         "isBlank": false
       },
       {
@@ -3995,7 +3955,7 @@ window.QUESTS_SECTION_2 = [
         "placeholder": "[ ___ ]"
       },
       {
-        "text": " ",
+        "text": " LIKE ",
         "isBlank": false
       },
       {
@@ -4007,39 +3967,39 @@ window.QUESTS_SECTION_2 = [
     ],
     "slots": {
       "slot1": {
-        "correct": "WHERE",
+        "correct": "Employees",
         "options": [
-          "HAVING",
-          "FILTER",
-          "ON",
-          "WHERE"
+          "Employees",
+          "Books",
+          "PetClinic",
+          "GymMembers"
         ]
       },
       "slot2": {
-        "correct": "last_name",
+        "correct": "WHERE",
         "options": [
-          "last_name",
-          "salary",
-          "department",
-          "first_name"
+          "WHEN",
+          "HAVING",
+          "WHERE",
+          "FILTER"
         ]
       },
       "slot3": {
-        "correct": "LIKE",
+        "correct": "last_name",
         "options": [
-          "=",
-          "MATCHES",
-          "CONTAINS",
-          "LIKE"
+          "hire_date",
+          "salary",
+          "last_name",
+          "bonus"
         ]
       },
       "slot4": {
         "correct": "'%son';",
         "options": [
-          "100",
-          "NULL",
           "'%son';",
-          "'Sample'"
+          "'%son'",
+          "'%sons'",
+          "'Non-%son'"
         ]
       }
     },
@@ -4067,7 +4027,7 @@ window.QUESTS_SECTION_2 = [
     "targetQuery": "SELECT item_name\nFROM GroceryItems\nWHERE item_name LIKE '%Organic%';",
     "template": [
       {
-        "text": "SELECT item_name\nFROM GroceryItems\n",
+        "text": "SELECT item_name\nFROM ",
         "isBlank": false
       },
       {
@@ -4077,7 +4037,7 @@ window.QUESTS_SECTION_2 = [
         "placeholder": "[ ___ ]"
       },
       {
-        "text": " ",
+        "text": "\n",
         "isBlank": false
       },
       {
@@ -4097,7 +4057,7 @@ window.QUESTS_SECTION_2 = [
         "placeholder": "[ ___ ]"
       },
       {
-        "text": " ",
+        "text": " LIKE ",
         "isBlank": false
       },
       {
@@ -4109,38 +4069,38 @@ window.QUESTS_SECTION_2 = [
     ],
     "slots": {
       "slot1": {
-        "correct": "WHERE",
+        "correct": "GroceryItems",
         "options": [
-          "HAVING",
-          "WHERE",
-          "ON",
-          "FILTER"
+          "GroceryItems",
+          "Books",
+          "GymMembers",
+          "FlightSchedule"
         ]
       },
       "slot2": {
-        "correct": "item_name",
+        "correct": "WHERE",
         "options": [
-          "is_organic",
-          "stock_qty",
-          "category",
-          "item_name"
+          "WHERE",
+          "FILTER",
+          "WHEN",
+          "HAVING"
         ]
       },
       "slot3": {
-        "correct": "LIKE",
+        "correct": "item_name",
         "options": [
-          "CONTAINS",
-          "MATCHES",
-          "LIKE",
-          "="
+          "stock_qty",
+          "unit_price",
+          "item_name",
+          "calories"
         ]
       },
       "slot4": {
         "correct": "'%Organic%';",
         "options": [
-          "NULL",
-          "'Sample'",
-          "100",
+          "'%Organic%'",
+          "'Non-%Organic%'",
+          "'%Organic%s'",
           "'%Organic%';"
         ]
       }
@@ -4169,7 +4129,7 @@ window.QUESTS_SECTION_2 = [
     "targetQuery": "SELECT order_id, customer_name\nFROM Orders\nWHERE customer_name LIKE 'Z%';",
     "template": [
       {
-        "text": "SELECT order_id, customer_name\nFROM Orders\n",
+        "text": "SELECT order_id, customer_name\nFROM ",
         "isBlank": false
       },
       {
@@ -4179,7 +4139,7 @@ window.QUESTS_SECTION_2 = [
         "placeholder": "[ ___ ]"
       },
       {
-        "text": " ",
+        "text": "\n",
         "isBlank": false
       },
       {
@@ -4199,7 +4159,7 @@ window.QUESTS_SECTION_2 = [
         "placeholder": "[ ___ ]"
       },
       {
-        "text": " ",
+        "text": " LIKE ",
         "isBlank": false
       },
       {
@@ -4211,39 +4171,39 @@ window.QUESTS_SECTION_2 = [
     ],
     "slots": {
       "slot1": {
-        "correct": "WHERE",
+        "correct": "Orders",
         "options": [
-          "HAVING",
-          "WHERE",
-          "FILTER",
-          "ON"
+          "Students",
+          "Orders",
+          "Books",
+          "MusicTracks"
         ]
       },
       "slot2": {
-        "correct": "customer_name",
+        "correct": "WHERE",
         "options": [
-          "customer_name",
-          "quantity",
-          "product_name",
-          "discount_pct"
+          "WHEN",
+          "WHERE",
+          "FILTER",
+          "HAVING"
         ]
       },
       "slot3": {
-        "correct": "LIKE",
+        "correct": "customer_name",
         "options": [
-          "CONTAINS",
-          "LIKE",
-          "=",
-          "MATCHES"
+          "quantity",
+          "unit_price",
+          "shipping_city",
+          "customer_name"
         ]
       },
       "slot4": {
         "correct": "'Z%';",
         "options": [
-          "NULL",
-          "'Sample'",
-          "100",
-          "'Z%';"
+          "'Non-Z%'",
+          "'Z%';",
+          "'Z%s'",
+          "'Pre-Z%'"
         ]
       }
     },
@@ -4267,11 +4227,11 @@ window.QUESTS_SECTION_2 = [
     "difficulty": "Medium",
     "task": "Find all tracks that have 'Rain' in the title.",
     "table": "MusicTracks",
-    "schemaSnippet": "MusicTracks(track_id INT, title VARCHAR, track_title VARCHAR, artist VARCHAR, genre VARCHAR, duration_seconds INT, play_count INT, release_year INT)",
+    "schemaSnippet": "MusicTracks(track_id INT, title VARCHAR, track_title VARCHAR, artist VARCHAR, artist_name VARCHAR, genre VARCHAR, duration_seconds INT, play_count INT, release_year INT)",
     "targetQuery": "SELECT track_title\nFROM MusicTracks\nWHERE track_title LIKE '%Rain%';",
     "template": [
       {
-        "text": "SELECT ",
+        "text": "SELECT track_title\nFROM ",
         "isBlank": false
       },
       {
@@ -4291,7 +4251,7 @@ window.QUESTS_SECTION_2 = [
         "placeholder": "[ ___ ]"
       },
       {
-        "text": " MusicTracks\n",
+        "text": " ",
         "isBlank": false
       },
       {
@@ -4313,39 +4273,39 @@ window.QUESTS_SECTION_2 = [
     ],
     "slots": {
       "slot1": {
-        "correct": "track_title",
+        "correct": "MusicTracks",
         "options": [
-          "track_title",
-          "*",
-          "DISTINCT track_title",
-          "NULL"
+          "GymMembers",
+          "MusicTracks",
+          "Employees",
+          "MovieReviews"
         ]
       },
       "slot2": {
-        "correct": "FROM",
-        "options": [
-          "FROM",
-          "JOIN",
-          "INTO",
-          "TABLE"
-        ]
-      },
-      "slot3": {
         "correct": "WHERE",
         "options": [
-          "HAVING",
           "WHERE",
           "WHEN",
+          "HAVING",
           "FILTER"
         ]
       },
-      "slot4": {
-        "correct": "track_title LIKE '%Rain%';",
+      "slot3": {
+        "correct": "track_title",
         "options": [
-          "track_title LIKE '%Rain%'; AND 1=1",
-          "NULL",
-          "track_title LIKE '%Rain%';",
-          "0"
+          "release_year",
+          "play_count",
+          "track_title",
+          "duration_seconds"
+        ]
+      },
+      "slot4": {
+        "correct": "LIKE '%Rain%';",
+        "options": [
+          "> 0;",
+          "IS NOT NULL;",
+          "= 'Active';",
+          "LIKE '%Rain%';"
         ]
       }
     },
@@ -4373,7 +4333,7 @@ window.QUESTS_SECTION_2 = [
     "targetQuery": "SELECT member_name\nFROM GymMembers\nWHERE member_name LIKE '_a%';",
     "template": [
       {
-        "text": "SELECT ",
+        "text": "SELECT member_name\nFROM ",
         "isBlank": false
       },
       {
@@ -4393,7 +4353,7 @@ window.QUESTS_SECTION_2 = [
         "placeholder": "[ ___ ]"
       },
       {
-        "text": " GymMembers\n",
+        "text": " ",
         "isBlank": false
       },
       {
@@ -4415,39 +4375,39 @@ window.QUESTS_SECTION_2 = [
     ],
     "slots": {
       "slot1": {
-        "correct": "member_name",
+        "correct": "GymMembers",
         "options": [
-          "DISTINCT member_name",
-          "member_name",
-          "NULL",
-          "*"
+          "PetClinic",
+          "GymMembers",
+          "Employees",
+          "MovieReviews"
         ]
       },
       "slot2": {
-        "correct": "FROM",
+        "correct": "WHERE",
         "options": [
-          "TABLE",
-          "JOIN",
-          "INTO",
-          "FROM"
+          "WHEN",
+          "FILTER",
+          "HAVING",
+          "WHERE"
         ]
       },
       "slot3": {
-        "correct": "WHERE",
+        "correct": "member_name",
         "options": [
-          "WHERE",
-          "HAVING",
-          "FILTER",
-          "WHEN"
+          "membership_plan",
+          "member_id",
+          "has_trainer",
+          "member_name"
         ]
       },
       "slot4": {
-        "correct": "member_name LIKE '_a%';",
+        "correct": "LIKE '_a%';",
         "options": [
-          "NULL",
-          "member_name LIKE '_a%';",
-          "0",
-          "member_name LIKE '_a%'; AND 1=1"
+          "IS NOT NULL;",
+          "LIKE '_a%';",
+          "= 'Active';",
+          "> 0;"
         ]
       }
     },
@@ -4475,7 +4435,7 @@ window.QUESTS_SECTION_2 = [
     "targetQuery": "SELECT movie_title\nFROM MovieReviews\nWHERE movie_title LIKE '%The %';",
     "template": [
       {
-        "text": "SELECT ",
+        "text": "SELECT movie_title\nFROM ",
         "isBlank": false
       },
       {
@@ -4495,7 +4455,7 @@ window.QUESTS_SECTION_2 = [
         "placeholder": "[ ___ ]"
       },
       {
-        "text": " MovieReviews\n",
+        "text": " ",
         "isBlank": false
       },
       {
@@ -4517,39 +4477,39 @@ window.QUESTS_SECTION_2 = [
     ],
     "slots": {
       "slot1": {
-        "correct": "movie_title",
+        "correct": "MovieReviews",
         "options": [
-          "NULL",
-          "DISTINCT movie_title",
-          "*",
-          "movie_title"
+          "Books",
+          "PetClinic",
+          "MovieReviews",
+          "GymMembers"
         ]
       },
       "slot2": {
-        "correct": "FROM",
+        "correct": "WHERE",
         "options": [
-          "TABLE",
-          "JOIN",
-          "FROM",
-          "INTO"
+          "FILTER",
+          "WHERE",
+          "HAVING",
+          "WHEN"
         ]
       },
       "slot3": {
-        "correct": "WHERE",
+        "correct": "movie_title",
         "options": [
-          "WHEN",
-          "HAVING",
-          "FILTER",
-          "WHERE"
+          "movie_title",
+          "director",
+          "review_id",
+          "release_year"
         ]
       },
       "slot4": {
-        "correct": "movie_title LIKE '%The %';",
+        "correct": "LIKE '%The %';",
         "options": [
-          "movie_title LIKE '%The %'; AND 1=1",
-          "NULL",
-          "0",
-          "movie_title LIKE '%The %';"
+          "> 0;",
+          "IS NOT NULL;",
+          "= 'Active';",
+          "LIKE '%The %';"
         ]
       }
     },
@@ -4577,7 +4537,7 @@ window.QUESTS_SECTION_2 = [
     "targetQuery": "SELECT flight_id\nFROM FlightSchedule\nWHERE flight_id LIKE 'AA-%';",
     "template": [
       {
-        "text": "SELECT ",
+        "text": "SELECT flight_id\nFROM ",
         "isBlank": false
       },
       {
@@ -4597,7 +4557,7 @@ window.QUESTS_SECTION_2 = [
         "placeholder": "[ ___ ]"
       },
       {
-        "text": " FlightSchedule\n",
+        "text": " ",
         "isBlank": false
       },
       {
@@ -4619,39 +4579,39 @@ window.QUESTS_SECTION_2 = [
     ],
     "slots": {
       "slot1": {
-        "correct": "flight_id",
+        "correct": "FlightSchedule",
         "options": [
-          "flight_id",
-          "NULL",
-          "DISTINCT flight_id",
-          "*"
+          "FlightSchedule",
+          "PetClinic",
+          "GroceryItems",
+          "GymMembers"
         ]
       },
       "slot2": {
-        "correct": "FROM",
-        "options": [
-          "TABLE",
-          "FROM",
-          "INTO",
-          "JOIN"
-        ]
-      },
-      "slot3": {
         "correct": "WHERE",
         "options": [
-          "FILTER",
           "WHEN",
+          "FILTER",
           "WHERE",
           "HAVING"
         ]
       },
-      "slot4": {
-        "correct": "flight_id LIKE 'AA-%';",
+      "slot3": {
+        "correct": "flight_id",
         "options": [
-          "0",
-          "flight_id LIKE 'AA-%'; AND 1=1",
-          "NULL",
-          "flight_id LIKE 'AA-%';"
+          "destination_airport",
+          "flight_id",
+          "dest_airport",
+          "ticket_price"
+        ]
+      },
+      "slot4": {
+        "correct": "LIKE 'AA-%';",
+        "options": [
+          "= 'Active';",
+          "LIKE 'AA-%';",
+          "> 0;",
+          "IS NOT NULL;"
         ]
       }
     },
@@ -4679,7 +4639,7 @@ window.QUESTS_SECTION_2 = [
     "targetQuery": "SELECT pet_name, breed\nFROM PetClinic\nWHERE breed LIKE '%Retriever%';",
     "template": [
       {
-        "text": "SELECT ",
+        "text": "SELECT pet_name, breed\nFROM ",
         "isBlank": false
       },
       {
@@ -4699,7 +4659,7 @@ window.QUESTS_SECTION_2 = [
         "placeholder": "[ ___ ]"
       },
       {
-        "text": " PetClinic\n",
+        "text": " ",
         "isBlank": false
       },
       {
@@ -4721,39 +4681,39 @@ window.QUESTS_SECTION_2 = [
     ],
     "slots": {
       "slot1": {
-        "correct": "pet_name, breed",
+        "correct": "PetClinic",
         "options": [
-          "*",
-          "pet_name, breed",
-          "DISTINCT pet_name, breed",
-          "pet_name AND breed"
+          "PetClinic",
+          "MovieReviews",
+          "Books",
+          "GymMembers"
         ]
       },
       "slot2": {
-        "correct": "FROM",
+        "correct": "WHERE",
         "options": [
-          "JOIN",
-          "INTO",
-          "TABLE",
-          "FROM"
+          "WHERE",
+          "HAVING",
+          "FILTER",
+          "WHEN"
         ]
       },
       "slot3": {
-        "correct": "WHERE",
+        "correct": "breed",
         "options": [
-          "WHEN",
-          "HAVING",
-          "WHERE",
-          "FILTER"
+          "age_years",
+          "is_vaccinated",
+          "pet_name",
+          "breed"
         ]
       },
       "slot4": {
-        "correct": "breed LIKE '%Retriever%';",
+        "correct": "LIKE '%Retriever%';",
         "options": [
-          "0",
-          "breed LIKE '%Retriever%'; AND 1=1",
-          "breed LIKE '%Retriever%';",
-          "NULL"
+          "LIKE '%Retriever%';",
+          "> 0;",
+          "IS NOT NULL;",
+          "= 'Active';"
         ]
       }
     },
@@ -4781,7 +4741,7 @@ window.QUESTS_SECTION_2 = [
     "targetQuery": "SELECT title\nFROM Books\nWHERE title NOT LIKE '%The%';",
     "template": [
       {
-        "text": "SELECT title\nFROM Books\n",
+        "text": "SELECT title\nFROM ",
         "isBlank": false
       },
       {
@@ -4791,7 +4751,7 @@ window.QUESTS_SECTION_2 = [
         "placeholder": "[ ___ ]"
       },
       {
-        "text": " ",
+        "text": "\n",
         "isBlank": false
       },
       {
@@ -4823,39 +4783,39 @@ window.QUESTS_SECTION_2 = [
     ],
     "slots": {
       "slot1": {
+        "correct": "Books",
+        "options": [
+          "MovieReviews",
+          "FlightSchedule",
+          "Books",
+          "Students"
+        ]
+      },
+      "slot2": {
         "correct": "WHERE",
         "options": [
-          "ON",
           "HAVING",
+          "WHEN",
           "FILTER",
           "WHERE"
         ]
       },
-      "slot2": {
+      "slot3": {
         "correct": "title",
         "options": [
           "title",
-          "price",
-          "book_id",
-          "author"
-        ]
-      },
-      "slot3": {
-        "correct": "NOT LIKE",
-        "options": [
-          "NOT LIKE",
-          "!=",
-          "UNLIKE",
-          "NOT MATCH"
+          "stock_qty",
+          "is_hardcover",
+          "published_year"
         ]
       },
       "slot4": {
-        "correct": "'%The%';",
+        "correct": "NOT LIKE '%The%';",
         "options": [
-          "'Sample'",
-          "NULL",
-          "'%The%';",
-          "100"
+          "NOT LIKE '%The%';",
+          "> 0;",
+          "= 'Active';",
+          "IS NOT NULL;"
         ]
       }
     },
@@ -4883,7 +4843,7 @@ window.QUESTS_SECTION_2 = [
     "targetQuery": "SELECT full_name, city\nFROM Students\nWHERE city NOT LIKE 'S%';",
     "template": [
       {
-        "text": "SELECT full_name, city\nFROM Students\n",
+        "text": "SELECT full_name, city\nFROM ",
         "isBlank": false
       },
       {
@@ -4893,7 +4853,7 @@ window.QUESTS_SECTION_2 = [
         "placeholder": "[ ___ ]"
       },
       {
-        "text": " ",
+        "text": "\n",
         "isBlank": false
       },
       {
@@ -4925,39 +4885,39 @@ window.QUESTS_SECTION_2 = [
     ],
     "slots": {
       "slot1": {
-        "correct": "WHERE",
+        "correct": "Students",
         "options": [
-          "HAVING",
-          "ON",
-          "WHERE",
-          "FILTER"
+          "Orders",
+          "Books",
+          "Students",
+          "GroceryItems"
         ]
       },
       "slot2": {
-        "correct": "city",
+        "correct": "WHERE",
         "options": [
-          "age",
-          "gpa",
-          "enrolled_year",
-          "city"
+          "WHEN",
+          "HAVING",
+          "FILTER",
+          "WHERE"
         ]
       },
       "slot3": {
-        "correct": "NOT LIKE",
+        "correct": "city",
         "options": [
-          "NOT LIKE",
-          "NOT MATCH",
-          "UNLIKE",
-          "!="
+          "full_name",
+          "gpa",
+          "student_id",
+          "city"
         ]
       },
       "slot4": {
-        "correct": "'S%';",
+        "correct": "NOT LIKE 'S%';",
         "options": [
-          "100",
-          "'S%';",
-          "'Sample'",
-          "NULL"
+          "= 'Active';",
+          "> 0;",
+          "NOT LIKE 'S%';",
+          "IS NOT NULL;"
         ]
       }
     },
@@ -4985,7 +4945,7 @@ window.QUESTS_SECTION_2 = [
     "targetQuery": "SELECT first_name, department\nFROM Employees\nWHERE department NOT LIKE '%ing';",
     "template": [
       {
-        "text": "SELECT first_name, department\nFROM Employees\n",
+        "text": "SELECT first_name, department\nFROM ",
         "isBlank": false
       },
       {
@@ -4995,7 +4955,7 @@ window.QUESTS_SECTION_2 = [
         "placeholder": "[ ___ ]"
       },
       {
-        "text": " ",
+        "text": "\n",
         "isBlank": false
       },
       {
@@ -5027,39 +4987,39 @@ window.QUESTS_SECTION_2 = [
     ],
     "slots": {
       "slot1": {
-        "correct": "WHERE",
+        "correct": "Employees",
         "options": [
-          "FILTER",
-          "WHERE",
-          "ON",
-          "HAVING"
+          "FlightSchedule",
+          "Employees",
+          "PetClinic",
+          "MovieReviews"
         ]
       },
       "slot2": {
-        "correct": "department",
+        "correct": "WHERE",
         "options": [
-          "department",
-          "first_name",
-          "bonus",
-          "emp_id"
+          "WHEN",
+          "WHERE",
+          "FILTER",
+          "HAVING"
         ]
       },
       "slot3": {
-        "correct": "NOT LIKE",
+        "correct": "department",
         "options": [
-          "UNLIKE",
-          "!=",
-          "NOT LIKE",
-          "NOT MATCH"
+          "emp_id",
+          "salary",
+          "bonus",
+          "department"
         ]
       },
       "slot4": {
-        "correct": "'%ing';",
+        "correct": "NOT LIKE '%ing';",
         "options": [
-          "'Sample'",
-          "100",
-          "'%ing';",
-          "NULL"
+          "IS NOT NULL;",
+          "= 'Active';",
+          "NOT LIKE '%ing';",
+          "> 0;"
         ]
       }
     },
@@ -5087,7 +5047,7 @@ window.QUESTS_SECTION_2 = [
     "targetQuery": "SELECT item_name\nFROM GroceryItems\nWHERE item_name NOT LIKE '%Milk%';",
     "template": [
       {
-        "text": "SELECT item_name\nFROM GroceryItems\n",
+        "text": "SELECT item_name\nFROM ",
         "isBlank": false
       },
       {
@@ -5097,7 +5057,7 @@ window.QUESTS_SECTION_2 = [
         "placeholder": "[ ___ ]"
       },
       {
-        "text": " ",
+        "text": "\n",
         "isBlank": false
       },
       {
@@ -5129,39 +5089,39 @@ window.QUESTS_SECTION_2 = [
     ],
     "slots": {
       "slot1": {
-        "correct": "WHERE",
+        "correct": "GroceryItems",
         "options": [
-          "ON",
-          "WHERE",
-          "HAVING",
-          "FILTER"
+          "PetClinic",
+          "Books",
+          "Orders",
+          "GroceryItems"
         ]
       },
       "slot2": {
-        "correct": "item_name",
+        "correct": "WHERE",
         "options": [
-          "stock_qty",
-          "unit_price",
-          "category",
-          "item_name"
+          "WHERE",
+          "FILTER",
+          "WHEN",
+          "HAVING"
         ]
       },
       "slot3": {
-        "correct": "NOT LIKE",
+        "correct": "item_name",
         "options": [
-          "UNLIKE",
-          "NOT LIKE",
-          "!=",
-          "NOT MATCH"
+          "item_name",
+          "unit_price",
+          "calories",
+          "category"
         ]
       },
       "slot4": {
-        "correct": "'%Milk%';",
+        "correct": "NOT LIKE '%Milk%';",
         "options": [
-          "100",
-          "NULL",
-          "'%Milk%';",
-          "'Sample'"
+          "NOT LIKE '%Milk%';",
+          "= 'Active';",
+          "> 0;",
+          "IS NOT NULL;"
         ]
       }
     },
@@ -5189,7 +5149,7 @@ window.QUESTS_SECTION_2 = [
     "targetQuery": "SELECT order_id, order_status\nFROM Orders\nWHERE order_status NOT LIKE '%Cancel%';",
     "template": [
       {
-        "text": "SELECT order_id, order_status\nFROM Orders\n",
+        "text": "SELECT order_id, order_status\nFROM ",
         "isBlank": false
       },
       {
@@ -5199,7 +5159,7 @@ window.QUESTS_SECTION_2 = [
         "placeholder": "[ ___ ]"
       },
       {
-        "text": " ",
+        "text": "\n",
         "isBlank": false
       },
       {
@@ -5231,39 +5191,39 @@ window.QUESTS_SECTION_2 = [
     ],
     "slots": {
       "slot1": {
-        "correct": "WHERE",
+        "correct": "Orders",
         "options": [
-          "HAVING",
-          "WHERE",
-          "FILTER",
-          "ON"
+          "Books",
+          "FlightSchedule",
+          "GymMembers",
+          "Orders"
         ]
       },
       "slot2": {
-        "correct": "order_status",
+        "correct": "WHERE",
         "options": [
-          "quantity",
-          "unit_price",
-          "order_status",
-          "shipping_city"
+          "HAVING",
+          "FILTER",
+          "WHERE",
+          "WHEN"
         ]
       },
       "slot3": {
-        "correct": "NOT LIKE",
+        "correct": "order_status",
         "options": [
-          "UNLIKE",
-          "!=",
-          "NOT MATCH",
-          "NOT LIKE"
+          "order_status",
+          "discount_pct",
+          "order_id",
+          "product_name"
         ]
       },
       "slot4": {
-        "correct": "'%Cancel%';",
+        "correct": "NOT LIKE '%Cancel%';",
         "options": [
-          "'%Cancel%';",
-          "'Sample'",
-          "NULL",
-          "100"
+          "IS NOT NULL;",
+          "> 0;",
+          "= 'Active';",
+          "NOT LIKE '%Cancel%';"
         ]
       }
     },
@@ -5287,11 +5247,11 @@ window.QUESTS_SECTION_2 = [
     "difficulty": "Medium",
     "task": "Find music tracks that do not have 'Love' in the title.",
     "table": "MusicTracks",
-    "schemaSnippet": "MusicTracks(track_id INT, title VARCHAR, track_title VARCHAR, artist VARCHAR, genre VARCHAR, duration_seconds INT, play_count INT, release_year INT)",
+    "schemaSnippet": "MusicTracks(track_id INT, title VARCHAR, track_title VARCHAR, artist VARCHAR, artist_name VARCHAR, genre VARCHAR, duration_seconds INT, play_count INT, release_year INT)",
     "targetQuery": "SELECT track_title\nFROM MusicTracks\nWHERE track_title NOT LIKE '%Love%';",
     "template": [
       {
-        "text": "SELECT track_title\nFROM MusicTracks\n",
+        "text": "SELECT track_title\nFROM ",
         "isBlank": false
       },
       {
@@ -5301,7 +5261,7 @@ window.QUESTS_SECTION_2 = [
         "placeholder": "[ ___ ]"
       },
       {
-        "text": " ",
+        "text": "\n",
         "isBlank": false
       },
       {
@@ -5333,39 +5293,39 @@ window.QUESTS_SECTION_2 = [
     ],
     "slots": {
       "slot1": {
+        "correct": "MusicTracks",
+        "options": [
+          "Orders",
+          "Employees",
+          "MusicTracks",
+          "GymMembers"
+        ]
+      },
+      "slot2": {
         "correct": "WHERE",
         "options": [
           "FILTER",
           "HAVING",
           "WHERE",
-          "ON"
-        ]
-      },
-      "slot2": {
-        "correct": "track_title",
-        "options": [
-          "track_id",
-          "artist",
-          "track_title",
-          "release_year"
+          "WHEN"
         ]
       },
       "slot3": {
-        "correct": "NOT LIKE",
+        "correct": "track_title",
         "options": [
-          "UNLIKE",
-          "NOT LIKE",
-          "!=",
-          "NOT MATCH"
+          "title",
+          "track_title",
+          "duration_seconds",
+          "release_year"
         ]
       },
       "slot4": {
-        "correct": "'%Love%';",
+        "correct": "NOT LIKE '%Love%';",
         "options": [
-          "NULL",
-          "100",
-          "'%Love%';",
-          "'Sample'"
+          "= 'Active';",
+          "NOT LIKE '%Love%';",
+          "> 0;",
+          "IS NOT NULL;"
         ]
       }
     },
@@ -5393,7 +5353,7 @@ window.QUESTS_SECTION_2 = [
     "targetQuery": "SELECT member_name\nFROM GymMembers\nWHERE member_name NOT LIKE 'J%';",
     "template": [
       {
-        "text": "SELECT member_name\nFROM GymMembers\n",
+        "text": "SELECT member_name\nFROM ",
         "isBlank": false
       },
       {
@@ -5403,7 +5363,7 @@ window.QUESTS_SECTION_2 = [
         "placeholder": "[ ___ ]"
       },
       {
-        "text": " ",
+        "text": "\n",
         "isBlank": false
       },
       {
@@ -5435,39 +5395,39 @@ window.QUESTS_SECTION_2 = [
     ],
     "slots": {
       "slot1": {
-        "correct": "WHERE",
+        "correct": "GymMembers",
         "options": [
-          "FILTER",
-          "WHERE",
-          "ON",
-          "HAVING"
+          "Books",
+          "Students",
+          "GymMembers",
+          "Orders"
         ]
       },
       "slot2": {
-        "correct": "member_name",
+        "correct": "WHERE",
         "options": [
-          "joined_date",
-          "has_trainer",
-          "member_id",
-          "member_name"
+          "WHEN",
+          "HAVING",
+          "FILTER",
+          "WHERE"
         ]
       },
       "slot3": {
-        "correct": "NOT LIKE",
+        "correct": "member_name",
         "options": [
-          "UNLIKE",
-          "NOT MATCH",
-          "!=",
-          "NOT LIKE"
+          "member_name",
+          "monthly_fee",
+          "has_trainer",
+          "visits_this_month"
         ]
       },
       "slot4": {
-        "correct": "'J%';",
+        "correct": "NOT LIKE 'J%';",
         "options": [
-          "'J%';",
-          "'Sample'",
-          "NULL",
-          "100"
+          "= 'Active';",
+          "IS NOT NULL;",
+          "> 0;",
+          "NOT LIKE 'J%';"
         ]
       }
     },
@@ -5495,7 +5455,7 @@ window.QUESTS_SECTION_2 = [
     "targetQuery": "SELECT movie_title\nFROM MovieReviews\nWHERE movie_title LIKE '___';",
     "template": [
       {
-        "text": "SELECT ",
+        "text": "SELECT movie_title\nFROM ",
         "isBlank": false
       },
       {
@@ -5515,7 +5475,7 @@ window.QUESTS_SECTION_2 = [
         "placeholder": "[ ___ ]"
       },
       {
-        "text": " MovieReviews\n",
+        "text": " ",
         "isBlank": false
       },
       {
@@ -5537,39 +5497,39 @@ window.QUESTS_SECTION_2 = [
     ],
     "slots": {
       "slot1": {
-        "correct": "movie_title",
+        "correct": "MovieReviews",
         "options": [
-          "movie_title",
-          "NULL",
-          "DISTINCT movie_title",
-          "*"
+          "GymMembers",
+          "MovieReviews",
+          "Employees",
+          "PetClinic"
         ]
       },
       "slot2": {
-        "correct": "FROM",
-        "options": [
-          "INTO",
-          "JOIN",
-          "TABLE",
-          "FROM"
-        ]
-      },
-      "slot3": {
         "correct": "WHERE",
         "options": [
-          "FILTER",
           "HAVING",
+          "FILTER",
           "WHEN",
           "WHERE"
         ]
       },
-      "slot4": {
-        "correct": "movie_title LIKE '___';",
+      "slot3": {
+        "correct": "movie_title",
         "options": [
-          "movie_title LIKE '___';",
-          "0",
-          "movie_title LIKE '___'; AND 1=1",
-          "NULL"
+          "movie_title",
+          "star_rating",
+          "director",
+          "genre"
+        ]
+      },
+      "slot4": {
+        "correct": "LIKE '___';",
+        "options": [
+          "IS NOT NULL;",
+          "LIKE '___';",
+          "= 'Active';",
+          "> 0;"
         ]
       }
     },
@@ -5597,7 +5557,7 @@ window.QUESTS_SECTION_2 = [
     "targetQuery": "SELECT flight_id\nFROM FlightSchedule\nWHERE flight_id NOT LIKE 'DL-%';",
     "template": [
       {
-        "text": "SELECT flight_id\nFROM FlightSchedule\n",
+        "text": "SELECT flight_id\nFROM ",
         "isBlank": false
       },
       {
@@ -5607,7 +5567,7 @@ window.QUESTS_SECTION_2 = [
         "placeholder": "[ ___ ]"
       },
       {
-        "text": " ",
+        "text": "\n",
         "isBlank": false
       },
       {
@@ -5639,39 +5599,39 @@ window.QUESTS_SECTION_2 = [
     ],
     "slots": {
       "slot1": {
-        "correct": "WHERE",
+        "correct": "FlightSchedule",
         "options": [
-          "FILTER",
-          "WHERE",
-          "ON",
-          "HAVING"
+          "MusicTracks",
+          "MovieReviews",
+          "FlightSchedule",
+          "Books"
         ]
       },
       "slot2": {
-        "correct": "flight_id",
+        "correct": "WHERE",
         "options": [
-          "flight_id",
-          "destination_airport",
-          "airline",
-          "origin_airport"
+          "WHERE",
+          "WHEN",
+          "HAVING",
+          "FILTER"
         ]
       },
       "slot3": {
-        "correct": "NOT LIKE",
+        "correct": "flight_id",
         "options": [
-          "NOT LIKE",
-          "!=",
-          "NOT MATCH",
-          "UNLIKE"
+          "flight_id",
+          "delay_minutes",
+          "origin_airport",
+          "destination_airport"
         ]
       },
       "slot4": {
-        "correct": "'DL-%';",
+        "correct": "NOT LIKE 'DL-%';",
         "options": [
-          "NULL",
-          "100",
-          "'Sample'",
-          "'DL-%';"
+          "= 'Active';",
+          "> 0;",
+          "IS NOT NULL;",
+          "NOT LIKE 'DL-%';"
         ]
       }
     },
@@ -5699,7 +5659,7 @@ window.QUESTS_SECTION_2 = [
     "targetQuery": "SELECT pet_name\nFROM PetClinic\nWHERE pet_name LIKE '____';",
     "template": [
       {
-        "text": "SELECT ",
+        "text": "SELECT pet_name\nFROM ",
         "isBlank": false
       },
       {
@@ -5719,7 +5679,7 @@ window.QUESTS_SECTION_2 = [
         "placeholder": "[ ___ ]"
       },
       {
-        "text": " PetClinic\n",
+        "text": " ",
         "isBlank": false
       },
       {
@@ -5741,39 +5701,39 @@ window.QUESTS_SECTION_2 = [
     ],
     "slots": {
       "slot1": {
-        "correct": "pet_name",
+        "correct": "PetClinic",
         "options": [
-          "pet_name",
-          "NULL",
-          "*",
-          "DISTINCT pet_name"
+          "PetClinic",
+          "FlightSchedule",
+          "Orders",
+          "MovieReviews"
         ]
       },
       "slot2": {
-        "correct": "FROM",
-        "options": [
-          "INTO",
-          "JOIN",
-          "TABLE",
-          "FROM"
-        ]
-      },
-      "slot3": {
         "correct": "WHERE",
         "options": [
-          "WHERE",
           "HAVING",
+          "WHERE",
           "WHEN",
           "FILTER"
         ]
       },
-      "slot4": {
-        "correct": "pet_name LIKE '____';",
+      "slot3": {
+        "correct": "pet_name",
         "options": [
-          "0",
-          "NULL",
-          "pet_name LIKE '____';",
-          "pet_name LIKE '____'; AND 1=1"
+          "breed",
+          "weight_kg",
+          "pet_id",
+          "pet_name"
+        ]
+      },
+      "slot4": {
+        "correct": "LIKE '____';",
+        "options": [
+          "LIKE '____';",
+          "= 'Active';",
+          "IS NOT NULL;",
+          "> 0;"
         ]
       }
     },
@@ -5801,7 +5761,7 @@ window.QUESTS_SECTION_2 = [
     "targetQuery": "SELECT full_name, city, gpa\nFROM Students\nWHERE city = 'Seattle' AND gpa > 3.50;",
     "template": [
       {
-        "text": "SELECT full_name, city, gpa\nFROM Students\nWHERE ",
+        "text": "SELECT ",
         "isBlank": false
       },
       {
@@ -5811,7 +5771,7 @@ window.QUESTS_SECTION_2 = [
         "placeholder": "[ ___ ]"
       },
       {
-        "text": " = 'Seattle' ",
+        "text": ", city, gpa\nFROM Students\n",
         "isBlank": false
       },
       {
@@ -5821,7 +5781,7 @@ window.QUESTS_SECTION_2 = [
         "placeholder": "[ ___ ]"
       },
       {
-        "text": " ",
+        "text": " city = 'Seattle' ",
         "isBlank": false
       },
       {
@@ -5843,39 +5803,39 @@ window.QUESTS_SECTION_2 = [
     ],
     "slots": {
       "slot1": {
-        "correct": "city",
+        "correct": "full_name",
         "options": [
-          "gpa",
+          "full_name",
           "age",
           "city",
-          "enrolled_year"
+          "major"
         ]
       },
       "slot2": {
-        "correct": "AND",
+        "correct": "WHERE",
         "options": [
-          "AND",
-          "OR",
-          "THEN",
-          "PLUS"
+          "FILTER",
+          "HAVING",
+          "WHEN",
+          "WHERE"
         ]
       },
       "slot3": {
-        "correct": "gpa",
+        "correct": "AND",
         "options": [
-          "enrolled_year",
-          "gpa",
-          "last_name",
-          "city"
+          "PLUS",
+          "OR",
+          "AND",
+          "THEN"
         ]
       },
       "slot4": {
-        "correct": "> 3.50;",
+        "correct": "gpa > 3.50;",
         "options": [
-          "!= 3.50;",
-          "> 3.50;",
-          "LIKE 3.50;",
-          "= 3.50;"
+          "gpa > 3.50;",
+          "NULL",
+          "gpa < 3.50;",
+          "status = 'ACTIVE';"
         ]
       }
     },
@@ -5903,7 +5863,7 @@ window.QUESTS_SECTION_2 = [
     "targetQuery": "SELECT title, price, stock_qty\nFROM Books\nWHERE genre = 'Sci-Fi' AND price < 25.00;",
     "template": [
       {
-        "text": "SELECT title, price, stock_qty\nFROM Books\nWHERE ",
+        "text": "SELECT ",
         "isBlank": false
       },
       {
@@ -5913,7 +5873,7 @@ window.QUESTS_SECTION_2 = [
         "placeholder": "[ ___ ]"
       },
       {
-        "text": " = 'Sci-Fi' ",
+        "text": ", price, stock_qty\nFROM Books\n",
         "isBlank": false
       },
       {
@@ -5923,7 +5883,7 @@ window.QUESTS_SECTION_2 = [
         "placeholder": "[ ___ ]"
       },
       {
-        "text": " ",
+        "text": " genre = 'Sci-Fi' ",
         "isBlank": false
       },
       {
@@ -5945,39 +5905,39 @@ window.QUESTS_SECTION_2 = [
     ],
     "slots": {
       "slot1": {
-        "correct": "genre",
+        "correct": "title",
         "options": [
-          "is_hardcover",
-          "published_year",
+          "genre",
           "title",
-          "genre"
+          "price",
+          "stock_qty"
         ]
       },
       "slot2": {
-        "correct": "AND",
+        "correct": "WHERE",
         "options": [
-          "THEN",
-          "AND",
-          "OR",
-          "PLUS"
+          "HAVING",
+          "FILTER",
+          "WHEN",
+          "WHERE"
         ]
       },
       "slot3": {
-        "correct": "price",
+        "correct": "AND",
         "options": [
-          "is_hardcover",
-          "stock_qty",
-          "genre",
-          "price"
+          "PLUS",
+          "OR",
+          "AND",
+          "THEN"
         ]
       },
       "slot4": {
-        "correct": "< 25.00;",
+        "correct": "price < 25.00;",
         "options": [
-          "!= 25.00;",
-          "LIKE 25.00;",
-          "= 25.00;",
-          "< 25.00;"
+          "status = 'ACTIVE';",
+          "0",
+          "NULL",
+          "price < 25.00;"
         ]
       }
     },
@@ -6005,7 +5965,7 @@ window.QUESTS_SECTION_2 = [
     "targetQuery": "SELECT first_name, department, salary\nFROM Employees\nWHERE department = 'Engineering' AND salary >= 90000.00;",
     "template": [
       {
-        "text": "SELECT first_name, department, salary\nFROM Employees\nWHERE ",
+        "text": "SELECT ",
         "isBlank": false
       },
       {
@@ -6015,7 +5975,7 @@ window.QUESTS_SECTION_2 = [
         "placeholder": "[ ___ ]"
       },
       {
-        "text": " = 'Engineering' ",
+        "text": ", department, salary\nFROM Employees\n",
         "isBlank": false
       },
       {
@@ -6025,7 +5985,7 @@ window.QUESTS_SECTION_2 = [
         "placeholder": "[ ___ ]"
       },
       {
-        "text": " ",
+        "text": " department = 'Engineering' ",
         "isBlank": false
       },
       {
@@ -6047,39 +6007,39 @@ window.QUESTS_SECTION_2 = [
     ],
     "slots": {
       "slot1": {
-        "correct": "department",
+        "correct": "first_name",
         "options": [
-          "salary",
-          "emp_id",
           "first_name",
-          "department"
+          "bonus",
+          "emp_id",
+          "hire_date"
         ]
       },
       "slot2": {
-        "correct": "AND",
+        "correct": "WHERE",
         "options": [
-          "OR",
-          "THEN",
-          "AND",
-          "PLUS"
+          "WHERE",
+          "WHEN",
+          "HAVING",
+          "FILTER"
         ]
       },
       "slot3": {
-        "correct": "salary",
+        "correct": "AND",
         "options": [
-          "last_name",
-          "first_name",
-          "salary",
-          "emp_id"
+          "THEN",
+          "AND",
+          "PLUS",
+          "OR"
         ]
       },
       "slot4": {
-        "correct": ">= 90000.00;",
+        "correct": "salary >= 90000.00;",
         "options": [
-          ">= 90000.00;",
-          "!= 90000.00;",
-          "= 90000.00;",
-          "LIKE 90000.00;"
+          "status = 'ACTIVE';",
+          "salary <= 90000.00;",
+          "salary >!= 90000.00;",
+          "salary >= 90000.00;"
         ]
       }
     },
@@ -6107,7 +6067,7 @@ window.QUESTS_SECTION_2 = [
     "targetQuery": "SELECT item_name, unit_price, is_organic\nFROM GroceryItems\nWHERE is_organic = TRUE AND unit_price < 4.00;",
     "template": [
       {
-        "text": "SELECT item_name, unit_price, is_organic\nFROM GroceryItems\nWHERE ",
+        "text": "SELECT ",
         "isBlank": false
       },
       {
@@ -6117,7 +6077,7 @@ window.QUESTS_SECTION_2 = [
         "placeholder": "[ ___ ]"
       },
       {
-        "text": " = TRUE ",
+        "text": ", unit_price, is_organic\nFROM GroceryItems\n",
         "isBlank": false
       },
       {
@@ -6127,7 +6087,7 @@ window.QUESTS_SECTION_2 = [
         "placeholder": "[ ___ ]"
       },
       {
-        "text": " ",
+        "text": " is_organic = TRUE ",
         "isBlank": false
       },
       {
@@ -6149,39 +6109,39 @@ window.QUESTS_SECTION_2 = [
     ],
     "slots": {
       "slot1": {
-        "correct": "is_organic",
+        "correct": "item_name",
         "options": [
-          "calories",
           "item_id",
-          "item_name",
-          "is_organic"
+          "calories",
+          "stock_qty",
+          "item_name"
         ]
       },
       "slot2": {
-        "correct": "AND",
+        "correct": "WHERE",
         "options": [
-          "OR",
-          "AND",
-          "THEN",
-          "PLUS"
+          "FILTER",
+          "WHERE",
+          "HAVING",
+          "WHEN"
         ]
       },
       "slot3": {
-        "correct": "unit_price",
+        "correct": "AND",
         "options": [
-          "category",
-          "item_name",
-          "stock_qty",
-          "unit_price"
+          "THEN",
+          "AND",
+          "PLUS",
+          "OR"
         ]
       },
       "slot4": {
-        "correct": "< 4.00;",
+        "correct": "unit_price < 4.00;",
         "options": [
-          "LIKE 4.00;",
-          "= 4.00;",
-          "!= 4.00;",
-          "< 4.00;"
+          "unit_price < 4.00;",
+          "0",
+          "NULL",
+          "status = 'ACTIVE';"
         ]
       }
     },
@@ -6209,7 +6169,7 @@ window.QUESTS_SECTION_2 = [
     "targetQuery": "SELECT order_id, quantity, discount_pct\nFROM Orders\nWHERE quantity >= 2 AND discount_pct > 0.05;",
     "template": [
       {
-        "text": "SELECT order_id, quantity, discount_pct\nFROM Orders\nWHERE ",
+        "text": "SELECT ",
         "isBlank": false
       },
       {
@@ -6219,7 +6179,7 @@ window.QUESTS_SECTION_2 = [
         "placeholder": "[ ___ ]"
       },
       {
-        "text": " >= 2 ",
+        "text": ", quantity, discount_pct\nFROM Orders\n",
         "isBlank": false
       },
       {
@@ -6229,7 +6189,7 @@ window.QUESTS_SECTION_2 = [
         "placeholder": "[ ___ ]"
       },
       {
-        "text": " ",
+        "text": " quantity >= 2 ",
         "isBlank": false
       },
       {
@@ -6251,39 +6211,39 @@ window.QUESTS_SECTION_2 = [
     ],
     "slots": {
       "slot1": {
-        "correct": "quantity",
+        "correct": "order_id",
         "options": [
-          "shipping_city",
-          "unit_price",
+          "discount_pct",
           "quantity",
+          "order_id",
           "order_status"
         ]
       },
       "slot2": {
-        "correct": "AND",
+        "correct": "WHERE",
         "options": [
-          "OR",
-          "PLUS",
-          "THEN",
-          "AND"
+          "HAVING",
+          "WHERE",
+          "WHEN",
+          "FILTER"
         ]
       },
       "slot3": {
-        "correct": "discount_pct",
+        "correct": "AND",
         "options": [
-          "order_id",
-          "unit_price",
-          "order_status",
-          "discount_pct"
+          "THEN",
+          "OR",
+          "AND",
+          "PLUS"
         ]
       },
       "slot4": {
-        "correct": "> 0.05;",
+        "correct": "discount_pct > 0.05;",
         "options": [
-          "= 0.05;",
-          "!= 0.05;",
-          "LIKE 0.05;",
-          "> 0.05;"
+          "discount_pct > 0.05;",
+          "status = 'ACTIVE';",
+          "discount_pct < 0.05;",
+          "NULL"
         ]
       }
     },
@@ -6307,11 +6267,11 @@ window.QUESTS_SECTION_2 = [
     "difficulty": "Medium",
     "task": "Find Synthwave tracks released specifically in the year 2024.",
     "table": "MusicTracks",
-    "schemaSnippet": "MusicTracks(track_id INT, title VARCHAR, track_title VARCHAR, artist VARCHAR, genre VARCHAR, duration_seconds INT, play_count INT, release_year INT)",
+    "schemaSnippet": "MusicTracks(track_id INT, title VARCHAR, track_title VARCHAR, artist VARCHAR, artist_name VARCHAR, genre VARCHAR, duration_seconds INT, play_count INT, release_year INT)",
     "targetQuery": "SELECT track_title, genre, release_year\nFROM MusicTracks\nWHERE genre = 'Synthwave' AND release_year = 2024;",
     "template": [
       {
-        "text": "SELECT track_title, genre, release_year\nFROM MusicTracks\nWHERE ",
+        "text": "SELECT ",
         "isBlank": false
       },
       {
@@ -6321,7 +6281,7 @@ window.QUESTS_SECTION_2 = [
         "placeholder": "[ ___ ]"
       },
       {
-        "text": " = 'Synthwave' ",
+        "text": ", genre, release_year\nFROM MusicTracks\n",
         "isBlank": false
       },
       {
@@ -6331,7 +6291,7 @@ window.QUESTS_SECTION_2 = [
         "placeholder": "[ ___ ]"
       },
       {
-        "text": " ",
+        "text": " genre = 'Synthwave' ",
         "isBlank": false
       },
       {
@@ -6353,39 +6313,39 @@ window.QUESTS_SECTION_2 = [
     ],
     "slots": {
       "slot1": {
-        "correct": "genre",
+        "correct": "track_title",
         "options": [
-          "title",
           "play_count",
           "genre",
-          "track_id"
+          "track_title",
+          "release_year"
         ]
       },
       "slot2": {
-        "correct": "AND",
+        "correct": "WHERE",
         "options": [
-          "AND",
-          "PLUS",
-          "OR",
-          "THEN"
+          "WHEN",
+          "HAVING",
+          "WHERE",
+          "FILTER"
         ]
       },
       "slot3": {
-        "correct": "release_year",
+        "correct": "AND",
         "options": [
-          "artist",
-          "release_year",
-          "duration_seconds",
-          "title"
+          "OR",
+          "AND",
+          "THEN",
+          "PLUS"
         ]
       },
       "slot4": {
-        "correct": "= 2024;",
+        "correct": "release_year = 2024;",
         "options": [
-          "= 2024;",
-          "LIKE 2024;",
-          "!= 2024;",
-          "NULL"
+          "release_year = 2024;",
+          "NULL",
+          "status = 'ACTIVE';",
+          "release_year != 2024;"
         ]
       }
     },
@@ -6413,7 +6373,7 @@ window.QUESTS_SECTION_2 = [
     "targetQuery": "SELECT member_name, membership_plan, visits_this_month\nFROM GymMembers\nWHERE membership_plan = 'Gold' AND visits_this_month >= 15;",
     "template": [
       {
-        "text": "SELECT member_name, membership_plan, visits_this_month\nFROM GymMembers\nWHERE ",
+        "text": "SELECT ",
         "isBlank": false
       },
       {
@@ -6423,7 +6383,7 @@ window.QUESTS_SECTION_2 = [
         "placeholder": "[ ___ ]"
       },
       {
-        "text": " = 'Gold' ",
+        "text": ", membership_plan, visits_this_month\nFROM GymMembers\n",
         "isBlank": false
       },
       {
@@ -6433,7 +6393,7 @@ window.QUESTS_SECTION_2 = [
         "placeholder": "[ ___ ]"
       },
       {
-        "text": " ",
+        "text": " membership_plan = 'Gold' ",
         "isBlank": false
       },
       {
@@ -6455,39 +6415,39 @@ window.QUESTS_SECTION_2 = [
     ],
     "slots": {
       "slot1": {
-        "correct": "membership_plan",
+        "correct": "member_name",
         "options": [
-          "joined_date",
           "visits_this_month",
+          "joined_date",
           "membership_plan",
           "member_name"
         ]
       },
       "slot2": {
-        "correct": "AND",
+        "correct": "WHERE",
         "options": [
-          "PLUS",
-          "OR",
-          "AND",
-          "THEN"
+          "WHERE",
+          "FILTER",
+          "WHEN",
+          "HAVING"
         ]
       },
       "slot3": {
-        "correct": "visits_this_month",
+        "correct": "AND",
         "options": [
-          "joined_date",
-          "has_trainer",
-          "member_id",
-          "visits_this_month"
+          "THEN",
+          "PLUS",
+          "AND",
+          "OR"
         ]
       },
       "slot4": {
-        "correct": ">= 15;",
+        "correct": "visits_this_month >= 15;",
         "options": [
-          ">= 15;",
-          "!= 15;",
-          "= 15;",
-          "LIKE 15;"
+          "visits_this_month >!= 15;",
+          "visits_this_month >= 15;",
+          "visits_this_month <= 15;",
+          "status = 'ACTIVE';"
         ]
       }
     },
@@ -6515,7 +6475,7 @@ window.QUESTS_SECTION_2 = [
     "targetQuery": "SELECT movie_title, genre, star_rating\nFROM MovieReviews\nWHERE genre = 'Sci-Fi' AND star_rating >= 4.5;",
     "template": [
       {
-        "text": "SELECT movie_title, genre, star_rating\nFROM MovieReviews\nWHERE ",
+        "text": "SELECT ",
         "isBlank": false
       },
       {
@@ -6525,7 +6485,7 @@ window.QUESTS_SECTION_2 = [
         "placeholder": "[ ___ ]"
       },
       {
-        "text": " = 'Sci-Fi' ",
+        "text": ", genre, star_rating\nFROM MovieReviews\n",
         "isBlank": false
       },
       {
@@ -6535,7 +6495,7 @@ window.QUESTS_SECTION_2 = [
         "placeholder": "[ ___ ]"
       },
       {
-        "text": " ",
+        "text": " genre = 'Sci-Fi' ",
         "isBlank": false
       },
       {
@@ -6557,39 +6517,39 @@ window.QUESTS_SECTION_2 = [
     ],
     "slots": {
       "slot1": {
-        "correct": "genre",
+        "correct": "movie_title",
         "options": [
+          "review_count",
+          "director",
           "movie_title",
-          "review_id",
-          "release_year",
-          "genre"
+          "review_id"
         ]
       },
       "slot2": {
-        "correct": "AND",
+        "correct": "WHERE",
         "options": [
-          "THEN",
-          "AND",
-          "PLUS",
-          "OR"
+          "HAVING",
+          "WHEN",
+          "FILTER",
+          "WHERE"
         ]
       },
       "slot3": {
-        "correct": "star_rating",
+        "correct": "AND",
         "options": [
-          "director",
-          "release_year",
-          "review_id",
-          "star_rating"
+          "THEN",
+          "OR",
+          "PLUS",
+          "AND"
         ]
       },
       "slot4": {
-        "correct": ">= 4.5;",
+        "correct": "star_rating >= 4.5;",
         "options": [
-          "!= 4.5;",
-          "LIKE 4.5;",
-          "= 4.5;",
-          ">= 4.5;"
+          "star_rating >!= 4.5;",
+          "star_rating >= 4.5;",
+          "status = 'ACTIVE';",
+          "star_rating <= 4.5;"
         ]
       }
     },
@@ -6617,7 +6577,7 @@ window.QUESTS_SECTION_2 = [
     "targetQuery": "SELECT flight_id, airline, delay_minutes\nFROM FlightSchedule\nWHERE airline = 'United Airlines' AND delay_minutes = 0;",
     "template": [
       {
-        "text": "SELECT flight_id, airline, delay_minutes\nFROM FlightSchedule\nWHERE ",
+        "text": "SELECT ",
         "isBlank": false
       },
       {
@@ -6627,7 +6587,7 @@ window.QUESTS_SECTION_2 = [
         "placeholder": "[ ___ ]"
       },
       {
-        "text": " = 'United Airlines' ",
+        "text": ", airline, delay_minutes\nFROM FlightSchedule\n",
         "isBlank": false
       },
       {
@@ -6637,7 +6597,7 @@ window.QUESTS_SECTION_2 = [
         "placeholder": "[ ___ ]"
       },
       {
-        "text": " ",
+        "text": " airline = 'United Airlines' ",
         "isBlank": false
       },
       {
@@ -6659,15 +6619,24 @@ window.QUESTS_SECTION_2 = [
     ],
     "slots": {
       "slot1": {
-        "correct": "airline",
+        "correct": "flight_id",
         "options": [
           "airline",
-          "delay_minutes",
-          "dest_airport",
-          "destination_airport"
+          "flight_id",
+          "departure_time",
+          "ticket_price"
         ]
       },
       "slot2": {
+        "correct": "WHERE",
+        "options": [
+          "WHEN",
+          "FILTER",
+          "WHERE",
+          "HAVING"
+        ]
+      },
+      "slot3": {
         "correct": "AND",
         "options": [
           "PLUS",
@@ -6676,22 +6645,13 @@ window.QUESTS_SECTION_2 = [
           "AND"
         ]
       },
-      "slot3": {
-        "correct": "delay_minutes",
-        "options": [
-          "departure_time",
-          "destination_airport",
-          "delay_minutes",
-          "airline"
-        ]
-      },
       "slot4": {
-        "correct": "= 0;",
+        "correct": "delay_minutes = 0;",
         "options": [
-          "!= 0;",
-          "= 0;",
-          "LIKE 0;",
-          "NULL"
+          "status = 'ACTIVE';",
+          "NULL",
+          "delay_minutes != 0;",
+          "delay_minutes = 0;"
         ]
       }
     },
@@ -6719,7 +6679,7 @@ window.QUESTS_SECTION_2 = [
     "targetQuery": "SELECT pet_name, species, is_vaccinated\nFROM PetClinic\nWHERE species = 'Dog' AND is_vaccinated = TRUE;",
     "template": [
       {
-        "text": "SELECT pet_name, species, is_vaccinated\nFROM PetClinic\nWHERE ",
+        "text": "SELECT ",
         "isBlank": false
       },
       {
@@ -6729,7 +6689,7 @@ window.QUESTS_SECTION_2 = [
         "placeholder": "[ ___ ]"
       },
       {
-        "text": " = 'Dog' ",
+        "text": ", species, is_vaccinated\nFROM PetClinic\n",
         "isBlank": false
       },
       {
@@ -6739,7 +6699,7 @@ window.QUESTS_SECTION_2 = [
         "placeholder": "[ ___ ]"
       },
       {
-        "text": " ",
+        "text": " species = 'Dog' ",
         "isBlank": false
       },
       {
@@ -6761,39 +6721,39 @@ window.QUESTS_SECTION_2 = [
     ],
     "slots": {
       "slot1": {
-        "correct": "species",
+        "correct": "pet_name",
         "options": [
-          "species",
-          "age_years",
           "pet_name",
-          "pet_id"
+          "is_vaccinated",
+          "species",
+          "age_years"
         ]
       },
       "slot2": {
-        "correct": "AND",
+        "correct": "WHERE",
         "options": [
-          "AND",
-          "THEN",
-          "PLUS",
-          "OR"
+          "FILTER",
+          "HAVING",
+          "WHERE",
+          "WHEN"
         ]
       },
       "slot3": {
-        "correct": "is_vaccinated",
+        "correct": "AND",
         "options": [
-          "is_vaccinated",
-          "pet_id",
-          "pet_name",
-          "breed"
+          "PLUS",
+          "THEN",
+          "AND",
+          "OR"
         ]
       },
       "slot4": {
-        "correct": "= TRUE;",
+        "correct": "is_vaccinated = TRUE;",
         "options": [
-          "= TRUE;",
-          "LIKE TRUE;",
-          "!= TRUE;",
-          "NULL"
+          "is_vaccinated = TRUE;",
+          "NULL",
+          "status = 'ACTIVE';",
+          "is_vaccinated != TRUE;"
         ]
       }
     },
@@ -6821,7 +6781,7 @@ window.QUESTS_SECTION_2 = [
     "targetQuery": "SELECT full_name, city\nFROM Students\nWHERE city = 'Chicago' OR city = 'Austin';",
     "template": [
       {
-        "text": "SELECT full_name, city\nFROM Students\nWHERE ",
+        "text": "SELECT ",
         "isBlank": false
       },
       {
@@ -6831,7 +6791,7 @@ window.QUESTS_SECTION_2 = [
         "placeholder": "[ ___ ]"
       },
       {
-        "text": " = 'Chicago' ",
+        "text": ", city\nFROM Students\n",
         "isBlank": false
       },
       {
@@ -6841,7 +6801,7 @@ window.QUESTS_SECTION_2 = [
         "placeholder": "[ ___ ]"
       },
       {
-        "text": " ",
+        "text": " city = 'Chicago' ",
         "isBlank": false
       },
       {
@@ -6863,39 +6823,39 @@ window.QUESTS_SECTION_2 = [
     ],
     "slots": {
       "slot1": {
-        "correct": "city",
+        "correct": "full_name",
         "options": [
+          "gpa",
           "city",
           "full_name",
-          "age",
           "enrolled_year"
         ]
       },
       "slot2": {
-        "correct": "OR",
+        "correct": "WHERE",
         "options": [
-          "ELSE",
-          "OR",
-          "AND",
-          "XOR"
+          "FILTER",
+          "WHERE",
+          "WHEN",
+          "HAVING"
         ]
       },
       "slot3": {
-        "correct": "city",
+        "correct": "OR",
         "options": [
-          "city",
-          "enrolled_year",
-          "last_name",
-          "major"
+          "OR",
+          "XOR",
+          "AND",
+          "NOR"
         ]
       },
       "slot4": {
-        "correct": "= 'Austin';",
+        "correct": "city = 'Austin';",
         "options": [
-          "IS NOT NULL;",
-          "!= 'Austin';",
-          "NULL",
-          "= 'Austin';"
+          "city = 'Austin';",
+          "city != 'Austin';",
+          "status = 'ARCHIVED';",
+          "NULL"
         ]
       }
     },
@@ -6923,7 +6883,7 @@ window.QUESTS_SECTION_2 = [
     "targetQuery": "SELECT title, genre, price\nFROM Books\nWHERE (genre = 'Sci-Fi' OR genre = 'Mystery') AND price < 20.00;",
     "template": [
       {
-        "text": "SELECT title, genre, price\nFROM Books\nWHERE ",
+        "text": "SELECT ",
         "isBlank": false
       },
       {
@@ -6933,7 +6893,7 @@ window.QUESTS_SECTION_2 = [
         "placeholder": "[ ___ ]"
       },
       {
-        "text": " = 'Sci-Fi' OR genre = 'Mystery') ",
+        "text": ", genre, price\nFROM Books\n",
         "isBlank": false
       },
       {
@@ -6943,7 +6903,7 @@ window.QUESTS_SECTION_2 = [
         "placeholder": "[ ___ ]"
       },
       {
-        "text": " ",
+        "text": " (genre = 'Sci-Fi' OR genre = 'Mystery') ",
         "isBlank": false
       },
       {
@@ -6965,39 +6925,39 @@ window.QUESTS_SECTION_2 = [
     ],
     "slots": {
       "slot1": {
-        "correct": "(genre",
+        "correct": "title",
         "options": [
-          "title",
-          "(genre",
+          "author",
+          "stock_qty",
           "book_id",
-          "published_year"
+          "title"
         ]
       },
       "slot2": {
-        "correct": "AND",
+        "correct": "WHERE",
         "options": [
-          "THEN",
-          "OR",
-          "PLUS",
-          "AND"
+          "HAVING",
+          "WHEN",
+          "WHERE",
+          "FILTER"
         ]
       },
       "slot3": {
-        "correct": "price",
+        "correct": "AND",
         "options": [
-          "genre",
-          "title",
-          "author",
-          "price"
+          "THEN",
+          "AND",
+          "OR",
+          "PLUS"
         ]
       },
       "slot4": {
-        "correct": "< 20.00;",
+        "correct": "price < 20.00;",
         "options": [
-          "= 20.00;",
-          "LIKE 20.00;",
-          "!= 20.00;",
-          "< 20.00;"
+          "status = 'ACTIVE';",
+          "price < 20.00;",
+          "NULL",
+          "0"
         ]
       }
     },
@@ -7025,7 +6985,7 @@ window.QUESTS_SECTION_2 = [
     "targetQuery": "SELECT first_name, department, salary\nFROM Employees\nWHERE (department = 'Engineering' OR department = 'Marketing') AND salary > 70000.00;",
     "template": [
       {
-        "text": "SELECT first_name, department, salary\nFROM Employees\nWHERE ",
+        "text": "SELECT ",
         "isBlank": false
       },
       {
@@ -7035,7 +6995,7 @@ window.QUESTS_SECTION_2 = [
         "placeholder": "[ ___ ]"
       },
       {
-        "text": " = 'Engineering' OR department = 'Marketing') ",
+        "text": ", department, salary\nFROM Employees\n",
         "isBlank": false
       },
       {
@@ -7045,7 +7005,7 @@ window.QUESTS_SECTION_2 = [
         "placeholder": "[ ___ ]"
       },
       {
-        "text": " ",
+        "text": " (department = 'Engineering' OR department = 'Marketing') ",
         "isBlank": false
       },
       {
@@ -7067,39 +7027,39 @@ window.QUESTS_SECTION_2 = [
     ],
     "slots": {
       "slot1": {
-        "correct": "(department",
+        "correct": "first_name",
         "options": [
-          "salary",
-          "(department",
+          "hire_date",
+          "department",
           "first_name",
-          "department"
+          "last_name"
         ]
       },
       "slot2": {
-        "correct": "AND",
+        "correct": "WHERE",
         "options": [
-          "OR",
-          "AND",
-          "PLUS",
-          "THEN"
+          "WHEN",
+          "HAVING",
+          "WHERE",
+          "FILTER"
         ]
       },
       "slot3": {
-        "correct": "salary",
+        "correct": "AND",
         "options": [
-          "first_name",
-          "salary",
-          "last_name",
-          "department"
+          "OR",
+          "THEN",
+          "AND",
+          "PLUS"
         ]
       },
       "slot4": {
-        "correct": "> 70000.00;",
+        "correct": "salary > 70000.00;",
         "options": [
-          "= 70000.00;",
-          "!= 70000.00;",
-          "LIKE 70000.00;",
-          "> 70000.00;"
+          "status = 'ACTIVE';",
+          "salary < 70000.00;",
+          "NULL",
+          "salary > 70000.00;"
         ]
       }
     },
@@ -7127,7 +7087,7 @@ window.QUESTS_SECTION_2 = [
     "targetQuery": "SELECT item_name, category, unit_price\nFROM GroceryItems\nWHERE (category = 'Produce' OR category = 'Bakery') AND unit_price <= 5.00;",
     "template": [
       {
-        "text": "SELECT item_name, category, unit_price\nFROM GroceryItems\nWHERE ",
+        "text": "SELECT ",
         "isBlank": false
       },
       {
@@ -7137,7 +7097,7 @@ window.QUESTS_SECTION_2 = [
         "placeholder": "[ ___ ]"
       },
       {
-        "text": " = 'Produce' OR category = 'Bakery') ",
+        "text": ", category, unit_price\nFROM GroceryItems\n",
         "isBlank": false
       },
       {
@@ -7147,7 +7107,7 @@ window.QUESTS_SECTION_2 = [
         "placeholder": "[ ___ ]"
       },
       {
-        "text": " ",
+        "text": " (category = 'Produce' OR category = 'Bakery') ",
         "isBlank": false
       },
       {
@@ -7169,39 +7129,39 @@ window.QUESTS_SECTION_2 = [
     ],
     "slots": {
       "slot1": {
-        "correct": "(category",
+        "correct": "item_name",
         "options": [
-          "unit_price",
-          "category",
+          "calories",
           "is_organic",
-          "(category"
+          "item_name",
+          "category"
         ]
       },
       "slot2": {
-        "correct": "AND",
+        "correct": "WHERE",
         "options": [
-          "PLUS",
-          "OR",
-          "AND",
-          "THEN"
+          "WHEN",
+          "WHERE",
+          "FILTER",
+          "HAVING"
         ]
       },
       "slot3": {
-        "correct": "unit_price",
+        "correct": "AND",
         "options": [
-          "item_id",
-          "unit_price",
-          "item_name",
-          "is_organic"
+          "AND",
+          "OR",
+          "PLUS",
+          "THEN"
         ]
       },
       "slot4": {
-        "correct": "<= 5.00;",
+        "correct": "unit_price <= 5.00;",
         "options": [
-          "<= 5.00;",
-          "= 5.00;",
-          "LIKE 5.00;",
-          "!= 5.00;"
+          "status = 'ACTIVE';",
+          "unit_price <!= 5.00;",
+          "NULL",
+          "unit_price <= 5.00;"
         ]
       }
     },
@@ -7229,7 +7189,7 @@ window.QUESTS_SECTION_2 = [
     "targetQuery": "SELECT order_id, order_status, shipping_city\nFROM Orders\nWHERE (order_status = 'Processing' OR order_status = 'Pending') AND shipping_city = 'Denver';",
     "template": [
       {
-        "text": "SELECT order_id, order_status, shipping_city\nFROM Orders\nWHERE ",
+        "text": "SELECT ",
         "isBlank": false
       },
       {
@@ -7239,7 +7199,7 @@ window.QUESTS_SECTION_2 = [
         "placeholder": "[ ___ ]"
       },
       {
-        "text": " = 'Processing' OR order_status = 'Pending') ",
+        "text": ", order_status, shipping_city\nFROM Orders\n",
         "isBlank": false
       },
       {
@@ -7249,7 +7209,7 @@ window.QUESTS_SECTION_2 = [
         "placeholder": "[ ___ ]"
       },
       {
-        "text": " ",
+        "text": " (order_status = 'Processing' OR order_status = 'Pending') ",
         "isBlank": false
       },
       {
@@ -7271,39 +7231,39 @@ window.QUESTS_SECTION_2 = [
     ],
     "slots": {
       "slot1": {
-        "correct": "(order_status",
+        "correct": "order_id",
         "options": [
-          "(order_status",
-          "order_id",
-          "customer_name",
-          "product_name"
-        ]
-      },
-      "slot2": {
-        "correct": "AND",
-        "options": [
-          "PLUS",
-          "OR",
-          "THEN",
-          "AND"
-        ]
-      },
-      "slot3": {
-        "correct": "shipping_city",
-        "options": [
-          "order_id",
-          "shipping_city",
           "unit_price",
+          "order_status",
+          "order_id",
           "quantity"
         ]
       },
-      "slot4": {
-        "correct": "= 'Denver';",
+      "slot2": {
+        "correct": "WHERE",
         "options": [
-          "NULL",
-          "!= 'Denver';",
-          "LIKE 'Denver';",
-          "= 'Denver';"
+          "HAVING",
+          "FILTER",
+          "WHEN",
+          "WHERE"
+        ]
+      },
+      "slot3": {
+        "correct": "AND",
+        "options": [
+          "OR",
+          "THEN",
+          "AND",
+          "PLUS"
+        ]
+      },
+      "slot4": {
+        "correct": "shipping_city = 'Denver';",
+        "options": [
+          "shipping_city = 'Denver';",
+          "status = 'ACTIVE';",
+          "shipping_city != 'Denver';",
+          "NULL"
         ]
       }
     },
@@ -7327,11 +7287,11 @@ window.QUESTS_SECTION_2 = [
     "difficulty": "Hard",
     "task": "Find Rock or Synthwave tracks with over 50,000 plays.",
     "table": "MusicTracks",
-    "schemaSnippet": "MusicTracks(track_id INT, title VARCHAR, track_title VARCHAR, artist VARCHAR, genre VARCHAR, duration_seconds INT, play_count INT, release_year INT)",
+    "schemaSnippet": "MusicTracks(track_id INT, title VARCHAR, track_title VARCHAR, artist VARCHAR, artist_name VARCHAR, genre VARCHAR, duration_seconds INT, play_count INT, release_year INT)",
     "targetQuery": "SELECT track_title, genre, play_count\nFROM MusicTracks\nWHERE (genre = 'Rock' OR genre = 'Synthwave') AND play_count > 50000;",
     "template": [
       {
-        "text": "SELECT track_title, genre, play_count\nFROM MusicTracks\n",
+        "text": "SELECT ",
         "isBlank": false
       },
       {
@@ -7341,7 +7301,7 @@ window.QUESTS_SECTION_2 = [
         "placeholder": "[ ___ ]"
       },
       {
-        "text": " (genre = 'Rock' ",
+        "text": ", genre, play_count\nFROM ",
         "isBlank": false
       },
       {
@@ -7351,7 +7311,7 @@ window.QUESTS_SECTION_2 = [
         "placeholder": "[ ___ ]"
       },
       {
-        "text": " ",
+        "text": "\n",
         "isBlank": false
       },
       {
@@ -7361,7 +7321,7 @@ window.QUESTS_SECTION_2 = [
         "placeholder": "[ ___ ]"
       },
       {
-        "text": ") ",
+        "text": " (genre = 'Rock' OR genre = 'Synthwave') ",
         "isBlank": false
       },
       {
@@ -7383,48 +7343,48 @@ window.QUESTS_SECTION_2 = [
     ],
     "slots": {
       "slot1": {
-        "correct": "WHERE",
+        "correct": "track_title",
         "options": [
-          "FILTER",
-          "WHERE",
-          "HAVING",
-          "CASE"
+          "track_title",
+          "title",
+          "duration_seconds",
+          "artist_name"
         ]
       },
       "slot2": {
-        "correct": "OR",
+        "correct": "MusicTracks",
         "options": [
-          "AND",
-          "NOR",
-          "OR",
-          "XOR"
+          "Employees",
+          "FlightSchedule",
+          "MusicTracks",
+          "Books"
         ]
       },
       "slot3": {
-        "correct": "genre = 'Synthwave'",
+        "correct": "WHERE",
         "options": [
-          "genre = 'Synthwave'",
-          "genre = Synthwave",
-          "genre = 'Rock'",
-          "genre != 'Synthwave'"
+          "CASE",
+          "FILTER",
+          "HAVING",
+          "WHERE"
         ]
       },
       "slot4": {
         "correct": "AND",
         "options": [
           "PLUS",
-          "THEN",
           "AND",
+          "THEN",
           "OR"
         ]
       },
       "slot5": {
         "correct": "play_count > 50000;",
         "options": [
-          "status = 'ACTIVE';",
           "play_count > 50000;",
           "play_count < 50000;",
-          "NULL"
+          "NULL",
+          "status = 'ACTIVE';"
         ]
       }
     },
@@ -7452,7 +7412,7 @@ window.QUESTS_SECTION_2 = [
     "targetQuery": "SELECT member_name, membership_plan, has_trainer\nFROM GymMembers\nWHERE (membership_plan = 'Gold' OR membership_plan = 'Platinum') AND has_trainer = TRUE;",
     "template": [
       {
-        "text": "SELECT member_name, membership_plan, has_trainer\nFROM GymMembers\n",
+        "text": "SELECT ",
         "isBlank": false
       },
       {
@@ -7462,7 +7422,7 @@ window.QUESTS_SECTION_2 = [
         "placeholder": "[ ___ ]"
       },
       {
-        "text": " (membership_plan = 'Gold' ",
+        "text": ", membership_plan, has_trainer\nFROM ",
         "isBlank": false
       },
       {
@@ -7472,7 +7432,7 @@ window.QUESTS_SECTION_2 = [
         "placeholder": "[ ___ ]"
       },
       {
-        "text": " ",
+        "text": "\n",
         "isBlank": false
       },
       {
@@ -7482,7 +7442,7 @@ window.QUESTS_SECTION_2 = [
         "placeholder": "[ ___ ]"
       },
       {
-        "text": ") ",
+        "text": " (membership_plan = 'Gold' OR membership_plan = 'Platinum') ",
         "isBlank": false
       },
       {
@@ -7504,48 +7464,48 @@ window.QUESTS_SECTION_2 = [
     ],
     "slots": {
       "slot1": {
-        "correct": "WHERE",
+        "correct": "member_name",
         "options": [
-          "FILTER",
-          "WHERE",
-          "CASE",
-          "HAVING"
+          "has_trainer",
+          "monthly_fee",
+          "joined_date",
+          "member_name"
         ]
       },
       "slot2": {
-        "correct": "OR",
+        "correct": "GymMembers",
         "options": [
-          "AND",
-          "XOR",
-          "NOR",
-          "OR"
+          "GymMembers",
+          "PetClinic",
+          "GroceryItems",
+          "Orders"
         ]
       },
       "slot3": {
-        "correct": "membership_plan = 'Platinum'",
+        "correct": "WHERE",
         "options": [
-          "membership_plan = 'Gold'",
-          "membership_plan = 'Platinum'",
-          "membership_plan = Platinum",
-          "membership_plan != 'Platinum'"
+          "HAVING",
+          "CASE",
+          "WHERE",
+          "FILTER"
         ]
       },
       "slot4": {
         "correct": "AND",
         "options": [
-          "OR",
-          "THEN",
           "AND",
-          "PLUS"
+          "PLUS",
+          "THEN",
+          "OR"
         ]
       },
       "slot5": {
         "correct": "has_trainer = TRUE;",
         "options": [
-          "has_trainer != TRUE;",
-          "NULL",
           "status = 'ACTIVE';",
-          "has_trainer = TRUE;"
+          "NULL",
+          "has_trainer = TRUE;",
+          "has_trainer != TRUE;"
         ]
       }
     },
@@ -7573,7 +7533,7 @@ window.QUESTS_SECTION_2 = [
     "targetQuery": "SELECT movie_title, director, star_rating\nFROM MovieReviews\nWHERE (director = 'Greta Gerwig' OR director = 'Sofia Coppola') AND star_rating >= 4.0;",
     "template": [
       {
-        "text": "SELECT movie_title, director, star_rating\nFROM MovieReviews\n",
+        "text": "SELECT ",
         "isBlank": false
       },
       {
@@ -7583,7 +7543,7 @@ window.QUESTS_SECTION_2 = [
         "placeholder": "[ ___ ]"
       },
       {
-        "text": " (director = 'Greta Gerwig' ",
+        "text": ", director, star_rating\nFROM ",
         "isBlank": false
       },
       {
@@ -7593,7 +7553,7 @@ window.QUESTS_SECTION_2 = [
         "placeholder": "[ ___ ]"
       },
       {
-        "text": " ",
+        "text": "\n",
         "isBlank": false
       },
       {
@@ -7603,7 +7563,7 @@ window.QUESTS_SECTION_2 = [
         "placeholder": "[ ___ ]"
       },
       {
-        "text": ") ",
+        "text": " (director = 'Greta Gerwig' OR director = 'Sofia Coppola') ",
         "isBlank": false
       },
       {
@@ -7625,30 +7585,30 @@ window.QUESTS_SECTION_2 = [
     ],
     "slots": {
       "slot1": {
-        "correct": "WHERE",
+        "correct": "movie_title",
         "options": [
-          "WHERE",
-          "FILTER",
-          "CASE",
-          "HAVING"
+          "genre",
+          "director",
+          "review_count",
+          "movie_title"
         ]
       },
       "slot2": {
-        "correct": "OR",
+        "correct": "MovieReviews",
         "options": [
-          "NOR",
-          "AND",
-          "XOR",
-          "OR"
+          "MovieReviews",
+          "FlightSchedule",
+          "GymMembers",
+          "Books"
         ]
       },
       "slot3": {
-        "correct": "director = 'Sofia Coppola'",
+        "correct": "WHERE",
         "options": [
-          "director = Sofia Coppola",
-          "director = 'Greta Gerwig'",
-          "director != 'Sofia Coppola'",
-          "director = 'Sofia Coppola'"
+          "FILTER",
+          "WHERE",
+          "HAVING",
+          "CASE"
         ]
       },
       "slot4": {
@@ -7664,9 +7624,9 @@ window.QUESTS_SECTION_2 = [
         "correct": "star_rating >= 4.0;",
         "options": [
           "star_rating >= 4.0;",
+          "star_rating >!= 4.0;",
           "star_rating <= 4.0;",
-          "status = 'ACTIVE';",
-          "star_rating >!= 4.0;"
+          "status = 'ACTIVE';"
         ]
       }
     },
@@ -7694,7 +7654,7 @@ window.QUESTS_SECTION_2 = [
     "targetQuery": "SELECT flight_id, origin_airport, dest_airport\nFROM FlightSchedule\nWHERE (origin_airport = 'ORD' OR origin_airport = 'MDW') AND dest_airport = 'LAX';",
     "template": [
       {
-        "text": "SELECT flight_id, origin_airport, dest_airport\nFROM FlightSchedule\n",
+        "text": "SELECT ",
         "isBlank": false
       },
       {
@@ -7704,7 +7664,7 @@ window.QUESTS_SECTION_2 = [
         "placeholder": "[ ___ ]"
       },
       {
-        "text": " (origin_airport = 'ORD' ",
+        "text": ", origin_airport, dest_airport\nFROM ",
         "isBlank": false
       },
       {
@@ -7714,7 +7674,7 @@ window.QUESTS_SECTION_2 = [
         "placeholder": "[ ___ ]"
       },
       {
-        "text": " ",
+        "text": "\n",
         "isBlank": false
       },
       {
@@ -7724,7 +7684,7 @@ window.QUESTS_SECTION_2 = [
         "placeholder": "[ ___ ]"
       },
       {
-        "text": ") ",
+        "text": " (origin_airport = 'ORD' OR origin_airport = 'MDW') ",
         "isBlank": false
       },
       {
@@ -7746,48 +7706,48 @@ window.QUESTS_SECTION_2 = [
     ],
     "slots": {
       "slot1": {
-        "correct": "WHERE",
+        "correct": "flight_id",
         "options": [
-          "HAVING",
-          "FILTER",
-          "CASE",
-          "WHERE"
+          "flight_id",
+          "destination_airport",
+          "airline",
+          "delay_minutes"
         ]
       },
       "slot2": {
-        "correct": "OR",
+        "correct": "FlightSchedule",
         "options": [
-          "AND",
-          "OR",
-          "NOR",
-          "XOR"
+          "Employees",
+          "Orders",
+          "GymMembers",
+          "FlightSchedule"
         ]
       },
       "slot3": {
-        "correct": "origin_airport = 'MDW'",
+        "correct": "WHERE",
         "options": [
-          "origin_airport = MDW",
-          "origin_airport = 'MDW'",
-          "origin_airport != 'MDW'",
-          "origin_airport = 'ORD'"
+          "CASE",
+          "WHERE",
+          "FILTER",
+          "HAVING"
         ]
       },
       "slot4": {
         "correct": "AND",
         "options": [
-          "OR",
-          "THEN",
+          "PLUS",
           "AND",
-          "PLUS"
+          "THEN",
+          "OR"
         ]
       },
       "slot5": {
         "correct": "dest_airport = 'LAX';",
         "options": [
+          "status = 'ACTIVE';",
           "dest_airport = 'LAX';",
-          "NULL",
           "dest_airport != 'LAX';",
-          "status = 'ACTIVE';"
+          "NULL"
         ]
       }
     },
@@ -7815,7 +7775,7 @@ window.QUESTS_SECTION_2 = [
     "targetQuery": "SELECT pet_name, species, age_years\nFROM PetClinic\nWHERE (species = 'Dog' OR species = 'Cat') AND age_years < 2;",
     "template": [
       {
-        "text": "SELECT pet_name, species, age_years\nFROM PetClinic\n",
+        "text": "SELECT ",
         "isBlank": false
       },
       {
@@ -7825,7 +7785,7 @@ window.QUESTS_SECTION_2 = [
         "placeholder": "[ ___ ]"
       },
       {
-        "text": " (species = 'Dog' ",
+        "text": ", species, age_years\nFROM ",
         "isBlank": false
       },
       {
@@ -7835,7 +7795,7 @@ window.QUESTS_SECTION_2 = [
         "placeholder": "[ ___ ]"
       },
       {
-        "text": " ",
+        "text": "\n",
         "isBlank": false
       },
       {
@@ -7845,7 +7805,7 @@ window.QUESTS_SECTION_2 = [
         "placeholder": "[ ___ ]"
       },
       {
-        "text": ") ",
+        "text": " (species = 'Dog' OR species = 'Cat') ",
         "isBlank": false
       },
       {
@@ -7867,46 +7827,46 @@ window.QUESTS_SECTION_2 = [
     ],
     "slots": {
       "slot1": {
-        "correct": "WHERE",
+        "correct": "pet_name",
         "options": [
-          "WHERE",
-          "FILTER",
-          "CASE",
-          "HAVING"
+          "pet_id",
+          "breed",
+          "is_vaccinated",
+          "pet_name"
         ]
       },
       "slot2": {
-        "correct": "OR",
+        "correct": "PetClinic",
         "options": [
-          "NOR",
-          "AND",
-          "OR",
-          "XOR"
+          "Orders",
+          "PetClinic",
+          "Students",
+          "MovieReviews"
         ]
       },
       "slot3": {
-        "correct": "species = 'Cat'",
+        "correct": "WHERE",
         "options": [
-          "species = 'Cat'",
-          "species != 'Cat'",
-          "species = 'Dog'",
-          "species = Cat"
+          "FILTER",
+          "HAVING",
+          "WHERE",
+          "CASE"
         ]
       },
       "slot4": {
         "correct": "AND",
         "options": [
-          "THEN",
           "AND",
           "PLUS",
-          "OR"
+          "OR",
+          "THEN"
         ]
       },
       "slot5": {
         "correct": "age_years < 2;",
         "options": [
-          "NULL",
           "0",
+          "NULL",
           "status = 'ACTIVE';",
           "age_years < 2;"
         ]
@@ -7936,7 +7896,7 @@ window.QUESTS_SECTION_2 = [
     "targetQuery": "SELECT first_name, bonus\nFROM Employees\nWHERE bonus IS NULL;",
     "template": [
       {
-        "text": "SELECT first_name, bonus\n",
+        "text": "SELECT ",
         "isBlank": false
       },
       {
@@ -7946,7 +7906,7 @@ window.QUESTS_SECTION_2 = [
         "placeholder": "[ ___ ]"
       },
       {
-        "text": " Employees\n",
+        "text": ", bonus\nFROM ",
         "isBlank": false
       },
       {
@@ -7956,7 +7916,7 @@ window.QUESTS_SECTION_2 = [
         "placeholder": "[ ___ ]"
       },
       {
-        "text": " ",
+        "text": "\n",
         "isBlank": false
       },
       {
@@ -7978,39 +7938,39 @@ window.QUESTS_SECTION_2 = [
     ],
     "slots": {
       "slot1": {
-        "correct": "FROM",
+        "correct": "first_name",
         "options": [
-          "FROM",
-          "SOURCE",
-          "INTO",
-          "TABLE"
+          "salary",
+          "first_name",
+          "emp_id",
+          "hire_date"
         ]
       },
       "slot2": {
-        "correct": "WHERE",
+        "correct": "Employees",
         "options": [
-          "WHEN",
-          "ON",
-          "WHERE",
-          "HAVING"
+          "Employees",
+          "MovieReviews",
+          "Orders",
+          "PetClinic"
         ]
       },
       "slot3": {
-        "correct": "bonus",
+        "correct": "WHERE",
         "options": [
-          "bonus",
-          "salary",
-          "first_name",
-          "last_name"
+          "FILTER",
+          "WHERE",
+          "HAVING",
+          "WHEN"
         ]
       },
       "slot4": {
-        "correct": "IS NULL;",
+        "correct": "bonus IS NULL;",
         "options": [
-          "IS NULL;",
-          "IS NOT NULL;",
-          "= NULL;",
-          "!= NULL;"
+          "status = 'ACTIVE';",
+          "id > 0;",
+          "gpa >= 3.0;",
+          "bonus IS NULL;"
         ]
       }
     },
@@ -8038,7 +7998,7 @@ window.QUESTS_SECTION_2 = [
     "targetQuery": "SELECT first_name, bonus\nFROM Employees\nWHERE bonus IS NOT NULL;",
     "template": [
       {
-        "text": "SELECT first_name, bonus\n",
+        "text": "SELECT ",
         "isBlank": false
       },
       {
@@ -8048,7 +8008,7 @@ window.QUESTS_SECTION_2 = [
         "placeholder": "[ ___ ]"
       },
       {
-        "text": " Employees\n",
+        "text": ", bonus\nFROM ",
         "isBlank": false
       },
       {
@@ -8058,7 +8018,7 @@ window.QUESTS_SECTION_2 = [
         "placeholder": "[ ___ ]"
       },
       {
-        "text": " ",
+        "text": "\n",
         "isBlank": false
       },
       {
@@ -8080,39 +8040,39 @@ window.QUESTS_SECTION_2 = [
     ],
     "slots": {
       "slot1": {
-        "correct": "FROM",
+        "correct": "first_name",
         "options": [
-          "FROM",
-          "INTO",
-          "TABLE",
-          "SOURCE"
+          "salary",
+          "bonus",
+          "first_name",
+          "emp_id"
         ]
       },
       "slot2": {
-        "correct": "WHERE",
+        "correct": "Employees",
         "options": [
-          "HAVING",
-          "WHEN",
-          "ON",
-          "WHERE"
+          "Students",
+          "PetClinic",
+          "Books",
+          "Employees"
         ]
       },
       "slot3": {
-        "correct": "bonus",
+        "correct": "WHERE",
         "options": [
-          "salary",
-          "department",
-          "bonus",
-          "hire_date"
+          "HAVING",
+          "FILTER",
+          "WHEN",
+          "WHERE"
         ]
       },
       "slot4": {
-        "correct": "IS NOT NULL;",
+        "correct": "bonus IS NOT NULL;",
         "options": [
-          "IS NOT NULL;",
-          "!= NULL;",
-          "IS NULL;",
-          "= NULL;"
+          "gpa >= 3.0;",
+          "status = 'ACTIVE';",
+          "id > 0;",
+          "bonus IS NOT NULL;"
         ]
       }
     },
@@ -8140,7 +8100,7 @@ window.QUESTS_SECTION_2 = [
     "targetQuery": "SELECT title, stock_qty\nFROM Books\nWHERE stock_qty IS NOT NULL AND stock_qty > 0;",
     "template": [
       {
-        "text": "SELECT title, stock_qty\nFROM Books\n",
+        "text": "SELECT ",
         "isBlank": false
       },
       {
@@ -8150,7 +8110,7 @@ window.QUESTS_SECTION_2 = [
         "placeholder": "[ ___ ]"
       },
       {
-        "text": " ",
+        "text": ", stock_qty\nFROM ",
         "isBlank": false
       },
       {
@@ -8160,7 +8120,7 @@ window.QUESTS_SECTION_2 = [
         "placeholder": "[ ___ ]"
       },
       {
-        "text": " ",
+        "text": "\n",
         "isBlank": false
       },
       {
@@ -8180,7 +8140,7 @@ window.QUESTS_SECTION_2 = [
         "placeholder": "[ ___ ]"
       },
       {
-        "text": " ",
+        "text": " AND ",
         "isBlank": false
       },
       {
@@ -8192,48 +8152,48 @@ window.QUESTS_SECTION_2 = [
     ],
     "slots": {
       "slot1": {
-        "correct": "WHERE",
+        "correct": "title",
         "options": [
-          "FILTER",
-          "CASE",
-          "HAVING",
-          "WHERE"
+          "published_year",
+          "title",
+          "price",
+          "author"
         ]
       },
       "slot2": {
-        "correct": "stock_qty",
+        "correct": "Books",
         "options": [
-          "stock_qty",
-          "book_id",
-          "published_year",
-          "price"
+          "Students",
+          "MusicTracks",
+          "PetClinic",
+          "Books"
         ]
       },
       "slot3": {
-        "correct": "IS NOT NULL",
+        "correct": "WHERE",
         "options": [
-          "= NULL",
-          "!= NULL",
-          "IS NOT NULL",
-          "IS NULL"
+          "WHEN",
+          "WHERE",
+          "FILTER",
+          "HAVING"
         ]
       },
       "slot4": {
-        "correct": "AND",
+        "correct": "stock_qty IS NOT NULL",
         "options": [
-          "OR",
-          "ELSE",
-          "AND",
-          "THEN"
+          "NULL",
+          "id > 0",
+          "stock_qty IS NOT NULL",
+          "0"
         ]
       },
       "slot5": {
         "correct": "stock_qty > 0;",
         "options": [
-          "IS NULL;",
-          "> 100;",
-          "stock_qty > 0;",
-          "= 0;"
+          "NULL",
+          "1=1;",
+          "status = 'ACTIVE';",
+          "stock_qty > 0;"
         ]
       }
     },
@@ -8261,7 +8221,7 @@ window.QUESTS_SECTION_2 = [
     "targetQuery": "SELECT full_name, gpa\nFROM Students\nWHERE gpa IS NOT NULL;",
     "template": [
       {
-        "text": "SELECT full_name, gpa\n",
+        "text": "SELECT ",
         "isBlank": false
       },
       {
@@ -8271,7 +8231,7 @@ window.QUESTS_SECTION_2 = [
         "placeholder": "[ ___ ]"
       },
       {
-        "text": " Students\n",
+        "text": ", gpa\nFROM ",
         "isBlank": false
       },
       {
@@ -8281,7 +8241,7 @@ window.QUESTS_SECTION_2 = [
         "placeholder": "[ ___ ]"
       },
       {
-        "text": " ",
+        "text": "\n",
         "isBlank": false
       },
       {
@@ -8303,39 +8263,39 @@ window.QUESTS_SECTION_2 = [
     ],
     "slots": {
       "slot1": {
-        "correct": "FROM",
+        "correct": "full_name",
         "options": [
-          "FROM",
-          "TABLE",
-          "SOURCE",
-          "INTO"
+          "first_name",
+          "full_name",
+          "age",
+          "city"
         ]
       },
       "slot2": {
-        "correct": "WHERE",
+        "correct": "Students",
         "options": [
-          "HAVING",
-          "WHERE",
-          "ON",
-          "WHEN"
+          "Students",
+          "GroceryItems",
+          "Employees",
+          "MusicTracks"
         ]
       },
       "slot3": {
-        "correct": "gpa",
+        "correct": "WHERE",
         "options": [
-          "city",
-          "age",
-          "gpa",
-          "last_name"
+          "WHEN",
+          "HAVING",
+          "FILTER",
+          "WHERE"
         ]
       },
       "slot4": {
-        "correct": "IS NOT NULL;",
+        "correct": "gpa IS NOT NULL;",
         "options": [
-          "!= NULL;",
-          "IS NULL;",
-          "IS NOT NULL;",
-          "= NULL;"
+          "gpa >= 3.0;",
+          "id > 0;",
+          "status = 'ACTIVE';",
+          "gpa IS NOT NULL;"
         ]
       }
     },
@@ -8363,7 +8323,7 @@ window.QUESTS_SECTION_2 = [
     "targetQuery": "SELECT order_id, discount_pct\nFROM Orders\nWHERE discount_pct IS NULL OR discount_pct = 0.00;",
     "template": [
       {
-        "text": "SELECT order_id, discount_pct\nFROM Orders\n",
+        "text": "SELECT ",
         "isBlank": false
       },
       {
@@ -8373,7 +8333,7 @@ window.QUESTS_SECTION_2 = [
         "placeholder": "[ ___ ]"
       },
       {
-        "text": " ",
+        "text": ", discount_pct\nFROM ",
         "isBlank": false
       },
       {
@@ -8383,7 +8343,7 @@ window.QUESTS_SECTION_2 = [
         "placeholder": "[ ___ ]"
       },
       {
-        "text": " ",
+        "text": "\n",
         "isBlank": false
       },
       {
@@ -8403,7 +8363,7 @@ window.QUESTS_SECTION_2 = [
         "placeholder": "[ ___ ]"
       },
       {
-        "text": " ",
+        "text": " OR ",
         "isBlank": false
       },
       {
@@ -8415,48 +8375,48 @@ window.QUESTS_SECTION_2 = [
     ],
     "slots": {
       "slot1": {
-        "correct": "WHERE",
+        "correct": "order_id",
         "options": [
-          "HAVING",
-          "FILTER",
-          "CASE",
-          "WHERE"
+          "product_name",
+          "shipping_city",
+          "order_id",
+          "unit_price"
         ]
       },
       "slot2": {
-        "correct": "discount_pct",
+        "correct": "Orders",
         "options": [
-          "discount_pct",
-          "product_name",
-          "shipping_city",
-          "order_id"
+          "GroceryItems",
+          "Orders",
+          "Students",
+          "PetClinic"
         ]
       },
       "slot3": {
-        "correct": "IS NULL",
+        "correct": "WHERE",
         "options": [
-          "IS NOT NULL",
-          "= NULL",
-          "!= NULL",
-          "IS NULL"
+          "HAVING",
+          "WHEN",
+          "WHERE",
+          "FILTER"
         ]
       },
       "slot4": {
-        "correct": "OR",
+        "correct": "discount_pct IS NULL",
         "options": [
-          "THEN",
-          "AND",
-          "OR",
-          "ELSE"
+          "id > 0",
+          "NULL",
+          "discount_pct IS NULL",
+          "0"
         ]
       },
       "slot5": {
         "correct": "discount_pct = 0.00;",
         "options": [
           "discount_pct = 0.00;",
-          "= 0;",
-          "IS NULL;",
-          "> 100;"
+          "1=1;",
+          "status = 'ACTIVE';",
+          "discount_pct != 0.00;"
         ]
       }
     },
@@ -8484,7 +8444,7 @@ window.QUESTS_SECTION_2 = [
     "targetQuery": "SELECT pet_name, breed\nFROM PetClinic\nWHERE breed IS NOT NULL;",
     "template": [
       {
-        "text": "SELECT pet_name, breed\n",
+        "text": "SELECT ",
         "isBlank": false
       },
       {
@@ -8494,7 +8454,7 @@ window.QUESTS_SECTION_2 = [
         "placeholder": "[ ___ ]"
       },
       {
-        "text": " PetClinic\n",
+        "text": ", breed\nFROM ",
         "isBlank": false
       },
       {
@@ -8504,7 +8464,7 @@ window.QUESTS_SECTION_2 = [
         "placeholder": "[ ___ ]"
       },
       {
-        "text": " ",
+        "text": "\n",
         "isBlank": false
       },
       {
@@ -8526,39 +8486,39 @@ window.QUESTS_SECTION_2 = [
     ],
     "slots": {
       "slot1": {
-        "correct": "FROM",
+        "correct": "pet_name",
         "options": [
-          "SOURCE",
-          "TABLE",
-          "INTO",
-          "FROM"
+          "breed",
+          "pet_name",
+          "weight_kg",
+          "species"
         ]
       },
       "slot2": {
-        "correct": "WHERE",
+        "correct": "PetClinic",
         "options": [
-          "WHERE",
-          "WHEN",
-          "HAVING",
-          "ON"
+          "FlightSchedule",
+          "Orders",
+          "GymMembers",
+          "PetClinic"
         ]
       },
       "slot3": {
-        "correct": "breed",
+        "correct": "WHERE",
         "options": [
-          "breed",
-          "pet_id",
-          "is_vaccinated",
-          "pet_name"
+          "HAVING",
+          "WHEN",
+          "FILTER",
+          "WHERE"
         ]
       },
       "slot4": {
-        "correct": "IS NOT NULL;",
+        "correct": "breed IS NOT NULL;",
         "options": [
-          "IS NOT NULL;",
-          "IS NULL;",
-          "!= NULL;",
-          "= NULL;"
+          "breed IS NOT NULL;",
+          "status = 'ACTIVE';",
+          "gpa >= 3.0;",
+          "id > 0;"
         ]
       }
     },
@@ -8586,7 +8546,7 @@ window.QUESTS_SECTION_2 = [
     "targetQuery": "SELECT flight_id, delay_minutes\nFROM FlightSchedule\nWHERE delay_minutes IS NOT NULL AND delay_minutes = 0;",
     "template": [
       {
-        "text": "SELECT flight_id, delay_minutes\nFROM FlightSchedule\n",
+        "text": "SELECT ",
         "isBlank": false
       },
       {
@@ -8596,7 +8556,7 @@ window.QUESTS_SECTION_2 = [
         "placeholder": "[ ___ ]"
       },
       {
-        "text": " ",
+        "text": ", delay_minutes\nFROM ",
         "isBlank": false
       },
       {
@@ -8606,7 +8566,7 @@ window.QUESTS_SECTION_2 = [
         "placeholder": "[ ___ ]"
       },
       {
-        "text": " ",
+        "text": "\n",
         "isBlank": false
       },
       {
@@ -8626,7 +8586,7 @@ window.QUESTS_SECTION_2 = [
         "placeholder": "[ ___ ]"
       },
       {
-        "text": " ",
+        "text": " AND ",
         "isBlank": false
       },
       {
@@ -8638,48 +8598,48 @@ window.QUESTS_SECTION_2 = [
     ],
     "slots": {
       "slot1": {
-        "correct": "WHERE",
+        "correct": "flight_id",
         "options": [
-          "WHERE",
-          "HAVING",
-          "CASE",
-          "FILTER"
+          "airline",
+          "origin_airport",
+          "flight_id",
+          "dest_airport"
         ]
       },
       "slot2": {
-        "correct": "delay_minutes",
+        "correct": "FlightSchedule",
         "options": [
-          "delay_minutes",
-          "dest_airport",
-          "destination_airport",
-          "flight_id"
+          "MusicTracks",
+          "FlightSchedule",
+          "Books",
+          "PetClinic"
         ]
       },
       "slot3": {
-        "correct": "IS NOT NULL",
+        "correct": "WHERE",
         "options": [
-          "IS NOT NULL",
-          "!= NULL",
-          "IS NULL",
-          "= NULL"
+          "WHEN",
+          "FILTER",
+          "HAVING",
+          "WHERE"
         ]
       },
       "slot4": {
-        "correct": "AND",
+        "correct": "delay_minutes IS NOT NULL",
         "options": [
-          "OR",
-          "ELSE",
-          "THEN",
-          "AND"
+          "0",
+          "id > 0",
+          "delay_minutes IS NOT NULL",
+          "NULL"
         ]
       },
       "slot5": {
         "correct": "delay_minutes = 0;",
         "options": [
+          "status = 'ACTIVE';",
           "delay_minutes = 0;",
-          "> 100;",
-          "IS NULL;",
-          "= 0;"
+          "1=1;",
+          "delay_minutes != 0;"
         ]
       }
     },
@@ -8707,7 +8667,7 @@ window.QUESTS_SECTION_2 = [
     "targetQuery": "SELECT member_name, visits_this_month\nFROM GymMembers\nWHERE visits_this_month IS NOT NULL AND visits_this_month = 0;",
     "template": [
       {
-        "text": "SELECT member_name, visits_this_month\nFROM GymMembers\n",
+        "text": "SELECT ",
         "isBlank": false
       },
       {
@@ -8717,7 +8677,7 @@ window.QUESTS_SECTION_2 = [
         "placeholder": "[ ___ ]"
       },
       {
-        "text": " ",
+        "text": ", visits_this_month\nFROM ",
         "isBlank": false
       },
       {
@@ -8727,7 +8687,7 @@ window.QUESTS_SECTION_2 = [
         "placeholder": "[ ___ ]"
       },
       {
-        "text": " ",
+        "text": "\n",
         "isBlank": false
       },
       {
@@ -8747,7 +8707,7 @@ window.QUESTS_SECTION_2 = [
         "placeholder": "[ ___ ]"
       },
       {
-        "text": " ",
+        "text": " AND ",
         "isBlank": false
       },
       {
@@ -8759,47 +8719,47 @@ window.QUESTS_SECTION_2 = [
     ],
     "slots": {
       "slot1": {
-        "correct": "WHERE",
+        "correct": "member_name",
         "options": [
-          "WHERE",
-          "HAVING",
-          "CASE",
-          "FILTER"
+          "member_id",
+          "has_trainer",
+          "member_name",
+          "membership_plan"
         ]
       },
       "slot2": {
-        "correct": "visits_this_month",
+        "correct": "GymMembers",
         "options": [
-          "visits_this_month",
-          "joined_date",
-          "has_trainer",
-          "member_id"
+          "MovieReviews",
+          "GymMembers",
+          "FlightSchedule",
+          "PetClinic"
         ]
       },
       "slot3": {
-        "correct": "IS NOT NULL",
+        "correct": "WHERE",
         "options": [
-          "IS NOT NULL",
-          "!= NULL",
-          "IS NULL",
-          "= NULL"
+          "FILTER",
+          "HAVING",
+          "WHEN",
+          "WHERE"
         ]
       },
       "slot4": {
-        "correct": "AND",
+        "correct": "visits_this_month IS NOT NULL",
         "options": [
-          "ELSE",
-          "OR",
-          "AND",
-          "THEN"
+          "id > 0",
+          "visits_this_month IS NOT NULL",
+          "NULL",
+          "0"
         ]
       },
       "slot5": {
         "correct": "visits_this_month = 0;",
         "options": [
-          "IS NULL;",
-          "> 100;",
-          "= 0;",
+          "1=1;",
+          "status = 'ACTIVE';",
+          "visits_this_month != 0;",
           "visits_this_month = 0;"
         ]
       }
@@ -8828,7 +8788,7 @@ window.QUESTS_SECTION_2 = [
     "targetQuery": "SELECT item_name, unit_price\nFROM GroceryItems\nWHERE unit_price IS NOT NULL AND unit_price > 0.00;",
     "template": [
       {
-        "text": "SELECT item_name, unit_price\nFROM GroceryItems\n",
+        "text": "SELECT ",
         "isBlank": false
       },
       {
@@ -8838,7 +8798,7 @@ window.QUESTS_SECTION_2 = [
         "placeholder": "[ ___ ]"
       },
       {
-        "text": " ",
+        "text": ", unit_price\nFROM ",
         "isBlank": false
       },
       {
@@ -8848,7 +8808,7 @@ window.QUESTS_SECTION_2 = [
         "placeholder": "[ ___ ]"
       },
       {
-        "text": " ",
+        "text": "\n",
         "isBlank": false
       },
       {
@@ -8868,7 +8828,7 @@ window.QUESTS_SECTION_2 = [
         "placeholder": "[ ___ ]"
       },
       {
-        "text": " ",
+        "text": " AND ",
         "isBlank": false
       },
       {
@@ -8880,48 +8840,48 @@ window.QUESTS_SECTION_2 = [
     ],
     "slots": {
       "slot1": {
-        "correct": "WHERE",
+        "correct": "item_name",
         "options": [
-          "FILTER",
-          "WHERE",
-          "CASE",
-          "HAVING"
+          "category",
+          "item_id",
+          "item_name",
+          "unit_price"
         ]
       },
       "slot2": {
-        "correct": "unit_price",
+        "correct": "GroceryItems",
         "options": [
-          "item_id",
-          "unit_price",
-          "is_organic",
-          "item_name"
+          "GymMembers",
+          "GroceryItems",
+          "Orders",
+          "Books"
         ]
       },
       "slot3": {
-        "correct": "IS NOT NULL",
+        "correct": "WHERE",
         "options": [
-          "IS NULL",
-          "= NULL",
-          "IS NOT NULL",
-          "!= NULL"
+          "HAVING",
+          "WHEN",
+          "FILTER",
+          "WHERE"
         ]
       },
       "slot4": {
-        "correct": "AND",
+        "correct": "unit_price IS NOT NULL",
         "options": [
-          "THEN",
-          "ELSE",
-          "OR",
-          "AND"
+          "id > 0",
+          "NULL",
+          "0",
+          "unit_price IS NOT NULL"
         ]
       },
       "slot5": {
         "correct": "unit_price > 0.00;",
         "options": [
-          "= 0;",
-          "> 100;",
+          "1=1;",
           "unit_price > 0.00;",
-          "IS NULL;"
+          "status = 'ACTIVE';",
+          "NULL"
         ]
       }
     },
@@ -8945,11 +8905,11 @@ window.QUESTS_SECTION_2 = [
     "difficulty": "Hard",
     "task": "Select tracks with verified play metrics.",
     "table": "MusicTracks",
-    "schemaSnippet": "MusicTracks(track_id INT, title VARCHAR, track_title VARCHAR, artist VARCHAR, genre VARCHAR, duration_seconds INT, play_count INT, release_year INT)",
+    "schemaSnippet": "MusicTracks(track_id INT, title VARCHAR, track_title VARCHAR, artist VARCHAR, artist_name VARCHAR, genre VARCHAR, duration_seconds INT, play_count INT, release_year INT)",
     "targetQuery": "SELECT track_title, play_count\nFROM MusicTracks\nWHERE play_count IS NOT NULL AND play_count >= 0;",
     "template": [
       {
-        "text": "SELECT track_title, play_count\nFROM MusicTracks\n",
+        "text": "SELECT ",
         "isBlank": false
       },
       {
@@ -8959,7 +8919,7 @@ window.QUESTS_SECTION_2 = [
         "placeholder": "[ ___ ]"
       },
       {
-        "text": " ",
+        "text": ", play_count\nFROM ",
         "isBlank": false
       },
       {
@@ -8969,7 +8929,7 @@ window.QUESTS_SECTION_2 = [
         "placeholder": "[ ___ ]"
       },
       {
-        "text": " ",
+        "text": "\n",
         "isBlank": false
       },
       {
@@ -8989,7 +8949,7 @@ window.QUESTS_SECTION_2 = [
         "placeholder": "[ ___ ]"
       },
       {
-        "text": " ",
+        "text": " AND ",
         "isBlank": false
       },
       {
@@ -9001,48 +8961,48 @@ window.QUESTS_SECTION_2 = [
     ],
     "slots": {
       "slot1": {
-        "correct": "WHERE",
+        "correct": "track_title",
         "options": [
-          "FILTER",
-          "WHERE",
-          "CASE",
-          "HAVING"
+          "title",
+          "release_year",
+          "track_title",
+          "duration_seconds"
         ]
       },
       "slot2": {
-        "correct": "play_count",
+        "correct": "MusicTracks",
         "options": [
-          "release_year",
-          "artist",
-          "play_count",
-          "track_id"
+          "MusicTracks",
+          "Orders",
+          "MovieReviews",
+          "Books"
         ]
       },
       "slot3": {
-        "correct": "IS NOT NULL",
+        "correct": "WHERE",
         "options": [
-          "!= NULL",
-          "IS NOT NULL",
-          "= NULL",
-          "IS NULL"
+          "WHEN",
+          "FILTER",
+          "WHERE",
+          "HAVING"
         ]
       },
       "slot4": {
-        "correct": "AND",
+        "correct": "play_count IS NOT NULL",
         "options": [
-          "THEN",
-          "AND",
-          "OR",
-          "ELSE"
+          "NULL",
+          "id > 0",
+          "play_count IS NOT NULL",
+          "0"
         ]
       },
       "slot5": {
         "correct": "play_count >= 0;",
         "options": [
-          "= 0;",
-          "> 100;",
-          "IS NULL;",
-          "play_count >= 0;"
+          "1=1;",
+          "play_count >= 0;",
+          "play_count >!= 0;",
+          "status = 'ACTIVE';"
         ]
       }
     },
@@ -9070,7 +9030,7 @@ window.QUESTS_SECTION_2 = [
     "targetQuery": "SELECT first_name, bonus\nFROM Employees\nWHERE bonus IS NULL;",
     "template": [
       {
-        "text": "SELECT first_name, bonus\n",
+        "text": "SELECT ",
         "isBlank": false
       },
       {
@@ -9080,7 +9040,7 @@ window.QUESTS_SECTION_2 = [
         "placeholder": "[ ___ ]"
       },
       {
-        "text": " Employees\n",
+        "text": ", bonus\nFROM ",
         "isBlank": false
       },
       {
@@ -9090,7 +9050,7 @@ window.QUESTS_SECTION_2 = [
         "placeholder": "[ ___ ]"
       },
       {
-        "text": " ",
+        "text": "\n",
         "isBlank": false
       },
       {
@@ -9112,39 +9072,39 @@ window.QUESTS_SECTION_2 = [
     ],
     "slots": {
       "slot1": {
-        "correct": "FROM",
+        "correct": "first_name",
         "options": [
-          "INTO",
-          "FROM",
-          "TABLE",
-          "SOURCE"
+          "first_name",
+          "hire_date",
+          "bonus",
+          "last_name"
         ]
       },
       "slot2": {
-        "correct": "WHERE",
+        "correct": "Employees",
         "options": [
-          "WHEN",
-          "ON",
-          "WHERE",
-          "HAVING"
+          "Students",
+          "GroceryItems",
+          "Employees",
+          "MovieReviews"
         ]
       },
       "slot3": {
-        "correct": "bonus",
+        "correct": "WHERE",
         "options": [
-          "salary",
-          "emp_id",
-          "last_name",
-          "bonus"
+          "HAVING",
+          "WHEN",
+          "WHERE",
+          "FILTER"
         ]
       },
       "slot4": {
-        "correct": "IS NULL;",
+        "correct": "bonus IS NULL;",
         "options": [
-          "IS NOT NULL;",
-          "= NULL;",
-          "!= NULL;",
-          "IS NULL;"
+          "gpa >= 3.0;",
+          "bonus IS NULL;",
+          "status = 'ACTIVE';",
+          "id > 0;"
         ]
       }
     },
@@ -9172,7 +9132,7 @@ window.QUESTS_SECTION_2 = [
     "targetQuery": "SELECT full_name, city, gpa\nFROM Students\nWHERE (city = 'Chicago' OR city = 'Seattle') AND gpa > 3.50;",
     "template": [
       {
-        "text": "SELECT full_name, city, gpa\nFROM Students\n",
+        "text": "SELECT ",
         "isBlank": false
       },
       {
@@ -9182,7 +9142,7 @@ window.QUESTS_SECTION_2 = [
         "placeholder": "[ ___ ]"
       },
       {
-        "text": " (city = 'Chicago' ",
+        "text": ", city, gpa\nFROM ",
         "isBlank": false
       },
       {
@@ -9192,7 +9152,7 @@ window.QUESTS_SECTION_2 = [
         "placeholder": "[ ___ ]"
       },
       {
-        "text": " ",
+        "text": "\n",
         "isBlank": false
       },
       {
@@ -9202,7 +9162,7 @@ window.QUESTS_SECTION_2 = [
         "placeholder": "[ ___ ]"
       },
       {
-        "text": ") ",
+        "text": " (city = 'Chicago' OR city = 'Seattle') ",
         "isBlank": false
       },
       {
@@ -9224,30 +9184,30 @@ window.QUESTS_SECTION_2 = [
     ],
     "slots": {
       "slot1": {
-        "correct": "WHERE",
+        "correct": "full_name",
         "options": [
-          "WHERE",
-          "CASE",
-          "HAVING",
-          "FILTER"
+          "full_name",
+          "last_name",
+          "first_name",
+          "major"
         ]
       },
       "slot2": {
-        "correct": "OR",
+        "correct": "Students",
         "options": [
-          "AND",
-          "OR",
-          "XOR",
-          "NOR"
+          "Employees",
+          "Books",
+          "Students",
+          "PetClinic"
         ]
       },
       "slot3": {
-        "correct": "city = 'Seattle'",
+        "correct": "WHERE",
         "options": [
-          "city = 'Seattle'",
-          "city = Seattle",
-          "city != 'Seattle'",
-          "city = 'Chicago'"
+          "HAVING",
+          "WHERE",
+          "FILTER",
+          "CASE"
         ]
       },
       "slot4": {
@@ -9262,10 +9222,10 @@ window.QUESTS_SECTION_2 = [
       "slot5": {
         "correct": "gpa > 3.50;",
         "options": [
-          "gpa > 3.50;",
           "gpa < 3.50;",
-          "status = 'ACTIVE';",
-          "NULL"
+          "gpa > 3.50;",
+          "NULL",
+          "status = 'ACTIVE';"
         ]
       }
     },
@@ -9293,7 +9253,7 @@ window.QUESTS_SECTION_2 = [
     "targetQuery": "SELECT title, price\nFROM Books\nWHERE price BETWEEN 10.00 AND 25.00;",
     "template": [
       {
-        "text": "SELECT title, price\n",
+        "text": "SELECT ",
         "isBlank": false
       },
       {
@@ -9303,7 +9263,7 @@ window.QUESTS_SECTION_2 = [
         "placeholder": "[ ___ ]"
       },
       {
-        "text": " ",
+        "text": ", price\nFROM ",
         "isBlank": false
       },
       {
@@ -9331,43 +9291,62 @@ window.QUESTS_SECTION_2 = [
         "isBlank": true,
         "slotId": "slot4",
         "placeholder": "[ ___ ]"
+      },
+      {
+        "text": " AND ",
+        "isBlank": false
+      },
+      {
+        "text": "",
+        "isBlank": true,
+        "slotId": "slot5",
+        "placeholder": "[ ___ ]"
       }
     ],
     "slots": {
       "slot1": {
-        "correct": "FROM",
+        "correct": "title",
         "options": [
-          "TABLE",
-          "INTO",
-          "FROM",
-          "SOURCE"
+          "price",
+          "author",
+          "title",
+          "is_hardcover"
         ]
       },
       "slot2": {
         "correct": "Books",
         "options": [
-          "Books",
-          "GroceryItems",
           "PetClinic",
-          "FlightSchedule"
+          "GroceryItems",
+          "Employees",
+          "Books"
         ]
       },
       "slot3": {
         "correct": "WHERE",
         "options": [
-          "WHEN",
-          "WHERE",
           "HAVING",
+          "WHERE",
+          "WHEN",
           "FILTER"
         ]
       },
       "slot4": {
-        "correct": "price BETWEEN 10.00 AND 25.00;",
+        "correct": "price BETWEEN 10.00",
         "options": [
-          "price BETWEEN 10.00 AND 25.00;",
-          "price BETWEEN 10.00 OR 25.00;",
+          "price BETWEEN 10.00",
           "NULL",
-          "0"
+          "0",
+          "id > 0"
+        ]
+      },
+      "slot5": {
+        "correct": "25.00;",
+        "options": [
+          "status = 'ACTIVE';",
+          "NULL",
+          "25.00;",
+          "1=1;"
         ]
       }
     },
@@ -9395,7 +9374,7 @@ window.QUESTS_SECTION_2 = [
     "targetQuery": "SELECT item_name, category\nFROM GroceryItems\nWHERE category IN ('Produce', 'Bakery');",
     "template": [
       {
-        "text": "SELECT item_name, category\n",
+        "text": "SELECT ",
         "isBlank": false
       },
       {
@@ -9405,7 +9384,7 @@ window.QUESTS_SECTION_2 = [
         "placeholder": "[ ___ ]"
       },
       {
-        "text": " GroceryItems\n",
+        "text": ", category\nFROM ",
         "isBlank": false
       },
       {
@@ -9415,7 +9394,7 @@ window.QUESTS_SECTION_2 = [
         "placeholder": "[ ___ ]"
       },
       {
-        "text": " ",
+        "text": "\n",
         "isBlank": false
       },
       {
@@ -9433,43 +9412,62 @@ window.QUESTS_SECTION_2 = [
         "isBlank": true,
         "slotId": "slot4",
         "placeholder": "[ ___ ]"
+      },
+      {
+        "text": " ",
+        "isBlank": false
+      },
+      {
+        "text": "",
+        "isBlank": true,
+        "slotId": "slot5",
+        "placeholder": "[ ___ ]"
       }
     ],
     "slots": {
       "slot1": {
-        "correct": "FROM",
+        "correct": "item_name",
         "options": [
-          "FROM",
-          "INTO",
-          "SOURCE",
-          "TABLE"
+          "is_organic",
+          "item_id",
+          "item_name",
+          "category"
         ]
       },
       "slot2": {
-        "correct": "WHERE",
+        "correct": "GroceryItems",
         "options": [
-          "WHERE",
-          "HAVING",
-          "FILTER",
-          "WHEN"
+          "GroceryItems",
+          "Employees",
+          "MusicTracks",
+          "GymMembers"
         ]
       },
       "slot3": {
-        "correct": "(ategory IN ('Produce', 'Bakery')",
+        "correct": "WHERE",
         "options": [
-          "(1=1)",
-          "(ategory IN ('Produce', 'Bakery')",
-          "(id > 0)",
-          "(true)"
+          "HAVING",
+          "WHERE",
+          "WHEN",
+          "FILTER"
         ]
       },
       "slot4": {
-        "correct": "category IN ('Produce', 'Bakery');",
+        "correct": "category",
         "options": [
-          "category IN ('Produce', 'Bakery');",
-          "HAVING count(*) > 0;",
-          "ORDER BY id;",
-          "WHERE 1=1;"
+          "item_id",
+          "calories",
+          "category",
+          "unit_price"
+        ]
+      },
+      "slot5": {
+        "correct": "IN ('Produce', 'Bakery');",
+        "options": [
+          "IN ('Produce', 'Bakery');",
+          "= 'Active';",
+          "> 100;",
+          "IS NOT NULL;"
         ]
       }
     },
@@ -9497,7 +9495,7 @@ window.QUESTS_SECTION_2 = [
     "targetQuery": "SELECT order_id, shipping_city\nFROM Orders\nWHERE shipping_city = 'Denver';",
     "template": [
       {
-        "text": "SELECT order_id, shipping_city\n",
+        "text": "SELECT ",
         "isBlank": false
       },
       {
@@ -9507,7 +9505,7 @@ window.QUESTS_SECTION_2 = [
         "placeholder": "[ ___ ]"
       },
       {
-        "text": " ",
+        "text": ", shipping_city\nFROM ",
         "isBlank": false
       },
       {
@@ -9539,39 +9537,39 @@ window.QUESTS_SECTION_2 = [
     ],
     "slots": {
       "slot1": {
-        "correct": "FROM",
+        "correct": "order_id",
         "options": [
-          "SOURCE",
-          "FROM",
-          "TABLE",
-          "INTO"
+          "unit_price",
+          "quantity",
+          "order_id",
+          "product_name"
         ]
       },
       "slot2": {
         "correct": "Orders",
         "options": [
-          "Employees",
+          "Orders",
           "GymMembers",
-          "FlightSchedule",
-          "Orders"
+          "Students",
+          "Employees"
         ]
       },
       "slot3": {
         "correct": "WHERE",
         "options": [
           "FILTER",
-          "HAVING",
           "WHEN",
+          "HAVING",
           "WHERE"
         ]
       },
       "slot4": {
         "correct": "shipping_city = 'Denver';",
         "options": [
+          "id > 0;",
           "shipping_city = 'Denver';",
-          "shipping_city != 'Denver';",
-          "shipping_city = \"Denver\";",
-          "NULL"
+          "gpa >= 3.0;",
+          "status = 'ACTIVE';"
         ]
       }
     },
@@ -9595,11 +9593,11 @@ window.QUESTS_SECTION_2 = [
     "difficulty": "Hard",
     "task": "Fix assignment syntax: 'WHERE genre = Rock%' (pattern matching requires LIKE, not =).",
     "table": "MusicTracks",
-    "schemaSnippet": "MusicTracks(track_id INT, title VARCHAR, track_title VARCHAR, artist VARCHAR, genre VARCHAR, duration_seconds INT, play_count INT, release_year INT)",
+    "schemaSnippet": "MusicTracks(track_id INT, title VARCHAR, track_title VARCHAR, artist VARCHAR, artist_name VARCHAR, genre VARCHAR, duration_seconds INT, play_count INT, release_year INT)",
     "targetQuery": "SELECT track_title, genre\nFROM MusicTracks\nWHERE genre LIKE 'Rock%';",
     "template": [
       {
-        "text": "SELECT track_title, genre\n",
+        "text": "SELECT ",
         "isBlank": false
       },
       {
@@ -9609,7 +9607,7 @@ window.QUESTS_SECTION_2 = [
         "placeholder": "[ ___ ]"
       },
       {
-        "text": " ",
+        "text": ", genre\nFROM ",
         "isBlank": false
       },
       {
@@ -9641,39 +9639,39 @@ window.QUESTS_SECTION_2 = [
     ],
     "slots": {
       "slot1": {
-        "correct": "FROM",
+        "correct": "track_title",
         "options": [
-          "SOURCE",
-          "FROM",
-          "INTO",
-          "TABLE"
+          "track_title",
+          "release_year",
+          "track_id",
+          "genre"
         ]
       },
       "slot2": {
         "correct": "MusicTracks",
         "options": [
-          "Students",
           "GroceryItems",
+          "GymMembers",
           "MusicTracks",
-          "PetClinic"
+          "Orders"
         ]
       },
       "slot3": {
         "correct": "WHERE",
         "options": [
+          "WHEN",
           "HAVING",
-          "FILTER",
           "WHERE",
-          "WHEN"
+          "FILTER"
         ]
       },
       "slot4": {
         "correct": "genre LIKE 'Rock%';",
         "options": [
-          "genre LIKE 'Rock%';",
-          "genre LIKE \"Rock%\";",
-          "0",
-          "NULL"
+          "gpa >= 3.0;",
+          "id > 0;",
+          "status = 'ACTIVE';",
+          "genre LIKE 'Rock%';"
         ]
       }
     },
@@ -9701,7 +9699,7 @@ window.QUESTS_SECTION_2 = [
     "targetQuery": "SELECT member_name, monthly_fee\nFROM GymMembers\nWHERE monthly_fee >= 30.00 AND monthly_fee <= 70.00;",
     "template": [
       {
-        "text": "SELECT member_name, monthly_fee\n",
+        "text": "SELECT ",
         "isBlank": false
       },
       {
@@ -9711,7 +9709,7 @@ window.QUESTS_SECTION_2 = [
         "placeholder": "[ ___ ]"
       },
       {
-        "text": " ",
+        "text": ", monthly_fee\nFROM ",
         "isBlank": false
       },
       {
@@ -9739,43 +9737,62 @@ window.QUESTS_SECTION_2 = [
         "isBlank": true,
         "slotId": "slot4",
         "placeholder": "[ ___ ]"
+      },
+      {
+        "text": " AND ",
+        "isBlank": false
+      },
+      {
+        "text": "",
+        "isBlank": true,
+        "slotId": "slot5",
+        "placeholder": "[ ___ ]"
       }
     ],
     "slots": {
       "slot1": {
-        "correct": "FROM",
+        "correct": "member_name",
         "options": [
-          "FROM",
-          "TABLE",
-          "INTO",
-          "SOURCE"
+          "monthly_fee",
+          "member_id",
+          "member_name",
+          "membership_plan"
         ]
       },
       "slot2": {
         "correct": "GymMembers",
         "options": [
-          "GymMembers",
-          "Students",
+          "Employees",
           "PetClinic",
-          "FlightSchedule"
+          "GymMembers",
+          "GroceryItems"
         ]
       },
       "slot3": {
         "correct": "WHERE",
         "options": [
-          "FILTER",
+          "WHEN",
           "WHERE",
           "HAVING",
-          "WHEN"
+          "FILTER"
         ]
       },
       "slot4": {
-        "correct": "monthly_fee >= 30.00 AND monthly_fee <= 70.00;",
+        "correct": "monthly_fee >= 30.00",
         "options": [
-          "monthly_fee >= 30.00 OR monthly_fee <= 70.00;",
-          "NULL",
-          "monthly_fee >!= 30.00 AND monthly_fee <!= 70.00;",
-          "monthly_fee >= 30.00 AND monthly_fee <= 70.00;"
+          "monthly_fee <= 30.00",
+          "monthly_fee >= 30.00",
+          "id > 0",
+          "monthly_fee >!= 30.00"
+        ]
+      },
+      "slot5": {
+        "correct": "monthly_fee <= 70.00;",
+        "options": [
+          "monthly_fee <!= 70.00;",
+          "monthly_fee <= 70.00;",
+          "status = 'ACTIVE';",
+          "1=1;"
         ]
       }
     },
@@ -9803,7 +9820,7 @@ window.QUESTS_SECTION_2 = [
     "targetQuery": "SELECT movie_title, star_rating\nFROM MovieReviews\nWHERE star_rating > 4.0;",
     "template": [
       {
-        "text": "SELECT movie_title, star_rating\n",
+        "text": "SELECT ",
         "isBlank": false
       },
       {
@@ -9813,7 +9830,7 @@ window.QUESTS_SECTION_2 = [
         "placeholder": "[ ___ ]"
       },
       {
-        "text": " ",
+        "text": ", star_rating\nFROM ",
         "isBlank": false
       },
       {
@@ -9845,39 +9862,39 @@ window.QUESTS_SECTION_2 = [
     ],
     "slots": {
       "slot1": {
-        "correct": "FROM",
+        "correct": "movie_title",
         "options": [
-          "INTO",
-          "FROM",
-          "SOURCE",
-          "TABLE"
+          "review_count",
+          "director",
+          "genre",
+          "movie_title"
         ]
       },
       "slot2": {
         "correct": "MovieReviews",
         "options": [
+          "MusicTracks",
           "GroceryItems",
-          "MovieReviews",
-          "Books",
-          "Students"
+          "GymMembers",
+          "MovieReviews"
         ]
       },
       "slot3": {
         "correct": "WHERE",
         "options": [
           "WHEN",
-          "FILTER",
+          "HAVING",
           "WHERE",
-          "HAVING"
+          "FILTER"
         ]
       },
       "slot4": {
         "correct": "star_rating > 4.0;",
         "options": [
-          "NULL",
           "star_rating > 4.0;",
-          "'Default'",
-          "0"
+          "status = 'ACTIVE';",
+          "id > 0;",
+          "gpa >= 3.0;"
         ]
       }
     },
@@ -9905,7 +9922,7 @@ window.QUESTS_SECTION_2 = [
     "targetQuery": "SELECT flight_id, delay_minutes\nFROM FlightSchedule\nWHERE delay_minutes != 0;",
     "template": [
       {
-        "text": "SELECT flight_id, delay_minutes\n",
+        "text": "SELECT ",
         "isBlank": false
       },
       {
@@ -9915,7 +9932,7 @@ window.QUESTS_SECTION_2 = [
         "placeholder": "[ ___ ]"
       },
       {
-        "text": " ",
+        "text": ", delay_minutes\nFROM ",
         "isBlank": false
       },
       {
@@ -9947,29 +9964,29 @@ window.QUESTS_SECTION_2 = [
     ],
     "slots": {
       "slot1": {
-        "correct": "FROM",
+        "correct": "flight_id",
         "options": [
-          "SOURCE",
-          "FROM",
-          "TABLE",
-          "INTO"
+          "delay_minutes",
+          "departure_time",
+          "destination_airport",
+          "flight_id"
         ]
       },
       "slot2": {
         "correct": "FlightSchedule",
         "options": [
-          "MusicTracks",
-          "Books",
-          "Orders",
-          "FlightSchedule"
+          "Students",
+          "FlightSchedule",
+          "Employees",
+          "Books"
         ]
       },
       "slot3": {
         "correct": "WHERE",
         "options": [
-          "FILTER",
-          "HAVING",
           "WHEN",
+          "HAVING",
+          "FILTER",
           "WHERE"
         ]
       },
@@ -9977,9 +9994,9 @@ window.QUESTS_SECTION_2 = [
         "correct": "delay_minutes != 0;",
         "options": [
           "delay_minutes != 0;",
-          "NULL",
-          "0",
-          "delay_minutes !!= 0;"
+          "id > 0;",
+          "status = 'ACTIVE';",
+          "gpa >= 3.0;"
         ]
       }
     },
@@ -10007,7 +10024,7 @@ window.QUESTS_SECTION_2 = [
     "targetQuery": "SELECT pet_name, species\nFROM PetClinic\nWHERE species = 'Cat' OR species = 'Dog';",
     "template": [
       {
-        "text": "SELECT pet_name, species\n",
+        "text": "SELECT ",
         "isBlank": false
       },
       {
@@ -10017,7 +10034,7 @@ window.QUESTS_SECTION_2 = [
         "placeholder": "[ ___ ]"
       },
       {
-        "text": " ",
+        "text": ", species\nFROM ",
         "isBlank": false
       },
       {
@@ -10045,43 +10062,62 @@ window.QUESTS_SECTION_2 = [
         "isBlank": true,
         "slotId": "slot4",
         "placeholder": "[ ___ ]"
+      },
+      {
+        "text": " OR ",
+        "isBlank": false
+      },
+      {
+        "text": "",
+        "isBlank": true,
+        "slotId": "slot5",
+        "placeholder": "[ ___ ]"
       }
     ],
     "slots": {
       "slot1": {
-        "correct": "FROM",
+        "correct": "pet_name",
         "options": [
-          "FROM",
-          "SOURCE",
-          "INTO",
-          "TABLE"
+          "species",
+          "is_vaccinated",
+          "pet_id",
+          "pet_name"
         ]
       },
       "slot2": {
         "correct": "PetClinic",
         "options": [
-          "PetClinic",
+          "Orders",
+          "Students",
           "MovieReviews",
-          "GymMembers",
-          "Orders"
+          "PetClinic"
         ]
       },
       "slot3": {
         "correct": "WHERE",
         "options": [
           "HAVING",
+          "FILTER",
           "WHEN",
-          "WHERE",
-          "FILTER"
+          "WHERE"
         ]
       },
       "slot4": {
-        "correct": "species = 'Cat' OR species = 'Dog';",
+        "correct": "species = 'Cat'",
         "options": [
-          "species = 'Cat' OR species = 'Dog';",
-          "species = \"Cat\" OR species = \"Dog\";",
+          "id > 0",
+          "species != 'Cat'",
           "NULL",
-          "species != 'Cat' OR species != 'Dog';"
+          "species = 'Cat'"
+        ]
+      },
+      "slot5": {
+        "correct": "species = 'Dog';",
+        "options": [
+          "status = 'ACTIVE';",
+          "species != 'Dog';",
+          "1=1;",
+          "species = 'Dog';"
         ]
       }
     },

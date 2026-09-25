@@ -30,8 +30,8 @@ const SCHEMAS = {
     snippet: 'Orders(order_id INT, customer_name VARCHAR, product_name VARCHAR, quantity INT, unit_price DECIMAL, discount_pct DECIMAL, order_status VARCHAR, shipping_city VARCHAR)'
   },
   MusicTracks: {
-    cols: ['track_id', 'title', 'track_title', 'artist', 'genre', 'duration_seconds', 'play_count', 'release_year'],
-    snippet: 'MusicTracks(track_id INT, title VARCHAR, track_title VARCHAR, artist VARCHAR, genre VARCHAR, duration_seconds INT, play_count INT, release_year INT)'
+    cols: ['track_id', 'title', 'track_title', 'artist', 'artist_name', 'genre', 'duration_seconds', 'play_count', 'release_year'],
+    snippet: 'MusicTracks(track_id INT, title VARCHAR, track_title VARCHAR, artist VARCHAR, artist_name VARCHAR, genre VARCHAR, duration_seconds INT, play_count INT, release_year INT)'
   },
   GymMembers: {
     cols: ['member_id', 'member_name', 'membership_plan', 'monthly_fee', 'joined_date', 'visits_this_month', 'has_trainer'],
@@ -92,22 +92,22 @@ function ensureFourUniqueOptions(correctVal, rawOptions, fallbackGenerator) {
 
 function getColumnDistractors(tableName, correctCol) {
   const cols = (SCHEMAS[tableName] && SCHEMAS[tableName].cols) || SCHEMAS.Students.cols;
-  const filtered = cols.filter(c => c !== correctCol);
+  const filtered = cols.filter(c => c.toLowerCase() !== correctCol.toLowerCase());
   const shuffled = shuffle(filtered);
   return ensureFourUniqueOptions(correctCol, [correctCol, shuffled[0], shuffled[1], shuffled[2]], () => ['id', 'status', 'name']);
 }
 
 function getTableDistractors(correctTable) {
   const cleanTable = correctTable.replace(/;$/, '');
-  const filtered = ALL_TABLES.filter(t => t !== cleanTable);
+  const filtered = ALL_TABLES.filter(t => t.toLowerCase() !== cleanTable.toLowerCase());
   const shuffled = shuffle(filtered);
   const hasSemi = correctTable.endsWith(';');
   const appendSemi = (s) => hasSemi ? s + ';' : s;
   return ensureFourUniqueOptions(correctTable, [
     correctTable,
-    appendSemi(shuffled[0] || 'Metadata'),
-    appendSemi(shuffled[1] || 'AuditLog'),
-    appendSemi(shuffled[2] || 'Archive')
+    appendSemi(shuffled[0] || 'Books'),
+    appendSemi(shuffled[1] || 'Employees'),
+    appendSemi(shuffled[2] || 'Orders')
   ], () => [appendSemi('Catalog'), appendSemi('History')]);
 }
 
@@ -118,20 +118,11 @@ function getOperatorDistractors(op) {
   return ensureFourUniqueOptions(op, [op, shuffled[0], shuffled[1], shuffled[2]]);
 }
 
-function getLiteralDistractors(literal, typeHint) {
+function getLiteralDistractors(literal) {
   let raw = [literal];
   if (literal.startsWith("'") && literal.endsWith("'")) {
     const inner = literal.slice(1, -1);
-    if (inner.includes('%') || inner.includes('_')) {
-      raw.push(
-        `'${inner.replace(/[%_]/g, '')}'`,
-        `'%${inner}%'`,
-        `'${inner}%'`,
-        `'%${inner}'`
-      );
-    } else {
-      raw.push(`'${inner}s'`, `'Non-${inner}'`, `'Pre-${inner}'`, `'All'`);
-    }
+    raw.push(`'${inner}s'`, `'Non-${inner}'`, `'Pre-${inner}'`, `'All'`);
   } else if (!isNaN(Number(literal))) {
     const num = Number(literal);
     const isDec = literal.includes('.');
@@ -193,44 +184,72 @@ const section2Quests = drills.map((d, idx) => {
   const whereClauseWithSemi = q.slice(whereIdx + 5).trim();
   const whereClause = whereClauseWithSemi.replace(/;$/, '').trim();
 
+  // Parse first projected column for Foundations mixing
+  const colList = selectCols.split(',').map(s => s.trim());
+  const firstProjCol = colList[0];
+  const restProjCols = colList.slice(1).join(', ');
+
   // ---------------------------------------------------------------------------
   // TIER 1: Levels 01–20 (3 Blanks)
+  // Progressive Mixing: Foundations (table / projected col) + WHERE + Condition
   // ---------------------------------------------------------------------------
   if (levelNum <= 20) {
-    // Pattern: SELECT col1, col2 \n FROM table \n [WHERE] [col] [op val;]
-    // Or: [SELECT] col1, col2 \n [FROM] table \n [WHERE] predicate;
     const tokens = whereClause.split(/\s+/);
     const filterCol = tokens[0];
     const op = tokens[1];
     const valWithSemi = tokens.slice(2).join(' ') + ';';
 
-    template = [
-      { text: `SELECT ${selectCols}\nFROM ${fromTable}\n`, isBlank: false },
-      { text: '', isBlank: true, slotId: 'slot1', placeholder: '[ ___ ]' },
-      { text: ' ', isBlank: false },
-      { text: '', isBlank: true, slotId: 'slot2', placeholder: '[ ___ ]' },
-      { text: ' ', isBlank: false },
-      { text: '', isBlank: true, slotId: 'slot3', placeholder: '[ ___ ]' }
-    ];
+    if (levelNum % 2 !== 0) {
+      // Odd levels: Blank FROM table (Foundations) + WHERE + filterCol op val; (WHERE)
+      template = [
+        { text: `SELECT ${selectCols}\nFROM `, isBlank: false },
+        { text: '', isBlank: true, slotId: 'slot1', placeholder: '[ ___ ]' },
+        { text: '\n', isBlank: false },
+        { text: '', isBlank: true, slotId: 'slot2', placeholder: '[ ___ ]' },
+        { text: ' ', isBlank: false },
+        { text: '', isBlank: true, slotId: 'slot3', placeholder: '[ ___ ]' }
+      ];
 
-    slots = {
-      slot1: { correct: 'WHERE', options: shuffle(['WHERE', 'HAVING', 'FILTER', 'WHEN']) },
-      slot2: { correct: filterCol, options: getColumnDistractors(tblName, filterCol) },
-      slot3: { correct: `${op} ${valWithSemi}`, options: shuffle([
-        `${op} ${valWithSemi}`,
-        `= ${valWithSemi}`,
-        `!= ${valWithSemi}`,
-        `LIKE ${valWithSemi}`
-      ]) }
-    };
+      slots = {
+        slot1: { correct: fromTable, options: getTableDistractors(fromTable) },
+        slot2: { correct: 'WHERE', options: shuffle(['WHERE', 'HAVING', 'FILTER', 'WHEN']) },
+        slot3: { correct: `${filterCol} ${op} ${valWithSemi}`, options: shuffle([
+          `${filterCol} ${op} ${valWithSemi}`,
+          `${filterCol} = ${valWithSemi}`,
+          `${filterCol} != ${valWithSemi}`,
+          `${filterCol} LIKE ${valWithSemi}`
+        ]) }
+      };
+    } else {
+      // Even levels: Blank SELECT projected col (Foundations) + WHERE filterCol + op val;
+      const selectRestStr = restProjCols ? `, ${restProjCols}` : '';
+      template = [
+        { text: `SELECT `, isBlank: false },
+        { text: '', isBlank: true, slotId: 'slot1', placeholder: '[ ___ ]' },
+        { text: `${selectRestStr}\nFROM ${fromTable}\nWHERE `, isBlank: false },
+        { text: '', isBlank: true, slotId: 'slot2', placeholder: '[ ___ ]' },
+        { text: ' ', isBlank: false },
+        { text: '', isBlank: true, slotId: 'slot3', placeholder: '[ ___ ]' }
+      ];
+
+      slots = {
+        slot1: { correct: firstProjCol, options: getColumnDistractors(tblName, firstProjCol) },
+        slot2: { correct: filterCol, options: getColumnDistractors(tblName, filterCol) },
+        slot3: { correct: `${op} ${valWithSemi}`, options: shuffle([
+          `${op} ${valWithSemi}`,
+          `= ${valWithSemi}`,
+          `!= ${valWithSemi}`,
+          `LIKE ${valWithSemi}`
+        ]) }
+      };
+    }
   }
   // ---------------------------------------------------------------------------
-  // TIER 2: Levels 21–45 (3 to 4 Blanks)
+  // TIER 2: Levels 21–45 (4 Blanks)
+  // Progressive Mixing: Foundations (FROM table) + WHERE + filterCol + Predicate Syntax
   // ---------------------------------------------------------------------------
   else if (levelNum <= 45) {
     if (whereClause.includes('BETWEEN')) {
-      // col BETWEEN v1 AND v2
-      // 4 blanks: [WHERE] [col] [BETWEEN] v1 [AND] v2;
       const bParts = whereClause.split(/\s+BETWEEN\s+/i);
       const filterCol = bParts[0].trim();
       const rangeParts = bParts[1].split(/\s+AND\s+/i);
@@ -238,35 +257,9 @@ const section2Quests = drills.map((d, idx) => {
       const v2WithSemi = rangeParts[1].trim() + ';';
 
       template = [
-        { text: `SELECT ${selectCols}\nFROM ${fromTable}\n`, isBlank: false },
+        { text: `SELECT ${selectCols}\nFROM `, isBlank: false },
         { text: '', isBlank: true, slotId: 'slot1', placeholder: '[ ___ ]' },
-        { text: ' ', isBlank: false },
-        { text: '', isBlank: true, slotId: 'slot2', placeholder: '[ ___ ]' },
-        { text: ' ', isBlank: false },
-        { text: '', isBlank: true, slotId: 'slot3', placeholder: '[ ___ ]' },
-        { text: ` ${v1} `, isBlank: false },
-        { text: '', isBlank: true, slotId: 'slot4', placeholder: '[ ___ ]' },
-        { text: ` ${v2WithSemi}`, isBlank: false }
-      ];
-
-      slots = {
-        slot1: { correct: 'WHERE', options: shuffle(['WHERE', 'HAVING', 'ON', 'WHEN']) },
-        slot2: { correct: filterCol, options: getColumnDistractors(tblName, filterCol) },
-        slot3: { correct: 'BETWEEN', options: shuffle(['BETWEEN', 'IN', 'WITHIN', 'RANGE']) },
-        slot4: { correct: 'AND', options: shuffle(['AND', 'TO', 'THROUGH', 'OR']) }
-      };
-    } else if (whereClause.includes(' IN ') || whereClause.includes(' NOT IN ')) {
-      // col IN (...) or col NOT IN (...)
-      const isIn = whereClause.includes(' IN ');
-      const inKeyword = isIn ? 'IN' : 'NOT IN';
-      const parts = whereClause.split(new RegExp(`\\s+${inKeyword}\\s+`, 'i'));
-      const filterCol = parts[0].trim();
-      const listVal = parts[1].trim() + ';';
-
-      template = [
-        { text: `SELECT ${selectCols}\nFROM ${fromTable}\n`, isBlank: false },
-        { text: '', isBlank: true, slotId: 'slot1', placeholder: '[ ___ ]' },
-        { text: ' ', isBlank: false },
+        { text: '\n', isBlank: false },
         { text: '', isBlank: true, slotId: 'slot2', placeholder: '[ ___ ]' },
         { text: ' ', isBlank: false },
         { text: '', isBlank: true, slotId: 'slot3', placeholder: '[ ___ ]' },
@@ -275,21 +268,78 @@ const section2Quests = drills.map((d, idx) => {
       ];
 
       slots = {
-        slot1: { correct: 'WHERE', options: shuffle(['WHERE', 'HAVING', 'FILTER', 'CASE']) },
-        slot2: { correct: filterCol, options: getColumnDistractors(tblName, filterCol) },
-        slot3: { correct: inKeyword, options: shuffle(['IN', 'NOT IN', 'CONTAINS', '= ANY']) },
-        slot4: { correct: listVal, options: getLiteralDistractors(listVal) }
+        slot1: { correct: fromTable, options: getTableDistractors(fromTable) },
+        slot2: { correct: 'WHERE', options: shuffle(['WHERE', 'HAVING', 'FILTER', 'WHEN']) },
+        slot3: { correct: filterCol, options: getColumnDistractors(tblName, filterCol) },
+        slot4: { correct: `BETWEEN ${v1} AND ${v2WithSemi}`, options: shuffle([
+          `BETWEEN ${v1} AND ${v2WithSemi}`,
+          `IN (${v1}, ${v2WithSemi.replace(/;$/, '')});`,
+          `= ${v1};`,
+          `>= ${v1};`
+        ]) }
+      };
+    } else if (whereClause.includes('IN')) {
+      const inParts = whereClause.split(/\s+IN\s+/i);
+      const filterCol = inParts[0].trim();
+      const listWithSemi = inParts[1].trim() + ';';
+
+      template = [
+        { text: `SELECT ${selectCols}\nFROM `, isBlank: false },
+        { text: '', isBlank: true, slotId: 'slot1', placeholder: '[ ___ ]' },
+        { text: '\n', isBlank: false },
+        { text: '', isBlank: true, slotId: 'slot2', placeholder: '[ ___ ]' },
+        { text: ' ', isBlank: false },
+        { text: '', isBlank: true, slotId: 'slot3', placeholder: '[ ___ ]' },
+        { text: ' ', isBlank: false },
+        { text: '', isBlank: true, slotId: 'slot4', placeholder: '[ ___ ]' }
+      ];
+
+      slots = {
+        slot1: { correct: fromTable, options: getTableDistractors(fromTable) },
+        slot2: { correct: 'WHERE', options: shuffle(['WHERE', 'HAVING', 'FILTER', 'WHEN']) },
+        slot3: { correct: filterCol, options: getColumnDistractors(tblName, filterCol) },
+        slot4: { correct: `IN ${listWithSemi}`, options: shuffle([
+          `IN ${listWithSemi}`,
+          `NOT IN ${listWithSemi}`,
+          `= ${listWithSemi}`,
+          `LIKE ${listWithSemi}`
+        ]) }
+      };
+    } else if (whereClause.includes('LIKE')) {
+      const isNotLike = whereClause.includes('NOT LIKE');
+      const lParts = whereClause.split(isNotLike ? /\s+NOT\s+LIKE\s+/i : /\s+LIKE\s+/i);
+      const filterCol = lParts[0].trim();
+      const pat = lParts[1].trim() + ';';
+      const likeOp = isNotLike ? 'NOT LIKE' : 'LIKE';
+
+      template = [
+        { text: `SELECT ${selectCols}\nFROM `, isBlank: false },
+        { text: '', isBlank: true, slotId: 'slot1', placeholder: '[ ___ ]' },
+        { text: '\n', isBlank: false },
+        { text: '', isBlank: true, slotId: 'slot2', placeholder: '[ ___ ]' },
+        { text: ' ', isBlank: false },
+        { text: '', isBlank: true, slotId: 'slot3', placeholder: '[ ___ ]' },
+        { text: ` ${likeOp} `, isBlank: false },
+        { text: '', isBlank: true, slotId: 'slot4', placeholder: '[ ___ ]' }
+      ];
+
+      slots = {
+        slot1: { correct: fromTable, options: getTableDistractors(fromTable) },
+        slot2: { correct: 'WHERE', options: shuffle(['WHERE', 'HAVING', 'FILTER', 'WHEN']) },
+        slot3: { correct: filterCol, options: getColumnDistractors(tblName, filterCol) },
+        slot4: { correct: pat, options: getLiteralDistractors(pat.replace(/;$/, '')) }
       };
     } else {
-      // LIKE patterns (Levels 41-45)
-      const parts = whereClause.split(/\s+LIKE\s+/i);
-      const filterCol = parts[0].trim();
-      const patternVal = parts[1].trim() + ';';
+      // General 4 blanks
+      const tokens = whereClause.split(/\s+/);
+      const filterCol = tokens[0];
+      const op = tokens[1];
+      const val = tokens.slice(2).join(' ') + ';';
 
       template = [
-        { text: `SELECT ${selectCols}\nFROM ${fromTable}\n`, isBlank: false },
+        { text: `SELECT ${selectCols}\nFROM `, isBlank: false },
         { text: '', isBlank: true, slotId: 'slot1', placeholder: '[ ___ ]' },
-        { text: ' ', isBlank: false },
+        { text: '\n', isBlank: false },
         { text: '', isBlank: true, slotId: 'slot2', placeholder: '[ ___ ]' },
         { text: ' ', isBlank: false },
         { text: '', isBlank: true, slotId: 'slot3', placeholder: '[ ___ ]' },
@@ -298,26 +348,27 @@ const section2Quests = drills.map((d, idx) => {
       ];
 
       slots = {
-        slot1: { correct: 'WHERE', options: shuffle(['WHERE', 'HAVING', 'FILTER', 'ON']) },
-        slot2: { correct: filterCol, options: getColumnDistractors(tblName, filterCol) },
-        slot3: { correct: 'LIKE', options: shuffle(['LIKE', '=', 'MATCHES', 'CONTAINS']) },
-        slot4: { correct: patternVal, options: getLiteralDistractors(patternVal) }
+        slot1: { correct: fromTable, options: getTableDistractors(fromTable) },
+        slot2: { correct: 'WHERE', options: shuffle(['WHERE', 'HAVING', 'FILTER', 'WHEN']) },
+        slot3: { correct: filterCol, options: getColumnDistractors(tblName, filterCol) },
+        slot4: { correct: `${op} ${val}`, options: shuffle([`${op} ${val}`, `= ${val}`, `!= ${val}`, `LIKE ${val}`]) }
       };
     }
   }
   // ---------------------------------------------------------------------------
-  // TIER 3: Levels 46–75 (4 Blanks)
+  // TIER 3: Levels 46–75 (Strictly 4 Blanks)
+  // Progressive Mixing: Foundations (SELECT col or FROM table) + WHERE + compound logic
   // ---------------------------------------------------------------------------
   else if (levelNum <= 75) {
-    if (whereClause.includes('NOT LIKE')) {
-      const parts = whereClause.split(/\s+NOT LIKE\s+/i);
-      const filterCol = parts[0].trim();
-      const pat = parts[1].trim() + ';';
+    if (whereClause.includes('IS NULL') || whereClause.includes('IS NOT NULL')) {
+      const isNull = whereClause.includes('IS NOT NULL') ? false : true;
+      const col = whereClause.split(/\s+IS\s+/i)[0].trim();
+      const nullOp = isNull ? 'IS NULL' : 'IS NOT NULL';
 
       template = [
-        { text: `SELECT ${selectCols}\nFROM ${fromTable}\n`, isBlank: false },
+        { text: `SELECT ${selectCols}\nFROM `, isBlank: false },
         { text: '', isBlank: true, slotId: 'slot1', placeholder: '[ ___ ]' },
-        { text: ' ', isBlank: false },
+        { text: '\n', isBlank: false },
         { text: '', isBlank: true, slotId: 'slot2', placeholder: '[ ___ ]' },
         { text: ' ', isBlank: false },
         { text: '', isBlank: true, slotId: 'slot3', placeholder: '[ ___ ]' },
@@ -326,176 +377,104 @@ const section2Quests = drills.map((d, idx) => {
       ];
 
       slots = {
-        slot1: { correct: 'WHERE', options: shuffle(['WHERE', 'HAVING', 'FILTER', 'ON']) },
-        slot2: { correct: filterCol, options: getColumnDistractors(tblName, filterCol) },
-        slot3: { correct: 'NOT LIKE', options: shuffle(['NOT LIKE', '!=', 'UNLIKE', 'NOT MATCH']) },
-        slot4: { correct: pat, options: getLiteralDistractors(pat) }
+        slot1: { correct: fromTable, options: getTableDistractors(fromTable) },
+        slot2: { correct: 'WHERE', options: shuffle(['WHERE', 'HAVING', 'ON', 'WHEN']) },
+        slot3: { correct: col, options: getColumnDistractors(tblName, col) },
+        slot4: { correct: `${nullOp};`, options: shuffle([`${nullOp};`, isNull ? 'IS NOT NULL;' : 'IS NULL;', '= NULL;', '!= NULL;']) }
       };
     } else if (whereClause.includes(' AND ')) {
-      // Compound AND: pred1 AND pred2
       const andParts = whereClause.split(/\s+AND\s+/i);
       const p1 = andParts[0].trim();
       const p2WithSemi = andParts[1].trim() + ';';
 
-      const p1Tokens = p1.split(/\s+/);
-      const col1 = p1Tokens[0];
-      const op1 = p1Tokens[1];
-      const val1 = p1Tokens.slice(2).join(' ');
-
+      const selectRestStr = restProjCols ? `, ${restProjCols}` : '';
       template = [
-        { text: `SELECT ${selectCols}\nFROM ${fromTable}\nWHERE `, isBlank: false },
+        { text: `SELECT `, isBlank: false },
         { text: '', isBlank: true, slotId: 'slot1', placeholder: '[ ___ ]' },
-        { text: ` ${op1} ${val1} `, isBlank: false },
+        { text: `${selectRestStr}\nFROM ${fromTable}\n`, isBlank: false },
         { text: '', isBlank: true, slotId: 'slot2', placeholder: '[ ___ ]' },
-        { text: ' ', isBlank: false },
+        { text: ` ${p1} `, isBlank: false },
         { text: '', isBlank: true, slotId: 'slot3', placeholder: '[ ___ ]' },
         { text: ' ', isBlank: false },
         { text: '', isBlank: true, slotId: 'slot4', placeholder: '[ ___ ]' }
       ];
 
-      const p2Tokens = p2WithSemi.replace(/;$/, '').split(/\s+/);
-      const col2 = p2Tokens[0];
-      const op2AndVal = p2Tokens.slice(1).join(' ') + ';';
-
       slots = {
-        slot1: { correct: col1, options: getColumnDistractors(tblName, col1) },
-        slot2: { correct: 'AND', options: shuffle(['AND', 'OR', 'THEN', 'PLUS']) },
-        slot3: { correct: col2, options: getColumnDistractors(tblName, col2) },
-        slot4: { correct: op2AndVal, options: shuffle([
-          op2AndVal,
-          `= ${p2Tokens.slice(2).join(' ') || '0'};`,
-          `!= ${p2Tokens.slice(2).join(' ') || '0'};`,
-          `LIKE ${p2Tokens.slice(2).join(' ') || "'%'"};`
+        slot1: { correct: firstProjCol, options: getColumnDistractors(tblName, firstProjCol) },
+        slot2: { correct: 'WHERE', options: shuffle(['WHERE', 'HAVING', 'FILTER', 'WHEN']) },
+        slot3: { correct: 'AND', options: shuffle(['AND', 'OR', 'THEN', 'PLUS']) },
+        slot4: { correct: p2WithSemi, options: shuffle([
+          p2WithSemi,
+          p2WithSemi.replace(/=/g, '!='),
+          p2WithSemi.replace(/>/g, '<'),
+          `status = 'ACTIVE';`
         ]) }
       };
     } else if (whereClause.includes(' OR ')) {
-      // Compound OR: pred1 OR pred2
       const orParts = whereClause.split(/\s+OR\s+/i);
       const p1 = orParts[0].trim();
       const p2WithSemi = orParts[1].trim() + ';';
 
-      const p1Tokens = p1.split(/\s+/);
-      const col1 = p1Tokens[0];
-      const op1 = p1Tokens[1];
-      const val1 = p1Tokens.slice(2).join(' ');
-
+      const selectRestStr = restProjCols ? `, ${restProjCols}` : '';
       template = [
-        { text: `SELECT ${selectCols}\nFROM ${fromTable}\nWHERE `, isBlank: false },
+        { text: `SELECT `, isBlank: false },
         { text: '', isBlank: true, slotId: 'slot1', placeholder: '[ ___ ]' },
-        { text: ` ${op1} ${val1} `, isBlank: false },
+        { text: `${selectRestStr}\nFROM ${fromTable}\n`, isBlank: false },
         { text: '', isBlank: true, slotId: 'slot2', placeholder: '[ ___ ]' },
-        { text: ' ', isBlank: false },
+        { text: ` ${p1} `, isBlank: false },
         { text: '', isBlank: true, slotId: 'slot3', placeholder: '[ ___ ]' },
         { text: ' ', isBlank: false },
         { text: '', isBlank: true, slotId: 'slot4', placeholder: '[ ___ ]' }
       ];
 
-      const p2Tokens = p2WithSemi.replace(/;$/, '').split(/\s+/);
-      const col2 = p2Tokens[0];
-      const op2AndVal = p2Tokens.slice(1).join(' ') + ';';
-
       slots = {
-        slot1: { correct: col1, options: getColumnDistractors(tblName, col1) },
-        slot2: { correct: 'OR', options: shuffle(['OR', 'AND', 'XOR', 'ELSE']) },
-        slot3: { correct: col2, options: getColumnDistractors(tblName, col2) },
-        slot4: { correct: op2AndVal, options: shuffle([
-          op2AndVal,
-          `= ${p2Tokens.slice(2).join(' ') || '0'};`,
-          `!= ${p2Tokens.slice(2).join(' ') || '0'};`,
-          `IS NOT NULL;`
+        slot1: { correct: firstProjCol, options: getColumnDistractors(tblName, firstProjCol) },
+        slot2: { correct: 'WHERE', options: shuffle(['WHERE', 'HAVING', 'FILTER', 'WHEN']) },
+        slot3: { correct: 'OR', options: shuffle(['OR', 'AND', 'NOR', 'XOR']) },
+        slot4: { correct: p2WithSemi, options: shuffle([
+          p2WithSemi,
+          p2WithSemi.replace(/=/g, '!='),
+          p2WithSemi.replace(/</g, '>'),
+          `status = 'ARCHIVED';`
         ]) }
       };
     } else {
-      // 4-blank general filter
       template = [
-        { text: 'SELECT ', isBlank: false },
+        { text: `SELECT ${selectCols}\nFROM `, isBlank: false },
         { text: '', isBlank: true, slotId: 'slot1', placeholder: '[ ___ ]' },
         { text: '\n', isBlank: false },
         { text: '', isBlank: true, slotId: 'slot2', placeholder: '[ ___ ]' },
-        { text: ` ${fromTable}\n`, isBlank: false },
+        { text: ' ', isBlank: false },
         { text: '', isBlank: true, slotId: 'slot3', placeholder: '[ ___ ]' },
         { text: ' ', isBlank: false },
         { text: '', isBlank: true, slotId: 'slot4', placeholder: '[ ___ ]' }
       ];
 
       slots = {
-        slot1: { correct: selectCols, options: shuffle([selectCols, '*', selectCols.replace(/,/g, ' AND'), `DISTINCT ${selectCols}`]) },
-        slot2: { correct: 'FROM', options: shuffle(['FROM', 'INTO', 'TABLE', 'JOIN']) },
-        slot3: { correct: 'WHERE', options: shuffle(['WHERE', 'HAVING', 'FILTER', 'WHEN']) },
-        slot4: { correct: whereClauseWithSemi, options: shuffle([
-          whereClauseWithSemi,
-          whereClauseWithSemi.replace(/=/g, '!='),
-          whereClauseWithSemi.replace(/>/g, '<'),
-          whereClauseWithSemi + ' AND 1=1'
+        slot1: { correct: fromTable, options: getTableDistractors(fromTable) },
+        slot2: { correct: 'WHERE', options: shuffle(['WHERE', 'HAVING', 'FILTER', 'WHEN']) },
+        slot3: { correct: whereClause.split(/\s+/)[0], options: getColumnDistractors(tblName, whereClause.split(/\s+/)[0]) },
+        slot4: { correct: whereClause.split(/\s+/).slice(1).join(' ') + ';', options: shuffle([
+          whereClause.split(/\s+/).slice(1).join(' ') + ';',
+          `= 'Active';`,
+          `> 0;`,
+          `IS NOT NULL;`
         ]) }
       };
     }
   }
   // ---------------------------------------------------------------------------
-  // TIER 4: Levels 76–100 (4 to 5 Blanks) - Master (FAANG-Ready)
+  // TIER 4: Levels 76–100 (5 Blanks)
+  // Progressive Mixing: Foundations (SELECT col & FROM table) + WHERE + compound parenthesis
   // ---------------------------------------------------------------------------
   else {
-    if (whereClause.includes('IS NULL') || whereClause.includes('IS NOT NULL')) {
-      const isNull = whereClause.includes('IS NULL');
-      const nullOp = isNull ? 'IS NULL' : 'IS NOT NULL';
-      const parts = whereClause.split(new RegExp(`\\s+${nullOp}`, 'i'));
-      const col = parts[0].trim();
-      const rest = parts[1] ? parts[1].trim() : '';
+    const selectRestStr = restProjCols ? `, ${restProjCols}` : '';
 
-      if (rest.length > 0) {
-        // e.g. stock_qty IS NOT NULL AND stock_qty > 0;
-        // 5 Blanks!
-        template = [
-          { text: `SELECT ${selectCols}\nFROM ${fromTable}\n`, isBlank: false },
-          { text: '', isBlank: true, slotId: 'slot1', placeholder: '[ ___ ]' },
-          { text: ' ', isBlank: false },
-          { text: '', isBlank: true, slotId: 'slot2', placeholder: '[ ___ ]' },
-          { text: ' ', isBlank: false },
-          { text: '', isBlank: true, slotId: 'slot3', placeholder: '[ ___ ]' },
-          { text: ' ', isBlank: false },
-          { text: '', isBlank: true, slotId: 'slot4', placeholder: '[ ___ ]' },
-          { text: ' ', isBlank: false },
-          { text: '', isBlank: true, slotId: 'slot5', placeholder: '[ ___ ]' }
-        ];
-
-        const restTokens = (rest + ';').split(/\s+/);
-        const conj = restTokens[0]; // AND / OR
-        const restPred = restTokens.slice(1).join(' ');
-
-        slots = {
-          slot1: { correct: 'WHERE', options: shuffle(['WHERE', 'HAVING', 'FILTER', 'CASE']) },
-          slot2: { correct: col, options: getColumnDistractors(tblName, col) },
-          slot3: { correct: nullOp, options: shuffle(['IS NULL', 'IS NOT NULL', '= NULL', '!= NULL']) },
-          slot4: { correct: conj, options: shuffle(['AND', 'OR', 'THEN', 'ELSE']) },
-          slot5: { correct: restPred, options: shuffle([restPred, `= 0;`, `> 100;`, `IS NULL;`]) }
-        };
-      } else {
-        // Just col IS NULL; -> 4 Blanks
-        template = [
-          { text: `SELECT ${selectCols}\n`, isBlank: false },
-          { text: '', isBlank: true, slotId: 'slot1', placeholder: '[ ___ ]' },
-          { text: ` ${fromTable}\n`, isBlank: false },
-          { text: '', isBlank: true, slotId: 'slot2', placeholder: '[ ___ ]' },
-          { text: ' ', isBlank: false },
-          { text: '', isBlank: true, slotId: 'slot3', placeholder: '[ ___ ]' },
-          { text: ' ', isBlank: false },
-          { text: '', isBlank: true, slotId: 'slot4', placeholder: '[ ___ ]' }
-        ];
-
-        slots = {
-          slot1: { correct: 'FROM', options: shuffle(['FROM', 'INTO', 'TABLE', 'SOURCE']) },
-          slot2: { correct: 'WHERE', options: shuffle(['WHERE', 'HAVING', 'ON', 'WHEN']) },
-          slot3: { correct: col, options: getColumnDistractors(tblName, col) },
-          slot4: { correct: `${nullOp};`, options: shuffle([`${nullOp};`, isNull ? 'IS NOT NULL;' : 'IS NULL;', '= NULL;', '!= NULL;']) }
-        };
-      }
-    } else if (whereClause.includes('(') && whereClause.includes(')')) {
-      // Mixed precedence query: (cond1 OR cond2) AND cond3;
-      // 5 Blanks!
+    if (whereClause.includes('(') && whereClause.includes(')')) {
       const parenMatch = whereClause.match(/\((.*?)\)\s+(AND|OR)\s+(.*)/i);
       if (parenMatch) {
-        const inner = parenMatch[1].trim(); // e.g. genre = 'Rock' OR genre = 'Synthwave'
-        const outerConj = parenMatch[2].trim(); // AND
+        const inner = parenMatch[1].trim();
+        const outerConj = parenMatch[2].trim();
         const outerCondWithSemi = parenMatch[3].trim() + ';';
 
         const innerConj = inner.includes(' OR ') ? 'OR' : 'AND';
@@ -504,27 +483,22 @@ const section2Quests = drills.map((d, idx) => {
         const innerCond2 = innerParts[1].trim();
 
         template = [
-          { text: `SELECT ${selectCols}\nFROM ${fromTable}\n`, isBlank: false },
+          { text: `SELECT `, isBlank: false },
           { text: '', isBlank: true, slotId: 'slot1', placeholder: '[ ___ ]' },
-          { text: ` (${innerCond1} `, isBlank: false },
+          { text: `${selectRestStr}\nFROM `, isBlank: false },
           { text: '', isBlank: true, slotId: 'slot2', placeholder: '[ ___ ]' },
-          { text: ' ', isBlank: false },
+          { text: '\n', isBlank: false },
           { text: '', isBlank: true, slotId: 'slot3', placeholder: '[ ___ ]' },
-          { text: ') ', isBlank: false },
+          { text: ` (${innerCond1} ${innerConj} ${innerCond2}) `, isBlank: false },
           { text: '', isBlank: true, slotId: 'slot4', placeholder: '[ ___ ]' },
           { text: ' ', isBlank: false },
           { text: '', isBlank: true, slotId: 'slot5', placeholder: '[ ___ ]' }
         ];
 
         slots = {
-          slot1: { correct: 'WHERE', options: shuffle(['WHERE', 'HAVING', 'FILTER', 'CASE']) },
-          slot2: { correct: innerConj, options: shuffle(['OR', 'AND', 'XOR', 'NOR']) },
-          slot3: { correct: innerCond2, options: shuffle([
-            innerCond2,
-            innerCond1,
-            innerCond2.replace(/=/g, '!='),
-            innerCond2.replace(/'/g, '')
-          ]) },
+          slot1: { correct: firstProjCol, options: getColumnDistractors(tblName, firstProjCol) },
+          slot2: { correct: fromTable, options: getTableDistractors(fromTable) },
+          slot3: { correct: 'WHERE', options: shuffle(['WHERE', 'HAVING', 'FILTER', 'CASE']) },
           slot4: { correct: outerConj, options: shuffle(['AND', 'OR', 'THEN', 'PLUS']) },
           slot5: { correct: outerCondWithSemi, options: shuffle([
             outerCondWithSemi,
@@ -534,60 +508,88 @@ const section2Quests = drills.map((d, idx) => {
           ]) }
         };
       } else {
-        // Fallback 4 blanks
+        // Fallback 5 blanks
         template = [
-          { text: `SELECT ${selectCols}\n`, isBlank: false },
+          { text: `SELECT `, isBlank: false },
           { text: '', isBlank: true, slotId: 'slot1', placeholder: '[ ___ ]' },
-          { text: ` ${fromTable}\n`, isBlank: false },
+          { text: `${selectRestStr}\nFROM `, isBlank: false },
           { text: '', isBlank: true, slotId: 'slot2', placeholder: '[ ___ ]' },
+          { text: '\n', isBlank: false },
+          { text: '', isBlank: true, slotId: 'slot3', placeholder: '[ ___ ]' },
           { text: ' ', isBlank: false },
+          { text: '', isBlank: true, slotId: 'slot4', placeholder: '[ ___ ]' },
+          { text: ' ', isBlank: false },
+          { text: '', isBlank: true, slotId: 'slot5', placeholder: '[ ___ ]' }
+        ];
+
+        const tokens = whereClause.split(/\s+/);
+        slots = {
+          slot1: { correct: firstProjCol, options: getColumnDistractors(tblName, firstProjCol) },
+          slot2: { correct: fromTable, options: getTableDistractors(fromTable) },
+          slot3: { correct: 'WHERE', options: shuffle(['WHERE', 'HAVING', 'FILTER', 'WHEN']) },
+          slot4: { correct: tokens[0], options: getColumnDistractors(tblName, tokens[0]) },
+          slot5: { correct: tokens.slice(1).join(' ') + ';', options: shuffle([
+            tokens.slice(1).join(' ') + ';',
+            `IS NOT NULL;`,
+            `> 100;`,
+            `= 'Active';`
+          ]) }
+        };
+      }
+    } else {
+      // 5 Blanks compound
+      const andOrMatch = whereClause.match(/\s+(AND|OR)\s+/i);
+      if (andOrMatch) {
+        const conj = andOrMatch[1].toUpperCase();
+        const parts = whereClause.split(new RegExp(`\\s+${conj}\\s+`, 'i'));
+        const p1 = parts[0].trim();
+        const p2WithSemi = parts[1].trim() + ';';
+
+        template = [
+          { text: `SELECT `, isBlank: false },
+          { text: '', isBlank: true, slotId: 'slot1', placeholder: '[ ___ ]' },
+          { text: `${selectRestStr}\nFROM `, isBlank: false },
+          { text: '', isBlank: true, slotId: 'slot2', placeholder: '[ ___ ]' },
+          { text: '\n', isBlank: false },
+          { text: '', isBlank: true, slotId: 'slot3', placeholder: '[ ___ ]' },
+          { text: ' ', isBlank: false },
+          { text: '', isBlank: true, slotId: 'slot4', placeholder: '[ ___ ]' },
+          { text: ` ${conj} `, isBlank: false },
+          { text: '', isBlank: true, slotId: 'slot5', placeholder: '[ ___ ]' }
+        ];
+
+        slots = {
+          slot1: { correct: firstProjCol, options: getColumnDistractors(tblName, firstProjCol) },
+          slot2: { correct: fromTable, options: getTableDistractors(fromTable) },
+          slot3: { correct: 'WHERE', options: shuffle(['WHERE', 'HAVING', 'FILTER', 'WHEN']) },
+          slot4: { correct: p1, options: shuffle([p1, p1.replace(/=/g, '!='), p1.replace(/>/g, '<'), 'id > 0']) },
+          slot5: { correct: p2WithSemi, options: shuffle([p2WithSemi, p2WithSemi.replace(/=/g, '!='), `status = 'ACTIVE';`, `1=1;`]) }
+        };
+      } else {
+        template = [
+          { text: `SELECT `, isBlank: false },
+          { text: '', isBlank: true, slotId: 'slot1', placeholder: '[ ___ ]' },
+          { text: `${selectRestStr}\nFROM `, isBlank: false },
+          { text: '', isBlank: true, slotId: 'slot2', placeholder: '[ ___ ]' },
+          { text: '\n', isBlank: false },
           { text: '', isBlank: true, slotId: 'slot3', placeholder: '[ ___ ]' },
           { text: ' ', isBlank: false },
           { text: '', isBlank: true, slotId: 'slot4', placeholder: '[ ___ ]' }
         ];
+
         slots = {
-          slot1: { correct: 'FROM', options: shuffle(['FROM', 'INTO', 'TABLE', 'SOURCE']) },
-          slot2: { correct: 'WHERE', options: shuffle(['WHERE', 'HAVING', 'FILTER', 'WHEN']) },
-          slot3: { correct: `(${whereClause.slice(1, whereClause.indexOf(')'))})`, options: shuffle([
-            `(${whereClause.slice(1, whereClause.indexOf(')'))})`,
-            `(1=1)`,
-            `(true)`,
-            `(id > 0)`
-          ]) },
-          slot4: { correct: whereClauseWithSemi, options: shuffle([whereClauseWithSemi, 'WHERE 1=1;', 'HAVING count(*) > 0;', 'ORDER BY id;']) }
+          slot1: { correct: firstProjCol, options: getColumnDistractors(tblName, firstProjCol) },
+          slot2: { correct: fromTable, options: getTableDistractors(fromTable) },
+          slot3: { correct: 'WHERE', options: shuffle(['WHERE', 'HAVING', 'FILTER', 'WHEN']) },
+          slot4: { correct: whereClauseWithSemi, options: shuffle([whereClauseWithSemi, `id > 0;`, `status = 'ACTIVE';`, `gpa >= 3.0;`]) }
         };
       }
-    } else {
-      // 4-5 blanks for advanced synthesis
-      template = [
-        { text: `SELECT ${selectCols}\n`, isBlank: false },
-        { text: '', isBlank: true, slotId: 'slot1', placeholder: '[ ___ ]' },
-        { text: ' ', isBlank: false },
-        { text: '', isBlank: true, slotId: 'slot2', placeholder: '[ ___ ]' },
-        { text: '\n', isBlank: false },
-        { text: '', isBlank: true, slotId: 'slot3', placeholder: '[ ___ ]' },
-        { text: ' ', isBlank: false },
-        { text: '', isBlank: true, slotId: 'slot4', placeholder: '[ ___ ]' }
-      ];
-
-      slots = {
-        slot1: { correct: 'FROM', options: shuffle(['FROM', 'INTO', 'TABLE', 'SOURCE']) },
-        slot2: { correct: fromTable, options: getTableDistractors(fromTable) },
-        slot3: { correct: 'WHERE', options: shuffle(['WHERE', 'HAVING', 'FILTER', 'WHEN']) },
-        slot4: { correct: whereClauseWithSemi, options: shuffle([
-          whereClauseWithSemi,
-          whereClauseWithSemi.replace(/=/g, '!='),
-          whereClauseWithSemi.replace(/AND/g, 'OR'),
-          whereClauseWithSemi.replace(/'/g, '"')
-        ]) }
-      };
     }
   }
 
-  // Double check all slots have exactly 4 unique options including correct
+  // Ensure 4 unique options for all slots
   for (const sId of Object.keys(slots)) {
-    const sl = slots[sId];
-    sl.options = ensureFourUniqueOptions(sl.correct, sl.options);
+    slots[sId].options = ensureFourUniqueOptions(slots[sId].correct, slots[sId].options, () => ['NULL', '0', "'Default'", 'TRUE']);
   }
 
   return {
@@ -597,7 +599,7 @@ const section2Quests = drills.map((d, idx) => {
     subtitle: d.scenario || d.businessObjective || cleanTitle,
     type: 'fill_blank',
     category: 'Section 02: WHERE Predicates & Filtering',
-    subcluster: d.subcluster || '2.1 WHERE Logic',
+    subcluster: d.subcluster || '2.1 Exact Equality',
     tier: tier,
     tierColor: tierColor,
     difficulty: difficulty,
@@ -618,11 +620,11 @@ const section2Quests = drills.map((d, idx) => {
 
 const output = `// =============================================================================
 // SECTION 02: WHERE PREDICATES & FILTERING (100 INTERACTIVE MULTI-BLANK QUESTS)
-// Progressive 3-to-5 Blank Challenge Engine with Tiered Difficulty
+// Progressive Cumulative 3-to-5 Blank Challenge Engine Interleaving Foundations & Filtering
 // =============================================================================
 
 window.QUESTS_SECTION_2 = ${JSON.stringify(section2Quests, null, 2)};
 `;
 
 fs.writeFileSync('visualizer/quests_section2_data.js', output, 'utf8');
-console.log('✅ Generated visualizer/quests_section2_data.js with', section2Quests.length, 'quests!');
+console.log('✅ Generated visualizer/quests_section2_data.js with', section2Quests.length, 'progressive interleaved quests!');
