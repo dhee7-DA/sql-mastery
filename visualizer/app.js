@@ -6695,6 +6695,8 @@ let bugIsFixed = false;
 
 let activeJoinDisciplineFilter = null;
 let isJoinMatrixGuideCollapsed = false;
+let activeWindowDisciplineFilter = null;
+let isWindowMatrixGuideCollapsed = false;
 
 function getActiveQuestsList() {
   if (currentQuestSection === 'section1' && window.QUESTS_SECTION_1 && window.QUESTS_SECTION_1.length > 0) {
@@ -6715,6 +6717,12 @@ function getActiveQuestsList() {
     }
     return window.QUESTS_SECTION_5;
   }
+  if (currentQuestSection === 'section6' && window.QUESTS_SECTION_6 && window.QUESTS_SECTION_6.length > 0) {
+    if (activeWindowDisciplineFilter) {
+      return window.QUESTS_SECTION_6.filter(q => q.disciplineKey === activeWindowDisciplineFilter);
+    }
+    return window.QUESTS_SECTION_6;
+  }
   return window.QUESTS_DATA || [];
 }
 
@@ -6722,11 +6730,14 @@ function switchQuestSection(sectionKey) {
   currentQuestSection = sectionKey;
   currentQuestIndex = 0;
   questChunkStart = 0;
-  const isMultiChunk = (sectionKey === 'section1' || sectionKey === 'section2' || sectionKey === 'section3' || sectionKey === 'section4' || sectionKey === 'section5');
+  const isMultiChunk = (sectionKey === 'section1' || sectionKey === 'section2' || sectionKey === 'section3' || sectionKey === 'section4' || sectionKey === 'section5' || sectionKey === 'section6');
   questChunkEnd = isMultiChunk ? 20 : 30;
 
   if (sectionKey === 'section5') {
     activeJoinDisciplineFilter = null;
+  }
+  if (sectionKey === 'section6') {
+    activeWindowDisciplineFilter = null;
   }
 
   // Update tabs
@@ -6756,6 +6767,7 @@ function switchQuestSection(sectionKey) {
     else if (sectionKey === 'section3') footerTrack.textContent = 'Section 03: ORDER BY & Slicing (100)';
     else if (sectionKey === 'section4') footerTrack.textContent = 'Section 04: Aggregations & GROUP BY (100)';
     else if (sectionKey === 'section5') footerTrack.textContent = 'Section 05: Relational JOINs Arena (420)';
+    else if (sectionKey === 'section6') footerTrack.textContent = 'Section 06: Window Functions Arena (100)';
     else if (sectionKey === 'featured') footerTrack.textContent = 'Bonus: Boss Gauntlet (30)';
   }
 
@@ -6774,6 +6786,8 @@ function switchQuestSection(sectionKey) {
       window.SQL_BUDDY.say("📊 Section 04: Aggregations & GROUP BY loaded (100 Levels)! Time to summarize, bucket, and master HAVING!", 3500, 'celebrate');
     } else if (sectionKey === 'section5') {
       window.SQL_BUDDY.say("🏛️ Section 05: Relational JOINs Master Arena loaded (420 Levels across 7 Disciplines)! Let's master multi-table relational algebra!", 4500, 'celebrate');
+    } else if (sectionKey === 'section6') {
+      window.SQL_BUDDY.say("🪟 Section 06: Window Functions & Analytical Partitioning loaded (100 Levels)! Master ROW_NUMBER, LEAD/LAG, and sliding frames!", 4500, 'celebrate');
     } else {
       window.SQL_BUDDY.say("🏆 Boss Gauntlet Activated! 30 Advanced Challenges across all SQL pillars!", 3500, 'celebrate');
     }
@@ -6930,6 +6944,155 @@ function toggleJoinMatrixGuide() {
   if (window.AudioFX) window.AudioFX.playClick();
 }
 window.toggleJoinMatrixGuide = toggleJoinMatrixGuide;
+
+// =============================================================================
+// SECTION 06: WINDOW FUNCTIONS MASTER DECISION MATRIX & DISCIPLINE FILTER
+// =============================================================================
+function renderWindowMasterMatrixHtml() {
+  const metadata = window.WINDOW_DISCIPLINES_METADATA || [];
+  const isCollapsed = isWindowMatrixGuideCollapsed;
+  const currentDisciplineKey = activeWindowDisciplineFilter;
+
+  let filterPillsHtml = `
+    <button class="choice-pill ${!currentDisciplineKey ? 'selected' : ''}" onclick="setWindowDisciplineFilter(null)" style="font-size: 11px; padding: 4px 10px;">
+      <span>All 100 Quests</span>
+    </button>
+  `;
+
+  metadata.forEach(d => {
+    const isSelected = currentDisciplineKey === d.key;
+    filterPillsHtml += `
+      <button class="choice-pill ${isSelected ? 'selected' : ''}" onclick="setWindowDisciplineFilter('${d.key}')" style="font-size: 11px; padding: 4px 10px; border-color: ${d.color}66;">
+        <span style="color: ${d.color}; font-weight: 800; margin-right: 4px;">${d.symbol}</span>
+        <span>${escapeHtml(d.name)} (20)</span>
+      </button>
+    `;
+  });
+
+  let tableRowsHtml = '';
+  metadata.forEach(d => {
+    const isActiveRow = currentDisciplineKey === d.key;
+    tableRowsHtml += `
+      <tr class="${isActiveRow ? 'active-row' : ''}">
+        <td style="white-space: nowrap;">
+          <div style="display: flex; align-items: center; gap: 8px;">
+            <span class="join-symbol-badge" style="color: ${d.color}; border-color: ${d.color}66;">${d.symbol}</span>
+            <div>
+              <strong style="color: ${d.color}; font-size: 12px; font-family: var(--font-mono);">${escapeHtml(d.name)}</strong>
+              <div style="font-size: 10px; color: var(--text-muted);">${escapeHtml(d.concept)}</div>
+            </div>
+          </div>
+        </td>
+        <td style="max-width: 220px; line-height: 1.45; color: var(--text-secondary);">
+          ${escapeHtml(d.whenToUse)}
+        </td>
+        <td style="max-width: 240px; line-height: 1.45; color: #a7f3d0;">
+          <div style="font-size: 10.5px;">📈 <strong>Finance &amp; Analytics Scenarios:</strong></div>
+          <div style="font-size: 10px; color: var(--text-secondary); margin-top: 2px;">${escapeHtml(d.scenarios)}</div>
+        </td>
+        <td style="max-width: 260px; line-height: 1.45;">
+          <div class="join-trap-pill">
+            <span style="color: #f87171; font-weight: 700; font-size: 10px; display: block; margin-bottom: 2px;">⚠️ TRAP / GOTCHA:</span>
+            <span style="color: #fca5a5; font-size: 10px;">${escapeHtml(d.traps)}</span>
+          </div>
+        </td>
+        <td style="text-align: right; white-space: nowrap;">
+          <button class="card-nav-btn ${isActiveRow ? 'action-btn-primary' : ''}" style="padding: 4px 10px; font-size: 10px;" onclick="setWindowDisciplineFilter('${d.key}')">
+            ${isActiveRow ? '✓ Active (20)' : `Practice (${d.name.split(' ')[0]})`}
+          </button>
+        </td>
+      </tr>
+    `;
+  });
+
+  return `
+    <div class="join-matrix-card" style="border-color: rgba(168, 85, 247, 0.35);">
+      <div class="join-matrix-header">
+        <div style="display: flex; align-items: center; gap: 10px;">
+          <span style="font-size: 16px;">🪟</span>
+          <div>
+            <div style="font-size: 13px; font-weight: 700; color: #c084fc; display: flex; align-items: center; gap: 8px;">
+              <span>Window Functions &amp; Analytical Partitioning Decision Matrix</span>
+              <span class="status-pill" style="font-size: 9.5px; color: #a855f7; background: rgba(168,85,247,0.12); border-color: rgba(168,85,247,0.3);">5 Disciplines • 100 Problems</span>
+            </div>
+            <div style="font-size: 11px; color: var(--text-muted); margin-top: 2px;">
+              Cross-reference table: Which window function or sliding frame matches your business requirement, and how to avoid silent partitioning traps.
+            </div>
+          </div>
+        </div>
+        <button class="card-nav-btn" style="padding: 4px 10px; font-size: 11px;" onclick="toggleWindowMatrixGuide()">
+          ${isCollapsed ? '➕ Expand Decision Matrix' : '➖ Collapse Reference'}
+        </button>
+      </div>
+
+      <div class="join-filter-pills-row">
+        <span style="font-size: 10px; font-family: var(--font-mono); color: var(--text-muted); white-space: nowrap; margin-right: 4px;">FILTER BY DISCIPLINE:</span>
+        ${filterPillsHtml}
+      </div>
+
+      ${!isCollapsed ? `
+        <div class="join-matrix-table-wrap">
+          <table class="join-matrix-table">
+            <thead>
+              <tr>
+                <th style="width: 190px;">Window Discipline</th>
+                <th>When To Use / Core Concept</th>
+                <th>Real-World Finance &amp; Data Scenarios</th>
+                <th>Silent Trap &amp; Anti-Pattern Focus</th>
+                <th style="text-align: right; width: 110px;">Practice</th>
+              </tr>
+            </thead>
+            <tbody>
+              ${tableRowsHtml}
+            </tbody>
+          </table>
+        </div>
+      ` : `
+        <div style="font-size: 11px; color: var(--text-muted); padding: 4px 0; display: flex; align-items: center; justify-content: space-between;">
+          <span><em>Matrix reference collapsed. Click &quot;Expand Decision Matrix&quot; above to view analytical scenarios and trap analysis.</em></span>
+          ${currentDisciplineKey ? `<span style="color: #c084fc; font-weight: 600;">Currently filtered: ${currentDisciplineKey.replace(/_/g, ' ').toUpperCase()} (20 Quests)</span>` : ''}
+        </div>
+      `}
+    </div>
+  `;
+}
+window.renderWindowMasterMatrixHtml = renderWindowMasterMatrixHtml;
+
+function setWindowDisciplineFilter(discKey) {
+  if (activeWindowDisciplineFilter === discKey) {
+    activeWindowDisciplineFilter = null;
+  } else {
+    activeWindowDisciplineFilter = discKey;
+  }
+  currentQuestIndex = 0;
+  questChunkStart = 0;
+  questChunkEnd = 20;
+
+  const levelSelect = document.getElementById('questDirectLevelSelect');
+  if (levelSelect) levelSelect.innerHTML = '';
+
+  renderQuestStepperTrack();
+  renderActiveQuest(0);
+
+  if (window.AudioFX) window.AudioFX.playClick();
+  if (window.SQL_BUDDY) {
+    if (activeWindowDisciplineFilter) {
+      const meta = (window.WINDOW_DISCIPLINES_METADATA || []).find(m => m.key === activeWindowDisciplineFilter);
+      const name = meta ? meta.name : activeWindowDisciplineFilter;
+      window.SQL_BUDDY.say(`Filtered to ${name} (20 Levels)! Master this analytical discipline!`, 3500, 'celebrate');
+    } else {
+      window.SQL_BUDDY.say("Showing all 100 Window Function quests across 5 disciplines!", 3000, 'happy');
+    }
+  }
+}
+window.setWindowDisciplineFilter = setWindowDisciplineFilter;
+
+function toggleWindowMatrixGuide() {
+  isWindowMatrixGuideCollapsed = !isWindowMatrixGuideCollapsed;
+  renderActiveQuest(currentQuestIndex);
+  if (window.AudioFX) window.AudioFX.playClick();
+}
+window.toggleWindowMatrixGuide = toggleWindowMatrixGuide;
 
 function toggleQuestLevelDrawer() {
   const drawer = document.getElementById('questLevelDrawer');
@@ -7306,10 +7469,11 @@ function updateQuestSidebars(quest, idx, total) {
   const tierName = (quest.tier || '').toLowerCase();
   const levelNum = idx + 1;
   const isSection5 = currentQuestSection === 'section5';
-  const isTier1 = tierName.includes('apprentice') || (isSection5 ? levelNum <= 20 : (currentQuestSection === 'section1' ? levelNum <= 15 : levelNum <= 20));
-  const isTier2 = tierName.includes('practitioner') || (isSection5 ? (levelNum > 20 && levelNum <= 40) : (currentQuestSection === 'section1' ? (levelNum > 15 && levelNum <= 40) : (levelNum > 20 && levelNum <= 45)));
-  const isTier3 = tierName.includes('specialist') || (isSection5 ? (levelNum > 40 && levelNum <= 60) : (currentQuestSection === 'section1' ? (levelNum > 40 && levelNum <= 70) : (levelNum > 45 && levelNum <= 75)));
-  const isTier4 = tierName.includes('master') || (isSection5 ? levelNum > 60 : (currentQuestSection === 'section1' ? levelNum > 70 : levelNum > 75));
+  const isSection6 = currentQuestSection === 'section6';
+  const isTier1 = tierName.includes('apprentice') || (isSection5 || isSection6 ? levelNum <= 20 : (currentQuestSection === 'section1' ? levelNum <= 15 : levelNum <= 20));
+  const isTier2 = tierName.includes('practitioner') || (isSection5 ? (levelNum > 20 && levelNum <= 40) : (isSection6 ? (levelNum > 20 && levelNum <= 45) : (currentQuestSection === 'section1' ? (levelNum > 15 && levelNum <= 40) : (levelNum > 20 && levelNum <= 45))));
+  const isTier3 = tierName.includes('specialist') || (isSection5 ? (levelNum > 40 && levelNum <= 60) : (isSection6 ? (levelNum > 45 && levelNum <= 75) : (currentQuestSection === 'section1' ? (levelNum > 40 && levelNum <= 70) : (levelNum > 45 && levelNum <= 75))));
+  const isTier4 = tierName.includes('master') || (isSection5 ? levelNum > 60 : (isSection6 ? levelNum > 75 : (currentQuestSection === 'section1' ? levelNum > 70 : levelNum > 75)));
 
   const tiers = [
     { id: 'ladderTier1', active: isTier1 },
@@ -7330,7 +7494,12 @@ function updateQuestSidebars(quest, idx, total) {
   const sub2 = document.querySelector('#ladderTier2 .ladder-tier-sub');
   const sub3 = document.querySelector('#ladderTier3 .ladder-tier-sub');
   const sub4 = document.querySelector('#ladderTier4 .ladder-tier-sub');
-  if (currentQuestSection === 'section5') {
+  if (currentQuestSection === 'section6') {
+    if (sub1) sub1.textContent = 'Lvl 01–20 • Ranking & Numbering';
+    if (sub2) sub2.textContent = 'Lvl 21–45 • Offsets & Velocity';
+    if (sub3) sub3.textContent = 'Lvl 46–75 • Cumulative Accumulators';
+    if (sub4) sub4.textContent = 'Lvl 76–100 • Sliding Window Frames';
+  } else if (currentQuestSection === 'section5') {
     if (sub1) sub1.textContent = 'Tier 1 • Easy (01–20) • 3 Blanks';
     if (sub2) sub2.textContent = 'Tier 2 • Medium (21–40) • 4 Blanks';
     if (sub3) sub3.textContent = 'Tier 3 • Hard (41–60) • 5 Blanks';
@@ -7505,6 +7674,30 @@ const SQL_TRAP_CATALOG = {
   'WHERE B.': {
     title: 'Outer Join Nullification Trap',
     explanation: 'Filtering a column from the right (preserved) table in the `WHERE` clause (e.g. `WHERE b.status = "ACTIVE"`) drops all unmatched NULL rows, silently turning your `LEFT JOIN` into an `INNER JOIN`! Place such filters in the `ON` clause instead.'
+  },
+  'WHERE ROW_NUMBER': {
+    title: 'Window Function in WHERE Clause Trap',
+    explanation: 'Window functions cannot be placed in the `WHERE` clause! The SQL engine evaluates `WHERE` before window functions. Wrap the query in a CTE (`WITH cte AS (...)`) and filter `WHERE rnk <= 3` outside.'
+  },
+  'WHERE RANK': {
+    title: 'Window Function in WHERE Clause Trap',
+    explanation: '`RANK()` cannot be evaluated in `WHERE`! Use a CTE or subquery to filter on ranked values.'
+  },
+  'WHERE LEAD': {
+    title: 'Offset Window in WHERE Clause Trap',
+    explanation: '`LEAD()` and `LAG()` evaluate along window partitions after `WHERE` filtering. Filter offset deltas via an outer query / CTE.'
+  },
+  'RANGE BETWEEN': {
+    title: 'Logical RANGE vs Physical ROWS Trap',
+    explanation: '`RANGE` groups duplicate peer values together into one step! If two rows have identical `ORDER BY` values, `RANGE` aggregates them both at once. Use `ROWS BETWEEN` for strict physical row counting.'
+  },
+  'LAST_VALUE': {
+    title: 'LAST_VALUE Default Window Frame Trap',
+    explanation: 'By default, the window frame stops at `CURRENT ROW`! Calling `LAST_VALUE()` returns the current row value unless you explicitly specify `ROWS BETWEEN CURRENT ROW AND UNBOUNDED FOLLOWING`.'
+  },
+  'GROUP BY ': {
+    title: 'GROUP BY vs PARTITION BY Confusion',
+    explanation: '`GROUP BY` collapses multiple rows into a single aggregated row. In window functions, use `PARTITION BY` inside `OVER()` to preserve individual row identities while computing summary metrics.'
   }
 };
 
@@ -8059,9 +8252,396 @@ function renderJoinDualCodingHtml(quest, userSelections) {
 }
 window.renderJoinDualCodingHtml = renderJoinDualCodingHtml;
 
+// =============================================================================
+// DUAL-CODING WINDOW FUNCTION & SLIDING FRAME VISUALIZER
+// =============================================================================
+function renderWindowDualCodingHtml(quest, userSelections) {
+  const table = quest.table || 'SalesTrades';
+  const allSelStr = Object.values(userSelections || {}).join(' ').toUpperCase();
+
+  let discKey = quest.disciplineKey || 'ranking';
+  if (allSelStr.includes('ROW_NUMBER') || allSelStr.includes('RANK') || allSelStr.includes('NTILE') || allSelStr.includes('DENSE')) {
+    discKey = 'ranking';
+  } else if (allSelStr.includes('LEAD') || allSelStr.includes('LAG')) {
+    discKey = 'offsets';
+  } else if (allSelStr.includes('ROWS BETWEEN') || allSelStr.includes('RANGE BETWEEN') || allSelStr.includes('PRECEDING') || allSelStr.includes('FOLLOWING')) {
+    discKey = 'window_frames';
+  } else if (allSelStr.includes('SUM') || allSelStr.includes('AVG') || allSelStr.includes('RUNNING')) {
+    discKey = 'running_totals';
+  } else if (allSelStr.includes('FIRST_VALUE') || allSelStr.includes('LAST_VALUE') || allSelStr.includes('PERCENT_RANK') || allSelStr.includes('CUME_DIST')) {
+    discKey = 'extremums_stats';
+  }
+
+  const configs = {
+    ranking: {
+      name: 'ROW NUMBERING & RANKING',
+      symbol: '🏅',
+      color: '#38bdf8',
+      summary: 'Positional Sequence: Computes integer rank ordering along ordered partition values.',
+      badgeText: 'Positional Rank Sequence Active'
+    },
+    offsets: {
+      name: 'TEMPORAL OFFSETS (LEAD & LAG)',
+      symbol: '⏱️',
+      color: '#10b981',
+      summary: 'Inter-Row Velocity: Retrieves values from prior (LAG) or subsequent (LEAD) rows without self-joins.',
+      badgeText: 'Inter-Row Delta & Velocity Active'
+    },
+    running_totals: {
+      name: 'CUMULATIVE ACCUMULATORS',
+      symbol: '📈',
+      color: '#f59e0b',
+      summary: 'Running Accumulation: Computes running sums and rolling metrics along the ordered partition horizon.',
+      badgeText: 'Running Cumulative Accumulator'
+    },
+    window_frames: {
+      name: 'SLIDING WINDOW FRAMES',
+      symbol: '🪟',
+      color: '#ec4899',
+      summary: 'Physical Horizon Frame: Restricts calculations to a local sliding window (e.g. 3-day moving average).',
+      badgeText: 'Sliding Frame Horizon Active'
+    },
+    extremums_stats: {
+      name: 'BOUNDARY PICKS & PERCENTILES',
+      symbol: '🎯',
+      color: '#a855f7',
+      summary: 'Boundary Anchors & Distribution: Anchors FIRST_VALUE/LAST_VALUE and calculates statistical percentiles.',
+      badgeText: 'Boundary Anchor & Percentile Active'
+    }
+  };
+
+  const cfg = configs[discKey] || configs.ranking;
+
+  // 1. Interactive Graphic Panel
+  let diagramHtml = '';
+  if (discKey === 'ranking') {
+    diagramHtml = `
+      <div style="text-align: center; width: 100%;">
+        <div style="font-size: 10px; font-family: var(--font-mono); color: #38bdf8; font-weight: 700; margin-bottom: 6px;">
+          LEADERBOARD PARTITION ORDERING
+        </div>
+        <div style="display: flex; justify-content: center; gap: 8px; align-items: flex-end; height: 95px; padding-bottom: 8px;">
+          <div style="background: rgba(56, 189, 248, 0.2); border: 1px solid #38bdf8; border-radius: 4px; width: 44px; height: 75px; display: flex; flex-direction: column; align-items: center; justify-content: center;">
+            <span style="font-size: 14px;">🥈</span>
+            <span style="font-size: 9px; font-weight: 800; color: #38bdf8; font-family: monospace;">#2</span>
+            <span style="font-size: 8px; color: var(--text-muted);">$85k</span>
+          </div>
+          <div style="background: rgba(56, 189, 248, 0.35); border: 2px solid #38bdf8; border-radius: 4px; width: 48px; height: 90px; display: flex; flex-direction: column; align-items: center; justify-content: center; box-shadow: 0 0 10px rgba(56, 189, 248, 0.3);">
+            <span style="font-size: 16px;">🥇</span>
+            <span style="font-size: 10px; font-weight: 900; color: #ffffff; font-family: monospace;">#1</span>
+            <span style="font-size: 8.5px; color: #38bdf8; font-weight: 700;">$140k</span>
+          </div>
+          <div style="background: rgba(56, 189, 248, 0.15); border: 1px solid #38bdf8; border-radius: 4px; width: 44px; height: 60px; display: flex; flex-direction: column; align-items: center; justify-content: center;">
+            <span style="font-size: 13px;">🥉</span>
+            <span style="font-size: 9px; font-weight: 800; color: #38bdf8; font-family: monospace;">#3</span>
+            <span style="font-size: 8px; color: var(--text-muted);">$62k</span>
+          </div>
+        </div>
+        <div style="font-size: 9px; color: var(--text-muted);">Ties evaluated: DENSE_RANK (no gaps) vs RANK (gaps)</div>
+      </div>
+    `;
+  } else if (discKey === 'offsets') {
+    diagramHtml = `
+      <div style="width: 100%; padding: 4px 6px;">
+        <div style="font-size: 10px; font-family: var(--font-mono); color: #10b981; font-weight: 700; margin-bottom: 8px; text-align: center;">
+          CHRONOLOGICAL OFFSET VELOCITY (LAG &rarr; CURRENT &rarr; LEAD)
+        </div>
+        <div style="display: flex; align-items: center; justify-content: space-between; gap: 6px;">
+          <div style="background: rgba(255,255,255,0.04); border: 1px dashed rgba(255,255,255,0.2); border-radius: 6px; padding: 6px 8px; text-align: center; flex: 1;">
+            <div style="font-size: 9px; color: var(--text-muted);">Row t-1</div>
+            <div style="font-size: 10px; font-weight: 700; color: var(--text-secondary); font-family: monospace;">$150.00</div>
+            <div style="font-size: 8.5px; color: #10b981;">LAG(1)</div>
+          </div>
+          <span style="color: #10b981; font-size: 14px; font-weight: 800;">&rarr;</span>
+          <div style="background: rgba(16, 185, 129, 0.15); border: 1px solid #10b981; border-radius: 6px; padding: 6px 8px; text-align: center; flex: 1.1; box-shadow: 0 0 8px rgba(16, 185, 129, 0.25);">
+            <div style="font-size: 9px; color: #34d399; font-weight: 700;">CURRENT</div>
+            <div style="font-size: 11px; font-weight: 800; color: #ffffff; font-family: monospace;">$185.00</div>
+            <div style="font-size: 8.5px; color: #a7f3d0;">Δ +$35.00</div>
+          </div>
+          <span style="color: #10b981; font-size: 14px; font-weight: 800;">&rarr;</span>
+          <div style="background: rgba(255,255,255,0.04); border: 1px dashed rgba(255,255,255,0.2); border-radius: 6px; padding: 6px 8px; text-align: center; flex: 1;">
+            <div style="font-size: 9px; color: var(--text-muted);">Row t+1</div>
+            <div style="font-size: 10px; font-weight: 700; color: var(--text-secondary); font-family: monospace;">$210.00</div>
+            <div style="font-size: 8.5px; color: #10b981;">LEAD(1)</div>
+          </div>
+        </div>
+      </div>
+    `;
+  } else if (discKey === 'running_totals') {
+    diagramHtml = `
+      <div style="width: 100%; padding: 4px 6px;">
+        <div style="font-size: 10px; font-family: var(--font-mono); color: #f59e0b; font-weight: 700; margin-bottom: 8px; text-align: center;">
+          CUMULATIVE ACCUMULATOR GAUGE
+        </div>
+        <div style="display: flex; flex-direction: column; gap: 6px;">
+          <div>
+            <div style="display: flex; justify-content: space-between; font-size: 9.5px; font-family: monospace; margin-bottom: 2px;">
+              <span>Row 1: +$1,200</span>
+              <span style="color: #fbbf24;">Sum: $1,200</span>
+            </div>
+            <div style="height: 6px; background: rgba(255,255,255,0.06); border-radius: 3px; overflow: hidden;">
+              <div style="width: 25%; height: 100%; background: #f59e0b;"></div>
+            </div>
+          </div>
+          <div>
+            <div style="display: flex; justify-content: space-between; font-size: 9.5px; font-family: monospace; margin-bottom: 2px;">
+              <span>Row 2: +$2,500</span>
+              <span style="color: #fbbf24;">Sum: $3,700</span>
+            </div>
+            <div style="height: 6px; background: rgba(255,255,255,0.06); border-radius: 3px; overflow: hidden;">
+              <div style="width: 60%; height: 100%; background: #f59e0b;"></div>
+            </div>
+          </div>
+          <div>
+            <div style="display: flex; justify-content: space-between; font-size: 9.5px; font-family: monospace; margin-bottom: 2px;">
+              <span style="color: #ffffff; font-weight: 700;">👉 Current Row 3: +$1,800</span>
+              <span style="color: #fde68a; font-weight: 800;">Sum: $5,500</span>
+            </div>
+            <div style="height: 6px; background: rgba(255,255,255,0.06); border-radius: 3px; overflow: hidden;">
+              <div style="width: 88%; height: 100%; background: #fbbf24; box-shadow: 0 0 6px #f59e0b;"></div>
+            </div>
+          </div>
+        </div>
+      </div>
+    `;
+  } else if (discKey === 'window_frames') {
+    diagramHtml = `
+      <div style="width: 100%; padding: 4px 6px;">
+        <div style="font-size: 10px; font-family: var(--font-mono); color: #ec4899; font-weight: 700; margin-bottom: 8px; text-align: center;">
+          SLIDING FRAME: ROWS BETWEEN 2 PRECEDING AND CURRENT ROW
+        </div>
+        <div style="border: 2px dashed #ec4899; background: rgba(236, 72, 153, 0.08); border-radius: 6px; padding: 6px 8px;">
+          <div style="display: flex; justify-content: space-between; align-items: center; font-size: 9.5px; font-family: monospace; margin-bottom: 4px;">
+            <span style="color: #f472b6;">[ 2 PRECEDING ]</span>
+            <span style="color: #ffffff; font-weight: 800;">👉 [ CURRENT ROW ]</span>
+            <span style="color: var(--text-muted); opacity: 0.5;">[ 1 FOLLOWING ]</span>
+          </div>
+          <div style="display: flex; gap: 4px; justify-content: center;">
+            <span style="background: rgba(236,72,153,0.2); border: 1px solid #ec4899; border-radius: 3px; padding: 2px 6px; font-size: 9px; font-family: monospace;">R1 ($120)</span>
+            <span style="background: rgba(236,72,153,0.2); border: 1px solid #ec4899; border-radius: 3px; padding: 2px 6px; font-size: 9px; font-family: monospace;">R2 ($150)</span>
+            <span style="background: rgba(236,72,153,0.4); border: 1.5px solid #ec4899; border-radius: 3px; padding: 2px 6px; font-size: 9.5px; font-weight: 800; color: #fff; font-family: monospace;">R3 ($210)</span>
+            <span style="background: rgba(255,255,255,0.03); border: 1px solid rgba(255,255,255,0.1); opacity: 0.4; border-radius: 3px; padding: 2px 6px; font-size: 9px; font-family: monospace;">R4 (out)</span>
+          </div>
+          <div style="font-size: 8.5px; text-align: center; color: #fbcfe8; margin-top: 6px;">
+            Local Window AVG = (120 + 150 + 210) / 3 = <strong>$160.00</strong>
+          </div>
+        </div>
+      </div>
+    `;
+  } else {
+    // Extremums & Stats
+    diagramHtml = `
+      <div style="width: 100%; padding: 4px 6px;">
+        <div style="font-size: 10px; font-family: var(--font-mono); color: #a855f7; font-weight: 700; margin-bottom: 8px; text-align: center;">
+          PARTITION BOUNDARY ANCHORS
+        </div>
+        <div style="display: flex; flex-direction: column; gap: 8px;">
+          <div style="display: flex; justify-content: space-between; align-items: center; background: rgba(168, 85, 247, 0.12); border: 1px solid #a855f7; border-radius: 5px; padding: 4px 8px;">
+            <span style="font-size: 9px; font-family: monospace; color: #c084fc;">FIRST_VALUE Anchor:</span>
+            <span style="font-size: 10px; font-weight: 800; color: #ffffff; font-family: monospace;">$100.00 (Row #1)</span>
+          </div>
+          <div style="display: flex; justify-content: space-between; align-items: center; background: rgba(255,255,255,0.04); border: 1px solid rgba(255,255,255,0.1); border-radius: 5px; padding: 4px 8px;">
+            <span style="font-size: 9px; font-family: monospace; color: var(--text-muted);">Current Value:</span>
+            <span style="font-size: 10px; font-weight: 700; color: var(--text-secondary); font-family: monospace;">$165.00 (Row #4)</span>
+          </div>
+          <div style="display: flex; justify-content: space-between; align-items: center; background: rgba(168, 85, 247, 0.12); border: 1px solid #a855f7; border-radius: 5px; padding: 4px 8px;">
+            <span style="font-size: 9px; font-family: monospace; color: #c084fc;">LAST_VALUE (Unbounded):</span>
+            <span style="font-size: 10px; font-weight: 800; color: #ffffff; font-family: monospace;">$280.00 (Row #10)</span>
+          </div>
+        </div>
+      </div>
+    `;
+  }
+
+  // 2. Synchronous Table Projection
+  let rowsHtml = '';
+  if (discKey === 'ranking') {
+    rowsHtml = `
+      <tr class="row-match">
+        <td><span class="match-key-pill" style="border-color: #38bdf8; color: #38bdf8;">TECH-DESK</span></td>
+        <td>2026-03-01</td>
+        <td>$140,000.00</td>
+        <td><strong style="color: #38bdf8;">Rank #1</strong></td>
+        <td style="text-align: right;"><span class="row-status-pill keep">🥇 Top Metric</span></td>
+      </tr>
+      <tr class="row-match">
+        <td><span class="match-key-pill" style="border-color: #38bdf8; color: #38bdf8;">TECH-DESK</span></td>
+        <td>2026-03-02</td>
+        <td>$85,000.00</td>
+        <td><strong style="color: #38bdf8;">Rank #2</strong></td>
+        <td style="text-align: right;"><span class="row-status-pill keep">🥈 2nd Place</span></td>
+      </tr>
+      <tr class="row-match">
+        <td><span class="match-key-pill" style="border-color: #38bdf8; color: #38bdf8;">TECH-DESK</span></td>
+        <td>2026-03-03</td>
+        <td>$62,000.00</td>
+        <td><strong style="color: #38bdf8;">Rank #3</strong></td>
+        <td style="text-align: right;"><span class="row-status-pill keep">🥉 3rd Place</span></td>
+      </tr>
+      <tr class="row-match">
+        <td><span class="match-key-pill" style="border-color: #38bdf8; color: #38bdf8;">TECH-DESK</span></td>
+        <td>2026-03-04</td>
+        <td>$41,000.00</td>
+        <td><strong style="color: #38bdf8;">Rank #4</strong></td>
+        <td style="text-align: right;"><span class="row-status-pill keep">Quartile 4</span></td>
+      </tr>
+    `;
+  } else if (discKey === 'offsets') {
+    rowsHtml = `
+      <tr class="row-match">
+        <td><span class="match-key-pill" style="border-color: #10b981; color: #10b981;">ACCT-101</span></td>
+        <td>2026-03-01</td>
+        <td>$120.00</td>
+        <td><span class="null-pill">&lt;NULL&gt;</span></td>
+        <td style="text-align: right;"><span class="row-status-pill keep">★ Boundary Start</span></td>
+      </tr>
+      <tr class="row-match">
+        <td><span class="match-key-pill" style="border-color: #10b981; color: #10b981;">ACCT-101</span></td>
+        <td>2026-03-02</td>
+        <td>$150.00</td>
+        <td><strong style="color: #34d399;">$120.00</strong> (Δ +$30.00)</td>
+        <td style="text-align: right;"><span class="row-status-pill keep">✓ Lag(1) Matched</span></td>
+      </tr>
+      <tr class="row-match" style="background: rgba(16, 185, 129, 0.08);">
+        <td><span class="match-key-pill" style="border-color: #10b981; color: #10b981;">ACCT-101</span></td>
+        <td>2026-03-03</td>
+        <td>$185.00</td>
+        <td><strong style="color: #34d399;">$150.00</strong> (Δ +$35.00)</td>
+        <td style="text-align: right;"><span class="row-status-pill keep" style="background: rgba(16, 185, 129, 0.2); color: #34d399;">👉 Current Row</span></td>
+      </tr>
+    `;
+  } else if (discKey === 'running_totals') {
+    rowsHtml = `
+      <tr class="row-match">
+        <td><span class="match-key-pill" style="border-color: #f59e0b; color: #f59e0b;">REGION-EAST</span></td>
+        <td>2026-03-01</td>
+        <td>+$1,200.00</td>
+        <td><strong style="color: #fbbf24;">$1,200.00</strong></td>
+        <td style="text-align: right;"><span class="row-status-pill keep">Row 1 Baseline</span></td>
+      </tr>
+      <tr class="row-match">
+        <td><span class="match-key-pill" style="border-color: #f59e0b; color: #f59e0b;">REGION-EAST</span></td>
+        <td>2026-03-02</td>
+        <td>+$2,500.00</td>
+        <td><strong style="color: #fbbf24;">$3,700.00</strong></td>
+        <td style="text-align: right;"><span class="row-status-pill keep">Accumulated</span></td>
+      </tr>
+      <tr class="row-match" style="background: rgba(245, 158, 11, 0.08);">
+        <td><span class="match-key-pill" style="border-color: #f59e0b; color: #f59e0b;">REGION-EAST</span></td>
+        <td>2026-03-03</td>
+        <td>+$1,800.00</td>
+        <td><strong style="color: #fbbf24; font-size: 11.5px;">$5,500.00</strong></td>
+        <td style="text-align: right;"><span class="row-status-pill cartesian">👉 Running Peak</span></td>
+      </tr>
+    `;
+  } else if (discKey === 'window_frames') {
+    rowsHtml = `
+      <tr class="row-match">
+        <td><span class="match-key-pill" style="border-color: #ec4899; color: #ec4899;">DESK-ALPHA</span></td>
+        <td>2026-03-01</td>
+        <td>$120.00</td>
+        <td><strong style="color: #f472b6;">$120.00</strong></td>
+        <td style="text-align: right;"><span class="row-status-pill null-pad">1-Row Frame</span></td>
+      </tr>
+      <tr class="row-match">
+        <td><span class="match-key-pill" style="border-color: #ec4899; color: #ec4899;">DESK-ALPHA</span></td>
+        <td>2026-03-02</td>
+        <td>$150.00</td>
+        <td><strong style="color: #f472b6;">$135.00</strong></td>
+        <td style="text-align: right;"><span class="row-status-pill null-pad">2-Row Frame</span></td>
+      </tr>
+      <tr class="row-match" style="background: rgba(236, 72, 153, 0.08);">
+        <td><span class="match-key-pill" style="border-color: #ec4899; color: #ec4899;">DESK-ALPHA</span></td>
+        <td>2026-03-03</td>
+        <td>$210.00</td>
+        <td><strong style="color: #f472b6; font-size: 11.5px;">$160.00</strong></td>
+        <td style="text-align: right;"><span class="row-status-pill null-pad" style="background: rgba(236, 72, 153, 0.25);">👉 3-Period Rolling</span></td>
+      </tr>
+    `;
+  } else {
+    rowsHtml = `
+      <tr class="row-match">
+        <td><span class="match-key-pill" style="border-color: #a855f7; color: #a855f7;">PORTFOLIO-1</span></td>
+        <td>2026-03-01</td>
+        <td>$100.00</td>
+        <td><strong style="color: #c084fc;">First: $100.00</strong></td>
+        <td style="text-align: right;"><span class="row-status-pill keep" style="background: rgba(168,85,247,0.2); color: #c084fc;">★ Open Baseline</span></td>
+      </tr>
+      <tr class="row-match">
+        <td><span class="match-key-pill" style="border-color: #a855f7; color: #a855f7;">PORTFOLIO-1</span></td>
+        <td>2026-03-02</td>
+        <td>$140.00</td>
+        <td><strong style="color: #c084fc;">First: $100.00</strong></td>
+        <td style="text-align: right;"><span class="row-status-pill keep" style="background: rgba(168,85,247,0.2); color: #c084fc;">Anchor Preserved</span></td>
+      </tr>
+      <tr class="row-match">
+        <td><span class="match-key-pill" style="border-color: #a855f7; color: #a855f7;">PORTFOLIO-1</span></td>
+        <td>2026-03-03</td>
+        <td>$280.00</td>
+        <td><strong style="color: #c084fc;">Last: $280.00</strong></td>
+        <td style="text-align: right;"><span class="row-status-pill keep" style="background: rgba(168,85,247,0.2); color: #c084fc;">★ Horizon Final</span></td>
+      </tr>
+    `;
+  }
+
+  return `
+    <div class="live-preview-header">
+      <div class="live-preview-title">
+        <span class="join-symbol-badge" style="color: ${cfg.color}; border-color: ${cfg.color}66; width: 18px; height: 18px; font-size: 11px;">${cfg.symbol}</span>
+        <span>DUAL-CODING ANALYTICAL WINDOW ENGINE:</span>
+        <span style="color: ${cfg.color}; font-weight: 800;">${cfg.name}</span>
+      </div>
+      <span class="live-preview-subtitle">${cfg.badgeText}</span>
+    </div>
+
+    <div style="font-size: 11px; color: var(--text-secondary); margin-bottom: 8px; line-height: 1.45;">
+      ${cfg.summary}
+    </div>
+
+    <div class="join-dual-coding-grid">
+      <!-- Left Column: Graphic Gauge / Frame Horizon -->
+      <div class="join-venn-card" style="border-color: ${cfg.color}33;">
+        ${diagramHtml}
+      </div>
+
+      <!-- Right Column: Live Table Record Alignment -->
+      <div class="join-live-table-card">
+        <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 6px; padding-bottom: 4px; border-bottom: 1px solid rgba(255,255,255,0.06);">
+          <span style="font-size: 10px; font-family: var(--font-mono); color: var(--text-muted); font-weight: 700;">
+            ANALYTICAL ROW PROJECTION (OVER PARTITION PREVIEW)
+          </span>
+          <span style="font-size: 9.5px; font-family: var(--font-mono); color: ${cfg.color};">
+            Table: ${escapeHtml(table)}
+          </span>
+        </div>
+        <table class="live-preview-table">
+          <thead>
+            <tr>
+              <th style="width: 100px;">PARTITION</th>
+              <th style="width: 80px;">ORDER KEY</th>
+              <th>ROW METRIC</th>
+              <th>WINDOW CALCULATION</th>
+              <th style="width: 120px; text-align: right;">STATUS</th>
+            </tr>
+          </thead>
+          <tbody>
+            ${rowsHtml}
+          </tbody>
+        </table>
+      </div>
+    </div>
+  `;
+}
+window.renderWindowDualCodingHtml = renderWindowDualCodingHtml;
+
 function renderLiveTransformationHtml(quest, userSelections) {
-  // 1. Dual Coding for Section 05 & Relational JOINs
-  if (currentQuestSection === 'section5' || quest.disciplineKey || (quest.joinTable && quest.targetQuery && quest.targetQuery.toUpperCase().includes('JOIN'))) {
+  // 1. Dual Coding for Section 06 (Window Functions & Analytical Partitioning)
+  if (currentQuestSection === 'section6' || ['ranking', 'offsets', 'running_totals', 'window_frames', 'extremums_stats'].includes(quest.disciplineKey)) {
+    return renderWindowDualCodingHtml(quest, userSelections);
+  }
+
+  // 2. Dual Coding for Section 05 & Relational JOINs
+  if (currentQuestSection === 'section5' || (quest.disciplineKey && quest.disciplineKey.includes('join')) || (quest.joinTable && quest.targetQuery && quest.targetQuery.toUpperCase().includes('JOIN'))) {
     return renderJoinDualCodingHtml(quest, userSelections);
   }
 
@@ -8376,6 +8956,8 @@ function renderFillBlankQuest(container, quest) {
   container.innerHTML = `
     <!-- Section 05: Relational JOINs Master Arena Decision Matrix & Trap Focus Reference -->
     ${currentQuestSection === 'section5' ? renderJoinMasterMatrixHtml() : ''}
+    <!-- Section 06: Window Functions & Analytical Partitioning Decision Matrix Reference -->
+    ${currentQuestSection === 'section6' ? renderWindowMasterMatrixHtml() : ''}
 
     <!-- Faded Scaffolding Tier Banner -->
     ${getScaffoldingBannerHtml(quest, currentQuestIndex)}
