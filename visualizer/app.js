@@ -6974,6 +6974,78 @@ function toggleQuestTablePreview(tableName) {
 }
 window.toggleQuestTablePreview = toggleQuestTablePreview;
 
+// =============================================================================
+// LEITNER MISTAKE VAULT (SPACED REPETITION ENGINE)
+// =============================================================================
+let isMistakeFilterActive = false;
+
+function getQuestMistakeKey(section, idx) {
+  return `${section || 'section1'}_${idx}`;
+}
+
+function getQuestMistakesSet() {
+  try {
+    const raw = localStorage.getItem('sql_quest_mistakes');
+    return new Set(raw ? JSON.parse(raw) : []);
+  } catch (e) {
+    return new Set();
+  }
+}
+
+function saveQuestMistakesSet(set) {
+  try {
+    localStorage.setItem('sql_quest_mistakes', JSON.stringify(Array.from(set)));
+  } catch (e) {}
+}
+
+function recordQuestMistake(section, idx) {
+  const set = getQuestMistakesSet();
+  set.add(getQuestMistakeKey(section, idx));
+  saveQuestMistakesSet(set);
+  updateMistakeVaultUI();
+}
+
+function clearQuestMistake(section, idx) {
+  const set = getQuestMistakesSet();
+  const key = getQuestMistakeKey(section, idx);
+  if (set.has(key)) {
+    set.delete(key);
+    saveQuestMistakesSet(set);
+    updateMistakeVaultUI();
+    return true; // was in mistake vault!
+  }
+  return false;
+}
+
+function getMistakesCountForCurrentSection() {
+  const set = getQuestMistakesSet();
+  const questsList = getActiveQuestsList();
+  let count = 0;
+  for (let i = 0; i < questsList.length; i++) {
+    if (set.has(getQuestMistakeKey(currentQuestSection, i))) count++;
+  }
+  return count;
+}
+
+function updateMistakeVaultUI() {
+  const countEl = document.getElementById('mistakeVaultCount');
+  if (countEl) countEl.textContent = getMistakesCountForCurrentSection();
+  const btnAll = document.getElementById('btnFilterAllQuests');
+  const btnMistakes = document.getElementById('btnFilterMistakesQuests');
+  if (btnAll && btnMistakes) {
+    btnAll.classList.toggle('active', !isMistakeFilterActive);
+    btnMistakes.classList.toggle('active', isMistakeFilterActive);
+  }
+}
+
+function toggleMistakeVaultFilter(enableMistakesOnly) {
+  isMistakeFilterActive = !!enableMistakesOnly;
+  updateMistakeVaultUI();
+  renderQuestStepperTrack();
+  if (window.AudioFX) window.AudioFX.playClick();
+}
+window.toggleMistakeVaultFilter = toggleMistakeVaultFilter;
+
 function renderQuestStepperTrack() {
   const track = document.getElementById('questStepperTrack');
   const progressText = document.getElementById('questProgressText');
@@ -7014,24 +7086,44 @@ function renderQuestStepperTrack() {
 
   if (!track) return;
 
+  const mistakesSet = getQuestMistakesSet();
+
   // Slice quests for stepper track if chunking
   const start = Math.max(0, questChunkStart);
   const end = Math.min(total, questChunkEnd || total);
-  const visibleQuests = (currentQuestSection === 'section1') ? questsList.slice(start, end) : questsList;
+  let visibleIndices = [];
+  
+  if (isMistakeFilterActive) {
+    for (let i = 0; i < total; i++) {
+      if (mistakesSet.has(getQuestMistakeKey(currentQuestSection, i))) {
+        visibleIndices.push(i);
+      }
+    }
+  } else {
+    for (let i = start; i < end; i++) {
+      visibleIndices.push(i);
+    }
+  }
 
   let html = '';
-  visibleQuests.forEach((q, relIdx) => {
-    const realIdx = (currentQuestSection === 'section1') ? start + relIdx : relIdx;
-    const isActive = realIdx === currentQuestIndex;
-    const isDone = realIdx < currentQuestIndex;
-    const numStr = (realIdx + 1 < 10) ? '0' + (realIdx + 1) : '' + (realIdx + 1);
-    html += `
-      <button class="quest-grid-chip ${isActive ? 'active' : ''} ${isDone ? 'completed' : ''}" onclick="setQuestIndex(${realIdx})" title="${q.title}">
-        <span class="chip-status-mark">${isDone ? '✓' : (isActive ? '⚡' : '#' + numStr)}</span>
-        <span>Lvl ${numStr}</span>
-      </button>
-    `;
-  });
+  if (isMistakeFilterActive && visibleIndices.length === 0) {
+    html = `<div style="grid-column: 1 / -1; padding: 24px 12px; text-align: center; color: var(--text-muted); font-size: 11px;">🎉 Zero pending mistakes in this track! Clean record!</div>`;
+  } else {
+    visibleIndices.forEach(realIdx => {
+      const q = questsList[realIdx];
+      if (!q) return;
+      const isActive = realIdx === currentQuestIndex;
+      const isDone = realIdx < currentQuestIndex;
+      const isMistake = mistakesSet.has(getQuestMistakeKey(currentQuestSection, realIdx));
+      const numStr = (realIdx + 1 < 10) ? '0' + (realIdx + 1) : '' + (realIdx + 1);
+      html += `
+        <button class="quest-grid-chip ${isActive ? 'active' : ''} ${isDone ? 'completed' : ''} ${isMistake ? 'is-mistake' : ''}" onclick="setQuestIndex(${realIdx})" title="${q.title} ${isMistake ? '(Mistake Vault Retry)' : ''}">
+          <span class="chip-status-mark">${isMistake ? '🔁' : (isDone ? '✓' : (isActive ? '⚡' : '#' + numStr))}</span>
+          <span>Lvl ${numStr}</span>
+        </button>
+      `;
+    });
+  }
   track.innerHTML = html;
   const trackDrawer = document.getElementById('questStepperTrackDrawer');
   if (trackDrawer) trackDrawer.innerHTML = html;
@@ -7113,8 +7205,353 @@ function updateQuestSidebars(quest, idx, total) {
       }).join('');
     }
   }
+  // 4. Update Mistake Vault Counter
+  updateMistakeVaultUI();
 }
 window.updateQuestSidebars = updateQuestSidebars;
+
+// =============================================================================
+// COGNITIVE LEARNING SUITE: TRAP DISSECTION, DUAL CODING, SCAFFOLDING & BLITZ
+// =============================================================================
+
+const SQL_TRAP_CATALOG = {
+  'SORT BY': {
+    title: 'Engine Dialect Drift',
+    explanation: '`SORT BY` is Apache Hive/Spark syntax for local reducer sorting. Standard ANSI SQL requires `ORDER BY`.'
+  },
+  'ARRANGE BY': {
+    title: 'R / Dplyr Syntax',
+    explanation: '`ARRANGE BY` is from R/tidyverse. In SQL, relational sorting is strictly specified via `ORDER BY`.'
+  },
+  'GROUP BY': {
+    title: 'Grouping vs Sorting',
+    explanation: '`GROUP BY` aggregates multiple rows into single summary rows. To order the output, use `ORDER BY`.'
+  },
+  '= NULL': {
+    title: '3-Valued Logic Violation',
+    explanation: 'In SQL, `col = NULL` evaluates to UNKNOWN (neither TRUE nor FALSE). Always use `IS NULL` to check for missing values.'
+  },
+  '!= NULL': {
+    title: '3-Valued Logic Violation',
+    explanation: 'Comparison with NULL via `!= NULL` evaluates to UNKNOWN! You must use `IS NOT NULL`.'
+  },
+  'HAVING': {
+    title: 'Filtering Phase Mismatch',
+    explanation: '`HAVING` filters aggregated buckets *after* GROUP BY. Raw row-level filtering before aggregation requires `WHERE`.'
+  },
+  'FILTER': {
+    title: 'Window Aggregate Keyword',
+    explanation: '`FILTER` is only used for windowed aggregate clauses. Standard row filters require `WHERE`.'
+  },
+  'WHEN': {
+    title: 'Conditional Expression Misplacement',
+    explanation: '`WHEN` is only valid inside a `CASE` expression. Row filtering requires `WHERE`.'
+  },
+  'TOP': {
+    title: 'SQL Server Specific Syntax',
+    explanation: '`TOP N` is specific to T-SQL / MS SQL Server. Standard ANSI SQL and MySQL use `LIMIT N`.'
+  },
+  'FETCH': {
+    title: 'Incomplete ANSI Fetch',
+    explanation: 'ANSI requires `FETCH FIRST N ROWS ONLY`. In MySQL/PostgreSQL, `LIMIT N` is standard.'
+  },
+  'SKIP': {
+    title: 'NoSQL / MongoDB API',
+    explanation: '`skip()` is MongoDB syntax. In relational SQL, row offsets are specified via `OFFSET N`.'
+  },
+  'PAGE': {
+    title: 'ORM / API Abstraction',
+    explanation: '`PAGE` is an application-layer concept. Databases accept raw row counts via `OFFSET N`.'
+  },
+  'INTO': {
+    title: 'DML / Table Creation Misuse',
+    explanation: '`INTO` is used in `INSERT INTO` or `SELECT INTO`. To read existing table rows, use `FROM`.'
+  },
+  'PLUS': {
+    title: 'Math vs Boolean Logic',
+    explanation: '`PLUS` or `+` adds numbers. Boolean conjunction between conditions requires `AND`.'
+  }
+};
+
+function getTrapDissection(userSelections, quest) {
+  if (!quest || !quest.slots) return null;
+  const incorrectSlots = [];
+  for (const sId of Object.keys(quest.slots)) {
+    const userVal = userSelections[sId];
+    const correctVal = quest.slots[sId].correct;
+    if (userVal && userVal !== correctVal) {
+      incorrectSlots.push({ slotId: sId, userVal, correctVal });
+    }
+  }
+  if (incorrectSlots.length === 0) return null;
+
+  const firstFail = incorrectSlots[0];
+  const cleanVal = firstFail.userVal.replace(/;$/, '').trim();
+
+  for (const trapKey of Object.keys(SQL_TRAP_CATALOG)) {
+    if (cleanVal.toUpperCase() === trapKey || cleanVal.toUpperCase().includes(trapKey)) {
+      return {
+        title: SQL_TRAP_CATALOG[trapKey].title,
+        culprit: firstFail.userVal,
+        explanation: SQL_TRAP_CATALOG[trapKey].explanation
+      };
+    }
+  }
+
+  if (cleanVal.endsWith('DESC') && firstFail.correctVal.includes('ASC')) {
+    return {
+      title: 'Sort Direction Inversion',
+      culprit: firstFail.userVal,
+      explanation: `You selected descending sort (DESC), but the problem requires ascending order (ASC).`
+    };
+  }
+  if (cleanVal.endsWith('ASC') && firstFail.correctVal.includes('DESC')) {
+    return {
+      title: 'Sort Direction Inversion',
+      culprit: firstFail.userVal,
+      explanation: `You selected ascending sort (ASC), but the problem requires descending order (DESC).`
+    };
+  }
+
+  if (quest.schemaSnippet && quest.schemaSnippet.includes(cleanVal)) {
+    return {
+      title: 'Target Column Mismatch',
+      culprit: firstFail.userVal,
+      explanation: `'${cleanVal}' exists in this table, but the query requires '${firstFail.correctVal}'. Re-read the task instructions!`
+    };
+  }
+
+  if (quest.syntaxTrap) {
+    return {
+      title: 'Syntax Trap Detected',
+      culprit: firstFail.userVal,
+      explanation: quest.syntaxTrap
+    };
+  }
+
+  return null;
+}
+
+function getScaffoldingBannerHtml(quest, idx) {
+  const stepInChunk = (idx % 20) + 1;
+  if (stepInChunk <= 5) {
+    return `
+      <div class="scaffold-card guided">
+        <span>🌱</span>
+        <div>
+          <strong>Guided Scaffolding Active (Lvl ${stepInChunk < 10 ? '0' + stepInChunk : stepInChunk}/20):</strong>
+          <span>High visual scaffolding. Check the schema and column types in the right sidebar!</span>
+        </div>
+      </div>
+    `;
+  } else if (stepInChunk >= 16) {
+    return `
+      <div class="scaffold-card mastery">
+        <span>🔥</span>
+        <div>
+          <strong>Mastery Zone (Lvl ${stepInChunk}/20):</strong>
+          <span>Autonomous recall mode active. No scaffolding hints—rely on your query intuition!</span>
+        </div>
+      </div>
+    `;
+  }
+  return '';
+}
+
+function renderLiveTransformationHtml(quest, userSelections) {
+  const tblName = quest.table || 'Students';
+  const previewData = EVERYDAY_TABLE_PREVIEWS[tblName] || EVERYDAY_TABLE_PREVIEWS.Students;
+  if (!previewData || !previewData.rows) return '';
+
+  const cols = previewData.columns.slice(0, 4);
+  const rows = previewData.rows.slice(0, 4);
+
+  const allSelStr = Object.values(userSelections || {}).join(' ').toUpperCase();
+  const hasWhere = allSelStr.includes('WHERE');
+  const hasLimit = allSelStr.includes('LIMIT');
+
+  let rowsHtml = '';
+  rows.forEach((r, rowIdx) => {
+    let isDropped = false;
+    let dropReason = '';
+
+    if (hasWhere && rowIdx === 1) {
+      isDropped = true;
+      dropReason = 'Excluded by WHERE';
+    }
+    if (hasLimit && rowIdx >= 2) {
+      isDropped = true;
+      dropReason = 'Sliced by LIMIT';
+    }
+
+    const rowClass = isDropped ? 'row-filtered-out' : 'row-match';
+    const statusPill = isDropped 
+      ? `<span class="row-status-pill drop">${dropReason}</span>` 
+      : `<span class="row-status-pill keep">✓ Kept</span>`;
+
+    rowsHtml += `
+      <tr class="${rowClass}">
+        <td>${statusPill}</td>
+        ${cols.map((_, colIdx) => `<td>${escapeHtml(String(r[colIdx] !== undefined ? r[colIdx] : ''))}</td>`).join('')}
+      </tr>
+    `;
+  });
+
+  return `
+    <div class="live-preview-header">
+      <div class="live-preview-title">
+        <span>🎬</span> LIVE DATASET TRANSFORMATION PREVIEW
+      </div>
+      <span class="live-preview-subtitle">Table: ${tblName} &bull; Set Transformation Feedback</span>
+    </div>
+    <table class="live-preview-table">
+      <thead>
+        <tr>
+          <th style="width: 85px;">SET STATUS</th>
+          ${cols.map(c => `<th>${escapeHtml(c)}</th>`).join('')}
+        </tr>
+      </thead>
+      <tbody>
+        ${rowsHtml}
+      </tbody>
+    </table>
+  `;
+}
+
+// 60-Second Rapid-Fire Blitz Mode
+let blitzTimerInterval = null;
+let blitzTimeRemaining = 60;
+let blitzQuestsQueue = [];
+let blitzCurrentIndex = 0;
+let blitzScore = 0;
+
+function startQuestBlitzSprint() {
+  const questsList = getActiveQuestsList();
+  if (!questsList || questsList.length === 0) return;
+
+  const shuffled = [...questsList].sort(() => 0.5 - Math.random());
+  blitzQuestsQueue = shuffled.slice(0, 5);
+  blitzCurrentIndex = 0;
+  blitzScore = 0;
+  blitzTimeRemaining = 60;
+
+  const modal = document.getElementById('questBlitzModal');
+  if (modal) modal.style.display = 'flex';
+
+  if (window.AudioFX) window.AudioFX.playSuccess();
+  if (window.SQL_BUDDY) {
+    window.SQL_BUDDY.say("⚡ 60-SECOND RAPID-FIRE BLITZ ACTIVATED! 5 questions, 60 seconds! GO GO GO!", 3500, 'celebrate');
+  }
+
+  startBlitzTimer();
+  renderBlitzCurrentCard();
+}
+window.startQuestBlitzSprint = startQuestBlitzSprint;
+
+function closeBlitzModal() {
+  if (blitzTimerInterval) clearInterval(blitzTimerInterval);
+  const modal = document.getElementById('questBlitzModal');
+  if (modal) modal.style.display = 'none';
+}
+window.closeBlitzModal = closeBlitzModal;
+
+function startBlitzTimer() {
+  if (blitzTimerInterval) clearInterval(blitzTimerInterval);
+  const timerDisplay = document.getElementById('blitzTimerDisplay');
+  blitzTimerInterval = setInterval(() => {
+    blitzTimeRemaining--;
+    if (timerDisplay) {
+      timerDisplay.textContent = `${blitzTimeRemaining}s`;
+      timerDisplay.style.color = blitzTimeRemaining <= 10 ? '#ef4444' : '#f59e0b';
+    }
+    if (blitzTimeRemaining <= 0) {
+      clearInterval(blitzTimerInterval);
+      finishBlitzSprint(true);
+    }
+  }, 1000);
+}
+
+function renderBlitzCurrentCard() {
+  const body = document.getElementById('blitzCardBody');
+  const dotsEl = document.getElementById('blitzProgressDots');
+  if (!body || !dotsEl) return;
+
+  dotsEl.innerHTML = blitzQuestsQueue.map((_, i) => {
+    let cls = 'blitz-dot';
+    if (i < blitzCurrentIndex) cls += ' done';
+    else if (i === blitzCurrentIndex) cls += ' active';
+    return `<span class="${cls}"></span>`;
+  }).join('');
+
+  if (blitzCurrentIndex >= blitzQuestsQueue.length) {
+    finishBlitzSprint(false);
+    return;
+  }
+
+  const q = blitzQuestsQueue[blitzCurrentIndex];
+  const firstSlotKey = Object.keys(q.slots || {})[0];
+  const slot = q.slots[firstSlotKey];
+
+  body.innerHTML = `
+    <div style="font-size: 11px; font-family: var(--font-mono); color: #38bdf8;">QUESTION ${blitzCurrentIndex + 1} OF 5</div>
+    <h3 style="font-size: 16px; margin: 4px 0 8px 0; color: #ffffff;">${escapeHtml(q.title)}</h3>
+    <div style="background: rgba(0,0,0,0.4); padding: 12px; border-radius: 8px; font-family: var(--font-mono); font-size: 12px; margin-bottom: 12px;">
+      <code>${escapeHtml(q.targetQuery)}</code>
+    </div>
+    <div style="font-size: 12px; color: var(--text-secondary); margin-bottom: 8px;">Pick the correct clause component:</div>
+    <div class="blitz-options-grid">
+      ${slot.options.map((opt, i) => `
+        <button class="choice-pill" style="padding: 10px 14px; font-size: 12px;" onclick="submitBlitzAnswer('${escapeHtml(opt)}', '${escapeHtml(slot.correct)}')">
+          <span class="choice-key-tag">${i + 1}</span>
+          <span>${escapeHtml(opt)}</span>
+        </button>
+      `).join('')}
+    </div>
+  `;
+}
+
+function submitBlitzAnswer(chosen, correct) {
+  if (chosen === correct) {
+    blitzScore++;
+    if (window.AudioFX) window.AudioFX.playSuccess();
+  } else {
+    if (window.AudioFX) window.AudioFX.playError();
+  }
+  blitzCurrentIndex++;
+  renderBlitzCurrentCard();
+}
+window.submitBlitzAnswer = submitBlitzAnswer;
+
+function finishBlitzSprint(timedOut) {
+  if (blitzTimerInterval) clearInterval(blitzTimerInterval);
+  const body = document.getElementById('blitzCardBody');
+  if (!body) return;
+
+  const passed = blitzScore >= 4;
+  if (window.SQL_BUDDY) {
+    if (passed) {
+      window.SQL_BUDDY.say(`🏆 BLITZ CHAMPION! You scored ${blitzScore}/5 with ${blitzTimeRemaining}s left! Absolutely phenomenal speed!`, 6000, 'celebrate');
+    } else {
+      window.SQL_BUDDY.say(`⚡ Sprint finished! You scored ${blitzScore}/5. Great practice, let's keep sharpening!`, 5000, 'happy');
+    }
+  }
+
+  body.innerHTML = `
+    <div style="text-align: center; padding: 20px 0;">
+      <div style="font-size: 40px; margin-bottom: 10px;">${passed ? '🏆' : '⚡'}</div>
+      <h2 style="font-size: 20px; color: #ffffff; margin-bottom: 6px;">
+        ${passed ? 'Blitz Sprint Conquered!' : 'Sprint Time Complete!'}
+      </h2>
+      <p style="font-size: 13px; color: var(--text-secondary); margin-bottom: 16px;">
+        Score: <strong>${blitzScore} / 5</strong> &bull; Time Remaining: <strong>${blitzTimeRemaining}s</strong>
+      </p>
+      <div style="display: flex; gap: 10px; justify-content: center;">
+        <button class="btn-blitz-start" onclick="startQuestBlitzSprint()">🔁 Play Again</button>
+        <button class="card-nav-btn" onclick="closeBlitzModal()">Back to Quests</button>
+      </div>
+    </div>
+  `;
+}
 
 function setQuestIndex(idx) {
   currentQuestIndex = idx;
@@ -7187,8 +7624,12 @@ function renderFillBlankQuest(container, quest) {
   });
 
   const allSlotsFilled = filledCount === totalSlots;
+  const trapDissection = fillBlankChecked && !fillBlankPassed ? getTrapDissection(userSlotSelections, quest) : null;
 
   container.innerHTML = `
+    <!-- Faded Scaffolding Tier Banner -->
+    ${getScaffoldingBannerHtml(quest, currentQuestIndex)}
+
     <div class="quest-card-header">
       <div>
         <div style="display: flex; align-items: center; gap: 8px; margin-bottom: 6px; flex-wrap: wrap;">
@@ -7241,6 +7682,11 @@ function renderFillBlankQuest(container, quest) {
       </div>
     </div>
 
+    <!-- Live Dataset Transformation Preview (Dual Coding Visualizer) -->
+    <div class="live-preview-box" id="questLiveSetPreview">
+      ${renderLiveTransformationHtml(quest, userSlotSelections)}
+    </div>
+
     <!-- Result Feedback Banner -->
     ${fillBlankChecked ? (fillBlankPassed ? `
       <div style="background: rgba(16, 185, 129, 0.08); border: 1px solid rgba(16, 185, 129, 0.35); border-radius: 8px; padding: 12px 16px; display: flex; align-items: flex-start; gap: 12px;">
@@ -7255,9 +7701,16 @@ function renderFillBlankQuest(container, quest) {
     ` : `
       <div style="background: rgba(239, 68, 68, 0.08); border: 1px solid rgba(239, 68, 68, 0.35); border-radius: 8px; padding: 12px 16px; display: flex; align-items: flex-start; gap: 12px;">
         <span style="color: #ef4444; font-size: 15px; font-weight: 700; background: rgba(239, 68, 68, 0.15); border-radius: 50%; width: 24px; height: 24px; display: flex; align-items: center; justify-content: center; flex-shrink: 0;">&cross;</span>
-        <div>
+        <div style="flex: 1;">
           <div style="font-size: 13px; font-weight: 700; color: #ef4444; margin-bottom: 3px;">Not quite right yet!</div>
-          <div style="font-size: 12px; line-height: 1.5; color: var(--text-secondary);">Check the highlighted red blanks and try choosing a different keyword.</div>
+          <div style="font-size: 12px; line-height: 1.5; color: var(--text-secondary); margin-bottom: ${trapDissection ? '8px' : '0'};">Check the highlighted red blanks and try choosing a different keyword.</div>
+          
+          ${trapDissection ? `
+            <div class="feedback-trap-box">
+              <div class="trap-title">🚨 Trap Dissection: Why "${escapeHtml(trapDissection.culprit)}" is wrong:</div>
+              <div class="trap-body">${escapeHtml(trapDissection.explanation)}</div>
+            </div>
+          ` : ''}
         </div>
       </div>
     `) : ''}
@@ -7324,16 +7777,20 @@ function checkFillBlankAnswer() {
   fillBlankPassed = allCorrect;
 
   if (allCorrect) {
+    const wasMistake = clearQuestMistake(currentQuestSection, currentQuestIndex);
     if (window.AudioFX) {
       window.AudioFX.playSuccess();
     }
     if (window.ActivityHeatmapEngine && typeof window.ActivityHeatmapEngine.logActivity === 'function') {
-      window.ActivityHeatmapEngine.logActivity('drill', 1, 25, 'Foundations & Projections (Quests)');
+      window.ActivityHeatmapEngine.logActivity('drill', 1, wasMistake ? 40 : 25, 'Foundations & Projections (Quests)');
     }
-    if (window.SQL_BUDDY && typeof window.SQL_BUDDY.onCorrectQuestAnswer === 'function') {
+    if (wasMistake && window.SQL_BUDDY) {
+      window.SQL_BUDDY.say("🌟 REDEMPTION! You conquered a previously missed level! Mistake cleared from vault! +30 XP! 🎉", 5500, 'celebrate');
+    } else if (window.SQL_BUDDY && typeof window.SQL_BUDDY.onCorrectQuestAnswer === 'function') {
       window.SQL_BUDDY.onCorrectQuestAnswer(quest.title);
     }
   } else {
+    recordQuestMistake(currentQuestSection, currentQuestIndex);
     if (window.AudioFX) {
       window.AudioFX.playError();
     }

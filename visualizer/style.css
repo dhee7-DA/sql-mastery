@@ -22057,4 +22057,283 @@ button:active .framer-emoji-icon {
   }
 }
 
+/* =============================================================================
+   COGNITIVE LEARNING SUITE: TRAP DISSECTION, LIVE PREVIEW, MISTAKE VAULT, BLITZ
+   ============================================================================= */
+
+/* 1. Contrastive Trap Feedback */
+.feedback-trap-box {
+  margin-top: 8px;
+  background: rgba(239, 68, 68, 0.06);
+  border: 1px solid rgba(239, 68, 68, 0.25);
+  border-radius: 6px;
+  padding: 8px 12px;
+  display: flex;
+  flex-direction: column;
+  gap: 3px;
+}
+
+.trap-title {
+  font-size: 11.5px;
+  font-weight: 700;
+  color: #f87171;
+  display: flex;
+  align-items: center;
+  gap: 5px;
+}
+
+.trap-body {
+  font-size: 11px;
+  line-height: 1.5;
+  color: var(--text-secondary);
+}
+
+/* 2. Live Set Transformation Preview */
+.live-preview-box {
+  background: rgba(10, 12, 18, 0.85);
+  border: 1px solid var(--border-default);
+  border-radius: 10px;
+  padding: 12px 14px;
+  margin-top: 10px;
+  transition: all 0.2s ease;
+}
+
+.live-preview-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 8px;
+  padding-bottom: 6px;
+  border-bottom: 1px solid rgba(255, 255, 255, 0.06);
+}
+
+.live-preview-title {
+  font-size: 11px;
+  font-family: var(--font-mono);
+  font-weight: 700;
+  color: #38bdf8;
+  display: flex;
+  align-items: center;
+  gap: 6px;
+}
+
+.live-preview-subtitle {
+  font-size: 10px;
+  color: var(--text-muted);
+  font-family: var(--font-mono);
+}
+
+.live-preview-table {
+  width: 100%;
+  border-collapse: collapse;
+  font-family: var(--font-mono);
+  font-size: 11px;
+}
+
+.live-preview-table th {
+  padding: 5px 8px;
+  background: rgba(255, 255, 255, 0.04);
+  color: var(--text-secondary);
+  font-weight: 700;
+  text-align: left;
+  border-bottom: 1px solid rgba(255, 255, 255, 0.1);
+  font-size: 10.5px;
+}
+
+.live-preview-table td {
+  padding: 5px 8px;
+  border-bottom: 1px solid rgba(255, 255, 255, 0.04);
+  color: var(--text-primary);
+  transition: all 0.25s ease;
+}
+
+.live-preview-table tr.row-filtered-out {
+  opacity: 0.28;
+  text-decoration: line-through;
+  background: rgba(239, 68, 68, 0.06);
+}
+
+.live-preview-table tr.row-match {
+  background: rgba(16, 185, 129, 0.05);
+}
+
+.row-status-pill {
+  font-size: 9px;
+  padding: 1px 5px;
+  border-radius: 3px;
+  font-weight: 700;
+}
+
+.row-status-pill.keep {
+  background: rgba(16, 185, 129, 0.15);
+  color: #10b981;
+}
+
+.row-status-pill.drop {
+  background: rgba(239, 68, 68, 0.15);
+  color: #ef4444;
+}
+
+/* 3. Leitner Mistake Vault Badges & Buttons */
+.mistake-vault-toggle-bar {
+  display: flex;
+  gap: 6px;
+  margin-bottom: 10px;
+}
+
+.mistake-vault-btn {
+  flex: 1;
+  padding: 5px 8px;
+  font-family: var(--font-mono);
+  font-size: 10.5px;
+  font-weight: 700;
+  background: var(--bg-surface);
+  border: 1px solid var(--border-default);
+  border-radius: 6px;
+  color: var(--text-muted);
+  cursor: pointer;
+  transition: all 0.15s ease;
+  text-align: center;
+}
+
+.mistake-vault-btn:hover {
+  background: var(--bg-hover);
+  color: var(--text-primary);
+}
+
+.mistake-vault-btn.active {
+  background: rgba(245, 158, 11, 0.12);
+  border-color: #f59e0b;
+  color: #f59e0b;
+}
+
+.quest-grid-chip.is-mistake {
+  border-color: rgba(245, 158, 11, 0.45) !important;
+  color: #f59e0b !important;
+  background: rgba(245, 158, 11, 0.06);
+}
+
+.mistake-tag {
+  font-size: 9px;
+  margin-left: 2px;
+}
+
+/* 4. Faded Scaffolding Banners */
+.scaffold-card {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  padding: 8px 12px;
+  border-radius: 8px;
+  margin-bottom: 12px;
+  font-size: 11.5px;
+}
+
+.scaffold-card.guided {
+  background: rgba(56, 189, 248, 0.08);
+  border: 1px solid rgba(56, 189, 248, 0.25);
+  color: #38bdf8;
+}
+
+.scaffold-card.mastery {
+  background: rgba(236, 72, 153, 0.08);
+  border: 1px solid rgba(236, 72, 153, 0.25);
+  color: #f472b6;
+}
+
+/* 5. 60-Second Rapid-Fire Blitz Modal */
+.blitz-modal-overlay {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100vw;
+  height: 100vh;
+  background: rgba(0, 0, 0, 0.85);
+  backdrop-filter: blur(12px);
+  z-index: 10000;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.blitz-modal-card {
+  width: 90%;
+  max-width: 680px;
+  background: #0f131a;
+  border: 1px solid rgba(56, 189, 248, 0.35);
+  border-radius: 16px;
+  padding: 28px 32px;
+  display: flex;
+  flex-direction: column;
+  gap: 18px;
+  box-shadow: 0 20px 60px rgba(0, 0, 0, 0.6);
+  position: relative;
+}
+
+.blitz-hud-top {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}
+
+.blitz-timer-wrap {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  font-family: var(--font-mono);
+  font-size: 18px;
+  font-weight: 800;
+  color: #f59e0b;
+}
+
+.blitz-progress-pills {
+  display: flex;
+  gap: 6px;
+}
+
+.blitz-dot {
+  width: 10px;
+  height: 10px;
+  border-radius: 50%;
+  background: rgba(255, 255, 255, 0.15);
+}
+
+.blitz-dot.done {
+  background: #10b981;
+}
+
+.blitz-dot.active {
+  background: #38bdf8;
+  transform: scale(1.2);
+}
+
+.blitz-options-grid {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 10px;
+  margin-top: 10px;
+}
+
+.btn-blitz-start {
+  background: rgba(245, 158, 11, 0.12);
+  border: 1px solid rgba(245, 158, 11, 0.35);
+  color: #f59e0b;
+  font-family: var(--font-sans);
+  font-size: 12px;
+  font-weight: 700;
+  padding: 6px 14px;
+  border-radius: 8px;
+  cursor: pointer;
+  transition: all 0.15s ease;
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+}
+
+.btn-blitz-start:hover {
+  background: rgba(245, 158, 11, 0.22);
+  border-color: #f59e0b;
+  transform: translateY(-1px);
+}
+
 

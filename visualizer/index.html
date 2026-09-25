@@ -1185,6 +1185,12 @@
               </div>
             </div>
 
+            <!-- Leitner Mistake Vault Switcher -->
+            <div class="mistake-vault-toggle-bar">
+              <button class="mistake-vault-btn active" id="btnFilterAllQuests" onclick="toggleMistakeVaultFilter(false)">All Levels</button>
+              <button class="mistake-vault-btn" id="btnFilterMistakesQuests" onclick="toggleMistakeVaultFilter(true)">🔁 Mistakes (<span id="mistakeVaultCount">0</span>)</button>
+            </div>
+
             <!-- Chunk Jump Controls -->
             <div class="sidebar-chunk-tabs">
               <button class="chunk-tab-btn active" onclick="setQuestChunkRange(0, 20)">01–20</button>
@@ -1217,6 +1223,9 @@
             </div>
 
             <div class="hud-stepper-actions">
+              <button class="btn-blitz-start" onclick="startQuestBlitzSprint()" title="Start 60-Second Rapid-Fire Blitz Challenge">
+                <span>⚡ 60s Blitz</span>
+              </button>
               <button class="hud-nav-step-btn" id="btnQuestPrev" onclick="navigateQuestStep(-1)" title="Previous Level (Press [)">
                 &larr; Prev
               </button>
@@ -1326,6 +1335,20 @@
           </div>
         </aside>
       </div>
+    </div>
+  </div>
+
+  <!-- 60-Second Rapid-Fire Blitz Modal -->
+  <div id="questBlitzModal" class="blitz-modal-overlay" style="display: none;">
+    <div class="blitz-modal-card">
+      <div class="blitz-hud-top">
+        <div class="blitz-timer-wrap">
+          <span>⏱️</span> <span id="blitzTimerDisplay">60s</span>
+        </div>
+        <div class="blitz-progress-pills" id="blitzProgressDots"></div>
+        <button class="card-nav-btn" onclick="closeBlitzModal()" style="padding: 2px 8px; font-size: 14px;">&times;</button>
+      </div>
+      <div id="blitzCardBody"></div>
     </div>
   </div>
 
