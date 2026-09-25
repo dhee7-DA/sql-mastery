@@ -1124,6 +1124,11 @@ const SQL_BUDDY = (() => {
     void bubble.offsetWidth;
     bubble.classList.add("pop-anim");
 
+    // Trigger Web Speech synthesis if voice enabled
+    if (window.soundFX && typeof window.soundFX.speakBloops === 'function') {
+      window.soundFX.speakBloops(message);
+    }
+
     if (bubbleTimeout) clearTimeout(bubbleTimeout);
     if (duration > 0) {
       bubbleTimeout = setTimeout(() => {

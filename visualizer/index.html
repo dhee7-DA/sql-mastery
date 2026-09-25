@@ -1117,10 +1117,10 @@
           </div>
           <span class="section-tab-title">ORDER BY &amp; Slicing (100)</span>
         </button>
-        <button class="quest-section-tab locked" data-section="section4" onclick="switchQuestSection('section4')" title="Section 04: Aggregations &amp; GROUP BY (100)">
+        <button class="quest-section-tab" data-section="section4" onclick="switchQuestSection('section4')" title="Section 04: Aggregations &amp; GROUP BY (100 Levels) — Unlocked">
           <div class="section-tab-header-row">
             <span class="section-tab-badge">Section 04</span>
-            <span class="section-tab-status">🔒 Locked</span>
+            <span class="section-tab-status" style="color: #38bdf8;">Active Track</span>
           </div>
           <span class="section-tab-title">Aggregations &amp; GROUP BY (100)</span>
         </button>
@@ -1223,6 +1223,18 @@
             </div>
 
             <div class="hud-stepper-actions">
+              <button class="card-nav-btn" onclick="openExecutionOrderModal()" title="View Animated Physical Query Execution Order">
+                <span>🎬 Engine Step-Through</span>
+              </button>
+              <button class="card-nav-btn" onclick="openSQLSandboxModal()" title="Open Interactive Free-Form SQL Sandbox">
+                <span>💻 SQL Sandbox</span>
+              </button>
+              <button class="card-nav-btn" onclick="openStreakCalendarModal()" title="View Daily Challenge & Streak Calendar">
+                <span>🔥 Daily Streak</span>
+              </button>
+              <button class="card-nav-btn" onclick="openSoundStudioModal()" title="Configure Soundscape Studio & Voice Synthesizer">
+                <span>🔊 Audio Studio</span>
+              </button>
               <button class="btn-blitz-start" onclick="startQuestBlitzSprint()" title="Start 60-Second Rapid-Fire Blitz Challenge">
                 <span>⚡ 60s Blitz</span>
               </button>
@@ -1504,7 +1516,11 @@
 <script src="quests_section1_data.js"></script>
 <script src="quests_section2_data.js"></script>
 <script src="quests_section3_data.js"></script>
+<script src="quests_section4_data.js"></script>
 <script src="quests_engine.js"></script>
+<script src="execution_order_engine.js"></script>
+<script src="sql_sandbox_engine.js"></script>
+<script src="daily_streak_engine.js"></script>
 <script src="deconstructor_data.js"></script>
 <script src="theory_interview_prep.js"></script>
 <script src="syntax_gym_data.js"></script>

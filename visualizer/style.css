@@ -22336,4 +22336,57 @@ button:active .framer-emoji-icon {
   transform: translateY(-1px);
 }
 
+/* =============================================================================
+   EXECUTION ORDER & SANDBOX ENGINE STYLES
+   ============================================================================= */
+.exec-step-pills-row {
+  display: flex;
+  gap: 8px;
+  overflow-x: auto;
+  padding: 4px 0 10px 0;
+  scrollbar-width: thin;
+}
+
+.exec-step-pill {
+  background: var(--bg-surface-elevated, #161b22);
+  border: 1px solid var(--border-default, rgba(255, 255, 255, 0.1));
+  border-radius: 6px;
+  color: var(--text-secondary, #94a3b8);
+  font-family: var(--font-mono, monospace);
+  font-size: 11px;
+  font-weight: 700;
+  padding: 6px 12px;
+  cursor: pointer;
+  white-space: nowrap;
+  transition: all 0.15s ease;
+}
+
+.exec-step-pill:hover {
+  background: var(--bg-hover, rgba(255, 255, 255, 0.08));
+  color: #ffffff;
+  border-color: rgba(255, 255, 255, 0.3);
+}
+
+.exec-step-pill.active {
+  background: rgba(56, 189, 248, 0.15);
+  border-color: #38bdf8;
+  color: #38bdf8;
+  transform: translateY(-1px);
+}
+
+.exec-step-pill.completed {
+  border-color: rgba(16, 185, 129, 0.4);
+  color: #10b981;
+}
+
+.exec-code-block {
+  font-family: var(--font-mono, monospace);
+  font-size: 12px;
+  line-height: 1.6;
+  margin: 0;
+  white-space: pre-wrap;
+  word-break: break-word;
+}
+
+
 

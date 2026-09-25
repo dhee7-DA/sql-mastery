@@ -6703,22 +6703,18 @@ function getActiveQuestsList() {
   if (currentQuestSection === 'section3' && window.QUESTS_SECTION_3 && window.QUESTS_SECTION_3.length > 0) {
     return window.QUESTS_SECTION_3;
   }
+  if (currentQuestSection === 'section4' && window.QUESTS_SECTION_4 && window.QUESTS_SECTION_4.length > 0) {
+    return window.QUESTS_SECTION_4;
+  }
   return window.QUESTS_DATA || [];
 }
 
 function switchQuestSection(sectionKey) {
-  if (sectionKey === 'section4') {
-    if (window.AudioFX) window.AudioFX.playClick();
-    if (window.SQL_BUDDY) {
-      window.SQL_BUDDY.say("🔒 Section 04: Aggregations is unlocking next! Master Section 01, 02 & 03 first!", 3500, 'pensive');
-    }
-    return;
-  }
-
   currentQuestSection = sectionKey;
   currentQuestIndex = 0;
   questChunkStart = 0;
-  questChunkEnd = (sectionKey === 'section1' || sectionKey === 'section2' || sectionKey === 'section3') ? 20 : 30;
+  const is100Chunk = (sectionKey === 'section1' || sectionKey === 'section2' || sectionKey === 'section3' || sectionKey === 'section4');
+  questChunkEnd = is100Chunk ? 20 : 30;
 
   // Update tabs
   document.querySelectorAll('.quest-section-tab').forEach(tab => {
@@ -6728,7 +6724,7 @@ function switchQuestSection(sectionKey) {
   // Show/hide chunk nav
   const chunkNav = document.getElementById('questChunkNav');
   if (chunkNav) {
-    chunkNav.style.display = (sectionKey === 'section1' || sectionKey === 'section2' || sectionKey === 'section3') ? 'flex' : 'none';
+    chunkNav.style.display = is100Chunk ? 'flex' : 'none';
   }
 
   // Clear level select options so it refreshes with the new list
@@ -6745,6 +6741,7 @@ function switchQuestSection(sectionKey) {
     if (sectionKey === 'section1') footerTrack.textContent = 'Section 01: Foundations & Projections (100)';
     else if (sectionKey === 'section2') footerTrack.textContent = 'Section 02: WHERE & Filtering (100)';
     else if (sectionKey === 'section3') footerTrack.textContent = 'Section 03: ORDER BY & Slicing (100)';
+    else if (sectionKey === 'section4') footerTrack.textContent = 'Section 04: Aggregations & GROUP BY (100)';
     else if (sectionKey === 'featured') footerTrack.textContent = 'Bonus: Boss Gauntlet (30)';
   }
 
@@ -6759,6 +6756,8 @@ function switchQuestSection(sectionKey) {
       window.SQL_BUDDY.say("🎯 Section 02: WHERE Predicates & Filtering loaded (100 Levels)! Prepare to filter with pinpoint precision!", 3500, 'celebrate');
     } else if (sectionKey === 'section3') {
       window.SQL_BUDDY.say("⚡ Section 03: ORDER BY & LIMIT Slicing loaded (100 Levels)! Prepare to sort and slice with deterministic precision!", 3500, 'celebrate');
+    } else if (sectionKey === 'section4') {
+      window.SQL_BUDDY.say("📊 Section 04: Aggregations & GROUP BY loaded (100 Levels)! Time to summarize, bucket, and master HAVING!", 3500, 'celebrate');
     } else {
       window.SQL_BUDDY.say("🏆 Boss Gauntlet Activated! 30 Advanced Challenges across all SQL pillars!", 3500, 'celebrate');
     }
@@ -7270,6 +7269,42 @@ const SQL_TRAP_CATALOG = {
   'PLUS': {
     title: 'Math vs Boolean Logic',
     explanation: '`PLUS` or `+` adds numbers. Boolean conjunction between conditions requires `AND`.'
+  },
+  'PARTITION BY': {
+    title: 'Window Function vs Aggregation Bucket',
+    explanation: '`PARTITION BY` is used inside window functions `OVER (...)`. To collapse table rows into summary groups, use `GROUP BY`.'
+  },
+  'CLUSTER BY': {
+    title: 'Storage Clustering Keyword',
+    explanation: '`CLUSTER BY` is a distributed table layout clause (BigQuery/Hive). Standard relational grouping uses `GROUP BY`.'
+  },
+  'TOTAL': {
+    title: 'Non-Standard Function',
+    explanation: 'SQL has no `TOTAL()` aggregate function. Use `SUM()` for numerical addition and `COUNT()` for counting records.'
+  },
+  'MEAN': {
+    title: 'Statistical Naming Trap',
+    explanation: 'SQL has no `MEAN()` function. Standard ANSI SQL uses `AVG()` to compute arithmetic averages.'
+  },
+  'MEDIAN': {
+    title: 'Non-Standard Aggregate',
+    explanation: '`MEDIAN()` is not an ANSI standard aggregate in relational engines. Use `AVG()` for average or window percentiles.'
+  },
+  'UNIQUE': {
+    title: 'Schema Constraint vs Projection',
+    explanation: '`UNIQUE` is a DDL table constraint. To eliminate duplicate values in a SELECT query, use `DISTINCT`.'
+  },
+  'WHERE COUNT': {
+    title: 'Aggregate in WHERE Clause Trap',
+    explanation: 'Aggregates cannot appear in `WHERE`! The WHERE clause filters rows *before* grouping. Filter aggregates using `HAVING COUNT(...)`.'
+  },
+  'WHERE AVG': {
+    title: 'Aggregate in WHERE Clause Trap',
+    explanation: '`AVG()` cannot be placed in a WHERE clause! Use `HAVING AVG(...)` after the `GROUP BY` clause.'
+  },
+  'WHERE SUM': {
+    title: 'Aggregate in WHERE Clause Trap',
+    explanation: '`SUM()` cannot be evaluated in WHERE before grouping takes place. Use `HAVING SUM(...)`.'
   }
 };
 
@@ -7369,6 +7404,47 @@ function renderLiveTransformationHtml(quest, userSelections) {
   const allSelStr = Object.values(userSelections || {}).join(' ').toUpperCase();
   const hasWhere = allSelStr.includes('WHERE');
   const hasLimit = allSelStr.includes('LIMIT');
+  const hasGroupBy = allSelStr.includes('GROUP BY') || (quest.targetQuery && quest.targetQuery.includes('GROUP BY'));
+  const isAggQuest = (quest.category && quest.category.includes('Aggregations')) || hasGroupBy;
+
+  if (isAggQuest && hasGroupBy) {
+    // Dual Coding Grouped Bucket Visualizer
+    return `
+      <div class="live-preview-header">
+        <div class="live-preview-title">
+          <span>📊</span> LIVE AGGREGATE BUCKETS (GROUP BY PREVIEW)
+        </div>
+        <span class="live-preview-subtitle">Table: ${tblName} &bull; Summarized Partition Buckets</span>
+      </div>
+      <table class="live-preview-table">
+        <thead>
+          <tr>
+            <th style="width: 100px;">GROUP BUCKET</th>
+            <th>AGGREGATED ROWS</th>
+            <th>COUNT(*)</th>
+            <th>SUMMARY METRIC</th>
+            <th style="width: 80px;">HAVING STATUS</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr class="row-match">
+            <td><span class="row-status-pill keep">Group A</span></td>
+            <td><code>[Record #1, Record #3]</code></td>
+            <td><strong>2</strong></td>
+            <td><code>AVG = 3.88</code></td>
+            <td><span class="row-status-pill keep">✓ Passed</span></td>
+          </tr>
+          <tr class="${allSelStr.includes('HAVING') ? 'row-filtered-out' : 'row-match'}">
+            <td><span class="row-status-pill ${allSelStr.includes('HAVING') ? 'drop' : 'keep'}">Group B</span></td>
+            <td><code>[Record #2]</code></td>
+            <td><strong>1</strong></td>
+            <td><code>AVG = 3.42</code></td>
+            <td><span class="row-status-pill ${allSelStr.includes('HAVING') ? 'drop' : 'keep'}">${allSelStr.includes('HAVING') ? 'Pruned' : '✓ Passed'}</span></td>
+          </tr>
+        </tbody>
+      </table>
+    `;
+  }
 
   let rowsHtml = '';
   rows.forEach((r, rowIdx) => {
