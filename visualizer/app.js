@@ -6693,6 +6693,9 @@ let fillBlankChecked = false;
 let fillBlankPassed = false;
 let bugIsFixed = false;
 
+let activeJoinDisciplineFilter = null;
+let isJoinMatrixGuideCollapsed = false;
+
 function getActiveQuestsList() {
   if (currentQuestSection === 'section1' && window.QUESTS_SECTION_1 && window.QUESTS_SECTION_1.length > 0) {
     return window.QUESTS_SECTION_1;
@@ -6706,6 +6709,12 @@ function getActiveQuestsList() {
   if (currentQuestSection === 'section4' && window.QUESTS_SECTION_4 && window.QUESTS_SECTION_4.length > 0) {
     return window.QUESTS_SECTION_4;
   }
+  if (currentQuestSection === 'section5' && window.QUESTS_SECTION_5 && window.QUESTS_SECTION_5.length > 0) {
+    if (activeJoinDisciplineFilter) {
+      return window.QUESTS_SECTION_5.filter(q => q.disciplineKey === activeJoinDisciplineFilter);
+    }
+    return window.QUESTS_SECTION_5;
+  }
   return window.QUESTS_DATA || [];
 }
 
@@ -6713,8 +6722,12 @@ function switchQuestSection(sectionKey) {
   currentQuestSection = sectionKey;
   currentQuestIndex = 0;
   questChunkStart = 0;
-  const is100Chunk = (sectionKey === 'section1' || sectionKey === 'section2' || sectionKey === 'section3' || sectionKey === 'section4');
-  questChunkEnd = is100Chunk ? 20 : 30;
+  const isMultiChunk = (sectionKey === 'section1' || sectionKey === 'section2' || sectionKey === 'section3' || sectionKey === 'section4' || sectionKey === 'section5');
+  questChunkEnd = isMultiChunk ? 20 : 30;
+
+  if (sectionKey === 'section5') {
+    activeJoinDisciplineFilter = null;
+  }
 
   // Update tabs
   document.querySelectorAll('.quest-section-tab').forEach(tab => {
@@ -6724,7 +6737,7 @@ function switchQuestSection(sectionKey) {
   // Show/hide chunk nav
   const chunkNav = document.getElementById('questChunkNav');
   if (chunkNav) {
-    chunkNav.style.display = is100Chunk ? 'flex' : 'none';
+    chunkNav.style.display = isMultiChunk ? 'flex' : 'none';
   }
 
   // Clear level select options so it refreshes with the new list
@@ -6742,6 +6755,7 @@ function switchQuestSection(sectionKey) {
     else if (sectionKey === 'section2') footerTrack.textContent = 'Section 02: WHERE & Filtering (100)';
     else if (sectionKey === 'section3') footerTrack.textContent = 'Section 03: ORDER BY & Slicing (100)';
     else if (sectionKey === 'section4') footerTrack.textContent = 'Section 04: Aggregations & GROUP BY (100)';
+    else if (sectionKey === 'section5') footerTrack.textContent = 'Section 05: Relational JOINs Arena (420)';
     else if (sectionKey === 'featured') footerTrack.textContent = 'Bonus: Boss Gauntlet (30)';
   }
 
@@ -6758,12 +6772,164 @@ function switchQuestSection(sectionKey) {
       window.SQL_BUDDY.say("⚡ Section 03: ORDER BY & LIMIT Slicing loaded (100 Levels)! Prepare to sort and slice with deterministic precision!", 3500, 'celebrate');
     } else if (sectionKey === 'section4') {
       window.SQL_BUDDY.say("📊 Section 04: Aggregations & GROUP BY loaded (100 Levels)! Time to summarize, bucket, and master HAVING!", 3500, 'celebrate');
+    } else if (sectionKey === 'section5') {
+      window.SQL_BUDDY.say("🏛️ Section 05: Relational JOINs Master Arena loaded (420 Levels across 7 Disciplines)! Let's master multi-table relational algebra!", 4500, 'celebrate');
     } else {
       window.SQL_BUDDY.say("🏆 Boss Gauntlet Activated! 30 Advanced Challenges across all SQL pillars!", 3500, 'celebrate');
     }
   }
 }
 window.switchQuestSection = switchQuestSection;
+
+// =============================================================================
+// SECTION 05: RELATIONAL JOINS MASTER ARENA (DECISION MATRIX & DISCIPLINE FILTER)
+// =============================================================================
+function renderJoinMasterMatrixHtml() {
+  const metadata = window.JOIN_DISCIPLINES_METADATA || [];
+  const isCollapsed = isJoinMatrixGuideCollapsed;
+  const currentDisciplineKey = activeJoinDisciplineFilter;
+
+  let filterPillsHtml = `
+    <button class="choice-pill ${!currentDisciplineKey ? 'selected' : ''}" onclick="setJoinDisciplineFilter(null)" style="font-size: 11px; padding: 4px 10px;">
+      <span>All 420 Quests</span>
+    </button>
+  `;
+
+  metadata.forEach(d => {
+    const isSelected = currentDisciplineKey === d.key;
+    filterPillsHtml += `
+      <button class="choice-pill ${isSelected ? 'selected' : ''}" onclick="setJoinDisciplineFilter('${d.key}')" style="font-size: 11px; padding: 4px 10px; border-color: ${d.color}66;">
+        <span style="color: ${d.color}; font-weight: 800; margin-right: 4px;">${d.symbol}</span>
+        <span>${escapeHtml(d.name)} (60)</span>
+      </button>
+    `;
+  });
+
+  let tableRowsHtml = '';
+  metadata.forEach(d => {
+    const isActiveRow = currentDisciplineKey === d.key;
+    tableRowsHtml += `
+      <tr class="${isActiveRow ? 'active-row' : ''}">
+        <td style="white-space: nowrap;">
+          <div style="display: flex; align-items: center; gap: 8px;">
+            <span class="join-symbol-badge" style="color: ${d.color}; border-color: ${d.color}66;">${d.symbol}</span>
+            <div>
+              <strong style="color: ${d.color}; font-size: 12px; font-family: var(--font-mono);">${escapeHtml(d.name)}</strong>
+              <div style="font-size: 10px; color: var(--text-muted);">${escapeHtml(d.concept)}</div>
+            </div>
+          </div>
+        </td>
+        <td style="max-width: 220px; line-height: 1.45; color: var(--text-secondary);">
+          ${escapeHtml(d.whenToUse)}
+        </td>
+        <td style="max-width: 240px; line-height: 1.45; color: #a7f3d0;">
+          <div style="font-size: 10.5px;">📈 <strong>Finance &amp; Data Scenarios:</strong></div>
+          <div style="font-size: 10px; color: var(--text-secondary); margin-top: 2px;">${escapeHtml(d.scenarios)}</div>
+        </td>
+        <td style="max-width: 260px; line-height: 1.45;">
+          <div class="join-trap-pill">
+            <span style="color: #f87171; font-weight: 700; font-size: 10px; display: block; margin-bottom: 2px;">⚠️ TRAP / GOTCHA:</span>
+            <span style="color: #fca5a5; font-size: 10px;">${escapeHtml(d.traps)}</span>
+          </div>
+        </td>
+        <td style="text-align: right; white-space: nowrap;">
+          <button class="card-nav-btn ${isActiveRow ? 'action-btn-primary' : ''}" style="padding: 4px 10px; font-size: 10px;" onclick="setJoinDisciplineFilter('${d.key}')">
+            ${isActiveRow ? '✓ Active (60)' : `Practice (${d.name})`}
+          </button>
+        </td>
+      </tr>
+    `;
+  });
+
+  return `
+    <div class="join-matrix-card">
+      <div class="join-matrix-header">
+        <div style="display: flex; align-items: center; gap: 10px;">
+          <span style="font-size: 16px;">🏛️</span>
+          <div>
+            <div style="font-size: 13px; font-weight: 700; color: #38bdf8; display: flex; align-items: center; gap: 8px;">
+              <span>Relational JOINs Master Decision Matrix &amp; Trap Focus</span>
+              <span class="status-pill" style="font-size: 9.5px; color: #10b981; background: rgba(16,185,129,0.12); border-color: rgba(16,185,129,0.3);">7 Core Disciplines • 420 Problems</span>
+            </div>
+            <div style="font-size: 11px; color: var(--text-muted); margin-top: 2px;">
+              Cross-reference table: Which JOIN matches your business requirement, real-world data/finance scenario, and how to avoid silent corruption traps.
+            </div>
+          </div>
+        </div>
+        <button class="card-nav-btn" style="padding: 4px 10px; font-size: 11px;" onclick="toggleJoinMatrixGuide()">
+          ${isCollapsed ? '➕ Expand Decision Matrix' : '➖ Collapse Reference'}
+        </button>
+      </div>
+
+      <div class="join-filter-pills-row">
+        <span style="font-size: 10px; font-family: var(--font-mono); color: var(--text-muted); white-space: nowrap; margin-right: 4px;">FILTER BY JOIN:</span>
+        ${filterPillsHtml}
+      </div>
+
+      ${!isCollapsed ? `
+        <div class="join-matrix-table-wrap">
+          <table class="join-matrix-table">
+            <thead>
+              <tr>
+                <th style="width: 170px;">Join Discipline</th>
+                <th>When To Use / Core Concept</th>
+                <th>Real-World Finance &amp; Data Scenarios</th>
+                <th>Silent Trap &amp; Anti-Pattern Focus</th>
+                <th style="text-align: right; width: 110px;">Practice</th>
+              </tr>
+            </thead>
+            <tbody>
+              ${tableRowsHtml}
+            </tbody>
+          </table>
+        </div>
+      ` : `
+        <div style="font-size: 11px; color: var(--text-muted); padding: 4px 0; display: flex; align-items: center; justify-content: space-between;">
+          <span><em>Matrix reference collapsed. Click &quot;Expand Decision Matrix&quot; above to view real-world scenarios and trap analysis.</em></span>
+          ${currentDisciplineKey ? `<span style="color: #38bdf8; font-weight: 600;">Currently filtered: ${currentDisciplineKey.replace(/_/g, ' ').toUpperCase()} (60 Quests: 20E / 20M / 20H)</span>` : ''}
+        </div>
+      `}
+    </div>
+  `;
+}
+window.renderJoinMasterMatrixHtml = renderJoinMasterMatrixHtml;
+
+function setJoinDisciplineFilter(discKey) {
+  if (activeJoinDisciplineFilter === discKey) {
+    activeJoinDisciplineFilter = null;
+  } else {
+    activeJoinDisciplineFilter = discKey;
+  }
+  currentQuestIndex = 0;
+  questChunkStart = 0;
+  questChunkEnd = 20;
+
+  // Clear level select options so it refreshes with the new list
+  const levelSelect = document.getElementById('questDirectLevelSelect');
+  if (levelSelect) levelSelect.innerHTML = '';
+
+  renderQuestStepperTrack();
+  renderActiveQuest(0);
+
+  if (window.AudioFX) window.AudioFX.playClick();
+  if (window.SQL_BUDDY) {
+    if (activeJoinDisciplineFilter) {
+      const meta = (window.JOIN_DISCIPLINES_METADATA || []).find(m => m.key === activeJoinDisciplineFilter);
+      const name = meta ? meta.name : activeJoinDisciplineFilter;
+      window.SQL_BUDDY.say(`Filtered to ${name} (60 Levels)! 20 Easy, 20 Medium, 20 Hard loaded!`, 3500, 'celebrate');
+    } else {
+      window.SQL_BUDDY.say("Showing all 420 JOIN quests across 7 disciplines!", 3000, 'happy');
+    }
+  }
+}
+window.setJoinDisciplineFilter = setJoinDisciplineFilter;
+
+function toggleJoinMatrixGuide() {
+  isJoinMatrixGuideCollapsed = !isJoinMatrixGuideCollapsed;
+  renderActiveQuest(currentQuestIndex);
+  if (window.AudioFX) window.AudioFX.playClick();
+}
+window.toggleJoinMatrixGuide = toggleJoinMatrixGuide;
 
 function toggleQuestLevelDrawer() {
   const drawer = document.getElementById('questLevelDrawer');
@@ -7139,10 +7305,11 @@ function updateQuestSidebars(quest, idx, total) {
   // 2. Left Sidebar: Tier Ladder active states & labels
   const tierName = (quest.tier || '').toLowerCase();
   const levelNum = idx + 1;
-  const isTier1 = tierName.includes('apprentice') || (currentQuestSection === 'section1' ? levelNum <= 15 : levelNum <= 20);
-  const isTier2 = tierName.includes('practitioner') || (currentQuestSection === 'section1' ? (levelNum > 15 && levelNum <= 40) : (levelNum > 20 && levelNum <= 45));
-  const isTier3 = tierName.includes('specialist') || (currentQuestSection === 'section1' ? (levelNum > 40 && levelNum <= 70) : (levelNum > 45 && levelNum <= 75));
-  const isTier4 = tierName.includes('master') || (currentQuestSection === 'section1' ? levelNum > 70 : levelNum > 75);
+  const isSection5 = currentQuestSection === 'section5';
+  const isTier1 = tierName.includes('apprentice') || (isSection5 ? levelNum <= 20 : (currentQuestSection === 'section1' ? levelNum <= 15 : levelNum <= 20));
+  const isTier2 = tierName.includes('practitioner') || (isSection5 ? (levelNum > 20 && levelNum <= 40) : (currentQuestSection === 'section1' ? (levelNum > 15 && levelNum <= 40) : (levelNum > 20 && levelNum <= 45)));
+  const isTier3 = tierName.includes('specialist') || (isSection5 ? (levelNum > 40 && levelNum <= 60) : (currentQuestSection === 'section1' ? (levelNum > 40 && levelNum <= 70) : (levelNum > 45 && levelNum <= 75)));
+  const isTier4 = tierName.includes('master') || (isSection5 ? levelNum > 60 : (currentQuestSection === 'section1' ? levelNum > 70 : levelNum > 75));
 
   const tiers = [
     { id: 'ladderTier1', active: isTier1 },
@@ -7163,7 +7330,12 @@ function updateQuestSidebars(quest, idx, total) {
   const sub2 = document.querySelector('#ladderTier2 .ladder-tier-sub');
   const sub3 = document.querySelector('#ladderTier3 .ladder-tier-sub');
   const sub4 = document.querySelector('#ladderTier4 .ladder-tier-sub');
-  if (currentQuestSection === 'section2') {
+  if (currentQuestSection === 'section5') {
+    if (sub1) sub1.textContent = 'Tier 1 • Easy (01–20) • 3 Blanks';
+    if (sub2) sub2.textContent = 'Tier 2 • Medium (21–40) • 4 Blanks';
+    if (sub3) sub3.textContent = 'Tier 3 • Hard (41–60) • 5 Blanks';
+    if (sub4) sub4.textContent = 'Tier 4 • Master Arena (420)';
+  } else if (currentQuestSection === 'section2') {
     if (sub1) sub1.textContent = 'Lvl 01–20 • 3 Blanks';
     if (sub2) sub2.textContent = 'Lvl 21–45 • 3–4 Blanks';
     if (sub3) sub3.textContent = 'Lvl 46–75 • 4 Blanks';
@@ -7305,6 +7477,34 @@ const SQL_TRAP_CATALOG = {
   'WHERE SUM': {
     title: 'Aggregate in WHERE Clause Trap',
     explanation: '`SUM()` cannot be evaluated in WHERE before grouping takes place. Use `HAVING SUM(...)`.'
+  },
+  'CROSS JOIN': {
+    title: 'Unintended Cartesian Explosion',
+    explanation: '`CROSS JOIN` generates M × N rows without any filtering key. Joining large tables without a predicate causes memory exhaustion.'
+  },
+  'ON 1=1': {
+    title: 'Cartesian Product via Tautology',
+    explanation: '`ON 1=1` forces every row in table A to join with every row in table B. Use explicit key equality (e.g. `ON a.id = b.id`) for relational matching.'
+  },
+  'NATURAL JOIN': {
+    title: 'Silent Column Name Collision',
+    explanation: '`NATURAL JOIN` automatically matches all columns with identical names across tables. If schemas change or add metadata columns (like `created_at`), queries silently break or return 0 rows.'
+  },
+  'USING': {
+    title: 'USING vs ON Predicate Trap',
+    explanation: '`USING (col)` requires identical column names in both tables and merges them into one column. When column names differ or require expressions, use `ON a.col1 = b.col2`.'
+  },
+  'RIGHT JOIN': {
+    title: 'Symmetrical / Directional Confusion',
+    explanation: '`RIGHT JOIN` preserves the right table. Most enterprise SQL style guides prohibit `RIGHT JOIN` in favor of `LEFT JOIN` for natural left-to-right cognitive readability.'
+  },
+  'FULL JOIN': {
+    title: 'Full Outer Join Dialect Support',
+    explanation: '`FULL OUTER JOIN` retains unmatched rows on both sides. In engines like MySQL, FULL JOIN is not natively supported and must be emulated using `LEFT JOIN UNION RIGHT JOIN`.'
+  },
+  'WHERE B.': {
+    title: 'Outer Join Nullification Trap',
+    explanation: 'Filtering a column from the right (preserved) table in the `WHERE` clause (e.g. `WHERE b.status = "ACTIVE"`) drops all unmatched NULL rows, silently turning your `LEFT JOIN` into an `INNER JOIN`! Place such filters in the `ON` clause instead.'
   }
 };
 
@@ -7703,6 +7903,9 @@ function renderFillBlankQuest(container, quest) {
   const trapDissection = fillBlankChecked && !fillBlankPassed ? getTrapDissection(userSlotSelections, quest) : null;
 
   container.innerHTML = `
+    <!-- Section 05: Relational JOINs Master Arena Decision Matrix & Trap Focus Reference -->
+    ${currentQuestSection === 'section5' ? renderJoinMasterMatrixHtml() : ''}
+
     <!-- Faded Scaffolding Tier Banner -->
     ${getScaffoldingBannerHtml(quest, currentQuestIndex)}
 

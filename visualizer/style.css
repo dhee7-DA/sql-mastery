@@ -22388,5 +22388,94 @@ button:active .framer-emoji-icon {
   word-break: break-word;
 }
 
+/* =============================================================================
+   SECTION 05: RELATIONAL JOINS MASTER MATRIX STYLES
+   ============================================================================= */
+.join-matrix-card {
+  background: var(--bg-surface-elevated, #161b22);
+  border: 1px solid rgba(16, 185, 129, 0.35);
+  border-radius: 12px;
+  padding: 16px;
+  margin-bottom: 14px;
+}
+
+.join-matrix-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  border-bottom: 1px solid var(--border-default, rgba(255, 255, 255, 0.08));
+  padding-bottom: 12px;
+  margin-bottom: 12px;
+}
+
+.join-filter-pills-row {
+  display: flex;
+  gap: 6px;
+  overflow-x: auto;
+  align-items: center;
+  padding-bottom: 8px;
+  margin-bottom: 10px;
+  scrollbar-width: thin;
+}
+
+.join-matrix-table-wrap {
+  overflow-x: auto;
+  border: 1px solid rgba(255, 255, 255, 0.08);
+  border-radius: 8px;
+  background: rgba(0, 0, 0, 0.35);
+}
+
+.join-matrix-table {
+  width: 100%;
+  border-collapse: collapse;
+  font-size: 11px;
+  font-family: var(--font-sans);
+}
+
+.join-matrix-table th {
+  background: rgba(255, 255, 255, 0.04);
+  color: var(--text-secondary);
+  font-family: var(--font-mono);
+  font-size: 10px;
+  font-weight: 700;
+  text-transform: uppercase;
+  padding: 10px 12px;
+  text-align: left;
+  border-bottom: 1px solid rgba(255, 255, 255, 0.1);
+}
+
+.join-matrix-table td {
+  padding: 10px 12px;
+  border-bottom: 1px solid rgba(255, 255, 255, 0.05);
+  vertical-align: middle;
+}
+
+.join-matrix-table tr.active-row {
+  background: rgba(16, 185, 129, 0.08);
+}
+
+.join-symbol-badge {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  width: 22px;
+  height: 22px;
+  border-radius: 4px;
+  border: 1px solid;
+  font-family: var(--font-mono);
+  font-weight: 800;
+  font-size: 13px;
+  background: rgba(0, 0, 0, 0.4);
+}
+
+.join-trap-pill {
+  background: rgba(239, 68, 68, 0.06);
+  border: 1px solid rgba(239, 68, 68, 0.2);
+  border-radius: 6px;
+  padding: 6px 8px;
+  line-height: 1.35;
+}
+
+
 
 
