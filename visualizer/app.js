@@ -6697,6 +6697,8 @@ let activeJoinDisciplineFilter = null;
 let isJoinMatrixGuideCollapsed = false;
 let activeWindowDisciplineFilter = null;
 let isWindowMatrixGuideCollapsed = false;
+let activeCteDisciplineFilter = null;
+let isCteMatrixGuideCollapsed = false;
 
 function getActiveQuestsList() {
   if (currentQuestSection === 'section1' && window.QUESTS_SECTION_1 && window.QUESTS_SECTION_1.length > 0) {
@@ -6723,6 +6725,12 @@ function getActiveQuestsList() {
     }
     return window.QUESTS_SECTION_6;
   }
+  if (currentQuestSection === 'section7' && window.QUESTS_SECTION_7 && window.QUESTS_SECTION_7.length > 0) {
+    if (activeCteDisciplineFilter) {
+      return window.QUESTS_SECTION_7.filter(q => q.disciplineKey === activeCteDisciplineFilter);
+    }
+    return window.QUESTS_SECTION_7;
+  }
   return window.QUESTS_DATA || [];
 }
 
@@ -6730,7 +6738,7 @@ function switchQuestSection(sectionKey) {
   currentQuestSection = sectionKey;
   currentQuestIndex = 0;
   questChunkStart = 0;
-  const isMultiChunk = (sectionKey === 'section1' || sectionKey === 'section2' || sectionKey === 'section3' || sectionKey === 'section4' || sectionKey === 'section5' || sectionKey === 'section6');
+  const isMultiChunk = (sectionKey === 'section1' || sectionKey === 'section2' || sectionKey === 'section3' || sectionKey === 'section4' || sectionKey === 'section5' || sectionKey === 'section6' || sectionKey === 'section7');
   questChunkEnd = isMultiChunk ? 20 : 30;
 
   if (sectionKey === 'section5') {
@@ -6738,6 +6746,9 @@ function switchQuestSection(sectionKey) {
   }
   if (sectionKey === 'section6') {
     activeWindowDisciplineFilter = null;
+  }
+  if (sectionKey === 'section7') {
+    activeCteDisciplineFilter = null;
   }
 
   // Update tabs
@@ -6768,6 +6779,7 @@ function switchQuestSection(sectionKey) {
     else if (sectionKey === 'section4') footerTrack.textContent = 'Section 04: Aggregations & GROUP BY (100)';
     else if (sectionKey === 'section5') footerTrack.textContent = 'Section 05: Relational JOINs Arena (420)';
     else if (sectionKey === 'section6') footerTrack.textContent = 'Section 06: Window Functions Arena (100)';
+    else if (sectionKey === 'section7') footerTrack.textContent = 'Section 07: Subqueries & CTEs Arena (100)';
     else if (sectionKey === 'featured') footerTrack.textContent = 'Bonus: Boss Gauntlet (30)';
   }
 
@@ -6788,6 +6800,8 @@ function switchQuestSection(sectionKey) {
       window.SQL_BUDDY.say("🏛️ Section 05: Relational JOINs Master Arena loaded (420 Levels across 7 Disciplines)! Let's master multi-table relational algebra!", 4500, 'celebrate');
     } else if (sectionKey === 'section6') {
       window.SQL_BUDDY.say("🪟 Section 06: Window Functions & Analytical Partitioning loaded (100 Levels)! Master ROW_NUMBER, LEAD/LAG, and sliding frames!", 4500, 'celebrate');
+    } else if (sectionKey === 'section7') {
+      window.SQL_BUDDY.say("🌳 Section 07: Subqueries & CTEs Master Arena loaded (100 Levels)! Master modular pipelines, EXISTS, and recursive trees!", 4500, 'celebrate');
     } else {
       window.SQL_BUDDY.say("🏆 Boss Gauntlet Activated! 30 Advanced Challenges across all SQL pillars!", 3500, 'celebrate');
     }
@@ -7093,6 +7107,155 @@ function toggleWindowMatrixGuide() {
   if (window.AudioFX) window.AudioFX.playClick();
 }
 window.toggleWindowMatrixGuide = toggleWindowMatrixGuide;
+
+// =============================================================================
+// SECTION 07: SUBQUERIES & CTES MASTER DECISION MATRIX & DISCIPLINE FILTER
+// =============================================================================
+function renderCteMasterMatrixHtml() {
+  const metadata = window.CTE_DISCIPLINES_METADATA || [];
+  const isCollapsed = isCteMatrixGuideCollapsed;
+  const currentDisciplineKey = activeCteDisciplineFilter;
+
+  let filterPillsHtml = `
+    <button class="choice-pill ${!currentDisciplineKey ? 'selected' : ''}" onclick="setCteDisciplineFilter(null)" style="font-size: 11px; padding: 4px 10px;">
+      <span>All 100 Quests</span>
+    </button>
+  `;
+
+  metadata.forEach(d => {
+    const isSelected = currentDisciplineKey === d.key;
+    filterPillsHtml += `
+      <button class="choice-pill ${isSelected ? 'selected' : ''}" onclick="setCteDisciplineFilter('${d.key}')" style="font-size: 11px; padding: 4px 10px; border-color: ${d.color}66;">
+        <span style="color: ${d.color}; font-weight: 800; margin-right: 4px;">${d.symbol}</span>
+        <span>${escapeHtml(d.name)} (20)</span>
+      </button>
+    `;
+  });
+
+  let tableRowsHtml = '';
+  metadata.forEach(d => {
+    const isActiveRow = currentDisciplineKey === d.key;
+    tableRowsHtml += `
+      <tr class="${isActiveRow ? 'active-row' : ''}">
+        <td style="white-space: nowrap;">
+          <div style="display: flex; align-items: center; gap: 8px;">
+            <span class="join-symbol-badge" style="color: ${d.color}; border-color: ${d.color}66;">${d.symbol}</span>
+            <div>
+              <strong style="color: ${d.color}; font-size: 12px; font-family: var(--font-mono);">${escapeHtml(d.name)}</strong>
+              <div style="font-size: 10px; color: var(--text-muted);">${escapeHtml(d.concept)}</div>
+            </div>
+          </div>
+        </td>
+        <td style="max-width: 220px; line-height: 1.45; color: var(--text-secondary);">
+          ${escapeHtml(d.whenToUse)}
+        </td>
+        <td style="max-width: 240px; line-height: 1.45; color: #a7f3d0;">
+          <div style="font-size: 10.5px;">📈 <strong>Finance &amp; Analytics Scenarios:</strong></div>
+          <div style="font-size: 10px; color: var(--text-secondary); margin-top: 2px;">${escapeHtml(d.scenarios)}</div>
+        </td>
+        <td style="max-width: 260px; line-height: 1.45;">
+          <div class="join-trap-pill">
+            <span style="color: #f87171; font-weight: 700; font-size: 10px; display: block; margin-bottom: 2px;">⚠️ TRAP / GOTCHA:</span>
+            <span style="color: #fca5a5; font-size: 10px;">${escapeHtml(d.traps)}</span>
+          </div>
+        </td>
+        <td style="text-align: right; white-space: nowrap;">
+          <button class="card-nav-btn ${isActiveRow ? 'action-btn-primary' : ''}" style="padding: 4px 10px; font-size: 10px;" onclick="setCteDisciplineFilter('${d.key}')">
+            ${isActiveRow ? '✓ Active (20)' : `Practice (${d.name.split(' ')[0]})`}
+          </button>
+        </td>
+      </tr>
+    `;
+  });
+
+  return `
+    <div class="join-matrix-card" style="border-color: rgba(236, 72, 153, 0.35);">
+      <div class="join-matrix-header">
+        <div style="display: flex; align-items: center; gap: 10px;">
+          <span style="font-size: 16px;">🌳</span>
+          <div>
+            <div style="font-size: 13px; font-weight: 700; color: #f472b6; display: flex; align-items: center; gap: 8px;">
+              <span>Subqueries &amp; Common Table Expressions (CTEs) Master Decision Matrix</span>
+              <span class="status-pill" style="font-size: 9.5px; color: #ec4899; background: rgba(236,72,153,0.12); border-color: rgba(236,72,153,0.3);">5 Disciplines • 100 Problems</span>
+            </div>
+            <div style="font-size: 11px; color: var(--text-muted); margin-top: 2px;">
+              Cross-reference table: When to choose Scalar Subqueries, Correlated lookups, EXISTS vs IN, Modular CTEs, or Recursive hierarchies.
+            </div>
+          </div>
+        </div>
+        <button class="card-nav-btn" style="padding: 4px 10px; font-size: 11px;" onclick="toggleCteMatrixGuide()">
+          ${isCollapsed ? '➕ Expand Decision Matrix' : '➖ Collapse Reference'}
+        </button>
+      </div>
+
+      <div class="join-filter-pills-row">
+        <span style="font-size: 10px; font-family: var(--font-mono); color: var(--text-muted); white-space: nowrap; margin-right: 4px;">FILTER BY DISCIPLINE:</span>
+        ${filterPillsHtml}
+      </div>
+
+      ${!isCollapsed ? `
+        <div class="join-matrix-table-wrap">
+          <table class="join-matrix-table">
+            <thead>
+              <tr>
+                <th style="width: 190px;">Subquery / CTE Discipline</th>
+                <th>When To Use / Core Concept</th>
+                <th>Real-World Finance &amp; Data Scenarios</th>
+                <th>Silent Trap &amp; Anti-Pattern Focus</th>
+                <th style="text-align: right; width: 110px;">Practice</th>
+              </tr>
+            </thead>
+            <tbody>
+              ${tableRowsHtml}
+            </tbody>
+          </table>
+        </div>
+      ` : `
+        <div style="font-size: 11px; color: var(--text-muted); padding: 4px 0; display: flex; align-items: center; justify-content: space-between;">
+          <span><em>Matrix reference collapsed. Click &quot;Expand Decision Matrix&quot; above to view pipeline scenarios and trap analysis.</em></span>
+          ${currentDisciplineKey ? `<span style="color: #f472b6; font-weight: 600;">Currently filtered: ${currentDisciplineKey.replace(/_/g, ' ').toUpperCase()} (20 Quests)</span>` : ''}
+        </div>
+      `}
+    </div>
+  `;
+}
+window.renderCteMasterMatrixHtml = renderCteMasterMatrixHtml;
+
+function setCteDisciplineFilter(discKey) {
+  if (activeCteDisciplineFilter === discKey) {
+    activeCteDisciplineFilter = null;
+  } else {
+    activeCteDisciplineFilter = discKey;
+  }
+  currentQuestIndex = 0;
+  questChunkStart = 0;
+  questChunkEnd = 20;
+
+  const levelSelect = document.getElementById('questDirectLevelSelect');
+  if (levelSelect) levelSelect.innerHTML = '';
+
+  renderQuestStepperTrack();
+  renderActiveQuest(0);
+
+  if (window.AudioFX) window.AudioFX.playClick();
+  if (window.SQL_BUDDY) {
+    if (activeCteDisciplineFilter) {
+      const meta = (window.CTE_DISCIPLINES_METADATA || []).find(m => m.key === activeCteDisciplineFilter);
+      const name = meta ? meta.name : activeCteDisciplineFilter;
+      window.SQL_BUDDY.say(`Filtered to ${name} (20 Levels)! Master this pipeline discipline!`, 3500, 'celebrate');
+    } else {
+      window.SQL_BUDDY.say("Showing all 100 Subquery & CTE quests across 5 disciplines!", 3000, 'happy');
+    }
+  }
+}
+window.setCteDisciplineFilter = setCteDisciplineFilter;
+
+function toggleCteMatrixGuide() {
+  isCteMatrixGuideCollapsed = !isCteMatrixGuideCollapsed;
+  renderActiveQuest(currentQuestIndex);
+  if (window.AudioFX) window.AudioFX.playClick();
+}
+window.toggleCteMatrixGuide = toggleCteMatrixGuide;
 
 function toggleQuestLevelDrawer() {
   const drawer = document.getElementById('questLevelDrawer');
@@ -7470,10 +7633,11 @@ function updateQuestSidebars(quest, idx, total) {
   const levelNum = idx + 1;
   const isSection5 = currentQuestSection === 'section5';
   const isSection6 = currentQuestSection === 'section6';
-  const isTier1 = tierName.includes('apprentice') || (isSection5 || isSection6 ? levelNum <= 20 : (currentQuestSection === 'section1' ? levelNum <= 15 : levelNum <= 20));
-  const isTier2 = tierName.includes('practitioner') || (isSection5 ? (levelNum > 20 && levelNum <= 40) : (isSection6 ? (levelNum > 20 && levelNum <= 45) : (currentQuestSection === 'section1' ? (levelNum > 15 && levelNum <= 40) : (levelNum > 20 && levelNum <= 45))));
-  const isTier3 = tierName.includes('specialist') || (isSection5 ? (levelNum > 40 && levelNum <= 60) : (isSection6 ? (levelNum > 45 && levelNum <= 75) : (currentQuestSection === 'section1' ? (levelNum > 40 && levelNum <= 70) : (levelNum > 45 && levelNum <= 75))));
-  const isTier4 = tierName.includes('master') || (isSection5 ? levelNum > 60 : (isSection6 ? levelNum > 75 : (currentQuestSection === 'section1' ? levelNum > 70 : levelNum > 75)));
+  const isSection7 = currentQuestSection === 'section7';
+  const isTier1 = tierName.includes('apprentice') || (isSection5 || isSection6 || isSection7 ? levelNum <= 20 : (currentQuestSection === 'section1' ? levelNum <= 15 : levelNum <= 20));
+  const isTier2 = tierName.includes('practitioner') || (isSection5 ? (levelNum > 20 && levelNum <= 40) : (isSection6 || isSection7 ? (levelNum > 20 && levelNum <= 45) : (currentQuestSection === 'section1' ? (levelNum > 15 && levelNum <= 40) : (levelNum > 20 && levelNum <= 45))));
+  const isTier3 = tierName.includes('specialist') || (isSection5 ? (levelNum > 40 && levelNum <= 60) : (isSection6 || isSection7 ? (levelNum > 45 && levelNum <= 75) : (currentQuestSection === 'section1' ? (levelNum > 40 && levelNum <= 70) : (levelNum > 45 && levelNum <= 75))));
+  const isTier4 = tierName.includes('master') || (isSection5 ? levelNum > 60 : (isSection6 || isSection7 ? levelNum > 75 : (currentQuestSection === 'section1' ? levelNum > 70 : levelNum > 75)));
 
   const tiers = [
     { id: 'ladderTier1', active: isTier1 },
@@ -7494,7 +7658,12 @@ function updateQuestSidebars(quest, idx, total) {
   const sub2 = document.querySelector('#ladderTier2 .ladder-tier-sub');
   const sub3 = document.querySelector('#ladderTier3 .ladder-tier-sub');
   const sub4 = document.querySelector('#ladderTier4 .ladder-tier-sub');
-  if (currentQuestSection === 'section6') {
+  if (currentQuestSection === 'section7') {
+    if (sub1) sub1.textContent = 'Lvl 01–20 • Scalar & Predicates';
+    if (sub2) sub2.textContent = 'Lvl 21–45 • Correlated & Semi-Joins';
+    if (sub3) sub3.textContent = 'Lvl 46–75 • Chained Modular CTEs';
+    if (sub4) sub4.textContent = 'Lvl 76–100 • Recursive & Graph Trees';
+  } else if (currentQuestSection === 'section6') {
     if (sub1) sub1.textContent = 'Lvl 01–20 • Ranking & Numbering';
     if (sub2) sub2.textContent = 'Lvl 21–45 • Offsets & Velocity';
     if (sub3) sub3.textContent = 'Lvl 46–75 • Cumulative Accumulators';
@@ -7698,6 +7867,22 @@ const SQL_TRAP_CATALOG = {
   'GROUP BY ': {
     title: 'GROUP BY vs PARTITION BY Confusion',
     explanation: '`GROUP BY` collapses multiple rows into a single aggregated row. In window functions, use `PARTITION BY` inside `OVER()` to preserve individual row identities while computing summary metrics.'
+  },
+  'NOT IN': {
+    title: 'The Fatal NOT IN with NULL Trap',
+    explanation: 'If the subquery inside `NOT IN` contains even a SINGLE `NULL` value, SQL evaluates `val NOT IN (..., NULL)` as `UNKNOWN`, causing the entire WHERE clause to fail and return ZERO rows! Always use `NOT EXISTS` for safe anti-joins.'
+  },
+  'SELECT COUNT(*)': {
+    title: 'EXISTS vs COUNT(*) Performance Trap',
+    explanation: 'Writing `WHERE (SELECT COUNT(*) FROM ...) > 0` forces the database to scan every matching row to compute the full count! `WHERE EXISTS (SELECT 1 ...)` performs an early-exit probe and stops immediately upon finding the first match.'
+  },
+  'UNION': {
+    title: 'UNION vs UNION ALL Deduplication Trap',
+    explanation: '`UNION` performs an expensive deduplication sort across the entire intermediate result set. In recursive CTEs and pipeline mergers, use `UNION ALL` unless duplicate elimination is explicitly required.'
+  },
+  'WITH RECURSE': {
+    title: 'Recursive CTE Keyword Trap',
+    explanation: 'ANSI SQL requires `WITH RECURSIVE <name> AS (...)`, not `WITH RECURSE` or `RECURSIVE WITH`.'
   }
 };
 
@@ -8634,13 +8819,347 @@ function renderWindowDualCodingHtml(quest, userSelections) {
 }
 window.renderWindowDualCodingHtml = renderWindowDualCodingHtml;
 
+// =============================================================================
+// DUAL-CODING SUBQUERY & CTE DATAFLOW DAG VISUALIZER
+// =============================================================================
+function renderCteDualCodingHtml(quest, userSelections) {
+  const table = quest.table || 'InvestmentAccounts';
+  const allSelStr = Object.values(userSelections || {}).join(' ').toUpperCase();
+
+  let discKey = quest.disciplineKey || 'scalar_subqueries';
+  if (allSelStr.includes('RECURSIVE')) {
+    discKey = 'recursive_ctes';
+  } else if (allSelStr.includes('WITH') && (allSelStr.includes('STAGE') || allSelStr.includes(','))) {
+    discKey = 'chained_ctes';
+  } else if (allSelStr.includes('EXISTS')) {
+    discKey = 'semi_anti_joins';
+  } else if (allSelStr.includes('WHERE B.') || allSelStr.includes('WHERE A.')) {
+    discKey = 'correlated_subqueries';
+  }
+
+  const configs = {
+    scalar_subqueries: {
+      name: 'SCALAR & BENCHMARK SUBQUERY',
+      symbol: '📌',
+      color: '#38bdf8',
+      summary: 'Scalar Isolation: Encapsulates a single aggregate baseline value to inject or filter across rows.',
+      badgeText: 'Single Scalar Benchmark Active'
+    },
+    correlated_subqueries: {
+      name: 'CORRELATED ROW-CONTEXT LOOKUP',
+      symbol: '🔄',
+      color: '#10b981',
+      summary: 'Dynamic Sub-Scan: Outer row passes its group key into the inner query to compute a peer-group metric.',
+      badgeText: 'Row-by-Row Correlated Context Active'
+    },
+    semi_anti_joins: {
+      name: 'SEMI-JOIN PROBE (EXISTS vs IN)',
+      symbol: '⚡',
+      color: '#f59e0b',
+      summary: 'Early-Exit Probe: Validates existence without duplicating records or succumbing to NOT IN NULL traps.',
+      badgeText: 'Existence Probe Stream Active'
+    },
+    chained_ctes: {
+      name: 'CHAINED MODULAR CTE PIPELINE',
+      symbol: '🔗',
+      color: '#ec4899',
+      summary: 'Sequential Staging: Transforms raw inputs through clean, modular, self-contained pipeline stages.',
+      badgeText: 'Multi-Stage Dataflow Active'
+    },
+    recursive_ctes: {
+      name: 'RECURSIVE HIERARCHY TREE',
+      symbol: '🌳',
+      color: '#a855f7',
+      summary: 'Iterative Graph Traversal: Recursively unrolls parent-child trees using anchor and recursive UNION ALL.',
+      badgeText: 'Recursive Depth Unrolling Active'
+    }
+  };
+
+  const cfg = configs[discKey] || configs.scalar_subqueries;
+
+  // 1. Diagram Panel
+  let diagramHtml = '';
+  if (discKey === 'scalar_subqueries') {
+    diagramHtml = `
+      <div style="width: 100%; padding: 4px 6px;">
+        <div style="font-size: 10px; font-family: var(--font-mono); color: #38bdf8; font-weight: 700; margin-bottom: 8px; text-align: center;">
+          INLINE SCALAR INJECTION (1 ROW × 1 COL)
+        </div>
+        <div style="display: flex; align-items: center; justify-content: center; gap: 10px;">
+          <div style="background: rgba(255,255,255,0.04); border: 1px solid rgba(255,255,255,0.1); border-radius: 6px; padding: 6px 10px; text-align: center;">
+            <div style="font-size: 8.5px; color: var(--text-muted);">Row Value</div>
+            <div style="font-size: 11px; font-weight: 800; color: #ffffff; font-family: monospace;">$185,000</div>
+          </div>
+          <span style="color: #38bdf8; font-size: 16px; font-weight: 900;">&gt;</span>
+          <div style="background: rgba(56, 189, 248, 0.15); border: 1.5px solid #38bdf8; border-radius: 6px; padding: 6px 10px; text-align: center; box-shadow: 0 0 10px rgba(56, 189, 248, 0.25);">
+            <div style="font-size: 8.5px; color: #7dd3fc; font-weight: 700;">SCALAR SUBQUERY</div>
+            <div style="font-size: 11px; font-weight: 900; color: #38bdf8; font-family: monospace;">$124,500 [AVG]</div>
+          </div>
+        </div>
+        <div style="font-size: 9px; color: var(--text-muted); text-align: center; margin-top: 8px;">
+          ✓ Predicate evaluates to TRUE &bull; Record preserved in result set
+        </div>
+      </div>
+    `;
+  } else if (discKey === 'correlated_subqueries') {
+    diagramHtml = `
+      <div style="width: 100%; padding: 4px 6px;">
+        <div style="font-size: 10px; font-family: var(--font-mono); color: #10b981; font-weight: 700; margin-bottom: 8px; text-align: center;">
+          CORRELATED LOOP: OUTER ROW &rarr; INNER EVALUATION
+        </div>
+        <div style="display: flex; flex-direction: column; gap: 6px;">
+          <div style="display: flex; justify-content: space-between; align-items: center; background: rgba(16, 185, 129, 0.12); border: 1px solid #10b981; border-radius: 5px; padding: 4px 8px;">
+            <span style="font-size: 9px; font-family: monospace; color: #6ee7b7;">Outer: Emp #101 (Dept: SALES)</span>
+            <span style="font-size: 9.5px; font-weight: 800; color: #fff;">Salary: $95k</span>
+          </div>
+          <div style="text-align: center; color: #10b981; font-size: 11px; font-weight: 800; line-height: 1;">&darr; passes WHERE b.dept_id = 'SALES'</div>
+          <div style="display: flex; justify-content: space-between; align-items: center; background: rgba(255,255,255,0.04); border: 1px dashed rgba(255,255,255,0.2); border-radius: 5px; padding: 4px 8px;">
+            <span style="font-size: 9px; font-family: monospace; color: var(--text-muted);">Inner Result: AVG(SALES)</span>
+            <span style="font-size: 9.5px; font-weight: 700; color: #10b981;">Dept Mean: $78k (Passes)</span>
+          </div>
+        </div>
+      </div>
+    `;
+  } else if (discKey === 'semi_anti_joins') {
+    diagramHtml = `
+      <div style="width: 100%; padding: 4px 6px;">
+        <div style="font-size: 10px; font-family: var(--font-mono); color: #f59e0b; font-weight: 700; margin-bottom: 8px; text-align: center;">
+          EARLY-EXIT PROBING: EXISTS (SELECT 1)
+        </div>
+        <div style="display: flex; align-items: center; justify-content: space-between; gap: 6px;">
+          <div style="background: rgba(255,255,255,0.04); border: 1px solid rgba(255,255,255,0.1); border-radius: 5px; padding: 6px 8px; flex: 1; text-align: center;">
+            <div style="font-size: 8.5px; color: var(--text-muted);">Driving Client</div>
+            <div style="font-size: 10px; font-weight: 700; color: #fff; font-family: monospace;">CL-808</div>
+          </div>
+          <span style="color: #f59e0b; font-size: 14px; font-weight: 800;">&rarr; Probe &rarr;</span>
+          <div style="background: rgba(245, 158, 11, 0.15); border: 1px solid #f59e0b; border-radius: 5px; padding: 6px 8px; flex: 1.2; text-align: center;">
+            <div style="font-size: 8.5px; color: #fde68a;">Orders Index</div>
+            <div style="font-size: 9.5px; font-weight: 800; color: #fbbf24;">Found Row #1! [STOP]</div>
+          </div>
+        </div>
+        <div style="font-size: 8.5px; color: #fde68a; text-align: center; margin-top: 6px;">
+          ⚡ Zero Row Duplication &bull; Safe from NULL corruption
+        </div>
+      </div>
+    `;
+  } else if (discKey === 'chained_ctes') {
+    diagramHtml = `
+      <div style="width: 100%; padding: 4px 6px;">
+        <div style="font-size: 10px; font-family: var(--font-mono); color: #ec4899; font-weight: 700; margin-bottom: 8px; text-align: center;">
+          MODULAR CTE DATAFLOW PIPELINE (DAG)
+        </div>
+        <div style="display: flex; align-items: center; justify-content: space-between; gap: 4px;">
+          <div style="background: rgba(255,255,255,0.04); border: 1px solid rgba(255,255,255,0.1); border-radius: 4px; padding: 4px 6px; text-align: center; flex: 1;">
+            <div style="font-size: 7.5px; color: var(--text-muted);">STAGE 1</div>
+            <div style="font-size: 8.5px; font-weight: 700; color: #f472b6;">raw_filter</div>
+            <div style="font-size: 7.5px; color: #aaa;">10k &rarr; 850</div>
+          </div>
+          <span style="color: #ec4899; font-size: 11px;">&rarr;</span>
+          <div style="background: rgba(236, 72, 153, 0.15); border: 1px solid #ec4899; border-radius: 4px; padding: 4px 6px; text-align: center; flex: 1;">
+            <div style="font-size: 7.5px; color: #fbcfe8;">STAGE 2</div>
+            <div style="font-size: 8.5px; font-weight: 800; color: #fff;">dept_aggs</div>
+            <div style="font-size: 7.5px; color: #f472b6;">850 &rarr; 24</div>
+          </div>
+          <span style="color: #ec4899; font-size: 11px;">&rarr;</span>
+          <div style="background: rgba(255,255,255,0.04); border: 1px solid rgba(255,255,255,0.1); border-radius: 4px; padding: 4px 6px; text-align: center; flex: 1;">
+            <div style="font-size: 7.5px; color: var(--text-muted);">FINAL</div>
+            <div style="font-size: 8.5px; font-weight: 700; color: #fff;">SELECT</div>
+            <div style="font-size: 7.5px; color: #34d399;">Top 5</div>
+          </div>
+        </div>
+      </div>
+    `;
+  } else {
+    // Recursive CTEs
+    diagramHtml = `
+      <div style="width: 100%; padding: 4px 6px;">
+        <div style="font-size: 10px; font-family: var(--font-mono); color: #a855f7; font-weight: 700; margin-bottom: 8px; text-align: center;">
+          RECURSIVE DEPTH UNROLLING: UNION ALL
+        </div>
+        <div style="display: flex; flex-direction: column; gap: 4px;">
+          <div style="display: flex; justify-content: space-between; background: rgba(168, 85, 247, 0.2); border: 1px solid #a855f7; border-radius: 4px; padding: 3px 6px; font-size: 8.5px; font-family: monospace;">
+            <span style="color: #c084fc;">[ANCHOR] Depth 0</span>
+            <span style="color: #fff; font-weight: 800;">CEO (manager_id IS NULL)</span>
+          </div>
+          <div style="display: flex; justify-content: space-between; background: rgba(168, 85, 247, 0.12); border: 1px solid rgba(168, 85, 247, 0.4); border-radius: 4px; padding: 3px 6px; font-size: 8.5px; font-family: monospace; margin-left: 10px;">
+            <span style="color: #d8b4fe;">&rarr; [RECURSE] Depth 1</span>
+            <span style="color: #e9d5ff;">VP Engineering &bull; VP Sales</span>
+          </div>
+          <div style="display: flex; justify-content: space-between; background: rgba(255, 255, 255, 0.04); border: 1px dashed rgba(255, 255, 255, 0.2); border-radius: 4px; padding: 3px 6px; font-size: 8.5px; font-family: monospace; margin-left: 20px;">
+            <span style="color: var(--text-muted);">&rarr; [RECURSE] Depth 2</span>
+            <span style="color: #fff;">Lead Architects &bull; Managers</span>
+          </div>
+        </div>
+      </div>
+    `;
+  }
+
+  // 2. Synchronous Table Projection
+  let rowsHtml = '';
+  if (discKey === 'scalar_subqueries') {
+    rowsHtml = `
+      <tr class="row-match">
+        <td><span class="match-key-pill" style="border-color: #38bdf8; color: #38bdf8;">ACC-101</span></td>
+        <td>Enterprise Alpha</td>
+        <td>$185,000.00</td>
+        <td><strong style="color: #38bdf8;">$124,500.00</strong> (Global AVG)</td>
+        <td style="text-align: right;"><span class="row-status-pill keep">✓ In Benchmark</span></td>
+      </tr>
+      <tr class="row-match">
+        <td><span class="match-key-pill" style="border-color: #38bdf8; color: #38bdf8;">ACC-104</span></td>
+        <td>Quantum Capital</td>
+        <td>$240,000.00</td>
+        <td><strong style="color: #38bdf8;">$124,500.00</strong> (Global AVG)</td>
+        <td style="text-align: right;"><span class="row-status-pill keep">✓ In Benchmark</span></td>
+      </tr>
+      <tr class="row-match">
+        <td><span class="match-key-pill" style="border-color: #38bdf8; color: #38bdf8;">ACC-109</span></td>
+        <td>Nexus Hedge</td>
+        <td>$310,000.00</td>
+        <td><strong style="color: #38bdf8;">$124,500.00</strong> (Global AVG)</td>
+        <td style="text-align: right;"><span class="row-status-pill keep">✓ In Benchmark</span></td>
+      </tr>
+    `;
+  } else if (discKey === 'correlated_subqueries') {
+    rowsHtml = `
+      <tr class="row-match">
+        <td><span class="match-key-pill" style="border-color: #10b981; color: #10b981;">EMP-201</span></td>
+        <td>Sarah Connor</td>
+        <td>SALES</td>
+        <td>$95k &gt; <strong style="color: #10b981;">Dept AVG $78k</strong></td>
+        <td style="text-align: right;"><span class="row-status-pill keep">★ Top of Dept</span></td>
+      </tr>
+      <tr class="row-match">
+        <td><span class="match-key-pill" style="border-color: #10b981; color: #10b981;">EMP-304</span></td>
+        <td>Alex Murphy</td>
+        <td>ENGINEERING</td>
+        <td>$140k &gt; <strong style="color: #10b981;">Dept AVG $120k</strong></td>
+        <td style="text-align: right;"><span class="row-status-pill keep">★ Top of Dept</span></td>
+      </tr>
+    `;
+  } else if (discKey === 'semi_anti_joins') {
+    rowsHtml = `
+      <tr class="row-match">
+        <td><span class="match-key-pill" style="border-color: #f59e0b; color: #f59e0b;">CL-801</span></td>
+        <td>Acme Global</td>
+        <td>ACTIVE</td>
+        <td>EXISTS (3 Orders Found)</td>
+        <td style="text-align: right;"><span class="row-status-pill keep">✓ Semi-Join Pass</span></td>
+      </tr>
+      <tr class="row-match">
+        <td><span class="match-key-pill" style="border-color: #f59e0b; color: #f59e0b;">CL-808</span></td>
+        <td>Stark Industries</td>
+        <td>ACTIVE</td>
+        <td>EXISTS (1 Order Found)</td>
+        <td style="text-align: right;"><span class="row-status-pill keep">✓ Semi-Join Pass</span></td>
+      </tr>
+    `;
+  } else if (discKey === 'chained_ctes') {
+    rowsHtml = `
+      <tr class="row-match">
+        <td><span class="match-key-pill" style="border-color: #ec4899; color: #ec4899;">STAGE 2</span></td>
+        <td>REGION-EAST</td>
+        <td>42 Qualified Accounts</td>
+        <td><strong style="color: #f472b6;">Mean Balance: $88,400</strong></td>
+        <td style="text-align: right;"><span class="row-status-pill null-pad">Staged Output</span></td>
+      </tr>
+      <tr class="row-match">
+        <td><span class="match-key-pill" style="border-color: #ec4899; color: #ec4899;">STAGE 2</span></td>
+        <td>REGION-WEST</td>
+        <td>68 Qualified Accounts</td>
+        <td><strong style="color: #f472b6;">Mean Balance: $112,000</strong></td>
+        <td style="text-align: right;"><span class="row-status-pill null-pad">Staged Output</span></td>
+      </tr>
+    `;
+  } else {
+    // Recursive
+    rowsHtml = `
+      <tr class="row-match">
+        <td><span class="match-key-pill" style="border-color: #a855f7; color: #a855f7;">EMP-001</span></td>
+        <td>CEO / Founder</td>
+        <td><span class="null-pill">&lt;NULL&gt;</span> (Root)</td>
+        <td><strong style="color: #c084fc;">Depth: 0</strong></td>
+        <td style="text-align: right;"><span class="row-status-pill keep">★ Anchor Member</span></td>
+      </tr>
+      <tr class="row-match">
+        <td><span class="match-key-pill" style="border-color: #a855f7; color: #a855f7;">EMP-012</span></td>
+        <td>VP Operations</td>
+        <td>EMP-001 (CEO)</td>
+        <td><strong style="color: #c084fc;">Depth: 1</strong></td>
+        <td style="text-align: right;"><span class="row-status-pill keep">✓ Recursive Union</span></td>
+      </tr>
+      <tr class="row-match">
+        <td><span class="match-key-pill" style="border-color: #a855f7; color: #a855f7;">EMP-045</span></td>
+        <td>Senior Plant Lead</td>
+        <td>EMP-012 (VP)</td>
+        <td><strong style="color: #c084fc;">Depth: 2</strong></td>
+        <td style="text-align: right;"><span class="row-status-pill keep">✓ Recursive Union</span></td>
+      </tr>
+    `;
+  }
+
+  return `
+    <div class="live-preview-header">
+      <div class="live-preview-title">
+        <span class="join-symbol-badge" style="color: ${cfg.color}; border-color: ${cfg.color}66; width: 18px; height: 18px; font-size: 11px;">${cfg.symbol}</span>
+        <span>DUAL-CODING SUBQUERY &amp; CTE DATAFLOW ENGINE:</span>
+        <span style="color: ${cfg.color}; font-weight: 800;">${cfg.name}</span>
+      </div>
+      <span class="live-preview-subtitle">${cfg.badgeText}</span>
+    </div>
+
+    <div style="font-size: 11px; color: var(--text-secondary); margin-bottom: 8px; line-height: 1.45;">
+      ${cfg.summary}
+    </div>
+
+    <div class="join-dual-coding-grid">
+      <!-- Left Column: DAG / Early-Exit / Tree Visual -->
+      <div class="join-venn-card" style="border-color: ${cfg.color}33;">
+        ${diagramHtml}
+      </div>
+
+      <!-- Right Column: Live Table Record Alignment -->
+      <div class="join-live-table-card">
+        <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 6px; padding-bottom: 4px; border-bottom: 1px solid rgba(255,255,255,0.06);">
+          <span style="font-size: 10px; font-family: var(--font-mono); color: var(--text-muted); font-weight: 700;">
+            PIPELINE STAGE RECORD PROJECTION
+          </span>
+          <span style="font-size: 9.5px; font-family: var(--font-mono); color: ${cfg.color};">
+            Table: ${escapeHtml(table)}
+          </span>
+        </div>
+        <table class="live-preview-table">
+          <thead>
+            <tr>
+              <th style="width: 85px;">STAGE / KEY</th>
+              <th>PRIMARY ATTR</th>
+              <th>GROUP / PARENT</th>
+              <th>PIPELINE EVALUATION</th>
+              <th style="width: 120px; text-align: right;">STATUS</th>
+            </tr>
+          </thead>
+          <tbody>
+            ${rowsHtml}
+          </tbody>
+        </table>
+      </div>
+    </div>
+  `;
+}
+window.renderCteDualCodingHtml = renderCteDualCodingHtml;
+
 function renderLiveTransformationHtml(quest, userSelections) {
-  // 1. Dual Coding for Section 06 (Window Functions & Analytical Partitioning)
+  // 1. Dual Coding for Section 07 (Subqueries & CTEs)
+  if (currentQuestSection === 'section7' || ['scalar_subqueries', 'correlated_subqueries', 'semi_anti_joins', 'chained_ctes', 'recursive_ctes'].includes(quest.disciplineKey)) {
+    return renderCteDualCodingHtml(quest, userSelections);
+  }
+
+  // 2. Dual Coding for Section 06 (Window Functions & Analytical Partitioning)
   if (currentQuestSection === 'section6' || ['ranking', 'offsets', 'running_totals', 'window_frames', 'extremums_stats'].includes(quest.disciplineKey)) {
     return renderWindowDualCodingHtml(quest, userSelections);
   }
 
-  // 2. Dual Coding for Section 05 & Relational JOINs
+  // 3. Dual Coding for Section 05 & Relational JOINs
   if (currentQuestSection === 'section5' || (quest.disciplineKey && quest.disciplineKey.includes('join')) || (quest.joinTable && quest.targetQuery && quest.targetQuery.toUpperCase().includes('JOIN'))) {
     return renderJoinDualCodingHtml(quest, userSelections);
   }
@@ -8958,6 +9477,8 @@ function renderFillBlankQuest(container, quest) {
     ${currentQuestSection === 'section5' ? renderJoinMasterMatrixHtml() : ''}
     <!-- Section 06: Window Functions & Analytical Partitioning Decision Matrix Reference -->
     ${currentQuestSection === 'section6' ? renderWindowMasterMatrixHtml() : ''}
+    <!-- Section 07: Subqueries & CTEs Decision Matrix Reference -->
+    ${currentQuestSection === 'section7' ? renderCteMasterMatrixHtml() : ''}
 
     <!-- Faded Scaffolding Tier Banner -->
     ${getScaffoldingBannerHtml(quest, currentQuestIndex)}
