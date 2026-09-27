@@ -74,6 +74,8 @@ An institutional-grade, in-browser execution studio and visual masterclass locat
 | **Day 09** | [`day-09-intermediate-joins`](./day-09-intermediate-joins) | The Report, Top Competitors, Ollivander's Inventory, Non-Equi Joins | Medium | ✅ Completed (3/3) |
 | **Day 10** | [`day-10-advanced-joins-scoring`](./day-10-advanced-joins-scoring) | Contest Leaderboard, Placements, Symmetric Pairs, Subqueries | Medium / Hard | ✅ Completed (3/3) |
 
+> 🏛️ **Important Materials & Reference**: Complete **Relational JOINs Master Vault (420 Problems across 7 Disciplines & Master Decision Matrix)** available in [`docs/IMPORTANT_MATERIALS_RELATIONAL_JOINS.md`](./docs/IMPORTANT_MATERIALS_RELATIONAL_JOINS.md).
+
 ---
 
 ### 🟣 Phase 5: Advanced Analytical SQL & Portfolio Case Study
