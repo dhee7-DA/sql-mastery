@@ -4019,10 +4019,74 @@ body {
 /* Keyword Pill Filter Bar */
 .keyword-pill-filter {
   display: flex;
-  flex-wrap: wrap;
+  flex-direction: column;
+  gap: 10px;
+  margin-bottom: 20px;
+}
+
+.mcq-module-filter-section {
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+  width: 100%;
+}
+
+.mcq-modules-bar {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  overflow-x: auto;
+  padding-bottom: 6px;
+  scrollbar-width: thin;
+}
+
+.mcq-module-btn {
+  background: rgba(255, 255, 255, 0.04);
+  border: 1px solid rgba(255, 255, 255, 0.08);
+  border-radius: 8px;
+  padding: 8px 14px;
+  color: var(--text-secondary);
+  font-size: 12px;
+  font-weight: 600;
+  cursor: pointer;
+  white-space: nowrap;
+  display: inline-flex;
   align-items: center;
   gap: 6px;
-  margin-bottom: 20px;
+  transition: all 0.15s cubic-bezier(0.16, 1, 0.3, 1);
+  font-family: inherit;
+}
+
+.mcq-module-btn:hover {
+  background: rgba(255, 255, 255, 0.08);
+  color: #ffffff;
+  border-color: rgba(255, 255, 255, 0.2);
+  transform: translateY(-1px);
+}
+
+.mcq-module-btn.active {
+  background: rgba(56, 189, 248, 0.15) !important;
+  border-color: #38bdf8 !important;
+  color: #38bdf8 !important;
+  font-weight: 700;
+  box-shadow: 0 0 12px rgba(56, 189, 248, 0.25);
+}
+
+.mcq-module-btn .mod-count {
+  font-family: var(--font-mono);
+  font-size: 11px;
+  opacity: 0.8;
+}
+
+.mcq-subtopics-bar {
+  display: flex;
+  align-items: center;
+  flex-wrap: wrap;
+  gap: 6px;
+  padding: 10px 14px;
+  background: rgba(0, 0, 0, 0.2);
+  border: 1px solid rgba(255, 255, 255, 0.04);
+  border-radius: 8px;
 }
 
 .kw-filter-pill {
@@ -22904,35 +22968,37 @@ button:active .framer-emoji-icon {
 /* Bloub Mascot Avatar positioned on the Active Checkpoint */
 .trail-bloub-avatar {
   position: absolute;
-  top: -34px;
+  top: -36px;
   right: 12px;
   display: flex;
   flex-direction: column;
   align-items: center;
   pointer-events: none;
   z-index: 5;
-  animation: bloubTrailHop 2.4s infinite ease-in-out;
+  transition: transform 0.3s cubic-bezier(0.16, 1, 0.3, 1);
 }
 
 .trail-bloub-speech {
-  background: #3ecf8e;
+  background: #38bdf8;
   color: #0a0a0c;
   font-size: 9.5px;
   font-weight: 800;
-  padding: 1px 6px;
+  padding: 1px 7px;
   border-radius: 8px;
-  box-shadow: 0 2px 6px rgba(0, 0, 0, 0.3);
-  margin-bottom: -2px;
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.35);
+  margin-bottom: -3px;
   white-space: nowrap;
+  font-family: var(--font-mono);
+  letter-spacing: 0.02em;
 }
 
-.bloub-morph-bounce {
-  filter: drop-shadow(0 4px 8px rgba(0, 0, 0, 0.4));
+.bloub-authentic-icon {
+  filter: drop-shadow(0 4px 10px rgba(0, 0, 0, 0.5));
+  transition: transform 0.2s ease;
 }
 
-@keyframes bloubTrailHop {
-  0%, 100% { transform: translateY(0); }
-  50% { transform: translateY(-6px); }
+.journey-node-card:hover .bloub-authentic-icon {
+  transform: scale(1.04);
 }
 
 /* 3. Detailed Active Day Dossier Card */

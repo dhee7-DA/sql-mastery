@@ -1173,8 +1173,8 @@ const SQL_BUDDY = (() => {
   }
 
   function celebrate() {
-    targetScaleY = 1.45;
-    velocityY = -0.4;
+    targetScaleY = 1.08;
+    velocityY = -0.05;
     SOUNDS.playSuccess();
     triggerConfetti();
     say("🎉 Woohoo! Let's celebrate relational data mastery!", 4500, "happy");
@@ -1187,17 +1187,17 @@ const SQL_BUDDY = (() => {
 
     if (questStreak === 3) {
       praise = "⚡ COMBO x3! You're on fire! Sir Bloops is vibrating with pure relational energy! 🔥";
-      targetScaleY = 1.6;
-      velocityY = -0.55;
+      targetScaleY = 1.09;
+      velocityY = -0.06;
     } else if (questStreak === 5) {
       praise = "🔥 5-IN-A-ROW! UNSTOPPABLE STREAK! 💥 Sir Bloops is doing backflips in the query cache!";
-      targetScaleY = 1.75;
-      velocityY = -0.65;
+      targetScaleY = 1.10;
+      velocityY = -0.07;
       isSuperCombo = true;
     } else if (questStreak === 10) {
       praise = "👑 10-QUEST STREAK OF THE GODS! 🏆 YOU ARE AN ABSOLUTE SQL DEITY! Sir Bloops is weeping tears of joy!";
-      targetScaleY = 1.95;
-      velocityY = -0.78;
+      targetScaleY = 1.12;
+      velocityY = -0.08;
       isSuperCombo = true;
     } else {
       const woohooPraises = [
@@ -1208,8 +1208,8 @@ const SQL_BUDDY = (() => {
         "HAPPY WOOHOO! 🏆 Boom! Level conquered! Keep that streak rolling!"
       ];
       praise = woohooPraises[Math.floor(Math.random() * woohooPraises.length)];
-      targetScaleY = 1.48; // High joyful bounce!
-      velocityY = -0.46;
+      targetScaleY = 1.07; // Gentle authentic jelly pop
+      velocityY = -0.05;
     }
 
     setExpression("happy");

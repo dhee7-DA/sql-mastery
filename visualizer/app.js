@@ -4150,7 +4150,13 @@ function switchToMcqsWithKeyword(keywordName) {
   if (mcqTab) mcqTab.classList.add('active');
   if (mcqView) mcqView.classList.add('active');
 
-  renderMcqs(keywordName);
+  let targetMod = 'all';
+  if (keywordName && keywordName.toLowerCase() !== 'all') {
+    const found = MCQ_MODULES.find(m => m.keywords.some(k => k.toLowerCase() === keywordName.toLowerCase()));
+    if (found) targetMod = found.id;
+  }
+
+  renderMcqs(keywordName, true, targetMod);
 }
 
 let QuizState = {
@@ -4158,49 +4164,202 @@ let QuizState = {
   answered: 0,
   total: 0
 };
+
+const MCQ_MODULES = [
+  {
+    id: "all",
+    title: "All Modules",
+    icon: "🌐",
+    keywords: []
+  },
+  {
+    id: "foundations",
+    title: "Foundations & Projections",
+    icon: "📦",
+    keywords: ["SELECT", "FROM", "MATH & MEDIANS"]
+  },
+  {
+    id: "filtering",
+    title: "WHERE & 3-Valued Logic",
+    icon: "🎯",
+    keywords: ["WHERE", "EXISTS Mechanics & 3VL"]
+  },
+  {
+    id: "sorting",
+    title: "ORDER BY & Pagination",
+    icon: "⚡",
+    keywords: ["ORDER BY & LIMIT"]
+  },
+  {
+    id: "aggregations",
+    title: "Aggregations & Grouping",
+    icon: "📊",
+    keywords: ["COUNT", "SUM", "AVG", "MIN & MAX", "GROUP BY", "HAVING", "ROLLUP & CUBE"]
+  },
+  {
+    id: "joins",
+    title: "Relational JOINs Arena",
+    icon: "🏛️",
+    keywords: [
+      "INNER JOIN", "LEFT JOIN", "RIGHT JOIN", "FULL OUTER JOIN", 
+      "CROSS JOIN", "ANTI-JOIN", "SEMI-JOIN", "SELF-JOIN", 
+      "NON-EQUI JOIN", "JOIN ALGORITHMS"
+    ]
+  },
+  {
+    id: "window",
+    title: "Window Functions & Frames",
+    icon: "🪟",
+    keywords: [
+      "PARTITION BY", "ROW_NUMBER()", "RANK & DENSE_RANK", "NTILE()",
+      "LAG() & LEAD()", "FIRST_VALUE() & LAST_VALUE()", "Running Totals", 
+      "Moving Frames", "Gaps-and-Islands"
+    ]
+  },
+  {
+    id: "subqueries_ctes",
+    title: "Subqueries & Modular CTEs",
+    icon: "🌳",
+    keywords: [
+      "Subquery Dimensionality", "Correlation Parameter Binding", 
+      "Correlated Top-N", "Common Table Expressions", 
+      "WITH RECURSIVE", "Graph Traversals"
+    ]
+  },
+  {
+    id: "set_operations",
+    title: "Set Operations",
+    icon: "🔀",
+    keywords: ["UNION vs UNION ALL", "EXCEPT & INTERSECT"]
+  },
+  {
+    id: "cloud_modern",
+    title: "Cloud Warehouses & QUALIFY",
+    icon: "❄️",
+    keywords: ["QUALIFY & Pipeline"]
+  }
+];
+
+let activeMcqModule = 'all';
 let activeMcqFilter = 'all';
 let currentMcqDisplayLimit = 25;
 
-function renderMcqs(filterKeyword = 'all', resetLimit = true) {
+function renderMcqs(filterKeyword = null, resetLimit = true, targetModule = null) {
   if (resetLimit) currentMcqDisplayLimit = 25;
-  activeMcqFilter = filterKeyword;
+  if (targetModule !== null) {
+    activeMcqModule = targetModule;
+    activeMcqFilter = 'all';
+  }
+  if (filterKeyword !== null) {
+    activeMcqFilter = filterKeyword;
+  }
+
   const filterContainer = document.getElementById('mcqPillFilter');
   const container = document.getElementById('mcqCardsList');
   const allMcqs = window.MCQS_VAULT_500 || (window.FOUNDATIONS_DATA ? window.FOUNDATIONS_DATA.mcqs : []);
   if (!container || !allMcqs.length) return;
 
-  // 1. Render Filter Pills
+  const currentModObj = MCQ_MODULES.find(m => m.id === activeMcqModule) || MCQ_MODULES[0];
+
+  // 1. Render Categorized Module & Subtopic Filter Bar
   if (filterContainer) {
-    const uniqueKeywords = ['all', ...new Set(allMcqs.map(m => m.keyword))];
-    let pillsHtml = '';
-    uniqueKeywords.forEach(k => {
-      const isActive = k.toLowerCase() === activeMcqFilter.toLowerCase();
-      const count = k === 'all' ? allMcqs.length : allMcqs.filter(m => m.keyword === k).length;
-      const label = k === 'all' ? `All Questions (${count})` : `${k} (${count})`;
-      pillsHtml += `
-        <button class="kw-filter-pill ${isActive ? 'active' : ''}" data-filter="${k}">
-          <span>${label}</span>
+    // Module Tabs Bar
+    let modulesHtml = '<div class="mcq-modules-bar">';
+    MCQ_MODULES.forEach(mod => {
+      const isModActive = mod.id === activeMcqModule;
+      const modCount = mod.id === 'all' 
+        ? allMcqs.length 
+        : allMcqs.filter(m => mod.keywords.includes(m.keyword)).length;
+      modulesHtml += `
+        <button class="mcq-module-btn ${isModActive ? 'active' : ''}" data-module="${mod.id}">
+          <span class="mod-icon">${mod.icon}</span>
+          <span class="mod-title">${mod.title}</span>
+          <span class="mod-count">(${modCount})</span>
         </button>
       `;
     });
-    filterContainer.innerHTML = pillsHtml;
+    modulesHtml += '</div>';
 
+    // Subtopic Pills Bar
+    let subtopicsHtml = '<div class="mcq-subtopics-bar">';
+    if (activeMcqModule === 'all') {
+      const isAllActive = activeMcqFilter === 'all';
+      subtopicsHtml += `
+        <button class="kw-filter-pill ${isAllActive ? 'active' : ''}" data-filter="all">
+          <span>All 2,100 Questions</span>
+        </button>
+      `;
+      // Show top high-yield categories
+      const sampleKws = ["SELECT", "WHERE", "COUNT", "INNER JOIN", "LEFT JOIN", "ROW_NUMBER()", "LAG() & LEAD()", "Common Table Expressions", "QUALIFY & Pipeline"];
+      sampleKws.forEach(k => {
+        const isActive = activeMcqFilter === k;
+        const count = allMcqs.filter(m => m.keyword === k).length;
+        subtopicsHtml += `
+          <button class="kw-filter-pill ${isActive ? 'active' : ''}" data-filter="${k}">
+            <span>${k} (${count})</span>
+          </button>
+        `;
+      });
+    } else {
+      const modMcqs = allMcqs.filter(m => currentModObj.keywords.includes(m.keyword));
+      const isAllModActive = activeMcqFilter === 'all';
+      subtopicsHtml += `
+        <button class="kw-filter-pill ${isAllModActive ? 'active' : ''}" data-filter="all">
+          <span>All in ${currentModObj.title} (${modMcqs.length})</span>
+        </button>
+      `;
+      currentModObj.keywords.forEach(k => {
+        const isActive = activeMcqFilter === k;
+        const count = allMcqs.filter(m => m.keyword === k).length;
+        if (count > 0) {
+          subtopicsHtml += `
+            <button class="kw-filter-pill ${isActive ? 'active' : ''}" data-filter="${k}">
+              <span>${k} (${count})</span>
+            </button>
+          `;
+        }
+      });
+    }
+    subtopicsHtml += '</div>';
+
+    filterContainer.innerHTML = `
+      <div class="mcq-module-filter-section">
+        ${modulesHtml}
+        ${subtopicsHtml}
+      </div>
+    `;
+
+    // Bind Module button click events
+    filterContainer.querySelectorAll('.mcq-module-btn').forEach(btn => {
+      btn.addEventListener('click', () => {
+        if (window.soundFX) window.soundFX.playPop();
+        renderMcqs('all', true, btn.dataset.module);
+      });
+    });
+
+    // Bind Subtopic pill click events
     filterContainer.querySelectorAll('.kw-filter-pill').forEach(btn => {
       btn.addEventListener('click', () => {
         if (window.soundFX) window.soundFX.playPop();
-        renderMcqs(btn.dataset.filter, true);
+        renderMcqs(btn.dataset.filter, true, null);
       });
     });
   }
 
-  // 2. Filter Questions
-  const filteredMcqs = activeMcqFilter === 'all'
-    ? allMcqs
-    : allMcqs.filter(m => m.keyword.toLowerCase().includes(activeMcqFilter.toLowerCase()) || activeMcqFilter.toLowerCase().includes(m.keyword.toLowerCase()));
+  // 2. Filter Questions by Module and Keyword
+  let filteredMcqs = allMcqs;
+  if (activeMcqModule !== 'all' && currentModObj.keywords.length > 0) {
+    filteredMcqs = filteredMcqs.filter(m => currentModObj.keywords.includes(m.keyword));
+  }
+  if (activeMcqFilter !== 'all') {
+    filteredMcqs = filteredMcqs.filter(m => m.keyword.toLowerCase() === activeMcqFilter.toLowerCase() || m.keyword.toLowerCase().includes(activeMcqFilter.toLowerCase()));
+  }
 
-  QuizState.total = allMcqs.length;
-  document.getElementById('quizTotalCount').textContent = QuizState.total;
-  document.getElementById('quizScoreCount').textContent = QuizState.score;
+  QuizState.total = filteredMcqs.length;
+  const totalCountEl = document.getElementById('quizTotalCount');
+  if (totalCountEl) totalCountEl.textContent = QuizState.total;
+  const scoreCountEl = document.getElementById('quizScoreCount');
+  if (scoreCountEl) scoreCountEl.textContent = QuizState.score;
 
   let html = '';
   const visibleMcqs = filteredMcqs.slice(0, currentMcqDisplayLimit);
