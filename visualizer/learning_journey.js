@@ -828,14 +828,47 @@ class LearningJourneyEngine {
 
         <!-- 4. Quick Action Navigation Row -->
         <div class="dossier-footer-links">
-          <span style="font-size: 11px; color: var(--text-muted); font-weight: 600;">DIRECT SHORTCUTS:</span>
+          <span style="font-size: 11px; color: var(--text-muted); font-weight: 600;">TOPIC PRACTICE:</span>
+          <button class="dossier-pill-btn" onclick="window.learningJourneyEngine.openTopicHubForDay(${day.day}, 'mcqs')">🧠 Day ${day.day} MCQs</button>
+          <button class="dossier-pill-btn" onclick="window.learningJourneyEngine.openTopicHubForDay(${day.day}, 'cases')">💼 Day ${day.day} Case Studies</button>
+          <button class="dossier-pill-btn" onclick="window.learningJourneyEngine.openTopicHubForDay(${day.day}, 'problems')">🏆 Day ${day.day} Query Problems</button>
           <button class="dossier-pill-btn" onclick="window.learningJourneyEngine.launchQuestForDay(${day.day})">🎮 Quests Terminal</button>
-          <button class="dossier-pill-btn" onclick="switchMainView('viewGuidedLab')">🔬 Guided Simulator Lab</button>
-          <button class="dossier-pill-btn" onclick="switchMainView('viewExplainer')">📚 Masterclass Study Docs</button>
-          <button class="dossier-pill-btn" onclick="switchMainView('viewMcqs')">🧠 2,100 MCQs Vault</button>
+          <button class="dossier-pill-btn" onclick="switchMainView('viewExplainer')">📚 Study Docs</button>
         </div>
       </div>
     `;
+  }
+
+  openTopicHubForDay(dayNum, tabName = 'mcqs') {
+    const dayModuleMap = {
+      1: 'foundations',
+      2: 'filtering',
+      3: 'sorting',
+      4: 'foundations',
+      5: 'aggregations',
+      6: 'aggregations',
+      7: 'joins',
+      8: 'joins',
+      9: 'subqueries_ctes',
+      10: 'subqueries_ctes',
+      11: 'window',
+      12: 'window',
+      13: 'set_operations',
+      14: 'set_operations',
+      15: 'cloud_modern',
+      16: 'cloud_modern',
+      17: 'cloud_modern',
+      18: 'cloud_modern',
+      19: 'cloud_modern',
+      20: 'cloud_modern'
+    };
+    const modId = dayModuleMap[dayNum] || 'all';
+    if (typeof switchMainView === 'function') {
+      switchMainView('viewMcqs');
+    }
+    if (typeof renderMcqs === 'function') {
+      renderMcqs(null, true, modId, tabName);
+    }
   }
 
   launchQuestForDay(dayNum) {

@@ -4243,15 +4243,163 @@ const MCQ_MODULES = [
 let activeMcqModule = 'all';
 let activeMcqFilter = 'all';
 let currentMcqDisplayLimit = 25;
+let activeTopicResourceTab = 'mcqs'; // 'mcqs' | 'cases' | 'problems'
+let activeTopicCaseDiff = 'all';
+let activeTopicQuestDiff = 'all';
+let activeTopicSearchQuery = '';
 
-function renderMcqs(filterKeyword = null, resetLimit = true, targetModule = null) {
+function getTopicModuleQuests(moduleId) {
+  const sectionMap = {
+    foundations: [{ key: 'section1', quests: window.QUESTS_SECTION_1 || [] }],
+    filtering: [{ key: 'section2', quests: window.QUESTS_SECTION_2 || [] }],
+    sorting: [{ key: 'section3', quests: window.QUESTS_SECTION_3 || [] }],
+    aggregations: [{ key: 'section4', quests: window.QUESTS_SECTION_4 || [] }],
+    joins: [{ key: 'section5', quests: window.QUESTS_SECTION_5 || [] }],
+    window: [{ key: 'section6', quests: window.QUESTS_SECTION_6 || [] }],
+    subqueries_ctes: [{ key: 'section7', quests: window.QUESTS_SECTION_7 || [] }],
+    set_operations: [{ key: 'section9', quests: window.QUESTS_SECTION_9 || [] }],
+    cloud_modern: [
+      { key: 'section8', quests: window.QUESTS_SECTION_8 || [] },
+      { key: 'section10', quests: window.QUESTS_SECTION_10 || [] }
+    ]
+  };
+
+  if (moduleId === 'all') {
+    const all = [];
+    for (let i = 1; i <= 10; i++) {
+      const arr = window['QUESTS_SECTION_' + i] || [];
+      arr.forEach((q, idx) => all.push({ ...q, questSectionKey: 'section' + i, rawIndex: idx }));
+    }
+    return all;
+  }
+
+  const entries = sectionMap[moduleId] || [];
+  const res = [];
+  entries.forEach(e => {
+    e.quests.forEach((q, idx) => res.push({ ...q, questSectionKey: e.key, rawIndex: idx }));
+  });
+  return res;
+}
+
+function getTopicModuleCases(moduleId) {
+  const allCases = window.ALL_1490_CASE_STUDIES || window.ALL_1040_CASE_STUDIES || window.ALL_500_CASE_STUDIES || [];
+  if (moduleId === 'all') return allCases;
+
+  const filterMap = {
+    foundations: cs => cs.section && (cs.section.includes('Section 2') || cs.section.includes('Section 7') || cs.section.includes('Section 1')),
+    filtering: cs => cs.section && cs.section.includes('Section 3'),
+    sorting: cs => cs.section && cs.section.includes('Section 5'),
+    aggregations: cs => cs.section && cs.section.includes('Section 6'),
+    joins: cs => cs.section && cs.section.includes('Section 8'),
+    window: cs => cs.section && cs.section.includes('Section 9'),
+    subqueries_ctes: cs => cs.section && (cs.section.includes('Section 10') || cs.section.includes('Section 4')),
+    set_operations: cs => cs.section && cs.section.includes('Section 10'),
+    cloud_modern: cs => cs.section && cs.section.includes('Section 10')
+  };
+
+  const fn = filterMap[moduleId] || (() => true);
+  return allCases.filter(fn);
+}
+
+function switchTopicResourceTab(tabName) {
+  if (window.soundFX) window.soundFX.playPop();
+  activeTopicResourceTab = tabName;
+  activeTopicSearchQuery = '';
+  currentMcqDisplayLimit = 25;
+  renderMcqs();
+}
+window.switchTopicResourceTab = switchTopicResourceTab;
+
+function filterTopicCasesByDiff(diff) {
+  if (window.soundFX) window.soundFX.playPop();
+  activeTopicCaseDiff = diff;
+  currentMcqDisplayLimit = 25;
+  renderMcqs();
+}
+window.filterTopicCasesByDiff = filterTopicCasesByDiff;
+
+function filterTopicQuestsByDiff(diff) {
+  if (window.soundFX) window.soundFX.playPop();
+  activeTopicQuestDiff = diff;
+  currentMcqDisplayLimit = 25;
+  renderMcqs();
+}
+window.filterTopicQuestsByDiff = filterTopicQuestsByDiff;
+
+function handleTopicSearchInput(val) {
+  activeTopicSearchQuery = (val || '').trim().toLowerCase();
+  currentMcqDisplayLimit = 25;
+  renderMcqs();
+}
+window.handleTopicSearchInput = handleTopicSearchInput;
+
+function launchQuestFromTopic(sectionKey, questIdx) {
+  if (window.soundFX) window.soundFX.playSuccess();
+  switchMainView('viewQuests');
+  if (typeof switchQuestSection === 'function') {
+    switchQuestSection(sectionKey || 'section1');
+  }
+  if (typeof setQuestIndex === 'function') {
+    setQuestIndex(typeof questIdx === 'number' ? questIdx : 0);
+  }
+}
+window.launchQuestFromTopic = launchQuestFromTopic;
+
+function jumpToDedicatedCaseStudies(moduleId) {
+  if (window.soundFX) window.soundFX.playPop();
+  switchMainView('viewCases');
+  const sectionTargetMap = {
+    foundations: 'Section 2',
+    filtering: 'Section 3',
+    sorting: 'Section 5',
+    aggregations: 'Section 6',
+    joins: 'Section 8',
+    window: 'Section 9',
+    subqueries_ctes: 'Section 10',
+    set_operations: 'Section 10',
+    cloud_modern: 'Section 10'
+  };
+  const targetPrefix = sectionTargetMap[moduleId];
+  if (targetPrefix) {
+    const btn = Array.from(document.querySelectorAll('.case-section-btn')).find(b => b.dataset.section && b.dataset.section.includes(targetPrefix));
+    if (btn) btn.click();
+  }
+}
+window.jumpToDedicatedCaseStudies = jumpToDedicatedCaseStudies;
+
+function jumpToDedicatedQuestsArena(moduleId) {
+  if (window.soundFX) window.soundFX.playPop();
+  switchMainView('viewQuests');
+  const questSectionTargetMap = {
+    foundations: 'section1',
+    filtering: 'section2',
+    sorting: 'section3',
+    aggregations: 'section4',
+    joins: 'section5',
+    window: 'section6',
+    subqueries_ctes: 'section7',
+    set_operations: 'section9',
+    cloud_modern: 'section8'
+  };
+  const targetSection = questSectionTargetMap[moduleId] || 'section1';
+  if (typeof switchQuestSection === 'function') {
+    switchQuestSection(targetSection);
+  }
+}
+window.jumpToDedicatedQuestsArena = jumpToDedicatedQuestsArena;
+
+function renderMcqs(filterKeyword = null, resetLimit = true, targetModule = null, targetTab = null) {
   if (resetLimit) currentMcqDisplayLimit = 25;
   if (targetModule !== null) {
     activeMcqModule = targetModule;
     activeMcqFilter = 'all';
+    activeTopicSearchQuery = '';
   }
   if (filterKeyword !== null) {
     activeMcqFilter = filterKeyword;
+  }
+  if (targetTab !== null) {
+    activeTopicResourceTab = targetTab;
   }
 
   const filterContainer = document.getElementById('mcqPillFilter');
@@ -4261,9 +4409,16 @@ function renderMcqs(filterKeyword = null, resetLimit = true, targetModule = null
 
   const currentModObj = MCQ_MODULES.find(m => m.id === activeMcqModule) || MCQ_MODULES[0];
 
-  // 1. Render Categorized Module & Subtopic Filter Bar
+  // Retrieve cases and quests for the active module
+  const modCases = getTopicModuleCases(activeMcqModule);
+  const modQuests = getTopicModuleQuests(activeMcqModule);
+  const modMcqsCount = activeMcqModule === 'all'
+    ? allMcqs.length
+    : allMcqs.filter(m => currentModObj.keywords.includes(m.keyword)).length;
+
+  // 1. Render Categorized Module & Resource View Switcher Bar
   if (filterContainer) {
-    // Module Tabs Bar
+    // A. Module Tabs Bar
     let modulesHtml = '<div class="mcq-modules-bar">';
     MCQ_MODULES.forEach(mod => {
       const isModActive = mod.id === activeMcqModule;
@@ -4280,52 +4435,128 @@ function renderMcqs(filterKeyword = null, resetLimit = true, targetModule = null
     });
     modulesHtml += '</div>';
 
-    // Subtopic Pills Bar
-    let subtopicsHtml = '<div class="mcq-subtopics-bar">';
-    if (activeMcqModule === 'all') {
-      const isAllActive = activeMcqFilter === 'all';
-      subtopicsHtml += `
-        <button class="kw-filter-pill ${isAllActive ? 'active' : ''}" data-filter="all">
-          <span>All 2,100 Questions</span>
-        </button>
-      `;
-      // Show top high-yield categories
-      const sampleKws = ["SELECT", "WHERE", "COUNT", "INNER JOIN", "LEFT JOIN", "ROW_NUMBER()", "LAG() & LEAD()", "Common Table Expressions", "QUALIFY & Pipeline"];
-      sampleKws.forEach(k => {
-        const isActive = activeMcqFilter === k;
-        const count = allMcqs.filter(m => m.keyword === k).length;
-        subtopicsHtml += `
-          <button class="kw-filter-pill ${isActive ? 'active' : ''}" data-filter="${k}">
-            <span>${k} (${count})</span>
+    // B. Resource View Switcher Bar (3-in-1 Topic Window Tabs)
+    const resourceTabsHtml = `
+      <div class="topic-resource-tabs-bar">
+        <div class="topic-resource-tabs-group">
+          <button class="topic-resource-tab ${activeTopicResourceTab === 'mcqs' ? 'active' : ''}" onclick="switchTopicResourceTab('mcqs')">
+            <span class="tab-icon">🧠</span>
+            <span class="tab-label">Topic MCQs</span>
+            <span class="tab-badge">${modMcqsCount}</span>
+          </button>
+          <button class="topic-resource-tab ${activeTopicResourceTab === 'cases' ? 'active' : ''}" onclick="switchTopicResourceTab('cases')">
+            <span class="tab-icon">💼</span>
+            <span class="tab-label">Corporate Case Studies</span>
+            <span class="tab-badge">${modCases.length}</span>
+          </button>
+          <button class="topic-resource-tab ${activeTopicResourceTab === 'problems' ? 'active' : ''}" onclick="switchTopicResourceTab('problems')">
+            <span class="tab-icon">🏆</span>
+            <span class="tab-label">Query Problems &amp; Quests</span>
+            <span class="tab-badge">${modQuests.length}</span>
+          </button>
+        </div>
+
+        <div class="topic-resource-external-actions">
+          ${activeTopicResourceTab === 'cases' ? `
+            <button class="topic-ext-jump-btn" onclick="jumpToDedicatedCaseStudies('${activeMcqModule}')">
+              <span>Open in Case Studies Studio</span>
+              <svg width="11" height="11" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><polyline points="9 18 15 12 9 6"></polyline></svg>
+            </button>
+          ` : activeTopicResourceTab === 'problems' ? `
+            <button class="topic-ext-jump-btn" onclick="jumpToDedicatedQuestsArena('${activeMcqModule}')">
+              <span>Open in Quests Arena</span>
+              <svg width="11" height="11" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><polyline points="9 18 15 12 9 6"></polyline></svg>
+            </button>
+          ` : `
+            <button class="topic-ext-jump-btn" onclick="switchTopicResourceTab('cases')">
+              <span>Explore ${modCases.length} Case Studies &rarr;</span>
+            </button>
+          `}
+        </div>
+      </div>
+    `;
+
+    // C. Sub-Toolbar or Subtopics Bar depending on Active Resource Tab
+    let subBarHtml = '';
+    if (activeTopicResourceTab === 'mcqs') {
+      subBarHtml = '<div class="mcq-subtopics-bar">';
+      if (activeMcqModule === 'all') {
+        const isAllActive = activeMcqFilter === 'all';
+        subBarHtml += `
+          <button class="kw-filter-pill ${isAllActive ? 'active' : ''}" data-filter="all">
+            <span>All 2,100 Questions</span>
           </button>
         `;
-      });
-    } else {
-      const modMcqs = allMcqs.filter(m => currentModObj.keywords.includes(m.keyword));
-      const isAllModActive = activeMcqFilter === 'all';
-      subtopicsHtml += `
-        <button class="kw-filter-pill ${isAllModActive ? 'active' : ''}" data-filter="all">
-          <span>All in ${currentModObj.title} (${modMcqs.length})</span>
-        </button>
-      `;
-      currentModObj.keywords.forEach(k => {
-        const isActive = activeMcqFilter === k;
-        const count = allMcqs.filter(m => m.keyword === k).length;
-        if (count > 0) {
-          subtopicsHtml += `
+        const sampleKws = ["SELECT", "WHERE", "COUNT", "INNER JOIN", "LEFT JOIN", "ROW_NUMBER()", "LAG() & LEAD()", "Common Table Expressions", "QUALIFY & Pipeline"];
+        sampleKws.forEach(k => {
+          const isActive = activeMcqFilter === k;
+          const count = allMcqs.filter(m => m.keyword === k).length;
+          subBarHtml += `
             <button class="kw-filter-pill ${isActive ? 'active' : ''}" data-filter="${k}">
               <span>${k} (${count})</span>
             </button>
           `;
-        }
-      });
+        });
+      } else {
+        const modMcqs = allMcqs.filter(m => currentModObj.keywords.includes(m.keyword));
+        const isAllModActive = activeMcqFilter === 'all';
+        subBarHtml += `
+          <button class="kw-filter-pill ${isAllModActive ? 'active' : ''}" data-filter="all">
+            <span>All in ${currentModObj.title} (${modMcqs.length})</span>
+          </button>
+        `;
+        currentModObj.keywords.forEach(k => {
+          const isActive = activeMcqFilter === k;
+          const count = allMcqs.filter(m => m.keyword === k).length;
+          if (count > 0) {
+            subBarHtml += `
+              <button class="kw-filter-pill ${isActive ? 'active' : ''}" data-filter="${k}">
+                <span>${k} (${count})</span>
+              </button>
+            `;
+          }
+        });
+      }
+      subBarHtml += '</div>';
+    } else if (activeTopicResourceTab === 'cases') {
+      const easyCount = modCases.filter(c => c.difficulty === 'Easy').length;
+      const medCount = modCases.filter(c => c.difficulty === 'Medium').length;
+      const hardCount = modCases.filter(c => c.difficulty === 'Hard').length;
+      subBarHtml = `
+        <div class="topic-sub-toolbar">
+          <div class="topic-diff-pills">
+            <span style="font-size: 11px; font-weight: 700; color: var(--text-muted); margin-right: 4px;">DIFFICULTY:</span>
+            <button class="topic-diff-btn ${activeTopicCaseDiff === 'all' ? 'active' : ''}" onclick="filterTopicCasesByDiff('all')">All (${modCases.length})</button>
+            <button class="topic-diff-btn ${activeTopicCaseDiff === 'Easy' ? 'active' : ''}" onclick="filterTopicCasesByDiff('Easy')">🟢 Easy (${easyCount})</button>
+            <button class="topic-diff-btn ${activeTopicCaseDiff === 'Medium' ? 'active' : ''}" onclick="filterTopicCasesByDiff('Medium')">🟡 Medium (${medCount})</button>
+            <button class="topic-diff-btn ${activeTopicCaseDiff === 'Hard' ? 'active' : ''}" onclick="filterTopicCasesByDiff('Hard')">🔴 Hard (${hardCount})</button>
+          </div>
+          <input type="text" class="topic-sub-search" placeholder="🔍 Search ${currentModObj.title} case studies..." value="${escapeHtml(activeTopicSearchQuery)}" oninput="handleTopicSearchInput(this.value)">
+        </div>
+      `;
+    } else if (activeTopicResourceTab === 'problems') {
+      const easyCount = modQuests.filter(q => (q.difficulty || '').toLowerCase() === 'easy').length;
+      const medCount = modQuests.filter(q => (q.difficulty || '').toLowerCase() === 'medium').length;
+      const hardCount = modQuests.filter(q => (q.difficulty || '').toLowerCase() === 'hard').length;
+      subBarHtml = `
+        <div class="topic-sub-toolbar">
+          <div class="topic-diff-pills">
+            <span style="font-size: 11px; font-weight: 700; color: var(--text-muted); margin-right: 4px;">DIFFICULTY:</span>
+            <button class="topic-diff-btn ${activeTopicQuestDiff === 'all' ? 'active' : ''}" onclick="filterTopicQuestsByDiff('all')">All (${modQuests.length})</button>
+            <button class="topic-diff-btn ${activeTopicQuestDiff === 'Easy' ? 'active' : ''}" onclick="filterTopicQuestsByDiff('Easy')">🟢 Easy (${easyCount})</button>
+            <button class="topic-diff-btn ${activeTopicQuestDiff === 'Medium' ? 'active' : ''}" onclick="filterTopicQuestsByDiff('Medium')">🟡 Medium (${medCount})</button>
+            <button class="topic-diff-btn ${activeTopicQuestDiff === 'Hard' ? 'active' : ''}" onclick="filterTopicQuestsByDiff('Hard')">🔴 Hard (${hardCount})</button>
+          </div>
+          <input type="text" class="topic-sub-search" placeholder="🔍 Search ${currentModObj.title} quests & problems..." value="${escapeHtml(activeTopicSearchQuery)}" oninput="handleTopicSearchInput(this.value)">
+        </div>
+      `;
     }
-    subtopicsHtml += '</div>';
 
     filterContainer.innerHTML = `
       <div class="mcq-module-filter-section">
         ${modulesHtml}
-        ${subtopicsHtml}
+        ${resourceTabsHtml}
+        ${subBarHtml}
       </div>
     `;
 
@@ -4337,7 +4568,7 @@ function renderMcqs(filterKeyword = null, resetLimit = true, targetModule = null
       });
     });
 
-    // Bind Subtopic pill click events
+    // Bind Subtopic pill click events if on MCQs tab
     filterContainer.querySelectorAll('.kw-filter-pill').forEach(btn => {
       btn.addEventListener('click', () => {
         if (window.soundFX) window.soundFX.playPop();
@@ -4346,77 +4577,250 @@ function renderMcqs(filterKeyword = null, resetLimit = true, targetModule = null
     });
   }
 
-  // 2. Filter Questions by Module and Keyword
-  let filteredMcqs = allMcqs;
-  if (activeMcqModule !== 'all' && currentModObj.keywords.length > 0) {
-    filteredMcqs = filteredMcqs.filter(m => currentModObj.keywords.includes(m.keyword));
-  }
-  if (activeMcqFilter !== 'all') {
-    filteredMcqs = filteredMcqs.filter(m => m.keyword.toLowerCase() === activeMcqFilter.toLowerCase() || m.keyword.toLowerCase().includes(activeMcqFilter.toLowerCase()));
+  // Hide or Show Quiz Header Right
+  const quizHeaderRight = document.querySelector('.quiz-header-right');
+  if (quizHeaderRight) {
+    quizHeaderRight.style.display = (activeTopicResourceTab === 'mcqs') ? 'flex' : 'none';
   }
 
-  QuizState.total = filteredMcqs.length;
-  const totalCountEl = document.getElementById('quizTotalCount');
-  if (totalCountEl) totalCountEl.textContent = QuizState.total;
-  const scoreCountEl = document.getElementById('quizScoreCount');
-  if (scoreCountEl) scoreCountEl.textContent = QuizState.score;
-
+  // 2. Render Active Tab Content
   let html = '';
-  const visibleMcqs = filteredMcqs.slice(0, currentMcqDisplayLimit);
 
-  visibleMcqs.forEach((mcq, idx) => {
-    html += `
-      <div class="mcq-card" id="card_${mcq.id}">
-        <div class="mcq-meta-row">
-          <span class="mcq-keyword-tag">${mcq.keyword}</span>
-          ${mcq.tag ? `<span class="mcq-cute-badge">${mcq.tag}</span>` : ''}
-          <span style="font-size: 11px; font-family: var(--font-mono); color: var(--text-muted); margin-left: auto;">Question ${idx + 1} of ${filteredMcqs.length}</span>
-        </div>
-        <p class="mcq-question-text">${mcq.question}</p>
-        <div class="mcq-options-grid" id="options_${mcq.id}">
-          ${mcq.options.map((opt, optIdx) => `
-            <button class="mcq-option-btn" data-qid="${mcq.id}" data-optidx="${optIdx}">
-              <strong>${String.fromCharCode(65 + optIdx)}.</strong> ${opt}
+  if (activeTopicResourceTab === 'mcqs') {
+    // Filter Questions by Module and Keyword
+    let filteredMcqs = allMcqs;
+    if (activeMcqModule !== 'all' && currentModObj.keywords.length > 0) {
+      filteredMcqs = filteredMcqs.filter(m => currentModObj.keywords.includes(m.keyword));
+    }
+    if (activeMcqFilter !== 'all') {
+      filteredMcqs = filteredMcqs.filter(m => m.keyword.toLowerCase() === activeMcqFilter.toLowerCase() || m.keyword.toLowerCase().includes(activeMcqFilter.toLowerCase()));
+    }
+
+    QuizState.total = filteredMcqs.length;
+    const totalCountEl = document.getElementById('quizTotalCount');
+    if (totalCountEl) totalCountEl.textContent = QuizState.total;
+    const scoreCountEl = document.getElementById('quizScoreCount');
+    if (scoreCountEl) scoreCountEl.textContent = QuizState.score;
+
+    const visibleMcqs = filteredMcqs.slice(0, currentMcqDisplayLimit);
+
+    visibleMcqs.forEach((mcq, idx) => {
+      html += `
+        <div class="mcq-card" id="card_${mcq.id}">
+          <div class="mcq-meta-row">
+            <span class="mcq-keyword-tag">${mcq.keyword}</span>
+            ${mcq.tag ? `<span class="mcq-cute-badge">${mcq.tag}</span>` : ''}
+            <span style="font-size: 11px; font-family: var(--font-mono); color: var(--text-muted); margin-left: auto;">Question ${idx + 1} of ${filteredMcqs.length}</span>
+          </div>
+          <p class="mcq-question-text">${mcq.question}</p>
+          <div class="mcq-options-grid" id="options_${mcq.id}">
+            ${mcq.options.map((opt, optIdx) => `
+              <button class="mcq-option-btn" data-qid="${mcq.id}" data-optidx="${optIdx}">
+                <strong>${String.fromCharCode(65 + optIdx)}.</strong> ${opt}
+              </button>
+            `).join('')}
+          </div>
+          <div class="mcq-explanation-card" id="exp_${mcq.id}">
+            <div style="font-weight: 600; margin-bottom: 4px;" id="verdict_${mcq.id}"></div>
+            <div>${mcq.explanation}</div>
+          </div>
+          <div class="mcq-topic-links-row">
+            <button class="mcq-topic-link-btn" onclick="switchTopicResourceTab('cases')">
+              <span>💼 View ${modCases.length} Related Case Studies &rarr;</span>
             </button>
-          `).join('')}
+            <button class="mcq-topic-link-btn" onclick="switchTopicResourceTab('problems')">
+              <span>🏆 View ${modQuests.length} Related Query Problems &amp; Quests &rarr;</span>
+            </button>
+          </div>
         </div>
-        <div class="mcq-explanation-card" id="exp_${mcq.id}">
-          <div style="font-weight: 600; margin-bottom: 4px;" id="verdict_${mcq.id}"></div>
-          <div>${mcq.explanation}</div>
+      `;
+    });
+
+    if (filteredMcqs.length > currentMcqDisplayLimit) {
+      html += `
+        <div style="text-align: center; margin: 20px 0;">
+          <button id="btnLoadMoreMcqs" class="mcq-load-more-btn">
+            <span>🍡 Load Next 25 Questions (${visibleMcqs.length} of ${filteredMcqs.length} loaded)</span>
+          </button>
         </div>
-      </div>
-    `;
-  });
+      `;
+    }
 
-  if (filteredMcqs.length > currentMcqDisplayLimit) {
-    html += `
-      <div style="text-align: center; margin: 20px 0;">
-        <button id="btnLoadMoreMcqs" class="mcq-load-more-btn">
-          <span>🍡 Load Next 25 Questions (${visibleMcqs.length} of ${filteredMcqs.length} loaded)</span>
-        </button>
-      </div>
-    `;
-  }
+    container.innerHTML = html;
 
-  container.innerHTML = html;
+    const btnMore = document.getElementById('btnLoadMoreMcqs');
+    if (btnMore) {
+      btnMore.addEventListener('click', () => {
+        currentMcqDisplayLimit += 25;
+        if (window.soundFX) window.soundFX.playPop();
+        renderMcqs(activeMcqFilter, false);
+      });
+    }
 
-  const btnMore = document.getElementById('btnLoadMoreMcqs');
-  if (btnMore) {
-    btnMore.addEventListener('click', () => {
-      currentMcqDisplayLimit += 25;
-      if (window.soundFX) window.soundFX.playPop();
-      renderMcqs(activeMcqFilter, false);
+    // Bind option clicks
+    container.querySelectorAll('.mcq-option-btn').forEach(btn => {
+      btn.addEventListener('click', () => {
+        const qid = btn.dataset.qid;
+        const optIdx = parseInt(btn.dataset.optidx, 10);
+        handleMcqAnswer(qid, optIdx);
+      });
     });
-  }
 
-  // Bind option clicks
-  container.querySelectorAll('.mcq-option-btn').forEach(btn => {
-    btn.addEventListener('click', () => {
-      const qid = btn.dataset.qid;
-      const optIdx = parseInt(btn.dataset.optidx, 10);
-      handleMcqAnswer(qid, optIdx);
-    });
-  });
+  } else if (activeTopicResourceTab === 'cases') {
+    // Filter Corporate Case Studies for active module
+    let filteredCases = modCases;
+    if (activeTopicCaseDiff !== 'all') {
+      filteredCases = filteredCases.filter(c => (c.difficulty || '').toLowerCase() === activeTopicCaseDiff.toLowerCase());
+    }
+    if (activeTopicSearchQuery) {
+      filteredCases = filteredCases.filter(c => 
+        (c.title || '').toLowerCase().includes(activeTopicSearchQuery) ||
+        (c.scenario || '').toLowerCase().includes(activeTopicSearchQuery) ||
+        (c.table || '').toLowerCase().includes(activeTopicSearchQuery) ||
+        (c.industry || '').toLowerCase().includes(activeTopicSearchQuery)
+      );
+    }
+
+    const visibleCases = filteredCases.slice(0, currentMcqDisplayLimit);
+
+    if (visibleCases.length === 0) {
+      html = `
+        <div style="text-align: center; padding: 40px; background: rgba(0,0,0,0.2); border-radius: 12px; border: 1px solid rgba(255,255,255,0.06);">
+          <div style="font-size: 32px; margin-bottom: 8px;">💼</div>
+          <h3 style="color: var(--text-primary); margin: 0 0 6px 0;">No Case Studies Found</h3>
+          <p style="color: var(--text-muted); font-size: 13px; margin: 0;">Try adjusting your difficulty filter or search term.</p>
+        </div>
+      `;
+    } else {
+      visibleCases.forEach(cs => {
+        const diffClass = cs.difficulty === 'Easy' ? 'diff-pill-easy' : (cs.difficulty === 'Medium' ? 'diff-pill-medium' : 'diff-pill-hard');
+        const formattedId = cs.id < 10 ? '00' + cs.id : (cs.id < 100 ? '0' + cs.id : cs.id);
+        html += `
+          <div class="topic-case-card">
+            <div class="topic-item-main">
+              <div class="topic-item-meta">
+                <span class="badge" style="background: rgba(255,255,255,0.06); font-family: var(--font-mono); font-size: 11px; color: var(--text-secondary);">#${formattedId}</span>
+                <span class="badge ${diffClass}" style="font-size: 10px;">${cs.difficulty}</span>
+                <span class="case-industry-pill" style="font-size: 10px;">${cs.industry || 'Enterprise'}</span>
+                <code class="case-code-pill" style="font-size: 10.5px;">${cs.table}</code>
+                <span style="font-size: 11px; color: var(--text-muted); margin-left: auto;">${cs.section || ''}</span>
+              </div>
+              <h3 class="topic-item-title">${escapeHtml(cs.title)}</h3>
+              <p class="topic-item-desc">${escapeHtml(cs.scenario || '')}</p>
+            </div>
+            <div class="topic-item-actions">
+              <button class="action-btn action-btn-secondary" style="font-size: 11.5px; padding: 6px 12px;" onclick="switchToStudioWithQuery(decodeURIComponent('${encodeURIComponent(cs.targetQuery || '')}'), '${cs.table}')">
+                <span>⚡ Studio</span>
+              </button>
+              <button class="action-btn action-btn-primary" style="font-size: 11.5px; padding: 6px 14px;" onclick="openCaseDrawer(${cs.id})">
+                <span>Solve &amp; Drawer &rarr;</span>
+              </button>
+            </div>
+          </div>
+        `;
+      });
+
+      if (filteredCases.length > currentMcqDisplayLimit) {
+        html += `
+          <div style="text-align: center; margin: 20px 0;">
+            <button id="btnLoadMoreCases" class="mcq-load-more-btn">
+              <span>💼 Load Next 25 Case Studies (${visibleCases.length} of ${filteredCases.length} loaded)</span>
+            </button>
+          </div>
+        `;
+      }
+    }
+
+    container.innerHTML = html;
+
+    const btnMoreCases = document.getElementById('btnLoadMoreCases');
+    if (btnMoreCases) {
+      btnMoreCases.addEventListener('click', () => {
+        currentMcqDisplayLimit += 25;
+        if (window.soundFX) window.soundFX.playPop();
+        renderMcqs(activeMcqFilter, false);
+      });
+    }
+
+  } else if (activeTopicResourceTab === 'problems') {
+    // Filter Query Problems & Quests for active module
+    let filteredQuests = modQuests;
+    if (activeTopicQuestDiff !== 'all') {
+      filteredQuests = filteredQuests.filter(q => (q.difficulty || '').toLowerCase() === activeTopicQuestDiff.toLowerCase());
+    }
+    if (activeTopicSearchQuery) {
+      filteredQuests = filteredQuests.filter(q => 
+        (q.title || '').toLowerCase().includes(activeTopicSearchQuery) ||
+        (q.subtitle || '').toLowerCase().includes(activeTopicSearchQuery) ||
+        (q.task || '').toLowerCase().includes(activeTopicSearchQuery) ||
+        (q.table || '').toLowerCase().includes(activeTopicSearchQuery) ||
+        (q.subcluster || '').toLowerCase().includes(activeTopicSearchQuery) ||
+        (q.disciplineKey || '').toLowerCase().includes(activeTopicSearchQuery)
+      );
+    }
+
+    const visibleQuests = filteredQuests.slice(0, currentMcqDisplayLimit);
+
+    if (visibleQuests.length === 0) {
+      html = `
+        <div style="text-align: center; padding: 40px; background: rgba(0,0,0,0.2); border-radius: 12px; border: 1px solid rgba(255,255,255,0.06);">
+          <div style="font-size: 32px; margin-bottom: 8px;">🏆</div>
+          <h3 style="color: var(--text-primary); margin: 0 0 6px 0;">No Query Problems Found</h3>
+          <p style="color: var(--text-muted); font-size: 13px; margin: 0;">Try adjusting your difficulty filter or search term.</p>
+        </div>
+      `;
+    } else {
+      visibleQuests.forEach(quest => {
+        const diffClass = (quest.difficulty || 'Easy').toLowerCase() === 'easy' ? 'diff-pill-easy' : ((quest.difficulty || '').toLowerCase() === 'medium' ? 'diff-pill-medium' : 'diff-pill-hard');
+        const clusterTag = quest.disciplineKey || quest.subcluster || quest.category || 'SQL Quest';
+        const rawIdx = typeof quest.rawIndex === 'number' ? quest.rawIndex : (quest.id ? quest.id - 1 : 0);
+        html += `
+          <div class="topic-quest-card">
+            <div class="topic-item-main">
+              <div class="topic-item-meta">
+                <span class="badge" style="background: rgba(56, 189, 248, 0.12); color: #38bdf8; font-family: var(--font-mono); font-size: 11px; font-weight: 700;">${quest.levelDisplay || ('Quest #' + quest.id)}</span>
+                <span class="badge ${diffClass}" style="font-size: 10px;">${quest.difficulty || 'Easy'}</span>
+                <span class="badge" style="background: rgba(255,255,255,0.06); font-size: 10.5px; color: var(--text-secondary);">${escapeHtml(clusterTag)}</span>
+                <code class="case-code-pill" style="font-size: 10.5px;">${quest.table || 'Relational'}</code>
+                <span class="points-pill" style="font-size: 10px;">+${quest.points || 15} XP</span>
+              </div>
+              <h3 class="topic-item-title">${escapeHtml(quest.title)}</h3>
+              <p class="topic-item-desc">${escapeHtml(quest.subtitle || quest.task || '')}</p>
+            </div>
+            <div class="topic-item-actions">
+              <button class="action-btn action-btn-secondary" style="font-size: 11.5px; padding: 6px 12px;" onclick="switchToStudioWithQuery(decodeURIComponent('${encodeURIComponent(quest.targetQuery || '')}'), '${quest.table || 'Employees'}')">
+                <span>⚡ Studio</span>
+              </button>
+              <button class="action-btn action-btn-primary" style="font-size: 11.5px; padding: 6px 14px;" onclick="launchQuestFromTopic('${quest.questSectionKey || 'section1'}', ${rawIdx})">
+                <span>🎮 Launch Quest &rarr;</span>
+              </button>
+            </div>
+          </div>
+        `;
+      });
+
+      if (filteredQuests.length > currentMcqDisplayLimit) {
+        html += `
+          <div style="text-align: center; margin: 20px 0;">
+            <button id="btnLoadMoreQuests" class="mcq-load-more-btn">
+              <span>🏆 Load Next 25 Quests (${visibleQuests.length} of ${filteredQuests.length} loaded)</span>
+            </button>
+          </div>
+        `;
+      }
+    }
+
+    container.innerHTML = html;
+
+    const btnMoreQuests = document.getElementById('btnLoadMoreQuests');
+    if (btnMoreQuests) {
+      btnMoreQuests.addEventListener('click', () => {
+        currentMcqDisplayLimit += 25;
+        if (window.soundFX) window.soundFX.playPop();
+        renderMcqs(activeMcqFilter, false);
+      });
+    }
+  }
 }
 
 function handleMcqAnswer(qid, selectedIdx) {
@@ -14933,7 +15337,7 @@ function togglePathwayCaseView(mode) {
 let activeDrawerCaseId = 1;
 
 function navigateDrawerCase(step) {
-  const allCases = window.ALL_1040_CASE_STUDIES || [];
+  const allCases = window.ALL_1490_CASE_STUDIES || window.ALL_1040_CASE_STUDIES || window.ALL_500_CASE_STUDIES || [];
   const currentMod = TOPIC_PATHWAY_MODULES.find(m => m.id === currentPathwayModuleId);
   let scopeCases = allCases;
   if (currentMod && currentMod.caseSection) {
@@ -14950,7 +15354,7 @@ function navigateDrawerCase(step) {
 }
 
 function openCaseDrawer(caseId) {
-  const allCases = window.ALL_1040_CASE_STUDIES || [];
+  const allCases = window.ALL_1490_CASE_STUDIES || window.ALL_1040_CASE_STUDIES || window.ALL_500_CASE_STUDIES || [];
   const cs = allCases.find(c => c.id === caseId);
   if (!cs) return;
 
