@@ -282,7 +282,18 @@
           </div>
         </div>
 
-        <!-- 4. STUDIO (Direct Link) -->
+        <!-- 4. LEARNING JOURNEY (Direct Adventure Road Tab) -->
+        <button class="nav-group-trigger nav-direct-link nav-tab" id="btnNavLearningJourney" data-view="viewLearningJourney" onclick="selectNavView('viewLearningJourney', 'Learning Journey', null)">
+          <span class="nav-group-lead">
+            <span class="nav-group-icon">🗺️</span>
+            <span class="nav-group-title">Learning Journey</span>
+          </span>
+          <span class="nav-group-tail">
+            <span class="nav-current-pill" id="currentJourneyPill" style="background: rgba(16, 185, 129, 0.2); color: #10b981; font-weight: 700;">Day 1 • SELECT</span>
+          </span>
+        </button>
+
+        <!-- 5. STUDIO (Direct Link) -->
         <button class="nav-group-trigger nav-direct-link nav-tab" id="btnNavStudio" data-view="viewStudio" onclick="selectNavView('viewStudio', 'Studio', null)">
           <span class="nav-group-lead">
             <span class="nav-group-icon">
@@ -299,6 +310,9 @@
         <span class="module-indicator">Schema: <strong>Employees (8 rows)</strong></span>
       </div>
     </nav>
+
+    <!-- VIEW: 20-Day Learning Journey & Adventure Roadmap Hub -->
+    <div class="view-panel" id="viewLearningJourney"></div>
 
     <!-- VIEW 0: Topic Pathways & 4-Stage Modular Progression Hub -->
     <div class="view-panel" id="viewPathways">
@@ -1637,6 +1651,7 @@
 <script src="venn_matrix_engine.js?v=89"></script>
 <script src="window_functions_engine.js?v=90"></script>
 <script src="activity_heatmap_engine.js?v=91"></script>
+<script src="learning_journey.js"></script>
 <script src="app.js?v=91"></script>
 </body>
 </html>

@@ -22584,6 +22584,545 @@ button:active .framer-emoji-icon {
   border-color: #f59e0b;
 }
 
+/* =============================================================================
+   LEARNING JOURNEY & ADVENTURE TRAIL STYLES
+   ============================================================================= */
+
+.learning-journey-page {
+  display: flex;
+  flex-direction: column;
+  gap: 20px;
+  padding: 16px 20px 60px 20px;
+  max-width: 1360px;
+  margin: 0 auto;
+}
+
+/* 1. Heatmap Consistency Card */
+.journey-heatmap-card {
+  background: var(--bg-surface, #0f172a);
+  border: 1px solid var(--border-default, rgba(255, 255, 255, 0.08));
+  border-radius: 12px;
+  padding: 18px 22px;
+  display: flex;
+  flex-direction: column;
+  gap: 16px;
+  box-shadow: 0 4px 20px rgba(0, 0, 0, 0.25);
+}
+
+.journey-heatmap-header {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  flex-wrap: wrap;
+  gap: 14px;
+}
+
+.journey-heatmap-title-block {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+}
+
+.heatmap-icon {
+  font-size: 24px;
+  line-height: 1;
+}
+
+.heatmap-title {
+  font-size: 15px;
+  font-weight: 700;
+  color: var(--text-primary, #ffffff);
+  letter-spacing: -0.01em;
+}
+
+.heatmap-subtitle {
+  font-size: 12px;
+  color: var(--text-secondary, #94a3b8);
+  margin-top: 2px;
+}
+
+.journey-stats-row {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  flex-wrap: wrap;
+}
+
+.journey-stat-badge {
+  background: rgba(255, 255, 255, 0.04);
+  border: 1px solid rgba(255, 255, 255, 0.08);
+  border-radius: 8px;
+  padding: 6px 12px;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  min-width: 76px;
+}
+
+.journey-stat-badge .stat-num {
+  font-size: 14px;
+  font-weight: 800;
+  color: var(--text-primary, #ffffff);
+  font-family: var(--font-mono);
+}
+
+.journey-stat-badge .stat-lbl {
+  font-size: 10px;
+  text-transform: uppercase;
+  letter-spacing: 0.04em;
+  color: var(--text-muted, #64748b);
+  margin-top: 2px;
+}
+
+.journey-heatmap-grid-wrap {
+  display: flex;
+  align-items: center;
+  gap: 16px;
+  background: rgba(0, 0, 0, 0.25);
+  border-radius: 8px;
+  padding: 12px 16px;
+  border: 1px solid rgba(255, 255, 255, 0.04);
+  overflow-x: auto;
+}
+
+.heatmap-days-legend {
+  display: flex;
+  flex-direction: column;
+  gap: 4px;
+  font-size: 9.5px;
+  font-family: var(--font-mono);
+  color: var(--text-muted, #64748b);
+  line-height: 12px;
+}
+
+.heatmap-cells-grid {
+  display: grid;
+  grid-template-rows: repeat(4, 13px);
+  grid-auto-flow: column;
+  grid-auto-columns: 13px;
+  gap: 4px;
+}
+
+.heatmap-cell {
+  width: 13px;
+  height: 13px;
+  border-radius: 2px;
+  cursor: pointer;
+  transition: transform 0.15s, border-color 0.15s;
+}
+
+.heatmap-cell:hover {
+  transform: scale(1.3);
+  z-index: 2;
+}
+
+.heatmap-cell.level-0 {
+  background: rgba(255, 255, 255, 0.05);
+}
+
+.heatmap-cell.level-1 {
+  background: rgba(16, 185, 129, 0.25);
+}
+
+.heatmap-cell.level-2 {
+  background: rgba(16, 185, 129, 0.5);
+}
+
+.heatmap-cell.level-3 {
+  background: rgba(16, 185, 129, 0.75);
+}
+
+.heatmap-cell.level-4 {
+  background: #10b981;
+  box-shadow: 0 0 6px rgba(16, 185, 129, 0.4);
+}
+
+.heatmap-cell.is-today {
+  border: 1px solid #38bdf8;
+}
+
+.heatmap-intensity-legend {
+  display: flex;
+  align-items: center;
+  gap: 3px;
+  margin-left: auto;
+}
+
+/* 2. Adventure Trail Track */
+.journey-trail-section {
+  display: flex;
+  flex-direction: column;
+  gap: 14px;
+}
+
+.journey-trail-header {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  flex-wrap: wrap;
+  gap: 10px;
+}
+
+.trail-title {
+  font-size: 16px;
+  font-weight: 800;
+  color: var(--text-primary, #ffffff);
+  letter-spacing: -0.01em;
+}
+
+.trail-subtitle {
+  font-size: 12px;
+  color: var(--text-secondary, #94a3b8);
+  margin-top: 2px;
+}
+
+.trail-legend {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  font-size: 11px;
+  color: var(--text-secondary, #94a3b8);
+}
+
+.legend-item {
+  display: flex;
+  align-items: center;
+  gap: 5px;
+}
+
+.legend-dot.completed {
+  color: #10b981;
+  font-weight: 700;
+}
+
+.legend-dot.current {
+  color: #38bdf8;
+  font-size: 14px;
+}
+
+.journey-trail-track {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(220px, 1fr));
+  gap: 12px;
+}
+
+.journey-node-card {
+  position: relative;
+  background: var(--bg-surface, #0f172a);
+  border: 1px solid var(--border-default, rgba(255, 255, 255, 0.08));
+  border-radius: 10px;
+  padding: 14px;
+  display: flex;
+  flex-direction: column;
+  gap: 6px;
+  cursor: pointer;
+  transition: all 0.2s cubic-bezier(0.16, 1, 0.3, 1);
+}
+
+.journey-node-card:hover {
+  transform: translateY(-2px);
+  border-color: rgba(255, 255, 255, 0.2);
+  box-shadow: 0 6px 16px rgba(0, 0, 0, 0.3);
+}
+
+.journey-node-card.selected {
+  border-color: #38bdf8;
+  background: rgba(56, 189, 248, 0.04);
+  box-shadow: 0 0 0 1px #38bdf8;
+}
+
+.journey-node-card.completed {
+  border-color: rgba(16, 185, 129, 0.3);
+  background: rgba(16, 185, 129, 0.03);
+}
+
+.journey-node-card.current {
+  border-color: #38bdf8;
+  box-shadow: 0 0 16px rgba(56, 189, 248, 0.2);
+  background: rgba(56, 189, 248, 0.06);
+}
+
+.journey-node-card.locked {
+  opacity: 0.65;
+}
+
+.node-header {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+}
+
+.node-day-pill {
+  font-size: 11px;
+  font-weight: 700;
+  font-family: var(--font-mono);
+  color: var(--text-primary, #ffffff);
+  padding-left: 6px;
+}
+
+.checkpoint-check {
+  color: #10b981;
+  font-weight: 800;
+  font-size: 13px;
+}
+
+.checkpoint-active-pulse {
+  color: #38bdf8;
+  font-size: 14px;
+  animation: pulseActive 1.8s infinite ease-in-out;
+}
+
+@keyframes pulseActive {
+  0% { transform: scale(0.9); opacity: 0.6; }
+  50% { transform: scale(1.3); opacity: 1; }
+  100% { transform: scale(0.9); opacity: 0.6; }
+}
+
+.node-title {
+  font-size: 13px;
+  font-weight: 600;
+  color: var(--text-primary, #ffffff);
+  line-height: 1.3;
+  margin-top: 2px;
+}
+
+.node-category {
+  font-size: 10px;
+  font-weight: 600;
+  text-transform: uppercase;
+  letter-spacing: 0.05em;
+}
+
+.node-meta {
+  font-size: 11px;
+  color: var(--text-muted, #64748b);
+  font-family: var(--font-mono);
+  margin-top: auto;
+  padding-top: 4px;
+}
+
+/* Bloub Mascot Avatar positioned on the Active Checkpoint */
+.trail-bloub-avatar {
+  position: absolute;
+  top: -34px;
+  right: 12px;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  pointer-events: none;
+  z-index: 5;
+  animation: bloubTrailHop 2.4s infinite ease-in-out;
+}
+
+.trail-bloub-speech {
+  background: #3ecf8e;
+  color: #0a0a0c;
+  font-size: 9.5px;
+  font-weight: 800;
+  padding: 1px 6px;
+  border-radius: 8px;
+  box-shadow: 0 2px 6px rgba(0, 0, 0, 0.3);
+  margin-bottom: -2px;
+  white-space: nowrap;
+}
+
+.bloub-morph-bounce {
+  filter: drop-shadow(0 4px 8px rgba(0, 0, 0, 0.4));
+}
+
+@keyframes bloubTrailHop {
+  0%, 100% { transform: translateY(0); }
+  50% { transform: translateY(-6px); }
+}
+
+/* 3. Detailed Active Day Dossier Card */
+.journey-dossier-card {
+  background: var(--bg-surface, #0f172a);
+  border: 1px solid var(--border-default, rgba(255, 255, 255, 0.08));
+  border-radius: 12px;
+  padding: 22px;
+  display: flex;
+  flex-direction: column;
+  gap: 16px;
+  box-shadow: 0 8px 30px rgba(0, 0, 0, 0.3);
+}
+
+.dossier-header {
+  display: flex;
+  align-items: flex-start;
+  justify-content: space-between;
+  flex-wrap: wrap;
+  gap: 16px;
+  padding-top: 10px;
+}
+
+.dossier-meta-row {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  flex-wrap: wrap;
+  margin-bottom: 6px;
+}
+
+.dossier-day-tag {
+  font-size: 11px;
+  font-weight: 800;
+  font-family: var(--font-mono);
+  padding: 3px 8px;
+  border-radius: 4px;
+}
+
+.dossier-main-title {
+  font-size: 20px;
+  font-weight: 800;
+  color: var(--text-primary, #ffffff);
+  letter-spacing: -0.01em;
+  margin: 0;
+}
+
+.dossier-actions-col {
+  display: flex;
+  flex-direction: column;
+  min-width: 220px;
+}
+
+.dossier-cta-btn {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 6px;
+  padding: 10px 16px;
+  font-size: 13px;
+  font-weight: 700;
+}
+
+/* Sir Bloops Co-Pilot Briefing Card */
+.dossier-bloops-card {
+  display: flex;
+  align-items: center;
+  gap: 14px;
+  background: rgba(62, 207, 142, 0.08);
+  border: 1px solid rgba(62, 207, 142, 0.25);
+  border-radius: 10px;
+  padding: 12px 16px;
+}
+
+.bloops-avatar-thumb {
+  flex-shrink: 0;
+}
+
+.bloops-speech-content {
+  display: flex;
+  flex-direction: column;
+  gap: 2px;
+}
+
+.bloops-name {
+  font-size: 11px;
+  font-weight: 800;
+  text-transform: uppercase;
+  letter-spacing: 0.05em;
+  color: #3ecf8e;
+}
+
+.bloops-body {
+  font-size: 13px;
+  font-style: italic;
+  color: var(--text-primary, #ffffff);
+  line-height: 1.4;
+}
+
+.dossier-grid {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 14px;
+}
+
+@media (max-width: 860px) {
+  .dossier-grid {
+    grid-template-columns: 1fr;
+  }
+}
+
+.dossier-section-box {
+  background: rgba(0, 0, 0, 0.2);
+  border: 1px solid rgba(255, 255, 255, 0.05);
+  border-radius: 8px;
+  padding: 14px;
+}
+
+.box-title {
+  font-size: 12px;
+  font-weight: 700;
+  text-transform: uppercase;
+  letter-spacing: 0.04em;
+  color: var(--text-primary, #ffffff);
+  margin-bottom: 8px;
+}
+
+.dossier-list {
+  margin: 0;
+  padding-left: 18px;
+  font-size: 12px;
+  color: var(--text-secondary, #cbd5e1);
+  line-height: 1.6;
+}
+
+.dossier-list li {
+  margin-bottom: 4px;
+}
+
+.traps-container {
+  display: flex;
+  flex-direction: column;
+  gap: 6px;
+}
+
+.dossier-trap-item {
+  display: flex;
+  align-items: flex-start;
+  gap: 8px;
+  background: rgba(245, 158, 11, 0.08);
+  border-left: 3px solid #f59e0b;
+  border-radius: 4px;
+  padding: 8px 12px;
+  font-size: 12px;
+  color: #fde68a;
+  line-height: 1.4;
+}
+
+.trap-warn-icon {
+  flex-shrink: 0;
+}
+
+.dossier-footer-links {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  flex-wrap: wrap;
+  padding-top: 8px;
+  border-top: 1px solid rgba(255, 255, 255, 0.06);
+}
+
+.dossier-pill-btn {
+  background: rgba(255, 255, 255, 0.05);
+  border: 1px solid rgba(255, 255, 255, 0.1);
+  border-radius: 6px;
+  color: var(--text-secondary, #cbd5e1);
+  font-size: 11px;
+  font-weight: 600;
+  padding: 5px 10px;
+  cursor: pointer;
+  transition: all 0.15s ease;
+}
+
+.dossier-pill-btn:hover {
+  background: rgba(255, 255, 255, 0.12);
+  color: #ffffff;
+  border-color: rgba(255, 255, 255, 0.2);
+}
+
+
 
 
 

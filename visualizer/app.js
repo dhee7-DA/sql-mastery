@@ -2154,6 +2154,10 @@ function switchMainView(targetId) {
   }
 
   // Lazy render on view switch
+  if (targetId === 'viewLearningJourney') {
+    if (typeof renderLearningJourney === 'function') renderLearningJourney();
+    if (window.SQL_BUDDY) window.SQL_BUDDY.say("🗺️ Welcome to your 20-Day Learning Journey! Follow the trail and complete today's quests to advance me forward!", 5000, 'happy');
+  }
   if (targetId === 'viewPathways') renderTopicPathways();
   if (targetId === 'viewGuidedLab') {
     renderGuidedStep(currentGuidedStep);
