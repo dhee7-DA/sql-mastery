@@ -6707,6 +6707,8 @@ let activeDdlDisciplineFilter = null;
 let isDdlMatrixGuideCollapsed = false;
 let activeDmlDisciplineFilter = null;
 let isDmlMatrixGuideCollapsed = false;
+let activeViewsDisciplineFilter = null;
+let isViewsMatrixGuideCollapsed = false;
 
 function getActiveQuestsList() {
   if (currentQuestSection === 'section1' && window.QUESTS_SECTION_1 && window.QUESTS_SECTION_1.length > 0) {
@@ -6763,6 +6765,12 @@ function getActiveQuestsList() {
     }
     return window.QUESTS_SECTION_11;
   }
+  if (currentQuestSection === 'section12' && window.QUESTS_SECTION_12 && window.QUESTS_SECTION_12.length > 0) {
+    if (activeViewsDisciplineFilter) {
+      return window.QUESTS_SECTION_12.filter(q => q.disciplineKey === activeViewsDisciplineFilter);
+    }
+    return window.QUESTS_SECTION_12;
+  }
   return window.QUESTS_DATA || [];
 }
 
@@ -6770,7 +6778,7 @@ function switchQuestSection(sectionKey) {
   currentQuestSection = sectionKey;
   currentQuestIndex = 0;
   questChunkStart = 0;
-  const isMultiChunk = (sectionKey === 'section1' || sectionKey === 'section2' || sectionKey === 'section3' || sectionKey === 'section4' || sectionKey === 'section5' || sectionKey === 'section6' || sectionKey === 'section7' || sectionKey === 'section8' || sectionKey === 'section9' || sectionKey === 'section10' || sectionKey === 'section11');
+  const isMultiChunk = (sectionKey === 'section1' || sectionKey === 'section2' || sectionKey === 'section3' || sectionKey === 'section4' || sectionKey === 'section5' || sectionKey === 'section6' || sectionKey === 'section7' || sectionKey === 'section8' || sectionKey === 'section9' || sectionKey === 'section10' || sectionKey === 'section11' || sectionKey === 'section12');
   questChunkEnd = isMultiChunk ? 20 : 30;
 
   if (sectionKey === 'section5') {
@@ -6793,6 +6801,9 @@ function switchQuestSection(sectionKey) {
   }
   if (sectionKey === 'section11') {
     activeDmlDisciplineFilter = null;
+  }
+  if (sectionKey === 'section12') {
+    activeViewsDisciplineFilter = null;
   }
 
   // Update tabs
@@ -6828,6 +6839,7 @@ function switchQuestSection(sectionKey) {
     else if (sectionKey === 'section9') footerTrack.textContent = 'Section 09: Set Operations Arena (100)';
     else if (sectionKey === 'section10') footerTrack.textContent = 'Section 10: DDL & Architecture Arena (100)';
     else if (sectionKey === 'section11') footerTrack.textContent = 'Section 11: DML & Transactions Arena (100)';
+    else if (sectionKey === 'section12') footerTrack.textContent = 'Section 12: Views & Procedures Arena (100)';
     else if (sectionKey === 'featured') footerTrack.textContent = 'Bonus: Boss Gauntlet (30)';
   }
 
@@ -6858,6 +6870,8 @@ function switchQuestSection(sectionKey) {
       window.SQL_BUDDY.say("🏗️ Section 10: DDL, Schema Architecture & Integrity Constraints loaded (100 Levels)! Build bulletproof database foundations!", 4500, 'celebrate');
     } else if (sectionKey === 'section11') {
       window.SQL_BUDDY.say("⚡ Section 11: DML, Idempotent Upserts & ACID Transactions loaded (100 Levels)! Execute bulletproof, crash-resilient mutations!", 4500, 'celebrate');
+    } else if (sectionKey === 'section12') {
+      window.SQL_BUDDY.say("👁️ Section 12: Views, Materialized Views & Stored Procedures loaded (100 Levels)! Build precomputed pipelines and automated audit triggers!", 4500, 'celebrate');
     } else {
       window.SQL_BUDDY.say("🏆 Boss Gauntlet Activated! 30 Advanced Challenges across all SQL pillars!", 3500, 'celebrate');
     }
@@ -7879,6 +7893,145 @@ function toggleDmlMatrixGuide() {
 }
 window.toggleDmlMatrixGuide = toggleDmlMatrixGuide;
 
+// =============================================================================
+// SECTION 12: VIEWS, MATERIALIZED VIEWS & PROCEDURES MASTER MATRIX
+// =============================================================================
+function renderViewsMasterMatrixHtml() {
+  const metadata = window.VIEWS_DISCIPLINES_METADATA || [];
+  const isCollapsed = isViewsMatrixGuideCollapsed;
+  const currentDisciplineKey = activeViewsDisciplineFilter;
+
+  let filterPillsHtml = `
+    <button class="choice-pill ${!currentDisciplineKey ? 'selected' : ''}" onclick="setViewsDisciplineFilter(null)" style="font-size: 11px; padding: 4px 10px;">
+      <span>All 100 Quests</span>
+    </button>
+  `;
+
+  metadata.forEach(d => {
+    const isSelected = currentDisciplineKey === d.key;
+    filterPillsHtml += `
+      <button class="choice-pill ${isSelected ? 'selected' : ''}" onclick="setViewsDisciplineFilter('${d.key}')" style="font-size: 11px; padding: 4px 10px; border-color: ${d.color}66;">
+        <span style="color: ${d.color}; font-weight: 800; margin-right: 4px;">${d.symbol}</span>
+        <span>${escapeHtml(d.name)} (20)</span>
+      </button>
+    `;
+  });
+
+  let tableRowsHtml = '';
+  metadata.forEach(d => {
+    const isActiveRow = currentDisciplineKey === d.key;
+    tableRowsHtml += `
+      <tr class="${isActiveRow ? 'active-row' : ''}">
+        <td style="white-space: nowrap;">
+          <div style="display: flex; align-items: center; gap: 8px;">
+            <span class="join-symbol-badge" style="color: ${d.color}; border-color: ${d.color}66;">${d.symbol}</span>
+            <div>
+              <strong style="color: ${d.color}; font-size: 12px; font-family: var(--font-mono);">${escapeHtml(d.name)}</strong>
+              <div style="font-size: 10px; color: var(--text-muted);">${escapeHtml(d.concept)}</div>
+            </div>
+          </div>
+        </td>
+        <td style="font-size: 11px; line-height: 1.4; color: var(--text-secondary);">
+          ${escapeHtml(d.whenToUse)}
+        </td>
+        <td style="font-size: 11px; line-height: 1.4; color: #cbd5e1;">
+          ${escapeHtml(d.scenarios)}
+        </td>
+        <td>
+          <div class="join-trap-pill">
+            <span class="trap-icon">⚠️</span>
+            <span>${escapeHtml(d.traps)}</span>
+          </div>
+        </td>
+      </tr>
+    `;
+  });
+
+  return `
+    <div class="join-matrix-card">
+      <div class="join-matrix-header">
+        <div style="display: flex; align-items: center; gap: 8px;">
+          <span style="font-size: 16px;">👁️</span>
+          <span style="font-size: 13px; font-weight: 700; color: #fff; letter-spacing: 0.3px;">
+            VIEWS, MATERIALIZED VIEWS &amp; PROCEDURES DECISION MATRIX &bull; 100 QUESTS
+          </span>
+          <span class="badge" style="background: rgba(56, 189, 248, 0.2); color: #38bdf8; border: 1px solid rgba(56, 189, 248, 0.3); font-size: 10px;">
+            Abstraction &amp; Automation Reference
+          </span>
+        </div>
+        <button class="choice-pill" onclick="toggleViewsMatrixGuide()" style="font-size: 11px; padding: 2px 8px; border-color: var(--border-subtle);">
+          <span>${isCollapsed ? '▼ Expand Decision Matrix' : '▲ Collapse Matrix'}</span>
+        </button>
+      </div>
+
+      <div class="join-filter-pills-row">
+        <span style="font-size: 11px; color: var(--text-muted); font-weight: 600; text-transform: uppercase; letter-spacing: 0.5px;">Filter Discipline:</span>
+        ${filterPillsHtml}
+      </div>
+
+      ${!isCollapsed ? `
+        <div class="join-matrix-table-wrap">
+          <table class="join-matrix-table">
+            <thead>
+              <tr>
+                <th style="width: 220px;">DISCIPLINE &bull; SYMBOL</th>
+                <th style="width: 220px;">CORE ABSTRACTION CONCEPT</th>
+                <th>REAL-WORLD FINANCIAL &amp; AUDIT SCENARIOS</th>
+                <th style="width: 280px;">SILENT TRAP FOCUS &bull; PERFORMANCE &amp; CONCURRENCY</th>
+              </tr>
+            </thead>
+            <tbody>
+              ${tableRowsHtml}
+            </tbody>
+          </table>
+        </div>
+      ` : `
+        <div style="font-size: 11px; color: var(--text-muted); padding: 4px 0; display: flex; align-items: center; justify-content: space-between;">
+          <span><em>Matrix reference collapsed. Click &quot;Expand Decision Matrix&quot; above to view caching rules and trigger recursion traps.</em></span>
+          ${currentDisciplineKey ? `<span style="color: #38bdf8; font-weight: 600;">Currently filtered: ${currentDisciplineKey.replace(/_/g, ' ').toUpperCase()} (20 Quests)</span>` : ''}
+        </div>
+      `}
+    </div>
+  `;
+}
+window.renderViewsMasterMatrixHtml = renderViewsMasterMatrixHtml;
+
+function setViewsDisciplineFilter(discKey) {
+  if (activeViewsDisciplineFilter === discKey) {
+    activeViewsDisciplineFilter = null;
+  } else {
+    activeViewsDisciplineFilter = discKey;
+  }
+  currentQuestIndex = 0;
+  questChunkStart = 0;
+  questChunkEnd = 20;
+
+  const levelSelect = document.getElementById('questDirectLevelSelect');
+  if (levelSelect) levelSelect.innerHTML = '';
+
+  renderQuestStepperTrack();
+  renderActiveQuest(0);
+
+  if (window.AudioFX) window.AudioFX.playClick();
+  if (window.SQL_BUDDY) {
+    if (activeViewsDisciplineFilter) {
+      const meta = (window.VIEWS_DISCIPLINES_METADATA || []).find(m => m.key === activeViewsDisciplineFilter);
+      const name = meta ? meta.name : activeViewsDisciplineFilter;
+      window.SQL_BUDDY.say(`Filtered to ${name} (20 Levels)! Master database abstraction & automation!`, 3500, 'celebrate');
+    } else {
+      window.SQL_BUDDY.say("Showing all 100 Views & Procedures quests across 5 disciplines!", 3000, 'happy');
+    }
+  }
+}
+window.setViewsDisciplineFilter = setViewsDisciplineFilter;
+
+function toggleViewsMatrixGuide() {
+  isViewsMatrixGuideCollapsed = !isViewsMatrixGuideCollapsed;
+  renderActiveQuest(currentQuestIndex);
+  if (window.AudioFX) window.AudioFX.playClick();
+}
+window.toggleViewsMatrixGuide = toggleViewsMatrixGuide;
+
 function toggleQuestLevelDrawer() {
   const drawer = document.getElementById('questLevelDrawer');
   const btn = document.getElementById('btnToggleQuestDrawer');
@@ -8559,6 +8712,18 @@ const SQL_TRAP_CATALOG = {
   'CONCURRENCY RACE': {
     title: 'Non-Atomic Read-Modify-Write Concurrency Race Trap',
     explanation: 'Executing a separate SELECT followed by an application-side UPDATE creates a race window where another thread can modify the record in between. Use atomic UPDATE ... RETURNING or acquire pessimistic row locks with SELECT ... FOR UPDATE.'
+  },
+  'VIEW UNFOLDING': {
+    title: 'Standard View Unfolding & Performance Degradation Trap',
+    explanation: 'Standard views do NOT store precomputed data on disk! Querying a view unfolds the query plan and re-executes the underlying SELECT every time. Stacking views upon views causes severe execution plan bloat.'
+  },
+  'CONCURRENT REFRESH LOCK': {
+    title: 'Materialized View Exclusive Read-Lock Trap',
+    explanation: 'Executing plain REFRESH MATERIALIZED VIEW acquires an exclusive lock that blocks all reader queries until the refresh finishes. To keep reads non-blocking, build a UNIQUE INDEX and run REFRESH MATERIALIZED VIEW CONCURRENTLY.'
+  },
+  'TRIGGER RECURSION': {
+    title: 'Cascading Trigger Infinite Recursion Trap',
+    explanation: 'If a trigger on Table A mutates Table A or modifies a foreign child that cascades back to Table A, an infinite recursion loop is triggered, exhausting database resources. Use conditional WHEN guards or session variables to prevent self-retriggering.'
   }
 };
 
@@ -11108,8 +11273,341 @@ function renderDmlDualCodingHtml(quest, userSelections) {
 }
 window.renderDmlDualCodingHtml = renderDmlDualCodingHtml;
 
+// =============================================================================
+// DUAL-CODING VIEWS, MATERIALIZED VIEWS & PROCEDURES ENGINE
+// =============================================================================
+function renderViewsDualCodingHtml(quest, userSelections) {
+  const table = quest.table || 'BankAccounts';
+  const allSelStr = Object.values(userSelections || {}).join(' ').toUpperCase();
+
+  let discKey = quest.disciplineKey || 'standard_views';
+  if (allSelStr.includes('MATERIALIZED') || (quest.disciplineKey === 'materialized_views_refresh')) {
+    discKey = 'materialized_views_refresh';
+  } else if (allSelStr.includes('CALL') || allSelStr.includes('PROCEDURE') || (quest.disciplineKey === 'stored_procedures_transactions')) {
+    discKey = 'stored_procedures_transactions';
+  } else if (allSelStr.includes('FUNCTION') || allSelStr.includes('IMMUTABLE') || allSelStr.includes('STABLE') || (quest.disciplineKey === 'user_defined_functions')) {
+    discKey = 'user_defined_functions';
+  } else if (allSelStr.includes('TRIGGER') || allSelStr.includes('OLD.') || allSelStr.includes('NEW.') || (quest.disciplineKey === 'triggers_audit_logging')) {
+    discKey = 'triggers_audit_logging';
+  } else if (allSelStr.includes('VIEW') || (quest.disciplineKey === 'standard_views')) {
+    discKey = 'standard_views';
+  }
+
+  const configs = {
+    standard_views: {
+      name: 'VIRTUAL LOGICAL VIEW & SECURITY SHIELD',
+      symbol: '👁️',
+      color: '#38bdf8',
+      summary: 'Virtual Projection Lens: Dynamically unfolds SQL definition at runtime, shielding sensitive columns (like PII/SSN) with zero disk storage overhead.',
+      badgeText: 'Virtual View Lens Active'
+    },
+    materialized_views_refresh: {
+      name: 'PRECOMPUTED SNAPSHOT & CONCURRENT REFRESH',
+      symbol: '⚡',
+      color: '#10b981',
+      summary: 'Physical Disk Snapshot Cache: Persists aggregated query results on disk, enabling millisecond dashboard reads and non-blocking asynchronous refreshes.',
+      badgeText: 'Concurrent Refresh Active'
+    },
+    stored_procedures_transactions: {
+      name: 'STORED PROCEDURE & AUTONOMOUS COMMIT',
+      symbol: '⚙️',
+      color: '#f59e0b',
+      summary: 'Procedural Orchestration Engine: Executes multi-step business routines with autonomous mid-process transaction COMMIT / ROLLBACK capabilities.',
+      badgeText: 'Procedural Engine Active'
+    },
+    user_defined_functions: {
+      name: 'DETERMINISTIC UDF & COMPILER OPTIMIZATION',
+      symbol: '📐',
+      color: '#ec4899',
+      summary: 'Reusable Formula Inlining: Evaluates mathematical and financial algorithms with IMMUTABLE / STABLE compiler optimization hints.',
+      badgeText: 'Immutable UDF Optimizer Active'
+    },
+    triggers_audit_logging: {
+      name: 'EVENT-DRIVEN TRIGGER & AUDIT CAPTURE',
+      symbol: '🛡️',
+      color: '#a855f7',
+      summary: 'Tamper-Proof Audit Capture: Intercepts row-level mutations via OLD and NEW pseudo-records, guaranteeing regulatory compliance logging.',
+      badgeText: 'Row-Level Audit Trigger Active'
+    }
+  };
+
+  const cfg = configs[discKey] || configs.standard_views;
+
+  // 1. Diagram Panel
+  let diagramHtml = '';
+  if (discKey === 'standard_views') {
+    diagramHtml = `
+      <div style="width: 100%; padding: 4px 6px;">
+        <div style="font-size: 10px; font-family: var(--font-mono); color: #38bdf8; font-weight: 700; margin-bottom: 8px; text-align: center;">
+          VIRTUAL ABSTRACTION LENS &bull; ZERO DISK OVERHEAD
+        </div>
+        <div style="display: flex; align-items: center; justify-content: space-between; gap: 4px; font-family: monospace; font-size: 8.5px;">
+          <div style="background: rgba(56, 189, 248, 0.15); border: 1px solid #38bdf8; border-radius: 4px; padding: 4px; text-align: center; flex: 1;">
+            <div style="color: #7dd3fc; font-size: 7.5px;">CLIENT QUERY</div>
+            <div style="color: #fff;">SELECT * FROM v_Active</div>
+          </div>
+          <div style="color: #38bdf8; font-size: 10px;">&xrarr;</div>
+          <div style="background: rgba(56, 189, 248, 0.25); border: 1px dashed #38bdf8; border-radius: 4px; padding: 4px; text-align: center; flex: 1.2;">
+            <div style="color: #38bdf8; font-size: 7.5px;">LOGICAL VIEW</div>
+            <div style="color: #e0f2fe; font-size: 8px;">WHERE status='ACTIVE'</div>
+          </div>
+          <div style="color: #38bdf8; font-size: 10px;">&xrarr;</div>
+          <div style="background: rgba(255, 255, 255, 0.05); border: 1px solid rgba(255,255,255,0.15); border-radius: 4px; padding: 4px; text-align: center; flex: 1;">
+            <div style="color: var(--text-muted); font-size: 7.5px;">PHYSICAL TABLE</div>
+            <div style="color: #cbd5e1;">All Base Records</div>
+          </div>
+        </div>
+        <div style="font-size: 8.5px; color: #7dd3fc; text-align: center; margin-top: 6px;">
+          Dynamic query rewriting &bull; Zero precomputed storage footprint
+        </div>
+      </div>
+    `;
+  } else if (discKey === 'materialized_views_refresh') {
+    diagramHtml = `
+      <div style="width: 100%; padding: 4px 6px;">
+        <div style="font-size: 10px; font-family: var(--font-mono); color: #10b981; font-weight: 700; margin-bottom: 8px; text-align: center;">
+          PRECOMPUTED CACHE &bull; NON-BLOCKING READS
+        </div>
+        <div style="display: flex; flex-direction: column; gap: 4px; font-family: monospace; font-size: 8.5px;">
+          <div style="background: rgba(16, 185, 129, 0.15); border: 1px solid #10b981; border-radius: 3px; padding: 3px 6px; display: flex; justify-content: space-between;">
+            <span style="color: #6ee7b7;">DASHBOARD READS:</span>
+            <span style="color: #34d399; font-weight: 700;">⚡ 0.4ms from Physical Disk Cache</span>
+          </div>
+          <div style="background: rgba(16, 185, 129, 0.1); border: 1px dashed #10b981; border-radius: 3px; padding: 3px 6px; display: flex; justify-content: space-between;">
+            <span style="color: #a7f3d0;">ASYNC REFRESH:</span>
+            <span style="color: #fff;">REFRESH ... CONCURRENTLY</span>
+          </div>
+        </div>
+        <div style="font-size: 8.5px; color: #a7f3d0; text-align: center; margin-top: 6px;">
+          Unique Index lookup eliminates exclusive locks on readers
+        </div>
+      </div>
+    `;
+  } else if (discKey === 'stored_procedures_transactions') {
+    diagramHtml = `
+      <div style="width: 100%; padding: 4px 6px;">
+        <div style="font-size: 10px; font-family: var(--font-mono); color: #f59e0b; font-weight: 700; margin-bottom: 8px; text-align: center;">
+          PROCEDURAL EXECUTION &bull; EMBEDDED COMMIT
+        </div>
+        <div style="display: flex; align-items: center; justify-content: space-between; gap: 4px; font-family: monospace; font-size: 8.5px;">
+          <div style="background: rgba(245, 158, 11, 0.15); border: 1px solid #f59e0b; border-radius: 4px; padding: 4px; text-align: center; flex: 1;">
+            <div style="font-size: 7.5px; color: #fde68a;">STEP 1: BATCH</div>
+            <div style="font-size: 8.5px; color: #fff;">UPDATE 10k rows</div>
+          </div>
+          <div style="color: #f59e0b; font-size: 11px;">&xrarr;</div>
+          <div style="background: rgba(16, 185, 129, 0.2); border: 1px solid #10b981; border-radius: 4px; padding: 4px; text-align: center; flex: 1;">
+            <div style="font-size: 7.5px; color: #6ee7b7;">STEP 2: COMMIT</div>
+            <div style="font-size: 8.5px; color: #34d399; font-weight: 700;">Atomic Persist</div>
+          </div>
+          <div style="color: #f59e0b; font-size: 11px;">&xrarr;</div>
+          <div style="background: rgba(245, 158, 11, 0.15); border: 1px solid #f59e0b; border-radius: 4px; padding: 4px; text-align: center; flex: 1;">
+            <div style="font-size: 7.5px; color: #fde68a;">STEP 3: LOG</div>
+            <div style="font-size: 8.5px; color: #fff;">Emit Status</div>
+          </div>
+        </div>
+        <div style="font-size: 8.5px; color: #fde68a; text-align: center; margin-top: 6px;">
+          Full transaction control unavailable inside plain UDF functions
+        </div>
+      </div>
+    `;
+  } else if (discKey === 'user_defined_functions') {
+    diagramHtml = `
+      <div style="width: 100%; padding: 4px 6px;">
+        <div style="font-size: 10px; font-family: var(--font-mono); color: #ec4899; font-weight: 700; margin-bottom: 8px; text-align: center;">
+          IMMUTABLE COMPILER INLINING
+        </div>
+        <div style="display: flex; flex-direction: column; gap: 4px; font-family: monospace; font-size: 8.5px;">
+          <div style="background: rgba(236, 72, 153, 0.15); border: 1px solid #ec4899; border-radius: 3px; padding: 3px 6px; display: flex; justify-content: space-between;">
+            <span style="color: #f472b6;">FUNCTION:</span>
+            <span style="color: #fff;">fn_ComputeInterest(bal, rate)</span>
+          </div>
+          <div style="background: rgba(16, 185, 129, 0.2); border: 1px solid #10b981; border-radius: 3px; padding: 3px 6px; display: flex; justify-content: space-between;">
+            <span style="color: #6ee7b7;">HINT: IMMUTABLE</span>
+            <span style="color: #34d399;">Cached once per query constant</span>
+          </div>
+        </div>
+        <div style="font-size: 8.5px; color: #f472b6; text-align: center; margin-top: 6px;">
+          Avoids row-by-row optimizer black-box execution traps
+        </div>
+      </div>
+    `;
+  } else {
+    // Triggers & Audit
+    diagramHtml = `
+      <div style="width: 100%; padding: 4px 6px;">
+        <div style="font-size: 10px; font-family: var(--font-mono); color: #a855f7; font-weight: 700; margin-bottom: 8px; text-align: center;">
+          EVENT-DRIVEN TRIGGER AUDIT CAPTURE
+        </div>
+        <div style="display: flex; align-items: center; justify-content: space-between; gap: 4px; font-family: monospace; font-size: 8.5px;">
+          <div style="background: rgba(255, 255, 255, 0.05); border: 1px solid rgba(255,255,255,0.15); border-radius: 3px; padding: 3px 6px; text-align: center; flex: 1;">
+            <div style="color: var(--text-muted); font-size: 7.5px;">OLD ROW</div>
+            <div style="color: #cbd5e1;">bal: $5,000</div>
+          </div>
+          <div style="color: #a855f7; font-size: 10px;">&xrarr;</div>
+          <div style="background: rgba(168, 85, 247, 0.25); border: 1px solid #a855f7; border-radius: 3px; padding: 3px 6px; text-align: center; flex: 1.2;">
+            <div style="color: #d8b4fe; font-size: 7.5px;">TRIGGER</div>
+            <div style="color: #fff; font-size: 8px;">AFTER UPDATE</div>
+          </div>
+          <div style="color: #a855f7; font-size: 10px;">&xrarr;</div>
+          <div style="background: rgba(16, 185, 129, 0.2); border: 1px solid #10b981; border-radius: 3px; padding: 3px 6px; text-align: center; flex: 1;">
+            <div style="color: #6ee7b7; font-size: 7.5px;">NEW ROW</div>
+            <div style="color: #34d399;">bal: $4,500</div>
+          </div>
+        </div>
+        <div style="font-size: 8.5px; color: #d8b4fe; text-align: center; margin-top: 6px;">
+          Atomically inserted into AuditLedger &bull; SOX/Basel compliant
+        </div>
+      </div>
+    `;
+  }
+
+  // 2. Synchronous Table Projection
+  let rowsHtml = '';
+  if (discKey === 'standard_views') {
+    rowsHtml = `
+      <tr class="row-match">
+        <td><span class="match-key-pill" style="border-color: #38bdf8; color: #38bdf8;">ACC-101</span></td>
+        <td>ACTIVE</td>
+        <td>$145,250.00</td>
+        <td>PII Filtered (SSN Hidden)</td>
+        <td style="text-align: right;"><span class="row-status-pill keep">Virtual Pass</span></td>
+      </tr>
+      <tr class="row-match">
+        <td><span class="match-key-pill" style="border-color: #38bdf8; color: #38bdf8;">ACC-102</span></td>
+        <td>ACTIVE</td>
+        <td>$89,100.00</td>
+        <td>PII Filtered (SSN Hidden)</td>
+        <td style="text-align: right;"><span class="row-status-pill keep">Virtual Pass</span></td>
+      </tr>
+    `;
+  } else if (discKey === 'materialized_views_refresh') {
+    rowsHtml = `
+      <tr class="row-match">
+        <td><span class="match-key-pill" style="border-color: #10b981; color: #10b981;">SETTLED</span></td>
+        <td>$12,450,000.00</td>
+        <td>2026-09-27 08:00 UTC</td>
+        <td>Precomputed Snapshot</td>
+        <td style="text-align: right;"><span class="row-status-pill keep" style="background: rgba(16,185,129,0.2); color: #34d399;">⚡ 0.4ms Read</span></td>
+      </tr>
+      <tr class="row-match">
+        <td><span class="match-key-pill" style="border-color: #10b981; color: #10b981;">PENDING</span></td>
+        <td>$1,820,500.00</td>
+        <td>2026-09-27 08:00 UTC</td>
+        <td>Precomputed Snapshot</td>
+        <td style="text-align: right;"><span class="row-status-pill keep" style="background: rgba(16,185,129,0.2); color: #34d399;">⚡ 0.4ms Read</span></td>
+      </tr>
+    `;
+  } else if (discKey === 'stored_procedures_transactions') {
+    rowsHtml = `
+      <tr class="row-match">
+        <td><span class="match-key-pill" style="border-color: #f59e0b; color: #f59e0b;">BATCH-01</span></td>
+        <td>10,000 ACCOUNTS</td>
+        <td>Interest Applied (+2%)</td>
+        <td>INTERNAL COMMIT</td>
+        <td style="text-align: right;"><span class="row-status-pill keep">Committed Clean</span></td>
+      </tr>
+      <tr class="row-match">
+        <td><span class="match-key-pill" style="border-color: #f59e0b; color: #f59e0b;">BATCH-02</span></td>
+        <td>10,000 ACCOUNTS</td>
+        <td>Interest Applied (+2%)</td>
+        <td>INTERNAL COMMIT</td>
+        <td style="text-align: right;"><span class="row-status-pill keep">Committed Clean</span></td>
+      </tr>
+    `;
+  } else if (discKey === 'user_defined_functions') {
+    rowsHtml = `
+      <tr class="row-match">
+        <td><span class="match-key-pill" style="border-color: #ec4899; color: #ec4899;">VAL-101</span></td>
+        <td>Rate: 5.25%</td>
+        <td>$145,250.00</td>
+        <td>IMMUTABLE Evaluation</td>
+        <td style="text-align: right;"><span class="row-status-pill keep">Inlined Fast</span></td>
+      </tr>
+      <tr class="row-match">
+        <td><span class="match-key-pill" style="border-color: #ec4899; color: #ec4899;">VAL-102</span></td>
+        <td>Rate: 5.25%</td>
+        <td>$89,100.00</td>
+        <td>IMMUTABLE Evaluation</td>
+        <td style="text-align: right;"><span class="row-status-pill keep">Inlined Fast</span></td>
+      </tr>
+    `;
+  } else {
+    // Triggers & Audit
+    rowsHtml = `
+      <tr class="row-match">
+        <td><span class="match-key-pill" style="border-color: #a855f7; color: #a855f7;">LOG-901</span></td>
+        <td>ACC-101</td>
+        <td>Old: $5,000 &rarr; New: $4,500</td>
+        <td>AFTER UPDATE ON Accounts</td>
+        <td style="text-align: right;"><span class="row-status-pill keep" style="background: rgba(168,85,247,0.2); color: #c084fc;">Audit Persisted</span></td>
+      </tr>
+      <tr class="row-match">
+        <td><span class="match-key-pill" style="border-color: #a855f7; color: #a855f7;">LOG-902</span></td>
+        <td>ACC-102</td>
+        <td>Old: $8,200 &rarr; New: $8,000</td>
+        <td>AFTER UPDATE ON Accounts</td>
+        <td style="text-align: right;"><span class="row-status-pill keep" style="background: rgba(168,85,247,0.2); color: #c084fc;">Audit Persisted</span></td>
+      </tr>
+    `;
+  }
+
+  return `
+    <div class="live-preview-header">
+      <div class="live-preview-title">
+        <span class="join-symbol-badge" style="color: ${cfg.color}; border-color: ${cfg.color}66; width: 18px; height: 18px; font-size: 11px;">${cfg.symbol}</span>
+        <span>DUAL-CODING VIEWS &amp; PROCEDURES ENGINE:</span>
+        <span style="color: ${cfg.color}; font-weight: 800;">${cfg.name}</span>
+      </div>
+      <span class="live-preview-subtitle">${cfg.badgeText}</span>
+    </div>
+
+    <div style="font-size: 11px; color: var(--text-secondary); margin-bottom: 8px; line-height: 1.45;">
+      ${cfg.summary}
+    </div>
+
+    <div class="join-dual-coding-grid">
+      <!-- Left Column: Virtual Lens / Procedural Pipe -->
+      <div class="join-venn-card" style="border-color: ${cfg.color}33;">
+        ${diagramHtml}
+      </div>
+
+      <!-- Right Column: Live Table State Projection -->
+      <div class="join-live-table-card">
+        <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 6px; padding-bottom: 4px; border-bottom: 1px solid rgba(255,255,255,0.06);">
+          <span style="font-size: 10px; font-family: var(--font-mono); color: var(--text-muted); font-weight: 700;">
+            OBJECT AUDIT &amp; EXECUTION PROJECTION
+          </span>
+          <span style="font-size: 9.5px; font-family: var(--font-mono); color: ${cfg.color};">
+            Target: ${escapeHtml(table)}
+          </span>
+        </div>
+        <table class="live-preview-table">
+          <thead>
+            <tr>
+              <th style="width: 85px;">ROW ID</th>
+              <th>PRIMARY FILTER / STATE</th>
+              <th>OUTPUT VALUE / METRIC</th>
+              <th>EXECUTION MODE</th>
+              <th style="width: 130px; text-align: right;">STATUS</th>
+            </tr>
+          </thead>
+          <tbody>
+            ${rowsHtml}
+          </tbody>
+        </table>
+      </div>
+    </div>
+  `;
+}
+window.renderViewsDualCodingHtml = renderViewsDualCodingHtml;
+
 function renderLiveTransformationHtml(quest, userSelections) {
-  // 1. Dual Coding for Section 11 (DML, Upserts & ACID Transactions)
+  // 1. Dual Coding for Section 12 (Views, Materialized Views & Stored Procedures)
+  if (currentQuestSection === 'section12' || ['standard_views', 'materialized_views_refresh', 'stored_procedures_transactions', 'user_defined_functions', 'triggers_audit_logging'].includes(quest.disciplineKey)) {
+    return renderViewsDualCodingHtml(quest, userSelections);
+  }
+
+  // 2. Dual Coding for Section 11 (DML, Upserts & ACID Transactions)
   if (currentQuestSection === 'section11' || ['idempotent_upserts', 'audit_projections_returning', 'conditional_mutations_soft_deletes', 'acid_transactions_concurrency', 'scd_type2_versioning'].includes(quest.disciplineKey)) {
     return renderDmlDualCodingHtml(quest, userSelections);
   }
@@ -11467,6 +11965,8 @@ function renderFillBlankQuest(container, quest) {
     ${currentQuestSection === 'section10' ? renderDdlMasterMatrixHtml() : ''}
     <!-- Section 11: DML, Upserts & ACID Transactions Decision Matrix Reference -->
     ${currentQuestSection === 'section11' ? renderDmlMasterMatrixHtml() : ''}
+    <!-- Section 12: Views, Materialized Views & Stored Procedures Decision Matrix Reference -->
+    ${currentQuestSection === 'section12' ? renderViewsMasterMatrixHtml() : ''}
 
     <!-- Faded Scaffolding Tier Banner -->
     ${getScaffoldingBannerHtml(quest, currentQuestIndex)}
