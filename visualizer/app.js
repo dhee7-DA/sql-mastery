@@ -6713,6 +6713,8 @@ let activeOptimizationDisciplineFilter = null;
 let isOptimizationMatrixGuideCollapsed = false;
 let activeWarehouseDisciplineFilter = null;
 let isWarehouseMatrixGuideCollapsed = false;
+let activeJsonDisciplineFilter = null;
+let isJsonMatrixGuideCollapsed = false;
 
 function getActiveQuestsList() {
   if (currentQuestSection === 'section1' && window.QUESTS_SECTION_1 && window.QUESTS_SECTION_1.length > 0) {
@@ -6787,6 +6789,12 @@ function getActiveQuestsList() {
     }
     return window.QUESTS_SECTION_14;
   }
+  if (currentQuestSection === 'section15' && window.QUESTS_SECTION_15 && window.QUESTS_SECTION_15.length > 0) {
+    if (activeJsonDisciplineFilter) {
+      return window.QUESTS_SECTION_15.filter(q => q.disciplineKey === activeJsonDisciplineFilter);
+    }
+    return window.QUESTS_SECTION_15;
+  }
   return window.QUESTS_DATA || [];
 }
 
@@ -6794,7 +6802,7 @@ function switchQuestSection(sectionKey) {
   currentQuestSection = sectionKey;
   currentQuestIndex = 0;
   questChunkStart = 0;
-  const isMultiChunk = (sectionKey === 'section1' || sectionKey === 'section2' || sectionKey === 'section3' || sectionKey === 'section4' || sectionKey === 'section5' || sectionKey === 'section6' || sectionKey === 'section7' || sectionKey === 'section8' || sectionKey === 'section9' || sectionKey === 'section10' || sectionKey === 'section11' || sectionKey === 'section12' || sectionKey === 'section13' || sectionKey === 'section14');
+  const isMultiChunk = (sectionKey === 'section1' || sectionKey === 'section2' || sectionKey === 'section3' || sectionKey === 'section4' || sectionKey === 'section5' || sectionKey === 'section6' || sectionKey === 'section7' || sectionKey === 'section8' || sectionKey === 'section9' || sectionKey === 'section10' || sectionKey === 'section11' || sectionKey === 'section12' || sectionKey === 'section13' || sectionKey === 'section14' || sectionKey === 'section15');
   questChunkEnd = isMultiChunk ? 20 : 30;
 
   if (sectionKey === 'section5') {
@@ -6826,6 +6834,9 @@ function switchQuestSection(sectionKey) {
   }
   if (sectionKey === 'section14') {
     activeWarehouseDisciplineFilter = null;
+  }
+  if (sectionKey === 'section15') {
+    activeJsonDisciplineFilter = null;
   }
 
   // Update tabs
@@ -6864,6 +6875,7 @@ function switchQuestSection(sectionKey) {
     else if (sectionKey === 'section12') footerTrack.textContent = 'Section 12: Views & Procedures Arena (100)';
     else if (sectionKey === 'section13') footerTrack.textContent = 'Section 13: Query Optimization Arena (100)';
     else if (sectionKey === 'section14') footerTrack.textContent = 'Section 14: Cloud Warehouses & Modern SQL (100)';
+    else if (sectionKey === 'section15') footerTrack.textContent = 'Section 15: JSON & Semi-Structured Data in SQL (100)';
     else if (sectionKey === 'featured') footerTrack.textContent = 'Bonus: Boss Gauntlet (30)';
   }
 
@@ -6900,6 +6912,8 @@ function switchQuestSection(sectionKey) {
       window.SQL_BUDDY.say("🔬 Section 13: Query Performance, EXPLAIN ANALYZE & Query Optimization loaded (100 Levels)! Master cost models, index paths, and SARGability!", 4500, 'celebrate');
     } else if (sectionKey === 'section14') {
       window.SQL_BUDDY.say("❄️ Section 14: Cloud Warehouses & Modern SQL loaded (100 Levels)! Master QUALIFY, partition pruning, and DuckDB lakehouses!", 4500, 'celebrate');
+    } else if (sectionKey === 'section15') {
+      window.SQL_BUDDY.say("📦 Section 15: JSON & Semi-Structured Data in SQL loaded (100 Levels)! Master path traversal, array unnesting, and GIN containment!", 4500, 'celebrate');
     } else {
       window.SQL_BUDDY.say("🏆 Boss Gauntlet Activated! 30 Advanced Challenges across all SQL pillars!", 3500, 'celebrate');
     }
@@ -8338,6 +8352,145 @@ function toggleWarehouseMatrixGuide() {
 }
 window.toggleWarehouseMatrixGuide = toggleWarehouseMatrixGuide;
 
+// =============================================================================
+// SECTION 15: JSON & SEMI-STRUCTURED DATA IN SQL (DECISION MATRIX & DISCIPLINE FILTER)
+// =============================================================================
+function renderJsonMasterMatrixHtml() {
+  const metadata = window.JSON_DISCIPLINES_METADATA || [];
+  const isCollapsed = isJsonMatrixGuideCollapsed;
+  const currentDisciplineKey = activeJsonDisciplineFilter;
+
+  let filterPillsHtml = `
+    <button class="choice-pill ${!currentDisciplineKey ? 'selected' : ''}" onclick="setJsonDisciplineFilter(null)" style="font-size: 11px; padding: 4px 10px;">
+      <span>All 100 Quests</span>
+    </button>
+  `;
+
+  metadata.forEach(d => {
+    const isSelected = currentDisciplineKey === d.key;
+    filterPillsHtml += `
+      <button class="choice-pill ${isSelected ? 'selected' : ''}" onclick="setJsonDisciplineFilter('${d.key}')" style="font-size: 11px; padding: 4px 10px; border-color: ${d.color}66;">
+        <span style="color: ${d.color}; font-weight: 800; margin-right: 4px;">${d.symbol}</span>
+        <span>${escapeHtml(d.name)} (20)</span>
+      </button>
+    `;
+  });
+
+  let tableRowsHtml = '';
+  metadata.forEach(d => {
+    const isActiveRow = currentDisciplineKey === d.key;
+    tableRowsHtml += `
+      <tr class="${isActiveRow ? 'active-row' : ''}">
+        <td style="white-space: nowrap;">
+          <div style="display: flex; align-items: center; gap: 8px;">
+            <span class="join-symbol-badge" style="color: ${d.color}; border-color: ${d.color}66;">${d.symbol}</span>
+            <div>
+              <strong style="color: ${d.color}; font-size: 12px; font-family: var(--font-mono);">${escapeHtml(d.name)}</strong>
+              <div style="font-size: 10px; color: var(--text-muted);">${escapeHtml(d.concept)}</div>
+            </div>
+          </div>
+        </td>
+        <td style="font-size: 11px; line-height: 1.4; color: var(--text-secondary);">
+          ${escapeHtml(d.whenToUse)}
+        </td>
+        <td style="font-size: 11px; line-height: 1.4; color: #cbd5e1;">
+          ${escapeHtml(d.scenarios)}
+        </td>
+        <td>
+          <div class="join-trap-pill">
+            <span class="trap-icon">⚠️</span>
+            <span>${escapeHtml(d.traps)}</span>
+          </div>
+        </td>
+      </tr>
+    `;
+  });
+
+  return `
+    <div class="join-matrix-card">
+      <div class="join-matrix-header">
+        <div style="display: flex; align-items: center; gap: 8px;">
+          <span style="font-size: 16px;">📦</span>
+          <span style="font-size: 13px; font-weight: 700; color: #fff; letter-spacing: 0.3px;">
+            JSON &amp; SEMI-STRUCTURED DATA IN SQL DECISION MATRIX &bull; 100 QUESTS
+          </span>
+          <span class="badge" style="background: rgba(6, 182, 212, 0.2); color: #06b6d4; border: 1px solid rgba(6, 182, 212, 0.3); font-size: 10px;">
+            PostgreSQL JSONB &bull; Snowflake &bull; BigQuery &bull; DuckDB Reference
+          </span>
+        </div>
+        <button class="choice-pill" onclick="toggleJsonMatrixGuide()" style="font-size: 11px; padding: 2px 8px; border-color: var(--border-subtle);">
+          <span>${isCollapsed ? '▼ Expand Decision Matrix' : '▲ Collapse Matrix'}</span>
+        </button>
+      </div>
+
+      <div class="join-filter-pills-row">
+        <span style="font-size: 11px; color: var(--text-muted); font-weight: 600; text-transform: uppercase; letter-spacing: 0.5px;">Filter Discipline:</span>
+        ${filterPillsHtml}
+      </div>
+
+      ${!isCollapsed ? `
+        <div class="join-matrix-table-wrap">
+          <table class="join-matrix-table">
+            <thead>
+              <tr>
+                <th style="width: 230px;">DISCIPLINE &bull; SYMBOL</th>
+                <th style="width: 220px;">CORE JSON CONCEPT</th>
+                <th>REAL-WORLD SEMI-STRUCTURED SCENARIOS</th>
+                <th style="width: 280px;">SILENT TRAP FOCUS &bull; QUOTE DRIFT &amp; UNNEST DROPS</th>
+              </tr>
+            </thead>
+            <tbody>
+              ${tableRowsHtml}
+            </tbody>
+          </table>
+        </div>
+      ` : `
+        <div style="font-size: 11px; color: var(--text-muted); padding: 4px 0; display: flex; align-items: center; justify-content: space-between;">
+          <span><em>Matrix reference collapsed. Click &quot;Expand Decision Matrix&quot; above to view -&gt; vs -&gt;&gt;, array unnesting, and GIN containment rules.</em></span>
+          ${currentDisciplineKey ? `<span style="color: #06b6d4; font-weight: 600;">Currently filtered: ${currentDisciplineKey.replace(/_/g, ' ').toUpperCase()} (20 Quests)</span>` : ''}
+        </div>
+      `}
+    </div>
+  `;
+}
+window.renderJsonMasterMatrixHtml = renderJsonMasterMatrixHtml;
+
+function setJsonDisciplineFilter(discKey) {
+  if (activeJsonDisciplineFilter === discKey) {
+    activeJsonDisciplineFilter = null;
+  } else {
+    activeJsonDisciplineFilter = discKey;
+  }
+  currentQuestIndex = 0;
+  questChunkStart = 0;
+  questChunkEnd = 20;
+
+  const levelSelect = document.getElementById('questDirectLevelSelect');
+  if (levelSelect) levelSelect.innerHTML = '';
+
+  renderQuestStepperTrack();
+  renderActiveQuest(0);
+
+  if (window.AudioFX) window.AudioFX.playClick();
+  if (window.SQL_BUDDY) {
+    if (activeJsonDisciplineFilter) {
+      const meta = (window.JSON_DISCIPLINES_METADATA || []).find(m => m.key === activeJsonDisciplineFilter);
+      const name = meta ? meta.name : activeJsonDisciplineFilter;
+      window.SQL_BUDDY.say(`Filtered to ${name} (20 Levels)! Master semi-structured JSON extraction and document queries!`, 3500, 'celebrate');
+    } else {
+      window.SQL_BUDDY.say("Showing all 100 JSON & Semi-Structured SQL quests across 5 disciplines!", 3000, 'happy');
+    }
+  }
+}
+window.setJsonDisciplineFilter = setJsonDisciplineFilter;
+
+function toggleJsonMatrixGuide() {
+  isJsonMatrixGuideCollapsed = !isJsonMatrixGuideCollapsed;
+  renderActiveQuest(currentQuestIndex);
+  if (window.AudioFX) window.AudioFX.playClick();
+}
+window.toggleJsonMatrixGuide = toggleJsonMatrixGuide;
+
 function toggleQuestLevelDrawer() {
   const drawer = document.getElementById('questLevelDrawer');
   const btn = document.getElementById('btnToggleQuestDrawer');
@@ -9062,6 +9215,26 @@ const SQL_TRAP_CATALOG = {
   'PARQUET SELECT STAR': {
     title: 'Parquet Lakehouse SELECT * Projection Defeat Trap',
     explanation: 'Running SELECT * on external Parquet lakehouses forces the query engine to decompress and transfer every single columnar chunk across object storage, completely nullifying Parquet columnar projection pushdown.'
+  },
+  'JSON ARROW QUOTE DRIFT': {
+    title: 'JSON -> vs ->> Arrow Operator Quote Drift Trap',
+    explanation: 'Using `->` extracts a JSON element retaining quotes (e.g. `"succeeded"`), causing string comparisons like `payload->\'status\' = \'succeeded\'` to fail silently! Always use `->>` to extract unquoted scalar text values.'
+  },
+  'LATERAL UNNEST EMPTY ARRAY': {
+    title: 'Lateral Unnesting Empty Array Dropping Trap',
+    explanation: 'Using `CROSS JOIN LATERAL jsonb_array_elements(...)` on an empty array `[]` or NULL silently purges the entire parent row from the query result! Use `LEFT JOIN LATERAL ... ON TRUE` to safeguard parent records.'
+  },
+  'UNSAFE JSON TYPECAST': {
+    title: 'Unshielded JSON Scalar Typecast Abort Trap',
+    explanation: 'Directly casting extracted strings like `(payload->>\'amount\')::NUMERIC` aborts the entire transaction if any single malformed record contains `"N/A"` or empty strings. Use `TRY_CAST` or `SAFE_CAST` to yield NULL instead of a fatal crash.'
+  },
+  'JSONB_AGG NULL CONTAMINATION': {
+    title: 'jsonb_agg Null Array Contamination Trap',
+    explanation: 'Using `jsonb_agg(child_record)` after an outer join with no matches produces `[null]` rather than an empty JSON array `[]`. Use `jsonb_agg(...) FILTER (WHERE child_id IS NOT NULL)` and `COALESCE`.'
+  },
+  'BTREE FOR JSONB CONTAINMENT': {
+    title: 'B-Tree Index Ineffective for JSONB Containment Trap',
+    explanation: 'A standard B-Tree index on a JSONB column cannot accelerate `@>` containment searches or `?` key checks, forcing full sequential table scans. Always build an inverted `GIN (column jsonb_path_ops)` index.'
   }
 };
 
@@ -12511,10 +12684,300 @@ function renderWarehouseDualCodingHtml(quest, userSelections) {
     </div>
   `;
 }
-window.renderWarehouseDualCodingHtml = renderWarehouseDualCodingHtml;
+function renderJsonDualCodingHtml(quest, userSelections) {
+  const discKey = quest.disciplineKey || 'json_path_extraction';
+  const meta = (window.JSON_DISCIPLINES_METADATA || []).find(d => d.key === discKey) || {
+    name: 'JSON & Semi-Structured Data in SQL',
+    symbol: '📦',
+    color: '#06b6d4'
+  };
+
+  let leftPanelTitle = 'JSON Document Hierarchy & Tree Path Navigation';
+  let leftSvg = '';
+  let rightPanelTitle = 'Relational Transformation & Execution Projection';
+  let rowsHtml = '';
+
+  if (discKey === 'json_path_extraction') {
+    leftPanelTitle = 'JSON Tree Path Traversal (-> vs ->>)';
+    leftSvg = `
+      <div style="font-family: var(--font-mono); font-size: 11px; background: rgba(0,0,0,0.35); border-radius: 6px; padding: 10px; border: 1px solid rgba(255,255,255,0.08); color: #cbd5e1; line-height: 1.5;">
+        <div style="color: #64748b;">{ /* Raw Webhook JSONB Document */</div>
+        <div style="padding-left: 12px;"><span style="color: #38bdf8;">"event_id"</span>: <span style="color: #f59e0b;">"evt_984120"</span>,</div>
+        <div style="padding-left: 12px; background: rgba(56, 189, 248, 0.08); border-left: 2px solid #38bdf8; margin: 3px 0; padding-top: 3px; padding-bottom: 3px;">
+          <span style="color: #38bdf8;">"payment"</span>: { <span style="color: #64748b;">/* payload->'payment' (JSONB Object) */</span>
+            <div style="padding-left: 14px;"><span style="color: #38bdf8;">"currency"</span>: <span style="color: #f59e0b;">"USD"</span>,</div>
+            <div style="padding-left: 14px;"><span style="color: #38bdf8;">"amount"</span>: <span style="color: #34d399;">15000</span>,</div>
+            <div style="padding-left: 14px; background: rgba(16, 185, 129, 0.15); border-radius: 3px; padding: 2px 4px;">
+              <span style="color: #10b981; font-weight: 700;">"status"</span>: <span style="color: #38bdf8; font-weight: 700;">"succeeded"</span>
+              <span style="color: #10b981; font-size: 10px; margin-left: 6px;">&larr; payload->'payment'->>'status' (Unquoted Text)</span>
+            </div>
+          </div>
+          <span style="padding-left: 12px;">}</span>
+        </div>
+        <div style="color: #64748b;">}</div>
+      </div>
+    `;
+
+    rowsHtml = `
+      <tr>
+        <td style="font-family: var(--font-mono); color: #38bdf8; font-size: 11px;">payload->'payment'</td>
+        <td style="font-family: var(--font-mono); font-size: 11px;">{"status": "succeeded", "amount": 15000}</td>
+        <td style="color: #f59e0b; font-family: var(--font-mono); font-size: 11px;">JSONB Object</td>
+        <td style="color: var(--text-secondary); font-size: 11px;">Contains quotes &amp; braces; used for intermediate path hops</td>
+        <td style="text-align: right;"><span class="badge" style="background: rgba(56, 189, 248, 0.15); color: #38bdf8;">HOP (->)</span></td>
+      </tr>
+      <tr>
+        <td style="font-family: var(--font-mono); color: #10b981; font-size: 11px;">...->>'status'</td>
+        <td style="font-family: var(--font-mono); font-size: 11px;">succeeded</td>
+        <td style="color: #10b981; font-family: var(--font-mono); font-size: 11px;">TEXT / VARCHAR</td>
+        <td style="color: #34d399; font-size: 11px;">Quotes stripped; directly comparable with 'succeeded'</td>
+        <td style="text-align: right;"><span class="badge" style="background: rgba(16, 185, 129, 0.15); color: #10b981;">LEAF (->>)</span></td>
+      </tr>
+      <tr>
+        <td style="font-family: var(--font-mono); color: #a855f7; font-size: 11px;">(...->>'amount')::NUMERIC</td>
+        <td style="font-family: var(--font-mono); font-size: 11px;">15000.00</td>
+        <td style="color: #c084fc; font-family: var(--font-mono); font-size: 11px;">NUMERIC(12,2)</td>
+        <td style="color: var(--text-secondary); font-size: 11px;">Scalar cast enables arithmetic (&gt;, &lt;, SUM, AVG)</td>
+        <td style="text-align: right;"><span class="badge" style="background: rgba(168, 85, 247, 0.15); color: #a855f7;">CAST</span></td>
+      </tr>
+    `;
+  } else if (discKey === 'json_array_unnesting') {
+    leftPanelTitle = 'Lateral Array Expansion & Relationalization Pipeline';
+    leftSvg = `
+      <div style="font-family: var(--font-mono); font-size: 11px; display: flex; flex-direction: column; gap: 8px; padding: 4px;">
+        <div style="background: rgba(56, 189, 248, 0.1); border: 1px solid rgba(56, 189, 248, 0.3); border-radius: 6px; padding: 8px;">
+          <div style="color: #38bdf8; font-weight: 700; margin-bottom: 2px;">Parent Row: invoices (invoice_id: 801)</div>
+          <div style="color: var(--text-muted); font-size: 10px;">payload->'items' = [{"sku": "A1", "qty": 2}, {"sku": "B2", "qty": 1}, {"sku": "C3", "qty": 5}]</div>
+        </div>
+        <div style="text-align: center; color: #10b981; font-size: 14px; font-weight: 800;">
+          &darr; CROSS JOIN LATERAL jsonb_array_elements(...) &darr;
+        </div>
+        <div style="display: grid; grid-template-columns: 1fr 1fr 1fr; gap: 6px;">
+          <div style="background: rgba(16, 185, 129, 0.1); border: 1px solid rgba(16, 185, 129, 0.3); border-radius: 4px; padding: 6px; text-align: center;">
+            <div style="color: #10b981; font-weight: 700;">Row 1</div>
+            <div style="font-size: 10px; color: #fff;">SKU: A1 | Qty: 2</div>
+          </div>
+          <div style="background: rgba(16, 185, 129, 0.1); border: 1px solid rgba(16, 185, 129, 0.3); border-radius: 4px; padding: 6px; text-align: center;">
+            <div style="color: #10b981; font-weight: 700;">Row 2</div>
+            <div style="font-size: 10px; color: #fff;">SKU: B2 | Qty: 1</div>
+          </div>
+          <div style="background: rgba(16, 185, 129, 0.1); border: 1px solid rgba(16, 185, 129, 0.3); border-radius: 4px; padding: 6px; text-align: center;">
+            <div style="color: #10b981; font-weight: 700;">Row 3</div>
+            <div style="font-size: 10px; color: #fff;">SKU: C3 | Qty: 5</div>
+          </div>
+        </div>
+      </div>
+    `;
+
+    rowsHtml = `
+      <tr>
+        <td style="font-family: var(--font-mono); color: #10b981; font-size: 11px;">item->>'sku'</td>
+        <td style="font-family: var(--font-mono); font-size: 11px;">"A1", "B2", "C3"</td>
+        <td style="color: #38bdf8; font-size: 11px;">3 Relational Rows Produced</td>
+        <td style="color: #34d399; font-size: 11px;">Normalized 1:N items into flat columns</td>
+        <td style="text-align: right;"><span class="badge" style="background: rgba(16, 185, 129, 0.15); color: #10b981;">UNNESTED</span></td>
+      </tr>
+      <tr>
+        <td style="font-family: var(--font-mono); color: #f59e0b; font-size: 11px;">WITH ORDINALITY</td>
+        <td style="font-family: var(--font-mono); font-size: 11px;">1, 2, 3 (1-based)</td>
+        <td style="color: #f59e0b; font-size: 11px;">Element Position Index</td>
+        <td style="color: var(--text-secondary); font-size: 11px;">Preserves original order in JSON array</td>
+        <td style="text-align: right;"><span class="badge" style="background: rgba(245, 158, 11, 0.15); color: #f59e0b;">INDEXED</span></td>
+      </tr>
+      <tr>
+        <td style="font-family: var(--font-mono); color: #ec4899; font-size: 11px;">LEFT JOIN LATERAL</td>
+        <td style="font-family: var(--font-mono); font-size: 11px;">ON TRUE</td>
+        <td style="color: #ec4899; font-size: 11px;">Zero-Item Safe Guard</td>
+        <td style="color: var(--text-secondary); font-size: 11px;">Prevents dropping parent orders if items is empty []</td>
+        <td style="text-align: right;"><span class="badge" style="background: rgba(236, 72, 153, 0.15); color: #ec4899;">PRESERVE</span></td>
+      </tr>
+    `;
+  } else if (discKey === 'json_schema_validation') {
+    leftPanelTitle = 'Defensive Ingestion Firewall & Safe Casting Matrix';
+    leftSvg = `
+      <div style="font-family: var(--font-mono); font-size: 11px; display: flex; flex-direction: column; gap: 6px; padding: 4px;">
+        <div style="display: flex; align-items: center; justify-content: space-between; background: rgba(16, 185, 129, 0.1); border: 1px solid rgba(16, 185, 129, 0.3); border-radius: 4px; padding: 6px 10px;">
+          <span>1. Syntax Check: <strong style="color: #10b981;">raw_payload IS JSON</strong></span>
+          <span style="color: #10b981; font-weight: 700;">[PASS: Valid Syntax]</span>
+        </div>
+        <div style="display: flex; align-items: center; justify-content: space-between; background: rgba(56, 189, 248, 0.1); border: 1px solid rgba(56, 189, 248, 0.3); border-radius: 4px; padding: 6px 10px;">
+          <span>2. Root Type Check: <strong style="color: #38bdf8;">IS JSON OBJECT</strong></span>
+          <span style="color: #38bdf8; font-weight: 700;">[PASS: Key-Value Root]</span>
+        </div>
+        <div style="display: flex; align-items: center; justify-content: space-between; background: rgba(245, 158, 11, 0.1); border: 1px solid rgba(245, 158, 11, 0.3); border-radius: 4px; padding: 6px 10px;">
+          <span>3. Property Type: <strong style="color: #f59e0b;">jsonb_typeof(payload->'score')</strong></span>
+          <span style="color: #f59e0b; font-weight: 700;">[TYPE: 'number']</span>
+        </div>
+        <div style="display: flex; align-items: center; justify-content: space-between; background: rgba(168, 85, 247, 0.1); border: 1px solid rgba(168, 85, 247, 0.3); border-radius: 4px; padding: 6px 10px;">
+          <span>4. Defensive Cast: <strong style="color: #c084fc;">TRY_CAST(val AS INT)</strong></span>
+          <span style="color: #c084fc; font-weight: 700;">[ZERO CRASH: Yields NULL on corrupt string]</span>
+        </div>
+      </div>
+    `;
+
+    rowsHtml = `
+      <tr>
+        <td style="font-family: var(--font-mono); color: #10b981; font-size: 11px;">IS JSON</td>
+        <td style="font-family: var(--font-mono); font-size: 11px;">Syntactic parser check</td>
+        <td style="color: #10b981; font-size: 11px;">ANSI SQL Standard</td>
+        <td style="color: var(--text-secondary); font-size: 11px;">Filters out truncated or corrupt log lines</td>
+        <td style="text-align: right;"><span class="badge" style="background: rgba(16, 185, 129, 0.15); color: #10b981;">GUARD</span></td>
+      </tr>
+      <tr>
+        <td style="font-family: var(--font-mono); color: #f59e0b; font-size: 11px;">jsonb_typeof()</td>
+        <td style="font-family: var(--font-mono); font-size: 11px;">'object', 'array', 'number', 'string'</td>
+        <td style="color: #f59e0b; font-size: 11px;">Runtime Inspection</td>
+        <td style="color: var(--text-secondary); font-size: 11px;">Prevents type mismatch errors on polymorphic payloads</td>
+        <td style="text-align: right;"><span class="badge" style="background: rgba(245, 158, 11, 0.15); color: #f59e0b;">INSPECT</span></td>
+      </tr>
+      <tr>
+        <td style="font-family: var(--font-mono); color: #c084fc; font-size: 11px;">TRY_CAST / SAFE_CAST</td>
+        <td style="font-family: var(--font-mono); font-size: 11px;">Returns NULL on conversion failure</td>
+        <td style="color: #c084fc; font-size: 11px;">Exception Shield</td>
+        <td style="color: #34d399; font-size: 11px;">Never crashes queries when encountering values like "N/A"</td>
+        <td style="text-align: right;"><span class="badge" style="background: rgba(168, 85, 247, 0.15); color: #c084fc;">SHIELD</span></td>
+      </tr>
+    `;
+  } else if (discKey === 'json_aggregation_construction') {
+    leftPanelTitle = 'Relational to Hierarchical JSON Document Serialization';
+    leftSvg = `
+      <div style="font-family: var(--font-mono); font-size: 11px; display: flex; flex-direction: column; gap: 8px; padding: 4px;">
+        <div style="background: rgba(236, 72, 153, 0.1); border: 1px solid rgba(236, 72, 153, 0.3); border-radius: 6px; padding: 8px;">
+          <div style="color: #ec4899; font-weight: 700; margin-bottom: 2px;">Input: Relational Tables (1:N)</div>
+          <div style="color: var(--text-muted); font-size: 10px;">customers (1 row) &bull; transactions (3 child rows)</div>
+        </div>
+        <div style="text-align: center; color: #38bdf8; font-size: 13px; font-weight: 700;">
+          &darr; jsonb_build_object() + jsonb_agg() &darr;
+        </div>
+        <div style="background: rgba(0,0,0,0.35); border: 1px solid rgba(255,255,255,0.1); border-radius: 6px; padding: 8px; color: #cbd5e1;">
+          <div style="color: #64748b;">{</div>
+          <div style="padding-left: 12px;"><span style="color: #38bdf8;">"customer_id"</span>: 101, <span style="color: #38bdf8;">"name"</span>: <span style="color: #f59e0b;">"Acme Corp"</span>,</div>
+          <div style="padding-left: 12px;"><span style="color: #10b981;">"transactions"</span>: [ <span style="color: #64748b;">/* jsonb_agg */</span></div>
+          <div style="padding-left: 24px; color: #94a3b8;">{"id": 501, "amt": 1200}, {"id": 502, "amt": 4500}</div>
+          <div style="padding-left: 12px;">]</div>
+          <div style="color: #64748b;">}</div>
+        </div>
+      </div>
+    `;
+
+    rowsHtml = `
+      <tr>
+        <td style="font-family: var(--font-mono); color: #ec4899; font-size: 11px;">jsonb_build_object()</td>
+        <td style="font-family: var(--font-mono); font-size: 11px;">('key1', val1, 'key2', val2...)</td>
+        <td style="color: #ec4899; font-size: 11px;">Constructs Single JSONB Document</td>
+        <td style="color: var(--text-secondary); font-size: 11px;">Assembles arbitrary relational columns into key-value documents</td>
+        <td style="text-align: right;"><span class="badge" style="background: rgba(236, 72, 153, 0.15); color: #ec4899;">OBJECT</span></td>
+      </tr>
+      <tr>
+        <td style="font-family: var(--font-mono); color: #38bdf8; font-size: 11px;">jsonb_agg()</td>
+        <td style="font-family: var(--font-mono); font-size: 11px;">Aggregates rows into JSON array</td>
+        <td style="color: #38bdf8; font-size: 11px;">One-to-Many Nesting</td>
+        <td style="color: var(--text-secondary); font-size: 11px;">Supports ORDER BY inside aggregate to guarantee array sequence</td>
+        <td style="text-align: right;"><span class="badge" style="background: rgba(56, 189, 248, 0.15); color: #38bdf8;">ARRAY</span></td>
+      </tr>
+      <tr>
+        <td style="font-family: var(--font-mono); color: #10b981; font-size: 11px;">jsonb_strip_nulls()</td>
+        <td style="font-family: var(--font-mono); font-size: 11px;">Prunes {"key": null} entries</td>
+        <td style="color: #10b981; font-size: 11px;">Payload Compression</td>
+        <td style="color: #34d399; font-size: 11px;">Reduces API response bandwidth by removing null keys</td>
+        <td style="text-align: right;"><span class="badge" style="background: rgba(16, 185, 129, 0.15); color: #10b981;">COMPACT</span></td>
+      </tr>
+    `;
+  } else {
+    leftPanelTitle = 'JSONB GIN Indexing & Document Containment Operators (@>, ?)';
+    leftSvg = `
+      <div style="font-family: var(--font-mono); font-size: 11px; display: flex; flex-direction: column; gap: 8px; padding: 4px;">
+        <div style="background: rgba(239, 68, 68, 0.1); border: 1px solid rgba(239, 68, 68, 0.3); border-radius: 6px; padding: 8px;">
+          <div style="color: #ef4444; font-weight: 700;">Sequential Scan (Without GIN Index)</div>
+          <div style="color: var(--text-muted); font-size: 10px;">Scans 10,000,000 JSON documents one-by-one | Cost: 284,500 | Time: 2,140ms</div>
+        </div>
+        <div style="text-align: center; color: #a855f7; font-size: 13px; font-weight: 700;">
+          VS. GIN Index with jsonb_path_ops
+        </div>
+        <div style="background: rgba(168, 85, 247, 0.12); border: 1px solid rgba(168, 85, 247, 0.4); border-radius: 6px; padding: 8px;">
+          <div style="color: #c084fc; font-weight: 800;">Bitmap Index Scan on idx_prefs_gin (@>)</div>
+          <div style="color: #34d399; font-size: 10px; font-weight: 600;">Directly matches path hash in inverted index | Cost: 12.4 | Time: 0.82ms (2,600x FASTER!)</div>
+        </div>
+      </div>
+    `;
+
+    rowsHtml = `
+      <tr>
+        <td style="font-family: var(--font-mono); color: #c084fc; font-size: 11px;">@> (Containment)</td>
+        <td style="font-family: var(--font-mono); font-size: 11px;">payload @> '{"vip": true}'</td>
+        <td style="color: #c084fc; font-size: 11px;">Supported by GIN</td>
+        <td style="color: #34d399; font-size: 11px;">Accelerated by jsonb_path_ops and default jsonb_ops</td>
+        <td style="text-align: right;"><span class="badge" style="background: rgba(168, 85, 247, 0.15); color: #c084fc;">INDEXED</span></td>
+      </tr>
+      <tr>
+        <td style="font-family: var(--font-mono); color: #38bdf8; font-size: 11px;">? (Key Exists)</td>
+        <td style="font-family: var(--font-mono); font-size: 11px;">payload ? 'error_code'</td>
+        <td style="color: #38bdf8; font-size: 11px;">Top-level key check</td>
+        <td style="color: var(--text-secondary); font-size: 11px;">Requires default GIN index (jsonb_ops); not supported by path_ops</td>
+        <td style="text-align: right;"><span class="badge" style="background: rgba(56, 189, 248, 0.15); color: #38bdf8;">KEY SCAN</span></td>
+      </tr>
+      <tr>
+        <td style="font-family: var(--font-mono); color: #f59e0b; font-size: 11px;">jsonb_path_exists()</td>
+        <td style="font-family: var(--font-mono); font-size: 11px;">'$.ratings[*] ? (@.score &gt;= 80)'</td>
+        <td style="color: #f59e0b; font-size: 11px;">SQL/JSON Path Predicate</td>
+        <td style="color: var(--text-secondary); font-size: 11px;">Filters nested array elements inline using standard JSONPath</td>
+        <td style="text-align: right;"><span class="badge" style="background: rgba(245, 158, 11, 0.15); color: #f59e0b;">JSONPATH</span></td>
+      </tr>
+    `;
+  }
+
+  return `
+    <div class="dual-coding-split-container">
+      <div class="dual-coding-card">
+        <div class="dual-coding-card-header">
+          <div style="display: flex; align-items: center; gap: 8px;">
+            <span style="color: ${meta.color}; font-size: 14px;">${meta.symbol}</span>
+            <span class="card-title">${leftPanelTitle}</span>
+          </div>
+          <span class="badge" style="background: ${meta.color}22; color: ${meta.color}; font-size: 10px;">${escapeHtml(meta.name)}</span>
+        </div>
+        <div class="dual-coding-card-body">
+          ${leftSvg}
+        </div>
+      </div>
+
+      <div class="dual-coding-card">
+        <div class="dual-coding-card-header">
+          <div style="display: flex; align-items: center; gap: 8px;">
+            <span style="color: #38bdf8; font-size: 14px;">📊</span>
+            <span class="card-title">${rightPanelTitle}</span>
+          </div>
+          <span class="badge" style="background: rgba(56, 189, 248, 0.2); color: #38bdf8; font-size: 10px;">Live Relational Projection</span>
+        </div>
+        <div class="dual-coding-card-body" style="padding: 0;">
+          <table class="join-matrix-table" style="margin: 0; width: 100%; border: none;">
+            <thead>
+              <tr>
+                <th style="width: 140px;">EXPRESSION / OPERATOR</th>
+                <th>SAMPLE VALUE</th>
+                <th>DATATYPE / MECHANISM</th>
+                <th>EXECUTION SEMANTICS</th>
+                <th style="width: 110px; text-align: right;">STATUS</th>
+              </tr>
+            </thead>
+            <tbody>
+              ${rowsHtml}
+            </tbody>
+          </table>
+        </div>
+      </div>
+    </div>
+  `;
+}
+window.renderJsonDualCodingHtml = renderJsonDualCodingHtml;
 
 function renderLiveTransformationHtml(quest, userSelections) {
-  // 1. Dual Coding for Section 14 (Cloud Data Warehouses & Modern SQL)
+  // 1. Dual Coding for Section 15 (JSON & Semi-Structured Data in SQL)
+  if (currentQuestSection === 'section15' || ['json_path_extraction', 'json_array_unnesting', 'json_schema_validation', 'json_aggregation_construction', 'json_indexing_querying'].includes(quest.disciplineKey)) {
+    return renderJsonDualCodingHtml(quest, userSelections);
+  }
+
+  // 2. Dual Coding for Section 14 (Cloud Data Warehouses & Modern SQL)
   if (currentQuestSection === 'section14' || ['qualify_window_filtering', 'partition_pruning_clustering', 'time_travel_zero_copy', 'approximate_aggregations', 'parquet_lakehouse_duckdb'].includes(quest.disciplineKey)) {
     return renderWarehouseDualCodingHtml(quest, userSelections);
   }
@@ -12893,6 +13356,8 @@ function renderFillBlankQuest(container, quest) {
     ${currentQuestSection === 'section13' ? renderOptimizationMasterMatrixHtml() : ''}
     <!-- Section 14: Cloud Data Warehouses & Modern SQL Decision Matrix Reference -->
     ${currentQuestSection === 'section14' ? renderWarehouseMasterMatrixHtml() : ''}
+    <!-- Section 15: JSON & Semi-Structured Data in SQL Decision Matrix Reference -->
+    ${currentQuestSection === 'section15' ? renderJsonMasterMatrixHtml() : ''}
 
     <!-- Faded Scaffolding Tier Banner -->
     ${getScaffoldingBannerHtml(quest, currentQuestIndex)}
