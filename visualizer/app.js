@@ -4282,7 +4282,7 @@ function getTopicModuleQuests(moduleId) {
 }
 
 function getTopicModuleCases(moduleId) {
-  const allCases = window.ALL_2000_CASE_STUDIES || window.ALL_1490_CASE_STUDIES || window.ALL_1040_CASE_STUDIES || window.ALL_500_CASE_STUDIES || [];
+  const allCases = window.ALL_2540_CASE_STUDIES || window.ALL_2000_CASE_STUDIES || window.ALL_1490_CASE_STUDIES || window.ALL_1040_CASE_STUDIES || window.ALL_500_CASE_STUDIES || [];
   if (moduleId === 'all') return allCases;
 
   const filterMap = {
@@ -4989,7 +4989,7 @@ function renderCaseTableRowsHtml(columns, rows, evalResults = null) {
 }
 
 window.toggleCaseTableRows = function(caseId) {
-  const cs = (typeof getCaseStudyById === 'function' ? getCaseStudyById(caseId) : null) || (window.ALL_2000_CASE_STUDIES || window.ALL_1490_CASE_STUDIES || window.ALL_500_CASE_STUDIES || []).find(c => c.id === caseId || c.id === `gym_${caseId}`);
+  const cs = (typeof getCaseStudyById === 'function' ? getCaseStudyById(caseId) : null) || (window.ALL_2540_CASE_STUDIES || window.ALL_2000_CASE_STUDIES || window.ALL_1490_CASE_STUDIES || window.ALL_500_CASE_STUDIES || []).find(c => c.id === caseId || c.id === `gym_${caseId}`);
   if (!cs) return;
   const tbody = document.getElementById(`caseTableBody_${caseId}`);
   const btn = document.getElementById(`btnTableRows_${caseId}`);
@@ -5313,7 +5313,7 @@ function renderCaseStudies(
     window.DOMAIN_ERD_ENGINE.renderTopShowcase(targetDomain);
   }
 
-  let allCases = window.ALL_2000_CASE_STUDIES || window.ALL_1490_CASE_STUDIES || window.ALL_500_CASE_STUDIES || window.ALL_1340_CASE_STUDIES || window.ALL_1040_CASE_STUDIES || window.ALL_700_CASE_STUDIES || window.ALL_600_CASE_STUDIES || [];
+  let allCases = window.ALL_2540_CASE_STUDIES || window.ALL_2000_CASE_STUDIES || window.ALL_1490_CASE_STUDIES || window.ALL_500_CASE_STUDIES || window.ALL_1340_CASE_STUDIES || window.ALL_1040_CASE_STUDIES || window.ALL_700_CASE_STUDIES || window.ALL_600_CASE_STUDIES || [];
   let cases = allCases.slice();
 
   // 1. Filter by Section
@@ -5592,7 +5592,7 @@ function renderCaseStudies(
     }
 
     // 2. Check corporate enterprise cases
-    const allCases = window.ALL_2000_CASE_STUDIES || window.ALL_1490_CASE_STUDIES || window.ALL_500_CASE_STUDIES || window.ALL_1340_CASE_STUDIES || window.ALL_1040_CASE_STUDIES || [];
+    const allCases = window.ALL_2540_CASE_STUDIES || window.ALL_2000_CASE_STUDIES || window.ALL_1490_CASE_STUDIES || window.ALL_500_CASE_STUDIES || window.ALL_1340_CASE_STUDIES || window.ALL_1040_CASE_STUDIES || [];
     const numId = typeof caseId === 'number' ? caseId : parseInt(caseId, 10);
     let found = allCases.find(c => c.id === numId || c.id === caseId);
 
