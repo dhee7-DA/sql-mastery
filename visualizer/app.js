@@ -4282,7 +4282,7 @@ function getTopicModuleQuests(moduleId) {
 }
 
 function getTopicModuleCases(moduleId) {
-  const allCases = window.ALL_1490_CASE_STUDIES || window.ALL_1040_CASE_STUDIES || window.ALL_500_CASE_STUDIES || [];
+  const allCases = window.ALL_2000_CASE_STUDIES || window.ALL_1490_CASE_STUDIES || window.ALL_1040_CASE_STUDIES || window.ALL_500_CASE_STUDIES || [];
   if (moduleId === 'all') return allCases;
 
   const filterMap = {
@@ -4989,7 +4989,7 @@ function renderCaseTableRowsHtml(columns, rows, evalResults = null) {
 }
 
 window.toggleCaseTableRows = function(caseId) {
-  const cs = (typeof getCaseStudyById === 'function' ? getCaseStudyById(caseId) : null) || (window.ALL_1490_CASE_STUDIES || window.ALL_500_CASE_STUDIES || []).find(c => c.id === caseId || c.id === `gym_${caseId}`);
+  const cs = (typeof getCaseStudyById === 'function' ? getCaseStudyById(caseId) : null) || (window.ALL_2000_CASE_STUDIES || window.ALL_1490_CASE_STUDIES || window.ALL_500_CASE_STUDIES || []).find(c => c.id === caseId || c.id === `gym_${caseId}`);
   if (!cs) return;
   const tbody = document.getElementById(`caseTableBody_${caseId}`);
   const btn = document.getElementById(`btnTableRows_${caseId}`);
@@ -5313,7 +5313,7 @@ function renderCaseStudies(
     window.DOMAIN_ERD_ENGINE.renderTopShowcase(targetDomain);
   }
 
-  let allCases = window.ALL_1490_CASE_STUDIES || window.ALL_500_CASE_STUDIES || window.ALL_1340_CASE_STUDIES || window.ALL_1040_CASE_STUDIES || window.ALL_700_CASE_STUDIES || window.ALL_600_CASE_STUDIES || [];
+  let allCases = window.ALL_2000_CASE_STUDIES || window.ALL_1490_CASE_STUDIES || window.ALL_500_CASE_STUDIES || window.ALL_1340_CASE_STUDIES || window.ALL_1040_CASE_STUDIES || window.ALL_700_CASE_STUDIES || window.ALL_600_CASE_STUDIES || [];
   let cases = allCases.slice();
 
   // 1. Filter by Section
@@ -5592,7 +5592,7 @@ function renderCaseStudies(
     }
 
     // 2. Check corporate enterprise cases
-    const allCases = window.ALL_1490_CASE_STUDIES || window.ALL_500_CASE_STUDIES || window.ALL_1340_CASE_STUDIES || window.ALL_1040_CASE_STUDIES || [];
+    const allCases = window.ALL_2000_CASE_STUDIES || window.ALL_1490_CASE_STUDIES || window.ALL_500_CASE_STUDIES || window.ALL_1340_CASE_STUDIES || window.ALL_1040_CASE_STUDIES || [];
     const numId = typeof caseId === 'number' ? caseId : parseInt(caseId, 10);
     let found = allCases.find(c => c.id === numId || c.id === caseId);
 
@@ -9650,6 +9650,18 @@ const SQL_TRAP_CATALOG = {
   'WHERE B.': {
     title: 'Outer Join Nullification Trap',
     explanation: 'Filtering a column from the right (preserved) table in the `WHERE` clause (e.g. `WHERE b.status = "ACTIVE"`) drops all unmatched NULL rows, silently turning your `LEFT JOIN` into an `INNER JOIN`! Place such filters in the `ON` clause instead.'
+  },
+  'SELF JOIN': {
+    title: 'Self Join Alias Collision Trap',
+    explanation: 'Joining a table to itself without distinct aliases (e.g. `FROM employees e JOIN employees m`) causes ambiguous column references. Always qualify parent-child and lag columns with explicit table aliases.'
+  },
+  'NON-EQUI': {
+    title: 'Non-Equi Join Range Bound Trap',
+    explanation: 'Joining on unbounded inequalities (e.g. `ON a.time > b.time`) can generate runaway row explosions. Always bind time windows and price tiers using closed ranges like `ON a.tx_time BETWEEN b.start_time AND b.end_time`.'
+  },
+  'NULL = NULL': {
+    title: 'NULL Equality in Join Predicates',
+    explanation: 'In SQL three-valued logic, `NULL = NULL` yields UNKNOWN (false), meaning NULL keys never join in standard equality joins. Use `IS NOT DISTINCT FROM` or `COALESCE` if matching NULLs is required.'
   },
   'WHERE ROW_NUMBER': {
     title: 'Window Function in WHERE Clause Trap',

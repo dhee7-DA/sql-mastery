@@ -356,7 +356,7 @@ window.CASE_DOSSIER_ENGINE = (() => {
 
   function getDossier(caseIdOrCs) {
     const caseId = (caseIdOrCs && typeof caseIdOrCs === 'object') ? caseIdOrCs.id : caseIdOrCs;
-    const allCases = window.ALL_1490_CASE_STUDIES || window.ALL_500_CASE_STUDIES || window.ALL_300_CASE_STUDIES || [];
+    const allCases = window.ALL_2000_CASE_STUDIES || window.ALL_1490_CASE_STUDIES || window.ALL_500_CASE_STUDIES || window.ALL_300_CASE_STUDIES || [];
     const cs = (caseIdOrCs && typeof caseIdOrCs === 'object') 
       ? caseIdOrCs 
       : ((typeof window.getCaseStudyById === 'function' ? window.getCaseStudyById(caseId) : null) || allCases.find(c => c.id === caseId) || allCases[0]);
