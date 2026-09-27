@@ -6703,6 +6703,8 @@ let activePivotDisciplineFilter = null;
 let isPivotMatrixGuideCollapsed = false;
 let activeSetDisciplineFilter = null;
 let isSetMatrixGuideCollapsed = false;
+let activeDdlDisciplineFilter = null;
+let isDdlMatrixGuideCollapsed = false;
 
 function getActiveQuestsList() {
   if (currentQuestSection === 'section1' && window.QUESTS_SECTION_1 && window.QUESTS_SECTION_1.length > 0) {
@@ -6747,6 +6749,12 @@ function getActiveQuestsList() {
     }
     return window.QUESTS_SECTION_9;
   }
+  if (currentQuestSection === 'section10' && window.QUESTS_SECTION_10 && window.QUESTS_SECTION_10.length > 0) {
+    if (activeDdlDisciplineFilter) {
+      return window.QUESTS_SECTION_10.filter(q => q.disciplineKey === activeDdlDisciplineFilter);
+    }
+    return window.QUESTS_SECTION_10;
+  }
   return window.QUESTS_DATA || [];
 }
 
@@ -6754,7 +6762,7 @@ function switchQuestSection(sectionKey) {
   currentQuestSection = sectionKey;
   currentQuestIndex = 0;
   questChunkStart = 0;
-  const isMultiChunk = (sectionKey === 'section1' || sectionKey === 'section2' || sectionKey === 'section3' || sectionKey === 'section4' || sectionKey === 'section5' || sectionKey === 'section6' || sectionKey === 'section7' || sectionKey === 'section8' || sectionKey === 'section9');
+  const isMultiChunk = (sectionKey === 'section1' || sectionKey === 'section2' || sectionKey === 'section3' || sectionKey === 'section4' || sectionKey === 'section5' || sectionKey === 'section6' || sectionKey === 'section7' || sectionKey === 'section8' || sectionKey === 'section9' || sectionKey === 'section10');
   questChunkEnd = isMultiChunk ? 20 : 30;
 
   if (sectionKey === 'section5') {
@@ -6771,6 +6779,9 @@ function switchQuestSection(sectionKey) {
   }
   if (sectionKey === 'section9') {
     activeSetDisciplineFilter = null;
+  }
+  if (sectionKey === 'section10') {
+    activeDdlDisciplineFilter = null;
   }
 
   // Update tabs
@@ -6804,6 +6815,7 @@ function switchQuestSection(sectionKey) {
     else if (sectionKey === 'section7') footerTrack.textContent = 'Section 07: Subqueries & CTEs Arena (100)';
     else if (sectionKey === 'section8') footerTrack.textContent = 'Section 08: Conditional Pivots Arena (100)';
     else if (sectionKey === 'section9') footerTrack.textContent = 'Section 09: Set Operations Arena (100)';
+    else if (sectionKey === 'section10') footerTrack.textContent = 'Section 10: DDL & Architecture Arena (100)';
     else if (sectionKey === 'featured') footerTrack.textContent = 'Bonus: Boss Gauntlet (30)';
   }
 
@@ -6830,6 +6842,8 @@ function switchQuestSection(sectionKey) {
       window.SQL_BUDDY.say("📊 Section 08: Conditional Logic & Pivoting loaded (100 Levels)! Master CASE WHEN, matrix cross-tabs, and zero-shielding!", 4500, 'celebrate');
     } else if (sectionKey === 'section9') {
       window.SQL_BUDDY.say("🔀 Section 09: Set Operations & Schema Harmonization loaded (100 Levels)! Master UNION, INTERSECT, and EXCEPT!", 4500, 'celebrate');
+    } else if (sectionKey === 'section10') {
+      window.SQL_BUDDY.say("🏗️ Section 10: DDL, Schema Architecture & Integrity Constraints loaded (100 Levels)! Build bulletproof database foundations!", 4500, 'celebrate');
     } else {
       window.SQL_BUDDY.say("🏆 Boss Gauntlet Activated! 30 Advanced Challenges across all SQL pillars!", 3500, 'celebrate');
     }
@@ -7573,6 +7587,145 @@ function toggleSetMatrixGuide() {
 }
 window.toggleSetMatrixGuide = toggleSetMatrixGuide;
 
+// =============================================================================
+// SECTION 10: DDL, SCHEMA ARCHITECTURE & INTEGRITY CONSTRAINTS MASTER MATRIX
+// =============================================================================
+function renderDdlMasterMatrixHtml() {
+  const metadata = window.DDL_DISCIPLINES_METADATA || [];
+  const isCollapsed = isDdlMatrixGuideCollapsed;
+  const currentDisciplineKey = activeDdlDisciplineFilter;
+
+  let filterPillsHtml = `
+    <button class="choice-pill ${!currentDisciplineKey ? 'selected' : ''}" onclick="setDdlDisciplineFilter(null)" style="font-size: 11px; padding: 4px 10px;">
+      <span>All 100 Quests</span>
+    </button>
+  `;
+
+  metadata.forEach(d => {
+    const isSelected = currentDisciplineKey === d.key;
+    filterPillsHtml += `
+      <button class="choice-pill ${isSelected ? 'selected' : ''}" onclick="setDdlDisciplineFilter('${d.key}')" style="font-size: 11px; padding: 4px 10px; border-color: ${d.color}66;">
+        <span style="color: ${d.color}; font-weight: 800; margin-right: 4px;">${d.symbol}</span>
+        <span>${escapeHtml(d.name)} (20)</span>
+      </button>
+    `;
+  });
+
+  let tableRowsHtml = '';
+  metadata.forEach(d => {
+    const isActiveRow = currentDisciplineKey === d.key;
+    tableRowsHtml += `
+      <tr class="${isActiveRow ? 'active-row' : ''}">
+        <td style="white-space: nowrap;">
+          <div style="display: flex; align-items: center; gap: 8px;">
+            <span class="join-symbol-badge" style="color: ${d.color}; border-color: ${d.color}66;">${d.symbol}</span>
+            <div>
+              <strong style="color: ${d.color}; font-size: 12px; font-family: var(--font-mono);">${escapeHtml(d.name)}</strong>
+              <div style="font-size: 10px; color: var(--text-muted);">${escapeHtml(d.concept)}</div>
+            </div>
+          </div>
+        </td>
+        <td style="font-size: 11px; line-height: 1.4; color: var(--text-secondary);">
+          ${escapeHtml(d.whenToUse)}
+        </td>
+        <td style="font-size: 11px; line-height: 1.4; color: #cbd5e1;">
+          ${escapeHtml(d.scenarios)}
+        </td>
+        <td>
+          <div class="join-trap-pill">
+            <span class="trap-icon">⚠️</span>
+            <span>${escapeHtml(d.traps)}</span>
+          </div>
+        </td>
+      </tr>
+    `;
+  });
+
+  return `
+    <div class="join-matrix-card">
+      <div class="join-matrix-header">
+        <div style="display: flex; align-items: center; gap: 8px;">
+          <span style="font-size: 16px;">🏗️</span>
+          <span style="font-size: 13px; font-weight: 700; color: #fff; letter-spacing: 0.3px;">
+            DDL, SCHEMA ARCHITECTURE &amp; CONSTRAINTS DECISION MATRIX &bull; 100 QUESTS
+          </span>
+          <span class="badge" style="background: rgba(236, 72, 153, 0.2); color: #f472b6; border: 1px solid rgba(236, 72, 153, 0.3); font-size: 10px;">
+            Physical Architecture Reference
+          </span>
+        </div>
+        <button class="choice-pill" onclick="toggleDdlMatrixGuide()" style="font-size: 11px; padding: 2px 8px; border-color: var(--border-subtle);">
+          <span>${isCollapsed ? '▼ Expand Decision Matrix' : '▲ Collapse Matrix'}</span>
+        </button>
+      </div>
+
+      <div class="join-filter-pills-row">
+        <span style="font-size: 11px; color: var(--text-muted); font-weight: 600; text-transform: uppercase; letter-spacing: 0.5px;">Filter Discipline:</span>
+        ${filterPillsHtml}
+      </div>
+
+      ${!isCollapsed ? `
+        <div class="join-matrix-table-wrap">
+          <table class="join-matrix-table">
+            <thead>
+              <tr>
+                <th style="width: 220px;">DISCIPLINE &bull; SYMBOL</th>
+                <th style="width: 220px;">CORE INTEGRITY CONCEPT</th>
+                <th>REAL-WORLD FINANCIAL &amp; ENTERPRISE SCENARIOS</th>
+                <th style="width: 280px;">SILENT TRAP FOCUS &bull; DATA CORRUPTION</th>
+              </tr>
+            </thead>
+            <tbody>
+              ${tableRowsHtml}
+            </tbody>
+          </table>
+        </div>
+      ` : `
+        <div style="font-size: 11px; color: var(--text-muted); padding: 4px 0; display: flex; align-items: center; justify-content: space-between;">
+          <span><em>Matrix reference collapsed. Click &quot;Expand Decision Matrix&quot; above to view physical architecture rules and constraint traps.</em></span>
+          ${currentDisciplineKey ? `<span style="color: #f472b6; font-weight: 600;">Currently filtered: ${currentDisciplineKey.replace(/_/g, ' ').toUpperCase()} (20 Quests)</span>` : ''}
+        </div>
+      `}
+    </div>
+  `;
+}
+window.renderDdlMasterMatrixHtml = renderDdlMasterMatrixHtml;
+
+function setDdlDisciplineFilter(discKey) {
+  if (activeDdlDisciplineFilter === discKey) {
+    activeDdlDisciplineFilter = null;
+  } else {
+    activeDdlDisciplineFilter = discKey;
+  }
+  currentQuestIndex = 0;
+  questChunkStart = 0;
+  questChunkEnd = 20;
+
+  const levelSelect = document.getElementById('questDirectLevelSelect');
+  if (levelSelect) levelSelect.innerHTML = '';
+
+  renderQuestStepperTrack();
+  renderActiveQuest(0);
+
+  if (window.AudioFX) window.AudioFX.playClick();
+  if (window.SQL_BUDDY) {
+    if (activeDdlDisciplineFilter) {
+      const meta = (window.DDL_DISCIPLINES_METADATA || []).find(m => m.key === activeDdlDisciplineFilter);
+      const name = meta ? meta.name : activeDdlDisciplineFilter;
+      window.SQL_BUDDY.say(`Filtered to ${name} (20 Levels)! Master physical schema integrity!`, 3500, 'celebrate');
+    } else {
+      window.SQL_BUDDY.say("Showing all 100 DDL & Schema Architecture quests across 5 disciplines!", 3000, 'happy');
+    }
+  }
+}
+window.setDdlDisciplineFilter = setDdlDisciplineFilter;
+
+function toggleDdlMatrixGuide() {
+  isDdlMatrixGuideCollapsed = !isDdlMatrixGuideCollapsed;
+  renderActiveQuest(currentQuestIndex);
+  if (window.AudioFX) window.AudioFX.playClick();
+}
+window.toggleDdlMatrixGuide = toggleDdlMatrixGuide;
+
 function toggleQuestLevelDrawer() {
   const drawer = document.getElementById('questLevelDrawer');
   const btn = document.getElementById('btnToggleQuestDrawer');
@@ -8229,6 +8382,18 @@ const SQL_TRAP_CATALOG = {
   'SECONDARY ALIAS IGNORED': {
     title: 'Secondary Query Column Alias Silencing Trap',
     explanation: 'Column aliases declared in the second or subsequent SELECT statements of a set operation are completely ignored. The engine names the output columns strictly using the FIRST SELECT statement!'
+  },
+  'FLOAT ROUNDING': {
+    title: 'FLOAT / DOUBLE Floating-Point Precision Drift Trap',
+    explanation: 'Never store monetary balances in FLOAT or DOUBLE PRECISION types! Inexact binary IEEE 754 representation causes fractional cent rounding errors. Always use NUMERIC(18,4) or DECIMAL for exact financial accounting.'
+  },
+  'CASCADING PURGE': {
+    title: 'Uncontrolled Cascading Delete Purge Trap',
+    explanation: 'Applying ON DELETE CASCADE carelessly on parent tables will automatically delete all child transaction rows when a parent account is purged. Use ON DELETE RESTRICT or soft-deletes to protect audit histories!'
+  },
+  'CHECK 3VL': {
+    title: 'CHECK Constraint Three-Valued Logic NULL Pass Trap',
+    explanation: 'A CHECK constraint passes if the boolean condition evaluates to TRUE or NULL! If a checked column contains NULL, the check succeeds! Always pair CHECK constraints with NOT NULL when nulls must be barred.'
   }
 };
 
@@ -10140,8 +10305,332 @@ function renderSetDualCodingHtml(quest, userSelections) {
 }
 window.renderSetDualCodingHtml = renderSetDualCodingHtml;
 
+// =============================================================================
+// DUAL-CODING DDL, SCHEMA ARCHITECTURE & INTEGRITY CONSTRAINTS ENGINE
+// =============================================================================
+function renderDdlDualCodingHtml(quest, userSelections) {
+  const table = quest.table || 'SecuritiesLedger';
+  const allSelStr = Object.values(userSelections || {}).join(' ').toUpperCase();
+
+  let discKey = quest.disciplineKey || 'table_creation_datatypes';
+  if (allSelStr.includes('PRIMARY KEY') || allSelStr.includes('NUMERIC') || (quest.disciplineKey === 'table_creation_datatypes')) {
+    discKey = 'table_creation_datatypes';
+  } else if (allSelStr.includes('FOREIGN KEY') || allSelStr.includes('REFERENCES') || (quest.disciplineKey === 'primary_foreign_keys')) {
+    discKey = 'primary_foreign_keys';
+  } else if (allSelStr.includes('CHECK') || allSelStr.includes('UNIQUE') || (quest.disciplineKey === 'check_unique_constraints')) {
+    discKey = 'check_unique_constraints';
+  } else if (allSelStr.includes('ALTER TABLE') || allSelStr.includes('ADD COLUMN') || allSelStr.includes('ALTER COLUMN') || (quest.disciplineKey === 'schema_migrations_alter')) {
+    discKey = 'schema_migrations_alter';
+  } else if (allSelStr.includes('INDEX') || (quest.disciplineKey === 'performance_indexing')) {
+    discKey = 'performance_indexing';
+  }
+
+  const configs = {
+    table_creation_datatypes: {
+      name: 'PHYSICAL STORAGE BLUEPRINT (CREATE TABLE)',
+      symbol: '🏗️',
+      color: '#38bdf8',
+      summary: 'Storage Layer Integrity: Defines byte-aligned column types, exact NUMERIC fixed-point registers, and UTC microsecond timestamps.',
+      badgeText: 'Storage Allocation Active'
+    },
+    primary_foreign_keys: {
+      name: 'REFERENTIAL INTEGRITY GRAPH (FOREIGN KEY)',
+      symbol: '🔗',
+      color: '#10b981',
+      summary: 'Relational Graph Integrity: Enforces parent-to-child entity references with automated cascade or defensive SET NULL actions.',
+      badgeText: 'Foreign Key Cascade Guard Active'
+    },
+    check_unique_constraints: {
+      name: 'INTEGRITY FIREWALL (CHECK & UNIQUE)',
+      symbol: '🛡️',
+      color: '#f59e0b',
+      summary: 'Database-Level Invariant Enforcement: Validates business rules at the storage engine level, barring negative values and duplicate filings.',
+      badgeText: 'Constraint Assertion Active'
+    },
+    schema_migrations_alter: {
+      name: 'ZERO-DOWNTIME SCHEMA MIGRATION (ALTER)',
+      symbol: '🔄',
+      color: '#ec4899',
+      summary: 'Dynamic Schema Evolution: Non-blocking addition of audit attributes and datatype expansion (INT -> BIGINT) on live ledgers.',
+      badgeText: 'Schema Migration Pipe Active'
+    },
+    performance_indexing: {
+      name: 'B-TREE QUERY ACCELERATOR (INDEX)',
+      symbol: '⚡',
+      color: '#a855f7',
+      summary: 'O(log N) Index Traversal: Replaces full-table sequential scans with indexed tree navigation and hot partial queue filtering.',
+      badgeText: 'B-Tree Acceleration Active'
+    }
+  };
+
+  const cfg = configs[discKey] || configs.table_creation_datatypes;
+
+  // 1. Diagram Panel
+  let diagramHtml = '';
+  if (discKey === 'table_creation_datatypes') {
+    diagramHtml = `
+      <div style="width: 100%; padding: 4px 6px;">
+        <div style="font-size: 10px; font-family: var(--font-mono); color: #38bdf8; font-weight: 700; margin-bottom: 8px; text-align: center;">
+          PHYSICAL RECORD STORAGE LAYOUT &bull; FIXED REGISTER
+        </div>
+        <div style="display: flex; flex-direction: column; gap: 4px; font-family: monospace; font-size: 8.5px;">
+          <div style="background: rgba(56, 189, 248, 0.15); border: 1px solid #38bdf8; border-radius: 3px; padding: 3px 6px; display: flex; justify-content: space-between;">
+            <span style="color: #7dd3fc;">[0-3 bytes]:</span>
+            <span style="color: #fff;">id INT <strong style="color: #f59e0b;">(PRIMARY KEY)</strong></span>
+          </div>
+          <div style="background: rgba(56, 189, 248, 0.15); border: 1px solid #38bdf8; border-radius: 3px; padding: 3px 6px; display: flex; justify-content: space-between;">
+            <span style="color: #7dd3fc;">[4-11 bytes]:</span>
+            <span style="color: #fff;">price <strong style="color: #10b981;">NUMERIC(18,4)</strong> (Exact)</span>
+          </div>
+          <div style="background: rgba(56, 189, 248, 0.15); border: 1px solid #38bdf8; border-radius: 3px; padding: 3px 6px; display: flex; justify-content: space-between;">
+            <span style="color: #7dd3fc;">[12-19 bytes]:</span>
+            <span style="color: #fff;">ts <strong style="color: #a855f7;">TIMESTAMPTZ</strong> (UTC &mu;s)</span>
+          </div>
+        </div>
+        <div style="font-size: 8.5px; color: #7dd3fc; text-align: center; margin-top: 6px;">
+          ⚡ Zero float rounding errors &bull; Exact arithmetic guaranteed
+        </div>
+      </div>
+    `;
+  } else if (discKey === 'primary_foreign_keys') {
+    diagramHtml = `
+      <div style="width: 100%; padding: 4px 6px;">
+        <div style="font-size: 10px; font-family: var(--font-mono); color: #10b981; font-weight: 700; margin-bottom: 8px; text-align: center;">
+          RELATIONAL ENTITY GRAPH &bull; CASCADE ACTION
+        </div>
+        <div style="display: flex; align-items: center; justify-content: space-between; gap: 6px;">
+          <div style="background: rgba(16, 185, 129, 0.15); border: 1px solid #10b981; border-radius: 4px; padding: 4px 6px; text-align: center; flex: 1;">
+            <div style="font-size: 7.5px; color: #6ee7b7;">PARENT TABLE</div>
+            <div style="font-size: 8.5px; color: #fff; font-family: monospace;">[Accounts PK: 101]</div>
+          </div>
+          <div style="color: #10b981; font-size: 11px; font-weight: 800; text-align: center;">
+            &xrarr;<br><span style="font-size: 7px; color: #6ee7b7;">ON DELETE</span>
+          </div>
+          <div style="background: rgba(16, 185, 129, 0.15); border: 1px solid #10b981; border-radius: 4px; padding: 4px 6px; text-align: center; flex: 1;">
+            <div style="font-size: 7.5px; color: #6ee7b7;">CHILD LEDGER</div>
+            <div style="font-size: 8.5px; color: #fff; font-family: monospace;">[Trades FK: 101]</div>
+          </div>
+        </div>
+        <div style="margin-top: 6px; background: rgba(16, 185, 129, 0.2); border: 1px solid #10b981; border-radius: 4px; padding: 4px; text-align: center; font-size: 8.5px; font-family: monospace; color: #fff;">
+          🛡️ Referential Integrity Protected: No Orphaned Rows
+        </div>
+      </div>
+    `;
+  } else if (discKey === 'check_unique_constraints') {
+    diagramHtml = `
+      <div style="width: 100%; padding: 4px 6px;">
+        <div style="font-size: 10px; font-family: var(--font-mono); color: #f59e0b; font-weight: 700; margin-bottom: 8px; text-align: center;">
+          DATA INTEGRITY FIREWALL &bull; CHECK GATE
+        </div>
+        <div style="display: flex; flex-direction: column; gap: 4px; font-family: monospace; font-size: 8.5px;">
+          <div style="background: rgba(16, 185, 129, 0.2); border: 1px solid #10b981; border-radius: 3px; padding: 3px 6px; display: flex; justify-content: space-between;">
+            <span style="color: #fff;">INSERT $45,000.00:</span>
+            <span style="color: #34d399; font-weight: 800;">✓ CHECK PASS (&gt;= 0)</span>
+          </div>
+          <div style="background: rgba(239, 68, 68, 0.2); border: 1px solid #ef4444; border-radius: 3px; padding: 3px 6px; display: flex; justify-content: space-between;">
+            <span style="color: #fff;">INSERT -$150.00:</span>
+            <span style="color: #f87171; font-weight: 800;">✕ ABORT (VIOLATION)</span>
+          </div>
+        </div>
+        <div style="font-size: 8.5px; color: #fde68a; text-align: center; margin-top: 6px;">
+          Hard storage-layer barrier protects accounting integrity
+        </div>
+      </div>
+    `;
+  } else if (discKey === 'schema_migrations_alter') {
+    diagramHtml = `
+      <div style="width: 100%; padding: 4px 6px;">
+        <div style="font-size: 10px; font-family: var(--font-mono); color: #ec4899; font-weight: 700; margin-bottom: 8px; text-align: center;">
+          DYNAMIC SCHEMA EVOLUTION &bull; NON-BLOCKING ALTER
+        </div>
+        <div style="display: flex; flex-direction: column; gap: 4px; font-family: monospace; font-size: 8.5px;">
+          <div style="background: rgba(255, 255, 255, 0.05); border: 1px solid rgba(255,255,255,0.15); border-radius: 3px; padding: 3px 6px;">
+            <span style="color: var(--text-muted);">BEFORE:</span> [id INT, balance NUMERIC]
+          </div>
+          <div style="background: rgba(236, 72, 153, 0.2); border: 1px solid #ec4899; border-radius: 3px; padding: 3px 6px;">
+            <span style="color: #f472b6;">AFTER:</span> [id BIGINT, balance NUMERIC, <strong style="color: #38bdf8;">risk_tier DEFAULT 'STD'</strong>]
+          </div>
+        </div>
+        <div style="font-size: 8.5px; color: #fbcfe8; text-align: center; margin-top: 6px;">
+          Expanded without table lock or service downtime
+        </div>
+      </div>
+    `;
+  } else {
+    // Indexing
+    diagramHtml = `
+      <div style="width: 100%; padding: 4px 6px;">
+        <div style="font-size: 10px; font-family: var(--font-mono); color: #a855f7; font-weight: 700; margin-bottom: 8px; text-align: center;">
+          B-TREE INDEX TRAVERSAL &bull; O(log N)
+        </div>
+        <div style="display: flex; flex-direction: column; align-items: center; gap: 3px; font-family: monospace; font-size: 8px;">
+          <div style="background: rgba(168, 85, 247, 0.3); border: 1px solid #a855f7; border-radius: 3px; padding: 2px 8px; color: #fff;">
+            [ROOT: Key &lt; 500 | Key &ge; 500]
+          </div>
+          <div style="color: #a855f7; font-size: 9px;">&darr; &darr;</div>
+          <div style="display: flex; gap: 6px;">
+            <div style="background: rgba(168, 85, 247, 0.15); border: 1px solid #a855f7; border-radius: 3px; padding: 2px 6px; color: #d8b4fe;">
+              [LEAF: 101 &rarr; Page #4]
+            </div>
+            <div style="background: rgba(168, 85, 247, 0.15); border: 1px solid #a855f7; border-radius: 3px; padding: 2px 6px; color: #d8b4fe;">
+              [LEAF: 704 &rarr; Page #9]
+            </div>
+          </div>
+        </div>
+        <div style="font-size: 8.5px; color: #d8b4fe; text-align: center; margin-top: 6px;">
+          3 I/O hops instead of 10,000,000 sequential row scans
+        </div>
+      </div>
+    `;
+  }
+
+  // 2. Synchronous Table Projection
+  let rowsHtml = '';
+  if (discKey === 'table_creation_datatypes') {
+    rowsHtml = `
+      <tr class="row-match">
+        <td><span class="match-key-pill" style="border-color: #38bdf8; color: #38bdf8;">101</span></td>
+        <td>$145,250.7500</td>
+        <td>2026-09-27 08:30:00 UTC</td>
+        <td>NUMERIC(18,4)</td>
+        <td style="text-align: right;"><span class="row-status-pill keep">Exact Precision</span></td>
+      </tr>
+      <tr class="row-match">
+        <td><span class="match-key-pill" style="border-color: #38bdf8; color: #38bdf8;">102</span></td>
+        <td>$89,120.5000</td>
+        <td>2026-09-27 08:30:15 UTC</td>
+        <td>NUMERIC(18,4)</td>
+        <td style="text-align: right;"><span class="row-status-pill keep">Exact Precision</span></td>
+      </tr>
+    `;
+  } else if (discKey === 'primary_foreign_keys') {
+    rowsHtml = `
+      <tr class="row-match">
+        <td><span class="match-key-pill" style="border-color: #10b981; color: #10b981;">TRD-501</span></td>
+        <td>ACC-101 (Parent Active)</td>
+        <td>$25,000.00</td>
+        <td>CASCADE ENABLED</td>
+        <td style="text-align: right;"><span class="row-status-pill keep">Linked Cleanly</span></td>
+      </tr>
+      <tr class="row-match">
+        <td><span class="match-key-pill" style="border-color: #10b981; color: #10b981;">TRD-502</span></td>
+        <td>ACC-101 (Parent Active)</td>
+        <td>$42,000.00</td>
+        <td>CASCADE ENABLED</td>
+        <td style="text-align: right;"><span class="row-status-pill keep">Linked Cleanly</span></td>
+      </tr>
+    `;
+  } else if (discKey === 'check_unique_constraints') {
+    rowsHtml = `
+      <tr class="row-match">
+        <td><span class="match-key-pill" style="border-color: #f59e0b; color: #f59e0b;">ACC-901</span></td>
+        <td>$12,500.00</td>
+        <td>Tax Year 2026</td>
+        <td>CHECK (amt &gt;= 0)</td>
+        <td style="text-align: right;"><span class="row-status-pill keep" style="background: rgba(16,185,129,0.2); color: #34d399;">✓ Verified Clean</span></td>
+      </tr>
+      <tr class="row-match">
+        <td><span class="match-key-pill" style="border-color: #f59e0b; color: #f59e0b;">ACC-902</span></td>
+        <td>$340,000.00</td>
+        <td>Tax Year 2026</td>
+        <td>UNIQUE (acc, year)</td>
+        <td style="text-align: right;"><span class="row-status-pill keep" style="background: rgba(16,185,129,0.2); color: #34d399;">✓ Verified Clean</span></td>
+      </tr>
+    `;
+  } else if (discKey === 'schema_migrations_alter') {
+    rowsHtml = `
+      <tr class="row-match">
+        <td><span class="match-key-pill" style="border-color: #ec4899; color: #ec4899;">LGD-101</span></td>
+        <td>BIGINT (64-bit)</td>
+        <td>STANDARD</td>
+        <td>ALTER TABLE ADD</td>
+        <td style="text-align: right;"><span class="row-status-pill keep">Migrated Clean</span></td>
+      </tr>
+      <tr class="row-match">
+        <td><span class="match-key-pill" style="border-color: #ec4899; color: #ec4899;">LGD-102</span></td>
+        <td>BIGINT (64-bit)</td>
+        <td>HIGH_NET_WORTH</td>
+        <td>ALTER TABLE ADD</td>
+        <td style="text-align: right;"><span class="row-status-pill keep">Migrated Clean</span></td>
+      </tr>
+    `;
+  } else {
+    // Indexing
+    rowsHtml = `
+      <tr class="row-match">
+        <td><span class="match-key-pill" style="border-color: #a855f7; color: #a855f7;">ORD-701</span></td>
+        <td>PENDING</td>
+        <td>Partial Index Hit</td>
+        <td>idx_hot_queue</td>
+        <td style="text-align: right;"><span class="row-status-pill keep" style="background: rgba(168,85,247,0.2); color: #c084fc;">⚡ 0.2ms Index Scan</span></td>
+      </tr>
+      <tr class="row-match">
+        <td><span class="match-key-pill" style="border-color: #a855f7; color: #a855f7;">ORD-702</span></td>
+        <td>PENDING</td>
+        <td>Partial Index Hit</td>
+        <td>idx_hot_queue</td>
+        <td style="text-align: right;"><span class="row-status-pill keep" style="background: rgba(168,85,247,0.2); color: #c084fc;">⚡ 0.2ms Index Scan</span></td>
+      </tr>
+    `;
+  }
+
+  return `
+    <div class="live-preview-header">
+      <div class="live-preview-title">
+        <span class="join-symbol-badge" style="color: ${cfg.color}; border-color: ${cfg.color}66; width: 18px; height: 18px; font-size: 11px;">${cfg.symbol}</span>
+        <span>DUAL-CODING DDL, SCHEMA &amp; CONSTRAINTS ENGINE:</span>
+        <span style="color: ${cfg.color}; font-weight: 800;">${cfg.name}</span>
+      </div>
+      <span class="live-preview-subtitle">${cfg.badgeText}</span>
+    </div>
+
+    <div style="font-size: 11px; color: var(--text-secondary); margin-bottom: 8px; line-height: 1.45;">
+      ${cfg.summary}
+    </div>
+
+    <div class="join-dual-coding-grid">
+      <!-- Left Column: Schema Architecture Blueprint / B-Tree Tree -->
+      <div class="join-venn-card" style="border-color: ${cfg.color}33;">
+        ${diagramHtml}
+      </div>
+
+      <!-- Right Column: Live Table Schema & Constraint Projection -->
+      <div class="join-live-table-card">
+        <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 6px; padding-bottom: 4px; border-bottom: 1px solid rgba(255,255,255,0.06);">
+          <span style="font-size: 10px; font-family: var(--font-mono); color: var(--text-muted); font-weight: 700;">
+            PHYSICAL STORAGE RECORD PROJECTION
+          </span>
+          <span style="font-size: 9.5px; font-family: var(--font-mono); color: ${cfg.color};">
+            Table: ${escapeHtml(table)}
+          </span>
+        </div>
+        <table class="live-preview-table">
+          <thead>
+            <tr>
+              <th style="width: 85px;">ROW ID</th>
+              <th>PRIMARY ATTRIBUTE</th>
+              <th>TEMPORAL / VALUE</th>
+              <th>SPECIFICATION</th>
+              <th style="width: 130px; text-align: right;">STATUS</th>
+            </tr>
+          </thead>
+          <tbody>
+            ${rowsHtml}
+          </tbody>
+        </table>
+      </div>
+    </div>
+  `;
+}
+window.renderDdlDualCodingHtml = renderDdlDualCodingHtml;
+
 function renderLiveTransformationHtml(quest, userSelections) {
-  // 1. Dual Coding for Section 09 (Set Operations & Schema Harmonization)
+  // 1. Dual Coding for Section 10 (DDL, Schema Architecture & Constraints)
+  if (currentQuestSection === 'section10' || ['table_creation_datatypes', 'primary_foreign_keys', 'check_unique_constraints', 'schema_migrations_alter', 'performance_indexing'].includes(quest.disciplineKey)) {
+    return renderDdlDualCodingHtml(quest, userSelections);
+  }
+
+  // 2. Dual Coding for Section 09 (Set Operations & Schema Harmonization)
   if (currentQuestSection === 'section9' || ['union_all', 'union', 'intersect', 'except_minus', 'schema_harmonization'].includes(quest.disciplineKey)) {
     return renderSetDualCodingHtml(quest, userSelections);
   }
@@ -10485,6 +10974,8 @@ function renderFillBlankQuest(container, quest) {
     ${currentQuestSection === 'section8' ? renderPivotMasterMatrixHtml() : ''}
     <!-- Section 09: Set Operations & Schema Harmonization Decision Matrix Reference -->
     ${currentQuestSection === 'section9' ? renderSetMasterMatrixHtml() : ''}
+    <!-- Section 10: DDL, Schema Architecture & Integrity Constraints Decision Matrix Reference -->
+    ${currentQuestSection === 'section10' ? renderDdlMasterMatrixHtml() : ''}
 
     <!-- Faded Scaffolding Tier Banner -->
     ${getScaffoldingBannerHtml(quest, currentQuestIndex)}
