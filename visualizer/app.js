@@ -6699,6 +6699,8 @@ let activeWindowDisciplineFilter = null;
 let isWindowMatrixGuideCollapsed = false;
 let activeCteDisciplineFilter = null;
 let isCteMatrixGuideCollapsed = false;
+let activePivotDisciplineFilter = null;
+let isPivotMatrixGuideCollapsed = false;
 
 function getActiveQuestsList() {
   if (currentQuestSection === 'section1' && window.QUESTS_SECTION_1 && window.QUESTS_SECTION_1.length > 0) {
@@ -6731,6 +6733,12 @@ function getActiveQuestsList() {
     }
     return window.QUESTS_SECTION_7;
   }
+  if (currentQuestSection === 'section8' && window.QUESTS_SECTION_8 && window.QUESTS_SECTION_8.length > 0) {
+    if (activePivotDisciplineFilter) {
+      return window.QUESTS_SECTION_8.filter(q => q.disciplineKey === activePivotDisciplineFilter);
+    }
+    return window.QUESTS_SECTION_8;
+  }
   return window.QUESTS_DATA || [];
 }
 
@@ -6738,7 +6746,7 @@ function switchQuestSection(sectionKey) {
   currentQuestSection = sectionKey;
   currentQuestIndex = 0;
   questChunkStart = 0;
-  const isMultiChunk = (sectionKey === 'section1' || sectionKey === 'section2' || sectionKey === 'section3' || sectionKey === 'section4' || sectionKey === 'section5' || sectionKey === 'section6' || sectionKey === 'section7');
+  const isMultiChunk = (sectionKey === 'section1' || sectionKey === 'section2' || sectionKey === 'section3' || sectionKey === 'section4' || sectionKey === 'section5' || sectionKey === 'section6' || sectionKey === 'section7' || sectionKey === 'section8');
   questChunkEnd = isMultiChunk ? 20 : 30;
 
   if (sectionKey === 'section5') {
@@ -6749,6 +6757,9 @@ function switchQuestSection(sectionKey) {
   }
   if (sectionKey === 'section7') {
     activeCteDisciplineFilter = null;
+  }
+  if (sectionKey === 'section8') {
+    activePivotDisciplineFilter = null;
   }
 
   // Update tabs
@@ -6780,6 +6791,7 @@ function switchQuestSection(sectionKey) {
     else if (sectionKey === 'section5') footerTrack.textContent = 'Section 05: Relational JOINs Arena (420)';
     else if (sectionKey === 'section6') footerTrack.textContent = 'Section 06: Window Functions Arena (100)';
     else if (sectionKey === 'section7') footerTrack.textContent = 'Section 07: Subqueries & CTEs Arena (100)';
+    else if (sectionKey === 'section8') footerTrack.textContent = 'Section 08: Conditional Pivots Arena (100)';
     else if (sectionKey === 'featured') footerTrack.textContent = 'Bonus: Boss Gauntlet (30)';
   }
 
@@ -6802,6 +6814,8 @@ function switchQuestSection(sectionKey) {
       window.SQL_BUDDY.say("🪟 Section 06: Window Functions & Analytical Partitioning loaded (100 Levels)! Master ROW_NUMBER, LEAD/LAG, and sliding frames!", 4500, 'celebrate');
     } else if (sectionKey === 'section7') {
       window.SQL_BUDDY.say("🌳 Section 07: Subqueries & CTEs Master Arena loaded (100 Levels)! Master modular pipelines, EXISTS, and recursive trees!", 4500, 'celebrate');
+    } else if (sectionKey === 'section8') {
+      window.SQL_BUDDY.say("📊 Section 08: Conditional Logic & Pivoting loaded (100 Levels)! Master CASE WHEN, matrix cross-tabs, and zero-shielding!", 4500, 'celebrate');
     } else {
       window.SQL_BUDDY.say("🏆 Boss Gauntlet Activated! 30 Advanced Challenges across all SQL pillars!", 3500, 'celebrate');
     }
@@ -7257,6 +7271,155 @@ function toggleCteMatrixGuide() {
 }
 window.toggleCteMatrixGuide = toggleCteMatrixGuide;
 
+// =============================================================================
+// SECTION 08: CONDITIONAL LOGIC & DATA PIVOTING MASTER DECISION MATRIX
+// =============================================================================
+function renderPivotMasterMatrixHtml() {
+  const metadata = window.PIVOT_DISCIPLINES_METADATA || [];
+  const isCollapsed = isPivotMatrixGuideCollapsed;
+  const currentDisciplineKey = activePivotDisciplineFilter;
+
+  let filterPillsHtml = `
+    <button class="choice-pill ${!currentDisciplineKey ? 'selected' : ''}" onclick="setPivotDisciplineFilter(null)" style="font-size: 11px; padding: 4px 10px;">
+      <span>All 100 Quests</span>
+    </button>
+  `;
+
+  metadata.forEach(d => {
+    const isSelected = currentDisciplineKey === d.key;
+    filterPillsHtml += `
+      <button class="choice-pill ${isSelected ? 'selected' : ''}" onclick="setPivotDisciplineFilter('${d.key}')" style="font-size: 11px; padding: 4px 10px; border-color: ${d.color}66;">
+        <span style="color: ${d.color}; font-weight: 800; margin-right: 4px;">${d.symbol}</span>
+        <span>${escapeHtml(d.name)} (20)</span>
+      </button>
+    `;
+  });
+
+  let tableRowsHtml = '';
+  metadata.forEach(d => {
+    const isActiveRow = currentDisciplineKey === d.key;
+    tableRowsHtml += `
+      <tr class="${isActiveRow ? 'active-row' : ''}">
+        <td style="white-space: nowrap;">
+          <div style="display: flex; align-items: center; gap: 8px;">
+            <span class="join-symbol-badge" style="color: ${d.color}; border-color: ${d.color}66;">${d.symbol}</span>
+            <div>
+              <strong style="color: ${d.color}; font-size: 12px; font-family: var(--font-mono);">${escapeHtml(d.name)}</strong>
+              <div style="font-size: 10px; color: var(--text-muted);">${escapeHtml(d.concept)}</div>
+            </div>
+          </div>
+        </td>
+        <td style="max-width: 220px; line-height: 1.45; color: var(--text-secondary);">
+          ${escapeHtml(d.whenToUse)}
+        </td>
+        <td style="max-width: 240px; line-height: 1.45; color: #a7f3d0;">
+          <div style="font-size: 10.5px;">📈 <strong>Finance &amp; Analytics Scenarios:</strong></div>
+          <div style="font-size: 10px; color: var(--text-secondary); margin-top: 2px;">${escapeHtml(d.scenarios)}</div>
+        </td>
+        <td style="max-width: 260px; line-height: 1.45;">
+          <div class="join-trap-pill">
+            <span style="color: #f87171; font-weight: 700; font-size: 10px; display: block; margin-bottom: 2px;">⚠️ TRAP / GOTCHA:</span>
+            <span style="color: #fca5a5; font-size: 10px;">${escapeHtml(d.traps)}</span>
+          </div>
+        </td>
+        <td style="text-align: right; white-space: nowrap;">
+          <button class="card-nav-btn ${isActiveRow ? 'action-btn-primary' : ''}" style="padding: 4px 10px; font-size: 10px;" onclick="setPivotDisciplineFilter('${d.key}')">
+            ${isActiveRow ? '✓ Active (20)' : `Practice (${d.name.split(' ')[0]})`}
+          </button>
+        </td>
+      </tr>
+    `;
+  });
+
+  return `
+    <div class="join-matrix-card" style="border-color: rgba(16, 185, 129, 0.35);">
+      <div class="join-matrix-header">
+        <div style="display: flex; align-items: center; gap: 10px;">
+          <span style="font-size: 16px;">📊</span>
+          <div>
+            <div style="font-size: 13px; font-weight: 700; color: #34d399; display: flex; align-items: center; gap: 8px;">
+              <span>Conditional Logic &amp; Data Pivoting Master Decision Matrix</span>
+              <span class="status-pill" style="font-size: 9.5px; color: #10b981; background: rgba(16,185,129,0.12); border-color: rgba(16,185,129,0.3);">5 Disciplines • 100 Problems</span>
+            </div>
+            <div style="font-size: 11px; color: var(--text-muted); margin-top: 2px;">
+              Cross-reference table: When to choose Searched CASE, Row-to-Column Matrix Pivots, COALESCE &amp; NULLIF Sanitization, or Matrix Unpivoting.
+            </div>
+          </div>
+        </div>
+        <button class="card-nav-btn" style="padding: 4px 10px; font-size: 11px;" onclick="togglePivotMatrixGuide()">
+          ${isCollapsed ? '➕ Expand Decision Matrix' : '➖ Collapse Reference'}
+        </button>
+      </div>
+
+      <div class="join-filter-pills-row">
+        <span style="font-size: 10px; font-family: var(--font-mono); color: var(--text-muted); white-space: nowrap; margin-right: 4px;">FILTER BY DISCIPLINE:</span>
+        ${filterPillsHtml}
+      </div>
+
+      ${!isCollapsed ? `
+        <div class="join-matrix-table-wrap">
+          <table class="join-matrix-table">
+            <thead>
+              <tr>
+                <th style="width: 190px;">Discipline / Operator</th>
+                <th>When To Use / Core Concept</th>
+                <th>Real-World Finance &amp; Data Scenarios</th>
+                <th>Silent Trap &amp; Anti-Pattern Focus</th>
+                <th style="text-align: right; width: 110px;">Practice</th>
+              </tr>
+            </thead>
+            <tbody>
+              ${tableRowsHtml}
+            </tbody>
+          </table>
+        </div>
+      ` : `
+        <div style="font-size: 11px; color: var(--text-muted); padding: 4px 0; display: flex; align-items: center; justify-content: space-between;">
+          <span><em>Matrix reference collapsed. Click &quot;Expand Decision Matrix&quot; above to view pivot scenarios and trap analysis.</em></span>
+          ${currentDisciplineKey ? `<span style="color: #34d399; font-weight: 600;">Currently filtered: ${currentDisciplineKey.replace(/_/g, ' ').toUpperCase()} (20 Quests)</span>` : ''}
+        </div>
+      `}
+    </div>
+  `;
+}
+window.renderPivotMasterMatrixHtml = renderPivotMasterMatrixHtml;
+
+function setPivotDisciplineFilter(discKey) {
+  if (activePivotDisciplineFilter === discKey) {
+    activePivotDisciplineFilter = null;
+  } else {
+    activePivotDisciplineFilter = discKey;
+  }
+  currentQuestIndex = 0;
+  questChunkStart = 0;
+  questChunkEnd = 20;
+
+  const levelSelect = document.getElementById('questDirectLevelSelect');
+  if (levelSelect) levelSelect.innerHTML = '';
+
+  renderQuestStepperTrack();
+  renderActiveQuest(0);
+
+  if (window.AudioFX) window.AudioFX.playClick();
+  if (window.SQL_BUDDY) {
+    if (activePivotDisciplineFilter) {
+      const meta = (window.PIVOT_DISCIPLINES_METADATA || []).find(m => m.key === activePivotDisciplineFilter);
+      const name = meta ? meta.name : activePivotDisciplineFilter;
+      window.SQL_BUDDY.say(`Filtered to ${name} (20 Levels)! Master this pivoting discipline!`, 3500, 'celebrate');
+    } else {
+      window.SQL_BUDDY.say("Showing all 100 Conditional Logic & Pivoting quests across 5 disciplines!", 3000, 'happy');
+    }
+  }
+}
+window.setPivotDisciplineFilter = setPivotDisciplineFilter;
+
+function togglePivotMatrixGuide() {
+  isPivotMatrixGuideCollapsed = !isPivotMatrixGuideCollapsed;
+  renderActiveQuest(currentQuestIndex);
+  if (window.AudioFX) window.AudioFX.playClick();
+}
+window.togglePivotMatrixGuide = togglePivotMatrixGuide;
+
 function toggleQuestLevelDrawer() {
   const drawer = document.getElementById('questLevelDrawer');
   const btn = document.getElementById('btnToggleQuestDrawer');
@@ -7634,10 +7797,11 @@ function updateQuestSidebars(quest, idx, total) {
   const isSection5 = currentQuestSection === 'section5';
   const isSection6 = currentQuestSection === 'section6';
   const isSection7 = currentQuestSection === 'section7';
-  const isTier1 = tierName.includes('apprentice') || (isSection5 || isSection6 || isSection7 ? levelNum <= 20 : (currentQuestSection === 'section1' ? levelNum <= 15 : levelNum <= 20));
-  const isTier2 = tierName.includes('practitioner') || (isSection5 ? (levelNum > 20 && levelNum <= 40) : (isSection6 || isSection7 ? (levelNum > 20 && levelNum <= 45) : (currentQuestSection === 'section1' ? (levelNum > 15 && levelNum <= 40) : (levelNum > 20 && levelNum <= 45))));
-  const isTier3 = tierName.includes('specialist') || (isSection5 ? (levelNum > 40 && levelNum <= 60) : (isSection6 || isSection7 ? (levelNum > 45 && levelNum <= 75) : (currentQuestSection === 'section1' ? (levelNum > 40 && levelNum <= 70) : (levelNum > 45 && levelNum <= 75))));
-  const isTier4 = tierName.includes('master') || (isSection5 ? levelNum > 60 : (isSection6 || isSection7 ? levelNum > 75 : (currentQuestSection === 'section1' ? levelNum > 70 : levelNum > 75)));
+  const isSection8 = currentQuestSection === 'section8';
+  const isTier1 = tierName.includes('apprentice') || (isSection5 || isSection6 || isSection7 || isSection8 ? levelNum <= 20 : (currentQuestSection === 'section1' ? levelNum <= 15 : levelNum <= 20));
+  const isTier2 = tierName.includes('practitioner') || (isSection5 ? (levelNum > 20 && levelNum <= 40) : (isSection6 || isSection7 || isSection8 ? (levelNum > 20 && levelNum <= 45) : (currentQuestSection === 'section1' ? (levelNum > 15 && levelNum <= 40) : (levelNum > 20 && levelNum <= 45))));
+  const isTier3 = tierName.includes('specialist') || (isSection5 ? (levelNum > 40 && levelNum <= 60) : (isSection6 || isSection7 || isSection8 ? (levelNum > 45 && levelNum <= 75) : (currentQuestSection === 'section1' ? (levelNum > 40 && levelNum <= 70) : (levelNum > 45 && levelNum <= 75))));
+  const isTier4 = tierName.includes('master') || (isSection5 ? levelNum > 60 : (isSection6 || isSection7 || isSection8 ? levelNum > 75 : (currentQuestSection === 'section1' ? levelNum > 70 : levelNum > 75)));
 
   const tiers = [
     { id: 'ladderTier1', active: isTier1 },
@@ -7658,7 +7822,12 @@ function updateQuestSidebars(quest, idx, total) {
   const sub2 = document.querySelector('#ladderTier2 .ladder-tier-sub');
   const sub3 = document.querySelector('#ladderTier3 .ladder-tier-sub');
   const sub4 = document.querySelector('#ladderTier4 .ladder-tier-sub');
-  if (currentQuestSection === 'section7') {
+  if (currentQuestSection === 'section8') {
+    if (sub1) sub1.textContent = 'Lvl 01–20 • Simple & Searched CASE';
+    if (sub2) sub2.textContent = 'Lvl 21–45 • NULLIF Zero-Shielding';
+    if (sub3) sub3.textContent = 'Lvl 46–75 • Row-to-Column Matrix Pivots';
+    if (sub4) sub4.textContent = 'Lvl 76–100 • Matrix Unpivoting & Flags';
+  } else if (currentQuestSection === 'section7') {
     if (sub1) sub1.textContent = 'Lvl 01–20 • Scalar & Predicates';
     if (sub2) sub2.textContent = 'Lvl 21–45 • Correlated & Semi-Joins';
     if (sub3) sub3.textContent = 'Lvl 46–75 • Chained Modular CTEs';
@@ -7883,6 +8052,18 @@ const SQL_TRAP_CATALOG = {
   'WITH RECURSE': {
     title: 'Recursive CTE Keyword Trap',
     explanation: 'ANSI SQL requires `WITH RECURSIVE <name> AS (...)`, not `WITH RECURSE` or `RECURSIVE WITH`.'
+  },
+  'ELSE NULL': {
+    title: 'Forgotten ELSE 0 in Conditional Aggregation Trap',
+    explanation: 'When pivoting via `SUM(CASE WHEN ... THEN val END)`, omitting `ELSE 0` defaults unmatched rows to `NULL`. Aggregating NULLs can cause unexpected null propagation across calculated total columns!'
+  },
+  'DIVISION BY ZERO': {
+    title: 'Catastrophic Division by Zero Trap',
+    explanation: 'Dividing by an unshielded zero divisor causes a fatal query abort. Wrap the denominator in `NULLIF(col, 0)` so zero safely converts to NULL without crashing the transaction.'
+  },
+  'CASE PRECEDENCE': {
+    title: 'CASE Evaluation Order Precedence Trap',
+    explanation: 'SQL evaluates `CASE` expressions top-to-bottom and exits on the FIRST matching branch. If lower thresholds precede higher thresholds, the higher threshold will never execute.'
   }
 };
 
@@ -9148,13 +9329,340 @@ function renderCteDualCodingHtml(quest, userSelections) {
 }
 window.renderCteDualCodingHtml = renderCteDualCodingHtml;
 
+// =============================================================================
+// DUAL-CODING CONDITIONAL LOGIC & DATA PIVOTING ENGINE
+// =============================================================================
+function renderPivotDualCodingHtml(quest, userSelections) {
+  const table = quest.table || 'FinancialAccounts';
+  const allSelStr = Object.values(userSelections || {}).join(' ').toUpperCase();
+
+  let discKey = quest.disciplineKey || 'searched_case';
+  if (allSelStr.includes('UNION ALL') || quest.targetQuery && quest.targetQuery.includes('UNION ALL')) {
+    discKey = 'matrix_unpivoting';
+  } else if (allSelStr.includes('NULLIF') || allSelStr.includes('COALESCE')) {
+    discKey = 'null_sanitization';
+  } else if (allSelStr.includes('AND') || allSelStr.includes('OR') || (quest.targetQuery && quest.targetQuery.includes('AND'))) {
+    discKey = 'multi_conditional';
+  } else if (allSelStr.includes('SUM(') || allSelStr.includes('ELSE 0') || (quest.targetQuery && quest.targetQuery.includes('SUM(CASE'))) {
+    discKey = 'matrix_pivoting';
+  }
+
+  const configs = {
+    searched_case: {
+      name: 'SEARCHED CASE CLASSIFIER',
+      symbol: '🔀',
+      color: '#38bdf8',
+      summary: 'Sequential Evaluation: Evaluates Boolean conditions top-to-bottom and exits immediately upon the first TRUE condition.',
+      badgeText: 'Top-Down Precedence Active'
+    },
+    matrix_pivoting: {
+      name: 'ROW-TO-COLUMN CROSS-TAB PIVOT',
+      symbol: '📊',
+      color: '#10b981',
+      summary: 'Conditional Aggregation: Folds event-level rows into quarterly columns using SUM(CASE WHEN qtr=... THEN amt ELSE 0 END).',
+      badgeText: 'Cross-Tab Folding Active'
+    },
+    null_sanitization: {
+      name: 'DEFENSIVE SANITIZATION & ZERO-SHIELD',
+      symbol: '🛡️',
+      color: '#f59e0b',
+      summary: 'Runtime Exception Shield: NULLIF converts fatal 0 divisors to NULL; COALESCE provides cascading fallback channels.',
+      badgeText: 'Division-by-Zero Shield Active'
+    },
+    multi_conditional: {
+      name: 'COMPOUND MATRIX RISK CLASSIFIER',
+      symbol: '🚩',
+      color: '#ec4899',
+      summary: 'Multi-Variate Rules: Evaluates complex Boolean matrix logic (AND / OR) to flag high-risk transactional anomalies.',
+      badgeText: 'Compound Rule Evaluation Active'
+    },
+    matrix_unpivoting: {
+      name: 'COLUMN-TO-ROW MATRIX UNPIVOT',
+      symbol: '🔄',
+      color: '#a855f7',
+      summary: 'Dimensional Inversion: Normalizes wide spreadsheet columns (Q1, Q2, Q3, Q4) into tidy, time-series rows via stacked UNION ALL.',
+      badgeText: 'Tidy Row Inversion Active'
+    }
+  };
+
+  const cfg = configs[discKey] || configs.searched_case;
+
+  // 1. Diagram Panel
+  let diagramHtml = '';
+  if (discKey === 'searched_case') {
+    diagramHtml = `
+      <div style="width: 100%; padding: 4px 6px;">
+        <div style="font-size: 10px; font-family: var(--font-mono); color: #38bdf8; font-weight: 700; margin-bottom: 8px; text-align: center;">
+          TOP-DOWN RULE PRECEDENCE LADDER
+        </div>
+        <div style="display: flex; flex-direction: column; gap: 4px;">
+          <div style="background: rgba(56, 189, 248, 0.18); border: 1px solid #38bdf8; border-radius: 4px; padding: 4px 8px; display: flex; justify-content: space-between; font-size: 9px; font-family: monospace;">
+            <span style="color: #38bdf8; font-weight: 800;">1. WHEN balance &gt;= $250k</span>
+            <span style="color: #fff; font-weight: 700;">&rarr; 'PLATINUM' 🌟</span>
+          </div>
+          <div style="background: rgba(56, 189, 248, 0.1); border: 1px solid rgba(56, 189, 248, 0.3); border-radius: 4px; padding: 4px 8px; display: flex; justify-content: space-between; font-size: 9px; font-family: monospace;">
+            <span style="color: #7dd3fc;">2. WHEN balance &gt;= $100k</span>
+            <span style="color: #fff;">&rarr; 'GOLD' 🥇</span>
+          </div>
+          <div style="background: rgba(255, 255, 255, 0.04); border: 1px dashed rgba(255, 255, 255, 0.15); border-radius: 4px; padding: 4px 8px; display: flex; justify-content: space-between; font-size: 9px; font-family: monospace;">
+            <span style="color: var(--text-muted);">3. ELSE (Fallback)</span>
+            <span style="color: #94a3b8;">&rarr; 'STANDARD'</span>
+          </div>
+        </div>
+        <div style="font-size: 8.5px; color: var(--text-muted); text-align: center; margin-top: 6px;">
+          ⚡ First TRUE condition terminates evaluation
+        </div>
+      </div>
+    `;
+  } else if (discKey === 'matrix_pivoting') {
+    diagramHtml = `
+      <div style="width: 100%; padding: 4px 6px;">
+        <div style="font-size: 10px; font-family: var(--font-mono); color: #10b981; font-weight: 700; margin-bottom: 8px; text-align: center;">
+          ROW-TO-COLUMN AGGREGATION FOLDING
+        </div>
+        <div style="display: flex; align-items: center; justify-content: space-between; gap: 4px;">
+          <div style="background: rgba(255,255,255,0.04); border: 1px solid rgba(255,255,255,0.1); border-radius: 4px; padding: 4px 6px; text-align: center; flex: 1;">
+            <div style="font-size: 7.5px; color: var(--text-muted);">RAW ROWS</div>
+            <div style="font-size: 8.5px; color: #10b981; font-family: monospace;">Q1: $4,500</div>
+            <div style="font-size: 8.5px; color: #38bdf8; font-family: monospace;">Q2: $6,200</div>
+          </div>
+          <span style="color: #10b981; font-size: 13px; font-weight: 800;">&rarr; SUM() &rarr;</span>
+          <div style="background: rgba(16, 185, 129, 0.15); border: 1.5px solid #10b981; border-radius: 4px; padding: 4px 6px; text-align: center; flex: 1.3;">
+            <div style="font-size: 7.5px; color: #6ee7b7; font-weight: 700;">CROSS-TAB MATRIX</div>
+            <div style="font-size: 9px; font-weight: 800; color: #fff; font-family: monospace;">[Q1_REV] | [Q2_REV]</div>
+          </div>
+        </div>
+        <div style="font-size: 8.5px; color: #6ee7b7; text-align: center; margin-top: 6px;">
+          🛡️ ELSE 0 prevents NULL corruption in cross-sums
+        </div>
+      </div>
+    `;
+  } else if (discKey === 'null_sanitization') {
+    diagramHtml = `
+      <div style="width: 100%; padding: 4px 6px;">
+        <div style="font-size: 10px; font-family: var(--font-mono); color: #f59e0b; font-weight: 700; margin-bottom: 8px; text-align: center;">
+          DEFENSIVE DIVISION-BY-ZERO SHIELD
+        </div>
+        <div style="display: flex; align-items: center; justify-content: center; gap: 8px;">
+          <div style="background: rgba(255,255,255,0.04); border: 1px solid rgba(255,255,255,0.1); border-radius: 4px; padding: 4px 8px; text-align: center;">
+            <div style="font-size: 8px; color: var(--text-muted);">Divisor</div>
+            <div style="font-size: 10.5px; font-weight: 800; color: #f87171; font-family: monospace;">units = 0</div>
+          </div>
+          <span style="color: #f59e0b; font-size: 13px;">&rarr;</span>
+          <div style="background: rgba(245, 158, 11, 0.18); border: 1px solid #f59e0b; border-radius: 4px; padding: 4px 8px; text-align: center;">
+            <div style="font-size: 8px; color: #fde68a;">NULLIF(0, 0)</div>
+            <div style="font-size: 10.5px; font-weight: 800; color: #fbbf24; font-family: monospace;">&lt;NULL&gt;</div>
+          </div>
+          <span style="color: #10b981; font-size: 13px;">&rarr;</span>
+          <div style="background: rgba(16, 185, 129, 0.15); border: 1px solid #10b981; border-radius: 4px; padding: 4px 8px; text-align: center;">
+            <div style="font-size: 8px; color: #6ee7b7;">Query Status</div>
+            <div style="font-size: 10px; font-weight: 800; color: #34d399;">✓ ALIVE</div>
+          </div>
+        </div>
+        <div style="font-size: 8.5px; color: #fde68a; text-align: center; margin-top: 6px;">
+          Zero converted to NULL &bull; Catastrophic crash avoided
+        </div>
+      </div>
+    `;
+  } else if (discKey === 'multi_conditional') {
+    diagramHtml = `
+      <div style="width: 100%; padding: 4px 6px;">
+        <div style="font-size: 10px; font-family: var(--font-mono); color: #ec4899; font-weight: 700; margin-bottom: 8px; text-align: center;">
+          COMPOUND BOOLEAN MATRIX LOGIC
+        </div>
+        <div style="display: flex; flex-direction: column; gap: 4px;">
+          <div style="background: rgba(236, 72, 153, 0.15); border: 1px solid #ec4899; border-radius: 4px; padding: 4px 8px; font-size: 8.5px; font-family: monospace;">
+            <span style="color: #f472b6;">Balance &gt; $100k</span> <strong style="color: #fff;">AND</strong> <span style="color: #f472b6;">Risk &gt; 80</span>
+            <div style="color: #fb7185; font-weight: 800; margin-top: 2px;">&rarr; 🚩 FLAGGED_CRITICAL</div>
+          </div>
+          <div style="background: rgba(255, 255, 255, 0.04); border: 1px dashed rgba(255, 255, 255, 0.15); border-radius: 4px; padding: 4px 8px; font-size: 8.5px; font-family: monospace;">
+            <span style="color: var(--text-muted);">Balance &gt; $50k</span> <strong style="color: #fff;">OR</strong> <span style="color: var(--text-muted);">Risk &gt; 70</span>
+            <div style="color: #fcd34d; font-weight: 700; margin-top: 2px;">&rarr; ⚠️ REVIEW_REQUIRED</div>
+          </div>
+        </div>
+      </div>
+    `;
+  } else {
+    // Matrix Unpivoting
+    diagramHtml = `
+      <div style="width: 100%; padding: 4px 6px;">
+        <div style="font-size: 10px; font-family: var(--font-mono); color: #a855f7; font-weight: 700; margin-bottom: 8px; text-align: center;">
+          COLUMN-TO-ROW UNPIVOT (UNION ALL)
+        </div>
+        <div style="display: flex; align-items: center; justify-content: space-between; gap: 6px;">
+          <div style="background: rgba(255,255,255,0.04); border: 1px solid rgba(255,255,255,0.1); border-radius: 4px; padding: 4px 6px; text-align: center; flex: 1;">
+            <div style="font-size: 7.5px; color: var(--text-muted);">1 WIDE ROW</div>
+            <div style="font-size: 8px; color: #c084fc; font-family: monospace;">Q1 | Q2 | Q3 | Q4</div>
+          </div>
+          <span style="color: #a855f7; font-size: 13px;">&rarr;</span>
+          <div style="background: rgba(168, 85, 247, 0.18); border: 1px solid #a855f7; border-radius: 4px; padding: 4px 6px; text-align: center; flex: 1.2;">
+            <div style="font-size: 7.5px; color: #d8b4fe; font-weight: 700;">4 TIDY ROWS</div>
+            <div style="font-size: 8px; color: #fff; font-family: monospace;">[REP, 'Q1', AMT]<br>[REP, 'Q2', AMT]</div>
+          </div>
+        </div>
+      </div>
+    `;
+  }
+
+  // 2. Synchronous Table Projection
+  let rowsHtml = '';
+  if (discKey === 'searched_case') {
+    rowsHtml = `
+      <tr class="row-match">
+        <td><span class="match-key-pill" style="border-color: #38bdf8; color: #38bdf8;">ACC-101</span></td>
+        <td>$340,000.00</td>
+        <td>&gt;= $250,000.00</td>
+        <td><strong style="color: #38bdf8;">PLATINUM</strong> 🌟</td>
+        <td style="text-align: right;"><span class="row-status-pill keep">Tier 1 Matched</span></td>
+      </tr>
+      <tr class="row-match">
+        <td><span class="match-key-pill" style="border-color: #38bdf8; color: #38bdf8;">ACC-104</span></td>
+        <td>$145,000.00</td>
+        <td>&gt;= $100,000.00</td>
+        <td><strong style="color: #38bdf8;">GOLD</strong> 🥇</td>
+        <td style="text-align: right;"><span class="row-status-pill keep">Tier 2 Matched</span></td>
+      </tr>
+      <tr class="row-match">
+        <td><span class="match-key-pill" style="border-color: #38bdf8; color: #38bdf8;">ACC-108</span></td>
+        <td>$42,000.00</td>
+        <td>&lt; $50,000.00</td>
+        <td><span style="color: #94a3b8;">STANDARD</span></td>
+        <td style="text-align: right;"><span class="row-status-pill null-pad">ELSE Fallback</span></td>
+      </tr>
+    `;
+  } else if (discKey === 'matrix_pivoting') {
+    rowsHtml = `
+      <tr class="row-match">
+        <td><span class="match-key-pill" style="border-color: #10b981; color: #10b981;">SALES-EAST</span></td>
+        <td><strong style="color: #34d399;">$45,000.00</strong></td>
+        <td><strong style="color: #34d399;">$62,500.00</strong></td>
+        <td><strong style="color: #34d399;">$58,000.00</strong></td>
+        <td style="text-align: right;"><span class="row-status-pill keep">Cross-Tab OK</span></td>
+      </tr>
+      <tr class="row-match">
+        <td><span class="match-key-pill" style="border-color: #10b981; color: #10b981;">SALES-WEST</span></td>
+        <td><strong style="color: #34d399;">$78,000.00</strong></td>
+        <td><strong style="color: #34d399;">$84,200.00</strong></td>
+        <td><strong style="color: #34d399;">$91,000.00</strong></td>
+        <td style="text-align: right;"><span class="row-status-pill keep">Cross-Tab OK</span></td>
+      </tr>
+    `;
+  } else if (discKey === 'null_sanitization') {
+    rowsHtml = `
+      <tr class="row-match">
+        <td><span class="match-key-pill" style="border-color: #f59e0b; color: #f59e0b;">TXN-501</span></td>
+        <td>$12,000.00</td>
+        <td>0 Units</td>
+        <td><strong style="color: #fbbf24;">&lt;NULL&gt;</strong> (Safe)</td>
+        <td style="text-align: right;"><span class="row-status-pill keep" style="background: rgba(16,185,129,0.15); color: #34d399;">✓ Crash Avoided</span></td>
+      </tr>
+      <tr class="row-match">
+        <td><span class="match-key-pill" style="border-color: #f59e0b; color: #f59e0b;">TXN-502</span></td>
+        <td>$45,000.00</td>
+        <td>15 Units</td>
+        <td><strong style="color: #f59e0b;">$3,000.00 / unit</strong></td>
+        <td style="text-align: right;"><span class="row-status-pill keep">Ratio Computed</span></td>
+      </tr>
+    `;
+  } else if (discKey === 'multi_conditional') {
+    rowsHtml = `
+      <tr class="row-match">
+        <td><span class="match-key-pill" style="border-color: #ec4899; color: #ec4899;">CLI-901</span></td>
+        <td>$180,000.00</td>
+        <td>Risk: 92</td>
+        <td><strong style="color: #f43f5e;">FLAGGED_CRITICAL</strong></td>
+        <td style="text-align: right;"><span class="row-status-pill keep" style="background: rgba(244,63,94,0.15); color: #fb7185;">🚩 AML Alert</span></td>
+      </tr>
+      <tr class="row-match">
+        <td><span class="match-key-pill" style="border-color: #ec4899; color: #ec4899;">CLI-904</span></td>
+        <td>$65,000.00</td>
+        <td>Risk: 75</td>
+        <td><strong style="color: #fcd34d;">REVIEW_REQUIRED</strong></td>
+        <td style="text-align: right;"><span class="row-status-pill keep" style="background: rgba(245,158,11,0.15); color: #fcd34d;">⚠️ Audit Queued</span></td>
+      </tr>
+    `;
+  } else {
+    // Unpivoting
+    rowsHtml = `
+      <tr class="row-match">
+        <td><span class="match-key-pill" style="border-color: #a855f7; color: #a855f7;">DEPT-FIN</span></td>
+        <td><strong style="color: #c084fc;">Q1</strong></td>
+        <td>$120,000.00</td>
+        <td>Normalized Row 1</td>
+        <td style="text-align: right;"><span class="row-status-pill keep">Stacked OK</span></td>
+      </tr>
+      <tr class="row-match">
+        <td><span class="match-key-pill" style="border-color: #a855f7; color: #a855f7;">DEPT-FIN</span></td>
+        <td><strong style="color: #c084fc;">Q2</strong></td>
+        <td>$145,000.00</td>
+        <td>Normalized Row 2</td>
+        <td style="text-align: right;"><span class="row-status-pill keep">Stacked OK</span></td>
+      </tr>
+    `;
+  }
+
+  return `
+    <div class="live-preview-header">
+      <div class="live-preview-title">
+        <span class="join-symbol-badge" style="color: ${cfg.color}; border-color: ${cfg.color}66; width: 18px; height: 18px; font-size: 11px;">${cfg.symbol}</span>
+        <span>DUAL-CODING CONDITIONAL &amp; MATRIX PIVOT ENGINE:</span>
+        <span style="color: ${cfg.color}; font-weight: 800;">${cfg.name}</span>
+      </div>
+      <span class="live-preview-subtitle">${cfg.badgeText}</span>
+    </div>
+
+    <div style="font-size: 11px; color: var(--text-secondary); margin-bottom: 8px; line-height: 1.45;">
+      ${cfg.summary}
+    </div>
+
+    <div class="join-dual-coding-grid">
+      <!-- Left Column: Dynamic Matrix / Precedence / Shield Visual -->
+      <div class="join-venn-card" style="border-color: ${cfg.color}33;">
+        ${diagramHtml}
+      </div>
+
+      <!-- Right Column: Live Table Record Alignment -->
+      <div class="join-live-table-card">
+        <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 6px; padding-bottom: 4px; border-bottom: 1px solid rgba(255,255,255,0.06);">
+          <span style="font-size: 10px; font-family: var(--font-mono); color: var(--text-muted); font-weight: 700;">
+            TRANSFORMATION RECORD PROJECTION
+          </span>
+          <span style="font-size: 9.5px; font-family: var(--font-mono); color: ${cfg.color};">
+            Table: ${escapeHtml(table)}
+          </span>
+        </div>
+        <table class="live-preview-table">
+          <thead>
+            <tr>
+              <th style="width: 85px;">KEY / GROUP</th>
+              <th>PRIMARY METRIC</th>
+              <th>CRITERIA / PERIOD</th>
+              <th>EVALUATED OUTPUT</th>
+              <th style="width: 120px; text-align: right;">STATUS</th>
+            </tr>
+          </thead>
+          <tbody>
+            ${rowsHtml}
+          </tbody>
+        </table>
+      </div>
+    </div>
+  `;
+}
+window.renderPivotDualCodingHtml = renderPivotDualCodingHtml;
+
 function renderLiveTransformationHtml(quest, userSelections) {
-  // 1. Dual Coding for Section 07 (Subqueries & CTEs)
+  // 1. Dual Coding for Section 08 (Conditional Logic & Data Pivoting)
+  if (currentQuestSection === 'section8' || ['searched_case', 'matrix_pivoting', 'null_sanitization', 'multi_conditional', 'matrix_unpivoting'].includes(quest.disciplineKey)) {
+    return renderPivotDualCodingHtml(quest, userSelections);
+  }
+
+  // 2. Dual Coding for Section 07 (Subqueries & CTEs)
   if (currentQuestSection === 'section7' || ['scalar_subqueries', 'correlated_subqueries', 'semi_anti_joins', 'chained_ctes', 'recursive_ctes'].includes(quest.disciplineKey)) {
     return renderCteDualCodingHtml(quest, userSelections);
   }
 
-  // 2. Dual Coding for Section 06 (Window Functions & Analytical Partitioning)
+  // 3. Dual Coding for Section 06 (Window Functions & Analytical Partitioning)
   if (currentQuestSection === 'section6' || ['ranking', 'offsets', 'running_totals', 'window_frames', 'extremums_stats'].includes(quest.disciplineKey)) {
     return renderWindowDualCodingHtml(quest, userSelections);
   }
@@ -9479,6 +9987,8 @@ function renderFillBlankQuest(container, quest) {
     ${currentQuestSection === 'section6' ? renderWindowMasterMatrixHtml() : ''}
     <!-- Section 07: Subqueries & CTEs Decision Matrix Reference -->
     ${currentQuestSection === 'section7' ? renderCteMasterMatrixHtml() : ''}
+    <!-- Section 08: Conditional Logic & Data Pivoting Decision Matrix Reference -->
+    ${currentQuestSection === 'section8' ? renderPivotMasterMatrixHtml() : ''}
 
     <!-- Faded Scaffolding Tier Banner -->
     ${getScaffoldingBannerHtml(quest, currentQuestIndex)}
