@@ -6,24 +6,24 @@
 
 ## 📌 Current Snapshot
 
-- **Current Sprint**: **Day 12 Completed (Window Functions: Aggregates, Offsets & Rolling Frames) ➡️ Ready for Day 13 (Business Analytics & Churn Cohorts)**
-- **Active Module**: `day-12-window-aggregates` (Completed) ➡️ Next: `day-13-business-analytics`
+- **Current Sprint**: **Section 05 Relational JOINs Master Arena (420 Levels) + 2,540 Case Studies Complete ➡️ Ready for Day 13 (Business Analytics & Churn Cohorts)**
+- **Active Module**: `visualizer/quests_section5_data.js` & `docs/IMPORTANT_MATERIALS_RELATIONAL_JOINS.md` ➡️ Next: `day-13-business-analytics`
 - **Current Dialect**: **MySQL 8.0+ / ANSI SQL**
 - **Major Milestones Achieved**: 
-  - 🏆 **ALL HACKERRANK BASIC & ADVANCED JOINS CONQUERED (Contest Leaderboard, Placements, Symmetric Pairs)!**
-  - 🏆 **SECTION 8 JOIN CASE STUDIES COMPLETELY OVERHAULED (390 Handcrafted Production Cases, Total 1,040 in Vault)!**
-  - 🏆 **WINDOW FUNCTIONS TRACK 100% COMPLETE (Days 11 & 12 Conquered)!**
-  - 🏆 **MODULE 12 ADDED TO VISUAL MASTERCLASS STUDY LIBRARY (12 Complete SVG Masterclass Modules)!**
+  - 🏆 **SECTION 05 RELATIONAL JOINS MASTER ARENA DEPLOYED (420 Levels across 7 Disciplines: 20 Easy, 20 Med, 20 Hard each)!**
+  - 🏆 **RELATIONAL JOINS MASTER DECISION MATRIX EMBEDDED IN QUEST TERMINAL (Concepts, Scenarios, Traps)!**
+  - 🏆 **CORPORATE CASE STUDIES EXPANDED TO 2,540 FULL PRODUCTION SCENARIOS (All Sections >= 200)!**
+  - 🏆 **IMPORTANT MATERIALS & INTERVIEW QUESTIONS INDEX PUBLISHED (`docs/IMPORTANT_MATERIALS_RELATIONAL_JOINS.md`)!**
 - **Visualizer & Masterclass Super-Upgrades**:
-  - **12 Visual Masterclass Modules with Poppy Neo-Brutalist SVGs**: Textbook CS theory, formulas, storage physics, and gotchas covering Modules 01 through 12 (now including Module 12: Analytical Window Functions & Sliding Frame Physics).
-  - **The 2,100 Master MCQ Technical Vault**: 2,100 deep technical checks across 23 distinct categories, including **350 Dedicated Join MCQs**, **500 Dedicated Window Function MCQs**, and **150 Section 10 Subquery/CTE/Set Operation MCQs** with strictly balanced 25% option distribution.
-  - **The 1,490 Corporate Case Study Master Vault & Standalone Syntax Gym (1,700 Drills)**: Decoupled for clean UX without clutter: 1,490 production analytics scenarios across 10 corporate sections (530 Easy, 530 Medium, 430 Hard), alongside a standalone **Syntax Gym** housing 1,700 active-retrieval foundational micro-drills (`⚡ Drill #0001`–`#1700`) across 17 pillars: SELECT (100), WHERE (100), ORDER BY (100), Aggregations & GROUP BY (100), CASE WHEN & Conditional Logic (100), String Manipulation & Patterns (100), Relational Joins Core (100), Advanced Joins & Structural Patterns (100), Multi-Table Chaining & Joined Aggregations (100), Date, Time & Temporal Arithmetic (100), Subqueries & Derived Tables (100), Modular CTEs & Multi-Step Pipelines (100), Window Ranking & Percentiles (100), Value Offsets & Deltas (100), Running Balances & Frames (100), Set Operations & Combined Queries (100), and DDL & DML Schema Modifications (100) with interactive blanks and jumbled keyword banks across 10 everyday schemas.
-  - **30 Interactive Quests**: Levels 1–30 with audio FX, token puzzle mechanics, and instant evaluation.
+  - **12 Visual Masterclass Modules with Poppy Neo-Brutalist SVGs**: Textbook CS theory, formulas, storage physics, and gotchas covering Modules 01 through 12.
+  - **The 2,100 Master MCQ Technical Vault**: Categorized by 9 curriculum modules and 23 subtopics (including 350 Dedicated Join MCQs).
+  - **The 2,540 Corporate Case Study Master Vault & Standalone Syntax Gym (1,700 Drills)**: 2,540 production analytics scenarios across 10 corporate sections, including 390 dedicated Relational Join cases, 300 Window Functions cases, and 1,700 Syntax Gym drills.
+  - **1,850 Total Interactive Gamified Quests**: Across 15 sections, featuring Section 05's 420 join quests with audio FX, token puzzle mechanics, and instant AST evaluation.
   - **Track 04 in Guided Learning Lab**: 8 dedicated steps covering Inner, Left, Right, Full Outer, Anti, Cross, Self, and Non-Equi Joins.
-  - **🤖 "Byte" the Animated SQL Cyber-Bot Companion**: Reactive SVG buddy with 5 facial expressions (idle, happy, star-eyes celebrating, confused, pensive), contextual hints, view-switch commentary, poke interactions, and audio integration.
+  - **🤖 Sir Bloops Mascot Avatar**: 64-point cubic spline vector geometry, calm jelly physics, 20-day adventure trail, and 28-day practice consistency heatmap.
 - **Next Immediate Action**: Advance to Day 13 (*Real-World Business Analytics: Retention Cohort Heatmaps, Customer Churn Rates & LTV*)
-- **Total Problems Completed in Intensive**: 66 / 68 Problems
-- **Last Updated**: 2026-09-17 02:50 IST
+- **Total Problems Completed in Intensive**: 66 / 68 Problems (HackerRank) + 1,850 Interactive Quests
+- **Last Updated**: 2026-09-28 01:10 IST
 
 ---
 
@@ -129,6 +129,19 @@
 ### 12. 2026-09-17 (Opensource UI Modern Card Redesign for Syntax Gym)
 - **Aesthetic Overhaul**: Redesigned all 1,700 drill cards with an ultra-sleek, dark obsidian glassmorphism aesthetic inspired by `opensourceui.in`.
 - **Card Features**: 1px hairline borders (`rgba(255, 255, 255, 0.08)`), topic-specific top accent hairline glows, tactile 3D key chips with press states, pulsing IDE slot targets, collapsible syntax blueprint & trap drawer, and decoupled `renderGymDrillCardHtml()`.
+
+### 13. 2026-09-28 (Section 05 Relational JOINs Master Arena, Decision Matrix, 2,540 Case Studies & Important Materials Index)
+- **Section 05: Relational JOINs Master Arena (420 Levels)**:
+  - Deployed 420 interactive levels in `visualizer/quests_section5_data.js` across 7 disciplines: `INNER JOIN` (60), `LEFT JOIN` (60), `RIGHT JOIN` (60), `FULL OUTER JOIN` (60), `CROSS JOIN` (60), `SELF JOIN` (60), `NON-EQUI JOIN` (60).
+  - Strict 20/20/20 difficulty partitioning: exactly 20 Easy, 20 Medium, 20 Hard for every single discipline.
+  - Zero placeholder text: all problems feature 3 to 5 interactive token blanks, 4 plausible options, and realistic business/finance scenarios.
+- **Relational JOINs Master Decision Matrix**:
+  - Embedded an interactive decision matrix in the quest terminal with filter pills and expand/collapse states.
+- **2,540 Corporate Case Studies**:
+  - Expanded vault in `visualizer/case_studies_500.js` to 2,540 full production cases across 18 enterprise verticals (all sections have $\ge 200$ cases).
+- **Important Materials Documentation**:
+  - Published `docs/IMPORTANT_MATERIALS_RELATIONAL_JOINS.md` and `docs/IMPORTANT_QUESTIONS_RELATIONAL_JOINS.md`.
+  - Appended full curriculum to `day-08-basic-joins/INTERVIEW_QUESTIONS.md` and linked in `README.md`.
 
 
 
