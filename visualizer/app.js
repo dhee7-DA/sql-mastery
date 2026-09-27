@@ -6709,6 +6709,8 @@ let activeDmlDisciplineFilter = null;
 let isDmlMatrixGuideCollapsed = false;
 let activeViewsDisciplineFilter = null;
 let isViewsMatrixGuideCollapsed = false;
+let activeOptimizationDisciplineFilter = null;
+let isOptimizationMatrixGuideCollapsed = false;
 
 function getActiveQuestsList() {
   if (currentQuestSection === 'section1' && window.QUESTS_SECTION_1 && window.QUESTS_SECTION_1.length > 0) {
@@ -6771,6 +6773,12 @@ function getActiveQuestsList() {
     }
     return window.QUESTS_SECTION_12;
   }
+  if (currentQuestSection === 'section13' && window.QUESTS_SECTION_13 && window.QUESTS_SECTION_13.length > 0) {
+    if (activeOptimizationDisciplineFilter) {
+      return window.QUESTS_SECTION_13.filter(q => q.disciplineKey === activeOptimizationDisciplineFilter);
+    }
+    return window.QUESTS_SECTION_13;
+  }
   return window.QUESTS_DATA || [];
 }
 
@@ -6778,7 +6786,7 @@ function switchQuestSection(sectionKey) {
   currentQuestSection = sectionKey;
   currentQuestIndex = 0;
   questChunkStart = 0;
-  const isMultiChunk = (sectionKey === 'section1' || sectionKey === 'section2' || sectionKey === 'section3' || sectionKey === 'section4' || sectionKey === 'section5' || sectionKey === 'section6' || sectionKey === 'section7' || sectionKey === 'section8' || sectionKey === 'section9' || sectionKey === 'section10' || sectionKey === 'section11' || sectionKey === 'section12');
+  const isMultiChunk = (sectionKey === 'section1' || sectionKey === 'section2' || sectionKey === 'section3' || sectionKey === 'section4' || sectionKey === 'section5' || sectionKey === 'section6' || sectionKey === 'section7' || sectionKey === 'section8' || sectionKey === 'section9' || sectionKey === 'section10' || sectionKey === 'section11' || sectionKey === 'section12' || sectionKey === 'section13');
   questChunkEnd = isMultiChunk ? 20 : 30;
 
   if (sectionKey === 'section5') {
@@ -6804,6 +6812,9 @@ function switchQuestSection(sectionKey) {
   }
   if (sectionKey === 'section12') {
     activeViewsDisciplineFilter = null;
+  }
+  if (sectionKey === 'section13') {
+    activeOptimizationDisciplineFilter = null;
   }
 
   // Update tabs
@@ -6840,6 +6851,7 @@ function switchQuestSection(sectionKey) {
     else if (sectionKey === 'section10') footerTrack.textContent = 'Section 10: DDL & Architecture Arena (100)';
     else if (sectionKey === 'section11') footerTrack.textContent = 'Section 11: DML & Transactions Arena (100)';
     else if (sectionKey === 'section12') footerTrack.textContent = 'Section 12: Views & Procedures Arena (100)';
+    else if (sectionKey === 'section13') footerTrack.textContent = 'Section 13: Query Optimization Arena (100)';
     else if (sectionKey === 'featured') footerTrack.textContent = 'Bonus: Boss Gauntlet (30)';
   }
 
@@ -6872,6 +6884,8 @@ function switchQuestSection(sectionKey) {
       window.SQL_BUDDY.say("⚡ Section 11: DML, Idempotent Upserts & ACID Transactions loaded (100 Levels)! Execute bulletproof, crash-resilient mutations!", 4500, 'celebrate');
     } else if (sectionKey === 'section12') {
       window.SQL_BUDDY.say("👁️ Section 12: Views, Materialized Views & Stored Procedures loaded (100 Levels)! Build precomputed pipelines and automated audit triggers!", 4500, 'celebrate');
+    } else if (sectionKey === 'section13') {
+      window.SQL_BUDDY.say("🔬 Section 13: Query Performance, EXPLAIN ANALYZE & Query Optimization loaded (100 Levels)! Master cost models, index paths, and SARGability!", 4500, 'celebrate');
     } else {
       window.SQL_BUDDY.say("🏆 Boss Gauntlet Activated! 30 Advanced Challenges across all SQL pillars!", 3500, 'celebrate');
     }
@@ -8032,6 +8046,145 @@ function toggleViewsMatrixGuide() {
 }
 window.toggleViewsMatrixGuide = toggleViewsMatrixGuide;
 
+// =============================================================================
+// SECTION 13: QUERY PERFORMANCE, EXPLAIN ANALYZE & OPTIMIZATION MASTER MATRIX
+// =============================================================================
+function renderOptimizationMasterMatrixHtml() {
+  const metadata = window.OPTIMIZATION_DISCIPLINES_METADATA || [];
+  const isCollapsed = isOptimizationMatrixGuideCollapsed;
+  const currentDisciplineKey = activeOptimizationDisciplineFilter;
+
+  let filterPillsHtml = `
+    <button class="choice-pill ${!currentDisciplineKey ? 'selected' : ''}" onclick="setOptimizationDisciplineFilter(null)" style="font-size: 11px; padding: 4px 10px;">
+      <span>All 100 Quests</span>
+    </button>
+  `;
+
+  metadata.forEach(d => {
+    const isSelected = currentDisciplineKey === d.key;
+    filterPillsHtml += `
+      <button class="choice-pill ${isSelected ? 'selected' : ''}" onclick="setOptimizationDisciplineFilter('${d.key}')" style="font-size: 11px; padding: 4px 10px; border-color: ${d.color}66;">
+        <span style="color: ${d.color}; font-weight: 800; margin-right: 4px;">${d.symbol}</span>
+        <span>${escapeHtml(d.name)} (20)</span>
+      </button>
+    `;
+  });
+
+  let tableRowsHtml = '';
+  metadata.forEach(d => {
+    const isActiveRow = currentDisciplineKey === d.key;
+    tableRowsHtml += `
+      <tr class="${isActiveRow ? 'active-row' : ''}">
+        <td style="white-space: nowrap;">
+          <div style="display: flex; align-items: center; gap: 8px;">
+            <span class="join-symbol-badge" style="color: ${d.color}; border-color: ${d.color}66;">${d.symbol}</span>
+            <div>
+              <strong style="color: ${d.color}; font-size: 12px; font-family: var(--font-mono);">${escapeHtml(d.name)}</strong>
+              <div style="font-size: 10px; color: var(--text-muted);">${escapeHtml(d.concept)}</div>
+            </div>
+          </div>
+        </td>
+        <td style="font-size: 11px; line-height: 1.4; color: var(--text-secondary);">
+          ${escapeHtml(d.whenToUse)}
+        </td>
+        <td style="font-size: 11px; line-height: 1.4; color: #cbd5e1;">
+          ${escapeHtml(d.scenarios)}
+        </td>
+        <td>
+          <div class="join-trap-pill">
+            <span class="trap-icon">⚠️</span>
+            <span>${escapeHtml(d.traps)}</span>
+          </div>
+        </td>
+      </tr>
+    `;
+  });
+
+  return `
+    <div class="join-matrix-card">
+      <div class="join-matrix-header">
+        <div style="display: flex; align-items: center; gap: 8px;">
+          <span style="font-size: 16px;">🔬</span>
+          <span style="font-size: 13px; font-weight: 700; color: #fff; letter-spacing: 0.3px;">
+            QUERY PERFORMANCE &amp; OPTIMIZATION DECISION MATRIX &bull; 100 QUESTS
+          </span>
+          <span class="badge" style="background: rgba(236, 72, 153, 0.2); color: #ec4899; border: 1px solid rgba(236, 72, 153, 0.3); font-size: 10px;">
+            Profiling &amp; Access Paths Reference
+          </span>
+        </div>
+        <button class="choice-pill" onclick="toggleOptimizationMatrixGuide()" style="font-size: 11px; padding: 2px 8px; border-color: var(--border-subtle);">
+          <span>${isCollapsed ? '▼ Expand Decision Matrix' : '▲ Collapse Matrix'}</span>
+        </button>
+      </div>
+
+      <div class="join-filter-pills-row">
+        <span style="font-size: 11px; color: var(--text-muted); font-weight: 600; text-transform: uppercase; letter-spacing: 0.5px;">Filter Discipline:</span>
+        ${filterPillsHtml}
+      </div>
+
+      ${!isCollapsed ? `
+        <div class="join-matrix-table-wrap">
+          <table class="join-matrix-table">
+            <thead>
+              <tr>
+                <th style="width: 230px;">DISCIPLINE &bull; SYMBOL</th>
+                <th style="width: 220px;">CORE PERFORMANCE CONCEPT</th>
+                <th>REAL-WORLD PROFILING &amp; HIGH-LOAD SCENARIOS</th>
+                <th style="width: 280px;">SILENT TRAP FOCUS &bull; DISK SPILLS &amp; SARGABILITY</th>
+              </tr>
+            </thead>
+            <tbody>
+              ${tableRowsHtml}
+            </tbody>
+          </table>
+        </div>
+      ` : `
+        <div style="font-size: 11px; color: var(--text-muted); padding: 4px 0; display: flex; align-items: center; justify-content: space-between;">
+          <span><em>Matrix reference collapsed. Click &quot;Expand Decision Matrix&quot; above to view access paths, hash work_mem spills, and SARGability rules.</em></span>
+          ${currentDisciplineKey ? `<span style="color: #ec4899; font-weight: 600;">Currently filtered: ${currentDisciplineKey.replace(/_/g, ' ').toUpperCase()} (20 Quests)</span>` : ''}
+        </div>
+      `}
+    </div>
+  `;
+}
+window.renderOptimizationMasterMatrixHtml = renderOptimizationMasterMatrixHtml;
+
+function setOptimizationDisciplineFilter(discKey) {
+  if (activeOptimizationDisciplineFilter === discKey) {
+    activeOptimizationDisciplineFilter = null;
+  } else {
+    activeOptimizationDisciplineFilter = discKey;
+  }
+  currentQuestIndex = 0;
+  questChunkStart = 0;
+  questChunkEnd = 20;
+
+  const levelSelect = document.getElementById('questDirectLevelSelect');
+  if (levelSelect) levelSelect.innerHTML = '';
+
+  renderQuestStepperTrack();
+  renderActiveQuest(0);
+
+  if (window.AudioFX) window.AudioFX.playClick();
+  if (window.SQL_BUDDY) {
+    if (activeOptimizationDisciplineFilter) {
+      const meta = (window.OPTIMIZATION_DISCIPLINES_METADATA || []).find(m => m.key === activeOptimizationDisciplineFilter);
+      const name = meta ? meta.name : activeOptimizationDisciplineFilter;
+      window.SQL_BUDDY.say(`Filtered to ${name} (20 Levels)! Master query tuning and execution plans!`, 3500, 'celebrate');
+    } else {
+      window.SQL_BUDDY.say("Showing all 100 Query Optimization quests across 5 disciplines!", 3000, 'happy');
+    }
+  }
+}
+window.setOptimizationDisciplineFilter = setOptimizationDisciplineFilter;
+
+function toggleOptimizationMatrixGuide() {
+  isOptimizationMatrixGuideCollapsed = !isOptimizationMatrixGuideCollapsed;
+  renderActiveQuest(currentQuestIndex);
+  if (window.AudioFX) window.AudioFX.playClick();
+}
+window.toggleOptimizationMatrixGuide = toggleOptimizationMatrixGuide;
+
 function toggleQuestLevelDrawer() {
   const drawer = document.getElementById('questLevelDrawer');
   const btn = document.getElementById('btnToggleQuestDrawer');
@@ -8724,6 +8877,18 @@ const SQL_TRAP_CATALOG = {
   'TRIGGER RECURSION': {
     title: 'Cascading Trigger Infinite Recursion Trap',
     explanation: 'If a trigger on Table A mutates Table A or modifies a foreign child that cascades back to Table A, an infinite recursion loop is triggered, exhausting database resources. Use conditional WHEN guards or session variables to prevent self-retriggering.'
+  },
+  'EXPLAIN ANALYZE MUTATION': {
+    title: 'EXPLAIN ANALYZE Live Execution & Data Mutation Trap',
+    explanation: 'EXPLAIN only inspects the query planner tree, but EXPLAIN ANALYZE ACTUALLY RUNS THE STATEMENT! Running EXPLAIN ANALYZE on an UPDATE or DELETE statement will permanently mutate or wipe production records. Always wrap in a BEGIN ... ROLLBACK block!'
+  },
+  'HASH WORK_MEM SPILL': {
+    title: 'Hash Join work_mem Disk Spill Trap',
+    explanation: 'If the build side of a Hash Join exceeds the allocated session work_mem, PostgreSQL silently spills hash batches to temporary files on disk (Batches > 1), causing a devastating I/O throughput collapse!'
+  },
+  'NON-SARGABLE PREDICATE': {
+    title: 'Non-SARGable Function-Wrapped Column Trap',
+    explanation: 'Wrapping an indexed column inside a scalar function (e.g. WHERE DATE(created_at) = ... or WHERE UPPER(code) = ...) completely blinds the B-Tree index, forcing the database engine into an expensive full sequential heap scan!'
   }
 };
 
@@ -11601,8 +11766,329 @@ function renderViewsDualCodingHtml(quest, userSelections) {
 }
 window.renderViewsDualCodingHtml = renderViewsDualCodingHtml;
 
+// =============================================================================
+// DUAL-CODING QUERY PERFORMANCE & OPTIMIZATION ENGINE
+// =============================================================================
+function renderOptimizationDualCodingHtml(quest, userSelections) {
+  const table = quest.table || 'BankTransactions';
+  const allSelStr = Object.values(userSelections || {}).join(' ').toUpperCase();
+
+  let discKey = quest.disciplineKey || 'explain_analyze_cost';
+  if (allSelStr.includes('BUFFERS') || allSelStr.includes('ANALYZE') || (quest.disciplineKey === 'explain_analyze_cost')) {
+    discKey = 'explain_analyze_cost';
+  } else if (allSelStr.includes('BITMAP') || allSelStr.includes('INDEX SCAN') || (quest.disciplineKey === 'sequential_vs_index_scans')) {
+    discKey = 'sequential_vs_index_scans';
+  } else if (allSelStr.includes('WORK_MEM') || allSelStr.includes('HASH JOIN') || allSelStr.includes('MERGE JOIN') || (quest.disciplineKey === 'join_execution_engines')) {
+    discKey = 'join_execution_engines';
+  } else if (allSelStr.includes('INCLUDE') || allSelStr.includes('BRIN') || (quest.disciplineKey === 'index_architecture_optimization')) {
+    discKey = 'index_architecture_optimization';
+  } else if (allSelStr.includes('LIKE') || allSelStr.includes('SARG') || (quest.disciplineKey === 'query_tuning_antipatterns')) {
+    discKey = 'query_tuning_antipatterns';
+  }
+
+  const configs = {
+    explain_analyze_cost: {
+      name: 'EXPLAIN ANALYZE & BUFFER PROFILER',
+      symbol: '🔬',
+      color: '#38bdf8',
+      summary: 'Runtime Cost Model & Buffer Inspector: Measures actual startup vs total timing, shared buffer hits (RAM) vs disk reads (I/O), and planner cardinality estimation error.',
+      badgeText: 'Live Plan Tree Profiling'
+    },
+    sequential_vs_index_scans: {
+      name: 'SCAN ACCESS PATH SELECTIVITY',
+      symbol: '⚡',
+      color: '#10b981',
+      summary: 'Access Method Mechanics: Evaluates cost thresholds between Seq Scan (broad sweeps), Index Scan (point lookups), and Bitmap Scan (disjunctive index mergers).',
+      badgeText: 'Optimal Access Path Active'
+    },
+    join_execution_engines: {
+      name: 'JOIN ALGORITHM & WORK_MEM ENGINE',
+      symbol: '⚙️',
+      color: '#f59e0b',
+      summary: 'Physical Join Execution: Dynamically selects Nested Loop, In-Memory Hash Join, or Merge Join, tracking hash table sizing against work_mem limits.',
+      badgeText: 'Join Engine Optimization'
+    },
+    index_architecture_optimization: {
+      name: 'INDEX ARCHITECTURE & COVERING INCLUDE',
+      symbol: '📐',
+      color: '#ec4899',
+      summary: 'Covering B-Tree & Specialized Indexes: Employs INCLUDE clauses to serve Index-Only Scans with zero heap lookups, and BRIN for append-only logs.',
+      badgeText: 'Index-Only Covering Active'
+    },
+    query_tuning_antipatterns: {
+      name: 'SARGABLE PREDICATE TUNER',
+      symbol: '🛡️',
+      color: '#a855f7',
+      summary: 'Search-Argument-Able Refactoring: Eliminates index-blinding function calls (DATE, UPPER, math) and transforms queries into high-speed index range scans.',
+      badgeText: 'SARGable Range Tuned'
+    }
+  };
+
+  const cfg = configs[discKey] || configs.explain_analyze_cost;
+
+  // 1. Diagram Panel
+  let diagramHtml = '';
+  if (discKey === 'explain_analyze_cost') {
+    diagramHtml = `
+      <div style="width: 100%; padding: 4px 6px;">
+        <div style="font-size: 10px; font-family: var(--font-mono); color: #38bdf8; font-weight: 700; margin-bottom: 8px; text-align: center;">
+          PLANNER COST MODEL &bull; BUFFER HIT RATIO
+        </div>
+        <div style="display: flex; flex-direction: column; gap: 4px; font-family: monospace; font-size: 8.5px;">
+          <div style="background: rgba(56, 189, 248, 0.15); border: 1px solid #38bdf8; border-radius: 3px; padding: 3px 6px; display: flex; justify-content: space-between;">
+            <span style="color: #7dd3fc;">COST ESTIMATE:</span>
+            <span style="color: #fff;">cost=0.00..342.10 rows=50 width=48</span>
+          </div>
+          <div style="background: rgba(16, 185, 129, 0.2); border: 1px solid #10b981; border-radius: 3px; padding: 3px 6px; display: flex; justify-content: space-between;">
+            <span style="color: #6ee7b7;">ACTUAL RUNTIME:</span>
+            <span style="color: #34d399; font-weight: 700;">⚡ time=0.042..0.890ms rows=50</span>
+          </div>
+          <div style="background: rgba(255, 255, 255, 0.05); border: 1px solid rgba(255,255,255,0.15); border-radius: 3px; padding: 3px 6px; display: flex; justify-content: space-between;">
+            <span style="color: var(--text-muted);">SHARED BUFFERS:</span>
+            <span style="color: #cbd5e1;">hit=42 read=0 (100% RAM Cache)</span>
+          </div>
+        </div>
+        <div style="font-size: 8.5px; color: #7dd3fc; text-align: center; margin-top: 6px;">
+          Zero physical disk I/O &bull; Perfect planner row estimation
+        </div>
+      </div>
+    `;
+  } else if (discKey === 'sequential_vs_index_scans') {
+    diagramHtml = `
+      <div style="width: 100%; padding: 4px 6px;">
+        <div style="font-size: 10px; font-family: var(--font-mono); color: #10b981; font-weight: 700; margin-bottom: 8px; text-align: center;">
+          ACCESS PATH: B-TREE INDEX vs HEAP SCAN
+        </div>
+        <div style="display: flex; align-items: center; justify-content: space-between; gap: 4px; font-family: monospace; font-size: 8.5px;">
+          <div style="background: rgba(16, 185, 129, 0.2); border: 1px solid #10b981; border-radius: 4px; padding: 4px; text-align: center; flex: 1;">
+            <div style="color: #6ee7b7; font-size: 7.5px;">INDEX SCAN</div>
+            <div style="color: #34d399; font-weight: 700;">3 Block Hops</div>
+          </div>
+          <div style="color: #10b981; font-size: 11px;">vs</div>
+          <div style="background: rgba(239, 68, 68, 0.15); border: 1px solid #ef4444; border-radius: 4px; padding: 4px; text-align: center; flex: 1;">
+            <div style="color: #fca5a5; font-size: 7.5px;">SEQ SCAN</div>
+            <div style="color: #f87171;">50,000 Blocks</div>
+          </div>
+        </div>
+        <div style="font-size: 8.5px; color: #a7f3d0; text-align: center; margin-top: 6px;">
+          Selective lookups bypass heap table scans via index pointers
+        </div>
+      </div>
+    `;
+  } else if (discKey === 'join_execution_engines') {
+    diagramHtml = `
+      <div style="width: 100%; padding: 4px 6px;">
+        <div style="font-size: 10px; font-family: var(--font-mono); color: #f59e0b; font-weight: 700; margin-bottom: 8px; text-align: center;">
+          IN-MEMORY HASH JOIN &bull; ZERO DISK SPILL
+        </div>
+        <div style="display: flex; flex-direction: column; gap: 4px; font-family: monospace; font-size: 8.5px;">
+          <div style="background: rgba(245, 158, 11, 0.15); border: 1px solid #f59e0b; border-radius: 3px; padding: 3px 6px; display: flex; justify-content: space-between;">
+            <span style="color: #fde68a;">BUILD HASH TABLE:</span>
+            <span style="color: #fff;">Clients (10k rows, 1.2MB)</span>
+          </div>
+          <div style="background: rgba(16, 185, 129, 0.2); border: 1px solid #10b981; border-radius: 3px; padding: 3px 6px; display: flex; justify-content: space-between;">
+            <span style="color: #6ee7b7;">WORK_MEM SIZING:</span>
+            <span style="color: #34d399; font-weight: 700;">64MB (Batches: 1, Spills: 0)</span>
+          </div>
+        </div>
+        <div style="font-size: 8.5px; color: #fde68a; text-align: center; margin-top: 6px;">
+          In-memory probe avoids devastating temp disk I/O stalls
+        </div>
+      </div>
+    `;
+  } else if (discKey === 'index_architecture_optimization') {
+    diagramHtml = `
+      <div style="width: 100%; padding: 4px 6px;">
+        <div style="font-size: 10px; font-family: var(--font-mono); color: #ec4899; font-weight: 700; margin-bottom: 8px; text-align: center;">
+          INDEX-ONLY SCAN (INCLUDE CLAUSE)
+        </div>
+        <div style="display: flex; flex-direction: column; gap: 4px; font-family: monospace; font-size: 8.5px;">
+          <div style="background: rgba(236, 72, 153, 0.15); border: 1px solid #ec4899; border-radius: 3px; padding: 3px 6px; display: flex; justify-content: space-between;">
+            <span style="color: #f472b6;">B-TREE LEAF:</span>
+            <span style="color: #fff;">Key(client_id) + Payload(amount)</span>
+          </div>
+          <div style="background: rgba(16, 185, 129, 0.2); border: 1px solid #10b981; border-radius: 3px; padding: 3px 6px; display: flex; justify-content: space-between;">
+            <span style="color: #6ee7b7;">HEAP TABLE READS:</span>
+            <span style="color: #34d399; font-weight: 700;">0 Blocks (Pure Index Resolution)</span>
+          </div>
+        </div>
+        <div style="font-size: 8.5px; color: #f472b6; text-align: center; margin-top: 6px;">
+          INCLUDE columns stored in leaves without increasing B-Tree depth
+        </div>
+      </div>
+    `;
+  } else {
+    // SARGability & Tuning
+    diagramHtml = `
+      <div style="width: 100%; padding: 4px 6px;">
+        <div style="font-size: 10px; font-family: var(--font-mono); color: #a855f7; font-weight: 700; margin-bottom: 8px; text-align: center;">
+          SARGABLE RANGE vs NON-SARGABLE WRAP
+        </div>
+        <div style="display: flex; align-items: center; justify-content: space-between; gap: 4px; font-family: monospace; font-size: 8.5px;">
+          <div style="background: rgba(168, 85, 247, 0.25); border: 1px solid #a855f7; border-radius: 4px; padding: 4px; text-align: center; flex: 1.2;">
+            <div style="color: #d8b4fe; font-size: 7.5px;">SARGABLE RANGE</div>
+            <div style="color: #c084fc; font-weight: 700;">ts &gt;= '...' AND &lt; '...'</div>
+          </div>
+          <div style="color: #a855f7; font-size: 11px;">vs</div>
+          <div style="background: rgba(239, 68, 68, 0.15); border: 1px solid #ef4444; border-radius: 4px; padding: 4px; text-align: center; flex: 1;">
+            <div style="color: #fca5a5; font-size: 7.5px;">NON-SARGABLE</div>
+            <div style="color: #f87171;">DATE(ts) = '...'</div>
+          </div>
+        </div>
+        <div style="font-size: 8.5px; color: #d8b4fe; text-align: center; margin-top: 6px;">
+          Range operator preserves index traversal; function forces Seq Scan
+        </div>
+      </div>
+    `;
+  }
+
+  // 2. Synchronous Table Projection
+  let rowsHtml = '';
+  if (discKey === 'explain_analyze_cost') {
+    rowsHtml = `
+      <tr class="row-match">
+        <td><span class="match-key-pill" style="border-color: #38bdf8; color: #38bdf8;">NODE-01</span></td>
+        <td>HashAggregate</td>
+        <td>cost=342.10..343.10</td>
+        <td>actual time=0.812ms</td>
+        <td style="text-align: right;"><span class="row-status-pill keep">Hit: 42 Buffers</span></td>
+      </tr>
+      <tr class="row-match">
+        <td><span class="match-key-pill" style="border-color: #38bdf8; color: #38bdf8;">NODE-02</span></td>
+        <td>Index Scan on idx_client</td>
+        <td>cost=0.42..310.50</td>
+        <td>actual time=0.038ms</td>
+        <td style="text-align: right;"><span class="row-status-pill keep">Hit: 4 Buffers</span></td>
+      </tr>
+    `;
+  } else if (discKey === 'sequential_vs_index_scans') {
+    rowsHtml = `
+      <tr class="row-match">
+        <td><span class="match-key-pill" style="border-color: #10b981; color: #10b981;">PATH-A</span></td>
+        <td>Index Scan</td>
+        <td>Selectivity: 0.002%</td>
+        <td>3 Pages Read</td>
+        <td style="text-align: right;"><span class="row-status-pill keep" style="background: rgba(16,185,129,0.2); color: #34d399;">⚡ Optimal</span></td>
+      </tr>
+      <tr class="row-match">
+        <td><span class="match-key-pill" style="border-color: #10b981; color: #10b981;">PATH-B</span></td>
+        <td>Bitmap Index Scan</td>
+        <td>OR Predicate Merger</td>
+        <td>14 Pages Read</td>
+        <td style="text-align: right;"><span class="row-status-pill keep">Bitmap Valid</span></td>
+      </tr>
+    `;
+  } else if (discKey === 'join_execution_engines') {
+    rowsHtml = `
+      <tr class="row-match">
+        <td><span class="match-key-pill" style="border-color: #f59e0b; color: #f59e0b;">HASH-JOIN</span></td>
+        <td>Buckets: 16384</td>
+        <td>Batches: 1 (In-Memory)</td>
+        <td>Memory: 1,240 kB</td>
+        <td style="text-align: right;"><span class="row-status-pill keep">Zero Disk Spill</span></td>
+      </tr>
+      <tr class="row-match">
+        <td><span class="match-key-pill" style="border-color: #f59e0b; color: #f59e0b;">NESTED-LOOP</span></td>
+        <td>Outer: 12 rows</td>
+        <td>Inner: Index Lookup</td>
+        <td>Loops: 12</td>
+        <td style="text-align: right;"><span class="row-status-pill keep">Sub-millisecond</span></td>
+      </tr>
+    `;
+  } else if (discKey === 'index_architecture_optimization') {
+    rowsHtml = `
+      <tr class="row-match">
+        <td><span class="match-key-pill" style="border-color: #ec4899; color: #ec4899;">IDX-COV</span></td>
+        <td>B-Tree + INCLUDE</td>
+        <td>Index Only Scan</td>
+        <td>Heap Fetches: 0</td>
+        <td style="text-align: right;"><span class="row-status-pill keep">Heap Bypassed</span></td>
+      </tr>
+      <tr class="row-match">
+        <td><span class="match-key-pill" style="border-color: #ec4899; color: #ec4899;">IDX-BRIN</span></td>
+        <td>Block Range (128 pages)</td>
+        <td>Sequential Append Log</td>
+        <td>Index Size: 64 kB</td>
+        <td style="text-align: right;"><span class="row-status-pill keep">Compact Storage</span></td>
+      </tr>
+    `;
+  } else {
+    // SARGability & Tuning
+    rowsHtml = `
+      <tr class="row-match">
+        <td><span class="match-key-pill" style="border-color: #a855f7; color: #a855f7;">SARG-OPT</span></td>
+        <td>Range: &gt;= '...' AND &lt; '...'</td>
+        <td>Index Cond Used</td>
+        <td>Rows Scanned: 42</td>
+        <td style="text-align: right;"><span class="row-status-pill keep" style="background: rgba(168,85,247,0.2); color: #c084fc;">SARGable Pass</span></td>
+      </tr>
+      <tr class="row-match">
+        <td><span class="match-key-pill" style="border-color: #a855f7; color: #a855f7;">PREFIX-OPT</span></td>
+        <td>Pattern: 'SETTLE%'</td>
+        <td>Index Cond Used</td>
+        <td>Rows Scanned: 18</td>
+        <td style="text-align: right;"><span class="row-status-pill keep" style="background: rgba(168,85,247,0.2); color: #c084fc;">SARGable Pass</span></td>
+      </tr>
+    `;
+  }
+
+  return `
+    <div class="live-preview-header">
+      <div class="live-preview-title">
+        <span class="join-symbol-badge" style="color: ${cfg.color}; border-color: ${cfg.color}66; width: 18px; height: 18px; font-size: 11px;">${cfg.symbol}</span>
+        <span>DUAL-CODING QUERY OPTIMIZATION ENGINE:</span>
+        <span style="color: ${cfg.color}; font-weight: 800;">${cfg.name}</span>
+      </div>
+      <span class="live-preview-subtitle">${cfg.badgeText}</span>
+    </div>
+
+    <div style="font-size: 11px; color: var(--text-secondary); margin-bottom: 8px; line-height: 1.45;">
+      ${cfg.summary}
+    </div>
+
+    <div class="join-dual-coding-grid">
+      <!-- Left Column: Planner Execution Tree & Buffer Profiler -->
+      <div class="join-venn-card" style="border-color: ${cfg.color}33;">
+        ${diagramHtml}
+      </div>
+
+      <!-- Right Column: Live Optimizer Metric Projection -->
+      <div class="join-live-table-card">
+        <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 6px; padding-bottom: 4px; border-bottom: 1px solid rgba(255,255,255,0.06);">
+          <span style="font-size: 10px; font-family: var(--font-mono); color: var(--text-muted); font-weight: 700;">
+            QUERY PLANNER &amp; ACCESS PATH PROJECTION
+          </span>
+          <span style="font-size: 9.5px; font-family: var(--font-mono); color: ${cfg.color};">
+            Target: ${escapeHtml(table)}
+          </span>
+        </div>
+        <table class="live-preview-table">
+          <thead>
+            <tr>
+              <th style="width: 85px;">NODE ID</th>
+              <th>OPERATOR / ACCESS METHOD</th>
+              <th>COST / SELECTIVITY</th>
+              <th>ACTUAL RUNTIME / I/O</th>
+              <th style="width: 130px; text-align: right;">STATUS</th>
+            </tr>
+          </thead>
+          <tbody>
+            ${rowsHtml}
+          </tbody>
+        </table>
+      </div>
+    </div>
+  `;
+}
+window.renderOptimizationDualCodingHtml = renderOptimizationDualCodingHtml;
+
 function renderLiveTransformationHtml(quest, userSelections) {
-  // 1. Dual Coding for Section 12 (Views, Materialized Views & Stored Procedures)
+  // 1. Dual Coding for Section 13 (Query Performance & Optimization)
+  if (currentQuestSection === 'section13' || ['explain_analyze_cost', 'sequential_vs_index_scans', 'join_execution_engines', 'index_architecture_optimization', 'query_tuning_antipatterns'].includes(quest.disciplineKey)) {
+    return renderOptimizationDualCodingHtml(quest, userSelections);
+  }
+
+  // 2. Dual Coding for Section 12 (Views, Materialized Views & Stored Procedures)
   if (currentQuestSection === 'section12' || ['standard_views', 'materialized_views_refresh', 'stored_procedures_transactions', 'user_defined_functions', 'triggers_audit_logging'].includes(quest.disciplineKey)) {
     return renderViewsDualCodingHtml(quest, userSelections);
   }
@@ -11967,6 +12453,8 @@ function renderFillBlankQuest(container, quest) {
     ${currentQuestSection === 'section11' ? renderDmlMasterMatrixHtml() : ''}
     <!-- Section 12: Views, Materialized Views & Stored Procedures Decision Matrix Reference -->
     ${currentQuestSection === 'section12' ? renderViewsMasterMatrixHtml() : ''}
+    <!-- Section 13: Query Performance & Optimization Decision Matrix Reference -->
+    ${currentQuestSection === 'section13' ? renderOptimizationMasterMatrixHtml() : ''}
 
     <!-- Faded Scaffolding Tier Banner -->
     ${getScaffoldingBannerHtml(quest, currentQuestIndex)}
