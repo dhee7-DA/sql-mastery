@@ -6705,6 +6705,8 @@ let activeSetDisciplineFilter = null;
 let isSetMatrixGuideCollapsed = false;
 let activeDdlDisciplineFilter = null;
 let isDdlMatrixGuideCollapsed = false;
+let activeDmlDisciplineFilter = null;
+let isDmlMatrixGuideCollapsed = false;
 
 function getActiveQuestsList() {
   if (currentQuestSection === 'section1' && window.QUESTS_SECTION_1 && window.QUESTS_SECTION_1.length > 0) {
@@ -6755,6 +6757,12 @@ function getActiveQuestsList() {
     }
     return window.QUESTS_SECTION_10;
   }
+  if (currentQuestSection === 'section11' && window.QUESTS_SECTION_11 && window.QUESTS_SECTION_11.length > 0) {
+    if (activeDmlDisciplineFilter) {
+      return window.QUESTS_SECTION_11.filter(q => q.disciplineKey === activeDmlDisciplineFilter);
+    }
+    return window.QUESTS_SECTION_11;
+  }
   return window.QUESTS_DATA || [];
 }
 
@@ -6762,7 +6770,7 @@ function switchQuestSection(sectionKey) {
   currentQuestSection = sectionKey;
   currentQuestIndex = 0;
   questChunkStart = 0;
-  const isMultiChunk = (sectionKey === 'section1' || sectionKey === 'section2' || sectionKey === 'section3' || sectionKey === 'section4' || sectionKey === 'section5' || sectionKey === 'section6' || sectionKey === 'section7' || sectionKey === 'section8' || sectionKey === 'section9' || sectionKey === 'section10');
+  const isMultiChunk = (sectionKey === 'section1' || sectionKey === 'section2' || sectionKey === 'section3' || sectionKey === 'section4' || sectionKey === 'section5' || sectionKey === 'section6' || sectionKey === 'section7' || sectionKey === 'section8' || sectionKey === 'section9' || sectionKey === 'section10' || sectionKey === 'section11');
   questChunkEnd = isMultiChunk ? 20 : 30;
 
   if (sectionKey === 'section5') {
@@ -6782,6 +6790,9 @@ function switchQuestSection(sectionKey) {
   }
   if (sectionKey === 'section10') {
     activeDdlDisciplineFilter = null;
+  }
+  if (sectionKey === 'section11') {
+    activeDmlDisciplineFilter = null;
   }
 
   // Update tabs
@@ -6816,6 +6827,7 @@ function switchQuestSection(sectionKey) {
     else if (sectionKey === 'section8') footerTrack.textContent = 'Section 08: Conditional Pivots Arena (100)';
     else if (sectionKey === 'section9') footerTrack.textContent = 'Section 09: Set Operations Arena (100)';
     else if (sectionKey === 'section10') footerTrack.textContent = 'Section 10: DDL & Architecture Arena (100)';
+    else if (sectionKey === 'section11') footerTrack.textContent = 'Section 11: DML & Transactions Arena (100)';
     else if (sectionKey === 'featured') footerTrack.textContent = 'Bonus: Boss Gauntlet (30)';
   }
 
@@ -6844,6 +6856,8 @@ function switchQuestSection(sectionKey) {
       window.SQL_BUDDY.say("🔀 Section 09: Set Operations & Schema Harmonization loaded (100 Levels)! Master UNION, INTERSECT, and EXCEPT!", 4500, 'celebrate');
     } else if (sectionKey === 'section10') {
       window.SQL_BUDDY.say("🏗️ Section 10: DDL, Schema Architecture & Integrity Constraints loaded (100 Levels)! Build bulletproof database foundations!", 4500, 'celebrate');
+    } else if (sectionKey === 'section11') {
+      window.SQL_BUDDY.say("⚡ Section 11: DML, Idempotent Upserts & ACID Transactions loaded (100 Levels)! Execute bulletproof, crash-resilient mutations!", 4500, 'celebrate');
     } else {
       window.SQL_BUDDY.say("🏆 Boss Gauntlet Activated! 30 Advanced Challenges across all SQL pillars!", 3500, 'celebrate');
     }
@@ -7726,6 +7740,145 @@ function toggleDdlMatrixGuide() {
 }
 window.toggleDdlMatrixGuide = toggleDdlMatrixGuide;
 
+// =============================================================================
+// SECTION 11: DML, UPSERTS & ACID TRANSACTIONS MASTER MATRIX
+// =============================================================================
+function renderDmlMasterMatrixHtml() {
+  const metadata = window.DML_DISCIPLINES_METADATA || [];
+  const isCollapsed = isDmlMatrixGuideCollapsed;
+  const currentDisciplineKey = activeDmlDisciplineFilter;
+
+  let filterPillsHtml = `
+    <button class="choice-pill ${!currentDisciplineKey ? 'selected' : ''}" onclick="setDmlDisciplineFilter(null)" style="font-size: 11px; padding: 4px 10px;">
+      <span>All 100 Quests</span>
+    </button>
+  `;
+
+  metadata.forEach(d => {
+    const isSelected = currentDisciplineKey === d.key;
+    filterPillsHtml += `
+      <button class="choice-pill ${isSelected ? 'selected' : ''}" onclick="setDmlDisciplineFilter('${d.key}')" style="font-size: 11px; padding: 4px 10px; border-color: ${d.color}66;">
+        <span style="color: ${d.color}; font-weight: 800; margin-right: 4px;">${d.symbol}</span>
+        <span>${escapeHtml(d.name)} (20)</span>
+      </button>
+    `;
+  });
+
+  let tableRowsHtml = '';
+  metadata.forEach(d => {
+    const isActiveRow = currentDisciplineKey === d.key;
+    tableRowsHtml += `
+      <tr class="${isActiveRow ? 'active-row' : ''}">
+        <td style="white-space: nowrap;">
+          <div style="display: flex; align-items: center; gap: 8px;">
+            <span class="join-symbol-badge" style="color: ${d.color}; border-color: ${d.color}66;">${d.symbol}</span>
+            <div>
+              <strong style="color: ${d.color}; font-size: 12px; font-family: var(--font-mono);">${escapeHtml(d.name)}</strong>
+              <div style="font-size: 10px; color: var(--text-muted);">${escapeHtml(d.concept)}</div>
+            </div>
+          </div>
+        </td>
+        <td style="font-size: 11px; line-height: 1.4; color: var(--text-secondary);">
+          ${escapeHtml(d.whenToUse)}
+        </td>
+        <td style="font-size: 11px; line-height: 1.4; color: #cbd5e1;">
+          ${escapeHtml(d.scenarios)}
+        </td>
+        <td>
+          <div class="join-trap-pill">
+            <span class="trap-icon">⚠️</span>
+            <span>${escapeHtml(d.traps)}</span>
+          </div>
+        </td>
+      </tr>
+    `;
+  });
+
+  return `
+    <div class="join-matrix-card">
+      <div class="join-matrix-header">
+        <div style="display: flex; align-items: center; gap: 8px;">
+          <span style="font-size: 16px;">⚡</span>
+          <span style="font-size: 13px; font-weight: 700; color: #fff; letter-spacing: 0.3px;">
+            DML, UPSERTS &amp; ACID TRANSACTIONS DECISION MATRIX &bull; 100 QUESTS
+          </span>
+          <span class="badge" style="background: rgba(16, 185, 129, 0.2); color: #34d399; border: 1px solid rgba(16, 185, 129, 0.3); font-size: 10px;">
+            Atomic State Mutation Reference
+          </span>
+        </div>
+        <button class="choice-pill" onclick="toggleDmlMatrixGuide()" style="font-size: 11px; padding: 2px 8px; border-color: var(--border-subtle);">
+          <span>${isCollapsed ? '▼ Expand Decision Matrix' : '▲ Collapse Matrix'}</span>
+        </button>
+      </div>
+
+      <div class="join-filter-pills-row">
+        <span style="font-size: 11px; color: var(--text-muted); font-weight: 600; text-transform: uppercase; letter-spacing: 0.5px;">Filter Discipline:</span>
+        ${filterPillsHtml}
+      </div>
+
+      ${!isCollapsed ? `
+        <div class="join-matrix-table-wrap">
+          <table class="join-matrix-table">
+            <thead>
+              <tr>
+                <th style="width: 220px;">DISCIPLINE &bull; SYMBOL</th>
+                <th style="width: 220px;">CORE MUTATION CONCEPT</th>
+                <th>REAL-WORLD FINANCIAL &amp; ENTERPRISE SCENARIOS</th>
+                <th style="width: 280px;">SILENT TRAP FOCUS &bull; DATA CORRUPTION</th>
+              </tr>
+            </thead>
+            <tbody>
+              ${tableRowsHtml}
+            </tbody>
+          </table>
+        </div>
+      ` : `
+        <div style="font-size: 11px; color: var(--text-muted); padding: 4px 0; display: flex; align-items: center; justify-content: space-between;">
+          <span><em>Matrix reference collapsed. Click &quot;Expand Decision Matrix&quot; above to view mutation patterns and concurrency traps.</em></span>
+          ${currentDisciplineKey ? `<span style="color: #34d399; font-weight: 600;">Currently filtered: ${currentDisciplineKey.replace(/_/g, ' ').toUpperCase()} (20 Quests)</span>` : ''}
+        </div>
+      `}
+    </div>
+  `;
+}
+window.renderDmlMasterMatrixHtml = renderDmlMasterMatrixHtml;
+
+function setDmlDisciplineFilter(discKey) {
+  if (activeDmlDisciplineFilter === discKey) {
+    activeDmlDisciplineFilter = null;
+  } else {
+    activeDmlDisciplineFilter = discKey;
+  }
+  currentQuestIndex = 0;
+  questChunkStart = 0;
+  questChunkEnd = 20;
+
+  const levelSelect = document.getElementById('questDirectLevelSelect');
+  if (levelSelect) levelSelect.innerHTML = '';
+
+  renderQuestStepperTrack();
+  renderActiveQuest(0);
+
+  if (window.AudioFX) window.AudioFX.playClick();
+  if (window.SQL_BUDDY) {
+    if (activeDmlDisciplineFilter) {
+      const meta = (window.DML_DISCIPLINES_METADATA || []).find(m => m.key === activeDmlDisciplineFilter);
+      const name = meta ? meta.name : activeDmlDisciplineFilter;
+      window.SQL_BUDDY.say(`Filtered to ${name} (20 Levels)! Master atomic data mutations!`, 3500, 'celebrate');
+    } else {
+      window.SQL_BUDDY.say("Showing all 100 DML & Transaction quests across 5 disciplines!", 3000, 'happy');
+    }
+  }
+}
+window.setDmlDisciplineFilter = setDmlDisciplineFilter;
+
+function toggleDmlMatrixGuide() {
+  isDmlMatrixGuideCollapsed = !isDmlMatrixGuideCollapsed;
+  renderActiveQuest(currentQuestIndex);
+  if (window.AudioFX) window.AudioFX.playClick();
+}
+window.toggleDmlMatrixGuide = toggleDmlMatrixGuide;
+
 function toggleQuestLevelDrawer() {
   const drawer = document.getElementById('questLevelDrawer');
   const btn = document.getElementById('btnToggleQuestDrawer');
@@ -8394,6 +8547,18 @@ const SQL_TRAP_CATALOG = {
   'CHECK 3VL': {
     title: 'CHECK Constraint Three-Valued Logic NULL Pass Trap',
     explanation: 'A CHECK constraint passes if the boolean condition evaluates to TRUE or NULL! If a checked column contains NULL, the check succeeds! Always pair CHECK constraints with NOT NULL when nulls must be barred.'
+  },
+  'EXCLUDED PSEUDO-TABLE': {
+    title: 'ON CONFLICT DO UPDATE EXCLUDED Reference Trap',
+    explanation: 'When updating on conflict, incoming candidate values must be referenced via the EXCLUDED pseudo-table (e.g. EXCLUDED.balance), NOT the destination table name! Referring to the target table leaves the column unchanged.'
+  },
+  'UNBOUNDED MUTATION': {
+    title: 'Unbounded UPDATE / DELETE Table Wipe Trap',
+    explanation: 'Omitting the WHERE clause from an UPDATE or DELETE statement mutates or wipes every single row in the production database table! Always verify your predicate with a dry-run SELECT first.'
+  },
+  'CONCURRENCY RACE': {
+    title: 'Non-Atomic Read-Modify-Write Concurrency Race Trap',
+    explanation: 'Executing a separate SELECT followed by an application-side UPDATE creates a race window where another thread can modify the record in between. Use atomic UPDATE ... RETURNING or acquire pessimistic row locks with SELECT ... FOR UPDATE.'
   }
 };
 
@@ -10624,8 +10789,332 @@ function renderDdlDualCodingHtml(quest, userSelections) {
 }
 window.renderDdlDualCodingHtml = renderDdlDualCodingHtml;
 
+// =============================================================================
+// DUAL-CODING DML, UPSERTS & ACID TRANSACTIONS ENGINE
+// =============================================================================
+function renderDmlDualCodingHtml(quest, userSelections) {
+  const table = quest.table || 'BankAccounts';
+  const allSelStr = Object.values(userSelections || {}).join(' ').toUpperCase();
+
+  let discKey = quest.disciplineKey || 'idempotent_upserts';
+  if (allSelStr.includes('ON CONFLICT') || allSelStr.includes('MERGE') || (quest.disciplineKey === 'idempotent_upserts')) {
+    discKey = 'idempotent_upserts';
+  } else if (allSelStr.includes('RETURNING') || (quest.disciplineKey === 'audit_projections_returning')) {
+    discKey = 'audit_projections_returning';
+  } else if (allSelStr.includes('DELETED_AT') || allSelStr.includes('SOFT') || (quest.disciplineKey === 'conditional_mutations_soft_deletes')) {
+    discKey = 'conditional_mutations_soft_deletes';
+  } else if (allSelStr.includes('BEGIN') || allSelStr.includes('COMMIT') || allSelStr.includes('FOR UPDATE') || (quest.disciplineKey === 'acid_transactions_concurrency')) {
+    discKey = 'acid_transactions_concurrency';
+  } else if (allSelStr.includes('SCD') || allSelStr.includes('VALID_TO') || (quest.disciplineKey === 'scd_type2_versioning')) {
+    discKey = 'scd_type2_versioning';
+  }
+
+  const configs = {
+    idempotent_upserts: {
+      name: 'CONFLICT ARBITRATOR (ON CONFLICT / MERGE)',
+      symbol: '⚡',
+      color: '#38bdf8',
+      summary: 'Idempotent Ingestion Pipe: Branches incoming tuples into INSERT on new keys, or atomic UPDATE via EXCLUDED pseudo-table on collisions.',
+      badgeText: 'Idempotency Shield Active'
+    },
+    audit_projections_returning: {
+      name: 'ATOMIC MUTATION PROJECTION (RETURNING)',
+      symbol: '🎯',
+      color: '#10b981',
+      summary: 'Zero-Roundtrip State Return: Atomically commits record mutations and yields post-mutation balances, eliminating concurrency race windows.',
+      badgeText: 'Zero-Roundtrip Pipeline Active'
+    },
+    conditional_mutations_soft_deletes: {
+      name: 'AUDIT-SAFE SOFT-DELETE ENGINE',
+      symbol: '🛡️',
+      color: '#f59e0b',
+      summary: 'Non-Destructive State Transitions: Populates deleted_at timestamps while preserving relational integrity and regulatory audit histories.',
+      badgeText: 'Soft-Delete Guard Active'
+    },
+    acid_transactions_concurrency: {
+      name: 'ACID TRANSACTION PIPE & ROW LOCKING',
+      symbol: '🔒',
+      color: '#ec4899',
+      summary: 'All-or-Nothing Atomic Commit: Coordinates multi-leg ledger updates with SELECT ... FOR UPDATE pessimistic row-level locking.',
+      badgeText: 'Two-Phase Commit Guard Active'
+    },
+    scd_type2_versioning: {
+      name: 'SLOWLY CHANGING DIMENSION (SCD TYPE 2)',
+      symbol: '⏳',
+      color: '#a855f7',
+      summary: 'Point-in-Time Temporal Reconstruction: Closes historical version windows and appends active tuples with 9999-12-31 sentinels.',
+      badgeText: 'SCD Type 2 Timeline Active'
+    }
+  };
+
+  const cfg = configs[discKey] || configs.idempotent_upserts;
+
+  // 1. Diagram Panel
+  let diagramHtml = '';
+  if (discKey === 'idempotent_upserts') {
+    diagramHtml = `
+      <div style="width: 100%; padding: 4px 6px;">
+        <div style="font-size: 10px; font-family: var(--font-mono); color: #38bdf8; font-weight: 700; margin-bottom: 8px; text-align: center;">
+          CONFLICT ARBITRATION &bull; INCOMING TUPLE [PK: 101]
+        </div>
+        <div style="display: flex; flex-direction: column; gap: 4px; font-family: monospace; font-size: 8.5px;">
+          <div style="background: rgba(56, 189, 248, 0.15); border: 1px solid #38bdf8; border-radius: 3px; padding: 3px 6px; display: flex; justify-content: space-between;">
+            <span style="color: #7dd3fc;">INCOMING:</span>
+            <span style="color: #fff;">{id: 101, bal: $5,000.00}</span>
+          </div>
+          <div style="text-align: center; color: #f59e0b; font-size: 9px; font-weight: 800;">
+            &darr; ON CONFLICT (account_id) DETECTED &darr;
+          </div>
+          <div style="background: rgba(16, 185, 129, 0.2); border: 1px solid #10b981; border-radius: 3px; padding: 3px 6px; display: flex; justify-content: space-between;">
+            <span style="color: #6ee7b7;">MUTATION:</span>
+            <span style="color: #34d399; font-weight: 700;">UPDATE SET bal = EXCLUDED.bal</span>
+          </div>
+        </div>
+        <div style="font-size: 8.5px; color: #7dd3fc; text-align: center; margin-top: 6px;">
+          Zero duplicate row exceptions &bull; 100% idempotent
+        </div>
+      </div>
+    `;
+  } else if (discKey === 'audit_projections_returning') {
+    diagramHtml = `
+      <div style="width: 100%; padding: 4px 6px;">
+        <div style="font-size: 10px; font-family: var(--font-mono); color: #10b981; font-weight: 700; margin-bottom: 8px; text-align: center;">
+          ATOMIC WRITE &amp; READBACK PIPELINE
+        </div>
+        <div style="display: flex; align-items: center; justify-content: space-between; gap: 6px;">
+          <div style="background: rgba(16, 185, 129, 0.15); border: 1px solid #10b981; border-radius: 4px; padding: 4px 6px; text-align: center; flex: 1;">
+            <div style="font-size: 7.5px; color: #6ee7b7;">STORAGE WRITE</div>
+            <div style="font-size: 8.5px; color: #fff; font-family: monospace;">bal - $500.00</div>
+          </div>
+          <div style="color: #10b981; font-size: 11px; font-weight: 800; text-align: center;">
+            &xrarr;<br><span style="font-size: 7px; color: #6ee7b7;">RETURNING</span>
+          </div>
+          <div style="background: rgba(16, 185, 129, 0.15); border: 1px solid #10b981; border-radius: 4px; padding: 4px 6px; text-align: center; flex: 1;">
+            <div style="font-size: 7.5px; color: #6ee7b7;">APP CLIENT</div>
+            <div style="font-size: 8.5px; color: #34d399; font-family: monospace;">[id, new_balance]</div>
+          </div>
+        </div>
+        <div style="margin-top: 6px; background: rgba(16, 185, 129, 0.2); border: 1px solid #10b981; border-radius: 4px; padding: 4px; text-align: center; font-size: 8.5px; font-family: monospace; color: #fff;">
+          ⚡ Zero Race Condition Window: Single Round-Trip
+        </div>
+      </div>
+    `;
+  } else if (discKey === 'conditional_mutations_soft_deletes') {
+    diagramHtml = `
+      <div style="width: 100%; padding: 4px 6px;">
+        <div style="font-size: 10px; font-family: var(--font-mono); color: #f59e0b; font-weight: 700; margin-bottom: 8px; text-align: center;">
+          NON-DESTRUCTIVE SOFT-DELETE LIFECYCLE
+        </div>
+        <div style="display: flex; flex-direction: column; gap: 4px; font-family: monospace; font-size: 8.5px;">
+          <div style="background: rgba(16, 185, 129, 0.2); border: 1px solid #10b981; border-radius: 3px; padding: 3px 6px; display: flex; justify-content: space-between;">
+            <span style="color: #fff;">[ACTIVE STATE]:</span>
+            <span style="color: #34d399;">deleted_at: NULL</span>
+          </div>
+          <div style="text-align: center; color: #f59e0b; font-size: 8px; font-weight: 700;">
+            &darr; SOFT-DELETE APPLIED (WHERE id = 502) &darr;
+          </div>
+          <div style="background: rgba(245, 158, 11, 0.2); border: 1px solid #f59e0b; border-radius: 3px; padding: 3px 6px; display: flex; justify-content: space-between;">
+            <span style="color: #fff;">[ARCHIVED STATE]:</span>
+            <span style="color: #fde68a;">deleted_at: 2026-09-27T08:30Z</span>
+          </div>
+        </div>
+        <div style="font-size: 8.5px; color: #fde68a; text-align: center; margin-top: 6px;">
+          Foreign key relationships &amp; ledger audits preserved
+        </div>
+      </div>
+    `;
+  } else if (discKey === 'acid_transactions_concurrency') {
+    diagramHtml = `
+      <div style="width: 100%; padding: 4px 6px;">
+        <div style="font-size: 10px; font-family: var(--font-mono); color: #ec4899; font-weight: 700; margin-bottom: 8px; text-align: center;">
+          ATOMIC TWO-LEG TRANSFER &bull; FOR UPDATE LOCK
+        </div>
+        <div style="display: flex; flex-direction: column; gap: 4px; font-family: monospace; font-size: 8.5px;">
+          <div style="background: rgba(236, 72, 153, 0.15); border: 1px solid #ec4899; border-radius: 3px; padding: 3px 6px; display: flex; justify-content: space-between;">
+            <span style="color: #f472b6;">LEG 1 (Acc 101):</span>
+            <span style="color: #fff;">-$1,000.00 <strong style="color: #f59e0b;">[LOCKED]</strong></span>
+          </div>
+          <div style="background: rgba(236, 72, 153, 0.15); border: 1px solid #ec4899; border-radius: 3px; padding: 3px 6px; display: flex; justify-content: space-between;">
+            <span style="color: #f472b6;">LEG 2 (Acc 102):</span>
+            <span style="color: #fff;">+$1,000.00 <strong style="color: #f59e0b;">[LOCKED]</strong></span>
+          </div>
+        </div>
+        <div style="margin-top: 6px; background: rgba(16, 185, 129, 0.2); border: 1px solid #10b981; border-radius: 4px; padding: 4px; text-align: center; font-size: 8.5px; font-family: monospace; color: #34d399;">
+          COMMIT: Both Legs Persist Atomically (Sum Conservation)
+        </div>
+      </div>
+    `;
+  } else {
+    // SCD Type 2
+    diagramHtml = `
+      <div style="width: 100%; padding: 4px 6px;">
+        <div style="font-size: 10px; font-family: var(--font-mono); color: #a855f7; font-weight: 700; margin-bottom: 8px; text-align: center;">
+          TEMPORAL VALIDITY HORIZON (SCD TYPE 2)
+        </div>
+        <div style="display: flex; flex-direction: column; gap: 4px; font-family: monospace; font-size: 8.5px;">
+          <div style="background: rgba(255, 255, 255, 0.05); border: 1px solid rgba(255,255,255,0.15); border-radius: 3px; padding: 3px 6px; display: flex; justify-content: space-between;">
+            <span style="color: var(--text-muted);">V1 (CLOSED):</span>
+            <span style="color: #94a3b8;">2024-01-01 &rarr; 2026-09-27 [is_current=F]</span>
+          </div>
+          <div style="background: rgba(168, 85, 247, 0.2); border: 1px solid #a855f7; border-radius: 3px; padding: 3px 6px; display: flex; justify-content: space-between;">
+            <span style="color: #d8b4fe;">V2 (ACTIVE):</span>
+            <span style="color: #c084fc;">2026-09-27 &rarr; 9999-12-31 [is_current=T]</span>
+          </div>
+        </div>
+        <div style="font-size: 8.5px; color: #d8b4fe; text-align: center; margin-top: 6px;">
+          Perfect point-in-time historical reconstruction
+        </div>
+      </div>
+    `;
+  }
+
+  // 2. Synchronous Table Projection
+  let rowsHtml = '';
+  if (discKey === 'idempotent_upserts') {
+    rowsHtml = `
+      <tr class="row-match">
+        <td><span class="match-key-pill" style="border-color: #38bdf8; color: #38bdf8;">ACC-101</span></td>
+        <td>$5,000.00</td>
+        <td>2026-09-27 08:35:00 UTC</td>
+        <td>ON CONFLICT DO UPDATE</td>
+        <td style="text-align: right;"><span class="row-status-pill keep">Upserted Clean</span></td>
+      </tr>
+      <tr class="row-match">
+        <td><span class="match-key-pill" style="border-color: #38bdf8; color: #38bdf8;">ACC-102</span></td>
+        <td>$12,400.00</td>
+        <td>2026-09-27 08:35:10 UTC</td>
+        <td>ON CONFLICT DO UPDATE</td>
+        <td style="text-align: right;"><span class="row-status-pill keep">Upserted Clean</span></td>
+      </tr>
+    `;
+  } else if (discKey === 'audit_projections_returning') {
+    rowsHtml = `
+      <tr class="row-match">
+        <td><span class="match-key-pill" style="border-color: #10b981; color: #10b981;">TXN-701</span></td>
+        <td>$4,750.00 (Post-Deduction)</td>
+        <td>2026-09-27 08:35:20 UTC</td>
+        <td>RETURNING id, balance</td>
+        <td style="text-align: right;"><span class="row-status-pill keep">Captured Atomic</span></td>
+      </tr>
+      <tr class="row-match">
+        <td><span class="match-key-pill" style="border-color: #10b981; color: #10b981;">TXN-702</span></td>
+        <td>$8,200.00 (Post-Deduction)</td>
+        <td>2026-09-27 08:35:25 UTC</td>
+        <td>RETURNING id, balance</td>
+        <td style="text-align: right;"><span class="row-status-pill keep">Captured Atomic</span></td>
+      </tr>
+    `;
+  } else if (discKey === 'conditional_mutations_soft_deletes') {
+    rowsHtml = `
+      <tr class="row-match">
+        <td><span class="match-key-pill" style="border-color: #f59e0b; color: #f59e0b;">USR-502</span></td>
+        <td>DEACTIVATED</td>
+        <td>2026-09-27 08:35:30 UTC</td>
+        <td>deleted_at IS NOT NULL</td>
+        <td style="text-align: right;"><span class="row-status-pill keep" style="background: rgba(245,158,11,0.2); color: #fde68a;">Soft-Deleted</span></td>
+      </tr>
+      <tr class="row-match">
+        <td><span class="match-key-pill" style="border-color: #f59e0b; color: #f59e0b;">USR-503</span></td>
+        <td>ACTIVE</td>
+        <td>NULL</td>
+        <td>deleted_at IS NULL</td>
+        <td style="text-align: right;"><span class="row-status-pill keep">Active Invariant</span></td>
+      </tr>
+    `;
+  } else if (discKey === 'acid_transactions_concurrency') {
+    rowsHtml = `
+      <tr class="row-match">
+        <td><span class="match-key-pill" style="border-color: #ec4899; color: #ec4899;">ACC-101</span></td>
+        <td>$44,000.00 (Debited $1,000)</td>
+        <td>2026-09-27 08:35:40 UTC</td>
+        <td>FOR UPDATE (Pessimistic)</td>
+        <td style="text-align: right;"><span class="row-status-pill keep">Committed Clean</span></td>
+      </tr>
+      <tr class="row-match">
+        <td><span class="match-key-pill" style="border-color: #ec4899; color: #ec4899;">ACC-102</span></td>
+        <td>$26,000.00 (Credited $1,000)</td>
+        <td>2026-09-27 08:35:40 UTC</td>
+        <td>FOR UPDATE (Pessimistic)</td>
+        <td style="text-align: right;"><span class="row-status-pill keep">Committed Clean</span></td>
+      </tr>
+    `;
+  } else {
+    // SCD Type 2
+    rowsHtml = `
+      <tr class="row-match">
+        <td><span class="match-key-pill" style="border-color: #a855f7; color: #a855f7;">DIM-405-V1</span></td>
+        <td>STANDARD_TIER</td>
+        <td>Valid: 2024-01-01 to 2026-09-27</td>
+        <td>is_current = FALSE</td>
+        <td style="text-align: right;"><span class="row-status-pill keep" style="background: rgba(255,255,255,0.06); color: #94a3b8;">Expired Historic</span></td>
+      </tr>
+      <tr class="row-match">
+        <td><span class="match-key-pill" style="border-color: #a855f7; color: #a855f7;">DIM-405-V2</span></td>
+        <td>VIP_TIER</td>
+        <td>Valid: 2026-09-27 to 9999-12-31</td>
+        <td>is_current = TRUE</td>
+        <td style="text-align: right;"><span class="row-status-pill keep" style="background: rgba(168,85,247,0.2); color: #c084fc;">Active Current</span></td>
+      </tr>
+    `;
+  }
+
+  return `
+    <div class="live-preview-header">
+      <div class="live-preview-title">
+        <span class="join-symbol-badge" style="color: ${cfg.color}; border-color: ${cfg.color}66; width: 18px; height: 18px; font-size: 11px;">${cfg.symbol}</span>
+        <span>DUAL-CODING DML, UPSERTS &amp; TRANSACTIONS ENGINE:</span>
+        <span style="color: ${cfg.color}; font-weight: 800;">${cfg.name}</span>
+      </div>
+      <span class="live-preview-subtitle">${cfg.badgeText}</span>
+    </div>
+
+    <div style="font-size: 11px; color: var(--text-secondary); margin-bottom: 8px; line-height: 1.45;">
+      ${cfg.summary}
+    </div>
+
+    <div class="join-dual-coding-grid">
+      <!-- Left Column: Mutation State Machine / Transaction Pipe -->
+      <div class="join-venn-card" style="border-color: ${cfg.color}33;">
+        ${diagramHtml}
+      </div>
+
+      <!-- Right Column: Live Table State Projection -->
+      <div class="join-live-table-card">
+        <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 6px; padding-bottom: 4px; border-bottom: 1px solid rgba(255,255,255,0.06);">
+          <span style="font-size: 10px; font-family: var(--font-mono); color: var(--text-muted); font-weight: 700;">
+            MUTATION AUDIT RECORD PROJECTION
+          </span>
+          <span style="font-size: 9.5px; font-family: var(--font-mono); color: ${cfg.color};">
+            Table: ${escapeHtml(table)}
+          </span>
+        </div>
+        <table class="live-preview-table">
+          <thead>
+            <tr>
+              <th style="width: 85px;">ROW ID</th>
+              <th>MUTATED METRIC</th>
+              <th>TEMPORAL VALIDITY</th>
+              <th>MUTATION TYPE</th>
+              <th style="width: 130px; text-align: right;">STATUS</th>
+            </tr>
+          </thead>
+          <tbody>
+            ${rowsHtml}
+          </tbody>
+        </table>
+      </div>
+    </div>
+  `;
+}
+window.renderDmlDualCodingHtml = renderDmlDualCodingHtml;
+
 function renderLiveTransformationHtml(quest, userSelections) {
-  // 1. Dual Coding for Section 10 (DDL, Schema Architecture & Constraints)
+  // 1. Dual Coding for Section 11 (DML, Upserts & ACID Transactions)
+  if (currentQuestSection === 'section11' || ['idempotent_upserts', 'audit_projections_returning', 'conditional_mutations_soft_deletes', 'acid_transactions_concurrency', 'scd_type2_versioning'].includes(quest.disciplineKey)) {
+    return renderDmlDualCodingHtml(quest, userSelections);
+  }
+
+  // 2. Dual Coding for Section 10 (DDL, Schema Architecture & Constraints)
   if (currentQuestSection === 'section10' || ['table_creation_datatypes', 'primary_foreign_keys', 'check_unique_constraints', 'schema_migrations_alter', 'performance_indexing'].includes(quest.disciplineKey)) {
     return renderDdlDualCodingHtml(quest, userSelections);
   }
@@ -10976,6 +11465,8 @@ function renderFillBlankQuest(container, quest) {
     ${currentQuestSection === 'section9' ? renderSetMasterMatrixHtml() : ''}
     <!-- Section 10: DDL, Schema Architecture & Integrity Constraints Decision Matrix Reference -->
     ${currentQuestSection === 'section10' ? renderDdlMasterMatrixHtml() : ''}
+    <!-- Section 11: DML, Upserts & ACID Transactions Decision Matrix Reference -->
+    ${currentQuestSection === 'section11' ? renderDmlMasterMatrixHtml() : ''}
 
     <!-- Faded Scaffolding Tier Banner -->
     ${getScaffoldingBannerHtml(quest, currentQuestIndex)}
