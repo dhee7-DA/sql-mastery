@@ -13,10 +13,11 @@ const scripts = [
   'verify_section10_quests.js',
   'verify_section11_quests.js',
   'verify_section12_quests.js',
-  'verify_section13_quests.js'
+  'verify_section13_quests.js',
+  'verify_section14_quests.js'
 ];
 
-console.log('=== RUNNING COMPLETE AUDIT OF ALL 13 SQL ARENA SECTIONS (1,620 TOTAL QUESTS) ===');
+console.log('=== RUNNING COMPLETE AUDIT OF ALL 14 SQL ARENA SECTIONS (1,720 TOTAL QUESTS) ===');
 let totalErrors = 0;
 
 scripts.forEach(script => {
@@ -31,7 +32,7 @@ scripts.forEach(script => {
 
 console.log('================================================================================');
 if (totalErrors === 0) {
-  console.log('🏆 ALL 13 SECTIONS AUDITED & 100% CLEAN! (1,620/1,620 QUESTS VERIFIED WITH 0 ERRORS)');
+  console.log('🏆 ALL 14 SECTIONS AUDITED & 100% CLEAN! (1,720/1,720 QUESTS VERIFIED WITH 0 ERRORS)');
 } else {
   console.error(`💥 ENCOUNTERED ${totalErrors} SECTION FAILURES!`);
   process.exit(1);

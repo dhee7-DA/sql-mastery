@@ -6711,6 +6711,8 @@ let activeViewsDisciplineFilter = null;
 let isViewsMatrixGuideCollapsed = false;
 let activeOptimizationDisciplineFilter = null;
 let isOptimizationMatrixGuideCollapsed = false;
+let activeWarehouseDisciplineFilter = null;
+let isWarehouseMatrixGuideCollapsed = false;
 
 function getActiveQuestsList() {
   if (currentQuestSection === 'section1' && window.QUESTS_SECTION_1 && window.QUESTS_SECTION_1.length > 0) {
@@ -6779,6 +6781,12 @@ function getActiveQuestsList() {
     }
     return window.QUESTS_SECTION_13;
   }
+  if (currentQuestSection === 'section14' && window.QUESTS_SECTION_14 && window.QUESTS_SECTION_14.length > 0) {
+    if (activeWarehouseDisciplineFilter) {
+      return window.QUESTS_SECTION_14.filter(q => q.disciplineKey === activeWarehouseDisciplineFilter);
+    }
+    return window.QUESTS_SECTION_14;
+  }
   return window.QUESTS_DATA || [];
 }
 
@@ -6786,7 +6794,7 @@ function switchQuestSection(sectionKey) {
   currentQuestSection = sectionKey;
   currentQuestIndex = 0;
   questChunkStart = 0;
-  const isMultiChunk = (sectionKey === 'section1' || sectionKey === 'section2' || sectionKey === 'section3' || sectionKey === 'section4' || sectionKey === 'section5' || sectionKey === 'section6' || sectionKey === 'section7' || sectionKey === 'section8' || sectionKey === 'section9' || sectionKey === 'section10' || sectionKey === 'section11' || sectionKey === 'section12' || sectionKey === 'section13');
+  const isMultiChunk = (sectionKey === 'section1' || sectionKey === 'section2' || sectionKey === 'section3' || sectionKey === 'section4' || sectionKey === 'section5' || sectionKey === 'section6' || sectionKey === 'section7' || sectionKey === 'section8' || sectionKey === 'section9' || sectionKey === 'section10' || sectionKey === 'section11' || sectionKey === 'section12' || sectionKey === 'section13' || sectionKey === 'section14');
   questChunkEnd = isMultiChunk ? 20 : 30;
 
   if (sectionKey === 'section5') {
@@ -6815,6 +6823,9 @@ function switchQuestSection(sectionKey) {
   }
   if (sectionKey === 'section13') {
     activeOptimizationDisciplineFilter = null;
+  }
+  if (sectionKey === 'section14') {
+    activeWarehouseDisciplineFilter = null;
   }
 
   // Update tabs
@@ -6852,6 +6863,7 @@ function switchQuestSection(sectionKey) {
     else if (sectionKey === 'section11') footerTrack.textContent = 'Section 11: DML & Transactions Arena (100)';
     else if (sectionKey === 'section12') footerTrack.textContent = 'Section 12: Views & Procedures Arena (100)';
     else if (sectionKey === 'section13') footerTrack.textContent = 'Section 13: Query Optimization Arena (100)';
+    else if (sectionKey === 'section14') footerTrack.textContent = 'Section 14: Cloud Warehouses & Modern SQL (100)';
     else if (sectionKey === 'featured') footerTrack.textContent = 'Bonus: Boss Gauntlet (30)';
   }
 
@@ -6886,6 +6898,8 @@ function switchQuestSection(sectionKey) {
       window.SQL_BUDDY.say("👁️ Section 12: Views, Materialized Views & Stored Procedures loaded (100 Levels)! Build precomputed pipelines and automated audit triggers!", 4500, 'celebrate');
     } else if (sectionKey === 'section13') {
       window.SQL_BUDDY.say("🔬 Section 13: Query Performance, EXPLAIN ANALYZE & Query Optimization loaded (100 Levels)! Master cost models, index paths, and SARGability!", 4500, 'celebrate');
+    } else if (sectionKey === 'section14') {
+      window.SQL_BUDDY.say("❄️ Section 14: Cloud Warehouses & Modern SQL loaded (100 Levels)! Master QUALIFY, partition pruning, and DuckDB lakehouses!", 4500, 'celebrate');
     } else {
       window.SQL_BUDDY.say("🏆 Boss Gauntlet Activated! 30 Advanced Challenges across all SQL pillars!", 3500, 'celebrate');
     }
@@ -8185,6 +8199,145 @@ function toggleOptimizationMatrixGuide() {
 }
 window.toggleOptimizationMatrixGuide = toggleOptimizationMatrixGuide;
 
+// =============================================================================
+// SECTION 14: CLOUD DATA WAREHOUSES & MODERN SQL (SNOWFLAKE, BIGQUERY, DUCKDB)
+// =============================================================================
+function renderWarehouseMasterMatrixHtml() {
+  const metadata = window.WAREHOUSE_DISCIPLINES_METADATA || [];
+  const isCollapsed = isWarehouseMatrixGuideCollapsed;
+  const currentDisciplineKey = activeWarehouseDisciplineFilter;
+
+  let filterPillsHtml = `
+    <button class="choice-pill ${!currentDisciplineKey ? 'selected' : ''}" onclick="setWarehouseDisciplineFilter(null)" style="font-size: 11px; padding: 4px 10px;">
+      <span>All 100 Quests</span>
+    </button>
+  `;
+
+  metadata.forEach(d => {
+    const isSelected = currentDisciplineKey === d.key;
+    filterPillsHtml += `
+      <button class="choice-pill ${isSelected ? 'selected' : ''}" onclick="setWarehouseDisciplineFilter('${d.key}')" style="font-size: 11px; padding: 4px 10px; border-color: ${d.color}66;">
+        <span style="color: ${d.color}; font-weight: 800; margin-right: 4px;">${d.symbol}</span>
+        <span>${escapeHtml(d.name)} (20)</span>
+      </button>
+    `;
+  });
+
+  let tableRowsHtml = '';
+  metadata.forEach(d => {
+    const isActiveRow = currentDisciplineKey === d.key;
+    tableRowsHtml += `
+      <tr class="${isActiveRow ? 'active-row' : ''}">
+        <td style="white-space: nowrap;">
+          <div style="display: flex; align-items: center; gap: 8px;">
+            <span class="join-symbol-badge" style="color: ${d.color}; border-color: ${d.color}66;">${d.symbol}</span>
+            <div>
+              <strong style="color: ${d.color}; font-size: 12px; font-family: var(--font-mono);">${escapeHtml(d.name)}</strong>
+              <div style="font-size: 10px; color: var(--text-muted);">${escapeHtml(d.concept)}</div>
+            </div>
+          </div>
+        </td>
+        <td style="font-size: 11px; line-height: 1.4; color: var(--text-secondary);">
+          ${escapeHtml(d.whenToUse)}
+        </td>
+        <td style="font-size: 11px; line-height: 1.4; color: #cbd5e1;">
+          ${escapeHtml(d.scenarios)}
+        </td>
+        <td>
+          <div class="join-trap-pill">
+            <span class="trap-icon">⚠️</span>
+            <span>${escapeHtml(d.traps)}</span>
+          </div>
+        </td>
+      </tr>
+    `;
+  });
+
+  return `
+    <div class="join-matrix-card">
+      <div class="join-matrix-header">
+        <div style="display: flex; align-items: center; gap: 8px;">
+          <span style="font-size: 16px;">❄️</span>
+          <span style="font-size: 13px; font-weight: 700; color: #fff; letter-spacing: 0.3px;">
+            CLOUD DATA WAREHOUSES &amp; MODERN SQL DECISION MATRIX &bull; 100 QUESTS
+          </span>
+          <span class="badge" style="background: rgba(16, 185, 129, 0.2); color: #10b981; border: 1px solid rgba(16, 185, 129, 0.3); font-size: 10px;">
+            Snowflake &bull; BigQuery &bull; DuckDB Reference
+          </span>
+        </div>
+        <button class="choice-pill" onclick="toggleWarehouseMatrixGuide()" style="font-size: 11px; padding: 2px 8px; border-color: var(--border-subtle);">
+          <span>${isCollapsed ? '▼ Expand Decision Matrix' : '▲ Collapse Matrix'}</span>
+        </button>
+      </div>
+
+      <div class="join-filter-pills-row">
+        <span style="font-size: 11px; color: var(--text-muted); font-weight: 600; text-transform: uppercase; letter-spacing: 0.5px;">Filter Discipline:</span>
+        ${filterPillsHtml}
+      </div>
+
+      ${!isCollapsed ? `
+        <div class="join-matrix-table-wrap">
+          <table class="join-matrix-table">
+            <thead>
+              <tr>
+                <th style="width: 230px;">DISCIPLINE &bull; SYMBOL</th>
+                <th style="width: 220px;">CORE WAREHOUSE CONCEPT</th>
+                <th>REAL-WORLD CLOUD ANALYTICS SCENARIOS</th>
+                <th style="width: 280px;">SILENT TRAP FOCUS &bull; SCAN FEES &amp; NON-PORTABLE SYNTAX</th>
+              </tr>
+            </thead>
+            <tbody>
+              ${tableRowsHtml}
+            </tbody>
+          </table>
+        </div>
+      ` : `
+        <div style="font-size: 11px; color: var(--text-muted); padding: 4px 0; display: flex; align-items: center; justify-content: space-between;">
+          <span><em>Matrix reference collapsed. Click &quot;Expand Decision Matrix&quot; above to view QUALIFY syntax, partition pruning, and DuckDB Parquet rules.</em></span>
+          ${currentDisciplineKey ? `<span style="color: #10b981; font-weight: 600;">Currently filtered: ${currentDisciplineKey.replace(/_/g, ' ').toUpperCase()} (20 Quests)</span>` : ''}
+        </div>
+      `}
+    </div>
+  `;
+}
+window.renderWarehouseMasterMatrixHtml = renderWarehouseMasterMatrixHtml;
+
+function setWarehouseDisciplineFilter(discKey) {
+  if (activeWarehouseDisciplineFilter === discKey) {
+    activeWarehouseDisciplineFilter = null;
+  } else {
+    activeWarehouseDisciplineFilter = discKey;
+  }
+  currentQuestIndex = 0;
+  questChunkStart = 0;
+  questChunkEnd = 20;
+
+  const levelSelect = document.getElementById('questDirectLevelSelect');
+  if (levelSelect) levelSelect.innerHTML = '';
+
+  renderQuestStepperTrack();
+  renderActiveQuest(0);
+
+  if (window.AudioFX) window.AudioFX.playClick();
+  if (window.SQL_BUDDY) {
+    if (activeWarehouseDisciplineFilter) {
+      const meta = (window.WAREHOUSE_DISCIPLINES_METADATA || []).find(m => m.key === activeWarehouseDisciplineFilter);
+      const name = meta ? meta.name : activeWarehouseDisciplineFilter;
+      window.SQL_BUDDY.say(`Filtered to ${name} (20 Levels)! Master cloud data warehouses and modern analytical SQL!`, 3500, 'celebrate');
+    } else {
+      window.SQL_BUDDY.say("Showing all 100 Cloud Data Warehouse quests across 5 disciplines!", 3000, 'happy');
+    }
+  }
+}
+window.setWarehouseDisciplineFilter = setWarehouseDisciplineFilter;
+
+function toggleWarehouseMatrixGuide() {
+  isWarehouseMatrixGuideCollapsed = !isWarehouseMatrixGuideCollapsed;
+  renderActiveQuest(currentQuestIndex);
+  if (window.AudioFX) window.AudioFX.playClick();
+}
+window.toggleWarehouseMatrixGuide = toggleWarehouseMatrixGuide;
+
 function toggleQuestLevelDrawer() {
   const drawer = document.getElementById('questLevelDrawer');
   const btn = document.getElementById('btnToggleQuestDrawer');
@@ -8889,6 +9042,26 @@ const SQL_TRAP_CATALOG = {
   'NON-SARGABLE PREDICATE': {
     title: 'Non-SARGable Function-Wrapped Column Trap',
     explanation: 'Wrapping an indexed column inside a scalar function (e.g. WHERE DATE(created_at) = ... or WHERE UPPER(code) = ...) completely blinds the B-Tree index, forcing the database engine into an expensive full sequential heap scan!'
+  },
+  'WHERE ROW_NUMBER': {
+    title: 'Window Function in WHERE Clause Trap',
+    explanation: 'Window functions like ROW_NUMBER() and RANK() evaluate AFTER the WHERE clause in the SQL execution pipeline! Attempting to write WHERE ROW_NUMBER() = 1 causes an immediate syntax error. In modern warehouses use QUALIFY; in standard SQL wrap in a CTE.'
+  },
+  'PARTITION PRUNING DEFEAT': {
+    title: 'Partition Pruning Defeat & Runaway Cloud Billing Trap',
+    explanation: 'Wrapping partition/clustering keys inside scalar expressions (e.g. WHERE TIMESTAMP_TRUNC(event_timestamp, DAY) = ...) disables metadata min/max pruning, turning a 20 MB scan into an expensive 10 TB full-table scan!'
+  },
+  'TIME TRAVEL EXPIRED': {
+    title: 'Time-Travel Retention Expiration Trap',
+    explanation: 'Querying historical snapshots with AT(TIMESTAMP => ...) or BEFORE(STATEMENT => ...) beyond the warehouse DATA_RETENTION_TIME_IN_DAYS fails instantly because historical micro-partitions have moved into Fail-safe storage.'
+  },
+  'APPROXIMATE RE-AGGREGATION': {
+    title: 'Approximate Metric Re-Aggregation Trap',
+    explanation: 'You cannot algebraically sum or average APPROX_COUNT_DISTINCT or APPROX_PERCENTILE estimates across subgroups without compounding statistical errors! Instead, produce intermediate sketches with HLL_ACCUMULATE and merge them via HLL_COMBINE.'
+  },
+  'PARQUET SELECT STAR': {
+    title: 'Parquet Lakehouse SELECT * Projection Defeat Trap',
+    explanation: 'Running SELECT * on external Parquet lakehouses forces the query engine to decompress and transfer every single columnar chunk across object storage, completely nullifying Parquet columnar projection pushdown.'
   }
 };
 
@@ -12082,8 +12255,271 @@ function renderOptimizationDualCodingHtml(quest, userSelections) {
 }
 window.renderOptimizationDualCodingHtml = renderOptimizationDualCodingHtml;
 
+function renderWarehouseDualCodingHtml(quest, userSelections) {
+  const discKey = quest.disciplineKey || 'qualify_window_filtering';
+  const meta = (window.WAREHOUSE_DISCIPLINES_METADATA || []).find(d => d.key === discKey) || {
+    name: 'Cloud Data Warehouses & Modern SQL',
+    symbol: '❄️',
+    color: '#10b981'
+  };
+
+  let leftPanelTitle = 'Execution Pipeline & Physical Storage Topology';
+  let leftSvg = '';
+  let rightPanelTitle = 'Warehouse Execution Engine & Pruning Analytics';
+  let rowsHtml = '';
+
+  if (discKey === 'qualify_window_filtering') {
+    leftPanelTitle = 'Analytical Filter Pipeline (WHERE vs QUALIFY)';
+    leftSvg = `
+      <div style="font-family: var(--font-mono); font-size: 11px; display: flex; flex-direction: column; gap: 8px; padding: 4px;">
+        <div style="display: flex; align-items: center; gap: 6px;">
+          <span style="background: rgba(56, 189, 248, 0.2); color: #38bdf8; padding: 3px 8px; border-radius: 4px; font-weight: 700;">1. FROM &amp; WHERE</span>
+          <span style="color: var(--text-muted);">&rarr; Filter raw rows</span>
+        </div>
+        <div style="display: flex; align-items: center; gap: 6px;">
+          <span style="background: rgba(245, 158, 11, 0.2); color: #f59e0b; padding: 3px 8px; border-radius: 4px; font-weight: 700;">2. GROUP BY &amp; AGG</span>
+          <span style="color: var(--text-muted);">&rarr; Collapse groupings</span>
+        </div>
+        <div style="display: flex; align-items: center; gap: 6px;">
+          <span style="background: rgba(168, 85, 247, 0.2); color: #c084fc; padding: 3px 8px; border-radius: 4px; font-weight: 700;">3. WINDOW FUNCTIONS</span>
+          <span style="color: var(--text-muted);">&rarr; Compute ROW_NUMBER() / DENSE_RANK()</span>
+        </div>
+        <div style="display: flex; align-items: center; gap: 6px; border: 1px solid #10b981; border-radius: 4px; padding: 4px; background: rgba(16, 185, 129, 0.1);">
+          <span style="background: #10b981; color: #000; padding: 3px 8px; border-radius: 4px; font-weight: 800;">4. QUALIFY FILTER</span>
+          <span style="color: #34d399; font-weight: 600;">&rarr; Prunes window ranks directly without subquery wrap!</span>
+        </div>
+        <div style="display: flex; align-items: center; gap: 6px;">
+          <span style="background: rgba(255, 255, 255, 0.1); color: #fff; padding: 3px 8px; border-radius: 4px; font-weight: 700;">5. SELECT &amp; LIMIT</span>
+          <span style="color: var(--text-muted);">&rarr; Project final output columns</span>
+        </div>
+      </div>
+    `;
+    rowsHtml = `
+      <tr class="row-match">
+        <td><span class="match-key-pill" style="border-color: #10b981; color: #10b981;">ACC-9021</span></td>
+        <td>DENSE_RANK() OVER (...)</td>
+        <td>Rank = 1 (Latest Snapshot)</td>
+        <td>Passes QUALIFY</td>
+        <td style="text-align: right;"><span class="row-status-pill keep" style="background: rgba(16,185,129,0.2); color: #34d399;">⚡ Retained</span></td>
+      </tr>
+      <tr class="row-match">
+        <td><span class="match-key-pill" style="border-color: #64748b; color: #94a3b8;">ACC-9021</span></td>
+        <td>DENSE_RANK() OVER (...)</td>
+        <td>Rank = 2 (Historical)</td>
+        <td>QUALIFY rank = 1</td>
+        <td style="text-align: right;"><span class="row-status-pill remove">Pruned</span></td>
+      </tr>
+      <tr class="row-match">
+        <td><span class="match-key-pill" style="border-color: #10b981; color: #10b981;">ACC-9088</span></td>
+        <td>ROW_NUMBER() OVER (...)</td>
+        <td>Rank = 1 (Top Traded)</td>
+        <td>Passes QUALIFY</td>
+        <td style="text-align: right;"><span class="row-status-pill keep" style="background: rgba(16,185,129,0.2); color: #34d399;">⚡ Retained</span></td>
+      </tr>
+    `;
+  } else if (discKey === 'partition_pruning_clustering') {
+    leftPanelTitle = 'Micro-Partition Pruning & Cluster Keys';
+    leftSvg = `
+      <div style="font-family: var(--font-mono); font-size: 11px; padding: 4px;">
+        <div style="display: flex; justify-content: space-between; margin-bottom: 6px;">
+          <span style="color: var(--text-muted);">Partition Pruning Efficiency:</span>
+          <strong style="color: #38bdf8;">98.4% Eliminated</strong>
+        </div>
+        <div style="height: 10px; background: rgba(255,255,255,0.1); border-radius: 5px; overflow: hidden; margin-bottom: 10px; display: flex;">
+          <div style="width: 1.6%; background: #ef4444;" title="Scanned: 16 MB"></div>
+          <div style="width: 98.4%; background: #10b981;" title="Pruned: 984 MB"></div>
+        </div>
+        <div style="display: flex; flex-direction: column; gap: 4px; font-size: 10px; color: var(--text-secondary);">
+          <div>&bull; Total Partitions: <strong>2,000 blocks (1.2 TB)</strong></div>
+          <div>&bull; Partitions Scanned: <strong style="color: #38bdf8;">32 blocks (19.2 GB)</strong></div>
+          <div>&bull; Clustering Depth: <strong>1.08 (Optimal Colocation)</strong></div>
+          <div>&bull; Scan Cost Avoidance: <strong style="color: #34d399;">$5.88 saved per query</strong></div>
+        </div>
+      </div>
+    `;
+    rowsHtml = `
+      <tr class="row-match">
+        <td><span class="match-key-pill" style="border-color: #38bdf8; color: #38bdf8;">MP-0012</span></td>
+        <td>2026-03-01 .. 2026-03-07</td>
+        <td>Matches WHERE date filter</td>
+        <td>Min/Max Overlap</td>
+        <td style="text-align: right;"><span class="row-status-pill keep" style="background: rgba(56,189,248,0.2); color: #38bdf8;">Scanned</span></td>
+      </tr>
+      <tr class="row-match">
+        <td><span class="match-key-pill" style="border-color: #10b981; color: #10b981;">MP-0013..0998</span></td>
+        <td>2025-01-01 .. 2026-02-28</td>
+        <td>Outside query interval</td>
+        <td>Pruned by Metadata</td>
+        <td style="text-align: right;"><span class="row-status-pill keep" style="background: rgba(16,185,129,0.2); color: #34d399;">Pruned (0 Bytes)</span></td>
+      </tr>
+    `;
+  } else if (discKey === 'time_travel_zero_copy') {
+    leftPanelTitle = 'Time-Travel Snapshot & Zero-Copy Metadata Clone';
+    leftSvg = `
+      <div style="font-family: var(--font-mono); font-size: 11px; padding: 4px; display: flex; flex-direction: column; gap: 8px;">
+        <div style="display: flex; align-items: center; justify-content: space-between; border-bottom: 1px solid rgba(255,255,255,0.08); padding-bottom: 6px;">
+          <span style="color: var(--text-muted);">Storage Mechanism:</span>
+          <span style="color: #a855f7; font-weight: 700;">Immutable Micro-Partition Pointer Swap</span>
+        </div>
+        <div style="display: flex; align-items: center; gap: 8px;">
+          <span style="background: rgba(16, 185, 129, 0.2); color: #34d399; padding: 2px 6px; border-radius: 3px;">T-0</span>
+          <span style="color: var(--text-secondary);">Production Snapshot (09:00:00 UTC)</span>
+        </div>
+        <div style="display: flex; align-items: center; gap: 8px;">
+          <span style="background: rgba(239, 68, 68, 0.2); color: #f87171; padding: 2px 6px; border-radius: 3px;">T-1</span>
+          <span style="color: #f87171;">Unfiltered UPDATE Incident (09:14:22 UTC)</span>
+        </div>
+        <div style="display: flex; align-items: center; gap: 8px;">
+          <span style="background: rgba(168, 85, 247, 0.2); color: #c084fc; padding: 2px 6px; border-radius: 3px;">T-2</span>
+          <span style="color: #c084fc; font-weight: 700;">CLONE TABLE ... AT (OFFSET =&gt; -15*60)</span>
+        </div>
+        <div style="font-size: 10px; color: #34d399; margin-top: 4px;">
+          &bull; Clone Provision Time: <strong>120ms</strong> | Data Duplicated: <strong>0 Bytes (Shared Immutable Pointers)</strong>
+        </div>
+      </div>
+    `;
+    rowsHtml = `
+      <tr class="row-match">
+        <td><span class="match-key-pill" style="border-color: #c084fc; color: #c084fc;">SNAPSHOT-A</span></td>
+        <td>BEFORE (STATEMENT =&gt; '01b...')</td>
+        <td>Read Historical Immutable Blocks</td>
+        <td>Zero Lock Overhead</td>
+        <td style="text-align: right;"><span class="row-status-pill keep" style="background: rgba(168,85,247,0.2); color: #c084fc;">Restored</span></td>
+      </tr>
+      <tr class="row-match">
+        <td><span class="match-key-pill" style="border-color: #10b981; color: #10b981;">DEV_CLONE</span></td>
+        <td>CLONE ledger_prod AT(TIMESTAMP)</td>
+        <td>Metadata Only Pointer Copy</td>
+        <td>Immediate Availability</td>
+        <td style="text-align: right;"><span class="row-status-pill keep" style="background: rgba(16,185,129,0.2); color: #34d399;">Zero Storage Cost</span></td>
+      </tr>
+    `;
+  } else if (discKey === 'approximate_aggregations') {
+    leftPanelTitle = 'HyperLogLog Probabilistic Registers vs Exact Count';
+    leftSvg = `
+      <div style="font-family: var(--font-mono); font-size: 11px; padding: 4px;">
+        <div style="display: flex; justify-content: space-between; margin-bottom: 8px;">
+          <span style="color: var(--text-muted);">Query Execution Speedup:</span>
+          <strong style="color: #f59e0b;">120&times; Faster</strong>
+        </div>
+        <div style="display: flex; flex-direction: column; gap: 6px; font-size: 10px;">
+          <div style="display: flex; justify-content: space-between;">
+            <span style="color: var(--text-secondary);">Exact COUNT(DISTINCT user_id):</span>
+            <span style="color: #ef4444; font-weight: 700;">48.2s (Spills 12GB to SSD)</span>
+          </div>
+          <div style="display: flex; justify-content: space-between;">
+            <span style="color: var(--text-secondary);">APPROX_COUNT_DISTINCT(user_id):</span>
+            <span style="color: #34d399; font-weight: 700;">0.38s (In-Memory 16KB Sketch)</span>
+          </div>
+          <div style="display: flex; justify-content: space-between; border-top: 1px solid rgba(255,255,255,0.08); padding-top: 4px;">
+            <span style="color: var(--text-muted);">Empirical Error Rate:</span>
+            <span style="color: #38bdf8; font-weight: 700;">&plusmn;0.41% (Threshold &lt; 1%)</span>
+          </div>
+        </div>
+      </div>
+    `;
+    rowsHtml = `
+      <tr class="row-match">
+        <td><span class="match-key-pill" style="border-color: #f59e0b; color: #f59e0b;">HLL-SKETCH</span></td>
+        <td>APPROX_COUNT_DISTINCT</td>
+        <td>Cardinality: 14,281,900</td>
+        <td>Error: +0.28%</td>
+        <td style="text-align: right;"><span class="row-status-pill keep" style="background: rgba(245,158,11,0.2); color: #fbbf24;">⚡ 0.38s</span></td>
+      </tr>
+      <tr class="row-match">
+        <td><span class="match-key-pill" style="border-color: #f59e0b; color: #f59e0b;">PERCENTILE</span></td>
+        <td>APPROX_PERCENTILE(latency, 0.99)</td>
+        <td>p99 Estimate: 142.1ms</td>
+        <td>Error: &plusmn;0.5%</td>
+        <td style="text-align: right;"><span class="row-status-pill keep" style="background: rgba(245,158,11,0.2); color: #fbbf24;">⚡ 0.45s</span></td>
+      </tr>
+    `;
+  } else {
+    leftPanelTitle = 'DuckDB Columnar Parquet Reader & Lakehouse Engine';
+    leftSvg = `
+      <div style="font-family: var(--font-mono); font-size: 11px; padding: 4px; display: flex; flex-direction: column; gap: 6px;">
+        <div style="display: flex; justify-content: space-between; border-bottom: 1px solid rgba(255,255,255,0.08); padding-bottom: 4px;">
+          <span style="color: var(--text-muted);">File Format:</span>
+          <span style="color: #06b6d4; font-weight: 700;">Apache Parquet (Column-Oriented + Snappy)</span>
+        </div>
+        <div style="display: flex; align-items: center; justify-content: space-between;">
+          <span style="color: var(--text-secondary);">Projection Pushdown:</span>
+          <span style="color: #34d399; font-weight: 700;">Only 3 of 42 columns read from disk</span>
+        </div>
+        <div style="display: flex; align-items: center; justify-content: space-between;">
+          <span style="color: var(--text-secondary);">Predicate Pushdown:</span>
+          <span style="color: #34d399; font-weight: 700;">Row groups skipped via file footer stats</span>
+        </div>
+        <div style="display: flex; align-items: center; justify-content: space-between;">
+          <span style="color: var(--text-secondary);">Zero Database Server:</span>
+          <span style="color: #38bdf8; font-weight: 700;">Direct S3 / Local read_parquet()</span>
+        </div>
+      </div>
+    `;
+    rowsHtml = `
+      <tr class="row-match">
+        <td><span class="match-key-pill" style="border-color: #06b6d4; color: #06b6d4;">RG-01</span></td>
+        <td>Row Group 1 (100k rows)</td>
+        <td>trade_date min: 2026-01-01 max: 2026-01-15</td>
+        <td>Predicate Match</td>
+        <td style="text-align: right;"><span class="row-status-pill keep" style="background: rgba(6,182,212,0.2); color: #22d3ee;">Read 3 Cols</span></td>
+      </tr>
+      <tr class="row-match">
+        <td><span class="match-key-pill" style="border-color: #64748b; color: #94a3b8;">RG-02</span></td>
+        <td>Row Group 2 (100k rows)</td>
+        <td>trade_date min: 2026-01-16 max: 2026-01-31</td>
+        <td>Excluded by Filter</td>
+        <td style="text-align: right;"><span class="row-status-pill remove">Skipped (0 I/O)</span></td>
+      </tr>
+    `;
+  }
+
+  return `
+    <div class="join-dual-coding-panel">
+      <!-- Left: Graphical Architecture Pipeline Card -->
+      <div class="join-visual-schema-card">
+        <div class="panel-section-title" style="margin-bottom: 8px;">
+          <span class="symbol-circle" style="background: ${meta.color}22; color: ${meta.color}; border: 1px solid ${meta.color}44;">${meta.symbol}</span>
+          <span>${leftPanelTitle}</span>
+        </div>
+        <div class="join-visual-diagram-box" style="padding: 12px; background: rgba(0,0,0,0.25); border-radius: 6px; border: 1px solid var(--border-subtle);">
+          ${leftSvg}
+        </div>
+      </div>
+
+      <!-- Right: Real-World Execution Table -->
+      <div class="join-simulated-table-card">
+        <div class="panel-section-title" style="margin-bottom: 8px;">
+          <span class="status-indicator live"></span>
+          <span>${rightPanelTitle}</span>
+        </div>
+        <table class="join-live-table">
+          <thead>
+            <tr>
+              <th style="width: 140px;">NODE / OBJECT</th>
+              <th>OPERATION / METRIC</th>
+              <th>EXECUTION DETAILS</th>
+              <th>VERDICT / OPTIMIZATION</th>
+              <th style="width: 130px; text-align: right;">STATUS</th>
+            </tr>
+          </thead>
+          <tbody>
+            ${rowsHtml}
+          </tbody>
+        </table>
+      </div>
+    </div>
+  `;
+}
+window.renderWarehouseDualCodingHtml = renderWarehouseDualCodingHtml;
+
 function renderLiveTransformationHtml(quest, userSelections) {
-  // 1. Dual Coding for Section 13 (Query Performance & Optimization)
+  // 1. Dual Coding for Section 14 (Cloud Data Warehouses & Modern SQL)
+  if (currentQuestSection === 'section14' || ['qualify_window_filtering', 'partition_pruning_clustering', 'time_travel_zero_copy', 'approximate_aggregations', 'parquet_lakehouse_duckdb'].includes(quest.disciplineKey)) {
+    return renderWarehouseDualCodingHtml(quest, userSelections);
+  }
+
+  // 2. Dual Coding for Section 13 (Query Performance & Optimization)
   if (currentQuestSection === 'section13' || ['explain_analyze_cost', 'sequential_vs_index_scans', 'join_execution_engines', 'index_architecture_optimization', 'query_tuning_antipatterns'].includes(quest.disciplineKey)) {
     return renderOptimizationDualCodingHtml(quest, userSelections);
   }
@@ -12455,6 +12891,8 @@ function renderFillBlankQuest(container, quest) {
     ${currentQuestSection === 'section12' ? renderViewsMasterMatrixHtml() : ''}
     <!-- Section 13: Query Performance & Optimization Decision Matrix Reference -->
     ${currentQuestSection === 'section13' ? renderOptimizationMasterMatrixHtml() : ''}
+    <!-- Section 14: Cloud Data Warehouses & Modern SQL Decision Matrix Reference -->
+    ${currentQuestSection === 'section14' ? renderWarehouseMasterMatrixHtml() : ''}
 
     <!-- Faded Scaffolding Tier Banner -->
     ${getScaffoldingBannerHtml(quest, currentQuestIndex)}
