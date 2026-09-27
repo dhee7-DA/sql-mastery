@@ -6701,6 +6701,8 @@ let activeCteDisciplineFilter = null;
 let isCteMatrixGuideCollapsed = false;
 let activePivotDisciplineFilter = null;
 let isPivotMatrixGuideCollapsed = false;
+let activeSetDisciplineFilter = null;
+let isSetMatrixGuideCollapsed = false;
 
 function getActiveQuestsList() {
   if (currentQuestSection === 'section1' && window.QUESTS_SECTION_1 && window.QUESTS_SECTION_1.length > 0) {
@@ -6739,6 +6741,12 @@ function getActiveQuestsList() {
     }
     return window.QUESTS_SECTION_8;
   }
+  if (currentQuestSection === 'section9' && window.QUESTS_SECTION_9 && window.QUESTS_SECTION_9.length > 0) {
+    if (activeSetDisciplineFilter) {
+      return window.QUESTS_SECTION_9.filter(q => q.disciplineKey === activeSetDisciplineFilter);
+    }
+    return window.QUESTS_SECTION_9;
+  }
   return window.QUESTS_DATA || [];
 }
 
@@ -6746,7 +6754,7 @@ function switchQuestSection(sectionKey) {
   currentQuestSection = sectionKey;
   currentQuestIndex = 0;
   questChunkStart = 0;
-  const isMultiChunk = (sectionKey === 'section1' || sectionKey === 'section2' || sectionKey === 'section3' || sectionKey === 'section4' || sectionKey === 'section5' || sectionKey === 'section6' || sectionKey === 'section7' || sectionKey === 'section8');
+  const isMultiChunk = (sectionKey === 'section1' || sectionKey === 'section2' || sectionKey === 'section3' || sectionKey === 'section4' || sectionKey === 'section5' || sectionKey === 'section6' || sectionKey === 'section7' || sectionKey === 'section8' || sectionKey === 'section9');
   questChunkEnd = isMultiChunk ? 20 : 30;
 
   if (sectionKey === 'section5') {
@@ -6760,6 +6768,9 @@ function switchQuestSection(sectionKey) {
   }
   if (sectionKey === 'section8') {
     activePivotDisciplineFilter = null;
+  }
+  if (sectionKey === 'section9') {
+    activeSetDisciplineFilter = null;
   }
 
   // Update tabs
@@ -6792,6 +6803,7 @@ function switchQuestSection(sectionKey) {
     else if (sectionKey === 'section6') footerTrack.textContent = 'Section 06: Window Functions Arena (100)';
     else if (sectionKey === 'section7') footerTrack.textContent = 'Section 07: Subqueries & CTEs Arena (100)';
     else if (sectionKey === 'section8') footerTrack.textContent = 'Section 08: Conditional Pivots Arena (100)';
+    else if (sectionKey === 'section9') footerTrack.textContent = 'Section 09: Set Operations Arena (100)';
     else if (sectionKey === 'featured') footerTrack.textContent = 'Bonus: Boss Gauntlet (30)';
   }
 
@@ -6816,6 +6828,8 @@ function switchQuestSection(sectionKey) {
       window.SQL_BUDDY.say("🌳 Section 07: Subqueries & CTEs Master Arena loaded (100 Levels)! Master modular pipelines, EXISTS, and recursive trees!", 4500, 'celebrate');
     } else if (sectionKey === 'section8') {
       window.SQL_BUDDY.say("📊 Section 08: Conditional Logic & Pivoting loaded (100 Levels)! Master CASE WHEN, matrix cross-tabs, and zero-shielding!", 4500, 'celebrate');
+    } else if (sectionKey === 'section9') {
+      window.SQL_BUDDY.say("🔀 Section 09: Set Operations & Schema Harmonization loaded (100 Levels)! Master UNION, INTERSECT, and EXCEPT!", 4500, 'celebrate');
     } else {
       window.SQL_BUDDY.say("🏆 Boss Gauntlet Activated! 30 Advanced Challenges across all SQL pillars!", 3500, 'celebrate');
     }
@@ -7419,6 +7433,145 @@ function togglePivotMatrixGuide() {
   if (window.AudioFX) window.AudioFX.playClick();
 }
 window.togglePivotMatrixGuide = togglePivotMatrixGuide;
+
+// =============================================================================
+// SECTION 09: SET OPERATIONS & SCHEMA HARMONIZATION MASTER DECISION MATRIX
+// =============================================================================
+function renderSetMasterMatrixHtml() {
+  const metadata = window.SET_DISCIPLINES_METADATA || [];
+  const isCollapsed = isSetMatrixGuideCollapsed;
+  const currentDisciplineKey = activeSetDisciplineFilter;
+
+  let filterPillsHtml = `
+    <button class="choice-pill ${!currentDisciplineKey ? 'selected' : ''}" onclick="setSetDisciplineFilter(null)" style="font-size: 11px; padding: 4px 10px;">
+      <span>All 100 Quests</span>
+    </button>
+  `;
+
+  metadata.forEach(d => {
+    const isSelected = currentDisciplineKey === d.key;
+    filterPillsHtml += `
+      <button class="choice-pill ${isSelected ? 'selected' : ''}" onclick="setSetDisciplineFilter('${d.key}')" style="font-size: 11px; padding: 4px 10px; border-color: ${d.color}66;">
+        <span style="color: ${d.color}; font-weight: 800; margin-right: 4px;">${d.symbol}</span>
+        <span>${escapeHtml(d.name)} (20)</span>
+      </button>
+    `;
+  });
+
+  let tableRowsHtml = '';
+  metadata.forEach(d => {
+    const isActiveRow = currentDisciplineKey === d.key;
+    tableRowsHtml += `
+      <tr class="${isActiveRow ? 'active-row' : ''}">
+        <td style="white-space: nowrap;">
+          <div style="display: flex; align-items: center; gap: 8px;">
+            <span class="join-symbol-badge" style="color: ${d.color}; border-color: ${d.color}66;">${d.symbol}</span>
+            <div>
+              <strong style="color: ${d.color}; font-size: 12px; font-family: var(--font-mono);">${escapeHtml(d.name)}</strong>
+              <div style="font-size: 10px; color: var(--text-muted);">${escapeHtml(d.concept)}</div>
+            </div>
+          </div>
+        </td>
+        <td style="font-size: 11px; line-height: 1.4; color: var(--text-secondary);">
+          ${escapeHtml(d.whenToUse)}
+        </td>
+        <td style="font-size: 11px; line-height: 1.4; color: #cbd5e1;">
+          ${escapeHtml(d.scenarios)}
+        </td>
+        <td>
+          <div class="join-trap-pill">
+            <span class="trap-icon">⚠️</span>
+            <span>${escapeHtml(d.traps)}</span>
+          </div>
+        </td>
+      </tr>
+    `;
+  });
+
+  return `
+    <div class="join-matrix-card">
+      <div class="join-matrix-header">
+        <div style="display: flex; align-items: center; gap: 8px;">
+          <span style="font-size: 16px;">🔀</span>
+          <span style="font-size: 13px; font-weight: 700; color: #fff; letter-spacing: 0.3px;">
+            SET OPERATIONS &amp; SCHEMA HARMONIZATION DECISION MATRIX &bull; 100 QUESTS
+          </span>
+          <span class="badge" style="background: rgba(99, 102, 241, 0.2); color: #818cf8; border: 1px solid rgba(99, 102, 241, 0.3); font-size: 10px;">
+            Mathematical Set Theory Reference
+          </span>
+        </div>
+        <button class="choice-pill" onclick="toggleSetMatrixGuide()" style="font-size: 11px; padding: 2px 8px; border-color: var(--border-subtle);">
+          <span>${isCollapsed ? '▼ Expand Decision Matrix' : '▲ Collapse Matrix'}</span>
+        </button>
+      </div>
+
+      <div class="join-filter-pills-row">
+        <span style="font-size: 11px; color: var(--text-muted); font-weight: 600; text-transform: uppercase; letter-spacing: 0.5px;">Filter Discipline:</span>
+        ${filterPillsHtml}
+      </div>
+
+      ${!isCollapsed ? `
+        <div class="join-matrix-table-wrap">
+          <table class="join-matrix-table">
+            <thead>
+              <tr>
+                <th style="width: 220px;">DISCIPLINE &bull; SYMBOL</th>
+                <th style="width: 220px;">SET THEORY CONCEPT</th>
+                <th>REAL-WORLD FINANCIAL &amp; ANALYTICS SCENARIOS</th>
+                <th style="width: 280px;">SILENT TRAP FOCUS &bull; DATA CORRUPTION</th>
+              </tr>
+            </thead>
+            <tbody>
+              ${tableRowsHtml}
+            </tbody>
+          </table>
+        </div>
+      ` : `
+        <div style="font-size: 11px; color: var(--text-muted); padding: 4px 0; display: flex; align-items: center; justify-content: space-between;">
+          <span><em>Matrix reference collapsed. Click &quot;Expand Decision Matrix&quot; above to view relational set theory scenarios and trap analysis.</em></span>
+          ${currentDisciplineKey ? `<span style="color: #818cf8; font-weight: 600;">Currently filtered: ${currentDisciplineKey.replace(/_/g, ' ').toUpperCase()} (20 Quests)</span>` : ''}
+        </div>
+      `}
+    </div>
+  `;
+}
+window.renderSetMasterMatrixHtml = renderSetMasterMatrixHtml;
+
+function setSetDisciplineFilter(discKey) {
+  if (activeSetDisciplineFilter === discKey) {
+    activeSetDisciplineFilter = null;
+  } else {
+    activeSetDisciplineFilter = discKey;
+  }
+  currentQuestIndex = 0;
+  questChunkStart = 0;
+  questChunkEnd = 20;
+
+  const levelSelect = document.getElementById('questDirectLevelSelect');
+  if (levelSelect) levelSelect.innerHTML = '';
+
+  renderQuestStepperTrack();
+  renderActiveQuest(0);
+
+  if (window.AudioFX) window.AudioFX.playClick();
+  if (window.SQL_BUDDY) {
+    if (activeSetDisciplineFilter) {
+      const meta = (window.SET_DISCIPLINES_METADATA || []).find(m => m.key === activeSetDisciplineFilter);
+      const name = meta ? meta.name : activeSetDisciplineFilter;
+      window.SQL_BUDDY.say(`Filtered to ${name} (20 Levels)! Master this set operation!`, 3500, 'celebrate');
+    } else {
+      window.SQL_BUDDY.say("Showing all 100 Set Operations quests across 5 disciplines!", 3000, 'happy');
+    }
+  }
+}
+window.setSetDisciplineFilter = setSetDisciplineFilter;
+
+function toggleSetMatrixGuide() {
+  isSetMatrixGuideCollapsed = !isSetMatrixGuideCollapsed;
+  renderActiveQuest(currentQuestIndex);
+  if (window.AudioFX) window.AudioFX.playClick();
+}
+window.toggleSetMatrixGuide = toggleSetMatrixGuide;
 
 function toggleQuestLevelDrawer() {
   const drawer = document.getElementById('questLevelDrawer');
@@ -8064,6 +8217,18 @@ const SQL_TRAP_CATALOG = {
   'CASE PRECEDENCE': {
     title: 'CASE Evaluation Order Precedence Trap',
     explanation: 'SQL evaluates `CASE` expressions top-to-bottom and exits on the FIRST matching branch. If lower thresholds precede higher thresholds, the higher threshold will never execute.'
+  },
+  'EXCEPT NON-COMMUTATIVE': {
+    title: 'Order Sensitivity in Set Differences (A EXCEPT B ≠ B EXCEPT A)',
+    explanation: 'Unlike UNION and INTERSECT, the EXCEPT operator is NOT commutative! (A EXCEPT B) returns records unique to A; (B EXCEPT A) returns records unique to B. Swapping the queries inverts your reconciliation audit!'
+  },
+  'COLUMN COUNT MISMATCH': {
+    title: 'Positional & Column Count Alignment Trap',
+    explanation: 'Every branch in a compound set query must project the exact same number of columns with compatible data types. Pad missing columns with synthetic literals like `NULL AS col`.'
+  },
+  'SECONDARY ALIAS IGNORED': {
+    title: 'Secondary Query Column Alias Silencing Trap',
+    explanation: 'Column aliases declared in the second or subsequent SELECT statements of a set operation are completely ignored. The engine names the output columns strictly using the FIRST SELECT statement!'
   }
 };
 
@@ -9651,8 +9816,337 @@ function renderPivotDualCodingHtml(quest, userSelections) {
 }
 window.renderPivotDualCodingHtml = renderPivotDualCodingHtml;
 
+// =============================================================================
+// DUAL-CODING SET OPERATIONS & RELATIONAL SET THEORY ENGINE
+// =============================================================================
+function renderSetDualCodingHtml(quest, userSelections) {
+  const tableA = quest.table || 'DomesticTrades';
+  const tableB = quest.table === 'DomesticTrades' ? 'OffshoreTrades' : 'RetailStoreOrders';
+  const allSelStr = Object.values(userSelections || {}).join(' ').toUpperCase();
+
+  let discKey = quest.disciplineKey || 'union_all';
+  if (allSelStr.includes('UNION ALL') || quest.targetQuery && quest.targetQuery.includes('UNION ALL')) {
+    if (allSelStr.includes('NULL AS') || (quest.targetQuery && quest.targetQuery.includes('NULL AS')) || (quest.disciplineKey === 'schema_harmonization')) {
+      discKey = 'schema_harmonization';
+    } else {
+      discKey = 'union_all';
+    }
+  } else if (allSelStr.includes('INTERSECT') || quest.targetQuery && quest.targetQuery.includes('INTERSECT')) {
+    discKey = 'intersect';
+  } else if (allSelStr.includes('EXCEPT') || allSelStr.includes('MINUS') || quest.targetQuery && quest.targetQuery.includes('EXCEPT')) {
+    discKey = 'except_minus';
+  } else if (allSelStr.includes('UNION') || quest.targetQuery && quest.targetQuery.includes('UNION')) {
+    discKey = 'union';
+  }
+
+  const configs = {
+    union_all: {
+      name: 'STREAM APPENDER (UNION ALL)',
+      symbol: '⧺',
+      color: '#38bdf8',
+      summary: 'Zero-Sort Throughput: Vertically stacks rows from Table A and Table B without performing a deduplication sort pass.',
+      badgeText: 'Zero-Sort Append Active'
+    },
+    union: {
+      name: 'DISTINCT SET MERGER (UNION)',
+      symbol: '∪',
+      color: '#10b981',
+      summary: 'Distinct Relational Union: Stacks records and executes a merge-sort pass to collapse duplicate tuples into a single record.',
+      badgeText: 'Deduplication Active'
+    },
+    intersect: {
+      name: 'RELATIONAL SET OVERLAP (INTERSECT)',
+      symbol: '∩',
+      color: '#f59e0b',
+      summary: 'Mutual Inclusion: Isolates only the common tuples that exist simultaneously in both Table A and Table B.',
+      badgeText: 'Common Overlap Active'
+    },
+    except_minus: {
+      name: 'SET DIFFERENCE BREAKS (EXCEPT)',
+      symbol: '∖',
+      color: '#ec4899',
+      summary: 'Reconciliation Break Audit: Isolates records residing in Table A that are completely absent from Table B (A ∖ B).',
+      badgeText: 'Anti-Set Audit Active'
+    },
+    schema_harmonization: {
+      name: 'HETEROGENEOUS SCHEMA ALIGNMENT',
+      symbol: '🧩',
+      color: '#a855f7',
+      summary: 'Synthetic Column Padding: Aligns disparate table structures using NULL AS placeholders and static system origin tags.',
+      badgeText: 'Synthetic Alignment Active'
+    }
+  };
+
+  const cfg = configs[discKey] || configs.union_all;
+
+  // 1. Diagram Panel
+  let diagramHtml = '';
+  if (discKey === 'union_all') {
+    diagramHtml = `
+      <div style="width: 100%; padding: 4px 6px;">
+        <div style="font-size: 10px; font-family: var(--font-mono); color: #38bdf8; font-weight: 700; margin-bottom: 8px; text-align: center;">
+          HIGH-THROUGHPUT DUAL STREAM CONSOLIDATION
+        </div>
+        <div style="display: flex; align-items: center; justify-content: space-between; gap: 6px;">
+          <div style="background: rgba(56, 189, 248, 0.12); border: 1px solid #38bdf8; border-radius: 4px; padding: 4px 6px; text-align: center; flex: 1;">
+            <div style="font-size: 7.5px; color: #7dd3fc;">STREAM A</div>
+            <div style="font-size: 8px; color: #fff; font-family: monospace;">[TX-101, $45k]<br>[TX-102, $12k]</div>
+          </div>
+          <span style="color: #38bdf8; font-size: 14px; font-weight: 800;">+</span>
+          <div style="background: rgba(56, 189, 248, 0.12); border: 1px solid #38bdf8; border-radius: 4px; padding: 4px 6px; text-align: center; flex: 1;">
+            <div style="font-size: 7.5px; color: #7dd3fc;">STREAM B</div>
+            <div style="font-size: 8px; color: #fff; font-family: monospace;">[TX-201, $88k]<br>[TX-102, $12k]</div>
+          </div>
+        </div>
+        <div style="margin-top: 6px; background: rgba(56, 189, 248, 0.2); border: 1px solid #38bdf8; border-radius: 4px; padding: 4px; text-align: center; font-size: 8.5px; font-family: monospace; color: #fff;">
+          &darr; ZERO-SORT APPEND: 4 Total Rows Preserved (Duplicates Kept) &darr;
+        </div>
+      </div>
+    `;
+  } else if (discKey === 'union') {
+    diagramHtml = `
+      <div style="width: 100%; padding: 4px 6px;">
+        <div style="font-size: 10px; font-family: var(--font-mono); color: #10b981; font-weight: 700; margin-bottom: 8px; text-align: center;">
+          RELATIONAL SET UNION &bull; MERGE SORT DEDUP
+        </div>
+        <div style="display: flex; align-items: center; justify-content: center; gap: 8px;">
+          <div style="width: 55px; height: 55px; border-radius: 50%; background: rgba(16, 185, 129, 0.25); border: 1.5px solid #10b981; display: flex; align-items: center; justify-content: center; font-size: 9px; font-weight: 800; color: #fff;">
+            SET A
+          </div>
+          <span style="color: #10b981; font-size: 14px; font-weight: 800;">&cup;</span>
+          <div style="width: 55px; height: 55px; border-radius: 50%; background: rgba(16, 185, 129, 0.25); border: 1.5px solid #10b981; display: flex; align-items: center; justify-content: center; font-size: 9px; font-weight: 800; color: #fff;">
+            SET B
+          </div>
+        </div>
+        <div style="font-size: 8.5px; color: #6ee7b7; text-align: center; margin-top: 6px;">
+          ⚡ Merges domain &bull; Collapses duplicate [TX-102] into 1 row
+        </div>
+      </div>
+    `;
+  } else if (discKey === 'intersect') {
+    diagramHtml = `
+      <div style="width: 100%; padding: 4px 6px;">
+        <div style="font-size: 10px; font-family: var(--font-mono); color: #f59e0b; font-weight: 700; margin-bottom: 8px; text-align: center;">
+          MUTUAL INCLUSION &bull; SET OVERLAP LENS
+        </div>
+        <div style="position: relative; width: 140px; height: 55px; margin: 0 auto;">
+          <div style="position: absolute; left: 15px; width: 52px; height: 52px; border-radius: 50%; border: 1.5px dashed rgba(245,158,11,0.5); background: rgba(245,158,11,0.08);"></div>
+          <div style="position: absolute; right: 15px; width: 52px; height: 52px; border-radius: 50%; border: 1.5px dashed rgba(245,158,11,0.5); background: rgba(245,158,11,0.08);"></div>
+          <div style="position: absolute; left: 45px; top: 8px; width: 50px; height: 36px; background: rgba(245, 158, 11, 0.45); border: 1.5px solid #f59e0b; border-radius: 18px; display: flex; align-items: center; justify-content: center; font-size: 8px; font-weight: 800; color: #fff;">
+            A &cap; B
+          </div>
+        </div>
+        <div style="font-size: 8.5px; color: #fde68a; text-align: center; margin-top: 6px;">
+          Only records present in BOTH tables survive
+        </div>
+      </div>
+    `;
+  } else if (discKey === 'except_minus') {
+    diagramHtml = `
+      <div style="width: 100%; padding: 4px 6px;">
+        <div style="font-size: 10px; font-family: var(--font-mono); color: #ec4899; font-weight: 700; margin-bottom: 8px; text-align: center;">
+          RECONCILIATION BREAK FINDER &bull; (A ∖ B)
+        </div>
+        <div style="display: flex; align-items: center; justify-content: center; gap: 8px;">
+          <div style="width: 55px; height: 55px; border-radius: 50%; background: rgba(236, 72, 153, 0.35); border: 2px solid #ec4899; display: flex; flex-direction: column; align-items: center; justify-content: center; font-size: 8px; font-weight: 800; color: #fff;">
+            <span>A ONLY</span>
+            <span style="font-size: 7px; color: #fbcfe8;">(Breaks)</span>
+          </div>
+          <span style="color: #ec4899; font-size: 14px; font-weight: 800;">∖</span>
+          <div style="width: 55px; height: 55px; border-radius: 50%; background: rgba(255, 255, 255, 0.04); border: 1px dashed rgba(255, 255, 255, 0.2); display: flex; align-items: center; justify-content: center; font-size: 8px; color: var(--text-muted);">
+            SET B
+          </div>
+        </div>
+        <div style="font-size: 8.5px; color: #fbcfe8; text-align: center; margin-top: 6px;">
+          Flags records in A missing from clearinghouse B
+        </div>
+      </div>
+    `;
+  } else {
+    // Schema Harmonization
+    diagramHtml = `
+      <div style="width: 100%; padding: 4px 6px;">
+        <div style="font-size: 10px; font-family: var(--font-mono); color: #a855f7; font-weight: 700; margin-bottom: 8px; text-align: center;">
+          SYNTHETIC COLUMN PADDING JIG
+        </div>
+        <div style="display: flex; flex-direction: column; gap: 4px; font-family: monospace; font-size: 8.5px;">
+          <div style="background: rgba(168, 85, 247, 0.15); border: 1px solid #a855f7; border-radius: 3px; padding: 3px 6px; display: flex; justify-content: space-between;">
+            <span style="color: #d8b4fe;">TABLE A:</span>
+            <span style="color: #fff;">[ID, AMT, <strong style="color: #f59e0b;">NULL AS fee</strong>, 'MODERN']</span>
+          </div>
+          <div style="background: rgba(168, 85, 247, 0.1); border: 1px solid rgba(168, 85, 247, 0.4); border-radius: 3px; padding: 3px 6px; display: flex; justify-content: space-between;">
+            <span style="color: #d8b4fe;">TABLE B:</span>
+            <span style="color: #fff;">[ID, AMT, <strong style="color: #38bdf8;">real_fee</strong>, 'LEGACY']</span>
+          </div>
+        </div>
+        <div style="font-size: 8.5px; color: #d8b4fe; text-align: center; margin-top: 6px;">
+          Identical 4-column arity achieved &bull; Query executes cleanly
+        </div>
+      </div>
+    `;
+  }
+
+  // 2. Synchronous Table Projection
+  let rowsHtml = '';
+  if (discKey === 'union_all') {
+    rowsHtml = `
+      <tr class="row-match">
+        <td><span class="match-key-pill" style="border-color: #38bdf8; color: #38bdf8;">TX-101</span></td>
+        <td>DOMESTIC</td>
+        <td>$45,000.00</td>
+        <td>Source A</td>
+        <td style="text-align: right;"><span class="row-status-pill keep">✓ Appended</span></td>
+      </tr>
+      <tr class="row-match">
+        <td><span class="match-key-pill" style="border-color: #38bdf8; color: #38bdf8;">TX-102</span></td>
+        <td>DOMESTIC</td>
+        <td>$12,000.00</td>
+        <td>Source A</td>
+        <td style="text-align: right;"><span class="row-status-pill keep">✓ Appended</span></td>
+      </tr>
+      <tr class="row-match">
+        <td><span class="match-key-pill" style="border-color: #38bdf8; color: #38bdf8;">TX-102</span></td>
+        <td>OFFSHORE</td>
+        <td>$12,000.00</td>
+        <td>Source B</td>
+        <td style="text-align: right;"><span class="row-status-pill keep">✓ Appended (Dup)</span></td>
+      </tr>
+    `;
+  } else if (discKey === 'union') {
+    rowsHtml = `
+      <tr class="row-match">
+        <td><span class="match-key-pill" style="border-color: #10b981; color: #10b981;">CLI-001</span></td>
+        <td>alex@invest.com</td>
+        <td>Active Account</td>
+        <td>Source A</td>
+        <td style="text-align: right;"><span class="row-status-pill keep">✓ Distinct</span></td>
+      </tr>
+      <tr class="row-match">
+        <td><span class="match-key-pill" style="border-color: #10b981; color: #10b981;">CLI-002</span></td>
+        <td>brooke@capital.org</td>
+        <td>Marketing Lead</td>
+        <td>Source B</td>
+        <td style="text-align: right;"><span class="row-status-pill keep">✓ Distinct</span></td>
+      </tr>
+      <tr class="row-match">
+        <td><span class="match-key-pill" style="border-color: #10b981; color: #10b981;">CLI-005</span></td>
+        <td>charles@fund.net</td>
+        <td>Overlapping Lead</td>
+        <td>A &amp; B Collapsed</td>
+        <td style="text-align: right;"><span class="row-status-pill keep" style="background: rgba(16,185,129,0.2); color: #34d399;">★ Deduplicated</span></td>
+      </tr>
+    `;
+  } else if (discKey === 'intersect') {
+    rowsHtml = `
+      <tr class="row-match">
+        <td><span class="match-key-pill" style="border-color: #f59e0b; color: #f59e0b;">VIP-801</span></td>
+        <td>Brokerage + Wealth</td>
+        <td>Active in Both</td>
+        <td>Mutual Set</td>
+        <td style="text-align: right;"><span class="row-status-pill keep" style="background: rgba(245,158,11,0.2); color: #fbbf24;">✓ Intersect Match</span></td>
+      </tr>
+      <tr class="row-match">
+        <td><span class="match-key-pill" style="border-color: #f59e0b; color: #f59e0b;">VIP-809</span></td>
+        <td>Brokerage + Wealth</td>
+        <td>Active in Both</td>
+        <td>Mutual Set</td>
+        <td style="text-align: right;"><span class="row-status-pill keep" style="background: rgba(245,158,11,0.2); color: #fbbf24;">✓ Intersect Match</span></td>
+      </tr>
+    `;
+  } else if (discKey === 'except_minus') {
+    rowsHtml = `
+      <tr class="row-match">
+        <td><span class="match-key-pill" style="border-color: #ec4899; color: #ec4899;">BRK-901</span></td>
+        <td>Front Office OMS</td>
+        <td>$250,000.00</td>
+        <td>Missing in Clearing</td>
+        <td style="text-align: right;"><span class="row-status-pill keep" style="background: rgba(236,72,153,0.2); color: #f472b6;">🚩 Audit Break</span></td>
+      </tr>
+      <tr class="row-match">
+        <td><span class="match-key-pill" style="border-color: #ec4899; color: #ec4899;">BRK-904</span></td>
+        <td>Front Office OMS</td>
+        <td>$115,000.00</td>
+        <td>Missing in Clearing</td>
+        <td style="text-align: right;"><span class="row-status-pill keep" style="background: rgba(236,72,153,0.2); color: #f472b6;">🚩 Audit Break</span></td>
+      </tr>
+    `;
+  } else {
+    // Harmonization
+    rowsHtml = `
+      <tr class="row-match">
+        <td><span class="match-key-pill" style="border-color: #a855f7; color: #a855f7;">ACC-101</span></td>
+        <td>$140,000.00</td>
+        <td><span class="null-pill">&lt;NULL&gt;</span> (Padded)</td>
+        <td>MODERN</td>
+        <td style="text-align: right;"><span class="row-status-pill keep">✓ Harmonized</span></td>
+      </tr>
+      <tr class="row-match">
+        <td><span class="match-key-pill" style="border-color: #a855f7; color: #a855f7;">ACC-202</span></td>
+        <td>$98,000.00</td>
+        <td>$45.00 Real Fee</td>
+        <td>LEGACY</td>
+        <td style="text-align: right;"><span class="row-status-pill keep">✓ Harmonized</span></td>
+      </tr>
+    `;
+  }
+
+  return `
+    <div class="live-preview-header">
+      <div class="live-preview-title">
+        <span class="join-symbol-badge" style="color: ${cfg.color}; border-color: ${cfg.color}66; width: 18px; height: 18px; font-size: 11px;">${cfg.symbol}</span>
+        <span>DUAL-CODING SET OPERATIONS &amp; HARMONIZATION ENGINE:</span>
+        <span style="color: ${cfg.color}; font-weight: 800;">${cfg.name}</span>
+      </div>
+      <span class="live-preview-subtitle">${cfg.badgeText}</span>
+    </div>
+
+    <div style="font-size: 11px; color: var(--text-secondary); margin-bottom: 8px; line-height: 1.45;">
+      ${cfg.summary}
+    </div>
+
+    <div class="join-dual-coding-grid">
+      <!-- Left Column: Set Theory Venn / Stream Visual -->
+      <div class="join-venn-card" style="border-color: ${cfg.color}33;">
+        ${diagramHtml}
+      </div>
+
+      <!-- Right Column: Live Table Record Alignment -->
+      <div class="join-live-table-card">
+        <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 6px; padding-bottom: 4px; border-bottom: 1px solid rgba(255,255,255,0.06);">
+          <span style="font-size: 10px; font-family: var(--font-mono); color: var(--text-muted); font-weight: 700;">
+            COMPOUND SET RESULT PROJECTION
+          </span>
+          <span style="font-size: 9.5px; font-family: var(--font-mono); color: ${cfg.color};">
+            Tables: ${escapeHtml(tableA)} &bull; ${escapeHtml(tableB)}
+          </span>
+        </div>
+        <table class="live-preview-table">
+          <thead>
+            <tr>
+              <th style="width: 85px;">ROW ID</th>
+              <th>ATTRIBUTE / EMAIL</th>
+              <th>METRIC / VALUE</th>
+              <th>SOURCE ORIGIN</th>
+              <th style="width: 130px; text-align: right;">STATUS</th>
+            </tr>
+          </thead>
+          <tbody>
+            ${rowsHtml}
+          </tbody>
+        </table>
+      </div>
+    </div>
+  `;
+}
+window.renderSetDualCodingHtml = renderSetDualCodingHtml;
+
 function renderLiveTransformationHtml(quest, userSelections) {
-  // 1. Dual Coding for Section 08 (Conditional Logic & Data Pivoting)
+  // 1. Dual Coding for Section 09 (Set Operations & Schema Harmonization)
+  if (currentQuestSection === 'section9' || ['union_all', 'union', 'intersect', 'except_minus', 'schema_harmonization'].includes(quest.disciplineKey)) {
+    return renderSetDualCodingHtml(quest, userSelections);
+  }
+
+  // 2. Dual Coding for Section 08 (Conditional Logic & Data Pivoting)
   if (currentQuestSection === 'section8' || ['searched_case', 'matrix_pivoting', 'null_sanitization', 'multi_conditional', 'matrix_unpivoting'].includes(quest.disciplineKey)) {
     return renderPivotDualCodingHtml(quest, userSelections);
   }
@@ -9989,6 +10483,8 @@ function renderFillBlankQuest(container, quest) {
     ${currentQuestSection === 'section7' ? renderCteMasterMatrixHtml() : ''}
     <!-- Section 08: Conditional Logic & Data Pivoting Decision Matrix Reference -->
     ${currentQuestSection === 'section8' ? renderPivotMasterMatrixHtml() : ''}
+    <!-- Section 09: Set Operations & Schema Harmonization Decision Matrix Reference -->
+    ${currentQuestSection === 'section9' ? renderSetMasterMatrixHtml() : ''}
 
     <!-- Faded Scaffolding Tier Banner -->
     ${getScaffoldingBannerHtml(quest, currentQuestIndex)}
