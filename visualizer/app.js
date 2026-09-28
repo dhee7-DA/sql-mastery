@@ -13861,7 +13861,7 @@ function renderActiveQuest(idx) {
 
   updateQuestSidebars(quest, idx, questsList.length);
 
-  if (quest.type === 'fill_blank') {
+  if (!quest.type || quest.type === 'fill_blank') {
     renderFillBlankQuest(container, quest);
   } else if (quest.type === 'slider') {
     renderSliderQuest(container, quest);
@@ -13871,6 +13871,8 @@ function renderActiveQuest(idx) {
     renderSpotBugQuest(container, quest);
   } else if (quest.type === 'boss') {
     renderBossQuest(container, quest);
+  } else {
+    renderFillBlankQuest(container, quest);
   }
 }
 

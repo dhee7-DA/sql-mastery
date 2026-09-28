@@ -604,21 +604,35 @@ function generateQuestsForDiscipline(disc, startGlobalId) {
       }
     }
 
+    const tableName = schemaStr.split('(')[0].trim();
+
     // Assemble quest object
     quests.push({
       id: globalId,
+      discipline: disc.name,
       disciplineKey: disc.key,
       disciplineName: disc.name,
       disciplineSymbol: disc.symbol,
       disciplineColor: disc.color,
+      disciplineLevel: lvl,
       title: title,
+      subtitle: scenario,
+      type: 'fill_blank',
+      category: `Section 06: Window Functions (${disc.name})`,
+      subcluster: `${disc.name} (${diff})`,
       level: lvl,
+      levelDisplay: `${disc.symbol} Lvl ${padLvl}`,
       difficulty: diff,
       tier: tier,
       tierColor: tierColor,
+      task: scenario,
+      xp: diff === 'Easy' ? 30 : (diff === 'Medium' ? 45 : 60),
+      table: tableName,
       scenario: scenario,
-      targetQuery: targetQuery,
+      businessObjective: scenario,
+      schemaSnippet: schemaStr,
       schema: schemaStr,
+      targetQuery: targetQuery,
       template: template,
       slots: slots
     });
