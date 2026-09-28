@@ -7433,7 +7433,7 @@ function switchQuestSection(sectionKey) {
     else if (sectionKey === 'section3') footerTrack.textContent = 'Section 03: ORDER BY & Slicing (100)';
     else if (sectionKey === 'section4') footerTrack.textContent = 'Section 04: Aggregations & GROUP BY (100)';
     else if (sectionKey === 'section5') footerTrack.textContent = 'Section 05: Relational JOINs Arena (420)';
-    else if (sectionKey === 'section6') footerTrack.textContent = 'Section 06: Window Functions Arena (100)';
+    else if (sectionKey === 'section6') footerTrack.textContent = 'Section 06: Window Functions Arena (420)';
     else if (sectionKey === 'section7') footerTrack.textContent = 'Section 07: Subqueries & CTEs Arena (100)';
     else if (sectionKey === 'section8') footerTrack.textContent = 'Section 08: Conditional Pivots Arena (100)';
     else if (sectionKey === 'section9') footerTrack.textContent = 'Section 09: Set Operations Arena (100)';
@@ -7462,7 +7462,7 @@ function switchQuestSection(sectionKey) {
     } else if (sectionKey === 'section5') {
       window.SQL_BUDDY.say("🏛️ Section 05: Relational JOINs Master Arena loaded (420 Levels across 7 Disciplines)! Let's master multi-table relational algebra!", 4500, 'celebrate');
     } else if (sectionKey === 'section6') {
-      window.SQL_BUDDY.say("🪟 Section 06: Window Functions & Analytical Partitioning loaded (100 Levels)! Master ROW_NUMBER, LEAD/LAG, and sliding frames!", 4500, 'celebrate');
+      window.SQL_BUDDY.say("🪟 Section 06: Window Functions Master Arena loaded (420 Levels across 7 Disciplines)! Master ranking, offsets, running totals, and sliding frames!", 4500, 'celebrate');
     } else if (sectionKey === 'section7') {
       window.SQL_BUDDY.say("🌳 Section 07: Subqueries & CTEs Master Arena loaded (100 Levels)! Master modular pipelines, EXISTS, and recursive trees!", 4500, 'celebrate');
     } else if (sectionKey === 'section8') {
@@ -7648,7 +7648,7 @@ function renderWindowMasterMatrixHtml() {
 
   let filterPillsHtml = `
     <button class="choice-pill ${!currentDisciplineKey ? 'selected' : ''}" onclick="setWindowDisciplineFilter(null)" style="font-size: 11px; padding: 4px 10px;">
-      <span>All 100 Quests</span>
+      <span>All 420 Quests</span>
     </button>
   `;
 
@@ -7657,7 +7657,7 @@ function renderWindowMasterMatrixHtml() {
     filterPillsHtml += `
       <button class="choice-pill ${isSelected ? 'selected' : ''}" onclick="setWindowDisciplineFilter('${d.key}')" style="font-size: 11px; padding: 4px 10px; border-color: ${d.color}66;">
         <span style="color: ${d.color}; font-weight: 800; margin-right: 4px;">${d.symbol}</span>
-        <span>${escapeHtml(d.name)} (20)</span>
+        <span>${escapeHtml(d.name)} (60)</span>
       </button>
     `;
   });
@@ -7691,7 +7691,7 @@ function renderWindowMasterMatrixHtml() {
         </td>
         <td style="text-align: right; white-space: nowrap;">
           <button class="card-nav-btn ${isActiveRow ? 'action-btn-primary' : ''}" style="padding: 4px 10px; font-size: 10px;" onclick="setWindowDisciplineFilter('${d.key}')">
-            ${isActiveRow ? '✓ Active (20)' : `Practice (${d.name.split(' ')[0]})`}
+            ${isActiveRow ? '✓ Active (60)' : `Practice (${d.name.split(' ')[0]})`}
           </button>
         </td>
       </tr>
@@ -7706,7 +7706,7 @@ function renderWindowMasterMatrixHtml() {
           <div>
             <div style="font-size: 13px; font-weight: 700; color: #c084fc; display: flex; align-items: center; gap: 8px;">
               <span>Window Functions &amp; Analytical Partitioning Decision Matrix</span>
-              <span class="status-pill" style="font-size: 9.5px; color: #a855f7; background: rgba(168,85,247,0.12); border-color: rgba(168,85,247,0.3);">5 Disciplines • 100 Problems</span>
+              <span class="status-pill" style="font-size: 9.5px; color: #a855f7; background: rgba(168,85,247,0.12); border-color: rgba(168,85,247,0.3);">7 Disciplines • 420 Problems</span>
             </div>
             <div style="font-size: 11px; color: var(--text-muted); margin-top: 2px;">
               Cross-reference table: Which window function or sliding frame matches your business requirement, and how to avoid silent partitioning traps.
@@ -7743,7 +7743,7 @@ function renderWindowMasterMatrixHtml() {
       ` : `
         <div style="font-size: 11px; color: var(--text-muted); padding: 4px 0; display: flex; align-items: center; justify-content: space-between;">
           <span><em>Matrix reference collapsed. Click &quot;Expand Decision Matrix&quot; above to view analytical scenarios and trap analysis.</em></span>
-          ${currentDisciplineKey ? `<span style="color: #c084fc; font-weight: 600;">Currently filtered: ${currentDisciplineKey.replace(/_/g, ' ').toUpperCase()} (20 Quests)</span>` : ''}
+          ${currentDisciplineKey ? `<span style="color: #c084fc; font-weight: 600;">Currently filtered: ${currentDisciplineKey.replace(/_/g, ' ').toUpperCase()} (60 Quests)</span>` : ''}
         </div>
       `}
     </div>

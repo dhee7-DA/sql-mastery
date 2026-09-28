@@ -86,6 +86,8 @@ An institutional-grade, in-browser execution studio and visual masterclass locat
 | **Day 13** | `day-13-business-analytics` | Churn Analysis, Retention Cohorts, MoM Growth Queries | Advanced | 🟡 Next Up |
 | **Day 14** | `day-14-capstone-project` | Comprehensive End-to-End Analytics Case Study & Presentation | Capstone | ⚪ Pending |
 
+> 🪟 **Important Materials & Reference**: Complete **Window Functions Master Vault (420 Problems across 7 Disciplines & Master Decision Matrix)** available in [`docs/IMPORTANT_MATERIALS_WINDOW_FUNCTIONS.md`](./docs/IMPORTANT_MATERIALS_WINDOW_FUNCTIONS.md) and [`docs/IMPORTANT_QUESTIONS_WINDOW_FUNCTIONS.md`](./docs/IMPORTANT_QUESTIONS_WINDOW_FUNCTIONS.md).
+
 ---
 
 ## 📁 Repository Architecture

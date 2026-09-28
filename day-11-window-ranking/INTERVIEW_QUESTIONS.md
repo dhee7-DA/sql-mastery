@@ -1,5 +1,8 @@
 # 💼 Day 11: Real-World Interview Case Studies & System Architecture Scenarios
 
+> 📘 **Curated Compendium**: For the comprehensive 420-level syllabus, decision matrix, and production traps across all 7 window function disciplines, see [`docs/IMPORTANT_MATERIALS_WINDOW_FUNCTIONS.md`](../docs/IMPORTANT_MATERIALS_WINDOW_FUNCTIONS.md) and [`docs/IMPORTANT_QUESTIONS_WINDOW_FUNCTIONS.md`](../docs/IMPORTANT_QUESTIONS_WINDOW_FUNCTIONS.md).
+> 🎮 **Interactive Arena**: Practice all 420 problems with real-time feedback in Section 06 of the Visualizer.
+
 Window functions are the single highest-frequency topic in Senior Data Analyst, Analytics Engineer, and Data Scientist technical interviews across FAANG and Tier-1 tech firms.
 
 ---
