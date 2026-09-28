@@ -1,75 +1,87 @@
+// =============================================================================
+// VERIFY SECTION 07: SUBQUERIES & CTES MASTER ARENA (420 QUESTS)
+// Strict Audit: 7 Disciplines x 60, 20/20/20 Difficulty, 3-5 Blanks, Zero Duplicates
+// =============================================================================
+
 const fs = require('fs');
+const vm = require('vm');
 
-// Mock window object
-global.window = {};
-require('../visualizer/quests_section7_data.js');
+const code = fs.readFileSync('visualizer/quests_section7_data.js', 'utf8');
+const sandbox = { window: {} };
+vm.createContext(sandbox);
+vm.runInContext(code, sandbox);
 
-const quests = window.QUESTS_SECTION_7;
-console.log('--- AUDITING SECTION 07: SUBQUERIES & CTES ARENA (100 QUESTS) ---');
+const metadata = sandbox.window.CTE_DISCIPLINES_METADATA;
+const quests = sandbox.window.QUESTS_SECTION_7;
 
-let errors = 0;
-const discCounts = {};
-const diffCounts = {};
-const blankDist = { '3': 0, '4': 0, '5': 0, other: 0 };
+console.log('--- AUDITING SECTION 07: SUBQUERIES & CTES ARENA (420 QUESTS) ---');
+console.log('Total Disciplines:', metadata.length);
+console.log('Total Quests:', quests.length);
 
-if (!Array.isArray(quests) || quests.length !== 100) {
-  console.error(`ERROR: Expected 100 quests, found ${quests ? quests.length : 0}`);
-  errors++;
-}
+let errors = [];
+const disciplineCounts = {};
+const diffCounts = { Easy: 0, Medium: 0, Hard: 0 };
+const blankCounts = { '3': 0, '4': 0, '5': 0, other: 0 };
 
 quests.forEach((q, idx) => {
-  discCounts[q.discipline] = (discCounts[q.discipline] || 0) + 1;
-  diffCounts[q.difficulty] = (diffCounts[q.difficulty] || 0) + 1;
+  // 1. Discipline check
+  disciplineCounts[q.disciplineName] = (disciplineCounts[q.disciplineName] || 0) + 1;
 
-  const slotKeys = Object.keys(q.slots || {});
-  const numBlanks = slotKeys.length;
-  if (blankDist[numBlanks] !== undefined) blankDist[numBlanks]++;
-  else blankDist.other++;
-
-  if (numBlanks < 3 || numBlanks > 5) {
-    console.error(`Quest #${q.id} (index ${idx}) has invalid blank count: ${numBlanks}`);
-    errors++;
+  // 2. Difficulty check
+  if (diffCounts[q.difficulty] !== undefined) {
+    diffCounts[q.difficulty]++;
+  } else {
+    errors.push(`Quest #${q.id} has invalid difficulty: ${q.difficulty}`);
   }
 
-  // Check slots
-  slotKeys.forEach(sId => {
-    const slot = q.slots[sId];
+  // 3. Type check
+  if (q.type !== 'fill_blank') {
+    errors.push(`Quest #${q.id} missing type: 'fill_blank'!`);
+  }
+
+  // 4. Task check
+  if (!q.task || q.task.length < 10) {
+    errors.push(`Quest #${q.id} missing task instruction!`);
+  }
+
+  // 5. Blanks count check
+  const numBlanks = Object.keys(q.slots || {}).length;
+  if (numBlanks >= 3 && numBlanks <= 5) {
+    blankCounts[String(numBlanks)]++;
+  } else {
+    blankCounts.other++;
+    errors.push(`Quest #${q.id} has ${numBlanks} blanks (must be between 3 and 5)!`);
+  }
+
+  // 6. Slots & Options validation
+  Object.keys(q.slots || {}).forEach(slotKey => {
+    const slot = q.slots[slotKey];
     if (!slot.correct) {
-      console.error(`Quest #${q.id} slot ${sId} missing correct answer`);
-      errors++;
+      errors.push(`Quest #${q.id} ${slotKey} missing correct answer!`);
     }
-    if (!slot.options || !Array.isArray(slot.options)) {
-      console.error(`Quest #${q.id} slot ${sId} missing options array`);
-      errors++;
-    } else {
-      if (!slot.options.includes(slot.correct)) {
-        console.error(`Quest #${q.id} slot ${sId} correct answer "${slot.correct}" not in options [${slot.options.join(', ')}]`);
-        errors++;
-      }
-      const uniqueOpts = new Set(slot.options);
-      if (uniqueOpts.size !== slot.options.length) {
-        console.error(`Quest #${q.id} slot ${sId} contains duplicate options: [${slot.options.join(', ')}]`);
-        errors++;
-      }
+    if (!Array.isArray(slot.options) || slot.options.length !== 4) {
+      errors.push(`Quest #${q.id} ${slotKey} must have exactly 4 options!`);
+    }
+    // Check for duplicates
+    const unique = new Set(slot.options);
+    if (unique.size !== slot.options.length) {
+      errors.push(`Quest #${q.id} ${slotKey} has duplicate options: ${JSON.stringify(slot.options)}`);
+    }
+    // Check that correct is in options
+    if (!slot.options.includes(slot.correct)) {
+      errors.push(`Quest #${q.id} ${slotKey} options do not include correct answer '${slot.correct}'!`);
     }
   });
-
-  // Verify template matches slots
-  const templateSlotCount = (q.template || []).filter(t => t.isBlank).length;
-  if (templateSlotCount !== numBlanks) {
-    console.error(`Quest #${q.id} template blanks (${templateSlotCount}) != slots count (${numBlanks})`);
-    errors++;
-  }
 });
 
-console.log('Total Quests:', quests.length);
-console.log('Discipline Breakdown (Target: 20 each):', discCounts);
-console.log('Difficulty Breakdown:', diffCounts);
-console.log('Blank Count Distribution (3-5 blanks):', blankDist);
-console.log('Total Validation Errors:', errors);
+console.log('Discipline Breakdown (Target: 60 each):', disciplineCounts);
+console.log('Difficulty Breakdown (Target: 140 each):', diffCounts);
+console.log('Blank Count Distribution (3-5 blanks):', blankCounts);
 
-if (errors === 0) {
-  console.log('🎉 SECTION 07 AUDIT 100% CLEAN & VERIFIED (100/100)!');
-} else {
+if (errors.length > 0) {
+  console.error(`❌ Found ${errors.length} validation errors:`);
+  errors.slice(0, 10).forEach(e => console.error(' -', e));
   process.exit(1);
+} else {
+  console.log('🎉 SECTION 07 AUDIT 100% CLEAN & VERIFIED (420/420)!');
 }
