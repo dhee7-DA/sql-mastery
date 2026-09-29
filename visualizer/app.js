@@ -7437,7 +7437,7 @@ function switchQuestSection(sectionKey) {
     else if (sectionKey === 'section7') footerTrack.textContent = 'Section 07: Subqueries & CTEs Arena (420)';
     else if (sectionKey === 'section8') footerTrack.textContent = 'Section 08: Conditional Pivots Arena (420)';
     else if (sectionKey === 'section9') footerTrack.textContent = 'Section 09: Set Operations Arena (420)';
-    else if (sectionKey === 'section10') footerTrack.textContent = 'Section 10: DDL & Architecture Arena (100)';
+    else if (sectionKey === 'section10') footerTrack.textContent = 'Section 10: DDL & Constraints Arena (420)';
     else if (sectionKey === 'section11') footerTrack.textContent = 'Section 11: DML & Transactions Arena (100)';
     else if (sectionKey === 'section12') footerTrack.textContent = 'Section 12: Views & Procedures Arena (100)';
     else if (sectionKey === 'section13') footerTrack.textContent = 'Section 13: Query Optimization Arena (100)';
@@ -7470,7 +7470,7 @@ function switchQuestSection(sectionKey) {
     } else if (sectionKey === 'section9') {
       window.SQL_BUDDY.say("🔀 Section 09: Set Operations & Schema Harmonization loaded (420 Levels across 7 Disciplines)! Master multiset algebra, reconciliation breaks, and schema alignment!", 4500, 'celebrate');
     } else if (sectionKey === 'section10') {
-      window.SQL_BUDDY.say("🏗️ Section 10: DDL, Schema Architecture & Integrity Constraints loaded (100 Levels)! Build bulletproof database foundations!", 4500, 'celebrate');
+      window.SQL_BUDDY.say("🏗️ Section 10: DDL, Schema Architecture & Integrity Constraints loaded (420 Levels across 7 Disciplines)! Build bulletproof database foundations!", 4500, 'celebrate');
     } else if (sectionKey === 'section11') {
       window.SQL_BUDDY.say("⚡ Section 11: DML, Idempotent Upserts & ACID Transactions loaded (100 Levels)! Execute bulletproof, crash-resilient mutations!", 4500, 'celebrate');
     } else if (sectionKey === 'section12') {
@@ -8234,7 +8234,7 @@ function renderDdlMasterMatrixHtml() {
 
   let filterPillsHtml = `
     <button class="choice-pill ${!currentDisciplineKey ? 'selected' : ''}" onclick="setDdlDisciplineFilter(null)" style="font-size: 11px; padding: 4px 10px;">
-      <span>All 100 Quests</span>
+      <span>All 420 Quests</span>
     </button>
   `;
 
@@ -8243,7 +8243,7 @@ function renderDdlMasterMatrixHtml() {
     filterPillsHtml += `
       <button class="choice-pill ${isSelected ? 'selected' : ''}" onclick="setDdlDisciplineFilter('${d.key}')" style="font-size: 11px; padding: 4px 10px; border-color: ${d.color}66;">
         <span style="color: ${d.color}; font-weight: 800; margin-right: 4px;">${d.symbol}</span>
-        <span>${escapeHtml(d.name)} (20)</span>
+        <span>${escapeHtml(d.name)} (60)</span>
       </button>
     `;
   });
@@ -8284,7 +8284,7 @@ function renderDdlMasterMatrixHtml() {
         <div style="display: flex; align-items: center; gap: 8px;">
           <span style="font-size: 16px;">🏗️</span>
           <span style="font-size: 13px; font-weight: 700; color: #fff; letter-spacing: 0.3px;">
-            DDL, SCHEMA ARCHITECTURE &amp; CONSTRAINTS DECISION MATRIX &bull; 100 QUESTS
+            DDL, SCHEMA ARCHITECTURE &amp; CONSTRAINTS DECISION MATRIX &bull; 420 QUESTS
           </span>
           <span class="badge" style="background: rgba(236, 72, 153, 0.2); color: #f472b6; border: 1px solid rgba(236, 72, 153, 0.3); font-size: 10px;">
             Physical Architecture Reference
@@ -8319,7 +8319,7 @@ function renderDdlMasterMatrixHtml() {
       ` : `
         <div style="font-size: 11px; color: var(--text-muted); padding: 4px 0; display: flex; align-items: center; justify-content: space-between;">
           <span><em>Matrix reference collapsed. Click &quot;Expand Decision Matrix&quot; above to view physical architecture rules and constraint traps.</em></span>
-          ${currentDisciplineKey ? `<span style="color: #f472b6; font-weight: 600;">Currently filtered: ${currentDisciplineKey.replace(/_/g, ' ').toUpperCase()} (20 Quests)</span>` : ''}
+          ${currentDisciplineKey ? `<span style="color: #f472b6; font-weight: 600;">Currently filtered: ${currentDisciplineKey.replace(/_/g, ' ').toUpperCase()} (60 Quests: 20E / 20M / 20H)</span>` : ''}
         </div>
       `}
     </div>
@@ -8348,9 +8348,9 @@ function setDdlDisciplineFilter(discKey) {
     if (activeDdlDisciplineFilter) {
       const meta = (window.DDL_DISCIPLINES_METADATA || []).find(m => m.key === activeDdlDisciplineFilter);
       const name = meta ? meta.name : activeDdlDisciplineFilter;
-      window.SQL_BUDDY.say(`Filtered to ${name} (20 Levels)! Master physical schema integrity!`, 3500, 'celebrate');
+      window.SQL_BUDDY.say(`Filtered to ${name} (60 Levels)! Master physical schema integrity!`, 3500, 'celebrate');
     } else {
-      window.SQL_BUDDY.say("Showing all 100 DDL & Schema Architecture quests across 5 disciplines!", 3000, 'happy');
+      window.SQL_BUDDY.say("Showing all 420 DDL & Schema Architecture quests across 7 disciplines!", 3000, 'happy');
     }
   }
 }
