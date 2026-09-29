@@ -7435,7 +7435,7 @@ function switchQuestSection(sectionKey) {
     else if (sectionKey === 'section5') footerTrack.textContent = 'Section 05: Relational JOINs Arena (420)';
     else if (sectionKey === 'section6') footerTrack.textContent = 'Section 06: Window Functions Arena (420)';
     else if (sectionKey === 'section7') footerTrack.textContent = 'Section 07: Subqueries & CTEs Arena (420)';
-    else if (sectionKey === 'section8') footerTrack.textContent = 'Section 08: Conditional Pivots Arena (100)';
+    else if (sectionKey === 'section8') footerTrack.textContent = 'Section 08: Conditional Pivots Arena (420)';
     else if (sectionKey === 'section9') footerTrack.textContent = 'Section 09: Set Operations Arena (100)';
     else if (sectionKey === 'section10') footerTrack.textContent = 'Section 10: DDL & Architecture Arena (100)';
     else if (sectionKey === 'section11') footerTrack.textContent = 'Section 11: DML & Transactions Arena (100)';
@@ -7466,7 +7466,7 @@ function switchQuestSection(sectionKey) {
     } else if (sectionKey === 'section7') {
       window.SQL_BUDDY.say("🌳 Section 07: Subqueries & CTEs Master Arena loaded (420 Levels across 7 Disciplines)! Master modular pipelines, EXISTS, and recursive trees!", 4500, 'celebrate');
     } else if (sectionKey === 'section8') {
-      window.SQL_BUDDY.say("📊 Section 08: Conditional Logic & Pivoting loaded (100 Levels)! Master CASE WHEN, matrix cross-tabs, and zero-shielding!", 4500, 'celebrate');
+      window.SQL_BUDDY.say("📊 Section 08: Conditional Logic & Pivoting loaded (420 Levels across 7 Disciplines)! Master CASE WHEN, matrix cross-tabs, zero-shielding, FILTER clauses, and aging buckets!", 4500, 'celebrate');
     } else if (sectionKey === 'section9') {
       window.SQL_BUDDY.say("🔀 Section 09: Set Operations & Schema Harmonization loaded (100 Levels)! Master UNION, INTERSECT, and EXCEPT!", 4500, 'celebrate');
     } else if (sectionKey === 'section10') {
@@ -7946,7 +7946,7 @@ function renderPivotMasterMatrixHtml() {
 
   let filterPillsHtml = `
     <button class="choice-pill ${!currentDisciplineKey ? 'selected' : ''}" onclick="setPivotDisciplineFilter(null)" style="font-size: 11px; padding: 4px 10px;">
-      <span>All 100 Quests</span>
+      <span>All 420 Quests</span>
     </button>
   `;
 
@@ -7955,7 +7955,7 @@ function renderPivotMasterMatrixHtml() {
     filterPillsHtml += `
       <button class="choice-pill ${isSelected ? 'selected' : ''}" onclick="setPivotDisciplineFilter('${d.key}')" style="font-size: 11px; padding: 4px 10px; border-color: ${d.color}66;">
         <span style="color: ${d.color}; font-weight: 800; margin-right: 4px;">${d.symbol}</span>
-        <span>${escapeHtml(d.name)} (20)</span>
+        <span>${escapeHtml(d.name)} (60)</span>
       </button>
     `;
   });
@@ -7989,7 +7989,7 @@ function renderPivotMasterMatrixHtml() {
         </td>
         <td style="text-align: right; white-space: nowrap;">
           <button class="card-nav-btn ${isActiveRow ? 'action-btn-primary' : ''}" style="padding: 4px 10px; font-size: 10px;" onclick="setPivotDisciplineFilter('${d.key}')">
-            ${isActiveRow ? '✓ Active (20)' : `Practice (${d.name.split(' ')[0]})`}
+            ${isActiveRow ? '✓ Active (60)' : `Practice (${d.name.split(' ')[0]})`}
           </button>
         </td>
       </tr>
@@ -8004,10 +8004,10 @@ function renderPivotMasterMatrixHtml() {
           <div>
             <div style="font-size: 13px; font-weight: 700; color: #34d399; display: flex; align-items: center; gap: 8px;">
               <span>Conditional Logic &amp; Data Pivoting Master Decision Matrix</span>
-              <span class="status-pill" style="font-size: 9.5px; color: #10b981; background: rgba(16,185,129,0.12); border-color: rgba(16,185,129,0.3);">5 Disciplines • 100 Problems</span>
+              <span class="status-pill" style="font-size: 9.5px; color: #10b981; background: rgba(16,185,129,0.12); border-color: rgba(16,185,129,0.3);">7 Disciplines • 420 Problems</span>
             </div>
             <div style="font-size: 11px; color: var(--text-muted); margin-top: 2px;">
-              Cross-reference table: When to choose Searched CASE, Row-to-Column Matrix Pivots, COALESCE &amp; NULLIF Sanitization, or Matrix Unpivoting.
+              Cross-reference table: When to choose Searched CASE, Row-to-Column Matrix Pivots, COALESCE &amp; NULLIF Sanitization, FILTER Clauses, or Dynamic Bucketing.
             </div>
           </div>
         </div>
@@ -8041,7 +8041,7 @@ function renderPivotMasterMatrixHtml() {
       ` : `
         <div style="font-size: 11px; color: var(--text-muted); padding: 4px 0; display: flex; align-items: center; justify-content: space-between;">
           <span><em>Matrix reference collapsed. Click &quot;Expand Decision Matrix&quot; above to view pivot scenarios and trap analysis.</em></span>
-          ${currentDisciplineKey ? `<span style="color: #34d399; font-weight: 600;">Currently filtered: ${currentDisciplineKey.replace(/_/g, ' ').toUpperCase()} (20 Quests)</span>` : ''}
+          ${currentDisciplineKey ? `<span style="color: #34d399; font-weight: 600;">Currently filtered: ${currentDisciplineKey.replace(/_/g, ' ').toUpperCase()} (60 Quests)</span>` : ''}
         </div>
       `}
     </div>
@@ -8070,9 +8070,9 @@ function setPivotDisciplineFilter(discKey) {
     if (activePivotDisciplineFilter) {
       const meta = (window.PIVOT_DISCIPLINES_METADATA || []).find(m => m.key === activePivotDisciplineFilter);
       const name = meta ? meta.name : activePivotDisciplineFilter;
-      window.SQL_BUDDY.say(`Filtered to ${name} (20 Levels)! Master this pivoting discipline!`, 3500, 'celebrate');
+      window.SQL_BUDDY.say(`Filtered to ${name} (60 Levels)! Master this pivoting discipline!`, 3500, 'celebrate');
     } else {
-      window.SQL_BUDDY.say("Showing all 100 Conditional Logic & Pivoting quests across 5 disciplines!", 3000, 'happy');
+      window.SQL_BUDDY.say("Showing all 420 Conditional Logic & Pivoting quests across 7 disciplines!", 3000, 'happy');
     }
   }
 }
@@ -11087,7 +11087,9 @@ function renderPivotDualCodingHtml(quest, userSelections) {
   const allSelStr = Object.values(userSelections || {}).join(' ').toUpperCase();
 
   let discKey = quest.disciplineKey || 'searched_case';
-  if (allSelStr.includes('UNION ALL') || quest.targetQuery && quest.targetQuery.includes('UNION ALL')) {
+  if (discKey === 'filter_clause' || discKey === 'dynamic_bucketing') {
+    // Preserve explicit disciplineKey
+  } else if (allSelStr.includes('UNION ALL') || quest.targetQuery && quest.targetQuery.includes('UNION ALL')) {
     discKey = 'matrix_unpivoting';
   } else if (allSelStr.includes('NULLIF') || allSelStr.includes('COALESCE')) {
     discKey = 'null_sanitization';
@@ -11132,6 +11134,20 @@ function renderPivotDualCodingHtml(quest, userSelections) {
       color: '#a855f7',
       summary: 'Dimensional Inversion: Normalizes wide spreadsheet columns (Q1, Q2, Q3, Q4) into tidy, time-series rows via stacked UNION ALL.',
       badgeText: 'Tidy Row Inversion Active'
+    },
+    filter_clause: {
+      name: 'FILTER (WHERE ...) CONDITIONAL AGGREGATES',
+      symbol: '⚡',
+      color: '#06b6d4',
+      summary: 'ANSI Targeted Aggregations: Native FILTER (WHERE condition) evaluates selective metric totals cleanly in a single table scan.',
+      badgeText: 'ANSI FILTER Active'
+    },
+    dynamic_bucketing: {
+      name: 'DYNAMIC BUCKETING & AGING SCHEDULES',
+      symbol: '📦',
+      color: '#f97316',
+      summary: 'Asymmetric Numerical Discretization: Groups continuous balances and aging intervals into discrete risk buckets.',
+      badgeText: 'Aging Bucket Matrix Active'
     }
   };
 
@@ -11228,6 +11244,50 @@ function renderPivotDualCodingHtml(quest, userSelections) {
           <div style="background: rgba(255, 255, 255, 0.04); border: 1px dashed rgba(255, 255, 255, 0.15); border-radius: 4px; padding: 4px 8px; font-size: 8.5px; font-family: monospace;">
             <span style="color: var(--text-muted);">Balance &gt; $50k</span> <strong style="color: #fff;">OR</strong> <span style="color: var(--text-muted);">Risk &gt; 70</span>
             <div style="color: #fcd34d; font-weight: 700; margin-top: 2px;">&rarr; ⚠️ REVIEW_REQUIRED</div>
+          </div>
+        </div>
+      </div>
+    `;
+  } else if (discKey === 'filter_clause') {
+    diagramHtml = `
+      <div style="width: 100%; padding: 4px 6px;">
+        <div style="font-size: 10px; font-family: var(--font-mono); color: #06b6d4; font-weight: 700; margin-bottom: 8px; text-align: center;">
+          ANSI FILTER (WHERE ...) PREDICATE STREAM
+        </div>
+        <div style="display: flex; align-items: center; justify-content: space-between; gap: 6px;">
+          <div style="background: rgba(6, 182, 212, 0.15); border: 1px solid #06b6d4; border-radius: 4px; padding: 4px 6px; text-align: center; flex: 1;">
+            <div style="font-size: 7.5px; color: #a5f3fc; font-weight: 700;">FILTER (WHERE side='BUY')</div>
+            <div style="font-size: 8.5px; color: #fff; font-family: monospace;">SUM(notional) &rarr; $8.4M</div>
+          </div>
+          <span style="color: #06b6d4; font-size: 13px;">⚡</span>
+          <div style="background: rgba(244, 63, 94, 0.15); border: 1px solid #f43f5e; border-radius: 4px; padding: 4px 6px; text-align: center; flex: 1;">
+            <div style="font-size: 7.5px; color: #fecdd3; font-weight: 700;">FILTER (WHERE side='SELL')</div>
+            <div style="font-size: 8.5px; color: #fff; font-family: monospace;">SUM(notional) &rarr; $6.1M</div>
+          </div>
+        </div>
+        <div style="font-size: 8.5px; color: #a5f3fc; text-align: center; margin-top: 6px;">
+          Clean ANSI SQL:2003 syntax without verbose CASE statements
+        </div>
+      </div>
+    `;
+  } else if (discKey === 'dynamic_bucketing') {
+    diagramHtml = `
+      <div style="width: 100%; padding: 4px 6px;">
+        <div style="font-size: 10px; font-family: var(--font-mono); color: #f97316; font-weight: 700; margin-bottom: 8px; text-align: center;">
+          ASYMMETRIC AR AGING BUCKETS
+        </div>
+        <div style="display: flex; flex-direction: column; gap: 3px;">
+          <div style="background: rgba(16, 185, 129, 0.15); border: 1px solid #10b981; border-radius: 3px; padding: 3px 6px; display: flex; justify-content: space-between; font-size: 8.5px; font-family: monospace;">
+            <span style="color: #34d399;">0-30 Days (Current)</span>
+            <span style="color: #fff;">0.5% Provision</span>
+          </div>
+          <div style="background: rgba(245, 158, 11, 0.15); border: 1px solid #f59e0b; border-radius: 3px; padding: 3px 6px; display: flex; justify-content: space-between; font-size: 8.5px; font-family: monospace;">
+            <span style="color: #fbbf24;">31-60 Days</span>
+            <span style="color: #fff;">5.0% Provision</span>
+          </div>
+          <div style="background: rgba(239, 68, 68, 0.18); border: 1px solid #ef4444; border-radius: 3px; padding: 3px 6px; display: flex; justify-content: space-between; font-size: 8.5px; font-family: monospace;">
+            <span style="color: #f87171;">90+ Days (Default Risk)</span>
+            <span style="color: #fff; font-weight: 800;">100% Provision</span>
           </div>
         </div>
       </div>
@@ -11329,6 +11389,40 @@ function renderPivotDualCodingHtml(quest, userSelections) {
         <td>Risk: 75</td>
         <td><strong style="color: #fcd34d;">REVIEW_REQUIRED</strong></td>
         <td style="text-align: right;"><span class="row-status-pill keep" style="background: rgba(245,158,11,0.15); color: #fcd34d;">⚠️ Audit Queued</span></td>
+      </tr>
+    `;
+  } else if (discKey === 'filter_clause') {
+    rowsHtml = `
+      <tr class="row-match">
+        <td><span class="match-key-pill" style="border-color: #06b6d4; color: #06b6d4;">DESK-EQUITY</span></td>
+        <td><strong style="color: #22d3ee;">$14,250,000.00</strong></td>
+        <td><strong style="color: #f43f5e;">$11,800,000.00</strong></td>
+        <td>1.208 (Buy-Biased)</td>
+        <td style="text-align: right;"><span class="row-status-pill keep">FILTER OK</span></td>
+      </tr>
+      <tr class="row-match">
+        <td><span class="match-key-pill" style="border-color: #06b6d4; color: #06b6d4;">DESK-FIXED</span></td>
+        <td><strong style="color: #22d3ee;">$28,400,000.00</strong></td>
+        <td><strong style="color: #f43f5e;">$31,200,000.00</strong></td>
+        <td>0.910 (Balanced)</td>
+        <td style="text-align: right;"><span class="row-status-pill keep">FILTER OK</span></td>
+      </tr>
+    `;
+  } else if (discKey === 'dynamic_bucketing') {
+    rowsHtml = `
+      <tr class="row-match">
+        <td><span class="match-key-pill" style="border-color: #f97316; color: #f97316;">INV-8801</span></td>
+        <td>12 Days Overdue</td>
+        <td><strong style="color: #fbbf24;">1-30 Days</strong></td>
+        <td>$14,500.00 (5% Prov)</td>
+        <td style="text-align: right;"><span class="row-status-pill keep">Provisioned</span></td>
+      </tr>
+      <tr class="row-match">
+        <td><span class="match-key-pill" style="border-color: #f97316; color: #f97316;">INV-8809</span></td>
+        <td>104 Days Overdue</td>
+        <td><strong style="color: #ef4444;">90+ Days Default</strong></td>
+        <td>$82,000.00 (100% Prov)</td>
+        <td style="text-align: right;"><span class="row-status-pill keep" style="background: rgba(239,68,68,0.15); color: #f87171;">⚠️ Impaired</span></td>
       </tr>
     `;
   } else {
