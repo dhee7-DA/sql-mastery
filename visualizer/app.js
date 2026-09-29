@@ -7436,7 +7436,7 @@ function switchQuestSection(sectionKey) {
     else if (sectionKey === 'section6') footerTrack.textContent = 'Section 06: Window Functions Arena (420)';
     else if (sectionKey === 'section7') footerTrack.textContent = 'Section 07: Subqueries & CTEs Arena (420)';
     else if (sectionKey === 'section8') footerTrack.textContent = 'Section 08: Conditional Pivots Arena (420)';
-    else if (sectionKey === 'section9') footerTrack.textContent = 'Section 09: Set Operations Arena (100)';
+    else if (sectionKey === 'section9') footerTrack.textContent = 'Section 09: Set Operations Arena (420)';
     else if (sectionKey === 'section10') footerTrack.textContent = 'Section 10: DDL & Architecture Arena (100)';
     else if (sectionKey === 'section11') footerTrack.textContent = 'Section 11: DML & Transactions Arena (100)';
     else if (sectionKey === 'section12') footerTrack.textContent = 'Section 12: Views & Procedures Arena (100)';
@@ -7468,7 +7468,7 @@ function switchQuestSection(sectionKey) {
     } else if (sectionKey === 'section8') {
       window.SQL_BUDDY.say("📊 Section 08: Conditional Logic & Pivoting loaded (420 Levels across 7 Disciplines)! Master CASE WHEN, matrix cross-tabs, zero-shielding, FILTER clauses, and aging buckets!", 4500, 'celebrate');
     } else if (sectionKey === 'section9') {
-      window.SQL_BUDDY.say("🔀 Section 09: Set Operations & Schema Harmonization loaded (100 Levels)! Master UNION, INTERSECT, and EXCEPT!", 4500, 'celebrate');
+      window.SQL_BUDDY.say("🔀 Section 09: Set Operations & Schema Harmonization loaded (420 Levels across 7 Disciplines)! Master multiset algebra, reconciliation breaks, and schema alignment!", 4500, 'celebrate');
     } else if (sectionKey === 'section10') {
       window.SQL_BUDDY.say("🏗️ Section 10: DDL, Schema Architecture & Integrity Constraints loaded (100 Levels)! Build bulletproof database foundations!", 4500, 'celebrate');
     } else if (sectionKey === 'section11') {
@@ -8095,7 +8095,7 @@ function renderSetMasterMatrixHtml() {
 
   let filterPillsHtml = `
     <button class="choice-pill ${!currentDisciplineKey ? 'selected' : ''}" onclick="setSetDisciplineFilter(null)" style="font-size: 11px; padding: 4px 10px;">
-      <span>All 100 Quests</span>
+      <span>All 420 Quests</span>
     </button>
   `;
 
@@ -8104,7 +8104,7 @@ function renderSetMasterMatrixHtml() {
     filterPillsHtml += `
       <button class="choice-pill ${isSelected ? 'selected' : ''}" onclick="setSetDisciplineFilter('${d.key}')" style="font-size: 11px; padding: 4px 10px; border-color: ${d.color}66;">
         <span style="color: ${d.color}; font-weight: 800; margin-right: 4px;">${d.symbol}</span>
-        <span>${escapeHtml(d.name)} (20)</span>
+        <span>${escapeHtml(d.name)} (60)</span>
       </button>
     `;
   });
@@ -8145,7 +8145,7 @@ function renderSetMasterMatrixHtml() {
         <div style="display: flex; align-items: center; gap: 8px;">
           <span style="font-size: 16px;">🔀</span>
           <span style="font-size: 13px; font-weight: 700; color: #fff; letter-spacing: 0.3px;">
-            SET OPERATIONS &amp; SCHEMA HARMONIZATION DECISION MATRIX &bull; 100 QUESTS
+            SET OPERATIONS &amp; SCHEMA HARMONIZATION DECISION MATRIX &bull; 420 QUESTS
           </span>
           <span class="badge" style="background: rgba(99, 102, 241, 0.2); color: #818cf8; border: 1px solid rgba(99, 102, 241, 0.3); font-size: 10px;">
             Mathematical Set Theory Reference
@@ -8180,7 +8180,7 @@ function renderSetMasterMatrixHtml() {
       ` : `
         <div style="font-size: 11px; color: var(--text-muted); padding: 4px 0; display: flex; align-items: center; justify-content: space-between;">
           <span><em>Matrix reference collapsed. Click &quot;Expand Decision Matrix&quot; above to view relational set theory scenarios and trap analysis.</em></span>
-          ${currentDisciplineKey ? `<span style="color: #818cf8; font-weight: 600;">Currently filtered: ${currentDisciplineKey.replace(/_/g, ' ').toUpperCase()} (20 Quests)</span>` : ''}
+          ${currentDisciplineKey ? `<span style="color: #818cf8; font-weight: 600;">Currently filtered: ${currentDisciplineKey.replace(/_/g, ' ').toUpperCase()} (60 Quests: 20E / 20M / 20H)</span>` : ''}
         </div>
       `}
     </div>
@@ -8209,9 +8209,9 @@ function setSetDisciplineFilter(discKey) {
     if (activeSetDisciplineFilter) {
       const meta = (window.SET_DISCIPLINES_METADATA || []).find(m => m.key === activeSetDisciplineFilter);
       const name = meta ? meta.name : activeSetDisciplineFilter;
-      window.SQL_BUDDY.say(`Filtered to ${name} (20 Levels)! Master this set operation!`, 3500, 'celebrate');
+      window.SQL_BUDDY.say(`Filtered to ${name} (60 Levels)! Master this set operation!`, 3500, 'celebrate');
     } else {
-      window.SQL_BUDDY.say("Showing all 100 Set Operations quests across 5 disciplines!", 3000, 'happy');
+      window.SQL_BUDDY.say("Showing all 420 Set Operations quests across 7 disciplines!", 3000, 'happy');
     }
   }
 }
@@ -11504,8 +11504,12 @@ function renderSetDualCodingHtml(quest, userSelections) {
   const allSelStr = Object.values(userSelections || {}).join(' ').toUpperCase();
 
   let discKey = quest.disciplineKey || 'union_all';
-  if (allSelStr.includes('UNION ALL') || quest.targetQuery && quest.targetQuery.includes('UNION ALL')) {
-    if (allSelStr.includes('NULL AS') || (quest.targetQuery && quest.targetQuery.includes('NULL AS')) || (quest.disciplineKey === 'schema_harmonization')) {
+  if (quest.disciplineKey) {
+    discKey = quest.disciplineKey;
+  } else if ((allSelStr.includes('INTERSECT') && allSelStr.includes('UNION')) || (quest.targetQuery && quest.targetQuery.includes('INTERSECT') && quest.targetQuery.includes('UNION'))) {
+    discKey = 'compound_precedence';
+  } else if (allSelStr.includes('UNION ALL') || quest.targetQuery && quest.targetQuery.includes('UNION ALL')) {
+    if (allSelStr.includes('NULL AS') || (quest.targetQuery && quest.targetQuery.includes('NULL AS'))) {
       discKey = 'schema_harmonization';
     } else {
       discKey = 'union_all';
@@ -11553,6 +11557,20 @@ function renderSetDualCodingHtml(quest, userSelections) {
       color: '#a855f7',
       summary: 'Synthetic Column Padding: Aligns disparate table structures using NULL AS placeholders and static system origin tags.',
       badgeText: 'Synthetic Alignment Active'
+    },
+    compound_precedence: {
+      name: 'COMPOUND SET PRECEDENCE (INTERSECT > UNION)',
+      symbol: '⚖️',
+      color: '#06b6d4',
+      summary: 'Operator Precedence: INTERSECT binds tighter than UNION/EXCEPT. Explicit parentheses safeguard intended evaluation order.',
+      badgeText: 'Precedence Guard Active'
+    },
+    symmetric_delta_audit: {
+      name: 'SYMMETRIC DIFFERENCE & DUAL-DIRECTION RECONCILIATION',
+      symbol: '∆',
+      color: '#f43f5e',
+      summary: 'Bidirectional Variance Isolation: (A EXCEPT B) UNION ALL (B EXCEPT A) flags disjoint records across both source ledgers.',
+      badgeText: 'Bilateral Discrepancy Active'
     }
   };
 
@@ -11638,6 +11656,49 @@ function renderSetDualCodingHtml(quest, userSelections) {
         </div>
         <div style="font-size: 8.5px; color: #fbcfe8; text-align: center; margin-top: 6px;">
           Flags records in A missing from clearinghouse B
+        </div>
+      </div>
+    `;
+  } else if (discKey === 'compound_precedence') {
+    diagramHtml = `
+      <div style="width: 100%; padding: 4px 6px;">
+        <div style="font-size: 10px; font-family: var(--font-mono); color: #06b6d4; font-weight: 700; margin-bottom: 8px; text-align: center;">
+          PRECEDENCE BINDING: A UNION (B INTERSECT C)
+        </div>
+        <div style="display: flex; flex-direction: column; gap: 4px; font-family: monospace; font-size: 8.5px;">
+          <div style="background: rgba(6, 182, 212, 0.15); border: 1px solid #06b6d4; border-radius: 3px; padding: 3px 6px; display: flex; justify-content: space-between;">
+            <span style="color: #67e8f9;">STEP 1 (Priority):</span>
+            <span style="color: #fff;">B INTERSECT C &rarr; Overlap Sub-Set</span>
+          </div>
+          <div style="background: rgba(6, 182, 212, 0.1); border: 1px solid rgba(6, 182, 212, 0.4); border-radius: 3px; padding: 3px 6px; display: flex; justify-content: space-between;">
+            <span style="color: #67e8f9;">STEP 2 (Union):</span>
+            <span style="color: #fff;">A UNION [Step 1 Result] &rarr; Final Set</span>
+          </div>
+        </div>
+        <div style="font-size: 8.5px; color: #67e8f9; text-align: center; margin-top: 6px;">
+          INTERSECT executes before UNION unless parentheses override
+        </div>
+      </div>
+    `;
+  } else if (discKey === 'symmetric_delta_audit') {
+    diagramHtml = `
+      <div style="width: 100%; padding: 4px 6px;">
+        <div style="font-size: 10px; font-family: var(--font-mono); color: #f43f5e; font-weight: 700; margin-bottom: 8px; text-align: center;">
+          SYMMETRIC DIFFERENCE &bull; (A ∖ B) ⧺ (B ∖ A)
+        </div>
+        <div style="display: flex; align-items: center; justify-content: space-between; gap: 6px;">
+          <div style="background: rgba(244, 63, 94, 0.15); border: 1px solid #f43f5e; border-radius: 4px; padding: 4px 6px; text-align: center; flex: 1;">
+            <div style="font-size: 7.5px; color: #fda4af;">A ONLY (Missing B)</div>
+            <div style="font-size: 8px; color: #fff; font-family: monospace;">[ORD-101]<br>[ORD-104]</div>
+          </div>
+          <span style="color: #f43f5e; font-size: 14px; font-weight: 800;">⧺</span>
+          <div style="background: rgba(244, 63, 94, 0.15); border: 1px solid #f43f5e; border-radius: 4px; padding: 4px 6px; text-align: center; flex: 1;">
+            <div style="font-size: 7.5px; color: #fda4af;">B ONLY (Missing A)</div>
+            <div style="font-size: 8px; color: #fff; font-family: monospace;">[ORD-202]<br>[ORD-305]</div>
+          </div>
+        </div>
+        <div style="font-size: 8.5px; color: #fda4af; text-align: center; margin-top: 6px;">
+          Full bilateral discrepancy register &bull; Zero mutual rows shown
         </div>
       </div>
     `;
@@ -11747,6 +11808,40 @@ function renderSetDualCodingHtml(quest, userSelections) {
         <td>$115,000.00</td>
         <td>Missing in Clearing</td>
         <td style="text-align: right;"><span class="row-status-pill keep" style="background: rgba(236,72,153,0.2); color: #f472b6;">🚩 Audit Break</span></td>
+      </tr>
+    `;
+  } else if (discKey === 'compound_precedence') {
+    rowsHtml = `
+      <tr class="row-match">
+        <td><span class="match-key-pill" style="border-color: #06b6d4; color: #06b6d4;">CUST-10</span></td>
+        <td>Enterprise Tier</td>
+        <td>$500,000 ARR</td>
+        <td>Set A (Base Tier)</td>
+        <td style="text-align: right;"><span class="row-status-pill keep" style="background: rgba(6,182,212,0.2); color: #67e8f9;">✓ Base Stream</span></td>
+      </tr>
+      <tr class="row-match">
+        <td><span class="match-key-pill" style="border-color: #06b6d4; color: #06b6d4;">CUST-42</span></td>
+        <td>Dual Certified</td>
+        <td>$120,000 ARR</td>
+        <td>B ∩ C Mutual</td>
+        <td style="text-align: right;"><span class="row-status-pill keep" style="background: rgba(6,182,212,0.2); color: #67e8f9;">★ Tight Binding</span></td>
+      </tr>
+    `;
+  } else if (discKey === 'symmetric_delta_audit') {
+    rowsHtml = `
+      <tr class="row-match">
+        <td><span class="match-key-pill" style="border-color: #f43f5e; color: #f43f5e;">LED-801</span></td>
+        <td>$750,000.00</td>
+        <td>MISSING_IN_LEDGER_B</td>
+        <td>Ledger A Only</td>
+        <td style="text-align: right;"><span class="row-status-pill keep" style="background: rgba(244,63,94,0.2); color: #fda4af;">🚩 Side A Discrepancy</span></td>
+      </tr>
+      <tr class="row-match">
+        <td><span class="match-key-pill" style="border-color: #f43f5e; color: #f43f5e;">LED-909</span></td>
+        <td>$42,500.00</td>
+        <td>MISSING_IN_LEDGER_A</td>
+        <td>Ledger B Only</td>
+        <td style="text-align: right;"><span class="row-status-pill keep" style="background: rgba(244,63,94,0.2); color: #fda4af;">🚩 Side B Discrepancy</span></td>
       </tr>
     `;
   } else {

@@ -1,75 +1,105 @@
+// =============================================================================
+// SECTION 09 VERIFIER: SET OPERATIONS & SCHEMA HARMONIZATION ARENA (420 QUESTS)
+// Audits 7 Disciplines x 60 Levels, Option Uniqueness, Blanks (3-5), Schema, Previews
+// =============================================================================
+
 const fs = require('fs');
 
-// Mock window object
-global.window = {};
-require('../visualizer/quests_section9_data.js');
+const { SET_DISCIPLINES_METADATA, QUESTS_SECTION_9 } = require('../visualizer/quests_section9_data.js');
 
-const quests = window.QUESTS_SECTION_9;
-console.log('--- AUDITING SECTION 09: SET OPERATIONS & SCHEMA HARMONIZATION ARENA (100 QUESTS) ---');
+const metadata = SET_DISCIPLINES_METADATA;
+const quests = QUESTS_SECTION_9;
 
-let errors = 0;
-const discCounts = {};
-const diffCounts = {};
-const blankDist = { '3': 0, '4': 0, '5': 0, other: 0 };
+console.log("--- AUDITING SECTION 09: SET OPERATIONS & SCHEMA HARMONIZATION ARENA (420 QUESTS) ---");
+console.log(`Total Disciplines: ${metadata.length}`);
+console.log(`Total Quests: ${quests.length}`);
 
-if (!Array.isArray(quests) || quests.length !== 100) {
-  console.error(`ERROR: Expected 100 quests, found ${quests ? quests.length : 0}`);
-  errors++;
+let errors = [];
+
+// 1. Check metadata length
+if (metadata.length !== 7) {
+  errors.push(`Expected 7 disciplines in metadata, got ${metadata.length}`);
 }
 
-quests.forEach((q, idx) => {
-  discCounts[q.discipline] = (discCounts[q.discipline] || 0) + 1;
-  diffCounts[q.difficulty] = (diffCounts[q.difficulty] || 0) + 1;
+// 2. Discipline counts
+const disciplineCounts = {};
+quests.forEach(q => {
+  disciplineCounts[q.discipline] = (disciplineCounts[q.discipline] || 0) + 1;
+});
+console.log("Discipline Breakdown (Target: 60 each):", disciplineCounts);
 
-  const slotKeys = Object.keys(q.slots || {});
-  const numBlanks = slotKeys.length;
-  if (blankDist[numBlanks] !== undefined) blankDist[numBlanks]++;
-  else blankDist.other++;
-
-  if (numBlanks < 3 || numBlanks > 5) {
-    console.error(`Quest #${q.id} (index ${idx}) has invalid blank count: ${numBlanks}`);
-    errors++;
-  }
-
-  // Check slots
-  slotKeys.forEach(sId => {
-    const slot = q.slots[sId];
-    if (!slot.correct) {
-      console.error(`Quest #${q.id} slot ${sId} missing correct answer`);
-      errors++;
-    }
-    if (!slot.options || !Array.isArray(slot.options)) {
-      console.error(`Quest #${q.id} slot ${sId} missing options array`);
-      errors++;
-    } else {
-      if (!slot.options.includes(slot.correct)) {
-        console.error(`Quest #${q.id} slot ${sId} correct answer "${slot.correct}" not in options [${slot.options.join(', ')}]`);
-        errors++;
-      }
-      const uniqueOpts = new Set(slot.options);
-      if (uniqueOpts.size !== slot.options.length) {
-        console.error(`Quest #${q.id} slot ${sId} contains duplicate options: [${slot.options.join(', ')}]`);
-        errors++;
-      }
-    }
-  });
-
-  // Verify template matches slots
-  const templateSlotCount = (q.template || []).filter(t => t.isBlank).length;
-  if (templateSlotCount !== numBlanks) {
-    console.error(`Quest #${q.id} template blanks (${templateSlotCount}) != slots count (${numBlanks})`);
-    errors++;
+metadata.forEach(d => {
+  if (disciplineCounts[d.name] !== 60) {
+    errors.push(`Discipline ${d.name} has ${disciplineCounts[d.name]} quests, expected 60`);
   }
 });
 
-console.log('Total Quests:', quests.length);
-console.log('Discipline Breakdown (Target: 20 each):', discCounts);
-console.log('Difficulty Breakdown:', diffCounts);
-console.log('Blank Count Distribution (3-5 blanks):', blankDist);
-console.log('Total Validation Errors:', errors);
+// 3. Difficulty counts
+const difficultyCounts = { Easy: 0, Medium: 0, Hard: 0 };
+quests.forEach(q => {
+  if (difficultyCounts[q.difficulty] !== undefined) {
+    difficultyCounts[q.difficulty]++;
+  } else {
+    errors.push(`Quest ${q.id} has invalid difficulty: ${q.difficulty}`);
+  }
+});
+console.log("Difficulty Breakdown (Target: 140 each):", difficultyCounts);
 
-if (errors === 0) {
-  console.log('🎉 SECTION 09 AUDIT 100% CLEAN & VERIFIED (100/100)!');
-} else {
+if (difficultyCounts.Easy !== 140 || difficultyCounts.Medium !== 140 || difficultyCounts.Hard !== 140) {
+  errors.push(`Expected 140 Easy, 140 Medium, 140 Hard! Got ${JSON.stringify(difficultyCounts)}`);
+}
+
+// 4. Validate slots and options
+const blankDistribution = { '3': 0, '4': 0, '5': 0, other: 0 };
+quests.forEach(q => {
+  const slotKeys = Object.keys(q.slots || {});
+  const numSlots = slotKeys.length;
+  if (numSlots >= 3 && numSlots <= 5) {
+    blankDistribution[numSlots.toString()]++;
+  } else {
+    blankDistribution.other++;
+    errors.push(`Quest ${q.id} (${q.title}) has invalid slot count: ${numSlots}`);
+  }
+
+  slotKeys.forEach(sk => {
+    const slot = q.slots[sk];
+    if (!slot.correct) {
+      errors.push(`Quest ${q.id} slot ${sk} missing correct answer`);
+    }
+    if (!Array.isArray(slot.options) || slot.options.length !== 4) {
+      errors.push(`Quest ${q.id} slot ${sk} options count != 4`);
+    }
+    const uniqueOptions = new Set(slot.options);
+    if (uniqueOptions.size !== slot.options.length) {
+      errors.push(`Quest ${q.id} slot ${sk} has duplicate options: ${JSON.stringify(slot.options)}`);
+    }
+    if (!slot.options.includes(slot.correct)) {
+      errors.push(`Quest ${q.id} slot ${sk} options missing correct value: ${slot.correct}`);
+    }
+  });
+
+  // Verify template structure
+  if (!Array.isArray(q.template) || q.template.length === 0) {
+    errors.push(`Quest ${q.id} template is not an array or is empty`);
+  } else {
+    const blankTokens = q.template.filter(t => t.isBlank);
+    if (blankTokens.length !== slotKeys.length) {
+      errors.push(`Quest ${q.id} template blank tokens (${blankTokens.length}) != slot count (${slotKeys.length})`);
+    }
+  }
+
+  if (!q.targetQuery || q.targetQuery.trim() === '') {
+    errors.push(`Quest ${q.id} has empty targetQuery`);
+  }
+});
+
+console.log("Blank Count Distribution (3-5 blanks):", blankDistribution);
+console.log(`Total Validation Errors: ${errors.length}`);
+
+if (errors.length > 0) {
+  console.error("FAILURES DETECTED:");
+  errors.slice(0, 15).forEach(e => console.error(" - " + e));
   process.exit(1);
+} else {
+  console.log("🎉 SECTION 09 AUDIT 100% CLEAN & VERIFIED (420/420)!");
 }
