@@ -220,6 +220,16 @@
                 <span class="nav-item-desc">10 production finance &amp; data projects with topic bridges</span>
               </div>
             </button>
+            <button class="nav-dropdown-item nav-tab" data-view="viewAmazonStory" onclick="selectNavView('viewAmazonStory', 'Amazon Analyst (30d)', 'navGroupPractice')">
+              <span class="nav-item-icon">📦</span>
+              <div class="nav-item-text">
+                <div class="nav-item-title-row">
+                  <span class="nav-item-title">Amazon Analyst Story</span>
+                  <span class="nav-item-tag" style="background: rgba(245, 158, 11, 0.2); color: #f59e0b;">30-Day Sim</span>
+                </div>
+                <span class="nav-item-desc">Day-in-the-life L4 Data Analyst onboarding &amp; Prime Day war room</span>
+              </div>
+            </button>
           </div>
         </div>
 
@@ -1458,6 +1468,13 @@
     </div>
   </div>
 
+  <!-- VIEW: Amazon Data Analyst 30-Day Onboarding Simulator -->
+  <div class="view-panel" id="viewAmazonStory">
+    <div id="amazonStoryContentRoot" class="amazon-story-workspace-wrap">
+      <!-- Dynamically populated by amazon_story_engine.js -->
+    </div>
+  </div>
+
   <!-- 60-Second Rapid-Fire Blitz Modal -->
   <div id="questBlitzModal" class="blitz-modal-overlay" style="display: none;">
     <div class="blitz-modal-card">
@@ -1671,6 +1688,8 @@
 <script src="learning_journey.js"></script>
 <script src="capstones_data.js"></script>
 <script src="capstone_engine.js"></script>
+<script src="amazon_story_data.js"></script>
+<script src="amazon_story_engine.js"></script>
 <script src="app.js?v=91"></script>
 </body>
 </html>

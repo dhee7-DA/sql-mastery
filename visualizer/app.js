@@ -2113,6 +2113,8 @@ const NAV_GROUPS_MAP = {
   viewSyntaxGym: { triggerId: 'btnGroupPractice', pillId: 'currentPracticePill', label: 'Syntax Gym' },
   viewCases: { triggerId: 'btnGroupPractice', pillId: 'currentPracticePill', label: 'Case Studies' },
   viewProblems: { triggerId: 'btnGroupPractice', pillId: 'currentPracticePill', label: 'Problem Bank' },
+  viewCapstones: { triggerId: 'btnGroupPractice', pillId: 'currentPracticePill', label: 'Capstones (10)' },
+  viewAmazonStory: { triggerId: 'btnGroupPractice', pillId: 'currentPracticePill', label: 'Amazon Analyst (30d)' },
 
   viewExplainer: { triggerId: 'btnGroupReference', pillId: 'currentReferencePill', label: 'Study Docs' },
   viewDeconstructor: { triggerId: 'btnGroupReference', pillId: 'currentReferencePill', label: 'Deconstructor' },
@@ -2198,6 +2200,10 @@ function switchMainView(targetId) {
   if (targetId === 'viewCapstones') {
     if (window.initCapstoneEngine) window.initCapstoneEngine();
     if (window.SQL_BUDDY) window.SQL_BUDDY.say("🎓 Guided Capstones Arena: 10 production projects across the Top 5 hiring domains with live topic bridges!", 5000, 'celebrate');
+  }
+  if (targetId === 'viewAmazonStory') {
+    if (window.initAmazonStoryEngine) window.initAmazonStoryEngine();
+    if (window.SQL_BUDDY) window.SQL_BUDDY.say("📦 Welcome to Amazon SCOT! 30-Day Day-in-the-Life L4 Data Analyst Simulation loaded!", 5000, 'happy');
   }
 }
 
