@@ -2195,6 +2195,10 @@ function switchMainView(targetId) {
     if (window.SQL_BUDDY) window.SQL_BUDDY.say("🪟 Window Functions Cockpit: Master Partitioning, Ranking Matrix, Sliding Frames & Offsets!", 4500, 'happy');
   }
   if (targetId === 'viewProblems') renderProblemBank();
+  if (targetId === 'viewCapstones') {
+    if (window.initCapstoneEngine) window.initCapstoneEngine();
+    if (window.SQL_BUDDY) window.SQL_BUDDY.say("🎓 Guided Capstones Arena: 10 production projects across the Top 5 hiring domains with live topic bridges!", 5000, 'celebrate');
+  }
 }
 
 window.switchMainView = switchMainView;

@@ -210,6 +210,16 @@
                 <span class="nav-item-desc">Graded SQL interview challenges by difficulty</span>
               </div>
             </button>
+            <button class="nav-dropdown-item nav-tab" data-view="viewCapstones" onclick="selectNavView('viewCapstones', 'Capstones (10)', 'navGroupPractice')">
+              <span class="nav-item-icon">🎓</span>
+              <div class="nav-item-text">
+                <div class="nav-item-title-row">
+                  <span class="nav-item-title">Guided Capstones</span>
+                  <span class="nav-item-tag accent">Top 5 Domains</span>
+                </div>
+                <span class="nav-item-desc">10 production finance &amp; data projects with topic bridges</span>
+              </div>
+            </button>
           </div>
         </div>
 
@@ -1441,6 +1451,13 @@
     </div>
   </div>
 
+  <!-- VIEW: Guided Capstones Arena (Top 5 Hiring Domains) -->
+  <div class="view-panel" id="viewCapstones">
+    <div id="capstoneContentRoot" class="capstones-workspace-wrap">
+      <!-- Dynamically populated by capstone_engine.js -->
+    </div>
+  </div>
+
   <!-- 60-Second Rapid-Fire Blitz Modal -->
   <div id="questBlitzModal" class="blitz-modal-overlay" style="display: none;">
     <div class="blitz-modal-card">
@@ -1652,6 +1669,8 @@
 <script src="window_functions_engine.js?v=90"></script>
 <script src="activity_heatmap_engine.js?v=91"></script>
 <script src="learning_journey.js"></script>
+<script src="capstones_data.js"></script>
+<script src="capstone_engine.js"></script>
 <script src="app.js?v=91"></script>
 </body>
 </html>
