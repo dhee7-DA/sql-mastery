@@ -7515,8 +7515,8 @@ function renderJoinMasterMatrixHtml() {
   metadata.forEach(d => {
     const isSelected = currentDisciplineKey === d.key;
     filterPillsHtml += `
-      <button class="choice-pill ${isSelected ? 'selected' : ''}" onclick="setJoinDisciplineFilter('${d.key}')" style="font-size: 11px; padding: 4px 10px; border-color: ${d.color}66;">
-        <span style="color: ${d.color}; font-weight: 800; margin-right: 4px;">${d.symbol}</span>
+      <button class="choice-pill ${isSelected ? 'selected' : ''}" onclick="setJoinDisciplineFilter('${d.key}')" style="font-size: 11px; padding: 4px 10px; border-color: #243048;">
+        <span style="color: #93c5fd; font-weight: 700; margin-right: 4px; font-family: var(--font-mono);">${d.symbol}</span>
         <span>${escapeHtml(d.name)} (60)</span>
       </button>
     `;
@@ -7529,19 +7529,19 @@ function renderJoinMasterMatrixHtml() {
       <tr class="${isActiveRow ? 'active-row' : ''}">
         <td style="white-space: nowrap;">
           <div style="display: flex; align-items: center; gap: 8px;">
-            <span class="join-symbol-badge" style="color: ${d.color}; border-color: ${d.color}66;">${d.symbol}</span>
+            <span class="join-symbol-badge">${d.symbol}</span>
             <div>
-              <strong style="color: ${d.color}; font-size: 12px; font-family: var(--font-mono);">${escapeHtml(d.name)}</strong>
-              <div style="font-size: 10px; color: var(--text-muted);">${escapeHtml(d.concept)}</div>
+              <strong style="color: #93c5fd; font-size: 12px; font-family: var(--font-mono);">${escapeHtml(d.name)}</strong>
+              <div style="font-size: 10px; color: #64748b;">${escapeHtml(d.concept)}</div>
             </div>
           </div>
         </td>
-        <td style="max-width: 220px; line-height: 1.45; color: var(--text-secondary);">
+        <td style="max-width: 220px; line-height: 1.45; color: #cbd5e1;">
           ${escapeHtml(d.whenToUse)}
         </td>
-        <td style="max-width: 240px; line-height: 1.45; color: #a7f3d0;">
-          <div style="font-size: 10.5px;">📈 <strong>Finance &amp; Data Scenarios:</strong></div>
-          <div style="font-size: 10px; color: var(--text-secondary); margin-top: 2px;">${escapeHtml(d.scenarios)}</div>
+        <td style="max-width: 240px; line-height: 1.45; color: #cbd5e1;">
+          <div style="font-size: 10.5px; color: #60a5fa; font-weight: 600;">📈 Real-World Data &amp; Finance:</div>
+          <div style="font-size: 10px; color: #94a3b8; margin-top: 2px;">${escapeHtml(d.scenarios)}</div>
         </td>
         <td style="max-width: 260px; line-height: 1.45;">
           <div class="join-trap-pill">
@@ -7564,11 +7564,11 @@ function renderJoinMasterMatrixHtml() {
         <div style="display: flex; align-items: center; gap: 10px;">
           <span style="font-size: 16px;">🏛️</span>
           <div>
-            <div style="font-size: 13px; font-weight: 700; color: #38bdf8; display: flex; align-items: center; gap: 8px;">
+            <div style="font-size: 13px; font-weight: 700; color: #e2e8f0; display: flex; align-items: center; gap: 8px;">
               <span>Relational JOINs Master Decision Matrix &amp; Trap Focus</span>
-              <span class="status-pill" style="font-size: 9.5px; color: #10b981; background: rgba(16,185,129,0.12); border-color: rgba(16,185,129,0.3);">7 Core Disciplines • 420 Problems</span>
+              <span class="status-pill" style="font-size: 9.5px; color: #60a5fa; background: #0f172a; border-color: #1e293b;">7 Core Disciplines • 420 Problems</span>
             </div>
-            <div style="font-size: 11px; color: var(--text-muted); margin-top: 2px;">
+            <div style="font-size: 11px; color: #64748b; margin-top: 2px;">
               Cross-reference table: Which JOIN matches your business requirement, real-world data/finance scenario, and how to avoid silent corruption traps.
             </div>
           </div>
