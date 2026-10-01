@@ -10,11 +10,36 @@
 
 (function() {
   let activeDayNumber = 1;
+  let activePhaseFilter = 'all'; // 'all' | 1 | 2 | 3 | 4
   let activeTab = 'context'; // 'context' | 'challenge' | 'terminal'
   let userBlanks = {};
   let isEvaluated = false;
   let isSuccess = false;
   let solvedDays = new Set();
+
+  function playUiSound(type) {
+    try {
+      if (window.soundFX) {
+        if (type === 'click') window.soundFX.playPop();
+        else if (type === 'success') {
+          window.soundFX.playSuccess();
+          window.soundFX.playChordChime();
+          if (typeof window.soundFX.addXP === 'function') {
+            window.soundFX.addXP(25, 'Amazon Ticket Verified!');
+          }
+        }
+        else if (type === 'error') window.soundFX.playError();
+        return;
+      }
+      if (window.AudioFX) {
+        if (type === 'click') window.AudioFX.playClick();
+        else if (type === 'success') window.AudioFX.playSuccess();
+        else if (type === 'error') window.AudioFX.playError();
+      }
+    } catch (e) {
+      console.warn('Audio effect error:', e);
+    }
+  }
 
   // Load solved days from localStorage if available
   try {
@@ -41,18 +66,25 @@
     isEvaluated = false;
     isSuccess = false;
     renderAmazonWorkspace();
-    if (window.AudioFX) window.AudioFX.playClick();
+    playUiSound('click');
+  }
+
+  function setPhaseFilter(phaseVal) {
+    activePhaseFilter = phaseVal;
+    renderAmazonWorkspace();
+    playUiSound('click');
   }
 
   function setViewTab(tabKey) {
     activeTab = tabKey;
     renderAmazonMainStage();
-    if (window.AudioFX) window.AudioFX.playClick();
+    playUiSound('click');
   }
 
   function selectBlankOption(blankId, chosenOption) {
     userBlanks[blankId] = chosenOption;
     renderAmazonChallengePanel();
+    playUiSound('click');
   }
 
   function checkAmazonChallenge() {
@@ -77,12 +109,12 @@
         localStorage.setItem('sql_amazon_solved_days', JSON.stringify(Array.from(solvedDays)));
       } catch (e) {}
 
-      if (window.AudioFX) window.AudioFX.playSuccess();
+      playUiSound('success');
       if (window.SQL_BUDDY && window.SQL_BUDDY.celebrate) {
         window.SQL_BUDDY.celebrate();
       }
     } else {
-      if (window.AudioFX) window.AudioFX.playError();
+      playUiSound('error');
     }
 
     renderAmazonChallengePanel();
@@ -93,6 +125,7 @@
     isEvaluated = false;
     isSuccess = false;
     renderAmazonChallengePanel();
+    playUiSound('click');
   }
 
   function getCareerTitle(solvedCount) {
@@ -107,7 +140,10 @@
     const root = document.getElementById('amazonStoryContentRoot');
     if (!root) return;
 
-    const list = window.AMAZON_ANALYST_STORY_DATA || [];
+    const allList = window.AMAZON_ANALYST_STORY_DATA || [];
+    const filteredList = activePhaseFilter === 'all' 
+      ? allList 
+      : allList.filter(d => d.week === activePhaseFilter);
     const active = getActiveDayData();
     const career = getCareerTitle(solvedDays.size);
 
@@ -132,20 +168,37 @@
           </div>
         </header>
 
-        <!-- 3-PANE WORKSPACE: LEFT (TICKETS), CENTER (STAGE), RIGHT (SCHEMA) -->
+        <!-- 2-COLUMN SPLIT WORKSPACE: LEFT (TICKETS & PHASES), RIGHT (MAIN STAGE) -->
         <div class="amazon-workspace-grid">
           <!-- LEFT COLUMN: 30-DAY CHIME INBOX -->
           <aside class="amazon-tickets-sidebar">
             <div class="sidebar-header-box">
               <div class="sidebar-title-row">
                 <span>💬 Chime Inbox</span>
-                <span class="inbox-count-pill">${list.length} Tickets</span>
+                <span class="inbox-count-pill">${filteredList.length} of ${allList.length} Tickets</span>
               </div>
-              <div class="sidebar-phase-desc">Phase: ${active.phase}</div>
+              <!-- Phase Filter Pills -->
+              <div class="amazon-phase-filter-tabs">
+                <button class="phase-pill-btn ${activePhaseFilter === 'all' ? 'active' : ''}" onclick="window.AMAZON_STORY.setPhaseFilter('all')">
+                  All
+                </button>
+                <button class="phase-pill-btn ${activePhaseFilter === 1 ? 'active' : ''}" onclick="window.AMAZON_STORY.setPhaseFilter(1)" title="Week 1: Onboarding">
+                  Wk 1
+                </button>
+                <button class="phase-pill-btn ${activePhaseFilter === 2 ? 'active' : ''}" onclick="window.AMAZON_STORY.setPhaseFilter(2)" title="Week 2: Logistics &amp; JOINs">
+                  Wk 2
+                </button>
+                <button class="phase-pill-btn ${activePhaseFilter === 3 ? 'active' : ''}" onclick="window.AMAZON_STORY.setPhaseFilter(3)" title="Week 3: Aggregations &amp; WBR">
+                  Wk 3
+                </button>
+                <button class="phase-pill-btn ${activePhaseFilter === 4 ? 'active' : ''}" onclick="window.AMAZON_STORY.setPhaseFilter(4)" title="Week 4: War Room">
+                  Wk 4
+                </button>
+              </div>
             </div>
 
             <div class="amazon-tickets-list">
-              ${list.map(d => {
+              ${filteredList.map(d => {
                 const isSelected = d.day === activeDayNumber;
                 const isDone = solvedDays.has(d.day);
                 return `
@@ -420,6 +473,7 @@
   window.AMAZON_STORY = {
     init: initAmazonStoryEngine,
     selectDay: selectDay,
+    setPhaseFilter: setPhaseFilter,
     setViewTab: setViewTab,
     selectBlankOption: selectBlankOption,
     checkAmazonChallenge: checkAmazonChallenge,

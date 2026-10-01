@@ -23429,6 +23429,954 @@ button:active .framer-emoji-icon {
   border-color: rgba(255, 255, 255, 0.2);
 }
 
+/* =============================================================================
+   AMAZON 30-DAY L4 DATA ANALYST SIMULATOR STYLES
+   Industrial AWS / Redshift / Chime Aesthetic
+   ============================================================================= */
+
+.amazon-story-workspace-wrap {
+  width: 100%;
+  height: 100%;
+  display: flex;
+  flex-direction: column;
+  background: var(--bg-canvas, #090d16);
+  color: var(--text-primary, #f8fafc);
+  overflow: hidden;
+}
+
+.amazon-sim-container {
+  display: flex;
+  flex-direction: column;
+  width: 100%;
+  height: 100%;
+  min-height: 0;
+}
+
+/* Top Branded Corporate Banner */
+.amazon-sim-header {
+  flex-shrink: 0;
+  background: linear-gradient(90deg, #131921 0%, #1a2433 100%);
+  border-bottom: 2px solid #ff9900;
+  padding: 10px 20px;
+  box-shadow: 0 4px 16px rgba(0, 0, 0, 0.4);
+  z-index: 10;
+}
+
+.amazon-brand-row {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  flex-wrap: wrap;
+  gap: 12px;
+}
+
+.amazon-logo-group {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+}
+
+.amazon-prime-badge {
+  font-family: var(--font-sans);
+  font-weight: 900;
+  font-size: 20px;
+  letter-spacing: -0.04em;
+  color: #ffffff;
+  background: #232f3e;
+  padding: 3px 12px;
+  border-radius: 4px;
+  border: 1px solid rgba(255, 153, 0, 0.35);
+  box-shadow: 0 2px 6px rgba(0, 0, 0, 0.3);
+  position: relative;
+}
+
+.amazon-prime-badge::after {
+  content: "";
+  position: absolute;
+  bottom: 3px;
+  left: 14px;
+  right: 14px;
+  height: 2.5px;
+  background: #ff9900;
+  border-radius: 2px;
+}
+
+.amazon-team-tag {
+  font-size: 13px;
+  font-weight: 600;
+  color: #94a3b8;
+  letter-spacing: -0.01em;
+  border-left: 1px solid rgba(255, 255, 255, 0.12);
+  padding-left: 12px;
+}
+
+.amazon-career-status {
+  display: flex;
+  align-items: center;
+  gap: 14px;
+}
+
+.career-text-col {
+  display: flex;
+  flex-direction: column;
+  align-items: flex-end;
+  gap: 2px;
+}
+
+.career-role-title {
+  font-size: 13px;
+  font-weight: 700;
+  color: #f1f5f9;
+}
+
+.career-progress-sub {
+  font-size: 11px;
+  color: #94a3b8;
+  font-family: var(--font-mono);
+}
+
+.career-pill {
+  font-size: 11px;
+  font-weight: 800;
+  font-family: var(--font-mono);
+  padding: 4px 10px;
+  border-radius: 6px;
+  border: 1px solid;
+  letter-spacing: 0.04em;
+}
+
+/* 2-Column Split Workspace */
+.amazon-workspace-grid {
+  display: grid;
+  grid-template-columns: 320px 1fr;
+  flex: 1 1 0;
+  min-height: 0;
+  overflow: hidden;
+}
+
+/* LEFT SIDEBAR: Chime Tickets */
+.amazon-tickets-sidebar {
+  background: #0d131f;
+  border-right: 1px solid rgba(255, 255, 255, 0.08);
+  display: flex;
+  flex-direction: column;
+  min-height: 0;
+  overflow: hidden;
+}
+
+.sidebar-header-box {
+  padding: 12px 14px;
+  border-bottom: 1px solid rgba(255, 255, 255, 0.08);
+  background: #111827;
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+  flex-shrink: 0;
+}
+
+.sidebar-title-row {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  font-size: 13px;
+  font-weight: 800;
+  color: #f8fafc;
+  letter-spacing: -0.01em;
+}
+
+.inbox-count-pill {
+  background: rgba(56, 189, 248, 0.15);
+  color: #38bdf8;
+  border: 1px solid rgba(56, 189, 248, 0.3);
+  font-size: 10px;
+  font-weight: 700;
+  padding: 2px 7px;
+  border-radius: 12px;
+  font-family: var(--font-mono);
+}
+
+/* Phase Filter Tabs */
+.amazon-phase-filter-tabs {
+  display: grid;
+  grid-template-columns: repeat(4, 1fr);
+  gap: 4px;
+}
+
+.phase-pill-btn {
+  background: rgba(255, 255, 255, 0.05);
+  border: 1px solid rgba(255, 255, 255, 0.08);
+  color: #94a3b8;
+  font-size: 10px;
+  font-weight: 700;
+  padding: 5px 2px;
+  border-radius: 4px;
+  cursor: pointer;
+  transition: all 0.15s ease;
+  text-align: center;
+}
+
+.phase-pill-btn:hover {
+  background: rgba(255, 255, 255, 0.1);
+  color: #ffffff;
+}
+
+.phase-pill-btn.active {
+  background: #ff9900;
+  color: #0f172a;
+  border-color: #ff9900;
+  font-weight: 800;
+}
+
+.amazon-tickets-list {
+  flex: 1 1 0;
+  min-height: 0;
+  overflow-y: auto;
+  padding: 10px;
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+  -webkit-overflow-scrolling: touch;
+}
+
+.amazon-tickets-list::-webkit-scrollbar {
+  width: 6px;
+}
+
+.amazon-tickets-list::-webkit-scrollbar-thumb {
+  background: rgba(255, 255, 255, 0.12);
+  border-radius: 3px;
+}
+
+.amazon-ticket-card {
+  background: #151e2e;
+  border: 1px solid rgba(255, 255, 255, 0.06);
+  border-radius: 8px;
+  padding: 10px 12px;
+  display: flex;
+  flex-direction: column;
+  gap: 6px;
+  cursor: pointer;
+  text-align: left;
+  transition: all 0.15s ease;
+  color: inherit;
+  width: 100%;
+}
+
+.amazon-ticket-card:hover {
+  background: #1c273a;
+  border-color: rgba(255, 153, 0, 0.35);
+  transform: translateY(-1px);
+}
+
+.amazon-ticket-card.active {
+  background: #1e2c42;
+  border-color: #ff9900;
+  box-shadow: 0 0 12px rgba(255, 153, 0, 0.2);
+}
+
+.amazon-ticket-card.completed {
+  border-left: 3px solid #10b981;
+}
+
+.ticket-card-top {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+}
+
+.ticket-day-badge {
+  font-size: 10px;
+  font-weight: 800;
+  font-family: var(--font-mono);
+  background: rgba(255, 255, 255, 0.08);
+  color: #cbd5e1;
+  padding: 2px 6px;
+  border-radius: 4px;
+}
+
+.ticket-day-badge.done {
+  background: rgba(16, 185, 129, 0.2);
+  color: #34d399;
+}
+
+.ticket-priority-pill {
+  font-size: 9.5px;
+  font-weight: 700;
+  padding: 1px 6px;
+  border-radius: 4px;
+  font-family: var(--font-mono);
+}
+
+.priority-p0 {
+  background: rgba(239, 68, 68, 0.2);
+  color: #f87171;
+  border: 1px solid rgba(239, 68, 68, 0.4);
+}
+
+.priority-p1 {
+  background: rgba(245, 158, 11, 0.2);
+  color: #fbbf24;
+  border: 1px solid rgba(245, 158, 11, 0.4);
+}
+
+.priority-p2 {
+  background: rgba(56, 189, 248, 0.15);
+  color: #38bdf8;
+  border: 1px solid rgba(56, 189, 248, 0.3);
+}
+
+.ticket-check-mark {
+  color: #10b981;
+  font-weight: 900;
+  font-size: 13px;
+}
+
+.ticket-sender-row {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+}
+
+.ticket-avatar {
+  font-size: 16px;
+}
+
+.ticket-sender-info {
+  display: flex;
+  flex-direction: column;
+}
+
+.ticket-sender-name {
+  font-size: 12px;
+  font-weight: 700;
+  color: #f1f5f9;
+}
+
+.ticket-dept-text {
+  font-size: 10px;
+  color: #94a3b8;
+}
+
+.ticket-subject-title {
+  font-size: 12px;
+  color: #cbd5e1;
+  line-height: 1.35;
+  font-weight: 500;
+  display: -webkit-box;
+  -webkit-line-clamp: 2;
+  line-clamp: 2;
+  -webkit-box-orient: vertical;
+  overflow: hidden;
+}
+
+/* RIGHT COLUMN: MAIN STAGE */
+.amazon-main-stage {
+  display: flex;
+  flex-direction: column;
+  flex: 1 1 0;
+  min-height: 0;
+  overflow-y: auto;
+  padding: 16px 20px;
+  gap: 14px;
+  background: #090e17;
+  -webkit-overflow-scrolling: touch;
+}
+
+.amazon-main-stage::-webkit-scrollbar {
+  width: 8px;
+}
+
+.amazon-main-stage::-webkit-scrollbar-thumb {
+  background: rgba(255, 255, 255, 0.1);
+  border-radius: 4px;
+}
+
+/* Chime Memo Hero Card */
+.chime-memo-card {
+  background: #111a28;
+  border: 1px solid rgba(255, 255, 255, 0.08);
+  border-radius: 10px;
+  padding: 16px 18px;
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+  box-shadow: 0 4px 20px rgba(0, 0, 0, 0.3);
+  border-left: 4px solid #ff9900;
+  flex-shrink: 0;
+}
+
+.chime-memo-header {
+  display: flex;
+  align-items: flex-start;
+  justify-content: space-between;
+  flex-wrap: wrap;
+  gap: 10px;
+}
+
+.chime-sender-block {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+}
+
+.chime-avatar-large {
+  font-size: 28px;
+  background: rgba(255, 255, 255, 0.05);
+  border-radius: 50%;
+  width: 44px;
+  height: 44px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  border: 1px solid rgba(255, 255, 255, 0.1);
+}
+
+.chime-sender-name-row {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  flex-wrap: wrap;
+}
+
+.chime-name {
+  font-size: 15px;
+  font-weight: 800;
+  color: #ffffff;
+}
+
+.chime-role-badge {
+  font-size: 10.5px;
+  font-weight: 700;
+  background: rgba(255, 153, 0, 0.15);
+  color: #ff9900;
+  border: 1px solid rgba(255, 153, 0, 0.3);
+  padding: 1px 7px;
+  border-radius: 4px;
+  font-family: var(--font-mono);
+}
+
+.chime-timestamp {
+  font-size: 11px;
+  color: #64748b;
+  font-family: var(--font-mono);
+}
+
+.chime-dept-label {
+  font-size: 11.5px;
+  color: #94a3b8;
+  margin-top: 2px;
+}
+
+.chime-priority-badge {
+  background: rgba(239, 68, 68, 0.15);
+  color: #f87171;
+  border: 1px solid rgba(239, 68, 68, 0.35);
+  font-size: 11px;
+  font-weight: 800;
+  padding: 3px 8px;
+  border-radius: 6px;
+  font-family: var(--font-mono);
+}
+
+.chime-speech-bubble {
+  background: rgba(0, 0, 0, 0.3);
+  border: 1px solid rgba(255, 255, 255, 0.05);
+  border-radius: 8px;
+  padding: 12px 16px;
+}
+
+.chime-message-text {
+  margin: 0;
+  font-size: 14px;
+  line-height: 1.55;
+  color: #f8fafc;
+  font-weight: 500;
+}
+
+/* Tabs Bar */
+.amazon-tabs-bar {
+  display: flex;
+  gap: 8px;
+  border-bottom: 1px solid rgba(255, 255, 255, 0.08);
+  padding-bottom: 8px;
+  flex-shrink: 0;
+}
+
+.amazon-tab-btn {
+  background: rgba(255, 255, 255, 0.05);
+  border: 1px solid rgba(255, 255, 255, 0.08);
+  border-radius: 6px;
+  padding: 8px 16px;
+  font-size: 12px;
+  font-weight: 700;
+  color: #94a3b8;
+  cursor: pointer;
+  transition: all 0.15s ease;
+  display: flex;
+  align-items: center;
+  gap: 6px;
+}
+
+.amazon-tab-btn:hover {
+  background: rgba(255, 255, 255, 0.1);
+  color: #f8fafc;
+}
+
+.amazon-tab-btn.active {
+  background: #ff9900;
+  color: #0f172a;
+  border-color: #ff9900;
+  box-shadow: 0 2px 8px rgba(255, 153, 0, 0.3);
+}
+
+/* TAB PANEL CONTENT */
+.amazon-tab-panel {
+  display: flex;
+  flex-direction: column;
+  gap: 14px;
+  flex: 1 1 auto;
+}
+
+/* Context Report View */
+.context-report-view {
+  display: flex;
+  flex-direction: column;
+  gap: 14px;
+}
+
+.report-box {
+  background: #111827;
+  border: 1px solid rgba(255, 255, 255, 0.07);
+  border-radius: 8px;
+  padding: 14px 16px;
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+}
+
+.report-box-title {
+  font-size: 12.5px;
+  font-weight: 800;
+  color: #f8fafc;
+  display: flex;
+  align-items: center;
+  gap: 6px;
+  letter-spacing: -0.01em;
+}
+
+.report-box-text {
+  margin: 0;
+  font-size: 13px;
+  color: #cbd5e1;
+  line-height: 1.6;
+}
+
+.report-bullets-list {
+  margin: 0;
+  padding-left: 20px;
+  font-size: 13px;
+  color: #cbd5e1;
+  line-height: 1.65;
+}
+
+.report-bullets-list li {
+  margin-bottom: 4px;
+}
+
+.report-bullets-list code {
+  background: rgba(0, 0, 0, 0.4);
+  color: #38bdf8;
+  padding: 1px 5px;
+  border-radius: 3px;
+  font-family: var(--font-mono);
+  font-size: 12px;
+}
+
+.report-dual-grid {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 14px;
+}
+
+@media (max-width: 900px) {
+  .report-dual-grid {
+    grid-template-columns: 1fr;
+  }
+}
+
+.trap-box {
+  border-left: 3px solid #f59e0b;
+}
+
+.interview-note {
+  margin-top: 6px;
+  padding: 8px 10px;
+  background: rgba(245, 158, 11, 0.08);
+  border-radius: 6px;
+  font-size: 12px;
+  color: #fed7aa;
+  line-height: 1.5;
+}
+
+.schema-box {
+  border-left: 3px solid #38bdf8;
+}
+
+.schema-code-block {
+  margin: 0;
+  background: #080d16;
+  border: 1px solid rgba(255, 255, 255, 0.06);
+  border-radius: 6px;
+  padding: 10px 12px;
+  font-family: var(--font-mono);
+  font-size: 11.5px;
+  color: #7dd3fc;
+  overflow-x: auto;
+  line-height: 1.5;
+}
+
+.report-action-row {
+  display: flex;
+  justify-content: flex-end;
+  padding-top: 6px;
+}
+
+.btn-launch-challenge {
+  background: #ff9900;
+  color: #0f172a;
+  border: none;
+  border-radius: 8px;
+  padding: 12px 22px;
+  font-size: 13.5px;
+  font-weight: 800;
+  cursor: pointer;
+  transition: all 0.15s ease;
+  box-shadow: 0 4px 14px rgba(255, 153, 0, 0.35);
+  display: flex;
+  align-items: center;
+  gap: 8px;
+}
+
+.btn-launch-challenge:hover {
+  background: #ffaa22;
+  transform: translateY(-1px);
+  box-shadow: 0 6px 18px rgba(255, 153, 0, 0.45);
+}
+
+/* Challenge View & Interactive Token Blanks */
+.challenge-inner-wrap {
+  display: flex;
+  flex-direction: column;
+  gap: 14px;
+}
+
+.challenge-instruction-card {
+  background: #131c2a;
+  border: 1px solid rgba(56, 189, 248, 0.25);
+  border-left: 4px solid #38bdf8;
+  border-radius: 8px;
+  padding: 12px 16px;
+  font-size: 13.5px;
+  color: #f1f5f9;
+  line-height: 1.5;
+}
+
+.instruction-lead {
+  font-weight: 800;
+  color: #38bdf8;
+  margin-right: 4px;
+}
+
+.amazon-code-terminal {
+  background: #080d16;
+  border: 1px solid rgba(255, 255, 255, 0.1);
+  border-radius: 8px;
+  overflow: hidden;
+  box-shadow: 0 6px 24px rgba(0, 0, 0, 0.4);
+}
+
+.terminal-bar {
+  background: #111827;
+  padding: 8px 12px;
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  border-bottom: 1px solid rgba(255, 255, 255, 0.06);
+}
+
+.terminal-dots {
+  display: flex;
+  gap: 6px;
+}
+
+.terminal-dots .dot {
+  width: 10px;
+  height: 10px;
+  border-radius: 50%;
+}
+
+.dot.red { background: #ef4444; }
+.dot.yellow { background: #f59e0b; }
+.dot.green { background: #10b981; }
+
+.terminal-title {
+  font-family: var(--font-mono);
+  font-size: 11.5px;
+  color: #94a3b8;
+  font-weight: 600;
+}
+
+.terminal-editor-body {
+  margin: 0;
+  padding: 16px;
+  font-family: var(--font-mono);
+  font-size: 13px;
+  line-height: 1.8;
+  color: #e2e8f0;
+  overflow-x: auto;
+  white-space: pre-wrap;
+  word-break: break-word;
+}
+
+/* Blank Drop-Zones inside the SQL Code Block */
+.code-blank-slot {
+  display: inline-block;
+  padding: 2px 8px;
+  border-radius: 4px;
+  border: 1px dashed rgba(255, 255, 255, 0.3);
+  background: rgba(255, 255, 255, 0.05);
+  color: #94a3b8;
+  font-weight: 700;
+  font-family: var(--font-mono);
+  transition: all 0.15s ease;
+}
+
+.code-blank-slot.filled {
+  background: rgba(56, 189, 248, 0.18);
+  border: 1px solid #38bdf8;
+  color: #38bdf8;
+}
+
+.code-blank-slot.correct {
+  background: rgba(16, 185, 129, 0.25) !important;
+  border-color: #10b981 !important;
+  color: #34d399 !important;
+}
+
+.code-blank-slot.wrong {
+  background: rgba(239, 68, 68, 0.25) !important;
+  border-color: #ef4444 !important;
+  color: #f87171 !important;
+}
+
+/* Blank Option Tray Selector */
+.blank-options-tray-section {
+  background: #111827;
+  border: 1px solid rgba(255, 255, 255, 0.07);
+  border-radius: 8px;
+  padding: 14px 16px;
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+}
+
+.tray-label {
+  font-size: 12px;
+  font-weight: 800;
+  text-transform: uppercase;
+  letter-spacing: 0.04em;
+  color: #94a3b8;
+}
+
+.blank-selectors-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
+  gap: 12px;
+}
+
+.blank-selector-card {
+  background: rgba(0, 0, 0, 0.25);
+  border: 1px solid rgba(255, 255, 255, 0.06);
+  border-radius: 6px;
+  padding: 10px;
+  display: flex;
+  flex-direction: column;
+  gap: 6px;
+}
+
+.blank-card-title {
+  font-size: 11px;
+  font-weight: 700;
+  color: #cbd5e1;
+  font-family: var(--font-mono);
+}
+
+.blank-pill-options {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 6px;
+}
+
+.blank-choice-pill {
+  background: rgba(255, 255, 255, 0.06);
+  border: 1px solid rgba(255, 255, 255, 0.12);
+  border-radius: 4px;
+  color: #e2e8f0;
+  font-size: 11.5px;
+  font-family: var(--font-mono);
+  font-weight: 600;
+  padding: 4px 8px;
+  cursor: pointer;
+  transition: all 0.15s ease;
+}
+
+.blank-choice-pill:hover {
+  background: rgba(255, 255, 255, 0.15);
+  border-color: rgba(255, 255, 255, 0.25);
+}
+
+.blank-choice-pill.active {
+  background: #38bdf8;
+  color: #0f172a;
+  border-color: #38bdf8;
+  font-weight: 800;
+  box-shadow: 0 2px 6px rgba(56, 189, 248, 0.35);
+}
+
+/* Actions Bar */
+.challenge-actions-bar {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  flex-wrap: wrap;
+}
+
+.btn-verify-query {
+  background: #10b981;
+  color: #ffffff;
+  border: none;
+  border-radius: 6px;
+  padding: 10px 20px;
+  font-size: 13px;
+  font-weight: 800;
+  cursor: pointer;
+  transition: all 0.15s ease;
+  box-shadow: 0 4px 12px rgba(16, 185, 129, 0.3);
+  display: flex;
+  align-items: center;
+  gap: 6px;
+}
+
+.btn-verify-query:hover {
+  background: #059669;
+  transform: translateY(-1px);
+}
+
+.btn-reset-query {
+  background: rgba(255, 255, 255, 0.08);
+  border: 1px solid rgba(255, 255, 255, 0.12);
+  border-radius: 6px;
+  padding: 10px 16px;
+  font-size: 12.5px;
+  font-weight: 700;
+  color: #cbd5e1;
+  cursor: pointer;
+  transition: all 0.15s ease;
+}
+
+.btn-reset-query:hover {
+  background: rgba(255, 255, 255, 0.14);
+  color: #ffffff;
+}
+
+/* Evaluation Feedback Cards */
+.evaluation-card {
+  border-radius: 8px;
+  padding: 16px;
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+  animation: fadeIn 0.2s ease-in-out;
+}
+
+.evaluation-card.success {
+  background: rgba(16, 185, 129, 0.12);
+  border: 1px solid #10b981;
+}
+
+.evaluation-card.error {
+  background: rgba(239, 68, 68, 0.12);
+  border: 1px solid #ef4444;
+}
+
+.eval-header {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+}
+
+.eval-icon {
+  font-size: 24px;
+}
+
+.eval-sub {
+  font-size: 12px;
+  color: #94a3b8;
+  margin-top: 2px;
+}
+
+.manager-review-box {
+  background: rgba(0, 0, 0, 0.25);
+  border: 1px solid rgba(255, 255, 255, 0.06);
+  border-radius: 6px;
+  padding: 10px 14px;
+}
+
+.review-title {
+  font-size: 12px;
+  font-weight: 800;
+  color: #34d399;
+  margin-bottom: 4px;
+}
+
+.review-comment {
+  margin: 0;
+  font-size: 13px;
+  color: #e2e8f0;
+  line-height: 1.5;
+}
+
+.eval-next-row {
+  display: flex;
+  justify-content: flex-end;
+  padding-top: 4px;
+}
+
+.btn-next-day {
+  background: #ff9900;
+  color: #0f172a;
+  border: none;
+  border-radius: 6px;
+  padding: 10px 20px;
+  font-size: 13px;
+  font-weight: 800;
+  cursor: pointer;
+  transition: all 0.15s ease;
+  box-shadow: 0 4px 12px rgba(255, 153, 0, 0.3);
+}
+
+.btn-next-day:hover {
+  background: #ffaa22;
+  transform: translateY(-1px);
+}
+
+.capstone-congrats {
+  font-size: 14px;
+  font-weight: 800;
+  color: #34d399;
+}
+
+
 
 
 
