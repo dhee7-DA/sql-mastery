@@ -7782,9 +7782,9 @@ function setWindowDisciplineFilter(discKey) {
     if (activeWindowDisciplineFilter) {
       const meta = (window.WINDOW_DISCIPLINES_METADATA || []).find(m => m.key === activeWindowDisciplineFilter);
       const name = meta ? meta.name : activeWindowDisciplineFilter;
-      window.SQL_BUDDY.say(`Filtered to ${name} (20 Levels)! Master this analytical discipline!`, 3500, 'celebrate');
+      window.SQL_BUDDY.say(`Filtered to ${name} (60 Levels)! Master this analytical discipline!`, 3500, 'celebrate');
     } else {
-      window.SQL_BUDDY.say("Showing all 100 Window Function quests across 5 disciplines!", 3000, 'happy');
+      window.SQL_BUDDY.say("Showing all 420 Window Function quests across 7 disciplines!", 3000, 'happy');
     }
   }
 }
