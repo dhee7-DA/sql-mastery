@@ -230,6 +230,16 @@
                 <span class="nav-item-desc">Day-in-the-life L4 Data Analyst onboarding &amp; Prime Day war room</span>
               </div>
             </button>
+            <button class="nav-dropdown-item nav-tab" data-view="viewTrapGym" onclick="selectNavView('viewTrapGym', 'Trap Gym (SRS)', 'navGroupPractice')">
+              <span class="nav-item-icon">🧠</span>
+              <div class="nav-item-text">
+                <div class="nav-item-title-row">
+                  <span class="nav-item-title">Trap Memory Gym</span>
+                  <span class="nav-item-tag accent" id="trapSrsNavBadge">🔥 36 Due</span>
+                </div>
+                <span class="nav-item-desc">Spaced repetition (Leitner SRS) for 36 critical production traps</span>
+              </div>
+            </button>
           </div>
         </div>
 
@@ -1475,6 +1485,11 @@
     </div>
   </div>
 
+  <!-- VIEW: SQL Production Trap Memory Gym (Leitner SRS) -->
+  <div class="view-panel" id="viewTrapGym">
+    <!-- Populated dynamically by trap_memory_engine.js -->
+  </div>
+
   <!-- 60-Second Rapid-Fire Blitz Modal -->
   <div id="questBlitzModal" class="blitz-modal-overlay" style="display: none;">
     <div class="blitz-modal-card">
@@ -1690,6 +1705,8 @@
 <script src="capstone_engine.js"></script>
 <script src="amazon_story_data.js"></script>
 <script src="amazon_story_engine.js"></script>
+<script src="trap_flashcards_data.js"></script>
+<script src="trap_memory_engine.js"></script>
 <script src="app.js?v=91"></script>
 </body>
 </html>
