@@ -173,10 +173,36 @@
     recordMistake(trapKey, contextInfo) {
       if (!trapKey) return;
       const allCards = window.MASTER_TRAP_FLASHCARDS || [];
-      const match = allCards.find(c => 
-        (c.trapKey && c.trapKey.toUpperCase() === trapKey.toUpperCase()) ||
-        (c.trapTitle && c.trapTitle.toUpperCase().includes(trapKey.toUpperCase()))
+      const tkUpper = String(trapKey).toUpperCase();
+      const ctxUpper = String(contextInfo || '').toUpperCase();
+
+      // 1. Direct match by trapKey or title
+      let match = allCards.find(c => 
+        (c.trapKey && (c.trapKey.toUpperCase() === tkUpper || tkUpper.includes(c.trapKey.toUpperCase()))) ||
+        (c.trapTitle && (c.trapTitle.toUpperCase().includes(tkUpper) || tkUpper.includes(c.trapTitle.toUpperCase())))
       );
+
+      // 2. Intelligent category keyword fallback
+      if (!match) {
+        const fullText = `${tkUpper} ${ctxUpper}`;
+        if (fullText.includes('JOIN')) {
+          match = allCards.find(c => c.category === 'joins');
+        } else if (fullText.includes('NULL') || fullText.includes('3VL') || fullText.includes('LOGIC')) {
+          match = allCards.find(c => c.category === 'logic_nulls');
+        } else if (fullText.includes('WINDOW') || fullText.includes('RANK') || fullText.includes('OVER') || fullText.includes('LAG') || fullText.includes('LEAD')) {
+          match = allCards.find(c => c.category === 'window');
+        } else if (fullText.includes('GROUP') || fullText.includes('HAVING') || fullText.includes('COUNT') || fullText.includes('SUM') || fullText.includes('AVG')) {
+          match = allCards.find(c => c.category === 'aggregates');
+        } else if (fullText.includes('SUBQUERY') || fullText.includes('CTE') || fullText.includes('WITH') || fullText.includes('EXISTS')) {
+          match = allCards.find(c => c.category === 'subqueries');
+        } else if (fullText.includes('UNION') || fullText.includes('INTERSECT') || fullText.includes('EXCEPT')) {
+          match = allCards.find(c => c.category === 'set_operations');
+        }
+      }
+
+      if (!match && allCards.length > 0) {
+        match = allCards[0];
+      }
 
       this.state.mistakesLoggedCount = (this.state.mistakesLoggedCount || 0) + 1;
 
@@ -188,15 +214,38 @@
         this.saveState();
         this.updateGlobalBadge();
 
+        this.showMistakeToast(match.trapTitle, contextInfo);
+
         // Dispatch notification
-        window.dispatchEvent(new CustomEvent('sql-trap-captured', {
-          detail: {
-            cardId: match.id,
-            trapTitle: match.trapTitle,
-            context: contextInfo
-          }
-        }));
+        if (typeof window !== 'undefined' && typeof window.dispatchEvent === 'function') {
+          window.dispatchEvent(new CustomEvent('sql-trap-captured', {
+            detail: {
+              cardId: match.id,
+              trapTitle: match.trapTitle,
+              context: contextInfo
+            }
+          }));
+        }
       }
+    }
+
+    showMistakeToast(trapTitle, contextInfo) {
+      if (typeof document === 'undefined') return;
+      const existing = document.getElementById('srsMistakeToast');
+      if (existing) existing.remove();
+
+      const toast = document.createElement('div');
+      toast.id = 'srsMistakeToast';
+      toast.className = 'srs-toast-notification';
+      toast.innerHTML = `
+        <span style="font-size: 16px;">🧠</span>
+        <div>
+          <div style="font-weight: 700; color: #f87171;">Trap Added to Memory Gym</div>
+          <div style="font-size: 11px; opacity: 0.9;">${this.escapeHtml(trapTitle)} (Box 1: Due Today)</div>
+        </div>
+      `;
+      document.body.appendChild(toast);
+      setTimeout(() => { if (toast && toast.parentNode) toast.remove(); }, 3500);
     }
 
     resetAllProgress() {
@@ -314,6 +363,26 @@
                 <span class="leitner-tile-count text-cyan">${stats.retentionRate}%</span>
               </div>
               <div class="leitner-tile-sub">${stats.mistakesLogged} Traps Logged</div>
+            </div>
+          </div>
+
+          <!-- LEITNER MASTERY PROGRESS DISTRIBUTION -->
+          <div class="leitner-progress-wrapper">
+            <div class="leitner-progress-header">
+              <span class="leitner-progress-label">🧠 Leitner Mastery Distribution</span>
+              <span class="leitner-progress-pct">${Math.round(((stats.boxCounts[3] + stats.boxCounts[4]) / (stats.totalCards || 36)) * 100)}% Retained / Mastered</span>
+            </div>
+            <div class="leitner-multi-progress-bar" title="Box 1: ${stats.boxCounts[1]} | Box 2: ${stats.boxCounts[2]} | Box 3: ${stats.boxCounts[3]} | Box 4: ${stats.boxCounts[4]}">
+              <div class="leitner-prog-segment seg-box1" style="width: ${(stats.boxCounts[1] / (stats.totalCards || 36)) * 100}%;"></div>
+              <div class="leitner-prog-segment seg-box2" style="width: ${(stats.boxCounts[2] / (stats.totalCards || 36)) * 100}%;"></div>
+              <div class="leitner-prog-segment seg-box3" style="width: ${(stats.boxCounts[3] / (stats.totalCards || 36)) * 100}%;"></div>
+              <div class="leitner-prog-segment seg-box4" style="width: ${(stats.boxCounts[4] / (stats.totalCards || 36)) * 100}%;"></div>
+            </div>
+            <div class="leitner-progress-legend">
+              <span class="legend-dot dot-b1">● Box 1: Learning (${stats.boxCounts[1]})</span>
+              <span class="legend-dot dot-b2">● Box 2: Developing (${stats.boxCounts[2]})</span>
+              <span class="legend-dot dot-b3">● Box 3: Retained (${stats.boxCounts[3]})</span>
+              <span class="legend-dot dot-b4">● Box 4: Mastered (${stats.boxCounts[4]})</span>
             </div>
           </div>
 

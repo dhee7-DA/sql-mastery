@@ -4875,6 +4875,14 @@ function handleMcqAnswer(qid, selectedIdx) {
     optionBtns[selectedIdx].classList.add('opt-wrong');
     if (optionBtns[correctIdx]) optionBtns[correctIdx].classList.add('opt-correct');
     verdict.innerHTML = `<span style="color: #fb7185; font-weight: 700;">&cross; Not quite!</span> &mdash; Correct answer is <strong>Option ${String.fromCharCode(65 + correctIdx)}</strong>`;
+    
+    // Auto-log mistake to Trap SRS Deck
+    window.dispatchEvent(new CustomEvent('sql-trap-logged', {
+      detail: {
+        trapKey: mcq.trapKey || mcq.keyword || mcq.topic || 'SQL MCQ Trap',
+        context: `MCQ #${mcq.id}: ${mcq.question ? mcq.question.substring(0, 50) : 'MCQ mistake'}`
+      }
+    }));
   }
 
   QuizState.answered++;
@@ -6039,6 +6047,14 @@ function renderCaseStudies(
         const correct = wrongInfo ? wrongInfo.correct : '';
         window.GYM_MASTERY_RADAR.recordMistake(caseId, chosen, correct, cs.title, cs.syntaxTrap);
       }
+
+      // Auto-log mistake to Trap SRS Deck
+      window.dispatchEvent(new CustomEvent('sql-trap-logged', {
+        detail: {
+          trapKey: cs.syntaxTrap || cs.title || cs.subcluster || cs.topicName || 'Syntax Drill Trap',
+          context: `Syntax Drill #${cs.drillNumber || cs.id}: ${cs.title}`
+        }
+      }));
     }
   };
 }
@@ -14316,6 +14332,14 @@ function checkFillBlankAnswer() {
     if (window.SQL_BUDDY && typeof window.SQL_BUDDY.onIncorrectQuestAnswer === 'function') {
       window.SQL_BUDDY.onIncorrectQuestAnswer();
     }
+
+    // Auto-log mistake to Trap SRS Deck
+    window.dispatchEvent(new CustomEvent('sql-trap-logged', {
+      detail: {
+        trapKey: (quest.trapDissection && quest.trapDissection.trapKey) || quest.category || quest.title || 'SQL Quest Trap',
+        context: `Quest #${currentQuestIndex + 1}: ${quest.title}`
+      }
+    }));
   }
 
   renderQuestStepperTrack();
