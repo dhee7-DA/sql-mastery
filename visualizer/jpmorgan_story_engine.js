@@ -18,6 +18,11 @@
   let isEvaluated = false;
   let isSuccess = false;
   let solvedDays = new Set();
+  let challengeMode = 'blanks'; // 'blanks' | 'live_repl'
+  let liveQueryText = '';
+  let liveQueryResult = null;
+  let liveQueryError = null;
+  let liveQueryLatency = null;
 
   function playUiSound(type) {
     try {
@@ -67,6 +72,10 @@
     userBlanks = {};
     isEvaluated = false;
     isSuccess = false;
+    liveQueryResult = null;
+    liveQueryError = null;
+    liveQueryLatency = null;
+    liveQueryText = '';
     renderJPMorganWorkspace();
     playUiSound('click');
   }
@@ -459,6 +468,75 @@
     `;
   }
 
+  function setChallengeMode(mode) {
+    challengeMode = mode;
+    renderJPMorganChallengePanel();
+    playUiSound('click');
+  }
+
+  function executeLiveQuery(queryOverride) {
+    const d = getActiveDayData();
+    if (!d) return;
+
+    const editor = document.getElementById('jpmorganLiveSqlEditor');
+    const sqlToRun = (queryOverride || (editor ? editor.value : liveQueryText) || '').trim();
+    if (!sqlToRun) return;
+
+    liveQueryText = sqlToRun;
+
+    if (typeof window.alasql !== 'function') {
+      liveQueryError = "AlaSQL in-memory engine is initializing. Please wait a moment.";
+      renderJPMorganChallengePanel();
+      return;
+    }
+
+    const startTs = performance.now();
+
+    try {
+      // Ensure the day's sample table is loaded into AlaSQL memory
+      const sample = (window.JPMORGAN_SAMPLE_TABLES && window.JPMORGAN_SAMPLE_TABLES[d.day]) || null;
+      if (sample) {
+        try { window.alasql('DROP TABLE IF EXISTS ' + sample.tableName); } catch (e) {}
+        window.alasql('CREATE TABLE ' + sample.tableName);
+        window.alasql.tables[sample.tableName].data = sample.rows.map(r => {
+          const rowObj = {};
+          sample.columns.forEach((c, idx) => {
+            rowObj[c] = r[idx];
+          });
+          return rowObj;
+        });
+      }
+
+      // Strip trailing semicolons for AlaSQL parser
+      let cleanQuery = sqlToRun.replace(/;+\s*$/, '');
+
+      // Execute query
+      const result = window.alasql(cleanQuery);
+      const elapsed = (performance.now() - startTs).toFixed(2);
+
+      liveQueryResult = Array.isArray(result) ? result : [result];
+      liveQueryError = null;
+      liveQueryLatency = elapsed;
+
+      if (liveQueryResult.length > 0) {
+        solvedDays.add(d.day);
+        try {
+          localStorage.setItem('sql_jpmorgan_solved_days', JSON.stringify(Array.from(solvedDays)));
+        } catch (e) {}
+        playUiSound('success');
+      } else {
+        playUiSound('click');
+      }
+    } catch (err) {
+      liveQueryError = err.message || String(err);
+      liveQueryResult = null;
+      liveQueryLatency = null;
+      playUiSound('error');
+    }
+
+    renderJPMorganChallengePanel();
+  }
+
   function renderJPMorganChallengePanel() {
     const root = document.getElementById('jpmorganTabContentRoot');
     if (!root || activeTab !== 'challenge') return;
@@ -486,17 +564,11 @@
       renderedQuery = renderedQuery.replace(`___${b.id}___`, slotHtml);
     });
 
-    root.innerHTML = `
-      <div class="challenge-workspace-box">
-        <!-- Instruction banner -->
-        <div class="challenge-instruction-card" style="border-left: 3px solid #f59e0b;">
-          <span class="instruction-icon">🎯</span>
-          <div>
-            <div class="instruction-title" style="color: #fbbf24;">Trading Day Objective:</div>
-            <div class="instruction-p">${d.challenge.instruction}</div>
-          </div>
-        </div>
+    // Content based on challengeMode
+    let modeContentHtml = '';
 
+    if (challengeMode === 'blanks') {
+      modeContentHtml = `
         <!-- Interactive Query Canvas -->
         <div class="challenge-query-canvas">
           <div class="canvas-header">
@@ -551,9 +623,133 @@
             </button>
           </div>
         </div>
+      `;
+    } else {
+      // Live REPL Terminal Mode
+      const sample = (window.JPMORGAN_SAMPLE_TABLES && window.JPMORGAN_SAMPLE_TABLES[d.day]) || null;
+      const initialSql = liveQueryText || d.challenge.expectedSql;
+
+      modeContentHtml = `
+        <div class="live-sql-editor-container" style="margin-bottom: 16px;">
+          <div style="display: flex; justify-content: space-between; align-items: center; background: #0f172a; padding: 10px 14px; border-top-left-radius: 8px; border-top-right-radius: 8px; border: 1px solid #1e293b; border-bottom: none; flex-wrap: wrap; gap: 8px;">
+            <div style="display: flex; align-items: center; gap: 8px;">
+              <span style="font-size: 15px;">⚡</span>
+              <span style="font-family: monospace; font-size: 12px; color: #fbbf24;">Live In-Memory SQL Terminal &bull; Active Table: ${sample ? sample.tableName : d.schema}</span>
+            </div>
+            <div style="display: flex; gap: 8px;">
+              <button class="btn btn-secondary btn-xs" onclick="window.JPMORGAN_STORY.loadSuggestedQuery()">
+                ✨ Load Expected Solution
+              </button>
+              <button class="btn btn-secondary btn-xs" onclick="window.JPMORGAN_STORY.clearLiveQuery()">
+                ↺ Clear
+              </button>
+            </div>
+          </div>
+          <textarea id="jpmorganLiveSqlEditor" style="width: 100%; height: 110px; font-family: 'JetBrains Mono', monospace; font-size: 13px; line-height: 1.5; padding: 12px; box-sizing: border-box; background: #060b13; border: 1px solid #1e293b; border-bottom-left-radius: 8px; border-bottom-right-radius: 8px; color: #38bdf8; resize: vertical;" placeholder="Write your SQL query here...">${initialSql}</textarea>
+        </div>
+
+        <!-- Terminal Execution Bar -->
+        <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 16px; flex-wrap: wrap; gap: 10px;">
+          <div style="display: flex; gap: 10px; align-items: center;">
+            <button class="btn btn-primary" style="background: #f59e0b; color: #000; font-weight: 700; padding: 8px 20px;" onclick="window.JPMORGAN_STORY.runLiveQuery()">
+              ▶ Run Query (Ctrl+Enter)
+            </button>
+            ${liveQueryLatency !== null ? `
+              <span style="font-size: 12px; font-family: monospace; color: #10b981; background: rgba(16, 185, 129, 0.1); padding: 4px 10px; border-radius: 999px; border: 1px solid rgba(16, 185, 129, 0.2);">
+                ⚡ ${liveQueryResult ? liveQueryResult.length : 0} rows returned in ${liveQueryLatency}ms
+              </span>
+            ` : ''}
+          </div>
+          <span style="font-size: 12px; color: #64748b;">Shortcuts: Ctrl+Enter executes query</span>
+        </div>
+
+        <!-- Terminal Execution Results -->
+        ${liveQueryError ? `
+          <div style="background: rgba(239, 68, 68, 0.1); border: 1px solid rgba(239, 68, 68, 0.3); border-radius: 8px; padding: 16px; margin-bottom: 16px;">
+            <div style="color: #f87171; font-weight: 600; font-size: 13px; margin-bottom: 4px;">⚠️ SQL Execution Error:</div>
+            <pre style="margin: 0; color: #fca5a5; font-family: monospace; font-size: 12px; white-space: pre-wrap;">${liveQueryError}</pre>
+          </div>
+        ` : ''}
+
+        ${liveQueryResult ? `
+          <div style="background: #0b111e; border: 1px solid #1e293b; border-radius: 8px; padding: 14px; overflow-x: auto; max-height: 380px;">
+            <div style="display: flex; justify-content: space-between; margin-bottom: 10px; font-size: 12px; color: #94a3b8;">
+              <span>Query Result Set</span>
+              <span>${liveQueryResult.length} Record(s)</span>
+            </div>
+            ${liveQueryResult.length > 0 ? `
+              <table style="width: 100%; border-collapse: collapse; font-family: 'JetBrains Mono', monospace; font-size: 12px; text-align: left;">
+                <thead>
+                  <tr style="background: #111a2e; border-bottom: 2px solid #b45309; position: sticky; top: 0;">
+                    ${Object.keys(liveQueryResult[0]).map(k => `
+                      <th style="padding: 8px 12px; color: #fbbf24; font-weight: 600; white-space: nowrap;">${k}</th>
+                    `).join('')}
+                  </tr>
+                </thead>
+                <tbody>
+                  ${liveQueryResult.map((row, idx) => `
+                    <tr style="background: ${idx % 2 === 0 ? 'rgba(15, 23, 42, 0.5)' : 'rgba(11, 17, 30, 0.7)'}; border-bottom: 1px solid rgba(51, 65, 85, 0.3);">
+                      ${Object.values(row).map(val => {
+                        const isNum = typeof val === 'number';
+                        let display = val;
+                        if (isNum) {
+                          display = Number.isInteger(val) ? val.toLocaleString() : val.toLocaleString(undefined, { minimumFractionDigits: 2, maximumFractionDigits: 4 });
+                        } else if (val === null || val === undefined) {
+                          display = '<span style="color: #64748b; font-style: italic;">NULL</span>';
+                        }
+                        return `
+                          <td style="padding: 8px 12px; color: ${isNum ? '#38bdf8' : '#e2e8f0'}; white-space: nowrap; ${isNum ? 'text-align: right;' : ''}">
+                            ${display}
+                          </td>
+                        `;
+                      }).join('')}
+                    </tr>
+                  `).join('')}
+                </tbody>
+              </table>
+            ` : `
+              <div style="padding: 24px; text-align: center; color: #64748b;">Query returned 0 matching records.</div>
+            `}
+          </div>
+        ` : (liveQueryError ? '' : `
+          <div style="padding: 30px; text-align: center; color: #64748b; background: rgba(0,0,0,0.3); border: 1px dashed #1e293b; border-radius: 8px;">
+            <span>Click <strong>▶ Run Query</strong> or press <strong>Ctrl+Enter</strong> to execute against ${sample ? sample.tableName : 'the ledger table'}.</span>
+          </div>
+        `)}
+      `;
+    }
+
+    root.innerHTML = `
+      <div class="challenge-workspace-box">
+        <!-- Instruction banner -->
+        <div class="challenge-instruction-card" style="border-left: 3px solid #f59e0b; margin-bottom: 14px;">
+          <span class="instruction-icon">🎯</span>
+          <div>
+            <div class="instruction-title" style="color: #fbbf24;">Trading Day Objective:</div>
+            <div class="instruction-p">${d.challenge.instruction}</div>
+          </div>
+        </div>
+
+        <!-- Mode Switcher Row -->
+        <div class="challenge-mode-switcher-row" style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 14px; background: rgba(0,0,0,0.4); padding: 8px 14px; border-radius: 8px; border: 1px solid rgba(245, 158, 11, 0.2); flex-wrap: wrap; gap: 8px;">
+          <div style="display: flex; gap: 8px; align-items: center;">
+            <span style="font-size: 11px; color: #94a3b8; font-weight: 600; text-transform: uppercase; letter-spacing: 0.05em;">Workstation Mode:</span>
+            <button class="choice-pill ${challengeMode === 'blanks' ? 'active' : ''}" style="${challengeMode === 'blanks' ? 'background: #f59e0b; color: #000; font-weight: 700;' : ''}" onclick="window.JPMORGAN_STORY.setChallengeMode('blanks')">
+              🧩 Assisted Token Blanks
+            </button>
+            <button class="choice-pill ${challengeMode === 'live_repl' ? 'active' : ''}" style="${challengeMode === 'live_repl' ? 'background: #f59e0b; color: #000; font-weight: 700;' : ''}" onclick="window.JPMORGAN_STORY.setChallengeMode('live_repl')">
+              💻 Live SQL Terminal (Run Queries)
+            </button>
+          </div>
+          ${challengeMode === 'live_repl' ? `
+            <span style="font-size: 11px; color: #38bdf8; font-family: monospace;">⚡ In-Memory AlaSQL Engine</span>
+          ` : ''}
+        </div>
+
+        ${modeContentHtml}
 
         <!-- Manager Feedback Drawer if solved -->
-        ${isSuccess ? `
+        ${(isSuccess || (challengeMode === 'live_repl' && liveQueryResult && liveQueryResult.length > 0)) ? `
           <div class="manager-feedback-card" style="border-left: 3px solid #10b981; margin-top: 14px; background: rgba(16, 185, 129, 0.08);">
             <div class="feedback-header">
               <span style="font-size: 18px;">🏛️</span>
@@ -578,6 +774,19 @@
         ` : ''}
       </div>
     `;
+
+    // Keyboard shortcut for Ctrl+Enter in live terminal
+    if (challengeMode === 'live_repl') {
+      const editor = document.getElementById('jpmorganLiveSqlEditor');
+      if (editor) {
+        editor.addEventListener('keydown', (e) => {
+          if (e.ctrlKey && e.key === 'Enter') {
+            e.preventDefault();
+            executeLiveQuery();
+          }
+        });
+      }
+    }
   }
 
   // Export to window
@@ -586,11 +795,31 @@
     selectDay: selectDay,
     setPhaseFilter: setPhaseFilter,
     setViewTab: setViewTab,
+    setChallengeMode: setChallengeMode,
     selectBlankOption: selectBlankOption,
     checkChallenge: checkJPMorganChallenge,
-    resetChallenge: resetJPMorganChallenge
+    resetChallenge: resetJPMorganChallenge,
+    runLiveQuery: () => executeLiveQuery(),
+    loadSuggestedQuery: () => {
+      const d = getActiveDayData();
+      if (d) {
+        const ed = document.getElementById('jpmorganLiveSqlEditor');
+        if (ed) ed.value = d.challenge.expectedSql;
+        executeLiveQuery(d.challenge.expectedSql);
+      }
+    },
+    clearLiveQuery: () => {
+      liveQueryResult = null;
+      liveQueryError = null;
+      liveQueryLatency = null;
+      liveQueryText = '';
+      const ed = document.getElementById('jpmorganLiveSqlEditor');
+      if (ed) ed.value = '';
+      renderJPMorganChallengePanel();
+    }
   };
 
   window.initJPMorganStoryEngine = initJPMorganStoryEngine;
 
 })();
+
