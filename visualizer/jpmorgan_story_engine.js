@@ -484,39 +484,18 @@
 
     liveQueryText = sqlToRun;
 
-    if (typeof window.alasql !== 'function') {
-      liveQueryError = "AlaSQL in-memory engine is initializing. Please wait a moment.";
+    if (!window.JPMORGAN_SQL_RUNNER || typeof window.JPMORGAN_SQL_RUNNER.execute !== 'function') {
+      liveQueryError = "SQL execution engine is initializing. Please wait a moment.";
       renderJPMorganChallengePanel();
       return;
     }
 
-    const startTs = performance.now();
+    const outcome = window.JPMORGAN_SQL_RUNNER.execute(sqlToRun, d.day);
 
-    try {
-      // Ensure the day's sample table is loaded into AlaSQL memory
-      const sample = (window.JPMORGAN_SAMPLE_TABLES && window.JPMORGAN_SAMPLE_TABLES[d.day]) || null;
-      if (sample) {
-        try { window.alasql('DROP TABLE IF EXISTS ' + sample.tableName); } catch (e) {}
-        window.alasql('CREATE TABLE ' + sample.tableName);
-        window.alasql.tables[sample.tableName].data = sample.rows.map(r => {
-          const rowObj = {};
-          sample.columns.forEach((c, idx) => {
-            rowObj[c] = r[idx];
-          });
-          return rowObj;
-        });
-      }
-
-      // Strip trailing semicolons for AlaSQL parser
-      let cleanQuery = sqlToRun.replace(/;+\s*$/, '');
-
-      // Execute query
-      const result = window.alasql(cleanQuery);
-      const elapsed = (performance.now() - startTs).toFixed(2);
-
-      liveQueryResult = Array.isArray(result) ? result : [result];
+    if (outcome.success) {
+      liveQueryResult = outcome.rows;
       liveQueryError = null;
-      liveQueryLatency = elapsed;
+      liveQueryLatency = outcome.latency;
 
       if (liveQueryResult.length > 0) {
         solvedDays.add(d.day);
@@ -527,10 +506,10 @@
       } else {
         playUiSound('click');
       }
-    } catch (err) {
-      liveQueryError = err.message || String(err);
+    } else {
+      liveQueryError = outcome.error;
       liveQueryResult = null;
-      liveQueryLatency = null;
+      liveQueryLatency = outcome.latency;
       playUiSound('error');
     }
 
