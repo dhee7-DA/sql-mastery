@@ -2116,6 +2116,7 @@ const NAV_GROUPS_MAP = {
   viewCapstones: { triggerId: 'btnGroupPractice', pillId: 'currentPracticePill', label: 'Capstones (10)' },
   viewAmazonStory: { triggerId: 'btnGroupPractice', pillId: 'currentPracticePill', label: 'Amazon Analyst (30d)' },
   viewTrapGym: { triggerId: 'btnGroupPractice', pillId: 'currentPracticePill', label: 'Trap Gym (SRS)' },
+  viewJPMorganStory: { triggerId: 'btnGroupPractice', pillId: 'currentPracticePill', label: 'JPMorgan (30d)' },
 
   viewExplainer: { triggerId: 'btnGroupReference', pillId: 'currentReferencePill', label: 'Study Docs' },
   viewDeconstructor: { triggerId: 'btnGroupReference', pillId: 'currentReferencePill', label: 'Deconstructor' },
@@ -2211,6 +2212,10 @@ function switchMainView(targetId) {
       window.trapSRS.renderView();
     }
     if (window.SQL_BUDDY) window.SQL_BUDDY.say("🧠 Welcome to the Trap Memory Gym! Train your muscle memory against 36 high-frequency production traps!", 4500, 'thinking');
+  }
+  if (targetId === 'viewJPMorganStory') {
+    if (window.initJPMorganStoryEngine) window.initJPMorganStoryEngine();
+    if (window.SQL_BUDDY) window.SQL_BUDDY.say("🏛️ Welcome to JPMorgan Chase! 30-Day Quantitative Risk & Treasury Analyst Rotation loaded!", 5000, 'celebrate');
   }
 }
 

@@ -240,6 +240,16 @@
                 <span class="nav-item-desc">Spaced repetition (Leitner SRS) for 36 critical production traps</span>
               </div>
             </button>
+            <button class="nav-dropdown-item nav-tab" data-view="viewJPMorganStory" onclick="selectNavView('viewJPMorganStory', 'JPMorgan Analyst (30d)', 'navGroupPractice')">
+              <span class="nav-item-icon">🏛️</span>
+              <div class="nav-item-text">
+                <div class="nav-item-title-row">
+                  <span class="nav-item-title">JPMorgan Analyst (30d)</span>
+                  <span class="nav-item-tag" style="background: rgba(245, 158, 11, 0.2); color: #fbbf24; border: 1px solid rgba(245, 158, 11, 0.4);">Wall St</span>
+                </div>
+                <span class="nav-item-desc">Quantitative risk, core banking ledgers, AML &amp; treasury</span>
+              </div>
+            </button>
           </div>
         </div>
 
@@ -1490,6 +1500,13 @@
     <!-- Populated dynamically by trap_memory_engine.js -->
   </div>
 
+  <!-- VIEW: JPMorgan Chase Quantitative Risk & Treasury 30-Day Simulator -->
+  <div class="view-panel" id="viewJPMorganStory">
+    <div id="jpmorganStoryContentRoot" class="amazon-story-workspace-wrap">
+      <!-- Dynamically populated by jpmorgan_story_engine.js -->
+    </div>
+  </div>
+
   <!-- 60-Second Rapid-Fire Blitz Modal -->
   <div id="questBlitzModal" class="blitz-modal-overlay" style="display: none;">
     <div class="blitz-modal-card">
@@ -1705,6 +1722,8 @@
 <script src="capstone_engine.js"></script>
 <script src="amazon_story_data.js"></script>
 <script src="amazon_story_engine.js"></script>
+<script src="jpmorgan_story_data.js"></script>
+<script src="jpmorgan_story_engine.js"></script>
 <script src="trap_flashcards_data.js"></script>
 <script src="trap_memory_engine.js"></script>
 <script src="app.js?v=91"></script>
