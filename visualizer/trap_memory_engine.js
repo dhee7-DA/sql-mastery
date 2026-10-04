@@ -131,10 +131,12 @@
         cs.box = 1;
         cs.streak = 0;
         cs.nextReview = now + (5 * 60 * 1000); // 5 minutes
+        if (window.soundFX) window.soundFX.playError();
       } else if (rating === 'hard') {
         // Stay in Box 1 or Box 2, due tomorrow
         cs.box = Math.max(1, Math.min(cs.box, 2));
         cs.nextReview = now + (1 * DAY_MS);
+        if (window.soundFX) window.soundFX.playClick();
       } else if (rating === 'good') {
         // Advance 1 Box up to Box 4
         cs.box = Math.min(4, cs.box + 1);
@@ -143,6 +145,12 @@
         this.sessionStats.correctThisSession++;
         const interval = BOX_CONFIG[cs.box].intervalDays * DAY_MS;
         cs.nextReview = now + Math.max(interval, DAY_MS);
+        if (window.soundFX) {
+          window.soundFX.playSuccess();
+          if (typeof window.soundFX.addXP === 'function') {
+            window.soundFX.addXP(15, 'Trap Mastered!');
+          }
+        }
       } else if (rating === 'easy') {
         // Jump directly to Box 4 (Mastered)
         cs.box = 4;
@@ -150,6 +158,12 @@
         this.state.goodReviewsCount = (this.state.goodReviewsCount || 0) + 1;
         this.sessionStats.correctThisSession++;
         cs.nextReview = now + (7 * DAY_MS);
+        if (window.soundFX) {
+          window.soundFX.playSuccess();
+          if (typeof window.soundFX.addXP === 'function') {
+            window.soundFX.addXP(25, 'Instant Trap Master!');
+          }
+        }
       }
 
       this.saveState();
@@ -463,7 +477,7 @@
               <div class="srs-code-container correct">
                 <div class="srs-code-header">
                   <span class="srs-code-label" style="color: #10b981;">✅ Bulletproof Corrected Production Query</span>
-                  <button class="btn btn-secondary btn-xs" onclick="window.trapSRS.copyCode('${card.id}')">
+                  <button class="btn btn-secondary btn-xs" id="btnCopySqlSnippet" onclick="window.trapSRS.copyCode('${card.id}')">
                     📋 Copy SQL
                   </button>
                 </div>
@@ -482,23 +496,23 @@
               <!-- LEITNER RATING ACTIONS -->
               <div class="srs-rating-container">
                 <div class="srs-rating-prompt">
-                  How well did you recall this trap? Grade yourself to update Leitner spacing:
+                  How well did you recall this trap? Grade yourself to update Leitner spacing (or press keys 1–4):
                 </div>
                 <div class="srs-rating-buttons">
-                  <button class="srs-grade-btn again" onclick="window.trapSRS.gradeCard('${card.id}', 'again')">
-                    <div class="grade-label">🔴 Again</div>
+                  <button class="srs-grade-btn again" onclick="window.trapSRS.gradeCard('${card.id}', 'again')" title="Shortcut: Press 1">
+                    <div class="grade-label">🔴 Again <kbd class="srs-kbd">1</kbd></div>
                     <div class="grade-sub">Box 1 &bull; Due in 5m</div>
                   </button>
-                  <button class="srs-grade-btn hard" onclick="window.trapSRS.gradeCard('${card.id}', 'hard')">
-                    <div class="grade-label">🟡 Hard</div>
+                  <button class="srs-grade-btn hard" onclick="window.trapSRS.gradeCard('${card.id}', 'hard')" title="Shortcut: Press 2">
+                    <div class="grade-label">🟡 Hard <kbd class="srs-kbd">2</kbd></div>
                     <div class="grade-sub">Box 2 &bull; 1 day</div>
                   </button>
-                  <button class="srs-grade-btn good" onclick="window.trapSRS.gradeCard('${card.id}', 'good')">
-                    <div class="grade-label">🟢 Good</div>
+                  <button class="srs-grade-btn good" onclick="window.trapSRS.gradeCard('${card.id}', 'good')" title="Shortcut: Press 3">
+                    <div class="grade-label">🟢 Good <kbd class="srs-kbd">3</kbd></div>
                     <div class="grade-sub">Box 3 &bull; 3 days</div>
                   </button>
-                  <button class="srs-grade-btn easy" onclick="window.trapSRS.gradeCard('${card.id}', 'easy')">
-                    <div class="grade-label">🔵 Easy</div>
+                  <button class="srs-grade-btn easy" onclick="window.trapSRS.gradeCard('${card.id}', 'easy')" title="Shortcut: Press 4">
+                    <div class="grade-label">🔵 Easy <kbd class="srs-kbd">4</kbd></div>
                     <div class="grade-sub">Box 4 &bull; 7 days</div>
                   </button>
                 </div>
@@ -549,8 +563,14 @@
       this.renderView();
     }
 
+    getActiveCard() {
+      const deck = this.getActiveDeck();
+      return deck[this.currentCardIndex] || null;
+    }
+
     flipCard() {
       this.isFlipped = !this.isFlipped;
+      if (window.soundFX) window.soundFX.playWhoosh();
       this.renderView();
     }
 
@@ -558,6 +578,7 @@
       if (this.currentCardIndex > 0) {
         this.currentCardIndex--;
         this.isFlipped = false;
+        if (window.soundFX) window.soundFX.playClick();
         this.renderView();
       }
     }
@@ -567,6 +588,7 @@
       if (this.currentCardIndex < deck.length - 1) {
         this.currentCardIndex++;
         this.isFlipped = false;
+        if (window.soundFX) window.soundFX.playClick();
         this.renderView();
       }
     }
@@ -574,6 +596,7 @@
     jumpToCard(index) {
       this.currentCardIndex = index;
       this.isFlipped = false;
+      if (window.soundFX) window.soundFX.playClick();
       this.renderView();
       const el = document.getElementById('srsActiveCard');
       if (el) el.scrollIntoView({ behavior: 'smooth', block: 'start' });
@@ -595,7 +618,15 @@
       const card = allCards.find(c => c.id === cardId);
       if (card && card.revealedAnalysis && card.revealedAnalysis.correctCode) {
         navigator.clipboard.writeText(card.revealedAnalysis.correctCode)
-          .then(() => alert('✅ Corrected SQL copied to clipboard!'))
+          .then(() => {
+            const btn = document.getElementById('btnCopySqlSnippet');
+            if (btn) {
+              const orig = btn.innerHTML;
+              btn.innerHTML = '✓ Copied SQL!';
+              setTimeout(() => { if (btn) btn.innerHTML = orig; }, 1800);
+            }
+            if (window.soundFX) window.soundFX.playPop();
+          })
           .catch(() => {});
       }
     }
@@ -615,13 +646,38 @@
   const engine = new TrapMemoryEngine();
   window.trapSRS = engine;
 
-  // Global key listener for spacebar card flip
+  // Global key listener for spacebar card flip, arrows, and ratings 1-4
   window.addEventListener('keydown', (e) => {
-    if (e.code === 'Space' && document.getElementById('viewTrapGym') && document.getElementById('viewTrapGym').classList.contains('active')) {
-      const activeEl = document.activeElement;
-      if (activeEl && (activeEl.tagName === 'INPUT' || activeEl.tagName === 'TEXTAREA')) return;
+    const gym = document.getElementById('viewTrapGym');
+    if (!gym || !gym.classList.contains('active')) return;
+    const activeEl = document.activeElement;
+    if (activeEl && (activeEl.tagName === 'INPUT' || activeEl.tagName === 'TEXTAREA')) return;
+
+    if (e.code === 'Space') {
       e.preventDefault();
       window.trapSRS.flipCard();
+    } else if (e.code === 'ArrowLeft') {
+      e.preventDefault();
+      window.trapSRS.prevCard();
+    } else if (e.code === 'ArrowRight') {
+      e.preventDefault();
+      window.trapSRS.nextCard();
+    } else if (window.trapSRS && window.trapSRS.isFlipped) {
+      const activeCard = window.trapSRS.getActiveCard();
+      if (!activeCard) return;
+      if (e.key === '1') {
+        e.preventDefault();
+        window.trapSRS.gradeCard(activeCard.id, 'again');
+      } else if (e.key === '2') {
+        e.preventDefault();
+        window.trapSRS.gradeCard(activeCard.id, 'hard');
+      } else if (e.key === '3') {
+        e.preventDefault();
+        window.trapSRS.gradeCard(activeCard.id, 'good');
+      } else if (e.key === '4') {
+        e.preventDefault();
+        window.trapSRS.gradeCard(activeCard.id, 'easy');
+      }
     }
   });
 
