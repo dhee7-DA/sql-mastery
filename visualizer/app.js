@@ -2115,6 +2115,7 @@ const NAV_GROUPS_MAP = {
   viewProblems: { triggerId: 'btnGroupPractice', pillId: 'currentPracticePill', label: 'Problem Bank' },
   viewCapstones: { triggerId: 'btnGroupPractice', pillId: 'currentPracticePill', label: 'Capstones (10)' },
   viewAmazonStory: { triggerId: 'btnGroupPractice', pillId: 'currentPracticePill', label: 'Amazon Analyst (30d)' },
+  viewTrapGym: { triggerId: 'btnGroupPractice', pillId: 'currentPracticePill', label: 'Trap Gym (SRS)' },
 
   viewExplainer: { triggerId: 'btnGroupReference', pillId: 'currentReferencePill', label: 'Study Docs' },
   viewDeconstructor: { triggerId: 'btnGroupReference', pillId: 'currentReferencePill', label: 'Deconstructor' },
@@ -2204,6 +2205,12 @@ function switchMainView(targetId) {
   if (targetId === 'viewAmazonStory') {
     if (window.initAmazonStoryEngine) window.initAmazonStoryEngine();
     if (window.SQL_BUDDY) window.SQL_BUDDY.say("📦 Welcome to Amazon SCOT! 30-Day Day-in-the-Life L4 Data Analyst Simulation loaded!", 5000, 'happy');
+  }
+  if (targetId === 'viewTrapGym') {
+    if (window.trapSRS && typeof window.trapSRS.renderView === 'function') {
+      window.trapSRS.renderView();
+    }
+    if (window.SQL_BUDDY) window.SQL_BUDDY.say("🧠 Welcome to the Trap Memory Gym! Train your muscle memory against 36 high-frequency production traps!", 4500, 'thinking');
   }
 }
 

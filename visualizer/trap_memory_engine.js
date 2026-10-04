@@ -202,6 +202,7 @@
     }
 
     updateGlobalBadge() {
+      if (typeof document === 'undefined') return;
       const stats = this.getStats();
       const badgePill = document.getElementById('trapSrsNavBadge');
       if (badgePill) {
@@ -630,5 +631,16 @@
       window.trapSRS.recordMistake(e.detail.trapKey, e.detail.context);
     }
   });
+
+  // Initial badge sync on DOM ready
+  if (typeof document !== 'undefined') {
+    if (document.readyState === 'loading') {
+      document.addEventListener('DOMContentLoaded', () => {
+        window.trapSRS.updateGlobalBadge();
+      });
+    } else {
+      window.trapSRS.updateGlobalBadge();
+    }
+  }
 
 })(window);
