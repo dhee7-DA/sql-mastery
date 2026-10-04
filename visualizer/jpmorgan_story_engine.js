@@ -466,6 +466,20 @@
             </div>
             <p class="feedback-body">${d.challenge.managerReview}</p>
           </div>
+          ${solvedDays.size >= 30 ? `
+            <div class="jpmorgan-capstone-banner" style="margin-top: 18px; padding: 20px; border-radius: 12px; background: linear-gradient(135deg, rgba(245, 158, 11, 0.15) 0%, rgba(217, 119, 6, 0.25) 100%); border: 2px solid #f59e0b; text-align: center;">
+              <div style="font-size: 32px; margin-bottom: 6px;">🏆 🏛️ 📜</div>
+              <h3 style="color: #fbbf24; margin: 0 0 8px 0; font-family: serif; font-size: 22px; letter-spacing: 0.04em;">JPMORGAN CHASE &amp; CO. BOARD OF DIRECTORS CITATION</h3>
+              <p style="color: #f1f5f9; font-size: 14px; line-height: 1.6; max-width: 680px; margin: 0 auto 12px auto;">
+                In recognition of exceptional analytical rigor across 30 days of market volatility, liquidity stress, and regulatory compliance. You have successfully resolved all 30 high-stakes quantitative risk tickets and earned the rank of <strong>Managing Director &amp; Global Head of Quantitative Risk</strong>.
+              </p>
+              <div style="display: inline-flex; gap: 16px; justify-content: center; flex-wrap: wrap;">
+                <span style="background: rgba(0,0,0,0.4); border: 1px solid #f59e0b; color: #fde68a; padding: 6px 14px; border-radius: 999px; font-size: 12px; font-weight: 700;">✅ Basel III LCR Compliant</span>
+                <span style="background: rgba(0,0,0,0.4); border: 1px solid #f59e0b; color: #fde68a; padding: 6px 14px; border-radius: 999px; font-size: 12px; font-weight: 700;">✅ 99% 1-Day VaR Audited</span>
+                <span style="background: rgba(0,0,0,0.4); border: 1px solid #f59e0b; color: #fde68a; padding: 6px 14px; border-radius: 999px; font-size: 12px; font-weight: 700;">✅ CET1 Ratio 14.85%</span>
+              </div>
+            </div>
+          ` : ''}
         ` : ''}
       </div>
     `;

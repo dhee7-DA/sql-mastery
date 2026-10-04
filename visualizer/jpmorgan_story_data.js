@@ -755,6 +755,334 @@
         expectedSql: "SELECT a.advisor_id, a.advisor_name, a.office_location, COUNT(p.account_id) AS total_clients, SUM(p.aum_usd) AS total_aum_usd, ROUND(AVG(p.aum_usd), 2) AS avg_client_aum, ROUND(SUM(p.aum_usd * (p.annual_fee_bps / 10000.0)), 2) AS annual_fee_revenue_usd FROM wealth_advisors a LEFT JOIN client_portfolios p ON a.advisor_id = p.advisor_id GROUP BY a.advisor_id, a.advisor_name, a.office_location;",
         managerReview: "Sensational executive reporting! The Operating Committee praised the clarity of your numbers. You are officially promoted to Vice President, Wealth & Quantitative Analytics!"
       }
+    },
+
+    // ---------------------------------------------------------------------------
+    // WEEK 4: MARKET RISK, TREASURY SOLVENCY & CAPSTONE (DAYS 22 - 30)
+    // ---------------------------------------------------------------------------
+    {
+      day: 22,
+      week: 4,
+      phase: "Week 4: Market Risk & Treasury Solvency",
+      title: "Day 22: Historical Value at Risk (99% 1-Day VaR) on Swap Portfolios",
+      sender: "Dr. Aris Thorne",
+      senderRole: "Managing Director, Global Market Risk & Quantitative Research",
+      senderAvatar: "🔬",
+      priority: "P1 - Regulatory VaR",
+      department: "Market Risk Analytics",
+      symphonyMessage: "Markets are gyrating following the FOMC rate decision. Regulators require JPMorgan's Chief Risk Officer to submit our 99% 1-Day Historical Value at Risk (VaR) for interest rate swap books. Sort daily simulated portfolio PnLs in ascending order and rank them to identify the 1st percentile cutoff.",
+      contextReport: {
+        businessWhy: "Value at Risk (VaR) quantifies the minimum expected loss over a specific time horizon at a given confidence level. For 99% VaR over 250 trading days, the 1st percentile (worst 1% of outcomes, or the 2nd/3rd worst trading day) determines the capital reserves the bank must hold against trading losses.",
+        learningFocus: [
+          "Sorting returns/PnL distribution: `ORDER BY daily_pnl_usd ASC`",
+          "Percentile ranking window functions: `PERCENT_RANK() OVER (ORDER BY daily_pnl_usd ASC)`",
+          "Filtering at the 99% tail boundary: `WHERE percent_rank <= 0.01`",
+          "Selecting worst-case cutoffs"
+        ],
+        sampleSchema: "swap_portfolio_pnl (\n  sim_id INT PRIMARY KEY,\n  trading_desk VARCHAR(30),\n  historical_date DATE,\n  daily_pnl_usd DECIMAL(16,2)\n)",
+        realWorldTrap: "Do not confuse 99% confidence with the top 99%! VaR is a loss metric focused on the worst 1% tail of the loss distribution (the far left tail). Sorting in descending order would give you your best profit day rather than your catastrophic risk threshold!",
+        interviewRelevance: "VaR is the universal risk metric across Goldman Sachs, Morgan Stanley, Citadel, and JPMorgan. Explaining how to calculate historical vs parametric VaR in SQL is an elite quant interview question."
+      },
+      schema: "swap_portfolio_pnl",
+      challenge: {
+        instruction: "Calculate the percentile rank of daily PnL for each trading desk ordered ascending, filtering for scenarios where the percentile rank is at or below 0.01 (99% VaR tail).",
+        template: "WITH RankedPnL AS (\n  SELECT sim_id, trading_desk, historical_date, daily_pnl_usd,\n         PERCENT_RANK() OVER (\n           PARTITION BY ___1___\n           ORDER BY ___2___ ASC\n         ) AS pnl_percentile\n  FROM swap_portfolio_pnl\n)\nSELECT trading_desk, MIN(daily_pnl_usd) AS worst_loss_usd,\n       MAX(daily_pnl_usd) AS var_99_cutoff_usd\nFROM RankedPnL\nWHERE pnl_percentile <= ___3___\nGROUP BY trading_desk;",
+        blanks: [
+          { id: 1, label: "Partition Desk", answer: "trading_desk", options: ["trading_desk", "sim_id", "historical_date", "daily_pnl_usd"] },
+          { id: 2, label: "Sort Column", answer: "daily_pnl_usd", options: ["daily_pnl_usd", "historical_date", "trading_desk", "sim_id"] },
+          { id: 3, label: "Tail Cutoff", answer: "0.01", options: ["0.01", "0.99", "0.05", "0.95"] }
+        ],
+        expectedSql: "WITH RankedPnL AS ( SELECT sim_id, trading_desk, historical_date, daily_pnl_usd, PERCENT_RANK() OVER ( PARTITION BY trading_desk ORDER BY daily_pnl_usd ASC ) AS pnl_percentile FROM swap_portfolio_pnl ) SELECT trading_desk, MIN(daily_pnl_usd) AS worst_loss_usd, MAX(daily_pnl_usd) AS var_99_cutoff_usd FROM RankedPnL WHERE pnl_percentile <= 0.01 GROUP BY trading_desk;",
+        managerReview: "Superb quant work. Your 99% VaR calculations matched our Risk Engine benchmarks to the penny. The Market Risk Committee has signed off on today's limits."
+      }
+    },
+    {
+      day: 23,
+      week: 4,
+      phase: "Week 4: Market Risk & Treasury Solvency",
+      title: "Day 23: Monte Carlo Convexity Shocks & Second-Order Greek Approximations",
+      sender: "Siddharth Rao",
+      senderRole: "Head of Derivatives Risk Modeling",
+      senderAvatar: "📐",
+      priority: "P1 - Risk Model Validation",
+      department: "Exotics & Equity Derivatives Desk",
+      symphonyMessage: "Our exotics book holds billions in equity index options. Under a sudden market crash of -15% index shock, linear Delta estimation fails because options have massive Gamma (curvature/convexity). Calculate the second-order Taylor expansion PnL shock: `Delta * shock + 0.5 * Gamma * (shock ^ 2)`.",
+      contextReport: {
+        businessWhy: "Linear risk measures (Delta) assume price changes are straight lines. In volatile crashes, option convexity (Gamma) accelerates losses or gains quadratically. Failing to account for 0.5 * Gamma * shock^2 causes trading desks to blow through margin buffers.",
+        learningFocus: [
+          "Mathematical modeling in SQL: `(delta * shock) + (0.5 * gamma * POWER(shock, 2))`",
+          "Aggregate portfolio sensitivity totals",
+          "Grouping by option underlying and book",
+          "Conditional flagging of extreme negative convexity positions"
+        ],
+        sampleSchema: "options_book_sensitivities (\n  position_id VARCHAR(20) PRIMARY KEY,\n  underlying_ticker VARCHAR(10),\n  contract_type VARCHAR(4),\n  delta_usd DECIMAL(14,2),\n  gamma_usd DECIMAL(14,2)\n)",
+        realWorldTrap: "Notice the factor of 0.5! The Taylor series second-order term is `f''(x) * (dx^2) / 2!`. Omitting the 0.5 will double the estimated gamma effect, heavily distorting margin hedging requirements.",
+        interviewRelevance: "Quants love testing candidates on whether they understand Greek sensitivity approximations and how non-linear derivatives behave under stress."
+      },
+      schema: "options_book_sensitivities",
+      challenge: {
+        instruction: "Calculate the second-order Taylor series estimated PnL shock for a -0.15 (-15%) market move using delta_usd and gamma_usd with POWER().",
+        template: "SELECT underlying_ticker,\n       COUNT(*) AS total_positions,\n       ROUND(SUM(delta_usd), 2) AS net_delta_usd,\n       ROUND(SUM(gamma_usd), 2) AS net_gamma_usd,\n       ROUND(SUM((delta_usd * ___1___) + (0.5 * gamma_usd * POWER(___2___, ___3___))), 2) AS estimated_pnl_shock_usd\nFROM options_book_sensitivities\nGROUP BY underlying_ticker\nORDER BY estimated_pnl_shock_usd ASC;",
+        blanks: [
+          { id: 1, label: "Shock Parameter", answer: "-0.15", options: ["-0.15", "0.15", "-1.50", "0.85"] },
+          { id: 2, label: "Quadratic Variable", answer: "-0.15", options: ["-0.15", "0.15", "gamma_usd", "delta_usd"] },
+          { id: 3, label: "Taylor Exponent", answer: "2", options: ["2", "1", "0.5", "3"] }
+        ],
+        expectedSql: "SELECT underlying_ticker, COUNT(*) AS total_positions, ROUND(SUM(delta_usd), 2) AS net_delta_usd, ROUND(SUM(gamma_usd), 2) AS net_gamma_usd, ROUND(SUM((delta_usd * -0.15) + (0.5 * gamma_usd * POWER(-0.15, 2))), 2) AS estimated_pnl_shock_usd FROM options_book_sensitivities GROUP BY underlying_ticker ORDER BY estimated_pnl_shock_usd ASC;",
+        managerReview: "Brilliant numerical accuracy. Your convexity calculation alerted the trading desk that S&P 500 put options needed a $45M delta hedge before today's bell."
+      }
+    },
+    {
+      day: 24,
+      week: 4,
+      phase: "Week 4: Market Risk & Treasury Solvency",
+      title: "Day 24: Basel III Liquidity Coverage Ratio (LCR) & HQLA Stress Buffers",
+      sender: "Jean-Paul Dubois",
+      senderRole: "Chief Risk Officer, EMEA Treasury",
+      senderAvatar: "⚖️",
+      priority: "P0 - Basel III Regulatory Mandate",
+      department: "Global Treasury & Regulatory Capital",
+      symphonyMessage: "Under Basel III regulations, Global Systemically Important Banks (G-SIBs) like JPMorgan must maintain a Liquidity Coverage Ratio (LCR) >= 100%. LCR = Total High-Quality Liquid Assets (HQLA) divided by Total Net Cash Outflows over 30 days. Calculate our weighted HQLA reserves using regulatory haircuts: Level 1 (100%), Level 2A (85%), and Level 2B (50%).",
+      contextReport: {
+        businessWhy: "In a liquidity crisis (such as the 2008 Lehman collapse or 2023 regional bank runs), depositors rush to withdraw cash. Basel III requires banks to hold enough unencumbered High-Quality Liquid Assets (HQLA) to survive a severe 30-day liquidity stress period without external central bank bailouts.",
+        learningFocus: [
+          "Multi-tier regulatory haircut logic using `CASE WHEN asset_level = 'Level 1' THEN market_value * 1.0 ...`",
+          "Aggregation of weighted eligible liquidity buffers",
+          "Calculating LCR percentage: `ROUND((weighted_hqla / net_outflows_30d) * 100, 2)`",
+          "Compliance pass/fail conditional indicators"
+        ],
+        sampleSchema: "treasury_liquidity_holdings (\n  asset_id VARCHAR(20) PRIMARY KEY,\n  asset_description VARCHAR(100),\n  asset_level VARCHAR(10), -- 'Level 1', 'Level 2A', 'Level 2B'\n  market_value_usd DECIMAL(18,2),\n  is_encumbered BOOLEAN\n)",
+        realWorldTrap: "Encumbered assets (e.g. securities already pledged as collateral to third parties or repo lenders) are strictly INELIGIBLE for HQLA! Forgetting to filter `WHERE is_encumbered = FALSE` would artificially inflate bank solvency by billions, triggering harsh audit sanctions.",
+        interviewRelevance: "LCR and HQLA calculations are bread-and-butter concepts for treasury, regulatory capital, and bank liquidity risk analytics teams."
+      },
+      schema: "treasury_liquidity_holdings",
+      challenge: {
+        instruction: "Calculate total unencumbered weighted HQLA using Basel III haircut multipliers (Level 1: 1.00, Level 2A: 0.85, Level 2B: 0.50), filtering out encumbered securities.",
+        template: "SELECT asset_level,\n       COUNT(*) AS asset_count,\n       SUM(market_value_usd) AS raw_market_value,\n       ROUND(SUM(CASE \n         WHEN asset_level = 'Level 1' THEN market_value_usd * ___1___\n         WHEN asset_level = 'Level 2A' THEN market_value_usd * ___2___\n         WHEN asset_level = 'Level 2B' THEN market_value_usd * ___3___\n         ELSE 0.00\n       END), 2) AS weighted_hqla_usd\nFROM treasury_liquidity_holdings\nWHERE is_encumbered = ___4___\nGROUP BY asset_level;",
+        blanks: [
+          { id: 1, label: "Level 1 Weight", answer: "1.00", options: ["1.00", "0.85", "0.50", "0.00"] },
+          { id: 2, label: "Level 2A Weight", answer: "0.85", options: ["0.85", "1.00", "0.75", "0.50"] },
+          { id: 3, label: "Level 2B Weight", answer: "0.50", options: ["0.50", "0.85", "0.25", "0.00"] },
+          { id: 4, label: "Encumbered Filter", answer: "FALSE", options: ["FALSE", "TRUE", "NULL", "'NO'"] }
+        ],
+        expectedSql: "SELECT asset_level, COUNT(*) AS asset_count, SUM(market_value_usd) AS raw_market_value, ROUND(SUM(CASE WHEN asset_level = 'Level 1' THEN market_value_usd * 1.00 WHEN asset_level = 'Level 2A' THEN market_value_usd * 0.85 WHEN asset_level = 'Level 2B' THEN market_value_usd * 0.50 ELSE 0.00 END), 2) AS weighted_hqla_usd FROM treasury_liquidity_holdings WHERE is_encumbered = FALSE GROUP BY asset_level;",
+        managerReview: "Flawless regulatory execution. Our calculated unencumbered HQLA stands at $684 Billion, yielding a healthy 118% LCR for our monthly Federal Reserve report."
+      }
+    },
+    {
+      day: 25,
+      week: 4,
+      phase: "Week 4: Market Risk & Treasury Solvency",
+      title: "Day 25: Counterparty Credit Risk, Bilateral Netting & Margin Calls",
+      sender: "Devon Vance",
+      senderRole: "Head of Counterparty Exposure & Collateral Management",
+      senderAvatar: "🛡️",
+      priority: "P0 - Margin Breach",
+      department: "Credit Risk Management",
+      symphonyMessage: "Several hedge fund counterparties are running heavy short positions. Under ISDA bilateral netting agreements, we calculate Current Exposure as `MAX(0, Net Mark-to-Market)`. If `Current Exposure - Collateral Held > Margin Threshold`, an immediate Variation Margin call must be issued. Identify all counterparties breaching their margin thresholds.",
+      contextReport: {
+        businessWhy: "When Archegos Capital collapsed in 2021, banks lost over $10 Billion because counterparty exposures weren't properly netted, margin calls lagged, and collateral buffers were breached. Real-time margin shortfall surveillance prevents catastrophic counterparty credit defaults.",
+        learningFocus: [
+          "Bilateral netting across derivative contracts: `SUM(mark_to_market_usd)`",
+          "Joining counterparty legal entities with open contracts and collateral balances",
+          "Net unsecured exposure calculation: `(Net MTM - Collateral Posted)`",
+          "Filtering for margin call breaches via `HAVING`"
+        ],
+        sampleSchema: "counterparties (\n  counterparty_id VARCHAR(20) PRIMARY KEY,\n  legal_name VARCHAR(100),\n  credit_rating VARCHAR(5),\n  collateral_posted_usd DECIMAL(16,2),\n  margin_threshold_usd DECIMAL(16,2)\n)\nderivative_trades (\n  trade_id VARCHAR(20) PRIMARY KEY,\n  counterparty_id VARCHAR(20),\n  asset_class VARCHAR(20),\n  mark_to_market_usd DECIMAL(16,2)\n)",
+        realWorldTrap: "Remember that from the bank's perspective, positive mark-to-market means the counterparty owes the bank money (credit exposure). Negative MTM reduces total exposure under bilateral netting agreements!",
+        interviewRelevance: "Counterparty risk, ISDA Master Agreements, Credit Support Annex (CSA), and Potential Future Exposure (PFE) queries are staple technical questions for tier-1 credit risk teams."
+      },
+      schema: "counterparties",
+      challenge: {
+        instruction: "Join counterparties and derivative trades to find legal entities where net MTM minus collateral posted exceeds their contractual margin threshold.",
+        template: "SELECT c.counterparty_id, c.legal_name, c.credit_rating,\n       c.collateral_posted_usd, c.margin_threshold_usd,\n       SUM(t.mark_to_market_usd) AS net_mtm_usd,\n       (SUM(t.mark_to_market_usd) - c.collateral_posted_usd) AS unsecured_exposure_usd,\n       ((SUM(t.mark_to_market_usd) - c.collateral_posted_usd) - c.margin_threshold_usd) AS margin_call_required_usd\nFROM counterparties c\nJOIN derivative_trades t\n  ON c.counterparty_id = t.___1___\nGROUP BY c.counterparty_id, c.legal_name, c.credit_rating, c.collateral_posted_usd, c.margin_threshold_usd\nHAVING (SUM(t.mark_to_market_usd) - c.collateral_posted_usd) > c.___2___\nORDER BY margin_call_required_usd ___3___;",
+        blanks: [
+          { id: 1, label: "Join Key", answer: "counterparty_id", options: ["counterparty_id", "trade_id", "asset_class", "legal_name"] },
+          { id: 2, label: "Margin Threshold Field", answer: "margin_threshold_usd", options: ["margin_threshold_usd", "collateral_posted_usd", "net_mtm_usd", "0"] },
+          { id: 3, label: "Sort Direction", answer: "DESC", options: ["DESC", "ASC", "LIMIT", "ALL"] }
+        ],
+        expectedSql: "SELECT c.counterparty_id, c.legal_name, c.credit_rating, c.collateral_posted_usd, c.margin_threshold_usd, SUM(t.mark_to_market_usd) AS net_mtm_usd, (SUM(t.mark_to_market_usd) - c.collateral_posted_usd) AS unsecured_exposure_usd, ((SUM(t.mark_to_market_usd) - c.collateral_posted_usd) - c.margin_threshold_usd) AS margin_call_required_usd FROM counterparties c JOIN derivative_trades t ON c.counterparty_id = t.counterparty_id GROUP BY c.counterparty_id, c.legal_name, c.credit_rating, c.collateral_posted_usd, c.margin_threshold_usd HAVING (SUM(t.mark_to_market_usd) - c.collateral_posted_usd) > c.margin_threshold_usd ORDER BY margin_call_required_usd DESC;",
+        managerReview: "Immediate collateral action taken! Your query flagged a $62M shortfall on a London hedge fund, allowing our operations team to secure collateral before Asian market open."
+      }
+    },
+    {
+      day: 26,
+      week: 4,
+      phase: "Week 4: Market Risk & Treasury Solvency",
+      title: "Day 26: High-Frequency Algo Microsecond Latency Arbitrage & Quote Stuffing",
+      sender: "Kenji Takahashi",
+      senderRole: "Head of Electronic Trading Surveillance & Market Integrity",
+      senderAvatar: "⚡",
+      priority: "P1 - SEC Rule 15c3-5 Compliance",
+      department: "Automated Trading Compliance",
+      symphonyMessage: "Market surveillance algorithms have detected abnormal message rates on our Nasdaq direct-market-access (DMA) gateway. Algorithmic traders may be quote-stuffing or spoofing by posting and cancelling orders in sub-millisecond windows. Use window functions to compute latency between order creation and cancellation, filtering for orders cancelled in under 5,000 microseconds (5 ms).",
+      contextReport: {
+        businessWhy: "Under SEC Rule 15c3-5 (Market Access Rule), broker-dealers must establish pre-trade and post-trade algorithmic controls to prevent erroneous orders and malicious market manipulation. Quote stuffing and predatory latency manipulation create market instability and expose the bank to multi-million dollar regulatory enforcement actions.",
+        learningFocus: [
+          "Microsecond timestamp precision: `TIMESTAMPDIFF(MICROSECOND, placed_at, cancelled_at)`",
+          "Order book event sequences: linking lifecycle events",
+          "High-cancellation ratio calculations: `COUNT(cancelled) / COUNT(placed)`",
+          "Identifying aggressive algorithmic participants"
+        ],
+        sampleSchema: "dma_algo_orders (\n  order_id VARCHAR(30) PRIMARY KEY,\n  client_mpid VARCHAR(10),\n  ticker_symbol VARCHAR(10),\n  order_qty INT,\n  limit_price DECIMAL(10,4),\n  placed_at_ts TIMESTAMP(6),\n  cancelled_at_ts TIMESTAMP(6)\n)",
+        realWorldTrap: "Ensure you use `MICROSECOND` rather than `SECOND` or `MILLISECOND`! High-frequency trading (HFT) events happen in microseconds ($10^{-6}$ seconds). Rounding to whole seconds would make all sub-millisecond cancellations show up as 0 seconds!",
+        interviewRelevance: "Electronic trading desks at quantitative market makers (Jane Street, Citadel, JPMorgan e-Trading) prioritize candidates who know how to handle sub-millisecond tick data in SQL."
+      },
+      schema: "dma_algo_orders",
+      challenge: {
+        instruction: "Calculate the duration in microseconds between order placement and cancellation, identifying all algo clients with average cancellation lifespans under 5,000 microseconds.",
+        template: "SELECT client_mpid, ticker_symbol,\n       COUNT(*) AS rapid_cancel_count,\n       ROUND(AVG(TIMESTAMPDIFF(___1___, placed_at_ts, cancelled_at_ts)), 2) AS avg_duration_us,\n       MIN(TIMESTAMPDIFF(___2___, placed_at_ts, cancelled_at_ts)) AS fastest_cancel_us\nFROM dma_algo_orders\nWHERE cancelled_at_ts IS NOT NULL\n  AND TIMESTAMPDIFF(___3___, placed_at_ts, cancelled_at_ts) < 5000\nGROUP BY client_mpid, ticker_symbol\nHAVING COUNT(*) >= 10\nORDER BY rapid_cancel_count DESC;",
+        blanks: [
+          { id: 1, label: "Time Unit 1", answer: "MICROSECOND", options: ["MICROSECOND", "MILLISECOND", "SECOND", "MINUTE"] },
+          { id: 2, label: "Time Unit 2", answer: "MICROSECOND", options: ["MICROSECOND", "MILLISECOND", "SECOND", "HOUR"] },
+          { id: 3, label: "Time Unit 3", answer: "MICROSECOND", options: ["MICROSECOND", "MILLISECOND", "SECOND", "NANOSECOND"] }
+        ],
+        expectedSql: "SELECT client_mpid, ticker_symbol, COUNT(*) AS rapid_cancel_count, ROUND(AVG(TIMESTAMPDIFF(MICROSECOND, placed_at_ts, cancelled_at_ts)), 2) AS avg_duration_us, MIN(TIMESTAMPDIFF(MICROSECOND, placed_at_ts, cancelled_at_ts)) AS fastest_cancel_us FROM dma_algo_orders WHERE cancelled_at_ts IS NOT NULL AND TIMESTAMPDIFF(MICROSECOND, placed_at_ts, cancelled_at_ts) < 5000 GROUP BY client_mpid, ticker_symbol HAVING COUNT(*) >= 10 ORDER BY rapid_cancel_count DESC;",
+        managerReview: "Incredible diagnostic speed! Your surveillance query isolated a rogue algorithmic trading account in Chicago that sent 42,000 phantom quotes in 30 seconds. Gateway kill-switch deployed."
+      }
+    },
+    {
+      day: 27,
+      week: 4,
+      phase: "Week 4: Market Risk & Treasury Solvency",
+      title: "Day 27: Cross-Currency Basis Swaps & Covered Interest Parity (CIP) Deviations",
+      sender: "Giselle Moreau",
+      senderRole: "Head of FX & Cross-Currency Basis Trading",
+      senderAvatar: "💶",
+      priority: "P1 - Global Arbitrage Desk",
+      department: "Global Foreign Exchange (FX)",
+      symphonyMessage: "Covered Interest Parity (CIP) states that the interest rate differential between two currencies should equal the percentage difference between the spot and forward foreign exchange rates. When global USD funding dries up, the EUR/USD cross-currency basis widens significantly. Detect anomalies where the basis spread deviates by more than 2.5 standard deviations from its 30-day moving average.",
+      contextReport: {
+        businessWhy: "Cross-currency basis swaps reflect the premium financial institutions are willing to pay to secure US Dollars against foreign currency collateral. Wide deviations from Covered Interest Parity signal global liquidity crunches and create lucrative covered arbitrage opportunities for central banks and prime dealers.",
+        learningFocus: [
+          "Rolling statistical window calculations: `AVG(basis_spread_bps) OVER (...)`",
+          "Window standard deviation: `STDDEV_SAMP(basis_spread_bps) OVER (...)`",
+          "Z-Score anomaly detection: `ABS(spread - rolling_avg) / rolling_std > 2.5`",
+          "Time-series partitioning by currency pair"
+        ],
+        sampleSchema: "fx_cross_currency_basis (\n  quote_id INT PRIMARY KEY,\n  currency_pair VARCHAR(7), -- e.g. 'EUR/USD'\n  quote_date DATE,\n  basis_spread_bps DECIMAL(10,3)\n)",
+        realWorldTrap: "Make sure you order your rolling window clause by `quote_date ASC ROWS BETWEEN 29 PRECEDING AND CURRENT ROW`! Omitting the rolling frame causes SQL to average across the entire multi-year dataset, destroying the recency of your volatility detection!",
+        interviewRelevance: "Cross-currency basis and covered interest parity deviations are the pinnacle of global macro hedge fund and FX structuring interview topics."
+      },
+      schema: "fx_cross_currency_basis",
+      challenge: {
+        instruction: "Compute a 30-day rolling average and standard deviation of basis spread in bps, then calculate the Z-Score to isolate spread dislocations exceeding 2.5 standard deviations.",
+        template: "WITH RollingStats AS (\n  SELECT quote_id, currency_pair, quote_date, basis_spread_bps,\n         AVG(basis_spread_bps) OVER (\n           PARTITION BY currency_pair\n           ORDER BY quote_date ASC\n           ROWS BETWEEN ___1___ PRECEDING AND CURRENT ROW\n         ) AS rolling_mean_bps,\n         STDDEV_SAMP(basis_spread_bps) OVER (\n           PARTITION BY currency_pair\n           ORDER BY quote_date ASC\n           ROWS BETWEEN ___2___ PRECEDING AND CURRENT ROW\n         ) AS rolling_std_bps\n  FROM fx_cross_currency_basis\n)\nSELECT currency_pair, quote_date, basis_spread_bps, rolling_mean_bps,\n       ROUND(ABS(basis_spread_bps - rolling_mean_bps) / NULLIF(rolling_std_bps, 0), 2) AS z_score\nFROM RollingStats\nWHERE ABS(basis_spread_bps - rolling_mean_bps) / NULLIF(rolling_std_bps, 0) > ___3___\nORDER BY z_score DESC;",
+        blanks: [
+          { id: 1, label: "Rolling Window Frame 1", answer: "29", options: ["29", "30", "1", "UNBOUNDED"] },
+          { id: 2, label: "Rolling Window Frame 2", answer: "29", options: ["29", "30", "1", "UNBOUNDED"] },
+          { id: 3, label: "Z-Score Threshold", answer: "2.5", options: ["2.5", "1.0", "3.0", "0.5"] }
+        ],
+        expectedSql: "WITH RollingStats AS ( SELECT quote_id, currency_pair, quote_date, basis_spread_bps, AVG(basis_spread_bps) OVER ( PARTITION BY currency_pair ORDER BY quote_date ASC ROWS BETWEEN 29 PRECEDING AND CURRENT ROW ) AS rolling_mean_bps, STDDEV_SAMP(basis_spread_bps) OVER ( PARTITION BY currency_pair ORDER BY quote_date ASC ROWS BETWEEN 29 PRECEDING AND CURRENT ROW ) AS rolling_std_bps FROM fx_cross_currency_basis ) SELECT currency_pair, quote_date, basis_spread_bps, rolling_mean_bps, ROUND(ABS(basis_spread_bps - rolling_mean_bps) / NULLIF(rolling_std_bps, 0), 2) AS z_score FROM RollingStats WHERE ABS(basis_spread_bps - rolling_mean_bps) / NULLIF(rolling_std_bps, 0) > 2.5 ORDER BY z_score DESC;",
+        managerReview: "Exceptional quantitative insight! Your Z-Score anomaly filter alerted the FX desk to a 48 bps dislocation in 3-month EUR/USD basis, enabling a $12M basis arbitrage lock-in."
+      }
+    },
+    {
+      day: 28,
+      week: 4,
+      phase: "Week 4: Market Risk & Treasury Solvency",
+      title: "Day 28: Federal Reserve CCAR Severely Adverse Scenario Credit Loss Modeling",
+      sender: "Catherine Howard",
+      senderRole: "Head of Regulatory Stress Testing & CCAR Governance",
+      senderAvatar: "🏛️",
+      priority: "P0 - Federal Reserve Submission",
+      department: "Enterprise Risk & Regulatory CCAR",
+      symphonyMessage: "Annual Federal Reserve Comprehensive Capital Analysis and Review (CCAR) deadline is here. Under the 'Severely Adverse' macroeconomic scenario (unemployment at 10%, commercial real estate crashing 40%), we must project 9-quarter cumulative credit losses: `Expected Loss = Exposure at Default (EAD) * Probability of Default (PD) * (1 - Recovery Rate)`. Group projections by loan asset class.",
+      contextReport: {
+        businessWhy: "CCAR is the Fed's annual regulatory stress test. If JPMorgan's projected post-stress capital ratios fall below minimum requirements under the Severely Adverse scenario, the Federal Reserve legally bans the bank from paying dividends to shareholders or executing stock buybacks.",
+        learningFocus: [
+          "Basel credit risk expected loss formula: `EAD * PD * LGD` where `LGD = 1.0 - recovery_rate`",
+          "Calculating aggregate expected credit losses across loan asset classes",
+          "Computing weighted average probability of default: `SUM(ead * pd) / SUM(ead)`",
+          "Executive capital buffer deductions"
+        ],
+        sampleSchema: "ccar_loan_portfolio (\n  loan_id VARCHAR(20) PRIMARY KEY,\n  asset_class VARCHAR(40), -- 'Commercial Real Estate', 'Residential Mortgages', 'Corporate Bonds', 'Credit Cards'\n  exposure_at_default_usd DECIMAL(16,2),\n  stressed_pd DECIMAL(6,4), -- e.g. 0.0850 for 8.5% default rate\n  recovery_rate DECIMAL(6,4) -- e.g. 0.4000 for 40% recovery\n)",
+        realWorldTrap: "Do not forget that Loss Given Default (LGD) is the complement of Recovery Rate: `LGD = (1 - Recovery Rate)`. If the collateral recovers 60%, the bank's loss is 40%! Multiplying directly by recovery_rate would calculate the recovered capital instead of the credit loss!",
+        interviewRelevance: "Every bank risk analyst must master CCAR, DFAST (Dodd-Frank Act Stress Testing), and Expected Loss formulations (`EL = PD * LGD * EAD`)."
+      },
+      schema: "ccar_loan_portfolio",
+      challenge: {
+        instruction: "Calculate total exposure at default and cumulative projected credit losses across each loan asset class using the Expected Loss formula: EAD * stressed_pd * (1 - recovery_rate).",
+        template: "SELECT asset_class,\n       COUNT(*) AS total_loans,\n       SUM(exposure_at_default_usd) AS total_ead_usd,\n       ROUND(SUM(exposure_at_default_usd * stressed_pd) / SUM(exposure_at_default_usd), 4) AS weighted_avg_pd,\n       ROUND(SUM(exposure_at_default_usd * stressed_pd * (___1___ - recovery_rate)), 2) AS projected_credit_loss_usd\nFROM ccar_loan_portfolio\nGROUP BY ___2___\nORDER BY projected_credit_loss_usd ___3___;",
+        blanks: [
+          { id: 1, label: "LGD Complement Factor", answer: "1.0", options: ["1.0", "100.0", "0.5", "0.0"] },
+          { id: 2, label: "Group Key", answer: "asset_class", options: ["asset_class", "loan_id", "stressed_pd", "recovery_rate"] },
+          { id: 3, label: "Sort Direction", answer: "DESC", options: ["DESC", "ASC", "LIMIT", "ALL"] }
+        ],
+        expectedSql: "SELECT asset_class, COUNT(*) AS total_loans, SUM(exposure_at_default_usd) AS total_ead_usd, ROUND(SUM(exposure_at_default_usd * stressed_pd) / SUM(exposure_at_default_usd), 4) AS weighted_avg_pd, ROUND(SUM(exposure_at_default_usd * stressed_pd * (1.0 - recovery_rate)), 2) AS projected_credit_loss_usd FROM ccar_loan_portfolio GROUP BY asset_class ORDER BY projected_credit_loss_usd DESC;",
+        managerReview: "Commanding CCAR delivery. Your projected loss metrics passed internal audit and will be transmitted to the Federal Reserve Board this afternoon without revision."
+      }
+    },
+    {
+      day: 29,
+      week: 4,
+      phase: "Week 4: Market Risk & Treasury Solvency",
+      title: "Day 29: Intraday Fedwire Settlement & Real-Time Liquidity Shortfall Defense",
+      sender: "Marcus Sterling",
+      senderRole: "Managing Director, Global Treasury Operations",
+      senderAvatar: "👔",
+      priority: "P0 - Fedwire Cutoff Warning",
+      department: "Office of the Chief Financial Officer",
+      symphonyMessage: "Fedwire closes in 90 minutes. Over $400 Billion in gross interbank payments flow across our Federal Reserve account daily. We must maintain a positive intraday cash balance with the Federal Reserve Bank of New York to avoid costly daylight overdraft penalty rates. Calculate our cumulative running reserve balance throughout the settlement day and flag the lowest liquidity trough.",
+      contextReport: {
+        businessWhy: "The Federal Reserve charges penalty interest rates (or rejects outgoing wire queues) if a bank runs uncollateralized intraday daylight overdrafts. Treasury quants track running payment flows millisecond by millisecond so repo desks can borrow cash from money markets before wires stall.",
+        learningFocus: [
+          "Cumulative running balance: `SUM(inflow - outflow) OVER (ORDER BY wire_time ROWS BETWEEN UNBOUNDED PRECEDING AND CURRENT ROW)`",
+          "Initial cash balance incorporation",
+          "Tracking intraday cash dips and maximum liquidity drain",
+          "Window function ordering without gaps"
+        ],
+        sampleSchema: "fedwire_settlement_ledger (\n  wire_id VARCHAR(30) PRIMARY KEY,\n  wire_time TIME,\n  sender_bank VARCHAR(50),\n  receiver_bank VARCHAR(50),\n  net_cash_flow_usd DECIMAL(18,2) -- Positive for incoming wire, Negative for outgoing wire\n)",
+        realWorldTrap: "Pay careful attention to the window specification! If you use `ORDER BY wire_time` without `ROWS BETWEEN UNBOUNDED PRECEDING AND CURRENT ROW`, duplicate timestamps will be lumped together by the default `RANGE` frame, giving you inaccurate intraday spikes!",
+        interviewRelevance: "Running total calculations via window functions (`SUM() OVER (...)`) are among the most frequently tested patterns in investment banking data engineering interviews."
+      },
+      schema: "fedwire_settlement_ledger",
+      challenge: {
+        instruction: "Calculate the cumulative intraday cash position starting from an opening balance of $50,000,000,000 using SUM() OVER (ORDER BY wire_time ROWS BETWEEN UNBOUNDED PRECEDING AND CURRENT ROW).",
+        template: "SELECT wire_id, wire_time, net_cash_flow_usd,\n       ROUND(50000000000.00 + SUM(net_cash_flow_usd) OVER (\n         ORDER BY wire_time ASC\n         ROWS BETWEEN ___1___ AND ___2___\n       ), 2) AS running_fed_reserve_balance_usd\nFROM fedwire_settlement_ledger\nORDER BY wire_time ___3___;",
+        blanks: [
+          { id: 1, label: "Window Start", answer: "UNBOUNDED PRECEDING", options: ["UNBOUNDED PRECEDING", "CURRENT ROW", "1 PRECEDING", "10 PRECEDING"] },
+          { id: 2, label: "Window End", answer: "CURRENT ROW", options: ["CURRENT ROW", "UNBOUNDED FOLLOWING", "1 FOLLOWING", "wire_time"] },
+          { id: 3, label: "Display Sort", answer: "ASC", options: ["ASC", "DESC", "NULL", "LIMIT"] }
+        ],
+        expectedSql: "SELECT wire_id, wire_time, net_cash_flow_usd, ROUND(50000000000.00 + SUM(net_cash_flow_usd) OVER ( ORDER BY wire_time ASC ROWS BETWEEN UNBOUNDED PRECEDING AND CURRENT ROW ), 2) AS running_fed_reserve_balance_usd FROM fedwire_settlement_ledger ORDER BY wire_time ASC;",
+        managerReview: "Masterful intraday cash surveillance! You spotted a $3.2B trough at 14:15 ET, allowing Treasury to tap the overnight repo market 45 minutes ahead of the Fedwire cutoff."
+      }
+    },
+    {
+      day: 30,
+      week: 4,
+      phase: "Week 4: Market Risk & Treasury Solvency",
+      title: "Day 30: Executive Capstone: The Board of Directors & Operating Committee Risk Briefing",
+      sender: "Jamie Dimon",
+      senderRole: "Chairman & Chief Executive Officer",
+      senderAvatar: "⭐",
+      priority: "P0 - Board of Directors Annual Meeting",
+      department: "Executive Committee / Office of the CEO",
+      symphonyMessage: "Welcome to Day 30, Analyst. The Board of Directors and Operating Committee are assembled in the 48th-floor boardroom. We need our definitive capital adequacy summary: Common Equity Tier 1 (CET1) Capital, Total Risk-Weighted Assets (RWA), and the final CET1 Ratio percentage: `(CET1 Capital / RWA) * 100`. The minimum regulatory threshold is 11.5%. Deliver our capital solvency deck.",
+      contextReport: {
+        businessWhy: "The CET1 Ratio is the ultimate benchmark of global banking strength and resilience. It proves that the bank holds enough pure common equity capital (retained earnings and common stock) relative to risk-weighted assets to withstand severe macroeconomic collapse without failing.",
+        learningFocus: [
+          "Enterprise balance sheet aggregation",
+          "Common Equity Tier 1 (CET1) capital ratio formula: `(SUM(cet1_capital) / SUM(risk_weighted_assets)) * 100`",
+          "CTE-based multi-tier balance sheet summaries",
+          "Final executive capstone presentation metrics"
+        ],
+        sampleSchema: "jpmorgan_divisions_capital (\n  division_id VARCHAR(20) PRIMARY KEY,\n  division_name VARCHAR(60), -- e.g. 'Corporate & Investment Bank', 'Consumer & Community Banking', 'Asset & Wealth Management', 'Commercial Banking'\n  cet1_capital_usd DECIMAL(18,2),\n  risk_weighted_assets_usd DECIMAL(18,2)\n)",
+        realWorldTrap: "Make sure you multiply by 100.0 to display the ratio as a proper percentage! A ratio of 0.1425 expressed without multiplying looks like 0.14% instead of 14.25%, which would cause unnecessary panic in an executive board meeting!",
+        interviewRelevance: "Understanding CET1, Basel III capital ratios, and how tier-1 capital relates to risk-weighted assets is the gold standard for executive-track quantitative finance careers."
+      },
+      schema: "jpmorgan_divisions_capital",
+      challenge: {
+        instruction: "Aggregate total CET1 Capital and Risk-Weighted Assets across all business divisions, calculating the final enterprise-wide CET1 Capital Ratio percentage rounded to 2 decimal places.",
+        template: "SELECT COUNT(division_id) AS total_divisions,\n       SUM(cet1_capital_usd) AS total_cet1_capital_usd,\n       SUM(risk_weighted_assets_usd) AS total_rwa_usd,\n       ROUND((SUM(cet1_capital_usd) / SUM(risk_weighted_assets_usd)) * ___1___, 2) AS enterprise_cet1_ratio_pct,\n       CASE \n         WHEN (SUM(cet1_capital_usd) / SUM(risk_weighted_assets_usd)) * 100.0 >= ___2___ THEN 'STRONG SOLVENCY (PASSED)'\n         ELSE 'CAPITAL DEFICIT'\n       END AS board_verdict\nFROM jpmorgan_divisions_capital;",
+        blanks: [
+          { id: 1, label: "Percentage Multiplier", answer: "100.0", options: ["100.0", "1.0", "1000.0", "10.0"] },
+          { id: 2, label: "Regulatory Hurdle Rate", answer: "11.5", options: ["11.5", "8.0", "15.0", "5.0"] }
+        ],
+        expectedSql: "SELECT COUNT(division_id) AS total_divisions, SUM(cet1_capital_usd) AS total_cet1_capital_usd, SUM(risk_weighted_assets_usd) AS total_rwa_usd, ROUND((SUM(cet1_capital_usd) / SUM(risk_weighted_assets_usd)) * 100.0, 2) AS enterprise_cet1_ratio_pct, CASE WHEN (SUM(cet1_capital_usd) / SUM(risk_weighted_assets_usd)) * 100.0 >= 11.5 THEN 'STRONG SOLVENCY (PASSED)' ELSE 'CAPITAL DEFICIT' END AS board_verdict FROM jpmorgan_divisions_capital;",
+        managerReview: "STANDING OVATION IN THE BOARDROOM! Total CET1 Ratio confirmed at 14.85%, far exceeding regulatory mandates. Jamie Dimon personally signed your promotion to Managing Director & Global Head of Quantitative Risk. Congratulations on conquering the 30-Day JPMorgan Simulator!"
+      }
     }
   ];
 
