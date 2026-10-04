@@ -275,10 +275,13 @@
           <p class="bubble-message-text">${d.symphonyMessage}</p>
         </div>
 
-        <!-- 3 STAGE TABS -->
+        <!-- 4 STAGE TABS -->
         <div class="stage-nav-tabs">
           <button class="stage-tab-btn ${activeTab === 'context' ? 'active' : ''}" onclick="window.JPMORGAN_STORY.setViewTab('context')">
             📋 Executive Briefing &amp; Traps
+          </button>
+          <button class="stage-tab-btn ${activeTab === 'sample_table' ? 'active' : ''}" onclick="window.JPMORGAN_STORY.setViewTab('sample_table')">
+            📊 Live Sample Table &amp; Ledger Data
           </button>
           <button class="stage-tab-btn ${activeTab === 'challenge' ? 'active' : ''}" onclick="window.JPMORGAN_STORY.setViewTab('challenge')">
             ⚡ SQL Workstation (Day Challenge)
@@ -342,6 +345,8 @@
           </button>
         </div>
       `;
+    } else if (activeTab === 'sample_table') {
+      root.innerHTML = renderSampleTableHtml(d);
     } else if (activeTab === 'challenge') {
       renderJPMorganChallengePanel();
     } else if (activeTab === 'terminal') {
@@ -362,6 +367,96 @@
         </div>
       `;
     }
+  }
+
+  function renderSampleTableHtml(d) {
+    const sample = (window.JPMORGAN_SAMPLE_TABLES && window.JPMORGAN_SAMPLE_TABLES[d.day]) || null;
+    if (!sample) {
+      return `
+        <div style="padding: 32px; text-align: center; color: #94a3b8; background: #0b111e; border-radius: 10px; border: 1px solid rgba(245, 158, 11, 0.2);">
+          <div style="font-size: 32px; margin-bottom: 8px;">📊</div>
+          <h4 style="color: #fbbf24; margin: 0 0 6px 0;">No Sample Data Seeded for Day ${d.day}</h4>
+          <p style="margin: 0; font-size: 13px;">Refer to the Relational Schema Definition in the Executive Briefing tab.</p>
+        </div>
+      `;
+    }
+
+    // Build standalone DDL snippet
+    const createTableSql = `CREATE TABLE ${sample.tableName} (\n` +
+      sample.columns.map(col => `  ${col} VARCHAR(50)`).join(',\n') +
+      `\n);\n\nINSERT INTO ${sample.tableName} (${sample.columns.join(', ')}) VALUES\n` +
+      sample.rows.map(r => `  (${r.map(val => typeof val === 'string' ? `'${val}'` : (val === null ? 'NULL' : val)).join(', ')})`).join(',\n') + `;\n`;
+
+    return `
+      <div class="jpmorgan-sample-table-pane" style="background: #0b111e; border: 1px solid rgba(245, 158, 11, 0.2); border-radius: 10px; padding: 20px;">
+        <div style="display: flex; justify-content: space-between; align-items: flex-start; margin-bottom: 16px; flex-wrap: wrap; gap: 12px;">
+          <div>
+            <div style="display: flex; align-items: center; gap: 10px;">
+              <span style="font-size: 20px;">📊</span>
+              <h3 style="margin: 0; color: #fbbf24; font-family: monospace; font-size: 18px;">${sample.tableName}</h3>
+              <span style="background: rgba(56, 189, 248, 0.15); color: #38bdf8; border: 1px solid rgba(56, 189, 248, 0.3); padding: 2px 8px; border-radius: 999px; font-size: 11px; font-weight: 600;">
+                ${sample.rows.length} Sample Rows
+              </span>
+            </div>
+            <p style="margin: 4px 0 0 0; color: #94a3b8; font-size: 13px;">${sample.description}</p>
+          </div>
+          <button class="btn btn-secondary btn-xs" style="border-color: #f59e0b; color: #fbbf24;" onclick="navigator.clipboard.writeText(decodeURIComponent('${encodeURIComponent(createTableSql)}')); alert('Table DDL and sample INSERTs copied to clipboard!');">
+            📋 Copy Table SQL (DDL + Inserts)
+          </button>
+        </div>
+
+        <!-- Scrollable Data Grid -->
+        <div style="overflow-x: auto; max-height: 420px; border-radius: 8px; border: 1px solid #1e293b;">
+          <table style="width: 100%; border-collapse: collapse; font-family: 'JetBrains Mono', monospace; font-size: 13px; text-align: left;">
+            <thead>
+              <tr style="background: #111a2e; border-bottom: 2px solid #b45309; position: sticky; top: 0; z-index: 2;">
+                ${sample.columns.map(col => `
+                  <th style="padding: 10px 14px; color: #fbbf24; font-weight: 600; white-space: nowrap; letter-spacing: 0.03em;">
+                    ${col}
+                  </th>
+                `).join('')}
+              </tr>
+            </thead>
+            <tbody>
+              ${sample.rows.map((row, idx) => `
+                <tr style="background: ${idx % 2 === 0 ? 'rgba(15, 23, 42, 0.6)' : 'rgba(11, 17, 30, 0.8)'}; border-bottom: 1px solid rgba(51, 65, 85, 0.4);">
+                  ${row.map(cell => {
+                    const isNum = typeof cell === 'number';
+                    const isNegative = isNum && cell < 0;
+                    let displayVal = cell;
+                    if (isNum) {
+                      displayVal = Number.isInteger(cell) ? cell.toLocaleString() : cell.toLocaleString(undefined, { minimumFractionDigits: 2, maximumFractionDigits: 4 });
+                    } else if (cell === null) {
+                      displayVal = '<span style="color: #64748b; font-style: italic;">NULL</span>';
+                    } else if (typeof cell === 'boolean') {
+                      displayVal = cell ? '<span style="color: #34d399; font-weight: 600;">TRUE</span>' : '<span style="color: #f87171; font-weight: 600;">FALSE</span>';
+                    } else if (cell === 'MATCHED' || cell === 'SETTLED' || cell === 'ACTIVE' || cell === 'FILLED') {
+                      displayVal = `<span style="background: rgba(16, 185, 129, 0.15); color: #34d399; padding: 2px 6px; border-radius: 4px; font-size: 11px;">${cell}</span>`;
+                    } else if (cell === 'UNRECONCILED' || cell === 'FAILED' || cell === 'FLAGGED') {
+                      displayVal = `<span style="background: rgba(239, 68, 68, 0.15); color: #f87171; padding: 2px 6px; border-radius: 4px; font-size: 11px;">${cell}</span>`;
+                    }
+                    return `
+                      <td style="padding: 9px 14px; color: ${isNegative ? '#f87171' : (isNum ? '#38bdf8' : '#e2e8f0')}; white-space: nowrap; ${isNum ? 'text-align: right;' : ''}">
+                        ${displayVal}
+                      </td>
+                    `;
+                  }).join('')}
+                </tr>
+              `).join('')}
+            </tbody>
+          </table>
+        </div>
+
+        <div style="margin-top: 14px; display: flex; justify-content: space-between; align-items: center; flex-wrap: wrap; gap: 10px;">
+          <span style="font-size: 12px; color: #64748b;">
+            💡 Tip: Practice your Day ${d.day} SQL against these exact columns in the <strong>SQL Workstation</strong> tab.
+          </span>
+          <button class="btn btn-primary btn-sm" style="background: #f59e0b; color: #000; font-weight: 700;" onclick="window.JPMORGAN_STORY.setViewTab('challenge')">
+            Go to SQL Workstation &rarr;
+          </button>
+        </div>
+      </div>
+    `;
   }
 
   function renderJPMorganChallengePanel() {
