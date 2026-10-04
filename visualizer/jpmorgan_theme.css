@@ -1,0 +1,613 @@
+/* =============================================================================
+   JPMORGAN CHASE QUANTITATIVE RISK & TREASURY TERMINAL DESIGN SYSTEM
+   Theme: Wall Street Executive Dark Slate & Gold (#f59e0b, #fbbf24, #0b111e)
+   ============================================================================= */
+
+/* Main Container Theme */
+.jpmorgan-sim-theme {
+  background: #070b12 !important;
+  color: #e2e8f0;
+  font-family: var(--font-sans, -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif);
+}
+
+.jpmorgan-sim-theme .amazon-sim-header {
+  background: linear-gradient(180deg, #0e1726 0%, #080d16 100%) !important;
+  border-bottom: 2px solid #b45309 !important;
+  padding: 12px 24px;
+}
+
+.jpmorgan-sim-theme .jpm-brand-badge {
+  font-family: 'Cinzel', 'Playfair Display', Georgia, serif;
+  font-weight: 800;
+  letter-spacing: 0.12em;
+  color: #fbbf24;
+  font-size: 20px;
+  text-shadow: 0 0 20px rgba(245, 158, 11, 0.35);
+}
+
+.jpmorgan-sim-theme .amazon-team-tag {
+  background: rgba(245, 158, 11, 0.12);
+  color: #fde68a;
+  border: 1px solid rgba(245, 158, 11, 0.3);
+  padding: 3px 10px;
+  border-radius: 4px;
+  font-size: 11.5px;
+  letter-spacing: 0.04em;
+  font-weight: 600;
+}
+
+/* Sidebar Customizations */
+.jpmorgan-sim-theme .amazon-tickets-sidebar {
+  background: #090e17;
+  border-right: 1px solid #1c2738;
+}
+
+.jpmorgan-sim-theme .sidebar-header-box {
+  background: #0c1322;
+  border-bottom: 1px solid #1c2738;
+}
+
+.jpmorgan-sim-theme .phase-pill-btn.active {
+  background: #f59e0b !important;
+  color: #0b111e !important;
+  border-color: #fbbf24 !important;
+  font-weight: 700;
+}
+
+.jpmorgan-sim-theme .amazon-ticket-card:hover {
+  background: #111a2b;
+  border-color: rgba(245, 158, 11, 0.4);
+}
+
+.jpmorgan-sim-theme .amazon-ticket-card.active {
+  background: #132035 !important;
+  border-color: #f59e0b !important;
+  box-shadow: 0 0 14px rgba(245, 158, 11, 0.15);
+}
+
+.jpmorgan-sim-theme .amazon-main-stage {
+  background: #070b12 !important;
+  padding: 20px 24px !important;
+  gap: 16px !important;
+}
+
+/* Ticket Banner & Metadata Strip */
+.ticket-banner-strip {
+  background: #0b1220;
+  border: 1px solid #1e2c44;
+  border-radius: 8px;
+  padding: 16px 20px;
+  display: flex;
+  flex-direction: column;
+  gap: 14px;
+  box-shadow: 0 4px 20px rgba(0, 0, 0, 0.4);
+}
+
+.ticket-banner-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: flex-start;
+  gap: 16px;
+  flex-wrap: wrap;
+}
+
+.ticket-phase-tag {
+  font-size: 11px;
+  font-family: var(--font-mono, monospace);
+  font-weight: 700;
+  text-transform: uppercase;
+  letter-spacing: 0.08em;
+  margin-bottom: 4px;
+}
+
+.ticket-banner-title {
+  margin: 0;
+  font-size: 18px;
+  font-weight: 700;
+  color: #f8fafc;
+  line-height: 1.35;
+}
+
+/* Symphony Chime Chat Message Bubble */
+.chime-message-bubble {
+  background: #0c1424;
+  border: 1px solid rgba(245, 158, 11, 0.25);
+  border-radius: 8px;
+  padding: 12px 16px;
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+}
+
+.bubble-sender-row {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+}
+
+.bubble-avatar {
+  font-size: 22px;
+  background: #131d33;
+  width: 36px;
+  height: 36px;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  border-radius: 6px;
+  border: 1px solid rgba(245, 158, 11, 0.2);
+}
+
+.bubble-sender-meta {
+  display: flex;
+  flex-direction: column;
+  gap: 2px;
+}
+
+.bubble-sender-name {
+  font-size: 13px;
+  font-weight: 700;
+  letter-spacing: 0.02em;
+}
+
+.bubble-sender-role {
+  font-size: 11.5px;
+  color: #94a3b8;
+  font-family: var(--font-mono, monospace);
+}
+
+.bubble-message-text {
+  margin: 0;
+  font-size: 13.5px;
+  line-height: 1.55;
+  color: #e2e8f0;
+}
+
+/* Stage Navigation Tabs */
+.stage-nav-tabs {
+  display: flex;
+  gap: 8px;
+  border-bottom: 1px solid #1e2c44;
+  padding-bottom: 8px;
+  margin-top: 4px;
+  flex-wrap: wrap;
+}
+
+.stage-tab-btn {
+  background: #0d1526;
+  border: 1px solid #1e2c44;
+  border-radius: 6px;
+  padding: 7px 14px;
+  font-size: 12px;
+  font-weight: 600;
+  font-family: var(--font-mono, monospace);
+  color: #94a3b8;
+  cursor: pointer;
+  transition: all 0.15s ease;
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+}
+
+.stage-tab-btn:hover {
+  background: #142038;
+  color: #f1f5f9;
+  border-color: rgba(245, 158, 11, 0.4);
+}
+
+.stage-tab-btn.active {
+  background: rgba(245, 158, 11, 0.16);
+  color: #fbbf24;
+  border-color: #f59e0b;
+  font-weight: 700;
+  box-shadow: 0 0 10px rgba(245, 158, 11, 0.15);
+}
+
+/* Tab Content Root */
+.stage-tab-content-pane {
+  display: flex;
+  flex-direction: column;
+  gap: 16px;
+}
+
+/* Context Report Grid (Tab 1: Executive Briefing & Traps) */
+.context-report-grid {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 14px;
+}
+
+@media (max-width: 1024px) {
+  .context-report-grid {
+    grid-template-columns: 1fr;
+  }
+}
+
+.context-card {
+  background: #0b1220;
+  border: 1px solid #1a273e;
+  border-radius: 8px;
+  padding: 14px 16px;
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+  box-shadow: 0 4px 14px rgba(0, 0, 0, 0.25);
+}
+
+.context-card-title {
+  font-size: 12px;
+  font-weight: 700;
+  font-family: var(--font-mono, monospace);
+  text-transform: uppercase;
+  letter-spacing: 0.04em;
+  display: flex;
+  align-items: center;
+  gap: 6px;
+}
+
+.context-card-p {
+  margin: 0;
+  font-size: 13px;
+  line-height: 1.6;
+  color: #cbd5e1;
+}
+
+.context-focus-list {
+  margin: 0;
+  padding-left: 20px;
+  font-size: 13px;
+  line-height: 1.6;
+  color: #cbd5e1;
+}
+
+.context-focus-list li {
+  margin-bottom: 4px;
+}
+
+.context-focus-list code {
+  background: #141f33;
+  color: #38bdf8;
+  padding: 2px 6px;
+  border-radius: 4px;
+  font-family: var(--font-mono, monospace);
+  font-size: 12px;
+  border: 1px solid #1f2f4c;
+}
+
+.context-schema-code {
+  margin: 0;
+  background: #050810;
+  border: 1px solid #192336;
+  border-radius: 6px;
+  padding: 12px 14px;
+  font-family: 'JetBrains Mono', var(--font-mono, monospace);
+  font-size: 11.5px;
+  line-height: 1.55;
+  color: #c084fc;
+  overflow-x: auto;
+  white-space: pre-wrap;
+  word-break: break-word;
+}
+
+/* SQL Workstation Challenge Container (Tab 3) */
+.challenge-workspace-box {
+  display: flex;
+  flex-direction: column;
+  gap: 14px;
+}
+
+.challenge-instruction-card {
+  background: #0b1220;
+  border: 1px solid #1a273e;
+  border-radius: 8px;
+  padding: 12px 16px;
+  display: flex;
+  align-items: flex-start;
+  gap: 12px;
+}
+
+.instruction-icon {
+  font-size: 20px;
+  flex-shrink: 0;
+  margin-top: 2px;
+}
+
+.instruction-title {
+  font-size: 12px;
+  font-weight: 700;
+  font-family: var(--font-mono, monospace);
+  text-transform: uppercase;
+  letter-spacing: 0.04em;
+  margin-bottom: 2px;
+}
+
+.instruction-p {
+  font-size: 13px;
+  line-height: 1.5;
+  color: #e2e8f0;
+}
+
+.choice-pill {
+  background: #0f182b;
+  border: 1px solid #1f2f4c;
+  color: #94a3b8;
+  font-size: 11px;
+  font-family: var(--font-mono, monospace);
+  font-weight: 600;
+  padding: 5px 12px;
+  border-radius: 4px;
+  cursor: pointer;
+  transition: all 0.15s ease;
+}
+
+.choice-pill:hover {
+  background: #17243e;
+  color: #f1f5f9;
+  border-color: #334a75;
+}
+
+/* Query Canvas & Tokens */
+.challenge-query-canvas {
+  background: #060912;
+  border: 1px solid #19253c;
+  border-radius: 8px;
+  overflow: hidden;
+  box-shadow: 0 4px 16px rgba(0, 0, 0, 0.4);
+}
+
+.canvas-header {
+  background: #0c1424;
+  border-bottom: 1px solid #19253c;
+  padding: 8px 14px;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  font-family: var(--font-mono, monospace);
+  font-size: 11.5px;
+  color: #94a3b8;
+}
+
+.canvas-code-block {
+  margin: 0;
+  padding: 16px;
+  font-family: 'JetBrains Mono', var(--font-mono, monospace);
+  font-size: 12.5px;
+  line-height: 1.7;
+  color: #f1f5f9;
+  overflow-x: auto;
+  white-space: pre-wrap;
+  word-break: break-word;
+}
+
+.challenge-blank-slot {
+  display: inline-block;
+  padding: 2px 8px;
+  margin: 0 2px;
+  border-radius: 4px;
+  border: 1px dashed rgba(245, 158, 11, 0.4);
+  background: #0f1a2e;
+  color: #94a3b8;
+  font-weight: 600;
+  font-family: var(--font-mono, monospace);
+  transition: all 0.12s ease;
+}
+
+.challenge-blank-slot.filled {
+  background: rgba(245, 158, 11, 0.15);
+  border: 1px solid #f59e0b;
+  color: #fbbf24;
+  font-weight: 700;
+}
+
+.challenge-blank-slot.slot-correct {
+  background: rgba(16, 185, 129, 0.2) !important;
+  border-color: #10b981 !important;
+  color: #6ee7b7 !important;
+}
+
+.challenge-blank-slot.slot-wrong {
+  background: rgba(239, 68, 68, 0.2) !important;
+  border-color: #ef4444 !important;
+  color: #fca5a5 !important;
+}
+
+/* Tokens Tray */
+.challenge-tokens-tray {
+  background: #0b1220;
+  border: 1px solid #19253c;
+  border-radius: 8px;
+  padding: 14px 16px;
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+}
+
+.tray-title {
+  font-size: 11px;
+  font-weight: 700;
+  font-family: var(--font-mono, monospace);
+  text-transform: uppercase;
+  letter-spacing: 0.05em;
+}
+
+.blanks-picker-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
+  gap: 12px;
+}
+
+.blank-picker-card {
+  background: #070d18;
+  border: 1px solid #162238;
+  border-radius: 6px;
+  padding: 10px 12px;
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+}
+
+.picker-label {
+  font-size: 11px;
+  font-family: var(--font-mono, monospace);
+  color: #94a3b8;
+}
+
+.picker-options-row {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 6px;
+}
+
+.token-option-chip {
+  background: #0f1a2e;
+  border: 1px solid #1e2e4a;
+  border-radius: 4px;
+  color: #cbd5e1;
+  font-size: 11.5px;
+  font-family: 'JetBrains Mono', var(--font-mono, monospace);
+  padding: 4px 8px;
+  cursor: pointer;
+  transition: all 0.12s ease;
+}
+
+.token-option-chip:hover {
+  background: #172744;
+  border-color: rgba(245, 158, 11, 0.4);
+  color: #f8fafc;
+}
+
+.token-option-chip.selected {
+  background: #f59e0b;
+  border-color: #fbbf24;
+  color: #0b111e;
+  font-weight: 700;
+}
+
+/* Action Bar */
+.challenge-action-bar {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  flex-wrap: wrap;
+  gap: 12px;
+  padding-top: 6px;
+}
+
+.eval-result-pill {
+  font-size: 12px;
+  font-weight: 700;
+  font-family: var(--font-mono, monospace);
+  padding: 6px 14px;
+  border-radius: 6px;
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+}
+
+.eval-pass {
+  background: rgba(16, 185, 129, 0.15);
+  border: 1px solid #10b981;
+  color: #34d399;
+}
+
+.eval-fail {
+  background: rgba(239, 68, 68, 0.15);
+  border: 1px solid #ef4444;
+  color: #f87171;
+}
+
+.action-right-col {
+  display: flex;
+  gap: 10px;
+}
+
+/* Reference Implementation Tab (Tab 4) */
+.terminal-reference-pane {
+  background: #060912;
+  border: 1px solid #19253c;
+  border-radius: 8px;
+  overflow: hidden;
+  box-shadow: 0 4px 20px rgba(0, 0, 0, 0.4);
+}
+
+.terminal-ref-header {
+  background: #0c1424;
+  border-bottom: 1px solid #19253c;
+  padding: 10px 16px;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}
+
+.terminal-ref-title {
+  font-family: var(--font-mono, monospace);
+  font-size: 12px;
+  font-weight: 700;
+  color: #fbbf24;
+}
+
+.terminal-ref-code {
+  margin: 0;
+  padding: 16px 20px;
+  background: #050810;
+  font-family: 'JetBrains Mono', var(--font-mono, monospace);
+  font-size: 13px;
+  line-height: 1.6;
+  color: #38bdf8;
+  overflow-x: auto;
+  border-bottom: 1px solid #19253c;
+}
+
+.terminal-ref-review {
+  background: #090e1a;
+  padding: 16px 20px;
+  display: flex;
+  flex-direction: column;
+  gap: 6px;
+}
+
+.review-lead-title {
+  font-size: 12px;
+  font-weight: 700;
+  font-family: var(--font-mono, monospace);
+  text-transform: uppercase;
+  letter-spacing: 0.04em;
+}
+
+.review-lead-p {
+  margin: 0;
+  font-size: 13px;
+  line-height: 1.6;
+  color: #cbd5e1;
+}
+
+/* Manager Feedback Card */
+.manager-feedback-card {
+  background: #0b1626;
+  border: 1px solid #1e3a5f;
+  border-radius: 8px;
+  padding: 14px 18px;
+  display: flex;
+  flex-direction: column;
+  gap: 6px;
+}
+
+.feedback-header {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+}
+
+.feedback-title {
+  font-size: 12px;
+  font-weight: 700;
+  font-family: var(--font-mono, monospace);
+  text-transform: uppercase;
+  letter-spacing: 0.04em;
+}
+
+.feedback-body {
+  margin: 0;
+  font-size: 13px;
+  line-height: 1.6;
+  color: #cbd5e1;
+}
