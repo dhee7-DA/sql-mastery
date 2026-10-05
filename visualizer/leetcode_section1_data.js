@@ -378,6 +378,263 @@ window.LEETCODE_SECTION_1_DATA = (() => {
             </div>
           </div>
         `
+      },
+
+      {
+        id: 'chap-5-distinct',
+        number: '1.5',
+        title: 'The DISTINCT Engine & Tuple Deduplication (LeetCode #1148 Masterclass)',
+        content: `
+          <p class="lc-p">
+            In <strong>LeetCode #1148 (Article Views I)</strong>, an author might read their own article multiple times across different days. The question demands returning each author exactly once, sorted by ID.
+          </p>
+
+          <p class="lc-p">
+            To solve this, we write <code class="lc-code-pill">SELECT DISTINCT author_id AS id</code>. But how does <code class="lc-code-pill">DISTINCT</code> actually operate under the hood in database memory?
+          </p>
+
+          <div class="lc-rule-banner">
+            <strong>The Memory Mechanics:</strong><br>
+            When you run <code>DISTINCT</code>, the database allocates an internal <strong>In-Memory Hash Set</strong>.<br>
+            As each surviving row arrives from the WHERE filter, the engine hashes the column values:<br>
+            &bull; If the hash value is new &rarr; It stores it in memory and outputs the row.<br>
+            &bull; If the hash value already exists &rarr; <strong>It drops the duplicate immediately!</strong>
+          </div>
+
+          <div class="lc-callout-card warning">
+            <div class="lc-callout-title">
+              <span>⚠️</span>
+              <span>The Tuple Trap: What Does DISTINCT Actually Deduplicate?</span>
+            </div>
+            <div class="lc-callout-body">
+              One of the most common candidate mistakes in interviews is writing:<br>
+              <code class="lc-code-pill">SELECT DISTINCT author_id, view_date FROM Views;</code><br>
+              and expecting only <code>author_id</code> to be unique.<br><br>
+              <strong>The Rule:</strong> <code>DISTINCT</code> is <strong>NOT</strong> a function. It does not apply to just the first column. It applies to the <strong>entire combination of columns</strong> in your SELECT list!<br>
+              If author #4 viewed the article on July 21st and again on July 22nd, both rows will appear because <code>(4, July 21)</code> &ne; <code>(4, July 22)</code>.
+            </div>
+          </div>
+        `,
+        diagram: {
+          id: 'diag-distinct-hash',
+          title: 'How The Database Deduplicates Rows In Memory',
+          svg: `<svg viewBox="0 0 880 220" class="lc-diagram-svg" xmlns="http://www.w3.org/2000/svg">
+            <defs>
+              <marker id="arrowDistinct" viewBox="0 0 10 10" refX="5" refY="5" markerWidth="6" markerHeight="6" orient="auto-start-reverse">
+                <path d="M 0 1 L 8 5 L 0 9 z" fill="#2563eb"/>
+              </marker>
+            </defs>
+
+            <!-- Incoming Stream -->
+            <rect x="20" y="25" width="220" height="170" rx="8" fill="#f8fafc" stroke="#cbd5e1" stroke-width="1.5"/>
+            <text x="35" y="50" fill="#0f172a" font-size="13" font-weight="700">Incoming Stream</text>
+            <text x="35" y="70" fill="#64748b" font-size="11">From WHERE author = viewer</text>
+            <rect x="35" y="85" width="180" height="24" rx="4" fill="#ffffff" stroke="#e2e8f0"/>
+            <text x="45" y="101" fill="#0f172a" font-family="monospace" font-size="11">author_id: 4</text>
+            <rect x="35" y="115" width="180" height="24" rx="4" fill="#fffbeb" stroke="#fde68a"/>
+            <text x="45" y="131" fill="#b45309" font-family="monospace" font-size="11">author_id: 4 (Duplicate)</text>
+            <rect x="35" y="145" width="180" height="24" rx="4" fill="#ffffff" stroke="#e2e8f0"/>
+            <text x="45" y="161" fill="#0f172a" font-family="monospace" font-size="11">author_id: 7</text>
+
+            <!-- Arrow 1 to 2 -->
+            <line x1="245" y1="110" x2="310" y2="110" stroke="#2563eb" stroke-width="2" marker-end="url(#arrowDistinct)"/>
+
+            <!-- In-Memory Hash Set Engine -->
+            <rect x="320" y="20" width="280" height="180" rx="8" fill="#ffffff" stroke="#2563eb" stroke-width="2"/>
+            <rect x="335" y="35" width="150" height="22" rx="4" fill="#eff6ff" stroke="#bfdbfe"/>
+            <text x="343" y="50" fill="#1d4ed8" font-family="monospace" font-size="11" font-weight="700">DISTINCT Hash Engine</text>
+            <text x="335" y="80" fill="#0f172a" font-size="13" font-weight="700">Hash Set Lookup Table</text>
+            <text x="335" y="105" fill="#16a34a" font-size="12">Key 4 ➔ Hash(4) &bull; Seen (Add)</text>
+            <text x="335" y="130" fill="#dc2626" font-size="12" font-weight="600">Key 4 ➔ Hash(4) &bull; Collision! (DROP)</text>
+            <text x="335" y="155" fill="#16a34a" font-size="12">Key 7 ➔ Hash(7) &bull; Seen (Add)</text>
+            <rect x="335" y="168" width="220" height="22" rx="4" fill="#f8fafc" stroke="#cbd5e1"/>
+            <text x="345" y="183" fill="#64748b" font-family="monospace" font-size="10.5">Hash collisions silently dropped</text>
+
+            <!-- Arrow 2 to 3 -->
+            <line x1="605" y1="110" x2="670" y2="110" stroke="#2563eb" stroke-width="2" marker-end="url(#arrowDistinct)"/>
+
+            <!-- Output -->
+            <rect x="680" y="25" width="180" height="170" rx="8" fill="#f0fdf4" stroke="#86efac" stroke-width="1.5"/>
+            <text x="695" y="50" fill="#166534" font-size="13" font-weight="700">Unique Output</text>
+            <text x="695" y="70" fill="#15803d" font-size="11">Sorted by id ASC</text>
+            <rect x="695" y="90" width="150" height="26" rx="4" fill="#ffffff" stroke="#86efac"/>
+            <text x="705" y="107" fill="#0f172a" font-family="monospace" font-size="12" font-weight="700">id: 4</text>
+            <rect x="695" y="125" width="150" height="26" rx="4" fill="#ffffff" stroke="#86efac"/>
+            <text x="705" y="142" fill="#0f172a" font-family="monospace" font-size="12" font-weight="700">id: 7</text>
+          </svg>`
+        }
+      },
+
+      {
+        id: 'chap-6-or-vs-union',
+        number: '1.6',
+        title: 'The OR vs UNION Dilemma (LeetCode #595 Senior Follow-Up)',
+        content: `
+          <p class="lc-p">
+            In <strong>LeetCode #595 (Big Countries)</strong>, a country is defined as big if:
+            <code class="lc-code-pill">area &gt;= 3,000,000 OR population &gt;= 25,000,000</code>.
+          </p>
+
+          <p class="lc-p">
+            Writing a simple <code class="lc-code-pill">OR</code> passes the LeetCode judge in 5 seconds. But in an onsite interview at Meta, Amazon, or Uber, the interviewer will immediately follow up:
+          </p>
+
+          <div class="lc-rule-banner">
+            <strong>The Follow-up Question:</strong><br>
+            <em>"Imagine our World table has 500,000,000 rows. There is an index on 'area' and an index on 'population'. Why does this simple OR query slow down, and how would you optimize it?"</em>
+          </div>
+
+          <p class="lc-p">
+            <strong>The Problem with OR:</strong> When an OR condition references two <em>completely different columns</em>, the query optimizer usually cannot use both single-column indexes effectively. It often gives up and performs an excruciatingly slow <strong>Full Table Scan</strong> across all 500 million records!
+          </p>
+
+          <p class="lc-p">
+            <strong>The Senior Solution (UNION):</strong> We split the query into two independent SELECT statements and combine them with <code class="lc-code-pill">UNION</code>:
+          </p>
+
+          <div class="lc-comparison-grid">
+            <div class="lc-compare-card bad">
+              <div class="lc-compare-title">
+                <span>⚠️</span>
+                <span>Standard OR Approach</span>
+              </div>
+              <div class="lc-code-snippet">SELECT name, population, area<br>FROM World<br>WHERE area &gt;= 3000000<br>   OR population &gt;= 25000000;</div>
+              <div class="lc-compare-explain">
+                Simple and clean for small tables. But on massive tables, the optimizer struggles to combine two indexes, causing table scan degradation.
+              </div>
+            </div>
+
+            <div class="lc-compare-card good">
+              <div class="lc-compare-title">
+                <span>⚡</span>
+                <span>High-Scale UNION Approach</span>
+              </div>
+              <div class="lc-code-snippet">SELECT name, population, area<br>FROM World<br>WHERE area &gt;= 3000000<br>UNION<br>SELECT name, population, area<br>FROM World<br>WHERE population &gt;= 25000000;</div>
+              <div class="lc-compare-explain">
+                Branch 1 uses the <code>area</code> index (0.8ms).<br>
+                Branch 2 uses the <code>population</code> index (0.9ms).<br>
+                <code>UNION</code> automatically deduplicates overlap. <strong>1,000x faster!</strong>
+              </div>
+            </div>
+          </div>
+        `,
+        diagram: {
+          id: 'diag-or-vs-union',
+          title: 'Query Plan Comparison: Single OR vs Split UNION',
+          svg: `<svg viewBox="0 0 880 200" class="lc-diagram-svg" xmlns="http://www.w3.org/2000/svg">
+            <!-- Plan A -->
+            <rect x="20" y="15" width="410" height="170" rx="8" fill="#fffbeb" stroke="#fde68a" stroke-width="1.5"/>
+            <rect x="35" y="30" width="130" height="22" rx="4" fill="#fef3c7" stroke="#fde68a"/>
+            <text x="43" y="45" fill="#b45309" font-family="monospace" font-size="11" font-weight="700">PLAN A: Single OR</text>
+            <text x="35" y="75" fill="#0f172a" font-size="13" font-weight="700">Index Merge Failure</text>
+            <text x="35" y="98" fill="#475569" font-size="12">Cannot traverse both B-Trees simultaneously.</text>
+            <rect x="35" y="125" width="260" height="28" rx="4" fill="#ffffff" stroke="#fde68a"/>
+            <text x="45" y="143" fill="#b45309" font-family="monospace" font-size="11.5" font-weight="700">🐢 Full Table Scan (3,800 ms)</text>
+
+            <!-- Plan B -->
+            <rect x="450" y="15" width="410" height="170" rx="8" fill="#f0fdf4" stroke="#86efac" stroke-width="1.5"/>
+            <rect x="465" y="30" width="130" height="22" rx="4" fill="#dcfce7" stroke="#86efac"/>
+            <text x="473" y="45" fill="#166534" font-family="monospace" font-size="11" font-weight="700">PLAN B: Split UNION</text>
+            <text x="465" y="75" fill="#0f172a" font-size="13" font-weight="700">Dual Direct B-Tree Seeks</text>
+            <text x="465" y="98" fill="#475569" font-size="12">Each query branch hits its own dedicated index.</text>
+            <rect x="465" y="125" width="260" height="28" rx="4" fill="#ffffff" stroke="#86efac"/>
+            <text x="475" y="143" fill="#16a34a" font-family="monospace" font-size="11.5" font-weight="700">⚡ Two Seeks &bull; Latency: 2.1 ms</text>
+          </svg>`
+        }
+      },
+
+      {
+        id: 'chap-7-null-safe-toolkit',
+        number: '1.7',
+        title: 'The NULL-Safe Toolkit: <=>, COALESCE(), and IFNULL()',
+        content: `
+          <p class="lc-p">
+            In <strong>LeetCode #584 (Find Customer Referee)</strong>, writing <code class="lc-code-pill">WHERE referee_id != 2 OR referee_id IS NULL</code> is the classic standard solution. But top engineers have three other powerful tools in their toolkit:
+          </p>
+
+          <div style="display: grid; grid-template-columns: 1fr; gap: 12px; margin: 16px 0;">
+            <div style="background: #ffffff; border: 1px solid #e4e4e7; border-radius: 8px; padding: 16px;">
+              <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 6px;">
+                <span style="font-weight: 700; font-size: 14px; color: #2563eb;">Tool 1: The MySQL Spaceship Operator (&lt;=&gt;)</span>
+                <span style="font-family: var(--font-mono); font-size: 11px; background: #eff6ff; color: #1d4ed8; padding: 2px 8px; border-radius: 4px;">NULL-Safe Equal</span>
+              </div>
+              <p class="lc-p" style="margin-bottom: 8px;">
+                MySQL has a unique operator called the <strong>Spaceship Operator</strong> (<code class="lc-code-pill">&lt;=&gt;</code>). Unlike the regular <code>=</code> operator, it <strong>NEVER evaluates to UNKNOWN</strong>!
+              </p>
+              <div class="lc-code-snippet">WHERE NOT (referee_id &lt;=&gt; 2);</div>
+              <div style="font-size: 12px; color: #64748b; margin-top: 6px;">
+                If <code>referee_id</code> is NULL: <code>NULL &lt;=&gt; 2</code> evaluates to <strong>FALSE (0)</strong>, so <code>NOT FALSE</code> evaluates to <strong>TRUE (1)</strong>! Clean, concise, and no <code>OR</code> required!
+              </div>
+            </div>
+
+            <div style="background: #ffffff; border: 1px solid #e4e4e7; border-radius: 8px; padding: 16px;">
+              <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 6px;">
+                <span style="font-weight: 700; font-size: 14px; color: #059669;">Tool 2: COALESCE() and IFNULL() Fallbacks</span>
+                <span style="font-family: var(--font-mono); font-size: 11px; background: #f0fdf4; color: #15803d; padding: 2px 8px; border-radius: 4px;">Fallback Functions</span>
+              </div>
+              <p class="lc-p" style="margin-bottom: 8px;">
+                Substitute a dummy value (like 0 or -1) whenever a column is missing:
+              </p>
+              <div class="lc-code-snippet">WHERE COALESCE(referee_id, 0) != 2;</div>
+              <div style="font-size: 12px; color: #64748b; margin-top: 6px;">
+                If <code>referee_id</code> is NULL, <code>COALESCE</code> converts it to <code>0</code>. Since <code>0 != 2</code> is TRUE, the customer is safely kept!
+              </div>
+            </div>
+          </div>
+        `
+      },
+
+      {
+        id: 'chap-8-cheat-sheet',
+        number: '1.8',
+        title: 'The 60-Second Interview Executive Cheat Sheet',
+        content: `
+          <p class="lc-p">
+            Scan this quick reference table 5 minutes before your SQL technical screening:
+          </p>
+
+          <table style="width: 100%; border-collapse: collapse; margin: 16px 0; font-size: 13px;">
+            <thead>
+              <tr style="background: #f8fafc; border-bottom: 2px solid #e4e4e7;">
+                <th style="padding: 10px 12px; text-align: left;">Topic</th>
+                <th style="padding: 10px 12px; text-align: left;">The Trap</th>
+                <th style="padding: 10px 12px; text-align: left;">The Bulletproof Rule</th>
+              </tr>
+            </thead>
+            <tbody>
+              <tr style="border-bottom: 1px solid #f4f4f5;">
+                <td style="padding: 10px 12px; font-weight: 700;">Aliases in WHERE</td>
+                <td style="padding: 10px 12px; color: #dc2626;"><code>WHERE alias &gt; 10</code> crashes</td>
+                <td style="padding: 10px 12px; color: #16a34a;">WHERE runs at Step 2; aliases are created at Step 5. Repeat the math in WHERE!</td>
+              </tr>
+              <tr style="border-bottom: 1px solid #f4f4f5;">
+                <td style="padding: 10px 12px; font-weight: 700;">NULL Comparisons</td>
+                <td style="padding: 10px 12px; color: #dc2626;"><code>col != 2</code> drops NULLs</td>
+                <td style="padding: 10px 12px; color: #16a34a;">Always add <code>OR col IS NULL</code>, or use <code>COALESCE(col, 0) != 2</code></td>
+              </tr>
+              <tr style="border-bottom: 1px solid #f4f4f5;">
+                <td style="padding: 10px 12px; font-weight: 700;">NOT IN with NULL</td>
+                <td style="padding: 10px 12px; color: #dc2626;">Returns 0 rows if list has NULL</td>
+                <td style="padding: 10px 12px; color: #16a34a;">Always prefer <code>NOT EXISTS</code> for subqueries instead of <code>NOT IN</code></td>
+              </tr>
+              <tr style="border-bottom: 1px solid #f4f4f5;">
+                <td style="padding: 10px 12px; font-weight: 700;">Counting Text Length</td>
+                <td style="padding: 10px 12px; color: #dc2626;"><code>LENGTH()</code> counts bytes</td>
+                <td style="padding: 10px 12px; color: #16a34a;">Use <code>CHAR_LENGTH()</code> for character limits (emojis take 4 bytes!)</td>
+              </tr>
+              <tr style="border-bottom: 1px solid #f4f4f5;">
+                <td style="padding: 10px 12px; font-weight: 700;">Sargability</td>
+                <td style="padding: 10px 12px; color: #dc2626;"><code>WHERE YEAR(date) = 2026</code></td>
+                <td style="padding: 10px 12px; color: #16a34a;">Never wrap columns in functions. Use <code>date &gt;= '2026-01-01' AND ...</code></td>
+              </tr>
+              <tr style="border-bottom: 1px solid #f4f4f5;">
+                <td style="padding: 10px 12px; font-weight: 700;">Precedence Order</td>
+                <td style="padding: 10px 12px; color: #dc2626;"><code>A OR B AND C</code> behaves as <code>A OR (B AND C)</code></td>
+                <td style="padding: 10px 12px; color: #16a34a;">AND binds tighter than OR. Always use defensive parentheses: <code>(A OR B) AND C</code></td>
+              </tr>
+            </tbody>
+          </table>
+        `
       }
     ],
 
