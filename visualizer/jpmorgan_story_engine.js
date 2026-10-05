@@ -171,15 +171,15 @@
     root.innerHTML = `
       <div class="amazon-sim-container jpmorgan-sim-theme">
         <!-- TOP BRANDED HEADER -->
-        <header class="amazon-sim-header" style="border-bottom: 2px solid #b45309; background: linear-gradient(180deg, #0e1726 0%, #080d16 100%);">
+        <header class="amazon-sim-header">
           <div class="amazon-brand-row">
             <div class="amazon-logo-group">
-              <span class="jpm-brand-badge" style="font-family: serif; font-weight: 900; letter-spacing: 0.08em; color: #f59e0b; font-size: 19px;">J.P. Morgan</span>
-              <span class="amazon-team-tag" style="background: rgba(245, 158, 11, 0.15); color: #fbbf24; border-color: rgba(245, 158, 11, 0.3);">Global Banking, Markets &amp; Treasury Risk</span>
+              <span class="jpm-brand-badge">J.P. Morgan</span>
+              <span class="amazon-team-tag">Global Banking, Markets &amp; Treasury Risk</span>
             </div>
             <div class="amazon-career-status">
               <div class="career-text-col">
-                <span class="career-role-title" style="color: #f1f5f9;">${career.title}</span>
+                <span class="career-role-title">${career.title}</span>
                 <span class="career-progress-sub">Audits Cleared: ${solvedDays.size} of ${allList.length} Trading Days</span>
               </div>
               <span class="career-pill" style="color: ${career.color}; border-color: ${career.color}44; background: ${career.color}15;">
@@ -263,21 +263,21 @@
 
     stageRoot.innerHTML = `
       <!-- TICKET BANNER & METADATA STRIP -->
-      <section class="ticket-banner-strip" style="border-left: 4px solid #f59e0b;">
+      <section class="ticket-banner-strip">
         <div class="ticket-banner-header">
           <div>
-            <div class="ticket-phase-tag" style="color: #f59e0b;">${d.phase}</div>
+            <div class="ticket-phase-tag">${d.phase}</div>
             <h1 class="ticket-banner-title">${d.title}</h1>
           </div>
           <span class="ticket-priority-pill priority-${d.priority.split(' ')[0].toLowerCase()}">${d.priority}</span>
         </div>
 
         <!-- SENDER & SYMPHONY MESSAGE CHAT BUBBLE -->
-        <div class="chime-message-bubble" style="background: rgba(15, 23, 42, 0.7); border-color: rgba(245, 158, 11, 0.25);">
+        <div class="chime-message-bubble">
           <div class="bubble-sender-row">
             <span class="bubble-avatar">${d.senderAvatar}</span>
             <div class="bubble-sender-meta">
-              <span class="bubble-sender-name" style="color: #fbbf24;">${d.sender}</span>
+              <span class="bubble-sender-name">${d.sender}</span>
               <span class="bubble-sender-role">${d.senderRole} &bull; ${d.department}</span>
             </div>
           </div>
@@ -320,36 +320,36 @@
     if (activeTab === 'context') {
       root.innerHTML = `
         <div class="context-report-grid">
-          <div class="context-card card-why" style="border-left: 3px solid #38bdf8;">
-            <div class="context-card-title" style="color: #38bdf8;">💡 Why This Financial Metric Matters to Leadership</div>
+          <div class="context-card card-why">
+            <div class="context-card-title">💡 Why This Financial Metric Matters to Leadership</div>
             <p class="context-card-p">${d.contextReport.businessWhy}</p>
           </div>
 
-          <div class="context-card card-focus" style="border-left: 3px solid #10b981;">
-            <div class="context-card-title" style="color: #10b981;">🎯 SQL &amp; Quantitative Principles in Focus</div>
+          <div class="context-card card-focus">
+            <div class="context-card-title">🎯 SQL &amp; Quantitative Principles in Focus</div>
             <ul class="context-focus-list">
               ${d.contextReport.learningFocus.map(item => `<li>${item}</li>`).join('')}
             </ul>
           </div>
 
-          <div class="context-card card-schema" style="border-left: 3px solid #a855f7;">
-            <div class="context-card-title" style="color: #c084fc;">🗄️ Relational Ledger Schema Definition</div>
+          <div class="context-card card-schema">
+            <div class="context-card-title">🗄️ Relational Ledger Schema Definition</div>
             <pre class="context-schema-code"><code>${d.contextReport.sampleSchema}</code></pre>
           </div>
 
-          <div class="context-card card-trap" style="border-left: 3px solid #ef4444;">
-            <div class="context-card-title" style="color: #f87171;">⚠️ Production Trap to Avoid on Wall Street</div>
-            <p class="context-card-p" style="color: #fca5a5;">${d.contextReport.realWorldTrap}</p>
+          <div class="context-card card-trap">
+            <div class="context-card-title">⚠️ Production Trap to Avoid on Wall Street</div>
+            <p class="context-card-p">${d.contextReport.realWorldTrap}</p>
           </div>
 
-          <div class="context-card card-interview" style="border-left: 3px solid #f59e0b; grid-column: 1 / -1;">
-            <div class="context-card-title" style="color: #fbbf24;">🏛️ Investment Banking Interview Relevance</div>
+          <div class="context-card card-interview" style="grid-column: 1 / -1;">
+            <div class="context-card-title">🏛️ Investment Banking Interview Relevance</div>
             <p class="context-card-p">${d.contextReport.interviewRelevance}</p>
           </div>
         </div>
 
-        <div style="margin-top: 18px; display: flex; justify-content: flex-end;">
-          <button class="btn btn-primary" style="background: #f59e0b; color: #000; font-weight: 700;" onclick="window.JPMORGAN_STORY.setViewTab('challenge')">
+        <div style="margin-top: 16px; display: flex; justify-content: flex-end;">
+          <button class="btn btn-primary" onclick="window.JPMORGAN_STORY.setViewTab('challenge')">
             Launch Day ${d.day} SQL Workstation &rarr;
           </button>
         </div>
@@ -370,7 +370,7 @@
           <pre class="terminal-ref-code"><code>${d.challenge.expectedSql}</code></pre>
 
           <div class="terminal-ref-review">
-            <div class="review-lead-title" style="color: #f59e0b;">💬 Managing Director Sign-off:</div>
+            <div class="review-lead-title">💬 Managing Director Sign-off:</div>
             <p class="review-lead-p">${d.challenge.managerReview}</p>
           </div>
         </div>
@@ -382,10 +382,10 @@
     const sample = (window.JPMORGAN_SAMPLE_TABLES && window.JPMORGAN_SAMPLE_TABLES[d.day]) || null;
     if (!sample) {
       return `
-        <div style="padding: 32px; text-align: center; color: #94a3b8; background: #0b111e; border-radius: 10px; border: 1px solid rgba(245, 158, 11, 0.2);">
-          <div style="font-size: 32px; margin-bottom: 8px;">📊</div>
-          <h4 style="color: #fbbf24; margin: 0 0 6px 0;">No Sample Data Seeded for Day ${d.day}</h4>
-          <p style="margin: 0; font-size: 13px;">Refer to the Relational Schema Definition in the Executive Briefing tab.</p>
+        <div style="padding: 28px; text-align: center; color: var(--text-muted); background: var(--bg-surface); border-radius: var(--radius-sm, 6px); border: 1px solid var(--border-default);">
+          <div style="font-size: 28px; margin-bottom: 8px;">📊</div>
+          <h4 style="color: var(--text-primary); margin: 0 0 6px 0; font-family: var(--font-sans);">No Sample Data Seeded for Day ${d.day}</h4>
+          <p style="margin: 0; font-size: 12.5px; font-family: var(--font-sans);">Refer to the Relational Schema Definition in the Executive Briefing tab.</p>
         </div>
       `;
     }
@@ -397,30 +397,30 @@
       sample.rows.map(r => `  (${r.map(val => typeof val === 'string' ? `'${val}'` : (val === null ? 'NULL' : val)).join(', ')})`).join(',\n') + `;\n`;
 
     return `
-      <div class="jpmorgan-sample-table-pane" style="background: #0b111e; border: 1px solid rgba(245, 158, 11, 0.2); border-radius: 10px; padding: 20px;">
-        <div style="display: flex; justify-content: space-between; align-items: flex-start; margin-bottom: 16px; flex-wrap: wrap; gap: 12px;">
+      <div class="jpmorgan-sample-table-pane">
+        <div style="display: flex; justify-content: space-between; align-items: flex-start; margin-bottom: 14px; flex-wrap: wrap; gap: 10px;">
           <div>
-            <div style="display: flex; align-items: center; gap: 10px;">
-              <span style="font-size: 20px;">📊</span>
-              <h3 style="margin: 0; color: #fbbf24; font-family: monospace; font-size: 18px;">${sample.tableName}</h3>
-              <span style="background: rgba(56, 189, 248, 0.15); color: #38bdf8; border: 1px solid rgba(56, 189, 248, 0.3); padding: 2px 8px; border-radius: 999px; font-size: 11px; font-weight: 600;">
-                ${sample.rows.length} Sample Rows
+            <div style="display: flex; align-items: center; gap: 8px;">
+              <span style="font-size: 16px;">📊</span>
+              <h3 style="margin: 0; color: var(--text-primary); font-family: var(--font-mono); font-size: 15px;">${sample.tableName}</h3>
+              <span style="background: var(--bg-surface-elevated); color: var(--text-muted); border: 1px solid var(--border-default); padding: 2px 7px; border-radius: var(--radius-xs, 4px); font-size: 11px; font-family: var(--font-mono); font-weight: 600;">
+                ${sample.rows.length} Rows
               </span>
             </div>
-            <p style="margin: 4px 0 0 0; color: #94a3b8; font-size: 13px;">${sample.description}</p>
+            <p style="margin: 4px 0 0 0; color: var(--text-muted); font-size: 12.5px; font-family: var(--font-sans);">${sample.description}</p>
           </div>
-          <button class="btn btn-secondary btn-xs" style="border-color: #f59e0b; color: #fbbf24;" onclick="navigator.clipboard.writeText(decodeURIComponent('${encodeURIComponent(createTableSql)}')); alert('Table DDL and sample INSERTs copied to clipboard!');">
+          <button class="btn btn-secondary btn-xs" onclick="navigator.clipboard.writeText(decodeURIComponent('${encodeURIComponent(createTableSql)}')); alert('Table DDL and sample INSERTs copied to clipboard!');">
             📋 Copy Table SQL (DDL + Inserts)
           </button>
         </div>
 
         <!-- Scrollable Data Grid -->
-        <div style="overflow-x: auto; max-height: 420px; border-radius: 8px; border: 1px solid #1e293b;">
-          <table style="width: 100%; border-collapse: collapse; font-family: 'JetBrains Mono', monospace; font-size: 13px; text-align: left;">
+        <div style="overflow-x: auto; max-height: 400px; border-radius: var(--radius-xs, 4px); border: 1px solid var(--border-default);">
+          <table style="width: 100%; border-collapse: collapse; font-family: var(--font-mono); font-size: 12px; text-align: left;">
             <thead>
-              <tr style="background: #111a2e; border-bottom: 2px solid #b45309; position: sticky; top: 0; z-index: 2;">
+              <tr style="background: var(--bg-surface-elevated); border-bottom: 2px solid var(--border-default); position: sticky; top: 0; z-index: 2;">
                 ${sample.columns.map(col => `
-                  <th style="padding: 10px 14px; color: #fbbf24; font-weight: 600; white-space: nowrap; letter-spacing: 0.03em;">
+                  <th style="padding: 8px 12px; color: var(--text-primary); font-weight: 700; white-space: nowrap; font-family: var(--font-mono);">
                     ${col}
                   </th>
                 `).join('')}
@@ -428,7 +428,7 @@
             </thead>
             <tbody>
               ${sample.rows.map((row, idx) => `
-                <tr style="background: ${idx % 2 === 0 ? 'rgba(15, 23, 42, 0.6)' : 'rgba(11, 17, 30, 0.8)'}; border-bottom: 1px solid rgba(51, 65, 85, 0.4);">
+                <tr style="background: ${idx % 2 === 0 ? 'var(--bg-surface)' : 'var(--bg-surface-elevated)'}; border-bottom: 1px solid var(--border-subtle);">
                   ${row.map(cell => {
                     const isNum = typeof cell === 'number';
                     const isNegative = isNum && cell < 0;
@@ -436,16 +436,16 @@
                     if (isNum) {
                       displayVal = Number.isInteger(cell) ? cell.toLocaleString() : cell.toLocaleString(undefined, { minimumFractionDigits: 2, maximumFractionDigits: 4 });
                     } else if (cell === null) {
-                      displayVal = '<span style="color: #64748b; font-style: italic;">NULL</span>';
+                      displayVal = '<span style="color: var(--text-muted); font-style: italic;">NULL</span>';
                     } else if (typeof cell === 'boolean') {
-                      displayVal = cell ? '<span style="color: #34d399; font-weight: 600;">TRUE</span>' : '<span style="color: #f87171; font-weight: 600;">FALSE</span>';
+                      displayVal = cell ? '<span style="color: var(--status-success); font-weight: 600;">TRUE</span>' : '<span style="color: var(--status-fail); font-weight: 600;">FALSE</span>';
                     } else if (cell === 'MATCHED' || cell === 'SETTLED' || cell === 'ACTIVE' || cell === 'FILLED') {
-                      displayVal = `<span style="background: rgba(16, 185, 129, 0.15); color: #34d399; padding: 2px 6px; border-radius: 4px; font-size: 11px;">${cell}</span>`;
+                      displayVal = `<span style="background: var(--status-success-bg); color: var(--status-success); padding: 2px 6px; border-radius: var(--radius-xs, 4px); font-size: 11px;">${cell}</span>`;
                     } else if (cell === 'UNRECONCILED' || cell === 'FAILED' || cell === 'FLAGGED') {
-                      displayVal = `<span style="background: rgba(239, 68, 68, 0.15); color: #f87171; padding: 2px 6px; border-radius: 4px; font-size: 11px;">${cell}</span>`;
+                      displayVal = `<span style="background: var(--status-fail-bg); color: var(--status-fail); padding: 2px 6px; border-radius: var(--radius-xs, 4px); font-size: 11px;">${cell}</span>`;
                     }
                     return `
-                      <td style="padding: 9px 14px; color: ${isNegative ? '#f87171' : (isNum ? '#38bdf8' : '#e2e8f0')}; white-space: nowrap; ${isNum ? 'text-align: right;' : ''}">
+                      <td style="padding: 8px 12px; color: ${isNegative ? 'var(--status-fail)' : (isNum ? 'var(--accent)' : 'var(--text-primary)')}; white-space: nowrap; ${isNum ? 'text-align: right;' : ''}">
                         ${displayVal}
                       </td>
                     `;
@@ -456,11 +456,11 @@
           </table>
         </div>
 
-        <div style="margin-top: 14px; display: flex; justify-content: space-between; align-items: center; flex-wrap: wrap; gap: 10px;">
-          <span style="font-size: 12px; color: #64748b;">
-            💡 Tip: Practice your Day ${d.day} SQL against these exact columns in the <strong>SQL Workstation</strong> tab.
+        <div style="margin-top: 12px; display: flex; justify-content: space-between; align-items: center; flex-wrap: wrap; gap: 8px;">
+          <span style="font-size: 11.5px; color: var(--text-muted); font-family: var(--font-mono);">
+            Practice your SQL against these columns in the SQL Workstation tab.
           </span>
-          <button class="btn btn-primary btn-sm" style="background: #f59e0b; color: #000; font-weight: 700;" onclick="window.JPMORGAN_STORY.setViewTab('challenge')">
+          <button class="btn btn-primary btn-sm" onclick="window.JPMORGAN_STORY.setViewTab('challenge')">
             Go to SQL Workstation &rarr;
           </button>
         </div>
@@ -597,7 +597,7 @@
             <button class="btn btn-secondary" onclick="window.JPMORGAN_STORY.resetChallenge()">
               Clear Slots
             </button>
-            <button class="btn btn-primary" style="background: #f59e0b; color: #000; font-weight: 700;" onclick="window.JPMORGAN_STORY.checkChallenge()">
+            <button class="btn btn-primary" onclick="window.JPMORGAN_STORY.checkChallenge()">
               Validate &amp; Submit Audit &check;
             </button>
           </div>
@@ -609,13 +609,13 @@
       const initialSql = liveQueryText || d.challenge.expectedSql;
 
       modeContentHtml = `
-        <div class="live-sql-editor-container" style="margin-bottom: 16px;">
-          <div style="display: flex; justify-content: space-between; align-items: center; background: #0f172a; padding: 10px 14px; border-top-left-radius: 8px; border-top-right-radius: 8px; border: 1px solid #1e293b; border-bottom: none; flex-wrap: wrap; gap: 8px;">
+        <div class="live-sql-editor-container" style="margin-bottom: 14px;">
+          <div style="display: flex; justify-content: space-between; align-items: center; background: var(--bg-surface-elevated); padding: 8px 12px; border-bottom: 1px solid var(--border-default); flex-wrap: wrap; gap: 8px;">
             <div style="display: flex; align-items: center; gap: 8px;">
-              <span style="font-size: 15px;">⚡</span>
-              <span style="font-family: monospace; font-size: 12px; color: #fbbf24;">Live In-Memory SQL Terminal &bull; Active Table: ${sample ? sample.tableName : d.schema}</span>
+              <span style="font-size: 14px;">⚡</span>
+              <span style="font-family: var(--font-mono); font-size: 11.5px; color: var(--text-primary); font-weight: 600;">Active Table: ${sample ? sample.tableName : d.schema}</span>
             </div>
-            <div style="display: flex; gap: 8px;">
+            <div style="display: flex; gap: 6px;">
               <button class="btn btn-secondary btn-xs" onclick="window.JPMORGAN_STORY.loadSuggestedQuery()">
                 ✨ Load Expected Solution
               </button>
@@ -624,60 +624,60 @@
               </button>
             </div>
           </div>
-          <textarea id="jpmorganLiveSqlEditor" style="width: 100%; height: 110px; font-family: 'JetBrains Mono', monospace; font-size: 13px; line-height: 1.5; padding: 12px; box-sizing: border-box; background: #060b13; border: 1px solid #1e293b; border-bottom-left-radius: 8px; border-bottom-right-radius: 8px; color: #38bdf8; resize: vertical;" placeholder="Write your SQL query here...">${initialSql}</textarea>
+          <textarea id="jpmorganLiveSqlEditor" style="width: 100%; height: 110px; font-family: var(--font-mono); font-size: 12.5px; line-height: 1.55; padding: 12px; box-sizing: border-box; background: var(--bg-canvas); border: none; color: var(--text-primary); resize: vertical;" placeholder="Write your SQL query here...">${initialSql}</textarea>
         </div>
 
         <!-- Terminal Execution Bar -->
-        <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 16px; flex-wrap: wrap; gap: 10px;">
-          <div style="display: flex; gap: 10px; align-items: center;">
-            <button class="btn btn-primary" style="background: #f59e0b; color: #000; font-weight: 700; padding: 8px 20px;" onclick="window.JPMORGAN_STORY.runLiveQuery()">
+        <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 14px; flex-wrap: wrap; gap: 8px;">
+          <div style="display: flex; gap: 8px; align-items: center;">
+            <button class="btn btn-primary" onclick="window.JPMORGAN_STORY.runLiveQuery()">
               ▶ Run Query (Ctrl+Enter)
             </button>
             ${liveQueryLatency !== null ? `
-              <span style="font-size: 12px; font-family: monospace; color: #10b981; background: rgba(16, 185, 129, 0.1); padding: 4px 10px; border-radius: 999px; border: 1px solid rgba(16, 185, 129, 0.2);">
-                ⚡ ${liveQueryResult ? liveQueryResult.length : 0} rows returned in ${liveQueryLatency}ms
+              <span style="font-size: 11px; font-family: var(--font-mono); color: var(--status-success); background: var(--status-success-bg); padding: 3px 8px; border-radius: var(--radius-xs, 4px); border: 1px solid var(--status-success-border);">
+                ⚡ ${liveQueryResult ? liveQueryResult.length : 0} rows in ${liveQueryLatency}ms
               </span>
             ` : ''}
           </div>
-          <span style="font-size: 12px; color: #64748b;">Shortcuts: Ctrl+Enter executes query</span>
+          <span style="font-size: 11.5px; color: var(--text-muted); font-family: var(--font-mono);">Ctrl+Enter to run</span>
         </div>
 
         <!-- Terminal Execution Results -->
         ${liveQueryError ? `
-          <div style="background: rgba(239, 68, 68, 0.1); border: 1px solid rgba(239, 68, 68, 0.3); border-radius: 8px; padding: 16px; margin-bottom: 16px;">
-            <div style="color: #f87171; font-weight: 600; font-size: 13px; margin-bottom: 4px;">⚠️ SQL Execution Error:</div>
-            <pre style="margin: 0; color: #fca5a5; font-family: monospace; font-size: 12px; white-space: pre-wrap;">${liveQueryError}</pre>
+          <div style="background: var(--status-fail-bg); border: 1px solid var(--status-fail-border); border-radius: var(--radius-sm, 6px); padding: 12px 14px; margin-bottom: 14px;">
+            <div style="color: var(--status-fail); font-weight: 700; font-size: 12px; margin-bottom: 4px; font-family: var(--font-mono);">⚠️ SQL Execution Error:</div>
+            <pre style="margin: 0; color: var(--status-fail); font-family: var(--font-mono); font-size: 11.5px; white-space: pre-wrap;">${liveQueryError}</pre>
           </div>
         ` : ''}
 
         ${liveQueryResult ? `
-          <div style="background: #0b111e; border: 1px solid #1e293b; border-radius: 8px; padding: 14px; overflow-x: auto; max-height: 380px;">
-            <div style="display: flex; justify-content: space-between; margin-bottom: 10px; font-size: 12px; color: #94a3b8;">
+          <div style="background: var(--bg-surface); border: 1px solid var(--border-default); border-radius: var(--radius-sm, 6px); padding: 12px; overflow-x: auto; max-height: 380px;">
+            <div style="display: flex; justify-content: space-between; margin-bottom: 8px; font-size: 11.5px; color: var(--text-muted); font-family: var(--font-mono);">
               <span>Query Result Set</span>
               <span>${liveQueryResult.length} Record(s)</span>
             </div>
             ${liveQueryResult.length > 0 ? `
-              <table style="width: 100%; border-collapse: collapse; font-family: 'JetBrains Mono', monospace; font-size: 12px; text-align: left;">
+              <table style="width: 100%; border-collapse: collapse; font-family: var(--font-mono); font-size: 12px; text-align: left;">
                 <thead>
-                  <tr style="background: #111a2e; border-bottom: 2px solid #b45309; position: sticky; top: 0;">
+                  <tr style="background: var(--bg-surface-elevated); border-bottom: 2px solid var(--border-default); position: sticky; top: 0;">
                     ${Object.keys(liveQueryResult[0]).map(k => `
-                      <th style="padding: 8px 12px; color: #fbbf24; font-weight: 600; white-space: nowrap;">${k}</th>
+                      <th style="padding: 8px 12px; color: var(--text-primary); font-weight: 700; white-space: nowrap; font-family: var(--font-mono);">${k}</th>
                     `).join('')}
                   </tr>
                 </thead>
                 <tbody>
                   ${liveQueryResult.map((row, idx) => `
-                    <tr style="background: ${idx % 2 === 0 ? 'rgba(15, 23, 42, 0.5)' : 'rgba(11, 17, 30, 0.7)'}; border-bottom: 1px solid rgba(51, 65, 85, 0.3);">
+                    <tr style="background: ${idx % 2 === 0 ? 'var(--bg-surface)' : 'var(--bg-surface-elevated)'}; border-bottom: 1px solid var(--border-subtle);">
                       ${Object.values(row).map(val => {
                         const isNum = typeof val === 'number';
                         let display = val;
                         if (isNum) {
                           display = Number.isInteger(val) ? val.toLocaleString() : val.toLocaleString(undefined, { minimumFractionDigits: 2, maximumFractionDigits: 4 });
                         } else if (val === null || val === undefined) {
-                          display = '<span style="color: #64748b; font-style: italic;">NULL</span>';
+                          display = '<span style="color: var(--text-muted); font-style: italic;">NULL</span>';
                         }
                         return `
-                          <td style="padding: 8px 12px; color: ${isNum ? '#38bdf8' : '#e2e8f0'}; white-space: nowrap; ${isNum ? 'text-align: right;' : ''}">
+                          <td style="padding: 8px 12px; color: ${isNum ? 'var(--accent)' : 'var(--text-primary)'}; white-space: nowrap; ${isNum ? 'text-align: right;' : ''}">
                             ${display}
                           </td>
                         `;
@@ -687,11 +687,11 @@
                 </tbody>
               </table>
             ` : `
-              <div style="padding: 24px; text-align: center; color: #64748b;">Query returned 0 matching records.</div>
+              <div style="padding: 20px; text-align: center; color: var(--text-muted); font-family: var(--font-sans); font-size: 12.5px;">Query returned 0 matching records.</div>
             `}
           </div>
         ` : (liveQueryError ? '' : `
-          <div style="padding: 30px; text-align: center; color: #64748b; background: rgba(0,0,0,0.3); border: 1px dashed #1e293b; border-radius: 8px;">
+          <div style="padding: 24px; text-align: center; color: var(--text-muted); background: var(--bg-surface-elevated); border: 1px dashed var(--border-default); border-radius: var(--radius-sm, 6px); font-family: var(--font-mono); font-size: 12px;">
             <span>Click <strong>▶ Run Query</strong> or press <strong>Ctrl+Enter</strong> to execute against ${sample ? sample.tableName : 'the ledger table'}.</span>
           </div>
         `)}
@@ -701,27 +701,27 @@
     root.innerHTML = `
       <div class="challenge-workspace-box">
         <!-- Instruction banner -->
-        <div class="challenge-instruction-card" style="border-left: 3px solid #f59e0b; margin-bottom: 14px;">
+        <div class="challenge-instruction-card">
           <span class="instruction-icon">🎯</span>
           <div>
-            <div class="instruction-title" style="color: #fbbf24;">Trading Day Objective:</div>
+            <div class="instruction-title">Trading Day Objective:</div>
             <div class="instruction-p">${d.challenge.instruction}</div>
           </div>
         </div>
 
         <!-- Mode Switcher Row -->
-        <div class="challenge-mode-switcher-row" style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 14px; background: rgba(0,0,0,0.4); padding: 8px 14px; border-radius: 8px; border: 1px solid rgba(245, 158, 11, 0.2); flex-wrap: wrap; gap: 8px;">
+        <div class="challenge-mode-switcher-row">
           <div style="display: flex; gap: 8px; align-items: center;">
-            <span style="font-size: 11px; color: #94a3b8; font-weight: 600; text-transform: uppercase; letter-spacing: 0.05em;">Workstation Mode:</span>
-            <button class="choice-pill ${challengeMode === 'blanks' ? 'active' : ''}" style="${challengeMode === 'blanks' ? 'background: #f59e0b; color: #000; font-weight: 700;' : ''}" onclick="window.JPMORGAN_STORY.setChallengeMode('blanks')">
+            <span style="font-size: 11px; color: var(--text-muted); font-weight: 600; text-transform: uppercase; letter-spacing: 0.05em; font-family: var(--font-mono);">Workstation Mode:</span>
+            <button class="choice-pill ${challengeMode === 'blanks' ? 'active' : ''}" onclick="window.JPMORGAN_STORY.setChallengeMode('blanks')">
               🧩 Assisted Token Blanks
             </button>
-            <button class="choice-pill ${challengeMode === 'live_repl' ? 'active' : ''}" style="${challengeMode === 'live_repl' ? 'background: #f59e0b; color: #000; font-weight: 700;' : ''}" onclick="window.JPMORGAN_STORY.setChallengeMode('live_repl')">
+            <button class="choice-pill ${challengeMode === 'live_repl' ? 'active' : ''}" onclick="window.JPMORGAN_STORY.setChallengeMode('live_repl')">
               💻 Live SQL Terminal (Run Queries)
             </button>
           </div>
           ${challengeMode === 'live_repl' ? `
-            <span style="font-size: 11px; color: #38bdf8; font-family: monospace;">⚡ In-Memory AlaSQL Engine</span>
+            <span style="font-size: 11px; color: var(--accent); font-family: var(--font-mono);">⚡ In-Memory SQL Engine</span>
           ` : ''}
         </div>
 
@@ -729,10 +729,10 @@
 
         <!-- Manager Feedback Drawer if solved -->
         ${(isSuccess || (challengeMode === 'live_repl' && liveQueryResult && liveQueryResult.length > 0)) ? `
-          <div class="manager-feedback-card" style="border-left: 3px solid #10b981; margin-top: 14px; background: rgba(16, 185, 129, 0.08);">
+          <div class="manager-feedback-card">
             <div class="feedback-header">
-              <span style="font-size: 18px;">🏛️</span>
-              <span class="feedback-title" style="color: #34d399;">Managing Director Sign-off:</span>
+              <span style="font-size: 16px;">🏛️</span>
+              <span class="feedback-title">Managing Director Sign-off:</span>
             </div>
             <p class="feedback-body">${d.challenge.managerReview}</p>
           </div>
