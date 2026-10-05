@@ -348,9 +348,14 @@
           </div>
         </div>
 
-        <div style="margin-top: 16px; display: flex; justify-content: flex-end;">
-          <button class="btn btn-primary" onclick="window.JPMORGAN_STORY.setViewTab('challenge')">
-            Launch Day ${d.day} SQL Workstation &rarr;
+        <div class="jpmorgan-launch-bar">
+          <div class="jpmorgan-launch-info">
+            <span class="jpmorgan-launch-title">Ready to Audit Day ${d.day}?</span>
+            <span class="jpmorgan-launch-sub">Switch to the interactive SQL Workstation or Live REPL to test your query against production ledger rows.</span>
+          </div>
+          <button class="btn-launch-workstation" onclick="window.JPMORGAN_STORY.setViewTab('challenge')">
+            <span>Launch Day ${d.day} SQL Workstation</span>
+            <span>&rarr;</span>
           </button>
         </div>
       `;
@@ -456,12 +461,13 @@
           </table>
         </div>
 
-        <div style="margin-top: 12px; display: flex; justify-content: space-between; align-items: center; flex-wrap: wrap; gap: 8px;">
+        <div style="margin-top: 14px; display: flex; justify-content: space-between; align-items: center; flex-wrap: wrap; gap: 10px; padding-top: 12px; border-top: 1px solid var(--border-default);">
           <span style="font-size: 11.5px; color: var(--text-muted); font-family: var(--font-mono);">
-            Practice your SQL against these columns in the SQL Workstation tab.
+            Ready to test your queries against these exact columns?
           </span>
-          <button class="btn btn-primary btn-sm" onclick="window.JPMORGAN_STORY.setViewTab('challenge')">
-            Go to SQL Workstation &rarr;
+          <button class="btn-launch-workstation" onclick="window.JPMORGAN_STORY.setViewTab('challenge')">
+            <span>Launch Day ${d.day} SQL Workstation</span>
+            <span>&rarr;</span>
           </button>
         </div>
       </div>
