@@ -2117,6 +2117,7 @@ const NAV_GROUPS_MAP = {
   viewAmazonStory: { triggerId: 'btnGroupPractice', pillId: 'currentPracticePill', label: 'Amazon Analyst (30d)' },
   viewTrapGym: { triggerId: 'btnGroupPractice', pillId: 'currentPracticePill', label: 'Trap Gym (SRS)' },
   viewJPMorganStory: { triggerId: 'btnGroupPractice', pillId: 'currentPracticePill', label: 'JPMorgan (30d)' },
+  viewLeetCode50: { triggerId: 'btnGroupPractice', pillId: 'currentPracticePill', label: 'LeetCode 50' },
 
   viewExplainer: { triggerId: 'btnGroupReference', pillId: 'currentReferencePill', label: 'Study Docs' },
   viewDeconstructor: { triggerId: 'btnGroupReference', pillId: 'currentReferencePill', label: 'Deconstructor' },
@@ -2216,6 +2217,10 @@ function switchMainView(targetId) {
   if (targetId === 'viewJPMorganStory') {
     if (window.initJPMorganStoryEngine) window.initJPMorganStoryEngine();
     if (window.SQL_BUDDY) window.SQL_BUDDY.say("🏛️ Welcome to JPMorgan Chase! 30-Day Quantitative Risk & Treasury Analyst Rotation loaded!", 5000, 'celebrate');
+  }
+  if (targetId === 'viewLeetCode50') {
+    if (window.LEETCODE_ARENA) window.LEETCODE_ARENA.init();
+    if (window.SQL_BUDDY) window.SQL_BUDDY.say("⚡ Welcome to the LeetCode 50 Arena! Concept Masterclass, 100 MCQs, 100 Drills and Interactive Test Judge loaded!", 5000, 'celebrate');
   }
 }
 
