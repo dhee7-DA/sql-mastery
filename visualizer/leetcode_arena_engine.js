@@ -598,7 +598,7 @@ window.LEETCODE_ARENA = (() => {
         <!-- Left: Problems Drawer -->
         <div class="lc-problems-drawer">
           <div style="font-size: 13px; font-weight: 700; color: var(--text-primary); margin-bottom: 6px;">
-            Concept 1 Problems (${problems.length})
+            Concept ${data.conceptNumber || 1} Problems (${problems.length})
           </div>
           ${drawerHtml}
         </div>

@@ -8,10 +8,10 @@ window.LEETCODE_SECTION_2_DATA = {
   conceptNumber: 2,
   title: 'Relational Joins & Self-Joins',
   subtitle: 'Master physical join engines, Venn set mechanics, the ON vs WHERE outer trap, temporal self-joins, and Cartesian matrices across 9 canonical problems.',
-  badge: '9 Problems • 100 MCQs • 100 Drills',
+  keyTakeaway: 'In relational databases, real-world data almost never lives in a single monolithic table. Joining tables is the heart of relational database systems.',
 
   // ---------------------------------------------------------------------------
-  // 1. MASTERCLASS CURRICULUM
+  // 1. MASTERCLASS CURRICULUM (EVERY CHAPTER INCLUDES BESPOKE SVG EXPLAINERS)
   // ---------------------------------------------------------------------------
   masterclass: {
     overview: `
@@ -27,7 +27,7 @@ window.LEETCODE_SECTION_2_DATA = {
       {
         id: 'chap-2-1-venn-taxonomy',
         number: '2.1',
-        title: 'The Visual Taxonomy of Joins (Venn Sets & Boundaries)',
+        title: 'The Visual Taxonomy of Joins (Venn Sets & Shaded Boundaries)',
         content: `
           <p class="lc-p">
             Think of two relational tables as two overlapping mathematical sets: <strong>Table A (Left)</strong> and <strong>Table B (Right)</strong>.
@@ -56,11 +56,8 @@ window.LEETCODE_SECTION_2_DATA = {
               <rect x="0" y="0" width="160" height="220" rx="8" fill="#ffffff" stroke="#e4e4e7" stroke-width="1.5"/>
               <text x="80" y="25" text-anchor="middle" fill="#0f172a" font-size="12" font-weight="700">INNER JOIN</text>
               <text x="80" y="42" text-anchor="middle" fill="#64748b" font-size="10">Intersection (A ∩ B)</text>
-              <!-- Left circle -->
               <circle cx="60" cy="110" r="40" fill="#f1f5f9" stroke="#94a3b8" stroke-width="1.5"/>
-              <!-- Right circle -->
               <circle cx="100" cy="110" r="40" fill="#f1f5f9" stroke="#94a3b8" stroke-width="1.5"/>
-              <!-- Intersection Clip -->
               <path d="M 80 75 A 40 40 0 0 1 80 145 A 40 40 0 0 1 80 75" fill="#2563eb" opacity="0.85"/>
               <text x="45" y="115" fill="#64748b" font-size="11" font-weight="700">A</text>
               <text x="110" y="115" fill="#64748b" font-size="11" font-weight="700">B</text>
@@ -73,9 +70,7 @@ window.LEETCODE_SECTION_2_DATA = {
               <rect x="0" y="0" width="160" height="220" rx="8" fill="#ffffff" stroke="#e4e4e7" stroke-width="1.5"/>
               <text x="80" y="25" text-anchor="middle" fill="#0f172a" font-size="12" font-weight="700">LEFT OUTER JOIN</text>
               <text x="80" y="42" text-anchor="middle" fill="#64748b" font-size="10">All of Table A + Matches</text>
-              <!-- Left circle (Filled) -->
               <circle cx="60" cy="110" r="40" fill="#2563eb" opacity="0.85" stroke="#1d4ed8" stroke-width="1.5"/>
-              <!-- Right circle (Outlined) -->
               <circle cx="100" cy="110" r="40" fill="none" stroke="#94a3b8" stroke-width="1.5"/>
               <text x="45" y="115" fill="#ffffff" font-size="11" font-weight="700">A</text>
               <text x="110" y="115" fill="#64748b" font-size="11" font-weight="700">B</text>
@@ -88,11 +83,8 @@ window.LEETCODE_SECTION_2_DATA = {
               <rect x="0" y="0" width="160" height="220" rx="8" fill="#ffffff" stroke="#e4e4e7" stroke-width="1.5"/>
               <text x="80" y="25" text-anchor="middle" fill="#0f172a" font-size="12" font-weight="700">LEFT ANTI-JOIN</text>
               <text x="80" y="42" text-anchor="middle" fill="#64748b" font-size="10">A minus B (Unmatched)</text>
-              <!-- Left circle filled -->
               <circle cx="60" cy="110" r="40" fill="#f59e0b" opacity="0.85" stroke="#d97706" stroke-width="1.5"/>
-              <!-- Mask intersection with white -->
               <path d="M 80 75 A 40 40 0 0 1 80 145 A 40 40 0 0 1 80 75" fill="#ffffff"/>
-              <!-- Right circle outline -->
               <circle cx="100" cy="110" r="40" fill="none" stroke="#94a3b8" stroke-width="1.5"/>
               <text x="45" y="115" fill="#ffffff" font-size="11" font-weight="700">A</text>
               <text x="110" y="115" fill="#64748b" font-size="11" font-weight="700">B</text>
@@ -105,9 +97,7 @@ window.LEETCODE_SECTION_2_DATA = {
               <rect x="0" y="0" width="160" height="220" rx="8" fill="#ffffff" stroke="#e4e4e7" stroke-width="1.5"/>
               <text x="80" y="25" text-anchor="middle" fill="#0f172a" font-size="12" font-weight="700">FULL OUTER JOIN</text>
               <text x="80" y="42" text-anchor="middle" fill="#64748b" font-size="10">Union (A ∪ B)</text>
-              <!-- Left circle filled -->
               <circle cx="60" cy="110" r="40" fill="#10b981" opacity="0.75" stroke="#059669" stroke-width="1.5"/>
-              <!-- Right circle filled -->
               <circle cx="100" cy="110" r="40" fill="#10b981" opacity="0.75" stroke="#059669" stroke-width="1.5"/>
               <text x="45" y="115" fill="#ffffff" font-size="11" font-weight="700">A</text>
               <text x="110" y="115" fill="#ffffff" font-size="11" font-weight="700">B</text>
@@ -120,7 +110,6 @@ window.LEETCODE_SECTION_2_DATA = {
               <rect x="0" y="0" width="160" height="220" rx="8" fill="#ffffff" stroke="#e4e4e7" stroke-width="1.5"/>
               <text x="80" y="25" text-anchor="middle" fill="#0f172a" font-size="12" font-weight="700">CROSS JOIN</text>
               <text x="80" y="42" text-anchor="middle" fill="#64748b" font-size="10">Cartesian Matrix (A × B)</text>
-              <!-- Grid representation -->
               <rect x="45" y="80" width="70" height="60" rx="4" fill="#f8fafc" stroke="#6366f1" stroke-width="1.5"/>
               <line x1="45" y1="100" x2="115" y2="100" stroke="#cbd5e1" stroke-dasharray="2,2"/>
               <line x1="45" y1="120" x2="115" y2="120" stroke="#cbd5e1" stroke-dasharray="2,2"/>
@@ -188,48 +177,37 @@ window.LEETCODE_SECTION_2_DATA = {
             <rect x="30" y="20" width="220" height="230" rx="8" fill="#ffffff" stroke="#cbd5e1" stroke-width="1.5"/>
             <rect x="30" y="20" width="220" height="35" rx="8" fill="#f8fafc"/>
             <text x="45" y="42" fill="#0f172a" font-size="13" font-weight="700">Employees (Left Table)</text>
-            <!-- Header -->
             <text x="50" y="75" fill="#64748b" font-family="monospace" font-size="11" font-weight="700">id (PK)</text>
             <text x="140" y="75" fill="#64748b" font-family="monospace" font-size="11" font-weight="700">name</text>
             <line x1="30" y1="85" x2="250" y2="85" stroke="#e2e8f0"/>
-            <!-- Row 1 -->
             <rect x="35" y="95" width="210" height="35" rx="4" fill="#f0fdf4" stroke="#86efac"/>
             <text x="50" y="117" fill="#166534" font-family="monospace" font-size="12" font-weight="700">1</text>
             <text x="140" y="117" fill="#0f172a" font-size="12">Alice</text>
-            <!-- Row 2 -->
             <rect x="35" y="140" width="210" height="35" rx="4" fill="#f0fdf4" stroke="#86efac"/>
             <text x="50" y="162" fill="#166534" font-family="monospace" font-size="12" font-weight="700">2</text>
             <text x="140" y="162" fill="#0f172a" font-size="12">Bob</text>
-            <!-- Row 3 -->
             <rect x="35" y="185" width="210" height="35" rx="4" fill="#fef2f2" stroke="#fecaca"/>
             <text x="50" y="207" fill="#991b1b" font-family="monospace" font-size="12" font-weight="700">3</text>
             <text x="140" y="207" fill="#0f172a" font-size="12">Charlie</text>
 
             <!-- Arrows Left to Right -->
-            <!-- Alice Match -->
             <path d="M 250 112 Q 285 112, 310 112" fill="none" stroke="#16a34a" stroke-width="2.5" marker-end="url(#matchArrow)"/>
-            <!-- Bob Match -->
             <path d="M 250 157 Q 285 157, 310 157" fill="none" stroke="#16a34a" stroke-width="2.5" marker-end="url(#matchArrow)"/>
-            <!-- Charlie No Match -->
             <path d="M 250 202 Q 275 202, 290 220" fill="none" stroke="#dc2626" stroke-width="2" stroke-dasharray="4,4" marker-end="url(#nullArrow)"/>
 
             <!-- Table 2: EmployeeUNI (Right) -->
             <rect x="320" y="20" width="230" height="230" rx="8" fill="#ffffff" stroke="#cbd5e1" stroke-width="1.5"/>
             <rect x="320" y="20" width="230" height="35" rx="8" fill="#f8fafc"/>
             <text x="335" y="42" fill="#0f172a" font-size="13" font-weight="700">EmployeeUNI (Right Table)</text>
-            <!-- Header -->
             <text x="340" y="75" fill="#64748b" font-family="monospace" font-size="11" font-weight="700">id</text>
             <text x="420" y="75" fill="#64748b" font-family="monospace" font-size="11" font-weight="700">unique_id</text>
             <line x1="320" y1="85" x2="550" y2="85" stroke="#e2e8f0"/>
-            <!-- Row 1 -->
             <rect x="325" y="95" width="220" height="35" rx="4" fill="#f0fdf4" stroke="#86efac"/>
             <text x="340" y="117" fill="#166534" font-family="monospace" font-size="12" font-weight="700">1</text>
             <text x="420" y="117" fill="#1d4ed8" font-family="monospace" font-size="12" font-weight="700">101</text>
-            <!-- Row 2 -->
             <rect x="325" y="140" width="220" height="35" rx="4" fill="#f0fdf4" stroke="#86efac"/>
             <text x="340" y="162" fill="#166534" font-family="monospace" font-size="12" font-weight="700">2</text>
             <text x="420" y="162" fill="#1d4ed8" font-family="monospace" font-size="12" font-weight="700">102</text>
-            <!-- Unmatched Indicator -->
             <rect x="325" y="185" width="220" height="45" rx="4" fill="#fffbeb" stroke="#fde68a"/>
             <text x="335" y="205" fill="#b45309" font-size="11" font-weight="700">⚠️ No Row for id: 3</text>
             <text x="335" y="222" fill="#78350f" font-size="10.5">Padded with NULL by LEFT JOIN</text>
@@ -241,19 +219,15 @@ window.LEETCODE_SECTION_2_DATA = {
             <rect x="610" y="20" width="240" height="230" rx="8" fill="#ffffff" stroke="#2563eb" stroke-width="1.5"/>
             <rect x="610" y="20" width="240" height="35" rx="8" fill="#eff6ff"/>
             <text x="625" y="42" fill="#1d4ed8" font-size="13" font-weight="700">Final Joined Output</text>
-            <!-- Header -->
             <text x="625" y="75" fill="#64748b" font-family="monospace" font-size="11" font-weight="700">unique_id</text>
             <text x="735" y="75" fill="#64748b" font-family="monospace" font-size="11" font-weight="700">name</text>
             <line x1="610" y1="85" x2="850" y2="85" stroke="#e2e8f0"/>
-            <!-- Result 1 -->
             <rect x="615" y="95" width="230" height="35" rx="4" fill="#ffffff" stroke="#e2e8f0"/>
             <text x="625" y="117" fill="#1d4ed8" font-family="monospace" font-size="12" font-weight="700">101</text>
             <text x="735" y="117" fill="#0f172a" font-size="12">Alice</text>
-            <!-- Result 2 -->
             <rect x="615" y="140" width="230" height="35" rx="4" fill="#ffffff" stroke="#e2e8f0"/>
             <text x="625" y="162" fill="#1d4ed8" font-family="monospace" font-size="12" font-weight="700">102</text>
             <text x="735" y="162" fill="#0f172a" font-size="12">Bob</text>
-            <!-- Result 3 (NULL) -->
             <rect x="615" y="185" width="230" height="35" rx="4" fill="#fff1f2" stroke="#fecdd3"/>
             <text x="625" y="207" fill="#e11d48" font-family="monospace" font-size="12" font-weight="700">null</text>
             <text x="735" y="207" fill="#0f172a" font-size="12">Charlie</text>
@@ -308,7 +282,56 @@ window.LEETCODE_SECTION_2_DATA = {
               </div>
             </div>
           </div>
-        `
+        `,
+        diagram: {
+          id: 'diag-on-vs-where-timeline',
+          title: 'Execution Stage Timeline: Why WHERE Filters Silently Kill Outer Joins',
+          svg: `<svg viewBox="0 0 880 230" class="lc-diagram-svg" xmlns="http://www.w3.org/2000/svg">
+            <defs>
+              <marker id="timelineArrow" viewBox="0 0 10 10" refX="5" refY="5" markerWidth="6" markerHeight="6" orient="auto-start-reverse">
+                <path d="M 0 1 L 8 5 L 0 9 z" fill="#2563eb"/>
+              </marker>
+            </defs>
+
+            <!-- Step 1: FROM + JOIN ON -->
+            <rect x="30" y="25" width="250" height="180" rx="8" fill="#ffffff" stroke="#cbd5e1" stroke-width="1.5"/>
+            <rect x="30" y="25" width="250" height="30" rx="8" fill="#f8fafc"/>
+            <text x="45" y="45" fill="#0f172a" font-size="12" font-weight="700">STAGE 1: JOIN ON Clause</text>
+            <text x="45" y="75" fill="#64748b" font-size="11">Resolves relationships &amp; matches</text>
+            <rect x="40" y="90" width="230" height="30" rx="4" fill="#f0fdf4" stroke="#86efac"/>
+            <text x="50" y="110" fill="#166534" font-family="monospace" font-size="11">Emp 1 ➔ Bonus $500 (Matched)</text>
+            <rect x="40" y="130" width="230" height="30" rx="4" fill="#eff6ff" stroke="#bfdbfe"/>
+            <text x="50" y="150" fill="#1d4ed8" font-family="monospace" font-size="11">Emp 2 ➔ NULL (Preserved!)</text>
+            <text x="45" y="185" fill="#16a34a" font-size="10.5" font-weight="600">✓ Left table rows survive intact</text>
+
+            <!-- Arrow 1 to 2 -->
+            <line x1="285" y1="115" x2="330" y2="115" stroke="#2563eb" stroke-width="2.5" marker-end="url(#timelineArrow)"/>
+
+            <!-- Step 2: WHERE Post-Filter -->
+            <rect x="340" y="25" width="250" height="180" rx="8" fill="#ffffff" stroke="#dc2626" stroke-width="1.5"/>
+            <rect x="340" y="25" width="250" height="30" rx="8" fill="#fef2f2"/>
+            <text x="355" y="45" fill="#991b1b" font-size="12" font-weight="700">STAGE 2: WHERE Clause</text>
+            <text x="355" y="75" fill="#64748b" font-size="11">Evaluates predicates in 3VL</text>
+            <rect x="350" y="90" width="230" height="30" rx="4" fill="#f0fdf4" stroke="#86efac"/>
+            <text x="360" y="110" fill="#166534" font-family="monospace" font-size="11">b.dept_id = 10 ➔ TRUE</text>
+            <rect x="350" y="130" width="230" height="30" rx="4" fill="#fef2f2" stroke="#fca5a5"/>
+            <text x="360" y="150" fill="#dc2626" font-family="monospace" font-size="11">NULL = 10 ➔ UNKNOWN (DROP!)</text>
+            <text x="355" y="185" fill="#dc2626" font-size="10.5" font-weight="700">❌ Emp 2 is silently eliminated!</text>
+
+            <!-- Arrow 2 to 3 -->
+            <line x1="595" y1="115" x2="640" y2="115" stroke="#2563eb" stroke-width="2.5" marker-end="url(#timelineArrow)"/>
+
+            <!-- Output: Accidental Inner Join -->
+            <rect x="650" y="25" width="200" height="180" rx="8" fill="#ffffff" stroke="#cbd5e1" stroke-width="1.5"/>
+            <rect x="650" y="25" width="200" height="30" rx="8" fill="#f8fafc"/>
+            <text x="665" y="45" fill="#0f172a" font-size="12" font-weight="700">Final Result Output</text>
+            <rect x="660" y="90" width="180" height="30" rx="4" fill="#ffffff" stroke="#cbd5e1"/>
+            <text x="670" y="110" fill="#0f172a" font-family="monospace" font-size="11">Emp 1 only</text>
+            <rect x="660" y="130" width="180" height="50" rx="4" fill="#fffbeb" stroke="#fde68a"/>
+            <text x="670" y="150" fill="#b45309" font-size="10.5" font-weight="700">⚠️ Accidentally</text>
+            <text x="670" y="168" fill="#78350f" font-size="10">Mutated into INNER JOIN!</text>
+          </svg>`
+        }
       },
 
       {
@@ -507,51 +530,197 @@ window.LEETCODE_SECTION_2_DATA = {
       },
 
       {
-        id: 'chap-2-6-cheat-sheet',
+        id: 'chap-2-6-hierarchies',
         number: '2.6',
-        title: 'The 60-Second Joins Executive Cheat Sheet',
+        title: 'The Self-Referential Hierarchy Trap (LeetCode #570 Masterclass)',
         content: `
           <p class="lc-p">
-            Quick mental reference for technical screenings:
+            In <strong>LeetCode #570 (Managers with at Least 5 Direct Reports)</strong>, managers and employees share the <em>exact same table</em>.
+            Each row contains an <code>id</code> and an optional <code>managerId</code> pointing to another employee's <code>id</code>.
           </p>
 
-          <table style="width: 100%; border-collapse: collapse; margin: 16px 0; font-size: 13px;">
-            <thead>
-              <tr style="background: #f8fafc; border-bottom: 2px solid #e4e4e7;">
-                <th style="padding: 10px 12px; text-align: left;">Pattern</th>
-                <th style="padding: 10px 12px; text-align: left;">Syntax</th>
-                <th style="padding: 10px 12px; text-align: left;">When To Use It</th>
-              </tr>
-            </thead>
-            <tbody>
-              <tr style="border-bottom: 1px solid #f4f4f5;">
-                <td style="padding: 10px 12px; font-weight: 700;">Anti-Join (Exclusion)</td>
-                <td style="padding: 10px 12px; color: #2563eb; font-family: monospace;">A LEFT JOIN B ON A.id = B.id WHERE B.id IS NULL</td>
-                <td style="padding: 10px 12px;">Customers who never purchased, visitors with no transactions (LC #1581)</td>
-              </tr>
-              <tr style="border-bottom: 1px solid #f4f4f5;">
-                <td style="padding: 10px 12px; font-weight: 700;">Yesterday Offset</td>
-                <td style="padding: 10px 12px; color: #2563eb; font-family: monospace;">ON DATEDIFF(w1.date, w2.date) = 1</td>
-                <td style="padding: 10px 12px;">Comparing current day against previous calendar day (LC #197)</td>
-              </tr>
-              <tr style="border-bottom: 1px solid #f4f4f5;">
-                <td style="padding: 10px 12px; font-weight: 700;">Zero-Count Matrix</td>
-                <td style="padding: 10px 12px; color: #2563eb; font-family: monospace;">FROM A CROSS JOIN B LEFT JOIN C ...</td>
-                <td style="padding: 10px 12px;">Preserving 0 counts across dimensions (LC #1280)</td>
-              </tr>
-              <tr style="border-bottom: 1px solid #f4f4f5;">
-                <td style="padding: 10px 12px; font-weight: 700;">Safe Null Counting</td>
-                <td style="padding: 10px 12px; color: #16a34a; font-family: monospace;">COUNT(right_table.col)</td>
-                <td style="padding: 10px 12px;">Counts 0 when right side is NULL. <code>COUNT(*)</code> returns 1!</td>
-              </tr>
-              <tr style="border-bottom: 1px solid #f4f4f5;">
-                <td style="padding: 10px 12px; font-weight: 700;">Boolean Avg Trick</td>
-                <td style="padding: 10px 12px; color: #16a34a; font-family: monospace;">ROUND(IFNULL(AVG(action = 'confirmed'), 0), 2)</td>
-                <td style="padding: 10px 12px;">Instant confirmation/success rate calculation (LC #1934)</td>
-              </tr>
-            </tbody>
-          </table>
-        `
+          <div class="lc-rule-banner">
+            <strong>The Self-Join Graph Technique:</strong><br>
+            &bull; Table Instance 1 (<code>Employee e</code>): Represents the <strong>Subordinate / Direct Report</strong>.<br>
+            &bull; Table Instance 2 (<code>Employee m</code>): Represents the <strong>Manager</strong>.<br>
+            Join condition: <code class="lc-code-pill">ON e.managerId = m.id</code>.<br>
+            Then aggregate: <code class="lc-code-pill">GROUP BY m.id, m.name HAVING COUNT(e.id) &gt;= 5</code>.
+          </div>
+        `,
+        diagram: {
+          id: 'diag-hierarchy-tree',
+          title: 'Graph Visualization: Linking Subordinates Upward to Managers in the Same Table',
+          svg: `<svg viewBox="0 0 880 220" class="lc-diagram-svg" xmlns="http://www.w3.org/2000/svg">
+            <defs>
+              <marker id="repArrow" viewBox="0 0 10 10" refX="5" refY="5" markerWidth="6" markerHeight="6" orient="auto-start-reverse">
+                <path d="M 0 1 L 8 5 L 0 9 z" fill="#2563eb"/>
+              </marker>
+            </defs>
+
+            <!-- Manager Box -->
+            <g transform="translate(340, 20)">
+              <rect x="0" y="0" width="200" height="60" rx="8" fill="#eff6ff" stroke="#2563eb" stroke-width="2"/>
+              <text x="100" y="26" text-anchor="middle" font-size="13" font-weight="700" fill="#1d4ed8">Manager: John (id: 101)</text>
+              <rect x="35" y="34" width="130" height="18" rx="4" fill="#ffffff" stroke="#bfdbfe"/>
+              <text x="100" y="47" text-anchor="middle" font-family="monospace" font-size="10" fill="#2563eb">COUNT(reports) = 5 ⚡</text>
+            </g>
+
+            <!-- 5 Subordinate Boxes -->
+            <g transform="translate(30, 140)">
+              <rect x="0" y="0" width="140" height="50" rx="6" fill="#ffffff" stroke="#cbd5e1"/>
+              <text x="70" y="22" text-anchor="middle" font-size="11" font-weight="600" fill="#0f172a">Dan (id: 102)</text>
+              <text x="70" y="38" text-anchor="middle" font-family="monospace" font-size="9.5" fill="#64748b">managerId: 101</text>
+            </g>
+
+            <g transform="translate(190, 140)">
+              <rect x="0" y="0" width="140" height="50" rx="6" fill="#ffffff" stroke="#cbd5e1"/>
+              <text x="70" y="22" text-anchor="middle" font-size="11" font-weight="600" fill="#0f172a">James (id: 103)</text>
+              <text x="70" y="38" text-anchor="middle" font-family="monospace" font-size="9.5" fill="#64748b">managerId: 101</text>
+            </g>
+
+            <g transform="translate(350, 140)">
+              <rect x="0" y="0" width="140" height="50" rx="6" fill="#ffffff" stroke="#cbd5e1"/>
+              <text x="70" y="22" text-anchor="middle" font-size="11" font-weight="600" fill="#0f172a">Amy (id: 104)</text>
+              <text x="70" y="38" text-anchor="middle" font-family="monospace" font-size="9.5" fill="#64748b">managerId: 101</text>
+            </g>
+
+            <g transform="translate(510, 140)">
+              <rect x="0" y="0" width="140" height="50" rx="6" fill="#ffffff" stroke="#cbd5e1"/>
+              <text x="70" y="22" text-anchor="middle" font-size="11" font-weight="600" fill="#0f172a">Anne (id: 105)</text>
+              <text x="70" y="38" text-anchor="middle" font-family="monospace" font-size="9.5" fill="#64748b">managerId: 101</text>
+            </g>
+
+            <g transform="translate(670, 140)">
+              <rect x="0" y="0" width="140" height="50" rx="6" fill="#ffffff" stroke="#cbd5e1"/>
+              <text x="70" y="22" text-anchor="middle" font-size="11" font-weight="600" fill="#0f172a">Ron (id: 106)</text>
+              <text x="70" y="38" text-anchor="middle" font-family="monospace" font-size="9.5" fill="#64748b">managerId: 101</text>
+            </g>
+
+            <!-- Upward Reporting Arrows -->
+            <path d="M 100 140 C 150 90, 360 85, 410 80" fill="none" stroke="#2563eb" stroke-width="1.8" marker-end="url(#repArrow)"/>
+            <path d="M 260 140 C 290 100, 390 90, 425 80" fill="none" stroke="#2563eb" stroke-width="1.8" marker-end="url(#repArrow)"/>
+            <path d="M 420 140 L 440 85" fill="none" stroke="#2563eb" stroke-width="1.8" marker-end="url(#repArrow)"/>
+            <path d="M 580 140 C 550 100, 480 90, 455 80" fill="none" stroke="#2563eb" stroke-width="1.8" marker-end="url(#repArrow)"/>
+            <path d="M 740 140 C 690 90, 520 85, 470 80" fill="none" stroke="#2563eb" stroke-width="1.8" marker-end="url(#repArrow)"/>
+          </svg>`
+        }
+      },
+
+      {
+        id: 'chap-2-7-confirmation-pipeline',
+        number: '2.7',
+        title: 'Confirmation Rate & Boolean Mean Aggregation (LeetCode #1934 Masterclass)',
+        content: `
+          <p class="lc-p">
+            In <strong>LeetCode #1934 (Confirmation Rate)</strong>, you must calculate the fraction of confirmation requests that were confirmed.
+            <strong>Crucial Edge Case:</strong> Users who registered but never requested a confirmation must appear with a rate of <code>0.00</code>.
+          </p>
+
+          <div class="lc-rule-banner">
+            <strong>The Boolean Mean Super-Power:</strong><br>
+            In MySQL, the boolean expression <code class="lc-code-pill">action = 'confirmed'</code> evaluates to <strong>1 (true)</strong> or <strong>0 (false)</strong>.<br>
+            Therefore: <code class="lc-code-pill">AVG(action = 'confirmed')</code> mathematically equals:
+            <br>$$\\frac{\\sum \\text{Confirmed (1s)}}{\\text{Total Requests (1s and 0s)}} = \\text{Confirmation Rate!}$$
+            Combine with <code>ROUND(IFNULL(..., 0), 2)</code> to handle zero-request users cleanly!
+          </div>
+        `,
+        diagram: {
+          id: 'diag-confirmation-pipeline',
+          title: 'Signups LEFT JOIN Confirmations & Boolean Mean Aggregation Flow',
+          svg: `<svg viewBox="0 0 880 210" class="lc-diagram-svg" xmlns="http://www.w3.org/2000/svg">
+            <!-- Left: Signups Table -->
+            <rect x="30" y="20" width="200" height="170" rx="8" fill="#ffffff" stroke="#cbd5e1" stroke-width="1.5"/>
+            <rect x="30" y="20" width="200" height="30" rx="8" fill="#f8fafc"/>
+            <text x="45" y="40" font-size="12" font-weight="700" fill="#0f172a">Signups Table (Users)</text>
+            <rect x="40" y="60" width="180" height="26" rx="4" fill="#eff6ff" stroke="#bfdbfe"/>
+            <text x="50" y="77" font-family="monospace" font-size="11" fill="#1d4ed8">user_id: 3 (Active)</text>
+            <rect x="40" y="95" width="180" height="26" rx="4" fill="#eff6ff" stroke="#bfdbfe"/>
+            <text x="50" y="112" font-family="monospace" font-size="11" fill="#1d4ed8">user_id: 7 (Active)</text>
+            <rect x="40" y="130" width="180" height="26" rx="4" fill="#fff1f2" stroke="#fecdd3"/>
+            <text x="50" y="147" font-family="monospace" font-size="11" fill="#be123c">user_id: 2 (0 Requests!)</text>
+
+            <!-- Arrow -->
+            <path d="M 230 105 L 290 105" fill="none" stroke="#2563eb" stroke-width="2.5" marker-end="url(#timelineArrow)"/>
+            <text x="260" y="95" text-anchor="middle" font-size="10" font-weight="700" fill="#2563eb">LEFT JOIN</text>
+
+            <!-- Middle: Confirmations Table -->
+            <rect x="300" y="20" width="250" height="170" rx="8" fill="#ffffff" stroke="#cbd5e1" stroke-width="1.5"/>
+            <rect x="300" y="20" width="250" height="30" rx="8" fill="#f8fafc"/>
+            <text x="315" y="40" font-size="12" font-weight="700" fill="#0f172a">Confirmations Events Stream</text>
+            <text x="315" y="75" font-family="monospace" font-size="10.5" fill="#16a34a">User 3 ➔ 'confirmed' (1)</text>
+            <text x="315" y="95" font-family="monospace" font-size="10.5" fill="#dc2626">User 3 ➔ 'timeout' (0)</text>
+            <text x="315" y="115" font-family="monospace" font-size="10.5" fill="#16a34a">User 7 ➔ 'confirmed' (1)</text>
+            <rect x="310" y="130" width="230" height="26" rx="4" fill="#fffbeb" stroke="#fde68a"/>
+            <text x="320" y="147" font-family="monospace" font-size="10.5" fill="#b45309">User 2 ➔ NULL in Events!</text>
+
+            <!-- Arrow -->
+            <path d="M 550 105 L 610 105" fill="none" stroke="#2563eb" stroke-width="2.5" marker-end="url(#timelineArrow)"/>
+            <text x="580" y="95" text-anchor="middle" font-size="10" font-weight="700" fill="#2563eb">AVG()</text>
+
+            <!-- Right: Evaluated Output -->
+            <rect x="620" y="20" width="230" height="170" rx="8" fill="#f0fdf4" stroke="#86efac" stroke-width="1.5"/>
+            <rect x="620" y="20" width="230" height="30" rx="8" fill="#dcfce7"/>
+            <text x="635" y="40" font-size="12" font-weight="700" fill="#166534">Calculated Confirmation Rate</text>
+            <text x="635" y="75" font-family="monospace" font-size="11" fill="#0f172a">User 3: AVG(1, 0) ➔ <strong>0.50</strong></text>
+            <text x="635" y="105" font-family="monospace" font-size="11" fill="#0f172a">User 7: AVG(1) ➔ <strong>1.00</strong></text>
+            <rect x="630" y="125" width="210" height="30" rx="4" fill="#ffffff" stroke="#86efac"/>
+            <text x="640" y="145" font-family="monospace" font-size="11" font-weight="700" fill="#16a34a">User 2: IFNULL(NULL, 0) ➔ 0.00!</text>
+          </svg>`
+        }
+      },
+
+      {
+        id: 'chap-2-8-decision-tree',
+        number: '2.8',
+        title: 'The 60-Second Visual Join Chooser (Diagnostic Decision Tree)',
+        content: `
+          <p class="lc-p">
+            Whenever you encounter a multi-table SQL interview question, run through this mental flowchart in 15 seconds to select the guaranteed optimal join type:
+          </p>
+        `,
+        diagram: {
+          id: 'diag-join-decision-tree',
+          title: 'The Diagnostic Decision Tree: Which SQL Join To Use?',
+          svg: `<svg viewBox="0 0 880 220" class="lc-diagram-svg" xmlns="http://www.w3.org/2000/svg">
+            <defs>
+              <marker id="treeArrow" viewBox="0 0 10 10" refX="5" refY="5" markerWidth="6" markerHeight="6" orient="auto-start-reverse">
+                <path d="M 0 1 L 8 5 L 0 9 z" fill="#2563eb"/>
+              </marker>
+            </defs>
+
+            <!-- Question 1 -->
+            <rect x="30" y="75" width="200" height="70" rx="8" fill="#ffffff" stroke="#2563eb" stroke-width="2"/>
+            <text x="130" y="102" text-anchor="middle" font-size="11.5" font-weight="700" fill="#0f172a">Do you need every</text>
+            <text x="130" y="122" text-anchor="middle" font-size="11.5" font-weight="700" fill="#0f172a">row from Table A?</text>
+
+            <!-- No -> INNER JOIN -->
+            <path d="M 130 75 C 130 35, 230 35, 300 35" fill="none" stroke="#64748b" stroke-width="2" marker-end="url(#treeArrow)"/>
+            <text x="180" y="45" font-size="11" font-weight="700" fill="#64748b">NO</text>
+            <rect x="310" y="15" width="220" height="42" rx="6" fill="#eff6ff" stroke="#bfdbfe"/>
+            <text x="325" y="40" font-family="monospace" font-size="12" font-weight="700" fill="#1d4ed8">INNER JOIN A and B</text>
+
+            <!-- Yes -> Next Question -->
+            <path d="M 230 110 L 310 110" fill="none" stroke="#2563eb" stroke-width="2" marker-end="url(#treeArrow)"/>
+            <text x="265" y="102" font-size="11" font-weight="700" fill="#2563eb">YES</text>
+
+            <!-- Question 2 -->
+            <rect x="320" y="75" width="230" height="70" rx="8" fill="#ffffff" stroke="#2563eb" stroke-width="2"/>
+            <text x="435" y="102" text-anchor="middle" font-size="11.5" font-weight="700" fill="#0f172a">Do you only want</text>
+            <text x="435" y="122" text-anchor="middle" font-size="11.5" font-weight="700" fill="#0f172a">unmatched missing rows?</text>
+
+            <!-- Yes -> Anti-Join -->
+            <path d="M 550 95 C 600 70, 620 50, 670 45" fill="none" stroke="#b45309" stroke-width="2" marker-end="url(#treeArrow)"/>
+            <text x="590" y="65" font-size="11" font-weight="700" fill="#b45309">YES</text>
+            <rect x="680" y="25" width="180" height="42" rx="6" fill="#fffbeb" stroke="#fde68a"/>
+            <text x="690" y="50" font-family="monospace" font-size="11" font-weight="700" fill="#b45309">LEFT ANTI-JOIN</text>
+
+            <!-- No -> Standard Left Join -->
+            <path d="M 550 125 C 600 145, 620 160, 670 165" fill="none" stroke="#16a34a" stroke-width="2" marker-end="url(#treeArrow)"/>
+            <text x="590" y="155" font-size="11" font-weight="700" fill="#16a34a">NO</text>
+            <rect x="680" y="145" width="180" height="42" rx="6" fill="#f0fdf4" stroke="#86efac"/>
+            <text x="690" y="170" font-family="monospace" font-size="11" font-weight="700" fill="#166534">STANDARD LEFT JOIN</text>
+          </svg>`
+        }
       }
     ],
 
@@ -698,14 +867,14 @@ window.LEETCODE_SECTION_2_DATA = {
   // ---------------------------------------------------------------------------
   // 3. 100 PREP CASE STUDIES & QUERY DRILLS
   // ---------------------------------------------------------------------------
-  drills: (() => {
+  prepDrills: (() => {
     const list = [];
     const domains = [
-      { name: 'Fintech Banking Ledgers', leftTbl: 'Accounts', rightTbl: 'WireTransfers', leftCol: 'account_id', rightCol: 'sender_acct' },
-      { name: 'E-Commerce Marketplace', leftTbl: 'Merchants', rightTbl: 'ProductListings', leftCol: 'merchant_id', rightCol: 'seller_id' },
-      { name: 'SaaS User Analytics', leftTbl: 'Tenants', rightTbl: 'ActiveSubscriptions', leftCol: 'tenant_id', rightCol: 'org_id' },
-      { name: 'Hospitality & Travel', leftTbl: 'Hotels', rightTbl: 'RoomBookings', leftCol: 'hotel_id', rightCol: 'property_id' },
-      { name: 'Global Supply Chain', leftTbl: 'Warehouses', rightTbl: 'ShipmentManifests', leftCol: 'warehouse_id', rightCol: 'source_wh' }
+      { name: 'Fintech Banking Ledgers', leftTbl: 'Accounts', rightTbl: 'WireTransfers', leftCol: 'account_id', rightCol: 'sender_acct', schema: 'Accounts(account_id, holder_name, balance), WireTransfers(transfer_id, sender_acct, amount)' },
+      { name: 'E-Commerce Marketplace', leftTbl: 'Merchants', rightTbl: 'ProductListings', leftCol: 'merchant_id', rightCol: 'seller_id', schema: 'Merchants(merchant_id, store_name), ProductListings(listing_id, seller_id, price)' },
+      { name: 'SaaS User Analytics', leftTbl: 'Tenants', rightTbl: 'ActiveSubscriptions', leftCol: 'tenant_id', rightCol: 'org_id', schema: 'Tenants(tenant_id, company_name), ActiveSubscriptions(sub_id, org_id, plan_tier)' },
+      { name: 'Hospitality & Travel', leftTbl: 'Hotels', rightTbl: 'RoomBookings', leftCol: 'hotel_id', rightCol: 'property_id', schema: 'Hotels(hotel_id, property_name), RoomBookings(booking_id, property_id, nights)' },
+      { name: 'Global Supply Chain', leftTbl: 'Warehouses', rightTbl: 'ShipmentManifests', leftCol: 'warehouse_id', rightCol: 'source_wh', schema: 'Warehouses(warehouse_id, location_city), ShipmentManifests(manifest_id, source_wh, units)' }
     ];
 
     const drillScenarios = [
@@ -713,36 +882,36 @@ window.LEETCODE_SECTION_2_DATA = {
         title: 'Preserve Inactive Accounts (Basic Left Join)',
         diff: 'Easy',
         prompt: 'Return all records from {leftTbl} along with their corresponding {rightTbl}. Ensure records with no activity appear with NULL values.',
-        sql: 'SELECT a.*, b.* FROM {leftTbl} a LEFT JOIN {rightTbl} b ON a.{leftCol} = b.{rightCol};',
-        hint: 'Use a LEFT JOIN from the primary entity table.'
+        starter: 'SELECT a.*, b.*\nFROM {leftTbl} a\n-- Your JOIN here',
+        sql: 'SELECT a.*, b.* FROM {leftTbl} a LEFT JOIN {rightTbl} b ON a.{leftCol} = b.{rightCol};'
       },
       {
         title: 'Zero Activity Audit (Anti-Join Pattern)',
         diff: 'Easy',
         prompt: 'Identify all records in {leftTbl} that have NEVER generated an entry in {rightTbl}.',
-        sql: 'SELECT a.{leftCol} FROM {leftTbl} a LEFT JOIN {rightTbl} b ON a.{leftCol} = b.{rightCol} WHERE b.{rightCol} IS NULL;',
-        hint: 'LEFT JOIN combined with WHERE right_table.key IS NULL.'
+        starter: 'SELECT a.{leftCol}\nFROM {leftTbl} a\n-- Your Anti-Join here',
+        sql: 'SELECT a.{leftCol} FROM {leftTbl} a LEFT JOIN {rightTbl} b ON a.{leftCol} = b.{rightCol} WHERE b.{rightCol} IS NULL;'
       },
       {
         title: 'Strict Active Pairs (Inner Join)',
         diff: 'Easy',
         prompt: 'Select only active relationships where an entity in {leftTbl} has at least one confirmed match in {rightTbl}.',
-        sql: 'SELECT DISTINCT a.{leftCol} FROM {leftTbl} a INNER JOIN {rightTbl} b ON a.{leftCol} = b.{rightCol};',
-        hint: 'INNER JOIN drops all unmatched records on both sides.'
+        starter: 'SELECT DISTINCT a.{leftCol}\nFROM {leftTbl} a\n-- Your INNER JOIN here',
+        sql: 'SELECT DISTINCT a.{leftCol} FROM {leftTbl} a INNER JOIN {rightTbl} b ON a.{leftCol} = b.{rightCol};'
       },
       {
         title: 'Consecutive Day Metric Delta (Self-Join Offset)',
         diff: 'Medium',
         prompt: 'Compare each entity against its own historical record exactly 1 day prior using a self-join with DATEDIFF.',
-        sql: 'SELECT t1.{leftCol} FROM {rightTbl} t1 JOIN {rightTbl} t2 ON t1.{leftCol} = t2.{leftCol} AND DATEDIFF(t1.created_at, t2.created_at) = 1 WHERE t1.amount > t2.amount;',
-        hint: 'Alias the table as t1 and t2 with DATEDIFF(t1.date, t2.date) = 1.'
+        starter: 'SELECT t1.{leftCol}\nFROM {rightTbl} t1\n-- Your Self-Join here',
+        sql: 'SELECT t1.{leftCol} FROM {rightTbl} t1 JOIN {rightTbl} t2 ON t1.{leftCol} = t2.{leftCol} AND DATEDIFF(t1.created_at, t2.created_at) = 1 WHERE t1.amount > t2.amount;'
       },
       {
         title: 'Cartesian Matrix Multiplier (Cross Join)',
         diff: 'Medium',
         prompt: 'Generate every possible combination of entities between {leftTbl} and regional subject dimensions before aggregating counts.',
-        sql: 'SELECT a.{leftCol}, d.dimension_code, COUNT(b.{rightCol}) FROM {leftTbl} a CROSS JOIN Dimensions d LEFT JOIN {rightTbl} b ON a.{leftCol} = b.{rightCol} GROUP BY a.{leftCol}, d.dimension_code;',
-        hint: 'CROSS JOIN creates the full universe before LEFT JOINing event counts.'
+        starter: 'SELECT a.{leftCol}, d.dimension_code\nFROM {leftTbl} a\n-- Your CROSS JOIN here',
+        sql: 'SELECT a.{leftCol}, d.dimension_code, COUNT(b.{rightCol}) FROM {leftTbl} a CROSS JOIN Dimensions d LEFT JOIN {rightTbl} b ON a.{leftCol} = b.{rightCol} GROUP BY a.{leftCol}, d.dimension_code;'
       }
     ];
 
@@ -761,6 +930,11 @@ window.LEETCODE_SECTION_2_DATA = {
           .replace(/{rightTbl}/g, dom.rightTbl)
           .replace(/{leftCol}/g, dom.leftCol)
           .replace(/{rightCol}/g, dom.rightCol);
+        const starterFormatted = sc.starter
+          .replace(/{leftTbl}/g, dom.leftTbl)
+          .replace(/{rightTbl}/g, dom.rightTbl)
+          .replace(/{leftCol}/g, dom.leftCol)
+          .replace(/{rightCol}/g, dom.rightCol);
 
         list.push({
           id: idCount,
@@ -768,8 +942,9 @@ window.LEETCODE_SECTION_2_DATA = {
           title: `Drill #${idCount}: ${titleFormatted}`,
           difficulty: sc.diff,
           prompt: promptFormatted,
-          solutionSql: sqlFormatted,
-          hint: sc.hint
+          schema: dom.schema,
+          starterSQL: starterFormatted,
+          solutionSQL: sqlFormatted
         });
         idCount++;
       });
@@ -779,99 +954,92 @@ window.LEETCODE_SECTION_2_DATA = {
   })(),
 
   // ---------------------------------------------------------------------------
-  // 4. THE 9 CANONICAL LEETCODE PROBLEMS (WITH SVG SCHEMAS & INTEL)
+  // 4. THE 9 CANONICAL LEETCODE PROBLEMS (WITH DETAILED SCHEMA SVGS & INTEL)
   // ---------------------------------------------------------------------------
-  problems: [
+  leetcodeProblems: [
     {
       id: 1378,
       number: '1378',
       title: 'Replace Employee ID With The Unique Identifier',
       difficulty: 'Easy',
-      acceptance: '86.4%',
+      category: 'Basic Joins',
       companies: ['Amazon', 'Microsoft', 'Bloomberg', 'Google'],
-      interviewWeight: 'High (Standard Screening Warmup)',
-      description: `
-        Table: <code>Employees</code>
-        <pre>
-+---------------+---------+
-| Column Name   | Type    |
-+---------------+---------+
-| id            | int     |
-| name          | varchar |
-+---------------+---------+
-id is the primary key for this table.
-Each row contains the id and the name of an employee.
-        </pre>
+      interviewFreq: 'Very High (Standard Screening Warmup)',
+      interviewRound: 'Phone Screen / Technical Screening (Round 1)',
+      prompt: `Write an SQL query to show the unique ID of each user. If a user does not have a unique ID replacement, just show null.
 
-        Table: <code>EmployeeUNI</code>
-        <pre>
-+---------------+---------+
-| Column Name   | Type    |
-+---------------+---------+
-| id            | int     |
-| unique_id     | int     |
-+---------------+---------+
-(id, unique_id) is the primary key for this table.
-Each row contains the id and corresponding unique_id of an employee.
-        </pre>
-
-        Write an SQL query to show the <strong>unique ID</strong> of each user. 
-        If a user does not have a unique ID replacement, just show <code>null</code>.
-        <br><br>
-        Return the result table in <strong>any order</strong>.
-      `,
-      schemaDiagram: {
-        title: 'Schema Linkage: Employees LEFT JOIN EmployeeUNI',
-        svg: `<svg viewBox="0 0 880 200" class="lc-diagram-svg" xmlns="http://www.w3.org/2000/svg">
-          <rect x="50" y="20" width="300" height="150" rx="8" fill="#ffffff" stroke="#cbd5e1" stroke-width="1.5"/>
-          <rect x="50" y="20" width="300" height="32" rx="8" fill="#f8fafc"/>
-          <text x="65" y="42" fill="#0f172a" font-size="12" font-weight="700">Employees (Left Table)</text>
-          <text x="70" y="80" fill="#2563eb" font-family="monospace" font-size="11" font-weight="700">id (PK)</text>
-          <text x="180" y="80" fill="#64748b" font-family="monospace" font-size="11">name</text>
-          <line x1="50" y1="92" x2="350" y2="92" stroke="#e2e8f0"/>
-          <text x="70" y="115" fill="#0f172a" font-family="monospace" font-size="11">1, 2, 3, 11, 90</text>
-          <text x="180" y="115" fill="#0f172a" font-size="11">Alice, Bob, Meir...</text>
-
-          <!-- Arrow -->
-          <path d="M 350 80 Q 440 80, 520 80" fill="none" stroke="#2563eb" stroke-width="2.5" marker-end="url(#arrowDistinct)"/>
-          <text x="435" y="70" text-anchor="middle" fill="#2563eb" font-family="monospace" font-size="10" font-weight="700">ON e.id = u.id</text>
-
-          <rect x="530" y="20" width="300" height="150" rx="8" fill="#ffffff" stroke="#cbd5e1" stroke-width="1.5"/>
-          <rect x="530" y="20" width="300" height="32" rx="8" fill="#f8fafc"/>
-          <text x="545" y="42" fill="#0f172a" font-size="12" font-weight="700">EmployeeUNI (Right Table)</text>
-          <text x="550" y="80" fill="#2563eb" font-family="monospace" font-size="11" font-weight="700">id</text>
-          <text x="660" y="80" fill="#16a34a" font-family="monospace" font-size="11" font-weight="700">unique_id</text>
-          <line x1="530" y1="92" x2="830" y2="92" stroke="#e2e8f0"/>
-          <text x="550" y="115" fill="#0f172a" font-family="monospace" font-size="11">3, 11, 90</text>
-          <text x="660" y="115" fill="#16a34a" font-family="monospace" font-size="11">1, 2, 3</text>
-          <text x="550" y="145" fill="#dc2626" font-size="10.5">⚠️ IDs 1 and 2 missing ➔ Padded with NULL</text>
-        </svg>`
+Return the result table in any order.`,
+      schemaDescription: 'Employees(id, name), EmployeeUNI(id, unique_id)',
+      sampleInput: {
+        table: 'Employees & EmployeeUNI',
+        columns: ['id', 'name', 'unique_id'],
+        rows: [
+          ['1', 'Alice', 'null'],
+          ['2', 'Bob', 'null'],
+          ['3', 'Meir', '2'],
+          ['11', 'Winston', '3'],
+          ['90', 'Jonathan', '1']
+        ]
       },
+      expectedOutput: {
+        columns: ['unique_id', 'name'],
+        rows: [
+          ['null', 'Alice'],
+          ['null', 'Bob'],
+          ['2', 'Meir'],
+          ['3', 'Winston'],
+          ['1', 'Jonathan']
+        ]
+      },
+      svgDiagram: `<svg viewBox="0 0 880 220" class="lc-diagram-svg" xmlns="http://www.w3.org/2000/svg">
+        <defs>
+          <marker id="arrow1378" viewBox="0 0 10 10" refX="5" refY="5" markerWidth="6" markerHeight="6" orient="auto-start-reverse">
+            <path d="M 0 1 L 8 5 L 0 9 z" fill="#2563eb"/>
+          </marker>
+        </defs>
+        <!-- Table 1 -->
+        <rect x="40" y="20" width="280" height="170" rx="8" fill="#ffffff" stroke="#cbd5e1" stroke-width="1.5"/>
+        <rect x="40" y="20" width="280" height="32" rx="8" fill="#f8fafc"/>
+        <text x="55" y="42" fill="#0f172a" font-size="12" font-weight="700">Employees e (Left Table)</text>
+        <text x="55" y="75" fill="#2563eb" font-family="monospace" font-size="11" font-weight="700">id (PK)</text>
+        <text x="160" y="75" fill="#64748b" font-family="monospace" font-size="11">name</text>
+        <line x1="40" y1="85" x2="320" y2="85" stroke="#e2e8f0"/>
+        <text x="55" y="110" fill="#0f172a" font-family="monospace" font-size="11">1, 2 (Unmatched) ➔</text>
+        <text x="160" y="110" fill="#0f172a" font-size="11">Alice, Bob</text>
+        <text x="55" y="140" fill="#16a34a" font-family="monospace" font-size="11">3, 11, 90 (Matched) ➔</text>
+        <text x="160" y="140" fill="#0f172a" font-size="11">Meir, Winston, Jon</text>
+
+        <!-- Connecting Arrow -->
+        <path d="M 320 110 Q 420 110, 510 110" fill="none" stroke="#2563eb" stroke-width="2.5" marker-end="url(#arrow1378)"/>
+        <text x="420" y="100" text-anchor="middle" fill="#2563eb" font-family="monospace" font-size="10.5" font-weight="700">LEFT JOIN ON e.id = u.id</text>
+
+        <!-- Table 2 -->
+        <rect x="520" y="20" width="310" height="170" rx="8" fill="#ffffff" stroke="#cbd5e1" stroke-width="1.5"/>
+        <rect x="520" y="20" width="310" height="32" rx="8" fill="#f8fafc"/>
+        <text x="535" y="42" fill="#0f172a" font-size="12" font-weight="700">EmployeeUNI u (Right Table)</text>
+        <text x="535" y="75" fill="#2563eb" font-family="monospace" font-size="11" font-weight="700">id</text>
+        <text x="650" y="75" fill="#16a34a" font-family="monospace" font-size="11" font-weight="700">unique_id</text>
+        <line x1="520" y1="85" x2="830" y2="85" stroke="#e2e8f0"/>
+        <text x="535" y="110" fill="#dc2626" font-size="11">IDs 1 &amp; 2 missing ➔ Pads with NULL</text>
+        <text x="535" y="140" fill="#16a34a" font-family="monospace" font-size="11">3 ➔ 2 | 11 ➔ 3 | 90 ➔ 1</text>
+      </svg>`,
       logicBreakdown: [
         'We must return the unique_id for EVERY user in the Employees table.',
         'Because some users (like Alice and Bob) do not exist in EmployeeUNI, an INNER JOIN would discard them.',
         'A LEFT JOIN starting from Employees guarantees that every employee is preserved, automatically outputting NULL for missing unique_ids.'
       ],
-      solutionSql: `SELECT 
+      solutionSQL: `SELECT 
     u.unique_id, 
     e.name
 FROM Employees e
 LEFT JOIN EmployeeUNI u
     ON e.id = u.id;`,
-      solutionWalkthrough: [
-        { line: 'SELECT u.unique_id, e.name', explain: 'Selects the target unique_id from the right table and name from the left table.' },
-        { line: 'FROM Employees e', explain: 'Designates Employees as the driving left table, guaranteeing all employee names survive.' },
-        { line: 'LEFT JOIN EmployeeUNI u', explain: 'Pulls in unique_id where available, padding with NULL when no key matches.' },
-        { line: '    ON e.id = u.id;', explain: 'Resolves the join on matching employee IDs.' }
-      ],
-      initialCode: `SELECT 
-    u.unique_id, 
-    e.name
-FROM Employees e
-LEFT JOIN EmployeeUNI u
-    ON e.id = u.id;`,
-      testQuery: `SELECT u.unique_id, e.name FROM Employees e LEFT JOIN EmployeeUNI u ON e.id = u.id;`,
-      expectedColumns: ['unique_id', 'name']
+      lineByLineExplanation: [
+        { clause: 'SELECT u.unique_id, e.name', exp: 'Projects target unique_id from right table and name from left driving table.' },
+        { clause: 'FROM Employees e', exp: 'Designates Employees as the left table so every single employee survives.' },
+        { clause: 'LEFT JOIN EmployeeUNI u', exp: 'Attaches unique_id if found; pads with NULL if no corresponding row exists.' },
+        { clause: '    ON e.id = u.id;', exp: 'Join condition linking both tables on employee id.' }
+      ]
     },
 
     {
@@ -879,78 +1047,60 @@ LEFT JOIN EmployeeUNI u
       number: '1068',
       title: 'Product Sales Analysis I',
       difficulty: 'Easy',
-      acceptance: '84.1%',
+      category: 'Basic Joins',
       companies: ['Amazon', 'Apple', 'Adobe'],
-      interviewWeight: 'Medium (Dimension Lookup)',
-      description: `
-        Table: <code>Sales</code>
-        <pre>
-+-------------+-------+
-| Column Name | Type  |
-+-------------+-------+
-| sale_id     | int   |
-| product_id  | int   |
-| year        | int   |
-| quantity    | int   |
-| price       | int   |
-+-------------+-------+
-(sale_id, year) is the primary key. product_id is a foreign key to Product.
-        </pre>
+      interviewFreq: 'Medium (Fact/Dimension Join)',
+      interviewRound: 'Technical Screening',
+      prompt: `Write an SQL query that reports the product_name, year, and price for each sale_id in the Sales table.
 
-        Table: <code>Product</code>
-        <pre>
-+--------------+---------+
-| Column Name  | Type    |
-+--------------+---------+
-| product_id   | int     |
-| product_name | varchar |
-+--------------+---------+
-product_id is the primary key.
-        </pre>
-
-        Write an SQL query that reports the <code>product_name</code>, <code>year</code>, and <code>price</code> for each <code>sale_id</code> in the <code>Sales</code> table.
-      `,
-      schemaDiagram: {
-        title: 'Sales Fact Table JOIN Product Dimension Table',
-        svg: `<svg viewBox="0 0 880 180" class="lc-diagram-svg" xmlns="http://www.w3.org/2000/svg">
-          <rect x="50" y="20" width="320" height="130" rx="8" fill="#ffffff" stroke="#cbd5e1" stroke-width="1.5"/>
-          <text x="65" y="45" fill="#0f172a" font-size="12" font-weight="700">Sales (Fact Table)</text>
-          <text x="65" y="75" fill="#2563eb" font-family="monospace" font-size="11">sale_id (PK), product_id (FK), year, price</text>
-          <text x="65" y="110" fill="#64748b" font-size="11">Driving stream: contains numeric measures</text>
-
-          <path d="M 370 75 Q 450 75, 500 75" fill="none" stroke="#2563eb" stroke-width="2" marker-end="url(#arrowDistinct)"/>
-
-          <rect x="510" y="20" width="320" height="130" rx="8" fill="#ffffff" stroke="#cbd5e1" stroke-width="1.5"/>
-          <text x="525" y="45" fill="#0f172a" font-size="12" font-weight="700">Product (Dimension Table)</text>
-          <text x="525" y="75" fill="#16a34a" font-family="monospace" font-size="11">product_id (PK), product_name</text>
-          <text x="525" y="110" fill="#64748b" font-size="11">Pulls in human-readable name for reporting</text>
-        </svg>`
+Return the resulting table in any order.`,
+      schemaDescription: 'Sales(sale_id, product_id, year, quantity, price), Product(product_id, product_name)',
+      sampleInput: {
+        table: 'Sales & Product',
+        columns: ['sale_id', 'product_id', 'year', 'price', 'product_name'],
+        rows: [
+          ['1', '100', '2008', '5000', 'Nokia'],
+          ['2', '100', '2009', '5000', 'Nokia'],
+          ['7', '200', '2011', '9000', 'Apple']
+        ]
       },
+      expectedOutput: {
+        columns: ['product_name', 'year', 'price'],
+        rows: [
+          ['Nokia', '2008', '5000'],
+          ['Nokia', '2009', '5000'],
+          ['Apple', '2011', '9000']
+        ]
+      },
+      svgDiagram: `<svg viewBox="0 0 880 180" class="lc-diagram-svg" xmlns="http://www.w3.org/2000/svg">
+        <rect x="40" y="20" width="340" height="140" rx="8" fill="#ffffff" stroke="#cbd5e1" stroke-width="1.5"/>
+        <text x="55" y="45" fill="#0f172a" font-size="12" font-weight="700">Sales (Fact Table)</text>
+        <text x="55" y="75" fill="#2563eb" font-family="monospace" font-size="11">sale_id, product_id, year, price</text>
+        <text x="55" y="105" fill="#64748b" font-size="11">Stores transactional numbers and dates</text>
+
+        <path d="M 380 75 Q 440 75, 490 75" fill="none" stroke="#2563eb" stroke-width="2" marker-end="url(#arrow1378)"/>
+
+        <rect x="500" y="20" width="340" height="140" rx="8" fill="#ffffff" stroke="#cbd5e1" stroke-width="1.5"/>
+        <text x="515" y="45" fill="#0f172a" font-size="12" font-weight="700">Product (Dimension Table)</text>
+        <text x="515" y="75" fill="#16a34a" font-family="monospace" font-size="11">product_id (PK), product_name</text>
+        <text x="515" y="105" fill="#64748b" font-size="11">Enriches sales record with readable title</text>
+      </svg>`,
       logicBreakdown: [
-        'We need product_name from the Product table alongside year and price from Sales.',
-        'Since product_id is a foreign key guaranteed to exist in Product, an INNER JOIN or LEFT JOIN on product_id matches each transaction.'
+        'Sales contains the numbers (year, price), but product_id is just an integer foreign key.',
+        'Join to Product on s.product_id = p.product_id to fetch the human-readable product_name.'
       ],
-      solutionSql: `SELECT 
+      solutionSQL: `SELECT 
     p.product_name, 
     s.year, 
     s.price
 FROM Sales s
 JOIN Product p 
     ON s.product_id = p.product_id;`,
-      solutionWalkthrough: [
-        { line: 'SELECT p.product_name, s.year, s.price', explain: 'Projects the human-readable product name with transaction details.' },
-        { line: 'FROM Sales s', explain: 'Starts from the sales transactions.' },
-        { line: 'JOIN Product p ON s.product_id = p.product_id;', explain: 'Looks up the product metadata on matching product_id keys.' }
-      ],
-      initialCode: `SELECT 
-    p.product_name, 
-    s.year, 
-    s.price
-FROM Sales s
-JOIN Product p 
-    ON s.product_id = p.product_id;`,
-      testQuery: `SELECT p.product_name, s.year, s.price FROM Sales s JOIN Product p ON s.product_id = p.product_id;`,
-      expectedColumns: ['product_name', 'year', 'price']
+      lineByLineExplanation: [
+        { clause: 'SELECT p.product_name, s.year, s.price', exp: 'Selects the enriched product name alongside transaction year and price.' },
+        { clause: 'FROM Sales s', exp: 'Starts from the sales transactions.' },
+        { clause: 'JOIN Product p ON s.product_id = p.product_id;', exp: 'Performs relational lookup using the indexed product_id key.' }
+      ]
     },
 
     {
@@ -958,59 +1108,55 @@ JOIN Product p
       number: '1581',
       title: 'Customer Who Visited but Did Not Make Any Transactions',
       difficulty: 'Easy',
-      acceptance: '82.8%',
+      category: 'Basic Joins',
       companies: ['Amazon', 'Apple', 'Google'],
-      interviewWeight: 'High (Anti-Join Pattern)',
-      description: `
-        Table: <code>Visits</code>
-        <pre>
-+-------------+---------+
-| Column Name | Type    |
-+-------------+---------+
-| visit_id    | int     |
-| customer_id | int     |
-+-------------+---------+
-visit_id is the primary key.
-        </pre>
+      interviewFreq: 'High (Anti-Join Pattern)',
+      interviewRound: 'Technical Screening',
+      prompt: `Write an SQL query to find the IDs of the users who visited without making any transactions and the number of times they made these types of visits.
 
-        Table: <code>Transactions</code>
-        <pre>
-+----------------+---------+
-| Column Name    | Type    |
-+----------------+---------+
-| transaction_id | int     |
-| visit_id       | int     |
-| amount         | int     |
-+----------------+---------+
-transaction_id is the primary key.
-        </pre>
-
-        Write an SQL query to find the IDs of the users who visited without making any transactions and the number of times they made these types of visits.
-      `,
-      schemaDiagram: {
-        title: 'Anti-Join: Visits without Transactions',
-        svg: `<svg viewBox="0 0 880 180" class="lc-diagram-svg" xmlns="http://www.w3.org/2000/svg">
-          <rect x="50" y="20" width="340" height="140" rx="8" fill="#ffffff" stroke="#cbd5e1" stroke-width="1.5"/>
-          <text x="65" y="45" fill="#0f172a" font-size="12" font-weight="700">Visits Table</text>
-          <text x="65" y="75" fill="#2563eb" font-family="monospace" font-size="11">visit_id (PK), customer_id</text>
-          <text x="65" y="110" fill="#16a34a" font-size="11">Visit logged whenever customer walks into store</text>
-
-          <path d="M 390 75 Q 450 75, 490 75" fill="none" stroke="#dc2626" stroke-width="2.5" marker-end="url(#arrowDistinct)"/>
-          <text x="440" y="65" text-anchor="middle" fill="#dc2626" font-size="10" font-weight="700">LEFT JOIN</text>
-
-          <rect x="500" y="20" width="340" height="140" rx="8" fill="#ffffff" stroke="#dc2626" stroke-width="1.5"/>
-          <text x="515" y="45" fill="#0f172a" font-size="12" font-weight="700">Transactions Table</text>
-          <text x="515" y="75" fill="#dc2626" font-family="monospace" font-size="11">transaction_id (PK), visit_id</text>
-          <rect x="515" y="95" width="300" height="26" rx="4" fill="#fef2f2" stroke="#fecaca"/>
-          <text x="525" y="112" fill="#991b1b" font-family="monospace" font-size="10.5" font-weight="700">WHERE t.transaction_id IS NULL</text>
-        </svg>`
+Return the result table sorted in any order.`,
+      schemaDescription: 'Visits(visit_id, customer_id), Transactions(transaction_id, visit_id, amount)',
+      sampleInput: {
+        table: 'Visits & Transactions',
+        columns: ['visit_id', 'customer_id', 'transaction_id'],
+        rows: [
+          ['1', '23', '12'],
+          ['2', '9', '13'],
+          ['4', '30', 'null'],
+          ['6', '96', 'null'],
+          ['7', '54', 'null']
+        ]
       },
+      expectedOutput: {
+        columns: ['customer_id', 'count_no_trans'],
+        rows: [
+          ['30', '1'],
+          ['96', '1'],
+          ['54', '1']
+        ]
+      },
+      svgDiagram: `<svg viewBox="0 0 880 180" class="lc-diagram-svg" xmlns="http://www.w3.org/2000/svg">
+        <rect x="40" y="20" width="340" height="140" rx="8" fill="#ffffff" stroke="#cbd5e1" stroke-width="1.5"/>
+        <text x="55" y="45" fill="#0f172a" font-size="12" font-weight="700">Visits Table</text>
+        <text x="55" y="75" fill="#2563eb" font-family="monospace" font-size="11">visit_id (PK), customer_id</text>
+        <text x="55" y="105" fill="#16a34a" font-size="11">Logs every customer entrance</text>
+
+        <path d="M 380 75 Q 440 75, 490 75" fill="none" stroke="#dc2626" stroke-width="2.5" marker-end="url(#arrow1378)"/>
+        <text x="435" y="65" text-anchor="middle" fill="#dc2626" font-size="10" font-weight="700">ANTI-JOIN</text>
+
+        <rect x="500" y="20" width="340" height="140" rx="8" fill="#ffffff" stroke="#dc2626" stroke-width="1.5"/>
+        <text x="515" y="45" fill="#0f172a" font-size="12" font-weight="700">Transactions Table</text>
+        <text x="515" y="75" fill="#dc2626" font-family="monospace" font-size="11">transaction_id (PK), visit_id</text>
+        <rect x="515" y="95" width="300" height="26" rx="4" fill="#fef2f2" stroke="#fecaca"/>
+        <text x="525" y="112" fill="#991b1b" font-family="monospace" font-size="10.5" font-weight="700">WHERE t.transaction_id IS NULL</text>
+      </svg>`,
       logicBreakdown: [
-        'A visit without a transaction means visit_id exists in Visits, but has NO matching row in Transactions.',
-        'Using a LEFT JOIN, unmatched visits receive NULL for all Transactions columns.',
-        'Filter for WHERE t.transaction_id IS NULL to isolate non-purchasing visits, then GROUP BY customer_id and COUNT(*).'
+        'A customer visit without a purchase produces a row in Visits that has NO match in Transactions.',
+        'Perform a LEFT JOIN from Visits to Transactions on visit_id.',
+        'Use the Anti-Join filter: WHERE t.transaction_id IS NULL.',
+        'Aggregate by customer_id and COUNT(v.visit_id) to calculate total empty visits.'
       ],
-      solutionSql: `SELECT 
+      solutionSQL: `SELECT 
     v.customer_id, 
     COUNT(v.visit_id) AS count_no_trans
 FROM Visits v
@@ -1018,22 +1164,12 @@ LEFT JOIN Transactions t
     ON v.visit_id = t.visit_id
 WHERE t.transaction_id IS NULL
 GROUP BY v.customer_id;`,
-      solutionWalkthrough: [
-        { line: 'SELECT v.customer_id, COUNT(v.visit_id) AS count_no_trans', explain: 'Counts the number of isolated visits per customer.' },
-        { line: 'FROM Visits v LEFT JOIN Transactions t ON v.visit_id = t.visit_id', explain: 'Attempts to match each visit to a payment record.' },
-        { line: 'WHERE t.transaction_id IS NULL', explain: 'The Anti-Join filter: discards visits that generated a transaction.' },
-        { line: 'GROUP BY v.customer_id;', explain: 'Aggregates the total empty visits per individual customer.' }
-      ],
-      initialCode: `SELECT 
-    v.customer_id, 
-    COUNT(v.visit_id) AS count_no_trans
-FROM Visits v
-LEFT JOIN Transactions t
-    ON v.visit_id = t.visit_id
-WHERE t.transaction_id IS NULL
-GROUP BY v.customer_id;`,
-      testQuery: `SELECT v.customer_id, COUNT(v.visit_id) AS count_no_trans FROM Visits v LEFT JOIN Transactions t ON v.visit_id = t.visit_id WHERE t.transaction_id IS NULL GROUP BY v.customer_id;`,
-      expectedColumns: ['customer_id', 'count_no_trans']
+      lineByLineExplanation: [
+        { clause: 'SELECT v.customer_id, COUNT(v.visit_id) AS count_no_trans', exp: 'Computes total non-transaction visits per customer.' },
+        { clause: 'FROM Visits v LEFT JOIN Transactions t ON v.visit_id = t.visit_id', exp: 'Pairs visits with transactions, padding empty visits with NULL.' },
+        { clause: 'WHERE t.transaction_id IS NULL', exp: 'The Anti-Join filter isolating non-purchasing visits.' },
+        { clause: 'GROUP BY v.customer_id;', exp: 'Aggregates counts per individual customer.' }
+      ]
     },
 
     {
@@ -1041,66 +1177,62 @@ GROUP BY v.customer_id;`,
       number: '197',
       title: 'Rising Temperature',
       difficulty: 'Easy',
-      acceptance: '46.2%',
+      category: 'Basic Joins',
       companies: ['Amazon', 'Bloomberg', 'Facebook / Meta', 'Google', 'Uber'],
-      interviewWeight: 'Very High (Canonical Self-Join Offset)',
-      description: `
-        Table: <code>Weather</code>
-        <pre>
-+---------------+---------+
-| Column Name   | Type    |
-+---------------+---------+
-| id            | int     |
-| recordDate    | date    |
-| temperature   | int     |
-+---------------+---------+
-id is the primary key. There are no different rows with the same recordDate.
-        </pre>
+      interviewFreq: 'Very High (Canonical Self-Join Offset)',
+      interviewRound: 'Technical Interview',
+      prompt: `Write an SQL query to find all dates' Id with higher temperatures compared to its previous dates (yesterday).
 
-        Write an SQL query to find all dates' <code>Id</code> with higher temperatures compared to its <strong>previous dates (yesterday)</strong>.
-      `,
-      schemaDiagram: {
-        title: 'Weather Table Self-Join on 1-Day Temporal Delta',
-        svg: `<svg viewBox="0 0 880 180" class="lc-diagram-svg" xmlns="http://www.w3.org/2000/svg">
-          <rect x="50" y="20" width="340" height="140" rx="8" fill="#ffffff" stroke="#2563eb" stroke-width="1.5"/>
-          <text x="65" y="45" fill="#1d4ed8" font-size="12" font-weight="700">Weather w1 (Today)</text>
-          <text x="65" y="75" fill="#0f172a" font-family="monospace" font-size="11">id, recordDate, temperature</text>
-          <text x="65" y="110" fill="#16a34a" font-size="11">Tests if temperature is strictly higher</text>
-
-          <path d="M 390 75 Q 450 75, 490 75" fill="none" stroke="#2563eb" stroke-width="2" marker-end="url(#arrowDistinct)"/>
-          <text x="440" y="65" text-anchor="middle" fill="#2563eb" font-family="monospace" font-size="9.5">DATEDIFF=1</text>
-
-          <rect x="500" y="20" width="340" height="140" rx="8" fill="#ffffff" stroke="#64748b" stroke-width="1.5"/>
-          <text x="515" y="45" fill="#334155" font-size="12" font-weight="700">Weather w2 (Yesterday)</text>
-          <text x="515" y="75" fill="#0f172a" font-family="monospace" font-size="11">id, recordDate, temperature</text>
-          <text x="515" y="110" fill="#64748b" font-size="11">Serves as baseline comparison value</text>
-        </svg>`
+Return the result table in any order.`,
+      schemaDescription: 'Weather(id, recordDate, temperature)',
+      sampleInput: {
+        table: 'Weather',
+        columns: ['id', 'recordDate', 'temperature'],
+        rows: [
+          ['1', '2015-01-01', '10'],
+          ['2', '2015-01-02', '25'],
+          ['3', '2015-01-03', '20'],
+          ['4', '2015-01-04', '30']
+        ]
       },
+      expectedOutput: {
+        columns: ['id'],
+        rows: [
+          ['2'],
+          ['4']
+        ]
+      },
+      svgDiagram: `<svg viewBox="0 0 880 180" class="lc-diagram-svg" xmlns="http://www.w3.org/2000/svg">
+        <rect x="40" y="20" width="340" height="140" rx="8" fill="#ffffff" stroke="#2563eb" stroke-width="1.5"/>
+        <text x="55" y="45" fill="#1d4ed8" font-size="12" font-weight="700">Weather w1 (Today)</text>
+        <text x="55" y="75" fill="#0f172a" font-family="monospace" font-size="11">id, recordDate, temperature</text>
+        <text x="55" y="105" fill="#16a34a" font-size="11">Tests if temperature is strictly higher</text>
+
+        <path d="M 380 75 Q 440 75, 490 75" fill="none" stroke="#2563eb" stroke-width="2" marker-end="url(#arrow1378)"/>
+        <text x="435" y="65" text-anchor="middle" fill="#2563eb" font-family="monospace" font-size="9.5">DATEDIFF=1</text>
+
+        <rect x="500" y="20" width="340" height="140" rx="8" fill="#ffffff" stroke="#64748b" stroke-width="1.5"/>
+        <text x="515" y="45" fill="#334155" font-size="12" font-weight="700">Weather w2 (Yesterday)</text>
+        <text x="515" y="75" fill="#0f172a" font-family="monospace" font-size="11">id, recordDate, temperature</text>
+        <text x="515" y="105" fill="#64748b" font-size="11">Serves as baseline comparison value</text>
+      </svg>`,
       logicBreakdown: [
-        'A single row cannot look backward to another row without a window function or a self-join.',
+        'A single row cannot compare itself to yesterday without an offset mechanism.',
         'Join Weather w1 to Weather w2 on DATEDIFF(w1.recordDate, w2.recordDate) = 1.',
-        'Add the filter WHERE w1.temperature > w2.temperature to return w1.id.'
+        'Add the predicate WHERE w1.temperature > w2.temperature to return w1.id.'
       ],
-      solutionSql: `SELECT 
+      solutionSQL: `SELECT 
     w1.id
 FROM Weather w1
 JOIN Weather w2
     ON DATEDIFF(w1.recordDate, w2.recordDate) = 1
 WHERE w1.temperature > w2.temperature;`,
-      solutionWalkthrough: [
-        { line: 'SELECT w1.id', explain: 'Returns the ID of today, the day when the temperature rose.' },
-        { line: 'FROM Weather w1 JOIN Weather w2', explain: 'Instantiates two virtual copies of Weather in memory.' },
-        { line: 'ON DATEDIFF(w1.recordDate, w2.recordDate) = 1', explain: 'Aligns today (w1) with exactly yesterday (w2).' },
-        { line: 'WHERE w1.temperature > w2.temperature;', explain: 'Filters for days where today is strictly hotter than yesterday.' }
-      ],
-      initialCode: `SELECT 
-    w1.id
-FROM Weather w1
-JOIN Weather w2
-    ON DATEDIFF(w1.recordDate, w2.recordDate) = 1
-WHERE w1.temperature > w2.temperature;`,
-      testQuery: `SELECT w1.id FROM Weather w1 JOIN Weather w2 ON DATEDIFF(w1.recordDate, w2.recordDate) = 1 WHERE w1.temperature > w2.temperature;`,
-      expectedColumns: ['id']
+      lineByLineExplanation: [
+        { clause: 'SELECT w1.id', exp: 'Returns the ID of today, the day temperature rose.' },
+        { clause: 'FROM Weather w1 JOIN Weather w2', exp: 'Creates two virtual instances of the weather table.' },
+        { clause: 'ON DATEDIFF(w1.recordDate, w2.recordDate) = 1', exp: 'Pairs today with exactly yesterday.' },
+        { clause: 'WHERE w1.temperature > w2.temperature;', exp: 'Filters for days strictly hotter than yesterday.' }
+      ]
     },
 
     {
@@ -1108,51 +1240,51 @@ WHERE w1.temperature > w2.temperature;`,
       number: '1661',
       title: 'Average Time of Process per Machine',
       difficulty: 'Easy',
-      acceptance: '71.5%',
+      category: 'Basic Joins',
       companies: ['Amazon', 'Facebook / Meta', 'Google'],
-      interviewWeight: 'High (Event Pair Delta)',
-      description: `
-        Table: <code>Activity</code>
-        <pre>
-+----------------+---------+
-| Column Name    | Type    |
-+----------------+---------+
-| machine_id     | int     |
-| process_id     | int     |
-| activity_type  | enum    |
-| timestamp      | float   |
-+----------------+---------+
-(machine_id, process_id, activity_type) is the primary key.
-activity_type is an ENUM of type ('start', 'end').
-        </pre>
+      interviewFreq: 'High (Event Delta Pairing)',
+      interviewRound: 'Technical Interview',
+      prompt: `There is a factory website that has several machines each running the same number of processes. Write an SQL query to find the average time each machine takes to complete a process.
 
-        There is a factory website that has several machines each running the same number of processes. 
-        Write an SQL query to find the <strong>average time</strong> each machine takes to complete a process.
-        The time to complete a process is <code>'end' timestamp - 'start' timestamp</code>. 
-        The resulting table should have the <code>machine_id</code> and the average time as <code>processing_time</code> rounded to <strong>3 decimal places</strong>.
-      `,
-      schemaDiagram: {
-        title: 'Activity Self-Join Pairing "start" and "end" timestamps',
-        svg: `<svg viewBox="0 0 880 180" class="lc-diagram-svg" xmlns="http://www.w3.org/2000/svg">
-          <rect x="50" y="20" width="340" height="140" rx="8" fill="#ffffff" stroke="#cbd5e1" stroke-width="1.5"/>
-          <text x="65" y="45" fill="#0f172a" font-size="12" font-weight="700">Activity a1 (start)</text>
-          <text x="65" y="75" fill="#2563eb" font-family="monospace" font-size="11">machine_id, process_id, timestamp</text>
-          <text x="65" y="105" fill="#64748b" font-size="11">Filtered for activity_type = 'start'</text>
+The time to complete a process is 'end' timestamp - 'start' timestamp. The resulting table should have the machine_id and the average time as processing_time rounded to 3 decimal places.
 
-          <path d="M 390 75 Q 450 75, 490 75" fill="none" stroke="#2563eb" stroke-width="2" marker-end="url(#arrowDistinct)"/>
-
-          <rect x="500" y="20" width="340" height="140" rx="8" fill="#ffffff" stroke="#cbd5e1" stroke-width="1.5"/>
-          <text x="515" y="45" fill="#0f172a" font-size="12" font-weight="700">Activity a2 (end)</text>
-          <text x="515" y="75" fill="#16a34a" font-family="monospace" font-size="11">machine_id, process_id, timestamp</text>
-          <text x="515" y="105" fill="#64748b" font-size="11">Delta = a2.timestamp - a1.timestamp</text>
-        </svg>`
+Return the result table in any order.`,
+      schemaDescription: 'Activity(machine_id, process_id, activity_type, timestamp)',
+      sampleInput: {
+        table: 'Activity',
+        columns: ['machine_id', 'process_id', 'activity_type', 'timestamp'],
+        rows: [
+          ['0', '0', 'start', '0.712'],
+          ['0', '0', 'end', '1.520'],
+          ['0', '1', 'start', '3.140'],
+          ['0', '1', 'end', '4.120']
+        ]
       },
+      expectedOutput: {
+        columns: ['machine_id', 'processing_time'],
+        rows: [
+          ['0', '0.894']
+        ]
+      },
+      svgDiagram: `<svg viewBox="0 0 880 180" class="lc-diagram-svg" xmlns="http://www.w3.org/2000/svg">
+        <rect x="40" y="20" width="340" height="140" rx="8" fill="#ffffff" stroke="#cbd5e1" stroke-width="1.5"/>
+        <text x="55" y="45" fill="#0f172a" font-size="12" font-weight="700">Activity a1 (start)</text>
+        <text x="55" y="75" fill="#2563eb" font-family="monospace" font-size="11">machine_id, process_id, timestamp</text>
+        <text x="55" y="105" fill="#64748b" font-size="11">Filtered for activity_type = 'start'</text>
+
+        <path d="M 380 75 Q 440 75, 490 75" fill="none" stroke="#2563eb" stroke-width="2" marker-end="url(#arrow1378)"/>
+
+        <rect x="500" y="20" width="340" height="140" rx="8" fill="#ffffff" stroke="#cbd5e1" stroke-width="1.5"/>
+        <text x="515" y="45" fill="#0f172a" font-size="12" font-weight="700">Activity a2 (end)</text>
+        <text x="515" y="75" fill="#16a34a" font-family="monospace" font-size="11">machine_id, process_id, timestamp</text>
+        <text x="515" y="105" fill="#64748b" font-size="11">Delta = a2.timestamp - a1.timestamp</text>
+      </svg>`,
       logicBreakdown: [
         'Processes are split across two rows: one for start and one for end.',
-        'Join Activity a1 to Activity a2 on machine_id and process_id, specifying a1.activity_type = "start" and a2.activity_type = "end".',
-        'Compute the elapsed time as a2.timestamp - a1.timestamp, group by machine_id, and take ROUND(AVG(...), 3).'
+        'Self-join Activity a1 to Activity a2 on matching machine_id and process_id, ensuring a1 is "start" and a2 is "end".',
+        'Compute elapsed seconds (a2.timestamp - a1.timestamp), group by machine_id, and take ROUND(AVG(...), 3).'
       ],
-      solutionSql: `SELECT 
+      solutionSQL: `SELECT 
     a1.machine_id,
     ROUND(AVG(a2.timestamp - a1.timestamp), 3) AS processing_time
 FROM Activity a1
@@ -1162,25 +1294,13 @@ JOIN Activity a2
    AND a1.activity_type = 'start'
    AND a2.activity_type = 'end'
 GROUP BY a1.machine_id;`,
-      solutionWalkthrough: [
-        { line: 'SELECT a1.machine_id, ROUND(AVG(a2.timestamp - a1.timestamp), 3) AS processing_time', explain: 'Computes the mean elapsed seconds rounded to 3 decimal places.' },
-        { line: 'FROM Activity a1 JOIN Activity a2', explain: 'Pairs start and end timestamps into a single unified row in memory.' },
-        { line: '    ON a1.machine_id = a2.machine_id AND a1.process_id = a2.process_id', explain: 'Ensures the process belonging to the exact same machine is compared.' },
-        { line: '   AND a1.activity_type = "start" AND a2.activity_type = "end"', explain: 'Guarantees subtraction direction is end minus start.' },
-        { line: 'GROUP BY a1.machine_id;', explain: 'Aggregates the averages across each individual factory machine.' }
-      ],
-      initialCode: `SELECT 
-    a1.machine_id,
-    ROUND(AVG(a2.timestamp - a1.timestamp), 3) AS processing_time
-FROM Activity a1
-JOIN Activity a2
-    ON a1.machine_id = a2.machine_id
-   AND a1.process_id = a2.process_id
-   AND a1.activity_type = 'start'
-   AND a2.activity_type = 'end'
-GROUP BY a1.machine_id;`,
-      testQuery: `SELECT a1.machine_id, ROUND(AVG(a2.timestamp - a1.timestamp), 3) AS processing_time FROM Activity a1 JOIN Activity a2 ON a1.machine_id = a2.machine_id AND a1.process_id = a2.process_id AND a1.activity_type = 'start' AND a2.activity_type = 'end' GROUP BY a1.machine_id;`,
-      expectedColumns: ['machine_id', 'processing_time']
+      lineByLineExplanation: [
+        { clause: 'SELECT a1.machine_id, ROUND(AVG(a2.timestamp - a1.timestamp), 3) AS processing_time', exp: 'Averages elapsed seconds rounded to 3 decimal places.' },
+        { clause: 'FROM Activity a1 JOIN Activity a2', exp: 'Pairs start and end records into a single row.' },
+        { clause: 'ON a1.machine_id = a2.machine_id AND a1.process_id = a2.process_id', exp: 'Ensures timestamps belong to the exact same machine and process.' },
+        { clause: 'AND a1.activity_type = "start" AND a2.activity_type = "end"', exp: 'Ensures positive subtraction direction (end minus start).' },
+        { clause: 'GROUP BY a1.machine_id;', exp: 'Aggregates averages per individual factory machine.' }
+      ]
     },
 
     {
@@ -1188,60 +1308,53 @@ GROUP BY a1.machine_id;`,
       number: '577',
       title: 'Employee Bonus',
       difficulty: 'Easy',
-      acceptance: '74.5%',
+      category: 'Basic Joins',
       companies: ['Amazon', 'Bloomberg', 'Microsoft'],
-      interviewWeight: 'Medium (Outer Join NULL Evaluation)',
-      description: `
-        Table: <code>Employee</code>
-        <pre>
-+-------------+---------+
-| Column Name | Type    |
-+-------------+---------+
-| empId       | int     |
-| name        | varchar |
-| supervisor  | int     |
-| salary      | int     |
-+-------------+---------+
-empId is the primary key.
-        </pre>
+      interviewFreq: 'Medium (Outer Join NULL Fallback)',
+      interviewRound: 'Technical Screening',
+      prompt: `Write an SQL query to report the name and bonus amount of each employee with a bonus less than 1000.
+Employees who received no bonus at all should also be included!
 
-        Table: <code>Bonus</code>
-        <pre>
-+-------------+------+
-| Column Name | Type |
-+-------------+------+
-| empId       | int  |
-| bonus       | int  |
-+-------------+------+
-empId is the foreign key.
-        </pre>
-
-        Write an SQL query to report the name and bonus amount of each employee with a bonus <strong>less than 1000</strong>.
-        Employees who received <strong>no bonus at all</strong> should also be included!
-      `,
-      schemaDiagram: {
-        title: 'Employee LEFT JOIN Bonus with NULL Fallback',
-        svg: `<svg viewBox="0 0 880 180" class="lc-diagram-svg" xmlns="http://www.w3.org/2000/svg">
-          <rect x="50" y="20" width="340" height="140" rx="8" fill="#ffffff" stroke="#cbd5e1" stroke-width="1.5"/>
-          <text x="65" y="45" fill="#0f172a" font-size="12" font-weight="700">Employee Table</text>
-          <text x="65" y="75" fill="#2563eb" font-family="monospace" font-size="11">empId (PK), name, salary</text>
-          <text x="65" y="105" fill="#16a34a" font-size="11">Every employee must be checked</text>
-
-          <path d="M 390 75 Q 450 75, 490 75" fill="none" stroke="#2563eb" stroke-width="2" marker-end="url(#arrowDistinct)"/>
-
-          <rect x="500" y="20" width="340" height="140" rx="8" fill="#ffffff" stroke="#cbd5e1" stroke-width="1.5"/>
-          <text x="515" y="45" fill="#0f172a" font-size="12" font-weight="700">Bonus Table</text>
-          <text x="515" y="75" fill="#16a34a" font-family="monospace" font-size="11">empId (FK), bonus</text>
-          <rect x="515" y="95" width="300" height="26" rx="4" fill="#fffbeb" stroke="#fde68a"/>
-          <text x="525" y="112" fill="#b45309" font-family="monospace" font-size="10.5" font-weight="700">WHERE b.bonus &lt; 1000 OR b.bonus IS NULL</text>
-        </svg>`
+Return the result table in any order.`,
+      schemaDescription: 'Employee(empId, name, supervisor, salary), Bonus(empId, bonus)',
+      sampleInput: {
+        table: 'Employee & Bonus',
+        columns: ['empId', 'name', 'bonus'],
+        rows: [
+          ['1', 'John', 'null'],
+          ['2', 'Dan', '500'],
+          ['3', 'Brad', 'null'],
+          ['4', 'Thomas', '2000']
+        ]
       },
+      expectedOutput: {
+        columns: ['name', 'bonus'],
+        rows: [
+          ['John', 'null'],
+          ['Dan', '500'],
+          ['Brad', 'null']
+        ]
+      },
+      svgDiagram: `<svg viewBox="0 0 880 180" class="lc-diagram-svg" xmlns="http://www.w3.org/2000/svg">
+        <rect x="40" y="20" width="340" height="140" rx="8" fill="#ffffff" stroke="#cbd5e1" stroke-width="1.5"/>
+        <text x="55" y="45" fill="#0f172a" font-size="12" font-weight="700">Employee Table</text>
+        <text x="55" y="75" fill="#2563eb" font-family="monospace" font-size="11">empId (PK), name, salary</text>
+        <text x="55" y="105" fill="#16a34a" font-size="11">Every employee must be checked</text>
+
+        <path d="M 380 75 Q 440 75, 490 75" fill="none" stroke="#2563eb" stroke-width="2" marker-end="url(#arrow1378)"/>
+
+        <rect x="500" y="20" width="340" height="140" rx="8" fill="#ffffff" stroke="#cbd5e1" stroke-width="1.5"/>
+        <text x="515" y="45" fill="#0f172a" font-size="12" font-weight="700">Bonus Table</text>
+        <text x="515" y="75" fill="#16a34a" font-family="monospace" font-size="11">empId (FK), bonus</text>
+        <rect x="515" y="95" width="300" height="26" rx="4" fill="#fffbeb" stroke="#fde68a"/>
+        <text x="525" y="112" fill="#b45309" font-family="monospace" font-size="10.5" font-weight="700">WHERE b.bonus &lt; 1000 OR b.bonus IS NULL</text>
+      </svg>`,
       logicBreakdown: [
-        'A candidate who writes WHERE b.bonus < 1000 will fail hidden test cases because employees with no bonus have NULL bonus, which evaluates to UNKNOWN.',
-        'Perform a LEFT JOIN from Employee to Bonus.',
-        'In the WHERE clause, include both conditions: WHERE b.bonus < 1000 OR b.bonus IS NULL (or IFNULL(b.bonus, 0) < 1000).'
+        'Writing WHERE b.bonus < 1000 fails because employees with no bonus have NULL, evaluating to UNKNOWN in 3VL.',
+        'Use a LEFT JOIN from Employee to Bonus.',
+        'Include both conditions: WHERE b.bonus < 1000 OR b.bonus IS NULL.'
       ],
-      solutionSql: `SELECT 
+      solutionSQL: `SELECT 
     e.name, 
     b.bonus
 FROM Employee e
@@ -1249,21 +1362,11 @@ LEFT JOIN Bonus b
     ON e.empId = b.empId
 WHERE b.bonus < 1000 
    OR b.bonus IS NULL;`,
-      solutionWalkthrough: [
-        { line: 'SELECT e.name, b.bonus', explain: 'Projects employee name and their corresponding bonus value.' },
-        { line: 'FROM Employee e LEFT JOIN Bonus b ON e.empId = b.empId', explain: 'Preserves all employees even if they were never awarded a bonus.' },
-        { line: 'WHERE b.bonus < 1000 OR b.bonus IS NULL;', explain: 'Defensive 3VL filter: prevents NULL bonus employees from being dropped.' }
-      ],
-      initialCode: `SELECT 
-    e.name, 
-    b.bonus
-FROM Employee e
-LEFT JOIN Bonus b
-    ON e.empId = b.empId
-WHERE b.bonus < 1000 
-   OR b.bonus IS NULL;`,
-      testQuery: `SELECT e.name, b.bonus FROM Employee e LEFT JOIN Bonus b ON e.empId = b.empId WHERE b.bonus < 1000 OR b.bonus IS NULL;`,
-      expectedColumns: ['name', 'bonus']
+      lineByLineExplanation: [
+        { clause: 'SELECT e.name, b.bonus', exp: 'Selects employee name and bonus amount.' },
+        { clause: 'FROM Employee e LEFT JOIN Bonus b ON e.empId = b.empId', exp: 'Preserves all employees even if they received no bonus record.' },
+        { clause: 'WHERE b.bonus < 1000 OR b.bonus IS NULL;', exp: 'Defensive 3VL filter: prevents NULL bonus employees from being dropped.' }
+      ]
     },
 
     {
@@ -1271,73 +1374,60 @@ WHERE b.bonus < 1000
       number: '1280',
       title: 'Students and Examinations',
       difficulty: 'Easy',
-      acceptance: '53.6%',
+      category: 'Basic Joins',
       companies: ['Amazon', 'Apple', 'Facebook / Meta', 'Google', 'Microsoft'],
-      interviewWeight: 'Very High (Cartesian Matrix Generation)',
-      description: `
-        Table: <code>Students</code>
-        <pre>
-+---------------+---------+
-| Column Name   | Type    |
-+---------------+---------+
-| student_id    | int     |
-| student_name  | varchar |
-+---------------+---------+
-student_id is the primary key.
-        </pre>
+      interviewFreq: 'Very High (Cartesian Matrix Generation)',
+      interviewRound: 'Technical Interview',
+      prompt: `Write an SQL query to find the number of times each student attended each exam.
 
-        Table: <code>Subjects</code>
-        <pre>
-+--------------+---------+
-| Column Name  | Type    |
-+--------------+---------+
-| subject_name | varchar |
-+--------------+---------+
-subject_name is the primary key.
-        </pre>
-
-        Table: <code>Examinations</code>
-        <pre>
-+--------------+---------+
-| Column Name  | Type    |
-+--------------+---------+
-| student_id   | int     |
-| subject_name | varchar |
-+--------------+---------+
-There is no primary key for this table. It may contain duplicates.
-        </pre>
-
-        Write an SQL query to find the number of times each student attended each exam.
-        Return the result table ordered by <code>student_id</code> and <code>subject_name</code>.
-      `,
-      schemaDiagram: {
-        title: 'Two-Step Join: CROSS JOIN Matrix + LEFT JOIN Occurrences',
-        svg: `<svg viewBox="0 0 880 180" class="lc-diagram-svg" xmlns="http://www.w3.org/2000/svg">
-          <rect x="50" y="20" width="220" height="140" rx="8" fill="#ffffff" stroke="#cbd5e1" stroke-width="1.5"/>
-          <text x="65" y="45" fill="#0f172a" font-size="12" font-weight="700">Students Table</text>
-          <text x="65" y="75" fill="#2563eb" font-family="monospace" font-size="11">student_id (PK)</text>
-
-          <text x="285" y="95" fill="#6366f1" font-size="20" font-weight="700">CROSS</text>
-
-          <rect x="340" y="20" width="220" height="140" rx="8" fill="#ffffff" stroke="#cbd5e1" stroke-width="1.5"/>
-          <text x="355" y="45" fill="#0f172a" font-size="12" font-weight="700">Subjects Table</text>
-          <text x="355" y="75" fill="#6d28d9" font-family="monospace" font-size="11">subject_name (PK)</text>
-
-          <path d="M 560 90 Q 600 90, 630 90" fill="none" stroke="#2563eb" stroke-width="2" marker-end="url(#arrowDistinct)"/>
-
-          <rect x="640" y="20" width="200" height="140" rx="8" fill="#ffffff" stroke="#16a34a" stroke-width="1.5"/>
-          <text x="655" y="45" fill="#166534" font-size="12" font-weight="700">Examinations</text>
-          <text x="655" y="75" fill="#16a34a" font-family="monospace" font-size="11">LEFT JOIN on both</text>
-          <text x="655" y="105" fill="#0f172a" font-family="monospace" font-size="11">COUNT(e.subject_name)</text>
-        </svg>`
+Return the result table ordered by student_id and subject_name.`,
+      schemaDescription: 'Students(student_id, student_name), Subjects(subject_name), Examinations(student_id, subject_name)',
+      sampleInput: {
+        table: 'Students, Subjects, Examinations',
+        columns: ['student_id', 'student_name', 'subject_name', 'attended_exams'],
+        rows: [
+          ['1', 'Alice', 'Math', '3'],
+          ['1', 'Alice', 'Physics', '2'],
+          ['2', 'Bob', 'Programming', '1'],
+          ['2', 'Bob', 'Physics', '0']
+        ]
       },
+      expectedOutput: {
+        columns: ['student_id', 'student_name', 'subject_name', 'attended_exams'],
+        rows: [
+          ['1', 'Alice', 'Math', '3'],
+          ['1', 'Alice', 'Physics', '2'],
+          ['1', 'Alice', 'Programming', '1'],
+          ['2', 'Bob', 'Math', '1'],
+          ['2', 'Bob', 'Physics', '0'],
+          ['2', 'Bob', 'Programming', '1']
+        ]
+      },
+      svgDiagram: `<svg viewBox="0 0 880 180" class="lc-diagram-svg" xmlns="http://www.w3.org/2000/svg">
+        <rect x="40" y="20" width="220" height="140" rx="8" fill="#ffffff" stroke="#cbd5e1" stroke-width="1.5"/>
+        <text x="55" y="45" fill="#0f172a" font-size="12" font-weight="700">Students Table</text>
+        <text x="55" y="75" fill="#2563eb" font-family="monospace" font-size="11">student_id (PK)</text>
+
+        <text x="275" y="95" fill="#6366f1" font-size="20" font-weight="700">CROSS</text>
+
+        <rect x="330" y="20" width="220" height="140" rx="8" fill="#ffffff" stroke="#cbd5e1" stroke-width="1.5"/>
+        <text x="345" y="45" fill="#0f172a" font-size="12" font-weight="700">Subjects Table</text>
+        <text x="345" y="75" fill="#6d28d9" font-family="monospace" font-size="11">subject_name (PK)</text>
+
+        <path d="M 550 90 Q 590 90, 620 90" fill="none" stroke="#2563eb" stroke-width="2" marker-end="url(#arrow1378)"/>
+
+        <rect x="630" y="20" width="210" height="140" rx="8" fill="#ffffff" stroke="#16a34a" stroke-width="1.5"/>
+        <text x="645" y="45" fill="#166534" font-size="12" font-weight="700">Examinations</text>
+        <text x="645" y="75" fill="#16a34a" font-family="monospace" font-size="11">LEFT JOIN on both</text>
+        <text x="645" y="105" fill="#0f172a" font-family="monospace" font-size="11">COUNT(e.subject_name)</text>
+      </svg>`,
       logicBreakdown: [
         'Every student must appear with every subject, even if they attended 0 exams.',
-        'Step 1: Students CROSS JOIN Subjects generates the complete Cartesian grid of all student-subject pairs.',
+        'Step 1: Students CROSS JOIN Subjects generates the baseline Cartesian matrix of all possible student-subject pairs.',
         'Step 2: LEFT JOIN Examinations on student_id AND subject_name.',
-        'Step 3: GROUP BY s.student_id, sub.subject_name and use COUNT(e.subject_name) so unrepresented exams evaluate to 0 instead of 1.'
+        'Step 3: GROUP BY student and subject, and use COUNT(e.subject_name) so unrepresented exams evaluate to 0 instead of 1.'
       ],
-      solutionSql: `SELECT 
+      solutionSQL: `SELECT 
     s.student_id,
     s.student_name,
     sub.subject_name,
@@ -1349,27 +1439,13 @@ LEFT JOIN Examinations e
    AND sub.subject_name = e.subject_name
 GROUP BY s.student_id, s.student_name, sub.subject_name
 ORDER BY s.student_id, sub.subject_name;`,
-      solutionWalkthrough: [
-        { line: 'SELECT s.student_id, s.student_name, sub.subject_name, COUNT(e.subject_name) AS attended_exams', explain: 'Projects student identification, subject, and non-null exam counts.' },
-        { line: 'FROM Students s CROSS JOIN Subjects sub', explain: 'The Cartesian Matrix: generates every possible combination of student and course.' },
-        { line: 'LEFT JOIN Examinations e ON s.student_id = e.student_id AND sub.subject_name = e.subject_name', explain: 'Matches real attendance records while preserving 0-attendance rows.' },
-        { line: 'GROUP BY s.student_id, s.student_name, sub.subject_name', explain: 'Collapses multiple exam attendances into a single count per pair.' },
-        { line: 'ORDER BY s.student_id, sub.subject_name;', explain: 'Sorts as requested by the problem specification.' }
-      ],
-      initialCode: `SELECT 
-    s.student_id,
-    s.student_name,
-    sub.subject_name,
-    COUNT(e.subject_name) AS attended_exams
-FROM Students s
-CROSS JOIN Subjects sub
-LEFT JOIN Examinations e
-    ON s.student_id = e.student_id
-   AND sub.subject_name = e.subject_name
-GROUP BY s.student_id, s.student_name, sub.subject_name
-ORDER BY s.student_id, sub.subject_name;`,
-      testQuery: `SELECT s.student_id, s.student_name, sub.subject_name, COUNT(e.subject_name) AS attended_exams FROM Students s CROSS JOIN Subjects sub LEFT JOIN Examinations e ON s.student_id = e.student_id AND sub.subject_name = e.subject_name GROUP BY s.student_id, s.student_name, sub.subject_name ORDER BY s.student_id, sub.subject_name;`,
-      expectedColumns: ['student_id', 'student_name', 'subject_name', 'attended_exams']
+      lineByLineExplanation: [
+        { clause: 'SELECT s.student_id, s.student_name, sub.subject_name, COUNT(e.subject_name) AS attended_exams', exp: 'Selects student info, subject, and non-null exam counts.' },
+        { clause: 'FROM Students s CROSS JOIN Subjects sub', exp: 'Generates the complete Cartesian matrix pairing every student with every course.' },
+        { clause: 'LEFT JOIN Examinations e ON s.student_id = e.student_id AND sub.subject_name = e.subject_name', exp: 'Pulls in attendance records while preserving 0-attendance rows.' },
+        { clause: 'GROUP BY s.student_id, s.student_name, sub.subject_name', exp: 'Aggregates exam counts per student-subject combination.' },
+        { clause: 'ORDER BY s.student_id, sub.subject_name;', exp: 'Sorts output in ascending order as requested.' }
+      ]
     },
 
     {
@@ -1377,73 +1453,65 @@ ORDER BY s.student_id, sub.subject_name;`,
       number: '570',
       title: 'Managers with at Least 5 Direct Reports',
       difficulty: 'Medium',
-      acceptance: '64.8%',
+      category: 'Basic Joins',
       companies: ['Amazon', 'Apple', 'Bloomberg', 'Google'],
-      interviewWeight: 'High (Self-Referential Hierarchy)',
-      description: `
-        Table: <code>Employee</code>
-        <pre>
-+-------------+---------+
-| Column Name | Type    |
-+-------------+---------+
-| id          | int     |
-| name        | varchar |
-| department  | varchar |
-| managerId   | int     |
-+-------------+---------+
-id is the primary key.
-Each row indicates the name of an employee, department, and the id of their manager.
-If managerId is null, the employee does not have a manager.
-        </pre>
+      interviewFreq: 'High (Self-Referential Hierarchy)',
+      interviewRound: 'Technical Interview',
+      prompt: `Write an SQL query to report the managers with at least five direct reports.
 
-        Write an SQL query to report the <strong>managers with at least five direct reports</strong>.
-        Return the result table in any order.
-      `,
-      schemaDiagram: {
-        title: 'Manager-Employee Self-Referential Hierarchy Matching',
-        svg: `<svg viewBox="0 0 880 180" class="lc-diagram-svg" xmlns="http://www.w3.org/2000/svg">
-          <rect x="50" y="20" width="340" height="140" rx="8" fill="#ffffff" stroke="#cbd5e1" stroke-width="1.5"/>
-          <text x="65" y="45" fill="#0f172a" font-size="12" font-weight="700">Employee e (Direct Report)</text>
-          <text x="65" y="75" fill="#2563eb" font-family="monospace" font-size="11">id, name, managerId</text>
-          <text x="65" y="105" fill="#64748b" font-size="11">Points to boss via managerId</text>
-
-          <path d="M 390 75 Q 450 75, 490 75" fill="none" stroke="#2563eb" stroke-width="2" marker-end="url(#arrowDistinct)"/>
-          <text x="440" y="65" text-anchor="middle" fill="#2563eb" font-family="monospace" font-size="9.5">e.managerId = m.id</text>
-
-          <rect x="500" y="20" width="340" height="140" rx="8" fill="#ffffff" stroke="#2563eb" stroke-width="1.5"/>
-          <text x="515" y="45" fill="#1d4ed8" font-size="12" font-weight="700">Employee m (Manager)</text>
-          <text x="515" y="75" fill="#1d4ed8" font-family="monospace" font-size="11">id, name</text>
-          <rect x="515" y="95" width="300" height="26" rx="4" fill="#f0fdf4" stroke="#86efac"/>
-          <text x="525" y="112" fill="#166534" font-family="monospace" font-size="10.5" font-weight="700">HAVING COUNT(e.id) &gt;= 5</text>
-        </svg>`
+Return the result table in any order.`,
+      schemaDescription: 'Employee(id, name, department, managerId)',
+      sampleInput: {
+        table: 'Employee',
+        columns: ['id', 'name', 'department', 'managerId'],
+        rows: [
+          ['101', 'John', 'A', 'null'],
+          ['102', 'Dan', 'A', '101'],
+          ['103', 'James', 'A', '101'],
+          ['104', 'Amy', 'A', '101'],
+          ['105', 'Anne', 'A', '101'],
+          ['106', 'Ron', 'B', '101']
+        ]
       },
+      expectedOutput: {
+        columns: ['name'],
+        rows: [
+          ['John']
+        ]
+      },
+      svgDiagram: `<svg viewBox="0 0 880 180" class="lc-diagram-svg" xmlns="http://www.w3.org/2000/svg">
+        <rect x="40" y="20" width="340" height="140" rx="8" fill="#ffffff" stroke="#cbd5e1" stroke-width="1.5"/>
+        <text x="55" y="45" fill="#0f172a" font-size="12" font-weight="700">Employee e (Direct Report)</text>
+        <text x="55" y="75" fill="#2563eb" font-family="monospace" font-size="11">id, name, managerId</text>
+        <text x="55" y="105" fill="#64748b" font-size="11">Points to boss via managerId</text>
+
+        <path d="M 380 75 Q 440 75, 490 75" fill="none" stroke="#2563eb" stroke-width="2" marker-end="url(#arrow1378)"/>
+        <text x="435" y="65" text-anchor="middle" fill="#2563eb" font-family="monospace" font-size="9.5">e.managerId = m.id</text>
+
+        <rect x="500" y="20" width="340" height="140" rx="8" fill="#ffffff" stroke="#2563eb" stroke-width="1.5"/>
+        <text x="515" y="45" fill="#1d4ed8" font-size="12" font-weight="700">Employee m (Manager)</text>
+        <text x="515" y="75" fill="#1d4ed8" font-family="monospace" font-size="11">id, name</text>
+        <rect x="515" y="95" width="300" height="26" rx="4" fill="#f0fdf4" stroke="#86efac"/>
+        <text x="525" y="112" fill="#166534" font-family="monospace" font-size="10.5" font-weight="700">HAVING COUNT(e.id) &gt;= 5</text>
+      </svg>`,
       logicBreakdown: [
-        'Employees report to managers using managerId, which points to another row\'s id.',
+        'Employees report to managers using managerId, which references another row in the same table.',
         'Join Employee e (subordinate) to Employee m (manager) on e.managerId = m.id.',
         'Group by m.id (and m.name) and filter with HAVING COUNT(e.id) >= 5.'
       ],
-      solutionSql: `SELECT 
+      solutionSQL: `SELECT 
     m.name
 FROM Employee e
 JOIN Employee m
     ON e.managerId = m.id
 GROUP BY m.id, m.name
 HAVING COUNT(e.id) >= 5;`,
-      solutionWalkthrough: [
-        { line: 'SELECT m.name', explain: 'Projects the manager\'s name.' },
-        { line: 'FROM Employee e JOIN Employee m ON e.managerId = m.id', explain: 'Links subordinates to their direct manager in the same table.' },
-        { line: 'GROUP BY m.id, m.name', explain: 'Aggregates direct reports around each distinct manager.' },
-        { line: 'HAVING COUNT(e.id) >= 5;', explain: 'Filters for managers supervising 5 or more team members.' }
-      ],
-      initialCode: `SELECT 
-    m.name
-FROM Employee e
-JOIN Employee m
-    ON e.managerId = m.id
-GROUP BY m.id, m.name
-HAVING COUNT(e.id) >= 5;`,
-      testQuery: `SELECT m.name FROM Employee e JOIN Employee m ON e.managerId = m.id GROUP BY m.id, m.name HAVING COUNT(e.id) >= 5;`,
-      expectedColumns: ['name']
+      lineByLineExplanation: [
+        { clause: 'SELECT m.name', exp: 'Projects the manager\'s name.' },
+        { clause: 'FROM Employee e JOIN Employee m ON e.managerId = m.id', exp: 'Links subordinates to their direct manager in the same table.' },
+        { clause: 'GROUP BY m.id, m.name', exp: 'Aggregates reports around each distinct manager.' },
+        { clause: 'HAVING COUNT(e.id) >= 5;', exp: 'Filters for managers supervising 5 or more team members.' }
+      ]
     },
 
     {
@@ -1451,83 +1519,65 @@ HAVING COUNT(e.id) >= 5;`,
       number: '1934',
       title: 'Confirmation Rate',
       difficulty: 'Medium',
-      acceptance: '61.7%',
+      category: 'Basic Joins',
       companies: ['Amazon', 'Bloomberg', 'Facebook / Meta', 'Google', 'Uber'],
-      interviewWeight: 'Very High (Outer Join Conditional Mean)',
-      description: `
-        Table: <code>Signups</code>
-        <pre>
-+----------------+----------+
-| Column Name    | Type     |
-+----------------+----------+
-| user_id        | int      |
-| time_stamp     | datetime |
-+----------------+----------+
-user_id is the primary key.
-        </pre>
+      interviewFreq: 'Very High (Outer Join Conditional Mean)',
+      interviewRound: 'Technical Interview',
+      prompt: `The confirmation rate of a user is the number of 'confirmed' messages divided by the total number of requested confirmation messages. The confirmation rate of a user that did not request any confirmation messages is 0. Round the confirmation rate to two decimal places.
 
-        Table: <code>Confirmations</code>
-        <pre>
-+----------------+----------+
-| Column Name    | Type     |
-+----------------+----------+
-| user_id        | int      |
-| time_stamp     | datetime |
-| action         | ENUM     |
-+----------------+----------+
-(user_id, time_stamp) is the primary key.
-action is an ENUM of ('confirmed', 'timeout')
-        </pre>
+Write an SQL query to find the confirmation rate of each user.
 
-        The <strong>confirmation rate</strong> of a user is the number of <code>'confirmed'</code> messages divided by the total number of requested confirmation messages.
-        The confirmation rate of a user that did not request any confirmation messages is <code>0</code>. 
-        Round the confirmation rate to <strong>two decimal places</strong>.
-        <br><br>
-        Write an SQL query to find the confirmation rate of each user.
-      `,
-      schemaDiagram: {
-        title: 'Signups LEFT JOIN Confirmations with Boolean Mean',
-        svg: `<svg viewBox="0 0 880 180" class="lc-diagram-svg" xmlns="http://www.w3.org/2000/svg">
-          <rect x="50" y="20" width="340" height="140" rx="8" fill="#ffffff" stroke="#cbd5e1" stroke-width="1.5"/>
-          <text x="65" y="45" fill="#0f172a" font-size="12" font-weight="700">Signups (All Users)</text>
-          <text x="65" y="75" fill="#2563eb" font-family="monospace" font-size="11">user_id (PK)</text>
-          <text x="65" y="105" fill="#16a34a" font-size="11">Guarantees 0-rate users appear!</text>
-
-          <path d="M 390 75 Q 450 75, 490 75" fill="none" stroke="#2563eb" stroke-width="2" marker-end="url(#arrowDistinct)"/>
-
-          <rect x="500" y="20" width="340" height="140" rx="8" fill="#ffffff" stroke="#cbd5e1" stroke-width="1.5"/>
-          <text x="515" y="45" fill="#0f172a" font-size="12" font-weight="700">Confirmations (Events)</text>
-          <text x="515" y="75" fill="#64748b" font-family="monospace" font-size="11">user_id, action ('confirmed' | 'timeout')</text>
-          <rect x="515" y="95" width="300" height="26" rx="4" fill="#eff6ff" stroke="#bfdbfe"/>
-          <text x="525" y="112" fill="#1d4ed8" font-family="monospace" font-size="10.5" font-weight="700">ROUND(IFNULL(AVG(action = 'confirmed'), 0), 2)</text>
-        </svg>`
+Return the result table in any order.`,
+      schemaDescription: 'Signups(user_id, time_stamp), Confirmations(user_id, time_stamp, action)',
+      sampleInput: {
+        table: 'Signups & Confirmations',
+        columns: ['user_id', 'action'],
+        rows: [
+          ['3', 'confirmed'],
+          ['3', 'timeout'],
+          ['7', 'confirmed'],
+          ['2', 'null']
+        ]
       },
+      expectedOutput: {
+        columns: ['user_id', 'confirmation_rate'],
+        rows: [
+          ['3', '0.50'],
+          ['7', '1.00'],
+          ['2', '0.00']
+        ]
+      },
+      svgDiagram: `<svg viewBox="0 0 880 180" class="lc-diagram-svg" xmlns="http://www.w3.org/2000/svg">
+        <rect x="40" y="20" width="340" height="140" rx="8" fill="#ffffff" stroke="#cbd5e1" stroke-width="1.5"/>
+        <text x="55" y="45" fill="#0f172a" font-size="12" font-weight="700">Signups (All Users)</text>
+        <text x="55" y="75" fill="#2563eb" font-family="monospace" font-size="11">user_id (PK)</text>
+        <text x="55" y="105" fill="#16a34a" font-size="11">Guarantees 0-rate users appear!</text>
+
+        <path d="M 380 75 Q 440 75, 490 75" fill="none" stroke="#2563eb" stroke-width="2" marker-end="url(#arrow1378)"/>
+
+        <rect x="500" y="20" width="340" height="140" rx="8" fill="#ffffff" stroke="#cbd5e1" stroke-width="1.5"/>
+        <text x="515" y="45" fill="#0f172a" font-size="12" font-weight="700">Confirmations (Events)</text>
+        <text x="515" y="75" fill="#64748b" font-family="monospace" font-size="11">user_id, action ('confirmed' | 'timeout')</text>
+        <rect x="515" y="95" width="300" height="26" rx="4" fill="#eff6ff" stroke="#bfdbfe"/>
+        <text x="525" y="112" fill="#1d4ed8" font-family="monospace" font-size="10.5" font-weight="700">ROUND(IFNULL(AVG(action = 'confirmed'), 0), 2)</text>
+      </svg>`,
       logicBreakdown: [
         'Users who never requested a confirmation must appear in the output with a rate of 0.00. This mandates a LEFT JOIN from Signups.',
         'In MySQL, action = "confirmed" evaluates to 1 when true and 0 when false. For users with no rows, AVG yields NULL.',
         'Wrap with IFNULL(..., 0) and round to 2 decimal places.'
       ],
-      solutionSql: `SELECT 
+      solutionSQL: `SELECT 
     s.user_id,
     ROUND(IFNULL(AVG(c.action = 'confirmed'), 0), 2) AS confirmation_rate
 FROM Signups s
 LEFT JOIN Confirmations c
     ON s.user_id = c.user_id
 GROUP BY s.user_id;`,
-      solutionWalkthrough: [
-        { line: 'SELECT s.user_id, ROUND(IFNULL(AVG(c.action = "confirmed"), 0), 2) AS confirmation_rate', explain: 'Computes the fraction of confirmed messages, falling back to 0.00 for inactive users.' },
-        { line: 'FROM Signups s LEFT JOIN Confirmations c ON s.user_id = c.user_id', explain: 'Retains every registered user regardless of confirmation activity.' },
-        { line: 'GROUP BY s.user_id;', explain: 'Aggregates statistics per individual user.' }
-      ],
-      initialCode: `SELECT 
-    s.user_id,
-    ROUND(IFNULL(AVG(c.action = 'confirmed'), 0), 2) AS confirmation_rate
-FROM Signups s
-LEFT JOIN Confirmations c
-    ON s.user_id = c.user_id
-GROUP BY s.user_id;`,
-      testQuery: `SELECT s.user_id, ROUND(IFNULL(AVG(c.action = 'confirmed'), 0), 2) AS confirmation_rate FROM Signups s LEFT JOIN Confirmations c ON s.user_id = c.user_id GROUP BY s.user_id;`,
-      expectedColumns: ['user_id', 'confirmation_rate']
+      lineByLineExplanation: [
+        { clause: 'SELECT s.user_id, ROUND(IFNULL(AVG(c.action = "confirmed"), 0), 2) AS confirmation_rate', exp: 'Computes fraction of confirmed messages, falling back to 0.00 for inactive users.' },
+        { clause: 'FROM Signups s LEFT JOIN Confirmations c ON s.user_id = c.user_id', exp: 'Retains every registered user regardless of confirmation activity.' },
+        { clause: 'GROUP BY s.user_id;', exp: 'Aggregates statistics per individual user.' }
+      ]
     }
   ]
 };

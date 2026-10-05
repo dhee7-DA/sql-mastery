@@ -377,7 +377,58 @@ window.LEETCODE_SECTION_1_DATA = (() => {
               Whenever counting text length or characters in SQL interviews, <strong>always use CHAR_LENGTH()</strong>!
             </div>
           </div>
-        `
+        `,
+        diagram: {
+          id: 'diag-string-byte-memory',
+          title: 'Memory Representation: CHAR_LENGTH() vs LENGTH() in UTF-8',
+          svg: `<svg viewBox="0 0 880 220" class="lc-diagram-svg" xmlns="http://www.w3.org/2000/svg">
+            <!-- Left Panel: CHAR_LENGTH (Characters) -->
+            <rect x="30" y="20" width="400" height="180" rx="8" fill="#f0fdf4" stroke="#86efac" stroke-width="1.5"/>
+            <rect x="45" y="32" width="160" height="24" rx="4" fill="#dcfce7" stroke="#86efac"/>
+            <text x="53" y="48" fill="#166534" font-family="monospace" font-size="11" font-weight="700">CHAR_LENGTH('Vote 🚀')</text>
+            <text x="45" y="78" fill="#0f172a" font-size="13" font-weight="700">6 Visible Character Glyphs</text>
+            
+            <g transform="translate(45, 95)">
+              <rect x="0" y="0" width="45" height="40" rx="4" fill="#ffffff" stroke="#86efac"/>
+              <text x="22" y="25" text-anchor="middle" font-family="monospace" font-weight="700" fill="#0f172a">V</text>
+              <rect x="52" y="0" width="45" height="40" rx="4" fill="#ffffff" stroke="#86efac"/>
+              <text x="74" y="25" text-anchor="middle" font-family="monospace" font-weight="700" fill="#0f172a">o</text>
+              <rect x="104" y="0" width="45" height="40" rx="4" fill="#ffffff" stroke="#86efac"/>
+              <text x="126" y="25" text-anchor="middle" font-family="monospace" font-weight="700" fill="#0f172a">t</text>
+              <rect x="156" y="0" width="45" height="40" rx="4" fill="#ffffff" stroke="#86efac"/>
+              <text x="178" y="25" text-anchor="middle" font-family="monospace" font-weight="700" fill="#0f172a">e</text>
+              <rect x="208" y="0" width="45" height="40" rx="4" fill="#ffffff" stroke="#86efac"/>
+              <text x="230" y="25" text-anchor="middle" font-family="monospace" fill="#94a3b8">[sp]</text>
+              <rect x="260" y="0" width="70" height="40" rx="4" fill="#eff6ff" stroke="#93c5fd" stroke-width="2"/>
+              <text x="295" y="26" text-anchor="middle" font-size="18">🚀</text>
+            </g>
+            <text x="45" y="165" fill="#166534" font-family="monospace" font-size="12" font-weight="700">Result: 6 characters (Safe &amp; Human-Accurate)</text>
+
+            <!-- Right Panel: LENGTH (Raw Bytes) -->
+            <rect x="450" y="20" width="400" height="180" rx="8" fill="#fef2f2" stroke="#fca5a5" stroke-width="1.5"/>
+            <rect x="465" y="32" width="150" height="24" rx="4" fill="#fee2e2" stroke="#fca5a5"/>
+            <text x="473" y="48" fill="#991b1b" font-family="monospace" font-size="11" font-weight="700">LENGTH('Vote 🚀')</text>
+            <text x="465" y="78" fill="#0f172a" font-size="13" font-weight="700">9 Raw UTF-8 Memory Bytes</text>
+
+            <g transform="translate(465, 95)">
+              <rect x="0" y="0" width="28" height="40" rx="3" fill="#ffffff" stroke="#e2e8f0"/>
+              <text x="14" y="24" text-anchor="middle" font-family="monospace" font-size="9" fill="#64748b">0x56</text>
+              <rect x="32" y="0" width="28" height="40" rx="3" fill="#ffffff" stroke="#e2e8f0"/>
+              <text x="46" y="24" text-anchor="middle" font-family="monospace" font-size="9" fill="#64748b">0x6F</text>
+              <rect x="64" y="0" width="28" height="40" rx="3" fill="#ffffff" stroke="#e2e8f0"/>
+              <text x="78" y="24" text-anchor="middle" font-family="monospace" font-size="9" fill="#64748b">0x74</text>
+              <rect x="96" y="0" width="28" height="40" rx="3" fill="#ffffff" stroke="#e2e8f0"/>
+              <text x="110" y="24" text-anchor="middle" font-family="monospace" font-size="9" fill="#64748b">0x65</text>
+              <rect x="128" y="0" width="28" height="40" rx="3" fill="#ffffff" stroke="#e2e8f0"/>
+              <text x="142" y="24" text-anchor="middle" font-family="monospace" font-size="9" fill="#64748b">0x20</text>
+              <!-- 4-byte Emoji Block -->
+              <rect x="160" y="0" width="180" height="40" rx="4" fill="#fff1f2" stroke="#f43f5e" stroke-width="1.5"/>
+              <text x="250" y="16" text-anchor="middle" font-family="monospace" font-size="8.5" fill="#e11d48">0xF0 0x9F 0x9A 0x80</text>
+              <text x="250" y="32" text-anchor="middle" font-family="monospace" font-size="9" font-weight="700" fill="#be123c">🚀 Emoji = 4 Bytes!</text>
+            </g>
+            <text x="465" y="165" fill="#dc2626" font-family="monospace" font-size="12" font-weight="700">Result: 9 bytes (Causes False Failure in LC #1683)</text>
+          </svg>`
+        }
       },
 
       {
@@ -581,7 +632,49 @@ window.LEETCODE_SECTION_1_DATA = (() => {
               </div>
             </div>
           </div>
-        `
+        `,
+        diagram: {
+          id: 'diag-null-safe-flowchart',
+          title: 'Evaluation Pathways: Regular != vs Spaceship <=> vs COALESCE()',
+          svg: `<svg viewBox="0 0 880 210" class="lc-diagram-svg" xmlns="http://www.w3.org/2000/svg">
+            <defs>
+              <marker id="flowArrow" viewBox="0 0 10 10" refX="5" refY="5" markerWidth="6" markerHeight="6" orient="auto-start-reverse">
+                <path d="M 0 1 L 8 5 L 0 9 z" fill="#2563eb"/>
+              </marker>
+            </defs>
+
+            <!-- Column Value (NULL) -->
+            <rect x="30" y="70" width="140" height="70" rx="6" fill="#fffbeb" stroke="#fde68a" stroke-width="2"/>
+            <text x="100" y="100" text-anchor="middle" font-family="monospace" font-size="12" font-weight="700" fill="#b45309">referee_id = NULL</text>
+            <text x="100" y="120" text-anchor="middle" font-size="10.5" fill="#78350f">Candidate Row</text>
+
+            <!-- Branch 1: Standard != (DROPPED) -->
+            <path d="M 170 85 C 240 85, 260 45, 330 45" fill="none" stroke="#dc2626" stroke-width="2" marker-end="url(#flowArrow)"/>
+            <rect x="330" y="20" width="280" height="50" rx="6" fill="#fef2f2" stroke="#fca5a5"/>
+            <text x="345" y="42" font-family="monospace" font-size="11" font-weight="700" fill="#991b1b">referee_id != 2</text>
+            <text x="345" y="58" font-size="11" fill="#dc2626">Evaluates to UNKNOWN ➔ ❌ Silently Dropped!</text>
+
+            <!-- Branch 2: Spaceship <=> (KEPT) -->
+            <path d="M 170 105 L 320 105" fill="none" stroke="#16a34a" stroke-width="2" marker-end="url(#flowArrow)"/>
+            <rect x="330" y="80" width="280" height="50" rx="6" fill="#f0fdf4" stroke="#86efac"/>
+            <text x="345" y="102" font-family="monospace" font-size="11" font-weight="700" fill="#166534">NOT (referee_id &lt;=&gt; 2)</text>
+            <text x="345" y="118" font-size="11" fill="#15803d">NULL &lt;=&gt; 2 is FALSE ➔ NOT FALSE = TRUE ➔ ⚡ KEPT!</text>
+
+            <!-- Branch 3: COALESCE (KEPT) -->
+            <path d="M 170 125 C 240 125, 260 165, 330 165" fill="none" stroke="#2563eb" stroke-width="2" marker-end="url(#flowArrow)"/>
+            <rect x="330" y="140" width="280" height="50" rx="6" fill="#eff6ff" stroke="#bfdbfe"/>
+            <text x="345" y="162" font-family="monospace" font-size="11" font-weight="700" fill="#1d4ed8">COALESCE(referee_id, 0) != 2</text>
+            <text x="345" y="178" font-size="11" fill="#2563eb">NULL replaced by 0 ➔ 0 != 2 = TRUE ➔ ⚡ KEPT!</text>
+
+            <!-- Final Takeaway Badge -->
+            <rect x="640" y="45" width="210" height="120" rx="8" fill="#ffffff" stroke="#cbd5e1" stroke-width="1.5"/>
+            <text x="655" y="70" font-size="12" font-weight="700" fill="#0f172a">Executive Takeaway</text>
+            <text x="655" y="92" font-size="11" fill="#64748b">In SQL interviews, using</text>
+            <text x="655" y="110" font-family="monospace" font-size="11" font-weight="700" fill="#2563eb">&lt;=&gt; or COALESCE()</text>
+            <text x="655" y="130" font-size="11" fill="#64748b">proves you master 3VL</text>
+            <text x="655" y="148" font-size="11" fill="#16a34a" font-weight="700">edge cases!</text>
+          </svg>`
+        }
       },
 
       {
@@ -634,7 +727,44 @@ window.LEETCODE_SECTION_1_DATA = (() => {
               </tr>
             </tbody>
           </table>
-        `
+        `,
+        diagram: {
+          id: 'diag-operator-precedence',
+          title: 'Operator Precedence Hierarchy & Defensive Parentheses Rule',
+          svg: `<svg viewBox="0 0 880 200" class="lc-diagram-svg" xmlns="http://www.w3.org/2000/svg">
+            <!-- Left: Precedence Pyramid -->
+            <g transform="translate(30, 20)">
+              <rect x="0" y="0" width="380" height="160" rx="8" fill="#ffffff" stroke="#cbd5e1" stroke-width="1.5"/>
+              <text x="20" y="28" font-size="12" font-weight="700" fill="#0f172a">SQL Logical Operator Precedence</text>
+              
+              <!-- Tier 1: NOT -->
+              <rect x="20" y="45" width="340" height="28" rx="4" fill="#eff6ff" stroke="#bfdbfe"/>
+              <text x="35" y="64" font-family="monospace" font-size="11" font-weight="700" fill="#1d4ed8">1. NOT (Highest Priority • Binds Immediately)</text>
+
+              <!-- Tier 2: AND -->
+              <rect x="20" y="80" width="340" height="28" rx="4" fill="#f0fdf4" stroke="#86efac"/>
+              <text x="35" y="99" font-family="monospace" font-size="11" font-weight="700" fill="#166534">2. AND (Medium Priority • Binds Like Multiplication)</text>
+
+              <!-- Tier 3: OR -->
+              <rect x="20" y="115" width="340" height="28" rx="4" fill="#fffbeb" stroke="#fde68a"/>
+              <text x="35" y="134" font-family="monospace" font-size="11" font-weight="700" fill="#b45309">3. OR (Lowest Priority • Binds Like Addition)</text>
+            </g>
+
+            <!-- Right: The Classic Trap & Solution -->
+            <g transform="translate(440, 20)">
+              <rect x="0" y="0" width="410" height="160" rx="8" fill="#ffffff" stroke="#cbd5e1" stroke-width="1.5"/>
+              <text x="20" y="28" font-size="12" font-weight="700" fill="#0f172a">The Ambiguity Trap in Interviews</text>
+              
+              <rect x="20" y="45" width="370" height="42" rx="4" fill="#fef2f2" stroke="#fca5a5"/>
+              <text x="30" y="62" font-family="monospace" font-size="11" fill="#dc2626">WHERE status = 'active' OR role = 'admin' AND score &gt; 90</text>
+              <text x="30" y="78" font-size="10.5" fill="#991b1b">⚠️ Engine evaluates as: active OR (admin AND score &gt; 90)</text>
+
+              <rect x="20" y="95" width="370" height="42" rx="4" fill="#f0fdf4" stroke="#86efac"/>
+              <text x="30" y="112" font-family="monospace" font-size="11" font-weight="700" fill="#166534">WHERE (status = 'active' OR role = 'admin') AND score &gt; 90</text>
+              <text x="30" y="128" font-size="10.5" fill="#15803d">⚡ Defensive parentheses force intended grouping!</text>
+            </g>
+          </svg>`
+        }
       }
     ],
 
