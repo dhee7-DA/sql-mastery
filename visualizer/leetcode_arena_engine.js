@@ -47,7 +47,22 @@ window.LEETCODE_ARENA = (() => {
   }
 
   function getSectionData() {
+    if (state.activeConceptId === 'concept-2') {
+      return window.LEETCODE_SECTION_2_DATA;
+    }
     return window.LEETCODE_SECTION_1_DATA;
+  }
+
+  function switchConcept(conceptId) {
+    state.activeConceptId = conceptId;
+    const data = getSectionData();
+    if (data && data.problems && data.problems.length > 0) {
+      state.activeProblemId = data.problems[0].id;
+    }
+    state.activeDrillId = 1;
+    renderShell();
+    renderActiveStage();
+    updateStatsHeader();
   }
 
   // ---------------------------------------------------------------------------
@@ -78,7 +93,7 @@ window.LEETCODE_ARENA = (() => {
             <h2>
               <span style="color: var(--accent, #ea580c);">⚡</span>
               LeetCode 50 SQL Arena
-              <span class="lc-concept-badge">Concept-First Masterclass</span>
+              <span class="lc-concept-badge">${data.title}</span>
             </h2>
             <p>Master the canonical LeetCode SQL 50 through concept architecture, visual SVG schema diagrams, 100 theory trap MCQs, 100 prep drills, and instant test verification.</p>
           </div>
@@ -100,12 +115,12 @@ window.LEETCODE_ARENA = (() => {
 
         <!-- Concept Navigation Bar -->
         <div class="lc-concept-nav">
-          <button class="lc-concept-btn active" data-concept="concept-1">
+          <button class="lc-concept-btn ${state.activeConceptId === 'concept-1' ? 'active' : ''}" data-concept="concept-1">
             <span>📐 Concept 1:</span>
             <span>Filtering &amp; Three-Valued Logic</span>
             <span class="lc-concept-badge">5 Problems</span>
           </button>
-          <button class="lc-concept-btn" style="opacity: 0.6; cursor: not-allowed;" title="Upcoming Module">
+          <button class="lc-concept-btn ${state.activeConceptId === 'concept-2' ? 'active' : ''}" data-concept="concept-2">
             <span>🔗 Concept 2:</span>
             <span>Relational Joins &amp; Self-Joins</span>
             <span class="lc-concept-badge">9 Problems</span>
@@ -139,33 +154,43 @@ window.LEETCODE_ARENA = (() => {
 
         <!-- 4-Stage Sub Navigation -->
         <div class="lc-stage-nav">
-          <button class="lc-stage-btn active" data-stage="masterclass">
+          <button class="lc-stage-btn ${state.activeStage === 'masterclass' ? 'active' : ''}" data-stage="masterclass">
             <span>📐 Stage 1: Visual Masterclass</span>
             <span class="lc-stage-badge">SVG Deep-Dive</span>
           </button>
-          <button class="lc-stage-btn" data-stage="mcqs">
+          <button class="lc-stage-btn ${state.activeStage === 'mcqs' ? 'active' : ''}" data-stage="mcqs">
             <span>🧠 Stage 2: Concept MCQs</span>
             <span class="lc-stage-badge">100 Traps</span>
           </button>
-          <button class="lc-stage-btn" data-stage="drills">
+          <button class="lc-stage-btn ${state.activeStage === 'drills' ? 'active' : ''}" data-stage="drills">
             <span>💼 Stage 3: Prep Query Drills</span>
             <span class="lc-stage-badge">100 Scenarios</span>
           </button>
-          <button class="lc-stage-btn" data-stage="problems">
+          <button class="lc-stage-btn ${state.activeStage === 'problems' ? 'active' : ''}" data-stage="problems">
             <span>⚡ Stage 4: LeetCode Problems</span>
-            <span class="lc-stage-badge">5 Curated</span>
+            <span class="lc-stage-badge">${data.problems ? data.problems.length : 0} Curated</span>
           </button>
         </div>
 
         <!-- Stage Panels Container -->
         <div id="lcStageContainer">
-          <div class="lc-stage-panel active" id="lcPanelMasterclass"></div>
-          <div class="lc-stage-panel" id="lcPanelMcqs"></div>
-          <div class="lc-stage-panel" id="lcPanelDrills"></div>
-          <div class="lc-stage-panel" id="lcPanelProblems"></div>
+          <div class="lc-stage-panel ${state.activeStage === 'masterclass' ? 'active' : ''}" id="lcPanelMasterclass"></div>
+          <div class="lc-stage-panel ${state.activeStage === 'mcqs' ? 'active' : ''}" id="lcPanelMcqs"></div>
+          <div class="lc-stage-panel ${state.activeStage === 'drills' ? 'active' : ''}" id="lcPanelDrills"></div>
+          <div class="lc-stage-panel ${state.activeStage === 'problems' ? 'active' : ''}" id="lcPanelProblems"></div>
         </div>
       </div>
     `;
+
+    // Hook up Concept navigation
+    container.querySelectorAll('.lc-concept-btn[data-concept]').forEach(btn => {
+      btn.addEventListener('click', () => {
+        const conceptId = btn.dataset.concept;
+        if (conceptId && conceptId !== state.activeConceptId) {
+          switchConcept(conceptId);
+        }
+      });
+    });
 
     // Hook up Stage navigation
     container.querySelectorAll('.lc-stage-btn').forEach(btn => {
