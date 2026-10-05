@@ -4,13 +4,30 @@
    NO harsh orange outlines. Pure typographical and architectural elegance.
    ============================================================================= */
 
+/* Top Navigation Tab Override - Completely removes orange outline */
+#btnNavLeetCode.active,
+.nav-group-trigger#btnNavLeetCode.active,
+[data-theme="active-builders"] .nav-group-trigger#btnNavLeetCode.active {
+  background: #ffffff !important;
+  border-color: #18181b !important;
+  color: #18181b !important;
+  box-shadow: 0 1px 3px rgba(0, 0, 0, 0.08), 0 0 0 1px #18181b !important;
+}
+
+#btnNavLeetCode .nav-current-pill,
+[data-theme="active-builders"] #btnNavLeetCode .nav-current-pill {
+  color: #2563eb !important;
+  background: #eff6ff !important;
+  border: 1px solid #bfdbfe !important;
+}
+
 .lc-arena-container {
   display: flex;
   flex-direction: column;
   gap: 20px;
-  max-width: 1400px;
+  max-width: 1360px;
   margin: 0 auto;
-  padding: 20px 24px 60px 24px;
+  padding: 16px 20px 60px 20px;
   font-family: var(--font-sans, -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif);
   color: var(--text-primary, #18181b);
 }
@@ -25,7 +42,7 @@
   border: 1px solid var(--border-default, #e4e4e7);
   border-radius: 8px;
   padding: 20px 24px;
-  box-shadow: 0 1px 3px rgba(0, 0, 0, 0.04);
+  box-shadow: 0 1px 3px rgba(0, 0, 0, 0.03);
 }
 
 .lc-title-area h2 {
@@ -193,7 +210,7 @@
 }
 
 /* =============================================================================
-   STAGE 1: VISUAL MASTERCLASS & TEXTBOOK LEARNING MATERIAL
+   STAGE 1: VISUAL MASTERCLASS & TYPOGRAPHY
    ============================================================================= */
 .lc-masterclass-grid {
   display: flex;
@@ -205,7 +222,7 @@
   background: var(--bg-surface, #ffffff);
   border: 1px solid var(--border-default, #e4e4e7);
   border-radius: 8px;
-  padding: 24px;
+  padding: 24px 28px;
   box-shadow: 0 1px 3px rgba(0, 0, 0, 0.02);
 }
 
@@ -213,7 +230,7 @@
   display: flex;
   justify-content: space-between;
   align-items: center;
-  margin-bottom: 16px;
+  margin-bottom: 18px;
   padding-bottom: 12px;
   border-bottom: 1px solid var(--border-subtle, #e4e4e7);
 }
@@ -223,20 +240,120 @@
   font-weight: 700;
   display: flex;
   align-items: center;
-  gap: 8px;
+  gap: 10px;
   color: var(--text-primary, #18181b);
+}
+
+.lc-p {
+  font-size: 14px;
+  line-height: 1.7;
+  color: var(--text-secondary, #3f3f46);
+  margin: 0 0 14px 0;
+}
+
+.lc-p strong {
+  color: var(--text-primary, #18181b);
+}
+
+.lc-p code,
+code.lc-code-pill {
+  font-family: var(--font-mono, monospace);
+  font-size: 12px;
+  background: #f4f4f5;
+  padding: 2px 6px;
+  border-radius: 4px;
+  border: 1px solid #e4e4e7;
+  color: #0f766e;
+  font-weight: 600;
+}
+
+/* Highlighted Formula & Principle Banner */
+.lc-rule-banner {
+  background: #f8fafc;
+  border: 1px solid #e2e8f0;
+  border-left: 4px solid #2563eb;
+  border-radius: 6px;
+  padding: 14px 18px;
+  margin: 16px 0;
+  font-size: 13.5px;
+  line-height: 1.6;
+}
+
+.lc-rule-banner strong {
+  color: #1e293b;
+}
+
+/* Side-by-Side Comparison Grid */
+.lc-comparison-grid {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 16px;
+  margin: 18px 0;
+}
+
+.lc-compare-card {
+  border-radius: 8px;
+  padding: 16px 18px;
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+}
+
+.lc-compare-card.bad {
+  background: #fef2f2;
+  border: 1px solid #fecaca;
+}
+
+.lc-compare-card.good {
+  background: #f0fdf4;
+  border: 1px solid #bbf7d0;
+}
+
+.lc-compare-title {
+  font-size: 13px;
+  font-weight: 700;
+  display: flex;
+  align-items: center;
+  gap: 6px;
+}
+
+.lc-compare-card.bad .lc-compare-title {
+  color: #991b1b;
+}
+
+.lc-compare-card.good .lc-compare-title {
+  color: #166534;
+}
+
+.lc-code-snippet {
+  font-family: var(--font-mono, monospace);
+  font-size: 12px;
+  padding: 10px 12px;
+  border-radius: 6px;
+  background: #ffffff;
+  border: 1px solid rgba(0, 0, 0, 0.08);
+  color: #0f172a;
+  line-height: 1.5;
+  overflow-x: auto;
+}
+
+.lc-compare-explain {
+  font-size: 12.5px;
+  line-height: 1.55;
+  color: #475569;
 }
 
 .lc-diagram-wrap {
   background: #ffffff;
   border: 1px solid var(--border-subtle, #e4e4e7);
-  border-radius: 6px;
-  padding: 20px;
+  border-radius: 8px;
+  padding: 16px;
   margin: 16px 0;
   display: flex;
   justify-content: center;
   align-items: center;
   overflow-x: auto;
+  box-shadow: 0 1px 2px rgba(0, 0, 0, 0.02);
 }
 
 .lc-diagram-svg {
@@ -246,42 +363,7 @@
   display: block;
 }
 
-.lc-explainer-text {
-  font-size: 14px;
-  line-height: 1.7;
-  color: var(--text-secondary, #3f3f46);
-}
-
-.lc-explainer-text strong {
-  color: var(--text-primary, #18181b);
-}
-
-.lc-explainer-text code {
-  font-family: var(--font-mono, monospace);
-  font-size: 12px;
-  background: var(--bg-surface-elevated, #f4f4f5);
-  padding: 2px 6px;
-  border-radius: 4px;
-  border: 1px solid var(--border-subtle, #e4e4e7);
-  color: #0f766e;
-}
-
-.lc-section-break {
-  height: 1px;
-  background: var(--border-subtle, #e4e4e7);
-  margin: 20px 0;
-}
-
-.lc-sub-header {
-  font-size: 14.5px;
-  font-weight: 700;
-  color: var(--text-primary, #18181b);
-  margin: 16px 0 8px 0;
-  display: flex;
-  align-items: center;
-  gap: 6px;
-}
-
+/* Callouts */
 .lc-callout-grid {
   display: grid;
   grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
@@ -930,6 +1012,7 @@
 }
 
 @media (max-width: 900px) {
+  .lc-comparison-grid,
   .lc-drill-grid,
   .lc-problems-layout {
     grid-template-columns: 1fr;

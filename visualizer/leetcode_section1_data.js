@@ -1,84 +1,137 @@
 // =============================================================================
-// LEETCODE SQL 50 ARENA - CONCEPT SECTION 1 DATA (TEXTBOOK GRADE)
+// LEETCODE SQL 50 ARENA - CONCEPT SECTION 1 DATA (INTUITIVE & BEAUTIFULLY FORMATTED)
 // Concept 1: Filtering & Three-Valued Logic (WHERE, NULL, and Predicates)
 // =============================================================================
 
 window.LEETCODE_SECTION_1_DATA = (() => {
 
-  // ---------------------------------------------------------------------------
-  // 1. EXTENSIVE MASTERCLASS LEARNING MATERIAL WITH MODERN LIGHT-THEME SVGS
-  // ---------------------------------------------------------------------------
   const masterclass = {
     conceptId: 'concept-1',
     title: 'Filtering & Three-Valued Logic Masterclass',
-    subtitle: 'An exhaustive deep dive into physical execution pipelines, 3VL boolean mechanics, NULL traps, index sargability, and string semantics.',
-    keyTakeaway: 'The WHERE clause operates during Phase 2 of physical execution. It enforces an existential filter: only rows where the boolean expression strictly evaluates to TRUE survive into memory buffers. Rows evaluating to FALSE or UNKNOWN are immediately dropped.',
-    
+    subtitle: 'Learn how the database really filters rows, why NULL is not zero, and how to avoid silent data loss in technical interviews.',
+    keyTakeaway: 'The WHERE clause acts like a strict bouncer at a nightclub door: it only lets rows in if their pass evaluates to strictly TRUE. If a row evaluates to FALSE or UNKNOWN (NULL), it is discarded on the spot.',
+
     chapters: [
       {
         id: 'chap-1-exec-order',
         number: '1.1',
-        title: 'The Anatomy of SQL Physical Execution Pipeline',
-        content: `In declarative programming languages like SQL, queries are written in a logical syntax that looks like natural English (<code>SELECT ... FROM ... WHERE ...</code>). However, the internal relational database management system (RDBMS) execution engine parses, compiles, and optimizes this query into a completely different physical sequence.
+        title: 'How SQL Executes Your Query (The 8-Step Assembly Line)',
+        content: `
+          <p class="lc-p">
+            When you read an SQL query, it looks like a natural English sentence:
+            <code class="lc-code-pill">SELECT name, salary FROM Employees WHERE salary &gt; 50000;</code>
+            Because you read <strong>SELECT</strong> first, your brain naturally assumes the database picks the columns first.
+          </p>
 
-Understanding this sequence is the single most important prerequisite for solving interview traps:
+          <p class="lc-p">
+            <strong>The database does the exact opposite!</strong> Think of the database as a chef making a salad:
+          </p>
 
-<ol style="margin: 12px 0 16px 20px; line-height: 1.8;">
-  <li><strong>Phase 1: FROM &amp; JOIN</strong> &mdash; The storage engine locates the target physical tables on disk or buffer pool, loads row candidates, and applies any Cartesian products or <code>ON</code> join conditions to construct the base working rowset.</li>
-  <li><strong>Phase 2: WHERE Filter</strong> &mdash; The filter engine streams through every row in the working rowset. For each row, it evaluates the boolean predicate. Rows evaluating to <code>FALSE</code> or <code>UNKNOWN</code> are discarded on the fly.</li>
-  <li><strong>Phase 3: GROUP BY</strong> &mdash; Surviving rows are partitioned into aggregate buckets based on distinct combinations of the grouping keys.</li>
-  <li><strong>Phase 4: HAVING</strong> &mdash; Evaluates aggregate predicates (such as <code>COUNT(*) &gt; 5</code>) on the group buckets, discarding entire groups.</li>
-  <li><strong>Phase 5: SELECT &amp; Expressions</strong> &mdash; The projection engine computes mathematical calculations, string functions, window functions, and assigns column aliases (e.g. <code>AS total_rev</code>).</li>
-  <li><strong>Phase 6: DISTINCT</strong> &mdash; A hash table or sort-based deduplication pass strips duplicate projection rows.</li>
-  <li><strong>Phase 7: ORDER BY</strong> &mdash; Rows are sorted in memory (or external temporary disk files if the rowset exceeds the memory buffer).</li>
-  <li><strong>Phase 8: LIMIT / OFFSET</strong> &mdash; The cursor skips and caps the output stream, returning the final result to the client.</li>
-</ol>
+          <div class="lc-rule-banner">
+            <strong>The Kitchen Analogy:</strong><br>
+            1. First, the chef grabs the raw vegetables from the refrigerator (<code class="lc-code-pill">FROM</code>).<br>
+            2. Next, the chef washes and throws away rotten tomatoes (<code class="lc-code-pill">WHERE</code>).<br>
+            3. Only at the very end does the chef chop them into a bowl, arrange the presentation, and serve (<code class="lc-code-pill">SELECT</code>).
+          </div>
 
-<strong>The Alias Blindspot Trap:</strong> Candidates often try to write <code>WHERE total_profit &gt; 1000</code> when <code>total_profit</code> was defined in the <code>SELECT</code> clause. Because Phase 2 (WHERE) runs long before Phase 5 (SELECT), the database parser throws an immediate <code>Unknown column 'total_profit'</code> error. In contrast, <code>ORDER BY total_profit</code> works flawlessly because Phase 7 runs after Phase 5!`,
+          <p class="lc-p">
+            Here is the physical order the SQL engine runs internally every single time:
+          </p>
+
+          <div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(240px, 1fr)); gap: 12px; margin: 16px 0;">
+            <div style="background: #f8fafc; border: 1px solid #e2e8f0; border-radius: 6px; padding: 12px;">
+              <span style="font-family: var(--font-mono); font-size: 11px; font-weight: 700; color: #2563eb;">STEP 1: FROM &amp; JOIN</span>
+              <div style="font-weight: 600; font-size: 13px; color: #18181b; margin-top: 2px;">Load Raw Tables</div>
+              <div style="font-size: 12px; color: #64748b; margin-top: 4px;">Pulls raw table pages from storage.</div>
+            </div>
+
+            <div style="background: #f8fafc; border: 1px solid #2563eb; border-radius: 6px; padding: 12px;">
+              <span style="font-family: var(--font-mono); font-size: 11px; font-weight: 700; color: #2563eb;">STEP 2: WHERE (Filter)</span>
+              <div style="font-weight: 600; font-size: 13px; color: #18181b; margin-top: 2px;">Discard Bad Rows</div>
+              <div style="font-size: 12px; color: #64748b; margin-top: 4px;">Tests your condition on every row.</div>
+            </div>
+
+            <div style="background: #f8fafc; border: 1px solid #e2e8f0; border-radius: 6px; padding: 12px;">
+              <span style="font-family: var(--font-mono); font-size: 11px; font-weight: 700; color: #64748b;">STEP 3: GROUP BY</span>
+              <div style="font-weight: 600; font-size: 13px; color: #18181b; margin-top: 2px;">Bucket Rows</div>
+              <div style="font-size: 12px; color: #64748b; margin-top: 4px;">Groups remaining rows by key.</div>
+            </div>
+
+            <div style="background: #f8fafc; border: 1px solid #e2e8f0; border-radius: 6px; padding: 12px;">
+              <span style="font-family: var(--font-mono); font-size: 11px; font-weight: 700; color: #64748b;">STEP 4: HAVING</span>
+              <div style="font-weight: 600; font-size: 13px; color: #18181b; margin-top: 2px;">Filter Buckets</div>
+              <div style="font-size: 12px; color: #64748b; margin-top: 4px;">Checks aggregate thresholds.</div>
+            </div>
+
+            <div style="background: #f0fdf4; border: 1px solid #86efac; border-radius: 6px; padding: 12px;">
+              <span style="font-family: var(--font-mono); font-size: 11px; font-weight: 700; color: #166534;">STEP 5: SELECT</span>
+              <div style="font-weight: 600; font-size: 13px; color: #18181b; margin-top: 2px;">Pick &amp; Name Columns</div>
+              <div style="font-size: 12px; color: #166534; margin-top: 4px;">Calculates math and assigns aliases.</div>
+            </div>
+
+            <div style="background: #f8fafc; border: 1px solid #e2e8f0; border-radius: 6px; padding: 12px;">
+              <span style="font-family: var(--font-mono); font-size: 11px; font-weight: 700; color: #64748b;">STEP 6: ORDER BY</span>
+              <div style="font-weight: 600; font-size: 13px; color: #18181b; margin-top: 2px;">Sort Output</div>
+              <div style="font-size: 12px; color: #64748b; margin-top: 4px;">Orders rows A-Z or High-Low.</div>
+            </div>
+          </div>
+
+          <div class="lc-callout-card warning" style="margin-top: 14px;">
+            <div class="lc-callout-title">
+              <span>⚠️</span>
+              <span>Why Aliases Fail in WHERE (The #1 Interview Stumble)</span>
+            </div>
+            <div class="lc-callout-body">
+              Imagine you write: <code class="lc-code-pill">SELECT price * quantity AS total_cost FROM Sales WHERE total_cost &gt; 100;</code><br>
+              This query crashes with: <em>"Unknown column 'total_cost' in where clause"</em>.<br><br>
+              <strong>Why?</strong> The label tag <code class="lc-code-pill">total_cost</code> is only created at <strong>Step 5 (SELECT)</strong>. But <strong>Step 2 (WHERE)</strong> runs before Step 5 even begins! When Step 2 asks for "total_cost", that label does not exist in memory yet. You must write: <code class="lc-code-pill">WHERE price * quantity &gt; 100</code>.
+            </div>
+          </div>
+        `,
         diagram: {
           id: 'diag-exec-pipeline',
-          title: 'Physical Query Lifecycle: Memory Buffer & Predicate Gate',
-          svg: `<svg viewBox="0 0 900 240" class="lc-diagram-svg" xmlns="http://www.w3.org/2000/svg">
+          title: 'Visual Flow: Raw Rows Streaming Through The Filter Gate',
+          svg: `<svg viewBox="0 0 880 220" class="lc-diagram-svg" xmlns="http://www.w3.org/2000/svg">
             <defs>
-              <marker id="arrow" viewBox="0 0 10 10" refX="6" refY="5" markerWidth="6" markerHeight="6" orient="auto-start-reverse">
-                <path d="M 0 1 L 8 5 L 0 9 z" fill="#475569"/>
+              <marker id="arrowhead" viewBox="0 0 10 10" refX="5" refY="5" markerWidth="6" markerHeight="6" orient="auto-start-reverse">
+                <path d="M 0 1 L 8 5 L 0 9 z" fill="#2563eb"/>
               </marker>
             </defs>
-            <!-- Phase 1: FROM -->
-            <rect x="20" y="30" width="230" height="175" rx="8" fill="#f8fafc" stroke="#cbd5e1" stroke-width="1.5"/>
-            <rect x="35" y="45" width="80" height="20" rx="4" fill="#eff6ff" stroke="#bfdbfe"/>
-            <text x="42" y="59" fill="#1d4ed8" font-family="monospace" font-size="10.5" font-weight="700">PHASE 1: FROM</text>
-            <text x="35" y="88" fill="#0f172a" font-size="14" font-weight="700">Base Table Scan</text>
-            <text x="35" y="112" fill="#52525b" font-size="12" line-height="1.4">Reads raw rows from disk blocks or buffer cache pool.</text>
-            <rect x="35" y="150" width="130" height="28" rx="5" fill="#ffffff" stroke="#e2e8f0"/>
-            <text x="45" y="169" fill="#0284c7" font-family="monospace" font-size="11.5" font-weight="600">📥 10,000 Rows In</text>
+
+            <!-- Box 1: Storage -->
+            <rect x="20" y="30" width="220" height="160" rx="8" fill="#f8fafc" stroke="#cbd5e1" stroke-width="1.5"/>
+            <rect x="35" y="45" width="105" height="22" rx="4" fill="#eff6ff" stroke="#bfdbfe"/>
+            <text x="43" y="60" fill="#1d4ed8" font-family="monospace" font-size="11" font-weight="700">1. FROM &amp; JOIN</text>
+            <text x="35" y="92" fill="#0f172a" font-size="14" font-weight="700">Raw Table Data</text>
+            <text x="35" y="115" fill="#64748b" font-size="12">Reads all candidate records from disk into RAM.</text>
+            <rect x="35" y="145" width="120" height="26" rx="4" fill="#ffffff" stroke="#cbd5e1"/>
+            <text x="45" y="162" fill="#2563eb" font-family="monospace" font-size="11" font-weight="600">📥 1,000 Rows In</text>
 
             <!-- Arrow 1 to 2 -->
-            <line x1="250" y1="117" x2="310" y2="117" stroke="#475569" stroke-width="2" marker-end="url(#arrow)"/>
+            <line x1="245" y1="110" x2="305" y2="110" stroke="#2563eb" stroke-width="2" marker-end="url(#arrowhead)"/>
 
-            <!-- Phase 2: WHERE -->
-            <rect x="320" y="15" width="280" height="205" rx="8" fill="#ffffff" stroke="#2563eb" stroke-width="2" filter="drop-shadow(0 4px 6px rgba(0,0,0,0.04))"/>
-            <rect x="335" y="30" width="95" height="20" rx="4" fill="#eff6ff" stroke="#bfdbfe"/>
-            <text x="342" y="44" fill="#1d4ed8" font-family="monospace" font-size="10.5" font-weight="700">PHASE 2: WHERE</text>
-            <text x="335" y="74" fill="#0f172a" font-size="14" font-weight="700">Streaming Filter Gate</text>
-            <text x="335" y="98" fill="#52525b" font-size="12">Tests predicate per row:</text>
-            <text x="335" y="120" fill="#dc2626" font-size="11.5" font-weight="600">❌ FALSE ➔ Discarded</text>
-            <text x="335" y="140" fill="#ea580c" font-size="11.5" font-weight="600">⚠️ UNKNOWN (NULL) ➔ Discarded</text>
-            <text x="335" y="160" fill="#16a34a" font-size="11.5" font-weight="600">✅ TRUE ➔ Retained in memory</text>
-            <rect x="335" y="175" width="200" height="26" rx="4" fill="#f8fafc" stroke="#cbd5e1"/>
-            <text x="345" y="192" fill="#475569" font-family="monospace" font-size="10.5">WHERE referee_id != 2</text>
+            <!-- Box 2: Filter Gate -->
+            <rect x="315" y="15" width="270" height="190" rx="8" fill="#ffffff" stroke="#2563eb" stroke-width="2"/>
+            <rect x="330" y="30" width="130" height="22" rx="4" fill="#eff6ff" stroke="#bfdbfe"/>
+            <text x="338" y="45" fill="#1d4ed8" font-family="monospace" font-size="11" font-weight="700">2. WHERE (Filter Gate)</text>
+            <text x="330" y="78" fill="#0f172a" font-size="14" font-weight="700">Tests Condition Per Row</text>
+            <text x="330" y="105" fill="#dc2626" font-size="12" font-weight="600">❌ FALSE ➔ Dropped</text>
+            <text x="330" y="128" fill="#d97706" font-size="12" font-weight="600">⚠️ UNKNOWN (NULL) ➔ Dropped</text>
+            <text x="330" y="150" fill="#16a34a" font-size="12" font-weight="600">✅ TRUE ➔ Kept &amp; Passed Through</text>
+            <rect x="330" y="165" width="210" height="24" rx="4" fill="#f8fafc" stroke="#cbd5e1"/>
+            <text x="340" y="181" fill="#475569" font-family="monospace" font-size="11">Only TRUE rows survive</text>
 
             <!-- Arrow 2 to 3 -->
-            <line x1="600" y1="117" x2="660" y2="117" stroke="#475569" stroke-width="2" marker-end="url(#arrow)"/>
+            <line x1="590" y1="110" x2="650" y2="110" stroke="#2563eb" stroke-width="2" marker-end="url(#arrowhead)"/>
 
-            <!-- Phase 3: SELECT -->
-            <rect x="670" y="30" width="210" height="175" rx="8" fill="#f8fafc" stroke="#cbd5e1" stroke-width="1.5"/>
-            <rect x="685" y="45" width="95" height="20" rx="4" fill="#f0fdf4" stroke="#bbf7d0"/>
-            <text x="692" y="59" fill="#15803d" font-family="monospace" font-size="10.5" font-weight="700">PHASE 5: SELECT</text>
-            <text x="685" y="88" fill="#0f172a" font-size="14" font-weight="700">Column Projection</text>
-            <text x="685" y="112" fill="#52525b" font-size="12">Computes expressions &amp; assigns output column aliases.</text>
-            <rect x="685" y="150" width="130" height="28" rx="5" fill="#ffffff" stroke="#e2e8f0"/>
-            <text x="695" y="169" fill="#16a34a" font-family="monospace" font-size="11.5" font-weight="600">📤 420 Filtered Rows</text>
+            <!-- Box 3: Projection -->
+            <rect x="660" y="30" width="200" height="160" rx="8" fill="#f8fafc" stroke="#cbd5e1" stroke-width="1.5"/>
+            <rect x="675" y="45" width="90" height="22" rx="4" fill="#f0fdf4" stroke="#bbf7d0"/>
+            <text x="683" y="60" fill="#15803d" font-family="monospace" font-size="11" font-weight="700">5. SELECT</text>
+            <text x="675" y="92" fill="#0f172a" font-size="14" font-weight="700">Final Columns</text>
+            <text x="675" y="115" fill="#64748b" font-size="12">Picks the requested fields and renames aliases.</text>
+            <rect x="675" y="145" width="130" height="26" rx="4" fill="#ffffff" stroke="#bbf7d0"/>
+            <text x="685" y="162" fill="#16a34a" font-family="monospace" font-size="11" font-weight="600">📤 42 Surviving Rows</text>
           </svg>`
         }
       },
@@ -86,83 +139,100 @@ Understanding this sequence is the single most important prerequisite for solvin
       {
         id: 'chap-2-3vl-logic',
         number: '1.2',
-        title: 'Three-Valued Logic (3VL) & The Deep Anatomy of NULL',
-        content: `Standard programming languages (Java, Python, C++, TypeScript) operate in **Two-Valued Logic (2VL)**: every expression is either <code>true</code> or <code>false</code>. 
+        title: 'The Mystery of NULL: Why NULL is NOT Zero or Blank',
+        content: `
+          <p class="lc-p">
+            In everyday programming (JavaScript, Python), a variable is usually either truthy or falsy. In SQL, however, there is a third state called <strong>UNKNOWN</strong>.
+          </p>
 
-In contrast, SQL is fundamentally built upon **Three-Valued Logic (3VL)**, formulated by database pioneer Edgar F. Codd. In SQL, a truth value can be:
-<ul>
-  <li><code>TRUE</code>: The assertion is definitely factual.</li>
-  <li><code>FALSE</code>: The assertion is definitely counter-factual.</li>
-  <li><code>UNKNOWN</code>: The assertion cannot be determined because data is missing or indeterminate.</li>
-</ul>
+          <div class="lc-rule-banner">
+            <strong>The Core Intuition:</strong><br>
+            <code>NULL</code> does not mean zero (0), and it does not mean empty text ("").<br>
+            <code>NULL</code> means: <strong>"We do not know what the value is."</strong>
+          </div>
 
-### The Truth Evaluation Tables (Kleene Logic)
-When evaluating compound boolean expressions with logical operators (<code>AND</code>, <code>OR</code>, <code>NOT</code>), SQL follows strict truth matrices:
+          <p class="lc-p">
+            Imagine two strangers in a room: Alex and Brian. You do not know Alex's age (<code>NULL</code>), and you do not know Brian's age (<code>NULL</code>).
+          </p>
 
-<table style="width: 100%; border-collapse: collapse; margin: 16px 0; font-size: 13px;">
-  <thead>
-    <tr style="background: #f8fafc; border-bottom: 2px solid #e4e4e7;">
-      <th style="padding: 8px 12px; text-align: left;">Operator</th>
-      <th style="padding: 8px 12px; text-align: left;">Operand A</th>
-      <th style="padding: 8px 12px; text-align: left;">Operand B</th>
-      <th style="padding: 8px 12px; text-align: left;">Evaluated Result</th>
-      <th style="padding: 8px 12px; text-align: left;">Survives WHERE?</th>
-    </tr>
-  </thead>
-  <tbody>
-    <tr style="border-bottom: 1px solid #f4f4f5;"><td style="padding: 6px 12px;"><strong>AND</strong></td><td>TRUE</td><td>UNKNOWN</td><td><code>UNKNOWN</code></td><td style="color: #dc2626;">❌ Discarded</td></tr>
-    <tr style="border-bottom: 1px solid #f4f4f5;"><td style="padding: 6px 12px;"><strong>AND</strong></td><td>FALSE</td><td>UNKNOWN</td><td><code>FALSE</code></td><td style="color: #dc2626;">❌ Discarded</td></tr>
-    <tr style="border-bottom: 1px solid #f4f4f5;"><td style="padding: 6px 12px;"><strong>OR</strong></td><td>TRUE</td><td>UNKNOWN</td><td><code>TRUE</code></td><td style="color: #16a34a; font-weight: 700;">✅ Kept</td></tr>
-    <tr style="border-bottom: 1px solid #f4f4f5;"><td style="padding: 6px 12px;"><strong>OR</strong></td><td>FALSE</td><td>UNKNOWN</td><td><code>UNKNOWN</code></td><td style="color: #dc2626;">❌ Discarded</td></tr>
-    <tr style="border-bottom: 1px solid #f4f4f5;"><td style="padding: 6px 12px;"><strong>NOT</strong></td><td>UNKNOWN</td><td>&mdash;</td><td><code>UNKNOWN</code></td><td style="color: #dc2626;">❌ Discarded</td></tr>
-  </tbody>
-</table>
+          <p class="lc-p">
+            If someone asks you: <em>"Is Alex the same age as Brian?"</em> &mdash; what do you answer?<br>
+            &bull; Can you say <strong>YES (TRUE)</strong>? No, they might be different ages.<br>
+            &bull; Can you say <strong>NO (FALSE)</strong>? No, they might happen to be the exact same age.<br>
+            &bull; The only honest answer is: <strong>"I DO NOT KNOW" (UNKNOWN)</strong>!
+          </p>
 
-### The 5 Deadly NULL Traps in Technical Interviews
+          <p class="lc-p">
+            That is why in SQL, <code class="lc-code-pill">NULL = NULL</code> does <strong>NOT</strong> equal TRUE. It equals <strong>UNKNOWN</strong>!
+          </p>
 
-1. **The Equality Fallacy:** Writing <code>WHERE status = NULL</code> is universally incorrect. It always evaluates to <code>UNKNOWN</code>, returning zero records. You must always use <code>WHERE status IS NULL</code>.
-2. **The Inequality Filter Trap (LeetCode #584):** When filtering <code>WHERE referee_id != 2</code>, any row where <code>referee_id</code> is NULL produces <code>UNKNOWN != 2</code> &rarr; <code>UNKNOWN</code>. Because <code>UNKNOWN</code> is not <code>TRUE</code>, the customer is silently dropped! You must write <code>WHERE referee_id != 2 OR referee_id IS NULL</code>.
-3. **The Poisonous NOT IN Subquery Trap:** If you query <code>WHERE dept_id NOT IN (SELECT manager_dept FROM Managers)</code>, and even a single row in <code>manager_dept</code> is NULL, the entire query returns **ZERO records**. Why? Because <code>x NOT IN (1, 2, NULL)</code> expands to <code>x != 1 AND x != 2 AND x != NULL</code>. Since <code>x != NULL</code> is UNKNOWN, the entire AND chain collapses to UNKNOWN! Always use <code>NOT EXISTS</code> instead.
-4. **The Aggregate Counting Asymmetry:** <code>COUNT(*)</code> counts every row in the partition (including rows with all NULLs). However, <code>COUNT(column_name)</code> strictly counts rows where <code>column_name IS NOT NULL</code>. Similarly, <code>AVG(salary)</code> calculates <code>SUM(salary) / COUNT(salary)</code>, completely omitting employees with NULL salary from the denominator!
-5. **The Concatenation Eraser:** In standard ANSI SQL, string concatenation with NULL returns NULL: <code>CONCAT('Hello', ' ', NULL) = NULL</code>. In MySQL, <code>CONCAT</code> returns NULL if any argument is NULL. To prevent strings from vanishing, use <code>CONCAT_WS(' ', first_name, last_name)</code> or <code>COALESCE</code>.`,
+          <div class="lc-sub-header">
+            <span>🚪</span>
+            <span>The Nightclub Bouncer Rule: How WHERE Treats UNKNOWN</span>
+          </div>
+
+          <p class="lc-p">
+            Think of the <code class="lc-code-pill">WHERE</code> clause as a nightclub bouncer guarding the VIP door:
+          </p>
+          <ul style="margin: 0 0 16px 20px; line-height: 1.8; color: var(--text-secondary);">
+            <li>If your condition says <strong>TRUE</strong> &rarr; The bouncer lets the row through.</li>
+            <li>If your condition says <strong>FALSE</strong> &rarr; The bouncer turns the row away.</li>
+            <li>If your condition says <strong>UNKNOWN</strong> &rarr; <strong>The bouncer ALSO turns the row away!</strong></li>
+          </ul>
+
+          <div class="lc-callout-card danger">
+            <div class="lc-callout-title">
+              <span>🚨</span>
+              <span>The LeetCode #584 Trap: Why Innocent Customers Disappear</span>
+            </div>
+            <div class="lc-callout-body">
+              LeetCode #584 asks: <em>"Find customer names who were NOT referred by customer #2."</em><br><br>
+              Most candidates immediately write: <code class="lc-code-pill">WHERE referee_id != 2</code><br><br>
+              <strong>Why does this fail?</strong><br>
+              Imagine customer Will has no referee (<code class="lc-code-pill">referee_id IS NULL</code>).<br>
+              The query checks: <code class="lc-code-pill">NULL != 2</code> &rarr; Evaluates to <strong>UNKNOWN</strong>!<br>
+              The WHERE bouncer sees UNKNOWN and throws Will out of the results! Will was never referred by #2, but he vanished.<br><br>
+              <strong>The Fix:</strong> Always protect against NULLs explicitly:<br>
+              <code class="lc-code-pill">WHERE referee_id != 2 OR referee_id IS NULL;</code>
+            </div>
+          </div>
+        `,
         diagram: {
-          id: 'diag-3vl-matrix',
-          title: '3VL Matrix & Row Survival Mechanics',
-          svg: `<svg viewBox="0 0 900 230" class="lc-diagram-svg" xmlns="http://www.w3.org/2000/svg">
-            <rect x="20" y="15" width="860" height="200" rx="8" fill="#ffffff" stroke="#cbd5e1" stroke-width="1.5"/>
-            <!-- Title -->
-            <text x="35" y="42" fill="#0f172a" font-size="13" font-weight="700">THREE-VALUED LOGIC COMPARISON TRUTH TABLE</text>
+          id: 'diag-3vl-table',
+          title: 'Three-Valued Logic Truth Table: What Happens When Conditions Run',
+          svg: `<svg viewBox="0 0 880 230" class="lc-diagram-svg" xmlns="http://www.w3.org/2000/svg">
+            <rect x="20" y="15" width="840" height="200" rx="8" fill="#ffffff" stroke="#cbd5e1" stroke-width="1.5"/>
+            <text x="35" y="42" fill="#0f172a" font-size="13" font-weight="700">THREE-VALUED LOGIC (3VL) EVALUATION MATRIX</text>
             
-            <!-- Table Header -->
-            <rect x="35" y="55" width="830" height="28" fill="#f8fafc" rx="4"/>
-            <text x="45" y="73" fill="#64748b" font-family="monospace" font-size="11" font-weight="700">ROW RECORD</text>
-            <text x="240" y="73" fill="#64748b" font-family="monospace" font-size="11" font-weight="700">TEST PREDICATE</text>
-            <text x="480" y="73" fill="#64748b" font-family="monospace" font-size="11" font-weight="700">3VL EVALUATION</text>
-            <text x="680" y="73" fill="#64748b" font-family="monospace" font-size="11" font-weight="700">ENGINE ACTION</text>
+            <rect x="35" y="55" width="810" height="28" fill="#f8fafc" rx="4"/>
+            <text x="45" y="73" fill="#64748b" font-family="monospace" font-size="11" font-weight="700">ROW VALUE</text>
+            <text x="240" y="73" fill="#64748b" font-family="monospace" font-size="11" font-weight="700">YOUR CONDITION</text>
+            <text x="480" y="73" fill="#64748b" font-family="monospace" font-size="11" font-weight="700">EVALUATION</text>
+            <text x="680" y="73" fill="#64748b" font-family="monospace" font-size="11" font-weight="700">SURVIVES WHERE?</text>
 
             <!-- Row 1 -->
-            <line x1="35" y1="92" x2="865" y2="92" stroke="#f1f5f9"/>
-            <text x="45" y="112" fill="#0f172a" font-family="monospace" font-size="11.5">User #1 (referee=1)</text>
+            <line x1="35" y1="92" x2="845" y2="92" stroke="#f1f5f9"/>
+            <text x="45" y="112" fill="#0f172a" font-family="monospace" font-size="11.5">referee_id = 1</text>
             <text x="240" y="112" fill="#2563eb" font-family="monospace" font-size="11.5">referee_id != 2</text>
             <text x="480" y="112" fill="#16a34a" font-family="monospace" font-size="12" font-weight="700">TRUE</text>
-            <rect x="680" y="98" width="95" height="20" rx="4" fill="#f0fdf4" stroke="#bbf7d0"/>
-            <text x="692" y="112" fill="#15803d" font-size="11" font-weight="600">✅ Retained</text>
+            <rect x="680" y="98" width="100" height="22" rx="4" fill="#f0fdf4" stroke="#86efac"/>
+            <text x="692" y="113" fill="#15803d" font-size="11" font-weight="600">✅ Kept</text>
 
             <!-- Row 2 -->
-            <line x1="35" y1="130" x2="865" y2="130" stroke="#f1f5f9"/>
-            <text x="45" y="148" fill="#0f172a" font-family="monospace" font-size="11.5">User #2 (referee=2)</text>
+            <line x1="35" y1="130" x2="845" y2="130" stroke="#f1f5f9"/>
+            <text x="45" y="148" fill="#0f172a" font-family="monospace" font-size="11.5">referee_id = 2</text>
             <text x="240" y="148" fill="#2563eb" font-family="monospace" font-size="11.5">referee_id != 2</text>
             <text x="480" y="148" fill="#dc2626" font-family="monospace" font-size="12" font-weight="700">FALSE</text>
-            <rect x="680" y="134" width="95" height="20" rx="4" fill="#fef2f2" stroke="#fecaca"/>
-            <text x="692" y="148" fill="#991b1b" font-size="11" font-weight="600">❌ Discarded</text>
+            <rect x="680" y="134" width="100" height="22" rx="4" fill="#fef2f2" stroke="#fecaca"/>
+            <text x="692" y="149" fill="#991b1b" font-size="11" font-weight="600">❌ Dropped</text>
 
-            <!-- Row 3 (THE TRAP) -->
-            <rect x="35" y="162" width="830" height="36" rx="4" fill="#fffbeb" stroke="#fde68a"/>
-            <text x="45" y="184" fill="#92400e" font-family="monospace" font-size="11.5" font-weight="700">User #3 (referee=NULL)</text>
-            <text x="240" y="184" fill="#2563eb" font-family="monospace" font-size="11.5">referee_id != 2</text>
-            <text x="480" y="184" fill="#d97706" font-family="monospace" font-size="12" font-weight="700">UNKNOWN (NULL)</text>
-            <rect x="680" y="170" width="165" height="20" rx="4" fill="#fef2f2" stroke="#fecaca"/>
-            <text x="690" y="184" fill="#991b1b" font-size="11" font-weight="700">❌ Discarded (Silent!)</text>
+            <!-- Row 3 (TRAP) -->
+            <rect x="35" y="162" width="810" height="38" rx="4" fill="#fffbeb" stroke="#fde68a"/>
+            <text x="45" y="186" fill="#92400e" font-family="monospace" font-size="11.5" font-weight="700">referee_id = NULL</text>
+            <text x="240" y="186" fill="#2563eb" font-family="monospace" font-size="11.5">referee_id != 2</text>
+            <text x="480" y="186" fill="#d97706" font-family="monospace" font-size="12" font-weight="700">UNKNOWN</text>
+            <rect x="680" y="170" width="150" height="22" rx="4" fill="#fef2f2" stroke="#fecaca"/>
+            <text x="688" y="185" fill="#991b1b" font-size="11" font-weight="700">❌ Silently Dropped!</text>
           </svg>`
         }
       },
@@ -170,46 +240,98 @@ When evaluating compound boolean expressions with logical operators (<code>AND</
       {
         id: 'chap-3-sargability',
         number: '1.3',
-        title: 'Query Optimizer Mechanics & Index Sargability',
-        content: `Writing functional SQL is easy; writing **production-grade performant SQL** separates senior data engineers from novices. The heart of SQL performance is **Sargability** (an acronym for *Search Argument Able*).
+        title: 'Making Queries 1,000x Faster: The Art of Sargability',
+        content: `
+          <p class="lc-p">
+            Anyone can write a query that works on 5 rows. But what happens when your table has <strong>10,000,000 rows</strong> in production?
+          </p>
 
-A predicate is **Sargable** if the database engine can directly exploit an existing B-Tree index to perform a direct logarithmic range seek (<code>O(log N)</code>) rather than scanning every record in the table (<code>O(N)</code>).
+          <div class="lc-rule-banner">
+            <strong>The Dictionary Analogy:</strong><br>
+            Imagine searching for the word <em>"Zebra"</em> in a 1,000-page English dictionary.<br>
+            Because the dictionary has an alphabetical index (A to Z), you flip directly to the letter 'Z' in <strong>2 seconds</strong>.<br><br>
+            Now imagine your boss asks: <em>"Find every word whose LAST letter is 'q'."</em><br>
+            Can you use the alphabetical index? <strong>No!</strong> You are forced to read every single word on all 1,000 pages line-by-line. That takes <strong>3 hours</strong>!
+          </div>
 
-### The Golden Rule of Sargability
-<blockquote><strong>Never wrap the indexed column inside a function or mathematical expression in the WHERE clause. Always manipulate the constant operand instead.</strong></blockquote>
+          <p class="lc-p">
+            In SQL, a condition is called <strong>Sargable</strong> (Search-Argument-Able) if the database can flip directly to the index page instead of reading the entire table row-by-row.
+          </p>
 
-#### 1. Date Transformations
-* ❌ **Non-Sargable:** <code>WHERE YEAR(order_date) = 2026</code> &mdash; The engine must execute the <code>YEAR()</code> function on 10,000,000 rows one by one. Index disabled!
-* ✅ **Sargable:** <code>WHERE order_date &gt;= '2026-01-01' AND order_date &lt; '2027-01-01'</code> &mdash; The engine immediately seeks to the first January 1st node in the B-Tree index and reads linearly.
+          <div class="lc-rule-banner" style="border-left-color: #16a34a; background: #f0fdf4;">
+            <strong style="color: #166534;">The Golden Rule of Speed:</strong><br>
+            Never put a function around your table column in the WHERE clause. Always keep the column bare and transform the number or date on the right side!
+          </div>
 
-#### 2. String Matching & Wildcard Placement
-* ❌ **Non-Sargable:** <code>WHERE sku LIKE '%PRO'</code> &mdash; Leading wildcards prevent B-Tree index seek because the starting characters are unknown.
-* ✅ **Sargable:** <code>WHERE sku LIKE 'PRO%'</code> &mdash; Trailing wildcards allow the B-Tree index to perform an exact prefix seek.
+          <div class="lc-comparison-grid">
+            <div class="lc-compare-card bad">
+              <div class="lc-compare-title">
+                <span>❌</span>
+                <span>Slow / Non-Sargable (Full Table Scan)</span>
+              </div>
+              <div class="lc-code-snippet">WHERE YEAR(order_date) = 2026</div>
+              <div class="lc-compare-explain">
+                The database must calculate <code>YEAR()</code> on 10,000,000 rows individually. The index is completely ignored!
+              </div>
+            </div>
 
-#### 3. Mathematical Operations
-* ❌ **Non-Sargable:** <code>WHERE price * 1.10 &gt; 100</code>
-* ✅ **Sargable:** <code>WHERE price &gt; 100 / 1.10</code>`,
+            <div class="lc-compare-card good">
+              <div class="lc-compare-title">
+                <span>✅</span>
+                <span>Fast / Sargable (Direct Index Seek)</span>
+              </div>
+              <div class="lc-code-snippet">WHERE order_date &gt;= '2026-01-01'<br>  AND order_date &lt; '2027-01-01'</div>
+              <div class="lc-compare-explain">
+                The column is untouched. The database jumps straight to Jan 1st in the B-Tree index in <strong>0.5 milliseconds</strong>!
+              </div>
+            </div>
+          </div>
+
+          <div class="lc-comparison-grid">
+            <div class="lc-compare-card bad">
+              <div class="lc-compare-title">
+                <span>❌</span>
+                <span>Slow / Non-Sargable</span>
+              </div>
+              <div class="lc-code-snippet">WHERE price * 1.10 &gt; 100</div>
+              <div class="lc-compare-explain">
+                Math is performed on the column itself, forcing the engine to calculate multiplication for every single row.
+              </div>
+            </div>
+
+            <div class="lc-compare-card good">
+              <div class="lc-compare-title">
+                <span>✅</span>
+                <span>Fast / Sargable</span>
+              </div>
+              <div class="lc-code-snippet">WHERE price &gt; 100 / 1.10</div>
+              <div class="lc-compare-explain">
+                Math is calculated ONCE on the constant right side. The database performs an instant B-Tree index range seek.
+              </div>
+            </div>
+          </div>
+        `,
         diagram: {
           id: 'diag-index-seek',
-          title: 'B-Tree Index Range Seek vs Full Table Scan',
-          svg: `<svg viewBox="0 0 900 210" class="lc-diagram-svg" xmlns="http://www.w3.org/2000/svg">
-            <rect x="20" y="15" width="415" height="180" rx="8" fill="#f8fafc" stroke="#cbd5e1" stroke-width="1.5"/>
-            <text x="35" y="42" fill="#16a34a" font-size="13" font-weight="700">SARGABLE: B-Tree Index Range Seek</text>
-            <text x="35" y="65" fill="#52525b" font-family="monospace" font-size="11">WHERE created_at &gt;= '2026-01-01'</text>
-            <rect x="35" y="80" width="385" height="50" rx="4" fill="#ffffff" stroke="#e2e8f0"/>
-            <text x="45" y="102" fill="#0f172a" font-size="12">Traverses B-Tree Root ➔ Branch ➔ Leaf page</text>
-            <text x="45" y="120" fill="#16a34a" font-family="monospace" font-size="11" font-weight="700">⚡ 3 Page I/O Reads &bull; Latency: 0.8ms</text>
-            <rect x="35" y="145" width="120" height="22" rx="4" fill="#f0fdf4" stroke="#86efac"/>
-            <text x="45" y="160" fill="#166534" font-size="11" font-weight="600">O(log N) Cost</text>
+          title: 'Visual Proof: Index Range Seek (Fast) vs Full Table Scan (Slow)',
+          svg: `<svg viewBox="0 0 880 200" class="lc-diagram-svg" xmlns="http://www.w3.org/2000/svg">
+            <!-- Left: Fast Seek -->
+            <rect x="20" y="15" width="410" height="170" rx="8" fill="#f0fdf4" stroke="#86efac" stroke-width="1.5"/>
+            <rect x="35" y="30" width="130" height="22" rx="4" fill="#dcfce7" stroke="#86efac"/>
+            <text x="43" y="45" fill="#166534" font-family="monospace" font-size="11" font-weight="700">FAST: B-Tree Seek</text>
+            <text x="35" y="75" fill="#0f172a" font-size="13" font-weight="700">Direct Page Navigation</text>
+            <text x="35" y="98" fill="#475569" font-size="12">Traverses B-Tree Root ➔ Leaf page directly.</text>
+            <rect x="35" y="125" width="220" height="28" rx="4" fill="#ffffff" stroke="#86efac"/>
+            <text x="45" y="143" fill="#16a34a" font-family="monospace" font-size="11.5" font-weight="700">⚡ 3 Page Reads &bull; 0.4 ms</text>
 
-            <rect x="465" y="15" width="415" height="180" rx="8" fill="#f8fafc" stroke="#cbd5e1" stroke-width="1.5"/>
-            <text x="480" y="42" fill="#dc2626" font-size="13" font-weight="700">NON-SARGABLE: Full Table Scan (FTS)</text>
-            <text x="480" y="65" fill="#52525b" font-family="monospace" font-size="11">WHERE YEAR(created_at) = 2026</text>
-            <rect x="480" y="80" width="385" height="50" rx="4" fill="#ffffff" stroke="#e2e8f0"/>
-            <text x="490" y="102" fill="#0f172a" font-size="12">Must execute function on every single raw disk row</text>
-            <text x="490" y="120" fill="#dc2626" font-family="monospace" font-size="11" font-weight="700">🐢 85,000 Page I/O Reads &bull; Latency: 4,200ms</text>
-            <rect x="480" y="145" width="120" height="22" rx="4" fill="#fef2f2" stroke="#fca5a5"/>
-            <text x="490" y="160" fill="#991b1b" font-size="11" font-weight="600">O(N) Full Scan</text>
+            <!-- Right: Slow Scan -->
+            <rect x="450" y="15" width="410" height="170" rx="8" fill="#fef2f2" stroke="#fca5a5" stroke-width="1.5"/>
+            <rect x="465" y="30" width="145" height="22" rx="4" fill="#fee2e2" stroke="#fca5a5"/>
+            <text x="473" y="45" fill="#991b1b" font-family="monospace" font-size="11" font-weight="700">SLOW: Full Table Scan</text>
+            <text x="465" y="75" fill="#0f172a" font-size="13" font-weight="700">Reads Every Page on Disk</text>
+            <text x="465" y="98" fill="#475569" font-size="12">Checks all 10,000,000 rows one by one.</text>
+            <rect x="465" y="125" width="230" height="28" rx="4" fill="#ffffff" stroke="#fca5a5"/>
+            <text x="475" y="143" fill="#dc2626" font-family="monospace" font-size="11.5" font-weight="700">🐢 85,000 Page Reads &bull; 4.2 sec</text>
           </svg>`
         }
       },
@@ -217,29 +339,52 @@ A predicate is **Sargable** if the database engine can directly exploit an exist
       {
         id: 'chap-4-strings',
         number: '1.4',
-        title: 'String Semantics, Unicode Traps & Character Counting',
-        content: `In LeetCode #1683 (Invalid Tweets), the specification asks to find tweets where the number of characters strictly exceeds 15. Candidates who use <code>LENGTH()</code> frequently fail hidden test cases involving modern unicode emojis.
+        title: 'String Length vs Byte Length (The Hidden Emoji Bug)',
+        content: `
+          <p class="lc-p">
+            In <strong>LeetCode #1683 (Invalid Tweets)</strong>, you must find tweets that have strictly more than 15 characters.
+          </p>
 
-### Byte Length vs Character Count
-In modern databases utilizing <code>utf8mb4</code> encoding:
-<ul>
-  <li>Standard ASCII characters (A-Z, 0-9) consume <strong>1 byte</strong>.</li>
-  <li>Accented Latin characters (&eacute;, &ntilde;) consume <strong>2 bytes</strong>.</li>
-  <li>Common Asian characters (&atilde;&sbquo;&cent;, &auml;&frac12;&nbsp;) consume <strong>3 bytes</strong>.</li>
-  <li>Modern Unicode Emojis (&#128640;, &#128514;, &#128293;) consume <strong>4 bytes</strong>!</li>
-</ul>
+          <p class="lc-p">
+            Many candidates write <code class="lc-code-pill">WHERE LENGTH(content) &gt; 15</code> and wonder why their solution fails hidden test cases.
+          </p>
 
-* <code>LENGTH('Vote for 🚀')</code> returns **13 bytes** (9 letters + 4 bytes for rocket).
-* <code>CHAR_LENGTH('Vote for 🚀')</code> returns **10 characters** (the actual count of human-perceived characters).
+          <div class="lc-rule-banner">
+            <strong>The Memory Difference:</strong><br>
+            &bull; <code>LENGTH()</code> counts <strong>raw bytes</strong> stored on the hard drive.<br>
+            &bull; <code>CHAR_LENGTH()</code> counts <strong>actual characters</strong> as seen by human eyes!
+          </div>
 
-Always use <code>CHAR_LENGTH()</code> for text character limits and word counting in SQL interviews.`
+          <p class="lc-p">
+            In modern UTF-8 database encoding:
+          </p>
+          <ul style="margin: 0 0 16px 20px; line-height: 1.8; color: var(--text-secondary);">
+            <li>Simple English letters (A-Z) take <strong>1 byte</strong> each.</li>
+            <li>Accented letters (&eacute;, &ntilde;) take <strong>2 bytes</strong> each.</li>
+            <li>Asian characters take <strong>3 bytes</strong> each.</li>
+            <li>Modern Emojis (&#128640;, &#128514;, &#128293;) take <strong>4 bytes</strong> each!</li>
+          </ul>
+
+          <div class="lc-callout-card info">
+            <div class="lc-callout-title">
+              <span>💡</span>
+              <span>The Takeaway</span>
+            </div>
+            <div class="lc-callout-body">
+              The tweet: <strong>"Vote 🚀"</strong> has only 6 visible characters.<br>
+              &bull; <code class="lc-code-pill">CHAR_LENGTH('Vote 🚀')</code> = <strong>6</strong> (Correct!)<br>
+              &bull; <code class="lc-code-pill">LENGTH('Vote 🚀')</code> = <strong>9</strong> (Wrong: counts 5 letters + 4 bytes for the rocket!)<br><br>
+              Whenever counting text length or characters in SQL interviews, <strong>always use CHAR_LENGTH()</strong>!
+            </div>
+          </div>
+        `
       }
     ],
 
     callouts: [
       {
         type: 'danger',
-        title: 'The "NOT IN" NULL Poison Trap',
+        title: 'The "NOT IN" Poison Trap',
         body: 'If a subquery or list contains even a single NULL, `col NOT IN (1, 2, NULL)` will return ZERO rows for the entire table! This is because `col != NULL` yields UNKNOWN, poisoning the entire AND conjunction.'
       },
       {
