@@ -225,7 +225,7 @@
                 return `
                   <button class="amazon-ticket-card ${isSelected ? 'active' : ''} ${isDone ? 'completed' : ''}" onclick="window.JPMORGAN_STORY.selectDay(${d.day})">
                     <div class="ticket-card-top">
-                      <span class="ticket-day-badge ${isDone ? 'done' : ''}" style="${isSelected ? 'background: #f59e0b; color: #000;' : ''}">Day ${String(d.day).padStart(2, '0')}</span>
+                      <span class="ticket-day-badge ${isDone ? 'done' : ''}">Day ${String(d.day).padStart(2, '0')}</span>
                       <span class="ticket-priority-pill priority-${d.priority.split(' ')[0].toLowerCase()}">${d.priority}</span>
                       ${isDone ? '<span class="ticket-check-mark">✓</span>' : ''}
                     </div>
